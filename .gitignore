@@ -1,0 +1,13 @@
+# emacs
+*~
+*#*
+.#*
+
+# vscode
+.vscode
+
+# idea
+.idea
+
+# macOS
+.DS_Store
