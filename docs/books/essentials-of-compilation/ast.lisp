@@ -18,6 +18,16 @@
 ;; maybe we need structural typing,
 ;; instead of nominal typing.
 
+;; 也许就应该用 nominal typing，
+;; 即用不同名字的数据构造子，
+;; 因为这些数据构造子的意义不是独立的，
+;; 而是来自它们与同类型的其他构造子之间的关系的。
+
+;; 缺点是结构相似但是名字不同的数据之间，需要显式地转换。
+
+;; 定义数据构造子不是让人通过 substitution 来使用所定义的名字，
+;; 而是说所定义的名字可以如何使用以构造数据。
+
 (define-data atom-t
   [atom-var ([name string-t]) atom-t]
   [atom-int ([value int-t]) atom-t])
