@@ -3,12 +3,12 @@ title: simply typed lisp
 date: 2025-05-24
 ---
 
-# Dynamicly typed
+# 动态类型
 
-I was thinking about dynamicly typed lisp,
-because I want to learn about generic dispatching.
+我之前想要实现动态类型的 lisp，
+因为想要使用 generic dispatching。
 
-keywords:
+语法关键词：
 
 - `define-generic`
 - `define-handler`
@@ -33,12 +33,10 @@ keywords:
 (define (add x y) ...)
 ```
 
-# Simply typed
+# 简单类型
 
-It seems simply typed version makes more sense,
-if we want to go this way, we can learn from Milner's ML.
-
-But is it still possible to support generic dispatching?
+但是其实对于第一个语言来说，可能简单类型更实用。
+但是此时就没法支持 generic dispatching 了。
 
 ```scheme
 (define-datatype exp-t
@@ -56,9 +54,11 @@ But is it still possible to support generic dispatching?
   [(exp-ap target arg) ...])
 ```
 
-Suppose data need to be constructed with `()`,
-even zero arity `(null)` and `(zero)`,
-so that it is clear what is a pattern in pattern matching.
+假设构造数据的时候，必须用数据构造子的作用语法，
+也就是都要加上 `()`，零元的数据构造子也不例外，
+比如 `(null)` 和 `(zero)`。
+
+这样就能明确那些是 pattern matching 的语法了。
 
 ```scheme
 (claim add (-> nat-t nat-t nat-t))
@@ -68,7 +68,11 @@ so that it is clear what is a pattern in pattern matching.
     [(zero) y]
     [(add1 prev)
      (add1 (add prev y))]))
+```
 
+模仿 haskell 和 prolog 一个函数定义多次（一个 case 一次）：
+
+```scheme
 (define-case (add (zero) y) y)
 (define-case (add (add1 prev) y) (add1 (add prev y)))
 ```
@@ -85,7 +89,8 @@ so that it is clear what is a pattern in pattern matching.
      (cons (f head) (list-map tail f))]))
 ```
 
-用 `nu` 代表 `fresh-type`：
+如果觉得 `fresh-type` 太长了，
+也许可以用 `nu` 代表（new 的缩写）：
 
 ```scheme
 (claim list-map

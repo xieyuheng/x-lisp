@@ -14,3 +14,5 @@
 [diary] on syntax
 
 - 反思关于 cicada-lisp 的 class 语法中使用的 @ 来代表 self。
+
+[learn] 读 H 和 M 关于 HM 类型系统的论文
