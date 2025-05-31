@@ -1,4 +1,5 @@
 [diary] review old diary
+
 [diary] new plan
 
 把编译器的课程学完
@@ -11,3 +12,5 @@
 - Use x-lisp to read EOPL, so that even the simple part will not be boring.
 
 [diary] on syntax
+
+- 反思关于 cicada-lisp 的 class 语法中使用的 @ 来代表 self。
