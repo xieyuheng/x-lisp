@@ -8,17 +8,17 @@ date: 2024-09-18
 完全是 OOP 里各种技巧的上位替代。
 
 ```scheme
-(define (responsible (an-entry entry))
-  (if (is-kind-of an-entry film)
-    an-entry:producer
-    an-entry:author))
+(define (responsible [entry entry-t])
+  (if (is-kind-of entry film)
+    entry:producer
+    entry:author))
 
 
-(define-handler (responsible (a-film film))
-  a-film:producer)
+(define-handler (responsible [film film-t])
+  film:producer)
 
-(define-handler (responsible (an-entry entry))
-  an-entry:author)
+(define-handler (responsible [entry entry-t])
+  entry:author)
 ```
 
 因为太常用了，所以也许 `define`
@@ -26,15 +26,15 @@ date: 2024-09-18
 而不用每次都写 `define-handler`。
 
 ```scheme
-(define (responsible (an-entry entry))
-  (if (is-kind-of an-entry film)
-    an-entry:producer
-    an-entry:author))
+(define (responsible [entry entry-t])
+  (if (is-kind-of entry film)
+    entry:producer
+    entry:author))
 
 
-(define (responsible (a-film film))
-  a-film:producer)
+(define (responsible [film film-t])
+  film:producer)
 
-(define (responsible (an-entry entry))
-  an-entry:author)
+(define (responsible [entry entry-t])
+  entry:author)
 ```

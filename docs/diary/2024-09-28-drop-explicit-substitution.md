@@ -3,7 +3,7 @@ title: drop explicit substitution
 date: 2024-09-28
 ---
 
-放弃在这个项目中使用 explicit substitution。
+放弃使用 explicit substitution 来实现这个语言。
 
 因为：
 

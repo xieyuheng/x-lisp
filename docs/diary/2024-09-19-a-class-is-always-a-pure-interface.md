@@ -29,3 +29,13 @@ date: 2024-09-19
   但是不支持 subclass 对 superclass 的 method 的 override。
 
 我还不确定应该如何选择。
+
+---
+
+- [2025-06-01] 在读 EOC 的过程中，
+  用到了带有 method 的和 override 功能的 class。
+  因为要使用 open recursion 来渐进地定义语言的解释器。
+
+  因此就应该实现正常的功能完备的 class。
+  想到在 JS 中用 function + record 实现各种 OOP 功能，
+  就知道实现 class 也并不难。

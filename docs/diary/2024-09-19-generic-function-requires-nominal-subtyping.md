@@ -9,7 +9,7 @@ generic function 要求我们用 nominal subtyping，
 因为我们需 nominal 信息来在运行时做 dispatching。
 
 ```scheme
-(define (display (self bordered-figure))
+(define (display [self bordered-figure-t])
   (display (as-figure self))
   (display-border self))
 ```
