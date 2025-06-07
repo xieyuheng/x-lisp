@@ -57,6 +57,8 @@ date: 2025-06-06
 
 这是从 shen-lang 学的，比如：
 
+- 用 `#` 作为 built-in 函数的前缀。
+
 ```scheme
 '(a b c) => ['a 'b 'c] => (#list 'a 'b 'c)
 ```
@@ -64,3 +66,31 @@ date: 2025-06-06
 注意，如果这样使用 `[...]`
 那么在就不能在 `let` 和 `cond` 中使用 `[]` 了，
 这也许是好事。
+
+如果要实现这样的 list with attributes，
+就不能用简单的 cons 了，
+每个 list 其实都是 list + map。
+cdr 一个 list 的时候，会把 map 传递给 tail。
+要有两个平行的数据，而不能直接把 attributes 保存在 list 里。
+因此也许应该叫做 data 而不应该叫做 list。
+
+```scheme
+'(a b c) => ['a 'b 'c] => (#data 'a 'b 'c)
+```
+
+或者直接用 `#`：
+
+```scheme
+'(a b c) => ['a 'b 'c] => (# 'a 'b 'c)
+```
+
+```typescript
+type Data = {
+  list: List,
+  attributes: Record<string, Value>,
+}
+
+type List = Null | Cons
+type Null = { kind: "Null" }
+type Cons = { kind: "Cons", head: Value, tail: List }
+```
