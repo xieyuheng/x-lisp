@@ -49,7 +49,7 @@ date: 2025-06-06
 
 我也在考虑避免让 built-in 函数占用 list 这种常见的名字。
 也许可以模仿 `'(...)` 展开成 `(quote (...))`，
-让 `[...]` 展开成 `(list-new ...)`。
+让 `[...]` 展开成 `(#list ...)`。
 
 ```scheme
 ['lambda ['x] 'x :span [:low 0 :high 10]]
@@ -58,7 +58,7 @@ date: 2025-06-06
 这是从 shen-lang 学的，比如：
 
 ```scheme
-'(a b c) => ['a 'b 'c] => (list-new 'a 'b 'c)
+'(a b c) => ['a 'b 'c] => (#list 'a 'b 'c)
 ```
 
 注意，如果这样使用 `[...]`
