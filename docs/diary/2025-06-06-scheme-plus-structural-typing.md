@@ -55,6 +55,12 @@ date: 2025-06-06
 ['lambda ['x] 'x :span [:low 0 :high 10]]
 ```
 
+这是从 shen-lang 学的，比如：
+
+```scheme
+'(a b c) => ['a 'b 'c] => (list-new 'a 'b 'c)
+```
+
 注意，如果这样使用 `[...]`
 那么在就不能在 `let` 和 `cond` 中使用 `[]` 了，
 这也许是好事。
