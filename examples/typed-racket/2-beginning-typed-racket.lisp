@@ -1,6 +1,6 @@
-(define tree-t (union leaf-t node-t))
-(define leaf-t (tau 'leaf number-t))
-(define node-t (tau 'node tree-t tree-t))
+(define-type tree-t (union leaf-t node-t))
+(define-type leaf-t (tau 'leaf number-t))
+(define-type node-t (tau 'node tree-t tree-t))
 
 (claim tree-height (-> tree-t integer-t))
 (define (tree-height tree)

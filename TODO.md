@@ -1,5 +1,3 @@
-[example] typed racket -- 3-specifying-types
-[example] typed racket -- 4-types-in-typed-racket
 [example] typed racket -- 5-occurrence-typing
 [example] typed racket -- 6-typed-untyped-interaction
 [example] typed racket -- 7-optimization-in-typed-racket

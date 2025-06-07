@@ -1,4 +1,4 @@
-(define point-t (tau number-t number-t))
+(define-type point-t (tau number-t number-t))
 
 (claim point-x (-> point-t number-t))
 (define (point-x p) (list-get p 0))
