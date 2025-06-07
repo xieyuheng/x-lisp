@@ -1,5 +1,3 @@
-[learn] 读 H 和 M 关于 HM 类型系统的论文
-
 # example
 
 > 尝试给这个教程中的代码加 structural 类型。
