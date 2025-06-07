@@ -9,4 +9,5 @@
   (sqrt (+ (sqr (- (pt-x p2) (pt-x p1)))
            (sqr (- (pt-y p2) (pt-y p1))))))
 
-(distance (pt 0 0) (pt 3.1415 2.7172))
+(distance (pt 0 0)
+          (pt 3.1415 2.7172))
