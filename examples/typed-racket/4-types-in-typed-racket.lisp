@@ -28,6 +28,9 @@
     ([head . tail]
      (add1 (list-length tail)))))
 
+;; 与其支持下面这种可变 arity 的函数，
+;; 不如限制 arity 不可变，并支持 auto currying。
+
 (claim sum
   (->* (list-t number-t) number-t))
 (claim sum
