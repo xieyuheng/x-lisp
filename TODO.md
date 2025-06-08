@@ -1,3 +1,7 @@
+# scheme
+
+[scheme] a simple scheme like language, with data instead of list
+
 # type system
 
 [learn] 1967-fundamental-concepts-in-programming-languages
