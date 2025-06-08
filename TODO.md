@@ -1,7 +1,12 @@
 # scheme
 
 [scheme] `List` & `Data` -- a simple scheme like language, with data instead of list
+
 [sexp] just use parse to `Data` instead of `Sexp`
+
+- how should i name this module? not sexp anymore,
+  but more like serialization and deserialization,
+  maybe use `read` and `write` like scheme.
 
 # type system
 
