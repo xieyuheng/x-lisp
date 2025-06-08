@@ -1,6 +1,7 @@
 # scheme
 
-[scheme] a simple scheme like language, with data instead of list
+[scheme] `List` & `Data` -- a simple scheme like language, with data instead of list
+[sexp] just use parse to `Data` instead of `Sexp`
 
 # type system
 
