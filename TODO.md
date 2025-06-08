@@ -1,9 +1,10 @@
-# example
+setup ts project
 
-> 尝试给这个教程中的代码加 structural 类型。
+# example
 
 [learn] 2006-an-incremental-approach-to-compiler-construction.pdf -- 对比 EOC。
 [learn] 2006-compilers-backend-to-frontend-and-back-to-front-again.pdf -- 对比 EOC。
+[learn] add structural types to aziz's tutorial code
 
 # later
 
