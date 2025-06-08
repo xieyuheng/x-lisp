@@ -1,5 +1,3 @@
-setup ts project
-
 # type system
 
 [learn] 1967-fundamental-concepts-in-programming-languages
