@@ -37,7 +37,17 @@ date: 2025-06-06
 也就是说 `[1 2 . [3]]` 与 `[1 2 3]` 并不等价，
 而 `(normalize-dot [1 2 . [3]]) => [1 2 3]`。
 
-clojure 是没有给 `.` 以特殊解释的 lisp 的例子，
+clojure 是没有给 `.` 以特殊解释的 lisp 的例子。
+为了避免所出现的 `.` 让 lisper 误会，clojure 使用了 `&`。
+
+```scheme
+(define exp-t (union var-t int-t prim-t fn-t ap-t let-t))
+(define var-t symbol-t)
+(define let-t (tau 'let (list-t (typle-t symbol-t exp-t)) & (list-t exp-t)))
+(define fn-t (tau 'lambda (list-t symbol-t) & (list-t exp-t)))
+(define ap-t (list-t exp-t))
+(define program-t (tau 'program info-t & (list-t exp-t)))
+```
 
 # More Examples
 
