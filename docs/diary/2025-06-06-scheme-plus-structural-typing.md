@@ -16,6 +16,9 @@ date: 2025-06-06
 用 `tau` 来声明形如 list 的 structural type。
 
 ```scheme
+(claim list-t (-> type-t type-t))
+(define (list-t A) (union null-t (cons-t A (list-t A))))
+
 (define exp-t (union var-t int-t prim-t fn-t ap-t let-t))
 (define var-t symbol-t)
 (define let-t (tau 'let (list-t (typle-t symbol-t exp-t)) . (list-t exp-t)))
@@ -27,22 +30,14 @@ date: 2025-06-06
 上面的 `(tau 'lambda (list-t symbol-t) . (list-t exp-t))` 有歧义，
 因为按照 `.` 的意义，
 它会被解析为 `(tau 'lambda (list-t symbol-t) list-t exp-t)`。
-所以也许应该放弃直接解析 `.`，
-要么完全放弃使用它，要么把它解析为一个特殊的 symbol。
+所以不能把 `.` 解析为 list 的 cons，
+唯一可能的方式是把它解析为一个特殊的 attributes，
+并且要求它只能被用在 pattern 中。
 
-```scheme
-(define exp-t (union var-t int-t prim-t fn-t ap-t let-t))
-(define var-t symbol-t)
-(define let-t (tau 'let (list-t (typle-t symbol-t exp-t)) :rest (list-t exp-t)))
-(define fn-t (tau 'lambda (list-t symbol-t) :rest (list-t exp-t)))
-(define ap-t (list-t exp-t))
-(define program-t (tau 'program info-t :rest (list-t exp-t)))
-```
+也就是说 `[1 2 . [3]]` 与 `[1 2 3]` 并不等价，
+而 `(normalize-dot [1 2 . [3]]) => [1 2 3]`。
 
-```scheme
-(claim list-t (-> type-t type-t))
-(define (list-t A) (union null-t (cons-t A (list-t A))))
-```
+clojure 是没有给 `.` 以特殊解释的 lisp 的例子，
 
 # More Examples
 
