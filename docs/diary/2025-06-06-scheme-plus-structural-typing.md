@@ -103,7 +103,7 @@ date: 2025-06-06
 (define program-t (tau* 'program info-t (list-t exp-t)))
 ```
 
-感觉这才是正解。
+感觉这才是正解！
 
 在 pattern 中也许可以直接使用 `cons`：
 
