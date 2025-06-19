@@ -220,3 +220,30 @@ type Float = { kind: "Float"; content: number; attributes: Attributes }
 ;; with attribute:
 (quote x :span [:start 0 :end 1])
 ```
+
+# Bool and Special Constants
+
+Bool 类型的两个值 `#t` 与 `#f`，
+是 special constants 的例子。
+
+这样可以避免在 parsing 的过程中，
+把 true 和 false 处理成特殊的 symbol。
+
+比如：
+
+```scheme
+'(true false)
+```
+
+list 中的两个元素是 symbol 还是 bool 是有歧义的。
+
+而用 `#` 来代表 special constants 就没有歧义：
+
+```scheme
+'(#t #f)
+```
+
+这要求了任何 symbol 不能以 `#` 开头。
+
+但是由于我们把 symbol 和 string 融合了，
+所以如果需要还是可以写出来 `"#t"`。
