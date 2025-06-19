@@ -2,7 +2,7 @@
 (define (sum-list list)
   (match list
     ([] 0)
-    ([head & tail]
+    ((cons head tail)
      (add head (sum-list tail)))))
 
 (define-type (maybe-t A) (union nothing-t (just-t A)))
@@ -15,7 +15,7 @@
 (define (find value list)
   (match list
     ([] '(nothing))
-    ([head & tail]
+    ((cons head tail)
      (if (equal? head value)
        ['just value]
        (find value tail)))))
@@ -25,7 +25,7 @@
 (define (list-length list)
   (match list
     ([] 0)
-    ([head & tail]
+    ((cons head tail)
      (add1 (list-length tail)))))
 
 ;; 与其支持下面这种可变 arity 的函数，
