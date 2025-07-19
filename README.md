@@ -1,6 +1,6 @@
 # occam-lisp.js
 
-lambda-lisp.js + builtin functions
+A lisp without unnecessary entities.
 
 ## Usages
 
