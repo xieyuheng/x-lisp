@@ -11,15 +11,8 @@ import {
 } from "../value/index.ts"
 import { ctxBindName, ctxDepthAdd1, type Ctx } from "./Ctx.ts"
 
-const debug = false
-
 export function equalInCtx(ctx: Ctx, lhs: Value, rhs: Value): boolean {
   ctx = ctxDepthAdd1(ctx)
-
-  if (debug) {
-    console.log("[sameInCtx]", ctx.depth, " ", formatValue(lhs))
-    console.log("[sameInCtx]", ctx.depth, "=", formatValue(rhs))
-  }
 
   if (lhs.kind === "NotYet" && rhs.kind === "NotYet") {
     return sameNeutralInCtx(ctx, lhs.neutral, rhs.neutral)
