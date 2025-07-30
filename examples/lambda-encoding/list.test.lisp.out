@@ -1,0 +1,4 @@
+[assert-equal] fail:
+  lhs: (add two five)
+  rhs: seven
+
