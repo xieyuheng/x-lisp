@@ -19,8 +19,8 @@ export async function handleEffect(mod: Mod, stmt: Stmt): Promise<void> {
 
     throw new Error(
       `[assert-equal] fail:\n` +
-      `  lhs: ${formatExp(stmt.lhs)}\n` +
-      `  rhs: ${formatExp(stmt.rhs)}\n`,
+        `  lhs: ${formatExp(stmt.lhs)}\n` +
+        `  rhs: ${formatExp(stmt.rhs)}\n`,
     )
   }
 
@@ -36,8 +36,8 @@ export async function handleEffect(mod: Mod, stmt: Stmt): Promise<void> {
 
     throw new Error(
       `[assert-not-equal] fail:\n` +
-      `  lhs: ${formatExp(stmt.lhs)}\n` +
-      `  rhs: ${formatExp(stmt.rhs)}\n`,
+        `  lhs: ${formatExp(stmt.lhs)}\n` +
+        `  rhs: ${formatExp(stmt.rhs)}\n`,
     )
   }
 
