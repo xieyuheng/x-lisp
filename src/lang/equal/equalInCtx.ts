@@ -1,6 +1,5 @@
 import { freshen } from "../../utils/name/freshen.ts"
 import { apply } from "../evaluate/index.ts"
-import { formatValue } from "../format/index.ts"
 import * as Neutrals from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import {
