@@ -3,7 +3,7 @@ import fs from "fs"
 import Path from "path"
 import { load } from "../lang/load/index.ts"
 
-export const runCommand: Command = {
+export const RunCommand: Command = {
   name: "run",
   description: "Run a file",
   help(commander) {
