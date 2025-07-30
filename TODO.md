@@ -1,2 +1,2 @@
-move back some tests
+move back tests about lambda encoding
 add builtin mechanism

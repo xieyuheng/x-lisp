@@ -1,4 +1,0 @@
-[assert-not-same] fail:
-  lhs: (lambda (x y) (x y))
-  rhs: (lambda (y x) (y x))
-

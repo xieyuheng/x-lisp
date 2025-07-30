@@ -1,35 +1,35 @@
-(assert-same
+(assert-equal
   (lambda (x) x)
   (lambda (y) y))
 
-(assert-same
+(assert-equal
   (lambda (x y) (x y))
   (lambda (y x) (y x)))
 
-(assert-not-same
+(assert-not-equal
   (lambda (x y) (x y))
   (lambda (x y) (y x)))
 
 (define (id1 x) x)
 (define (id2 x) x)
 
-(assert-same id1 id1)
-(assert-same id2 id2)
-(assert-not-same id1 id2)
+(assert-equal id1 id1)
+(assert-equal id2 id2)
+(assert-not-equal id1 id2)
 
-(assert-same
+(assert-equal
   (lambda (x) (id2 x))
   (lambda (x) (id2 x)))
 
 ;; partial evaluation for unnamed lambda:
-(assert-same
+(assert-equal
   (lambda (x) ((lambda (x) (id2 x)) x))
   (lambda (x) (id2 x)))
 
-(assert-not-same
+(assert-not-equal
   id1
   (lambda (x) (id1 x)))
 
-(assert-not-same
+(assert-equal
   (lambda (x) (id2 x))
   (lambda (x) (id1 x)))
