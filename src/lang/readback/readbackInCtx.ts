@@ -1,11 +1,11 @@
 import { freshen } from "../../utils/name/freshen.ts"
-import { applyWithDelay } from "../evaluate/index.ts"
+import { apply } from "../evaluate/index.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import * as Neutrals from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import {
-  delayedApplyHead,
+
   lambdaIsDefined,
   type Neutral,
   type Value,
@@ -35,24 +35,8 @@ export function readbackInCtx(ctx: Ctx, value: Value): Exp {
       const freshName = freshen(ctx.boundNames, value.name)
       ctx = ctxBindName(ctx, freshName)
       const arg = Values.NotYet(Neutrals.Var(freshName))
-      const ret = applyWithDelay(value, arg)
+      const ret = apply(value, arg)
       return Exps.Lambda(freshName, readbackInCtx(ctx, ret))
-    }
-
-    case "DelayedApply": {
-      const head = delayedApplyHead(value)
-      if (head.kind === "Lambda") {
-        if (lambdaIsDefined(head)) {
-          if (ctxBlazeOccurred(ctx, head)) {
-            return Exps.Apply(
-              readbackInCtx(ctx, value.target),
-              readbackInCtx(ctx, value.arg),
-            )
-          }
-        }
-      }
-
-      return readbackInCtx(ctx, applyWithDelay(value.target, value.arg))
     }
   }
 }

@@ -1,2 +1,2 @@
 export * from "./evaluate.ts"
-export * from "./evaluateWithDelay.ts"
+export * from "./evaluate.ts"

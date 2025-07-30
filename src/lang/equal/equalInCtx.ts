@@ -1,5 +1,5 @@
 import { freshen } from "../../utils/name/freshen.ts"
-import { applyWithDelay } from "../evaluate/index.ts"
+import { apply } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
 import { same } from "../same/index.ts"
 import * as Neutrals from "../value/index.ts"
@@ -43,7 +43,7 @@ export function equalInCtx(ctx: Ctx, lhs: Value, rhs: Value): boolean {
     ctx = ctxBindName(ctx, freshName)
     const v = Neutrals.Var(freshName)
     const arg = Values.NotYet(v)
-    return equalInCtx(ctx, applyWithDelay(lhs, arg), applyWithDelay(rhs, arg))
+    return equalInCtx(ctx, apply(lhs, arg), apply(rhs, arg))
   }
 
   if (rhs.kind === "Lambda") {
@@ -59,36 +59,7 @@ export function equalInCtx(ctx: Ctx, lhs: Value, rhs: Value): boolean {
     ctx = ctxBindName(ctx, freshName)
     const v = Neutrals.Var(freshName)
     const arg = Values.NotYet(v)
-    return equalInCtx(ctx, applyWithDelay(lhs, arg), applyWithDelay(rhs, arg))
-  }
-
-  if (lhs.kind === "DelayedApply" && rhs.kind === "DelayedApply") {
-    if (
-      equalInCtx(ctx, lhs.target, rhs.target) &&
-      equalInCtx(ctx, lhs.arg, rhs.arg)
-    ) {
-      return true
-    }
-
-    // if (
-    //   equalInCtx(ctx, applyWithDelay(lhs.target, lhs.arg), rhs) ||
-    //   equalInCtx(ctx, lhs, applyWithDelay(rhs.target, rhs.arg)) ||
-    //   equalInCtx(
-    //     ctx,
-    //     applyWithDelay(lhs.target, lhs.arg),
-    //     applyWithDelay(rhs.target, rhs.arg),
-    //   )
-    // ) {
-    //   return true
-    // }
-  }
-
-  if (lhs.kind === "DelayedApply") {
-    return equalInCtx(ctx, applyWithDelay(lhs.target, lhs.arg), rhs)
-  }
-
-  if (rhs.kind === "DelayedApply") {
-    return equalInCtx(ctx, lhs, applyWithDelay(rhs.target, rhs.arg))
+    return equalInCtx(ctx, apply(lhs, arg), apply(rhs, arg))
   }
 
   return false

@@ -1,5 +1,5 @@
 import { freshen } from "../../utils/name/freshen.ts"
-import { applyWithDelay } from "../evaluate/index.ts"
+import { apply } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
 import * as Neutrals from "../value/index.ts"
 import * as Values from "../value/index.ts"
@@ -39,35 +39,14 @@ export function sameInCtx(ctx: Ctx, lhs: Value, rhs: Value): boolean {
     const freshName = freshen(ctx.boundNames, lhs.name)
     ctx = ctxBindName(ctx, freshName)
     const arg = Values.NotYet(Neutrals.Var(freshName))
-    return sameInCtx(ctx, applyWithDelay(lhs, arg), applyWithDelay(rhs, arg))
+    return sameInCtx(ctx, apply(lhs, arg), apply(rhs, arg))
   }
 
   if (rhs.kind === "Lambda" && !lambdaIsDefined(rhs)) {
     const freshName = freshen(ctx.boundNames, rhs.name)
     ctx = ctxBindName(ctx, freshName)
     const arg = Values.NotYet(Neutrals.Var(freshName))
-    return sameInCtx(ctx, applyWithDelay(lhs, arg), applyWithDelay(rhs, arg))
-  }
-
-  if (lhs.kind === "DelayedApply" && rhs.kind === "DelayedApply") {
-    if (
-      sameInCtx(ctx, lhs.target, rhs.target) &&
-      sameInCtx(ctx, lhs.arg, rhs.arg)
-    ) {
-      return true
-    }
-  }
-
-  if (lhs.kind === "DelayedApply") {
-    if (!(lhs.target.kind === "Lambda" && lambdaIsDefined(lhs.target))) {
-      return sameInCtx(ctx, applyWithDelay(lhs.target, lhs.arg), rhs)
-    }
-  }
-
-  if (rhs.kind === "DelayedApply") {
-    if (!(rhs.target.kind === "Lambda" && lambdaIsDefined(rhs.target))) {
-      return sameInCtx(ctx, lhs, applyWithDelay(rhs.target, rhs.arg))
-    }
+    return sameInCtx(ctx, apply(lhs, arg), apply(rhs, arg))
   }
 
   return false
