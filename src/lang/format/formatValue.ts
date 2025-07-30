@@ -1,7 +1,6 @@
 import { formatExp } from "../format/index.ts"
 import {
   lambdaIsDefined,
-  lazyActive,
   type Neutral,
   type Value,
 } from "../value/index.ts"
@@ -20,9 +19,6 @@ export function formatValue(value: Value): string {
       return `(lambda (${value.name}) ${formatExp(value.ret)})`
     }
 
-    case "Lazy": {
-      return formatValue(lazyActive(value))
-    }
 
     case "DelayedApply": {
       const target = formatValue(value.target)

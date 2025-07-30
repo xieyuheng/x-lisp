@@ -39,10 +39,6 @@ export function readbackInCtx(ctx: Ctx, value: Value): Exp {
       return Exps.Lambda(freshName, readbackInCtx(ctx, ret))
     }
 
-    case "Lazy": {
-      return readbackInCtx(ctx, Values.lazyActive(value))
-    }
-
     case "DelayedApply": {
       const head = delayedApplyHead(value)
       if (head.kind === "Lambda") {

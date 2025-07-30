@@ -3,7 +3,7 @@ import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Neutral } from "../value/index.ts"
 
-export type Value = NotYet | Lambda | Lazy | DelayedApply
+export type Value = NotYet | Lambda | DelayedApply
 
 export type NotYet = {
   kind: "NotYet"
@@ -17,14 +17,6 @@ export type Lambda = {
   name: string
   ret: Exp
   definedName?: string
-}
-
-export type Lazy = {
-  kind: "Lazy"
-  mod: Mod
-  env: Env
-  exp: Exp
-  value?: Value
 }
 
 export type DelayedApply = {
@@ -47,15 +39,6 @@ export function Lambda(mod: Mod, env: Env, name: string, ret: Exp): Lambda {
     env,
     name,
     ret,
-  }
-}
-
-export function Lazy(mod: Mod, env: Env, exp: Exp): Lazy {
-  return {
-    kind: "Lazy",
-    mod,
-    env,
-    exp,
   }
 }
 
