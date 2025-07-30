@@ -18,8 +18,6 @@ const debug = false
 export function equalInCtx(ctx: Ctx, lhs: Value, rhs: Value): boolean {
   ctx = ctxDepthAdd1(ctx)
 
-
-
   if (debug) {
     console.log("[equalInCtx]", ctx.depth, " ", formatValue(lhs))
     console.log("[equalInCtx]", ctx.depth, "=", formatValue(rhs))

@@ -61,8 +61,6 @@ export function applyWithDelay(target: Value, arg: Value): Value {
       )
     }
 
-
-
     case "DelayedApply": {
       const nextTarget = applyWithDelay(target.target, target.arg)
       return applyWithDelay(nextTarget, arg)
