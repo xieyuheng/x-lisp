@@ -3,16 +3,12 @@ import { type Exp } from "../exp/index.ts"
 export type Stmt =
   | AssertEqual
   | AssertNotEqual
-  | AssertSame
-  | AssertNotSame
   | Compute
   | Define
   | Import
 
 export type AssertEqual = { kind: "AssertEqual"; lhs: Exp; rhs: Exp }
 export type AssertNotEqual = { kind: "AssertNotEqual"; lhs: Exp; rhs: Exp }
-export type AssertSame = { kind: "AssertSame"; lhs: Exp; rhs: Exp }
-export type AssertNotSame = { kind: "AssertNotSame"; lhs: Exp; rhs: Exp }
 export type Compute = { kind: "Compute"; exp: Exp }
 export type Define = { kind: "Define"; name: string; exp: Exp }
 export type Import = {
@@ -37,22 +33,6 @@ export function AssertEqual(lhs: Exp, rhs: Exp): AssertEqual {
 export function AssertNotEqual(lhs: Exp, rhs: Exp): AssertNotEqual {
   return {
     kind: "AssertNotEqual",
-    lhs,
-    rhs,
-  }
-}
-
-export function AssertSame(lhs: Exp, rhs: Exp): AssertSame {
-  return {
-    kind: "AssertSame",
-    lhs,
-    rhs,
-  }
-}
-
-export function AssertNotSame(lhs: Exp, rhs: Exp): AssertNotSame {
-  return {
-    kind: "AssertNotSame",
     lhs,
     rhs,
   }
