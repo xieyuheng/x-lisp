@@ -4,12 +4,7 @@ import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import * as Neutrals from "../value/index.ts"
 import * as Values from "../value/index.ts"
-import {
-
-  lambdaIsDefined,
-  type Neutral,
-  type Value,
-} from "../value/index.ts"
+import { lambdaIsDefined, type Neutral, type Value } from "../value/index.ts"
 import {
   ctxBindName,
   ctxBlazeOccurred,

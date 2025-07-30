@@ -5,7 +5,6 @@ import * as Neutrals from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 
-
 export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
   switch (exp.kind) {
     case "Var": {
@@ -35,11 +34,7 @@ export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
     case "Let": {
       const oldEnv = env
       for (const bind of bindsToArray(exp.binds)) {
-        env = envUpdate(
-          env,
-          bind.name,
-          evaluate(mod, oldEnv, bind.exp),
-        )
+        env = envUpdate(env, bind.name, evaluate(mod, oldEnv, bind.exp))
       }
 
       return evaluate(mod, env, exp.body)
@@ -60,7 +55,5 @@ export function apply(target: Value, arg: Value): Value {
         target.ret,
       )
     }
-
-
   }
 }
