@@ -1,7 +1,7 @@
 import { emptyEnv } from "../env/index.ts"
 import { equal } from "../equal/index.ts"
 import { evaluate } from "../evaluate/index.ts"
-import { formatValue, formatExp } from "../format/index.ts"
+import { formatExp, formatValue } from "../format/index.ts"
 import type { Mod } from "../mod/index.ts"
 import type { Stmt } from "../stmt/index.ts"
 
