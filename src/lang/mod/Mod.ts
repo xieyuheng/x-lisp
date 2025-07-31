@@ -8,7 +8,6 @@ export type Def = {
   mod: Mod
   name: string
   exp: Exp
-  freeNames?: Set<string>
   value?: Value
 }
 
