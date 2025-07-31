@@ -1,5 +1,8 @@
-update `x-data` -- should read doublequoted string a `(quote <string>)`
-examples about literal atom
+update `x-data`
+
+- should read doublequoted string a `(quote <string>)`
+- distinguish `0.0` (float) from `0` (int)
+
 parse quote as `Atoms.String`
 examples about literal string
 
