@@ -6,7 +6,7 @@ import * as Atoms from "../value/index.ts"
 const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher("`(lambda ,names ,exp)", ({ names, exp }) =>
     X.dataToArray(names)
-      .map(X.dataToString)
+      .map(X.symbolToString)
       .reduceRight((fn, name) => Exps.Lambda(name, fn), matchExp(exp)),
   ),
 
@@ -32,7 +32,9 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       case "Float":
         return Atoms.Float(X.dataToNumber(data))
       case "String":
-        return Exps.Var(X.dataToString(data))
+        return Atoms.String(X.dataToString(data))
+      case "Symbol":
+        return Exps.Var(X.symbolToString(data))
     }
   }),
 ])
@@ -44,7 +46,7 @@ export function matchExp(data: X.Data): Exp {
 export function matchBind(data: X.Data): Bind {
   return X.match(
     X.matcher("`(,name ,exp)", ({ name, exp }) => ({
-      name: X.dataToString(name),
+      name: X.symbolToString(name),
       exp: matchExp(exp),
     })),
     data,

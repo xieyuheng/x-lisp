@@ -1,4 +1,3 @@
-import { stringHasBlank } from "../../utils/string/stringHasBlank.ts"
 import { type Atom } from "../value/index.ts"
 
 export function formatAtom(value: Atom): string {
@@ -11,12 +10,12 @@ export function formatAtom(value: Atom): string {
       }
     }
 
+    case "Symbol": {
+      return `'${value.content}`
+    }
+
     case "String": {
-      if (stringHasBlank(value.content)) {
-        return JSON.stringify(value.content)
-      } else {
-        return `'${value.content}`
-      }
+      return JSON.stringify(value.content)
     }
 
     case "Int": {
