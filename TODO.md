@@ -1,5 +1,3 @@
-update `x-data` -- `Tael` has `elements` instead of `content`
-
 `formatValue` -- `Tael`
 add `Tael` to `Exp`
 
