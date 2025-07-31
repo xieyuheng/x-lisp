@@ -1,8 +1,8 @@
-parse `(quote <symbol>)`
-examples about literal symbol
-
 add `Tael` to `Value`
 add `Tael` to `Exp`
+
+parse `(quote <data>)` -- to `tael`
+examples about literal `tael`
 
 `Exp` -- `If`
 `Exp` -- `Cond`

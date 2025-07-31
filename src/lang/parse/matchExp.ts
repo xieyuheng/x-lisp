@@ -17,6 +17,21 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     ),
   ),
 
+  X.matcher("`(quote ,data)", ({ data }) => {
+    switch (data.kind) {
+      case "Bool":
+        return Atoms.Bool(X.dataToBoolean(data))
+      case "Int":
+        return Atoms.Int(X.dataToNumber(data))
+      case "Float":
+        return Atoms.Float(X.dataToNumber(data))
+      case "String":
+        return Atoms.String(X.dataToString(data))
+      case "Symbol":
+        return Atoms.Symbol(X.symbolToString(data))
+    }
+  }),
+
   X.matcher("(cons target args)", ({ target, args }) =>
     X.dataToArray(args)
       .map(matchExp)
