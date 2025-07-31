@@ -4,7 +4,15 @@ add `Tael` to `Exp`
 parse `(quote <data>)` -- to `tael`
 examples about literal `tael`
 
+add builtin mechanism
+
+[builtin] functions about `Bool`
+
+[builtin] functions about `Int`
+[builtin] functions about `Float`
+
 `Exp` -- `If`
 `Exp` -- `Cond`
 
-add builtin mechanism
+[builtin] functions about `Symbol`
+[builtin] functions about `String`
