@@ -1,9 +1,7 @@
 import { type Exp } from "../exp/index.ts"
 
-export type Stmt = AssertEqual | AssertNotEqual | Compute | Define | Import
+export type Stmt = Compute | Define | Import
 
-export type AssertEqual = { kind: "AssertEqual"; lhs: Exp; rhs: Exp }
-export type AssertNotEqual = { kind: "AssertNotEqual"; lhs: Exp; rhs: Exp }
 export type Compute = { kind: "Compute"; exp: Exp }
 export type Define = { kind: "Define"; name: string; exp: Exp }
 export type Import = {
@@ -15,22 +13,6 @@ export type Import = {
 export type ImportEntry = {
   name: string
   rename?: string
-}
-
-export function AssertEqual(lhs: Exp, rhs: Exp): AssertEqual {
-  return {
-    kind: "AssertEqual",
-    lhs,
-    rhs,
-  }
-}
-
-export function AssertNotEqual(lhs: Exp, rhs: Exp): AssertNotEqual {
-  return {
-    kind: "AssertNotEqual",
-    lhs,
-    rhs,
-  }
 }
 
 export function Compute(exp: Exp): Compute {

@@ -25,14 +25,6 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     return Stmts.Import(X.dataToString(url), entries.map(matchImportEntry))
   }),
 
-  X.matcher("`(assert-equal ,lhs ,rhs)", ({ lhs, rhs }) =>
-    Stmts.AssertEqual(matchExp(lhs), matchExp(rhs)),
-  ),
-
-  X.matcher("`(assert-not-equal ,lhs ,rhs)", ({ lhs, rhs }) =>
-    Stmts.AssertNotEqual(matchExp(lhs), matchExp(rhs)),
-  ),
-
   X.matcher("exp", ({ exp }) => Stmts.Compute(matchExp(exp))),
 ])
 
