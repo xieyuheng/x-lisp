@@ -1,7 +1,8 @@
-`stringIsBlank`
-fix `formatValue` for `String` -- use `stringIsBlank`
+add `Atom` to `Exp`
+examples about literal atom
 
-`Tael` to `Value`
+add `Tael` to `Value`
+add `Tael` to `Exp`
 
 `Exp` -- `If`
 `Exp` -- `Cond`

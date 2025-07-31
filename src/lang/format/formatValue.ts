@@ -1,3 +1,4 @@
+import { stringHasBlank } from "../../utils/string/stringHasBlank.ts"
 import { formatExp } from "../format/index.ts"
 import { lambdaIsDefined, type Value } from "../value/index.ts"
 
@@ -12,8 +13,11 @@ export function formatValue(value: Value): string {
     }
 
     case "String": {
-      // TODO
-      return `'${value.content}`
+      if (stringHasBlank(value.content)) {
+        return JSON.stringify(value.content)
+      } else {
+        return `'${value.content}`
+      }
     }
 
     case "Int": {
@@ -21,7 +25,11 @@ export function formatValue(value: Value): string {
     }
 
     case "Float": {
-      return value.content.toString()
+      if (Number.isInteger(value.content)) {
+        return `${value.content.toString()}.0`
+      } else {
+        return value.content.toString()
+      }
     }
 
     case "Lambda": {
