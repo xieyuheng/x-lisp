@@ -10,7 +10,6 @@ export type Def = {
   exp: Exp
   freeNames?: Set<string>
   value?: Value
-  isRecursive?: boolean
 }
 
 export type Mod = {

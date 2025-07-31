@@ -2,7 +2,6 @@ import { ParsingError } from "@xieyuheng/x-data.js"
 import assert from "node:assert"
 import fs from "node:fs"
 import { expFreeNames } from "../exp/expFreeNames.ts"
-import { expIndirectFreeNames } from "../exp/index.ts"
 import { formatExp } from "../format/formatExp.ts"
 import { createMod, modFind, modOwnDefs, type Mod } from "../mod/index.ts"
 import { parseStmts } from "../parse/index.ts"
@@ -46,26 +45,22 @@ async function run(mod: Mod): Promise<void> {
 }
 
 function postprocess(mod: Mod): void {
-  for (const def of modOwnDefs(mod).values()) {
-    def.freeNames = expFreeNames(new Set(), def.exp)
-  }
+
+
+
 
   for (const def of modOwnDefs(mod).values()) {
-    assert(def.freeNames)
-    for (const name of def.freeNames) {
+    const freeNames = expFreeNames(new Set(), def.exp)
+    for (const name of freeNames) {
       if (!modFind(mod, name)) {
         throw new Error(
           `[load] I find undefined name: ${name}\n` +
-            `  defining: ${def.name}\n` +
-            `  to: : ${formatExp(def.exp)}\n`,
+          `  defining: ${def.name}\n` +
+          `  to: : ${formatExp(def.exp)}\n`,
         )
       }
     }
   }
 
-  for (const def of modOwnDefs(mod).values()) {
-    if (expIndirectFreeNames(mod, def.exp).has(def.name)) {
-      def.isRecursive = true
-    }
-  }
+
 }
