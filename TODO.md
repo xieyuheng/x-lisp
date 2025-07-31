@@ -1,7 +1,5 @@
-update `x-data` -- distinguish symbol from string
-
-parse quote as `Atoms.String`
-examples about literal string
+parse `(quote <symbol>)`
+examples about literal symbol
 
 add `Tael` to `Value`
 add `Tael` to `Exp`
