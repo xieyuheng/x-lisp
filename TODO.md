@@ -1,7 +1,4 @@
-update `x-data`
-
-- should read doublequoted string a `(quote <string>)`
-- distinguish `0.0` (float) from `0` (int)
+update `x-data` -- distinguish symbol from string
 
 parse quote as `Atoms.String`
 examples about literal string
