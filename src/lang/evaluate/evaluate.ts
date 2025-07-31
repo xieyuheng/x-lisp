@@ -3,9 +3,13 @@ import { bindsToArray, type Exp } from "../exp/index.ts"
 import { formatValue } from "../format/index.ts"
 import { modFindValue, type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
-import { type Value } from "../value/index.ts"
+import { isAtom, type Value } from "../value/index.ts"
 
 export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
+  if (isAtom(exp)) {
+    return exp
+  }
+
   switch (exp.kind) {
     case "Var": {
       let value = undefined

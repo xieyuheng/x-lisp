@@ -1,6 +1,7 @@
 import { type Binds } from "../exp/index.ts"
+import { type Atom } from "../value/index.ts"
 
-export type Exp = Var | Lambda | Apply | Let
+export type Exp = Atom | Var | Lambda | Apply | Let
 export type Var = { kind: "Var"; name: string }
 export type Lambda = { kind: "Lambda"; name: string; ret: Exp }
 export type Apply = { kind: "Apply"; target: Exp; arg: Exp }

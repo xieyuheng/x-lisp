@@ -1,7 +1,12 @@
 import { bindsToArray } from "../exp/index.ts"
+import { isAtom } from "../value/Atom.ts"
 import { type Exp } from "./index.ts"
 
 export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
+  if (isAtom(exp)) {
+    return new Set()
+  }
+
   switch (exp.kind) {
     case "Var": {
       return boundNames.has(exp.name) ? new Set() : new Set([exp.name])

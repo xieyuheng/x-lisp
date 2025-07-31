@@ -1,7 +1,13 @@
 import type { Bind } from "../../lang/exp/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
+import { formatAtom } from "../format/index.ts"
+import { isAtom } from "../value/Atom.ts"
 
 export function formatExp(exp: Exp): string {
+  if (isAtom(exp)) {
+    return formatAtom(exp)
+  }
+
   switch (exp.kind) {
     case "Var": {
       return exp.name
