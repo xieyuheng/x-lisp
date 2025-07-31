@@ -7,6 +7,10 @@ export function formatValue(value: Value): string {
   }
 
   switch (value.kind) {
+    case "Tael": {
+      throw new Error()
+    }
+
     case "Lambda": {
       if (lambdaIsDefined(value)) {
         return value.definedName
