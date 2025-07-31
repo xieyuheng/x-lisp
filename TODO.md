@@ -1,6 +1,3 @@
-`formatAtom`
-
-`isAtom`
 add `Atom` to `Exp`
 parse `Atom` of `Exp`
 

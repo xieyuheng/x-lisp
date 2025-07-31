@@ -1,8 +1,19 @@
+import type { Value } from "./Value.ts"
+
 export type Atom = Bool | String | Int | Float
 export type Bool = { kind: "Bool"; content: boolean }
 export type String = { kind: "String"; content: string }
 export type Int = { kind: "Int"; content: number }
 export type Float = { kind: "Float"; content: number }
+
+export function isAtom(value: Value): value is Atom {
+  return (
+    value.kind === "Bool" ||
+    value.kind === "String" ||
+    value.kind === "Int" ||
+    value.kind === "Float"
+  )
+}
 
 export function Bool(content: boolean): Bool {
   return {
