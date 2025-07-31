@@ -1,5 +1,6 @@
 import { envFindValue, envUpdate, type Env } from "../env/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
+import { formatValue } from "../format/index.ts"
 import { modFindValue, type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
@@ -42,13 +43,17 @@ export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
 }
 
 export function apply(target: Value, arg: Value): Value {
-  switch (target.kind) {
-    case "Lambda": {
-      return evaluate(
-        target.mod,
-        envUpdate(target.env, target.name, arg),
-        target.ret,
-      )
-    }
+  if (target.kind === "Lambda") {
+    return evaluate(
+      target.mod,
+      envUpdate(target.env, target.name, arg),
+      target.ret,
+    )
   }
+
+  throw new Error(
+    `[apply] can not apply\n` +
+      `  target: ${formatValue(target)}\n` +
+      `  arg: ${formatValue(arg)}\n`,
+  )
 }
