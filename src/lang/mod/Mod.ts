@@ -42,16 +42,7 @@ export function modFindValue(mod: Mod, name: string): Value | undefined {
 
   const value = evaluate(def.mod, emptyEnv(), def.exp)
 
-  // TODO Uncomment the following,
-  // will only blaze recursive function,
-  // but it will be to slow for `equalInCtx`.
-  // I do not fully understand it yet.
-
-  if (
-    // def.isRecursive &&
-    value.kind === "Lambda" &&
-    value.definedName === undefined
-  ) {
+  if (value.kind === "Lambda" && value.definedName === undefined) {
     value.definedName = def.name
   }
 
