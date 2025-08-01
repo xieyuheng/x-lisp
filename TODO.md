@@ -1,4 +1,4 @@
-`Def` can only has `value` -- one kind of `Def` different kinds of values
+refactor `modDefine`
 
 [prelude] `definePrelude`
 [prelude] `load` call `definePrelude`

@@ -45,14 +45,17 @@ async function run(mod: Mod): Promise<void> {
 
 function postprocess(mod: Mod): void {
   for (const def of modOwnDefs(mod).values()) {
-    const freeNames = expFreeNames(new Set(), def.exp)
-    for (const name of freeNames) {
-      if (!modFind(mod, name)) {
-        throw new Error(
-          `[load] I find undefined name: ${name}\n` +
-            `  defining: ${def.name}\n` +
-            `  to: : ${formatExp(def.exp)}\n`,
-        )
+    if (def.value.kind === "Lazy") {
+      const lazy = def.value
+      const freeNames = expFreeNames(new Set(), lazy.exp)
+      for (const name of freeNames) {
+        if (!modFind(mod, name)) {
+          throw new Error(
+            `[load] I find undefined name: ${name}\n` +
+              `  defining: ${def.name}\n` +
+              `  to: : ${formatExp(lazy.exp)}\n`,
+          )
+        }
       }
     }
   }
