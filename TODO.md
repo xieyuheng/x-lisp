@@ -1,6 +1,3 @@
-`utils/url` -- create url or create file url
-`isValidUrl`
-`utils/url` -- read data from url -- `fetch` for http and `fs.readFile` for file
 `utils/error` -- `errorReport`
 
 parse `(quote <data>)` to `tael`
