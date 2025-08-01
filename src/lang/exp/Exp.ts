@@ -1,7 +1,8 @@
+import { type Data } from "@xieyuheng/x-data.js"
 import { type Binds } from "../exp/index.ts"
 import { type Atom } from "../value/index.ts"
 
-export type Exp = Atom | Var | Lambda | Apply | Let | Tael
+export type Exp = Atom | Var | Lambda | Apply | Let | Tael | Quote
 export type Var = { kind: "Var"; name: string }
 export type Lambda = { kind: "Lambda"; name: string; ret: Exp }
 export type Apply = { kind: "Apply"; target: Exp; arg: Exp }
@@ -14,6 +15,8 @@ export type Tael = {
   elements: Array<Exp>
   attributes: Attributes
 }
+
+export type Quote = { kind: "Quote"; data: Data }
 
 export function Var(name: string): Var {
   return { kind: "Var", name }
@@ -37,4 +40,8 @@ export function Tael(elements: Array<Exp>, attributes: Attributes): Tael {
     elements,
     attributes,
   }
+}
+
+export function Quote(data: Data): Quote {
+  return { kind: "Quote", data }
 }

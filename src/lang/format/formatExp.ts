@@ -43,6 +43,10 @@ export function formatExp(exp: Exp): string {
         return `[${elements.join(" ")} ${attributes.join(" ")}]`
       }
     }
+
+    case "Quote": {
+      return formatData(exp.data)
+    }
   }
 }
 

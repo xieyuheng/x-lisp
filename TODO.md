@@ -1,4 +1,6 @@
-parse `(quote <data>)` to `tael`
+parse `(quote <data>)` to `Exps.Quote`
+`evaluate` -- `Quote`
+update `x-data` for `formatData`
 
 examples about literal `tael`
 

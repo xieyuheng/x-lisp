@@ -49,5 +49,9 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
         ),
       )
     }
+
+    case "Quote": {
+      return new Set()
+    }
   }
 }
