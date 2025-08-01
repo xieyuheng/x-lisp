@@ -68,7 +68,7 @@ export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
         case "Symbol":
           return Atoms.Symbol(X.symbolToString(data))
         case "Tael": {
-          throw new Error("TODO")
+          return Values.Tael(data.elements, data.attributes)
         }
       }
     }
