@@ -1,4 +1,5 @@
 import * as X from "@xieyuheng/x-data.js"
+import { recordMap } from "../../utils/record/recordMap.ts"
 import * as Exps from "../exp/index.ts"
 import { bindsFromArray, type Bind, type Exp } from "../exp/index.ts"
 import * as Atoms from "../value/index.ts"
@@ -32,11 +33,18 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     }
   }),
 
-  X.matcher("(cons target args)", ({ target, args }) =>
-    X.dataToArray(args)
+  X.matcher("(cons 'tael elements)", ({ elements }, { data }) => {
+    return Exps.Tael(
+      X.dataToArray(elements).map(matchExp),
+      recordMap(X.asTael(data).attributes, matchExp),
+    )
+  }),
+
+  X.matcher("(cons target args)", ({ target, args }) => {
+    return X.dataToArray(args)
       .map(matchExp)
-      .reduce((result, arg) => Exps.Apply(result, arg), matchExp(target)),
-  ),
+      .reduce((result, arg) => Exps.Apply(result, arg), matchExp(target))
+  }),
 
   X.matcher("data", ({ data }) => {
     switch (data.kind) {

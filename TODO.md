@@ -1,6 +1,5 @@
-parse `Tael`
+parse `(quote <data>)` to `tael`
 
-parse `(quote <data>)` -- to `tael`
 examples about literal `tael`
 
 add builtin mechanism

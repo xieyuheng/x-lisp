@@ -31,6 +31,7 @@ export const RunCommand: Command = {
         process.exit(1)
       }
 
+      console.log("unknown error", { error })
       process.exit(1)
     }
   },
