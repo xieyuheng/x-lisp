@@ -1,7 +1,6 @@
 import { type Command } from "@xieyuheng/commander.js"
 import { load } from "../lang/load/index.ts"
-import { createFileUrl } from "../utils/url/createFileUrl.ts"
-import { isValidUrl } from "../utils/url/isValidUrl.ts"
+import { createUrlOrFileUrl } from "../utils/url/createUrlOrFileUrl.ts"
 
 export const RunCommand: Command = {
   name: "run",
@@ -23,8 +22,7 @@ export const RunCommand: Command = {
         )
       }
 
-      const path = commander.args[0]
-      const url = isValidUrl(path) ? new URL(path) : createFileUrl(path)
+      const url = createUrlOrFileUrl(commander.args[0])
       await load(url)
     } catch (error) {
       if (error instanceof Error) {
