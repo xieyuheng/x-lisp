@@ -1,3 +1,4 @@
+import { formatData } from "@xieyuheng/x-data.js"
 import type { Bind } from "../../lang/exp/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
 import { formatAtom } from "../format/index.ts"
@@ -45,9 +46,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Quote": {
-      return "Quote"
-      // TODO
-      // return formatData(exp.data)
+      return formatData(exp.data)
     }
   }
 }

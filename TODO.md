@@ -1,4 +1,3 @@
-update `x-data` for `formatData`
 `evaluate` -- `Quote` -- `Tael`
 
 examples about literal `tael`
