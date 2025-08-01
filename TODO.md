@@ -1,6 +1,6 @@
-`Delayed` as `Value` -- for top level `define` of a mod
-
+`apply` handle `Lazy`
 `Def` can only has `value` -- one kind of `Def` different kinds of values
+
 [prelude] `definePrelude`
 [prelude] `load` call `definePrelude`
 

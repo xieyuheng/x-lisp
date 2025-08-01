@@ -3,7 +3,7 @@ import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Atom } from "./Atom.ts"
 
-export type Value = Atom | Tael | Lambda
+export type Value = Atom | Tael | Lambda | Lazy
 
 type Attributes = Record<string, Value>
 
@@ -20,6 +20,14 @@ export type Lambda = {
   name: string
   ret: Exp
   definedName?: string
+}
+
+export type Lazy = {
+  kind: "Lazy"
+  mod: Mod
+  env: Env
+  exp: Exp
+  value?: Value
 }
 
 export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
@@ -53,5 +61,14 @@ export function Lambda(mod: Mod, env: Env, name: string, ret: Exp): Lambda {
     env,
     name,
     ret,
+  }
+}
+
+export function Lazy(mod: Mod, env: Env, exp: Exp): Lazy {
+  return {
+    kind: "Lazy",
+    mod,
+    env,
+    exp,
   }
 }
