@@ -45,7 +45,9 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Quote": {
-      return formatData(exp.data)
+      return "Quote"
+      // TODO
+      // return formatData(exp.data)
     }
   }
 }

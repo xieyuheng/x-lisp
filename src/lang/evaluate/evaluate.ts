@@ -1,8 +1,10 @@
+import * as X from "@xieyuheng/x-data.js"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { envFindValue, envUpdate, type Env } from "../env/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
 import { formatValue } from "../format/index.ts"
 import { modFindValue, type Mod } from "../mod/index.ts"
+import * as Atoms from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 
@@ -50,6 +52,25 @@ export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
         exp.elements.map((e) => evaluate(mod, env, e)),
         recordMap(exp.attributes, (e) => evaluate(mod, env, e)),
       )
+    }
+
+    case "Quote": {
+      const { data } = exp
+      switch (data.kind) {
+        case "Bool":
+          return Atoms.Bool(X.dataToBoolean(data))
+        case "Int":
+          return Atoms.Int(X.dataToNumber(data))
+        case "Float":
+          return Atoms.Float(X.dataToNumber(data))
+        case "String":
+          return Atoms.String(X.dataToString(data))
+        case "Symbol":
+          return Atoms.Symbol(X.symbolToString(data))
+        case "Tael": {
+          throw new Error("TODO")
+        }
+      }
     }
   }
 }
