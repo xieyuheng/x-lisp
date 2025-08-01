@@ -1,4 +1,4 @@
-import { setUnion, setUnionMany } from "../../utils/set/Set.ts"
+import { setUnion, setUnionMany } from "../../utils/set/setAlgebra.ts"
 import { bindsToArray } from "../exp/index.ts"
 import { isAtom } from "../value/Atom.ts"
 import { type Exp } from "./index.ts"
