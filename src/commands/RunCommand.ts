@@ -1,7 +1,7 @@
 import { type Command } from "@xieyuheng/commander.js"
-import fs from "fs"
-import Path from "path"
 import { load } from "../lang/load/index.ts"
+import { createFileUrl } from "../utils/url/createFileUrl.ts"
+import { isValidUrl } from "../utils/url/isValidUrl.ts"
 
 export const RunCommand: Command = {
   name: "run",
@@ -23,7 +23,8 @@ export const RunCommand: Command = {
         )
       }
 
-      const url = createURL(commander.args[0])
+      const path = commander.args[0]
+      const url = isValidUrl(path) ? new URL(path) : createFileUrl(path)
       await load(url)
     } catch (error) {
       if (error instanceof Error) {
@@ -35,17 +36,4 @@ export const RunCommand: Command = {
       process.exit(1)
     }
   },
-}
-
-function createURL(path: string): URL {
-  try {
-    return new URL(path)
-  } catch (_) {
-    if (fs.existsSync(path) && fs.lstatSync(path).isFile()) {
-      const fullPath = Path.resolve(path)
-      return new URL(`file:${fullPath}`)
-    }
-
-    throw new Error(`[createURL] I can not create URL from path: ${path}`)
-  }
 }

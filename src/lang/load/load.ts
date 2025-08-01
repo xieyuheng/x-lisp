@@ -1,5 +1,5 @@
 import { ParsingError } from "@xieyuheng/x-data.js"
-import fs from "node:fs"
+import { urlReadText } from "../../utils/url/urlReadText.ts"
 import { expFreeNames } from "../exp/expFreeNames.ts"
 import { formatExp } from "../format/formatExp.ts"
 import { createMod, modFind, modOwnDefs, type Mod } from "../mod/index.ts"
@@ -13,7 +13,7 @@ export async function load(url: URL): Promise<Mod> {
   const found = globalLoadedMods.get(url.href)
   if (found !== undefined) return found.mod
 
-  const text = await fs.promises.readFile(url.pathname, "utf8")
+  const text = await urlReadText(url)
 
   try {
     const mod = createMod(url)
