@@ -1,4 +1,3 @@
-`apply` handle `Lazy`
 `Def` can only has `value` -- one kind of `Def` different kinds of values
 
 [prelude] `definePrelude`

@@ -59,6 +59,10 @@ export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
 }
 
 export function apply(target: Value, arg: Value): Value {
+  if (target.kind === "Lazy") {
+    return apply(Values.lazyActive(target), arg)
+  }
+
   if (target.kind === "Lambda") {
     return evaluate(
       target.mod,
