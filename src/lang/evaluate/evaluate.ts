@@ -1,3 +1,4 @@
+import { recordMap } from "../../utils/record/recordMap.ts"
 import { envFindValue, envUpdate, type Env } from "../env/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
 import { formatValue } from "../format/index.ts"
@@ -42,6 +43,13 @@ export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
       }
 
       return evaluate(mod, env, exp.body)
+    }
+
+    case "Tael": {
+      return Values.Tael(
+        exp.elements.map((e) => evaluate(mod, env, e)),
+        recordMap(exp.attributes, (e) => evaluate(mod, env, e)),
+      )
     }
   }
 }

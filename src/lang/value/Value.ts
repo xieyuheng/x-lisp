@@ -5,7 +5,8 @@ import { type Atom } from "./Atom.ts"
 
 export type Value = Atom | Tael | Lambda
 
-export type Attributes = Record<string, Value>
+type Attributes = Record<string, Value>
+
 export type Tael = {
   kind: "Tael"
   elements: Array<Value>

@@ -1,4 +1,4 @@
-add `Tael` to `Exp`
+parse `Tael`
 
 parse `(quote <data>)` -- to `tael`
 examples about literal `tael`

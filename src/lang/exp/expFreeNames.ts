@@ -1,3 +1,4 @@
+import { setUnion, setUnionMany } from "../../utils/set/Set.ts"
 import { bindsToArray } from "../exp/index.ts"
 import { isAtom } from "../value/Atom.ts"
 import { type Exp } from "./index.ts"
@@ -36,6 +37,17 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
           exp.body,
         ),
       ])
+    }
+
+    case "Tael": {
+      return setUnion(
+        setUnionMany(
+          exp.elements.map((element) => expFreeNames(boundNames, element)),
+        ),
+        setUnionMany(
+          Object.values(exp.attributes).map((e) => expFreeNames(boundNames, e)),
+        ),
+      )
     }
   }
 }

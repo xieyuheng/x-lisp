@@ -27,6 +27,22 @@ export function formatExp(exp: Exp): string {
       const binds = bindsToArray(exp.binds).map(formatBind)
       return `(let (${binds.join(" ")}) ${formatExp(exp.body)})`
     }
+
+    case "Tael": {
+      const elements = exp.elements.map(formatExp)
+      const attributes = Object.entries(exp.attributes).map(
+        ([k, e]) => `:${k} ${formatExp(e)}`,
+      )
+      if (elements.length === 0 && attributes.length === 0) {
+        return `[]`
+      } else if (attributes.length === 0) {
+        return `[${elements.join(" ")}]`
+      } else if (elements.length === 0) {
+        return `[${attributes.join(" ")}]`
+      } else {
+        return `[${elements.join(" ")} ${attributes.join(" ")}]`
+      }
+    }
   }
 }
 
