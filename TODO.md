@@ -1,5 +1,3 @@
-`utils/error` -- `errorReport`
-
 parse `(quote <data>)` to `tael`
 
 examples about literal `tael`

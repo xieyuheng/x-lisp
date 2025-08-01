@@ -1,5 +1,6 @@
 import { type Command } from "@xieyuheng/commander.js"
 import { load } from "../lang/load/index.ts"
+import { errorReport } from "../utils/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../utils/url/createUrlOrFileUrl.ts"
 
 export const RunCommand: Command = {
@@ -25,12 +26,7 @@ export const RunCommand: Command = {
       const url = createUrlOrFileUrl(commander.args[0])
       await load(url)
     } catch (error) {
-      if (error instanceof Error) {
-        console.log(error.message)
-        process.exit(1)
-      }
-
-      console.log("unknown error", { error })
+      errorReport(error)
       process.exit(1)
     }
   },
