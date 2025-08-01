@@ -26,16 +26,16 @@ export function createMod(url: URL): Mod {
   }
 }
 
-export function modDefine(mod: Mod, name: string, def: Def): void {
+export function modSet(mod: Mod, name: string, def: Def): void {
   mod.defs.set(name, def)
 }
 
-export function modFind(mod: Mod, name: string): Def | undefined {
+export function modGet(mod: Mod, name: string): Def | undefined {
   return mod.defs.get(name)
 }
 
-export function modFindValue(mod: Mod, name: string): Value | undefined {
-  const def = modFind(mod, name)
+export function modGetValue(mod: Mod, name: string): Value | undefined {
+  const def = modGet(mod, name)
   if (def === undefined) return undefined
 
   if (def.value.kind === "Lambda" && def.value.definedName === undefined) {

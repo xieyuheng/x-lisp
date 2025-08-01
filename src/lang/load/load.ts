@@ -2,7 +2,7 @@ import { ParsingError } from "@xieyuheng/x-data.js"
 import { urlReadText } from "../../utils/url/urlReadText.ts"
 import { expFreeNames } from "../exp/expFreeNames.ts"
 import { formatExp } from "../format/formatExp.ts"
-import { createMod, modFind, modOwnDefs, type Mod } from "../mod/index.ts"
+import { createMod, modGet, modOwnDefs, type Mod } from "../mod/index.ts"
 import { parseStmts } from "../parse/index.ts"
 import { globalLoadedMods } from "./globalLoadedMods.ts"
 import { handleDefine } from "./handleDefine.ts"
@@ -49,7 +49,7 @@ function postprocess(mod: Mod): void {
       const lazy = def.value
       const freeNames = expFreeNames(new Set(), lazy.exp)
       for (const name of freeNames) {
-        if (!modFind(mod, name)) {
+        if (!modGet(mod, name)) {
           throw new Error(
             `[load] I find undefined name: ${name}\n` +
               `  defining: ${def.name}\n` +

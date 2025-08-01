@@ -2,7 +2,7 @@ import { recordMap } from "../../utils/record/recordMap.ts"
 import { envFindValue, envUpdate, type Env } from "../env/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
 import { formatValue } from "../format/index.ts"
-import { modFindValue, type Mod } from "../mod/index.ts"
+import { modGetValue, type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 
@@ -18,7 +18,7 @@ export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
       value = envFindValue(env, exp.name)
       if (value !== undefined) return value
 
-      value = modFindValue(mod, exp.name)
+      value = modGetValue(mod, exp.name)
       if (value !== undefined) return value
 
       throw new Error(

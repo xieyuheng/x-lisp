@@ -1,5 +1,3 @@
-refactor `modDefine`
-
 [prelude] `definePrelude`
 [prelude] `load` call `definePrelude`
 

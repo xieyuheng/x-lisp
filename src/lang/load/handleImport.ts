@@ -1,4 +1,4 @@
-import { modDefine, modFind, modResolve } from "../mod/index.ts"
+import { modGet, modResolve, modSet } from "../mod/index.ts"
 import type { Mod } from "../mod/Mod.ts"
 import type { ImportEntry, Stmt } from "../stmt/Stmt.ts"
 import { load } from "./load.ts"
@@ -26,7 +26,7 @@ async function importOne(
   const importedMod = await load(url)
 
   const { name, rename } = entry
-  const def = modFind(importedMod, name)
+  const def = modGet(importedMod, name)
   if (def === undefined) {
     throw new Error(
       `[import] I can not import undefined name: ${name}, from path: ${path}`,
@@ -34,9 +34,9 @@ async function importOne(
   }
 
   const localName = rename || name
-  if (modFind(mod, localName)) {
+  if (modGet(mod, localName)) {
     throw new Error(`[import] I can not redefine name: ${localName}`)
   }
 
-  modDefine(mod, localName, def)
+  modSet(mod, localName, def)
 }
