@@ -1,5 +1,5 @@
-import { emptyEnv } from "../env/Env.ts"
-import { evaluate } from "../evaluate/evaluate.ts"
+import { emptyEnv } from "../env/index.ts"
+import { evaluate } from "../evaluate/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { type Value } from "../value/index.ts"
