@@ -9,12 +9,9 @@ export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
       throw new Error(`[define] I can not redefine name: ${stmt.name}`)
     }
 
-    modSet(mod, stmt.name, {
-      mod,
-      name: stmt.name,
-      value: Values.Lazy(mod, emptyEnv(), stmt.exp),
-    })
-
+    const { name, exp } = stmt
+    const value = Values.Lazy(mod, emptyEnv(), exp)
+    modSet(mod, name, { mod, name, value })
     return
   }
 }
