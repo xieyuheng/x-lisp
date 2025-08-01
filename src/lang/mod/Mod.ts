@@ -4,6 +4,10 @@ import { type Exp } from "../exp/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { type Value } from "../value/index.ts"
 
+// `Mod` stores values indirectly via `Def`,
+// which can be used to distinguish
+// imported names from own defined names.
+
 export type Def = {
   mod: Mod
   name: string

@@ -1,12 +1,15 @@
-add builtin mechanism
+`Delayed` as `Value` -- for top level `define` of a mod
 
-[builtin] functions about `Bool`
+`Def` can only has `value` -- one kind of `Def` different kinds of values
+[prelude] `definePrelude`
+[prelude] `load` call `definePrelude`
 
-[builtin] functions about `Int`
-[builtin] functions about `Float`
+[prelude] `aboutBool`
+[prelude] `aboutInt`
+[prelude] `aboutFloat`
 
 `Exp` -- `If`
 `Exp` -- `Cond`
 
-[builtin] functions about `Symbol`
-[builtin] functions about `String`
+[prelude] `aboutSymbol`
+[prelude] `aboutString`
