@@ -1,5 +1,3 @@
-examples about literal `tael`
-
 add builtin mechanism
 
 [builtin] functions about `Bool`
