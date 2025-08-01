@@ -8,7 +8,7 @@ export type Value = Atom | Tael | Lambda
 export type Attributes = Record<string, Value>
 export type Tael = {
   kind: "Tael"
-  content: Array<Value>
+  elements: Array<Value>
   attributes: Attributes
 }
 
@@ -21,18 +21,18 @@ export type Lambda = {
   definedName?: string
 }
 
-export function Tael(content: Array<Value>, attributes: Attributes): Tael {
+export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
   return {
     kind: "Tael",
-    content,
+    elements,
     attributes,
   }
 }
 
-export function List(content: Array<Value>): Tael {
+export function List(elements: Array<Value>): Tael {
   return {
     kind: "Tael",
-    content,
+    elements,
     attributes: {},
   }
 }
@@ -40,7 +40,7 @@ export function List(content: Array<Value>): Tael {
 export function Record(attributes: Attributes): Tael {
   return {
     kind: "Tael",
-    content: [],
+    elements: [],
     attributes,
   }
 }

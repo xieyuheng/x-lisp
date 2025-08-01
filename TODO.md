@@ -1,4 +1,3 @@
-`formatValue` -- `Tael`
 add `Tael` to `Exp`
 
 parse `(quote <data>)` -- to `tael`

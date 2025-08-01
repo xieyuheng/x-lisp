@@ -8,7 +8,19 @@ export function formatValue(value: Value): string {
 
   switch (value.kind) {
     case "Tael": {
-      throw new Error()
+      const elements = value.elements.map(formatValue)
+      const attributes = Object.entries(value.attributes).map(
+        ([k, v]) => `:${k} ${formatValue(v)}`,
+      )
+      if (elements.length === 0 && attributes.length === 0) {
+        return `[]`
+      } else if (attributes.length === 0) {
+        return `[${elements.join(" ")}]`
+      } else if (elements.length === 0) {
+        return `[${attributes.join(" ")}]`
+      } else {
+        return `[${elements.join(" ")} ${attributes.join(" ")}]`
+      }
     }
 
     case "Lambda": {
