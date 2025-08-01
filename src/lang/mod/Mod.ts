@@ -37,7 +37,6 @@ export function modFind(mod: Mod, name: string): Def | undefined {
 export function modFindValue(mod: Mod, name: string): Value | undefined {
   const def = modFind(mod, name)
   if (def === undefined) return undefined
-
   if (def.value) return def.value
 
   const value = evaluate(def.mod, emptyEnv(), def.exp)
