@@ -1,6 +1,6 @@
 import { setUnion, setUnionMany } from "../../utils/set/setAlgebra.ts"
 import { bindsToArray } from "../exp/index.ts"
-import { isAtom } from "../value/Atom.ts"
+import { isAtom } from "../value/index.ts"
 import { type Exp } from "./index.ts"
 
 export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {

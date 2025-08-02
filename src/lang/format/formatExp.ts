@@ -2,7 +2,7 @@ import { formatData } from "@xieyuheng/x-data.js"
 import type { Bind } from "../../lang/exp/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
 import { formatAtom } from "../format/index.ts"
-import { isAtom } from "../value/Atom.ts"
+import { isAtom } from "../value/index.ts"
 
 export function formatExp(exp: Exp): string {
   if (isAtom(exp)) {

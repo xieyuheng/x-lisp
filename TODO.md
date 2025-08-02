@@ -1,4 +1,3 @@
-[prelude] `aboutBool` -- `not`
 apply support `PrimFn`
 `CurriedApply` as `Value`
 

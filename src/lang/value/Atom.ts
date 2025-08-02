@@ -5,16 +5,6 @@ export type String = { kind: "String"; content: string }
 export type Int = { kind: "Int"; content: number }
 export type Float = { kind: "Float"; content: number }
 
-export function isAtom(value: any): value is Atom {
-  return (
-    value.kind === "Bool" ||
-    value.kind === "Symbol" ||
-    value.kind === "String" ||
-    value.kind === "Int" ||
-    value.kind === "Float"
-  )
-}
-
 export function Bool(content: boolean): Bool {
   return {
     kind: "Bool",
