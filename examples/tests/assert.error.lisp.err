@@ -1,4 +1,4 @@
-[place] examples/tests/assert.error.lisp:0:0
+[place] examples/tests/assert.error.lisp:1:1
 [assert] fail
   exp: (not true)
 
@@ -7,7 +7,7 @@
  1|(assert (not #t))
  2|
 
-[place] examples/tests/assert.error.lisp:1:0
+[place] examples/tests/assert.error.lisp:2:1
 [assert] fail
   exp: (not #t)
 
