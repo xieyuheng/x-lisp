@@ -25,6 +25,8 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     return Stmts.Import(X.dataToString(url), entries.map(matchImportEntry))
   }),
 
+  X.matcher("`(assert ,exp)", ({ exp }) => Stmts.Assert(matchExp(exp))),
+
   X.matcher("exp", ({ exp }) => Stmts.Compute(matchExp(exp))),
 ])
 
