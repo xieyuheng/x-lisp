@@ -1,6 +1,5 @@
 # testing
 
-[prelude] `aboutValue` -- setup
 `same/`
 `equal/`
 [prelude] `aboutValue` -- same?

@@ -4,6 +4,7 @@ import { aboutFloat } from "./aboutFloat.ts"
 import { aboutInt } from "./aboutInt.ts"
 import { aboutString } from "./aboutString.ts"
 import { aboutSymbol } from "./aboutSymbol.ts"
+import { aboutValue } from "./aboutValue.ts"
 
 let mod: Mod | undefined = undefined
 
@@ -17,6 +18,7 @@ export function usePreludeMod(): Mod {
   aboutFloat(mod)
   aboutSymbol(mod)
   aboutString(mod)
+  aboutValue(mod)
 
   return mod
 }
