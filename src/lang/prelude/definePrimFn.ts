@@ -1,5 +1,6 @@
-import { modSet, type Mod } from "../mod/index.ts"
+import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
+import { defineValue } from "./defineValue.ts"
 
 export function definePrimFn(
   mod: Mod,
@@ -7,6 +8,5 @@ export function definePrimFn(
   arity: number,
   fn: Values.ValueFn,
 ): void {
-  const value = Values.PrimFn(name, arity, fn)
-  modSet(mod, name, { mod, name, value })
+  defineValue(mod, name, Values.PrimFn(name, arity, fn))
 }
