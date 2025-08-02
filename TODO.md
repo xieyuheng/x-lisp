@@ -1,12 +1,10 @@
 # testing
 
-`assert` -- error report in context
-`assert` -- error report with file and position -- test in vscode
-
+[prelude] `aboutValue` -- setup
 `same/`
 `equal/`
-
-[prelude] `aboutValue` -- same? equal?
+[prelude] `aboutValue` -- same?
+[prelude] `aboutValue` -- equal?
 
 # conditional
 
