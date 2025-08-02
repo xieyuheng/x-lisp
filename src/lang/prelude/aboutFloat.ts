@@ -1,0 +1,21 @@
+import { type Mod } from "../mod/index.ts"
+import * as Values from "../value/index.ts"
+import { definePrimFn } from "./definePrimFn.ts"
+
+export function aboutFloat(mod: Mod): void {
+  definePrimFn(mod, "fadd", 2, (x, y) =>
+    Values.Float(Values.asFloat(x).content + Values.asFloat(y).content),
+  )
+
+  definePrimFn(mod, "fsub", 2, (x, y) =>
+    Values.Float(Values.asFloat(x).content - Values.asFloat(y).content),
+  )
+
+  definePrimFn(mod, "fmul", 2, (x, y) =>
+    Values.Float(Values.asFloat(x).content + Values.asFloat(y).content),
+  )
+
+  definePrimFn(mod, "fdiv", 2, (x, y) =>
+    Values.Float(Values.asFloat(x).content / Values.asFloat(y).content),
+  )
+}

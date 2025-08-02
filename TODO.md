@@ -1,5 +1,4 @@
 `assert` as a `Stmt` -- for testing
-[prelude] `aboutFloat` -- fadd fsub fmul fdiv
 
 `Exp` -- `If`
 `Exp` -- `Cond`
@@ -8,3 +7,8 @@
 
 [prelude] `aboutSymbol`
 [prelude] `aboutString`
+
+string-length
+
+symbol-length
+symbol-to-string
