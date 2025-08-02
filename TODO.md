@@ -1,4 +1,4 @@
-[prelude] `aboutInt` -- iadd isub imul idiv
+[prelude] `aboutInt` -- isub imul idiv
 [prelude] `aboutFloat` -- fadd fsub fmul fdiv
 
 `Exp` -- `If`
