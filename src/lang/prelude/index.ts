@@ -1,1 +1,1 @@
-export * from "./definePrelude.ts"
+export * from "./requirePrelude.ts"

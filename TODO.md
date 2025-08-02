@@ -1,6 +1,9 @@
-[prelude] `definePrelude` -- call abouts
+`usePreludeMod` -- call abouts
 
-[prelude] `aboutBool`
+apply support `PrimFn`
+[prelude] `aboutBool` -- `not`
+`CurriedApply` as `Value`
+
 [prelude] `aboutInt`
 [prelude] `aboutFloat`
 
