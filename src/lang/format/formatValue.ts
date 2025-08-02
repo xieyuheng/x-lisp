@@ -43,5 +43,10 @@ export function formatValue(value: Value): string {
     case "PrimFn": {
       return `${value.name}`
     }
+
+    case "CurriedPrimFn": {
+      const args = value.args.map(formatValue)
+      return `(${value.primFn.name} ${args.join(" ")})`
+    }
   }
 }

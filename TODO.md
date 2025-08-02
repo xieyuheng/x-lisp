@@ -1,4 +1,4 @@
-`CurriedApply` as `Value`
+`apply` -- handle `CurriedPrimFn`
 
 [prelude] `aboutInt`
 [prelude] `aboutFloat`

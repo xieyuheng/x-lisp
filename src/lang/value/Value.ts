@@ -3,7 +3,7 @@ import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Atom } from "./Atom.ts"
 
-export type Value = Atom | Tael | Lambda | Lazy | PrimFn
+export type Value = Atom | Tael | Lambda | Lazy | PrimFn | CurriedPrimFn
 
 type Attributes = Record<string, Value>
 
@@ -37,6 +37,12 @@ export type PrimFn = {
   name: string
   arity: number
   fn: ValueFn
+}
+
+export type CurriedPrimFn = {
+  kind: "CurriedPrimFn"
+  primFn: PrimFn
+  args: Array<Value>
 }
 
 export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
@@ -88,5 +94,16 @@ export function PrimFn(name: string, arity: number, fn: ValueFn): PrimFn {
     name,
     arity,
     fn,
+  }
+}
+
+export function CurriedPrimFn(
+  primFn: PrimFn,
+  args: Array<Value>,
+): CurriedPrimFn {
+  return {
+    kind: "CurriedPrimFn",
+    primFn,
+    args,
   }
 }
