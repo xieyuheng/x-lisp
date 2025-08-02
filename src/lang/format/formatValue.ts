@@ -39,5 +39,9 @@ export function formatValue(value: Value): string {
     case "Lazy": {
       return `${formatValue(lazyActiveDeep(value))}`
     }
+
+    case "PrimFn": {
+      return `${value.name}`
+    }
   }
 }

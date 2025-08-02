@@ -1,5 +1,3 @@
-new kinds of value for primitive function and data
-
 [prelude] `definePrelude`
 [prelude] `load` call `definePrelude`
 
