@@ -20,7 +20,7 @@ async function importOne(
 ): Promise<void> {
   const url = modResolve(mod, path)
   if (url.href === mod.url.href) {
-    throw new Error(`[import] A module can not import itself: ${path}`)
+    throw new Error(`[handleImport] A module can not import itself: ${path}\n`)
   }
 
   const importedMod = await load(url)
@@ -29,13 +29,14 @@ async function importOne(
   const def = modGet(importedMod, name)
   if (def === undefined) {
     throw new Error(
-      `[import] I can not import undefined name: ${name}, from path: ${path}`,
+      `[handleImport] I can not import undefined name: ${name}\n` +
+        `  path: ${path}\n`,
     )
   }
 
   const localName = rename || name
   if (modGet(mod, localName)) {
-    throw new Error(`[import] I can not redefine name: ${localName}`)
+    throw new Error(`[handleImport] I can not redefine name: ${localName}\n`)
   }
 
   modSet(mod, localName, def)

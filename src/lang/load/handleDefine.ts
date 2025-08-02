@@ -6,7 +6,7 @@ import * as Values from "../value/index.ts"
 export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
   if (stmt.kind === "Define") {
     if (modGet(mod, stmt.name)) {
-      throw new Error(`[define] I can not redefine name: ${stmt.name}`)
+      throw new Error(`[handleDefine] I can not redefine name: ${stmt.name}\n`)
     }
 
     const { name, exp } = stmt

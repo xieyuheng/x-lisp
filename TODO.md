@@ -1,9 +1,5 @@
-[prelude] `definePrimFn`
-
-apply support `PrimFn`
-
 [prelude] `aboutBool` -- `not`
-
+apply support `PrimFn`
 `CurriedApply` as `Value`
 
 [prelude] `aboutInt`

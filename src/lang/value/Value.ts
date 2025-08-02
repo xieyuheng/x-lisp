@@ -30,11 +30,13 @@ export type Lazy = {
   value?: Value
 }
 
+export type ValueFn = (...args: Array<Value>) => Value
+
 export type PrimFn = {
   kind: "PrimFn"
   name: string
   arity: number
-  fn: (...args: Array<Value>) => Value
+  fn: ValueFn
 }
 
 export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
@@ -80,11 +82,7 @@ export function Lazy(mod: Mod, env: Env, exp: Exp): Lazy {
   }
 }
 
-export function PrimFn(
-  name: string,
-  arity: number,
-  fn: (...args: Array<Value>) => Value,
-): PrimFn {
+export function PrimFn(name: string, arity: number, fn: ValueFn): PrimFn {
   return {
     kind: "PrimFn",
     name,
