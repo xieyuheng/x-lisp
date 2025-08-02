@@ -1,4 +1,4 @@
-[prelude] `aboutInt` -- isub imul idiv
+`assert` as a `Stmt` -- for testing
 [prelude] `aboutFloat` -- fadd fsub fmul fdiv
 
 `Exp` -- `If`

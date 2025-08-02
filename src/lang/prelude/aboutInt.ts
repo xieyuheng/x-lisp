@@ -6,4 +6,20 @@ export function aboutInt(mod: Mod): void {
   definePrimFn(mod, "iadd", 2, (x, y) =>
     Values.Int(Values.asInt(x).content + Values.asInt(y).content),
   )
+
+  definePrimFn(mod, "isub", 2, (x, y) =>
+    Values.Int(Values.asInt(x).content - Values.asInt(y).content),
+  )
+
+  definePrimFn(mod, "imul", 2, (x, y) =>
+    Values.Int(Values.asInt(x).content + Values.asInt(y).content),
+  )
+
+  definePrimFn(mod, "idiv", 2, (x, y) =>
+    Values.Int(Math.trunc(Values.asInt(x).content / Values.asInt(y).content)),
+  )
+
+  definePrimFn(mod, "imod", 2, (x, y) =>
+    Values.Int(Values.asInt(x).content % Values.asInt(y).content),
+  )
 }
