@@ -2,7 +2,13 @@ import { ParsingError } from "@xieyuheng/x-data.js"
 import { urlReadText } from "../../utils/url/urlReadText.ts"
 import { expFreeNames } from "../exp/expFreeNames.ts"
 import { formatExp } from "../format/formatExp.ts"
-import { createMod, modGet, modOwnDefs, type Mod } from "../mod/index.ts"
+import {
+  createMod,
+  modGet,
+  modOwnDefs,
+  type Def,
+  type Mod,
+} from "../mod/index.ts"
 import { parseStmts } from "../parse/index.ts"
 import { definePrelude } from "../prelude/index.ts"
 import { globalLoadedMods } from "./globalLoadedMods.ts"
@@ -38,27 +44,23 @@ async function run(mod: Mod): Promise<void> {
 
   for (const stmt of mod.stmts) await handleDefine(mod, stmt)
   for (const stmt of mod.stmts) await handleImport(mod, stmt)
-
-  postprocess(mod)
-
+  for (const def of modOwnDefs(mod)) assertNoUndefinedName(mod, def)
   for (const stmt of mod.stmts) await handleEffect(mod, stmt)
 
   mod.isFinished = true
 }
 
-function postprocess(mod: Mod): void {
-  for (const def of modOwnDefs(mod)) {
-    if (def.value.kind === "Lazy") {
-      const lazy = def.value
-      const freeNames = expFreeNames(new Set(), lazy.exp)
-      for (const name of freeNames) {
-        if (!modGet(mod, name)) {
-          throw new Error(
-            `[load] I find undefined name: ${name}\n` +
-              `  defining: ${def.name}\n` +
-              `  to: : ${formatExp(lazy.exp)}\n`,
-          )
-        }
+function assertNoUndefinedName(mod: Mod, def: Def): void {
+  if (def.value.kind === "Lazy") {
+    const lazy = def.value
+    const freeNames = expFreeNames(new Set(), lazy.exp)
+    for (const name of freeNames) {
+      if (!modGet(mod, name)) {
+        throw new Error(
+          `[load] I find undefined name: ${name}\n` +
+            `  defining: ${def.name}\n` +
+            `  to: : ${formatExp(lazy.exp)}\n`,
+        )
       }
     }
   }
