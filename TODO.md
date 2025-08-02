@@ -1,10 +1,11 @@
 # testing
 
-`assert` -- error report with file and position -- test in vscode
 `assert` -- error report in context
+`assert` -- error report with file and position -- test in vscode
 
 `same/`
 `equal/`
+
 [prelude] `aboutValue` -- same? equal?
 
 # conditional

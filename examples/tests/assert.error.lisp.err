@@ -1,6 +1,16 @@
 [assert] fail
   exp: (not true)
 
+ 0|(assert (not true))
+   ~~~~~~~~~~~~~~~~~~~ 
+ 1|(assert (not #t))
+ 2|
+
 [assert] fail
   exp: (not #t)
+
+ 0|(assert (not true))
+ 1|(assert (not #t))
+   ~~~~~~~~~~~~~~~~~ 
+ 2|
 

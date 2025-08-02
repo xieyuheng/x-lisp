@@ -1,3 +1,4 @@
+import * as X from "@xieyuheng/x-data.js"
 import { emptyEnv } from "../env/index.ts"
 import { evaluate } from "../evaluate/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
@@ -19,10 +20,18 @@ export async function handleEffect(mod: Mod, stmt: Stmt): Promise<void> {
           `  value: ${formatValue(value)}\n` +
           `  exp: ${formatExp(stmt.exp)}\n`,
       )
+
+      if (mod.text) {
+        console.log(X.spanReport(stmt.meta.span, mod.text))
+      }
     }
 
     if (value.kind === "Bool" && value.content === false) {
       console.log(`[assert] fail\n` + `  exp: ${formatExp(stmt.exp)}\n`)
+
+      if (mod.text) {
+        console.log(X.spanReport(stmt.meta.span, mod.text))
+      }
     }
 
     return
