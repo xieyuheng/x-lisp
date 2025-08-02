@@ -1,5 +1,4 @@
-`modOwnDefs` should not return `Map`
-extract `?` from postprocess
+extract `?` from `postprocess`
 [prelude] `definePrelude` -- call abouts
 
 [prelude] `aboutBool`

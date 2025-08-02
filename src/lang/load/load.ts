@@ -47,7 +47,7 @@ async function run(mod: Mod): Promise<void> {
 }
 
 function postprocess(mod: Mod): void {
-  for (const def of modOwnDefs(mod).values()) {
+  for (const def of modOwnDefs(mod)) {
     if (def.value.kind === "Lazy") {
       const lazy = def.value
       const freeNames = expFreeNames(new Set(), lazy.exp)

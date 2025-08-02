@@ -49,11 +49,11 @@ export function modResolve(mod: Mod, href: string): URL {
   return new URL(href, mod.url)
 }
 
-export function modOwnDefs(mod: Mod): Map<string, Def> {
-  const ownDefs = new Map()
-  for (const [name, def] of mod.defs) {
+export function modOwnDefs(mod: Mod): Array<Def> {
+  const ownDefs: Array<Def> = []
+  for (const def of mod.defs.values()) {
     if (def.mod.url.href === mod.url.href) {
-      ownDefs.set(name, def)
+      ownDefs.push(def)
     }
   }
 
