@@ -1,5 +1,7 @@
 `CurriedApply` as `Value`
 
+`defineValue` -- for `true` and `false` in `aboutBool`
+
 [prelude] `aboutInt`
 [prelude] `aboutFloat`
 
