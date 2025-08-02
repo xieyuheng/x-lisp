@@ -1,5 +1,5 @@
-[prelude] `definePrelude`
-[prelude] `load` call `definePrelude`
+[prelude] `load` -- call `definePrelude`
+[prelude] `definePrelude` -- call abouts
 
 [prelude] `aboutBool`
 [prelude] `aboutInt`
