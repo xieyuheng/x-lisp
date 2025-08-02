@@ -1,15 +1,14 @@
 import { createMod, type Mod } from "../mod/index.ts"
+import { aboutBool } from "./aboutBool.ts"
 
-const globalPreludeMod = createMod(new URL("prelude:occam"))
-
-let isInitialized = false
+let mod: Mod | undefined = undefined
 
 export function usePreludeMod(): Mod {
-  if (!isInitialized) {
-    //
+  if (mod) return mod
 
-    isInitialized = true
-  }
+  mod = createMod(new URL("prelude:occam"))
 
-  return globalPreludeMod
+  aboutBool(mod)
+
+  return mod
 }
