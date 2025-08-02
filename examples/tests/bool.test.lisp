@@ -15,3 +15,9 @@ false
 
 (not (not true))
 (not (not false))
+
+(assert #t)
+(assert true)
+
+(assert (not #f))
+(assert (not false))

@@ -1,0 +1,6 @@
+[assert] fail
+  exp: (not true)
+
+[assert] fail
+  exp: (not #t)
+
