@@ -4,6 +4,7 @@ import { expFreeNames } from "../exp/expFreeNames.ts"
 import { formatExp } from "../format/formatExp.ts"
 import { createMod, modGet, modOwnDefs, type Mod } from "../mod/index.ts"
 import { parseStmts } from "../parse/index.ts"
+import { definePrelude } from "../prelude/index.ts"
 import { globalLoadedMods } from "./globalLoadedMods.ts"
 import { handleDefine } from "./handleDefine.ts"
 import { handleEffect } from "./handleEffect.ts"
@@ -32,6 +33,8 @@ export async function load(url: URL): Promise<Mod> {
 
 async function run(mod: Mod): Promise<void> {
   if (mod.isFinished) return
+
+  definePrelude(mod)
 
   for (const stmt of mod.stmts) await handleDefine(mod, stmt)
   for (const stmt of mod.stmts) await handleImport(mod, stmt)
