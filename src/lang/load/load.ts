@@ -24,6 +24,7 @@ export async function load(url: URL): Promise<Mod> {
 
   try {
     const mod = createMod(url)
+    mod.text = text
     mod.stmts = parseStmts(text)
     globalLoadedMods.set(url.href, { mod, text })
     await run(mod)

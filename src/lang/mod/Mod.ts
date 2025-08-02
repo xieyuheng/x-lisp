@@ -13,6 +13,7 @@ export type Def = {
 
 export type Mod = {
   url: URL
+  text?: string
   defs: Map<string, Def>
   stmts: Array<Stmt>
   isFinished?: boolean
