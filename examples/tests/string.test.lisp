@@ -2,3 +2,5 @@
 "abc"
 "a b c"
 ""
+
+(string-length "abc")
