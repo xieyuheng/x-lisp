@@ -1,11 +1,5 @@
-import {
-  type Atom,
-  type Bool,
-  type Float,
-  type Int,
-  type String,
-  type Symbol,
-} from "./Atom.ts"
+import * as Atoms from "./Atom.ts"
+import { type Atom } from "./Atom.ts"
 import { type Value } from "./Value.ts"
 
 export function isAtom(value: any): value is Atom {
@@ -18,27 +12,27 @@ export function isAtom(value: any): value is Atom {
   )
 }
 
-export function asBool(value: Value): Bool {
+export function asBool(value: Value): Atoms.Bool {
   if (value.kind === "Bool") return value
   throw new Error(`[asBool] fail on: ${value.kind}`)
 }
 
-export function asSymbol(value: Value): Symbol {
+export function asSymbol(value: Value): Atoms.Symbol {
   if (value.kind === "Symbol") return value
   throw new Error(`[asSymbol] fail on: ${value.kind}`)
 }
 
-export function asString(value: Value): String {
+export function asString(value: Value): Atoms.String {
   if (value.kind === "String") return value
   throw new Error(`[asString] fail on: ${value.kind}`)
 }
 
-export function asInt(value: Value): Int {
+export function asInt(value: Value): Atoms.Int {
   if (value.kind === "Int") return value
   throw new Error(`[asInt] fail on: ${value.kind}`)
 }
 
-export function asFloat(value: Value): Float {
+export function asFloat(value: Value): Atoms.Float {
   if (value.kind === "Float") return value
   throw new Error(`[asFloat] fail on: ${value.kind}`)
 }

@@ -1,3 +1,4 @@
+import assert from "node:assert"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { envFindValue, envUpdate, type Env } from "../env/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
@@ -69,6 +70,11 @@ export function apply(target: Value, arg: Value): Value {
       envUpdate(target.env, target.name, arg),
       target.ret,
     )
+  }
+
+  if (target.kind === "PrimFn") {
+    assert(target.arity === 1)
+    return target.fn(arg)
   }
 
   throw new Error(

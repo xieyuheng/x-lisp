@@ -1,4 +1,3 @@
-apply support `PrimFn`
 `CurriedApply` as `Value`
 
 [prelude] `aboutInt`
