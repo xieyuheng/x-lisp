@@ -1,4 +1,3 @@
-import assert from "node:assert"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { envFindValue, envUpdate, type Env } from "../env/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
@@ -73,8 +72,19 @@ export function apply(target: Value, arg: Value): Value {
   }
 
   if (target.kind === "PrimFn") {
-    assert(target.arity === 1)
-    return target.fn(arg)
+    if (target.arity === 1) {
+      return target.fn(arg)
+    } else {
+      return Values.CurriedPrimFn(target, [arg])
+    }
+  }
+
+  if (target.kind === "CurriedPrimFn") {
+    if (target.args.length + 1 === target.primFn.arity) {
+      return target.primFn.fn(...target.args, arg)
+    } else {
+      return Values.CurriedPrimFn(target.primFn, [...target.args, arg])
+    }
   }
 
   throw new Error(
