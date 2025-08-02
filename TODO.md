@@ -1,6 +1,6 @@
 # testing
 
-`assert` as a `Stmt` -- for testing
+parse `assert`
 `assert` -- error report with file and position -- test in vscode
 `assert` -- error report in context
 

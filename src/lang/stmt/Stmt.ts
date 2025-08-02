@@ -1,9 +1,18 @@
 import { type Exp } from "../exp/index.ts"
 
-export type Stmt = Compute | Define | Import
+export type Stmt = Compute | Define | Import | Assert
 
-export type Compute = { kind: "Compute"; exp: Exp }
-export type Define = { kind: "Define"; name: string; exp: Exp }
+export type Compute = {
+  kind: "Compute"
+  exp: Exp
+}
+
+export type Define = {
+  kind: "Define"
+  name: string
+  exp: Exp
+}
+
 export type Import = {
   kind: "Import"
   path: string
@@ -13,6 +22,11 @@ export type Import = {
 export type ImportEntry = {
   name: string
   rename?: string
+}
+
+export type Assert = {
+  kind: "Assert"
+  exp: Exp
 }
 
 export function Compute(exp: Exp): Compute {
@@ -35,5 +49,12 @@ export function Import(path: string, entries: Array<ImportEntry>): Import {
     kind: "Import",
     path,
     entries,
+  }
+}
+
+export function Assert(exp: Exp): Assert {
+  return {
+    kind: "Assert",
+    exp,
   }
 }
