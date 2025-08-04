@@ -9,7 +9,7 @@ export function equal(lhs: Value, rhs: Value): boolean {
 
   if (lhs.kind === "Tael" && rhs.kind === "Tael") {
     return (
-      lhs.elements.length !== rhs.elements.length &&
+      lhs.elements.length === rhs.elements.length &&
       arrayZip(lhs.elements, rhs.elements).every(([l, r]) => equal(l, r))
     )
   }
