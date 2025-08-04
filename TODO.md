@@ -1,7 +1,6 @@
 `evaluate` -- use combinators -- with the help of `Effect` type
 `evaluate` -- handle `Begin`
 begin.test.lisp
-`Lambda` -- rename `ret` to `body`
 `Lambda` -- `body` should be `Array<Exp>` instead of `Exp`
 `Assert` -- should be an `Exp` -- return the value asserted
 `Assign` -- as an `Exp` -- use `=` as concrete syntax

@@ -15,7 +15,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Lambda": {
-      const { names, ret } = formatLambda([exp.name], exp.ret)
+      const { names, ret } = formatLambda([exp.name], exp.body)
       return `(lambda (${names.join(" ")}) ${ret})`
     }
 
@@ -61,7 +61,7 @@ function formatLambda(
   ret: Exp,
 ): { names: Array<string>; ret: string } {
   if (ret.kind === "Lambda") {
-    return formatLambda([...names, ret.name], ret.ret)
+    return formatLambda([...names, ret.name], ret.body)
   } else {
     return { names, ret: formatExp(ret) }
   }

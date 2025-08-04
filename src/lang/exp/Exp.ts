@@ -4,7 +4,7 @@ import { type Atom } from "../value/index.ts"
 
 export type Exp = Atom | Var | Lambda | Apply | Let | Begin | Tael | Quote
 export type Var = { kind: "Var"; name: string }
-export type Lambda = { kind: "Lambda"; name: string; ret: Exp }
+export type Lambda = { kind: "Lambda"; name: string; body: Exp }
 export type Apply = { kind: "Apply"; target: Exp; arg: Exp }
 export type Let = { kind: "Let"; binds: Binds; body: Exp }
 export type Begin = { kind: "Begin"; body: Body }
@@ -25,8 +25,8 @@ export function Var(name: string): Var {
   return { kind: "Var", name }
 }
 
-export function Lambda(name: string, ret: Exp): Lambda {
-  return { kind: "Lambda", name, ret }
+export function Lambda(name: string, body: Exp): Lambda {
+  return { kind: "Lambda", name, body }
 }
 
 export function Apply(target: Exp, arg: Exp): Apply {

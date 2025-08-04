@@ -29,7 +29,7 @@ export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
     }
 
     case "Lambda": {
-      return Values.Lambda(mod, env, exp.name, exp.ret)
+      return Values.Lambda(mod, env, exp.name, exp.body)
     }
 
     case "Apply": {
