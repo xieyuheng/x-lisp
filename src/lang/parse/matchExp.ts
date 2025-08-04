@@ -27,6 +27,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     )
   }),
 
+  X.matcher("(cons 'begin body)", ({ body }) => {
+    return Exps.Begin(X.dataToArray(body).map(matchExp))
+  }),
+
   X.matcher("(cons target args)", ({ target, args }) => {
     return X.dataToArray(args)
       .map(matchExp)

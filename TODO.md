@@ -1,7 +1,8 @@
-begin.test.lisp
-`Lambda` -- `body` should be `Array<Exp>` instead of `Exp`
-`Assert` -- should be an `Exp` -- return the value asserted
 `Assign` -- as an `Exp` -- use `=` as concrete syntax
+`Assert` -- should be an `Exp` -- return the value asserted
+begin.test.lisp -- with assert
+
+`Lambda` -- `body` should be `Array<Exp>` instead of `Exp`
 `Let` -- has `body` instead of `exp`
 `LetStar` --  has `body`
 `let` test -- use `assert` as `Exp` -- instead of `Stmt`
