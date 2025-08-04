@@ -1,4 +1,3 @@
-`evaluate` -- handle `Begin`
 begin.test.lisp
 `Lambda` -- `body` should be `Array<Exp>` instead of `Exp`
 `Assert` -- should be an `Exp` -- return the value asserted

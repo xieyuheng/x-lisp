@@ -1,3 +1,4 @@
+import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlPathRelativeToCwd } from "../../utils/url/urlPathRelativeToCwd.ts"
 import { envFindValue, envUpdate, type Env } from "../env/index.ts"
@@ -63,7 +64,15 @@ export function evaluate(exp: Exp): Effect {
     }
 
     case "Begin": {
-      throw new Error("TODO")
+      return (mod, env) => {
+        const [prefix, last] = arrayPickLast(exp.body)
+        for (const e of prefix) {
+          const [nextEnv, _] = evaluate(e)(mod, env)
+          env = nextEnv
+        }
+
+        return evaluate(last)(mod, env)
+      }
     }
 
     case "Tael": {
