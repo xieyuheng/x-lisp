@@ -47,6 +47,10 @@ export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
       return evaluate(mod, env, exp.body)
     }
 
+    case "Begin": {
+      throw new Error("TODO")
+    }
+
     case "Tael": {
       return Values.Tael(
         exp.elements.map((e) => evaluate(mod, env, e)),

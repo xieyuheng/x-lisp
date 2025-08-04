@@ -29,6 +29,11 @@ export function formatExp(exp: Exp): string {
       return `(let (${binds.join(" ")}) ${formatExp(exp.body)})`
     }
 
+    case "Begin": {
+      const body = exp.body.map(formatExp)
+      return `(begin ${body.join(" ")})`
+    }
+
     case "Tael": {
       const elements = exp.elements.map(formatExp)
       const attributes = Object.entries(exp.attributes).map(
