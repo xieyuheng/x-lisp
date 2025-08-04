@@ -38,6 +38,10 @@ export function formatExp(exp: Exp): string {
       return `(= ${exp.name} ${formatExp(exp.rhs)})`
     }
 
+    case "Assert": {
+      return `(assert ${formatExp(exp.exp)})`
+    }
+
     case "Tael": {
       const elements = exp.elements.map(formatExp)
       const attributes = Object.entries(exp.attributes).map(

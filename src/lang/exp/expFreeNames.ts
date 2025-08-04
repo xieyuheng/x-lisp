@@ -48,6 +48,10 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       return expFreeNames(boundNames, exp.rhs)
     }
 
+    case "Assert": {
+      return expFreeNames(boundNames, exp.exp)
+    }
+
     case "Tael": {
       return setUnion(
         setUnionMany(

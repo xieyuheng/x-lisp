@@ -14,7 +14,7 @@ export type Exp =
   | Let
   | Begin
   | Assign
-  // | Assert
+  | Assert
   | Tael
   | Quote
 
@@ -31,7 +31,7 @@ export type Apply = { kind: "Apply"; target: Exp; arg: Exp; meta: Meta }
 export type Let = { kind: "Let"; binds: Binds; body: Exp; meta: Meta }
 export type Begin = { kind: "Begin"; body: Body; meta: Meta }
 export type Assign = { kind: "Assign"; name: string; rhs: Exp; meta: Meta }
-// export type Assert = { kind: "Assert"; exp: Exp , meta: Meta}
+export type Assert = { kind: "Assert"; exp: Exp; meta: Meta }
 
 export type Tael = {
   kind: "Tael"
@@ -110,9 +110,9 @@ export function Assign(name: string, rhs: Exp, meta: Meta): Assign {
   return { kind: "Assign", name, rhs, meta }
 }
 
-// export function Assert(exp: Exp, meta: Meta): Assert {
-//   return { kind: "Assert", exp, meta }
-// }
+export function Assert(exp: Exp, meta: Meta): Assert {
+  return { kind: "Assert", exp, meta }
+}
 
 export function Tael(
   elements: Array<Exp>,

@@ -1,10 +1,11 @@
+import * as X from "@xieyuheng/x-data.js"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlPathRelativeToCwd } from "../../utils/url/urlPathRelativeToCwd.ts"
 import { envFindValue, envUpdate, type Env } from "../env/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
-import { formatValue } from "../format/index.ts"
-import { modGetValue, type Mod } from "../mod/index.ts"
+import { formatExp, formatValue } from "../format/index.ts"
+import { modGetValue, modReportSource, type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 
@@ -79,6 +80,31 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const value = resultValue(evaluate(exp.rhs)(mod, env))
         return [envUpdate(env, exp.name, value), value]
+      }
+    }
+
+    case "Assert": {
+      return (mod, env) => {
+        const value = resultValue(evaluate(exp.exp)(mod, env))
+
+        if (value.kind !== "Bool") {
+          let message =
+            `[assert] fail on non boolean value\n` +
+            `  value: ${formatValue(value)}\n` +
+            `  exp: ${formatExp(exp.exp)}\n`
+          message += `[source] ${modReportSource(mod, exp.meta.span)}\n`
+          if (mod.text) message += X.spanReport(exp.meta.span, mod.text)
+          console.log(message)
+        }
+
+        if (value.kind === "Bool" && value.content === false) {
+          let message = `[assert] fail\n` + `  exp: ${formatExp(exp.exp)}\n`
+          message += `[source] ${modReportSource(mod, exp.meta.span)}\n`
+          if (mod.text) message += X.spanReport(exp.meta.span, mod.text)
+          console.log(message)
+        }
+
+        return [env, value]
       }
     }
 

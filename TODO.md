@@ -1,4 +1,3 @@
-`evaluate` -- `Assert` -- the value asserted
 parse -- `Assert`
 remove `Assert` from `Stmt`
 begin.test.lisp -- with assert
