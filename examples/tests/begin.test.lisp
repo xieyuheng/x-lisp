@@ -12,3 +12,7 @@
      (= x 1)
      x)
    1))
+
+(begin
+  (= x 1)
+  (assert (equal? x 1)))
