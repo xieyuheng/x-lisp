@@ -1,7 +1,9 @@
 # testing
 
-`same/`
 [prelude] `aboutValue` -- `same?` -- like `eq?` of scheme
+`same/` -- test
+`same/` -- lambda and tael
+
 `equal/`
 [prelude] `aboutValue` -- `equal?`
 
@@ -14,11 +16,17 @@
 
 # list processing
 
-TODO
+list-length
+list-append
 
 # record processing
 
-TODO
+record-length
+record-append
+
+# tael
+
+combine
 
 # define-data
 
