@@ -1,4 +1,4 @@
-import { evaluate } from "../evaluate/index.ts"
+import { evaluate, resultValue } from "../evaluate/index.ts"
 import type * as Values from "./index.ts"
 import { type Value } from "./index.ts"
 
@@ -7,7 +7,7 @@ export function lazyActive(lazy: Values.Lazy): Value {
     return lazy.value
   }
 
-  return (lazy.value = evaluate(lazy.mod, lazy.env, lazy.exp))
+  return (lazy.value = resultValue(evaluate(lazy.exp)(lazy.mod, lazy.env)))
 }
 
 export function lazyActiveDeep(value: Value): Value {

@@ -7,44 +7,59 @@ import { modGetValue, type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 
-export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
+export type Result = [Env, Value]
+export type Effect = (mod: Mod, env: Env) => Result
+
+export function resultValue(result: Result): Value {
+  const [_, value] = result
+  return value
+}
+
+export function evaluate(exp: Exp): Effect {
   if (isAtom(exp)) {
-    return exp
+    return (mod, env) => [env, exp]
   }
 
   switch (exp.kind) {
     case "Var": {
-      let value = undefined
+      return (mod, env) => {
+        let value = undefined
 
-      value = envFindValue(env, exp.name)
-      if (value !== undefined) return value
+        value = envFindValue(env, exp.name)
+        if (value !== undefined) return [env, value]
 
-      value = modGetValue(mod, exp.name)
-      if (value !== undefined) return value
+        value = modGetValue(mod, exp.name)
+        if (value !== undefined) return [env, value]
 
-      throw new Error(
-        `[evaluate] I meet undefined name: ${exp.name}\n` +
-          `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
-      )
+        throw new Error(
+          `[evaluate] I meet undefined name: ${exp.name}\n` +
+            `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+        )
+      }
     }
 
     case "Lambda": {
-      return Values.Lambda(mod, env, exp.name, exp.body)
+      return (mod, env) => [env, Values.Lambda(mod, env, exp.name, exp.body)]
     }
 
     case "Apply": {
-      const target = evaluate(mod, env, exp.target)
-      const arg = evaluate(mod, env, exp.arg)
-      return apply(target, arg)
+      return (mod, env) => {
+        const target = resultValue(evaluate(exp.target)(mod, env))
+        const arg = resultValue(evaluate(exp.arg)(mod, env))
+        return [env, apply(target, arg)]
+      }
     }
 
     case "Let": {
-      const oldEnv = env
-      for (const bind of bindsToArray(exp.binds)) {
-        env = envUpdate(env, bind.name, evaluate(mod, oldEnv, bind.exp))
-      }
+      return (mod, env) => {
+        const oldEnv = env
+        for (const bind of bindsToArray(exp.binds)) {
+          const value = resultValue(evaluate(bind.exp)(mod, oldEnv))
+          env = envUpdate(env, bind.name, value)
+        }
 
-      return evaluate(mod, env, exp.body)
+        return evaluate(exp.body)(mod, env)
+      }
     }
 
     case "Begin": {
@@ -52,14 +67,17 @@ export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
     }
 
     case "Tael": {
-      return Values.Tael(
-        exp.elements.map((e) => evaluate(mod, env, e)),
-        recordMap(exp.attributes, (e) => evaluate(mod, env, e)),
-      )
+      return (mod, env) => {
+        const value = Values.Tael(
+          exp.elements.map((e) => resultValue(evaluate(e)(mod, env))),
+          recordMap(exp.attributes, (e) => resultValue(evaluate(e)(mod, env))),
+        )
+        return [env, value]
+      }
     }
 
     case "Quote": {
-      return exp.data
+      return (mod, env) => [env, exp.data]
     }
   }
 }
@@ -70,10 +88,8 @@ export function apply(target: Value, arg: Value): Value {
   }
 
   if (target.kind === "Lambda") {
-    return evaluate(
-      target.mod,
-      envUpdate(target.env, target.name, arg),
-      target.ret,
+    return resultValue(
+      evaluate(target.ret)(target.mod, envUpdate(target.env, target.name, arg)),
     )
   }
 

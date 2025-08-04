@@ -1,4 +1,3 @@
-`evaluate` -- use combinators -- with the help of `Effect` type
 `evaluate` -- handle `Begin`
 begin.test.lisp
 `Lambda` -- `body` should be `Array<Exp>` instead of `Exp`
