@@ -1,9 +1,9 @@
 # testing
 
 `same/`
+[prelude] `aboutValue` -- `same?` -- like `eq?` of scheme
 `equal/`
-[prelude] `aboutValue` -- same?
-[prelude] `aboutValue` -- equal?
+[prelude] `aboutValue` -- `equal?`
 
 # conditional
 
