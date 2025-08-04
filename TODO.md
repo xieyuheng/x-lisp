@@ -1,3 +1,9 @@
+remove `Atom` -- inline it to `Value` and `Exp`
+
+- structural subtyping is not always good,
+  because now `Atom` in `Value` and `Exp` are different,
+  `Atom` in `Exp` will have `meta.span`.
+
 `Exp` -- has `meta.span`
 `evaluate` -- `Assert` -- the value asserted
 parse -- `Assert`
