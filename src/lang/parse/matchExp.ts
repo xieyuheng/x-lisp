@@ -25,6 +25,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     Exps.Quote(data, { span }),
   ),
 
+  X.matcher("`(assert ,exp)", ({ exp }, { span }) =>
+    Exps.Assert(matchExp(exp), { span }),
+  ),
+
   X.matcher("`(= ,name ,rhs)", ({ name, rhs }, { span }) =>
     Exps.Assign(X.symbolToString(name), matchExp(rhs), { span }),
   ),

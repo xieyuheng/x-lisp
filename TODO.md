@@ -1,4 +1,3 @@
-parse -- `Assert`
 remove `Assert` from `Stmt`
 begin.test.lisp -- with assert
 `Lambda` -- `body` should be `Array<Exp>` instead of `Exp`
