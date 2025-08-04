@@ -3,3 +3,7 @@
 
 (assert (same? 'a 'a))
 (assert (not (same? 'a 'b)))
+
+(define abc '(a b c))
+(assert (same? abc abc))
+(assert (not (same? abc '(a b c))))

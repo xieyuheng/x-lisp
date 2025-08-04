@@ -1,7 +1,5 @@
 # testing
 
-`same/` -- lambda and tael
-
 `equal/`
 [prelude] `aboutValue` -- `equal?`
 
