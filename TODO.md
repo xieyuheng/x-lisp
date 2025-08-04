@@ -1,7 +1,7 @@
 # testing
 
-`equal/`
-[prelude] `aboutValue` -- `equal?`
+`equal/` -- `equal` handle `Tael`
+`equal/` -- `equal` handle `PrimFn` and `CurriedPrimFn`
 
 # conditional
 
@@ -27,5 +27,5 @@ combine
 # define-data
 
 data predicate
-variant constructor
-variant predicate
+data constructor
+data constructor predicate
