@@ -1,4 +1,3 @@
-`Exp` -- has `meta.span`
 `evaluate` -- `Assert` -- the value asserted
 parse -- `Assert`
 remove `Assert` from `Stmt`

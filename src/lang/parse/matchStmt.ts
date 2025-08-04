@@ -12,7 +12,10 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
         X.symbolToString(name),
         X.dataToArray(args)
           .map(X.symbolToString)
-          .reduceRight((fn, name) => Exps.Lambda(name, fn), matchExp(exp)),
+          .reduceRight(
+            (fn, name) => Exps.Lambda(name, fn, { span }),
+            matchExp(exp),
+          ),
         { span },
       ),
   ),
