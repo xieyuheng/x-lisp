@@ -5,7 +5,7 @@ import { type Atom } from "./Atom.ts"
 
 export type Value = Atom | Tael | Lambda | Lazy | PrimFn | CurriedPrimFn
 
-type Attributes = Record<string, Value>
+export type Attributes = Record<string, Value>
 
 export type Tael = {
   kind: "Tael"

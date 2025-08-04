@@ -1,6 +1,5 @@
 # testing
 
-`equal/` -- `equal` handle `Tael` record
 `equal/` -- `equal` handle `PrimFn` and `CurriedPrimFn`
 
 # conditional
