@@ -1,11 +1,12 @@
-`Assert` -- should be an `Exp` -- return the value asserted
+`Exp` -- has `meta.span`
+`evaluate` -- `Assert` -- the value asserted
+parse -- `Assert`
+remove `Assert` from `Stmt`
 begin.test.lisp -- with assert
-
 `Lambda` -- `body` should be `Array<Exp>` instead of `Exp`
 `Let` -- has `body` instead of `exp`
 `LetStar` --  has `body`
 `let` test -- use `assert` as `Exp` -- instead of `Stmt`
-
 fix `expFreeNames` for `Assign` in `body`
 
 # conditional
