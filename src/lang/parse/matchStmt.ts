@@ -33,10 +33,6 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     })
   }),
 
-  X.matcher("`(assert ,exp)", ({ exp }, { span }) =>
-    Stmts.Assert(matchExp(exp), { span }),
-  ),
-
   X.matcher("exp", ({ exp }, { span }) =>
     Stmts.Compute(matchExp(exp), { span }),
   ),

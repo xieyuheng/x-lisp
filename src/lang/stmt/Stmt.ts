@@ -3,7 +3,7 @@ import { type Exp } from "../exp/index.ts"
 
 type Meta = { span: Span }
 
-export type Stmt = Compute | Define | Import | Assert
+export type Stmt = Compute | Define | Import
 
 export type Compute = {
   kind: "Compute"
@@ -28,12 +28,6 @@ export type Import = {
 export type ImportEntry = {
   name: string
   rename?: string
-  meta: Meta
-}
-
-export type Assert = {
-  kind: "Assert"
-  exp: Exp
   meta: Meta
 }
 
@@ -63,14 +57,6 @@ export function Import(
     kind: "Import",
     path,
     entries,
-    meta,
-  }
-}
-
-export function Assert(exp: Exp, meta: Meta): Assert {
-  return {
-    kind: "Assert",
-    exp,
     meta,
   }
 }
