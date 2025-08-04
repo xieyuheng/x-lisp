@@ -1,7 +1,3 @@
-# testing
-
-`equal/` -- `equal` handle `PrimFn` and `CurriedPrimFn`
-
 # conditional
 
 `Exp` -- `If`
@@ -28,3 +24,7 @@ combine
 data predicate
 data constructor
 data constructor predicate
+
+# equal
+
+[maybe] `equal/` -- `equal` handle `CurriedLambda`

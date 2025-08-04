@@ -15,6 +15,13 @@ export function equal(lhs: Value, rhs: Value): boolean {
     )
   }
 
+  if (lhs.kind === "CurriedPrimFn" && rhs.kind === "CurriedPrimFn") {
+    return (
+      same(lhs.primFn, rhs.primFn) &&
+      arrayZip(lhs.args, rhs.args).every(([l, r]) => equal(l, r))
+    )
+  }
+
   return same(lhs, rhs)
 }
 
