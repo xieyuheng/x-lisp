@@ -1,16 +1,16 @@
 [assert] fail
   exp: (not true)
 [source] examples/tests/assert.error.lisp:1:1
- 0|(assert (not true))
+ 1|(assert (not true))
    ~~~~~~~~~~~~~~~~~~~ 
- 1|(assert (not #t))
- 2|
+ 2|(assert (not #t))
+ 3|
 
 [assert] fail
   exp: (not #t)
 [source] examples/tests/assert.error.lisp:2:1
- 0|(assert (not true))
- 1|(assert (not #t))
+ 1|(assert (not true))
+ 2|(assert (not #t))
    ~~~~~~~~~~~~~~~~~ 
- 2|
+ 3|
 
