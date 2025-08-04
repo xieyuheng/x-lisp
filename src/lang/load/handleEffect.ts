@@ -16,35 +16,27 @@ export async function handleEffect(mod: Mod, stmt: Stmt): Promise<void> {
   if (stmt.kind === "Assert") {
     const value = evaluate(mod, emptyEnv(), stmt.exp)
     if (value.kind !== "Bool") {
-      console.log(
-        `[place] ${modReportPlace(mod, stmt.meta.span)}\n` +
-          `[assert] fail on non boolean value\n` +
-          `  value: ${formatValue(value)}\n` +
-          `  exp: ${formatExp(stmt.exp)}\n`,
-      )
-
-      if (mod.text) {
-        console.log(X.spanReport(stmt.meta.span, mod.text))
-      }
+      let message =
+        `[assert] fail on non boolean value\n` +
+        `  value: ${formatValue(value)}\n` +
+        `  exp: ${formatExp(stmt.exp)}\n`
+      message += `[source] ${modReportSource(mod, stmt.meta.span)}\n`
+      if (mod.text) message += X.spanReport(stmt.meta.span, mod.text)
+      console.log(message)
     }
 
     if (value.kind === "Bool" && value.content === false) {
-      console.log(
-        `[place] ${modReportPlace(mod, stmt.meta.span)}\n` +
-          `[assert] fail\n` +
-          `  exp: ${formatExp(stmt.exp)}\n`,
-      )
-
-      if (mod.text) {
-        console.log(X.spanReport(stmt.meta.span, mod.text))
-      }
+      let message = `[assert] fail\n` + `  exp: ${formatExp(stmt.exp)}\n`
+      message += `[source] ${modReportSource(mod, stmt.meta.span)}\n`
+      if (mod.text) message += X.spanReport(stmt.meta.span, mod.text)
+      console.log(message)
     }
 
     return
   }
 }
 
-function modReportPlace(mod: Mod, span: X.Span): string {
+function modReportSource(mod: Mod, span: X.Span): string {
   return `${urlPathRelativeToCwd(mod.url)}:${formatPosition(span.start)}`
 }
 

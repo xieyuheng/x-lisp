@@ -1,4 +1,5 @@
 import { recordMap } from "../../utils/record/recordMap.ts"
+import { urlPathRelativeToCwd } from "../../utils/url/urlPathRelativeToCwd.ts"
 import { envFindValue, envUpdate, type Env } from "../env/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
 import { formatValue } from "../format/index.ts"
@@ -22,7 +23,8 @@ export function evaluate(mod: Mod, env: Env, exp: Exp): Value {
       if (value !== undefined) return value
 
       throw new Error(
-        `[evaluate] I meet undefined name: ${exp.name}, in mod: ${mod.url}`,
+        `[evaluate] I meet undefined name: ${exp.name}\n` +
+          `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
       )
     }
 
@@ -88,7 +90,7 @@ export function apply(target: Value, arg: Value): Value {
   }
 
   throw new Error(
-    `[apply] can not apply\n` +
+    `[apply] I can not handle this kind of target\n` +
       `  target: ${formatValue(target)}\n` +
       `  arg: ${formatValue(arg)}\n`,
   )
