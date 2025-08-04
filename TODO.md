@@ -1,7 +1,5 @@
 # testing
 
-[prelude] `aboutValue` -- `same?` -- like `eq?` of scheme
-`same/` -- test
 `same/` -- lambda and tael
 
 `equal/`
@@ -30,4 +28,6 @@ combine
 
 # define-data
 
-TODO
+data predicate
+variant constructor
+variant predicate
