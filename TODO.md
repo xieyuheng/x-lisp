@@ -1,4 +1,3 @@
-`Assign` -- as an `Exp` -- use `=` as concrete syntax
 `Assert` -- should be an `Exp` -- return the value asserted
 begin.test.lisp -- with assert
 

@@ -20,6 +20,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("`(quote ,data)", ({ data }) => Exps.Quote(data)),
 
+  X.matcher("`(= ,name ,rhs)", ({ name, rhs }) =>
+    Exps.Assign(X.symbolToString(name), matchExp(rhs)),
+  ),
+
   X.matcher("(cons 'tael elements)", ({ elements }, { data }) => {
     return Exps.Tael(
       X.dataToArray(elements).map(matchExp),

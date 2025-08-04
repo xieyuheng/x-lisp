@@ -34,6 +34,10 @@ export function formatExp(exp: Exp): string {
       return `(begin ${body.join(" ")})`
     }
 
+    case "Assign": {
+      return `(= ${exp.name} ${formatExp(exp.rhs)})`
+    }
+
     case "Tael": {
       const elements = exp.elements.map(formatExp)
       const attributes = Object.entries(exp.attributes).map(

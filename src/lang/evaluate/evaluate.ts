@@ -75,6 +75,13 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
+    case "Assign": {
+      return (mod, env) => {
+        const value = resultValue(evaluate(exp.rhs)(mod, env))
+        return [envUpdate(env, exp.name, value), value]
+      }
+    }
+
     case "Tael": {
       return (mod, env) => {
         const value = Values.Tael(

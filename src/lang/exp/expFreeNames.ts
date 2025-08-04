@@ -43,6 +43,11 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       return setUnionMany(exp.body.map((e) => expFreeNames(boundNames, e)))
     }
 
+    case "Assign": {
+      // TODO
+      return expFreeNames(boundNames, exp.rhs)
+    }
+
     case "Tael": {
       return setUnion(
         setUnionMany(
