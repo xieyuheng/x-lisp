@@ -1,7 +1,5 @@
 # conditional
 
-parse `(and)` and `(or)`
-
 `Exp` -- `Not` -- no need to be lazy
 
 `Exp` -- `Cond` -- cond line, question, answer, else line

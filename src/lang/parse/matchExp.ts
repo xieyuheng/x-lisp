@@ -36,6 +36,14 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       ),
   ),
 
+  X.matcher("(cons 'and exps)", ({ exps }, { span }) =>
+    Exps.And(X.dataToArray(exps).map(matchExp), { span }),
+  ),
+
+  X.matcher("(cons 'or exps)", ({ exps }, { span }) =>
+    Exps.Or(X.dataToArray(exps).map(matchExp), { span }),
+  ),
+
   X.matcher("`(assert ,exp)", ({ exp }, { span }) =>
     Exps.Assert(matchExp(exp), { span }),
   ),
@@ -44,17 +52,17 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     Exps.Assign(X.symbolToString(name), matchExp(rhs), { span }),
   ),
 
-  X.matcher("(cons 'tael elements)", ({ elements }, { data, span }) => {
-    return Exps.Tael(
+  X.matcher("(cons 'tael elements)", ({ elements }, { data, span }) =>
+    Exps.Tael(
       X.dataToArray(elements).map(matchExp),
       recordMap(X.asTael(data).attributes, matchExp),
       { span },
-    )
-  }),
+    ),
+  ),
 
-  X.matcher("(cons 'begin body)", ({ body }, { span }) => {
-    return Exps.Begin(X.dataToArray(body).map(matchExp), { span })
-  }),
+  X.matcher("(cons 'begin body)", ({ body }, { span }) =>
+    Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
+  ),
 
   X.matcher("(cons target args)", ({ target, args }, { span }) => {
     let result: Exp = matchExp(target)
