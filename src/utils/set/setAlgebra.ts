@@ -1,3 +1,7 @@
+export function setAdd<T>(x: ReadonlySet<T>, e: T): Set<T> {
+  return new Set([...x, e])
+}
+
 export function setUnion<T>(x: ReadonlySet<T>, y: ReadonlySet<T>): Set<T> {
   return new Set([...x, ...y])
 }

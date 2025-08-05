@@ -1,5 +1,3 @@
-refactor `expFreeNames`
-
 # conditional
 
 `Exp` -- `If` -- if then else
