@@ -79,7 +79,7 @@ export function evaluate(exp: Exp): Effect {
     case "Assign": {
       return (mod, env) => {
         const value = resultValue(evaluate(exp.rhs)(mod, env))
-        return [envUpdate(env, exp.name, value), value]
+        return [envUpdate(env, exp.name, value), Values.Void()]
       }
     }
 
