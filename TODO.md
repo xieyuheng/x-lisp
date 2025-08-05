@@ -1,7 +1,10 @@
-`Lambda` -- `body` should be `Array<Exp>` instead of `Exp`
-`Let` -- has `body` instead of `exp`
-`LetStar` --  has `body`
+`Lambda` -- has `ret` instead of `body` -- just use `begin`
+
+`Let` -- support "multi exp body" by `begin`
+`LetStar`
+
 `let` test -- use `assert` as `Exp` -- instead of `Stmt`
+
 fix `expFreeNames` for `Assign` in `body`
 
 # conditional

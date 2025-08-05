@@ -3,7 +3,6 @@ import { type Binds } from "../exp/index.ts"
 
 type Meta = { span: Span }
 
-export type Body = Array<Exp>
 export type Attributes = Record<string, Exp>
 
 export type Exp =
@@ -29,7 +28,7 @@ export type Var = { kind: "Var"; name: string; meta: Meta }
 export type Lambda = { kind: "Lambda"; name: string; body: Exp; meta: Meta }
 export type Apply = { kind: "Apply"; target: Exp; arg: Exp; meta: Meta }
 export type Let = { kind: "Let"; binds: Binds; body: Exp; meta: Meta }
-export type Begin = { kind: "Begin"; body: Body; meta: Meta }
+export type Begin = { kind: "Begin"; body: Array<Exp>; meta: Meta }
 export type Assign = { kind: "Assign"; name: string; rhs: Exp; meta: Meta }
 export type Assert = { kind: "Assert"; exp: Exp; meta: Meta }
 
@@ -102,7 +101,7 @@ export function Let(binds: Binds, body: Exp, meta: Meta): Let {
   return { kind: "Let", binds, body, meta }
 }
 
-export function Begin(body: Body, meta: Meta): Begin {
+export function Begin(body: Array<Exp>, meta: Meta): Begin {
   return { kind: "Begin", body, meta }
 }
 
