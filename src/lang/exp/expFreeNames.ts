@@ -13,7 +13,8 @@ export function expFreeNames(exp: Exp): Effect {
     return (boundNames) => {
       return {
         boundNames,
-        freeNames: new Set() }
+        freeNames: new Set(),
+      }
     }
   }
 
@@ -22,19 +23,22 @@ export function expFreeNames(exp: Exp): Effect {
       return (boundNames) => {
         if (boundNames.has(exp.name)) {
           return {
-            boundNames, freeNames: new Set() }
+            boundNames,
+            freeNames: new Set(),
+          }
         } else {
           return {
-            boundNames, freeNames: new Set([exp.name]) }
+            boundNames,
+            freeNames: new Set([exp.name]),
+          }
         }
       }
     }
 
     case "Lambda": {
       return (boundNames) => {
-        return         expFreeNames(exp.body)(setAdd(boundNames, exp.name))
+        return expFreeNames(exp.body)(setAdd(boundNames, exp.name))
       }
-
     }
 
     case "Apply": {
@@ -83,7 +87,9 @@ export function expFreeNames(exp: Exp): Effect {
         }
 
         return {
-          boundNames, freeNames }
+          boundNames,
+          freeNames,
+        }
       }
     }
 
@@ -124,7 +130,9 @@ export function expFreeNames(exp: Exp): Effect {
     case "Quote": {
       return (boundNames) => {
         return {
-          boundNames, freeNames: new Set() }
+          boundNames,
+          freeNames: new Set(),
+        }
       }
     }
 
