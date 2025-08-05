@@ -1,22 +1,23 @@
 # conditional
 
-`Exp` -- `If` -- if then else
-`Exp` -- `If` -- if then
-
-`Exp` -- `Cond`
-
+parse `if`
+test `if`
 `Exp` -- `And` -- lazy
 `Exp` -- `Or` -- lazy
+
+`Exp` -- `Cond`
 
 # list processing
 
 list-length
 list-append
+list-of
 
 # record processing
 
 record-length
-record-append
+record-update
+record-of
 
 # tael
 

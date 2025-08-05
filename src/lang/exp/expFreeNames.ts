@@ -118,5 +118,18 @@ export function expFreeNames(exp: Exp): Effect {
         return { boundNames, freeNames: new Set() }
       }
     }
+
+    case "If": {
+      return (boundNames) => {
+        return {
+          boundNames,
+          freeNames: setUnionMany([
+            expFreeNames(exp.testExp)(boundNames).freeNames,
+            expFreeNames(exp.thenExp)(boundNames).freeNames,
+            expFreeNames(exp.elseExp)(boundNames).freeNames,
+          ]),
+        }
+      }
+    }
   }
 }

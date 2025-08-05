@@ -16,6 +16,7 @@ export type Exp =
   | Assert
   | Tael
   | Quote
+  | If
 
 export type Atom = Bool | Symbol | String | Int | Float
 export type Bool = { kind: "Bool"; content: boolean; meta: Meta }
@@ -31,15 +32,20 @@ export type Let = { kind: "Let"; binds: Binds; body: Exp; meta: Meta }
 export type Begin = { kind: "Begin"; sequence: Array<Exp>; meta: Meta }
 export type Assign = { kind: "Assign"; name: string; rhs: Exp; meta: Meta }
 export type Assert = { kind: "Assert"; exp: Exp; meta: Meta }
-
 export type Tael = {
   kind: "Tael"
   elements: Array<Exp>
   attributes: Attributes
   meta: Meta
 }
-
 export type Quote = { kind: "Quote"; data: Data; meta: Meta }
+export type If = {
+  kind: "If"
+  testExp: Exp
+  thenExp: Exp
+  elseExp: Exp
+  meta: Meta
+}
 
 export function Bool(content: boolean, meta: Meta): Bool {
   return {
@@ -128,4 +134,14 @@ export function Tael(
 
 export function Quote(data: Data, meta: Meta): Quote {
   return { kind: "Quote", data, meta }
+}
+
+export function If(testExp: Exp, thenExp: Exp, elseExp: Exp, meta: Meta): If {
+  return {
+    kind: "If",
+    testExp,
+    thenExp,
+    elseExp,
+    meta,
+  }
 }

@@ -121,6 +121,25 @@ export function evaluate(exp: Exp): Effect {
     case "Quote": {
       return (mod, env) => [env, exp.data]
     }
+
+    case "If": {
+      return (mod, env) => {
+        const test = resultValue(evaluate(exp.testExp)(mod, env))
+        if (test.kind !== "Bool") {
+          throw new Error(
+            `[evaluate] The test part of a if must be bool\n` +
+              `  value: ${formatValue(test)}\n` +
+              `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+          )
+        }
+
+        if (test.content) {
+          return evaluate(exp.thenExp)(mod, env)
+        } else {
+          return evaluate(exp.elseExp)(mod, env)
+        }
+      }
+    }
   }
 }
 

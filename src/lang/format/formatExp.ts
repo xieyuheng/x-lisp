@@ -61,6 +61,10 @@ export function formatExp(exp: Exp): string {
     case "Quote": {
       return formatData(exp.data)
     }
+
+    case "If": {
+      return `(if ${formatExp(exp.testExp)} ${formatExp(exp.thenExp)} ${formatExp(exp.elseExp)})`
+    }
   }
 }
 
