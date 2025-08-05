@@ -28,7 +28,7 @@ export type Var = { kind: "Var"; name: string; meta: Meta }
 export type Lambda = { kind: "Lambda"; name: string; body: Exp; meta: Meta }
 export type Apply = { kind: "Apply"; target: Exp; arg: Exp; meta: Meta }
 export type Let = { kind: "Let"; binds: Binds; body: Exp; meta: Meta }
-export type Begin = { kind: "Begin"; body: Array<Exp>; meta: Meta }
+export type Begin = { kind: "Begin"; sequence: Array<Exp>; meta: Meta }
 export type Assign = { kind: "Assign"; name: string; rhs: Exp; meta: Meta }
 export type Assert = { kind: "Assert"; exp: Exp; meta: Meta }
 
@@ -101,8 +101,8 @@ export function Let(binds: Binds, body: Exp, meta: Meta): Let {
   return { kind: "Let", binds, body, meta }
 }
 
-export function Begin(body: Array<Exp>, meta: Meta): Begin {
-  return { kind: "Begin", body, meta }
+export function Begin(sequence: Array<Exp>, meta: Meta): Begin {
+  return { kind: "Begin", sequence, meta }
 }
 
 export function Assign(name: string, rhs: Exp, meta: Meta): Assign {

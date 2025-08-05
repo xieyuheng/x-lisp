@@ -30,7 +30,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Begin": {
-      const body = exp.body.map(formatExp)
+      const body = exp.sequence.map(formatExp)
       return `(begin ${body.join(" ")})`
     }
 

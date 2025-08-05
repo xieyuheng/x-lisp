@@ -1,5 +1,4 @@
-`Lambda` -- has `ret` instead of `body` -- just use `begin`
-
+`Lambda` -- support "multi exp body" by `begin`
 `Let` -- support "multi exp body" by `begin`
 `LetStar`
 

@@ -66,7 +66,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Begin": {
       return (mod, env) => {
-        const [prefix, last] = arrayPickLast(exp.body)
+        const [prefix, last] = arrayPickLast(exp.sequence)
         for (const e of prefix) {
           const [nextEnv, _] = evaluate(e)(mod, env)
           env = nextEnv
