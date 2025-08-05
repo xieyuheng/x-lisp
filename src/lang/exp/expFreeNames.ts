@@ -11,7 +11,9 @@ type Effect = (boundNames: Set<string>) => {
 export function expFreeNames(exp: Exp): Effect {
   if (isAtom(exp)) {
     return (boundNames) => {
-      return { boundNames, freeNames: new Set() }
+      return {
+        boundNames,
+        freeNames: new Set() }
     }
   }
 
@@ -19,16 +21,20 @@ export function expFreeNames(exp: Exp): Effect {
     case "Var": {
       return (boundNames) => {
         if (boundNames.has(exp.name)) {
-          return { boundNames, freeNames: new Set() }
+          return {
+            boundNames, freeNames: new Set() }
         } else {
-          return { boundNames, freeNames: new Set([exp.name]) }
+          return {
+            boundNames, freeNames: new Set([exp.name]) }
         }
       }
     }
 
     case "Lambda": {
-      return (boundNames) =>
-        expFreeNames(exp.body)(setAdd(boundNames, exp.name))
+      return (boundNames) => {
+        return         expFreeNames(exp.body)(setAdd(boundNames, exp.name))
+      }
+
     }
 
     case "Apply": {
@@ -54,6 +60,7 @@ export function expFreeNames(exp: Exp): Effect {
             )
             .flatMap((names) => names),
         )
+
         return {
           boundNames,
           freeNames: setUnion(
@@ -75,7 +82,8 @@ export function expFreeNames(exp: Exp): Effect {
           freeNames = setUnion(freeNames, result.freeNames)
         }
 
-        return { boundNames, freeNames }
+        return {
+          boundNames, freeNames }
       }
     }
 
@@ -115,7 +123,8 @@ export function expFreeNames(exp: Exp): Effect {
 
     case "Quote": {
       return (boundNames) => {
-        return { boundNames, freeNames: new Set() }
+        return {
+          boundNames, freeNames: new Set() }
       }
     }
 
