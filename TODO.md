@@ -1,5 +1,3 @@
-`let` test -- use `assert` as `Exp` -- instead of `Stmt`
-
 fix `expFreeNames` for `Assign` in `body`
 
 # conditional

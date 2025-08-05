@@ -7,3 +7,10 @@
          (y 1))
      (iadd x y))
    2))
+
+(let ((x 1)
+      (y 1))
+  (assert
+    (equal?
+     (iadd x y)
+     2)))
