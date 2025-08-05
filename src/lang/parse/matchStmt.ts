@@ -1,14 +1,15 @@
 import * as X from "@xieyuheng/x-data.js"
 import * as Exps from "../exp/index.ts"
+import { type Exp } from "../exp/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { matchExp } from "./matchExp.ts"
 
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
-    "`(define ,(cons name args) ,exp)",
-    ({ name, args, exp }, { span }) => {
-      let result = matchExp(exp)
+    "(cons* 'define (cons name args) body)",
+    ({ name, args, body }, { span }) => {
+      let result: Exp = Exps.Begin(X.dataToArray(body).map(matchExp), { span })
       for (const argName of X.dataToArray(args).map(X.symbolToString)) {
         result = Exps.Lambda(argName, result, { span })
       }

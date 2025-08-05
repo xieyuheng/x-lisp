@@ -1,6 +1,4 @@
-`Let` -- support "multi exp body" by `begin`
-`LetStar`
-
+`matchExp` -- `Let` -- support "multi exp body" by `begin`
 `let` test -- use `assert` as `Exp` -- instead of `Stmt`
 
 fix `expFreeNames` for `Assign` in `body`
@@ -38,3 +36,7 @@ data constructor predicate
 # equal
 
 [maybe] `equal/` -- `equal` handle `CurriedLambda`
+
+# maybe
+
+`LetStar`
