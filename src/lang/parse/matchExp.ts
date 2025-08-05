@@ -4,8 +4,8 @@ import * as Exps from "../exp/index.ts"
 import { bindsFromArray, type Bind, type Exp } from "../exp/index.ts"
 
 const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
-  X.matcher("`(lambda ,names ,exp)", ({ names, exp }, { span }) => {
-    let result: Exp = matchExp(exp)
+  X.matcher("(cons* 'lambda names body)", ({ names, body }, { span }) => {
+    let result: Exp = Exps.Begin(X.dataToArray(body).map(matchExp), { span })
     for (const name of X.dataToArray(names).map(X.symbolToString)) {
       result = Exps.Lambda(name, result, { span })
     }

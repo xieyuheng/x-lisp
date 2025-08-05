@@ -1,0 +1,4 @@
+[load] I find undefined name: y
+  defining: assert-one
+  to: : (lambda (x) (begin (= y 1) (assert (equal? y 1))))
+
