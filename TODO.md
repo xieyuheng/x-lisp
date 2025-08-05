@@ -1,8 +1,8 @@
 # conditional
 
-test `if`
 `Exp` -- `And` -- lazy
 `Exp` -- `Or` -- lazy
+`Exp` -- `Not` -- no need to be lazy
 
 `Exp` -- `Cond`
 
