@@ -1,22 +1,26 @@
 # conditional
 
-`Exp` -- `Cond` -- cond line, question, answer, else line
+`Exp` -- `Cond` -- `expFreeNames`
+`Exp` -- `Cond` -- `formatExp`
+`Exp` -- `Cond` -- `evaluate`
+parse `(cond)`
+test `(cond)`
 
 # list processing
 
-list-length
-list-append
-list-of
+`list-length`
+`list-append`
+`list-of`
 
 # record processing
 
-record-length
-record-update
-record-of
+`record-length`
+`record-update`
+`record-of`
 
 # tael
 
-combine
+`combine`
 
 # define-data
 
@@ -26,12 +30,15 @@ data constructor predicate
 
 # examples
 
-find some examples to test the language
+examples without `(match)` -- just use `(cond)`
 
-# equal
+# match
 
-[maybe] `equal/` -- `equal` handle `CurriedLambda`
+# examples
+
+examples with `(match)`
 
 # maybe
 
-`LetStar`
+[maybe] `equal` handle `CurriedLambda`
+[maybe] support `LetStar`
