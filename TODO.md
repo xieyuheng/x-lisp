@@ -1,4 +1,4 @@
-fix `expFreeNames` for `Assign` in `body`
+refactor `expFreeNames`
 
 # conditional
 

@@ -62,18 +62,25 @@ export function expFreeNames(exp: Exp): Effect {
 
     case "Begin": {
       return (boundNames) => {
-        return {
-          boundNames,
-          freeNames: setUnionMany(
-            exp.sequence.map((e) => expFreeNames(e)(boundNames).freeNames),
-          ),
+        let freeNames = new Set<string>()
+        for (const e of exp.sequence) {
+          const result = expFreeNames(e)(boundNames)
+          boundNames = result.boundNames
+          freeNames = setUnion(freeNames, result.freeNames)
         }
+
+        return { boundNames, freeNames }
       }
     }
 
     case "Assign": {
-      // TODO
-      return expFreeNames(exp.rhs)
+      return (boundNames) => {
+        const rhs = expFreeNames(exp.rhs)(boundNames)
+        return {
+          boundNames: new Set([...rhs.boundNames, exp.name]),
+          freeNames: rhs.freeNames,
+        }
+      }
     }
 
     case "Assert": {
