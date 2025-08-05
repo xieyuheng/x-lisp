@@ -7,17 +7,14 @@ import { matchExp } from "./matchExp.ts"
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
     "`(define ,(cons name args) ,exp)",
-    ({ name, args, exp }, { span }) =>
-      Stmts.Define(
-        X.symbolToString(name),
-        X.dataToArray(args)
-          .map(X.symbolToString)
-          .reduceRight(
-            (fn, name) => Exps.Lambda(name, fn, { span }),
-            matchExp(exp),
-          ),
-        { span },
-      ),
+    ({ name, args, exp }, { span }) => {
+      let result = matchExp(exp)
+      for (const argName of X.dataToArray(args).map(X.symbolToString)) {
+        result = Exps.Lambda(argName, result, { span })
+      }
+
+      return Stmts.Define(X.symbolToString(name), result, { span })
+    },
   ),
 
   X.matcher("`(define ,name ,exp)", ({ name, exp }, { span }) =>

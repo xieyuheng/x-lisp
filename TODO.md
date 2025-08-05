@@ -1,5 +1,3 @@
-`matchStmt` quit using `reduceRight`
-
 `Lambda` -- support "multi exp body" by `begin`
 `Let` -- support "multi exp body" by `begin`
 `LetStar`
