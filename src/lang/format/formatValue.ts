@@ -48,5 +48,9 @@ export function formatValue(value: Value): string {
       const args = value.args.map(formatValue)
       return `(${value.primFn.name} ${args.join(" ")})`
     }
+
+    case "Void": {
+      return "#void"
+    }
   }
 }

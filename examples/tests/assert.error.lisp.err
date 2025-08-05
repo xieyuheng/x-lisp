@@ -6,7 +6,6 @@
  2|(assert (not #t))
  3|
 
-#f
 [assert] fail
   exp: (not #t)
 [source] examples/tests/assert.error.lisp:2:1
@@ -15,4 +14,3 @@
    ~~~~~~~~~~~~~~~~~ 
  3|
 
-#f

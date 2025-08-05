@@ -104,7 +104,7 @@ export function evaluate(exp: Exp): Effect {
           console.log(message)
         }
 
-        return [env, value]
+        return [env, Values.Void()]
       }
     }
 

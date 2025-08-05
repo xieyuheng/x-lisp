@@ -1,6 +1,3 @@
-`Void` as `Value` -- top level `Void` should not be printed.
-`Assert` return `Void`
-
 `Lambda` -- `body` should be `Array<Exp>` instead of `Exp`
 `Let` -- has `body` instead of `exp`
 `LetStar` --  has `body`

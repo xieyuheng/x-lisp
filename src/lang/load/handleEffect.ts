@@ -7,7 +7,10 @@ import type { Stmt } from "../stmt/index.ts"
 export async function handleEffect(mod: Mod, stmt: Stmt): Promise<void> {
   if (stmt.kind === "Compute") {
     const value = resultValue(evaluate(stmt.exp)(mod, emptyEnv()))
-    console.log(formatValue(value))
+    if (value.kind !== "Void") {
+      console.log(formatValue(value))
+    }
+
     return
   }
 }

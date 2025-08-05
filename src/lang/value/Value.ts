@@ -4,7 +4,7 @@ import { type Mod } from "../mod/index.ts"
 
 export type Attributes = Record<string, Value>
 
-export type Value = Atom | Tael | Lambda | Lazy | PrimFn | CurriedPrimFn
+export type Value = Atom | Tael | Lambda | Lazy | PrimFn | CurriedPrimFn | Void
 
 export type Atom = Bool | Symbol | String | Int | Float
 export type Bool = { kind: "Bool"; content: boolean }
@@ -49,6 +49,10 @@ export type CurriedPrimFn = {
   kind: "CurriedPrimFn"
   primFn: PrimFn
   args: Array<Value>
+}
+
+export type Void = {
+  kind: "Void"
 }
 
 export function Bool(content: boolean): Bool {
@@ -150,5 +154,11 @@ export function CurriedPrimFn(
     kind: "CurriedPrimFn",
     primFn,
     args,
+  }
+}
+
+export function Void(): Void {
+  return {
+    kind: "Void",
   }
 }
