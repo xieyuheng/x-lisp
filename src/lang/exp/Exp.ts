@@ -19,7 +19,7 @@ export type Exp =
   | If
   | And
   | Or
-  | Cond
+//  | Cond
 
 export type Atom = Bool | Symbol | String | Int | Float
 export type Bool = { kind: "Bool"; content: boolean; meta: Meta }
