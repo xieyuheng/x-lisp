@@ -1,6 +1,5 @@
 # conditional
 
-parse `if`
 test `if`
 `Exp` -- `And` -- lazy
 `Exp` -- `Or` -- lazy
