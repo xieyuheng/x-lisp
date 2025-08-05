@@ -63,7 +63,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "If": {
-      return `(if ${formatExp(exp.testExp)} ${formatExp(exp.thenExp)} ${formatExp(exp.elseExp)})`
+      return `(if ${formatExp(exp.condition)} ${formatExp(exp.consequent)} ${formatExp(exp.alternative)})`
     }
   }
 }

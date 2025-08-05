@@ -124,9 +124,9 @@ export function expFreeNames(exp: Exp): Effect {
         return {
           boundNames,
           freeNames: setUnionMany([
-            expFreeNames(exp.testExp)(boundNames).freeNames,
-            expFreeNames(exp.thenExp)(boundNames).freeNames,
-            expFreeNames(exp.elseExp)(boundNames).freeNames,
+            expFreeNames(exp.condition)(boundNames).freeNames,
+            expFreeNames(exp.consequent)(boundNames).freeNames,
+            expFreeNames(exp.alternative)(boundNames).freeNames,
           ]),
         }
       }

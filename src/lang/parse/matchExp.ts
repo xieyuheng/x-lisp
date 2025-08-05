@@ -25,8 +25,15 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     Exps.Quote(data, { span }),
   ),
 
-  X.matcher("`(if ,p ,t ,f)", ({ p, t, f }, { span }) =>
-    Exps.If(matchExp(p), matchExp(t), matchExp(f), { span }),
+  X.matcher(
+    "`(if ,condition ,consequent ,alternative)",
+    ({ condition, consequent, alternative }, { span }) =>
+      Exps.If(
+        matchExp(condition),
+        matchExp(consequent),
+        matchExp(alternative),
+        { span },
+      ),
   ),
 
   X.matcher("`(assert ,exp)", ({ exp }, { span }) =>

@@ -124,7 +124,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "If": {
       return (mod, env) => {
-        const test = resultValue(evaluate(exp.testExp)(mod, env))
+        const test = resultValue(evaluate(exp.condition)(mod, env))
         if (test.kind !== "Bool") {
           throw new Error(
             `[evaluate] The test part of a if must be bool\n` +
@@ -134,9 +134,9 @@ export function evaluate(exp: Exp): Effect {
         }
 
         if (test.content) {
-          return evaluate(exp.thenExp)(mod, env)
+          return evaluate(exp.consequent)(mod, env)
         } else {
-          return evaluate(exp.elseExp)(mod, env)
+          return evaluate(exp.alternative)(mod, env)
         }
       }
     }

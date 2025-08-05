@@ -4,7 +4,7 @@
 `Exp` -- `Or` -- lazy
 `Exp` -- `Not` -- no need to be lazy
 
-`Exp` -- `Cond`
+`Exp` -- `Cond` -- cond line, question, answer, else line
 
 # list processing
 
@@ -27,6 +27,10 @@ combine
 data predicate
 data constructor
 data constructor predicate
+
+# examples
+
+find some examples to test the language
 
 # equal
 

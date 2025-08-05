@@ -41,9 +41,9 @@ export type Tael = {
 export type Quote = { kind: "Quote"; data: Data; meta: Meta }
 export type If = {
   kind: "If"
-  testExp: Exp
-  thenExp: Exp
-  elseExp: Exp
+  condition: Exp
+  consequent: Exp
+  alternative: Exp
   meta: Meta
 }
 
@@ -136,12 +136,17 @@ export function Quote(data: Data, meta: Meta): Quote {
   return { kind: "Quote", data, meta }
 }
 
-export function If(testExp: Exp, thenExp: Exp, elseExp: Exp, meta: Meta): If {
+export function If(
+  condition: Exp,
+  consequent: Exp,
+  alternative: Exp,
+  meta: Meta,
+): If {
   return {
     kind: "If",
-    testExp,
-    thenExp,
-    elseExp,
+    condition,
+    consequent,
+    alternative,
     meta,
   }
 }
