@@ -9,8 +9,8 @@ import { modGetValue, modReportSource, type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 
-export type Result = [Env, Value]
-export type Effect = (mod: Mod, env: Env) => Result
+type Result = [Env, Value]
+type Effect = (mod: Mod, env: Env) => Result
 
 export function resultValue(result: Result): Value {
   const [_, value] = result
