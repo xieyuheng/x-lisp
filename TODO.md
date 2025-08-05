@@ -1,11 +1,3 @@
-# conditional
-
-`Exp` -- `Cond` -- `expFreeNames`
-`Exp` -- `Cond` -- `formatExp`
-`Exp` -- `Cond` -- `evaluate`
-parse `(cond)`
-test `(cond)`
-
 # list processing
 
 `list-length`
@@ -21,6 +13,15 @@ test `(cond)`
 # tael
 
 `combine`
+
+# conditional
+
+`Exp` -- `Cond` -- `expFreeNames`
+`Exp` -- `Cond` -- `formatExp`
+`Exp` -- `Cond` -- `evaluate`
+
+parse `(cond)`
+test `(cond)`
 
 # define-data
 
