@@ -1,4 +1,3 @@
-`matchExp` -- `Let` -- support "multi exp body" by `begin`
 `let` test -- use `assert` as `Exp` -- instead of `Stmt`
 
 fix `expFreeNames` for `Assign` in `body`

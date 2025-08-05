@@ -13,10 +13,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return result
   }),
 
-  X.matcher("`(let ,binds ,body)", ({ binds, body }, { span }) =>
+  X.matcher("(cons* 'let binds body)", ({ binds, body }, { span }) =>
     Exps.Let(
       bindsFromArray(X.dataToArray(binds).map(matchBind)),
-      matchExp(body),
+      Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
       { span },
     ),
   ),
