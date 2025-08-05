@@ -46,12 +46,12 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   }),
 
   X.matcher("(cons target args)", ({ target, args }, { span }) => {
-    return X.dataToArray(args)
-      .map(matchExp)
-      .reduce(
-        (result, arg) => Exps.Apply(result, arg, { span }),
-        matchExp(target),
-      )
+    let result: Exp = matchExp(target)
+    for (const arg of X.dataToArray(args).map(matchExp)) {
+      result = Exps.Apply(result, arg, { span })
+    }
+
+    return result
   }),
 
   X.matcher("data", ({ data }, { span }) => {
