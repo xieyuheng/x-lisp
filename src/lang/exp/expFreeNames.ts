@@ -148,5 +148,27 @@ export function expFreeNames(exp: Exp): Effect {
         }
       }
     }
+
+    case "And": {
+      return (boundNames) => {
+        return {
+          boundNames,
+          freeNames: setUnionMany(
+            exp.exps.map((e) => expFreeNames(e)(boundNames).freeNames),
+          ),
+        }
+      }
+    }
+
+    case "Or": {
+      return (boundNames) => {
+        return {
+          boundNames,
+          freeNames: setUnionMany(
+            exp.exps.map((e) => expFreeNames(e)(boundNames).freeNames),
+          ),
+        }
+      }
+    }
   }
 }

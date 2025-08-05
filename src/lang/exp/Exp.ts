@@ -17,6 +17,8 @@ export type Exp =
   | Tael
   | Quote
   | If
+  | And
+  | Or
 
 export type Atom = Bool | Symbol | String | Int | Float
 export type Bool = { kind: "Bool"; content: boolean; meta: Meta }
@@ -46,6 +48,8 @@ export type If = {
   alternative: Exp
   meta: Meta
 }
+export type And = { kind: "And"; exps: Array<Exp>; meta: Meta }
+export type Or = { kind: "Or"; exps: Array<Exp>; meta: Meta }
 
 export function Bool(content: boolean, meta: Meta): Bool {
   return {
@@ -149,4 +153,12 @@ export function If(
     alternative,
     meta,
   }
+}
+
+export function And(exps: Array<Exp>, meta: Meta): And {
+  return { kind: "And", exps, meta }
+}
+
+export function Or(exps: Array<Exp>, meta: Meta): Or {
+  return { kind: "Or", exps, meta }
 }

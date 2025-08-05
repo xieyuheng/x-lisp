@@ -124,20 +124,62 @@ export function evaluate(exp: Exp): Effect {
 
     case "If": {
       return (mod, env) => {
-        const test = resultValue(evaluate(exp.condition)(mod, env))
-        if (test.kind !== "Bool") {
+        const condition = resultValue(evaluate(exp.condition)(mod, env))
+        if (condition.kind !== "Bool") {
           throw new Error(
-            `[evaluate] The test part of a if must be bool\n` +
-              `  value: ${formatValue(test)}\n` +
+            `[evaluate] The condition part of a (if) must be bool\n` +
+              `  condition: ${formatValue(condition)}\n` +
               `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
           )
         }
 
-        if (test.content) {
+        if (condition.content) {
           return evaluate(exp.consequent)(mod, env)
         } else {
           return evaluate(exp.alternative)(mod, env)
         }
+      }
+    }
+
+    case "And": {
+      return (mod, env) => {
+        for (const e of exp.exps) {
+          const value = resultValue(evaluate(e)(mod, env))
+          if (value.kind !== "Bool") {
+            throw new Error(
+              `[evaluate] The subexpressions of (and) must evaluate to bool\n` +
+                `  value: ${formatValue(value)}\n` +
+                `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+            )
+          }
+
+          if (value.content === false) {
+            return [env, Values.Bool(false)]
+          }
+        }
+
+        return [env, Values.Bool(true)]
+      }
+    }
+
+    case "Or": {
+      return (mod, env) => {
+        for (const e of exp.exps) {
+          const value = resultValue(evaluate(e)(mod, env))
+          if (value.kind !== "Bool") {
+            throw new Error(
+              `[evaluate] The subexpressions of (or) must evaluate to bool\n` +
+                `  value: ${formatValue(value)}\n` +
+                `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+            )
+          }
+
+          if (value.content === true) {
+            return [env, Values.Bool(true)]
+          }
+        }
+
+        return [env, Values.Bool(false)]
       }
     }
   }

@@ -65,6 +65,24 @@ export function formatExp(exp: Exp): string {
     case "If": {
       return `(if ${formatExp(exp.condition)} ${formatExp(exp.consequent)} ${formatExp(exp.alternative)})`
     }
+
+    case "And": {
+      const exps = exp.exps.map(formatExp)
+      if (exps.length === 0) {
+        return `(and)`
+      } else {
+        return `(and ${exps.join(" ")})`
+      }
+    }
+
+    case "Or": {
+      const exps = exp.exps.map(formatExp)
+      if (exps.length === 0) {
+        return `(or)`
+      } else {
+        return `(or ${exps.join(" ")})`
+      }
+    }
   }
 }
 
