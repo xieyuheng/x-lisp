@@ -4,14 +4,14 @@ import * as Exps from "../exp/index.ts"
 import { bindsFromArray, type Bind, type Exp } from "../exp/index.ts"
 
 const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
-  X.matcher("`(lambda ,names ,exp)", ({ names, exp }, { span }) =>
-    X.dataToArray(names)
-      .map(X.symbolToString)
-      .reduceRight(
-        (fn, name) => Exps.Lambda(name, fn, { span }),
-        matchExp(exp),
-      ),
-  ),
+  X.matcher("`(lambda ,names ,exp)", ({ names, exp }, { span }) => {
+    let result: Exp = matchExp(exp)
+    for (const name of X.dataToArray(names).map(X.symbolToString)) {
+      result = Exps.Lambda(name, result, { span })
+    }
+
+    return result
+  }),
 
   X.matcher("`(let ,binds ,body)", ({ binds, body }, { span }) =>
     Exps.Let(
