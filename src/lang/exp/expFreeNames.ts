@@ -3,68 +3,105 @@ import { bindsToArray } from "../exp/index.ts"
 import { isAtom } from "../value/index.ts"
 import { type Exp } from "./index.ts"
 
-export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
+type Effect = (boundNames: Set<string>) => {
+  boundNames: Set<string>
+  freeNames: Set<string>
+}
+
+export function expFreeNames(exp: Exp): Effect {
   if (isAtom(exp)) {
-    return new Set()
+    return (boundNames) => ({ boundNames, freeNames: new Set() })
   }
 
   switch (exp.kind) {
     case "Var": {
-      return boundNames.has(exp.name) ? new Set() : new Set([exp.name])
+      return (boundNames) => {
+        if (boundNames.has(exp.name)) {
+          return { boundNames, freeNames: new Set() }
+        } else {
+          return { boundNames, freeNames: new Set([exp.name]) }
+        }
+      }
     }
 
     case "Lambda": {
-      return expFreeNames(new Set([...boundNames, exp.name]), exp.body)
+      return (boundNames) =>
+        expFreeNames(exp.body)(new Set([...boundNames, exp.name]))
     }
 
     case "Apply": {
-      return new Set([
-        ...expFreeNames(boundNames, exp.target),
-        ...expFreeNames(boundNames, exp.arg),
-      ])
+      return (boundNames) => ({
+        boundNames,
+        freeNames: new Set([
+          ...expFreeNames(exp.target)(boundNames).freeNames,
+          ...expFreeNames(exp.arg)(boundNames).freeNames,
+        ]),
+      })
     }
 
     case "Let": {
-      // NOTE All binds in the binds are independent.
-      const binds = bindsToArray(exp.binds)
-      const bindsFreeNames = binds
-        .map((bind) => Array.from(expFreeNames(boundNames, bind.exp)))
-        .flatMap((names) => names)
-      return new Set([
-        ...bindsFreeNames,
-        ...expFreeNames(
-          new Set([...boundNames, ...binds.map((bind) => bind.name)]),
-          exp.body,
-        ),
-      ])
+      return (boundNames) => {
+        // NOTE All binds in the binds are independent.
+        const binds = bindsToArray(exp.binds)
+        const bindsFreeNames = binds
+          .map((bind) =>
+            Array.from(expFreeNames(bind.exp)(boundNames).freeNames),
+          )
+          .flatMap((names) => names)
+        return {
+          boundNames,
+          freeNames: new Set([
+            ...bindsFreeNames,
+            ...expFreeNames(exp.body)(
+              new Set([...boundNames, ...binds.map((bind) => bind.name)]),
+            ).freeNames,
+          ]),
+        }
+      }
     }
 
     case "Begin": {
-      return setUnionMany(exp.sequence.map((e) => expFreeNames(boundNames, e)))
+      return (boundNames) => {
+        return {
+          boundNames,
+          freeNames: setUnionMany(
+            exp.sequence.map((e) => expFreeNames(e)(boundNames).freeNames),
+          ),
+        }
+      }
     }
 
     case "Assign": {
       // TODO
-      return expFreeNames(boundNames, exp.rhs)
+      return expFreeNames(exp.rhs)
     }
 
     case "Assert": {
-      return expFreeNames(boundNames, exp.exp)
+      return expFreeNames(exp.exp)
     }
 
     case "Tael": {
-      return setUnion(
-        setUnionMany(
-          exp.elements.map((element) => expFreeNames(boundNames, element)),
-        ),
-        setUnionMany(
-          Object.values(exp.attributes).map((e) => expFreeNames(boundNames, e)),
-        ),
-      )
+      return (boundNames) => {
+        return {
+          boundNames,
+          freeNames: setUnion(
+            setUnionMany(
+              exp.elements.map(
+                (element) => expFreeNames(element)(boundNames).freeNames,
+              ),
+            ),
+            setUnionMany(
+              Object.values(exp.attributes).map(
+                (e) => expFreeNames(e)(boundNames).freeNames,
+              ),
+            ),
+          ),
+        }
+      }
     }
 
     case "Quote": {
-      return new Set()
+      return (boundNames) => ({ boundNames, freeNames: new Set() })
     }
   }
 }

@@ -54,7 +54,7 @@ async function run(mod: Mod): Promise<void> {
 function assertNoUndefinedName(mod: Mod, def: Def): void {
   if (def.value.kind === "Lazy") {
     const lazy = def.value
-    const freeNames = expFreeNames(new Set(), lazy.exp)
+    const { freeNames } = expFreeNames(lazy.exp)(new Set())
     for (const name of freeNames) {
       if (!modGet(mod, name)) {
         throw new Error(
