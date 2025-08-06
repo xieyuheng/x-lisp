@@ -56,5 +56,14 @@ export function formatValue(value: Value): string {
     case "DataConstructor": {
       return value.name
     }
+
+    case "Data": {
+      if (value.elements.length === 0) {
+        return value.constructor.name
+      } else {
+        const elements = value.elements.map(formatValue)
+        return `(${value.constructor.name} ${elements.join(" ")})`
+      }
+    }
   }
 }

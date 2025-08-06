@@ -39,3 +39,29 @@ export type DataConstructorPredicate = {
   spec: DataSpec
   constructor: DataConstructor
 }
+
+export function Data(
+  spec: DataSpec,
+  constructor: DataConstructor,
+  elements: Array<Value>,
+): Data {
+  return {
+    kind: "Data",
+    spec,
+    constructor,
+    elements,
+  }
+}
+
+export function DataConstructor(
+  spec: DataSpec,
+  name: string,
+  fields: Array<DataField>,
+): DataConstructor {
+  return {
+    kind: "DataConstructor",
+    spec,
+    name,
+    fields,
+  }
+}

@@ -2,7 +2,7 @@ import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Atom } from "./Atom.ts"
-import { type DataConstructor } from "./Data.ts"
+import { type Data, type DataConstructor } from "./Data.ts"
 
 export type Attributes = Record<string, Value>
 
@@ -15,6 +15,7 @@ export type Value =
   | CurriedPrimFn
   | Void
   | DataConstructor
+  | Data
 
 export type Tael = {
   kind: "Tael"
