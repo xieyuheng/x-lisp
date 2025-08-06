@@ -1,7 +1,3 @@
-# list processing
-
-`list-of`
-
 # record processing
 
 `record-length`

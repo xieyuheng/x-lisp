@@ -35,3 +35,8 @@
   (equal?
    (list-append [1 2 3] [4 5 6])
    [1 2 3 4 5 6]))
+
+(assert
+  (equal?
+   (list-of [1 2 3 :x 1 :y 2 :z 3])
+   [1 2 3]))
