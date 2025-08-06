@@ -6,4 +6,8 @@ export function aboutList(mod: Mod): void {
   definePrimFn(mod, "list-length", 1, (x) =>
     Values.Int(Values.asTael(x).elements.length),
   )
+
+  definePrimFn(mod, "list-append", 2, (x, y) =>
+    Values.List([...Values.asTael(x).elements, ...Values.asTael(y).elements]),
+  )
 }

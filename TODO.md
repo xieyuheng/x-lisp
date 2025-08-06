@@ -1,6 +1,5 @@
 # list processing
 
-`list-append`
 `list-of`
 
 # record processing
