@@ -52,5 +52,9 @@ export function formatValue(value: Value): string {
     case "Void": {
       return "#void"
     }
+
+    case "DataConstructor": {
+      return value.name
+    }
   }
 }

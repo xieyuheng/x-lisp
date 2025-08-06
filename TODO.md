@@ -1,7 +1,9 @@
+value/Atom.ts
+exp/Atom.ts
+
 # define-data
 
 `Data` as `Value`
-`DataConstructor` as `Value`
 `DataPredicate` as `Value`
 `DataConstructorPredicate` as `Value`
 

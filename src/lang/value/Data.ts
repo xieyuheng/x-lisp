@@ -1,16 +1,18 @@
 import { type Exp } from "../exp/index.ts"
+import { type Mod } from "../mod/index.ts"
 import { type Value } from "./Value.ts"
+
+export type DataSpec = {
+  mod: Mod
+  predicate: DataPredicate
+  constructors: Record<string, DataConstructor>
+}
 
 export type Data = {
   kind: "Data"
   spec: DataSpec
   constructor: DataConstructor
   elements: Array<Value>
-}
-
-export type DataSpec = {
-  predicate: DataPredicate
-  constructors: Record<string, DataConstructor>
 }
 
 export type DataPredicate = {

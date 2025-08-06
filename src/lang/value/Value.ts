@@ -1,10 +1,19 @@
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
+import { type DataConstructor } from "./Data.ts"
 
 export type Attributes = Record<string, Value>
 
-export type Value = Atom | Tael | Lambda | Lazy | PrimFn | CurriedPrimFn | Void
+export type Value =
+  | Atom
+  | Tael
+  | Lambda
+  | Lazy
+  | PrimFn
+  | CurriedPrimFn
+  | Void
+  | DataConstructor
 
 export type Atom = Bool | Symbol | String | Int | Float
 export type Bool = { kind: "Bool"; content: boolean }
