@@ -1,6 +1,4 @@
-import { type Span } from "@xieyuheng/x-data.js"
-
-type Meta = { span: Span }
+import { type Meta } from "../exp/index.ts"
 
 export type Atom = Bool | Symbol | String | Int | Float
 export type Bool = { kind: "Bool"; content: boolean; meta: Meta }
