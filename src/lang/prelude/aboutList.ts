@@ -8,8 +8,10 @@ export function aboutList(mod: Mod): void {
   )
 
   definePrimFn(mod, "list-append", 2, (x, y) =>
-    Values.Tael([...Values.asTael(x).elements, ...Values.asTael(y).elements],
-                Values.asTael(x).attributes),
+    Values.Tael(
+      [...Values.asTael(x).elements, ...Values.asTael(y).elements],
+      Values.asTael(x).attributes,
+    ),
   )
 
   definePrimFn(mod, "list-of", 1, (x) =>

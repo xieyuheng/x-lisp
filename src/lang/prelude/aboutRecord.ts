@@ -8,7 +8,7 @@ export function aboutRecord(mod: Mod): void {
   )
 
   definePrimFn(mod, "record-update", 2, (x, y) =>
-    Values.Record({
+    Values.Tael(Values.asTael(x).elements, {
       ...Values.asTael(x).attributes,
       ...Values.asTael(y).attributes,
     }),

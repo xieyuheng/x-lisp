@@ -1,5 +1,3 @@
-`record-update` -- should keep list part
-
 # conditional
 
 `Exp` -- `Cond` -- `expFreeNames`
