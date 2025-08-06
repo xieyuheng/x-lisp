@@ -1,5 +1,3 @@
-exp/Atom.ts
-
 # define-data
 
 `Data` as `Value`
