@@ -27,5 +27,12 @@
 (assert (equal? (list-append [1 2 3] [4 5 6])
                 [1 2 3 4 5 6]))
 
+(assert (equal? (list-append [1 2 3 :x 1 :y 2 :z 3] [4 5 6])
+                [1 2 3 4 5 6 :x 1 :y 2 :z 3]))
+
+;; the record part of the appended list are ignored:
+(assert (equal? (list-append [1 2 3 :x 1 :y 2 :z 3] [4 5 6 :x 0])
+                [1 2 3 4 5 6 :x 1 :y 2 :z 3]))
+
 (assert (equal? (list-of [1 2 3 :x 1 :y 2 :z 3])
                 [1 2 3]))
