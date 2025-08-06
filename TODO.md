@@ -1,7 +1,6 @@
 # conditional
 
 `Exp` -- `Cond` -- `expFreeNames`
-`Exp` -- `Cond` -- `formatExp`
 `Exp` -- `Cond` -- `evaluate`
 
 parse `(cond)`

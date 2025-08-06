@@ -19,7 +19,7 @@ export type Exp =
   | If
   | And
   | Or
-//  | Cond
+  | Cond
 
 export type Atom = Bool | Symbol | String | Int | Float
 export type Bool = { kind: "Bool"; content: boolean; meta: Meta }
@@ -54,7 +54,7 @@ export type Or = { kind: "Or"; exps: Array<Exp>; meta: Meta }
 export type Cond = {
   kind: "Cond"
   condLines: Array<CondLine>
-  elseAnswer: Exp
+  elseAnswer?: Exp
   meta: Meta
 }
 
@@ -175,15 +175,10 @@ export function Or(exps: Array<Exp>, meta: Meta): Or {
   return { kind: "Or", exps, meta }
 }
 
-export function Cond(
-  condLines: Array<CondLine>,
-  elseAnswer: Exp,
-  meta: Meta,
-): Cond {
+export function Cond(condLines: Array<CondLine>, meta: Meta): Cond {
   return {
     kind: "Cond",
     condLines,
-    elseAnswer,
     meta,
   }
 }
