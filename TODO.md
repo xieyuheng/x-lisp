@@ -1,4 +1,3 @@
-value/Atom.ts
 exp/Atom.ts
 
 # define-data

@@ -1,5 +1,5 @@
-import * as Values from "./Value.ts"
-import { type Atom, type Value } from "./Value.ts"
+import * as Values from "../value/index.ts"
+import { type Atom, type Value } from "../value/index.ts"
 
 export function isAtom(value: any): value is Atom {
   return (

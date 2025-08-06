@@ -1,3 +1,4 @@
+export * from "./Atom.ts"
 export * from "./atomUtils.ts"
 export * from "./Data.ts"
 export * from "./lambdaUtils.ts"
