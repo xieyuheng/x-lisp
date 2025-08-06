@@ -86,11 +86,7 @@ export function formatExp(exp: Exp): string {
 
     case "Cond": {
       const condLines = exp.condLines.map(formatCondLine)
-      if (exp.elseAnswer) {
-        return `(cond (${condLines.join(" ")} (else ${formatExp(exp.elseAnswer)})))`
-      } else {
-        return `(cond (${condLines.join(" ")}))`
-      }
+      return `(cond (${condLines.join(" ")}))`
     }
   }
 }

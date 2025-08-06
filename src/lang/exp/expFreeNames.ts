@@ -180,13 +180,6 @@ export function expFreeNames(exp: Exp): Effect {
           ),
         )
 
-        if (exp.elseAnswer) {
-          freeNames = setUnion(
-            freeNames,
-            expFreeNames(exp.elseAnswer)(boundNames).freeNames,
-          )
-        }
-
         return {
           boundNames,
           freeNames,

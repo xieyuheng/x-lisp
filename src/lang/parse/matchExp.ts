@@ -64,6 +64,11 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
   ),
 
+  X.matcher("(cons 'cond lines)", ({ lines }, { span }) => {
+    const condLines = X.dataToArray(lines).map(matchCondLine)
+    return Exps.Cond(condLines, { span })
+  }),
+
   X.matcher("(cons target args)", ({ target, args }, { span }) => {
     let result: Exp = matchExp(target)
     for (const arg of X.dataToArray(args).map(matchExp)) {
@@ -99,6 +104,25 @@ export function matchBind(data: X.Data): Bind {
       name: X.symbolToString(name),
       exp: matchExp(exp),
     })),
+    data,
+  )
+}
+
+export function matchCondLine(data: X.Data): Exps.CondLine {
+  return X.match(
+    X.matcher("`(,question ,answer)", ({ question, answer }, { span }) => {
+      if (question.kind === "Symbol" && question.content === "else") {
+        return {
+          question: Exps.Bool(true, { span }),
+          answer: matchExp(answer),
+        }
+      }
+
+      return {
+        question: matchExp(question),
+        answer: matchExp(answer),
+      }
+    }),
     data,
   )
 }

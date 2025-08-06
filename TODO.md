@@ -1,6 +1,5 @@
 # conditional
 
-parse `(cond)`
 test `(cond)`
 
 # define-data

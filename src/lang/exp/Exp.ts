@@ -54,7 +54,6 @@ export type Or = { kind: "Or"; exps: Array<Exp>; meta: Meta }
 export type Cond = {
   kind: "Cond"
   condLines: Array<CondLine>
-  elseAnswer?: Exp
   meta: Meta
 }
 
