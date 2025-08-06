@@ -1,6 +1,5 @@
 # list processing
 
-`list-length`
 `list-append`
 `list-of`
 
