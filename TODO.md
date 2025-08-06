@@ -1,3 +1,5 @@
+`Exps.Apply` -- take `args` instead of one `arg`
+
 # define-data
 
 `DataPredicate` as `Value`
