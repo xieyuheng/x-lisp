@@ -1,12 +1,8 @@
 # define-data
 
-`DataPredicate` as `Value`
-
-`DataSpec` -- setup
-
-`DataPredicate` link back to `DataSpec`
-
+`Data` as `Value`
 `DataConstructor` as `Value`
+`DataPredicate` as `Value`
 `DataConstructorPredicate` as `Value`
 
 `DefineData` as `Stmt`
