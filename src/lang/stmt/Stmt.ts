@@ -4,6 +4,7 @@ import { type Exp } from "../exp/index.ts"
 type Meta = { span: Span }
 
 export type Stmt = Compute | Define | Import
+// | DefineData
 
 export type Compute = {
   kind: "Compute"
@@ -28,6 +29,14 @@ export type Import = {
 export type ImportEntry = {
   name: string
   rename?: string
+  meta: Meta
+}
+
+export type DefineData = {
+  kind: "DefineData"
+  predicateName: string
+  predicateParameters: Array<string>
+  constructors: Array<{ name: string; fields: Array<[string, Exp]> }>
   meta: Meta
 }
 

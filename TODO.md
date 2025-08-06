@@ -1,8 +1,17 @@
 # define-data
 
-data predicate
-data constructor
-data constructor predicate
+`DataPredicate` as `Value`
+
+`DataSpec` -- setup
+
+`DataPredicate` link back to `DataSpec`
+
+`DataConstructor` as `Value`
+`DataConstructorPredicate` as `Value`
+
+`DefineData` as `Stmt`
+parse `(define-data)`
+`handleDefine` -- support `DefineData`
 
 # examples
 

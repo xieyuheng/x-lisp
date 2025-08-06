@@ -1,4 +1,5 @@
 export * from "./atomUtils.ts"
+export * from "./DefinedData.ts"
 export * from "./lambdaUtils.ts"
 export * from "./lazyUtils.ts"
 export * from "./taelUtils.ts"
