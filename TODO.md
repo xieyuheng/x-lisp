@@ -1,7 +1,5 @@
 # conditional
 
-`Exp` -- `Cond` -- `evaluate`
-
 parse `(cond)`
 test `(cond)`
 

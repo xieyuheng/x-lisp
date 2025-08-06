@@ -35,7 +35,7 @@ export function evaluate(exp: Exp): Effect {
 
         throw new Error(
           `[evaluate] I meet undefined name: ${exp.name}\n` +
-            `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+          `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
         )
       }
     }
@@ -128,8 +128,8 @@ export function evaluate(exp: Exp): Effect {
         if (condition.kind !== "Bool") {
           throw new Error(
             `[evaluate] The condition part of a (if) must be bool\n` +
-              `  condition: ${formatValue(condition)}\n` +
-              `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+            `  condition: ${formatValue(condition)}\n` +
+            `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
           )
         }
 
@@ -148,8 +148,8 @@ export function evaluate(exp: Exp): Effect {
           if (value.kind !== "Bool") {
             throw new Error(
               `[evaluate] The subexpressions of (and) must evaluate to bool\n` +
-                `  value: ${formatValue(value)}\n` +
-                `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+              `  value: ${formatValue(value)}\n` +
+              `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
             )
           }
 
@@ -169,8 +169,8 @@ export function evaluate(exp: Exp): Effect {
           if (value.kind !== "Bool") {
             throw new Error(
               `[evaluate] The subexpressions of (or) must evaluate to bool\n` +
-                `  value: ${formatValue(value)}\n` +
-                `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+              `  value: ${formatValue(value)}\n` +
+              `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
             )
           }
 
@@ -180,6 +180,34 @@ export function evaluate(exp: Exp): Effect {
         }
 
         return [env, Values.Bool(false)]
+      }
+    }
+
+    case "Cond": {
+      return (mod, env) => {
+        for (const condLine of exp.condLines) {
+          const value = resultValue(evaluate(condLine.question)(mod, env))
+          if (value.kind !== "Bool") {
+            throw new Error(
+              `[evaluate] The question part of a (cond) line must evaluate to bool\n` +
+              `  value: ${formatValue(value)}\n` +
+              `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+            )
+          }
+
+          if (value.content === true) {
+            return evaluate(condLine.answer)(mod, env)
+          }
+        }
+
+        if (exp.elseAnswer) {
+          return evaluate(exp.elseAnswer)(mod, env)
+        } else {
+          throw new Error(
+            `[evaluate] All questions of a (cond) failed\n` +
+            `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+          )
+        }
       }
     }
   }
@@ -214,7 +242,7 @@ export function apply(target: Value, arg: Value): Value {
 
   throw new Error(
     `[apply] I can not handle this kind of target\n` +
-      `  target: ${formatValue(target)}\n` +
-      `  arg: ${formatValue(arg)}\n`,
+    `  target: ${formatValue(target)}\n` +
+    `  arg: ${formatValue(arg)}\n`,
   )
 }
