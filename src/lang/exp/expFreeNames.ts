@@ -3,10 +3,8 @@ import { bindsToArray } from "../exp/index.ts"
 import { isAtom } from "../value/index.ts"
 import { type Exp } from "./index.ts"
 
-type Effect = (boundNames: Set<string>) => {
-  boundNames: Set<string>
-  freeNames: Set<string>
-}
+type Result = { boundNames: Set<string>; freeNames: Set<string> }
+type Effect = (boundNames: Set<string>) => Result
 
 export function expFreeNames(exp: Exp): Effect {
   if (isAtom(exp)) {
@@ -95,10 +93,10 @@ export function expFreeNames(exp: Exp): Effect {
 
     case "Assign": {
       return (boundNames) => {
-        const rhs = expFreeNames(exp.rhs)(boundNames)
+        const rhsResult = expFreeNames(exp.rhs)(boundNames)
         return {
-          boundNames: setAdd(rhs.boundNames, exp.name),
-          freeNames: rhs.freeNames,
+          boundNames: setAdd(rhsResult.boundNames, exp.name),
+          freeNames: rhsResult.freeNames,
         }
       }
     }
@@ -167,6 +165,31 @@ export function expFreeNames(exp: Exp): Effect {
           freeNames: setUnionMany(
             exp.exps.map((e) => expFreeNames(e)(boundNames).freeNames),
           ),
+        }
+      }
+    }
+
+    case "Cond": {
+      return (boundNames) => {
+        let freeNames = setUnionMany(
+          exp.condLines.map((condLine) =>
+            setUnion(
+              expFreeNames(condLine.question)(boundNames).freeNames,
+              expFreeNames(condLine.answer)(boundNames).freeNames,
+            ),
+          ),
+        )
+
+        if (exp.elseAnswer) {
+          freeNames = setUnion(
+            freeNames,
+            expFreeNames(exp.elseAnswer)(boundNames).freeNames,
+          )
+        }
+
+        return {
+          boundNames,
+          freeNames,
         }
       }
     }

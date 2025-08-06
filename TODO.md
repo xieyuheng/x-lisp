@@ -1,6 +1,5 @@
 # conditional
 
-`Exp` -- `Cond` -- `expFreeNames`
 `Exp` -- `Cond` -- `evaluate`
 
 parse `(cond)`
