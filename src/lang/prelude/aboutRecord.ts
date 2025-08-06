@@ -11,7 +11,7 @@ export function aboutRecord(mod: Mod): void {
   //   Values.List([...Values.asTael(x).elements, ...Values.asTael(y).elements]),
   //             )
 
-  // definePrimFn(mod, "list-of", 1, (x) =>
-  //   Values.List([...Values.asTael(x).elements]),
-  // )
+  definePrimFn(mod, "record-of", 1, (x) =>
+    Values.Record({...Values.asTael(x).attributes}),
+  )
 }

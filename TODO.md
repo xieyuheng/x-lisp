@@ -1,7 +1,6 @@
 # record processing
 
 `record-update`
-`record-of`
 
 # tael
 
