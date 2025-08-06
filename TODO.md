@@ -1,7 +1,3 @@
-# conditional
-
-test `(cond)`
-
 # define-data
 
 data predicate
