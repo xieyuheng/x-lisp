@@ -101,23 +101,10 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Tael": {
-      return (boundNames) => {
-        return {
-          boundNames,
-          freeNames: setUnion(
-            setUnionMany(
-              exp.elements.map(
-                (element) => expFreeNames(element)(boundNames).freeNames,
-              ),
-            ),
-            setUnionMany(
-              Object.values(exp.attributes).map(
-                (e) => expFreeNames(e)(boundNames).freeNames,
-              ),
-            ),
-          ),
-        }
-      }
+      return effectUnion(
+        effectUnionMany(exp.elements.map(expFreeNames)),
+        effectUnionMany(Object.values(exp.attributes).map(expFreeNames)),
+      )
     }
 
     case "Quote": {
@@ -130,56 +117,30 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "If": {
-      return (boundNames) => {
-        return {
-          boundNames,
-          freeNames: setUnionMany([
-            expFreeNames(exp.condition)(boundNames).freeNames,
-            expFreeNames(exp.consequent)(boundNames).freeNames,
-            expFreeNames(exp.alternative)(boundNames).freeNames,
-          ]),
-        }
-      }
+      return effectUnionMany([
+        expFreeNames(exp.condition),
+        expFreeNames(exp.consequent),
+        expFreeNames(exp.alternative),
+      ])
     }
 
     case "And": {
-      return (boundNames) => {
-        return {
-          boundNames,
-          freeNames: setUnionMany(
-            exp.exps.map((e) => expFreeNames(e)(boundNames).freeNames),
-          ),
-        }
-      }
+      return effectUnionMany(exp.exps.map(expFreeNames))
     }
 
     case "Or": {
-      return (boundNames) => {
-        return {
-          boundNames,
-          freeNames: setUnionMany(
-            exp.exps.map((e) => expFreeNames(e)(boundNames).freeNames),
-          ),
-        }
-      }
+      return effectUnionMany(exp.exps.map(expFreeNames))
     }
 
     case "Cond": {
-      return (boundNames) => {
-        let freeNames = setUnionMany(
-          exp.condLines.map((condLine) =>
-            setUnion(
-              expFreeNames(condLine.question)(boundNames).freeNames,
-              expFreeNames(condLine.answer)(boundNames).freeNames,
-            ),
+      return effectUnionMany(
+        exp.condLines.map((condLine) =>
+          effectUnion(
+            expFreeNames(condLine.question),
+            expFreeNames(condLine.answer),
           ),
-        )
-
-        return {
-          boundNames,
-          freeNames,
-        }
-      }
+        ),
+      )
     }
   }
 }

@@ -1,5 +1,3 @@
-`expFreeNames` -- use combinators
-
 # define-data
 
 `apply` -- handle `DataConstructor`
