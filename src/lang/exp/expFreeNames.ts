@@ -40,17 +40,10 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Apply": {
-      return (boundNames) => {
-        return {
-          boundNames,
-          freeNames: setUnion(
-            expFreeNames(exp.target)(boundNames).freeNames,
-            setUnionMany(
-              exp.args.map((e) => expFreeNames(e)(boundNames).freeNames),
-            ),
-          ),
-        }
-      }
+      return effectUnion(
+        expFreeNames(exp.target),
+        effectUnionMany(exp.args.map(expFreeNames)),
+      )
     }
 
     case "Let": {
@@ -189,4 +182,21 @@ export function expFreeNames(exp: Exp): Effect {
       }
     }
   }
+}
+
+// combinators
+
+function effectUnionMany(effects: Array<Effect>): Effect {
+  return (boundNames) => {
+    return {
+      boundNames,
+      freeNames: setUnionMany(
+        effects.map((effect) => effect(boundNames).freeNames),
+      ),
+    }
+  }
+}
+
+function effectUnion(lhs: Effect, rhs: Effect): Effect {
+  return effectUnionMany([lhs, rhs])
 }

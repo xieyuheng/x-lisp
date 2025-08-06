@@ -1,5 +1,8 @@
+`expFreeNames` -- use combinators
+
 # define-data
 
+`apply` -- handle `DataConstructor`
 `DataPredicate` as `Value`
 `DataConstructorPredicate` as `Value`
 
