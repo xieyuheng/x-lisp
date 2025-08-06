@@ -1,6 +1,5 @@
 # define-data
 
-`apply` -- handle `DataConstructor`
 `DataPredicate` as `Value`
 `DataConstructorPredicate` as `Value`
 

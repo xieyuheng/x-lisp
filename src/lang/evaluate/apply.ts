@@ -51,6 +51,18 @@ export function apply(target: Value, args: Array<Value>): Value {
     }
   }
 
+  if (target.kind === "DataConstructor") {
+    if (target.fields.length !== args.length) {
+      throw new Error(
+        `[apply] data constructor arity mismatch\n` +
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
+      )
+    }
+
+    return Values.Data(target, args)
+  }
+
   throw new Error(
     `[apply] I can not handle this kind of target\n` +
       `  target: ${formatValue(target)}\n` +

@@ -10,7 +10,6 @@ export type DataSpec = {
 
 export type Data = {
   kind: "Data"
-  spec: DataSpec
   constructor: DataConstructor
   elements: Array<Value>
 }
@@ -41,13 +40,11 @@ export type DataConstructorPredicate = {
 }
 
 export function Data(
-  spec: DataSpec,
   constructor: DataConstructor,
   elements: Array<Value>,
 ): Data {
   return {
     kind: "Data",
-    spec,
     constructor,
     elements,
   }
