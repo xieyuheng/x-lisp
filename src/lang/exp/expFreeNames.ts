@@ -198,5 +198,10 @@ function effectUnionMany(effects: Array<Effect>): Effect {
 }
 
 function effectUnion(lhs: Effect, rhs: Effect): Effect {
-  return effectUnionMany([lhs, rhs])
+  return (boundNames) => {
+    return {
+      boundNames,
+      freeNames: setUnion(lhs(boundNames).freeNames, rhs(boundNames).freeNames),
+    }
+  }
 }
