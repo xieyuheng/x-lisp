@@ -45,7 +45,9 @@ export function expFreeNames(exp: Exp): Effect {
           boundNames,
           freeNames: setUnion(
             expFreeNames(exp.target)(boundNames).freeNames,
-            expFreeNames(exp.arg)(boundNames).freeNames,
+            setUnionMany(
+              exp.args.map((e) => expFreeNames(e)(boundNames).freeNames),
+            ),
           ),
         }
       }

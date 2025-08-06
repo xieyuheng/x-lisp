@@ -48,8 +48,8 @@ export function evaluate(exp: Exp): Effect {
     case "Apply": {
       return (mod, env) => {
         const target = resultValue(evaluate(exp.target)(mod, env))
-        const arg = resultValue(evaluate(exp.arg)(mod, env))
-        return [env, apply(target, [arg])]
+        const args = exp.args.map((arg) => resultValue(evaluate(arg)(mod, env)))
+        return [env, apply(target, args)]
       }
     }
 

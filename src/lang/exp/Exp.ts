@@ -22,7 +22,7 @@ export type Exp =
 
 export type Var = { kind: "Var"; name: string; meta: Meta }
 export type Lambda = { kind: "Lambda"; name: string; body: Exp; meta: Meta }
-export type Apply = { kind: "Apply"; target: Exp; arg: Exp; meta: Meta }
+export type Apply = { kind: "Apply"; target: Exp; args: Array<Exp>; meta: Meta }
 export type Let = { kind: "Let"; binds: Binds; body: Exp; meta: Meta }
 export type Begin = { kind: "Begin"; sequence: Array<Exp>; meta: Meta }
 export type Assign = { kind: "Assign"; name: string; rhs: Exp; meta: Meta }
@@ -62,8 +62,8 @@ export function Lambda(name: string, body: Exp, meta: Meta): Lambda {
   return { kind: "Lambda", name, body, meta }
 }
 
-export function Apply(target: Exp, arg: Exp, meta: Meta): Apply {
-  return { kind: "Apply", target, arg, meta }
+export function Apply(target: Exp, args: Array<Exp>, meta: Meta): Apply {
+  return { kind: "Apply", target, args, meta }
 }
 
 export function Let(binds: Binds, body: Exp, meta: Meta): Let {

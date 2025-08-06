@@ -69,14 +69,9 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Cond(condLines, { span })
   }),
 
-  X.matcher("(cons target args)", ({ target, args }, { span }) => {
-    let result: Exp = matchExp(target)
-    for (const arg of X.dataToArray(args).map(matchExp)) {
-      result = Exps.Apply(result, arg, { span })
-    }
-
-    return result
-  }),
+  X.matcher("(cons target args)", ({ target, args }, { span }) =>
+    Exps.Apply(matchExp(target), X.dataToArray(args).map(matchExp), { span }),
+  ),
 
   X.matcher("data", ({ data }, { span }) => {
     switch (data.kind) {

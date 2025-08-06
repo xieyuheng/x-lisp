@@ -20,8 +20,13 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Apply": {
-      const { target, args } = formatApply(exp.target, [formatExp(exp.arg)])
-      return `(${target} ${args.join(" ")})`
+      const target = formatExp(exp.target)
+      const args = exp.args.map(formatExp)
+      if (args.length === 0) {
+        return `(${target})`
+      } else {
+        return `(${target} ${args.join(" ")})`
+      }
     }
 
     case "Let": {
@@ -103,17 +108,6 @@ function formatLambda(
     return formatLambda([...names, ret.name], ret.body)
   } else {
     return { names, ret: formatExp(ret) }
-  }
-}
-
-function formatApply(
-  target: Exp,
-  args: Array<string>,
-): { target: string; args: Array<string> } {
-  if (target.kind === "Apply") {
-    return formatApply(target.target, [formatExp(target.arg), ...args])
-  } else {
-    return { target: formatExp(target), args }
   }
 }
 
