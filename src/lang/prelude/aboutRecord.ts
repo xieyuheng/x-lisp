@@ -7,11 +7,14 @@ export function aboutRecord(mod: Mod): void {
     Values.Int(Object.keys(Values.asTael(x).attributes).length),
   )
 
-  // definePrimFn(mod, "list-append", 2, (x, y) =>
-  //   Values.List([...Values.asTael(x).elements, ...Values.asTael(y).elements]),
-  //             )
+  definePrimFn(mod, "record-update", 2, (x, y) =>
+    Values.Record({
+      ...Values.asTael(x).attributes,
+      ...Values.asTael(y).attributes,
+    }),
+  )
 
   definePrimFn(mod, "record-of", 1, (x) =>
-    Values.Record({...Values.asTael(x).attributes}),
+    Values.Record({ ...Values.asTael(x).attributes }),
   )
 }

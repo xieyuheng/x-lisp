@@ -1,7 +1,3 @@
-# record processing
-
-`record-update`
-
 # tael
 
 `combine`

@@ -12,5 +12,9 @@
 (assert (equal? (record-length [1 2 3 4 5 :x 1 :y 2 :z 3])
                 3))
 
+(assert (equal? (record-update [1 2 3 4 5 :x 1 :y 2 :z 0]
+                               [:x 1 :z 3])
+                [:x 1 :y 2 :z 3]))
+
 (assert (equal? (record-of [1 2 3 4 5 :x 1 :y 2 :z 3])
                 [:x 1 :y 2 :z 3]))
