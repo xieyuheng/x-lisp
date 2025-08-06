@@ -9,7 +9,7 @@ export function aboutList(mod: Mod): void {
 
   definePrimFn(mod, "list-append", 2, (x, y) =>
     Values.List([...Values.asTael(x).elements, ...Values.asTael(y).elements]),
-              )
+  )
 
   definePrimFn(mod, "list-of", 1, (x) =>
     Values.List([...Values.asTael(x).elements]),

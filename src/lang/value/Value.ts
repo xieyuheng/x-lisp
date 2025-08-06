@@ -102,7 +102,6 @@ export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
   }
 }
 
-
 export function Lambda(mod: Mod, env: Env, name: string, ret: Exp): Lambda {
   return {
     kind: "Lambda",

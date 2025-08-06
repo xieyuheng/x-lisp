@@ -1,6 +1,5 @@
 # record processing
 
-`record-length`
 `record-update`
 `record-of`
 

@@ -3,6 +3,7 @@ import { aboutBool } from "./aboutBool.ts"
 import { aboutFloat } from "./aboutFloat.ts"
 import { aboutInt } from "./aboutInt.ts"
 import { aboutList } from "./aboutList.ts"
+import { aboutRecord } from "./aboutRecord.ts"
 import { aboutString } from "./aboutString.ts"
 import { aboutSymbol } from "./aboutSymbol.ts"
 import { aboutValue } from "./aboutValue.ts"
@@ -21,6 +22,7 @@ export function usePreludeMod(): Mod {
   aboutString(mod)
   aboutValue(mod)
   aboutList(mod)
+  aboutRecord(mod)
 
   return mod
 }
