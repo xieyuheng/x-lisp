@@ -102,21 +102,6 @@ export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
   }
 }
 
-export function List(elements: Array<Value>): Tael {
-  return {
-    kind: "Tael",
-    elements,
-    attributes: {},
-  }
-}
-
-export function Record(attributes: Attributes): Tael {
-  return {
-    kind: "Tael",
-    elements: [],
-    attributes,
-  }
-}
 
 export function Lambda(mod: Mod, env: Env, name: string, ret: Exp): Lambda {
   return {
