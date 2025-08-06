@@ -49,7 +49,7 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const target = resultValue(evaluate(exp.target)(mod, env))
         const arg = resultValue(evaluate(exp.arg)(mod, env))
-        return [env, apply(target, arg)]
+        return [env, apply(target, [arg])]
       }
     }
 

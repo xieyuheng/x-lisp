@@ -4,36 +4,56 @@ import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
-export function apply(target: Value, arg: Value): Value {
+export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "Lazy") {
-    return apply(Values.lazyActive(target), arg)
+    return apply(Values.lazyActive(target), args)
   }
 
   if (target.kind === "Lambda") {
-    return resultValue(
-      evaluate(target.ret)(target.mod, envUpdate(target.env, target.name, arg)),
-    )
+    if (args.length === 0) {
+      throw new Error(
+        `[apply] Can not apply lambda to zero arguments\n` +
+          `  target: ${formatValue(target)}\n`,
+      )
+    }
+
+    const [firstArg, ...restArgs] = args
+    const nextEnv = envUpdate(target.env, target.name, firstArg)
+    const nextTarget = resultValue(evaluate(target.ret)(target.mod, nextEnv))
+    return apply(nextTarget, restArgs)
   }
 
   if (target.kind === "PrimFn") {
-    if (target.arity === 1) {
-      return target.fn(arg)
+    if (args.length === target.arity) {
+      return target.fn(...args)
+    } else if (args.length < target.arity) {
+      return Values.CurriedPrimFn(target, args)
     } else {
-      return Values.CurriedPrimFn(target, [arg])
+      throw new Error(
+        `[apply] Too many arguments\n` +
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
+      )
     }
   }
 
   if (target.kind === "CurriedPrimFn") {
-    if (target.args.length + 1 === target.primFn.arity) {
-      return target.primFn.fn(...target.args, arg)
+    if (target.args.length + args.length === target.primFn.arity) {
+      return target.primFn.fn(...target.args, ...args)
+    } else if (target.args.length + args.length < target.primFn.arity) {
+      return Values.CurriedPrimFn(target.primFn, [...target.args, ...args])
     } else {
-      return Values.CurriedPrimFn(target.primFn, [...target.args, arg])
+      throw new Error(
+        `[apply] Too many arguments\n` +
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
+      )
     }
   }
 
   throw new Error(
     `[apply] I can not handle this kind of target\n` +
       `  target: ${formatValue(target)}\n` +
-      `  arg: ${formatValue(arg)}\n`,
+      `  args: [${args.map(formatValue).join(" ")}]\n`,
   )
 }
