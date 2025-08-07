@@ -3,7 +3,7 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutInt(mod: Mod): void {
-  definePrimFn(mod, "int?", 1, (x) => Values.Bool(x.kind === "Int"))
+  definePrimFn(mod, "int?", 1, (x) => Values.Bool(Values.isInt(x)))
 
   definePrimFn(mod, "iadd", 2, (x, y) =>
     Values.Int(Values.asInt(x).content + Values.asInt(y).content),

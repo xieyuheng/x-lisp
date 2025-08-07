@@ -3,8 +3,8 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutSymbol(mod: Mod): void {
-  definePrimFn(mod, "symbol?", 1, (x) => Values.Bool(x.kind === "Symbol"))
-  
+  definePrimFn(mod, "symbol?", 1, (x) => Values.Bool(Values.isSymbol(x)))
+
   definePrimFn(mod, "symbol-length", 1, (x) =>
     Values.Int(Values.asSymbol(x).content.length),
   )
