@@ -17,6 +17,9 @@ nil
 (assert (my-list? int? nil))
 (assert (my-list? int? (li 1 (li 2 (li 3 nil)))))
 
+(assert (my-list? symbol? nil))
+(assert (not (my-list? symbol? (li 1 (li 2 (li 3 nil))))))
+
 (assert (not (my-list? int? 1)))
 (assert (not (my-list? int? 'a)))
 

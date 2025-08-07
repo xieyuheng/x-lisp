@@ -1,7 +1,6 @@
 [prelude] float?
 [prelude] bool?
 [prelude] string?
-[prelude] symbol?
 
 # module
 
