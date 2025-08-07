@@ -46,10 +46,6 @@ export function modGetValue(mod: Mod, name: string): Value | undefined {
   return def.value
 }
 
-export function modResolve(mod: Mod, href: string): URL {
-  return new URL(href, mod.url)
-}
-
 export function modOwnDefs(mod: Mod): Array<Def> {
   const ownDefs: Array<Def> = []
   for (const def of mod.defs.values()) {

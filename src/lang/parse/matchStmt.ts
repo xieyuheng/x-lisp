@@ -32,10 +32,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   ),
 
   X.matcher("`(require ,source)", ({ source }, { span }) =>
-    Stmts.Require(
-      X.dataToString(source),
-      { span },
-    ),
+    Stmts.Require(X.dataToString(source), { span }),
   ),
 
   X.matcher(

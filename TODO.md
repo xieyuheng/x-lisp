@@ -1,5 +1,3 @@
-refactor `handleImport`
-
 # examples
 
 my-list -- test data predicate a little
