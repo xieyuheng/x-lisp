@@ -29,17 +29,27 @@ export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
     define(mod, stmt.predicate.name, spec.predicate)
 
     for (const constructor of Object.values(spec.constructors)) {
-      if (constructor.fields.length === 0) {
-        define(mod, constructor.name, Values.Data(constructor, []))
-      } else {
-        define(mod, constructor.name, constructor)
-      }
+      define(
+        mod,
+        constructor.name,
+        constructor.fields.length === 0
+          ? Values.Data(constructor, [])
+          : constructor,
+      )
 
       define(
         mod,
         `${constructor.name}?`,
         Values.DataConstructorPredicate(constructor),
       )
+
+      for (const [index, field] of constructor.fields.entries()) {
+        define(
+          mod,
+          `${constructor.name}-${field.name}`,
+          Values.DataGetter(constructor, field.name, index),
+        )
+      }
     }
   }
 }

@@ -1,10 +1,10 @@
 # define-data
 
-`handleDefine` -- define `DataGetter`
 `equal` support new values about `Data`
 `apply` handle `DataConstructorPredicate`
 `apply` handle `DataPredicate`
 `apply` handle `DataGetter`
+test data
 
 # examples
 
