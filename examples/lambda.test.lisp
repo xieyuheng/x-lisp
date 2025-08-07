@@ -1,15 +1,4 @@
-(import "lambda.lisp"
-  var-exp
-  var-exp?
-  var-exp-name
-  apply-exp
-  apply-exp?
-  apply-exp-target
-  apply-exp-arg
-  lambda-exp
-  lambda-exp?
-  lambda-exp-bound-name
-  lambda-exp-body)
+(require "lambda.lisp")
 
 (var-exp "x")
 (apply-exp (var-exp "f") (var-exp "x"))

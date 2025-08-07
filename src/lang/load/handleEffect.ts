@@ -10,7 +10,5 @@ export async function handleEffect(mod: Mod, stmt: Stmt): Promise<void> {
     if (value.kind !== "Void") {
       console.log(formatValue(value))
     }
-
-    return
   }
 }

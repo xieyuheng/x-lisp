@@ -4,7 +4,7 @@ import { type DataField } from "../value/index.ts"
 
 type Meta = { span: Span }
 
-export type Stmt = Compute | Define | Import | DefineData
+export type Stmt = Compute | Define | Import | Require | DefineData
 
 export type Compute = {
   kind: "Compute"
@@ -23,6 +23,12 @@ export type Import = {
   kind: "Import"
   path: string
   entries: Array<ImportEntry>
+  meta: Meta
+}
+
+export type Require = {
+  kind: "Require"
+  path: string
   meta: Meta
 }
 
@@ -68,6 +74,14 @@ export function Import(
     kind: "Import",
     path,
     entries,
+    meta,
+  }
+}
+
+export function Require(path: string, meta: Meta): Require {
+  return {
+    kind: "Require",
+    path,
     meta,
   }
 }
