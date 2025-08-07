@@ -33,6 +33,12 @@ export type DataPredicate = {
   parameters: Array<string>
 }
 
+export type CurriedDataPredicate = {
+  kind: "CurriedDataPredicate"
+  predicate: DataPredicate
+  args: Array<Value>
+}
+
 export type DataConstructorPredicate = {
   kind: "DataConstructorPredicate"
   constructor: DataConstructor
@@ -79,6 +85,17 @@ export function DataPredicate(
     spec,
     name,
     parameters,
+  }
+}
+
+export function CurriedDataPredicate(
+  predicate: DataPredicate,
+  args: Array<Value>,
+): CurriedDataPredicate {
+  return {
+    kind: "CurriedDataPredicate",
+    predicate,
+    args,
   }
 }
 

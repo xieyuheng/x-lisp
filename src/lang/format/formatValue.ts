@@ -66,6 +66,11 @@ export function formatValue(value: Value): string {
       return value.name
     }
 
+    case "CurriedDataPredicate": {
+      const args = value.args.map(formatValue)
+      return `(${formatValue(value.predicate)} ${args.join(" ")})`
+    }
+
     case "DataConstructor": {
       return value.name
     }

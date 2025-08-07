@@ -3,6 +3,7 @@ import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Atom } from "./Atom.ts"
 import {
+  type CurriedDataPredicate,
   type Data,
   type DataConstructor,
   type DataConstructorPredicate,
@@ -22,6 +23,7 @@ export type Value =
   | Void
   | Data
   | DataPredicate
+  | CurriedDataPredicate
   | DataConstructor
   | DataConstructorPredicate
   | DataGetter
