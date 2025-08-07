@@ -23,14 +23,13 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     Stmts.Define(X.symbolToString(name), matchExp(exp), { span }),
   ),
 
-  X.matcher("(cons 'import body)", ({ body }, { span }) => {
-    const array = X.dataToArray(body)
-    const url = array[array.length - 1]
-    const entries = array.slice(0, array.length - 1)
-    return Stmts.Import(X.dataToString(url), entries.map(matchImportEntry), {
-      span,
-    })
-  }),
+  X.matcher("(cons* 'import source entries)", ({ source, entries }, { span }) =>
+    Stmts.Import(
+      X.dataToString(source),
+      X.dataToArray(entries).map(matchImportEntry),
+      { span },
+    ),
+  ),
 
   X.matcher(
     "(cons* 'define-data predicate constructors)",

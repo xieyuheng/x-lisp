@@ -1,4 +1,4 @@
-(import
+(import "lambda.lisp"
   var-exp
   var-exp?
   var-exp-name
@@ -9,8 +9,7 @@
   lambda-exp
   lambda-exp?
   lambda-exp-bound-name
-  lambda-exp-body
-  "lambda.lisp")
+  lambda-exp-body)
 
 (var-exp "x")
 (apply-exp (var-exp "f") (var-exp "x"))

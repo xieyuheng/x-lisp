@@ -1,12 +1,11 @@
-(import
+(import "my-list.lisp"
   my-list?
   nil
   nil?
   li
   li?
   li-head
-  li-tail
-  "my-list.lisp")
+  li-tail)
 
 nil
 (li 1 (li 2 (li 3 nil)))
