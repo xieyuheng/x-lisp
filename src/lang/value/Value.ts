@@ -6,6 +6,7 @@ import {
   type Data,
   type DataConstructor,
   type DataConstructorPredicate,
+  type DataPredicate,
 } from "./Data.ts"
 
 export type Attributes = Record<string, Value>
@@ -19,6 +20,7 @@ export type Value =
   | CurriedPrimFn
   | Void
   | Data
+  | DataPredicate
   | DataConstructor
   | DataConstructorPredicate
 

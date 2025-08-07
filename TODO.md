@@ -1,8 +1,7 @@
 # define-data
 
-`DataPredicate` as `Value`
 `handleDefine` -- define `DataPredicate`
-
+`apply` handle `DataConstructorPredicate`
 `equal` support new values about `Data`
 
 # examples

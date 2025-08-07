@@ -62,6 +62,10 @@ export function formatValue(value: Value): string {
       }
     }
 
+    case "DataPredicate": {
+      return value.name
+    }
+
     case "DataConstructor": {
       return value.name
     }
