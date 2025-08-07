@@ -110,6 +110,11 @@ export function apply(target: Value, args: Array<Value>): Value {
     return data.elements[target.fieldIndex]
   }
 
+  if (target.kind === "DataPredicate") {
+    // use CurriedDataPredicate
+    // TODO
+  }
+
   throw new Error(
     `[apply] I can not handle this kind of target\n` +
       `  target: ${formatValue(target)}\n` +

@@ -1,5 +1,6 @@
 # define-data
 
+`CurriedDataPredicate` as `Value`
 `apply` handle `DataPredicate`
 
 # module
