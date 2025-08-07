@@ -1,5 +1,6 @@
+import { define } from "../define/index.ts"
 import { emptyEnv } from "../env/index.ts"
-import { modGet, modSet, type Mod } from "../mod/index.ts"
+import { modGet, type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -9,11 +10,7 @@ export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
       throw new Error(`[handleDefine] I can not redefine name: ${stmt.name}\n`)
     }
 
-    modSet(mod, stmt.name, {
-      mod,
-      name: stmt.name,
-      value: Values.Lazy(mod, emptyEnv(), stmt.exp),
-    })
+    define(mod, stmt.name, Values.Lazy(mod, emptyEnv(), stmt.exp))
   }
 
   if (stmt.kind === "DefineData") {
@@ -31,17 +28,9 @@ export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
 
     for (const constructor of Object.values(spec.constructors)) {
       if (constructor.fields.length === 0) {
-        modSet(mod, constructor.name, {
-          mod,
-          name: constructor.name,
-          value: Values.Data(constructor, []),
-        })
+        define(mod, constructor.name, Values.Data(constructor, []))
       } else {
-        modSet(mod, constructor.name, {
-          mod,
-          name: constructor.name,
-          value: constructor,
-        })
+        define(mod, constructor.name, constructor)
       }
     }
   }
