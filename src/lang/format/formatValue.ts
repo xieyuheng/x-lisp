@@ -53,10 +53,6 @@ export function formatValue(value: Value): string {
       return "#void"
     }
 
-    case "DataConstructor": {
-      return value.name
-    }
-
     case "Data": {
       if (value.elements.length === 0) {
         return value.constructor.name
@@ -64,6 +60,14 @@ export function formatValue(value: Value): string {
         const elements = value.elements.map(formatValue)
         return `(${value.constructor.name} ${elements.join(" ")})`
       }
+    }
+
+    case "DataConstructor": {
+      return value.name
+    }
+
+    case "DataConstructorPredicate": {
+      return `${value.constructor.name}?`
     }
   }
 }

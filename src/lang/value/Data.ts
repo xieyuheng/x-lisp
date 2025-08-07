@@ -35,7 +35,6 @@ export type DataPredicate = {
 
 export type DataConstructorPredicate = {
   kind: "DataConstructorPredicate"
-  spec: DataSpec
   constructor: DataConstructor
 }
 
@@ -73,5 +72,14 @@ export function DataPredicate(
     spec,
     name,
     parameters,
+  }
+}
+
+export function DataConstructorPredicate(
+  constructor: DataConstructor,
+): DataConstructorPredicate {
+  return {
+    kind: "DataConstructorPredicate",
+    constructor,
   }
 }
