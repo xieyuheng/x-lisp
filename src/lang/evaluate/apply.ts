@@ -25,30 +25,32 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "PrimFn") {
-    if (args.length === target.arity) {
-      return target.fn(...args)
-    } else if (args.length < target.arity) {
-      return Values.CurriedPrimFn(target, args)
-    } else {
+    if (args.length > target.arity) {
       throw new Error(
         `[apply] Too many arguments\n` +
           `  target: ${formatValue(target)}\n` +
           `  args: [${args.map(formatValue).join(" ")}]\n`,
       )
+    } else
+
+    if (args.length === target.arity) {
+      return target.fn(...args)
+    } else {
+      return Values.CurriedPrimFn(target, args)
     }
   }
 
   if (target.kind === "CurriedPrimFn") {
-    if (target.args.length + args.length === target.primFn.arity) {
-      return target.primFn.fn(...target.args, ...args)
-    } else if (target.args.length + args.length < target.primFn.arity) {
-      return Values.CurriedPrimFn(target.primFn, [...target.args, ...args])
-    } else {
+    if (target.args.length + args.length > target.primFn.arity) {
       throw new Error(
         `[apply] Too many arguments\n` +
           `  target: ${formatValue(target)}\n` +
           `  args: [${args.map(formatValue).join(" ")}]\n`,
       )
+    } else if (target.args.length + args.length === target.primFn.arity) {
+      return target.primFn.fn(...target.args, ...args)
+    } else {
+      return Values.CurriedPrimFn(target.primFn, [...target.args, ...args])
     }
   }
 
@@ -111,6 +113,7 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "DataPredicate") {
+    // DataPredicate
     // use CurriedDataPredicate
     // TODO
   }

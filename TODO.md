@@ -18,7 +18,8 @@ lambda -- test by writing lambda calculus interpreter
 
 examples with `(match)`
 
-# maybe
+# later
 
-[maybe] `equal` handle `CurriedLambda`
-[maybe] support `LetStar`
+`equal` handle `CurriedLambda`
+`equal` handle `CurriedDataPredicate`
+support `LetStar`
