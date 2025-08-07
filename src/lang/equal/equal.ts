@@ -18,6 +18,36 @@ export function equal(lhs: Value, rhs: Value): boolean {
     return same(lhs.primFn, rhs.primFn) && equalValues(lhs.args, rhs.args)
   }
 
+  if (lhs.kind === "DataPredicate" && rhs.kind === "DataPredicate") {
+    return same(lhs, rhs)
+  }
+
+  if (lhs.kind === "DataConstructor" && rhs.kind === "DataConstructor") {
+    return same(lhs, rhs)
+  }
+
+  if (
+    lhs.kind === "DataConstructorPredicate" &&
+    rhs.kind === "DataConstructorPredicate"
+  ) {
+    return equal(lhs.constructor, rhs.constructor)
+  }
+
+  if (lhs.kind === "Data" && rhs.kind === "Data") {
+    return (
+      equal(lhs.constructor, rhs.constructor) &&
+      equalValues(lhs.elements, rhs.elements)
+    )
+  }
+
+  if (lhs.kind === "DataGetter" && rhs.kind === "DataGetter") {
+    return (
+      equal(lhs.constructor, rhs.constructor) &&
+      lhs.fieldName === rhs.fieldName &&
+      lhs.index === rhs.index
+    )
+  }
+
   return same(lhs, rhs)
 }
 
