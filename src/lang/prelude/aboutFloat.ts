@@ -1,6 +1,6 @@
+import { definePrimFn } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
-import { definePrimFn } from "./definePrimFn.ts"
 
 export function aboutFloat(mod: Mod): void {
   definePrimFn(mod, "fadd", 2, (x, y) =>

@@ -1,5 +1,7 @@
 # define-data
 
+rename `defineValue` to `define`
+
 `DataConstructorPredicate` as `Value`
 `handleDefine` -- define `DataConstructorPredicate`
 

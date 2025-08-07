@@ -1,6 +1,6 @@
+import { definePrimFn } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
-import { definePrimFn } from "./definePrimFn.ts"
 
 export function aboutInt(mod: Mod): void {
   definePrimFn(mod, "iadd", 2, (x, y) =>
