@@ -31,9 +31,7 @@ export function apply(target: Value, args: Array<Value>): Value {
           `  target: ${formatValue(target)}\n` +
           `  args: [${args.map(formatValue).join(" ")}]\n`,
       )
-    } else
-
-    if (args.length === target.arity) {
+    } else if (args.length === target.arity) {
       return target.fn(...args)
     } else {
       return Values.CurriedPrimFn(target, args)
