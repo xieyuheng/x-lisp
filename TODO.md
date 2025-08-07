@@ -2,6 +2,11 @@
 
 `apply` handle `DataPredicate`
 
+# module
+
+`(import)` -- take path as the first argument, because we often import many names
+`(require)` -- to avoid importing too much
+
 # examples
 
 my-list -- test data predicate a little
