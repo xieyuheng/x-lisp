@@ -26,6 +26,8 @@ export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
       spec.constructors[name] = Values.DataConstructor(spec, name, fields)
     }
 
+    define(mod, stmt.predicate.name, spec.predicate)
+
     for (const constructor of Object.values(spec.constructors)) {
       if (constructor.fields.length === 0) {
         define(mod, constructor.name, Values.Data(constructor, []))
