@@ -1,7 +1,5 @@
 # define-data
 
-`handleDefine` -- define `DataConstructorPredicate`
-
 `DataPredicate` as `Value`
 `handleDefine` -- define `DataPredicate`
 

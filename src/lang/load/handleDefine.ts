@@ -32,6 +32,12 @@ export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
       } else {
         define(mod, constructor.name, constructor)
       }
+
+      define(
+        mod,
+        `${constructor.name}?`,
+        Values.DataConstructorPredicate(constructor),
+      )
     }
   }
 }
