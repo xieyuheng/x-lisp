@@ -1,10 +1,10 @@
 # define-data
 
-`apply` handle `DataConstructorPredicate`
-`apply` handle `DataPredicate`
 `apply` handle `DataGetter`
 
 test data
+
+`apply` handle `DataPredicate`
 
 # examples
 

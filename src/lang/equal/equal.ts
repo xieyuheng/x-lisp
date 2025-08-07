@@ -44,7 +44,7 @@ export function equal(lhs: Value, rhs: Value): boolean {
     return (
       equal(lhs.constructor, rhs.constructor) &&
       lhs.fieldName === rhs.fieldName &&
-      lhs.index === rhs.index
+      lhs.fieldIndex === rhs.fieldIndex
     )
   }
 

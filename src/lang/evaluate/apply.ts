@@ -1,4 +1,5 @@
 import { envUpdate } from "../env/index.ts"
+import { equal } from "../equal/index.ts"
 import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
@@ -61,6 +62,21 @@ export function apply(target: Value, args: Array<Value>): Value {
     }
 
     return Values.Data(target, args)
+  }
+
+  if (target.kind === "DataConstructorPredicate") {
+    if (args.length !== 1) {
+      throw new Error(
+        `[apply] data constructor predicate can only take one argument\n` +
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
+      )
+    }
+
+    const data = args[0]
+    return Values.Bool(
+      data.kind === "Data" && equal(target.constructor, data.constructor),
+    )
   }
 
   throw new Error(
