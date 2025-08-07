@@ -1,13 +1,17 @@
 # examples
 
-lambda -- test by writing lambda calculus interpreter
+lambda -- parse sexp
+lambda -- read sexp from file
 
 # predicate
 
 `aboutPredicate` -- `neg` as predicate combinators
+`Exp` -- `conj` and `disj` -- predicate combinators
+`Exp` -- `union` and `inter` -- predicate combinators
 
-`Exp` -- `conj` and `disj`
-`Exp` -- `union` and `inter`
+# claim
+
+`(claim)`
 
 # match
 
