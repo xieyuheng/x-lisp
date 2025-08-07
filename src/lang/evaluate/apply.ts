@@ -74,9 +74,40 @@ export function apply(target: Value, args: Array<Value>): Value {
     }
 
     const data = args[0]
+
     return Values.Bool(
       data.kind === "Data" && equal(target.constructor, data.constructor),
     )
+  }
+
+  if (target.kind === "DataGetter") {
+    if (args.length !== 1) {
+      throw new Error(
+        `[apply] data getter can only take one argument\n` +
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
+      )
+    }
+
+    const data = args[0]
+
+    if (data.kind !== "Data") {
+      throw new Error(
+        `[apply] data getter can only take data as argument\n` +
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
+      )
+    }
+
+    if (!equal(data.constructor, target.constructor)) {
+      throw new Error(
+        `[apply] data getter constructor mismatch\n` +
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
+      )
+    }
+
+    return data.elements[target.fieldIndex]
   }
 
   throw new Error(

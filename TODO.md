@@ -1,7 +1,5 @@
 # define-data
 
-`apply` handle `DataGetter`
-
 test data
 
 `apply` handle `DataPredicate`
