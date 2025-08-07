@@ -9,10 +9,11 @@ export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
       throw new Error(`[handleDefine] I can not redefine name: ${stmt.name}\n`)
     }
 
-    const { name, exp } = stmt
-    const value = Values.Lazy(mod, emptyEnv(), exp)
-    modSet(mod, name, { mod, name, value })
-    return
+    modSet(mod, stmt.name, {
+      mod,
+      name: stmt.name,
+      value: Values.Lazy(mod, emptyEnv(), stmt.exp),
+    })
   }
 
   if (stmt.kind === "DefineData") {
@@ -26,6 +27,14 @@ export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
 
     for (const { name, fields } of stmt.constructors) {
       spec.constructors[name] = Values.DataConstructor(spec, name, fields)
+    }
+
+    for (const constructor of Object.values(spec.constructors)) {
+      modSet(mod, constructor.name, {
+        mod,
+        name: constructor.name,
+        value: constructor,
+      })
     }
   }
 }

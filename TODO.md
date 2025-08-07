@@ -1,6 +1,5 @@
 # define-data
 
-`handleDefine` -- define `DataConstructor`
 test `DataConstructor`
 
 `DataPredicate` as `Value`
