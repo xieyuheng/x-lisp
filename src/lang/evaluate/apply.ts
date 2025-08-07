@@ -25,17 +25,7 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "PrimFn") {
-    if (args.length > target.arity) {
-      throw new Error(
-        `[apply] Too many arguments\n` +
-          `  target: ${formatValue(target)}\n` +
-          `  args: [${args.map(formatValue).join(" ")}]\n`,
-      )
-    } else if (args.length === target.arity) {
-      return target.fn(...args)
-    } else {
-      return Values.CurriedPrimFn(target, args)
-    }
+    return apply(Values.CurriedPrimFn(target, []), args)
   }
 
   if (target.kind === "CurriedPrimFn") {
@@ -111,8 +101,10 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "DataPredicate") {
-    // DataPredicate
-    // use CurriedDataPredicate
+    return apply(Values.CurriedDataPredicate(target, []), args)
+  }
+
+  if (target.kind === "CurriedDataPredicate") {
     // TODO
   }
 
