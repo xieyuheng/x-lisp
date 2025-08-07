@@ -1,12 +1,10 @@
 # define-data
 
-`handleDefine` -- define `Data` for constructors with no arguments
+`DataConstructorPredicate` as `Value`
+`handleDefine` -- define `DataConstructorPredicate`
 
 `DataPredicate` as `Value`
-`DataConstructorPredicate` as `Value`
-
 `handleDefine` -- define `DataPredicate`
-`handleDefine` -- define `DataConstructorPredicate`
 
 `equal` support new values about `Data`
 

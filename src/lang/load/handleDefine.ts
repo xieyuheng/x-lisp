@@ -30,11 +30,19 @@ export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
     }
 
     for (const constructor of Object.values(spec.constructors)) {
-      modSet(mod, constructor.name, {
-        mod,
-        name: constructor.name,
-        value: constructor,
-      })
+      if (constructor.fields.length === 0) {
+        modSet(mod, constructor.name, {
+          mod,
+          name: constructor.name,
+          value: Values.Data(constructor, []),
+        })
+      } else {
+        modSet(mod, constructor.name, {
+          mod,
+          name: constructor.name,
+          value: constructor,
+        })
+      }
     }
   }
 }
