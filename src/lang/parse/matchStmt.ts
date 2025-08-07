@@ -72,7 +72,7 @@ function matchImportEntry(data: X.Data): Stmts.ImportEntry {
 function matchDataPredicate(data: X.Data): Stmts.DataPredicateSpec {
   return X.match(
     X.matcherChoice([
-      X.matcher("`(,name ,parameters)", ({ name, parameters }, { span }) => ({
+      X.matcher("(cons name parameters)", ({ name, parameters }, { span }) => ({
         name: X.symbolToString(name),
         parameters: X.dataToArray(parameters).map(X.symbolToString),
       })),
@@ -89,7 +89,7 @@ function matchDataPredicate(data: X.Data): Stmts.DataPredicateSpec {
 function matchDataConstructor(data: X.Data): Stmts.DataConstructorSpec {
   return X.match(
     X.matcherChoice([
-      X.matcher("`(,name ,fields)", ({ name, fields }, { span }) => ({
+      X.matcher("(cons name fields)", ({ name, fields }, { span }) => ({
         name: X.symbolToString(name),
         fields: X.dataToArray(fields).map(matchDataField),
       })),
