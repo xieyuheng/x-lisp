@@ -1,12 +1,11 @@
 # define-data
 
-test data
-
 `apply` handle `DataPredicate`
 
 # examples
 
-examples without `(match)` -- just use `(cond)`
+my-list -- test data predicate a little
+lambda -- test by writing lambda calculus interpreter
 
 # match
 
