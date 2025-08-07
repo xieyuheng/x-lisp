@@ -6,6 +6,14 @@ nil
 (assert (nil? nil))
 (assert (li? (li 1 (li 2 (li 3 nil)))))
 
+(assert (equal? (length nil) 0))
+(assert (equal? (length (li 1 (li 2 (li 3 nil)))) 3))
+
+(assert (equal? (append nil nil) nil))
+(assert (equal? (append (li 1 (li 2 (li 3 nil)))
+                        (li 4 (li 5 (li 6 nil))))
+                (li 1 (li 2 (li 3 (li 4 (li 5 (li 6 nil))))))))
+
 (assert (my-list? int? nil))
 (assert (my-list? int? (li 1 (li 2 (li 3 nil)))))
 

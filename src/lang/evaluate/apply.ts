@@ -22,7 +22,11 @@ export function apply(target: Value, args: Array<Value>): Value {
     const [firstArg, ...restArgs] = args
     const nextEnv = envUpdate(target.env, target.name, firstArg)
     const nextTarget = resultValue(evaluate(target.ret)(target.mod, nextEnv))
-    return apply(nextTarget, restArgs)
+    if (restArgs.length === 0) {
+      return nextTarget
+    } else {
+      return apply(nextTarget, restArgs)
+    }
   }
 
   if (target.kind === "PrimFn") {

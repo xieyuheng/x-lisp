@@ -11,7 +11,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     "(cons* 'define (cons name args) body)",
     ({ name, args, body }, { span }) => {
       let result: Exp = Exps.Begin(X.dataToArray(body).map(matchExp), { span })
-      for (const argName of X.dataToArray(args).map(X.symbolToString)) {
+      for (const argName of X.dataToArray(args).toReversed().map(X.symbolToString)) {
         result = Exps.Lambda(argName, result, { span })
       }
 

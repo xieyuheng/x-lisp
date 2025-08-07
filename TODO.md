@@ -1,6 +1,5 @@
 # examples
 
-my-list -- test data predicate a little
 lambda -- test by writing lambda calculus interpreter
 
 # predicate

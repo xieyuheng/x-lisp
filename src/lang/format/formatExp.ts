@@ -91,7 +91,7 @@ export function formatExp(exp: Exp): string {
 
     case "Cond": {
       const condLines = exp.condLines.map(formatCondLine)
-      return `(cond (${condLines.join(" ")}))`
+      return `(cond ${condLines.join(" ")})`
     }
   }
 }
