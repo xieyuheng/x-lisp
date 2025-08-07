@@ -4,6 +4,7 @@ import { type Exp } from "../exp/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { matchExp } from "./matchExp.ts"
+import type { DataField } from "../value/Data.ts"
 
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
@@ -31,6 +32,16 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     })
   }),
 
+  X.matcher(
+    "(cons* 'define-data predicate constructors)",
+    ({ predicate, constructors }, { span }) =>
+      Stmts.DefineData(
+        matchDataPredicate(predicate),
+        X.dataToArray(constructors).map(matchDataConstructor),
+        { span },
+      ),
+  ),
+
   X.matcher("exp", ({ exp }, { span }) =>
     Stmts.Compute(matchExp(exp), { span }),
   ),
@@ -52,6 +63,52 @@ function matchImportEntry(data: X.Data): Stmts.ImportEntry {
       X.matcher("name", ({ name }, { span }) => ({
         name: X.symbolToString(name),
         meta: { span },
+      })),
+    ]),
+    data,
+  )
+}
+
+function matchDataPredicate(data: X.Data): Stmts.DataPredicateSpec {
+  return X.match(
+    X.matcherChoice([
+      X.matcher("`(,name ,parameters)", ({ name, parameters }, { span }) => ({
+        name: X.symbolToString(name),
+        parameters: X.dataToArray(parameters).map(X.symbolToString),
+      })),
+
+      X.matcher("name", ({ name }, { span }) => ({
+        name: X.symbolToString(name),
+        parameters: [],
+      })),
+    ]),
+    data,
+  )
+}
+
+function matchDataConstructor(data: X.Data): Stmts.DataConstructorSpec {
+  return X.match(
+    X.matcherChoice([
+      X.matcher("`(,name ,fields)", ({ name, fields }, { span }) => ({
+        name: X.symbolToString(name),
+        fields: X.dataToArray(fields).map(matchDataField),
+      })),
+
+      X.matcher("name", ({ name }, { span }) => ({
+        name: X.symbolToString(name),
+        fields: [],
+      })),
+    ]),
+    data,
+  )
+}
+
+function matchDataField(data: X.Data): DataField {
+  return X.match(
+    X.matcherChoice([
+      X.matcher("`(,name ,exp)", ({ name, exp }, { span }) => ({
+        name: X.symbolToString(name),
+        predicate: matchExp(exp)
       })),
     ]),
     data,

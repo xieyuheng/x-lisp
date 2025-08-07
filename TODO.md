@@ -1,6 +1,5 @@
 # define-data
 
-parse `(define-data)`
 `handleDefine` -- support `DefineData`
 
 `DataPredicate` as `Value`

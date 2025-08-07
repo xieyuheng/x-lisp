@@ -30,7 +30,7 @@ export type DataPredicate = {
   kind: "DataPredicate"
   spec: DataSpec
   name: string
-  paramaters: Array<string>
+  parameters: Array<string>
 }
 
 export type DataConstructorPredicate = {

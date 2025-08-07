@@ -34,11 +34,13 @@ export type ImportEntry = {
 
 export type DefineData = {
   kind: "DefineData"
-  predicateName: string
-  predicateParameters: Array<string>
-  constructors: Array<{ name: string; fields: Array<DataField> }>
+  predicate: DataPredicateSpec
+  constructors: Array<DataConstructorSpec>
   meta: Meta
 }
+
+export type DataPredicateSpec = { name: string; parameters: Array<string> }
+export type DataConstructorSpec = { name: string; fields: Array<DataField> }
 
 export function Compute(exp: Exp, meta: Meta): Compute {
   return {
@@ -66,6 +68,19 @@ export function Import(
     kind: "Import",
     path,
     entries,
+    meta,
+  }
+}
+
+export function DefineData(
+  predicate: DataPredicateSpec,
+  constructors: Array<DataConstructorSpec>,
+  meta: Meta,
+): DefineData {
+  return {
+    kind: "DefineData",
+    predicate,
+    constructors,
     meta,
   }
 }
