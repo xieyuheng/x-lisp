@@ -9,20 +9,23 @@ export function equal(lhs: Value, rhs: Value): boolean {
 
   if (lhs.kind === "Tael" && rhs.kind === "Tael") {
     return (
-      lhs.elements.length === rhs.elements.length &&
-      arrayZip(lhs.elements, rhs.elements).every(([l, r]) => equal(l, r)) &&
+      equalValues(lhs.elements, rhs.elements) &&
       equalAttributes(lhs.attributes, rhs.attributes)
     )
   }
 
   if (lhs.kind === "CurriedPrimFn" && rhs.kind === "CurriedPrimFn") {
-    return (
-      same(lhs.primFn, rhs.primFn) &&
-      arrayZip(lhs.args, rhs.args).every(([l, r]) => equal(l, r))
-    )
+    return same(lhs.primFn, rhs.primFn) && equalValues(lhs.args, rhs.args)
   }
 
   return same(lhs, rhs)
+}
+
+function equalValues(lhs: Array<Value>, rhs: Array<Value>): boolean {
+  return (
+    lhs.length === rhs.length &&
+    arrayZip(lhs, rhs).every(([l, r]) => equal(l, r))
+  )
 }
 
 function equalAttributes(lhs: Attributes, rhs: Attributes): boolean {
