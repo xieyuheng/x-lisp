@@ -15,7 +15,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (args.length === 0) {
       throw new Error(
         `[apply] Can not apply lambda to zero arguments\n` +
-        `  target: ${formatValue(target)}\n`,
+          `  target: ${formatValue(target)}\n`,
       )
     }
 
@@ -33,8 +33,8 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (target.args.length + args.length > target.primFn.arity) {
       throw new Error(
         `[apply] Too many arguments\n` +
-        `  target: ${formatValue(target)}\n` +
-        `  args: [${args.map(formatValue).join(" ")}]\n`,
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
       )
     } else if (target.args.length + args.length === target.primFn.arity) {
       return target.primFn.fn(...target.args, ...args)
@@ -47,8 +47,8 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (target.fields.length !== args.length) {
       throw new Error(
         `[apply] data constructor arity mismatch\n` +
-        `  target: ${formatValue(target)}\n` +
-        `  args: [${args.map(formatValue).join(" ")}]\n`,
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
       )
     }
 
@@ -59,8 +59,8 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (args.length !== 1) {
       throw new Error(
         `[apply] data constructor predicate can only take one argument\n` +
-        `  target: ${formatValue(target)}\n` +
-        `  args: [${args.map(formatValue).join(" ")}]\n`,
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
       )
     }
 
@@ -75,8 +75,8 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (args.length !== 1) {
       throw new Error(
         `[apply] data getter can only take one argument\n` +
-        `  target: ${formatValue(target)}\n` +
-        `  args: [${args.map(formatValue).join(" ")}]\n`,
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
       )
     }
 
@@ -85,16 +85,16 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (data.kind !== "Data") {
       throw new Error(
         `[apply] data getter can only take data as argument\n` +
-        `  target: ${formatValue(target)}\n` +
-        `  args: [${args.map(formatValue).join(" ")}]\n`,
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
       )
     }
 
     if (!equal(data.constructor, target.constructor)) {
       throw new Error(
         `[apply] data getter constructor mismatch\n` +
-        `  target: ${formatValue(target)}\n` +
-        `  args: [${args.map(formatValue).join(" ")}]\n`,
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
       )
     }
 
@@ -110,8 +110,8 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (target.args.length + args.length > arity) {
       throw new Error(
         `[apply] Too many arguments\n` +
-        `  target: ${formatValue(target)}\n` +
-        `  args: [${args.map(formatValue).join(" ")}]\n`,
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
       )
     } else if (target.args.length + args.length === arity) {
       return applyDataPredicate(target.predicate, [...target.args, ...args])
@@ -125,8 +125,8 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   throw new Error(
     `[apply] I can not handle this kind of target\n` +
-    `  target: ${formatValue(target)}\n` +
-    `  args: [${args.map(formatValue).join(" ")}]\n`,
+      `  target: ${formatValue(target)}\n` +
+      `  args: [${args.map(formatValue).join(" ")}]\n`,
   )
 }
 
@@ -155,9 +155,9 @@ function applyDataPredicate(
     if (result.kind !== "Bool") {
       throw new Error(
         `[applyDataPredicate] I expect the result of a data field predicate to be bool\n` +
-        `  data field predicate: ${formatValue(target)}\n` +
-        `  data element: ${formatValue(element)}\n` +
-        `  result: ${formatValue(result)}\n`,
+          `  data field predicate: ${formatValue(target)}\n` +
+          `  data element: ${formatValue(element)}\n` +
+          `  result: ${formatValue(result)}\n`,
       )
     } else if (result.content === false) {
       return Values.Bool(false)

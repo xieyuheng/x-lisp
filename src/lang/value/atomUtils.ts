@@ -12,26 +12,24 @@ export function isAtom(value: any): value is Atom {
 }
 
 export function isBool(value: Value): value is Values.Bool {
-  return (value.kind === "Bool")
+  return value.kind === "Bool"
 }
 
 export function isSymbol(value: Value): value is Values.Symbol {
-return (value.kind === "Symbol")
+  return value.kind === "Symbol"
 }
 
 export function isString(value: Value): value is Values.String {
-return (value.kind === "String")
+  return value.kind === "String"
 }
 
 export function isInt(value: Value): value is Values.Int {
-return  (value.kind === "Int")
-
+  return value.kind === "Int"
 }
 
 export function isFloat(value: Value): value is Values.Float {
-  return (value.kind === "Float")
+  return value.kind === "Float"
 }
-
 
 export function asBool(value: Value): Values.Bool {
   if (isBool(value)) return value
