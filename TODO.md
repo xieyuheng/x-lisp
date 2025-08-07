@@ -1,3 +1,8 @@
+[prelude] float?
+[prelude] bool?
+[prelude] string?
+[prelude] symbol?
+
 # module
 
 `(import)` -- take path as the first argument, because we often import many names
