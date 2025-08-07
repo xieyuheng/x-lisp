@@ -14,4 +14,18 @@ export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
     modSet(mod, name, { mod, name, value })
     return
   }
+
+  if (stmt.kind === "DefineData") {
+    const spec = { mod, constructors: {} } as Values.DataSpec
+
+    spec.predicate = Values.DataPredicate(
+      spec,
+      stmt.predicate.name,
+      stmt.predicate.parameters,
+    )
+
+    for (const { name, fields } of stmt.constructors) {
+      spec.constructors[name] = Values.DataConstructor(spec, name, fields)
+    }
+  }
 }

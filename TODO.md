@@ -1,9 +1,13 @@
 # define-data
 
-`handleDefine` -- support `DefineData`
+`handleDefine` -- define `DataConstructor`
+test `DataConstructor`
 
 `DataPredicate` as `Value`
 `DataConstructorPredicate` as `Value`
+
+`handleDefine` -- define `DataPredicate`
+`handleDefine` -- define `DataConstructorPredicate`
 
 # examples
 

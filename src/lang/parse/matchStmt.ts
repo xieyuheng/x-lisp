@@ -3,8 +3,8 @@ import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
-import { matchExp } from "./matchExp.ts"
 import type { DataField } from "../value/Data.ts"
+import { matchExp } from "./matchExp.ts"
 
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
@@ -108,7 +108,7 @@ function matchDataField(data: X.Data): DataField {
     X.matcherChoice([
       X.matcher("`(,name ,exp)", ({ name, exp }, { span }) => ({
         name: X.symbolToString(name),
-        predicate: matchExp(exp)
+        predicate: matchExp(exp),
       })),
     ]),
     data,

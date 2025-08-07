@@ -62,3 +62,16 @@ export function DataConstructor(
     fields,
   }
 }
+
+export function DataPredicate(
+  spec: DataSpec,
+  name: string,
+  parameters: Array<string>,
+): DataPredicate {
+  return {
+    kind: "DataPredicate",
+    spec,
+    name,
+    parameters,
+  }
+}
