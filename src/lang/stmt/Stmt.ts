@@ -1,10 +1,10 @@
 import { type Span } from "@xieyuheng/x-data.js"
 import { type Exp } from "../exp/index.ts"
+import { type DataField } from "../value/index.ts"
 
 type Meta = { span: Span }
 
-export type Stmt = Compute | Define | Import
-// | DefineData
+export type Stmt = Compute | Define | Import | DefineData
 
 export type Compute = {
   kind: "Compute"
@@ -36,7 +36,7 @@ export type DefineData = {
   kind: "DefineData"
   predicateName: string
   predicateParameters: Array<string>
-  constructors: Array<{ name: string; fields: Array<[string, Exp]> }>
+  constructors: Array<{ name: string; fields: Array<DataField> }>
   meta: Meta
 }
 

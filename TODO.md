@@ -1,11 +1,10 @@
 # define-data
 
-`DataPredicate` as `Value`
-`DataConstructorPredicate` as `Value`
-
-`DefineData` as `Stmt`
 parse `(define-data)`
 `handleDefine` -- support `DefineData`
+
+`DataPredicate` as `Value`
+`DataConstructorPredicate` as `Value`
 
 # examples
 

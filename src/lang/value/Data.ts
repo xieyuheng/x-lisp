@@ -14,13 +14,6 @@ export type Data = {
   elements: Array<Value>
 }
 
-export type DataPredicate = {
-  kind: "DataPredicate"
-  spec: DataSpec
-  name: string
-  paramaters: Array<string>
-}
-
 export type DataConstructor = {
   kind: "DataConstructor"
   spec: DataSpec
@@ -31,6 +24,13 @@ export type DataConstructor = {
 export type DataField = {
   name: string
   predicate: Exp
+}
+
+export type DataPredicate = {
+  kind: "DataPredicate"
+  spec: DataSpec
+  name: string
+  paramaters: Array<string>
 }
 
 export type DataConstructorPredicate = {
