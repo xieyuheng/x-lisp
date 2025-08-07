@@ -38,6 +38,13 @@ export type DataConstructorPredicate = {
   constructor: DataConstructor
 }
 
+export type DataGetter = {
+  kind: "DataGetter"
+  constructor: DataConstructor
+  fieldName: string
+  fieldIndex: number
+}
+
 export function Data(
   constructor: DataConstructor,
   elements: Array<Value>,
@@ -81,5 +88,18 @@ export function DataConstructorPredicate(
   return {
     kind: "DataConstructorPredicate",
     constructor,
+  }
+}
+
+export function DataGetter(
+  constructor: DataConstructor,
+  fieldName: string,
+  fieldIndex: number,
+): DataGetter {
+  return {
+    kind: "DataGetter",
+    constructor,
+    fieldName,
+    fieldIndex,
   }
 }

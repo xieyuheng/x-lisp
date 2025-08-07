@@ -6,6 +6,7 @@ import {
   type Data,
   type DataConstructor,
   type DataConstructorPredicate,
+  type DataGetter,
   type DataPredicate,
 } from "./Data.ts"
 
@@ -23,6 +24,7 @@ export type Value =
   | DataPredicate
   | DataConstructor
   | DataConstructorPredicate
+  | DataGetter
 
 export type Tael = {
   kind: "Tael"

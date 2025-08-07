@@ -1,6 +1,5 @@
 # define-data
 
-`DataGetter` as `Value`
 `handleDefine` -- define `DataGetter`
 `equal` support new values about `Data`
 `apply` handle `DataConstructorPredicate`

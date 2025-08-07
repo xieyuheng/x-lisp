@@ -73,5 +73,9 @@ export function formatValue(value: Value): string {
     case "DataConstructorPredicate": {
       return `${value.constructor.name}?`
     }
+
+    case "DataGetter": {
+      return `${value.constructor.name}-${value.fieldName}`
+    }
   }
 }
