@@ -1,7 +1,3 @@
-# define-data
-
-`apply` handle `CurriedDataPredicate`
-
 # module
 
 `(import)` -- take path as the first argument, because we often import many names

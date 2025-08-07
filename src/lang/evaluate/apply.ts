@@ -1,4 +1,5 @@
-import { envUpdate } from "../env/index.ts"
+import assert from "node:assert"
+import { emptyEnv, envUpdate } from "../env/index.ts"
 import { equal } from "../equal/index.ts"
 import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
@@ -105,7 +106,21 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "CurriedDataPredicate") {
-    // TODO
+    const arity = target.predicate.parameters.length + 1
+    if (target.args.length + args.length > arity) {
+      throw new Error(
+        `[apply] Too many arguments\n` +
+          `  target: ${formatValue(target)}\n` +
+          `  args: [${args.map(formatValue).join(" ")}]\n`,
+      )
+    } else if (target.args.length + args.length === arity) {
+      return applyDataPredicate(target.predicate, [...target.args, ...args])
+    } else {
+      return Values.CurriedDataPredicate(target.predicate, [
+        ...target.args,
+        ...args,
+      ])
+    }
   }
 
   throw new Error(
@@ -113,4 +128,41 @@ export function apply(target: Value, args: Array<Value>): Value {
       `  target: ${formatValue(target)}\n` +
       `  args: [${args.map(formatValue).join(" ")}]\n`,
   )
+}
+
+function applyDataPredicate(
+  predicate: Values.DataPredicate,
+  args: Array<Value>,
+): Value {
+  const arity = args.length + 1
+  assert(predicate.parameters.length === arity)
+
+  let env = emptyEnv()
+  for (const [index, parameter] of predicate.parameters.entries()) {
+    env = envUpdate(env, parameter, args[index])
+  }
+
+  const data = args[args.length - 1]
+  if (data.kind !== "Data") return Values.Bool(false)
+  const constructor = predicate.spec.constructors[data.constructor.name]
+  if (constructor === undefined) return Values.Bool(false)
+  for (const [index, field] of constructor.fields.entries()) {
+    const target = resultValue(
+      evaluate(field.predicate)(predicate.spec.mod, env),
+    )
+    const element = data.elements[index]
+    const result = apply(target, [element])
+    if (result.kind !== "Bool") {
+      throw new Error(
+        `[applyDataPredicate] I expect the result of a data field predicate to be bool\n` +
+          `  data field predicate: ${formatValue(target)}\n` +
+          `  data element: ${formatValue(element)}\n` +
+          `  result: ${formatValue(result)}\n`,
+      )
+    } else if (result.content === false) {
+      return Values.Bool(false)
+    }
+  }
+
+  return Values.Bool(true)
 }
