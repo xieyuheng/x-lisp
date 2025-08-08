@@ -1,5 +1,4 @@
-`Value` -- `Lambda` -- has many `names` -- to handle currying at run time
-`Exp` -- `Lambda` -- has many `names`
+`Exp` -- `Lambda` -- has many `parameters` -- to handle currying at run time
 
 # predicate
 

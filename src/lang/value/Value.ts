@@ -26,7 +26,7 @@ export type Lambda = {
   kind: "Lambda"
   mod: Mod
   env: Env
-  parameter: string
+  parameters: Array<string>
   body: Exp
   definedName?: string
 }
@@ -69,14 +69,14 @@ export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
 export function Lambda(
   mod: Mod,
   env: Env,
-  parameter: string,
+  parameters: Array<string>,
   body: Exp,
 ): Lambda {
   return {
     kind: "Lambda",
     mod,
     env,
-    parameter,
+    parameters,
     body,
   }
 }

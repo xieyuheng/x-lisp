@@ -44,7 +44,7 @@ export function evaluate(exp: Exp): Effect {
     case "Lambda": {
       return (mod, env) => [
         env,
-        Values.Lambda(mod, env, exp.parameter, exp.body),
+        Values.Lambda(mod, env, [exp.parameter], exp.body),
       ]
     }
 

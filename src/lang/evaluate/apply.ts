@@ -19,13 +19,17 @@ export function apply(target: Value, args: Array<Value>): Value {
       )
     }
 
-    const [firstArg, ...restArgs] = args
-    const nextEnv = envUpdate(target.env, target.parameter, firstArg)
-    const nextTarget = resultValue(evaluate(target.body)(target.mod, nextEnv))
+    let env = target.env
+    for (const [index, parameter] of target.parameters.entries()) {
+      env = envUpdate(target.env, parameter, args[index])
+    }
+
+    const restArgs = args.slice(target.parameters.length)
+    const result = resultValue(evaluate(target.body)(target.mod, env))
     if (restArgs.length === 0) {
-      return nextTarget
+      return result
     } else {
-      return apply(nextTarget, restArgs)
+      return apply(result, restArgs)
     }
   }
 
