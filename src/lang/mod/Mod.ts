@@ -39,10 +39,6 @@ export function modGetValue(mod: Mod, name: string): Value | undefined {
   const def = modGet(mod, name)
   if (def === undefined) return undefined
 
-  if (def.value.kind === "Lambda" && def.value.definedName === undefined) {
-    def.value.definedName = def.name
-  }
-
   return def.value
 }
 

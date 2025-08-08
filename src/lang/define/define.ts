@@ -3,4 +3,8 @@ import type { Value } from "../value/index.ts"
 
 export function define(mod: Mod, name: string, value: Value): void {
   modSet(mod, name, { mod, name, value })
+
+  if (value.kind === "Lambda" && value.definedName === undefined) {
+    value.definedName = name
+  }
 }

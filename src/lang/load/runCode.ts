@@ -34,10 +34,12 @@ function assertLambdaNoFreeName(lambda: Values.Lambda): void {
   const definedNames = setUnion(modNames(lambda.mod), envNames(lambda.env))
   const undefinedNames = setDifference(freeNames, definedNames)
   if (undefinedNames.size > 0) {
-    let message =
-      `[assertLambdaNoFreeName] fail\n` +
-      `  undefined names: [${Array.from(undefinedNames).join(" ")}]\n` +
-      `  lambda: ${formatValue(lambda)}\n`
+    const unnamedLambda = { ...lambda, definedName: undefined }
+    let message = `[assertLambdaNoFreeName] fail\n`
+    message += `  undefined names: [${Array.from(undefinedNames).join(" ")}]\n`
+    if (lambda.definedName)
+      message += `  lambda defined name: ${lambda.definedName}\n`
+    message += `  lambda: ${formatValue(unnamedLambda)}\n`
     message += `[source] ${urlRelativeToCwd(lambda.mod.url)}\n`
     throw new Error(message)
   }
