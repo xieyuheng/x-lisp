@@ -1,3 +1,7 @@
+ambr fetchText urlReadText
+`fetchTextSync`
+`load` -- avoid using async function -- use `fetchTextSync`
+
 # predicate
 
 `evaluate` -- `union` and `inter` -- use `union-fn` and `inter-fn`
