@@ -1,6 +1,5 @@
-tests/syntax
-`aboutValue` -- atom?
 remove let -- occam
+`aboutValue` -- atom?
 
 # claim
 
