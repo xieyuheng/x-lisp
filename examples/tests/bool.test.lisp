@@ -22,5 +22,8 @@ false
 (assert (not #f))
 (assert (not false))
 
+(assert (equal? (or) #f))
+(assert (equal? (and) #t))
+
 (assert (not (negate string? "abc")))
 (assert (negate string? 'abc))

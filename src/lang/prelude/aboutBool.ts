@@ -14,8 +14,11 @@ export function aboutBool(mod: Mod): void {
 
   runCode(
     mod,
-    `\n
+    `\
 (define (negate p x) (not (p x)))
+
+;; (define (union-fn ps x)
+;;   (if (null? ps) #f))
 `,
   )
 }
