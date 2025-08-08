@@ -1,7 +1,5 @@
 # claim
 
-`DebugCommand` -- run with global flag
-
 `Arrow` as `Value`
 `Claim` as `Stmt`
 parse `(claim)`
