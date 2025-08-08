@@ -4,7 +4,7 @@ import { type DataField } from "../value/index.ts"
 
 type Meta = { span: Span }
 
-export type Stmt = Compute | Define | Import | Require | DefineData
+export type Stmt = Compute | Define | Import | Require | DefineData | Claim
 
 export type Compute = {
   kind: "Compute"
@@ -47,6 +47,13 @@ export type DefineData = {
 
 export type DataPredicateSpec = { name: string; parameters: Array<string> }
 export type DataConstructorSpec = { name: string; fields: Array<DataField> }
+
+export type Claim = {
+  kind: "Claim"
+  name: string
+  exp: Exp
+  meta: Meta
+}
 
 export function Compute(exp: Exp, meta: Meta): Compute {
   return {
@@ -95,6 +102,15 @@ export function DefineData(
     kind: "DefineData",
     predicate,
     constructors,
+    meta,
+  }
+}
+
+export function Claim(name: string, exp: Exp, meta: Meta): Claim {
+  return {
+    kind: "Claim",
+    name,
+    exp,
     meta,
   }
 }

@@ -1,6 +1,5 @@
 # claim
 
-`Claim` as `Stmt`
 parse `(claim)`
 
 examples/predicate/claim.test.lisp
@@ -19,4 +18,5 @@ parse `(match)`
 my-list -- test with `(match)`
 lambda -- test with `(match)`
 lambda -- parse sexp
-lambda -- read sexp from file
+lambda -- `read-list` from file
+lambda -- `write-list` to file
