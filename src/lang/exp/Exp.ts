@@ -23,7 +23,12 @@ export type Exp =
   | Inter
 
 export type Var = { kind: "Var"; name: string; meta: Meta }
-export type Lambda = { kind: "Lambda"; name: string; body: Exp; meta: Meta }
+export type Lambda = {
+  kind: "Lambda"
+  parameter: string
+  body: Exp
+  meta: Meta
+}
 export type Apply = { kind: "Apply"; target: Exp; args: Array<Exp>; meta: Meta }
 export type Let = { kind: "Let"; binds: Binds; body: Exp; meta: Meta }
 export type Begin = { kind: "Begin"; sequence: Array<Exp>; meta: Meta }
@@ -64,8 +69,8 @@ export function Var(name: string, meta: Meta): Var {
   return { kind: "Var", name, meta }
 }
 
-export function Lambda(name: string, body: Exp, meta: Meta): Lambda {
-  return { kind: "Lambda", name, body, meta }
+export function Lambda(parameter: string, body: Exp, meta: Meta): Lambda {
+  return { kind: "Lambda", parameter, body, meta }
 }
 
 export function Apply(target: Exp, args: Array<Exp>, meta: Meta): Apply {

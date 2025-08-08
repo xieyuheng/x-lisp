@@ -42,7 +42,10 @@ export function evaluate(exp: Exp): Effect {
     }
 
     case "Lambda": {
-      return (mod, env) => [env, Values.Lambda(mod, env, exp.name, exp.body)]
+      return (mod, env) => [
+        env,
+        Values.Lambda(mod, env, exp.parameter, exp.body),
+      ]
     }
 
     case "Apply": {

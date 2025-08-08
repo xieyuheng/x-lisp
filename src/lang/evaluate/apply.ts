@@ -20,7 +20,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     }
 
     const [firstArg, ...restArgs] = args
-    const nextEnv = envUpdate(target.env, target.name, firstArg)
+    const nextEnv = envUpdate(target.env, target.parameter, firstArg)
     const nextTarget = resultValue(evaluate(target.body)(target.mod, nextEnv))
     if (restArgs.length === 0) {
       return nextTarget
