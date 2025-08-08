@@ -22,6 +22,15 @@ export function equal(lhs: Value, rhs: Value): boolean {
     return same(lhs, rhs)
   }
 
+  if (
+    lhs.kind === "CurriedDataPredicate" &&
+    rhs.kind === "CurriedDataPredicate"
+  ) {
+    return (
+      equal(lhs.predicate, rhs.predicate) && equalValues(lhs.args, rhs.args)
+    )
+  }
+
   if (lhs.kind === "DataConstructor" && rhs.kind === "DataConstructor") {
     return same(lhs, rhs)
   }

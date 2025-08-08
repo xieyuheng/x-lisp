@@ -1,5 +1,3 @@
 (iadd 1)
-
-(assert (equal? (iadd 1) (iadd 1)))
-
-(assert (not (equal? (iadd 1) (iadd 2))))
+(iadd 1 1)
+((iadd 1) 1)

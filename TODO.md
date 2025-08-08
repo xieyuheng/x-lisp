@@ -1,7 +1,7 @@
 # later
 
-`equal` handle `CurriedDataPredicate`
-`equal` handle `CurriedLambda`
+`equal` handle `CurriedDataPredicate` -- test by `either?`
+`equal` handle `CurriedLambda` -- test by `iplus`
 
 # claim
 
