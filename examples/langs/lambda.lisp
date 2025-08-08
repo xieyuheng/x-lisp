@@ -14,7 +14,8 @@
   none
   (just (content A)))
 
-;; (claim lookup (-> symbol? env? value?))
+(claim lookup (-> symbol? env? value?))
+
 (define (lookup name env)
   (cond ((empty-env? env) none)
         ((cons-env? env)
@@ -31,7 +32,8 @@
   (assert (equal? (lookup 'x env) (just 1)))
   (assert (equal? (lookup 'y env) (just 2))))
 
-;; (claim eval (-> exp? env? value?))
+(claim eval (-> exp? env? value?))
+
 (define (eval exp env)
   (cond ((var-exp? exp)
          (just-content (lookup (var-exp-name exp) env)))
@@ -52,7 +54,8 @@
 ;;     ((lambda-exp parameter body)
 ;;      (closure parameter body env))))
 
-;; (claim apply (-> value? value? value?))
+(claim apply (-> value? value? value?))
+
 (define (apply target arg)
   (cond ((closure? target)
          (eval (closure-body target)

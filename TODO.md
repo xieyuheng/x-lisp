@@ -1,5 +1,8 @@
 # claim
 
+set lambda `definedName` during define instead of `modGetValue`
+`Mod` has `claims`
+`define/claim` -- like `define`
 `handleDefine` -- handle `(claim)`
 examples/predicate/claim.test.lisp
 
