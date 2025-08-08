@@ -39,7 +39,11 @@ export function formatValue(value: Value): string {
     case "CurriedLambda": {
       const lambda = formatValue(value.lambda)
       const args = value.args.map(formatValue)
-      return `(${lambda} ${args.join(" ")})`
+      if (args.length === 0) {
+        return `${lambda}`
+      } else {
+        return `(${lambda} ${args.join(" ")})`
+      }
     }
 
     case "Lazy": {
@@ -52,7 +56,11 @@ export function formatValue(value: Value): string {
 
     case "CurriedPrimFn": {
       const args = value.args.map(formatValue)
-      return `(${value.primFn.name} ${args.join(" ")})`
+      if (args.length === 0) {
+        return `${value.primFn.name}`
+      } else {
+        return `(${value.primFn.name} ${args.join(" ")})`
+      }
     }
 
     case "Void": {
@@ -74,7 +82,11 @@ export function formatValue(value: Value): string {
 
     case "CurriedDataPredicate": {
       const args = value.args.map(formatValue)
-      return `(${formatValue(value.predicate)} ${args.join(" ")})`
+      if (args.length === 0) {
+        return `${formatValue(value.predicate)}`
+      } else {
+        return `(${formatValue(value.predicate)} ${args.join(" ")})`
+      }
     }
 
     case "DataConstructor": {

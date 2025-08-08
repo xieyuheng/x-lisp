@@ -26,7 +26,7 @@ export function aboutList(mod: Mod): void {
     )
   })
 
-  definePrimFn(mod, "cons", 1, (head, tail) => {
+  definePrimFn(mod, "cons", 2, (head, tail) => {
     return Values.Tael(
       [head, ...Values.asTael(tail).elements],
       Values.asTael(tail).attributes,
