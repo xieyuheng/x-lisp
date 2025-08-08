@@ -1,13 +1,7 @@
-# examples
-
-lambda -- parse sexp
-lambda -- read sexp from file
-
 # predicate
 
-`aboutPredicate` -- `neg` as predicate combinators
-`Exp` -- `conj` and `disj` -- predicate combinators
 `Exp` -- `union` and `inter` -- predicate combinators
+`aboutPredicate` -- `negate` as predicate combinators
 
 # claim
 
@@ -26,3 +20,12 @@ examples with `(match)`
 `equal` handle `CurriedDataPredicate`
 `equal` handle `CurriedLambda`
 support `LetStar`
+
+# list
+
+cons car cdr
+
+# examples
+
+lambda -- parse sexp
+lambda -- read sexp from file
