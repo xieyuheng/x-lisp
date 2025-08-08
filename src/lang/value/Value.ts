@@ -15,6 +15,7 @@ export type Value =
   | CurriedPrimFn
   | Void
   | AboutData
+  | Arrow
 
 export type Tael = {
   kind: "Tael"
@@ -54,6 +55,12 @@ export type CurriedPrimFn = {
 
 export type Void = {
   kind: "Void"
+}
+
+export type Arrow = {
+  kind: "Arrow"
+  args: Array<Value>
+  ret: Value
 }
 
 export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
@@ -113,5 +120,13 @@ export function CurriedPrimFn(
 export function Void(): Void {
   return {
     kind: "Void",
+  }
+}
+
+export function Arrow(args: Array<Value>, ret: Value): Arrow {
+  return {
+    kind: "Arrow",
+    args,
+    ret,
   }
 }

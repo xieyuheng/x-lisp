@@ -1,7 +1,7 @@
 # claim
 
-`Arrow` as `Value`
-parse `(->)`
+`equal` handle `Arrow`
+parse `(->)` -- do not normalize during parsing
 
 examples/predicate/arrow.snapshot.lisp
 

@@ -91,5 +91,11 @@ export function formatValue(value: Value): string {
     case "DataGetter": {
       return `${value.constructor.name}-${value.fieldName}`
     }
+
+    case "Arrow": {
+      const args = value.args.map(formatValue)
+      const ret = formatValue(value.ret)
+      return `(-> ${args.join(" ")} ${ret})`
+    }
   }
 }
