@@ -1,5 +1,5 @@
 [load] I find undefined name: g
   defining: f
   to: : (lambda (x) (begin (g x)))
-[source] examples/tests/undefined-name.error.lisp
+[source] examples/errors/undefined-name.error.lisp
 
