@@ -56,3 +56,18 @@ export function modOwnDefs(mod: Mod): Array<Def> {
 
   return ownDefs
 }
+
+export function modNames(mod: Mod): Set<string> {
+  return new Set(mod.defs.keys())
+}
+
+export function modOwnNames(mod: Mod): Set<string> {
+  const ownNames = new Set<string>()
+  for (const [name, def] of mod.defs.entries()) {
+    if (def.mod.url.href === mod.url.href) {
+      ownNames.add(name)
+    }
+  }
+
+  return ownNames
+}

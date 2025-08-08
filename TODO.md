@@ -1,5 +1,4 @@
-`envNames` and `modNames`
-fix `assertLambdaNoFreeName` -- take env into account
+`envNames` -- fix `assertLambdaNoFreeName` -- take env into account
 
 # claim
 

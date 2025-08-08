@@ -1,4 +1,5 @@
-[assertLambdaNoFreeName] I find undefined name: g
+[assertLambdaNoFreeName] fail
+  undefined names: [g]
   lambda: (lambda (x) (begin (g x)))
 [source] examples/errors/undefined-name.error.lisp
 

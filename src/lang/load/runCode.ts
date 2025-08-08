@@ -1,8 +1,8 @@
+import { setDifference } from "../../utils/set/setAlgebra.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { expFreeNames } from "../exp/index.ts"
 import { formatValue } from "../format/index.ts"
-import { modGet, type Def } from "../mod/index.ts"
-import { modOwnDefs, type Mod } from "../mod/Mod.ts"
+import { modNames, modOwnDefs, type Def, type Mod } from "../mod/index.ts"
 import { parseStmts } from "../parse/parse.ts"
 import * as Values from "../value/index.ts"
 import { handleDefine } from "./handleDefine.ts"
@@ -30,13 +30,14 @@ function assertNoUndefinedName(def: Def): void {
 function assertLambdaNoFreeName(lambda: Values.Lambda): void {
   const boundNames = new Set(lambda.parameters)
   const { freeNames } = expFreeNames(lambda.body)(boundNames)
-  for (const name of freeNames) {
-    if (!modGet(lambda.mod, name)) {
-      let message =
-        `[assertLambdaNoFreeName] I find undefined name: ${name}\n` +
-        `  lambda: ${formatValue(lambda)}\n`
-      message += `[source] ${urlRelativeToCwd(lambda.mod.url)}\n`
-      throw new Error(message)
-    }
+  const definedNames = modNames(lambda.mod)
+  const undefinedNames = setDifference(freeNames, definedNames)
+  if (undefinedNames.size > 0) {
+    let message =
+      `[assertLambdaNoFreeName] fail\n` +
+      `  undefined names: [${Array.from(undefinedNames).join(" ")}]\n` +
+      `  lambda: ${formatValue(lambda)}\n`
+    message += `[source] ${urlRelativeToCwd(lambda.mod.url)}\n`
+    throw new Error(message)
   }
 }
