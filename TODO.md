@@ -1,6 +1,6 @@
-# claim
+parsing error about `assert` taking more than one arguments
 
-parse `(->)` -- do not normalize during parsing
+# claim
 
 examples/predicate/arrow.snapshot.lisp
 

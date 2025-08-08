@@ -63,7 +63,7 @@ export type CondLine = {
 
 export type Union = { kind: "Union"; exps: Array<Exp>; meta: Meta }
 export type Inter = { kind: "Inter"; exps: Array<Exp>; meta: Meta }
-export type Arrow = { kind: "Arrow"; args: Array<Exp>; ret: Exp }
+export type Arrow = { kind: "Arrow"; args: Array<Exp>; ret: Exp; meta: Meta }
 
 export function Var(name: string, meta: Meta): Var {
   return { kind: "Var", name, meta }
@@ -149,10 +149,11 @@ export function Inter(exps: Array<Exp>, meta: Meta): Inter {
   return { kind: "Inter", exps, meta }
 }
 
-export function Arrow(args: Array<Exp>, ret: Exp): Arrow {
+export function Arrow(args: Array<Exp>, ret: Exp, meta: Meta): Arrow {
   return {
     kind: "Arrow",
     args,
     ret,
+    meta,
   }
 }

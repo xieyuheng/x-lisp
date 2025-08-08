@@ -1,4 +1,5 @@
 import * as X from "@xieyuheng/x-data.js"
+import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
@@ -44,6 +45,11 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher("(cons 'inter exps)", ({ exps }, { span }) =>
     Exps.Inter(X.dataToArray(exps).map(matchExp), { span }),
   ),
+
+  X.matcher("(cons '-> exps)", ({ exps }, { span }) => {
+    const [args, ret] = arrayPickLast(X.dataToArray(exps).map(matchExp))
+    return Exps.Arrow(args, ret, { span })
+  }),
 
   X.matcher("`(assert ,exp)", ({ exp }, { span }) =>
     Exps.Assert(matchExp(exp), { span }),
