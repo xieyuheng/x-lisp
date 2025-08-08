@@ -1,5 +1,6 @@
 import * as X from "@xieyuheng/x-data.js"
 import assert from "node:assert"
+import process from "node:process"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
@@ -89,6 +90,7 @@ export function evaluate(exp: Exp): Effect {
           message += `[source] ${modReportSource(mod, exp.meta.span)}\n`
           if (mod.code) message += X.spanReport(exp.meta.span, mod.code)
           console.log(message)
+          process.exit(1)
         }
 
         if (value.kind === "Bool" && value.content === false) {
@@ -96,6 +98,7 @@ export function evaluate(exp: Exp): Effect {
           message += `[source] ${modReportSource(mod, exp.meta.span)}\n`
           if (mod.code) message += X.spanReport(exp.meta.span, mod.code)
           console.log(message)
+          process.exit(1)
         }
 
         return [env, Values.Void()]
