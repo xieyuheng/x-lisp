@@ -35,7 +35,9 @@ export function expFreeNames(exp: Exp): Effect {
 
     case "Lambda": {
       return (boundNames) => {
-        return expFreeNames(exp.body)(setAdd(boundNames, exp.parameter))
+        return expFreeNames(exp.body)(
+          setUnion(boundNames, new Set(exp.parameters)),
+        )
       }
     }
 

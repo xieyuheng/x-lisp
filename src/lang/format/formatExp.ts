@@ -15,8 +15,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Lambda": {
-      const { names, ret } = formatLambda([exp.parameter], exp.body)
-      return `(lambda (${names.join(" ")}) ${ret})`
+      return `(lambda (${exp.parameters.join(" ")}) ${formatExp(exp.body)})`
     }
 
     case "Apply": {
@@ -116,17 +115,6 @@ export function formatExp(exp: Exp): string {
 
 function formatCondLine(condLine: CondLine): string {
   return `(${formatExp(condLine.question)} ${formatExp(condLine.answer)})`
-}
-
-function formatLambda(
-  names: Array<string>,
-  ret: Exp,
-): { names: Array<string>; ret: string } {
-  if (ret.kind === "Lambda") {
-    return formatLambda([...names, ret.parameter], ret.body)
-  } else {
-    return { names, ret: formatExp(ret) }
-  }
 }
 
 function formatBind(bind: Bind): string {

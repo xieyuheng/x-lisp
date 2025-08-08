@@ -1,5 +1,3 @@
-`Exp` -- `Lambda` -- has many `parameters` -- to handle currying at run time
-
 # predicate
 
 `aboutBool` -- `negate` as predicate combinators

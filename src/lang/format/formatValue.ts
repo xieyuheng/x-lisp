@@ -33,7 +33,7 @@ export function formatValue(value: Value): string {
         return value.definedName
       }
 
-      return `(lambda (${value.parameters}) ${formatExp(value.body)})`
+      return `(lambda (${value.parameters.join(" ")}) ${formatExp(value.body)})`
     }
 
     case "Lazy": {

@@ -25,7 +25,7 @@ export type Exp =
 export type Var = { kind: "Var"; name: string; meta: Meta }
 export type Lambda = {
   kind: "Lambda"
-  parameter: string
+  parameters: Array<string>
   body: Exp
   meta: Meta
 }
@@ -69,8 +69,12 @@ export function Var(name: string, meta: Meta): Var {
   return { kind: "Var", name, meta }
 }
 
-export function Lambda(parameter: string, body: Exp, meta: Meta): Lambda {
-  return { kind: "Lambda", parameter, body, meta }
+export function Lambda(
+  parameters: Array<string>,
+  body: Exp,
+  meta: Meta,
+): Lambda {
+  return { kind: "Lambda", parameters, body, meta }
 }
 
 export function Apply(target: Exp, args: Array<Exp>, meta: Meta): Apply {

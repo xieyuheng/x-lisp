@@ -21,7 +21,7 @@ export function apply(target: Value, args: Array<Value>): Value {
 
     let env = target.env
     for (const [index, parameter] of target.parameters.entries()) {
-      env = envUpdate(target.env, parameter, args[index])
+      env = envUpdate(env, parameter, args[index])
     }
 
     const restArgs = args.slice(target.parameters.length)

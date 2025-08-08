@@ -1,6 +1,5 @@
 import * as X from "@xieyuheng/x-data.js"
 import * as Exps from "../exp/index.ts"
-import { type Exp } from "../exp/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import type { DataField } from "../value/Data.ts"
@@ -8,17 +7,17 @@ import { matchExp } from "./matchExp.ts"
 
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
-    "(cons* 'define (cons name args) body)",
-    ({ name, args, body }, { span }) => {
-      let result: Exp = Exps.Begin(X.dataToArray(body).map(matchExp), { span })
-      for (const argName of X.dataToArray(args)
-        .toReversed()
-        .map(X.symbolToString)) {
-        result = Exps.Lambda(argName, result, { span })
-      }
-
-      return Stmts.Define(X.symbolToString(name), result, { span })
-    },
+    "(cons* 'define (cons name parameters) body)",
+    ({ name, parameters, body }, { span }) =>
+      Stmts.Define(
+        X.symbolToString(name),
+        Exps.Lambda(
+          X.dataToArray(parameters).map(X.symbolToString),
+          Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
+          { span },
+        ),
+        { span },
+      ),
   ),
 
   X.matcher("`(define ,name ,exp)", ({ name, exp }, { span }) =>
