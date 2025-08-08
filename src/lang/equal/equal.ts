@@ -1,12 +1,8 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
-import * as Values from "../value/index.ts"
 import { type Attributes, type Value } from "../value/index.ts"
 import { same } from "./same.ts"
 
 export function equal(lhs: Value, rhs: Value): boolean {
-  lhs = Values.lazyActiveDeep(lhs)
-  rhs = Values.lazyActiveDeep(rhs)
-
   if (lhs.kind === "Tael" && rhs.kind === "Tael") {
     return (
       equalValues(lhs.elements, rhs.elements) &&

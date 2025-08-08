@@ -1,5 +1,6 @@
 import { define } from "../define/index.ts"
 import { emptyEnv } from "../env/index.ts"
+import { evaluate, resultValue } from "../evaluate/index.ts"
 import { modGet, type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import * as Values from "../value/index.ts"
@@ -10,7 +11,7 @@ export function handleDefine(mod: Mod, stmt: Stmt): void {
       throw new Error(`[handleDefine] I can not redefine name: ${stmt.name}\n`)
     }
 
-    define(mod, stmt.name, Values.Lazy(mod, emptyEnv(), stmt.exp))
+    define(mod, stmt.name, resultValue(evaluate(stmt.exp)(mod, emptyEnv())))
   }
 
   if (stmt.kind === "DefineData") {

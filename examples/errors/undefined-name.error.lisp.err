@@ -1,5 +1,4 @@
-[load] I find undefined name: g
-  defining: f
-  to: : (lambda (x) (begin (g x)))
+[assertLambdaNoFreeName] I find undefined name: g
+  lambda: (lambda (x) (begin (g x)))
 [source] examples/errors/undefined-name.error.lisp
 

@@ -7,10 +7,6 @@ import { type Value } from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
-  if (target.kind === "Lazy") {
-    return apply(Values.lazyActive(target), args)
-  }
-
   if (target.kind === "Lambda") {
     return apply(Values.CurriedLambda(target, []), args)
   }

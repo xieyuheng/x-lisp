@@ -1,3 +1,6 @@
+`envNames` and `modNames`
+fix `assertLambdaNoFreeName` -- take env into account
+
 # claim
 
 `Arrow` as `Value`

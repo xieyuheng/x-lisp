@@ -11,7 +11,6 @@ export type Value =
   | Tael
   | Lambda
   | CurriedLambda
-  | Lazy
   | PrimFn
   | CurriedPrimFn
   | Void
@@ -36,14 +35,6 @@ export type CurriedLambda = {
   kind: "CurriedLambda"
   lambda: Lambda
   args: Array<Value>
-}
-
-export type Lazy = {
-  kind: "Lazy"
-  mod: Mod
-  env: Env
-  exp: Exp
-  value?: Value
 }
 
 export type ValueFn = (...args: Array<Value>) => Value
@@ -96,15 +87,6 @@ export function CurriedLambda(
     kind: "CurriedLambda",
     lambda,
     args,
-  }
-}
-
-export function Lazy(mod: Mod, env: Env, exp: Exp): Lazy {
-  return {
-    kind: "Lazy",
-    mod,
-    env,
-    exp,
   }
 }
 

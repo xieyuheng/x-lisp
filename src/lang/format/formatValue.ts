@@ -1,10 +1,5 @@
 import { formatAtom, formatExp } from "../format/index.ts"
-import {
-  isAtom,
-  lambdaIsDefined,
-  lazyActiveDeep,
-  type Value,
-} from "../value/index.ts"
+import { isAtom, lambdaIsDefined, type Value } from "../value/index.ts"
 
 export function formatValue(value: Value): string {
   if (isAtom(value)) {
@@ -44,10 +39,6 @@ export function formatValue(value: Value): string {
       } else {
         return `(${lambda} ${args.join(" ")})`
       }
-    }
-
-    case "Lazy": {
-      return `${formatValue(lazyActiveDeep(value))}`
     }
 
     case "PrimFn": {
