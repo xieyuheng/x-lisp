@@ -1,8 +1,3 @@
-# later
-
-`equal` handle `CurriedDataPredicate` -- test by `either?`
-`equal` handle `CurriedLambda` -- test by `iplus`
-
 # claim
 
 `Arrow` as `Value`

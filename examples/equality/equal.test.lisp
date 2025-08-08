@@ -5,7 +5,11 @@
 
 ;; curried lambda
 
-;; TODO
+(define (my-iadd x y) (iadd x y))
+
+(assert (equal? (my-iadd 1 2) 3))
+(assert (equal? (my-iadd 1) (my-iadd 1)))
+(assert (not (equal? (my-iadd 1) (my-iadd 2))))
 
 ;; curried data predicate
 

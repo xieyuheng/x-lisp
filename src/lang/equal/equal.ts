@@ -15,7 +15,11 @@ export function equal(lhs: Value, rhs: Value): boolean {
   }
 
   if (lhs.kind === "CurriedPrimFn" && rhs.kind === "CurriedPrimFn") {
-    return same(lhs.primFn, rhs.primFn) && equalValues(lhs.args, rhs.args)
+    return equal(lhs.primFn, rhs.primFn) && equalValues(lhs.args, rhs.args)
+  }
+
+  if (lhs.kind === "CurriedLambda" && rhs.kind === "CurriedLambda") {
+    return equal(lhs.lambda, rhs.lambda) && equalValues(lhs.args, rhs.args)
   }
 
   if (lhs.kind === "DataPredicate" && rhs.kind === "DataPredicate") {
