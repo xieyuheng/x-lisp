@@ -1,8 +1,14 @@
 # claim
 
-`(claim)`
+`DebugCommand` -- run with global flag
 
-`debug` vs. `run`
+`Arrow` as `Value`
+`Claim` as `Stmt`
+parse `(claim)`
+
+`apply` -- `Arrow` to `Lambda`
+
+be careful about claim and currying
 
 # match
 
