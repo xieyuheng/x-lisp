@@ -1,6 +1,11 @@
-import { modGet, modImport, modSet } from "../mod/index.ts"
-import { type Mod, modOwnDefs } from "../mod/Mod.ts"
-import type { Stmt } from "../stmt/Stmt.ts"
+import {
+  type Mod,
+  modGet,
+  modImport,
+  modOwnDefs,
+  modSet,
+} from "../mod/index.ts"
+import { type Stmt } from "../stmt/index.ts"
 
 export async function handleImport(mod: Mod, stmt: Stmt): Promise<void> {
   if (stmt.kind === "Import") {

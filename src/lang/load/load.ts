@@ -1,7 +1,7 @@
 import { ParsingError } from "@xieyuheng/x-data.js"
 import { urlReadText } from "../../utils/url/urlReadText.ts"
-import { expFreeNames } from "../exp/expFreeNames.ts"
-import { formatExp } from "../format/formatExp.ts"
+import { expFreeNames } from "../exp/index.ts"
+import { formatExp } from "../format/index.ts"
 import {
   createMod,
   modGet,
