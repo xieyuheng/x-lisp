@@ -1,5 +1,5 @@
 import { ParsingError } from "@xieyuheng/x-data.js"
-import { fetchText } from "../../utils/url/fetchText.ts"
+import { fetchTextSync } from "../../utils/url/fetchTextSync.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { expFreeNames } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
@@ -21,7 +21,7 @@ export async function load(url: URL): Promise<Mod> {
   const found = globalLoadedMods.get(url.href)
   if (found !== undefined) return found.mod
 
-  const code = await fetchText(url)
+  const code = fetchTextSync(url)
 
   try {
     const mod = createMod(url)

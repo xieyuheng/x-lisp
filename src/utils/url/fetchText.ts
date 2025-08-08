@@ -10,5 +10,5 @@ export async function fetchText(url: URL): Promise<string> {
     return await fs.promises.readFile(url.pathname, "utf8")
   }
 
-  throw new Error(`[fetchText] unknown protocol: ${url}`)
+  throw new Error(`[fetchText] not supported protocol: ${url}`)
 }

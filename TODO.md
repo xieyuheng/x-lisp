@@ -1,4 +1,4 @@
-`load` -- avoid using async function -- use `fetchTextSync`
+`load` -- be sync instead of async
 
 # predicate
 
