@@ -1,7 +1,6 @@
 # claim
 
-parse `(claim)`
-
+`handleDefine` -- handle `(claim)`
 examples/predicate/claim.test.lisp
 
 `apply` -- `Arrow` to `Lambda` -- add claim to `Lambda` -- be careful about claim and currying
