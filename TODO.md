@@ -1,6 +1,8 @@
-Lambda rename name to parameter
-`Value` -- `Lambda` has many `names` -- to handle currying at run time
-`Exp` -- `Lambda` has many `names`
+`Value` -- `Lambda` -- rename `name` to `parameter`
+`Exp` -- `Lambda` -- rename `name` to `parameter`
+
+`Value` -- `Lambda` -- has many `names` -- to handle currying at run time
+`Exp` -- `Lambda` -- has many `names`
 
 # predicate
 
