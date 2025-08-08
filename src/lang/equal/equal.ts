@@ -59,6 +59,8 @@ export function equal(lhs: Value, rhs: Value): boolean {
   }
 
   if (lhs.kind === "Arrow" && rhs.kind === "Arrow") {
+    lhs = normalizeArrow(lhs)
+    rhs = normalizeArrow(rhs)
     return equalValues(lhs.args, rhs.args) && equal(lhs.ret, rhs.ret)
   }
 

@@ -2,8 +2,6 @@ parsing error about `assert` taking more than one arguments
 
 # claim
 
-examples/predicate/arrow.snapshot.lisp
-
 `Claim` as `Stmt`
 parse `(claim)`
 

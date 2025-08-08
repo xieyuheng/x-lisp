@@ -1,0 +1,5 @@
+(-> int? int? int?)
+(-> int? (-> int? int?))
+
+(assert (equal? (-> int? int? int?)
+                (-> int? (-> int? int?))))
