@@ -1,6 +1,7 @@
 # predicate
 
 refactor `load` -- for `defineCode`
+
 `defineCode`
 
 `aboutBool` -- `union-fn` as predicate combinators

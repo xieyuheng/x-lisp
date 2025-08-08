@@ -13,16 +13,16 @@ export type Def = {
 
 export type Mod = {
   url: URL
-  text?: string
   defs: Map<string, Def>
+  text: string
   stmts: Array<Stmt>
-  isFinished?: boolean
 }
 
 export function createMod(url: URL): Mod {
   return {
     url,
     defs: new Map(),
+    text: "",
     stmts: [],
   }
 }

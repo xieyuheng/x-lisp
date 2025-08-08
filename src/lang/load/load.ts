@@ -39,16 +39,12 @@ export async function load(url: URL): Promise<Mod> {
 }
 
 async function run(mod: Mod): Promise<void> {
-  if (mod.isFinished) return
-
   requirePrelude(mod)
 
   for (const stmt of mod.stmts) await handleDefine(mod, stmt)
   for (const stmt of mod.stmts) await handleImport(mod, stmt)
   for (const def of modOwnDefs(mod)) assertNoUndefinedName(mod, def)
   for (const stmt of mod.stmts) await handleEffect(mod, stmt)
-
-  mod.isFinished = true
 }
 
 function assertNoUndefinedName(mod: Mod, def: Def): void {
