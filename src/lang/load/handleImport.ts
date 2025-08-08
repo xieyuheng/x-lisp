@@ -1,7 +1,6 @@
-import { modGet, modImport, modResolve, modSet } from "../mod/index.ts"
+import { modGet, modImport, modSet } from "../mod/index.ts"
 import { type Mod, modOwnDefs } from "../mod/Mod.ts"
-import type { ImportEntry, Stmt } from "../stmt/Stmt.ts"
-import { load } from "./load.ts"
+import type { Stmt } from "../stmt/Stmt.ts"
 
 export async function handleImport(mod: Mod, stmt: Stmt): Promise<void> {
   if (stmt.kind === "Import") {
@@ -11,7 +10,7 @@ export async function handleImport(mod: Mod, stmt: Stmt): Promise<void> {
       if (def === undefined) {
         throw new Error(
           `[handleImport] I can not import undefined name: ${entry.name}\n` +
-          `  path: ${stmt.path}\n`,
+            `  path: ${stmt.path}\n`,
         )
       }
 

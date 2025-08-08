@@ -2,13 +2,13 @@ import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Value } from "./Value.ts"
 
-export type AboutData =   | Data
+export type AboutData =
+  | Data
   | DataPredicate
   | CurriedDataPredicate
   | DataConstructor
   | DataConstructorPredicate
   | DataGetter
-
 
 export type DataSpec = {
   mod: Mod

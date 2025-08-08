@@ -2,9 +2,7 @@ import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Atom } from "./Atom.ts"
-import {
-  type AboutData
-} from "./Data.ts"
+import { type AboutData } from "./Data.ts"
 
 export type Attributes = Record<string, Value>
 

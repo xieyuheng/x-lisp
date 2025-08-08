@@ -210,16 +210,14 @@ export function evaluate(exp: Exp): Effect {
 
     case "Union": {
       return (mod, env) => {
-              throw new Error("TODO")
+        throw new Error("TODO")
       }
-
     }
 
     case "Inter": {
       return (mod, env) => {
-              throw new Error("TODO")
+        throw new Error("TODO")
       }
-
     }
   }
 }

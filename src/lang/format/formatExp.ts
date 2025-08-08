@@ -94,7 +94,6 @@ export function formatExp(exp: Exp): string {
       return `(cond ${condLines.join(" ")})`
     }
 
-
     case "Union": {
       const exps = exp.exps.map(formatExp)
       if (exps.length === 0) {
