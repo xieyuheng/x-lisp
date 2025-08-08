@@ -1,5 +1,3 @@
-`aboutValue` -- atom?
-
 # later
 
 `equal` handle `CurriedDataPredicate`

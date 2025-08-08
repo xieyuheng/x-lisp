@@ -6,4 +6,5 @@ import * as Values from "../value/index.ts"
 export function aboutValue(mod: Mod) {
   definePrimFn(mod, "same?", 2, (x, y) => Values.Bool(same(x, y)))
   definePrimFn(mod, "equal?", 2, (x, y) => Values.Bool(equal(x, y)))
+  definePrimFn(mod, "atom?", 1, (x) => Values.Bool(Values.isAtom(x)))
 }
