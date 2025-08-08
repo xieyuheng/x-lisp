@@ -1,9 +1,9 @@
 import * as X from "@xieyuheng/x-data.js"
-import { urlPathRelativeToCwd } from "../../utils/url/urlPathRelativeToCwd.ts"
+import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import type { Mod } from "./Mod.ts"
 
 export function modReportSource(mod: Mod, span: X.Span): string {
-  return `${urlPathRelativeToCwd(mod.url)}:${formatPosition(span.start)}`
+  return `${urlRelativeToCwd(mod.url)}:${formatPosition(span.start)}`
 }
 
 function formatPosition(position: X.Position): string {

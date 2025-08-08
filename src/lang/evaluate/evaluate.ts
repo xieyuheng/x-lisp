@@ -1,7 +1,7 @@
 import * as X from "@xieyuheng/x-data.js"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
-import { urlPathRelativeToCwd } from "../../utils/url/urlPathRelativeToCwd.ts"
+import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { envFindValue, envUpdate, type Env } from "../env/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
@@ -36,7 +36,7 @@ export function evaluate(exp: Exp): Effect {
 
         throw new Error(
           `[evaluate] I meet undefined name: ${exp.name}\n` +
-            `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+            `[source] ${urlRelativeToCwd(mod.url)}\n`,
         )
       }
     }
@@ -133,7 +133,7 @@ export function evaluate(exp: Exp): Effect {
           throw new Error(
             `[evaluate] The condition part of a (if) must be bool\n` +
               `  condition: ${formatValue(condition)}\n` +
-              `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+              `[source] ${urlRelativeToCwd(mod.url)}\n`,
           )
         }
 
@@ -153,7 +153,7 @@ export function evaluate(exp: Exp): Effect {
             throw new Error(
               `[evaluate] The subexpressions of (and) must evaluate to bool\n` +
                 `  value: ${formatValue(value)}\n` +
-                `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+                `[source] ${urlRelativeToCwd(mod.url)}\n`,
             )
           }
 
@@ -174,7 +174,7 @@ export function evaluate(exp: Exp): Effect {
             throw new Error(
               `[evaluate] The subexpressions of (or) must evaluate to bool\n` +
                 `  value: ${formatValue(value)}\n` +
-                `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+                `[source] ${urlRelativeToCwd(mod.url)}\n`,
             )
           }
 
@@ -195,7 +195,7 @@ export function evaluate(exp: Exp): Effect {
             throw new Error(
               `[evaluate] The question part of a (cond) line must evaluate to bool\n` +
                 `  value: ${formatValue(value)}\n` +
-                `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+                `[source] ${urlRelativeToCwd(mod.url)}\n`,
             )
           }
 
@@ -206,7 +206,7 @@ export function evaluate(exp: Exp): Effect {
 
         throw new Error(
           `[evaluate] All questions of a (cond) failed\n` +
-            `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+            `[source] ${urlRelativeToCwd(mod.url)}\n`,
         )
       }
     }

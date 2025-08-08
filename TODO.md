@@ -1,5 +1,3 @@
-ambr fetchText urlReadText
-`fetchTextSync`
 `load` -- avoid using async function -- use `fetchTextSync`
 
 # predicate

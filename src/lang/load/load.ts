@@ -1,6 +1,6 @@
 import { ParsingError } from "@xieyuheng/x-data.js"
-import { urlPathRelativeToCwd } from "../../utils/url/urlPathRelativeToCwd.ts"
-import { urlReadText } from "../../utils/url/urlReadText.ts"
+import { fetchText } from "../../utils/url/fetchText.ts"
+import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { expFreeNames } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import {
@@ -21,7 +21,7 @@ export async function load(url: URL): Promise<Mod> {
   const found = globalLoadedMods.get(url.href)
   if (found !== undefined) return found.mod
 
-  const code = await urlReadText(url)
+  const code = await fetchText(url)
 
   try {
     const mod = createMod(url)
@@ -60,7 +60,7 @@ function assertNoUndefinedName(mod: Mod, def: Def): void {
           `[load] I find undefined name: ${name}\n` +
             `  defining: ${def.name}\n` +
             `  to: : ${formatExp(lazy.exp)}\n` +
-            `[source] ${urlPathRelativeToCwd(mod.url)}\n`,
+            `[source] ${urlRelativeToCwd(mod.url)}\n`,
         )
       }
     }
