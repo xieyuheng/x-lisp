@@ -10,6 +10,7 @@ export type Value =
   | Atom
   | Tael
   | Lambda
+  | CurriedLambda
   | Lazy
   | PrimFn
   | CurriedPrimFn
@@ -29,6 +30,12 @@ export type Lambda = {
   parameters: Array<string>
   body: Exp
   definedName?: string
+}
+
+export type CurriedLambda = {
+  kind: "CurriedLambda"
+  lambda: Lambda
+  args: Array<Value>
 }
 
 export type Lazy = {
@@ -78,6 +85,17 @@ export function Lambda(
     env,
     parameters,
     body,
+  }
+}
+
+export function CurriedLambda(
+  lambda: Lambda,
+  args: Array<Value>,
+): CurriedLambda {
+  return {
+    kind: "CurriedLambda",
+    lambda,
+    args,
   }
 }
 

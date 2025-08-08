@@ -12,6 +12,10 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "Lambda") {
+    return apply(Values.CurriedLambda(target, []), args)
+  }
+
+  if (target.kind === "CurriedLambda") {
     if (args.length === 0) {
       throw new Error(
         `[apply] Can not apply lambda to zero arguments\n` +
@@ -19,13 +23,21 @@ export function apply(target: Value, args: Array<Value>): Value {
       )
     }
 
-    let env = target.env
-    for (const [index, parameter] of target.parameters.entries()) {
-      env = envUpdate(env, parameter, args[index])
+    const arity = target.lambda.parameters.length
+    const totalArgs = [...target.args, ...args]
+    if (totalArgs.length < arity) {
+      return Values.CurriedLambda(target.lambda, totalArgs)
     }
 
-    const restArgs = args.slice(target.parameters.length)
-    const result = resultValue(evaluate(target.body)(target.mod, env))
+    let env = target.lambda.env
+    for (const [index, parameter] of target.lambda.parameters.entries()) {
+      env = envUpdate(env, parameter, totalArgs[index])
+    }
+
+    const restArgs = totalArgs.slice(arity)
+    const result = resultValue(
+      evaluate(target.lambda.body)(target.lambda.mod, env),
+    )
     if (restArgs.length === 0) {
       return result
     } else {
@@ -38,13 +50,14 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "CurriedPrimFn") {
-    if (target.args.length + args.length > target.primFn.arity) {
+    const arity = target.primFn.arity
+    if (target.args.length + args.length > arity) {
       throw new Error(
         `[apply] Too many arguments\n` +
           `  target: ${formatValue(target)}\n` +
           `  args: [${args.map(formatValue).join(" ")}]\n`,
       )
-    } else if (target.args.length + args.length === target.primFn.arity) {
+    } else if (target.args.length + args.length === arity) {
       return target.primFn.fn(...target.args, ...args)
     } else {
       return Values.CurriedPrimFn(target.primFn, [...target.args, ...args])

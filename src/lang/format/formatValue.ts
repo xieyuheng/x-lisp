@@ -36,6 +36,12 @@ export function formatValue(value: Value): string {
       return `(lambda (${value.parameters.join(" ")}) ${formatExp(value.body)})`
     }
 
+    case "CurriedLambda": {
+      const lambda = formatValue(value.lambda)
+      const args = value.args.map(formatValue)
+      return `(${lambda} ${args.join(" ")})`
+    }
+
     case "Lazy": {
       return `${formatValue(lazyActiveDeep(value))}`
     }
