@@ -1,10 +1,10 @@
 (define-data exp?
   (var-exp (name symbol?))
   (apply-exp (target exp?) (arg exp?))
-  (lambda-exp (bound-name symbol?) (body exp?)))
+  (lambda-exp (name symbol?) (body exp?)))
 
 (define-data value?
-  (closure (bound-name symbol?) (body exp?) (env env?)))
+  (closure (name symbol?) (body exp?) (env env?)))
 
 (define-data env?
   empty-env
@@ -39,7 +39,7 @@
          (apply (eval (apply-exp-target exp) env)
            (eval (apply-exp-arg exp) env)))
         ((lambda-exp? exp)
-         (closure (lambda-exp-bound-name exp)
+         (closure (lambda-exp-name exp)
                   (lambda-exp-body exp)
                   env))))
 
@@ -47,5 +47,5 @@
 (define (apply target arg)
   (cond ((closure? target)
          (eval (closure-body target)
-               (cons-env (closure-bound-name target) arg
+               (cons-env (closure-name target) arg
                          (closure-env target))))))

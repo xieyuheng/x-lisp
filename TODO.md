@@ -1,10 +1,10 @@
 # predicate
 
-`Value` -- `union` and `inter`
-`apply` -- `union` and `inter`
-`evaluate` -- `union` and `inter`
+`aboutBool` -- `negate` as predicate combinators
+`aboutBool` -- `union-fn` as predicate combinators
+`aboutBool` -- `inter-fn` as predicate combinators
 
-`aboutPredicate` -- `negate` as predicate combinators
+`evaluate` -- `union` and `inter`
 
 # claim
 
