@@ -2,7 +2,7 @@ import { definePrimFn } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
-export function aboutList(mod: Mod): void {
+export async function aboutList(mod: Mod) {
   definePrimFn(mod, "null?", 1, (x) =>
     Values.Bool(Values.asTael(x).elements.length === 0),
   )

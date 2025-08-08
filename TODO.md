@@ -1,8 +1,5 @@
 # predicate
 
-`aboutBool` -- `union-fn` as predicate combinators
-`aboutBool` -- `inter-fn` as predicate combinators
-
 `evaluate` -- `union` and `inter` -- use `union-fn` and `inter-fn`
 
 # claim

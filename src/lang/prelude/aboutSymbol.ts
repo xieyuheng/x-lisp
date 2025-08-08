@@ -2,7 +2,7 @@ import { definePrimFn } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
-export function aboutSymbol(mod: Mod): void {
+export async function aboutSymbol(mod: Mod) {
   definePrimFn(mod, "symbol?", 1, (x) => Values.Bool(Values.isSymbol(x)))
 
   definePrimFn(mod, "symbol-length", 1, (x) =>
