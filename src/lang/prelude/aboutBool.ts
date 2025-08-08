@@ -12,5 +12,10 @@ export function aboutBool(mod: Mod): void {
 
   definePrimFn(mod, "not", 1, (x) => Values.Bool(!Values.asBool(x).content))
 
-  runCode(mod, "(define (negate p x) (not (p x)))")
+  runCode(
+    mod,
+    `\n
+(define (negate p x) (not (p x)))
+`,
+  )
 }

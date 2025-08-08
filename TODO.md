@@ -25,10 +25,6 @@ examples with `(match)`
 `equal` handle `CurriedLambda`
 support `LetStar`
 
-# list
-
-cons car cdr
-
 # examples
 
 lambda -- parse sexp
