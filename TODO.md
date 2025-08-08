@@ -1,7 +1,6 @@
 tests/syntax
-tests/tael
-
-remove let
+`aboutValue` -- atom?
+remove let -- occam
 
 # claim
 
