@@ -1,6 +1,6 @@
 import { formatData } from "@xieyuheng/x-data.js"
-import type { Bind, CondLine } from "../../lang/exp/index.ts"
-import { bindsToArray, type Exp } from "../exp/index.ts"
+import type { CondLine } from "../../lang/exp/index.ts"
+import { type Exp } from "../exp/index.ts"
 import { formatAtom } from "../format/index.ts"
 import { isAtom } from "../value/index.ts"
 
@@ -26,11 +26,6 @@ export function formatExp(exp: Exp): string {
       } else {
         return `(${target} ${args.join(" ")})`
       }
-    }
-
-    case "Let": {
-      const binds = bindsToArray(exp.binds).map(formatBind)
-      return `(let (${binds.join(" ")}) ${formatExp(exp.body)})`
     }
 
     case "Begin": {
@@ -115,8 +110,4 @@ export function formatExp(exp: Exp): string {
 
 function formatCondLine(condLine: CondLine): string {
   return `(${formatExp(condLine.question)} ${formatExp(condLine.answer)})`
-}
-
-function formatBind(bind: Bind): string {
-  return `[${bind.name} ${formatExp(bind.exp)}]`
 }

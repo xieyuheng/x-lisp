@@ -1,5 +1,5 @@
 import { type Data, type Span } from "@xieyuheng/x-data.js"
-import { type Atom, type Binds } from "../exp/index.ts"
+import { type Atom } from "../exp/index.ts"
 
 export type Meta = { span: Span }
 export type Attributes = Record<string, Exp>
@@ -9,7 +9,6 @@ export type Exp =
   | Var
   | Lambda
   | Apply
-  | Let
   | Begin
   | Assign
   | Assert
@@ -30,7 +29,6 @@ export type Lambda = {
   meta: Meta
 }
 export type Apply = { kind: "Apply"; target: Exp; args: Array<Exp>; meta: Meta }
-export type Let = { kind: "Let"; binds: Binds; body: Exp; meta: Meta }
 export type Begin = { kind: "Begin"; sequence: Array<Exp>; meta: Meta }
 export type Assign = { kind: "Assign"; name: string; rhs: Exp; meta: Meta }
 export type Assert = { kind: "Assert"; exp: Exp; meta: Meta }
@@ -79,10 +77,6 @@ export function Lambda(
 
 export function Apply(target: Exp, args: Array<Exp>, meta: Meta): Apply {
   return { kind: "Apply", target, args, meta }
-}
-
-export function Let(binds: Binds, body: Exp, meta: Meta): Let {
-  return { kind: "Let", binds, body, meta }
 }
 
 export function Begin(sequence: Array<Exp>, meta: Meta): Begin {

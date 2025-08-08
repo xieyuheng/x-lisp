@@ -1,5 +1,4 @@
 import { setAdd, setUnion, setUnionMany } from "../../utils/set/setAlgebra.ts"
-import { bindsToArray } from "../exp/index.ts"
 import { isAtom } from "../value/index.ts"
 import { type Exp } from "./index.ts"
 
@@ -46,30 +45,6 @@ export function expFreeNames(exp: Exp): Effect {
         expFreeNames(exp.target),
         effectUnionMany(exp.args.map(expFreeNames)),
       )
-    }
-
-    case "Let": {
-      return (boundNames) => {
-        // NOTE All binds in the binds are independent.
-        const binds = bindsToArray(exp.binds)
-        const bindsFreeNames = new Set(
-          binds
-            .map((bind) =>
-              Array.from(expFreeNames(bind.exp)(boundNames).freeNames),
-            )
-            .flatMap((names) => names),
-        )
-
-        return {
-          boundNames,
-          freeNames: setUnion(
-            bindsFreeNames,
-            expFreeNames(exp.body)(
-              setUnion(boundNames, new Set(binds.map((bind) => bind.name))),
-            ).freeNames,
-          ),
-        }
-      }
     }
 
     case "Begin": {

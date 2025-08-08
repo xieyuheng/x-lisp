@@ -4,7 +4,7 @@ import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { envFindValue, envUpdate, type Env } from "../env/index.ts"
-import { bindsToArray, type Exp } from "../exp/index.ts"
+import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
 import { modGetValue, modReportSource, type Mod } from "../mod/index.ts"
 import { usePreludeMod } from "../prelude/index.ts"
@@ -55,18 +55,6 @@ export function evaluate(exp: Exp): Effect {
         const target = resultValue(evaluate(exp.target)(mod, env))
         const args = exp.args.map((arg) => resultValue(evaluate(arg)(mod, env)))
         return [env, apply(target, args)]
-      }
-    }
-
-    case "Let": {
-      return (mod, env) => {
-        const oldEnv = env
-        for (const bind of bindsToArray(exp.binds)) {
-          const value = resultValue(evaluate(bind.exp)(mod, oldEnv))
-          env = envUpdate(env, bind.name, value)
-        }
-
-        return evaluate(exp.body)(mod, env)
       }
     }
 

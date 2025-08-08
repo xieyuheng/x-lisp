@@ -1,5 +1,9 @@
-remove let -- occam
 `aboutValue` -- atom?
+
+# later
+
+`equal` handle `CurriedDataPredicate`
+`equal` handle `CurriedLambda`
 
 # claim
 
@@ -18,12 +22,6 @@ be careful about claim and currying
 # examples
 
 examples with `(match)`
-
-# later
-
-`equal` handle `CurriedDataPredicate`
-`equal` handle `CurriedLambda`
-support `LetStar`
 
 # examples
 

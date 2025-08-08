@@ -1,7 +1,7 @@
 import * as X from "@xieyuheng/x-data.js"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import * as Exps from "../exp/index.ts"
-import { bindsFromArray, type Bind, type Exp } from "../exp/index.ts"
+import { type Exp } from "../exp/index.ts"
 
 const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher(
@@ -12,14 +12,6 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
         Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
         { span },
       ),
-  ),
-
-  X.matcher("(cons* 'let binds body)", ({ binds, body }, { span }) =>
-    Exps.Let(
-      bindsFromArray(X.dataToArray(binds).map(matchBind)),
-      Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
-      { span },
-    ),
   ),
 
   X.matcher("`(quote ,data)", ({ data }, { span }) =>
@@ -100,16 +92,6 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
 export function matchExp(data: X.Data): Exp {
   return X.match(expMatcher, data)
-}
-
-export function matchBind(data: X.Data): Bind {
-  return X.match(
-    X.matcher("`(,name ,exp)", ({ name, exp }) => ({
-      name: X.symbolToString(name),
-      exp: matchExp(exp),
-    })),
-    data,
-  )
 }
 
 export function matchCondLine(data: X.Data): Exps.CondLine {
