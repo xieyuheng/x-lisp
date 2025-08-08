@@ -1,7 +1,3 @@
-# predicate
-
-`evaluate` -- `union` and `inter` -- use `union-fn` and `inter-fn`
-
 # claim
 
 `(claim)`

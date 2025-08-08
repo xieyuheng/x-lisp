@@ -1,4 +1,5 @@
 import * as X from "@xieyuheng/x-data.js"
+import assert from "node:assert"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
@@ -6,6 +7,7 @@ import { envFindValue, envUpdate, type Env } from "../env/index.ts"
 import { bindsToArray, type Exp } from "../exp/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
 import { modGetValue, modReportSource, type Mod } from "../mod/index.ts"
+import { usePreludeMod } from "../prelude/index.ts"
 import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
@@ -213,13 +215,25 @@ export function evaluate(exp: Exp): Effect {
 
     case "Union": {
       return (mod, env) => {
-        throw new Error("TODO")
+        const preludeMod = usePreludeMod()
+        const value = modGetValue(preludeMod, "union-fn")
+        assert(value)
+        const predicates = exp.exps.map((e) =>
+          resultValue(evaluate(e)(mod, env)),
+        )
+        return [env, apply(value, [Values.List(predicates)])]
       }
     }
 
     case "Inter": {
       return (mod, env) => {
-        throw new Error("TODO")
+        const preludeMod = usePreludeMod()
+        const value = modGetValue(preludeMod, "inter-fn")
+        assert(value)
+        const predicates = exp.exps.map((e) =>
+          resultValue(evaluate(e)(mod, env)),
+        )
+        return [env, apply(value, [Values.List(predicates)])]
       }
     }
   }

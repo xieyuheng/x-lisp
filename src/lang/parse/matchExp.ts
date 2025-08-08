@@ -45,6 +45,14 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     Exps.Or(X.dataToArray(exps).map(matchExp), { span }),
   ),
 
+  X.matcher("(cons 'union exps)", ({ exps }, { span }) =>
+    Exps.Union(X.dataToArray(exps).map(matchExp), { span }),
+  ),
+
+  X.matcher("(cons 'inter exps)", ({ exps }, { span }) =>
+    Exps.Inter(X.dataToArray(exps).map(matchExp), { span }),
+  ),
+
   X.matcher("`(assert ,exp)", ({ exp }, { span }) =>
     Exps.Assert(matchExp(exp), { span }),
   ),
