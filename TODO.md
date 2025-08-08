@@ -1,5 +1,3 @@
-`envNames` -- fix `assertLambdaNoFreeName` -- take env into account
-
 # claim
 
 `Arrow` as `Value`

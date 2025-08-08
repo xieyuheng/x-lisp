@@ -6,8 +6,8 @@ export function emptyEnv(): Env {
   return new Map()
 }
 
-export function envNames(env: Env): Array<string> {
-  return Array.from(env.keys())
+export function envNames(env: Env): Set<string> {
+  return new Set(env.keys())
 }
 
 export function envFindValue(env: Env, name: string): undefined | Value {

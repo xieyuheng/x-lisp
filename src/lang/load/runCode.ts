@@ -1,5 +1,6 @@
-import { setDifference } from "../../utils/set/setAlgebra.ts"
+import { setDifference, setUnion } from "../../utils/set/setAlgebra.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
+import { envNames } from "../env/index.ts"
 import { expFreeNames } from "../exp/index.ts"
 import { formatValue } from "../format/index.ts"
 import { modNames, modOwnDefs, type Def, type Mod } from "../mod/index.ts"
@@ -30,7 +31,7 @@ function assertNoUndefinedName(def: Def): void {
 function assertLambdaNoFreeName(lambda: Values.Lambda): void {
   const boundNames = new Set(lambda.parameters)
   const { freeNames } = expFreeNames(lambda.body)(boundNames)
-  const definedNames = modNames(lambda.mod)
+  const definedNames = setUnion(modNames(lambda.mod), envNames(lambda.env))
   const undefinedNames = setDifference(freeNames, definedNames)
   if (undefinedNames.size > 0) {
     let message =
