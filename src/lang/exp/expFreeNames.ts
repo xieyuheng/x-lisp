@@ -127,6 +127,13 @@ export function expFreeNames(exp: Exp): Effect {
     case "Inter": {
       return effectUnionMany(exp.exps.map(expFreeNames))
     }
+
+    case "Arrow": {
+      return effectUnion(
+        expFreeNames(exp.ret),
+        effectUnionMany(exp.args.map(expFreeNames)),
+      )
+    }
   }
 }
 

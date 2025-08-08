@@ -105,6 +105,12 @@ export function formatExp(exp: Exp): string {
         return `(inter ${exps.join(" ")})`
       }
     }
+
+    case "Arrow": {
+      const args = exp.args.map(formatExp)
+      const ret = formatExp(exp.ret)
+      return `(-> ${args.join(" ")} ${ret})`
+    }
   }
 }
 

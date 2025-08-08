@@ -227,5 +227,13 @@ export function evaluate(exp: Exp): Effect {
         return [env, apply(value, [Values.List(predicates)])]
       }
     }
+
+    case "Arrow": {
+      return (mod, env) => {
+        const args = exp.args.map((e) => resultValue(evaluate(e)(mod, env)))
+        const ret = resultValue(evaluate(exp.ret)(mod, env))
+        return [env, Values.Arrow(args, ret)]
+      }
+    }
   }
 }

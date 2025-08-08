@@ -20,6 +20,7 @@ export type Exp =
   | Cond
   | Union
   | Inter
+  | Arrow
 
 export type Var = { kind: "Var"; name: string; meta: Meta }
 export type Lambda = {
@@ -62,6 +63,7 @@ export type CondLine = {
 
 export type Union = { kind: "Union"; exps: Array<Exp>; meta: Meta }
 export type Inter = { kind: "Inter"; exps: Array<Exp>; meta: Meta }
+export type Arrow = { kind: "Arrow"; args: Array<Exp>; ret: Exp }
 
 export function Var(name: string, meta: Meta): Var {
   return { kind: "Var", name, meta }
@@ -145,4 +147,12 @@ export function Union(exps: Array<Exp>, meta: Meta): Union {
 
 export function Inter(exps: Array<Exp>, meta: Meta): Inter {
   return { kind: "Inter", exps, meta }
+}
+
+export function Arrow(args: Array<Exp>, ret: Exp): Arrow {
+  return {
+    kind: "Arrow",
+    args,
+    ret,
+  }
 }

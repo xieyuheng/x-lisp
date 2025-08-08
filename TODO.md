@@ -1,6 +1,7 @@
 # claim
 
 parse `(->)` -- do not normalize during parsing
+
 examples/predicate/arrow.snapshot.lisp
 
 `Claim` as `Stmt`
