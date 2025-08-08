@@ -1,3 +1,8 @@
+tests/syntax
+tests/tael
+
+remove let
+
 # claim
 
 `Arrow` as `Value`
