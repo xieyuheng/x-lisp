@@ -1,6 +1,6 @@
 # predicate
 
-refactor `load` -- for `defineCode`
+`runCode` -- refactor `load` -- for `defineCode`
 
 `defineCode`
 

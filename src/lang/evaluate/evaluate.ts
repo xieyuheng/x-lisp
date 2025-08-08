@@ -97,14 +97,14 @@ export function evaluate(exp: Exp): Effect {
             `  value: ${formatValue(value)}\n` +
             `  exp: ${formatExp(exp.exp)}\n`
           message += `[source] ${modReportSource(mod, exp.meta.span)}\n`
-          if (mod.text) message += X.spanReport(exp.meta.span, mod.text)
+          if (mod.code) message += X.spanReport(exp.meta.span, mod.code)
           console.log(message)
         }
 
         if (value.kind === "Bool" && value.content === false) {
           let message = `[assert] fail\n` + `  exp: ${formatExp(exp.exp)}\n`
           message += `[source] ${modReportSource(mod, exp.meta.span)}\n`
-          if (mod.text) message += X.spanReport(exp.meta.span, mod.text)
+          if (mod.code) message += X.spanReport(exp.meta.span, mod.code)
           console.log(message)
         }
 

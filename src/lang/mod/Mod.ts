@@ -14,7 +14,7 @@ export type Def = {
 export type Mod = {
   url: URL
   defs: Map<string, Def>
-  text: string
+  code: string
   stmts: Array<Stmt>
 }
 
@@ -22,7 +22,7 @@ export function createMod(url: URL): Mod {
   return {
     url,
     defs: new Map(),
-    text: "",
+    code: "",
     stmts: [],
   }
 }

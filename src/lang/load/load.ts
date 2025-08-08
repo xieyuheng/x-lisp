@@ -20,18 +20,19 @@ export async function load(url: URL): Promise<Mod> {
   const found = globalLoadedMods.get(url.href)
   if (found !== undefined) return found.mod
 
-  const text = await urlReadText(url)
+  const code = await urlReadText(url)
 
   try {
     const mod = createMod(url)
-    mod.text = text
-    mod.stmts = parseStmts(text)
-    globalLoadedMods.set(url.href, { mod, text })
+    mod.code = code
+    mod.stmts = parseStmts(code)
+    globalLoadedMods.set(url.href, { mod, text: code })
+    requirePrelude(mod)
     await run(mod)
     return mod
   } catch (error) {
     if (error instanceof ParsingError) {
-      throw new Error(error.report({ text }))
+      throw new Error(error.report({ text: code }))
     }
 
     throw error
@@ -39,8 +40,6 @@ export async function load(url: URL): Promise<Mod> {
 }
 
 async function run(mod: Mod): Promise<void> {
-  requirePrelude(mod)
-
   for (const stmt of mod.stmts) await handleDefine(mod, stmt)
   for (const stmt of mod.stmts) await handleImport(mod, stmt)
   for (const def of modOwnDefs(mod)) assertNoUndefinedName(mod, def)
