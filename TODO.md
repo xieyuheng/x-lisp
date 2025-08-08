@@ -1,14 +1,20 @@
+Lambda rename name to parameter
+`Value` -- `Lambda` has many `names` -- to handle currying at run time
+`Exp` -- `Lambda` has many `names`
+
 # predicate
 
 `aboutBool` -- `negate` as predicate combinators
 `aboutBool` -- `union-fn` as predicate combinators
 `aboutBool` -- `inter-fn` as predicate combinators
 
-`evaluate` -- `union` and `inter`
+`evaluate` -- `union` and `inter` -- use `union-fn` and `inter-fn`
 
 # claim
 
 `(claim)`
+
+`debug` vs. `run`
 
 # match
 
