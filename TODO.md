@@ -1,22 +1,27 @@
 # claim
 
 `Arrow` as `Value`
+parse `(->)`
+
+examples/predicate/arrow.snapshot.lisp
+
 `Claim` as `Stmt`
 parse `(claim)`
 
-`apply` -- `Arrow` to `Lambda`
+examples/predicate/claim.test.lisp
 
-be careful about claim and currying
+`apply` -- `Arrow` to `Lambda` -- add claim to `Lambda` -- be careful about claim and currying
+`apply` -- `Lambda` -- use `claims` during debug
 
 # match
 
-`(match)`
+`Match` as `Exp`
+parse `(match)`
+`match(pattern, value)`
 
 # examples
 
-examples with `(match)`
-
-# examples
-
+my-list -- test with `(match)`
+lambda -- test with `(match)`
 lambda -- parse sexp
 lambda -- read sexp from file
