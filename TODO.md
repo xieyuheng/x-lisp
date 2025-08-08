@@ -1,5 +1,3 @@
-parsing error about `assert` taking more than one arguments
-
 # claim
 
 `Claim` as `Stmt`

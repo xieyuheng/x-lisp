@@ -1,0 +1,7 @@
+[assert] (assert) can only take one arguments
+
+
+ 1|(assert #t #t)
+   ~~~~~~~~~~~~~~ 
+ 2|
+

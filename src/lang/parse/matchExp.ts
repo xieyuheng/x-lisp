@@ -51,9 +51,16 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Arrow(args, ret, { span })
   }),
 
-  X.matcher("`(assert ,exp)", ({ exp }, { span }) =>
-    Exps.Assert(matchExp(exp), { span }),
-  ),
+  X.matcher("(cons 'assert exps)", ({ exps }, { span }) => {
+    const args = X.dataToArray(exps).map(matchExp)
+    if (args.length !== 1) {
+      const message =
+        "[assert] The (assert) expression can only take one arguments\n"
+      throw new X.ParsingError(message, span)
+    }
+
+    return Exps.Assert(args[0], { span })
+  }),
 
   X.matcher("`(= ,name ,rhs)", ({ name, rhs }, { span }) =>
     Exps.Assign(X.symbolToString(name), matchExp(rhs), { span }),
