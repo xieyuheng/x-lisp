@@ -1,4 +1,5 @@
-import { define, defineCode, definePrimFn } from "../define/index.ts"
+import { define, definePrimFn } from "../define/index.ts"
+import { runCode } from "../load/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -11,5 +12,5 @@ export function aboutBool(mod: Mod): void {
 
   definePrimFn(mod, "not", 1, (x) => Values.Bool(!Values.asBool(x).content))
 
-  defineCode(mod, "(define (negate p x) (not (p x)))")
+  runCode(mod, "(define (negate p x) (not (p x)))")
 }

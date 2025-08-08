@@ -1,7 +1,5 @@
 # predicate
 
-`defineCode`
-
 `aboutBool` -- `union-fn` as predicate combinators
 `aboutBool` -- `inter-fn` as predicate combinators
 

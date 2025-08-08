@@ -37,7 +37,7 @@ export async function load(url: URL): Promise<Mod> {
   }
 }
 
-async function runCode(mod: Mod, code: string): Promise<void> {
+export async function runCode(mod: Mod, code: string): Promise<void> {
   const stmts = parseStmts(code)
 
   mod.code = mod.code + code
