@@ -25,6 +25,7 @@ export function apply(target: Value, args: Array<Value>): Value {
 
     const arity = target.lambda.parameters.length
     const totalArgs = [...target.args, ...args]
+
     if (totalArgs.length < arity) {
       return Values.CurriedLambda(target.lambda, totalArgs)
     }
@@ -51,17 +52,21 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   if (target.kind === "CurriedPrimFn") {
     const arity = target.primFn.arity
-    if (target.args.length + args.length > arity) {
-      throw new Error(
-        `[apply] Too many arguments\n` +
-          `  target: ${formatValue(target)}\n` +
-          `  args: [${args.map(formatValue).join(" ")}]\n`,
-      )
-    } else if (target.args.length + args.length === arity) {
-      return target.primFn.fn(...target.args, ...args)
-    } else {
-      return Values.CurriedPrimFn(target.primFn, [...target.args, ...args])
+    const totalArgs = [...target.args, ...args]
+
+    if (totalArgs.length < arity) {
+      return Values.CurriedPrimFn(target.primFn, totalArgs)
     }
+
+    if (totalArgs.length === arity) {
+      return target.primFn.fn(...totalArgs)
+    }
+
+    throw new Error(
+      `[apply] Too many arguments\n` +
+        `  target: ${formatValue(target)}\n` +
+        `  args: [${args.map(formatValue).join(" ")}]\n`,
+    )
   }
 
   if (target.kind === "DataConstructor") {
@@ -128,20 +133,21 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   if (target.kind === "CurriedDataPredicate") {
     const arity = target.predicate.parameters.length + 1
-    if (target.args.length + args.length > arity) {
-      throw new Error(
-        `[apply] Too many arguments\n` +
-          `  target: ${formatValue(target)}\n` +
-          `  args: [${args.map(formatValue).join(" ")}]\n`,
-      )
-    } else if (target.args.length + args.length === arity) {
-      return applyDataPredicate(target.predicate, [...target.args, ...args])
-    } else {
-      return Values.CurriedDataPredicate(target.predicate, [
-        ...target.args,
-        ...args,
-      ])
+    const totalArgs = [...target.args, ...args]
+
+    if (totalArgs.length < arity) {
+      return Values.CurriedDataPredicate(target.predicate, totalArgs)
     }
+
+    if (totalArgs.length === arity) {
+      return applyDataPredicate(target.predicate, totalArgs)
+    }
+
+    throw new Error(
+      `[apply] Too many arguments\n` +
+        `  target: ${formatValue(target)}\n` +
+        `  args: [${args.map(formatValue).join(" ")}]\n`,
+    )
   }
 
   throw new Error(
