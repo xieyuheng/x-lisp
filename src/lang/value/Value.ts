@@ -3,12 +3,7 @@ import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Atom } from "./Atom.ts"
 import {
-  type CurriedDataPredicate,
-  type Data,
-  type DataConstructor,
-  type DataConstructorPredicate,
-  type DataGetter,
-  type DataPredicate,
+  type AboutData
 } from "./Data.ts"
 
 export type Attributes = Record<string, Value>
@@ -21,12 +16,7 @@ export type Value =
   | PrimFn
   | CurriedPrimFn
   | Void
-  | Data
-  | DataPredicate
-  | CurriedDataPredicate
-  | DataConstructor
-  | DataConstructorPredicate
-  | DataGetter
+  | AboutData
 
 export type Tael = {
   kind: "Tael"

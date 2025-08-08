@@ -19,6 +19,8 @@ export type Exp =
   | And
   | Or
   | Cond
+  | Union
+  | Inter
 
 export type Var = { kind: "Var"; name: string; meta: Meta }
 export type Lambda = { kind: "Lambda"; name: string; body: Exp; meta: Meta }
@@ -43,6 +45,7 @@ export type If = {
 }
 export type And = { kind: "And"; exps: Array<Exp>; meta: Meta }
 export type Or = { kind: "Or"; exps: Array<Exp>; meta: Meta }
+
 export type Cond = {
   kind: "Cond"
   condLines: Array<CondLine>
@@ -53,6 +56,9 @@ export type CondLine = {
   question: Exp
   answer: Exp
 }
+
+export type Union = { kind: "Union"; exps: Array<Exp>; meta: Meta }
+export type Inter = { kind: "Inter"; exps: Array<Exp>; meta: Meta }
 
 export function Var(name: string, meta: Meta): Var {
   return { kind: "Var", name, meta }
@@ -128,4 +134,12 @@ export function Cond(condLines: Array<CondLine>, meta: Meta): Cond {
     condLines,
     meta,
   }
+}
+
+export function Union(exps: Array<Exp>, meta: Meta): Union {
+  return { kind: "Union", exps, meta }
+}
+
+export function Inter(exps: Array<Exp>, meta: Meta): Inter {
+  return { kind: "Inter", exps, meta }
 }

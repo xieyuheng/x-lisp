@@ -1,6 +1,9 @@
 # predicate
 
-`Exp` -- `union` and `inter` -- predicate combinators
+`Value` -- `union` and `inter`
+`apply` -- `union` and `inter`
+`evaluate` -- `union` and `inter`
+
 `aboutPredicate` -- `negate` as predicate combinators
 
 # claim

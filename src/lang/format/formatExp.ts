@@ -93,6 +93,25 @@ export function formatExp(exp: Exp): string {
       const condLines = exp.condLines.map(formatCondLine)
       return `(cond ${condLines.join(" ")})`
     }
+
+
+    case "Union": {
+      const exps = exp.exps.map(formatExp)
+      if (exps.length === 0) {
+        return `(union)`
+      } else {
+        return `(union ${exps.join(" ")})`
+      }
+    }
+
+    case "Inter": {
+      const exps = exp.exps.map(formatExp)
+      if (exps.length === 0) {
+        return `(inter)`
+      } else {
+        return `(inter ${exps.join(" ")})`
+      }
+    }
   }
 }
 

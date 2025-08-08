@@ -142,6 +142,14 @@ export function expFreeNames(exp: Exp): Effect {
         ),
       )
     }
+
+    case "Union": {
+      return effectUnionMany(exp.exps.map(expFreeNames))
+    }
+
+    case "Inter": {
+      return effectUnionMany(exp.exps.map(expFreeNames))
+    }
   }
 }
 
