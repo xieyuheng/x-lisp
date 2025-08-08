@@ -4,7 +4,7 @@ import { modGet, type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import * as Values from "../value/index.ts"
 
-export async function handleDefine(mod: Mod, stmt: Stmt): Promise<void> {
+export function handleDefine(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Define") {
     if (modGet(mod, stmt.name)) {
       throw new Error(`[handleDefine] I can not redefine name: ${stmt.name}\n`)

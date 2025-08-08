@@ -7,9 +7,9 @@ import {
 } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 
-export async function handleImport(mod: Mod, stmt: Stmt): Promise<void> {
+export function handleImport(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Import") {
-    const importedMod = await modImport(mod, stmt.path)
+    const importedMod = modImport(mod, stmt.path)
     for (const entry of stmt.entries) {
       const def = modGet(importedMod, entry.name)
       if (def === undefined) {
@@ -29,7 +29,7 @@ export async function handleImport(mod: Mod, stmt: Stmt): Promise<void> {
   }
 
   if (stmt.kind === "Require") {
-    const importedMod = await modImport(mod, stmt.path)
+    const importedMod = modImport(mod, stmt.path)
     for (const def of modOwnDefs(importedMod)) {
       if (modGet(mod, def.name)) {
         throw new Error(`[handleImport] I can not redefine name: ${def.name}\n`)

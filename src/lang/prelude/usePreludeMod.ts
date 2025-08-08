@@ -11,20 +11,20 @@ import { aboutValue } from "./aboutValue.ts"
 
 let mod: Mod | undefined = undefined
 
-export async function usePreludeMod(): Promise<Mod> {
+export function usePreludeMod(): Mod {
   if (mod) return mod
 
   mod = createMod(new URL("prelude:occam"))
 
-  await aboutBool(mod)
-  await aboutInt(mod)
-  await aboutFloat(mod)
-  await aboutSymbol(mod)
-  await aboutString(mod)
-  await aboutValue(mod)
-  await aboutList(mod)
-  await aboutRecord(mod)
-  await aboutPredicate(mod)
+  aboutBool(mod)
+  aboutInt(mod)
+  aboutFloat(mod)
+  aboutSymbol(mod)
+  aboutString(mod)
+  aboutValue(mod)
+  aboutList(mod)
+  aboutRecord(mod)
+  aboutPredicate(mod)
 
   return mod
 }

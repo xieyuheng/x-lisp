@@ -2,7 +2,7 @@ import { definePrimFn } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
-export async function aboutFloat(mod: Mod) {
+export function aboutFloat(mod: Mod) {
   definePrimFn(mod, "float?", 1, (x) => Values.Bool(Values.isFloat(x)))
 
   definePrimFn(mod, "fadd", 2, (x, y) =>

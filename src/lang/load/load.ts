@@ -17,7 +17,7 @@ import { handleDefine } from "./handleDefine.ts"
 import { handleEffect } from "./handleEffect.ts"
 import { handleImport } from "./handleImport.ts"
 
-export async function load(url: URL): Promise<Mod> {
+export function load(url: URL): Mod {
   const found = globalLoadedMods.get(url.href)
   if (found !== undefined) return found.mod
 
@@ -26,8 +26,8 @@ export async function load(url: URL): Promise<Mod> {
   try {
     const mod = createMod(url)
     globalLoadedMods.set(url.href, { mod, text: code })
-    await requirePrelude(mod)
-    await runCode(mod, code)
+    requirePrelude(mod)
+    runCode(mod, code)
     return mod
   } catch (error) {
     if (error instanceof ParsingError) {
@@ -38,16 +38,16 @@ export async function load(url: URL): Promise<Mod> {
   }
 }
 
-export async function runCode(mod: Mod, code: string): Promise<void> {
+export function runCode(mod: Mod, code: string): void {
   const stmts = parseStmts(code)
 
   mod.code = mod.code + code
   mod.stmts = [...mod.stmts, ...stmts]
 
-  for (const stmt of stmts) await handleDefine(mod, stmt)
-  for (const stmt of stmts) await handleImport(mod, stmt)
+  for (const stmt of stmts) handleDefine(mod, stmt)
+  for (const stmt of stmts) handleImport(mod, stmt)
   for (const def of modOwnDefs(mod)) assertNoUndefinedName(mod, def)
-  for (const stmt of stmts) await handleEffect(mod, stmt)
+  for (const stmt of stmts) handleEffect(mod, stmt)
 }
 
 function assertNoUndefinedName(mod: Mod, def: Def): void {

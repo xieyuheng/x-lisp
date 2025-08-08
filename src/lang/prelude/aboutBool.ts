@@ -2,7 +2,7 @@ import { define, definePrimFn } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
-export async function aboutBool(mod: Mod) {
+export function aboutBool(mod: Mod) {
   definePrimFn(mod, "bool?", 1, (x) => Values.Bool(Values.isBool(x)))
 
   define(mod, "true", Values.Bool(true))

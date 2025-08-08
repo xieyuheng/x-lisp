@@ -1,8 +1,8 @@
 import { runCode } from "../load/index.ts"
 import { type Mod } from "../mod/index.ts"
 
-export async function aboutPredicate(mod: Mod) {
-  await runCode(
+export function aboutPredicate(mod: Mod) {
+  runCode(
     mod,
     `\
 (define (negate p x) (not (p x)))

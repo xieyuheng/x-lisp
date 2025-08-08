@@ -2,7 +2,7 @@ import { definePrimFn } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
-export async function aboutRecord(mod: Mod) {
+export function aboutRecord(mod: Mod) {
   definePrimFn(mod, "record-length", 1, (x) =>
     Values.Int(Object.keys(Values.asTael(x).attributes).length),
   )
