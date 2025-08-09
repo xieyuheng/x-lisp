@@ -1,12 +1,11 @@
-`aboutSchema` -- `the` -- call `evaluate/the`
-`evaluate/the`
-
 # claim
 
-`applyWithSchema` -- `Claimed` -- in debug mod
-
+`evaluate/the` -- setup
+`aboutSchema` -- `the` -- call `evaluate/the`
+`evaluate/the`
+test `the`
+`applyWithSchema` -- `Claimed` -- in debug mod -- call `the`
 examples/predicate/claim.test.lisp
-
 `equal` -- support `Claimed`
 
 # match
