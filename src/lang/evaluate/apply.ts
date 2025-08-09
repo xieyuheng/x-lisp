@@ -1,4 +1,5 @@
 import assert from "node:assert"
+import { flags } from "../../flags.ts"
 import { emptyEnv, envUpdate } from "../env/index.ts"
 import { equal } from "../equal/index.ts"
 import { formatValue } from "../format/index.ts"
@@ -9,6 +10,14 @@ import { evaluate, resultValue } from "./evaluate.ts"
 export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "Lambda") {
     return apply(Values.CurriedLambda(target, []), args)
+  }
+
+  if (target.kind === "Claimed") {
+    if (!flags.debug) {
+      return apply(target.value, args)
+    }
+
+    throw new Error("TODO")
   }
 
   if (target.kind === "CurriedLambda") {
