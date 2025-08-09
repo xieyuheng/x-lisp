@@ -11,7 +11,7 @@ export function handleDefine(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "Claim") {
-    claim(mod, stmt.name, resultValue(evaluate(stmt.exp)(mod, emptyEnv())))
+    claim(mod, stmt.name, resultValue(evaluate(stmt.schema)(mod, emptyEnv())))
   }
 
   if (stmt.kind === "DefineData") {

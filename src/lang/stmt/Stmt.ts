@@ -51,7 +51,7 @@ export type DataConstructorSpec = { name: string; fields: Array<DataField> }
 export type Claim = {
   kind: "Claim"
   name: string
-  exp: Exp
+  schema: Exp
   meta: Meta
 }
 
@@ -106,11 +106,11 @@ export function DefineData(
   }
 }
 
-export function Claim(name: string, exp: Exp, meta: Meta): Claim {
+export function Claim(name: string, schema: Exp, meta: Meta): Claim {
   return {
     kind: "Claim",
     name,
-    exp,
+    schema,
     meta,
   }
 }

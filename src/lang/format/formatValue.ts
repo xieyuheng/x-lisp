@@ -99,7 +99,7 @@ export function formatValue(value: Value): string {
     }
 
     case "Claimed": {
-      return `(the ${formatValue(value.arrow)} ${formatValue(value.value)})`
+      return `(the ${formatValue(value.schema)} ${formatValue(value.value)})`
     }
   }
 }

@@ -67,7 +67,7 @@ export type Arrow = {
 export type Claimed = {
   kind: "Claimed"
   value: Value
-  arrow: Arrow
+  schema: Value
 }
 
 export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
@@ -138,10 +138,10 @@ export function Arrow(args: Array<Value>, ret: Value): Arrow {
   }
 }
 
-export function Claimed(value: Value, arrow: Arrow): Claimed {
+export function Claimed(value: Value, schema: Value): Claimed {
   return {
     kind: "Claimed",
     value,
-    arrow,
+    schema,
   }
 }

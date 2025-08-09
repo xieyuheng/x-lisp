@@ -46,8 +46,8 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
       ),
   ),
 
-  X.matcher("`(claim ,name ,exp)", ({ name, exp }, { span }) =>
-    Stmts.Claim(X.symbolToString(name), matchExp(exp), { span }),
+  X.matcher("`(claim ,name ,schema)", ({ name, schema }, { span }) =>
+    Stmts.Claim(X.symbolToString(name), matchExp(schema), { span }),
   ),
 
   X.matcher("exp", ({ exp }, { span }) =>
