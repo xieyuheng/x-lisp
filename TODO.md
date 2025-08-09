@@ -1,7 +1,6 @@
 # match
 
 `pattern` -- `match` -- `ApplyPattern`
-`pattern` -- `match` -- `DataConstructorPattern`
 
 # examples
 

@@ -30,7 +30,15 @@ export function match(target: Value, pattern: Pattern): Effect {
 
     case "DataConstructorPattern": {
       return (env) => {
-        throw new Error("TODO")
+        if (
+          target.kind === "Data" &&
+          equal(target.constructor, pattern.constructor) &&
+          target.constructor.fields.length === 0
+        ) {
+          return env
+        } else {
+          return undefined
+        }
       }
     }
   }
