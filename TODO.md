@@ -1,6 +1,5 @@
 # match
 
-`pattern` -- `match` -- setup
 `evaluate` -- `Match` -- call `patternize` and `match`
 
 `pattern` -- `patternize`
