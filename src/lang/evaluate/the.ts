@@ -10,7 +10,7 @@ export function the(schema: Value, value: Value): Value {
 
   if (result.kind === "Bool") {
     if (result.content === false) {
-      let message = `(the) assertion fail`
+      let message = `(the) assertion fail\n`
       message += `  schema: ${formatValue(schema)}\n`
       message += `  value: ${formatValue(value)}\n`
       throw new Error(message)
