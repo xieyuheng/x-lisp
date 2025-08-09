@@ -60,8 +60,8 @@ export type Void = {
 
 export type Arrow = {
   kind: "Arrow"
-  args: Array<Value>
-  ret: Value
+  argSchemas: Array<Value>
+  retSchema: Value
 }
 
 export type Claimed = {
@@ -130,11 +130,11 @@ export function Void(): Void {
   }
 }
 
-export function Arrow(args: Array<Value>, ret: Value): Arrow {
+export function Arrow(argSchemas: Array<Value>, retSchema: Value): Arrow {
   return {
     kind: "Arrow",
-    args,
-    ret,
+    argSchemas,
+    retSchema,
   }
 }
 

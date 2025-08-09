@@ -60,7 +60,10 @@ export function equal(lhs: Value, rhs: Value): boolean {
   if (lhs.kind === "Arrow" && rhs.kind === "Arrow") {
     lhs = arrowNormalize(lhs)
     rhs = arrowNormalize(rhs)
-    return equalValues(lhs.args, rhs.args) && equal(lhs.ret, rhs.ret)
+    return (
+      equalValues(lhs.argSchemas, rhs.argSchemas) &&
+      equal(lhs.retSchema, rhs.retSchema)
+    )
   }
 
   return same(lhs, rhs)
