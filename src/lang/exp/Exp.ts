@@ -23,46 +23,25 @@ export type Exp =
   | Inter
   | Arrow
 
-export type Var = { kind: "Var"; name: string; meta: Meta }
+export type Var = {
+  kind: "Var"
+  name: string
+  meta: Meta
+}
+
+export function Var(name: string, meta: Meta): Var {
+  return {
+    kind: "Var",
+    name,
+    meta,
+  }
+}
+
 export type Lambda = {
   kind: "Lambda"
   parameters: Array<string>
   body: Exp
   meta: Meta
-}
-export type Apply = { kind: "Apply"; target: Exp; args: Array<Exp>; meta: Meta }
-export type Begin = { kind: "Begin"; sequence: Array<Exp>; meta: Meta }
-export type Assign = { kind: "Assign"; name: string; rhs: Exp; meta: Meta }
-export type Assert = { kind: "Assert"; exp: Exp; meta: Meta }
-export type Tael = {
-  kind: "Tael"
-  elements: Array<Exp>
-  attributes: Attributes
-  meta: Meta
-}
-export type Quote = { kind: "Quote"; data: Data; meta: Meta }
-export type If = {
-  kind: "If"
-  condition: Exp
-  consequent: Exp
-  alternative: Exp
-  meta: Meta
-}
-export type And = { kind: "And"; exps: Array<Exp>; meta: Meta }
-export type Or = { kind: "Or"; exps: Array<Exp>; meta: Meta }
-
-export type Cond = { kind: "Cond"; condLines: Array<CondLine>; meta: Meta }
-export type CondLine = { question: Exp; answer: Exp }
-
-export type Match = { kind: "Match"; matchLines: Array<MatchLine>; meta: Meta }
-export type MatchLine = { pattern: Exp; body: Exp }
-
-export type Union = { kind: "Union"; exps: Array<Exp>; meta: Meta }
-export type Inter = { kind: "Inter"; exps: Array<Exp>; meta: Meta }
-export type Arrow = { kind: "Arrow"; args: Array<Exp>; ret: Exp; meta: Meta }
-
-export function Var(name: string, meta: Meta): Var {
-  return { kind: "Var", name, meta }
 }
 
 export function Lambda(
@@ -70,23 +49,79 @@ export function Lambda(
   body: Exp,
   meta: Meta,
 ): Lambda {
-  return { kind: "Lambda", parameters, body, meta }
+  return {
+    kind: "Lambda",
+    parameters,
+    body,
+    meta,
+  }
+}
+
+export type Apply = {
+  kind: "Apply"
+  target: Exp
+  args: Array<Exp>
+  meta: Meta
 }
 
 export function Apply(target: Exp, args: Array<Exp>, meta: Meta): Apply {
-  return { kind: "Apply", target, args, meta }
+  return {
+    kind: "Apply",
+    target,
+    args,
+    meta,
+  }
+}
+
+export type Begin = {
+  kind: "Begin"
+  sequence: Array<Exp>
+  meta: Meta
 }
 
 export function Begin(sequence: Array<Exp>, meta: Meta): Begin {
-  return { kind: "Begin", sequence, meta }
+  return {
+    kind: "Begin",
+    sequence,
+    meta,
+  }
+}
+
+export type Assign = {
+  kind: "Assign"
+  name: string
+  rhs: Exp
+  meta: Meta
 }
 
 export function Assign(name: string, rhs: Exp, meta: Meta): Assign {
-  return { kind: "Assign", name, rhs, meta }
+  return {
+    kind: "Assign",
+    name,
+    rhs,
+    meta,
+  }
+}
+
+export type Assert = {
+  kind: "Assert"
+  exp: Exp
+  meta: Meta
 }
 
 export function Assert(exp: Exp, meta: Meta): Assert {
-  return { kind: "Assert", exp, meta }
+  return {
+    kind: "Assert",
+    exp,
+    meta,
+  }
+}
+
+export type Tael = {
+  kind: "Tael"
+  elements: Array<Exp>
+  attributes: Attributes
+  meta: Meta
 }
 
 export function Tael(
@@ -102,8 +137,26 @@ export function Tael(
   }
 }
 
+export type Quote = {
+  kind: "Quote"
+  data: Data
+  meta: Meta
+}
+
 export function Quote(data: Data, meta: Meta): Quote {
-  return { kind: "Quote", data, meta }
+  return {
+    kind: "Quote",
+    data,
+    meta,
+  }
+}
+
+export type If = {
+  kind: "If"
+  condition: Exp
+  consequent: Exp
+  alternative: Exp
+  meta: Meta
 }
 
 export function If(
@@ -121,12 +174,43 @@ export function If(
   }
 }
 
+export type And = {
+  kind: "And"
+  exps: Array<Exp>
+  meta: Meta
+}
+
 export function And(exps: Array<Exp>, meta: Meta): And {
-  return { kind: "And", exps, meta }
+  return {
+    kind: "And",
+    exps,
+    meta,
+  }
+}
+
+export type Or = {
+  kind: "Or"
+  exps: Array<Exp>
+  meta: Meta
 }
 
 export function Or(exps: Array<Exp>, meta: Meta): Or {
-  return { kind: "Or", exps, meta }
+  return {
+    kind: "Or",
+    exps,
+    meta,
+  }
+}
+
+export type Cond = {
+  kind: "Cond"
+  condLines: Array<CondLine>
+  meta: Meta
+}
+
+export type CondLine = {
+  question: Exp
+  answer: Exp
 }
 
 export function Cond(condLines: Array<CondLine>, meta: Meta): Cond {
@@ -137,16 +221,58 @@ export function Cond(condLines: Array<CondLine>, meta: Meta): Cond {
   }
 }
 
+export type Match = {
+  kind: "Match"
+  matchLines: Array<MatchLine>
+  meta: Meta
+}
+
+export type MatchLine = {
+  pattern: Exp
+  body: Exp
+}
+
 export function Match(matchLines: Array<MatchLine>, meta: Meta): Match {
-  return { kind: "Match", matchLines, meta }
+  return {
+    kind: "Match",
+    matchLines,
+    meta,
+  }
+}
+
+export type Union = {
+  kind: "Union"
+  exps: Array<Exp>
+  meta: Meta
 }
 
 export function Union(exps: Array<Exp>, meta: Meta): Union {
-  return { kind: "Union", exps, meta }
+  return {
+    kind: "Union",
+    exps,
+    meta,
+  }
+}
+
+export type Inter = {
+  kind: "Inter"
+  exps: Array<Exp>
+  meta: Meta
 }
 
 export function Inter(exps: Array<Exp>, meta: Meta): Inter {
-  return { kind: "Inter", exps, meta }
+  return {
+    kind: "Inter",
+    exps,
+    meta,
+  }
+}
+
+export type Arrow = {
+  kind: "Arrow"
+  args: Array<Exp>
+  ret: Exp
+  meta: Meta
 }
 
 export function Arrow(args: Array<Exp>, ret: Exp, meta: Meta): Arrow {
