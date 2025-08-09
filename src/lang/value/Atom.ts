@@ -1,15 +1,20 @@
 export type Atom = Bool | Symbol | String | Int | Float
-export type Bool = { kind: "Bool"; content: boolean }
-export type Symbol = { kind: "Symbol"; content: string }
-export type String = { kind: "String"; content: string }
-export type Int = { kind: "Int"; content: number }
-export type Float = { kind: "Float"; content: number }
+
+export type Bool = {
+  kind: "Bool"
+  content: boolean
+}
 
 export function Bool(content: boolean): Bool {
   return {
     kind: "Bool",
     content,
   }
+}
+
+export type Symbol = {
+  kind: "Symbol"
+  content: string
 }
 
 export function Symbol(content: string): Symbol {
@@ -19,11 +24,21 @@ export function Symbol(content: string): Symbol {
   }
 }
 
+export type String = {
+  kind: "String"
+  content: string
+}
+
 export function String(content: string): String {
   return {
     kind: "String",
     content,
   }
+}
+
+export type Int = {
+  kind: "Int"
+  content: number
 }
 
 export function Int(content: number): Int {
@@ -35,6 +50,11 @@ export function Int(content: number): Int {
     kind: "Int",
     content,
   }
+}
+
+export type Float = {
+  kind: "Float"
+  content: number
 }
 
 export function Float(content: number): Float {
