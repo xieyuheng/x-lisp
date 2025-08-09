@@ -2,6 +2,12 @@ import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Value } from "./Value.ts"
 
+export type DataSpec = {
+  mod: Mod
+  predicate: DataPredicate
+  constructors: Record<string, DataConstructor>
+}
+
 export type AboutData =
   | Data
   | DataPredicate
@@ -10,16 +16,21 @@ export type AboutData =
   | DataConstructorPredicate
   | DataGetter
 
-export type DataSpec = {
-  mod: Mod
-  predicate: DataPredicate
-  constructors: Record<string, DataConstructor>
-}
-
 export type Data = {
   kind: "Data"
   constructor: DataConstructor
   elements: Array<Value>
+}
+
+export function Data(
+  constructor: DataConstructor,
+  elements: Array<Value>,
+): Data {
+  return {
+    kind: "Data",
+    constructor,
+    elements,
+  }
 }
 
 export type DataConstructor = {
@@ -32,42 +43,6 @@ export type DataConstructor = {
 export type DataField = {
   name: string
   predicate: Exp
-}
-
-export type DataPredicate = {
-  kind: "DataPredicate"
-  spec: DataSpec
-  name: string
-  parameters: Array<string>
-}
-
-export type CurriedDataPredicate = {
-  kind: "CurriedDataPredicate"
-  predicate: DataPredicate
-  args: Array<Value>
-}
-
-export type DataConstructorPredicate = {
-  kind: "DataConstructorPredicate"
-  constructor: DataConstructor
-}
-
-export type DataGetter = {
-  kind: "DataGetter"
-  constructor: DataConstructor
-  fieldName: string
-  fieldIndex: number
-}
-
-export function Data(
-  constructor: DataConstructor,
-  elements: Array<Value>,
-): Data {
-  return {
-    kind: "Data",
-    constructor,
-    elements,
-  }
 }
 
 export function DataConstructor(
@@ -83,6 +58,13 @@ export function DataConstructor(
   }
 }
 
+export type DataPredicate = {
+  kind: "DataPredicate"
+  spec: DataSpec
+  name: string
+  parameters: Array<string>
+}
+
 export function DataPredicate(
   spec: DataSpec,
   name: string,
@@ -96,6 +78,12 @@ export function DataPredicate(
   }
 }
 
+export type CurriedDataPredicate = {
+  kind: "CurriedDataPredicate"
+  predicate: DataPredicate
+  args: Array<Value>
+}
+
 export function CurriedDataPredicate(
   predicate: DataPredicate,
   args: Array<Value>,
@@ -107,6 +95,11 @@ export function CurriedDataPredicate(
   }
 }
 
+export type DataConstructorPredicate = {
+  kind: "DataConstructorPredicate"
+  constructor: DataConstructor
+}
+
 export function DataConstructorPredicate(
   constructor: DataConstructor,
 ): DataConstructorPredicate {
@@ -114,6 +107,13 @@ export function DataConstructorPredicate(
     kind: "DataConstructorPredicate",
     constructor,
   }
+}
+
+export type DataGetter = {
+  kind: "DataGetter"
+  constructor: DataConstructor
+  fieldName: string
+  fieldIndex: number
 }
 
 export function DataGetter(

@@ -1,7 +1,6 @@
 # match
 
 fix the order of `Value` sum types
-fix the order of `Data` sum types
 
 test `expFreeNames` -- `Match`
 `pattern/` -- setup `Pattern`
