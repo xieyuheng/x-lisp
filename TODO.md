@@ -1,6 +1,5 @@
 # claim
 
-`applyWithSchema` -- `Claimed` -- in debug mod -- call `the`
 examples/predicate/claim.test.lisp
 `equal` -- support `Claimed`
 
