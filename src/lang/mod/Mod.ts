@@ -11,9 +11,15 @@ export type Def = {
   value: Value
 }
 
+export type Claim = {
+  name: string
+  value: Value
+}
+
 export type Mod = {
   url: URL
   defs: Map<string, Def>
+  claims: Map<string, Claim>
   code: string
   stmts: Array<Stmt>
 }
@@ -22,21 +28,14 @@ export function createMod(url: URL): Mod {
   return {
     url,
     defs: new Map(),
+    claims: new Map(),
     code: "",
     stmts: [],
   }
 }
 
-export function modSet(mod: Mod, name: string, def: Def): void {
-  mod.defs.set(name, def)
-}
-
-export function modGet(mod: Mod, name: string): Def | undefined {
-  return mod.defs.get(name)
-}
-
 export function modGetValue(mod: Mod, name: string): Value | undefined {
-  const def = modGet(mod, name)
+  const def = mod.defs.get(name)
   if (def === undefined) return undefined
 
   return def.value

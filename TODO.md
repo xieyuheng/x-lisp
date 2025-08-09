@@ -1,6 +1,5 @@
 # claim
 
-`Mod` has `claims`
 `define/claim` -- like `define`
 `handleDefine` -- handle `(claim)`
 examples/predicate/claim.test.lisp
