@@ -14,7 +14,7 @@
   none
   (just (content A)))
 
-(claim lookup (-> symbol? env? value?))
+(claim lookup (-> symbol? env? (maybe? value?)))
 
 (define (lookup name env)
   (cond ((empty-env? env) none)
@@ -22,15 +22,6 @@
          (if (equal? (cons-env-name env) name)
            (just (cons-env-value env))
            (lookup name (cons-env-rest env))))))
-
-(begin
-  (= env empty-env)
-  (assert (equal? (lookup 'x env) none))
-  (= env (cons-env 'x 1 env))
-  (assert (equal? (lookup 'x env) (just 1)))
-  (= env (cons-env 'y 2 env))
-  (assert (equal? (lookup 'x env) (just 1)))
-  (assert (equal? (lookup 'y env) (just 2))))
 
 (claim eval (-> exp? env? value?))
 

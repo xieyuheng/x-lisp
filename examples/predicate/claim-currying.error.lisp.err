@@ -1,0 +1,4 @@
+(the) assertion fail
+  schema: int?
+  value: 2.0
+

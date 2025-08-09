@@ -1,6 +1,5 @@
 # claim
 
-examples/predicate/claim.test.lisp
 `equal` -- support `Claimed`
 
 # match

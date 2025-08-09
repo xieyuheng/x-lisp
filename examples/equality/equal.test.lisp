@@ -5,11 +5,11 @@
 
 ;; curried lambda
 
-(define (my-iadd x y) (iadd x y))
+(define (my-add x y) (iadd x y))
 
-(assert (equal? (my-iadd 1 2) 3))
-(assert (equal? (my-iadd 1) (my-iadd 1)))
-(assert (not (equal? (my-iadd 1) (my-iadd 2))))
+(assert (equal? (my-add 1 2) 3))
+(assert (equal? (my-add 1) (my-add 1)))
+(assert (not (equal? (my-add 1) (my-add 2))))
 
 ;; curried data predicate
 

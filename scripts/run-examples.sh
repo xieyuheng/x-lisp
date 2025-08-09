@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-bin="node ./lib/main.js run"
+bin="node ./lib/main.js debug"
 ext=lisp
 
 for example in $(find examples -name "*.${ext}" -not -name "*.snapshot.${ext}" -not -name "*.error.${ext}" -not -name "*.play.${ext}" -not -name "*.benchmark.${ext}"); do
