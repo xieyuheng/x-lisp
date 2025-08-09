@@ -1,7 +1,5 @@
 # match
 
-fix the order of `Value` sum types
-
 test `expFreeNames` -- `Match`
 `pattern/` -- setup `Pattern`
 `patternize`

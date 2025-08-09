@@ -24,6 +24,14 @@ export type Tael = {
   attributes: Attributes
 }
 
+export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
+  return {
+    kind: "Tael",
+    elements,
+    attributes,
+  }
+}
+
 export type Lambda = {
   kind: "Lambda"
   mod: Mod
@@ -31,51 +39,6 @@ export type Lambda = {
   parameters: Array<string>
   body: Exp
   definedName?: string
-}
-
-export type CurriedLambda = {
-  kind: "CurriedLambda"
-  lambda: Lambda
-  args: Array<Value>
-}
-
-export type ValueFn = (...args: Array<Value>) => Value
-
-export type PrimFn = {
-  kind: "PrimFn"
-  name: string
-  arity: number
-  fn: ValueFn
-}
-
-export type CurriedPrimFn = {
-  kind: "CurriedPrimFn"
-  primFn: PrimFn
-  args: Array<Value>
-}
-
-export type Void = {
-  kind: "Void"
-}
-
-export type Arrow = {
-  kind: "Arrow"
-  argSchemas: Array<Value>
-  retSchema: Value
-}
-
-export type Claimed = {
-  kind: "Claimed"
-  value: Value
-  schema: Value
-}
-
-export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
-  return {
-    kind: "Tael",
-    elements,
-    attributes,
-  }
 }
 
 export function Lambda(
@@ -93,6 +56,12 @@ export function Lambda(
   }
 }
 
+export type CurriedLambda = {
+  kind: "CurriedLambda"
+  lambda: Lambda
+  args: Array<Value>
+}
+
 export function CurriedLambda(
   lambda: Lambda,
   args: Array<Value>,
@@ -104,6 +73,15 @@ export function CurriedLambda(
   }
 }
 
+export type PrimFn = {
+  kind: "PrimFn"
+  name: string
+  arity: number
+  fn: ValueFn
+}
+
+export type ValueFn = (...args: Array<Value>) => Value
+
 export function PrimFn(name: string, arity: number, fn: ValueFn): PrimFn {
   return {
     kind: "PrimFn",
@@ -111,6 +89,12 @@ export function PrimFn(name: string, arity: number, fn: ValueFn): PrimFn {
     arity,
     fn,
   }
+}
+
+export type CurriedPrimFn = {
+  kind: "CurriedPrimFn"
+  primFn: PrimFn
+  args: Array<Value>
 }
 
 export function CurriedPrimFn(
@@ -124,10 +108,20 @@ export function CurriedPrimFn(
   }
 }
 
+export type Void = {
+  kind: "Void"
+}
+
 export function Void(): Void {
   return {
     kind: "Void",
   }
+}
+
+export type Arrow = {
+  kind: "Arrow"
+  argSchemas: Array<Value>
+  retSchema: Value
 }
 
 export function Arrow(argSchemas: Array<Value>, retSchema: Value): Arrow {
@@ -136,6 +130,12 @@ export function Arrow(argSchemas: Array<Value>, retSchema: Value): Arrow {
     argSchemas,
     retSchema,
   }
+}
+
+export type Claimed = {
+  kind: "Claimed"
+  value: Value
+  schema: Value
 }
 
 export function Claimed(value: Value, schema: Value): Claimed {
