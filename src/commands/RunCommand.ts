@@ -26,7 +26,7 @@ export const RunCommand: Command = {
       const url = createUrlOrFileUrl(commander.args[0])
       await load(url)
     } catch (error) {
-      errorReport(error)
+      console.log(errorReport(error))
       process.exit(1)
     }
   },

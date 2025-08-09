@@ -1,3 +1,7 @@
+[applyWithSchema] fail
+  schema: (-> int? int? int?)
+  target: my-add
+  args: [1.0 1.0]
 (the) assertion fail
   schema: int?
   value: 1.0

@@ -1,7 +1,7 @@
-export function errorReport(error: unknown): void {
+export function errorReport(error: unknown): string {
   if (error instanceof Error) {
-    console.log(error.message)
+    return error.message
   } else {
-    console.log("unknown error:", error)
+    return `unknown error: ${error}`
   }
 }

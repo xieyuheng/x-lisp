@@ -1,3 +1,7 @@
+[applyWithSchema] fail
+  schema: (-> int? int? int?)
+  target: my-mul
+  args: [2.0 2.0]
 (the) assertion fail
   schema: int?
   value: 2.0

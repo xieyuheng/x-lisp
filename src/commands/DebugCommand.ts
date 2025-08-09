@@ -28,7 +28,7 @@ export const DebugCommand: Command = {
       flags.debug = true
       await load(url)
     } catch (error) {
-      errorReport(error)
+      console.log(errorReport(error))
       process.exit(1)
     }
   },
