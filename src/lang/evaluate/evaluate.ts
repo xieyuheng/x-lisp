@@ -205,7 +205,10 @@ export function evaluate(exp: Exp): Effect {
     }
 
     case "Match": {
-      throw new Error("TODO")
+      return (mod, env) => {
+        // TODO
+        return [env, Values.Void()]
+      }
     }
 
     case "Union": {

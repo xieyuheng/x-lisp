@@ -1,10 +1,11 @@
 # match
 
-`patternize`
-parse `(match)`
-`match(pattern, value)`
-`evaluate` -- `Match`
 test `expFreeNames` -- `Match`
+
+`patternize`
+`pattern` -- `match` -- setup
+`evaluate` -- `Match` -- call `patternize` and `match`
+`pattern` -- `match(pattern, value)`
 
 # examples
 

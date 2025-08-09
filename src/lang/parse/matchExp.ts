@@ -78,10 +78,13 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
   ),
 
-  X.matcher("(cons 'cond lines)", ({ lines }, { span }) => {
-    const condLines = X.dataToArray(lines).map(matchCondLine)
-    return Exps.Cond(condLines, { span })
-  }),
+  X.matcher("(cons 'cond lines)", ({ lines }, { span }) =>
+    Exps.Cond(X.dataToArray(lines).map(matchCondLine), { span }),
+  ),
+
+  X.matcher("(cons 'match lines)", ({ lines }, { span }) =>
+    Exps.Match(X.dataToArray(lines).map(matchMatchLine), { span }),
+  ),
 
   X.matcher("(cons target args)", ({ target, args }, { span }) =>
     Exps.Apply(matchExp(target), X.dataToArray(args).map(matchExp), { span }),
@@ -120,6 +123,18 @@ export function matchCondLine(data: X.Data): Exps.CondLine {
       return {
         question: matchExp(question),
         answer: matchExp(answer),
+      }
+    }),
+    data,
+  )
+}
+
+export function matchMatchLine(data: X.Data): Exps.MatchLine {
+  return X.match(
+    X.matcher("(cons pattern body)", ({ pattern, body }, { span }) => {
+      return {
+        pattern: matchExp(pattern),
+        body: Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
       }
     }),
     data,
