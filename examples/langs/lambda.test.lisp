@@ -12,4 +12,4 @@
   (assert (equal? (eval id-exp empty-env)
                   (closure 'x (var-exp 'x) empty-env)))
   (assert (equal? (eval id-id-exp empty-env)
-                  (closure 'x (var-exp 'x) empty-env)))  )
+                  (closure 'x (var-exp 'x) empty-env))))
