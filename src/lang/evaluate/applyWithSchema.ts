@@ -5,6 +5,7 @@ import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import { apply } from "./apply.ts"
 import { the } from "./the.ts"
+import { validate } from "./validate.ts"
 
 export function applyWithSchema(
   schema: Value,
@@ -28,7 +29,16 @@ export function applyWithSchema(
           ([schema, arg]) => the(schema, arg),
         )
         const result = apply(target, claimedArgs)
-        return the(arrow.retSchema, result)
+        if (validate(arrow.retSchema, result)) {
+          return result
+        } else {
+          let message = `[applyWithSchema] fail to validate the result\n`
+          message += `  schema: ${formatValue(schema)}\n`
+          message += `  target: ${formatValue(target)}\n`
+          message += `  args: [${args.map(formatValue).join(" ")}]\n`
+          message += `  result: ${formatValue(result)}\n`
+          throw new Error(message)
+        }
       }
 
       if (arrow.argSchemas.length > args.length) {
@@ -42,7 +52,7 @@ export function applyWithSchema(
         return the(newArrow, result)
       }
     } catch (error) {
-      let message = `[applyWithSchema] fail\n`
+      let message = `[applyWithSchema] fail to validate an argument\n`
       message += `  schema: ${formatValue(schema)}\n`
       message += `  target: ${formatValue(target)}\n`
       message += `  args: [${args.map(formatValue).join(" ")}]\n`

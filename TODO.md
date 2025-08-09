@@ -1,7 +1,3 @@
-# claim
-
-improve `(claim)` error report on result error
-
 # match
 
 `Match` as `Exp`

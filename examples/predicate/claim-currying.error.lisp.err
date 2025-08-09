@@ -1,4 +1,4 @@
-[applyWithSchema] fail
+[applyWithSchema] fail to validate an argument
   schema: (-> int? int? int?)
   target: my-add
   args: [1.0 1.0]

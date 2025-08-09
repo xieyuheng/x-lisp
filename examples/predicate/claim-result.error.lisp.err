@@ -1,8 +1,10 @@
-[applyWithSchema] fail
+[applyWithSchema] fail to validate an argument
   schema: (-> int? int? int?)
   target: my-add
   args: [1 1]
-(the) assertion fail
-  schema: int?
-  value: 'abc
+[applyWithSchema] fail to validate the result
+  schema: (-> int? int? int?)
+  target: my-add
+  args: [1 1]
+  result: 'abc
 
