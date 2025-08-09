@@ -1,6 +1,5 @@
 # match
 
-`pattern` -- `patternize`
 `pattern` -- `match`
 
 # examples

@@ -1,32 +1,46 @@
 import { type DataConstructor } from "../value/Data.ts"
 
-export type Pattern = PatternVar | DataPattern
+export type Pattern = VarPattern | ApplyPattern | DataConstructorPattern
 
-export type PatternVar = {
-  kind: "PatternVar"
+export type VarPattern = {
+  kind: "VarPattern"
   name: string
 }
 
-export function PatternVar(name: string): PatternVar {
+export function VarPattern(name: string): VarPattern {
   return {
-    kind: "PatternVar",
+    kind: "VarPattern",
     name,
   }
 }
 
-export type DataPattern = {
-  kind: "DataPattern"
-  constructor: DataConstructor
+export type ApplyPattern = {
+  kind: "ApplyPattern"
+  target: Pattern
   args: Array<Pattern>
 }
 
-export function DataPattern(
-  constructor: DataConstructor,
+export function ApplyPattern(
+  target: Pattern,
   args: Array<Pattern>,
-): DataPattern {
+): ApplyPattern {
   return {
-    kind: "DataPattern",
-    constructor,
+    kind: "ApplyPattern",
+    target,
     args,
+  }
+}
+
+export type DataConstructorPattern = {
+  kind: "DataConstructorPattern"
+  constructor: DataConstructor
+}
+
+export function DataConstructorPattern(
+  constructor: DataConstructor,
+): DataConstructorPattern {
+  return {
+    kind: "DataConstructorPattern",
+    constructor,
   }
 }

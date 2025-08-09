@@ -30,13 +30,11 @@ export function evaluate(exp: Exp): Effect {
   switch (exp.kind) {
     case "Var": {
       return (mod, env) => {
-        let value = undefined
+        const value = envGet(env, exp.name)
+        if (value) return [env, value]
 
-        value = envGet(env, exp.name)
-        if (value !== undefined) return [env, value]
-
-        value = modGetValue(mod, exp.name)
-        if (value !== undefined) return [env, value]
+        const topValue = modGetValue(mod, exp.name)
+        if (topValue) return [env, topValue]
 
         let message = `[evaluate] I meet undefined name: ${exp.name}\n`
         message += `[source] ${urlRelativeToCwd(mod.url)}\n`
