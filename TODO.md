@@ -1,6 +1,6 @@
 # claim
 
-`Claimed` as `Value`
+`equal` -- support `Claimed`
 when claim defined change the value to be `Claimed`
 when define claimed change the value to be `Claimed`
 `apply` -- `Claimed` -- in non debug mode

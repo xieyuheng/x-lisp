@@ -97,5 +97,9 @@ export function formatValue(value: Value): string {
       const ret = formatValue(value.ret)
       return `(-> ${args.join(" ")} ${ret})`
     }
+
+    case "Claimed": {
+      return `(the ${formatValue(value.arrow)} ${formatValue(value.value)})`
+    }
   }
 }

@@ -16,6 +16,7 @@ export type Value =
   | Void
   | AboutData
   | Arrow
+  | Claimed
 
 export type Tael = {
   kind: "Tael"
@@ -61,6 +62,12 @@ export type Arrow = {
   kind: "Arrow"
   args: Array<Value>
   ret: Value
+}
+
+export type Claimed = {
+  kind: "Claimed"
+  value: Value
+  arrow: Arrow
 }
 
 export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
@@ -128,5 +135,13 @@ export function Arrow(args: Array<Value>, ret: Value): Arrow {
     kind: "Arrow",
     args,
     ret,
+  }
+}
+
+export function Claimed(value: Value, arrow: Arrow): Claimed {
+  return {
+    kind: "Claimed",
+    value,
+    arrow,
   }
 }
