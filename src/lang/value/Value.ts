@@ -30,7 +30,6 @@ export type Lambda = {
   parameters: Array<string>
   body: Exp
   definedName?: string
-  claims: Array<Value>
 }
 
 export type CurriedLambda = {
@@ -84,7 +83,6 @@ export function Lambda(
     env,
     parameters,
     body,
-    claims: [],
   }
 }
 

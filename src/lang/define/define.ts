@@ -15,10 +15,5 @@ export function define(mod: Mod, name: string, value: Value): void {
 
   if (value.kind === "Lambda" && value.definedName === undefined) {
     value.definedName = name
-
-    const claimedValue = mod.claims.get(name)
-    if (claimedValue) {
-      value.claims.push(claimedValue)
-    }
   }
 }

@@ -1,5 +1,5 @@
 import { formatValue } from "../format/index.ts"
-import { modGetValue, type Mod } from "../mod/index.ts"
+import { type Mod } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
 
 export function claim(mod: Mod, name: string, value: Value): void {
@@ -12,9 +12,4 @@ export function claim(mod: Mod, name: string, value: Value): void {
   }
 
   mod.claims.set(name, value)
-
-  const definedValue = modGetValue(mod, name)
-  if (definedValue && definedValue.kind === "Lambda") {
-    definedValue.claims.push(value)
-  }
 }
