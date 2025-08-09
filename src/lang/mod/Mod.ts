@@ -11,15 +11,10 @@ export type Def = {
   value: Value
 }
 
-export type Claim = {
-  name: string
-  value: Value
-}
-
 export type Mod = {
   url: URL
   defs: Map<string, Def>
-  claims: Map<string, Claim>
+  claims: Map<string, Value>
   code: string
   stmts: Array<Stmt>
 }

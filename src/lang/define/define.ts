@@ -1,11 +1,13 @@
 import { formatValue } from "../format/index.ts"
-import { type Mod } from "../mod/index.ts"
+import { modGetValue, type Mod } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
 
 export function define(mod: Mod, name: string, value: Value): void {
-  if (mod.defs.get(name)) {
+  const found = modGetValue(mod, name)
+  if (found) {
     let message = `[define] I can not redefine name: ${name}\n`
-    message += `  to value: ${formatValue(value)}\n`
+    message += `  new value: ${formatValue(value)}\n`
+    message += `  old value: ${formatValue(found)}\n`
     throw new Error(message)
   }
 
