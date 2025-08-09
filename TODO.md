@@ -1,6 +1,9 @@
+`aboutSchema` -- `the` -- call `evaluate/the`
+`evaluate/the`
+
 # claim
 
-`apply` -- `Claimed` -- in debug mod
+`applyWithSchema` -- `Claimed` -- in debug mod
 
 examples/predicate/claim.test.lisp
 

@@ -51,7 +51,7 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   if (target.kind === "Claimed") {
     if (flags.debug) {
-      return applyWithClaimedSchema(target.schema, target.value, args)
+      return applyWithSchema(target.schema, target.value, args)
     } else {
       return apply(target.value, args)
     }
@@ -205,10 +205,17 @@ function applyDataPredicate(
   return Values.Bool(true)
 }
 
-function applyWithClaimedSchema(
+function applyWithSchema(
   schema: Value,
   target: Value,
   args: Array<Value>,
 ): Value {
-  throw new Error()
+  if (schema.kind === "Arrow") {
+    const arrow = Values.arrowNormalize(schema)
+    //
+  }
+
+  let message = `[applyWithSchema] unhandled kind of schema\n`
+  message += `  schema: ${formatValue(schema)}\n`
+  throw new Error(message)
 }
