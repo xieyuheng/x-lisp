@@ -36,9 +36,9 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Apply": {
-      return effectUnionMany([
+      return effectUnion([
         expFreeNames(exp.target),
-        effectUnionMany(exp.args.map(expFreeNames)),
+        effectUnion(exp.args.map(expFreeNames)),
       ])
     }
 
@@ -61,9 +61,9 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Tael": {
-      return effectUnionMany([
-        effectUnionMany(exp.elements.map(expFreeNames)),
-        effectUnionMany(Object.values(exp.attributes).map(expFreeNames)),
+      return effectUnion([
+        effectUnion(exp.elements.map(expFreeNames)),
+        effectUnion(Object.values(exp.attributes).map(expFreeNames)),
       ])
     }
 
@@ -72,7 +72,7 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "If": {
-      return effectUnionMany([
+      return effectUnion([
         expFreeNames(exp.condition),
         expFreeNames(exp.consequent),
         expFreeNames(exp.alternative),
@@ -80,17 +80,17 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "And": {
-      return effectUnionMany(exp.exps.map(expFreeNames))
+      return effectUnion(exp.exps.map(expFreeNames))
     }
 
     case "Or": {
-      return effectUnionMany(exp.exps.map(expFreeNames))
+      return effectUnion(exp.exps.map(expFreeNames))
     }
 
     case "Cond": {
-      return effectUnionMany(
+      return effectUnion(
         exp.condLines.map((condLine) =>
-          effectUnionMany([
+          effectUnion([
             expFreeNames(condLine.question),
             expFreeNames(condLine.answer),
           ]),
@@ -101,7 +101,7 @@ export function expFreeNames(exp: Exp): Effect {
     case "Match": {
       // We cheat by viewing all names (all free names)
       // in pattern as bound names.
-      return effectUnionMany(
+      return effectUnion(
         exp.matchLines.map((matchLine) =>
           effectSequence([
             effectInverse(expFreeNames(matchLine.pattern)),
@@ -112,17 +112,17 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Union": {
-      return effectUnionMany(exp.exps.map(expFreeNames))
+      return effectUnion(exp.exps.map(expFreeNames))
     }
 
     case "Inter": {
-      return effectUnionMany(exp.exps.map(expFreeNames))
+      return effectUnion(exp.exps.map(expFreeNames))
     }
 
     case "Arrow": {
-      return effectUnionMany([
+      return effectUnion([
         expFreeNames(exp.ret),
-        effectUnionMany(exp.args.map(expFreeNames)),
+        effectUnion(exp.args.map(expFreeNames)),
       ])
     }
   }
@@ -139,7 +139,7 @@ function identityEffect(): Effect {
   }
 }
 
-function effectUnionMany(effects: Array<Effect>): Effect {
+function effectUnion(effects: Array<Effect>): Effect {
   return (boundNames) => {
     return {
       boundNames,
