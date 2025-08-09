@@ -4,7 +4,7 @@ import process from "node:process"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
-import { envGet, envSet, envUpdate, type Env } from "../env/index.ts"
+import { emptyEnv, envGet, envSet, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
 import { modGetValue, modReportSource, type Mod } from "../mod/index.ts"
@@ -207,7 +207,7 @@ export function evaluate(exp: Exp): Effect {
         const target = resultValue(evaluate(exp.target)(mod, env))
         for (const matchLine of exp.matchLines) {
           const pattern = patternize(matchLine.pattern)(mod, env)
-          const resultEnv = match(target, pattern)
+          const resultEnv = match(target, pattern)(emptyEnv())
           if (resultEnv) {
             return evaluate(matchLine.body)(mod, envUpdate(env, resultEnv))
           }
