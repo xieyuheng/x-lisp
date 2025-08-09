@@ -1,7 +1,11 @@
+import { definePrimFn } from "../define/index.ts"
+import { the } from "../evaluate/index.ts"
 import { runCode } from "../load/index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function aboutPredicate(mod: Mod) {
+  definePrimFn(mod, "the", 2, the)
+
   runCode(
     mod,
     `\
