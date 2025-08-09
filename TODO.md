@@ -1,6 +1,5 @@
 # claim
 
-`evaluate/the` -- setup
 `aboutSchema` -- `the` -- call `evaluate/the`
 `evaluate/the`
 test `the`
