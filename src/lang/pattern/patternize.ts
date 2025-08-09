@@ -6,5 +6,5 @@ import type { Pattern } from "./Pattern.ts"
 type Effect = (mod: Mod, env: Env) => Pattern
 
 export function patternize(exp: Exp): Effect {
-  throw new Error("TODO")
+  throw new Error("TODO patternize")
 }

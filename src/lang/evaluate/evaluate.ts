@@ -4,10 +4,11 @@ import process from "node:process"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
-import { envGet, envSet, type Env } from "../env/index.ts"
+import { envGet, envSet, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
 import { modGetValue, modReportSource, type Mod } from "../mod/index.ts"
+import { match, patternize } from "../pattern/index.ts"
 import { usePreludeMod } from "../prelude/index.ts"
 import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
@@ -37,10 +38,9 @@ export function evaluate(exp: Exp): Effect {
         value = modGetValue(mod, exp.name)
         if (value !== undefined) return [env, value]
 
-        throw new Error(
-          `[evaluate] I meet undefined name: ${exp.name}\n` +
-            `[source] ${urlRelativeToCwd(mod.url)}\n`,
-        )
+        let message = `[evaluate] I meet undefined name: ${exp.name}\n`
+        message += `[source] ${urlRelativeToCwd(mod.url)}\n`
+        throw new Error(message)
       }
     }
 
@@ -206,8 +206,18 @@ export function evaluate(exp: Exp): Effect {
 
     case "Match": {
       return (mod, env) => {
-        // TODO
-        return [env, Values.Void()]
+        const target = resultValue(evaluate(exp.target)(mod, env))
+        for (const matchLine of exp.matchLines) {
+          const pattern = patternize(matchLine.pattern)(mod, env)
+          const resultEnv = match(target, pattern)
+          if (resultEnv) {
+            return evaluate(matchLine.body)(mod, envUpdate(env, resultEnv))
+          }
+        }
+
+        let message = `[evaluate] (match) mismatch\n`
+        message += `[source] ${urlRelativeToCwd(mod.url)}\n`
+        throw new Error(message)
       }
     }
 
