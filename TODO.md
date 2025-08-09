@@ -1,6 +1,5 @@
 # claim
 
-lambda has claim
 when define claimed or claim defined, add the claim to lambda
 
 `apply` -- `Arrow` to `Lambda` -- add claim to `Lambda`
