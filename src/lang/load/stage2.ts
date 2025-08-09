@@ -1,7 +1,7 @@
 import { type Mod, modImport, modOwnDefs } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 
-export function handleImport(mod: Mod, stmt: Stmt): void {
+export function stage2(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Import") {
     const importedMod = modImport(mod, stmt.path)
     for (const entry of stmt.entries) {

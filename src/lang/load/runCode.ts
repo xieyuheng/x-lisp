@@ -6,9 +6,9 @@ import { formatValue } from "../format/index.ts"
 import { modNames, modOwnDefs, type Def, type Mod } from "../mod/index.ts"
 import { parseStmts } from "../parse/parse.ts"
 import * as Values from "../value/index.ts"
-import { handleDefine } from "./handleDefine.ts"
-import { handleEffect } from "./handleEffect.ts"
-import { handleImport } from "./handleImport.ts"
+import { stage1 } from "./stage1.ts"
+import { stage2 } from "./stage2.ts"
+import { stage3 } from "./stage3.ts"
 
 export function runCode(mod: Mod, code: string): void {
   const stmts = parseStmts(code)
@@ -16,10 +16,10 @@ export function runCode(mod: Mod, code: string): void {
   mod.code = mod.code + code
   mod.stmts = [...mod.stmts, ...stmts]
 
-  for (const stmt of stmts) handleDefine(mod, stmt)
-  for (const stmt of stmts) handleImport(mod, stmt)
+  for (const stmt of stmts) stage1(mod, stmt)
+  for (const stmt of stmts) stage2(mod, stmt)
   for (const def of modOwnDefs(mod)) assertNoUndefinedName(def)
-  for (const stmt of stmts) handleEffect(mod, stmt)
+  for (const stmt of stmts) stage3(mod, stmt)
 }
 
 function assertNoUndefinedName(def: Def): void {

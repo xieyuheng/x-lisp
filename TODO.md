@@ -5,8 +5,6 @@ fix the order of `exp/Atom` sum types
 fix the order of `Value` sum types
 fix the order of `Data` sum types
 
-load -- use stage1 stage2 stage3 -- instead of handle*
-
 test `expFreeNames` -- `Match`
 `pattern/` -- setup `Pattern`
 `patternize`
