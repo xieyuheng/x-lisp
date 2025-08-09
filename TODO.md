@@ -1,3 +1,5 @@
+[prelude] `data?`
+
 # examples
 
 lambda -- `read-list` from file
