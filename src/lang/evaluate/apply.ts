@@ -1,11 +1,13 @@
 import assert from "node:assert"
 import { flags } from "../../flags.ts"
-import { emptyEnv, envUpdate } from "../env/index.ts"
 import { equal } from "../equal/index.ts"
 import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
-import { evaluate, resultValue } from "./evaluate.ts"
+import { applyDataGetter } from "./applyDataGetter.ts"
+import { applyDataPredicate } from "./applyDataPredicate.ts"
+import { applyLambda } from "./applyLambda.ts"
+import { applyWithSchema } from "./applyWithSchema.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "Lambda") {
@@ -14,10 +16,9 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   if (target.kind === "CurriedLambda") {
     if (args.length === 0) {
-      throw new Error(
-        `[apply] Can not apply lambda to zero arguments\n` +
-          `  target: ${formatValue(target)}\n`,
-      )
+      let message = `[apply] Can not apply lambda to zero arguments\n`
+      message += `  target: ${formatValue(target)}\n`
+      throw new Error(message)
     }
 
     const arity = target.lambda.parameters.length
@@ -27,20 +28,7 @@ export function apply(target: Value, args: Array<Value>): Value {
       return Values.CurriedLambda(target.lambda, totalArgs)
     }
 
-    let env = target.lambda.env
-    for (const [index, parameter] of target.lambda.parameters.entries()) {
-      env = envUpdate(env, parameter, totalArgs[index])
-    }
-
-    const restArgs = totalArgs.slice(arity)
-    const result = resultValue(
-      evaluate(target.lambda.body)(target.lambda.mod, env),
-    )
-    if (restArgs.length === 0) {
-      return result
-    } else {
-      return apply(result, restArgs)
-    }
+    return applyLambda(target.lambda, totalArgs)
   }
 
   if (target.kind === "Arrow") {
@@ -73,20 +61,18 @@ export function apply(target: Value, args: Array<Value>): Value {
       return target.primFn.fn(...totalArgs)
     }
 
-    throw new Error(
-      `[apply] Too many arguments\n` +
-        `  target: ${formatValue(target)}\n` +
-        `  args: [${args.map(formatValue).join(" ")}]\n`,
-    )
+    let message = `[apply] Too many arguments\n`
+    message += `  target: ${formatValue(target)}\n`
+    message += `  args: [${args.map(formatValue).join(" ")}]\n`
+    throw new Error(message)
   }
 
   if (target.kind === "DataConstructor") {
     if (target.fields.length !== args.length) {
-      throw new Error(
-        `[apply] data constructor arity mismatch\n` +
-          `  target: ${formatValue(target)}\n` +
-          `  args: [${args.map(formatValue).join(" ")}]\n`,
-      )
+      let message = `[apply] data constructor arity mismatch\n`
+      message += `  target: ${formatValue(target)}\n`
+      message += `  args: [${args.map(formatValue).join(" ")}]\n`
+      throw new Error(message)
     }
 
     return Values.Data(target, args)
@@ -94,48 +80,20 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   if (target.kind === "DataConstructorPredicate") {
     if (args.length !== 1) {
-      throw new Error(
-        `[apply] data constructor predicate can only take one argument\n` +
-          `  target: ${formatValue(target)}\n` +
-          `  args: [${args.map(formatValue).join(" ")}]\n`,
-      )
+      let message = `[apply] data constructor predicate can only take one argument\n`
+      message += `  target: ${formatValue(target)}\n`
+      message += `  args: [${args.map(formatValue).join(" ")}]\n`
+      throw new Error(message)
     }
 
     const data = args[0]
-
     return Values.Bool(
       data.kind === "Data" && equal(target.constructor, data.constructor),
     )
   }
 
   if (target.kind === "DataGetter") {
-    if (args.length !== 1) {
-      throw new Error(
-        `[apply] data getter can only take one argument\n` +
-          `  target: ${formatValue(target)}\n` +
-          `  args: [${args.map(formatValue).join(" ")}]\n`,
-      )
-    }
-
-    const data = args[0]
-
-    if (data.kind !== "Data") {
-      throw new Error(
-        `[apply] data getter can only take data as argument\n` +
-          `  target: ${formatValue(target)}\n` +
-          `  args: [${args.map(formatValue).join(" ")}]\n`,
-      )
-    }
-
-    if (!equal(data.constructor, target.constructor)) {
-      throw new Error(
-        `[apply] data getter constructor mismatch\n` +
-          `  target: ${formatValue(target)}\n` +
-          `  args: [${args.map(formatValue).join(" ")}]\n`,
-      )
-    }
-
-    return data.elements[target.fieldIndex]
+    return applyDataGetter(target, args)
   }
 
   if (target.kind === "DataPredicate") {
@@ -154,68 +112,14 @@ export function apply(target: Value, args: Array<Value>): Value {
       return applyDataPredicate(target.predicate, totalArgs)
     }
 
-    throw new Error(
-      `[apply] Too many arguments\n` +
-        `  target: ${formatValue(target)}\n` +
-        `  args: [${args.map(formatValue).join(" ")}]\n`,
-    )
+    let message = `[apply] Too many arguments\n`
+    message += `  target: ${formatValue(target)}\n`
+    message += `  args: [${args.map(formatValue).join(" ")}]\n`
+    throw new Error(message)
   }
 
-  throw new Error(
-    `[apply] I can not handle this kind of target\n` +
-      `  target: ${formatValue(target)}\n` +
-      `  args: [${args.map(formatValue).join(" ")}]\n`,
-  )
-}
-
-function applyDataPredicate(
-  predicate: Values.DataPredicate,
-  args: Array<Value>,
-): Value {
-  const arity = predicate.parameters.length + 1
-  assert(args.length === arity)
-
-  let env = emptyEnv()
-  for (const [index, parameter] of predicate.parameters.entries()) {
-    env = envUpdate(env, parameter, args[index])
-  }
-
-  const data = args[args.length - 1]
-  if (data.kind !== "Data") return Values.Bool(false)
-  const constructor = predicate.spec.constructors[data.constructor.name]
-  if (constructor === undefined) return Values.Bool(false)
-  for (const [index, field] of constructor.fields.entries()) {
-    const target = resultValue(
-      evaluate(field.predicate)(predicate.spec.mod, env),
-    )
-    const element = data.elements[index]
-    const result = apply(target, [element])
-    if (result.kind !== "Bool") {
-      throw new Error(
-        `[applyDataPredicate] I expect the result of a data field predicate to be bool\n` +
-          `  data field predicate: ${formatValue(target)}\n` +
-          `  data element: ${formatValue(element)}\n` +
-          `  result: ${formatValue(result)}\n`,
-      )
-    } else if (result.content === false) {
-      return Values.Bool(false)
-    }
-  }
-
-  return Values.Bool(true)
-}
-
-function applyWithSchema(
-  schema: Value,
-  target: Value,
-  args: Array<Value>,
-): Value {
-  if (schema.kind === "Arrow") {
-    const arrow = Values.arrowNormalize(schema)
-    //
-  }
-
-  let message = `[applyWithSchema] unhandled kind of schema\n`
-  message += `  schema: ${formatValue(schema)}\n`
+  let message = `[apply] I can not handle this kind of target\n`
+  message += `  target: ${formatValue(target)}\n`
+  message += `  args: [${args.map(formatValue).join(" ")}]\n`
   throw new Error(message)
 }
