@@ -1,6 +1,5 @@
 # match
 
-`expFreeNames` -- `effectSequence` for `Begin`
 `expFreeNames` -- `Match`
 `evaluate` -- `Match`
 

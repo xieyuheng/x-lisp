@@ -48,19 +48,7 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Begin": {
-      return (boundNames) => {
-        let freeNames = new Set<string>()
-        for (const e of exp.sequence) {
-          const result = expFreeNames(e)(boundNames)
-          boundNames = result.boundNames
-          freeNames = setUnion(freeNames, result.freeNames)
-        }
-
-        return {
-          boundNames,
-          freeNames,
-        }
-      }
+      return effectSequence(exp.sequence.map(expFreeNames))
     }
 
     case "Assign": {
@@ -161,6 +149,22 @@ function effectUnion(lhs: Effect, rhs: Effect): Effect {
     return {
       boundNames,
       freeNames: setUnion(lhs(boundNames).freeNames, rhs(boundNames).freeNames),
+    }
+  }
+}
+
+function effectSequence(effects: Array<Effect>): Effect {
+  return (boundNames) => {
+    let freeNames = new Set<string>()
+    for (const effect of effects) {
+      const result = effect(boundNames)
+      boundNames = result.boundNames
+      freeNames = setUnion(freeNames, result.freeNames)
+    }
+
+    return {
+      boundNames,
+      freeNames,
     }
   }
 }
