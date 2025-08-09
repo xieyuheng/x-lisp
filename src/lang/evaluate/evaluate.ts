@@ -4,7 +4,7 @@ import process from "node:process"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
-import { envFindValue, envUpdate, type Env } from "../env/index.ts"
+import { envGet, envSet, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
 import { modGetValue, modReportSource, type Mod } from "../mod/index.ts"
@@ -31,7 +31,7 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         let value = undefined
 
-        value = envFindValue(env, exp.name)
+        value = envGet(env, exp.name)
         if (value !== undefined) return [env, value]
 
         value = modGetValue(mod, exp.name)
@@ -74,7 +74,7 @@ export function evaluate(exp: Exp): Effect {
     case "Assign": {
       return (mod, env) => {
         const value = resultValue(evaluate(exp.rhs)(mod, env))
-        return [envUpdate(env, exp.name, value), Values.Void()]
+        return [envSet(env, exp.name, value), Values.Void()]
       }
     }
 

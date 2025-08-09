@@ -1,9 +1,13 @@
 # match
 
-`patternize`
+envUpdate -- update target by env
+
+`pattern` -- `patternize` -- setup
 `pattern` -- `match` -- setup
 `evaluate` -- `Match` -- call `patternize` and `match`
-`pattern` -- `match(pattern, value)`
+
+`pattern` -- `match`
+`pattern` -- `patternize`
 
 # examples
 

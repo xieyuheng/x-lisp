@@ -10,10 +10,10 @@ export function envNames(env: Env): Set<string> {
   return new Set(env.keys())
 }
 
-export function envFindValue(env: Env, name: string): undefined | Value {
+export function envGet(env: Env, name: string): undefined | Value {
   return env.get(name)
 }
 
-export function envUpdate(env: Env, name: string, value: Value): Env {
+export function envSet(env: Env, name: string, value: Value): Env {
   return new Map([...env, [name, value]])
 }
