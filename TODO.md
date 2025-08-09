@@ -1,10 +1,12 @@
 # claim
 
-`handleDefine` -- handle `(claim)`
-examples/predicate/claim.test.lisp
+lambda has claim
+when define claimed or claim defined, add the claim to lambda
 
-`apply` -- `Arrow` to `Lambda` -- add claim to `Lambda` -- be careful about claim and currying
-`apply` -- `Lambda` -- use `claims` during debug
+`apply` -- `Arrow` to `Lambda` -- add claim to `Lambda`
+`apply` -- `Lambda` -- use `claims` during debug -- be careful about claim and currying
+
+examples/predicate/claim.test.lisp
 
 # match
 

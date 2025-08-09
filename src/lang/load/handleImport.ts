@@ -13,11 +13,6 @@ export function handleImport(mod: Mod, stmt: Stmt): void {
       }
 
       const name = entry.rename || entry.name
-      if (mod.defs.get(name)) {
-        let message = `(import) I can not redefine name: ${name}\n`
-        throw new Error(message)
-      }
-
       mod.defs.set(name, def)
     }
   }
@@ -25,11 +20,6 @@ export function handleImport(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Require") {
     const importedMod = modImport(mod, stmt.path)
     for (const def of modOwnDefs(importedMod)) {
-      if (mod.defs.get(def.name)) {
-        let message = `(require) I can not redefine name: ${def.name}\n`
-        throw new Error(message)
-      }
-
       mod.defs.set(def.name, def)
     }
   }
