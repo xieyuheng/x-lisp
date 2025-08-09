@@ -224,6 +224,7 @@ export function Cond(condLines: Array<CondLine>, meta: Meta): Cond {
 
 export type Match = {
   kind: "Match"
+  target: Exp
   matchLines: Array<MatchLine>
   meta: Meta
 }
@@ -233,9 +234,14 @@ export type MatchLine = {
   body: Exp
 }
 
-export function Match(matchLines: Array<MatchLine>, meta: Meta): Match {
+export function Match(
+  target: Exp,
+  matchLines: Array<MatchLine>,
+  meta: Meta,
+): Match {
   return {
     kind: "Match",
+    target,
     matchLines,
     meta,
   }

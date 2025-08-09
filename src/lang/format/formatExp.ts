@@ -90,7 +90,7 @@ export function formatExp(exp: Exp): string {
 
     case "Match": {
       const matchLines = exp.matchLines.map(formatMatchLine)
-      return `(match ${matchLines.join(" ")})`
+      return `(match ${formatExp(exp.target)} ${matchLines.join(" ")})`
     }
 
     case "Union": {

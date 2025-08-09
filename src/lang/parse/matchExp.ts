@@ -82,8 +82,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     Exps.Cond(X.dataToArray(lines).map(matchCondLine), { span }),
   ),
 
-  X.matcher("(cons 'match lines)", ({ lines }, { span }) =>
-    Exps.Match(X.dataToArray(lines).map(matchMatchLine), { span }),
+  X.matcher("(cons* 'match target lines)", ({ target, lines }, { span }) =>
+    Exps.Match(matchExp(target), X.dataToArray(lines).map(matchMatchLine), {
+      span,
+    }),
   ),
 
   X.matcher("(cons target args)", ({ target, args }, { span }) =>

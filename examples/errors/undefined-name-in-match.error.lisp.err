@@ -1,0 +1,6 @@
+[assertLambdaNoFreeName] fail
+  undefined names: [tal]
+  lambda defined name: length
+  lambda: (lambda (target) (begin (match target (nil (begin 0)) ((li head tail) (begin (iadd 1 (length tal)))))))
+[source] examples/errors/undefined-name-in-match.error.lisp
+
