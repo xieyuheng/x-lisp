@@ -1,7 +1,3 @@
-# match
-
-`pattern` -- `match` -- `ApplyPattern`
-
 # examples
 
 my-list -- test with `(match)`

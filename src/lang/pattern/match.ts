@@ -1,3 +1,4 @@
+import { arrayZip } from "../../utils/array/arrayZip.ts"
 import { envGet, envSet, type Env } from "../env/index.ts"
 import { equal } from "../equal/index.ts"
 import type { Value } from "../value/index.ts"
@@ -24,7 +25,15 @@ export function match(target: Value, pattern: Pattern): Effect {
 
     case "ApplyPattern": {
       return (env) => {
-        throw new Error("TODO")
+        if (
+          pattern.target.kind === "DataConstructorPattern" &&
+          target.kind === "Data" &&
+          equal(target.constructor, pattern.target.constructor)
+        ) {
+          return matchMany(target.elements, pattern.args)(env)
+        } else {
+          return undefined
+        }
       }
     }
 
@@ -41,5 +50,20 @@ export function match(target: Value, pattern: Pattern): Effect {
         }
       }
     }
+  }
+}
+
+function matchMany(targets: Array<Value>, patterns: Array<Pattern>): Effect {
+  return (env) => {
+    if (targets.length !== patterns.length) return undefined
+
+    for (const [target, pattern] of arrayZip(targets, patterns)) {
+      const result = match(target, pattern)(env)
+      if (!result) return undefined
+
+      env = result
+    }
+
+    return env
   }
 }
