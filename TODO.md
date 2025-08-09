@@ -1,11 +1,10 @@
 # match
 
-`pattern` -- `patternize` -- setup
 `pattern` -- `match` -- setup
 `evaluate` -- `Match` -- call `patternize` and `match`
 
-`pattern` -- `match`
 `pattern` -- `patternize`
+`pattern` -- `match`
 
 # examples
 
