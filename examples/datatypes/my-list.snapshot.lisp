@@ -1,4 +1,0 @@
-(require "my-list.lisp")
-
-nil
-(li 1 (li 2 (li 3 nil)))

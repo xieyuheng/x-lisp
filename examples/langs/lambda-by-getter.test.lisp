@@ -1,4 +1,4 @@
-(require "lambda.lisp")
+(require "lambda-by-getter.lisp")
 
 (begin
   (= exp (apply-exp (var-exp 'f) (var-exp 'x)))
