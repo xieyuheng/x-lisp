@@ -50,11 +50,11 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "Claimed") {
-    if (!flags.debug) {
+    if (flags.debug) {
+      return applyWithClaimedSchema(target.schema, target.value, args)
+    } else {
       return apply(target.value, args)
     }
-
-    throw new Error("TODO")
   }
 
   if (target.kind === "PrimFn") {
@@ -203,4 +203,12 @@ function applyDataPredicate(
   }
 
   return Values.Bool(true)
+}
+
+function applyWithClaimedSchema(
+  schema: Value,
+  target: Value,
+  args: Array<Value>,
+): Value {
+  throw new Error()
 }

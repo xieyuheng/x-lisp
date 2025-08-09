@@ -1,6 +1,5 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
-import * as Values from "../value/index.ts"
-import { type Attributes, type Value } from "../value/index.ts"
+import { arrowNormalize, type Attributes, type Value } from "../value/index.ts"
 import { same } from "./same.ts"
 
 export function equal(lhs: Value, rhs: Value): boolean {
@@ -59,21 +58,12 @@ export function equal(lhs: Value, rhs: Value): boolean {
   }
 
   if (lhs.kind === "Arrow" && rhs.kind === "Arrow") {
-    lhs = normalizeArrow(lhs)
-    rhs = normalizeArrow(rhs)
+    lhs = arrowNormalize(lhs)
+    rhs = arrowNormalize(rhs)
     return equalValues(lhs.args, rhs.args) && equal(lhs.ret, rhs.ret)
   }
 
   return same(lhs, rhs)
-}
-
-function normalizeArrow(arrow: Values.Arrow): Values.Arrow {
-  if (arrow.ret.kind === "Arrow") {
-    const retArrow = normalizeArrow(arrow.ret)
-    return Values.Arrow([...arrow.args, ...retArrow.args], retArrow.ret)
-  }
-
-  return arrow
 }
 
 function equalValues(lhs: Array<Value>, rhs: Array<Value>): boolean {

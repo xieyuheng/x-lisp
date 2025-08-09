@@ -1,3 +1,4 @@
+export * from "./arrowUtils.ts"
 export * from "./Atom.ts"
 export * from "./atomUtils.ts"
 export * from "./Data.ts"
