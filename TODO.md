@@ -1,9 +1,3 @@
-[prelude] `data?` -- we need a predicate for x-data
-
-- but maybe `data?` is not the right name,
-  because of `Values.Data`.
-
-# examples
-
-lambda -- `read-list` from file
-lambda -- `write-list` to file
+[prelude] `sexp?` -- with the help of `isSexp`
+[prelude] `read-sexp-list` from file
+[prelude] `write-sexp-list` to file
