@@ -1,6 +1,5 @@
 # match
 
-`expFreeNames` -- remove `effectUnion`
 `expFreeNames` -- rename `effectUnionMany` to `effectUnion`
 
 fix the order of `Exp` sum types

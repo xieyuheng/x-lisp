@@ -36,10 +36,10 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Apply": {
-      return effectUnion(
+      return effectUnionMany([
         expFreeNames(exp.target),
         effectUnionMany(exp.args.map(expFreeNames)),
-      )
+      ])
     }
 
     case "Begin": {
@@ -61,10 +61,10 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Tael": {
-      return effectUnion(
+      return effectUnionMany([
         effectUnionMany(exp.elements.map(expFreeNames)),
         effectUnionMany(Object.values(exp.attributes).map(expFreeNames)),
-      )
+      ])
     }
 
     case "Quote": {
@@ -90,10 +90,10 @@ export function expFreeNames(exp: Exp): Effect {
     case "Cond": {
       return effectUnionMany(
         exp.condLines.map((condLine) =>
-          effectUnion(
+          effectUnionMany([
             expFreeNames(condLine.question),
             expFreeNames(condLine.answer),
-          ),
+          ]),
         ),
       )
     }
@@ -120,10 +120,10 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Arrow": {
-      return effectUnion(
+      return effectUnionMany([
         expFreeNames(exp.ret),
         effectUnionMany(exp.args.map(expFreeNames)),
-      )
+      ])
     }
   }
 }
@@ -146,15 +146,6 @@ function effectUnionMany(effects: Array<Effect>): Effect {
       freeNames: setUnionMany(
         effects.map((effect) => effect(boundNames).freeNames),
       ),
-    }
-  }
-}
-
-function effectUnion(lhs: Effect, rhs: Effect): Effect {
-  return (boundNames) => {
-    return {
-      boundNames,
-      freeNames: setUnion(lhs(boundNames).freeNames, rhs(boundNames).freeNames),
     }
   }
 }
