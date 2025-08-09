@@ -1,6 +1,6 @@
 import { setAdd, setUnion, setUnionMany } from "../../utils/set/setAlgebra.ts"
 import { isAtom } from "../value/index.ts"
-import { type Exp } from "./index.ts"
+import { type Exp, type MatchLine } from "./Exp.ts"
 
 type Result = { boundNames: Set<string>; freeNames: Set<string> }
 type Effect = (boundNames: Set<string>) => Result
@@ -99,16 +99,9 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Match": {
-      // We cheat by viewing all names (all free names)
-      // in pattern as bound names.
       return effectUnion([
         expFreeNames(exp.target),
-        ...exp.matchLines.map((matchLine) =>
-          effectSequence([
-            effectFreeAsBound(expFreeNames(matchLine.pattern)),
-            expFreeNames(matchLine.body),
-          ]),
-        ),
+        ...exp.matchLines.map(matchLineFreeNames),
       ])
     }
 
@@ -126,6 +119,17 @@ export function expFreeNames(exp: Exp): Effect {
         effectUnion(exp.args.map(expFreeNames)),
       ])
     }
+  }
+}
+
+function matchLineFreeNames(matchLine: MatchLine): Effect {
+  return (boundNames) => {
+    // We cheat by viewing all names in pattern as free names,
+    // and use them as bound names in the body.
+    const patternResult = expFreeNames(matchLine.pattern)(new Set())
+    return expFreeNames(matchLine.body)(
+      setUnion(boundNames, patternResult.freeNames),
+    )
   }
 }
 
@@ -163,16 +167,6 @@ function effectSequence(effects: Array<Effect>): Effect {
     return {
       boundNames,
       freeNames,
-    }
-  }
-}
-
-function effectFreeAsBound(effect: Effect): Effect {
-  return (boundNames) => {
-    const result = effect(boundNames)
-    return {
-      boundNames: result.freeNames,
-      freeNames: new Set(),
     }
   }
 }
