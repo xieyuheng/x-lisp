@@ -1,11 +1,12 @@
 import { type Meta } from "../exp/index.ts"
 
 export type Atom = Bool | Symbol | String | Int | Float
-export type Bool = { kind: "Bool"; content: boolean; meta: Meta }
-export type Symbol = { kind: "Symbol"; content: string; meta: Meta }
-export type String = { kind: "String"; content: string; meta: Meta }
-export type Int = { kind: "Int"; content: number; meta: Meta }
-export type Float = { kind: "Float"; content: number; meta: Meta }
+
+export type Bool = {
+  kind: "Bool"
+  content: boolean
+  meta: Meta
+}
 
 export function Bool(content: boolean, meta: Meta): Bool {
   return {
@@ -13,6 +14,12 @@ export function Bool(content: boolean, meta: Meta): Bool {
     content,
     meta,
   }
+}
+
+export type Symbol = {
+  kind: "Symbol"
+  content: string
+  meta: Meta
 }
 
 export function Symbol(content: string, meta: Meta): Symbol {
@@ -23,12 +30,24 @@ export function Symbol(content: string, meta: Meta): Symbol {
   }
 }
 
+export type String = {
+  kind: "String"
+  content: string
+  meta: Meta
+}
+
 export function String(content: string, meta: Meta): String {
   return {
     kind: "String",
     content,
     meta,
   }
+}
+
+export type Int = {
+  kind: "Int"
+  content: number
+  meta: Meta
 }
 
 export function Int(content: number, meta: Meta): Int {
@@ -41,6 +60,12 @@ export function Int(content: number, meta: Meta): Int {
     content,
     meta,
   }
+}
+
+export type Float = {
+  kind: "Float"
+  content: number
+  meta: Meta
 }
 
 export function Float(content: number, meta: Meta): Float {

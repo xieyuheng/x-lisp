@@ -1,6 +1,5 @@
 # match
 
-fix the order of `exp/Atom` sum types
 fix the order of `Value` sum types
 fix the order of `Data` sum types
 
