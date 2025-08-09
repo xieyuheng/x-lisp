@@ -1,6 +1,6 @@
 # claim
 
-when define claimed or claim defined, add the claim to lambda
+when claim defined, add the claim to lambda
 
 `apply` -- `Arrow` to `Lambda` -- add claim to `Lambda`
 `apply` -- `Lambda` -- use `claims` during debug -- be careful about claim and currying
