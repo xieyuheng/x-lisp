@@ -1,6 +1,5 @@
 # claim
 
-`evaluate/the`
 test `the`
 `applyWithSchema` -- `Claimed` -- in debug mod -- call `the`
 examples/predicate/claim.test.lisp
