@@ -34,7 +34,11 @@ export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "Arrow") {
     const [firstArg, ...restArgs] = args
     assert(firstArg)
-    return apply(Values.Claimed(firstArg, target), restArgs)
+    if (restArgs.length === 0) {
+      return Values.Claimed(firstArg, target)
+    } else {
+      return apply(Values.Claimed(firstArg, target), restArgs)
+    }
   }
 
   if (target.kind === "Claimed") {

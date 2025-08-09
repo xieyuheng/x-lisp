@@ -21,3 +21,13 @@
 (assert ((either? int? symbol?) (right 'a)))
 
 (assert (equal? (either? int?) (either? int?)))
+
+;; claimed value
+
+(define (id x) x)
+
+(assert (equal? (the (-> int? int?) id)
+                (the (-> int? int?) id)))
+
+(assert (not (equal? (the (-> int? int?) id)
+                     (the (-> float? float?) id))))

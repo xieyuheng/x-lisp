@@ -1,6 +1,6 @@
 # claim
 
-`equal` -- support `Claimed`
+improve `(claim)` error report
 
 # match
 
