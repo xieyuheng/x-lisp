@@ -1,9 +1,7 @@
 # match
 
-`expFreeNames` -- extract `identityEffect`
-
-remove effectUnion
-rename effectUnionMany to effectUnion
+`expFreeNames` -- remove `effectUnion`
+`expFreeNames` -- rename `effectUnionMany` to `effectUnion`
 
 fix the order of `Exp` sum types
 fix the order of `Value` sum types

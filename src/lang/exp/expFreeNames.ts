@@ -7,12 +7,7 @@ type Effect = (boundNames: Set<string>) => Result
 
 export function expFreeNames(exp: Exp): Effect {
   if (isAtom(exp)) {
-    return (boundNames) => {
-      return {
-        boundNames,
-        freeNames: new Set(),
-      }
-    }
+    return identityEffect()
   }
 
   switch (exp.kind) {
@@ -73,12 +68,7 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Quote": {
-      return (boundNames) => {
-        return {
-          boundNames,
-          freeNames: new Set(),
-        }
-      }
+      return identityEffect()
     }
 
     case "If": {
@@ -109,7 +99,8 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Match": {
-      // We cheat by viewing all names (all free names) in pattern as bound names.
+      // We cheat by viewing all names (all free names)
+      // in pattern as bound names.
       return effectUnionMany(
         exp.matchLines.map((matchLine) =>
           effectSequence([
@@ -138,6 +129,15 @@ export function expFreeNames(exp: Exp): Effect {
 }
 
 // combinators
+
+function identityEffect(): Effect {
+  return (boundNames) => {
+    return {
+      boundNames,
+      freeNames: new Set(),
+    }
+  }
+}
 
 function effectUnionMany(effects: Array<Effect>): Effect {
   return (boundNames) => {
