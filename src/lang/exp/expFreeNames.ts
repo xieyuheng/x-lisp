@@ -109,9 +109,15 @@ export function expFreeNames(exp: Exp): Effect {
     }
 
     case "Match": {
-      // We cheat here, by viewing
-      // all names in pattern as bound names.
-      throw new Error("TODO")
+      // We cheat by viewing all names (all free names) in pattern as bound names.
+      return effectUnionMany(
+        exp.matchLines.map((matchLine) =>
+          effectSequence([
+            effectInverse(expFreeNames(matchLine.pattern)),
+            expFreeNames(matchLine.body),
+          ]),
+        ),
+      )
     }
 
     case "Union": {
@@ -165,6 +171,16 @@ function effectSequence(effects: Array<Effect>): Effect {
     return {
       boundNames,
       freeNames,
+    }
+  }
+}
+
+function effectInverse(effect: Effect): Effect {
+  return (boundNames) => {
+    const result = effect(boundNames)
+    return {
+      boundNames: result.freeNames,
+      freeNames: result.boundNames,
     }
   }
 }
