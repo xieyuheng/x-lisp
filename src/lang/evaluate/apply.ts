@@ -12,14 +12,6 @@ export function apply(target: Value, args: Array<Value>): Value {
     return apply(Values.CurriedLambda(target, []), args)
   }
 
-  if (target.kind === "Claimed") {
-    if (!flags.debug) {
-      return apply(target.value, args)
-    }
-
-    throw new Error("TODO")
-  }
-
   if (target.kind === "CurriedLambda") {
     if (args.length === 0) {
       throw new Error(
@@ -49,6 +41,20 @@ export function apply(target: Value, args: Array<Value>): Value {
     } else {
       return apply(result, restArgs)
     }
+  }
+
+  if (target.kind === "Arrow") {
+    const [firstArg, ...restArgs] = args
+    assert(firstArg)
+    return apply(Values.Claimed(firstArg, target), restArgs)
+  }
+
+  if (target.kind === "Claimed") {
+    if (!flags.debug) {
+      return apply(target.value, args)
+    }
+
+    throw new Error("TODO")
   }
 
   if (target.kind === "PrimFn") {

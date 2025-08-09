@@ -1,6 +1,5 @@
 # claim
 
-`apply` -- `Arrow` to `Lambda` -- create `Claimed`
 `apply` -- `Claimed` -- in debug mod
 
 examples/predicate/claim.test.lisp
