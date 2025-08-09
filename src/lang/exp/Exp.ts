@@ -18,6 +18,7 @@ export type Exp =
   | And
   | Or
   | Cond
+  | Match
   | Union
   | Inter
   | Arrow
@@ -50,16 +51,11 @@ export type If = {
 export type And = { kind: "And"; exps: Array<Exp>; meta: Meta }
 export type Or = { kind: "Or"; exps: Array<Exp>; meta: Meta }
 
-export type Cond = {
-  kind: "Cond"
-  condLines: Array<CondLine>
-  meta: Meta
-}
+export type Cond = { kind: "Cond"; condLines: Array<CondLine>; meta: Meta }
+export type CondLine = { question: Exp; answer: Exp }
 
-export type CondLine = {
-  question: Exp
-  answer: Exp
-}
+export type Match = { kind: "Match"; matchLines: Array<MatchLine>; meta: Meta }
+export type MatchLine = { pattern: Exp; body: Exp }
 
 export type Union = { kind: "Union"; exps: Array<Exp>; meta: Meta }
 export type Inter = { kind: "Inter"; exps: Array<Exp>; meta: Meta }
@@ -139,6 +135,10 @@ export function Cond(condLines: Array<CondLine>, meta: Meta): Cond {
     condLines,
     meta,
   }
+}
+
+export function Match(matchLines: Array<MatchLine>, meta: Meta): Match {
+  return { kind: "Match", matchLines, meta }
 }
 
 export function Union(exps: Array<Exp>, meta: Meta): Union {

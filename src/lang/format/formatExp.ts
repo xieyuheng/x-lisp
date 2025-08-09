@@ -1,5 +1,5 @@
 import { formatData } from "@xieyuheng/x-data.js"
-import type { CondLine } from "../../lang/exp/index.ts"
+import { type CondLine, type MatchLine } from "../../lang/exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatAtom } from "../format/index.ts"
 import { isAtom } from "../value/index.ts"
@@ -88,6 +88,11 @@ export function formatExp(exp: Exp): string {
       return `(cond ${condLines.join(" ")})`
     }
 
+    case "Match": {
+      const matchLines = exp.matchLines.map(formatMatchLine)
+      return `(match ${matchLines.join(" ")})`
+    }
+
     case "Union": {
       const exps = exp.exps.map(formatExp)
       if (exps.length === 0) {
@@ -116,4 +121,8 @@ export function formatExp(exp: Exp): string {
 
 function formatCondLine(condLine: CondLine): string {
   return `(${formatExp(condLine.question)} ${formatExp(condLine.answer)})`
+}
+
+function formatMatchLine(matchLine: MatchLine): string {
+  return `(${formatExp(matchLine.pattern)} ${formatExp(matchLine.body)})`
 }

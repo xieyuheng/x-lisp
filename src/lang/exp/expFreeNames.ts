@@ -120,6 +120,12 @@ export function expFreeNames(exp: Exp): Effect {
       )
     }
 
+    case "Match": {
+      // We cheat here, by viewing
+      // all names in pattern as bound names.
+      throw new Error("TODO")
+    }
+
     case "Union": {
       return effectUnionMany(exp.exps.map(expFreeNames))
     }

@@ -204,6 +204,10 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
+    case "Match": {
+      throw new Error("TODO")
+    }
+
     case "Union": {
       return (mod, env) => {
         const preludeMod = usePreludeMod()

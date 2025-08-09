@@ -1,6 +1,19 @@
 # match
 
-`Match` as `Exp`
+`expFreeNames` -- `effectSequence` for `Begin`
+`expFreeNames` -- `Match`
+`evaluate` -- `Match`
+
+fix the order of `Exp` sum types
+fix the order of `Value` sum types
+fix the order of `Data` sum types
+fix the order of `value/Atom` sum types
+fix the order of `exp/Atom` sum types
+
+load -- use stage1 stage2 stage3 -- instead of handle*
+
+`pattern/` -- setup `Pattern`
+`patternize`
 parse `(match)`
 `match(pattern, value)`
 
