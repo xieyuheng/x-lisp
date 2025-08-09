@@ -1,6 +1,5 @@
 # claim
 
-when define claimed change the value to be `Claimed`
 `apply` -- `Claimed` -- in non debug mode
 `apply` -- `Arrow` to `Lambda` -- create `Claimed`
 `apply` -- `Claimed` -- in debug mod

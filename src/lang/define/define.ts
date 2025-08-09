@@ -1,6 +1,7 @@
 import { formatValue } from "../format/index.ts"
 import { modGetValue, type Mod } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
+import * as Values from "../value/index.ts"
 
 export function define(mod: Mod, name: string, value: Value): void {
   const found = modGetValue(mod, name)
@@ -11,9 +12,15 @@ export function define(mod: Mod, name: string, value: Value): void {
     throw new Error(message)
   }
 
-  mod.defs.set(name, { mod, name, value })
+  const def = { mod, name, value }
+  mod.defs.set(name, def)
 
   if (value.kind === "Lambda" && value.definedName === undefined) {
     value.definedName = name
+
+    const schema = mod.claims.get(name)
+    if (schema) {
+      def.value = Values.Claimed(def.value, schema)
+    }
   }
 }
