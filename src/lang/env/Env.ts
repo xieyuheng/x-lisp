@@ -1,3 +1,4 @@
+import assert from "node:assert"
 import { type Value } from "../value/index.ts"
 
 export type Env = Map<string, Value>
@@ -16,4 +17,14 @@ export function envGet(env: Env, name: string): undefined | Value {
 
 export function envSet(env: Env, name: string, value: Value): Env {
   return new Map([...env, [name, value]])
+}
+
+export function envUpdate(base: Env, env: Env): Env {
+  for (const name of envNames(env)) {
+    const value = envGet(env, name)
+    assert(value)
+    base = envSet(base, name, value)
+  }
+
+  return base
 }
