@@ -11,18 +11,35 @@ export function patternize(exp: Exp): Effect {
   return (mod, env) => {
     if (exp.kind === "Var") {
       const topValue = modGetValue(mod, exp.name)
-      if (topValue && topValue.kind === "DataConstructor") {
-        return Patterns.DataConstructorPattern(topValue)
+      if (
+        topValue &&
+        topValue.kind === "Data" &&
+        topValue.elements.length === 0
+      ) {
+        return Patterns.DataPattern(topValue.constructor, [])
       } else {
         return Patterns.VarPattern(exp.name)
       }
     }
 
     if (exp.kind === "Apply") {
-      return Patterns.ApplyPattern(
-        patternize(exp.target)(mod, env),
-        exp.args.map((arg) => patternize(arg)(mod, env)),
-      )
+      if (exp.target.kind !== "Var") {
+        let message = `[patternize] The target of apply must be a var\n`
+        message += `  exp: ${formatExp(exp)}`
+        throw new Error(message)
+      }
+
+      const topValue = modGetValue(mod, exp.target.name)
+      if (topValue && topValue.kind === "DataConstructor") {
+        return Patterns.DataPattern(
+          topValue,
+          exp.args.map((arg) => patternize(arg)(mod, env)),
+        )
+      } else {
+        let message = `[patternize] The target of apply must be data constructor\n`
+        message += `  exp: ${formatExp(exp)}`
+        throw new Error(message)
+      }
     }
 
     let message = `[patternize] unhandled kind of exp\n`

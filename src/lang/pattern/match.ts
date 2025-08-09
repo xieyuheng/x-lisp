@@ -23,28 +23,13 @@ export function match(target: Value, pattern: Pattern): Effect {
       }
     }
 
-    case "ApplyPattern": {
+    case "DataPattern": {
       return (env) => {
         if (
-          pattern.target.kind === "DataConstructorPattern" &&
           target.kind === "Data" &&
-          equal(target.constructor, pattern.target.constructor)
+          equal(target.constructor, pattern.constructor)
         ) {
           return matchMany(target.elements, pattern.args)(env)
-        } else {
-          return undefined
-        }
-      }
-    }
-
-    case "DataConstructorPattern": {
-      return (env) => {
-        if (
-          target.kind === "Data" &&
-          equal(target.constructor, pattern.constructor) &&
-          target.constructor.fields.length === 0
-        ) {
-          return env
         } else {
           return undefined
         }

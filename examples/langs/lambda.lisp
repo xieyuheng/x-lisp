@@ -36,15 +36,6 @@
                   (lambda-exp-body exp)
                   env))))
 
-;; (define (eval exp env)
-;;   (match exp
-;;     ((var-exp name)
-;;      (just-content (lookup name env)))
-;;     ((apply-exp target arg)
-;;      (apply (eval target env) (eval arg env)))
-;;     ((lambda-exp parameter body)
-;;      (closure parameter body env))))
-
 (claim apply (-> value? value? value?))
 
 (define (apply target arg)
@@ -52,8 +43,3 @@
          (eval (closure-body target)
                (cons-env (closure-parameter target) arg
                          (closure-env target))))))
-
-;; (define (apply target arg)
-;;   (match target
-;;     ((closure parameter body env)
-;;      (eval body (cons-env parameter arg env)))))
