@@ -5,6 +5,7 @@ import { aboutInt } from "./aboutInt.ts"
 import { aboutList } from "./aboutList.ts"
 import { aboutPredicate } from "./aboutPredicate.ts"
 import { aboutRecord } from "./aboutRecord.ts"
+import { aboutSchema } from "./aboutSchema.ts"
 import { aboutString } from "./aboutString.ts"
 import { aboutSymbol } from "./aboutSymbol.ts"
 import { aboutValue } from "./aboutValue.ts"
@@ -25,6 +26,7 @@ export function usePreludeMod(): Mod {
   aboutList(mod)
   aboutRecord(mod)
   aboutPredicate(mod)
+  aboutSchema(mod)
 
   return mod
 }
