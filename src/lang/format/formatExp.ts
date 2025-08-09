@@ -15,7 +15,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Lambda": {
-      return `(lambda (${exp.parameters.join(" ")}) ${formatExp(exp.body)})`
+      return `(lambda (${exp.parameters.join(" ")}) ${formatBody(exp.body)})`
     }
 
     case "Apply": {
@@ -29,8 +29,8 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Begin": {
-      const body = exp.sequence.map(formatExp)
-      return `(begin ${body.join(" ")})`
+      const sequence = exp.sequence.map(formatExp)
+      return `(begin ${sequence.join(" ")})`
     }
 
     case "Assign": {
@@ -119,10 +119,18 @@ export function formatExp(exp: Exp): string {
   }
 }
 
+export function formatBody(body: Exp): string {
+  if (body.kind === "Begin") {
+    return body.sequence.map(formatExp).join(" ")
+  } else {
+    return formatExp(body)
+  }
+}
+
 function formatCondLine(condLine: CondLine): string {
   return `(${formatExp(condLine.question)} ${formatExp(condLine.answer)})`
 }
 
 function formatMatchLine(matchLine: MatchLine): string {
-  return `(${formatExp(matchLine.pattern)} ${formatExp(matchLine.body)})`
+  return `(${formatExp(matchLine.pattern)} ${formatBody(matchLine.body)})`
 }

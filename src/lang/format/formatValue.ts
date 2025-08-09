@@ -1,4 +1,4 @@
-import { formatAtom, formatExp } from "../format/index.ts"
+import { formatAtom, formatBody } from "../format/index.ts"
 import { isAtom, lambdaIsDefined, type Value } from "../value/index.ts"
 
 export function formatValue(value: Value): string {
@@ -28,7 +28,7 @@ export function formatValue(value: Value): string {
         return value.definedName
       }
 
-      return `(lambda (${value.parameters.join(" ")}) ${formatExp(value.body)})`
+      return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 
     case "CurriedLambda": {

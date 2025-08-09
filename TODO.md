@@ -1,6 +1,5 @@
 # match
 
-`formatExp` -- should not print `begin` for `body`
 `patternize`
 `pattern` -- `match` -- setup
 `evaluate` -- `Match` -- call `patternize` and `match`
