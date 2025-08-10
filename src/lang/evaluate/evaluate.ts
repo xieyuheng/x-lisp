@@ -222,7 +222,7 @@ export function evaluate(exp: Exp): Effect {
     case "Union": {
       return (mod, env) => {
         const preludeMod = usePreludeMod()
-        const value = modGetValue(preludeMod, "union-fn")
+        const value = modGetValue(preludeMod, "union/fn")
         assert(value)
         const predicates = exp.exps.map((e) =>
           resultValue(evaluate(e)(mod, env)),
@@ -234,7 +234,7 @@ export function evaluate(exp: Exp): Effect {
     case "Inter": {
       return (mod, env) => {
         const preludeMod = usePreludeMod()
-        const value = modGetValue(preludeMod, "inter-fn")
+        const value = modGetValue(preludeMod, "inter/fn")
         assert(value)
         const predicates = exp.exps.map((e) =>
           resultValue(evaluate(e)(mod, env)),
