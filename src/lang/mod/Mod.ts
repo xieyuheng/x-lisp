@@ -1,4 +1,4 @@
-import { setUnion } from "../../utils/set/setAlgebra.ts"
+import { setUnionMany } from "../../utils/set/setAlgebra.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { type Value } from "../value/index.ts"
 
@@ -14,6 +14,7 @@ export type Mod = {
   claimed: Map<string, Definition>
   defined: Map<string, Definition>
   imported: Map<string, Definition>
+  included: Map<string, Definition>
   code: string
   stmts: Array<Stmt>
 }
@@ -24,13 +25,18 @@ export function createMod(url: URL): Mod {
     claimed: new Map(),
     defined: new Map(),
     imported: new Map(),
+    included: new Map(),
     code: "",
     stmts: [],
   }
 }
 
 export function modNames(mod: Mod): Set<string> {
-  return setUnion(new Set(mod.defined.keys()), new Set(mod.imported.keys()))
+  return setUnionMany([
+    new Set(mod.defined.keys()),
+    new Set(mod.imported.keys()),
+    new Set(mod.included.keys()),
+  ])
 }
 
 export function modLookupValue(mod: Mod, name: string): Value | undefined {
@@ -39,6 +45,9 @@ export function modLookupValue(mod: Mod, name: string): Value | undefined {
 
   const imported = mod.imported.get(name)
   if (imported) return imported.value
+
+  const included = mod.included.get(name)
+  if (included) return included.value
 
   return undefined
 }
@@ -50,12 +59,21 @@ export function modLookupPublicDefinition(
   const defined = mod.defined.get(name)
   if (defined && !defined.isPrivate) return defined
 
+  const included = mod.included.get(name)
+  if (included) return included
+
   return undefined
 }
 
 export function modPublicDefinitions(mod: Mod): Map<string, Definition> {
   const definitions: Map<string, Definition> = new Map()
   for (const [name, definition] of mod.defined.entries()) {
+    if (!definition.isPrivate) {
+      definitions.set(name, definition)
+    }
+  }
+
+  for (const [name, definition] of mod.included.entries()) {
     if (!definition.isPrivate) {
       definitions.set(name, definition)
     }

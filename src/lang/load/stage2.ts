@@ -30,4 +30,13 @@ export function stage2(mod: Mod, stmt: Stmt): void {
       mod.imported.set(name, definition)
     }
   }
+
+  if (stmt.kind === "Include") {
+    const importedMod = modImport(mod, stmt.path)
+    for (const [name, definition] of modPublicDefinitions(
+      importedMod,
+    ).entries()) {
+      mod.included.set(name, definition)
+    }
+  }
 }
