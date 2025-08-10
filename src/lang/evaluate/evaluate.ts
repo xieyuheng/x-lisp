@@ -4,7 +4,13 @@ import process from "node:process"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
-import { emptyEnv, envGet, envSet, envUpdate, type Env } from "../env/index.ts"
+import {
+  emptyEnv,
+  envLookup,
+  envSet,
+  envUpdate,
+  type Env,
+} from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
 import { modLookup, modReportSource, type Mod } from "../mod/index.ts"
@@ -30,7 +36,7 @@ export function evaluate(exp: Exp): Effect {
   switch (exp.kind) {
     case "Var": {
       return (mod, env) => {
-        const value = envGet(env, exp.name)
+        const value = envLookup(env, exp.name)
         if (value) return [env, value]
 
         const topValue = modLookup(mod, exp.name)

@@ -1,5 +1,5 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
-import { envGet, envSet, type Env } from "../env/index.ts"
+import { envLookup, envSet, type Env } from "../env/index.ts"
 import { equal } from "../equal/index.ts"
 import type { Value } from "../value/index.ts"
 import type { Pattern } from "./Pattern.ts"
@@ -10,7 +10,7 @@ export function match(target: Value, pattern: Pattern): Effect {
   switch (pattern.kind) {
     case "VarPattern": {
       return (env) => {
-        const found = envGet(env, pattern.name)
+        const found = envLookup(env, pattern.name)
         if (found) {
           if (equal(found, target)) {
             return env
