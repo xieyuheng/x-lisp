@@ -1,3 +1,4 @@
+import { setUnion } from "../../utils/set/setAlgebra.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { type Value } from "../value/index.ts"
 
@@ -27,12 +28,26 @@ export function createMod(url: URL): Mod {
   }
 }
 
+export function modNames(mod: Mod): Set<string> {
+  return setUnion(new Set(mod.defined.keys()), new Set(mod.imported.keys()))
+}
+
 export function modLookupValue(mod: Mod, name: string): Value | undefined {
   const defined = mod.defined.get(name)
   if (defined) return defined.value
 
   const imported = mod.imported.get(name)
   if (imported) return imported.value
+
+  return undefined
+}
+
+export function modLookupPublicDefinition(
+  mod: Mod,
+  name: string,
+): Definition | undefined {
+  const defined = mod.defined.get(name)
+  if (defined) return defined
 
   return undefined
 }
@@ -46,18 +61,4 @@ export function modPublicDefinitions(mod: Mod): Array<Definition> {
   }
 
   return ownDefinitions
-}
-
-export function modLookupPublicDefinition(
-  mod: Mod,
-  name: string,
-): Definition | undefined {
-  const defined = mod.defined.get(name)
-  if (defined) return defined
-
-  return undefined
-}
-
-export function modNames(mod: Mod): Set<string> {
-  return new Set(mod.defined.keys())
 }
