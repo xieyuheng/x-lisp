@@ -1,8 +1,7 @@
-parse `(thunk)`
+`force` -- handle `Thunk`
 test `(thunk)`
 
 `(define)` support `Thunk`
-`force` -- handle `Thunk`
 
 `PrimitiveThunk` as `Value`
 [prelude] `(current-working-directory)` -- be `PrimitiveThunk`

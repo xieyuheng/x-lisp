@@ -19,6 +19,12 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     )
   }),
 
+  X.matcher("(cons* 'thunk body)", ({ body }, { span }) => {
+    return Exps.Thunk(Exps.Begin(X.dataToArray(body).map(matchExp), { span }), {
+      span,
+    })
+  }),
+
   X.matcher("`(quote ,data)", ({ data }, { span }) =>
     Exps.Quote(data, { span }),
   ),
