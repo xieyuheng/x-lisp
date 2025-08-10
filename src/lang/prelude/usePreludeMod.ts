@@ -4,6 +4,7 @@ import { aboutFile } from "./aboutFile.ts"
 import { aboutFloat } from "./aboutFloat.ts"
 import { aboutInt } from "./aboutInt.ts"
 import { aboutList } from "./aboutList.ts"
+import { aboutPath } from "./aboutPath.ts"
 import { aboutPredicate } from "./aboutPredicate.ts"
 import { aboutProcess } from "./aboutProcess.ts"
 import { aboutRecord } from "./aboutRecord.ts"
@@ -30,6 +31,7 @@ export function usePreludeMod(): Mod {
   aboutPredicate(mod)
   aboutSexp(mod)
   aboutFile(mod)
+  aboutPath(mod)
   aboutProcess(mod)
 
   return mod

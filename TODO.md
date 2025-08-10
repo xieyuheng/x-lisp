@@ -1,4 +1,3 @@
-[prelude] `aboutPath` -- `(path-join [path ...])`
 [prelude] `aboutSexp` -- `format-sexp`
 [prelude] `aboutConsole` -- `print` and `println` for value
 
