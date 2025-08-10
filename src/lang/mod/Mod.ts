@@ -36,7 +36,7 @@ export function modLookup(mod: Mod, name: string): Value | undefined {
   return definition.value
 }
 
-export function modOwnDefinitions(mod: Mod): Array<Definition> {
+export function modPublicDefinitions(mod: Mod): Array<Definition> {
   const ownDefinitions: Array<Definition> = []
   for (const definition of mod.definitions.values()) {
     if (definition.origin.url.href === mod.url.href) {

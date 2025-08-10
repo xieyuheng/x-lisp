@@ -1,4 +1,3 @@
-ambr modOwnDefinitions  modPublicDefinitions
 `Mod` rename `definitions` to `defined`
 `Mod` rename `claims` to `claimed`
 `Mod` `claimed` has `Definition` instead of only `Value`

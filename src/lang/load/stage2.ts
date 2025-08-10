@@ -1,4 +1,4 @@
-import { type Mod, modImport, modOwnDefinitions } from "../mod/index.ts"
+import { type Mod, modImport, modPublicDefinitions } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 
 export function stage2(mod: Mod, stmt: Stmt): void {
@@ -19,7 +19,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
 
   if (stmt.kind === "Require") {
     const importedMod = modImport(mod, stmt.path)
-    for (const definition of modOwnDefinitions(importedMod)) {
+    for (const definition of modPublicDefinitions(importedMod)) {
       mod.definitions.set(definition.name, definition)
     }
   }

@@ -5,7 +5,7 @@ import { expFreeNames } from "../exp/index.ts"
 import { formatValue } from "../format/index.ts"
 import {
   modNames,
-  modOwnDefinitions,
+  modPublicDefinitions,
   type Definition,
   type Mod,
 } from "../mod/index.ts"
@@ -22,7 +22,7 @@ export function runCode(mod: Mod, code: string): void {
 
   for (const stmt of stmts) stage1(mod, stmt)
   for (const stmt of stmts) stage2(mod, stmt)
-  for (const definition of modOwnDefinitions(mod))
+  for (const definition of modPublicDefinitions(mod))
     assertNoUndefinedName(definition)
   for (const stmt of stmts) stage3(mod, stmt)
 }
