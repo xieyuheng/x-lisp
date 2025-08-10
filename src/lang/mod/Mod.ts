@@ -53,12 +53,12 @@ export function modLookupPublicDefinition(
 }
 
 export function modPublicDefinitions(mod: Mod): Array<Definition> {
-  const ownDefinitions: Array<Definition> = []
+  const definitions: Array<Definition> = []
   for (const definition of mod.defined.values()) {
     if (definition.origin.url.href === mod.url.href) {
-      ownDefinitions.push(definition)
+      definitions.push(definition)
     }
   }
 
-  return ownDefinitions
+  return definitions
 }
