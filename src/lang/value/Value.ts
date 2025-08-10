@@ -13,6 +13,7 @@ export type Value =
   | Thunk
   | CurriedLambda
   | PrimitiveFunction
+  | PrimitiveThunk
   | CurriedPrimitiveFunction
   | Void
   | AboutData
@@ -107,6 +108,22 @@ export function PrimitiveFunction(
     kind: "PrimitiveFunction",
     name,
     arity,
+    fn,
+  }
+}
+
+export type PrimitiveThunk = {
+  kind: "PrimitiveThunk"
+  name: string
+  fn: ValueThunk
+}
+
+export type ValueThunk = () => Value
+
+export function PrimitiveThunk(name: string, fn: ValueThunk): PrimitiveThunk {
+  return {
+    kind: "PrimitiveThunk",
+    name,
     fn,
   }
 }

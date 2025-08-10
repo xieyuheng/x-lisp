@@ -1,5 +1,7 @@
-`PrimitiveThunk` as `Value`
+`force` handle `PrimitiveThunk`
 [prelude] `(current-working-directory)` -- be `PrimitiveThunk`
+
+[maybe] merge `Curried`
 
 `Definition` should not use own or not to test public, just use `isPublic`
 

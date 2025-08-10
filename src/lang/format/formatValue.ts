@@ -45,6 +45,10 @@ export function formatValue(value: Value): string {
       return `${value.name}`
     }
 
+    case "PrimitiveThunk": {
+      return `${value.name}`
+    }
+
     case "CurriedPrimitiveFunction": {
       const args = value.args.map(formatValue)
       if (args.length === 0) {
