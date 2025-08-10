@@ -6,6 +6,7 @@ export type Definition = {
   origin: Mod
   name: string
   value: Value
+  isPrivate?: boolean
 }
 
 export type Mod = {
@@ -47,7 +48,7 @@ export function modLookupPublicDefinition(
   name: string,
 ): Definition | undefined {
   const defined = mod.defined.get(name)
-  if (defined) return defined
+  if (defined && !defined.isPrivate) return defined
 
   return undefined
 }
@@ -55,7 +56,9 @@ export function modLookupPublicDefinition(
 export function modPublicDefinitions(mod: Mod): Map<string, Definition> {
   const definitions: Map<string, Definition> = new Map()
   for (const [name, definition] of mod.defined.entries()) {
-    definitions.set(name, definition)
+    if (!definition.isPrivate) {
+      definitions.set(name, definition)
+    }
   }
 
   return definitions
