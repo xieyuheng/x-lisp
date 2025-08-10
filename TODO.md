@@ -1,9 +1,9 @@
-`Definition` rename `mod` to `origin`
-
-`Mod` has `defined`
+ambr modOwnDefinitions  modPublicDefinitions
+`Mod` rename `definitions` to `defined`
+`Mod` rename `claims` to `claimed`
+`Mod` `claimed` has `Definition` instead of only `Value`
 `Mod` has `imported`
 `modLookup` -- lookup both defined and imported
-remove `Definition`
 
 [prelude] `aboutModule` -- `(current-module-directory)` `(current-module-file)` -- be `PrimitiveThunk`
 

@@ -6,7 +6,7 @@ import { type Value } from "../value/index.ts"
 // imported names from own defined names.
 
 export type Definition = {
-  mod: Mod
+  origin: Mod
   name: string
   value: Value
 }
@@ -39,7 +39,7 @@ export function modLookup(mod: Mod, name: string): Value | undefined {
 export function modOwnDefinitions(mod: Mod): Array<Definition> {
   const ownDefinitions: Array<Definition> = []
   for (const definition of mod.definitions.values()) {
-    if (definition.mod.url.href === mod.url.href) {
+    if (definition.origin.url.href === mod.url.href) {
       ownDefinitions.push(definition)
     }
   }
@@ -49,15 +49,4 @@ export function modOwnDefinitions(mod: Mod): Array<Definition> {
 
 export function modNames(mod: Mod): Set<string> {
   return new Set(mod.definitions.keys())
-}
-
-export function modOwnNames(mod: Mod): Set<string> {
-  const ownNames = new Set<string>()
-  for (const [name, definition] of mod.definitions.entries()) {
-    if (definition.mod.url.href === mod.url.href) {
-      ownNames.add(name)
-    }
-  }
-
-  return ownNames
 }

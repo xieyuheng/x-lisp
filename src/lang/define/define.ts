@@ -12,7 +12,7 @@ export function define(mod: Mod, name: string, value: Value): void {
     throw new Error(message)
   }
 
-  const definition = { mod, name, value }
+  const definition = { origin: mod, name, value }
   mod.definitions.set(name, definition)
 
   const schema = mod.claims.get(name)
