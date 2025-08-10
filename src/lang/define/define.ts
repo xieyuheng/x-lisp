@@ -3,7 +3,14 @@ import { modLookupValue, type Mod } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 
-export function define(mod: Mod, name: string, value: Value): void {
+export type DefineOptions = { isPrivate?: boolean }
+
+export function define(
+  mod: Mod,
+  name: string,
+  value: Value,
+  options: DefineOptions = {},
+): void {
   const found = modLookupValue(mod, name)
   if (found) {
     let message = `[define] I can not redefine name: ${name}\n`
@@ -12,7 +19,9 @@ export function define(mod: Mod, name: string, value: Value): void {
     throw new Error(message)
   }
 
-  const defined = { origin: mod, name, value }
+  const { isPrivate } = options
+
+  const defined = { origin: mod, name, value, isPrivate }
   mod.defined.set(name, defined)
 
   const claimed = mod.claimed.get(name)
