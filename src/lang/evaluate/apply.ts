@@ -8,8 +8,8 @@ import { applyDataGetter } from "./applyDataGetter.ts"
 import { applyDataPredicate } from "./applyDataPredicate.ts"
 import { applyLambda } from "./applyLambda.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
-import { curry } from "./curry.ts"
 import { force } from "./force.ts"
+import { supply } from "./supply.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
   if (args.length === 0) {
@@ -17,7 +17,7 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "Curried") {
-    return curry(target.target, target.arity, [...target.args, ...args])
+    return supply(target.target, target.arity, [...target.args, ...args])
   }
 
   if (target.kind === "Lambda") {
@@ -25,7 +25,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (arity === args.length) {
       return applyLambda(target, args)
     } else {
-      return curry(target, arity, args)
+      return supply(target, arity, args)
     }
   }
 
@@ -52,7 +52,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (arity === args.length) {
       return target.fn(...args)
     } else {
-      return curry(target, arity, args)
+      return supply(target, arity, args)
     }
   }
 
@@ -90,7 +90,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (arity === args.length) {
       return applyDataPredicate(target, args)
     } else {
-      return curry(target, arity, args)
+      return supply(target, arity, args)
     }
   }
 
