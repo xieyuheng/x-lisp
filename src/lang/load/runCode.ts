@@ -22,7 +22,7 @@ export function runCode(mod: Mod, code: string): void {
 
   for (const stmt of stmts) stage1(mod, stmt)
   for (const stmt of stmts) stage2(mod, stmt)
-  for (const definition of modPublicDefinitions(mod))
+  for (const definition of modPublicDefinitions(mod).values())
     assertNoUndefinedName(definition)
   for (const stmt of stmts) stage3(mod, stmt)
 }

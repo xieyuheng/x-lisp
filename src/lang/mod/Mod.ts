@@ -52,12 +52,10 @@ export function modLookupPublicDefinition(
   return undefined
 }
 
-export function modPublicDefinitions(mod: Mod): Array<Definition> {
-  const definitions: Array<Definition> = []
-  for (const definition of mod.defined.values()) {
-    if (definition.origin.url.href === mod.url.href) {
-      definitions.push(definition)
-    }
+export function modPublicDefinitions(mod: Mod): Map<string, Definition> {
+  const definitions: Map<string, Definition> = new Map()
+  for (const [name, definition] of mod.defined.entries()) {
+    definitions.set(name, definition)
   }
 
   return definitions

@@ -24,8 +24,10 @@ export function stage2(mod: Mod, stmt: Stmt): void {
 
   if (stmt.kind === "Require") {
     const importedMod = modImport(mod, stmt.path)
-    for (const definition of modPublicDefinitions(importedMod)) {
-      mod.imported.set(definition.name, definition)
+    for (const [name, definition] of modPublicDefinitions(
+      importedMod,
+    ).entries()) {
+      mod.imported.set(name, definition)
     }
   }
 }
