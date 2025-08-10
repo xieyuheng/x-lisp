@@ -8,19 +8,18 @@ import { applyDataGetter } from "./applyDataGetter.ts"
 import { applyDataPredicate } from "./applyDataPredicate.ts"
 import { applyLambda } from "./applyLambda.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
+import { force } from "./force.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
+  if (args.length === 0) {
+    return force(target)
+  }
+
   if (target.kind === "Lambda") {
     return apply(Values.CurriedLambda(target, []), args)
   }
 
   if (target.kind === "CurriedLambda") {
-    if (args.length === 0) {
-      let message = `[apply] Can not apply lambda to zero arguments\n`
-      message += `  target: ${formatValue(target)}\n`
-      throw new Error(message)
-    }
-
     const arity = target.lambda.parameters.length
     const totalArgs = [...target.args, ...args]
 
