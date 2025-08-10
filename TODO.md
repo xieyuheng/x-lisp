@@ -1,5 +1,3 @@
-refactor `apply` and `supply`
-
 `Definition` should not use own or not to test public, just use `isPublic`
 
 [prelude] `aboutModule` -- `(current-module-directory)` `(current-module-file)` -- be `PrimitiveThunk`

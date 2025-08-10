@@ -9,69 +9,24 @@ import { applyDataPredicate } from "./applyDataPredicate.ts"
 import { applyLambda } from "./applyLambda.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
 import { force } from "./force.ts"
-
-export function supply(curried: Values.Curried, args: Array<Value>): Value {
-  if (curried.target.kind === "Lambda") {
-    const totalArgs = [...curried.args, ...args]
-
-    if (totalArgs.length < curried.arity) {
-      return Values.Curried(curried.target, curried.arity, totalArgs)
-    }
-
-    return applyLambda(curried.target, totalArgs)
-  }
-
-  if (curried.target.kind === "PrimitiveFunction") {
-    const totalArgs = [...curried.args, ...args]
-
-    if (totalArgs.length < curried.arity) {
-      return Values.Curried(curried.target, curried.arity, totalArgs)
-    }
-
-    if (totalArgs.length === curried.arity) {
-      return curried.target.fn(...totalArgs)
-    }
-
-    let message = `[supply] Too many arguments\n`
-    message += `  curried: ${formatValue(curried)}\n`
-    message += `  args: [${args.map(formatValue).join(" ")}]\n`
-    throw new Error(message)
-  }
-
-  if (curried.target.kind === "DataPredicate") {
-    const totalArgs = [...curried.args, ...args]
-
-    if (totalArgs.length < curried.arity) {
-      return Values.Curried(curried.target, curried.arity, totalArgs)
-    }
-
-    if (totalArgs.length === curried.arity) {
-      return applyDataPredicate(curried.target, totalArgs)
-    }
-
-    let message = `[supply] Too many arguments\n`
-    message += `  curried: ${formatValue(curried)}\n`
-    message += `  args: [${args.map(formatValue).join(" ")}]\n`
-    throw new Error(message)
-  }
-
-  let message = `[supply] I can not handle this kind of curried target\n`
-  message += `  curried target: ${formatValue(curried.target)}\n`
-  message += `  args: [${args.map(formatValue).join(" ")}]\n`
-  throw new Error(message)
-}
+import { supply } from "./supply.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
   if (args.length === 0) {
     return force(target)
   }
 
-  if (target.kind === "Lambda") {
-    return supply(Values.Curried(target, target.parameters.length, []), args)
-  }
-
   if (target.kind === "Curried") {
     return supply(target, args)
+  }
+
+  if (target.kind === "Lambda") {
+    const arity = target.parameters.length
+    if (arity === args.length) {
+      return applyLambda(target, args)
+    } else {
+      return supply(Values.Curried(target, arity, []), args)
+    }
   }
 
   if (target.kind === "Arrow") {
@@ -93,7 +48,12 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "PrimitiveFunction") {
-    return supply(Values.Curried(target, target.arity, []), args)
+    const arity = target.arity
+    if (arity === args.length) {
+      return target.fn(...args)
+    } else {
+      return supply(Values.Curried(target, arity, []), args)
+    }
   }
 
   if (target.kind === "DataConstructor") {
@@ -126,10 +86,12 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "DataPredicate") {
-    return supply(
-      Values.Curried(target, target.parameters.length + 1, []),
-      args,
-    )
+    const arity = target.parameters.length + 1
+    if (arity === args.length) {
+      return applyDataPredicate(target, args)
+    } else {
+      return supply(Values.Curried(target, arity, []), args)
+    }
   }
 
   let message = `[apply] I can not handle this kind of target\n`
