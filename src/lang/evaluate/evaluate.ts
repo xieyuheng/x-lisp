@@ -6,7 +6,7 @@ import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import {
   emptyEnv,
-  envLookup,
+  envLookupValue,
   envSet,
   envUpdate,
   type Env,
@@ -36,7 +36,7 @@ export function evaluate(exp: Exp): Effect {
   switch (exp.kind) {
     case "Var": {
       return (mod, env) => {
-        const value = envLookup(env, exp.name)
+        const value = envLookupValue(env, exp.name)
         if (value) return [env, value]
 
         const topValue = modLookupValue(mod, exp.name)

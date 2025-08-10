@@ -1,4 +1,4 @@
-`stage2` -- use `modLookupValuePublicDefinition`
+`stage2` -- use `modLookupPublicDefinition`
 
 [prelude] `aboutModule` -- `(current-module-directory)` `(current-module-file)` -- be `PrimitiveThunk`
 

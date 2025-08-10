@@ -11,7 +11,7 @@ export function envNames(env: Env): Set<string> {
   return new Set(env.keys())
 }
 
-export function envLookup(env: Env, name: string): undefined | Value {
+export function envLookupValue(env: Env, name: string): undefined | Value {
   return env.get(name)
 }
 
@@ -21,7 +21,7 @@ export function envSet(env: Env, name: string, value: Value): Env {
 
 export function envUpdate(base: Env, env: Env): Env {
   for (const name of envNames(env)) {
-    const value = envLookup(env, name)
+    const value = envLookupValue(env, name)
     assert(value)
     base = envSet(base, name, value)
   }
