@@ -1,10 +1,8 @@
-[prelude] `(current-working-directory)` -- be `PrimitiveThunk`
-
 [maybe] merge `Curried`
 
 `Definition` should not use own or not to test public, just use `isPublic`
 
-[prelude] `(current-directory)` `(current-file)` -- be `PrimitiveThunk`
+[prelude] `aboutModule` -- `(current-module-directory)` `(current-module-file)` -- be `PrimitiveThunk`
 [prelude] `aboutPath` -- `(path-join [path ...])`
 [prelude] `format-sexp`
 
