@@ -15,12 +15,8 @@ export function define(mod: Mod, name: string, value: Value): void {
   const def = { mod, name, value }
   mod.defs.set(name, def)
 
-  if (value.kind === "Lambda" && value.definedName === undefined) {
-    value.definedName = name
-
-    const schema = mod.claims.get(name)
-    if (schema) {
-      def.value = Values.Claimed(def.value, schema)
-    }
+  const schema = mod.claims.get(name)
+  if (schema) {
+    def.value = Values.Claimed(def.value, schema)
   }
 }

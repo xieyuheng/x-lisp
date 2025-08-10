@@ -1,1 +1,1 @@
-id
+(lambda (x) x)

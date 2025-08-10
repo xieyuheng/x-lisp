@@ -37,8 +37,6 @@ function assertLambdaNoFreeName(lambda: Values.Lambda): void {
     const unnamedLambda = { ...lambda, definedName: undefined }
     let message = `[assertLambdaNoFreeName] fail\n`
     message += `  undefined names: [${Array.from(undefinedNames).join(" ")}]\n`
-    if (lambda.definedName)
-      message += `  lambda defined name: ${lambda.definedName}\n`
     message += `  lambda: ${formatValue(unnamedLambda)}\n`
     message += `[source] ${urlRelativeToCwd(lambda.mod.url)}\n`
     throw new Error(message)

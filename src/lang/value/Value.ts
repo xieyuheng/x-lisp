@@ -11,6 +11,7 @@ export type Value =
   | Tael
   | Lambda
   | CurriedLambda
+  // | Thunk
   | PrimitiveFunction
   | CurriedPrimitiveFunction
   | Void
@@ -38,7 +39,6 @@ export type Lambda = {
   env: Env
   parameters: Array<string>
   body: Exp
-  definedName?: string
 }
 
 export function Lambda(
@@ -72,6 +72,26 @@ export function CurriedLambda(
     args,
   }
 }
+
+// export type Thunk = {
+//   kind: "Thunk"
+//   mod: Mod
+//   env: Env
+//   body: Exp
+// }
+
+// export function Thunk(
+//   mod: Mod,
+//   env: Env,
+//   body: Exp,
+// ): Lambda {
+//   return {
+//     kind: "Thunk",
+//     mod,
+//     env,
+//     body,
+//   }
+// }
 
 export type PrimitiveFunction = {
   kind: "PrimitiveFunction"

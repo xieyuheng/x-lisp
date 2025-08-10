@@ -1,5 +1,5 @@
 import { formatAtom, formatBody } from "../format/index.ts"
-import { isAtom, lambdaIsDefined, type Value } from "../value/index.ts"
+import { isAtom, type Value } from "../value/index.ts"
 
 export function formatValue(value: Value): string {
   if (isAtom(value)) {
@@ -24,10 +24,6 @@ export function formatValue(value: Value): string {
     }
 
     case "Lambda": {
-      if (lambdaIsDefined(value)) {
-        return value.definedName
-      }
-
       return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 

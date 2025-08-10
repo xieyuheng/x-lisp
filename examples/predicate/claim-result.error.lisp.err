@@ -1,10 +1,10 @@
 [applyWithSchema] fail to validate an argument
   schema: (-> int? int? int?)
-  target: my-add
+  target: (lambda (x y) 'abc)
   args: [1 1]
 [applyWithSchema] fail to validate the result
   schema: (-> int? int? int?)
-  target: my-add
+  target: (lambda (x y) 'abc)
   args: [1 1]
   result: 'abc
 

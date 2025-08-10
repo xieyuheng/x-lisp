@@ -1,6 +1,6 @@
 [applyWithSchema] fail to validate an argument
   schema: (-> int? int? int?)
-  target: my-add
+  target: (lambda (x) (lambda (y) (iadd x y)))
   args: [1.0 1.0]
 (the) assertion fail
   schema: int?
