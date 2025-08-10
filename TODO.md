@@ -1,5 +1,3 @@
-`(define)` support `Thunk`
-
 `PrimitiveThunk` as `Value`
 [prelude] `(current-working-directory)` -- be `PrimitiveThunk`
 

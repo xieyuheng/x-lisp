@@ -8,16 +8,27 @@ import { matchExp } from "./matchExp.ts"
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
     "(cons* 'define (cons name parameters) body)",
-    ({ name, parameters, body }, { span }) =>
-      Stmts.Define(
-        X.symbolToString(name),
-        Exps.Lambda(
-          X.dataToArray(parameters).map(X.symbolToString),
-          Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
+    ({ name, parameters, body }, { span }) => {
+      if (X.dataToArray(parameters).length === 0) {
+        return Stmts.Define(
+          X.symbolToString(name),
+          Exps.Thunk(Exps.Begin(X.dataToArray(body).map(matchExp), { span }), {
+            span,
+          }),
           { span },
-        ),
-        { span },
-      ),
+        )
+      } else {
+        return Stmts.Define(
+          X.symbolToString(name),
+          Exps.Lambda(
+            X.dataToArray(parameters).map(X.symbolToString),
+            Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
+            { span },
+          ),
+          { span },
+        )
+      }
+    },
   ),
 
   X.matcher("`(define ,name ,exp)", ({ name, exp }, { span }) =>

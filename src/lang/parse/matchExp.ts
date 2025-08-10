@@ -5,19 +5,21 @@ import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 
 const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
-  X.matcher("(cons* 'lambda names body)", ({ names, body }, { span }) => {
-    const parameters = X.dataToArray(names).map(X.symbolToString)
-    if (parameters.length === 0) {
-      const message = "(lambda) expression must have at least one parameter\n"
-      throw new X.ParsingError(message, span)
-    }
+  X.matcher(
+    "(cons* 'lambda parameters body)",
+    ({ parameters, body }, { span }) => {
+      if (X.dataToArray(parameters).length === 0) {
+        const message = "(lambda) expression must have at least one parameter\n"
+        throw new X.ParsingError(message, span)
+      }
 
-    return Exps.Lambda(
-      parameters,
-      Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
-      { span },
-    )
-  }),
+      return Exps.Lambda(
+        X.dataToArray(parameters).map(X.symbolToString),
+        Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
+        { span },
+      )
+    },
+  ),
 
   X.matcher("(cons* 'thunk body)", ({ body }, { span }) => {
     return Exps.Thunk(Exps.Begin(X.dataToArray(body).map(matchExp), { span }), {
