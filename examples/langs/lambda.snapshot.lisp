@@ -14,5 +14,7 @@
          empty-env)
    (closure 'x (var-exp 'x) empty-env)))
 
-;; (eval (parse-exp (parse-sexp (file-read "code")))
-;;       empty-env)
+(begin
+  (= file (path-join [(current-module-directory) "example.lambda"]))
+  (= exp (parse-sexp (file-read file)))
+  (eval (parse-exp exp) empty-env))
