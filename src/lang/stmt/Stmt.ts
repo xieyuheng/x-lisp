@@ -4,7 +4,14 @@ import { type DataField } from "../value/index.ts"
 
 export type Meta = { span: Span }
 
-export type Stmt = Compute | Define | Import | Require | DefineData | Claim
+export type Stmt =
+  | Compute
+  | Define
+  | Import
+  | Require
+  | Include
+  | DefineData
+  | Claim
 
 export type Compute = {
   kind: "Compute"
@@ -71,6 +78,20 @@ export type Require = {
 export function Require(path: string, meta: Meta): Require {
   return {
     kind: "Require",
+    path,
+    meta,
+  }
+}
+
+export type Include = {
+  kind: "Include"
+  path: string
+  meta: Meta
+}
+
+export function Include(path: string, meta: Meta): Include {
+  return {
+    kind: "Include",
     path,
     meta,
   }

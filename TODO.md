@@ -1,9 +1,4 @@
-# module
-
-support re-export by `include`
-
-```scheme
-(include <path>)
-(include <path> :only [<name> ...])
-(include <path> :except [<name> ...])
-```
+parse `(include)`
+`stage2` handle `Include` -- like `require` by be about to be imported by others
+`include` -- support `:only` -- `(include <path> :only [<name> ...])`
+`include` -- support `:except` -- `(include <path> :except [<name> ...])`
