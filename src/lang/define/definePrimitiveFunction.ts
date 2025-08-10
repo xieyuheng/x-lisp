@@ -6,7 +6,7 @@ export function definePrimitiveFunction(
   mod: Mod,
   name: string,
   arity: number,
-  fn: Values.ValueFn,
+  fn: Values.ValueFunction,
 ): void {
   define(mod, name, Values.PrimitiveFunction(name, arity, fn))
 }

@@ -77,15 +77,15 @@ export type PrimitiveFunction = {
   kind: "PrimitiveFunction"
   name: string
   arity: number
-  fn: ValueFn
+  fn: ValueFunction
 }
 
-export type ValueFn = (...args: Array<Value>) => Value
+export type ValueFunction = (...args: Array<Value>) => Value
 
 export function PrimitiveFunction(
   name: string,
   arity: number,
-  fn: ValueFn,
+  fn: ValueFunction,
 ): PrimitiveFunction {
   return {
     kind: "PrimitiveFunction",
