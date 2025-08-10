@@ -12,7 +12,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const entry of stmt.entries) {
       const definition = modLookupPublicDefinition(importedMod, entry.name)
       if (definition === undefined) {
-        let message = `(import) I can not import undefined name: ${entry.name}\n`
+        let message = `(import) undefined name: ${entry.name}\n`
         message += `  path: ${stmt.path}\n`
         throw new Error(message)
       }

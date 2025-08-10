@@ -13,7 +13,7 @@ export function supply(
   }
 
   if (args.length > arity) {
-    let message = `[supply] Too many arguments\n`
+    let message = `[supply] too many arguments\n`
     message += `  target: ${formatValue(target)}\n`
     message += `  arity: ${arity}\n`
     message += `  args: [${args.map(formatValue).join(" ")}]\n`
