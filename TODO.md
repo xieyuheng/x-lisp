@@ -1,4 +1,4 @@
-[prelude] `aboutSexp` -- `format-sexp`
+[prelude] `aboutConsole` -- `write` and `writeln` for string
 
 # module
 
