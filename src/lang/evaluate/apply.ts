@@ -17,7 +17,7 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "Curried") {
-    return supply(target, args)
+    return supply(target.target, target.arity, [...target.args, ...args])
   }
 
   if (target.kind === "Lambda") {
@@ -25,7 +25,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (arity === args.length) {
       return applyLambda(target, args)
     } else {
-      return supply(Values.Curried(target, arity, []), args)
+      return supply(target, arity, args)
     }
   }
 
@@ -52,7 +52,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (arity === args.length) {
       return target.fn(...args)
     } else {
-      return supply(Values.Curried(target, arity, []), args)
+      return supply(target, arity, args)
     }
   }
 
@@ -90,7 +90,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (arity === args.length) {
       return applyDataPredicate(target, args)
     } else {
-      return supply(Values.Curried(target, arity, []), args)
+      return supply(target, arity, args)
     }
   }
 

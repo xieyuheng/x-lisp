@@ -3,19 +3,22 @@ import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
 
-export function supply(curried: Values.Curried, args: Array<Value>): Value {
-  const totalArgs = [...curried.args, ...args]
-
-  if (totalArgs.length < curried.arity) {
-    return Values.Curried(curried.target, curried.arity, totalArgs)
+export function supply(
+  target: Value,
+  arity: number,
+  args: Array<Value>,
+): Value {
+  if (args.length < arity) {
+    return Values.Curried(target, arity, args)
   }
 
-  if (totalArgs.length > curried.arity) {
+  if (args.length > arity) {
     let message = `[supply] Too many arguments\n`
-    message += `  curried: ${formatValue(curried)}\n`
+    message += `  curried: ${formatValue(target)}\n`
+    message += `  arity: ${arity}\n`
     message += `  args: [${args.map(formatValue).join(" ")}]\n`
     throw new Error(message)
   }
 
-  return apply(curried.target, totalArgs)
+  return apply(target, args)
 }
