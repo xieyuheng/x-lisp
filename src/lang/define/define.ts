@@ -13,7 +13,7 @@ export function define(mod: Mod, name: string, value: Value): void {
   }
 
   const definition = { origin: mod, name, value }
-  mod.definitions.set(name, definition)
+  mod.defined.set(name, definition)
 
   const schema = mod.claims.get(name)
   if (schema) {

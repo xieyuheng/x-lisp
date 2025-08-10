@@ -13,7 +13,7 @@ export type Definition = {
 
 export type Mod = {
   url: URL
-  definitions: Map<string, Definition>
+  defined: Map<string, Definition>
   claims: Map<string, Value>
   code: string
   stmts: Array<Stmt>
@@ -22,7 +22,7 @@ export type Mod = {
 export function createMod(url: URL): Mod {
   return {
     url,
-    definitions: new Map(),
+    defined: new Map(),
     claims: new Map(),
     code: "",
     stmts: [],
@@ -30,7 +30,7 @@ export function createMod(url: URL): Mod {
 }
 
 export function modLookup(mod: Mod, name: string): Value | undefined {
-  const definition = mod.definitions.get(name)
+  const definition = mod.defined.get(name)
   if (definition === undefined) return undefined
 
   return definition.value
@@ -38,7 +38,7 @@ export function modLookup(mod: Mod, name: string): Value | undefined {
 
 export function modPublicDefinitions(mod: Mod): Array<Definition> {
   const ownDefinitions: Array<Definition> = []
-  for (const definition of mod.definitions.values()) {
+  for (const definition of mod.defined.values()) {
     if (definition.origin.url.href === mod.url.href) {
       ownDefinitions.push(definition)
     }
@@ -48,5 +48,5 @@ export function modPublicDefinitions(mod: Mod): Array<Definition> {
 }
 
 export function modNames(mod: Mod): Set<string> {
-  return new Set(mod.definitions.keys())
+  return new Set(mod.defined.keys())
 }
