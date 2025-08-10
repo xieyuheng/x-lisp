@@ -1,7 +1,12 @@
 import { formatValue } from "../format/index.ts"
 import { type Value } from "../value/index.ts"
+import { evaluate, resultValue } from "./evaluate.ts"
 
 export function force(target: Value): Value {
+  if (target.kind === "Thunk") {
+    return resultValue(evaluate(target.body)(target.mod, target.env))
+  }
+
   let message = `[force] unhandled target value kind\n`
   message += `  target: ${formatValue(target)}\n`
   throw new Error(message)

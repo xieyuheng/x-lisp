@@ -1,6 +1,3 @@
-`force` -- handle `Thunk`
-test `(thunk)`
-
 `(define)` support `Thunk`
 
 `PrimitiveThunk` as `Value`
