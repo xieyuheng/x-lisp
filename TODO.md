@@ -1,6 +1,7 @@
 [diary] 2025-08-10-function-vs-thunk.md
 [prelude] `(current-working-directory)` -- be thunk
-[prelude] `(current-module-directory)` `(current-module-file)`
+[prelude] [maybe] `(current-module-directory)` `(current-module-file)` -- be thunk
+[prelude] [maybe] `module-directory` `module-file` -- be string
 [prelude] `aboutPath` -- `(path-join [path ...])`
 [prelude] console-write console-print console-write
 
