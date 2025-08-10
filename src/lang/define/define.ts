@@ -1,10 +1,10 @@
 import { formatValue } from "../format/index.ts"
-import { modLookup, type Mod } from "../mod/index.ts"
+import { modLookupValue, type Mod } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 
 export function define(mod: Mod, name: string, value: Value): void {
-  const found = modLookup(mod, name)
+  const found = modLookupValue(mod, name)
   if (found) {
     let message = `[define] I can not redefine name: ${name}\n`
     message += `  new value: ${formatValue(value)}\n`

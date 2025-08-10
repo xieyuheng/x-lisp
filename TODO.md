@@ -1,5 +1,4 @@
-ambr modLookup modLookupValue
-`stage2` -- use `modLookupPublicDefinition`
+`stage2` -- use `modLookupValuePublicDefinition`
 
 [prelude] `aboutModule` -- `(current-module-directory)` `(current-module-file)` -- be `PrimitiveThunk`
 

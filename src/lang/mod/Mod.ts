@@ -27,7 +27,7 @@ export function createMod(url: URL): Mod {
   }
 }
 
-export function modLookup(mod: Mod, name: string): Value | undefined {
+export function modLookupValue(mod: Mod, name: string): Value | undefined {
   const defined = mod.defined.get(name)
   if (defined) return defined.value
 

@@ -1,7 +1,7 @@
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/formatExp.ts"
-import { modLookup, type Mod } from "../mod/index.ts"
+import { modLookupValue, type Mod } from "../mod/index.ts"
 import * as Patterns from "./Pattern.ts"
 import { type Pattern } from "./Pattern.ts"
 
@@ -10,7 +10,7 @@ type Effect = (mod: Mod, env: Env) => Pattern
 export function patternize(exp: Exp): Effect {
   return (mod, env) => {
     if (exp.kind === "Var") {
-      const topValue = modLookup(mod, exp.name)
+      const topValue = modLookupValue(mod, exp.name)
       if (
         topValue &&
         topValue.kind === "Data" &&
@@ -29,7 +29,7 @@ export function patternize(exp: Exp): Effect {
         throw new Error(message)
       }
 
-      const topValue = modLookup(mod, exp.target.name)
+      const topValue = modLookupValue(mod, exp.target.name)
       if (topValue && topValue.kind === "DataConstructor") {
         return Patterns.DataPattern(
           topValue,
