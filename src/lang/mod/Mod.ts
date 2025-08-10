@@ -9,8 +9,9 @@ export type Definition = {
 
 export type Mod = {
   url: URL
-  defined: Map<string, Definition>
   claimed: Map<string, Definition>
+  defined: Map<string, Definition>
+  imported: Map<string, Definition>
   code: string
   stmts: Array<Stmt>
 }
@@ -18,18 +19,22 @@ export type Mod = {
 export function createMod(url: URL): Mod {
   return {
     url,
-    defined: new Map(),
     claimed: new Map(),
+    defined: new Map(),
+    imported: new Map(),
     code: "",
     stmts: [],
   }
 }
 
 export function modLookup(mod: Mod, name: string): Value | undefined {
-  const definition = mod.defined.get(name)
-  if (definition === undefined) return undefined
+  const defined = mod.defined.get(name)
+  if (defined) return defined.value
 
-  return definition.value
+  const imported = mod.imported.get(name)
+  if (imported) return imported.value
+
+  return undefined
 }
 
 export function modPublicDefinitions(mod: Mod): Array<Definition> {

@@ -1,7 +1,7 @@
 import { load } from "../load/index.ts"
 import { type Mod } from "./Mod.ts"
 
-export function modResolve(mod: Mod, href: string): URL {
+function modResolve(mod: Mod, href: string): URL {
   return new URL(href, mod.url)
 }
 

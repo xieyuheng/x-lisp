@@ -13,14 +13,14 @@ export function stage2(mod: Mod, stmt: Stmt): void {
       }
 
       const name = entry.rename || entry.name
-      mod.defined.set(name, definition)
+      mod.imported.set(name, definition)
     }
   }
 
   if (stmt.kind === "Require") {
     const importedMod = modImport(mod, stmt.path)
     for (const definition of modPublicDefinitions(importedMod)) {
-      mod.defined.set(definition.name, definition)
+      mod.imported.set(definition.name, definition)
     }
   }
 }

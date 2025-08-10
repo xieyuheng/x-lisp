@@ -1,5 +1,5 @@
-`Mod` has `imported`
-`modLookup` -- lookup both defined and imported
+ambr modLookup modLookupValue
+`stage2` -- use `modLookupPublicDefinition`
 
 [prelude] `aboutModule` -- `(current-module-directory)` `(current-module-file)` -- be `PrimitiveThunk`
 

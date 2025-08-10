@@ -12,11 +12,11 @@ export function define(mod: Mod, name: string, value: Value): void {
     throw new Error(message)
   }
 
-  const definition = { origin: mod, name, value }
-  mod.defined.set(name, definition)
+  const defined = { origin: mod, name, value }
+  mod.defined.set(name, defined)
 
-  const claimedDefinition = mod.claimed.get(name)
-  if (claimedDefinition) {
-    definition.value = Values.Claimed(definition.value, claimedDefinition.value)
+  const claimed = mod.claimed.get(name)
+  if (claimed) {
+    defined.value = Values.Claimed(defined.value, claimed.value)
   }
 }
