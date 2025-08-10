@@ -10,8 +10,14 @@ export function equal(lhs: Value, rhs: Value): boolean {
     )
   }
 
-  if (lhs.kind === "CurriedPrimFn" && rhs.kind === "CurriedPrimFn") {
-    return equal(lhs.primFn, rhs.primFn) && equalValues(lhs.args, rhs.args)
+  if (
+    lhs.kind === "CurriedPrimitiveFunction" &&
+    rhs.kind === "CurriedPrimitiveFunction"
+  ) {
+    return (
+      equal(lhs.primitiveFunction, rhs.primitiveFunction) &&
+      equalValues(lhs.args, rhs.args)
+    )
   }
 
   if (lhs.kind === "CurriedLambda" && rhs.kind === "CurriedLambda") {

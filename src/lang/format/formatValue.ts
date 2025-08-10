@@ -41,16 +41,16 @@ export function formatValue(value: Value): string {
       }
     }
 
-    case "PrimFn": {
+    case "PrimitiveFunction": {
       return `${value.name}`
     }
 
-    case "CurriedPrimFn": {
+    case "CurriedPrimitiveFunction": {
       const args = value.args.map(formatValue)
       if (args.length === 0) {
-        return `${value.primFn.name}`
+        return `${value.primitiveFunction.name}`
       } else {
-        return `(${value.primFn.name} ${args.join(" ")})`
+        return `(${value.primitiveFunction.name} ${args.join(" ")})`
       }
     }
 

@@ -11,8 +11,8 @@ export type Value =
   | Tael
   | Lambda
   | CurriedLambda
-  | PrimFn
-  | CurriedPrimFn
+  | PrimitiveFunction
+  | CurriedPrimitiveFunction
   | Void
   | AboutData
   | Arrow
@@ -73,8 +73,8 @@ export function CurriedLambda(
   }
 }
 
-export type PrimFn = {
-  kind: "PrimFn"
+export type PrimitiveFunction = {
+  kind: "PrimitiveFunction"
   name: string
   arity: number
   fn: ValueFn
@@ -82,28 +82,32 @@ export type PrimFn = {
 
 export type ValueFn = (...args: Array<Value>) => Value
 
-export function PrimFn(name: string, arity: number, fn: ValueFn): PrimFn {
+export function PrimitiveFunction(
+  name: string,
+  arity: number,
+  fn: ValueFn,
+): PrimitiveFunction {
   return {
-    kind: "PrimFn",
+    kind: "PrimitiveFunction",
     name,
     arity,
     fn,
   }
 }
 
-export type CurriedPrimFn = {
-  kind: "CurriedPrimFn"
-  primFn: PrimFn
+export type CurriedPrimitiveFunction = {
+  kind: "CurriedPrimitiveFunction"
+  primitiveFunction: PrimitiveFunction
   args: Array<Value>
 }
 
-export function CurriedPrimFn(
-  primFn: PrimFn,
+export function CurriedPrimitiveFunction(
+  primitiveFunction: PrimitiveFunction,
   args: Array<Value>,
-): CurriedPrimFn {
+): CurriedPrimitiveFunction {
   return {
-    kind: "CurriedPrimFn",
-    primFn,
+    kind: "CurriedPrimitiveFunction",
+    primitiveFunction,
     args,
   }
 }

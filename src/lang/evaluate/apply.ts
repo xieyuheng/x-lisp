@@ -48,20 +48,23 @@ export function apply(target: Value, args: Array<Value>): Value {
     }
   }
 
-  if (target.kind === "PrimFn") {
-    return apply(Values.CurriedPrimFn(target, []), args)
+  if (target.kind === "PrimitiveFunction") {
+    return apply(Values.CurriedPrimitiveFunction(target, []), args)
   }
 
-  if (target.kind === "CurriedPrimFn") {
-    const arity = target.primFn.arity
+  if (target.kind === "CurriedPrimitiveFunction") {
+    const arity = target.primitiveFunction.arity
     const totalArgs = [...target.args, ...args]
 
     if (totalArgs.length < arity) {
-      return Values.CurriedPrimFn(target.primFn, totalArgs)
+      return Values.CurriedPrimitiveFunction(
+        target.primitiveFunction,
+        totalArgs,
+      )
     }
 
     if (totalArgs.length === arity) {
-      return target.primFn.fn(...totalArgs)
+      return target.primitiveFunction.fn(...totalArgs)
     }
 
     let message = `[apply] Too many arguments\n`

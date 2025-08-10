@@ -2,8 +2,10 @@ syntax error for zero argument lambda
 `Thunk` as `Value`
 `force` -- handle `Thunk`
 [prelude] `(current-working-directory)` -- be thunk
-[prelude] [maybe] `(current-module-directory)` `(current-module-file)` -- be thunk
-[prelude] [maybe] `module-directory` `module-file` -- be string
+
+`Def` should not use own or not to test public, just use `isPublic`
+
+[prelude] `(current-directory)` `(current-file)` -- be thunk
 [prelude] `aboutPath` -- `(path-join [path ...])`
 [prelude] `format-sexp`
 [prelude] console-write console-print console-write
