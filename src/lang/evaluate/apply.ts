@@ -10,24 +10,68 @@ import { applyLambda } from "./applyLambda.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
 import { force } from "./force.ts"
 
+export function supply(curried: Values.Curried, args: Array<Value>): Value {
+  if (curried.target.kind === "Lambda") {
+    const totalArgs = [...curried.args, ...args]
+
+    if (totalArgs.length < curried.arity) {
+      return Values.Curried(curried.target, curried.arity, totalArgs)
+    }
+
+    return applyLambda(curried.target, totalArgs)
+  }
+
+  if (curried.target.kind === "PrimitiveFunction") {
+    const totalArgs = [...curried.args, ...args]
+
+    if (totalArgs.length < curried.arity) {
+      return Values.Curried(curried.target, curried.arity, totalArgs)
+    }
+
+    if (totalArgs.length === curried.arity) {
+      return curried.target.fn(...totalArgs)
+    }
+
+    let message = `[supply] Too many arguments\n`
+    message += `  curried: ${formatValue(curried)}\n`
+    message += `  args: [${args.map(formatValue).join(" ")}]\n`
+    throw new Error(message)
+  }
+
+  if (curried.target.kind === "DataPredicate") {
+    const totalArgs = [...curried.args, ...args]
+
+    if (totalArgs.length < curried.arity) {
+      return Values.Curried(curried.target, curried.arity, totalArgs)
+    }
+
+    if (totalArgs.length === curried.arity) {
+      return applyDataPredicate(curried.target, totalArgs)
+    }
+
+    let message = `[supply] Too many arguments\n`
+    message += `  curried: ${formatValue(curried)}\n`
+    message += `  args: [${args.map(formatValue).join(" ")}]\n`
+    throw new Error(message)
+  }
+
+  let message = `[supply] I can not handle this kind of curried target\n`
+  message += `  curried target: ${formatValue(curried.target)}\n`
+  message += `  args: [${args.map(formatValue).join(" ")}]\n`
+  throw new Error(message)
+}
+
 export function apply(target: Value, args: Array<Value>): Value {
   if (args.length === 0) {
     return force(target)
   }
 
   if (target.kind === "Lambda") {
-    return apply(Values.CurriedLambda(target, []), args)
+    return supply(Values.Curried(target, target.parameters.length, []), args)
   }
 
-  if (target.kind === "CurriedLambda") {
-    const arity = target.lambda.parameters.length
-    const totalArgs = [...target.args, ...args]
-
-    if (totalArgs.length < arity) {
-      return Values.CurriedLambda(target.lambda, totalArgs)
-    }
-
-    return applyLambda(target.lambda, totalArgs)
+  if (target.kind === "Curried") {
+    return supply(target, args)
   }
 
   if (target.kind === "Arrow") {
@@ -49,28 +93,7 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "PrimitiveFunction") {
-    return apply(Values.CurriedPrimitiveFunction(target, []), args)
-  }
-
-  if (target.kind === "CurriedPrimitiveFunction") {
-    const arity = target.primitiveFunction.arity
-    const totalArgs = [...target.args, ...args]
-
-    if (totalArgs.length < arity) {
-      return Values.CurriedPrimitiveFunction(
-        target.primitiveFunction,
-        totalArgs,
-      )
-    }
-
-    if (totalArgs.length === arity) {
-      return target.primitiveFunction.fn(...totalArgs)
-    }
-
-    let message = `[apply] Too many arguments\n`
-    message += `  target: ${formatValue(target)}\n`
-    message += `  args: [${args.map(formatValue).join(" ")}]\n`
-    throw new Error(message)
+    return supply(Values.Curried(target, target.arity, []), args)
   }
 
   if (target.kind === "DataConstructor") {
@@ -103,25 +126,10 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "DataPredicate") {
-    return apply(Values.CurriedDataPredicate(target, []), args)
-  }
-
-  if (target.kind === "CurriedDataPredicate") {
-    const arity = target.predicate.parameters.length + 1
-    const totalArgs = [...target.args, ...args]
-
-    if (totalArgs.length < arity) {
-      return Values.CurriedDataPredicate(target.predicate, totalArgs)
-    }
-
-    if (totalArgs.length === arity) {
-      return applyDataPredicate(target.predicate, totalArgs)
-    }
-
-    let message = `[apply] Too many arguments\n`
-    message += `  target: ${formatValue(target)}\n`
-    message += `  args: [${args.map(formatValue).join(" ")}]\n`
-    throw new Error(message)
+    return supply(
+      Values.Curried(target, target.parameters.length + 1, []),
+      args,
+    )
   }
 
   let message = `[apply] I can not handle this kind of target\n`

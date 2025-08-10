@@ -11,14 +11,13 @@ export type Value =
   | Tael
   | Lambda
   | Thunk
-  | CurriedLambda
   | PrimitiveFunction
   | PrimitiveThunk
-  | CurriedPrimitiveFunction
   | Void
   | AboutData
   | Arrow
   | Claimed
+  | Curried
 
 export type Tael = {
   kind: "Tael"
@@ -73,23 +72,6 @@ export function Thunk(mod: Mod, env: Env, body: Exp): Thunk {
   }
 }
 
-export type CurriedLambda = {
-  kind: "CurriedLambda"
-  lambda: Lambda
-  args: Array<Value>
-}
-
-export function CurriedLambda(
-  lambda: Lambda,
-  args: Array<Value>,
-): CurriedLambda {
-  return {
-    kind: "CurriedLambda",
-    lambda,
-    args,
-  }
-}
-
 export type PrimitiveFunction = {
   kind: "PrimitiveFunction"
   name: string
@@ -128,23 +110,6 @@ export function PrimitiveThunk(name: string, fn: ValueThunk): PrimitiveThunk {
   }
 }
 
-export type CurriedPrimitiveFunction = {
-  kind: "CurriedPrimitiveFunction"
-  primitiveFunction: PrimitiveFunction
-  args: Array<Value>
-}
-
-export function CurriedPrimitiveFunction(
-  primitiveFunction: PrimitiveFunction,
-  args: Array<Value>,
-): CurriedPrimitiveFunction {
-  return {
-    kind: "CurriedPrimitiveFunction",
-    primitiveFunction,
-    args,
-  }
-}
-
 export type Void = {
   kind: "Void"
 }
@@ -180,5 +145,25 @@ export function Claimed(value: Value, schema: Value): Claimed {
     kind: "Claimed",
     value,
     schema,
+  }
+}
+
+export type Curried = {
+  kind: "Curried"
+  target: Value
+  arity: number
+  args: Array<Value>
+}
+
+export function Curried(
+  target: Value,
+  arity: number,
+  args: Array<Value>,
+): Curried {
+  return {
+    kind: "Curried",
+    target,
+    arity,
+    args,
   }
 }

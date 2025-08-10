@@ -27,16 +27,6 @@ export function formatValue(value: Value): string {
       return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 
-    case "CurriedLambda": {
-      const lambda = formatValue(value.lambda)
-      const args = value.args.map(formatValue)
-      if (args.length === 0) {
-        return `${lambda}`
-      } else {
-        return `(${lambda} ${args.join(" ")})`
-      }
-    }
-
     case "Thunk": {
       return `(thunk ${formatBody(value.body)})`
     }
@@ -47,15 +37,6 @@ export function formatValue(value: Value): string {
 
     case "PrimitiveThunk": {
       return `${value.name}`
-    }
-
-    case "CurriedPrimitiveFunction": {
-      const args = value.args.map(formatValue)
-      if (args.length === 0) {
-        return `${value.primitiveFunction.name}`
-      } else {
-        return `(${value.primitiveFunction.name} ${args.join(" ")})`
-      }
     }
 
     case "Void": {
@@ -73,15 +54,6 @@ export function formatValue(value: Value): string {
 
     case "DataPredicate": {
       return value.name
-    }
-
-    case "CurriedDataPredicate": {
-      const args = value.args.map(formatValue)
-      if (args.length === 0) {
-        return `${formatValue(value.predicate)}`
-      } else {
-        return `(${formatValue(value.predicate)} ${args.join(" ")})`
-      }
     }
 
     case "DataConstructor": {
@@ -104,6 +76,16 @@ export function formatValue(value: Value): string {
 
     case "Claimed": {
       return `(the ${formatValue(value.schema)} ${formatValue(value.value)})`
+    }
+
+    case "Curried": {
+      const target = formatValue(value.target)
+      const args = value.args.map(formatValue)
+      if (args.length === 0) {
+        return `${target}`
+      } else {
+        return `(${target} ${args.join(" ")})`
+      }
     }
   }
 }

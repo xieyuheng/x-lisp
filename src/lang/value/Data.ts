@@ -11,7 +11,6 @@ export type DataSpec = {
 export type AboutData =
   | Data
   | DataPredicate
-  | CurriedDataPredicate
   | DataConstructor
   | DataConstructorPredicate
   | DataGetter
@@ -75,23 +74,6 @@ export function DataPredicate(
     spec,
     name,
     parameters,
-  }
-}
-
-export type CurriedDataPredicate = {
-  kind: "CurriedDataPredicate"
-  predicate: DataPredicate
-  args: Array<Value>
-}
-
-export function CurriedDataPredicate(
-  predicate: DataPredicate,
-  args: Array<Value>,
-): CurriedDataPredicate {
-  return {
-    kind: "CurriedDataPredicate",
-    predicate,
-    args,
   }
 }
 

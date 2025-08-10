@@ -10,31 +10,12 @@ export function equal(lhs: Value, rhs: Value): boolean {
     )
   }
 
-  if (
-    lhs.kind === "CurriedPrimitiveFunction" &&
-    rhs.kind === "CurriedPrimitiveFunction"
-  ) {
-    return (
-      equal(lhs.primitiveFunction, rhs.primitiveFunction) &&
-      equalValues(lhs.args, rhs.args)
-    )
-  }
-
-  if (lhs.kind === "CurriedLambda" && rhs.kind === "CurriedLambda") {
-    return equal(lhs.lambda, rhs.lambda) && equalValues(lhs.args, rhs.args)
+  if (lhs.kind === "Curried" && rhs.kind === "Curried") {
+    return equal(lhs.target, rhs.target) && equalValues(lhs.args, rhs.args)
   }
 
   if (lhs.kind === "DataPredicate" && rhs.kind === "DataPredicate") {
     return same(lhs, rhs)
-  }
-
-  if (
-    lhs.kind === "CurriedDataPredicate" &&
-    rhs.kind === "CurriedDataPredicate"
-  ) {
-    return (
-      equal(lhs.predicate, rhs.predicate) && equalValues(lhs.args, rhs.args)
-    )
   }
 
   if (lhs.kind === "DataConstructor" && rhs.kind === "DataConstructor") {
