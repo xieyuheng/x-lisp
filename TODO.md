@@ -6,7 +6,6 @@
 `PrimitiveThunk` as `Value`
 [prelude] `(current-working-directory)` -- be `PrimitiveThunk`
 
-rename Def to Definition
 `Definition` should not use own or not to test public, just use `isPublic`
 
 [prelude] `(current-directory)` `(current-file)` -- be `PrimitiveThunk`

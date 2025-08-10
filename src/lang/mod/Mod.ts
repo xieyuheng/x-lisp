@@ -5,7 +5,7 @@ import { type Value } from "../value/index.ts"
 // which can be used to distinguish
 // imported names from own defined names.
 
-export type Def = {
+export type Definition = {
   mod: Mod
   name: string
   value: Value
@@ -13,7 +13,7 @@ export type Def = {
 
 export type Mod = {
   url: URL
-  defs: Map<string, Def>
+  definitions: Map<string, Definition>
   claims: Map<string, Value>
   code: string
   stmts: Array<Stmt>
@@ -22,7 +22,7 @@ export type Mod = {
 export function createMod(url: URL): Mod {
   return {
     url,
-    defs: new Map(),
+    definitions: new Map(),
     claims: new Map(),
     code: "",
     stmts: [],
@@ -30,31 +30,31 @@ export function createMod(url: URL): Mod {
 }
 
 export function modGetValue(mod: Mod, name: string): Value | undefined {
-  const def = mod.defs.get(name)
-  if (def === undefined) return undefined
+  const definition = mod.definitions.get(name)
+  if (definition === undefined) return undefined
 
-  return def.value
+  return definition.value
 }
 
-export function modOwnDefs(mod: Mod): Array<Def> {
-  const ownDefs: Array<Def> = []
-  for (const def of mod.defs.values()) {
-    if (def.mod.url.href === mod.url.href) {
-      ownDefs.push(def)
+export function modOwnDefinitions(mod: Mod): Array<Definition> {
+  const ownDefinitions: Array<Definition> = []
+  for (const definition of mod.definitions.values()) {
+    if (definition.mod.url.href === mod.url.href) {
+      ownDefinitions.push(definition)
     }
   }
 
-  return ownDefs
+  return ownDefinitions
 }
 
 export function modNames(mod: Mod): Set<string> {
-  return new Set(mod.defs.keys())
+  return new Set(mod.definitions.keys())
 }
 
 export function modOwnNames(mod: Mod): Set<string> {
   const ownNames = new Set<string>()
-  for (const [name, def] of mod.defs.entries()) {
-    if (def.mod.url.href === mod.url.href) {
+  for (const [name, definition] of mod.definitions.entries()) {
+    if (definition.mod.url.href === mod.url.href) {
       ownNames.add(name)
     }
   }

@@ -14,8 +14,8 @@ export function claim(mod: Mod, name: string, schema: Value): void {
 
   mod.claims.set(name, schema)
 
-  const def = mod.defs.get(name)
-  if (def) {
-    def.value = Values.Claimed(def.value, schema)
+  const definition = mod.definitions.get(name)
+  if (definition) {
+    definition.value = Values.Claimed(definition.value, schema)
   }
 }
