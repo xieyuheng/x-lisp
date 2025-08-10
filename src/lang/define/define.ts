@@ -15,7 +15,7 @@ export function define(mod: Mod, name: string, value: Value): void {
   const definition = { origin: mod, name, value }
   mod.defined.set(name, definition)
 
-  const schema = mod.claims.get(name)
+  const schema = mod.claimed.get(name)
   if (schema) {
     definition.value = Values.Claimed(definition.value, schema)
   }

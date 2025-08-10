@@ -14,7 +14,7 @@ export type Definition = {
 export type Mod = {
   url: URL
   defined: Map<string, Definition>
-  claims: Map<string, Value>
+  claimed: Map<string, Value>
   code: string
   stmts: Array<Stmt>
 }
@@ -23,7 +23,7 @@ export function createMod(url: URL): Mod {
   return {
     url,
     defined: new Map(),
-    claims: new Map(),
+    claimed: new Map(),
     code: "",
     stmts: [],
   }

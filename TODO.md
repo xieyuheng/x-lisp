@@ -1,4 +1,3 @@
-`Mod` rename `claims` to `claimed`
 `Mod` `claimed` has `Definition` instead of only `Value`
 `Mod` has `imported`
 `modLookup` -- lookup both defined and imported

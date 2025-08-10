@@ -4,7 +4,7 @@ import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 
 export function claim(mod: Mod, name: string, schema: Value): void {
-  const found = mod.claims.get(name)
+  const found = mod.claimed.get(name)
   if (found) {
     let message = `[claim] I can not reclaim name: ${name}\n`
     message += `  new schema: ${formatValue(schema)}\n`
@@ -12,7 +12,7 @@ export function claim(mod: Mod, name: string, schema: Value): void {
     throw new Error(message)
   }
 
-  mod.claims.set(name, schema)
+  mod.claimed.set(name, schema)
 
   const definition = mod.defined.get(name)
   if (definition) {
