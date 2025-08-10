@@ -29,7 +29,7 @@ export function createMod(url: URL): Mod {
   }
 }
 
-export function modGetValue(mod: Mod, name: string): Value | undefined {
+export function modLookup(mod: Mod, name: string): Value | undefined {
   const definition = mod.definitions.get(name)
   if (definition === undefined) return undefined
 

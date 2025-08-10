@@ -1,9 +1,17 @@
-`Definition` should not use own or not to test public, just use `isPublic`
+`Definition` rename `mod` to `origin`
+
+`Mod` has `defined`
+`Mod` has `imported`
+`modLookup` -- lookup both defined and imported
+remove `Definition`
 
 [prelude] `aboutModule` -- `(current-module-directory)` `(current-module-file)` -- be `PrimitiveThunk`
+
+- this group of definitions are not part of prelude mod
+- `load` call `aboutModule`
+
 [prelude] `aboutPath` -- `(path-join [path ...])`
 [prelude] `aboutSexp` -- `format-sexp`
-
 [prelude] `aboutConsole` -- `print` and `println` for value
 
 # module

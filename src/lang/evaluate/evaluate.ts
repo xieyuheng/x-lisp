@@ -7,7 +7,7 @@ import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { emptyEnv, envGet, envSet, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
-import { modGetValue, modReportSource, type Mod } from "../mod/index.ts"
+import { modLookup, modReportSource, type Mod } from "../mod/index.ts"
 import { match, patternize } from "../pattern/index.ts"
 import { usePreludeMod } from "../prelude/index.ts"
 import * as Values from "../value/index.ts"
@@ -33,7 +33,7 @@ export function evaluate(exp: Exp): Effect {
         const value = envGet(env, exp.name)
         if (value) return [env, value]
 
-        const topValue = modGetValue(mod, exp.name)
+        const topValue = modLookup(mod, exp.name)
         if (topValue) return [env, topValue]
 
         let message = `[evaluate] I meet undefined name: ${exp.name}\n`
@@ -226,7 +226,7 @@ export function evaluate(exp: Exp): Effect {
     case "Union": {
       return (mod, env) => {
         const preludeMod = usePreludeMod()
-        const value = modGetValue(preludeMod, "union/fn")
+        const value = modLookup(preludeMod, "union/fn")
         assert(value)
         const predicates = exp.exps.map((e) =>
           resultValue(evaluate(e)(mod, env)),
@@ -238,7 +238,7 @@ export function evaluate(exp: Exp): Effect {
     case "Inter": {
       return (mod, env) => {
         const preludeMod = usePreludeMod()
-        const value = modGetValue(preludeMod, "inter/fn")
+        const value = modLookup(preludeMod, "inter/fn")
         assert(value)
         const predicates = exp.exps.map((e) =>
           resultValue(evaluate(e)(mod, env)),
