@@ -10,8 +10,8 @@ export type Value =
   | Atom
   | Tael
   | Lambda
-  | CurriedLambda
   | Thunk
+  | CurriedLambda
   | PrimitiveFunction
   | CurriedPrimitiveFunction
   | Void
@@ -56,6 +56,22 @@ export function Lambda(
   }
 }
 
+export type Thunk = {
+  kind: "Thunk"
+  mod: Mod
+  env: Env
+  body: Exp
+}
+
+export function Thunk(mod: Mod, env: Env, body: Exp): Thunk {
+  return {
+    kind: "Thunk",
+    mod,
+    env,
+    body,
+  }
+}
+
 export type CurriedLambda = {
   kind: "CurriedLambda"
   lambda: Lambda
@@ -70,22 +86,6 @@ export function CurriedLambda(
     kind: "CurriedLambda",
     lambda,
     args,
-  }
-}
-
-export type Thunk = {
-  kind: "Thunk"
-  mod: Mod
-  env: Env
-  body: Exp
-}
-
-export function Thunk(mod: Mod, env: Env, body: Exp): Thunk {
-  return {
-    kind: "Thunk",
-    mod,
-    env,
-    body,
   }
 }
 

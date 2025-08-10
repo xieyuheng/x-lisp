@@ -49,6 +49,10 @@ export function evaluate(exp: Exp): Effect {
       ]
     }
 
+    case "Thunk": {
+      return (mod, env) => [env, Values.Thunk(mod, env, exp.body)]
+    }
+
     case "Apply": {
       return (mod, env) => {
         const target = resultValue(evaluate(exp.target)(mod, env))

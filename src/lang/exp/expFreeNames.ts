@@ -35,6 +35,10 @@ export function expFreeNames(exp: Exp): Effect {
       }
     }
 
+    case "Thunk": {
+      return expFreeNames(exp.body)
+    }
+
     case "Apply": {
       return effectUnion([
         expFreeNames(exp.target),

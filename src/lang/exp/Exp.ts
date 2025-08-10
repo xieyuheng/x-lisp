@@ -9,6 +9,7 @@ export type Exp =
   | Atom
   | Var
   | Lambda
+  | Thunk
   | Apply
   | Begin
   | Assign
@@ -53,6 +54,20 @@ export function Lambda(
   return {
     kind: "Lambda",
     parameters,
+    body,
+    meta,
+  }
+}
+
+export type Thunk = {
+  kind: "Thunk"
+  body: Exp
+  meta: Meta
+}
+
+export function Thunk(body: Exp, meta: Meta): Thunk {
+  return {
+    kind: "Thunk",
     body,
     meta,
   }

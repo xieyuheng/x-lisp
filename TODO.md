@@ -1,4 +1,6 @@
-`Thunk` as `Exp`
+parse `(thunk)`
+test `(thunk)`
+
 `(define)` support `Thunk`
 `force` -- handle `Thunk`
 
@@ -10,7 +12,9 @@
 [prelude] `(current-directory)` `(current-file)` -- be `PrimitiveThunk`
 [prelude] `aboutPath` -- `(path-join [path ...])`
 [prelude] `format-sexp`
-[prelude] console-write console-print console-write
+
+[prelude] `print` and `println` for value
+[prelude] `write` for string
 
 # module
 
