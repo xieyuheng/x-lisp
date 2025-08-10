@@ -48,6 +48,16 @@ export function modPublicDefinitions(mod: Mod): Array<Definition> {
   return ownDefinitions
 }
 
+export function modLookupPublicDefinition(
+  mod: Mod,
+  name: string,
+): Definition | undefined {
+  const defined = mod.defined.get(name)
+  if (defined) return defined
+
+  return undefined
+}
+
 export function modNames(mod: Mod): Set<string> {
   return new Set(mod.defined.keys())
 }

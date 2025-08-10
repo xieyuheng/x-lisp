@@ -1,11 +1,16 @@
-import { type Mod, modImport, modPublicDefinitions } from "../mod/index.ts"
+import {
+  type Mod,
+  modImport,
+  modLookupPublicDefinition,
+  modPublicDefinitions,
+} from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 
 export function stage2(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Import") {
     const importedMod = modImport(mod, stmt.path)
     for (const entry of stmt.entries) {
-      const definition = importedMod.defined.get(entry.name)
+      const definition = modLookupPublicDefinition(importedMod, entry.name)
       if (definition === undefined) {
         let message = `(import) I can not import undefined name: ${entry.name}\n`
         message += `  path: ${stmt.path}\n`
