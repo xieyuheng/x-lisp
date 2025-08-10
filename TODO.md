@@ -1,4 +1,3 @@
-`force` handle `PrimitiveThunk`
 [prelude] `(current-working-directory)` -- be `PrimitiveThunk`
 
 [maybe] merge `Curried`

@@ -7,6 +7,10 @@ export function force(target: Value): Value {
     return resultValue(evaluate(target.body)(target.mod, target.env))
   }
 
+  if (target.kind === "PrimitiveThunk") {
+    return target.fn()
+  }
+
   let message = `[force] unhandled target value kind\n`
   message += `  target: ${formatValue(target)}\n`
   throw new Error(message)
