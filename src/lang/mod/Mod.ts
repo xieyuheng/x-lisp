@@ -1,10 +1,6 @@
 import { type Stmt } from "../stmt/index.ts"
 import { type Value } from "../value/index.ts"
 
-// `Mod` stores values indirectly via `Def`,
-// which can be used to distinguish
-// imported names from own defined names.
-
 export type Definition = {
   origin: Mod
   name: string
@@ -14,7 +10,7 @@ export type Definition = {
 export type Mod = {
   url: URL
   defined: Map<string, Definition>
-  claimed: Map<string, Value>
+  claimed: Map<string, Definition>
   code: string
   stmts: Array<Stmt>
 }
