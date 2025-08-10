@@ -1,4 +1,5 @@
-[diary] 2025-08-10-function-vs-thunk.md
+syntax error for zero argument lambda
+`Thunk` as `Value`
 [prelude] `(current-working-directory)` -- be thunk
 [prelude] [maybe] `(current-module-directory)` `(current-module-file)` -- be thunk
 [prelude] [maybe] `module-directory` `module-file` -- be string
