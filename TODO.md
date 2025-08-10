@@ -4,10 +4,9 @@
 
 [prelude] `aboutModule` -- `(current-module-directory)` `(current-module-file)` -- be `PrimitiveThunk`
 [prelude] `aboutPath` -- `(path-join [path ...])`
-[prelude] `format-sexp`
+[prelude] `aboutSexp` -- `format-sexp`
 
-[prelude] `print` and `println` for value
-[prelude] `write` for string
+[prelude] `aboutConsole` -- `print` and `println` for value
 
 # module
 
