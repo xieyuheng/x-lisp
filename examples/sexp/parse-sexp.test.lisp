@@ -3,6 +3,3 @@
 
 (assert (equal? (parse-sexps "(f x) (g y)")
                 '((f x) (g y))))
-
-(parse-sexp "(f x)")
-(parse-sexps "(f x) (g y)")
