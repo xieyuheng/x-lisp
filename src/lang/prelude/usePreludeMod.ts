@@ -1,5 +1,6 @@
 import { createMod, type Mod } from "../mod/index.ts"
 import { aboutBool } from "./aboutBool.ts"
+import { aboutConsole } from "./aboutConsole.ts"
 import { aboutFile } from "./aboutFile.ts"
 import { aboutFloat } from "./aboutFloat.ts"
 import { aboutInt } from "./aboutInt.ts"
@@ -33,6 +34,7 @@ export function usePreludeMod(): Mod {
   aboutFile(mod)
   aboutPath(mod)
   aboutProcess(mod)
+  aboutConsole(mod)
 
   return mod
 }

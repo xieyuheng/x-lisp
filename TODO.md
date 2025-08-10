@@ -1,4 +1,3 @@
-[prelude] `aboutConsole` -- `print` and `println` for value
 [prelude] `aboutSexp` -- `format-sexp`
 
 # module
