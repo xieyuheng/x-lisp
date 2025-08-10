@@ -5,7 +5,6 @@ import { expFreeNames } from "../exp/index.ts"
 import { formatValue } from "../format/index.ts"
 import { modNames, modOwnDefs, type Def, type Mod } from "../mod/index.ts"
 import { parseStmts } from "../parse/parse.ts"
-import * as Values from "../value/index.ts"
 import { stage1 } from "./stage1.ts"
 import { stage2 } from "./stage2.ts"
 import { stage3 } from "./stage3.ts"
@@ -24,21 +23,19 @@ export function runCode(mod: Mod, code: string): void {
 
 function assertNoUndefinedName(def: Def): void {
   if (def.value.kind === "Lambda") {
-    assertLambdaNoFreeName(def.value)
-  }
-}
-
-function assertLambdaNoFreeName(lambda: Values.Lambda): void {
-  const boundNames = new Set(lambda.parameters)
-  const { freeNames } = expFreeNames(lambda.body)(boundNames)
-  const definedNames = setUnion(modNames(lambda.mod), envNames(lambda.env))
-  const undefinedNames = setDifference(freeNames, definedNames)
-  if (undefinedNames.size > 0) {
-    const unnamedLambda = { ...lambda, definedName: undefined }
-    let message = `[assertLambdaNoFreeName] fail\n`
-    message += `  undefined names: [${Array.from(undefinedNames).join(" ")}]\n`
-    message += `  lambda: ${formatValue(unnamedLambda)}\n`
-    message += `[source] ${urlRelativeToCwd(lambda.mod.url)}\n`
-    throw new Error(message)
+    const lambda = def.value
+    const boundNames = new Set(lambda.parameters)
+    const { freeNames } = expFreeNames(lambda.body)(boundNames)
+    const definedNames = setUnion(modNames(lambda.mod), envNames(lambda.env))
+    const undefinedNames = setDifference(freeNames, definedNames)
+    if (undefinedNames.size > 0) {
+      const unnamedLambda = { ...lambda, definedName: undefined }
+      let message = `[assertNoUndefinedName] found undefined names in lambda\n`
+      message += `  undefined names: [${Array.from(undefinedNames).join(" ")}]\n`
+      message += `  lambda: ${formatValue(unnamedLambda)}\n`
+      message += `  defining name: ${def.name}\n`
+      message += `[source] ${urlRelativeToCwd(lambda.mod.url)}\n`
+      throw new Error(message)
+    }
   }
 }

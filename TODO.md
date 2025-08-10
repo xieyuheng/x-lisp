@@ -1,5 +1,3 @@
-inline `assertLambdaNoFreeName`
-
 `Thunk` as `Value`
 `Thunk` as `Exp`
 `(define)` support `Thunk`
