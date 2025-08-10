@@ -1,7 +1,5 @@
-[prelude] `aboutFile` -- `(file-read path)` -- remove `file-read-sexp-list`
+[prelude] `aboutFile` -- `(print value)` `(println value)` `(newline)`
 [prelude] this-directory this-file
-[prelude] `aboutFile` -- `(print value)`
-[prelude] `aboutFile` -- `(newline)`
 [prelude] `aboutFile` -- `(file-write path list)`
 
 # module

@@ -14,5 +14,5 @@
          empty-env)
    (closure 'x (var-exp 'x) empty-env)))
 
-;; (eval (parse-exp (car (file-read-sexp-list "code")))
+;; (eval (parse-exp (parse-sexp (file-read "code")))
 ;;       empty-env)
