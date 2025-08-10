@@ -15,4 +15,15 @@ export function aboutConsole(mod: Mod) {
     process.stdout.write("\n")
     return Values.Void()
   })
+
+  definePrimitiveFunction(mod, "write", 1, (x) => {
+    process.stdout.write(Values.asString(x).content)
+    return Values.Void()
+  })
+
+  definePrimitiveFunction(mod, "writeln", 1, (x) => {
+    process.stdout.write(Values.asString(x).content)
+    process.stdout.write("\n")
+    return Values.Void()
+  })
 }

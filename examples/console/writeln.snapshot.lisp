@@ -1,0 +1,2 @@
+(writeln "abc")
+(writeln "abc")

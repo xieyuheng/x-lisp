@@ -1,5 +1,3 @@
-[prelude] `aboutConsole` -- `write` and `writeln` for string
-
 # module
 
 support re-export by `include`
