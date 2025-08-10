@@ -1,4 +1,3 @@
-syntax error for zero argument lambda
 `Thunk` as `Value`
 `force` -- handle `Thunk`
 

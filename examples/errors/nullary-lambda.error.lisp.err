@@ -1,0 +1,7 @@
+(lambda) expression must have at least one parameter
+
+
+ 1|(lambda () #t)
+   ~~~~~~~~~~~~~~ 
+ 2|
+

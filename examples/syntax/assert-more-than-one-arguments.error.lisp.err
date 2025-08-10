@@ -1,4 +1,4 @@
-[assert] The (assert) expression can only take one arguments
+(assert) expression can only take one arguments
 
 
  1|(assert #t #t)

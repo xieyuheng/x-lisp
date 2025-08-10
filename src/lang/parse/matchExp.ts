@@ -5,15 +5,19 @@ import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 
 const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
-  X.matcher(
-    "(cons* 'lambda parameters body)",
-    ({ parameters, body }, { span }) =>
-      Exps.Lambda(
-        X.dataToArray(parameters).map(X.symbolToString),
-        Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
-        { span },
-      ),
-  ),
+  X.matcher("(cons* 'lambda names body)", ({ names, body }, { span }) => {
+    const parameters = X.dataToArray(names).map(X.symbolToString)
+    if (parameters.length === 0) {
+      const message = "(lambda) expression must have at least one parameter\n"
+      throw new X.ParsingError(message, span)
+    }
+
+    return Exps.Lambda(
+      parameters,
+      Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
+      { span },
+    )
+  }),
 
   X.matcher("`(quote ,data)", ({ data }, { span }) =>
     Exps.Quote(data, { span }),
@@ -54,8 +58,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher("(cons 'assert exps)", ({ exps }, { span }) => {
     const args = X.dataToArray(exps).map(matchExp)
     if (args.length !== 1) {
-      const message =
-        "[assert] The (assert) expression can only take one arguments\n"
+      const message = "(assert) expression can only take one arguments\n"
       throw new X.ParsingError(message, span)
     }
 
