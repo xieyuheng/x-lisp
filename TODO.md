@@ -1,4 +1,3 @@
-`Thunk` as `Value`
 `Thunk` as `Exp`
 `(define)` support `Thunk`
 `force` -- handle `Thunk`

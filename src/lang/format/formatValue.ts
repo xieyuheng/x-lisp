@@ -37,6 +37,10 @@ export function formatValue(value: Value): string {
       }
     }
 
+    case "Thunk": {
+      return `(thunk ${formatBody(value.body)})`
+    }
+
     case "PrimitiveFunction": {
       return `${value.name}`
     }
