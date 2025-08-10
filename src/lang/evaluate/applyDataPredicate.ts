@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import { emptyEnv, envSet } from "../env/index.ts"
+import { emptyEnv, envSetValue } from "../env/index.ts"
 import { formatValue } from "../format/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
@@ -15,7 +15,7 @@ export function applyDataPredicate(
 
   let env = emptyEnv()
   for (const [index, parameter] of predicate.parameters.entries()) {
-    env = envSet(env, parameter, args[index])
+    env = envSetValue(env, parameter, args[index])
   }
 
   const data = args[args.length - 1]

@@ -7,7 +7,7 @@ import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import {
   emptyEnv,
   envLookupValue,
-  envSet,
+  envSetValue,
   envUpdate,
   type Env,
 } from "../env/index.ts"
@@ -82,7 +82,7 @@ export function evaluate(exp: Exp): Effect {
     case "Assign": {
       return (mod, env) => {
         const value = resultValue(evaluate(exp.rhs)(mod, env))
-        return [envSet(env, exp.name, value), Values.Void()]
+        return [envSetValue(env, exp.name, value), Values.Void()]
       }
     }
 
