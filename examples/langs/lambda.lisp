@@ -42,7 +42,7 @@
     ((closure parameter body env)
      (eval body (cons-env parameter arg env)))))
 
-(claim parse-exp (-> anything? exp?))
+(claim parse-exp (-> sexp? exp?))
 
 (define (parse-exp data)
   (cond ((symbol? data)
