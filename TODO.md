@@ -1,11 +1,14 @@
 syntax error for zero argument lambda
 `Thunk` as `Value`
 `force` -- handle `Thunk`
-[prelude] `(current-working-directory)` -- be thunk
 
-`Def` should not use own or not to test public, just use `isPublic`
+`PrimitiveThunk` as `Value`
+[prelude] `(current-working-directory)` -- be `PrimitiveThunk`
 
-[prelude] `(current-directory)` `(current-file)` -- be thunk
+rename Def to Definition
+`Definition` should not use own or not to test public, just use `isPublic`
+
+[prelude] `(current-directory)` `(current-file)` -- be `PrimitiveThunk`
 [prelude] `aboutPath` -- `(path-join [path ...])`
 [prelude] `format-sexp`
 [prelude] console-write console-print console-write
