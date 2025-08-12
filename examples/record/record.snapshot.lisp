@@ -1,7 +1,7 @@
 [:x 1 :y 2 :z 3]
 
-;; (assert (record? int? [:x 1 :y 2 :z 3]))
-;; (assert (not (record? int? [:x 1 :y 2 :z 'a])))
+(assert (record? int? [:x 1 :y 2 :z 3]))
+(assert (not (record? int? [:x 1 :y 2 :z 'a])))
 
 (assert (equal? [:x 1 :y 2 :z [:x 1 :y 2]]
                 [:x 1 :y 2 :z [:x 1 :y 2]]))

@@ -19,6 +19,7 @@ export function aboutList(mod: Mod) {
       if (result.kind !== "Bool") {
         let message = `(list?) one result of applying the predicate is not bool\n`
         message += `  predicate: ${formatValue(p)}\n`
+        message += `  target: ${formatValue(x)}\n`
         message += `  element: ${formatValue(element)}\n`
         message += `  result: ${formatValue(result)}\n`
         throw new Error(message)
