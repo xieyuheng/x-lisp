@@ -7,6 +7,9 @@
  [4 5 6]
  [7 8 9]]
 
+(assert (list? int? [1 2 3]))
+(assert (not (list? symbol? [1 2 3])))
+
 (assert (equal? [[1 2 3]
                  [4 5 6]
                  [7 8 9]]

@@ -3,6 +3,10 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutRecord(mod: Mod) {
+  definePrimitiveFunction(mod, "record?", 1, (x) =>
+    Values.Bool(x.kind === "Tael"),
+  )
+
   definePrimitiveFunction(mod, "record-length", 1, (x) =>
     Values.Int(Object.keys(Values.asTael(x).attributes).length),
   )

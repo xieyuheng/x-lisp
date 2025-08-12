@@ -1,4 +1,6 @@
 import { definePrimitiveFunction } from "../define/index.ts"
+import { apply } from "../evaluate/index.ts"
+import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -6,6 +8,29 @@ export function aboutList(mod: Mod) {
   definePrimitiveFunction(mod, "null?", 1, (x) =>
     Values.Bool(Values.asTael(x).elements.length === 0),
   )
+
+  definePrimitiveFunction(mod, "list?", 2, (p, x) => {
+    if (x.kind !== "Tael") {
+      return Values.Bool(false)
+    }
+
+    for (const element of Values.asTael(x).elements) {
+      const result = apply(p, [element])
+      if (result.kind !== "Bool") {
+        let message = `(list?) one result of applying the predicate is not bool\n`
+        message += `  predicate: ${formatValue(p)}\n`
+        message += `  element: ${formatValue(element)}\n`
+        message += `  result: ${formatValue(result)}\n`
+        throw new Error(message)
+      }
+
+      if (result.content === false) {
+        return Values.Bool(false)
+      }
+    }
+
+    return Values.Bool(true)
+  })
 
   definePrimitiveFunction(mod, "car", 1, (x) => {
     if (Values.asTael(x).elements.length === 0) {
