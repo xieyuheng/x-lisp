@@ -9,17 +9,17 @@ export function aboutList(mod: Mod) {
     Values.Bool(Values.asTael(x).elements.length === 0),
   )
 
-  definePrimitiveFunction(mod, "list?", 2, (p, x) => {
-    if (x.kind !== "Tael") {
+  definePrimitiveFunction(mod, "list?", 2, (p, target) => {
+    if (target.kind !== "Tael") {
       return Values.Bool(false)
     }
 
-    for (const element of Values.asTael(x).elements) {
+    for (const element of Values.asTael(target).elements) {
       const result = apply(p, [element])
       if (result.kind !== "Bool") {
         let message = `(list?) one result of applying the predicate is not bool\n`
         message += `  predicate: ${formatValue(p)}\n`
-        message += `  target: ${formatValue(x)}\n`
+        message += `  target: ${formatValue(target)}\n`
         message += `  element: ${formatValue(element)}\n`
         message += `  result: ${formatValue(result)}\n`
         throw new Error(message)
