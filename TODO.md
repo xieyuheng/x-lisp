@@ -1,5 +1,3 @@
-`aboutVoid` -- `void` and `void?`
-
 # optional
 
 `aboutOptional` -- `null` and `null?`

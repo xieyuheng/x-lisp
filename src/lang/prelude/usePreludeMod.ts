@@ -13,6 +13,7 @@ import { aboutSexp } from "./aboutSexp.ts"
 import { aboutString } from "./aboutString.ts"
 import { aboutSymbol } from "./aboutSymbol.ts"
 import { aboutValue } from "./aboutValue.ts"
+import { aboutVoid } from "./aboutVoid.ts"
 
 let mod: Mod | undefined = undefined
 
@@ -35,6 +36,7 @@ export function usePreludeMod(): Mod {
   aboutPath(mod)
   aboutProcess(mod)
   aboutConsole(mod)
+  aboutVoid(mod)
 
   return mod
 }
