@@ -1,6 +1,6 @@
 `Void` as `Exp` -- like `Null`
 parse `#void`
-unknown-special-symbol.error.lisp
+examples/void
 
 # optional
 
