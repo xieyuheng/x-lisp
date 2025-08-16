@@ -1,7 +1,15 @@
+# optional
+
+`Null` as `Exp`
+parse `#null`
+`aboutOptional` -- `null` and `null?`
+`aboutOptional` -- `optional?`
+
 # record
 
-`record-has?`
+`record-empty?`
 `record-get` -- take symbol
+`record-has?` -- take symbol
 `record-set` -- take symbol
 
 `RecordGet` as `Exp`
@@ -10,6 +18,8 @@
 # match
 
 `match` support tael
+`match` support atom
+`match` support quoted sexp
 
 # composition
 

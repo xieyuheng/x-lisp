@@ -8,6 +8,7 @@ export type Attributes = Record<string, Value>
 
 export type Value =
   | Atom
+  | Null
   | Tael
   | Lambda
   | Thunk
@@ -18,6 +19,16 @@ export type Value =
   | Arrow
   | Claimed
   | Curried
+
+export type Null = {
+  kind: "Null"
+}
+
+export function Null(): Null {
+  return {
+    kind: "Null",
+  }
+}
 
 export type Tael = {
   kind: "Tael"
