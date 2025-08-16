@@ -1,4 +1,5 @@
 import { define, definePrimitiveFunction } from "../define/index.ts"
+import { runCode } from "../load/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -8,4 +9,6 @@ export function aboutOptional(mod: Mod) {
   definePrimitiveFunction(mod, "null?", 1, (value) => {
     return Values.Bool(value.kind === "Null")
   })
+
+  runCode(mod, `(define (optional? p x) (or (p x) (null? x)))`)
 }

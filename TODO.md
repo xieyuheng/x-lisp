@@ -1,7 +1,3 @@
-# optional
-
-`aboutOptional` -- `optional?`
-
 # record
 
 `record-empty?`
