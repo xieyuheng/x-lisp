@@ -1,9 +1,3 @@
-# error
-
-learn from lisp and scheme error
-`exit`
-maybe just use combinnator and`(result? V E)` with `ok` and `error`
-
 # tael
 
 `list-get`
