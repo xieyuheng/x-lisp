@@ -45,6 +45,10 @@ export function formatExp(exp: Exp): string {
       return `(assert ${formatExp(exp.exp)})`
     }
 
+    case "Void": {
+      return "#void"
+    }
+
     case "Null": {
       return "#null"
     }

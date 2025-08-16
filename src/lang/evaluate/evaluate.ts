@@ -113,6 +113,10 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
+    case "Void": {
+      return (mod, env) => [env, Values.Void()]
+    }
+
     case "Null": {
       return (mod, env) => [env, Values.Null()]
     }

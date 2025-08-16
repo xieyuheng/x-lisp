@@ -14,6 +14,7 @@ export type Exp =
   | Begin
   | Assign
   | Assert
+  | Void
   | Null
   | Tael
   | Quote
@@ -130,6 +131,18 @@ export function Assert(exp: Exp, meta: Meta): Assert {
   return {
     kind: "Assert",
     exp,
+    meta,
+  }
+}
+
+export type Void = {
+  kind: "Void"
+  meta: Meta
+}
+
+export function Void(meta: Meta): Void {
+  return {
+    kind: "Void",
     meta,
   }
 }

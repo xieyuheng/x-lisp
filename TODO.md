@@ -1,4 +1,3 @@
-`Void` as `Exp` -- like `Null`
 parse `#void`
 examples/void
 
