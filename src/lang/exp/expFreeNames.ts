@@ -64,6 +64,10 @@ export function expFreeNames(exp: Exp): Effect {
       return expFreeNames(exp.exp)
     }
 
+    case "Null": {
+      return identityEffect()
+    }
+
     case "Tael": {
       return effectUnion([
         effectUnion(exp.elements.map(expFreeNames)),

@@ -45,6 +45,10 @@ export function formatExp(exp: Exp): string {
       return `(assert ${formatExp(exp.exp)})`
     }
 
+    case "Null": {
+      return "#null"
+    }
+
     case "Tael": {
       const elements = exp.elements.map(formatExp)
       const attributes = Object.entries(exp.attributes).map(

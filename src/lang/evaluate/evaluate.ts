@@ -113,6 +113,10 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
+    case "Null": {
+      return (mod, env) => [env, Values.Null()]
+    }
+
     case "Tael": {
       return (mod, env) => {
         const value = Values.Tael(

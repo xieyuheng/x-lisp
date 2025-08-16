@@ -1,6 +1,5 @@
 # optional
 
-`Null` as `Exp`
 parse `#null`
 `aboutOptional` -- `null` and `null?`
 `aboutOptional` -- `optional?`
