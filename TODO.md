@@ -1,6 +1,9 @@
+`Void` as `Exp` -- like `Null`
+parse `#void`
+unknown-special-symbol.error.lisp
+
 # optional
 
-parse `#null`
 `aboutOptional` -- `null` and `null?`
 `aboutOptional` -- `optional?`
 

@@ -9,7 +9,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     "(cons* 'lambda parameters body)",
     ({ parameters, body }, { span }) => {
       if (X.dataToArray(parameters).length === 0) {
-        const message = "(lambda) expression must have at least one parameter\n"
+        let message = `(lambda) expression must have at least one parameter\n`
         throw new X.ParsingError(message, span)
       }
 
@@ -113,8 +113,18 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
         return Exps.Float(X.dataToNumber(data), { span })
       case "String":
         return Exps.String(X.dataToString(data), { span })
-      case "Symbol":
+      case "Symbol": {
+        if (X.symbolToString(data).startsWith("#")) {
+          if (X.symbolToString(data) === "#null") {
+            return Exps.Null({ span })
+          }
+
+          let message = `unknown special symbol: ${X.symbolToString(data)}\n`
+          throw new X.ParsingError(message, span)
+        }
+
         return Exps.Var(X.symbolToString(data), { span })
+      }
     }
   }),
 ])
