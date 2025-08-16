@@ -30,7 +30,10 @@ export function aboutRecord(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "record-length", 1, (record) => {
-    return Values.Int(Object.keys(Values.asTael(record).attributes).length)
+    const values = Object.values(Values.asTael(record).attributes).filter(
+      (value) => value.kind !== "Null",
+    )
+    return Values.Int(values.length)
   })
 
   definePrimitiveFunction(mod, "record-update", 2, (base, record) => {
@@ -42,5 +45,12 @@ export function aboutRecord(mod: Mod) {
 
   definePrimitiveFunction(mod, "record-of", 1, (record) => {
     return Values.Record({ ...Values.asTael(record).attributes })
+  })
+
+  definePrimitiveFunction(mod, "record-empty?", 1, (record) => {
+    const values = Object.values(Values.asTael(record).attributes).filter(
+      (value) => value.kind !== "Null",
+    )
+    return Values.Bool(values.length === 0)
   })
 }
