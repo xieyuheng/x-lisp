@@ -1,4 +1,4 @@
-examples/void
+`aboutVoid` -- `void` and `void?`
 
 # optional
 
