@@ -1,6 +1,5 @@
 # optional
 
-`aboutOptional` -- `null` and `null?`
 `aboutOptional` -- `optional?`
 
 # record
