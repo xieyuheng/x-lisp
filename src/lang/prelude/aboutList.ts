@@ -5,7 +5,7 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutList(mod: Mod) {
-  definePrimitiveFunction(mod, "null?", 1, (x) => {
+  definePrimitiveFunction(mod, "list-empty?", 1, (x) => {
     return Values.Bool(Values.asTael(x).elements.length === 0)
   })
 

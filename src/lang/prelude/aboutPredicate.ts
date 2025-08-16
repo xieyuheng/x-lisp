@@ -12,12 +12,12 @@ export function aboutPredicate(mod: Mod) {
 (define (negate p x) (not (p x)))
 
 (define (union/fn ps x)
-  (cond ((null? ps) #f)
+  (cond ((list-empty? ps) #f)
         (((car ps) x) #t)
         (else (union/fn (cdr ps) x))))
 
 (define (inter/fn ps x)
-  (cond ((null? ps) #t)
+  (cond ((list-empty? ps) #t)
         ((not ((car ps) x)) #f)
         (else (inter/fn (cdr ps) x))))
 `,

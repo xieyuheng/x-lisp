@@ -1,5 +1,6 @@
-# tael
+# record
 
+`record-has?`
 `record-get` -- take symbol
 `record-set` -- take symbol
 

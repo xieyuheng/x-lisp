@@ -40,8 +40,8 @@
 (assert (equal? (list-of [1 2 3 :x 1 :y 2 :z 3])
                 [1 2 3]))
 
-(assert (null? []))
-(assert (not (null? [1])))
+(assert (list-empty? []))
+(assert (not (list-empty? [1])))
 
 (assert (equal? (cons 1 (cons 2 (cons 3 []))) [1 2 3]))
 (assert (equal? (car [1 2 3]) 1))
