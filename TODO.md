@@ -1,4 +1,3 @@
-parse `#void`
 examples/void
 
 # optional

@@ -115,6 +115,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
         return Exps.String(X.dataToString(data), { span })
       case "Symbol": {
         if (X.symbolToString(data).startsWith("#")) {
+          if (X.symbolToString(data) === "#void") {
+            return Exps.Void({ span })
+          }
+
           if (X.symbolToString(data) === "#null") {
             return Exps.Null({ span })
           }
