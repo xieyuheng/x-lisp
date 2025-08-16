@@ -46,3 +46,19 @@
 (assert (equal? (cons 1 (cons 2 (cons 3 []))) [1 2 3]))
 (assert (equal? (car [1 2 3]) 1))
 (assert (equal? (cdr [1 2 3]) [2 3]))
+
+(assert (equal? (list-get [1 2 3] 0) 1))
+(assert (equal? (list-get [1 2 3] 1) 2))
+(assert (equal? (list-get [1 2 3] 2) 3))
+
+(begin
+  (= list [0 0 0])
+  (assert (equal? (list-get list 0) 0))
+  (assert (equal? (list-get list 1) 0))
+  (assert (equal? (list-get list 2) 0))
+  (= list (list-set list 0 1))
+  (assert (equal? (list-get list 0) 1))
+  (= list (list-set list 1 2))
+  (assert (equal? (list-get list 1) 2))
+  (= list (list-set list 2 3))
+  (assert (equal? (list-get list 2) 3)))

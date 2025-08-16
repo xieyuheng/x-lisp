@@ -5,9 +5,9 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutList(mod: Mod) {
-  definePrimitiveFunction(mod, "null?", 1, (x) =>
-    Values.Bool(Values.asTael(x).elements.length === 0),
-  )
+  definePrimitiveFunction(mod, "null?", 1, (x) => {
+    return Values.Bool(Values.asTael(x).elements.length === 0)
+  })
 
   definePrimitiveFunction(mod, "list?", 2, (p, target) => {
     if (target.kind !== "Tael") {
@@ -73,4 +73,31 @@ export function aboutList(mod: Mod) {
   definePrimitiveFunction(mod, "list-of", 1, (x) =>
     Values.List([...Values.asTael(x).elements]),
   )
+
+  definePrimitiveFunction(mod, "list-get", 2, (list, index) => {
+    const elements = Values.asTael(list).elements
+    const i = Values.asInt(index).content
+    if (i < elements.length) {
+      return elements[i]
+    } else {
+      let message = `(list-get) index out of bound\n`
+      message += `  list: ${formatValue(list)}\n`
+      message += `  index: ${formatValue(index)}\n`
+      throw new Error(message)
+    }
+  })
+
+  definePrimitiveFunction(mod, "list-set", 3, (list, index, value) => {
+    const elements = Values.asTael(list).elements
+    const i = Values.asInt(index).content
+    if (i < elements.length) {
+      elements[i] = value
+      return Values.Tael(elements, Values.asTael(list).attributes)
+    } else {
+      let message = `(list-set) index out of bound\n`
+      message += `  list: ${formatValue(list)}\n`
+      message += `  index: ${formatValue(index)}\n`
+      throw new Error(message)
+    }
+  })
 }

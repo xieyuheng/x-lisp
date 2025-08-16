@@ -1,9 +1,10 @@
 # tael
 
-`list-get`
-`list-set`
-`record-get`
-`record-set`
+`record-get` -- take symbol
+`record-set` -- take symbol
+
+`RecordGet` as `Exp`
+`:keyword` as function
 
 # match
 
@@ -11,6 +12,7 @@
 
 # composition
 
+`compose/fn` -- like `union/fn` and `inter/fn`
 `compose` -- as a syntax keyword
 `pipe` -- as a syntax keyword
 
