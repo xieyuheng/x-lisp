@@ -35,3 +35,6 @@
 (assert (equal? (record-length [:x 1 :y 2 :z null]) 2))
 (assert (equal? (record-length [:x 1 :y null :z null]) 1))
 (assert (equal? (record-length [:x null :y null :z null]) 0))
+
+(assert (equal? [:x 1 :y 2 :z null]
+                [:x 1 :y 2]))
