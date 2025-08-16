@@ -5,20 +5,20 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutSexp(mod: Mod) {
-  definePrimitiveFunction(mod, "parse-sexp", 1, (x) =>
-    X.parseData(Values.asString(x).content),
-  )
+  definePrimitiveFunction(mod, "parse-sexp", 1, (string) => {
+    return X.parseData(Values.asString(string).content)
+  })
 
-  definePrimitiveFunction(mod, "parse-sexps", 1, (x) =>
-    Values.List(X.parseDataArray(Values.asString(x).content)),
-  )
+  definePrimitiveFunction(mod, "parse-sexps", 1, (string) => {
+    return Values.List(X.parseDataArray(Values.asString(string).content))
+  })
 
-  definePrimitiveFunction(mod, "format-sexp", 1, (x) => {
-    if (Values.isSexp(x)) {
-      return Values.String(Values.formatSexp(x))
+  definePrimitiveFunction(mod, "format-sexp", 1, (sexp) => {
+    if (Values.isSexp(sexp)) {
+      return Values.String(Values.formatSexp(sexp))
     } else {
       let message = `(format-sexp) expect argument to be sexp\n`
-      message += `  argument: ${formatValue(x)}`
+      message += `  argument: ${formatValue(sexp)}`
       throw new Error(message)
     }
   })

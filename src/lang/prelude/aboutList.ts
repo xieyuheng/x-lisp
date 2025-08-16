@@ -5,8 +5,8 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutList(mod: Mod) {
-  definePrimitiveFunction(mod, "list-empty?", 1, (x) => {
-    return Values.Bool(Values.asTael(x).elements.length === 0)
+  definePrimitiveFunction(mod, "list-empty?", 1, (value) => {
+    return Values.Bool(Values.asTael(value).elements.length === 0)
   })
 
   definePrimitiveFunction(mod, "list?", 2, (p, target) => {
@@ -33,22 +33,22 @@ export function aboutList(mod: Mod) {
     return Values.Bool(true)
   })
 
-  definePrimitiveFunction(mod, "car", 1, (x) => {
-    if (Values.asTael(x).elements.length === 0) {
-      throw new Error("[car] expect target to be non empty list")
+  definePrimitiveFunction(mod, "car", 1, (list) => {
+    if (Values.asTael(list).elements.length === 0) {
+      throw new Error("(car) expect target to be non empty list")
     }
 
-    return Values.asTael(x).elements[0]
+    return Values.asTael(list).elements[0]
   })
 
-  definePrimitiveFunction(mod, "cdr", 1, (x) => {
-    if (Values.asTael(x).elements.length === 0) {
-      throw new Error("[cdr] expect target to be non empty list")
+  definePrimitiveFunction(mod, "cdr", 1, (list) => {
+    if (Values.asTael(list).elements.length === 0) {
+      throw new Error("(cdr) expect target to be non empty list")
     }
 
     return Values.Tael(
-      Values.asTael(x).elements.slice(1),
-      Values.asTael(x).attributes,
+      Values.asTael(list).elements.slice(1),
+      Values.asTael(list).attributes,
     )
   })
 
@@ -59,20 +59,20 @@ export function aboutList(mod: Mod) {
     )
   })
 
-  definePrimitiveFunction(mod, "list-length", 1, (x) =>
-    Values.Int(Values.asTael(x).elements.length),
-  )
+  definePrimitiveFunction(mod, "list-length", 1, (list) => {
+    return Values.Int(Values.asTael(list).elements.length)
+  })
 
-  definePrimitiveFunction(mod, "list-append", 2, (x, y) =>
-    Values.Tael(
-      [...Values.asTael(x).elements, ...Values.asTael(y).elements],
-      Values.asTael(x).attributes,
-    ),
-  )
+  definePrimitiveFunction(mod, "list-append", 2, (base, list) => {
+    return Values.Tael(
+      [...Values.asTael(base).elements, ...Values.asTael(list).elements],
+      Values.asTael(base).attributes,
+    )
+  })
 
-  definePrimitiveFunction(mod, "list-of", 1, (x) =>
-    Values.List([...Values.asTael(x).elements]),
-  )
+  definePrimitiveFunction(mod, "list-of", 1, (list) => {
+    return Values.List([...Values.asTael(list).elements])
+  })
 
   definePrimitiveFunction(mod, "list-get", 2, (list, index) => {
     const elements = Values.asTael(list).elements

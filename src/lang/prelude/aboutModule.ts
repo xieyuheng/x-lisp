@@ -9,7 +9,9 @@ export function aboutModule(mod: Mod) {
   definePrimitiveThunk(
     mod,
     "current-module-file",
-    () => Values.String(mod.url.pathname),
+    () => {
+      return Values.String(mod.url.pathname)
+    },
     {
       isPrivate: true,
     },
@@ -18,7 +20,9 @@ export function aboutModule(mod: Mod) {
   definePrimitiveThunk(
     mod,
     "current-module-directory",
-    () => Values.String(dirname(mod.url.pathname)),
+    () => {
+      return Values.String(dirname(mod.url.pathname))
+    },
     {
       isPrivate: true,
     },

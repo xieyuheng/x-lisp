@@ -29,18 +29,18 @@ export function aboutRecord(mod: Mod) {
     return Values.Bool(true)
   })
 
-  definePrimitiveFunction(mod, "record-length", 1, (x) =>
-    Values.Int(Object.keys(Values.asTael(x).attributes).length),
-  )
+  definePrimitiveFunction(mod, "record-length", 1, (record) => {
+    return Values.Int(Object.keys(Values.asTael(record).attributes).length)
+  })
 
-  definePrimitiveFunction(mod, "record-update", 2, (x, y) =>
-    Values.Tael(Values.asTael(x).elements, {
-      ...Values.asTael(x).attributes,
-      ...Values.asTael(y).attributes,
-    }),
-  )
+  definePrimitiveFunction(mod, "record-update", 2, (base, record) => {
+    return Values.Tael(Values.asTael(base).elements, {
+      ...Values.asTael(base).attributes,
+      ...Values.asTael(record).attributes,
+    })
+  })
 
-  definePrimitiveFunction(mod, "record-of", 1, (x) =>
-    Values.Record({ ...Values.asTael(x).attributes }),
-  )
+  definePrimitiveFunction(mod, "record-of", 1, (record) => {
+    return Values.Record({ ...Values.asTael(record).attributes })
+  })
 }
