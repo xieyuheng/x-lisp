@@ -104,6 +104,18 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     )
   }),
 
+  X.matcher("[]", ({}, { data, span }) => {
+    const record = recordMap(X.asTael(data).attributes, matchExp)
+    const entries = Object.entries(record)
+    if (entries.length === 1) {
+      const [name, target] = entries[0]
+      return Exps.RecordGet(name, target, { span })
+    } else {
+      let message = `unhandled expression\n`
+      throw new X.ParsingError(message, span)
+    }
+  }),
+
   X.matcher("(cons target args)", ({ target, args }, { span }) => {
     return Exps.Apply(matchExp(target), X.dataToArray(args).map(matchExp), {
       span,
