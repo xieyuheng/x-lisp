@@ -1,5 +1,3 @@
-`matchExp` -- always use `return`
-
 # record
 
 parse `:keyword`

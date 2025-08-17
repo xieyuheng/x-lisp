@@ -27,36 +27,37 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     })
   }),
 
-  X.matcher("`(quote ,data)", ({ data }, { span }) =>
-    Exps.Quote(data, { span }),
-  ),
+  X.matcher("`(quote ,data)", ({ data }, { span }) => {
+    return Exps.Quote(data, { span })
+  }),
 
   X.matcher(
     "`(if ,condition ,consequent ,alternative)",
-    ({ condition, consequent, alternative }, { span }) =>
-      Exps.If(
+    ({ condition, consequent, alternative }, { span }) => {
+      return Exps.If(
         matchExp(condition),
         matchExp(consequent),
         matchExp(alternative),
         { span },
-      ),
+      )
+    },
   ),
 
-  X.matcher("(cons 'and exps)", ({ exps }, { span }) =>
-    Exps.And(X.dataToArray(exps).map(matchExp), { span }),
-  ),
+  X.matcher("(cons 'and exps)", ({ exps }, { span }) => {
+    return Exps.And(X.dataToArray(exps).map(matchExp), { span })
+  }),
 
-  X.matcher("(cons 'or exps)", ({ exps }, { span }) =>
-    Exps.Or(X.dataToArray(exps).map(matchExp), { span }),
-  ),
+  X.matcher("(cons 'or exps)", ({ exps }, { span }) => {
+    return Exps.Or(X.dataToArray(exps).map(matchExp), { span })
+  }),
 
-  X.matcher("(cons 'union exps)", ({ exps }, { span }) =>
-    Exps.Union(X.dataToArray(exps).map(matchExp), { span }),
-  ),
+  X.matcher("(cons 'union exps)", ({ exps }, { span }) => {
+    return Exps.Union(X.dataToArray(exps).map(matchExp), { span })
+  }),
 
-  X.matcher("(cons 'inter exps)", ({ exps }, { span }) =>
-    Exps.Inter(X.dataToArray(exps).map(matchExp), { span }),
-  ),
+  X.matcher("(cons 'inter exps)", ({ exps }, { span }) => {
+    return Exps.Inter(X.dataToArray(exps).map(matchExp), { span })
+  }),
 
   X.matcher("(cons '-> exps)", ({ exps }, { span }) => {
     const [args, ret] = arrayPickLast(X.dataToArray(exps).map(matchExp))
@@ -73,35 +74,41 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Assert(args[0], { span })
   }),
 
-  X.matcher("`(= ,name ,rhs)", ({ name, rhs }, { span }) =>
-    Exps.Assign(X.symbolToString(name), matchExp(rhs), { span }),
-  ),
+  X.matcher("`(= ,name ,rhs)", ({ name, rhs }, { span }) => {
+    return Exps.Assign(X.symbolToString(name), matchExp(rhs), { span })
+  }),
 
-  X.matcher("(cons 'tael elements)", ({ elements }, { data, span }) =>
-    Exps.Tael(
+  X.matcher("(cons 'tael elements)", ({ elements }, { data, span }) => {
+    return Exps.Tael(
       X.dataToArray(elements).map(matchExp),
       recordMap(X.asTael(data).attributes, matchExp),
       { span },
-    ),
-  ),
+    )
+  }),
 
-  X.matcher("(cons 'begin body)", ({ body }, { span }) =>
-    Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
-  ),
+  X.matcher("(cons 'begin body)", ({ body }, { span }) => {
+    return Exps.Begin(X.dataToArray(body).map(matchExp), { span })
+  }),
 
-  X.matcher("(cons 'cond lines)", ({ lines }, { span }) =>
-    Exps.Cond(X.dataToArray(lines).map(matchCondLine), { span }),
-  ),
+  X.matcher("(cons 'cond lines)", ({ lines }, { span }) => {
+    return Exps.Cond(X.dataToArray(lines).map(matchCondLine), { span })
+  }),
 
-  X.matcher("(cons* 'match target lines)", ({ target, lines }, { span }) =>
-    Exps.Match(matchExp(target), X.dataToArray(lines).map(matchMatchLine), {
+  X.matcher("(cons* 'match target lines)", ({ target, lines }, { span }) => {
+    return Exps.Match(
+      matchExp(target),
+      X.dataToArray(lines).map(matchMatchLine),
+      {
+        span,
+      },
+    )
+  }),
+
+  X.matcher("(cons target args)", ({ target, args }, { span }) => {
+    return Exps.Apply(matchExp(target), X.dataToArray(args).map(matchExp), {
       span,
-    }),
-  ),
-
-  X.matcher("(cons target args)", ({ target, args }, { span }) =>
-    Exps.Apply(matchExp(target), X.dataToArray(args).map(matchExp), { span }),
-  ),
+    })
+  }),
 
   X.matcher("data", ({ data }, { span }) => {
     switch (data.kind) {
