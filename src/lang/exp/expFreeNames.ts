@@ -131,6 +131,10 @@ export function expFreeNames(exp: Exp): Effect {
         effectUnion(exp.args.map(expFreeNames)),
       ])
     }
+
+    case "RecordGet": {
+      return expFreeNames(exp.target)
+    }
   }
 }
 

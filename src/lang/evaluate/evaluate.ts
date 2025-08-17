@@ -268,5 +268,18 @@ export function evaluate(exp: Exp): Effect {
         return [env, Values.Arrow(args, ret)]
       }
     }
+
+    case "RecordGet": {
+      return (mod, env) => {
+        const target = resultValue(evaluate(exp.target)(mod, env))
+        const attributes = Values.asTael(target).attributes
+        const value = attributes[exp.name]
+        if (value === undefined) {
+          return [env, Values.Null()]
+        } else {
+          return [env, value]
+        }
+      }
+    }
   }
 }

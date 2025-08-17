@@ -31,43 +31,47 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     },
   ),
 
-  X.matcher("`(define ,name ,exp)", ({ name, exp }, { span }) =>
-    Stmts.Define(X.symbolToString(name), matchExp(exp), { span }),
+  X.matcher("`(define ,name ,exp)", ({ name, exp }, { span }) => {
+    return Stmts.Define(X.symbolToString(name), matchExp(exp), { span })
+  }),
+
+  X.matcher(
+    "(cons* 'import source entries)",
+    ({ source, entries }, { span }) => {
+      return Stmts.Import(
+        X.dataToString(source),
+        X.dataToArray(entries).map(matchImportEntry),
+        { span },
+      )
+    },
   ),
 
-  X.matcher("(cons* 'import source entries)", ({ source, entries }, { span }) =>
-    Stmts.Import(
-      X.dataToString(source),
-      X.dataToArray(entries).map(matchImportEntry),
-      { span },
-    ),
-  ),
+  X.matcher("`(require ,source)", ({ source }, { span }) => {
+    return Stmts.Require(X.dataToString(source), { span })
+  }),
 
-  X.matcher("`(require ,source)", ({ source }, { span }) =>
-    Stmts.Require(X.dataToString(source), { span }),
-  ),
-
-  X.matcher("`(include ,source)", ({ source }, { span }) =>
-    Stmts.Include(X.dataToString(source), { span }),
-  ),
+  X.matcher("`(include ,source)", ({ source }, { span }) => {
+    return Stmts.Include(X.dataToString(source), { span })
+  }),
 
   X.matcher(
     "(cons* 'define-data predicate constructors)",
-    ({ predicate, constructors }, { span }) =>
-      Stmts.DefineData(
+    ({ predicate, constructors }, { span }) => {
+      return Stmts.DefineData(
         matchDataPredicate(predicate),
         X.dataToArray(constructors).map(matchDataConstructor),
         { span },
-      ),
+      )
+    },
   ),
 
-  X.matcher("`(claim ,name ,schema)", ({ name, schema }, { span }) =>
-    Stmts.Claim(X.symbolToString(name), matchExp(schema), { span }),
-  ),
+  X.matcher("`(claim ,name ,schema)", ({ name, schema }, { span }) => {
+    return Stmts.Claim(X.symbolToString(name), matchExp(schema), { span })
+  }),
 
-  X.matcher("exp", ({ exp }, { span }) =>
-    Stmts.Compute(matchExp(exp), { span }),
-  ),
+  X.matcher("exp", ({ exp }, { span }) => {
+    return Stmts.Compute(matchExp(exp), { span })
+  }),
 ])
 
 export function matchStmt(data: X.Data): Stmt {
@@ -77,16 +81,20 @@ export function matchStmt(data: X.Data): Stmt {
 function matchImportEntry(data: X.Data): Stmts.ImportEntry {
   return X.match(
     X.matcherChoice([
-      X.matcher("`(rename ,name ,rename)", ({ name, rename }, { span }) => ({
-        name: X.symbolToString(name),
-        rename: X.symbolToString(rename),
-        meta: { span },
-      })),
+      X.matcher("`(rename ,name ,rename)", ({ name, rename }, { span }) => {
+        return {
+          name: X.symbolToString(name),
+          rename: X.symbolToString(rename),
+          meta: { span },
+        }
+      }),
 
-      X.matcher("name", ({ name }, { span }) => ({
-        name: X.symbolToString(name),
-        meta: { span },
-      })),
+      X.matcher("name", ({ name }, { span }) => {
+        return {
+          name: X.symbolToString(name),
+          meta: { span },
+        }
+      }),
     ]),
     data,
   )
@@ -95,15 +103,19 @@ function matchImportEntry(data: X.Data): Stmts.ImportEntry {
 function matchDataPredicate(data: X.Data): Stmts.DataPredicateSpec {
   return X.match(
     X.matcherChoice([
-      X.matcher("(cons name parameters)", ({ name, parameters }, { span }) => ({
-        name: X.symbolToString(name),
-        parameters: X.dataToArray(parameters).map(X.symbolToString),
-      })),
+      X.matcher("(cons name parameters)", ({ name, parameters }, { span }) => {
+        return {
+          name: X.symbolToString(name),
+          parameters: X.dataToArray(parameters).map(X.symbolToString),
+        }
+      }),
 
-      X.matcher("name", ({ name }, { span }) => ({
-        name: X.symbolToString(name),
-        parameters: [],
-      })),
+      X.matcher("name", ({ name }, { span }) => {
+        return {
+          name: X.symbolToString(name),
+          parameters: [],
+        }
+      }),
     ]),
     data,
   )
@@ -112,15 +124,19 @@ function matchDataPredicate(data: X.Data): Stmts.DataPredicateSpec {
 function matchDataConstructor(data: X.Data): Stmts.DataConstructorSpec {
   return X.match(
     X.matcherChoice([
-      X.matcher("(cons name fields)", ({ name, fields }, { span }) => ({
-        name: X.symbolToString(name),
-        fields: X.dataToArray(fields).map(matchDataField),
-      })),
+      X.matcher("(cons name fields)", ({ name, fields }, { span }) => {
+        return {
+          name: X.symbolToString(name),
+          fields: X.dataToArray(fields).map(matchDataField),
+        }
+      }),
 
-      X.matcher("name", ({ name }, { span }) => ({
-        name: X.symbolToString(name),
-        fields: [],
-      })),
+      X.matcher("name", ({ name }, { span }) => {
+        return {
+          name: X.symbolToString(name),
+          fields: [],
+        }
+      }),
     ]),
     data,
   )
@@ -129,10 +145,12 @@ function matchDataConstructor(data: X.Data): Stmts.DataConstructorSpec {
 function matchDataField(data: X.Data): DataField {
   return X.match(
     X.matcherChoice([
-      X.matcher("`(,name ,exp)", ({ name, exp }, { span }) => ({
-        name: X.symbolToString(name),
-        predicate: matchExp(exp),
-      })),
+      X.matcher("`(,name ,exp)", ({ name, exp }, { span }) => {
+        return {
+          name: X.symbolToString(name),
+          predicate: matchExp(exp),
+        }
+      }),
     ]),
     data,
   )

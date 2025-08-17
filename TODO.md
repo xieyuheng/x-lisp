@@ -1,7 +1,8 @@
+`matchExp` -- always use `return`
+
 # record
 
-`RecordGet` as `Exp`
-`:keyword` as function
+parse `:keyword`
 
 # match
 

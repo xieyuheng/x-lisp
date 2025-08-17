@@ -26,6 +26,7 @@ export type Exp =
   | Union
   | Inter
   | Arrow
+  | RecordGet
 
 export type Var = {
   kind: "Var"
@@ -328,6 +329,22 @@ export function Arrow(args: Array<Exp>, ret: Exp, meta: Meta): Arrow {
     kind: "Arrow",
     args,
     ret,
+    meta,
+  }
+}
+
+export type RecordGet = {
+  kind: "RecordGet"
+  name: string
+  target: Exp
+  meta: Meta
+}
+
+export function RecordGet(name: string, target: Exp, meta: Meta): RecordGet {
+  return {
+    kind: "RecordGet",
+    name,
+    target,
     meta,
   }
 }

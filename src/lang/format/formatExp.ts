@@ -128,6 +128,10 @@ export function formatExp(exp: Exp): string {
       const ret = formatExp(exp.ret)
       return `(-> ${args.join(" ")} ${ret})`
     }
+
+    case "RecordGet": {
+      return `(:${exp.name} ${formatExp(exp.target)})`
+    }
   }
 }
 
