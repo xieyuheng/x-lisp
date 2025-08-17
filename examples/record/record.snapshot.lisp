@@ -38,3 +38,7 @@
 
 (assert (equal? [:x 1 :y 2 :z null]
                 [:x 1 :y 2]))
+
+(assert (equal? (record-get [:x 1 :y 2] 'x) 1))
+(assert (equal? (record-get [:x 1 :y 2] 'y) 2))
+(assert (equal? (record-get [:x 1 :y 2] 'z) null))

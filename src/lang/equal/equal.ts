@@ -80,9 +80,9 @@ function equalAttributes(lhs: Attributes, rhs: Attributes): boolean {
     const l = lhs[k]
     const r = rhs[k]
 
-    if (equal(l, r)) {
+    if (r === undefined && l.kind === "Null") {
       continue
-    } else if (r === undefined && l.kind === "Null") {
+    } else if (equal(l, r)) {
       continue
     } else {
       return false

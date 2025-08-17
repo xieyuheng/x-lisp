@@ -1,6 +1,5 @@
 # record
 
-`record-get` -- take symbol
 `record-has?` -- take symbol -- ignore null
 `record-set` -- take symbol
 

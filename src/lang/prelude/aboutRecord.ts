@@ -53,4 +53,14 @@ export function aboutRecord(mod: Mod) {
     )
     return Values.Bool(values.length === 0)
   })
+
+  definePrimitiveFunction(mod, "record-get", 2, (record, key) => {
+    const attributes = Values.asTael(record).attributes
+    const value = attributes[Values.asSymbol(key).content]
+    if (value === undefined) {
+      return Values.Null()
+    } else {
+      return value
+    }
+  })
 }
