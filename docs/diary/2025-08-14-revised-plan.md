@@ -15,3 +15,7 @@ date: 2025-08-14
 目标是前者，但是随时准备后退到后者。
 
 比如说，jai 的 compile time 功能都是用 bytecode 来完成的。
+
+也可以考虑编译到 forth-like 中间语言。
+如果使用 forth-like 作为编译对象的话，
+就可以直接用 text code 而不需要做 bytecode encoding。
