@@ -1,7 +1,5 @@
 # record
 
-`record-set` -- take symbol
-
 `RecordGet` as `Exp`
 `:keyword` as function
 
