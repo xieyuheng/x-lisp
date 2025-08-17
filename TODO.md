@@ -1,6 +1,5 @@
 # record
 
-`record-has?` -- take symbol -- ignore null
 `record-set` -- take symbol
 
 `RecordGet` as `Exp`
