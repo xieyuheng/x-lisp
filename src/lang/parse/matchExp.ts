@@ -110,8 +110,11 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     if (entries.length === 1) {
       const [name, target] = entries[0]
       return Exps.RecordGet(name, target, { span })
+    } else if (entries.length === 0) {
+      let message = `unhandled expression: empty list\n`
+      throw new X.ParsingError(message, span)
     } else {
-      let message = `unhandled expression\n`
+      let message = `unhandled expression: record with multiple keys\n`
       throw new X.ParsingError(message, span)
     }
   }),
