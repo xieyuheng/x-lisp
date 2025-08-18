@@ -1,7 +1,6 @@
 # match
 
-test atom
-
+`patternize` -- `Void` and `Null` to `LiteralPattern`
 `patternize` -- `Quote` to `LiteralPattern`
 test quote
 

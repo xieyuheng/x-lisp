@@ -1,3 +1,5 @@
+;; tael
+
 (begin
   (= value [1 2 3 :x 1 :y 2])
   (match value
@@ -20,3 +22,13 @@
   (match value
     ([a b c :x x :y y :z z] (assert false))
     (_ (assert true))))
+
+;; atom
+
+(match 1
+  (1 (assert true))
+  (_ (assert false)))
+
+(match "a"
+  ("a" (assert true))
+  (_ (assert false)))
