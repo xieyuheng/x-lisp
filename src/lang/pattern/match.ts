@@ -52,10 +52,21 @@ function matchMany(patterns: Array<Pattern>, targets: Array<Value>): Effect {
   return (env) => {
     if (targets.length !== patterns.length) return undefined
 
-    for (const [target, pattern] of arrayZip(targets, patterns)) {
-      const result = match(pattern, target)(env)
-      if (!result) return undefined
+    return sequenceEffect(
+      arrayZip(patterns, targets).map(([pattern, target]) =>
+        match(pattern, target),
+      ),
+    )(env)
+  }
+}
 
+// combinators
+
+function sequenceEffect(effects: Array<Effect>): Effect {
+  return (env) => {
+    for (const effect of effects) {
+      const result = effect(env)
+      if (!result) return undefined
       env = result
     }
 
