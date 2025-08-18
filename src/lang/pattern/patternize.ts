@@ -1,8 +1,10 @@
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { type Env } from "../env/index.ts"
+import { evaluate, resultValue } from "../evaluate/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/formatExp.ts"
 import { modLookupValue, type Mod } from "../mod/index.ts"
+import * as Values from "../value/index.ts"
 import * as Patterns from "./Pattern.ts"
 import { type Pattern } from "./Pattern.ts"
 
@@ -52,6 +54,12 @@ export function patternize(exp: Exp): Effect {
         exp.elements.map((value) => patternize(value)(mod, env)),
         recordMap(exp.attributes, (value) => patternize(value)(mod, env)),
       )
+    }
+  }
+
+  if (Values.isAtom(exp)) {
+    return (mod, env) => {
+      return Patterns.LiteralPattern(resultValue(evaluate(exp)(mod, env)))
     }
   }
 

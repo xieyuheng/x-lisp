@@ -1,6 +1,5 @@
 # match
 
-`patternize` -- `Atom` to `LiteralPattern`
 test atom
 
 `patternize` -- `Quote` to `LiteralPattern`
