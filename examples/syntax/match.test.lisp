@@ -32,3 +32,15 @@
 (match "a"
   ("a" (assert true))
   (_ (assert false)))
+
+;; void
+
+(match #void
+  (#void (assert true))
+  (_ (assert false)))
+
+;; null
+
+(match #null
+  (#null (assert true))
+  (_ (assert false)))
