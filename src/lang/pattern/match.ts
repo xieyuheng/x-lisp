@@ -6,19 +6,19 @@ import type { Pattern } from "./Pattern.ts"
 
 type Effect = (env: Env) => Env | undefined
 
-export function match(pattern: Pattern, target: Value): Effect {
+export function match(pattern: Pattern, value: Value): Effect {
   switch (pattern.kind) {
     case "VarPattern": {
       return (env) => {
         const found = envLookupValue(env, pattern.name)
         if (found) {
-          if (equal(found, target)) {
+          if (equal(found, value)) {
             return env
           } else {
             return undefined
           }
         } else {
-          return envSetValue(env, pattern.name, target)
+          return envSetValue(env, pattern.name, value)
         }
       }
     }
@@ -26,10 +26,10 @@ export function match(pattern: Pattern, target: Value): Effect {
     case "DataPattern": {
       return (env) => {
         if (
-          target.kind === "Data" &&
-          equal(target.constructor, pattern.constructor)
+          value.kind === "Data" &&
+          equal(value.constructor, pattern.constructor)
         ) {
-          return matchMany(pattern.args, target.elements)(env)
+          return matchMany(pattern.args, value.elements)(env)
         } else {
           return undefined
         }
@@ -38,8 +38,8 @@ export function match(pattern: Pattern, target: Value): Effect {
 
     case "TaelPattern": {
       return (env) => {
-        if (target.kind === "Tael") {
-          return matchMany(pattern.elements, target.elements)(env)
+        if (value.kind === "Tael") {
+          return matchMany(pattern.elements, value.elements)(env)
         } else {
           return undefined
         }
@@ -48,13 +48,13 @@ export function match(pattern: Pattern, target: Value): Effect {
   }
 }
 
-function matchMany(patterns: Array<Pattern>, targets: Array<Value>): Effect {
+function matchMany(patterns: Array<Pattern>, values: Array<Value>): Effect {
   return (env) => {
-    if (targets.length !== patterns.length) return undefined
+    if (values.length !== patterns.length) return undefined
 
     return sequenceEffect(
-      arrayZip(patterns, targets).map(([pattern, target]) =>
-        match(pattern, target),
+      arrayZip(patterns, values).map(([pattern, value]) =>
+        match(pattern, value),
       ),
     )(env)
   }
