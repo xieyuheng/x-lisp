@@ -73,3 +73,14 @@
   ((cons* first (eval (iadd 1 2)) tail)
    (assert false))
   (_ (assert true)))
+
+;; quasiquote
+
+(match '(1 2 3)
+  (`(,first ,(eval (iadd 1 1)) 3)
+   (assert (equal? first 1))))
+
+(match '(1 2 3)
+  (`(,first ,(eval (iadd 1 2)) 3)
+   (assert false))
+  (_ (assert true)))

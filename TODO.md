@@ -1,7 +1,3 @@
-# match
-
-`patternizeQuasiquote` -- to `TaelPattern`
-
 # composition
 
 `compose/fn` -- like `union/fn` and `inter/fn`
