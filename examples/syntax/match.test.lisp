@@ -48,3 +48,16 @@
 (match '(a b c)
   ('(a b c) (assert true))
   (_ (assert false)))
+
+;; cons and cons*
+
+(match '(a b c)
+  ((cons head tail)
+   (assert (equal? head 'a))
+   (assert (equal? tail '(b c)))))
+
+(match '(a b c)
+  ((cons* first second tail)
+   (assert (equal? first 'a))
+   (assert (equal? second 'b))
+   (assert (equal? tail '(c)))))
