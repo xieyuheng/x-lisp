@@ -1,10 +1,10 @@
 # quasiquote
 
-`evaluate` -- handle `Quasiquote` & `Unquote`
+`evaluateQuasiquote` -- handle `Quasiquote`
 
 # match
 
-`patternize` -- `Quasiquote` and `Unquote` to `TaelPattern`
+`patternize` -- `Quasiquote` to `TaelPattern`
 
 # composition
 

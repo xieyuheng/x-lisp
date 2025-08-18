@@ -19,9 +19,10 @@ import { usePreludeMod } from "../prelude/index.ts"
 import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
+import { evaluateQuasiquote } from "./evaluateQuasiquote.ts"
 
-type Result = [Env, Value]
-type Effect = (mod: Mod, env: Env) => Result
+export type Result = [Env, Value]
+export type Effect = (mod: Mod, env: Env) => Result
 
 export function resultValue(result: Result): Value {
   const [_, value] = result
@@ -140,20 +141,12 @@ export function evaluate(exp: Exp): Effect {
 
     case "Quote": {
       return (mod, env) => {
-        return [env, exp.data]
+        return [env, exp.sexp]
       }
     }
 
     case "Quasiquote": {
-      return (mod, env) => {
-        throw new Error()
-      }
-    }
-
-    case "Unquote": {
-      return (mod, env) => {
-        throw new Error()
-      }
+      return evaluateQuasiquote(exp.sexp)
     }
 
     case "If": {

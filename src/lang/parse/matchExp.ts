@@ -27,16 +27,12 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     })
   }),
 
-  X.matcher("`(quote ,data)", ({ data }, { span }) => {
-    return Exps.Quote(data, { span })
+  X.matcher("`(quote ,sexp)", ({ sexp }, { span }) => {
+    return Exps.Quote(sexp, { span })
   }),
 
-  X.matcher("`(quasiquote ,exp)", ({ exp }, { span }) => {
-    return Exps.Quasiquote(matchExp(exp), { span })
-  }),
-
-  X.matcher("`(unquote ,exp)", ({ exp }, { span }) => {
-    return Exps.Unquote(matchExp(exp), { span })
+  X.matcher("`(quasiquote ,sexp)", ({ sexp }, { span }) => {
+    return Exps.Quasiquote(sexp, { span })
   }),
 
   X.matcher(

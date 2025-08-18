@@ -2,7 +2,7 @@ import { formatData } from "@xieyuheng/x-data.js"
 import { type CondLine, type MatchLine } from "../../lang/exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatAtom } from "../format/index.ts"
-import { isAtom } from "../value/index.ts"
+import { formatSexp, isAtom } from "../value/index.ts"
 
 export function formatExp(exp: Exp): string {
   if (isAtom(exp)) {
@@ -70,15 +70,11 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Quote": {
-      return formatData(exp.data)
+      return formatData(exp.sexp)
     }
 
     case "Quasiquote": {
-      return `(quasiquote ${formatExp(exp.exp)})`
-    }
-
-    case "Unquote": {
-      return `(unquote ${formatExp(exp.exp)})`
+      return `(quasiquote ${formatSexp(exp.sexp)})`
     }
 
     case "If": {

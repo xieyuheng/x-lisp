@@ -19,7 +19,6 @@ export type Exp =
   | Tael
   | Quote
   | Quasiquote
-  | Unquote
   | If
   | And
   | Or
@@ -184,42 +183,28 @@ export function Tael(
 
 export type Quote = {
   kind: "Quote"
-  data: Data
+  sexp: Data
   meta: Meta
 }
 
-export function Quote(data: Data, meta: Meta): Quote {
+export function Quote(sexp: Data, meta: Meta): Quote {
   return {
     kind: "Quote",
-    data,
+    sexp,
     meta,
   }
 }
 
 export type Quasiquote = {
   kind: "Quasiquote"
-  exp: Exp
+  sexp: Data
   meta: Meta
 }
 
-export function Quasiquote(exp: Exp, meta: Meta): Quasiquote {
+export function Quasiquote(sexp: Data, meta: Meta): Quasiquote {
   return {
     kind: "Quasiquote",
-    exp,
-    meta,
-  }
-}
-
-export type Unquote = {
-  kind: "Unquote"
-  exp: Exp
-  meta: Meta
-}
-
-export function Unquote(exp: Exp, meta: Meta): Unquote {
-  return {
-    kind: "Unquote",
-    exp,
+    sexp,
     meta,
   }
 }
