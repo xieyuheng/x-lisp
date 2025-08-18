@@ -1,7 +1,3 @@
-# quasiquote
-
-`evaluateQuasiquote` -- handle `Quasiquote`
-
 # match
 
 `patternize` -- `Quasiquote` to `TaelPattern`
