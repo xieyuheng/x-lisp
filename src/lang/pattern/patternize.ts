@@ -8,8 +8,8 @@ import { type Pattern } from "./Pattern.ts"
 type Effect = (mod: Mod, env: Env) => Pattern
 
 export function patternize(exp: Exp): Effect {
-  return (mod, env) => {
-    if (exp.kind === "Var") {
+  if (exp.kind === "Var") {
+    return (mod, env) => {
       const topValue = modLookupValue(mod, exp.name)
       if (
         topValue &&
@@ -21,8 +21,10 @@ export function patternize(exp: Exp): Effect {
         return Patterns.VarPattern(exp.name)
       }
     }
+  }
 
-    if (exp.kind === "Apply") {
+  if (exp.kind === "Apply") {
+    return (mod, env) => {
       if (exp.target.kind !== "Var") {
         let message = `[patternize] The target of apply must be a var\n`
         message += `  exp: ${formatExp(exp)}`
@@ -41,9 +43,9 @@ export function patternize(exp: Exp): Effect {
         throw new Error(message)
       }
     }
-
-    let message = `[patternize] unhandled kind of exp\n`
-    message += `  exp: ${formatExp(exp)}`
-    throw new Error(message)
   }
+
+  let message = `[patternize] unhandled kind of exp\n`
+  message += `  exp: ${formatExp(exp)}`
+  throw new Error(message)
 }
