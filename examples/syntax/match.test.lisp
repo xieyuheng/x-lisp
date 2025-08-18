@@ -61,3 +61,15 @@
    (assert (equal? first 'a))
    (assert (equal? second 'b))
    (assert (equal? tail '(c)))))
+
+;; eval
+
+(match '(1 2 3)
+  ((cons* first (eval (iadd 1 1)) tail)
+   (assert (equal? first 1))
+   (assert (equal? tail '(3)))))
+
+(match '(1 2 3)
+  ((cons* first (eval (iadd 1 2)) tail)
+   (assert false))
+  (_ (assert true)))

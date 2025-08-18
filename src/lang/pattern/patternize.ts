@@ -28,22 +28,33 @@ export function patternize(exp: Exp): Effect {
   }
 
   if (exp.kind === "Apply") {
-    return (mod, env) => {
-      if (exp.target.kind !== "Var") {
-        let message = `[patternize] The target of apply must be a var\n`
-        message += `  exp: ${formatExp(exp)}`
-        throw new Error(message)
-      }
+    if (exp.target.kind !== "Var") {
+      let message = `[patternize] The target of apply must be a var\n`
+      message += `  exp: ${formatExp(exp)}`
+      throw new Error(message)
+    }
 
-      if (exp.target.name === "cons" || exp.target.name === "cons*") {
+    const name = exp.target.name
+
+    if (name === "cons" || name === "cons*") {
+      return (mod, env) => {
         const [prefix, rest] = arrayPickLast(exp.args)
         return Patterns.ConsStarPattern(
           prefix.map((e) => patternize(e)(mod, env)),
           patternize(rest)(mod, env),
         )
       }
+    }
 
-      const topValue = modLookupValue(mod, exp.target.name)
+    if (name === "eval" && exp.args.length === 1) {
+      return (mod, env) => {
+        const arg = exp.args[0]
+        return Patterns.LiteralPattern(resultValue(evaluate(arg)(mod, env)))
+      }
+    }
+
+    return (mod, env) => {
+      const topValue = modLookupValue(mod, name)
       if (topValue && topValue.kind === "DataConstructor") {
         return Patterns.DataPattern(
           topValue,

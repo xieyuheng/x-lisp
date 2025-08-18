@@ -1,7 +1,3 @@
-# match
-
-`(eval)` as `EvalPattern` to use `evaluate` in pattern
-
 # quasiquote
 
 `Quasiquote` as `Exp`
