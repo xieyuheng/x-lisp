@@ -73,6 +73,14 @@ export function formatExp(exp: Exp): string {
       return formatData(exp.data)
     }
 
+    case "Quasiquote": {
+      return `(quasiquote ${formatExp(exp.exp)})`
+    }
+
+    case "Unquote": {
+      return `(unquote ${formatExp(exp.exp)})`
+    }
+
     case "If": {
       return `(if ${formatExp(exp.condition)} ${formatExp(exp.consequent)} ${formatExp(exp.alternative)})`
     }

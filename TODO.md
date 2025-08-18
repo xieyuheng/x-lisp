@@ -1,12 +1,11 @@
 # quasiquote
 
-`Quasiquote` as `Exp`
-`Unquote` as `Exp`
+`evaluate` -- handle `Quasiquote` & `Unquote`
+parse `(quasiquote)` & `(unquote)`
 
 # match
 
-`patternize` -- `Unquote` to `LiteralPattern`
-`patternize` -- `Quasiquote` to `TaelPattern`
+`patternize` -- `Quasiquote` and `Unquote` to `TaelPattern`
 
 # composition
 
@@ -18,5 +17,7 @@
 
 `(include)` -- support `:only` -- `(include <path> :only [<name> ...])`
 `(include)` -- support `:except` -- `(include <path> :except [<name> ...])`
+
 `(require)` -- support `:only` and `:except`
-- if `(include)` support them, so should `(require)`
+- if `(include)` support them, so should `(require)`,
+  but `(require :only)` is the same as `(import)`.

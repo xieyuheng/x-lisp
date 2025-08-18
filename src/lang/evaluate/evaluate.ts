@@ -30,7 +30,9 @@ export function resultValue(result: Result): Value {
 
 export function evaluate(exp: Exp): Effect {
   if (isAtom(exp)) {
-    return (mod, env) => [env, exp]
+    return (mod, env) => {
+      return [env, exp]
+    }
   }
 
   switch (exp.kind) {
@@ -49,14 +51,16 @@ export function evaluate(exp: Exp): Effect {
     }
 
     case "Lambda": {
-      return (mod, env) => [
-        env,
-        Values.Lambda(mod, env, exp.parameters, exp.body),
-      ]
+      return (mod, env) => {
+        return [env, Values.Lambda(mod, env, exp.parameters, exp.body)]
+      }
     }
 
     case "Thunk": {
-      return (mod, env) => [env, Values.Thunk(mod, env, exp.body)]
+      return (mod, env) => {
+        return
+        ;[env, Values.Thunk(mod, env, exp.body)]
+      }
     }
 
     case "Apply": {
@@ -114,11 +118,15 @@ export function evaluate(exp: Exp): Effect {
     }
 
     case "Void": {
-      return (mod, env) => [env, Values.Void()]
+      return (mod, env) => {
+        return [env, Values.Void()]
+      }
     }
 
     case "Null": {
-      return (mod, env) => [env, Values.Null()]
+      return (mod, env) => {
+        return [env, Values.Null()]
+      }
     }
 
     case "Tael": {
@@ -132,7 +140,21 @@ export function evaluate(exp: Exp): Effect {
     }
 
     case "Quote": {
-      return (mod, env) => [env, exp.data]
+      return (mod, env) => {
+        return [env, exp.data]
+      }
+    }
+
+    case "Quasiquote": {
+      return (mod, env) => {
+        throw new Error()
+      }
+    }
+
+    case "unquote": {
+      return (mod, env) => {
+        throw new Error()
+      }
     }
 
     case "If": {

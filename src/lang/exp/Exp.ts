@@ -18,6 +18,8 @@ export type Exp =
   | Null
   | Tael
   | Quote
+  | Quasiquote
+  | Unquote
   | If
   | And
   | Or
@@ -190,6 +192,34 @@ export function Quote(data: Data, meta: Meta): Quote {
   return {
     kind: "Quote",
     data,
+    meta,
+  }
+}
+
+export type Quasiquote = {
+  kind: "Quasiquote"
+  exp: Exp
+  meta: Meta
+}
+
+export function Quasiquote(exp: Exp, meta: Meta): Quasiquote {
+  return {
+    kind: "Quasiquote",
+    exp,
+    meta,
+  }
+}
+
+export type Unquote = {
+  kind: "Unquote"
+  exp: Exp
+  meta: Meta
+}
+
+export function Unquote(exp: Exp, meta: Meta): Unquote {
+  return {
+    kind: "Unquote",
+    exp,
     meta,
   }
 }
