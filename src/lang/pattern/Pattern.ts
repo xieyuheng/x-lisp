@@ -73,13 +73,11 @@ export type ConsStarPattern = {
 
 export function ConsStarPattern(
   elements: Array<Pattern>,
-
   rest: Pattern,
 ): ConsStarPattern {
   return {
     kind: "ConsStarPattern",
     elements,
-
     rest,
   }
 }
