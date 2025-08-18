@@ -1,8 +1,9 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
 import { envLookupValue, envSetValue, type Env } from "../env/index.ts"
 import { equal } from "../equal/index.ts"
-import type { Value } from "../value/index.ts"
-import type { Pattern } from "./Pattern.ts"
+import * as Values from "../value/index.ts"
+import { type Value } from "../value/index.ts"
+import { type Pattern } from "./Pattern.ts"
 
 type Effect = (env: Env) => Env | undefined
 
@@ -44,13 +45,22 @@ export function match(pattern: Pattern, value: Value): Effect {
     case "LiteralPattern": {
       return (env) => {
         if (!equal(pattern.value, value)) return undefined
+
         return env
       }
     }
 
     case "ConsStarPattern": {
       return (env) => {
-        throw new Error()
+        if (value.kind !== "Tael") return undefined
+        if (pattern.elements.length > value.elements.length) return undefined
+
+        const prefix = value.elements.slice(0, pattern.elements.length)
+        const rest = Values.List(value.elements.slice(pattern.elements.length))
+        return sequenceEffect([
+          matchMany(pattern.elements, prefix),
+          match(pattern.rest, rest),
+        ])(env)
       }
     }
   }
