@@ -23,7 +23,7 @@
     ([a b c :x x :y y :z z] (assert false))
     (_ (assert true))))
 
-;; atom
+;; literal
 
 (match 1
   (1 (assert true))
@@ -33,14 +33,18 @@
   ("a" (assert true))
   (_ (assert false)))
 
-;; void
-
 (match #void
   (#void (assert true))
   (_ (assert false)))
 
-;; null
-
 (match #null
   (#null (assert true))
+  (_ (assert false)))
+
+(match 'a
+  ('a (assert true))
+  (_ (assert false)))
+
+(match '(a b c)
+  ('(a b c) (assert true))
   (_ (assert false)))

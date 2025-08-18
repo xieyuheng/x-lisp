@@ -57,7 +57,12 @@ export function patternize(exp: Exp): Effect {
     }
   }
 
-  if (Values.isAtom(exp) || exp.kind === "Void" || exp.kind === "Null") {
+  if (
+    Values.isAtom(exp) ||
+    exp.kind === "Void" ||
+    exp.kind === "Null" ||
+    exp.kind === "Quote"
+  ) {
     return (mod, env) => {
       return Patterns.LiteralPattern(resultValue(evaluate(exp)(mod, env)))
     }

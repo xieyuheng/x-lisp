@@ -1,10 +1,5 @@
 # match
 
-`patternize` -- `Quote` to `LiteralPattern`
-test quote
-
-# match
-
 `ConsStarPattern`
 `match` -- handle `ConsStarPattern`
 `patternize` -- `(cons)` to `ConsStarPattern`
