@@ -11,41 +11,33 @@ export function match(pattern: Pattern, value: Value): Effect {
     case "VarPattern": {
       return (env) => {
         const found = envLookupValue(env, pattern.name)
-        if (found) {
-          if (equal(found, value)) {
-            return env
-          } else {
-            return undefined
-          }
-        } else {
+        if (found === undefined) {
           return envSetValue(env, pattern.name, value)
         }
+
+        if (!equal(found, value)) return undefined
+
+        return env
       }
     }
 
     case "DataPattern": {
       return (env) => {
-        if (
-          value.kind === "Data" &&
-          equal(value.constructor, pattern.constructor)
-        ) {
-          return matchMany(pattern.args, value.elements)(env)
-        } else {
-          return undefined
-        }
+        if (value.kind !== "Data") return undefined
+        if (!equal(value.constructor, pattern.constructor)) return undefined
+
+        return matchMany(pattern.args, value.elements)(env)
       }
     }
 
     case "TaelPattern": {
       return (env) => {
-        if (value.kind === "Tael") {
-          return sequenceEffect([
-            matchMany(pattern.elements, value.elements),
-            matchAttributes(pattern.attributes, value.attributes),
-          ])(env)
-        } else {
-          return undefined
-        }
+        if (value.kind !== "Tael") return undefined
+
+        return sequenceEffect([
+          matchMany(pattern.elements, value.elements),
+          matchAttributes(pattern.attributes, value.attributes),
+        ])(env)
       }
     }
   }
@@ -71,6 +63,7 @@ function matchAttributes(
     for (const [key, pattern] of Object.entries(patterns)) {
       const value = values[key]
       if (value === undefined) return undefined
+      if (value.kind === "Null") return undefined
 
       const result = match(pattern, value)(env)
       if (result === undefined) return undefined

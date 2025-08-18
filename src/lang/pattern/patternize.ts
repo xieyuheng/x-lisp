@@ -1,3 +1,4 @@
+import { recordMap } from "../../utils/record/recordMap.ts"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/formatExp.ts"
@@ -42,6 +43,15 @@ export function patternize(exp: Exp): Effect {
         message += `  exp: ${formatExp(exp)}`
         throw new Error(message)
       }
+    }
+  }
+
+  if (exp.kind === "Tael") {
+    return (mod, env) => {
+      return Patterns.TaelPattern(
+        exp.elements.map((value) => patternize(value)(mod, env)),
+        recordMap(exp.attributes, (value) => patternize(value)(mod, env)),
+      )
     }
   }
 

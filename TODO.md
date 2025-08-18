@@ -1,9 +1,5 @@
 # match
 
-> `match` support tael
-
-`patternize` support `TaelPattern`
-
 > `match` support atom
 
 `LiteralPattern`
