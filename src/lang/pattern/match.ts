@@ -35,6 +35,16 @@ export function match(target: Value, pattern: Pattern): Effect {
         }
       }
     }
+
+    case "TaelPattern": {
+      return (env) => {
+        if (target.kind === "Tael") {
+          return matchMany(target.elements, pattern.elements)(env)
+        } else {
+          return undefined
+        }
+      }
+    }
   }
 }
 
