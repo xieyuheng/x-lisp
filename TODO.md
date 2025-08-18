@@ -1,5 +1,3 @@
-update x-data for utils
-
 # quasiquote
 
 `evaluateQuasiquote` -- handle `Quasiquote`
