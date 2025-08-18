@@ -69,18 +69,17 @@ export type ConsStarPattern = {
   kind: "ConsStarPattern"
   elements: Array<Pattern>
   rest: Pattern
-  attributes: Record<string, Pattern>
 }
 
 export function ConsStarPattern(
   elements: Array<Pattern>,
-  attributes: Record<string, Pattern>,
+
   rest: Pattern,
 ): ConsStarPattern {
   return {
     kind: "ConsStarPattern",
     elements,
-    attributes,
+
     rest,
   }
 }

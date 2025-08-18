@@ -1,10 +1,5 @@
 # match
 
-`patternize` -- `(cons)` to `ConsStarPattern`
-`patternize` -- `(cons*)` to `ConsStarPattern`
-
-# match
-
 `(eval)` as `EvalPattern` to use `evaluate` in pattern
 
 # quasiquote

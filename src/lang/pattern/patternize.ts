@@ -1,3 +1,4 @@
+import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { type Env } from "../env/index.ts"
 import { evaluate, resultValue } from "../evaluate/index.ts"
@@ -32,6 +33,14 @@ export function patternize(exp: Exp): Effect {
         let message = `[patternize] The target of apply must be a var\n`
         message += `  exp: ${formatExp(exp)}`
         throw new Error(message)
+      }
+
+      if (exp.target.name === "cons" || exp.target.name === "cons*") {
+        const [prefix, rest] = arrayPickLast(exp.args)
+        return Patterns.ConsStarPattern(
+          prefix.map((e) => patternize(e)(mod, env)),
+          patternize(rest)(mod, env),
+        )
       }
 
       const topValue = modLookupValue(mod, exp.target.name)
