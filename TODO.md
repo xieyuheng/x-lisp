@@ -1,10 +1,17 @@
 # match
 
-> `match` support atom
+`patternize` -- `Atom` to `LiteralPattern`
+test atom
 
-`LiteralPattern`
+`patternize` -- `Quote` to `LiteralPattern`
+test quote
 
-> `match` support quoted sexp
+# match
+
+`ConsStarPattern`
+`match` -- handle `ConsStarPattern`
+`patternize` -- `(cons)` to `ConsStarPattern`
+`patternize` -- `(cons*)` to `ConsStarPattern`
 
 # composition
 

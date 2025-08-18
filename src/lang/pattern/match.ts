@@ -40,6 +40,13 @@ export function match(pattern: Pattern, value: Value): Effect {
         ])(env)
       }
     }
+
+    case "LiteralPattern": {
+      return (env) => {
+        if (!equal(pattern.value, value)) return undefined
+        return env
+      }
+    }
   }
 }
 

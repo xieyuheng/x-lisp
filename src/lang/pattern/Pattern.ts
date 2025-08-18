@@ -1,6 +1,6 @@
-import { type DataConstructor } from "../value/Data.ts"
+import { type DataConstructor, type Value } from "../value/index.ts"
 
-export type Pattern = VarPattern | DataPattern | TaelPattern
+export type Pattern = VarPattern | DataPattern | TaelPattern | LiteralPattern
 
 export type VarPattern = {
   kind: "VarPattern"
@@ -45,5 +45,17 @@ export function TaelPattern(
     kind: "TaelPattern",
     elements,
     attributes,
+  }
+}
+
+export type LiteralPattern = {
+  kind: "LiteralPattern"
+  value: Value
+}
+
+export function LiteralPattern(value: Value): LiteralPattern {
+  return {
+    kind: "LiteralPattern",
+    value,
   }
 }
