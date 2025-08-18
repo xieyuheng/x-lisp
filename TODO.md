@@ -9,10 +9,13 @@
 
 `(eval)` as `EvalPattern` to use `evaluate` in pattern
 
-# match
+# quasiquote
 
 `Quasiquote` as `Exp`
 `Unquote` as `Exp`
+maybe remove `expFreeNames`
+
+# match
 
 `patternize` -- `Unquote` to `LiteralPattern`
 `patternize` -- `Quasiquote` to `TaelPattern`
