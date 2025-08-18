@@ -47,6 +47,12 @@ export function match(pattern: Pattern, value: Value): Effect {
         return env
       }
     }
+
+    case "ConsStarPattern": {
+      return (env) => {
+        throw new Error()
+      }
+    }
   }
 }
 

@@ -1,6 +1,5 @@
 # match
 
-`ConsStarPattern`
 `match` -- handle `ConsStarPattern`
 `patternize` -- `(cons)` to `ConsStarPattern`
 `patternize` -- `(cons*)` to `ConsStarPattern`
