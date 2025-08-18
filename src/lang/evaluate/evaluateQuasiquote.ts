@@ -8,5 +8,9 @@ export function evaluateQuasiquote(sexp: X.Data): Effect {
     }
   }
 
-  throw new Error("TODO")
+  if (X.isTael(sexp)) {
+    throw new Error("TODO")
+  }
+
+  throw new Error("[evaluateQuasiquote] unknown kind of data")
 }

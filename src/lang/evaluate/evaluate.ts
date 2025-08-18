@@ -153,11 +153,10 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const condition = resultValue(evaluate(exp.condition)(mod, env))
         if (condition.kind !== "Bool") {
-          throw new Error(
-            `[evaluate] The condition part of a (if) must be bool\n` +
-              `  condition: ${formatValue(condition)}\n` +
-              `[source] ${urlRelativeToCwd(mod.url)}\n`,
-          )
+          let message = `[evaluate] The condition part of a (if) must be bool\n`
+          message += `  condition: ${formatValue(condition)}\n`
+          message += `[source] ${urlRelativeToCwd(mod.url)}\n`
+          throw new Error(message)
         }
 
         if (condition.content) {
@@ -173,11 +172,10 @@ export function evaluate(exp: Exp): Effect {
         for (const e of exp.exps) {
           const value = resultValue(evaluate(e)(mod, env))
           if (value.kind !== "Bool") {
-            throw new Error(
-              `[evaluate] The subexpressions of (and) must evaluate to bool\n` +
-                `  value: ${formatValue(value)}\n` +
-                `[source] ${urlRelativeToCwd(mod.url)}\n`,
-            )
+            let message = `[evaluate] The subexpressions of (and) must evaluate to bool\n`
+            message += `  value: ${formatValue(value)}\n`
+            message += `[source] ${urlRelativeToCwd(mod.url)}\n`
+            throw new Error(message)
           }
 
           if (value.content === false) {
@@ -194,11 +192,10 @@ export function evaluate(exp: Exp): Effect {
         for (const e of exp.exps) {
           const value = resultValue(evaluate(e)(mod, env))
           if (value.kind !== "Bool") {
-            throw new Error(
-              `[evaluate] The subexpressions of (or) must evaluate to bool\n` +
-                `  value: ${formatValue(value)}\n` +
-                `[source] ${urlRelativeToCwd(mod.url)}\n`,
-            )
+            let message = `[evaluate] The subexpressions of (or) must evaluate to bool\n`
+            message += `  value: ${formatValue(value)}\n`
+            message += `[source] ${urlRelativeToCwd(mod.url)}\n`
+            throw new Error(message)
           }
 
           if (value.content === true) {
@@ -215,11 +212,10 @@ export function evaluate(exp: Exp): Effect {
         for (const condLine of exp.condLines) {
           const value = resultValue(evaluate(condLine.question)(mod, env))
           if (value.kind !== "Bool") {
-            throw new Error(
-              `[evaluate] The question part of a (cond) line must evaluate to bool\n` +
-                `  value: ${formatValue(value)}\n` +
-                `[source] ${urlRelativeToCwd(mod.url)}\n`,
-            )
+            let message = `[evaluate] The question part of a (cond) line must evaluate to bool\n`
+            message += `  value: ${formatValue(value)}\n`
+            message += `[source] ${urlRelativeToCwd(mod.url)}\n`
+            throw new Error(message)
           }
 
           if (value.content === true) {
@@ -227,10 +223,9 @@ export function evaluate(exp: Exp): Effect {
           }
         }
 
-        throw new Error(
-          `[evaluate] All questions of a (cond) failed\n` +
-            `[source] ${urlRelativeToCwd(mod.url)}\n`,
-        )
+        let message = `[evaluate] All questions of a (cond) failed\n`
+        message += `[source] ${urlRelativeToCwd(mod.url)}\n`
+        throw new Error(message)
       }
     }
 
