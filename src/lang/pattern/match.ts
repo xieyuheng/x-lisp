@@ -6,7 +6,7 @@ import type { Pattern } from "./Pattern.ts"
 
 type Effect = (env: Env) => Env | undefined
 
-export function match(target: Value, pattern: Pattern): Effect {
+export function match(pattern: Pattern, target: Value): Effect {
   switch (pattern.kind) {
     case "VarPattern": {
       return (env) => {
@@ -29,7 +29,7 @@ export function match(target: Value, pattern: Pattern): Effect {
           target.kind === "Data" &&
           equal(target.constructor, pattern.constructor)
         ) {
-          return matchMany(target.elements, pattern.args)(env)
+          return matchMany(pattern.args, target.elements)(env)
         } else {
           return undefined
         }
@@ -39,7 +39,7 @@ export function match(target: Value, pattern: Pattern): Effect {
     case "TaelPattern": {
       return (env) => {
         if (target.kind === "Tael") {
-          return matchMany(target.elements, pattern.elements)(env)
+          return matchMany(pattern.elements, target.elements)(env)
         } else {
           return undefined
         }
@@ -48,12 +48,12 @@ export function match(target: Value, pattern: Pattern): Effect {
   }
 }
 
-function matchMany(targets: Array<Value>, patterns: Array<Pattern>): Effect {
+function matchMany(patterns: Array<Pattern>, targets: Array<Value>): Effect {
   return (env) => {
     if (targets.length !== patterns.length) return undefined
 
     for (const [target, pattern] of arrayZip(targets, patterns)) {
-      const result = match(target, pattern)(env)
+      const result = match(pattern, target)(env)
       if (!result) return undefined
 
       env = result

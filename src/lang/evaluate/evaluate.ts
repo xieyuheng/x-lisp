@@ -225,7 +225,7 @@ export function evaluate(exp: Exp): Effect {
         const target = resultValue(evaluate(exp.target)(mod, env))
         for (const matchLine of exp.matchLines) {
           const pattern = patternize(matchLine.pattern)(mod, env)
-          const resultEnv = match(target, pattern)(emptyEnv())
+          const resultEnv = match(pattern, target)(emptyEnv())
           if (resultEnv) {
             return evaluate(matchLine.body)(mod, envUpdate(env, resultEnv))
           }
