@@ -2,7 +2,6 @@
 
 `Quasiquote` as `Exp`
 `Unquote` as `Exp`
-maybe remove `expFreeNames`
 
 # match
 
