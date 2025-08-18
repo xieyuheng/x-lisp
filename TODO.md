@@ -1,7 +1,6 @@
 # quasiquote
 
 `evaluate` -- handle `Quasiquote` & `Unquote`
-parse `(quasiquote)` & `(unquote)`
 
 # match
 

@@ -58,8 +58,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Thunk": {
       return (mod, env) => {
-        return
-        ;[env, Values.Thunk(mod, env, exp.body)]
+        return [env, Values.Thunk(mod, env, exp.body)]
       }
     }
 
@@ -151,7 +150,7 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
-    case "unquote": {
+    case "Unquote": {
       return (mod, env) => {
         throw new Error()
       }

@@ -31,6 +31,14 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Quote(data, { span })
   }),
 
+  X.matcher("`(quasiquote ,exp)", ({ exp }, { span }) => {
+    return Exps.Quasiquote(matchExp(exp), { span })
+  }),
+
+  X.matcher("`(unquote ,exp)", ({ exp }, { span }) => {
+    return Exps.Unquote(matchExp(exp), { span })
+  }),
+
   X.matcher(
     "`(if ,condition ,consequent ,alternative)",
     ({ condition, consequent, alternative }, { span }) => {
