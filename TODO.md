@@ -1,6 +1,6 @@
 # match
 
-`patternize` -- `Quasiquote` to `TaelPattern`
+`patternizeQuasiquote` -- to `TaelPattern`
 
 # composition
 

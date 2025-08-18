@@ -8,8 +8,9 @@ import { modLookupValue, type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import * as Patterns from "./Pattern.ts"
 import { type Pattern } from "./Pattern.ts"
+import { patternizeQuasiquote } from "./patternizeQuasiquote.ts"
 
-type Effect = (mod: Mod, env: Env) => Pattern
+export type Effect = (mod: Mod, env: Env) => Pattern
 
 export function patternize(exp: Exp): Effect {
   if (exp.kind === "Var") {
@@ -86,6 +87,10 @@ export function patternize(exp: Exp): Effect {
     return (mod, env) => {
       return Patterns.LiteralPattern(resultValue(evaluate(exp)(mod, env)))
     }
+  }
+
+  if (exp.kind === "Quasiquote") {
+    return patternizeQuasiquote(exp.sexp)
   }
 
   let message = `[patternize] unhandled kind of exp\n`
