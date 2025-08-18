@@ -39,7 +39,10 @@ export function match(pattern: Pattern, value: Value): Effect {
     case "TaelPattern": {
       return (env) => {
         if (value.kind === "Tael") {
-          return matchMany(pattern.elements, value.elements)(env)
+          return sequenceEffect([
+            matchMany(pattern.elements, value.elements),
+            matchAttributes(pattern.attributes, value.attributes),
+          ])(env)
         } else {
           return undefined
         }
@@ -60,13 +63,33 @@ function matchMany(patterns: Array<Pattern>, values: Array<Value>): Effect {
   }
 }
 
+function matchAttributes(
+  patterns: Record<string, Pattern>,
+  values: Record<string, Value>,
+): Effect {
+  return (env) => {
+    for (const [key, pattern] of Object.entries(patterns)) {
+      const value = values[key]
+      if (value === undefined) return undefined
+
+      const result = match(pattern, value)(env)
+      if (result === undefined) return undefined
+
+      env = result
+    }
+
+    return env
+  }
+}
+
 // combinators
 
 function sequenceEffect(effects: Array<Effect>): Effect {
   return (env) => {
     for (const effect of effects) {
       const result = effect(env)
-      if (!result) return undefined
+      if (result === undefined) return undefined
+
       env = result
     }
 

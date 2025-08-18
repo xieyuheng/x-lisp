@@ -2,8 +2,6 @@
 
 > `match` support tael
 
-`matchAttributes`
-`match` support `TaelPattern`
 `patternize` support `TaelPattern`
 
 > `match` support atom
