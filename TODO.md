@@ -5,6 +5,18 @@
 `patternize` -- `(cons)` to `ConsStarPattern`
 `patternize` -- `(cons*)` to `ConsStarPattern`
 
+# match
+
+`(eval)` as `EvalPattern` to use `evaluate` in pattern
+
+# match
+
+`Quasiquote` as `Exp`
+`Unquote` as `Exp`
+
+`patternize` -- `Unquote` to `LiteralPattern`
+`patternize` -- `Quasiquote` to `TaelPattern`
+
 # composition
 
 `compose/fn` -- like `union/fn` and `inter/fn`
