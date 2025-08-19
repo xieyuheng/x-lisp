@@ -44,13 +44,12 @@
 
 (claim parse-exp (-> sexp? exp?))
 
-(define (parse-exp data)
-  (cond ((symbol? data)
-         (var-exp data))
-        ((equal? (car data) 'lambda)
-         (lambda-exp
-          (car (car (cdr data)))
-          (parse-exp (car (cdr (cdr data))))))
-        (else
-         (apply-exp (parse-exp (car data))
-                    (parse-exp (car (cdr data)))))))
+(define (parse-exp sexp)
+  (match sexp
+    (`(lambda (,parameter) ,body)
+     (lambda-exp parameter (parse-exp body)))
+    (`(,target ,arg)
+     (apply-exp (parse-exp target) (parse-exp arg)))
+    (x
+     (assert (symbol? sexp))
+     (var-exp x))))

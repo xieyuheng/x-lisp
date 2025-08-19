@@ -1,0 +1,3 @@
+[evaluate] I meet undefined name: g
+[source] examples/tests/errors/undefined-name.error.lisp
+
