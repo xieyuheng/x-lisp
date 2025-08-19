@@ -1,4 +1,4 @@
-parse `(compose)` & `(pipe)`
+parse `(pipe)`
 
 # maybe
 

@@ -63,6 +63,14 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Inter(X.dataToArray(exps).map(matchExp), { span })
   }),
 
+  X.matcher("(cons 'compose exps)", ({ exps }, { span }) => {
+    return Exps.Compose(X.dataToArray(exps).map(matchExp), { span })
+  }),
+
+  X.matcher("(cons 'pipe arg exps)", ({ arg, exps }, { span }) => {
+    return Exps.Pipe(matchExp(arg), X.dataToArray(exps).map(matchExp), { span })
+  }),
+
   X.matcher("(cons '-> exps)", ({ exps }, { span }) => {
     const [args, ret] = arrayPickLast(X.dataToArray(exps).map(matchExp))
     return Exps.Arrow(args, ret, { span })
