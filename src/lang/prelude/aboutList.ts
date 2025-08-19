@@ -71,6 +71,28 @@ export function aboutList(mod: Mod) {
     )
   })
 
+  definePrimitiveFunction(mod, "list-init", 1, (list) => {
+    if (Values.asTael(list).elements.length === 0) {
+      throw new Error("(list-init) expect target to be non empty list")
+    }
+
+    return Values.Tael(
+      Values.asTael(list).elements.slice(
+        0,
+        Values.asTael(list).elements.length - 1,
+      ),
+      Values.asTael(list).attributes,
+    )
+  })
+
+  definePrimitiveFunction(mod, "list-last", 1, (list) => {
+    if (Values.asTael(list).elements.length === 0) {
+      throw new Error("(list-last) expect target to be non empty list")
+    }
+
+    return Values.asTael(list).elements[Values.asTael(list).elements.length - 1]
+  })
+
   definePrimitiveFunction(mod, "cons", 2, (head, tail) => {
     return Values.Tael(
       [head, ...Values.asTael(tail).elements],

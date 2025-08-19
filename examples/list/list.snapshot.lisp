@@ -50,6 +50,9 @@
 (assert (equal? (list-head [1 2 3]) 1))
 (assert (equal? (list-tail [1 2 3]) [2 3]))
 
+(assert (equal? (list-init [1 2 3]) [1 2]))
+(assert (equal? (list-last [1 2 3]) 3))
+
 (assert (equal? (list-get [1 2 3] 0) 1))
 (assert (equal? (list-get [1 2 3] 1) 2))
 (assert (equal? (list-get [1 2 3] 2) 3))

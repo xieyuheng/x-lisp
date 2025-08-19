@@ -1,4 +1,3 @@
-list-last list-init
 list-reverse
 
 # composition
