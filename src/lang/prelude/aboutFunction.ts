@@ -7,7 +7,11 @@ export function aboutFunction(mod: Mod) {
     `\
 (define (pipe/fn x fs)
   (cond ((list-empty? fs) x)
-        (else (pipe/fn ((car fs) x) (cdr fs)))))
+        (else (pipe/fn ((list-head fs) x) (list-tail fs)))))
+
+(define (compose/fn fs x)
+  (cond ((list-empty? fs) x)
+        (else (compose/fn (list-init fs) ((list-last fs) x)))))
 `,
   )
 }

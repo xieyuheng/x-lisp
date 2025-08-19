@@ -1,6 +1,5 @@
 # composition
 
-`aboutFunction` -- `compose/fn`
 `compose` -- as a syntax keyword
 `pipe` -- as a syntax keyword
 
