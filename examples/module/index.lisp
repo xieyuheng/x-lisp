@@ -1,2 +1,4 @@
-(include "one.lisp")
-(include "two.lisp")
+(include "module-one.lisp")
+(include "module-two.lisp")
+(include-except "module-three.lisp" one two)
+(include-only "module-four.lisp" four)
