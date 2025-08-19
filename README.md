@@ -20,7 +20,7 @@ See more examples at [`examples`](examples) directory.
 
 [`lambda.lisp`](examples/langs/lambda.lisp):
 
-```scheme
+```lisp
 (define-data exp?
   (var-exp (name symbol?))
   (apply-exp (target exp?) (arg exp?))
@@ -80,7 +80,7 @@ See more examples at [`examples`](examples) directory.
 
 [`lambda.snapshot.lisp`](examples/langs/lambda.snapshot.lisp):
 
-```scheme
+```lisp
 (import-all "lambda.lisp")
 
 (assert
