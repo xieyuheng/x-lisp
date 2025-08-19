@@ -1,3 +1,2 @@
-`stage2` -- handle `ImportAs`
 `stage2` -- handle `IncludeOnly`
-`stage2` -- handle `IncludeExcept`
+`stage2` -- handle `ImportAs`
