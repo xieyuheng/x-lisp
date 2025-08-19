@@ -22,7 +22,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     }
   }
 
-  if (stmt.kind === "Require") {
+  if (stmt.kind === "ImportAll") {
     const importedMod = modImport(mod, stmt.path)
     for (const [name, definition] of modPublicDefinitions(
       importedMod,

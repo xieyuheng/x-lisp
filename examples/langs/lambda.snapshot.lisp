@@ -1,4 +1,4 @@
-(require "lambda.lisp")
+(import-all "lambda.lisp")
 
 (assert
   (equal?

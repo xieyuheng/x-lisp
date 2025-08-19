@@ -1,4 +1,4 @@
-(require "my-list-by-getter.lisp")
+(import-all "my-list-by-getter.lisp")
 
 (assert (nil? nil))
 (assert (li? (li 1 (li 2 (li 3 nil)))))

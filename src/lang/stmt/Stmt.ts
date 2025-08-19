@@ -8,7 +8,7 @@ export type Stmt =
   | Compute
   | Define
   | Import
-  | Require
+  | ImportAll
   | Include
   | DefineData
   | Claim
@@ -69,15 +69,15 @@ export function Import(
   }
 }
 
-export type Require = {
-  kind: "Require"
+export type ImportAll = {
+  kind: "ImportAll"
   path: string
   meta: Meta
 }
 
-export function Require(path: string, meta: Meta): Require {
+export function ImportAll(path: string, meta: Meta): ImportAll {
   return {
-    kind: "Require",
+    kind: "ImportAll",
     path,
     meta,
   }

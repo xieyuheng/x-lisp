@@ -46,8 +46,8 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     },
   ),
 
-  X.matcher("`(require ,source)", ({ source }, { span }) => {
-    return Stmts.Require(X.dataToString(source), { span })
+  X.matcher("`(import-all ,source)", ({ source }, { span }) => {
+    return Stmts.ImportAll(X.dataToString(source), { span })
   }),
 
   X.matcher("`(include ,source)", ({ source }, { span }) => {
