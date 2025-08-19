@@ -28,6 +28,8 @@ export type Exp =
   | Inter
   | Arrow
   | RecordGet
+  | Compose
+  | Pipe
 
 export type Var = {
   kind: "Var"
@@ -360,6 +362,36 @@ export function RecordGet(name: string, target: Exp, meta: Meta): RecordGet {
     kind: "RecordGet",
     name,
     target,
+    meta,
+  }
+}
+
+export type Compose = {
+  kind: "Compose"
+  exps: Array<Exp>
+  meta: Meta
+}
+
+export function Compose(exps: Array<Exp>, meta: Meta): Compose {
+  return {
+    kind: "Compose",
+    exps,
+    meta,
+  }
+}
+
+export type Pipe = {
+  kind: "Pipe"
+  arg: Exp
+  exps: Array<Exp>
+  meta: Meta
+}
+
+export function Pipe(arg: Exp, exps: Array<Exp>, meta: Meta): Pipe {
+  return {
+    kind: "Pipe",
+    arg,
+    exps,
     meta,
   }
 }

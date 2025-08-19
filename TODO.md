@@ -1,7 +1,4 @@
-# composition
-
-`compose` -- as a syntax keyword
-`pipe` -- as a syntax keyword
+parse `(compose)` & `(pipe)`
 
 # maybe
 

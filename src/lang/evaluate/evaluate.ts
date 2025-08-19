@@ -290,5 +290,31 @@ export function evaluate(exp: Exp): Effect {
         }
       }
     }
+
+    case "Compose": {
+      return (mod, env) => {
+        const preludeMod = usePreludeMod()
+        const value = modLookupValue(preludeMod, "compose/fn")
+        assert(value)
+        const fs = exp.exps.map((e) => resultValue(evaluate(e)(mod, env)))
+        return [env, apply(value, [Values.List(fs)])]
+      }
+    }
+
+    case "Pipe": {
+      return (mod, env) => {
+        const preludeMod = usePreludeMod()
+        const value = modLookupValue(preludeMod, "pipe/fn")
+        assert(value)
+        const fs = exp.exps.map((e) => resultValue(evaluate(e)(mod, env)))
+        return [
+          env,
+          apply(value, [
+            resultValue(evaluate(exp.arg)(mod, env)),
+            Values.List(fs),
+          ]),
+        ]
+      }
+    }
   }
 }

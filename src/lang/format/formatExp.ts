@@ -136,6 +136,25 @@ export function formatExp(exp: Exp): string {
     case "RecordGet": {
       return `(:${exp.name} ${formatExp(exp.target)})`
     }
+
+    case "Compose": {
+      const exps = exp.exps.map(formatExp)
+      if (exps.length === 0) {
+        return `(compose)`
+      } else {
+        return `(compose ${exps.join(" ")})`
+      }
+    }
+
+    case "Pipe": {
+      const arg = formatExp(exp.arg)
+      const exps = exp.exps.map(formatExp)
+      if (exps.length === 0) {
+        return `(pipe ${arg})`
+      } else {
+        return `(pipe ${arg} ${exps.join(" ")})`
+      }
+    }
   }
 }
 
