@@ -7,7 +7,7 @@ import { matchExp } from "./matchExp.ts"
 
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
-    "(cons* 'define (cons name parameters) body)",
+    "(cons* 'define (cons* name parameters) body)",
     ({ name, parameters, body }, { span }) => {
       if (X.dataToArray(parameters).length === 0) {
         return Stmts.Define(
@@ -103,7 +103,7 @@ function matchImportEntry(data: X.Data): Stmts.ImportEntry {
 function matchDataPredicate(data: X.Data): Stmts.DataPredicateSpec {
   return X.match(
     X.matcherChoice([
-      X.matcher("(cons name parameters)", ({ name, parameters }, { span }) => {
+      X.matcher("(cons* name parameters)", ({ name, parameters }, { span }) => {
         return {
           name: X.symbolToString(name),
           parameters: X.dataToArray(parameters).map(X.symbolToString),
@@ -124,7 +124,7 @@ function matchDataPredicate(data: X.Data): Stmts.DataPredicateSpec {
 function matchDataConstructor(data: X.Data): Stmts.DataConstructorSpec {
   return X.match(
     X.matcherChoice([
-      X.matcher("(cons name fields)", ({ name, fields }, { span }) => {
+      X.matcher("(cons* name fields)", ({ name, fields }, { span }) => {
         return {
           name: X.symbolToString(name),
           fields: X.dataToArray(fields).map(matchDataField),

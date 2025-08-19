@@ -47,36 +47,36 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     },
   ),
 
-  X.matcher("(cons 'and exps)", ({ exps }, { span }) => {
+  X.matcher("(cons* 'and exps)", ({ exps }, { span }) => {
     return Exps.And(X.dataToArray(exps).map(matchExp), { span })
   }),
 
-  X.matcher("(cons 'or exps)", ({ exps }, { span }) => {
+  X.matcher("(cons* 'or exps)", ({ exps }, { span }) => {
     return Exps.Or(X.dataToArray(exps).map(matchExp), { span })
   }),
 
-  X.matcher("(cons 'union exps)", ({ exps }, { span }) => {
+  X.matcher("(cons* 'union exps)", ({ exps }, { span }) => {
     return Exps.Union(X.dataToArray(exps).map(matchExp), { span })
   }),
 
-  X.matcher("(cons 'inter exps)", ({ exps }, { span }) => {
+  X.matcher("(cons* 'inter exps)", ({ exps }, { span }) => {
     return Exps.Inter(X.dataToArray(exps).map(matchExp), { span })
   }),
 
-  X.matcher("(cons 'compose exps)", ({ exps }, { span }) => {
+  X.matcher("(cons* 'compose exps)", ({ exps }, { span }) => {
     return Exps.Compose(X.dataToArray(exps).map(matchExp), { span })
   }),
 
-  X.matcher("(cons 'pipe arg exps)", ({ arg, exps }, { span }) => {
+  X.matcher("(cons* 'pipe arg exps)", ({ arg, exps }, { span }) => {
     return Exps.Pipe(matchExp(arg), X.dataToArray(exps).map(matchExp), { span })
   }),
 
-  X.matcher("(cons '-> exps)", ({ exps }, { span }) => {
+  X.matcher("(cons* '-> exps)", ({ exps }, { span }) => {
     const [args, ret] = arrayPickLast(X.dataToArray(exps).map(matchExp))
     return Exps.Arrow(args, ret, { span })
   }),
 
-  X.matcher("(cons 'assert exps)", ({ exps }, { span }) => {
+  X.matcher("(cons* 'assert exps)", ({ exps }, { span }) => {
     const args = X.dataToArray(exps).map(matchExp)
     if (args.length !== 1) {
       const message = "(assert) expression can only take one arguments\n"
@@ -90,7 +90,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Assign(X.symbolToString(name), matchExp(rhs), { span })
   }),
 
-  X.matcher("(cons 'tael elements)", ({ elements }, { data, span }) => {
+  X.matcher("(cons* 'tael elements)", ({ elements }, { data, span }) => {
     return Exps.Tael(
       X.dataToArray(elements).map(matchExp),
       recordMap(X.asTael(data).attributes, matchExp),
@@ -98,11 +98,11 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     )
   }),
 
-  X.matcher("(cons 'begin body)", ({ body }, { span }) => {
+  X.matcher("(cons* 'begin body)", ({ body }, { span }) => {
     return Exps.Begin(X.dataToArray(body).map(matchExp), { span })
   }),
 
-  X.matcher("(cons 'cond lines)", ({ lines }, { span }) => {
+  X.matcher("(cons* 'cond lines)", ({ lines }, { span }) => {
     return Exps.Cond(X.dataToArray(lines).map(matchCondLine), { span })
   }),
 
@@ -131,7 +131,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     }
   }),
 
-  X.matcher("(cons target args)", ({ target, args }, { span }) => {
+  X.matcher("(cons* target args)", ({ target, args }, { span }) => {
     return Exps.Apply(matchExp(target), X.dataToArray(args).map(matchExp), {
       span,
     })
@@ -192,7 +192,7 @@ export function matchCondLine(data: X.Data): Exps.CondLine {
 
 export function matchMatchLine(data: X.Data): Exps.MatchLine {
   return X.match(
-    X.matcher("(cons pattern body)", ({ pattern, body }, { span }) => {
+    X.matcher("(cons* pattern body)", ({ pattern, body }, { span }) => {
       return {
         pattern: matchExp(pattern),
         body: Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
