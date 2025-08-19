@@ -1,5 +1,3 @@
-list-reverse
-
 # composition
 
 `aboutFunction` -- `compose/fn`

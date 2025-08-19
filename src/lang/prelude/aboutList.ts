@@ -141,4 +141,11 @@ export function aboutList(mod: Mod) {
       throw new Error(message)
     }
   })
+
+  definePrimitiveFunction(mod, "list-reverse", 1, (list) => {
+    return Values.Tael(
+      Values.asTael(list).elements.toReversed(),
+      Values.asTael(list).attributes,
+    )
+  })
 }
