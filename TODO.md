@@ -1,8 +1,5 @@
+list-last list-init
 list-reverse
-list-head
-list-tail
-list-last
-list-init
 
 # composition
 
