@@ -1,6 +1,12 @@
+list-reverse
+list-head
+list-tail
+list-last
+list-init
+
 # composition
 
-`compose/fn` -- like `union/fn` and `inter/fn`
+`aboutFunction` -- `compose/fn`
 `compose` -- as a syntax keyword
 `pipe` -- as a syntax keyword
 
