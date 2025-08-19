@@ -55,6 +55,28 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   }),
 
   X.matcher(
+    "(cons* 'include-only source names)",
+    ({ source, names }, { span }) => {
+      return Stmts.IncludeOnly(
+        X.dataToString(source),
+        X.dataToArray(names).map(X.symbolToString),
+        { span },
+      )
+    },
+  ),
+
+  X.matcher(
+    "(cons* 'include-except source names)",
+    ({ source, names }, { span }) => {
+      return Stmts.IncludeExcept(
+        X.dataToString(source),
+        X.dataToArray(names).map(X.symbolToString),
+        { span },
+      )
+    },
+  ),
+
+  X.matcher(
     "(cons* 'define-data predicate constructors)",
     ({ predicate, constructors }, { span }) => {
       return Stmts.DefineData(
