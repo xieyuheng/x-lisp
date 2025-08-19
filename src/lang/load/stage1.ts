@@ -1,4 +1,4 @@
-import { claim, define } from "../define/index.ts"
+import { define } from "../define/index.ts"
 import { emptyEnv } from "../env/index.ts"
 import { evaluate, resultValue } from "../evaluate/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -8,10 +8,6 @@ import * as Values from "../value/index.ts"
 export function stage1(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Define") {
     define(mod, stmt.name, resultValue(evaluate(stmt.exp)(mod, emptyEnv())))
-  }
-
-  if (stmt.kind === "Claim") {
-    claim(mod, stmt.name, resultValue(evaluate(stmt.schema)(mod, emptyEnv())))
   }
 
   if (stmt.kind === "DefineData") {
