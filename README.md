@@ -18,7 +18,7 @@ See more examples at [`examples`](examples) directory.
 
 ### Lambda Interpreter
 
-[`lambda.lisp`](examples/langs/lambda.lisp):
+[`lambda.lisp`](examples/langs/lambda/lambda.lisp):
 
 ```scheme
 (define-data exp?
@@ -78,7 +78,7 @@ See more examples at [`examples`](examples) directory.
      (var-exp x))))
 ```
 
-[`lambda.snapshot.lisp`](examples/langs/lambda.snapshot.lisp):
+[`lambda.snapshot.lisp`](examples/langs/lambda/lambda.snapshot.lisp):
 
 ```scheme
 (import-all "lambda.lisp")
