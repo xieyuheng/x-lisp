@@ -11,6 +11,8 @@ export type Stmt =
   | ImportAll
   | ImportAs
   | Include
+  | IncludeOnly
+  | IncludeExcept
   | DefineData
   | Claim
 
@@ -110,6 +112,46 @@ export function Include(path: string, meta: Meta): Include {
   return {
     kind: "Include",
     path,
+    meta,
+  }
+}
+
+export type IncludeOnly = {
+  kind: "IncludeOnly"
+  path: string
+  names: Array<string>
+  meta: Meta
+}
+
+export function IncludeExcept(
+  path: string,
+  names: Array<string>,
+  meta: Meta,
+): IncludeExcept {
+  return {
+    kind: "IncludeExcept",
+    path,
+    names,
+    meta,
+  }
+}
+
+export type IncludeExcept = {
+  kind: "IncludeExcept"
+  path: string
+  names: Array<string>
+  meta: Meta
+}
+
+export function IncludeOnly(
+  path: string,
+  names: Array<string>,
+  meta: Meta,
+): IncludeOnly {
+  return {
+    kind: "IncludeOnly",
+    path,
+    names,
     meta,
   }
 }

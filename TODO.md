@@ -1,6 +1,3 @@
-`IncludeOnly` as `Stmt`
-`IncludeExcept` as `Stmt`
-
 `matchStmt` -- `(import-as)`
 `matchStmt` -- `(include-only)`
 `matchStmt` -- `(include-except)`
