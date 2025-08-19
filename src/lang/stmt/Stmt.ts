@@ -9,6 +9,7 @@ export type Stmt =
   | Define
   | Import
   | ImportAll
+  | ImportAs
   | Include
   | DefineData
   | Claim
@@ -79,6 +80,22 @@ export function ImportAll(path: string, meta: Meta): ImportAll {
   return {
     kind: "ImportAll",
     path,
+    meta,
+  }
+}
+
+export type ImportAs = {
+  kind: "ImportAs"
+  path: string
+  name: string
+  meta: Meta
+}
+
+export function ImportAs(path: string, name: string, meta: Meta): ImportAs {
+  return {
+    kind: "ImportAs",
+    path,
+    name,
     meta,
   }
 }
