@@ -1,6 +1,8 @@
+update x-data to use `X.createRepl`
+
 # repl
 
-`ReplCommand` -- use node:readline
+`ReplCommand` -- use `X.createRepl`
 `ReplCommand` -- handle sexp
 
 # prelude
