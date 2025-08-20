@@ -8,20 +8,19 @@ export const DebugCommand: Command = {
   name: "debug",
   description: "Debug a file",
   help(commander) {
-    return [
-      `The ${this.name} command run a file with debug flag.`,
-      ``,
-      `  ${commander.name} ${this.name} <file>`,
-      ``,
-    ].join("\n")
+    let message = `The ${this.name} command run a file with debug flag.\n`
+    message += `\n`
+    message += `  ${commander.name} ${this.name} <file>\n`
+    message += `\n`
+    return message
   },
 
   async run(commander) {
     try {
       if (typeof commander.args[0] !== "string") {
-        throw new Error(
-          `[debug] I expect the first argument to be a path, instead of: ${commander.args[0]}`,
-        )
+        let message = `[debug] I expect the first argument to be a path\n`
+        message += `  first argument: ${commander.args[0]}\n`
+        throw new Error(message)
       }
 
       const url = createUrlOrFileUrl(commander.args[0])

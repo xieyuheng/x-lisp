@@ -2,6 +2,7 @@
 
 import { Commander } from "@xieyuheng/commander.js"
 import { DebugCommand } from "./commands/DebugCommand.ts"
+import { ReplCommand } from "./commands/ReplCommand.ts"
 import { RunCommand } from "./commands/RunCommand.ts"
 
 async function main() {
@@ -9,6 +10,7 @@ async function main() {
 
   commander.use(RunCommand)
   commander.use(DebugCommand)
+  commander.use(ReplCommand)
 
   await commander.run(process.argv)
 }

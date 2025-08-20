@@ -7,20 +7,19 @@ export const RunCommand: Command = {
   name: "run",
   description: "Run a file",
   help(commander) {
-    return [
-      `The ${this.name} command run a file.`,
-      ``,
-      `  ${commander.name} ${this.name} <file>`,
-      ``,
-    ].join("\n")
+    let message = `The ${this.name} command run a file.\n`
+    message += `\n`
+    message += `  ${commander.name} ${this.name} <file>\n`
+    message += `\n`
+    return message
   },
 
   async run(commander) {
     try {
       if (typeof commander.args[0] !== "string") {
-        throw new Error(
-          `[run] I expect the first argument to be a path, instead of: ${commander.args[0]}`,
-        )
+        let message = `[run] I expect the first argument to be a path\n`
+        message += `  first argument: ${commander.args[0]}\n`
+        throw new Error(message)
       }
 
       const url = createUrlOrFileUrl(commander.args[0])
