@@ -26,7 +26,7 @@ export const DebugCommand: Command = {
 
       const url = createUrlOrFileUrl(commander.args[0])
       flags.debug = true
-      await load(url)
+      load(url)
     } catch (error) {
       console.log(errorReport(error))
       process.exit(1)
