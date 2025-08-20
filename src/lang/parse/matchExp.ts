@@ -4,6 +4,10 @@ import { recordMap } from "../../utils/record/recordMap.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 
+export function matchExp(data: X.Data): Exp {
+  return X.match(expMatcher, data)
+}
+
 const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher(
     "(cons* 'lambda parameters body)",
@@ -166,10 +170,6 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     }
   }),
 ])
-
-export function matchExp(data: X.Data): Exp {
-  return X.match(expMatcher, data)
-}
 
 export function matchCondLine(data: X.Data): Exps.CondLine {
   return X.match(

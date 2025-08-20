@@ -5,6 +5,10 @@ import { type Stmt } from "../stmt/index.ts"
 import type { DataField } from "../value/Data.ts"
 import { matchExp } from "./matchExp.ts"
 
+export function matchStmt(data: X.Data): Stmt {
+  return X.match(stmtMatcher, data)
+}
+
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
     "(cons* 'define (cons* name parameters) body)",
@@ -101,10 +105,6 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     return Stmts.Compute(matchExp(exp), { span })
   }),
 ])
-
-export function matchStmt(data: X.Data): Stmt {
-  return X.match(stmtMatcher, data)
-}
 
 function matchImportEntry(data: X.Data): Stmts.ImportEntry {
   return X.match(
