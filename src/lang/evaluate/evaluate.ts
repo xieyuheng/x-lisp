@@ -117,6 +117,14 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
+    case "AssertEqual": {
+      throw new Error()
+    }
+
+    case "AssertNotEqual": {
+      throw new Error()
+    }
+
     case "Void": {
       return (mod, env) => {
         return [env, Values.Void()]
