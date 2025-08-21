@@ -1,6 +1,7 @@
 import { definePrimitiveFunction } from "../define/index.ts"
 import { apply } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
+import { runCode } from "../load/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -148,4 +149,14 @@ export function aboutList(mod: Mod) {
       Values.asTael(list).attributes,
     )
   })
+
+  runCode(
+    mod,
+    `\
+(define (list-map list f)
+  (if (list-empty? list)
+    []
+    (cons (f (car list)) (list-map (cdr list) f))))
+`,
+  )
 }
