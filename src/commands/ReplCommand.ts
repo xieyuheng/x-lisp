@@ -1,6 +1,9 @@
 import { type Command } from "@xieyuheng/commander.js"
-import { stdin, stdout } from "node:process"
-import { createInterface } from "node:readline/promises"
+import * as X from "@xieyuheng/x-data.js"
+import { runSexps } from "../lang/load/index.ts"
+import { createMod } from "../lang/mod/index.ts"
+import { aboutModule } from "../lang/prelude/aboutModule.ts"
+import { importPrelude } from "../lang/prelude/index.ts"
 import { errorReport } from "../utils/error/errorReport.ts"
 
 export const ReplCommand: Command = {
@@ -12,18 +15,20 @@ export const ReplCommand: Command = {
   },
 
   async run(commander) {
-    try {
-      const rl = createInterface({
-        input: stdin,
-        output: stdout,
-      })
+    const url = new URL("repl:")
+    const mod = createMod(url)
+    importPrelude(mod)
+    aboutModule(mod)
 
-      rl.on("line", (line) => {
-        console.log(`Received: ${line}`)
-      })
-    } catch (error) {
-      console.log(errorReport(error))
-      process.exit(1)
-    }
+    const repl = X.createRepl({
+      prompt: "> ",
+      async onSexps(sexps) {
+        try {
+          runSexps(mod, sexps)
+        } catch (error) {
+          console.log(errorReport(error))
+        }
+      },
+    })
   },
 }

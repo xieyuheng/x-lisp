@@ -1,7 +1,4 @@
-# repl
-
-`ReplCommand` -- use `X.createRepl`
-`ReplCommand` -- handle sexp
+update x-data for `onSexps`
 
 # prelude
 
