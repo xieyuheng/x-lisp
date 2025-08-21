@@ -4,14 +4,14 @@
   "repository": "github:xieyuheng/occam-lisp.js",
   "license": "GPL-3.0-or-later",
   "type": "module",
-  "main": "./lib/index.js",
+  "main": "./lib/src/index.js",
   "files": [
     "src",
     "lib",
     "examples"
   ],
   "bin": {
-    "occam-lisp.js": "lib/main.js"
+    "occam-lisp.js": "lib/src/main.js"
   },
   "scripts": {
     "build": "tsc",

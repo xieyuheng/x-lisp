@@ -1,5 +1,6 @@
 import { type Command } from "@xieyuheng/commander.js"
 import * as X from "@xieyuheng/x-data.js"
+import packageJson from "../../package.json" with { type: "json" }
 import { runSexps } from "../lang/load/index.ts"
 import { createMod } from "../lang/mod/index.ts"
 import { aboutModule } from "../lang/prelude/aboutModule.ts"
@@ -21,7 +22,7 @@ export const ReplCommand: Command = {
     aboutModule(mod)
 
     const repl = X.createRepl({
-      welcome: "Welcome to occam-lisp.",
+      welcome: `Welcome to occam-lisp.js ${packageJson.version}`,
       prompt: "> ",
       async onSexps(sexps) {
         try {
