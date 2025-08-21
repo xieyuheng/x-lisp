@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-data.js"
 import { recordMap } from "../../utils/record/recordMap.ts"
-import { matchExp } from "../parse/index.ts"
+import { matchExp } from "../syntax/index.ts"
 import * as Values from "../value/index.ts"
 import { evaluate, resultValue, type Effect } from "./evaluate.ts"
 

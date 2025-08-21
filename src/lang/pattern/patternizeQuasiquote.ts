@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-data.js"
 import { recordMap } from "../../utils/record/recordMap.ts"
-import { matchExp } from "../parse/index.ts"
+import { matchExp } from "../syntax/index.ts"
 import * as Patterns from "./Pattern.ts"
 import { patternize, type Effect } from "./patternize.ts"
 
