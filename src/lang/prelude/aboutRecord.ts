@@ -1,3 +1,4 @@
+import { recordMap } from "../../utils/record/recordMap.ts"
 import { definePrimitiveFunction } from "../define/index.ts"
 import { apply } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
@@ -82,5 +83,14 @@ export function aboutRecord(mod: Mod) {
       [Values.asSymbol(key).content]: value,
     }
     return Values.Tael(Values.asTael(record).elements, attributes)
+  })
+
+  definePrimitiveFunction(mod, "record-map", 2, (record, fn) => {
+    return Values.Tael(
+      Values.asTael(record).elements,
+      recordMap(Values.asTael(record).attributes, (value) =>
+        apply(fn, [value]),
+      ),
+    )
   })
 }

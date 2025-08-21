@@ -13,7 +13,6 @@
 
 # record
 
-`record-map`
 `record-filter`
 
 # lazy
