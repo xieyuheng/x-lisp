@@ -15,7 +15,6 @@ export type Mod = {
   defined: Map<string, Definition>
   imported: Map<string, Definition>
   included: Map<string, Definition>
-  code: string
   stmts: Array<Stmt>
 }
 
@@ -26,7 +25,6 @@ export function createMod(url: URL): Mod {
     defined: new Map(),
     imported: new Map(),
     included: new Map(),
-    code: "",
     stmts: [],
   }
 }

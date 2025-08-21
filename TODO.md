@@ -1,4 +1,3 @@
-remove `mod.code`
 `runCode` call `runSexps`
 
 # repl
