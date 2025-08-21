@@ -21,6 +21,7 @@ export const ReplCommand: Command = {
     aboutModule(mod)
 
     const repl = X.createRepl({
+      welcome: "Welcome to occam-lisp.",
       prompt: "> ",
       async onSexps(sexps) {
         try {
@@ -30,5 +31,7 @@ export const ReplCommand: Command = {
         }
       },
     })
+
+    X.replStart(repl)
   },
 }
