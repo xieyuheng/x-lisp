@@ -2,8 +2,9 @@
   "include": ["src"],
   "compilerOptions": {
     "lib": ["esnext", "dom"],
-    "module": "node20",
-    "target": "es6",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "esnext",
     "strict": true,
     "rewriteRelativeImportExtensions": true,
     "verbatimModuleSyntax": true,

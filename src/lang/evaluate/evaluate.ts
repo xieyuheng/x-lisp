@@ -1,6 +1,4 @@
-import * as X from "@xieyuheng/x-data.js"
 import assert from "node:assert"
-import process from "node:process"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
@@ -12,13 +10,14 @@ import {
   type Env,
 } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
-import { formatExp, formatValue } from "../format/index.ts"
-import { modLookupValue, modReportSource, type Mod } from "../mod/index.ts"
+import { formatValue } from "../format/index.ts"
+import { modLookupValue, type Mod } from "../mod/index.ts"
 import { match, patternize } from "../pattern/index.ts"
 import { usePreludeMod } from "../prelude/index.ts"
 import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
+import { assertTrue } from "./assertTrue.ts"
 import { evaluateQuasiquote } from "./evaluateQuasiquote.ts"
 
 export type Result = [Env, Value]
@@ -91,30 +90,7 @@ export function evaluate(exp: Exp): Effect {
     }
 
     case "Assert": {
-      return (mod, env) => {
-        const value = resultValue(evaluate(exp.exp)(mod, env))
-
-        if (value.kind !== "Bool") {
-          let message =
-            `[assert] fail on non boolean value\n` +
-            `  value: ${formatValue(value)}\n` +
-            `  exp: ${formatExp(exp.exp)}\n`
-          message += `[source] ${modReportSource(mod, exp.meta.span)}\n`
-          message += X.spanReport(exp.meta.span, exp.meta.text)
-          console.log(message)
-          process.exit(1)
-        }
-
-        if (value.kind === "Bool" && value.content === false) {
-          let message = `[assert] fail\n` + `  exp: ${formatExp(exp.exp)}\n`
-          message += `[source] ${modReportSource(mod, exp.meta.span)}\n`
-          message += X.spanReport(exp.meta.span, exp.meta.text)
-          console.log(message)
-          process.exit(1)
-        }
-
-        return [env, Values.Void()]
-      }
+      return assertTrue(exp.exp)
     }
 
     case "AssertEqual": {

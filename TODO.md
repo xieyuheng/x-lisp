@@ -1,6 +1,5 @@
 # testing
 
-extract `assertTrue`
 `assertEqual`
 `assertNotEqual`
 parse `(assert-equal)` and `(assert-not-equal)`
