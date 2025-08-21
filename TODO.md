@@ -1,3 +1,6 @@
+remove `mod.code`
+`runCode` call `runSexps`
+
 # repl
 
 `ReplCommand` -- use `X.createRepl`
