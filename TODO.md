@@ -1,7 +1,9 @@
 # list
 
 `list-filter`
-`list-flat-map`
+
+`list-append-many`
+`list-append-map`
 
 `list-fold-right`
 `list-fold-left`
