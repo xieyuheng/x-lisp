@@ -1,7 +1,7 @@
-import { type Data, type Span } from "@xieyuheng/x-data.js"
+import { type Data, type TokenMeta } from "@xieyuheng/x-data.js"
 import { type Atom } from "../exp/index.ts"
 
-export type Meta = { span: Span }
+export type Meta = TokenMeta
 
 export type Attributes = Record<string, Exp>
 

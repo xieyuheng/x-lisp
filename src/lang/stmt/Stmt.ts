@@ -1,8 +1,8 @@
-import { type Span } from "@xieyuheng/x-data.js"
+import { type TokenMeta } from "@xieyuheng/x-data.js"
 import { type Exp } from "../exp/index.ts"
 import { type DataField } from "../value/index.ts"
 
-export type Meta = { span: Span }
+export type Meta = TokenMeta
 
 export type Stmt =
   | Compute

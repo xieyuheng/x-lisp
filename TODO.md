@@ -1,5 +1,3 @@
-update x-data to use `X.createRepl`
-
 # repl
 
 `ReplCommand` -- use `X.createRepl`

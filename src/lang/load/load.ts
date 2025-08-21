@@ -21,7 +21,7 @@ export function load(url: URL): Mod {
     return mod
   } catch (error) {
     if (error instanceof ParsingError) {
-      throw new Error(error.report({ text: code }))
+      throw new Error(error.report())
     }
 
     throw error

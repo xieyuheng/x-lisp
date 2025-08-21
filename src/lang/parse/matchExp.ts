@@ -11,161 +11,155 @@ export function matchExp(data: X.Data): Exp {
 const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher(
     "(cons* 'lambda parameters body)",
-    ({ parameters, body }, { span }) => {
+    ({ parameters, body }, { meta }) => {
       if (X.dataToArray(parameters).length === 0) {
         let message = `(lambda) expression must have at least one parameter\n`
-        throw new X.ParsingError(message, span)
+        throw new X.ParsingError(message, meta)
       }
 
       return Exps.Lambda(
         X.dataToArray(parameters).map(X.symbolToString),
-        Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
-        { span },
+        Exps.Begin(X.dataToArray(body).map(matchExp), meta),
+        meta,
       )
     },
   ),
 
-  X.matcher("(cons* 'thunk body)", ({ body }, { span }) => {
-    return Exps.Thunk(Exps.Begin(X.dataToArray(body).map(matchExp), { span }), {
-      span,
-    })
+  X.matcher("(cons* 'thunk body)", ({ body }, { meta }) => {
+    return Exps.Thunk(Exps.Begin(X.dataToArray(body).map(matchExp), meta), meta)
   }),
 
-  X.matcher("`(quote ,sexp)", ({ sexp }, { span }) => {
-    return Exps.Quote(sexp, { span })
+  X.matcher("`(quote ,sexp)", ({ sexp }, { meta }) => {
+    return Exps.Quote(sexp, meta)
   }),
 
-  X.matcher("`(quasiquote ,sexp)", ({ sexp }, { span }) => {
-    return Exps.Quasiquote(sexp, { span })
+  X.matcher("`(quasiquote ,sexp)", ({ sexp }, { meta }) => {
+    return Exps.Quasiquote(sexp, meta)
   }),
 
   X.matcher(
     "`(if ,condition ,consequent ,alternative)",
-    ({ condition, consequent, alternative }, { span }) => {
+    ({ condition, consequent, alternative }, { meta }) => {
       return Exps.If(
         matchExp(condition),
         matchExp(consequent),
         matchExp(alternative),
-        { span },
+        meta,
       )
     },
   ),
 
-  X.matcher("(cons* 'and exps)", ({ exps }, { span }) => {
-    return Exps.And(X.dataToArray(exps).map(matchExp), { span })
+  X.matcher("(cons* 'and exps)", ({ exps }, { meta }) => {
+    return Exps.And(X.dataToArray(exps).map(matchExp), meta)
   }),
 
-  X.matcher("(cons* 'or exps)", ({ exps }, { span }) => {
-    return Exps.Or(X.dataToArray(exps).map(matchExp), { span })
+  X.matcher("(cons* 'or exps)", ({ exps }, { meta }) => {
+    return Exps.Or(X.dataToArray(exps).map(matchExp), meta)
   }),
 
-  X.matcher("(cons* 'union exps)", ({ exps }, { span }) => {
-    return Exps.Union(X.dataToArray(exps).map(matchExp), { span })
+  X.matcher("(cons* 'union exps)", ({ exps }, { meta }) => {
+    return Exps.Union(X.dataToArray(exps).map(matchExp), meta)
   }),
 
-  X.matcher("(cons* 'inter exps)", ({ exps }, { span }) => {
-    return Exps.Inter(X.dataToArray(exps).map(matchExp), { span })
+  X.matcher("(cons* 'inter exps)", ({ exps }, { meta }) => {
+    return Exps.Inter(X.dataToArray(exps).map(matchExp), meta)
   }),
 
-  X.matcher("(cons* 'compose exps)", ({ exps }, { span }) => {
-    return Exps.Compose(X.dataToArray(exps).map(matchExp), { span })
+  X.matcher("(cons* 'compose exps)", ({ exps }, { meta }) => {
+    return Exps.Compose(X.dataToArray(exps).map(matchExp), meta)
   }),
 
-  X.matcher("(cons* 'pipe arg exps)", ({ arg, exps }, { span }) => {
-    return Exps.Pipe(matchExp(arg), X.dataToArray(exps).map(matchExp), { span })
+  X.matcher("(cons* 'pipe arg exps)", ({ arg, exps }, { meta }) => {
+    return Exps.Pipe(matchExp(arg), X.dataToArray(exps).map(matchExp), meta)
   }),
 
-  X.matcher("(cons* '-> exps)", ({ exps }, { span }) => {
+  X.matcher("(cons* '-> exps)", ({ exps }, { meta }) => {
     const [args, ret] = arrayPickLast(X.dataToArray(exps).map(matchExp))
-    return Exps.Arrow(args, ret, { span })
+    return Exps.Arrow(args, ret, meta)
   }),
 
-  X.matcher("(cons* 'assert exps)", ({ exps }, { span }) => {
+  X.matcher("(cons* 'assert exps)", ({ exps }, { meta }) => {
     const args = X.dataToArray(exps).map(matchExp)
     if (args.length !== 1) {
       const message = "(assert) expression can only take one arguments\n"
-      throw new X.ParsingError(message, span)
+      throw new X.ParsingError(message, meta)
     }
 
-    return Exps.Assert(args[0], { span })
+    return Exps.Assert(args[0], meta)
   }),
 
-  X.matcher("`(= ,name ,rhs)", ({ name, rhs }, { span }) => {
-    return Exps.Assign(X.symbolToString(name), matchExp(rhs), { span })
+  X.matcher("`(= ,name ,rhs)", ({ name, rhs }, { meta }) => {
+    return Exps.Assign(X.symbolToString(name), matchExp(rhs), meta)
   }),
 
-  X.matcher("(cons* 'tael elements)", ({ elements }, { data, span }) => {
+  X.matcher("(cons* 'tael elements)", ({ elements }, { data, meta }) => {
     return Exps.Tael(
       X.dataToArray(elements).map(matchExp),
       recordMap(X.asTael(data).attributes, matchExp),
-      { span },
+      meta,
     )
   }),
 
-  X.matcher("(cons* 'begin body)", ({ body }, { span }) => {
-    return Exps.Begin(X.dataToArray(body).map(matchExp), { span })
+  X.matcher("(cons* 'begin body)", ({ body }, { meta }) => {
+    return Exps.Begin(X.dataToArray(body).map(matchExp), meta)
   }),
 
-  X.matcher("(cons* 'cond lines)", ({ lines }, { span }) => {
-    return Exps.Cond(X.dataToArray(lines).map(matchCondLine), { span })
+  X.matcher("(cons* 'cond lines)", ({ lines }, { meta }) => {
+    return Exps.Cond(X.dataToArray(lines).map(matchCondLine), meta)
   }),
 
-  X.matcher("(cons* 'match target lines)", ({ target, lines }, { span }) => {
+  X.matcher("(cons* 'match target lines)", ({ target, lines }, { meta }) => {
     return Exps.Match(
       matchExp(target),
       X.dataToArray(lines).map(matchMatchLine),
-      {
-        span,
-      },
+      meta,
     )
   }),
 
-  X.matcher("[]", ({}, { data, span }) => {
+  X.matcher("[]", ({}, { data, meta }) => {
     const record = recordMap(X.asTael(data).attributes, matchExp)
     const entries = Object.entries(record)
     if (entries.length === 1) {
       const [name, target] = entries[0]
-      return Exps.RecordGet(name, target, { span })
+      return Exps.RecordGet(name, target, meta)
     } else if (entries.length === 0) {
       let message = `unhandled expression: empty list\n`
-      throw new X.ParsingError(message, span)
+      throw new X.ParsingError(message, meta)
     } else {
       let message = `unhandled expression: record with multiple keys\n`
-      throw new X.ParsingError(message, span)
+      throw new X.ParsingError(message, meta)
     }
   }),
 
-  X.matcher("(cons* target args)", ({ target, args }, { span }) => {
-    return Exps.Apply(matchExp(target), X.dataToArray(args).map(matchExp), {
-      span,
-    })
+  X.matcher("(cons* target args)", ({ target, args }, { meta }) => {
+    return Exps.Apply(matchExp(target), X.dataToArray(args).map(matchExp), meta)
   }),
 
-  X.matcher("data", ({ data }, { span }) => {
+  X.matcher("data", ({ data }, { meta }) => {
     switch (data.kind) {
       case "Bool":
-        return Exps.Bool(X.dataToBoolean(data), { span })
+        return Exps.Bool(X.dataToBoolean(data), meta)
       case "Int":
-        return Exps.Int(X.dataToNumber(data), { span })
+        return Exps.Int(X.dataToNumber(data), meta)
       case "Float":
-        return Exps.Float(X.dataToNumber(data), { span })
+        return Exps.Float(X.dataToNumber(data), meta)
       case "String":
-        return Exps.String(X.dataToString(data), { span })
+        return Exps.String(X.dataToString(data), meta)
       case "Symbol": {
         if (X.symbolToString(data).startsWith("#")) {
           if (X.symbolToString(data) === "#void") {
-            return Exps.Void({ span })
+            return Exps.Void(meta)
           }
 
           if (X.symbolToString(data) === "#null") {
-            return Exps.Null({ span })
+            return Exps.Null(meta)
           }
 
           let message = `unknown special symbol: ${X.symbolToString(data)}\n`
-          throw new X.ParsingError(message, span)
+          throw new X.ParsingError(message, meta)
         }
 
-        return Exps.Var(X.symbolToString(data), { span })
+        return Exps.Var(X.symbolToString(data), meta)
       }
     }
   }),
@@ -173,10 +167,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
 export function matchCondLine(data: X.Data): Exps.CondLine {
   return X.match(
-    X.matcher("`(,question ,answer)", ({ question, answer }, { span }) => {
+    X.matcher("`(,question ,answer)", ({ question, answer }, { meta }) => {
       if (question.kind === "Symbol" && question.content === "else") {
         return {
-          question: Exps.Bool(true, { span }),
+          question: Exps.Bool(true, meta),
           answer: matchExp(answer),
         }
       }
@@ -192,10 +186,10 @@ export function matchCondLine(data: X.Data): Exps.CondLine {
 
 export function matchMatchLine(data: X.Data): Exps.MatchLine {
   return X.match(
-    X.matcher("(cons* pattern body)", ({ pattern, body }, { span }) => {
+    X.matcher("(cons* pattern body)", ({ pattern, body }, { meta }) => {
       return {
         pattern: matchExp(pattern),
-        body: Exps.Begin(X.dataToArray(body).map(matchExp), { span }),
+        body: Exps.Begin(X.dataToArray(body).map(matchExp), meta),
       }
     }),
     data,
