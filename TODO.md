@@ -1,5 +1,3 @@
-update x-data for `onSexps`
-
 # prelude
 
 `list-map`
