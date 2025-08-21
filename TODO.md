@@ -1,7 +1,12 @@
 # testing
 
-`AssertEqual` and `AssertNotEqual` as `Exp`
+extract `assertTrue`
+`assertEqual`
+`assertNotEqual`
 parse `(assert-equal)` and `(assert-not-equal)`
+`evaluate` -- handle `AssertEqual` and `AssertNotEqual`
+
+tests use `(assert-equal)` and `(assert-not-equal)`
 
 # list
 
