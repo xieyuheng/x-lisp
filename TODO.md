@@ -1,3 +1,8 @@
+# testing
+
+`AssertEqual` and `AssertNotEqual` as `Exp`
+parse `(assert-equal)` and `(assert-not-equal)`
+
 # list
 
 `list-filter`
@@ -20,8 +25,3 @@
 `define-lazy`
 `lambda-lazy`
 test by `my-if`
-
-# testing
-
-`assert-equal`
-`assert-not-equal`
