@@ -1,5 +1,3 @@
-use `(assert-not)`
-
 # list
 
 `list-lift`

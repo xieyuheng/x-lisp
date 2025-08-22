@@ -1,7 +1,7 @@
 [:x 1 :y 2 :z 3]
 
 (assert (record? int? [:x 1 :y 2 :z 3]))
-(assert (not (record? int? [:x 1 :y 2 :z 'a])))
+(assert-not (record? int? [:x 1 :y 2 :z 'a]))
 
 (assert-equal
   [:x 1 :y 2 :z [:x 1 :y 2]]
@@ -19,7 +19,7 @@
   (record-of [1 2 3 4 5 :x 1 :y 2 :z 3])
   [:x 1 :y 2 :z 3])
 
-(assert (not (record-empty? [:x 1 :y 2 :z 3])))
+(assert-not (record-empty? [:x 1 :y 2 :z 3]))
 (assert (record-empty? [:x null :y null :z null]))
 (assert (record-empty? [:x null]))
 (assert (record-empty? []))
@@ -38,8 +38,8 @@
 
 (assert (record-has? [:x 1 :y 2] 'x))
 (assert (record-has? [:x 1 :y 2] 'y))
-(assert (not (record-has? [:x 1 :y 2] 'z)))
-(assert (not (record-has? [:x 1 :y 2 :z null] 'z)))
+(assert-not (record-has? [:x 1 :y 2] 'z))
+(assert-not (record-has? [:x 1 :y 2 :z null] 'z))
 
 (begin
   (= record [:x 0])

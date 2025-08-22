@@ -8,7 +8,7 @@
  [7 8 9]]
 
 (assert (list? int? [1 2 3]))
-(assert (not (list? symbol? [1 2 3])))
+(assert-not (list? symbol? [1 2 3]))
 
 (assert-equal
   [[1 2 3]
@@ -31,7 +31,7 @@
   [1 2 3])
 
 (assert (list-empty? []))
-(assert (not (list-empty? [1])))
+(assert-not (list-empty? [1]))
 
 (assert-equal (cons 1 (cons 2 (cons 3 []))) [1 2 3])
 (assert-equal (car [1 2 3]) 1)
