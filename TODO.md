@@ -1,4 +1,4 @@
-tests use `(assert-equal)` and `(assert-not-equal)`
+all tests use `(assert-equal)` and `(assert-not-equal)`
 
 # list
 

@@ -22,5 +22,5 @@ false
 (assert (not #f))
 (assert (not false))
 
-(assert (equal? (or) #f))
-(assert (equal? (and) #t))
+(assert-equal (or) #f)
+(assert-equal (and) #t)
