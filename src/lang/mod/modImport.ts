@@ -1,15 +1,23 @@
+import { createUrlOrFileUrl } from "../../utils/url/createUrlOrFileUrl.ts"
 import { load } from "../load/index.ts"
 import { type Mod } from "./Mod.ts"
 
-function modResolve(mod: Mod, href: string): URL {
-  return new URL(href, mod.url)
-}
-
 export function modImport(mod: Mod, path: string): Mod {
-  const url = modResolve(mod, path)
-  if (url.href === mod.url.href) {
-    throw new Error(`[modImport] A module can not import itself: ${path}\n`)
+  if (mod.url.protocol === "file:") {
+    const url = new URL(path, mod.url)
+    if (url.href === mod.url.href) {
+      let message = `[modImport] A module can not import itself: ${path}\n`
+      throw new Error(message)
+    }
+
+    return load(url)
   }
 
-  return load(url)
+  if (mod.url.protocol === "repl:") {
+    const url = createUrlOrFileUrl(path)
+    return load(url)
+  }
+
+  let message = `[modImport] unhandled url protocol: ${path}\n`
+  throw new Error(message)
 }
