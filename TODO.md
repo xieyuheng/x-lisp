@@ -1,4 +1,3 @@
-utils/node/packageJson
 examples/std -- for prelude
 
 `list-filter`
