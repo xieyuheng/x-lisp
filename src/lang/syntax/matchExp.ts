@@ -88,6 +88,16 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Assert(args[0], meta)
   }),
 
+  X.matcher("(cons* 'assert-not exps)", ({ exps }, { meta }) => {
+    const args = X.dataToArray(exps).map(matchExp)
+    if (args.length !== 1) {
+      const message = "(assert-not) expression can only take one arguments\n"
+      throw new X.ParsingError(message, meta)
+    }
+
+    return Exps.AssertNot(args[0], meta)
+  }),
+
   X.matcher("`(assert-equal ,lhs ,rhs)", ({ lhs, rhs }, { meta }) => {
     return Exps.AssertEqual(matchExp(lhs), matchExp(rhs), meta)
   }),
