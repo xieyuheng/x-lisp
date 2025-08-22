@@ -22,6 +22,7 @@ export const ReplCommand: Command = {
     aboutModule(mod)
 
     const { version } = getPackageJson()
+
     const repl = X.createRepl({
       welcome: `Welcome to occam-lisp.js ${version}`,
       prompt: "> ",
