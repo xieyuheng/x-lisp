@@ -45,6 +45,10 @@ export function formatExp(exp: Exp): string {
       return `(assert ${formatExp(exp.exp)})`
     }
 
+    case "AssertNot": {
+      return `(assert-not ${formatExp(exp.exp)})`
+    }
+
     case "AssertEqual": {
       return `(assert-equal ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
     }

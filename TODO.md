@@ -1,3 +1,5 @@
+use `(assert-not)`
+
 # list
 
 `list-lift`
@@ -21,4 +23,5 @@
 
 `define-lazy`
 `lambda-lazy`
-test by `my-if`
+
+test by `(my-if)`

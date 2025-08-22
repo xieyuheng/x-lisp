@@ -19,6 +19,7 @@ import { isAtom, type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
 import { assertEqual } from "./assertEqual.ts"
 import { assertNotEqual } from "./assertNotEqual.ts"
+import { assertNotTrue } from "./assertNotTrue.ts"
 import { assertTrue } from "./assertTrue.ts"
 import { evaluateQuasiquote } from "./evaluateQuasiquote.ts"
 
@@ -93,6 +94,10 @@ export function evaluate(exp: Exp): Effect {
 
     case "Assert": {
       return assertTrue(exp.exp)
+    }
+
+    case "AssertNot": {
+      return assertNotTrue(exp.exp)
     }
 
     case "AssertEqual": {

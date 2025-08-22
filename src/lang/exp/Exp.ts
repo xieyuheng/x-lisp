@@ -14,6 +14,7 @@ export type Exp =
   | Begin
   | Assign
   | Assert
+  | AssertNot
   | AssertEqual
   | AssertNotEqual
   | Void
@@ -136,6 +137,20 @@ export type Assert = {
 export function Assert(exp: Exp, meta: Meta): Assert {
   return {
     kind: "Assert",
+    exp,
+    meta,
+  }
+}
+
+export type AssertNot = {
+  kind: "AssertNot"
+  exp: Exp
+  meta: Meta
+}
+
+export function AssertNot(exp: Exp, meta: Meta): AssertNot {
+  return {
+    kind: "AssertNot",
     exp,
     meta,
   }
