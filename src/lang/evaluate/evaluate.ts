@@ -17,6 +17,8 @@ import { usePreludeMod } from "../prelude/index.ts"
 import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
+import { assertEqual } from "./assertEqual.ts"
+import { assertNotEqual } from "./assertNotEqual.ts"
 import { assertTrue } from "./assertTrue.ts"
 import { evaluateQuasiquote } from "./evaluateQuasiquote.ts"
 
@@ -94,11 +96,11 @@ export function evaluate(exp: Exp): Effect {
     }
 
     case "AssertEqual": {
-      throw new Error()
+      return assertEqual(exp.lhs, exp.rhs)
     }
 
     case "AssertNotEqual": {
-      throw new Error()
+      return assertNotEqual(exp.lhs, exp.rhs)
     }
 
     case "Void": {

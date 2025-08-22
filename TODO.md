@@ -1,18 +1,16 @@
 # testing
 
-`assertEqual`
-`assertNotEqual`
 parse `(assert-equal)` and `(assert-not-equal)`
-`evaluate` -- handle `AssertEqual` and `AssertNotEqual`
-
 tests use `(assert-equal)` and `(assert-not-equal)`
 
 # list
 
-`list-filter`
-
+`list-lift`
+`list-unit`
 `list-append-many`
 `list-append-map`
+
+`list-filter`
 
 `list-fold-right`
 `list-fold-left`

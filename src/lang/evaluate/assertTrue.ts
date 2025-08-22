@@ -11,10 +11,9 @@ export function assertTrue(exp: Exp): Effect {
     const value = resultValue(evaluate(exp)(mod, env))
 
     if (value.kind !== "Bool") {
-      let message =
-        `[assert] fail on non boolean value\n` +
-        `  value: ${formatValue(value)}\n` +
-        `  exp: ${formatExp(exp)}\n`
+      let message = `[assertTrue] fail on non boolean value\n`
+      message += `  value: ${formatValue(value)}\n`
+      message += `  exp: ${formatExp(exp)}\n`
       message += `[source] ${modReportSource(mod, exp.meta.span)}\n`
       message += X.spanReport(exp.meta.span, exp.meta.text)
       console.log(message)
@@ -22,7 +21,8 @@ export function assertTrue(exp: Exp): Effect {
     }
 
     if (value.kind === "Bool" && value.content === false) {
-      let message = `[assert] fail\n` + `  exp: ${formatExp(exp)}\n`
+      let message = `[assertTrue] fail\n`
+      message += `  exp: ${formatExp(exp)}\n`
       message += `[source] ${modReportSource(mod, exp.meta.span)}\n`
       message += X.spanReport(exp.meta.span, exp.meta.text)
       console.log(message)
