@@ -1,7 +1,5 @@
 # list
 
-`list-lift` (`list-append-map`) & `list-unit`
-
 `list-filter`
 
 `list-fold-right`
