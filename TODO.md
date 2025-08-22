@@ -1,9 +1,6 @@
 # list
 
-`list-lift`
-`list-unit`
-`list-append-many`
-`list-append-map`
+`list-lift` (`list-append-map`) & `list-unit`
 
 `list-filter`
 

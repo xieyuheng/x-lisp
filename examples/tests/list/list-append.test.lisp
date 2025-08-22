@@ -1,8 +1,4 @@
 (assert-equal
-  (list-length [1 2 3])
-  3)
-
-(assert-equal
   (list-append [1 2 3] [4 5 6])
   [1 2 3 4 5 6])
 
