@@ -88,6 +88,14 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Assert(args[0], meta)
   }),
 
+  X.matcher("`(assert-equal ,lhs ,rhs)", ({ lhs, rhs }, { meta }) => {
+    return Exps.AssertEqual(matchExp(lhs), matchExp(rhs), meta)
+  }),
+
+  X.matcher("`(assert-not-equal ,lhs ,rhs)", ({ lhs, rhs }, { meta }) => {
+    return Exps.AssertNotEqual(matchExp(lhs), matchExp(rhs), meta)
+  }),
+
   X.matcher("`(= ,name ,rhs)", ({ name, rhs }, { meta }) => {
     return Exps.Assign(X.symbolToString(name), matchExp(rhs), meta)
   }),

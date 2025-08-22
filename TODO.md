@@ -1,6 +1,3 @@
-# testing
-
-parse `(assert-equal)` and `(assert-not-equal)`
 tests use `(assert-equal)` and `(assert-not-equal)`
 
 # list
