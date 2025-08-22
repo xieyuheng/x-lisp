@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-bin="node ./lib/src/main.js debug"
+bin="node ./lib/main.js debug"
 ext=lisp
 dir=examples
 

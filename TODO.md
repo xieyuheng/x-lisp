@@ -1,6 +1,10 @@
-# list
+utils/node/packageJson
+examples/std -- for prelude
 
 `list-filter`
+`record-filter`
+
+# list
 
 `list-fold-right`
 `list-fold-left`
@@ -10,7 +14,7 @@
 
 # record
 
-`record-filter`
+API about take and drop
 
 # lazy
 

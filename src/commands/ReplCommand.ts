@@ -1,6 +1,8 @@
 import { type Command } from "@xieyuheng/commander.js"
 import * as X from "@xieyuheng/x-data.js"
-import packageJson from "../../package.json" with { type: "json" }
+import fs from "node:fs"
+import Path from "node:path"
+import { fileURLToPath } from "node:url"
 import { runSexps } from "../lang/load/index.ts"
 import { createMod } from "../lang/mod/index.ts"
 import { aboutModule } from "../lang/prelude/aboutModule.ts"
@@ -21,8 +23,14 @@ export const ReplCommand: Command = {
     importPrelude(mod)
     aboutModule(mod)
 
+    const currentDir = Path.dirname(fileURLToPath(import.meta.url))
+    const packageFile = Path.join(currentDir, "../../package.json")
+    const packageText = fs.readFileSync(packageFile, "utf8")
+    const packageJson = JSON.parse(packageText)
+    const version = packageJson["version"]
+
     const repl = X.createRepl({
-      welcome: `Welcome to occam-lisp.js ${packageJson.version}`,
+      welcome: `Welcome to occam-lisp.js ${version}`,
       prompt: "> ",
       async onSexps(sexps) {
         try {
