@@ -1,5 +1,3 @@
-all tests use `(assert-equal)` and `(assert-not-equal)`
-
 # list
 
 `list-lift`
