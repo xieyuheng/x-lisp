@@ -6,7 +6,7 @@ import { aboutFloat } from "./aboutFloat.ts"
 import { aboutFunction } from "./aboutFunction.ts"
 import { aboutInt } from "./aboutInt.ts"
 import { aboutList } from "./aboutList.ts"
-import { aboutOptional } from "./aboutOptional.ts"
+import { aboutNull } from "./aboutNull.ts"
 import { aboutPath } from "./aboutPath.ts"
 import { aboutPredicate } from "./aboutPredicate.ts"
 import { aboutProcess } from "./aboutProcess.ts"
@@ -39,7 +39,7 @@ export function useBuiltinPreludeMod(): Mod {
   aboutProcess(mod)
   aboutConsole(mod)
   aboutVoid(mod)
-  aboutOptional(mod)
+  aboutNull(mod)
   aboutFunction(mod)
 
   return mod
