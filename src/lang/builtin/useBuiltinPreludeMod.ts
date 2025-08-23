@@ -19,10 +19,10 @@ import { aboutVoid } from "./aboutVoid.ts"
 
 let mod: Mod | undefined = undefined
 
-export function usePreludeMod(): Mod {
+export function useBuiltinPreludeMod(): Mod {
   if (mod) return mod
 
-  mod = createMod(new URL("prelude:occam"))
+  mod = createMod(new URL("buildin:prelude"))
 
   aboutBool(mod)
   aboutInt(mod)

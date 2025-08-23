@@ -1,4 +1,6 @@
-examples/std -- for prelude
+`std/` -- to make prelude easy to write
+
+`--no-std-prelude`
 
 `list-filter`
 `record-filter`

@@ -1,8 +1,8 @@
 import { ParsingError } from "@xieyuheng/x-data.js"
 import { fetchTextSync } from "../../utils/url/fetchTextSync.ts"
+import { aboutModule } from "../builtin/aboutModule.ts"
+import { importBuiltinPrelude } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
-import { aboutModule } from "../prelude/aboutModule.ts"
-import { importPrelude } from "../prelude/index.ts"
 import { globalLoadedMods } from "./globalLoadedMods.ts"
 import { runCode } from "./runCode.ts"
 
@@ -15,7 +15,7 @@ export function load(url: URL): Mod {
   try {
     const mod = createMod(url)
     globalLoadedMods.set(url.href, { mod, text: code })
-    importPrelude(mod)
+    importBuiltinPrelude(mod)
     aboutModule(mod)
     runCode(mod, code)
     return mod

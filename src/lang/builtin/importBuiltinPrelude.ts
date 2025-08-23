@@ -1,8 +1,8 @@
 import { modPublicDefinitions, type Mod } from "../mod/index.ts"
-import { usePreludeMod } from "./usePreludeMod.ts"
+import { useBuiltinPreludeMod } from "./useBuiltinPreludeMod.ts"
 
-export function importPrelude(mod: Mod) {
-  const preludeMod = usePreludeMod()
+export function importBuiltinPrelude(mod: Mod) {
+  const preludeMod = useBuiltinPreludeMod()
   for (const [name, definition] of modPublicDefinitions(preludeMod).entries()) {
     mod.defined.set(name, definition)
   }

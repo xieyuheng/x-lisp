@@ -1,9 +1,9 @@
 import { type Command } from "@xieyuheng/commander.js"
 import * as X from "@xieyuheng/x-data.js"
+import { aboutModule } from "../lang/builtin/aboutModule.ts"
+import { importBuiltinPrelude } from "../lang/builtin/index.ts"
 import { runSexps } from "../lang/load/index.ts"
 import { createMod } from "../lang/mod/index.ts"
-import { aboutModule } from "../lang/prelude/aboutModule.ts"
-import { importPrelude } from "../lang/prelude/index.ts"
 import { errorReport } from "../utils/error/errorReport.ts"
 import { getPackageJson } from "../utils/node/getPackageJson.ts"
 
@@ -18,7 +18,7 @@ export const ReplCommand: Command = {
   async run(commander) {
     const url = new URL("repl:")
     const mod = createMod(url)
-    importPrelude(mod)
+    importBuiltinPrelude(mod)
     aboutModule(mod)
 
     const { version } = getPackageJson()

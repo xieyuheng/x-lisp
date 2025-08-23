@@ -2,6 +2,7 @@ import assert from "node:assert"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
+import { useBuiltinPreludeMod } from "../builtin/index.ts"
 import {
   emptyEnv,
   envLookupValue,
@@ -13,7 +14,6 @@ import { type Exp } from "../exp/index.ts"
 import { formatValue } from "../format/index.ts"
 import { modLookupValue, type Mod } from "../mod/index.ts"
 import { match, patternize } from "../pattern/index.ts"
-import { usePreludeMod } from "../prelude/index.ts"
 import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
@@ -239,7 +239,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Union": {
       return (mod, env) => {
-        const preludeMod = usePreludeMod()
+        const preludeMod = useBuiltinPreludeMod()
         const value = modLookupValue(preludeMod, "union/fn")
         assert(value)
         const predicates = exp.exps.map((e) =>
@@ -251,7 +251,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Inter": {
       return (mod, env) => {
-        const preludeMod = usePreludeMod()
+        const preludeMod = useBuiltinPreludeMod()
         const value = modLookupValue(preludeMod, "inter/fn")
         assert(value)
         const predicates = exp.exps.map((e) =>
@@ -284,7 +284,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Compose": {
       return (mod, env) => {
-        const preludeMod = usePreludeMod()
+        const preludeMod = useBuiltinPreludeMod()
         const value = modLookupValue(preludeMod, "compose/fn")
         assert(value)
         const fs = exp.exps.map((e) => resultValue(evaluate(e)(mod, env)))
@@ -294,7 +294,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Pipe": {
       return (mod, env) => {
-        const preludeMod = usePreludeMod()
+        const preludeMod = useBuiltinPreludeMod()
         const value = modLookupValue(preludeMod, "pipe/fn")
         assert(value)
         const fs = exp.exps.map((e) => resultValue(evaluate(e)(mod, env)))
