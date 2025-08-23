@@ -12,8 +12,8 @@ export function assertNotTrue(exp: Exp): Effect {
 
     if (value.kind !== "Bool") {
       let message = `[assertNotTrue] fail on non boolean value\n`
-      message += `  value: ${formatValue(value)}\n`
       message += `  exp: ${formatExp(exp)}\n`
+      message += `  value: ${formatValue(value)}\n`
       message += `[source] ${modReportSource(mod, exp.meta.span)}\n`
       message += X.spanReport(exp.meta.span, exp.meta.text)
       console.log(message)

@@ -1,10 +1,4 @@
-# module
-
-consider directory as module
-
 # list
-
-`list-filter`
 
 `list-fold-right`
 `list-fold-left`
