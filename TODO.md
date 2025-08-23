@@ -1,11 +1,13 @@
-`useStdPreludeMod`
+update x-data to avoid calling `error.report` on `ParsingError`
 
-`--no-std-prelude` flag
+# std
 
-`list-filter`
-`record-filter`
+[std] `useStdPreludeMod`
+[std] `--no-std-prelude` flag
 
 # list
+
+`list-filter`
 
 `list-fold-right`
 `list-fold-left`
@@ -14,6 +16,8 @@
 `list-drop`
 
 # record
+
+`record-filter`
 
 API about take and drop
 

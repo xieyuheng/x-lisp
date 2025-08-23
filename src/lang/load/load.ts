@@ -11,7 +11,7 @@ export function load(url: URL): Mod {
   const found = globalLoadedMods.get(url.href)
   if (found !== undefined) return found.mod
 
-  const code = fetchTextSync(url)
+  const text = fetchTextSync(url)
 
   try {
     const mod = createMod(url)
@@ -19,8 +19,8 @@ export function load(url: URL): Mod {
     importBuiltinPrelude(mod)
     importStdPrelude(mod)
 
-    globalLoadedMods.set(url.href, { mod, text: code })
-    runCode(mod, code)
+    globalLoadedMods.set(url.href, { mod, text })
+    runCode(mod, text)
     return mod
   } catch (error) {
     if (error instanceof ParsingError) {
