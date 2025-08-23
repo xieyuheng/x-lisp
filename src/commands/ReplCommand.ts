@@ -17,6 +17,10 @@ export const ReplCommand: Command = {
   },
 
   async run(commander) {
+    if (commander.options["debug"]) {
+      flags.debug = true
+    }
+
     const url = new URL("repl:")
     const mod = createMod(url)
     aboutModule(mod)

@@ -1,6 +1,5 @@
 # std
 
-`ReplCommand` support `--debug`
 [std] `--no-std-prelude` flag
 scripts/run-std.sh
 
