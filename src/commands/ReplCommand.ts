@@ -4,6 +4,7 @@ import { aboutModule } from "../lang/builtin/aboutModule.ts"
 import { importBuiltinPrelude } from "../lang/builtin/index.ts"
 import { runSexps } from "../lang/load/index.ts"
 import { createMod } from "../lang/mod/index.ts"
+import { importStdPrelude } from "../lang/std/importStdPrelude.ts"
 import { errorReport } from "../utils/error/errorReport.ts"
 import { getPackageJson } from "../utils/node/getPackageJson.ts"
 
@@ -18,13 +19,12 @@ export const ReplCommand: Command = {
   async run(commander) {
     const url = new URL("repl:")
     const mod = createMod(url)
-    importBuiltinPrelude(mod)
     aboutModule(mod)
-
-    const { version } = getPackageJson()
+    importBuiltinPrelude(mod)
+    importStdPrelude(mod)
 
     const repl = X.createRepl({
-      welcome: `Welcome to occam-lisp.js ${version}`,
+      welcome: `Welcome to occam-lisp.js ${getPackageJson().version}`,
       prompt: "> ",
       async onSexps(sexps) {
         try {

@@ -1,6 +1,6 @@
-`std/` -- to make prelude easy to write
+`useStdPreludeMod`
 
-`--no-std-prelude`
+`--no-std-prelude` flag
 
 `list-filter`
 `record-filter`

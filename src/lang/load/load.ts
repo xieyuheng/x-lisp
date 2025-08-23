@@ -3,6 +3,7 @@ import { fetchTextSync } from "../../utils/url/fetchTextSync.ts"
 import { aboutModule } from "../builtin/aboutModule.ts"
 import { importBuiltinPrelude } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
+import { importStdPrelude } from "../std/importStdPrelude.ts"
 import { globalLoadedMods } from "./globalLoadedMods.ts"
 import { runCode } from "./runCode.ts"
 
@@ -14,9 +15,11 @@ export function load(url: URL): Mod {
 
   try {
     const mod = createMod(url)
-    globalLoadedMods.set(url.href, { mod, text: code })
-    importBuiltinPrelude(mod)
     aboutModule(mod)
+    importBuiltinPrelude(mod)
+    importStdPrelude(mod)
+
+    globalLoadedMods.set(url.href, { mod, text: code })
     runCode(mod, code)
     return mod
   } catch (error) {
