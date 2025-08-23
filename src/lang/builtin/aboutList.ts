@@ -104,13 +104,6 @@ export function aboutList(mod: Mod) {
     return Values.Int(Values.asTael(list).elements.length)
   })
 
-  definePrimitiveFunction(mod, "list-append", 2, (base, list) => {
-    return Values.Tael(
-      [...Values.asTael(base).elements, ...Values.asTael(list).elements],
-      Values.asTael(base).attributes,
-    )
-  })
-
   definePrimitiveFunction(mod, "list-of", 1, (list) => {
     return Values.List([...Values.asTael(list).elements])
   })

@@ -1,4 +1,5 @@
 (include "list-map.lisp")
 (include "list-filter.lisp")
+(include "list-append.lisp")
 (include "list-append-many.lisp")
 (include "list-monad.lisp")
