@@ -1,7 +1,6 @@
 # list
 
 list-append in std
-list-append-many in std
 
 `list-take`
 `list-drop`
