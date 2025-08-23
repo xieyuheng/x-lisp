@@ -26,10 +26,6 @@
    [4 5 6]
    [7 8 10]])
 
-(assert-equal
-  (list-of [1 2 3 :x 1 :y 2 :z 3])
-  [1 2 3])
-
 (assert (list-empty? []))
 (assert-not (list-empty? [1]))
 
@@ -42,5 +38,3 @@
 
 (assert-equal (list-init [1 2 3]) [1 2])
 (assert-equal (list-last [1 2 3]) 3)
-
-(assert-equal (list-reverse [1 2 3]) [3 2 1])

@@ -1,10 +1,13 @@
 # list
 
-`list-fold-right`
-`list-fold-left`
+list-append in std
+list-append-many in std
 
 `list-take`
 `list-drop`
+
+`list-fold-right`
+`list-fold-left`
 
 # record
 
