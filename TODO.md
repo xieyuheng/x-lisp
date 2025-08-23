@@ -1,5 +1,3 @@
-update x-data to avoid calling `error.report` on `ParsingError`
-
 # std
 
 [std] `useStdPreludeMod`
