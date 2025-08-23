@@ -1,19 +1,15 @@
-int-larger?
-int-smaller?
+int-larger? & int-smaller?
+int-larger-or-equal? & int-smaller-or-equal?
+int-min & int-max
 
-int-larger-or-equal?
-int-smaller-or-equal?
-
-float-larger?
-float-smaller?
-
-float-larger-or-equal?
-float-smaller-or-equal?
+float-larger? & float-smaller?
+float-larger-or-equal? & float-smaller-or-equal?
+float-min & float-max
 
 # list
 
 `list-take` -- use `int-larger-or-equal?`
-`list-drop`
+`list-drop` -- use `int-larger-or-equal?`
 
 `list-fold-right`
 `list-fold-left`
