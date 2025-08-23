@@ -1,5 +1,6 @@
 import { type Command } from "@xieyuheng/commander.js"
 import * as X from "@xieyuheng/x-data.js"
+import { flags } from "../flags.ts"
 import { aboutModule } from "../lang/builtin/aboutModule.ts"
 import { importBuiltinPrelude } from "../lang/builtin/index.ts"
 import { runSexps } from "../lang/load/index.ts"
@@ -18,14 +19,20 @@ export const ReplCommand: Command = {
 
   async run(commander) {
     if (commander.options["debug"]) {
-      flags.debug = true
+      flags["debug"] = true
+    }
+
+    if (commander.options["no-std-prelude"]) {
+      flags["no-std-prelude"] = true
     }
 
     const url = new URL("repl:")
     const mod = createMod(url)
     aboutModule(mod)
     importBuiltinPrelude(mod)
-    importStdPrelude(mod)
+    if (!flags["no-std-prelude"]) {
+      importStdPrelude(mod)
+    }
 
     const repl = X.createRepl({
       welcome: `Welcome to occam-lisp.js ${getPackageJson().version}`,

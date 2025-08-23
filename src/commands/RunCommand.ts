@@ -17,7 +17,11 @@ export const RunCommand: Command = {
 
   async run(commander) {
     if (commander.options["debug"]) {
-      flags.debug = true
+      flags["debug"] = true
+    }
+
+    if (commander.options["no-std-prelude"]) {
+      flags["no-std-prelude"] = true
     }
 
     if (typeof commander.args[0] !== "string") {

@@ -1,3 +1,4 @@
+import { flags } from "../../flags.ts"
 import { fetchTextSync } from "../../utils/url/fetchTextSync.ts"
 import { aboutModule } from "../builtin/aboutModule.ts"
 import { importBuiltinPrelude } from "../builtin/index.ts"
@@ -14,7 +15,9 @@ export function load(url: URL): Mod {
   const mod = createMod(url)
   aboutModule(mod)
   importBuiltinPrelude(mod)
-  importStdPrelude(mod)
+  if (!flags["no-std-prelude"]) {
+    importStdPrelude(mod)
+  }
 
   globalLoadedMods.set(url.href, { mod, text })
   runCode(mod, text)
