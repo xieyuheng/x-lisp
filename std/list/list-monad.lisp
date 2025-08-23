@@ -1,4 +1,4 @@
-(import list-map "list-map.lisp")
+(import "list-map.lisp" list-map)
 
 (define (list-append-map list f)
   (list-append-many (list-map list f)))

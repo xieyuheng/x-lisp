@@ -1,6 +1,5 @@
 # std
 
-[std] `useStdPreludeMod`
 [std] `--no-std-prelude` flag
 
 # list
