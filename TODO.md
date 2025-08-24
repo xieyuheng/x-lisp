@@ -1,4 +1,3 @@
-fneg
 int-larger? & int-smaller?
 int-larger-or-equal? & int-smaller-or-equal?
 int-min & int-max

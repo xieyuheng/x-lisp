@@ -7,6 +7,10 @@ export function aboutFloat(mod: Mod) {
     return Values.Bool(Values.isFloat(value))
   })
 
+  definePrimitiveFunction(mod, "fneg", 1, (x) => {
+    return Values.Float(-Values.asFloat(x).content)
+  })
+
   definePrimitiveFunction(mod, "fadd", 2, (x, y) => {
     return Values.Float(Values.asFloat(x).content + Values.asFloat(y).content)
   })
