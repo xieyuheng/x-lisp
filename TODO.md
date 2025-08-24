@@ -1,7 +1,5 @@
 # lazy
 
-`apply` -- handle lazy value
-
 `Lazy` as `Exp`
 parse `(lazy)`
 test `(lazy)`
