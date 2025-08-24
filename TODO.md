@@ -1,7 +1,6 @@
 # lazy
 
 `apply` -- handle lazy value
-`definePrimitiveFunction` -- handle lazy value
 
 `Lazy` as `Exp`
 parse `(lazy)`

@@ -11,3 +11,11 @@ export function lazyActive(lazy: Values.Lazy): Value {
   lazy.cachedValue = value
   return value
 }
+
+export function lazyWalk(value: Value): Value {
+  if (value.kind === "Lazy") {
+    return lazyWalk(lazyActive(value))
+  }
+
+  return value
+}
