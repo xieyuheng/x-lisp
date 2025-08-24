@@ -1,6 +1,7 @@
 # later
 
-[syntax] improve error report about `assert-equal` and `assert-not-equal`
+assert-equal-arity.error.lisp
+assert-not-equal-arity.error.lisp
 
 # lazy
 
