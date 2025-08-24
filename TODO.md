@@ -1,6 +1,5 @@
 # lazy
 
-`Lazy` as `Exp`
 parse `(lazy)`
 test `(lazy)`
 

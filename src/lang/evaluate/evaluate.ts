@@ -65,6 +65,12 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
+    case "Lazy": {
+      return (mod, env) => {
+        return [env, Values.Lazy(mod, env, exp.exp)]
+      }
+    }
+
     case "Apply": {
       return (mod, env) => {
         const target = resultValue(evaluate(exp.target)(mod, env))

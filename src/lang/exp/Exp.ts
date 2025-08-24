@@ -10,6 +10,7 @@ export type Exp =
   | Var
   | Lambda
   | Thunk
+  | Lazy
   | Apply
   | Begin
   | Assign
@@ -78,6 +79,20 @@ export function Thunk(body: Exp, meta: Meta): Thunk {
   return {
     kind: "Thunk",
     body,
+    meta,
+  }
+}
+
+export type Lazy = {
+  kind: "Lazy"
+  exp: Exp
+  meta: Meta
+}
+
+export function Lazy(exp: Exp, meta: Meta): Lazy {
+  return {
+    kind: "Lazy",
+    exp,
     meta,
   }
 }
