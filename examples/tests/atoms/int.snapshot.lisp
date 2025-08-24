@@ -17,3 +17,12 @@
 
 (assert-equal (ineg 1) -1)
 (assert-equal (ineg -1) 1)
+
+(assert (int-larger? 2 1))
+(assert (int-smaller? 1 2))
+
+(assert (int-larger-or-equal? 2 1))
+(assert (int-smaller-or-equal? 1 2))
+
+(assert (int-larger-or-equal? 2 2))
+(assert (int-smaller-or-equal? 1 1))
