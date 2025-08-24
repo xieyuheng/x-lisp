@@ -1,7 +1,5 @@
 # list
 
-`list-take` & `list-drop` -- use `int-non-negative?`
-
 `list-fold-right`
 `list-fold-left`
 

@@ -1,5 +1,5 @@
 (claim list-drop
-  (-> (list? anything?) (int-smaller-or-equal? 0)
+  (-> (list? anything?) int-non-negative?
       (list? anything?)))
 
 (define (list-drop list n)
