@@ -1,0 +1,6 @@
+(lazy 1)
+(iadd (lazy 1))
+(iadd (lazy 1))
+(iadd (lazy (begin (println "lazy 1") 1)))
+"lazy 1"
+"lazy 2"
