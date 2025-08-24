@@ -32,4 +32,20 @@ export function aboutInt(mod: Mod) {
   definePrimitiveFunction(mod, "imod", 2, (x, y) => {
     return Values.Int(Values.asInt(x).content % Values.asInt(y).content)
   })
+
+  definePrimitiveFunction(mod, "int-larger?", 2, (x, y) => {
+    return Values.Bool(Values.asInt(x).content > Values.asInt(y).content)
+  })
+
+  definePrimitiveFunction(mod, "int-smaller?", 2, (x, y) => {
+    return Values.Bool(Values.asInt(x).content < Values.asInt(y).content)
+  })
+
+  definePrimitiveFunction(mod, "int-larger-or-equal?", 2, (x, y) => {
+    return Values.Bool(Values.asInt(x).content >= Values.asInt(y).content)
+  })
+
+  definePrimitiveFunction(mod, "int-smaller-or-equal?", 2, (x, y) => {
+    return Values.Bool(Values.asInt(x).content <= Values.asInt(y).content)
+  })
 }
