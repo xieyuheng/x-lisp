@@ -1,8 +1,6 @@
 # list
 
-int-positive? & int-negative? & float-positive? & float-negative?
-
-`list-take` & `list-drop` -- use `int-positive?`
+`list-take` & `list-drop` -- use `int-non-negative?`
 
 `list-fold-right`
 `list-fold-left`

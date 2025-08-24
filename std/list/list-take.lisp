@@ -1,5 +1,5 @@
 (claim list-take
-  (-> (list? anything?) (int-larger-or-equal? 0)
+  (-> (list? anything?) (int-smaller-or-equal? 0)
       (list? anything?)))
 
 (define (list-take list n)

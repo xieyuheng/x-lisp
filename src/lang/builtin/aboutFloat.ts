@@ -54,4 +54,12 @@ export function aboutFloat(mod: Mod) {
   definePrimitiveFunction(mod, "float-smaller-or-equal?", 2, (x, y) => {
     return Values.Bool(Values.asFloat(x).content <= Values.asFloat(y).content)
   })
+
+  definePrimitiveFunction(mod, "float-positive?", 1, (x) => {
+    return Values.Bool(Values.asFloat(x).content > 0)
+  })
+
+  definePrimitiveFunction(mod, "float-non-negative?", 1, (x) => {
+    return Values.Bool(Values.asFloat(x).content >= 0)
+  })
 }

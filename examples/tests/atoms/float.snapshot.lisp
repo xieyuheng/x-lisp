@@ -19,3 +19,11 @@
 
 (assert (float-larger-or-equal? 2.0 2.0))
 (assert (float-smaller-or-equal? 1.0 1.0))
+
+(assert (float-positive? 1.0))
+(assert (not (float-positive? 0.0)))
+(assert (not (float-positive? -1.0)))
+
+(assert (float-non-negative? 1.0))
+(assert (float-non-negative? 0.0))
+(assert (not (float-non-negative? -1.0)))

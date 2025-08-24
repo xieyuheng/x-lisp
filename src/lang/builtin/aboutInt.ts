@@ -60,4 +60,12 @@ export function aboutInt(mod: Mod) {
   definePrimitiveFunction(mod, "int-smaller-or-equal?", 2, (x, y) => {
     return Values.Bool(Values.asInt(x).content <= Values.asInt(y).content)
   })
+
+  definePrimitiveFunction(mod, "int-positive?", 1, (x) => {
+    return Values.Bool(Values.asInt(x).content > 0)
+  })
+
+  definePrimitiveFunction(mod, "int-non-negative?", 1, (x) => {
+    return Values.Bool(Values.asInt(x).content >= 0)
+  })
 }

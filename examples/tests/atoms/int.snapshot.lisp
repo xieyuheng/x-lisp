@@ -29,3 +29,11 @@
 
 (assert (int-larger-or-equal? 2 2))
 (assert (int-smaller-or-equal? 1 1))
+
+(assert (int-positive? 1))
+(assert (not (int-positive? 0)))
+(assert (not (int-positive? -1)))
+
+(assert (int-non-negative? 1))
+(assert (int-non-negative? 0))
+(assert (not (int-non-negative? -1)))
