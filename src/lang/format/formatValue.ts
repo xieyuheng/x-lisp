@@ -1,4 +1,4 @@
-import { formatAtom, formatBody } from "../format/index.ts"
+import { formatAtom, formatBody, formatExp } from "../format/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 
 export function formatValue(value: Value): string {
@@ -31,12 +31,21 @@ export function formatValue(value: Value): string {
       return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 
-    case "LambdaLazy": {
-      return `(lambda-lazy (${value.parameters.join(" ")}) ${formatBody(value.body)})`
-    }
-
     case "Thunk": {
       return `(thunk ${formatBody(value.body)})`
+    }
+
+    case "Lazy": {
+      if (value.cachedValue) {
+        const cachedValue = formatValue(value.cachedValue)
+        return `(lazy ${formatExp(value.exp)} :cached-value ${cachedValue})`
+      } else {
+        return `(lazy ${formatExp(value.exp)})`
+      }
+    }
+
+    case "LambdaLazy": {
+      return `(lambda-lazy (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 
     case "PrimitiveFunction": {

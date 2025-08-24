@@ -1,6 +1,9 @@
 # lazy
 
-`Lazy` as `Value` -- with optional `cachedValue`
+`lazyUtils`
+`apply` -- handle lazy value
+`definePrimitiveFunction` -- handle lazy value
+
 `Lazy` as `Exp`
 parse `(lazy)`
 test `(lazy)`
@@ -10,4 +13,4 @@ test `(lazy)`
 parse `(lambda-lazy)`
 parse `(define-lazy)`
 
-test by `(my-if)`
+test `(lambda-lazy)` and `(define-lazy)` by `(my-if)`

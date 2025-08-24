@@ -11,8 +11,9 @@ export type Value =
   | Null
   | Tael
   | Lambda
-  | LambdaLazy
   | Thunk
+  | Lazy
+  | LambdaLazy
   | PrimitiveFunction
   | PrimitiveThunk
   | Void
@@ -68,6 +69,39 @@ export function Lambda(
   }
 }
 
+export type Thunk = {
+  kind: "Thunk"
+  mod: Mod
+  env: Env
+  body: Exp
+}
+
+export function Thunk(mod: Mod, env: Env, body: Exp): Thunk {
+  return {
+    kind: "Thunk",
+    mod,
+    env,
+    body,
+  }
+}
+
+export type Lazy = {
+  kind: "Lazy"
+  mod: Mod
+  env: Env
+  exp: Exp
+  cachedValue?: Value
+}
+
+export function Lazy(mod: Mod, env: Env, exp: Exp): Lazy {
+  return {
+    kind: "Lazy",
+    mod,
+    env,
+    exp,
+  }
+}
+
 export type LambdaLazy = {
   kind: "LambdaLazy"
   mod: Mod
@@ -87,22 +121,6 @@ export function LambdaLazy(
     mod,
     env,
     parameters,
-    body,
-  }
-}
-
-export type Thunk = {
-  kind: "Thunk"
-  mod: Mod
-  env: Env
-  body: Exp
-}
-
-export function Thunk(mod: Mod, env: Env, body: Exp): Thunk {
-  return {
-    kind: "Thunk",
-    mod,
-    env,
     body,
   }
 }
