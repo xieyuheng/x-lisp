@@ -1,6 +1,3 @@
-# list
-
-`list-fold-right`
 `list-fold-left`
 
 # record

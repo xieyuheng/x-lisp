@@ -5,3 +5,5 @@
 (include "list-monad.lisp")
 (include "list-take.lisp")
 (include "list-drop.lisp")
+(include "list-fold-right.lisp")
+(include "list-fold-left.lisp")
