@@ -11,6 +11,7 @@ export type Value =
   | Null
   | Tael
   | Lambda
+  | LambdaLazy
   | Thunk
   | PrimitiveFunction
   | PrimitiveThunk
@@ -60,6 +61,29 @@ export function Lambda(
 ): Lambda {
   return {
     kind: "Lambda",
+    mod,
+    env,
+    parameters,
+    body,
+  }
+}
+
+export type LambdaLazy = {
+  kind: "LambdaLazy"
+  mod: Mod
+  env: Env
+  parameters: Array<string>
+  body: Exp
+}
+
+export function LambdaLazy(
+  mod: Mod,
+  env: Env,
+  parameters: Array<string>,
+  body: Exp,
+): LambdaLazy {
+  return {
+    kind: "LambdaLazy",
     mod,
     env,
     parameters,

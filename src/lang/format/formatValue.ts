@@ -31,6 +31,10 @@ export function formatValue(value: Value): string {
       return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 
+    case "LambdaLazy": {
+      return `(lambda-lazy (${value.parameters.join(" ")}) ${formatBody(value.body)})`
+    }
+
     case "Thunk": {
       return `(thunk ${formatBody(value.body)})`
     }
