@@ -1,3 +1,4 @@
+(include "list-getters.lisp")
 (include "list-map.lisp")
 (include "list-filter.lisp")
 (include "list-append.lisp")

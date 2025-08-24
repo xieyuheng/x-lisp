@@ -1,5 +1,3 @@
-list-first list-second list-third
-
 # later
 
 [syntax] improve error report about `assert-equal` and `assert-not-equal`
