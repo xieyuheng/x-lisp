@@ -13,3 +13,6 @@
 
 (iadd 1)
 ((iadd 1) 1)
+
+(assert-equal (ineg 1) -1)
+(assert-equal (ineg -1) 1)

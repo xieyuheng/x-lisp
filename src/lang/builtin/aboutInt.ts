@@ -7,6 +7,10 @@ export function aboutInt(mod: Mod) {
     return Values.Bool(Values.isInt(value))
   })
 
+  definePrimitiveFunction(mod, "ineg", 1, (x) => {
+    return Values.Int(-Values.asInt(x).content)
+  })
+
   definePrimitiveFunction(mod, "iadd", 2, (x, y) => {
     return Values.Int(Values.asInt(x).content + Values.asInt(y).content)
   })
