@@ -1,4 +1,4 @@
-(assert-not) expression can only take one arguments
+(assert-not) must take one argument
 
  1|(assert-not #f #f)
    ~~~~~~~~~~~~~~~~~~ 

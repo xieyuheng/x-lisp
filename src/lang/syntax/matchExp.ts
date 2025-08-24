@@ -13,7 +13,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     "(cons* 'lambda parameters body)",
     ({ parameters, body }, { meta }) => {
       if (X.dataToArray(parameters).length === 0) {
-        let message = `(lambda) expression must have at least one parameter\n`
+        let message = `(lambda) must have at least one parameter\n`
         throw new X.ParsingError(message, meta)
       }
 
@@ -81,7 +81,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher("(cons* 'assert exps)", ({ exps }, { meta }) => {
     const args = X.dataToArray(exps).map(matchExp)
     if (args.length !== 1) {
-      const message = "(assert) expression can only take one arguments\n"
+      const message = "(assert) must take one argument\n"
       throw new X.ParsingError(message, meta)
     }
 
@@ -91,19 +91,33 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher("(cons* 'assert-not exps)", ({ exps }, { meta }) => {
     const args = X.dataToArray(exps).map(matchExp)
     if (args.length !== 1) {
-      const message = "(assert-not) expression can only take one arguments\n"
+      const message = "(assert-not) must take one argument\n"
       throw new X.ParsingError(message, meta)
     }
 
     return Exps.AssertNot(args[0], meta)
   }),
 
-  X.matcher("`(assert-equal ,lhs ,rhs)", ({ lhs, rhs }, { meta }) => {
-    return Exps.AssertEqual(matchExp(lhs), matchExp(rhs), meta)
+  X.matcher("(cons* 'assert-equal exps)", ({ exps }, { meta }) => {
+    const args = X.dataToArray(exps).map(matchExp)
+    if (args.length !== 2) {
+      const message = "(assert-equal) must take two arguments\n"
+      throw new X.ParsingError(message, meta)
+    }
+
+    const [lhs, rhs] = args
+    return Exps.AssertEqual(lhs, rhs, meta)
   }),
 
-  X.matcher("`(assert-not-equal ,lhs ,rhs)", ({ lhs, rhs }, { meta }) => {
-    return Exps.AssertNotEqual(matchExp(lhs), matchExp(rhs), meta)
+  X.matcher("(cons* 'assert-not-equal exps)", ({ exps }, { meta }) => {
+    const args = X.dataToArray(exps).map(matchExp)
+    if (args.length !== 2) {
+      const message = "(assert-not-equal) must take two arguments\n"
+      throw new X.ParsingError(message, meta)
+    }
+
+    const [lhs, rhs] = args
+    return Exps.AssertNotEqual(lhs, rhs, meta)
   }),
 
   X.matcher("`(= ,name ,rhs)", ({ name, rhs }, { meta }) => {
@@ -141,10 +155,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       const [name, target] = entries[0]
       return Exps.RecordGet(name, target, meta)
     } else if (entries.length === 0) {
-      let message = `unhandled expression: empty list\n`
+      let message = `[matchExp] can not handle empty list\n`
       throw new X.ParsingError(message, meta)
     } else {
-      let message = `unhandled expression: record with multiple keys\n`
+      let message = `[matchExp] can not handle record with multiple keys\n`
       throw new X.ParsingError(message, meta)
     }
   }),
