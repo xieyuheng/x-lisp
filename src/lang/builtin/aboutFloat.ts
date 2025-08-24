@@ -26,4 +26,20 @@ export function aboutFloat(mod: Mod) {
   definePrimitiveFunction(mod, "fdiv", 2, (x, y) => {
     return Values.Float(Values.asFloat(x).content / Values.asFloat(y).content)
   })
+
+  definePrimitiveFunction(mod, "float-larger?", 2, (x, y) => {
+    return Values.Bool(Values.asFloat(x).content > Values.asFloat(y).content)
+  })
+
+  definePrimitiveFunction(mod, "float-smaller?", 2, (x, y) => {
+    return Values.Bool(Values.asFloat(x).content < Values.asFloat(y).content)
+  })
+
+  definePrimitiveFunction(mod, "float-larger-or-equal?", 2, (x, y) => {
+    return Values.Bool(Values.asFloat(x).content >= Values.asFloat(y).content)
+  })
+
+  definePrimitiveFunction(mod, "float-smaller-or-equal?", 2, (x, y) => {
+    return Values.Bool(Values.asFloat(x).content <= Values.asFloat(y).content)
+  })
 }

@@ -1,6 +1,4 @@
 int-min & int-max
-
-float-larger? & float-smaller? & float-larger-or-equal? & float-smaller-or-equal?
 float-min & float-max
 
 # list
