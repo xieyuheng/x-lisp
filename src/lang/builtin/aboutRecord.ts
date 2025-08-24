@@ -43,6 +43,10 @@ export function aboutRecord(mod: Mod) {
     )
   })
 
+  definePrimitiveFunction(mod, "record-values", 1, (record) => {
+    return Values.List(Object.values(Values.asTael(record).attributes))
+  })
+
   definePrimitiveFunction(mod, "record-update", 2, (base, record) => {
     return Values.Tael(Values.asTael(base).elements, {
       ...Values.asTael(base).attributes,
