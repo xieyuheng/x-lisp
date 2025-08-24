@@ -29,6 +29,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Thunk(Exps.Begin(X.dataToArray(body).map(matchExp), meta), meta)
   }),
 
+  X.matcher("(cons* 'lazy exp)", ({ exp }, { meta }) => {
+    return Exps.Lazy(matchExp(exp), meta)
+  }),
+
   X.matcher("`(quote ,sexp)", ({ sexp }, { meta }) => {
     return Exps.Quote(sexp, meta)
   }),

@@ -1,6 +1,5 @@
 # lazy
 
-parse `(lazy)`
 test `(lazy)`
 
 `evaluate` -- handle `LambdaLazy`
