@@ -1,8 +1,13 @@
 # record
 
-API to write `record-filter` in the language itself
+`record-values`
+`record-entries`
+`record-from-entries`
 `record-filter`
-API about take and drop
+
+# later
+
+[syntax] improve error report about `assert-equal` and `assert-not-equal`
 
 # lazy
 
