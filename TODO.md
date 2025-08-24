@@ -1,6 +1,5 @@
 # lazy
 
-`lazyUtils`
 `apply` -- handle lazy value
 `definePrimitiveFunction` -- handle lazy value
 
