@@ -1,3 +1,7 @@
+(claim list-drop
+  (-> (list? anything?) (int-larger-or-equal? 0)
+      (list? anything?)))
+
 (define (list-drop list n)
   (if (or (equal? n 0) (list-empty? list))
     list

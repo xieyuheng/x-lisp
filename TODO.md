@@ -1,7 +1,8 @@
 # list
 
-`list-take` -- use `int-larger-or-equal?`
-`list-drop` -- use `int-larger-or-equal?`
+int-positive? & int-negative? & float-positive? & float-negative?
+
+`list-take` & `list-drop` -- use `int-positive?`
 
 `list-fold-right`
 `list-fold-left`
