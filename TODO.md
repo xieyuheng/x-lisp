@@ -1,5 +1,3 @@
-`list-fold-left`
-
 # record
 
 API to write `record-filter` in the language itself
