@@ -33,6 +33,18 @@ export function aboutInt(mod: Mod) {
     return Values.Int(Values.asInt(x).content % Values.asInt(y).content)
   })
 
+  definePrimitiveFunction(mod, "int-max", 2, (x, y) => {
+    return Values.Int(
+      Math.max(Values.asInt(x).content, Values.asInt(y).content),
+    )
+  })
+
+  definePrimitiveFunction(mod, "int-min", 2, (x, y) => {
+    return Values.Int(
+      Math.min(Values.asInt(x).content, Values.asInt(y).content),
+    )
+  })
+
   definePrimitiveFunction(mod, "int-larger?", 2, (x, y) => {
     return Values.Bool(Values.asInt(x).content > Values.asInt(y).content)
   })

@@ -27,6 +27,18 @@ export function aboutFloat(mod: Mod) {
     return Values.Float(Values.asFloat(x).content / Values.asFloat(y).content)
   })
 
+  definePrimitiveFunction(mod, "float-max", 2, (x, y) => {
+    return Values.Float(
+      Math.max(Values.asFloat(x).content, Values.asFloat(y).content),
+    )
+  })
+
+  definePrimitiveFunction(mod, "float-min", 2, (x, y) => {
+    return Values.Float(
+      Math.min(Values.asFloat(x).content, Values.asFloat(y).content),
+    )
+  })
+
   definePrimitiveFunction(mod, "float-larger?", 2, (x, y) => {
     return Values.Bool(Values.asFloat(x).content > Values.asFloat(y).content)
   })

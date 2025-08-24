@@ -1,6 +1,3 @@
-int-min & int-max
-float-min & float-max
-
 # list
 
 `list-take` -- use `int-larger-or-equal?`

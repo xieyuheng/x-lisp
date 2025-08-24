@@ -18,6 +18,9 @@
 (assert-equal (ineg 1) -1)
 (assert-equal (ineg -1) 1)
 
+(assert-equal (int-min 1 2) 1)
+(assert-equal (int-max 1 2) 2)
+
 (assert (int-larger? 2 1))
 (assert (int-smaller? 1 2))
 

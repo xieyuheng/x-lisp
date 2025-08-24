@@ -8,6 +8,9 @@
 (assert-equal (fneg 1.0) -1.0)
 (assert-equal (fneg -1.0) 1.0)
 
+(assert-equal (float-min 1.0 2.0) 1.0)
+(assert-equal (float-max 1.0 2.0) 2.0)
+
 (assert (float-larger? 2.0 1.0))
 (assert (float-smaller? 1.0 2.0))
 
