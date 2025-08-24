@@ -1,6 +1,5 @@
 # record
 
-`record-entries`
 `record-from-entries`
 `record-filter`
 

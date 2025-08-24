@@ -1,3 +1,4 @@
+import { arrayZip } from "../../utils/array/arrayZip.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { definePrimitiveFunction } from "../define/index.ts"
 import { apply } from "../evaluate/index.ts"
@@ -45,6 +46,15 @@ export function aboutRecord(mod: Mod) {
 
   definePrimitiveFunction(mod, "record-values", 1, (record) => {
     return Values.List(Object.values(Values.asTael(record).attributes))
+  })
+
+  definePrimitiveFunction(mod, "record-entries", 1, (record) => {
+    return Values.List(
+      arrayZip(
+        Object.keys(Values.asTael(record).attributes).map(Values.Symbol),
+        Object.values(Values.asTael(record).attributes),
+      ).map(Values.List),
+    )
   })
 
   definePrimitiveFunction(mod, "record-update", 2, (base, record) => {
