@@ -97,7 +97,7 @@ export function aboutRecord(mod: Mod) {
     }
   })
 
-  definePrimitiveFunction(mod, "record-set", 3, (record, key, value) => {
+  definePrimitiveFunction(mod, "record-set", 3, (key, value, record) => {
     const attributes = {
       ...Values.asTael(record).attributes,
       [Values.asSymbol(key).content]: value,
