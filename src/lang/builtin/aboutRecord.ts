@@ -105,7 +105,7 @@ export function aboutRecord(mod: Mod) {
     return Values.Tael(Values.asTael(record).elements, attributes)
   })
 
-  definePrimitiveFunction(mod, "record-map", 2, (record, fn) => {
+  definePrimitiveFunction(mod, "record-map", 2, (fn, record) => {
     return Values.Tael(
       Values.asTael(record).elements,
       recordMap(Values.asTael(record).attributes, (value) =>
