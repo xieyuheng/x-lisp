@@ -16,10 +16,6 @@ export function aboutValue(mod: Mod) {
     return Values.Bool(Values.isAtom(value))
   })
 
-  definePrimitiveFunction(mod, "sexp?", 1, (value) => {
-    return Values.Bool(Values.isSexp(value))
-  })
-
   definePrimitiveFunction(mod, "anything?", 1, (value) => {
     return Values.Bool(true)
   })

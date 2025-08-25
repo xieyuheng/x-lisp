@@ -5,6 +5,10 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutSexp(mod: Mod) {
+  definePrimitiveFunction(mod, "sexp?", 1, (value) => {
+    return Values.Bool(Values.isSexp(value))
+  })
+
   definePrimitiveFunction(mod, "parse-sexp", 1, (string) => {
     return X.parseData(Values.asString(string).content)
   })
