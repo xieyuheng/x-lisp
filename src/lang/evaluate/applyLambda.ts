@@ -4,7 +4,10 @@ import * as Values from "../value/index.ts"
 import { apply } from "./apply.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
-export function applyLambda(lambda: Values.Lambda, args: Array<Value>): Value {
+export function applyLambda(
+  lambda: Values.Lambda | Values.LambdaLazy,
+  args: Array<Value>,
+): Value {
   let env = lambda.env
   for (const [index, parameter] of lambda.parameters.entries()) {
     env = envSetValue(env, parameter, args[index])

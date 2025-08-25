@@ -22,7 +22,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     return supply(target.target, target.arity, [...target.args, ...args])
   }
 
-  if (target.kind === "Lambda") {
+  if (target.kind === "Lambda" || target.kind === "LambdaLazy") {
     const arity = target.parameters.length
     if (arity === args.length) {
       return applyLambda(target, args)

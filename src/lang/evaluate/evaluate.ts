@@ -74,8 +74,15 @@ export function evaluate(exp: Exp): Effect {
     case "Apply": {
       return (mod, env) => {
         const target = resultValue(evaluate(exp.target)(mod, env))
-        const args = exp.args.map((arg) => resultValue(evaluate(arg)(mod, env)))
-        return [env, apply(target, args)]
+        if (target.kind === "LambdaLazy") {
+          const args = exp.args.map((arg) => Values.Lazy(mod, env, arg))
+          return [env, apply(target, args)]
+        } else {
+          const args = exp.args.map((arg) =>
+            resultValue(evaluate(arg)(mod, env)),
+          )
+          return [env, apply(target, args)]
+        }
       }
     }
 
