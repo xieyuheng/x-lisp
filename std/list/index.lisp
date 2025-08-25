@@ -8,3 +8,4 @@
 (include "list-drop.lisp")
 (include "list-fold-right.lisp")
 (include "list-fold-left.lisp")
+(include "list-zip.lisp")
