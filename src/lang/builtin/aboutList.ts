@@ -108,15 +108,15 @@ export function aboutList(mod: Mod) {
     return Values.List([...Values.asTael(list).elements])
   })
 
-  definePrimitiveFunction(mod, "list-get", 2, (list, index) => {
+  definePrimitiveFunction(mod, "list-get", 2, (index, list) => {
     const elements = Values.asTael(list).elements
     const i = Values.asInt(index).content
     if (i < elements.length) {
       return elements[i]
     } else {
       let message = `(list-get) index out of bound\n`
-      message += `  list: ${formatValue(list)}\n`
       message += `  index: ${formatValue(index)}\n`
+      message += `  list: ${formatValue(list)}\n`
       throw new Error(message)
     }
   })
