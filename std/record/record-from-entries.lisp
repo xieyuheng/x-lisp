@@ -1,8 +1,8 @@
 (define (record-from-entries entries)
-  (record-update-many [] entries))
+  (record-append-many [] entries))
 
-(define (record-update-many record entries)
+(define (record-append-many record entries)
   (match entries
     ([] record)
     ((cons [k v] tail)
-     (record-update-many (record-set record k v) tail))))
+     (record-append-many (record-set record k v) tail))))

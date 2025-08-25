@@ -57,7 +57,7 @@ export function aboutRecord(mod: Mod) {
     )
   })
 
-  definePrimitiveFunction(mod, "record-update", 2, (base, record) => {
+  definePrimitiveFunction(mod, "record-append", 2, (base, record) => {
     return Values.Tael(Values.asTael(base).elements, {
       ...Values.asTael(base).attributes,
       ...Values.asTael(record).attributes,
