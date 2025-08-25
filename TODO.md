@@ -1,6 +1,5 @@
 # lazy
 
-`LambdaLazy` as `Exp`
 parse `(lambda-lazy)`
 parse `(define-lazy)`
 

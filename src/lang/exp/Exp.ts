@@ -11,6 +11,7 @@ export type Exp =
   | Lambda
   | Thunk
   | Lazy
+  | LambdaLazy
   | Apply
   | Begin
   | Assign
@@ -93,6 +94,26 @@ export function Lazy(exp: Exp, meta: Meta): Lazy {
   return {
     kind: "Lazy",
     exp,
+    meta,
+  }
+}
+
+export type LambdaLazy = {
+  kind: "LambdaLazy"
+  parameters: Array<string>
+  body: Exp
+  meta: Meta
+}
+
+export function LambdaLazy(
+  parameters: Array<string>,
+  body: Exp,
+  meta: Meta,
+): LambdaLazy {
+  return {
+    kind: "LambdaLazy",
+    parameters,
+    body,
     meta,
   }
 }
