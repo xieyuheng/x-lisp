@@ -1,3 +1,0 @@
-# lazy
-
-parse `(define-lazy)`

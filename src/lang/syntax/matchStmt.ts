@@ -33,6 +33,29 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     },
   ),
 
+  X.matcher(
+    "(cons* 'define-lazy (cons* name parameters) body)",
+    ({ name, parameters, body }, { meta }) => {
+      if (X.dataToArray(parameters).length === 0) {
+        return Stmts.Define(
+          X.symbolToString(name),
+          Exps.Thunk(Exps.Begin(X.dataToArray(body).map(matchExp), meta), meta),
+          meta,
+        )
+      } else {
+        return Stmts.Define(
+          X.symbolToString(name),
+          Exps.LambdaLazy(
+            X.dataToArray(parameters).map(X.symbolToString),
+            Exps.Begin(X.dataToArray(body).map(matchExp), meta),
+            meta,
+          ),
+          meta,
+        )
+      }
+    },
+  ),
+
   X.matcher("`(define ,name ,exp)", ({ name, exp }, { meta }) => {
     return Stmts.Define(X.symbolToString(name), matchExp(exp), meta)
   }),
