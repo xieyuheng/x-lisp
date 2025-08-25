@@ -1,8 +1,8 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
 import { errorReport } from "../../utils/error/errorReport.ts"
 import { formatValue } from "../format/index.ts"
-import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
 import { the } from "./the.ts"
 import { validate } from "./validate.ts"
@@ -12,6 +12,9 @@ export function applyWithSchema(
   target: Value,
   args: Array<Value>,
 ): Value {
+  schema = Values.lazyWalk(schema)
+  target = Values.lazyWalk(target)
+
   if (schema.kind === "Arrow") {
     const arrow = Values.arrowNormalize(schema)
 

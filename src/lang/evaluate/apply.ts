@@ -3,7 +3,7 @@ import { flags } from "../../flags.ts"
 import { equal } from "../equal/index.ts"
 import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
-import { type Value, lazyWalk } from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 import { applyDataGetter } from "./applyDataGetter.ts"
 import { applyDataPredicate } from "./applyDataPredicate.ts"
 import { applyLambda } from "./applyLambda.ts"
@@ -12,7 +12,7 @@ import { force } from "./force.ts"
 import { supply } from "./supply.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
-  target = lazyWalk(target)
+  target = Values.lazyWalk(target)
 
   if (args.length === 0) {
     return force(target)
@@ -52,7 +52,7 @@ export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "PrimitiveFunction") {
     const arity = target.arity
     if (arity === args.length) {
-      return target.fn(...args.map(lazyWalk))
+      return target.fn(...args.map(Values.lazyWalk))
     } else {
       return supply(target, arity, args)
     }
