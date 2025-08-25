@@ -6,7 +6,5 @@
   (list-append-many (list-map list f)))
 
 (define (list-unit x) [x])
-;; (define (list-bind list f) (list-append-map list f))
-;; (define (list-lift f list) (list-bind list f))
 (define list-bind list-append-map)
 (define list-lift (swap list-bind))
