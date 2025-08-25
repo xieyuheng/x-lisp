@@ -10,3 +10,4 @@
 (include "list-fold-left.lisp")
 (include "list-zip.lisp")
 (include "list-unzip.lisp")
+(include "list-map-zip.lisp")
