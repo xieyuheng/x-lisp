@@ -1,6 +1,6 @@
-(define (list-fold-left list op e)
+(define (list-fold-left op e list)
   (if (list-empty? list)
     e
     (list-fold-left
-     (list-tail list) op
-     (op e (list-head list)))))
+     op (op e (list-head list))
+     (list-tail list))))
