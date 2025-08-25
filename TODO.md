@@ -1,6 +1,4 @@
 # lazy
 
-parse `(lambda-lazy)`
+test `(lambda-lazy)` by `(my-if)`
 parse `(define-lazy)`
-
-test `(lambda-lazy)` and `(define-lazy)` by `(my-if)`
