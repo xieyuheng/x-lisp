@@ -15,7 +15,7 @@ import { formatValue } from "../format/index.ts"
 import { modLookupValue, type Mod } from "../mod/index.ts"
 import { match, patternize } from "../pattern/index.ts"
 import * as Values from "../value/index.ts"
-import { isAtom, type Value } from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
 import { assertEqual } from "./assertEqual.ts"
 import { assertNotEqual } from "./assertNotEqual.ts"
@@ -32,7 +32,7 @@ export function resultValue(result: Result): Value {
 }
 
 export function evaluate(exp: Exp): Effect {
-  if (isAtom(exp)) {
+  if (Values.isAtom(exp)) {
     return (mod, env) => {
       return [env, exp]
     }
@@ -79,7 +79,9 @@ export function evaluate(exp: Exp): Effect {
 
     case "Apply": {
       return (mod, env) => {
-        const target = resultValue(evaluate(exp.target)(mod, env))
+        const target = Values.lazyWalk(
+          resultValue(evaluate(exp.target)(mod, env)),
+        )
         if (target.kind === "LambdaLazy") {
           const args = exp.args.map((arg) => Values.Lazy(mod, env, arg))
           return [env, apply(target, args)]
@@ -161,7 +163,9 @@ export function evaluate(exp: Exp): Effect {
 
     case "If": {
       return (mod, env) => {
-        const condition = resultValue(evaluate(exp.condition)(mod, env))
+        const condition = Values.lazyWalk(
+          resultValue(evaluate(exp.condition)(mod, env)),
+        )
         if (condition.kind !== "Bool") {
           let message = `[evaluate] The condition part of a (if) must be bool\n`
           message += `  condition: ${formatValue(condition)}\n`
@@ -180,7 +184,7 @@ export function evaluate(exp: Exp): Effect {
     case "And": {
       return (mod, env) => {
         for (const e of exp.exps) {
-          const value = resultValue(evaluate(e)(mod, env))
+          const value = Values.lazyWalk(resultValue(evaluate(e)(mod, env)))
           if (value.kind !== "Bool") {
             let message = `[evaluate] The subexpressions of (and) must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
@@ -200,7 +204,7 @@ export function evaluate(exp: Exp): Effect {
     case "Or": {
       return (mod, env) => {
         for (const e of exp.exps) {
-          const value = resultValue(evaluate(e)(mod, env))
+          const value = Values.lazyWalk(resultValue(evaluate(e)(mod, env)))
           if (value.kind !== "Bool") {
             let message = `[evaluate] The subexpressions of (or) must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
@@ -220,7 +224,9 @@ export function evaluate(exp: Exp): Effect {
     case "Cond": {
       return (mod, env) => {
         for (const condLine of exp.condLines) {
-          const value = resultValue(evaluate(condLine.question)(mod, env))
+          const value = Values.lazyWalk(
+            resultValue(evaluate(condLine.question)(mod, env)),
+          )
           if (value.kind !== "Bool") {
             let message = `[evaluate] The question part of a (cond) line must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
@@ -241,7 +247,9 @@ export function evaluate(exp: Exp): Effect {
 
     case "Match": {
       return (mod, env) => {
-        const target = resultValue(evaluate(exp.target)(mod, env))
+        const target = Values.lazyWalk(
+          resultValue(evaluate(exp.target)(mod, env)),
+        )
         for (const matchLine of exp.matchLines) {
           const pattern = patternize(matchLine.pattern)(mod, env)
           const resultEnv = match(pattern, target)(emptyEnv())
@@ -290,7 +298,9 @@ export function evaluate(exp: Exp): Effect {
 
     case "RecordGet": {
       return (mod, env) => {
-        const target = resultValue(evaluate(exp.target)(mod, env))
+        const target = Values.lazyWalk(
+          resultValue(evaluate(exp.target)(mod, env)),
+        )
         const attributes = Values.asTael(target).attributes
         const value = attributes[exp.name]
         if (value === undefined) {
