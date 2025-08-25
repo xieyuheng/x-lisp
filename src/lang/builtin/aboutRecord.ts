@@ -105,6 +105,14 @@ export function aboutRecord(mod: Mod) {
     return Values.Tael(Values.asTael(record).elements, attributes)
   })
 
+  definePrimitiveFunction(mod, "record-delete", 2, (key, record) => {
+    const attributes = {
+      ...Values.asTael(record).attributes,
+    }
+    delete attributes[Values.asSymbol(key).content]
+    return Values.Tael(Values.asTael(record).elements, attributes)
+  })
+
   definePrimitiveFunction(mod, "record-map", 2, (fn, record) => {
     return Values.Tael(
       Values.asTael(record).elements,
