@@ -121,7 +121,7 @@ export function aboutList(mod: Mod) {
     }
   })
 
-  definePrimitiveFunction(mod, "list-set", 3, (list, index, value) => {
+  definePrimitiveFunction(mod, "list-set", 3, (index, value, list) => {
     const elements = Values.asTael(list).elements
     const i = Values.asInt(index).content
     if (i < elements.length) {
