@@ -5,5 +5,5 @@
 (define (record-filter p record)
   (pipe record
     record-entries
-    (swap list-filter (compose p list-second))
+    (list-filter (compose p list-second))
     record-from-entries))

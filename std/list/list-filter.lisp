@@ -1,6 +1,6 @@
-(define (list-filter list p)
+(define (list-filter p list)
   (cond ((list-empty? list) list)
         ((p (car list))
-         (cons (car list) (list-filter (cdr list) p)))
+         (cons (car list) (list-filter p (cdr list))))
         (else
-         (list-filter (cdr list) p))))
+         (list-filter p (cdr list)))))

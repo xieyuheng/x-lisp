@@ -1,5 +1,5 @@
 (import-all "list-map.lisp")
 
 (assert-equal
-  (list-map [1 2 3] (iadd 10))
+  (list-map (iadd 10) [1 2 3])
   [11 12 13])

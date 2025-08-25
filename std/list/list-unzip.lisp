@@ -2,5 +2,5 @@
 (import-all "list-map.lisp")
 
 (define (list-unzip pairs)
-  [(list-map pairs list-first)
-   (list-map pairs list-second)])
+  [(list-map list-first pairs)
+   (list-map list-second pairs)])

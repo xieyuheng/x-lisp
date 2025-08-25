@@ -1,4 +1,4 @@
-(define (list-map list f)
+(define (list-map f list)
   (if (list-empty? list)
     []
-    (cons (f (car list)) (list-map (cdr list) f))))
+    (cons (f (car list)) (list-map f (cdr list)))))
