@@ -1,10 +1,10 @@
 import { definePrimitiveFunction } from "../define/index.ts"
-import { validate } from "../evaluate/index.ts"
+import { the } from "../evaluate/index.ts"
 import { runCode } from "../load/index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function aboutPredicate(mod: Mod) {
-  definePrimitiveFunction(mod, "the", 2, validate)
+  definePrimitiveFunction(mod, "the", 2, the)
 
   runCode(
     mod,

@@ -3,7 +3,7 @@ import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
 
-export function validate(schema: Value, value: Value): Value {
+export function the(schema: Value, value: Value): Value {
   if (schema.kind === "Arrow") {
     return Values.The(schema, value)
   }
