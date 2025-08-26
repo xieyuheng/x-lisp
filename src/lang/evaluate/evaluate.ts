@@ -341,5 +341,17 @@ export function evaluate(exp: Exp): Effect {
         ]
       }
     }
+
+    case "Tau": {
+      return (mod, env) => {
+        const value = Values.Tau(
+          exp.elementSchemas.map((e) => resultValue(evaluate(e)(mod, env))),
+          recordMap(exp.attributeSchemas, (e) =>
+            resultValue(evaluate(e)(mod, env)),
+          ),
+        )
+        return [env, value]
+      }
+    }
   }
 }

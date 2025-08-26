@@ -175,6 +175,22 @@ export function formatExp(exp: Exp): string {
         return `(pipe ${arg} ${exps.join(" ")})`
       }
     }
+
+    case "Tau": {
+      const elementSchemas = exp.elementSchemas.map(formatExp)
+      const attributeSchemas = Object.entries(exp.attributeSchemas).map(
+        ([k, e]) => `:${k} ${formatExp(e)}`,
+      )
+      if (elementSchemas.length === 0 && attributeSchemas.length === 0) {
+        return `(tau)`
+      } else if (attributeSchemas.length === 0) {
+        return `(tau ${elementSchemas.join(" ")})`
+      } else if (elementSchemas.length === 0) {
+        return `(tau ${attributeSchemas.join(" ")})`
+      } else {
+        return `(tau ${elementSchemas.join(" ")} ${attributeSchemas.join(" ")})`
+      }
+    }
   }
 }
 

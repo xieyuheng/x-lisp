@@ -35,6 +35,7 @@ export type Exp =
   | RecordGet
   | Compose
   | Pipe
+  | Tau
 
 export type Var = {
   kind: "Var"
@@ -477,6 +478,26 @@ export function Pipe(arg: Exp, exps: Array<Exp>, meta: Meta): Pipe {
     kind: "Pipe",
     arg,
     exps,
+    meta,
+  }
+}
+
+export type Tau = {
+  kind: "Tau"
+  elementSchemas: Array<Exp>
+  attributeSchemas: Attributes
+  meta: Meta
+}
+
+export function Tau(
+  elementSchemas: Array<Exp>,
+  attributeSchemas: Attributes,
+  meta: Meta,
+): Tau {
+  return {
+    kind: "Tau",
+    elementSchemas,
+    attributeSchemas,
     meta,
   }
 }
