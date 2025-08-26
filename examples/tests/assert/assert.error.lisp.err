@@ -1,6 +1,6 @@
 [assertTrue] fail
   exp: (not #t)
-[source] examples/tests/syntax/assert.error.lisp:2:9
+[source] examples/tests/assert/assert.error.lisp:2:9
  1|(assert #t)
  2|(assert (not #t))
            ~~~~~~~~  
