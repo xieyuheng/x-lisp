@@ -6,11 +6,11 @@ import { type Value } from "../value/index.ts"
 import { applyDataGetter } from "./applyDataGetter.ts"
 import { applyDataPredicate } from "./applyDataPredicate.ts"
 import { applyLambda } from "./applyLambda.ts"
-import { applyTau } from "./applyTau.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
 import { force } from "./force.ts"
 import { supply } from "./supply.ts"
 import { the } from "./the.ts"
+import { validate } from "./validate.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
   target = Values.lazyWalk(target)
@@ -31,7 +31,12 @@ export function apply(target: Value, args: Array<Value>): Value {
       throw new Error(message)
     }
 
-    return applyTau(target, args[0])
+    const result = validate(target, args[0])
+    if (result.kind === "Ok") {
+      return Values.Bool(true)
+    } else {
+      return Values.Bool(false)
+    }
   }
 
   if (target.kind === "Lambda" || target.kind === "LambdaLazy") {
