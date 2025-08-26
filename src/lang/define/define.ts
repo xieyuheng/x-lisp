@@ -1,7 +1,7 @@
+import { the } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
 import { modLookupValue, type Mod } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
-import * as Values from "../value/index.ts"
 
 export type DefineOptions = { isPrivate?: boolean }
 
@@ -26,6 +26,6 @@ export function define(
 
   const claimed = mod.claimed.get(name)
   if (claimed) {
-    defined.value = Values.Claimed(defined.value, claimed.value)
+    defined.value = the(claimed.value, defined.value)
   }
 }

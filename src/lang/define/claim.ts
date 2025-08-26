@@ -1,6 +1,6 @@
+import { the } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
-import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 
 export function claim(mod: Mod, name: string, schema: Value): void {
@@ -16,6 +16,6 @@ export function claim(mod: Mod, name: string, schema: Value): void {
 
   const defined = mod.defined.get(name)
   if (defined) {
-    defined.value = Values.Claimed(defined.value, schema)
+    defined.value = the(schema, defined.value)
   }
 }
