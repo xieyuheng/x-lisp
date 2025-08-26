@@ -7,6 +7,7 @@ import { type Value } from "../value/index.ts"
 import { applyDataGetter } from "./applyDataGetter.ts"
 import { applyDataPredicate } from "./applyDataPredicate.ts"
 import { applyLambda } from "./applyLambda.ts"
+import { applyTau } from "./applyTau.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
 import { force } from "./force.ts"
 import { supply } from "./supply.ts"
@@ -20,6 +21,17 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   if (target.kind === "Curried") {
     return supply(target.target, target.arity, [...target.args, ...args])
+  }
+
+  if (target.kind === "Tau") {
+    if (args.length !== 1) {
+      let message = `[apply] tau can only take one argument\n`
+      message += `  target: ${formatValue(target)}\n`
+      message += `  args: [${args.map(formatValue).join(" ")}]\n`
+      throw new Error(message)
+    }
+
+    return applyTau(target, args[0])
   }
 
   if (target.kind === "Lambda" || target.kind === "LambdaLazy") {

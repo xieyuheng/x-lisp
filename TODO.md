@@ -1,1 +1,1 @@
-`applyTau` -- as predicate
+`applyTau` -- as predicate -- should `the` be this function?
