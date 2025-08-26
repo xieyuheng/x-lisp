@@ -2,8 +2,8 @@ import { flags } from "../../flags.ts"
 import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
-import { applyWithSchema } from "./applyWithSchema.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
+import { the } from "./the.ts"
 
 export function force(target: Value): Value {
   target = Values.lazyWalk(target)
@@ -18,13 +18,27 @@ export function force(target: Value): Value {
 
   if (target.kind === "Claimed") {
     if (flags.debug) {
-      return applyWithSchema(target.schema, force(target.value), [])
+      return forceWithSchema(target.schema, target.value)
     } else {
       return force(target.value)
     }
   }
 
   let message = `[force] unhandled target value kind\n`
+  message += `  target: ${formatValue(target)}\n`
+  throw new Error(message)
+}
+
+function forceWithSchema(schema: Value, target: Value): Value {
+  schema = Values.lazyWalk(schema)
+  target = Values.lazyWalk(target)
+
+  if (schema.kind === "Arrow" && schema.argSchemas.length === 0) {
+    return the(schema.retSchema, force(target))
+  }
+
+  let message = `[forceWithSchema] unhandled kind of schema\n`
+  message += `  schema: ${formatValue(schema)}\n`
   message += `  target: ${formatValue(target)}\n`
   throw new Error(message)
 }

@@ -88,7 +88,11 @@ export function formatValue(value: Value): string {
     case "Arrow": {
       const argSchemas = value.argSchemas.map(formatValue)
       const retSchema = formatValue(value.retSchema)
-      return `(-> ${argSchemas.join(" ")} ${retSchema})`
+      if (argSchemas.length === 0) {
+        return `(-> ${retSchema})`
+      } else {
+        return `(-> ${argSchemas.join(" ")} ${retSchema})`
+      }
     }
 
     case "Claimed": {
