@@ -21,6 +21,7 @@ export type Value =
   | Arrow
   | Claimed
   | Curried
+  | Tau
 
 export type Null = {
   kind: "Null"
@@ -218,5 +219,22 @@ export function Curried(
     target,
     arity,
     args,
+  }
+}
+
+export type Tau = {
+  kind: "Tau"
+  elementSchemas: Array<Value>
+  attributeSchemas: Attributes
+}
+
+export function Tau(
+  elementSchemas: Array<Value>,
+  attributeSchemas: Attributes,
+): Tau {
+  return {
+    kind: "Tau",
+    elementSchemas,
+    attributeSchemas,
   }
 }

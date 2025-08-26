@@ -108,5 +108,21 @@ export function formatValue(value: Value): string {
         return `(${target} ${args.join(" ")})`
       }
     }
+
+    case "Tau": {
+      const elementSchemas = value.elementSchemas.map(formatValue)
+      const attributeSchemas = Object.entries(value.attributeSchemas).map(
+        ([k, v]) => `:${k} ${formatValue(v)}`,
+      )
+      if (elementSchemas.length === 0 && attributeSchemas.length === 0) {
+        return `(tau)`
+      } else if (attributeSchemas.length === 0) {
+        return `(tau ${elementSchemas.join(" ")})`
+      } else if (elementSchemas.length === 0) {
+        return `(tau ${attributeSchemas.join(" ")})`
+      } else {
+        return `(tau ${elementSchemas.join(" ")} ${attributeSchemas.join(" ")})`
+      }
+    }
   }
 }

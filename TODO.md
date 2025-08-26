@@ -1,4 +1,3 @@
-new `validate` -- view one value as schema
-`tau/fn` -- call `validate`
+`applyTau`
 `Tau` as `Exp`
 parse `(tau)`
