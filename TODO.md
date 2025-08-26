@@ -1,2 +1,1 @@
-parse `(tau)`
-`applyTau`
+`applyTau` -- as predicate

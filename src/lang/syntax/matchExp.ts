@@ -152,6 +152,14 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     )
   }),
 
+  X.matcher("(cons* 'tau elements)", ({ elements }, { data, meta }) => {
+    return Exps.Tau(
+      X.dataToArray(elements).map(matchExp),
+      recordMap(X.asTael(data).attributes, matchExp),
+      meta,
+    )
+  }),
+
   X.matcher("(cons* 'begin body)", ({ body }, { meta }) => {
     return Exps.Begin(X.dataToArray(body).map(matchExp), meta)
   }),
