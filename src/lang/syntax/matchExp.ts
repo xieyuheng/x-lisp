@@ -140,8 +140,8 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.AssertNotEqual(lhs, rhs, meta)
   }),
 
-  X.matcher("`(= ,name ,rhs)", ({ name, rhs }, { meta }) => {
-    return Exps.Assign(X.symbolToString(name), matchExp(rhs), meta)
+  X.matcher("`(= ,lhs ,rhs)", ({ lhs, rhs }, { meta }) => {
+    return Exps.Assign(matchExp(lhs), matchExp(rhs), meta)
   }),
 
   X.matcher("(cons* 'tael elements)", ({ elements }, { data, meta }) => {

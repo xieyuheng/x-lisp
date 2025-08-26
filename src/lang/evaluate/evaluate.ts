@@ -3,15 +3,9 @@ import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { useBuiltinPreludeMod } from "../builtin/index.ts"
-import {
-  emptyEnv,
-  envLookupValue,
-  envSetValue,
-  envUpdate,
-  type Env,
-} from "../env/index.ts"
+import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
-import { formatValue } from "../format/index.ts"
+import { formatExp, formatValue } from "../format/index.ts"
 import { modLookupValue, type Mod } from "../mod/index.ts"
 import { match, patternize } from "../pattern/index.ts"
 import * as Values from "../value/index.ts"
@@ -108,8 +102,19 @@ export function evaluate(exp: Exp): Effect {
 
     case "Assign": {
       return (mod, env) => {
+        const pattern = patternize(exp.lhs)(mod, env)
         const value = resultValue(evaluate(exp.rhs)(mod, env))
-        return [envSetValue(env, exp.name, value), Values.Void()]
+        const resultEnv = match(pattern, value)(emptyEnv())
+        if (resultEnv === undefined) {
+          let message = `[evaluate] assignment pattern mismatch\n`
+          message += `  lhs exp: ${formatExp(exp.lhs)}\n`
+          message += `  rhs exp: ${formatExp(exp.rhs)}\n`
+          message += `  rhs value: ${formatValue(value)}\n`
+          message += `[source] ${urlRelativeToCwd(mod.url)}\n`
+          throw new Error(message)
+        }
+
+        return [envUpdate(env, resultEnv), Values.Void()]
       }
     }
 

@@ -46,7 +46,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Assign": {
-      return `(= ${exp.name} ${formatExp(exp.rhs)})`
+      return `(= ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
     }
 
     case "Assert": {

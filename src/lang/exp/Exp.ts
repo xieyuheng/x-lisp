@@ -150,15 +150,15 @@ export function Begin(sequence: Array<Exp>, meta: Meta): Begin {
 
 export type Assign = {
   kind: "Assign"
-  name: string
+  lhs: Exp
   rhs: Exp
   meta: Meta
 }
 
-export function Assign(name: string, rhs: Exp, meta: Meta): Assign {
+export function Assign(lhs: Exp, rhs: Exp, meta: Meta): Assign {
   return {
     kind: "Assign",
-    name,
+    lhs,
     rhs,
     meta,
   }

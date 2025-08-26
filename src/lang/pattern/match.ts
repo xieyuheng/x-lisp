@@ -8,7 +8,9 @@ import { type Pattern } from "./Pattern.ts"
 type Effect = (env: Env) => Env | undefined
 
 export function match(pattern: Pattern, value: Value): Effect {
-  value = Values.lazyWalk(value)
+  if (pattern.kind !== "VarPattern") {
+    value = Values.lazyWalk(value)
+  }
 
   switch (pattern.kind) {
     case "VarPattern": {
