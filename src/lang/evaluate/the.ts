@@ -1,8 +1,13 @@
 import { formatValue } from "../format/index.ts"
+import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
 
 export function the(schema: Value, value: Value): Value {
+  if (schema.kind === "Arrow") {
+    return Values.Claimed(value, schema)
+  }
+
   const result = apply(schema, [value])
   if (result.kind === "Claimed") {
     return result

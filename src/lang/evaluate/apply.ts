@@ -1,4 +1,3 @@
-import assert from "node:assert"
 import { flags } from "../../flags.ts"
 import { equal } from "../equal/index.ts"
 import { formatValue } from "../format/index.ts"
@@ -11,6 +10,7 @@ import { applyTau } from "./applyTau.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
 import { force } from "./force.ts"
 import { supply } from "./supply.ts"
+import { the } from "./the.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
   target = Values.lazyWalk(target)
@@ -45,11 +45,10 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   if (target.kind === "Arrow") {
     const [firstArg, ...restArgs] = args
-    assert(firstArg)
     if (restArgs.length === 0) {
-      return Values.Claimed(firstArg, target)
+      return the(target, firstArg)
     } else {
-      return apply(Values.Claimed(firstArg, target), restArgs)
+      return apply(the(target, firstArg), restArgs)
     }
   }
 
