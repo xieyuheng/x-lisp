@@ -52,7 +52,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     }
   }
 
-  if (target.kind === "Claimed") {
+  if (target.kind === "The") {
     if (flags.debug) {
       return applyWithSchema(target.schema, target.value, args)
     } else {

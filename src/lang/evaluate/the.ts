@@ -5,11 +5,11 @@ import { apply } from "./apply.ts"
 
 export function the(schema: Value, value: Value): Value {
   if (schema.kind === "Arrow") {
-    return Values.Claimed(value, schema)
+    return Values.The(schema, value)
   }
 
   const result = apply(schema, [value])
-  if (result.kind === "Claimed") {
+  if (result.kind === "The") {
     return result
   }
 

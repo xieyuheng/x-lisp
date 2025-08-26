@@ -16,7 +16,7 @@ export function force(target: Value): Value {
     return target.fn()
   }
 
-  if (target.kind === "Claimed") {
+  if (target.kind === "The") {
     if (flags.debug) {
       return forceWithSchema(target.schema, target.value)
     } else {

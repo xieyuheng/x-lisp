@@ -61,7 +61,7 @@ export function equal(lhs: Value, rhs: Value): boolean {
     )
   }
 
-  if (lhs.kind === "Claimed" && rhs.kind === "Claimed") {
+  if (lhs.kind === "The" && rhs.kind === "The") {
     return equal(lhs.schema, rhs.schema) && equal(lhs.value, rhs.value)
   }
 

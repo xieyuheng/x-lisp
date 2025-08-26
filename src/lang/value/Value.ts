@@ -19,7 +19,7 @@ export type Value =
   | Void
   | AboutData
   | Arrow
-  | Claimed
+  | The
   | Curried
   | Tau
 
@@ -188,17 +188,17 @@ export function Arrow(argSchemas: Array<Value>, retSchema: Value): Arrow {
   }
 }
 
-export type Claimed = {
-  kind: "Claimed"
-  value: Value
+export type The = {
+  kind: "The"
   schema: Value
+  value: Value
 }
 
-export function Claimed(value: Value, schema: Value): Claimed {
+export function The(schema: Value, value: Value): The {
   return {
-    kind: "Claimed",
-    value,
+    kind: "The",
     schema,
+    value,
   }
 }
 
