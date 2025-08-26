@@ -10,7 +10,7 @@ import { applyTau } from "./applyTau.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
 import { force } from "./force.ts"
 import { supply } from "./supply.ts"
-import { the } from "./the.ts"
+import { validate } from "./validate.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
   target = Values.lazyWalk(target)
@@ -46,9 +46,9 @@ export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "Arrow") {
     const [firstArg, ...restArgs] = args
     if (restArgs.length === 0) {
-      return the(target, firstArg)
+      return validate(target, firstArg)
     } else {
-      return apply(the(target, firstArg), restArgs)
+      return apply(validate(target, firstArg), restArgs)
     }
   }
 

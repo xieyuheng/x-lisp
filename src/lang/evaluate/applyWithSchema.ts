@@ -4,7 +4,7 @@ import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
-import { the } from "./the.ts"
+import { validate } from "./validate.ts"
 
 export function applyWithSchema(
   schema: Value,
@@ -28,7 +28,7 @@ export function applyWithSchema(
     try {
       if (arrow.argSchemas.length === args.length) {
         const claimedArgs = arrayZip(arrow.argSchemas, args).map(
-          ([schema, arg]) => the(schema, arg),
+          ([schema, arg]) => validate(schema, arg),
         )
         const result = apply(target, claimedArgs)
         if (validateResult(arrow.retSchema, result)) {
@@ -47,11 +47,11 @@ export function applyWithSchema(
         const argSchemas = arrow.argSchemas.slice(0, args.length)
         const restArgSchemas = arrow.argSchemas.slice(args.length)
         const claimedArgs = arrayZip(argSchemas, args).map(([schema, arg]) =>
-          the(schema, arg),
+          validate(schema, arg),
         )
         const result = apply(target, claimedArgs)
         const newArrow = Values.Arrow(restArgSchemas, arrow.retSchema)
-        return the(newArrow, result)
+        return validate(newArrow, result)
       }
     } catch (error) {
       let message = `[applyWithSchema] fail to validate an argument\n`
