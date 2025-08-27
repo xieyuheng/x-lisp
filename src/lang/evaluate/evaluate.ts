@@ -48,19 +48,25 @@ export function evaluate(exp: Exp): Effect {
 
     case "Lambda": {
       return (mod, env) => {
-        return [env, Values.Lambda(mod, env, exp.parameters, exp.body)]
+        return [
+          env,
+          Values.Lambda(mod, env, exp.parameters, exp.body, exp.meta),
+        ]
       }
     }
 
     case "LambdaLazy": {
       return (mod, env) => {
-        return [env, Values.LambdaLazy(mod, env, exp.parameters, exp.body)]
+        return [
+          env,
+          Values.LambdaLazy(mod, env, exp.parameters, exp.body, exp.meta),
+        ]
       }
     }
 
     case "Thunk": {
       return (mod, env) => {
-        return [env, Values.Thunk(mod, env, exp.body)]
+        return [env, Values.Thunk(mod, env, exp.body, exp.meta)]
       }
     }
 

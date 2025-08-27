@@ -1,8 +1,11 @@
+import { type TokenMeta } from "@xieyuheng/x-data.js"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Atom } from "./Atom.ts"
 import { type AboutData } from "./Data.ts"
+
+export type Meta = TokenMeta
 
 export type Attributes = Record<string, Value>
 
@@ -53,6 +56,7 @@ export type Lambda = {
   env: Env
   parameters: Array<string>
   body: Exp
+  meta?: Meta
 }
 
 export function Lambda(
@@ -60,6 +64,7 @@ export function Lambda(
   env: Env,
   parameters: Array<string>,
   body: Exp,
+  meta?: Meta,
 ): Lambda {
   return {
     kind: "Lambda",
@@ -75,9 +80,10 @@ export type Thunk = {
   mod: Mod
   env: Env
   body: Exp
+  meta?: Meta
 }
 
-export function Thunk(mod: Mod, env: Env, body: Exp): Thunk {
+export function Thunk(mod: Mod, env: Env, body: Exp, meta?: Meta): Thunk {
   return {
     kind: "Thunk",
     mod,
@@ -109,6 +115,7 @@ export type LambdaLazy = {
   env: Env
   parameters: Array<string>
   body: Exp
+  meta?: Meta
 }
 
 export function LambdaLazy(
@@ -116,6 +123,7 @@ export function LambdaLazy(
   env: Env,
   parameters: Array<string>,
   body: Exp,
+  meta?: Meta,
 ): LambdaLazy {
   return {
     kind: "LambdaLazy",

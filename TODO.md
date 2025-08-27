@@ -1,1 +1,2 @@
-`Lambda` has optional `source` -- for error report
+`arrayMapZip`
+`applyWithSchema` -- improve error report
