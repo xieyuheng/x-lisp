@@ -5,10 +5,10 @@
   schema: (-> int? int? int? int?)
   target: (lambda (x y z) (iadd x (iadd y z)))
 
-  --> examples/tests/claim/claim-one-argument.error.lisp:2:1
+  --> examples/tests/claim/claim-one-argument.error.lisp:2:9
  1 | (claim my-add-three (-> int? int? int? int?))
  2 | (define (my-add-three x y z) (iadd x (iadd y z)))
-   | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+   |         ~~~~~~~~~~~~~~~~~~~~                      
  3 | 
  4 | (my-add-three 1.0 2 1.0)
 

@@ -12,7 +12,10 @@ export function matchStmt(data: X.Data): Stmt {
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
     "(cons* 'define (cons* name parameters) body)",
-    ({ name, parameters, body }, { meta }) => {
+    ({ name, parameters, body }, { data }) => {
+      const keyword = X.asTael(data).elements[1]
+      const meta = X.tokenMetaFromDataMeta(keyword.meta)
+
       if (X.dataToArray(parameters).length === 0) {
         return Stmts.Define(
           X.symbolToString(name),
@@ -35,7 +38,10 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
 
   X.matcher(
     "(cons* 'define-lazy (cons* name parameters) body)",
-    ({ name, parameters, body }, { meta }) => {
+    ({ name, parameters, body }, { data }) => {
+      const keyword = X.asTael(data).elements[1]
+      const meta = X.tokenMetaFromDataMeta(keyword.meta)
+
       if (X.dataToArray(parameters).length === 0) {
         return Stmts.Define(
           X.symbolToString(name),
