@@ -1,8 +1,7 @@
-(the) assertion fail
-  schema: int?
-  value: 1.0
-[applyWithSchema] fail to validate an argument (due to the error above)
+(validation) fail on arguments
   args: [1.0 1.0]
+    #0: (the int? 1.0)
+    #1: (the int? 1.0)
   schema: (-> int? int? int?)
   target: (lambda (x) (lambda (y) (iadd x y)))
 
