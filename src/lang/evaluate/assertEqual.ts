@@ -1,9 +1,7 @@
 import * as X from "@xieyuheng/x-data.js"
-import process from "node:process"
 import { equal } from "../equal/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
-import { modReportSource } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import { evaluate, resultValue, type Effect } from "./evaluate.ts"
 
@@ -17,10 +15,7 @@ export function assertEqual(lhs: Exp, rhs: Exp): Effect {
       message += `  rhs exp: ${formatExp(rhs)}\n`
       message += `  lhs value: ${formatValue(lhsValue)}\n`
       message += `  rhs value: ${formatValue(rhsValue)}\n`
-      message += `[source] ${modReportSource(mod, rhs.meta.span)}\n`
-      message += X.spanReport(rhs.meta.span, rhs.meta.text)
-      console.log(message)
-      process.exit(1)
+      throw new X.ErrorWithMeta(message, rhs.meta)
     }
 
     return [env, Values.Void()]

@@ -1,6 +1,6 @@
 (assert) must take one argument
 
- 1|(assert #t #t)
-   ~~~~~~~~~~~~~~ 
- 2|
+ 1 | (assert #t #t)
+   | ~~~~~~~~~~~~~~ 
+ 2 | 
 

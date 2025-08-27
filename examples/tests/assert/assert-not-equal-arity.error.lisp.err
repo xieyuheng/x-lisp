@@ -1,6 +1,6 @@
 (assert-not-equal) must take two arguments
 
- 1|(assert-not-equal 1)
-   ~~~~~~~~~~~~~~~~~~~~ 
- 2|
+ 1 | (assert-not-equal 1)
+   | ~~~~~~~~~~~~~~~~~~~~ 
+ 2 | 
 

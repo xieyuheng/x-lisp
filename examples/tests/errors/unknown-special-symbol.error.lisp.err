@@ -1,6 +1,6 @@
 unknown special symbol: #abc
 
- 1|#abc
-   ~~~~ 
- 2|
+ 1 | #abc
+   | ~~~~ 
+ 2 | 
 

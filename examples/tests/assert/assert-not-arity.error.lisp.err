@@ -1,6 +1,6 @@
 (assert-not) must take one argument
 
- 1|(assert-not #f #f)
-   ~~~~~~~~~~~~~~~~~~ 
- 2|
+ 1 | (assert-not #f #f)
+   | ~~~~~~~~~~~~~~~~~~ 
+ 2 | 
 
