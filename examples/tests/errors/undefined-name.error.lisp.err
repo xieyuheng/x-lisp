@@ -1,5 +1,4 @@
 [evaluate] I meet undefined name: g
-[source] examples/tests/errors/undefined-name.error.lisp
 
 --> examples/tests/errors/undefined-name.error.lisp:1:16
  1 | (define (f x) (g x))

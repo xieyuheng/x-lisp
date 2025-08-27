@@ -6,5 +6,5 @@ export function urlRelativeToCwd(url: URL): string {
     return Path.relative(process.cwd(), url.pathname)
   }
 
-  return url.pathname
+  return url.href
 }
