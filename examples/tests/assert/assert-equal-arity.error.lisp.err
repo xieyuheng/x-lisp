@@ -1,5 +1,6 @@
 (assert-equal) must take two arguments
 
+--> examples/tests/assert/assert-equal-arity.error.lisp:1:1
  1 | (assert-equal 1)
    | ~~~~~~~~~~~~~~~~ 
  2 | 

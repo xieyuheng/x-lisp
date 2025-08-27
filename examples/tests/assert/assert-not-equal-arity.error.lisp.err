@@ -1,5 +1,6 @@
 (assert-not-equal) must take two arguments
 
+--> examples/tests/assert/assert-not-equal-arity.error.lisp:1:1
  1 | (assert-not-equal 1)
    | ~~~~~~~~~~~~~~~~~~~~ 
  2 | 
