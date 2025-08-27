@@ -1,3 +1,4 @@
+import * as X from "@xieyuheng/x-data.js"
 import assert from "node:assert"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
@@ -43,7 +44,7 @@ export function evaluate(exp: Exp): Effect {
 
         let message = `[evaluate] I meet undefined name: ${exp.name}\n`
         message += `[source] ${urlRelativeToCwd(mod.url)}\n`
-        throw new Error(message)
+        throw new X.ErrorWithMeta(message, exp.meta)
       }
     }
 
@@ -111,7 +112,7 @@ export function evaluate(exp: Exp): Effect {
           message += `  rhs exp: ${formatExp(exp.rhs)}\n`
           message += `  rhs value: ${formatValue(value)}\n`
           message += `[source] ${urlRelativeToCwd(mod.url)}\n`
-          throw new Error(message)
+          throw new X.ErrorWithMeta(message, exp.meta)
         }
 
         return [envUpdate(env, resultEnv), Values.Void()]
@@ -175,7 +176,7 @@ export function evaluate(exp: Exp): Effect {
           let message = `[evaluate] The condition part of a (if) must be bool\n`
           message += `  condition: ${formatValue(condition)}\n`
           message += `[source] ${urlRelativeToCwd(mod.url)}\n`
-          throw new Error(message)
+          throw new X.ErrorWithMeta(message, exp.meta)
         }
 
         if (condition.content) {
@@ -194,7 +195,7 @@ export function evaluate(exp: Exp): Effect {
             let message = `[evaluate] The subexpressions of (and) must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
             message += `[source] ${urlRelativeToCwd(mod.url)}\n`
-            throw new Error(message)
+            throw new X.ErrorWithMeta(message, exp.meta)
           }
 
           if (value.content === false) {
@@ -214,7 +215,7 @@ export function evaluate(exp: Exp): Effect {
             let message = `[evaluate] The subexpressions of (or) must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
             message += `[source] ${urlRelativeToCwd(mod.url)}\n`
-            throw new Error(message)
+            throw new X.ErrorWithMeta(message, exp.meta)
           }
 
           if (value.content === true) {
@@ -236,7 +237,7 @@ export function evaluate(exp: Exp): Effect {
             let message = `[evaluate] The question part of a (cond) line must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
             message += `[source] ${urlRelativeToCwd(mod.url)}\n`
-            throw new Error(message)
+            throw new X.ErrorWithMeta(message, exp.meta)
           }
 
           if (value.content === true) {
@@ -246,7 +247,7 @@ export function evaluate(exp: Exp): Effect {
 
         let message = `[evaluate] All questions of a (cond) failed\n`
         message += `[source] ${urlRelativeToCwd(mod.url)}\n`
-        throw new Error(message)
+        throw new X.ErrorWithMeta(message, exp.meta)
       }
     }
 
@@ -265,7 +266,7 @@ export function evaluate(exp: Exp): Effect {
 
         let message = `[evaluate] (match) mismatch\n`
         message += `[source] ${urlRelativeToCwd(mod.url)}\n`
-        throw new Error(message)
+        throw new X.ErrorWithMeta(message, exp.meta)
       }
     }
 
