@@ -1,6 +1,6 @@
 unknown special symbol: #abc
 
---> examples/tests/errors/unknown-special-symbol.error.lisp:1:1
+  --> examples/tests/errors/unknown-special-symbol.error.lisp:1:1
  1 | #abc
    | ~~~~ 
  2 | 
