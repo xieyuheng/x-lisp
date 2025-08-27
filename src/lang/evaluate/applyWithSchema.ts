@@ -1,4 +1,4 @@
-import { arrayZip } from "../../utils/array/arrayZip.ts"
+import { arrayMapZip } from "../../utils/array/arrayMapZip.ts"
 import { errorReport } from "../../utils/error/errorReport.ts"
 import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
@@ -27,9 +27,7 @@ export function applyWithSchema(
 
     try {
       if (arrow.argSchemas.length === args.length) {
-        const claimedArgs = arrayZip(arrow.argSchemas, args).map(
-          ([schema, arg]) => the(schema, arg),
-        )
+        const claimedArgs = arrayMapZip(the, arrow.argSchemas, args)
         const result = apply(target, claimedArgs)
         if (validateResult(arrow.retSchema, result)) {
           return result
@@ -46,9 +44,7 @@ export function applyWithSchema(
       if (arrow.argSchemas.length > args.length) {
         const argSchemas = arrow.argSchemas.slice(0, args.length)
         const restArgSchemas = arrow.argSchemas.slice(args.length)
-        const claimedArgs = arrayZip(argSchemas, args).map(([schema, arg]) =>
-          the(schema, arg),
-        )
+        const claimedArgs = arrayMapZip(the, argSchemas, args)
         const result = apply(target, claimedArgs)
         const newArrow = Values.Arrow(restArgSchemas, arrow.retSchema)
         return the(newArrow, result)
