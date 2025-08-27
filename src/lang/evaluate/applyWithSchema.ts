@@ -1,3 +1,4 @@
+import * as X from "@xieyuheng/x-data.js"
 import { arrayMapZip } from "../../utils/array/arrayMapZip.ts"
 import { errorReport } from "../../utils/error/errorReport.ts"
 import { formatValue } from "../format/index.ts"
@@ -14,15 +15,18 @@ export function applyWithSchema(
   schema = Values.lazyWalk(schema)
   target = Values.lazyWalk(target)
 
+  const meta = Values.valueMaybeMeta(target)
+
   if (schema.kind === "Arrow") {
     const arrow = Values.arrowNormalize(schema)
 
     if (arrow.argSchemas.length < args.length) {
       let message = `[applyWithSchema] too many arguments\n`
+      message += `  args: [${args.map(formatValue).join(" ")}]\n`
       message += `  schema: ${formatValue(schema)}\n`
       message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${args.map(formatValue).join(" ")}]\n`
-      throw new Error(message)
+      if (meta) throw new X.ErrorWithMeta(message, meta)
+      else throw new Error(message)
     }
 
     try {
@@ -33,11 +37,12 @@ export function applyWithSchema(
           return result
         } else {
           let message = `[applyWithSchema] fail to validate the result\n`
-          message += `  schema: ${formatValue(schema)}\n`
-          message += `  target: ${formatValue(target)}\n`
           message += `  args: [${args.map(formatValue).join(" ")}]\n`
           message += `  result: ${formatValue(result)}\n`
-          throw new Error(message)
+          message += `  schema: ${formatValue(schema)}\n`
+          message += `  target: ${formatValue(target)}\n`
+          if (meta) throw new X.ErrorWithMeta(message, meta)
+          else throw new Error(message)
         }
       }
 
@@ -50,20 +55,23 @@ export function applyWithSchema(
         return the(newArrow, result)
       }
     } catch (error) {
-      let message = `[applyWithSchema] fail to validate an argument\n`
+      let message = errorReport(error)
+
+      message += `[applyWithSchema] fail to validate an argument (due to the error above)\n`
+      message += `  args: [${args.map(formatValue).join(" ")}]\n`
       message += `  schema: ${formatValue(schema)}\n`
       message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${args.map(formatValue).join(" ")}]\n`
-      message += errorReport(error)
-      throw new Error(message)
+      if (meta) throw new X.ErrorWithMeta(message, meta)
+      else throw new Error(message)
     }
   }
 
   let message = `[applyWithSchema] unhandled kind of schema\n`
+  message += `  args: [${args.map(formatValue).join(" ")}]\n`
   message += `  schema: ${formatValue(schema)}\n`
   message += `  target: ${formatValue(target)}\n`
-  message += `  args: [${args.map(formatValue).join(" ")}]\n`
-  throw new Error(message)
+  if (meta) throw new X.ErrorWithMeta(message, meta)
+  else throw new Error(message)
 }
 
 function validateResult(schema: Value, value: Value): boolean {
@@ -74,8 +82,8 @@ function validateResult(schema: Value, value: Value): boolean {
   }
 
   let message = `[validateResult] expect result to be bool\n`
+  message += `  result: ${formatValue(result)}\n`
   message += `  schema: ${formatValue(schema)}\n`
   message += `  value: ${formatValue(value)}\n`
-  message += `  result: ${formatValue(result)}\n`
   throw new Error(message)
 }

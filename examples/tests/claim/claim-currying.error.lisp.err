@@ -1,8 +1,16 @@
-[applyWithSchema] fail to validate an argument
-  schema: (-> int? int? int?)
-  target: (lambda (x) (lambda (y) (iadd x y)))
-  args: [1.0 1.0]
 (the) assertion fail
   schema: int?
   value: 1.0
+[applyWithSchema] fail to validate an argument (due to the error above)
+  args: [1.0 1.0]
+  schema: (-> int? int? int?)
+  target: (lambda (x) (lambda (y) (iadd x y)))
+
+  --> examples/tests/claim/claim-currying.error.lisp:3:4
+ 1 | (claim my-add (-> int? int? int?))
+ 2 | (define my-add
+ 3 |   (lambda (x)
+   |    ~~~~~~     
+ 4 |     (lambda (y)
+ 5 |       (iadd x y))))
 

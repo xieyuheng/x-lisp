@@ -72,6 +72,7 @@ export function Lambda(
     env,
     parameters,
     body,
+    meta,
   }
 }
 
@@ -89,6 +90,7 @@ export function Thunk(mod: Mod, env: Env, body: Exp, meta?: Meta): Thunk {
     mod,
     env,
     body,
+    meta,
   }
 }
 
@@ -131,6 +133,7 @@ export function LambdaLazy(
     env,
     parameters,
     body,
+    meta,
   }
 }
 
