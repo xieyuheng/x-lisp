@@ -14,7 +14,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     ({ parameters, body }, { meta }) => {
       if (X.dataToArray(parameters).length === 0) {
         let message = `(lambda) must have at least one parameter\n`
-        throw new X.ParsingError(message, meta)
+        throw new X.ErrorWithMeta(message, meta)
       }
 
       return Exps.Lambda(
@@ -30,7 +30,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     ({ parameters, body }, { meta }) => {
       if (X.dataToArray(parameters).length === 0) {
         let message = `(lambda-lazy) must have at least one parameter\n`
-        throw new X.ParsingError(message, meta)
+        throw new X.ErrorWithMeta(message, meta)
       }
 
       return Exps.LambdaLazy(
@@ -102,7 +102,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     const args = X.dataToArray(exps).map(matchExp)
     if (args.length !== 1) {
       const message = "(assert) must take one argument\n"
-      throw new X.ParsingError(message, meta)
+      throw new X.ErrorWithMeta(message, meta)
     }
 
     return Exps.Assert(args[0], meta)
@@ -112,7 +112,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     const args = X.dataToArray(exps).map(matchExp)
     if (args.length !== 1) {
       const message = "(assert-not) must take one argument\n"
-      throw new X.ParsingError(message, meta)
+      throw new X.ErrorWithMeta(message, meta)
     }
 
     return Exps.AssertNot(args[0], meta)
@@ -122,7 +122,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     const args = X.dataToArray(exps).map(matchExp)
     if (args.length !== 2) {
       const message = "(assert-equal) must take two arguments\n"
-      throw new X.ParsingError(message, meta)
+      throw new X.ErrorWithMeta(message, meta)
     }
 
     const [lhs, rhs] = args
@@ -133,7 +133,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     const args = X.dataToArray(exps).map(matchExp)
     if (args.length !== 2) {
       const message = "(assert-not-equal) must take two arguments\n"
-      throw new X.ParsingError(message, meta)
+      throw new X.ErrorWithMeta(message, meta)
     }
 
     const [lhs, rhs] = args
@@ -184,10 +184,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       return Exps.RecordGet(name, target, meta)
     } else if (entries.length === 0) {
       let message = `[matchExp] can not handle empty list\n`
-      throw new X.ParsingError(message, meta)
+      throw new X.ErrorWithMeta(message, meta)
     } else {
       let message = `[matchExp] can not handle record with multiple keys\n`
-      throw new X.ParsingError(message, meta)
+      throw new X.ErrorWithMeta(message, meta)
     }
   }),
 
@@ -216,7 +216,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
           }
 
           let message = `unknown special symbol: ${X.symbolToString(data)}\n`
-          throw new X.ParsingError(message, meta)
+          throw new X.ErrorWithMeta(message, meta)
         }
 
         return Exps.Var(X.symbolToString(data), meta)
