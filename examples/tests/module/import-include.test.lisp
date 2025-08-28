@@ -1,4 +1,4 @@
-(import-all "example-include.lisp")
+(import-all "example-index.lisp")
 
 (assert-equal one 1)
 (assert-equal two 2)
