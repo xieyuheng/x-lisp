@@ -10,4 +10,10 @@ export function aboutString(mod: Mod) {
   definePrimitiveFunction(mod, "string-length", 1, (string) => {
     return Values.Int(Values.asString(string).content.length)
   })
+
+  definePrimitiveFunction(mod, "string-append", 1, (left, right) => {
+    return Values.String(
+      Values.asString(left).content + Values.asString(right).content,
+    )
+  })
 }
