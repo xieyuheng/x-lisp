@@ -13,6 +13,7 @@ export type Stmt =
   | Include
   | IncludeOnly
   | IncludeExcept
+  | IncludeAs
   | DefineData
   | Claim
 
@@ -152,6 +153,22 @@ export function IncludeOnly(
     kind: "IncludeOnly",
     path,
     names,
+    meta,
+  }
+}
+
+export type IncludeAs = {
+  kind: "IncludeAs"
+  path: string
+  name: string
+  meta: Meta
+}
+
+export function IncludeAs(path: string, name: string, meta: Meta): IncludeAs {
+  return {
+    kind: "IncludeAs",
+    path,
+    name,
     meta,
   }
 }

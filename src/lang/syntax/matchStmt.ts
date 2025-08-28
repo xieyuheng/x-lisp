@@ -111,6 +111,10 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     },
   ),
 
+  X.matcher("`(include-as ,source ,name)", ({ source, name }, { meta }) => {
+    return Stmts.IncludeAs(X.dataToString(source), X.symbolToString(name), meta)
+  }),
+
   X.matcher(
     "(cons* 'define-data predicate constructors)",
     ({ predicate, constructors }, { meta }) => {
