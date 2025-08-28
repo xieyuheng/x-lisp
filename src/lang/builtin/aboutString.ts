@@ -24,4 +24,12 @@ export function aboutString(mod: Mod) {
         .join(""),
     )
   })
+
+  definePrimitiveFunction(mod, "string-join", 2, (separator, list) => {
+    return Values.String(
+      Values.asTael(list)
+        .elements.map((string) => Values.asString(string).content)
+        .join(Values.asString(separator).content),
+    )
+  })
 }
