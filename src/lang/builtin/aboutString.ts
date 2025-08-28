@@ -11,9 +11,17 @@ export function aboutString(mod: Mod) {
     return Values.Int(Values.asString(string).content.length)
   })
 
-  definePrimitiveFunction(mod, "string-append", 1, (left, right) => {
+  definePrimitiveFunction(mod, "string-append", 2, (left, right) => {
     return Values.String(
       Values.asString(left).content + Values.asString(right).content,
+    )
+  })
+
+  definePrimitiveFunction(mod, "string-append-many", 1, (list) => {
+    return Values.String(
+      Values.asTael(list)
+        .elements.map((string) => Values.asString(string).content)
+        .join(""),
     )
   })
 }
