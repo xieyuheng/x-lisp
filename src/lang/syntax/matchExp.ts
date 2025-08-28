@@ -233,17 +233,17 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
 export function matchCondLine(data: X.Data): Exps.CondLine {
   return X.match(
-    X.matcher("`(,question ,answer)", ({ question, answer }, { meta }) => {
+    X.matcher("(cons* question body)", ({ question, body }, { meta }) => {
       if (question.kind === "Symbol" && question.content === "else") {
         return {
           question: Exps.Bool(true, meta),
-          answer: matchExp(answer),
+          answer: Exps.Begin(X.dataToArray(body).map(matchExp), meta),
         }
-      }
-
-      return {
-        question: matchExp(question),
-        answer: matchExp(answer),
+      } else {
+        return {
+          question: matchExp(question),
+          answer: Exps.Begin(X.dataToArray(body).map(matchExp), meta),
+        }
       }
     }),
     data,
