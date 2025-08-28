@@ -32,4 +32,10 @@ export function aboutString(mod: Mod) {
         .join(Values.asString(separator).content),
     )
   })
+
+  definePrimitiveFunction(mod, "string-chars", 1, (string) => {
+    return Values.List(
+      Values.asString(string).content.split("").map(Values.String),
+    )
+  })
 }
