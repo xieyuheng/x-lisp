@@ -157,6 +157,13 @@ false
 (string-chars string)
 ```
 
+In `std`:
+
+```scheme
+(string-to-subscript string)
+(char-to-subscript char)
+```
+
 ### Value
 
 ```scheme
@@ -185,6 +192,29 @@ false
 (list-reverse list)
 ```
 
+In `std`:
+
+```scheme
+(list-first list)
+(list-second list)
+(list-third list)
+(list-map f list)
+(list-filter p list)
+(list-append list tail)
+(list-append-many lists)
+(list-append-map f list)
+(list-unit x)
+(list-lift f list)
+(list-bind list f)
+(list-take n list)
+(list-drop n list)
+(list-fold-left op e list)
+(list-fold-right op e list)
+(list-zip left right)
+(list-unzip pairs)
+(list-map-zip f left right)
+```
+
 ### Record
 
 ```scheme
@@ -201,6 +231,14 @@ false
 (record-set key value record)
 (record-delete key record)
 (record-map fn record)
+```
+
+In `std`:
+
+```scheme
+(record-from-entries entries)
+(record-set-many entries record)
+(record-filter p record)
 ```
 
 ### Predicate
@@ -275,6 +313,29 @@ null
 ```scheme
 (pipe/fn x fs)
 (compose/fn fs x)
+```
+
+In `std`:
+
+```scheme
+(swap f x y)
+```
+
+### Conditional
+
+In `std`:
+
+```scheme
+(when p t)
+(unless p f)
+```
+
+### Optional
+
+In `std`:
+
+```scheme
+(optional? p x)
 ```
 
 ## Development
