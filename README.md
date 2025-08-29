@@ -87,6 +87,32 @@ See more examples at [`examples`](examples) directory.
 (eval (parse-exp '((lambda (x) x) (lambda (x) x))) empty-env)
 ```
 
+## Prelude
+
+### Bool
+
+- true
+- false
+- (bool? value)
+- (not bool)
+
+### Int
+### Float
+### Symbol
+### String
+### Value
+### List
+### Record
+### Predicate
+### Sexp
+### File
+### Path
+### Process
+### Console
+### Void
+### Null
+### Function
+
 ## Development
 
 ```sh

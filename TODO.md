@@ -1,3 +1,7 @@
+# docs
+
+about all buildin functions
+
 # side-effect
 
 `list-set!`
