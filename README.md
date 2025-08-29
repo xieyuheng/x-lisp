@@ -94,6 +94,8 @@ See more examples at [`examples`](examples) directory.
 
 ### Bool
 
+in [builtin](src/lang/builtin):
+
 ```scheme
 true
 false
@@ -102,6 +104,8 @@ false
 ```
 
 ### Int
+
+in [builtin](src/lang/builtin):
 
 ```scheme
 (int? value)
@@ -123,6 +127,8 @@ false
 
 ### Float
 
+in [builtin](src/lang/builtin):
+
 ```scheme
 (float? value)
 (fneg x)
@@ -142,6 +148,8 @@ false
 
 ### Symbol
 
+in [builtin](src/lang/builtin):
+
 ```scheme
 (symbol? value)
 (symbol-length symbol)
@@ -149,6 +157,8 @@ false
 ```
 
 ### String
+
+in [builtin](src/lang/builtin):
 
 ```scheme
 (string? value)
@@ -160,7 +170,7 @@ false
 (string-chars string)
 ```
 
-In [`std`](std):
+in [`std`](std):
 
 ```scheme
 (string-to-subscript string)
@@ -168,6 +178,8 @@ In [`std`](std):
 ```
 
 ### Value
+
+in [builtin](src/lang/builtin):
 
 ```scheme
 (same? lhs rhs)
@@ -177,6 +189,8 @@ In [`std`](std):
 ```
 
 ### List
+
+in [builtin](src/lang/builtin):
 
 ```scheme
 (list-empty? value)
@@ -195,7 +209,7 @@ In [`std`](std):
 (list-reverse list)
 ```
 
-In [`std`](std):
+in [`std`](std):
 
 ```scheme
 (list-first list)
@@ -220,6 +234,8 @@ In [`std`](std):
 
 ### Record
 
+in [builtin](src/lang/builtin):
+
 ```scheme
 (record? p target)
 (record-length record)
@@ -236,7 +252,7 @@ In [`std`](std):
 (record-map fn record)
 ```
 
-In [`std`](std):
+in [`std`](std):
 
 ```scheme
 (record-from-entries entries)
@@ -246,6 +262,8 @@ In [`std`](std):
 
 ### Predicate
 
+in [builtin](src/lang/builtin):
+
 ```scheme
 (negate p x)
 (union/fn ps x)
@@ -253,6 +271,8 @@ In [`std`](std):
 ```
 
 ### Sexp
+
+in [builtin](src/lang/builtin):
 
 ```scheme
 (sexp? value)
@@ -263,6 +283,8 @@ In [`std`](std):
 
 ### File
 
+in [builtin](src/lang/builtin):
+
 ```scheme
 (file-read path)
 (file-write text path)
@@ -270,11 +292,15 @@ In [`std`](std):
 
 ### Path
 
+in [builtin](src/lang/builtin):
+
 ```scheme
 (path-join list)
 ```
 
 ### Process
+
+in [builtin](src/lang/builtin):
 
 ```scheme
 (current-working-directory)
@@ -283,12 +309,16 @@ In [`std`](std):
 
 ### Module
 
+in [builtin](src/lang/builtin):
+
 ```scheme
 (current-module-file)
 (current-module-directory)
 ```
 
 ### Console
+
+in [builtin](src/lang/builtin):
 
 ```scheme
 (print value)
@@ -299,12 +329,16 @@ In [`std`](std):
 
 ### Void
 
+in [builtin](src/lang/builtin):
+
 ```scheme
 void
 (void? value)
 ```
 
 ### Null
+
+in [builtin](src/lang/builtin):
 
 ```scheme
 null
@@ -313,12 +347,14 @@ null
 
 ### Function
 
+in [builtin](src/lang/builtin):
+
 ```scheme
 (pipe/fn x fs)
 (compose/fn fs x)
 ```
 
-In [`std`](std):
+in [`std`](std):
 
 ```scheme
 (swap f x y)
@@ -326,7 +362,7 @@ In [`std`](std):
 
 ### Conditional
 
-In [`std`](std):
+in [`std`](std):
 
 ```scheme
 (when p t)
@@ -335,7 +371,7 @@ In [`std`](std):
 
 ### Optional
 
-In [`std`](std):
+in [`std`](std):
 
 ```scheme
 (optional? p x)
