@@ -122,17 +122,31 @@ export function aboutList(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "list-set", 3, (index, value, list) => {
-    const elements = Values.asTael(list).elements
+    const elements = Array.from(Values.asTael(list).elements)
     const i = Values.asInt(index).content
-    if (i < elements.length) {
-      elements[i] = value
-      return Values.Tael(elements, Values.asTael(list).attributes)
-    } else {
+    if (i >= elements.length) {
       let message = `(list-set) index out of bound\n`
       message += `  list: ${formatValue(list)}\n`
       message += `  index: ${formatValue(index)}\n`
       throw new Error(message)
     }
+
+    elements[i] = value
+    return Values.Tael(elements, Values.asTael(list).attributes)
+  })
+
+  definePrimitiveFunction(mod, "list-set!", 3, (index, value, list) => {
+    const elements = Values.asTael(list).elements
+    const i = Values.asInt(index).content
+    if (i >= elements.length) {
+      let message = `(list-set!) index out of bound\n`
+      message += `  list: ${formatValue(list)}\n`
+      message += `  index: ${formatValue(index)}\n`
+      throw new Error(message)
+    }
+
+    elements[i] = value
+    return list
   })
 
   definePrimitiveFunction(mod, "list-reverse", 1, (list) => {

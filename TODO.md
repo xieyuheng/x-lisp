@@ -1,6 +1,5 @@
 # side-effect
 
-`list-set!`
 `record-set!`
 
 `DataSetter` as `Value`

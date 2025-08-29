@@ -4,12 +4,21 @@
 
 (begin
   (= list [0 0 0])
-  (assert-equal (list-get 0 list) 0)
-  (assert-equal (list-get 1 list) 0)
-  (assert-equal (list-get 2 list) 0)
+  (list-set 0 1 list)
+  (list-set 1 2 list)
+  (list-set 2 3 list)
+  (assert-equal list [0 0 0]))
+
+(begin
+  (= list [0 0 0])
   (= list (list-set 0 1 list))
   (= list (list-set 1 2 list))
   (= list (list-set 2 3 list))
-  (assert-equal (list-get 0 list) 1)
-  (assert-equal (list-get 1 list) 2)
-  (assert-equal (list-get 2 list) 3))
+  (assert-equal list [1 2 3]))
+
+(begin
+  (= list [0 0 0])
+  (list-set! 0 1 list)
+  (list-set! 1 2 list)
+  (list-set! 2 3 list)
+  (assert-equal list [1 2 3]))
