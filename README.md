@@ -91,13 +91,38 @@ See more examples at [`examples`](examples) directory.
 
 ### Bool
 
-- true
-- false
-- (bool? value)
-- (not bool)
+```scheme
+true
+false
+(bool? value)
+(not bool)
+```
 
 ### Int
+
+```scheme
+(int? value)
+(ineg x)
+(iadd x y)
+(isub x y)
+(imul x y)
+(idiv x y)
+(imod x y)
+(int-max x y)
+(int-min x y)
+(int-larger? x y)
+(int-smaller? x y)
+(int-larger-or-equal? x y)
+(int-smaller-or-equal? x y)
+(int-positive? x)
+(int-non-negative? x)
+```
+
 ### Float
+
+```scheme
+```
+
 ### Symbol
 ### String
 ### Value
