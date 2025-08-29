@@ -121,22 +121,154 @@ false
 ### Float
 
 ```scheme
+(float? value)
+(fneg x)
+(fadd x y)
+(fsub x y)
+(fmul x y)
+(fdiv x y)
+(float-max x y)
+(float-min x y)
+(float-larger? x y)
+(float-smaller? x y)
+(float-larger-or-equal? x y)
+(float-smaller-or-equal? x y)
+(float-positive? x)
+(float-non-negative? x)
 ```
 
 ### Symbol
+
+```scheme
+(symbol? value)
+(symbol-length symbol)
+(symbol-to-string symbol)
+```
+
 ### String
+
+```scheme
+(string? value)
+(string-length string)
+(string-to-symbol string)
+(string-append left right)
+(string-append-many list)
+(string-join separator list)
+(string-chars string)
+```
+
 ### Value
+
+```scheme
+(same? lhs rhs)
+(equal? lhs rhs)
+(atom? value)
+(anything? value)
+```
+
 ### List
+
+```scheme
+(list-empty? value)
+(list? p target)
+(car list)
+(cdr list)
+(cons (head tail))
+(list-head list)
+(list-tail list)
+(list-init list)
+(list-last list)
+(list-length list)
+(list-of list)
+(list-get index list)
+(list-set index value list)
+(list-reverse list)
+```
+
 ### Record
+
+```scheme
+(record? p target)
+(record-length record)
+(record-keys record)
+(record-values record)
+(record-entries record)
+(record-append record rest)
+(record-of record)
+(record-empty? record)
+(record-get key record)
+(record-has? key record)
+(record-set key value record)
+(record-delete key record)
+(record-map fn record)
+```
+
 ### Predicate
+
+```scheme
+(negate p x)
+(union/fn ps x)
+(inter/fn ps x)
+```
+
 ### Sexp
+
+```scheme
+(sexp? value)
+(parse-sexp string)
+(parse-sexps string)
+(format-sexp sexp)
+```
+
 ### File
+
+```scheme
+(file-read path)
+(file-write text path)
+```
+
 ### Path
+
+```scheme
+(path-join list)
+```
+
 ### Process
+
+```scheme
+(current-working-directory)
+(exit sexp)
+```
+
 ### Console
+
+```scheme
+(print value)
+(println value)
+(write string)
+(writeln string)
+```
+
 ### Void
+
+```scheme
+void
+(void? value)
+```
+
 ### Null
+
+```scheme
+null
+(null? value)
+```
+
 ### Function
+
+```scheme
+(pipe/fn x fs)
+(compose/fn fs x)
+```
 
 ## Development
 

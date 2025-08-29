@@ -12,8 +12,8 @@ export function aboutProcess(mod: Mod) {
     return Values.String(process.cwd())
   })
 
-  definePrimitiveFunction(mod, "exit", 1, (info) => {
-    process.stdout.write(formatValue(info))
+  definePrimitiveFunction(mod, "exit", 1, (sexp) => {
+    process.stdout.write(formatValue(sexp))
     process.stdout.write("\n")
     process.exit(1)
   })

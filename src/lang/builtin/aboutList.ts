@@ -52,6 +52,13 @@ export function aboutList(mod: Mod) {
     )
   })
 
+  definePrimitiveFunction(mod, "cons", 2, (head, tail) => {
+    return Values.Tael(
+      [head, ...Values.asTael(tail).elements],
+      Values.asTael(tail).attributes,
+    )
+  })
+
   definePrimitiveFunction(mod, "list-head", 1, (list) => {
     if (Values.asTael(list).elements.length === 0) {
       throw new Error("(list-head) expect target to be non empty list")
@@ -91,13 +98,6 @@ export function aboutList(mod: Mod) {
     }
 
     return Values.asTael(list).elements[Values.asTael(list).elements.length - 1]
-  })
-
-  definePrimitiveFunction(mod, "cons", 2, (head, tail) => {
-    return Values.Tael(
-      [head, ...Values.asTael(tail).elements],
-      Values.asTael(tail).attributes,
-    )
   })
 
   definePrimitiveFunction(mod, "list-length", 1, (list) => {
