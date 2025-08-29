@@ -206,6 +206,7 @@ in [builtin](src/lang/builtin):
 (list-of list)
 (list-get index list)
 (list-set index value list)
+(list-set! index value list)
 (list-reverse list)
 ```
 
@@ -248,7 +249,9 @@ in [builtin](src/lang/builtin):
 (record-get key record)
 (record-has? key record)
 (record-set key value record)
+(record-set! key value record)
 (record-delete key record)
+(record-delete! key record)
 (record-map fn record)
 ```
 
