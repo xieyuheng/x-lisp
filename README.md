@@ -160,7 +160,7 @@ false
 (string-chars string)
 ```
 
-In `std`:
+In [`std`](std):
 
 ```scheme
 (string-to-subscript string)
@@ -195,7 +195,7 @@ In `std`:
 (list-reverse list)
 ```
 
-In `std`:
+In [`std`](std):
 
 ```scheme
 (list-first list)
@@ -236,7 +236,7 @@ In `std`:
 (record-map fn record)
 ```
 
-In `std`:
+In [`std`](std):
 
 ```scheme
 (record-from-entries entries)
@@ -318,7 +318,7 @@ null
 (compose/fn fs x)
 ```
 
-In `std`:
+In [`std`](std):
 
 ```scheme
 (swap f x y)
@@ -326,7 +326,7 @@ In `std`:
 
 ### Conditional
 
-In `std`:
+In [`std`](std):
 
 ```scheme
 (when p t)
@@ -335,7 +335,7 @@ In `std`:
 
 ### Optional
 
-In `std`:
+In [`std`](std):
 
 ```scheme
 (optional? p x)
