@@ -240,6 +240,13 @@ false
 (exit sexp)
 ```
 
+### Module
+
+```scheme
+(current-module-file)
+(current-module-directory)
+```
+
 ### Console
 
 ```scheme
