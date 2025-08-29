@@ -1,9 +1,12 @@
 (import-all "lambda.lisp")
 
-(eval (parse-exp '(lambda (x) x)) empty-env)
-(eval (parse-exp '((lambda (x) x) (lambda (x) x))) empty-env)
+(define (run-exp sexp)
+  (eval (parse-exp sexp) empty-env))
+
+(run-exp '(lambda (x) x))
+(run-exp '((lambda (x) x) (lambda (x) x)))
 
 (begin
   (= file (path-join [(current-module-directory) "example.lambda"]))
   (= sexp (parse-sexp (file-read file)))
-  (eval (parse-exp sexp) empty-env))
+  (run-exp sexp))

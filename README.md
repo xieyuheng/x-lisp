@@ -83,8 +83,11 @@ See more examples at [`examples`](examples) directory.
 ```scheme
 (import-all "lambda.lisp")
 
-(eval (parse-exp '(lambda (x) x)) empty-env)
-(eval (parse-exp '((lambda (x) x) (lambda (x) x))) empty-env)
+(define (run-exp sexp)
+  (eval (parse-exp sexp) empty-env))
+
+(run-exp '(lambda (x) x))
+(run-exp '((lambda (x) x) (lambda (x) x)))
 ```
 
 ## Prelude
