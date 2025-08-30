@@ -85,6 +85,10 @@ export function formatValue(value: Value): string {
       return `${value.constructor.name}-${value.fieldName}`
     }
 
+    case "DataSetter": {
+      return `set-${value.constructor.name}-${value.fieldName}!`
+    }
+
     case "Arrow": {
       const argSchemas = value.argSchemas.map(formatValue)
       const retSchema = formatValue(value.retSchema)
