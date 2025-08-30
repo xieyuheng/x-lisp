@@ -168,13 +168,7 @@ in [builtin](src/lang/builtin):
 (string-append-many list)
 (string-join separator list)
 (string-chars string)
-```
-
-in [`std`](std):
-
-```scheme
 (string-to-subscript string)
-(char-to-subscript char)
 ```
 
 ### Value
