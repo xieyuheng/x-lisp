@@ -47,6 +47,14 @@ export function stage1(mod: Mod, stmt: Stmt): void {
           Values.DataGetter(constructor, field.name, index),
         )
       }
+
+      for (const [index, field] of constructor.fields.entries()) {
+        define(
+          mod,
+          `set-${constructor.name}-${field.name}!`,
+          Values.DataSetter(constructor, field.name, index),
+        )
+      }
     }
   }
 }
