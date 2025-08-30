@@ -1,1 +1,4 @@
-ENOENT: no such file or directory, open '/home/xyh/projects/xieyuheng/occam-lisp.js/examples/tests/module/non-existing.lisp'
+[importByMod] Importing non-existing file
+  path: non-existing.lisp
+  by mod: examples/tests/module/import-non-existing-file.error.lisp
+
