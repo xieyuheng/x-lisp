@@ -1,1 +1,1 @@
-(include "optional.lisp")
+(include-all "optional.lisp")

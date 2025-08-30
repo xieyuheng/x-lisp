@@ -1,2 +1,2 @@
-(include "when.lisp")
-(include "unless.lisp")
+(include-all "when.lisp")
+(include-all "unless.lisp")

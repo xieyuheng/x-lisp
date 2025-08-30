@@ -85,8 +85,8 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     return Stmts.ImportAs(X.dataToString(source), X.symbolToString(name), meta)
   }),
 
-  X.matcher("`(include ,source)", ({ source }, { meta }) => {
-    return Stmts.Include(X.dataToString(source), meta)
+  X.matcher("`(include-all ,source)", ({ source }, { meta }) => {
+    return Stmts.IncludeAll(X.dataToString(source), meta)
   }),
 
   X.matcher(

@@ -40,7 +40,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     }
   }
 
-  if (stmt.kind === "Include") {
+  if (stmt.kind === "IncludeAll") {
     const importedMod = importByMod(stmt.path, mod)
     for (const [name, definition] of modPublicDefinitions(
       importedMod,

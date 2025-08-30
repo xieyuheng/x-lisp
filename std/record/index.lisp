@@ -1,2 +1,2 @@
-(include "record-from-entries.lisp")
-(include "record-filter.lisp")
+(include-all "record-from-entries.lisp")
+(include-all "record-filter.lisp")

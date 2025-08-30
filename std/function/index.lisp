@@ -1,1 +1,1 @@
-(include "swap.lisp")
+(include-all "swap.lisp")

@@ -10,7 +10,7 @@ export type Stmt =
   | Import
   | ImportAll
   | ImportAs
-  | Include
+  | IncludeAll
   | IncludeOnly
   | IncludeExcept
   | IncludeAs
@@ -103,15 +103,15 @@ export function ImportAs(path: string, name: string, meta: Meta): ImportAs {
   }
 }
 
-export type Include = {
-  kind: "Include"
+export type IncludeAll = {
+  kind: "IncludeAll"
   path: string
   meta: Meta
 }
 
-export function Include(path: string, meta: Meta): Include {
+export function IncludeAll(path: string, meta: Meta): IncludeAll {
   return {
-    kind: "Include",
+    kind: "IncludeAll",
     path,
     meta,
   }
