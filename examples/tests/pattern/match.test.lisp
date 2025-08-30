@@ -70,8 +70,7 @@
    (assert-equal tail '(3))))
 
 (match '(1 2 3)
-  ((cons* first (eval (iadd 1 2)) tail)
-   (assert false))
+  ((cons* first (eval (iadd 1 2)) tail) (assert false))
   (_ (assert true)))
 
 ;; quasiquote
@@ -81,6 +80,15 @@
    (assert (equal? first 1))))
 
 (match '(1 2 3)
-  (`(,first ,(eval (iadd 1 2)) 3)
-   (assert false))
+  (`(,first ,(eval (iadd 1 2)) 3) (assert false))
   (_ (assert true)))
+
+;; occur many times
+
+(match [1 2]
+  ([x x] (assert false))
+  (_ (assert true)))
+
+(match [1 1]
+  ([x x] (assert true))
+  (_ (assert false)))
