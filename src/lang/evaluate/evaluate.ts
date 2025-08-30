@@ -263,6 +263,7 @@ export function evaluate(exp: Exp): Effect {
         }
 
         let message = `[evaluate] (match) mismatch\n`
+        message += `  target: ${formatValue(target)}\n`
         throw new X.ErrorWithMeta(message, exp.meta)
       }
     }
