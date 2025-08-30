@@ -1,14 +1,14 @@
 import {
   type Mod,
-  modImport,
   modLookupPublicDefinition,
   modPublicDefinitions,
 } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
+import { importByMod } from "./importByMod.ts"
 
 export function stage2(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Import") {
-    const importedMod = modImport(mod, stmt.path)
+    const importedMod = importByMod(mod, stmt.path)
     for (const entry of stmt.entries) {
       const definition = modLookupPublicDefinition(importedMod, entry.name)
       if (definition === undefined) {
@@ -23,7 +23,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "ImportAll") {
-    const importedMod = modImport(mod, stmt.path)
+    const importedMod = importByMod(mod, stmt.path)
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
@@ -32,7 +32,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "ImportAs") {
-    const importedMod = modImport(mod, stmt.path)
+    const importedMod = importByMod(mod, stmt.path)
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
@@ -41,7 +41,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "Include") {
-    const importedMod = modImport(mod, stmt.path)
+    const importedMod = importByMod(mod, stmt.path)
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
@@ -50,7 +50,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "IncludeOnly") {
-    const importedMod = modImport(mod, stmt.path)
+    const importedMod = importByMod(mod, stmt.path)
     for (const name of stmt.names) {
       const definition = modLookupPublicDefinition(importedMod, name)
       if (definition === undefined) {
@@ -64,7 +64,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "IncludeExcept") {
-    const importedMod = modImport(mod, stmt.path)
+    const importedMod = importByMod(mod, stmt.path)
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
@@ -75,7 +75,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "IncludeAs") {
-    const importedMod = modImport(mod, stmt.path)
+    const importedMod = importByMod(mod, stmt.path)
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {

@@ -1,8 +1,8 @@
 import { createUrlOrFileUrl } from "../../utils/url/createUrlOrFileUrl.ts"
 import { load } from "../load/index.ts"
-import { type Mod } from "./Mod.ts"
+import { type Mod } from "../mod/index.ts"
 
-export function modImport(mod: Mod, path: string): Mod {
+export function importByMod(mod: Mod, path: string): Mod {
   if (mod.url.protocol === "file:") {
     const url = new URL(path, mod.url)
     if (url.href === mod.url.href) {
