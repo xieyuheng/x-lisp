@@ -3,6 +3,7 @@ import { aboutBool } from "./aboutBool.ts"
 import { aboutConsole } from "./aboutConsole.ts"
 import { aboutFile } from "./aboutFile.ts"
 import { aboutFloat } from "./aboutFloat.ts"
+import { aboutFormat } from "./aboutFormat.ts"
 import { aboutFunction } from "./aboutFunction.ts"
 import { aboutInt } from "./aboutInt.ts"
 import { aboutList } from "./aboutList.ts"
@@ -41,6 +42,7 @@ export function useBuiltinPreludeMod(): Mod {
   aboutVoid(mod)
   aboutNull(mod)
   aboutFunction(mod)
+  aboutFormat(mod)
 
   return mod
 }
