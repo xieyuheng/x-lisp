@@ -11,7 +11,7 @@ export type Stmt =
   | ImportAll
   | ImportAs
   | IncludeAll
-  | IncludeOnly
+  | Include
   | IncludeExcept
   | IncludeAs
   | DefineData
@@ -117,8 +117,8 @@ export function IncludeAll(path: string, meta: Meta): IncludeAll {
   }
 }
 
-export type IncludeOnly = {
-  kind: "IncludeOnly"
+export type Include = {
+  kind: "Include"
   path: string
   names: Array<string>
   meta: Meta
@@ -144,13 +144,13 @@ export type IncludeExcept = {
   meta: Meta
 }
 
-export function IncludeOnly(
+export function Include(
   path: string,
   names: Array<string>,
   meta: Meta,
-): IncludeOnly {
+): Include {
   return {
-    kind: "IncludeOnly",
+    kind: "Include",
     path,
     names,
     meta,

@@ -89,16 +89,13 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     return Stmts.IncludeAll(X.dataToString(source), meta)
   }),
 
-  X.matcher(
-    "(cons* 'include-only source names)",
-    ({ source, names }, { meta }) => {
-      return Stmts.IncludeOnly(
-        X.dataToString(source),
-        X.dataToArray(names).map(X.symbolToString),
-        meta,
-      )
-    },
-  ),
+  X.matcher("(cons* 'include source names)", ({ source, names }, { meta }) => {
+    return Stmts.Include(
+      X.dataToString(source),
+      X.dataToArray(names).map(X.symbolToString),
+      meta,
+    )
+  }),
 
   X.matcher(
     "(cons* 'include-except source names)",

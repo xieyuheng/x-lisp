@@ -49,12 +49,12 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     }
   }
 
-  if (stmt.kind === "IncludeOnly") {
+  if (stmt.kind === "Include") {
     const importedMod = importByMod(stmt.path, mod)
     for (const name of stmt.names) {
       const definition = modLookupPublicDefinition(importedMod, name)
       if (definition === undefined) {
-        let message = `(include-only) undefined name: ${name}\n`
+        let message = `(include) undefined name: ${name}\n`
         message += `  path: ${stmt.path}\n`
         throw new Error(message)
       }
