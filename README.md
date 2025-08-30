@@ -363,6 +363,14 @@ in [`std`](std):
 (swap f x y)
 ```
 
+### Format
+
+in [builtin](src/lang/builtin):
+
+```scheme
+(format-subscript n)
+```
+
 ### Conditional
 
 in [`std`](std):
