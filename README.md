@@ -154,6 +154,8 @@ in [builtin](src/lang/builtin):
 (symbol? value)
 (symbol-length symbol)
 (symbol-to-string symbol)
+(symbol-append left right)
+(symbol-append-many list)
 ```
 
 ### String

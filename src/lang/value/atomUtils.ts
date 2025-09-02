@@ -1,3 +1,4 @@
+import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Atom, type Value } from "../value/index.ts"
 
@@ -33,25 +34,25 @@ export function isFloat(value: Value): value is Values.Float {
 
 export function asBool(value: Value): Values.Bool {
   if (isBool(value)) return value
-  throw new Error(`[asBool] fail on: ${value.kind}`)
+  throw new Error(`[asBool] fail on: ${formatValue(value)}\n`)
 }
 
 export function asSymbol(value: Value): Values.Symbol {
   if (isSymbol(value)) return value
-  throw new Error(`[asSymbol] fail on: ${value.kind}`)
+  throw new Error(`[asSymbol] fail on: ${formatValue(value)}\n`)
 }
 
 export function asString(value: Value): Values.String {
   if (isString(value)) return value
-  throw new Error(`[asString] fail on: ${value.kind}`)
+  throw new Error(`[asString] fail on: ${formatValue(value)}\n`)
 }
 
 export function asInt(value: Value): Values.Int {
   if (isInt(value)) return value
-  throw new Error(`[asInt] fail on: ${value.kind}`)
+  throw new Error(`[asInt] fail on: ${formatValue(value)}\n`)
 }
 
 export function asFloat(value: Value): Values.Float {
   if (isFloat(value)) return value
-  throw new Error(`[asFloat] fail on: ${value.kind}`)
+  throw new Error(`[asFloat] fail on: ${formatValue(value)}\n`)
 }
