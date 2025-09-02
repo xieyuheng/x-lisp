@@ -1,2 +1,2 @@
-remove  symbol-append-subscript
-symbol-append-string
+symbol-append
+symbol-append-many
