@@ -168,7 +168,6 @@ in [builtin](src/lang/builtin):
 (string-append-many list)
 (string-join separator list)
 (string-chars string)
-(string-to-subscript string)
 ```
 
 ### Value
@@ -363,6 +362,7 @@ in [builtin](src/lang/builtin):
 
 ```scheme
 (format-subscript n)
+(format-superscript n)
 ```
 
 ### Conditional

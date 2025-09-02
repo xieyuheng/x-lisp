@@ -1,5 +1,4 @@
 import { stringHasBlank } from "../../utils/string/stringHasBlank.ts"
-import { stringToSubscript } from "../../utils/string/stringToSubscript.ts"
 import { definePrimitiveFunction } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
@@ -49,9 +48,5 @@ export function aboutString(mod: Mod) {
     return Values.List(
       Values.asString(string).content.split("").map(Values.String),
     )
-  })
-
-  definePrimitiveFunction(mod, "string-to-subscript", 1, (string) => {
-    return Values.String(stringToSubscript(Values.asString(string).content))
   })
 }
