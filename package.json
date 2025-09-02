@@ -1,6 +1,6 @@
 {
   "name": "@xieyuheng/occam-lisp.js",
-  "version": "0.1.38",
+  "version": "0.1.39",
   "repository": "github:xieyuheng/occam-lisp.js",
   "license": "GPL-3.0-or-later",
   "type": "module",
