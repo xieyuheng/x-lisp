@@ -1,10 +1,12 @@
-import { arrayZip } from "../../utils/array/arrayZip.ts"
 import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
 
 export type Result = { kind: "Ok"; value: Value } | { kind: "Err" }
+
+// `validate` should not return new value on `Tael`,
+// because there might be side effect on the old value.
 
 export function validate(schema: Value, value: Value): Result {
   schema = Values.lazyWalk(schema)
@@ -24,23 +26,23 @@ export function validate(schema: Value, value: Value): Result {
     }
 
     const validatedElements: Array<Value> = []
-    const zipped = arrayZip(schema.elementSchemas, value.elements)
-    for (const [elementSchema, element] of zipped) {
+    for (const index of value.elements.keys()) {
+      const elementSchema = schema.elementSchemas[index]
+      const element = value.elements[index]
       const result = validate(elementSchema, element)
       if (result.kind === "Ok") {
-        validatedElements.push(result.value)
+        value.elements[index] = result.value
       } else {
         return { kind: "Err" }
       }
     }
 
-    const validatedAttributes: Record<string, Value> = {}
     for (const key of Object.keys(schema.attributeSchemas)) {
       const attributeSchema = schema.attributeSchemas[key]
       const attribute = value.attributes[key] || Values.Null()
       const result = validate(attributeSchema, attribute)
-      if (result.kind === "Ok") {
-        validatedAttributes[key] = result.value
+      if (result.kind === "Ok" && attribute.kind !== "Null") {
+        value.attributes[key] = result.value
       } else {
         return { kind: "Err" }
       }
@@ -48,7 +50,7 @@ export function validate(schema: Value, value: Value): Result {
 
     return {
       kind: "Ok",
-      value: Values.Tael(validatedElements, validatedAttributes),
+      value,
     }
   }
 
