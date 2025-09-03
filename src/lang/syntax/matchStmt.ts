@@ -77,6 +77,10 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     },
   ),
 
+  X.matcher("(cons* 'export names)", ({ names }, { meta }) => {
+    return Stmts.Export(X.dataToArray(names).map(X.dataToString), meta)
+  }),
+
   X.matcher("`(import-all ,source)", ({ source }, { meta }) => {
     return Stmts.ImportAll(X.dataToString(source), meta)
   }),
