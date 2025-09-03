@@ -10,6 +10,12 @@ export function stage1(mod: Mod, stmt: Stmt): void {
     define(mod, stmt.name, value)
   }
 
+  if (stmt.kind === "Export") {
+    for (const name of stmt.names) {
+      mod.exported.add(name)
+    }
+  }
+
   if (stmt.kind === "DefineData") {
     const spec = { mod, constructors: {} } as Values.DataSpec
 
