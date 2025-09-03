@@ -3,11 +3,13 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutFloat(mod: Mod) {
-  provide(mod, ["float?"])
-  provide(mod, ["fneg", "fadd", "fsub"])
-  provide(mod, ["fmul", "fdiv"])
-
   provide(mod, [
+    "float?",
+    "fneg",
+    "fadd",
+    "fsub",
+    "fmul",
+    "fdiv",
     "float-max",
     "float-min",
     "float-larger?",

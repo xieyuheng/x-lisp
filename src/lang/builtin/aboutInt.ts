@@ -3,11 +3,14 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutInt(mod: Mod) {
-  provide(mod, ["int?"])
-  provide(mod, ["ineg", "iadd", "isub"])
-  provide(mod, ["imul", "idiv", "imod"])
-
   provide(mod, [
+    "int?",
+    "ineg",
+    "iadd",
+    "isub",
+    "imul",
+    "idiv",
+    "imod",
     "int-max",
     "int-min",
     "int-larger?",
