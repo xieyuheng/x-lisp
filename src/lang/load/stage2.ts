@@ -1,3 +1,4 @@
+import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { include } from "../define/index.ts"
 import {
   type Mod,
@@ -15,6 +16,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
       if (definition === undefined) {
         let message = `(import) undefined name: ${entry.name}\n`
         message += `  path: ${stmt.path}\n`
+        message += `  by mod: ${urlRelativeToCwd(mod.url)}\n`
         throw new Error(message)
       }
 
@@ -57,6 +59,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
       if (definition === undefined) {
         let message = `(include) undefined name: ${name}\n`
         message += `  path: ${stmt.path}\n`
+        message += `  by mod: ${urlRelativeToCwd(mod.url)}\n`
         throw new Error(message)
       }
 

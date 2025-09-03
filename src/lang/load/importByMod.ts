@@ -27,10 +27,5 @@ function createTargetUrl(path: string, mod: Mod): URL {
     return url
   }
 
-  if (mod.url.protocol === "repl:") {
-    return createUrlOrFileUrl(path)
-  }
-
-  let message = `[importByMod] unhandled url protocol: ${path}\n`
-  throw new Error(message)
+  return createUrlOrFileUrl(path)
 }
