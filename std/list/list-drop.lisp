@@ -1,3 +1,5 @@
+(export list-drop)
+
 (claim list-drop
   (-> int-non-negative? (list? anything?)
       (list? anything?)))

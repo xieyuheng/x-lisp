@@ -1,3 +1,5 @@
+(export list-map)
+
 (define (list-map f list)
   (if (list-empty? list)
     []

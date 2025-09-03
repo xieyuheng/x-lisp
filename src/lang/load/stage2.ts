@@ -1,3 +1,4 @@
+import { include } from "../define/index.ts"
 import {
   type Mod,
   modLookupPublicDefinition,
@@ -18,7 +19,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
       }
 
       const name = entry.rename || entry.name
-      mod.imported.set(name, definition)
+      mod.defined.set(name, definition)
     }
   }
 
@@ -27,7 +28,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
-      mod.imported.set(name, definition)
+      mod.defined.set(name, definition)
     }
   }
 
@@ -36,7 +37,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
-      mod.imported.set(`${stmt.name}/${name}`, definition)
+      mod.defined.set(`${stmt.name}/${name}`, definition)
     }
   }
 
@@ -45,7 +46,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
-      mod.included.set(name, definition)
+      include(mod, name, definition)
     }
   }
 
@@ -59,7 +60,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
         throw new Error(message)
       }
 
-      mod.included.set(name, definition)
+      include(mod, name, definition)
     }
   }
 
@@ -69,7 +70,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
       importedMod,
     ).entries()) {
       if (!stmt.names.includes(name)) {
-        mod.included.set(name, definition)
+        include(mod, name, definition)
       }
     }
   }
@@ -79,7 +80,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
-      mod.included.set(`${stmt.name}/${name}`, definition)
+      include(mod, `${stmt.name}/${name}`, definition)
     }
   }
 }

@@ -1,3 +1,5 @@
+(export parse-exp empty-env eval)
+
 (define-data exp?
   (var-exp (name symbol?))
   (apply-exp (target exp?) (arg exp?))

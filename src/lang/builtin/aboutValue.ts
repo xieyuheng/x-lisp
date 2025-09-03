@@ -1,9 +1,11 @@
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { equal, same } from "../equal/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutValue(mod: Mod) {
+  provide(mod, ["same?", "equal?", "atom?", "anything?"])
+
   definePrimitiveFunction(mod, "same?", 2, (lhs, rhs) => {
     return Values.Bool(same(lhs, rhs))
   })

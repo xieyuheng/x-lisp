@@ -1,4 +1,4 @@
-import { define } from "../define/index.ts"
+import { define, provide } from "../define/index.ts"
 import { emptyEnv } from "../env/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
@@ -11,9 +11,7 @@ export function stage1(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "Export") {
-    for (const name of stmt.names) {
-      mod.exported.add(name)
-    }
+    provide(mod, stmt.names)
   }
 
   if (stmt.kind === "DefineData") {

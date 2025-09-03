@@ -1,3 +1,5 @@
+(export list-take)
+
 (claim list-take
   (-> int-non-negative? (list? anything?)
       (list? anything?)))

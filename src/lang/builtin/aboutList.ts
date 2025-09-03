@@ -1,10 +1,17 @@
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { apply } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutList(mod: Mod) {
+  provide(mod, ["list-empty?", "list?"])
+  provide(mod, ["car", "cdr", "cons"])
+  provide(mod, ["list-head", "list-tail", "list-init", "list-last"])
+  provide(mod, ["list-length", "list-of"])
+  provide(mod, ["list-get", "list-set", "list-set!"])
+  provide(mod, ["list-reverse"])
+
   definePrimitiveFunction(mod, "list-empty?", 1, (value) => {
     return Values.Bool(Values.asTael(value).elements.length === 0)
   })

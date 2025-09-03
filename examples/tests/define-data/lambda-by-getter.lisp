@@ -1,3 +1,18 @@
+(export exp?
+        var-exp
+        var-exp?
+        apply-exp
+        apply-exp?
+        apply-exp-target
+        apply-exp-arg
+        lambda-exp
+        lambda-exp?
+        env?
+        empty-env
+        cons-env
+        closure
+        eval)
+
 (define-data exp?
   (var-exp (name symbol?))
   (apply-exp (target exp?) (arg exp?))

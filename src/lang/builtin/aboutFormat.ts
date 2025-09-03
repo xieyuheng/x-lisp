@@ -1,11 +1,13 @@
 import { stringToSubscript } from "../../utils/string/stringToSubscript.ts"
 import { stringToSuperscript } from "../../utils/string/stringToSuperscript.ts"
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutFormat(mod: Mod) {
+  provide(mod, ["format-subscript", "format-superscript"])
+
   definePrimitiveFunction(mod, "format-subscript", 1, (n) => {
     if (Values.asInt(n).content < 0) {
       let message = `(format-subscript) expect argument to be non-negative int\n`

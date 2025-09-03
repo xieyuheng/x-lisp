@@ -1,9 +1,19 @@
 import { stringHasBlank } from "../../utils/string/stringHasBlank.ts"
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutString(mod: Mod) {
+  provide(mod, [
+    "string?",
+    "string-length",
+    "string-to-symbol",
+    "string-append",
+    "string-append-many",
+    "string-join",
+    "string-chars",
+  ])
+
   definePrimitiveFunction(mod, "string?", 1, (value) => {
     return Values.Bool(Values.isString(value))
   })

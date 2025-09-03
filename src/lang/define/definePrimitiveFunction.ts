@@ -1,4 +1,4 @@
-import { define, type DefineOptions } from "../define/index.ts"
+import { define } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -7,7 +7,6 @@ export function definePrimitiveFunction(
   name: string,
   arity: number,
   fn: Values.ValueFunction,
-  options: DefineOptions = {},
 ): void {
-  define(mod, name, Values.PrimitiveFunction(name, arity, fn), options)
+  define(mod, name, Values.PrimitiveFunction(name, arity, fn))
 }

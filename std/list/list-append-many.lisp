@@ -1,5 +1,7 @@
 (import-all "list-append.lisp")
 
+(export list-append-many)
+
 (define (list-append-many lists)
     (if (list-empty? lists)
       []

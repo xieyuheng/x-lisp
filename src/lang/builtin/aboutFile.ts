@@ -1,9 +1,11 @@
 import fs from "node:fs"
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutFile(mod: Mod) {
+  provide(mod, ["file-read", "file-write"])
+
   definePrimitiveFunction(mod, "file-read", 1, (path) => {
     const text = fs.readFileSync(Values.asString(path).content, "utf8")
     return Values.String(text)

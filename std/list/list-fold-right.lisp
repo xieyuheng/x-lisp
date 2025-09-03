@@ -1,3 +1,5 @@
+(export list-fold-right)
+
 (define (list-fold-right op e list)
   (if (list-empty? list)
     e

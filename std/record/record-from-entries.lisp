@@ -1,3 +1,5 @@
+(export record-from-entries record-set-many)
+
 (define (record-from-entries entries)
   (record-set-many entries []))
 

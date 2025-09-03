@@ -1,14 +1,18 @@
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { the } from "../evaluate/index.ts"
 import { runCode } from "../load/index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function aboutPredicate(mod: Mod) {
+  provide(mod, ["the"])
+
   definePrimitiveFunction(mod, "the", 2, the)
 
   runCode(
     mod,
     `\
+(export negate union/fn inter/fn)
+
 (define (negate p x) (not (p x)))
 
 (define (union/fn ps x)

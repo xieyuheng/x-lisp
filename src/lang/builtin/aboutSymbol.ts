@@ -1,8 +1,16 @@
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutSymbol(mod: Mod) {
+  provide(mod, [
+    "symbol?",
+    "symbol-length",
+    "symbol-to-string",
+    "symbol-append",
+    "symbol-append-many",
+  ])
+
   definePrimitiveFunction(mod, "symbol?", 1, (value) => {
     return Values.Bool(Values.isSymbol(value))
   })

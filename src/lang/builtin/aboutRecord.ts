@@ -1,12 +1,30 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { apply } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutRecord(mod: Mod) {
+  provide(mod, [
+    "record?",
+    "record-length",
+    "record-keys",
+    "record-values",
+    "record-entries",
+    "record-append",
+    "record-of",
+    "record-empty?",
+    "record-get",
+    "record-has?",
+    "record-set",
+    "record-set!",
+    "record-delete",
+    "record-delete!",
+    "record-map",
+  ])
+
   definePrimitiveFunction(mod, "record?", 2, (p, target) => {
     if (target.kind !== "Tael") {
       return Values.Bool(false)

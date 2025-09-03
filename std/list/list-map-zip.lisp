@@ -2,6 +2,8 @@
 (import-all "list-map.lisp")
 (import-all "list-zip.lisp")
 
+(export list-map-zip)
+
 (define (list-map-zip f left right)
   (list-map
    (lambda (zipped)

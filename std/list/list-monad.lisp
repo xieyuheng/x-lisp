@@ -2,6 +2,8 @@
 (import-all "list-map.lisp")
 (import-all "list-append-many.lisp" )
 
+(export list-append-map list-unit list-lift list-bind)
+
 (define (list-append-map f list)
   (list-append-many (list-map f list)))
 

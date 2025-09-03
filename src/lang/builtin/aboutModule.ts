@@ -6,25 +6,11 @@ import * as Values from "../value/index.ts"
 // This group of definitions are NOT part of prelude mod.
 
 export function aboutModule(mod: Mod) {
-  definePrimitiveThunk(
-    mod,
-    "current-module-file",
-    () => {
-      return Values.String(mod.url.pathname)
-    },
-    {
-      isPrivate: true,
-    },
-  )
+  definePrimitiveThunk(mod, "current-module-file", () => {
+    return Values.String(mod.url.pathname)
+  })
 
-  definePrimitiveThunk(
-    mod,
-    "current-module-directory",
-    () => {
-      return Values.String(dirname(mod.url.pathname))
-    },
-    {
-      isPrivate: true,
-    },
-  )
+  definePrimitiveThunk(mod, "current-module-directory", () => {
+    return Values.String(dirname(mod.url.pathname))
+  })
 }
