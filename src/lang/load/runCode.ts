@@ -12,7 +12,6 @@ export function runCode(mod: Mod, code: string): void {
 
 export function runSexps(mod: Mod, sexps: Array<X.Data>): void {
   const stmts = sexps.map<Stmt>(matchStmt)
-  mod.stmts = [...mod.stmts, ...stmts]
 
   for (const stmt of stmts) stage1(mod, stmt)
   for (const stmt of stmts) stage2(mod, stmt)

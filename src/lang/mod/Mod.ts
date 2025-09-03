@@ -1,5 +1,4 @@
 import { setUnionMany } from "../../utils/set/setAlgebra.ts"
-import { type Stmt } from "../stmt/index.ts"
 import { type Value } from "../value/index.ts"
 
 export type Definition = {
@@ -13,9 +12,9 @@ export type Mod = {
   url: URL
   claimed: Map<string, Definition>
   defined: Map<string, Definition>
+  exported: Set<string>
   imported: Map<string, Definition>
   included: Map<string, Definition>
-  stmts: Array<Stmt>
 }
 
 export function createMod(url: URL): Mod {
@@ -23,9 +22,9 @@ export function createMod(url: URL): Mod {
     url,
     claimed: new Map(),
     defined: new Map(),
+    exported: new Set(),
     imported: new Map(),
     included: new Map(),
-    stmts: [],
   }
 }
 
