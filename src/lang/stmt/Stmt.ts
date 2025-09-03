@@ -16,6 +16,7 @@ export type Stmt =
   | IncludeAs
   | DefineData
   | Claim
+  | Export
 
 export type Compute = {
   kind: "Compute"
@@ -215,6 +216,20 @@ export function Claim(name: string, schema: Exp, meta: Meta): Claim {
     kind: "Claim",
     name,
     schema,
+    meta,
+  }
+}
+
+export type Export = {
+  kind: "Export"
+  names: Array<string>
+  meta: Meta
+}
+
+export function Export(names: Array<string>, meta: Meta): Export {
+  return {
+    kind: "Export",
+    names,
     meta,
   }
 }
