@@ -386,6 +386,15 @@ in [`std`](std):
 (optional? p x)
 ```
 
+### Random
+
+in [builtin](src/lang/builtin):
+
+```scheme
+(random-range start end)
+(random-proportion)
+```
+
 ## Development
 
 ```sh

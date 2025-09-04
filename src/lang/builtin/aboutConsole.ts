@@ -1,16 +1,11 @@
 import process from "node:process"
-import { readline } from "../../utils/readline/index.ts"
-import {
-  definePrimitiveFunction,
-  definePrimitiveThunk,
-  provide,
-} from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutConsole(mod: Mod) {
-  provide(mod, ["print", "println", "write", "writeln", "read-line"])
+  provide(mod, ["print", "println", "write", "writeln"])
 
   definePrimitiveFunction(mod, "print", 1, (value) => {
     process.stdout.write(formatValue(value))
@@ -32,9 +27,5 @@ export function aboutConsole(mod: Mod) {
     process.stdout.write(Values.asString(string).content)
     process.stdout.write("\n")
     return Values.Void()
-  })
-
-  definePrimitiveThunk(mod, "read-line", () => {
-    return Values.String(readline())
   })
 }

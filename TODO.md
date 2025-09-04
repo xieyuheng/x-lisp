@@ -1,1 +1,2 @@
-`read-line`
+`random-range`
+`random-proportion`
