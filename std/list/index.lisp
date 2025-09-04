@@ -11,3 +11,5 @@
 (include-all "list-zip.lisp")
 (include-all "list-unzip.lisp")
 (include-all "list-map-zip.lisp")
+(include-all "list-all.lisp")
+(include-all "list-any.lisp")

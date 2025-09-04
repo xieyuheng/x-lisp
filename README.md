@@ -226,6 +226,8 @@ in [`std`](std):
 (list-zip left right)
 (list-unzip pairs)
 (list-map-zip f left right)
+(list-all? p list)
+(list-any? p list)
 ```
 
 ### Record
