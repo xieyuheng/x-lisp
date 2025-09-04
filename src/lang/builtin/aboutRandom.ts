@@ -1,14 +1,14 @@
-import { randomRange } from "../../utils/random/randomRange.ts"
+import { randomInt } from "../../utils/random/randomInt.ts"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutRandom(mod: Mod) {
-  provide(mod, ["random-range"])
+  provide(mod, ["random-int"])
 
-  definePrimitiveFunction(mod, "random-range", 2, (start, end) => {
+  definePrimitiveFunction(mod, "random-int", 2, (start, end) => {
     return Values.Int(
-      randomRange(Values.asInt(start).content, Values.asInt(end).content),
+      randomInt(Values.asInt(start).content, Values.asInt(end).content),
     )
   })
 }

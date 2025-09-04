@@ -391,8 +391,8 @@ in [`std`](std):
 in [builtin](src/lang/builtin):
 
 ```scheme
-(random-range start end)
-(random-proportion)
+(random-int start end)
+(random-float start end)
 ```
 
 ## Development
