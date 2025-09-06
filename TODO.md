@@ -1,6 +1,4 @@
-# testing
-
-`evaluate` -- handle `AssertThe` -- like `(the)` but return `void`
+test assert-the
 
 # module
 

@@ -140,7 +140,19 @@ export function evaluate(exp: Exp): Effect {
     }
 
     case "AssertThe": {
-      throw new Error("TODO")
+      return (mod, env) => {
+        const schema = resultValue(evaluate(exp.schema)(mod, env))
+        const value = resultValue(evaluate(exp.exp)(mod, env))
+        const result = validate(schema, value)
+        if (result.kind === "Ok") {
+          return [env, Values.Void()]
+        } else {
+          let message = `(assert-the) validation fail\n`
+          message += `  schema: ${formatValue(schema)}\n`
+          message += `  value: ${formatValue(value)}\n`
+          throw new X.ErrorWithMeta(message, exp.meta)
+        }
+      }
     }
 
     case "Void": {
