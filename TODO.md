@@ -1,8 +1,8 @@
 # testing
 
 `AssertThe` -- as `Exp`
-`evaluate` -- handle `AssertThe` -- like `(the)` but return `void`
 parse `(assert-the)`
+`evaluate` -- handle `AssertThe` -- like `(the)` but return `void`
 
 # module
 

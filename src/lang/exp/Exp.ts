@@ -19,6 +19,7 @@ export type Exp =
   | AssertNot
   | AssertEqual
   | AssertNotEqual
+  | AssertThe
   | Void
   | Null
   | Tael
@@ -222,6 +223,22 @@ export function AssertNotEqual(lhs: Exp, rhs: Exp, meta: Meta): AssertNotEqual {
     kind: "AssertNotEqual",
     lhs,
     rhs,
+    meta,
+  }
+}
+
+export type AssertThe = {
+  kind: "AssertThe"
+  schema: Exp
+  exp: Exp
+  meta: Meta
+}
+
+export function AssertThe(schema: Exp, exp: Exp, meta: Meta): AssertThe {
+  return {
+    kind: "AssertThe",
+    schema,
+    exp,
     meta,
   }
 }

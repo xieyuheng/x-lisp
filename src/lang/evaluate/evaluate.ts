@@ -139,6 +139,10 @@ export function evaluate(exp: Exp): Effect {
       return assertNotEqual(exp.lhs, exp.rhs)
     }
 
+    case "AssertThe": {
+      throw new Error("TODO")
+    }
+
     case "Void": {
       return (mod, env) => {
         return [env, Values.Void()]
