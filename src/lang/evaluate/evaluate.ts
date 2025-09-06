@@ -98,7 +98,9 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const [prefix, last] = arrayPickLast(exp.sequence)
         for (const e of prefix) {
-          const [nextEnv, _] = evaluate(e)(mod, env)
+          const [nextEnv, value] = evaluate(e)(mod, env)
+          // There might be side-effect in lazy value!
+          Values.lazyWalk(value)
           env = nextEnv
         }
 
