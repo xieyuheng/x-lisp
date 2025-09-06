@@ -1,7 +1,5 @@
 # testing
 
-`evaluate` -- handle `The` -- report in token meta
-
 `AssertThe` -- as `Exp`
 `evaluate` -- handle `AssertThe` -- like `(the)` but return `void`
 parse `(assert-the)`

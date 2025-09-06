@@ -16,7 +16,7 @@ import { assertNotEqual } from "./assertNotEqual.ts"
 import { assertNotTrue } from "./assertNotTrue.ts"
 import { assertTrue } from "./assertTrue.ts"
 import { evaluateQuasiquote } from "./evaluateQuasiquote.ts"
-import { validateOrFail } from "./validate.ts"
+import { validate } from "./validate.ts"
 
 type Result = [Env, Value]
 export type Effect = (mod: Mod, env: Env) => Result
@@ -358,7 +358,15 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const schema = resultValue(evaluate(exp.schema)(mod, env))
         const value = resultValue(evaluate(exp.exp)(mod, env))
-        return [env, validateOrFail(schema, value)]
+        const result = validate(schema, value)
+        if (result.kind === "Ok") {
+          return [env, result.value]
+        } else {
+          let message = `(the) validation fail\n`
+          message += `  schema: ${formatValue(schema)}\n`
+          message += `  value: ${formatValue(value)}\n`
+          throw new X.ErrorWithMeta(message, exp.meta)
+        }
       }
     }
   }
