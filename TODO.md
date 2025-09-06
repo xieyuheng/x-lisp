@@ -1,4 +1,4 @@
-# module
-
-error on redefined to different `Definition` by `(import)` or `(include)`
-test about redefine -- `(import)` or `(include)` same `Definition` is ok
+[example] errors/redefine.error.lisp
+[example] module/idempotent-import.test.lisp
+[example] module/idempotent-import-all.test.lisp
+[example] module/idempotent-include-all.test.lisp
