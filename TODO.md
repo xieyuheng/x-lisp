@@ -1,5 +1,3 @@
-test `(file-set!)`
-
 # predicate
 
 `(enum)` -- build predicate -- for `reg-name?` in eoc
