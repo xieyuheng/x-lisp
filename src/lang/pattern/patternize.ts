@@ -47,7 +47,7 @@ export function patternize(exp: Exp): Effect {
       }
     }
 
-    if (name === "eval" && exp.args.length === 1) {
+    if (name === "escape" && exp.args.length === 1) {
       return (mod, env) => {
         const arg = exp.args[0]
         return Patterns.LiteralPattern(resultValue(evaluate(arg)(mod, env)))
