@@ -1,4 +1,4 @@
-test `(file-set! path text)`
+test `(file-set!)`
 
 # predicate
 

@@ -7,6 +7,6 @@
 (run-exp '((lambda (x) x) (lambda (x) x)))
 
 (begin
-  (= file (path-join [(current-module-directory) "example.lambda"]))
-  (= sexp (parse-sexp (file-get file)))
+  (= path (path-join [(current-module-directory) "example.lambda"]))
+  (= sexp (parse-sexp (file-get path)))
   (run-exp sexp))
