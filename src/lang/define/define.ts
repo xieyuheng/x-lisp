@@ -7,8 +7,8 @@ export function define(mod: Mod, name: string, value: Value): void {
   const found = modLookupValue(mod, name)
   if (found) {
     let message = `[define] I can not redefine name: ${name}\n`
-    message += `  new value: ${formatValue(value)}\n`
     message += `  old value: ${formatValue(found)}\n`
+    message += `  new value: ${formatValue(value)}\n`
     throw new Error(message)
   }
 

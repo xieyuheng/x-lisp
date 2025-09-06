@@ -1,5 +1,5 @@
 (include-all "module-one.lisp")
-(include-all "module-two.lisp")
+(include "module-two.lisp" two)
 (include-except "module-three.lisp" one two)
 (include "module-four.lisp" four)
 (include-as "module-four.lisp" f)

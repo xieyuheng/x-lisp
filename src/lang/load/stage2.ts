@@ -11,7 +11,7 @@ import {
 import { type Stmt } from "../stmt/index.ts"
 import { importByMod } from "./importByMod.ts"
 
-function checkNotRedefine(
+function checkRedefine(
   mod: Mod,
   name: string,
   definition: Definition,
@@ -21,9 +21,15 @@ function checkNotRedefine(
   if (found === undefined) return
   if (found === definition) return
 
-  let message = `[checkNotRedefine] I can not redefine name: ${name}\n`
-  message += `  new value: ${formatValue(definition.value)}\n`
-  message += `  old value: ${formatValue(found.value)}\n`
+  let message = `[checkRedefine] I can not redefine name: ${name}\n`
+  message += `  old definition:\n`
+  message += `    origin: ${urlRelativeToCwd(found.origin.url)}\n`
+  message += `    name: ${found.name}\n`
+  message += `    value: ${formatValue(found.value)}\n`
+  message += `  new definition:\n`
+  message += `    origin: ${urlRelativeToCwd(definition.origin.url)}\n`
+  message += `    name: ${definition.name}\n`
+  message += `    value: ${formatValue(definition.value)}\n`
   throw new X.ErrorWithMeta(message, meta)
 }
 
@@ -40,7 +46,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
       }
 
       const name = entry.rename || entry.name
-      checkNotRedefine(mod, name, definition, stmt.meta)
+      checkRedefine(mod, name, definition, stmt.meta)
       mod.defined.set(name, definition)
     }
   }
@@ -50,7 +56,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
-      checkNotRedefine(mod, name, definition, stmt.meta)
+      checkRedefine(mod, name, definition, stmt.meta)
       mod.defined.set(name, definition)
     }
   }
@@ -60,7 +66,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
-      checkNotRedefine(mod, `${stmt.name}/${name}`, definition, stmt.meta)
+      checkRedefine(mod, `${stmt.name}/${name}`, definition, stmt.meta)
       mod.defined.set(`${stmt.name}/${name}`, definition)
     }
   }
@@ -70,7 +76,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
-      checkNotRedefine(mod, name, definition, stmt.meta)
+      checkRedefine(mod, name, definition, stmt.meta)
       include(mod, name, definition)
     }
   }
@@ -86,7 +92,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
         throw new X.ErrorWithMeta(message, stmt.meta)
       }
 
-      checkNotRedefine(mod, name, definition, stmt.meta)
+      checkRedefine(mod, name, definition, stmt.meta)
       include(mod, name, definition)
     }
   }
@@ -97,7 +103,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
       importedMod,
     ).entries()) {
       if (!stmt.names.includes(name)) {
-        checkNotRedefine(mod, name, definition, stmt.meta)
+        checkRedefine(mod, name, definition, stmt.meta)
         include(mod, name, definition)
       }
     }
@@ -108,7 +114,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const [name, definition] of modPublicDefinitions(
       importedMod,
     ).entries()) {
-      checkNotRedefine(mod, `${stmt.name}/${name}`, definition, stmt.meta)
+      checkRedefine(mod, `${stmt.name}/${name}`, definition, stmt.meta)
       include(mod, `${stmt.name}/${name}`, definition)
     }
   }

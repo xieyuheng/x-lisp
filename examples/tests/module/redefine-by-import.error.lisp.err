@@ -1,0 +1,16 @@
+[checkNotRedefine] I can not redefine name: one
+  old definition:
+    origin: examples/tests/module/module-one.lisp
+    name: one
+    value: (lazy 1)
+  new definition:
+    origin: examples/tests/module/module-two.lisp
+    name: one
+    value: (lazy 1)
+
+  --> examples/tests/module/redefine-by-import.error.lisp:2:1
+ 1 | (import "module-one.lisp" one)
+ 2 | (import "module-two.lisp" one)
+   | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+ 3 | 
+

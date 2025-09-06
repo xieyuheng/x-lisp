@@ -7,8 +7,8 @@ export function claim(mod: Mod, name: string, schema: Value): void {
   const found = mod.claimed.get(name)
   if (found) {
     let message = `[claim] I can not reclaim name: ${name}\n`
-    message += `  new schema: ${formatValue(schema)}\n`
     message += `  old schema: ${formatValue(found.value)}\n`
+    message += `  new schema: ${formatValue(schema)}\n`
     throw new Error(message)
   }
 
