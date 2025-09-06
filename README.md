@@ -192,7 +192,7 @@ in [builtin](src/lang/builtin):
 (list? p target)
 (car list)
 (cdr list)
-(cons (head tail))
+(cons head tail)
 (list-head list)
 (list-tail list)
 (list-init list)
