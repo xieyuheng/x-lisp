@@ -286,8 +286,8 @@ in [builtin](src/lang/builtin):
 in [builtin](src/lang/builtin):
 
 ```scheme
-(file-read path)
-(file-write text path)
+(file-get path)
+(file-set! path text)
 ```
 
 ### Path

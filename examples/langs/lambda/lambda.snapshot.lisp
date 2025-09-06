@@ -8,5 +8,5 @@
 
 (begin
   (= file (path-join [(current-module-directory) "example.lambda"]))
-  (= sexp (parse-sexp (file-read file)))
+  (= sexp (parse-sexp (file-get file)))
   (run-exp sexp))
