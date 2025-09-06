@@ -1,0 +1,4 @@
+[define] I can not redefine name: x
+  new value: (lazy 2)
+  old value: (lazy 1)
+
