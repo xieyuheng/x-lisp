@@ -15,11 +15,8 @@ test about redefine -- `(import)` or `(include)` same `Definition` is ok
 
 # file system
 
-[maybe] rename `(file-read path)` to `(file-load path)`
-[maybe] rename `(file-write text path)` to `(file-save text path)`
-
-[maybe] rename `(file-read path)` to `(file-get path)`
-[maybe] rename `(file-write text path)` to `(file-set text path)`
+rename `(file-read path)` to `(file-get path)`
+rename `(file-write text path)` to `(file-set! path text)`
 
 use `file-open` and `file-close`
 
