@@ -1,5 +1,3 @@
-test assert-the
-
 # module
 
 error on redefined to different `Definition` by `(import)` or `(include)`
