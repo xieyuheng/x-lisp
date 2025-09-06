@@ -1,3 +1,2 @@
-[example] module/idempotent-import.test.lisp
-[example] module/idempotent-import-all.test.lisp
-[example] module/idempotent-include-all.test.lisp
+[example] module/import-redefine.error.lisp
+[example] module/import-all-redefine.error.lisp
