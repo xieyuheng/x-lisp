@@ -142,8 +142,17 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       throw new X.ErrorWithMeta(message, meta)
     }
 
-    const [lhs, rhs] = args
-    return Exps.AssertNotEqual(lhs, rhs, meta)
+    return Exps.AssertNotEqual(args[0], args[1], meta)
+  }),
+
+  X.matcher("(cons* 'assert-the exps)", ({ exps }, { meta }) => {
+    const args = X.dataToArray(exps).map(matchExp)
+    if (args.length !== 2) {
+      const message = "(assert-not-equal) must take two arguments\n"
+      throw new X.ErrorWithMeta(message, meta)
+    }
+
+    return Exps.AssertThe(args[0], args[1], meta)
   }),
 
   X.matcher("`(= ,lhs ,rhs)", ({ lhs, rhs }, { meta }) => {
