@@ -191,6 +191,10 @@ export function formatExp(exp: Exp): string {
         return `(tau ${elementSchemas.join(" ")} ${attributeSchemas.join(" ")})`
       }
     }
+
+    case "The": {
+      return `(the ${formatExp(exp.schema)} ${formatExp(exp.exp)})`
+    }
   }
 }
 

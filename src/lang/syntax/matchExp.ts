@@ -150,6 +150,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Assign(matchExp(lhs), matchExp(rhs), meta)
   }),
 
+  X.matcher("`(the ,schema ,exp)", ({ schema, exp }, { meta }) => {
+    return Exps.The(matchExp(schema), matchExp(exp), meta)
+  }),
+
   X.matcher("(cons* 'tael elements)", ({ elements }, { data, meta }) => {
     return Exps.Tael(
       X.dataToArray(elements).map(matchExp),

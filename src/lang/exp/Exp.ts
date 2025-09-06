@@ -36,6 +36,7 @@ export type Exp =
   | Compose
   | Pipe
   | Tau
+  | The
 
 export type Var = {
   kind: "Var"
@@ -498,6 +499,22 @@ export function Tau(
     kind: "Tau",
     elementSchemas,
     attributeSchemas,
+    meta,
+  }
+}
+
+export type The = {
+  kind: "The"
+  schema: Exp
+  exp: Exp
+  meta: Meta
+}
+
+export function The(schema: Exp, exp: Exp, meta: Meta): The {
+  return {
+    kind: "The",
+    schema,
+    exp,
     meta,
   }
 }

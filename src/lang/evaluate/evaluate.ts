@@ -16,6 +16,7 @@ import { assertNotEqual } from "./assertNotEqual.ts"
 import { assertNotTrue } from "./assertNotTrue.ts"
 import { assertTrue } from "./assertTrue.ts"
 import { evaluateQuasiquote } from "./evaluateQuasiquote.ts"
+import { validateOrFail } from "./validate.ts"
 
 type Result = [Env, Value]
 export type Effect = (mod: Mod, env: Env) => Result
@@ -350,6 +351,14 @@ export function evaluate(exp: Exp): Effect {
           ),
         )
         return [env, value]
+      }
+    }
+
+    case "The": {
+      return (mod, env) => {
+        const schema = resultValue(evaluate(exp.schema)(mod, env))
+        const value = resultValue(evaluate(exp.exp)(mod, env))
+        return [env, validateOrFail(schema, value)]
       }
     }
   }
