@@ -203,6 +203,7 @@ in [builtin](src/lang/builtin):
 (list-set index value list)
 (list-set! index value list)
 (list-reverse list)
+(list-member? x list)
 ```
 
 in [`std`](std):

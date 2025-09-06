@@ -13,3 +13,4 @@
 (include-all "list-map-zip.lisp")
 (include-all "list-all.lisp")
 (include-all "list-any.lisp")
+(include-all "list-member.lisp")
