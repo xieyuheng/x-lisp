@@ -1,4 +1,4 @@
-rename `(file-write text path)` to `(file-set! path text)`
+test `(file-set! path text)`
 
 # predicate
 
