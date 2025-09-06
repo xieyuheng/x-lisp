@@ -4,8 +4,7 @@ import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
-import { the } from "./the.ts"
-import { validate } from "./validate.ts"
+import { validate, validateOrFail } from "./validate.ts"
 
 export function applyWithSchema(
   schema: Value,
@@ -53,7 +52,7 @@ export function applyWithSchema(
       const restArgSchemas = arrow.argSchemas.slice(args.length)
       const result = apply(target, validateArgs(context, argSchemas, args))
       const newArrow = Values.Arrow(restArgSchemas, arrow.retSchema)
-      return the(newArrow, result)
+      return validateOrFail(newArrow, result)
     }
   }
 

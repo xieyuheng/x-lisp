@@ -1,7 +1,11 @@
 # testing
 
-`the` -- as `Exp` for better error report
-`(assert-the)` -- like `(the)` but return `void`
+`The` -- as `Exp` for better error report
+parse `(the)`
+`evaluate` -- handle `The`
+`AssertThe` -- as `Exp`
+`evaluate` -- handle `AssertThe` -- like `(the)` but return `void`
+parse `(assert-the)`
 
 # module
 

@@ -3,7 +3,7 @@ import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
 
-export type Result = { kind: "Ok"; value: Value } | { kind: "Err" }
+type Result = { kind: "Ok"; value: Value } | { kind: "Err" }
 
 // `validate` should not return new value on `Tael`,
 // because there might be side effect on the old value.
@@ -25,7 +25,6 @@ export function validate(schema: Value, value: Value): Result {
       return { kind: "Err" }
     }
 
-    const validatedElements: Array<Value> = []
     for (const index of value.elements.keys()) {
       const elementSchema = schema.elementSchemas[index]
       const element = value.elements[index]
@@ -67,5 +66,17 @@ export function validate(schema: Value, value: Value): Result {
   message += `  schema: ${formatValue(schema)}\n`
   message += `  value: ${formatValue(value)}\n`
   message += `  result: ${formatValue(result)}\n`
+  throw new Error(message)
+}
+
+export function validateOrFail(schema: Value, value: Value): Value {
+  const result = validate(schema, value)
+  if (result.kind === "Ok") {
+    return result.value
+  }
+
+  let message = `[validateOrFail] assertion fail\n`
+  message += `  schema: ${formatValue(schema)}\n`
+  message += `  value: ${formatValue(value)}\n`
   throw new Error(message)
 }

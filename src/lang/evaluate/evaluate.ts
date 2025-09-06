@@ -17,7 +17,7 @@ import { assertNotTrue } from "./assertNotTrue.ts"
 import { assertTrue } from "./assertTrue.ts"
 import { evaluateQuasiquote } from "./evaluateQuasiquote.ts"
 
-export type Result = [Env, Value]
+type Result = [Env, Value]
 export type Effect = (mod: Mod, env: Env) => Result
 
 export function resultValue(result: Result): Value {
