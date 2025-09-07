@@ -157,10 +157,6 @@ export function formatExp(exp: Exp): string {
       return `(-> ${args.join(" ")} ${ret})`
     }
 
-    case "RecordGet": {
-      return `(:${exp.name} ${formatExp(exp.target)})`
-    }
-
     case "Compose": {
       const exps = exp.exps.map(formatExp)
       if (exps.length === 0) {

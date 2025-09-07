@@ -195,21 +195,6 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     )
   }),
 
-  X.matcher("[]", ({}, { data, meta }) => {
-    const record = recordMap(X.asTael(data).attributes, matchExp)
-    const entries = Object.entries(record)
-    if (entries.length === 1) {
-      const [name, target] = entries[0]
-      return Exps.RecordGet(name, target, meta)
-    } else if (entries.length === 0) {
-      let message = `[matchExp] can not handle empty list\n`
-      throw new X.ErrorWithMeta(message, meta)
-    } else {
-      let message = `[matchExp] can not handle record with multiple keys\n`
-      throw new X.ErrorWithMeta(message, meta)
-    }
-  }),
-
   X.matcher("(cons* target args)", ({ target, args }, { meta }) => {
     return Exps.Apply(matchExp(target), X.dataToArray(args).map(matchExp), meta)
   }),

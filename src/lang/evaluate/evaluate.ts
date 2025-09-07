@@ -319,21 +319,6 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
-    case "RecordGet": {
-      return (mod, env) => {
-        const target = Values.lazyWalk(
-          resultValue(evaluate(exp.target)(mod, env)),
-        )
-        const attributes = Values.asTael(target).attributes
-        const value = attributes[exp.name]
-        if (value === undefined) {
-          return [env, Values.Null()]
-        } else {
-          return [env, value]
-        }
-      }
-    }
-
     case "Compose": {
       return (mod, env) => {
         const preludeMod = useBuiltinPreludeMod()
