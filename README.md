@@ -1,6 +1,6 @@
 # x-lisp.js
 
-A lisp without unnecessary entities.
+My list processing language.
 
 ## Install
 
