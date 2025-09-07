@@ -1,4 +1,4 @@
-# occam-lisp.js
+# x-lisp.js
 
 A lisp without unnecessary entities.
 
@@ -7,10 +7,10 @@ A lisp without unnecessary entities.
 Install it by the following command:
 
 ```sh
-npm install -g @xieyuheng/occam-lisp.js
+npm install -g @xieyuheng/x-lisp.js
 ```
 
-The command-line program is called `occam-lisp.js`.
+The command-line program is called `x-lisp.js`.
 
 ## Examples
 

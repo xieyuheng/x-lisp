@@ -1,7 +1,7 @@
 {
-  "name": "@xieyuheng/occam-lisp.js",
+  "name": "@xieyuheng/x-lisp.js",
   "version": "0.1.48",
-  "repository": "github:xieyuheng/occam-lisp.js",
+  "repository": "github:xieyuheng/x-lisp.js",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "main": "./lib/index.js",
@@ -12,7 +12,7 @@
     "examples"
   ],
   "bin": {
-    "occam-lisp.js": "lib/main.js"
+    "x-lisp.js": "lib/main.js"
   },
   "scripts": {
     "build": "tsc",
