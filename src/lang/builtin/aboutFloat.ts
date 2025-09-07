@@ -37,7 +37,7 @@ export function aboutFloat(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "fmul", 2, (x, y) => {
-    return Values.Float(Values.asFloat(x).content + Values.asFloat(y).content)
+    return Values.Float(Values.asFloat(x).content * Values.asFloat(y).content)
   })
 
   definePrimitiveFunction(mod, "fdiv", 2, (x, y) => {

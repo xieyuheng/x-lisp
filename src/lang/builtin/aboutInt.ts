@@ -38,7 +38,7 @@ export function aboutInt(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "imul", 2, (x, y) => {
-    return Values.Int(Values.asInt(x).content + Values.asInt(y).content)
+    return Values.Int(Values.asInt(x).content * Values.asInt(y).content)
   })
 
   definePrimitiveFunction(mod, "idiv", 2, (x, y) => {

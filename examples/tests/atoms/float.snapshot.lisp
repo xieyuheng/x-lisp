@@ -8,6 +8,11 @@
 (assert-equal (fneg 1.0) -1.0)
 (assert-equal (fneg -1.0) 1.0)
 
+(assert-equal (fmul 2.0 3.0) 6.0)
+(assert-equal (fmul 3.0 3.0) 9.0)
+(assert-equal (fmul -3.0 3.0) -9.0)
+(assert-equal (fmul -3.0 -3.0) 9.0)
+
 (assert-equal (float-min 1.0 2.0) 1.0)
 (assert-equal (float-max 1.0 2.0) 2.0)
 

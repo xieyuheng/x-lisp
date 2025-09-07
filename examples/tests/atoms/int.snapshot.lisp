@@ -18,6 +18,11 @@
 (assert-equal (ineg 1) -1)
 (assert-equal (ineg -1) 1)
 
+(assert-equal (imul 2 3) 6)
+(assert-equal (imul 3 3) 9)
+(assert-equal (imul -3 3) -9)
+(assert-equal (imul -3 -3) 9)
+
 (assert-equal (int-min 1 2) 1)
 (assert-equal (int-max 1 2) 2)
 
