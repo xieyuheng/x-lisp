@@ -351,6 +351,7 @@ null
 in [builtin](src/lang/builtin):
 
 ```scheme
+(apply f args)
 (pipe/fn x fs)
 (compose/fn fs x)
 ```

@@ -33,13 +33,13 @@
     ((var-exp name)
      (just-content (lookup name env)))
     ((apply-exp target arg)
-     (apply (eval target env) (eval arg env)))
+     (invoke (eval target env) (eval arg env)))
     ((lambda-exp parameter body)
      (closure parameter body env))))
 
-(claim apply (-> value? value? value?))
+(claim invoke (-> value? value? value?))
 
-(define (apply target arg)
+(define (invoke target arg)
   (match target
     ((closure parameter body env)
      (eval body (cons-env parameter arg env)))))
