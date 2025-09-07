@@ -15,3 +15,4 @@
 (include-all "list-any.lisp")
 (include-all "list-member.lisp")
 (include-all "list-find.lisp")
+(include-all "list-find-index.lisp")
