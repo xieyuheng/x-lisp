@@ -4,12 +4,13 @@ import { aboutModule } from "../builtin/aboutModule.ts"
 import { importBuiltinPrelude } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
 import { importStdPrelude } from "../std/importStdPrelude.ts"
-import { globalLoadedMods } from "./globalLoadedMods.ts"
 import { runCode } from "./runCode.ts"
+
+const globalLoadedMods: Map<string, Mod> = new Map()
 
 export function load(url: URL): Mod {
   const found = globalLoadedMods.get(url.href)
-  if (found !== undefined) return found.mod
+  if (found !== undefined) return found
 
   const text = fetchTextSync(url)
   const mod = createMod(url)
@@ -19,7 +20,7 @@ export function load(url: URL): Mod {
     importStdPrelude(mod)
   }
 
-  globalLoadedMods.set(url.href, { mod, text })
+  globalLoadedMods.set(url.href, mod)
   runCode(mod, text)
   return mod
 }
