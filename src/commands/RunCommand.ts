@@ -1,5 +1,6 @@
 import { type Command } from "@xieyuheng/commander.js"
 import { flags } from "../flags.ts"
+import { globals } from "../globals.ts"
 import { load } from "../lang/load/index.ts"
 import { errorReport } from "../utils/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../utils/url/createUrlOrFileUrl.ts"
@@ -16,6 +17,8 @@ export const RunCommand: Command = {
   },
 
   async run(commander) {
+    globals.commandLineArgs = commander.args.map(String).slice(1)
+
     if (commander.options["debug"]) {
       flags["debug"] = true
     }

@@ -1,6 +1,7 @@
 import { type Command } from "@xieyuheng/commander.js"
 import * as X from "@xieyuheng/x-data.js"
 import { flags } from "../flags.ts"
+import { globals } from "../globals.ts"
 import { aboutModule } from "../lang/builtin/aboutModule.ts"
 import { importBuiltinPrelude } from "../lang/builtin/index.ts"
 import { runSexps } from "../lang/load/index.ts"
@@ -18,6 +19,8 @@ export const ReplCommand: Command = {
   },
 
   async run(commander) {
+    globals.commandLineArgs = commander.args.map(String)
+
     if (commander.options["debug"]) {
       flags["debug"] = true
     }
