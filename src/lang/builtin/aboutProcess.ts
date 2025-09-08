@@ -1,5 +1,6 @@
 import * as X from "@xieyuheng/x-data.js"
 import process from "node:process"
+import { globals } from "../../globals.ts"
 import {
   definePrimitiveFunction,
   definePrimitiveThunk,
@@ -21,7 +22,7 @@ export function aboutProcess(mod: Mod) {
   })
 
   definePrimitiveThunk(mod, "current-command-line-args", () => {
-    const input = ["(", ...process.argv.slice(3), ")"].join(" ")
+    const input = ["(", ...globals.commandLineArgs, ")"].join(" ")
     return X.parseData(input)
   })
 
