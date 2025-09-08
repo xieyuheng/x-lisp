@@ -12,7 +12,7 @@ export function load(url: URL): Mod {
   const found = globalLoadedMods.get(url.href)
   if (found !== undefined) return found
 
-  const text = fetchTextSync(url)
+  const text = maybeIgnoreShebang(fetchTextSync(url))
   const mod = createMod(url)
   aboutModule(mod)
   importBuiltinPrelude(mod)
@@ -23,4 +23,14 @@ export function load(url: URL): Mod {
   globalLoadedMods.set(url.href, mod)
   runCode(mod, text)
   return mod
+}
+
+function maybeIgnoreShebang(text: string): string {
+  if (!text.startsWith("#!")) {
+    return text
+  }
+
+  const lines = text.split("\n")
+  lines[0] = " ".repeat(lines[0].length)
+  return lines.join("\n")
 }
