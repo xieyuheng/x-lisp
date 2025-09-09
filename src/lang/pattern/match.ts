@@ -88,9 +88,7 @@ function matchAttributes(
 ): Effect {
   return (env) => {
     for (const [key, pattern] of Object.entries(patterns)) {
-      const value = values[key]
-      if (value === undefined) return undefined
-      if (value.kind === "Null") return undefined
+      const value = values[key] || Values.Null()
 
       const result = match(pattern, value)(env)
       if (result === undefined) return undefined

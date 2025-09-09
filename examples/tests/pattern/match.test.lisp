@@ -13,15 +13,8 @@
 (begin
   (= value [1 2 3 :x 1 :y 2])
   (match value
-    ([a b c :x x :y y :z z] (assert false))
-    (_ (assert true))))
-
-(begin
-  ;; `null` as not exists
-  (= value [1 2 3 :x 1 :y 2 :z null])
-  (match value
-    ([a b c :x x :y y :z z] (assert false))
-    (_ (assert true))))
+    ([a b c :x x :y y :z z] (assert (null? z)))
+    (_ (assert false))))
 
 ;; literal
 
