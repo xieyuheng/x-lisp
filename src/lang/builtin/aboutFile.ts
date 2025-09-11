@@ -1,4 +1,5 @@
 import fs from "node:fs"
+import Path from "node:path"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
@@ -15,8 +16,8 @@ export function aboutFile(mod: Mod) {
     "directory-create-recursively",
     "directory-remove",
     "directory-remove-recursively",
-    // "directory-files",
-    // "directory-directories",
+    "directory-files",
+    "directory-directories",
   ])
 
   definePrimitiveFunction(mod, "file-exists?", 1, (path) => {
@@ -60,7 +61,6 @@ export function aboutFile(mod: Mod) {
 
   definePrimitiveFunction(mod, "file-remove", 1, (path) => {
     const pathString = Values.asString(path).content
-
     const stats = fs.statSync(pathString, {
       throwIfNoEntry: false,
     })
@@ -107,5 +107,23 @@ export function aboutFile(mod: Mod) {
   definePrimitiveFunction(mod, "directory-remove-recursively", 1, (path) => {
     fs.rmdirSync(Values.asString(path).content, { recursive: true })
     return Values.Void()
+  })
+
+  definePrimitiveFunction(mod, "directory-files", 1, (path) => {
+    const pathString = Values.asString(path).content
+    const files = fs
+      .readdirSync(pathString, { withFileTypes: true })
+      .filter((dirent) => dirent.isFile())
+      .map((dirent) => Path.join(pathString, dirent.name))
+    return Values.List(files.map(Values.String))
+  })
+
+  definePrimitiveFunction(mod, "directory-directories", 1, (path) => {
+    const pathString = Values.asString(path).content
+    const files = fs
+      .readdirSync(pathString, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => Path.join(pathString, dirent.name))
+    return Values.List(files.map(Values.String))
   })
 }
