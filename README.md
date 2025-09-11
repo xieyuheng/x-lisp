@@ -297,6 +297,8 @@ in [builtin](src/lang/builtin):
 in [`std`](std):
 
 ```scheme
+(identity x)
+(constant x y)
 (swap f x y)
 ```
 

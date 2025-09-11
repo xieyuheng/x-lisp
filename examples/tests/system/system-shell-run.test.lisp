@@ -1,5 +1,4 @@
 (begin
-  (= [:exit-code exit-code :stdout stdout] (system-shell-run "ls" ["-la"]))
+  (= [:exit-code exit-code :stdout stdout] (system-shell-run "echo" ["hello"]))
   (assert (equal? 0 exit-code))
-  (println [:message "testing (system-shell-run)"])
-  (write stdout))
+  (assert-equal stdout "hello\n"))

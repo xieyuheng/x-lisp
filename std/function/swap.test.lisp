@@ -1,4 +1,4 @@
-(import-all "swap.lisp")
+(import-all "index.lisp")
 
 (assert-equal
   (swap cons [] 1)
