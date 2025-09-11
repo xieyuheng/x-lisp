@@ -11,6 +11,7 @@ export function aboutFile(mod: Mod) {
     "file-load",
     "file-save",
     "file-remove",
+    "file-directory",
     "directory-exists?",
     "directory-create",
     "directory-create-recursively",
@@ -59,6 +60,10 @@ export function aboutFile(mod: Mod) {
       "utf8",
     )
     return Values.Void()
+  })
+
+  definePrimitiveFunction(mod, "file-directory", 1, (path) => {
+    return Values.String(Path.dirname(Values.asString(path).content))
   })
 
   definePrimitiveFunction(mod, "file-remove", 1, (path) => {
