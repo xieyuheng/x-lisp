@@ -4,10 +4,30 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutFile(mod: Mod) {
-  provide(mod, ["file-exists?", "file-load", "file-save", "file-remove"])
+  provide(mod, [
+    "file-exists?",
+    "file-load",
+    "file-save",
+    "file-remove",
+    "directory-exists?",
+    "directory-create",
+    "directory-create-recursively",
+    // "directory-remove",
+    // "directory-remove-recursively",
+    // "directory-files",
+    // "directory-directories",
+  ])
 
   definePrimitiveFunction(mod, "file-exists?", 1, (path) => {
-    return Values.Bool(fs.existsSync(Values.asString(path).content))
+    const stats = fs.statSync(Values.asString(path).content, {
+      throwIfNoEntry: false,
+    })
+
+    if (!stats) {
+      return Values.Bool(false)
+    } else {
+      return Values.Bool(stats.isFile())
+    }
   })
 
   definePrimitiveFunction(mod, "file-load", 1, (path) => {
@@ -31,6 +51,28 @@ export function aboutFile(mod: Mod) {
     }
 
     fs.rmSync(pathString)
+    return Values.Void()
+  })
+
+  definePrimitiveFunction(mod, "directory-exists?", 1, (path) => {
+    const stats = fs.statSync(Values.asString(path).content, {
+      throwIfNoEntry: false,
+    })
+
+    if (!stats) {
+      return Values.Bool(false)
+    } else {
+      return Values.Bool(stats.isDirectory())
+    }
+  })
+
+  definePrimitiveFunction(mod, "directory-create", 1, (path) => {
+    fs.mkdirSync(Values.asString(path).content)
+    return Values.Void()
+  })
+
+  definePrimitiveFunction(mod, "directory-create-recursively", 1, (path) => {
+    fs.mkdirSync(Values.asString(path).content, { recursive: true })
     return Values.Void()
   })
 }

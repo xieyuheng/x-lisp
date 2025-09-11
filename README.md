@@ -213,8 +213,10 @@ in [builtin](src/lang/builtin):
 in [builtin](src/lang/builtin):
 
 ```scheme
+(file-exists? path)
 (file-load path)
 (file-save path text)
+(file-remove path)
 ```
 
 ### Path

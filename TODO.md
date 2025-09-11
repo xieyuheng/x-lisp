@@ -1,10 +1,7 @@
-directory-create
-directory-create-recursively
-directory-remove
-directory-remove-recursively
+file-size
 
-directory-entries
-directory-files
-directory-directories
+directory-create & directory-create-recursively
+directory-remove & directory-remove-recursively
+directory-files & directory-directories
 
 `apply` -- use `lazyDeepWalk` for lazy value in tael
