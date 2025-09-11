@@ -1,5 +1,6 @@
 (begin
-  (= path (path-join [(current-module-directory) "example-2.txt"]))
+  (= path (path-join [(current-module-directory) "file-2.txt"]))
+
   (= text (file-load path))
   (assert-equal "abc\n" text)
 

@@ -1,6 +1,10 @@
-file-delete
+directory-create
+directory-create-recursively
+directory-remove
+directory-remove-recursively
 
-[maybe] directory-make
-[maybe] directory-make-recursively
+directory-entries
+directory-files
+directory-directories
 
 `apply` -- use `lazyDeepWalk` for lazy value in tael
