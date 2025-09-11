@@ -5,7 +5,7 @@
 
 (iadd (lazy (begin (println "lazy 1") 1)))
 
-(begin
-  (= x (lazy (begin (println "lazy 1") 1)))
-  (= y (lazy (begin (println "lazy 2") 2)))
-  (assert-equal (iadd x y) 3))
+(assert-equal
+  (iadd (lazy (begin (println "lazy 1") 1))
+        (lazy (begin (println "lazy 2") 2)))
+  3)
