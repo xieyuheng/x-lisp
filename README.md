@@ -323,6 +323,14 @@ in [builtin](src/lang/builtin):
 (random-float start end)
 ```
 
+### System
+
+in [builtin](src/lang/builtin):
+
+```scheme
+(system-shell-run command args)
+```
+
 ## Development
 
 ```sh
