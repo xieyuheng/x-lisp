@@ -1,6 +1,3 @@
-file-size
-
-directory-create & directory-create-recursively
 directory-remove & directory-remove-recursively
 directory-files & directory-directories
 

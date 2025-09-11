@@ -6,6 +6,7 @@ import * as Values from "../value/index.ts"
 export function aboutFile(mod: Mod) {
   provide(mod, [
     "file-exists?",
+    "file-size",
     "file-load",
     "file-save",
     "file-remove",
@@ -30,6 +31,19 @@ export function aboutFile(mod: Mod) {
     }
   })
 
+  definePrimitiveFunction(mod, "file-size", 1, (path) => {
+    const pathString = Values.asString(path).content
+    const stats = fs.statSync(pathString, {
+      throwIfNoEntry: false,
+    })
+
+    if (!stats) {
+      throw new Error(`(file-size) file does not exist: ${pathString}`)
+    }
+
+    return Values.Int(stats.size)
+  })
+
   definePrimitiveFunction(mod, "file-load", 1, (path) => {
     const text = fs.readFileSync(Values.asString(path).content, "utf8")
     return Values.String(text)
@@ -46,8 +60,17 @@ export function aboutFile(mod: Mod) {
 
   definePrimitiveFunction(mod, "file-remove", 1, (path) => {
     const pathString = Values.asString(path).content
-    if (!fs.existsSync(pathString)) {
+
+    const stats = fs.statSync(pathString, {
+      throwIfNoEntry: false,
+    })
+
+    if (!stats) {
       throw new Error(`(file-remove) file does not exist: ${pathString}`)
+    }
+
+    if (!stats.isFile()) {
+      throw new Error(`(file-remove) path is not file: ${pathString}`)
     }
 
     fs.rmSync(pathString)
