@@ -17,7 +17,9 @@ export function aboutFile(mod: Mod) {
     "directory-remove",
     "directory-remove-recursively",
     "directory-files",
+    "directory-files-recursively",
     "directory-directories",
+    "directory-directories-recursively",
   ])
 
   definePrimitiveFunction(mod, "file-exists?", 1, (path) => {
@@ -118,6 +120,15 @@ export function aboutFile(mod: Mod) {
     return Values.List(files.map(Values.String))
   })
 
+  definePrimitiveFunction(mod, "directory-files-recursively", 1, (path) => {
+    const pathString = Values.asString(path).content
+    const files = fs
+      .readdirSync(pathString, { withFileTypes: true, recursive: true })
+      .filter((dirent) => dirent.isFile())
+      .map((dirent) => Path.join(pathString, dirent.name))
+    return Values.List(files.map(Values.String))
+  })
+
   definePrimitiveFunction(mod, "directory-directories", 1, (path) => {
     const pathString = Values.asString(path).content
     const files = fs
@@ -126,4 +137,18 @@ export function aboutFile(mod: Mod) {
       .map((dirent) => Path.join(pathString, dirent.name))
     return Values.List(files.map(Values.String))
   })
+
+  definePrimitiveFunction(
+    mod,
+    "directory-directories-recursively",
+    1,
+    (path) => {
+      const pathString = Values.asString(path).content
+      const files = fs
+        .readdirSync(pathString, { withFileTypes: true, recursive: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => Path.join(pathString, dirent.name))
+      return Values.List(files.map(Values.String))
+    },
+  )
 }
