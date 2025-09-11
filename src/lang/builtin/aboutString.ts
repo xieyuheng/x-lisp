@@ -12,6 +12,8 @@ export function aboutString(mod: Mod) {
     "string-append-many",
     "string-join",
     "string-chars",
+    "string-replace-first",
+    "string-replace",
   ])
 
   definePrimitiveFunction(mod, "string?", 1, (value) => {
@@ -59,4 +61,32 @@ export function aboutString(mod: Mod) {
       Values.asString(string).content.split("").map(Values.String),
     )
   })
+
+  definePrimitiveFunction(
+    mod,
+    "string-replace-first",
+    3,
+    (pattern, replacement, string) => {
+      return Values.String(
+        Values.asString(string).content.replace(
+          Values.asString(pattern).content,
+          Values.asString(replacement).content,
+        ),
+      )
+    },
+  )
+
+  definePrimitiveFunction(
+    mod,
+    "string-replace",
+    3,
+    (pattern, replacement, string) => {
+      return Values.String(
+        Values.asString(string).content.replaceAll(
+          Values.asString(pattern).content,
+          Values.asString(replacement).content,
+        ),
+      )
+    },
+  )
 }
