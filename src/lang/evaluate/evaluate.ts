@@ -37,10 +37,10 @@ export function evaluate(exp: Exp): Effect {
     case "Var": {
       return (mod, env) => {
         const value = envLookupValue(env, exp.name)
-        if (value) return [env, value]
+        if (value) return [env, Values.lazyWalk(value)]
 
         const topValue = modLookupValue(mod, exp.name)
-        if (topValue) return [env, topValue]
+        if (topValue) return [env, Values.lazyWalk(topValue)]
 
         let message = `[evaluate] I meet undefined name: ${exp.name}\n`
         throw new X.ErrorWithMeta(message, exp.meta)
