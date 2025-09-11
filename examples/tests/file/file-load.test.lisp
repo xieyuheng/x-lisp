@@ -1,4 +1,4 @@
 (begin
   (= path (path-join [(current-module-directory) "example.txt"]))
-  (= text (file-get path))
+  (= text (file-load path))
   (assert-equal "abc\n" text))

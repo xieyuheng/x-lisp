@@ -1,5 +1,3 @@
-ambr file-get file-load
-ambr file-set! file-save
 file-delete
 
 [maybe] directory-make

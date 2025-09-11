@@ -213,7 +213,7 @@ in [builtin](src/lang/builtin):
 in [builtin](src/lang/builtin):
 
 ```scheme
-(file-get path)
+(file-load path)
 (file-set! path text)
 ```
 
