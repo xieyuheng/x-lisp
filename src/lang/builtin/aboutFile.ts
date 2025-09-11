@@ -13,8 +13,8 @@ export function aboutFile(mod: Mod) {
     "directory-exists?",
     "directory-create",
     "directory-create-recursively",
-    // "directory-remove",
-    // "directory-remove-recursively",
+    "directory-remove",
+    "directory-remove-recursively",
     // "directory-files",
     // "directory-directories",
   ])
@@ -96,6 +96,16 @@ export function aboutFile(mod: Mod) {
 
   definePrimitiveFunction(mod, "directory-create-recursively", 1, (path) => {
     fs.mkdirSync(Values.asString(path).content, { recursive: true })
+    return Values.Void()
+  })
+
+  definePrimitiveFunction(mod, "directory-remove", 1, (path) => {
+    fs.rmdirSync(Values.asString(path).content)
+    return Values.Void()
+  })
+
+  definePrimitiveFunction(mod, "directory-remove-recursively", 1, (path) => {
+    fs.rmdirSync(Values.asString(path).content, { recursive: true })
     return Values.Void()
   })
 }
