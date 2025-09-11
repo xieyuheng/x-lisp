@@ -214,7 +214,7 @@ in [builtin](src/lang/builtin):
 
 ```scheme
 (file-load path)
-(file-set! path text)
+(file-save path text)
 ```
 
 ### Path
