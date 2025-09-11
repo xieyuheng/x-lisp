@@ -116,7 +116,7 @@ export function aboutFile(mod: Mod) {
     const files = fs
       .readdirSync(pathString, { withFileTypes: true })
       .filter((dirent) => dirent.isFile())
-      .map((dirent) => Path.join(pathString, dirent.name))
+      .map((dirent) => Path.join(dirent.parentPath, dirent.name))
     return Values.List(files.map(Values.String))
   })
 
@@ -125,7 +125,7 @@ export function aboutFile(mod: Mod) {
     const files = fs
       .readdirSync(pathString, { withFileTypes: true, recursive: true })
       .filter((dirent) => dirent.isFile())
-      .map((dirent) => Path.join(pathString, dirent.name))
+      .map((dirent) => Path.join(dirent.parentPath, dirent.name))
     return Values.List(files.map(Values.String))
   })
 
@@ -134,7 +134,7 @@ export function aboutFile(mod: Mod) {
     const files = fs
       .readdirSync(pathString, { withFileTypes: true })
       .filter((dirent) => dirent.isDirectory())
-      .map((dirent) => Path.join(pathString, dirent.name))
+      .map((dirent) => Path.join(dirent.parentPath, dirent.name))
     return Values.List(files.map(Values.String))
   })
 
@@ -147,7 +147,7 @@ export function aboutFile(mod: Mod) {
       const files = fs
         .readdirSync(pathString, { withFileTypes: true, recursive: true })
         .filter((dirent) => dirent.isDirectory())
-        .map((dirent) => Path.join(pathString, dirent.name))
+        .map((dirent) => Path.join(dirent.parentPath, dirent.name))
       return Values.List(files.map(Values.String))
     },
   )
