@@ -16,6 +16,7 @@ import { aboutRecord } from "./aboutRecord.ts"
 import { aboutSexp } from "./aboutSexp.ts"
 import { aboutString } from "./aboutString.ts"
 import { aboutSymbol } from "./aboutSymbol.ts"
+import { aboutSystem } from "./aboutSystem.ts"
 import { aboutValue } from "./aboutValue.ts"
 import { aboutVoid } from "./aboutVoid.ts"
 
@@ -45,6 +46,7 @@ export function useBuiltinPreludeMod(): Mod {
   aboutFunction(mod)
   aboutFormat(mod)
   aboutRandom(mod)
+  aboutSystem(mod)
 
   return mod
 }
