@@ -214,9 +214,19 @@ in [builtin](src/lang/builtin):
 
 ```scheme
 (file-exists? path)
+(file-size path)
 (file-load path)
 (file-save path text)
 (file-remove path)
+(directory-exists? path)
+(directory-create path)
+(directory-create-recursively path)
+(directory-remove path)
+(directory-remove-recursively path)
+(directory-files path)
+(directory-files-recursively path)
+(directory-directories path)
+(directory-directories-recursively path)
 ```
 
 ### Path
