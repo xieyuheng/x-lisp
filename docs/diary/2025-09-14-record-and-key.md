@@ -20,14 +20,14 @@ date: 2025-09-14
 (record-empty? record)
 (record-get key record)
 (record-has? key record)
-(record-set key value record)
-(record-set! key value record)
+(record-put key value record)
+(record-put! key value record)
 (record-delete key record)
 (record-delete! key record)
 (record-map fn record)
 ```
 
-我主要是对 `record-get` 和 `record-set` 不太满意，
+我主要是对 `record-get` 和 `record-put` 不太满意，
 也许可以模仿 clojure 用 `:key` 来简化语法：
 
 ```scheme
@@ -51,12 +51,12 @@ date: 2025-09-14
 （或者像 common-lisp 一样理解为 symbol 数据类型），
 key 的概念只存在于 literal record 的语法中。
 
-也许可以把 `(get)` 和 `set!` 作为特殊语法关键词：
+也许可以把 `(get)` 和 `(put)` 作为特殊语法关键词：
 
 ```scheme
 (get :key record)
-(set :key value record)
-(set! :key value record)
+(put :key value record)
+(put! :key value record)
 ```
 
 从而把啰嗦的：
@@ -78,15 +78,5 @@ key 的概念只存在于 literal record 的语法中。
 `record-get` 之不直观在于写 record 时用的是 `:key`，
 但是 get 时用的是 `'key`。
 
-如果要在语言中加入作为数据类型的 set 的话，
-也许不应该用 `set` 而应该用 `put`，
-因为 `set` 即是动词又是名词。
-
-```scheme
-(get :key record)
-(put :key value record)
-(put! :key value record)
-```
-
 另外一种选择是保持简单，
-接受目前的 `record-get` 和 `record-set` 语法。
+接受目前的 `record-get` 和 `record-put` 语法。

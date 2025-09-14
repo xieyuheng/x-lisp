@@ -1,10 +1,10 @@
-(export record-from-entries record-set-many)
+(export record-from-entries record-put-many)
 
 (define (record-from-entries entries)
-  (record-set-many entries []))
+  (record-put-many entries []))
 
-(define (record-set-many entries record)
+(define (record-put-many entries record)
   (match entries
     ([] record)
     ((cons [k v] tail)
-     (record-set-many tail (record-set k v record)))))
+     (record-put-many tail (record-put k v record)))))

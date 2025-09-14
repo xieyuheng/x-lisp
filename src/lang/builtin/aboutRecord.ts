@@ -18,8 +18,8 @@ export function aboutRecord(mod: Mod) {
     "record-empty?",
     "record-get",
     "record-has?",
-    "record-set",
-    "record-set!",
+    "record-put",
+    "record-put!",
     "record-delete",
     "record-delete!",
     "record-map",
@@ -115,7 +115,7 @@ export function aboutRecord(mod: Mod) {
     }
   })
 
-  definePrimitiveFunction(mod, "record-set", 3, (key, value, record) => {
+  definePrimitiveFunction(mod, "record-put", 3, (key, value, record) => {
     const attributes = {
       ...Values.asTael(record).attributes,
       [Values.asSymbol(key).content]: value,
@@ -123,7 +123,7 @@ export function aboutRecord(mod: Mod) {
     return Values.Tael(Values.asTael(record).elements, attributes)
   })
 
-  definePrimitiveFunction(mod, "record-set!", 3, (key, value, record) => {
+  definePrimitiveFunction(mod, "record-put!", 3, (key, value, record) => {
     Values.asTael(record).attributes[Values.asSymbol(key).content] = value
     return record
   })

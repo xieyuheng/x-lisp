@@ -172,8 +172,8 @@ in [builtin](src/lang/builtin):
 (record-empty? record)
 (record-get key record)
 (record-has? key record)
-(record-set key value record)
-(record-set! key value record)
+(record-put key value record)
+(record-put! key value record)
 (record-delete key record)
 (record-delete! key record)
 (record-map fn record)
@@ -183,7 +183,7 @@ in [`std`](std):
 
 ```scheme
 (record-from-entries entries)
-(record-set-many entries record)
+(record-put-many entries record)
 (record-filter p record)
 ```
 
