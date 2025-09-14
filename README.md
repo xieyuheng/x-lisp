@@ -16,7 +16,7 @@ The command-line program is called `x-lisp.js`.
 
 See more examples at [`examples`](examples) directory.
 
-## Prelude
+## API
 
 ### Bool
 
