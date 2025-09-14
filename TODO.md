@@ -1,4 +1,3 @@
-[diary] tael -- will adding `{}` as set syntax break existing design of tael?
 [diary] adding set to x-data
 
 # set
