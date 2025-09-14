@@ -75,6 +75,9 @@ key 的概念只存在于 literal record 的语法中。
 (assert-equal (get :z [:x 1 :y 2]) null)
 ```
 
+`record-get` 之不直观在于写 record 时用的是 `:key`，
+但是 get 时用的是 `'key`。
+
 如果要在语言中加入作为数据类型的 set 的话，
 也许不应该用 `set` 而应该用 `put`，
 因为 `set` 即是动词又是名词。
@@ -84,3 +87,6 @@ key 的概念只存在于 literal record 的语法中。
 (put :key value record)
 (put! :key value record)
 ```
+
+另外一种选择是保持简单，
+接受目前的 `record-get` 和 `record-set` 语法。
