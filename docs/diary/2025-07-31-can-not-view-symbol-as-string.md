@@ -10,4 +10,4 @@ date: 2025-07-31
 此时 `'abc` 可以被 parser 展开成 `(quote abc)`，
 尽管 `"abc"` 也可以被 parser 展开成 `(quote abc)`，
 但是 `"a b c"` 没法被 parser 展开成任何东西，
-比如单开成 `(quote "a b c")` 是不对的。
+比如简单展开成 `(quote "a b c")` 是不对的。
