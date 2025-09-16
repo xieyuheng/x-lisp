@@ -58,26 +58,26 @@
 ;; escape
 
 (match '(1 2 3)
-  ((cons* first (escape (iadd 1 1)) tail)
+  ((cons* first (@escape (iadd 1 1)) tail)
    (assert-equal first 1)
    (assert-equal tail '(3))))
 
 (match '(1 2 3)
-  ((cons* first (escape (iadd 1 2)) tail) (assert false))
+  ((cons* first (@escape (iadd 1 2)) tail) (assert false))
   (_ (assert true)))
 
 (match null
-  ((escape null) (assert true))
+  ((@escape null) (assert true))
   (_ (assert false)))
 
 ;; quasiquote
 
 (match '(1 2 3)
-  (`(,first ,(escape (iadd 1 1)) 3)
+  (`(,first ,(@escape (iadd 1 1)) 3)
    (assert (equal? first 1))))
 
 (match '(1 2 3)
-  (`(,first ,(escape (iadd 1 2)) 3) (assert false))
+  (`(,first ,(@escape (iadd 1 2)) 3) (assert false))
   (_ (assert true)))
 
 ;; occur many times
