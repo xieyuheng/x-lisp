@@ -5,7 +5,6 @@
     <year>2021</year>
     <price currency="USD">24.99</price>
   </book>
-
   <book id="b102" category="non-fiction" lang="fr">
     <title>Learning XML</title>
     <author>Pierre Document</author>
