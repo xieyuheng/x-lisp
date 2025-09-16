@@ -1,5 +1,3 @@
-add test about literal @tael
-
 support literal @list
 support literal @record
 
