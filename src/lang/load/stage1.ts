@@ -55,7 +55,7 @@ export function stage1(mod: Mod, stmt: Stmt): void {
       for (const [index, field] of constructor.fields.entries()) {
         define(
           mod,
-          `set-${constructor.name}-${field.name}!`,
+          `put-${constructor.name}-${field.name}!`,
           Values.DataPutter(constructor, field.name, index),
         )
       }

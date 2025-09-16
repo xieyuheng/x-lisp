@@ -1,9 +1,5 @@
 # set
 
-> 在已有的 API 中避免使用 set 这个词。
-
-rename set- prefix to put-
-
 > 给所有由语法糖生成的语法关键词加上 `@` 前缀：
 >
 > - @quote
