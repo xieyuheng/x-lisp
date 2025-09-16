@@ -5,7 +5,7 @@ import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { applyDataGetter } from "./applyDataGetter.ts"
 import { applyDataPredicate } from "./applyDataPredicate.ts"
-import { applyDataSetter } from "./applyDataSetter.ts"
+import { applyDataPutter } from "./applyDataPutter.ts"
 import { applyLambda } from "./applyLambda.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
 import { force } from "./force.ts"
@@ -103,10 +103,10 @@ export function apply(target: Value, args: Array<Value>): Value {
     return applyDataGetter(target, args)
   }
 
-  if (target.kind === "DataSetter") {
+  if (target.kind === "DataPutter") {
     const arity = 2
     if (arity === args.length) {
-      return applyDataSetter(target, args)
+      return applyDataPutter(target, args)
     } else {
       return supply(target, arity, args)
     }

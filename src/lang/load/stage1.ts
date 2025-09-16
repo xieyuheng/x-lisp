@@ -56,7 +56,7 @@ export function stage1(mod: Mod, stmt: Stmt): void {
         define(
           mod,
           `set-${constructor.name}-${field.name}!`,
-          Values.DataSetter(constructor, field.name, index),
+          Values.DataPutter(constructor, field.name, index),
         )
       }
     }

@@ -14,7 +14,7 @@ export type AboutData =
   | DataConstructor
   | DataConstructorPredicate
   | DataGetter
-  | DataSetter
+  | DataPutter
 
 export type Data = {
   kind: "Data"
@@ -112,20 +112,20 @@ export function DataGetter(
   }
 }
 
-export type DataSetter = {
-  kind: "DataSetter"
+export type DataPutter = {
+  kind: "DataPutter"
   constructor: DataConstructor
   fieldName: string
   fieldIndex: number
 }
 
-export function DataSetter(
+export function DataPutter(
   constructor: DataConstructor,
   fieldName: string,
   fieldIndex: number,
-): DataSetter {
+): DataPutter {
   return {
-    kind: "DataSetter",
+    kind: "DataPutter",
     constructor,
     fieldName,
     fieldIndex,
