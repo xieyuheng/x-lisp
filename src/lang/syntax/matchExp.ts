@@ -55,11 +55,11 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Lazy(matchExp(exp), meta)
   }),
 
-  X.matcher("`(quote ,sexp)", ({ sexp }, { meta }) => {
+  X.matcher("`(@quote ,sexp)", ({ sexp }, { meta }) => {
     return Exps.Quote(sexp, meta)
   }),
 
-  X.matcher("`(quasiquote ,sexp)", ({ sexp }, { meta }) => {
+  X.matcher("`(@quasiquote ,sexp)", ({ sexp }, { meta }) => {
     return Exps.Quasiquote(sexp, meta)
   }),
 
@@ -163,7 +163,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.The(matchExp(schema), matchExp(exp), meta)
   }),
 
-  X.matcher("(cons* 'tael elements)", ({ elements }, { data, meta }) => {
+  X.matcher("(cons* '@tael elements)", ({ elements }, { data, meta }) => {
     return Exps.Tael(
       X.dataToArray(elements).map(matchExp),
       recordMap(X.asTael(data).attributes, matchExp),

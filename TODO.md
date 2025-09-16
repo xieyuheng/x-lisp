@@ -1,13 +1,7 @@
-update x-data for `@` prefix
+add test about literal @tael
 
-> x-data 给所有由语法糖生成的语法关键词加上 `@` 前缀：
->
-> - @quote
-> - @unquote
-> - @quasiquote
-> - @tael
-
-> 需要在 x-data 中将 `{}` 翻译为 `@set`。
+support literal @list
+support literal @record
 
 # set
 

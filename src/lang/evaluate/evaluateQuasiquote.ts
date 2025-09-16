@@ -16,7 +16,7 @@ export function evaluateQuasiquote(sexp: X.Data): Effect {
       sexp.kind === "Tael" &&
       sexp.elements.length >= 2 &&
       sexp.elements[0].kind === "Symbol" &&
-      sexp.elements[0].content === "unquote"
+      sexp.elements[0].content === "@unquote"
     ) {
       const firstSexp = X.asTael(sexp).elements[1]
       const exp = matchExp(firstSexp)
