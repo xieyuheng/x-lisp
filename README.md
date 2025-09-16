@@ -193,8 +193,8 @@ in [builtin](src/lang/builtin):
 
 ```scheme
 (negate p x)
-(union/fn ps x)
-(inter/fn ps x)
+(union-fn ps x)
+(inter-fn ps x)
 ```
 
 ### Sexp
@@ -290,8 +290,8 @@ in [builtin](src/lang/builtin):
 
 ```scheme
 (apply f args)
-(pipe/fn x fs)
-(compose/fn fs x)
+(pipe-fn x fs)
+(compose-fn fs x)
 ```
 
 in [`std`](std):

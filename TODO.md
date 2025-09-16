@@ -1,3 +1,5 @@
+side effect function should return value for pipe
+
 # set
 
 > 给所有由语法糖生成的语法关键词加上 `@` 前缀：
