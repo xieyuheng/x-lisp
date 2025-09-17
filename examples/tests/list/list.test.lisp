@@ -29,3 +29,5 @@
 
 (assert-equal (list-init [1 2 3]) [1 2])
 (assert-equal (list-last [1 2 3]) 3)
+
+(assert-equal {1 2 3} (list-to-set [1 2 3]))

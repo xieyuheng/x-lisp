@@ -21,6 +21,7 @@ export function aboutList(mod: Mod) {
     "list-put",
     "list-put!",
     "list-reverse",
+    "list-to-set",
   ])
 
   definePrimitiveFunction(mod, "list-empty?", 1, (value) => {
@@ -172,5 +173,9 @@ export function aboutList(mod: Mod) {
       Values.asTael(list).elements.toReversed(),
       Values.asTael(list).attributes,
     )
+  })
+
+  definePrimitiveFunction(mod, "list-to-set", 1, (list) => {
+    return Values.Set(Values.asTael(list).elements)
   })
 }
