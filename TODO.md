@@ -1,7 +1,5 @@
 # set
 
-`set-include?`
-
 `set-union`
 `set-inter`
 `set-difference`
@@ -13,6 +11,8 @@
 `set-to-list`
 
 `set-disjoint?`
+
+update readme for set
 
 # pattern
 
