@@ -1,7 +1,5 @@
 # set
 
-extract `valueArrayDedup`
-
 `set-size`
 `set-empty?`
 `set-union`
