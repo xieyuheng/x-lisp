@@ -13,6 +13,7 @@ export type Value =
   | Atom
   | Null
   | Tael
+  | Set
   | Lambda
   | Thunk
   | Lazy
@@ -47,6 +48,18 @@ export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
     kind: "Tael",
     elements,
     attributes,
+  }
+}
+
+export type Set = {
+  kind: "Set"
+  elements: Array<Value>
+}
+
+export function Set(elements: Array<Value>): Set {
+  return {
+    kind: "Set",
+    elements,
   }
 }
 

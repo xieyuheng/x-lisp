@@ -27,6 +27,15 @@ export function formatValue(value: Value): string {
       }
     }
 
+    case "Set": {
+      const elements = value.elements.map(formatValue)
+      if (elements.length === 0) {
+        return `{}`
+      } else {
+        return `{${elements.join(" ")}}`
+      }
+    }
+
     case "Lambda": {
       return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }

@@ -1,6 +1,5 @@
 # set
 
-`Set` as `Value`
 `Set` as `Exp`
 
 `evaluate` -- handle `Set` `{}` -- using `equal?` for member test
