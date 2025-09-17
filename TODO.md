@@ -1,11 +1,15 @@
 # set
 
-parse `@set`
+extract `valueArrayDedup`
 
-`set-empty?`
 `set-size`
+`set-empty?`
 `set-union`
 `set-inter`
+`set-difference`
+`set-put`
+`set-put!`
+`set-member?`
 
 # pattern
 
