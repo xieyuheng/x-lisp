@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-bin="node ./lib/main.js run --debug=true --no-std-prelude=true"
 parallel="parallel -v --halt now,fail=1"
+bin="node ./lib/main.js run --debug=true --no-std-prelude=true"
 
 true &&
     find std -name "*.test.lisp" | $parallel $bin {} &&
