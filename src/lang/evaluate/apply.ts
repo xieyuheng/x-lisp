@@ -1,6 +1,9 @@
+import assert from "node:assert"
 import { flags } from "../../flags.ts"
+import { emptyEnv, envLookupValue, envNames } from "../env/index.ts"
 import { equal } from "../equal/index.ts"
 import { formatValue } from "../format/index.ts"
+import { match } from "../pattern/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { applyDataGetter } from "./applyDataGetter.ts"
@@ -119,6 +122,30 @@ export function apply(target: Value, args: Array<Value>): Value {
     } else {
       return supply(target, arity, args)
     }
+  }
+
+  if (target.kind === "Pattern") {
+    if (args.length !== 1) {
+      let message = `[apply] pattern can only take one argument\n`
+      message += `  target: ${formatValue(target)}\n`
+      message += `  args: [${args.map(formatValue).join(" ")}]\n`
+      throw new Error(message)
+    }
+
+    const value = args[0]
+    const resultEnv = match(target.pattern, value)(emptyEnv())
+    if (resultEnv === undefined) {
+      return Values.Null()
+    }
+
+    const attributes: Record<string, Value> = {}
+    for (const name of envNames(resultEnv)) {
+      const value = envLookupValue(resultEnv, name)
+      assert(value)
+      attributes[name] = value
+    }
+
+    return Values.Record(attributes)
   }
 
   let message = `[apply] I can not handle this kind of target\n`
