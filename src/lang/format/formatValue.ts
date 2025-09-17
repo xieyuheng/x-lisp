@@ -143,7 +143,7 @@ export function formatValue(value: Value): string {
       }
     }
 
-    case "PatternValue": {
+    case "Pattern": {
       return `(@pattern ${formatPattern(value.pattern)})`
     }
   }

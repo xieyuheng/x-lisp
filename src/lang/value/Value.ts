@@ -27,7 +27,7 @@ export type Value =
   | The
   | Curried
   | Tau
-  | PatternValue
+  | Pattern
 
 export type Null = {
   kind: "Null"
@@ -265,14 +265,14 @@ export function Tau(
   }
 }
 
-export type PatternValue = {
-  kind: "PatternValue"
+export type Pattern = {
+  kind: "Pattern"
   pattern: Pattern
 }
 
-export function PatternValue(pattern: Pattern): PatternValue {
+export function Pattern(pattern: Pattern): Pattern {
   return {
-    kind: "PatternValue",
+    kind: "Pattern",
     pattern,
   }
 }
