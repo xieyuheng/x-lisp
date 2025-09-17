@@ -23,6 +23,7 @@ export type Exp =
   | Void
   | Null
   | Tael
+  | Set
   | Quote
   | Quasiquote
   | If
@@ -282,6 +283,20 @@ export function Tael(
     kind: "Tael",
     elements,
     attributes,
+    meta,
+  }
+}
+
+export type Set = {
+  kind: "Set"
+  elements: Array<Exp>
+  meta: Meta
+}
+
+export function Set(elements: Array<Exp>, meta: Meta): Set {
+  return {
+    kind: "Set",
+    elements,
     meta,
   }
 }

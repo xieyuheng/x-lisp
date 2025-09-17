@@ -93,6 +93,15 @@ export function formatExp(exp: Exp): string {
       }
     }
 
+    case "Set": {
+      const elements = exp.elements.map(formatExp)
+      if (elements.length === 0) {
+        return `{}`
+      } else {
+        return `{${elements.join(" ")}}`
+      }
+    }
+
     case "Quote": {
       return formatData(exp.sexp)
     }

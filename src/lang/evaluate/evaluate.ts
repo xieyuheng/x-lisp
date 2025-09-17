@@ -179,6 +179,17 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
+    case "Set": {
+      return (mod, env) => {
+        // TODO
+        const elements = exp.elements.map((e) =>
+          resultValue(evaluate(e)(mod, env)),
+        )
+        const value = Values.Set(elements)
+        return [env, value]
+      }
+    }
+
     case "Quote": {
       return (mod, env) => {
         return [env, exp.sexp]

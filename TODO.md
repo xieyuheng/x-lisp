@@ -1,8 +1,7 @@
 # set
 
-`Set` as `Exp`
-
-`evaluate` -- handle `Set` `{}` -- using `equal?` for member test
+`evaluate` -- handle `Set` `{}` -- using `equal?` dedup
+parse `@set`
 
 `set-empty?`
 `set-size`
