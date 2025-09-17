@@ -1,5 +1,9 @@
 # set
 
+`equal` -- handle `Set`
+
+- extract `valueArrayMember`
+
 `set-size`
 `set-empty?`
 `set-union`
