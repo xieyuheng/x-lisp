@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 
 bin="node ./lib/main.js run --debug=true"
+parallel="parallel -v --halt now,fail=1"
 
-find examples -name "*.test.lisp" | parallel -v --halt now,fail=1 ${bin} {} &&
-find examples -name "*.snapshot.lisp" | parallel -v --halt now,fail=1 ${bin} {} ">" {}.out &&
-find examples -name "*.error.lisp" | parallel -v --halt now,fail=1 ${bin} {} ">" {}.err "||" true
+true &&
+    find examples -name "*.test.lisp" | $parallel $bin {} &&
+    find examples -name "*.snapshot.lisp" | $parallel $bin {} ">" {}.out &&
+    find examples -name "*.error.lisp" | $parallel $bin {} ">" {}.err "||" true
