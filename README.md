@@ -130,6 +130,7 @@ in [builtin](src/lang/builtin):
 (list-put! index value list)
 (list-reverse list)
 (list-member? x list)
+(list-to-set list)
 ```
 
 in [`std`](std):
@@ -185,6 +186,28 @@ in [`std`](std):
 (record-from-entries entries)
 (record-put-many entries record)
 (record-filter p record)
+```
+
+## Set
+
+in [builtin](src/lang/builtin):
+
+```scheme
+(set? value)
+(set-empty? set)
+(set-size set)
+(set-member? value set)
+(set-include? subset set)
+(set-to-list set)
+(set-add value set)
+(set-add! value set)
+(set-remove value set)
+(set-remove! value set)
+(set-clear! set)
+(set-union left right)
+(set-inter left right)
+(set-difference left right)
+(set-disjoint? left right)
 ```
 
 ### Predicate

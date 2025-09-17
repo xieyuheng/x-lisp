@@ -1,5 +1,3 @@
-update readme for set
-
 # pattern
 
 `Pattern` as `Value`
