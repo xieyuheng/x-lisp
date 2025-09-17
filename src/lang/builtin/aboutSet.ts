@@ -11,6 +11,7 @@ export function aboutSet(mod: Mod) {
     "set-size",
     "set-member?",
     "set-include?",
+    "set-to-list",
   ])
 
   definePrimitiveFunction(mod, "set?", 2, (p, target) => {
@@ -57,5 +58,9 @@ export function aboutSet(mod: Mod) {
         Values.valueArrayMember(value, Values.asSet(set).elements),
       ),
     )
+  })
+
+  definePrimitiveFunction(mod, "set-to-list", 1, (set) => {
+    return Values.List(Values.asSet(set).elements)
   })
 }

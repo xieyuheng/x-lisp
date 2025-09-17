@@ -1,6 +1,5 @@
 # set
 
-`set-to-list`
 `list-to-set`
 
 `set-add` & `set-add!`
