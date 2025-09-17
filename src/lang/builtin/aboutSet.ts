@@ -19,6 +19,7 @@ export function aboutSet(mod: Mod) {
     "set-remove!",
     "set-clear!",
     "set-union",
+    "set-inter",
   ])
 
   definePrimitiveFunction(mod, "set?", 2, (p, target) => {
@@ -106,6 +107,14 @@ export function aboutSet(mod: Mod) {
         ...Values.asSet(left).elements,
         ...Values.asSet(right).elements,
       ]),
+    )
+  })
+
+  definePrimitiveFunction(mod, "set-inter", 2, (left, right) => {
+    return Values.Set(
+      Values.asSet(left).elements.filter((element) =>
+        Values.valueArrayMember(element, Values.asSet(right).elements),
+      ),
     )
   })
 }

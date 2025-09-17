@@ -1,6 +1,5 @@
 # set
 
-`set-inter`
 `set-difference`
 
 `set-disjoint?`
