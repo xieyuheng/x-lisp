@@ -17,6 +17,7 @@ export function aboutSet(mod: Mod) {
     "set-add!",
     "set-remove",
     "set-remove!",
+    "set-clear!",
   ])
 
   definePrimitiveFunction(mod, "set?", 2, (p, target) => {
@@ -90,6 +91,11 @@ export function aboutSet(mod: Mod) {
     Values.asSet(set).elements = Values.asSet(set).elements.filter(
       (element) => !equal(value, element),
     )
+    return set
+  })
+
+  definePrimitiveFunction(mod, "set-clear!", 1, (set) => {
+    Values.asSet(set).elements = []
     return set
   })
 }

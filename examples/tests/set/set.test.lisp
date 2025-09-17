@@ -38,3 +38,8 @@
   (= set {1 2 3})
   (assert-equal {1 3} (set-remove! 2 set))
   (assert-equal {1 3} set))
+
+(begin
+  (= set {1 2 3})
+  (assert-equal {} (set-clear! set))
+  (assert-equal {} set))
