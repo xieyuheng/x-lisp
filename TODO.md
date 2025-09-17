@@ -3,9 +3,6 @@
 `set-member?`
 `set-include?`
 
-`set-size`
-`set-empty?`
-
 `set-union`
 `set-inter`
 `set-difference`

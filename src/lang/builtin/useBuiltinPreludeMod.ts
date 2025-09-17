@@ -13,6 +13,7 @@ import { aboutPredicate } from "./aboutPredicate.ts"
 import { aboutProcess } from "./aboutProcess.ts"
 import { aboutRandom } from "./aboutRandom.ts"
 import { aboutRecord } from "./aboutRecord.ts"
+import { aboutSet } from "./aboutSet.ts"
 import { aboutSexp } from "./aboutSexp.ts"
 import { aboutString } from "./aboutString.ts"
 import { aboutSymbol } from "./aboutSymbol.ts"
@@ -47,6 +48,7 @@ export function useBuiltinPreludeMod(): Mod {
   aboutFormat(mod)
   aboutRandom(mod)
   aboutSystem(mod)
+  aboutSet(mod)
 
   return mod
 }
