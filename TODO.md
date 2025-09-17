@@ -1,6 +1,5 @@
 # pattern
 
-`PatternValue` as `Value`
-`@pattern` and `@escape`
+parse `@pattern`
 `pattern-test`
 `pattern-match`

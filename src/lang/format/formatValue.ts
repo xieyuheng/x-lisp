@@ -1,4 +1,9 @@
-import { formatAtom, formatBody, formatExp } from "../format/index.ts"
+import {
+  formatAtom,
+  formatBody,
+  formatExp,
+  formatPattern,
+} from "../format/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 
 export function formatValue(value: Value): string {
@@ -136,6 +141,10 @@ export function formatValue(value: Value): string {
       } else {
         return `(tau ${elementSchemas.join(" ")} ${attributeSchemas.join(" ")})`
       }
+    }
+
+    case "PatternValue": {
+      return `(@pattern ${formatPattern(value.pattern)})`
     }
   }
 }
