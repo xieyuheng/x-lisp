@@ -4,6 +4,7 @@ import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import { useBuiltinPreludeMod } from "../builtin/index.ts"
 import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"
+import { equal } from "../equal/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
 import { match, patternize } from "../match/index.ts"
@@ -181,10 +182,15 @@ export function evaluate(exp: Exp): Effect {
 
     case "Set": {
       return (mod, env) => {
-        // TODO
-        const elements = exp.elements.map((e) =>
+        const elements: Array<Value> = []
+        for (const element of exp.elements.map((e) =>
           resultValue(evaluate(e)(mod, env)),
-        )
+        )) {
+          if (!elements.some((occurred) => equal(element, occurred))) {
+            elements.push(element)
+          }
+        }
+
         const value = Values.Set(elements)
         return [env, value]
       }

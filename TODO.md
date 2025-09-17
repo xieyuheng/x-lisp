@@ -1,6 +1,5 @@
 # set
 
-`evaluate` -- handle `Set` `{}` -- using `equal?` dedup
 parse `@set`
 
 `set-empty?`
