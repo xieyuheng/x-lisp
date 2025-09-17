@@ -1,14 +1,15 @@
 # set
 
-`set-union`
-`set-inter`
-`set-difference`
+`set-to-list`
+`list-to-set`
 
 `set-add` & `set-add!`
 `set-remove` & `set-remove!`
 `set-clear!`
 
-`set-to-list`
+`set-union`
+`set-inter`
+`set-difference`
 
 `set-disjoint?`
 
