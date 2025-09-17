@@ -5,7 +5,7 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutSet(mod: Mod) {
-  provide(mod, ["set?", "set-empty?", "set-size"])
+  provide(mod, ["set?", "set-empty?", "set-size", "set-member?"])
 
   definePrimitiveFunction(mod, "set?", 2, (p, target) => {
     if (target.kind !== "Set") {
@@ -37,5 +37,11 @@ export function aboutSet(mod: Mod) {
 
   definePrimitiveFunction(mod, "set-size", 1, (value) => {
     return Values.Int(Values.asSet(value).elements.length)
+  })
+
+  definePrimitiveFunction(mod, "set-member?", 2, (value, set) => {
+    return Values.Bool(
+      Values.valueArrayMember(value, Values.asSet(set).elements),
+    )
   })
 }

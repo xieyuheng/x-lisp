@@ -1,6 +1,5 @@
 # set
 
-`set-member?`
 `set-include?`
 
 `set-union`
