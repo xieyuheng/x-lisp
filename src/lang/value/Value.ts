@@ -2,6 +2,7 @@ import { type TokenMeta } from "@xieyuheng/x-data.js"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
+// import { type Pattern } from "../pattern/index.ts"
 import { type Atom } from "./Atom.ts"
 import { type AboutData } from "./Data.ts"
 
@@ -26,6 +27,7 @@ export type Value =
   | The
   | Curried
   | Tau
+//  | PatternValue
 
 export type Null = {
   kind: "Null"
@@ -262,3 +264,17 @@ export function Tau(
     attributeSchemas,
   }
 }
+
+// export type PatternValue = {
+//   kind: "PatternValue"
+//   pattern: Pattern
+// }
+
+// export function PatternValue(
+//   pattern: Pattern
+// ): PatternValue {
+//   return {
+//     kind: "PatternValue",
+//     pattern,
+//   }
+// }
