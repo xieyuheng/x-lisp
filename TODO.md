@@ -1,17 +1,22 @@
 # set
 
-`equal` -- handle `Set`
-
-- extract `valueArrayMember`
+`set-member?`
+`set-include?`
 
 `set-size`
 `set-empty?`
+
 `set-union`
 `set-inter`
 `set-difference`
-`set-put`
-`set-put!`
-`set-member?`
+
+`set-add` & `set-add!`
+`set-remove` & `set-remove!`
+`set-clear!`
+
+`set-to-list`
+
+`set-disjoint?`
 
 # pattern
 

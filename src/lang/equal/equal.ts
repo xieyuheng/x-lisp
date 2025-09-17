@@ -1,4 +1,5 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
+import * as Values from "../value/index.ts"
 import {
   arrowNormalize,
   lazyWalk,
@@ -15,6 +16,17 @@ export function equal(lhs: Value, rhs: Value): boolean {
     return (
       equalValues(lhs.elements, rhs.elements) &&
       equalAttributes(lhs.attributes, rhs.attributes)
+    )
+  }
+
+  if (lhs.kind === "Set" && rhs.kind === "Set") {
+    return (
+      lhs.elements.every((left) =>
+        Values.valueArrayMember(left, Values.asSet(rhs).elements),
+      ) &&
+      rhs.elements.every((right) =>
+        Values.valueArrayMember(right, Values.asSet(lhs).elements),
+      )
     )
   }
 
