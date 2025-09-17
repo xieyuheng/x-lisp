@@ -121,3 +121,6 @@ clojure 是想在语法上利用 list 和 array 的差异来做一些设计，
 - 最后，也就是我们的目标「添加 set 数据类型」。
   新增 set 数据类型到 x-lisp（先不加到 x-data 试试），
   需要在 x-data 中将 `{}` 翻译为 `@set`。
+
+这个方案的特点是不需要给 x-data 增加数据类型，
+x-data 所解析到的 sexp 中最多只有 tael。
