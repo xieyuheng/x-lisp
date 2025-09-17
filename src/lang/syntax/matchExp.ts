@@ -63,6 +63,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Quasiquote(sexp, meta)
   }),
 
+  X.matcher("`(@pattern ,pattern)", ({ pattern }, { meta }) => {
+    return Exps.Pattern(matchExp(pattern), meta)
+  }),
+
   X.matcher(
     "`(if ,condition ,consequent ,alternative)",
     ({ condition, consequent, alternative }, { meta }) => {
