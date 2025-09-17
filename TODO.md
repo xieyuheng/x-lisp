@@ -1,7 +1,5 @@
 # set
 
-`set-difference`
-
 `set-disjoint?`
 
 update readme for set

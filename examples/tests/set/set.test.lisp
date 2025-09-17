@@ -46,3 +46,4 @@
 
 (assert-equal {1 2 3 4 5} (set-union {1 2 3} {3 4 5}))
 (assert-equal {3} (set-inter {1 2 3} {3 4 5}))
+(assert-equal {1 2} (set-difference {1 2 3} {3 4 5}))
