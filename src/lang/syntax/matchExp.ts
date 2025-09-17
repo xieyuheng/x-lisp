@@ -173,7 +173,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("(cons* '@list elements)", ({ elements }, { data, meta }) => {
     if (Object.keys(X.asTael(data).attributes).length > 0) {
-      let message = `(@list) can not have attributes\n`
+      let message = `(@list) literal list can not have attributes\n`
       throw new X.ErrorWithMeta(message, meta)
     }
 
@@ -182,7 +182,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("(cons* '@record elements)", ({ elements }, { data, meta }) => {
     if (X.dataToArray(elements).length > 0) {
-      let message = `(@record) can not have elements\n`
+      let message = `(@record) literal record can not have elements\n`
       throw new X.ErrorWithMeta(message, meta)
     }
 
@@ -191,7 +191,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("(cons* '@set elements)", ({ elements }, { data, meta }) => {
     if (Object.keys(X.asTael(data).attributes).length > 0) {
-      let message = `(@set) can not have attributes\n`
+      let message = `(@set) set can not have attributes\n`
       throw new X.ErrorWithMeta(message, meta)
     }
 
