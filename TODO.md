@@ -1,7 +1,3 @@
-# set
-
-`set-disjoint?`
-
 update readme for set
 
 # pattern
