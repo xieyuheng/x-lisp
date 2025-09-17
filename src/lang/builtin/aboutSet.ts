@@ -1,4 +1,5 @@
 import { definePrimitiveFunction, provide } from "../define/index.ts"
+import { equal } from "../equal/index.ts"
 import { apply } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -14,6 +15,8 @@ export function aboutSet(mod: Mod) {
     "set-to-list",
     "set-add",
     "set-add!",
+    "set-remove",
+    "set-remove!",
   ])
 
   definePrimitiveFunction(mod, "set?", 2, (p, target) => {
@@ -75,5 +78,18 @@ export function aboutSet(mod: Mod) {
   definePrimitiveFunction(mod, "set-add!", 2, (value, set) => {
     Values.asSet(set).elements.push(value)
     return Values.Set(Values.valueArrayDedup(Values.asSet(set).elements))
+  })
+
+  definePrimitiveFunction(mod, "set-remove", 2, (value, set) => {
+    return Values.Set(
+      Values.asSet(set).elements.filter((element) => !equal(value, element)),
+    )
+  })
+
+  definePrimitiveFunction(mod, "set-remove!", 2, (value, set) => {
+    Values.asSet(set).elements = Values.asSet(set).elements.filter(
+      (element) => !equal(value, element),
+    )
+    return set
   })
 }

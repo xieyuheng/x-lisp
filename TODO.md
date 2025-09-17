@@ -1,6 +1,5 @@
 # set
 
-`set-remove` & `set-remove!`
 `set-clear!`
 
 `set-union`
