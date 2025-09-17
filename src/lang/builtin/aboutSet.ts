@@ -18,6 +18,7 @@ export function aboutSet(mod: Mod) {
     "set-remove",
     "set-remove!",
     "set-clear!",
+    "set-union",
   ])
 
   definePrimitiveFunction(mod, "set?", 2, (p, target) => {
@@ -97,5 +98,14 @@ export function aboutSet(mod: Mod) {
   definePrimitiveFunction(mod, "set-clear!", 1, (set) => {
     Values.asSet(set).elements = []
     return set
+  })
+
+  definePrimitiveFunction(mod, "set-union", 2, (left, right) => {
+    return Values.Set(
+      Values.valueArrayDedup([
+        ...Values.asSet(left).elements,
+        ...Values.asSet(right).elements,
+      ]),
+    )
   })
 }

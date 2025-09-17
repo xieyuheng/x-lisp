@@ -1,6 +1,5 @@
 # set
 
-`set-union`
 `set-inter`
 `set-difference`
 

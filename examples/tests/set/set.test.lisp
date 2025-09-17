@@ -43,3 +43,5 @@
   (= set {1 2 3})
   (assert-equal {} (set-clear! set))
   (assert-equal {} set))
+
+(assert-equal {1 2 3 4 5} (set-union {1 2 3} {3 4 5}))
