@@ -18,3 +18,13 @@
 (assert-not (set-include? {1 4} {1 2 3}))
 
 (assert-equal [1 2 3] (set-to-list {1 2 3}))
+
+(begin
+  (= set {1 2 3})
+  (assert-equal {1 2 3 4} (set-add 4 set))
+  (assert-equal {1 2 3} set))
+
+(begin
+  (= set {1 2 3})
+  (assert-equal {1 2 3 4} (set-add! 4 set))
+  (assert-equal {1 2 3 4} set))

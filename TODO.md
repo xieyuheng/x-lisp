@@ -1,6 +1,5 @@
 # set
 
-`set-add` & `set-add!`
 `set-remove` & `set-remove!`
 `set-clear!`
 
