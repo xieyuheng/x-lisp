@@ -1,6 +1,3 @@
-support literal @list
-support literal @record
-
 # set
 
 `Set` as `Value`

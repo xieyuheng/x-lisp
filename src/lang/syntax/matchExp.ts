@@ -171,6 +171,24 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     )
   }),
 
+  X.matcher("(cons* '@list elements)", ({ elements }, { data, meta }) => {
+    if (Object.keys(X.asTael(data).attributes).length > 0) {
+      let message = `(@list) can not have attributes\n`
+      throw new X.ErrorWithMeta(message, meta)
+    }
+
+    return Exps.Tael(X.dataToArray(elements).map(matchExp), {}, meta)
+  }),
+
+  X.matcher("(cons* '@record elements)", ({ elements }, { data, meta }) => {
+    if (X.dataToArray(elements).length > 0) {
+      let message = `(@record) can not have elements\n`
+      throw new X.ErrorWithMeta(message, meta)
+    }
+
+    return Exps.Tael([], recordMap(X.asTael(data).attributes, matchExp), meta)
+  }),
+
   X.matcher("(cons* 'tau elements)", ({ elements }, { data, meta }) => {
     return Exps.Tau(
       X.dataToArray(elements).map(matchExp),
