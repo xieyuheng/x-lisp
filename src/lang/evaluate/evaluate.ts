@@ -383,5 +383,11 @@ export function evaluate(exp: Exp): Effect {
         }
       }
     }
+
+    case "Pattern": {
+      return (mod, env) => {
+        throw new Error()
+      }
+    }
   }
 }

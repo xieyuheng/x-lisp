@@ -38,6 +38,7 @@ export type Exp =
   | Pipe
   | Tau
   | The
+  | Pattern
 
 export type Var = {
   kind: "Var"
@@ -530,6 +531,20 @@ export function The(schema: Exp, exp: Exp, meta: Meta): The {
     kind: "The",
     schema,
     exp,
+    meta,
+  }
+}
+
+export type Pattern = {
+  kind: "Pattern"
+  pattern: Exp
+  meta: Meta
+}
+
+export function Pattern(pattern: Exp, meta: Meta): Pattern {
+  return {
+    kind: "Pattern",
+    pattern,
     meta,
   }
 }

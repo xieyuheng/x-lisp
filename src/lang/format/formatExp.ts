@@ -204,6 +204,10 @@ export function formatExp(exp: Exp): string {
     case "The": {
       return `(the ${formatExp(exp.schema)} ${formatExp(exp.exp)})`
     }
+
+    case "Pattern": {
+      return `(@pattern ${formatExp(exp.pattern)}`
+    }
   }
 }
 
