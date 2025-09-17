@@ -386,7 +386,8 @@ export function evaluate(exp: Exp): Effect {
 
     case "Pattern": {
       return (mod, env) => {
-        throw new Error()
+        const pattern = patternize(exp.pattern)(mod, env)
+        return [env, Values.Pattern(pattern)]
       }
     }
   }

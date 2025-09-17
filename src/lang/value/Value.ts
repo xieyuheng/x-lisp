@@ -2,7 +2,7 @@ import { type TokenMeta } from "@xieyuheng/x-data.js"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
-import { type Pattern } from "../pattern/index.ts"
+import * as Patterns from "../pattern/index.ts"
 import { type Atom } from "./Atom.ts"
 import { type AboutData } from "./Data.ts"
 
@@ -267,10 +267,10 @@ export function Tau(
 
 export type Pattern = {
   kind: "Pattern"
-  pattern: Pattern
+  pattern: Patterns.Pattern
 }
 
-export function Pattern(pattern: Pattern): Pattern {
+export function Pattern(pattern: Patterns.Pattern): Pattern {
   return {
     kind: "Pattern",
     pattern,
