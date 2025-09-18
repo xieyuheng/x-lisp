@@ -20,6 +20,8 @@ export function aboutList(mod: Mod) {
     "list-get",
     "list-put",
     "list-put!",
+    "list-push",
+    "list-push!",
     "list-reverse",
     "list-to-set",
   ])
@@ -165,6 +167,15 @@ export function aboutList(mod: Mod) {
     }
 
     elements[i] = value
+    return list
+  })
+
+  definePrimitiveFunction(mod, "list-push", 2, (value, list) => {
+    return Values.List([...Values.asTael(list).elements, value])
+  })
+
+  definePrimitiveFunction(mod, "list-push!", 2, (value, list) => {
+    Values.asTael(list).elements.push(value)
     return list
   })
 

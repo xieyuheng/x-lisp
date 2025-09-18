@@ -128,6 +128,8 @@ in [builtin](src/lang/builtin):
 (list-get index list)
 (list-put index value list)
 (list-put! index value list)
+(list-push value list)
+(list-push! value list)
 (list-reverse list)
 (list-member? x list)
 (list-to-set list)
