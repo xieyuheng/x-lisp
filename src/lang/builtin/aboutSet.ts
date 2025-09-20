@@ -24,6 +24,7 @@ export function aboutSet(mod: Mod) {
     "set-disjoint?",
     "set-map",
     "set-each",
+    "set-filter",
   ])
 
   definePrimitiveFunction(mod, "set?", 2, (p, target) => {
@@ -151,5 +152,26 @@ export function aboutSet(mod: Mod) {
     }
 
     return Values.Void()
+  })
+
+  definePrimitiveFunction(mod, "set-filter", 2, (p, set) => {
+    const elements: Array<Values.Value> = []
+    for (const element of Values.asSet(set).elements) {
+      const result = apply(p, [element])
+      if (result.kind !== "Bool") {
+        let message = `(set-filter) one result of applying the predicate is not bool\n`
+        message += `  predicate: ${formatValue(p)}\n`
+        message += `  set: ${formatValue(set)}\n`
+        message += `  element: ${formatValue(element)}\n`
+        message += `  result: ${formatValue(result)}\n`
+        throw new Error(message)
+      }
+
+      if (result.content === true) {
+        elements.push(element)
+      }
+    }
+
+    return Values.Set(elements)
   })
 }
