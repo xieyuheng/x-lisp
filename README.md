@@ -193,6 +193,7 @@ in [`std`](std):
 (record-update! fs record)
 (record-upsert upserters record)
 (record-upsert! upserters record)
+(record-unit key value)
 ```
 
 ## Set
