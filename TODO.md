@@ -1,6 +1,5 @@
 set-filter
 
-list-each
 set-each
 record-each
 
