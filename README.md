@@ -189,6 +189,10 @@ in [`std`](std):
 (record-from-entries entries)
 (record-put-many entries record)
 (record-filter p record)
+(record-update fs record)
+(record-update! fs record)
+(record-upsert upserters record)
+(record-upsert! upserters record)
 ```
 
 ## Set
