@@ -142,6 +142,7 @@ in [`std`](std):
 (list-second list)
 (list-third list)
 (list-map f list)
+(list-each f list)
 (list-filter p list)
 (list-append list tail)
 (list-append-many lists)
@@ -210,6 +211,9 @@ in [builtin](src/lang/builtin):
 (set-inter left right)
 (set-difference left right)
 (set-disjoint? left right)
+(set-map f set)
+(set-each f set)
+(set-filter p set)
 ```
 
 ### Predicate

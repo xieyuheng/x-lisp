@@ -1,5 +1,6 @@
 (include-all "list-getters.lisp")
 (include-all "list-map.lisp")
+(include-all "list-each.lisp")
 (include-all "list-filter.lisp")
 (include-all "list-append.lisp")
 (include-all "list-append-many.lisp")
@@ -16,4 +17,3 @@
 (include-all "list-member.lisp")
 (include-all "list-find.lisp")
 (include-all "list-find-index.lisp")
-(include-all "list-each.lisp")
