@@ -1,14 +1,10 @@
-list-for-each
+list-each
 
 set-map
-set-for-each
+set-each
 
-record-map-entry
-record-map-key
-
-record-for-each
-record-for-each-entry
-record-for-each-key
+record-each
 
 record-update & record-update!
+
 pretty-print
