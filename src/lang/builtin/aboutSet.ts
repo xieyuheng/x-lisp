@@ -23,6 +23,7 @@ export function aboutSet(mod: Mod) {
     "set-difference",
     "set-disjoint?",
     "set-map",
+    "set-each",
   ])
 
   definePrimitiveFunction(mod, "set?", 2, (p, target) => {
@@ -142,5 +143,13 @@ export function aboutSet(mod: Mod) {
     return Values.Set(
       Values.asSet(set).elements.map((element) => apply(f, [element])),
     )
+  })
+
+  definePrimitiveFunction(mod, "set-each", 2, (f, set) => {
+    for (const element of Values.asSet(set).elements) {
+      Values.lazyWalk(apply(f, [element]))
+    }
+
+    return Values.Void()
   })
 }
