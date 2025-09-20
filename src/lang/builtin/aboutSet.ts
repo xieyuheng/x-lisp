@@ -22,6 +22,7 @@ export function aboutSet(mod: Mod) {
     "set-inter",
     "set-difference",
     "set-disjoint?",
+    "set-map",
   ])
 
   definePrimitiveFunction(mod, "set?", 2, (p, target) => {
@@ -134,6 +135,12 @@ export function aboutSet(mod: Mod) {
       Values.asSet(left).elements.filter((element) =>
         Values.valueArrayMember(element, Values.asSet(right).elements),
       ).length === 0,
+    )
+  })
+
+  definePrimitiveFunction(mod, "set-map", 2, (f, set) => {
+    return Values.Set(
+      Values.asSet(set).elements.map((element) => apply(f, [element])),
     )
   })
 }
