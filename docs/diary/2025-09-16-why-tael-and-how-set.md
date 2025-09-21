@@ -11,7 +11,7 @@ date: 2025-09-16
 
 （1）tael 是 list with attribute。
 这一点的「合理性」来源于 XML 的 element + attribute 语义。
-也就是说 tael 是可以看制作是 XML 的扩展，其中 tag 可以是任意 node。
+也就是说 tael 是可以看作是 XML 的扩展，其中 tag 可以是任意 node。
 
 （2）tael 的语法处理的「合理性」来源于对 quote 的类比：
 
