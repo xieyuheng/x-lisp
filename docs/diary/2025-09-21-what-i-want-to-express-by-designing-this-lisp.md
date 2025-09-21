@@ -32,16 +32,29 @@ date: 2025-09-21
   - primitive: bool, int, float, symbol, string
   - compound: set, tael -- list with attribute
 
-- claim 与谓词所构成的 optional runtime assertion 系统。
-  包括：tau, inter, union 等等谓词构造子。
-
 - 在运行时用谓词实现 algebraic data type 的方式，
   也就是 define-data 和 match。
 
+  基础的数据类型给出了基础的集合，或者说「全集」，
+  而 define-data 给出了向「全集」中添加新元素的方式。
+
+  传统的 scheme 是没有添加新元素的机制的。
+  只能通过约定来增加新数据类型，
+  比如实现类似 define-record 的 macro 时，
+  其实是翻译成 list 或 vector。
+
+- claim 与谓词所构成的 optional runtime assertion 系统。
+  包括：tau, inter, union 等等谓词构造子。
+
+  想要强调谓词与集合之间的联系。
+  因为谓词可以很方便地刻画某个集合的子集。
+
 现在还用不到，但是未来还想要增加的核心功能：
 
-- 用 define-generaic 和 define-handler
-  所形成的 runtime multiple dispatching。
+- 用 define-generic 来定义新 generic 函数，
+  用 define-handler 和参数的谓词来实现
+  runtime multiple dispatching。
+
   这个功能是为了实现 propagator。
 
 也就是说，想要表达的核心 idea，都是实现无关的。
