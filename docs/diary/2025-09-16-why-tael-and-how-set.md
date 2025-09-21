@@ -122,7 +122,7 @@ clojure 是想在语法上利用 list 和 array 的差异来做一些设计，
   并且用 @pattern 来写 literal pattern，
   并且把 pattern 中目前使用的 escape 也加上 @ 前缀 @escape。
 
-  另外在 @tael 之外加上收相应限制的
+  另外在 @tael 之外加上带有相应限制的
   @list 和 @record 语法关键词，这两个应该是最常用的。
   一般的 `[]` 还是翻译为 `(@tael)`。
 
