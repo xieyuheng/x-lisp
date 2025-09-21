@@ -21,7 +21,15 @@ date: 2025-09-16
 （3）tael 的用处之一是给语法关键词加可选部分，比如 `(class)` 的 `:inherit`。
 
 （4）tael 的用处之二是将 attribute 作为 meta data 来保存 parse 时候的 span，
-但是这种设计证明是错误的，样做是行不通的。
+但是这种设计证明是错误的，这样做是行不通的。
+
+- 比如 `[:x 1 :y 2]` 不能被 read 成 `[:x 1 :y 2 :span ...]`，
+  因为 tael 可能本身就带有 `:span` 这个 attribute，
+  比如 `[:x 1 :y 2 :span [1 2]]`。
+
+- 想要实现 meta data，一个可行的方案是模仿 clojure，给 value 都加上 meta，
+  可以用 `(with-meta)` 来构造带有 meta 的 value，
+  并且用 `(get-data)` 取出来 value 的 meta。
 
 （5）tael 的设计灵感直接来自与之对应的 structural type 表达式 tau。
 如果 tael 要被分离为两种数据 list 和 record，
