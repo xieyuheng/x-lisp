@@ -2,6 +2,10 @@
 
 My list processing language.
 
+![steal your face](assets/images/steal-your-face-plt.svg)
+
+> -- Logo stole from Matthew Flatt's stealing from the "Steal Your Face" album of Grateful Dead.
+
 ## Install
 
 Install it by the following command:
