@@ -2,7 +2,7 @@
 
 My list processing language.
 
-<img src="assets/images/steal-your-face-plt.svg" alt="steal your face" width="48">
+<img src="assets/images/steal-your-face-plt.svg" alt="steal your face" width="320">
 
 > -- Logo stole from Matthew Flatt's stealing from the "Steal Your Face" album of Grateful Dead.
 
