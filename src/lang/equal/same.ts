@@ -6,9 +6,5 @@ export function same(lhs: Value, rhs: Value): boolean {
     return lhs.kind === rhs.kind && lhs.content === rhs.content
   }
 
-  if (lhs.kind === "Null" && rhs.kind === "Null") {
-    return true
-  }
-
   return lhs === rhs
 }

@@ -12,10 +12,6 @@ export function formatValue(value: Value): string {
   }
 
   switch (value.kind) {
-    case "Null": {
-      return "#null"
-    }
-
     case "Tael": {
       const elements = value.elements.map(formatValue)
       const attributes = Object.entries(value.attributes).map(

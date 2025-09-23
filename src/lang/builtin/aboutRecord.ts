@@ -51,7 +51,7 @@ export function aboutRecord(mod: Mod) {
 
   definePrimitiveFunction(mod, "record-length", 1, (record) => {
     const values = Object.values(Values.asTael(record).attributes).filter(
-      (value) => value.kind !== "Null",
+      (value) => !Values.isNull(value),
     )
     return Values.Int(values.length)
   })
@@ -88,7 +88,7 @@ export function aboutRecord(mod: Mod) {
 
   definePrimitiveFunction(mod, "record-empty?", 1, (record) => {
     const values = Object.values(Values.asTael(record).attributes).filter(
-      (value) => value.kind !== "Null",
+      (value) => !Values.isNull(value),
     )
     return Values.Bool(values.length === 0)
   })
@@ -108,7 +108,7 @@ export function aboutRecord(mod: Mod) {
     const value = attributes[Values.asSymbol(key).content]
     if (value === undefined) {
       return Values.Bool(false)
-    } else if (value.kind === "Null") {
+    } else if (Values.isNull(value)) {
       return Values.Bool(false)
     } else {
       return Values.Bool(true)

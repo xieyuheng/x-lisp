@@ -12,7 +12,6 @@ export type Attributes = Record<string, Value>
 
 export type Value =
   | Atom
-  | Null
   | Tael
   | Set
   | Lambda
@@ -27,16 +26,6 @@ export type Value =
   | Curried
   | Tau
   | Pattern
-
-export type Null = {
-  kind: "Null"
-}
-
-export function Null(): Null {
-  return {
-    kind: "Null",
-  }
-}
 
 export type Tael = {
   kind: "Tael"

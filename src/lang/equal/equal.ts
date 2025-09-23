@@ -88,10 +88,10 @@ function equalValues(lhs: Array<Value>, rhs: Array<Value>): boolean {
 }
 
 function equalAttributes(lhs: Attributes, rhs: Attributes): boolean {
-  const leftValues = Object.values(lhs).filter((value) => value.kind !== "Null")
+  const leftValues = Object.values(lhs).filter((value) => !Values.isNull(value))
 
   const rightValues = Object.values(rhs).filter(
-    (value) => value.kind !== "Null",
+    (value) => !Values.isNull(value),
   )
 
   if (leftValues.length !== rightValues.length) return false
@@ -100,7 +100,7 @@ function equalAttributes(lhs: Attributes, rhs: Attributes): boolean {
     const l = lhs[k]
     const r = rhs[k]
 
-    if (r === undefined && l.kind === "Null") {
+    if (r === undefined && Values.isNull(l)) {
       continue
     } else if (equal(l, r)) {
       continue

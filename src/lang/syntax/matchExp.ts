@@ -232,18 +232,8 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("data", ({ data }, { meta }) => {
     switch (data.kind) {
-      case "Hashtag": {
-        if (X.hashtagToString(data) === "void") {
-          return Exps.Void(meta)
-        }
-
-        if (X.hashtagToString(data) === "null") {
-          return Exps.Null(meta)
-        }
-
+      case "Hashtag":
         return Exps.Hashtag(X.hashtagToString(data), meta)
-      }
-
       case "Int":
         return Exps.Int(X.dataToNumber(data), meta)
       case "Float":

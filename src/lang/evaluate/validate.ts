@@ -40,7 +40,7 @@ export function validate(schema: Value, value: Value): Result {
       const attributeSchema = schema.attributeSchemas[key]
       const attribute = value.attributes[key] || Values.Null()
       const result = validate(attributeSchema, attribute)
-      if (result.kind === "Ok" && attribute.kind !== "Null") {
+      if (result.kind === "Ok" && !Values.isNull(attribute)) {
         value.attributes[key] = result.value
       } else {
         return { kind: "Err" }

@@ -8,6 +8,6 @@ export function aboutNull(mod: Mod) {
   define(mod, "null", Values.Null())
 
   definePrimitiveFunction(mod, "null?", 1, (value) => {
-    return Values.Bool(value.kind === "Null")
+    return Values.Bool(Values.isNull(value))
   })
 }
