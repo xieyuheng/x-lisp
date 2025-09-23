@@ -28,11 +28,12 @@ string 代表 literal string 的实现方式是：
 
 打印 string 的时候：
 
-- 如果 string 包含空字符（空格和换行等），
-  就打印成双引号的 literal string。
-
-- 如果 string 不包含空字符，
+- 如果 string 是 valid symbol，
   就直接打印成单引号的 literal symbol。
+
+- 如果 string 不是 valid symbol，
+  比如代表 literal atom 或带有空格，
+  就打印成双引号的 literal string。
 
 还是可以有 symbol 这个概念，
 但是此时它只是代表不包含空字符的 string。
