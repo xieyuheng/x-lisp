@@ -1,16 +1,4 @@
-export type Atom = Bool | Symbol | String | Int | Float
-
-export type Bool = {
-  kind: "Bool"
-  content: boolean
-}
-
-export function Bool(content: boolean): Bool {
-  return {
-    kind: "Bool",
-    content,
-  }
-}
+export type Atom = Symbol | Hashtag | String | Int | Float
 
 export type Symbol = {
   kind: "Symbol"
@@ -32,6 +20,18 @@ export type String = {
 export function String(content: string): String {
   return {
     kind: "String",
+    content,
+  }
+}
+
+export type Hashtag = {
+  kind: "Hashtag"
+  content: string
+}
+
+export function Hashtag(content: string): Hashtag {
+  return {
+    kind: "Hashtag",
     content,
   }
 }

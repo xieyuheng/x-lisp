@@ -37,7 +37,7 @@ export function aboutList(mod: Mod) {
 
     for (const element of Values.asTael(target).elements) {
       const result = apply(p, [element])
-      if (result.kind !== "Bool") {
+      if (!Values.isBool(result)) {
         let message = `(list?) one result of applying the predicate is not bool\n`
         message += `  predicate: ${formatValue(p)}\n`
         message += `  target: ${formatValue(target)}\n`
@@ -46,7 +46,7 @@ export function aboutList(mod: Mod) {
         throw new Error(message)
       }
 
-      if (result.content === false) {
+      if (Values.isFalse(result)) {
         return Values.Bool(false)
       }
     }

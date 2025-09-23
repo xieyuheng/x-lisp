@@ -232,8 +232,18 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("data", ({ data }, { meta }) => {
     switch (data.kind) {
-      case "Bool":
-        return Exps.Bool(X.dataToBoolean(data), meta)
+      case "Hashtag": {
+        if (X.hashtagToString(data) === "void") {
+          return Exps.Void(meta)
+        }
+
+        if (X.hashtagToString(data) === "null") {
+          return Exps.Null(meta)
+        }
+
+        return Exps.Hashtag(X.hashtagToString(data), meta)
+      }
+
       case "Int":
         return Exps.Int(X.dataToNumber(data), meta)
       case "Float":
@@ -241,19 +251,6 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       case "String":
         return Exps.String(X.dataToString(data), meta)
       case "Symbol": {
-        if (X.symbolToString(data).startsWith("#")) {
-          if (X.symbolToString(data) === "#void") {
-            return Exps.Void(meta)
-          }
-
-          if (X.symbolToString(data) === "#null") {
-            return Exps.Null(meta)
-          }
-
-          let message = `unknown special symbol: ${X.symbolToString(data)}\n`
-          throw new X.ErrorWithMeta(message, meta)
-        }
-
         return Exps.Var(X.symbolToString(data), meta)
       }
     }
@@ -265,7 +262,7 @@ export function matchCondLine(data: X.Data): Exps.CondLine {
     X.matcher("(cons* question body)", ({ question, body }, { meta }) => {
       if (question.kind === "Symbol" && question.content === "else") {
         return {
-          question: Exps.Bool(true, meta),
+          question: Exps.Hashtag("t", meta),
           answer: Exps.Begin(X.dataToArray(body).map(matchExp), meta),
         }
       } else {

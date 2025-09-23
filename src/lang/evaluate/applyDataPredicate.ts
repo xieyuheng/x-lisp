@@ -30,13 +30,13 @@ export function applyDataPredicate(
     )
     const element = data.elements[index]
     const result = apply(target, [element])
-    if (result.kind !== "Bool") {
+    if (!Values.isBool(result)) {
       let message = `[applyDataPredicate] I expect the result of a data field predicate to be bool\n`
       message += `  data field predicate: ${formatValue(target)}\n`
       message += `  data element: ${formatValue(element)}\n`
       message += `  result: ${formatValue(result)}\n`
       throw new Error(message)
-    } else if (result.content === false) {
+    } else if (Values.isFalse(result)) {
       return Values.Bool(false)
     }
   }

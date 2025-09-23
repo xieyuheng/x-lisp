@@ -2,12 +2,8 @@ import { type Atom } from "../value/index.ts"
 
 export function formatAtom(value: Atom): string {
   switch (value.kind) {
-    case "Bool": {
-      if (value.content) {
-        return "#t"
-      } else {
-        return "#f"
-      }
+    case "Hashtag": {
+      return `#${value.content}`
     }
 
     case "Symbol": {

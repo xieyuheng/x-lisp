@@ -4,7 +4,7 @@ import { type Atom, type Value } from "../value/index.ts"
 
 export function isAtom(value: any): value is Atom {
   return (
-    value.kind === "Bool" ||
+    value.kind === "Hashtag" ||
     value.kind === "Symbol" ||
     value.kind === "String" ||
     value.kind === "Int" ||
@@ -12,8 +12,8 @@ export function isAtom(value: any): value is Atom {
   )
 }
 
-export function isBool(value: Value): value is Values.Bool {
-  return value.kind === "Bool"
+export function isHashtag(value: Value): value is Values.Hashtag {
+  return value.kind === "Hashtag"
 }
 
 export function isSymbol(value: Value): value is Values.Symbol {
@@ -32,9 +32,9 @@ export function isFloat(value: Value): value is Values.Float {
   return value.kind === "Float"
 }
 
-export function asBool(value: Value): Values.Bool {
-  if (isBool(value)) return value
-  throw new Error(`[asBool] fail on: ${formatValue(value)}\n`)
+export function asHashtag(value: Value): Values.Hashtag {
+  if (isHashtag(value)) return value
+  throw new Error(`[asHashtag] fail on: ${formatValue(value)}\n`)
 }
 
 export function asSymbol(value: Value): Values.Symbol {

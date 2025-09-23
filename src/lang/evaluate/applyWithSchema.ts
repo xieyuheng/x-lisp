@@ -113,8 +113,8 @@ function validateArgs(
 function resultIsValid(schema: Value, value: Value): boolean {
   const result = apply(schema, [value])
 
-  if (result.kind === "Bool") {
-    return result.content
+  if (Values.isBool(result)) {
+    return Values.isTrue(result)
   }
 
   let message = `(validation) expect result to be bool\n`

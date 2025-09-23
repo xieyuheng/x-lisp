@@ -54,8 +54,8 @@ export function validate(schema: Value, value: Value): Result {
   }
 
   const result = apply(schema, [value])
-  if (result.kind === "Bool") {
-    if (result.content === true) {
+  if (Values.isBool(result)) {
+    if (Values.isTrue(result)) {
       return { kind: "Ok", value }
     } else {
       return { kind: "Err" }

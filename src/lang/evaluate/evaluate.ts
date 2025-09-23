@@ -205,13 +205,13 @@ export function evaluate(exp: Exp): Effect {
         const condition = Values.lazyWalk(
           resultValue(evaluate(exp.condition)(mod, env)),
         )
-        if (condition.kind !== "Bool") {
+        if (!Values.isBool(condition)) {
           let message = `[evaluate] The condition part of a (if) must be bool\n`
           message += `  condition: ${formatValue(condition)}\n`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
-        if (condition.content) {
+        if (Values.isTrue(condition)) {
           return evaluate(exp.consequent)(mod, env)
         } else {
           return evaluate(exp.alternative)(mod, env)
@@ -223,13 +223,13 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         for (const e of exp.exps) {
           const value = Values.lazyWalk(resultValue(evaluate(e)(mod, env)))
-          if (value.kind !== "Bool") {
+          if (!Values.isBool(value)) {
             let message = `[evaluate] The subexpressions of (and) must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
             throw new X.ErrorWithMeta(message, exp.meta)
           }
 
-          if (value.content === false) {
+          if (Values.isFalse(value)) {
             return [env, Values.Bool(false)]
           }
         }
@@ -242,13 +242,13 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         for (const e of exp.exps) {
           const value = Values.lazyWalk(resultValue(evaluate(e)(mod, env)))
-          if (value.kind !== "Bool") {
+          if (!Values.isBool(value)) {
             let message = `[evaluate] The subexpressions of (or) must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
             throw new X.ErrorWithMeta(message, exp.meta)
           }
 
-          if (value.content === true) {
+          if (Values.isTrue(value)) {
             return [env, Values.Bool(true)]
           }
         }
@@ -263,13 +263,13 @@ export function evaluate(exp: Exp): Effect {
           const value = Values.lazyWalk(
             resultValue(evaluate(condLine.question)(mod, env)),
           )
-          if (value.kind !== "Bool") {
+          if (!Values.isBool(value)) {
             let message = `[evaluate] The question part of a (cond) line must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
             throw new X.ErrorWithMeta(message, exp.meta)
           }
 
-          if (value.content === true) {
+          if (Values.isTrue(value)) {
             return evaluate(condLine.answer)(mod, env)
           }
         }

@@ -34,7 +34,7 @@ export function aboutSet(mod: Mod) {
 
     for (const element of Values.asSet(target).elements) {
       const result = apply(p, [element])
-      if (result.kind !== "Bool") {
+      if (!Values.isBool(result)) {
         let message = `(set?) one result of applying the predicate is not bool\n`
         message += `  predicate: ${formatValue(p)}\n`
         message += `  target: ${formatValue(target)}\n`
@@ -43,7 +43,7 @@ export function aboutSet(mod: Mod) {
         throw new Error(message)
       }
 
-      if (result.content === false) {
+      if (Values.isFalse(result)) {
         return Values.Bool(false)
       }
     }
@@ -158,7 +158,7 @@ export function aboutSet(mod: Mod) {
     const elements: Array<Values.Value> = []
     for (const element of Values.asSet(set).elements) {
       const result = apply(p, [element])
-      if (result.kind !== "Bool") {
+      if (!Values.isBool(result)) {
         let message = `(set-filter) one result of applying the predicate is not bool\n`
         message += `  predicate: ${formatValue(p)}\n`
         message += `  set: ${formatValue(set)}\n`
@@ -167,7 +167,7 @@ export function aboutSet(mod: Mod) {
         throw new Error(message)
       }
 
-      if (result.content === true) {
+      if (Values.isTrue(result)) {
         elements.push(element)
       }
     }

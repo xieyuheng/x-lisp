@@ -14,6 +14,6 @@ export function aboutBool(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "not", 1, (value) => {
-    return Values.Bool(!Values.asBool(value).content)
+    return Values.Bool(Values.isFalse(value))
   })
 }

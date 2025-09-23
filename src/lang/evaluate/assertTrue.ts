@@ -8,14 +8,14 @@ export function assertTrue(exp: Exp): Effect {
   return (mod, env) => {
     const value = resultValue(evaluate(exp)(mod, env))
 
-    if (value.kind !== "Bool") {
+    if (!Values.isBool(value)) {
       let message = `[assertTrue] fail on non boolean value\n`
       message += `  exp: ${formatExp(exp)}\n`
       message += `  value: ${formatValue(value)}\n`
       throw new X.ErrorWithMeta(message, exp.meta)
     }
 
-    if (value.kind === "Bool" && value.content === false) {
+    if (Values.isFalse(value)) {
       let message = `[assertTrue] fail\n`
       message += `  exp: ${formatExp(exp)}\n`
       throw new X.ErrorWithMeta(message, exp.meta)

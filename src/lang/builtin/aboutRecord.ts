@@ -32,7 +32,7 @@ export function aboutRecord(mod: Mod) {
 
     for (const value of Object.values(Values.asTael(target).attributes)) {
       const result = apply(p, [value])
-      if (result.kind !== "Bool") {
+      if (!Values.isBool(result)) {
         let message = `(record?) one result of applying the predicate is not bool\n`
         message += `  predicate: ${formatValue(p)}\n`
         message += `  target: ${formatValue(target)}\n`
@@ -41,7 +41,7 @@ export function aboutRecord(mod: Mod) {
         throw new Error(message)
       }
 
-      if (result.content === false) {
+      if (Values.isFalse(result)) {
         return Values.Bool(false)
       }
     }

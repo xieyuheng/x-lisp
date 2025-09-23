@@ -17,12 +17,8 @@ export function isSexp(value: Value): boolean {
 
 export function formatSexp(value: Value): string {
   switch (value.kind) {
-    case "Bool": {
-      if (value.content) {
-        return "#t"
-      } else {
-        return "#f"
-      }
+    case "Hashtag": {
+      return `#${value.content}`
     }
 
     case "Symbol": {

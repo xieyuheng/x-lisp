@@ -1,20 +1,6 @@
 import { type Meta } from "../exp/index.ts"
 
-export type Atom = Bool | Symbol | String | Int | Float
-
-export type Bool = {
-  kind: "Bool"
-  content: boolean
-  meta: Meta
-}
-
-export function Bool(content: boolean, meta: Meta): Bool {
-  return {
-    kind: "Bool",
-    content,
-    meta,
-  }
-}
+export type Atom = Symbol | Hashtag | String | Int | Float
 
 export type Symbol = {
   kind: "Symbol"
@@ -39,6 +25,20 @@ export type String = {
 export function String(content: string, meta: Meta): String {
   return {
     kind: "String",
+    content,
+    meta,
+  }
+}
+
+export type Hashtag = {
+  kind: "Hashtag"
+  content: string
+  meta: Meta
+}
+
+export function Hashtag(content: string, meta: Meta): Hashtag {
+  return {
+    kind: "Hashtag",
     content,
     meta,
   }
