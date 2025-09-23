@@ -118,4 +118,9 @@ single qouted string 也是 self-quoted value：
 '('a) => ['a]
 ```
 
-这好像是可行的。
+这也是不行的，
+因为一旦 double qouted string 可以被当作 identifier，
+它就没法被当作 string literal 了。
+
+不论如何，融合 symbol 和 string 的设计都太难解释了。
+所以还是放弃了。
