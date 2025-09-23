@@ -10,10 +10,12 @@ date: 2025-09-23
 
 - 把 `"abc"` 作为 literal string 的语法。
 
-- reader 区分 quote 的两种情况：
+- parser 处理 quote：
 
-  - `'abc` 直接翻译成 `"abc"`。
-  - `'(abc)` 被翻译成 `(@quote (abc))`。
+  - `'abc` 翻译成 `(@quote abc)`。
+  - `'(abc)` 翻译成 `(@quote (abc))`。
+
+- `(@quote ...)` 在 evaluate 时被求值成 string。
 
 - 打印 string 的时候：
 
