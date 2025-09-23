@@ -18,7 +18,8 @@ export function stage3(mod: Mod, stmt: Stmt): void {
     const value = Values.lazyWalk(
       resultValue(evaluate(stmt.exp)(mod, emptyEnv())),
     )
-    if (value.kind !== "Void") {
+
+    if (!Values.isVoid(value)) {
       console.log(formatValue(value))
     }
   }

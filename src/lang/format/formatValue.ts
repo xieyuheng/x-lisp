@@ -70,10 +70,6 @@ export function formatValue(value: Value): string {
       return `${value.name}`
     }
 
-    case "Void": {
-      return "#void"
-    }
-
     case "Data": {
       if (value.elements.length === 0) {
         return value.constructor.name

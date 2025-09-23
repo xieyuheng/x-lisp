@@ -10,9 +10,5 @@ export function same(lhs: Value, rhs: Value): boolean {
     return true
   }
 
-  if (lhs.kind === "Void" && rhs.kind === "Void") {
-    return true
-  }
-
   return lhs === rhs
 }

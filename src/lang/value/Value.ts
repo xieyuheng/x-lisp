@@ -21,7 +21,6 @@ export type Value =
   | LambdaLazy
   | PrimitiveFunction
   | PrimitiveThunk
-  | Void
   | AboutData
   | Arrow
   | The
@@ -187,16 +186,6 @@ export function PrimitiveThunk(name: string, fn: ValueThunk): PrimitiveThunk {
     kind: "PrimitiveThunk",
     name,
     fn,
-  }
-}
-
-export type Void = {
-  kind: "Void"
-}
-
-export function Void(): Void {
-  return {
-    kind: "Void",
   }
 }
 

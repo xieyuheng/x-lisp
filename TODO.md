@@ -1,2 +1,3 @@
-use `Hashtag` to implement `Void` and `Null`
+use `Hashtag` to implement `Null`
+`aboutHashtag` -- hashtag? hashtag-string
 pretty-print

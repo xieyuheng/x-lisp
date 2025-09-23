@@ -8,6 +8,6 @@ export function aboutVoid(mod: Mod) {
   define(mod, "void", Values.Void())
 
   definePrimitiveFunction(mod, "void?", 1, (value) => {
-    return Values.Bool(value.kind === "Void")
+    return Values.Bool(Values.isVoid(value))
   })
 }

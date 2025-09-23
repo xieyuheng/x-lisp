@@ -34,11 +34,7 @@ export function formatPattern(pattern: Pattern): string {
     }
 
     case "LiteralPattern": {
-      if (
-        Values.isAtom(pattern.value) ||
-        pattern.value.kind === "Void" ||
-        pattern.value.kind === "Null"
-      ) {
+      if (Values.isAtom(pattern.value) || pattern.value.kind === "Null") {
         return formatValue(pattern.value)
       }
 
