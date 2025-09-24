@@ -72,7 +72,18 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "Hash": {
-      return "TODO"
+      const entries: Array<string> = []
+      for (const entry of value.entries.values()) {
+        const k = formatValue(entry.key, options)
+        const v = formatValue(entry.value, options)
+        entries.push(`${k} ${v}`)
+      }
+
+      if (entries.length === 0) {
+        return `(@hash)`
+      } else {
+        return `(@hash ${entries.join(" ")})`
+      }
     }
 
     case "Lambda": {

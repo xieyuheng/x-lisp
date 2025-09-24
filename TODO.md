@@ -1,6 +1,5 @@
 # hash
 
-`formatValue` -- `Hash`
 `Hash` as `Exp` -- for `formatValue` and parse back
 parse `@hash` -- without much brackets
 `formatValue` -- support `Hash` -- but `Hash` is not pure data
