@@ -144,7 +144,7 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "Pattern": {
-      return `(@pattern ${formatPattern(value.pattern)})`
+      return `(@pattern ${formatPattern(value.pattern, options)})`
     }
   }
 }

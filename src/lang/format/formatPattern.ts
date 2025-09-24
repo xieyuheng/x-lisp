@@ -4,27 +4,31 @@ import * as Values from "../value/index.ts"
 
 type Options = { digest?: boolean }
 
-export function formatPatterns(patterns: Array<Pattern>): string {
-  return patterns.map((pattern) => formatPattern(pattern)).join(" ")
+export function formatPatterns(
+  patterns: Array<Pattern>,
+  options: Options = {},
+): string {
+  return patterns.map((pattern) => formatPattern(pattern, options)).join(" ")
 }
 
 export function formatPatternAttributes(
   attributes: Record<string, Pattern>,
+  options: Options = {},
 ): string {
   return Object.entries(attributes)
-    .map(([k, v]) => `:${k} ${formatPattern(v)}`)
+    .map(([k, v]) => `:${k} ${formatPattern(v, options)}`)
     .join(" ")
 }
 
-export function formatPattern(pattern: Pattern): string {
+export function formatPattern(pattern: Pattern, options: Options = {}): string {
   switch (pattern.kind) {
     case "VarPattern": {
       return pattern.name
     }
 
     case "TaelPattern": {
-      const elements = formatPatterns(pattern.elements)
-      const attributes = formatPatternAttributes(pattern.attributes)
+      const elements = formatPatterns(pattern.elements, options)
+      const attributes = formatPatternAttributes(pattern.attributes, options)
       if (elements.length === 0 && attributes.length === 0) {
         return `[]`
       } else if (attributes.length === 0) {
@@ -38,15 +42,15 @@ export function formatPattern(pattern: Pattern): string {
 
     case "LiteralPattern": {
       if (Values.isAtom(pattern.value) || Values.isNull(pattern.value)) {
-        return formatValue(pattern.value)
+        return formatValue(pattern.value, options)
       }
 
-      return `(@escape ${formatValue(pattern.value)})`
+      return `(@escape ${formatValue(pattern.value, options)})`
     }
 
     case "ConsStarPattern": {
-      const elements = formatPatterns(pattern.elements)
-      return `(cons* ${elements} ${formatPattern(pattern.rest)})`
+      const elements = formatPatterns(pattern.elements, options)
+      return `(cons* ${elements} ${formatPattern(pattern.rest, options)})`
     }
   }
 }
