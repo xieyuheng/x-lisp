@@ -1,6 +1,5 @@
 # hash
 
-`hashGet`
 `hashPut`
 
 `Hash` as `Exp` -- for `formatValue` and parse back
