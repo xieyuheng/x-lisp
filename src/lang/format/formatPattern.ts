@@ -8,6 +8,14 @@ export function formatPatterns(patterns: Array<Pattern>): string {
   return patterns.map((pattern) => formatPattern(pattern)).join(" ")
 }
 
+export function formatPatternAttributes(
+  attributes: Record<string, Pattern>,
+): string {
+  return Object.entries(attributes)
+    .map(([k, v]) => `:${k} ${formatPattern(v)}`)
+    .join(" ")
+}
+
 export function formatPattern(pattern: Pattern): string {
   switch (pattern.kind) {
     case "VarPattern": {
@@ -16,17 +24,15 @@ export function formatPattern(pattern: Pattern): string {
 
     case "TaelPattern": {
       const elements = formatPatterns(pattern.elements)
-      const attributes = Object.entries(pattern.attributes).map(
-        ([k, v]) => `:${k} ${formatPattern(v)}`,
-      )
+      const attributes = formatPatternAttributes(pattern.attributes)
       if (elements.length === 0 && attributes.length === 0) {
         return `[]`
       } else if (attributes.length === 0) {
         return `[${elements}]`
       } else if (elements.length === 0) {
-        return `[${attributes.join(" ")}]`
+        return `[${attributes}]`
       } else {
-        return `[${elements} ${attributes.join(" ")}]`
+        return `[${elements} ${attributes}]`
       }
     }
 

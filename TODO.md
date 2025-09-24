@@ -1,7 +1,5 @@
 # hash
 
-extract `formatPatternAttributes`
-
 `formatPattern` take `digest: true` option
 
 `formatValue` -- sort attributes on `digest`
