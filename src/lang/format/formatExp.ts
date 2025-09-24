@@ -102,6 +102,10 @@ export function formatExp(exp: Exp): string {
       }
     }
 
+    case "Hash": {
+      throw new Error("TODO")
+    }
+
     case "Quote": {
       return formatData(exp.sexp)
     }

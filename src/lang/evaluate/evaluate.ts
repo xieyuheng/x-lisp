@@ -190,6 +190,10 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
+    case "Hash": {
+      throw new Error("TODO")
+    }
+
     case "Quote": {
       return (mod, env) => {
         return [env, exp.sexp]

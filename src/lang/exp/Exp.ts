@@ -24,6 +24,7 @@ export type Exp =
   | Null
   | Tael
   | Set
+  | Hash
   | Quote
   | Quasiquote
   | If
@@ -298,6 +299,23 @@ export function Set(elements: Array<Exp>, meta: Meta): Set {
   return {
     kind: "Set",
     elements,
+    meta,
+  }
+}
+
+export type Hash = {
+  kind: "Hash"
+  entries: Array<{ key: Exp; value: Exp }>
+  meta: Meta
+}
+
+export function Hash(
+  entries: Array<{ key: Exp; value: Exp }>,
+  meta: Meta,
+): Hash {
+  return {
+    kind: "Hash",
+    entries,
     meta,
   }
 }
