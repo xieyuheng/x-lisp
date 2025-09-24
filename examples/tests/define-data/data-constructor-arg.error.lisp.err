@@ -1,6 +1,6 @@
-[applyDataConstructor] invalid args
+[applyDataConstructor] result data cannot possibly pass data predicate
   constructor: li
   args: [1 2]
   result data: [#li 1 2]
-  data does not pass predicate: my-list?
+  data predicate: my-list?
 
