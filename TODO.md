@@ -1,4 +1,6 @@
-`DataCnstructor` should validate arguments
+extract `applyDataConstructor`
+`applyDataConstructor` -- should validate arguments
+`applyDataPutter` -- should validate arguments
 
 # later
 

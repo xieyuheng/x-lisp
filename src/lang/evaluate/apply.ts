@@ -78,14 +78,12 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   if (target.kind === "DataConstructor") {
-    if (target.fields.length !== args.length) {
-      let message = `[apply] data constructor arity mismatch\n`
-      message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${args.map(formatValue).join(" ")}]\n`
-      throw new Error(message)
+    const arity = target.fields.length
+    if (arity === args.length) {
+      return Values.Data(target, args)
+    } else {
+      return supply(target, arity, args)
     }
-
-    return Values.Data(target, args)
   }
 
   if (target.kind === "DataConstructorPredicate") {

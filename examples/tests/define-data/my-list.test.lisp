@@ -22,3 +22,9 @@
 
 (assert-equal (li-tail (li 1 nil)) nil)
 (assert-equal (li-head (li 1 nil)) 1)
+
+;; data constructor currying:
+
+(assert-equal
+  (li 1 nil)
+  ((li 1) nil))
