@@ -18,10 +18,13 @@ export function patternize(exp: Exp): Effect {
       const topValue = modLookupValue(mod, exp.name)
       if (
         topValue &&
-        topValue.kind === "Data" &&
-        topValue.elements.length === 0
+        Values.isData(topValue) &&
+        topValue.elements.length === 1
       ) {
-        return Patterns.DataPattern(topValue.constructor, [])
+        return Patterns.TaelPattern(
+          [Patterns.LiteralPattern(Values.dataHashtag(topValue))],
+          {},
+        )
       } else {
         return Patterns.VarPattern(exp.name)
       }
@@ -57,9 +60,12 @@ export function patternize(exp: Exp): Effect {
     return (mod, env) => {
       const topValue = modLookupValue(mod, name)
       if (topValue && topValue.kind === "DataConstructor") {
-        return Patterns.DataPattern(
-          topValue,
-          exp.args.map((arg) => patternize(arg)(mod, env)),
+        return Patterns.TaelPattern(
+          [
+            Patterns.LiteralPattern(Values.Hashtag(topValue.name)),
+            ...exp.args.map((arg) => patternize(arg)(mod, env)),
+          ],
+          {},
         )
       } else {
         let message = `[patternize] The target of apply must be data constructor\n`

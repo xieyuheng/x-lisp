@@ -1,7 +1,6 @@
 import assert from "node:assert"
 import { flags } from "../../flags.ts"
 import { emptyEnv, envLookupValue, envNames } from "../env/index.ts"
-import { equal } from "../equal/index.ts"
 import { formatValue } from "../format/index.ts"
 import { match } from "../pattern/index.ts"
 import * as Values from "../value/index.ts"
@@ -97,8 +96,12 @@ export function apply(target: Value, args: Array<Value>): Value {
     }
 
     const data = args[0]
+    if (!Values.isData(data)) {
+      return Values.Bool(false)
+    }
+
     return Values.Bool(
-      data.kind === "Data" && equal(target.constructor, data.constructor),
+      target.constructor.name === Values.dataHashtag(data).content,
     )
   }
 

@@ -1,8 +1,7 @@
-import { type DataConstructor, type Value } from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 
 export type Pattern =
   | VarPattern
-  | DataPattern
   | TaelPattern
   | LiteralPattern
   | ConsStarPattern
@@ -16,23 +15,6 @@ export function VarPattern(name: string): VarPattern {
   return {
     kind: "VarPattern",
     name,
-  }
-}
-
-export type DataPattern = {
-  kind: "DataPattern"
-  constructor: DataConstructor
-  args: Array<Pattern>
-}
-
-export function DataPattern(
-  constructor: DataConstructor,
-  args: Array<Pattern>,
-): DataPattern {
-  return {
-    kind: "DataPattern",
-    constructor,
-    args,
   }
 }
 

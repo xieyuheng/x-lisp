@@ -26,15 +26,6 @@ export function match(pattern: Pattern, value: Value): Effect {
       }
     }
 
-    case "DataPattern": {
-      return (env) => {
-        if (value.kind !== "Data") return undefined
-        if (!equal(value.constructor, pattern.constructor)) return undefined
-
-        return matchMany(pattern.args, value.elements)(env)
-      }
-    }
-
     case "TaelPattern": {
       return (env) => {
         if (value.kind !== "Tael") return undefined

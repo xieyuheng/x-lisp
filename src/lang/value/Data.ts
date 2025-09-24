@@ -1,6 +1,5 @@
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
-import { type Value } from "./Value.ts"
 
 export type DataSpec = {
   mod: Mod
@@ -9,29 +8,11 @@ export type DataSpec = {
 }
 
 export type AboutData =
-  | Data
   | DataPredicate
   | DataConstructor
   | DataConstructorPredicate
   | DataGetter
   | DataPutter
-
-export type Data = {
-  kind: "Data"
-  constructor: DataConstructor
-  elements: Array<Value>
-}
-
-export function Data(
-  constructor: DataConstructor,
-  elements: Array<Value>,
-): Data {
-  return {
-    kind: "Data",
-    constructor,
-    elements,
-  }
-}
 
 export type DataConstructor = {
   kind: "DataConstructor"

@@ -19,16 +19,26 @@ export function applyDataPredicate(
   }
 
   const data = args[args.length - 1]
-  if (data.kind !== "Data") return Values.Bool(false)
+  if (!Values.isData(data)) {
+    return Values.Bool(false)
+  }
 
-  const constructor = predicate.spec.constructors[data.constructor.name]
-  if (constructor === undefined) return Values.Bool(false)
+  const constructor =
+    predicate.spec.constructors[Values.dataHashtag(data).content]
+  if (constructor === undefined) {
+    return Values.Bool(false)
+  }
 
   for (const [index, field] of constructor.fields.entries()) {
     const target = resultValue(
       evaluate(field.predicate)(predicate.spec.mod, env),
     )
-    const element = data.elements[index]
+    // index + 1 over the head hashtag.
+    const element = data.elements[index + 1]
+    if (element === undefined) {
+      return Values.Bool(false)
+    }
+
     const result = apply(target, [element])
     if (!Values.isBool(result)) {
       let message = `[applyDataPredicate] I expect the result of a data field predicate to be bool\n`

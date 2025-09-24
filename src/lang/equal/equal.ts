@@ -49,13 +49,6 @@ export function equal(lhs: Value, rhs: Value): boolean {
     return equal(lhs.constructor, rhs.constructor)
   }
 
-  if (lhs.kind === "Data" && rhs.kind === "Data") {
-    return (
-      equal(lhs.constructor, rhs.constructor) &&
-      equalValues(lhs.elements, rhs.elements)
-    )
-  }
-
   if (lhs.kind === "DataGetter" && rhs.kind === "DataGetter") {
     return (
       equal(lhs.constructor, rhs.constructor) &&

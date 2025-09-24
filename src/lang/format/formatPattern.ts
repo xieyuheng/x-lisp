@@ -8,15 +8,6 @@ export function formatPattern(pattern: Pattern): string {
       return pattern.name
     }
 
-    case "DataPattern": {
-      if (pattern.args.length === 0) {
-        return pattern.constructor.name
-      } else {
-        const args = pattern.args.map(formatPattern)
-        return `(${pattern.constructor.name} ${args.join(" ")})`
-      }
-    }
-
     case "TaelPattern": {
       const elements = pattern.elements.map(formatPattern)
       const attributes = Object.entries(pattern.attributes).map(
