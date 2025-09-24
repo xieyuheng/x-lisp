@@ -1,7 +1,5 @@
 # hash
 
-`hashPut`
-
 `Hash` as `Exp` -- for `formatValue` and parse back
 parse `@hash` -- without much brackets
 `Values.isPureData` -- only pure data can be used as hash key
