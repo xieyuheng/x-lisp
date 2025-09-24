@@ -32,6 +32,20 @@ export function formatAttributes(
   }
 }
 
+export function formatValueSet(
+  elements: Array<Value>,
+  options: Options = {},
+): string {
+  if (options.digest) {
+    return elements
+      .map((element) => formatValue(element, options))
+      .sort()
+      .join(" ")
+  } else {
+    return elements.map((element) => formatValue(element, options)).join(" ")
+  }
+}
+
 export function formatValue(value: Value, options: Options = {}): string {
   if (isAtom(value)) {
     return formatAtom(value)
@@ -53,7 +67,7 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "Set": {
-      const elements = formatValues(value.elements, options)
+      const elements = formatValueSet(value.elements, options)
       if (elements.length === 0) {
         return `{}`
       } else {

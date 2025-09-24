@@ -1,7 +1,5 @@
 # hash
 
-`formatValue` -- sort set on `digest`
-
 test `formatValue`
 
 `Hash` as `Value`
