@@ -2,6 +2,12 @@ import { formatValue } from "../format/index.ts"
 import { type Pattern } from "../pattern/index.ts"
 import * as Values from "../value/index.ts"
 
+type Options = { digest?: boolean }
+
+export function formatPatterns(patterns: Array<Pattern>): string {
+  return patterns.map((pattern) => formatPattern(pattern)).join(" ")
+}
+
 export function formatPattern(pattern: Pattern): string {
   switch (pattern.kind) {
     case "VarPattern": {
@@ -9,18 +15,18 @@ export function formatPattern(pattern: Pattern): string {
     }
 
     case "TaelPattern": {
-      const elements = pattern.elements.map(formatPattern)
+      const elements = formatPatterns(pattern.elements)
       const attributes = Object.entries(pattern.attributes).map(
         ([k, v]) => `:${k} ${formatPattern(v)}`,
       )
       if (elements.length === 0 && attributes.length === 0) {
         return `[]`
       } else if (attributes.length === 0) {
-        return `[${elements.join(" ")}]`
+        return `[${elements}]`
       } else if (elements.length === 0) {
         return `[${attributes.join(" ")}]`
       } else {
-        return `[${elements.join(" ")} ${attributes.join(" ")}]`
+        return `[${elements} ${attributes.join(" ")}]`
       }
     }
 
@@ -33,8 +39,8 @@ export function formatPattern(pattern: Pattern): string {
     }
 
     case "ConsStarPattern": {
-      const elements = pattern.elements.map(formatPattern)
-      return `(cons* ${elements.join(" ")} ${formatPattern(pattern.rest)})`
+      const elements = formatPatterns(pattern.elements)
+      return `(cons* ${elements} ${formatPattern(pattern.rest)})`
     }
   }
 }
