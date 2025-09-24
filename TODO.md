@@ -1,6 +1,5 @@
 # hash
 
-`formatValue` -- fix the case of length zero
 `formatValue` -- `Hash`
 `Hash` as `Exp` -- for `formatValue` and parse back
 parse `@hash` -- without much brackets

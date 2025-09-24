@@ -55,11 +55,11 @@ export function formatValue(value: Value, options: Options = {}): string {
     case "Tael": {
       const elements = formatValues(value.elements, options)
       const attributes = formatAttributes(value.attributes, options)
-      if (elements.length === 0 && attributes.length === 0) {
+      if (elements === "" && attributes === "") {
         return `[]`
-      } else if (attributes.length === 0) {
+      } else if (attributes === "") {
         return `[${elements}]`
-      } else if (elements.length === 0) {
+      } else if (elements === "") {
         return `[${attributes}]`
       } else {
         return `[${elements} ${attributes}]`
@@ -68,11 +68,7 @@ export function formatValue(value: Value, options: Options = {}): string {
 
     case "Set": {
       const elements = formatValueSet(value.elements, options)
-      if (elements.length === 0) {
-        return `{}`
-      } else {
-        return `{${elements}}`
-      }
+      return `{${elements}}`
     }
 
     case "Hash": {
@@ -131,7 +127,7 @@ export function formatValue(value: Value, options: Options = {}): string {
     case "Arrow": {
       const argSchemas = formatValues(value.argSchemas, options)
       const retSchema = formatValue(value.retSchema, options)
-      if (argSchemas.length === 0) {
+      if (argSchemas === "") {
         return `(-> ${retSchema})`
       } else {
         return `(-> ${argSchemas} ${retSchema})`
@@ -147,7 +143,7 @@ export function formatValue(value: Value, options: Options = {}): string {
     case "Curried": {
       const target = formatValue(value.target, options)
       const args = formatValues(value.args, options)
-      if (args.length === 0) {
+      if (args === "") {
         return `${target}`
       } else {
         return `(${target} ${args})`
@@ -157,11 +153,11 @@ export function formatValue(value: Value, options: Options = {}): string {
     case "Tau": {
       const elementSchemas = formatValues(value.elementSchemas, options)
       const attributeSchemas = formatAttributes(value.attributeSchemas, options)
-      if (elementSchemas.length === 0 && attributeSchemas.length === 0) {
+      if (elementSchemas === "" && attributeSchemas === "") {
         return `(tau)`
-      } else if (attributeSchemas.length === 0) {
+      } else if (attributeSchemas === "") {
         return `(tau ${elementSchemas})`
-      } else if (elementSchemas.length === 0) {
+      } else if (elementSchemas === "") {
         return `(tau ${attributeSchemas})`
       } else {
         return `(tau ${elementSchemas} ${attributeSchemas})`

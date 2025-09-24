@@ -36,11 +36,11 @@ export function formatPattern(pattern: Pattern, options: Options = {}): string {
     case "TaelPattern": {
       const elements = formatPatterns(pattern.elements, options)
       const attributes = formatPatternAttributes(pattern.attributes, options)
-      if (elements.length === 0 && attributes.length === 0) {
+      if (elements === "" && attributes === "") {
         return `[]`
-      } else if (attributes.length === 0) {
+      } else if (attributes === "") {
         return `[${elements}]`
-      } else if (elements.length === 0) {
+      } else if (elements === "") {
         return `[${attributes}]`
       } else {
         return `[${elements} ${attributes}]`
