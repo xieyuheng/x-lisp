@@ -4,19 +4,28 @@ import {
   formatExp,
   formatPattern,
 } from "../format/index.ts"
+import * as Values from "../value/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
+
+type Options = { digest?: boolean }
 
 export function formatValues(
   values: Array<Value>,
-  options: { digest?: boolean } = {},
+  options: Options = {},
 ): string {
   return values.map((v) => formatValue(v, options)).join(" ")
 }
 
-export function formatValue(
-  value: Value,
-  options: { digest?: boolean } = {},
+export function formatAttributes(
+  attributes: Values.Attributes,
+  options: Options = {},
 ): string {
+  return Object.entries(attributes)
+    .map(([k, v]) => `:${k} ${formatValue(v, options)}`)
+    .join(" ")
+}
+
+export function formatValue(value: Value, options: Options = {}): string {
   if (isAtom(value)) {
     return formatAtom(value)
   }
@@ -24,9 +33,7 @@ export function formatValue(
   switch (value.kind) {
     case "Tael": {
       const elements = formatValues(value.elements, options)
-      const attributes = Object.entries(value.attributes)
-        .map(([k, v]) => `:${k} ${formatValue(v, options)}`)
-        .join(" ")
+      const attributes = formatAttributes(value.attributes, options)
       if (elements.length === 0 && attributes.length === 0) {
         return `[]`
       } else if (attributes.length === 0) {
@@ -124,17 +131,15 @@ export function formatValue(
 
     case "Tau": {
       const elementSchemas = formatValues(value.elementSchemas, options)
-      const attributeSchemas = Object.entries(value.attributeSchemas).map(
-        ([k, v]) => `:${k} ${formatValue(v, options)}`,
-      )
+      const attributeSchemas = formatAttributes(value.attributeSchemas, options)
       if (elementSchemas.length === 0 && attributeSchemas.length === 0) {
         return `(tau)`
       } else if (attributeSchemas.length === 0) {
         return `(tau ${elementSchemas})`
       } else if (elementSchemas.length === 0) {
-        return `(tau ${attributeSchemas.join(" ")})`
+        return `(tau ${attributeSchemas})`
       } else {
-        return `(tau ${elementSchemas} ${attributeSchemas.join(" ")})`
+        return `(tau ${elementSchemas} ${attributeSchemas})`
       }
     }
 
