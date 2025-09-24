@@ -5,6 +5,7 @@ import { formatValue } from "../format/index.ts"
 import { match } from "../pattern/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
+import { applyDataConstructorPredicate } from "./applyDataConstructorPredicate.ts"
 import { applyDataGetter } from "./applyDataGetter.ts"
 import { applyDataPredicate } from "./applyDataPredicate.ts"
 import { applyDataPutter } from "./applyDataPutter.ts"
@@ -95,22 +96,7 @@ export function apply(target: Value, args: Array<Value>): Value {
       throw new Error(message)
     }
 
-    const data = args[0]
-    if (target.constructor.fields.length === 0) {
-      if (Values.isHashtag(data)) {
-        return Values.Bool(target.constructor.name === data.content)
-      }
-
-      return Values.Bool(false)
-    } else {
-      if (Values.isData(data)) {
-        return Values.Bool(
-          target.constructor.name === Values.dataHashtag(data).content,
-        )
-      }
-
-      return Values.Bool(false)
-    }
+    return applyDataConstructorPredicate(target, args[0])
   }
 
   if (target.kind === "DataGetter") {
