@@ -15,9 +15,16 @@ export function formatPatternAttributes(
   attributes: Record<string, Pattern>,
   options: Options = {},
 ): string {
-  return Object.entries(attributes)
-    .map(([k, v]) => `:${k} ${formatPattern(v, options)}`)
-    .join(" ")
+  if (options.digest) {
+    return Object.keys(attributes)
+      .sort()
+      .map((k) => `:${k} ${formatPattern(attributes[k], options)}`)
+      .join(" ")
+  } else {
+    return Object.entries(attributes)
+      .map(([k, v]) => `:${k} ${formatPattern(v, options)}`)
+      .join(" ")
+  }
 }
 
 export function formatPattern(pattern: Pattern, options: Options = {}): string {
