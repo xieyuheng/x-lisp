@@ -2,11 +2,13 @@
 
 `Hash` as `Value`
 
-`LiteralHash` as `Exp` -- for `formatValue` and parse back
+`Hash` as `Exp` -- for `formatValue` and parse back
 
-parse `@hash`
+parse `@hash` -- without much brackets
 
 `formatValue` -- support `Hash`
+
+`Values.isPureData` -- only pure data can be used as hash key
 
 `hash?`
 `hash-from-entries`
