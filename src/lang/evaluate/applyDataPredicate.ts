@@ -1,6 +1,8 @@
 import assert from "node:assert"
+import { useBuiltinPreludeMod } from "../builtin/index.ts"
 import { emptyEnv, envSetValue } from "../env/index.ts"
 import { formatValue } from "../format/index.ts"
+import { modLookupValue } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import { apply } from "./apply.ts"
@@ -65,4 +67,17 @@ export function applyDataPredicate(
   }
 
   return Values.Bool(false)
+}
+
+export function applyDataPredicateWithAnything(
+  predicate: Values.DataPredicate,
+  data: Value,
+): Value {
+  const preludeMod = useBuiltinPreludeMod()
+  const anything = modLookupValue(preludeMod, "anything?")
+  assert(anything)
+  return applyDataPredicate(predicate, [
+    ...predicate.parameters.map((_) => anything),
+    data,
+  ])
 }

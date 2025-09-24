@@ -1,4 +1,3 @@
-extract `dataMightPassDataPredicate`
 `applyDataPutter` -- should validate arguments
 
 # later
