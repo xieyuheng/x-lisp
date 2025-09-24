@@ -5,6 +5,7 @@ import { formatValue } from "../format/index.ts"
 import { match } from "../pattern/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
+import { applyDataConstructor } from "./applyDataConstructor.ts"
 import { applyDataConstructorPredicate } from "./applyDataConstructorPredicate.ts"
 import { applyDataGetter } from "./applyDataGetter.ts"
 import { applyDataPredicate } from "./applyDataPredicate.ts"
@@ -80,7 +81,7 @@ export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "DataConstructor") {
     const arity = target.fields.length
     if (arity === args.length) {
-      return Values.Data(target, args)
+      return applyDataConstructor(target, args)
     } else {
       return supply(target, arity, args)
     }
