@@ -34,7 +34,7 @@ export function stage1(mod: Mod, stmt: Stmt): void {
         mod,
         constructor.name,
         constructor.fields.length === 0
-          ? Values.Data(constructor, [])
+          ? Values.Hashtag(constructor.name)
           : constructor,
       )
 

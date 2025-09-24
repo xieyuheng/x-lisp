@@ -1,3 +1,4 @@
+extract `applyDataConstructorPredicate`
 `DataCnstructor` should validate arguments
 
 # later

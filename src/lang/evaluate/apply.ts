@@ -96,13 +96,21 @@ export function apply(target: Value, args: Array<Value>): Value {
     }
 
     const data = args[0]
-    if (!Values.isData(data)) {
+    if (target.constructor.fields.length === 0) {
+      if (Values.isHashtag(data)) {
+        return Values.Bool(target.constructor.name === data.content)
+      }
+
+      return Values.Bool(false)
+    } else {
+      if (Values.isData(data)) {
+        return Values.Bool(
+          target.constructor.name === Values.dataHashtag(data).content,
+        )
+      }
+
       return Values.Bool(false)
     }
-
-    return Values.Bool(
-      target.constructor.name === Values.dataHashtag(data).content,
-    )
   }
 
   if (target.kind === "DataGetter") {

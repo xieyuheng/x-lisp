@@ -16,15 +16,8 @@ export function patternize(exp: Exp): Effect {
   if (exp.kind === "Var") {
     return (mod, env) => {
       const topValue = modLookupValue(mod, exp.name)
-      if (
-        topValue &&
-        Values.isData(topValue) &&
-        topValue.elements.length === 1
-      ) {
-        return Patterns.TaelPattern(
-          [Patterns.LiteralPattern(Values.dataHashtag(topValue))],
-          {},
-        )
+      if (topValue && Values.isHashtag(topValue)) {
+        return Patterns.LiteralPattern(topValue)
       } else {
         return Patterns.VarPattern(exp.name)
       }
