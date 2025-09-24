@@ -1,7 +1,7 @@
 import assert from "node:assert"
 import { flags } from "../../flags.ts"
 import { emptyEnv, envLookupValue, envNames } from "../env/index.ts"
-import { formatValue } from "../format/index.ts"
+import { formatValue, formatValues } from "../format/index.ts"
 import { match } from "../pattern/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
@@ -31,7 +31,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (args.length !== 1) {
       let message = `[apply] tau can only take one argument\n`
       message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${args.map(formatValue).join(" ")}]\n`
+      message += `  args: [${formatValues(args)}]\n`
       throw new Error(message)
     }
 
@@ -91,7 +91,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (args.length !== 1) {
       let message = `[apply] data constructor predicate can only take one argument\n`
       message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${args.map(formatValue).join(" ")}]\n`
+      message += `  args: [${formatValues(args)}]\n`
       throw new Error(message)
     }
 
@@ -124,7 +124,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (args.length !== 1) {
       let message = `[apply] pattern can only take one argument\n`
       message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${args.map(formatValue).join(" ")}]\n`
+      message += `  args: [${formatValues(args)}]\n`
       throw new Error(message)
     }
 
@@ -146,6 +146,6 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   let message = `[apply] I can not handle this kind of target\n`
   message += `  target: ${formatValue(target)}\n`
-  message += `  args: [${args.map(formatValue).join(" ")}]\n`
+  message += `  args: [${formatValues(args)}]\n`
   throw new Error(message)
 }

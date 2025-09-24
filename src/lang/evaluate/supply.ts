@@ -1,4 +1,4 @@
-import { formatValue } from "../format/index.ts"
+import { formatValue, formatValues } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
@@ -16,7 +16,7 @@ export function supply(
     let message = `[supply] too many arguments\n`
     message += `  target: ${formatValue(target)}\n`
     message += `  arity: ${arity}\n`
-    message += `  args: [${args.map(formatValue).join(" ")}]\n`
+    message += `  args: [${formatValues(args)}]\n`
     throw new Error(message)
   }
 

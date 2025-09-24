@@ -6,34 +6,44 @@ import {
 } from "../format/index.ts"
 import { isAtom, type Value } from "../value/index.ts"
 
-export function formatValue(value: Value): string {
+export function formatValues(
+  values: Array<Value>,
+  options: { digest?: boolean } = {},
+): string {
+  return values.map((v) => formatValue(v, options)).join(" ")
+}
+
+export function formatValue(
+  value: Value,
+  options: { digest?: boolean } = {},
+): string {
   if (isAtom(value)) {
     return formatAtom(value)
   }
 
   switch (value.kind) {
     case "Tael": {
-      const elements = value.elements.map(formatValue)
-      const attributes = Object.entries(value.attributes).map(
-        ([k, v]) => `:${k} ${formatValue(v)}`,
-      )
+      const elements = formatValues(value.elements, options)
+      const attributes = Object.entries(value.attributes)
+        .map(([k, v]) => `:${k} ${formatValue(v, options)}`)
+        .join(" ")
       if (elements.length === 0 && attributes.length === 0) {
         return `[]`
       } else if (attributes.length === 0) {
-        return `[${elements.join(" ")}]`
+        return `[${elements}]`
       } else if (elements.length === 0) {
-        return `[${attributes.join(" ")}]`
+        return `[${attributes}]`
       } else {
-        return `[${elements.join(" ")} ${attributes.join(" ")}]`
+        return `[${elements} ${attributes}]`
       }
     }
 
     case "Set": {
-      const elements = value.elements.map(formatValue)
+      const elements = formatValues(value.elements, options)
       if (elements.length === 0) {
         return `{}`
       } else {
-        return `{${elements.join(" ")}}`
+        return `{${elements}}`
       }
     }
 
@@ -47,7 +57,7 @@ export function formatValue(value: Value): string {
 
     case "Lazy": {
       if (value.cachedValue) {
-        const cachedValue = formatValue(value.cachedValue)
+        const cachedValue = formatValue(value.cachedValue, options)
         return `(lazy ${formatExp(value.exp)} :cached-value ${cachedValue})`
       } else {
         return `(lazy ${formatExp(value.exp)})`
@@ -87,42 +97,44 @@ export function formatValue(value: Value): string {
     }
 
     case "Arrow": {
-      const argSchemas = value.argSchemas.map(formatValue)
-      const retSchema = formatValue(value.retSchema)
+      const argSchemas = formatValues(value.argSchemas, options)
+      const retSchema = formatValue(value.retSchema, options)
       if (argSchemas.length === 0) {
         return `(-> ${retSchema})`
       } else {
-        return `(-> ${argSchemas.join(" ")} ${retSchema})`
+        return `(-> ${argSchemas} ${retSchema})`
       }
     }
 
     case "The": {
-      return `(the ${formatValue(value.schema)} ${formatValue(value.value)})`
+      const schemaString = formatValue(value.schema, options)
+      const valueString = formatValue(value.value, options)
+      return `(the ${schemaString} ${valueString})`
     }
 
     case "Curried": {
-      const target = formatValue(value.target)
-      const args = value.args.map(formatValue)
+      const target = formatValue(value.target, options)
+      const args = formatValues(value.args, options)
       if (args.length === 0) {
         return `${target}`
       } else {
-        return `(${target} ${args.join(" ")})`
+        return `(${target} ${args})`
       }
     }
 
     case "Tau": {
-      const elementSchemas = value.elementSchemas.map(formatValue)
+      const elementSchemas = formatValues(value.elementSchemas, options)
       const attributeSchemas = Object.entries(value.attributeSchemas).map(
-        ([k, v]) => `:${k} ${formatValue(v)}`,
+        ([k, v]) => `:${k} ${formatValue(v, options)}`,
       )
       if (elementSchemas.length === 0 && attributeSchemas.length === 0) {
         return `(tau)`
       } else if (attributeSchemas.length === 0) {
-        return `(tau ${elementSchemas.join(" ")})`
+        return `(tau ${elementSchemas})`
       } else if (elementSchemas.length === 0) {
         return `(tau ${attributeSchemas.join(" ")})`
       } else {
-        return `(tau ${elementSchemas.join(" ")} ${attributeSchemas.join(" ")})`
+        return `(tau ${elementSchemas} ${attributeSchemas.join(" ")})`
       }
     }
 

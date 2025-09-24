@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-data.js"
 import { arrayMapZip } from "../../utils/array/arrayMapZip.ts"
-import { formatValue } from "../format/index.ts"
+import { formatValue, formatValues } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
@@ -22,7 +22,7 @@ export function applyWithSchema(
 
     if (arrow.argSchemas.length < args.length) {
       let message = `(validation) too many arguments\n`
-      message += `  args: [${args.map(formatValue).join(" ")}]\n`
+      message += `  args: [${formatValues(args)}]\n`
       message += `  schema: ${formatValue(schema)}\n`
       message += `  target: ${formatValue(target)}\n`
       if (meta) throw new X.ErrorWithMeta(message, meta)
@@ -38,7 +38,7 @@ export function applyWithSchema(
         return result
       } else {
         let message = `(validation) fail on result\n`
-        message += `  args: [${args.map(formatValue).join(" ")}]\n`
+        message += `  args: [${formatValues(args)}]\n`
         message += `  result: ${formatValue(result)}\n`
         message += `  schema: ${formatValue(schema)}\n`
         message += `  target: ${formatValue(target)}\n`
@@ -57,7 +57,7 @@ export function applyWithSchema(
   }
 
   let message = `(validation) unhandled kind of schema\n`
-  message += `  args: [${args.map(formatValue).join(" ")}]\n`
+  message += `  args: [${formatValues(args)}]\n`
   message += `  schema: ${formatValue(schema)}\n`
   message += `  target: ${formatValue(target)}\n`
   if (meta) throw new X.ErrorWithMeta(message, meta)
@@ -99,7 +99,7 @@ function validateArgs(
 
   const meta = Values.valueMaybeMeta(context.target)
   let message = `(validation) fail on arguments\n`
-  message += `  args: [${context.args.map(formatValue).join(" ")}]\n`
+  message += `  args: [${formatValues(context.args)}]\n`
   for (const { index, schema, arg } of erred) {
     message += `    #${index}: (the ${formatValue(schema)} ${formatValue(arg)})\n`
   }

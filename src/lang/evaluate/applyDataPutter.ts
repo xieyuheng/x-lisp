@@ -1,6 +1,6 @@
 import assert from "node:assert"
 import { flags } from "../../flags.ts"
-import { formatValue } from "../format/index.ts"
+import { formatValue, formatValues } from "../format/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import { applyDataPredicateWithAnything } from "./applyDataPredicate.ts"
@@ -12,7 +12,7 @@ export function applyDataPutter(
   if (args.length !== 2) {
     let message = `[applyDataPutter] data putter can only take two arguments\n`
     message += `  target: ${formatValue(putter)}\n`
-    message += `  args: [${args.map(formatValue).join(" ")}]\n`
+    message += `  args: [${formatValues(args)}]\n`
     throw new Error(message)
   }
 
@@ -21,14 +21,14 @@ export function applyDataPutter(
   if (!Values.isData(data)) {
     let message = `[applyDataPutter] data putter can only take data as the second argument\n`
     message += `  target: ${formatValue(putter)}\n`
-    message += `  args: [${args.map(formatValue).join(" ")}]\n`
+    message += `  args: [${formatValues(args)}]\n`
     throw new Error(message)
   }
 
   if (Values.dataHashtag(data).content !== putter.constructor.name) {
     let message = `[applyDataPutter] data putter constructor mismatch\n`
     message += `  target: ${formatValue(putter)}\n`
-    message += `  args: [${args.map(formatValue).join(" ")}]\n`
+    message += `  args: [${formatValues(args)}]\n`
     throw new Error(message)
   }
 
