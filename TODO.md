@@ -1,8 +1,18 @@
 # hash
 
 `Hash` as `Value`
+
+`LiteralHash` as `Exp` -- for `formatValue` and parse back
+
+parse `@hash`
+
+`formatValue` -- support `Hash`
+
 `hash?`
-support nested hash
+`hash-from-entries`
+`hash-entries`
+`hash-keys`
+`hash-values`
 
 # schema
 
