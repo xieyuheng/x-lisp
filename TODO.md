@@ -1,7 +1,5 @@
 # hash
 
-test `formatValue`
-
 `Hash` as `Value`
 `hash?`
 support nested hash
