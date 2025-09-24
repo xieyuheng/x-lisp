@@ -1,4 +1,4 @@
-`applyDataConstructor` -- should validate arguments
+extract `dataMightPassDataPredicate`
 `applyDataPutter` -- should validate arguments
 
 # later
