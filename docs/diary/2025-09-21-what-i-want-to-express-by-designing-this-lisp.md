@@ -43,6 +43,8 @@ date: 2025-09-21
   比如实现类似 define-record 的 macro 时，
   其实是翻译成 list 或 vector。
 
+  这种设计差异是 structural vs nominal 的差异。
+
 - claim 与谓词所构成的 optional runtime assertion 系统。
   包括：tau, inter, union 等等谓词构造子。
 
