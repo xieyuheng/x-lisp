@@ -20,9 +20,16 @@ export function formatAttributes(
   attributes: Values.Attributes,
   options: Options = {},
 ): string {
-  return Object.entries(attributes)
-    .map(([k, v]) => `:${k} ${formatValue(v, options)}`)
-    .join(" ")
+  if (options.digest) {
+    return Object.keys(attributes)
+      .sort()
+      .map((k) => `:${k} ${formatValue(attributes[k], options)}`)
+      .join(" ")
+  } else {
+    return Object.entries(attributes)
+      .map(([k, v]) => `:${k} ${formatValue(v, options)}`)
+      .join(" ")
+  }
 }
 
 export function formatValue(value: Value, options: Options = {}): string {
