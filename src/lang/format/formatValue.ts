@@ -75,6 +75,10 @@ export function formatValue(value: Value, options: Options = {}): string {
       }
     }
 
+    case "Hash": {
+      return "TODO"
+    }
+
     case "Lambda": {
       return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }

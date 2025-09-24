@@ -5,6 +5,7 @@ import { type Mod } from "../mod/index.ts"
 import * as Patterns from "../pattern/index.ts"
 import { type Atom } from "./Atom.ts"
 import { type AboutData } from "./Data.ts"
+import { type Hash } from "./Hash.ts"
 
 export type Meta = TokenMeta
 
@@ -14,6 +15,7 @@ export type Value =
   | Atom
   | Tael
   | Set
+  | Hash
   | Lambda
   | Thunk
   | Lazy
