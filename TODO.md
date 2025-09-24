@@ -1,8 +1,10 @@
 # hash
 
+`hashGet`
+`hashPut`
+
 `Hash` as `Exp` -- for `formatValue` and parse back
 parse `@hash` -- without much brackets
-`formatValue` -- support `Hash` -- but `Hash` is not pure data
 `Values.isPureData` -- only pure data can be used as hash key
 `hash?`
 `hash-from-entries`

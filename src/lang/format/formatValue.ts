@@ -73,7 +73,7 @@ export function formatValue(value: Value, options: Options = {}): string {
 
     case "Hash": {
       const entries: Array<string> = []
-      for (const entry of value.entries.values()) {
+      for (const entry of Values.hashEntries(value)) {
         const k = formatValue(entry.key, options)
         const v = formatValue(entry.value, options)
         entries.push(`${k} ${v}`)
