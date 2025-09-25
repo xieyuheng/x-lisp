@@ -11,6 +11,7 @@ export function aboutHash(mod: Mod) {
     "hash-get",
     "hash-put",
     "hash-put!",
+    "hash-copy",
   ])
 
   definePrimitiveFunction(mod, "hash?", 1, (value) => {
@@ -64,5 +65,14 @@ export function aboutHash(mod: Mod) {
 
     Values.hashPut(Values.asHash(hash), key, value)
     return hash
+  })
+
+  definePrimitiveFunction(mod, "hash-copy", 1, (hash) => {
+    const newHash = Values.Hash()
+    for (const entry of Values.hashEntries(Values.asHash(hash))) {
+      Values.hashPut(newHash, entry.key, entry.value)
+    }
+
+    return newHash
   })
 }
