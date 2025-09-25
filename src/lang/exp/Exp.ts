@@ -20,8 +20,6 @@ export type Exp =
   | AssertEqual
   | AssertNotEqual
   | AssertThe
-  | Void
-  | Null
   | Tael
   | Set
   | Hash
@@ -241,30 +239,6 @@ export function AssertThe(schema: Exp, exp: Exp, meta: Meta): AssertThe {
     kind: "AssertThe",
     schema,
     exp,
-    meta,
-  }
-}
-
-export type Void = {
-  kind: "Void"
-  meta: Meta
-}
-
-export function Void(meta: Meta): Void {
-  return {
-    kind: "Void",
-    meta,
-  }
-}
-
-export type Null = {
-  kind: "Null"
-  meta: Meta
-}
-
-export function Null(meta: Meta): Null {
-  return {
-    kind: "Null",
     meta,
   }
 }

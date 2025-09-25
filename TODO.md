@@ -1,7 +1,5 @@
 # hash
 
-remove `Void` and `Null` from `Exp`
-
 `hash-copy`
 
 `hash-empty?`

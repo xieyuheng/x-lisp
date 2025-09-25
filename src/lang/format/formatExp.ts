@@ -79,14 +79,6 @@ export function formatExp(exp: Exp): string {
       return `(assert-the ${formatExp(exp.schema)} ${formatExp(exp.exp)})`
     }
 
-    case "Void": {
-      return "#void"
-    }
-
-    case "Null": {
-      return "#null"
-    }
-
     case "Tael": {
       const elements = formatExps(exp.elements)
       const attributes = formatExpAttributes(exp.attributes)

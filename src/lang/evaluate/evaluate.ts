@@ -157,18 +157,6 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
-    case "Void": {
-      return (mod, env) => {
-        return [env, Values.Void()]
-      }
-    }
-
-    case "Null": {
-      return (mod, env) => {
-        return [env, Values.Null()]
-      }
-    }
-
     case "Tael": {
       return (mod, env) => {
         const value = Values.Tael(
