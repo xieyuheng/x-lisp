@@ -107,7 +107,14 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Hash": {
-      throw new Error("TODO")
+      const entries = exp.entries
+        .map(({ key, value }) => `${formatExp(key)} ${formatExp(value)}`)
+        .join(" ")
+      if (entries === "") {
+        return `(@hash)`
+      } else {
+        return `(@hash ${entries})`
+      }
     }
 
     case "Quote": {

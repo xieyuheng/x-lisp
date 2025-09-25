@@ -1,6 +1,5 @@
 # hash
 
-`formatExp` -- `Hash`
 `evaluate` -- `Hash`
 
 parse `@hash` -- without much brackets
