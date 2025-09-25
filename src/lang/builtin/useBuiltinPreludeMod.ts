@@ -11,10 +11,10 @@ import { aboutInt } from "./aboutInt.ts"
 import { aboutList } from "./aboutList.ts"
 import { aboutNull } from "./aboutNull.ts"
 import { aboutPath } from "./aboutPath.ts"
-import { aboutPredicate } from "./aboutPredicate.ts"
 import { aboutProcess } from "./aboutProcess.ts"
 import { aboutRandom } from "./aboutRandom.ts"
 import { aboutRecord } from "./aboutRecord.ts"
+import { aboutSchema } from "./aboutSchema.ts"
 import { aboutSet } from "./aboutSet.ts"
 import { aboutSexp } from "./aboutSexp.ts"
 import { aboutString } from "./aboutString.ts"
@@ -38,7 +38,7 @@ export function useBuiltinPreludeMod(): Mod {
   aboutValue(mod)
   aboutList(mod)
   aboutRecord(mod)
-  aboutPredicate(mod)
+  aboutSchema(mod)
   aboutSexp(mod)
   aboutFile(mod)
   aboutPath(mod)

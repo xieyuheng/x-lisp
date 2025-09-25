@@ -2,7 +2,7 @@
   schema: int?
   value: 1.0
 
-  --> examples/tests/predicate/the.error.lisp:1:1
+  --> examples/tests/schema/the.error.lisp:1:1
  1 | (the int? 1.0)
    | ~~~~~~~~~~~~~~ 
  2 | 

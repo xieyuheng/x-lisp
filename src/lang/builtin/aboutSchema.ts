@@ -1,7 +1,7 @@
 import { runCode } from "../load/index.ts"
 import { type Mod } from "../mod/index.ts"
 
-export function aboutPredicate(mod: Mod) {
+export function aboutSchema(mod: Mod) {
   runCode(
     mod,
     `\

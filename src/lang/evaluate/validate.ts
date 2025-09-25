@@ -1,3 +1,4 @@
+import { equal } from "../equal/index.ts"
 import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
@@ -14,6 +15,14 @@ export function validate(schema: Value, value: Value): Result {
 
   if (schema.kind === "Arrow") {
     return { kind: "Ok", value: Values.The(schema, value) }
+  }
+
+  if (Values.isAtom(schema)) {
+    if (equal(schema, value)) {
+      return { kind: "Ok", value: value }
+    } else {
+      return { kind: "Err" }
+    }
   }
 
   if (schema.kind === "Tau") {
