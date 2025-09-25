@@ -1,7 +1,4 @@
-# hash std
-
 `hash-map`
-`hash-append`
 
 # nested hash
 
