@@ -188,6 +188,7 @@ in [`std`](std):
 ```scheme
 (record-from-entries entries)
 (record-put-many entries record)
+(record-put-many! entries record)
 (record-filter p record)
 (record-update fs record)
 (record-update! fs record)

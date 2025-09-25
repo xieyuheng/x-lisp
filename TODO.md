@@ -1,5 +1,3 @@
-`record-put-many!`
-
 # hash std
 
 `hash-put-many`
