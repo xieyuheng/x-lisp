@@ -222,6 +222,23 @@ in [builtin](src/lang/builtin):
 (set-filter p set)
 ```
 
+### Hash
+
+in [builtin](src/lang/builtin):
+
+```scheme
+(hash? value)
+(hash-empty? hash)
+(hash-length hash)
+(hash-get key hash)
+(hash-put key value hash)
+(hash-put! key value hash)
+(hash-copy hash)
+(hash-entries hash)
+(hash-keys hash)
+(hash-values hash)
+```
+
 ### Predicate
 
 in [builtin](src/lang/builtin):
