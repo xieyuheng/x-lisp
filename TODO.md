@@ -1,5 +1,3 @@
-`hash-map`
-
 # nested hash
 
 `formatValue` -- `Hash` support `digest`
