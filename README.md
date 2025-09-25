@@ -239,6 +239,16 @@ in [builtin](src/lang/builtin):
 (hash-values hash)
 ```
 
+in [`std`](std):
+
+```scheme
+(hash-put-many entries hash)
+(hash-put-many! entries hash)
+(hash-from-entries entries)
+(hash-append hash rest)
+(hash-map f hash)
+```
+
 ### Predicate
 
 in [builtin](src/lang/builtin):
