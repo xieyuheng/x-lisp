@@ -1,6 +1,7 @@
 # hash
 
-parse `@hash` -- without much brackets
+`formatValue` `lazyWalk` on `digest`
+
 `Values.isPureData` -- only pure data can be used as hash key
 
 `hash?`

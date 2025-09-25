@@ -1,4 +1,5 @@
 import * as X from "@xieyuheng/x-data.js"
+import { arrayGroup2 } from "../../utils/array/arrayGroup2.ts"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
 import * as Exps from "../exp/index.ts"
@@ -195,11 +196,31 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("(cons* '@set elements)", ({ elements }, { data, meta }) => {
     if (Object.keys(X.asTael(data).attributes).length > 0) {
-      let message = `(@set) set can not have attributes\n`
+      let message = `(@set) can not have attributes\n`
       throw new X.ErrorWithMeta(message, meta)
     }
 
     return Exps.Set(X.dataToArray(elements).map(matchExp), meta)
+  }),
+
+  X.matcher("(cons* '@hash elements)", ({ elements }, { data, meta }) => {
+    if (Object.keys(X.asTael(data).attributes).length > 0) {
+      let message = `(@hash) can not have attributes\n`
+      throw new X.ErrorWithMeta(message, meta)
+    }
+
+    if (X.dataToArray(elements).length % 2 === 1) {
+      let message = `(@hash) body length must be even\n`
+      throw new X.ErrorWithMeta(message, meta)
+    }
+
+    const entries = arrayGroup2(X.dataToArray(elements)).map(
+      ([key, value]) => ({
+        key: matchExp(key),
+        value: matchExp(value),
+      }),
+    )
+    return Exps.Hash(entries, meta)
   }),
 
   X.matcher("(cons* 'tau elements)", ({ elements }, { data, meta }) => {
