@@ -3,7 +3,6 @@
 
 # hash
 
-`hash-get`
 `hash-put!`
 
 `hash-copy`

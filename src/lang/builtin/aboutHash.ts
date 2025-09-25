@@ -3,7 +3,7 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutHash(mod: Mod) {
-  provide(mod, ["hash?", "hash-empty?", "hash-length"])
+  provide(mod, ["hash?", "hash-empty?", "hash-length", "hash-get"])
 
   definePrimitiveFunction(mod, "hash?", 1, (value) => {
     return Values.Bool(Values.isHash(value))
@@ -15,5 +15,11 @@ export function aboutHash(mod: Mod) {
 
   definePrimitiveFunction(mod, "hash-length", 1, (value) => {
     return Values.Int(Values.hashEntries(Values.asHash(value)).length)
+  })
+
+  definePrimitiveFunction(mod, "hash-get", 2, (key, value) => {
+    const found = Values.hashGet(Values.asHash(value), key)
+    if (found) return found
+    else return Values.Null()
   })
 }
