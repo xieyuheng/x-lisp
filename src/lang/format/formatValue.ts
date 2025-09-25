@@ -50,13 +50,24 @@ function formatHashEntries(
   entries: Array<Values.HashEntry>,
   options: Options = {},
 ): string {
-  return entries
-    .map((entry) => {
-      const k = formatValue(entry.key, options)
-      const v = formatValue(entry.value, options)
-      return `${k} ${v}`
-    })
-    .join(" ")
+  if (options.digest) {
+    return entries
+      .map((entry) => {
+        const k = formatValue(entry.key, options)
+        const v = formatValue(entry.value, options)
+        return `${k} ${v}`
+      })
+      .sort()
+      .join(" ")
+  } else {
+    return entries
+      .map((entry) => {
+        const k = formatValue(entry.key, options)
+        const v = formatValue(entry.value, options)
+        return `${k} ${v}`
+      })
+      .join(" ")
+  }
 }
 
 export function formatValue(value: Value, options: Options = {}): string {

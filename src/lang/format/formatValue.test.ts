@@ -21,6 +21,14 @@ test("formatValue", () => {
       }),
     ),
   )
+
+  {
+    const hash = Values.Hash()
+    Values.hashPut(hash, Values.Symbol("c"), Values.Int(3))
+    Values.hashPut(hash, Values.Symbol("b"), Values.Int(2))
+    Values.hashPut(hash, Values.Symbol("a"), Values.Int(1))
+    assert.deepStrictEqual("(@hash 'c 3 'b 2 'a 1)", formatValue(hash))
+  }
 })
 
 test("formatValue -- for digest", () => {
@@ -43,4 +51,15 @@ test("formatValue -- for digest", () => {
       { digest: true },
     ),
   )
+
+  {
+    const hash = Values.Hash()
+    Values.hashPut(hash, Values.Symbol("c"), Values.Int(3))
+    Values.hashPut(hash, Values.Symbol("b"), Values.Int(2))
+    Values.hashPut(hash, Values.Symbol("a"), Values.Int(1))
+    assert.deepStrictEqual(
+      "(@hash 'a 1 'b 2 'c 3)",
+      formatValue(hash, { digest: true }),
+    )
+  }
 })
