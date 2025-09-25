@@ -5,6 +5,7 @@ import { aboutFile } from "./aboutFile.ts"
 import { aboutFloat } from "./aboutFloat.ts"
 import { aboutFormat } from "./aboutFormat.ts"
 import { aboutFunction } from "./aboutFunction.ts"
+import { aboutHash } from "./aboutHash.ts"
 import { aboutHashtag } from "./aboutHashtag.ts"
 import { aboutInt } from "./aboutInt.ts"
 import { aboutList } from "./aboutList.ts"
@@ -51,6 +52,7 @@ export function useBuiltinPreludeMod(): Mod {
   aboutSystem(mod)
   aboutSet(mod)
   aboutHashtag(mod)
+  aboutHash(mod)
 
   return mod
 }

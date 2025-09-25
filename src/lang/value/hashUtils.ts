@@ -3,6 +3,10 @@ import { type Hash, type HashEntry } from "./Hash.ts"
 import * as Values from "./index.ts"
 import { type Value } from "./index.ts"
 
+export function isHash(value: Value): boolean {
+  return value.kind === "Hash"
+}
+
 export function hashEntries(hash: Hash): Array<HashEntry> {
   return Array.from(hash.entries.values())
 }
