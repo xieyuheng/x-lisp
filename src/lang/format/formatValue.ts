@@ -47,6 +47,10 @@ export function formatValueSet(
 }
 
 export function formatValue(value: Value, options: Options = {}): string {
+  if (options.digest) {
+    value = Values.lazyWalk(value)
+  }
+
   if (isAtom(value)) {
     return formatAtom(value)
   }
