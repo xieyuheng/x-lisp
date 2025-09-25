@@ -1,7 +1,3 @@
-# more about side-effect
-
-`list-copy`
-`record-copy`
 `record-put-many!`
 
 # hash std
