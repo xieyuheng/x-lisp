@@ -16,7 +16,7 @@ export function formatValues(
   return values.map((v) => formatValue(v, options)).join(" ")
 }
 
-export function formatAttributes(
+function formatAttributes(
   attributes: Values.Attributes,
   options: Options = {},
 ): string {
@@ -32,7 +32,7 @@ export function formatAttributes(
   }
 }
 
-export function formatValueSet(
+function formatSetElements(
   elements: Array<Value>,
   options: Options = {},
 ): string {
@@ -44,6 +44,19 @@ export function formatValueSet(
   } else {
     return elements.map((element) => formatValue(element, options)).join(" ")
   }
+}
+
+function formatHashEntries(
+  entries: Array<Values.HashEntry>,
+  options: Options = {},
+): string {
+  return entries
+    .map((entry) => {
+      const k = formatValue(entry.key, options)
+      const v = formatValue(entry.value, options)
+      return `${k} ${v}`
+    })
+    .join(" ")
 }
 
 export function formatValue(value: Value, options: Options = {}): string {
@@ -71,22 +84,16 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "Set": {
-      const elements = formatValueSet(value.elements, options)
+      const elements = formatSetElements(value.elements, options)
       return `{${elements}}`
     }
 
     case "Hash": {
-      const entries: Array<string> = []
-      for (const entry of Values.hashEntries(value)) {
-        const k = formatValue(entry.key, options)
-        const v = formatValue(entry.value, options)
-        entries.push(`${k} ${v}`)
-      }
-
-      if (entries.length === 0) {
+      const entries = formatHashEntries(Values.hashEntries(value), options)
+      if (entries === "") {
         return `(@hash)`
       } else {
-        return `(@hash ${entries.join(" ")})`
+        return `(@hash ${entries})`
       }
     }
 
