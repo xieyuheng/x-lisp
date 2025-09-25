@@ -1,7 +1,3 @@
-# nested hash
-
-`isHashable` -- `Hash` should be hashable
-
 test nested hash
 
 # schema

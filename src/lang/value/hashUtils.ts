@@ -50,5 +50,9 @@ export function isHashable(value: Value): boolean {
     return value.elements.every(isHashable)
   }
 
+  if (value.kind === "Hash") {
+    return Values.hashEntries(value).every((entry) => isHashable(entry.value))
+  }
+
   return false
 }
