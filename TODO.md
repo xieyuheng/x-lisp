@@ -3,8 +3,6 @@
 
 # hash
 
-`hash-length`
-
 `hash-get`
 `hash-put!`
 
