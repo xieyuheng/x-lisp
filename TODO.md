@@ -1,5 +1,7 @@
 # hash
 
+`evaluate` -- `Hash` check `isHashable`
+
 `hash?`
 `hash-copy`
 
@@ -14,6 +16,16 @@
 
 `hash-get`
 `hash-put!`
+
+`hash-map`
+`hash-append`
+
+> nested hash
+
+`formatValue` -- `Hash` support `digest`
+`isHashable` -- `Hash` should be hashable
+
+test nested hash
 
 # schema
 
