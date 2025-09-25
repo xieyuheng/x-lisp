@@ -3,8 +3,13 @@ import { type Hash, type HashEntry } from "./Hash.ts"
 import * as Values from "./index.ts"
 import { type Value } from "./index.ts"
 
-export function isHash(value: Value): boolean {
+export function isHash(value: Value): value is Hash {
   return value.kind === "Hash"
+}
+
+export function asHash(value: Value): Hash {
+  if (isHash(value)) return value
+  throw new Error(`[asHash] fail on: ${formatValue(value)}\n`)
 }
 
 export function hashEntries(hash: Hash): Array<HashEntry> {

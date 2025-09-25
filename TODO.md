@@ -1,18 +1,20 @@
+`list-copy`
+`record-copy`
+
 # hash
 
-`hash-copy`
-
-`hash-empty?`
 `hash-length`
+
+`hash-get`
+`hash-put!`
+
+`hash-copy`
 
 `hash-from-entries`
 
 `hash-entries`
 `hash-keys`
 `hash-values`
-
-`hash-get`
-`hash-put!`
 
 `hash-map`
 `hash-append`
