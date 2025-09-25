@@ -2,6 +2,7 @@ import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 
 export function aboutHash(mod: Mod) {
   provide(mod, [
@@ -12,6 +13,9 @@ export function aboutHash(mod: Mod) {
     "hash-put",
     "hash-put!",
     "hash-copy",
+    "hash-entries",
+    "hash-keys",
+    "hash-values",
   ])
 
   definePrimitiveFunction(mod, "hash?", 1, (value) => {
@@ -74,5 +78,32 @@ export function aboutHash(mod: Mod) {
     }
 
     return newHash
+  })
+
+  definePrimitiveFunction(mod, "hash-entries", 1, (hash) => {
+    const elements: Array<Value> = []
+    for (const entry of Values.hashEntries(Values.asHash(hash))) {
+      elements.push(Values.List([entry.key, entry.value]))
+    }
+
+    return Values.List(elements)
+  })
+
+  definePrimitiveFunction(mod, "hash-keys", 1, (hash) => {
+    const elements: Array<Value> = []
+    for (const entry of Values.hashEntries(Values.asHash(hash))) {
+      elements.push(entry.key)
+    }
+
+    return Values.List(elements)
+  })
+
+  definePrimitiveFunction(mod, "hash-values", 1, (hash) => {
+    const elements: Array<Value> = []
+    for (const entry of Values.hashEntries(Values.asHash(hash))) {
+      elements.push(entry.value)
+    }
+
+    return Values.List(elements)
   })
 }

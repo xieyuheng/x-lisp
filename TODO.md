@@ -1,16 +1,20 @@
+# more about side-effect
+
 `list-copy`
 `record-copy`
+`record-put-many!`
 
-# hash
+# hash std
+
+`hash-put-many`
+`hash-put-many!`
 
 `hash-from-entries`
-`hash-entries`
-`hash-keys`
-`hash-values`
+
 `hash-map`
 `hash-append`
 
-> nested hash
+# nested hash
 
 `formatValue` -- `Hash` support `digest`
 `isHashable` -- `Hash` should be hashable

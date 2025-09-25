@@ -40,3 +40,9 @@
   (assert-equal (@hash 1 2) (hash-copy hash))
   (assert-equal (@hash 1 2 3 4) (hash-put! 3 4 (hash-copy hash)))
   (assert-equal (@hash 1 2) hash))
+
+(begin
+  (= hash (@hash 1 2 3 4))
+  (assert-equal [[1 2] [3 4]] (hash-entries hash))
+  (assert-equal [1 3] (hash-keys hash))
+  (assert-equal [2 4] (hash-values hash)))
