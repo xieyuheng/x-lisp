@@ -1,6 +1,11 @@
 (assert (hash? (@hash)))
 (assert (hash? (@hash 1 2 3 4)))
 
+(assert-equal (@hash) (@hash))
+(assert-equal (@hash 1 2 3 4) (@hash 1 2 3 4))
+(assert-equal (@hash 1 2 3 4) (@hash 3 4 1 2))
+(assert-not-equal (@hash 1 2 3 4) (@hash 3 4 1 5))
+
 (assert-not (hash? 1))
 (assert-not (hash? []))
 (assert-not (hash? {}))
