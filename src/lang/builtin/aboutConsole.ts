@@ -13,8 +13,7 @@ export function aboutConsole(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "println", 1, (value) => {
-    process.stdout.write(formatValue(value))
-    process.stdout.write("\n")
+    console.log(formatValue(value))
     return Values.Void()
   })
 
@@ -24,8 +23,7 @@ export function aboutConsole(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "writeln", 1, (string) => {
-    process.stdout.write(Values.asString(string).content)
-    process.stdout.write("\n")
+    console.log(Values.asString(string).content)
     return Values.Void()
   })
 }

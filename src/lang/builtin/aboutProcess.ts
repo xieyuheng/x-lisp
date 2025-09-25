@@ -27,8 +27,7 @@ export function aboutProcess(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "exit", 1, (sexp) => {
-    process.stdout.write(formatValue(sexp))
-    process.stdout.write("\n")
+    console.log(formatValue(sexp))
     process.exit(1)
   })
 }
