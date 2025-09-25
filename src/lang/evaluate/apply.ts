@@ -14,7 +14,7 @@ import { applyLambda } from "./applyLambda.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
 import { force } from "./force.ts"
 import { supply } from "./supply.ts"
-import { validate, validateOrFail } from "./validate.ts"
+import { validate } from "./validate.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
   target = Values.lazyWalk(target)
@@ -49,15 +49,6 @@ export function apply(target: Value, args: Array<Value>): Value {
       return applyLambda(target, args)
     } else {
       return supply(target, arity, args)
-    }
-  }
-
-  if (target.kind === "Arrow") {
-    const [firstArg, ...restArgs] = args
-    if (restArgs.length === 0) {
-      return validateOrFail(target, firstArg)
-    } else {
-      return apply(validateOrFail(target, firstArg), restArgs)
     }
   }
 

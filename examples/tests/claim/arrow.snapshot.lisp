@@ -5,8 +5,6 @@
   (-> int? int? int?)
   (-> int? (-> int? int?)))
 
-((-> int? int? int?) iadd)
-
 (assert-equal
-  (((-> int? int? int?) iadd) 1 1)
+  ((the (-> int? int? int?) iadd) 1 1)
   2)
