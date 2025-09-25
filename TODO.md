@@ -1,10 +1,6 @@
 # hash std
 
-`hash-put-many`
-`hash-put-many!`
-
 `hash-from-entries`
-
 `hash-map`
 `hash-append`
 
