@@ -1,7 +1,5 @@
 # hash
 
-`Values.isPureData` -- only pure data can be used as hash key
-
 `hash?`
 `hash-copy`
 
