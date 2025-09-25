@@ -4,13 +4,10 @@
 # hash
 
 `hash-copy`
-
 `hash-from-entries`
-
 `hash-entries`
 `hash-keys`
 `hash-values`
-
 `hash-map`
 `hash-append`
 
