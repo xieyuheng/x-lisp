@@ -46,3 +46,15 @@
   (assert-equal [[1 2] [3 4]] (hash-entries hash))
   (assert-equal [1 3] (hash-keys hash))
   (assert-equal [2 4] (hash-values hash)))
+
+;; hash as key
+
+(begin
+  (= hash (@hash))
+  (hash-put! (@hash 1 2) 1 hash)
+  (hash-put! (@hash 3 4) 3 hash)
+  (assert-equal
+    (@hash
+     (@hash 1 2) 1
+     (@hash 3 4) 3)
+    hash))

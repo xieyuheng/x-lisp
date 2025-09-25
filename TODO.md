@@ -1,5 +1,3 @@
-test nested hash
-
 # schema
 
 should not be able to apply arrow
