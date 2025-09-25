@@ -191,7 +191,18 @@ export function evaluate(exp: Exp): Effect {
     }
 
     case "Hash": {
-      throw new Error("TODO")
+      return (mod, env) => {
+        const hash = Values.Hash()
+        for (const entry of exp.entries) {
+          Values.hashPut(
+            hash,
+            Values.lazyWalk(resultValue(evaluate(entry.key)(mod, env))),
+            Values.lazyWalk(resultValue(evaluate(entry.value)(mod, env))),
+          )
+        }
+
+        return [env, hash]
+      }
     }
 
     case "Quote": {

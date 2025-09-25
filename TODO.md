@@ -1,7 +1,5 @@
 # hash
 
-`evaluate` -- `Hash`
-
 parse `@hash` -- without much brackets
 `Values.isPureData` -- only pure data can be used as hash key
 
