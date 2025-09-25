@@ -1,6 +1,5 @@
 # hash std
 
-`hash-from-entries`
 `hash-map`
 `hash-append`
 
