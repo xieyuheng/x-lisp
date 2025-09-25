@@ -5,14 +5,21 @@
 
 parse `@hash` -- without much brackets
 `Values.isPureData` -- only pure data can be used as hash key
+
 `hash?`
+`hash-copy`
+
+`hash-empty?`
+`hash-length`
+
 `hash-from-entries`
+
 `hash-entries`
 `hash-keys`
 `hash-values`
+
 `hash-get`
 `hash-put!`
-`hash-copy`
 
 # schema
 

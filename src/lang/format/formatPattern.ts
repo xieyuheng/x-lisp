@@ -4,14 +4,14 @@ import * as Values from "../value/index.ts"
 
 type Options = { digest?: boolean }
 
-export function formatPatterns(
+function formatPatterns(
   patterns: Array<Pattern>,
   options: Options = {},
 ): string {
   return patterns.map((pattern) => formatPattern(pattern, options)).join(" ")
 }
 
-export function formatPatternAttributes(
+function formatPatternAttributes(
   attributes: Record<string, Pattern>,
   options: Options = {},
 ): string {

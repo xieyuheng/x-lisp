@@ -4,6 +4,16 @@ import { type Exp } from "../exp/index.ts"
 import { formatAtom } from "../format/index.ts"
 import { formatSexp, isAtom } from "../value/index.ts"
 
+function formatExps(exps: Array<Exp>): string {
+  return exps.map(formatExp).join(" ")
+}
+
+function formatExpAttributes(attributes: Record<string, Exp>): string {
+  return Object.entries(attributes)
+    .map(([k, e]) => `:${k} ${formatExp(e)}`)
+    .join(" ")
+}
+
 export function formatExp(exp: Exp): string {
   if (isAtom(exp)) {
     return formatAtom(exp)
@@ -32,17 +42,17 @@ export function formatExp(exp: Exp): string {
 
     case "Apply": {
       const target = formatExp(exp.target)
-      const args = exp.args.map(formatExp)
-      if (args.length === 0) {
+      const args = formatExps(exp.args)
+      if (args === "") {
         return `(${target})`
       } else {
-        return `(${target} ${args.join(" ")})`
+        return `(${target} ${args})`
       }
     }
 
     case "Begin": {
-      const sequence = exp.sequence.map(formatExp)
-      return `(begin ${sequence.join(" ")})`
+      const sequence = formatExps(exp.sequence)
+      return `(begin ${sequence})`
     }
 
     case "Assign": {
@@ -78,28 +88,22 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Tael": {
-      const elements = exp.elements.map(formatExp)
-      const attributes = Object.entries(exp.attributes).map(
-        ([k, e]) => `:${k} ${formatExp(e)}`,
-      )
-      if (elements.length === 0 && attributes.length === 0) {
+      const elements = formatExps(exp.elements)
+      const attributes = formatExpAttributes(exp.attributes)
+      if (elements === "" && attributes === "") {
         return `[]`
-      } else if (attributes.length === 0) {
-        return `[${elements.join(" ")}]`
-      } else if (elements.length === 0) {
-        return `[${attributes.join(" ")}]`
+      } else if (attributes === "") {
+        return `[${elements}]`
+      } else if (elements === "") {
+        return `[${attributes}]`
       } else {
-        return `[${elements.join(" ")} ${attributes.join(" ")}]`
+        return `[${elements} ${attributes}]`
       }
     }
 
     case "Set": {
-      const elements = exp.elements.map(formatExp)
-      if (elements.length === 0) {
-        return `{}`
-      } else {
-        return `{${elements.join(" ")}}`
-      }
+      const elements = formatExps(exp.elements)
+      return `{${elements}}`
     }
 
     case "Hash": {
@@ -119,20 +123,20 @@ export function formatExp(exp: Exp): string {
     }
 
     case "And": {
-      const exps = exp.exps.map(formatExp)
-      if (exps.length === 0) {
+      const exps = formatExps(exp.exps)
+      if (exps === "") {
         return `(and)`
       } else {
-        return `(and ${exps.join(" ")})`
+        return `(and ${exps})`
       }
     }
 
     case "Or": {
-      const exps = exp.exps.map(formatExp)
-      if (exps.length === 0) {
+      const exps = formatExps(exp.exps)
+      if (exps === "") {
         return `(or)`
       } else {
-        return `(or ${exps.join(" ")})`
+        return `(or ${exps})`
       }
     }
 
@@ -147,61 +151,59 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Union": {
-      const exps = exp.exps.map(formatExp)
-      if (exps.length === 0) {
+      const exps = formatExps(exp.exps)
+      if (exps === "") {
         return `(union)`
       } else {
-        return `(union ${exps.join(" ")})`
+        return `(union ${exps})`
       }
     }
 
     case "Inter": {
-      const exps = exp.exps.map(formatExp)
-      if (exps.length === 0) {
+      const exps = formatExps(exp.exps)
+      if (exps === "") {
         return `(inter)`
       } else {
-        return `(inter ${exps.join(" ")})`
+        return `(inter ${exps})`
       }
     }
 
     case "Arrow": {
-      const args = exp.args.map(formatExp)
+      const args = formatExps(exp.args)
       const ret = formatExp(exp.ret)
-      return `(-> ${args.join(" ")} ${ret})`
+      return `(-> ${args} ${ret})`
     }
 
     case "Compose": {
-      const exps = exp.exps.map(formatExp)
-      if (exps.length === 0) {
+      const exps = formatExps(exp.exps)
+      if (exps === "") {
         return `(compose)`
       } else {
-        return `(compose ${exps.join(" ")})`
+        return `(compose ${exps})`
       }
     }
 
     case "Pipe": {
       const arg = formatExp(exp.arg)
-      const exps = exp.exps.map(formatExp)
-      if (exps.length === 0) {
+      const exps = formatExps(exp.exps)
+      if (exps === "") {
         return `(pipe ${arg})`
       } else {
-        return `(pipe ${arg} ${exps.join(" ")})`
+        return `(pipe ${arg} ${exps})`
       }
     }
 
     case "Tau": {
-      const elementSchemas = exp.elementSchemas.map(formatExp)
-      const attributeSchemas = Object.entries(exp.attributeSchemas).map(
-        ([k, e]) => `:${k} ${formatExp(e)}`,
-      )
-      if (elementSchemas.length === 0 && attributeSchemas.length === 0) {
+      const elementSchemas = formatExps(exp.elementSchemas)
+      const attributeSchemas = formatExpAttributes(exp.attributeSchemas)
+      if (elementSchemas === "" && attributeSchemas === "") {
         return `(tau)`
-      } else if (attributeSchemas.length === 0) {
-        return `(tau ${elementSchemas.join(" ")})`
-      } else if (elementSchemas.length === 0) {
-        return `(tau ${attributeSchemas.join(" ")})`
+      } else if (attributeSchemas === "") {
+        return `(tau ${elementSchemas})`
+      } else if (elementSchemas === "") {
+        return `(tau ${attributeSchemas})`
       } else {
-        return `(tau ${elementSchemas.join(" ")} ${attributeSchemas.join(" ")})`
+        return `(tau ${elementSchemas} ${attributeSchemas})`
       }
     }
 
@@ -217,7 +219,7 @@ export function formatExp(exp: Exp): string {
 
 export function formatBody(body: Exp): string {
   if (body.kind === "Begin") {
-    return body.sequence.map(formatExp).join(" ")
+    return formatExps(body.sequence)
   } else {
     return formatExp(body)
   }
