@@ -17,3 +17,9 @@
 (assert-equal 2 (hash-get 1 (@hash 1 2)))
 (assert-equal 2 (hash-get 1 (@hash 1 2 3 4)))
 (assert-equal 4 (hash-get 3 (@hash 1 2 3 4)))
+
+(begin
+  (= hash (@hash))
+  (hash-put! 1 2 hash)
+  (hash-put! 3 4 hash)
+  (assert-equal (@hash 1 2 3 4) hash))

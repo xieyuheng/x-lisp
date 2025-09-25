@@ -30,6 +30,10 @@ export function equal(lhs: Value, rhs: Value): boolean {
     )
   }
 
+  if (lhs.kind === "Hash" && rhs.kind === "Hash") {
+    return equalHash(lhs, rhs)
+  }
+
   if (lhs.kind === "Curried" && rhs.kind === "Curried") {
     return equal(lhs.target, rhs.target) && equalValues(lhs.args, rhs.args)
   }
@@ -82,12 +86,12 @@ function equalValues(lhs: Array<Value>, rhs: Array<Value>): boolean {
 
 function equalAttributes(lhs: Attributes, rhs: Attributes): boolean {
   const leftValues = Object.values(lhs).filter((value) => !Values.isNull(value))
-
   const rightValues = Object.values(rhs).filter(
     (value) => !Values.isNull(value),
   )
-
-  if (leftValues.length !== rightValues.length) return false
+  if (leftValues.length !== rightValues.length) {
+    return false
+  }
 
   for (const k of Object.keys(lhs)) {
     const l = lhs[k]
@@ -96,6 +100,32 @@ function equalAttributes(lhs: Attributes, rhs: Attributes): boolean {
     if (r === undefined && Values.isNull(l)) {
       continue
     } else if (equal(l, r)) {
+      continue
+    } else {
+      return false
+    }
+  }
+
+  return true
+}
+
+function equalHash(lhs: Values.Hash, rhs: Values.Hash): boolean {
+  const lhsEntries = Values.hashEntries(lhs)
+  const rhsEntries = Values.hashEntries(rhs)
+  if (lhsEntries.length !== rhsEntries.length) {
+    return false
+  }
+
+  for (const lhsEntry of lhsEntries) {
+    const lhsValue = lhsEntry.value
+    const rhsValue = Values.hashGet(rhs, lhsEntry.key)
+    if (rhsValue === undefined) {
+      if (Values.isNull(lhsValue)) {
+        continue
+      } else {
+        return false
+      }
+    } else if (equal(lhsValue, rhsValue)) {
       continue
     } else {
       return false

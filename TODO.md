@@ -3,8 +3,6 @@
 
 # hash
 
-`hash-put!`
-
 `hash-copy`
 
 `hash-from-entries`
