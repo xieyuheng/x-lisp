@@ -1,7 +1,5 @@
 # hash
 
-`evaluate` -- `Hash` check `isHashable`
-
 `hash?`
 `hash-copy`
 

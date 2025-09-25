@@ -194,11 +194,18 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const hash = Values.Hash()
         for (const entry of exp.entries) {
-          Values.hashPut(
-            hash,
-            Values.lazyWalk(resultValue(evaluate(entry.key)(mod, env))),
-            Values.lazyWalk(resultValue(evaluate(entry.value)(mod, env))),
+          const k = Values.lazyWalk(resultValue(evaluate(entry.key)(mod, env)))
+          const v = Values.lazyWalk(
+            resultValue(evaluate(entry.value)(mod, env)),
           )
+          if (!Values.isHashable(k)) {
+            let message = `[evaluate] Key in (@hash) is not hashable\n`
+            message += `  key: ${formatValue(k)}\n`
+            message += `  value: ${formatValue(v)}\n`
+            throw new X.ErrorWithMeta(message, entry.key.meta)
+          }
+
+          Values.hashPut(hash, k, v)
         }
 
         return [env, hash]

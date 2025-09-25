@@ -1,0 +1,9 @@
+[evaluate] Key in (@hash) is not hashable
+  key: (iadd 2)
+  value: 4
+
+  --> examples/tests/hash/hash-non-hashable-key.error.lisp:1:12
+ 1 | (@hash 1 2 (iadd 2) 4)
+   |            ~~~~~~~~    
+ 2 | 
+
