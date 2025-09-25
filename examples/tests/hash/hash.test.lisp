@@ -1,14 +1,13 @@
-(assert (hash? (@hash)))
-(assert (hash? (@hash 1 2 3 4)))
+(assert (hash? int? int? (@hash)))
+(assert (hash? int? int? (@hash 1 2 3 4)))
+
+(assert-not (hash? int? int? (@hash 'a 2 'b 4)))
+(assert-not (hash? int? int? (@hash 1 'a 3 'b)))
 
 (assert-equal (@hash) (@hash))
 (assert-equal (@hash 1 2 3 4) (@hash 1 2 3 4))
 (assert-equal (@hash 1 2 3 4) (@hash 3 4 1 2))
 (assert-not-equal (@hash 1 2 3 4) (@hash 3 4 1 5))
-
-(assert-not (hash? 1))
-(assert-not (hash? []))
-(assert-not (hash? {}))
 
 (assert (hash-empty? (@hash)))
 (assert-not (hash-empty? (@hash 1 2)))

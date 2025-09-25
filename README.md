@@ -115,7 +115,7 @@ in [builtin](src/lang/builtin):
 
 ```scheme
 (list-empty? value)
-(list? p target)
+(list? element-p target)
 (car list)
 (cdr list)
 (cons head tail)
@@ -166,7 +166,7 @@ in [`std`](std):
 in [builtin](src/lang/builtin):
 
 ```scheme
-(record? p target)
+(record? value-p target)
 (record-length record)
 (record-keys record)
 (record-values record)
@@ -202,7 +202,7 @@ in [`std`](std):
 in [builtin](src/lang/builtin):
 
 ```scheme
-(set? value)
+(set? element-p value)
 (set-empty? set)
 (set-size set)
 (set-member? value set)
@@ -227,7 +227,7 @@ in [builtin](src/lang/builtin):
 in [builtin](src/lang/builtin):
 
 ```scheme
-(hash? value)
+(hash? key-p value-p target)
 (hash-empty? hash)
 (hash-length hash)
 (hash-get key hash)

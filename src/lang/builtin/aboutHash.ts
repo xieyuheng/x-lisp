@@ -1,4 +1,5 @@
 import { definePrimitiveFunction, provide } from "../define/index.ts"
+import { apply } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
@@ -18,8 +19,44 @@ export function aboutHash(mod: Mod) {
     "hash-values",
   ])
 
-  definePrimitiveFunction(mod, "hash?", 1, (value) => {
-    return Values.Bool(Values.isHash(value))
+  definePrimitiveFunction(mod, "hash?", 3, (keyP, valueP, target) => {
+    if (!Values.isHash(target)) {
+      return Values.Bool(false)
+    }
+
+    for (const entry of Values.hashEntries(target)) {
+      const keyResult = apply(keyP, [entry.key])
+      if (!Values.isBool(keyResult)) {
+        let message = `(hash?) one result of applying the key predicate is not bool\n`
+        message += `  result: ${formatValue(keyResult)}\n`
+        message += `  key predicate: ${formatValue(keyP)}\n`
+        message += `  key: ${formatValue(entry.key)}\n`
+        message += `  value: ${formatValue(entry.value)}\n`
+        message += `  target: ${formatValue(target)}\n`
+        throw new Error(message)
+      }
+
+      if (Values.isFalse(keyResult)) {
+        return Values.Bool(false)
+      }
+
+      const valueResult = apply(valueP, [entry.value])
+      if (!Values.isBool(keyResult)) {
+        let message = `(hash?) one result of applying the value predicate is not bool\n`
+        message += `  result: ${formatValue(keyResult)}\n`
+        message += `  value predicate: ${formatValue(valueP)}\n`
+        message += `  key: ${formatValue(entry.key)}\n`
+        message += `  value: ${formatValue(entry.value)}\n`
+        message += `  target: ${formatValue(target)}\n`
+        throw new Error(message)
+      }
+
+      if (Values.isFalse(valueResult)) {
+        return Values.Bool(false)
+      }
+    }
+
+    return Values.Bool(true)
   })
 
   definePrimitiveFunction(mod, "hash-empty?", 1, (hash) => {
