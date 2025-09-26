@@ -170,9 +170,7 @@ export function evaluate(exp: Exp): Effect {
     case "Set": {
       return (mod, env) => {
         const value = Values.Set(
-          Values.valueArrayDedup(
-            exp.elements.map((e) => resultValue(evaluate(e)(mod, env))),
-          ),
+          exp.elements.map((e) => resultValue(evaluate(e)(mod, env))),
         )
         return [env, value]
       }

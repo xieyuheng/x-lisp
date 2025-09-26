@@ -1,4 +1,3 @@
-import { equal } from "../equal/index.ts"
 import { formatValue } from "../format/index.ts"
 import * as Values from "./index.ts"
 import { type Set, type Value } from "./index.ts"
@@ -47,27 +46,4 @@ export function setDelete(target: Value, element: Value): void {
 export function setDeleteAll(target: Value): void {
   const set = asSet(target)
   set.entries = new Map()
-}
-
-// old
-
-export function valueArrayDedup(values: Array<Value>): Array<Value> {
-  const dedupedValues: Array<Value> = []
-  for (const value of values) {
-    if (!dedupedValues.some((occurred) => equal(value, occurred))) {
-      dedupedValues.push(value)
-    }
-  }
-
-  return dedupedValues
-}
-
-export function valueArrayMember(target: Value, values: Array<Value>): boolean {
-  for (const value of values) {
-    if (equal(value, target)) {
-      return true
-    }
-  }
-
-  return false
 }
