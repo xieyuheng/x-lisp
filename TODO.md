@@ -1,3 +1,5 @@
+extract `AboutSchema`
+
 add `Polymorphic` to `Value`
 add `Polymorphic` to `Exp`
 parse `(polymorphic)`
@@ -6,5 +8,6 @@ parse `(polymorphic)`
 
 add `Specific` to `Value`
 add `Specific` to `Exp`
+parse `(specific)`
 
 `apply` -- `Specific`
