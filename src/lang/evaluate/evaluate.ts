@@ -169,10 +169,19 @@ export function evaluate(exp: Exp): Effect {
 
     case "Set": {
       return (mod, env) => {
-        const value = Values.Set(
-          exp.elements.map((e) => resultValue(evaluate(e)(mod, env))),
-        )
-        return [env, value]
+        const set = Values.Set([])
+        for (const element of exp.elements) {
+          const elementValue = resultValue(evaluate(element)(mod, env))
+          if (Values.isHashable(elementValue)) {
+            Values.setAdd(set, elementValue)
+          } else {
+            let message = `[evaluate] element in (@set) is not hashable\n`
+            message += `  element: ${formatValue(elementValue)}\n`
+            throw new X.ErrorWithMeta(message, element.meta)
+          }
+        }
+
+        return [env, set]
       }
     }
 
