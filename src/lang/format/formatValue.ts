@@ -95,7 +95,7 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "Set": {
-      const elements = formatSetElements(value.elements, options)
+      const elements = formatSetElements(Values.setElements(value), options)
       return `{${elements}}`
     }
 

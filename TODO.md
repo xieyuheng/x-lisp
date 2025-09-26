@@ -1,8 +1,9 @@
-# set
-
-extract `Set` from `Value`
-implement `Set` by js `Map` -- like `Hash`
 `Set` elements must be hashable
+ambr hashKey digest
+
+
+move `valueArrayMember`
+move `valueArrayDedup`
 
 # later
 

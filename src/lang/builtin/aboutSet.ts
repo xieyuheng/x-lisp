@@ -1,5 +1,4 @@
 import { definePrimitiveFunction, provide } from "../define/index.ts"
-import { equal } from "../equal/index.ts"
 import { apply } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -32,7 +31,7 @@ export function aboutSet(mod: Mod) {
       return Values.Bool(false)
     }
 
-    for (const element of Values.asSet(target).elements) {
+    for (const element of Values.setElements(target)) {
       const result = apply(p, [element])
       if (!Values.isBool(result)) {
         let message = `(set?) one result of applying the predicate is not bool\n`
@@ -52,102 +51,93 @@ export function aboutSet(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "set-empty?", 1, (value) => {
-    return Values.Bool(Values.asSet(value).elements.length === 0)
+    return Values.Bool(Values.setElements(value).length === 0)
   })
 
   definePrimitiveFunction(mod, "set-size", 1, (value) => {
-    return Values.Int(Values.asSet(value).elements.length)
+    return Values.Int(Values.setElements(value).length)
   })
 
   definePrimitiveFunction(mod, "set-member?", 2, (value, set) => {
-    return Values.Bool(
-      Values.valueArrayMember(value, Values.asSet(set).elements),
-    )
+    return Values.Bool(Values.setHas(set, value))
   })
 
   definePrimitiveFunction(mod, "set-include?", 2, (subset, set) => {
     return Values.Bool(
-      Values.asSet(subset).elements.every((value) =>
-        Values.valueArrayMember(value, Values.asSet(set).elements),
-      ),
+      Values.setElements(subset).every((value) => Values.setHas(set, value)),
     )
   })
 
   definePrimitiveFunction(mod, "set-to-list", 1, (set) => {
-    return Values.List(Values.asSet(set).elements)
+    return Values.List(Values.setElements(set))
   })
 
   definePrimitiveFunction(mod, "set-add", 2, (value, set) => {
-    return Values.Set(
-      Values.valueArrayDedup([...Values.asSet(set).elements, value]),
-    )
+    const newSet = Values.setCopy(set)
+    Values.setAdd(newSet, value)
+    return newSet
   })
 
   definePrimitiveFunction(mod, "set-add!", 2, (value, set) => {
-    Values.asSet(set).elements.push(value)
-    return Values.Set(Values.valueArrayDedup(Values.asSet(set).elements))
+    Values.setAdd(set, value)
+    return set
   })
 
   definePrimitiveFunction(mod, "set-remove", 2, (value, set) => {
-    return Values.Set(
-      Values.asSet(set).elements.filter((element) => !equal(value, element)),
-    )
+    const newSet = Values.setCopy(set)
+    Values.setDelete(newSet, value)
+    return newSet
   })
 
   definePrimitiveFunction(mod, "set-remove!", 2, (value, set) => {
-    Values.asSet(set).elements = Values.asSet(set).elements.filter(
-      (element) => !equal(value, element),
-    )
+    Values.setDelete(set, value)
     return set
   })
 
   definePrimitiveFunction(mod, "set-clear!", 1, (set) => {
-    Values.asSet(set).elements = []
+    Values.setDeleteAll(set)
     return set
   })
 
   definePrimitiveFunction(mod, "set-union", 2, (left, right) => {
-    return Values.Set(
-      Values.valueArrayDedup([
-        ...Values.asSet(left).elements,
-        ...Values.asSet(right).elements,
-      ]),
-    )
+    return Values.Set([
+      ...Values.setElements(left),
+      ...Values.setElements(right),
+    ])
   })
 
   definePrimitiveFunction(mod, "set-inter", 2, (left, right) => {
     return Values.Set(
-      Values.asSet(left).elements.filter((element) =>
-        Values.valueArrayMember(element, Values.asSet(right).elements),
+      Values.setElements(left).filter((element) =>
+        Values.setHas(right, element),
       ),
     )
   })
 
   definePrimitiveFunction(mod, "set-difference", 2, (left, right) => {
     return Values.Set(
-      Values.asSet(left).elements.filter(
-        (element) =>
-          !Values.valueArrayMember(element, Values.asSet(right).elements),
+      Values.setElements(left).filter(
+        (element) => !Values.setHas(right, element),
       ),
     )
   })
 
   definePrimitiveFunction(mod, "set-disjoint?", 2, (left, right) => {
     return Values.Bool(
-      Values.asSet(left).elements.filter((element) =>
-        Values.valueArrayMember(element, Values.asSet(right).elements),
+      Values.setElements(left).filter((element) =>
+        Values.setHas(right, element),
       ).length === 0,
     )
   })
 
   definePrimitiveFunction(mod, "set-map", 2, (f, set) => {
     return Values.Set(
-      Values.asSet(set).elements.map((element) => apply(f, [element])),
+      Values.setElements(set).map((element) => apply(f, [element])),
     )
   })
 
   definePrimitiveFunction(mod, "set-each", 2, (f, set) => {
-    for (const element of Values.asSet(set).elements) {
+    for (const element of Values.setElements(set)) {
       Values.lazyWalk(apply(f, [element]))
     }
 
@@ -155,8 +145,8 @@ export function aboutSet(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "set-filter", 2, (p, set) => {
-    const elements: Array<Values.Value> = []
-    for (const element of Values.asSet(set).elements) {
+    const newSet = Values.Set([])
+    for (const element of Values.setElements(set)) {
       const result = apply(p, [element])
       if (!Values.isBool(result)) {
         let message = `(set-filter) one result of applying the predicate is not bool\n`
@@ -168,10 +158,10 @@ export function aboutSet(mod: Mod) {
       }
 
       if (Values.isTrue(result)) {
-        elements.push(element)
+        Values.setAdd(newSet, element)
       }
     }
 
-    return Values.Set(elements)
+    return newSet
   })
 }

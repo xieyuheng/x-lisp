@@ -47,7 +47,7 @@ export function isHashable(value: Value): boolean {
   }
 
   if (value.kind === "Set") {
-    return value.elements.every(isHashable)
+    return Values.setElements(value).every(isHashable)
   }
 
   if (value.kind === "Hash") {

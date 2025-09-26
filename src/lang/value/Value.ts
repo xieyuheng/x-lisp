@@ -6,6 +6,7 @@ import * as Patterns from "../pattern/index.ts"
 import { type Atom } from "./Atom.ts"
 import { type AboutData } from "./Data.ts"
 import { type Hash } from "./Hash.ts"
+import { type Set } from "./Set.ts"
 
 export type Meta = TokenMeta
 
@@ -40,18 +41,6 @@ export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
     kind: "Tael",
     elements,
     attributes,
-  }
-}
-
-export type Set = {
-  kind: "Set"
-  elements: Array<Value>
-}
-
-export function Set(elements: Array<Value>): Set {
-  return {
-    kind: "Set",
-    elements,
   }
 }
 

@@ -21,12 +21,8 @@ export function equal(lhs: Value, rhs: Value): boolean {
 
   if (lhs.kind === "Set" && rhs.kind === "Set") {
     return (
-      lhs.elements.every((left) =>
-        Values.valueArrayMember(left, Values.asSet(rhs).elements),
-      ) &&
-      rhs.elements.every((right) =>
-        Values.valueArrayMember(right, Values.asSet(lhs).elements),
-      )
+      Values.setElements(lhs).every((left) => Values.setHas(rhs, left)) &&
+      Values.setElements(rhs).every((right) => Values.setHas(lhs, right))
     )
   }
 
