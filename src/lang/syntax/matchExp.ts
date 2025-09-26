@@ -79,6 +79,14 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     },
   ),
 
+  X.matcher("(cons* 'specific target args)", ({ target, args }, { meta }) => {
+    return Exps.Specific(
+      matchExp(target),
+      X.dataToArray(args).map(matchExp),
+      meta,
+    )
+  }),
+
   X.matcher(
     "`(if ,condition ,consequent ,alternative)",
     ({ condition, consequent, alternative }, { meta }) => {
