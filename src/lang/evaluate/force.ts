@@ -3,7 +3,7 @@ import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
-import { validateOrFail } from "./validate.ts"
+import { forceWithSchema } from "./forceWithSchema.ts"
 
 export function force(target: Value): Value {
   target = Values.lazyWalk(target)
@@ -25,20 +25,6 @@ export function force(target: Value): Value {
   }
 
   let message = `[force] unhandled target value kind\n`
-  message += `  target: ${formatValue(target)}\n`
-  throw new Error(message)
-}
-
-function forceWithSchema(schema: Value, target: Value): Value {
-  schema = Values.lazyWalk(schema)
-  target = Values.lazyWalk(target)
-
-  if (schema.kind === "Arrow" && schema.argSchemas.length === 0) {
-    return validateOrFail(schema.retSchema, force(target))
-  }
-
-  let message = `[forceWithSchema] unhandled kind of schema\n`
-  message += `  schema: ${formatValue(schema)}\n`
   message += `  target: ${formatValue(target)}\n`
   throw new Error(message)
 }
