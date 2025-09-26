@@ -21,12 +21,26 @@ export function setElements(target: Value): Array<Value> {
 }
 
 export function setHas(target: Value, element: Value): boolean {
+  if (!Values.isHashable(element)) {
+    let message = `[setHas] element is not hashable\n`
+    message += `  element: ${formatValue(element)}\n`
+    message += `  target: ${formatValue(target)}\n`
+    throw new Error(message)
+  }
+
   const set = asSet(target)
   const digest = formatValue(element, { digest: true })
   return set.entries.has(digest)
 }
 
 export function setAdd(target: Value, element: Value): void {
+  if (!Values.isHashable(element)) {
+    let message = `[setAdd] element is not hashable\n`
+    message += `  element: ${formatValue(element)}\n`
+    message += `  target: ${formatValue(target)}\n`
+    throw new Error(message)
+  }
+
   const set = asSet(target)
   const digest = formatValue(element, { digest: true })
   const entry = set.entries.get(digest)
@@ -38,6 +52,13 @@ export function setAdd(target: Value, element: Value): void {
 }
 
 export function setDelete(target: Value, element: Value): void {
+  if (!Values.isHashable(element)) {
+    let message = `[setDelete] element is not hashable\n`
+    message += `  element: ${formatValue(element)}\n`
+    message += `  target: ${formatValue(target)}\n`
+    throw new Error(message)
+  }
+
   const set = asSet(target)
   const digest = formatValue(element, { digest: true })
   set.entries.delete(digest)
