@@ -4,7 +4,7 @@ import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
-function applyPolymorphic(
+export function applyPolymorphic(
   polymorphic: Values.Polymorphic,
   args: Array<Value>,
 ): Value {

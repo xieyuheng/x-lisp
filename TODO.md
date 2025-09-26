@@ -1,4 +1,3 @@
-`validate` -- `Polymorphic` -- take `anything?` as arguments
 polymorphic.test.lisp
 
 add `Specific` to `Value`

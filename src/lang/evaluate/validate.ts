@@ -1,8 +1,12 @@
+import assert from "node:assert"
+import { useBuiltinPreludeMod } from "../builtin/index.ts"
 import { equal } from "../equal/index.ts"
 import { formatValue } from "../format/index.ts"
+import { modLookupValue } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
+import { applyPolymorphic } from "./applyPolymorphic.ts"
 
 type Result = { kind: "Ok"; value: Value } | { kind: "Err" }
 
@@ -24,6 +28,22 @@ export function validate(schema: Value, value: Value): Result {
 
   if (schema.kind === "Arrow") {
     return { kind: "Ok", value: Values.The(schema, value) }
+  }
+
+  if (schema.kind === "Polymorphic") {
+    const preludeMod = useBuiltinPreludeMod()
+    const anything = modLookupValue(preludeMod, "anything?")
+    assert(anything)
+    return {
+      kind: "Ok",
+      value: Values.The(
+        applyPolymorphic(
+          schema,
+          schema.parameters.map((_) => anything),
+        ),
+        value,
+      ),
+    }
   }
 
   if (Values.isAtom(schema)) {
