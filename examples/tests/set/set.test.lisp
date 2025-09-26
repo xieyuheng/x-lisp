@@ -50,3 +50,9 @@
 
 (assert-not (set-disjoint? {1 2 3} {3 4 5}))
 (assert (set-disjoint? {1 2 3} {4 5}))
+
+;; nested set
+
+(assert-equal
+  (@set (@set 1 2 3) (@set 1 2 3) (@set 1 2 3))
+  (@set (@set 1 2 3)))
