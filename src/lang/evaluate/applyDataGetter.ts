@@ -9,7 +9,7 @@ export function applyDataGetter(
   if (args.length !== 1) {
     let message = `[applyDataGetter] data getter can only take one argument\n`
     message += `  target: ${formatValue(getter)}\n`
-    message += `  args: [${formatValues(args)}]\n`
+    message += `  args: ${formatValues(args)}\n`
     throw new Error(message)
   }
 
@@ -18,14 +18,14 @@ export function applyDataGetter(
   if (!Values.isData(data)) {
     let message = `[applyDataGetter] data getter can only take data as argument\n`
     message += `  target: ${formatValue(getter)}\n`
-    message += `  args: [${formatValues(args)}]\n`
+    message += `  args: ${formatValues(args)}\n`
     throw new Error(message)
   }
 
   if (Values.dataHashtag(data).content !== getter.constructor.name) {
     let message = `[applyDataGetter] data getter constructor mismatch\n`
     message += `  target: ${formatValue(getter)}\n`
-    message += `  args: [${formatValues(args)}]\n`
+    message += `  args: ${formatValues(args)}\n`
     throw new Error(message)
   }
 

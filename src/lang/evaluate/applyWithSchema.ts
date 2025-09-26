@@ -40,7 +40,7 @@ export function applyWithSchema(
 
     if (arrow.argSchemas.length < args.length) {
       let message = `(validation) too many arguments\n`
-      message += `  args: [${formatValues(args)}]\n`
+      message += `  args: ${formatValues(args)}\n`
       message += `  schema: ${formatValue(schema)}\n`
       message += `  target: ${formatValue(target)}\n`
       if (meta) throw new X.ErrorWithMeta(message, meta)
@@ -56,7 +56,7 @@ export function applyWithSchema(
         return result
       } else {
         let message = `(validation) fail on result\n`
-        message += `  args: [${formatValues(args)}]\n`
+        message += `  args: ${formatValues(args)}\n`
         message += `  result: ${formatValue(result)}\n`
         message += `  schema: ${formatValue(schema)}\n`
         message += `  target: ${formatValue(target)}\n`
@@ -75,7 +75,7 @@ export function applyWithSchema(
   }
 
   let message = `(validation) unhandled kind of schema\n`
-  message += `  args: [${formatValues(args)}]\n`
+  message += `  args: ${formatValues(args)}\n`
   message += `  schema: ${formatValue(schema)}\n`
   message += `  target: ${formatValue(target)}\n`
   if (meta) throw new X.ErrorWithMeta(message, meta)

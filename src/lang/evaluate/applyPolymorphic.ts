@@ -12,7 +12,7 @@ export function applyPolymorphic(
   if (args.length !== arity) {
     let message = `[applyPolymorphic] arity mismatch\n`
     message += `  polymorphic: ${formatValue(polymorphic)}\n`
-    message += `  args: [${formatValues(args)}]\n`
+    message += `  args: ${formatValues(args)}\n`
     throw new Error(message)
   }
 

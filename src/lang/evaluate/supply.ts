@@ -16,7 +16,7 @@ export function supply(
     let message = `[supply] too many arguments\n`
     message += `  target: ${formatValue(target)}\n`
     message += `  arity: ${arity}\n`
-    message += `  args: [${formatValues(args)}]\n`
+    message += `  args: ${formatValues(args)}\n`
     throw new Error(message)
   }
 

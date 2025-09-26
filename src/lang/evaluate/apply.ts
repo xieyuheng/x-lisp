@@ -31,7 +31,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (args.length !== 1) {
       let message = `[apply] tau can only take one argument\n`
       message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${formatValues(args)}]\n`
+      message += `  args: ${formatValues(args)}\n`
       throw new Error(message)
     }
 
@@ -82,7 +82,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (args.length !== 1) {
       let message = `[apply] data constructor predicate can only take one argument\n`
       message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${formatValues(args)}]\n`
+      message += `  args: ${formatValues(args)}\n`
       throw new Error(message)
     }
 
@@ -115,7 +115,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     if (args.length !== 1) {
       let message = `[apply] pattern can only take one argument\n`
       message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${formatValues(args)}]\n`
+      message += `  args: ${formatValues(args)}\n`
       throw new Error(message)
     }
 
@@ -137,6 +137,6 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   let message = `[apply] I can not handle this kind of target\n`
   message += `  target: ${formatValue(target)}\n`
-  message += `  args: [${formatValues(args)}]\n`
+  message += `  args: ${formatValues(args)}\n`
   throw new Error(message)
 }

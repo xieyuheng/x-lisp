@@ -26,7 +26,7 @@ function checkExported(mod: Mod): void {
   const definedNames = new Set(mod.defined.keys())
   const undefinedNames = setDifference(mod.exported, definedNames)
   if (undefinedNames.size > 0) {
-    let message = `(export) undefined names: [${Array.from(undefinedNames).join(" ")}]\n`
+    let message = `(export) undefined names: ${Array.from(undefinedNames).join(" ")}\n`
     message += `  mod: ${urlRelativeToCwd(mod.url)}\n`
     throw new Error(message)
   }
