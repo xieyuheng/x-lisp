@@ -206,12 +206,5 @@ export function formatValue(value: Value, options: Options = {}): string {
       const schema = formatExp(value.schema)
       return `(polymorphic (${parameters}) ${schema})`
     }
-
-    case "Specific": {
-      const schema = formatValue(value.schema, options)
-      const target = formatValue(value.target, options)
-      const args = formatValues(value.args, options)
-      return `(specific ${schema} ${target} ${args})`
-    }
   }
 }

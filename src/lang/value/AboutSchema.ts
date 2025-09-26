@@ -3,7 +3,7 @@ import type { Exp } from "../exp/index.ts"
 import type { Mod } from "../mod/index.ts"
 import type { Attributes, Value } from "./Value.ts"
 
-export type AboutSchema = Arrow | The | Tau | Polymorphic | Specific
+export type AboutSchema = Arrow | The | Tau | Polymorphic
 
 export type Arrow = {
   kind: "Arrow"
@@ -70,25 +70,5 @@ export function Polymorphic(
     env,
     parameters,
     schema,
-  }
-}
-
-export type Specific = {
-  kind: "Specific"
-  schema: Value
-  target: Value
-  args: Array<Value>
-}
-
-export function Specific(
-  schema: Value,
-  target: Value,
-  args: Array<Value>,
-): Specific {
-  return {
-    kind: "Specific",
-    schema,
-    target,
-    args,
   }
 }
