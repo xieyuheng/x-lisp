@@ -133,6 +133,7 @@ in [builtin](src/lang/builtin):
 (list-reverse list)
 (list-member? x list)
 (list-to-set list)
+(list-dedup list)
 ```
 
 in [`std`](std):

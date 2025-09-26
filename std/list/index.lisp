@@ -17,3 +17,4 @@
 (include-all "list-member.lisp")
 (include-all "list-find.lisp")
 (include-all "list-find-index.lisp")
+(include-all "list-dedup.lisp")
