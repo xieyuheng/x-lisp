@@ -52,8 +52,16 @@
   (= hash (@hash))
   (hash-put! (@hash 1 2) 1 hash)
   (hash-put! (@hash 3 4) 3 hash)
-  (assert-equal
-    (@hash
-     (@hash 1 2) 1
-     (@hash 3 4) 3)
-    hash))
+  (assert-equal (@hash (@hash 1 2) 1 (@hash 3 4) 3) hash)
+  (assert-equal 1 (hash-get (@hash 1 2) hash))
+  (assert-equal 3 (hash-get (@hash 3 4) hash)))
+
+;; set as key
+
+(begin
+  (= hash (@hash))
+  (hash-put! (@set 1 2) 1 hash)
+  (hash-put! (@set 3 4) 3 hash)
+  (assert-equal (@hash (@set 1 2) 1 (@set 3 4) 3) hash)
+  (assert-equal 1 (hash-get (@set 1 2) hash))
+  (assert-equal 3 (hash-get (@set 3 4) hash)))
