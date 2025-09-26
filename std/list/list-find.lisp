@@ -1,8 +1,9 @@
 (export list-find)
 
 (claim list-find
-  (-> (-> anything? bool?) (list? anything?)
-      (union anything? null?)))
+  (polymorphic (A)
+    (-> (-> A bool?) (list? A)
+        (union A null?))))
 
 (define (list-find p list)
   (cond ((list-empty? list) null)

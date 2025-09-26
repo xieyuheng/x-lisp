@@ -1,8 +1,9 @@
 (export list-find-index)
 
 (claim list-find-index
-  (-> (-> anything? bool?) (list? anything?)
-      (union int? null?)))
+  (polymorphic (A)
+    (-> (-> A bool?) (list? A)
+        (union int? null?))))
 
 (define (list-find-index p list)
   (list-find-index-aux p list 0))

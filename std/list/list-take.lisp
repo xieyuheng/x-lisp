@@ -1,8 +1,9 @@
 (export list-take)
 
 (claim list-take
-  (-> int-non-negative? (list? anything?)
-      (list? anything?)))
+  (polymorphic (A)
+    (-> int-non-negative? (list? A)
+        (list? A))))
 
 (define (list-take n list)
   (if (or (equal? n 0) (list-empty? list))

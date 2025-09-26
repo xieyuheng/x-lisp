@@ -1,8 +1,9 @@
 (export list-member?)
 
 (claim list-member?
-  (-> anything? (list? anything?)
-      bool?))
+  (polymorphic (A)
+    (-> A (list? A)
+        bool?)))
 
 (define (list-member? x list)
   (cond ((list-empty? list) false)

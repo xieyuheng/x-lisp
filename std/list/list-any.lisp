@@ -1,8 +1,9 @@
 (export list-any?)
 
 (claim list-any?
-  (-> (-> anything? bool?) (list? anything?)
-      bool?))
+  (polymorphic (A)
+    (-> (-> A bool?) (list? A)
+        bool?)))
 
 (define (list-any? p list)
   (cond ((list-empty? list) false)
