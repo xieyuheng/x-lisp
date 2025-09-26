@@ -1,6 +1,6 @@
 import type { Attributes, Value } from "./Value.ts"
 
-export type AboutSchema = Arrow | The | Tau
+export type AboutSchema = Arrow | The | Tau | Polymorphic
 
 export type Arrow = {
   kind: "Arrow"
@@ -44,5 +44,22 @@ export function Tau(
     kind: "Tau",
     elementSchemas,
     attributeSchemas,
+  }
+}
+
+export type Polymorphic = {
+  kind: "Polymorphic"
+  parameters: Array<string>
+  schema: Value
+}
+
+export function Polymorphic(
+  parameters: Array<string>,
+  schema: Value,
+): Polymorphic {
+  return {
+    kind: "Polymorphic",
+    parameters,
+    schema,
   }
 }

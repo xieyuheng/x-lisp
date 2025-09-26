@@ -200,5 +200,9 @@ export function formatValue(value: Value, options: Options = {}): string {
     case "Pattern": {
       return `(@pattern ${formatPattern(value.pattern, options)})`
     }
+
+    case "Polymorphic": {
+      return `(polymorphic (${value.parameters.join(" ")}) ${formatValue(value.schema, options)})`
+    }
   }
 }
