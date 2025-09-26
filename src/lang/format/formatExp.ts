@@ -213,6 +213,10 @@ export function formatExp(exp: Exp): string {
     case "Pattern": {
       return `(@pattern ${formatExp(exp.pattern)}`
     }
+
+    case "Polymorphic": {
+      return `(@polymorphic (${exp.parameters.join(" ")}) ${formatExp(exp.schema)}`
+    }
   }
 }
 

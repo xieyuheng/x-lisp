@@ -407,5 +407,11 @@ export function evaluate(exp: Exp): Effect {
         return [env, Values.Pattern(pattern)]
       }
     }
+
+    case "Polymorphic": {
+      return (mod, env) => {
+        throw new Error("TODO")
+      }
+    }
   }
 }

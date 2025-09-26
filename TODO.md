@@ -1,5 +1,5 @@
-add `Polymorphic` to `Exp`
 parse `(polymorphic)`
+`evaluate` -- `Polymorphic`
 
 `apply` -- `Polymorphic` -- as schema take `anything?` as arguments
 

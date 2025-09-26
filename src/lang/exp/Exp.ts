@@ -38,6 +38,7 @@ export type Exp =
   | Tau
   | The
   | Pattern
+  | Polymorphic
 
 export type Var = {
   kind: "Var"
@@ -537,6 +538,26 @@ export function Pattern(pattern: Exp, meta: Meta): Pattern {
   return {
     kind: "Pattern",
     pattern,
+    meta,
+  }
+}
+
+export type Polymorphic = {
+  kind: "Polymorphic"
+  parameters: Array<string>
+  schema: Exp
+  meta: Meta
+}
+
+export function Polymorphic(
+  parameters: Array<string>,
+  schema: Exp,
+  meta: Meta,
+): Polymorphic {
+  return {
+    kind: "Polymorphic",
+    parameters,
+    schema,
     meta,
   }
 }
