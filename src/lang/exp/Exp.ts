@@ -39,6 +39,7 @@ export type Exp =
   | The
   | Pattern
   | Polymorphic
+  | Specific
 
 export type Var = {
   kind: "Var"
@@ -558,6 +559,22 @@ export function Polymorphic(
     kind: "Polymorphic",
     parameters,
     schema,
+    meta,
+  }
+}
+
+export type Specific = {
+  kind: "Specific"
+  target: Exp
+  args: Array<Exp>
+  meta: Meta
+}
+
+export function Specific(target: Exp, args: Array<Exp>, meta: Meta): Specific {
+  return {
+    kind: "Specific",
+    target,
+    args,
     meta,
   }
 }

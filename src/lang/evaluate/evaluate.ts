@@ -413,5 +413,11 @@ export function evaluate(exp: Exp): Effect {
         return [env, Values.Polymorphic(mod, env, exp.parameters, exp.schema)]
       }
     }
+
+    case "Specific": {
+      return (mod, env) => {
+        throw new Error("TODO")
+      }
+    }
   }
 }
