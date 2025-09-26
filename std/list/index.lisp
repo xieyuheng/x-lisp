@@ -18,3 +18,4 @@
 (include-all "list-find.lisp")
 (include-all "list-find-index.lisp")
 (include-all "list-dedup.lisp")
+(include-all "list-product.lisp")

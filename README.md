@@ -134,6 +134,8 @@ in [builtin](src/lang/builtin):
 (list-member? x list)
 (list-to-set list)
 (list-dedup list)
+(list-product lhs rhs)
+(list-product/no-diagonal lhs rhs)
 ```
 
 in [`std`](std):
