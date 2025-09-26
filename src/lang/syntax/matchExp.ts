@@ -69,7 +69,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   }),
 
   X.matcher(
-    "`(polymorphic parameters schema)",
+    "`(polymorphic ,parameters ,schema)",
     ({ parameters, schema }, { meta }) => {
       return Exps.Polymorphic(
         X.dataToArray(parameters).map(X.symbolToString),

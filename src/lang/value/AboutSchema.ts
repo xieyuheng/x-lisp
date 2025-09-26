@@ -1,3 +1,5 @@
+import type { Env } from "../env/index.ts"
+import type { Mod } from "../mod/index.ts"
 import type { Attributes, Value } from "./Value.ts"
 
 export type AboutSchema = Arrow | The | Tau | Polymorphic
@@ -49,16 +51,22 @@ export function Tau(
 
 export type Polymorphic = {
   kind: "Polymorphic"
+  mod: Mod
+  env: Env
   parameters: Array<string>
-  schema: Value
+  schema: Exp
 }
 
 export function Polymorphic(
+  mod: Mod,
+  env: Env,
   parameters: Array<string>,
-  schema: Value,
+  schema: Exp,
 ): Polymorphic {
   return {
     kind: "Polymorphic",
+    mod,
+    env,
     parameters,
     schema,
   }
