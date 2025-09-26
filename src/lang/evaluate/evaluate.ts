@@ -410,7 +410,10 @@ export function evaluate(exp: Exp): Effect {
 
     case "Polymorphic": {
       return (mod, env) => {
-        throw new Error("TODO")
+        const schema = Values.lazyWalk(
+          resultValue(evaluate(exp.schema)(mod, env)),
+        )
+        return [env, Values.Polymorphic(exp.parameters, schema)]
       }
     }
   }

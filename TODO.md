@@ -1,5 +1,3 @@
-`evaluate` -- `Polymorphic`
-
 `apply` -- `Polymorphic` -- as schema take `anything?` as arguments
 
 add `Specific` to `Value`
