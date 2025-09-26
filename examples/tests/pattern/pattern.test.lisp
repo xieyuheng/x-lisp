@@ -23,6 +23,10 @@
   [])
 
 (assert-equal
+  ((@pattern #abc) #abc)
+  [])
+
+(assert-equal
   ((@pattern '(a b c)) '(a b c))
   [])
 
@@ -46,9 +50,12 @@
   ((@pattern (cons* first (@escape (iadd 1 2)) tail)) '(1 2 3))
   null)
 
-(assert-equal
-  ((@pattern (@escape null)) null)
-  [])
+;; no need to escape: true false null void
+
+(assert-equal ((@pattern null) null) [])
+(assert-equal ((@pattern void) void) [])
+(assert-equal ((@pattern true) true) [])
+(assert-equal ((@pattern false) false) [])
 
 ;; quasiquote
 

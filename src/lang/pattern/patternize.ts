@@ -16,6 +16,9 @@ export function patternize(exp: Exp): Effect {
   if (exp.kind === "Var") {
     return (mod, env) => {
       const topValue = modLookupValue(mod, exp.name)
+      // Handle variable bind to hashtag specially:
+      // - no need to escape constant (nullary) data constructor;
+      // - also no need to escape: true false null void.
       if (topValue && Values.isHashtag(topValue)) {
         return Patterns.LiteralPattern(topValue)
       } else {
