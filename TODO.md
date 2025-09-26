@@ -1,5 +1,3 @@
-extract `AboutSchema`
-
 add `Polymorphic` to `Value`
 add `Polymorphic` to `Exp`
 parse `(polymorphic)`

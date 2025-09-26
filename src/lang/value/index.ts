@@ -1,4 +1,5 @@
 export * from "./AboutData.ts"
+export * from "./AboutSchema.ts"
 export * from "./arrowUtils.ts"
 export * from "./Atom.ts"
 export * from "./atomUtils.ts"

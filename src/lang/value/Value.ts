@@ -4,6 +4,7 @@ import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Patterns from "../pattern/index.ts"
 import { type AboutData } from "./AboutData.ts"
+import { type AboutSchema } from "./AboutSchema.ts"
 import { type Atom } from "./Atom.ts"
 import { type Hash } from "./Hash.ts"
 import { type Set } from "./Set.ts"
@@ -23,12 +24,10 @@ export type Value =
   | LambdaLazy
   | PrimitiveFunction
   | PrimitiveThunk
-  | AboutData
-  | Arrow
-  | The
   | Curried
-  | Tau
   | Pattern
+  | AboutData
+  | AboutSchema
 
 export type Tael = {
   kind: "Tael"
@@ -169,34 +168,6 @@ export function PrimitiveThunk(name: string, fn: ValueThunk): PrimitiveThunk {
   }
 }
 
-export type Arrow = {
-  kind: "Arrow"
-  argSchemas: Array<Value>
-  retSchema: Value
-}
-
-export function Arrow(argSchemas: Array<Value>, retSchema: Value): Arrow {
-  return {
-    kind: "Arrow",
-    argSchemas,
-    retSchema,
-  }
-}
-
-export type The = {
-  kind: "The"
-  schema: Value
-  value: Value
-}
-
-export function The(schema: Value, value: Value): The {
-  return {
-    kind: "The",
-    schema,
-    value,
-  }
-}
-
 export type Curried = {
   kind: "Curried"
   target: Value
@@ -214,23 +185,6 @@ export function Curried(
     target,
     arity,
     args,
-  }
-}
-
-export type Tau = {
-  kind: "Tau"
-  elementSchemas: Array<Value>
-  attributeSchemas: Attributes
-}
-
-export function Tau(
-  elementSchemas: Array<Value>,
-  attributeSchemas: Attributes,
-): Tau {
-  return {
-    kind: "Tau",
-    elementSchemas,
-    attributeSchemas,
   }
 }
 
