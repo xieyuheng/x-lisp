@@ -2,7 +2,7 @@ import { setAdd } from "./setUtils.ts"
 import { type Value } from "./Value.ts"
 
 export type SetEntry = {
-  hashKey: string
+  digest: string
   element: Value
 }
 

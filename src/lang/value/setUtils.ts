@@ -23,16 +23,16 @@ export function setElements(target: Value): Array<Value> {
 
 export function setHas(target: Value, element: Value): boolean {
   const set = asSet(target)
-  const hashKey = formatValue(element, { digest: true })
-  return set.entries.has(hashKey)
+  const digest = formatValue(element, { digest: true })
+  return set.entries.has(digest)
 }
 
 export function setAdd(target: Value, element: Value): void {
   const set = asSet(target)
-  const hashKey = formatValue(element, { digest: true })
-  const entry = set.entries.get(hashKey)
+  const digest = formatValue(element, { digest: true })
+  const entry = set.entries.get(digest)
   if (entry === undefined) {
-    set.entries.set(hashKey, { hashKey, element })
+    set.entries.set(digest, { digest, element })
   } else {
     entry.element = element
   }
@@ -40,8 +40,8 @@ export function setAdd(target: Value, element: Value): void {
 
 export function setDelete(target: Value, element: Value): void {
   const set = asSet(target)
-  const hashKey = formatValue(element, { digest: true })
-  set.entries.delete(hashKey)
+  const digest = formatValue(element, { digest: true })
+  set.entries.delete(digest)
 }
 
 export function setDeleteAll(target: Value): void {
