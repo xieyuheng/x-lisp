@@ -1,0 +1,15 @@
+(validation) fail on arguments
+  args: [[1 2] [3 4]]
+    #0: (the (list? symbol?) [1 2])
+    #1: (the (list? symbol?) [3 4])
+  schema: (-> (list? symbol?) (list? symbol?) (list? symbol?))
+  target: (lambda (left right) (list-append left right))
+
+   --> examples/tests/schema/specific.error.lisp:6:9
+  4 |         (list? A))))
+  5 | 
+  6 | (define (my-append left right)
+    |         ~~~~~~~~~~~~~~~~~~~~~~ 
+  7 |   (list-append left right))
+  8 | 
+

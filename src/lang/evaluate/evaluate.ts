@@ -5,12 +5,13 @@ import { recordMap } from "../../utils/record/recordMap.ts"
 import { useBuiltinPreludeMod } from "../builtin/index.ts"
 import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
-import { formatExp, formatValue } from "../format/index.ts"
+import { formatExp, formatValue, formatValues } from "../format/index.ts"
 import { modLookupValue, type Mod } from "../mod/index.ts"
 import { match, patternize } from "../pattern/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
+import { applyPolymorphic } from "./applyPolymorphic.ts"
 import { assertEqual } from "./assertEqual.ts"
 import { assertNotEqual } from "./assertNotEqual.ts"
 import { assertNotTrue } from "./assertNotTrue.ts"
@@ -416,7 +417,30 @@ export function evaluate(exp: Exp): Effect {
 
     case "Specific": {
       return (mod, env) => {
-        throw new Error("TODO")
+        const target = Values.lazyWalk(
+          resultValue(evaluate(exp.target)(mod, env)),
+        )
+        const args = exp.args.map((arg) => resultValue(evaluate(arg)(mod, env)))
+
+        if (target.kind !== "The") {
+          let message = `[evaluate] specific application expect target to be contracted -- (the) value\n`
+          message += `  target: ${formatValue(target)}\n`
+          message += `  args: [${formatValues(args)}]\n`
+          throw new X.ErrorWithMeta(message, exp.meta)
+        }
+
+        if (target.schema.kind !== "Polymorphic") {
+          let message = `[evaluate] specific application expect the schema of the target to be polymorphic\n`
+          message += `  target schema: ${formatValue(target.schema)}\n`
+          message += `  target: ${formatValue(target)}\n`
+          message += `  args: [${formatValues(args)}]\n`
+          throw new X.ErrorWithMeta(message, exp.meta)
+        }
+
+        return [
+          env,
+          Values.The(applyPolymorphic(target.schema, args), target.value),
+        ]
       }
     }
   }
