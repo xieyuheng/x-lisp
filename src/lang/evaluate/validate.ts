@@ -6,8 +6,17 @@ import { apply } from "./apply.ts"
 
 type Result = { kind: "Ok"; value: Value } | { kind: "Err" }
 
-// `validate` should not return new value on `Tael`,
-// because there might be side effect on the old value.
+export function validateOrFail(schema: Value, value: Value): Value {
+  const result = validate(schema, value)
+  if (result.kind === "Ok") {
+    return result.value
+  }
+
+  let message = `[validateOrFail] assertion fail\n`
+  message += `  schema: ${formatValue(schema)}\n`
+  message += `  value: ${formatValue(value)}\n`
+  throw new Error(message)
+}
 
 export function validate(schema: Value, value: Value): Result {
   schema = Values.lazyWalk(schema)
@@ -26,6 +35,10 @@ export function validate(schema: Value, value: Value): Result {
   }
 
   if (schema.kind === "Tau") {
+    // Should not return new `Tael` on `Tau`,
+    // because function schema might do
+    // side effect on the old value.
+
     if (value.kind !== "Tael") {
       return { kind: "Err" }
     }
@@ -75,17 +88,5 @@ export function validate(schema: Value, value: Value): Result {
   message += `  schema: ${formatValue(schema)}\n`
   message += `  value: ${formatValue(value)}\n`
   message += `  result: ${formatValue(result)}\n`
-  throw new Error(message)
-}
-
-export function validateOrFail(schema: Value, value: Value): Value {
-  const result = validate(schema, value)
-  if (result.kind === "Ok") {
-    return result.value
-  }
-
-  let message = `[validateOrFail] assertion fail\n`
-  message += `  schema: ${formatValue(schema)}\n`
-  message += `  value: ${formatValue(value)}\n`
   throw new Error(message)
 }
