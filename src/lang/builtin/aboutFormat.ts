@@ -6,7 +6,11 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutFormat(mod: Mod) {
-  provide(mod, ["format-subscript", "format-superscript"])
+  provide(mod, ["format", "format-subscript", "format-superscript"])
+
+  definePrimitiveFunction(mod, "format", 1, (value) => {
+    return Values.String(formatValue(value))
+  })
 
   definePrimitiveFunction(mod, "format-subscript", 1, (n) => {
     if (Values.asInt(n).content < 0) {
