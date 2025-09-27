@@ -281,7 +281,7 @@ in [builtin](src/lang/builtin):
 (file-exists? path)
 (file-size path)
 (file-load path)
-(file-save path text)
+(file-save path string)
 (file-remove path)
 (directory-exists? path)
 (directory-create path)
