@@ -4,4 +4,4 @@
 (include-all "list/index.lisp")
 (include-all "record/index.lisp")
 (include-all "hash/index.lisp")
-
+(include-all "set/index.lisp")

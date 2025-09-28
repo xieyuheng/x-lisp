@@ -23,7 +23,6 @@ export function aboutSet(mod: Mod) {
     "set-disjoint?",
     "set-map",
     "set-each",
-    "set-select",
   ])
 
   definePrimitiveFunction(mod, "set?", 2, (p, target) => {
