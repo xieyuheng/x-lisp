@@ -4,6 +4,10 @@
   (list-append [1 2 3] [4 5 6])
   [1 2 3 4 5 6])
 
+(assert-equal
+  ((specific list-append int?) [1 2 3] [4 5 6])
+  [1 2 3 4 5 6])
+
 ;; the record parts are ignored:
 
 (assert-equal
