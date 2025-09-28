@@ -147,6 +147,7 @@ in [`std`](std):
 (list-map f list)
 (list-each f list)
 (list-select p list)
+(list-reject p list)
 (list-append list tail)
 (list-append-many lists)
 (list-append-map f list)
@@ -193,6 +194,7 @@ in [`std`](std):
 (record-put-many entries record)
 (record-put-many! entries record)
 (record-select p record)
+(record-reject p record)
 (record-update fs record)
 (record-update! fs record)
 (record-upsert upserters record)
@@ -222,7 +224,13 @@ in [builtin](src/lang/builtin):
 (set-disjoint? left right)
 (set-map f set)
 (set-each f set)
+```
+
+in [`std`](std):
+
+```scheme
 (set-select p set)
+(set-reject p set)
 ```
 
 ### Hash
