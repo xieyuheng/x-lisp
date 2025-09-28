@@ -10,13 +10,13 @@ export function aboutFile(mod: Mod) {
     "file-size",
     "file-load",
     "file-save",
-    "file-remove",
+    "file-delete",
     "file-directory",
     "directory-exists?",
     "directory-create",
     "directory-create-recursively",
-    "directory-remove",
-    "directory-remove-recursively",
+    "directory-delete",
+    "directory-delete-recursively",
     "directory-files",
     "directory-files-recursively",
     "directory-directories",
@@ -66,18 +66,18 @@ export function aboutFile(mod: Mod) {
     return Values.String(Path.dirname(Values.asString(path).content))
   })
 
-  definePrimitiveFunction(mod, "file-remove", 1, (path) => {
+  definePrimitiveFunction(mod, "file-delete", 1, (path) => {
     const pathString = Values.asString(path).content
     const stats = fs.statSync(pathString, {
       throwIfNoEntry: false,
     })
 
     if (!stats) {
-      throw new Error(`(file-remove) file does not exist: ${pathString}`)
+      throw new Error(`(file-delete) file does not exist: ${pathString}`)
     }
 
     if (!stats.isFile()) {
-      throw new Error(`(file-remove) path is not file: ${pathString}`)
+      throw new Error(`(file-delete) path is not file: ${pathString}`)
     }
 
     fs.rmSync(pathString)
@@ -106,12 +106,12 @@ export function aboutFile(mod: Mod) {
     return Values.Void()
   })
 
-  definePrimitiveFunction(mod, "directory-remove", 1, (path) => {
+  definePrimitiveFunction(mod, "directory-delete", 1, (path) => {
     fs.rmdirSync(Values.asString(path).content)
     return Values.Void()
   })
 
-  definePrimitiveFunction(mod, "directory-remove-recursively", 1, (path) => {
+  definePrimitiveFunction(mod, "directory-delete-recursively", 1, (path) => {
     fs.rmdirSync(Values.asString(path).content, { recursive: true })
     return Values.Void()
   })

@@ -14,8 +14,8 @@ export function aboutSet(mod: Mod) {
     "set-to-list",
     "set-add",
     "set-add!",
-    "set-remove",
-    "set-remove!",
+    "set-delete",
+    "set-delete!",
     "set-clear!",
     "set-union",
     "set-inter",
@@ -83,13 +83,13 @@ export function aboutSet(mod: Mod) {
     return set
   })
 
-  definePrimitiveFunction(mod, "set-remove", 2, (value, set) => {
+  definePrimitiveFunction(mod, "set-delete", 2, (value, set) => {
     const newSet = Values.setCopy(set)
     Values.setDelete(newSet, value)
     return newSet
   })
 
-  definePrimitiveFunction(mod, "set-remove!", 2, (value, set) => {
+  definePrimitiveFunction(mod, "set-delete!", 2, (value, set) => {
     Values.setDelete(set, value)
     return set
   })

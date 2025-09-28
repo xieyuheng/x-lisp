@@ -4,5 +4,5 @@
   (assert-not (file-exists? path))
   (file-save path "abc\n")
   (assert (file-exists? path))
-  (file-remove path)
+  (file-delete path)
   (assert-not (file-exists? path)))
