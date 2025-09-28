@@ -1,2 +1,1 @@
-record-reject
 set-reject
