@@ -1,5 +1,5 @@
-(import-all "record-filter.lisp")
+(import-all "record-select.lisp")
 
 (assert-equal
   [:a 1 :b 2]
-  (record-filter int-non-negative? [:a 1 :b 2 :x -1 :y -2]))
+  (record-select int-non-negative? [:a 1 :b 2 :x -1 :y -2]))

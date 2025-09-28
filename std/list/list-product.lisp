@@ -28,5 +28,5 @@
      (list-map
       (lambda (left)
         (pipe rhs
-          (list-filter (negate (equal? left)))
+          (list-select (negate (equal? left)))
           (list-map (lambda (right) [left right]))))))))

@@ -1,7 +1,7 @@
 (include-all "list-getters.lisp")
 (include-all "list-map.lisp")
 (include-all "list-each.lisp")
-(include-all "list-filter.lisp")
+(include-all "list-select.lisp")
 (include-all "list-append.lisp")
 (include-all "list-append-many.lisp")
 (include-all "list-monad.lisp")

@@ -1,8 +1,8 @@
-(export list-filter)
+(export list-select)
 
-(define (list-filter p list)
+(define (list-select p list)
   (cond ((list-empty? list) list)
         ((p (car list))
-         (cons (car list) (list-filter p (cdr list))))
+         (cons (car list) (list-select p (cdr list))))
         (else
-         (list-filter p (cdr list)))))
+         (list-select p (cdr list)))))

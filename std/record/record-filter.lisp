@@ -2,10 +2,10 @@
 (import-all "../list/index.lisp")
 (import-all "record-from-entries.lisp")
 
-(export record-filter)
+(export record-select)
 
-(define (record-filter p record)
+(define (record-select p record)
   (pipe record
     record-entries
-    (list-filter (compose p list-second))
+    (list-select (compose p list-second))
     record-from-entries))
