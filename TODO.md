@@ -1,7 +1,3 @@
-# module
-
-move graph to std
-
 # priority-queue
 
 ```scheme
