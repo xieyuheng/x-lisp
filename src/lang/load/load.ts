@@ -4,8 +4,8 @@ import { flags } from "../../flags.ts"
 import { aboutModule } from "../builtin/aboutModule.ts"
 import { importBuiltin } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
-import { importStdPrelude } from "../std/importStdPrelude.ts"
-import { stdDirectory } from "../std/index.ts"
+import { importStdPrelude } from "../prelude/importStdPrelude.ts"
+import { stdDirectory } from "../prelude/index.ts"
 import { runCode } from "./runCode.ts"
 
 const globalLoadedMods: Map<string, Mod> = new Map()

@@ -6,7 +6,7 @@ import { aboutModule } from "../lang/builtin/aboutModule.ts"
 import { importBuiltin } from "../lang/builtin/index.ts"
 import { runSexps } from "../lang/load/index.ts"
 import { createMod } from "../lang/mod/index.ts"
-import { importStdPrelude } from "../lang/std/importStdPrelude.ts"
+import { importStdPrelude } from "../lang/prelude/importStdPrelude.ts"
 import { errorReport } from "../utils/error/errorReport.ts"
 import { getPackageJson } from "../utils/node/getPackageJson.ts"
 

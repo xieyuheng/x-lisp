@@ -1,6 +1,5 @@
 # module
 
-rename std/ to prelude/
 rename importStdPrelude to importPrelude
 move std/ to prelude/
 
