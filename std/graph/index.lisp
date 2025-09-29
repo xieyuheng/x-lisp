@@ -1,1 +1,1 @@
-(include-all "graph.lisp")
+(include-all "graph")
