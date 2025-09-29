@@ -14,7 +14,7 @@ export function stdDirectory(): string {
   return path.join(currentDir, "../../../std")
 }
 
-export function useStdPreludeMod(): Mod {
+export function usePreludeMod(): Mod {
   if (mod) return mod
 
   const preludeFile = path.join(stdDirectory(), "prelude.lisp")

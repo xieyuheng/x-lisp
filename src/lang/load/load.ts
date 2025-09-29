@@ -4,7 +4,7 @@ import { flags } from "../../flags.ts"
 import { aboutModule } from "../builtin/aboutModule.ts"
 import { importBuiltin } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
-import { importStdPrelude } from "../prelude/importStdPrelude.ts"
+import { importPrelude } from "../prelude/importPrelude.ts"
 import { stdDirectory } from "../prelude/index.ts"
 import { runCode } from "./runCode.ts"
 
@@ -19,7 +19,7 @@ export function load(url: URL): Mod {
   aboutModule(mod)
   importBuiltin(mod)
   if (!flags["no-std-prelude"]) {
-    importStdPrelude(mod)
+    importPrelude(mod)
   }
 
   globalLoadedMods.set(url.href, mod)

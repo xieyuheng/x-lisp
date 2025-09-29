@@ -1,2 +1,2 @@
-export * from "./importStdPrelude.ts"
-export * from "./useStdPreludeMod.ts"
+export * from "./importPrelude.ts"
+export * from "./usePreludeMod.ts"

@@ -1,6 +1,5 @@
 # module
 
-rename importStdPrelude to importPrelude
 move std/ to prelude/
 
 move graph to std
