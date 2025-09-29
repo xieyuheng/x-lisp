@@ -16,7 +16,7 @@ The command-line program is called `x-lisp.js`.
 
 See more examples at [`examples`](examples) directory.
 
-## Prelude
+## API
 
 ### Bool
 
@@ -138,7 +138,7 @@ in [builtin](src/lang/builtin):
 (list-product/no-diagonal lhs rhs)
 ```
 
-in [`std`](std):
+in [`prelude`](prelude):
 
 ```scheme
 (list-first list)
@@ -187,7 +187,7 @@ in [builtin](src/lang/builtin):
 (record-map fn record)
 ```
 
-in [`std`](std):
+in [`prelude`](prelude):
 
 ```scheme
 (record-from-entries entries)
@@ -226,7 +226,7 @@ in [builtin](src/lang/builtin):
 (set-each f set)
 ```
 
-in [`std`](std):
+in [`prelude`](prelude):
 
 ```scheme
 (set-select p set)
@@ -250,7 +250,7 @@ in [builtin](src/lang/builtin):
 (hash-values hash)
 ```
 
-in [`std`](std):
+in [`prelude`](prelude):
 
 ```scheme
 (hash-put-many entries hash)
@@ -367,7 +367,7 @@ in [builtin](src/lang/builtin):
 (compose-fn fs x)
 ```
 
-in [`std`](std):
+in [`prelude`](prelude):
 
 ```scheme
 (identity x)
@@ -386,7 +386,7 @@ in [builtin](src/lang/builtin):
 
 ### Conditional
 
-in [`std`](std):
+in [`prelude`](prelude):
 
 ```scheme
 (when p t)
@@ -395,7 +395,7 @@ in [`std`](std):
 
 ### Optional
 
-in [`std`](std):
+in [`prelude`](prelude):
 
 ```scheme
 (optional? p x)
