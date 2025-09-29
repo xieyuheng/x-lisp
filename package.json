@@ -7,9 +7,10 @@
   "main": "./lib/index.js",
   "files": [
     "src",
-    "std",
     "lib",
-    "examples"
+    "prelude",
+    "examples",
+    "std"
   ],
   "bin": {
     "x-lisp.js": "lib/main.js"
