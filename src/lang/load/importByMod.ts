@@ -1,4 +1,5 @@
 import fs from "node:fs"
+import Path from "node:path"
 import { createUrlOrFileUrl } from "../../utils/url/createUrlOrFileUrl.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { load } from "../load/index.ts"
@@ -16,6 +17,10 @@ function resoleModUrl(path: string, mod: Mod): URL {
       fs.lstatSync(url.pathname).isDirectory()
     ) {
       url = new URL(`${url.href}/index.lisp`)
+    }
+
+    if (Path.extname(url.pathname) === "") {
+      url = new URL(`${url.href}.lisp`)
     }
 
     if (!fs.existsSync(url.pathname)) {

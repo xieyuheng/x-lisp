@@ -1,4 +1,4 @@
-(import-all "record-from-entries.lisp")
+(import-all "record-from-entries")
 
 (assert-equal
   [:a 1 :b 2]

@@ -1,4 +1,4 @@
-(import-all "list-append.lisp")
+(import-all "list-append")
 
 (export list-append-many)
 

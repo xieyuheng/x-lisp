@@ -1,4 +1,4 @@
-(import-all "hash-put-many.lisp")
+(import-all "hash-put-many")
 
 (export hash-from-entries)
 

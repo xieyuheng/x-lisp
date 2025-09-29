@@ -1,4 +1,4 @@
-(import-all "record-select.lisp")
+(import-all "record-select")
 
 (assert-equal
   [:a 1 :b 2]

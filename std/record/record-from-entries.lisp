@@ -1,4 +1,4 @@
-(import-all "record-put-many.lisp")
+(import-all "record-put-many")
 
 (export record-from-entries)
 

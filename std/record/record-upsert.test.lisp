@@ -1,4 +1,4 @@
-(import-all "record-upsert.lisp")
+(import-all "record-upsert")
 
 (assert-equal
   [:a 2 :b 2]

@@ -1,4 +1,4 @@
-(import-all "hash-put-many.lisp")
+(import-all "hash-put-many")
 
 (assert-equal (@hash 'a 1 'b 2) (hash-put-many [['a 1] ['b 2]] (@hash)))
 

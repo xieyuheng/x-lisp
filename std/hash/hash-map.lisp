@@ -1,5 +1,5 @@
 (import-all "../list")
-(import-all "hash-from-entries.lisp")
+(import-all "hash-from-entries")
 
 (export hash-map)
 

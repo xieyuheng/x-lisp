@@ -1,4 +1,4 @@
-(import-all "record-update.lisp")
+(import-all "record-update")
 
 (assert-equal
   [:a 2 :b 2]

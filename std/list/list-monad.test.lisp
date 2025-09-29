@@ -1,4 +1,4 @@
-(import-all "list-monad.lisp")
+(import-all "list-monad")
 
 (assert-equal (list-append-map list-unit [1 2 3]) [1 2 3])
 

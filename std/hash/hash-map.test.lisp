@@ -1,4 +1,4 @@
-(import-all "hash-map.lisp")
+(import-all "hash-map")
 
 (assert-equal
   (@hash 1 2 3 4)

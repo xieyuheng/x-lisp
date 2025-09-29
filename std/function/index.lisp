@@ -1,1 +1,1 @@
-(include-all "combinator.lisp")
+(include-all "combinator")

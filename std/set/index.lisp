@@ -1,1 +1,1 @@
-(include-all "set-select.lisp")
+(include-all "set-select")

@@ -1,4 +1,4 @@
-(import-all "list-take.lisp")
+(import-all "list-take")
 
 (assert-equal (list-take 0 [1 2 3]) [])
 (assert-equal (list-take 1 [1 2 3]) [1])

@@ -1,4 +1,4 @@
-(import-all "list-zip.lisp")
+(import-all "list-zip")
 
 (assert-equal
   (list-zip ['a 'b 'c] [1 2 3])

@@ -1,4 +1,4 @@
-(import-all "record-unit.lisp")
+(import-all "record-unit")
 
 (assert-equal
   [:a 1]

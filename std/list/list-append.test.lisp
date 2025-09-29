@@ -1,4 +1,4 @@
-(import-all "list-append.lisp")
+(import-all "list-append")
 
 (assert-equal
   (list-append [1 2 3] [4 5 6])

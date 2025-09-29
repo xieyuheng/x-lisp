@@ -1,6 +1,6 @@
 (import-all "../function")
 (import-all "../list")
-(import-all "record-from-entries.lisp")
+(import-all "record-from-entries")
 
 (export
   record-select

@@ -1,6 +1,5 @@
 # module
 
-import file - if no extension, add `.lisp` by default
 support import `std;`
 ```scheme
 (import "std:graph")

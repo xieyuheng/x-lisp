@@ -1,4 +1,4 @@
-(import-all "list-append-many.lisp")
+(import-all "list-append-many")
 
 (assert-equal
   (list-append-many [[1 2 3] [4 5 6]])

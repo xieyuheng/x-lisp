@@ -1,4 +1,4 @@
-(import-all "list-product.lisp")
+(import-all "list-product")
 
 (assert-equal
   [[1 1] [1 2] [1 3]

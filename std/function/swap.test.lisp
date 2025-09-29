@@ -1,4 +1,4 @@
-(import-all "index.lisp")
+(import-all "index")
 
 (assert-equal
   (swap cons [] 1)

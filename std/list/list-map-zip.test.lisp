@@ -1,4 +1,4 @@
-(import-all "list-map-zip.lisp")
+(import-all "list-map-zip")
 
 (assert-equal
   (list-map-zip iadd [1 2 3] [10 20 30])

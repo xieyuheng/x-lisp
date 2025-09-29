@@ -1,4 +1,4 @@
-(import-all "list-dedup.lisp")
+(import-all "list-dedup")
 
 (assert-equal
   [1 2 3]

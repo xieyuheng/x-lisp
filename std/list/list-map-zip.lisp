@@ -1,6 +1,6 @@
-(import-all "list-getters.lisp")
-(import-all "list-map.lisp")
-(import-all "list-zip.lisp")
+(import-all "list-getters")
+(import-all "list-map")
+(import-all "list-zip")
 
 (export list-map-zip)
 

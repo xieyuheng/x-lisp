@@ -1,4 +1,4 @@
-(import-all "set-select.lisp")
+(import-all "set-select")
 
 (assert-equal
   {0 1 2}
