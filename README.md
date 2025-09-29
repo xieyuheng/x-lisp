@@ -202,7 +202,7 @@ in [`prelude`](prelude):
 (record-unit key value)
 ```
 
-## Set
+### Set
 
 in [builtin](src/lang/builtin):
 
@@ -416,6 +416,35 @@ in [builtin](src/lang/builtin):
 
 ```scheme
 (system-shell-run command args)
+```
+
+## Standard Libraries
+
+### Graph
+
+```scheme
+(graph? vertex-p value)
+(make-graph edges)
+(graph-vertices graph)
+(graph-neighbors vertex graph)
+(graph-add-vertex! vertex graph)
+(graph-add-edge! edge graph)
+(graph-add-edges! edges graph)
+(graph-adjacent? source target graph)
+```
+
+### Priority Queue
+
+```scheme
+(priority-queue? key-p value)
+(make-max-priority-queue)
+(make-min-priority-queue)
+(priority-queue-put! key priority queue)
+(priority-queue-get key queue)
+(priority-queue-delete! key queue)
+(priority-queue-peek queue)
+(priority-queue-poll! queue)
+(priority-queue-poll-all! queue)
 ```
 
 ## Development
