@@ -436,15 +436,7 @@ in [builtin](src/lang/builtin):
 ### Priority Queue
 
 ```scheme
-(priority-queue? key-p value)
-(make-max-priority-queue)
-(make-min-priority-queue)
-(priority-queue-put! key priority queue)
-(priority-queue-get key queue)
-(priority-queue-delete! key queue)
-(priority-queue-peek queue)
-(priority-queue-poll! queue)
-(priority-queue-poll-all! queue)
+TODO
 ```
 
 ## Development
