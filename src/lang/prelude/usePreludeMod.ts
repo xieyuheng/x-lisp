@@ -9,15 +9,15 @@ import { createMod, type Mod } from "../mod/index.ts"
 
 let mod: Mod | undefined = undefined
 
-export function stdDirectory(): string {
+export function usePreludeDirectory(): string {
   const currentDir = path.dirname(fileURLToPath(import.meta.url))
-  return path.join(currentDir, "../../../std")
+  return path.join(currentDir, "../../../prelude")
 }
 
 export function usePreludeMod(): Mod {
   if (mod) return mod
 
-  const preludeFile = path.join(stdDirectory(), "prelude.lisp")
+  const preludeFile = path.join(usePreludeDirectory(), "index.lisp")
   const url = createUrlOrFileUrl(preludeFile)
   const text = fs.readFileSync(preludeFile, "utf-8")
   mod = createMod(url)

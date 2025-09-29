@@ -5,7 +5,7 @@ import { aboutModule } from "../builtin/aboutModule.ts"
 import { importBuiltin } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
 import { importPrelude } from "../prelude/importPrelude.ts"
-import { stdDirectory } from "../prelude/index.ts"
+import { useStdDirectory } from "../std/index.ts"
 import { runCode } from "./runCode.ts"
 
 const globalLoadedMods: Map<string, Mod> = new Map()
@@ -33,7 +33,7 @@ function loadText(url: URL): string {
   }
 
   if (url.protocol === "std:") {
-    return fs.readFileSync(path.join(stdDirectory(), url.pathname), "utf8")
+    return fs.readFileSync(path.join(useStdDirectory(), url.pathname), "utf8")
   }
 
   throw new Error(`[loadText] not supported protocol: ${url}`)

@@ -1,7 +1,6 @@
 # module
 
-move std/ to prelude/
-
+ambr no-std-prelude no-prelude
 move graph to std
 
 # priority-queue
