@@ -1,6 +1,5 @@
 # module
 
-import directory -- add `index.lisp` by default
 import file - if no extension, add `.lisp` by default
 support import `std;`
 ```scheme

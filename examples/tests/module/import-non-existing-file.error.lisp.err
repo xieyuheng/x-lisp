@@ -1,4 +1,5 @@
-[importByMod] Importing non-existing file
-  path: non-existing.lisp
-  by mod: examples/tests/module/import-non-existing-file.error.lisp
+[resoleModUrl] resolved path does not exist as a file
+  given path: non-existing.lisp
+  resolved path: /home/xyh/projects/xieyuheng/x-lisp.js/examples/tests/module/non-existing.lisp
+  imported by mod: examples/tests/module/import-non-existing-file.error.lisp
 
