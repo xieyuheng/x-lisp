@@ -1,12 +1,9 @@
 # module
 
-support import `std;`
-```scheme
-(import "std:graph")
-(import "std:graph/index.lisp")
-```
-
-# graph
+rename importBuiltinPrelude to importBuiltin
+rename std/ to prelude/
+rename importStdPrelude to importPrelude
+move std/ to prelude/
 
 move graph to std
 
