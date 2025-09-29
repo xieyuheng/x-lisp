@@ -3,7 +3,7 @@ import * as X from "@xieyuheng/x-data.js"
 import { flags } from "../flags.ts"
 import { globals } from "../globals.ts"
 import { aboutModule } from "../lang/builtin/aboutModule.ts"
-import { importBuiltinPrelude } from "../lang/builtin/index.ts"
+import { importBuiltin } from "../lang/builtin/index.ts"
 import { runSexps } from "../lang/load/index.ts"
 import { createMod } from "../lang/mod/index.ts"
 import { importStdPrelude } from "../lang/std/importStdPrelude.ts"
@@ -32,7 +32,7 @@ export const ReplCommand: Command = {
     const url = new URL("repl:")
     const mod = createMod(url)
     aboutModule(mod)
-    importBuiltinPrelude(mod)
+    importBuiltin(mod)
     if (!flags["no-std-prelude"]) {
       importStdPrelude(mod)
     }

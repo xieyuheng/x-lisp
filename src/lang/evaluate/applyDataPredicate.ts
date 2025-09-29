@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import { useBuiltinPreludeMod } from "../builtin/index.ts"
+import { useBuiltinMod } from "../builtin/index.ts"
 import { emptyEnv, envSetValue } from "../env/index.ts"
 import { formatValue } from "../format/index.ts"
 import { modLookupValue } from "../mod/index.ts"
@@ -73,7 +73,7 @@ export function applyDataPredicateWithAnything(
   predicate: Values.DataPredicate,
   data: Value,
 ): Value {
-  const preludeMod = useBuiltinPreludeMod()
+  const preludeMod = useBuiltinMod()
   const anything = modLookupValue(preludeMod, "anything?")
   assert(anything)
   return applyDataPredicate(predicate, [

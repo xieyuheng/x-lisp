@@ -1,7 +1,7 @@
 import * as X from "@xieyuheng/x-data.js"
 import assert from "node:assert"
 import { arrayMapZip } from "../../utils/array/arrayMapZip.ts"
-import { useBuiltinPreludeMod } from "../builtin/index.ts"
+import { useBuiltinMod } from "../builtin/index.ts"
 import { formatValue, formatValues } from "../format/index.ts"
 import { modLookupValue } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
@@ -22,7 +22,7 @@ export function applyWithSchema(
   const context = { schema, target, args }
 
   if (schema.kind === "Polymorphic") {
-    const preludeMod = useBuiltinPreludeMod()
+    const preludeMod = useBuiltinMod()
     const anything = modLookupValue(preludeMod, "anything?")
     assert(anything)
     return applyWithSchema(

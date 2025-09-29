@@ -2,7 +2,7 @@ import fs from "node:fs"
 import path from "node:path"
 import { flags } from "../../flags.ts"
 import { aboutModule } from "../builtin/aboutModule.ts"
-import { importBuiltinPrelude } from "../builtin/index.ts"
+import { importBuiltin } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
 import { importStdPrelude } from "../std/importStdPrelude.ts"
 import { stdDirectory } from "../std/index.ts"
@@ -17,7 +17,7 @@ export function load(url: URL): Mod {
   const text = maybeIgnoreShebang(loadText(url))
   const mod = createMod(url)
   aboutModule(mod)
-  importBuiltinPrelude(mod)
+  importBuiltin(mod)
   if (!flags["no-std-prelude"]) {
     importStdPrelude(mod)
   }

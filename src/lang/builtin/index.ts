@@ -1,2 +1,2 @@
-export * from "./importBuiltinPrelude.ts"
-export * from "./useBuiltinPreludeMod.ts"
+export * from "./importBuiltin.ts"
+export * from "./useBuiltinMod.ts"

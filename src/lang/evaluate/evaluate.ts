@@ -2,7 +2,7 @@ import * as X from "@xieyuheng/x-data.js"
 import assert from "node:assert"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMap } from "../../utils/record/recordMap.ts"
-import { useBuiltinPreludeMod } from "../builtin/index.ts"
+import { useBuiltinMod } from "../builtin/index.ts"
 import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue, formatValues } from "../format/index.ts"
@@ -318,7 +318,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Union": {
       return (mod, env) => {
-        const preludeMod = useBuiltinPreludeMod()
+        const preludeMod = useBuiltinMod()
         const value = modLookupValue(preludeMod, "union-fn")
         assert(value)
         const predicates = exp.exps.map((e) =>
@@ -330,7 +330,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Inter": {
       return (mod, env) => {
-        const preludeMod = useBuiltinPreludeMod()
+        const preludeMod = useBuiltinMod()
         const value = modLookupValue(preludeMod, "inter-fn")
         assert(value)
         const predicates = exp.exps.map((e) =>
@@ -350,7 +350,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Compose": {
       return (mod, env) => {
-        const preludeMod = useBuiltinPreludeMod()
+        const preludeMod = useBuiltinMod()
         const value = modLookupValue(preludeMod, "compose-fn")
         assert(value)
         const fs = exp.exps.map((e) => resultValue(evaluate(e)(mod, env)))
@@ -360,7 +360,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Pipe": {
       return (mod, env) => {
-        const preludeMod = useBuiltinPreludeMod()
+        const preludeMod = useBuiltinMod()
         const value = modLookupValue(preludeMod, "pipe-fn")
         assert(value)
         const fs = exp.exps.map((e) => resultValue(evaluate(e)(mod, env)))

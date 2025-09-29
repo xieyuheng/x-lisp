@@ -25,7 +25,7 @@ import { aboutVoid } from "./aboutVoid.ts"
 
 let mod: Mod | undefined = undefined
 
-export function useBuiltinPreludeMod(): Mod {
+export function useBuiltinMod(): Mod {
   if (mod) return mod
 
   mod = createMod(new URL("buildin:prelude"))

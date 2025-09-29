@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import { useBuiltinPreludeMod } from "../builtin/index.ts"
+import { useBuiltinMod } from "../builtin/index.ts"
 import { formatValue } from "../format/index.ts"
 import { modLookupValue } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
@@ -13,7 +13,7 @@ export function forceWithSchema(schema: Value, target: Value): Value {
   target = Values.lazyWalk(target)
 
   if (schema.kind === "Polymorphic") {
-    const preludeMod = useBuiltinPreludeMod()
+    const preludeMod = useBuiltinMod()
     const anything = modLookupValue(preludeMod, "anything?")
     assert(anything)
     return forceWithSchema(
