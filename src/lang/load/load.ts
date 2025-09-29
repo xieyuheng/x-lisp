@@ -18,7 +18,7 @@ export function load(url: URL): Mod {
   const mod = createMod(url)
   aboutModule(mod)
   importBuiltin(mod)
-  if (!flags["no-std-prelude"]) {
+  if (!flags["no-prelude"]) {
     importPrelude(mod)
   }
 

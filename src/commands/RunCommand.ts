@@ -23,8 +23,8 @@ export const RunCommand: Command = {
       flags["debug"] = true
     }
 
-    if (commander.options["no-std-prelude"]) {
-      flags["no-std-prelude"] = true
+    if (commander.options["no-prelude"]) {
+      flags["no-prelude"] = true
     }
 
     if (typeof commander.args[0] !== "string") {

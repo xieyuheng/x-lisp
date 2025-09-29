@@ -25,15 +25,15 @@ export const ReplCommand: Command = {
       flags["debug"] = true
     }
 
-    if (commander.options["no-std-prelude"]) {
-      flags["no-std-prelude"] = true
+    if (commander.options["no-prelude"]) {
+      flags["no-prelude"] = true
     }
 
     const url = new URL("repl:")
     const mod = createMod(url)
     aboutModule(mod)
     importBuiltin(mod)
-    if (!flags["no-std-prelude"]) {
+    if (!flags["no-prelude"]) {
       importPrelude(mod)
     }
 
