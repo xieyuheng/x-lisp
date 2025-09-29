@@ -1,5 +1,5 @@
-(import-all "../list/index.lisp")
-(import-all "../conditional/index.lisp")
+(import-all "../list")
+(import-all "../conditional")
 (import-all "record-from-entries.lisp")
 
 (export record-update record-update!)

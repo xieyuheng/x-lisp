@@ -1,4 +1,4 @@
-(import-all "../function/index.lisp")
+(import-all "../function")
 (import-all "list-map.lisp")
 (import-all "list-append-many.lisp" )
 
