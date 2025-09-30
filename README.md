@@ -1,6 +1,6 @@
 # x-lisp.js
 
-My list processing language.
+Extensible list processing language.
 
 ## Install
 
@@ -12,9 +12,21 @@ npm install -g @xieyuheng/x-lisp.js
 
 The command-line program is called `x-lisp.js`.
 
+## Development
+
+```sh
+npm install
+npm run build
+npm run test
+```
+
 ## Examples
 
-See more examples at [`examples`](examples) directory.
+See more examples at:
+
+- [`examples`](examples)
+- [`prelude`](prelude)
+- [`std`](std)
 
 ## API
 
@@ -467,14 +479,6 @@ in [`prelude`](prelude):
 (priority-queue-peek queue)
 (priority-queue-poll! queue)
 (priority-queue-delete! key queue)
-```
-
-## Development
-
-```sh
-npm install
-npm run build
-npm run test
 ```
 
 ## License
