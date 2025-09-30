@@ -21,21 +21,44 @@
         (coloring? V))))
 
 (define (graph-coloring/dsatur-loop graph coloring queue)
-  (sort-by-saturation! graph coloring queue)
+  (queue-sort-by-saturation! graph coloring queue)
   (cond ((list-empty? queue) coloring)
         (else
-         ;; TODO
-         coloring)))
+         (= (cons first rest-queue) queue)
+         (= saturation (vertex-saturation graph coloring first))
+         (= color (next-not-used-color saturation))
+         (graph-coloring/dsatur-loop
+          graph
+          (hash-put! first color coloring)
+          rest-queue))))
 
-(claim saturation
+(claim next-not-used-color
+  (-> (set? color?)
+      color?))
+
+(define (next-not-used-color color-set)
+  (next-not-used-color/loop color-set 0))
+
+(define (next-not-used-color/loop color-set color)
+  (if (set-member? color color-set)
+    (next-not-used-color/loop color-set (iadd 1 color))
+    color))
+
+(claim vertex-saturation
   (polymorphic (V)
     (-> (graph? V) (coloring? V) V
         (set? color?))))
 
-(define (saturation graph coloring vertex)
-  ;; TODO
-  {})
+(define (vertex-saturation graph coloring vertex)
+  (= neighbors (graph-neighbors vertex graph))
+  (pipe neighbors
+    (set-map (swap hash-get coloring))
+    (set-reject null?)))
 
-(define (sort-by-saturation! graph coloring queue)
-  ;; TODO
-  void)
+(define (queue-sort-by-saturation! graph coloring queue)
+  (list-sort!
+   (lambda (v1 v2)
+     (int-compare/descending
+      (set-size (saturation graph coloring v1))
+      (set-size (saturation graph coloring v2)))
+   queue)))
