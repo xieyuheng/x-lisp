@@ -1,4 +1,3 @@
-[prelude] `sort/` setup
 [prelude] sort-order
 
 sort-order?

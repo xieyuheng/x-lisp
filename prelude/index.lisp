@@ -5,3 +5,4 @@
 (include-all "record")
 (include-all "hash")
 (include-all "set")
+(include-all "sort-order")
