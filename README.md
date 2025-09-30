@@ -6,13 +6,13 @@ Extensible list processing language.
 
 Install it by the following command:
 
-```sh
-npm install -g @xieyuheng/x-lisp.js
+```
+$ npm install -g @xieyuheng/x-lisp.js
 ```
 
 The command-line interface:
 
-```sh
+```
 $ x-lisp.js
 commands:
   help -- display help for a command
@@ -22,10 +22,10 @@ commands:
 
 ## Development
 
-```sh
-npm install
-npm run build
-npm run test
+```
+$ npm install
+$ npm run build
+$ npm run test
 ```
 
 ## Examples
