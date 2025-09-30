@@ -100,6 +100,7 @@ in [builtin](src/lang/builtin):
 (string-append-many list)
 (string-join separator list)
 (string-chars string)
+(string-compare/lexical x y)
 ```
 
 ### Value

@@ -1,8 +1,7 @@
-[builtin] string-compare/lexical
-
 [builtin] list-sort!
 [builtin] list-sort
 
+[prelude] `sort/` setup
 [prelude] sort-order
 
 sort-order?
