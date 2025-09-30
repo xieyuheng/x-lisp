@@ -19,6 +19,8 @@ export function aboutInt(mod: Mod) {
     "int-smaller-or-equal?",
     "int-positive?",
     "int-non-negative?",
+    "int-compare/ascending",
+    "int-compare/descending",
   ])
 
   definePrimitiveFunction(mod, "int?", 1, (value) => {
@@ -85,5 +87,17 @@ export function aboutInt(mod: Mod) {
 
   definePrimitiveFunction(mod, "int-non-negative?", 1, (x) => {
     return Values.Bool(Values.asInt(x).content >= 0)
+  })
+
+  definePrimitiveFunction(mod, "int-compare/ascending", 2, (x, y) => {
+    if (Values.asInt(x).content < Values.asInt(y).content) return Values.Int(-1)
+    if (Values.asInt(x).content > Values.asInt(y).content) return Values.Int(1)
+    else return Values.Int(0)
+  })
+
+  definePrimitiveFunction(mod, "int-compare/descending", 2, (x, y) => {
+    if (Values.asInt(x).content < Values.asInt(y).content) return Values.Int(1)
+    if (Values.asInt(x).content > Values.asInt(y).content) return Values.Int(-1)
+    else return Values.Int(0)
   })
 }

@@ -1,8 +1,23 @@
-int-compare
-float-compare
-string-compare
+[builtin] float-compare/ascending
+[builtin] float-compare/descending
+
+[builtin] string-compare/lexical
+
+[builtin] list-sort!
+[builtin] list-sort
+
+[prelude] sort-order
+
+sort-order?
+sort-order-reverse
+sort-order-negate
+sort-order-before?
+sort-order-same?
+sort-order-after?
 
 # priority-queue
+
+compare-priority
 
 ```scheme
 (priority-queue?)
