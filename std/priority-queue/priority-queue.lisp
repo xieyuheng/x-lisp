@@ -60,18 +60,18 @@
 (claim priority-queue-peek
   (polymorphic (K P)
     (-> (priority-queue? K P)
-        (optional? (tau K P)))))
+        (optional? K))))
 
 (define (priority-queue-peek queue)
   (= first (list-head (priority-queue-heap queue)))
   (if (null? first)
     null
-    [(node-key first) (node-priority first)]))
+    (node-key first)))
 
 (claim priority-queue-poll!
   (polymorphic (K P)
     (-> (priority-queue? K P)
-        (optional? (tau K P)))))
+        (optional? K))))
 
 (define (priority-queue-poll! queue)
   (cond ((priority-queue-empty? queue) null)
@@ -80,7 +80,7 @@
          (= first (list-pop! heap))
          (= node-hash (priority-queue-node-hash queue))
          (hash-delete! (node-key first) node-hash)
-         [(node-key first) (node-priority first)])
+         (node-key first))
         (else
          (= heap (priority-queue-heap queue))
          (= compare (priority-queue-compare queue))
@@ -91,7 +91,7 @@
          (node-swap! heap first last)
          (list-pop! heap)
          (node-blance! heap compare last)
-         [(node-key first) (node-priority first)])))
+         (node-key first))))
 
 (claim priority-queue-put!
   (polymorphic (K P)
