@@ -1,4 +1,4 @@
-(import-all "index")
+(import-all "graph")
 
 (begin
   (= graph (make-graph []))

@@ -186,12 +186,12 @@
 ;; node-left-child  -- 2i + 1
 ;; node-right-child -- 2i + 2
 
-(define node-getter?
+(define node-getter-schema
   (polymorphic (K P)
     (-> (heap? K P) (node? K P)
         (optional? (node? K P)))))
 
-(claim node-left-child node-getter?)
+(claim node-left-child node-getter-schema)
 
 (define (node-left-child heap node)
   (= child-index (iadd 1 (imul 2 (node-index node))))
@@ -199,7 +199,7 @@
     (list-get child-index heap)
     null))
 
-(claim node-right-child node-getter?)
+(claim node-right-child node-getter-schema)
 
 (define (node-right-child heap node)
   (= child-index (iadd 2 (imul 2 (node-index node))))
@@ -207,7 +207,7 @@
     (list-get child-index heap)
     null))
 
-(claim node-parent node-getter?)
+(claim node-parent node-getter-schema)
 
 (define (node-parent heap node)
   (= index (node-index node))

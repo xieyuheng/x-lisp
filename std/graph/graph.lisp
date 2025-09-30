@@ -14,6 +14,8 @@
    (vertices (set? V))
    (neighbor-hash (hash? V (set? V)))))
 
+(define graph-vertices cons-graph-vertices)
+
 (claim make-graph
   (polymorphic (V)
     (-> (list? (tau V V))
@@ -24,14 +26,6 @@
   (= neighbor-hash (@hash))
   (= graph (cons-graph vertices neighbor-hash))
   (graph-add-edges! edges graph))
-
-(claim graph-vertices
-  (polymorphic (V)
-    (-> (graph? V)
-        (set? V))))
-
-(define (graph-vertices graph)
-  (cons-graph-vertices graph))
 
 (claim graph-neighbors
   (polymorphic (V)
@@ -47,7 +41,7 @@
         (graph? V))))
 
 (define (graph-add-vertex! vertex graph)
-  (set-add! vertex (cons-graph-vertices graph))
+  (set-add! vertex (graph-vertices graph))
   graph)
 
 (claim graph-add-edge!
