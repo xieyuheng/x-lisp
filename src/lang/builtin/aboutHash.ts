@@ -13,6 +13,7 @@ export function aboutHash(mod: Mod) {
     "hash-get",
     "hash-put",
     "hash-put!",
+    "hash-delete!",
     "hash-copy",
     "hash-entries",
     "hash-keys",
@@ -105,6 +106,17 @@ export function aboutHash(mod: Mod) {
     }
 
     Values.hashPut(Values.asHash(hash), key, value)
+    return hash
+  })
+
+  definePrimitiveFunction(mod, "hash-delete!", 2, (key, hash) => {
+    if (!Values.isHashable(key)) {
+      let message = `(hash-delete!) the given key is not hashable\n`
+      message += `  key: ${formatValue(key)}`
+      throw new Error(message)
+    }
+
+    Values.hashDelete(Values.asHash(hash), key)
     return hash
   })
 

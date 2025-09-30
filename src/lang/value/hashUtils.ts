@@ -36,6 +36,11 @@ export function hashPut(hash: Hash, key: Value, value: Value): void {
   }
 }
 
+export function hashDelete(hash: Hash, key: Value): void {
+  const digest = formatValue(key, { digest: true })
+  hash.entries.delete(digest)
+}
+
 export function isHashable(value: Value): boolean {
   if (Values.isAtom(value)) return true
 

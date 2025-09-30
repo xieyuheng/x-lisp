@@ -252,6 +252,7 @@ in [builtin](src/lang/builtin):
 (hash-get key hash)
 (hash-put key value hash)
 (hash-put! key value hash)
+(hash-delete! key hash)
 (hash-copy hash)
 (hash-entries hash)
 (hash-keys hash)
