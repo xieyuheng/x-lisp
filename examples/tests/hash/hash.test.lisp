@@ -35,6 +35,12 @@
   (assert-equal (@hash 1 2 3 4) hash))
 
 (begin
+  (= hash (@hash 1 2 3 4))
+  (assert-equal (@hash 1 2) (hash-delete! 3 hash))
+  (assert-equal (@hash) (hash-delete! 1 hash))
+  (assert-equal (@hash) hash))
+
+(begin
   (= hash (@hash 1 2))
   (assert-equal (@hash 1 2) (hash-copy hash))
   (assert-equal (@hash 1 2 3 4) (hash-put! 3 4 (hash-copy hash)))
