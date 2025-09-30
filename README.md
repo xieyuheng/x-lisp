@@ -135,6 +135,7 @@ in [builtin](src/lang/builtin):
 (list-put! index value list)
 (list-push value list)
 (list-push! value list)
+(list-pop! list)
 (list-reverse list)
 (list-member? x list)
 (list-to-set list)
