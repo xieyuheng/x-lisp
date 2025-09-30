@@ -141,6 +141,8 @@ in [builtin](src/lang/builtin):
 (list-dedup list)
 (list-product lhs rhs)
 (list-product/no-diagonal lhs rhs)
+(list-sort! compare list)
+(list-sort compare list)
 ```
 
 in [`prelude`](prelude):

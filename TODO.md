@@ -1,6 +1,3 @@
-[builtin] list-sort!
-[builtin] list-sort
-
 [prelude] `sort/` setup
 [prelude] sort-order
 

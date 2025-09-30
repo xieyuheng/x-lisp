@@ -24,6 +24,8 @@ export function aboutList(mod: Mod) {
     "list-push!",
     "list-reverse",
     "list-to-set",
+    "list-sort!",
+    "list-sort",
   ])
 
   definePrimitiveFunction(mod, "list-empty?", 1, (value) => {
@@ -188,5 +190,22 @@ export function aboutList(mod: Mod) {
 
   definePrimitiveFunction(mod, "list-to-set", 1, (list) => {
     return Values.Set(Values.asTael(list).elements)
+  })
+
+  definePrimitiveFunction(mod, "list-sort!", 2, (compare, list) => {
+    Values.asTael(list).elements.sort((x, y) => {
+      const result = apply(compare, [x, y])
+      return Values.asInt(result).content
+    })
+    return list
+  })
+
+  definePrimitiveFunction(mod, "list-sort", 2, (compare, list) => {
+    return Values.List(
+      Values.asTael(list).elements.toSorted((x, y) => {
+        const result = apply(compare, [x, y])
+        return Values.asInt(result).content
+      }),
+    )
   })
 }
