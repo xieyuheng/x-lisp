@@ -211,6 +211,8 @@ false
 (list-push value list)
 (list-push! value list)
 (list-pop! list)
+(list-unshift! value list)
+(list-shift! list)
 (list-reverse list)
 (list-member? x list)
 (list-to-set list)
@@ -473,6 +475,7 @@ null
 (graph-add-edge! edge graph)
 (graph-add-edges! edges graph)
 (graph-adjacent? source target graph)
+(graph-coloring/dsatur graph)
 ```
 
 ### Priority Queue

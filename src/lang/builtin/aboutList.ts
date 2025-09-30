@@ -23,6 +23,8 @@ export function aboutList(mod: Mod) {
     "list-push",
     "list-push!",
     "list-pop!",
+    "list-shift!",
+    "list-unshift!",
     "list-reverse",
     "list-to-set",
     "list-sort!",
@@ -184,6 +186,20 @@ export function aboutList(mod: Mod) {
 
   definePrimitiveFunction(mod, "list-pop!", 1, (list) => {
     const value = Values.asTael(list).elements.pop()
+    if (value === undefined) {
+      return Values.Null()
+    } else {
+      return value
+    }
+  })
+
+  definePrimitiveFunction(mod, "list-unshift!", 2, (value, list) => {
+    Values.asTael(list).elements.unshift(value)
+    return list
+  })
+
+  definePrimitiveFunction(mod, "list-shift!", 1, (list) => {
+    const value = Values.asTael(list).elements.shift()
     if (value === undefined) {
       return Values.Null()
     } else {
