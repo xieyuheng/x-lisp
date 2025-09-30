@@ -425,6 +425,19 @@ in [builtin](src/lang/builtin):
 (system-shell-run command args)
 ```
 
+### Sort Order
+
+in [`prelude`](prelude):
+
+```scheme
+(sort-order? value)
+(sort-order-before? value)
+(sort-order-same? value)
+(sort-order-after? value)
+(sort-order-negate order)
+(sort-order-reverse compare x y)
+```
+
 ## Standard Libraries
 
 ### Graph

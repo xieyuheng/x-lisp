@@ -1,12 +1,3 @@
-[prelude] sort-order
-
-sort-order?
-sort-order-reverse
-sort-order-negate
-sort-order-before?
-sort-order-same?
-sort-order-after?
-
 # priority-queue
 
 compare-priority
