@@ -30,11 +30,80 @@ npm run test
 
 ## Examples
 
-See more examples at:
+See examples at:
 
 - [`examples`](examples)
 - [`prelude`](prelude)
 - [`std`](std)
+
+## Syntax
+
+### Top Level Statement Keywords
+
+```scheme
+(claim <name> <schema>)
+(define <name> <exp>)
+(define (<name> <parameters>) <body>)
+(define-lazy (<name> <parameters>) <body>)
+(define-data <predicate> <constructors>)
+(import <source> <entries>)
+(import-all <source>)
+(import-as <source> <name>)
+(export <names>)
+(include <source> <names>)
+(include-all <source>)
+(include-as <source> <name>)
+(include-except <source> <names>)
+```
+
+### Expression Keywords
+
+```scheme
+(lambda (<parameters>) <body>)
+(lambda-lazy (<parameters>) <body>)
+(thunk <body>)
+(lazy <exp>)
+(= <lhs> <rhs>)
+(the <schema> <exp>)
+(@tael <elements> <attributes>)
+(@list <elements>)
+(@record <attributes>)
+(@set <elements>)
+(@hash <key-value-pairs>)
+(tau <elements>)
+(begin <body>)
+(cond <cond-lines>)
+(match <target> <match-lines>)
+(-> <arg-schemas> <ret-schema>)
+(@quote <sexp>)
+(@quasiquote <sexp>)
+(@pattern <pattern>)
+(polymorphic (<parameters>) <schema>)
+(specific <target> <args>)
+(if <condition> <consequent> <alternative>)
+(and <exps>)
+(or <exps>)
+(union <exps>)
+(inter <exps>)
+(compose <exps>)
+(pipe <arg> <exps>)
+(assert <exp>)
+(assert-not <exp>)
+(assert-equal <lhs> <rhs>)
+(assert-not-equal <lhs> <rhs>)
+(assert-the <schema> <exp>)
+(<target> <args>)
+```
+
+### Parser Level Syntax Sugar
+
+```scheme
+'<sexp> => (@quote <sexp>)
+`<sexp> => (@quasiquote <sexp>)
+,<sexp> => (@unquote <sexp>)
+[<elements> <attributes>] => (@tael <elements> <attributes>)
+{<elements>} => (@set <elements>)
+```
 
 ## API
 
