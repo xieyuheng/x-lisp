@@ -49,6 +49,8 @@ in [builtin](src/lang/builtin):
 (int-smaller-or-equal? x y)
 (int-positive? x)
 (int-non-negative? x)
+(int-compare/ascending x y)
+(int-compare/descending x y)
 ```
 
 ### Float
@@ -70,6 +72,8 @@ in [builtin](src/lang/builtin):
 (float-smaller-or-equal? x y)
 (float-positive? x)
 (float-non-negative? x)
+(float-compare/ascending x y)
+(float-compare/descending x y)
 ```
 
 ### Symbol

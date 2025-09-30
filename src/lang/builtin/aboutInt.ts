@@ -90,14 +90,22 @@ export function aboutInt(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "int-compare/ascending", 2, (x, y) => {
-    if (Values.asInt(x).content < Values.asInt(y).content) return Values.Int(-1)
-    if (Values.asInt(x).content > Values.asInt(y).content) return Values.Int(1)
-    else return Values.Int(0)
+    if (Values.asInt(x).content < Values.asInt(y).content) {
+      return Values.Int(-1)
+    } else if (Values.asInt(x).content > Values.asInt(y).content) {
+      return Values.Int(1)
+    } else {
+      return Values.Int(0)
+    }
   })
 
   definePrimitiveFunction(mod, "int-compare/descending", 2, (x, y) => {
-    if (Values.asInt(x).content < Values.asInt(y).content) return Values.Int(1)
-    if (Values.asInt(x).content > Values.asInt(y).content) return Values.Int(-1)
-    else return Values.Int(0)
+    if (Values.asInt(x).content < Values.asInt(y).content) {
+      return Values.Int(1)
+    } else if (Values.asInt(x).content > Values.asInt(y).content) {
+      return Values.Int(-1)
+    } else {
+      return Values.Int(0)
+    }
   })
 }

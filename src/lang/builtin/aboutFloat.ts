@@ -18,6 +18,8 @@ export function aboutFloat(mod: Mod) {
     "float-smaller-or-equal?",
     "float-positive?",
     "float-non-negative?",
+    "float-compare/ascending",
+    "float-compare/descending",
   ])
 
   definePrimitiveFunction(mod, "float?", 1, (value) => {
@@ -78,5 +80,25 @@ export function aboutFloat(mod: Mod) {
 
   definePrimitiveFunction(mod, "float-non-negative?", 1, (x) => {
     return Values.Bool(Values.asFloat(x).content >= 0)
+  })
+
+  definePrimitiveFunction(mod, "float-compare/ascending", 2, (x, y) => {
+    if (Values.asFloat(x).content < Values.asFloat(y).content) {
+      return Values.Int(-1)
+    } else if (Values.asFloat(x).content > Values.asFloat(y).content) {
+      return Values.Int(1)
+    } else {
+      return Values.Int(0)
+    }
+  })
+
+  definePrimitiveFunction(mod, "float-compare/descending", 2, (x, y) => {
+    if (Values.asFloat(x).content < Values.asFloat(y).content) {
+      return Values.Int(1)
+    } else if (Values.asFloat(x).content > Values.asFloat(y).content) {
+      return Values.Int(-1)
+    } else {
+      return Values.Int(0)
+    }
   })
 }

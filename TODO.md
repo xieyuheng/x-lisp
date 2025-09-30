@@ -1,6 +1,3 @@
-[builtin] float-compare/ascending
-[builtin] float-compare/descending
-
 [builtin] string-compare/lexical
 
 [builtin] list-sort!
