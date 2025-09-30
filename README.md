@@ -109,8 +109,6 @@ See examples at:
 
 ### Bool
 
-in [builtin](src/lang/builtin):
-
 ```scheme
 true
 false
@@ -119,8 +117,6 @@ false
 ```
 
 ### Int
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 (int? value)
@@ -144,8 +140,6 @@ in [builtin](src/lang/builtin):
 
 ### Float
 
-in [builtin](src/lang/builtin):
-
 ```scheme
 (float? value)
 (fneg x)
@@ -167,8 +161,6 @@ in [builtin](src/lang/builtin):
 
 ### Symbol
 
-in [builtin](src/lang/builtin):
-
 ```scheme
 (symbol? value)
 (symbol-length symbol)
@@ -178,8 +170,6 @@ in [builtin](src/lang/builtin):
 ```
 
 ### String
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 (string? value)
@@ -194,8 +184,6 @@ in [builtin](src/lang/builtin):
 
 ### Value
 
-in [builtin](src/lang/builtin):
-
 ```scheme
 (same? lhs rhs)
 (equal? lhs rhs)
@@ -204,8 +192,6 @@ in [builtin](src/lang/builtin):
 ```
 
 ### List
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 (list-empty? value)
@@ -233,11 +219,7 @@ in [builtin](src/lang/builtin):
 (list-product/no-diagonal lhs rhs)
 (list-sort! compare list)
 (list-sort compare list)
-```
-
-in [`prelude`](prelude):
-
-```scheme
+;; prelude
 (list-first list)
 (list-second list)
 (list-third list)
@@ -264,8 +246,6 @@ in [`prelude`](prelude):
 
 ### Record
 
-in [builtin](src/lang/builtin):
-
 ```scheme
 (record? value-p target)
 (record-length record)
@@ -282,11 +262,7 @@ in [builtin](src/lang/builtin):
 (record-delete key record)
 (record-delete! key record)
 (record-map fn record)
-```
-
-in [`prelude`](prelude):
-
-```scheme
+;; prelude
 (record-from-entries entries)
 (record-put-many entries record)
 (record-put-many! entries record)
@@ -300,8 +276,6 @@ in [`prelude`](prelude):
 ```
 
 ### Set
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 (set? element-p value)
@@ -321,18 +295,12 @@ in [builtin](src/lang/builtin):
 (set-disjoint? left right)
 (set-map f set)
 (set-each f set)
-```
-
-in [`prelude`](prelude):
-
-```scheme
+;; prelude
 (set-select p set)
 (set-reject p set)
 ```
 
 ### Hash
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 (hash? key-p value-p target)
@@ -346,11 +314,7 @@ in [builtin](src/lang/builtin):
 (hash-entries hash)
 (hash-keys hash)
 (hash-values hash)
-```
-
-in [`prelude`](prelude):
-
-```scheme
+;; prelude
 (hash-put-many entries hash)
 (hash-put-many! entries hash)
 (hash-from-entries entries)
@@ -360,8 +324,6 @@ in [`prelude`](prelude):
 
 ### Predicate
 
-in [builtin](src/lang/builtin):
-
 ```scheme
 (negate p x)
 (union-fn ps x)
@@ -369,8 +331,6 @@ in [builtin](src/lang/builtin):
 ```
 
 ### Sexp
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 (sexp? value)
@@ -380,8 +340,6 @@ in [builtin](src/lang/builtin):
 ```
 
 ### File
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 (file-exists? path)
@@ -402,15 +360,11 @@ in [builtin](src/lang/builtin):
 
 ### Path
 
-in [builtin](src/lang/builtin):
-
 ```scheme
 (path-join list)
 ```
 
 ### Process
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 (current-working-directory)
@@ -419,16 +373,12 @@ in [builtin](src/lang/builtin):
 
 ### Module
 
-in [builtin](src/lang/builtin):
-
 ```scheme
 (current-module-file)
 (current-module-directory)
 ```
 
 ### Console
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 (print value)
@@ -439,16 +389,12 @@ in [builtin](src/lang/builtin):
 
 ### Void
 
-in [builtin](src/lang/builtin):
-
 ```scheme
 void
 (void? value)
 ```
 
 ### Null
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 null
@@ -457,25 +403,17 @@ null
 
 ### Function
 
-in [builtin](src/lang/builtin):
-
 ```scheme
 (apply f args)
 (pipe-fn x fs)
 (compose-fn fs x)
-```
-
-in [`prelude`](prelude):
-
-```scheme
+;; prelude
 (identity x)
 (constant x y)
 (swap f x y)
 ```
 
 ### Format
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 (format-subscript n)
@@ -484,24 +422,20 @@ in [builtin](src/lang/builtin):
 
 ### Conditional
 
-in [`prelude`](prelude):
-
 ```scheme
+;; prelude
 (when p t)
 (unless p f)
 ```
 
 ### Optional
 
-in [`prelude`](prelude):
-
 ```scheme
+;; prelude
 (optional? p x)
 ```
 
 ### Random
-
-in [builtin](src/lang/builtin):
 
 ```scheme
 (random-int start end)
@@ -510,17 +444,14 @@ in [builtin](src/lang/builtin):
 
 ### System
 
-in [builtin](src/lang/builtin):
-
 ```scheme
 (system-shell-run command args)
 ```
 
 ### Sort Order
 
-in [`prelude`](prelude):
-
 ```scheme
+;; prelude
 (sort-order? value)
 (sort-order-before? value)
 (sort-order-same? value)
