@@ -28,11 +28,11 @@
 (define-data (priority-queue? K P)
   (cons-priority-queue
    (compare (-> P P sort-order?))
-   (node-hash (hash? K (node? K P)))
+   (hash (hash? K (node? K P)))
    (heap (heap? K P))))
 
 (define priority-queue-compare cons-priority-queue-compare)
-(define priority-queue-node-hash cons-priority-queue-node-hash)
+(define priority-queue-hash cons-priority-queue-hash)
 (define priority-queue-heap cons-priority-queue-heap)
 
 (define (priority-queue-length queue)
@@ -55,7 +55,7 @@
         (optional? P))))
 
 (define (priority-queue-get key queue)
-  (= node (hash-get key (priority-queue-node-hash queue)))
+  (= node (hash-get key (priority-queue-hash queue)))
   (if (null? node)
     null
     (node-priority node)))
@@ -66,13 +66,10 @@
         (optional? K))))
 
 (define (priority-queue-peek queue)
-  (if (priority-queue-empty? queue)
-    null
-    (begin
-      (= first (list-head (priority-queue-heap queue)))
-      (if (null? first)
-        null
-        (node-key first)))))
+  (cond ((priority-queue-empty? queue) null)
+        (else
+         (= first (list-head (priority-queue-heap queue)))
+         (node-key first))))
 
 (claim priority-queue-poll!
   (polymorphic (K P)
@@ -84,15 +81,15 @@
         ((equal? 1 (priority-queue-length queue))
          (= heap (priority-queue-heap queue))
          (= first (list-pop! heap))
-         (= node-hash (priority-queue-node-hash queue))
-         (hash-delete! (node-key first) node-hash)
+         (= hash (priority-queue-hash queue))
+         (hash-delete! (node-key first) hash)
          (node-key first))
         (else
          (= heap (priority-queue-heap queue))
          (= compare (priority-queue-compare queue))
          (= first (list-head heap))
-         (= node-hash (priority-queue-node-hash queue))
-         (hash-delete! (node-key first) node-hash)
+         (= hash (priority-queue-hash queue))
+         (hash-delete! (node-key first) hash)
          (= last (list-last heap))
          (node-swap! heap first last)
          (list-pop! heap)
@@ -106,20 +103,20 @@
 
 (define (priority-queue-delete! key queue)
   (= compare (priority-queue-compare queue))
-  (= node-hash (priority-queue-node-hash queue))
+  (= hash (priority-queue-hash queue))
   (= heap (priority-queue-heap queue))
-  (= found (hash-get key node-hash))
+  (= found (hash-get key hash))
   (unless (null? found)
     (begin
       (= last (list-last heap))
       (cond ((equal? (node-key found) (node-key last))
              (list-pop! heap)
-             (hash-delete! (node-key found) node-hash))
+             (hash-delete! (node-key found) hash))
             (else
              (node-swap! heap found last)
              (list-pop! heap)
              (node-blance! heap compare last)
-             (hash-delete! (node-key found) node-hash)))))
+             (hash-delete! (node-key found) hash)))))
   queue)
 
 (claim priority-queue-put!
@@ -129,9 +126,9 @@
 
 (define (priority-queue-put! key priority queue)
   (= compare (priority-queue-compare queue))
-  (= node-hash (priority-queue-node-hash queue))
+  (= hash (priority-queue-hash queue))
   (= heap (priority-queue-heap queue))
-  (= found (hash-get key node-hash))
+  (= found (hash-get key hash))
   (cond ((not (null? found))
          (put-node-priority! priority found)
          (node-blance! heap compare found))
@@ -139,7 +136,7 @@
          (= index (list-length heap))
          (= new-node (cons-node key priority index))
          (list-push! new-node heap)
-         (hash-put! key new-node node-hash)
+         (hash-put! key new-node hash)
          (node-blance! heap compare new-node)))
   queue)
 
