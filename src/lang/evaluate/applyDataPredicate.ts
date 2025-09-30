@@ -1,12 +1,11 @@
 import assert from "node:assert"
 import { useBuiltinMod } from "../builtin/index.ts"
 import { emptyEnv, envSetValue } from "../env/index.ts"
-import { formatValue } from "../format/index.ts"
 import { modLookupValue } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
-import { apply } from "./apply.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
+import { validate } from "./validate.ts"
 
 export function applyDataPredicate(
   predicate: Values.DataPredicate,
@@ -51,14 +50,8 @@ export function applyDataPredicate(
         return Values.Bool(false)
       }
 
-      const result = apply(target, [element])
-      if (!Values.isBool(result)) {
-        let message = `[applyDataPredicate] I expect the result of a data field predicate to be bool\n`
-        message += `  data field predicate: ${formatValue(target)}\n`
-        message += `  data element: ${formatValue(element)}\n`
-        message += `  result: ${formatValue(result)}\n`
-        throw new Error(message)
-      } else if (Values.isFalse(result)) {
+      const result = validate(target, element)
+      if (result.kind === "Err") {
         return Values.Bool(false)
       }
     }
