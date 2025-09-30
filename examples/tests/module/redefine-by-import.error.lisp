@@ -1,2 +1,2 @@
-(import "module-one.lisp" one)
-(import "module-two.lisp" one)
+(import "module-one" one)
+(import "module-two" one)

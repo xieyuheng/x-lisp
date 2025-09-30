@@ -1,4 +1,4 @@
-(import-all "my-list.lisp")
+(import-all "my-list")
 
 (assert (nil? nil))
 (assert (li? (li 1 (li 2 (li 3 nil)))))

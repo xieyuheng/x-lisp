@@ -9,8 +9,8 @@
     value: (lazy 1)
 
   --> examples/tests/module/redefine-by-import.error.lisp:2:1
- 1 | (import "module-one.lisp" one)
- 2 | (import "module-two.lisp" one)
-   | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+ 1 | (import "module-one" one)
+ 2 | (import "module-two" one)
+   | ~~~~~~~~~~~~~~~~~~~~~~~~~ 
  3 | 
 

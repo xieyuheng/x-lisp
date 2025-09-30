@@ -1,5 +1,5 @@
-(import-all "my-list.lisp")
-(import-all "my-list-append.lisp")
+(import-all "my-list")
+(import-all "my-list-append")
 
 (assert-equal (append nil nil) nil)
 (assert-equal (append (li 1 (li 2 (li 3 nil)))

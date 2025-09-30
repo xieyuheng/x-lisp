@@ -1,1 +1,1 @@
-(import-all "non-existing.lisp")
+(import-all "non-existing")

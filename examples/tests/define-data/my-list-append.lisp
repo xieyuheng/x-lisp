@@ -1,4 +1,4 @@
-(import-all "my-list.lisp")
+(import-all "my-list")
 
 (export append)
 

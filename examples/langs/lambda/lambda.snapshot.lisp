@@ -1,4 +1,4 @@
-(import-all "lambda.lisp")
+(import-all "lambda")
 
 (define (run-exp sexp)
   (eval (parse-exp sexp) empty-env))
