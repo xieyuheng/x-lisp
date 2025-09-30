@@ -38,6 +38,16 @@ See examples at:
 
 ## Syntax
 
+### Parser Level Syntax Sugar
+
+```lisp
+'<sexp> => (@quote <sexp>)
+`<sexp> => (@quasiquote <sexp>)
+,<sexp> => (@unquote <sexp>)
+[<elements> <attributes>] => (@tael <elements> <attributes>)
+{<elements>} => (@set <elements>)
+```
+
 ### Top Level Statement Keywords
 
 ```lisp
@@ -93,16 +103,6 @@ See examples at:
 (assert-not-equal <lhs> <rhs>)
 (assert-the <schema> <exp>)
 (<target> <args>)
-```
-
-### Parser Level Syntax Sugar
-
-```lisp
-'<sexp> => (@quote <sexp>)
-`<sexp> => (@quasiquote <sexp>)
-,<sexp> => (@unquote <sexp>)
-[<elements> <attributes>] => (@tael <elements> <attributes>)
-{<elements>} => (@set <elements>)
 ```
 
 ## API
