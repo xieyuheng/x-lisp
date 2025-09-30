@@ -1,22 +1,43 @@
 (export
   priority-queue?
   make-priority-queue
-  priority-queue-get)
+  priority-queue-get
+  priority-queue-peek
+  priority-queue-put!)
+
+(define-data (node? K P)
+  (cons-node
+   (key K)
+   (priority P)
+   (index int?)))
+
+(define node-key cons-node-key)
+(define node-priority cons-node-priority)
+(define node-index cons-node-index)
+
+(define put-node-priority! put-cons-node-priority!)
+(define put-node-index! put-cons-node-index!)
+
+;; heap as complete-binary-tree
+(define (heap? K P) (list? (node? K P)))
 
 (define-data (priority-queue? K P)
   (cons-priority-queue
-   (compare (-> P sort-order?))
-   (priority-hash (hash? K P))
-   (index-hash (hash? K int?))
-   (complete-binary-tree (list? int?))))
+   (compare (-> P P sort-order?))
+   (node-hash (hash? K (node? K P)))
+   (heap (heap? K P))))
+
+(define priority-queue-compare cons-priority-queue-compare)
+(define priority-queue-node-hash cons-priority-queue-node-hash)
+(define priority-queue-heap cons-priority-queue-heap)
 
 (claim make-priority-queue
   (polymorphic (K P)
-    (-> (-> P sort-order?)
+    (-> (-> P P sort-order?)
         (priority-queue? K P))))
 
 (define (make-priority-queue compare)
-  (cons-priority-queue compare (@hash) (@hash) (@list)))
+  (cons-priority-queue compare (@hash) (@list)))
 
 (claim priority-queue-get
   (polymorphic (K P)
@@ -24,4 +45,116 @@
         (optional? P))))
 
 (define (priority-queue-get key queue)
-  (hash-get key (cons-priority-queue-priority-hash queue)))
+  (= node (hash-get key (priority-queue-node-hash queue)))
+  (if (null? node)
+    null
+    (node-priority node)))
+
+(claim priority-queue-peek
+  (polymorphic (K P)
+    (-> (priority-queue? K P)
+        (optional? (tau K P)))))
+
+(define (priority-queue-peek queue)
+  (= node (list-head (priority-queue-heap queue)))
+  (if (null? node)
+    null
+    [(node-key node) (node-priority node)]))
+
+(claim priority-queue-put!
+  (polymorphic (K P)
+    (-> K P (priority-queue? K P)
+        (priority-queue? K P))))
+
+(define (priority-queue-put! key priority queue)
+  (= heap (priority-queue-heap queue))
+  (= index (list-length heap))
+  (= node (cons-node key priority index))
+  (list-push! node heap)
+  (= node-hash (priority-queue-node-hash queue))
+  (hash-put! key node node-hash)
+  (= compare (priority-queue-compare queue))
+  (node-blance! heap compare node)
+  queue)
+
+(claim node-blance!
+  (polymorphic (K P)
+    (-> (heap? K P) (-> P P sort-order?) (node? K P)
+        void?)))
+
+(define (node-blance! heap compare node)
+  (= parent (node-parent heap node))
+  (= left-child (node-left-child heap node))
+  (= right-child (node-right-child heap node))
+  (cond ((and (not (null? parent))
+              (sort-order-before?
+               (compare (node-priority node)
+                        (node-priority parent))))
+         (node-swap! heap node parent)
+         (node-blance! heap compare node))
+        ((and (not (null? left-child))
+              (sort-order-after?
+               (compare (node-priority node)
+                        (node-priority left-child))))
+         (node-swap! heap node left-child)
+         (node-blance! heap compare node))
+        ((and (not (null? right-child))
+              (sort-order-after?
+               (compare (node-priority node)
+                        (node-priority right-child))))
+         (node-swap! heap node right-child)
+         (node-blance! heap compare node))
+        (else void)))
+
+(claim node-swap!
+  (polymorphic (K P)
+    (-> (heap? K P) (node? K P) (node? K P)
+        void?)))
+
+(define (node-swap! heap lhs rhs)
+  (= lhs-index (node-index lhs))
+  (= rhs-index (node-index rhs))
+  (put-node-index! rhs-index lhs)
+  (put-node-index! lhs-index rhs)
+  (list-put! rhs-index lhs heap)
+  (list-put! lhs-index rhs heap)
+  void)
+
+;; node-left-child  -- 2i + 1
+;; node-right-child -- 2i + 2
+
+(claim node-left-child
+  (polymorphic (K P)
+    (-> (heap? K P) (node? K P)
+        (optional? (node? K P)))))
+
+(define (node-left-child heap node)
+  (= child-index (iadd 1 (imul 2 (node-index node))))
+  (if (int-smaller? child-index (list-length heap))
+    (list-get child-index heap)
+    null))
+
+(claim node-right-child
+  (polymorphic (K P)
+    (-> (heap? K P) (node? K P)
+        (optional? (node? K P)))))
+
+(define (node-right-child heap node)
+  (= child-index (iadd 2 (imul 2 (node-index node))))
+  (if (int-smaller? child-index (list-length heap))
+    (list-get child-index heap)
+    null))
+
+(claim node-parent
+  (polymorphic (K P)
+    (-> (heap? K P) (node? K P)
+        (optional? (node? K P)))))
+
+(define (node-parent heap node)
+  (= index (node-index node))
+  (= parent-index
+     (cond ((equal? 1 (imod index 2)) (idiv index 2))
+           (else (isub (idiv index 2) 1))))
+  (if (int-non-negative? parent-index)
+    (list-get parent-index heap)
+    null))
