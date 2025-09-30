@@ -18,7 +18,7 @@ date: 2025-09-26
 
 (define (list-append list tail)
   (if (list-empty? list)
-    (list-of tail)
+    (list-copy tail)
     (cons (car list) (list-append (cdr list) tail))))
 ```
 

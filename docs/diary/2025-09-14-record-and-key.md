@@ -16,7 +16,7 @@ date: 2025-09-14
 (record-values record)
 (record-entries record)
 (record-append record rest)
-(record-of record)
+(record-copy record)
 (record-empty? record)
 (record-get key record)
 (record-has? key record)

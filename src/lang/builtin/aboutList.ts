@@ -16,7 +16,7 @@ export function aboutList(mod: Mod) {
     "list-init",
     "list-last",
     "list-length",
-    "list-of",
+    "list-copy",
     "list-get",
     "list-put",
     "list-put!",
@@ -128,7 +128,7 @@ export function aboutList(mod: Mod) {
     return Values.Int(Values.asTael(list).elements.length)
   })
 
-  definePrimitiveFunction(mod, "list-of", 1, (list) => {
+  definePrimitiveFunction(mod, "list-copy", 1, (list) => {
     return Values.List([...Values.asTael(list).elements])
   })
 

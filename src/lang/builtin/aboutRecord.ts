@@ -14,7 +14,7 @@ export function aboutRecord(mod: Mod) {
     "record-values",
     "record-entries",
     "record-append",
-    "record-of",
+    "record-copy",
     "record-empty?",
     "record-get",
     "record-has?",
@@ -82,7 +82,7 @@ export function aboutRecord(mod: Mod) {
     })
   })
 
-  definePrimitiveFunction(mod, "record-of", 1, (record) => {
+  definePrimitiveFunction(mod, "record-copy", 1, (record) => {
     return Values.Record({ ...Values.asTael(record).attributes })
   })
 
