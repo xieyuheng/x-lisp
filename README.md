@@ -475,6 +475,7 @@ null
 (graph-add-edge! edge graph)
 (graph-add-edges! edges graph)
 (graph-adjacent? source target graph)
+(graph-vertex-degree vertex graph)
 (graph-coloring/dsatur graph)
 ```
 

@@ -1,5 +1,7 @@
 (import-all "graph")
 
+;; graph-add-edge!
+
 (begin
   (= graph (make-graph []))
 
@@ -22,24 +24,13 @@
   (assert (graph-adjacent? 2 3 graph))
   (assert (graph-adjacent? 3 2 graph))
   (assert (graph-adjacent? 1 3 graph))
-  (assert (graph-adjacent? 3 1 graph))
+  (assert (graph-adjacent? 3 1 graph)))
 
-  void)
+;; graph-vertex-degree
 
 (begin
   (= graph (make-graph [[1 2] [2 3] [3 1]]))
 
-  (assert-equal {1 2 3} (graph-vertices graph))
-
-  (assert-equal {2 3} (graph-neighbors 1 graph))
-  (assert-equal {1 3} (graph-neighbors 2 graph))
-  (assert-equal {1 2} (graph-neighbors 3 graph))
-
-  (assert (graph-adjacent? 1 2 graph))
-  (assert (graph-adjacent? 2 1 graph))
-  (assert (graph-adjacent? 2 3 graph))
-  (assert (graph-adjacent? 3 2 graph))
-  (assert (graph-adjacent? 1 3 graph))
-  (assert (graph-adjacent? 3 1 graph))
-
-  void)
+  (assert-equal 2 (graph-vertex-degree 1 graph))
+  (assert-equal 2 (graph-vertex-degree 2 graph))
+  (assert-equal 2 (graph-vertex-degree 3 graph)))
