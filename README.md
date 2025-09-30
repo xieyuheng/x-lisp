@@ -40,7 +40,7 @@ See examples at:
 
 ### Top Level Statement Keywords
 
-```scheme
+```lisp
 (claim <name> <schema>)
 (define <name> <exp>)
 (define (<name> <parameters>) <body>)
@@ -58,7 +58,7 @@ See examples at:
 
 ### Expression Keywords
 
-```scheme
+```lisp
 (lambda (<parameters>) <body>)
 (lambda-lazy (<parameters>) <body>)
 (thunk <body>)
@@ -97,7 +97,7 @@ See examples at:
 
 ### Parser Level Syntax Sugar
 
-```scheme
+```lisp
 '<sexp> => (@quote <sexp>)
 `<sexp> => (@quasiquote <sexp>)
 ,<sexp> => (@unquote <sexp>)
@@ -109,7 +109,7 @@ See examples at:
 
 ### Bool
 
-```scheme
+```lisp
 true
 false
 (bool? value)
@@ -118,7 +118,7 @@ false
 
 ### Int
 
-```scheme
+```lisp
 (int? value)
 (ineg x)
 (iadd x y)
@@ -140,7 +140,7 @@ false
 
 ### Float
 
-```scheme
+```lisp
 (float? value)
 (fneg x)
 (fadd x y)
@@ -161,7 +161,7 @@ false
 
 ### Symbol
 
-```scheme
+```lisp
 (symbol? value)
 (symbol-length symbol)
 (symbol-to-string symbol)
@@ -171,7 +171,7 @@ false
 
 ### String
 
-```scheme
+```lisp
 (string? value)
 (string-length string)
 (string-to-symbol string)
@@ -184,7 +184,7 @@ false
 
 ### Value
 
-```scheme
+```lisp
 (same? lhs rhs)
 (equal? lhs rhs)
 (atom? value)
@@ -193,7 +193,7 @@ false
 
 ### List
 
-```scheme
+```lisp
 (list-empty? value)
 (list? element-p target)
 (car list)
@@ -246,7 +246,7 @@ false
 
 ### Record
 
-```scheme
+```lisp
 (record? value-p target)
 (record-length record)
 (record-keys record)
@@ -277,7 +277,7 @@ false
 
 ### Set
 
-```scheme
+```lisp
 (set? element-p value)
 (set-empty? set)
 (set-size set)
@@ -302,7 +302,7 @@ false
 
 ### Hash
 
-```scheme
+```lisp
 (hash? key-p value-p target)
 (hash-empty? hash)
 (hash-length hash)
@@ -324,7 +324,7 @@ false
 
 ### Predicate
 
-```scheme
+```lisp
 (negate p x)
 (union-fn ps x)
 (inter-fn ps x)
@@ -332,7 +332,7 @@ false
 
 ### Sexp
 
-```scheme
+```lisp
 (sexp? value)
 (parse-sexp string)
 (parse-sexps string)
@@ -341,7 +341,7 @@ false
 
 ### File
 
-```scheme
+```lisp
 (file-exists? path)
 (file-size path)
 (file-load path)
@@ -360,27 +360,27 @@ false
 
 ### Path
 
-```scheme
+```lisp
 (path-join list)
 ```
 
 ### Process
 
-```scheme
+```lisp
 (current-working-directory)
 (exit sexp)
 ```
 
 ### Module
 
-```scheme
+```lisp
 (current-module-file)
 (current-module-directory)
 ```
 
 ### Console
 
-```scheme
+```lisp
 (print value)
 (println value)
 (write string)
@@ -389,21 +389,21 @@ false
 
 ### Void
 
-```scheme
+```lisp
 void
 (void? value)
 ```
 
 ### Null
 
-```scheme
+```lisp
 null
 (null? value)
 ```
 
 ### Function
 
-```scheme
+```lisp
 (apply f args)
 (pipe-fn x fs)
 (compose-fn fs x)
@@ -415,14 +415,14 @@ null
 
 ### Format
 
-```scheme
+```lisp
 (format-subscript n)
 (format-superscript n)
 ```
 
 ### Conditional
 
-```scheme
+```lisp
 ;; prelude
 (when p t)
 (unless p f)
@@ -430,27 +430,27 @@ null
 
 ### Optional
 
-```scheme
+```lisp
 ;; prelude
 (optional? p x)
 ```
 
 ### Random
 
-```scheme
+```lisp
 (random-int start end)
 (random-float start end)
 ```
 
 ### System
 
-```scheme
+```lisp
 (system-shell-run command args)
 ```
 
 ### Sort Order
 
-```scheme
+```lisp
 ;; prelude
 (sort-order? value)
 (sort-order-before? value)
@@ -464,7 +464,7 @@ null
 
 ### Graph
 
-```scheme
+```lisp
 (graph? vertex-p value)
 (make-graph edges)
 (graph-vertices graph)
@@ -477,7 +477,7 @@ null
 
 ### Priority Queue
 
-```scheme
+```lisp
 (priority-queue? key-p priority-p value)
 (make-priority-queue compare)
 (priority-queue-empty? queue)
