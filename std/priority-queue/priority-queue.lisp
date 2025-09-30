@@ -1,10 +1,13 @@
 (export
   priority-queue?
   make-priority-queue
+  priority-queue-empty?
+  priority-queue-length
   priority-queue-get
   priority-queue-put!
   priority-queue-peek
-  priority-queue-poll!)
+  priority-queue-poll!
+  priority-queue-delete!)
 
 (define-data (node? K P)
   (cons-node
@@ -63,10 +66,13 @@
         (optional? K))))
 
 (define (priority-queue-peek queue)
-  (= first (list-head (priority-queue-heap queue)))
-  (if (null? first)
+  (if (priority-queue-empty? queue)
     null
-    (node-key first)))
+    (begin
+      (= first (list-head (priority-queue-heap queue)))
+      (if (null? first)
+        null
+        (node-key first)))))
 
 (claim priority-queue-poll!
   (polymorphic (K P)
@@ -93,6 +99,29 @@
          (node-blance! heap compare last)
          (node-key first))))
 
+(claim priority-queue-delete!
+  (polymorphic (K P)
+    (-> K (priority-queue? K P)
+        (priority-queue? K P))))
+
+(define (priority-queue-delete! key queue)
+  (= compare (priority-queue-compare queue))
+  (= node-hash (priority-queue-node-hash queue))
+  (= heap (priority-queue-heap queue))
+  (= found (hash-get key node-hash))
+  (unless (null? found)
+    (begin
+      (= last (list-last heap))
+      (cond ((equal? (node-key found) (node-key last))
+             (list-pop! heap)
+             (hash-delete! (node-key found) node-hash))
+            (else
+             (node-swap! heap found last)
+             (list-pop! heap)
+             (node-blance! heap compare last)
+             (hash-delete! (node-key found) node-hash)))))
+  queue)
+
 (claim priority-queue-put!
   (polymorphic (K P)
     (-> K P (priority-queue? K P)
@@ -102,10 +131,10 @@
   (= compare (priority-queue-compare queue))
   (= node-hash (priority-queue-node-hash queue))
   (= heap (priority-queue-heap queue))
-  (= found-node (hash-get key node-hash))
-  (cond ((not (null? found-node))
-         (put-node-priority! priority found-node)
-         (node-blance! heap compare found-node))
+  (= found (hash-get key node-hash))
+  (cond ((not (null? found))
+         (put-node-priority! priority found)
+         (node-blance! heap compare found))
         (else
          (= index (list-length heap))
          (= new-node (cons-node key priority index))
