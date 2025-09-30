@@ -458,7 +458,15 @@ in [`prelude`](prelude):
 ### Priority Queue
 
 ```scheme
-TODO
+(priority-queue? key-p priority-p value)
+(make-priority-queue compare)
+(priority-queue-empty? queue)
+(priority-queue-length queue)
+(priority-queue-get key queue)
+(priority-queue-put! key priority queue)
+(priority-queue-peek queue)
+(priority-queue-poll! queue)
+(priority-queue-delete! key queue)
 ```
 
 ## Development
