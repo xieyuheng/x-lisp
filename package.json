@@ -24,7 +24,7 @@
     "format": "prettier src --write"
   },
   "dependencies": {
-    "@xieyuheng/commander.js": "^0.1.4",
+    "@xieyuheng/commander.js": "^0.1.5",
     "@xieyuheng/x-data.js": "^0.5.2"
   },
   "devDependencies": {

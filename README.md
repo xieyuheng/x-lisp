@@ -10,7 +10,15 @@ Install it by the following command:
 npm install -g @xieyuheng/x-lisp.js
 ```
 
-The command-line program is called `x-lisp.js`.
+The command-line interface:
+
+```sh
+$ x-lisp.js
+commands:
+  help -- display help for a command
+  run -- Run a file
+  repl -- Start the REPL
+```
 
 ## Development
 
