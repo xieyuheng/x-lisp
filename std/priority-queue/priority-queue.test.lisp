@@ -15,6 +15,20 @@
   (assert-equal 2 (priority-queue-get "b" queue))
   (assert-equal 3 (priority-queue-get "c" queue))
 
+  (assert-equal "c" (priority-queue-peek queue))
+
+  (priority-queue-put! "a" 10 queue)
+  (assert-equal "a" (priority-queue-peek queue))
+
+  (priority-queue-put! "b" 20 queue)
+  (assert-equal "b" (priority-queue-peek queue))
+
+  (priority-queue-put! "a" 1 queue)
+  (assert-equal "b" (priority-queue-peek queue))
+
+  (priority-queue-put! "b" 2 queue)
+  (assert-equal "c" (priority-queue-peek queue))
+
   (assert-equal "c" (priority-queue-poll! queue))
   (assert-equal "b" (priority-queue-poll! queue))
   (assert-equal "a" (priority-queue-poll! queue))

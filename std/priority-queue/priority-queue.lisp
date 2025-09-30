@@ -99,14 +99,19 @@
         (priority-queue? K P))))
 
 (define (priority-queue-put! key priority queue)
-  (= heap (priority-queue-heap queue))
-  (= index (list-length heap))
-  (= node (cons-node key priority index))
-  (list-push! node heap)
-  (= node-hash (priority-queue-node-hash queue))
-  (hash-put! key node node-hash)
   (= compare (priority-queue-compare queue))
-  (node-blance! heap compare node)
+  (= node-hash (priority-queue-node-hash queue))
+  (= heap (priority-queue-heap queue))
+  (= found-node (hash-get key node-hash))
+  (cond ((not (null? found-node))
+         (put-node-priority! priority found-node)
+         (node-blance! heap compare found-node))
+        (else
+         (= index (list-length heap))
+         (= new-node (cons-node key priority index))
+         (list-push! new-node heap)
+         (hash-put! key new-node node-hash)
+         (node-blance! heap compare new-node)))
   queue)
 
 (claim node-blance!
