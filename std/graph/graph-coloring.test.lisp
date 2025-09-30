@@ -29,8 +29,6 @@
   (graph-add-edge! ["c" "d"] graph)
   (graph-add-edge! ["d" "b"] graph)
 
-
-
   (assert-equal
     3
     (pipe graph
