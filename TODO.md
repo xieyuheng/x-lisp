@@ -1,3 +1,10 @@
+[maybe] rename `record-map` to `record-map-value`
+
+`record-map-entry`
+`record-each-entry`
+`hash-map-key`
+`hash-invert`
+
 # later
 
 list-index -- use value and equal?
