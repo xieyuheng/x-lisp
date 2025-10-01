@@ -24,7 +24,7 @@ date: 2025-09-14
 (record-put! key value record)
 (record-delete key record)
 (record-delete! key record)
-(record-map fn record)
+(record-map f record)
 ```
 
 我主要是对 `record-get` 和 `record-put` 不太满意，
