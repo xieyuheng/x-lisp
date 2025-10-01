@@ -1,5 +1,3 @@
-remove some `digit` to back to `hashKey`
-
 # list
 
 list-group -- by the hash key returned by function

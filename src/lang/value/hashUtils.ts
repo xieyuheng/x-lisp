@@ -17,8 +17,8 @@ export function hashEntries(hash: Hash): Array<HashEntry> {
 }
 
 export function hashGet(hash: Hash, key: Value): Value | undefined {
-  const digest = formatValue(key, { digest: true })
-  const entry = hash.entries.get(digest)
+  const hashKey = formatValue(key, { digest: true })
+  const entry = hash.entries.get(hashKey)
   if (entry === undefined) {
     return undefined
   } else {
@@ -27,18 +27,18 @@ export function hashGet(hash: Hash, key: Value): Value | undefined {
 }
 
 export function hashPut(hash: Hash, key: Value, value: Value): void {
-  const digest = formatValue(key, { digest: true })
-  const entry = hash.entries.get(digest)
+  const hashKey = formatValue(key, { digest: true })
+  const entry = hash.entries.get(hashKey)
   if (entry === undefined) {
-    hash.entries.set(digest, { digest, key, value })
+    hash.entries.set(hashKey, { hashKey, key, value })
   } else {
     entry.value = value
   }
 }
 
 export function hashDelete(hash: Hash, key: Value): void {
-  const digest = formatValue(key, { digest: true })
-  hash.entries.delete(digest)
+  const hashKey = formatValue(key, { digest: true })
+  hash.entries.delete(hashKey)
 }
 
 export function isHashable(value: Value): boolean {

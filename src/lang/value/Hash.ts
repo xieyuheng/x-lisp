@@ -1,7 +1,7 @@
 import { type Value } from "./Value.ts"
 
 export type HashEntry = {
-  digest: string
+  hashKey: string
   key: Value
   value: Value
 }
