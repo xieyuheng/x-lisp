@@ -1,6 +1,11 @@
-move `checkExported` from `runSexps` to `load`
-
-`aboutInt` -- add claim
+[std] claim list-fold-left
+[std] claim list-fold-right
+[std] claim list-map-zip
+[std] claim list-map
+[std] claim list-append-map list-unit list-lift list-bind
+[std] claim list-select list-reject
+[std] claim list-unzip
+[std] claim list-zip
 
 hash-map -- key and value
 
@@ -20,6 +25,12 @@ record-each
 list-group -- by the hash key returned by function
 list-foremost -- first after sort
 list-rearmost -- last after sort
+
+# schema
+
+move `checkExported` from `runSexps` to `load`
+
+`aboutInt` -- add claim
 
 # later
 
