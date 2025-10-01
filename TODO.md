@@ -1,7 +1,5 @@
-hash-append -- add claim
 hash-map-value -- add claim
 hash-map-key -- add claim
-hash-invert -- add claim
 
 move `checkExported` from `runSexps` to `load`
 
@@ -12,6 +10,8 @@ hash-map -- key and value
 hash-each-value
 hash-each-key
 hash-each
+
+hash-invert/group -- from (hash? K V) to (hash? V (set? K))
 
 record-map-key
 record-map -- key and value

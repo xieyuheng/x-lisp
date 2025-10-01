@@ -3,6 +3,11 @@
 
 (export hash-invert)
 
+(claim hash-invert
+  (polymorphic (K V)
+    (-> (hash? K V)
+        (hash? V K))))
+
 (define (hash-invert hash)
   (pipe hash
     hash-entries
