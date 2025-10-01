@@ -14,13 +14,15 @@
 
 (define (graph-coloring! coloring queue graph)
   (queue-sort-by-saturation! graph coloring queue)
-  (cond ((list-empty? queue) coloring)
-        (else
-         (= (cons first rest-queue) queue)
+  (match queue
+    ([] coloring)
+    ((cons first rest-queue)
+     (unless (hash-has? first coloring)
+       (begin
          (= saturation (vertex-saturation graph coloring first))
          (= color (next-not-used-color saturation))
-         (hash-put! first color coloring)
-         (graph-coloring! coloring rest-queue graph))))
+         (hash-put! first color coloring)))
+     (graph-coloring! coloring rest-queue graph))))
 
 (claim next-not-used-color
   (-> (set? color?)
