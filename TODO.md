@@ -4,7 +4,8 @@ hash-map-value -- add claim
 hash-map-key -- add claim
 hash-invert -- add claim
 
-move checkExported from runSexps to load
+move `checkExported` from `runSexps` to `load`
+`runCodeNewline` -- should add `\n` to each input -- to be used in builtin modules
 
 `aboutInt` -- add claim
 
