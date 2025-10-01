@@ -1,4 +1,3 @@
-update readme about unless and when
 `list-find`
 
 # later

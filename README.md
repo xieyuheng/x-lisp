@@ -54,7 +54,6 @@ See examples at:
 (claim <name> <schema>)
 (define <name> <exp>)
 (define (<name> <parameters>) <body>)
-(define-lazy (<name> <parameters>) <body>)
 (define-data <predicate> <constructors>)
 (import <source> <entries>)
 (import-all <source>)
@@ -70,7 +69,6 @@ See examples at:
 
 ```lisp
 (lambda (<parameters>) <body>)
-(lambda-lazy (<parameters>) <body>)
 (thunk <body>)
 (lazy <exp>)
 (= <lhs> <rhs>)
@@ -91,6 +89,8 @@ See examples at:
 (polymorphic (<parameters>) <schema>)
 (specific <target> <args>)
 (if <condition> <consequent> <alternative>)
+(when <condition> <consequent>)
+(unless <condition> <consequent>)
 (and <exps>)
 (or <exps>)
 (union <exps>)
@@ -421,14 +421,6 @@ null
 ```lisp
 (format-subscript n)
 (format-superscript n)
-```
-
-### Conditional
-
-```lisp
-;; prelude
-(when p t)
-(unless p f)
 ```
 
 ### Optional
