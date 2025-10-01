@@ -325,6 +325,8 @@ false
 (hash-from-entries entries)
 (hash-append hash rest)
 (hash-map-value f hash)
+(hash-map-key f hash)
+(hash-invert hash)
 ```
 
 ### Predicate
