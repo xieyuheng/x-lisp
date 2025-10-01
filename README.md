@@ -214,11 +214,7 @@ false
 (list-unshift! value list)
 (list-shift! list)
 (list-reverse list)
-(list-member? x list)
 (list-to-set list)
-(list-dedup list)
-(list-product lhs rhs)
-(list-product/no-diagonal lhs rhs)
 (list-sort! compare list)
 (list-sort compare list)
 ;; prelude
@@ -244,6 +240,12 @@ false
 (list-map-zip f left right)
 (list-all? p list)
 (list-any? p list)
+(list-member? x list)
+(list-find p list)
+(list-find-index p list)
+(list-dedup list)
+(list-product lhs rhs)
+(list-product/no-diagonal lhs rhs)
 ```
 
 ### Record
