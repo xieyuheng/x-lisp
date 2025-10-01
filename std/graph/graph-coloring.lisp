@@ -18,10 +18,9 @@
     ([] coloring)
     ((cons first rest-queue)
      (unless (hash-has? first coloring)
-       (begin
-         (= saturation (vertex-saturation graph coloring first))
-         (= color (next-not-used-color saturation))
-         (hash-put! first color coloring)))
+       (= saturation (vertex-saturation graph coloring first))
+       (= color (next-not-used-color saturation))
+       (hash-put! first color coloring))
      (graph-coloring! coloring rest-queue graph))))
 
 (claim next-not-used-color

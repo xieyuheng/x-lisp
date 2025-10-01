@@ -107,16 +107,15 @@
   (= heap (priority-queue-heap queue))
   (= found (hash-get key hash))
   (unless (null? found)
-    (begin
-      (= last (list-last heap))
-      (cond ((equal? (node-key found) (node-key last))
-             (list-pop! heap)
-             (hash-delete! (node-key found) hash))
-            (else
-             (node-swap! heap found last)
-             (list-pop! heap)
-             (node-blance! heap compare last)
-             (hash-delete! (node-key found) hash)))))
+    (= last (list-last heap))
+    (cond ((equal? (node-key found) (node-key last))
+           (list-pop! heap)
+           (hash-delete! (node-key found) hash))
+          (else
+           (node-swap! heap found last)
+           (list-pop! heap)
+           (node-blance! heap compare last)
+           (hash-delete! (node-key found) hash))))
   queue)
 
 (claim priority-queue-put!
