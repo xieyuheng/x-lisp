@@ -1,4 +1,4 @@
-`unless` and `when` as `Exp` -- to support taking body -- instead of only taking exp
+parse unless and when
 remove `define-lazy`
 `list-find`
 

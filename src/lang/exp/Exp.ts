@@ -26,6 +26,8 @@ export type Exp =
   | Quote
   | Quasiquote
   | If
+  | When
+  | Unless
   | And
   | Or
   | Cond
@@ -343,6 +345,38 @@ export function If(
     condition,
     consequent,
     alternative,
+    meta,
+  }
+}
+
+export type When = {
+  kind: "When"
+  condition: Exp
+  consequent: Exp
+  meta: Meta
+}
+
+export function When(condition: Exp, consequent: Exp, meta: Meta): When {
+  return {
+    kind: "When",
+    condition,
+    consequent,
+    meta,
+  }
+}
+
+export type Unless = {
+  kind: "Unless"
+  condition: Exp
+  consequent: Exp
+  meta: Meta
+}
+
+export function Unless(condition: Exp, consequent: Exp, meta: Meta): Unless {
+  return {
+    kind: "Unless",
+    condition,
+    consequent,
     meta,
   }
 }
