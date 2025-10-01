@@ -7,6 +7,21 @@
 [std] claim list-unzip
 [std] claim list-zip
 
+[std] claim record-from-entries
+[std] claim record-put-many
+[std] claim record-select record-reject
+[std] claim record-unit
+[std] claim record-update
+[std] claim record-upsert
+
+[std] claim optional?
+
+[std] claim identity constant swap
+
+[std] claim set-select set-reject
+
+[std] claim functions about sort-order
+
 hash-map -- key and value
 
 hash-each-value
