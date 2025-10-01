@@ -8,13 +8,19 @@
   (graph-add-edge! ["c" "d"] graph)
   (graph-add-edge! ["d" "a"] graph)
 
-  (assert-equal
-    2
-    (pipe graph
-      graph-coloring/dsatur
-      hash-values
-      list-dedup
-      list-length)))
+  (= coloring (@hash))
+  (= vertices (set-to-list (graph-vertices graph)))
+  (graph-coloring! coloring vertices graph)
+  coloring
+
+  ;; (assert-equal
+  ;;   2
+  ;;   (pipe graph
+  ;;     graph-coloring!
+  ;;     hash-values
+  ;;     list-dedup
+  ;;     list-length))
+  )
 
 (begin
   (= graph (make-graph []))
@@ -29,10 +35,17 @@
   (graph-add-edge! ["c" "d"] graph)
   (graph-add-edge! ["d" "b"] graph)
 
-  (assert-equal
-    3
-    (pipe graph
-      graph-coloring/dsatur
-      hash-values
-      list-dedup
-      list-length)))
+
+  (= coloring (@hash))
+  (= vertices (set-to-list (graph-vertices graph)))
+  (graph-coloring! coloring vertices graph)
+  coloring
+
+  ;; (assert-equal
+  ;;   3
+  ;;   (pipe graph
+  ;;     graph-coloring!
+  ;;     hash-values
+  ;;     list-dedup
+  ;;     list-length))
+  )

@@ -476,7 +476,7 @@ null
 (graph-add-edges! edges graph)
 (graph-adjacent? source target graph)
 (graph-vertex-degree vertex graph)
-(graph-coloring/dsatur graph)
+(graph-coloring! coloring vertices graph)
 ```
 
 ### Priority Queue

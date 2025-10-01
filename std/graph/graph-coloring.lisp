@@ -1,45 +1,24 @@
 (import-all "graph")
 
-(export graph-coloring/dsatur)
+(export graph-coloring!)
 
 (define color? int?)
 (define (coloring? V) (hash? V color?))
 
-(claim graph-coloring/dsatur
+(claim graph-coloring!
   (polymorphic (V)
-    (-> (graph? V)
+    (-> (coloring? V) (list? V) (graph? V)
         (coloring? V))))
 
-(define (graph-coloring/dsatur graph)
-  (= coloring (@hash))
-  (= queue (set-to-list (graph-vertices graph)))
-  (queue-sort-by-degree! graph queue)
-  (graph-coloring/dsatur-loop graph coloring queue))
-
-(define (queue-sort-by-degree! graph queue)
-  (list-sort!
-   (lambda (v1 v2)
-     (int-compare/descending
-      (graph-vertex-degree v1 graph)
-      (graph-vertex-degree v2 graph)))
-   queue))
-
-(claim graph-coloring/dsatur-loop
-  (polymorphic (V)
-    (-> (graph? V) (coloring? V) (list? V)
-        (coloring? V))))
-
-(define (graph-coloring/dsatur-loop graph coloring queue)
+(define (graph-coloring! coloring queue graph)
   (queue-sort-by-saturation! graph coloring queue)
   (cond ((list-empty? queue) coloring)
         (else
          (= (cons first rest-queue) queue)
          (= saturation (vertex-saturation graph coloring first))
          (= color (next-not-used-color saturation))
-         (graph-coloring/dsatur-loop
-          graph
-          (hash-put! first color coloring)
-          rest-queue))))
+         (hash-put! first color coloring)
+         (graph-coloring! coloring rest-queue graph))))
 
 (claim next-not-used-color
   (-> (set? color?)
