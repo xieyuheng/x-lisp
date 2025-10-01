@@ -265,7 +265,7 @@ false
 (record-put! key value record)
 (record-delete key record)
 (record-delete! key record)
-(record-map f record)
+(record-map-value f record)
 ;; prelude
 (record-from-entries entries)
 (record-put-many entries record)

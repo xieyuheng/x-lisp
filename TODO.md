@@ -1,5 +1,4 @@
-[maybe] rename `record-map` to `record-map-value`
-
+ambr hash-map hash-map-value
 `record-map-entry`
 `record-each-entry`
 `hash-map-key`

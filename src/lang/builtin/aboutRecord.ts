@@ -22,7 +22,7 @@ export function aboutRecord(mod: Mod) {
     "record-put!",
     "record-delete",
     "record-delete!",
-    "record-map",
+    "record-map-value",
   ])
 
   definePrimitiveFunction(mod, "record?", 2, (p, target) => {
@@ -141,7 +141,7 @@ export function aboutRecord(mod: Mod) {
     return record
   })
 
-  definePrimitiveFunction(mod, "record-map", 2, (fn, record) => {
+  definePrimitiveFunction(mod, "record-map-value", 2, (fn, record) => {
     return Values.Tael(
       Values.asTael(record).elements,
       recordMap(Values.asTael(record).attributes, (value) =>
