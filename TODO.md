@@ -1,6 +1,3 @@
-hash-map-value -- add claim
-hash-map-key -- add claim
-
 move `checkExported` from `runSexps` to `load`
 
 `aboutInt` -- add claim

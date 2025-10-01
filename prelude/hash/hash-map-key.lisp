@@ -3,6 +3,11 @@
 
 (export hash-map-key)
 
+(claim hash-map-value
+  (polymorphic (K1 K2 V)
+    (-> (-> K1 K2) (hash? K1 V)
+        (hash? K1 V))))
+
 (define (hash-map-key f hash)
   (pipe hash
     hash-entries
