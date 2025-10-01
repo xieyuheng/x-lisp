@@ -1,5 +1,4 @@
 (import-all "../list")
-(import-all "../conditional")
 (import-all "record-from-entries")
 
 (export record-update record-update!)

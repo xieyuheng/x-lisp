@@ -1,5 +1,5 @@
-parse unless and when
 remove `define-lazy`
+update readme about unless and when
 `list-find`
 
 # later

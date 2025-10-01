@@ -224,7 +224,7 @@ export function evaluate(exp: Exp): Effect {
           resultValue(evaluate(exp.condition)(mod, env)),
         )
         if (!Values.isBool(condition)) {
-          let message = `[evaluate] The condition part of a (if) must be bool\n`
+          let message = `(if) the condition must be bool\n`
           message += `  condition: ${formatValue(condition)}\n`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
@@ -243,7 +243,7 @@ export function evaluate(exp: Exp): Effect {
           resultValue(evaluate(exp.condition)(mod, env)),
         )
         if (!Values.isBool(condition)) {
-          let message = `[evaluate] The condition part of a (when) must be bool\n`
+          let message = `(when) the condition must be bool\n`
           message += `  condition: ${formatValue(condition)}\n`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
@@ -262,7 +262,7 @@ export function evaluate(exp: Exp): Effect {
           resultValue(evaluate(exp.condition)(mod, env)),
         )
         if (!Values.isBool(condition)) {
-          let message = `[evaluate] The condition part of a (unless) must be bool\n`
+          let message = `(unless) the condition must be bool\n`
           message += `  condition: ${formatValue(condition)}\n`
           throw new X.ErrorWithMeta(message, exp.meta)
         }

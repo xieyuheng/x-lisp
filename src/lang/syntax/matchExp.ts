@@ -99,6 +99,25 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     },
   ),
 
+  X.matcher("(cons* 'when condition body)", ({ condition, body }, { meta }) => {
+    return Exps.When(
+      matchExp(condition),
+      Exps.Begin(X.dataToArray(body).map(matchExp), meta),
+      meta,
+    )
+  }),
+
+  X.matcher(
+    "(cons* 'unless condition body)",
+    ({ condition, body }, { meta }) => {
+      return Exps.Unless(
+        matchExp(condition),
+        Exps.Begin(X.dataToArray(body).map(matchExp), meta),
+        meta,
+      )
+    },
+  ),
+
   X.matcher("(cons* 'and exps)", ({ exps }, { meta }) => {
     return Exps.And(X.dataToArray(exps).map(matchExp), meta)
   }),
