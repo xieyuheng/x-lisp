@@ -1,9 +1,12 @@
-hash-put-many -- add claim
 hash-from-entries -- add claim
 hash-append -- add claim
 hash-map-value -- add claim
 hash-map-key -- add claim
 hash-invert -- add claim
+
+move checkExported from runSexps to load
+
+`aboutInt` -- add claim
 
 hash-map -- key and value
 

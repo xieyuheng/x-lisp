@@ -2,8 +2,18 @@
   hash-put-many
   hash-put-many!)
 
+(claim hash-put-many
+  (polymorphic (K V)
+    (-> (list? (tau K V)) (hash? K V)
+        (hash? K V))))
+
 (define (hash-put-many entries hash)
   (hash-put-many! entries (hash-copy hash)))
+
+(claim hash-put-many!
+  (polymorphic (K V)
+    (-> (list? (tau K V)) (hash? K V)
+        (hash? K V))))
 
 (define (hash-put-many! entries hash)
   (match entries
