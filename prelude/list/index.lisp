@@ -17,5 +17,6 @@
 (include-all "list-member")
 (include-all "list-find")
 (include-all "list-find-index")
+(include-all "list-index")
 (include-all "list-dedup")
 (include-all "list-product")
