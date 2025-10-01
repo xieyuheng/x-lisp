@@ -11,6 +11,7 @@ export function aboutHash(mod: Mod) {
     "hash-empty?",
     "hash-length",
     "hash-get",
+    "hash-has?",
     "hash-put",
     "hash-put!",
     "hash-delete!",
@@ -78,6 +79,17 @@ export function aboutHash(mod: Mod) {
     const found = Values.hashGet(Values.asHash(hash), key)
     if (found) return found
     else return Values.Null()
+  })
+
+  definePrimitiveFunction(mod, "hash-has?", 2, (key, hash) => {
+    if (!Values.isHashable(key)) {
+      let message = `(hash-has?) the given key is not hashable\n`
+      message += `  key: ${formatValue(key)}`
+      throw new Error(message)
+    }
+
+    const found = Values.hashGet(Values.asHash(hash), key)
+    return Values.Bool(found !== undefined)
   })
 
   definePrimitiveFunction(mod, "hash-put", 3, (key, value, hash) => {

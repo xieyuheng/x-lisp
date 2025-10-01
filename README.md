@@ -309,6 +309,7 @@ false
 (hash-empty? hash)
 (hash-length hash)
 (hash-get key hash)
+(hash-has? key hash)
 (hash-put key value hash)
 (hash-put! key value hash)
 (hash-delete! key hash)

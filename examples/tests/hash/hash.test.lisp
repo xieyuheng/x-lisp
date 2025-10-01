@@ -17,6 +17,12 @@
 (assert-equal 1 (hash-length (@hash 1 2)))
 (assert-equal 2 (hash-length (@hash 1 2 3 4)))
 
+(assert-not (hash-has? 1 (@hash)))
+(assert (hash-has? 1 (@hash 1 2)))
+(assert-not (hash-has? 3 (@hash 1 2)))
+(assert (hash-has? 1 (@hash 1 2 3 4)))
+(assert (hash-has? 3 (@hash 1 2 3 4)))
+
 (assert-equal null (hash-get 1 (@hash)))
 (assert-equal 2 (hash-get 1 (@hash 1 2)))
 (assert-equal 2 (hash-get 1 (@hash 1 2 3 4)))

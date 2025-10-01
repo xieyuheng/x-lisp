@@ -1,5 +1,7 @@
 (import-all "graph")
 
+;; graph coloring by DSATUR algorithm
+
 (export graph-coloring!)
 
 (define color? int?)
