@@ -1,14 +1,18 @@
-`record-map-entry`
-`record-each-entry`
-`hash-map-key`
-`hash-invert`
+# hash
 
-# later
+hash-invert
+
+# list
 
 list-index -- use value and equal?
 list-group -- by the hask key returned by function
 list-foremost -- first after sort
 list-rearmost -- last after sort
+
+# record
+
+record-map-entry
+record-each-entry
 
 # later
 

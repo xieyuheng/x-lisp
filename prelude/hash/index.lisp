@@ -2,3 +2,4 @@
 (include-all "hash-from-entries")
 (include-all "hash-append")
 (include-all "hash-map-value")
+(include-all "hash-map-key")
