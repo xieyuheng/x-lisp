@@ -57,15 +57,6 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
-    case "LambdaLazy": {
-      return (mod, env) => {
-        return [
-          env,
-          Values.LambdaLazy(mod, env, exp.parameters, exp.body, exp.meta),
-        ]
-      }
-    }
-
     case "Thunk": {
       return (mod, env) => {
         return [env, Values.Thunk(mod, env, exp.body, exp.meta)]
@@ -83,15 +74,8 @@ export function evaluate(exp: Exp): Effect {
         const target = Values.lazyWalk(
           resultValue(evaluate(exp.target)(mod, env)),
         )
-        if (target.kind === "LambdaLazy") {
-          const args = exp.args.map((arg) => Values.Lazy(mod, env, arg))
-          return [env, apply(target, args)]
-        } else {
-          const args = exp.args.map((arg) =>
-            resultValue(evaluate(arg)(mod, env)),
-          )
-          return [env, apply(target, args)]
-        }
+        const args = exp.args.map((arg) => resultValue(evaluate(arg)(mod, env)))
+        return [env, apply(target, args)]
       }
     }
 

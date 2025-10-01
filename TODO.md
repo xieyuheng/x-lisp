@@ -1,4 +1,3 @@
-remove `define-lazy`
 update readme about unless and when
 `list-find`
 

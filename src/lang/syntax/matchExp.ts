@@ -29,25 +29,6 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     },
   ),
 
-  X.matcher(
-    "(cons* 'lambda-lazy parameters body)",
-    ({ parameters, body }, { data }) => {
-      const keyword = X.asTael(data).elements[0]
-      const meta = X.tokenMetaFromDataMeta(keyword.meta)
-
-      if (X.dataToArray(parameters).length === 0) {
-        let message = `(lambda-lazy) must have at least one parameter\n`
-        throw new X.ErrorWithMeta(message, meta)
-      }
-
-      return Exps.LambdaLazy(
-        X.dataToArray(parameters).map(X.symbolToString),
-        Exps.Begin(X.dataToArray(body).map(matchExp), meta),
-        meta,
-      )
-    },
-  ),
-
   X.matcher("(cons* 'thunk body)", ({ body }, { meta }) => {
     return Exps.Thunk(Exps.Begin(X.dataToArray(body).map(matchExp), meta), meta)
   }),

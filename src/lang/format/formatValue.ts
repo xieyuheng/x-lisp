@@ -125,10 +125,6 @@ export function formatValue(value: Value, options: Options = {}): string {
       }
     }
 
-    case "LambdaLazy": {
-      return `(lambda-lazy (${value.parameters.join(" ")}) ${formatBody(value.body)})`
-    }
-
     case "PrimitiveFunction": {
       return `${value.name}`
     }

@@ -43,7 +43,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     }
   }
 
-  if (target.kind === "Lambda" || target.kind === "LambdaLazy") {
+  if (target.kind === "Lambda") {
     const arity = target.parameters.length
     if (arity === args.length) {
       return applyLambda(target, args)

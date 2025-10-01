@@ -21,7 +21,6 @@ export type Value =
   | Lambda
   | Thunk
   | Lazy
-  | LambdaLazy
   | PrimitiveFunction
   | PrimitiveThunk
   | Curried
@@ -101,32 +100,6 @@ export function Lazy(mod: Mod, env: Env, exp: Exp): Lazy {
     mod,
     env,
     exp,
-  }
-}
-
-export type LambdaLazy = {
-  kind: "LambdaLazy"
-  mod: Mod
-  env: Env
-  parameters: Array<string>
-  body: Exp
-  meta?: Meta
-}
-
-export function LambdaLazy(
-  mod: Mod,
-  env: Env,
-  parameters: Array<string>,
-  body: Exp,
-  meta?: Meta,
-): LambdaLazy {
-  return {
-    kind: "LambdaLazy",
-    mod,
-    env,
-    parameters,
-    body,
-    meta,
   }
 }
 

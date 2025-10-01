@@ -28,10 +28,6 @@ export function formatExp(exp: Exp): string {
       return `(lambda (${exp.parameters.join(" ")}) ${formatBody(exp.body)})`
     }
 
-    case "LambdaLazy": {
-      return `(lambda-lazy (${exp.parameters.join(" ")}) ${formatBody(exp.body)})`
-    }
-
     case "Thunk": {
       return `(thunk ${formatBody(exp.body)})`
     }
