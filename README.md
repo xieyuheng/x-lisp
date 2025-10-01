@@ -324,7 +324,7 @@ false
 (hash-put-many! entries hash)
 (hash-from-entries entries)
 (hash-append hash rest)
-(hash-map f hash)
+(hash-map-value f hash)
 ```
 
 ### Predicate
