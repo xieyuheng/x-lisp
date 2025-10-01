@@ -1,5 +1,5 @@
 import * as X from "@xieyuheng/x-data.js"
-import { recordMap } from "../../utils/record/recordMap.ts"
+import { recordMapValue } from "../../utils/record/recordMapValue.ts"
 import { matchExp } from "../syntax/index.ts"
 import * as Values from "../value/index.ts"
 import { evaluate, resultValue, type Effect } from "./evaluate.ts"
@@ -29,7 +29,7 @@ export function evaluateQuasiquote(sexp: X.Data): Effect {
             sexp.elements.map((e) =>
               resultValue(evaluateQuasiquote(e)(mod, env)),
             ),
-            recordMap(sexp.attributes, (e) =>
+            recordMapValue(sexp.attributes, (e) =>
               resultValue(evaluateQuasiquote(e)(mod, env)),
             ),
           ),

@@ -1,7 +1,7 @@
 import * as X from "@xieyuheng/x-data.js"
 import { arrayGroup2 } from "../../utils/array/arrayGroup2.ts"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
-import { recordMap } from "../../utils/record/recordMap.ts"
+import { recordMapValue } from "../../utils/record/recordMapValue.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 
@@ -190,7 +190,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher("(cons* '@tael elements)", ({ elements }, { data, meta }) => {
     return Exps.Tael(
       X.dataToArray(elements).map(matchExp),
-      recordMap(X.asTael(data).attributes, matchExp),
+      recordMapValue(X.asTael(data).attributes, matchExp),
       meta,
     )
   }),
@@ -210,7 +210,11 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       throw new X.ErrorWithMeta(message, meta)
     }
 
-    return Exps.Tael([], recordMap(X.asTael(data).attributes, matchExp), meta)
+    return Exps.Tael(
+      [],
+      recordMapValue(X.asTael(data).attributes, matchExp),
+      meta,
+    )
   }),
 
   X.matcher("(cons* '@set elements)", ({ elements }, { data, meta }) => {
@@ -245,7 +249,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher("(cons* 'tau elements)", ({ elements }, { data, meta }) => {
     return Exps.Tau(
       X.dataToArray(elements).map(matchExp),
-      recordMap(X.asTael(data).attributes, matchExp),
+      recordMapValue(X.asTael(data).attributes, matchExp),
       meta,
     )
   }),

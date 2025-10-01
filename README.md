@@ -243,6 +243,7 @@ false
 (list-member? x list)
 (list-find p list)
 (list-find-index p list)
+(list-index e list)
 (list-dedup list)
 (list-product lhs rhs)
 (list-product/no-diagonal lhs rhs)

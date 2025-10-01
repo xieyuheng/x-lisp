@@ -1,5 +1,5 @@
 import * as X from "@xieyuheng/x-data.js"
-import { recordMap } from "../../utils/record/recordMap.ts"
+import { recordMapValue } from "../../utils/record/recordMapValue.ts"
 import { matchExp } from "../syntax/index.ts"
 import * as Patterns from "./Pattern.ts"
 import { patternize, type Effect } from "./patternize.ts"
@@ -25,7 +25,9 @@ export function patternizeQuasiquote(sexp: X.Data): Effect {
       return (mod, env) => {
         return Patterns.TaelPattern(
           sexp.elements.map((e) => patternizeQuasiquote(e)(mod, env)),
-          recordMap(sexp.attributes, (e) => patternizeQuasiquote(e)(mod, env)),
+          recordMapValue(sexp.attributes, (e) =>
+            patternizeQuasiquote(e)(mod, env),
+          ),
         )
       }
     }

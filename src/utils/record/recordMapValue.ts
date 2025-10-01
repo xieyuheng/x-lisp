@@ -1,4 +1,4 @@
-export function recordMap<A, B>(
+export function recordMapValue<A, B>(
   record: Record<string, A>,
   f: (x: A) => B,
 ): Record<string, B> {

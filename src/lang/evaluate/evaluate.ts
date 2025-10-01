@@ -1,7 +1,7 @@
 import * as X from "@xieyuheng/x-data.js"
 import assert from "node:assert"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
-import { recordMap } from "../../utils/record/recordMap.ts"
+import { recordMapValue } from "../../utils/record/recordMapValue.ts"
 import { useBuiltinMod } from "../builtin/index.ts"
 import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
@@ -146,7 +146,9 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const value = Values.Tael(
           exp.elements.map((e) => resultValue(evaluate(e)(mod, env))),
-          recordMap(exp.attributes, (e) => resultValue(evaluate(e)(mod, env))),
+          recordMapValue(exp.attributes, (e) =>
+            resultValue(evaluate(e)(mod, env)),
+          ),
         )
         return [env, value]
       }
@@ -400,7 +402,7 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const value = Values.Tau(
           exp.elementSchemas.map((e) => resultValue(evaluate(e)(mod, env))),
-          recordMap(exp.attributeSchemas, (e) =>
+          recordMapValue(exp.attributeSchemas, (e) =>
             resultValue(evaluate(e)(mod, env)),
           ),
         )

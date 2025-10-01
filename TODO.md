@@ -1,6 +1,8 @@
+remove some `digit` to back to `hashKey`
+
 # list
 
-list-group -- by the hask key returned by function
+list-group -- by the hash key returned by function
 list-foremost -- first after sort
 list-rearmost -- last after sort
 

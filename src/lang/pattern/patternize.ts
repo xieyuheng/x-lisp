@@ -1,5 +1,5 @@
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
-import { recordMap } from "../../utils/record/recordMap.ts"
+import { recordMapValue } from "../../utils/record/recordMapValue.ts"
 import { type Env } from "../env/index.ts"
 import { evaluate, resultValue } from "../evaluate/index.ts"
 import { type Exp } from "../exp/index.ts"
@@ -75,7 +75,7 @@ export function patternize(exp: Exp): Effect {
     return (mod, env) => {
       return Patterns.TaelPattern(
         exp.elements.map((value) => patternize(value)(mod, env)),
-        recordMap(exp.attributes, (value) => patternize(value)(mod, env)),
+        recordMapValue(exp.attributes, (value) => patternize(value)(mod, env)),
       )
     }
   }

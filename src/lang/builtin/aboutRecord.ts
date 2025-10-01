@@ -1,5 +1,5 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
-import { recordMap } from "../../utils/record/recordMap.ts"
+import { recordMapValue } from "../../utils/record/recordMapValue.ts"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { apply } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
@@ -144,7 +144,7 @@ export function aboutRecord(mod: Mod) {
   definePrimitiveFunction(mod, "record-map-value", 2, (fn, record) => {
     return Values.Tael(
       Values.asTael(record).elements,
-      recordMap(Values.asTael(record).attributes, (value) =>
+      recordMapValue(Values.asTael(record).attributes, (value) =>
         apply(fn, [value]),
       ),
     )
