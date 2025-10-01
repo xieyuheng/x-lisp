@@ -3,3 +3,4 @@
 (include-all "hash-append")
 (include-all "hash-map-value")
 (include-all "hash-map-key")
+(include-all "hash-invert")

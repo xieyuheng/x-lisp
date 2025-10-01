@@ -1,7 +1,3 @@
-# hash
-
-hash-invert
-
 # list
 
 list-index -- use value and equal?
