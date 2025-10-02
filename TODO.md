@@ -1,5 +1,3 @@
-[prelude] claim functions about sort-order
-
 hash-map -- key and value
 
 hash-each-value
