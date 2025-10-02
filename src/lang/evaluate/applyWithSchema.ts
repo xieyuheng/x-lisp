@@ -39,12 +39,25 @@ export function applyWithSchema(
     const arrow = Values.arrowNormalize(schema)
 
     if (arrow.argSchemas.length < args.length) {
-      let message = `(validation) too many arguments\n`
-      message += `  args: ${formatValues(args)}\n`
-      message += `  schema: ${formatValue(schema)}\n`
-      message += `  target: ${formatValue(target)}\n`
-      if (meta) throw new X.ErrorWithMeta(message, meta)
-      else throw new Error(message)
+      const usedArgs = args.slice(0, arrow.argSchemas.length)
+      const spilledArgs = args.slice(arrow.argSchemas.length)
+      const result = apply(
+        target,
+        validateArgs(context, arrow.argSchemas, usedArgs),
+      )
+
+      if (resultIsValid(arrow.retSchema, result)) {
+        return apply(result, spilledArgs)
+      } else {
+        let message = `(validation) fail on result\n`
+        message += `  used args: ${formatValues(usedArgs)}\n`
+        message += `  spilled args: ${formatValues(spilledArgs)}\n`
+        message += `  result: ${formatValue(result)}\n`
+        message += `  schema: ${formatValue(schema)}\n`
+        message += `  target: ${formatValue(target)}\n`
+        if (meta) throw new X.ErrorWithMeta(message, meta)
+        else throw new Error(message)
+      }
     }
 
     if (arrow.argSchemas.length === args.length) {
