@@ -1,5 +1,3 @@
-[prelude] claim set-select set-reject
-
 [prelude] claim functions about sort-order
 
 hash-map -- key and value
