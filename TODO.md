@@ -1,5 +1,3 @@
-record-upsert -- should take simple input -- not record
-
 [prelude] claim record-update & record-upsert
 
 [prelude] claim optional?

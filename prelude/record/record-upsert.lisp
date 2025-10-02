@@ -3,15 +3,12 @@
 
 (export record-upsert record-upsert!)
 
-(define (record-upsert fs record)
-  (= new-record (record-from-entries (record-entries record)))
-  (record-upsert! fs new-record)
+(define (record-upsert key f record)
+  (= new-record (record-copy record))
+  (record-upsert! key f new-record)
   new-record)
 
-(define (record-upsert! fs record)
-  (list-each (lambda (entry)
-               (= [key f] entry)
-               (= value (record-get key record))
-               (record-put! key (f value) record))
-             (record-entries fs))
+(define (record-upsert! key f record)
+  (= value (record-get key record))
+  (record-put! key (f value) record)
   record)
