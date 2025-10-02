@@ -1,5 +1,3 @@
-[std] claim list-fold-left
-[std] claim list-fold-right
 [std] claim list-map-zip
 [std] claim list-map
 [std] claim list-append-map list-unit list-lift list-bind
