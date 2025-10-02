@@ -1,4 +1,3 @@
-list-group -- by the hash key returned by function
 list-foremost -- first after sort
 list-rearmost -- last after sort
 

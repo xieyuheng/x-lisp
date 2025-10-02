@@ -20,3 +20,4 @@
 (include-all "list-index")
 (include-all "list-dedup")
 (include-all "list-product")
+(include-all "list-group")
