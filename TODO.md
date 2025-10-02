@@ -1,5 +1,3 @@
-[prelude] claim record-from-entries
-[prelude] claim record-put-many
 [prelude] claim record-select record-reject
 [prelude] claim record-unit
 [prelude] claim record-update
