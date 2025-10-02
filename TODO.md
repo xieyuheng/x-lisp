@@ -1,9 +1,3 @@
-hash-map -- key and value
-
-hash-each-value
-hash-each-key
-hash-each
-
 hash-invert/group -- from (hash? K V) to (hash? V (set? K))
 
 record-map-key
