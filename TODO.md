@@ -1,6 +1,3 @@
-record-each-key
-record-each
-
 hash-invert/group -- from (hash? K V) to (hash? V (set? K))
 
 list-group -- by the hash key returned by function

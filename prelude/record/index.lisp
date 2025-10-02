@@ -6,6 +6,4 @@
 (include-all "record-upsert")
 (include-all "record-map-value")
 (include-all "record-map-key")
-(include-all "record-each-value")
-(include-all "record-each-key")
 (include-all "record-each")
