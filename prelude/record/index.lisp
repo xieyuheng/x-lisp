@@ -1,7 +1,7 @@
 (include-all "record-unit")
 (include-all "record-put-many")
 (include-all "record-from-entries")
-(include-all "record-select-value")
+(include-all "record-select")
 (include-all "record-update")
 (include-all "record-upsert")
 (include-all "record-map-value")

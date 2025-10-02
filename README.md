@@ -270,8 +270,8 @@ false
 (record-from-entries entries)
 (record-put-many entries record)
 (record-put-many! entries record)
-(record-select-value p record)
-(record-reject-value p record)
+(record-select p record)
+(record-reject p record)
 (record-update fs record)
 (record-update! fs record)
 (record-upsert upserters record)
@@ -426,7 +426,9 @@ null
 ;; prelude
 (identity x)
 (constant x y)
-(swap f x y)
+(swap f)
+(drop f)
+(dup f)
 ```
 
 ### Format
