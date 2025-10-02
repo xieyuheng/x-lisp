@@ -1,7 +1,3 @@
-[prelude] claim optional?
-
-[prelude] claim identity constant swap
-
 [prelude] claim set-select set-reject
 
 [prelude] claim functions about sort-order
