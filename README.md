@@ -327,6 +327,9 @@ false
 (hash-append hash rest)
 (hash-map-value f hash)
 (hash-map-key f hash)
+(hash-each-value f hash)
+(hash-each-key f hash)
+(hash-each f hash)
 (hash-invert hash)
 ```
 
