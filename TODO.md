@@ -1,7 +1,9 @@
-[prelude] claim record-select record-reject
+[prelude] claim record-select-value record-reject-value
 [prelude] claim record-unit
-[prelude] claim record-update
-[prelude] claim record-upsert
+
+record-update & record-upsert -- should take simple input -- not record
+
+[prelude] claim record-update & record-upsert
 
 [prelude] claim optional?
 
