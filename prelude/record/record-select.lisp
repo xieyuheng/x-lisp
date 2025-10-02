@@ -7,15 +7,23 @@
   record-reject)
 
 (claim record-select
-  (polymorphic (A)
-    (-> (-> A bool?) (record? A)
-        (record? A))))
+  (polymorphic (V)
+    (-> (-> symbol? V bool?) (record? V)
+        (record? V))))
 
 (define (record-select p record)
   (pipe record
     record-entries
-    (list-select (compose p list-second))
+    (list-select (apply p))
     record-from-entries))
 
+(claim record-reject
+  (polymorphic (V)
+    (-> (-> symbol? V bool?) (record? V)
+        (record? V))))
+
 (define (record-reject p record)
-  (record-select (negate p) record))
+  (pipe record
+    record-entries
+    (list-reject (apply p))
+    record-from-entries))

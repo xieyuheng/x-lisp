@@ -1,5 +1,3 @@
-record-select record-reject -- remove record-select-value
-
 hash-select hash-reject
 hash-invert/group -- from (hash? K V) to (hash? V (set? K))
 list-group -- by the hash key returned by function
