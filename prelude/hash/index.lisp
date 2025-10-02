@@ -3,7 +3,5 @@
 (include-all "hash-append")
 (include-all "hash-map-value")
 (include-all "hash-map-key")
-(include-all "hash-each-value")
-(include-all "hash-each-key")
 (include-all "hash-each")
 (include-all "hash-invert")
