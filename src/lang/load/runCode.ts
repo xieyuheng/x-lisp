@@ -1,6 +1,4 @@
 import * as X from "@xieyuheng/x-data.js"
-import { setDifference } from "../../utils/set/setAlgebra.ts"
-import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { matchStmt } from "../syntax/index.ts"
@@ -18,16 +16,4 @@ export function runSexps(mod: Mod, sexps: Array<X.Data>): void {
   for (const stmt of stmts) stage1(mod, stmt)
   for (const stmt of stmts) stage2(mod, stmt)
   for (const stmt of stmts) stage3(mod, stmt)
-
-  checkExported(mod)
-}
-
-function checkExported(mod: Mod): void {
-  const definedNames = new Set(mod.defined.keys())
-  const undefinedNames = setDifference(mod.exported, definedNames)
-  if (undefinedNames.size > 0) {
-    let message = `(export) undefined names: ${Array.from(undefinedNames).join(" ")}\n`
-    message += `  mod: ${urlRelativeToCwd(mod.url)}\n`
-    throw new Error(message)
-  }
 }

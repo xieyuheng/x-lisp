@@ -1,6 +1,8 @@
 import fs from "node:fs"
 import Path from "node:path"
 import { flags } from "../../flags.ts"
+import { setDifference } from "../../utils/set/setAlgebra.ts"
+import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { aboutModule } from "../builtin/aboutModule.ts"
 import { importBuiltin } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
@@ -27,7 +29,18 @@ export function load(url: URL): Mod {
 
   globalLoadedMods.set(url.href, mod)
   runCode(mod, text)
+  checkExported(mod)
   return mod
+}
+
+function checkExported(mod: Mod): void {
+  const definedNames = new Set(mod.defined.keys())
+  const undefinedNames = setDifference(mod.exported, definedNames)
+  if (undefinedNames.size > 0) {
+    let message = `(export) undefined names: ${Array.from(undefinedNames).join(" ")}\n`
+    message += `  mod: ${urlRelativeToCwd(mod.url)}\n`
+    throw new Error(message)
+  }
 }
 
 function resolveToFileUrl(url: URL): URL {

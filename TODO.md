@@ -1,7 +1,5 @@
 # schema for builtin
 
-move `checkExported` from `runSexps` to `load`
-
 `aboutInt` -- add claim
 
 # dependent schema
