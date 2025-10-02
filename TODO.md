@@ -1,4 +1,3 @@
-[prelude] claim list-append-map list-unit list-lift list-bind
 [prelude] claim list-select list-reject
 [prelude] claim list-unzip
 [prelude] claim list-zip
