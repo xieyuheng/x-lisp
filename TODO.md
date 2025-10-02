@@ -1,4 +1,4 @@
-record-update & record-upsert -- should take simple input -- not record
+record-upsert -- should take simple input -- not record
 
 [prelude] claim record-update & record-upsert
 
