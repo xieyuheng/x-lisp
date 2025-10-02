@@ -21,3 +21,4 @@
 (include-all "list-dedup")
 (include-all "list-product")
 (include-all "list-group")
+(include-all "list-foremost")

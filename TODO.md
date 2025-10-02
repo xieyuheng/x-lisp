@@ -1,4 +1,3 @@
-list-foremost -- first after sort
 list-rearmost -- last after sort
 
 # schema for builtin

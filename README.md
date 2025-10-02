@@ -247,6 +247,7 @@ false
 (list-dedup list)
 (list-product lhs rhs)
 (list-product/no-diagonal lhs rhs)
+(list-group f list)
 ```
 
 ### Record
