@@ -279,6 +279,9 @@ false
 (record-unit key value)
 (record-map-value f record)
 (record-map-key f record)
+(record-each-value f record)
+(record-each-key f record)
+(record-each f record)
 ```
 
 ### Set
