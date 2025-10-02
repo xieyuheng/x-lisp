@@ -4,6 +4,11 @@
 
 (export list-map-zip)
 
+(claim list-map-zip
+  (polymorphic (A B C)
+    (-> (-> A B C) (list? A) (list? B)
+        (list? C))))
+
 (define (list-map-zip f left right)
   (list-map
    (lambda (zipped)
