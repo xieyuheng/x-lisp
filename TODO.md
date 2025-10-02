@@ -1,4 +1,3 @@
-hash-invert/group -- from (hash? K V) to (hash? V (set? K))
 list-group -- by the hash key returned by function
 list-foremost -- first after sort
 list-rearmost -- last after sort
