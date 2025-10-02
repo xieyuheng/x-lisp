@@ -1,4 +1,4 @@
 1
 0
 -1
-(iadd 1)
+(the (-> int? int?) (iadd 1))

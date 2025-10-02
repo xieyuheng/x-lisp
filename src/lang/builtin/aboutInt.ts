@@ -1,5 +1,5 @@
 import { definePrimitiveFunction, provide } from "../define/index.ts"
-// import { runCode } from "../load/index.ts"
+import { runCode } from "../load/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -32,7 +32,7 @@ export function aboutInt(mod: Mod) {
     return Values.Int(-Values.asInt(x).content)
   })
 
-  // runCode(mod, `(claim iadd (-> int? int? int?))`)
+  runCode(mod, `(claim iadd (-> int? int? int?))`)
 
   definePrimitiveFunction(mod, "iadd", 2, (x, y) => {
     return Values.Int(Values.asInt(x).content + Values.asInt(y).content)

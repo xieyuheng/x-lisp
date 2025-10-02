@@ -1,5 +1,5 @@
 [evaluate] Key in (@hash) is not hashable
-  key: (iadd 2)
+  key: (the (-> int? int?) (iadd 2))
   value: 4
 
   --> examples/tests/hash/hash-non-hashable-key.error.lisp:1:12
