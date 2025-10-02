@@ -328,6 +328,8 @@ false
 (hash-put-many entries hash)
 (hash-put-many! entries hash)
 (hash-from-entries entries)
+(hash-select p hash)
+(hash-reject p hash)
 (hash-append hash rest)
 (hash-map-value f hash)
 (hash-map-key f hash)
