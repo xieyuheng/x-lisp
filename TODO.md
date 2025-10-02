@@ -1,4 +1,4 @@
-fix bug of lazy or remove lazy
+remove `(lazy)` syntax
 
 repl enable debug by default
 
