@@ -1,4 +1,3 @@
-[prelude] claim list-select list-reject
 [prelude] claim list-unzip
 [prelude] claim list-zip
 
