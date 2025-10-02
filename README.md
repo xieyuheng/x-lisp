@@ -266,7 +266,6 @@ false
 (record-put! key value record)
 (record-delete key record)
 (record-delete! key record)
-(record-map-value f record)
 ;; prelude
 (record-from-entries entries)
 (record-put-many entries record)
@@ -278,6 +277,8 @@ false
 (record-upsert upserters record)
 (record-upsert! upserters record)
 (record-unit key value)
+(record-map-value f record)
+(record-map-key f record)
 ```
 
 ### Set

@@ -1,5 +1,4 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
-import { recordMapValue } from "../../utils/record/recordMapValue.ts"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { apply } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
@@ -22,7 +21,6 @@ export function aboutRecord(mod: Mod) {
     "record-put!",
     "record-delete",
     "record-delete!",
-    "record-map-value",
   ])
 
   definePrimitiveFunction(mod, "record?", 2, (p, target) => {
@@ -139,14 +137,5 @@ export function aboutRecord(mod: Mod) {
   definePrimitiveFunction(mod, "record-delete!", 2, (key, record) => {
     delete Values.asTael(record).attributes[Values.asSymbol(key).content]
     return record
-  })
-
-  definePrimitiveFunction(mod, "record-map-value", 2, (fn, record) => {
-    return Values.Tael(
-      Values.asTael(record).elements,
-      recordMapValue(Values.asTael(record).attributes, (value) =>
-        apply(fn, [value]),
-      ),
-    )
   })
 }
