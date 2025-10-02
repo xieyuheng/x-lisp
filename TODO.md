@@ -1,6 +1,3 @@
-[prelude] claim list-unzip
-[prelude] claim list-zip
-
 [prelude] claim record-from-entries
 [prelude] claim record-put-many
 [prelude] claim record-select record-reject
