@@ -5,3 +5,4 @@
 (include-all "hash-map-key")
 (include-all "hash-each")
 (include-all "hash-invert")
+(include-all "hash-select")
