@@ -248,6 +248,8 @@ false
 (list-product lhs rhs)
 (list-product/no-diagonal lhs rhs)
 (list-group f list)
+(list-foremost compare list)
+(list-rearmost compare list)
 ```
 
 ### Record

@@ -1,5 +1,3 @@
-list-rearmost -- last after sort
-
 # schema for builtin
 
 move `checkExported` from `runSexps` to `load`
