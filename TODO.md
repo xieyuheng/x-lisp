@@ -1,4 +1,4 @@
-support different kinds of definition, when lookup, give value in different ways
+`Mod` use ADT  `Definition`
 
 remove `Lazy` `Value`
 
