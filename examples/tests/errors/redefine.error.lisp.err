@@ -1,3 +1,7 @@
-[defineExp] can not redefine name: x
+[defineLazy] can not redefine name: x
   new exp: 2
+  old definition:
+    origin: examples/tests/errors/redefine.error.lisp
+    name: x
+    exp: 1
 

@@ -1,17 +1,13 @@
-import {
-  definePrimitiveFunction,
-  defineValue,
-  provide,
-} from "../define/index.ts"
+import { define, definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutBool(mod: Mod) {
   provide(mod, ["true", "false", "bool?", "not"])
 
-  defineValue(mod, "true", Values.Bool(true))
+  define(mod, "true", Values.Bool(true))
 
-  defineValue(mod, "false", Values.Bool(false))
+  define(mod, "false", Values.Bool(false))
 
   definePrimitiveFunction(mod, "bool?", 1, (value) => {
     return Values.Bool(Values.isBool(value))
