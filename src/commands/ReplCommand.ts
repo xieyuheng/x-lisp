@@ -21,9 +21,8 @@ export const ReplCommand: Command = {
   async run(commander) {
     globals.commandLineArgs = commander.args.map(String)
 
-    if (commander.options["debug"]) {
-      flags["debug"] = true
-    }
+    // We always enable debug by default
+    flags["debug"] = true
 
     if (commander.options["no-prelude"]) {
       flags["no-prelude"] = true

@@ -1,6 +1,5 @@
 `defineValue` improve error report on redefine
 `claim` improve error report when claim other mod's vlaue
-`ReplCommand` -- enable debug by default
 
 aboutInt -- add claim
 aboutBool -- add claim
