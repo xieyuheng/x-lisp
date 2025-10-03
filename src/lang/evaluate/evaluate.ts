@@ -320,8 +320,8 @@ export function evaluate(exp: Exp): Effect {
 
     case "Union": {
       return (mod, env) => {
-        const preludeMod = useBuiltinMod()
-        const value = modLookupValue(preludeMod, "union-fn")
+        const builtinMod = useBuiltinMod()
+        const value = modLookupValue(builtinMod, "union-fn")
         assert(value)
         const predicates = exp.exps.map((e) =>
           resultValue(evaluate(e)(mod, env)),
@@ -332,8 +332,8 @@ export function evaluate(exp: Exp): Effect {
 
     case "Inter": {
       return (mod, env) => {
-        const preludeMod = useBuiltinMod()
-        const value = modLookupValue(preludeMod, "inter-fn")
+        const builtinMod = useBuiltinMod()
+        const value = modLookupValue(builtinMod, "inter-fn")
         assert(value)
         const predicates = exp.exps.map((e) =>
           resultValue(evaluate(e)(mod, env)),
@@ -352,8 +352,8 @@ export function evaluate(exp: Exp): Effect {
 
     case "Compose": {
       return (mod, env) => {
-        const preludeMod = useBuiltinMod()
-        const value = modLookupValue(preludeMod, "compose-fn")
+        const builtinMod = useBuiltinMod()
+        const value = modLookupValue(builtinMod, "compose-fn")
         assert(value)
         const fs = exp.exps.map((e) => resultValue(evaluate(e)(mod, env)))
         return [env, apply(value, [Values.List(fs)])]
@@ -362,8 +362,8 @@ export function evaluate(exp: Exp): Effect {
 
     case "Pipe": {
       return (mod, env) => {
-        const preludeMod = useBuiltinMod()
-        const value = modLookupValue(preludeMod, "pipe-fn")
+        const builtinMod = useBuiltinMod()
+        const value = modLookupValue(builtinMod, "pipe-fn")
         assert(value)
         const fs = exp.exps.map((e) => resultValue(evaluate(e)(mod, env)))
         return [
