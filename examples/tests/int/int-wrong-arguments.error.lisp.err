@@ -1,0 +1,6 @@
+(validation) fail on arguments
+  args: [1 "a"]
+    #1: (the int? "a")
+  schema: (-> int? int? int?)
+  target: iadd
+
