@@ -13,6 +13,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
     "(cons* 'define (cons* name parameters) body)",
     ({ name, parameters, body }, { data }) => {
+      // We only use the meta of the keyword for a smaller span.
       const keyword = X.asTael(data).elements[1]
       const meta = X.tokenMetaFromDataMeta(keyword.meta)
 

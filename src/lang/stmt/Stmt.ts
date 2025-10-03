@@ -7,6 +7,7 @@ export type Meta = TokenMeta
 export type Stmt =
   | Compute
   | Define
+  | DefineFunction
   | Import
   | ImportAll
   | ImportAs
@@ -44,6 +45,29 @@ export function Define(name: string, exp: Exp, meta: Meta): Define {
     kind: "Define",
     name,
     exp,
+    meta,
+  }
+}
+
+export type DefineFunction = {
+  kind: "DefineFunction"
+  name: string
+  parameters: Array<string>
+  body: Exp
+  meta: Meta
+}
+
+export function DefineFunction(
+  name: string,
+  parameters: Array<string>,
+  body: Exp,
+  meta: Meta,
+): DefineFunction {
+  return {
+    kind: "DefineFunction",
+    name,
+    parameters,
+    body,
     meta,
   }
 }
