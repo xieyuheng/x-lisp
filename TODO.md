@@ -1,5 +1,3 @@
-tests/string
-
 remove tests/atoms/
 
 aboutInt -- add claim
