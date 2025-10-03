@@ -1,5 +1,4 @@
 (include-all "function")
-(include-all "optional")
 (include-all "list")
 (include-all "record")
 (include-all "hash")
