@@ -52,3 +52,27 @@
 (claim string-replace-first (-> string? string? string? string?))
 (claim string-replace (-> string? string? string? string?))
 (claim string-compare/lexical (-> string? string? int?))
+
+;; list
+
+(claim car (polymorphic (A) (-> (list? A) A)))
+(claim cdr (polymorphic (A) (-> (list? A) (list? A))))
+(claim cons (polymorphic (A) (-> A (list? A) (list? A))))
+(claim list-head (polymorphic (A) (-> (list? A) A)))
+(claim list-tail (polymorphic (A) (-> (list? A) (list? A))))
+(claim list-init (polymorphic (A) (-> (list? A) (list? A))))
+(claim list-last (polymorphic (A) (-> (list? A) A)))
+(claim list-length (polymorphic (A) (-> (list? A) int?)))
+(claim list-copy (polymorphic (A) (-> (list? A) (list? A))))
+;; (claim list-get (polymorphic (A) (-> (list? A) int? (optional? A))))
+;; list-put
+;; list-put!
+;; list-push
+;; list-push!
+;; list-pop!
+;; list-shift!
+;; list-unshift!
+;; list-reverse
+;; list-to-set
+;; list-sort!
+;; list-sort

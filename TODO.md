@@ -1,5 +1,7 @@
-aboutValue -- add claim
+move optional? to builtin
+
 aboutList -- add claim
+
 aboutRecord -- add claim
 aboutSchema -- add claim
 aboutSexp -- add claim
