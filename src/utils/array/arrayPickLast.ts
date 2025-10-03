@@ -1,6 +1,6 @@
 export function arrayPickLast<A>(array: Array<A>): [prefix: Array<A>, last: A] {
   if (array.length === 0) {
-    throw new Error(`[arrayPickLast] I can not pick the last from empty array`)
+    throw new Error(`[arrayPickLast] can not pick the last from empty array`)
   }
 
   const prefix = array.slice(0, array.length - 1)

@@ -28,7 +28,7 @@ export const RunCommand: Command = {
     }
 
     if (typeof commander.args[0] !== "string") {
-      let message = `[run] I expect the first argument to be a path\n`
+      let message = `[run] expect the first argument to be a path\n`
       message += `  first argument: ${commander.args[0]}\n`
       throw new Error(message)
     }

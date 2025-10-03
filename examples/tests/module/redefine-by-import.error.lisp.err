@@ -1,4 +1,4 @@
-[checkRedefine] I can not redefine name: one
+[checkRedefine] can not redefine name: one
   old definition:
     origin: examples/tests/module/module-one.lisp
     name: one

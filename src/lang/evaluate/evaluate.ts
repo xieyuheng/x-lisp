@@ -43,7 +43,7 @@ export function evaluate(exp: Exp): Effect {
         const topValue = modLookupValue(mod, exp.name)
         if (topValue) return [env, topValue]
 
-        let message = `[evaluate] I meet undefined name: ${exp.name}\n`
+        let message = `[evaluate] meet undefined name: ${exp.name}\n`
         throw new X.ErrorWithMeta(message, exp.meta)
       }
     }

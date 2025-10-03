@@ -21,7 +21,7 @@ function checkRedefine(
   if (found === undefined) return
   if (found === definition) return
 
-  let message = `[checkRedefine] I can not redefine name: ${name}\n`
+  let message = `[checkRedefine] can not redefine name: ${name}\n`
   message += `  old definition:\n`
   message += indent(formatDefinition(found), { length: 4 })
   message += `  new definition:\n`

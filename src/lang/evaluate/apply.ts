@@ -133,7 +133,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     return Values.Record(attributes)
   }
 
-  let message = `[apply] I can not handle this kind of target\n`
+  let message = `[apply] can not handle this kind of target\n`
   message += `  target: ${formatValue(target)}\n`
   message += `  args: ${formatValues(args)}\n`
   throw new Error(message)
