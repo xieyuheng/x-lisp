@@ -1,4 +1,6 @@
-aboutFloat -- add claim
+relex some float predicates
+relex some int predicates
+
 aboutSymbol -- add claim
 aboutString -- add claim
 aboutValue -- add claim
