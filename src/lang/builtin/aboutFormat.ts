@@ -13,22 +13,10 @@ export function aboutFormat(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "format-subscript", 1, (n) => {
-    if (Values.asInt(n).content < 0) {
-      let message = `(format-subscript) expect argument to be non-negative int\n`
-      message += `  argument: ${formatValue(n)}`
-      throw new Error(message)
-    }
-
     return Values.String(stringToSubscript(Values.asInt(n).content.toString()))
   })
 
   definePrimitiveFunction(mod, "format-superscript", 1, (n) => {
-    if (Values.asInt(n).content < 0) {
-      let message = `(format-superscript) expect argument to be non-negative int\n`
-      message += `  argument: ${formatValue(n)}`
-      throw new Error(message)
-    }
-
     return Values.String(
       stringToSuperscript(Values.asInt(n).content.toString()),
     )

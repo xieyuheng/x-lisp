@@ -1,7 +1,3 @@
-aboutVoid -- add claim
-aboutNull -- add claim
-aboutFunction -- add claim
-aboutFormat -- add claim
 aboutRandom -- add claim
 aboutSystem -- add claim
 aboutSet -- add claim

@@ -145,3 +145,9 @@
 (claim println (-> anything? void?))
 (claim write (-> string? void?))
 (claim writeln (-> string? void?))
+
+;; format
+
+(claim format (-> anything? string?))
+(claim format-subscript (-> int-non-negative? string?))
+(claim format-superscript (-> int-non-negative? string?))
