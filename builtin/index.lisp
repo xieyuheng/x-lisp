@@ -38,3 +38,5 @@
 
 (claim symbol-length (-> symbol? int?))
 (claim symbol-to-string (-> symbol? string?))
+(claim symbol-append (-> symbol? symbol? symbol?))
+(claim symbol-append-many (-> (list? symbol?) symbol?))

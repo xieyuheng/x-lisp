@@ -1,4 +1,3 @@
-aboutSymbol -- add claim
 aboutString -- add claim
 aboutValue -- add claim
 aboutList -- add claim
