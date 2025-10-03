@@ -1,3 +1,3 @@
-[defineValue] I can not redefine name: x
-  new value: (lazy 2)
+[defineExp] I can not redefine name: x
+  new exp: 2
 

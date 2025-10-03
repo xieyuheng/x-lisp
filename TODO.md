@@ -1,4 +1,3 @@
-stage1 use `defineExp` to handle `Define`
 parse Stmts.DefineFunction
 stage1 handle DefineFunction
 remove `Lazy` `Value`
