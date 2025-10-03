@@ -64,15 +64,15 @@
 (claim list-last (polymorphic (A) (-> (list? A) A)))
 (claim list-length (polymorphic (A) (-> (list? A) int?)))
 (claim list-copy (polymorphic (A) (-> (list? A) (list? A))))
-;; (claim list-get (polymorphic (A) (-> (list? A) int? (optional? A))))
-;; list-put
-;; list-put!
-;; list-push
-;; list-push!
-;; list-pop!
-;; list-shift!
-;; list-unshift!
-;; list-reverse
-;; list-to-set
-;; list-sort!
-;; list-sort
+(claim list-get (polymorphic (A) (-> int? (list? A) (optional? A))))
+(claim list-put (polymorphic (A) (-> int? A (list? A) (list? A))))
+(claim list-put! (polymorphic (A) (-> int? A (list? A) (list? A))))
+(claim list-push (polymorphic (A) (-> A (list? A) (list? A))))
+(claim list-push! (polymorphic (A) (-> A (list? A) (list? A))))
+(claim list-pop! (polymorphic (A) (-> (list? A) A)))
+(claim list-shift! (polymorphic (A) (-> (list? A) A)))
+(claim list-unshift! (polymorphic (A) (-> A (list? A) (list? A))))
+(claim list-reverse (polymorphic (A) (-> (list? A) (list? A))))
+(claim list-to-set (polymorphic (A) (-> (list? A) (set? A))))
+;; (claim list-sort! (polymorphic (A) (-> (list? A) (-> A A sort-order?) (list? A))))
+;; (claim list-sort (polymorphic (A) (-> (list? A) (-> A A sort-order?) (list? A))))
