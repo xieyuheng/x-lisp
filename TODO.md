@@ -1,4 +1,4 @@
-extract lookup
+only use lazyWalk in lookup
 
 repl enable debug by default
 
