@@ -1,9 +1,3 @@
-1
-0
--1
-
-(iadd 1)
-
 (assert-equal ((iadd 1) 1) 2)
 
 (assert-equal (iadd 1 1) 2)
