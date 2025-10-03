@@ -1,3 +1,10 @@
+tests/int
+tests/float
+tests/bool
+tests/string
+
+remove tests/atoms/
+
 aboutInt -- add claim
 aboutBool -- add claim
 aboutFloat -- add claim
