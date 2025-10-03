@@ -1,3 +1,7 @@
+move definition to top level
+`indent` take optional arguments -- update utils.js
+`formatDefinition`
+fix error report about definition in `stage2`
 `defineValue` improve error report on redefine
 `claim` improve error report when claim other mod's vlaue
 
