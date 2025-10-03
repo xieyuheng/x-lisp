@@ -1,4 +1,3 @@
-aboutRecord -- add claim
 aboutSchema -- add claim
 aboutSexp -- add claim
 aboutFile -- add claim
