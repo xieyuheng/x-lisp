@@ -111,3 +111,21 @@
 (claim parse-sexp (-> string? sexp?))
 (claim parse-sexps (-> string? (list? sexp?)))
 (claim format-sexp (-> sexp? string?))
+
+;; file
+
+(claim file-exists? (-> string? bool?))
+(claim file-size (-> string? int?))
+(claim file-load (-> string? string?))
+(claim file-save (-> string? string? void?))
+(claim file-delete (-> string? void?))
+(claim file-directory (-> string? string?))
+(claim directory-exists? (-> string? bool?))
+(claim directory-create (-> string? void?))
+(claim directory-create-recursively (-> string? void?))
+(claim directory-delete (-> string? void?))
+(claim directory-delete-recursively (-> string? void?))
+(claim directory-files (-> string? (list? string?)))
+(claim directory-files-recursively (-> string? (list? string?)))
+(claim directory-directories (-> string? (list? string?)))
+(claim directory-directories-recursively (-> string? (list? string?)))
