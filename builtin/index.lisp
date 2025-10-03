@@ -15,8 +15,8 @@
 (claim int-smaller? (-> int? int? bool?))
 (claim int-larger-or-equal? (-> int? int? bool?))
 (claim int-smaller-or-equal? (-> int? int? bool?))
-(claim int-compare/ascending (-> int? int? int?))
-(claim int-compare/descending (-> int? int? int?))
+(claim int-compare/ascending (-> int? int? sort-order?))
+(claim int-compare/descending (-> int? int? sort-order?))
 
 ;; float
 
@@ -31,8 +31,8 @@
 (claim float-smaller? (-> float? float? bool?))
 (claim float-larger-or-equal? (-> float? float? bool?))
 (claim float-small-or-equal? (-> float? float? bool?))
-(claim float-compare/ascending (-> float? float? int?))
-(claim float-compare/descending (-> float? float? int?))
+(claim float-compare/ascending (-> float? float? sort-order?))
+(claim float-compare/descending (-> float? float? sort-order?))
 
 ;; symbol
 
@@ -81,5 +81,5 @@
 (claim list-unshift! (polymorphic (A) (-> A (list? A) (list? A))))
 (claim list-reverse (polymorphic (A) (-> (list? A) (list? A))))
 (claim list-to-set (polymorphic (A) (-> (list? A) (set? A))))
-;; (claim list-sort! (polymorphic (A) (-> (list? A) (-> A A sort-order?) (list? A))))
-;; (claim list-sort (polymorphic (A) (-> (list? A) (-> A A sort-order?) (list? A))))
+(claim list-sort! (polymorphic (A) (-> (-> A A sort-order?) (list? A) (list? A))))
+(claim list-sort (polymorphic (A) (-> (-> A A sort-order?) (list? A) (list? A))))

@@ -1,5 +1,3 @@
-aboutList -- add claim -- all
-
 aboutRecord -- add claim
 aboutSchema -- add claim
 aboutSexp -- add claim
