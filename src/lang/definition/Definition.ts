@@ -1,6 +1,6 @@
 import { type Exp } from "../exp/index.ts"
+import { type Mod } from "../mod/index.ts"
 import { type Value } from "../value/index.ts"
-import { type Mod } from "./Mod.ts"
 
 // We have different kinds of definition,
 // on lookup, they produce value in different ways.

@@ -1,8 +1,8 @@
 import { emptyEnv } from "../env/Env.ts"
 import { evaluate, resultValue, validateOrFail } from "../evaluate/index.ts"
+import { type Mod } from "../mod/index.ts"
 import { type Value } from "../value/index.ts"
 import { type Definition } from "./Definition.ts"
-import type { Mod } from "./Mod.ts"
 
 export function meaning(mod: Mod, definition: Definition): Value {
   switch (definition.kind) {

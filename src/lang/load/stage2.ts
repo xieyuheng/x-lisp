@@ -1,9 +1,9 @@
 import * as X from "@xieyuheng/x-data.js"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { include } from "../define/index.ts"
+import type { Definition } from "../definition/index.ts"
 import { formatValue } from "../format/index.ts"
 import {
-  type Definition,
   type Mod,
   modLookupPublicDefinition,
   modPublicDefinitions,

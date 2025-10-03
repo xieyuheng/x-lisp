@@ -1,6 +1,5 @@
+import { meaning, type Definition } from "../definition/index.ts"
 import { type Value } from "../value/index.ts"
-import { type Definition } from "./Definition.ts"
-import { meaning } from "./meaning.ts"
 
 export type Mod = {
   url: URL

@@ -1,4 +1,3 @@
-move definition to top level
 `indent` take optional arguments -- update utils.js
 `formatDefinition`
 fix error report about definition in `stage2`

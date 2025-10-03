@@ -1,6 +1,6 @@
+import { LazyDefinition, ValueDefinition } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
-import { LazyDefinition, ValueDefinition } from "../mod/Definition.ts"
 import { modLookupDefinition, type Mod } from "../mod/index.ts"
 import { type Value } from "../value/index.ts"
 
