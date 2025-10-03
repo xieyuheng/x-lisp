@@ -1,5 +1,3 @@
-parse Stmts.DefineFunction
-stage1 handle DefineFunction
 remove `Lazy` `Value`
 
 extract `produceValue`
