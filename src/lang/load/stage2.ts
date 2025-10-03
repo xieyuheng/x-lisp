@@ -23,13 +23,11 @@ function checkRedefine(
 
   let message = `[checkRedefine] I can not redefine name: ${name}\n`
   message += `  old definition:\n`
-  message += indent(formatDefinition(found), { leftMargin: "    " }).trimEnd()
-  message += `\n`
+  message += indent(formatDefinition(found), { length: 4 })
   message += `  new definition:\n`
   message += indent(formatDefinition(definition), {
-    leftMargin: "    ",
-  }).trimEnd()
-  message += `\n`
+    length: 4,
+  })
   throw new X.ErrorWithMeta(message, meta)
 }
 
