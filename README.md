@@ -389,7 +389,8 @@ false
 
 ```lisp
 (current-working-directory)
-(exit sexp)
+(current-command-line-args)
+(exit info)
 ```
 
 ### Module

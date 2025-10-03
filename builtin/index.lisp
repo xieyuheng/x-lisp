@@ -133,3 +133,8 @@
 ;; path
 
 (claim path-join (-> (list? string?) string?))
+
+;; process
+
+(claim current-working-directory (-> string?))
+(claim current-command-line-args (-> sexp?))

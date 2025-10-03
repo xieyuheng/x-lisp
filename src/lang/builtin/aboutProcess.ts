@@ -26,8 +26,8 @@ export function aboutProcess(mod: Mod) {
     return X.parseData(input)
   })
 
-  definePrimitiveFunction(mod, "exit", 1, (sexp) => {
-    console.log(formatValue(sexp))
+  definePrimitiveFunction(mod, "exit", 1, (info) => {
+    console.log(formatValue(info))
     process.exit(1)
   })
 }

@@ -1,4 +1,3 @@
-aboutProcess -- add claim
 aboutConsole -- add claim
 aboutVoid -- add claim
 aboutNull -- add claim
