@@ -1,10 +1,3 @@
-3.14
-0.0
--3.14
-
-(fadd 3.14 -3.14)
-(fadd 0.1 0.2)
-
 (assert-equal (fneg 1.0) -1.0)
 (assert-equal (fneg -1.0) 1.0)
 

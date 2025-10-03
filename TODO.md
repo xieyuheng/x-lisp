@@ -1,4 +1,3 @@
-tests/float
 tests/bool
 tests/string
 
