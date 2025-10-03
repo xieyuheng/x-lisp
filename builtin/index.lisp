@@ -156,3 +156,11 @@
 
 (claim random-int (-> int? int? int?))
 (claim random-float (-> float? float? float?))
+
+;; system
+
+(claim system-shell-run
+  (-> string? (list? string?)
+      (tau :exit-code int-non-negative?
+           :stdout string?
+           :stderr string?)))
