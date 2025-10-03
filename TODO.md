@@ -1,4 +1,6 @@
-extract lookup
+support different kinds of definition, when lookup, give value in different ways
+
+remove `Lazy` `Value`
 
 repl enable debug by default
 
