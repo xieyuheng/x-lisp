@@ -7,9 +7,8 @@
   hash-select/key
   hash-select/value
   hash-reject
-  ;; hash-reject/key
-  ;; hash-reject/value
-  )
+  hash-reject/key
+  hash-reject/value)
 
 (claim hash-select
   (polymorphic (K V)
@@ -53,4 +52,26 @@
   (pipe hash
     hash-entries
     (list-reject (apply p))
+    hash-from-entries))
+
+(claim hash-reject/key
+  (polymorphic (K V)
+    (-> (-> K bool?) (hash? K V)
+        (hash? K V))))
+
+(define (hash-reject/key p hash)
+  (pipe hash
+    hash-entries
+    (list-reject (apply (swap (drop p))))
+    hash-from-entries))
+
+(claim hash-reject/value
+  (polymorphic (K V)
+    (-> (-> V bool?) (hash? K V)
+        (hash? K V))))
+
+(define (hash-reject/value p hash)
+  (pipe hash
+    hash-entries
+    (list-reject (apply (drop p)))
     hash-from-entries))

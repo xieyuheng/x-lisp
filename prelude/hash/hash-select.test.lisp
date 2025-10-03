@@ -16,3 +16,11 @@
 (assert-equal
   (@hash 'x -1 'y -2)
   (hash-reject (drop int-non-negative?) (@hash 'a 1 'b 2 'x -1 'y -2)))
+
+(assert-equal
+  (@hash 'x -1 'y -2)
+  (hash-reject/value int-non-negative? (@hash 'a 1 'b 2 'x -1 'y -2)))
+
+(assert-equal
+  (@hash -1 'x -2 'y)
+  (hash-reject/key int-non-negative? (@hash 1 'a 2 'b -1 'x -2 'y)))

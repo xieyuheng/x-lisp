@@ -1,5 +1,3 @@
-hash-reject/key & hash-reject/value
-
 record-select/key & record-select/value
 record-reject/key & record-reject/value
 
