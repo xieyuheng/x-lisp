@@ -1,4 +1,4 @@
-`defineExp` -- use `LazyDefinition`
+Stmts.Define vs Stmts.DefineFunction
 remove `Lazy` `Value`
 
 extract `produceValue`
