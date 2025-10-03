@@ -1,5 +1,3 @@
-relex some int predicates
-
 aboutSymbol -- add claim
 aboutString -- add claim
 aboutValue -- add claim

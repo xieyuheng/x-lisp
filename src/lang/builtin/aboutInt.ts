@@ -31,17 +31,17 @@ export function aboutInt(mod: Mod) {
 
   runCode(mod, `(claim int-positive? (-> int? bool?))`)
   definePrimitiveFunction(mod, "int-positive?", 1, (x) => {
-    return Values.Bool(Values.asInt(x).content > 0)
+    return Values.Bool(Values.isInt(x) && Values.asInt(x).content > 0)
   })
 
   runCode(mod, `(claim int-non-negative? (-> int? bool?))`)
   definePrimitiveFunction(mod, "int-non-negative?", 1, (x) => {
-    return Values.Bool(Values.asInt(x).content >= 0)
+    return Values.Bool(Values.isInt(x) && Values.asInt(x).content >= 0)
   })
 
   runCode(mod, `(claim int-non-zero? (-> int? bool?))`)
   definePrimitiveFunction(mod, "int-non-zero?", 1, (x) => {
-    return Values.Bool(Values.asInt(x).content !== 0)
+    return Values.Bool(Values.isInt(x) && Values.asInt(x).content !== 0)
   })
 
   runCode(mod, `(claim ineg (-> int? int?))`)
