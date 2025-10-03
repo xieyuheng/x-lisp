@@ -1,3 +1,7 @@
+import fs from "node:fs"
+import path from "node:path"
+import { fileURLToPath } from "node:url"
+import { runCode } from "../load/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
 import { aboutBool } from "./aboutBool.ts"
 import { aboutConsole } from "./aboutConsole.ts"
@@ -53,6 +57,11 @@ export function useBuiltinMod(): Mod {
   aboutSet(mod)
   aboutHashtag(mod)
   aboutHash(mod)
+
+  const currentDir = path.dirname(fileURLToPath(import.meta.url))
+  const schemaFile = path.join(currentDir, "../../../builtin/index.lisp")
+  const schemaCode = fs.readFileSync(schemaFile, "utf-8")
+  runCode(mod, schemaCode)
 
   return mod
 }

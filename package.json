@@ -8,6 +8,7 @@
   "files": [
     "src",
     "lib",
+    "builtin",
     "prelude",
     "examples",
     "std"

@@ -1,0 +1,40 @@
+;; int
+
+(claim int-positive? (-> int? bool?))
+(claim int-non-negative? (-> int? bool?))
+(claim int-non-zero? (-> int? bool?))
+(claim ineg (-> int? int?))
+(claim iadd (-> int? int? int?))
+(claim isub (-> int? int? int?))
+(claim imul (-> int? int? int?))
+(claim idiv (-> int? int-non-zero? int?))
+(claim imod (-> int? int-non-zero? int?))
+(claim int-max (-> int? int? int?))
+(claim int-min (-> int? int? int?))
+(claim int-larger? (-> int? int? bool?))
+(claim int-smaller? (-> int? int? bool?))
+(claim int-larger-or-equal? (-> int? int? bool?))
+(claim int-smaller-or-equal? (-> int? int? bool?))
+(claim int-compare/ascending (-> int? int? int?))
+(claim int-compare/descending (-> int? int? int?))
+
+;; float
+
+(claim fneg (-> float? float?))
+(claim fadd (-> float? float? float?))
+(claim fsub (-> float? float? float?))
+(claim fmul (-> float? float? float?))
+(claim fdiv (-> float? float-non-zero? float?))
+(claim float-max (-> float? float? float?))
+(claim float-min (-> float? float? float?))
+(claim float-larger? (-> float? float? bool?))
+(claim float-smaller? (-> float? float? bool?))
+(claim float-larger-or-equal? (-> float? float? bool?))
+(claim float-small-or-equal? (-> float? float? bool?))
+(claim float-compare/ascending (-> float? float? int?))
+(claim float-compare/descending (-> float? float? int?))
+
+;; symbol
+
+(claim symbol-length (-> symbol? int?))
+(claim symbol-to-string (-> symbol? string?))
