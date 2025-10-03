@@ -1,4 +1,4 @@
-import { define } from "../define/index.ts"
+import { defineValue } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -7,5 +7,5 @@ export function definePrimitiveThunk(
   name: string,
   fn: Values.ValueThunk,
 ): void {
-  define(mod, name, Values.PrimitiveThunk(name, fn))
+  defineValue(mod, name, Values.PrimitiveThunk(name, fn))
 }

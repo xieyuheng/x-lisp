@@ -25,11 +25,12 @@ function checkRedefine(
   message += `  old definition:\n`
   message += `    origin: ${urlRelativeToCwd(found.origin.url)}\n`
   message += `    name: ${found.name}\n`
-  message += `    value: ${formatValue(found.value)}\n`
+  if (found.value) message += `    value: ${formatValue(found.value)}\n`
   message += `  new definition:\n`
   message += `    origin: ${urlRelativeToCwd(definition.origin.url)}\n`
   message += `    name: ${definition.name}\n`
-  message += `    value: ${formatValue(definition.value)}\n`
+  if (definition.value)
+    message += `    value: ${formatValue(definition.value)}\n`
   throw new X.ErrorWithMeta(message, meta)
 }
 

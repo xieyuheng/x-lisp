@@ -12,6 +12,8 @@ export type ValueDefinition = {
   origin: Mod
   name: string
   value: Value
+  schema?: Value
+  validatedValue?: Value
 }
 
 export function ValueDefinition(
@@ -33,6 +35,8 @@ export type LazyDefinition = {
   name: string
   exp: Exp
   value?: Value
+  schema?: Value
+  validatedValue?: Value
 }
 
 export function LazyDefinition(
