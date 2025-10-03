@@ -47,8 +47,8 @@ export function applyWithSchema(
         return apply(result, spilledArgs)
       } else {
         let message = `(validation) fail on result\n`
-        message += `  used args: ${formatValues(usedArgs)}\n`
-        message += `  spilled args: ${formatValues(spilledArgs)}\n`
+        message += `  used args: [${formatValues(usedArgs)}]\n`
+        message += `  spilled args: [${formatValues(spilledArgs)}]\n`
         message += `  result: ${formatValue(result)}\n`
         message += `  schema: ${formatValue(schema)}\n`
         message += `  target: ${formatValue(target)}\n`
@@ -66,7 +66,7 @@ export function applyWithSchema(
         return result
       } else {
         let message = `(validation) fail on result\n`
-        message += `  args: ${formatValues(args)}\n`
+        message += `  args: [${formatValues(args)}]\n`
         message += `  result: ${formatValue(result)}\n`
         message += `  schema: ${formatValue(schema)}\n`
         message += `  target: ${formatValue(target)}\n`
@@ -85,7 +85,7 @@ export function applyWithSchema(
   }
 
   let message = `(validation) unhandled kind of schema\n`
-  message += `  args: ${formatValues(args)}\n`
+  message += `  args: [${formatValues(args)}]\n`
   message += `  schema: ${formatValue(schema)}\n`
   message += `  target: ${formatValue(target)}\n`
   if (meta) throw new X.ErrorWithMeta(message, meta)

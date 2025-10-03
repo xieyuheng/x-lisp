@@ -18,7 +18,7 @@ export function applyDataConstructor(
     if (Values.isFalse(ok)) {
       let message = `[applyDataConstructor] result data cannot possibly pass data predicate\n`
       message += `  constructor: ${formatValue(constructor)}\n`
-      message += `  args: ${formatValues(args)}\n`
+      message += `  args: [${formatValues(args)}]\n`
       message += `  result data: ${formatValue(data)}\n`
       message += `  data predicate: ${formatValue(predicate)}\n`
       throw new Error(message)

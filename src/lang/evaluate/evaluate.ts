@@ -425,7 +425,7 @@ export function evaluate(exp: Exp): Effect {
         if (target.kind !== "The") {
           let message = `[evaluate] specific application expect target to be contracted -- (the) value\n`
           message += `  target: ${formatValue(target)}\n`
-          message += `  args: ${formatValues(args)}\n`
+          message += `  args: [${formatValues(args)}]\n`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
@@ -433,7 +433,7 @@ export function evaluate(exp: Exp): Effect {
           let message = `[evaluate] specific application expect the schema of the target to be polymorphic\n`
           message += `  target schema: ${formatValue(target.schema)}\n`
           message += `  target: ${formatValue(target)}\n`
-          message += `  args: ${formatValues(args)}\n`
+          message += `  args: [${formatValues(args)}]\n`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
