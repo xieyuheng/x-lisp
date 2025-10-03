@@ -1,4 +1,3 @@
-aboutSet -- add claim
 aboutHashtag -- add claim
 aboutHash -- add claim
 

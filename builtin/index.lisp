@@ -164,3 +164,22 @@
       (tau :exit-code int-non-negative?
            :stdout string?
            :stderr string?)))
+
+;; set
+
+(claim set-empty? (polymorphic (E) (-> (set? E) bool?)))
+(claim set-size (polymorphic (E) (-> (set? E) int?)))
+(claim set-member? (polymorphic (E) (-> E (set? E) bool?)))
+(claim set-include? (polymorphic (E) (-> (set? E) (set? E) bool?)))
+(claim set-to-list (polymorphic (E) (-> (set? E) (list? E))))
+(claim set-add (polymorphic (E) (-> E (set? E) (set? E))))
+(claim set-add! (polymorphic (E) (-> E (set? E) (set? E))))
+(claim set-delete (polymorphic (E) (-> E (set? E) (set? E))))
+(claim set-delete! (polymorphic (E) (-> E (set? E) (set? E))))
+(claim set-clear! (polymorphic (E) (-> (set? E) (set? E))))
+(claim set-union (polymorphic (E) (-> (set? E) (set? E) (set? E))))
+(claim set-inter (polymorphic (E) (-> (set? E) (set? E) (set? E))))
+(claim set-difference (polymorphic (E) (-> (set? E) (set? E) (set? E))))
+(claim set-disjoint? (polymorphic (E) (-> (set? E) (set? E) bool?)))
+(claim set-map (polymorphic (E1 E2) (-> (-> E1 E2) (set? E1) (set? E2))))
+(claim set-each (polymorphic (E) (-> (-> E anything?) (set? E) void?)))
