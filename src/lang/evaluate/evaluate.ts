@@ -3,7 +3,7 @@ import assert from "node:assert"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMapValue } from "../../utils/record/recordMapValue.ts"
 import { useBuiltinMod } from "../builtin/index.ts"
-import { emptyEnv, envUpdate, type Env } from "../env/index.ts"
+import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue, formatValues } from "../format/index.ts"
 import { modLookupValue, type Mod } from "../mod/index.ts"
@@ -17,7 +17,6 @@ import { assertNotEqual } from "./assertNotEqual.ts"
 import { assertNotTrue } from "./assertNotTrue.ts"
 import { assertTrue } from "./assertTrue.ts"
 import { evaluateQuasiquote } from "./evaluateQuasiquote.ts"
-import { lookup } from "./lookup.ts"
 import { validate } from "./validate.ts"
 
 type Result = [Env, Value]
@@ -38,13 +37,14 @@ export function evaluate(exp: Exp): Effect {
   switch (exp.kind) {
     case "Var": {
       return (mod, env) => {
-        const value = lookup(mod, env, exp.name)
-        if (value === undefined) {
-          let message = `[evaluate] I meet undefined name: ${exp.name}\n`
-          throw new X.ErrorWithMeta(message, exp.meta)
-        }
+        const value = envLookupValue(env, exp.name)
+        if (value) return [env, Values.lazyWalk(value)]
 
-        return [env, value]
+        const topValue = modLookupValue(mod, exp.name)
+        if (topValue) return [env, Values.lazyWalk(topValue)]
+
+        let message = `[evaluate] I meet undefined name: ${exp.name}\n`
+        throw new X.ErrorWithMeta(message, exp.meta)
       }
     }
 
