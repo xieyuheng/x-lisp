@@ -1,3 +1,4 @@
+(include-all "int")
 (include-all "function")
 (include-all "list")
 (include-all "record")
