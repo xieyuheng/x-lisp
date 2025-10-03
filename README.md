@@ -420,6 +420,7 @@ void
 ```lisp
 null
 (null? value)
+(optional? p x)
 ```
 
 ### Function
@@ -443,13 +444,6 @@ null
 (format-superscript n)
 ```
 
-### Optional
-
-```lisp
-;; prelude
-(optional? p x)
-```
-
 ### Random
 
 ```lisp
@@ -466,7 +460,6 @@ null
 ### Sort Order
 
 ```lisp
-;; prelude
 (sort-order? value)
 (sort-order-before? value)
 (sort-order-same? value)

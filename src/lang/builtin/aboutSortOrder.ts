@@ -1,3 +1,10 @@
+import { runCode } from "../load/index.ts"
+import { type Mod } from "../mod/index.ts"
+
+export function aboutSortOrder(mod: Mod) {
+  runCode(
+    mod,
+    `\
 (export
   sort-order?
   sort-order-before?
@@ -16,16 +23,10 @@
 (define sort-order-same? (equal? 0))
 (define sort-order-after? (equal? 1))
 
-(claim sort-order-reverse
-  (polymorphic (A)
-    (-> (-> A A sort-order?)
-        (-> A A sort-order?))))
-
 (define (sort-order-reverse compare x y)
   (sort-order-negate (compare x y)))
 
-(claim sort-order-negate
-  (-> sort-order?
-      sort-order?))
-
 (define sort-order-negate ineg)
+`,
+  )
+}

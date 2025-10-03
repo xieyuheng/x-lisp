@@ -21,6 +21,7 @@ import { aboutRecord } from "./aboutRecord.ts"
 import { aboutSchema } from "./aboutSchema.ts"
 import { aboutSet } from "./aboutSet.ts"
 import { aboutSexp } from "./aboutSexp.ts"
+import { aboutSortOrder } from "./aboutSortOrder.ts"
 import { aboutString } from "./aboutString.ts"
 import { aboutSymbol } from "./aboutSymbol.ts"
 import { aboutSystem } from "./aboutSystem.ts"
@@ -40,6 +41,7 @@ export function useBuiltinMod(): Mod {
   aboutSymbol(mod)
   aboutString(mod)
   aboutValue(mod)
+  aboutSortOrder(mod)
   aboutList(mod)
   aboutRecord(mod)
   aboutSchema(mod)

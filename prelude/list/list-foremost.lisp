@@ -1,5 +1,3 @@
-(import-all "../sort-order")
-
 (export
   list-foremost
   list-rearmost)

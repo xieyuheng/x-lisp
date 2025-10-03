@@ -1,5 +1,3 @@
-move sort-order? to builtin
-
 aboutList -- add claim -- all
 
 aboutRecord -- add claim

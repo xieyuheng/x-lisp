@@ -53,6 +53,13 @@
 (claim string-replace (-> string? string? string? string?))
 (claim string-compare/lexical (-> string? string? int?))
 
+;; sort-order
+
+(claim sort-order-reverse
+  (polymorphic (A)
+    (-> (-> A A sort-order?) (-> A A sort-order?))))
+(claim sort-order-negate (-> sort-order? sort-order?))
+
 ;; list
 
 (claim car (polymorphic (A) (-> (list? A) A)))
