@@ -1,12 +1,12 @@
 import * as X from "@xieyuheng/x-data.js"
+import { indent } from "../../utils/format/indent.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { include } from "../define/index.ts"
-import type { Definition } from "../definition/index.ts"
-import { formatValue } from "../format/index.ts"
+import { formatDefinition, type Definition } from "../definition/index.ts"
 import {
-  type Mod,
   modLookupPublicDefinition,
   modPublicDefinitions,
+  type Mod,
 } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { importByMod } from "./importByMod.ts"
@@ -23,14 +23,13 @@ function checkRedefine(
 
   let message = `[checkRedefine] I can not redefine name: ${name}\n`
   message += `  old definition:\n`
-  message += `    origin: ${urlRelativeToCwd(found.origin.url)}\n`
-  message += `    name: ${found.name}\n`
-  if (found.value) message += `    value: ${formatValue(found.value)}\n`
+  message += indent(formatDefinition(found), { leftMargin: "    " }).trimEnd()
+  message += `\n`
   message += `  new definition:\n`
-  message += `    origin: ${urlRelativeToCwd(definition.origin.url)}\n`
-  message += `    name: ${definition.name}\n`
-  if (definition.value)
-    message += `    value: ${formatValue(definition.value)}\n`
+  message += indent(formatDefinition(definition), {
+    leftMargin: "    ",
+  }).trimEnd()
+  message += `\n`
   throw new X.ErrorWithMeta(message, meta)
 }
 

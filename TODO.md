@@ -1,4 +1,4 @@
-fix error report about definition in `stage2`
+export-undefined.error.lisp
 `defineValue` improve error report on redefine
 `claim` improve error report when claim other mod's vlaue
 
