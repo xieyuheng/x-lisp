@@ -183,3 +183,21 @@
 (claim set-disjoint? (polymorphic (E) (-> (set? E) (set? E) bool?)))
 (claim set-map (polymorphic (E1 E2) (-> (-> E1 E2) (set? E1) (set? E2))))
 (claim set-each (polymorphic (E) (-> (-> E anything?) (set? E) void?)))
+
+;; hashtag
+
+(claim hashtag-string (-> hashtag? string?))
+
+;; hash
+
+(claim hash-empty? (polymorphic (K V) (-> (hash? K V) bool?)))
+(claim hash-length (polymorphic (K V) (-> (hash? K V) int?)))
+(claim hash-get (polymorphic (K V) (-> K (hash? K V) V)))
+(claim hash-has? (polymorphic (K V) (-> K (hash? K V) bool?)))
+(claim hash-put (polymorphic (K V) (-> K V (hash? K V) (hash? K V))))
+(claim hash-put! (polymorphic (K V) (-> K V (hash? K V) (hash? K V))))
+(claim hash-delete! (polymorphic (K V) (-> K (hash? K V) (hash? K V))))
+(claim hash-copy (polymorphic (K V) (-> (hash? K V) (hash? K V))))
+(claim hash-entries (polymorphic (K V) (-> (hash? K V) (list? (tau K V)))))
+(claim hash-keys (polymorphic (K V) (-> (hash? K V) (list? K))))
+(claim hash-values (polymorphic (K V) (-> (hash? K V) (list? V))))

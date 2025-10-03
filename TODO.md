@@ -1,6 +1,3 @@
-aboutHashtag -- add claim
-aboutHash -- add claim
-
 # container schema
 
 add `list-of` schema -- `ListOf` as `Value`
