@@ -1,4 +1,3 @@
-tests/bool
 tests/string
 
 remove tests/atoms/
