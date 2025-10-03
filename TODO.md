@@ -1,4 +1,3 @@
-aboutString -- add claim
 aboutValue -- add claim
 aboutList -- add claim
 aboutRecord -- add claim

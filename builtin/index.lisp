@@ -40,3 +40,15 @@
 (claim symbol-to-string (-> symbol? string?))
 (claim symbol-append (-> symbol? symbol? symbol?))
 (claim symbol-append-many (-> (list? symbol?) symbol?))
+
+;; string
+
+(claim string-length (-> string? int?))
+(claim string-to-symbol (-> string? symbol?))
+(claim string-append (-> string? string? string?))
+(claim string-append-many (-> (list? string?) string?))
+(claim string-join (-> string? (list? string?) string?))
+(claim string-chars (-> string? (list? string?)))
+(claim string-replace-first (-> string? string? string? string?))
+(claim string-replace (-> string? string? string? string?))
+(claim string-compare/lexical (-> string? string? int?))
