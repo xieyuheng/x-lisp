@@ -1,4 +1,3 @@
-aboutSexp -- add claim
 aboutFile -- add claim
 aboutPath -- add claim
 aboutProcess -- add claim

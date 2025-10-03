@@ -105,3 +105,9 @@
 (claim negate (polymorphic (A) (-> (-> A bool?) (-> A bool?))))
 ;; (claim union-fn (polymorphic (A) (-> (list-of (-> A bool?)) (-> A bool?))))
 ;; (claim inter-fn (polymorphic (A) (-> (list-of (-> A bool?)) (-> A bool?))))
+
+;; sexp
+
+(claim parse-sexp (-> string? sexp?))
+(claim parse-sexps (-> string? (list? sexp?)))
+(claim format-sexp (-> sexp? string?))
