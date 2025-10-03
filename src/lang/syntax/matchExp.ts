@@ -22,7 +22,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       }
 
       return Exps.Lambda(
-        X.dataToArray(parameters).map(X.symbolToString),
+        X.dataToArray(parameters).map(matchExp),
         Exps.Begin(X.dataToArray(body).map(matchExp), meta),
         meta,
       )

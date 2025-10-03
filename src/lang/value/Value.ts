@@ -45,7 +45,7 @@ export type Lambda = {
   kind: "Lambda"
   mod: Mod
   env: Env
-  parameters: Array<string>
+  parameters: Array<Exp>
   body: Exp
   meta?: Meta
 }
@@ -53,7 +53,7 @@ export type Lambda = {
 export function Lambda(
   mod: Mod,
   env: Env,
-  parameters: Array<string>,
+  parameters: Array<Exp>,
   body: Exp,
   meta?: Meta,
 ): Lambda {

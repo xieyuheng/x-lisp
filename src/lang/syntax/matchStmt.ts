@@ -27,7 +27,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
         return Stmts.Define(
           X.symbolToString(name),
           Exps.Lambda(
-            X.dataToArray(parameters).map(X.symbolToString),
+            X.dataToArray(parameters).map(matchExp),
             Exps.Begin(X.dataToArray(body).map(matchExp), meta),
             meta,
           ),

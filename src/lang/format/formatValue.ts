@@ -2,6 +2,7 @@ import {
   formatAtom,
   formatBody,
   formatExp,
+  formatExps,
   formatPattern,
 } from "../format/index.ts"
 import * as Values from "../value/index.ts"
@@ -105,7 +106,7 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "Lambda": {
-      return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
+      return `(lambda (${formatExps(value.parameters)}) ${formatBody(value.body)})`
     }
 
     case "Thunk": {

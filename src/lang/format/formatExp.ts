@@ -4,7 +4,7 @@ import { type Exp } from "../exp/index.ts"
 import { formatAtom } from "../format/index.ts"
 import { formatSexp, isAtom } from "../value/index.ts"
 
-function formatExps(exps: Array<Exp>): string {
+export function formatExps(exps: Array<Exp>): string {
   return exps.map(formatExp).join(" ")
 }
 
@@ -25,7 +25,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Lambda": {
-      return `(lambda (${exp.parameters.join(" ")}) ${formatBody(exp.body)})`
+      return `(lambda (${formatExps(exp.parameters)}) ${formatBody(exp.body)})`
     }
 
     case "Thunk": {
