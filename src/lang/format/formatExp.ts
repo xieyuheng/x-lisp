@@ -32,10 +32,6 @@ export function formatExp(exp: Exp): string {
       return `(thunk ${formatBody(exp.body)})`
     }
 
-    case "Lazy": {
-      return `(lazy ${formatExp(exp.exp)})`
-    }
-
     case "Apply": {
       const target = formatExp(exp.target)
       const args = formatExps(exp.args)

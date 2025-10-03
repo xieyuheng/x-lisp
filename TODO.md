@@ -1,5 +1,3 @@
-remove `Lazy` `Exp`
-
 extract lookup
 
 repl enable debug by default
