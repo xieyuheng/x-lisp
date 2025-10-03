@@ -1,6 +1,10 @@
-export function indent(text: string, indentation: string = "    "): string {
+type Options = {
+  leftMargin: string
+}
+
+export function indent(text: string, options: Options): string {
   return text
     .split("\n")
-    .map((line) => indentation + line)
+    .map((line) => options.leftMargin + line)
     .join("\n")
 }
