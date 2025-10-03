@@ -1,14 +1,7 @@
-hash-select-by-key
-hash-reject-by-key
+hash-reject/key & hash-reject/value
 
-hash-select-by-value
-hash-reject-by-value
-
-record-select-by-key
-record-reject-by-key
-
-record-select-by-value
-record-reject-by-value
+record-select/key & record-select/value
+record-reject/key & record-reject/value
 
 # later
 

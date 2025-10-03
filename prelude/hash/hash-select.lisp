@@ -1,9 +1,15 @@
 (import-all "../list")
+(import-all "../function")
 (import-all "hash-from-entries")
 
 (export
   hash-select
-  hash-reject)
+  hash-select/key
+  hash-select/value
+  hash-reject
+  ;; hash-reject/key
+  ;; hash-reject/value
+  )
 
 (claim hash-select
   (polymorphic (K V)
@@ -14,6 +20,28 @@
   (pipe hash
     hash-entries
     (list-select (apply p))
+    hash-from-entries))
+
+(claim hash-select/key
+  (polymorphic (K V)
+    (-> (-> K bool?) (hash? K V)
+        (hash? K V))))
+
+(define (hash-select/key p hash)
+  (pipe hash
+    hash-entries
+    (list-select (apply (swap (drop p))))
+    hash-from-entries))
+
+(claim hash-select/value
+  (polymorphic (K V)
+    (-> (-> V bool?) (hash? K V)
+        (hash? K V))))
+
+(define (hash-select/value p hash)
+  (pipe hash
+    hash-entries
+    (list-select (apply (drop p)))
     hash-from-entries))
 
 (claim hash-reject
