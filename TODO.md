@@ -1,4 +1,3 @@
-relex some float predicates
 relex some int predicates
 
 aboutSymbol -- add claim

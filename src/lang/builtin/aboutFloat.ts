@@ -29,15 +29,15 @@ export function aboutFloat(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "float-positive?", 1, (x) => {
-    return Values.Bool(Values.asFloat(x).content > 0)
+    return Values.Bool(Values.isFloat(x) && Values.asFloat(x).content > 0)
   })
 
   definePrimitiveFunction(mod, "float-non-negative?", 1, (x) => {
-    return Values.Bool(Values.asFloat(x).content >= 0)
+    return Values.Bool(Values.isFloat(x) && Values.asFloat(x).content >= 0)
   })
 
   definePrimitiveFunction(mod, "float-non-zero?", 1, (x) => {
-    return Values.Bool(Values.asFloat(x).content !== 0)
+    return Values.Bool(Values.isFloat(x) && Values.asFloat(x).content !== 0)
   })
 
   runCode(mod, `(claim fneg (-> float? float?))`)
