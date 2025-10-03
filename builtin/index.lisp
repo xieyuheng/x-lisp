@@ -151,3 +151,8 @@
 (claim format (-> anything? string?))
 (claim format-subscript (-> int-non-negative? string?))
 (claim format-superscript (-> int-non-negative? string?))
+
+;; random
+
+(claim random-int (-> int? int? int?))
+(claim random-float (-> float? float? float?))

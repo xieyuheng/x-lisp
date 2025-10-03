@@ -1,4 +1,3 @@
-aboutRandom -- add claim
 aboutSystem -- add claim
 aboutSet -- add claim
 aboutHashtag -- add claim
