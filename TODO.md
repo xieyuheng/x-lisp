@@ -1,4 +1,3 @@
-aboutBool -- add claim
 aboutFloat -- add claim
 aboutSymbol -- add claim
 aboutString -- add claim
