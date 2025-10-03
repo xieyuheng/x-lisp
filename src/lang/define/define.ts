@@ -1,3 +1,4 @@
+import { ErrorWithMeta } from "@xieyuheng/x-data.js"
 import { indent } from "../../utils/format/indent.ts"
 import {
   formatDefinition,
@@ -31,7 +32,7 @@ export function defineLazy(mod: Mod, name: string, exp: Exp): void {
     message += `  new exp: ${formatExp(exp)}\n`
     message += `  old definition:\n`
     message += indent(formatDefinition(found), { length: 4 })
-    throw new Error(message)
+    throw new ErrorWithMeta(message, exp.meta)
   }
 
   const definition = LazyDefinition(mod, name, exp)

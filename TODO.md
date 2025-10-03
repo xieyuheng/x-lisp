@@ -1,5 +1,3 @@
-`claim` improve error report when claim other mod's vlaue
-
 aboutInt -- add claim
 aboutBool -- add claim
 aboutFloat -- add claim
