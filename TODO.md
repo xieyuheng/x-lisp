@@ -1,4 +1,3 @@
-aboutConsole -- add claim
 aboutVoid -- add claim
 aboutNull -- add claim
 aboutFunction -- add claim

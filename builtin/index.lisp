@@ -138,3 +138,10 @@
 
 (claim current-working-directory (-> string?))
 (claim current-command-line-args (-> sexp?))
+
+;; console
+
+(claim print (-> anything? void?))
+(claim println (-> anything? void?))
+(claim write (-> string? void?))
+(claim writeln (-> string? void?))
