@@ -71,10 +71,6 @@ function formatHashEntries(
 }
 
 export function formatValue(value: Value, options: Options = {}): string {
-  if (options.digest) {
-    value = Values.lazyWalk(value)
-  }
-
   if (isAtom(value)) {
     return formatAtom(value)
   }
@@ -114,15 +110,6 @@ export function formatValue(value: Value, options: Options = {}): string {
 
     case "Thunk": {
       return `(thunk ${formatBody(value.body)})`
-    }
-
-    case "Lazy": {
-      if (value.cachedValue) {
-        const cachedValue = formatValue(value.cachedValue, options)
-        return `(lazy ${formatExp(value.exp)} :cached-value ${cachedValue})`
-      } else {
-        return `(lazy ${formatExp(value.exp)})`
-      }
     }
 
     case "PrimitiveFunction": {

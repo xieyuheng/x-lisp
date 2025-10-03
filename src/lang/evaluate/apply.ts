@@ -17,8 +17,6 @@ import { supply } from "./supply.ts"
 import { validate } from "./validate.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
-  target = Values.lazyWalk(target)
-
   if (args.length === 0) {
     return force(target)
   }
@@ -63,7 +61,7 @@ export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "PrimitiveFunction") {
     const arity = target.arity
     if (arity === args.length) {
-      return target.fn(...args.map(Values.lazyWalk))
+      return target.fn(...args)
     } else {
       return supply(target, arity, args)
     }

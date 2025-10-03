@@ -20,7 +20,6 @@ export type Value =
   | Hash
   | Lambda
   | Thunk
-  | Lazy
   | PrimitiveFunction
   | PrimitiveThunk
   | Curried
@@ -83,23 +82,6 @@ export function Thunk(mod: Mod, env: Env, body: Exp, meta?: Meta): Thunk {
     env,
     body,
     meta,
-  }
-}
-
-export type Lazy = {
-  kind: "Lazy"
-  mod: Mod
-  env: Env
-  exp: Exp
-  cachedValue?: Value
-}
-
-export function Lazy(mod: Mod, env: Env, exp: Exp): Lazy {
-  return {
-    kind: "Lazy",
-    mod,
-    env,
-    exp,
   }
 }
 

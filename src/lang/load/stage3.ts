@@ -8,16 +8,12 @@ import * as Values from "../value/index.ts"
 
 export function stage3(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Claim") {
-    const schema = Values.lazyWalk(
-      resultValue(evaluate(stmt.schema)(mod, emptyEnv())),
-    )
+    const schema = resultValue(evaluate(stmt.schema)(mod, emptyEnv()))
     claim(mod, stmt.name, schema)
   }
 
   if (stmt.kind === "Compute") {
-    const value = Values.lazyWalk(
-      resultValue(evaluate(stmt.exp)(mod, emptyEnv())),
-    )
+    const value = resultValue(evaluate(stmt.exp)(mod, emptyEnv()))
 
     if (!Values.isVoid(value)) {
       console.log(formatValue(value))

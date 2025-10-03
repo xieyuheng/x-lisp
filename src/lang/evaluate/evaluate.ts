@@ -38,10 +38,10 @@ export function evaluate(exp: Exp): Effect {
     case "Var": {
       return (mod, env) => {
         const value = envLookupValue(env, exp.name)
-        if (value) return [env, Values.lazyWalk(value)]
+        if (value) return [env, value]
 
         const topValue = modLookupValue(mod, exp.name)
-        if (topValue) return [env, Values.lazyWalk(topValue)]
+        if (topValue) return [env, topValue]
 
         let message = `[evaluate] I meet undefined name: ${exp.name}\n`
         throw new X.ErrorWithMeta(message, exp.meta)
@@ -65,9 +65,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Apply": {
       return (mod, env) => {
-        const target = Values.lazyWalk(
-          resultValue(evaluate(exp.target)(mod, env)),
-        )
+        const target = resultValue(evaluate(exp.target)(mod, env))
         const args = exp.args.map((arg) => resultValue(evaluate(arg)(mod, env)))
         return [env, apply(target, args)]
       }
@@ -78,8 +76,6 @@ export function evaluate(exp: Exp): Effect {
         const [prefix, last] = arrayPickLast(exp.sequence)
         for (const e of prefix) {
           const [nextEnv, value] = evaluate(e)(mod, env)
-          // There might be side-effect in lazy value!
-          Values.lazyWalk(value)
           env = nextEnv
         }
 
@@ -170,10 +166,8 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const hash = Values.Hash()
         for (const entry of exp.entries) {
-          const k = Values.lazyWalk(resultValue(evaluate(entry.key)(mod, env)))
-          const v = Values.lazyWalk(
-            resultValue(evaluate(entry.value)(mod, env)),
-          )
+          const k = resultValue(evaluate(entry.key)(mod, env))
+          const v = resultValue(evaluate(entry.value)(mod, env))
           if (!Values.isHashable(k)) {
             let message = `[evaluate] Key in (@hash) is not hashable\n`
             message += `  key: ${formatValue(k)}\n`
@@ -200,9 +194,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "If": {
       return (mod, env) => {
-        const condition = Values.lazyWalk(
-          resultValue(evaluate(exp.condition)(mod, env)),
-        )
+        const condition = resultValue(evaluate(exp.condition)(mod, env))
         if (!Values.isBool(condition)) {
           let message = `(if) the condition must be bool\n`
           message += `  condition: ${formatValue(condition)}\n`
@@ -219,9 +211,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "When": {
       return (mod, env) => {
-        const condition = Values.lazyWalk(
-          resultValue(evaluate(exp.condition)(mod, env)),
-        )
+        const condition = resultValue(evaluate(exp.condition)(mod, env))
         if (!Values.isBool(condition)) {
           let message = `(when) the condition must be bool\n`
           message += `  condition: ${formatValue(condition)}\n`
@@ -238,9 +228,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Unless": {
       return (mod, env) => {
-        const condition = Values.lazyWalk(
-          resultValue(evaluate(exp.condition)(mod, env)),
-        )
+        const condition = resultValue(evaluate(exp.condition)(mod, env))
         if (!Values.isBool(condition)) {
           let message = `(unless) the condition must be bool\n`
           message += `  condition: ${formatValue(condition)}\n`
@@ -258,7 +246,7 @@ export function evaluate(exp: Exp): Effect {
     case "And": {
       return (mod, env) => {
         for (const e of exp.exps) {
-          const value = Values.lazyWalk(resultValue(evaluate(e)(mod, env)))
+          const value = resultValue(evaluate(e)(mod, env))
           if (!Values.isBool(value)) {
             let message = `[evaluate] The subexpressions of (and) must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
@@ -277,7 +265,7 @@ export function evaluate(exp: Exp): Effect {
     case "Or": {
       return (mod, env) => {
         for (const e of exp.exps) {
-          const value = Values.lazyWalk(resultValue(evaluate(e)(mod, env)))
+          const value = resultValue(evaluate(e)(mod, env))
           if (!Values.isBool(value)) {
             let message = `[evaluate] The subexpressions of (or) must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
@@ -296,9 +284,7 @@ export function evaluate(exp: Exp): Effect {
     case "Cond": {
       return (mod, env) => {
         for (const condLine of exp.condLines) {
-          const value = Values.lazyWalk(
-            resultValue(evaluate(condLine.question)(mod, env)),
-          )
+          const value = resultValue(evaluate(condLine.question)(mod, env))
           if (!Values.isBool(value)) {
             let message = `[evaluate] The question part of a (cond) line must evaluate to bool\n`
             message += `  value: ${formatValue(value)}\n`
@@ -317,9 +303,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Match": {
       return (mod, env) => {
-        const target = Values.lazyWalk(
-          resultValue(evaluate(exp.target)(mod, env)),
-        )
+        const target = resultValue(evaluate(exp.target)(mod, env))
         for (const matchLine of exp.matchLines) {
           const pattern = patternize(matchLine.pattern)(mod, env)
           const resultEnv = match(pattern, target)(emptyEnv())
@@ -435,9 +419,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Specific": {
       return (mod, env) => {
-        const target = Values.lazyWalk(
-          resultValue(evaluate(exp.target)(mod, env)),
-        )
+        const target = resultValue(evaluate(exp.target)(mod, env))
         const args = exp.args.map((arg) => resultValue(evaluate(arg)(mod, env)))
 
         if (target.kind !== "The") {

@@ -15,9 +15,6 @@ export function applyWithSchema(
   target: Value,
   args: Array<Value>,
 ): Value {
-  schema = Values.lazyWalk(schema)
-  target = Values.lazyWalk(target)
-
   const meta = Values.valueMaybeMeta(target)
   const context = { schema, target, args }
 

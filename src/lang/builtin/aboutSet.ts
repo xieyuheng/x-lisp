@@ -137,7 +137,7 @@ export function aboutSet(mod: Mod) {
 
   definePrimitiveFunction(mod, "set-each", 2, (f, set) => {
     for (const element of Values.setElements(set)) {
-      Values.lazyWalk(apply(f, [element]))
+      apply(f, [element])
     }
 
     return Values.Void()

@@ -1,10 +1,7 @@
-remove `Lazy` `Value`
-
 extract `produceValue`
 `defineValue` improve error report on redefine
 `claim` improve error report when claim other mod's vlaue
-
-repl enable debug by default
+`ReplCommand` -- enable debug by default
 
 aboutInt -- add claim
 aboutBool -- add claim

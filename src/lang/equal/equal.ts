@@ -1,17 +1,9 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
 import * as Values from "../value/index.ts"
-import {
-  arrowNormalize,
-  lazyWalk,
-  type Attributes,
-  type Value,
-} from "../value/index.ts"
+import { arrowNormalize, type Attributes, type Value } from "../value/index.ts"
 import { same } from "./same.ts"
 
 export function equal(lhs: Value, rhs: Value): boolean {
-  lhs = lazyWalk(lhs)
-  rhs = lazyWalk(rhs)
-
   if (lhs.kind === "Tael" && rhs.kind === "Tael") {
     return (
       equalValues(lhs.elements, rhs.elements) &&

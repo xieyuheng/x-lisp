@@ -19,9 +19,6 @@ export function validateOrFail(schema: Value, value: Value): Value {
 }
 
 export function validate(schema: Value, value: Value): Result {
-  schema = Values.lazyWalk(schema)
-  value = Values.lazyWalk(value)
-
   if (schema.kind === "Arrow") {
     return { kind: "Ok", value: Values.The(schema, value) }
   }
