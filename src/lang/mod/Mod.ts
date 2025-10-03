@@ -1,7 +1,6 @@
-import { emptyEnv } from "../env/Env.ts"
-import { evaluate, resultValue, validateOrFail } from "../evaluate/index.ts"
 import { type Value } from "../value/index.ts"
 import { type Definition } from "./Definition.ts"
+import { meaning } from "./meaning.ts"
 
 export type Mod = {
   url: URL
@@ -29,52 +28,7 @@ export function modLookupValue(mod: Mod, name: string): Value | undefined {
     return undefined
   }
 
-  switch (definition.kind) {
-    case "ValueDefinition": {
-      if (definition.validatedValue) {
-        return definition.validatedValue
-      } else if (definition.schema) {
-        const validatedValue = validateOrFail(
-          definition.schema,
-          definition.value,
-        )
-        definition.validatedValue = validatedValue
-        return validatedValue
-      } else {
-        return definition.value
-      }
-    }
-
-    case "LazyDefinition": {
-      if (definition.validatedValue) {
-        return definition.validatedValue
-      } else if (definition.value && definition.schema) {
-        const validatedValue = validateOrFail(
-          definition.schema,
-          definition.value,
-        )
-        definition.validatedValue = validatedValue
-        return validatedValue
-      } else if (definition.value) {
-        return definition.value
-      } else {
-        const value = resultValue(
-          evaluate(definition.exp)(definition.origin, emptyEnv()),
-        )
-        definition.value = value
-        if (definition.schema) {
-          const validatedValue = validateOrFail(
-            definition.schema,
-            definition.value,
-          )
-          definition.validatedValue = validatedValue
-          return validatedValue
-        } else {
-          return definition.value
-        }
-      }
-    }
-  }
+  return meaning(mod, definition)
 }
 
 export function modLookupDefinition(
