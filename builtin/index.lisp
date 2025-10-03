@@ -129,3 +129,7 @@
 (claim directory-files-recursively (-> string? (list? string?)))
 (claim directory-directories (-> string? (list? string?)))
 (claim directory-directories-recursively (-> string? (list? string?)))
+
+;; path
+
+(claim path-join (-> (list? string?) string?))

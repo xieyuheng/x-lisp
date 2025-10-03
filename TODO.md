@@ -1,4 +1,3 @@
-aboutPath -- add claim
 aboutProcess -- add claim
 aboutConsole -- add claim
 aboutVoid -- add claim
