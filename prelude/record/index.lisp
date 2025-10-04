@@ -4,6 +4,5 @@
 (include-all "record-select")
 (include-all "record-update")
 (include-all "record-upsert")
-(include-all "record-map-value")
-(include-all "record-map-key")
+(include-all "record-map")
 (include-all "record-each")
