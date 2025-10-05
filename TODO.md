@@ -5,7 +5,10 @@ hash-from-map
 # repl
 
 repl use >> and => -- so that a exp with both side effect (print) and return value can be seen easily
-run and debug -- support no-echo option -- to not print top-level values
+
+[maybe] run and debug -- support no-echo option -- to not print top-level values
+
+- maybe not, because it will too many options, and this default behavior is good enough given that we have void
 
 # pretty-print
 
