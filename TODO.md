@@ -2,6 +2,10 @@ record-map
 hash-map
 hash-from-map
 
+# graph
+
+graph-add-vertices!
+
 # repl
 
 repl use >> and => -- so that a exp with both side effect (print) and return value can be seen easily

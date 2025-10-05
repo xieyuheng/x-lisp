@@ -1,10 +1,9 @@
-;; undirected simple graph
-
 (export
   graph? make-graph
   graph-vertices
   graph-neighbors
   graph-add-vertex!
+  ;; graph-add-vertices!
   graph-add-edge!
   graph-add-edges!
   graph-adjacent?
