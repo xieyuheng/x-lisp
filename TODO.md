@@ -2,6 +2,11 @@ record-map
 hash-map
 hash-from-map
 
+# repl
+
+repl use >> and => -- so that a exp with both side effect (print) and return value can be seen easily
+run and debug -- support no-echo option -- to not print top-level values
+
 # pretty-print
 
 support `pretty-print`
