@@ -1,6 +1,6 @@
 # x-lisp.js
 
-Extensible list processing language.
+My list processing language.
 
 ## Install
 
