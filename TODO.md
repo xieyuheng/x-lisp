@@ -1,4 +1,4 @@
-make-graph -- also take vertices
+graph-edges
 
 # repl
 

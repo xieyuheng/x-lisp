@@ -1,7 +1,7 @@
 (import-all "index")
 
 (begin
-  (= graph (make-graph []))
+  (= graph (make-graph [] []))
 
   (graph-add-edge! ["a" "b"] graph)
   (graph-add-edge! ["b" "c"] graph)
@@ -20,7 +20,7 @@
       list-length)))
 
 (begin
-  (= graph (make-graph []))
+  (= graph (make-graph [] []))
 
   (graph-add-edge! ["d" "e"] graph)
 

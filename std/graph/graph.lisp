@@ -18,13 +18,12 @@
 
 (claim make-graph
   (polymorphic (V)
-    (-> (list? (tau V V))
+    (-> (list? V) (list? (tau V V))
         (graph? V))))
 
-(define (make-graph edges)
-  (= vertices (@set))
-  (= neighbor-hash (@hash))
-  (= graph (cons-graph vertices neighbor-hash))
+(define (make-graph vertices edges)
+  (= graph (cons-graph (@set) (@hash)))
+  (graph-add-vertices! vertices graph)
   (graph-add-edges! edges graph))
 
 (claim graph-neighbors
