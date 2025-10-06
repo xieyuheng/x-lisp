@@ -1,5 +1,3 @@
-hash-invert-group -- a group should be a set
-
 # repl
 
 repl use >> and => -- so that a exp with both side effect (print) and return value can be seen easily

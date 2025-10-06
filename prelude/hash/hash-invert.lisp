@@ -22,14 +22,13 @@
 (claim hash-invert-group
   (polymorphic (K V)
     (-> (hash? K V)
-        (hash? V (list? K)))))
+        (hash? V (set? K)))))
 
 (define (hash-invert-group hash)
   (= new-hash (@hash))
   (pipe hash
-    hash-values
-    (list-each
+    (hash-each-value
      (lambda (value)
        (= keys (hash-keys (hash-select (drop (equal? value)) hash)))
-       (hash-put! value keys new-hash))))
+       (hash-put! value (list-to-set keys) new-hash))))
   new-hash)
