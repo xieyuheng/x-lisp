@@ -1,7 +1,3 @@
-# repl
-
-repl use >> and => -- so that a exp with both side effect (print) and return value can be seen easily
-
 # pretty-print
 
 `pretty-format`

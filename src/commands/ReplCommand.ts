@@ -38,10 +38,10 @@ export const ReplCommand: Command = {
 
     const repl = X.createRepl({
       welcome: `Welcome to x-lisp.js ${getPackageJson().version}`,
-      prompt: "> ",
+      prompt: ">> ",
       async onSexps(sexps) {
         try {
-          runSexps(mod, sexps)
+          runSexps(mod, sexps, { resultPrompt: "=> " })
         } catch (error) {
           console.log(errorReport(error))
         }

@@ -10,10 +10,14 @@ export function runCode(mod: Mod, code: string): void {
   return runSexps(mod, X.parseDataArray(code, { url: mod.url }))
 }
 
-export function runSexps(mod: Mod, sexps: Array<X.Data>): void {
+export function runSexps(
+  mod: Mod,
+  sexps: Array<X.Data>,
+  options: { resultPrompt?: string } = {},
+): void {
   const stmts = sexps.map<Stmt>(matchStmt)
 
   for (const stmt of stmts) stage1(mod, stmt)
   for (const stmt of stmts) stage2(mod, stmt)
-  for (const stmt of stmts) stage3(mod, stmt)
+  for (const stmt of stmts) stage3(mod, stmt, options)
 }

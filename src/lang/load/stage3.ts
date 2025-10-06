@@ -6,7 +6,11 @@ import { type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import * as Values from "../value/index.ts"
 
-export function stage3(mod: Mod, stmt: Stmt): void {
+export function stage3(
+  mod: Mod,
+  stmt: Stmt,
+  options: { resultPrompt?: string },
+): void {
   if (stmt.kind === "Claim") {
     const schema = resultValue(evaluate(stmt.schema)(mod, emptyEnv()))
     claim(mod, stmt.name, schema)
@@ -16,6 +20,10 @@ export function stage3(mod: Mod, stmt: Stmt): void {
     const value = resultValue(evaluate(stmt.exp)(mod, emptyEnv()))
 
     if (!Values.isVoid(value)) {
+      if (options.resultPrompt) {
+        process.stdout.write(options.resultPrompt)
+      }
+
       console.log(formatValue(value))
     }
   }
