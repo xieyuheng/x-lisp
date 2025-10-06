@@ -1,5 +1,3 @@
-hash-from-map
-
 # graph
 
 graph-add-vertices!
