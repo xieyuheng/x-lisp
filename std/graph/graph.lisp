@@ -18,7 +18,7 @@
 
 (claim make-graph
   (polymorphic (V)
-    (-> (set? V) (list? (tau V V))
+    (-> (list? V) (list? (tau V V))
         (graph? V))))
 
 (define (make-graph vertices edges)
@@ -45,11 +45,11 @@
 
 (claim graph-add-vertices!
   (polymorphic (V)
-    (-> (set? V) (graph? V)
+    (-> (list? V) (graph? V)
         (graph? V))))
 
 (define (graph-add-vertices! vertices graph)
-  (set-each (swap graph-add-vertex! graph) vertices)
+  (list-each (swap graph-add-vertex! graph) vertices)
   graph)
 
 (claim graph-add-edge!

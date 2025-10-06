@@ -1,6 +1,3 @@
-graph-add-edge! -- take set of two vertices
-graph-add-edges! -- take set of edges
-make-graph -- take sets instead of list
 graph-edges
 
 # repl
