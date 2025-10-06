@@ -2,8 +2,20 @@
 (import-all "record-from-entries")
 
 (export
+  record-map
   record-map/key
   record-map/value)
+
+(claim record-map
+  (polymorphic (V)
+    (-> (-> symbol? V (tau symbol? V)) (record? V)
+        (record? V))))
+
+(define (record-map f record)
+  (pipe record
+    record-entries
+    (list-map (apply f))
+    record-from-entries))
 
 (claim record-map/key
   (polymorphic (V)

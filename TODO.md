@@ -1,4 +1,3 @@
-record-map
 hash-map
 hash-from-map
 

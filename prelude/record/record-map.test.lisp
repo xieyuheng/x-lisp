@@ -1,9 +1,15 @@
 (import-all "record-map")
 
 (assert-equal
+  [:xx 11 :yy 12 :zz 13]
+  (record-map
+   (lambda (k v) [(symbol-append k k) (iadd 10 v)])
+   [:x 1 :y 2 :z 3]))
+
+(assert-equal
   [:xx 1 :yy 2 :zz 3]
   (record-map/key
-   (lambda (key) (symbol-append key key))
+   (lambda (k) (symbol-append k k))
    [:x 1 :y 2 :z 3]))
 
 (assert-equal
