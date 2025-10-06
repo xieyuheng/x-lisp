@@ -16,8 +16,8 @@
     (pipe graph
       (graph-coloring! coloring vertices)
       hash-values
-      list-dedup
-      list-length)))
+      list-to-set
+      set-size)))
 
 (begin
   (= graph (make-graph [] []))
@@ -40,5 +40,5 @@
     (pipe graph
       (graph-coloring! coloring vertices)
       hash-values
-      list-dedup
-      list-length)))
+      list-to-set
+      set-size)))

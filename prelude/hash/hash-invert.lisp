@@ -28,7 +28,6 @@
   (= new-hash (@hash))
   (pipe hash
     hash-values
-    list-dedup
     (list-each
      (lambda (value)
        (= keys (hash-keys (hash-select (drop (equal? value)) hash)))

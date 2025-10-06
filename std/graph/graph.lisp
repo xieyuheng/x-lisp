@@ -20,7 +20,8 @@
 (define graph-neighbor-hash cons-graph-neighbor-hash)
 
 (define (graph-edge? V)
-  (union (tau V V) (negate (apply equal?))))
+  (union (tau V V)
+         (negate (apply equal?))))
 
 (claim make-graph
   (polymorphic (V)
