@@ -1,5 +1,6 @@
 (export
   graph? make-graph
+  graph-edge?
   graph-vertices
   graph-edges
   graph-neighbors
@@ -18,9 +19,12 @@
 (define graph-vertices cons-graph-vertices)
 (define graph-neighbor-hash cons-graph-neighbor-hash)
 
+(define (graph-edge? V)
+  (union (tau V V) (negate (apply equal?))))
+
 (claim make-graph
   (polymorphic (V)
-    (-> (list? V) (list? (tau V V))
+    (-> (list? V) (list? (graph-edge? V))
         (graph? V))))
 
 (define (make-graph vertices edges)
@@ -39,7 +43,7 @@
 (claim graph-edges
   (polymorphic (V)
     (-> (graph? V)
-        (set? (tau V V)))))
+        (set? (graph-edge? V)))))
 
 (define (graph-edges graph)
   (pipe graph
@@ -74,7 +78,7 @@
 
 (claim graph-add-edge!
   (polymorphic (V)
-    (-> (tau V V) (graph? V)
+    (-> (graph-edge? V) (graph? V)
         (graph? V))))
 
 (define (graph-add-edge! [source target] graph)
@@ -93,7 +97,7 @@
 
 (claim graph-add-edges!
   (polymorphic (V)
-    (-> (list? (tau V V)) (graph? V)
+    (-> (list? (graph-edge? V)) (graph? V)
         (graph? V))))
 
 (define (graph-add-edges! edges graph)
