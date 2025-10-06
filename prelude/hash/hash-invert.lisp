@@ -6,7 +6,7 @@
 
 (export
   hash-invert
-  hash-invert/group)
+  hash-invert-group)
 
 (claim hash-invert
   (polymorphic (K V)
@@ -19,12 +19,12 @@
     (list-map (lambda ([k v]) [v k]))
     hash-from-entries))
 
-(claim hash-invert/group
+(claim hash-invert-group
   (polymorphic (K V)
     (-> (hash? K V)
         (hash? V (list? K)))))
 
-(define (hash-invert/group hash)
+(define (hash-invert-group hash)
   (= new-hash (@hash))
   (pipe hash
     hash-values

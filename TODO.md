@@ -13,10 +13,10 @@ repl use >> and => -- so that a exp with both side effect (print) and return val
 - write note about this in diary
 - maybe not, because it will too many options, and this default behavior is good enough given that we have void
 
-# print/pretty
+# pretty-print
 
-`format/pretty`
-`print/pretty`
+`pretty-format`
+`pretty-print`
 
 # dependent schema
 

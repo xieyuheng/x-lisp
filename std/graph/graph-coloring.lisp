@@ -49,11 +49,11 @@
 (define (queue-sort-by-saturation! graph coloring queue)
   (list-sort!
    (lambda (v1 v2)
-     (= order (int-compare/descending
+     (= order (int-compare-descending
                (set-size (vertex-saturation graph coloring v1))
                (set-size (vertex-saturation graph coloring v2))))
      (if (sort-order-same? order)
-       (int-compare/descending
+       (int-compare-descending
         (graph-vertex-degree v1 graph)
         (graph-vertex-degree v2 graph))
        order))

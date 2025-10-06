@@ -15,8 +15,8 @@
 (claim int-smaller? (-> int? int? bool?))
 (claim int-larger-or-equal? (-> int? int? bool?))
 (claim int-smaller-or-equal? (-> int? int? bool?))
-(claim int-compare/ascending (-> int? int? sort-order?))
-(claim int-compare/descending (-> int? int? sort-order?))
+(claim int-compare-ascending (-> int? int? sort-order?))
+(claim int-compare-descending (-> int? int? sort-order?))
 
 ;; float
 
@@ -31,8 +31,8 @@
 (claim float-smaller? (-> float? float? bool?))
 (claim float-larger-or-equal? (-> float? float? bool?))
 (claim float-small-or-equal? (-> float? float? bool?))
-(claim float-compare/ascending (-> float? float? sort-order?))
-(claim float-compare/descending (-> float? float? sort-order?))
+(claim float-compare-ascending (-> float? float? sort-order?))
+(claim float-compare-descending (-> float? float? sort-order?))
 
 ;; symbol
 
@@ -51,7 +51,7 @@
 (claim string-chars (-> string? (list? string?)))
 (claim string-replace-first (-> string? string? string? string?))
 (claim string-replace (-> string? string? string? string?))
-(claim string-compare/lexical (-> string? string? int?))
+(claim string-compare-lexical (-> string? string? int?))
 
 ;; sort-order
 

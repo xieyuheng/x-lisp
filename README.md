@@ -134,8 +134,8 @@ false
 (int-smaller-or-equal? x y)
 (int-positive? x)
 (int-non-negative? x)
-(int-compare/ascending x y)
-(int-compare/descending x y)
+(int-compare-ascending x y)
+(int-compare-descending x y)
 ```
 
 ### Float
@@ -155,8 +155,8 @@ false
 (float-smaller-or-equal? x y)
 (float-positive? x)
 (float-non-negative? x)
-(float-compare/ascending x y)
-(float-compare/descending x y)
+(float-compare-ascending x y)
+(float-compare-descending x y)
 ```
 
 ### Symbol
@@ -179,7 +179,7 @@ false
 (string-append-many list)
 (string-join separator list)
 (string-chars string)
-(string-compare/lexical x y)
+(string-compare-lexical x y)
 ```
 
 ### Value
@@ -246,7 +246,7 @@ false
 (list-index e list)
 (list-dedup list)
 (list-product lhs rhs)
-(list-product/no-diagonal lhs rhs)
+(list-product-without-diagonal lhs rhs)
 (list-group f list)
 (list-foremost compare list)
 (list-rearmost compare list)
@@ -274,19 +274,19 @@ false
 (record-put-many entries record)
 (record-put-many! entries record)
 (record-select p record)
-(record-select/key p record)
-(record-select/value p record)
+(record-select-key p record)
+(record-select-value p record)
 (record-reject p record)
-(record-reject/key p record)
-(record-reject/value p record)
+(record-reject-key p record)
+(record-reject-value p record)
 (record-update fs record)
 (record-update! fs record)
 (record-upsert upserters record)
 (record-upsert! upserters record)
 (record-unit key value)
 (record-map f record)
-(record-map/value f record)
-(record-map/key f record)
+(record-map-value f record)
+(record-map-key f record)
 (record-each-value f record)
 (record-each-key f record)
 (record-each f record)
@@ -337,20 +337,20 @@ false
 (hash-put-many! entries hash)
 (hash-from-entries entries)
 (hash-select p hash)
-(hash-select/key p hash)
-(hash-select/value p hash)
+(hash-select-key p hash)
+(hash-select-value p hash)
 (hash-reject p hash)
-(hash-reject/key p hash)
-(hash-reject/value p hash)
+(hash-reject-key p hash)
+(hash-reject-value p hash)
 (hash-append hash rest)
 (hash-map f hash)
-(hash-map/key f hash)
-(hash-map/value f hash)
+(hash-map-key f hash)
+(hash-map-value f hash)
 (hash-each-value f hash)
 (hash-each-key f hash)
 (hash-each f hash)
 (hash-invert hash)
-(hash-invert/group hash)
+(hash-invert-group hash)
 ```
 
 ### Predicate

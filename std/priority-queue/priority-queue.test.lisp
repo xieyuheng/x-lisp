@@ -3,7 +3,7 @@
 ;; test length and predicates
 
 (begin
-  (= queue (make-priority-queue int-compare/descending))
+  (= queue (make-priority-queue int-compare-descending))
 
   (assert (priority-queue-empty? queue))
   (assert-equal 0 (priority-queue-length queue))
@@ -22,7 +22,7 @@
 ;; test poll
 
 (begin
-  (= queue (make-priority-queue int-compare/descending))
+  (= queue (make-priority-queue int-compare-descending))
 
   (assert-equal null (priority-queue-get "a" queue))
   (assert-equal null (priority-queue-get "b" queue))
@@ -62,7 +62,7 @@
 ;; test delete
 
 (begin
-  (= queue (make-priority-queue int-compare/descending))
+  (= queue (make-priority-queue int-compare-descending))
 
   (priority-queue-put! "b" 2 queue)
   (priority-queue-put! "c" 3 queue)

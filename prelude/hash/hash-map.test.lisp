@@ -8,9 +8,9 @@
 (assert-equal
   (@hash 2 2 4 4)
   (pipe (@hash 1 2 3 4)
-    (hash-map/key (iadd 1))))
+    (hash-map-key (iadd 1))))
 
 (assert-equal
   (@hash 1 3 3 5)
   (pipe (@hash 1 2 3 4)
-    (hash-map/value (iadd 1))))
+    (hash-map-value (iadd 1))))

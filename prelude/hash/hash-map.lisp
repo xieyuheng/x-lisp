@@ -3,8 +3,8 @@
 
 (export
   hash-map
-  hash-map/key
-  hash-map/value)
+  hash-map-key
+  hash-map-value)
 
 (claim hash-map
   (polymorphic (K1 V1 K2 V2)
@@ -17,23 +17,23 @@
     (list-map (apply f))
     hash-from-entries))
 
-(claim hash-map/key
+(claim hash-map-key
   (polymorphic (K1 K2 V)
     (-> (-> K1 K2) (hash? K1 V)
         (hash? K1 V))))
 
-(define (hash-map/key f hash)
+(define (hash-map-key f hash)
   (pipe hash
     hash-entries
     (list-map (lambda ([k v]) [(f k) v]))
     hash-from-entries))
 
-(claim hash-map/value
+(claim hash-map-value
   (polymorphic (K V1 V2)
     (-> (-> V1 V2) (hash? K V1)
         (hash? K V2))))
 
-(define (hash-map/value f hash)
+(define (hash-map-value f hash)
   (pipe hash
     hash-entries
     (list-map (lambda ([k v]) [k (f v)]))

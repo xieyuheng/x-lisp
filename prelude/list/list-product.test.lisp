@@ -10,5 +10,5 @@
   [      [1 2] [1 3]
    [2 1]       [2 3]
    [3 1] [3 2]      ]
-  (list-product/no-diagonal
+  (list-product-without-diagonal
    [1 2 3] [1 2 3]))

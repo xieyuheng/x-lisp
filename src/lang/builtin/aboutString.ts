@@ -14,7 +14,7 @@ export function aboutString(mod: Mod) {
     "string-chars",
     "string-replace-first",
     "string-replace",
-    "string-compare/lexical",
+    "string-compare-lexical",
   ])
 
   definePrimitiveFunction(mod, "string?", 1, (value) => {
@@ -91,7 +91,7 @@ export function aboutString(mod: Mod) {
     },
   )
 
-  definePrimitiveFunction(mod, "string-compare/lexical", 2, (x, y) => {
+  definePrimitiveFunction(mod, "string-compare-lexical", 2, (x, y) => {
     if (Values.asString(x).content < Values.asString(y).content) {
       return Values.Int(-1)
     } else if (Values.asString(x).content > Values.asString(y).content) {
