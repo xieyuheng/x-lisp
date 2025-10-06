@@ -49,8 +49,7 @@
     (-> (tau V V) (graph? V)
         (graph? V))))
 
-(define (graph-add-edge! edge graph)
-  (= [source target] edge)
+(define (graph-add-edge! [source target] graph)
   (graph-add-vertex! source graph)
   (graph-add-vertex! target graph)
   (= neighbor-hash (cons-graph-neighbor-hash graph))

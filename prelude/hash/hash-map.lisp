@@ -13,7 +13,7 @@
 (define (hash-map/key f hash)
   (pipe hash
     hash-entries
-    (list-map (lambda (entry) (= [k v] entry) [(f k) v]))
+    (list-map (lambda ([k v]) [(f k) v]))
     hash-from-entries))
 
 (claim hash-map/value
@@ -24,5 +24,5 @@
 (define (hash-map/value f hash)
   (pipe hash
     hash-entries
-    (list-map (lambda (entry) (= [k v] entry) [k (f v)]))
+    (list-map (lambda ([k v]) [k (f v)]))
     hash-from-entries))

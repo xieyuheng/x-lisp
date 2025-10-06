@@ -12,11 +12,13 @@ repl use >> and => -- so that a exp with both side effect (print) and return val
 
 [maybe] run and debug -- support no-echo option -- to not print top-level values
 
+- write note about this in diary
 - maybe not, because it will too many options, and this default behavior is good enough given that we have void
 
-# pretty-print
+# print/pretty
 
-support `pretty-print`
+`format/pretty`
+`print/pretty`
 
 # dependent schema
 

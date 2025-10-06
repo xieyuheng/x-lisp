@@ -13,10 +13,7 @@
 (define (record-map/key f record)
   (pipe record
     record-entries
-    (list-map
-     (lambda (entry)
-       (= [key value] entry)
-       [(f key) value]))
+    (list-map (lambda ([k v]) [(f k) v]))
     record-from-entries))
 
 (claim record-map/value
@@ -27,8 +24,5 @@
 (define (record-map/value f record)
   (pipe record
     record-entries
-    (list-map
-     (lambda (entry)
-       (= [key value] entry)
-       [key (f value)]))
+    (list-map (lambda ([k v]) [k (f v)]))
     record-from-entries))
