@@ -1,4 +1,3 @@
-hash-map
 hash-from-map
 
 # graph
