@@ -1,4 +1,6 @@
-graph-edges
+graph-edge?
+remove list-dedup
+hash-invert-group -- a group should be a set
 
 # repl
 

@@ -20,6 +20,15 @@
   (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
   (assert-equal {1 2 3} (graph-vertices graph)))
 
+;; graph-edges
+
+(begin
+  (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
+  (assert-equal
+    {{1 2} {2 3} {3 1}}
+    (pipe (graph-edges graph)
+      (set-map list-to-set))))
+
 ;; graph-neighbors
 
 (begin

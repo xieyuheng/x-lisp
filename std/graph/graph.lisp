@@ -1,6 +1,7 @@
 (export
   graph? make-graph
   graph-vertices
+  graph-edges
   graph-neighbors
   graph-add-vertex!
   graph-add-vertices!
@@ -15,6 +16,7 @@
    (neighbor-hash (hash? V (set? V)))))
 
 (define graph-vertices cons-graph-vertices)
+(define graph-neighbor-hash cons-graph-neighbor-hash)
 
 (claim make-graph
   (polymorphic (V)
@@ -32,7 +34,25 @@
         (set? V))))
 
 (define (graph-neighbors vertex graph)
-  (hash-get vertex (cons-graph-neighbor-hash graph)))
+  (hash-get vertex (graph-neighbor-hash graph)))
+
+(claim graph-edges
+  (polymorphic (V)
+    (-> (graph? V)
+        (set? (tau V V)))))
+
+(define (graph-edges graph)
+  (pipe graph
+    graph-neighbor-hash
+    hash-entries
+    (list-append-map
+     (lambda ([vertex neighbors])
+       (pipe neighbors
+         set-to-list
+         (list-map
+          (lambda (neighbor) {vertex neighbor})))))
+    (list-map set-to-list)
+    list-to-set))
 
 (claim graph-add-vertex!
   (polymorphic (V)
@@ -60,7 +80,7 @@
 (define (graph-add-edge! [source target] graph)
   (graph-add-vertex! source graph)
   (graph-add-vertex! target graph)
-  (= neighbor-hash (cons-graph-neighbor-hash graph))
+  (= neighbor-hash (graph-neighbor-hash graph))
   (= source-neighbors (hash-get source neighbor-hash))
   (if (null? source-neighbors)
     (hash-put! source {target} neighbor-hash)
