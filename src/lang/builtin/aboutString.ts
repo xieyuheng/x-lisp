@@ -9,7 +9,7 @@ export function aboutString(mod: Mod) {
     "string-length",
     "string-to-symbol",
     "string-append",
-    "string-append-many",
+    "string-concat",
     "string-join",
     "string-chars",
     "string-replace-first",
@@ -41,7 +41,7 @@ export function aboutString(mod: Mod) {
     )
   })
 
-  definePrimitiveFunction(mod, "string-append-many", 1, (list) => {
+  definePrimitiveFunction(mod, "string-concat", 1, (list) => {
     return Values.String(
       Values.asTael(list)
         .elements.map((string) => Values.asString(string).content)

@@ -1,4 +1,4 @@
 (assert-equal
-  (string-append-many
+  (string-concat
    ["a" "b" "c"])
   "abc")

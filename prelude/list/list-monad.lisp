@@ -1,6 +1,6 @@
 (import-all "../function")
 (import-all "list-map")
-(import-all "list-append-many" )
+(import-all "list-concat" )
 
 (export list-append-map list-unit list-lift list-bind)
 
@@ -10,7 +10,7 @@
         (list? B))))
 
 (define (list-append-map f list)
-  (list-append-many (list-map f list)))
+  (list-concat (list-map f list)))
 
 (claim list-unit
   (polymorphic (A)

@@ -10,7 +10,7 @@
         (list? (tau A B)))))
 
 (define (list-product lhs rhs)
-  (list-append-many
+  (list-concat
    (pipe lhs
      (list-map
       (lambda (left)
@@ -23,7 +23,7 @@
         (list? (tau A B)))))
 
 (define (list-product-without-diagonal lhs rhs)
-  (list-append-many
+  (list-concat
    (pipe lhs
      (list-map
       (lambda (left)

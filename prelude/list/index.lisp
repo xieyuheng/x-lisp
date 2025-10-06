@@ -3,7 +3,7 @@
 (include-all "list-each")
 (include-all "list-select")
 (include-all "list-append")
-(include-all "list-append-many")
+(include-all "list-concat")
 (include-all "list-monad")
 (include-all "list-take")
 (include-all "list-drop")

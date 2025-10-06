@@ -1,4 +1,4 @@
 (assert-equal
-  (symbol-append-many
+  (symbol-concat
    ['a 'b 'c])
   'abc)

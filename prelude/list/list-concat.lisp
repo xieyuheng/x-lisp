@@ -1,15 +1,15 @@
 (import-all "list-append")
 
-(export list-append-many)
+(export list-concat)
 
-(claim list-append-many
+(claim list-concat
   (polymorphic (A)
     (-> (list? (list? A))
         (list? A))))
 
-(define (list-append-many lists)
+(define (list-concat lists)
   (if (list-empty? lists)
     []
     (list-append
      (car lists)
-     (list-append-many (cdr lists)))))
+     (list-concat (cdr lists)))))

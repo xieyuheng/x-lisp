@@ -8,7 +8,7 @@ export function aboutSymbol(mod: Mod) {
     "symbol-length",
     "symbol-to-string",
     "symbol-append",
-    "symbol-append-many",
+    "symbol-concat",
   ])
 
   definePrimitiveFunction(mod, "symbol?", 1, (value) => {
@@ -29,7 +29,7 @@ export function aboutSymbol(mod: Mod) {
     )
   })
 
-  definePrimitiveFunction(mod, "symbol-append-many", 1, (list) => {
+  definePrimitiveFunction(mod, "symbol-concat", 1, (list) => {
     return Values.Symbol(
       Values.asTael(list)
         .elements.map((string) => Values.asSymbol(string).content)

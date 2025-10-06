@@ -166,7 +166,7 @@ false
 (symbol-length symbol)
 (symbol-to-string symbol)
 (symbol-append left right)
-(symbol-append-many list)
+(symbol-concat list)
 ```
 
 ### String
@@ -176,7 +176,7 @@ false
 (string-length string)
 (string-to-symbol string)
 (string-append left right)
-(string-append-many list)
+(string-concat list)
 (string-join separator list)
 (string-chars string)
 (string-compare-lexical x y)
@@ -226,7 +226,7 @@ false
 (list-select p list)
 (list-reject p list)
 (list-append list tail)
-(list-append-many lists)
+(list-concat lists)
 (list-append-map f list)
 (list-unit x)
 (list-lift f list)
