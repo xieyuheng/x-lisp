@@ -3,7 +3,7 @@
   graph-vertices
   graph-neighbors
   graph-add-vertex!
-  ;; graph-add-vertices!
+  graph-add-vertices!
   graph-add-edge!
   graph-add-edges!
   graph-adjacent?
@@ -42,6 +42,15 @@
 
 (define (graph-add-vertex! vertex graph)
   (set-add! vertex (graph-vertices graph))
+  graph)
+
+(claim graph-add-vertices!
+  (polymorphic (V)
+    (-> (list? V) (graph? V)
+        (graph? V))))
+
+(define (graph-add-vertices! vertices graph)
+  (list-each (swap graph-add-vertex! graph) vertices)
   graph)
 
 (claim graph-add-edge!

@@ -1,6 +1,4 @@
-# graph
-
-graph-add-vertices!
+make-graph -- also take vertices
 
 # repl
 
