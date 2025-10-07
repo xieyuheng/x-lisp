@@ -1,4 +1,3 @@
-[prelude] optional-lift & optional-bind
 [prelude] hash-update & hash-update!
 
 # meta
