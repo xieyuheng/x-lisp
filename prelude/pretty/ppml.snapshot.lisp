@@ -9,14 +9,14 @@
       (break-node " ")
       (group-node
        (concat-node
-        [(text-node "stmt;")
+        [(text-node "stmt")
          (break-node " ")
-         (text-node "stmt;")
+         (text-node "stmt")
          (break-node " ")
-         (text-node "stmt;")]))))
+         (text-node "stmt")]))))
     (break-node " ")
     (text-node "end")]))
 
 (writeln (ppml-format 30 example-node))
-(writeln (ppml-format 25 example-node))
+(writeln (ppml-format 20 example-node))
 (writeln (ppml-format 10 example-node))

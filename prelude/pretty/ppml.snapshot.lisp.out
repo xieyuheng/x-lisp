@@ -1,0 +1,9 @@
+begin stmt stmt stmt end
+begin
+   stmt stmt stmt
+end
+begin
+   stmt
+   stmt
+   stmt
+end
