@@ -32,6 +32,7 @@ $ npm run test
 
 See examples at:
 
+- [`builtin`](builtin)
 - [`examples`](examples)
 - [`prelude`](prelude)
 - [`std`](std)
