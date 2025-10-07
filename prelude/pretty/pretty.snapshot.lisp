@@ -29,3 +29,13 @@
   (pretty-print 30 value)
   (pretty-print 10 value)
   (pretty-print 5 value))
+
+;; list with attributes
+
+(begin
+  (= value [1 2 3
+            :x 1 :y 2 :z 3])
+  (pretty-print 30 value)
+  (pretty-print 10 value)
+  (pretty-print 5 value)
+  (pretty-print 3 value))

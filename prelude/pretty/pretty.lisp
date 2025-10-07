@@ -41,6 +41,17 @@
               (list-empty? value))
          (= attributes (indent-node 1 (render-attributes (record-entries value))))
          (group-node (concat-node [(text-node "[") attributes (text-node "]")])))
+        ((record? anything? value)
+         (= elements (indent-node 1 (render-elements value)))
+         (= attributes (indent-node 1 (render-attributes (record-entries value))))
+         (group-node
+          (concat-node
+           [(text-node "[")
+            (group-node elements)
+            (group-node (append-node
+                         (indent-node 1 (break-node " "))
+                         attributes))
+            (text-node "]")])))
         (else (text-node (format value)))))
 
 (define (render-key key)
@@ -59,11 +70,10 @@
     ([[key value]]
      (render-attribute key value))
     ((cons [key value] tail)
-     (group-node
-      (concat-node
-       [(render-attribute key value)
-        (break-node " ")
-        (render-attributes tail)])))))
+     (concat-node
+      [(render-attribute key value)
+       (break-node " ")
+       (render-attributes tail)]))))
 
 (define (render-elements elements)
   (match elements
