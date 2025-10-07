@@ -330,6 +330,8 @@ false
 ;; prelude
 (hash-put-many entries hash)
 (hash-put-many! entries hash)
+(hash-update key f hash)
+(hash-update! key f hash)
 (hash-from-entries entries)
 (hash-select p hash)
 (hash-select-key p hash)
@@ -432,6 +434,9 @@ null
 
 ```lisp
 (optional? p x)
+;; prelude
+(optional-lift f x)
+(optional-bind x f)
 ```
 
 ### Function

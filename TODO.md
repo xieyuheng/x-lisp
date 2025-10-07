@@ -1,5 +1,3 @@
-[prelude] hash-update & hash-update!
-
 # meta
 
 support `meta`
