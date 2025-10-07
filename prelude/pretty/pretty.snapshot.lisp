@@ -2,40 +2,20 @@
 
 ;; list
 
-(pretty-print
- 30
- [[1 2 3]
-  [4 5 6]
-  [7 8 9]])
-
-(pretty-print
- 10
- [[1 2 3]
-  [4 5 6]
-  [7 8 9]])
-
-(pretty-print
- 5
- [[1 2 3]
-  [4 5 6]
-  [7 8 9]])
+(begin
+  (= value [[1 2 3]
+            [4 5 6]
+            [7 8 9]])
+  (pretty-print 30 value)
+  (pretty-print 10 value)
+  (pretty-print 5 value))
 
 ;; set
 
-(pretty-print
- 30
- {{1 2 3}
-  {4 5 6}
-  {7 8 9}})
-
-(pretty-print
- 10
- {{1 2 3}
-  {4 5 6}
-  {7 8 9}})
-
-(pretty-print
- 5
- {{1 2 3}
-  {4 5 6}
-  {7 8 9}})
+(begin
+  (= value {{1 2 3}
+            {4 5 6}
+            {7 8 9}})
+  (pretty-print 30 value)
+  (pretty-print 10 value)
+  (pretty-print 5 value))
