@@ -58,3 +58,16 @@
         (graph-vertex-degree v2 graph))
        order))
    queue))
+
+;; (define (queue-sort-by-saturation! graph coloring queue)
+;;   (list-sort!
+;;    (compose-compare
+;;     (lambda (v1 v2)
+;;       (int-compare-descending
+;;        (set-size (vertex-saturation graph coloring v1))
+;;        (set-size (vertex-saturation graph coloring v2))))
+;;     (lambda (v1 v2)
+;;       (int-compare-descending
+;;        (graph-vertex-degree v1 graph)
+;;        (graph-vertex-degree v2 graph))))
+;;    queue))
