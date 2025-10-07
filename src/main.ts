@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node
+#!/usr/bin/env -S node --stack-size=65536
 
 import { Commander } from "@xieyuheng/commander.js"
 import { ReplCommand } from "./commands/ReplCommand.ts"
