@@ -19,3 +19,13 @@
   (pretty-print 30 value)
   (pretty-print 10 value)
   (pretty-print 5 value))
+
+;; record
+
+(begin
+  (= value [:x [:x 1 :y 2 :z 3]
+            :y [:x 4 :y 5 :z 6]
+            :z [:x 7 :y 8 :z 9]])
+  (pretty-print 30 value)
+  (pretty-print 10 value)
+  (pretty-print 5 value))
