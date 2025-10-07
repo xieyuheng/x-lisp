@@ -16,27 +16,61 @@
       string?))
 
 (define (pretty-format max-width value)
-  (ppml-format max-width (pretty-render value)))
+  (ppml-format max-width (render value)))
 
-(claim pretty-render (-> anything? ppml-node?))
+(claim render (-> anything? ppml-node?))
 
-(define (pretty-render value)
+(define (render value)
   (cond ((atom? value)
          (text-node (format value)))
+        ((and (set? anything? value)
+              (set-empty? value))
+         (text-node "{}"))
         ((set? anything? value)
-         (= elements (indent-node 1 (pretty-render-elements (set-to-list value))))
+         (= elements (indent-node 1 (render-elements (set-to-list value))))
          (group-node (concat-node [(text-node "{") elements (text-node "}")])))
-        ((list? anything? value)
-         (= elements (indent-node 1 (pretty-render-elements value)))
+        ((and (list? anything? value)
+              (list-empty? value)
+              (record-empty? value))
+         (text-node "[]"))
+        ((and (list? anything? value)
+              (record-empty? value))
+         (= elements (indent-node 1 (render-elements value)))
          (group-node (concat-node [(text-node "[") elements (text-node "]")])))
+        ((and (record? anything? value)
+              (list-empty? value))
+         (= attributes (indent-node 1 (render-attributes (record-entries value))))
+         (group-node (concat-node [(text-node "[") attributes (text-node "]")])))
         (else (text-node (format value)))))
 
-(define (pretty-render-elements list)
-  (match list
+(define (render-key key)
+  (text-node (string-append ":" (symbol-to-string key))))
+
+(define (render-attribute key value)
+  (group-node
+   (concat-node
+    [(render-key key)
+     (break-node " ")
+     (render value)])))
+
+(define (render-attributes entries)
+  (match entries
     ([] null-node)
-    ([element] (pretty-render element))
-    ((cons head tail)
-     (append-node
-      (append-node (pretty-render head)
-                   (break-node " "))
-      (pretty-render-elements tail)))))
+    ([[key value]]
+     (render-attribute key value))
+    ((cons [key value] tail)
+     (group-node
+      (concat-node
+       [(render-attribute key value)
+        (break-node " ")
+        (render-attributes tail)])))))
+
+(define (render-elements elements)
+  (match elements
+    ([] null-node)
+    ([element] (render element))
+    ((cons element tail)
+     (concat-node
+      [(render element)
+       (break-node " ")
+       (render-elements tail)]))))

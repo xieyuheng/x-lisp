@@ -1,6 +1,6 @@
 # pretty-print
 
-`pretty-print` -- handle record
+`pretty-print` -- handle list with attributes
 `pretty-print` -- handle hash
 
 # dependent schema
