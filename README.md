@@ -503,7 +503,7 @@ null
 ```lisp
 (graph? vertex-p value)
 (make-graph vertices edges)
-(graph-edge? V edge)
+(graph-edge? vertex-p edge)
 (graph-vertices graph)
 (graph-neighbors vertex graph)
 (graph-add-vertex! vertex graph)
