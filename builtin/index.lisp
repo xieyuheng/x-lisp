@@ -151,6 +151,7 @@
 (claim format (-> anything? string?))
 (claim format-subscript (-> int-non-negative? string?))
 (claim format-superscript (-> int-non-negative? string?))
+(claim format-left-margin (-> string? string? string?))
 
 ;; random
 

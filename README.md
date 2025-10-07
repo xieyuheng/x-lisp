@@ -450,8 +450,10 @@ null
 ### Format
 
 ```lisp
+(format value)
 (format-subscript n)
 (format-superscript n)
+(format-left-margin margin string)
 ```
 
 ### Random
@@ -476,6 +478,13 @@ null
 (sort-order-after? value)
 (sort-order-negate order)
 (sort-order-reverse compare x y)
+```
+
+### Pretty
+
+```lisp
+(pretty-print max-width value)
+(pretty-format max-width value)
 ```
 
 ## Standard Libraries

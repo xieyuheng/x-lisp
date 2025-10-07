@@ -6,7 +6,12 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutFormat(mod: Mod) {
-  provide(mod, ["format", "format-subscript", "format-superscript"])
+  provide(mod, [
+    "format",
+    "format-subscript",
+    "format-superscript",
+    "format-left-margin",
+  ])
 
   definePrimitiveFunction(mod, "format", 1, (value) => {
     return Values.String(formatValue(value))
@@ -19,6 +24,13 @@ export function aboutFormat(mod: Mod) {
   definePrimitiveFunction(mod, "format-superscript", 1, (n) => {
     return Values.String(
       stringToSuperscript(Values.asInt(n).content.toString()),
+    )
+  })
+
+  definePrimitiveFunction(mod, "format-left-margin", 2, (margin, string) => {
+    const lines = Values.asString(string).content.split("\n")
+    return Values.String(
+      lines.map((line) => Values.asString(margin).content + line).join("\n"),
     )
   })
 }
