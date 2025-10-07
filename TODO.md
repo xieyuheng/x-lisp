@@ -1,7 +1,8 @@
 # pretty-print
 
-`pretty-format`
-`pretty-print`
+`pretty-print` -- handle record
+`pretty-print` -- handle set
+`pretty-print` -- handle hash
 
 # dependent schema
 

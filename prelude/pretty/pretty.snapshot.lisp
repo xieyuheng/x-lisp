@@ -1,5 +1,19 @@
 (import-all "pretty")
 
 (pretty-print
- [:left-margin "  "]
- [1 2 3])
+ 30
+ [[1 2 3]
+  [4 5 6]
+  [7 8 9]])
+
+(pretty-print
+ 10
+ [[1 2 3]
+  [4 5 6]
+  [7 8 9]])
+
+(pretty-print
+ 5
+ [[1 2 3]
+  [4 5 6]
+  [7 8 9]])
