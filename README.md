@@ -447,6 +447,7 @@ null
 (compose-fn fs x)
 ;; prelude
 (identity x)
+(identity-unless b f)
 (constant x y)
 (with-default-argument default f)
 (swap f)
