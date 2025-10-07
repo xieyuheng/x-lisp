@@ -23,15 +23,15 @@
 (define (pretty-render value)
   (cond ((atom? value)
          (text-node (format value)))
+        ((set? anything? value)
+         (= elements (indent-node 1 (pretty-render-elements (set-to-list value))))
+         (group-node (concat-node [(text-node "{") elements (text-node "}")])))
         ((list? anything? value)
-         (group-node
-          (append-node
-           (text-node "[")
-           (append-node (indent-node 1 (pretty-render-list value))
-                        (text-node "]")))))
+         (= elements (indent-node 1 (pretty-render-elements value)))
+         (group-node (concat-node [(text-node "[") elements (text-node "]")])))
         (else (text-node (format value)))))
 
-(define (pretty-render-list list)
+(define (pretty-render-elements list)
   (match list
     ([] null-node)
     ([element] (pretty-render element))
@@ -39,4 +39,4 @@
      (append-node
       (append-node (pretty-render head)
                    (break-node " "))
-      (pretty-render-list tail)))))
+      (pretty-render-elements tail)))))
