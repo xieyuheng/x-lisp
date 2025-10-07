@@ -1,5 +1,5 @@
-optional-lift & optional-bind
-hash-update & hash-update!
+[prelude] optional-lift & optional-bind
+[prelude] hash-update & hash-update!
 
 # meta
 

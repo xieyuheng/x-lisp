@@ -5,3 +5,4 @@
 (include-all "hash")
 (include-all "set")
 (include-all "pretty")
+(include-all "optional")
