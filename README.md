@@ -439,6 +439,7 @@ null
 ;; prelude
 (identity x)
 (constant x y)
+(with-default-argument default f)
 (swap f)
 (drop f)
 (dup f)
