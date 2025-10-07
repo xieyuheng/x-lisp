@@ -80,3 +80,55 @@
  2
  :z
  3]
+(@hash
+  "x" (@hash "x" 1 "y" 2 "z" 3)
+  "y" (@hash "x" 4 "y" 5 "z" 6)
+  "z" (@hash "x" 7 "y" 8 "z" 9))
+(@hash
+  "x"
+  (@hash "x" 1 "y" 2 "z" 3)
+  "y"
+  (@hash "x" 4 "y" 5 "z" 6)
+  "z"
+  (@hash "x" 7 "y" 8 "z" 9))
+(@hash
+  "x"
+  (@hash
+    "x" 1
+    "y" 2
+    "z" 3)
+  "y"
+  (@hash
+    "x" 4
+    "y" 5
+    "z" 6)
+  "z"
+  (@hash
+    "x" 7
+    "y" 8
+    "z" 9))
+(@hash
+  "x"
+  (@hash
+    "x"
+    1
+    "y"
+    2
+    "z"
+    3)
+  "y"
+  (@hash
+    "x"
+    4
+    "y"
+    5
+    "z"
+    6)
+  "z"
+  (@hash
+    "x"
+    7
+    "y"
+    8
+    "z"
+    9))

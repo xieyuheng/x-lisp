@@ -1,11 +1,7 @@
-# pretty-print
-
-`pretty-print` -- handle hash
-
 # dependent schema
 
-`forall` -- be like `->`-- `(forall (name arg-type) ... return-type)`
-`exists` -- be like `forall` -- for list value
+`forall` -- be like `pi`
+`exists` -- be like `sigma` -- for list value
 
 # meta
 
