@@ -1,5 +1,7 @@
 # meta
 
+list all existing constructors and eliminators
+
 support `meta`
 
 - be careful about the meaning of `same?` now,
@@ -15,4 +17,12 @@ add `ThePattern` to `Pattern`
 # later
 
 sort-order monad -- compose compare function
-optional monad
+
+# generic
+
+```scheme
+(define-generic add :arity 2)
+
+(define-case add (-> int? int? int?)
+  (lamnda (x y) (iadd x y)))
+```
