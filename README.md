@@ -502,10 +502,12 @@ null
 
 ```lisp
 (graph? vertex-p value)
-(make-graph edges)
+(make-graph vertices edges)
+(graph-edge? V edge)
 (graph-vertices graph)
 (graph-neighbors vertex graph)
 (graph-add-vertex! vertex graph)
+(graph-add-vertices! vertices graph)
 (graph-add-edge! edge graph)
 (graph-add-edges! edges graph)
 (graph-adjacent? source target graph)
