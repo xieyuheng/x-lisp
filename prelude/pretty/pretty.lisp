@@ -51,6 +51,9 @@
             (indent-node 1 (break-node " "))
             attributes
             (text-node "]")])))
+        ((and (hash? anything? anything? value)
+              (hash-empty? value))
+         (text-node "(@hash)"))
         ((hash? anything? anything? value)
          (= entries (indent-node 2 (render-hash-entries (hash-entries value))))
          (group-node
