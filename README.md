@@ -427,6 +427,11 @@ void
 ```lisp
 null
 (null? value)
+```
+
+### Optional
+
+```lisp
 (optional? p x)
 ```
 

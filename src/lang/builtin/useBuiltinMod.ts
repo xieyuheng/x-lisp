@@ -14,6 +14,7 @@ import { aboutHashtag } from "./aboutHashtag.ts"
 import { aboutInt } from "./aboutInt.ts"
 import { aboutList } from "./aboutList.ts"
 import { aboutNull } from "./aboutNull.ts"
+import { aboutOptional } from "./aboutOptional.ts"
 import { aboutPath } from "./aboutPath.ts"
 import { aboutProcess } from "./aboutProcess.ts"
 import { aboutRandom } from "./aboutRandom.ts"
@@ -52,6 +53,7 @@ export function useBuiltinMod(): Mod {
   aboutConsole(mod)
   aboutVoid(mod)
   aboutNull(mod)
+  aboutOptional(mod)
   aboutFunction(mod)
   aboutFormat(mod)
   aboutRandom(mod)

@@ -1,9 +1,5 @@
-hash-update
-
-# dependent schema
-
-`forall` -- be like `pi`
-`exists` -- be like `sigma` -- for list value
+optional-lift & optional-bind
+hash-update & hash-update!
 
 # meta
 
