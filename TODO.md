@@ -8,6 +8,10 @@ support `meta`
 wrap every value in `meta` during debug
 suppor `(list? (-> A B))` by side effect
 
+# pattern
+
+add `ThePattern` to `Pattern`
+
 # later
 
 sort-order monad -- compose compare function
