@@ -1,7 +1,7 @@
 (import-all "list-monad")
 
-(assert-equal (list-append-map list-unit [1 2 3]) [1 2 3])
-(assert-equal ((specific list-append-map int? int?)
+(assert-equal (list-lift list-unit [1 2 3]) [1 2 3])
+(assert-equal ((specific list-lift int? int?)
                list-unit [1 2 3]) [1 2 3])
 
 (assert-equal (list-unit 1) [1])

@@ -227,7 +227,6 @@ false
 (list-reject p list)
 (list-append list tail)
 (list-concat lists)
-(list-append-map f list)
 (list-unit x)
 (list-lift f list)
 (list-bind list f)

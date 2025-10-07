@@ -2,14 +2,17 @@
 (import-all "list-map")
 (import-all "list-concat" )
 
-(export list-append-map list-unit list-lift list-bind)
+(export
+  list-lift
+  list-unit
+  list-bind)
 
-(claim list-append-map
+(claim list-lift
   (polymorphic (A B)
     (-> (-> A (list? B)) (list? A)
         (list? B))))
 
-(define (list-append-map f list)
+(define (list-lift f list)
   (list-concat (list-map f list)))
 
 (claim list-unit
@@ -18,5 +21,4 @@
 
 (define (list-unit x) [x])
 
-(define list-lift list-append-map)
 (define list-bind (swap list-lift))

@@ -50,7 +50,7 @@
   (pipe graph
     graph-neighbor-hash
     hash-entries
-    (list-append-map
+    (list-lift
      (lambda ([vertex neighbors])
        (pipe neighbors
          set-to-list
