@@ -245,7 +245,6 @@ false
 (list-find-index p list)
 (list-index e list)
 (list-product lhs rhs)
-(list-product-without-diagonal lhs rhs)
 (list-group f list)
 (list-foremost compare list)
 (list-rearmost compare list)
