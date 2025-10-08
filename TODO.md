@@ -6,6 +6,9 @@ remove `*-concat` functions
 
 fix (validation) error report -- be more clear about args
 
+- index or count? it is not clear
+- wrap in `(the)` is not clear
+
 # pattern
 
 add `ThePattern` to `Pattern`
