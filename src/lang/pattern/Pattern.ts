@@ -2,6 +2,7 @@ import { type Value } from "../value/index.ts"
 
 export type Pattern =
   | VarPattern
+  | ThePattern
   | TaelPattern
   | LiteralPattern
   | ConsStarPattern
@@ -15,6 +16,20 @@ export function VarPattern(name: string): VarPattern {
   return {
     kind: "VarPattern",
     name,
+  }
+}
+
+export type ThePattern = {
+  kind: "ThePattern"
+  schema: Value
+  pattern: Pattern
+}
+
+export function ThePattern(schema: Value, pattern: Pattern): ThePattern {
+  return {
+    kind: "ThePattern",
+    schema,
+    pattern,
   }
 }
 

@@ -33,6 +33,10 @@ export function formatPattern(pattern: Pattern, options: Options = {}): string {
       return pattern.name
     }
 
+    case "ThePattern": {
+      return `(the ${formatValue(pattern.schema, options)} ${formatPattern(pattern.pattern, options)})`
+    }
+
     case "TaelPattern": {
       const elements = formatPatterns(pattern.elements, options)
       const attributes = formatPatternAttributes(pattern.attributes, options)

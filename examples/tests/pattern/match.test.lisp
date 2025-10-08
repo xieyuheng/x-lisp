@@ -89,3 +89,16 @@
 (match [1 1]
   ([x x] (assert true))
   (_ (assert false)))
+
+;; the
+
+(match [1 2]
+  ([x (the int? y)]
+   (assert-equal x 1)
+   (assert-equal y 2))
+  (_ (assert false)))
+
+(match [1 2]
+  ([x (the float? y)]
+   (assert false))
+  (_ (assert true)))

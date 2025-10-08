@@ -1,6 +1,7 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
 import { envLookupValue, envPut, type Env } from "../env/index.ts"
 import { equal } from "../equal/index.ts"
+import { isValid } from "../evaluate/validate.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { type Pattern } from "./Pattern.ts"
@@ -16,10 +17,17 @@ export function match(pattern: Pattern, value: Value): Effect {
           return envPut(env, pattern.name, value)
         }
 
-        if (!equal(found, value)) return undefined
-
-        return env
+        if (equal(found, value)) return env
+        else return undefined
       }
+    }
+
+    case "ThePattern": {
+      if (!isValid(pattern.schema, value)) {
+        return (env) => undefined
+      }
+
+      return match(pattern.pattern, value)
     }
 
     case "TaelPattern": {

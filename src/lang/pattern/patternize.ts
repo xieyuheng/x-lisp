@@ -90,6 +90,14 @@ export function patternize(exp: Exp): Effect {
     return patternizeQuasiquote(exp.sexp)
   }
 
+  if (exp.kind === "The") {
+    return (mod, env) => {
+      const schema = resultValue(evaluate(exp.schema)(mod, env))
+      const pattern = patternize(exp.exp)(mod, env)
+      return Patterns.ThePattern(schema, pattern)
+    }
+  }
+
   let message = `[patternize] unhandled kind of exp\n`
   message += `  exp: ${formatExp(exp)}`
   throw new Error(message)
