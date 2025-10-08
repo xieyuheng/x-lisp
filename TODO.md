@@ -1,4 +1,3 @@
-`applyWithSchema` support `VariadicArrow`
 `forceWithSchema` support `VariadicArrow`
 
 compose pipe union inter -- should be `variadic-lambda`
@@ -33,7 +32,7 @@ need to be able to use arrow as predicates to check arguments one by one.
 (define-generic add :arity 2)
 
 (define-case add (-> int? int? int?)
-  (lamnda (x y) (iadd x y)))
+  (lambda (x y) (iadd x y)))
 ```
 
 # meta

@@ -1,0 +1,6 @@
+(validation) fail on arguments
+  args: [1 2 3.0]
+    #2: (the int? 3.0)
+  schema: (*-> int? int?)
+  target: (lambda ns (match ns ([] 0) ([n] n) ((cons n tail) (iadd n (apply sum tail)))))
+

@@ -32,6 +32,29 @@ export function applyWithSchema(
     )
   }
 
+  if (schema.kind === "VariadicArrow") {
+    const result = apply(
+      target,
+      validateArgs(
+        context,
+        args.map((_) => schema.argSchema),
+        args,
+      ),
+    )
+
+    if (resultIsValid(schema.retSchema, result)) {
+      return result
+    } else {
+      let message = `(validation) fail on result\n`
+      message += `  args: [${formatValues(args)}]\n`
+      message += `  result: ${formatValue(result)}\n`
+      message += `  schema: ${formatValue(schema)}\n`
+      message += `  target: ${formatValue(target)}\n`
+      if (meta) throw new X.ErrorWithMeta(message, meta)
+      else throw new Error(message)
+    }
+  }
+
   if (schema.kind === "Arrow") {
     const arrow = Values.arrowNormalize(schema)
 

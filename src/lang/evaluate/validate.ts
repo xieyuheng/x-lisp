@@ -23,6 +23,10 @@ export function validate(schema: Value, value: Value): Result {
     return { kind: "Ok", value: Values.The(schema, value) }
   }
 
+  if (schema.kind === "VariadicArrow") {
+    return { kind: "Ok", value: Values.The(schema, value) }
+  }
+
   if (schema.kind === "Polymorphic") {
     return { kind: "Ok", value: Values.The(schema, value) }
   }
