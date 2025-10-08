@@ -1,3 +1,4 @@
+(import-all "../function")
 (import-all "list-monad")
 
 (assert-equal (list-lift list-unit [1 2 3]) [1 2 3])

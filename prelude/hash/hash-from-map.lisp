@@ -1,4 +1,5 @@
 (import-all "../list")
+(import-all "../function")
 (import-all "hash-from-entries")
 
 (export hash-from-map)

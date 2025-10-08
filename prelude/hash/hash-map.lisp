@@ -1,3 +1,4 @@
+(import-all "../function")
 (import-all "../list")
 (import-all "hash-from-entries")
 

@@ -1,3 +1,4 @@
+(import-all "pipe")
 (import-all "identity")
 
 (assert-equal 1 (identity 1))

@@ -1,5 +1,3 @@
-[prelude] `pipe` -- should be `variadic-lambda`
-
 [prelude] setup `schema/`
 [prelude] `union` & `inter` -- should be `variadic-lambda`
 

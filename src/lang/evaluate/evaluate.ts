@@ -375,22 +375,6 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
-    case "Pipe": {
-      return (mod, env) => {
-        const builtinMod = useBuiltinMod()
-        const value = modLookupValue(builtinMod, "pipe-fn")
-        assert(value)
-        const fs = exp.exps.map((e) => resultValue(evaluate(e)(mod, env)))
-        return [
-          env,
-          apply(value, [
-            resultValue(evaluate(exp.arg)(mod, env)),
-            Values.List(fs),
-          ]),
-        ]
-      }
-    }
-
     case "Tau": {
       return (mod, env) => {
         const value = Values.Tau(

@@ -183,16 +183,6 @@ export function formatExp(exp: Exp): string {
       return `(&-> ${argSchema} ${retSchema})`
     }
 
-    case "Pipe": {
-      const arg = formatExp(exp.arg)
-      const exps = formatExps(exp.exps)
-      if (exps === "") {
-        return `(pipe ${arg})`
-      } else {
-        return `(pipe ${arg} ${exps})`
-      }
-    }
-
     case "Tau": {
       const elementSchemas = formatExps(exp.elementSchemas)
       const attributeSchemas = formatExpAttributes(exp.attributeSchemas)

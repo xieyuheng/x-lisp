@@ -443,7 +443,6 @@ null
 
 ```lisp
 (apply f args)
-(pipe-fn x fs)
 ;; prelude
 (identity x)
 (identity-unless b f)
@@ -452,7 +451,8 @@ null
 (swap f)
 (drop f)
 (dup f)
-(compose ...fs)
+(compose ...fs x)
+(pipe x ...fs)
 ```
 
 ### Format

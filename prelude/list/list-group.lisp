@@ -1,4 +1,5 @@
 (import-all "../hash")
+(import-all "../function")
 (import-all "list-each")
 
 (export list-group)

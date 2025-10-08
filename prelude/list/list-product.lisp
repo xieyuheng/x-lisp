@@ -1,3 +1,4 @@
+(import-all "../function")
 (import-all "index")
 
 (export list-product)

@@ -1,3 +1,4 @@
+(import-all "../function")
 (import-all "hash-map")
 
 (assert-equal

@@ -35,7 +35,6 @@ export type Exp =
   | Inter
   | Arrow
   | VariadicArrow
-  | Pipe
   | Tau
   | The
   | Pattern
@@ -498,22 +497,6 @@ export function VariadicArrow(
     kind: "VariadicArrow",
     argSchema,
     retSchema,
-    meta,
-  }
-}
-
-export type Pipe = {
-  kind: "Pipe"
-  arg: Exp
-  exps: Array<Exp>
-  meta: Meta
-}
-
-export function Pipe(arg: Exp, exps: Array<Exp>, meta: Meta): Pipe {
-  return {
-    kind: "Pipe",
-    arg,
-    exps,
     meta,
   }
 }
