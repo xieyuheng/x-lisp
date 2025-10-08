@@ -1,4 +1,4 @@
-parse `variadic-lambda` -- just use `(lamnda name ...)`
+update x-data
 
 `apply` -- `VariadicLambda`
 

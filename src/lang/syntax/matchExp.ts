@@ -16,6 +16,14 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       const keyword = X.asTael(data).elements[0]
       const meta = X.tokenMetaFromDataMeta(keyword.meta)
 
+      if (X.isSymbol(parameters)) {
+        return Exps.VariadicLambda(
+          X.symbolToString(parameters),
+          Exps.Begin(X.dataToArray(body).map(matchExp), meta),
+          meta,
+        )
+      }
+
       if (X.dataToArray(parameters).length === 0) {
         let message = `(lambda) must have at least one parameter\n`
         throw new X.ErrorWithMeta(message, meta)
