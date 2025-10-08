@@ -1,6 +1,3 @@
-float-sum
-float-product
-
 # error report
 
 fix (validation) error report -- be more clear about args
