@@ -365,6 +365,14 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
+    case "VariadicArrow": {
+      return (mod, env) => {
+        const arg = resultValue(evaluate(exp.arg)(mod, env))
+        const ret = resultValue(evaluate(exp.ret)(mod, env))
+        return [env, Values.VariadicArrow(arg, ret)]
+      }
+    }
+
     case "Compose": {
       return (mod, env) => {
         const builtinMod = useBuiltinMod()

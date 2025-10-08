@@ -177,6 +177,12 @@ export function formatExp(exp: Exp): string {
       return `(-> ${args} ${ret})`
     }
 
+    case "VariadicArrow": {
+      const arg = formatExp(exp.arg)
+      const ret = formatExp(exp.ret)
+      return `(&-> ${arg} ${ret})`
+    }
+
     case "Compose": {
       const exps = formatExps(exp.exps)
       if (exps === "") {

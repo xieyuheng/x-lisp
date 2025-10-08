@@ -1,6 +1,9 @@
-`VariadicArrow` as `Exp`
+`Exp` -- fix name of `Arrow` properties
+
 parse `variadic-arrow` -- `*->`
+
 `applyWithSchema` support `VariadicArrow`
+`forceWithSchema` support `VariadicArrow`
 
 compose pipe union inter -- should be `variadic-lambda`
 

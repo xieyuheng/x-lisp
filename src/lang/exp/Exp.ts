@@ -34,6 +34,7 @@ export type Exp =
   | Union
   | Inter
   | Arrow
+  | VariadicArrow
   | Compose
   | Pipe
   | Tau
@@ -473,6 +474,22 @@ export function Arrow(args: Array<Exp>, ret: Exp, meta: Meta): Arrow {
   return {
     kind: "Arrow",
     args,
+    ret,
+    meta,
+  }
+}
+
+export type VariadicArrow = {
+  kind: "VariadicArrow"
+  arg: Exp
+  ret: Exp
+  meta: Meta
+}
+
+export function VariadicArrow(arg: Exp, ret: Exp, meta: Meta): VariadicArrow {
+  return {
+    kind: "VariadicArrow",
+    arg,
     ret,
     meta,
   }
