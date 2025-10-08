@@ -351,8 +351,8 @@ false
 ```lisp
 ;; prelude
 (negate p x)
-(union ...ps x)
-(inter ...ps x)
+(union ...ps)
+(inter ...ps)
 ```
 
 ### Sexp
@@ -448,7 +448,7 @@ null
 (swap f)
 (drop f)
 (dup f)
-(compose ...fs x)
+(compose ...fs)
 (pipe x ...fs)
 ```
 
@@ -483,6 +483,8 @@ null
 (sort-order-after? value)
 (sort-order-negate order)
 (sort-order-reverse compare x y)
+;; prelude
+(compose-compare ...fs)
 ```
 
 ### Pretty

@@ -7,3 +7,4 @@
 (include-all "pretty")
 (include-all "optional")
 (include-all "schema")
+(include-all "sort-order")

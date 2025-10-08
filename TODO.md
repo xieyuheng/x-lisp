@@ -1,4 +1,3 @@
-sort-order -- `compose-compare`
 remove `*-concat` functions
 
 # later
