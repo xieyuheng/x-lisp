@@ -1,10 +1,6 @@
-# prelude
-
-int-sum -- take list
-int-product -- take list
-
-float-sum -- take list
-float-product -- take list
+int-product
+float-sum
+float-product
 
 # error report
 

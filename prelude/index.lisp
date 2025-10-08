@@ -1,4 +1,5 @@
 (include-all "int")
+(include-all "float")
 (include-all "function")
 (include-all "list")
 (include-all "record")
