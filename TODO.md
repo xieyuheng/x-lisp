@@ -1,9 +1,5 @@
 remove `*-concat` functions
 
-# later
-
-ambr put-many put-entries
-
 # error report
 
 fix (validation) error report -- be more clear

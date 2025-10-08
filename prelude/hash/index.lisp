@@ -1,4 +1,4 @@
-(include-all "hash-put-many")
+(include-all "hash-put-entries")
 (include-all "hash-update")
 (include-all "hash-from-entries")
 (include-all "hash-from-map")

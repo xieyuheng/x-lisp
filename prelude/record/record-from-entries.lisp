@@ -1,4 +1,4 @@
-(import-all "record-put-many")
+(import-all "record-put-entries")
 
 (export record-from-entries)
 
@@ -8,4 +8,4 @@
         (record? A))))
 
 (define (record-from-entries entries)
-  (record-put-many entries []))
+  (record-put-entries entries []))

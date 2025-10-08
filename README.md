@@ -264,8 +264,8 @@ false
 (record-delete! key record)
 ;; prelude
 (record-from-entries entries)
-(record-put-many entries record)
-(record-put-many! entries record)
+(record-put-entries entries record)
+(record-put-entries! entries record)
 (record-select p record)
 (record-select-key p record)
 (record-select-value p record)
@@ -324,8 +324,8 @@ false
 (hash-keys hash)
 (hash-values hash)
 ;; prelude
-(hash-put-many entries hash)
-(hash-put-many! entries hash)
+(hash-put-entries entries hash)
+(hash-put-entries! entries hash)
 (hash-update key f hash)
 (hash-update! key f hash)
 (hash-from-entries entries)

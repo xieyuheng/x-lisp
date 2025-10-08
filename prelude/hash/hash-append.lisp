@@ -1,4 +1,4 @@
-(import-all "hash-put-many")
+(import-all "hash-put-entries")
 
 (export hash-append)
 
@@ -8,4 +8,4 @@
         (hash? K V))))
 
 (define (hash-append hash rest)
-  (hash-put-many (hash-entries rest) hash))
+  (hash-put-entries (hash-entries rest) hash))

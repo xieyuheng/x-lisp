@@ -1,23 +1,23 @@
 (export
-  hash-put-many
-  hash-put-many!)
+  hash-put-entries
+  hash-put-entries!)
 
-(claim hash-put-many
+(claim hash-put-entries
   (polymorphic (K V)
     (-> (list? (tau K V)) (hash? K V)
         (hash? K V))))
 
-(define (hash-put-many entries hash)
-  (hash-put-many! entries (hash-copy hash)))
+(define (hash-put-entries entries hash)
+  (hash-put-entries! entries (hash-copy hash)))
 
-(claim hash-put-many!
+(claim hash-put-entries!
   (polymorphic (K V)
     (-> (list? (tau K V)) (hash? K V)
         (hash? K V))))
 
-(define (hash-put-many! entries hash)
+(define (hash-put-entries! entries hash)
   (match entries
     ([] hash)
     ((cons [k v] tail)
      (hash-put! k v hash)
-     (hash-put-many! tail hash))))
+     (hash-put-entries! tail hash))))
