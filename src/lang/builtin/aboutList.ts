@@ -1,5 +1,5 @@
 import { definePrimitiveFunction, provide } from "../define/index.ts"
-import { apply } from "../evaluate/index.ts"
+import { apply, isValid } from "../evaluate/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
@@ -41,17 +41,7 @@ export function aboutList(mod: Mod) {
     }
 
     for (const element of Values.asTael(target).elements) {
-      const result = apply(p, [element])
-      if (!Values.isBool(result)) {
-        let message = `(list?) one result of applying the predicate is not bool\n`
-        message += `  predicate: ${formatValue(p)}\n`
-        message += `  target: ${formatValue(target)}\n`
-        message += `  element: ${formatValue(element)}\n`
-        message += `  result: ${formatValue(result)}\n`
-        throw new Error(message)
-      }
-
-      if (Values.isFalse(result)) {
+      if (!isValid(p, element)) {
         return Values.Bool(false)
       }
     }
