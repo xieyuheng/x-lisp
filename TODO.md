@@ -1,17 +1,3 @@
-[diary] add note about meta to container schema note
-
-> maybe this should wait after compiler runtime design.
-
-list all existing constructors and eliminators
-
-support `meta`
-
-- be careful about the meaning of `same?` now,
-  even for string, it is already not just pointer equality.
-
-wrap every value in `meta` during debug
-suppor `(list? (-> A B))` by side effect
-
 # prelude
 
 int-sum -- take list
