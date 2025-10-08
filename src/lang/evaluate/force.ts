@@ -1,12 +1,17 @@
 import { flags } from "../../flags.ts"
 import { formatValue } from "../format/index.ts"
 import { type Value } from "../value/index.ts"
+import { applyVariadicLambda } from "./applyVariadicLambda.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 import { forceWithSchema } from "./forceWithSchema.ts"
 
 export function force(target: Value): Value {
   if (target.kind === "Thunk") {
     return resultValue(evaluate(target.body)(target.mod, target.env))
+  }
+
+  if (target.kind === "VariadicLambda") {
+    return applyVariadicLambda(target, [])
   }
 
   if (target.kind === "PrimitiveThunk") {

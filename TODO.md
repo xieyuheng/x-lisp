@@ -1,4 +1,7 @@
-compose pipe union inter -- should be `variadic-lambda`
+`compose` -- should be `variadic-lambda`
+`pipe` -- should be `variadic-lambda`
+`union` & `inter` -- should be `variadic-lambda`
+
 sort-order -- `compose-compare`
 remove `*-concat` functions
 
