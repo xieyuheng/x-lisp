@@ -9,6 +9,7 @@ export type Exp =
   | Atom
   | Var
   | Lambda
+  | VariadicLambda
   | Thunk
   | Apply
   | Begin
@@ -66,6 +67,26 @@ export function Lambda(parameters: Array<Exp>, body: Exp, meta: Meta): Lambda {
   return {
     kind: "Lambda",
     parameters,
+    body,
+    meta,
+  }
+}
+
+export type VariadicLambda = {
+  kind: "VariadicLambda"
+  variadicParameter: string
+  body: Exp
+  meta: Meta
+}
+
+export function VariadicLambda(
+  variadicParameter: string,
+  body: Exp,
+  meta: Meta,
+): VariadicLambda {
+  return {
+    kind: "VariadicLambda",
+    variadicParameter,
     body,
     meta,
   }

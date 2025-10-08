@@ -57,6 +57,21 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
+    case "VariadicLambda": {
+      return (mod, env) => {
+        return [
+          env,
+          Values.VariadicLambda(
+            mod,
+            env,
+            exp.variadicParameter,
+            exp.body,
+            exp.meta,
+          ),
+        ]
+      }
+    }
+
     case "Thunk": {
       return (mod, env) => {
         return [env, Values.Thunk(mod, env, exp.body, exp.meta)]

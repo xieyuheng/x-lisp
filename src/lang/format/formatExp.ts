@@ -28,6 +28,10 @@ export function formatExp(exp: Exp): string {
       return `(lambda (${formatExps(exp.parameters)}) ${formatBody(exp.body)})`
     }
 
+    case "VariadicLambda": {
+      return `(lambda ${exp.variadicParameter} ${formatBody(exp.body)})`
+    }
+
     case "Thunk": {
       return `(thunk ${formatBody(exp.body)})`
     }

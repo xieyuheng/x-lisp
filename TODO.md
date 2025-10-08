@@ -1,6 +1,6 @@
-`VariadicLambda` as `Exp`
 parse `variadic-lambda` -- just use `(lamnda name ...)`
-`evaluate` -- `VariadicLambda`
+
+`apply` -- `VariadicLambda`
 
 `variadic-arrow` -- `*->`
 
