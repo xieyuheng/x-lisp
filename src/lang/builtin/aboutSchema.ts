@@ -5,9 +5,7 @@ export function aboutSchema(mod: Mod) {
   runCode(
     mod,
     `\
-(export negate union-fn inter-fn)
-
-(define (negate p x) (not (p x)))
+(export union-fn inter-fn)
 
 (define (union-fn ps x)
   (cond ((list-empty? ps) #f)

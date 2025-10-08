@@ -1,3 +1,5 @@
+(import-all "../schema")
+
 (export
   set-select
   set-reject)

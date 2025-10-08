@@ -100,12 +100,6 @@
 (claim record-delete (polymorphic (V) (-> symbol? (record? V) (record? V))))
 (claim record-delete! (polymorphic (V) (-> symbol? (record? V) (record? V))))
 
-;; schema
-
-(claim negate (polymorphic (A) (-> (-> A bool?) (-> A bool?))))
-;; (claim union-fn (polymorphic (A) (-> (list-of (-> A bool?)) (-> A bool?))))
-;; (claim inter-fn (polymorphic (A) (-> (list-of (-> A bool?)) (-> A bool?))))
-
 ;; sexp
 
 (claim parse-sexp (-> string? sexp?))

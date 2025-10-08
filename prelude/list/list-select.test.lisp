@@ -1,3 +1,4 @@
+(import-all "../schema")
 (import-all "list-select")
 
 (assert-equal

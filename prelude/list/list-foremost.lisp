@@ -1,3 +1,5 @@
+(import-all "../schema")
+
 (export
   list-foremost
   list-rearmost)

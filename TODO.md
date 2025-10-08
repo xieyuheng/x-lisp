@@ -1,5 +1,9 @@
-[prelude] setup `schema/`
 [prelude] `union` & `inter` -- should be `variadic-lambda`
+
+```scheme
+(claim union-fn (polymorphic (A) (-> (list-of (-> A bool?)) (-> A bool?))))
+(claim inter-fn (polymorphic (A) (-> (list-of (-> A bool?)) (-> A bool?))))
+```
 
 sort-order -- `compose-compare`
 remove `*-concat` functions

@@ -6,3 +6,4 @@
 (include-all "set")
 (include-all "pretty")
 (include-all "optional")
+(include-all "schema")
