@@ -162,15 +162,6 @@ function validateArgs(
 }
 
 function resultIsValid(schema: Value, value: Value): boolean {
-  const result = apply(schema, [value])
-
-  if (Values.isBool(result)) {
-    return Values.isTrue(result)
-  }
-
-  let message = `(validation) expect result to be bool\n`
-  message += `  result: ${formatValue(result)}\n`
-  message += `  schema: ${formatValue(schema)}\n`
-  message += `  value: ${formatValue(value)}\n`
-  throw new Error(message)
+  const result = validate(schema, value)
+  return result.kind === "Ok"
 }

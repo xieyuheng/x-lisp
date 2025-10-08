@@ -1,5 +1,9 @@
 (export compose)
 
+(claim compose
+  (*-> (-> anything? anything?)
+       (-> anything? anything?)))
+
 (define compose
   (lambda fs
     (if (list-empty? fs)
