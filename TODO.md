@@ -1,6 +1,19 @@
-# schema
+[builtin] `aboutSchema` -- `valid?`
+[builtin] `list?` -- call `isValid` instead of `apply`
 
-`->` use `validate` instead of `apply` -- to support non predicate schema
+```scheme
+(the (list? (-> int? int?))
+  [(iadd 1) (iadd 2) (iadd 3)])
+```
+
+> all polymorphic schema taken function should all `valid?` instead of `apply`
+
+[builtin] `set?` -- call `isValid` instead of `apply`
+[builtin] `record?` -- call `isValid` instead of `apply`
+[builtin] `hash?` -- call `isValid` instead of `apply`
+[builtin] `optional?` -- call `isValid` instead of `apply`
+
+test my-list of arrow
 
 # error report
 
