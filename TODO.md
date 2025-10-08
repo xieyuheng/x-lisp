@@ -1,4 +1,3 @@
-[builtin] `aboutSchema` -- `valid?`
 [builtin] `list?` -- call `isValid` instead of `apply`
 
 ```scheme

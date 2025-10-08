@@ -187,6 +187,12 @@ false
 (anything? value)
 ```
 
+### Schema
+
+```lisp
+(valid? schema value)
+```
+
 ### List
 
 ```lisp

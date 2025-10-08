@@ -57,6 +57,10 @@
 (claim string-replace (-> string? string? string? string?))
 (claim string-compare-lexical (-> string? string? int?))
 
+;; schema
+
+(claim valid? (-> anything? anything? bool?))
+
 ;; sort-order
 
 (claim sort-order-reverse
