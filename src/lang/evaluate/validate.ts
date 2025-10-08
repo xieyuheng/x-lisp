@@ -6,6 +6,11 @@ import { apply } from "./apply.ts"
 
 type Result = { kind: "Ok"; value: Value } | { kind: "Err" }
 
+export function isValid(schema: Value, value: Value): boolean {
+  const result = validate(schema, value)
+  return result.kind === "Ok"
+}
+
 export function validateOrFail(schema: Value, value: Value): Value {
   const result = validate(schema, value)
   if (result.kind === "Ok") {

@@ -8,7 +8,7 @@ import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
 import { applyPolymorphic } from "./applyPolymorphic.ts"
-import { validate, validateOrFail } from "./validate.ts"
+import { isValid, validate, validateOrFail } from "./validate.ts"
 
 export function applyWithSchema(
   schema: Value,
@@ -42,7 +42,7 @@ export function applyWithSchema(
       ),
     )
 
-    if (resultIsValid(schema.retSchema, result)) {
+    if (isValid(schema.retSchema, result)) {
       return result
     } else {
       let message = `(validation) fail on result\n`
@@ -66,7 +66,7 @@ export function applyWithSchema(
         validateArgs(context, arrow.argSchemas, usedArgs),
       )
 
-      if (resultIsValid(arrow.retSchema, result)) {
+      if (isValid(arrow.retSchema, result)) {
         return apply(result, spilledArgs)
       } else {
         let message = `(validation) fail on result\n`
@@ -85,7 +85,7 @@ export function applyWithSchema(
         target,
         validateArgs(context, arrow.argSchemas, args),
       )
-      if (resultIsValid(arrow.retSchema, result)) {
+      if (isValid(arrow.retSchema, result)) {
         return result
       } else {
         let message = `(validation) fail on result\n`
@@ -159,9 +159,4 @@ function validateArgs(
   message += `  target: ${formatValue(context.target)}\n`
   if (meta) throw new X.ErrorWithMeta(message, meta)
   else throw new Error(message)
-}
-
-function resultIsValid(schema: Value, value: Value): boolean {
-  const result = validate(schema, value)
-  return result.kind === "Ok"
 }
