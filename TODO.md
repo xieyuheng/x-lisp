@@ -1,5 +1,3 @@
-update x-data
-
 `apply` -- `VariadicLambda`
 
 `variadic-arrow` -- `*->`

@@ -17,18 +17,21 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
       const keyword = X.asTael(data).elements[1]
       const meta = X.tokenMetaFromDataMeta(keyword.meta)
 
-      if (X.dataToArray(parameters).length === 0) {
+      if (X.listElements(parameters).length === 0) {
         return Stmts.Define(
-          X.symbolToString(name),
-          Exps.Thunk(Exps.Begin(X.dataToArray(body).map(matchExp), meta), meta),
+          X.symbolContent(name),
+          Exps.Thunk(
+            Exps.Begin(X.listElements(body).map(matchExp), meta),
+            meta,
+          ),
           meta,
         )
       } else {
         return Stmts.Define(
-          X.symbolToString(name),
+          X.symbolContent(name),
           Exps.Lambda(
-            X.dataToArray(parameters).map(matchExp),
-            Exps.Begin(X.dataToArray(body).map(matchExp), meta),
+            X.listElements(parameters).map(matchExp),
+            Exps.Begin(X.listElements(body).map(matchExp), meta),
             meta,
           ),
           meta,
@@ -38,40 +41,40 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   ),
 
   X.matcher("`(define ,name ,exp)", ({ name, exp }, { meta }) => {
-    return Stmts.Define(X.symbolToString(name), matchExp(exp), meta)
+    return Stmts.Define(X.symbolContent(name), matchExp(exp), meta)
   }),
 
   X.matcher(
     "(cons* 'import source entries)",
     ({ source, entries }, { meta }) => {
       return Stmts.Import(
-        X.dataToString(source),
-        X.dataToArray(entries).map(matchImportEntry),
+        X.stringContent(source),
+        X.listElements(entries).map(matchImportEntry),
         meta,
       )
     },
   ),
 
   X.matcher("(cons* 'export names)", ({ names }, { meta }) => {
-    return Stmts.Export(X.dataToArray(names).map(X.symbolToString), meta)
+    return Stmts.Export(X.listElements(names).map(X.symbolContent), meta)
   }),
 
   X.matcher("`(import-all ,source)", ({ source }, { meta }) => {
-    return Stmts.ImportAll(X.dataToString(source), meta)
+    return Stmts.ImportAll(X.stringContent(source), meta)
   }),
 
   X.matcher("`(import-as ,source ,name)", ({ source, name }, { meta }) => {
-    return Stmts.ImportAs(X.dataToString(source), X.symbolToString(name), meta)
+    return Stmts.ImportAs(X.stringContent(source), X.symbolContent(name), meta)
   }),
 
   X.matcher("`(include-all ,source)", ({ source }, { meta }) => {
-    return Stmts.IncludeAll(X.dataToString(source), meta)
+    return Stmts.IncludeAll(X.stringContent(source), meta)
   }),
 
   X.matcher("(cons* 'include source names)", ({ source, names }, { meta }) => {
     return Stmts.Include(
-      X.dataToString(source),
-      X.dataToArray(names).map(X.symbolToString),
+      X.stringContent(source),
+      X.listElements(names).map(X.symbolContent),
       meta,
     )
   }),
@@ -80,15 +83,15 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     "(cons* 'include-except source names)",
     ({ source, names }, { meta }) => {
       return Stmts.IncludeExcept(
-        X.dataToString(source),
-        X.dataToArray(names).map(X.symbolToString),
+        X.stringContent(source),
+        X.listElements(names).map(X.symbolContent),
         meta,
       )
     },
   ),
 
   X.matcher("`(include-as ,source ,name)", ({ source, name }, { meta }) => {
-    return Stmts.IncludeAs(X.dataToString(source), X.symbolToString(name), meta)
+    return Stmts.IncludeAs(X.stringContent(source), X.symbolContent(name), meta)
   }),
 
   X.matcher(
@@ -96,14 +99,14 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     ({ predicate, constructors }, { meta }) => {
       return Stmts.DefineData(
         matchDataPredicate(predicate),
-        X.dataToArray(constructors).map(matchDataConstructor),
+        X.listElements(constructors).map(matchDataConstructor),
         meta,
       )
     },
   ),
 
   X.matcher("`(claim ,name ,schema)", ({ name, schema }, { meta }) => {
-    return Stmts.Claim(X.symbolToString(name), matchExp(schema), meta)
+    return Stmts.Claim(X.symbolContent(name), matchExp(schema), meta)
   }),
 
   X.matcher("exp", ({ exp }, { meta }) => {
@@ -116,15 +119,15 @@ function matchImportEntry(data: X.Data): Stmts.ImportEntry {
     X.matcherChoice([
       X.matcher("`(rename ,name ,rename)", ({ name, rename }, { meta }) => {
         return {
-          name: X.symbolToString(name),
-          rename: X.symbolToString(rename),
+          name: X.symbolContent(name),
+          rename: X.symbolContent(rename),
           meta,
         }
       }),
 
       X.matcher("name", ({ name }, { meta }) => {
         return {
-          name: X.symbolToString(name),
+          name: X.symbolContent(name),
           meta,
         }
       }),
@@ -138,14 +141,14 @@ function matchDataPredicate(data: X.Data): Stmts.DataPredicateSpec {
     X.matcherChoice([
       X.matcher("(cons* name parameters)", ({ name, parameters }, { meta }) => {
         return {
-          name: X.symbolToString(name),
-          parameters: X.dataToArray(parameters).map(X.symbolToString),
+          name: X.symbolContent(name),
+          parameters: X.listElements(parameters).map(X.symbolContent),
         }
       }),
 
       X.matcher("name", ({ name }, { meta }) => {
         return {
-          name: X.symbolToString(name),
+          name: X.symbolContent(name),
           parameters: [],
         }
       }),
@@ -159,14 +162,14 @@ function matchDataConstructor(data: X.Data): Stmts.DataConstructorSpec {
     X.matcherChoice([
       X.matcher("(cons* name fields)", ({ name, fields }, { meta }) => {
         return {
-          name: X.symbolToString(name),
-          fields: X.dataToArray(fields).map(matchDataField),
+          name: X.symbolContent(name),
+          fields: X.listElements(fields).map(matchDataField),
         }
       }),
 
       X.matcher("name", ({ name }, { meta }) => {
         return {
-          name: X.symbolToString(name),
+          name: X.symbolContent(name),
           fields: [],
         }
       }),
@@ -180,7 +183,7 @@ function matchDataField(data: X.Data): DataField {
     X.matcherChoice([
       X.matcher("`(,name ,exp)", ({ name, exp }, { meta }) => {
         return {
-          name: X.symbolToString(name),
+          name: X.symbolContent(name),
           predicate: matchExp(exp),
         }
       }),
