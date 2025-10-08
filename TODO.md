@@ -6,19 +6,13 @@ remove `*-concat` functions
 
 fix (validation) error report -- be more clear about args
 
-# define-object or define-record
-
-[maybe] `define-data` with single clause
-
-- record this idea in diary
-
-define-record
-
 # pattern
 
 add `ThePattern` to `Pattern`
 
 # generic
+
+note about `define-generic`
 
 need to be able to use arrow as predicates to check arguments one by one.
 
