@@ -4,6 +4,18 @@ import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
+const anything = Values.PrimitiveFunction("anything?", 1, () =>
+  Values.Bool(true),
+)
+export function applyPolymorphicWithAnythings(
+  polymorphic: Values.Polymorphic,
+): Value {
+  return applyPolymorphic(
+    polymorphic,
+    polymorphic.parameters.map((_) => anything),
+  )
+}
+
 export function applyPolymorphic(
   polymorphic: Values.Polymorphic,
   args: Array<Value>,

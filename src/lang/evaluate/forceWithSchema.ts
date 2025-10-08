@@ -1,24 +1,12 @@
-import assert from "node:assert"
-import { useBuiltinMod } from "../builtin/index.ts"
 import { formatValue } from "../format/index.ts"
-import { modLookupValue } from "../mod/index.ts"
 import { type Value } from "../value/index.ts"
-import { applyPolymorphic } from "./applyPolymorphic.ts"
+import { applyPolymorphicWithAnythings } from "./applyPolymorphic.ts"
 import { force } from "./force.ts"
 import { validateOrFail } from "./validate.ts"
 
 export function forceWithSchema(schema: Value, target: Value): Value {
   if (schema.kind === "Polymorphic") {
-    const preludeMod = useBuiltinMod()
-    const anything = modLookupValue(preludeMod, "anything?")
-    assert(anything)
-    return forceWithSchema(
-      applyPolymorphic(
-        schema,
-        schema.parameters.map((_) => anything),
-      ),
-      target,
-    )
+    return forceWithSchema(applyPolymorphicWithAnythings(schema), target)
   }
 
   if (schema.kind === "Arrow" && schema.argSchemas.length === 0) {

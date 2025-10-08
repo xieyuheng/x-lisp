@@ -1,7 +1,5 @@
 import assert from "node:assert"
-import { useBuiltinMod } from "../builtin/index.ts"
 import { emptyEnv, envPut } from "../env/index.ts"
-import { modLookupValue } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
@@ -62,13 +60,14 @@ export function applyDataPredicate(
   return Values.Bool(false)
 }
 
+const anything = Values.PrimitiveFunction("anything?", 1, () =>
+  Values.Bool(true),
+)
+
 export function applyDataPredicateWithAnything(
   predicate: Values.DataPredicate,
   data: Value,
 ): Value {
-  const preludeMod = useBuiltinMod()
-  const anything = modLookupValue(preludeMod, "anything?")
-  assert(anything)
   return applyDataPredicate(predicate, [
     ...predicate.parameters.map((_) => anything),
     data,

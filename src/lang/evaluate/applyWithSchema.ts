@@ -1,13 +1,10 @@
 import * as X from "@xieyuheng/x-data.js"
-import assert from "node:assert"
 import { arrayMapZip } from "../../utils/array/arrayMapZip.ts"
-import { useBuiltinMod } from "../builtin/index.ts"
 import { formatValue, formatValues } from "../format/index.ts"
-import { modLookupValue } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
-import { applyPolymorphic } from "./applyPolymorphic.ts"
+import { applyPolymorphicWithAnythings } from "./applyPolymorphic.ts"
 import { isValid, validate, validateOrFail } from "./validate.ts"
 
 export function applyWithSchema(
@@ -19,17 +16,7 @@ export function applyWithSchema(
   const context = { schema, target, args }
 
   if (schema.kind === "Polymorphic") {
-    const preludeMod = useBuiltinMod()
-    const anything = modLookupValue(preludeMod, "anything?")
-    assert(anything)
-    return applyWithSchema(
-      applyPolymorphic(
-        schema,
-        schema.parameters.map((_) => anything),
-      ),
-      target,
-      args,
-    )
+    return applyWithSchema(applyPolymorphicWithAnythings(schema), target, args)
   }
 
   if (schema.kind === "VariadicArrow") {

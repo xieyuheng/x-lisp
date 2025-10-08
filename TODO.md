@@ -1,8 +1,3 @@
-quit using do not export `useBuiltinMod`
-do not export `usePreludeMod`
-
-1.careful; cautious; discreet; chary; punctilious
-
 [diary] add note about meta to container schema note
 
 > maybe this should wait after compiler runtime design.
