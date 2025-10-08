@@ -19,6 +19,7 @@ export type Value =
   | Set
   | Hash
   | Lambda
+  | VariadicLambda
   | Thunk
   | PrimitiveFunction
   | PrimitiveThunk
@@ -62,6 +63,32 @@ export function Lambda(
     mod,
     env,
     parameters,
+    body,
+    meta,
+  }
+}
+
+export type VariadicLambda = {
+  kind: "VariadicLambda"
+  mod: Mod
+  env: Env
+  variadicParameter: string
+  body: Exp
+  meta?: Meta
+}
+
+export function VariadicLambda(
+  mod: Mod,
+  env: Env,
+  variadicParameter: string,
+  body: Exp,
+  meta?: Meta,
+): VariadicLambda {
+  return {
+    kind: "VariadicLambda",
+    mod,
+    env,
+    variadicParameter,
     body,
     meta,
   }

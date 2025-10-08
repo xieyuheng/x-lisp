@@ -109,6 +109,10 @@ export function formatValue(value: Value, options: Options = {}): string {
       return `(lambda (${formatExps(value.parameters)}) ${formatBody(value.body)})`
     }
 
+    case "VariadicLambda": {
+      return `(lambda ${value.variadicParameter} ${formatBody(value.body)})`
+    }
+
     case "Thunk": {
       return `(thunk ${formatBody(value.body)})`
     }
