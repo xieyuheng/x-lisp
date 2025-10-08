@@ -1,5 +1,3 @@
-test my-list of arrow
-
 > all polymorphic schema taken function should all `valid?` instead of `apply`
 
 [builtin] `set?` -- call `isValid` instead of `apply`
