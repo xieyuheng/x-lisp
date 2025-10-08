@@ -15,7 +15,13 @@ date: 2025-10-03
 因为 `validate` 在调用 `list?` 的时候，
 不会替换 list 中的元素，也不会对元素做副作用。
 
-- 目前带有副作用的地方只有 tau 的 attributes。
+- 目前带有副作用的地方只有 `tau` 的 attributes。
+  这个行为也是值得质疑的。
+
+  我之所以这样处理了，是因为只有函数 attribute 才会遭受这种副作用。
+  但是即便如此，这已经影响到 `the` 之后 `equal?` 的判断是否不变了。
+  所以这种行为应该是没法接受的。
+  因为这意味着开启 debug，不光影响程序的速度，还改变了而程序的行为。
 
 其他类似 list 的 container 类型都不能支持 arrow。
 
@@ -57,3 +63,36 @@ meta 有两种实现方式：
 另外需要注意 meta 对 `same?` 的影响，
 现在 `same?` 并不是指针之间的相等，
 比如 string 指针不等也可能 same。
+
+问题：
+
+- 但是这个方案好像不太对，
+  因为如果 `the` 带有副作用，
+  那么一个顶层函数，
+  在不同的地方被不同的 `the` 作用，
+  两次 `the` 所声明的类型可能是冲突的！
+
+# 方案 B
+
+只有顶层的函数有 schema 支持，
+放弃其他情况下函数的 schema 支持。
+
+# 本质
+
+从一个角度看，这个问题的本质是 schema 比 predicate 具有更多职责的。
+
+比如：
+
+- isValid -- schema 可以被用作 predicate。
+
+- validate -- 检查数据，不修改数据，找到不匹配的具体位置来报错。
+
+- validate + prune -- 检查数据，并且过滤掉没有在 schema 中被表达出来的字段。
+
+- validate + wrap -- 这是我们遇到的情况，
+  我们需要函数的 arrow schema 可以 wrap 到 lambda 上，
+  在运行 lambda 时，做进一步的 validation。
+
+因为没有静态类型系统，
+我们不能检查函数是否符合 arrow，
+只能做 wrap，然后在运行时做 validation。
