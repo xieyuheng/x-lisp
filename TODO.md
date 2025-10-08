@@ -1,4 +1,3 @@
-int-product
 float-sum
 float-product
 
