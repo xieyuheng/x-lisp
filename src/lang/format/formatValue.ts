@@ -121,6 +121,10 @@ export function formatValue(value: Value, options: Options = {}): string {
       return `${value.name}`
     }
 
+    case "PrimitiveVariadicFunction": {
+      return `${value.name}`
+    }
+
     case "PrimitiveThunk": {
       return `${value.name}`
     }
