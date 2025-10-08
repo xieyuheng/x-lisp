@@ -1,4 +1,7 @@
-[diary] note about variadic function -- 关于为什么要少用
+quit using do not export `useBuiltinMod`
+do not export `usePreludeMod`
+
+1.careful; cautious; discreet; chary; punctilious
 
 [diary] add note about meta to container schema note
 
