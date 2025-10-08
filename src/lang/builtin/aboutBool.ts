@@ -1,5 +1,4 @@
 import { define, definePrimitiveFunction, provide } from "../define/index.ts"
-import { runCode } from "../load/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -14,7 +13,6 @@ export function aboutBool(mod: Mod) {
     return Values.Bool(Values.isBool(value))
   })
 
-  runCode(mod, `(claim not (-> bool? bool?))`)
   definePrimitiveFunction(mod, "not", 1, (value) => {
     return Values.Bool(Values.isFalse(value))
   })

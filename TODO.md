@@ -1,3 +1,5 @@
+`definePrimitiveVariadicFunction`
+
 remove `*-concat` functions
 
 # error report

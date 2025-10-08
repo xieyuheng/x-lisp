@@ -1,3 +1,7 @@
+;; bool
+
+(claim not (-> bool? bool?))
+
 ;; int
 
 (claim int-positive? (-> int? bool?))
