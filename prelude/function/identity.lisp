@@ -1,7 +1,6 @@
 (export
   identity
-  identity-unless
-  constant)
+  identity-unless)
 
 (claim identity
   (polymorphic (A)
@@ -16,10 +15,3 @@
 
 (define (identity-unless b f)
   (if b f identity))
-
-(claim constant
-  (polymorphic (A)
-    (-> A anything?
-        A)))
-
-(define (constant x y) x)

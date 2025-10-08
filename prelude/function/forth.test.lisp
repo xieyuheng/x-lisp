@@ -1,4 +1,4 @@
-(import-all "index")
+(import-all "forth")
 
 (assert-equal 2 (drop (iadd 1) "a" 1))
 (assert-equal 2 ((specific drop int? int?)

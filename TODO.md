@@ -1,6 +1,8 @@
-`compose` -- should be `variadic-lambda`
-`pipe` -- should be `variadic-lambda`
-`union` & `inter` -- should be `variadic-lambda`
+[prelude] `compose` -- should be `variadic-lambda`
+[prelude] `pipe` -- should be `variadic-lambda`
+
+[prelude] setup `schema/`
+[prelude] `union` & `inter` -- should be `variadic-lambda`
 
 sort-order -- `compose-compare`
 remove `*-concat` functions
