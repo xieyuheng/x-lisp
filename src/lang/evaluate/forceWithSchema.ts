@@ -25,6 +25,10 @@ export function forceWithSchema(schema: Value, target: Value): Value {
     return validateOrFail(schema.retSchema, force(target))
   }
 
+  if (schema.kind === "VariadicArrow" && schema.argSchemas.length === 0) {
+    return validateOrFail(schema.retSchema, force(target))
+  }
+
   let message = `[forceWithSchema] unhandled kind of schema\n`
   message += `  schema: ${formatValue(schema)}\n`
   message += `  target: ${formatValue(target)}\n`

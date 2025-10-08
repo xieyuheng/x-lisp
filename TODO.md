@@ -1,16 +1,14 @@
-`forceWithSchema` support `VariadicArrow`
-
 compose pipe union inter -- should be `variadic-lambda`
-
-`compose-compare` -- as `variadic-lambda`
-
-# later
-
-sort-order monad -- compose compare function
+sort-order -- `compose-compare`
+remove `*-concat` functions
 
 # later
 
 ambr put-many put-entries
+
+# error report
+
+fix (validation) error report -- be more clear
 
 # define-object or define-record
 
