@@ -1,6 +1,6 @@
 import assert from "node:assert"
 import { useBuiltinMod } from "../builtin/index.ts"
-import { emptyEnv, envSetValue } from "../env/index.ts"
+import { emptyEnv, envPut } from "../env/index.ts"
 import { modLookupValue } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
@@ -16,7 +16,7 @@ export function applyDataPredicate(
 
   let env = emptyEnv()
   for (const [index, parameter] of predicate.parameters.entries()) {
-    env = envSetValue(env, parameter, args[index])
+    env = envPut(env, parameter, args[index])
   }
 
   const data = args[args.length - 1]

@@ -1,5 +1,5 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
-import { envLookupValue, envSetValue, type Env } from "../env/index.ts"
+import { envLookupValue, envPut, type Env } from "../env/index.ts"
 import { equal } from "../equal/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
@@ -13,7 +13,7 @@ export function match(pattern: Pattern, value: Value): Effect {
       return (env) => {
         const found = envLookupValue(env, pattern.name)
         if (found === undefined) {
-          return envSetValue(env, pattern.name, value)
+          return envPut(env, pattern.name, value)
         }
 
         if (!equal(found, value)) return undefined

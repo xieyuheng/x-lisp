@@ -15,7 +15,7 @@ export function envLookupValue(env: Env, name: string): undefined | Value {
   return env.get(name)
 }
 
-export function envSetValue(env: Env, name: string, value: Value): Env {
+export function envPut(env: Env, name: string, value: Value): Env {
   return new Map([...env, [name, value]])
 }
 
@@ -23,7 +23,7 @@ export function envUpdate(base: Env, env: Env): Env {
   for (const name of envNames(env)) {
     const value = envLookupValue(env, name)
     assert(value)
-    base = envSetValue(base, name, value)
+    base = envPut(base, name, value)
   }
 
   return base

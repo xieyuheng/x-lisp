@@ -1,4 +1,4 @@
-import { envSetValue } from "../env/index.ts"
+import { envPut } from "../env/index.ts"
 import { formatValue, formatValues } from "../format/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
@@ -18,7 +18,7 @@ export function applyPolymorphic(
 
   let env = polymorphic.env
   for (const [index, parameter] of polymorphic.parameters.entries()) {
-    env = envSetValue(env, parameter, args[index])
+    env = envPut(env, parameter, args[index])
   }
 
   return resultValue(evaluate(polymorphic.schema)(polymorphic.mod, env))

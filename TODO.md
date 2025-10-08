@@ -1,5 +1,3 @@
-ambr envSetValue envPut
-
 `variadic-arrow` -- `*->`
 
 compose pipe union inter -- should be `variadic-lambda`
