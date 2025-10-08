@@ -1,1 +1,1 @@
-(include-all "compose-compare")
+(include-all "chain-compare")

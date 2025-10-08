@@ -484,7 +484,7 @@ null
 (sort-order-negate order)
 (sort-order-reverse compare x y)
 ;; prelude
-(compose-compare ...fs)
+(chain-compare ...fs)
 ```
 
 ### Pretty

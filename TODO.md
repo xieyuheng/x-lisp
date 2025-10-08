@@ -4,7 +4,7 @@ remove `*-concat` functions
 
 # error report
 
-fix (validation) error report -- be more clear
+fix (validation) error report -- be more clear about args
 
 # define-object or define-record
 
