@@ -1,3 +1,21 @@
+[diary] note about variadic function -- 关于为什么要少用
+
+[diary] add note about meta to container schema note
+
+> maybe this should wait after compiler runtime design.
+
+list all existing constructors and eliminators
+
+support `meta`
+
+- be careful about the meaning of `same?` now,
+  even for string, it is already not just pointer equality.
+
+wrap every value in `meta` during debug
+suppor `(list? (-> A B))` by side effect
+
+# prelude
+
 int-sum -- take list
 int-product -- take list
 
@@ -15,16 +33,6 @@ fix (validation) error report -- be more clear about args
 
 add `ThePattern` to `Pattern`
 
-# meta
+# schema
 
-> maybe this should wait after compiler runtime design.
-
-list all existing constructors and eliminators
-
-support `meta`
-
-- be careful about the meaning of `same?` now,
-  even for string, it is already not just pointer equality.
-
-wrap every value in `meta` during debug
-suppor `(list? (-> A B))` by side effect
+`->` use `validate` instead of `apply` -- to support non predicate schema
