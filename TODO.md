@@ -10,19 +10,6 @@ fix (validation) error report -- be more clear about args
 
 add `ThePattern` to `Pattern`
 
-# generic
-
-note about `define-generic`
-
-need to be able to use arrow as predicates to check arguments one by one.
-
-```scheme
-(define-generic add :arity 2)
-
-(define-case add (-> int? int? int?)
-  (lambda (x y) (iadd x y)))
-```
-
 # meta
 
 > maybe this should wait after compiler runtime design.
