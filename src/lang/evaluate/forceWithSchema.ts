@@ -25,7 +25,7 @@ export function forceWithSchema(schema: Value, target: Value): Value {
     return validateOrFail(schema.retSchema, force(target))
   }
 
-  if (schema.kind === "VariadicArrow" && schema.argSchemas.length === 0) {
+  if (schema.kind === "VariadicArrow") {
     return validateOrFail(schema.retSchema, force(target))
   }
 
