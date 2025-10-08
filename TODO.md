@@ -1,5 +1,3 @@
-parse `variadic-arrow` -- `*->`
-
 `applyWithSchema` support `VariadicArrow`
 `forceWithSchema` support `VariadicArrow`
 

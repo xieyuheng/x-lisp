@@ -131,9 +131,18 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   }),
 
   X.matcher("(cons* '-> exps)", ({ exps }, { meta }) => {
-    const [args, ret] = arrayPickLast(X.listElements(exps).map(matchExp))
-    return Exps.Arrow(args, ret, meta)
+    const [argSchemas, retSchema] = arrayPickLast(
+      X.listElements(exps).map(matchExp),
+    )
+    return Exps.Arrow(argSchemas, retSchema, meta)
   }),
+
+  X.matcher(
+    "`(*-> ,argSchema ,retSchema)",
+    ({ argSchema, retSchema }, { meta }) => {
+      return Exps.VariadicArrow(matchExp(argSchema), matchExp(retSchema), meta)
+    },
+  ),
 
   X.matcher("(cons* 'assert exps)", ({ exps }, { meta }) => {
     const args = X.listElements(exps).map(matchExp)
