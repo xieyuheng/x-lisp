@@ -3,7 +3,7 @@ import type { Exp } from "../exp/index.ts"
 import type { Mod } from "../mod/index.ts"
 import type { Attributes, Value } from "./Value.ts"
 
-export type AboutSchema = Arrow | The | Tau | Polymorphic
+export type AboutSchema = Arrow | VariadicArrow | The | Tau | Polymorphic
 
 export type Arrow = {
   kind: "Arrow"
@@ -15,6 +15,23 @@ export function Arrow(argSchemas: Array<Value>, retSchema: Value): Arrow {
   return {
     kind: "Arrow",
     argSchemas,
+    retSchema,
+  }
+}
+
+export type VariadicArrow = {
+  kind: "VariadicArrow"
+  argSchema: Value
+  retSchema: Value
+}
+
+export function VariadicArrow(
+  argSchema: Value,
+  retSchema: Value,
+): VariadicArrow {
+  return {
+    kind: "VariadicArrow",
+    argSchema,
     retSchema,
   }
 }

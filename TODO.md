@@ -1,4 +1,6 @@
-`variadic-arrow` -- `*->`
+`VariadicArrow` as `Exp`
+parse `variadic-arrow` -- `*->`
+`applyWithSchema` support `VariadicArrow`
 
 compose pipe union inter -- should be `variadic-lambda`
 
@@ -8,11 +10,25 @@ compose pipe union inter -- should be `variadic-lambda`
 
 sort-order monad -- compose compare function
 
+# later
+
+ambr put-many put-entries
+
+# define-object or define-record
+
+[maybe] `define-data` with single clause
+
+- record this idea in diary
+
+define-record
+
 # pattern
 
 add `ThePattern` to `Pattern`
 
 # generic
+
+need to be able to use arrow as predicates to check arguments one by one.
 
 ```scheme
 (define-generic add :arity 2)

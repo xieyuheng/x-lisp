@@ -155,6 +155,12 @@ export function formatValue(value: Value, options: Options = {}): string {
       }
     }
 
+    case "VariadicArrow": {
+      const argSchema = formatValue(value.argSchema, options)
+      const retSchema = formatValue(value.retSchema, options)
+      return `(*-> ${argSchema} ${retSchema})`
+    }
+
     case "The": {
       const schemaString = formatValue(value.schema, options)
       const valueString = formatValue(value.value, options)
