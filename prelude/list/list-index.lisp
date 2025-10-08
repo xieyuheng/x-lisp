@@ -1,6 +1,7 @@
-(export list-index)
-
+(import-all "../schema")
 (import-all "list-find-index")
+
+(export list-index)
 
 (claim list-index
   (polymorphic (A)

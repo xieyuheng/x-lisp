@@ -114,14 +114,6 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Or(X.listElements(exps).map(matchExp), meta)
   }),
 
-  X.matcher("(cons* 'union exps)", ({ exps }, { meta }) => {
-    return Exps.Union(X.listElements(exps).map(matchExp), meta)
-  }),
-
-  X.matcher("(cons* 'inter exps)", ({ exps }, { meta }) => {
-    return Exps.Inter(X.listElements(exps).map(matchExp), meta)
-  }),
-
   X.matcher("(cons* '-> exps)", ({ exps }, { meta }) => {
     const [argSchemas, retSchema] = arrayPickLast(
       X.listElements(exps).map(matchExp),

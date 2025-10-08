@@ -1,4 +1,5 @@
 (import-all "../function")
+(import-all "../schema")
 (import-all "record-select")
 
 (assert-equal

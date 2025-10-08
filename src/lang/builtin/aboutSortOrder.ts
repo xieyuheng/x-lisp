@@ -13,11 +13,11 @@ export function aboutSortOrder(mod: Mod) {
   sort-order-reverse
   sort-order-negate)
 
-(define sort-order?
-  (union
-    sort-order-before?
-    sort-order-same?
-    sort-order-after?))
+(define (sort-order? x)
+  (or
+    (sort-order-before? x)
+    (sort-order-same? x)
+    (sort-order-after? x)))
 
 (define sort-order-before? (equal? -1))
 (define sort-order-same? (equal? 0))

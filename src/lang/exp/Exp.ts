@@ -31,8 +31,6 @@ export type Exp =
   | Or
   | Cond
   | Match
-  | Union
-  | Inter
   | Arrow
   | VariadicArrow
   | Tau
@@ -429,34 +427,6 @@ export function Match(
     kind: "Match",
     target,
     matchLines,
-    meta,
-  }
-}
-
-export type Union = {
-  kind: "Union"
-  exps: Array<Exp>
-  meta: Meta
-}
-
-export function Union(exps: Array<Exp>, meta: Meta): Union {
-  return {
-    kind: "Union",
-    exps,
-    meta,
-  }
-}
-
-export type Inter = {
-  kind: "Inter"
-  exps: Array<Exp>
-  meta: Meta
-}
-
-export function Inter(exps: Array<Exp>, meta: Meta): Inter {
-  return {
-    kind: "Inter",
-    exps,
     meta,
   }
 }

@@ -1,8 +1,6 @@
 import * as X from "@xieyuheng/x-data.js"
-import assert from "node:assert"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMapValue } from "../../utils/record/recordMapValue.ts"
-import { useBuiltinMod } from "../builtin/index.ts"
 import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue, formatValues } from "../format/index.ts"
@@ -330,30 +328,6 @@ export function evaluate(exp: Exp): Effect {
         let message = `[evaluate] (match) mismatch\n`
         message += `  target: ${formatValue(target)}\n`
         throw new X.ErrorWithMeta(message, exp.meta)
-      }
-    }
-
-    case "Union": {
-      return (mod, env) => {
-        const builtinMod = useBuiltinMod()
-        const value = modLookupValue(builtinMod, "union-fn")
-        assert(value)
-        const predicates = exp.exps.map((e) =>
-          resultValue(evaluate(e)(mod, env)),
-        )
-        return [env, apply(value, [Values.List(predicates)])]
-      }
-    }
-
-    case "Inter": {
-      return (mod, env) => {
-        const builtinMod = useBuiltinMod()
-        const value = modLookupValue(builtinMod, "inter-fn")
-        assert(value)
-        const predicates = exp.exps.map((e) =>
-          resultValue(evaluate(e)(mod, env)),
-        )
-        return [env, apply(value, [Values.List(predicates)])]
       }
     }
 

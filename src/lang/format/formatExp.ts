@@ -153,24 +153,6 @@ export function formatExp(exp: Exp): string {
       return `(match ${formatExp(exp.target)} ${matchLines.join(" ")})`
     }
 
-    case "Union": {
-      const exps = formatExps(exp.exps)
-      if (exps === "") {
-        return `(union)`
-      } else {
-        return `(union ${exps})`
-      }
-    }
-
-    case "Inter": {
-      const exps = formatExps(exp.exps)
-      if (exps === "") {
-        return `(inter)`
-      } else {
-        return `(inter ${exps})`
-      }
-    }
-
     case "Arrow": {
       const argSchemas = formatExps(exp.argSchemas)
       const retSchema = formatExp(exp.retSchema)
