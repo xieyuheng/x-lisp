@@ -1,4 +1,4 @@
-`apply` -- `VariadicLambda`
+ambr envSetValue envPut
 
 `variadic-arrow` -- `*->`
 

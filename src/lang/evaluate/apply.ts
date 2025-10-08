@@ -11,6 +11,7 @@ import { applyDataGetter } from "./applyDataGetter.ts"
 import { applyDataPredicate } from "./applyDataPredicate.ts"
 import { applyDataPutter } from "./applyDataPutter.ts"
 import { applyLambda } from "./applyLambda.ts"
+import { applyVariadicLambda } from "./applyVariadicLambda.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
 import { force } from "./force.ts"
 import { supply } from "./supply.ts"
@@ -48,6 +49,10 @@ export function apply(target: Value, args: Array<Value>): Value {
     } else {
       return supply(target, arity, args)
     }
+  }
+
+  if (target.kind === "VariadicLambda") {
+    return applyVariadicLambda(target, args)
   }
 
   if (target.kind === "The") {
