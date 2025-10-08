@@ -183,15 +183,6 @@ export function formatExp(exp: Exp): string {
       return `(&-> ${argSchema} ${retSchema})`
     }
 
-    case "Compose": {
-      const exps = formatExps(exp.exps)
-      if (exps === "") {
-        return `(compose)`
-      } else {
-        return `(compose ${exps})`
-      }
-    }
-
     case "Pipe": {
       const arg = formatExp(exp.arg)
       const exps = formatExps(exp.exps)

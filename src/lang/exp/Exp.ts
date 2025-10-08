@@ -35,7 +35,6 @@ export type Exp =
   | Inter
   | Arrow
   | VariadicArrow
-  | Compose
   | Pipe
   | Tau
   | The
@@ -499,20 +498,6 @@ export function VariadicArrow(
     kind: "VariadicArrow",
     argSchema,
     retSchema,
-    meta,
-  }
-}
-
-export type Compose = {
-  kind: "Compose"
-  exps: Array<Exp>
-  meta: Meta
-}
-
-export function Compose(exps: Array<Exp>, meta: Meta): Compose {
-  return {
-    kind: "Compose",
-    exps,
     meta,
   }
 }

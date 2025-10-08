@@ -96,7 +96,6 @@ See examples at:
 (or <exps>)
 (union <exps>)
 (inter <exps>)
-(compose <exps>)
 (pipe <arg> <exps>)
 (assert <exp>)
 (assert-not <exp>)
@@ -445,7 +444,6 @@ null
 ```lisp
 (apply f args)
 (pipe-fn x fs)
-(compose-fn fs x)
 ;; prelude
 (identity x)
 (identity-unless b f)
@@ -454,6 +452,7 @@ null
 (swap f)
 (drop f)
 (dup f)
+(compose ...fs)
 ```
 
 ### Format

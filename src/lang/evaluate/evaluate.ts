@@ -375,16 +375,6 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
-    case "Compose": {
-      return (mod, env) => {
-        const builtinMod = useBuiltinMod()
-        const value = modLookupValue(builtinMod, "compose-fn")
-        assert(value)
-        const fs = exp.exps.map((e) => resultValue(evaluate(e)(mod, env)))
-        return [env, apply(value, [Values.List(fs)])]
-      }
-    }
-
     case "Pipe": {
       return (mod, env) => {
         const builtinMod = useBuiltinMod()
