@@ -71,7 +71,6 @@ See examples at:
 ```lisp
 (lambda (<parameters>) <body>)
 (thunk <body>)
-(lazy <exp>)
 (= <lhs> <rhs>)
 (the <schema> <exp>)
 (@tael <elements> <attributes>)
@@ -94,9 +93,6 @@ See examples at:
 (unless <condition> <consequent>)
 (and <exps>)
 (or <exps>)
-(union <exps>)
-(inter <exps>)
-(pipe <arg> <exps>)
 (assert <exp>)
 (assert-not <exp>)
 (assert-equal <lhs> <rhs>)
@@ -353,9 +349,10 @@ false
 ### Predicate
 
 ```lisp
+;; prelude
 (negate p x)
-(union-fn ps x)
-(inter-fn ps x)
+(union ...ps x)
+(inter ...ps x)
 ```
 
 ### Sexp
