@@ -465,32 +465,40 @@ export function Inter(exps: Array<Exp>, meta: Meta): Inter {
 
 export type Arrow = {
   kind: "Arrow"
-  args: Array<Exp>
-  ret: Exp
+  argSchemas: Array<Exp>
+  retSchema: Exp
   meta: Meta
 }
 
-export function Arrow(args: Array<Exp>, ret: Exp, meta: Meta): Arrow {
+export function Arrow(
+  argSchemas: Array<Exp>,
+  retSchema: Exp,
+  meta: Meta,
+): Arrow {
   return {
     kind: "Arrow",
-    args,
-    ret,
+    argSchemas,
+    retSchema,
     meta,
   }
 }
 
 export type VariadicArrow = {
   kind: "VariadicArrow"
-  arg: Exp
-  ret: Exp
+  argSchema: Exp
+  retSchema: Exp
   meta: Meta
 }
 
-export function VariadicArrow(arg: Exp, ret: Exp, meta: Meta): VariadicArrow {
+export function VariadicArrow(
+  argSchema: Exp,
+  retSchema: Exp,
+  meta: Meta,
+): VariadicArrow {
   return {
     kind: "VariadicArrow",
-    arg,
-    ret,
+    argSchema,
+    retSchema,
     meta,
   }
 }

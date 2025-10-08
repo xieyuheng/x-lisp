@@ -359,17 +359,19 @@ export function evaluate(exp: Exp): Effect {
 
     case "Arrow": {
       return (mod, env) => {
-        const args = exp.args.map((e) => resultValue(evaluate(e)(mod, env)))
-        const ret = resultValue(evaluate(exp.ret)(mod, env))
-        return [env, Values.Arrow(args, ret)]
+        const argSchemas = exp.argSchemas.map((e) =>
+          resultValue(evaluate(e)(mod, env)),
+        )
+        const retSchema = resultValue(evaluate(exp.retSchema)(mod, env))
+        return [env, Values.Arrow(argSchemas, retSchema)]
       }
     }
 
     case "VariadicArrow": {
       return (mod, env) => {
-        const arg = resultValue(evaluate(exp.arg)(mod, env))
-        const ret = resultValue(evaluate(exp.ret)(mod, env))
-        return [env, Values.VariadicArrow(arg, ret)]
+        const argSchema = resultValue(evaluate(exp.argSchema)(mod, env))
+        const retSchema = resultValue(evaluate(exp.retSchema)(mod, env))
+        return [env, Values.VariadicArrow(argSchema, retSchema)]
       }
     }
 

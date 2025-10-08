@@ -172,15 +172,15 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Arrow": {
-      const args = formatExps(exp.args)
-      const ret = formatExp(exp.ret)
-      return `(-> ${args} ${ret})`
+      const argSchemas = formatExps(exp.argSchemas)
+      const retSchema = formatExp(exp.retSchema)
+      return `(-> ${argSchemas} ${retSchema})`
     }
 
     case "VariadicArrow": {
-      const arg = formatExp(exp.arg)
-      const ret = formatExp(exp.ret)
-      return `(&-> ${arg} ${ret})`
+      const argSchema = formatExp(exp.argSchema)
+      const retSchema = formatExp(exp.retSchema)
+      return `(&-> ${argSchema} ${retSchema})`
     }
 
     case "Compose": {

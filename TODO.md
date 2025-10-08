@@ -1,5 +1,3 @@
-`Exp` -- fix name of `Arrow` properties
-
 parse `variadic-arrow` -- `*->`
 
 `applyWithSchema` support `VariadicArrow`
