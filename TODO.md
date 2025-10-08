@@ -1,6 +1,8 @@
-`apply` -- handle `PrimitiveVariadicFunction`
+int-sum -- take list
+int-product -- take list
 
-remove `*-concat` functions
+float-sum -- take list
+float-product -- take list
 
 # error report
 

@@ -11,14 +11,6 @@ export function definePrimitiveFunction(
   define(mod, name, Values.PrimitiveFunction(name, arity, fn))
 }
 
-export function definePrimitiveVariadicFunction(
-  mod: Mod,
-  name: string,
-  fn: Values.ValueFunction,
-): void {
-  define(mod, name, Values.PrimitiveVariadicFunction(name, fn))
-}
-
 export function definePrimitiveThunk(
   mod: Mod,
   name: string,

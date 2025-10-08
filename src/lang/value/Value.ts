@@ -22,7 +22,6 @@ export type Value =
   | VariadicLambda
   | Thunk
   | PrimitiveFunction
-  | PrimitiveVariadicFunction
   | PrimitiveThunk
   | Curried
   | Pattern
@@ -131,22 +130,6 @@ export function PrimitiveFunction(
     kind: "PrimitiveFunction",
     name,
     arity,
-    fn,
-  }
-}
-export type PrimitiveVariadicFunction = {
-  kind: "PrimitiveVariadicFunction"
-  name: string
-  fn: ValueFunction
-}
-
-export function PrimitiveVariadicFunction(
-  name: string,
-  fn: ValueFunction,
-): PrimitiveVariadicFunction {
-  return {
-    kind: "PrimitiveVariadicFunction",
-    name,
     fn,
   }
 }
