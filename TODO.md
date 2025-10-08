@@ -1,5 +1,3 @@
-`definePrimitiveVariadicFunction`
-
 `apply` -- handle `PrimitiveVariadicFunction`
 
 remove `*-concat` functions
