@@ -1,7 +1,3 @@
-[utils] setup ppml
-
-- with note -- learned from: christian-lindig/2000-stricty-pretty
-
 [utils] ppml-node
 
 [utils] formatLeftMargin -- remove indent
