@@ -161,7 +161,7 @@ export function formatExp(exp: Exp): string {
     case "VariadicArrow": {
       const argSchema = formatExp(exp.argSchema)
       const retSchema = formatExp(exp.retSchema)
-      return `(&-> ${argSchema} ${retSchema})`
+      return `(*-> ${argSchema} ${retSchema})`
     }
 
     case "Tau": {
