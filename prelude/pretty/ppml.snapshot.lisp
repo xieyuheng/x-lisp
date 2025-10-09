@@ -1,3 +1,6 @@
+(import-all "../function")
+(import-all "../string")
+(import-all "../list")
 (import-all "ppml")
 
 (define example-node
@@ -17,6 +20,13 @@
     (break-node " ")
     (text-node "end")]))
 
-(writeln (ppml-format 30 example-node))
-(writeln (ppml-format 20 example-node))
-(writeln (ppml-format 10 example-node))
+(define (test-widths widths node)
+  (pipe widths
+    (list-each
+     (lambda (width)
+       (write (string-repeat width "-"))
+       (write "|")
+       (writeln (format width))
+       (writeln (ppml-format width node))))))
+
+(test-widths [30 20 10] example-node)

@@ -11,7 +11,7 @@ function testExps(code: string) {
   const widths = [30, 20, 13, 10, 5]
   for (const exp of exps) {
     for (const width of widths) {
-      console.log("-".repeat(width) + "|", width)
+      console.log(`${"-".repeat(width)}|${width}`)
       console.log(prettyFormatExp(width, exp))
     }
   }
