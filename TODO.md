@@ -1,6 +1,5 @@
 # utils
 
-[ppml] test
 [ppml] copy `utils/ppml` to utils.js
 
 # pretty print
