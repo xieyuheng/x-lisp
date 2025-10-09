@@ -1,5 +1,3 @@
-note about comment and code formatting
-
 # pretty print
 
 `prettyFormatExp`
