@@ -5,15 +5,13 @@ const exampleNode = pp.concat(
   pp.text("begin"),
   pp.indent(
     3,
-    pp.concat(
+    pp.br(),
+    pp.group(
+      pp.text("stmt"),
       pp.br(),
-      pp.group(
-        pp.text("stmt"),
-        pp.br(),
-        pp.text("stmt"),
-        pp.br(),
-        pp.text("stmt"),
-      ),
+      pp.text("stmt"),
+      pp.br(),
+      pp.text("stmt"),
     ),
   ),
   pp.br(),

@@ -8,63 +8,38 @@ export function prettyFormatExp(maxWidth: number, exp: Exp): string {
 }
 
 export function renderExps(exps: Array<Exp>): pp.Node {
-  if (exps.length === 0) return pp.NullNode()
+  if (exps.length === 0) return pp.nil()
   else if (exps.length === 1) return renderExp(exps[0])
-  else
-    return pp.concat(
-      renderExp(exps[0]),
-      pp.BreakNode(" "),
-      renderExps(exps.slice(1)),
-    )
+  else return pp.concat(renderExp(exps[0]), pp.br(), renderExps(exps.slice(1)))
 }
 
 export function renderExp(exp: Exp): pp.Node {
   if (isAtom(exp)) {
-    return pp.TextNode(formatAtom(exp))
+    return pp.text(formatAtom(exp))
   }
 
   switch (exp.kind) {
     case "Var": {
-      return pp.TextNode(exp.name)
+      return pp.text(exp.name)
     }
 
     case "Lambda": {
-      return pp.GroupNode(
-        pp.concat(
-          pp.TextNode("(lambda"),
-          pp.GroupNode(
-            pp.concat(
-              pp.TextNode("("),
-              renderExps(exp.parameters),
-              pp.TextNode(")"),
-            ),
-          ),
-          pp.IndentNode(
-            2,
-            pp.GroupNode(
-              pp.concat(
-                pp.BreakNode(" "),
-                renderExp(exp.body),
-                pp.TextNode(")"),
-              ),
-            ),
-          ),
-        ),
+      return pp.group(
+        pp.text("(lambda"),
+        pp.group(pp.text("("), renderExps(exp.parameters), pp.text(")")),
+        pp.indent(2, pp.group(pp.br(), renderExp(exp.body), pp.text(")"))),
       )
     }
 
     case "VariadicLambda": {
-      return pp.NullNode()
       // return `(lambda ${exp.variadicParameter} ${formatBody(exp.body)})`
     }
 
     case "Thunk": {
-      return pp.NullNode()
       // return `(thunk ${formatBody(exp.body)})`
     }
 
     case "Apply": {
-      return pp.NullNode()
       // const target = formatExp(exp.target)
       // const args = formatExps(exp.args)
       // if (args === "") {
@@ -75,43 +50,35 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Begin": {
-      return pp.NullNode()
       // const sequence = formatExps(exp.sequence)
       // return `(begin ${sequence})`
     }
 
     case "Assign": {
-      return pp.NullNode()
       // return `(= ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
     }
 
     case "Assert": {
-      return pp.NullNode()
       // return `(assert ${formatExp(exp.exp)})`
     }
 
     case "AssertNot": {
-      return pp.NullNode()
       // return `(assert-not ${formatExp(exp.exp)})`
     }
 
     case "AssertEqual": {
-      return pp.NullNode()
       // return `(assert-equal ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
     }
 
     case "AssertNotEqual": {
-      return pp.NullNode()
       // return `(assert-not-equal ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
     }
 
     case "AssertThe": {
-      return pp.NullNode()
       // return `(assert-the ${formatExp(exp.schema)} ${formatExp(exp.exp)})`
     }
 
     case "Tael": {
-      return pp.NullNode()
       // const elements = formatExps(exp.elements)
       // const attributes = formatExpAttributes(exp.attributes)
       // if (elements === "" && attributes === "") {
@@ -126,13 +93,11 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Set": {
-      return pp.NullNode()
       // const elements = formatExps(exp.elements)
       // return `{${elements}}`
     }
 
     case "Hash": {
-      return pp.NullNode()
       // const entries = exp.entries
       //   .map(({ key, value }) => `${formatExp(key)} ${formatExp(value)}`)
       //   .join(" ")
@@ -144,32 +109,26 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Quote": {
-      return pp.NullNode()
       // return `(@quote ${formatSexp(exp.sexp)})`
     }
 
     case "Quasiquote": {
-      return pp.NullNode()
       // return `(@quasiquote ${formatSexp(exp.sexp)})`
     }
 
     case "If": {
-      return pp.NullNode()
       // return `(if ${formatExp(exp.condition)} ${formatExp(exp.consequent)} ${formatExp(exp.alternative)})`
     }
 
     case "When": {
-      return pp.NullNode()
       // return `(when ${formatExp(exp.condition)} ${formatExp(exp.consequent)})`
     }
 
     case "Unless": {
-      return pp.NullNode()
       // return `(unless ${formatExp(exp.condition)} ${formatExp(exp.consequent)})`
     }
 
     case "And": {
-      return pp.NullNode()
       // const exps = formatExps(exp.exps)
       // if (exps === "") {
       //   return `(and)`
@@ -179,7 +138,6 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Or": {
-      return pp.NullNode()
       // const exps = formatExps(exp.exps)
       // if (exps === "") {
       //   return `(or)`
@@ -189,7 +147,6 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Cond": {
-      return pp.NullNode()
       // const condLines = exp.condLines.map(formatCondLine)
       // return `(cond ${condLines.join(" ")})`
     }
@@ -240,7 +197,7 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Specific": {
-      return pp.NullNode()
+      return pp.nil()
       // const target = formatExp(exp.target)
       // const args = formatExps(exp.args)
       // return `(ppecific ${target} ${args}`
