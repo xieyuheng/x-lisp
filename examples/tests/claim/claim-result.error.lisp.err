@@ -1,6 +1,6 @@
 [applyWithSchema] fail on result
   schema: (-> int? int? int?)
-  target: (lambda (x y) 'abc)
+  target: (lambda (x y) (@quote abc))
   args: [1 1]
   result: 'abc
 

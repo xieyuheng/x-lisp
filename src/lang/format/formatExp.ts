@@ -1,4 +1,3 @@
-import { formatData } from "@xieyuheng/x-data.js"
 import { type CondLine, type MatchLine } from "../../lang/exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatAtom, formatSexp } from "../format/index.ts"
@@ -106,11 +105,11 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Quote": {
-      return formatData(exp.sexp)
+      return `(@quote ${formatSexp(exp.sexp)})`
     }
 
     case "Quasiquote": {
-      return `(quasiquote ${formatSexp(exp.sexp)})`
+      return `(@quasiquote ${formatSexp(exp.sexp)})`
     }
 
     case "If": {
