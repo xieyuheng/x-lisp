@@ -80,6 +80,33 @@ function layout(
 }
 
 function fitInline(width: number, nodes: Array<PPML.Node>): boolean {
-  // TODO
-  return true
+  if (width < 0) return false
+  if (nodes.length === 0) return true
+
+  const [node, ...restNodes] = nodes
+  switch (node.kind) {
+    case "NullNode": {
+      return fitInline(width, restNodes)
+    }
+
+    case "TextNode": {
+      return fitInline(width - node.content.length, restNodes)
+    }
+
+    case "AppendNode": {
+      return fitInline(width, [node.leftChild, node.rightChild, ...restNodes])
+    }
+
+    case "IndentNode": {
+      return fitInline(width, [node.child, ...restNodes])
+    }
+
+    case "BreakNode": {
+      return fitInline(width - node.space.length, restNodes)
+    }
+
+    case "GroupNode": {
+      return fitInline(width, [node.child, ...restNodes])
+    }
+  }
 }

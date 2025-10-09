@@ -1,10 +1,7 @@
 # utils
 
-[ppml] `fitInline`
-
-[format] `formatLeftMargin` -- remove `indent`
-[format] `formatLeftPad` -- remove `leftPad`
-[format] copy `utils/ppml` to utils.js
+[ppml] test
+[ppml] copy `utils/ppml` to utils.js
 
 # pretty print
 
@@ -15,3 +12,8 @@ setup `pretty/`
 `prettyFormatExp`
 
 use pretty print in error report
+
+# later
+
+[format] `formatLeftMargin`
+[format] remove `indent`
