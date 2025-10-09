@@ -1,14 +1,8 @@
-# utils
-
-[ppml] copy `utils/ppml` to utils.js
-
 # pretty print
 
-setup `pretty/`
-
-`prettyFormatValue`
 `prettyFormatSexp`
 `prettyFormatExp`
+`prettyFormatValue`
 
 use pretty print in error report
 
