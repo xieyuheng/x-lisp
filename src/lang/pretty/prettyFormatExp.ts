@@ -25,9 +25,8 @@ export function renderExp(exp: Exp): pp.Node {
 
     case "Lambda": {
       return pp.group(
-        pp.text("("),
         pp.group(
-          pp.text("lambda"),
+          pp.text("(lambda"),
           pp.indent(
             4,
             pp.br(),
@@ -44,8 +43,10 @@ export function renderExp(exp: Exp): pp.Node {
 
     case "VariadicLambda": {
       return pp.group(
-        pp.text("(lambda"),
-        pp.indent(4, pp.br(), pp.text(exp.variadicParameter)),
+        pp.group(
+          pp.text("(lambda"),
+          pp.indent(4, pp.br(), pp.text(exp.variadicParameter)),
+        ),
         pp.indent(2, pp.br(), pp.group(renderBody(exp.body), pp.text(")"))),
       )
     }
@@ -108,7 +109,8 @@ export function renderExp(exp: Exp): pp.Node {
     case "AssertEqual": {
       return pp.group(
         pp.text("(assert-equal"),
-        pp.indent(2, pp.br(), renderExp(exp.lhs), pp.br(), renderExp(exp.rhs)),
+        pp.indent(2, pp.br(), renderExp(exp.lhs)),
+        pp.indent(2, pp.br(), renderExp(exp.rhs)),
         pp.text(")"),
       )
     }
@@ -116,7 +118,8 @@ export function renderExp(exp: Exp): pp.Node {
     case "AssertNotEqual": {
       return pp.group(
         pp.text("(assert-not-equal"),
-        pp.indent(2, pp.br(), renderExp(exp.lhs), pp.br(), renderExp(exp.rhs)),
+        pp.indent(2, pp.br(), renderExp(exp.lhs)),
+        pp.indent(2, pp.br(), renderExp(exp.rhs)),
         pp.text(")"),
       )
     }
@@ -124,13 +127,8 @@ export function renderExp(exp: Exp): pp.Node {
     case "AssertThe": {
       return pp.group(
         pp.text("(assert-the"),
-        pp.indent(
-          2,
-          pp.br(),
-          renderExp(exp.schema),
-          pp.br(),
-          renderExp(exp.exp),
-        ),
+        pp.indent(2, pp.br(), renderExp(exp.schema)),
+        pp.indent(2, pp.br(), renderExp(exp.exp)),
         pp.text(")"),
       )
     }
@@ -150,8 +148,11 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Set": {
-      // const elements = formatExps(exp.elements)
-      // return `{${elements}}`
+      return pp.group(
+        pp.text("{"),
+        pp.indent(1, renderExps(exp.elements)),
+        pp.text("}"),
+      )
     }
 
     case "Hash": {
@@ -170,11 +171,20 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Quasiquote": {
+      return pp.text("TODO")
       // return `(@quasiquote ${formatSexp(exp.sexp)})`
     }
 
     case "If": {
-      // return `(if ${formatExp(exp.condition)} ${formatExp(exp.consequent)} ${formatExp(exp.alternative)})`
+      return pp.group(
+        pp.group(
+          pp.text("(if"),
+          pp.indent(4, pp.br(), renderExp(exp.condition)),
+        ),
+        pp.indent(2, pp.br(), renderExp(exp.consequent)),
+        pp.indent(2, pp.br(), renderExp(exp.alternative)),
+        pp.text(")"),
+      )
     }
 
     case "When": {
@@ -226,6 +236,7 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Tau": {
+      return pp.text("TODO")
       // const elementSchemas = formatExps(exp.elementSchemas)
       // const attributeSchemas = formatExpAttributes(exp.attributeSchemas)
       // if (elementSchemas === "" && attributeSchemas === "") {
@@ -240,7 +251,11 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "The": {
-      // return `(the ${formatExp(exp.schema)} ${formatExp(exp.exp)})`
+      return pp.group(
+        pp.group(pp.text("(the"), pp.indent(4, pp.br(), renderExp(exp.schema))),
+        pp.indent(2, pp.br(), renderExp(exp.exp)),
+        pp.text(")"),
+      )
     }
 
     case "Pattern": {
@@ -248,6 +263,7 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Polymorphic": {
+      return pp.text("TODO")
       // const parameters = exp.parameters.join(" ")
       // const schema = formatExp(exp.schema)
       // return `(polymorphic (${parameters}) ${schema}`

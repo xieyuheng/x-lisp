@@ -34,3 +34,7 @@ test("prettyFormatExp", () => {
   new-hash)
 `)
 })
+
+test("prettyFormatExp -- set", () => {
+  testExps(`{{1 2 3} {4 5 6} {7 8 9}}`)
+})
