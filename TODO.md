@@ -1,6 +1,5 @@
 # utils
 
-[ppml] `GroupingMode`
 [ppml] `format`
 [ppml] `LayoutTarget`
 [ppml] `layout`
