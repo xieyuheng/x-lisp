@@ -1,5 +1,3 @@
-[prelude] inter and negate and union -- call `valid?` instead of `apply`
-
 # error report
 
 fix (validation) error report -- be more clear about args
