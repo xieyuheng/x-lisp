@@ -38,13 +38,13 @@
   (= target [0 grouping-inline (group-node node)])
   (layout max-width 0 [target]))
 
-(define layouting-target?
+(define layout-target?
   (tau int-non-negative? grouping-mode? ppml-node?))
 
 (claim layout
   (-> int-non-negative?
       int-non-negative?
-      (list? layouting-target?)
+      (list? layout-target?)
       string?))
 
 (define (layout max-width cursor targets)
