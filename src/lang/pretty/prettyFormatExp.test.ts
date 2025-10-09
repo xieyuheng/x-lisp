@@ -8,7 +8,7 @@ function testExps(code: string) {
   const sexps = X.parseDataArray(code)
   const exps = sexps.map<Exp>(matchExp)
 
-  const widths = [30, 20, 13, 10]
+  const widths = [30, 20, 13, 10, 5]
   for (const exp of exps) {
     for (const width of widths) {
       console.log("-".repeat(width) + "|", width)
@@ -18,7 +18,6 @@ function testExps(code: string) {
 }
 
 test("prettyFormatExp", () => {
-  testExps(`
-(lambda (f x y) (f y x))
-`)
+  testExps(`(lambda (f x y) (f y x))`)
+  testExps(`(lambda (f x y) (begin (f y x)))`)
 })

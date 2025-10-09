@@ -31,7 +31,11 @@ export function renderExp(exp: Exp): pp.Node {
           pp.indent(
             4,
             pp.br(),
-            pp.group(pp.text("("), renderExps(exp.parameters), pp.text(")")),
+            pp.group(
+              pp.text("("),
+              pp.indent(1, renderExps(exp.parameters)),
+              pp.text(")"),
+            ),
           ),
         ),
         pp.indent(2, pp.br(), pp.group(renderBody(exp.body), pp.text(")"))),
@@ -59,13 +63,17 @@ export function renderExp(exp: Exp): pp.Node {
       if (exp.args.length === 0) {
         return pp.group(pp.text("("), target, pp.text(")"))
       } else {
-        return pp.group(pp.text("("), target, pp.br(), args, pp.text(")"))
+        return pp.group(
+          pp.text("("),
+          pp.indent(1, target, pp.br(), args),
+          pp.text(")"),
+        )
       }
     }
 
     case "Begin": {
-      // const sequence = formatExps(exp.sequence)
-      // return `(begin ${sequence})`
+      const sequence = renderExps(exp.sequence)
+      return pp.group(pp.text("("), pp.text("begin"), sequence, pp.text(")"))
     }
 
     case "Assign": {
