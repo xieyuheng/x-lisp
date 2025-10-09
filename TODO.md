@@ -6,7 +6,7 @@
 [ppml] `formatIndentation`
 [ppml] `LayoutTarget`
 [ppml] `layout`
-[ppml] `fit`
+[ppml] `canFitInline`
 
 [format] `formatLeftMargin` -- remove `indent`
 [format] `formatLeftPad` -- remove `leftPad`
