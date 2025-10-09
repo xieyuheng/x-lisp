@@ -85,28 +85,17 @@ function fitInline(width: number, nodes: Array<PPML.Node>): boolean {
 
   const [node, ...restNodes] = nodes
   switch (node.kind) {
-    case "NullNode": {
+    case "NullNode":
       return fitInline(width, restNodes)
-    }
-
-    case "TextNode": {
+    case "TextNode":
       return fitInline(width - node.content.length, restNodes)
-    }
-
-    case "AppendNode": {
+    case "AppendNode":
       return fitInline(width, [node.leftChild, node.rightChild, ...restNodes])
-    }
-
-    case "IndentNode": {
+    case "IndentNode":
       return fitInline(width, [node.child, ...restNodes])
-    }
-
-    case "BreakNode": {
+    case "BreakNode":
       return fitInline(width - node.space.length, restNodes)
-    }
-
-    case "GroupNode": {
+    case "GroupNode":
       return fitInline(width, [node.child, ...restNodes])
-    }
   }
 }
