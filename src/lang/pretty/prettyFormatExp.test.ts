@@ -8,10 +8,12 @@ function testExps(code: string) {
   const sexps = X.parseDataArray(code)
   const exps = sexps.map<Exp>(matchExp)
 
+  const widths = [30, 20, 13, 10]
   for (const exp of exps) {
-    console.log(prettyFormatExp(30, exp))
-    console.log(prettyFormatExp(20, exp))
-    console.log(prettyFormatExp(10, exp))
+    for (const width of widths) {
+      console.log("-".repeat(width) + "|")
+      console.log(prettyFormatExp(width, exp))
+    }
   }
 }
 

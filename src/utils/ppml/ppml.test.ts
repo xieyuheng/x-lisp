@@ -19,7 +19,9 @@ const exampleNode = pp.concat(
 )
 
 test("ppml", () => {
-  console.log(pp.format(30, exampleNode))
-  console.log(pp.format(20, exampleNode))
-  console.log(pp.format(10, exampleNode))
+  const widths = [30, 20, 10]
+  for (const width of widths) {
+    console.log("-".repeat(width) + "|")
+    console.log(pp.format(width, exampleNode))
+  }
 })

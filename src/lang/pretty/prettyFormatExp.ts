@@ -25,11 +25,14 @@ export function renderExp(exp: Exp): pp.Node {
 
     case "Lambda": {
       return pp.group(
-        pp.text("(lambda"),
-        pp.indent(
-          4,
-          pp.br(),
-          pp.group(pp.text("("), renderExps(exp.parameters), pp.text(")")),
+        pp.text("("),
+        pp.group(
+          pp.text("lambda"),
+          pp.indent(
+            4,
+            pp.br(),
+            pp.group(pp.text("("), renderExps(exp.parameters), pp.text(")")),
+          ),
         ),
         pp.indent(2, pp.br(), pp.group(renderBody(exp.body), pp.text(")"))),
       )
@@ -51,13 +54,13 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Apply": {
-      // const target = formatExp(exp.target)
-      // const args = formatExps(exp.args)
-      // if (args === "") {
-      //   return `(${target})`
-      // } else {
-      //   return `(${target} ${args})`
-      // }
+      const target = renderExp(exp.target)
+      const args = renderExps(exp.args)
+      if (exp.args.length === 0) {
+        return pp.group(pp.text("("), target, pp.text(")"))
+      } else {
+        return pp.group(pp.text("("), target, pp.br(), args, pp.text(")"))
+      }
     }
 
     case "Begin": {
