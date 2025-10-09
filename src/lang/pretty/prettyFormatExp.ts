@@ -148,8 +148,8 @@ export function renderExp(exp: Exp): pp.Node {
       } else {
         return pp.group(
           pp.text("["),
-          pp.indent(1, elements),
-          pp.br(),
+          pp.group(pp.indent(1, elements)),
+          pp.indent(1, pp.br()),
           pp.indent(1, attributes),
           pp.text("]"),
         )
@@ -259,9 +259,9 @@ export function renderExp(exp: Exp): pp.Node {
       return pp.group(
         pp.group(
           pp.text("(->"),
-          pp.indent(4, pp.br(), renderExps(exp.argSchemas)),
+          pp.indent(2, pp.br(), renderExps(exp.argSchemas)),
         ),
-        pp.indent(4, pp.br(), renderExp(exp.retSchema)),
+        pp.indent(2, pp.br(), renderExp(exp.retSchema)),
         pp.text(")"),
       )
     }
@@ -270,26 +270,44 @@ export function renderExp(exp: Exp): pp.Node {
       return pp.group(
         pp.group(
           pp.text("(*->"),
-          pp.indent(5, pp.br(), renderExp(exp.argSchema)),
+          pp.indent(2, pp.br(), renderExp(exp.argSchema)),
         ),
-        pp.indent(5, pp.br(), renderExp(exp.retSchema)),
+        pp.indent(2, pp.br(), renderExp(exp.retSchema)),
         pp.text(")"),
       )
     }
 
     case "Tau": {
-      return pp.text("TODO")
-      // const elementSchemas = formatExps(exp.elementSchemas)
-      // const attributeSchemas = formatExpAttributes(exp.attributeSchemas)
-      // if (elementSchemas === "" && attributeSchemas === "") {
-      //   return `(tau)`
-      // } else if (attributeSchemas === "") {
-      //   return `(tau ${elementSchemas})`
-      // } else if (elementSchemas === "") {
-      //   return `(tau ${attributeSchemas})`
-      // } else {
-      //   return `(tau ${elementSchemas} ${attributeSchemas})`
-      // }
+      const elementSchemas = renderExps(exp.elementSchemas)
+      const attributeSchemas = renderAttributes(
+        Object.entries(exp.attributeSchemas),
+      )
+      if (
+        exp.elementSchemas.length === 0 &&
+        Object.keys(exp.attributeSchemas).length === 0
+      ) {
+        return pp.text(`(tau)`)
+      } else if (Object.keys(exp.attributeSchemas).length === 0) {
+        return pp.group(
+          pp.text("(tau"),
+          pp.indent(2, elementSchemas),
+          pp.text(")"),
+        )
+      } else if (exp.elementSchemas.length === 0) {
+        return pp.group(
+          pp.text("(tau"),
+          pp.indent(2, attributeSchemas),
+          pp.text(")"),
+        )
+      } else {
+        return pp.group(
+          pp.text("(tau"),
+          pp.group(pp.indent(2, elementSchemas)),
+          pp.indent(2, pp.br()),
+          pp.indent(2, attributeSchemas),
+          pp.text(")"),
+        )
+      }
     }
 
     case "The": {

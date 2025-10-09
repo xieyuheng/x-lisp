@@ -1,12 +1,16 @@
 # pretty print
 
-`prettyFormatExp` -- Tau
 `prettyFormatExp` -- Hash
 `prettyFormatExp` -- Cond
 `prettyFormatExp` -- Match
 
-`prettyFormatSexp` -- fix `prettyFormatExp`
 `prettyFormatValue`
+
+`prettyFormatSexp` -- always format as code
+
+- can be config-ed by keyword lists -- like emacs scheme-mode
+
+`prettyFormatExp` -- should be implemented as `readbackExp` and `prettyFormatSexp`
 
 use pretty print in error report
 
