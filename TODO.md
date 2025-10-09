@@ -1,12 +1,11 @@
 # utils
 
-[ppml] `concatNode`
 [ppml] `GroupingMode`
 [ppml] `format`
-[ppml] `formatIndentation`
 [ppml] `LayoutTarget`
 [ppml] `layout`
-[ppml] `canFitInline`
+[ppml] `fitInline`
+[ppml] `formatIndentation`
 
 [format] `formatLeftMargin` -- remove `indent`
 [format] `formatLeftPad` -- remove `leftPad`

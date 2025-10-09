@@ -5,5 +5,12 @@ import * as PPML from "./index.ts"
 test("ppml", () => {
   assert
 
-  console.log(PPML.NullNode())
+  console.log(
+    PPML.concatNode([
+      PPML.TextNode("a"),
+      PPML.TextNode("b"),
+      PPML.TextNode("c"),
+      PPML.NullNode(),
+    ]),
+  )
 })
