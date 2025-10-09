@@ -134,17 +134,26 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Tael": {
-      // const elements = formatExps(exp.elements)
-      // const attributes = formatExpAttributes(exp.attributes)
-      // if (elements === "" && attributes === "") {
-      //   return `[]`
-      // } else if (attributes === "") {
-      //   return `[${elements}]`
-      // } else if (elements === "") {
-      //   return `[${attributes}]`
-      // } else {
-      //   return `[${elements} ${attributes}]`
-      // }
+      const elements = renderExps(exp.elements)
+      const attributes = renderAttributes(Object.entries(exp.attributes))
+      if (
+        exp.elements.length === 0 &&
+        Object.keys(exp.attributes).length === 0
+      ) {
+        return pp.text("[]")
+      } else if (Object.keys(exp.attributes).length === 0) {
+        return pp.group(pp.text("["), pp.indent(1, elements), pp.text("]"))
+      } else if (exp.elements.length === 0) {
+        return pp.group(pp.text("["), pp.indent(1, attributes), pp.text("]"))
+      } else {
+        return pp.group(
+          pp.text("["),
+          pp.indent(1, elements),
+          pp.br(),
+          pp.indent(1, attributes),
+          pp.text("]"),
+        )
+      }
     }
 
     case "Set": {
@@ -329,4 +338,20 @@ function renderBody(body: Exp): pp.Node {
   } else {
     return renderExp(body)
   }
+}
+
+export function renderAttribute(entry: [string, Exp]): pp.Node {
+  const [key, exp] = entry
+  return pp.group(pp.text(`:${key}`), pp.br(), renderExp(exp))
+}
+
+export function renderAttributes(entries: Array<[string, Exp]>): pp.Node {
+  if (entries.length === 0) return pp.nil()
+  else if (entries.length === 1) return renderAttribute(entries[0])
+  else
+    return pp.concat(
+      renderAttribute(entries[0]),
+      pp.br(),
+      renderAttributes(entries.slice(1)),
+    )
 }
