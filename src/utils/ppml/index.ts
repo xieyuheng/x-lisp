@@ -1,1 +1,1 @@
-import * from "./ppml.ts"
+export * from "./ppml.ts"
