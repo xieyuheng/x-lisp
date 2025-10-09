@@ -1,29 +1,27 @@
 import { test } from "node:test"
-import * as PPML from "./index.ts"
+import * as pp from "./index.ts"
 
-const exampleNode = PPML.concatNode([
-  PPML.TextNode("begin"),
-  PPML.IndentNode(
+const exampleNode = pp.concat(
+  pp.text("begin"),
+  pp.indent(
     3,
-    PPML.AppendNode(
-      PPML.BreakNode(" "),
-      PPML.GroupNode(
-        PPML.concatNode([
-          PPML.TextNode("stmt"),
-          PPML.BreakNode(" "),
-          PPML.TextNode("stmt"),
-          PPML.BreakNode(" "),
-          PPML.TextNode("stmt"),
-        ]),
+    pp.concat(
+      pp.br(),
+      pp.group(
+        pp.text("stmt"),
+        pp.br(),
+        pp.text("stmt"),
+        pp.br(),
+        pp.text("stmt"),
       ),
     ),
   ),
-  PPML.BreakNode(" "),
-  PPML.TextNode("end"),
-])
+  pp.br(),
+  pp.text("end"),
+)
 
 test("ppml", () => {
-  console.log(PPML.format(30, exampleNode))
-  console.log(PPML.format(20, exampleNode))
-  console.log(PPML.format(10, exampleNode))
+  console.log(pp.format(30, exampleNode))
+  console.log(pp.format(20, exampleNode))
+  console.log(pp.format(10, exampleNode))
 })

@@ -1,13 +1,13 @@
-import * as PPML from "./index.ts"
+import * as pp from "./index.ts"
 
-export function format(maxWidth: number, node: PPML.Node): string {
-  const target: LayoutTarget = [0, "GroupingInline", PPML.GroupNode(node)]
+export function format(maxWidth: number, node: pp.Node): string {
+  const target: LayoutTarget = [0, "GroupingInline", pp.GroupNode(node)]
   return layout(maxWidth, 0, [target])
 }
 
 type GroupingMode = "GroupingInline" | "GroupingBlock"
 
-type LayoutTarget = [indentation: number, mode: GroupingMode, node: PPML.Node]
+type LayoutTarget = [indentation: number, mode: GroupingMode, node: pp.Node]
 
 function layout(
   maxWidth: number,
@@ -79,7 +79,7 @@ function layout(
   }
 }
 
-function fitInline(width: number, nodes: Array<PPML.Node>): boolean {
+function fitInline(width: number, nodes: Array<pp.Node>): boolean {
   if (width < 0) return false
   if (nodes.length === 0) return true
 
