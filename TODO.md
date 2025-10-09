@@ -1,6 +1,7 @@
 # pretty print
 
-`prettyFormatExp` -- Apply Begin Assign Assert AssertNot AssertEqual AssertNotEqual AssertThe Tael Set Hash Quote Quasiquote If When Unless And Or Cond Match Arrow VariadicArrow Tau The Pattern Polymorphic Specific
+`prettyFormatExp` -- Apply
+`prettyFormatExp` -- Begin Assign Assert AssertNot AssertEqual AssertNotEqual AssertThe Tael Set Hash Quote Quasiquote If When Unless And Or Cond Match Arrow VariadicArrow Tau The Pattern Polymorphic Specific
 
 `prettyFormatSexp`
 `prettyFormatValue`
