@@ -1,6 +1,4 @@
-> all polymorphic schema taken function should all `valid?` instead of `apply`
-
-[builtin] `optional?` -- call `isValid` instead of `apply`
+[prelude] inter and negate and union -- call `valid?` instead of `apply`
 
 # error report
 

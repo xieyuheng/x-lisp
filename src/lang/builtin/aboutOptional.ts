@@ -9,8 +9,8 @@ export function aboutOptional(mod: Mod) {
     mod,
     `\n
 (define (optional? p x)
-  (or (p x)
-      (null? x)))
+  (or (null? x)
+      (valid? p x)))
 `,
   )
 }
