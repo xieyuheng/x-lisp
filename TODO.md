@@ -1,8 +1,6 @@
 # utils
 
-[ppml] `layout`
 [ppml] `fitInline`
-[ppml] `formatIndentation`
 
 [format] `formatLeftMargin` -- remove `indent`
 [format] `formatLeftPad` -- remove `leftPad`

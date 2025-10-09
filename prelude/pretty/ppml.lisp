@@ -90,7 +90,7 @@
             grouping-inline
             grouping-block))
        (layout max-width
-               indentation
+               cursor
                (cons [indentation grouping-mode child]
                      (cdr targets)))))))
 

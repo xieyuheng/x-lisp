@@ -9,10 +9,77 @@ type GroupingMode = "GroupingInline" | "GroupingBlock"
 
 type LayoutTarget = [indentation: number, mode: GroupingMode, node: PPML.Node]
 
-export function layout(
+function layout(
   maxWidth: number,
   cursor: number,
   targets: Array<LayoutTarget>,
 ): string {
-  return "TODO"
+  if (targets.length === 0) {
+    return ""
+  }
+
+  const [[indentation, mode, node], ...restTargets] = targets
+
+  switch (node.kind) {
+    case "NullNode": {
+      return layout(maxWidth, cursor, restTargets)
+    }
+
+    case "TextNode": {
+      return (
+        node.content +
+        layout(maxWidth, cursor + node.content.length, restTargets)
+      )
+    }
+
+    case "AppendNode": {
+      return layout(maxWidth, cursor, [
+        [indentation, mode, node.leftChild],
+        [indentation, mode, node.rightChild],
+        ...restTargets,
+      ])
+    }
+
+    case "IndentNode": {
+      return layout(maxWidth, cursor, [
+        [indentation + node.length, mode, node.child],
+        ...restTargets,
+      ])
+    }
+
+    case "BreakNode": {
+      switch (mode) {
+        case "GroupingInline": {
+          return (
+            node.space +
+            layout(maxWidth, cursor + node.space.length, restTargets)
+          )
+        }
+
+        case "GroupingBlock": {
+          return (
+            "\n" +
+            " ".repeat(indentation) +
+            layout(maxWidth, indentation, restTargets)
+          )
+        }
+      }
+    }
+
+    case "GroupNode": {
+      const groupingMode = fitInline(maxWidth - cursor, [node.child])
+        ? "GroupingInline"
+        : "GroupingBlock"
+
+      return layout(maxWidth, cursor, [
+        [indentation, groupingMode, node.child],
+        ...restTargets,
+      ])
+    }
+  }
+}
+
+function fitInline(width: number, nodes: Array<PPML.Node>): boolean {
+  // TODO
+  return true
 }
