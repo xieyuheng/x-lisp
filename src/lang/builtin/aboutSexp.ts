@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-data.js"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
-import { formatValue } from "../format/index.ts"
+import { formatSexp, formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -21,7 +21,7 @@ export function aboutSexp(mod: Mod) {
 
   definePrimitiveFunction(mod, "format-sexp", 1, (sexp) => {
     if (Values.isSexp(sexp)) {
-      return Values.String(Values.formatSexp(sexp))
+      return Values.String(formatSexp(sexp))
     } else {
       let message = `(format-sexp) expect argument to be sexp\n`
       message += `  argument: ${formatValue(sexp)}`

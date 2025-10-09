@@ -1,8 +1,8 @@
 import { formatData } from "@xieyuheng/x-data.js"
 import { type CondLine, type MatchLine } from "../../lang/exp/index.ts"
 import { type Exp } from "../exp/index.ts"
-import { formatAtom } from "../format/index.ts"
-import { formatSexp, isAtom } from "../value/index.ts"
+import { formatAtom, formatSexp } from "../format/index.ts"
+import { isAtom } from "../value/index.ts"
 
 export function formatExps(exps: Array<Exp>): string {
   return exps.map(formatExp).join(" ")
