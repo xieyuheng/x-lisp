@@ -82,7 +82,12 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Assign": {
-      // return `(= ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
+      return pp.group(
+        pp.text("("),
+        pp.group(pp.text("="), pp.text(" "), renderExp(exp.lhs)),
+        pp.indent(3, pp.br(), renderExp(exp.rhs)),
+        pp.text(")"),
+      )
     }
 
     case "Assert": {
