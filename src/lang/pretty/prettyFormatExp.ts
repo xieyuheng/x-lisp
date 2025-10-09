@@ -73,7 +73,12 @@ export function renderExp(exp: Exp): pp.Node {
 
     case "Begin": {
       const sequence = renderExps(exp.sequence)
-      return pp.group(pp.text("("), pp.text("begin"), sequence, pp.text(")"))
+      return pp.group(
+        pp.text("("),
+        pp.text("begin"),
+        pp.indent(2, pp.br(), sequence),
+        pp.text(")"),
+      )
     }
 
     case "Assign": {
