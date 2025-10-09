@@ -1,6 +1,7 @@
 (include-all "int")
 (include-all "float")
 (include-all "function")
+(include-all "string")
 (include-all "list")
 (include-all "record")
 (include-all "hash")

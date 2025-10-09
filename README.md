@@ -176,6 +176,8 @@ false
 (string-join separator list)
 (string-chars string)
 (string-compare-lexical x y)
+;; prelude
+(string-repeat n string)
 ```
 
 ### Value

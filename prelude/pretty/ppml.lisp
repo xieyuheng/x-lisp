@@ -1,3 +1,5 @@
+(import-all "../string")
+
 ;; learned from: christian-lindig/2000-stricty-pretty
 
 (export
@@ -80,7 +82,7 @@
                 (cdr targets))))
       ([indentation grouping-block (break-node space)]
        (string-append
-        (string-append "\n" (format-indentation indentation))
+        (string-append "\n" (string-repeat indentation " "))
         (layout max-width
                 indentation
                 (cdr targets))))
@@ -93,15 +95,6 @@
                cursor
                (cons [indentation grouping-mode child]
                      (cdr targets)))))))
-
-(claim format-indentation
-  (-> int-non-negative?
-      string?))
-
-(define (format-indentation i)
-  (if (equal? i 0)
-    ""
-    (string-append " " (format-indentation (isub i 1)))))
 
 (claim fit-inline?
   (-> int? (list? ppml-node?)
