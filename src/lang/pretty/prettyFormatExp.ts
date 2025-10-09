@@ -72,42 +72,67 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Begin": {
-      const sequence = renderExps(exp.sequence)
       return pp.group(
-        pp.text("("),
-        pp.text("begin"),
-        pp.indent(2, pp.br(), sequence),
+        pp.text("(begin"),
+        pp.indent(2, pp.br(), renderExps(exp.sequence)),
         pp.text(")"),
       )
     }
 
     case "Assign": {
       return pp.group(
-        pp.text("("),
-        pp.group(pp.text("="), pp.text(" "), renderExp(exp.lhs)),
+        pp.text("(="),
+        pp.text(" "),
+        renderExp(exp.lhs),
         pp.indent(3, pp.br(), renderExp(exp.rhs)),
         pp.text(")"),
       )
     }
 
     case "Assert": {
-      // return `(assert ${formatExp(exp.exp)})`
+      return pp.group(
+        pp.text("(assert"),
+        pp.indent(2, pp.br(), renderExp(exp.exp)),
+        pp.text(")"),
+      )
     }
 
     case "AssertNot": {
-      // return `(assert-not ${formatExp(exp.exp)})`
+      return pp.group(
+        pp.text("(assert-not"),
+        pp.indent(2, pp.br(), renderExp(exp.exp)),
+        pp.text(")"),
+      )
     }
 
     case "AssertEqual": {
-      // return `(assert-equal ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
+      return pp.group(
+        pp.text("(assert-equal"),
+        pp.indent(2, pp.br(), renderExp(exp.lhs), pp.br(), renderExp(exp.rhs)),
+        pp.text(")"),
+      )
     }
 
     case "AssertNotEqual": {
-      // return `(assert-not-equal ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
+      return pp.group(
+        pp.text("(assert-not-equal"),
+        pp.indent(2, pp.br(), renderExp(exp.lhs), pp.br(), renderExp(exp.rhs)),
+        pp.text(")"),
+      )
     }
 
     case "AssertThe": {
-      // return `(assert-the ${formatExp(exp.schema)} ${formatExp(exp.exp)})`
+      return pp.group(
+        pp.text("(assert-the"),
+        pp.indent(
+          2,
+          pp.br(),
+          renderExp(exp.schema),
+          pp.br(),
+          renderExp(exp.exp),
+        ),
+        pp.text(")"),
+      )
     }
 
     case "Tael": {
