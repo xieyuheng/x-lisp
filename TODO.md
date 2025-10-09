@@ -1,9 +1,7 @@
 # utils
 
-[ppml] `format`
 [ppml] `layout`
 [ppml] `fitInline`
-[ppml] `LayoutTarget`
 [ppml] `formatIndentation`
 
 [format] `formatLeftMargin` -- remove `indent`
@@ -16,5 +14,6 @@ setup `pretty/`
 
 `prettyFormatValue`
 `prettyFormatSexp`
+`prettyFormatExp`
 
 use pretty print in error report
