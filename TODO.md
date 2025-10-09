@@ -1,5 +1,7 @@
 # pretty print
 
-ppml in utils -- in typescript
-pretty print by ppml -- in typescript
+copy utils/ppml from utils.js
+setup pretty/
+`prettyFormatValue`
+`prettyFormatSexp`
 use pretty print in error report

@@ -1,3 +1,5 @@
+;; learned from: christian-lindig/2000-stricty-pretty
+
 (export
   ppml-node?
   null-node text-node append-node
