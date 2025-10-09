@@ -1,6 +1,5 @@
 # utils
 
-[ppml] `Node` constructors
 [ppml] ppml setup test
 
 [ppml] concat-node

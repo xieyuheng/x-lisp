@@ -10,10 +10,10 @@
 (define-data ppml-node?
   null-node
   (text-node (content string?))
-  (append-node (left ppml-node?) (right ppml-node?))
-  (indent-node (length int-non-negative?) (node ppml-node?))
+  (append-node (left-child ppml-node?) (right-child ppml-node?))
+  (indent-node (length int-non-negative?) (child ppml-node?))
   (break-node (space string?))
-  (group-node (node ppml-node?)))
+  (group-node (child ppml-node?)))
 
 (claim concat-node
   (-> (list? ppml-node?)
@@ -67,10 +67,10 @@
                     (cons [indentation mode left]
                           (cons [indentation mode right]
                                 (cdr targets)))))
-           ([indentation mode (indent-node length node)]
+           ([indentation mode (indent-node length child)]
             (layout max-width
                     cursor
-                    (cons [(iadd indentation length) mode node]
+                    (cons [(iadd indentation length) mode child]
                           (cdr targets))))
            ([indentation grouping-inline (break-node space)]
             (string-append
@@ -84,15 +84,14 @@
              (layout max-width
                      indentation
                      (cdr targets))))
-           ([indentation mode (group-node node)]
-            (= nodes [node])
+           ([indentation mode (group-node child)]
             (= grouping-mode
-               (if (fit? (isub max-width cursor) nodes)
+               (if (fit? (isub max-width cursor) [child])
                  grouping-inline
                  grouping-block))
             (layout max-width
                     indentation
-                    (cons [indentation grouping-mode node]
+                    (cons [indentation grouping-mode child]
                           (cdr targets))))))))
 
 (claim format-indentation
@@ -122,12 +121,12 @@
            ((append-node left right)
             (fit? width
                   (cons left (cons right (cdr nodes)))))
-           ((indent-node length node)
+           ((indent-node length child)
             (fit? width
-                  (cons node (cdr nodes))))
+                  (cons child (cdr nodes))))
            ((break-node space)
             (fit? (isub width (string-length space))
                   (cdr nodes)))
-           ((group-node node)
+           ((group-node child)
             (fit? width
-                  (cons node (cdr nodes))))))))
+                  (cons child (cdr nodes))))))))
