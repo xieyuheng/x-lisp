@@ -4,11 +4,10 @@ import type { Exp } from "../exp/index.ts"
 import { matchExp } from "../syntax/index.ts"
 import { prettyFormatExp } from "./index.ts"
 
-function testExps(code: string) {
+function testWidths(widths: Array<number>, code: string) {
   const sexps = X.parseDataArray(code)
   const exps = sexps.map<Exp>(matchExp)
 
-  const widths = [60, 30, 20, 13, 10, 5]
   for (const exp of exps) {
     for (const width of widths) {
       console.log(`${"-".repeat(width)}|${width}`)
@@ -18,9 +17,11 @@ function testExps(code: string) {
 }
 
 test("prettyFormatExp", () => {
-  testExps(`(lambda (f x y) (f y x))`)
-  testExps(`(lambda (f x y) (begin (f y x)))`)
-  testExps(`
+  testWidths([30, 20, 13, 10, 5], `(lambda (f x y) (f y x))`)
+  testWidths([30, 20, 13, 10, 5], `(lambda (f x y) (begin (f y x)))`)
+  testWidths(
+    [60, 30],
+    `
 (lambda (f list)
   (= new-hash (@hash))
   (pipe list
@@ -32,13 +33,14 @@ test("prettyFormatExp", () => {
          (hash-put! key [value] new-hash)
          (list-push! value group)))))
   new-hash)
-`)
+`,
+  )
 })
 
 test("prettyFormatExp -- set", () => {
-  testExps(`{{1 2 3} {4 5 6} {7 8 9}}`)
+  testWidths([30, 20, 10], `{{1 2 3} {4 5 6} {7 8 9}}`)
 })
 
 test("prettyFormatExp -- list", () => {
-  testExps(`[[1 2 3] [4 5 6] [7 8 9]]`)
+  testWidths([30, 20, 10], `[[1 2 3] [4 5 6] [7 8 9]]`)
 })

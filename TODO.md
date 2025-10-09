@@ -1,7 +1,9 @@
 # pretty print
 
-`prettyFormatExp` -- Hash Tau
-`prettyFormatExp` -- Cond Match
+`prettyFormatExp` -- Tau
+`prettyFormatExp` -- Hash
+`prettyFormatExp` -- Cond
+`prettyFormatExp` -- Match
 
 `prettyFormatSexp` -- fix `prettyFormatExp`
 `prettyFormatValue`
