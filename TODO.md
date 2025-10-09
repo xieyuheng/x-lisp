@@ -1,9 +1,9 @@
 # utils
 
 [ppml] `format`
-[ppml] `LayoutTarget`
 [ppml] `layout`
 [ppml] `fitInline`
+[ppml] `LayoutTarget`
 [ppml] `formatIndentation`
 
 [format] `formatLeftMargin` -- remove `indent`
