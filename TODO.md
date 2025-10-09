@@ -1,7 +1,12 @@
 # pretty print
 
-`prettyFormatSexp`
 `prettyFormatExp`
+`prettyFormatStmt`
+`prettyFormatCode`
+
+`FormatCommand` -- call `prettyFormatCode`
+
+`prettyFormatSexp`
 `prettyFormatValue`
 
 use pretty print in error report
