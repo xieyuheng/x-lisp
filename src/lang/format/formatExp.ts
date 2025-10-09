@@ -189,13 +189,13 @@ export function formatExp(exp: Exp): string {
     case "Polymorphic": {
       const parameters = exp.parameters.join(" ")
       const schema = formatExp(exp.schema)
-      return `(polymorphic (${parameters}) ${schema}`
+      return `(polymorphic (${parameters}) ${schema})`
     }
 
     case "Specific": {
       const target = formatExp(exp.target)
       const args = formatExps(exp.args)
-      return `(ppecific ${target} ${args}`
+      return `(specific ${target} ${args}`
     }
   }
 }

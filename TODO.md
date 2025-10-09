@@ -1,8 +1,8 @@
 # pretty print
 
-`prettyFormatExp` -- Tael Hash Quote Quasiquote When Unless And Or Cond Match Arrow VariadicArrow Tau Pattern Polymorphic Specific
+`prettyFormatExp` -- Tael Hash And Or Cond Match Arrow VariadicArrow Tau Pattern Polymorphic Specific
 
-`prettyFormatSexp`
+`prettyFormatSexp` -- fix `prettyFormatExp`
 `prettyFormatValue`
 
 use pretty print in error report

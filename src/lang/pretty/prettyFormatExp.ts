@@ -1,6 +1,6 @@
 import * as pp from "../../utils/ppml/index.ts"
 import { type Exp } from "../exp/index.ts"
-import { formatAtom } from "../format/index.ts"
+import { formatAtom, formatSexp } from "../format/index.ts"
 import { isAtom } from "../value/index.ts"
 
 export function prettyFormatExp(maxWidth: number, exp: Exp): string {
@@ -156,6 +156,7 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Hash": {
+      return pp.text("TODO")
       // const entries = exp.entries
       //   .map(({ key, value }) => `${formatExp(key)} ${formatExp(value)}`)
       //   .join(" ")
@@ -167,12 +168,13 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Quote": {
-      // return `(@quote ${formatSexp(exp.sexp)})`
+      // TODO
+      return pp.text(`(@quote ${formatSexp(exp.sexp)})`)
     }
 
     case "Quasiquote": {
-      return pp.text("TODO")
-      // return `(@quasiquote ${formatSexp(exp.sexp)})`
+      // TODO
+      return pp.text(`(@quasiquote ${formatSexp(exp.sexp)})`)
     }
 
     case "If": {
@@ -188,11 +190,25 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "When": {
-      // return `(when ${formatExp(exp.condition)} ${formatExp(exp.consequent)})`
+      return pp.group(
+        pp.group(
+          pp.text("(when"),
+          pp.indent(4, pp.br(), renderExp(exp.condition)),
+        ),
+        pp.indent(2, pp.br(), renderBody(exp.consequent)),
+        pp.text(")"),
+      )
     }
 
     case "Unless": {
-      // return `(unless ${formatExp(exp.condition)} ${formatExp(exp.consequent)})`
+      return pp.group(
+        pp.group(
+          pp.text("(unless"),
+          pp.indent(4, pp.br(), renderExp(exp.condition)),
+        ),
+        pp.indent(2, pp.br(), renderBody(exp.consequent)),
+        pp.text(")"),
+      )
     }
 
     case "And": {
@@ -219,20 +235,31 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Match": {
+      return pp.text("TODO")
       // const matchLines = exp.matchLines.map(formatMatchLine)
       // return `(match ${formatExp(exp.target)} ${matchLines.join(" ")})`
     }
 
     case "Arrow": {
-      // const argSchemas = formatExps(exp.argSchemas)
-      // const retSchema = formatExp(exp.retSchema)
-      // return `(-> ${argSchemas} ${retSchema})`
+      return pp.group(
+        pp.group(
+          pp.text("(->"),
+          pp.indent(4, pp.br(), renderExps(exp.argSchemas)),
+        ),
+        pp.indent(4, pp.br(), renderExp(exp.retSchema)),
+        pp.text(")"),
+      )
     }
 
     case "VariadicArrow": {
-      // const argSchema = formatExp(exp.argSchema)
-      // const retSchema = formatExp(exp.retSchema)
-      // return `(*-> ${argSchema} ${retSchema})`
+      return pp.group(
+        pp.group(
+          pp.text("(*->"),
+          pp.indent(5, pp.br(), renderExp(exp.argSchema)),
+        ),
+        pp.indent(5, pp.br(), renderExp(exp.retSchema)),
+        pp.text(")"),
+      )
     }
 
     case "Tau": {
@@ -259,21 +286,33 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Pattern": {
-      // return `(@pattern ${formatExp(exp.pattern)}`
+      return pp.group(
+        pp.text("(@pattern"),
+        pp.indent(2, pp.br(), renderExp(exp.pattern)),
+        pp.text(")"),
+      )
     }
 
     case "Polymorphic": {
-      return pp.text("TODO")
-      // const parameters = exp.parameters.join(" ")
-      // const schema = formatExp(exp.schema)
-      // return `(polymorphic (${parameters}) ${schema}`
+      return pp.group(
+        pp.group(
+          pp.text("(polymorphic"),
+          pp.indent(4, pp.br(), pp.text(`(${exp.parameters.join(" ")})`)),
+        ),
+        pp.indent(2, pp.br(), renderExp(exp.schema)),
+        pp.text(")"),
+      )
     }
 
     case "Specific": {
-      return pp.text("TODO")
-      // const target = formatExp(exp.target)
-      // const args = formatExps(exp.args)
-      // return `(ppecific ${target} ${args}`
+      return pp.group(
+        pp.group(
+          pp.text("(specific"),
+          pp.indent(4, pp.br(), renderExp(exp.target)),
+        ),
+        pp.indent(2, pp.br(), renderExps(exp.args)),
+        pp.text(")"),
+      )
     }
   }
 }
