@@ -1,7 +1,5 @@
 > all polymorphic schema taken function should all `valid?` instead of `apply`
 
-[builtin] `set?` -- call `isValid` instead of `apply`
-[builtin] `record?` -- call `isValid` instead of `apply`
 [builtin] `hash?` -- call `isValid` instead of `apply`
 [builtin] `optional?` -- call `isValid` instead of `apply`
 

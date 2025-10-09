@@ -1,7 +1,6 @@
 import { arrayZip } from "../../utils/array/arrayZip.ts"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
-import { apply } from "../evaluate/index.ts"
-import { formatValue } from "../format/index.ts"
+import { isValid } from "../evaluate/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -29,17 +28,7 @@ export function aboutRecord(mod: Mod) {
     }
 
     for (const value of Object.values(Values.asTael(target).attributes)) {
-      const result = apply(p, [value])
-      if (!Values.isBool(result)) {
-        let message = `(record?) one result of applying the predicate is not bool\n`
-        message += `  predicate: ${formatValue(p)}\n`
-        message += `  target: ${formatValue(target)}\n`
-        message += `  value: ${formatValue(value)}\n`
-        message += `  result: ${formatValue(result)}\n`
-        throw new Error(message)
-      }
-
-      if (Values.isFalse(result)) {
+      if (!isValid(p, value)) {
         return Values.Bool(false)
       }
     }
