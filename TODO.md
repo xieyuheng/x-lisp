@@ -1,6 +1,6 @@
 # pretty print
 
-`prettyFormatExp` -- Tael Hash And Or Cond Match Arrow VariadicArrow Tau Pattern Polymorphic Specific
+`prettyFormatExp` -- Tael Hash Cond Match Arrow VariadicArrow Tau Pattern Polymorphic Specific
 
 `prettyFormatSexp` -- fix `prettyFormatExp`
 `prettyFormatValue`

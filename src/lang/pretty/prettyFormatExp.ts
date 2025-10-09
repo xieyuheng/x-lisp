@@ -212,21 +212,27 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "And": {
-      // const exps = formatExps(exp.exps)
-      // if (exps === "") {
-      //   return `(and)`
-      // } else {
-      //   return `(and ${exps})`
-      // }
+      if (exp.exps.length === 0) {
+        return pp.text(`(and)`)
+      } else {
+        return pp.group(
+          pp.text("(and"),
+          pp.indent(2, pp.br(), renderExps(exp.exps)),
+          pp.text(")"),
+        )
+      }
     }
 
     case "Or": {
-      // const exps = formatExps(exp.exps)
-      // if (exps === "") {
-      //   return `(or)`
-      // } else {
-      //   return `(or ${exps})`
-      // }
+      if (exp.exps.length === 0) {
+        return pp.text(`(or)`)
+      } else {
+        return pp.group(
+          pp.text("(or"),
+          pp.indent(2, pp.br(), renderExps(exp.exps)),
+          pp.text(")"),
+        )
+      }
     }
 
     case "Cond": {
