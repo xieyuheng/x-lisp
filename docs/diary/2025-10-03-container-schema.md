@@ -85,6 +85,8 @@ meta 有两种实现方式：
 
 - isValid -- schema 可以被用作 predicate。
 
+- generate -- 根据 schema 的描述，生成符合 schema 的随机数据。
+
 - validate -- 检查数据，不修改数据，找到不匹配的具体位置来报错。
 
 - validate + prune -- 检查数据，并且过滤掉没有在 schema 中被表达出来的字段。
