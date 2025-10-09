@@ -26,17 +26,28 @@ export function renderExp(exp: Exp): pp.Node {
     case "Lambda": {
       return pp.group(
         pp.text("(lambda"),
-        pp.group(pp.text("("), renderExps(exp.parameters), pp.text(")")),
-        pp.indent(2, pp.group(pp.br(), renderExp(exp.body), pp.text(")"))),
+        pp.indent(
+          4,
+          pp.br(),
+          pp.group(pp.text("("), renderExps(exp.parameters), pp.text(")")),
+        ),
+        pp.indent(2, pp.br(), pp.group(renderBody(exp.body), pp.text(")"))),
       )
     }
 
     case "VariadicLambda": {
-      // return `(lambda ${exp.variadicParameter} ${formatBody(exp.body)})`
+      return pp.group(
+        pp.text("(lambda"),
+        pp.indent(4, pp.br(), pp.text(exp.variadicParameter)),
+        pp.indent(2, pp.br(), pp.group(renderBody(exp.body), pp.text(")"))),
+      )
     }
 
     case "Thunk": {
-      // return `(thunk ${formatBody(exp.body)})`
+      return pp.group(
+        pp.text("(thunk"),
+        pp.indent(2, pp.br(), pp.group(renderBody(exp.body), pp.text(")"))),
+      )
     }
 
     case "Apply": {
@@ -202,5 +213,13 @@ export function renderExp(exp: Exp): pp.Node {
       // const args = formatExps(exp.args)
       // return `(ppecific ${target} ${args}`
     }
+  }
+}
+
+function renderBody(body: Exp): pp.Node {
+  if (body.kind === "Begin") {
+    return renderExps(body.sequence)
+  } else {
+    return renderExp(body)
   }
 }
