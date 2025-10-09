@@ -4,7 +4,6 @@
   "repository": "github:xieyuheng/x-lisp.js",
   "license": "GPL-3.0-or-later",
   "type": "module",
-  "main": "./lib/index.js",
   "files": [
     "src",
     "lib",
