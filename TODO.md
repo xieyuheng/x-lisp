@@ -1,8 +1,8 @@
 # pretty print
 
-`prettyFormatExp`
 `prettyFormatStmt`
 `prettyFormatCode`
+`prettyFormatExp`
 
 `FormatCommand` -- call `prettyFormatCode`
 
