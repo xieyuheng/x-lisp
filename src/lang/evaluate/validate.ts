@@ -94,7 +94,7 @@ export function validate(schema: Value, value: Value): Result {
     }
   }
 
-  let message = `(validation) predicate schema must return bool\n`
+  let message = `[validate] predicate schema must return bool\n`
   message += `  schema: ${formatValue(schema)}\n`
   message += `  value: ${formatValue(value)}\n`
   message += `  result: ${formatValue(result)}\n`

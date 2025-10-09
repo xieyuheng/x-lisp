@@ -1,6 +1,9 @@
-(validation) fail on arguments
-  args: [1 "a"]
-    #1: (the int? "a")
+[applyWithSchema] fail on arguments
   schema: (-> int? int? int?)
   target: iadd
+  args: [1 "a"]
+  failed args:
+  - count: 2
+    schema: int?
+    value: "a"
 

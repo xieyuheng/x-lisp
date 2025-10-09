@@ -32,11 +32,11 @@ export function applyWithSchema(
     if (isValid(schema.retSchema, result)) {
       return result
     } else {
-      let message = `(validation) fail on result\n`
-      message += `  args: [${formatValues(args)}]\n`
-      message += `  result: ${formatValue(result)}\n`
+      let message = `[applyWithSchema] fail on result\n`
       message += `  schema: ${formatValue(schema)}\n`
       message += `  target: ${formatValue(target)}\n`
+      message += `  args: [${formatValues(args)}]\n`
+      message += `  result: ${formatValue(result)}\n`
       if (meta) throw new X.ErrorWithMeta(message, meta)
       else throw new Error(message)
     }
@@ -56,12 +56,12 @@ export function applyWithSchema(
       if (isValid(arrow.retSchema, result)) {
         return apply(result, spilledArgs)
       } else {
-        let message = `(validation) fail on result\n`
+        let message = `[applyWithSchema] fail on result\n`
+        message += `  schema: ${formatValue(schema)}\n`
+        message += `  target: ${formatValue(target)}\n`
         message += `  used args: [${formatValues(usedArgs)}]\n`
         message += `  spilled args: [${formatValues(spilledArgs)}]\n`
         message += `  result: ${formatValue(result)}\n`
-        message += `  schema: ${formatValue(schema)}\n`
-        message += `  target: ${formatValue(target)}\n`
         if (meta) throw new X.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
@@ -75,11 +75,11 @@ export function applyWithSchema(
       if (isValid(arrow.retSchema, result)) {
         return result
       } else {
-        let message = `(validation) fail on result\n`
-        message += `  args: [${formatValues(args)}]\n`
-        message += `  result: ${formatValue(result)}\n`
+        let message = `[applyWithSchema] fail on result\n`
         message += `  schema: ${formatValue(schema)}\n`
         message += `  target: ${formatValue(target)}\n`
+        message += `  args: [${formatValues(args)}]\n`
+        message += `  result: ${formatValue(result)}\n`
         if (meta) throw new X.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
@@ -94,10 +94,10 @@ export function applyWithSchema(
     }
   }
 
-  let message = `(validation) unhandled kind of schema\n`
-  message += `  args: [${formatValues(args)}]\n`
+  let message = `[applyWithSchema] unhandled kind of schema\n`
   message += `  schema: ${formatValue(schema)}\n`
   message += `  target: ${formatValue(target)}\n`
+  message += `  args: [${formatValues(args)}]\n`
   if (meta) throw new X.ErrorWithMeta(message, meta)
   else throw new Error(message)
 }
@@ -136,14 +136,17 @@ function validateArgs(
   }
 
   const meta = Values.valueMaybeMeta(context.target)
-  let message = `(validation) fail on arguments\n`
-  message += `  args: [${formatValues(context.args)}]\n`
-  for (const { index, schema, arg } of erred) {
-    message += `    #${index}: (the ${formatValue(schema)} ${formatValue(arg)})\n`
-  }
-
+  let message = `[applyWithSchema] fail on arguments\n`
   message += `  schema: ${formatValue(context.schema)}\n`
   message += `  target: ${formatValue(context.target)}\n`
+  message += `  args: [${formatValues(context.args)}]\n`
+  message += `  failed args:\n`
+  for (const { index, schema, arg } of erred) {
+    message += `  - count: ${index + 1}\n`
+    message += `    schema: ${formatValue(schema)}\n`
+    message += `    value: ${formatValue(arg)}\n`
+  }
+
   if (meta) throw new X.ErrorWithMeta(message, meta)
   else throw new Error(message)
 }

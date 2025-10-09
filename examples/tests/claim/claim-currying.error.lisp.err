@@ -1,9 +1,14 @@
-(validation) fail on arguments
-  args: [1.0 1.0]
-    #0: (the int? 1.0)
-    #1: (the int? 1.0)
+[applyWithSchema] fail on arguments
   schema: (-> int? int? int?)
   target: (lambda (x) (lambda (y) (iadd x y)))
+  args: [1.0 1.0]
+  failed args:
+  - count: 1
+    schema: int?
+    value: 1.0
+  - count: 2
+    schema: int?
+    value: 1.0
 
   --> examples/tests/claim/claim-currying.error.lisp:3:4
  1 | (claim my-add (-> int? int? int?))

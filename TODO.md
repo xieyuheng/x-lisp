@@ -1,10 +1,3 @@
-# error report
-
-fix (validation) error report -- be more clear about args
-
-- index or count? it is not clear
-- wrap in `(the)` is not clear
-
 # pretty print
 
 ppml in utils -- in typescript
