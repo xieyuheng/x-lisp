@@ -1,11 +1,8 @@
+note about comment and code formatting
+
 # pretty print
 
-`prettyFormatStmt`
-`prettyFormatCode`
 `prettyFormatExp`
-
-`FormatCommand` -- call `prettyFormatCode`
-
 `prettyFormatSexp`
 `prettyFormatValue`
 
