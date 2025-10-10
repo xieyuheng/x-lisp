@@ -1,8 +1,6 @@
-use `prettyValue` -- lang/evaluate/apply.ts
 use `prettyValue` -- lang/evaluate/applyPolymorphic.ts
 use `prettyValue` -- lang/evaluate/applyDataGetter.ts
 use `prettyValue` -- lang/evaluate/applyDataConstructor.ts
-
 
 # pretty
 
