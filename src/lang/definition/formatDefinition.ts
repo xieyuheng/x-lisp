@@ -1,4 +1,4 @@
-import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
+import { urlRelativeToCwd } from "../../helper/url/urlRelativeToCwd.ts"
 import { formatExp, formatValue } from "../format/index.ts"
 import type { Definition } from "./index.ts"
 

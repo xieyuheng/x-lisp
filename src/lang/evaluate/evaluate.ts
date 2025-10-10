@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-sexp.js"
-import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
-import { recordMapValue } from "../../utils/record/recordMapValue.ts"
+import { arrayPickLast } from "../../helper/array/arrayPickLast.ts"
+import { recordMapValue } from "../../helper/record/recordMapValue.ts"
 import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp, formatValue, formatValues } from "../format/index.ts"

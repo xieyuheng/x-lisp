@@ -1,5 +1,5 @@
-import { formatIndent } from "../../utils/format/formatIndent.ts"
-import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
+import { formatIndent } from "../../helper/format/formatIndent.ts"
+import { urlRelativeToCwd } from "../../helper/url/urlRelativeToCwd.ts"
 import { formatDefinition } from "../definition/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"

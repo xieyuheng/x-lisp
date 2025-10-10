@@ -1,5 +1,5 @@
 import { ErrorWithMeta } from "@xieyuheng/x-sexp.js"
-import { formatIndent } from "../../utils/format/formatIndent.ts"
+import { formatIndent } from "../../helper/format/formatIndent.ts"
 import { LazyDefinition } from "../definition/Definition.ts"
 import { formatDefinition } from "../definition/formatDefinition.ts"
 import type { Exp } from "../exp/Exp.ts"

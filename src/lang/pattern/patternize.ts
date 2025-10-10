@@ -1,5 +1,5 @@
-import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
-import { recordMapValue } from "../../utils/record/recordMapValue.ts"
+import { arrayPickLast } from "../../helper/array/arrayPickLast.ts"
+import { recordMapValue } from "../../helper/record/recordMapValue.ts"
 import { type Env } from "../env/index.ts"
 import { evaluate, resultValue } from "../evaluate/index.ts"
 import { type Exp } from "../exp/index.ts"

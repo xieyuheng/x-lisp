@@ -1,4 +1,4 @@
-import { formatIndent } from "../../utils/format/formatIndent.ts"
+import { formatIndent } from "../../helper/format/formatIndent.ts"
 import { formatDefinition, ValueDefinition } from "../definition/index.ts"
 import { formatValue } from "../format/index.ts"
 import { modLookupDefinition, type Mod } from "../mod/index.ts"

@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-sexp.js"
-import { arrayMapZip } from "../../utils/array/arrayMapZip.ts"
-import { formatUnderTag } from "../../utils/format/formatUnderTag.ts"
+import { arrayMapZip } from "../../helper/array/arrayMapZip.ts"
+import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
 import { formatValue, formatValues } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"

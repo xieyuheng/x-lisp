@@ -1,4 +1,4 @@
-import { createUrlOrFileUrl } from "../../utils/url/createUrlOrFileUrl.ts"
+import { createUrlOrFileUrl } from "../../helper/url/createUrlOrFileUrl.ts"
 import { type Mod } from "../mod/index.ts"
 import { load } from "./index.ts"
 import { resolveModPath } from "./resolveModPath.ts"

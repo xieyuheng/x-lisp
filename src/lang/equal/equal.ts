@@ -1,4 +1,4 @@
-import { arrayZip } from "../../utils/array/arrayZip.ts"
+import { arrayZip } from "../../helper/array/arrayZip.ts"
 import * as Values from "../value/index.ts"
 import { arrowNormalize, type Attributes, type Value } from "../value/index.ts"
 import { same } from "./same.ts"

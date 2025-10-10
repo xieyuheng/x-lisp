@@ -1,4 +1,4 @@
-import { isAtom } from "./atomUtils.ts"
+import { isAtom } from "./atomHelper.ts"
 import type { Value } from "./Value.ts"
 
 export function isSexp(value: Value): boolean {

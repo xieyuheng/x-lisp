@@ -2,13 +2,13 @@ import { type Command } from "@xieyuheng/commander.js"
 import * as X from "@xieyuheng/x-sexp.js"
 import { flags } from "../flags.ts"
 import { globals } from "../globals.ts"
+import { errorReport } from "../helper/error/errorReport.ts"
+import { getPackageJson } from "../helper/node/getPackageJson.ts"
 import { aboutModule } from "../lang/builtin/aboutModule.ts"
 import { importBuiltin } from "../lang/builtin/index.ts"
 import { runSexps } from "../lang/load/index.ts"
 import { createMod } from "../lang/mod/index.ts"
 import { importPrelude } from "../lang/prelude/importPrelude.ts"
-import { errorReport } from "../utils/error/errorReport.ts"
-import { getPackageJson } from "../utils/node/getPackageJson.ts"
 
 export const ReplCommand: Command = {
   name: "repl",

@@ -1,4 +1,4 @@
-import { arrayZip } from "../../utils/array/arrayZip.ts"
+import { arrayZip } from "../../helper/array/arrayZip.ts"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { isValid } from "../evaluate/index.ts"
 import { type Mod } from "../mod/index.ts"

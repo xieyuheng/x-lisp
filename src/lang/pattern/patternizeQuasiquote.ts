@@ -1,5 +1,5 @@
 import * as X from "@xieyuheng/x-sexp.js"
-import { recordMapValue } from "../../utils/record/recordMapValue.ts"
+import { recordMapValue } from "../../helper/record/recordMapValue.ts"
 import { matchExp } from "../syntax/index.ts"
 import * as Patterns from "./Pattern.ts"
 import { patternize, type Effect } from "./patternize.ts"

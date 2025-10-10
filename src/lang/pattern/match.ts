@@ -1,4 +1,4 @@
-import { arrayZip } from "../../utils/array/arrayZip.ts"
+import { arrayZip } from "../../helper/array/arrayZip.ts"
 import { envLookupValue, envPut, type Env } from "../env/index.ts"
 import { equal } from "../equal/index.ts"
 import { isValid } from "../evaluate/validate.ts"
