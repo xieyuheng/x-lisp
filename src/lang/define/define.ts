@@ -1,4 +1,4 @@
-import { indent } from "../../utils/format/indent.ts"
+import { formatIndent } from "../../utils/format/formatIndent.ts"
 import { formatDefinition, ValueDefinition } from "../definition/index.ts"
 import { formatValue } from "../format/index.ts"
 import { modLookupDefinition, type Mod } from "../mod/index.ts"
@@ -10,7 +10,7 @@ export function define(mod: Mod, name: string, value: Value): void {
     let message = `[define] can not redefine name: ${name}`
     message += `\n  new value: ${formatValue(value)}`
     message += `\n  old definition:`
-    message += indent(4, formatDefinition(found))
+    message += formatIndent(4, formatDefinition(found))
     throw new Error(message)
   }
 

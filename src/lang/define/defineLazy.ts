@@ -1,5 +1,5 @@
 import { ErrorWithMeta } from "@xieyuheng/x-data.js"
-import { indent } from "../../utils/format/indent.ts"
+import { formatIndent } from "../../utils/format/formatIndent.ts"
 import { LazyDefinition } from "../definition/Definition.ts"
 import { formatDefinition } from "../definition/formatDefinition.ts"
 import type { Exp } from "../exp/Exp.ts"
@@ -12,7 +12,7 @@ export function defineLazy(mod: Mod, name: string, exp: Exp): void {
     let message = `[defineLazy] can not redefine name: ${name}`
     message += `\n  new exp: ${formatExp(exp)}`
     message += `\n  old definition:`
-    message += indent(4, formatDefinition(found))
+    message += formatIndent(4, formatDefinition(found))
     throw new ErrorWithMeta(message, exp.meta)
   }
 

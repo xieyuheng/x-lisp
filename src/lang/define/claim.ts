@@ -1,4 +1,4 @@
-import { indent } from "../../utils/format/indent.ts"
+import { formatIndent } from "../../utils/format/formatIndent.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { formatDefinition } from "../definition/index.ts"
 import { formatValue } from "../format/index.ts"
@@ -30,7 +30,7 @@ export function claim(mod: Mod, name: string, schema: Value): void {
     message += `\n  name: ${name}`
     message += `\n  schema: ${formatValue(schema)}`
     message += `\n  definition:`
-    message += indent(4, formatDefinition(definition))
+    message += formatIndent(4, formatDefinition(definition))
     throw new Error(message)
   }
 }

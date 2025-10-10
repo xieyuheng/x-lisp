@@ -1,6 +1,9 @@
 # pretty print
 
+extract `formatUnderTag`
+
 `applyWithSchema` -- prepare to use pretty print
+
 `prettyFormatValue`
 `prettyFormatSexp` -- always format as code
 - can be config-ed by keyword lists -- like emacs scheme-mode

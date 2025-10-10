@@ -1,5 +1,5 @@
 import * as X from "@xieyuheng/x-data.js"
-import { indent } from "../../utils/format/indent.ts"
+import { formatIndent } from "../../utils/format/formatIndent.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { include } from "../define/index.ts"
 import { formatDefinition, type Definition } from "../definition/index.ts"
@@ -23,9 +23,9 @@ function checkRedefine(
 
   let message = `[checkRedefine] can not redefine name: ${name}`
   message += `\n  old definition:`
-  message += indent(4, formatDefinition(found))
+  message += formatIndent(4, formatDefinition(found))
   message += `\n  new definition:`
-  message += indent(4, formatDefinition(definition))
+  message += formatIndent(4, formatDefinition(definition))
   throw new X.ErrorWithMeta(message, meta)
 }
 
