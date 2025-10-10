@@ -28,6 +28,29 @@ function renderValue(value: Value): pp.Node {
   }
 
   switch (value.kind) {
+    case "Tael": {
+      const elements = renderValues(value.elements)
+      const attributes = renderAttributes(Object.entries(value.attributes))
+      if (
+        value.elements.length === 0 &&
+        Object.keys(value.attributes).length === 0
+      ) {
+        return pp.text("[]")
+      } else if (Object.keys(value.attributes).length === 0) {
+        return pp.group(pp.text("["), pp.indent(1, elements), pp.text("]"))
+      } else if (value.elements.length === 0) {
+        return pp.group(pp.text("["), pp.indent(1, attributes), pp.text("]"))
+      } else {
+        return pp.group(
+          pp.text("["),
+          pp.group(pp.indent(1, elements)),
+          pp.indent(1, pp.br()),
+          pp.indent(1, attributes),
+          pp.text("]"),
+        )
+      }
+    }
+
     case "Lambda": {
       return pp.group(
         pp.group(
@@ -47,5 +70,23 @@ function renderValue(value: Value): pp.Node {
     }
   }
 
-  throw new Error("TODO")
+  return pp.text("TODO")
+}
+
+function renderAttribute([key, value]: [string, Value]): pp.Node {
+  return pp.group(pp.text(`:${key}`), pp.br(), renderValue(value))
+}
+
+function renderAttributes(entries: Array<[string, Value]>): pp.Node {
+  return pp.mapWithBreak(renderAttribute, entries)
+}
+
+function renderHashEntry(entry: { key: Value; value: Value }): pp.Node {
+  return pp.group(renderValue(entry.key), pp.br(), renderValue(entry.value))
+}
+
+function renderHashEntries(
+  entries: Array<{ key: Value; value: Value }>,
+): pp.Node {
+  return pp.mapWithBreak(renderHashEntry, entries)
 }

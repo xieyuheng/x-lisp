@@ -1,7 +1,7 @@
 # pretty
 
-[pretty] `renderValue` setup test
-[pretty] `renderValue`
+[pretty] `renderValue` -- Set
+
 [pretty] `prettySexp` -- always format as code
 - can be config-ed by keyword lists -- like emacs scheme-mode
 [pretty] `prettyExp` -- should be implemented as `readbackExp` and `prettySexp`
