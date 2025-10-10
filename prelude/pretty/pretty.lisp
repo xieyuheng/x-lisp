@@ -1,7 +1,7 @@
 (import-all "ppml")
 
 (export
-  pretty-format
+  pretty
   pretty-print)
 
 (claim pretty-print
@@ -9,13 +9,13 @@
       void?))
 
 (define (pretty-print max-width value)
-  (writeln (pretty-format max-width value)))
+  (writeln (pretty max-width value)))
 
-(claim pretty-format
+(claim pretty
   (-> int-non-negative? anything?
       string?))
 
-(define (pretty-format max-width value)
+(define (pretty max-width value)
   (ppml-format max-width (render value)))
 
 (claim render (-> anything? ppml-node?))

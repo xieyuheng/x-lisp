@@ -499,7 +499,7 @@ null
 
 ```lisp
 (pretty-print max-width value)
-(pretty-format max-width value)
+(pretty max-width value)
 ```
 
 ## Standard Libraries
