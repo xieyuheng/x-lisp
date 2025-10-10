@@ -7,11 +7,11 @@ export function prettyExp(maxWidth: number, exp: Exp): string {
   return pp.format(maxWidth, renderExp(exp))
 }
 
-function renderExps(exps: Array<Exp>): pp.Node {
+export function renderExps(exps: Array<Exp>): pp.Node {
   return pp.mapWithBreak(renderExp, exps)
 }
 
-function renderExp(exp: Exp): pp.Node {
+export function renderExp(exp: Exp): pp.Node {
   if (isAtom(exp)) {
     return pp.text(formatAtom(exp))
   }
@@ -348,7 +348,7 @@ function renderExp(exp: Exp): pp.Node {
   }
 }
 
-function renderBody(body: Exp): pp.Node {
+export function renderBody(body: Exp): pp.Node {
   if (body.kind === "Begin") {
     return renderExps(body.sequence)
   } else {

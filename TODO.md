@@ -1,5 +1,6 @@
 # pretty
 
+[pretty] `renderValue` setup test
 [pretty] `renderValue`
 [pretty] `prettySexp` -- always format as code
 - can be config-ed by keyword lists -- like emacs scheme-mode
