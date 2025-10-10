@@ -1,8 +1,13 @@
 [applyWithSchema] fail on arguments
-  schema: (-> int? int? int?)
-  target: iadd
-  args: [1 "a"]
+  schema:
+    (-> int? int? int?)
+  target:
+    iadd
+  args:
+    [1 "a"]
   failed args:
   - count: 2
-    schema: int?
-    value: "a"
+    schema:
+      int?
+    value:
+      "a"

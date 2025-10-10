@@ -1,14 +1,21 @@
 [applyWithSchema] fail on arguments
-  schema: (-> int? int? int?)
-  target: (lambda (x y) (iadd x y))
-  args: [1.0 1.0]
+  schema:
+    (-> int? int? int?)
+  target:
+    (lambda (x y) (iadd x y))
+  args:
+    [1.0 1.0]
   failed args:
   - count: 1
-    schema: int?
-    value: 1.0
+    schema:
+      int?
+    value:
+      1.0
   - count: 2
-    schema: int?
-    value: 1.0
+    schema:
+      int?
+    value:
+      1.0
   --> examples/tests/claim/claim-arguments.error.lisp:2:9
  1 | (claim my-add (-> int? int? int?))
  2 | (define (my-add x y) (iadd x y))

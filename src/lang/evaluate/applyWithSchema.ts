@@ -1,5 +1,6 @@
 import * as X from "@xieyuheng/x-data.js"
 import { arrayMapZip } from "../../utils/array/arrayMapZip.ts"
+import { indent } from "../../utils/format/indent.ts"
 import { formatValue, formatValues } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
@@ -43,14 +44,12 @@ export function applyWithSchema(
   }
 
   if (schema.kind === "Arrow") {
-    const arrow = Values.arrowNormalize(schema)
-
-    if (arrow.argSchemas.length < args.length) {
-      const usedArgs = args.slice(0, arrow.argSchemas.length)
-      const spilledArgs = args.slice(arrow.argSchemas.length)
-      const checkedArgs = validateArgs(context, arrow.argSchemas, usedArgs)
+    if (schema.argSchemas.length < args.length) {
+      const usedArgs = args.slice(0, schema.argSchemas.length)
+      const spilledArgs = args.slice(schema.argSchemas.length)
+      const checkedArgs = validateArgs(context, schema.argSchemas, usedArgs)
       const ret = apply(target, checkedArgs)
-      const result = validate(arrow.retSchema, ret)
+      const result = validate(schema.retSchema, ret)
       if (result.kind === "Err") {
         let message = `[applyWithSchema] fail on result`
         message += `\n  schema: ${formatValue(schema)}`
@@ -65,10 +64,10 @@ export function applyWithSchema(
       return apply(result.value, spilledArgs)
     }
 
-    if (arrow.argSchemas.length === args.length) {
-      const checkedArgs = validateArgs(context, arrow.argSchemas, args)
+    if (schema.argSchemas.length === args.length) {
+      const checkedArgs = validateArgs(context, schema.argSchemas, args)
       const ret = apply(target, checkedArgs)
-      const result = validate(arrow.retSchema, ret)
+      const result = validate(schema.retSchema, ret)
       if (result.kind === "Err") {
         let message = `[applyWithSchema] fail on result`
         message += `\n  schema: ${formatValue(schema)}`
@@ -82,11 +81,11 @@ export function applyWithSchema(
       return result.value
     }
 
-    if (arrow.argSchemas.length > args.length) {
-      const argSchemas = arrow.argSchemas.slice(0, args.length)
-      const restArgSchemas = arrow.argSchemas.slice(args.length)
+    if (schema.argSchemas.length > args.length) {
+      const argSchemas = schema.argSchemas.slice(0, args.length)
+      const restArgSchemas = schema.argSchemas.slice(args.length)
       const result = apply(target, validateArgs(context, argSchemas, args))
-      const newArrow = Values.Arrow(restArgSchemas, arrow.retSchema)
+      const newArrow = Values.Arrow(restArgSchemas, schema.retSchema)
       return validateOrFail(newArrow, result)
     }
   }
@@ -134,14 +133,19 @@ function validateArgs(
 
   const meta = Values.valueMaybeMeta(context.target)
   let message = `[applyWithSchema] fail on arguments`
-  message += `\n  schema: ${formatValue(context.schema)}`
-  message += `\n  target: ${formatValue(context.target)}`
-  message += `\n  args: [${formatValues(context.args)}]`
+  message += `\n  schema:`
+  message += indent(4, `\n` + formatValue(context.schema))
+  message += `\n  target:`
+  message += indent(4, `\n` + formatValue(context.target))
+  message += `\n  args:`
+  message += indent(4, `\n` + `[${formatValues(context.args)}]`)
   message += `\n  failed args:`
   for (const { index, schema, arg } of erred) {
     message += `\n  - count: ${index + 1}`
-    message += `\n    schema: ${formatValue(schema)}`
-    message += `\n    value: ${formatValue(arg)}`
+    message += `\n    schema:`
+    message += indent(6, `\n` + formatValue(schema))
+    message += `\n    value:`
+    message += indent(6, `\n` + formatValue(arg))
   }
 
   if (meta) throw new X.ErrorWithMeta(message, meta)

@@ -1,14 +1,21 @@
 [applyWithSchema] fail on arguments
-  schema: (-> (list? symbol?) (list? symbol?) (list? symbol?))
-  target: (lambda (left right) (list-append left right))
-  args: [[1 2] [3 4]]
+  schema:
+    (-> (list? symbol?) (list? symbol?) (list? symbol?))
+  target:
+    (lambda (left right) (list-append left right))
+  args:
+    [[1 2] [3 4]]
   failed args:
   - count: 1
-    schema: (list? symbol?)
-    value: [1 2]
+    schema:
+      (list? symbol?)
+    value:
+      [1 2]
   - count: 2
-    schema: (list? symbol?)
-    value: [3 4]
+    schema:
+      (list? symbol?)
+    value:
+      [3 4]
    --> examples/tests/schema/specific.error.lisp:6:9
   4 |         (list? A))))
   5 | 
