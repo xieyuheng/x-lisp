@@ -127,6 +127,17 @@ function renderValue(value: Value): pp.Node {
         pp.text(")"),
       )
     }
+
+    case "The": {
+      return pp.group(
+        pp.group(
+          pp.text("(the"),
+          pp.indent(4, pp.br(), renderValue(value.schema)),
+        ),
+        pp.indent(2, pp.br(), renderValue(value.value)),
+        pp.text(")"),
+      )
+    }
   }
 
   return pp.text("TODO")

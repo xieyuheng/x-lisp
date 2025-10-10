@@ -1,6 +1,6 @@
 # pretty
 
-[pretty] `renderValue` -- The Curried
+[pretty] `renderValue` -- Curried
 [pretty] `renderValue` -- Tau Pattern Polymorphic
 [pretty] `renderValue` -- default -- just use `formatValue`
 
