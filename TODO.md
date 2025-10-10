@@ -1,5 +1,3 @@
-[pretty] `assertEqual` use pretty print
-
 # pretty
 
 update x-sexp for `prettySexp`

@@ -1,4 +1,5 @@
 import * as X from "@xieyuheng/x-sexp.js"
+import { globals } from "../../globals.ts"
 import { arrayMapZip } from "../../helper/array/arrayMapZip.ts"
 import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
 import { prettyValue, prettyValues } from "../pretty/index.ts"
@@ -8,13 +9,12 @@ import { apply } from "./apply.ts"
 import { applyPolymorphicWithAnythings } from "./applyPolymorphic.ts"
 import { validate, validateOrFail } from "./validate.ts"
 
-const maxWidth = 38
-
 export function applyWithSchema(
   schema: Value,
   target: Value,
   args: Array<Value>,
 ): Value {
+  const maxWidth = globals.maxWidth
   const meta = Values.valueMaybeMeta(target)
   const context = { schema, target, args }
 
@@ -114,6 +114,7 @@ function validateArgs(
   argSchemas: Array<Value>,
   args: Array<Value>,
 ): Array<Value> {
+  const maxWidth = globals.maxWidth
   const validatedArgs: Array<Value> = []
   const erred: Array<{ index: number; schema: Value; arg: Value }> = []
   for (const [index, result] of arrayMapZip(

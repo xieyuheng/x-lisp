@@ -1,23 +1,26 @@
 import * as X from "@xieyuheng/x-sexp.js"
+import { globals } from "../../globals.ts"
+import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
 import { type Exp } from "../exp/index.ts"
-import { formatExp, formatValue } from "../format/index.ts"
+import { prettyExp, prettyValue } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"
 import { evaluate, resultValue, type Effect } from "./evaluate.ts"
 
 export function assertNotTrue(exp: Exp): Effect {
   return (mod, env) => {
+    const maxWidth = globals.maxWidth
     const value = resultValue(evaluate(exp)(mod, env))
 
     if (!Values.isBool(value)) {
       let message = `[assertNotTrue] fail on non boolean value`
-      message += `\n  exp: ${formatExp(exp)}`
-      message += `\n  value: ${formatValue(value)}`
+      message += formatUnderTag(2, `exp:`, prettyExp(maxWidth, exp))
+      message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
       throw new X.ErrorWithMeta(message, exp.meta)
     }
 
     if (Values.isTrue(value)) {
       let message = `[assertNotTrue] fail`
-      message += `\n  exp: ${formatExp(exp)}`
+      message += formatUnderTag(2, `exp:`, prettyExp(maxWidth, exp))
       throw new X.ErrorWithMeta(message, exp.meta)
     }
 
