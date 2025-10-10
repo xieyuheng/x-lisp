@@ -105,6 +105,28 @@ function renderValue(value: Value): pp.Node {
         pp.indent(2, pp.br(), pp.group(renderBody(value.body), pp.text(")"))),
       )
     }
+
+    case "Arrow": {
+      return pp.group(
+        pp.group(
+          pp.text("(->"),
+          pp.indent(2, pp.br(), renderValues(value.argSchemas)),
+        ),
+        pp.indent(2, pp.br(), renderValue(value.retSchema)),
+        pp.text(")"),
+      )
+    }
+
+    case "VariadicArrow": {
+      return pp.group(
+        pp.group(
+          pp.text("(*->"),
+          pp.indent(2, pp.br(), renderValue(value.argSchema)),
+        ),
+        pp.indent(2, pp.br(), renderValue(value.retSchema)),
+        pp.text(")"),
+      )
+    }
   }
 
   return pp.text("TODO")
