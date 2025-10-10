@@ -1,5 +1,3 @@
-use `prettyValue` -- lang/define/define.ts
-
 use `prettyValue` -- lang/definition/formatDefinition.ts
 
 use `prettyValue` -- lang/evaluate/validate.ts
