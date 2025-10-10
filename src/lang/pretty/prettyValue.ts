@@ -1,9 +1,9 @@
 import assert from "node:assert"
 import * as pp from "../../helper/ppml/index.ts"
-import { formatAtom, formatValue } from "../format/index.ts"
+import { formatAtom, formatPattern, formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
-import { renderBody, renderExps } from "./prettyExp.ts"
+import { renderBody, renderExp, renderExps } from "./prettyExp.ts"
 
 export function prettyValue(maxWidth: number, value: Value): string {
   return pp.format(maxWidth, renderValue(value))
@@ -129,6 +129,39 @@ function renderValue(value: Value): pp.Node {
       )
     }
 
+    case "Tau": {
+      const elementSchemas = renderValues(value.elementSchemas)
+      const attributeSchemas = renderAttributes(
+        Object.entries(value.attributeSchemas),
+      )
+      if (
+        value.elementSchemas.length === 0 &&
+        Object.keys(value.attributeSchemas).length === 0
+      ) {
+        return pp.text(`(tau)`)
+      } else if (Object.keys(value.attributeSchemas).length === 0) {
+        return pp.group(
+          pp.text("(tau"),
+          pp.indent(2, elementSchemas),
+          pp.text(")"),
+        )
+      } else if (value.elementSchemas.length === 0) {
+        return pp.group(
+          pp.text("(tau"),
+          pp.indent(2, attributeSchemas),
+          pp.text(")"),
+        )
+      } else {
+        return pp.group(
+          pp.text("(tau"),
+          pp.group(pp.indent(2, elementSchemas)),
+          pp.indent(2, pp.br()),
+          pp.indent(2, attributeSchemas),
+          pp.text(")"),
+        )
+      }
+    }
+
     case "The": {
       return pp.group(
         pp.group(
@@ -147,6 +180,25 @@ function renderValue(value: Value): pp.Node {
         renderValue(value.target),
         pp.br(),
         renderValues(value.args),
+        pp.text(")"),
+      )
+    }
+
+    case "Pattern": {
+      return pp.group(
+        pp.text("(@pattern"),
+        pp.indent(2, pp.br(), pp.text(formatPattern(value.pattern))),
+        pp.text(")"),
+      )
+    }
+
+    case "Polymorphic": {
+      return pp.group(
+        pp.group(
+          pp.text("(polymorphic"),
+          pp.indent(4, pp.br(), pp.text(`(${value.parameters.join(" ")})`)),
+        ),
+        pp.indent(2, pp.br(), renderExp(value.schema)),
         pp.text(")"),
       )
     }
