@@ -6,7 +6,7 @@ import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
 import { applyPolymorphicWithAnythings } from "./applyPolymorphic.ts"
-import { isValid, validate, validateOrFail } from "./validate.ts"
+import { validate, validateOrFail } from "./validate.ts"
 
 export function applyWithSchema(
   schema: Value,
@@ -21,26 +21,21 @@ export function applyWithSchema(
   }
 
   if (schema.kind === "VariadicArrow") {
-    const result = apply(
-      target,
-      validateArgs(
-        context,
-        args.map((_) => schema.argSchema),
-        args,
-      ),
-    )
-
-    if (isValid(schema.retSchema, result)) {
-      return result
-    } else {
+    const argSchemas = Array(args.length).fill(schema.argSchema)
+    const checkedArgs = validateArgs(context, argSchemas, args)
+    const ret = apply(target, checkedArgs)
+    const result = validate(schema.retSchema, ret)
+    if (result.kind === "Err") {
       let message = `[applyWithSchema] fail on result`
       message += `\n  schema: ${formatValue(schema)}`
       message += `\n  target: ${formatValue(target)}`
       message += `\n  args: [${formatValues(args)}]`
-      message += `\n  result: ${formatValue(result)}`
+      message += `\n  result: ${formatValue(ret)}`
       if (meta) throw new X.ErrorWithMeta(message, meta)
       else throw new Error(message)
     }
+
+    return result.value
   }
 
   if (schema.kind === "Arrow") {
