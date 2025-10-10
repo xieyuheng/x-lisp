@@ -48,41 +48,38 @@ export function applyWithSchema(
     if (arrow.argSchemas.length < args.length) {
       const usedArgs = args.slice(0, arrow.argSchemas.length)
       const spilledArgs = args.slice(arrow.argSchemas.length)
-      const result = apply(
-        target,
-        validateArgs(context, arrow.argSchemas, usedArgs),
-      )
-
-      if (isValid(arrow.retSchema, result)) {
-        return apply(result, spilledArgs)
-      } else {
+      const checkedArgs = validateArgs(context, arrow.argSchemas, usedArgs)
+      const ret = apply(target, checkedArgs)
+      const result = validate(arrow.retSchema, ret)
+      if (result.kind === "Err") {
         let message = `[applyWithSchema] fail on result`
         message += `\n  schema: ${formatValue(schema)}`
         message += `\n  target: ${formatValue(target)}`
         message += `\n  used args: [${formatValues(usedArgs)}]`
         message += `\n  spilled args: [${formatValues(spilledArgs)}]`
-        message += `\n  result: ${formatValue(result)}`
+        message += `\n  result: ${formatValue(ret)}`
         if (meta) throw new X.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
+
+      return apply(result.value, spilledArgs)
     }
 
     if (arrow.argSchemas.length === args.length) {
-      const result = apply(
-        target,
-        validateArgs(context, arrow.argSchemas, args),
-      )
-      if (isValid(arrow.retSchema, result)) {
-        return result
-      } else {
+      const checkedArgs = validateArgs(context, arrow.argSchemas, args)
+      const ret = apply(target, checkedArgs)
+      const result = validate(arrow.retSchema, ret)
+      if (result.kind === "Err") {
         let message = `[applyWithSchema] fail on result`
         message += `\n  schema: ${formatValue(schema)}`
         message += `\n  target: ${formatValue(target)}`
         message += `\n  args: [${formatValues(args)}]`
-        message += `\n  result: ${formatValue(result)}`
+        message += `\n  result: ${formatValue(ret)}`
         if (meta) throw new X.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
+
+      return result.value
     }
 
     if (arrow.argSchemas.length > args.length) {
