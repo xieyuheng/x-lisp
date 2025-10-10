@@ -201,6 +201,12 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
+    case "Comment": {
+      return (mod, env) => {
+        return [env, Values.Void()]
+      }
+    }
+
     case "Quasiquote": {
       return evaluateQuasiquote(exp.sexp)
     }

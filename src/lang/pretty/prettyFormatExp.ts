@@ -180,6 +180,10 @@ export function renderExp(exp: Exp): pp.Node {
       return pp.text(`(@quote ${formatSexp(exp.sexp)})`)
     }
 
+    case "Comment": {
+      return pp.text(`(@comment ${formatSexp(exp.sexp)})`)
+    }
+
     case "Quasiquote": {
       return pp.text(`(@quasiquote ${formatSexp(exp.sexp)})`)
     }

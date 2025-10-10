@@ -23,6 +23,7 @@ export type Exp =
   | Set
   | Hash
   | Quote
+  | Comment
   | Quasiquote
   | If
   | When
@@ -38,6 +39,7 @@ export type Exp =
   | Pattern
   | Polymorphic
   | Specific
+  | Comment
 
 export type Var = {
   kind: "Var"
@@ -285,6 +287,20 @@ export type Quote = {
 export function Quote(sexp: Data, meta: Meta): Quote {
   return {
     kind: "Quote",
+    sexp,
+    meta,
+  }
+}
+
+export type Comment = {
+  kind: "Comment"
+  sexp: Data
+  meta: Meta
+}
+
+export function Comment(sexp: Data, meta: Meta): Comment {
+  return {
+    kind: "Comment",
     sexp,
     meta,
   }

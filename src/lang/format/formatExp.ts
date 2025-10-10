@@ -108,6 +108,10 @@ export function formatExp(exp: Exp): string {
       return `(@quote ${formatSexp(exp.sexp)})`
     }
 
+    case "Comment": {
+      return `(@comment ${formatSexp(exp.sexp)})`
+    }
+
     case "Quasiquote": {
       return `(@quasiquote ${formatSexp(exp.sexp)})`
     }

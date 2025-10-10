@@ -1,15 +1,12 @@
-support `@comment`
+parse `@comment`
 
 # pretty print
 
 `formatValue` -- should not call `formatExp`
 `prettyFormatValue`
 `prettyFormatSexp` -- always format as code
-
 - can be config-ed by keyword lists -- like emacs scheme-mode
-
 `prettyFormatExp` -- should be implemented as `readbackExp` and `prettyFormatSexp`
-
 use pretty print in error report
 
 # later
