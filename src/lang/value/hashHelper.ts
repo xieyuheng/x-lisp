@@ -16,6 +16,10 @@ export function hashEntries(hash: Hash): Array<HashEntry> {
   return Array.from(hash.entries.values())
 }
 
+export function hashLength(hash: Hash): number {
+  return Array.from(hash.entries.values()).length
+}
+
 export function hashGet(hash: Hash, key: Value): Value | undefined {
   const hashKey = formatValue(key, { digest: true })
   const entry = hash.entries.get(hashKey)

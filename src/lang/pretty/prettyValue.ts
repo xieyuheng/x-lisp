@@ -51,6 +51,26 @@ function renderValue(value: Value): pp.Node {
       }
     }
 
+    case "Set": {
+      return pp.group(
+        pp.text("{"),
+        pp.indent(1, renderValues(Values.setElements(value))),
+        pp.text("}"),
+      )
+    }
+
+    case "Hash": {
+      if (Values.hashLength(value) === 0) {
+        return pp.text(`(@hash)`)
+      } else {
+        return pp.group(
+          pp.text("(@hash"),
+          pp.indent(2, pp.br(), renderHashEntries(Values.hashEntries(value))),
+          pp.text(")"),
+        )
+      }
+    }
+
     case "Lambda": {
       return pp.group(
         pp.group(
@@ -65,6 +85,23 @@ function renderValue(value: Value): pp.Node {
             ),
           ),
         ),
+        pp.indent(2, pp.br(), pp.group(renderBody(value.body), pp.text(")"))),
+      )
+    }
+
+    case "VariadicLambda": {
+      return pp.group(
+        pp.group(
+          pp.text("(lambda"),
+          pp.indent(4, pp.br(), pp.text(value.variadicParameter)),
+        ),
+        pp.indent(2, pp.br(), pp.group(renderBody(value.body), pp.text(")"))),
+      )
+    }
+
+    case "Thunk": {
+      return pp.group(
+        pp.text("(thunk"),
         pp.indent(2, pp.br(), pp.group(renderBody(value.body), pp.text(")"))),
       )
     }
