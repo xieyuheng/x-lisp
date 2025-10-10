@@ -2,8 +2,7 @@
   schema:
     (-> int? int? int?)
   target:
-    (lambda (x)
-      (lambda (y) (iadd x y)))
+    (lambda (x) (lambda (y) (iadd x y)))
   args:
     1.0 1.0
   failed args:

@@ -1,12 +1,3 @@
-[#closure
- 'x
- [#var-exp 'x]
- #empty-env]
-[#closure
- 'x
- [#var-exp 'x]
- #empty-env]
-[#closure
- 'x
- [#var-exp 'x]
- #empty-env]
+[#closure 'x [#var-exp 'x] #empty-env]
+[#closure 'x [#var-exp 'x] #empty-env]
+[#closure 'x [#var-exp 'x] #empty-env]

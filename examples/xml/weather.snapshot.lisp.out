@@ -7,13 +7,8 @@
  ['current
   ['temperature 22 :unit 'celsius]
   ['humidity 65 :unit 'percent]
-  ['condition
-   :type 'cloudy
-   :description "Partly cloudy"]
-  ['wind
-   :speed 15
-   :direction 'NE
-   :unit 'kmh]
+  ['condition :type 'cloudy :description "Partly cloudy"]
+  ['wind :speed 15 :direction 'NE :unit 'kmh]
   :timestamp "2023-07-15T14:30:00Z"]
  ['forecast
   ['high 26 :unit 'celsius]

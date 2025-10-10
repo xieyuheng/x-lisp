@@ -9,8 +9,7 @@
 (@pattern 'a)
 (@pattern (@escape ['a 'b 'c]))
 (@pattern (cons* head tail))
-(@pattern
-  (cons* first second tail))
+(@pattern (cons* first second tail))
 (@pattern (cons* first 2 tail))
 (@pattern (cons* first 3 tail))
 (@pattern #null)
