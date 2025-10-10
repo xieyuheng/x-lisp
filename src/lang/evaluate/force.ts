@@ -1,11 +1,15 @@
 import { flags } from "../../flags.ts"
-import { formatValue } from "../format/index.ts"
+import { globals } from "../../globals.ts"
+import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
+import { prettyValue } from "../pretty/index.ts"
 import { type Value } from "../value/index.ts"
 import { applyVariadicLambda } from "./applyVariadicLambda.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 import { forceWithSchema } from "./forceWithSchema.ts"
 
 export function force(target: Value): Value {
+  const maxWidth = globals.maxWidth
+
   if (target.kind === "Thunk") {
     return resultValue(evaluate(target.body)(target.mod, target.env))
   }
@@ -27,6 +31,6 @@ export function force(target: Value): Value {
   }
 
   let message = `[force] unhandled target value kind`
-  message += `\n  target: ${formatValue(target)}`
+  message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
   throw new Error(message)
 }

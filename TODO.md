@@ -1,4 +1,3 @@
-use `prettyValue` -- lang/evaluate/force.ts
 use `prettyValue` -- lang/evaluate/evaluate.ts
 use `prettyValue` -- lang/evaluate/apply.ts
 use `prettyValue` -- lang/evaluate/applyPolymorphic.ts
