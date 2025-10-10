@@ -10,7 +10,7 @@ export function define(mod: Mod, name: string, value: Value): void {
     let message = `[define] can not redefine name: ${name}`
     message += `\n  new value: ${formatValue(value)}`
     message += `\n  old definition:`
-    message += indent(formatDefinition(found), { length: 4 })
+    message += indent(4, formatDefinition(found))
     throw new Error(message)
   }
 

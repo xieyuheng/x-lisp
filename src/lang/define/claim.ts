@@ -30,7 +30,7 @@ export function claim(mod: Mod, name: string, schema: Value): void {
     message += `\n  name: ${name}`
     message += `\n  schema: ${formatValue(schema)}`
     message += `\n  definition:`
-    message += indent(formatDefinition(definition), { length: 4 })
+    message += indent(4, formatDefinition(definition))
     throw new Error(message)
   }
 }

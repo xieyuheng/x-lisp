@@ -12,7 +12,7 @@ export function defineLazy(mod: Mod, name: string, exp: Exp): void {
     let message = `[defineLazy] can not redefine name: ${name}`
     message += `\n  new exp: ${formatExp(exp)}`
     message += `\n  old definition:`
-    message += indent(formatDefinition(found), { length: 4 })
+    message += indent(4, formatDefinition(found))
     throw new ErrorWithMeta(message, exp.meta)
   }
 
