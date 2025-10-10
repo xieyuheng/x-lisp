@@ -1,4 +1,3 @@
-use `prettyValue` -- lang/evaluate/validate.ts
 use `prettyValue` -- lang/evaluate/forceWithSchema.ts
 use `prettyValue` -- lang/evaluate/force.ts
 use `prettyValue` -- lang/evaluate/evaluate.ts

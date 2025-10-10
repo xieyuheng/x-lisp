@@ -1,5 +1,7 @@
+import { globals } from "../../globals.ts"
+import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
 import { equal } from "../equal/index.ts"
-import { formatValue } from "../format/index.ts"
+import { prettyValue } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
@@ -12,18 +14,21 @@ export function isValid(schema: Value, value: Value): boolean {
 }
 
 export function validateOrFail(schema: Value, value: Value): Value {
+  const maxWidth = globals.maxWidth
   const result = validate(schema, value)
   if (result.kind === "Ok") {
     return result.value
   }
 
   let message = `[validateOrFail] assertion fail`
-  message += `\n  schema: ${formatValue(schema)}`
-  message += `\n  value: ${formatValue(value)}`
+  message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
+  message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
   throw new Error(message)
 }
 
 export function validate(schema: Value, value: Value): Result {
+  const maxWidth = globals.maxWidth
+
   if (schema.kind === "Arrow") {
     return { kind: "Ok", value: Values.The(schema, value) }
   }
@@ -95,8 +100,8 @@ export function validate(schema: Value, value: Value): Result {
   }
 
   let message = `[validate] predicate schema must return bool`
-  message += `\n  schema: ${formatValue(schema)}`
-  message += `\n  value: ${formatValue(value)}`
-  message += `\n  result: ${formatValue(result)}`
+  message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
+  message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
+  message += formatUnderTag(2, `result:`, prettyValue(maxWidth, result))
   throw new Error(message)
 }
