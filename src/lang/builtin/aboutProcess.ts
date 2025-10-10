@@ -6,8 +6,8 @@ import {
   definePrimitiveThunk,
   provide,
 } from "../define/index.ts"
-import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
+import { prettyValue } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"
 
 export function aboutProcess(mod: Mod) {
@@ -27,7 +27,7 @@ export function aboutProcess(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "exit", 1, (info) => {
-    console.log(formatValue(info))
+    console.log(prettyValue(globals.maxWidth, info))
     process.exit(1)
   })
 }
