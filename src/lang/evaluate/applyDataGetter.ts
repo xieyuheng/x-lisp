@@ -1,4 +1,6 @@
-import { formatValue, formatValues } from "../format/index.ts"
+import { globals } from "../../globals.ts"
+import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
+import { prettyValue, prettyValues } from "../pretty/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -6,10 +8,12 @@ export function applyDataGetter(
   getter: Values.DataGetter,
   args: Array<Value>,
 ): Value {
+  const maxWidth = globals.maxWidth
+
   if (args.length !== 1) {
     let message = `[applyDataGetter] data getter can only take one argument`
-    message += `\n  target: ${formatValue(getter)}`
-    message += `\n  args: [${formatValues(args)}]`
+    message += formatUnderTag(2, `getter:`, prettyValue(maxWidth, getter))
+    message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
     throw new Error(message)
   }
 
@@ -17,15 +21,15 @@ export function applyDataGetter(
 
   if (!Values.isData(data)) {
     let message = `[applyDataGetter] data getter can only take data as argument`
-    message += `\n  target: ${formatValue(getter)}`
-    message += `\n  args: [${formatValues(args)}]`
+    message += formatUnderTag(2, `getter:`, prettyValue(maxWidth, getter))
+    message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
     throw new Error(message)
   }
 
   if (Values.dataHashtag(data).content !== getter.constructor.name) {
     let message = `[applyDataGetter] data getter constructor mismatch`
-    message += `\n  target: ${formatValue(getter)}`
-    message += `\n  args: [${formatValues(args)}]`
+    message += formatUnderTag(2, `getter:`, prettyValue(maxWidth, getter))
+    message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
     throw new Error(message)
   }
 

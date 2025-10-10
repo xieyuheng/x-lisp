@@ -1,5 +1,7 @@
+import { globals } from "../../globals.ts"
+import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
 import { envPut } from "../env/index.ts"
-import { formatValue, formatValues } from "../format/index.ts"
+import { prettyValue, prettyValues } from "../pretty/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
@@ -20,11 +22,16 @@ export function applyPolymorphic(
   polymorphic: Values.Polymorphic,
   args: Array<Value>,
 ): Value {
+  const maxWidth = globals.maxWidth
   const arity = polymorphic.parameters.length
   if (args.length !== arity) {
     let message = `[applyPolymorphic] arity mismatch`
-    message += `\n  polymorphic: ${formatValue(polymorphic)}`
-    message += `\n  args: [${formatValues(args)}]`
+    message += formatUnderTag(
+      2,
+      `polymorphic:`,
+      prettyValue(maxWidth, polymorphic),
+    )
+    message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
     throw new Error(message)
   }
 
