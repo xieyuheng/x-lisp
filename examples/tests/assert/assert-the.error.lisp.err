@@ -1,6 +1,8 @@
 (assert-the) validation fail
-  schema: int?
-  value: 'a
+  schema:
+    int?
+  value:
+    'a
   --> examples/tests/assert/assert-the.error.lisp:2:1
  1 | (assert-the int? 1)
  2 | (assert-the int? 'a)

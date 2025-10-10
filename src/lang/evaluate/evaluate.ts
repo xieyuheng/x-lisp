@@ -1,11 +1,13 @@
 import * as X from "@xieyuheng/x-sexp.js"
+import { globals } from "../../globals.ts"
 import { arrayPickLast } from "../../helper/array/arrayPickLast.ts"
+import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
 import { recordMapValue } from "../../helper/record/recordMapValue.ts"
 import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
-import { formatExp, formatValue, formatValues } from "../format/index.ts"
 import { modLookupValue, type Mod } from "../mod/index.ts"
 import { match, patternize } from "../pattern/index.ts"
+import { prettyExp, prettyValue, prettyValues } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
@@ -26,6 +28,8 @@ export function resultValue(result: Result): Value {
 }
 
 export function evaluate(exp: Exp): Effect {
+  const maxWidth = globals.maxWidth
+
   if (Values.isAtom(exp)) {
     return (mod, env) => {
       return [env, exp]
@@ -41,7 +45,8 @@ export function evaluate(exp: Exp): Effect {
         const topValue = modLookupValue(mod, exp.name)
         if (topValue) return [env, topValue]
 
-        let message = `[evaluate] meet undefined name: ${exp.name}`
+        let message = `[evaluate] undefined`
+        message += `\n  name: ${exp.name}`
         throw new X.ErrorWithMeta(message, exp.meta)
       }
     }
@@ -103,9 +108,13 @@ export function evaluate(exp: Exp): Effect {
         const resultEnv = match(pattern, value)(emptyEnv())
         if (resultEnv === undefined) {
           let message = `[evaluate] assignment pattern mismatch`
-          message += `\n  lhs exp: ${formatExp(exp.lhs)}`
-          message += `\n  rhs exp: ${formatExp(exp.rhs)}`
-          message += `\n  rhs value: ${formatValue(value)}`
+          message += formatUnderTag(2, `lhs exp:`, prettyExp(maxWidth, exp.lhs))
+          message += formatUnderTag(2, `rhs exp:`, prettyExp(maxWidth, exp.rhs))
+          message += formatUnderTag(
+            2,
+            `rhs value:`,
+            prettyValue(maxWidth, value),
+          )
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
@@ -138,8 +147,8 @@ export function evaluate(exp: Exp): Effect {
           return [env, Values.Void()]
         } else {
           let message = `(assert-the) validation fail`
-          message += `\n  schema: ${formatValue(schema)}`
-          message += `\n  value: ${formatValue(value)}`
+          message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
+          message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
           throw new X.ErrorWithMeta(message, exp.meta)
         }
       }
@@ -166,7 +175,11 @@ export function evaluate(exp: Exp): Effect {
             Values.setAdd(set, elementValue)
           } else {
             let message = `[evaluate] element in (@set) is not hashable`
-            message += `\n  element: ${formatValue(elementValue)}`
+            message += formatUnderTag(
+              2,
+              `element:`,
+              prettyValue(maxWidth, elementValue),
+            )
             throw new X.ErrorWithMeta(message, element.meta)
           }
         }
@@ -183,8 +196,8 @@ export function evaluate(exp: Exp): Effect {
           const v = resultValue(evaluate(entry.value)(mod, env))
           if (!Values.isHashable(k)) {
             let message = `[evaluate] Key in (@hash) is not hashable`
-            message += `\n  key: ${formatValue(k)}`
-            message += `\n  value: ${formatValue(v)}`
+            message += formatUnderTag(2, `key:`, prettyValue(maxWidth, k))
+            message += formatUnderTag(2, `value:`, prettyValue(maxWidth, v))
             throw new X.ErrorWithMeta(message, entry.key.meta)
           }
 
@@ -216,7 +229,11 @@ export function evaluate(exp: Exp): Effect {
         const condition = resultValue(evaluate(exp.condition)(mod, env))
         if (!Values.isBool(condition)) {
           let message = `(if) the condition must be bool`
-          message += `\n  condition: ${formatValue(condition)}`
+          message += formatUnderTag(
+            2,
+            `condition:`,
+            prettyValue(maxWidth, condition),
+          )
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
@@ -233,7 +250,11 @@ export function evaluate(exp: Exp): Effect {
         const condition = resultValue(evaluate(exp.condition)(mod, env))
         if (!Values.isBool(condition)) {
           let message = `(when) the condition must be bool`
-          message += `\n  condition: ${formatValue(condition)}`
+          message += formatUnderTag(
+            2,
+            `condition:`,
+            prettyValue(maxWidth, condition),
+          )
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
@@ -250,7 +271,11 @@ export function evaluate(exp: Exp): Effect {
         const condition = resultValue(evaluate(exp.condition)(mod, env))
         if (!Values.isBool(condition)) {
           let message = `(unless) the condition must be bool`
-          message += `\n  condition: ${formatValue(condition)}`
+          message += formatUnderTag(
+            2,
+            `condition:`,
+            prettyValue(maxWidth, condition),
+          )
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
@@ -268,7 +293,7 @@ export function evaluate(exp: Exp): Effect {
           const value = resultValue(evaluate(e)(mod, env))
           if (!Values.isBool(value)) {
             let message = `[evaluate] The subexpressions of (and) must evaluate to bool`
-            message += `\n  value: ${formatValue(value)}`
+            message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
             throw new X.ErrorWithMeta(message, exp.meta)
           }
 
@@ -287,7 +312,7 @@ export function evaluate(exp: Exp): Effect {
           const value = resultValue(evaluate(e)(mod, env))
           if (!Values.isBool(value)) {
             let message = `[evaluate] The subexpressions of (or) must evaluate to bool`
-            message += `\n  value: ${formatValue(value)}`
+            message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
             throw new X.ErrorWithMeta(message, exp.meta)
           }
 
@@ -306,7 +331,7 @@ export function evaluate(exp: Exp): Effect {
           const value = resultValue(evaluate(condLine.question)(mod, env))
           if (!Values.isBool(value)) {
             let message = `[evaluate] The question part of a (cond) line must evaluate to bool`
-            message += `\n  value: ${formatValue(value)}`
+            message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
             throw new X.ErrorWithMeta(message, exp.meta)
           }
 
@@ -332,7 +357,7 @@ export function evaluate(exp: Exp): Effect {
         }
 
         let message = `[evaluate] (match) mismatch`
-        message += `\n  target: ${formatValue(target)}`
+        message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
         throw new X.ErrorWithMeta(message, exp.meta)
       }
     }
@@ -376,8 +401,8 @@ export function evaluate(exp: Exp): Effect {
           return [env, result.value]
         } else {
           let message = `(the) validation fail`
-          message += `\n  schema: ${formatValue(schema)}`
-          message += `\n  value: ${formatValue(value)}`
+          message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
+          message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
           throw new X.ErrorWithMeta(message, exp.meta)
         }
       }
@@ -403,16 +428,20 @@ export function evaluate(exp: Exp): Effect {
 
         if (target.kind !== "The") {
           let message = `[evaluate] specific application expect target to be contracted -- (the) value`
-          message += `\n  target: ${formatValue(target)}`
-          message += `\n  args: [${formatValues(args)}]`
+          message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
+          message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
         if (target.schema.kind !== "Polymorphic") {
           let message = `[evaluate] specific application expect the schema of the target to be polymorphic`
-          message += `\n  target schema: ${formatValue(target.schema)}`
-          message += `\n  target: ${formatValue(target)}`
-          message += `\n  args: [${formatValues(args)}]`
+          message += formatUnderTag(
+            2,
+            `target schema:`,
+            prettyValue(maxWidth, target.schema),
+          )
+          message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
+          message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
