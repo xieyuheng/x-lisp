@@ -1,3 +1,4 @@
+import assert from "node:assert"
 import {
   formatAtom,
   formatBody,
@@ -170,11 +171,8 @@ export function formatValue(value: Value, options: Options = {}): string {
     case "Curried": {
       const target = formatValue(value.target, options)
       const args = formatValues(value.args, options)
-      if (args === "") {
-        return `${target}`
-      } else {
-        return `(${target} ${args})`
-      }
+      assert(value.args.length > 0)
+      return `(${target} ${args})`
     }
 
     case "Tau": {

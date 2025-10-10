@@ -1,5 +1,6 @@
+import assert from "node:assert"
 import * as pp from "../../helper/ppml/index.ts"
-import { formatAtom } from "../format/index.ts"
+import { formatAtom, formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { renderBody, renderExps } from "./prettyExp.ts"
@@ -138,9 +139,22 @@ function renderValue(value: Value): pp.Node {
         pp.text(")"),
       )
     }
-  }
 
-  return pp.text("TODO")
+    case "Curried": {
+      assert(value.args.length > 0)
+      return pp.group(
+        pp.text("("),
+        renderValue(value.target),
+        pp.br(),
+        renderValues(value.args),
+        pp.text(")"),
+      )
+    }
+
+    default: {
+      return pp.text(formatValue(value))
+    }
+  }
 }
 
 function renderAttribute([key, value]: [string, Value]): pp.Node {

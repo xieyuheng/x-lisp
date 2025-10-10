@@ -1,8 +1,6 @@
 # pretty
 
-[pretty] `renderValue` -- Curried
 [pretty] `renderValue` -- Tau Pattern Polymorphic
-[pretty] `renderValue` -- default -- just use `formatValue`
 
 [pretty] `applyWithSchema` -- use pretty print in error report
 
