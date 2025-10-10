@@ -1,5 +1,3 @@
-use `prettyValue` -- lang/load/stage3.ts
-
 use `prettyValue` -- lang/evaluate/applyDataPutter.ts
 use `prettyValue` -- lang/evaluate/applyLambda.ts
 use `prettyValue` -- lang/evaluate/applyPolymorphic.ts

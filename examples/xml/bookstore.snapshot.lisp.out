@@ -1,1 +1,17 @@
-['bookstore ['book ['title "The Great Novel"] ['author "Bill Authorette"] ['year 2021] ['price 24.99 :currency 'USD] :id 'b101 :category 'fiction :lang 'en] ['book ['title "Learning XML"] ['author "Pierre Document"] ['year 2019] ['price 19.5 :currency 'EUR] :id 'b102 :category 'non-fiction :lang 'fr]]
+['bookstore
+ ['book
+  ['title "The Great Novel"]
+  ['author "Bill Authorette"]
+  ['year 2021]
+  ['price 24.99 :currency 'USD]
+  :id 'b101
+  :category 'fiction
+  :lang 'en]
+ ['book
+  ['title "Learning XML"]
+  ['author "Pierre Document"]
+  ['year 2019]
+  ['price 19.5 :currency 'EUR]
+  :id 'b102
+  :category 'non-fiction
+  :lang 'fr]]

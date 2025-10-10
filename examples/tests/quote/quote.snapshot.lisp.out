@@ -18,4 +18,5 @@
 ['@quote 'a]
 ['@quasiquote 'a]
 [['@quasiquote ['a]]]
-[['@quasiquote ['a ['@unquote 'x] 'b]]]
+[['@quasiquote
+  ['a ['@unquote 'x] 'b]]]
