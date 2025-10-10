@@ -44,3 +44,15 @@ test("prettyFormatExp -- set", () => {
 test("prettyFormatExp -- list", () => {
   testWidths([30, 20, 10], `[[1 2 3] [4 5 6] [7 8 9]]`)
 })
+
+test("prettyFormatExp -- hash", () => {
+  testWidths(
+    [60, 30, 10, 5],
+    `
+(@hash
+  "x" (@hash "x" 1 "y" 2 "z" 3)
+  "y" (@hash "x" 4 "y" 5 "z" 6)
+  "z" (@hash "x" 7 "y" 8 "z" 9))
+`,
+  )
+})

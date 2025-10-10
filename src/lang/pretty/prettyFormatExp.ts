@@ -165,24 +165,22 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Hash": {
-      return pp.text("TODO")
-      // const entries = exp.entries
-      //   .map(({ key, value }) => `${formatExp(key)} ${formatExp(value)}`)
-      //   .join(" ")
-      // if (entries === "") {
-      //   return `(@hash)`
-      // } else {
-      //   return `(@hash ${entries})`
-      // }
+      if (exp.entries.length === 0) {
+        return pp.text(`(@hash)`)
+      } else {
+        return pp.group(
+          pp.text("(@hash"),
+          pp.indent(2, pp.br(), renderHashEntries(exp.entries)),
+          pp.text(")"),
+        )
+      }
     }
 
     case "Quote": {
-      // TODO
       return pp.text(`(@quote ${formatSexp(exp.sexp)})`)
     }
 
     case "Quasiquote": {
-      // TODO
       return pp.text(`(@quasiquote ${formatSexp(exp.sexp)})`)
     }
 
@@ -371,5 +369,22 @@ export function renderAttributes(entries: Array<[string, Exp]>): pp.Node {
       renderAttribute(entries[0]),
       pp.br(),
       renderAttributes(entries.slice(1)),
+    )
+}
+
+export function renderHashEntry(entry: { key: Exp; value: Exp }): pp.Node {
+  return pp.group(renderExp(entry.key), pp.br(), renderExp(entry.value))
+}
+
+export function renderHashEntries(
+  entries: Array<{ key: Exp; value: Exp }>,
+): pp.Node {
+  if (entries.length === 0) return pp.nil()
+  else if (entries.length === 1) return renderHashEntry(entries[0])
+  else
+    return pp.concat(
+      renderHashEntry(entries[0]),
+      pp.br(),
+      renderHashEntries(entries.slice(1)),
     )
 }

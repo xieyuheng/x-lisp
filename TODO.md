@@ -1,8 +1,9 @@
 # pretty print
 
-`prettyFormatExp` -- Hash
 `prettyFormatExp` -- Cond
 `prettyFormatExp` -- Match
+
+`formatValue` -- should not call `formatExp`
 
 `prettyFormatValue`
 
