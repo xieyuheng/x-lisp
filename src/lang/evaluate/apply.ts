@@ -1,8 +1,10 @@
 import assert from "node:assert"
 import { flags } from "../../flags.ts"
+import { globals } from "../../globals.ts"
+import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
 import { emptyEnv, envLookupValue, envNames } from "../env/index.ts"
-import { formatValue, formatValues } from "../format/index.ts"
 import { match } from "../pattern/index.ts"
+import { prettyValue, prettyValues } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { applyDataConstructor } from "./applyDataConstructor.ts"
@@ -18,6 +20,8 @@ import { supply } from "./supply.ts"
 import { validate } from "./validate.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
+  const maxWidth = globals.maxWidth
+
   if (args.length === 0) {
     return force(target)
   }
@@ -29,8 +33,8 @@ export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "Tau") {
     if (args.length !== 1) {
       let message = `[apply] tau can only take one argument`
-      message += `\n  target: ${formatValue(target)}`
-      message += `\n  args: [${formatValues(args)}]`
+      message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
+      message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
       throw new Error(message)
     }
 
@@ -84,8 +88,8 @@ export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "DataConstructorPredicate") {
     if (args.length !== 1) {
       let message = `[apply] data constructor predicate can only take one argument`
-      message += `\n  target: ${formatValue(target)}`
-      message += `\n  args: [${formatValues(args)}]`
+      message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
+      message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
       throw new Error(message)
     }
 
@@ -117,8 +121,8 @@ export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "Pattern") {
     if (args.length !== 1) {
       let message = `[apply] pattern can only take one argument`
-      message += `\n  target: ${formatValue(target)}`
-      message += `\n  args: [${formatValues(args)}]`
+      message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
+      message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
       throw new Error(message)
     }
 
@@ -139,7 +143,7 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   let message = `[apply] can not handle this kind of target`
-  message += `\n  target: ${formatValue(target)}`
-  message += `\n  args: [${formatValues(args)}]`
+  message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
+  message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
   throw new Error(message)
 }
