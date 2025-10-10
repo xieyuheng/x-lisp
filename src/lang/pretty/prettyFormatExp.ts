@@ -1,6 +1,6 @@
 import * as pp from "../../utils/ppml/index.ts"
 import { type Exp } from "../exp/index.ts"
-import { formatAtom, formatSexp } from "../format/index.ts"
+import { formatAtom, formatExp, formatSexp } from "../format/index.ts"
 import { isAtom } from "../value/index.ts"
 
 export function prettyFormatExp(maxWidth: number, exp: Exp): string {
@@ -243,14 +243,11 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Cond": {
-      // const condLines = exp.condLines.map(formatCondLine)
-      // return `(cond ${condLines.join(" ")})`
+      return pp.text(formatExp(exp))
     }
 
     case "Match": {
-      return pp.text("TODO")
-      // const matchLines = exp.matchLines.map(formatMatchLine)
-      // return `(match ${formatExp(exp.target)} ${matchLines.join(" ")})`
+      return pp.text(formatExp(exp))
     }
 
     case "Arrow": {

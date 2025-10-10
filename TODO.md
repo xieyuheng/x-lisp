@@ -1,12 +1,9 @@
+support `@comment`
+
 # pretty print
 
-`prettyFormatExp` -- Cond
-`prettyFormatExp` -- Match
-
 `formatValue` -- should not call `formatExp`
-
 `prettyFormatValue`
-
 `prettyFormatSexp` -- always format as code
 
 - can be config-ed by keyword lists -- like emacs scheme-mode
