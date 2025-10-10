@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-data.js"
+import * as X from "@xieyuheng/x-sexp.js"
 import { formatIndent } from "../../utils/format/formatIndent.ts"
 import { urlRelativeToCwd } from "../../utils/url/urlRelativeToCwd.ts"
 import { include } from "../define/index.ts"

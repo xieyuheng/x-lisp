@@ -1,4 +1,4 @@
-import { ErrorWithMeta } from "@xieyuheng/x-data.js"
+import { ErrorWithMeta } from "@xieyuheng/x-sexp.js"
 import { formatIndent } from "../../utils/format/formatIndent.ts"
 import { LazyDefinition } from "../definition/Definition.ts"
 import { formatDefinition } from "../definition/formatDefinition.ts"

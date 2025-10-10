@@ -9,4 +9,4 @@ date: 2025-09-23
 
 为了有统一的方式来实现 `#t #f #null #void`，
 并且保持它们都是 self-evaluating value。
-给 x-data 增加了 hashtag 这个数据类型。
+给 x-sexp 增加了 hashtag 这个数据类型。

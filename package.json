@@ -25,10 +25,10 @@
   },
   "dependencies": {
     "@xieyuheng/commander.js": "^0.1.5",
-    "@xieyuheng/x-data.js": "^0.5.3"
+    "@xieyuheng/x-sexp.js": "^0.5.4"
   },
   "devDependencies": {
-    "@types/node": "^24.7.0",
+    "@types/node": "^24.7.1",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.3.0",
     "typescript": "^5.9.3"

@@ -1,20 +1,20 @@
-import * as X from "@xieyuheng/x-data.js"
+import * as X from "@xieyuheng/x-sexp.js"
 import { arrayGroup2 } from "../../utils/array/arrayGroup2.ts"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMapValue } from "../../utils/record/recordMapValue.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 
-export function matchExp(data: X.Data): Exp {
+export function matchExp(data: X.Sexp): Exp {
   return X.match(expMatcher, data)
 }
 
 const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher(
     "(cons* 'lambda parameters body)",
-    ({ parameters, body }, { data }) => {
-      const keyword = X.asTael(data).elements[0]
-      const meta = X.tokenMetaFromDataMeta(keyword.meta)
+    ({ parameters, body }, { sexp }) => {
+      const keyword = X.asTael(sexp).elements[0]
+      const meta = X.tokenMetaFromSexpMeta(keyword.meta)
 
       if (X.isSymbol(parameters)) {
         return Exps.VariadicLambda(
@@ -191,16 +191,16 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.The(matchExp(schema), matchExp(exp), meta)
   }),
 
-  X.matcher("(cons* '@tael elements)", ({ elements }, { data, meta }) => {
+  X.matcher("(cons* '@tael elements)", ({ elements }, { sexp, meta }) => {
     return Exps.Tael(
       X.listElements(elements).map(matchExp),
-      recordMapValue(X.asTael(data).attributes, matchExp),
+      recordMapValue(X.asTael(sexp).attributes, matchExp),
       meta,
     )
   }),
 
-  X.matcher("(cons* '@list elements)", ({ elements }, { data, meta }) => {
-    if (Object.keys(X.asTael(data).attributes).length > 0) {
+  X.matcher("(cons* '@list elements)", ({ elements }, { sexp, meta }) => {
+    if (Object.keys(X.asTael(sexp).attributes).length > 0) {
       let message = `(@list) literal list can not have attributes`
       throw new X.ErrorWithMeta(message, meta)
     }
@@ -208,7 +208,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Tael(X.listElements(elements).map(matchExp), {}, meta)
   }),
 
-  X.matcher("(cons* '@record elements)", ({ elements }, { data, meta }) => {
+  X.matcher("(cons* '@record elements)", ({ elements }, { sexp, meta }) => {
     if (X.listElements(elements).length > 0) {
       let message = `(@record) literal record can not have elements`
       throw new X.ErrorWithMeta(message, meta)
@@ -216,13 +216,13 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
     return Exps.Tael(
       [],
-      recordMapValue(X.asTael(data).attributes, matchExp),
+      recordMapValue(X.asTael(sexp).attributes, matchExp),
       meta,
     )
   }),
 
-  X.matcher("(cons* '@set elements)", ({ elements }, { data, meta }) => {
-    if (Object.keys(X.asTael(data).attributes).length > 0) {
+  X.matcher("(cons* '@set elements)", ({ elements }, { sexp, meta }) => {
+    if (Object.keys(X.asTael(sexp).attributes).length > 0) {
       let message = `(@set) can not have attributes`
       throw new X.ErrorWithMeta(message, meta)
     }
@@ -230,8 +230,8 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Set(X.listElements(elements).map(matchExp), meta)
   }),
 
-  X.matcher("(cons* '@hash elements)", ({ elements }, { data, meta }) => {
-    if (Object.keys(X.asTael(data).attributes).length > 0) {
+  X.matcher("(cons* '@hash elements)", ({ elements }, { sexp, meta }) => {
+    if (Object.keys(X.asTael(sexp).attributes).length > 0) {
       let message = `(@hash) can not have attributes`
       throw new X.ErrorWithMeta(message, meta)
     }
@@ -250,10 +250,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Hash(entries, meta)
   }),
 
-  X.matcher("(cons* 'tau elements)", ({ elements }, { data, meta }) => {
+  X.matcher("(cons* 'tau elements)", ({ elements }, { sexp, meta }) => {
     return Exps.Tau(
       X.listElements(elements).map(matchExp),
-      recordMapValue(X.asTael(data).attributes, matchExp),
+      recordMapValue(X.asTael(sexp).attributes, matchExp),
       meta,
     )
   }),
@@ -299,7 +299,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   }),
 ])
 
-export function matchCondLine(data: X.Data): Exps.CondLine {
+export function matchCondLine(data: X.Sexp): Exps.CondLine {
   return X.match(
     X.matcher("(cons* question body)", ({ question, body }, { meta }) => {
       if (question.kind === "Symbol" && question.content === "else") {
@@ -318,7 +318,7 @@ export function matchCondLine(data: X.Data): Exps.CondLine {
   )
 }
 
-export function matchMatchLine(data: X.Data): Exps.MatchLine {
+export function matchMatchLine(data: X.Sexp): Exps.MatchLine {
   return X.match(
     X.matcher("(cons* pattern body)", ({ pattern, body }, { meta }) => {
       return {

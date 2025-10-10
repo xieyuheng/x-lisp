@@ -84,7 +84,7 @@ clojure 是想在语法上利用 list 和 array 的差异来做一些设计，
 如果融合，可以用 `(@tael)`。
 
 （C）放弃一致性，保持现在 tael 的设计，
-把 set literal 作为一个 x-data 的数据类型加到 sexp 中。
+把 set literal 作为一个 x-sexp 的数据类型加到 sexp 中。
 
 尽管 set 已经是 X-data 的一部分了，
 但是，reader 读到 `{a b c}` 的时候，
@@ -99,13 +99,13 @@ clojure 是想在语法上利用 list 和 array 的差异来做一些设计，
 也就是说 reader 所读到的 sexp 不会包含 set 只能包含 tael，
 这种不一致性也让人担忧。
 
-这会导致 x-data 作为保存数据的格式，没法直接保存 set，
+这会导致 x-sexp 作为保存数据的格式，没法直接保存 set，
 只有读到 sexp 之后再经过 eval 才能被视为 set。
 
 # 决定
 
 决定放弃一致性，选方案（C）。
-同时放弃 x-data 作为数据交换语言像 JSON 和 EDN 一样的易用性。
+同时放弃 x-sexp 作为数据交换语言像 JSON 和 EDN 一样的易用性。
 
 具体性修改：
 
@@ -128,7 +128,7 @@ clojure 是想在语法上利用 list 和 array 的差异来做一些设计，
 
 - 最后，也就是我们的目标「添加 set 数据类型」。
   新增 set 数据类型到 x-lisp，
-  需要在 x-data 中将 `{}` 翻译为 `@set`。
+  需要在 x-sexp 中将 `{}` 翻译为 `@set`。
 
-这个方案的特点是不需要给 x-data 增加数据类型，
-x-data 所解析到的 sexp 中最多只有 tael。
+这个方案的特点是不需要给 x-sexp 增加数据类型，
+x-sexp 所解析到的 sexp 中最多只有 tael。

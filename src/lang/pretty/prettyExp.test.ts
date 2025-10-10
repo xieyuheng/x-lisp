@@ -1,11 +1,11 @@
-import * as X from "@xieyuheng/x-data.js"
+import * as X from "@xieyuheng/x-sexp.js"
 import { test } from "node:test"
 import type { Exp } from "../exp/index.ts"
 import { matchExp } from "../syntax/index.ts"
 import { prettyExp } from "./index.ts"
 
 function testWidths(widths: Array<number>, code: string) {
-  const sexps = X.parseDataArray(code)
+  const sexps = X.parseSexpArray(code)
   const exps = sexps.map<Exp>(matchExp)
 
   for (const exp of exps) {

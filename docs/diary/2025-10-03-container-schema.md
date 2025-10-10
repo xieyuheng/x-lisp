@@ -47,7 +47,7 @@ meta 有两种实现方式：
   在很多时候需啊哟 unwrap。
 
 - 一种是直接在 value 中增加 meta 字段，
-  类似 x-data 中现在所做的那样。
+  类似 x-sexp 中现在所做的那样。
 
 可能只有 wrapper 才是合理的，
 否则 int 和 float 之类的数据就需要变成指针了。

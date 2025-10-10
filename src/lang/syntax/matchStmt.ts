@@ -1,21 +1,21 @@
-import * as X from "@xieyuheng/x-data.js"
+import * as X from "@xieyuheng/x-sexp.js"
 import * as Exps from "../exp/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import type { DataField } from "../value/AboutData.ts"
 import { matchExp } from "./matchExp.ts"
 
-export function matchStmt(data: X.Data): Stmt {
+export function matchStmt(data: X.Sexp): Stmt {
   return X.match(stmtMatcher, data)
 }
 
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
     "(cons* 'define (cons* name parameters) body)",
-    ({ name, parameters, body }, { data }) => {
+    ({ name, parameters, body }, { sexp }) => {
       // We only use the meta of the keyword for a smaller span.
-      const keyword = X.asTael(data).elements[1]
-      const meta = X.tokenMetaFromDataMeta(keyword.meta)
+      const keyword = X.asTael(sexp).elements[1]
+      const meta = X.tokenMetaFromSexpMeta(keyword.meta)
 
       if (X.listElements(parameters).length === 0) {
         return Stmts.Define(
@@ -114,7 +114,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   }),
 ])
 
-function matchImportEntry(data: X.Data): Stmts.ImportEntry {
+function matchImportEntry(data: X.Sexp): Stmts.ImportEntry {
   return X.match(
     X.matcherChoice([
       X.matcher("`(rename ,name ,rename)", ({ name, rename }, { meta }) => {
@@ -136,7 +136,7 @@ function matchImportEntry(data: X.Data): Stmts.ImportEntry {
   )
 }
 
-function matchDataPredicate(data: X.Data): Stmts.DataPredicateSpec {
+function matchDataPredicate(data: X.Sexp): Stmts.DataPredicateSpec {
   return X.match(
     X.matcherChoice([
       X.matcher("(cons* name parameters)", ({ name, parameters }, { meta }) => {
@@ -157,7 +157,7 @@ function matchDataPredicate(data: X.Data): Stmts.DataPredicateSpec {
   )
 }
 
-function matchDataConstructor(data: X.Data): Stmts.DataConstructorSpec {
+function matchDataConstructor(data: X.Sexp): Stmts.DataConstructorSpec {
   return X.match(
     X.matcherChoice([
       X.matcher("(cons* name fields)", ({ name, fields }, { meta }) => {
@@ -178,7 +178,7 @@ function matchDataConstructor(data: X.Data): Stmts.DataConstructorSpec {
   )
 }
 
-function matchDataField(data: X.Data): DataField {
+function matchDataField(data: X.Sexp): DataField {
   return X.match(
     X.matcherChoice([
       X.matcher("`(,name ,exp)", ({ name, exp }, { meta }) => {

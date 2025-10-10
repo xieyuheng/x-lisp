@@ -3,8 +3,8 @@ title: tael and reader
 date: 2025-09-14
 ---
 
-在考虑是否要增加 x-data 的语法来表达 set。
-回想到 x-data 中 tael 与 reader 的问题，
+在考虑是否要增加 x-sexp 的语法来表达 set。
+回想到 x-sexp 中 tael 与 reader 的问题，
 现在讨论一下，看看会不会影响 set 的语法设计。
 
 当 reader 读到 `[...]` 时，会把它翻译为 `(tael ...)`，

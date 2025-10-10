@@ -77,7 +77,7 @@ int 和 float 是 self-quoted value：
 '("a") => ['"a"]
 ```
 
-注意，如果不给 x-data 加上 `#t #f` 这种 literal bool 语法，
+注意，如果不给 x-sexp 加上 `#t #f` 这种 literal bool 语法，
 那么 `#t #f` 也不是 self-quoted valued：
 
 ```scheme
@@ -85,12 +85,12 @@ int 和 float 是 self-quoted value：
 ```
 
 这好像是没法避免的，
-因为如果 x-data 和 x-lisp 被作为两个 project 的话，
-就没法在 x-data 中以 self-quoted literal 的形式，
+因为如果 x-sexp 和 x-lisp 被作为两个 project 的话，
+就没法在 x-sexp 中以 self-quoted literal 的形式，
 支持 x-lisp 中想要支持的所有 literal。
 比如 `#null` 和 `#void`。
 
-除非合并 x-data 和 x-lisp。
+除非合并 x-sexp 和 x-lisp。
 
 # 另外一种方案
 

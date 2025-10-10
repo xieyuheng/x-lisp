@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-data.js"
+import * as X from "@xieyuheng/x-sexp.js"
 import { emptyEnv, envUpdate } from "../env/index.ts"
 import { formatExp, formatValue } from "../format/index.ts"
 import { match, patternize } from "../pattern/index.ts"

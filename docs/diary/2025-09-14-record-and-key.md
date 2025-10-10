@@ -3,7 +3,7 @@ title: record and key
 date: 2025-09-14
 ---
 
-目前我很满意 x-data 部分的语法，
+目前我很满意 x-sexp 部分的语法，
 也就是改良 sexp 使得 sexp 中的 list
 可以同时被视为 list 和 record。
 

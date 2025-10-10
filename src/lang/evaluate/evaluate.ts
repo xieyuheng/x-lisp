@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-data.js"
+import * as X from "@xieyuheng/x-sexp.js"
 import { arrayPickLast } from "../../utils/array/arrayPickLast.ts"
 import { recordMapValue } from "../../utils/record/recordMapValue.ts"
 import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"

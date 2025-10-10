@@ -1,4 +1,4 @@
-import { type TokenMeta } from "@xieyuheng/x-data.js"
+import { type TokenMeta } from "@xieyuheng/x-sexp.js"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"

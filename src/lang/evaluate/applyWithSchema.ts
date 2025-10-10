@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-data.js"
+import * as X from "@xieyuheng/x-sexp.js"
 import { arrayMapZip } from "../../utils/array/arrayMapZip.ts"
 import { formatUnderTag } from "../../utils/format/formatUnderTag.ts"
 import { formatValue, formatValues } from "../format/index.ts"

@@ -1,4 +1,4 @@
-import { type Data, type TokenMeta } from "@xieyuheng/x-data.js"
+import { type Sexp, type TokenMeta } from "@xieyuheng/x-sexp.js"
 import { type Atom } from "../exp/index.ts"
 
 export type Meta = TokenMeta
@@ -280,11 +280,11 @@ export function Hash(
 
 export type Quote = {
   kind: "Quote"
-  sexp: Data
+  sexp: Sexp
   meta: Meta
 }
 
-export function Quote(sexp: Data, meta: Meta): Quote {
+export function Quote(sexp: Sexp, meta: Meta): Quote {
   return {
     kind: "Quote",
     sexp,
@@ -294,11 +294,11 @@ export function Quote(sexp: Data, meta: Meta): Quote {
 
 export type Comment = {
   kind: "Comment"
-  sexps: Array<Data>
+  sexps: Array<Sexp>
   meta: Meta
 }
 
-export function Comment(sexps: Array<Data>, meta: Meta): Comment {
+export function Comment(sexps: Array<Sexp>, meta: Meta): Comment {
   return {
     kind: "Comment",
     sexps,
@@ -308,11 +308,11 @@ export function Comment(sexps: Array<Data>, meta: Meta): Comment {
 
 export type Quasiquote = {
   kind: "Quasiquote"
-  sexp: Data
+  sexp: Sexp
   meta: Meta
 }
 
-export function Quasiquote(sexp: Data, meta: Meta): Quasiquote {
+export function Quasiquote(sexp: Sexp, meta: Meta): Quasiquote {
   return {
     kind: "Quasiquote",
     sexp,

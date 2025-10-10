@@ -1,10 +1,10 @@
-import * as X from "@xieyuheng/x-data.js"
+import * as X from "@xieyuheng/x-sexp.js"
 import { recordMapValue } from "../../utils/record/recordMapValue.ts"
 import { matchExp } from "../syntax/index.ts"
 import * as Values from "../value/index.ts"
 import { evaluate, resultValue, type Effect } from "./evaluate.ts"
 
-export function evaluateQuasiquote(sexp: X.Data): Effect {
+export function evaluateQuasiquote(sexp: X.Sexp): Effect {
   if (X.isAtom(sexp)) {
     return (mod, env) => {
       return [env, sexp]

@@ -1,5 +1,5 @@
 import { type Command } from "@xieyuheng/commander.js"
-import * as X from "@xieyuheng/x-data.js"
+import * as X from "@xieyuheng/x-sexp.js"
 import { flags } from "../flags.ts"
 import { globals } from "../globals.ts"
 import { aboutModule } from "../lang/builtin/aboutModule.ts"
