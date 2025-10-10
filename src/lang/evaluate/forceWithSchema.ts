@@ -17,8 +17,8 @@ export function forceWithSchema(schema: Value, target: Value): Value {
     return validateOrFail(schema.retSchema, force(target))
   }
 
-  let message = `[forceWithSchema] unhandled kind of schema\n`
-  message += `  schema: ${formatValue(schema)}\n`
-  message += `  target: ${formatValue(target)}\n`
+  let message = `[forceWithSchema] unhandled kind of schema`
+  message += `\n  schema: ${formatValue(schema)}`
+  message += `\n  target: ${formatValue(target)}`
   throw new Error(message)
 }

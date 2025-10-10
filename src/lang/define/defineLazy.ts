@@ -9,9 +9,9 @@ import { type Mod, modLookupDefinition } from "../mod/Mod.ts"
 export function defineLazy(mod: Mod, name: string, exp: Exp): void {
   const found = modLookupDefinition(mod, name)
   if (found) {
-    let message = `[defineLazy] can not redefine name: ${name}\n`
-    message += `  new exp: ${formatExp(exp)}\n`
-    message += `  old definition:\n`
+    let message = `[defineLazy] can not redefine name: ${name}`
+    message += `\n  new exp: ${formatExp(exp)}`
+    message += `\n  old definition:`
     message += indent(formatDefinition(found), { length: 4 })
     throw new ErrorWithMeta(message, exp.meta)
   }

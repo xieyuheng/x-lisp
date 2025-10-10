@@ -1,6 +1,5 @@
 [evaluate] element in (@set) is not hashable
   element: (the (-> int? int? int?) iadd)
-
   --> examples/tests/set/set-non-hashable-element.error.lisp:1:11
  1 | (@set 1 2 iadd 3 4)
    |           ~~~~      

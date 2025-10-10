@@ -41,7 +41,7 @@ export function evaluate(exp: Exp): Effect {
         const topValue = modLookupValue(mod, exp.name)
         if (topValue) return [env, topValue]
 
-        let message = `[evaluate] meet undefined name: ${exp.name}\n`
+        let message = `[evaluate] meet undefined name: ${exp.name}`
         throw new X.ErrorWithMeta(message, exp.meta)
       }
     }
@@ -102,10 +102,10 @@ export function evaluate(exp: Exp): Effect {
         const value = resultValue(evaluate(exp.rhs)(mod, env))
         const resultEnv = match(pattern, value)(emptyEnv())
         if (resultEnv === undefined) {
-          let message = `[evaluate] assignment pattern mismatch\n`
-          message += `  lhs exp: ${formatExp(exp.lhs)}\n`
-          message += `  rhs exp: ${formatExp(exp.rhs)}\n`
-          message += `  rhs value: ${formatValue(value)}\n`
+          let message = `[evaluate] assignment pattern mismatch`
+          message += `\n  lhs exp: ${formatExp(exp.lhs)}`
+          message += `\n  rhs exp: ${formatExp(exp.rhs)}`
+          message += `\n  rhs value: ${formatValue(value)}`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
@@ -137,9 +137,9 @@ export function evaluate(exp: Exp): Effect {
         if (result.kind === "Ok") {
           return [env, Values.Void()]
         } else {
-          let message = `(assert-the) validation fail\n`
-          message += `  schema: ${formatValue(schema)}\n`
-          message += `  value: ${formatValue(value)}\n`
+          let message = `(assert-the) validation fail`
+          message += `\n  schema: ${formatValue(schema)}`
+          message += `\n  value: ${formatValue(value)}`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
       }
@@ -165,8 +165,8 @@ export function evaluate(exp: Exp): Effect {
           if (Values.isHashable(elementValue)) {
             Values.setAdd(set, elementValue)
           } else {
-            let message = `[evaluate] element in (@set) is not hashable\n`
-            message += `  element: ${formatValue(elementValue)}\n`
+            let message = `[evaluate] element in (@set) is not hashable`
+            message += `\n  element: ${formatValue(elementValue)}`
             throw new X.ErrorWithMeta(message, element.meta)
           }
         }
@@ -182,9 +182,9 @@ export function evaluate(exp: Exp): Effect {
           const k = resultValue(evaluate(entry.key)(mod, env))
           const v = resultValue(evaluate(entry.value)(mod, env))
           if (!Values.isHashable(k)) {
-            let message = `[evaluate] Key in (@hash) is not hashable\n`
-            message += `  key: ${formatValue(k)}\n`
-            message += `  value: ${formatValue(v)}\n`
+            let message = `[evaluate] Key in (@hash) is not hashable`
+            message += `\n  key: ${formatValue(k)}`
+            message += `\n  value: ${formatValue(v)}`
             throw new X.ErrorWithMeta(message, entry.key.meta)
           }
 
@@ -215,8 +215,8 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const condition = resultValue(evaluate(exp.condition)(mod, env))
         if (!Values.isBool(condition)) {
-          let message = `(if) the condition must be bool\n`
-          message += `  condition: ${formatValue(condition)}\n`
+          let message = `(if) the condition must be bool`
+          message += `\n  condition: ${formatValue(condition)}`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
@@ -232,8 +232,8 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const condition = resultValue(evaluate(exp.condition)(mod, env))
         if (!Values.isBool(condition)) {
-          let message = `(when) the condition must be bool\n`
-          message += `  condition: ${formatValue(condition)}\n`
+          let message = `(when) the condition must be bool`
+          message += `\n  condition: ${formatValue(condition)}`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
@@ -249,8 +249,8 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const condition = resultValue(evaluate(exp.condition)(mod, env))
         if (!Values.isBool(condition)) {
-          let message = `(unless) the condition must be bool\n`
-          message += `  condition: ${formatValue(condition)}\n`
+          let message = `(unless) the condition must be bool`
+          message += `\n  condition: ${formatValue(condition)}`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
@@ -267,8 +267,8 @@ export function evaluate(exp: Exp): Effect {
         for (const e of exp.exps) {
           const value = resultValue(evaluate(e)(mod, env))
           if (!Values.isBool(value)) {
-            let message = `[evaluate] The subexpressions of (and) must evaluate to bool\n`
-            message += `  value: ${formatValue(value)}\n`
+            let message = `[evaluate] The subexpressions of (and) must evaluate to bool`
+            message += `\n  value: ${formatValue(value)}`
             throw new X.ErrorWithMeta(message, exp.meta)
           }
 
@@ -286,8 +286,8 @@ export function evaluate(exp: Exp): Effect {
         for (const e of exp.exps) {
           const value = resultValue(evaluate(e)(mod, env))
           if (!Values.isBool(value)) {
-            let message = `[evaluate] The subexpressions of (or) must evaluate to bool\n`
-            message += `  value: ${formatValue(value)}\n`
+            let message = `[evaluate] The subexpressions of (or) must evaluate to bool`
+            message += `\n  value: ${formatValue(value)}`
             throw new X.ErrorWithMeta(message, exp.meta)
           }
 
@@ -305,8 +305,8 @@ export function evaluate(exp: Exp): Effect {
         for (const condLine of exp.condLines) {
           const value = resultValue(evaluate(condLine.question)(mod, env))
           if (!Values.isBool(value)) {
-            let message = `[evaluate] The question part of a (cond) line must evaluate to bool\n`
-            message += `  value: ${formatValue(value)}\n`
+            let message = `[evaluate] The question part of a (cond) line must evaluate to bool`
+            message += `\n  value: ${formatValue(value)}`
             throw new X.ErrorWithMeta(message, exp.meta)
           }
 
@@ -315,7 +315,7 @@ export function evaluate(exp: Exp): Effect {
           }
         }
 
-        let message = `[evaluate] All questions of a (cond) failed\n`
+        let message = `[evaluate] All questions of a (cond) failed`
         throw new X.ErrorWithMeta(message, exp.meta)
       }
     }
@@ -331,8 +331,8 @@ export function evaluate(exp: Exp): Effect {
           }
         }
 
-        let message = `[evaluate] (match) mismatch\n`
-        message += `  target: ${formatValue(target)}\n`
+        let message = `[evaluate] (match) mismatch`
+        message += `\n  target: ${formatValue(target)}`
         throw new X.ErrorWithMeta(message, exp.meta)
       }
     }
@@ -375,9 +375,9 @@ export function evaluate(exp: Exp): Effect {
         if (result.kind === "Ok") {
           return [env, result.value]
         } else {
-          let message = `(the) validation fail\n`
-          message += `  schema: ${formatValue(schema)}\n`
-          message += `  value: ${formatValue(value)}\n`
+          let message = `(the) validation fail`
+          message += `\n  schema: ${formatValue(schema)}`
+          message += `\n  value: ${formatValue(value)}`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
       }
@@ -402,17 +402,17 @@ export function evaluate(exp: Exp): Effect {
         const args = exp.args.map((arg) => resultValue(evaluate(arg)(mod, env)))
 
         if (target.kind !== "The") {
-          let message = `[evaluate] specific application expect target to be contracted -- (the) value\n`
-          message += `  target: ${formatValue(target)}\n`
-          message += `  args: [${formatValues(args)}]\n`
+          let message = `[evaluate] specific application expect target to be contracted -- (the) value`
+          message += `\n  target: ${formatValue(target)}`
+          message += `\n  args: [${formatValues(args)}]`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 
         if (target.schema.kind !== "Polymorphic") {
-          let message = `[evaluate] specific application expect the schema of the target to be polymorphic\n`
-          message += `  target schema: ${formatValue(target.schema)}\n`
-          message += `  target: ${formatValue(target)}\n`
-          message += `  args: [${formatValues(args)}]\n`
+          let message = `[evaluate] specific application expect the schema of the target to be polymorphic`
+          message += `\n  target schema: ${formatValue(target.schema)}`
+          message += `\n  target: ${formatValue(target)}`
+          message += `\n  args: [${formatValues(args)}]`
           throw new X.ErrorWithMeta(message, exp.meta)
         }
 

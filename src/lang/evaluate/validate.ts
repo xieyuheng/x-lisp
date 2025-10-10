@@ -17,9 +17,9 @@ export function validateOrFail(schema: Value, value: Value): Value {
     return result.value
   }
 
-  let message = `[validateOrFail] assertion fail\n`
-  message += `  schema: ${formatValue(schema)}\n`
-  message += `  value: ${formatValue(value)}\n`
+  let message = `[validateOrFail] assertion fail`
+  message += `\n  schema: ${formatValue(schema)}`
+  message += `\n  value: ${formatValue(value)}`
   throw new Error(message)
 }
 
@@ -94,9 +94,9 @@ export function validate(schema: Value, value: Value): Result {
     }
   }
 
-  let message = `[validate] predicate schema must return bool\n`
-  message += `  schema: ${formatValue(schema)}\n`
-  message += `  value: ${formatValue(value)}\n`
-  message += `  result: ${formatValue(result)}\n`
+  let message = `[validate] predicate schema must return bool`
+  message += `\n  schema: ${formatValue(schema)}`
+  message += `\n  value: ${formatValue(value)}`
+  message += `\n  result: ${formatValue(result)}`
   throw new Error(message)
 }

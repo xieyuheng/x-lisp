@@ -9,7 +9,7 @@ export function isHash(value: Value): value is Hash {
 
 export function asHash(value: Value): Hash {
   if (isHash(value)) return value
-  throw new Error(`[asHash] fail on: ${formatValue(value)}\n`)
+  throw new Error(`[asHash] fail on: ${formatValue(value)}`)
 }
 
 export function hashEntries(hash: Hash): Array<HashEntry> {

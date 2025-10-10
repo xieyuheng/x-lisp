@@ -138,11 +138,11 @@ export function aboutSet(mod: Mod) {
     for (const element of Values.setElements(set)) {
       const result = apply(p, [element])
       if (!Values.isBool(result)) {
-        let message = `(set-select) one result of applying the predicate is not bool\n`
-        message += `  predicate: ${formatValue(p)}\n`
-        message += `  set: ${formatValue(set)}\n`
-        message += `  element: ${formatValue(element)}\n`
-        message += `  result: ${formatValue(result)}\n`
+        let message = `(set-select) one result of applying the predicate is not bool`
+        message += `\n  predicate: ${formatValue(p)}`
+        message += `\n  set: ${formatValue(set)}`
+        message += `\n  element: ${formatValue(element)}`
+        message += `\n  result: ${formatValue(result)}`
         throw new Error(message)
       }
 

@@ -23,7 +23,7 @@ export function isFalse(value: Value): boolean {
 
 export function asBool(value: Value): Values.Hashtag {
   if (isBool(value)) return value as Values.Hashtag
-  throw new Error(`[asBool] fail on: ${formatValue(value)}\n`)
+  throw new Error(`[asBool] fail on: ${formatValue(value)}`)
 }
 
 export function Void(): Values.Hashtag {

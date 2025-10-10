@@ -28,9 +28,9 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   if (target.kind === "Tau") {
     if (args.length !== 1) {
-      let message = `[apply] tau can only take one argument\n`
-      message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${formatValues(args)}]\n`
+      let message = `[apply] tau can only take one argument`
+      message += `\n  target: ${formatValue(target)}`
+      message += `\n  args: [${formatValues(args)}]`
       throw new Error(message)
     }
 
@@ -83,9 +83,9 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   if (target.kind === "DataConstructorPredicate") {
     if (args.length !== 1) {
-      let message = `[apply] data constructor predicate can only take one argument\n`
-      message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${formatValues(args)}]\n`
+      let message = `[apply] data constructor predicate can only take one argument`
+      message += `\n  target: ${formatValue(target)}`
+      message += `\n  args: [${formatValues(args)}]`
       throw new Error(message)
     }
 
@@ -116,9 +116,9 @@ export function apply(target: Value, args: Array<Value>): Value {
 
   if (target.kind === "Pattern") {
     if (args.length !== 1) {
-      let message = `[apply] pattern can only take one argument\n`
-      message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${formatValues(args)}]\n`
+      let message = `[apply] pattern can only take one argument`
+      message += `\n  target: ${formatValue(target)}`
+      message += `\n  args: [${formatValues(args)}]`
       throw new Error(message)
     }
 
@@ -138,8 +138,8 @@ export function apply(target: Value, args: Array<Value>): Value {
     return Values.Record(attributes)
   }
 
-  let message = `[apply] can not handle this kind of target\n`
-  message += `  target: ${formatValue(target)}\n`
-  message += `  args: [${formatValues(args)}]\n`
+  let message = `[apply] can not handle this kind of target`
+  message += `\n  target: ${formatValue(target)}`
+  message += `\n  args: [${formatValues(args)}]`
   throw new Error(message)
 }

@@ -23,8 +23,8 @@ export function aboutSexp(mod: Mod) {
     if (Values.isSexp(sexp)) {
       return Values.String(formatSexp(sexp))
     } else {
-      let message = `(format-sexp) expect argument to be sexp\n`
-      message += `  argument: ${formatValue(sexp)}`
+      let message = `(format-sexp) expect argument to be sexp`
+      message += `\n  argument: ${formatValue(sexp)}`
       throw new Error(message)
     }
   })

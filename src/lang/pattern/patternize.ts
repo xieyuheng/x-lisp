@@ -29,8 +29,8 @@ export function patternize(exp: Exp): Effect {
 
   if (exp.kind === "Apply") {
     if (exp.target.kind !== "Var") {
-      let message = `[patternize] The target of apply must be a var\n`
-      message += `  exp: ${formatExp(exp)}`
+      let message = `[patternize] The target of apply must be a var`
+      message += `\n  exp: ${formatExp(exp)}`
       throw new Error(message)
     }
 
@@ -64,8 +64,8 @@ export function patternize(exp: Exp): Effect {
           {},
         )
       } else {
-        let message = `[patternize] The target of apply must be data constructor\n`
-        message += `  exp: ${formatExp(exp)}`
+        let message = `[patternize] The target of apply must be data constructor`
+        message += `\n  exp: ${formatExp(exp)}`
         throw new Error(message)
       }
     }
@@ -98,7 +98,7 @@ export function patternize(exp: Exp): Effect {
     }
   }
 
-  let message = `[patternize] unhandled kind of exp\n`
-  message += `  exp: ${formatExp(exp)}`
+  let message = `[patternize] unhandled kind of exp`
+  message += `\n  exp: ${formatExp(exp)}`
   throw new Error(message)
 }

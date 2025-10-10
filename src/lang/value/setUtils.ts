@@ -8,7 +8,7 @@ export function isSet(value: Value): value is Set {
 
 export function asSet(value: Value): Set {
   if (value.kind === "Set") return value
-  throw new Error(`[asSet] fail on: ${formatValue(value)}\n`)
+  throw new Error(`[asSet] fail on: ${formatValue(value)}`)
 }
 
 export function setCopy(target: Value): Set {
@@ -22,9 +22,9 @@ export function setElements(target: Value): Array<Value> {
 
 export function setHas(target: Value, element: Value): boolean {
   if (!Values.isHashable(element)) {
-    let message = `[setHas] element is not hashable\n`
-    message += `  element: ${formatValue(element)}\n`
-    message += `  target: ${formatValue(target)}\n`
+    let message = `[setHas] element is not hashable`
+    message += `\n  element: ${formatValue(element)}`
+    message += `\n  target: ${formatValue(target)}`
     throw new Error(message)
   }
 
@@ -35,9 +35,9 @@ export function setHas(target: Value, element: Value): boolean {
 
 export function setAdd(target: Value, element: Value): void {
   if (!Values.isHashable(element)) {
-    let message = `[setAdd] element is not hashable\n`
-    message += `  element: ${formatValue(element)}\n`
-    message += `  target: ${formatValue(target)}\n`
+    let message = `[setAdd] element is not hashable`
+    message += `\n  element: ${formatValue(element)}`
+    message += `\n  target: ${formatValue(target)}`
     throw new Error(message)
   }
 
@@ -53,9 +53,9 @@ export function setAdd(target: Value, element: Value): void {
 
 export function setDelete(target: Value, element: Value): void {
   if (!Values.isHashable(element)) {
-    let message = `[setDelete] element is not hashable\n`
-    message += `  element: ${formatValue(element)}\n`
-    message += `  target: ${formatValue(target)}\n`
+    let message = `[setDelete] element is not hashable`
+    message += `\n  element: ${formatValue(element)}`
+    message += `\n  target: ${formatValue(target)}`
     throw new Error(message)
   }
 

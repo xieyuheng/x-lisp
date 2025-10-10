@@ -1,3 +1,2 @@
 (string-to-symbol) symbol can not have black chars
   string: "a b c"
-

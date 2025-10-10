@@ -14,10 +14,10 @@ export function applyLambda(lambda: Values.Lambda, args: Array<Value>): Value {
     const pattern = patternize(parameter)(mod, env)
     const resultEnv = match(pattern, args[index])(emptyEnv())
     if (resultEnv === undefined) {
-      let message = `[applyLambda] pattern mismatch\n`
-      message += `  parameter index: ${index}\n`
-      message += `  parameter pattern: ${formatExp(parameter)}\n`
-      message += `  arg value: ${formatValue(args[index])}\n`
+      let message = `[applyLambda] pattern mismatch`
+      message += `\n  parameter index: ${index}`
+      message += `\n  parameter pattern: ${formatExp(parameter)}`
+      message += `\n  arg value: ${formatValue(args[index])}`
       throw new X.ErrorWithMeta(message, parameter.meta)
     }
 

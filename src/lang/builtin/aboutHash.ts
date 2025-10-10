@@ -49,8 +49,8 @@ export function aboutHash(mod: Mod) {
 
   definePrimitiveFunction(mod, "hash-get", 2, (key, hash) => {
     if (!Values.isHashable(key)) {
-      let message = `(hash-get) the given key is not hashable\n`
-      message += `  key: ${formatValue(key)}`
+      let message = `(hash-get) the given key is not hashable`
+      message += `\n  key: ${formatValue(key)}`
       throw new Error(message)
     }
 
@@ -61,8 +61,8 @@ export function aboutHash(mod: Mod) {
 
   definePrimitiveFunction(mod, "hash-has?", 2, (key, hash) => {
     if (!Values.isHashable(key)) {
-      let message = `(hash-has?) the given key is not hashable\n`
-      message += `  key: ${formatValue(key)}`
+      let message = `(hash-has?) the given key is not hashable`
+      message += `\n  key: ${formatValue(key)}`
       throw new Error(message)
     }
 
@@ -72,9 +72,9 @@ export function aboutHash(mod: Mod) {
 
   definePrimitiveFunction(mod, "hash-put", 3, (key, value, hash) => {
     if (!Values.isHashable(key)) {
-      let message = `(hash-put) the given key is not hashable\n`
-      message += `  key: ${formatValue(key)}`
-      message += `  value: ${formatValue(value)}`
+      let message = `(hash-put) the given key is not hashable`
+      message += `\n  key: ${formatValue(key)}`
+      message += `\n  value: ${formatValue(value)}`
       throw new Error(message)
     }
 
@@ -89,9 +89,9 @@ export function aboutHash(mod: Mod) {
 
   definePrimitiveFunction(mod, "hash-put!", 3, (key, value, hash) => {
     if (!Values.isHashable(key)) {
-      let message = `(hash-put!) the given key is not hashable\n`
-      message += `  key: ${formatValue(key)}`
-      message += `  value: ${formatValue(value)}`
+      let message = `(hash-put!) the given key is not hashable`
+      message += `\n  key: ${formatValue(key)}`
+      message += `\n  value: ${formatValue(value)}`
       throw new Error(message)
     }
 
@@ -101,8 +101,8 @@ export function aboutHash(mod: Mod) {
 
   definePrimitiveFunction(mod, "hash-delete!", 2, (key, hash) => {
     if (!Values.isHashable(key)) {
-      let message = `(hash-delete!) the given key is not hashable\n`
-      message += `  key: ${formatValue(key)}`
+      let message = `(hash-delete!) the given key is not hashable`
+      message += `\n  key: ${formatValue(key)}`
       throw new Error(message)
     }
 

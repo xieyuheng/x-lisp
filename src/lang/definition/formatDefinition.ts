@@ -6,27 +6,27 @@ export function formatDefinition(definition: Definition): string {
   switch (definition.kind) {
     case "ValueDefinition": {
       let message = ""
-      message += `origin: ${urlRelativeToCwd(definition.origin.url)}\n`
-      message += `name: ${definition.name}\n`
-      message += `value: ${formatValue(definition.value)}\n`
+      message += `\norigin: ${urlRelativeToCwd(definition.origin.url)}`
+      message += `\nname: ${definition.name}`
+      message += `\nvalue: ${formatValue(definition.value)}`
       if (definition.schema)
-        message += `schema: ${formatValue(definition.schema)}\n`
+        message += `\nschema: ${formatValue(definition.schema)}`
       if (definition.validatedValue)
-        message += `validated value: ${formatValue(definition.validatedValue)}\n`
+        message += `\nvalidated value: ${formatValue(definition.validatedValue)}`
       return message
     }
 
     case "LazyDefinition": {
       let message = ""
-      message += `origin: ${urlRelativeToCwd(definition.origin.url)}\n`
-      message += `name: ${definition.name}\n`
-      message += `exp: ${formatExp(definition.exp)}\n`
+      message += `\norigin: ${urlRelativeToCwd(definition.origin.url)}`
+      message += `\nname: ${definition.name}`
+      message += `\nexp: ${formatExp(definition.exp)}`
       if (definition.value)
-        message += `value: ${formatValue(definition.value)}\n`
+        message += `\nvalue: ${formatValue(definition.value)}`
       if (definition.schema)
-        message += `schema: ${formatValue(definition.schema)}\n`
+        message += `\nschema: ${formatValue(definition.schema)}`
       if (definition.validatedValue)
-        message += `validated value: ${formatValue(definition.validatedValue)}\n`
+        message += `\nvalidated value: ${formatValue(definition.validatedValue)}`
       return message
     }
   }

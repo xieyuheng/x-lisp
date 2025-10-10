@@ -130,9 +130,9 @@ export function aboutList(mod: Mod) {
     if (i < elements.length) {
       return elements[i]
     } else {
-      let message = `(list-get) index out of bound\n`
-      message += `  index: ${formatValue(index)}\n`
-      message += `  list: ${formatValue(list)}\n`
+      let message = `(list-get) index out of bound`
+      message += `\n  index: ${formatValue(index)}`
+      message += `\n  list: ${formatValue(list)}`
       throw new Error(message)
     }
   })
@@ -141,9 +141,9 @@ export function aboutList(mod: Mod) {
     const elements = Array.from(Values.asTael(list).elements)
     const i = Values.asInt(index).content
     if (i >= elements.length) {
-      let message = `(list-put) index out of bound\n`
-      message += `  list: ${formatValue(list)}\n`
-      message += `  index: ${formatValue(index)}\n`
+      let message = `(list-put) index out of bound`
+      message += `\n  list: ${formatValue(list)}`
+      message += `\n  index: ${formatValue(index)}`
       throw new Error(message)
     }
 
@@ -155,9 +155,9 @@ export function aboutList(mod: Mod) {
     const elements = Values.asTael(list).elements
     const i = Values.asInt(index).content
     if (i >= elements.length) {
-      let message = `(list-put!) index out of bound\n`
-      message += `  list: ${formatValue(list)}\n`
-      message += `  index: ${formatValue(index)}\n`
+      let message = `(list-put!) index out of bound`
+      message += `\n  list: ${formatValue(list)}`
+      message += `\n  index: ${formatValue(index)}`
       throw new Error(message)
     }
 

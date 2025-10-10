@@ -10,11 +10,11 @@ export function assertEqual(lhs: Exp, rhs: Exp): Effect {
     const lhsValue = resultValue(evaluate(lhs)(mod, env))
     const rhsValue = resultValue(evaluate(rhs)(mod, env))
     if (!equal(lhsValue, rhsValue)) {
-      let message = `[assertEqual] fail\n`
-      message += `  lhs exp: ${formatExp(lhs)}\n`
-      message += `  rhs exp: ${formatExp(rhs)}\n`
-      message += `  lhs value: ${formatValue(lhsValue)}\n`
-      message += `  rhs value: ${formatValue(rhsValue)}\n`
+      let message = `[assertEqual] fail`
+      message += `\n  lhs exp: ${formatExp(lhs)}`
+      message += `\n  rhs exp: ${formatExp(rhs)}`
+      message += `\n  lhs value: ${formatValue(lhsValue)}`
+      message += `\n  rhs value: ${formatValue(rhsValue)}`
       throw new X.ErrorWithMeta(message, rhs.meta)
     }
 

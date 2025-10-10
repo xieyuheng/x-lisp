@@ -26,7 +26,7 @@ export function force(target: Value): Value {
     }
   }
 
-  let message = `[force] unhandled target value kind\n`
-  message += `  target: ${formatValue(target)}\n`
+  let message = `[force] unhandled target value kind`
+  message += `\n  target: ${formatValue(target)}`
   throw new Error(message)
 }

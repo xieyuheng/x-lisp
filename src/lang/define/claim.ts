@@ -8,11 +8,11 @@ import { type Value } from "../value/index.ts"
 export function claim(mod: Mod, name: string, schema: Value): void {
   const found = mod.claimed.get(name)
   if (found) {
-    let message = `[claim] can not reclaim name\n`
-    message += `  mod: ${urlRelativeToCwd(mod.url)}\n`
-    message += `  name: ${name}\n`
-    message += `  old schema: ${formatValue(found)}\n`
-    message += `  new schema: ${formatValue(schema)}\n`
+    let message = `[claim] can not reclaim name`
+    message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
+    message += `\n  name: ${name}`
+    message += `\n  old schema: ${formatValue(found)}`
+    message += `\n  new schema: ${formatValue(schema)}`
     throw new Error(message)
   }
 
@@ -25,11 +25,11 @@ export function claim(mod: Mod, name: string, schema: Value): void {
   }
 
   if (definition && definition.origin !== mod) {
-    let message = `[claim] can not claim name of other module\n`
-    message += `  mod: ${urlRelativeToCwd(mod.url)}\n`
-    message += `  name: ${name}\n`
-    message += `  schema: ${formatValue(schema)}\n`
-    message += `  definition:\n`
+    let message = `[claim] can not claim name of other module`
+    message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
+    message += `\n  name: ${name}`
+    message += `\n  schema: ${formatValue(schema)}`
+    message += `\n  definition:`
     message += indent(formatDefinition(definition), { length: 4 })
     throw new Error(message)
   }

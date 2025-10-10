@@ -21,10 +21,10 @@ function checkRedefine(
   if (found === undefined) return
   if (found === definition) return
 
-  let message = `[checkRedefine] can not redefine name: ${name}\n`
-  message += `  old definition:\n`
+  let message = `[checkRedefine] can not redefine name: ${name}`
+  message += `\n  old definition:`
   message += indent(formatDefinition(found), { length: 4 })
-  message += `  new definition:\n`
+  message += `\n  new definition:`
   message += indent(formatDefinition(definition), {
     length: 4,
   })
@@ -37,9 +37,9 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const entry of stmt.entries) {
       const definition = modLookupPublicDefinition(importedMod, entry.name)
       if (definition === undefined) {
-        let message = `(import) undefined name: ${entry.name}\n`
-        message += `  path: ${stmt.path}\n`
-        message += `  by mod: ${urlRelativeToCwd(mod.url)}\n`
+        let message = `(import) undefined name: ${entry.name}`
+        message += `\n  path: ${stmt.path}`
+        message += `\n  by mod: ${urlRelativeToCwd(mod.url)}`
         throw new X.ErrorWithMeta(message, stmt.meta)
       }
 
@@ -84,9 +84,9 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const name of stmt.names) {
       const definition = modLookupPublicDefinition(importedMod, name)
       if (definition === undefined) {
-        let message = `(include) undefined name: ${name}\n`
-        message += `  path: ${stmt.path}\n`
-        message += `  by mod: ${urlRelativeToCwd(mod.url)}\n`
+        let message = `(include) undefined name: ${name}`
+        message += `\n  path: ${stmt.path}`
+        message += `\n  by mod: ${urlRelativeToCwd(mod.url)}`
         throw new X.ErrorWithMeta(message, stmt.meta)
       }
 

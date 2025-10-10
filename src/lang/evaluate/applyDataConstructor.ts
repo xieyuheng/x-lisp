@@ -16,11 +16,11 @@ export function applyDataConstructor(
     const ok = applyDataPredicateWithAnything(predicate, data)
     assert(Values.isBool(ok))
     if (Values.isFalse(ok)) {
-      let message = `[applyDataConstructor] result data cannot possibly pass data predicate\n`
-      message += `  constructor: ${formatValue(constructor)}\n`
-      message += `  args: [${formatValues(args)}]\n`
-      message += `  result data: ${formatValue(data)}\n`
-      message += `  data predicate: ${formatValue(predicate)}\n`
+      let message = `[applyDataConstructor] result data cannot possibly pass data predicate`
+      message += `\n  constructor: ${formatValue(constructor)}`
+      message += `\n  args: [${formatValues(args)}]`
+      message += `\n  result data: ${formatValue(data)}`
+      message += `\n  data predicate: ${formatValue(predicate)}`
       throw new Error(message)
     }
   }

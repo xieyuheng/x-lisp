@@ -6,4 +6,3 @@
   - count: 3
     schema: int?
     value: 3.0
-

@@ -27,8 +27,8 @@ export function aboutString(mod: Mod) {
 
   definePrimitiveFunction(mod, "string-to-symbol", 1, (string) => {
     if (stringHasBlank(Values.asString(string).content)) {
-      let message = `(string-to-symbol) symbol can not have black chars\n`
-      message += `  string: "${Values.asString(string).content}"\n`
+      let message = `(string-to-symbol) symbol can not have black chars`
+      message += `\n  string: "${Values.asString(string).content}"`
       throw new Error(message)
     }
 

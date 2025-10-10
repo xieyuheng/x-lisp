@@ -25,7 +25,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       }
 
       if (X.listElements(parameters).length === 0) {
-        let message = `(lambda) must have at least one parameter\n`
+        let message = `(lambda) must have at least one parameter`
         throw new X.ErrorWithMeta(message, meta)
       }
 
@@ -201,7 +201,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("(cons* '@list elements)", ({ elements }, { data, meta }) => {
     if (Object.keys(X.asTael(data).attributes).length > 0) {
-      let message = `(@list) literal list can not have attributes\n`
+      let message = `(@list) literal list can not have attributes`
       throw new X.ErrorWithMeta(message, meta)
     }
 
@@ -210,7 +210,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("(cons* '@record elements)", ({ elements }, { data, meta }) => {
     if (X.listElements(elements).length > 0) {
-      let message = `(@record) literal record can not have elements\n`
+      let message = `(@record) literal record can not have elements`
       throw new X.ErrorWithMeta(message, meta)
     }
 
@@ -223,7 +223,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("(cons* '@set elements)", ({ elements }, { data, meta }) => {
     if (Object.keys(X.asTael(data).attributes).length > 0) {
-      let message = `(@set) can not have attributes\n`
+      let message = `(@set) can not have attributes`
       throw new X.ErrorWithMeta(message, meta)
     }
 
@@ -232,12 +232,12 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("(cons* '@hash elements)", ({ elements }, { data, meta }) => {
     if (Object.keys(X.asTael(data).attributes).length > 0) {
-      let message = `(@hash) can not have attributes\n`
+      let message = `(@hash) can not have attributes`
       throw new X.ErrorWithMeta(message, meta)
     }
 
     if (X.listElements(elements).length % 2 === 1) {
-      let message = `(@hash) body length must be even\n`
+      let message = `(@hash) body length must be even`
       throw new X.ErrorWithMeta(message, meta)
     }
 

@@ -9,9 +9,9 @@ export const RunCommand: Command = {
   name: "run",
   description: "Run a file",
   help(commander) {
-    let message = `The ${this.name} command run a file.\n`
+    let message = `The ${this.name} command run a file.`
     message += `\n`
-    message += `  ${commander.name} ${this.name} <file>\n`
+    message += `\n  ${commander.name} ${this.name} <file>`
     message += `\n`
     return message
   },
@@ -28,8 +28,8 @@ export const RunCommand: Command = {
     }
 
     if (typeof commander.args[0] !== "string") {
-      let message = `[run] expect the first argument to be a path\n`
-      message += `  first argument: ${commander.args[0]}\n`
+      let message = `[run] expect the first argument to be a path`
+      message += `\n  first argument: ${commander.args[0]}`
       throw new Error(message)
     }
 

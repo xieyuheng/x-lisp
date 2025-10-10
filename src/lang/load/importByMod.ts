@@ -16,7 +16,7 @@ function urlRelativeToMod(path: string, mod: Mod): URL {
   if (mod.url.protocol === "file:") {
     const url = new URL(path, mod.url)
     if (url.href === mod.url.href) {
-      let message = `[urlRelativeToMod] A module can not import itself: ${path}\n`
+      let message = `[urlRelativeToMod] A module can not import itself: ${path}`
       throw new Error(message)
     }
 

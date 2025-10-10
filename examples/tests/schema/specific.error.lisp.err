@@ -9,7 +9,6 @@
   - count: 2
     schema: (list? symbol?)
     value: [3 4]
-
    --> examples/tests/schema/specific.error.lisp:6:9
   4 |         (list? A))))
   5 | 

@@ -14,7 +14,7 @@ export const ReplCommand: Command = {
   name: "repl",
   description: "Start the REPL",
   help(commander) {
-    let message = `The ${this.name} start the read-eval-print loop.\n`
+    let message = `The ${this.name} start the read-eval-print loop.`
     return message
   },
 

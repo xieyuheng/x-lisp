@@ -10,25 +10,25 @@ export function applyDataPutter(
   args: Array<Value>,
 ): Value {
   if (args.length !== 2) {
-    let message = `[applyDataPutter] data putter can only take two arguments\n`
-    message += `  target: ${formatValue(putter)}\n`
-    message += `  args: [${formatValues(args)}]\n`
+    let message = `[applyDataPutter] data putter can only take two arguments`
+    message += `\n  target: ${formatValue(putter)}`
+    message += `\n  args: [${formatValues(args)}]`
     throw new Error(message)
   }
 
   const [value, data] = args
 
   if (!Values.isData(data)) {
-    let message = `[applyDataPutter] data putter can only take data as the second argument\n`
-    message += `  target: ${formatValue(putter)}\n`
-    message += `  args: [${formatValues(args)}]\n`
+    let message = `[applyDataPutter] data putter can only take data as the second argument`
+    message += `\n  target: ${formatValue(putter)}`
+    message += `\n  args: [${formatValues(args)}]`
     throw new Error(message)
   }
 
   if (Values.dataHashtag(data).content !== putter.constructor.name) {
-    let message = `[applyDataPutter] data putter constructor mismatch\n`
-    message += `  target: ${formatValue(putter)}\n`
-    message += `  args: [${formatValues(args)}]\n`
+    let message = `[applyDataPutter] data putter constructor mismatch`
+    message += `\n  target: ${formatValue(putter)}`
+    message += `\n  args: [${formatValues(args)}]`
     throw new Error(message)
   }
 
@@ -40,11 +40,11 @@ export function applyDataPutter(
     const ok = applyDataPredicateWithAnything(predicate, data)
     assert(Values.isBool(ok))
     if (Values.isFalse(ok)) {
-      let message = `[applyDataPutter] result data cannot possibly pass data predicate\n`
-      message += `  putter: ${formatValue(putter)}\n`
-      message += `  putting value: ${formatValue(value)}\n`
-      message += `  result data: ${formatValue(data)}\n`
-      message += `  data predicate: ${formatValue(predicate)}\n`
+      let message = `[applyDataPutter] result data cannot possibly pass data predicate`
+      message += `\n  putter: ${formatValue(putter)}`
+      message += `\n  putting value: ${formatValue(value)}`
+      message += `\n  result data: ${formatValue(data)}`
+      message += `\n  data predicate: ${formatValue(predicate)}`
       throw new Error(message)
     }
   }

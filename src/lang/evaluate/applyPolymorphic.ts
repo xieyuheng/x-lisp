@@ -22,9 +22,9 @@ export function applyPolymorphic(
 ): Value {
   const arity = polymorphic.parameters.length
   if (args.length !== arity) {
-    let message = `[applyPolymorphic] arity mismatch\n`
-    message += `  polymorphic: ${formatValue(polymorphic)}\n`
-    message += `  args: [${formatValues(args)}]\n`
+    let message = `[applyPolymorphic] arity mismatch`
+    message += `\n  polymorphic: ${formatValue(polymorphic)}`
+    message += `\n  args: [${formatValues(args)}]`
     throw new Error(message)
   }
 

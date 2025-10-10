@@ -18,8 +18,8 @@ export function isData(value: Value): value is Values.Tael {
 
 export function dataHashtag(value: Value): Values.Hashtag {
   if (!isData(value)) {
-    let message = `[dataHashtag] expect value to be data\n`
-    message += `  value: ${formatValue(value)}\n`
+    let message = `[dataHashtag] expect value to be data`
+    message += `\n  value: ${formatValue(value)}`
     throw new Error(message)
   }
 

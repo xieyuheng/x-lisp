@@ -44,8 +44,8 @@ export function formatSexp(value: Value): string {
     }
 
     default: {
-      let message = `[formatSexp] expect value to be sexp\n`
-      message += `  value: ${formatValue(value)}`
+      let message = `[formatSexp] expect value to be sexp`
+      message += `\n  value: ${formatValue(value)}`
       throw new Error(message)
     }
   }

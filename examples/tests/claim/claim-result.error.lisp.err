@@ -3,7 +3,6 @@
   target: (lambda (x y) (@quote abc))
   args: [1 1]
   result: 'abc
-
   --> examples/tests/claim/claim-result.error.lisp:2:9
  1 | (claim my-add (-> int? int? int?))
  2 | (define (my-add x y) 'abc)

@@ -9,7 +9,6 @@
   - count: 2
     schema: int?
     value: 1.0
-
   --> examples/tests/claim/claim-arguments.error.lisp:2:9
  1 | (claim my-add (-> int? int? int?))
  2 | (define (my-add x y) (iadd x y))

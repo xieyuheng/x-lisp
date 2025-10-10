@@ -12,9 +12,9 @@ export function resolveModPath(inputPath: string): string {
   }
 
   if (!fs.existsSync(path)) {
-    let message = `[resoleModPath] resolved path does not exist as a file\n`
-    message += `  input path: ${path}\n`
-    message += `  resolved path: ${path}\n`
+    let message = `[resoleModPath] resolved path does not exist as a file`
+    message += `\n  input path: ${path}`
+    message += `\n  resolved path: ${path}`
     throw new Error(message)
   }
 

@@ -32,11 +32,11 @@ export function applyWithSchema(
     if (isValid(schema.retSchema, result)) {
       return result
     } else {
-      let message = `[applyWithSchema] fail on result\n`
-      message += `  schema: ${formatValue(schema)}\n`
-      message += `  target: ${formatValue(target)}\n`
-      message += `  args: [${formatValues(args)}]\n`
-      message += `  result: ${formatValue(result)}\n`
+      let message = `[applyWithSchema] fail on result`
+      message += `\n  schema: ${formatValue(schema)}`
+      message += `\n  target: ${formatValue(target)}`
+      message += `\n  args: [${formatValues(args)}]`
+      message += `\n  result: ${formatValue(result)}`
       if (meta) throw new X.ErrorWithMeta(message, meta)
       else throw new Error(message)
     }
@@ -56,12 +56,12 @@ export function applyWithSchema(
       if (isValid(arrow.retSchema, result)) {
         return apply(result, spilledArgs)
       } else {
-        let message = `[applyWithSchema] fail on result\n`
-        message += `  schema: ${formatValue(schema)}\n`
-        message += `  target: ${formatValue(target)}\n`
-        message += `  used args: [${formatValues(usedArgs)}]\n`
-        message += `  spilled args: [${formatValues(spilledArgs)}]\n`
-        message += `  result: ${formatValue(result)}\n`
+        let message = `[applyWithSchema] fail on result`
+        message += `\n  schema: ${formatValue(schema)}`
+        message += `\n  target: ${formatValue(target)}`
+        message += `\n  used args: [${formatValues(usedArgs)}]`
+        message += `\n  spilled args: [${formatValues(spilledArgs)}]`
+        message += `\n  result: ${formatValue(result)}`
         if (meta) throw new X.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
@@ -75,11 +75,11 @@ export function applyWithSchema(
       if (isValid(arrow.retSchema, result)) {
         return result
       } else {
-        let message = `[applyWithSchema] fail on result\n`
-        message += `  schema: ${formatValue(schema)}\n`
-        message += `  target: ${formatValue(target)}\n`
-        message += `  args: [${formatValues(args)}]\n`
-        message += `  result: ${formatValue(result)}\n`
+        let message = `[applyWithSchema] fail on result`
+        message += `\n  schema: ${formatValue(schema)}`
+        message += `\n  target: ${formatValue(target)}`
+        message += `\n  args: [${formatValues(args)}]`
+        message += `\n  result: ${formatValue(result)}`
         if (meta) throw new X.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
@@ -94,10 +94,10 @@ export function applyWithSchema(
     }
   }
 
-  let message = `[applyWithSchema] unhandled kind of schema\n`
-  message += `  schema: ${formatValue(schema)}\n`
-  message += `  target: ${formatValue(target)}\n`
-  message += `  args: [${formatValues(args)}]\n`
+  let message = `[applyWithSchema] unhandled kind of schema`
+  message += `\n  schema: ${formatValue(schema)}`
+  message += `\n  target: ${formatValue(target)}`
+  message += `\n  args: [${formatValues(args)}]`
   if (meta) throw new X.ErrorWithMeta(message, meta)
   else throw new Error(message)
 }
@@ -136,15 +136,15 @@ function validateArgs(
   }
 
   const meta = Values.valueMaybeMeta(context.target)
-  let message = `[applyWithSchema] fail on arguments\n`
-  message += `  schema: ${formatValue(context.schema)}\n`
-  message += `  target: ${formatValue(context.target)}\n`
-  message += `  args: [${formatValues(context.args)}]\n`
-  message += `  failed args:\n`
+  let message = `[applyWithSchema] fail on arguments`
+  message += `\n  schema: ${formatValue(context.schema)}`
+  message += `\n  target: ${formatValue(context.target)}`
+  message += `\n  args: [${formatValues(context.args)}]`
+  message += `\n  failed args:`
   for (const { index, schema, arg } of erred) {
-    message += `  - count: ${index + 1}\n`
-    message += `    schema: ${formatValue(schema)}\n`
-    message += `    value: ${formatValue(arg)}\n`
+    message += `\n  - count: ${index + 1}`
+    message += `\n    schema: ${formatValue(schema)}`
+    message += `\n    value: ${formatValue(arg)}`
   }
 
   if (meta) throw new X.ErrorWithMeta(message, meta)

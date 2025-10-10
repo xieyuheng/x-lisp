@@ -3,4 +3,3 @@
   args: [1 2]
   result data: [#li 1 2]
   data predicate: my-list?
-

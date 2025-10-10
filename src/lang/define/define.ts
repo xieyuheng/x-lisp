@@ -7,9 +7,9 @@ import { type Value } from "../value/index.ts"
 export function define(mod: Mod, name: string, value: Value): void {
   const found = modLookupDefinition(mod, name)
   if (found) {
-    let message = `[define] can not redefine name: ${name}\n`
-    message += `  new value: ${formatValue(value)}\n`
-    message += `  old definition:\n`
+    let message = `[define] can not redefine name: ${name}`
+    message += `\n  new value: ${formatValue(value)}`
+    message += `\n  old definition:`
     message += indent(formatDefinition(found), { length: 4 })
     throw new Error(message)
   }

@@ -20,5 +20,5 @@ export function Record(attributes: Values.Attributes): Values.Tael {
 
 export function asTael(value: Value): Values.Tael {
   if (value.kind === "Tael") return value
-  throw new Error(`[asTael] fail on: ${formatValue(value)}\n`)
+  throw new Error(`[asTael] fail on: ${formatValue(value)}`)
 }
