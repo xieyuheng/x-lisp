@@ -9,6 +9,10 @@ export function prettyValue(maxWidth: number, value: Value): string {
   return pp.format(maxWidth, renderValue(value))
 }
 
+export function prettyValues(maxWidth: number, values: Array<Value>): string {
+  return pp.format(maxWidth, renderValues(values))
+}
+
 function renderValues(values: Array<Value>): pp.Node {
   if (values.length === 0) {
     return pp.nil()
@@ -111,9 +115,9 @@ function renderValue(value: Value): pp.Node {
       return pp.group(
         pp.group(
           pp.text("(->"),
-          pp.indent(2, pp.br(), renderValues(value.argSchemas)),
+          pp.indent(4, pp.br(), renderValues(value.argSchemas)),
         ),
-        pp.indent(2, pp.br(), renderValue(value.retSchema)),
+        pp.indent(4, pp.br(), renderValue(value.retSchema)),
         pp.text(")"),
       )
     }
@@ -122,9 +126,9 @@ function renderValue(value: Value): pp.Node {
       return pp.group(
         pp.group(
           pp.text("(*->"),
-          pp.indent(2, pp.br(), renderValue(value.argSchema)),
+          pp.indent(5, pp.br(), renderValue(value.argSchema)),
         ),
-        pp.indent(2, pp.br(), renderValue(value.retSchema)),
+        pp.indent(5, pp.br(), renderValue(value.retSchema)),
         pp.text(")"),
       )
     }

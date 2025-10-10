@@ -1,10 +1,12 @@
 [applyWithSchema] fail on arguments
   schema:
-    (-> (list? symbol?) (list? symbol?) (list? symbol?))
+    (-> (list? symbol?) (list? symbol?)
+        (list? symbol?))
   target:
-    (lambda (left right) (list-append left right))
+    (lambda (left right)
+      (list-append left right))
   args:
-    [[1 2] [3 4]]
+    [1 2] [3 4]
   failed args:
   - count: 1
     schema:

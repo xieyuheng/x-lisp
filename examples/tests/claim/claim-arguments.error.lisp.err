@@ -4,7 +4,7 @@
   target:
     (lambda (x y) (iadd x y))
   args:
-    [1.0 1.0]
+    1.0 1.0
   failed args:
   - count: 1
     schema:

@@ -1,6 +1,4 @@
-# pretty
-
-[pretty] `applyWithSchema` -- use pretty print in error report
+[pretty] `assertEqual` use pretty print
 
 # pretty
 

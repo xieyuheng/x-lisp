@@ -257,9 +257,9 @@ export function renderExp(exp: Exp): pp.Node {
       return pp.group(
         pp.group(
           pp.text("(->"),
-          pp.indent(2, pp.br(), renderExps(exp.argSchemas)),
+          pp.indent(4, pp.br(), renderExps(exp.argSchemas)),
         ),
-        pp.indent(2, pp.br(), renderExp(exp.retSchema)),
+        pp.indent(4, pp.br(), renderExp(exp.retSchema)),
         pp.text(")"),
       )
     }
@@ -268,9 +268,9 @@ export function renderExp(exp: Exp): pp.Node {
       return pp.group(
         pp.group(
           pp.text("(*->"),
-          pp.indent(2, pp.br(), renderExp(exp.argSchema)),
+          pp.indent(5, pp.br(), renderExp(exp.argSchema)),
         ),
-        pp.indent(2, pp.br(), renderExp(exp.retSchema)),
+        pp.indent(5, pp.br(), renderExp(exp.retSchema)),
         pp.text(")"),
       )
     }
