@@ -2,7 +2,7 @@ import * as X from "@xieyuheng/x-data.js"
 import { test } from "node:test"
 import type { Exp } from "../exp/index.ts"
 import { matchExp } from "../syntax/index.ts"
-import { prettyFormatExp } from "./index.ts"
+import { prettyExp } from "./index.ts"
 
 function testWidths(widths: Array<number>, code: string) {
   const sexps = X.parseDataArray(code)
@@ -11,12 +11,12 @@ function testWidths(widths: Array<number>, code: string) {
   for (const exp of exps) {
     for (const width of widths) {
       console.log(`${"-".repeat(width)}|${width}`)
-      console.log(prettyFormatExp(width, exp))
+      console.log(prettyExp(width, exp))
     }
   }
 }
 
-test("prettyFormatExp", () => {
+test("prettyExp", () => {
   testWidths([30, 20, 13, 10, 5], `(lambda (f x y) (f y x))`)
   testWidths([30, 20, 13, 10, 5], `(lambda (f x y) (begin (f y x)))`)
   testWidths(
@@ -37,15 +37,15 @@ test("prettyFormatExp", () => {
   )
 })
 
-test("prettyFormatExp -- set", () => {
+test("prettyExp -- set", () => {
   testWidths([30, 20, 10], `{{1 2 3} {4 5 6} {7 8 9}}`)
 })
 
-test("prettyFormatExp -- list", () => {
+test("prettyExp -- list", () => {
   testWidths([30, 20, 10], `[[1 2 3] [4 5 6] [7 8 9]]`)
 })
 
-test("prettyFormatExp -- hash", () => {
+test("prettyExp -- hash", () => {
   testWidths(
     [60, 30, 10, 5],
     `

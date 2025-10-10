@@ -3,7 +3,7 @@ import { type Exp } from "../exp/index.ts"
 import { formatAtom, formatExp, formatSexp } from "../format/index.ts"
 import { isAtom } from "../value/index.ts"
 
-export function prettyFormatExp(maxWidth: number, exp: Exp): string {
+export function prettyExp(maxWidth: number, exp: Exp): string {
   return pp.format(maxWidth, renderExp(exp))
 }
 
