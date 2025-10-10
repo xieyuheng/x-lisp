@@ -9,7 +9,8 @@
       void?))
 
 (define (pretty-print max-width value)
-  (writeln (pretty max-width value)))
+  (write (pretty max-width value))
+  (write "\n"))
 
 (claim pretty
   (-> int-non-negative? anything?

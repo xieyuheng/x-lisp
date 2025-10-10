@@ -1,4 +1,4 @@
-(writeln
+(write
  (format-left-margin
   "| "
   (string-concat

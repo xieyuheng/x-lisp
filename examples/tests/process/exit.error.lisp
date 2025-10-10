@@ -1,5 +1,6 @@
 (define (main)
-  (writeln "hi")
+  (write "hi")
+  (write "\n")
   (exit "bye"))
 
 (main)

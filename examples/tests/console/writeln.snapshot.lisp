@@ -1,2 +1,2 @@
-(writeln "abc")
-(writeln "abc")
+(write "abc")
+(write "\n")

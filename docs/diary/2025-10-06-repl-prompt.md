@@ -12,7 +12,7 @@ REPL 的：
 就可以和表达式最后的 result 的 print 区分开：
 
 ```scheme
->> (begin (println "hello") 123)
+>> (begin (print "hello") (write "\n") 123)
 "hello"
 => 123
 ```

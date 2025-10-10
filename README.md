@@ -416,9 +416,7 @@ false
 
 ```lisp
 (print value)
-(println value)
 (write string)
-(writeln string)
 ```
 
 ### Void

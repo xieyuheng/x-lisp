@@ -1,3 +1,8 @@
-(println 123)
-(println '(a b c))
-(println "abc")
+(print 123)
+(write "\n")
+
+(print '(a b c))
+(write "\n")
+
+(print "abc")
+(write "\n")

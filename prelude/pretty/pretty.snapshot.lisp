@@ -9,7 +9,8 @@
      (lambda (width)
        (write (string-repeat width "-"))
        (write "|")
-       (writeln (format width))
+       (write (format width))
+       (write "\n")
        (pretty-print width value)))))
 
 ;; list

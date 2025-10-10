@@ -26,7 +26,9 @@
      (lambda (width)
        (write (string-repeat width "-"))
        (write "|")
-       (writeln (format width))
-       (writeln (ppml-format width node))))))
+       (write (format width))
+       (write "\n")
+       (write (ppml-format width node))
+       (write "\n")))))
 
 (test-widths [30 20 10] example-node)

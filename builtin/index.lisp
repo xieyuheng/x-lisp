@@ -144,9 +144,7 @@
 ;; console
 
 (claim print (-> anything? void?))
-(claim println (-> anything? void?))
 (claim write (-> string? void?))
-(claim writeln (-> string? void?))
 
 ;; format
 
