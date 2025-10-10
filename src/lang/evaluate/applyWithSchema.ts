@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-data.js"
 import { arrayMapZip } from "../../utils/array/arrayMapZip.ts"
-import { formatIndent } from "../../utils/format/formatIndent.ts"
+import { formatUnderTag } from "../../utils/format/formatUnderTag.ts"
 import { formatValue, formatValues } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
@@ -128,20 +128,14 @@ function validateArgs(
 
   const meta = Values.valueMaybeMeta(context.target)
   let message = `[applyWithSchema] fail on arguments`
-  // message += formatUnderTag(2, `schema:`, formatValue(context.schema))
-  message += `\n  schema:`
-  message += formatIndent(4, `\n` + formatValue(context.schema))
-  message += `\n  target:`
-  message += formatIndent(4, `\n` + formatValue(context.target))
-  message += `\n  args:`
-  message += formatIndent(4, `\n` + `[${formatValues(context.args)}]`)
+  message += formatUnderTag(2, `schema:`, formatValue(context.schema))
+  message += formatUnderTag(2, `target:`, formatValue(context.target))
+  message += formatUnderTag(2, `args:`, `[${formatValues(context.args)}]`)
   message += `\n  failed args:`
   for (const { index, schema, arg } of erred) {
     message += `\n  - count: ${index + 1}`
-    message += `\n    schema:`
-    message += formatIndent(6, `\n` + formatValue(schema))
-    message += `\n    value:`
-    message += formatIndent(6, `\n` + formatValue(arg))
+    message += formatUnderTag(4, `schema:`, formatValue(schema))
+    message += formatUnderTag(4, `arg:`, formatValue(arg))
   }
 
   if (meta) throw new X.ErrorWithMeta(message, meta)

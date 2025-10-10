@@ -1,7 +1,5 @@
 # pretty print
 
-extract `formatUnderTag`
-
 `applyWithSchema` -- prepare to use pretty print
 
 `prettyFormatValue`

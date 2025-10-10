@@ -9,12 +9,12 @@
   - count: 1
     schema:
       int?
-    value:
+    arg:
       1.0
   - count: 3
     schema:
       int?
-    value:
+    arg:
       1.0
   --> examples/tests/claim/claim-one-argument.error.lisp:2:9
  1 | (claim my-add-three (-> int? int? int? int?))

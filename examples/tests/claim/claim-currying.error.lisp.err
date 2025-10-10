@@ -9,12 +9,12 @@
   - count: 1
     schema:
       int?
-    value:
+    arg:
       1.0
   - count: 2
     schema:
       int?
-    value:
+    arg:
       1.0
   --> examples/tests/claim/claim-currying.error.lisp:3:4
  1 | (claim my-add (-> int? int? int?))

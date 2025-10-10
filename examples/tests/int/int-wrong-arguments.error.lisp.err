@@ -9,5 +9,5 @@
   - count: 2
     schema:
       int?
-    value:
+    arg:
       "a"

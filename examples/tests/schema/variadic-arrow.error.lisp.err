@@ -9,5 +9,5 @@
   - count: 3
     schema:
       int?
-    value:
+    arg:
       3.0
