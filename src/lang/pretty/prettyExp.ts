@@ -368,14 +368,17 @@ function renderAttribute(entry: [string, Exp]): pp.Node {
 }
 
 function renderAttributes(entries: Array<[string, Exp]>): pp.Node {
-  if (entries.length === 0) return pp.nil()
-  else if (entries.length === 1) return renderAttribute(entries[0])
-  else
+  if (entries.length === 0) {
+    return pp.nil()
+  } else if (entries.length === 1) {
+    return renderAttribute(entries[0])
+  } else {
     return pp.concat(
       renderAttribute(entries[0]),
       pp.br(),
       renderAttributes(entries.slice(1)),
     )
+  }
 }
 
 function renderHashEntry(entry: { key: Exp; value: Exp }): pp.Node {
@@ -383,12 +386,15 @@ function renderHashEntry(entry: { key: Exp; value: Exp }): pp.Node {
 }
 
 function renderHashEntries(entries: Array<{ key: Exp; value: Exp }>): pp.Node {
-  if (entries.length === 0) return pp.nil()
-  else if (entries.length === 1) return renderHashEntry(entries[0])
-  else
+  if (entries.length === 0) {
+    return pp.nil()
+  } else if (entries.length === 1) {
+    return renderHashEntry(entries[0])
+  } else {
     return pp.concat(
       renderHashEntry(entries[0]),
       pp.br(),
       renderHashEntries(entries.slice(1)),
     )
+  }
 }
