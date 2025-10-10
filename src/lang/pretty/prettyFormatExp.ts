@@ -181,7 +181,8 @@ export function renderExp(exp: Exp): pp.Node {
     }
 
     case "Comment": {
-      return pp.text(`(@comment ${formatSexp(exp.sexp)})`)
+      const sexps = exp.sexps.map(formatSexp).join(" ")
+      return pp.text(`(@comment ${sexps})`)
     }
 
     case "Quasiquote": {

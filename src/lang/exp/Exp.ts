@@ -294,14 +294,14 @@ export function Quote(sexp: Data, meta: Meta): Quote {
 
 export type Comment = {
   kind: "Comment"
-  sexp: Data
+  sexps: Array<Data>
   meta: Meta
 }
 
-export function Comment(sexp: Data, meta: Meta): Comment {
+export function Comment(sexps: Array<Data>, meta: Meta): Comment {
   return {
     kind: "Comment",
-    sexp,
+    sexps,
     meta,
   }
 }

@@ -1,5 +1,3 @@
-parse `@comment`
-
 # pretty print
 
 `formatValue` -- should not call `formatExp`

@@ -109,7 +109,8 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Comment": {
-      return `(@comment ${formatSexp(exp.sexp)})`
+      const sexps = exp.sexps.map(formatSexp).join(" ")
+      return `(@comment ${sexps})`
     }
 
     case "Quasiquote": {

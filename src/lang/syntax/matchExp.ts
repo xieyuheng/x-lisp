@@ -48,6 +48,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Quote(sexp, meta)
   }),
 
+  X.matcher("(cons* '@comment sexps)", ({ sexps }, { meta }) => {
+    return Exps.Comment(X.listElements(sexps), meta)
+  }),
+
   X.matcher("`(@quasiquote ,sexp)", ({ sexp }, { meta }) => {
     return Exps.Quasiquote(sexp, meta)
   }),
