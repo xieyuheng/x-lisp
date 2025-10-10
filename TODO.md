@@ -1,4 +1,3 @@
-use `prettyValue` -- lang/define/claim.ts
 use `prettyValue` -- lang/define/define.ts
 
 use `prettyValue` -- lang/definition/formatDefinition.ts
