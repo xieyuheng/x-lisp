@@ -1,18 +1,24 @@
-// import * as pp from "../../utils/ppml/index.ts"
-// import { type Exp } from "../exp/index.ts"
-// import { formatAtom, formatExp, formatSexp } from "../format/index.ts"
-// import { isAtom } from "../value/index.ts"
+import * as pp from "../../utils/ppml/index.ts"
+import { type Value } from "../value/index.ts"
 
-// export function prettyValue(maxWidth: number, value: Value): string {
-//   return pp.format(maxWidth, renderExp(exp))
-// }
+export function prettyValue(maxWidth: number, value: Value): string {
+  return pp.format(maxWidth, renderValue(value))
+}
 
-// export function renderValues(values: Array<Value>): pp.Node {
-//   if (exps.length === 0) return pp.nil()
-//   else if (exps.length === 1) return renderExp(exps[0])
-//   else return pp.concat(renderExp(exps[0]), pp.br(), renderExps(exps.slice(1)))
-// }
+function renderValues(values: Array<Value>): pp.Node {
+  if (values.length === 0) {
+    return pp.nil()
+  } else if (values.length === 1) {
+    return renderValue(values[0])
+  } else {
+    return pp.concat(
+      renderValue(values[0]),
+      pp.br(),
+      renderValues(values.slice(1)),
+    )
+  }
+}
 
-// export function renderValue(value: Value): pp.Node {
-
-// }
+function renderValue(value: Value): pp.Node {
+  throw new Error("TODO")
+}

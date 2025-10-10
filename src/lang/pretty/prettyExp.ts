@@ -7,13 +7,17 @@ export function prettyExp(maxWidth: number, exp: Exp): string {
   return pp.format(maxWidth, renderExp(exp))
 }
 
-export function renderExps(exps: Array<Exp>): pp.Node {
-  if (exps.length === 0) return pp.nil()
-  else if (exps.length === 1) return renderExp(exps[0])
-  else return pp.concat(renderExp(exps[0]), pp.br(), renderExps(exps.slice(1)))
+function renderExps(exps: Array<Exp>): pp.Node {
+  if (exps.length === 0) {
+    return pp.nil()
+  } else if (exps.length === 1) {
+    return renderExp(exps[0])
+  } else {
+    return pp.concat(renderExp(exps[0]), pp.br(), renderExps(exps.slice(1)))
+  }
 }
 
-export function renderExp(exp: Exp): pp.Node {
+function renderExp(exp: Exp): pp.Node {
   if (isAtom(exp)) {
     return pp.text(formatAtom(exp))
   }
@@ -358,12 +362,12 @@ function renderBody(body: Exp): pp.Node {
   }
 }
 
-export function renderAttribute(entry: [string, Exp]): pp.Node {
+function renderAttribute(entry: [string, Exp]): pp.Node {
   const [key, exp] = entry
   return pp.group(pp.text(`:${key}`), pp.br(), renderExp(exp))
 }
 
-export function renderAttributes(entries: Array<[string, Exp]>): pp.Node {
+function renderAttributes(entries: Array<[string, Exp]>): pp.Node {
   if (entries.length === 0) return pp.nil()
   else if (entries.length === 1) return renderAttribute(entries[0])
   else
@@ -374,13 +378,11 @@ export function renderAttributes(entries: Array<[string, Exp]>): pp.Node {
     )
 }
 
-export function renderHashEntry(entry: { key: Exp; value: Exp }): pp.Node {
+function renderHashEntry(entry: { key: Exp; value: Exp }): pp.Node {
   return pp.group(renderExp(entry.key), pp.br(), renderExp(entry.value))
 }
 
-export function renderHashEntries(
-  entries: Array<{ key: Exp; value: Exp }>,
-): pp.Node {
+function renderHashEntries(entries: Array<{ key: Exp; value: Exp }>): pp.Node {
   if (entries.length === 0) return pp.nil()
   else if (entries.length === 1) return renderHashEntry(entries[0])
   else
