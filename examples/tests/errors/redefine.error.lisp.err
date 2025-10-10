@@ -1,9 +1,11 @@
 [defineLazy] can not redefine name: x
-  new exp: 2
+  new exp:
+    2
   old definition:
     origin: examples/tests/errors/redefine.error.lisp
     name: x
-    exp: 1
+    exp:
+      1
   --> examples/tests/errors/redefine.error.lisp:2:11
  1 | (define x 1)
  2 | (define x 2)
