@@ -7,7 +7,7 @@ export function aboutOptional(mod: Mod) {
 
   runCode(
     mod,
-    `\n
+    `
 (define (optional? p x)
   (or (null? x)
       (valid? p x)))

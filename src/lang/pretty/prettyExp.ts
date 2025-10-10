@@ -8,13 +8,7 @@ export function prettyExp(maxWidth: number, exp: Exp): string {
 }
 
 function renderExps(exps: Array<Exp>): pp.Node {
-  if (exps.length === 0) {
-    return pp.nil()
-  } else if (exps.length === 1) {
-    return renderExp(exps[0])
-  } else {
-    return pp.concat(renderExp(exps[0]), pp.br(), renderExps(exps.slice(1)))
-  }
+  return pp.mapWithBreak(renderExp, exps)
 }
 
 function renderExp(exp: Exp): pp.Node {
@@ -362,23 +356,12 @@ function renderBody(body: Exp): pp.Node {
   }
 }
 
-function renderAttribute(entry: [string, Exp]): pp.Node {
-  const [key, exp] = entry
+function renderAttribute([key, exp]: [string, Exp]): pp.Node {
   return pp.group(pp.text(`:${key}`), pp.br(), renderExp(exp))
 }
 
 function renderAttributes(entries: Array<[string, Exp]>): pp.Node {
-  if (entries.length === 0) {
-    return pp.nil()
-  } else if (entries.length === 1) {
-    return renderAttribute(entries[0])
-  } else {
-    return pp.concat(
-      renderAttribute(entries[0]),
-      pp.br(),
-      renderAttributes(entries.slice(1)),
-    )
-  }
+  return pp.mapWithBreak(renderAttribute, entries)
 }
 
 function renderHashEntry(entry: { key: Exp; value: Exp }): pp.Node {
@@ -386,15 +369,5 @@ function renderHashEntry(entry: { key: Exp; value: Exp }): pp.Node {
 }
 
 function renderHashEntries(entries: Array<{ key: Exp; value: Exp }>): pp.Node {
-  if (entries.length === 0) {
-    return pp.nil()
-  } else if (entries.length === 1) {
-    return renderHashEntry(entries[0])
-  } else {
-    return pp.concat(
-      renderHashEntry(entries[0]),
-      pp.br(),
-      renderHashEntries(entries.slice(1)),
-    )
-  }
+  return pp.mapWithBreak(renderHashEntry, entries)
 }
