@@ -26,11 +26,11 @@ export function applyWithSchema(
     const ret = apply(target, checkedArgs)
     const result = validate(schema.retSchema, ret)
     if (result.kind === "Err") {
-      let message = `[applyWithSchema] fail on result`
-      message += `\n  schema: ${formatValue(schema)}`
-      message += `\n  target: ${formatValue(target)}`
-      message += `\n  args: [${formatValues(args)}]`
-      message += `\n  result: ${formatValue(ret)}`
+      let message = `[applyWithSchema/VariadicArrow] fail on return value`
+      message += formatUnderTag(2, `schema:`, formatValue(schema))
+      message += formatUnderTag(2, `target:`, formatValue(target))
+      message += formatUnderTag(2, `args:`, `[${formatValues(args)}]`)
+      message += formatUnderTag(2, `return:`, formatValue(ret))
       if (meta) throw new X.ErrorWithMeta(message, meta)
       else throw new Error(message)
     }
@@ -46,12 +46,16 @@ export function applyWithSchema(
       const ret = apply(target, checkedArgs)
       const result = validate(schema.retSchema, ret)
       if (result.kind === "Err") {
-        let message = `[applyWithSchema] fail on result`
-        message += `\n  schema: ${formatValue(schema)}`
-        message += `\n  target: ${formatValue(target)}`
-        message += `\n  used args: [${formatValues(usedArgs)}]`
-        message += `\n  spilled args: [${formatValues(spilledArgs)}]`
-        message += `\n  result: ${formatValue(ret)}`
+        let message = `[applyWithSchema/Arrow] fail on return value (with spilled args)`
+        message += formatUnderTag(2, `schema:`, formatValue(schema))
+        message += formatUnderTag(2, `target:`, formatValue(target))
+        message += formatUnderTag(2, `used args:`, `${formatValues(usedArgs)}]`)
+        message += formatUnderTag(
+          2,
+          `spilled args:`,
+          `${formatValues(spilledArgs)}]`,
+        )
+        message += formatUnderTag(2, `return:`, formatValue(ret))
         if (meta) throw new X.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
@@ -64,11 +68,11 @@ export function applyWithSchema(
       const ret = apply(target, checkedArgs)
       const result = validate(schema.retSchema, ret)
       if (result.kind === "Err") {
-        let message = `[applyWithSchema] fail on result`
-        message += `\n  schema: ${formatValue(schema)}`
-        message += `\n  target: ${formatValue(target)}`
-        message += `\n  args: [${formatValues(args)}]`
-        message += `\n  result: ${formatValue(ret)}`
+        let message = `[applyWithSchema/Arrow] fail on return value`
+        message += formatUnderTag(2, `schema:`, formatValue(schema))
+        message += formatUnderTag(2, `target:`, formatValue(target))
+        message += formatUnderTag(2, `args:`, `[${formatValues(args)}]`)
+        message += formatUnderTag(2, `return:`, formatValue(ret))
         if (meta) throw new X.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
@@ -86,9 +90,9 @@ export function applyWithSchema(
   }
 
   let message = `[applyWithSchema] unhandled kind of schema`
-  message += `\n  schema: ${formatValue(schema)}`
-  message += `\n  target: ${formatValue(target)}`
-  message += `\n  args: [${formatValues(args)}]`
+  message += formatUnderTag(2, `schema:`, formatValue(schema))
+  message += formatUnderTag(2, `target:`, formatValue(target))
+  message += formatUnderTag(2, `args:`, `[${formatValues(args)}]`)
   if (meta) throw new X.ErrorWithMeta(message, meta)
   else throw new Error(message)
 }

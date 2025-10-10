@@ -1,8 +1,12 @@
-[applyWithSchema] fail on result
-  schema: (-> int? int? int?)
-  target: (lambda (x y) (@quote abc))
-  args: [1 1]
-  result: 'abc
+[applyWithSchema/Arrow] fail on return value
+  schema:
+    (-> int? int? int?)
+  target:
+    (lambda (x y) (@quote abc))
+  args:
+    [1 1]
+  return:
+    'abc
   --> examples/tests/claim/claim-result.error.lisp:2:9
  1 | (claim my-add (-> int? int? int?))
  2 | (define (my-add x y) 'abc)
