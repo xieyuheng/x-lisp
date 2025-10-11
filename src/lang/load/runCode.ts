@@ -7,7 +7,7 @@ import { stage2 } from "./stage2.ts"
 import { stage3 } from "./stage3.ts"
 
 export function runCode(mod: Mod, code: string): void {
-  return runSexps(mod, X.parseSexpArray(code, { url: mod.url }))
+  return runSexps(mod, X.parseSexps(code, { url: mod.url }))
 }
 
 export function runSexps(

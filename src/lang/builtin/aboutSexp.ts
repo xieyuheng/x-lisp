@@ -16,7 +16,7 @@ export function aboutSexp(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "parse-sexps", 1, (string) => {
-    return Values.List(X.parseSexpArray(Values.asString(string).content))
+    return Values.List(X.parseSexps(Values.asString(string).content))
   })
 
   definePrimitiveFunction(mod, "format-sexp", 1, (sexp) => {

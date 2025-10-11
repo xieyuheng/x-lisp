@@ -5,7 +5,7 @@ import { matchExp } from "../syntax/index.ts"
 import { prettyExp } from "./index.ts"
 
 function testWidths(widths: Array<number>, code: string) {
-  const sexps = X.parseSexpArray(code)
+  const sexps = X.parseSexps(code)
   const exps = sexps.map<Exp>(matchExp)
 
   for (const exp of exps) {

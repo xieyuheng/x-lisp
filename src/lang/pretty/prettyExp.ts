@@ -8,7 +8,7 @@ export function prettyExp(maxWidth: number, exp: Exp): string {
 }
 
 export function renderExps(exps: Array<Exp>): pp.Node {
-  return pp.mapWithBreak(renderExp, exps)
+  return pp.flex(exps.map(renderExp))
 }
 
 export function renderExp(exp: Exp): pp.Node {
@@ -361,7 +361,7 @@ function renderAttribute([key, exp]: [string, Exp]): pp.Node {
 }
 
 function renderAttributes(entries: Array<[string, Exp]>): pp.Node {
-  return pp.mapWithBreak(renderAttribute, entries)
+  return pp.flex(entries.map(renderAttribute))
 }
 
 function renderHashEntry(entry: { key: Exp; value: Exp }): pp.Node {
@@ -369,5 +369,5 @@ function renderHashEntry(entry: { key: Exp; value: Exp }): pp.Node {
 }
 
 function renderHashEntries(entries: Array<{ key: Exp; value: Exp }>): pp.Node {
-  return pp.mapWithBreak(renderHashEntry, entries)
+  return pp.flex(entries.map(renderHashEntry))
 }

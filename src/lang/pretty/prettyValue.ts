@@ -218,7 +218,7 @@ function renderAttribute([key, value]: [string, Value]): pp.Node {
 }
 
 function renderAttributes(entries: Array<[string, Value]>): pp.Node {
-  return pp.mapWithBreak(renderAttribute, entries)
+  return pp.flex(entries.map(renderAttribute))
 }
 
 function renderHashEntry(entry: { key: Value; value: Value }): pp.Node {
@@ -228,5 +228,5 @@ function renderHashEntry(entry: { key: Value; value: Value }): pp.Node {
 function renderHashEntries(
   entries: Array<{ key: Value; value: Value }>,
 ): pp.Node {
-  return pp.mapWithBreak(renderHashEntry, entries)
+  return pp.flex(entries.map(renderHashEntry))
 }
