@@ -28,6 +28,7 @@ export const sexpConfig: X.Config = {
     ["else", 0],
     ["@list", 0],
     ["@tael", 0],
+    ["@record", 0],
     ["@set", 0],
     ["@hash", 0],
     ["specific", 1],
