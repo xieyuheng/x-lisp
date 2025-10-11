@@ -2,7 +2,7 @@
   schema:
     (-> int? int? int?)
   target:
-    (lambda (x y) (@quote abc))
+    (lambda (x y) 'abc)
   args:
     1 1
   return:

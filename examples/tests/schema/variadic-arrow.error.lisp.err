@@ -3,7 +3,10 @@
     (*-> int? int?)
   target:
     (lambda ns
-      (match ns ([] 0) ([n] n) ((cons n tail) (iadd n (apply sum tail)))))
+      (match ns
+        ([] 0)
+        ([n] n)
+        ((cons n tail) (iadd n (apply sum tail)))))
   args:
     1 2 3.0
   failed args:
