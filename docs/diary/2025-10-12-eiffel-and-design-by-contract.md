@@ -137,12 +137,12 @@ contract 可以设 claim 配合使用，
 
 ```scheme
 (require (f x y)
-  (assert "contract-name" ...)
-  (assert "contract-name" ...))
+  (assert-message "contract-name" ...)
+  (assert-message "contract-name" ...))
 
 (ensure (f x y result)
-  (assert "contract-name" ...)
-  (assert "contract-name" ...))
+  (assert-message "contract-name" ...)
+  (assert-message "contract-name" ...))
 ```
 
 但是这样可能不利于报错。
@@ -152,6 +152,19 @@ contract 可以设 claim 配合使用，
 所以可能也没有关系。
 
 这可能是最简单的最好的设计。
+
+也许有了 report in context 之后，
+根本不需要给 assert 名字了：
+
+```scheme
+(require (f x y)
+  (assert ...)
+  (assert ...))
+
+(ensure (f x y result)
+  (assert ...)
+  (assert ...))
+```
 
 # 学习 eiffel 的感受
 
