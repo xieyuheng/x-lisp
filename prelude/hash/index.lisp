@@ -7,3 +7,4 @@
 (include-all "hash-each")
 (include-all "hash-invert")
 (include-all "hash-select")
+(include-all "hash-find-key")

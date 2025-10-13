@@ -352,6 +352,7 @@ false
 (hash-each f hash)
 (hash-invert hash)
 (hash-invert-group hash)
+(hash-find-key p hash)
 ```
 
 ### Predicate
