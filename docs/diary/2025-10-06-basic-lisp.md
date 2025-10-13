@@ -40,10 +40,9 @@ date: 2025-10-06
 因此可以先写一个 js 版本的 basic-lisp。
 然后再 port 到 c。
 
-basic-lisp 应该放在这个 repo 内。
-因此顶层应该区分 x-lisp 和 basic-lisp 代码，
-`src/` 中的 `lang/` 也应该改名为 `x-lisp/`，
-并且新增 `basic-lisp/`。
-
 写完 js 版本的 basic-lisp，
 就可以跟康奈尔大学的课程了。
+
+有了中间语言 basic-lisp 就有了更多的选择。
+可以直接在目前的 js x-lisp 实现中，
+实现从 basic-lisp 到 x86 的代码生成。
