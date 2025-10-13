@@ -17,7 +17,6 @@
 (include-all "list-member")
 (include-all "list-find")
 (include-all "list-find-index")
-(include-all "list-index")
 (include-all "list-product")
 (include-all "list-group")
 (include-all "list-foremost")
