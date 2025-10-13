@@ -253,6 +253,31 @@ false
 (list-rearmost compare list)
 ```
 
+### Set
+
+```lisp
+(set? element-p value)
+(set-empty? set)
+(set-size set)
+(set-member? value set)
+(set-include? subset set)
+(set-to-list set)
+(set-add value set)
+(set-add! value set)
+(set-delete value set)
+(set-delete! value set)
+(set-clear! set)
+(set-union left right)
+(set-inter left right)
+(set-difference left right)
+(set-disjoint? left right)
+(set-map f set)
+(set-each f set)
+;; prelude
+(set-select p set)
+(set-reject p set)
+```
+
 ### Record
 
 ```lisp
@@ -289,31 +314,6 @@ false
 (record-each-value f record)
 (record-each-key f record)
 (record-each f record)
-```
-
-### Set
-
-```lisp
-(set? element-p value)
-(set-empty? set)
-(set-size set)
-(set-member? value set)
-(set-include? subset set)
-(set-to-list set)
-(set-add value set)
-(set-add! value set)
-(set-delete value set)
-(set-delete! value set)
-(set-clear! set)
-(set-union left right)
-(set-inter left right)
-(set-difference left right)
-(set-disjoint? left right)
-(set-map f set)
-(set-each f set)
-;; prelude
-(set-select p set)
-(set-reject p set)
 ```
 
 ### Hash
