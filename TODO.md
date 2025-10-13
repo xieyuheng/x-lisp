@@ -1,3 +1,2 @@
-record-find
-record-find-value
-record-find-key
+hash-find-key
+hash-find-keys

@@ -313,6 +313,7 @@ false
 (record-each-value f record)
 (record-each-key f record)
 (record-each f record)
+(record-find-key p record)
 ```
 
 ### Hash

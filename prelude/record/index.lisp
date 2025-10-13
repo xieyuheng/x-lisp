@@ -5,3 +5,4 @@
 (include-all "record-update")
 (include-all "record-map")
 (include-all "record-each")
+(include-all "record-find-key")
