@@ -25,7 +25,6 @@ export const sexpConfig: X.Config = {
     ["when", 1],
     ["unless", 1],
     ["cond", 0],
-    ["else", 0],
     ["@list", 0],
     ["@tael", 0],
     ["@record", 0],
