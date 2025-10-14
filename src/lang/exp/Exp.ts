@@ -10,7 +10,7 @@ export type Exp =
   | Var
   | Lambda
   | VariadicLambda
-  | Thunk
+  | NullaryLambda
   | Apply
   | Begin
   | Assign
@@ -91,15 +91,15 @@ export function VariadicLambda(
   }
 }
 
-export type Thunk = {
-  kind: "Thunk"
+export type NullaryLambda = {
+  kind: "NullaryLambda"
   body: Exp
   meta: Meta
 }
 
-export function Thunk(body: Exp, meta: Meta): Thunk {
+export function NullaryLambda(body: Exp, meta: Meta): NullaryLambda {
   return {
-    kind: "Thunk",
+    kind: "NullaryLambda",
     body,
     meta,
   }

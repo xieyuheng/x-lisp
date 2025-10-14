@@ -20,7 +20,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
       if (X.listElements(parameters).length === 0) {
         return Stmts.Define(
           X.symbolContent(name),
-          Exps.Thunk(
+          Exps.NullaryLambda(
             Exps.Begin(X.listElements(body).map(matchExp), meta),
             meta,
           ),

@@ -25,7 +25,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       }
 
       if (X.listElements(parameters).length === 0) {
-        return Exps.Thunk(
+        return Exps.NullaryLambda(
           Exps.Begin(X.listElements(body).map(matchExp), meta),
           meta,
         )

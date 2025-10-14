@@ -114,7 +114,7 @@ export function formatValue(value: Value, options: Options = {}): string {
       return `(lambda ${value.variadicParameter} ${formatBody(value.body)})`
     }
 
-    case "Thunk": {
+    case "NullaryLambda": {
       return `(lambda () ${formatBody(value.body)})`
     }
 
@@ -122,7 +122,7 @@ export function formatValue(value: Value, options: Options = {}): string {
       return `${value.name}`
     }
 
-    case "PrimitiveThunk": {
+    case "PrimitiveNullaryLambda": {
       return `${value.name}`
     }
 

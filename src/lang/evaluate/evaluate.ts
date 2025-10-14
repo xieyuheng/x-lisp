@@ -75,9 +75,9 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
-    case "Thunk": {
+    case "NullaryLambda": {
       return (mod, env) => {
-        return [env, Values.Thunk(mod, env, exp.body, exp.meta)]
+        return [env, Values.NullaryLambda(mod, env, exp.body, exp.meta)]
       }
     }
 

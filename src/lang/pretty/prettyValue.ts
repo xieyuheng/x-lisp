@@ -104,7 +104,7 @@ function renderValue(value: Value): pp.Node {
       )
     }
 
-    case "Thunk": {
+    case "NullaryLambda": {
       return pp.group(
         pp.text("(lambda ()"),
         pp.indent(2, pp.br(), pp.group(renderBody(value.body), pp.text(")"))),

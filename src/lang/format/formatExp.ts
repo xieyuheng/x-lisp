@@ -31,7 +31,7 @@ export function formatExp(exp: Exp): string {
       return `(lambda ${exp.variadicParameter} ${formatBody(exp.body)})`
     }
 
-    case "Thunk": {
+    case "NullaryLambda": {
       return `(lambda () ${formatBody(exp.body)})`
     }
 

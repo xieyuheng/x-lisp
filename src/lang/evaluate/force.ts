@@ -10,7 +10,7 @@ import { forceWithSchema } from "./forceWithSchema.ts"
 export function force(target: Value): Value {
   const maxWidth = globals.maxWidth
 
-  if (target.kind === "Thunk") {
+  if (target.kind === "NullaryLambda") {
     return resultValue(evaluate(target.body)(target.mod, target.env))
   }
 
@@ -18,7 +18,7 @@ export function force(target: Value): Value {
     return applyVariadicLambda(target, [])
   }
 
-  if (target.kind === "PrimitiveThunk") {
+  if (target.kind === "PrimitiveNullaryLambda") {
     return target.fn()
   }
 

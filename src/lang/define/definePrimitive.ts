@@ -11,10 +11,10 @@ export function definePrimitiveFunction(
   define(mod, name, Values.PrimitiveFunction(name, arity, fn))
 }
 
-export function definePrimitiveThunk(
+export function definePrimitiveNullaryLambda(
   mod: Mod,
   name: string,
-  fn: Values.ValueThunk,
+  fn: Values.ValueNullaryLambda,
 ): void {
-  define(mod, name, Values.PrimitiveThunk(name, fn))
+  define(mod, name, Values.PrimitiveNullaryLambda(name, fn))
 }

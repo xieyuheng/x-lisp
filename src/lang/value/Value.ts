@@ -20,9 +20,9 @@ export type Value =
   | Hash
   | Lambda
   | VariadicLambda
-  | Thunk
+  | NullaryLambda
   | PrimitiveFunction
-  | PrimitiveThunk
+  | PrimitiveNullaryLambda
   | Curried
   | Pattern
   | AboutData
@@ -94,17 +94,22 @@ export function VariadicLambda(
   }
 }
 
-export type Thunk = {
-  kind: "Thunk"
+export type NullaryLambda = {
+  kind: "NullaryLambda"
   mod: Mod
   env: Env
   body: Exp
   meta?: Meta
 }
 
-export function Thunk(mod: Mod, env: Env, body: Exp, meta?: Meta): Thunk {
+export function NullaryLambda(
+  mod: Mod,
+  env: Env,
+  body: Exp,
+  meta?: Meta,
+): NullaryLambda {
   return {
-    kind: "Thunk",
+    kind: "NullaryLambda",
     mod,
     env,
     body,
@@ -134,17 +139,20 @@ export function PrimitiveFunction(
   }
 }
 
-export type PrimitiveThunk = {
-  kind: "PrimitiveThunk"
+export type PrimitiveNullaryLambda = {
+  kind: "PrimitiveNullaryLambda"
   name: string
-  fn: ValueThunk
+  fn: ValueNullaryLambda
 }
 
-export type ValueThunk = () => Value
+export type ValueNullaryLambda = () => Value
 
-export function PrimitiveThunk(name: string, fn: ValueThunk): PrimitiveThunk {
+export function PrimitiveNullaryLambda(
+  name: string,
+  fn: ValueNullaryLambda,
+): PrimitiveNullaryLambda {
   return {
-    kind: "PrimitiveThunk",
+    kind: "PrimitiveNullaryLambda",
     name,
     fn,
   }
