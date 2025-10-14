@@ -115,7 +115,7 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "Thunk": {
-      return `(thunk ${formatBody(value.body)})`
+      return `(lambda () ${formatBody(value.body)})`
     }
 
     case "PrimitiveFunction": {

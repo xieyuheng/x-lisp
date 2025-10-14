@@ -1,5 +1,5 @@
-(thunk #t)
-((thunk #t))
+(lambda () #t)
+((lambda () #t))
 
 (define (f) #t)
 f

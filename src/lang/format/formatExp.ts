@@ -32,7 +32,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Thunk": {
-      return `(thunk ${formatBody(exp.body)})`
+      return `(lambda () ${formatBody(exp.body)})`
     }
 
     case "Apply": {

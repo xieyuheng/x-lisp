@@ -1,4 +1,4 @@
-(thunk #t)
+(lambda () #t)
 #t
-(thunk #t)
+(lambda () #t)
 #t

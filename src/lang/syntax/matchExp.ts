@@ -25,8 +25,10 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       }
 
       if (X.listElements(parameters).length === 0) {
-        let message = `(lambda) must have at least one parameter`
-        throw new X.ErrorWithMeta(message, meta)
+        return Exps.Thunk(
+          Exps.Begin(X.listElements(body).map(matchExp), meta),
+          meta,
+        )
       }
 
       return Exps.Lambda(
@@ -36,13 +38,6 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       )
     },
   ),
-
-  X.matcher("(cons* 'thunk body)", ({ body }, { meta }) => {
-    return Exps.Thunk(
-      Exps.Begin(X.listElements(body).map(matchExp), meta),
-      meta,
-    )
-  }),
 
   X.matcher("`(@quote ,sexp)", ({ sexp }, { meta }) => {
     return Exps.Quote(sexp, meta)

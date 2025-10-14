@@ -70,7 +70,6 @@ See examples at:
 
 ```lisp
 (lambda (<parameters>) <body>)
-(thunk <body>)
 (= <lhs> <rhs>)
 (the <schema> <exp>)
 (@tael <elements> <attributes>)
