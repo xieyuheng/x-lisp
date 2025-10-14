@@ -1,7 +1,7 @@
-remove `format-left-margin`
-string-split & string-lines
 `match` & `cond` -- get meta only from the first keyword
-add (newline)
+
+string-split & string-lines
+remove `format-left-margin`
 
 # basic-lisp
 

@@ -1,2 +1,2 @@
 (write "abc")
-(write "\n")
+(newline)

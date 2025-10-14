@@ -145,6 +145,7 @@
 
 (claim print (-> anything? void?))
 (claim write (-> string? void?))
+(claim newline (-> void?))
 
 ;; format
 
