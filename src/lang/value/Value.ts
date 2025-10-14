@@ -22,7 +22,7 @@ export type Value =
   | VariadicLambda
   | NullaryLambda
   | PrimitiveFunction
-  | PrimitiveNullaryLambda
+  | PrimitiveNullaryFunction
   | Curried
   | Pattern
   | AboutData
@@ -139,20 +139,20 @@ export function PrimitiveFunction(
   }
 }
 
-export type PrimitiveNullaryLambda = {
-  kind: "PrimitiveNullaryLambda"
+export type PrimitiveNullaryFunction = {
+  kind: "PrimitiveNullaryFunction"
   name: string
-  fn: ValueNullaryLambda
+  fn: ValueNullaryFunction
 }
 
-export type ValueNullaryLambda = () => Value
+export type ValueNullaryFunction = () => Value
 
-export function PrimitiveNullaryLambda(
+export function PrimitiveNullaryFunction(
   name: string,
-  fn: ValueNullaryLambda,
-): PrimitiveNullaryLambda {
+  fn: ValueNullaryFunction,
+): PrimitiveNullaryFunction {
   return {
-    kind: "PrimitiveNullaryLambda",
+    kind: "PrimitiveNullaryFunction",
     name,
     fn,
   }

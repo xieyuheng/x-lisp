@@ -13,9 +13,9 @@ import { applyDataGetter } from "./applyDataGetter.ts"
 import { applyDataPredicate } from "./applyDataPredicate.ts"
 import { applyDataPutter } from "./applyDataPutter.ts"
 import { applyLambda } from "./applyLambda.ts"
+import { applyNullary } from "./applyNullary.ts"
 import { applyVariadicLambda } from "./applyVariadicLambda.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
-import { force } from "./force.ts"
 import { supply } from "./supply.ts"
 import { validate } from "./validate.ts"
 
@@ -23,7 +23,7 @@ export function apply(target: Value, args: Array<Value>): Value {
   const maxWidth = globals.maxWidth
 
   if (args.length === 0) {
-    return force(target)
+    return applyNullary(target)
   }
 
   if (target.kind === "Curried") {

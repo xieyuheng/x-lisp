@@ -3,7 +3,7 @@ import process from "node:process"
 import { globals } from "../../globals.ts"
 import {
   definePrimitiveFunction,
-  definePrimitiveNullaryLambda,
+  definePrimitiveNullaryFunction,
   provide,
 } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -17,11 +17,11 @@ export function aboutProcess(mod: Mod) {
     "exit",
   ])
 
-  definePrimitiveNullaryLambda(mod, "current-working-directory", () => {
+  definePrimitiveNullaryFunction(mod, "current-working-directory", () => {
     return Values.String(process.cwd())
   })
 
-  definePrimitiveNullaryLambda(mod, "current-command-line-args", () => {
+  definePrimitiveNullaryFunction(mod, "current-command-line-args", () => {
     const input = ["(", ...globals.commandLineArgs, ")"].join(" ")
     return X.parseSexp(input)
   })

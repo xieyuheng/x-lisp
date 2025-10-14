@@ -122,7 +122,7 @@ export function formatValue(value: Value, options: Options = {}): string {
       return `${value.name}`
     }
 
-    case "PrimitiveNullaryLambda": {
+    case "PrimitiveNullaryFunction": {
       return `${value.name}`
     }
 

@@ -3,11 +3,11 @@ import { globals } from "../../globals.ts"
 import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
 import { prettyValue } from "../pretty/index.ts"
 import { type Value } from "../value/index.ts"
+import { applyNullaryWithSchema } from "./applyNullaryWithSchema.ts"
 import { applyVariadicLambda } from "./applyVariadicLambda.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
-import { forceWithSchema } from "./forceWithSchema.ts"
 
-export function force(target: Value): Value {
+export function applyNullary(target: Value): Value {
   const maxWidth = globals.maxWidth
 
   if (target.kind === "NullaryLambda") {
@@ -18,19 +18,19 @@ export function force(target: Value): Value {
     return applyVariadicLambda(target, [])
   }
 
-  if (target.kind === "PrimitiveNullaryLambda") {
+  if (target.kind === "PrimitiveNullaryFunction") {
     return target.fn()
   }
 
   if (target.kind === "The") {
     if (flags.debug) {
-      return forceWithSchema(target.schema, target.value)
+      return applyNullaryWithSchema(target.schema, target.value)
     } else {
-      return force(target.value)
+      return applyNullary(target.value)
     }
   }
 
-  let message = `[force] unhandled target value kind`
+  let message = `[applyNullary] unhandled target value kind`
   message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
   throw new Error(message)
 }
