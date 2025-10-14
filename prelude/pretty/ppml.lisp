@@ -101,7 +101,7 @@
       bool?))
 
 (define (fit-inline? width nodes)
-  (cond ((int-smaller? width 0) false)
+  (cond ((int-less? width 0) false)
         ((list-empty? nodes) true)
         (else
          (match (car nodes)

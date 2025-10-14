@@ -20,14 +20,14 @@
 (assert-equal (int-min 1 2) 1)
 (assert-equal (int-max 1 2) 2)
 
-(assert (int-larger? 2 1))
-(assert (int-smaller? 1 2))
+(assert (int-greater? 2 1))
+(assert (int-less? 1 2))
 
-(assert (int-larger-or-equal? 2 1))
-(assert (int-smaller-or-equal? 1 2))
+(assert (int-greater-equal? 2 1))
+(assert (int-less-equal? 1 2))
 
-(assert (int-larger-or-equal? 2 2))
-(assert (int-smaller-or-equal? 1 1))
+(assert (int-greater-equal? 2 2))
+(assert (int-less-equal? 1 1))
 
 (assert (int-positive? 1))
 (assert (not (int-positive? 0)))

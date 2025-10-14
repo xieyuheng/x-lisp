@@ -16,10 +16,10 @@ export function aboutInt(mod: Mod) {
     "imod",
     "int-max",
     "int-min",
-    "int-larger?",
-    "int-smaller?",
-    "int-larger-or-equal?",
-    "int-smaller-or-equal?",
+    "int-greater?",
+    "int-less?",
+    "int-greater-equal?",
+    "int-less-equal?",
     "int-compare-ascending",
     "int-compare-descending",
   ])
@@ -78,19 +78,19 @@ export function aboutInt(mod: Mod) {
     )
   })
 
-  definePrimitiveFunction(mod, "int-larger?", 2, (x, y) => {
+  definePrimitiveFunction(mod, "int-greater?", 2, (x, y) => {
     return Values.Bool(Values.asInt(x).content > Values.asInt(y).content)
   })
 
-  definePrimitiveFunction(mod, "int-smaller?", 2, (x, y) => {
+  definePrimitiveFunction(mod, "int-less?", 2, (x, y) => {
     return Values.Bool(Values.asInt(x).content < Values.asInt(y).content)
   })
 
-  definePrimitiveFunction(mod, "int-larger-or-equal?", 2, (x, y) => {
+  definePrimitiveFunction(mod, "int-greater-equal?", 2, (x, y) => {
     return Values.Bool(Values.asInt(x).content >= Values.asInt(y).content)
   })
 
-  definePrimitiveFunction(mod, "int-smaller-or-equal?", 2, (x, y) => {
+  definePrimitiveFunction(mod, "int-less-equal?", 2, (x, y) => {
     return Values.Bool(Values.asInt(x).content <= Values.asInt(y).content)
   })
 

@@ -13,7 +13,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
     "(cons* 'define (cons* name parameters) body)",
     ({ name, parameters, body }, { sexp }) => {
-      // We only use the meta of the keyword for a smaller span.
+      // We only use the meta of the keyword for a less span.
       const keyword = X.asTael(sexp).elements[1]
       const meta = X.tokenMetaFromSexpMeta(keyword.meta)
 

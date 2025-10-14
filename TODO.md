@@ -1,9 +1,3 @@
-rename small to less
-rename larger to greater
-
-rename less-or-equal to less-equal
-rename greater-or-equal to greater-equal
-
 validate should not do side effect
 
 remove `(thunk ...)` syntax use `(lambda () ...)`

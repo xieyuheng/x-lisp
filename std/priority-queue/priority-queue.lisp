@@ -194,7 +194,7 @@
 
 (define (node-left-child heap node)
   (= child-index (iadd 1 (imul 2 (node-index node))))
-  (if (int-smaller? child-index (list-length heap))
+  (if (int-less? child-index (list-length heap))
     (list-get child-index heap)
     null))
 
@@ -202,7 +202,7 @@
 
 (define (node-right-child heap node)
   (= child-index (iadd 2 (imul 2 (node-index node))))
-  (if (int-smaller? child-index (list-length heap))
+  (if (int-less? child-index (list-length heap))
     (list-get child-index heap)
     null))
 
