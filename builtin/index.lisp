@@ -52,6 +52,8 @@
 (claim string-append (-> string? string? string?))
 (claim string-concat (-> (list? string?) string?))
 (claim string-join (-> string? (list? string?) string?))
+(claim string-split (-> string? string? (list? string?)))
+(claim string-lines (-> string? (list? string?)))
 (claim string-chars (-> string? (list? string?)))
 (claim string-replace-first (-> string? string? string? string?))
 (claim string-replace (-> string? string? string? string?))

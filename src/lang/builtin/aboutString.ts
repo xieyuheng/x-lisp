@@ -11,6 +11,8 @@ export function aboutString(mod: Mod) {
     "string-append",
     "string-concat",
     "string-join",
+    "string-split",
+    "string-lines",
     "string-chars",
     "string-replace-first",
     "string-replace",
@@ -54,6 +56,20 @@ export function aboutString(mod: Mod) {
       Values.asTael(list)
         .elements.map((string) => Values.asString(string).content)
         .join(Values.asString(separator).content),
+    )
+  })
+
+  definePrimitiveFunction(mod, "string-split", 2, (separator, string) => {
+    return Values.List(
+      Values.asString(string)
+        .content.split(Values.asString(separator).content)
+        .map(Values.String),
+    )
+  })
+
+  definePrimitiveFunction(mod, "string-lines", 1, (string) => {
+    return Values.List(
+      Values.asString(string).content.split("\n").map(Values.String),
     )
   })
 
