@@ -3,9 +3,18 @@ title: design basic-lisp
 date: 2025-10-15
 ---
 
-直接描述 block 而不是从 instruction list 生成 block。
+# block list vs. instruction list
 
-问题 1：
+直接描述 block list
+还是描述 instruction list 再生成 block？
+
+如果直接描述 block list 了，
+那么有的 function 只有一个 block 怎么办？
+另外，一般 function 的开头 block 都是没有名字的。
+
+TODO
+
+# 是否限制 operand 为 variable？
 
 是否像 bril 一样，限制所有的 operand 都是 variable？
 bril 这样做其实是为了方便用 json 表示。
