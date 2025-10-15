@@ -1,5 +1,5 @@
 import * as X from "@xieyuheng/x-sexp.js"
-import * as pp from "../../helper/ppml/index.ts"
+import * as pp from "../../helpers/ppml/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import { sexpConfig } from "./sexpConfig.ts"

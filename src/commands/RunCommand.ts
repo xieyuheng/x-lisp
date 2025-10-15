@@ -1,8 +1,8 @@
 import { type Command } from "@xieyuheng/commander.js"
 import { flags } from "../flags.ts"
 import { globals } from "../globals.ts"
-import { errorReport } from "../helper/error/errorReport.ts"
-import { createUrlOrFileUrl } from "../helper/url/createUrlOrFileUrl.ts"
+import { errorReport } from "../helpers/error/errorReport.ts"
+import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 import { load } from "../lang/load/index.ts"
 
 export const RunCommand: Command = {

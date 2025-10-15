@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-sexp.js"
-import { formatIndent } from "../../helper/format/formatIndent.ts"
-import { urlRelativeToCwd } from "../../helper/url/urlRelativeToCwd.ts"
+import { formatIndent } from "../../helpers/format/formatIndent.ts"
+import { urlRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 import { include } from "../define/index.ts"
 import { formatDefinition, type Definition } from "../definition/index.ts"
 import {

@@ -1,7 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import { createUrlOrFileUrl } from "../../helper/url/createUrlOrFileUrl.ts"
+import { createUrlOrFileUrl } from "../../helpers/url/createUrlOrFileUrl.ts"
 import { aboutModule } from "../builtin/aboutModule.ts"
 import { importBuiltin } from "../builtin/importBuiltin.ts"
 import { runCode } from "../load/index.ts"

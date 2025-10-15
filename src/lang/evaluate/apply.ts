@@ -1,7 +1,7 @@
 import assert from "node:assert"
 import { flags } from "../../flags.ts"
 import { globals } from "../../globals.ts"
-import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
+import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { emptyEnv, envLookupValue, envNames } from "../env/index.ts"
 import { match } from "../pattern/index.ts"
 import { prettyValue, prettyValues } from "../pretty/index.ts"

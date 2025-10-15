@@ -1,6 +1,6 @@
 import { globals } from "../../globals.ts"
-import { formatIndent } from "../../helper/format/formatIndent.ts"
-import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
+import { formatIndent } from "../../helpers/format/formatIndent.ts"
+import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { formatDefinition, ValueDefinition } from "../definition/index.ts"
 import { modLookupDefinition, type Mod } from "../mod/index.ts"
 import { prettyValue } from "../pretty/index.ts"

@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import * as pp from "../../helper/ppml/index.ts"
+import * as pp from "../../helpers/ppml/index.ts"
 import { formatAtom, formatPattern, formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"

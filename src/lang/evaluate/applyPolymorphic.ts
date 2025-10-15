@@ -1,5 +1,5 @@
 import { globals } from "../../globals.ts"
-import { formatUnderTag } from "../../helper/format/formatUnderTag.ts"
+import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { envPut } from "../env/index.ts"
 import { prettyValue, prettyValues } from "../pretty/index.ts"
 import type { Value } from "../value/index.ts"
