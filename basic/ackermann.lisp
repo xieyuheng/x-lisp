@@ -1,0 +1,29 @@
+;; Compute the Ackermann function recursively.
+;; WARNING: Will quickly exceed stack size
+;; ARGS: 3 6
+
+(define (main m n)
+  (= tmp (call ack m n))
+  (print tmp))
+
+(define (ack m n)
+  (= zero (const 0))
+  (= one (const 1))
+  (= cond-m (eq m zero))
+  (br cond-m .m-zero .m-nonzero)
+  .m-zero
+  (= tmp (add n one))
+  (ret tmp)
+  .m-nonzero
+  (= cond-n (eq n zero))
+  (br cond-n .n-zero .n-nonzero)
+  .n-zero
+  (= m1 (sub m one))
+  (= tmp (call ack m1 one))
+  (ret tmp)
+  .n-nonzero
+  (= m1 (sub m one))
+  (= n1 (sub n one))
+  (= t1 (call ack m n1))
+  (= t2 (call ack m1 t1))
+  (ret t2))
