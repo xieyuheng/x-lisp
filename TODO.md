@@ -5,4 +5,4 @@ remove `format-left-margin`
 
 # basic-lisp
 
-setup `basic/`
+setup `basic/` examples -- copy code from bril
