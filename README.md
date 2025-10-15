@@ -465,7 +465,6 @@ null
 (format value)
 (format-subscript n)
 (format-superscript n)
-(format-left-margin margin string)
 ```
 
 ### Random
