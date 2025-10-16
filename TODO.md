@@ -1,9 +1,4 @@
-[digraph] digraph-successor?
-[digraph] digraph-predecessor?
-
-[digraph] digraph-in-degree
-[digraph] digraph-out-degree
-
+[digraph] digraph-successor? & digraph-predecessor?
 [digraph] topological sort
 
 # basic

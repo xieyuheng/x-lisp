@@ -109,3 +109,14 @@
   (assert-equal
     (make-digraph [] [])
     (digraph-delete-vertex! 3 digraph)))
+
+;; digraph-in-degree & digraph-out-degree
+
+(begin
+  (= digraph (make-digraph [1 2 3] [[1 2] [1 3] [2 3] [3 1]]))
+  (assert-equal 2 (digraph-out-degree 1 digraph))
+  (assert-equal 1 (digraph-out-degree 2 digraph))
+  (assert-equal 1 (digraph-out-degree 3 digraph))
+  (assert-equal 1 (digraph-in-degree 1 digraph))
+  (assert-equal 1 (digraph-in-degree 2 digraph))
+  (assert-equal 2 (digraph-in-degree 3 digraph)))

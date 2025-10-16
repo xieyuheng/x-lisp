@@ -11,6 +11,8 @@
   digraph-add-vertices!
   digraph-direct-successors
   digraph-direct-predecessors
+  digraph-out-degree
+  digraph-in-degree
   digraph-add-edge!
   digraph-add-edges!
   digraph-has-edge?
@@ -123,6 +125,22 @@
 
 (define (digraph-direct-predecessors vertex digraph)
   (hash-get vertex (digraph-direct-predecessor-hash digraph)))
+
+(claim digraph-out-degree
+  (polymorphic (V)
+    (-> V (digraph? V)
+        int?)))
+
+(define (digraph-out-degree vertex digraph)
+  (set-size (digraph-direct-successors vertex digraph)))
+
+(claim digraph-in-degree
+  (polymorphic (V)
+    (-> V (digraph? V)
+        int?)))
+
+(define (digraph-in-degree vertex digraph)
+  (set-size (digraph-direct-predecessors vertex digraph)))
 
 (claim digraph-add-edge!
   (polymorphic (V)
