@@ -16,7 +16,8 @@
   graph-add-edge!
   graph-add-edges!
   graph-adjacent?
-  graph-degree)
+  graph-degree
+  graph-max-degree)
 
 (define-data (graph? V)
   (cons-graph
@@ -179,3 +180,14 @@
 
 (define (graph-degree vertex graph)
   (set-size (graph-neighbors vertex graph)))
+
+(claim graph-max-degree
+  (polymorphic (V)
+    (-> (graph? V)
+        int?)))
+
+(define (graph-max-degree graph)
+  (pipe graph
+    graph-vertices
+    (list-map (swap graph-degree graph))
+    (list-foremost int-compare-descending)))

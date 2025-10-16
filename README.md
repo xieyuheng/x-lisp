@@ -522,6 +522,7 @@ null
 (graph-add-edges! edges graph)
 (graph-adjacent? source target graph)
 (graph-degree vertex graph)
+(graph-max-degree graph)
 (graph-coloring! coloring vertices graph)
 (graph-coloring graph)
 ```

@@ -1,5 +1,3 @@
-[greph] graph-max-degree
-
 [greph] graph-has-vertex?
 [greph] graph-delete-vertex!
 

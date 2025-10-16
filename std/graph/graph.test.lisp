@@ -69,4 +69,12 @@
   (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
   (assert-equal 2 (graph-degree 1 graph))
   (assert-equal 2 (graph-degree 2 graph))
-  (assert-equal 2 (graph-degree 3 graph)))
+  (assert-equal 2 (graph-degree 3 graph))
+  (assert-equal 2 (graph-max-degree graph)))
+
+(begin
+  (= graph (make-graph [1 2 3] [[1 2] [2 3]]))
+  (assert-equal 1 (graph-degree 1 graph))
+  (assert-equal 2 (graph-degree 2 graph))
+  (assert-equal 1 (graph-degree 3 graph))
+  (assert-equal 2 (graph-max-degree graph)))
