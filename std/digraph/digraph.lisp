@@ -9,7 +9,8 @@
   digraph-has-vertex?
   digraph-add-vertices!
   digraph-direct-predecessors
-  digraph-direct-successors)
+  digraph-direct-successors
+  digraph-add-edge!)
 
 (define-data (digraph? V)
   (cons-digraph
@@ -93,7 +94,7 @@
         (set? V))))
 
 (define (digraph-direct-predecessors vertex digraph)
-  (hash-get vertex (digraph-direct-predecessor-hash graph)))
+  (hash-get vertex (digraph-direct-predecessor-hash digraph)))
 
 (claim digraph-direct-successors
   (polymorphic (V)
@@ -101,4 +102,16 @@
         (set? V))))
 
 (define (digraph-direct-successors vertex digraph)
-  (hash-get vertex (digraph-direct-successor-hash graph)))
+  (hash-get vertex (digraph-direct-successor-hash digraph)))
+
+(claim digraph-add-edge!
+  (polymorphic (V)
+    (-> (digraph-edge? V) (digraph? V)
+        (digraph? V))))
+
+(define (digraph-add-edge! [source target] digraph)
+  (digraph-add-vertex! source digraph)
+  (digraph-add-vertex! target digraph)
+  (set-add! target (digraph-direct-successors source digraph))
+  (set-add! source (digraph-direct-predecessors target digraph))
+  digraph)
