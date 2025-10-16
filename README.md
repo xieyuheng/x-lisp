@@ -275,6 +275,8 @@ false
 ;; prelude
 (set-select p set)
 (set-reject p set)
+(set-all? p set)
+(set-any? p set)
 ```
 
 ### Record

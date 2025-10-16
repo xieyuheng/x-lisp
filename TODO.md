@@ -1,5 +1,3 @@
-`set-all?`
-`set-any?`
 fix `digraph-successor?` by `set-any?`
 [digraph] topological sort
 
