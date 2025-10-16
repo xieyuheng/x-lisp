@@ -1,6 +1,3 @@
-[digraph] make-empty-digraph
-[digraph] make-digraph
-
 [digraph] digraph-edges
 [digraph] digraph-vertices
 
@@ -20,6 +17,8 @@
 [digraph] digraph-has-edge?
 [digraph] digraph-delete-edge!
 [digraph] digraph-add-edges!
+
+[digraph] make-digraph
 
 [digraph] digraph-successor?
 [digraph] digraph-predecessor?
