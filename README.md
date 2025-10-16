@@ -197,7 +197,6 @@ false
 ### List
 
 ```lisp
-(list-empty? value)
 (list? element-p target)
 (car list)
 (cdr list)
@@ -207,6 +206,7 @@ false
 (list-init list)
 (list-last list)
 (list-length list)
+(list-empty? list)
 (list-copy list)
 (list-get index list)
 (list-put index value list)
@@ -255,8 +255,9 @@ false
 
 ```lisp
 (set? element-p value)
-(set-empty? set)
 (set-size set)
+(set-empty? set)
+(set-copy set)
 (set-member? value set)
 (set-include? subset set)
 (set-to-list set)

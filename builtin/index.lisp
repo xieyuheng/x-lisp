@@ -80,6 +80,7 @@
 (claim list-init (polymorphic (E) (-> (list? E) (list? E))))
 (claim list-last (polymorphic (E) (-> (list? E) E)))
 (claim list-length (polymorphic (E) (-> (list? E) int?)))
+(claim list-empty? (polymorphic (E) (-> (list? E) bool?)))
 (claim list-copy (polymorphic (E) (-> (list? E) (list? E))))
 (claim list-get (polymorphic (E) (-> int? (list? E) (optional? E))))
 (claim list-put (polymorphic (E) (-> int? E (list? E) (list? E))))
@@ -170,8 +171,9 @@
 
 ;; set
 
-(claim set-empty? (polymorphic (E) (-> (set? E) bool?)))
+(claim set-copy (polymorphic (E) (-> (set? E) (set? E))))
 (claim set-size (polymorphic (E) (-> (set? E) int?)))
+(claim set-empty? (polymorphic (E) (-> (set? E) bool?)))
 (claim set-member? (polymorphic (E) (-> E (set? E) bool?)))
 (claim set-include? (polymorphic (E) (-> (set? E) (set? E) bool?)))
 (claim set-to-list (polymorphic (E) (-> (set? E) (list? E))))

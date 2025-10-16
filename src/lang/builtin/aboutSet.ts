@@ -7,8 +7,9 @@ import * as Values from "../value/index.ts"
 export function aboutSet(mod: Mod) {
   provide(mod, [
     "set?",
-    "set-empty?",
+    "set-copy",
     "set-size",
+    "set-empty?",
     "set-member?",
     "set-include?",
     "set-to-list",
@@ -39,12 +40,16 @@ export function aboutSet(mod: Mod) {
     return Values.Bool(true)
   })
 
-  definePrimitiveFunction(mod, "set-empty?", 1, (value) => {
-    return Values.Bool(Values.setElements(value).length === 0)
+  definePrimitiveFunction(mod, "set-copy", 1, (set) => {
+    return Values.setCopy(set)
   })
 
   definePrimitiveFunction(mod, "set-size", 1, (value) => {
     return Values.Int(Values.setElements(value).length)
+  })
+
+  definePrimitiveFunction(mod, "set-empty?", 1, (value) => {
+    return Values.Bool(Values.setElements(value).length === 0)
   })
 
   definePrimitiveFunction(mod, "set-member?", 2, (value, set) => {
