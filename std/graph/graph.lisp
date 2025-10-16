@@ -8,6 +8,7 @@
   graph-empty?
   graph-edges
   graph-edge-count
+  graph-equal-edge?
   graph-equal-edge-list?
   graph-neighbors
   graph-add-vertex!
@@ -90,6 +91,14 @@
     list-to-set
     (set-map set-to-list)
     set-to-list))
+
+(claim graph-equal-edge?
+  (polymorphic (V)
+    (-> (graph-edge? V) (graph-edge? V)
+        bool?)))
+
+(define (graph-equal-edge? lhs rhs)
+  (equal? (list-to-set lhs) (list-to-set rhs)))
 
 (claim graph-equal-edge-list?
   (polymorphic (V)
