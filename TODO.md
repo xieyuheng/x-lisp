@@ -1,4 +1,3 @@
-[digraph] digraph-vertex-count
 [digraph] digraph-empty?
 
 [digraph] digraph-direct-predecessors

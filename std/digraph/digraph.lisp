@@ -2,6 +2,7 @@
   digraph?
   digraph-edge?
   digraph-vertices
+  digraph-vertex-count
   make-empty-digraph)
 
 (define-data (digraph? V)
@@ -29,3 +30,11 @@
 
 (define digraph-vertices
   (compose set-to-list digraph-vertex-set))
+
+(claim digraph-vertex-count
+  (polymorphic (V)
+    (-> (digraph? V)
+        int?)))
+
+(define digraph-vertex-count
+  (compose list-length digraph-vertices))
