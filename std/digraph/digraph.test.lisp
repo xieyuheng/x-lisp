@@ -120,3 +120,23 @@
   (assert-equal 1 (digraph-in-degree 1 digraph))
   (assert-equal 1 (digraph-in-degree 2 digraph))
   (assert-equal 2 (digraph-in-degree 3 digraph)))
+
+;; digraph-predecessor? & digraph-successor?
+
+(begin
+  (= digraph (make-digraph [1 2 3] [[1 2] [2 3] [3 1]]))
+  (assert (digraph-predecessor? 1 2 digraph))
+  (assert (digraph-successor? 2 1 digraph))
+  (assert (digraph-predecessor? 2 1 digraph)) ;; 2 -> 3 -> 1
+  (assert (digraph-successor? 1 2 digraph))
+  (assert (digraph-predecessor? 3 2 digraph)) ;; 3 -> 1 -> 2
+  (assert (digraph-successor? 2 3 digraph)))
+
+(begin
+  (= digraph (make-digraph [1 2 3] [[1 2] [2 3]]))
+  (assert (digraph-predecessor? 1 2 digraph))
+  (assert (digraph-predecessor? 2 3 digraph))
+  (assert (digraph-predecessor? 1 3 digraph))
+  (assert-not (digraph-predecessor? 2 1 digraph))
+  (assert-not (digraph-predecessor? 3 2 digraph))
+  (assert-not (digraph-predecessor? 3 1 digraph)))
