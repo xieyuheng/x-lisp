@@ -21,7 +21,10 @@
   digraph-edges
   digraph-edge-count
   digraph-delete-edge!
-  digraph-delete-vertex!)
+  digraph-delete-vertex!
+  ;; digraph-successor?
+  ;; digraph-predecessor?
+  )
 
 (define-data (digraph? V)
   (cons-digraph
@@ -178,7 +181,7 @@
     (-> V V (digraph? V)
         bool?)))
 
-(define (digraph-direct-successor? source target digraph)
+(define (digraph-direct-successor? target source digraph)
   (digraph-has-edge? [source target] digraph))
 
 (claim digraph-direct-predecessor?
@@ -186,7 +189,7 @@
     (-> V V (digraph? V)
         bool?)))
 
-(define (digraph-direct-predecessor? target source digraph)
+(define (digraph-direct-predecessor? source target digraph)
   (digraph-has-edge? [source target] digraph))
 
 (claim digraph-edges
@@ -242,3 +245,22 @@
     (hash-delete! vertex (digraph-direct-predecessor-hash digraph))
     (set-delete! vertex (digraph-vertex-set digraph)))
   digraph)
+
+;; (claim digraph-successor?
+;;   (polymorphic (V)
+;;     (-> V V (digraph? V)
+;;         bool?)))
+
+;; (define (digraph-successor? source target digraph)
+;;   (or (digraph-direct-successor? source target digraph)
+;;       (list-any?
+;;        (lambda (successor) (digraph-successor? successor target digraph))
+;;        (set-to-list (digraph-direct-successors source digraph)))))
+
+;; (claim digraph-predecessor?
+;;   (polymorphic (V)
+;;     (-> V V (digraph? V)
+;;         bool?)))
+
+;; (define (digraph-predecessor? target source digraph)
+;;   (digraph-successor? source target digraph))
