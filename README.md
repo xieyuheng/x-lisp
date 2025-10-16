@@ -502,6 +502,20 @@ null
 
 ## Standard Libraries
 
+### Priority Queue
+
+```lisp
+(priority-queue? key-p priority-p value)
+(make-priority-queue compare)
+(priority-queue-empty? queue)
+(priority-queue-length queue)
+(priority-queue-get key queue)
+(priority-queue-put! key priority queue)
+(priority-queue-peek queue)
+(priority-queue-poll! queue)
+(priority-queue-delete! key queue)
+```
+
 ### Graph
 
 ```lisp
@@ -531,18 +545,34 @@ null
 (graph-coloring graph)
 ```
 
-### Priority Queue
+## Digraph
 
-```lisp
-(priority-queue? key-p priority-p value)
-(make-priority-queue compare)
-(priority-queue-empty? queue)
-(priority-queue-length queue)
-(priority-queue-get key queue)
-(priority-queue-put! key priority queue)
-(priority-queue-peek queue)
-(priority-queue-poll! queue)
-(priority-queue-delete! key queue)
+```scheme
+(digraph? vertex-p value)
+(digraph-edge? vertex-p value)
+(make-empty-digraph)
+(make-digraph vertices edges)
+(digraph-vertices digraph)
+(digraph-vertex-count digraph)
+(digraph-empty? digraph)
+(digraph-add-vertex! vertex digraph)
+(digraph-has-vertex? vertex digraph)
+(digraph-add-vertices! vertices digraph)
+(digraph-direct-successors vertex digraph)
+(digraph-direct-predecessors vertex digraph)
+(digraph-out-degree vertex digraph)
+(digraph-in-degree vertex digraph)
+(digraph-add-edge! edge digraph)
+(digraph-add-edges! edges digraph)
+(digraph-has-edge? edge digraph)
+(digraph-direct-predecessor? source target digraph)
+(digraph-direct-successor? target source digraph)
+(digraph-edges digraph)
+(digraph-edge-count digraph)
+(digraph-delete-edge! edge digraph)
+(digraph-delete-vertex! vertex digraph)
+(digraph-predecessor? source target digraph)
+(digraph-successor? target source digraph)
 ```
 
 ## License
