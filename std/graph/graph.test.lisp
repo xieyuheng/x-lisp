@@ -27,7 +27,7 @@
 
 (begin
   (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
-  (assert-equal {1 2 3} (graph-vertices graph)))
+  (assert-equal {1 2 3} (list-to-set (graph-vertices graph))))
 
 ;; graph-edges
 

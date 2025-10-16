@@ -19,11 +19,13 @@
 
 (define-data (graph? V)
   (cons-graph
-   (vertices (set? V))
+   (vertex-set (set? V))
    (neighbor-hash (hash? V (set? V)))))
 
-(define graph-vertices cons-graph-vertices)
+(define graph-vertex-set cons-graph-vertex-set)
 (define graph-neighbor-hash cons-graph-neighbor-hash)
+
+(define graph-vertices (compose set-to-list graph-vertex-set))
 
 (define (graph-edge? V)
   (union (tau V V)
@@ -60,7 +62,7 @@
         int?)))
 
 (define (graph-vertex-count graph)
-  (set-size (graph-vertices graph)))
+  (set-size (graph-vertex-set graph)))
 
 (claim graph-empty?
   (polymorphic (V)
@@ -113,7 +115,7 @@
         (graph? V))))
 
 (define (graph-add-vertex! vertex graph)
-  (set-add! vertex (graph-vertices graph))
+  (set-add! vertex (graph-vertex-set graph))
   graph)
 
 (claim graph-add-vertices!

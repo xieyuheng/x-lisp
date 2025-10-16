@@ -9,7 +9,7 @@
   (graph-add-edge! ["d" "a"] graph)
 
   (= coloring (@hash))
-  (= vertices (set-to-list (graph-vertices graph)))
+  (= vertices (graph-vertices graph))
 
   (assert-equal
     2
@@ -33,7 +33,7 @@
   (graph-add-edge! ["d" "b"] graph)
 
   (= coloring (@hash))
-  (= vertices (set-to-list (graph-vertices graph)))
+  (= vertices (graph-vertices graph))
 
   (assert-equal
     3

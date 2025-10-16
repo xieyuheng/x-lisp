@@ -1,7 +1,5 @@
 [greph] graph-equal-edge? -- for symmetry
 
-[greph] graph-vertices -- should return list
-
 [greph] graph-max-degree
 [greph] graph-coloring -- no need to pass `coloring`
 
