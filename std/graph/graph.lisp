@@ -13,6 +13,7 @@
   graph-neighbors
   graph-add-vertex!
   graph-has-vertex?
+  graph-delete-vertex!
   graph-add-vertices!
   graph-add-edge!
   graph-has-edge?
@@ -132,6 +133,22 @@
   (= neighbor-hash (graph-neighbor-hash graph))
   (unless (hash-has? vertex neighbor-hash)
     (hash-put! vertex {} neighbor-hash))
+  graph)
+
+(claim graph-delete-vertex!
+  (polymorphic (V)
+    (-> V (graph? V)
+        (graph? V))))
+
+(define (graph-delete-vertex! vertex graph)
+  (when (graph-has-vertex? vertex graph)
+    (= neighbors (graph-neighbors vertex graph))
+    (set-each
+     (lambda (neighbor)
+       (graph-delete-edge! [vertex neighbor] graph))
+     neighbors)
+    (hash-delete! vertex (graph-neighbor-hash graph))
+    (set-delete! vertex (graph-vertex-set graph)))
   graph)
 
 (claim graph-has-vertex?

@@ -125,3 +125,14 @@
   (graph-delete-edge! [2 3] graph)
   (graph-delete-edge! [3 1] graph)
   (assert-equal graph (make-graph [1 2 3] [])))
+
+;; graph-delete-vertex!
+
+(begin
+  (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
+  (graph-delete-vertex! 1 graph)
+  (assert-equal graph (make-graph [2 3] [[2 3]]))
+  (graph-delete-vertex! 2 graph)
+  (assert-equal graph (make-graph [3] []))
+  (graph-delete-vertex! 3 graph)
+  (assert-equal graph (make-graph [] [])))

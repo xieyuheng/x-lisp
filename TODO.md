@@ -1,5 +1,3 @@
-[greph] graph-delete-vertex!
-
 [digraph] digraph?
 [digraph] make-digraph
 [digraph] make-empty-digraph
