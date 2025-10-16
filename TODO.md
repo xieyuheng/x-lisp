@@ -1,3 +1,51 @@
+[greph] graph-max-degree
+
+[greph] make-empty-graph
+[greph] graph-vertex-count
+[greph] graph-edge-count
+[greph] graph-empty?
+
+[greph] graph-coloring
+
+[greph] graph-has-vertex?
+[greph] graph-delete-vertex!
+
+[greph] graph-has-edge?
+[greph] graph-delete-edge!
+
+[digraph] setup
+
+[digraph] digraph?
+[digraph] make-digraph
+[digraph] make-empty-digraph
+[digraph] digraph-edge?
+
+[digraph] digraph-edges
+[digraph] digraph-vertices
+
+[digraph] digraph-edge-count
+[digraph] digraph-vertex-count
+[digraph] digraph-empty?
+
+[digraph] digraph-direct-predecessors
+[digraph] digraph-direct-successors
+
+[digraph] digraph-add-vertex!
+[digraph] digraph-has-vertex?
+[digraph] digraph-add-vertices!
+[digraph] digraph-delete-vertex!
+
+[digraph] digraph-add-edge!
+[digraph] digraph-has-edge?
+[digraph] digraph-delete-edge!
+[digraph] digraph-add-edges!
+
+[digraph] digraph-successor?
+[digraph] digraph-predecessor?
+
+[digraph] digraph-in-degree
+[digraph] digraph-out-degree
+
 # basic
 
 [basic] `Stmt` -- `Define` -- only define function

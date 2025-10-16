@@ -9,7 +9,7 @@
   graph-add-edge!
   graph-add-edges!
   graph-adjacent?
-  graph-vertex-degree)
+  graph-degree)
 
 (define-data (graph? V)
   (cons-graph
@@ -113,10 +113,10 @@
 (define (graph-adjacent? source target graph)
   (set-member? target (graph-neighbors source graph)))
 
-(claim graph-vertex-degree
+(claim graph-degree
   (polymorphic (V)
     (-> V (graph? V)
         int?)))
 
-(define (graph-vertex-degree vertex graph)
+(define (graph-degree vertex graph)
   (set-size (graph-neighbors vertex graph)))

@@ -48,10 +48,10 @@
   (assert (graph-adjacent? 1 3 graph))
   (assert (graph-adjacent? 3 1 graph)))
 
-;; graph-vertex-degree
+;; graph-degree
 
 (begin
   (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
-  (assert-equal 2 (graph-vertex-degree 1 graph))
-  (assert-equal 2 (graph-vertex-degree 2 graph))
-  (assert-equal 2 (graph-vertex-degree 3 graph)))
+  (assert-equal 2 (graph-degree 1 graph))
+  (assert-equal 2 (graph-degree 2 graph))
+  (assert-equal 2 (graph-degree 3 graph)))

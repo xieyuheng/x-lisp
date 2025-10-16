@@ -55,6 +55,6 @@
        (set-size (vertex-saturation graph coloring v2))))
     (lambda (v1 v2)
       (int-compare-descending
-       (graph-vertex-degree v1 graph)
-       (graph-vertex-degree v2 graph))))
+       (graph-degree v1 graph)
+       (graph-degree v2 graph))))
    queue))
