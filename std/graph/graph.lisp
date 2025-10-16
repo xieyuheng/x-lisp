@@ -189,7 +189,9 @@
         bool?)))
 
 (define (graph-has-edge? [source target] graph)
-  (set-member? target (graph-neighbors source graph)))
+  (and (graph-has-vertex? source graph)
+       (graph-has-vertex? target graph)
+       (set-member? target (graph-neighbors source graph))))
 
 (claim graph-delete-edge!
   (polymorphic (V)

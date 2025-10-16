@@ -11,7 +11,8 @@
   digraph-direct-predecessors
   digraph-direct-successors
   digraph-add-edge!
-  digraph-add-edges!)
+  digraph-add-edges!
+  digraph-has-edge?)
 
 (define-data (digraph? V)
   (cons-digraph
@@ -125,3 +126,13 @@
 (define (digraph-add-edges! edges digraph)
   (list-each (swap digraph-add-edge! digraph) edges)
   digraph)
+
+(claim digraph-has-edge?
+  (polymorphic (V)
+    (-> (digraph-edge? V) (digraph? V)
+        bool?)))
+
+(define (digraph-has-edge? [source target] digraph)
+  (and (digraph-has-vertex? source digraph)
+       (digraph-has-vertex? target digraph)
+       (set-member? target (digraph-direct-successors source digraph))))

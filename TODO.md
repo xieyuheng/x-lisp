@@ -1,5 +1,3 @@
-[digraph] digraph-has-edge?
-
 [digraph] make-digraph
 
 [digraph] digraph-direct-successor?

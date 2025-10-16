@@ -64,3 +64,9 @@
   (assert-equal {3} (digraph-direct-predecessors 1 digraph))
   (assert-equal {1} (digraph-direct-predecessors 2 digraph))
   (assert-equal {1 2} (digraph-direct-predecessors 3  digraph)))
+
+(begin
+  (= digraph (make-empty-digraph))
+  (digraph-add-edges! [[1 2] [1 3] [2 3] [3 1]] digraph)
+  (assert (digraph-has-edge? [1 2] digraph))
+  (assert-not (digraph-has-edge? [2 1] digraph)))
