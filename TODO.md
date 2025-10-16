@@ -6,8 +6,6 @@
 [greph] graph-has-edge?
 [greph] graph-delete-edge!
 
-[digraph] setup
-
 [digraph] digraph?
 [digraph] make-digraph
 [digraph] make-empty-digraph

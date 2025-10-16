@@ -523,6 +523,7 @@ null
 (graph-adjacent? source target graph)
 (graph-degree vertex graph)
 (graph-coloring! coloring vertices graph)
+(graph-coloring graph)
 ```
 
 ### Priority Queue
