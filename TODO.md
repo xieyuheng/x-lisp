@@ -1,5 +1,3 @@
-[digraph] make-digraph
-
 [digraph] digraph-direct-successor?
 [digraph] digraph-direct-predecessor?
 
@@ -14,6 +12,8 @@
 
 [digraph] digraph-in-degree
 [digraph] digraph-out-degree
+
+[digraph] topological sort
 
 # basic
 

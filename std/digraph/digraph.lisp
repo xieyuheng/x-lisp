@@ -2,6 +2,7 @@
   digraph?
   digraph-edge?
   make-empty-digraph
+  make-digraph
   digraph-vertices
   digraph-vertex-count
   digraph-empty?
@@ -31,6 +32,17 @@
 
 (define (make-empty-digraph)
   (cons-digraph (@set) (@hash) (@hash)))
+
+(claim make-digraph
+  (polymorphic (V)
+    (-> (list? V) (list? (digraph-edge? V))
+        (digraph? V))))
+
+(define (make-digraph vertices edges)
+  (= digraph (make-empty-digraph))
+  (digraph-add-vertices! vertices digraph)
+  (digraph-add-edges! edges digraph)
+  digraph)
 
 (claim digraph-vertices
   (polymorphic (V)
