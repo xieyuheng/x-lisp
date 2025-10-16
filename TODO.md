@@ -1,11 +1,10 @@
-[greph] graph-max-degree
-
-[greph] make-empty-graph
 [greph] graph-vertex-count
 [greph] graph-edge-count
 [greph] graph-empty?
 
-[greph] graph-coloring
+[greph] graph-max-degree
+
+[greph] graph-coloring -- no need to pass `coloring`
 
 [greph] graph-has-vertex?
 [greph] graph-delete-vertex!

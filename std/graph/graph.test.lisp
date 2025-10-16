@@ -3,7 +3,7 @@
 (assert-equal
   (make-graph [1 2 3] [])
   (begin
-    (= graph (make-graph [] []))
+    (= graph (make-empty-graph))
     (graph-add-vertex! 1 graph)
     (graph-add-vertex! 2 graph)
     (graph-add-vertex! 3 graph)))
@@ -11,7 +11,7 @@
 (assert-equal
   (make-graph [1 2 3] [])
   (begin
-    (= graph (make-graph [] []))
+    (= graph (make-empty-graph))
     (graph-add-vertices! [1 2 3] graph)))
 
 ;; graph-vertices

@@ -1,6 +1,8 @@
 (export
-  graph? make-graph
+  graph?
   graph-edge?
+  make-graph
+  make-empty-graph
   graph-vertices
   graph-edges
   graph-neighbors
@@ -32,6 +34,13 @@
   (= graph (cons-graph (@set) (@hash)))
   (graph-add-vertices! vertices graph)
   (graph-add-edges! edges graph))
+
+(claim make-empty-graph
+  (polymorphic (V)
+    (-> (graph? V))))
+
+(define (make-empty-graph)
+  (cons-graph (@set) (@hash)))
 
 (claim graph-neighbors
   (polymorphic (V)
