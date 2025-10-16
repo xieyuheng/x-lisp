@@ -7,6 +7,7 @@
   graph-vertex-count
   graph-empty?
   graph-edges
+  graph-edge-count
   graph-neighbors
   graph-add-vertex!
   graph-add-vertices!
@@ -83,8 +84,16 @@
          set-to-list
          (list-map
           (lambda (neighbor) {vertex neighbor})))))
-    (list-map set-to-list)
-    list-to-set))
+    list-to-set
+    (set-map set-to-list)))
+
+(claim graph-edge-count
+  (polymorphic (V)
+    (-> (graph? V)
+        int?)))
+
+(define (graph-edge-count graph)
+  (set-size (graph-edges graph)))
 
 (claim graph-add-vertex!
   (polymorphic (V)

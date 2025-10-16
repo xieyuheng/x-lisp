@@ -1,4 +1,8 @@
-[greph] graph-edge-count
+[greph] graph-equal-edge-list? -- for testing
+
+[greph] graph-edges -- should return list
+[greph] graph-vertices -- should return list
+
 [greph] graph-max-degree
 [greph] graph-coloring -- no need to pass `coloring`
 
