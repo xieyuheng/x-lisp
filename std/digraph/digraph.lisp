@@ -252,9 +252,9 @@
 
 (define (digraph-predecessor? source target digraph)
   (or (digraph-direct-predecessor? source target digraph)
-      (list-any?
+      (set-any?
        (lambda (predecessor) (digraph-predecessor? source predecessor digraph))
-       (set-to-list (digraph-direct-predecessors target digraph)))))
+       (digraph-direct-predecessors target digraph))))
 
 (claim digraph-successor?
   (polymorphic (V)

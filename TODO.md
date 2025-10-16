@@ -1,4 +1,3 @@
-fix `digraph-successor?` by `set-any?`
 [digraph] topological sort
 
 # basic
