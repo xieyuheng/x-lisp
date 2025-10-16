@@ -1,9 +1,10 @@
 (export
   digraph?
   digraph-edge?
+  make-empty-digraph
   digraph-vertices
   digraph-vertex-count
-  make-empty-digraph)
+  digraph-empty?)
 
 (define-data (digraph? V)
   (cons-digraph
@@ -38,3 +39,11 @@
 
 (define digraph-vertex-count
   (compose list-length digraph-vertices))
+
+(claim digraph-empty?
+  (polymorphic (V)
+    (-> (digraph? V)
+        bool?)))
+
+(define digraph-empty?
+  (compose (equal? 0) digraph-vertex-count))

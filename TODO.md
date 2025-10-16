@@ -1,5 +1,3 @@
-[digraph] digraph-empty?
-
 [digraph] digraph-direct-predecessors
 [digraph] digraph-direct-successors
 
