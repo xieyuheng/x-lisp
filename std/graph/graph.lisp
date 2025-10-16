@@ -129,6 +129,9 @@
 
 (define (graph-add-vertex! vertex graph)
   (set-add! vertex (graph-vertex-set graph))
+  (= neighbor-hash (graph-neighbor-hash graph))
+  (unless (hash-has? vertex neighbor-hash)
+    (hash-put! vertex {} neighbor-hash))
   graph)
 
 (claim graph-has-vertex?
@@ -158,13 +161,9 @@
   (graph-add-vertex! target graph)
   (= neighbor-hash (graph-neighbor-hash graph))
   (= source-neighbors (hash-get source neighbor-hash))
-  (if (null? source-neighbors)
-    (hash-put! source {target} neighbor-hash)
-    (set-add! target source-neighbors))
+  (set-add! target source-neighbors)
   (= target-neighbors (hash-get target neighbor-hash))
-  (if (null? target-neighbors)
-    (hash-put! target {source} neighbor-hash)
-    (set-add! source target-neighbors))
+  (set-add! source target-neighbors)
   graph)
 
 (claim graph-has-edge?
@@ -181,13 +180,9 @@
         (graph? V))))
 
 (define (graph-delete-edge! [source target] graph)
-  (= neighbor-hash (graph-neighbor-hash graph))
-  (= source-neighbors (hash-get source neighbor-hash))
-  (unless (null? source-neighbors)
-    (set-delete! target source-neighbors))
-  (= target-neighbors (hash-get target neighbor-hash))
-  (unless (null? target-neighbors)
-    (set-delete! source target-neighbors))
+  (when (graph-has-edge? [source target] graph)
+    (set-delete! target (graph-neighbors source graph))
+    (set-delete! source (graph-neighbors target graph)))
   graph)
 
 (claim graph-add-edges!

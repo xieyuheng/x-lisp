@@ -114,3 +114,14 @@
   (assert-equal
     (make-graph [1 2 3] [[1 2] [2 3]])
     graph))
+
+(begin
+  (= graph (make-graph [1 2 3] []))
+  (graph-add-edge! [1 2] graph)
+  (graph-add-edge! [2 3] graph)
+  (graph-add-edge! [3 1] graph)
+  (assert-not-equal graph (make-graph [1 2 3] []))
+  (graph-delete-edge! [1 2] graph)
+  (graph-delete-edge! [2 3] graph)
+  (graph-delete-edge! [3 1] graph)
+  (assert-equal graph (make-graph [1 2 3] [])))
