@@ -1,5 +1,3 @@
-[greph] graph-has-edge?
-
 [greph] graph-delete-vertex!
 [greph] graph-delete-edge!
 

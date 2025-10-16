@@ -15,6 +15,7 @@
   graph-has-vertex?
   graph-add-vertices!
   graph-add-edge!
+  graph-has-edge?
   graph-add-edges!
   graph-adjacent?
   graph-degree
@@ -164,6 +165,14 @@
     (hash-put! target {source} neighbor-hash)
     (set-add! source target-neighbors))
   graph)
+
+(claim graph-has-edge?
+  (polymorphic (V)
+    (-> (graph-edge? V) (graph? V)
+        bool?)))
+
+(define (graph-has-edge? [source target] graph)
+  (set-member? target (graph-neighbors source graph)))
 
 (claim graph-add-edges!
   (polymorphic (V)

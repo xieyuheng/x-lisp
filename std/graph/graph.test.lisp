@@ -72,6 +72,17 @@
   (assert (graph-adjacent? 1 3 graph))
   (assert (graph-adjacent? 3 1 graph)))
 
+;; graph-has-edge?
+
+(begin
+  (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
+  (assert (graph-has-edge? [1 2] graph))
+  (assert (graph-has-edge? [2 1] graph))
+  (assert (graph-has-edge? [2 3] graph))
+  (assert (graph-has-edge? [3 2] graph))
+  (assert (graph-has-edge? [1 3] graph))
+  (assert (graph-has-edge? [3 1] graph)))
+
 ;; graph-degree
 
 (begin
