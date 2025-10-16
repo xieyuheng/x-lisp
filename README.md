@@ -513,6 +513,7 @@ null
 (graph-vertex-count graph)
 (graph-empty? graph)
 (graph-edges graph)
+(graph-equal-edge-list? lhs rhs)
 (graph-neighbors vertex graph)
 (graph-add-vertex! vertex graph)
 (graph-add-vertices! vertices graph)

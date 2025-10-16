@@ -33,10 +33,10 @@
 
 (begin
   (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
-  (assert-equal
-    {{1 2} {2 3} {3 1}}
-    (pipe (graph-edges graph)
-      (set-map list-to-set))))
+  (assert
+    (graph-equal-edge-list?
+     [[1 2] [2 3] [3 1]]
+     (graph-edges graph))))
 
 (assert-equal 0 (graph-edge-count (make-empty-graph)))
 (assert-equal 3 (graph-edge-count (make-graph [1 2 3] [[1 2] [2 3] [3 1]])))

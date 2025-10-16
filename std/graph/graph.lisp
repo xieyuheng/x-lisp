@@ -8,6 +8,7 @@
   graph-empty?
   graph-edges
   graph-edge-count
+  graph-equal-edge-list?
   graph-neighbors
   graph-add-vertex!
   graph-add-vertices!
@@ -72,7 +73,7 @@
 (claim graph-edges
   (polymorphic (V)
     (-> (graph? V)
-        (set? (graph-edge? V)))))
+        (list? (graph-edge? V)))))
 
 (define (graph-edges graph)
   (pipe graph
@@ -85,7 +86,18 @@
          (list-map
           (lambda (neighbor) {vertex neighbor})))))
     list-to-set
-    (set-map set-to-list)))
+    (set-map set-to-list)
+    set-to-list))
+
+(claim graph-equal-edge-list?
+  (polymorphic (V)
+    (-> (list? (graph-edge? V)) (list? (graph-edge? V))
+        bool?)))
+
+(define (graph-equal-edge-list? lhs rhs)
+  (equal?
+   (pipe lhs (list-map list-to-set) list-to-set)
+   (pipe rhs (list-map list-to-set) list-to-set)))
 
 (claim graph-edge-count
   (polymorphic (V)
@@ -93,7 +105,7 @@
         int?)))
 
 (define (graph-edge-count graph)
-  (set-size (graph-edges graph)))
+  (list-length (graph-edges graph)))
 
 (claim graph-add-vertex!
   (polymorphic (V)

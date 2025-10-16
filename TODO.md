@@ -1,6 +1,5 @@
-[greph] graph-equal-edge-list? -- for testing
+[greph] graph-equal-edge? -- for symmetry
 
-[greph] graph-edges -- should return list
 [greph] graph-vertices -- should return list
 
 [greph] graph-max-degree
