@@ -2,10 +2,23 @@
 
 ;; graph coloring by DSATUR algorithm
 
-(export graph-coloring!)
+(export
+  graph-coloring
+  graph-coloring!)
 
 (define color? int?)
 (define (coloring? V) (hash? V color?))
+
+(claim graph-coloring
+  (polymorphic (V)
+    (-> (graph? V)
+        (coloring? V))))
+
+(define (graph-coloring graph)
+  (= coloring (@hash))
+  (= queue (graph-vertices graph))
+  (graph-coloring! coloring queue graph)
+  coloring)
 
 (claim graph-coloring!
   (polymorphic (V)

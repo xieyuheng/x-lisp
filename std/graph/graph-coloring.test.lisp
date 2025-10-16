@@ -32,13 +32,10 @@
   (graph-add-edge! ["c" "d"] graph)
   (graph-add-edge! ["d" "b"] graph)
 
-  (= coloring (@hash))
-  (= vertices (graph-vertices graph))
-
   (assert-equal
     3
     (pipe graph
-      (graph-coloring! coloring vertices)
+      graph-coloring
       hash-values
       list-to-set
       set-size)))
