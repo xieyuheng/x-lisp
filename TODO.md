@@ -1,6 +1,3 @@
-[digraph] digraph-edges
-[digraph] digraph-edge-count
-
 [digraph] digraph-delete-edge!
 [digraph] digraph-delete-vertex!
 

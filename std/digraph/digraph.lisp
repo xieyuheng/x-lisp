@@ -15,7 +15,9 @@
   digraph-add-edges!
   digraph-has-edge?
   digraph-direct-successor?
-  digraph-direct-predecessor?)
+  digraph-direct-predecessor?
+  digraph-edges
+  digraph-edge-count)
 
 (define-data (digraph? V)
   (cons-digraph
@@ -166,3 +168,26 @@
 
 (define (digraph-direct-predecessor? target source digraph)
   (digraph-has-edge? [source target] digraph))
+
+(claim digraph-edges
+  (polymorphic (V)
+    (-> (digraph? V)
+        (list? (digraph-edge? V)))))
+
+(define (digraph-edges digraph)
+  (pipe (digraph-vertices digraph)
+    (list-map (swap digraph-direct-successors digraph))
+    (list-zip (digraph-vertices digraph))
+    (list-lift
+     (lambda ([vertex successors])
+       (pipe successors
+         set-to-list
+         (list-map (lambda (successor) [vertex successor])))))))
+
+(claim digraph-edge-count
+  (polymorphic (V)
+    (-> (digraph? V)
+        int?)))
+
+(define (digraph-edge-count digraph)
+  (list-length (digraph-edges digraph)))

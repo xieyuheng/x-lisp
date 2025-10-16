@@ -69,3 +69,12 @@
   (assert-not (digraph-has-edge? [2 1] digraph))
   (assert-not (digraph-direct-successor? 2 1 digraph))
   (assert-not (digraph-direct-predecessor? 1 2 digraph)))
+
+;; digraph-edges & digraph-edge-count
+
+(begin
+  (= digraph (make-digraph [1 2 3] [[1 2] [1 3] [2 3] [3 1]]))
+  (assert-equal
+    {[1 2] [1 3] [2 3] [3 1]}
+    (list-to-set (digraph-edges digraph)))
+  (assert-equal 4 (digraph-edge-count digraph)))
