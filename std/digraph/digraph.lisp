@@ -1,6 +1,7 @@
 (export
   digraph?
   digraph-edge?
+  digraph-vertices
   make-empty-digraph)
 
 (define-data (digraph? V)
@@ -20,3 +21,11 @@
 
 (define (make-empty-digraph)
   (cons-digraph (@set) (@hash) (@hash)))
+
+(claim digraph-vertices
+  (polymorphic (V)
+    (-> (digraph? V)
+        (list? V))))
+
+(define digraph-vertices
+  (compose set-to-list digraph-vertex-set))

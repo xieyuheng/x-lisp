@@ -1,7 +1,3 @@
-[digraph] digraph-edges
-[digraph] digraph-vertices
-
-[digraph] digraph-edge-count
 [digraph] digraph-vertex-count
 [digraph] digraph-empty?
 
@@ -12,6 +8,9 @@
 [digraph] digraph-has-vertex?
 [digraph] digraph-add-vertices!
 [digraph] digraph-delete-vertex!
+
+[digraph] digraph-edges
+[digraph] digraph-edge-count
 
 [digraph] digraph-add-edge!
 [digraph] digraph-has-edge?

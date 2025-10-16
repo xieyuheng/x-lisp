@@ -1,3 +1,5 @@
 (import-all "digraph")
 
-(make-empty-digraph)
+(begin
+  (= digraph (make-empty-digraph))
+  (assert-equal [] (digraph-vertices digraph)))
