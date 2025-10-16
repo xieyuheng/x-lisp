@@ -521,6 +521,7 @@ null
 (graph-add-vertices! vertices graph)
 (graph-add-edge! edge graph)
 (graph-has-edge? edge graph)
+(graph-delete-edge! edge graph)
 (graph-add-edges! edges graph)
 (graph-adjacent? source target graph)
 (graph-degree vertex graph)

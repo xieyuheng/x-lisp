@@ -16,6 +16,7 @@
   graph-add-vertices!
   graph-add-edge!
   graph-has-edge?
+  graph-delete-edge!
   graph-add-edges!
   graph-adjacent?
   graph-degree
@@ -173,6 +174,21 @@
 
 (define (graph-has-edge? [source target] graph)
   (set-member? target (graph-neighbors source graph)))
+
+(claim graph-delete-edge!
+  (polymorphic (V)
+    (-> (graph-edge? V) (graph? V)
+        (graph? V))))
+
+(define (graph-delete-edge! [source target] graph)
+  (= neighbor-hash (graph-neighbor-hash graph))
+  (= source-neighbors (hash-get source neighbor-hash))
+  (unless (null? source-neighbors)
+    (set-delete! target source-neighbors))
+  (= target-neighbors (hash-get target neighbor-hash))
+  (unless (null? target-neighbors)
+    (set-delete! source target-neighbors))
+  graph)
 
 (claim graph-add-edges!
   (polymorphic (V)

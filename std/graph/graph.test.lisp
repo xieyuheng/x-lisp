@@ -98,3 +98,19 @@
   (assert-equal 2 (graph-degree 2 graph))
   (assert-equal 1 (graph-degree 3 graph))
   (assert-equal 2 (graph-max-degree graph)))
+
+;; graph-delete-edge!
+
+(begin
+  (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
+  (graph-delete-edge! [3 1] graph)
+  (assert-equal
+    (make-graph [1 2 3] [[1 2] [2 3]])
+    graph))
+
+(begin
+  (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
+  (graph-delete-edge! [1 3] graph)
+  (assert-equal
+    (make-graph [1 2 3] [[1 2] [2 3]])
+    graph))
