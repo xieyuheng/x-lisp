@@ -1,5 +1,3 @@
-ambr graph-equal-edge-list? graph-equal-edges?
-
 [greph] graph-max-degree
 [greph] graph-coloring -- no need to pass `coloring`
 

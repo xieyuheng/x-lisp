@@ -34,7 +34,7 @@
 (begin
   (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
   (assert
-    (graph-equal-edge-list?
+    (graph-equal-edges?
      [[1 2] [2 3] [3 1]]
      (graph-edges graph))))
 

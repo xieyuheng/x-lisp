@@ -9,7 +9,7 @@
   graph-edges
   graph-edge-count
   graph-equal-edge?
-  graph-equal-edge-list?
+  graph-equal-edges?
   graph-neighbors
   graph-add-vertex!
   graph-add-vertices!
@@ -100,12 +100,12 @@
 (define (graph-equal-edge? lhs rhs)
   (equal? (list-to-set lhs) (list-to-set rhs)))
 
-(claim graph-equal-edge-list?
+(claim graph-equal-edges?
   (polymorphic (V)
     (-> (list? (graph-edge? V)) (list? (graph-edge? V))
         bool?)))
 
-(define (graph-equal-edge-list? lhs rhs)
+(define (graph-equal-edges? lhs rhs)
   (equal?
    (pipe lhs (list-map list-to-set) list-to-set)
    (pipe rhs (list-map list-to-set) list-to-set)))
