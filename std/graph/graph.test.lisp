@@ -1,6 +1,15 @@
 (import-all "graph")
 
 (assert-equal
+  (make-graph [] [])
+  (make-empty-graph))
+
+(assert-equal 0 (graph-vertex-count (make-empty-graph)))
+(assert-equal 3 (graph-vertex-count (make-graph [1 2 3] [])))
+
+(assert (graph-empty? (make-empty-graph)))
+
+(assert-equal
   (make-graph [1 2 3] [])
   (begin
     (= graph (make-empty-graph))

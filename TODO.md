@@ -1,9 +1,5 @@
-[greph] graph-vertex-count
 [greph] graph-edge-count
-[greph] graph-empty?
-
 [greph] graph-max-degree
-
 [greph] graph-coloring -- no need to pass `coloring`
 
 [greph] graph-has-vertex?

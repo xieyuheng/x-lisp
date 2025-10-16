@@ -4,6 +4,8 @@
   make-graph
   make-empty-graph
   graph-vertices
+  graph-vertex-count
+  graph-empty?
   graph-edges
   graph-neighbors
   graph-add-vertex!
@@ -49,6 +51,22 @@
 
 (define (graph-neighbors vertex graph)
   (hash-get vertex (graph-neighbor-hash graph)))
+
+(claim graph-vertex-count
+  (polymorphic (V)
+    (-> (graph? V)
+        int?)))
+
+(define (graph-vertex-count graph)
+  (set-size (graph-vertices graph)))
+
+(claim graph-empty?
+  (polymorphic (V)
+    (-> (graph? V)
+        bool?)))
+
+(define (graph-empty? graph)
+  (equal? 0 (graph-vertex-count graph)))
 
 (claim graph-edges
   (polymorphic (V)
