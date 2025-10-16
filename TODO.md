@@ -1,6 +1,3 @@
-[digraph] digraph-delete-edge!
-[digraph] digraph-delete-vertex!
-
 [digraph] digraph-successor?
 [digraph] digraph-predecessor?
 

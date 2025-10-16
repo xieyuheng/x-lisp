@@ -78,3 +78,34 @@
     {[1 2] [1 3] [2 3] [3 1]}
     (list-to-set (digraph-edges digraph)))
   (assert-equal 4 (digraph-edge-count digraph)))
+
+;; digraph-delete-edge!
+
+(begin
+  (= digraph (make-digraph [1 2 3] [[1 2] [1 3] [2 3] [3 1]]))
+  (assert-equal
+    (make-digraph [1 2 3] [[1 2] [2 3] [3 1]])
+    (digraph-delete-edge! [1 3] digraph))
+  (assert-equal
+    (make-digraph [1 2 3] [[2 3] [3 1]])
+    (digraph-delete-edge! [1 2] digraph))
+  (assert-equal
+    (make-digraph [1 2 3] [[3 1]])
+    (digraph-delete-edge! [2 3] digraph))
+  (assert-equal
+    (make-digraph [1 2 3] [])
+    (digraph-delete-edge! [3 1] digraph)))
+
+;; digraph-delete-vertex!
+
+(begin
+  (= digraph (make-digraph [1 2 3] [[1 2] [1 3] [2 3] [3 1]]))
+  (assert-equal
+    (make-digraph [2 3] [[2 3]])
+    (digraph-delete-vertex! 1 digraph))
+  (assert-equal
+    (make-digraph [3] [])
+    (digraph-delete-vertex! 2 digraph))
+  (assert-equal
+    (make-digraph [] [])
+    (digraph-delete-vertex! 3 digraph)))

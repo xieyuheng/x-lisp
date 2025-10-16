@@ -17,7 +17,9 @@
   digraph-direct-successor?
   digraph-direct-predecessor?
   digraph-edges
-  digraph-edge-count)
+  digraph-edge-count
+  digraph-delete-edge!
+  digraph-delete-vertex!)
 
 (define-data (digraph? V)
   (cons-digraph
@@ -191,3 +193,34 @@
 
 (define (digraph-edge-count digraph)
   (list-length (digraph-edges digraph)))
+
+(claim digraph-delete-edge!
+  (polymorphic (V)
+    (-> (digraph-edge? V) (digraph? V)
+        (digraph? V))))
+
+(define (digraph-delete-edge! [source target] digraph)
+  (when (digraph-has-edge? [source target] digraph)
+    (set-delete! target (digraph-direct-successors source digraph))
+    (set-delete! source (digraph-direct-predecessors target digraph)))
+  digraph)
+
+(claim digraph-delete-vertex!
+  (polymorphic (V)
+    (-> V (digraph? V)
+        (digraph? V))))
+
+(define (digraph-delete-vertex! vertex digraph)
+  (when (digraph-has-vertex? vertex digraph)
+    (pipe (digraph-direct-successors vertex digraph)
+      (set-each
+       (lambda (successor)
+         (digraph-delete-edge! [vertex successor] digraph))))
+    (pipe (digraph-direct-predecessors vertex digraph)
+      (set-each
+       (lambda (predecessor)
+         (digraph-delete-edge! [predecessor vertex] digraph))))
+    (hash-delete! vertex (digraph-direct-successor-hash digraph))
+    (hash-delete! vertex (digraph-direct-predecessor-hash digraph))
+    (set-delete! vertex (digraph-vertex-set digraph)))
+  digraph)
