@@ -2,19 +2,16 @@
 [digraph] digraph-has-edge?
 [digraph] digraph-add-edges!
 
-[digraph] digraph-edges
-[digraph] digraph-edge-count
-
-[digraph] digraph-direct-predecessors
-[digraph] digraph-direct-successors
-
-[digraph] digraph-delete-edge!
-[digraph] digraph-delete-vertex!
-
 [digraph] make-digraph
 
 [digraph] digraph-direct-successor?
 [digraph] digraph-direct-predecessor?
+
+[digraph] digraph-edges
+[digraph] digraph-edge-count
+
+[digraph] digraph-delete-edge!
+[digraph] digraph-delete-vertex!
 
 [digraph] digraph-successor?
 [digraph] digraph-predecessor?
