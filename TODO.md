@@ -1,3 +1,7 @@
+[greph] ensure every vertex has neighbors in the neighbor-hash
+
+- so that we can use equal? on graph
+
 [greph] graph-delete-vertex!
 
 [digraph] digraph?
