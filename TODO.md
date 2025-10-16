@@ -1,7 +1,5 @@
-[digraph] digraph?
-[digraph] make-digraph
 [digraph] make-empty-digraph
-[digraph] digraph-edge?
+[digraph] make-digraph
 
 [digraph] digraph-edges
 [digraph] digraph-vertices
