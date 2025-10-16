@@ -1,5 +1,4 @@
 [digraph] digraph-has-edge?
-[digraph] digraph-add-edges!
 
 [digraph] make-digraph
 

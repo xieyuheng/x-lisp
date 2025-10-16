@@ -10,7 +10,8 @@
   digraph-add-vertices!
   digraph-direct-predecessors
   digraph-direct-successors
-  digraph-add-edge!)
+  digraph-add-edge!
+  digraph-add-edges!)
 
 (define-data (digraph? V)
   (cons-digraph
@@ -114,4 +115,13 @@
   (digraph-add-vertex! target digraph)
   (set-add! target (digraph-direct-successors source digraph))
   (set-add! source (digraph-direct-predecessors target digraph))
+  digraph)
+
+(claim digraph-add-edges!
+  (polymorphic (V)
+    (-> (list? (digraph-edge? V)) (digraph? V)
+        (digraph? V))))
+
+(define (digraph-add-edges! edges digraph)
+  (list-each (swap digraph-add-edge! digraph) edges)
   digraph)
