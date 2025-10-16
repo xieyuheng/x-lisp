@@ -4,7 +4,10 @@
   make-empty-digraph
   digraph-vertices
   digraph-vertex-count
-  digraph-empty?)
+  digraph-empty?
+  digraph-add-vertex!
+  digraph-has-vertex?
+  digraph-add-vertices!)
 
 (define-data (digraph? V)
   (cons-digraph
@@ -47,3 +50,37 @@
 
 (define digraph-empty?
   (compose (equal? 0) digraph-vertex-count))
+
+(claim digraph-add-vertex!
+  (polymorphic (V)
+    (-> V (digraph? V)
+        (digraph? V))))
+
+(define (digraph-add-vertex! vertex digraph)
+  (= vertex-set (digraph-vertex-set digraph))
+  (set-add! vertex vertex-set)
+  (= direct-predecessor-hash (digraph-direct-predecessor-hash digraph))
+  (unless (hash-has? vertex direct-predecessor-hash)
+    (hash-put! vertex {} direct-predecessor-hash))
+  (= direct-successor-hash (digraph-direct-successor-hash digraph))
+  (unless (hash-has? vertex direct-successor-hash)
+    (hash-put! vertex {} direct-successor-hash))
+  digraph)
+
+(claim digraph-has-vertex?
+  (polymorphic (V)
+    (-> V (digraph? V)
+        bool?)))
+
+(define (digraph-has-vertex? vertex digraph)
+  (= vertex-set (digraph-vertex-set digraph))
+  (set-member? vertex vertex-set))
+
+(claim digraph-add-vertices!
+  (polymorphic (V)
+    (-> (list? V) (digraph? V)
+        (digraph? V))))
+
+(define (digraph-add-vertices! vertices digraph)
+  (list-each (swap digraph-add-vertex! digraph) vertices)
+  digraph)

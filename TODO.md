@@ -1,20 +1,20 @@
-[digraph] digraph-direct-predecessors
-[digraph] digraph-direct-successors
-
-[digraph] digraph-add-vertex!
-[digraph] digraph-has-vertex?
-[digraph] digraph-add-vertices!
-[digraph] digraph-delete-vertex!
+[digraph] digraph-add-edge!
+[digraph] digraph-has-edge?
+[digraph] digraph-add-edges!
 
 [digraph] digraph-edges
 [digraph] digraph-edge-count
 
-[digraph] digraph-add-edge!
-[digraph] digraph-has-edge?
+[digraph] digraph-direct-predecessors
+[digraph] digraph-direct-successors
+
 [digraph] digraph-delete-edge!
-[digraph] digraph-add-edges!
+[digraph] digraph-delete-vertex!
 
 [digraph] make-digraph
+
+[digraph] digraph-direct-successor?
+[digraph] digraph-direct-predecessor?
 
 [digraph] digraph-successor?
 [digraph] digraph-predecessor?
