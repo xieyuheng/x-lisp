@@ -9,23 +9,25 @@
   digraph-add-vertex!
   digraph-has-vertex?
   digraph-add-vertices!
-  digraph-direct-predecessors
   digraph-direct-successors
+  digraph-direct-predecessors
   digraph-add-edge!
   digraph-add-edges!
-  digraph-has-edge?)
+  digraph-has-edge?
+  digraph-direct-successor?
+  digraph-direct-predecessor?)
 
 (define-data (digraph? V)
   (cons-digraph
    (vertex-set (set? V))
-   (direct-predecessor-hash (hash? V (set? V)))
-   (direct-successor-hash (hash? V (set? V)))))
+   (direct-successor-hash (hash? V (set? V)))
+   (direct-predecessor-hash (hash? V (set? V)))))
 
 (define (digraph-edge? V) (tau V V))
 
 (define digraph-vertex-set cons-digraph-vertex-set)
-(define digraph-direct-predecessor-hash cons-digraph-direct-predecessor-hash)
 (define digraph-direct-successor-hash cons-digraph-direct-successor-hash)
+(define digraph-direct-predecessor-hash cons-digraph-direct-predecessor-hash)
 
 (claim make-empty-digraph
   (polymorphic (V) (-> (digraph? V))))
@@ -102,14 +104,6 @@
   (list-each (swap digraph-add-vertex! digraph) vertices)
   digraph)
 
-(claim digraph-direct-predecessors
-  (polymorphic (V)
-    (-> V (digraph? V)
-        (set? V))))
-
-(define (digraph-direct-predecessors vertex digraph)
-  (hash-get vertex (digraph-direct-predecessor-hash digraph)))
-
 (claim digraph-direct-successors
   (polymorphic (V)
     (-> V (digraph? V)
@@ -117,6 +111,14 @@
 
 (define (digraph-direct-successors vertex digraph)
   (hash-get vertex (digraph-direct-successor-hash digraph)))
+
+(claim digraph-direct-predecessors
+  (polymorphic (V)
+    (-> V (digraph? V)
+        (set? V))))
+
+(define (digraph-direct-predecessors vertex digraph)
+  (hash-get vertex (digraph-direct-predecessor-hash digraph)))
 
 (claim digraph-add-edge!
   (polymorphic (V)
@@ -148,3 +150,19 @@
   (and (digraph-has-vertex? source digraph)
        (digraph-has-vertex? target digraph)
        (set-member? target (digraph-direct-successors source digraph))))
+
+(claim digraph-direct-successor?
+  (polymorphic (V)
+    (-> V V (digraph? V)
+        bool?)))
+
+(define (digraph-direct-successor? source target digraph)
+  (digraph-has-edge? [source target] digraph))
+
+(claim digraph-direct-predecessor?
+  (polymorphic (V)
+    (-> V V (digraph? V)
+        bool?)))
+
+(define (digraph-direct-predecessor? target source digraph)
+  (digraph-has-edge? [source target] digraph))

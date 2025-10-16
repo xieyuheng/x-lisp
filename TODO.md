@@ -1,6 +1,3 @@
-[digraph] digraph-direct-successor?
-[digraph] digraph-direct-predecessor?
-
 [digraph] digraph-edges
 [digraph] digraph-edge-count
 
