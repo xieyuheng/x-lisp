@@ -1,7 +1,6 @@
-[greph] graph-has-vertex?
-[greph] graph-delete-vertex!
-
 [greph] graph-has-edge?
+
+[greph] graph-delete-vertex!
 [greph] graph-delete-edge!
 
 [digraph] digraph?

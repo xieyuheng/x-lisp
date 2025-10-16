@@ -517,6 +517,7 @@ null
 (graph-equal-edges? lhs rhs)
 (graph-neighbors vertex graph)
 (graph-add-vertex! vertex graph)
+(graph-has-vertex? vertex graph)
 (graph-add-vertices! vertices graph)
 (graph-add-edge! edge graph)
 (graph-add-edges! edges graph)

@@ -12,6 +12,7 @@
   graph-equal-edges?
   graph-neighbors
   graph-add-vertex!
+  graph-has-vertex?
   graph-add-vertices!
   graph-add-edge!
   graph-add-edges!
@@ -127,6 +128,14 @@
 (define (graph-add-vertex! vertex graph)
   (set-add! vertex (graph-vertex-set graph))
   graph)
+
+(claim graph-has-vertex?
+  (polymorphic (V)
+    (-> V (graph? V)
+        bool?)))
+
+(define (graph-has-vertex? vertex graph)
+  (set-member? vertex (graph-vertex-set graph)))
 
 (claim graph-add-vertices!
   (polymorphic (V)

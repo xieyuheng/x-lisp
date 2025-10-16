@@ -52,6 +52,15 @@
   (assert-equal {1 3} (graph-neighbors 2 graph))
   (assert-equal {1 2} (graph-neighbors 3 graph)))
 
+;; graph-has-vertex?
+
+(begin
+  (= graph (make-graph [1 2 3] []))
+  (assert (graph-has-vertex? 1 graph))
+  (assert (graph-has-vertex? 2 graph))
+  (assert (graph-has-vertex? 3 graph))
+  (assert-not (graph-has-vertex? 4 graph)))
+
 ;; graph-adjacent?
 
 (begin
