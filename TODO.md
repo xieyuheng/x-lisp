@@ -1,4 +1,5 @@
 [digraph] topological sort
+[digraph] digraph-acyclic?
 
 # basic
 
