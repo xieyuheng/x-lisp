@@ -140,3 +140,13 @@
   (assert-not (digraph-predecessor? 2 1 digraph))
   (assert-not (digraph-predecessor? 3 2 digraph))
   (assert-not (digraph-predecessor? 3 1 digraph)))
+
+;; digraph-copy
+
+(begin
+  (= digraph (make-digraph [1 2 3] [[1 2] [1 3] [2 3] [3 1]]))
+  (= digraph-2 (digraph-copy digraph))
+  (assert-equal digraph-2 digraph)
+  (digraph-delete-vertex! 1 digraph)
+  (assert-not-equal digraph-2 digraph)
+  (assert-equal digraph-2 (make-digraph [1 2 3] [[1 2] [1 3] [2 3] [3 1]])))

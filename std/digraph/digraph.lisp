@@ -3,6 +3,7 @@
   digraph-edge?
   make-empty-digraph
   make-digraph
+  digraph-copy
   digraph-vertices
   digraph-vertex-count
   digraph-empty?
@@ -53,6 +54,15 @@
   (digraph-add-vertices! vertices digraph)
   (digraph-add-edges! edges digraph)
   digraph)
+
+(claim digraph-copy
+  (polymorphic (V)
+    (-> (digraph? V)
+        (digraph? V))))
+
+(define (digraph-copy digraph)
+  (make-digraph (digraph-vertices digraph)
+                (digraph-edges digraph)))
 
 (claim digraph-vertices
   (polymorphic (V)
