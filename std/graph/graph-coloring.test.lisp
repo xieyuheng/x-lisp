@@ -1,4 +1,5 @@
-(import-all "index")
+(import-all "graph")
+(import-all "graph-coloring")
 
 (begin
   (= graph (make-empty-graph))

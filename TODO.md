@@ -1,4 +1,3 @@
-[digraph] digraph-topological-order
 [digraph] digraph-acyclic?
 
 # basic
