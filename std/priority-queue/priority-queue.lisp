@@ -27,7 +27,7 @@
 
 (define-data (priority-queue? K P)
   (cons-priority-queue
-   (compare (-> P P sort-order?))
+   (compare (-> P P ordering?))
    (hash (hash? K (node? K P)))
    (heap (heap? K P))))
 
@@ -43,7 +43,7 @@
 
 (claim make-priority-queue
   (polymorphic (K P)
-    (-> (-> P P sort-order?)
+    (-> (-> P P ordering?)
         (priority-queue? K P))))
 
 (define (make-priority-queue compare)
@@ -141,7 +141,7 @@
 
 (claim node-blance!
   (polymorphic (K P)
-    (-> (heap? K P) (-> P P sort-order?) (node? K P)
+    (-> (heap? K P) (-> P P ordering?) (node? K P)
         void?)))
 
 (define (node-blance! heap compare node)
@@ -149,19 +149,19 @@
   (= left-child (node-left-child heap node))
   (= right-child (node-right-child heap node))
   (cond ((and (not (null? parent))
-              (sort-order-before?
+              (ordering-before?
                (compare (node-priority node)
                         (node-priority parent))))
          (node-swap! heap node parent)
          (node-blance! heap compare node))
         ((and (not (null? left-child))
-              (sort-order-after?
+              (ordering-after?
                (compare (node-priority node)
                         (node-priority left-child))))
          (node-swap! heap node left-child)
          (node-blance! heap compare node))
         ((and (not (null? right-child))
-              (sort-order-after?
+              (ordering-after?
                (compare (node-priority node)
                         (node-priority right-child))))
          (node-swap! heap node right-child)

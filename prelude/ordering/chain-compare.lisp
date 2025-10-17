@@ -2,8 +2,8 @@
 
 (claim chain-compare
   (polymorphic (A)
-    (*-> (-> A A sort-order?)
-         (-> A A sort-order?))))
+    (*-> (-> A A ordering?)
+         (-> A A ordering?))))
 
 (define chain-compare
   (lambda fs

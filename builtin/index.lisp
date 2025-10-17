@@ -19,8 +19,8 @@
 (claim int-less? (-> int? int? bool?))
 (claim int-greater-equal? (-> int? int? bool?))
 (claim int-less-equal? (-> int? int? bool?))
-(claim int-compare-ascending (-> int? int? sort-order?))
-(claim int-compare-descending (-> int? int? sort-order?))
+(claim int-compare-ascending (-> int? int? ordering?))
+(claim int-compare-descending (-> int? int? ordering?))
 
 ;; float
 
@@ -35,8 +35,8 @@
 (claim float-less? (-> float? float? bool?))
 (claim float-greater-equal? (-> float? float? bool?))
 (claim float-small-or-equal? (-> float? float? bool?))
-(claim float-compare-ascending (-> float? float? sort-order?))
-(claim float-compare-descending (-> float? float? sort-order?))
+(claim float-compare-ascending (-> float? float? ordering?))
+(claim float-compare-descending (-> float? float? ordering?))
 
 ;; symbol
 
@@ -63,12 +63,12 @@
 
 (claim valid? (-> anything? anything? bool?))
 
-;; sort-order
+;; ordering
 
-(claim sort-order-reverse
+(claim ordering-reverse
   (polymorphic (A)
-    (-> (-> A A sort-order?) (-> A A sort-order?))))
-(claim sort-order-negate (-> sort-order? sort-order?))
+    (-> (-> A A ordering?) (-> A A ordering?))))
+(claim ordering-negate (-> ordering? ordering?))
 
 ;; list
 
@@ -92,8 +92,8 @@
 (claim list-unshift! (polymorphic (E) (-> E (list? E) (list? E))))
 (claim list-reverse (polymorphic (E) (-> (list? E) (list? E))))
 (claim list-to-set (polymorphic (E) (-> (list? E) (set? E))))
-(claim list-sort! (polymorphic (E) (-> (-> E E sort-order?) (list? E) (list? E))))
-(claim list-sort (polymorphic (E) (-> (-> E E sort-order?) (list? E) (list? E))))
+(claim list-sort! (polymorphic (E) (-> (-> E E ordering?) (list? E) (list? E))))
+(claim list-sort (polymorphic (E) (-> (-> E E ordering?) (list? E) (list? E))))
 
 ;; record
 

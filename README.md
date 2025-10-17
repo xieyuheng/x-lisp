@@ -486,12 +486,12 @@ null
 ### Sort Order
 
 ```lisp
-(sort-order? value)
-(sort-order-before? value)
-(sort-order-same? value)
-(sort-order-after? value)
-(sort-order-negate order)
-(sort-order-reverse compare x y)
+(ordering? value)
+(ordering-before? value)
+(ordering-same? value)
+(ordering-after? value)
+(ordering-negate order)
+(ordering-reverse compare x y)
 ;; prelude
 (chain-compare ...fs)
 ```

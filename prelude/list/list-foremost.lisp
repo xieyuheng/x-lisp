@@ -6,7 +6,7 @@
 
 (claim list-foremost
   (polymorphic (A)
-    (-> (-> A A sort-order?)
+    (-> (-> A A ordering?)
         (inter (list? A) (negate list-empty?))
         A)))
 
@@ -24,7 +24,7 @@
 
 (claim list-rearmost
   (polymorphic (A)
-    (-> (-> A A sort-order?)
+    (-> (-> A A ordering?)
         (inter (list? A) (negate list-empty?))
         A)))
 

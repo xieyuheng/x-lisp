@@ -15,6 +15,7 @@ import { aboutInt } from "./aboutInt.ts"
 import { aboutList } from "./aboutList.ts"
 import { aboutNull } from "./aboutNull.ts"
 import { aboutOptional } from "./aboutOptional.ts"
+import { aboutOrdering } from "./aboutOrdering.ts"
 import { aboutPath } from "./aboutPath.ts"
 import { aboutProcess } from "./aboutProcess.ts"
 import { aboutRandom } from "./aboutRandom.ts"
@@ -22,7 +23,6 @@ import { aboutRecord } from "./aboutRecord.ts"
 import { aboutSchema } from "./aboutSchema.ts"
 import { aboutSet } from "./aboutSet.ts"
 import { aboutSexp } from "./aboutSexp.ts"
-import { aboutSortOrder } from "./aboutSortOrder.ts"
 import { aboutString } from "./aboutString.ts"
 import { aboutSymbol } from "./aboutSymbol.ts"
 import { aboutSystem } from "./aboutSystem.ts"
@@ -43,7 +43,7 @@ export function useBuiltinMod(): Mod {
   aboutString(mod)
   aboutValue(mod)
   aboutSchema(mod)
-  aboutSortOrder(mod)
+  aboutOrdering(mod)
   aboutList(mod)
   aboutRecord(mod)
   aboutSexp(mod)
