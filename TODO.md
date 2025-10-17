@@ -1,3 +1,4 @@
+[digraph] digraph-copy
 [digraph] digraph-topological-order
 [digraph] digraph-acyclic?
 

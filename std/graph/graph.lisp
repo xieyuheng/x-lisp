@@ -1,6 +1,7 @@
 (export
   graph?
   graph-edge?
+  graph-copy
   make-graph
   make-empty-graph
   graph-vertices
@@ -36,6 +37,15 @@
 (define (graph-edge? V)
   (union (tau V V)
          (negate (apply equal?))))
+
+(claim graph-copy
+  (polymorphic (V)
+    (-> (graph? V)
+        (graph? V))))
+
+(define (graph-copy graph)
+  (make-graph (graph-vertices graph)
+              (graph-edges graph)))
 
 (claim make-graph
   (polymorphic (V)

@@ -136,3 +136,13 @@
   (assert-equal graph (make-graph [3] []))
   (graph-delete-vertex! 3 graph)
   (assert-equal graph (make-graph [] [])))
+
+;; graph-copy
+
+(begin
+  (= graph (make-graph [1 2 3] [[1 2] [2 3] [3 1]]))
+  (= graph-2 (graph-copy graph))
+  (assert-equal graph-2 graph)
+  (graph-delete-vertex! 1 graph)
+  (assert-not-equal graph-2 graph)
+  (assert-equal graph-2 (make-graph [1 2 3] [[1 2] [2 3] [3 1]])))
