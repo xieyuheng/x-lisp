@@ -11,8 +11,9 @@
         (list? V))))
 
 (define (digraph-topological-order digraph)
+  (= digraph (digraph-copy digraph))
   (= queue (digraph-zero-dependency-vertices digraph))
-  (kahn-algorithm (digraph-copy digraph) queue []))
+  (kahn-algorithm digraph queue []))
 
 (define (digraph-zero-dependency-vertices digraph)
   (pipe (digraph-vertices digraph)
@@ -39,7 +40,10 @@
         bool?)))
 
 (define (digraph-acyclic? digraph)
-  )
+  (= digraph (digraph-copy digraph))
+  (= queue (digraph-zero-dependency-vertices digraph))
+  (kahn-algorithm digraph queue [])
+  (digraph-empty? digraph))
 
 (claim kahn-algorithm
   (polymorphic (V)

@@ -1,5 +1,3 @@
-[digraph] digraph-acyclic?
-
 # basic
 
 [basic] `Stmt` -- `Define` -- only define function

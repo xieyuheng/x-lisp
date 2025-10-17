@@ -21,3 +21,11 @@
   (= digraph (example-digraph))
   (= vertices (digraph-topological-order digraph))
   (assert (digraph-topological-ordered? vertices digraph)))
+
+(begin
+  (= digraph (example-digraph))
+  (assert (digraph-acyclic? digraph)))
+
+(begin
+  (= digraph (make-digraph [] [[1 2] [2 3] [3 1]]))
+  (assert-not (digraph-acyclic? digraph)))
