@@ -578,6 +578,9 @@ null
 (digraph-delete-vertex! vertex digraph)
 (digraph-predecessor? source target digraph)
 (digraph-successor? target source digraph)
+(digraph-topological-order digraph)
+(digraph-topological-ordered? vertices digraph)
+(digraph-acyclic? digraph)
 ```
 
 ## License
