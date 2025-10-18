@@ -22,7 +22,7 @@ function testWidths(widths: Array<number>, code: string) {
   }
 }
 
-test("prettyValue", () => {
+test("prettyValue -- lambda", () => {
   testWidths([30, 20, 13, 10, 5], `(lambda (f x y) (f y x))`)
   testWidths([30, 20, 13, 10, 5], `(lambda (f x y) (begin (f y x)))`)
   testWidths(
@@ -41,6 +41,10 @@ test("prettyValue", () => {
   new-hash)
 `,
   )
+})
+
+test("prettyValue -- tau", () => {
+  testWidths([20, 10], `(tau 1 2 3)`)
 })
 
 test("prettyValue -- set", () => {

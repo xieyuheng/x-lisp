@@ -16,7 +16,7 @@ function testWidths(widths: Array<number>, code: string) {
   }
 }
 
-test("prettyExp", () => {
+test("prettyExp -- lambda", () => {
   testWidths([30, 20, 13, 10, 5], `(lambda (f x y) (f y x))`)
   testWidths([30, 20, 13, 10, 5], `(lambda (f x y) (begin (f y x)))`)
   testWidths(
@@ -35,6 +35,10 @@ test("prettyExp", () => {
   new-hash)
 `,
   )
+})
+
+test("prettyExp -- tau", () => {
+  testWidths([20, 10], `(tau exp? type?)`)
 })
 
 test("prettyExp -- set", () => {

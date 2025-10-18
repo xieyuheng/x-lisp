@@ -145,22 +145,22 @@ function renderValue(value: Value): pp.Node {
         return pp.text(`(tau)`)
       } else if (Object.keys(value.attributeSchemas).length === 0) {
         return pp.group(
-          pp.text("(tau"),
-          pp.indent(2, elementSchemas),
+          pp.text("(tau "),
+          pp.indent(5, elementSchemas),
           pp.text(")"),
         )
       } else if (value.elementSchemas.length === 0) {
         return pp.group(
-          pp.text("(tau"),
-          pp.indent(2, attributeSchemas),
+          pp.text("(tau "),
+          pp.indent(5, attributeSchemas),
           pp.text(")"),
         )
       } else {
         return pp.group(
-          pp.text("(tau"),
-          pp.group(pp.indent(2, elementSchemas)),
-          pp.indent(2, pp.br()),
-          pp.indent(2, attributeSchemas),
+          pp.text("(tau "),
+          pp.group(pp.indent(5, elementSchemas)),
+          pp.indent(5, pp.br()),
+          pp.indent(5, attributeSchemas),
           pp.text(")"),
         )
       }
