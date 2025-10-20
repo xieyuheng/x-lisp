@@ -6,8 +6,8 @@ import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { sexpKeywordMeta } from "./sexpKeywordMeta.ts"
 
-export function matchExp(data: X.Sexp): Exp {
-  return X.match(expMatcher, data)
+export function matchExp(sexp: X.Sexp): Exp {
+  return X.match(expMatcher, sexp)
 }
 
 const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
@@ -298,7 +298,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   }),
 ])
 
-export function matchCondLine(data: X.Sexp): Exps.CondLine {
+export function matchCondLine(sexp: X.Sexp): Exps.CondLine {
   return X.match(
     X.matcher("(cons* question body)", ({ question, body }, { meta }) => {
       if (question.kind === "Symbol" && question.content === "else") {
@@ -313,11 +313,11 @@ export function matchCondLine(data: X.Sexp): Exps.CondLine {
         }
       }
     }),
-    data,
+    sexp,
   )
 }
 
-export function matchMatchLine(data: X.Sexp): Exps.MatchLine {
+export function matchMatchLine(sexp: X.Sexp): Exps.MatchLine {
   return X.match(
     X.matcher("(cons* pattern body)", ({ pattern, body }, { meta }) => {
       return {
@@ -325,6 +325,6 @@ export function matchMatchLine(data: X.Sexp): Exps.MatchLine {
         body: Exps.Begin(X.listElements(body).map(matchExp), meta),
       }
     }),
-    data,
+    sexp,
   )
 }

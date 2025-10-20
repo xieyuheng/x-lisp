@@ -113,7 +113,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   }),
 ])
 
-function matchImportEntry(data: X.Sexp): Stmts.ImportEntry {
+function matchImportEntry(sexp: X.Sexp): Stmts.ImportEntry {
   return X.match(
     X.matcherChoice([
       X.matcher("`(rename ,name ,rename)", ({ name, rename }, { meta }) => {
@@ -131,11 +131,11 @@ function matchImportEntry(data: X.Sexp): Stmts.ImportEntry {
         }
       }),
     ]),
-    data,
+    sexp,
   )
 }
 
-function matchDataPredicate(data: X.Sexp): Stmts.DataPredicateSpec {
+function matchDataPredicate(sexp: X.Sexp): Stmts.DataPredicateSpec {
   return X.match(
     X.matcherChoice([
       X.matcher("(cons* name parameters)", ({ name, parameters }, { meta }) => {
@@ -152,11 +152,11 @@ function matchDataPredicate(data: X.Sexp): Stmts.DataPredicateSpec {
         }
       }),
     ]),
-    data,
+    sexp,
   )
 }
 
-function matchDataConstructor(data: X.Sexp): Stmts.DataConstructorSpec {
+function matchDataConstructor(sexp: X.Sexp): Stmts.DataConstructorSpec {
   return X.match(
     X.matcherChoice([
       X.matcher("(cons* name fields)", ({ name, fields }, { meta }) => {
@@ -173,11 +173,11 @@ function matchDataConstructor(data: X.Sexp): Stmts.DataConstructorSpec {
         }
       }),
     ]),
-    data,
+    sexp,
   )
 }
 
-function matchDataField(data: X.Sexp): DataField {
+function matchDataField(sexp: X.Sexp): DataField {
   return X.match(
     X.matcherChoice([
       X.matcher("`(,name ,exp)", ({ name, exp }, { meta }) => {
@@ -187,6 +187,6 @@ function matchDataField(data: X.Sexp): DataField {
         }
       }),
     ]),
-    data,
+    sexp,
   )
 }

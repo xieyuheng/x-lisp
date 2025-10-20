@@ -1,6 +1,7 @@
 # basic
 
-[basic] `syntax/` -- `matchInstr`
+[basic] `basic:run`
+[basic]  `execute` -- mod and function without args
 [basic] `execute` -- mod and function without args
 
 # later

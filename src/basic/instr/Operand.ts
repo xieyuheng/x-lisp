@@ -1,6 +1,6 @@
 import { type Value } from "../value/index.ts"
 
-export type Operand = Var
+export type Operand = Var | Imm
 
 export type Var = {
   kind: "Var"
