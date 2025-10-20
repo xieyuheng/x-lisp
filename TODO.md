@@ -1,6 +1,5 @@
 # basic
 
-[basic] `createMod` -- take `url`
 [basic] `Stmt` -- `DefineFunction` -- same as `FunctionDefinition`
 [basic] `syntax/` -- parse `DefineFunction`
 [basic] build control flow graph -- use digraph
