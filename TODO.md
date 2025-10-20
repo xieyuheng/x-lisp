@@ -1,12 +1,14 @@
 # basic
 
 [basic] `Value` & `Type` -- just simple type for now
+
 [basic] `Label`
+
 [basic] `Mod`
 
 - Mod
-  - Def
-    - FnDef
+  - Definition
+    - FunctionDefinition
       - Block
         - Instr
 
@@ -25,7 +27,3 @@
 # later
 
 [basic] `Stmt` -- `Import`
-
-[basic] `Mod` -- need bundler before codegen
-
-- review Module system from EOPL

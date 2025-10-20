@@ -82,3 +82,28 @@ SSA 到 x86 的 codegen 可以简单地用 rewrite rule 实现。
   在调用 GC 的时候使用这些信息。
 
   在 heap 中，每个 data 都要有 header 来保存 metadata。
+
+# module bundler
+
+basic-lisp 需要支持模块系统，
+因为这样可以让 frontend 不必重新实现模块系统。
+
+对于 module 的代码生成，有两种方案：
+
+- 方案 A：一个 module 一个 object file。
+
+- 方案 B：把所有 module bundle 到一起，生成一个 object file。
+
+两个方案可能都要实现，首先要实现方案 B。
+
+假设我们还是使用 one file one module 的模块系统设计。
+此时 module 是没有用户所指定的名字的，
+module 的名字就是 file path。
+
+要实现方案 B，就需要给每个 module 生成一个唯一的前缀。
+然后把 imported name 都处理为带有前缀的唯一 name。
+
+- 如果每个 module 有用户所给出的唯一的名字，
+  就可以避免生成前缀，可以直接用给出的名字作为前缀。
+  类似 java 的模块系统，
+  但是我们还是想实现简单的 one file one module。
