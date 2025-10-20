@@ -1,7 +1,5 @@
 # basic
 
-[basic] `Type` -- `AtomType` and `TermType`
-
 [basic] `Mod`
 
 - no `Label` -- just use string

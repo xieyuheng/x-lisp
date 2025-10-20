@@ -1,6 +1,5 @@
+import { type Type } from "../type/index.ts"
 import { type Value } from "../value/index.ts"
-
-export type Type = "TODO"
 
 export type Instr = {
   dest?: string
