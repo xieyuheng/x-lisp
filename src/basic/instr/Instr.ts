@@ -5,11 +5,12 @@ export type Instr = {
   dest?: string
   type?: Type
   op: string
-  refs?: Array<string>
-  operands?: Array<string>
-  labels?: Array<string>
+  operands: Array<Operand>
   value?: Value
 }
+
+export type Operand = Var
+export type Var = { kind: "Var"; name: string }
 
 export type Constant = Instr & {
   dest: string
