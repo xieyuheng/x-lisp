@@ -1,4 +1,5 @@
-export type Value = "TODO"
+import { type Value } from "../value/index.ts"
+
 export type Type = "TODO"
 
 export type Instr = {
