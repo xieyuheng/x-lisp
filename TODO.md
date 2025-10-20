@@ -1,13 +1,10 @@
 # basic
 
-[basic] `Stmt` -- `Define` -- only define function
-
-- Stmt
-  - Define
-    - Instr | Label
-
-[basic] parse stmt
-[basic] build control flow graph
+[basic] constructor for `FunctionDefinition` constructor `Block`
+[basic] `createMod` -- take `url`
+[basic] `Stmt` -- `DefineFunction` -- same as `FunctionDefinition`
+[basic] parse `DefineFunction`
+[basic] build control flow graph -- use digraph
 [basic] `execute` -- mod and function without args
 [basic] full type inference
 [basic] plugin system -- for extensions -- learn from vite API

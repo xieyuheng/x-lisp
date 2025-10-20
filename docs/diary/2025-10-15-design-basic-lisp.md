@@ -12,22 +12,23 @@ date: 2025-10-15
 那么有的 function 只有一个 block 怎么办？
 另外，一般 function 的开头 block 都是没有名字的。
 
-结论：还是使用 instruction list，
-完全模仿 bril，但是改成 lisp 语法。
+结论：直接描述 block。
+只是为了避免写函数开头的 block，
+而放弃结构化的语法，不值得。
 
 # 是否限制 operand 为 variable？
 
 是否像 bril 一样，限制所有的 operand 都是 variable？
-bril 这样做其实是为了方便用 json 表示。
+bril 这样做其实是为了方便用 JSON 表示。
 LLVM 的 IR 是没有这样限制的。
 
-结论：先限制。
-如果发现对于后续的优化而言，
-这个限制没必要，再取消。
+结论：不限制。
+因为这个局限来自于「方便用 JSON 表示」，
+既然我不用 JSON，就不应该有这个局限。
 
 # codegen
 
-SSA 到 x86 的 codegen 可以简单地用 rewrite rule 实现。
+未来 SSA 到 x86 的 codegen 可以简单地用 rewrite rule 实现。
 由于我们有 structural 的数据类型 sexp，
 所以使用 rewrite rule 很方便。
 
