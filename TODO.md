@@ -1,6 +1,6 @@
 # basic
 
-[basic] `basic:run`
+[basic] `load`
 [basic]  `execute` -- mod and function without args
 [basic] `execute` -- mod and function without args
 

@@ -12,9 +12,9 @@ import { importPrelude } from "../lang/prelude/importPrelude.ts"
 
 export const ReplCommand: Command = {
   name: "repl",
-  description: "Start the REPL",
+  description: "Start x-lisp REPL",
   help(commander) {
-    let message = `The ${this.name} start the read-eval-print loop.`
+    let message = `The ${this.name} start x-lisp's read-eval-print loop.`
     return message
   },
 
