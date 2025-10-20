@@ -1,7 +1,5 @@
 # basic
 
-[basic] `Value` should not use `number` directly, use `Int` and `Float`
-
 [basic] `Mod`
 
 - just use `string` as label
