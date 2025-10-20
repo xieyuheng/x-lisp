@@ -2,7 +2,7 @@
 
 [basic] `Mod`
 
-- no `Label` -- just use string
+- just use `string` as label
 
 - Mod
   - Definition
@@ -16,8 +16,10 @@
   - Define
     - Instr | Label
 
+[basic] parse stmt
+[basic] build control flow graph
+[basic] `execute` -- mod and function without args
 [basic] full type inference
-
 [basic] plugin system -- for extensions -- learn from vite API
 
 # later
