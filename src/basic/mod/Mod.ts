@@ -1,3 +1,5 @@
+import type { Definition } from "../definition/index.ts"
+
 export type Mod = {
-  // TODO
+  definitions: Map<string, Definition>
 }

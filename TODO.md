@@ -1,15 +1,5 @@
 # basic
 
-[basic] `Mod`
-
-- just use `string` as label
-
-- Mod
-  - Definition
-    - FunctionDefinition
-      - Block
-        - Instr
-
 [basic] `Stmt` -- `Define` -- only define function
 
 - Stmt
