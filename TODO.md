@@ -1,8 +1,8 @@
 # basic
 
-[basic] `runCode`
-[basic] `runMain`
-[basic] `execute` -- run the `main` function
+[basic] `execute`
+[basic] `runMain` -- run the `main` function
+[basic] `BasicRunCommand` -- call `runMain`
 [basic] plugin system -- for extensions -- learn from vite API
 
 # later

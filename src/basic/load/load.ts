@@ -1,5 +1,6 @@
 import fs from "node:fs"
 import { createMod, type Mod } from "../mod/index.ts"
+import { runCode } from "./runCode.ts"
 
 const globalLoadedMods: Map<string, Mod> = new Map()
 
@@ -10,7 +11,7 @@ export function load(url: URL): Mod {
   const text = loadText(url)
   const mod = createMod(url)
   globalLoadedMods.set(url.href, mod)
-  // runCode(mod, text)
+  runCode(mod, text)
   return mod
 }
 
