@@ -1,4 +1,7 @@
+export * from "./block/index.ts"
+export * from "./definition/index.ts"
 export * from "./instr/index.ts"
 export * from "./mod/index.ts"
+export * from "./stmt/index.ts"
 export * from "./type/index.ts"
 export * from "./value/index.ts"

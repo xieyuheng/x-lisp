@@ -1,6 +1,5 @@
 # basic
 
-[basic] `Stmt` -- `DefineFunction` -- same as `FunctionDefinition`
 [basic] `syntax/` -- parse `DefineFunction`
 [basic] build control flow graph -- use digraph
 [basic] `execute` -- mod and function without args
