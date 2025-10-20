@@ -43,7 +43,7 @@ function matchInstr(sexp: X.Sexp): Instr {
   return X.match(
     X.matcherChoice<Instr>([
       X.matcher(
-        "(cons* '= dest (cons* op operands))",
+        "`(= ,dest ,(cons* op operands))",
         ({ dest, op, operands }, { sexp }) => {
           return {
             dest: X.symbolContent(dest),

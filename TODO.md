@@ -1,5 +1,6 @@
 # basic
 
+[basic] use record instead of map
 [basic] `execute`
 [basic] `runMain` -- run the `main` function
 [basic] `BasicRunCommand` -- call `runMain`

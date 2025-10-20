@@ -12,6 +12,7 @@ export function load(url: URL): Mod {
   const mod = createMod(url)
   globalLoadedMods.set(url.href, mod)
   runCode(mod, text)
+  console.dir(mod, { depth: null })
   return mod
 }
 
