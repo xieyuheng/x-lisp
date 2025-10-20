@@ -11,25 +11,32 @@ export type Instr = {
   value?: Value
 }
 
-export type Const = {
+export type Constant = Instr & {
   dest: string
-  type: Type
   op: "const"
   value: Value
 }
 
-export type Operation = {
-  dest: string
-  type: Type
-  op: string
-  refs?: Array<string>
-  operands?: Array<string>
-  labels?: Array<string>
+export function isConstant(instr: Instr): instr is Constant {
+  return (
+    instr.dest !== undefined &&
+    instr.value !== undefined &&
+    instr.op === "const"
+  )
 }
 
-export type Effect = {
-  op: string
-  refs?: Array<string>
-  operands?: Array<string>
-  labels?: Array<string>
+export type Operation = Instr & {
+  dest: string
+}
+
+export function isOperation(instr: Instr): instr is Operation {
+  return instr.dest !== undefined && instr.op !== "const"
+}
+
+export type Effect = Instr & {
+  dest: undefined
+}
+
+export function isEffect(instr: Instr): instr is Effect {
+  return instr.dest === undefined
 }

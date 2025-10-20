@@ -1,12 +1,7 @@
 # basic
 
-[basic] `isConst` `isOperation` `isEffect`
-
+[basic] `Value` & `Type` -- just simple type for now
 [basic] `Label`
-
-[basic] `Type` -- just simple type for now
-[basic] `Value`
-
 [basic] `Mod`
 
 - Mod
@@ -22,7 +17,6 @@
     - Instr | Label
 
 [basic] `Stmt` -- `Claim`
-
 
 [basic] full type inference
 
