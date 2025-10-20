@@ -1,6 +1,6 @@
 # basic
 
-[basic] `syntax/` -- `matchBlock`
+[basic] `syntax/` -- `matchInstr`
 [basic] `execute` -- mod and function without args
 
 # later
