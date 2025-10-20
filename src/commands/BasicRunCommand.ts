@@ -1,4 +1,5 @@
 import { type Command } from "@xieyuheng/commander.js"
+import { load } from "../basic/load/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
@@ -22,7 +23,7 @@ export const BasicRunCommand: Command = {
 
     try {
       const url = createUrlOrFileUrl(commander.args[0])
-      // load(url)
+      load(url)
     } catch (error) {
       console.log(errorReport(error))
       process.exit(1)

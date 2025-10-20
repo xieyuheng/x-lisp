@@ -1,14 +1,14 @@
 # basic
 
-[basic] `load`
-[basic]  `execute` -- mod and function without args
-[basic] `execute` -- mod and function without args
+[basic] `runCode`
+[basic] `runMain`
+[basic] `execute` -- run the `main` function
+[basic] plugin system -- for extensions -- learn from vite API
 
 # later
 
 [basic] full type inference
 [basic] build control flow graph -- use digraph
-[basic] plugin system -- for extensions -- learn from vite API
 
 [basic] `Stmt` -- `Claim`
 [basic] `Stmt` -- `Import`
