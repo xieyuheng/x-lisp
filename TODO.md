@@ -1,5 +1,12 @@
 # basic
 
+[basic] `isConst` `isOperation` `isEffect`
+
+[basic] `Label`
+
+[basic] `Type` -- just simple type for now
+[basic] `Value`
+
 [basic] `Mod`
 
 - Mod
@@ -12,15 +19,12 @@
 
 - Stmt
   - Define
-    - Instr
+    - Instr | Label
 
-[basic] `Instr` -- including label
+[basic] `Stmt` -- `Claim`
 
-[basic] `Operand` -- `Label` -- symbol start with `.` -- `.label`
-[basic] `Operand` -- `Var` -- can local name or function name
 
-[basic] `Type` -- just simple type for now
-[basic] `Value`
+[basic] full type inference
 
 [basic] plugin system -- for extensions -- learn from vite API
 
