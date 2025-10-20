@@ -6,8 +6,8 @@ import type { DataField } from "../value/AboutData.ts"
 import { matchExp } from "./matchExp.ts"
 import { sexpKeywordMeta } from "./sexpKeywordMeta.ts"
 
-export function matchStmt(data: X.Sexp): Stmt {
-  return X.match(stmtMatcher, data)
+export function matchStmt(sexp: X.Sexp): Stmt {
+  return X.match(stmtMatcher, sexp)
 }
 
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
