@@ -49,9 +49,11 @@ uxn 风格的 game engine 的脚本语言。
   - [ ] bundling
   - [ ] dynamic type -- support tag and untag operaters
 - [ ] x-lisp compiler (to basic-lisp)
+  - [ ] shrink
   - [ ] uniquify
   - [ ] unnest
   - [ ] dynamic type -- use tag and untag operaters
+  - [ ] explicate-control
 - [ ] C runtime (with GC)
   - [ ] value tag encoding
   - [ ] builtin
