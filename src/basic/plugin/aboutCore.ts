@@ -27,6 +27,25 @@ export const aboutCore: Plugins = {
     },
   },
 
+  branch: {
+    execute(context, frame, instr) {
+      const condition = frameEval(frame, instr.operands[0])
+      assert(condition.kind === "Bool")
+
+      assert(instr.operands[1].kind === "Var")
+      const thenLabel = instr.operands[1].name
+
+      assert(instr.operands[2].kind === "Var")
+      const elseLabel = instr.operands[2].name
+
+      if (condition.content) {
+        frameGoto(frame, thenLabel)
+      } else {
+        frameGoto(frame, elseLabel)
+      }
+    },
+  },
+
   call: {
     execute(context, frame, instr) {
       const [f, ...rest] = instr.operands

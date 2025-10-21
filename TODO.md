@@ -1,9 +1,18 @@
 # basic
 
-[basic] `plugin/` -- `aboutCore` -- `branch`
+[basic] `createPlugin`
+[basic] `composePlugins`
+[basic] `InstrHandler`
+[basic] `pluginPrimitiveFunction`
 
 [basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
 [basic] `plugin/` -- `aboutFloat`
+
+[basic] `aboutSSA` -- `get` and `use`
+
+[basic] `plugin/` -- `aboutCore` -- `assert`
+
+[basic] instr has `meta` -- for `assert`
 
 # later
 
