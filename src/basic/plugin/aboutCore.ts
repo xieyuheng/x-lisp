@@ -1,6 +1,11 @@
 import assert from "node:assert"
 import { equal } from "../equal/index.ts"
-import { callFunction, frameEval, framePut } from "../execute/index.ts"
+import {
+  callFunction,
+  frameEval,
+  frameGoto,
+  framePut,
+} from "../execute/index.ts"
 import * as Values from "../value/index.ts"
 import type { Plugins } from "./index.ts"
 
@@ -12,6 +17,13 @@ export const aboutCore: Plugins = {
       }
 
       context.frames.pop()
+    },
+  },
+
+  goto: {
+    execute(context, frame, instr) {
+      assert(instr.operands[0].kind === "Var")
+      frameGoto(frame, instr.operands[0].name)
     },
   },
 

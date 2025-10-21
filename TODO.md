@@ -1,9 +1,9 @@
 # basic
 
+[basic] `plugin/` -- `aboutCore` -- `branch`
+
 [basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
 [basic] `plugin/` -- `aboutFloat`
-[basic] `plugin/` -- `aboutCore` -- `branch`
-[basic] `plugin/` -- `aboutCore` -- `goto`
 
 # later
 

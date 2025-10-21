@@ -48,6 +48,18 @@ export function framePut(frame: Frame, name: string, value: Value): void {
   frame.env.set(name, value)
 }
 
+export function frameGoto(frame: Frame, label: string): void {
+  const block = frame.blocks.get(label)
+  if (block === undefined) {
+    let message = "[frameGoto] undefined label"
+    message += `\n  label: ${label}`
+    throw new Error(message)
+  }
+
+  frame.block = block
+  frame.index = 0
+}
+
 export function frameEval(frame: Frame, operand: Operand): Value {
   switch (operand.kind) {
     case "Var": {
