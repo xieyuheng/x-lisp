@@ -40,10 +40,18 @@ export function createFrame(
   }
 }
 
+export function frameGet(frame: Frame, name: string): Value | undefined {
+  return frame.env.get(name)
+}
+
+export function framePut(frame: Frame, name: string, value: Value): void {
+  frame.env.set(name, value)
+}
+
 export function frameEval(frame: Frame, operand: Operand): Value {
   switch (operand.kind) {
     case "Var": {
-      const value = frame.env.get(operand.name)
+      const value = frameGet(frame, operand.name)
       if (value === undefined) {
         let message = "[frameEval] undefined variable"
         message += `\n  name: ${operand.name}`

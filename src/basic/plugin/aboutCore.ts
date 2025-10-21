@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import { callFunction, frameEval } from "../execute/index.ts"
+import { callFunction, frameEval, framePut } from "../execute/index.ts"
 import type { Plugins } from "./index.ts"
 
 export const aboutCore: Plugins = {
@@ -22,11 +22,9 @@ export const aboutCore: Plugins = {
       callFunction(context, f.name, args)
       if (instr.dest !== undefined) {
         assert(context.result)
-        frame.env.set(instr.dest, context.result)
+        framePut(frame, instr.dest, context.result)
         delete context.result
       }
-
-      return
     },
   },
 }

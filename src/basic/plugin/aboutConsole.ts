@@ -7,7 +7,6 @@ export const aboutConsole: Plugins = {
       const [x] = instr.operands
       const value = frameEval(frame, x)
       console.log(value)
-      return
     },
   },
 }
