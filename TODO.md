@@ -1,7 +1,5 @@
 # basic
 
-[basic] `eq?` instr
-
 [basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
 
 [basic] `plugin/` -- `aboutFloat`

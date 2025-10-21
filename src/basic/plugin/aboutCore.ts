@@ -1,12 +1,16 @@
 import assert from "node:assert"
+import { equal } from "../equal/index.ts"
 import { callFunction, frameEval, framePut } from "../execute/index.ts"
+import * as Values from "../value/index.ts"
 import type { Plugins } from "./index.ts"
 
 export const aboutCore: Plugins = {
   return: {
     execute(context, frame, instr) {
-      const [x] = instr.operands
-      if (x !== undefined) context.result = frameEval(frame, x)
+      if (instr.operands.length > 0) {
+        context.result = frameEval(frame, instr.operands[0])
+      }
+
       context.frames.pop()
     },
   },
@@ -25,20 +29,28 @@ export const aboutCore: Plugins = {
     },
   },
 
-  identity: {
-    execute(context, frame, instr) {
-      assert(instr.dest)
-      const [x] = instr.operands
-      framePut(frame, instr.dest, frameEval(frame, x))
-    },
-  },
-
   const: {
     execute(context, frame, instr) {
       assert(instr.dest)
-      const [x] = instr.operands
-      assert(x.kind === "Imm")
-      framePut(frame, instr.dest, x.value)
+      assert(instr.operands[0].kind === "Imm")
+      framePut(frame, instr.dest, instr.operands[0].value)
+    },
+  },
+
+  identity: {
+    execute(context, frame, instr) {
+      assert(instr.dest)
+      const x = frameEval(frame, instr.operands[0])
+      framePut(frame, instr.dest, x)
+    },
+  },
+
+  "eq?": {
+    execute(context, frame, instr) {
+      assert(instr.dest)
+      const x = frameEval(frame, instr.operands[0])
+      const y = frameEval(frame, instr.operands[1])
+      framePut(frame, instr.dest, Values.Bool(equal(x, y)))
     },
   },
 }
