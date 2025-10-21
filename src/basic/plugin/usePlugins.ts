@@ -3,6 +3,6 @@ import type { Plugins } from "./index.ts"
 
 export function usePlugins(): Plugins {
   return {
-    ...aboutCore(),
+    ...aboutCore,
   }
 }
