@@ -1,6 +1,7 @@
 import assert from "node:assert"
-import type { Instr } from "../instr/index.ts"
+import type { Instr, Operand } from "../instr/index.ts"
 import { modLookup } from "../mod/index.ts"
+import type { Value } from "../value/index.ts"
 import {
   contextCurrentFrame,
   contextIsFinished,
@@ -28,18 +29,28 @@ export function executeInstr(
       const definition = modLookup(context.mod, f.name)
       assert(definition)
       assert(definition.kind === "FunctionDefinition")
-      const args = rest.map(evaluateOperand(frame.env))
+      const args = rest.map((x) => evaluateOperand(frame.env, x))
       context.frames.push(createFrame(definition, args))
     }
 
     case "ret": {
       const [x] = instr.operands
-      context.result = evaluateOperand(frame.env)(x)
+      context.result = evaluateOperand(frame.env, x)
       context.frames.pop()
     }
   }
 }
 
-// evaluateOperand
-// framePut
-// frameGet
+function evaluateOperand(env: Map<string, Value>, operand: Operand): Value {
+  switch (operand.kind) {
+    case "Var": {
+      const value = env.get(operand.name)
+      assert(value)
+      return value
+    }
+
+    case "Imm": {
+      return operand.value
+    }
+  }
+}

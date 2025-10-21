@@ -1,7 +1,5 @@
 # basic
 
-[basic] `evaluateOperand`
-
 [basic] fix basic examples -- `main` should not take args
 [basic] `runMain` -- run the `main` function
 [basic] `BasicRunCommand` -- call `runMain`
