@@ -29,13 +29,4 @@ export const aboutCore: Plugins = {
       return
     },
   },
-
-  print: {
-    execute(context, frame, instr) {
-      const [x] = instr.operands
-      const value = frameEval(frame, x)
-      console.log(value)
-      return
-    },
-  },
 }
