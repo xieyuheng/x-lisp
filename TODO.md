@@ -1,6 +1,12 @@
 # basic
 
-[basic] `execute` -- take `context` with `frames` as argument
+[basic] `contextCurrentFrame`
+[basic] `frameNextInstr`
+[basic] `modLookup`
+[basic] `evaluateOperand`
+[basic] `createFrame`
+[basic] `evaluateOperand`
+
 [basic] fix basic examples -- `main` should not take args
 [basic] `runMain` -- run the `main` function
 [basic] `BasicRunCommand` -- call `runMain`
