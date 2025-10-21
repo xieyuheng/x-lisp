@@ -1,13 +1,9 @@
 # basic
 
 [basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
-
 [basic] `plugin/` -- `aboutFloat`
-
 [basic] `plugin/` -- `aboutCore` -- `branch`
 [basic] `plugin/` -- `aboutCore` -- `goto`
-
-[basic] `formatValue`
 
 # later
 
