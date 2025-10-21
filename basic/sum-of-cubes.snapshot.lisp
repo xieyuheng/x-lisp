@@ -1,6 +1,7 @@
 (define (main)
   (block entry
     (= x (call sum-of-cubes 6))
+    (print x)
     (return)))
 
 (define (sum-of-cubes n)

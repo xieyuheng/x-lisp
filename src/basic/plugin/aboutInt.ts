@@ -8,7 +8,7 @@ export const aboutInt: Plugins = {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
-      const y = frameEval(frame, instr.operands[0])
+      const y = frameEval(frame, instr.operands[1])
       const result = Values.Int(
         Values.asInt(x).content + Values.asInt(y).content,
       )
@@ -20,7 +20,7 @@ export const aboutInt: Plugins = {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
-      const y = frameEval(frame, instr.operands[0])
+      const y = frameEval(frame, instr.operands[1])
       const result = Values.Int(
         Values.asInt(x).content - Values.asInt(y).content,
       )
@@ -32,7 +32,7 @@ export const aboutInt: Plugins = {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
-      const y = frameEval(frame, instr.operands[0])
+      const y = frameEval(frame, instr.operands[1])
       const result = Values.Int(
         Values.asInt(x).content * Values.asInt(y).content,
       )
@@ -44,7 +44,7 @@ export const aboutInt: Plugins = {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
-      const y = frameEval(frame, instr.operands[0])
+      const y = frameEval(frame, instr.operands[1])
       const result = Values.Int(
         Math.trunc(Values.asInt(x).content / Values.asInt(y).content),
       )
@@ -56,7 +56,7 @@ export const aboutInt: Plugins = {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
-      const y = frameEval(frame, instr.operands[0])
+      const y = frameEval(frame, instr.operands[1])
       const result = Values.Int(
         Values.asInt(x).content % Values.asInt(y).content,
       )

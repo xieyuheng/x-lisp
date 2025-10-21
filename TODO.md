@@ -8,7 +8,7 @@
 [basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
 [basic] `plugin/` -- `aboutFloat`
 
-[basic] `aboutSSA` -- `get` and `use`
+[basic] `aboutSSA` -- `put!` and `use`
 
 [basic] `plugin/` -- `aboutCore` -- `assert`
 
