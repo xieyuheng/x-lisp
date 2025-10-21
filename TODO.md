@@ -1,8 +1,14 @@
 # basic
 
-[basic] `plugin/` -- `aboutCore` -- `branch`
+[basic] `Bool` as `Value`
+[basic] `eq?` instr
+
+[basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
 
 [basic] `plugin/` -- `aboutFloat`
+
+[basic] `plugin/` -- `aboutCore` -- `branch`
+[basic] `plugin/` -- `aboutCore` -- `goto`
 
 [basic] `formatValue`
 

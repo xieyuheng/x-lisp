@@ -5,27 +5,31 @@
   (block entry
     (= x (call ack 3 6))
     (print x)
-    (ret)))
+    (return)))
 
 (define (ack m n)
   (block entry
     (= zero (const 0))
     (= one (const 1))
-    (= cond-m (eq m zero))
-    (br cond-m m-zero m-nonzero))
+    (= cond-m (eq? m zero))
+    (branch cond-m m-zero m-nonzero))
+
   (block m-zero
     (= tmp (iadd n one))
-    (ret tmp))
+    (return tmp))
+
   (block m-nonzero
-    (= cond-n (eq n zero))
-    (br cond-n n-zero n-nonzero))
+    (= cond-n (eq? n zero))
+    (branch cond-n n-zero n-nonzero))
+
   (block n-zero
     (= m1 (isub m one))
     (= tmp (call ack m1 one))
-    (ret tmp))
+    (return tmp))
+
   (block n-nonzero
     (= m1 (isub m one))
     (= n1 (isub n one))
     (= t1 (call ack m n1))
     (= t2 (call ack m1 t1))
-    (ret t2)))
+    (return t2)))

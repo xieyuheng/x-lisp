@@ -3,7 +3,7 @@ import { callFunction, frameEval, framePut } from "../execute/index.ts"
 import type { Plugins } from "./index.ts"
 
 export const aboutCore: Plugins = {
-  ret: {
+  return: {
     execute(context, frame, instr) {
       const [x] = instr.operands
       if (x !== undefined) context.result = frameEval(frame, x)

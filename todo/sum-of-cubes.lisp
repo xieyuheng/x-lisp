@@ -1,7 +1,7 @@
 (define (main)
   (block entry
     (= x (call sum-of-cubes 6))
-    (ret)))
+    (return)))
 
 (define (sum-of-cubes n)
   (block entry
@@ -12,4 +12,4 @@
     (= v4 (imul v2 v3)) ; n(n+1)
     (= v5 (idiv v4 v1)) ; n(n+1)/2
     (= v6 (imul v5 v5)) ; (n(n+1)/2)^2
-    (ret v6)))
+    (return v6)))
