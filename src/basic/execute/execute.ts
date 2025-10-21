@@ -1,13 +1,14 @@
 import assert from "node:assert"
 import type { Instr } from "../instr/index.ts"
 import { modLookup } from "../mod/index.ts"
+import { usePlugins } from "../plugin/index.ts"
 import type { Value } from "../value/index.ts"
 import {
   contextCurrentFrame,
   contextIsFinished,
   type Context,
 } from "./Context.ts"
-import { createFrame, frameEval, frameNextInstr, type Frame } from "./Frame.ts"
+import { createFrame, frameNextInstr, type Frame } from "./Frame.ts"
 
 export function executeOneStep(context: Context): void {
   if (contextIsFinished(context)) return
@@ -22,38 +23,15 @@ export function executeInstr(
   frame: Frame,
   instr: Instr,
 ): void {
-  switch (instr.op) {
-    case "call": {
-      const [f, ...rest] = instr.operands
-      assert(f.kind === "Var")
-      const args = rest.map((x) => frameEval(frame, x))
-      callFunction(context, f.name, args)
-      if (instr.dest !== undefined) {
-        assert(context.result)
-        frame.env.set(instr.dest, context.result)
-        delete context.result
-      }
-
-      return
-    }
-
-    case "ret": {
-      const [x] = instr.operands
-      if (x !== undefined) {
-        context.result = frameEval(frame, x)
-      }
-
-      context.frames.pop()
-      return
-    }
-
-    case "print": {
-      const [x] = instr.operands
-      const value = frameEval(frame, x)
-      console.log(value)
-      return
-    }
+  const plugins = usePlugins()
+  const plugin = plugins[instr.op]
+  if (plugin === undefined) {
+    let message = "[executeInstr] undefined op"
+    message += `\n  op: ${instr.op}`
+    throw new Error(message)
   }
+
+  plugin.execute(context, frame, instr)
 }
 
 export function callFunction(
