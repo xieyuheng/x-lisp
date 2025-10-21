@@ -4,3 +4,5 @@ import type { Instr } from "../instr/index.ts"
 export type Plugin = {
   execute: (context: Context, frame: Frame, instr: Instr) => void
 }
+
+export type Plugins = Record<string, Plugin>
