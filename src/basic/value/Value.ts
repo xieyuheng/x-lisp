@@ -1,4 +1,16 @@
-export type Value = Int | Float
+export type Value = Bool | Int | Float
+
+export type Bool = {
+  kind: "Bool"
+  content: boolean
+}
+
+export function Bool(content: boolean): Bool {
+  return {
+    kind: "Bool",
+    content,
+  }
+}
 
 export type Int = {
   kind: "Int"

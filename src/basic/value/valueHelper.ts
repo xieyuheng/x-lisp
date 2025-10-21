@@ -2,12 +2,21 @@ import { formatValue } from "../format/index.ts"
 import type { Value } from "./index.ts"
 import * as Values from "./index.ts"
 
+export function isBool(value: Value): value is Values.Bool {
+  return value.kind === "Bool"
+}
+
 export function isInt(value: Value): value is Values.Int {
   return value.kind === "Int"
 }
 
 export function isFloat(value: Value): value is Values.Float {
   return value.kind === "Float"
+}
+
+export function asBool(value: Value): Values.Bool {
+  if (isBool(value)) return value
+  throw new Error(`[asBool] fail on: ${formatValue(value)}`)
 }
 
 export function asInt(value: Value): Values.Int {

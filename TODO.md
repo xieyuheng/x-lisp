@@ -1,6 +1,5 @@
 # basic
 
-[basic] `Bool` as `Value`
 [basic] `eq?` instr
 
 [basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
