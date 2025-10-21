@@ -28,7 +28,7 @@
     "@xieyuheng/x-sexp.js": "^0.5.5"
   },
   "devDependencies": {
-    "@types/node": "^24.9.0",
+    "@types/node": "^24.9.1",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.3.0",
     "typescript": "^5.9.3"
