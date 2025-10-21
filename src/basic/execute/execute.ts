@@ -6,7 +6,7 @@ import {
   contextIsFinished,
   type Context,
 } from "./Context.ts"
-import type { Frame } from "./Frame.ts"
+import { frameNextInstr, type Frame } from "./Frame.ts"
 
 export function executeOneStep(context: Context): void {
   if (contextIsFinished(context)) return

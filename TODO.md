@@ -1,7 +1,5 @@
 # basic
 
-[basic] `frameNextInstr`
-[basic] `evaluateOperand`
 [basic] `createFrame`
 [basic] `evaluateOperand`
 
