@@ -39,8 +39,18 @@ export function executeInstr(
 
     case "ret": {
       const [x] = instr.operands
-      context.result = evaluateOperand(frame.env, x)
+      if (x !== undefined) {
+        context.result = evaluateOperand(frame.env, x)
+      }
+
       context.frames.pop()
+      return
+    }
+
+    case "print": {
+      const [x] = instr.operands
+      const value = evaluateOperand(frame.env, x)
+      console.log(value)
       return
     }
   }
@@ -65,7 +75,11 @@ function evaluateOperand(env: Map<string, Value>, operand: Operand): Value {
   switch (operand.kind) {
     case "Var": {
       const value = env.get(operand.name)
-      assert(value)
+      if (value === undefined) {
+        let message = "[evaluateOperand] undefined variable"
+        message += `\n  name: ${operand.name}`
+        throw new Error(message)
+      }
       return value
     }
 

@@ -1,6 +1,12 @@
 # basic
 
-[basic] `BasicRunCommand` -- call `main`
+[basic] `formatValue`
+
+[basic] `execute` -- supported `const`
+[basic] `execute` -- supported `identity`
+[basic] `execute` -- supported `br`
+[basic] `execute` -- supported int opcode
+
 [basic] plugin system -- for extensions -- learn from vite API
 
 # later

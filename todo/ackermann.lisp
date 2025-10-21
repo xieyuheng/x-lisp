@@ -4,7 +4,8 @@
 (define (main)
   (block entry
     (= x (call ack 3 6))
-    (print x)))
+    (print x)
+    (ret)))
 
 (define (ack m n)
   (block entry
@@ -13,18 +14,18 @@
     (= cond-m (eq m zero))
     (br cond-m m-zero m-nonzero))
   (block m-zero
-    (= tmp (add n one))
+    (= tmp (iadd n one))
     (ret tmp))
   (block m-nonzero
     (= cond-n (eq n zero))
     (br cond-n n-zero n-nonzero))
   (block n-zero
-    (= m1 (sub m one))
+    (= m1 (isub m one))
     (= tmp (call ack m1 one))
     (ret tmp))
   (block n-nonzero
-    (= m1 (sub m one))
-    (= n1 (sub n one))
+    (= m1 (isub m one))
+    (= n1 (isub n one))
     (= t1 (call ack m n1))
     (= t2 (call ack m1 t1))
     (ret t2)))
