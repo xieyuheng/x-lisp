@@ -40,18 +40,22 @@ uxn 风格的 game engine 的脚本语言。
 
 - [x] x-lisp language design
 - [x] x-lisp interpreter
+- [x] basic-lisp language design
 - [x] basic-lisp interpreter
   - [ ] plugin system
   - [ ] SSA
   - [ ] type inference
   - [ ] module system
   - [ ] bundling
+  - [ ] dynamic type -- support tag and untag operaters
 - [ ] x-lisp compiler (to basic-lisp)
   - [ ] uniquify
   - [ ] unnest
+  - [ ] dynamic type -- use tag and untag operaters
 - [ ] C runtime (with GC)
+  - [ ] value tag encoding
   - [ ] builtin
-  - [ ] GC
+  - [ ] GC -- must support untagged value
 - [ ] basic-lisp codegen (to x86 via GNU assembler)
   - [ ] select instruction
   - [ ] allocate registers
