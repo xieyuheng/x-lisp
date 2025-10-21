@@ -1,8 +1,6 @@
 # basic
 
-[basic] fix basic examples -- `main` should not take args
-[basic] `runMain` -- run the `main` function
-[basic] `BasicRunCommand` -- call `runMain`
+[basic] `BasicRunCommand` -- call `main`
 [basic] plugin system -- for extensions -- learn from vite API
 
 # later

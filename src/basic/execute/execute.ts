@@ -46,7 +46,7 @@ export function executeInstr(
   }
 }
 
-function callFunction(
+export function callFunction(
   context: Context,
   name: string,
   args: Array<Value>,

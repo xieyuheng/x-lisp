@@ -1,6 +1,9 @@
-;; ARGS: 6
+(define (main)
+  (block entry
+    (= x (call sum-of-cubes 6))
+    (print x)))
 
-(define (main n)
+(define (sum-of-cubes n)
   (block entry
     (= v0 (const 1))
     (= v1 (const 2))

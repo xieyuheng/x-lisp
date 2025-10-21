@@ -1,11 +1,10 @@
 ;; Compute the Ackermann function recursively.
 ;; WARNING: Will quickly exceed stack size
-;; ARGS: 3 6
 
-(define (main m n)
+(define (main)
   (block entry
-    (= tmp (call ack m n))
-    (print tmp)))
+    (= x (call ack 3 6))
+    (print x)))
 
 (define (ack m n)
   (block entry

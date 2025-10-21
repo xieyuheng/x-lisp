@@ -9,6 +9,14 @@ export type Context = {
   result?: Value
 }
 
+export function createContext(mod: Mod): Context {
+  return {
+    mod,
+    frames: [],
+    result: undefined,
+  }
+}
+
 export function contextIsFinished(context: Context): boolean {
   return context.frames.length === 0
 }
