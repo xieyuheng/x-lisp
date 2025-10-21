@@ -1,6 +1,5 @@
 # basic
 
-[basic] `contextCurrentFrame`
 [basic] `frameNextInstr`
 [basic] `modLookup`
 [basic] `evaluateOperand`
