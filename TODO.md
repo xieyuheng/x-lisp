@@ -1,6 +1,5 @@
 # basic
 
-[basic] `createFrame`
 [basic] `evaluateOperand`
 
 [basic] fix basic examples -- `main` should not take args
