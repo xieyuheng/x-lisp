@@ -1,13 +1,15 @@
 # basic
 
+[basic] `plugin/` -- `aboutCore`
+
+[basic] `plugin/` -- `aboutCore` -- `const`
+[basic] `plugin/` -- `aboutCore` -- `identity`
+[basic] `plugin/` -- `aboutCore` -- `branch`
+
+[basic] `plugin/` -- `aboutInt`
+[basic] `plugin/` -- `aboutFloat`
+
 [basic] `formatValue`
-
-[basic] `execute` -- supported `const`
-[basic] `execute` -- supported `identity`
-[basic] `execute` -- supported `br`
-[basic] `execute` -- supported int opcode
-
-[basic] plugin system -- for extensions -- learn from vite API
 
 # later
 
