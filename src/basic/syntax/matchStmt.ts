@@ -68,6 +68,19 @@ function matchOperand(sexp: X.Sexp): Operand {
   return X.match(
     X.matcher("data", ({ data }, { meta }) => {
       switch (data.kind) {
+        case "Hashtag": {
+          const content = X.hashtagContent(data)
+          if (content === "t") {
+            return Operands.Imm(Values.Bool(true))
+          } else if (content === "f") {
+            return Operands.Imm(Values.Bool(false))
+          } else {
+            let message = `[matchOperand] unknown hashtag`
+            message += `\n  hashtag: #${content}`
+            throw new X.ErrorWithMeta(message, meta)
+          }
+        }
+
         case "Int":
           return Operands.Imm(Values.Int(X.numberContent(data)))
         case "Float":
