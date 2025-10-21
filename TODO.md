@@ -1,7 +1,5 @@
 # basic
 
-[basic] `plugin/` -- `aboutCore` -- `const`
-[basic] `plugin/` -- `aboutCore` -- `identity`
 [basic] `plugin/` -- `aboutCore` -- `branch`
 
 [basic] `plugin/` -- `aboutInt`

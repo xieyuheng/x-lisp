@@ -6,10 +6,7 @@ export const aboutCore: Plugins = {
   ret: {
     execute(context, frame, instr) {
       const [x] = instr.operands
-      if (x !== undefined) {
-        context.result = frameEval(frame, x)
-      }
-
+      if (x !== undefined) context.result = frameEval(frame, x)
       context.frames.pop()
     },
   },
@@ -25,6 +22,23 @@ export const aboutCore: Plugins = {
         framePut(frame, instr.dest, context.result)
         delete context.result
       }
+    },
+  },
+
+  identity: {
+    execute(context, frame, instr) {
+      assert(instr.dest)
+      const [x] = instr.operands
+      framePut(frame, instr.dest, frameEval(frame, x))
+    },
+  },
+
+  const: {
+    execute(context, frame, instr) {
+      assert(instr.dest)
+      const [x] = instr.operands
+      assert(x.kind === "Imm")
+      framePut(frame, instr.dest, x.value)
     },
   },
 }
