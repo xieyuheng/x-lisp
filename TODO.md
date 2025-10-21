@@ -2,7 +2,6 @@
 
 [basic] `plugin/` -- `aboutCore` -- `branch`
 
-[basic] `plugin/` -- `aboutInt`
 [basic] `plugin/` -- `aboutFloat`
 
 [basic] `formatValue`
