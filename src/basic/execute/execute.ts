@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import type { Instr, Operand } from "../instr/index.ts"
+import type { Instr } from "../instr/index.ts"
 import { modLookup } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
 import {
@@ -7,7 +7,7 @@ import {
   contextIsFinished,
   type Context,
 } from "./Context.ts"
-import { createFrame, frameNextInstr, type Frame } from "./Frame.ts"
+import { createFrame, frameEval, frameNextInstr, type Frame } from "./Frame.ts"
 
 export function executeOneStep(context: Context): void {
   if (contextIsFinished(context)) return
@@ -26,7 +26,7 @@ export function executeInstr(
     case "call": {
       const [f, ...rest] = instr.operands
       assert(f.kind === "Var")
-      const args = rest.map((x) => evaluateOperand(frame.env, x))
+      const args = rest.map((x) => frameEval(frame, x))
       callFunction(context, f.name, args)
       if (instr.dest !== undefined) {
         assert(context.result)
@@ -40,7 +40,7 @@ export function executeInstr(
     case "ret": {
       const [x] = instr.operands
       if (x !== undefined) {
-        context.result = evaluateOperand(frame.env, x)
+        context.result = frameEval(frame, x)
       }
 
       context.frames.pop()
@@ -49,7 +49,7 @@ export function executeInstr(
 
     case "print": {
       const [x] = instr.operands
-      const value = evaluateOperand(frame.env, x)
+      const value = frameEval(frame, x)
       console.log(value)
       return
     }
@@ -68,23 +68,5 @@ export function callFunction(
   context.frames.push(createFrame(definition, args))
   while (context.frames.length > base) {
     executeOneStep(context)
-  }
-}
-
-function evaluateOperand(env: Map<string, Value>, operand: Operand): Value {
-  switch (operand.kind) {
-    case "Var": {
-      const value = env.get(operand.name)
-      if (value === undefined) {
-        let message = "[evaluateOperand] undefined variable"
-        message += `\n  name: ${operand.name}`
-        throw new Error(message)
-      }
-      return value
-    }
-
-    case "Imm": {
-      return operand.value
-    }
   }
 }
