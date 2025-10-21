@@ -26,18 +26,38 @@ export function executeInstr(
     case "call": {
       const [f, ...rest] = instr.operands
       assert(f.kind === "Var")
-      const definition = modLookup(context.mod, f.name)
-      assert(definition)
-      assert(definition.kind === "FunctionDefinition")
       const args = rest.map((x) => evaluateOperand(frame.env, x))
-      context.frames.push(createFrame(definition, args))
+      callFunction(context, f.name, args)
+      if (instr.dest !== undefined) {
+        assert(context.result)
+        frame.env.set(instr.dest, context.result)
+        delete context.result
+      }
+
+      return
     }
 
     case "ret": {
       const [x] = instr.operands
       context.result = evaluateOperand(frame.env, x)
       context.frames.pop()
+      return
     }
+  }
+}
+
+function callFunction(
+  context: Context,
+  name: string,
+  args: Array<Value>,
+): void {
+  const definition = modLookup(context.mod, name)
+  assert(definition)
+  assert(definition.kind === "FunctionDefinition")
+  const base = context.frames.length
+  context.frames.push(createFrame(definition, args))
+  while (context.frames.length > base) {
+    executeOneStep(context)
   }
 }
 
