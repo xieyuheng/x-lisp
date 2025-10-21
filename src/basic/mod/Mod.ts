@@ -11,3 +11,7 @@ export function createMod(url: URL): Mod {
     definitions: new Map(),
   }
 }
+
+export function modLookup(mod: Mod, name: string): Definition | undefined {
+  return mod.definitions.get(name)
+}

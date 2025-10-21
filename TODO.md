@@ -1,7 +1,6 @@
 # basic
 
 [basic] `frameNextInstr`
-[basic] `modLookup`
 [basic] `evaluateOperand`
 [basic] `createFrame`
 [basic] `evaluateOperand`

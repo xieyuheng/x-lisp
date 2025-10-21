@@ -1,5 +1,6 @@
 import assert from "node:assert"
 import type { Instr } from "../instr/index.ts"
+import { modLookup } from "../mod/index.ts"
 import {
   contextCurrentFrame,
   contextIsFinished,
