@@ -1,7 +1,6 @@
 # basic
 
-[basic] `pluginGetHandler`
-[basic] `pluginDefineExecute` -- take `plugin` as first arg
+[basic] `pluginOnExecute` -- take `plugin` as first arg
 
 [basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
 [basic] `plugin/` -- `aboutFloat`

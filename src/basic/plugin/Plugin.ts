@@ -22,3 +22,10 @@ export function pluginDefineHandler(
 ): void {
   plugin.handlers[name] = handler
 }
+
+export function pluginGetHandler(
+  plugin: Plugin,
+  name: string,
+): Handler | undefined {
+  return plugin.handlers[name]
+}
