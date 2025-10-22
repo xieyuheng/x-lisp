@@ -49,7 +49,7 @@ export function pluginDefineFunction(
     execute(context, frame, instr) {
       const args = instr.operands.map((operand) => frameEval(frame, operand))
       if (args.length !== arity) {
-        let message = `(${instr.op}) arity mismatch`
+        let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
         message += `\n  args: ${formatValues(args)}`
         throw new Error(message)

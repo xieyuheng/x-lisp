@@ -1,12 +1,9 @@
 # basic
 
+[basic] `plugin/` -- `aboutTesting` -- `assert`
 [basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
 [basic] `plugin/` -- `aboutFloat`
-
 [basic] `aboutSSA` -- `put!` and `use`
-
-[basic] `plugin/` -- `aboutCore` -- `assert`
-
 [basic] instr has `meta` -- for `assert`
 
 # later

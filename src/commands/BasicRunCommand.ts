@@ -28,7 +28,6 @@ export const BasicRunCommand: Command = {
       const context = createContext(mod)
       callFunction(context, "main", [])
     } catch (error) {
-      console.log(error)
       console.log(errorReport(error))
       process.exit(1)
     }
