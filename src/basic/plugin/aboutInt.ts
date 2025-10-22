@@ -1,10 +1,10 @@
 import assert from "node:assert"
 import { frameEval, framePut } from "../execute/index.ts"
 import * as Values from "../value/index.ts"
-import type { Plugins } from "./index.ts"
+import { pluginInstr, type Plugin } from "./index.ts"
 
-export const aboutInt: Plugins = {
-  iadd: {
+export function aboutInt(plugin: Plugin) {
+  pluginInstr(plugin, "iadd", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
@@ -14,9 +14,9 @@ export const aboutInt: Plugins = {
       )
       framePut(frame, instr.dest, result)
     },
-  },
+  })
 
-  isub: {
+  pluginInstr(plugin, "isub", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
@@ -26,9 +26,9 @@ export const aboutInt: Plugins = {
       )
       framePut(frame, instr.dest, result)
     },
-  },
+  })
 
-  imul: {
+  pluginInstr(plugin, "imul", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
@@ -38,9 +38,9 @@ export const aboutInt: Plugins = {
       )
       framePut(frame, instr.dest, result)
     },
-  },
+  })
 
-  idiv: {
+  pluginInstr(plugin, "idiv", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
@@ -50,9 +50,9 @@ export const aboutInt: Plugins = {
       )
       framePut(frame, instr.dest, result)
     },
-  },
+  })
 
-  imod: {
+  pluginInstr(plugin, "imod", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
@@ -62,5 +62,5 @@ export const aboutInt: Plugins = {
       )
       framePut(frame, instr.dest, result)
     },
-  },
+  })
 }

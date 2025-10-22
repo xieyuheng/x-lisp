@@ -1,7 +1,7 @@
 import assert from "node:assert"
 import type { Instr } from "../instr/index.ts"
 import { modLookup } from "../mod/index.ts"
-import { usePlugins } from "../plugin/index.ts"
+import { useDefaultPlugin } from "../plugin/index.ts"
 import type { Value } from "../value/index.ts"
 import {
   contextCurrentFrame,
@@ -23,15 +23,15 @@ export function executeInstr(
   frame: Frame,
   instr: Instr,
 ): void {
-  const plugins = usePlugins()
-  const plugin = plugins[instr.op]
-  if (plugin === undefined) {
+  const plugin = useDefaultPlugin()
+  const instrHandler = plugin.instrHandlers[instr.op]
+  if (instrHandler === undefined) {
     let message = "[executeInstr] undefined op"
     message += `\n  op: ${instr.op}`
     throw new Error(message)
   }
 
-  plugin.execute(context, frame, instr)
+  instrHandler.execute(context, frame, instr)
 }
 
 export function callFunction(

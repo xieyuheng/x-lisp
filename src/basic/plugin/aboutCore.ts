@@ -7,10 +7,10 @@ import {
   framePut,
 } from "../execute/index.ts"
 import * as Values from "../value/index.ts"
-import type { Plugins } from "./index.ts"
+import { pluginInstr, type Plugin } from "./index.ts"
 
-export const aboutCore: Plugins = {
-  return: {
+export function aboutCore(plugin: Plugin) {
+  pluginInstr(plugin, "return", {
     execute(context, frame, instr) {
       if (instr.operands.length > 0) {
         context.result = frameEval(frame, instr.operands[0])
@@ -18,16 +18,16 @@ export const aboutCore: Plugins = {
 
       context.frames.pop()
     },
-  },
+  })
 
-  goto: {
+  pluginInstr(plugin, "goto", {
     execute(context, frame, instr) {
       assert(instr.operands[0].kind === "Var")
       frameGoto(frame, instr.operands[0].name)
     },
-  },
+  })
 
-  branch: {
+  pluginInstr(plugin, "branch", {
     execute(context, frame, instr) {
       const condition = frameEval(frame, instr.operands[0])
       assert(condition.kind === "Bool")
@@ -44,9 +44,9 @@ export const aboutCore: Plugins = {
         frameGoto(frame, elseLabel)
       }
     },
-  },
+  })
 
-  call: {
+  pluginInstr(plugin, "call", {
     execute(context, frame, instr) {
       const [f, ...rest] = instr.operands
       assert(f.kind === "Var")
@@ -58,30 +58,30 @@ export const aboutCore: Plugins = {
         delete context.result
       }
     },
-  },
+  })
 
-  const: {
+  pluginInstr(plugin, "const", {
     execute(context, frame, instr) {
       assert(instr.dest)
       assert(instr.operands[0].kind === "Imm")
       framePut(frame, instr.dest, instr.operands[0].value)
     },
-  },
+  })
 
-  identity: {
+  pluginInstr(plugin, "identity", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
       framePut(frame, instr.dest, x)
     },
-  },
+  })
 
-  "eq?": {
+  pluginInstr(plugin, "eq?", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
       const y = frameEval(frame, instr.operands[1])
       framePut(frame, instr.dest, Values.Bool(equal(x, y)))
     },
-  },
+  })
 }
