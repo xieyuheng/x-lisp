@@ -62,3 +62,27 @@ export function pluginDefineFunction(
     },
   }
 }
+
+export function pluginDefineFunctionWithInstr(
+  plugin: Plugin,
+  name: string,
+  arity: number,
+  fn: (instr: Instr) => ValueFn,
+): void {
+  plugin.handlers[name] = {
+    execute(context, frame, instr) {
+      const args = instr.operands.map((operand) => frameEval(frame, operand))
+      if (args.length !== arity) {
+        let message = `(${instr.op}) instruction arity mismatch`
+        message += `\n  arity: ${arity}`
+        message += `\n  args: ${formatValues(args)}`
+        throw new Error(message)
+      }
+
+      const result = fn(instr)(...args)
+      if (instr.dest) {
+        framePut(frame, instr.dest, result)
+      }
+    },
+  }
+}
