@@ -1,4 +1,3 @@
-import assert from "node:assert"
 import {
   frameEval,
   framePut,
@@ -47,10 +46,9 @@ export function pluginDefineFunction(
 ): void {
   plugin.handlers[name] = {
     execute(context, frame, instr) {
-      assert(instr.dest)
       const args = instr.operands.map((operand) => frameEval(frame, operand))
       const result = fn(...args)
-      framePut(frame, instr.dest, result)
+      if (instr.dest) framePut(frame, instr.dest, result)
     },
   }
 }

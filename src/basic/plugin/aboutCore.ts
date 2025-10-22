@@ -17,8 +17,8 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginDefineFunction(plugin, "identity", 1, (x) => {
-    return x
+  pluginDefineFunction(plugin, "identity", 1, (value) => {
+    return value
   })
 
   pluginDefineFunction(plugin, "eq?", 2, (x, y) => {

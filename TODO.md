@@ -1,7 +1,5 @@
 # basic
 
-[basic] print return void
-
 [basic] `pluginDefineFunction` -- error report
 [basic] `pluginDefineFunction` -- check arity
 
