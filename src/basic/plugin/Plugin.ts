@@ -1,12 +1,12 @@
 import type { Context, Frame } from "../execute/index.ts"
 import type { Instr } from "../instr/index.ts"
 
-type Handler = {
-  execute: (context: Context, frame: Frame, instr: Instr) => void
-}
-
 export type Plugin = {
   handlers: Record<string, Handler>
+}
+
+type Handler = {
+  execute: (context: Context, frame: Frame, instr: Instr) => void
 }
 
 export function createPlugin(): Plugin {
@@ -15,7 +15,7 @@ export function createPlugin(): Plugin {
   }
 }
 
-export function pluginInstr(
+export function pluginHandler(
   plugin: Plugin,
   name: string,
   handler: Handler,

@@ -7,10 +7,10 @@ import {
   framePut,
 } from "../execute/index.ts"
 import * as Values from "../value/index.ts"
-import { pluginInstr, type Plugin } from "./index.ts"
+import { pluginHandler, type Plugin } from "./index.ts"
 
 export function aboutCore(plugin: Plugin) {
-  pluginInstr(plugin, "return", {
+  pluginHandler(plugin, "return", {
     execute(context, frame, instr) {
       if (instr.operands.length > 0) {
         context.result = frameEval(frame, instr.operands[0])
@@ -20,14 +20,14 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginInstr(plugin, "goto", {
+  pluginHandler(plugin, "goto", {
     execute(context, frame, instr) {
       assert(instr.operands[0].kind === "Var")
       frameGoto(frame, instr.operands[0].name)
     },
   })
 
-  pluginInstr(plugin, "branch", {
+  pluginHandler(plugin, "branch", {
     execute(context, frame, instr) {
       const condition = frameEval(frame, instr.operands[0])
       assert(condition.kind === "Bool")
@@ -46,7 +46,7 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginInstr(plugin, "call", {
+  pluginHandler(plugin, "call", {
     execute(context, frame, instr) {
       const [f, ...rest] = instr.operands
       assert(f.kind === "Var")
@@ -60,7 +60,7 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginInstr(plugin, "const", {
+  pluginHandler(plugin, "const", {
     execute(context, frame, instr) {
       assert(instr.dest)
       assert(instr.operands[0].kind === "Imm")
@@ -68,7 +68,7 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginInstr(plugin, "identity", {
+  pluginHandler(plugin, "identity", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
@@ -76,7 +76,7 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginInstr(plugin, "eq?", {
+  pluginHandler(plugin, "eq?", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
