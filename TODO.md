@@ -1,10 +1,7 @@
 # basic
 
-[basic] `plugin/` -- `aboutControlFlow`
-
 [basic] void as value
 [basic] print return void
-
 
 [basic] `pluginDefineFunction` -- error report
 [basic] `pluginDefineFunction` -- check arity
