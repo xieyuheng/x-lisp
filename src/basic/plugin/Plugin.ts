@@ -4,6 +4,7 @@ import {
   type Context,
   type Frame,
 } from "../execute/index.ts"
+import { formatValues } from "../format/index.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Value } from "../value/index.ts"
 
@@ -47,8 +48,17 @@ export function pluginDefineFunction(
   plugin.handlers[name] = {
     execute(context, frame, instr) {
       const args = instr.operands.map((operand) => frameEval(frame, operand))
+      if (args.length !== arity) {
+        let message = `(${instr.op}) arity mismatch`
+        message += `\n  arity: ${arity}`
+        message += `\n  args: ${formatValues(args)}`
+        throw new Error(message)
+      }
+
       const result = fn(...args)
-      if (instr.dest) framePut(frame, instr.dest, result)
+      if (instr.dest) {
+        framePut(frame, instr.dest, result)
+      }
     },
   }
 }

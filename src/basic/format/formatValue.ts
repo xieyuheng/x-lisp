@@ -1,5 +1,9 @@
 import type { Value } from "../value/index.ts"
 
+export function formatValues(values: Array<Value>): string {
+  return values.map(formatValue).join(" ")
+}
+
 export function formatValue(value: Value): string {
   switch (value.kind) {
     case "Bool": {
