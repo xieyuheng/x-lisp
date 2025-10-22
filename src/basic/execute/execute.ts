@@ -24,14 +24,14 @@ export function executeInstr(
   instr: Instr,
 ): void {
   const plugin = useDefaultPlugin()
-  const instrHandler = plugin.instrHandlers[instr.op]
-  if (instrHandler === undefined) {
+  const handler = plugin.handlers[instr.op]
+  if (handler === undefined) {
     let message = "[executeInstr] undefined op"
     message += `\n  op: ${instr.op}`
     throw new Error(message)
   }
 
-  instrHandler.execute(context, frame, instr)
+  handler.execute(context, frame, instr)
 }
 
 export function callFunction(
