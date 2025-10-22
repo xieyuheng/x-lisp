@@ -7,7 +7,11 @@ import {
   framePut,
 } from "../execute/index.ts"
 import * as Values from "../value/index.ts"
-import { pluginDefineHandler, type Plugin } from "./index.ts"
+import {
+  pluginDefineFunction,
+  pluginDefineHandler,
+  type Plugin,
+} from "./index.ts"
 
 export function aboutCore(plugin: Plugin) {
   pluginDefineHandler(plugin, "return", {
@@ -76,12 +80,7 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginDefineHandler(plugin, "eq?", {
-    execute(context, frame, instr) {
-      assert(instr.dest)
-      const x = frameEval(frame, instr.operands[0])
-      const y = frameEval(frame, instr.operands[1])
-      framePut(frame, instr.dest, Values.Bool(equal(x, y)))
-    },
+  pluginDefineFunction(plugin, "eq?", 2, (x, y) => {
+    return Values.Bool(equal(x, y))
   })
 }

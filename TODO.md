@@ -1,6 +1,8 @@
 # basic
 
-[basic] `pluginOnExecute` -- take `plugin` as first arg
+[basic] use `pluginDefineFunction`
+[basic] `pluginDefineFunction` -- error report
+[basic] `pluginDefineFunction` -- check arity
 
 [basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
 [basic] `plugin/` -- `aboutFloat`
