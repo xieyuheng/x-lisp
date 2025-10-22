@@ -1,2 +1,2 @@
 export * from "./Plugin.ts"
-export * from "./useDefaultPlugin.ts"
+export * from "./useCorePlugin.ts"

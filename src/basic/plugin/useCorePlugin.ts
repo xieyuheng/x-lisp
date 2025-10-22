@@ -7,7 +7,7 @@ import { aboutTest } from "./aboutTest.ts"
 import { aboutValue } from "./aboutValue.ts"
 import { createPlugin, type Plugin } from "./index.ts"
 
-export function useDefaultPlugin(): Plugin {
+export function useCorePlugin(): Plugin {
   const plugin = createPlugin()
 
   aboutControlFlow(plugin)

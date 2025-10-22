@@ -3,7 +3,7 @@ title: x-lisp project
 date: 2025-10-22
 ---
 
-# why do it?
+# value
 
 我想要有一个能由我完全控制的语言，
 可以实现我需要的语言功能，
@@ -42,7 +42,7 @@ uxn 风格的 game engine 的脚本语言。
 - [x] x-lisp interpreter
 - [x] basic-lisp language design
 - [x] basic-lisp interpreter
-  - [ ] plugin system
+  - [x] plugin system
   - [ ] SSA
   - [ ] type inference
   - [ ] module system

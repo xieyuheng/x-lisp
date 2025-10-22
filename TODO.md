@@ -1,11 +1,19 @@
-# basic
+[basic] `checkBlock` -- only end with terminator instruction
+
+# basic SSA
 
 [basic] `aboutSSA` -- `put!` and `use`
 
+# basic type inference
+
 [basic] full type inference
-[basic] build control flow graph -- use digraph
+
+# basic module
 
 [basic] `Stmt` -- `Claim`
 [basic] `Stmt` -- `Import`
 [basic] `Stmt` -- `Include`
+
+# basic bundling
+
 [basic] `Mod` -- bundle
