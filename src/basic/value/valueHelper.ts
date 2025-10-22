@@ -6,6 +6,14 @@ export function isBool(value: Value): value is Values.Bool {
   return value.kind === "Bool"
 }
 
+export function isTrue(value: Value): value is Values.Bool {
+  return isBool(value) && value.content === true
+}
+
+export function isFalse(value: Value): value is Values.Bool {
+  return isBool(value) && value.content === false
+}
+
 export function isVoid(value: Value): value is Values.Void {
   return value.kind === "Void"
 }

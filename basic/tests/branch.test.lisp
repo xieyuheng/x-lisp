@@ -1,9 +1,10 @@
 (define (main)
   (block entry
     (= x (call zero? 1))
-    (print x)
+    (= x.1 (not x))
+    (assert x.1)
     (= y (call zero? 0))
-    (print y)
+    (assert y)
     (return)))
 
 (define (zero? x)

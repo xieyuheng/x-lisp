@@ -1,6 +1,5 @@
 # basic
 
-[basic] `plugin/` -- `aboutTesting` -- `assert`
 [basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
 [basic] `plugin/` -- `aboutFloat`
 [basic] `aboutSSA` -- `put!` and `use`
