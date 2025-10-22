@@ -22,7 +22,7 @@ export function createPlugin(): Plugin {
   }
 }
 
-export function pluginDefineHandler(
+export function pluginDefineControlFlow(
   plugin: Plugin,
   name: string,
   handler: Handler,
@@ -30,16 +30,25 @@ export function pluginDefineHandler(
   plugin.handlers[name] = handler
 }
 
-export function pluginGetHandler(
+export function pluginExecuteInstr(
   plugin: Plugin,
-  name: string,
-): Handler | undefined {
-  return plugin.handlers[name]
+  context: Context,
+  frame: Frame,
+  instr: Instr,
+): void {
+  const handler = plugin.handlers[instr.op]
+  if (handler === undefined) {
+    let message = "[pluginExecuteInstr] undefined op"
+    message += `\n  op: ${instr.op}`
+    throw new Error(message)
+  }
+
+  handler.execute(context, frame, instr)
 }
 
 type ValueFn = (...args: Array<Value>) => Value
 
-export function pluginDefineFunction(
+export function pluginDefineInstr(
   plugin: Plugin,
   name: string,
   arity: number,
@@ -63,7 +72,7 @@ export function pluginDefineFunction(
   }
 }
 
-export function pluginDefineFunctionWithInstr(
+export function pluginDefineInstrWithInstr(
   plugin: Plugin,
   name: string,
   arity: number,

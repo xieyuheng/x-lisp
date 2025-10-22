@@ -1,10 +1,10 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
-import { pluginDefineFunctionWithInstr, type Plugin } from "./index.ts"
+import { pluginDefineInstrWithInstr, type Plugin } from "./index.ts"
 
 export function aboutTest(plugin: Plugin) {
-  pluginDefineFunctionWithInstr(plugin, "assert", 1, (instr) => (value) => {
+  pluginDefineInstrWithInstr(plugin, "assert", 1, (instr) => (value) => {
     if (!Values.isBool(value)) {
       let message = `(assert) value is not bool`
       message += `\n  value: ${formatValue(value)}`
