@@ -4,7 +4,8 @@
 (define (main)
   (block entry
     (= x (call ack 3 6))
-    (print x)
+    (= ok (eq? 509 x))
+    (assert ok)
     (return)))
 
 (define (ack m n)

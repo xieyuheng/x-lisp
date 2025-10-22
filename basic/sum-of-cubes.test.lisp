@@ -1,7 +1,8 @@
 (define (main)
   (block entry
     (= x (call sum-of-cubes 6))
-    (print x)
+    (= ok (eq? 441 x))
+    (assert ok)
     (return)))
 
 (define (sum-of-cubes n)
