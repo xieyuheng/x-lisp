@@ -1,6 +1,5 @@
 # basic
 
-[basic] void as value
 [basic] print return void
 
 [basic] `pluginDefineFunction` -- error report

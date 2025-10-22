@@ -1,6 +1,6 @@
 import assert from "node:assert"
 import { equal } from "../equal/index.ts"
-import { frameEval, framePut } from "../execute/index.ts"
+import { framePut } from "../execute/index.ts"
 import * as Values from "../value/index.ts"
 import {
   pluginDefineFunction,
@@ -17,12 +17,8 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginDefineHandler(plugin, "identity", {
-    execute(context, frame, instr) {
-      assert(instr.dest)
-      const x = frameEval(frame, instr.operands[0])
-      framePut(frame, instr.dest, x)
-    },
+  pluginDefineFunction(plugin, "identity", 1, (x) => {
+    return x
   })
 
   pluginDefineFunction(plugin, "eq?", 2, (x, y) => {
