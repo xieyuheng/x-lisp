@@ -15,7 +15,7 @@ export function createPlugin(): Plugin {
   }
 }
 
-export function pluginHandler(
+export function pluginDefineHandler(
   plugin: Plugin,
   name: string,
   handler: Handler,

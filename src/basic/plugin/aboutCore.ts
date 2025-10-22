@@ -7,10 +7,10 @@ import {
   framePut,
 } from "../execute/index.ts"
 import * as Values from "../value/index.ts"
-import { pluginHandler, type Plugin } from "./index.ts"
+import { pluginDefineHandler, type Plugin } from "./index.ts"
 
 export function aboutCore(plugin: Plugin) {
-  pluginHandler(plugin, "return", {
+  pluginDefineHandler(plugin, "return", {
     execute(context, frame, instr) {
       if (instr.operands.length > 0) {
         context.result = frameEval(frame, instr.operands[0])
@@ -20,14 +20,14 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginHandler(plugin, "goto", {
+  pluginDefineHandler(plugin, "goto", {
     execute(context, frame, instr) {
       assert(instr.operands[0].kind === "Var")
       frameGoto(frame, instr.operands[0].name)
     },
   })
 
-  pluginHandler(plugin, "branch", {
+  pluginDefineHandler(plugin, "branch", {
     execute(context, frame, instr) {
       const condition = frameEval(frame, instr.operands[0])
       assert(condition.kind === "Bool")
@@ -46,7 +46,7 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginHandler(plugin, "call", {
+  pluginDefineHandler(plugin, "call", {
     execute(context, frame, instr) {
       const [f, ...rest] = instr.operands
       assert(f.kind === "Var")
@@ -60,7 +60,7 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginHandler(plugin, "const", {
+  pluginDefineHandler(plugin, "const", {
     execute(context, frame, instr) {
       assert(instr.dest)
       assert(instr.operands[0].kind === "Imm")
@@ -68,7 +68,7 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginHandler(plugin, "identity", {
+  pluginDefineHandler(plugin, "identity", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
@@ -76,7 +76,7 @@ export function aboutCore(plugin: Plugin) {
     },
   })
 
-  pluginHandler(plugin, "eq?", {
+  pluginDefineHandler(plugin, "eq?", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])

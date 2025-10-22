@@ -1,9 +1,9 @@
 import { frameEval } from "../execute/index.ts"
 import { formatValue } from "../format/index.ts"
-import { pluginHandler, type Plugin } from "./index.ts"
+import { pluginDefineHandler, type Plugin } from "./index.ts"
 
 export function aboutConsole(plugin: Plugin) {
-  pluginHandler(plugin, "print", {
+  pluginDefineHandler(plugin, "print", {
     execute(context, frame, instr) {
       const [x] = instr.operands
       const value = frameEval(frame, x)

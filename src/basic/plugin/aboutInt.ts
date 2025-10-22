@@ -1,10 +1,10 @@
 import assert from "node:assert"
 import { frameEval, framePut } from "../execute/index.ts"
 import * as Values from "../value/index.ts"
-import { pluginHandler, type Plugin } from "./index.ts"
+import { pluginDefineHandler, type Plugin } from "./index.ts"
 
 export function aboutInt(plugin: Plugin) {
-  pluginHandler(plugin, "iadd", {
+  pluginDefineHandler(plugin, "iadd", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
@@ -16,7 +16,7 @@ export function aboutInt(plugin: Plugin) {
     },
   })
 
-  pluginHandler(plugin, "isub", {
+  pluginDefineHandler(plugin, "isub", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
@@ -28,7 +28,7 @@ export function aboutInt(plugin: Plugin) {
     },
   })
 
-  pluginHandler(plugin, "imul", {
+  pluginDefineHandler(plugin, "imul", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
@@ -40,7 +40,7 @@ export function aboutInt(plugin: Plugin) {
     },
   })
 
-  pluginHandler(plugin, "idiv", {
+  pluginDefineHandler(plugin, "idiv", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
@@ -52,7 +52,7 @@ export function aboutInt(plugin: Plugin) {
     },
   })
 
-  pluginHandler(plugin, "imod", {
+  pluginDefineHandler(plugin, "imod", {
     execute(context, frame, instr) {
       assert(instr.dest)
       const x = frameEval(frame, instr.operands[0])
