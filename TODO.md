@@ -1,8 +1,14 @@
+[basic] `pluginDefineEffect` -- for `print` and `assert`
+[basic] `pluginDefineInstr` -- error report when there is not `dest`
+
+[basic] remove `Void` from `Value`
+
 [basic]  kinds of instruction
 
 - pure -- with return value
 - effect -- no return value
 - mixed -- with return value and effect
+  - should we disallow this case?
 - terminator -- for control flow
 - SSA related -- `put!` and `use`
 
