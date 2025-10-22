@@ -1,6 +1,7 @@
 import { aboutBool } from "./aboutBool.ts"
 import { aboutConsole } from "./aboutConsole.ts"
 import { aboutControlFlow } from "./aboutControlFlow.ts"
+import { aboutFloat } from "./aboutFloat.ts"
 import { aboutInt } from "./aboutInt.ts"
 import { aboutTest } from "./aboutTest.ts"
 import { aboutValue } from "./aboutValue.ts"
@@ -15,6 +16,7 @@ export function useDefaultPlugin(): Plugin {
   aboutConsole(plugin)
   aboutBool(plugin)
   aboutInt(plugin)
+  aboutFloat(plugin)
 
   return plugin
 }

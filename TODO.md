@@ -1,7 +1,5 @@
 # basic
 
-[basic] `plugin/` -- `aboutFloat`
-
 [basic] instr has `meta` -- for `assert`
 [basic] `aboutSSA` -- `put!` and `use`
 
