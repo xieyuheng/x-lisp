@@ -18,13 +18,14 @@ export function executeOneStep(context: Context): void {
   executeInstr(context, frame, instr)
 }
 
+const corePlugin = useCorePlugin()
+
 export function executeInstr(
   context: Context,
   frame: Frame,
   instr: Instr,
 ): void {
-  const plugin = useCorePlugin()
-  const handler = pluginGetHandler(plugin, instr.op)
+  const handler = pluginGetHandler(corePlugin, instr.op)
   if (handler === undefined) {
     let message = "[executeInstr] undefined op"
     message += `\n  op: ${instr.op}`
