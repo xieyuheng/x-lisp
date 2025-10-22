@@ -1,10 +1,6 @@
 # basic
 
-[basic] `plugin/` -- `aboutControlFlow`
-
-[basic] void as value
-[basic] print return void
-
+[basic] use `pluginDefineFunction`
 [basic] `pluginDefineFunction` -- error report
 [basic] `pluginDefineFunction` -- check arity
 
@@ -13,7 +9,7 @@
 
 [basic] `aboutSSA` -- `put!` and `use`
 
-[basic] `plugin/` -- `aboutTest` -- `assert`
+[basic] `plugin/` -- `aboutCore` -- `assert`
 
 [basic] instr has `meta` -- for `assert`
 
