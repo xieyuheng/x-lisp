@@ -8,7 +8,7 @@ import {
   type Plugin,
 } from "./index.ts"
 
-export function aboutCore(plugin: Plugin) {
+export function aboutValue(plugin: Plugin) {
   pluginDefineHandler(plugin, "const", {
     execute(context, frame, instr) {
       assert(instr.dest)
