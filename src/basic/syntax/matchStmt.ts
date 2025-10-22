@@ -44,21 +44,26 @@ function matchInstr(sexp: X.Sexp): Instr {
     X.matcherChoice<Instr>([
       X.matcher(
         "`(= ,dest ,(cons* op operands))",
-        ({ dest, op, operands }, { sexp }) => {
+        ({ dest, op, operands }, { sexp, meta }) => {
           return {
             dest: X.symbolContent(dest),
             op: X.symbolContent(op),
             operands: X.listElements(operands).map(matchOperand),
+            meta,
           }
         },
       ),
 
-      X.matcher("(cons* op operands)", ({ dest, op, operands }, { sexp }) => {
-        return {
-          op: X.symbolContent(op),
-          operands: X.listElements(operands).map(matchOperand),
-        }
-      }),
+      X.matcher(
+        "(cons* op operands)",
+        ({ dest, op, operands }, { sexp, meta }) => {
+          return {
+            op: X.symbolContent(op),
+            operands: X.listElements(operands).map(matchOperand),
+            meta,
+          }
+        },
+      ),
     ]),
     sexp,
   )
@@ -71,9 +76,9 @@ function matchOperand(sexp: X.Sexp): Operand {
         case "Hashtag": {
           const content = X.hashtagContent(data)
           if (content === "t") {
-            return Operands.Imm(Values.Bool(true))
+            return Operands.Imm(Values.Bool(true), meta)
           } else if (content === "f") {
-            return Operands.Imm(Values.Bool(false))
+            return Operands.Imm(Values.Bool(false), meta)
           } else {
             let message = `[matchOperand] unknown hashtag`
             message += `\n  hashtag: #${content}`
@@ -82,11 +87,11 @@ function matchOperand(sexp: X.Sexp): Operand {
         }
 
         case "Int":
-          return Operands.Imm(Values.Int(X.numberContent(data)))
+          return Operands.Imm(Values.Int(X.numberContent(data)), meta)
         case "Float":
-          return Operands.Imm(Values.Float(X.numberContent(data)))
+          return Operands.Imm(Values.Float(X.numberContent(data)), meta)
         case "Symbol": {
-          return Operands.Var(X.symbolContent(data))
+          return Operands.Var(X.symbolContent(data), meta)
         }
       }
     }),

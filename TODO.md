@@ -1,6 +1,6 @@
 # basic
 
-[basic] instr has `meta` -- for `assert`
+[basic] `assert` report use `meta`
 [basic] `aboutSSA` -- `put!` and `use`
 
 [basic] full type inference
