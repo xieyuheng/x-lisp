@@ -1,11 +1,9 @@
 # basic
 
-[basic] `plugin/` -- `aboutInt` -- `int-less?` and so on
 [basic] `plugin/` -- `aboutFloat`
-[basic] `aboutSSA` -- `put!` and `use`
-[basic] instr has `meta` -- for `assert`
 
-# later
+[basic] instr has `meta` -- for `assert`
+[basic] `aboutSSA` -- `put!` and `use`
 
 [basic] full type inference
 [basic] build control flow graph -- use digraph
