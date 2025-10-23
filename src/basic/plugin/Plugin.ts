@@ -4,7 +4,7 @@ import {
   type Context,
   type Frame,
 } from "../execute/index.ts"
-import { formatValues } from "../format/index.ts"
+import { formatInstr } from "../format/index.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Value } from "../value/index.ts"
 
@@ -60,7 +60,7 @@ export function definePureInstr(
       if (args.length !== arity) {
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
-        message += `\n  args: ${formatValues(args)}`
+        message += `\n  instr: ${formatInstr(instr)}`
         throw new Error(message)
       }
 
@@ -84,7 +84,7 @@ export function definePureInstrWithInstr(
       if (args.length !== arity) {
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
-        message += `\n  args: ${formatValues(args)}`
+        message += `\n  instr: ${formatInstr(instr)}`
         throw new Error(message)
       }
 
@@ -108,14 +108,13 @@ export function defineEffectInstr(
       if (args.length !== arity) {
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
-        message += `\n  args: ${formatValues(args)}`
+        message += `\n  instr: ${formatInstr(instr)}`
         throw new Error(message)
       }
 
       if (instr.dest !== undefined) {
         let message = `(${instr.op}) effect instruction should not have dest variable`
-        message += `\n  dest: ${instr.dest}`
-        message += `\n  args: ${formatValues(args)}`
+        message += `\n  instr: ${formatInstr(instr)}`
         throw new Error(message)
       }
 
@@ -136,14 +135,13 @@ export function defineEffectInstrWithInstr(
       if (args.length !== arity) {
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
-        message += `\n  args: ${formatValues(args)}`
+        message += `\n  instr: ${formatInstr(instr)}`
         throw new Error(message)
       }
 
       if (instr.dest !== undefined) {
         let message = `(${instr.op}) effect instruction should not have dest variable`
-        message += `\n  dest: ${instr.dest}`
-        message += `\n  args: ${formatValues(args)}`
+        message += `\n  instr: ${formatInstr(instr)}`
         throw new Error(message)
       }
 
