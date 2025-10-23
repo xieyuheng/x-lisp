@@ -1,3 +1,4 @@
+import * as X from "@xieyuheng/x-sexp.js"
 import { frameEval, framePut } from "../execute/index.ts"
 import { formatInstr } from "../format/index.ts"
 import type { Instr } from "../instr/index.ts"
@@ -25,7 +26,8 @@ export function definePureInstr(
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
         message += `\n  instr: ${formatInstr(instr)}`
-        throw new Error(message)
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
       }
 
       const result = fn(...args)
@@ -49,7 +51,8 @@ export function definePureInstrWithInstr(
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
         message += `\n  instr: ${formatInstr(instr)}`
-        throw new Error(message)
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
       }
 
       const result = fn(instr)(...args)
@@ -73,13 +76,15 @@ export function defineEffectInstr(
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
         message += `\n  instr: ${formatInstr(instr)}`
-        throw new Error(message)
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
       }
 
       if (instr.dest !== undefined) {
         let message = `(${instr.op}) effect instruction should not have dest variable`
         message += `\n  instr: ${formatInstr(instr)}`
-        throw new Error(message)
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
       }
 
       fn(...args)
@@ -100,13 +105,15 @@ export function defineEffectInstrWithInstr(
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
         message += `\n  instr: ${formatInstr(instr)}`
-        throw new Error(message)
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
       }
 
       if (instr.dest !== undefined) {
         let message = `(${instr.op}) effect instruction should not have dest variable`
         message += `\n  instr: ${formatInstr(instr)}`
-        throw new Error(message)
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
       }
 
       fn(instr)(...args)
