@@ -3,13 +3,13 @@ import { equal } from "../equal/index.ts"
 import { framePut } from "../execute/index.ts"
 import * as Values from "../value/index.ts"
 import {
-  pluginDefineControlFlow,
-  pluginDefineInstr,
+  defineControlFlowInstr,
+  definePureInstr,
   type Plugin,
 } from "./index.ts"
 
 export function aboutValue(plugin: Plugin) {
-  pluginDefineControlFlow(plugin, "const", {
+  defineControlFlowInstr(plugin, "const", {
     execute(context, frame, instr) {
       assert(instr.dest)
       assert(instr.operands[0].kind === "Imm")
@@ -17,11 +17,11 @@ export function aboutValue(plugin: Plugin) {
     },
   })
 
-  pluginDefineInstr(plugin, "identity", 1, (value) => {
+  definePureInstr(plugin, "identity", 1, (value) => {
     return value
   })
 
-  pluginDefineInstr(plugin, "eq?", 2, (x, y) => {
+  definePureInstr(plugin, "eq?", 2, (x, y) => {
     return Values.Bool(equal(x, y))
   })
 }

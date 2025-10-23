@@ -22,7 +22,7 @@ export function createPlugin(): Plugin {
   }
 }
 
-export function pluginDefineControlFlow(
+export function defineControlFlowInstr(
   plugin: Plugin,
   name: string,
   handler: Handler,
@@ -48,7 +48,7 @@ export function pluginExecuteInstr(
 
 type ValueFn = (...args: Array<Value>) => Value
 
-export function pluginDefineInstr(
+export function definePureInstr(
   plugin: Plugin,
   name: string,
   arity: number,
@@ -72,7 +72,7 @@ export function pluginDefineInstr(
   }
 }
 
-export function pluginDefineInstrWithInstr(
+export function definePureInstrWithInstr(
   plugin: Plugin,
   name: string,
   arity: number,

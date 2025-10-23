@@ -1,4 +1,3 @@
-[basic] rename plugin functions to `definePureInstr` and `defineControlFlowInstr`
 [basic] `definePureInstr` -- error report when there is not `dest`
 [basic] `defineEffectInstr` -- for `print` and `assert`
 [basic] remove `Void` from `Value`

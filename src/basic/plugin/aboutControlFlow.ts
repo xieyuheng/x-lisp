@@ -5,10 +5,10 @@ import {
   frameGoto,
   framePut,
 } from "../execute/index.ts"
-import { pluginDefineControlFlow, type Plugin } from "./index.ts"
+import { defineControlFlowInstr, type Plugin } from "./index.ts"
 
 export function aboutControlFlow(plugin: Plugin) {
-  pluginDefineControlFlow(plugin, "return", {
+  defineControlFlowInstr(plugin, "return", {
     execute(context, frame, instr) {
       if (instr.operands.length > 0) {
         context.result = frameEval(frame, instr.operands[0])
@@ -18,14 +18,14 @@ export function aboutControlFlow(plugin: Plugin) {
     },
   })
 
-  pluginDefineControlFlow(plugin, "goto", {
+  defineControlFlowInstr(plugin, "goto", {
     execute(context, frame, instr) {
       assert(instr.operands[0].kind === "Var")
       frameGoto(frame, instr.operands[0].name)
     },
   })
 
-  pluginDefineControlFlow(plugin, "branch", {
+  defineControlFlowInstr(plugin, "branch", {
     execute(context, frame, instr) {
       const condition = frameEval(frame, instr.operands[0])
       assert(condition.kind === "Bool")
@@ -44,7 +44,7 @@ export function aboutControlFlow(plugin: Plugin) {
     },
   })
 
-  pluginDefineControlFlow(plugin, "call", {
+  defineControlFlowInstr(plugin, "call", {
     execute(context, frame, instr) {
       const [f, ...rest] = instr.operands
       assert(f.kind === "Var")
