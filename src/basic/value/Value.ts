@@ -1,4 +1,4 @@
-export type Value = Bool | Void | Int | Float
+export type Value = Bool | Int | Float
 
 export type Bool = {
   kind: "Bool"
@@ -9,16 +9,6 @@ export function Bool(content: boolean): Bool {
   return {
     kind: "Bool",
     content,
-  }
-}
-
-export type Void = {
-  kind: "Void"
-}
-
-export function Void(): Void {
-  return {
-    kind: "Void",
   }
 }
 

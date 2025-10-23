@@ -14,10 +14,6 @@ export function isFalse(value: Value): value is Values.Bool {
   return isBool(value) && value.content === false
 }
 
-export function isVoid(value: Value): value is Values.Void {
-  return value.kind === "Void"
-}
-
 export function isInt(value: Value): value is Values.Int {
   return value.kind === "Int"
 }
@@ -29,11 +25,6 @@ export function isFloat(value: Value): value is Values.Float {
 export function asBool(value: Value): Values.Bool {
   if (isBool(value)) return value
   throw new Error(`[asBool] fail on: ${formatValue(value)}`)
-}
-
-export function asVoid(value: Value): Values.Void {
-  if (isVoid(value)) return value
-  throw new Error(`[asVoid] fail on: ${formatValue(value)}`)
 }
 
 export function asInt(value: Value): Values.Int {

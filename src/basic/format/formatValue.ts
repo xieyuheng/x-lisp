@@ -10,10 +10,6 @@ export function formatValue(value: Value): string {
       return value.content ? "#t" : "#f"
     }
 
-    case "Void": {
-      return "#void"
-    }
-
     case "Int": {
       return value.content.toString()
     }

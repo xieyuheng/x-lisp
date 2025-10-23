@@ -1,6 +1,4 @@
-[basic] remove `Void` from `Value`
 [basic] `definePureInstr` -- error report when there is not `dest`
-
 [basic] `checkBlock` -- only end with terminator instruction
 
 # basic SSA
