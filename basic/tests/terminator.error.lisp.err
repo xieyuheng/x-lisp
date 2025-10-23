@@ -1,0 +1,9 @@
+[checkBlockTerminator] block must end with terminator instruction
+  instr: (= x (iadd 1 2))
+  --> basic/tests/terminator.error.lisp:3:5
+ 1 | (define (main)
+ 2 |   (block entry
+ 3 |     (= x (iadd 1 2))))
+   |     ~~~~~~~~~~~~~~~~   
+ 4 | 
+

@@ -1,5 +1,5 @@
-[basic] `checkTerminator` -- only end with terminator instruction
-instruction
+[basic] `Block` has optional `meta` -- fix `checkBlockTerminator` on empty block
+
 # basic SSA
 
 [basic] `aboutSSA` -- `put!` and `use`
