@@ -30,10 +30,15 @@ export function definePureInstr(
         else throw new Error(message)
       }
 
-      const result = fn(...args)
-      if (instr.dest) {
-        framePut(frame, instr.dest, result)
+      if (instr.dest === undefined) {
+        let message = `(${instr.op}) value instruction must have dest`
+        message += `\n  instr: ${formatInstr(instr)}`
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
       }
+
+      const result = fn(...args)
+      framePut(frame, instr.dest, result)
     },
   }
 }
@@ -55,10 +60,15 @@ export function definePureInstrWithInstr(
         else throw new Error(message)
       }
 
-      const result = fn(instr)(...args)
-      if (instr.dest) {
-        framePut(frame, instr.dest, result)
+      if (instr.dest === undefined) {
+        let message = `(${instr.op}) value instruction must have dest`
+        message += `\n  instr: ${formatInstr(instr)}`
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
       }
+
+      const result = fn(instr)(...args)
+      framePut(frame, instr.dest, result)
     },
   }
 }
@@ -81,7 +91,7 @@ export function defineEffectInstr(
       }
 
       if (instr.dest !== undefined) {
-        let message = `(${instr.op}) effect instruction should not have dest variable`
+        let message = `(${instr.op}) effect instruction should NOT have dest`
         message += `\n  instr: ${formatInstr(instr)}`
         if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
         else throw new Error(message)
@@ -110,7 +120,7 @@ export function defineEffectInstrWithInstr(
       }
 
       if (instr.dest !== undefined) {
-        let message = `(${instr.op}) effect instruction should not have dest variable`
+        let message = `(${instr.op}) effect instruction should NOT have dest`
         message += `\n  instr: ${formatInstr(instr)}`
         if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
         else throw new Error(message)
