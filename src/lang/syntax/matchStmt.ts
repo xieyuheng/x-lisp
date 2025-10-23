@@ -4,7 +4,6 @@ import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import type { DataField } from "../value/AboutData.ts"
 import { matchExp } from "./matchExp.ts"
-import { sexpKeywordMeta } from "./sexpKeywordMeta.ts"
 
 export function matchStmt(sexp: X.Sexp): Stmt {
   return X.match(stmtMatcher, sexp)
@@ -14,8 +13,8 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
     "(cons* 'define (cons* name parameters) body)",
     ({ name, parameters, body }, { sexp }) => {
-      const meta = sexpKeywordMeta(sexp)
-
+      const keyword = X.asTael(sexp).elements[1]
+      const meta = X.tokenMetaFromSexpMeta(keyword.meta)
       if (X.listElements(parameters).length === 0) {
         return Stmts.Define(
           X.symbolContent(name),

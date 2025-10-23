@@ -4,7 +4,6 @@ import { arrayPickLast } from "../../helpers/array/arrayPickLast.ts"
 import { recordMapValue } from "../../helpers/record/recordMapValue.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
-import { sexpKeywordMeta } from "./sexpKeywordMeta.ts"
 
 export function matchExp(sexp: X.Sexp): Exp {
   return X.match(expMatcher, sexp)
@@ -259,13 +258,14 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   }),
 
   X.matcher("(cons* 'cond lines)", ({ lines }, { sexp }) => {
-    const meta = sexpKeywordMeta(sexp)
+    const keyword = X.asTael(sexp).elements[1]
+    const meta = X.tokenMetaFromSexpMeta(keyword.meta)
     return Exps.Cond(X.listElements(lines).map(matchCondLine), meta)
   }),
 
   X.matcher("(cons* 'match target lines)", ({ target, lines }, { sexp }) => {
-    const meta = sexpKeywordMeta(sexp)
-
+    const keyword = X.asTael(sexp).elements[1]
+    const meta = X.tokenMetaFromSexpMeta(keyword.meta)
     return Exps.Match(
       matchExp(target),
       X.listElements(lines).map(matchMatchLine),
