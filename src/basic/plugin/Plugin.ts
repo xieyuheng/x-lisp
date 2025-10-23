@@ -121,3 +121,31 @@ export function defineEffectInstr(
     },
   }
 }
+
+export function defineEffectInstrWithInstr(
+  plugin: Plugin,
+  name: string,
+  arity: number,
+  fn: (instr: Instr) => (...args: Array<Value>) => void,
+): void {
+  plugin.handlers[name] = {
+    execute(context, frame, instr) {
+      const args = instr.operands.map((operand) => frameEval(frame, operand))
+      if (args.length !== arity) {
+        let message = `(${instr.op}) instruction arity mismatch`
+        message += `\n  arity: ${arity}`
+        message += `\n  args: ${formatValues(args)}`
+        throw new Error(message)
+      }
+
+      if (instr.dest !== undefined) {
+        let message = `(${instr.op}) effect instruction should not have dest variable`
+        message += `\n  dest: ${instr.dest}`
+        message += `\n  args: ${formatValues(args)}`
+        throw new Error(message)
+      }
+
+      fn(instr)(...args)
+    },
+  }
+}
