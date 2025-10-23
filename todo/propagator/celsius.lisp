@@ -6,13 +6,13 @@
    (divider 5 9)
    c))
 
-;; maybe use -pp postfix to name all propagators,
 ;; unified namespace is a problem here.
+;; maybe use p/ prefix to name all propagators:
 
-(define-propagator (fahrenheit-to-celsius-pp f c)
-  (mul-pp
-   (sub-pp f 32)
-   (div-pp 5 9)
+(define-propagator (p/fahrenheit-to-celsius f c)
+  (p/mul
+   (p/sub f 32)
+   (p/div 5 9)
    c))
 
 (define-propagator (fahrenheit-celsius f c)
