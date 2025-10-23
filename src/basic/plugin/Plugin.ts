@@ -12,8 +12,10 @@ export type Plugin = {
   handlers: Record<string, Handler>
 }
 
+export type Execute = (context: Context, frame: Frame, instr: Instr) => void
+
 type Handler = {
-  execute: (context: Context, frame: Frame, instr: Instr) => void
+  execute: Execute
 }
 
 export function createPlugin(): Plugin {
@@ -25,9 +27,9 @@ export function createPlugin(): Plugin {
 export function defineControlFlowInstr(
   plugin: Plugin,
   name: string,
-  handler: Handler,
+  execute: Execute,
 ): void {
-  plugin.handlers[name] = handler
+  plugin.handlers[name] = { execute }
 }
 
 export function pluginExecuteInstr(

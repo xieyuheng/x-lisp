@@ -1,3 +1,4 @@
+[basic] `formatInstr`
 [basic] `definePureInstr` -- error report when there is not `dest`
 [basic] `checkBlock` -- only end with terminator instruction
 
