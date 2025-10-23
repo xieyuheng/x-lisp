@@ -1,4 +1,4 @@
-propagator# basic SSA
+# basic SSA
 
 [basic] `aboutSSA` -- `put!` and `use`
 [basic] `checkSSA` -- single `use`
