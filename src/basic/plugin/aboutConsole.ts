@@ -1,10 +1,8 @@
 import { formatValue } from "../format/index.ts"
-import * as Values from "../value/index.ts"
-import { definePureInstr, type Plugin } from "./index.ts"
+import { defineEffectInstr, type Plugin } from "./index.ts"
 
 export function aboutConsole(plugin: Plugin) {
-  definePureInstr(plugin, "print", 1, (value) => {
+  defineEffectInstr(plugin, "print", 1, (value) => {
     console.log(formatValue(value))
-    return Values.Void()
   })
 }

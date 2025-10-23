@@ -46,13 +46,11 @@ export function pluginExecuteInstr(
   handler.execute(context, frame, instr)
 }
 
-type ValueFn = (...args: Array<Value>) => Value
-
 export function definePureInstr(
   plugin: Plugin,
   name: string,
   arity: number,
-  fn: ValueFn,
+  fn: (...args: Array<Value>) => Value,
 ): void {
   plugin.handlers[name] = {
     execute(context, frame, instr) {
@@ -76,7 +74,7 @@ export function definePureInstrWithInstr(
   plugin: Plugin,
   name: string,
   arity: number,
-  fn: (instr: Instr) => ValueFn,
+  fn: (instr: Instr) => (...args: Array<Value>) => Value,
 ): void {
   plugin.handlers[name] = {
     execute(context, frame, instr) {
@@ -92,6 +90,34 @@ export function definePureInstrWithInstr(
       if (instr.dest) {
         framePut(frame, instr.dest, result)
       }
+    },
+  }
+}
+
+export function defineEffectInstr(
+  plugin: Plugin,
+  name: string,
+  arity: number,
+  fn: (...args: Array<Value>) => void,
+): void {
+  plugin.handlers[name] = {
+    execute(context, frame, instr) {
+      const args = instr.operands.map((operand) => frameEval(frame, operand))
+      if (args.length !== arity) {
+        let message = `(${instr.op}) instruction arity mismatch`
+        message += `\n  arity: ${arity}`
+        message += `\n  args: ${formatValues(args)}`
+        throw new Error(message)
+      }
+
+      if (instr.dest !== undefined) {
+        let message = `(${instr.op}) effect instruction should not have dest variable`
+        message += `\n  dest: ${instr.dest}`
+        message += `\n  args: ${formatValues(args)}`
+        throw new Error(message)
+      }
+
+      fn(...args)
     },
   }
 }
