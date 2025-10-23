@@ -1,0 +1,2 @@
+(define (main)
+  (block entry))

@@ -1,0 +1,7 @@
+[checkBlockTerminator] block must not be empty
+  --> basic/tests/empty-block.error.lisp:2:10
+ 1 | (define (main)
+ 2 |   (block entry))
+   |          ~~~~~   
+ 3 | 
+

@@ -29,10 +29,12 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
 
 function matchBlock(sexp: X.Sexp): Block {
   return X.match(
-    X.matcher("(cons* 'block label instrs)", ({ label, instrs }, { sexp }) => {
+    X.matcher("(cons* 'block label instrs)", ({ label, instrs }) => {
+      const meta = X.tokenMetaFromSexpMeta(label.meta)
       return Block(
         X.symbolContent(label),
         X.listElements(instrs).map(matchInstr),
+        meta,
       )
     }),
     sexp,

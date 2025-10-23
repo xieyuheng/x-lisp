@@ -6,7 +6,8 @@ import type { Instr } from "../instr/index.ts"
 export function checkBlockTerminator(block: Block): void {
   if (block.instrs.length === 0) {
     let message = `[checkBlockTerminator] block must not be empty`
-    throw new Error(message)
+    if (block.meta) throw new X.ErrorWithMeta(message, block.meta)
+    else throw new Error(message)
   }
 
   const lastInstr = block.instrs[block.instrs.length - 1]
