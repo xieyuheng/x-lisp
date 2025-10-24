@@ -36,24 +36,58 @@ uxn 风格的 game engine 的脚本语言。
 
 第二个阶段可以把 js/ts 代码 port 到 x-lisp。
 
-# work breakdown
+# 项目管理之前已完成的部分
 
 - [x] x-lisp language design
 - [x] x-lisp interpreter
 - [x] basic-lisp language design
-- [x] basic-lisp interpreter
+- [x] basic-lisp interpreter (no module system)
   - [x] plugin system
-  - [ ] SSA
-  - [ ] type inference
-  - [ ] module system
-  - [ ] bundling
-  - [ ] dynamic type -- support tag and untag operaters
+
+# milestone 1 -- compiler frontend
+
+从 x-lisp 编译到 basic-lisp，
+然后用 basic-lisp 的解释器来运行代码。
+
+这是最难的部分。
+因为这里需要处理与 x-lisp 的特殊 feature 有关的编译问题，
+而这些问题可能是需要研究的，
+是不能在已有的课程中直接学到的。
+
+可以先不考虑 module system。
+
+前提：
+
+- [ ] 从 EOC 学会如何编译 function 和 lambda
+- [ ] 从 EOC 学会如何处理动态类型
+
+任务：
+
 - [ ] x-lisp compiler (to basic-lisp)
   - [ ] shrink
   - [ ] uniquify
   - [ ] unnest
   - [ ] dynamic type -- use tag and untag operaters
   - [ ] explicate-control
+- [ ] basic-lisp interpreter
+  - [ ] type inference
+  - [ ] dynamic type -- support tag and untag operaters
+  - [ ] SSA
+
+# milestone 2 -- module system and bounding
+
+这是补全上一个 milestone 没有完成的任务，
+也是为 codegen 做准备。
+
+bounding 问题对于我来说是新问题，
+所以也独立开一个 milestone。
+
+- [ ] basic-lisp interpreter
+  - [ ] module system
+  - [ ] bundling
+
+# milestone 3 -- codegen
+
 - [ ] C runtime (with GC)
   - [ ] value tag encoding
   - [ ] builtin
@@ -61,3 +95,7 @@ uxn 风格的 game engine 的脚本语言。
 - [ ] basic-lisp codegen (to x86 via GNU assembler)
   - [ ] select instruction
   - [ ] allocate registers
+
+# milestone 4 -- optimization
+
+优化放到最后，具体任务待定。
