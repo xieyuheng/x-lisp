@@ -82,11 +82,18 @@ uxn 风格的 game engine 的脚本语言。
 bounding 问题对于我来说是新问题，
 所以也独立开一个 milestone。
 
+这个 milestone 会使得 x-lisp
+可以编译带有 module system 的代码 到 basic-lisp。
+
 - [ ] basic-lisp interpreter
   - [ ] module system
   - [ ] bundling
 
 # milestone 3 -- codegen
+
+使得 x-lisp 可以完全脱离 js 的 runtime。
+这时我们「独立自主」的目标已经达成了。
+写 x-lisp 代码时的感觉完全不一样了。
 
 - [ ] C runtime (with GC)
   - [ ] value tag encoding
