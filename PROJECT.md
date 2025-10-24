@@ -3,7 +3,7 @@ title: x-lisp project
 date: 2025-10-22
 ---
 
-# value
+# 价值
 
 我想要有一个能由我完全控制的语言，
 可以实现我需要的语言功能，
@@ -19,7 +19,7 @@ date: 2025-10-22
 uxn 风格的 game engine 的脚本语言。
 或者 uxn 风格的 app 的脚本语言。
 
-# scope
+# 范围
 
 我想要独立自主的语言，
 因此最终的目标是用 x-lisp 写其自身的编译器。
@@ -46,15 +46,23 @@ uxn 风格的 game engine 的脚本语言。
 
 # milestone 1 -- compiler frontend
 
-从 x-lisp 编译到 basic-lisp，
-然后用 basic-lisp 的解释器来运行代码。
+从 x-lisp 编译到 basic-lisp。
 
 这是最难的部分。
 因为这里需要处理与 x-lisp 的特殊 feature 有关的编译问题，
 而这些问题可能是需要研究的，
 是不能在已有的课程中直接学到的。
 
-可以先不考虑 module system。
+成果：
+
+- 在使用 x-lisp 的解释器来运行代码之外，
+  有了用 basic-lisp 的解释器来运行代码的能力。
+
+  可以在命令行新增一个命令来区分两种运行模式。
+
+范围：
+
+- 可以先不考虑 module system。
 
 前提：
 
@@ -82,8 +90,12 @@ uxn 风格的 game engine 的脚本语言。
 bounding 问题对于我来说是新问题，
 所以也独立开一个 milestone。
 
-这个 milestone 会使得 x-lisp
-可以编译带有 module system 的代码 到 basic-lisp。
+成果：
+
+- 这个 milestone 会使得 x-lisp
+  可以编译带有 module system 的代码 到 basic-lisp。
+
+任务：
 
 - [ ] basic-lisp interpreter
   - [ ] module system
@@ -91,9 +103,13 @@ bounding 问题对于我来说是新问题，
 
 # milestone 3 -- codegen
 
+成果：
+
 使得 x-lisp 可以完全脱离 js 的 runtime。
 这时我们「独立自主」的目标已经达成了。
 写 x-lisp 代码时的感觉完全不一样了。
+
+任务：
 
 - [ ] C runtime (with GC)
   - [ ] value tag encoding
