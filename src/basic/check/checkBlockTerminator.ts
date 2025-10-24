@@ -5,7 +5,7 @@ import type { Instr } from "../instr/index.ts"
 
 export function checkBlockTerminator(block: Block): void {
   if (block.instrs.length === 0) {
-    let message = `[checkBlockTerminator] block must not be empty`
+    let message = `[checkBlockTerminator] block must end with terminator instruction`
     if (block.meta) throw new X.ErrorWithMeta(message, block.meta)
     else throw new Error(message)
   }
