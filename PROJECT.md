@@ -52,10 +52,11 @@ date: 2025-10-22
 
 - 一个独立于 x-lisp 的，练习性质的编译器。
 
-任务：
+任务（按照 EOC 的章节划分）：
 
 - [ ] 学会如何编译带有 GC 的语言
-- [ ] 学会如何编译 function 和 lambda
+- [ ] 学会如何编译 function
+- [ ] 学会如何编译 lambda
 - [ ] 学会如何处理动态类型编码
 
 # milestone 1 -- compiler frontend
