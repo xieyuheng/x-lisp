@@ -5,36 +5,36 @@ date: 2025-10-22
 
 # 价值
 
-我想要有一个能由我完全控制的语言，
-可以实现我需要的语言功能，
-并且实验我所感兴趣的，新的语言功能。
+一个独立自主的语言。
 
-我想要有一个合适的语言来写新的解释器与编译器，
-写这些东西的目的是为了探索新的计算模型，
-比如 interaction net 和 pi-calculus，
-又比如 rewrite system 和 propagator model
-和 logic constraint programming。
+适合用来写新的解释器与编译器，目的是为了探索新的计算模型。比如：
 
-有了 x-lisp 之后，我还可以把它作为
-uxn 风格的 game engine 的脚本语言。
-或者 uxn 风格的 app 的脚本语言。
+- interaction net
+- pi-calculus
+- rewrite system
+- propagator model
+- logic constraint programming
+
+方便用 C 扩展，可以作为 APP 的脚本语言：
+
+- uxn 风格的 canvas
+- uxn 风格的 flash card APP
 
 # 范围
 
-我想要独立自主的语言，
-因此最终的目标是用 x-lisp 写其自身的编译器。
+为了独立自主，最终的目标是用 x-lisp 写其自身的编译器。
 
 但是第一阶段可以先用 js/ts 来写编译器。
-因此第一个阶段的代码都是 js/ts 实现的。
 
 第一个阶段的 scope 是：
 
-- x-lisp 的解释器。
-- basic-lisp 中间语言。
-- x-lisp 到 basic-lisp 的编译器。
-- basic-lisp 到 x86 的 codegen，外加一个 C runtime。
+- x-lisp 的解释器
+- basic-lisp 中间语言
+- x-lisp 到 basic-lisp 的编译器
+- C runtime
+- basic-lisp 到 x86 的 codegen
 
-第二个阶段可以把 js/ts 代码 port 到 x-lisp。
+第二个阶段可以直接把 js/ts 代码 port 到 x-lisp。
 
 # 项目管理之前已完成的部分
 
@@ -43,6 +43,20 @@ uxn 风格的 game engine 的脚本语言。
 - [x] basic-lisp language design
 - [x] basic-lisp interpreter (no module system)
   - [x] plugin system
+
+# milestone 0 -- learn EOC
+
+补全为了实现编译器我所已知欠缺的知识。
+
+成果：
+
+- 一个独立于 x-lisp 的，练习性质的编译器。
+
+任务：
+
+- [ ] 学会如何编译带有 GC 的语言
+- [ ] 学会如何编译 function 和 lambda
+- [ ] 学会如何处理动态类型编码
 
 # milestone 1 -- compiler frontend
 
@@ -57,17 +71,12 @@ uxn 风格的 game engine 的脚本语言。
 
 - 在使用 x-lisp 的解释器来运行代码之外，
   有了用 basic-lisp 的解释器来运行代码的能力。
-
   可以在命令行新增一个命令来区分两种运行模式。
 
 范围：
 
 - 可以先不考虑 module system。
-
-前提：
-
-- [ ] 从 EOC 学会如何编译 function 和 lambda
-- [ ] 从 EOC 学会如何处理动态类型
+- 为了简单，不考虑静态类型，只实现纯粹的 dynamic type。
 
 任务：
 
@@ -75,11 +84,8 @@ uxn 风格的 game engine 的脚本语言。
   - [ ] shrink
   - [ ] uniquify
   - [ ] unnest
-  - [ ] dynamic type -- use tag and untag operaters
   - [ ] explicate-control
 - [ ] basic-lisp interpreter
-  - [ ] type inference
-  - [ ] dynamic type -- support tag and untag operaters
   - [ ] SSA
 
 # milestone 2 -- module system and bounding
@@ -109,12 +115,16 @@ bounding 问题对于我来说是新问题，
 这时我们「独立自主」的目标已经达成了。
 写 x-lisp 代码时的感觉完全不一样了。
 
+范围：
+
+- GC 可以只支持 tagged value。
+
 任务：
 
 - [ ] C runtime (with GC)
   - [ ] value tag encoding
   - [ ] builtin
-  - [ ] GC -- must support untagged value
+  - [ ] GC
 - [ ] basic-lisp codegen (to x86 via GNU assembler)
   - [ ] select instruction
   - [ ] allocate registers
