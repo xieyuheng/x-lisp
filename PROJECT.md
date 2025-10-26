@@ -15,10 +15,10 @@ date: 2025-10-22
 - propagator model
 - logic constraint programming
 
-方便用 C 扩展，可以作为 APP 的脚本语言：
+方便用 C 扩展，可以作为 app 的脚本语言：
 
 - uxn 风格的 canvas
-- uxn 风格的 flash card APP
+- uxn 风格的 flash card app
 
 # 范围
 
