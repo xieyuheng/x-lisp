@@ -1,3 +1,5 @@
+should generate `<type>-put-<field>!` instead of `put-<type>-<field>!`
+
 # basic SSA
 
 [basic] `aboutSSA` -- `put!` and `use`
