@@ -1,9 +1,39 @@
-(define-struct node-t
-  (prev node-t)
-  (next node-t)
-  (value object-t))
+(define-struct (node-t A)
+  (prev (optional (node-t A)))
+  (next (optional (node-t A)))
+  (value A))
 
-(define-struct (node-t V)
-  (prev (node-t V))
-  (next (node-t V))
-  (value V))
+(define-struct (list-t A)
+  (first (optional (node-t A)))
+  (last (optional (node-t A)))
+  (cursor (optional (node-t A)))
+  (length int-t)
+  (free-fn (optional (-> A void-t)))
+  (equal-fn (optional (-> A A bool-t)))
+  (copy-fn (optional (-> A A))))
+
+(claim new-list (polymorphic (A) (-> (list-t A))))
+
+(define (new-list)
+  (new list-t :length 0))
+
+(claim list-free (polymorphic (A) (-> (list-t A) void-t)))
+
+(define (list-destroy self)
+  (list-purge self)
+  (free self))
+
+(claim list-purge (polymorphic (A) (-> (list-t A) void-t)))
+
+(define (list-purge self)
+  (= node self:first)
+  (while (not (null? node))
+    (= next node:next)
+    (unless (null? self:free-fn)
+      (self:free-fn node:value))
+    (free node)
+    (= node next))
+  (= self:first null)
+  (= self:last null)
+  (= self:cursor null)
+  (= self:length 0))
