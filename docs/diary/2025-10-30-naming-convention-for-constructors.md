@@ -12,7 +12,7 @@ date: 2025-10-30
 (make-empty-graph)
 ```
 
-而不是类似 scalable C 的：
+而不是类似 scalable c 的：
 
 ```scheme
 (graph-new vertices edges)
@@ -44,3 +44,13 @@ variant 就是特殊的 constructor。
 它说，pattern matching 的过程中，
 一个 algebraic data type 的 variant 才是我们所主要关心的，
 因此 variant name 应该前置。
+
+# 推论
+
+以此类推，在写 scalable c 的时候，
+可能 `new` 也应该前置，
+应该写 `new_list` 而不是 `list_new`。
+
+这样能在两种语言的代码中保持命名惯例一致。
+
+同样，scalable c 中的 setter 也应该改成 putter。
