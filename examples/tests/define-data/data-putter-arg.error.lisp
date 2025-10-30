@@ -4,4 +4,4 @@
 
 (begin
   (= l (li 1 nil))
-  (put-li-tail! 2 l))
+  (li-put-tail! 2 l))

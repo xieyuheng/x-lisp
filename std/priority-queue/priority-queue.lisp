@@ -19,8 +19,8 @@
 (define node-priority cons-node-priority)
 (define node-index cons-node-index)
 
-(define put-node-priority! put-cons-node-priority!)
-(define put-node-index! put-cons-node-index!)
+(define node-put-priority! cons-node-put-priority!)
+(define node-put-index! cons-node-put-index!)
 
 ;; heap as complete-binary-tree
 (define (heap? K P) (list? (node? K P)))
@@ -129,7 +129,7 @@
   (= heap (priority-queue-heap queue))
   (= found (hash-get key hash))
   (cond ((not (null? found))
-         (put-node-priority! priority found)
+         (node-put-priority! priority found)
          (node-blance! heap compare found))
         (else
          (= index (list-length heap))
@@ -176,8 +176,8 @@
 (define (node-swap! heap lhs rhs)
   (= lhs-index (node-index lhs))
   (= rhs-index (node-index rhs))
-  (put-node-index! rhs-index lhs)
-  (put-node-index! lhs-index rhs)
+  (node-put-index! rhs-index lhs)
+  (node-put-index! lhs-index rhs)
   (list-put! rhs-index lhs heap)
   (list-put! lhs-index rhs heap)
   void)
