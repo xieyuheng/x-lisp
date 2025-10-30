@@ -54,3 +54,27 @@ runtime 中有用 c 实现的 overloaded apply 函数，
 把整个编译流程跑起来。
 
 然后再将所编译的对象扩展到整个 x-lisp。
+
+> A flower in nature is not built step by step,
+> it grows from a center and unfolds itself
+> as a whole to it's full form.
+
+lambda calculus is the center.
+lambda calculus is the core.
+
+# 反思 EOC 课程设计
+
+我觉得这也是为什么 EOC 的课程感觉不太对。
+EOC 虽然是渐进地从一个具有完整流程的编译器开始的，
+但是所编译的对象语言不是从 core 展开的。
+
+到课程的中后期，才讲到 lambda conversion，
+在讲解的时候，老师也说，这是这个课程的核心。
+
+但是很遗憾，课程没有从核心开始。
+
+开始的时候，没有 GC，所以按照 EOC 的设计，
+很难从 lambda calculus 开始编译。
+但是如果区分 frontend 和 backend，
+就可以在 frontend 从 lambda calculus 开始，中间语言可以先解释运行。
+而到 backend 的时候，核心问题就是 GC 了。
