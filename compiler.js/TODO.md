@@ -1,8 +1,12 @@
 # frontend
 
-[frontend] `load/` -- `DefineFunction` to `FunctionDefinition`
-[frontend] `load/` -- collect top-level `Compute` to `main` function
+[frontend] `load/` -- setup
+
 [frontend] `CompilePassesCommand` -- call `load`
+
+[frontend] `load/` -- `stage0` -- collect top-level `Compute` to `main` function
+[frontend] `load/` -- `stage1` -- `DefineFunction` to `FunctionDefinition`
+
 [frontend] setup test for passes
 
 [pass] `005-shrink`
