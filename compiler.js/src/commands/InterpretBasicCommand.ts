@@ -4,11 +4,11 @@ import { load } from "../backend/load/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
-export const BasicRunCommand: Command = {
-  name: "basic:run",
-  description: "Run a basic-lisp file",
+export const InterpretBasicCommand: Command = {
+  name: "interpret-basic",
+  description: "Interpret a basic-lisp file",
   help(commander) {
-    let message = `The ${this.name} command run a basic-lisp file.`
+    let message = `The ${this.name} command interpret a basic-lisp file.`
     message += `\n`
     message += `\n  ${commander.name} ${this.name} <file>`
     message += `\n`
@@ -17,7 +17,7 @@ export const BasicRunCommand: Command = {
 
   async run(commander) {
     if (typeof commander.args[0] !== "string") {
-      let message = `[basic:run] expect the first argument to be a path`
+      let message = `[interpret-basic] expect the first argument to be a path`
       message += `\n  first argument: ${commander.args[0]}`
       throw new Error(message)
     }

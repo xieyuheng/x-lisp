@@ -1,5 +1,4 @@
 rename RunCommand to InterpretCommand
-rename BasicRunCommand to InterpretBasicCommand
 
 # compiler frontend
 

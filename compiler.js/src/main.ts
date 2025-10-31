@@ -1,7 +1,7 @@
 #!/usr/bin/env -S node --stack-size=65536
 
 import { Commander } from "@xieyuheng/commander.js"
-import { BasicRunCommand } from "./commands/BasicRunCommand.ts"
+import { InterpretBasicCommand } from "./commands/InterpretBasicCommand.ts"
 import { ReplCommand } from "./commands/ReplCommand.ts"
 import { RunCommand } from "./commands/RunCommand.ts"
 
@@ -10,7 +10,7 @@ async function main() {
 
   commander.use(RunCommand)
   commander.use(ReplCommand)
-  commander.use(BasicRunCommand)
+  commander.use(InterpretBasicCommand)
 
   await commander.run(process.argv)
 }

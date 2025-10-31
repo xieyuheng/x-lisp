@@ -19,8 +19,8 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "test:node": "node --test 'lib/**/*.test.js'",
-    "test:lang": "bash scripts/run-all.sh",
-    "test": "npm run test:node && npm run test:lang",
+    "test:all": "bash scripts/test-all.sh",
+    "test": "npm run test:node && npm run test:all",
     "format": "prettier src --write"
   },
   "dependencies": {
