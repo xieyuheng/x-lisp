@@ -5,8 +5,6 @@
 
 [frontend] `compilePasses`
 
-[frontend] setup test for passes
-
 [pass] `005-shrink`
 [pass] `010-uniquify`
 [pass] `011-reveal-functions`

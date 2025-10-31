@@ -1,7 +1,7 @@
 (iadd) instruction arity mismatch
   arity: 2
   instr: (= x (iadd 1))
-  --> lisp/basic/tests/arity-mismatch.error.lisp:3:5
+  --> lisp/basic-tests/errors/arity-mismatch.error.lisp:3:5
  1 | (define (main)
  2 |   (block entry
  3 |     (= x (iadd 1))
