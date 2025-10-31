@@ -1,15 +1,16 @@
 # frontend
 
+[frontend] `load/` -- `DefineFunction` to `FunctionDefinition`
 [frontend] `load/` -- collect top-level `Compute` to `main` function
-
+[frontend] `CompilePassesCommand` -- call `load`
 [frontend] setup test for passes
 
-[pass] `shrink`
-[pass] `uniquify`
-[pass] `reveal-functions`
-[pass] `convert-lambdas`
-[pass] `unnest-operands`
-[pass] `explicate-control`
+[pass] `005-shrink`
+[pass] `010-uniquify`
+[pass] `011-reveal-functions`
+[pass] `012-convert-lambdas`
+[pass] `020-unnest-operands`
+[pass] `030-explicate-control`
 
 # basic SSA
 
