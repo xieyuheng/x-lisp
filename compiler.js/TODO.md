@@ -1,7 +1,5 @@
 # frontend
 
-[frontend] `mod/` -- `modLookupDefinition`
-
 [frontend] `definition/` -- `FunctionDefinition`
 
 [frontend] `exp/` -- only lambda calculus for now
