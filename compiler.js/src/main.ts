@@ -8,8 +8,8 @@ import { InterpretCommand } from "./commands/InterpretCommand.ts"
 async function main() {
   const commander = new Commander()
 
-  commander.use(InterpretCommand)
   commander.use(ReplCommand)
+  commander.use(InterpretCommand)
   commander.use(InterpretBasicCommand)
 
   await commander.run(process.argv)
