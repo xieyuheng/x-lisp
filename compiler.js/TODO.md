@@ -1,8 +1,8 @@
 # compiler frontend
 
 [frontend] `mod/`
+[frontend] `definition/` -- `FunctionDefinition`
 [frontend] `exp/`
-[frontend] `definition/`
 
 [frontend] setup test for passes
 
