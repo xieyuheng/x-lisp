@@ -1,0 +1,17 @@
+[checkRedefine] can not redefine name: one
+  old definition:
+    origin: tests/module/module-one.lisp
+    name: one
+    exp:
+      1
+  new definition:
+    origin: tests/module/module-two.lisp
+    name: one
+    exp:
+      1
+  --> tests/module/redefine-by-import.error.lisp:2:1
+ 1 | (import "module-one" one)
+ 2 | (import "module-two" one)
+   | ~~~~~~~~~~~~~~~~~~~~~~~~~ 
+ 3 | 
+

@@ -1,0 +1,3 @@
+[resolveModPath] resolved path does not exist as a file
+  input path: tests/module/non-existing.lisp
+  resolved path: tests/module/non-existing.lisp

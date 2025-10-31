@@ -1,0 +1,2 @@
+(export) undefined names: one
+  mod: tests/errors/export-undefined.error.lisp

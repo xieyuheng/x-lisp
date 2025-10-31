@@ -1,0 +1,6 @@
+(@list) literal list can not have attributes
+  --> tests/list/literal-list.error.lisp:1:1
+ 1 | (@list 1 2 3 :x 1 :y 2)
+   | ~~~~~~~~~~~~~~~~~~~~~~~ 
+ 2 | 
+

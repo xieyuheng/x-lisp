@@ -1,0 +1,6 @@
+(@hash) body length must be even
+  --> tests/hash/hash-body-length.error.lisp:1:1
+ 1 | (@hash 1 2 3)
+   | ~~~~~~~~~~~~~ 
+ 2 | 
+

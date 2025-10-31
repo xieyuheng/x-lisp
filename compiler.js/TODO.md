@@ -1,4 +1,3 @@
-[compiler.js] rename examples/ to tests/
 [compiler.js] move lisp code to lisp/
 
 # frontend

@@ -1,0 +1,10 @@
+(the) validation fail
+  schema:
+    int?
+  value:
+    1.0
+  --> tests/schema/the.error.lisp:1:1
+ 1 | (the int? 1.0)
+   | ~~~~~~~~~~~~~~ 
+ 2 | 
+

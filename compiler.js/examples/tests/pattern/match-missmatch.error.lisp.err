@@ -1,9 +1,0 @@
-[evaluate] (match) mismatch
-  target:
-    'd
-  --> examples/tests/pattern/match-missmatch.error.lisp:1:8
- 1 | (match 'd
-   |        ~  
- 2 |   ('a 1)
- 3 |   ('b 2)
-
