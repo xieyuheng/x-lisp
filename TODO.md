@@ -1,12 +1,20 @@
+move ts code to compiler/
+setup runtime/ -- copy from eoc
+
 # compiler frontend
 
-[frontend] `shrink`
+[frontend] `exp/` -- fresh start
+[frontend] `mod/` -- fresh start
+[frontend] `definition/` -- fresh start
+
 [frontend] setup test for passes
-[frontend] `uniquify`
-[frontend] `reveal-functions`
-[frontend] `convert-lambdas`
-[frontend] `unnest-operands`
-[frontend] `explicate-control`
+
+[pass] `shrink`
+[pass] `uniquify`
+[pass] `reveal-functions`
+[pass] `convert-lambdas`
+[pass] `unnest-operands`
+[pass] `explicate-control`
 
 # basic SSA
 
