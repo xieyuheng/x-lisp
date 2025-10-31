@@ -1,6 +1,3 @@
-move ts code to compiler/
-setup runtime/ -- copy from eoc
-
 # compiler frontend
 
 [frontend] `exp/` -- fresh start

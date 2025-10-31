@@ -1,4 +1,4 @@
-# x-lisp.js compiler
+# x-lisp / bootstrap compiler
 
 ## Install
 
