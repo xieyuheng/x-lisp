@@ -1,8 +1,18 @@
-# compiler frontend
+# frontend
 
 [frontend] `mod/`
 [frontend] `definition/` -- `FunctionDefinition`
-[frontend] `exp/`
+
+[frontend] `exp/` -- lambda calculus
+
+[frontend] `stmt/` -- `Define`
+[frontend] `stmt/` -- `DefineFunction`
+[frontend] `stmt/` -- `Compute`
+
+[frontend] `syntax/` -- `matchStmt`
+[frontend] `syntax/` -- `matchExp`
+
+[frontend] `load/` -- collect top-level `Compute` to `main` function
 
 [frontend] setup test for passes
 
