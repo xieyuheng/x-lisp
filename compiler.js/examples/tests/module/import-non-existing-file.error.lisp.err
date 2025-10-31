@@ -1,3 +1,3 @@
-[resoleModPath] resolved path does not exist as a file
-  input path: /home/xyh/projects/xieyuheng/x-lisp.js/examples/tests/module/non-existing.lisp
-  resolved path: /home/xyh/projects/xieyuheng/x-lisp.js/examples/tests/module/non-existing.lisp
+[resolveModPath] resolved path does not exist as a file
+  input path: examples/tests/module/non-existing.lisp
+  resolved path: examples/tests/module/non-existing.lisp

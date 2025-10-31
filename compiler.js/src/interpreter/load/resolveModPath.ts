@@ -1,5 +1,6 @@
 import fs from "node:fs"
 import Path from "path"
+import { pathRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 
 export function resolveModPath(inputPath: string): string {
   let path = inputPath
@@ -12,9 +13,9 @@ export function resolveModPath(inputPath: string): string {
   }
 
   if (!fs.existsSync(path)) {
-    let message = `[resoleModPath] resolved path does not exist as a file`
-    message += `\n  input path: ${path}`
-    message += `\n  resolved path: ${path}`
+    let message = `[resolveModPath] resolved path does not exist as a file`
+    message += `\n  input path: ${pathRelativeToCwd(path)}`
+    message += `\n  resolved path: ${pathRelativeToCwd(path)}`
     throw new Error(message)
   }
 
