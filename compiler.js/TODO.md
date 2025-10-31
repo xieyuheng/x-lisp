@@ -1,7 +1,5 @@
 # frontend
 
-[frontend] `definition/` -- `FunctionDefinition`
-
 [frontend] `exp/` -- only lambda calculus for now
 [frontend] `value/` -- only lambda calculus for now
 
