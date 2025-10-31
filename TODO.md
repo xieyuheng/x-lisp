@@ -1,4 +1,5 @@
-setup runtime/ -- copy from eoc
+rename compiler to compiler.js
+rename project to x-lisp -- compiler in x-lisp itself will be in this repo too
 
 # compiler frontend
 
