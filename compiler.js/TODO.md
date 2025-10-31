@@ -1,7 +1,3 @@
-# interpreter
-
-[interpreter] inline `Atom` to `Exp`
-
 # frontend
 
 [frontend] `exp/` -- only lambda calculus for now

@@ -1,13 +1,12 @@
 import { type Sexp, type TokenMeta } from "@xieyuheng/x-sexp.js"
-import { type Atom } from "./index.ts"
 
 export type Meta = TokenMeta
 
 export type Attributes = Record<string, Exp>
 
 export type Exp =
-  | Atom
   | Var
+  | Symbol | Hashtag | String | Int | Float
   | Lambda
   | VariadicLambda
   | NullaryLambda
@@ -51,6 +50,80 @@ export function Var(name: string, meta: Meta): Var {
   return {
     kind: "Var",
     name,
+    meta,
+  }
+}
+
+export type Symbol = {
+  kind: "Symbol"
+  content: string
+  meta: Meta
+}
+
+export function Symbol(content: string, meta: Meta): Symbol {
+  return {
+    kind: "Symbol",
+    content,
+    meta,
+  }
+}
+
+export type String = {
+  kind: "String"
+  content: string
+  meta: Meta
+}
+
+export function String(content: string, meta: Meta): String {
+  return {
+    kind: "String",
+    content,
+    meta,
+  }
+}
+
+export type Hashtag = {
+  kind: "Hashtag"
+  content: string
+  meta: Meta
+}
+
+export function Hashtag(content: string, meta: Meta): Hashtag {
+  return {
+    kind: "Hashtag",
+    content,
+    meta,
+  }
+}
+
+export type Int = {
+  kind: "Int"
+  content: number
+  meta: Meta
+}
+
+export function Int(content: number, meta: Meta): Int {
+  if (!Number.isInteger(content)) {
+    throw new Error(`[intAtom] expect number be int: ${content}.`)
+  }
+
+  return {
+    kind: "Int",
+    content,
+    meta,
+  }
+}
+
+export type Float = {
+  kind: "Float"
+  content: number
+  meta: Meta
+}
+
+export function Float(content: number, meta: Meta): Float {
+  return {
+    kind: "Float",
+    content,
     meta,
   }
 }
