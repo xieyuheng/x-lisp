@@ -1,0 +1,16 @@
+[applyWithSchema/Arrow] fail on return value
+  schema:
+    (-> int? int? int?)
+  target:
+    (lambda (x y) 'abc)
+  args:
+    1 1
+  return:
+    'abc
+  --> lisp/tests/claim/claim-result.error.lisp:2:9
+ 1 | (claim my-add (-> int? int? int?))
+ 2 | (define (my-add x y) 'abc)
+   |         ~~~~~~~~~~~~       
+ 3 | 
+ 4 | (my-add 1 1)
+

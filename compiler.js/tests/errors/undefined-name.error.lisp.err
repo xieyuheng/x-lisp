@@ -1,8 +1,0 @@
-[evaluate] undefined
-  name: g
-  --> tests/errors/undefined-name.error.lisp:1:16
- 1 | (define (f x) (g x))
-   |                ~     
- 2 | (f 1)
- 3 | 
-

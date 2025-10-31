@@ -1,5 +1,3 @@
-[compiler.js] move tests/ to lisp/
-
 # frontend
 
 [frontend] `load/` -- `stage0` -- collect top-level `Compute` to `main` function
