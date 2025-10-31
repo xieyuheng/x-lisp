@@ -3,7 +3,7 @@
 set -e
 
 parallel="parallel -v --halt now,fail=1"
-bin="node ./lib/main.js run --debug=true"
+bin="node ./lib/main.js interpret --debug=true"
 
 find examples -name "*.test.lisp" | $parallel $bin {}
 find examples -name "*.snapshot.lisp" | $parallel $bin {} ">" {}.out

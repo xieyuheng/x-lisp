@@ -3,12 +3,12 @@
 import { Commander } from "@xieyuheng/commander.js"
 import { InterpretBasicCommand } from "./commands/InterpretBasicCommand.ts"
 import { ReplCommand } from "./commands/ReplCommand.ts"
-import { RunCommand } from "./commands/RunCommand.ts"
+import { InterpretCommand } from "./commands/InterpretCommand.ts"
 
 async function main() {
   const commander = new Commander()
 
-  commander.use(RunCommand)
+  commander.use(InterpretCommand)
   commander.use(ReplCommand)
   commander.use(InterpretBasicCommand)
 

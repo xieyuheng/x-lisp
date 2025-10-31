@@ -1,5 +1,3 @@
-rename RunCommand to InterpretCommand
-
 # compiler frontend
 
 [frontend] `mod/`

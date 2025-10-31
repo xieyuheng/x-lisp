@@ -3,6 +3,6 @@
 set -e
 
 sh scripts/test-interpret-basic.sh
-sh scripts/run-prelude.sh
-sh scripts/run-std.sh
-sh scripts/run-examples.sh
+sh scripts/test-interpret-prelude.sh
+sh scripts/test-interpret-std.sh
+sh scripts/test-interpret-examples.sh
