@@ -1,6 +1,7 @@
-# frontend
+[compiler.js] rename examples/ to tests/
+[compiler.js] move lisp code to lisp/
 
-[frontend] `CompilePassesCommand` -- call `load` and `compilePasses`
+# frontend
 
 [frontend] `load/` -- `stage0` -- collect top-level `Compute` to `main` function
 [frontend] `load/` -- `stage1` -- `DefineFunction` to `FunctionDefinition`

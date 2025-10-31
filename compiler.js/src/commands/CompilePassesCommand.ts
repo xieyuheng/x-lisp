@@ -1,5 +1,8 @@
 import { type Command } from "@xieyuheng/commander.js"
 import { errorReport } from "../helpers/error/errorReport.ts"
+import { compilePasses } from "../frontend/compile/index.ts"
+import { load } from "../frontend/load/index.ts"
+import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
 export const CompilePassesCommand: Command = {
   name: "compile-passes",
@@ -20,7 +23,9 @@ export const CompilePassesCommand: Command = {
     }
 
     try {
-      // TODO
+      const url = createUrlOrFileUrl(commander.args[0])
+      const mod = load(url)
+      compilePasses(mod)
     } catch (error) {
       console.log(errorReport(error))
       process.exit(1)
