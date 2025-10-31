@@ -21,13 +21,8 @@
 [backend] `aboutSSA` -- `put!` and `use`
 [backend] `checkSSA` -- single `use`
 
-# basic type inference
-
-[backend] full type inference
-
 # basic module
 
-[backend] `Stmt` -- `Claim`
 [backend] `Stmt` -- `Import`
 [backend] `Stmt` -- `Include`
 
