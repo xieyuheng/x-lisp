@@ -1,3 +1,14 @@
+# compiler frontend
+
+[pass] setup passes
+[pass] `shrink`
+[pass] setup test for passes
+[pass] `uniquify`
+[pass] `reveal-functions`
+[pass] `convert-lambdas`
+[pass] `unnest-operands`
+[pass] `explicate-control`
+
 # basic SSA
 
 [basic] `aboutSSA` -- `put!` and `use`

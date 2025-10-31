@@ -44,21 +44,6 @@ date: 2025-10-22
 - [x] basic-lisp interpreter (no module system)
   - [x] plugin system
 
-# milestone 0 -- learn EOC
-
-补全为了实现编译器我所已知欠缺的知识。
-
-成果：
-
-- 一个独立于 x-lisp 的，练习性质的编译器。
-
-任务（按照 EOC 的章节划分）：
-
-- [ ] 学会如何编译带有 GC 的语言
-- [ ] 学会如何编译 function
-- [ ] 学会如何编译 lambda
-- [ ] 学会如何处理动态类型编码
-
 # milestone 1 -- compiler frontend
 
 从 x-lisp 编译到 basic-lisp。
@@ -84,17 +69,19 @@ date: 2025-10-22
 - [ ] x-lisp compiler (to basic-lisp)
   - [ ] shrink
   - [ ] uniquify
-  - [ ] unnest
+  - [ ] reveal-functions
+  - [ ] convert-lambdas
+  - [ ] unnest-operands
   - [ ] explicate-control
 - [ ] basic-lisp interpreter
   - [ ] SSA
 
-# milestone 2 -- module system and bounding
+# milestone 2 -- module system and bundling
 
 这是补全上一个 milestone 没有完成的任务，
 也是为 codegen 做准备。
 
-bounding 问题对于我来说是新问题，
+bundling 问题对于我来说是新问题，
 所以也独立开一个 milestone。
 
 成果：
