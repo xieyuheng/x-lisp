@@ -1,29 +1,31 @@
+rename basic to backend
+[frontend] setup frontend
+
 # compiler frontend
 
-[pass] setup passes
-[pass] `shrink`
-[pass] setup test for passes
-[pass] `uniquify`
-[pass] `reveal-functions`
-[pass] `convert-lambdas`
-[pass] `unnest-operands`
-[pass] `explicate-control`
+[frontend] `shrink`
+[frontend] setup test for passes
+[frontend] `uniquify`
+[frontend] `reveal-functions`
+[frontend] `convert-lambdas`
+[frontend] `unnest-operands`
+[frontend] `explicate-control`
 
 # basic SSA
 
-[basic] `aboutSSA` -- `put!` and `use`
-[basic] `checkSSA` -- single `use`
+[backend] `aboutSSA` -- `put!` and `use`
+[backend] `checkSSA` -- single `use`
 
 # basic type inference
 
-[basic] full type inference
+[backend] full type inference
 
 # basic module
 
-[basic] `Stmt` -- `Claim`
-[basic] `Stmt` -- `Import`
-[basic] `Stmt` -- `Include`
+[backend] `Stmt` -- `Claim`
+[backend] `Stmt` -- `Import`
+[backend] `Stmt` -- `Include`
 
 # basic bundling
 
-[basic] `Mod` -- bundle
+[backend] `Mod` -- bundle

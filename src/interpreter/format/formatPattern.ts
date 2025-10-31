@@ -1,6 +1,6 @@
-import { formatValue } from "../format/index.ts"
 import { type Pattern } from "../pattern/index.ts"
 import * as Values from "../value/index.ts"
+import { formatValue } from "./index.ts"
 
 type Options = { digest?: boolean }
 

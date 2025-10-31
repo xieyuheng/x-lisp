@@ -1,13 +1,13 @@
 import assert from "node:assert"
+import * as Values from "../value/index.ts"
+import { isAtom, type Value } from "../value/index.ts"
 import {
   formatAtom,
   formatBody,
   formatExp,
   formatExps,
   formatPattern,
-} from "../format/index.ts"
-import * as Values from "../value/index.ts"
-import { isAtom, type Value } from "../value/index.ts"
+} from "./index.ts"
 
 type Options = { digest?: boolean }
 

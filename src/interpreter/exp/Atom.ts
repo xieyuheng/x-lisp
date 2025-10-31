@@ -1,4 +1,4 @@
-import { type Meta } from "../exp/index.ts"
+import { type Meta } from "./index.ts"
 
 export type Atom = Symbol | Hashtag | String | Int | Float
 

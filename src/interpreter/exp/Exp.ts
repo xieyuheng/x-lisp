@@ -1,5 +1,5 @@
 import { type Sexp, type TokenMeta } from "@xieyuheng/x-sexp.js"
-import { type Atom } from "../exp/index.ts"
+import { type Atom } from "./index.ts"
 
 export type Meta = TokenMeta
 

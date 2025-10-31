@@ -1,5 +1,5 @@
-import { formatValue } from "../format/index.ts"
 import { type Value } from "../value/index.ts"
+import { formatValue } from "./index.ts"
 
 export function formatSexp(value: Value): string {
   switch (value.kind) {

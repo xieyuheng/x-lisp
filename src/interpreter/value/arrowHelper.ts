@@ -1,4 +1,4 @@
-import * as Values from "../value/index.ts"
+import * as Values from "./index.ts"
 
 export function arrowNormalize(arrow: Values.Arrow): Values.Arrow {
   if (arrow.retSchema.kind === "Arrow") {

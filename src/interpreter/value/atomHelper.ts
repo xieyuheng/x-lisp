@@ -1,6 +1,6 @@
 import { formatValue } from "../format/index.ts"
-import * as Values from "../value/index.ts"
-import { type Atom, type Value } from "../value/index.ts"
+import * as Values from "./index.ts"
+import { type Atom, type Value } from "./index.ts"
 
 export function isAtom(value: any): value is Atom {
   return (

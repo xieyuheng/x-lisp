@@ -3,7 +3,7 @@ import { flags } from "../flags.ts"
 import { globals } from "../globals.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
-import { load } from "../lang/load/index.ts"
+import { load } from "../interpreter/load/index.ts"
 
 export const RunCommand: Command = {
   name: "run",
