@@ -2,8 +2,8 @@
 
 import { Commander } from "@xieyuheng/commander.js"
 import { InterpretBasicCommand } from "./commands/InterpretBasicCommand.ts"
-import { ReplCommand } from "./commands/ReplCommand.ts"
 import { InterpretCommand } from "./commands/InterpretCommand.ts"
+import { ReplCommand } from "./commands/ReplCommand.ts"
 
 async function main() {
   const commander = new Commander()

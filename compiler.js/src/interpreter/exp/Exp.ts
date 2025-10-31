@@ -6,7 +6,11 @@ export type Attributes = Record<string, Exp>
 
 export type Exp =
   | Var
-  | Symbol | Hashtag | String | Int | Float
+  | Symbol
+  | Hashtag
+  | String
+  | Int
+  | Float
   | Lambda
   | VariadicLambda
   | NullaryLambda

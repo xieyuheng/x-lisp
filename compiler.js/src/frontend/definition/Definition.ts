@@ -9,9 +9,11 @@ export type FunctionDefinition = {
   body: Exp
 }
 
-export function FunctionDefinition(name: string,
+export function FunctionDefinition(
+  name: string,
   parameters: Array<string>,
-  body: Exp): FunctionDefinition {
+  body: Exp,
+): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
     name,
