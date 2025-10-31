@@ -1,8 +1,11 @@
+rename RunCommand to InterpretCommand
+rename BasicRunCommand to InterpretBasicCommand
+
 # compiler frontend
 
-[frontend] `exp/` -- fresh start
-[frontend] `mod/` -- fresh start
-[frontend] `definition/` -- fresh start
+[frontend] `mod/`
+[frontend] `exp/`
+[frontend] `definition/`
 
 [frontend] setup test for passes
 
