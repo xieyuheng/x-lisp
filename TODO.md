@@ -1,4 +1,3 @@
-rename basic to backend
 [frontend] setup frontend
 
 # compiler frontend
