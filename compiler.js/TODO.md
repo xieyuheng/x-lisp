@@ -1,8 +1,5 @@
 # frontend
 
-[frontend] `exp/` -- only lambda calculus for now
-[frontend] `value/` -- only lambda calculus for now
-
 [frontend] `stmt/` -- `Define`
 [frontend] `stmt/` -- `DefineFunction`
 [frontend] `stmt/` -- `Compute`
