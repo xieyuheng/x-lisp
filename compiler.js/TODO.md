@@ -1,9 +1,11 @@
 # frontend
 
-[frontend] `CompilePassesCommand` -- call `load`
+[frontend] `CompilePassesCommand` -- call `load` and `compilePasses`
 
 [frontend] `load/` -- `stage0` -- collect top-level `Compute` to `main` function
 [frontend] `load/` -- `stage1` -- `DefineFunction` to `FunctionDefinition`
+
+[frontend] `compilePasses`
 
 [frontend] setup test for passes
 
@@ -13,6 +15,10 @@
 [pass] `012-convert-lambdas`
 [pass] `020-unnest-operands`
 [pass] `030-explicate-control`
+
+# later
+
+[frontend] `compileMod`
 
 # basic SSA
 
