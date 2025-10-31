@@ -1,5 +1,3 @@
-[frontend] setup frontend
-
 # compiler frontend
 
 [frontend] `shrink`
