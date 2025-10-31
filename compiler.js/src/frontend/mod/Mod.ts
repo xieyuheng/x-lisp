@@ -11,3 +11,7 @@ export function createMod(url: URL): Mod {
     defined: new Map(),
   }
 }
+
+export function modNames(mod: Mod): Set<string> {
+  return new Set(mod.defined.keys())
+}

@@ -1,6 +1,5 @@
 # frontend
 
-[frontend] `mod/` -- `modNames`
 [frontend] `mod/` -- `modLookupDefinition`
 
 [frontend] `definition/` -- `FunctionDefinition`
