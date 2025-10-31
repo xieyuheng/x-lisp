@@ -1,7 +1,5 @@
 # frontend
 
-[frontend] `load/` -- setup
-
 [frontend] `CompilePassesCommand` -- call `load`
 
 [frontend] `load/` -- `stage0` -- collect top-level `Compute` to `main` function
