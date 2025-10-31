@@ -1,4 +1,4 @@
-[compiler.js] move lisp code to lisp/
+[compiler.js] move tests/ to lisp/
 
 # frontend
 

@@ -11,7 +11,7 @@ let mod: Mod | undefined = undefined
 
 export function usePreludeDirectory(): string {
   const currentDir = path.dirname(fileURLToPath(import.meta.url))
-  return path.join(currentDir, "../../../prelude")
+  return path.join(currentDir, "../../../lisp/prelude")
 }
 
 export function usePreludeMod(): Mod {

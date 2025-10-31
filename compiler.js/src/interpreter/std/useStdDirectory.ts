@@ -3,5 +3,5 @@ import { fileURLToPath } from "node:url"
 
 export function useStdDirectory(): string {
   const currentDir = path.dirname(fileURLToPath(import.meta.url))
-  return path.join(currentDir, "../../../std")
+  return path.join(currentDir, "../../../lisp/std")
 }

@@ -63,7 +63,7 @@ export function useBuiltinMod(): Mod {
   aboutHash(mod)
 
   const currentDir = path.dirname(fileURLToPath(import.meta.url))
-  const schemaFile = path.join(currentDir, "../../../builtin/index.lisp")
+  const schemaFile = path.join(currentDir, "../../../lisp/builtin/index.lisp")
   const schemaCode = fs.readFileSync(schemaFile, "utf-8")
   runCode(mod, schemaCode)
 

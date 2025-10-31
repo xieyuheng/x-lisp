@@ -1,6 +1,6 @@
 (iadd) value instruction must have dest
   instr: (iadd 1 2)
-  --> basic/tests/value-instruction.error.lisp:3:5
+  --> lisp/basic/tests/value-instruction.error.lisp:3:5
  1 | (define (main)
  2 |   (block entry
  3 |     (iadd 1 2)
