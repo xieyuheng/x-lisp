@@ -9,6 +9,7 @@ export type Exp =
   | String
   | Int
   | Float
+| Lambda
   | Apply
   | Begin
   | Assign
@@ -98,6 +99,22 @@ export function Float(content: number, meta: Meta): Float {
   return {
     kind: "Float",
     content,
+    meta,
+  }
+}
+
+export type Lambda = {
+  kind: "Lambda"
+  parameters: Array<string>
+  body: Exp
+  meta: Meta
+}
+
+export function Lambda(parameters: Array<string>, body: Exp, meta: Meta): Lambda {
+  return {
+    kind: "Lambda",
+    parameters,
+    body,
     meta,
   }
 }

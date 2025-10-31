@@ -1,8 +1,5 @@
 # frontend
 
-[frontend] `syntax/` -- `matchExp`
-[frontend] `syntax/` -- `matchStmt`
-
 [frontend] `load/` -- collect top-level `Compute` to `main` function
 
 [frontend] setup test for passes
