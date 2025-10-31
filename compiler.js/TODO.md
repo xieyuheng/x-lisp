@@ -1,9 +1,12 @@
 # frontend
 
-[frontend] `mod/`
+[frontend] `mod/` -- `modNames`
+[frontend] `mod/` -- `modLookupDefinition`
+
 [frontend] `definition/` -- `FunctionDefinition`
 
-[frontend] `exp/` -- lambda calculus
+[frontend] `exp/` -- only lambda calculus for now
+[frontend] `value/` -- only lambda calculus for now
 
 [frontend] `stmt/` -- `Define`
 [frontend] `stmt/` -- `DefineFunction`
