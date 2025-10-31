@@ -1,11 +1,7 @@
 # frontend
 
-[frontend] `stmt/` -- `Define`
-[frontend] `stmt/` -- `DefineFunction`
-[frontend] `stmt/` -- `Compute`
-
-[frontend] `syntax/` -- `matchStmt`
 [frontend] `syntax/` -- `matchExp`
+[frontend] `syntax/` -- `matchStmt`
 
 [frontend] `load/` -- collect top-level `Compute` to `main` function
 
