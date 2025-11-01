@@ -22,7 +22,7 @@ shrink:
     (define (identity x) x)
     
     (define (main)
-      (let1 f identity (let1 g (dup identity) (g f f))))
+      (@let1 f identity (@let1 g (dup identity) (g f f))))
 
 uniquify:
 
@@ -35,5 +35,5 @@ uniquify:
     (define (identity x) x)
     
     (define (main)
-      (let1 f₀ identity (let1 g₀ (dup identity) (g₀ f₀ f₀))))
+      (@let1 f₀ identity (@let1 g₀ (dup identity) (g₀ f₀ f₀))))
 

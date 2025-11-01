@@ -1,6 +1,14 @@
 # frontend
 
-[frontend] `011-reveal-functions`
+[frontend] `builtin` -- `getBuiltinFunctionArity` -- for `011-reveal-functions`
+
+- `builtinFunctionArities`
+
+[frontend] `011-reveal-functions` -- `(@function)`
+
+- error report on undefined
+- no module system for now -- only builtin and current module
+
 [frontend] `012-convert-lambdas`
 [frontend] `020-unnest-operands`
 [frontend] `030-explicate-control`
