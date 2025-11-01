@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import { setAdd, setUnion } from "../../helpers/set/setAlgebra.ts"
-import { getBuiltinFunctionArity, hasBuiltinFunction } from "../builtin/index.ts"
+import { getBuiltinFunctionArity } from "../builtin/index.ts"
 import type { Definition } from "../definition/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"

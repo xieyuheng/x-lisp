@@ -39,7 +39,11 @@ export type FunctionRef = {
   meta?: Meta
 }
 
-export function FunctionRef(name: string, arity: number, meta?: Meta): FunctionRef {
+export function FunctionRef(
+  name: string,
+  arity: number,
+  meta?: Meta,
+): FunctionRef {
   return {
     kind: "FunctionRef",
     name,
