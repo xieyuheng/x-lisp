@@ -1,12 +1,16 @@
 import * as X from "@xieyuheng/x-sexp.js"
+import { setAdd, setUnion } from "../../helpers/set/setAlgebra.ts"
 import { hasBuiltinFunction } from "../builtin/index.ts"
 import type { Definition } from "../definition/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
 import * as Exps from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
-import { modLookupDefinition, modMapDefinition, type Mod } from "../mod/index.ts"
-import { setAdd, setUnion } from "../../helpers/set/setAlgebra.ts"
+import {
+  modLookupDefinition,
+  modMapDefinition,
+  type Mod,
+} from "../mod/index.ts"
 
 export function revealFunction(mod: Mod): Mod {
   return modMapDefinition(mod, (definition) =>
