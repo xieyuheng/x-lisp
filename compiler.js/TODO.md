@@ -1,13 +1,18 @@
 # frontend
 
-[frontend] `builtin` -- `getBuiltinFunctionArity` -- for `011-reveal-functions`
+[frontend] `builtin` -- `builtinFunctionArities` -- for `011-reveal-functions`
 
-- `builtinFunctionArities`
+- `hasBuiltinFunction`
+- `getBuiltinFunctionArity`
 
+[frontend] `FunctionRef` as `Exp`
 [frontend] `011-reveal-functions` -- `(@function)`
 
 - error report on undefined
 - no module system for now -- only builtin and current module
+
+[frontend] `expHeplers` -- `expFreeNames` -- assume shrinked
+[frontend] `expHeplers` -- `expBoundNames` -- assume shrinked
 
 [frontend] `012-convert-lambdas`
 [frontend] `020-unnest-operands`

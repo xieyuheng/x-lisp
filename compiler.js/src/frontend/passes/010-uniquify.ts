@@ -112,7 +112,7 @@ function countName(
 ): Record<string, number> {
   const count = nameCounts[name]
   if (count === undefined) {
-    return { ...nameCounts, [name]: 0 }
+    return { ...nameCounts, [name]: 1 }
   } else {
     return { ...nameCounts, [name]: count + 1 }
   }
