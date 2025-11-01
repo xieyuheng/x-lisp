@@ -33,7 +33,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   ),
 
   X.matcher("`(= ,lhs ,rhs)", ({ lhs, rhs }, { meta }) => {
-    return Exps.Assign(matchExp(lhs), matchExp(rhs), meta)
+    return Exps.AssignSugar(matchExp(lhs), matchExp(rhs), meta)
   }),
 
   X.matcher("(cons* 'begin body)", ({ body }, { meta }) => {

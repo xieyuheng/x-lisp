@@ -57,7 +57,7 @@ export function formatExp(exp: Exp): string {
       return `(begin ${sequence})`
     }
 
-    case "Assign": {
+    case "AssignSugar": {
       return `(= ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
     }
 

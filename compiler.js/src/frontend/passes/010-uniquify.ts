@@ -59,7 +59,7 @@ function uniquifyExp(
       )
     }
 
-    case "Assign": {
+    case "AssignSugar": {
       throw new Error()
     }
 

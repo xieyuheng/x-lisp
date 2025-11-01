@@ -12,7 +12,7 @@ export type Exp =
   | Lambda
   | Apply
   | BeginSugar
-  | Assign
+  | AssignSugar
   | If
 
 export type Var = {
@@ -153,16 +153,16 @@ export function BeginSugar(sequence: Array<Exp>, meta?: Meta): BeginSugar {
   }
 }
 
-export type Assign = {
-  kind: "Assign"
+export type AssignSugar = {
+  kind: "AssignSugar"
   lhs: Exp
   rhs: Exp
   meta?: Meta
 }
 
-export function Assign(lhs: Exp, rhs: Exp, meta?: Meta): Assign {
+export function AssignSugar(lhs: Exp, rhs: Exp, meta?: Meta): AssignSugar {
   return {
-    kind: "Assign",
+    kind: "AssignSugar",
     lhs,
     rhs,
     meta,

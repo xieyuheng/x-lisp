@@ -1,4 +1,3 @@
-rename Assign to AssignSugar
 add Let to Exp
 add Begin (binary version) to Exp
 
