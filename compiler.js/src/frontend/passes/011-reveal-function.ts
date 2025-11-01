@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import { setAdd, setUnion } from "../../helpers/set/setAlgebra.ts"
-import { hasBuiltinFunction } from "../builtin/index.ts"
+import { getBuiltinFunctionArity, hasBuiltinFunction } from "../builtin/index.ts"
 import type { Definition } from "../definition/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
@@ -46,8 +46,9 @@ function revealExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
         return exp
       }
 
-      if (hasBuiltinFunction(exp.name)) {
-        return Exps.FunctionRef(exp.name, exp.meta)
+      const builtinArity = getBuiltinFunctionArity(exp.name)
+      if (builtinArity !== undefined) {
+        return Exps.FunctionRef(exp.name, builtinArity, exp.meta)
       }
 
       const definition = modLookupDefinition(mod, exp.name)
@@ -65,7 +66,8 @@ function revealExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
         else throw new Error(message)
       }
 
-      return Exps.FunctionRef(exp.name, exp.meta)
+      const arity = definition.parameters.length
+      return Exps.FunctionRef(exp.name, arity, exp.meta)
     }
 
     case "Lambda": {

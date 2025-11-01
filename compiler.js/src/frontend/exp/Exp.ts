@@ -35,13 +35,15 @@ export function Var(name: string, meta?: Meta): Var {
 export type FunctionRef = {
   kind: "FunctionRef"
   name: string
+  arity: number
   meta?: Meta
 }
 
-export function FunctionRef(name: string, meta?: Meta): FunctionRef {
+export function FunctionRef(name: string, arity: number, meta?: Meta): FunctionRef {
   return {
     kind: "FunctionRef",
     name,
+    arity,
     meta,
   }
 }

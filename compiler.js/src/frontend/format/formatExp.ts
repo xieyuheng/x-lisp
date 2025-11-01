@@ -15,7 +15,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "FunctionRef": {
-      return `(@function ${exp.name})`
+      return `(@function ${exp.name} ${exp.arity})`
     }
 
     case "Hashtag": {

@@ -48,6 +48,7 @@ reveal-function:
     (define (identity x) x)
     
     (define (main)
-      (@let1 f₁ (@function identity)
-        (@let1 g₁ ((@function dup) (@function identity)) (g₁ f₁ f₁))))
+      (@let1 f₁ (@function identity 1)
+        (@let1 g₁ ((@function dup 1) (@function identity 1))
+          (g₁ f₁ f₁))))
 
