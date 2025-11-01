@@ -10,6 +10,8 @@ export const sexpConfig: X.Config = {
     ["claim", 1],
     ["define", 1],
     ["define-data", 1],
+    ["let", 1],
+    ["let1", 2],
     ["the", 1],
     ["assert", 0],
     ["assert-not", 0],

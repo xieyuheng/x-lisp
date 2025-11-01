@@ -1,11 +1,11 @@
 import * as X from "@xieyuheng/x-sexp.js"
+import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import type { Definition } from "../definition/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
 import * as Exps from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import { modMapDefinition, type Mod } from "../mod/index.ts"
-import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 
 export function uniquify(mod: Mod): Mod {
   return modMapDefinition(mod, uniquifyDefinition)
@@ -44,13 +44,10 @@ function uniquifyExp(
     }
 
     case "Lambda": {
-      let newNameCounts = nameCounts
-      for (const name of exp.parameters) {
-        newNameCounts = countName(newNameCounts, name)
-      }
-
-      const parameters = exp.parameters.map(name =>
-        generateNameInCounts(newNameCounts, name))
+      let newNameCounts = countNames(nameCounts, exp.parameters)
+      const parameters = exp.parameters.map((name) =>
+        generateNameInCounts(newNameCounts, name),
+      )
 
       const newNameTable = { ...nameTable }
       for (const [index, name] of exp.parameters.entries()) {
@@ -120,6 +117,18 @@ function countName(
   } else {
     return { ...nameCounts, [name]: count + 1 }
   }
+}
+
+function countNames(
+  nameCounts: Record<string, number>,
+  names: Array<string>,
+): Record<string, number> {
+  if (names.length === 0) {
+    return nameCounts
+  }
+
+  const [name, ...restNames] = names
+  return countNames(countName(nameCounts, name), restNames)
 }
 
 function generateNameInCounts(

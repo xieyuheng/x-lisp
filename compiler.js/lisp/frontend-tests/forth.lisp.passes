@@ -1,38 +1,39 @@
 mod:
 
     (define (swap f x y) (f y x))
-
+    
     (define (drop f) (lambda (dropped x) (f x)))
-
+    
     (define (dup f) (lambda (x) (f x x)))
-
+    
     (define (identity x) x)
-
+    
     (define (main)
       (begin (= f identity) (= g (dup identity)) (g f f)))
 
 shrink:
 
     (define (swap f x y) (f y x))
-
+    
     (define (drop f) (lambda (dropped x) (f x)))
-
+    
     (define (dup f) (lambda (x) (f x x)))
-
+    
     (define (identity x) x)
-
+    
     (define (main)
-      (let ((f identity)) (let ((g (dup identity))) (g f f))))
+      (let1 f identity (let1 g (dup identity) (g f f))))
 
 uniquify:
 
     (define (swap f x y) (f y x))
-
+    
     (define (drop f) (lambda (dropped₀ x₀) (f x₀)))
-
+    
     (define (dup f) (lambda (x₀) (f x₀ x₀)))
-
+    
     (define (identity x) x)
-
+    
     (define (main)
-      (let ((f₀ identity)) (let ((g₀ (dup identity))) (g₀ f₀ f₀))))
+      (let1 f₀ identity (let1 g₀ (dup identity) (g₀ f₀ f₀))))
+

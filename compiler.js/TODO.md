@@ -1,4 +1,3 @@
-countNames
 zip & record from entry
 
 # frontend
