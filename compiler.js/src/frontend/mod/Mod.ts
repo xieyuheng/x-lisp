@@ -1,3 +1,4 @@
+import { mapMapValue } from "../../helpers/map/mapMapValue.ts"
 import { type Definition } from "../definition/index.ts"
 
 export type Mod = {
@@ -24,4 +25,13 @@ export function modLookupDefinition(
   if (defined) return defined
 
   return undefined
+}
+
+export function modMapDefinition(
+  mod: Mod,
+  f: (definition: Definition) => Definition,
+): Mod {
+  const newMod = createMod(mod.url)
+  newMod.defined = mapMapValue(mod.defined, f)
+  return newMod
 }
