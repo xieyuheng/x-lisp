@@ -16,7 +16,7 @@ export function stage0(mod: Mod, stmt: Stmt): void {
         "main",
         [],
         Exps.Begin(sequence, stmt.meta),
-        stmt.meta
+        stmt.meta,
       )
       mod.defined.set("main", main)
     }

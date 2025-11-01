@@ -16,12 +16,14 @@ export type FunctionDefinition = {
 export function FunctionDefinition(
   name: string,
   parameters: Array<string>,
-  body: Exp, meta: Meta
+  body: Exp,
+  meta: Meta,
 ): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
     name,
     parameters,
-    body, meta
+    body,
+    meta,
   }
 }
