@@ -1,5 +1,9 @@
 # frontend
 
+[frontend] `pretty` -- `prettyExp` use `formatExp`
+[frontend] `pretty` -- `prettyDefinition`
+[frontend] `pretty` -- `prettyMod`
+
 [frontend] `compilePasses`
 
 [pass] `005-shrink`
