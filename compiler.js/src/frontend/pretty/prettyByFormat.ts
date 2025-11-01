@@ -7,8 +7,8 @@ type Pretty<A> = (maxWidth: number, x: A) => string
 
 export function prettyByFormat<A>(format: Format<A>): Pretty<A> {
   return (maxWidth, x) => {
-    const sexp = X.parseSexp(format(x))
-    const node = X.renderSexp(sexp)(sexpConfig)
-    return pp.format(maxWidth, node)
+    const sexps = X.parseSexps(format(x))
+    const nodes = sexps.map(sexp => X.renderSexp(sexp)(sexpConfig))
+    return nodes.map( node => pp.format(maxWidth, node)).join("\n\n")
   }
 }

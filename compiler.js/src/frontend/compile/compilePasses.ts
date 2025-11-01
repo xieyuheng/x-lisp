@@ -12,8 +12,7 @@ export function compilePasses(mod: Mod): void {
 
 function logMod(tag: string, mod: Mod): Mod {
   console.log(`${tag}:`)
-  console.log()
-  console.log(formatIndent(4, prettyMod(80, mod)))
+  console.log(formatIndent(4, "\n" + prettyMod(80, mod)))
   console.log()
   return mod
 }
