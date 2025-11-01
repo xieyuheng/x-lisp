@@ -22,7 +22,7 @@ export function equal(lhs: Value, rhs: Value): boolean {
     return equalHash(lhs, rhs)
   }
 
-  if (lhs.kind === "Curried" && rhs.kind === "Curried") {
+  if (lhs.kind === "Curry" && rhs.kind === "Curry") {
     return equal(lhs.target, rhs.target) && equalValues(lhs.args, rhs.args)
   }
 

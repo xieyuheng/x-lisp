@@ -177,7 +177,7 @@ function renderValue(value: Value): pp.Node {
       )
     }
 
-    case "Curried": {
+    case "Curry": {
       assert(value.args.length > 0)
       return pp.group(
         pp.text("("),

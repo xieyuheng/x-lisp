@@ -168,7 +168,7 @@ export function formatValue(value: Value, options: Options = {}): string {
       return `(the ${schemaString} ${valueString})`
     }
 
-    case "Curried": {
+    case "Curry": {
       const target = formatValue(value.target, options)
       const args = formatValues(value.args, options)
       assert(value.args.length > 0)

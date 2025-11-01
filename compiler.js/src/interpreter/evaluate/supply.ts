@@ -8,7 +8,7 @@ export function supply(
   args: Array<Value>,
 ): Value {
   if (args.length < arity) {
-    return Values.Curried(target, arity, args)
+    return Values.Curry(target, arity, args)
   } else if (args.length > arity) {
     return apply(apply(target, args.slice(0, arity)), args.slice(arity))
   } else {

@@ -23,7 +23,7 @@ export type Value =
   | NullaryLambda
   | PrimitiveFunction
   | PrimitiveNullaryFunction
-  | Curried
+  | Curry
   | Pattern
   | AboutData
   | AboutSchema
@@ -158,20 +158,20 @@ export function PrimitiveNullaryFunction(
   }
 }
 
-export type Curried = {
-  kind: "Curried"
+export type Curry = {
+  kind: "Curry"
   target: Value
   arity: number
   args: Array<Value>
 }
 
-export function Curried(
+export function Curry(
   target: Value,
   arity: number,
   args: Array<Value>,
-): Curried {
+): Curry {
   return {
-    kind: "Curried",
+    kind: "Curry",
     target,
     arity,
     args,

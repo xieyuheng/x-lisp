@@ -1,11 +1,13 @@
 # frontend
 
+[frontend] `@curry` as `Exp`
+[frontend] `modFlatMapDefinition`
+[frontend] `LambdaFunctionDefinition`
+
+[frontend] `expHeplers` -- `expFreeNames` -- assume shrinked
+[frontend] `expHeplers` -- `expBoundNames` -- assume shrinked
+
 [frontend] `012-convert-lambda`
-
-- [frontend] `@curried`
-
-- [frontend] `expHeplers` -- `expFreeNames` -- assume shrinked
-- [frontend] `expHeplers` -- `expBoundNames` -- assume shrinked
 
 [frontend] `020-unnest-operand`
 [frontend] `030-explicate-control`

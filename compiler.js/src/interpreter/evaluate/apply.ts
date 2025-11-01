@@ -26,7 +26,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     return applyNullary(target)
   }
 
-  if (target.kind === "Curried") {
+  if (target.kind === "Curry") {
     return supply(target.target, target.arity, [...target.args, ...args])
   }
 
