@@ -1,6 +1,6 @@
 # frontend
 
-[frontend] `011-reveal-function` -- `(@function)`
+[frontend] `011-reveal-function` -- `revealExp` -- generate `(@function)`
 
 - error report on undefined
 - no module system for now -- only builtin and current module
