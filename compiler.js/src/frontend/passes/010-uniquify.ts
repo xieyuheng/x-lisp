@@ -63,7 +63,7 @@ function uniquifyExp(
     case "Apply": {
       return Exps.Apply(
         uniquifyExp(nameCounts, nameTable, exp.target),
-        exp.args.map((arg) => uniquifyExp(nameCounts, nameTable, arg)),
+        exp.args.map((e) => uniquifyExp(nameCounts, nameTable, e)),
         exp.meta,
       )
     }

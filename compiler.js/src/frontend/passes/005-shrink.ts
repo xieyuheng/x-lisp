@@ -44,7 +44,7 @@ function shrinkExp(exp: Exp): Exp {
     case "Apply": {
       return Exps.Apply(
         shrinkExp(exp.target),
-        exp.args.map((arg) => shrinkExp(arg)),
+        exp.args.map((e) => shrinkExp(e)),
         exp.meta,
       )
     }
