@@ -1,7 +1,5 @@
 # frontend
 
-[frontend] `format` -- `formatMod`
-
 [frontend] extract `prettyByFormat`
 
 [frontend] `pretty` -- `prettyDefinition`
