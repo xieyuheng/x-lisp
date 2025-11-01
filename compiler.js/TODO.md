@@ -1,10 +1,5 @@
 # frontend
 
-[frontend] `builtin` -- `builtinFunctionArities` -- for `011-reveal-functions`
-
-- `hasBuiltinFunction`
-- `getBuiltinFunctionArity`
-
 [frontend] `FunctionRef` as `Exp`
 [frontend] `011-reveal-functions` -- `(@function)`
 
