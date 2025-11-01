@@ -1,4 +1,4 @@
-[pass] `010-uniquify` -- `uniquifyExp`
+rename Let to Let1
 
 # frontend
 

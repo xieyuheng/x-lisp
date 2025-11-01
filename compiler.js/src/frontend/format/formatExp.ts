@@ -70,7 +70,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "AssignSugar": {
-      return `(= ${(exp.name)} ${formatExp(exp.rhs)})`
+      return `(= ${exp.name} ${formatExp(exp.rhs)})`
     }
 
     case "If": {

@@ -50,11 +50,7 @@ function shrinkExp(exp: Exp): Exp {
     }
 
     case "Begin": {
-      return Exps.Begin(
-        shrinkExp(exp.head),
-        shrinkExp(exp.body),
-        exp.meta,
-      )
+      return Exps.Begin(shrinkExp(exp.head), shrinkExp(exp.body), exp.meta)
     }
 
     case "Let": {
@@ -89,11 +85,7 @@ function shrinkExp(exp: Exp): Exp {
           exp.meta,
         )
       } else {
-        return Exps.Begin(
-          shrinkExp(head),
-          shrinkExp(body),
-          head.meta,
-        )
+        return Exps.Begin(shrinkExp(head), shrinkExp(body), head.meta)
       }
     }
 
