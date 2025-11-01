@@ -43,7 +43,9 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Lambda": {
-      return `(lambda (${formatParameters(exp.parameters)}) ${formatBody(exp.body)})`
+      const parameters = formatParameters(exp.parameters)
+            const body = formatBody(exp.body)
+      return `(lambda (${(parameters)}) ${body})`
     }
 
     case "Apply": {
