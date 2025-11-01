@@ -1,8 +1,8 @@
-add Let to Exp
-add Begin (binary version) to Exp
+[pass] `005-shrink` -- `shrinkDefinition`
+[pass] `005-shrink` -- `shrinkExp`
 
-[pass] `005-shrink` -- handle `BeginSugar`
-[pass] `005-shrink` -- handle `AssignSugar` in `BeginSugar`
+[pass] `005-shrink` -- `shrinkExp` handle `BeginSugar`
+[pass] `005-shrink` -- `shrinkExp` handle `AssignSugar` in `BeginSugar`
 
 [pass] `010-uniquify` -- `uniquifyExp`
 

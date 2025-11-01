@@ -11,6 +11,8 @@ export type Exp =
   | Float
   | Lambda
   | Apply
+  | Begin
+  | Let
   | BeginSugar
   | AssignSugar
   | If
@@ -135,6 +137,40 @@ export function Apply(target: Exp, args: Array<Exp>, meta?: Meta): Apply {
     kind: "Apply",
     target,
     args,
+    meta,
+  }
+}
+
+export type Begin = {
+  kind: "Begin"
+  head: Exp
+  body: Exp
+  meta?: Meta
+}
+
+export function Begin(head: Exp, body: Exp, meta?: Meta): Begin {
+  return {
+    kind: "Begin",
+    head,
+    body,
+    meta,
+  }
+}
+
+export type Let = {
+  kind: "Let"
+  name: string
+  rhs: Exp
+  body: Exp
+  meta?: Meta
+}
+
+export function Let(name: string, rhs: Exp, body: Exp, meta?: Meta): Let {
+  return {
+    kind: "Let",
+    name,
+    rhs,
+    body,
     meta,
   }
 }
