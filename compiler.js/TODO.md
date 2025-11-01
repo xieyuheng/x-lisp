@@ -1,6 +1,5 @@
 # frontend
 
-[frontend] `FunctionRef` as `Exp`
 [frontend] `011-reveal-functions` -- `(@function)`
 
 - error report on undefined

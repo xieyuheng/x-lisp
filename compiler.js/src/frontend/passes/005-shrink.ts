@@ -104,5 +104,12 @@ function shrinkExp(exp: Exp): Exp {
         exp.meta,
       )
     }
+
+    default: {
+      let message = `[shrink] unhandled exp`
+      message += `\n  exp: ${formatExp(exp)}`
+      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      else throw new Error(message)
+    }
   }
 }

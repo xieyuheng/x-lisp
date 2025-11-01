@@ -3,7 +3,7 @@ import { type TokenMeta } from "@xieyuheng/x-sexp.js"
 export type Meta = TokenMeta
 
 export type Exp =
-  | Var
+  | Var | FunctionRef
   | Symbol
   | Hashtag
   | String
@@ -26,6 +26,20 @@ export type Var = {
 export function Var(name: string, meta?: Meta): Var {
   return {
     kind: "Var",
+    name,
+    meta,
+  }
+}
+
+export type FunctionRef = {
+  kind: "FunctionRef"
+  name: string
+  meta?: Meta
+}
+
+export function FunctionRef(name: string, meta?: Meta): FunctionRef {
+  return {
+    kind: "FunctionRef",
     name,
     meta,
   }
