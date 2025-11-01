@@ -3,8 +3,8 @@ import type { Definition } from "../definition/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
 import * as Exps from "../exp/index.ts"
-import { modMapDefinition, type Mod } from "../mod/index.ts"
 import { formatExp } from "../format/index.ts"
+import { modMapDefinition, type Mod } from "../mod/index.ts"
 
 export function uniquify(mod: Mod): Mod {
   return modMapDefinition(mod, uniquifyDefinition)
@@ -42,9 +42,9 @@ function uniquifyExp(
       return foundName ? Exps.Var(foundName, exp.meta) : exp
     }
 
-    case "Lambda": {
-      throw new Error()
-    }
+    // case "Lambda": {
+    //   throw new Error()
+    // }
 
     case "Apply": {
       return Exps.Apply(
@@ -54,15 +54,12 @@ function uniquifyExp(
       )
     }
 
-    case "BeginSugar": {
-      return Exps.BeginSugar(
-        exp.sequence.map((e) => uniquifyExp(nameCounts, nameTable, e)),
+    case "Begin": {
+      return Exps.Begin(
+        uniquifyExp(nameCounts, nameTable, exp.head),
+        uniquifyExp(nameCounts, nameTable, exp.body),
         exp.meta,
       )
-    }
-
-    case "AssignSugar": {
-      throw new Error()
     }
 
     case "If": {
@@ -75,7 +72,7 @@ function uniquifyExp(
     }
 
     default: {
-      let message = `[uniquify] unknown exp`
+      let message = `[uniquify] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
       if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)

@@ -191,15 +191,15 @@ export function BeginSugar(sequence: Array<Exp>, meta?: Meta): BeginSugar {
 
 export type AssignSugar = {
   kind: "AssignSugar"
-  lhs: Exp
+  name: string
   rhs: Exp
   meta?: Meta
 }
 
-export function AssignSugar(lhs: Exp, rhs: Exp, meta?: Meta): AssignSugar {
+export function AssignSugar(name: string, rhs: Exp, meta?: Meta): AssignSugar {
   return {
     kind: "AssignSugar",
-    lhs,
+    name,
     rhs,
     meta,
   }

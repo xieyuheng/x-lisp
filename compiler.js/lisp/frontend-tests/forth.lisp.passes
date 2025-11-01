@@ -22,18 +22,6 @@ shrink:
     (define (identity x) x)
     
     (define (main)
-      (begin (= f identity) (= g (dup identity)) (g f f)))
+      (let ((f identity)) (let ((g (dup identity))) (g f f))))
 
-uniquify:
-
-    (define (swap f x y) (f y x))
-    
-    (define (drop f) (lambda (dropped x) (f x)))
-    
-    (define (dup f) (lambda (x) (f x x)))
-    
-    (define (identity x) x)
-    
-    (define (main)
-      (begin (= f identity) (= g (dup identity)) (g f f)))
 
