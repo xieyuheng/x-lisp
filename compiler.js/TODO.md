@@ -1,5 +1,3 @@
-zip & record from entry
-
 # frontend
 
 [frontend] `011-reveal-functions`

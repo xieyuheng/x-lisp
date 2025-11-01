@@ -6,6 +6,7 @@ import type { Exp } from "../exp/index.ts"
 import * as Exps from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import { modMapDefinition, type Mod } from "../mod/index.ts"
+import { arrayZip } from "../../helpers/array/arrayZip.ts"
 
 export function uniquify(mod: Mod): Mod {
   return modMapDefinition(mod, uniquifyDefinition)
@@ -49,9 +50,9 @@ function uniquifyExp(
         generateNameInCounts(newNameCounts, name),
       )
 
-      const newNameTable = { ...nameTable }
-      for (const [index, name] of exp.parameters.entries()) {
-        newNameTable[name] = parameters[index]
+      const newNameTable = {
+        ...nameTable,
+        ...Object.fromEntries(arrayZip(exp.parameters, parameters))
       }
 
       return Exps.Lambda(
