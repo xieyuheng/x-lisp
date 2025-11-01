@@ -1,7 +1,7 @@
 import { type Command } from "@xieyuheng/commander.js"
-import { errorReport } from "../helpers/error/errorReport.ts"
 import { compilePasses } from "../frontend/compile/index.ts"
 import { load } from "../frontend/load/index.ts"
+import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
 export const CompilePassesCommand: Command = {

@@ -1,9 +1,8 @@
+import assert from "node:assert"
 import { FunctionDefinition } from "../definition/index.ts"
+import * as Exps from "../exp/index.ts"
 import { modLookupDefinition, type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
-import * as Exps from "../exp/index.ts"
-import assert from "node:assert"
-
 
 export function stage0(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Compute") {
