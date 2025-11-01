@@ -1,10 +1,5 @@
 # frontend
 
-[frontend] extract `prettyByFormat`
-
-[frontend] `pretty` -- `prettyDefinition`
-[frontend] `pretty` -- `prettyMod`
-
 [frontend] `compilePasses`
 
 [pass] `005-shrink`
