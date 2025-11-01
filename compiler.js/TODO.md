@@ -1,6 +1,5 @@
 # frontend
 
-[frontend] `load/` -- `stage0` -- collect top-level `Compute` to `main` function
 [frontend] `load/` -- `stage1` -- `DefineFunction` to `FunctionDefinition`
 
 [frontend] `compilePasses`

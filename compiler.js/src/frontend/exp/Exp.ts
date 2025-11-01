@@ -18,10 +18,10 @@ export type Exp =
 export type Var = {
   kind: "Var"
   name: string
-  meta: Meta
+  meta?: Meta
 }
 
-export function Var(name: string, meta: Meta): Var {
+export function Var(name: string, meta?: Meta): Var {
   return {
     kind: "Var",
     name,
@@ -32,10 +32,10 @@ export function Var(name: string, meta: Meta): Var {
 export type Symbol = {
   kind: "Symbol"
   content: string
-  meta: Meta
+  meta?: Meta
 }
 
-export function Symbol(content: string, meta: Meta): Symbol {
+export function Symbol(content: string, meta?: Meta): Symbol {
   return {
     kind: "Symbol",
     content,
@@ -46,10 +46,10 @@ export function Symbol(content: string, meta: Meta): Symbol {
 export type String = {
   kind: "String"
   content: string
-  meta: Meta
+  meta?: Meta
 }
 
-export function String(content: string, meta: Meta): String {
+export function String(content: string, meta?: Meta): String {
   return {
     kind: "String",
     content,
@@ -60,10 +60,10 @@ export function String(content: string, meta: Meta): String {
 export type Hashtag = {
   kind: "Hashtag"
   content: string
-  meta: Meta
+  meta?: Meta
 }
 
-export function Hashtag(content: string, meta: Meta): Hashtag {
+export function Hashtag(content: string, meta?: Meta): Hashtag {
   return {
     kind: "Hashtag",
     content,
@@ -74,10 +74,10 @@ export function Hashtag(content: string, meta: Meta): Hashtag {
 export type Int = {
   kind: "Int"
   content: number
-  meta: Meta
+  meta?: Meta
 }
 
-export function Int(content: number, meta: Meta): Int {
+export function Int(content: number, meta?: Meta): Int {
   if (!Number.isInteger(content)) {
     throw new Error(`[intAtom] expect number be int: ${content}.`)
   }
@@ -92,10 +92,10 @@ export function Int(content: number, meta: Meta): Int {
 export type Float = {
   kind: "Float"
   content: number
-  meta: Meta
+  meta?: Meta
 }
 
-export function Float(content: number, meta: Meta): Float {
+export function Float(content: number, meta?: Meta): Float {
   return {
     kind: "Float",
     content,
@@ -107,13 +107,13 @@ export type Lambda = {
   kind: "Lambda"
   parameters: Array<string>
   body: Exp
-  meta: Meta
+  meta?: Meta
 }
 
 export function Lambda(
   parameters: Array<string>,
   body: Exp,
-  meta: Meta,
+  meta?: Meta,
 ): Lambda {
   return {
     kind: "Lambda",
@@ -127,10 +127,10 @@ export type Apply = {
   kind: "Apply"
   target: Exp
   args: Array<Exp>
-  meta: Meta
+  meta?: Meta
 }
 
-export function Apply(target: Exp, args: Array<Exp>, meta: Meta): Apply {
+export function Apply(target: Exp, args: Array<Exp>, meta?: Meta): Apply {
   return {
     kind: "Apply",
     target,
@@ -142,10 +142,10 @@ export function Apply(target: Exp, args: Array<Exp>, meta: Meta): Apply {
 export type Begin = {
   kind: "Begin"
   sequence: Array<Exp>
-  meta: Meta
+  meta?: Meta
 }
 
-export function Begin(sequence: Array<Exp>, meta: Meta): Begin {
+export function Begin(sequence: Array<Exp>, meta?: Meta): Begin {
   return {
     kind: "Begin",
     sequence,
@@ -157,10 +157,10 @@ export type Assign = {
   kind: "Assign"
   lhs: Exp
   rhs: Exp
-  meta: Meta
+  meta?: Meta
 }
 
-export function Assign(lhs: Exp, rhs: Exp, meta: Meta): Assign {
+export function Assign(lhs: Exp, rhs: Exp, meta?: Meta): Assign {
   return {
     kind: "Assign",
     lhs,
@@ -174,14 +174,14 @@ export type If = {
   condition: Exp
   consequent: Exp
   alternative: Exp
-  meta: Meta
+  meta?: Meta
 }
 
 export function If(
   condition: Exp,
   consequent: Exp,
   alternative: Exp,
-  meta: Meta,
+  meta?: Meta,
 ): If {
   return {
     kind: "If",
