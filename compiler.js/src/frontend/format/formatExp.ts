@@ -58,10 +58,10 @@ export function formatExp(exp: Exp): string {
       return `(begin ${head} ${body})`
     }
 
-    case "Let": {
+    case "Let1": {
       const rhs = formatExp(exp.rhs)
       const body = formatExp(exp.body)
-      return `(let ((${exp.name} ${rhs})) ${body})`
+      return `(let1 ${exp.name} ${rhs} ${body})`
     }
 
     case "BeginSugar": {

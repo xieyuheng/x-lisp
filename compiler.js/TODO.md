@@ -1,11 +1,12 @@
-rename Let to Let1
+countNames
+zip & record from entry
 
 # frontend
 
-[pass] `011-reveal-functions`
-[pass] `012-convert-lambdas`
-[pass] `020-unnest-operands`
-[pass] `030-explicate-control`
+[frontend] `011-reveal-functions`
+[frontend] `012-convert-lambdas`
+[frontend] `020-unnest-operands`
+[frontend] `030-explicate-control`
 
 # later
 

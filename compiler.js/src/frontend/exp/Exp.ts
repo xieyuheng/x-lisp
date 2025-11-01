@@ -12,7 +12,7 @@ export type Exp =
   | Lambda
   | Apply
   | Begin
-  | Let
+  | Let1
   | BeginSugar
   | AssignSugar
   | If
@@ -157,17 +157,17 @@ export function Begin(head: Exp, body: Exp, meta?: Meta): Begin {
   }
 }
 
-export type Let = {
-  kind: "Let"
+export type Let1 = {
+  kind: "Let1"
   name: string
   rhs: Exp
   body: Exp
   meta?: Meta
 }
 
-export function Let(name: string, rhs: Exp, body: Exp, meta?: Meta): Let {
+export function Let1(name: string, rhs: Exp, body: Exp, meta?: Meta): Let1 {
   return {
-    kind: "Let",
+    kind: "Let1",
     name,
     rhs,
     body,

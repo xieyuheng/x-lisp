@@ -80,11 +80,11 @@ function uniquifyExp(
       )
     }
 
-    case "Let": {
+    case "Let1": {
       const newNameCounts = countName(nameCounts, exp.name)
       const newName = generateNameInCounts(newNameCounts, exp.name)
       const newNameTable = { ...nameTable, [exp.name]: newName }
-      return Exps.Let(
+      return Exps.Let1(
         newName,
         uniquifyExp(newNameCounts, nameTable, exp.rhs),
         uniquifyExp(newNameCounts, newNameTable, exp.body),

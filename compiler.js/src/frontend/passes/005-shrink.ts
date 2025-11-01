@@ -53,8 +53,8 @@ function shrinkExp(exp: Exp): Exp {
       return Exps.Begin(shrinkExp(exp.head), shrinkExp(exp.body), exp.meta)
     }
 
-    case "Let": {
-      return Exps.Let(
+    case "Let1": {
+      return Exps.Let1(
         exp.name,
         shrinkExp(exp.rhs),
         shrinkExp(exp.body),
@@ -78,7 +78,7 @@ function shrinkExp(exp: Exp): Exp {
       const body = Exps.BeginSugar(rest, exp.meta)
 
       if (head.kind === "AssignSugar") {
-        return Exps.Let(
+        return Exps.Let1(
           head.name,
           shrinkExp(head.rhs),
           shrinkExp(body),
