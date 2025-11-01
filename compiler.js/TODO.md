@@ -1,4 +1,5 @@
-[pass] `010-uniquify`
+[pass] `010-uniquify` -- `uniquifyDefinition`
+[pass] `010-uniquify` -- `uniquifyExp`
 
 # frontend
 
