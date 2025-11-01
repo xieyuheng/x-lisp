@@ -1,9 +1,13 @@
-[pass] `010-uniquify` -- `uniquifyDefinition`
+rename Begin to BeginSugar
+rename Assign to AssignSugar
+add Let to Exp
+add Begin (binary version) to Exp
+
+[pass] `005-shrink`
 [pass] `010-uniquify` -- `uniquifyExp`
 
 # frontend
 
-[pass] `005-shrink`
 [pass] `011-reveal-functions`
 [pass] `012-convert-lambdas`
 [pass] `020-unnest-operands`
