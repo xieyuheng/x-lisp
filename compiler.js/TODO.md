@@ -1,7 +1,5 @@
 # frontend
 
-[frontend] `load/` -- `stage1` -- `DefineFunction` to `FunctionDefinition`
-
 [frontend] `compilePasses`
 
 [pass] `005-shrink`
