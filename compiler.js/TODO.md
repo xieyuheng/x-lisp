@@ -1,9 +1,10 @@
-rename Begin to BeginSugar
 rename Assign to AssignSugar
 add Let to Exp
 add Begin (binary version) to Exp
 
-[pass] `005-shrink`
+[pass] `005-shrink` -- handle `BeginSugar`
+[pass] `005-shrink` -- handle `AssignSugar` in `BeginSugar`
+
 [pass] `010-uniquify` -- `uniquifyExp`
 
 # frontend

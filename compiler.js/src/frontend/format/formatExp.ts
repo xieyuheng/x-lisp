@@ -52,7 +52,7 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "Begin": {
+    case "BeginSugar": {
       const sequence = formatExps(exp.sequence)
       return `(begin ${sequence})`
     }
@@ -68,7 +68,7 @@ export function formatExp(exp: Exp): string {
 }
 
 export function formatBody(body: Exp): string {
-  if (body.kind === "Begin") {
+  if (body.kind === "BeginSugar") {
     return formatExps(body.sequence)
   } else {
     return formatExp(body)

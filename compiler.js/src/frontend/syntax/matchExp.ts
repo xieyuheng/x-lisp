@@ -14,7 +14,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       const meta = X.tokenMetaFromSexpMeta(keyword.meta)
       return Exps.Lambda(
         X.listElements(parameters).map(X.symbolContent),
-        Exps.Begin(X.listElements(body).map(matchExp), meta),
+        Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
         meta,
       )
     },
@@ -37,7 +37,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   }),
 
   X.matcher("(cons* 'begin body)", ({ body }, { meta }) => {
-    return Exps.Begin(X.listElements(body).map(matchExp), meta)
+    return Exps.BeginSugar(X.listElements(body).map(matchExp), meta)
   }),
 
   X.matcher("(cons* target args)", ({ target, args }, { meta }) => {

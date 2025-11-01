@@ -9,14 +9,14 @@ export function stage1(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Compute") {
     const found = modLookupDefinition(mod, "main")
     if (found) {
-      assert(found.body.kind === "Begin")
+      assert(found.body.kind === "BeginSugar")
       found.body.sequence.push(stmt.exp)
     } else {
       const sequence = [stmt.exp]
       const main = FunctionDefinition(
         "main",
         [],
-        Exps.Begin(sequence, stmt.meta),
+        Exps.BeginSugar(sequence, stmt.meta),
         stmt.meta,
       )
       mod.defined.set("main", main)

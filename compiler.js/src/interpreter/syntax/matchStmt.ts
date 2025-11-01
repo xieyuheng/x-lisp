@@ -19,7 +19,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
         return Stmts.Define(
           X.symbolContent(name),
           Exps.NullaryLambda(
-            Exps.Begin(X.listElements(body).map(matchExp), meta),
+            Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
             meta,
           ),
           meta,
@@ -29,7 +29,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
           X.symbolContent(name),
           Exps.Lambda(
             X.listElements(parameters).map(matchExp),
-            Exps.Begin(X.listElements(body).map(matchExp), meta),
+            Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
             meta,
           ),
           meta,

@@ -11,7 +11,7 @@ export type Exp =
   | Float
   | Lambda
   | Apply
-  | Begin
+  | BeginSugar
   | Assign
   | If
 
@@ -139,15 +139,15 @@ export function Apply(target: Exp, args: Array<Exp>, meta?: Meta): Apply {
   }
 }
 
-export type Begin = {
-  kind: "Begin"
+export type BeginSugar = {
+  kind: "BeginSugar"
   sequence: Array<Exp>
   meta?: Meta
 }
 
-export function Begin(sequence: Array<Exp>, meta?: Meta): Begin {
+export function BeginSugar(sequence: Array<Exp>, meta?: Meta): BeginSugar {
   return {
-    kind: "Begin",
+    kind: "BeginSugar",
     sequence,
     meta,
   }

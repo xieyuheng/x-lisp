@@ -89,7 +89,7 @@ export function evaluate(exp: Exp): Effect {
       }
     }
 
-    case "Begin": {
+    case "BeginSugar": {
       return (mod, env) => {
         const [prefix, last] = arrayPickLast(exp.sequence)
         for (const e of prefix) {

@@ -19,21 +19,21 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       if (X.isSymbol(parameters)) {
         return Exps.VariadicLambda(
           X.symbolContent(parameters),
-          Exps.Begin(X.listElements(body).map(matchExp), meta),
+          Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
           meta,
         )
       }
 
       if (X.listElements(parameters).length === 0) {
         return Exps.NullaryLambda(
-          Exps.Begin(X.listElements(body).map(matchExp), meta),
+          Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
           meta,
         )
       }
 
       return Exps.Lambda(
         X.listElements(parameters).map(matchExp),
-        Exps.Begin(X.listElements(body).map(matchExp), meta),
+        Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
         meta,
       )
     },
@@ -89,7 +89,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   X.matcher("(cons* 'when condition body)", ({ condition, body }, { meta }) => {
     return Exps.When(
       matchExp(condition),
-      Exps.Begin(X.listElements(body).map(matchExp), meta),
+      Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
       meta,
     )
   }),
@@ -99,7 +99,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     ({ condition, body }, { meta }) => {
       return Exps.Unless(
         matchExp(condition),
-        Exps.Begin(X.listElements(body).map(matchExp), meta),
+        Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
         meta,
       )
     },
@@ -254,7 +254,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
   }),
 
   X.matcher("(cons* 'begin body)", ({ body }, { meta }) => {
-    return Exps.Begin(X.listElements(body).map(matchExp), meta)
+    return Exps.BeginSugar(X.listElements(body).map(matchExp), meta)
   }),
 
   X.matcher("(cons* 'cond lines)", ({ lines }, { sexp }) => {
@@ -304,12 +304,12 @@ export function matchCondLine(sexp: X.Sexp): Exps.CondLine {
       if (question.kind === "Symbol" && question.content === "else") {
         return {
           question: Exps.Hashtag("t", meta),
-          answer: Exps.Begin(X.listElements(body).map(matchExp), meta),
+          answer: Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
         }
       } else {
         return {
           question: matchExp(question),
-          answer: Exps.Begin(X.listElements(body).map(matchExp), meta),
+          answer: Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
         }
       }
     }),
@@ -322,7 +322,7 @@ export function matchMatchLine(sexp: X.Sexp): Exps.MatchLine {
     X.matcher("(cons* pattern body)", ({ pattern, body }, { meta }) => {
       return {
         pattern: matchExp(pattern),
-        body: Exps.Begin(X.listElements(body).map(matchExp), meta),
+        body: Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
       }
     }),
     sexp,

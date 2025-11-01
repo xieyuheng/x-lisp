@@ -18,7 +18,7 @@ export function renderExp(exp: Exp): pp.Node {
 }
 
 export function renderBody(body: Exp): pp.Node {
-  if (body.kind === "Begin") {
+  if (body.kind === "BeginSugar") {
     return renderExps(body.sequence)
   } else {
     return renderExp(body)

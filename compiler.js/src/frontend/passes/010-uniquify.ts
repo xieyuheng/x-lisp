@@ -52,8 +52,8 @@ function uniquifyExp(
       )
     }
 
-    case "Begin": {
-      return Exps.Begin(
+    case "BeginSugar": {
+      return Exps.BeginSugar(
         exp.sequence.map((e) => uniquifyExp(nameCounts, nameTable, e)),
         exp.meta,
       )

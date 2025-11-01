@@ -17,7 +17,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
       return Stmts.DefineFunction(
         X.symbolContent(name),
         X.listElements(parameters).map(X.symbolContent),
-        Exps.Begin(X.listElements(body).map(matchExp), meta),
+        Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
         meta,
       )
     },
