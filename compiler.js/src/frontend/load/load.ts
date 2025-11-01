@@ -3,7 +3,6 @@ import fs from "node:fs"
 import { createMod, type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { matchStmt } from "../syntax/index.ts"
-import { stage0 } from "./stage0.ts"
 import { stage1 } from "./stage1.ts"
 
 export function load(url: URL): Mod {
@@ -12,7 +11,6 @@ export function load(url: URL): Mod {
 
   const sexps = X.parseSexps(text, { url: mod.url })
   const stmts = sexps.map<Stmt>(matchStmt)
-  for (const stmt of stmts) stage0(mod, stmt)
   for (const stmt of stmts) stage1(mod, stmt)
 
   return mod

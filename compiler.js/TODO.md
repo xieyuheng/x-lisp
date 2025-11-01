@@ -1,7 +1,11 @@
+`mapMapValue`
+`modMapDefinition`
+
+[pass] `010-uniquify`
+
 # frontend
 
 [pass] `005-shrink`
-[pass] `010-uniquify`
 [pass] `011-reveal-functions`
 [pass] `012-convert-lambdas`
 [pass] `020-unnest-operands`

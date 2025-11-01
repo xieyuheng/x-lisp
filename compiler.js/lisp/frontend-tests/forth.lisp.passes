@@ -5,6 +5,11 @@ mod:
     (define (drop f) (lambda (dropped x) (f x)))
     
     (define (dup f) (lambda (x) (f x x)))
+    
+    (define (identity x) x)
+    
+    (define (main)
+      (begin (= f identity) (= g (dup identity)) (g f f)))
 
 shrink:
 
@@ -13,6 +18,11 @@ shrink:
     (define (drop f) (lambda (dropped x) (f x)))
     
     (define (dup f) (lambda (x) (f x x)))
+    
+    (define (identity x) x)
+    
+    (define (main)
+      (begin (= f identity) (= g (dup identity)) (g f f)))
 
 uniquify:
 
@@ -21,4 +31,9 @@ uniquify:
     (define (drop f) (lambda (dropped x) (f x)))
     
     (define (dup f) (lambda (x) (f x x)))
+    
+    (define (identity x) x)
+    
+    (define (main)
+      (begin (= f identity) (= g (dup identity)) (g f f)))
 
