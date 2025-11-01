@@ -1,6 +1,6 @@
 # frontend
 
-[frontend] `011-reveal-functions` -- `(@function)`
+[frontend] `011-reveal-function` -- `(@function)`
 
 - error report on undefined
 - no module system for now -- only builtin and current module
@@ -8,8 +8,8 @@
 [frontend] `expHeplers` -- `expFreeNames` -- assume shrinked
 [frontend] `expHeplers` -- `expBoundNames` -- assume shrinked
 
-[frontend] `012-convert-lambdas`
-[frontend] `020-unnest-operands`
+[frontend] `012-convert-lambda`
+[frontend] `020-unnest-operand`
 [frontend] `030-explicate-control`
 
 # later

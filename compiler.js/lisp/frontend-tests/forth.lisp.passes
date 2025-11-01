@@ -37,3 +37,16 @@ uniquify:
     (define (main)
       (@let1 f₁ identity (@let1 g₁ (dup identity) (g₁ f₁ f₁))))
 
+reveal-function:
+
+    (define (swap f x y) (f y x))
+    
+    (define (drop f) (lambda (dropped₁ x₁) (f x₁)))
+    
+    (define (dup f) (lambda (x₁) (f x₁ x₁)))
+    
+    (define (identity x) x)
+    
+    (define (main)
+      (@let1 f₁ identity (@let1 g₁ (dup identity) (g₁ f₁ f₁))))
+
