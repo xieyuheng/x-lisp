@@ -1,4 +1,3 @@
-[compiler] use frontend/index.ts
 [frontend] `030-ExplicateControlPass`
 
 # later
