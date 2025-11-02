@@ -165,11 +165,7 @@ export type Curry = {
   args: Array<Value>
 }
 
-export function Curry(
-  target: Value,
-  arity: number,
-  args: Array<Value>,
-): Curry {
+export function Curry(target: Value, arity: number, args: Array<Value>): Curry {
   return {
     kind: "Curry",
     target,

@@ -35,3 +35,18 @@ export function modMapDefinition(
   newMod.defined = mapMapValue(mod.defined, f)
   return newMod
 }
+
+export type DefinitionEntry = [string, Definition]
+
+export function modFlatMapDefinitionEntry(
+  mod: Mod,
+  f: (entry: DefinitionEntry) => DefinitionEntry,
+): Mod {
+  const newMod = createMod(mod.url)
+  for (const entry of mod.defined.entries()) {
+    const [name, definition] = f(entry)
+    newMod.defined.set(name, definition)
+  }
+
+  return newMod
+}

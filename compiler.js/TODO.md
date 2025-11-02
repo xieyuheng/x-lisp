@@ -1,6 +1,5 @@
 # frontend
 
-[frontend] `modFlatMapDefinition`
 [frontend] `@curry` as `Exp`
 [frontend] `expHeplers` -- `expFreeNames` -- assume shrinked
 [frontend] `012-convert-lambda`
