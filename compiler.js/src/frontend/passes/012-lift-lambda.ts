@@ -62,8 +62,9 @@ function liftExp(context: Context, exp: Exp): Exp {
 
     case "Lambda": {
       const freeNames = Array.from(Exps.expFreeNames(new Set(), exp))
-      const subscript = stringToSubscript(context.lifted.size.toString())
-      const newFunctionName = `${context.definition.name}/lambda${subscript}`
+      const liftedCount = context.lifted.size + 1
+      const subscript = stringToSubscript(liftedCount.toString())
+      const newFunctionName = `${context.definition.name}/λ${subscript}`
       const newParameters = [...freeNames, ...exp.parameters]
       const arity = newParameters.length
       assert(exp.meta)

@@ -1,0 +1,33 @@
+mod:
+
+    (define (Y f)
+      ((lambda (u) (u u)) (lambda (x) (f (lambda (t) ((x x) t))))))
+
+shrink:
+
+    (define (Y f)
+      ((lambda (u) (u u)) (lambda (x) (f (lambda (t) ((x x) t))))))
+
+uniquify:
+
+    (define (Y f)
+      ((lambda (u₁) (u₁ u₁))
+       (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
+
+reveal-function:
+
+    (define (Y f)
+      ((lambda (u₁) (u₁ u₁))
+       (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
+
+lift-lambda:
+
+    (define (Y f)
+      ((@curry (@function Y/λ₁ 1) 1) (@curry (@function Y/λ₂ 2) 2 f)))
+    
+    (define (Y/λ₁ u₁) (u₁ u₁))
+    
+    (define (Y/λ₂ f x₁) (f (@curry (@function Y/λ₂/λ₁ 2) 2 x₁)))
+    
+    (define (Y/λ₂/λ₁ x₁ t₁) ((x₁ x₁) t₁))
+
