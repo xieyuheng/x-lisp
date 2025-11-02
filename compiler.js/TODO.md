@@ -1,6 +1,6 @@
 # frontend
 
-[frontend] `020-UnnestOperandPass` -- `unnestAtom`
+[frontend] `020-UnnestOperandPass` -- `unnestAtom` -- `Curry`
 
 [frontend] `030-ExplicateControlPass`
 
