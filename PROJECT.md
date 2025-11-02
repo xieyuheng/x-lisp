@@ -66,7 +66,7 @@ date: 2025-10-22
   - [x] shrink
   - [x] uniquify
   - [x] reveal-function
-  - [ ] convert-lambda
+  - [ ] lift-lambda
   - [ ] unnest-operand
   - [ ] explicate-control
 - [ ] basic-lisp interpreter
