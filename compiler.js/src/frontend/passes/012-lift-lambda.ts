@@ -1,4 +1,5 @@
 import * as X from "@xieyuheng/x-sexp.js"
+import { mapFlatMap } from "../../helpers/map/mapFlatMap.ts"
 import type { Definition } from "../definition/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
@@ -10,7 +11,7 @@ import {
 } from "../mod/index.ts"
 
 export function liftLambda(mod: Mod): Mod {
-  return modFlatMapDefinitionEntry(mod, (entry) => liftDefinitionEntry(entry))
+  return modFlatMapDefinitionEntry(mod, liftDefinitionEntry)
 }
 
 function liftDefinitionEntry([
@@ -20,17 +21,17 @@ function liftDefinitionEntry([
   switch (definition.kind) {
     case "FunctionDefinition": {
       const lifted: Map<string, Definition> = new Map()
+      const newBody = liftExp(lifted, definition.body)
+      const newDefinition = Definitions.FunctionDefinition(
+        definition.name,
+        definition.parameters,
+        newBody,
+        definition.meta,
+      )
+
       return [
-        [
-          name,
-          Definitions.FunctionDefinition(
-            definition.name,
-            definition.parameters,
-            liftExp(lifted, definition.body),
-            definition.meta,
-          ),
-        ],
-        ...lifted.entries(),
+        [name, newDefinition],
+        ...mapFlatMap(lifted, liftDefinitionEntry).entries(),
       ]
     }
   }
