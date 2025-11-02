@@ -1,6 +1,6 @@
 import { type Command } from "@xieyuheng/commander.js"
-import { callFunction, createContext } from "../backend/execute/index.ts"
-import { load } from "../backend/load/index.ts"
+import { callFunction, createContext } from "../compiler/backend/execute/index.ts"
+import { load } from "../compiler/backend/load/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
