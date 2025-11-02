@@ -74,3 +74,25 @@ LiftLambdaPass:
         (@let1 g₁ ((@function dup 1) (@function identity 1))
           (g₁ f₁ f₁))))
 
+UnnestOperandPass:
+
+    (define (swap f x y) (f y x))
+    
+    (define (drop f) (@curry (@function drop/λ₁ 2) 2 f))
+    
+    (define (drop/λ₁ f dropped₁)
+      (@curry (@function drop/λ₁/λ₁ 2) 2 f))
+    
+    (define (drop/λ₁/λ₁ f x₁) (f x₁))
+    
+    (define (dup f) (@curry (@function dup/λ₁ 2) 2 f))
+    
+    (define (dup/λ₁ f x₁) (f x₁ x₁))
+    
+    (define (identity x) x)
+    
+    (define (main)
+      (@let1 f₁ (@function identity 1)
+        (@let1 g₁ ((@function dup 1) (@function identity 1))
+          (g₁ f₁ f₁))))
+

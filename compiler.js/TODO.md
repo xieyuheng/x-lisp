@@ -1,6 +1,5 @@
 # frontend
 
-[frontend] `020-UnnestOperandPass` -- setup
 [frontend] `020-UnnestOperandPass`
 [frontend] `030-ExplicateControlPass`
 

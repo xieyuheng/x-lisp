@@ -4,6 +4,7 @@ import { ShrinkPass } from "../passes/005-ShrinkPass.ts"
 import { UniquifyPass } from "../passes/010-UniquifyPass.ts"
 import { RevealFunctionPass } from "../passes/011-RevealFunctionPass.ts"
 import { LiftLambdaPass } from "../passes/012-LiftLambdaPass.ts"
+import { UnnestOperandPass } from "../passes/020-UnnestOperandPass.ts"
 import { prettyMod } from "../pretty/index.ts"
 
 export function compilePasses(mod: Mod): void {
@@ -12,6 +13,7 @@ export function compilePasses(mod: Mod): void {
   mod = logMod("UniquifyPass", UniquifyPass(mod))
   mod = logMod("RevealFunctionPass", RevealFunctionPass(mod))
   mod = logMod("LiftLambdaPass", LiftLambdaPass(mod))
+  mod = logMod("UnnestOperandPass", UnnestOperandPass(mod))
 }
 
 function logMod(tag: string, mod: Mod): Mod {
