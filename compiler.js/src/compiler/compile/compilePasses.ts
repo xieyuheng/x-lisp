@@ -1,11 +1,11 @@
 import { formatIndent } from "../../helpers/format/formatIndent.ts"
-import type { Mod } from "../mod/index.ts"
-import { ShrinkPass } from "../passes/005-ShrinkPass.ts"
-import { UniquifyPass } from "../passes/010-UniquifyPass.ts"
-import { RevealFunctionPass } from "../passes/011-RevealFunctionPass.ts"
-import { LiftLambdaPass } from "../passes/012-LiftLambdaPass.ts"
-import { UnnestOperandPass } from "../passes/020-UnnestOperandPass.ts"
-import { prettyMod } from "../pretty/index.ts"
+import type { Mod } from "../../frontend/mod/index.ts"
+import { ShrinkPass } from "../../frontend/passes/005-ShrinkPass.ts"
+import { UniquifyPass } from "../../frontend/passes/010-UniquifyPass.ts"
+import { RevealFunctionPass } from "../../frontend/passes/011-RevealFunctionPass.ts"
+import { LiftLambdaPass } from "../../frontend/passes/012-LiftLambdaPass.ts"
+import { UnnestOperandPass } from "../../frontend/passes/020-UnnestOperandPass.ts"
+import { prettyMod } from "../../frontend/pretty/index.ts"
 
 export function compilePasses(mod: Mod): void {
   logMod("Initially", mod)

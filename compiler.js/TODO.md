@@ -4,7 +4,7 @@
 
 # later
 
-[frontend] `compileMod`
+[compiler] `compileMod`
 
 # basic SSA
 
