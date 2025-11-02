@@ -1,6 +1,6 @@
 import { type TokenMeta } from "@xieyuheng/x-sexp.js"
 
-export type Meta = TokenMeta
+type Meta = TokenMeta
 
 export type Exp =
   | Var

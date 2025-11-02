@@ -1,0 +1,5 @@
+export * from "./005-ShrinkPass.ts"
+export * from "./010-UniquifyPass.ts"
+export * from "./011-RevealFunctionPass.ts"
+export * from "./012-LiftLambdaPass.ts"
+export * from "./020-UnnestOperandPass.ts"
