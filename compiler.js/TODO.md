@@ -1,4 +1,3 @@
-`arrayConcat`
 `arrayUnzip`
 
 # frontend
