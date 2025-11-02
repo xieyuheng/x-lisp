@@ -1,7 +1,5 @@
 # frontend
 
-[frontend] `020-UnnestOperandPass` -- handle `Curry`
-
 [frontend] `020-UnnestOperandPass` -- `unnestAtom`
 
 [frontend] `030-ExplicateControlPass`

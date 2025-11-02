@@ -52,21 +52,22 @@ function unnestExp(state: State, exp: Exp): Exp {
       return exp
     }
 
-    // case "Curry": {
-    //   // TODO
-    //   return exp
-    // }
+    case "Curry": {
+      const [targetEntries, target] = unnestAtom(state, exp.target)
+      const [argEntries, args] = unnestAtomMany(state, exp.args)
+      return prependLets(
+        [...targetEntries, ...argEntries],
+        Exps.Curry(target, exp.arity, args, exp.meta),
+      )
+    }
 
     case "Apply": {
       const [targetEntries, target] = unnestAtom(state, exp.target)
       const [argEntries, args] = unnestAtomMany(state, exp.args)
       return prependLets(
         [...targetEntries, ...argEntries],
-        Exps.Apply(
-        target,
-        args,
-        exp.meta,
-      ))
+        Exps.Apply(target, args, exp.meta),
+      )
     }
 
     case "Begin": {
@@ -105,7 +106,9 @@ function unnestExp(state: State, exp: Exp): Exp {
 }
 
 function prependLets(entries: Array<Entry>, exp: Exp): Exp {
-  if (entries.length === 0) {return exp}
+  if (entries.length === 0) {
+    return exp
+  }
 
   const [[name, rhs], ...restEntries] = entries
   return Exps.Let1(name, rhs, prependLets(restEntries, exp))
