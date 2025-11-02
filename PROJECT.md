@@ -22,19 +22,18 @@ date: 2025-10-22
 
 # 范围
 
-为了独立自主，最终的目标是用 x-lisp 写其自身的编译器。
+只实简单的 dynamic type，所有的 value 都有 tag。
 
-但是第一阶段可以先用 js/ts 来写编译器。
+第一个阶段实现 bootstrap compiler：
 
-第一个阶段的 scope 是：
-
-- x-lisp 的解释器
-- basic-lisp 中间语言
-- x-lisp 到 basic-lisp 的编译器
+- x-lisp interpreter
+- basic-lisp interpreter
+- x-lisp compile to basic-lisp
 - C runtime
-- basic-lisp 到 x86 的 codegen
+- basic-lisp codegen to x86
 
-第二个阶段可以直接把 js/ts 代码 port 到 x-lisp。
+第二个阶段实现 self compiler，
+可以直接把 js/ts 代码 port 到 x-lisp。
 
 # 项目管理之前已完成的部分
 
@@ -50,15 +49,14 @@ date: 2025-10-22
 
 成果：
 
-- 在使用 x-lisp 的解释器来运行代码之外，
-  有了用 basic-lisp 的解释器来运行代码的能力。
-  可以在命令行新增一个命令来区分两种运行模式。
+- 获得用 basic-lisp 的解释器来运行代码的能力。
+- 给命令行新增一个命令来区分两种运行模式。
 
 范围：
 
-- 为了简单，不考虑静态类型，只实现纯粹的 dynamic type。
-- 先实现一个可扩展的 lambda calculus，这是语言的核心部分，然后再扩展。
-- 可以先不考虑 module system。
+- 先实现一个可扩展的 lambda calculus，这是语言的核心部分。
+- 先不考虑 module system。
+- 先不考虑 SSA，直接生成最可以多次赋值的 basic block。
 
 任务：
 
@@ -66,19 +64,18 @@ date: 2025-10-22
   - [x] shrink
   - [x] uniquify
   - [x] reveal-function
-  - [ ] lift-lambda
-  - [ ] unnest-operand
+  - [x] lift-lambda
+  - [x] unnest-operand
   - [ ] explicate-control
-- [ ] basic-lisp interpreter
-  - [ ] SSA
 
 # milestone 2 -- module system and bundling
 
 这是补全上一个 milestone 没有完成的任务，
 也是为 codegen 做准备。
 
-bundling 问题对于我来说是新问题，
-所以也独立开一个 milestone。
+难点：
+
+- bundling 问题对于我来说是新问题。
 
 成果：
 
@@ -95,9 +92,8 @@ bundling 问题对于我来说是新问题，
 
 成果：
 
-使得 x-lisp 可以完全脱离 js 的 runtime。
-这时我们「独立自主」的目标已经达成了。
-写 x-lisp 代码时的感觉完全不一样了。
+- 使得 x-lisp 可以完全脱离 js 的 runtime。
+  这时我们「独立自主」的目标已经达成了。
 
 范围：
 
@@ -113,6 +109,25 @@ bundling 问题对于我来说是新问题，
   - [ ] select-instruction
   - [ ] allocate-register
 
-# milestone 4 -- optimization
+# milestone 待定 -- SSA
+
+SSA 是后续所有 optimization 的前提。
+
+如果不考虑优化，SSA 对于 codegen 来说是可选的。
+
+难点：
+
+- 研究转化 SSA 的各种方式。
+
+成果：
+
+- 将 basic-lisp 转化为 SSA。
+
+任务：
+
+- [ ] basic-lisp interpreter
+  - [ ] SSA
+
+# milestone 待定 -- optimization
 
 优化放到最后，具体任务待定。

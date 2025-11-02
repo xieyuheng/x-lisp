@@ -1,19 +1,29 @@
+# backend
+
+[backend] `formatDefinition`
+[backend] `formatMod`
+
+[backend] `prettyMod` & `prettyDefinition`
+
+# frontend -- passes
+
+[frontend] `030-ExplicateControlPass` -- setup -- with log
 [frontend] `030-ExplicateControlPass`
 
-# later
-
-[compiler] `compileMod`
-
-# basic SSA
+# backend -- SSA
 
 [backend] `aboutSSA` -- `put!` and `use`
 [backend] `checkSSA` -- single `use`
 
-# basic module
+# backend -- module
 
 [backend] `Stmt` -- `Import`
 [backend] `Stmt` -- `Include`
 
-# basic bundling
+# backend -- bundling
 
 [backend] `Mod` -- bundle
+
+# compiler
+
+[compiler] `compileMod`
