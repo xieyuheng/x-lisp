@@ -1,5 +1,3 @@
-`arrayUnzip`
-
 # frontend
 
 [frontend] `020-UnnestOperandPass` -- `unnestAtomMany`
