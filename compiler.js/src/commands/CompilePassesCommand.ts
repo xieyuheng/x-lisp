@@ -1,8 +1,8 @@
 import { type Command } from "@xieyuheng/commander.js"
+import { compilePasses } from "../compiler/compile/index.ts"
 import { load } from "../compiler/frontend/load/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
-import { compilePasses } from "../compiler/compile/index.ts"
 
 export const CompilePassesCommand: Command = {
   name: "compile-passes",
