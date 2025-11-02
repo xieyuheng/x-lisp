@@ -34,11 +34,16 @@ LiftLambdaPass:
 UnnestOperandPass:
 
     (define (Y f)
-      ((@curry (@function Y/λ₁ 1) 1) (@curry (@function Y/λ₂ 2) 2 f)))
+      (@let1 _₁ (@function Y/λ₁ 1)
+        (@let1 _₂ (@curry _₁ 1)
+          (@let1 _₃ (@function Y/λ₂ 2)
+            (@let1 _₄ (@curry _₃ 2 f) (_₂ _₄))))))
     
     (define (Y/λ₁ u₁) (u₁ u₁))
     
-    (define (Y/λ₂ f x₁) (f (@curry (@function Y/λ₂/λ₁ 2) 2 x₁)))
+    (define (Y/λ₂ f x₁)
+      (@let1 _₁ (@function Y/λ₂/λ₁ 2)
+        (@let1 _₂ (@curry _₁ 2 x₁) (f _₂))))
     
-    (define (Y/λ₂/λ₁ x₁ t₁) ((x₁ x₁) t₁))
+    (define (Y/λ₂/λ₁ x₁ t₁) (@let1 _₁ (x₁ x₁) (_₁ t₁)))
 

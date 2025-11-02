@@ -126,19 +126,31 @@ function unnestAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
       return [[], exp]
     }
 
-    case "FunctionRef":
     case "Var": {
       return [[], exp]
     }
 
-    // case "Curry": {
-    //   const [targetEntries, target] = unnestAtom(state, exp.target)
-    //   const [argEntries, args] = unnestAtomMany(state, exp.args)
-    //   return prependLets(
-    //     [...targetEntries, ...argEntries],
-    //     Exps.Curry(target, exp.arity, args, exp.meta),
-    //   )
-    // }
+    case "FunctionRef":
+    case "Begin":
+    case "If": {
+      const freshName = generateFreshName(state)
+      const entry: Entry = [freshName, unnestExp(state, exp)]
+      return [[entry], Exps.Var(freshName, exp.meta)]
+    }
+
+    case "Curry": {
+      const [targetEntries, newTarget] = unnestAtom(state, exp.target)
+      const [argEntries, newArgs] = unnestAtomMany(state, exp.args)
+      const freshName = generateFreshName(state)
+      const entry: Entry = [
+        freshName,
+        Exps.Curry(newTarget, exp.arity, newArgs, exp.meta),
+      ]
+      return [
+        [...targetEntries, ...argEntries, entry],
+        Exps.Var(freshName, exp.meta),
+      ]
+    }
 
     case "Apply": {
       const [targetEntries, newTarget] = unnestAtom(state, exp.target)
@@ -155,13 +167,6 @@ function unnestAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
       const rhsEntry: Entry = [exp.name, unnestExp(state, exp.rhs)]
       const [bodyEntries, newBody] = unnestAtom(state, exp.body)
       return [[rhsEntry, ...bodyEntries], newBody]
-    }
-
-    case "Begin":
-    case "If": {
-      const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, unnestExp(state, exp)]
-      return [[entry], Exps.Var(freshName, exp.meta)]
     }
 
     default: {
