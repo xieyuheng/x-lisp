@@ -48,11 +48,6 @@ date: 2025-10-22
 
 从 x-lisp 编译到 basic-lisp。
 
-这是最难的部分。
-因为这里需要处理与 x-lisp 的特殊 feature 有关的编译问题，
-而这些问题可能是需要研究的，
-是不能在已有的课程中直接学到的。
-
 成果：
 
 - 在使用 x-lisp 的解释器来运行代码之外，
@@ -61,17 +56,18 @@ date: 2025-10-22
 
 范围：
 
-- 可以先不考虑 module system。
 - 为了简单，不考虑静态类型，只实现纯粹的 dynamic type。
+- 先实现一个可扩展的 lambda calculus，这是语言的核心部分，然后再扩展。
+- 可以先不考虑 module system。
 
 任务：
 
-- [ ] x-lisp compiler (to basic-lisp)
-  - [ ] shrink
-  - [ ] uniquify
-  - [ ] reveal-functions
-  - [ ] convert-lambdas
-  - [ ] unnest-operands
+- [x] x-lisp compiler (to basic-lisp)
+  - [x] shrink
+  - [x] uniquify
+  - [x] reveal-function
+  - [ ] convert-lambda
+  - [ ] unnest-operand
   - [ ] explicate-control
 - [ ] basic-lisp interpreter
   - [ ] SSA
@@ -114,8 +110,8 @@ bundling 问题对于我来说是新问题，
   - [ ] builtin
   - [ ] GC
 - [ ] basic-lisp codegen (to x86 via GNU assembler)
-  - [ ] select instruction
-  - [ ] allocate registers
+  - [ ] select-instruction
+  - [ ] allocate-register
 
 # milestone 4 -- optimization
 
