@@ -160,11 +160,8 @@ function unnestAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
     case "Begin":
     case "If": {
       const freshName = generateFreshName(state)
-      const entry: Entry =[freshName, unnestExp(state, exp)]
-      return [
-        [entry],
-        Exps.Var(freshName, exp.meta),
-      ]
+      const entry: Entry = [freshName, unnestExp(state, exp)]
+      return [[entry], Exps.Var(freshName, exp.meta)]
     }
 
     default: {
