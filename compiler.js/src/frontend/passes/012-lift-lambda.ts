@@ -1,5 +1,7 @@
 import * as X from "@xieyuheng/x-sexp.js"
+import assert from "node:assert"
 import { mapFlatMap } from "../../helpers/map/mapFlatMap.ts"
+import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import type { Definition } from "../definition/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
@@ -22,7 +24,7 @@ function liftDefinitionEntry([
   switch (definition.kind) {
     case "FunctionDefinition": {
       const lifted: Map<string, Definition> = new Map()
-      const context = { lifted, functionName: definition.name }
+      const context = { lifted, definition }
       const newBody = liftExp(context, definition.body)
       const newDefinition = Definitions.FunctionDefinition(
         definition.name,
@@ -40,7 +42,7 @@ function liftDefinitionEntry([
 
 type Context = {
   lifted: Map<string, Definition>
-  functionName: string
+  definition: Definitions.FunctionDefinition
 }
 
 function liftExp(context: Context, exp: Exp): Exp {
@@ -58,15 +60,29 @@ function liftExp(context: Context, exp: Exp): Exp {
       return exp
     }
 
-    // case "Lambda": {
-    //   const freeNames = expFreeNames(new Set(), exp)
-    //   const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
-    //   return Exps.Curry(
-    //     exp.parameters,
-    //     revealExp(mod, newBoundNames, exp.body),
-    //     exp.meta,
-    //   )
-    // }
+    case "Lambda": {
+      const freeNames = Array.from(Exps.expFreeNames(new Set(), exp))
+      const subscript = stringToSubscript(context.lifted.size.toString())
+      const newFunctionName = `${context.definition.name}/lambda${subscript}`
+      const newParameters = [...freeNames, ...exp.parameters]
+      const arity = newParameters.length
+      assert(exp.meta)
+      const newDefinition = Definitions.FunctionDefinition(
+        newFunctionName,
+        newParameters,
+        exp.body,
+        exp.meta,
+      )
+      context.lifted.set(newFunctionName, newDefinition)
+
+      const freeVariables = freeNames.map((name) => Exps.Var(name))
+      return Exps.Curry(
+        Exps.FunctionRef(newFunctionName, arity),
+        arity,
+        freeVariables,
+        exp.meta,
+      )
+    }
 
     case "Apply": {
       return Exps.Apply(

@@ -52,3 +52,22 @@ reveal-function:
         (@let1 g₁ ((@function dup 1) (@function identity 1))
           (g₁ f₁ f₁))))
 
+lift-lambda:
+
+    (define (swap f x y) (f y x))
+    
+    (define (drop f) (@curry (@function drop/lambda₀ 3) 3 f))
+    
+    (define (drop/lambda₀ f dropped₁ x₁) (f x₁))
+    
+    (define (dup f) (@curry (@function dup/lambda₀ 2) 2 f))
+    
+    (define (dup/lambda₀ f x₁) (f x₁ x₁))
+    
+    (define (identity x) x)
+    
+    (define (main)
+      (@let1 f₁ (@function identity 1)
+        (@let1 g₁ ((@function dup 1) (@function identity 1))
+          (g₁ f₁ f₁))))
+

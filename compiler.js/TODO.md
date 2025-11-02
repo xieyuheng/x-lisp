@@ -1,6 +1,5 @@
 # frontend
 
-[frontend] `012-lift-lambda` -- `liftExp` -- handle `Lambda`
 [frontend] `020-unnest-operand`
 [frontend] `030-explicate-control`
 
