@@ -1,7 +1,9 @@
 import * as X from "@xieyuheng/x-sexp.js"
+import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import type { Definition } from "../definition/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
+import * as Exps from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import { modMapDefinition, type Mod } from "../mod/index.ts"
 
@@ -9,20 +11,31 @@ export function UnnestOperandPass(mod: Mod): Mod {
   return modMapDefinition(mod, (definition) => unnestDefinition(definition))
 }
 
+type State = {
+  freshNameCount: number
+}
+
 function unnestDefinition(definition: Definition): Definition {
   switch (definition.kind) {
     case "FunctionDefinition": {
+      const state = { freshNameCount: 0 }
       return Definitions.FunctionDefinition(
         definition.name,
         definition.parameters,
-        unnestExp(definition.body),
+        unnestExp(state, definition.body),
         definition.meta,
       )
     }
   }
 }
 
-function unnestExp(exp: Exp): Exp {
+function generateFreshName(state: State): string {
+  state.freshNameCount++
+  const subscript = stringToSubscript(state.freshNameCount.toString())
+  return `_${subscript}`
+}
+
+function unnestExp(state: State, exp: Exp): Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -32,42 +45,14 @@ function unnestExp(exp: Exp): Exp {
       return exp
     }
 
-    // case "Var": {
-    //   if (boundNames.has(exp.name)) {
-    //     return exp
-    //   }
+    case "FunctionRef":
+    case "Var": {
+      return exp
+    }
 
-    //   const builtinArity = getBuiltinFunctionArity(exp.name)
-    //   if (builtinArity !== undefined) {
-    //     return Exps.FunctionRef(exp.name, builtinArity, exp.meta)
-    //   }
-
-    //   const definition = modLookupDefinition(mod, exp.name)
-    //   if (definition === undefined) {
-    //     let message = `[reveal-function] undefined name`
-    //     message += `\n  name: ${exp.name}`
-    //     if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
-    //     else throw new Error(message)
-    //   }
-
-    //   if (definition.kind !== "FunctionDefinition") {
-    //     let message = `[reveal-function] global name must be function for now`
-    //     message += `\n  name: ${exp.name}`
-    //     if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
-    //     else throw new Error(message)
-    //   }
-
-    //   const arity = definition.parameters.length
-    //   return Exps.FunctionRef(exp.name, arity, exp.meta)
-    // }
-
-    // case "Lambda": {
-    //   const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
-    //   return Exps.Lambda(
-    //     exp.parameters,
-    //     revealExp(mod, newBoundNames, exp.body),
-    //     exp.meta,
-    //   )
+    // case "Curry": {
+    //   // TODO
+    //   return exp
     // }
 
     // case "Apply": {
@@ -78,40 +63,55 @@ function unnestExp(exp: Exp): Exp {
     //   )
     // }
 
-    // case "Begin": {
-    //   return Exps.Begin(
-    //     revealExp(mod, boundNames, exp.head),
-    //     revealExp(mod, boundNames, exp.body),
-    //     exp.meta,
-    //   )
-    // }
+    case "Begin": {
+      return Exps.Begin(
+        unnestExp(state, exp.head),
+        unnestExp(state, exp.body),
+        exp.meta,
+      )
+    }
 
-    // case "Let1": {
-    //   const newBoundNames = setAdd(boundNames, exp.name)
-    //   return Exps.Let1(
-    //     exp.name,
-    //     revealExp(mod, newBoundNames, exp.rhs),
-    //     revealExp(mod, newBoundNames, exp.body),
-    //     exp.meta,
-    //   )
-    // }
+    case "Let1": {
+      return Exps.Let1(
+        exp.name,
+        unnestExp(state, exp.rhs),
+        unnestExp(state, exp.body),
+        exp.meta,
+      )
+    }
 
-    // case "If": {
-    //   return Exps.If(
-    //     revealExp(mod, boundNames, exp.condition),
-    //     revealExp(mod, boundNames, exp.consequent),
-    //     revealExp(mod, boundNames, exp.alternative),
-    //     exp.meta,
-    //   )
-    // }
+    case "If": {
+      return Exps.If(
+        unnestExp(state, exp.condition),
+        unnestExp(state, exp.consequent),
+        unnestExp(state, exp.alternative),
+        exp.meta,
+      )
+    }
 
     default: {
-      return exp
-      // TODO
-      // let message = `[UnnestOperandPass] unhandled exp`
-      // message += `\n  exp: ${formatExp(exp)}`
-      // if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
-      // else throw new Error(message)
+      let message = `[UnnestOperandPass] unhandled exp`
+      message += `\n  exp: ${formatExp(exp)}`
+      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      else throw new Error(message)
     }
   }
 }
+
+function prependLets(entries: Array<Entry>, exp: Exp): Exp {
+  throw new Error()
+}
+
+type Entry = [string, Exp]
+
+function unnestAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
+  throw new Error()
+}
+
+// function unnestAtomMany(
+//   state: State,
+//   exps: Array<Exp>,
+// ): [Array<Entry>, Array<Exp>] {
+//   const [entriesArray, newExps] = arrayUnzip(exps.map(e => unnestAtom(state, e)))
+//   return [arrayConcat(entriesArray), newExps]
+// }

@@ -1,6 +1,14 @@
+`arrayConcat`
+`arrayUnzip`
+
 # frontend
 
-[frontend] `020-UnnestOperandPass`
+[frontend] `020-UnnestOperandPass` -- `unnestAtomMany`
+[frontend] `020-UnnestOperandPass` -- `prependLets`
+[frontend] `020-UnnestOperandPass` -- `unnestAtom`
+
+[frontend] `020-UnnestOperandPass` -- handle `Apply`
+[frontend] `020-UnnestOperandPass` -- handle `Curry`
 [frontend] `030-ExplicateControlPass`
 
 # later

@@ -17,6 +17,11 @@ export function LiftLambdaPass(mod: Mod): Mod {
   return modFlatMapDefinitionEntry(mod, liftDefinitionEntry)
 }
 
+type State = {
+  lifted: Map<string, Definition>
+  definition: Definitions.FunctionDefinition
+}
+
 function liftDefinitionEntry([
   name,
   definition,
@@ -38,11 +43,6 @@ function liftDefinitionEntry([
       ]
     }
   }
-}
-
-type State = {
-  lifted: Map<string, Definition>
-  definition: Definitions.FunctionDefinition
 }
 
 function liftExp(state: State, exp: Exp): Exp {
