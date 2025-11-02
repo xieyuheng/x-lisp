@@ -57,13 +57,17 @@ function unnestExp(state: State, exp: Exp): Exp {
     //   return exp
     // }
 
-    // case "Apply": {
-    //   return Exps.Apply(
-    //     revealExp(mod, boundNames, exp.target),
-    //     exp.args.map((e) => revealExp(mod, boundNames, e)),
-    //     exp.meta,
-    //   )
-    // }
+    case "Apply": {
+      const [targetEntries, target] = unnestAtom(state, exp.target)
+      const [argEntries, args] = unnestAtomMany(state, exp.args)
+      return prependLets(
+        [...targetEntries, ...argEntries],
+        Exps.Apply(
+        target,
+        args,
+        exp.meta,
+      ))
+    }
 
     case "Begin": {
       return Exps.Begin(
