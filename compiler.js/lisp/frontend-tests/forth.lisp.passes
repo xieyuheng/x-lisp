@@ -1,4 +1,4 @@
-mod:
+Initially:
 
     (define (swap f x y) (f y x))
     
@@ -11,7 +11,7 @@ mod:
     (define (main)
       (begin (= f identity) (= g (dup identity)) (g f f)))
 
-shrink:
+ShrinkPass:
 
     (define (swap f x y) (f y x))
     
@@ -24,7 +24,7 @@ shrink:
     (define (main)
       (@let1 f identity (@let1 g (dup identity) (g f f))))
 
-uniquify:
+UniquifyPass:
 
     (define (swap f x y) (f y x))
     
@@ -37,7 +37,7 @@ uniquify:
     (define (main)
       (@let1 f₁ identity (@let1 g₁ (dup identity) (g₁ f₁ f₁))))
 
-reveal-function:
+RevealFunctionPass:
 
     (define (swap f x y) (f y x))
     
@@ -52,7 +52,7 @@ reveal-function:
         (@let1 g₁ ((@function dup 1) (@function identity 1))
           (g₁ f₁ f₁))))
 
-lift-lambda:
+LiftLambdaPass:
 
     (define (swap f x y) (f y x))
     

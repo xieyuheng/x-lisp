@@ -1,26 +1,26 @@
-mod:
+Initially:
 
     (define (Y f)
       ((lambda (u) (u u)) (lambda (x) (f (lambda (t) ((x x) t))))))
 
-shrink:
+ShrinkPass:
 
     (define (Y f)
       ((lambda (u) (u u)) (lambda (x) (f (lambda (t) ((x x) t))))))
 
-uniquify:
+UniquifyPass:
 
     (define (Y f)
       ((lambda (u₁) (u₁ u₁))
        (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
 
-reveal-function:
+RevealFunctionPass:
 
     (define (Y f)
       ((lambda (u₁) (u₁ u₁))
        (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
 
-lift-lambda:
+LiftLambdaPass:
 
     (define (Y f)
       ((@curry (@function Y/λ₁ 1) 1) (@curry (@function Y/λ₂ 2) 2 f)))
