@@ -1,17 +1,17 @@
 import { formatIndent } from "../../helpers/format/formatIndent.ts"
 import type { Mod } from "../mod/index.ts"
-import { shrink } from "../passes/005-shrink.ts"
-import { uniquify } from "../passes/010-uniquify.ts"
-import { revealFunction } from "../passes/011-reveal-function.ts"
-import { liftLambda } from "../passes/012-lift-lambda.ts"
+import { ShrinkPass } from "../passes/005-ShrinkPass.ts"
+import { UniquifyPass } from "../passes/010-UniquifyPass.ts"
+import { RevealFunctionPass } from "../passes/011-RevealFunctionPass.ts"
+import { LiftLambdaPass } from "../passes/012-LiftLambdaPass.ts"
 import { prettyMod } from "../pretty/index.ts"
 
 export function compilePasses(mod: Mod): void {
-  logMod("mod", mod)
-  mod = logMod("shrink", shrink(mod))
-  mod = logMod("uniquify", uniquify(mod))
-  mod = logMod("reveal-function", revealFunction(mod))
-  mod = logMod("lift-lambda", liftLambda(mod))
+  logMod("Initially", mod)
+  mod = logMod("ShrinkPass", ShrinkPass(mod))
+  mod = logMod("UniquifyPass", UniquifyPass(mod))
+  mod = logMod("RevealFunctionPass", RevealFunctionPass(mod))
+  mod = logMod("LiftLambdaPass", LiftLambdaPass(mod))
 }
 
 function logMod(tag: string, mod: Mod): Mod {

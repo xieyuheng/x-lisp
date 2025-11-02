@@ -6,7 +6,7 @@ import * as Exps from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import { modMapDefinition, type Mod } from "../mod/index.ts"
 
-export function shrink(mod: Mod): Mod {
+export function ShrinkPass(mod: Mod): Mod {
   return modMapDefinition(mod, shrinkDefinition)
 }
 
@@ -106,7 +106,7 @@ function shrinkExp(exp: Exp): Exp {
     }
 
     default: {
-      let message = `[shrink] unhandled exp`
+      let message = `[ShrinkPass] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
       if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)

@@ -8,7 +8,7 @@ import * as Exps from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import { modMapDefinition, type Mod } from "../mod/index.ts"
 
-export function uniquify(mod: Mod): Mod {
+export function UniquifyPass(mod: Mod): Mod {
   return modMapDefinition(mod, uniquifyDefinition)
 }
 
@@ -98,7 +98,7 @@ function uniquifyExp(
     }
 
     default: {
-      let message = `[uniquify] unhandled exp`
+      let message = `[UniquifyPass] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
       if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)

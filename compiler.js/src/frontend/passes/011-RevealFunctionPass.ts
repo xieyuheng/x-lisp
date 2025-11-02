@@ -12,7 +12,7 @@ import {
   type Mod,
 } from "../mod/index.ts"
 
-export function revealFunction(mod: Mod): Mod {
+export function RevealFunctionPass(mod: Mod): Mod {
   return modMapDefinition(mod, (definition) =>
     revealDefinition(mod, definition),
   )
@@ -115,7 +115,7 @@ function revealExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
     }
 
     default: {
-      let message = `[reveal-function] unhandled exp`
+      let message = `[RevealFunctionPass] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
       if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)

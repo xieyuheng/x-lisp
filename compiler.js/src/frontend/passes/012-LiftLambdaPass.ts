@@ -13,7 +13,7 @@ import {
   type Mod,
 } from "../mod/index.ts"
 
-export function liftLambda(mod: Mod): Mod {
+export function LiftLambdaPass(mod: Mod): Mod {
   return modFlatMapDefinitionEntry(mod, liftDefinitionEntry)
 }
 
@@ -120,7 +120,7 @@ function liftExp(context: Context, exp: Exp): Exp {
     }
 
     default: {
-      let message = `[lift-lambda] unhandled exp`
+      let message = `[LiftLambdaPass] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
       if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)

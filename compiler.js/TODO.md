@@ -1,11 +1,8 @@
-[frontend] fix pass file naming -- respect js naming convention
-[frontend] add pass postfix to every pass
-
 # frontend
 
-[frontend] `020-unnestOperandPass` -- setup
-[frontend] `020-unnestOperandPass`
-[frontend] `030-explicateControlPass`
+[frontend] `020-UnnestOperandPass` -- setup
+[frontend] `020-UnnestOperandPass`
+[frontend] `030-ExplicateControlPass`
 
 # later
 
