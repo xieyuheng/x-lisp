@@ -1,4 +1,6 @@
 import * as X from "@xieyuheng/x-sexp.js"
+import { arrayConcat } from "../../helpers/array/arrayConcat.ts"
+import { arrayUnzip } from "../../helpers/array/arrayUnzip.ts"
 import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import type { Definition } from "../definition/index.ts"
 import * as Definitions from "../definition/index.ts"
@@ -108,10 +110,12 @@ function unnestAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
   throw new Error()
 }
 
-// function unnestAtomMany(
-//   state: State,
-//   exps: Array<Exp>,
-// ): [Array<Entry>, Array<Exp>] {
-//   const [entriesArray, newExps] = arrayUnzip(exps.map(e => unnestAtom(state, e)))
-//   return [arrayConcat(entriesArray), newExps]
-// }
+function unnestAtomMany(
+  state: State,
+  exps: Array<Exp>,
+): [Array<Entry>, Array<Exp>] {
+  const [entriesArray, newExps] = arrayUnzip(
+    exps.map((e) => unnestAtom(state, e)),
+  )
+  return [arrayConcat(entriesArray), newExps]
+}

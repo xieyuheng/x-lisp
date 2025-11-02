@@ -1,6 +1,5 @@
 # frontend
 
-[frontend] `020-UnnestOperandPass` -- `unnestAtomMany`
 [frontend] `020-UnnestOperandPass` -- `prependLets`
 [frontend] `020-UnnestOperandPass` -- `unnestAtom`
 
