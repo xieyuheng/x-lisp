@@ -24,8 +24,8 @@ function liftDefinitionEntry([
   switch (definition.kind) {
     case "FunctionDefinition": {
       const lifted: Map<string, Definition> = new Map()
-      const context = { lifted, definition }
-      const newBody = liftExp(context, definition.body)
+      const state = { lifted, definition }
+      const newBody = liftExp(state, definition.body)
       const newDefinition = Definitions.FunctionDefinition(
         definition.name,
         definition.parameters,
@@ -40,12 +40,12 @@ function liftDefinitionEntry([
   }
 }
 
-type Context = {
+type State = {
   lifted: Map<string, Definition>
   definition: Definitions.FunctionDefinition
 }
 
-function liftExp(context: Context, exp: Exp): Exp {
+function liftExp(state: State, exp: Exp): Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -62,9 +62,9 @@ function liftExp(context: Context, exp: Exp): Exp {
 
     case "Lambda": {
       const freeNames = Array.from(Exps.expFreeNames(new Set(), exp))
-      const liftedCount = context.lifted.size + 1
+      const liftedCount = state.lifted.size + 1
       const subscript = stringToSubscript(liftedCount.toString())
-      const newFunctionName = `${context.definition.name}/λ${subscript}`
+      const newFunctionName = `${state.definition.name}/λ${subscript}`
       const newParameters = [...freeNames, ...exp.parameters]
       const arity = newParameters.length
       assert(exp.meta)
@@ -74,7 +74,7 @@ function liftExp(context: Context, exp: Exp): Exp {
         exp.body,
         exp.meta,
       )
-      context.lifted.set(newFunctionName, newDefinition)
+      state.lifted.set(newFunctionName, newDefinition)
 
       const freeVariables = freeNames.map((name) => Exps.Var(name))
       return Exps.Curry(
@@ -87,16 +87,16 @@ function liftExp(context: Context, exp: Exp): Exp {
 
     case "Apply": {
       return Exps.Apply(
-        liftExp(context, exp.target),
-        exp.args.map((e) => liftExp(context, e)),
+        liftExp(state, exp.target),
+        exp.args.map((e) => liftExp(state, e)),
         exp.meta,
       )
     }
 
     case "Begin": {
       return Exps.Begin(
-        liftExp(context, exp.head),
-        liftExp(context, exp.body),
+        liftExp(state, exp.head),
+        liftExp(state, exp.body),
         exp.meta,
       )
     }
@@ -104,17 +104,17 @@ function liftExp(context: Context, exp: Exp): Exp {
     case "Let1": {
       return Exps.Let1(
         exp.name,
-        liftExp(context, exp.rhs),
-        liftExp(context, exp.body),
+        liftExp(state, exp.rhs),
+        liftExp(state, exp.body),
         exp.meta,
       )
     }
 
     case "If": {
       return Exps.If(
-        liftExp(context, exp.condition),
-        liftExp(context, exp.consequent),
-        liftExp(context, exp.alternative),
+        liftExp(state, exp.condition),
+        liftExp(state, exp.consequent),
+        liftExp(state, exp.alternative),
         exp.meta,
       )
     }
