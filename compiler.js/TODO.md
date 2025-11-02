@@ -1,6 +1,5 @@
 # frontend
 
-[frontend] `expHeplers` -- `expFreeNames` -- assume shrinked
 [frontend] `012-lift-lambda`
 [frontend] `020-unnest-operand`
 [frontend] `030-explicate-control`
