@@ -101,7 +101,10 @@ function unnestExp(state: State, exp: Exp): Exp {
 }
 
 function prependLets(entries: Array<Entry>, exp: Exp): Exp {
-  throw new Error()
+  if (entries.length === 0) {return exp}
+
+  const [[name, rhs], ...restEntries] = entries
+  return Exps.Let1(name, rhs, prependLets(restEntries, exp))
 }
 
 type Entry = [string, Exp]
