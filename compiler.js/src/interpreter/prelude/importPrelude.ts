@@ -4,6 +4,6 @@ import { usePreludeMod } from "./usePreludeMod.ts"
 export function importPrelude(mod: Mod) {
   const preludeMod = usePreludeMod()
   for (const [name, definition] of modPublicDefinitions(preludeMod).entries()) {
-    mod.defined.set(name, definition)
+    mod.definitions.set(name, definition)
   }
 }

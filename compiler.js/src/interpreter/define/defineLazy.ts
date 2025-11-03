@@ -21,5 +21,5 @@ export function defineLazy(mod: Mod, name: string, exp: Exp): void {
 
   const definition = LazyDefinition(mod, name, exp)
   definition.schema = mod.claimed.get(name)
-  mod.defined.set(name, definition)
+  mod.definitions.set(name, definition)
 }

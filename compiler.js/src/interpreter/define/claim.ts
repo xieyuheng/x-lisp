@@ -21,7 +21,7 @@ export function claim(mod: Mod, name: string, schema: Value): void {
 
   mod.claimed.set(name, schema)
 
-  const definition = mod.defined.get(name)
+  const definition = mod.definitions.get(name)
 
   if (definition && definition.origin === mod) {
     definition.schema = schema

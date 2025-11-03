@@ -17,7 +17,7 @@ function checkRedefine(
   definition: Definition,
   meta: X.TokenMeta,
 ): void {
-  const found = mod.defined.get(name)
+  const found = mod.definitions.get(name)
   if (found === undefined) return
   if (found === definition) return
 
@@ -43,7 +43,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
 
       const name = entry.rename || entry.name
       checkRedefine(mod, name, definition, stmt.meta)
-      mod.defined.set(name, definition)
+      mod.definitions.set(name, definition)
     }
   }
 
@@ -53,7 +53,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
       importedMod,
     ).entries()) {
       checkRedefine(mod, name, definition, stmt.meta)
-      mod.defined.set(name, definition)
+      mod.definitions.set(name, definition)
     }
   }
 
@@ -63,7 +63,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
       importedMod,
     ).entries()) {
       checkRedefine(mod, `${stmt.name}/${name}`, definition, stmt.meta)
-      mod.defined.set(`${stmt.name}/${name}`, definition)
+      mod.definitions.set(`${stmt.name}/${name}`, definition)
     }
   }
 

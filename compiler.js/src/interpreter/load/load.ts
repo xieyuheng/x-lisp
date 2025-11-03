@@ -34,7 +34,7 @@ export function load(url: URL): Mod {
 }
 
 function checkExported(mod: Mod): void {
-  const definedNames = new Set(mod.defined.keys())
+  const definedNames = new Set(mod.definitions.keys())
   const undefinedNames = setDifference(mod.exported, definedNames)
   if (undefinedNames.size > 0) {
     let message = `(export) undefined names: ${Array.from(undefinedNames).join(" ")}`

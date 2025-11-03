@@ -19,5 +19,5 @@ export function define(mod: Mod, name: string, value: Value): void {
 
   const definition = ValueDefinition(mod, name, value)
   definition.schema = mod.claimed.get(name)
-  mod.defined.set(name, definition)
+  mod.definitions.set(name, definition)
 }

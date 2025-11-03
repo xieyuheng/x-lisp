@@ -1,4 +1,3 @@
-[interpreter] -- rename defined to definitions
 [backend] `Assert` as `Intstr`
 [backend] fix basic-tests/
 [backend] fix `checkBlockTerminator`
