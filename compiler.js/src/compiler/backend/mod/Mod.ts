@@ -14,11 +14,12 @@ export function createMod(url: URL): Mod {
   }
 }
 
-export function modLookupDefinition(mod: Mod, name: string): Definition | undefined {
+export function modLookupDefinition(
+  mod: Mod,
+  name: string,
+): Definition | undefined {
   return mod.definitions.get(name)
 }
-
-
 
 export function modPublicDefinitions(mod: Mod): Map<string, Definition> {
   const definitions: Map<string, Definition> = new Map()
@@ -32,7 +33,6 @@ export function modPublicDefinitions(mod: Mod): Map<string, Definition> {
 
   return definitions
 }
-
 
 export function logMod(tag: string, mod: Mod): Mod {
   console.log(`${tag}:`)

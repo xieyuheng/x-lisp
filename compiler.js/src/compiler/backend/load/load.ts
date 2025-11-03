@@ -1,5 +1,6 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import fs from "node:fs"
+import { importBuiltin } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { matchStmt } from "../syntax/index.ts"
@@ -14,6 +15,8 @@ export function load(url: URL): Mod {
   const text = loadText(url)
   const mod = createMod(url)
   globalLoadedMods.set(url.href, mod)
+
+  importBuiltin(mod)
 
   const sexps = X.parseSexps(text, { url: mod.url })
   const stmts = sexps.map<Stmt>(matchStmt)

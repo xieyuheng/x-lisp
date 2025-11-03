@@ -1,12 +1,9 @@
-[backend] remove plugin system -- just use module and definition
-[backend] fix basic-tests/
-
 [interpreter] -- rename defined to definitions
-
+[backend] `Assert` as `Intstr`
+[backend] fix basic-tests/
 [backend] fix `checkBlockTerminator`
 
 [backend] add explicit `(argument)` instr
-
 [backend] add `Curry` to `Value`
 [backend] add `Apply` to `instr`
 

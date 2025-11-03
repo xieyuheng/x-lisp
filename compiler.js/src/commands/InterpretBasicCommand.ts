@@ -1,8 +1,5 @@
 import { type Command } from "@xieyuheng/commander.js"
-import {
-  callFunction,
-  createContext,
-} from "../compiler/backend/execute/index.ts"
+import { call, createContext } from "../compiler/backend/execute/index.ts"
 import { load } from "../compiler/backend/load/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
@@ -29,7 +26,7 @@ export const InterpretBasicCommand: Command = {
       const url = createUrlOrFileUrl(commander.args[0])
       const mod = load(url)
       const context = createContext(mod)
-      callFunction(context, "main", [])
+      call(context, "main", [])
     } catch (error) {
       console.log(errorReport(error))
       process.exit(1)
