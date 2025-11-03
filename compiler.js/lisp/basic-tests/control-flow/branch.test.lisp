@@ -1,9 +1,9 @@
 (define (main)
   (block entry
-    (= x (call zero? 1))
+    (= x (apply zero? 1))
     (= x.1 (not x))
     (assert x.1)
-    (= y (call zero? 0))
+    (= y (apply zero? 0))
     (assert y)
     (return)))
 

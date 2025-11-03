@@ -38,7 +38,7 @@ export function aboutControlFlow(plugin: Plugin) {
     }
   })
 
-  defineControlFlowInstr(plugin, "call", (context, frame, instr) => {
+  defineControlFlowInstr(plugin, "apply", (context, frame, instr) => {
     const [f, ...rest] = instr.operands
     assert(f.kind === "Var")
     const args = rest.map((x) => frameEval(frame, x))
