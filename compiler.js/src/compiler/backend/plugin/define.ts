@@ -13,7 +13,7 @@ export function defineControlFlowInstr(
   plugin.handlers[name] = { execute }
 }
 
-export function definePureInstr(
+export function definePrimitiveFunction(
   plugin: Plugin,
   name: string,
   arity: number,
@@ -43,7 +43,7 @@ export function definePureInstr(
   }
 }
 
-export function definePureInstrWithInstr(
+export function definePrimitiveFunctionWithInstr(
   plugin: Plugin,
   name: string,
   arity: number,
@@ -69,64 +69,6 @@ export function definePureInstrWithInstr(
 
       const result = fn(instr)(...args)
       framePut(frame, instr.dest, result)
-    },
-  }
-}
-
-export function defineEffectInstr(
-  plugin: Plugin,
-  name: string,
-  arity: number,
-  fn: (...args: Array<Value>) => void,
-): void {
-  plugin.handlers[name] = {
-    execute(context, frame, instr) {
-      const args = instr.operands.map((operand) => frameEval(frame, operand))
-      if (args.length !== arity) {
-        let message = `(${instr.op}) instruction arity mismatch`
-        message += `\n  arity: ${arity}`
-        message += `\n  instr: ${formatInstr(instr)}`
-        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
-        else throw new Error(message)
-      }
-
-      if (instr.dest !== undefined) {
-        let message = `(${instr.op}) effect instruction should NOT have dest`
-        message += `\n  instr: ${formatInstr(instr)}`
-        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
-        else throw new Error(message)
-      }
-
-      fn(...args)
-    },
-  }
-}
-
-export function defineEffectInstrWithInstr(
-  plugin: Plugin,
-  name: string,
-  arity: number,
-  fn: (instr: Instr) => (...args: Array<Value>) => void,
-): void {
-  plugin.handlers[name] = {
-    execute(context, frame, instr) {
-      const args = instr.operands.map((operand) => frameEval(frame, operand))
-      if (args.length !== arity) {
-        let message = `(${instr.op}) instruction arity mismatch`
-        message += `\n  arity: ${arity}`
-        message += `\n  instr: ${formatInstr(instr)}`
-        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
-        else throw new Error(message)
-      }
-
-      if (instr.dest !== undefined) {
-        let message = `(${instr.op}) effect instruction should NOT have dest`
-        message += `\n  instr: ${formatInstr(instr)}`
-        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
-        else throw new Error(message)
-      }
-
-      fn(instr)(...args)
     },
   }
 }

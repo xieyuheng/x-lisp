@@ -4,7 +4,7 @@ import { framePut } from "../execute/index.ts"
 import * as Values from "../value/index.ts"
 import {
   defineControlFlowInstr,
-  definePureInstr,
+  definePrimitiveFunction,
   type Plugin,
 } from "./index.ts"
 
@@ -15,11 +15,11 @@ export function aboutValue(plugin: Plugin) {
     framePut(frame, instr.dest, instr.operands[0].value)
   })
 
-  definePureInstr(plugin, "identity", 1, (value) => {
+  definePrimitiveFunction(plugin, "identity", 1, (value) => {
     return value
   })
 
-  definePureInstr(plugin, "equal?", 2, (x, y) => {
+  definePrimitiveFunction(plugin, "equal?", 2, (x, y) => {
     return Values.Bool(equal(x, y))
   })
 }

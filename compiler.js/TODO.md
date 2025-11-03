@@ -1,5 +1,3 @@
-[backend] merge effect with pure function
-
 # backend
 
 [backend] use AST `Instr` with similar fields -- instead of generic `Instr`
