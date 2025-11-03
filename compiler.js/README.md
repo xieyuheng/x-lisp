@@ -14,8 +14,9 @@ The command-line interface:
 $ x-lisp.js
 commands:
   help -- display help for a command
-  run -- Run a file
-  repl -- Start the REPL
+  repl -- Start x-lisp REPL
+  interpret -- Interpret a x-lisp file
+  interpret-basic -- Interpret a basic-lisp file
 ```
 
 ## Development
