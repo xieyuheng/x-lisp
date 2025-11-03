@@ -1,5 +1,7 @@
+import { formatIndent } from "../../../helpers/format/formatIndent.ts"
 import { mapMapValue } from "../../../helpers/map/mapMapValue.ts"
 import { type Definition } from "../definition/index.ts"
+import { prettyMod } from "../pretty/index.ts"
 
 export type Mod = {
   url: URL
@@ -50,4 +52,11 @@ export function modFlatMapDefinitionEntry(
   }
 
   return newMod
+}
+
+export function logMod(tag: string, mod: Mod): Mod {
+  console.log(`${tag}:`)
+  console.log(formatIndent(4, "\n" + prettyMod(64, mod)))
+  console.log()
+  return mod
 }
