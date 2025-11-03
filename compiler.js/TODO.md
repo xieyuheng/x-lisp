@@ -1,8 +1,14 @@
 # backend
 
-[backend] `PrimitiveFunction` should be different from instruction
+[backend] remove plugin system -- just use module and definition
 
-- [maybe] add `@` prefix to all instructions
+- PrimitiveFunctionDefinition codegen:
+  - RuntimeFunction
+  - Instruction
+
+[backend] use AST instead of generic instr -- why?
+
+[backend] `PrimitiveFunction` should be different from instruction
 
 [backend] add `Curry` to `Value`
 

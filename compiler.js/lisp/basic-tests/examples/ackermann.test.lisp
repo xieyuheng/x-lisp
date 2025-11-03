@@ -3,7 +3,7 @@
 
 (define (main)
   (block entry
-    (= x (apply ack 3 6))
+    (= x (call ack 3 6))
     (= ok (equal? 509 x))
     (assert ok)
     (return)))
@@ -25,12 +25,12 @@
 
   (block n-zero
     (= m1 (isub m one))
-    (= tmp (apply ack m1 one))
+    (= tmp (call ack m1 one))
     (return tmp))
 
   (block n-nonzero
     (= m1 (isub m one))
     (= n1 (isub n one))
-    (= t1 (apply ack m n1))
-    (= t2 (apply ack m1 t1))
+    (= t1 (call ack m n1))
+    (= t2 (call ack m1 t1))
     (return t2)))

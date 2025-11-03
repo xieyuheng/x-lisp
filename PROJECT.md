@@ -41,7 +41,6 @@ date: 2025-10-22
 - [x] x-lisp interpreter
 - [x] basic-lisp language design
 - [x] basic-lisp interpreter (no module system)
-  - [x] plugin system
 
 # milestone 1 -- compiler frontend
 
