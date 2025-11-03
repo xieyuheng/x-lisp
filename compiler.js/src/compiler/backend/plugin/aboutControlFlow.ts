@@ -1,12 +1,12 @@
 import assert from "node:assert"
 import {
   callFunction,
-  frameLookup,
   frameGoto,
+  frameLookup,
   framePut,
 } from "../execute/index.ts"
-import { defineControlFlowInstr, type Plugin } from "./index.ts"
 import { instrOperands } from "../instr/index.ts"
+import { defineControlFlowInstr, type Plugin } from "./index.ts"
 
 export function aboutControlFlow(plugin: Plugin) {
   defineControlFlowInstr(plugin, "Return", (context, frame, instr) => {

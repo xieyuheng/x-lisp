@@ -21,7 +21,9 @@ export function definePrimitiveFunction(
 ): void {
   plugin.handlers[name] = {
     execute(context, frame, instr) {
-      const args = instrOperands(instr).map((operand) => frameLookup(frame, operand))
+      const args = instrOperands(instr).map((operand) =>
+        frameLookup(frame, operand),
+      )
       if (args.length !== arity) {
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
@@ -47,7 +49,9 @@ export function definePrimitiveFunctionWithInstr(
 ): void {
   plugin.handlers[name] = {
     execute(context, frame, instr) {
-      const args = instrOperands(instr).map((operand) => frameLookup(frame, operand))
+      const args = instrOperands(instr).map((operand) =>
+        frameLookup(frame, operand),
+      )
       if (args.length !== arity) {
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`

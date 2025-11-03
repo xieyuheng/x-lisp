@@ -10,5 +10,9 @@ export function formatDefinition(definition: Definition): string {
       ).join(" ")
       return `(define (${head}) ${blocks})`
     }
+
+    case "PrimitiveFunctionDefinition": {
+      return `(define-primitive ${definition.name} ${definition.arity})`
+    }
   }
 }

@@ -22,7 +22,7 @@ export function matchInstr(sexp: X.Sexp): Instr {
         return Instrs.Return([X.symbolContent(result)], meta)
       }),
 
-      X.matcher("`(return)", ({ }, { sexp, meta }) => {
+      X.matcher("`(return)", ({}, { sexp, meta }) => {
         return Instrs.Return([], meta)
       }),
 

@@ -7,7 +7,6 @@ import {
   definePrimitiveFunction,
   type Plugin,
 } from "./index.ts"
-import { instrOperands } from "../instr/index.ts"
 
 export function aboutValue(plugin: Plugin) {
   defineControlFlowInstr(plugin, "Const", (context, frame, instr) => {

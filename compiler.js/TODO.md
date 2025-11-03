@@ -1,6 +1,6 @@
 # backend
 
-[backend] `definePrimitiveFunction` & `PrimitiveFunctionDefinition`
+[backend] `definePrimitiveFunction`
 [backend] remove plugin system -- just use module and definition
 
 [backend] fix `checkBlockTerminator`
