@@ -1,6 +1,6 @@
 import assert from "node:assert"
 import type { Instr } from "../instr/index.ts"
-import { modLookup } from "../mod/index.ts"
+import { modLookupDefinition } from "../mod/index.ts"
 import { pluginExecuteInstr, useCorePlugin } from "../plugin/index.ts"
 import type { Value } from "../value/index.ts"
 import {
@@ -33,7 +33,7 @@ export function callFunction(
   name: string,
   args: Array<Value>,
 ): void {
-  const definition = modLookup(context.mod, name)
+  const definition = modLookupDefinition(context.mod, name)
   assert(definition)
   assert(definition.kind === "FunctionDefinition")
   const base = context.frames.length

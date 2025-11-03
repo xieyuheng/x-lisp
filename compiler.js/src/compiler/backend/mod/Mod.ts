@@ -14,9 +14,25 @@ export function createMod(url: URL): Mod {
   }
 }
 
-export function modLookup(mod: Mod, name: string): Definition | undefined {
+export function modLookupDefinition(mod: Mod, name: string): Definition | undefined {
   return mod.definitions.get(name)
 }
+
+
+
+export function modPublicDefinitions(mod: Mod): Map<string, Definition> {
+  const definitions: Map<string, Definition> = new Map()
+  for (const [name, definition] of mod.definitions.entries()) {
+    definitions.set(name, definition)
+
+    // if (mod.exported.has(name)) {
+    //   definitions.set(name, definition)
+    // }
+  }
+
+  return definitions
+}
+
 
 export function logMod(tag: string, mod: Mod): Mod {
   console.log(`${tag}:`)

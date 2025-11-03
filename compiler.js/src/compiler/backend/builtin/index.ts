@@ -1,2 +1,2 @@
 export * from "./useBuiltinMod.ts"
-// export * from "./importBuiltin.ts"
+export * from "./importBuiltin.ts"
