@@ -3,25 +3,25 @@ import { type Definition } from "../definition/index.ts"
 
 export type Mod = {
   url: URL
-  defined: Map<string, Definition>
+  definitions: Map<string, Definition>
 }
 
 export function createMod(url: URL): Mod {
   return {
     url,
-    defined: new Map(),
+    definitions: new Map(),
   }
 }
 
 export function modNames(mod: Mod): Set<string> {
-  return new Set(mod.defined.keys())
+  return new Set(mod.definitions.keys())
 }
 
 export function modLookupDefinition(
   mod: Mod,
   name: string,
 ): Definition | undefined {
-  const defined = mod.defined.get(name)
+  const defined = mod.definitions.get(name)
   if (defined) return defined
 
   return undefined
@@ -32,7 +32,7 @@ export function modMapDefinition(
   f: (definition: Definition) => Definition,
 ): Mod {
   const newMod = createMod(mod.url)
-  newMod.defined = mapMapValue(mod.defined, f)
+  newMod.definitions = mapMapValue(mod.definitions, f)
   return newMod
 }
 
@@ -43,9 +43,9 @@ export function modFlatMapDefinitionEntry(
   f: (entry: DefinitionEntry) => Array<DefinitionEntry>,
 ): Mod {
   const newMod = createMod(mod.url)
-  for (const entry of mod.defined.entries()) {
+  for (const entry of mod.definitions.entries()) {
     for (const [name, definition] of f(entry)) {
-      newMod.defined.set(name, definition)
+      newMod.definitions.set(name, definition)
     }
   }
 

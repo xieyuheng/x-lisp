@@ -4,11 +4,11 @@ import { formatBlock } from "./formatBlock.ts"
 export function formatDefinition(definition: Definition): string {
   switch (definition.kind) {
     case "FunctionDefinition": {
-      const head = [definition.name, ...definition.parameters].join(' ')
-      const blocks = Array.from(definition.blocks.values().map(formatBlock)).join(" ")
+      const head = [definition.name, ...definition.parameters].join(" ")
+      const blocks = Array.from(
+        definition.blocks.values().map(formatBlock),
+      ).join(" ")
       return `(define (${head}) ${blocks})`
     }
   }
 }
-
-

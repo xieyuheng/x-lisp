@@ -1,7 +1,5 @@
 # backend
 
-[backend] `formatMod`
-
 [backend] `prettyMod` & `prettyDefinition`
 
 # frontend

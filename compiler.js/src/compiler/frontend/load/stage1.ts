@@ -19,17 +19,17 @@ export function stage1(mod: Mod, stmt: Stmt): void {
         Exps.BeginSugar(sequence, stmt.meta),
         stmt.meta,
       )
-      mod.defined.set("main", main)
+      mod.definitions.set("main", main)
     }
   }
 
   if (stmt.kind === "DefineFunction") {
-    if (mod.defined.has(stmt.name)) {
+    if (mod.definitions.has(stmt.name)) {
       let message = `[stage1/DefineFunction] can not redefine`
       message += `\n  name: ${stmt.name}`
       throw new X.ErrorWithMeta(message, stmt.meta)
     } else {
-      mod.defined.set(
+      mod.definitions.set(
         stmt.name,
         FunctionDefinition(stmt.name, stmt.parameters, stmt.body, stmt.meta),
       )
