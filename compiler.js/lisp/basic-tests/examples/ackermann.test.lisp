@@ -4,7 +4,7 @@
 (define (main)
   (block entry
     (= x (call ack 3 6))
-    (= ok (eq? 509 x))
+    (= ok (equal? 509 x))
     (assert ok)
     (return)))
 
@@ -12,7 +12,7 @@
   (block entry
     (= zero (const 0))
     (= one (const 1))
-    (= cond-m (eq? m zero))
+    (= cond-m (equal? m zero))
     (branch cond-m m-zero m-nonzero))
 
   (block m-zero
@@ -20,7 +20,7 @@
     (return tmp))
 
   (block m-nonzero
-    (= cond-n (eq? n zero))
+    (= cond-n (equal? n zero))
     (branch cond-n n-zero n-nonzero))
 
   (block n-zero

@@ -19,7 +19,7 @@ export function aboutValue(plugin: Plugin) {
     return value
   })
 
-  definePureInstr(plugin, "eq?", 2, (x, y) => {
+  definePureInstr(plugin, "equal?", 2, (x, y) => {
     return Values.Bool(equal(x, y))
   })
 }

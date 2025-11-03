@@ -1,7 +1,6 @@
 # backend
-
-[backend] rename call to apply
 [backend] rename eq? to equal?
+[backend] rename call to apply
 
 [backend] `PrimitiveFunction` should be different from instruction
 

@@ -9,7 +9,7 @@
 
 (define (zero? x)
   (block entry
-    (= b (eq? x 0))
+    (= b (equal? x 0))
     (branch b then else))
 
   (block then
