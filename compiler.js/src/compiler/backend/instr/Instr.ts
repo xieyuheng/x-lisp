@@ -1,11 +1,96 @@
 import { type TokenMeta } from "@xieyuheng/x-sexp.js"
-import { type Operand } from "./Operand.ts"
+import type { Value } from "../value/index.ts"
 
 export type Meta = TokenMeta
 
-export type Instr = {
-  dest?: string
-  op: string
-  operands: Array<Operand>
+export type Instr = Const | Return | Goto | Branch | Call
+
+export type Const = {
+  op: "Const"
+  value: Value
+  dest: string
   meta?: Meta
+}
+
+export function Const(value: Value, dest: string, meta?: Meta): Const {
+  return {
+    op: "Const",
+    value,
+    dest,
+    meta,
+  }
+}
+
+export type Return = {
+  op: "Return"
+  operands: Array<string>
+  meta?: Meta
+}
+
+export function Return(operands: Array<string>, meta?: Meta): Return {
+  return {
+    op: "Return",
+    operands,
+    meta,
+  }
+}
+
+export type Goto = {
+  op: "Goto"
+  label: string
+  meta?: Meta
+}
+
+export function Goto(label: string, meta?: Meta): Goto {
+  return {
+    op: "Goto",
+    label,
+    meta,
+  }
+}
+
+export type Branch = {
+  op: "Branch"
+  operands: [string]
+  thenLabel: string
+  elseLabel: string
+  meta?: Meta
+}
+
+export function Branch(
+  operands: [string],
+  thenLabel: string,
+  elseLabel: string,
+  meta?: Meta,
+): Branch {
+  return {
+    op: "Branch",
+    operands,
+    thenLabel,
+    elseLabel,
+    meta,
+  }
+}
+
+export type Call = {
+  op: "Call"
+  target: string
+  operands: Array<string>
+  dest?: string
+  meta?: Meta
+}
+
+export function Call(
+  target: string,
+  operands: Array<string>,
+  dest?: string,
+  meta?: Meta,
+): Call {
+  return {
+    op: "Call",
+    target,
+    operands,
+    dest,
+    meta,
+  }
 }

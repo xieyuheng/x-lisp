@@ -1,35 +1,32 @@
 import assert from "node:assert"
 import {
   callFunction,
-  frameEval,
+  frameLookup,
   frameGoto,
   framePut,
 } from "../execute/index.ts"
 import { defineControlFlowInstr, type Plugin } from "./index.ts"
+import { instrOperands } from "../instr/index.ts"
 
 export function aboutControlFlow(plugin: Plugin) {
-  defineControlFlowInstr(plugin, "return", (context, frame, instr) => {
-    if (instr.operands.length > 0) {
-      context.result = frameEval(frame, instr.operands[0])
+  defineControlFlowInstr(plugin, "Return", (context, frame, instr) => {
+    if (instrOperands(instr).length > 0) {
+      context.result = frameLookup(frame, instrOperands(instr)[0])
     }
 
     context.frames.pop()
   })
 
   defineControlFlowInstr(plugin, "goto", (context, frame, instr) => {
-    assert(instr.operands[0].kind === "Var")
-    frameGoto(frame, instr.operands[0].name)
+    frameGoto(frame, instrOperands(instr)[0])
   })
 
   defineControlFlowInstr(plugin, "branch", (context, frame, instr) => {
-    const condition = frameEval(frame, instr.operands[0])
+    const condition = frameLookup(frame, instrOperands(instr)[0])
     assert(condition.kind === "Bool")
 
-    assert(instr.operands[1].kind === "Var")
-    const thenLabel = instr.operands[1].name
-
-    assert(instr.operands[2].kind === "Var")
-    const elseLabel = instr.operands[2].name
+    const thenLabel = instrOperands(instr)[1]
+    const elseLabel = instrOperands(instr)[2]
 
     if (condition.content) {
       frameGoto(frame, thenLabel)
@@ -39,10 +36,9 @@ export function aboutControlFlow(plugin: Plugin) {
   })
 
   defineControlFlowInstr(plugin, "call", (context, frame, instr) => {
-    const [f, ...rest] = instr.operands
-    assert(f.kind === "Var")
-    const args = rest.map((x) => frameEval(frame, x))
-    callFunction(context, f.name, args)
+    assert(instr.op === "Call")
+    const args = instrOperands(instr).map((x) => frameLookup(frame, x))
+    callFunction(context, instr.target, args)
     if (instr.dest !== undefined) {
       assert(context.result)
       framePut(frame, instr.dest, context.result)

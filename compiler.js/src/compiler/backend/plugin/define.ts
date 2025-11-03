@@ -1,7 +1,7 @@
 import * as X from "@xieyuheng/x-sexp.js"
-import { frameEval, framePut } from "../execute/index.ts"
+import { frameLookup, framePut } from "../execute/index.ts"
 import { formatInstr } from "../format/index.ts"
-import type { Instr } from "../instr/index.ts"
+import { instrDest, instrOperands, type Instr } from "../instr/index.ts"
 import type { Value } from "../value/index.ts"
 import type { Execute, Plugin } from "./Plugin.ts"
 
@@ -21,7 +21,7 @@ export function definePrimitiveFunction(
 ): void {
   plugin.handlers[name] = {
     execute(context, frame, instr) {
-      const args = instr.operands.map((operand) => frameEval(frame, operand))
+      const args = instrOperands(instr).map((operand) => frameLookup(frame, operand))
       if (args.length !== arity) {
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
@@ -31,8 +31,9 @@ export function definePrimitiveFunction(
       }
 
       const result = fn(...args)
-      if (instr.dest) {
-        framePut(frame, instr.dest, result)
+      const dest = instrDest(instr)
+      if (dest) {
+        framePut(frame, dest, result)
       }
     },
   }
@@ -46,7 +47,7 @@ export function definePrimitiveFunctionWithInstr(
 ): void {
   plugin.handlers[name] = {
     execute(context, frame, instr) {
-      const args = instr.operands.map((operand) => frameEval(frame, operand))
+      const args = instrOperands(instr).map((operand) => frameLookup(frame, operand))
       if (args.length !== arity) {
         let message = `(${instr.op}) instruction arity mismatch`
         message += `\n  arity: ${arity}`
@@ -56,8 +57,9 @@ export function definePrimitiveFunctionWithInstr(
       }
 
       const result = fn(instr)(...args)
-      if (instr.dest) {
-        framePut(frame, instr.dest, result)
+      const dest = instrDest(instr)
+      if (dest) {
+        framePut(frame, dest, result)
       }
     },
   }

@@ -20,5 +20,5 @@ export function checkBlockTerminator(block: Block): void {
 }
 
 function isTerminator(instr: Instr): boolean {
-  return ["return", "goto", "branch"].includes(instr.op)
+  return ["Return", "Goto", "Branch"].includes(instr.op)
 }

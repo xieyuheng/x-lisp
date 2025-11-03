@@ -1,10 +1,8 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import { Block } from "../block/index.ts"
-import type { Instr, Operand } from "../instr/index.ts"
-import * as Operands from "../instr/Operand.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
-import * as Values from "../value/index.ts"
+import { matchInstr } from "./matchInstr.ts"
 
 export function matchStmt(sexp: X.Sexp): Stmt {
   return X.match(stmtMatcher, sexp)
@@ -36,66 +34,6 @@ function matchBlock(sexp: X.Sexp): Block {
         X.listElements(instrs).map(matchInstr),
         meta,
       )
-    }),
-    sexp,
-  )
-}
-
-function matchInstr(sexp: X.Sexp): Instr {
-  return X.match(
-    X.matcherChoice<Instr>([
-      X.matcher(
-        "`(= ,dest ,(cons* op operands))",
-        ({ dest, op, operands }, { sexp, meta }) => {
-          return {
-            dest: X.symbolContent(dest),
-            op: X.symbolContent(op),
-            operands: X.listElements(operands).map(matchOperand),
-            meta,
-          }
-        },
-      ),
-
-      X.matcher(
-        "(cons* op operands)",
-        ({ dest, op, operands }, { sexp, meta }) => {
-          return {
-            op: X.symbolContent(op),
-            operands: X.listElements(operands).map(matchOperand),
-            meta,
-          }
-        },
-      ),
-    ]),
-    sexp,
-  )
-}
-
-function matchOperand(sexp: X.Sexp): Operand {
-  return X.match(
-    X.matcher("data", ({ data }, { meta }) => {
-      switch (data.kind) {
-        case "Hashtag": {
-          const content = X.hashtagContent(data)
-          if (content === "t") {
-            return Operands.Imm(Values.Bool(true), meta)
-          } else if (content === "f") {
-            return Operands.Imm(Values.Bool(false), meta)
-          } else {
-            let message = `[matchOperand] unknown hashtag`
-            message += `\n  hashtag: #${content}`
-            throw new X.ErrorWithMeta(message, meta)
-          }
-        }
-
-        case "Int":
-          return Operands.Imm(Values.Int(X.numberContent(data)), meta)
-        case "Float":
-          return Operands.Imm(Values.Float(X.numberContent(data)), meta)
-        case "Symbol": {
-          return Operands.Var(X.symbolContent(data), meta)
-        }
-      }
     }),
     sexp,
   )

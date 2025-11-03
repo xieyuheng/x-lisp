@@ -1,12 +1,9 @@
 # backend
 
-[backend] use AST `Instr` with similar fields -- instead of generic `Instr`
-
-[backend] `Operand` must be `string`
-
-[backend] target of `Call` should be `FunctionRef`
 [backend] `definePrimitiveFunction` & `PrimitiveFunctionDefinition`
 [backend] remove plugin system -- just use module and definition
+
+[backend] fix `checkBlockTerminator`
 
 [backend] add explicit `(argument)` instr
 

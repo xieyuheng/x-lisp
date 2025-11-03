@@ -1,7 +1,9 @@
 (define (main)
   (block entry
-    (= x (call sum-of-cubes 6))
-    (= ok (equal? 441 x))
+    (= n (const 6))
+    (= x (call sum-of-cubes n))
+    (= expected (const 441))
+    (= ok (equal? expected x))
     (assert ok)
     (return)))
 

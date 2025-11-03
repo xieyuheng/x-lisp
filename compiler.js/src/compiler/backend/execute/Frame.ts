@@ -1,7 +1,7 @@
 import assert from "node:assert"
 import type { Block } from "../block/index.ts"
 import type { FunctionDefinition } from "../definition/index.ts"
-import type { Instr, Operand } from "../instr/index.ts"
+import type { Instr } from "../instr/index.ts"
 import type { Value } from "../value/index.ts"
 
 export type Frame = {
@@ -60,21 +60,13 @@ export function frameGoto(frame: Frame, label: string): void {
   frame.index = 0
 }
 
-export function frameEval(frame: Frame, operand: Operand): Value {
-  switch (operand.kind) {
-    case "Var": {
-      const value = frameGet(frame, operand.name)
-      if (value === undefined) {
-        let message = "[frameEval] undefined variable"
-        message += `\n  name: ${operand.name}`
-        throw new Error(message)
-      }
-
-      return value
-    }
-
-    case "Imm": {
-      return operand.value
-    }
+export function frameLookup(frame: Frame, name: string): Value {
+  const value = frameGet(frame, name)
+  if (value === undefined) {
+    let message = "[frameLookup] undefined variable"
+    message += `\n  name: ${name}`
+    throw new Error(message)
   }
+
+  return value
 }

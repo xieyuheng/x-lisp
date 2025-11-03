@@ -7,12 +7,12 @@ import {
   definePrimitiveFunction,
   type Plugin,
 } from "./index.ts"
+import { instrOperands } from "../instr/index.ts"
 
 export function aboutValue(plugin: Plugin) {
-  defineControlFlowInstr(plugin, "const", (context, frame, instr) => {
-    assert(instr.dest)
-    assert(instr.operands[0].kind === "Imm")
-    framePut(frame, instr.dest, instr.operands[0].value)
+  defineControlFlowInstr(plugin, "Const", (context, frame, instr) => {
+    assert(instr.op === "Const")
+    framePut(frame, instr.dest, instr.value)
   })
 
   definePrimitiveFunction(plugin, "identity", 1, (value) => {
