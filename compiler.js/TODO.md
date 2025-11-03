@@ -1,7 +1,3 @@
-# frontend
-
-[frontend] `030-ExplicateControlPass` -- setup -- with log
-
 # backend
 
 [backend] rename call to apply

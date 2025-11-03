@@ -1,4 +1,4 @@
-Initially:
+Input:
 
     (define (swap f x y) (f y x))
     
@@ -98,4 +98,8 @@ UnnestOperandPass:
             (@let1 _₁ (@function dup 1)
               (@let1 _₂ (@function identity 1) (_₁ _₂)))
           (g₁ f₁ f₁))))
+
+ExplicateControlPass:
+
+    
 

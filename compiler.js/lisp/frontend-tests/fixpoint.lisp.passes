@@ -1,4 +1,4 @@
-Initially:
+Input:
 
     (define (Y f)
       ((lambda (u) (u u)) (lambda (x) (f (lambda (t) ((x x) t))))))
@@ -46,4 +46,8 @@ UnnestOperandPass:
         (@let1 _₂ (@curry _₁ 2 x₁) (f _₂))))
     
     (define (Y/λ₂/λ₁ x₁ t₁) (@let1 _₁ (x₁ x₁) (_₁ t₁)))
+
+ExplicateControlPass:
+
+    
 
