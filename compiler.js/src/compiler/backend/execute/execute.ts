@@ -25,14 +25,14 @@ export function executeInstr(
 ): void {
   switch (instr.op) {
     case "Const": {
-      assert(instr.op === "Const")
       framePut(frame, instr.dest, instr.value)
       return
     }
 
     case "Return": {
       if (instrOperands(instr).length > 0) {
-        context.result = frameLookup(frame, instrOperands(instr)[0])
+        const [x] = instrOperands(instr)
+        context.result = frameLookup(frame, x)
       }
 
       context.frames.pop()
@@ -40,21 +40,18 @@ export function executeInstr(
     }
 
     case "Goto": {
-      frameGoto(frame, instrOperands(instr)[0])
+      frameGoto(frame, instr.label)
       return
     }
 
     case "Branch": {
-      const condition = frameLookup(frame, instrOperands(instr)[0])
+      const [x] = instrOperands(instr)
+      const condition = frameLookup(frame, x)
       assert(condition.kind === "Bool")
-
-      const thenLabel = instrOperands(instr)[1]
-      const elseLabel = instrOperands(instr)[2]
-
       if (condition.content) {
-        frameGoto(frame, thenLabel)
+        frameGoto(frame, instr.thenLabel)
       } else {
-        frameGoto(frame, elseLabel)
+        frameGoto(frame, instr.elseLabel)
       }
 
       return
