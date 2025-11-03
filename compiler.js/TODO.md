@@ -1,12 +1,9 @@
 # backend
 
+[backend] use AST `Instr` instead of generic `Instr`
+
 [backend] remove plugin system -- just use module and definition
-
-- PrimitiveFunctionDefinition codegen:
-  - RuntimeFunction
-  - Instruction
-
-[backend] use AST instead of generic instr -- why?
+[backend] `definePrimitiveFunction` & `PrimitiveFunctionDefinition`
 
 [backend] `PrimitiveFunction` should be different from instruction
 

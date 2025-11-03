@@ -83,3 +83,15 @@ LLVM 的 IR 是没有这样限制的。
   在调用 GC 的时候使用这些信息。
 
   在 heap 中，每个 data 都要有 header 来保存 metadata。
+
+[2025-11-03] 为了方便 GC，
+我还是决定使用 fully tagged value。
+这里描述的方案，之后实现静态类型语言时可以使用。
+
+# AST vs. generic instr
+
+[2025-11-03] 老师为了教学而使用了完全通用的 instr 结构。
+这是为了跨语言来写 pass。
+
+在 basic-lisp 的实现中，我完全没有理由这么做。
+如果需要跨语言，只需要保证有稳定的 sexp 表示就可以了。
