@@ -1,16 +1,24 @@
+[backend] add back `Void` `Value`
+[backend] merge effect with pure function
+
 # backend
 
-[backend] use AST `Instr` instead of generic `Instr`
+[backend] use AST `Instr` with similar fields -- instead of generic `Instr`
 
-[backend] remove plugin system -- just use module and definition
+[backend] `Operand` must be `string`
+
+[backend] target of `Call` should be `FunctionRef`
 [backend] `definePrimitiveFunction` & `PrimitiveFunctionDefinition`
+[backend] remove plugin system -- just use module and definition
 
-[backend] `PrimitiveFunction` should be different from instruction
+[backend] add explicit `(argument)` instr
 
 [backend] add `Curry` to `Value`
+[backend] add `Apply` to `instr`
 
 # frontend
 
+[frontend] `020-UnnestOperandPass` -- also unnest atom value -- to use `const` in basic-lisp
 [frontend] `030-ExplicateControlPass`
 
 # backend -- SSA
