@@ -1,6 +1,5 @@
 # backend
 
-[backend] `formatDefinition`
 [backend] `formatMod`
 
 [backend] `prettyMod` & `prettyDefinition`
