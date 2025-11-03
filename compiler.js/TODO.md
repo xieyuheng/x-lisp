@@ -1,5 +1,3 @@
-[backend] `modLog`
-
 # frontend
 
 [frontend] `030-ExplicateControlPass` -- setup -- with log
