@@ -30,15 +30,10 @@ export function definePrimitiveFunction(
         else throw new Error(message)
       }
 
-      if (instr.dest === undefined) {
-        let message = `(${instr.op}) value instruction must have dest`
-        message += `\n  instr: ${formatInstr(instr)}`
-        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
-        else throw new Error(message)
-      }
-
       const result = fn(...args)
-      framePut(frame, instr.dest, result)
+      if (instr.dest) {
+        framePut(frame, instr.dest, result)
+      }
     },
   }
 }
@@ -60,15 +55,10 @@ export function definePrimitiveFunctionWithInstr(
         else throw new Error(message)
       }
 
-      if (instr.dest === undefined) {
-        let message = `(${instr.op}) value instruction must have dest`
-        message += `\n  instr: ${formatInstr(instr)}`
-        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
-        else throw new Error(message)
-      }
-
       const result = fn(instr)(...args)
-      framePut(frame, instr.dest, result)
+      if (instr.dest) {
+        framePut(frame, instr.dest, result)
+      }
     },
   }
 }
