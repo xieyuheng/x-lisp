@@ -1,4 +1,3 @@
-[backend] add back `Void` `Value`
 [backend] merge effect with pure function
 
 # backend
