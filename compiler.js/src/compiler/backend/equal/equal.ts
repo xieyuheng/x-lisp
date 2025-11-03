@@ -1,4 +1,4 @@
-import type { Value } from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 
 export function equal(lhs: Value, rhs: Value): boolean {
   if (lhs.kind === "Bool" && rhs.kind === "Bool") {

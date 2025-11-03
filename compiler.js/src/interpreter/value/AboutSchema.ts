@@ -1,7 +1,7 @@
-import type { Env } from "../env/index.ts"
-import type { Exp } from "../exp/index.ts"
-import type { Mod } from "../mod/index.ts"
-import type { Attributes, Value } from "./Value.ts"
+import { type Env } from "../env/index.ts"
+import { type Exp } from "../exp/index.ts"
+import { type Mod } from "../mod/index.ts"
+import { type Attributes, Value } from "./Value.ts"
 
 export type AboutSchema = Arrow | VariadicArrow | The | Tau | Polymorphic
 

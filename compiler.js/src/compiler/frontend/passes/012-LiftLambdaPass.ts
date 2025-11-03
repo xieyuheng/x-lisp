@@ -2,10 +2,10 @@ import * as X from "@xieyuheng/x-sexp.js"
 import assert from "node:assert"
 import { mapFlatMap } from "../../../helpers/map/mapFlatMap.ts"
 import { stringToSubscript } from "../../../helpers/string/stringToSubscript.ts"
-import type { Definition } from "../definition/index.ts"
 import * as Definitions from "../definition/index.ts"
-import type { Exp } from "../exp/index.ts"
+import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
+import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import {
   modFlatMapDefinitionEntry,

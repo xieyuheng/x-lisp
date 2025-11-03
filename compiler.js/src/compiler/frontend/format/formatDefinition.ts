@@ -1,4 +1,4 @@
-import type { Definition } from "../definition/index.ts"
+import { type Definition } from "../definition/index.ts"
 import { formatBody } from "./formatExp.ts"
 
 export function formatDefinition(definition: Definition): string {

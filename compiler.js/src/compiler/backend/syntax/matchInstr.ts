@@ -1,8 +1,8 @@
 import * as X from "@xieyuheng/x-sexp.js"
-import type { Instr } from "../instr/index.ts"
 import * as Instrs from "../instr/index.ts"
-import type { Value } from "../value/index.ts"
+import { type Instr } from "../instr/index.ts"
 import * as Values from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 
 export function matchInstr(sexp: X.Sexp): Instr {
   return X.match(

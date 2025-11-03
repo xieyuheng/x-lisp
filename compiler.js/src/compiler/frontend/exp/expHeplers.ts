@@ -5,7 +5,7 @@ import {
   setUnionMany,
 } from "../../../helpers/set/setAlgebra.ts"
 import { formatExp } from "../format/index.ts"
-import type { Exp } from "./Exp.ts"
+import { type Exp } from "./Exp.ts"
 
 export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
   switch (exp.kind) {

@@ -4,7 +4,7 @@ import { formatIndent } from "../../helpers/format/formatIndent.ts"
 import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { LazyDefinition } from "../definition/Definition.ts"
 import { formatDefinition } from "../definition/formatDefinition.ts"
-import type { Exp } from "../exp/Exp.ts"
+import { type Exp } from "../exp/Exp.ts"
 import { type Mod, modLookupDefinition } from "../mod/Mod.ts"
 import { prettyExp } from "../pretty/index.ts"
 

@@ -1,6 +1,6 @@
 import * as Definitions from "../definition/index.ts"
 import { type Mod } from "../mod/index.ts"
-import type { Value } from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 
 export function definePrimitiveFunction(
   mod: Mod,

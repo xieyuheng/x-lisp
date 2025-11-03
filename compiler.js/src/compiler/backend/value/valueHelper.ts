@@ -1,6 +1,6 @@
 import { formatValue } from "../format/index.ts"
-import type { Value } from "./index.ts"
 import * as Values from "./index.ts"
+import { type Value } from "./index.ts"
 
 export function isBool(value: Value): value is Values.Bool {
   return value.kind === "Bool"

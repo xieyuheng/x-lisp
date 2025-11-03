@@ -1,4 +1,4 @@
-import type { Block } from "../block/Block.ts"
+import { type Block } from "../block/Block.ts"
 import { formatInstr } from "./formatInstr.ts"
 
 export function formatBlock(block: Block): string {

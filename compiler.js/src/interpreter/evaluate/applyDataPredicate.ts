@@ -1,7 +1,7 @@
 import assert from "node:assert"
 import { emptyEnv, envPut } from "../env/index.ts"
-import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 import { validate } from "./validate.ts"
 

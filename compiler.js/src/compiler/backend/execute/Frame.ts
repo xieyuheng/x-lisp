@@ -1,8 +1,8 @@
 import assert from "node:assert"
-import type { Block } from "../block/index.ts"
-import type { FunctionDefinition } from "../definition/index.ts"
-import type { Instr } from "../instr/index.ts"
-import type { Value } from "../value/index.ts"
+import { type Block } from "../block/index.ts"
+import { type FunctionDefinition } from "../definition/index.ts"
+import { type Instr } from "../instr/index.ts"
+import { type Value } from "../value/index.ts"
 
 export type Frame = {
   name: string

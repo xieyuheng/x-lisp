@@ -1,4 +1,4 @@
-import type { Value } from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 
 export function formatValues(values: Array<Value>): string {
   return values.map(formatValue).join(" ")

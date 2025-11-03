@@ -1,4 +1,4 @@
-import type { Block } from "../block/index.ts"
+import { type Block } from "../block/index.ts"
 
 export type Stmt = DefineFunction
 

@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import { test } from "node:test"
-import type { Exp } from "../exp/index.ts"
+import { type Exp } from "../exp/index.ts"
 import { matchExp } from "../syntax/index.ts"
 import { prettyExp } from "./index.ts"
 

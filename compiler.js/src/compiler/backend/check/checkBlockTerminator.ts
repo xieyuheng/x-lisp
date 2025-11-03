@@ -1,7 +1,7 @@
 import * as X from "@xieyuheng/x-sexp.js"
-import type { Block } from "../block/index.ts"
+import { type Block } from "../block/index.ts"
 import { formatInstr } from "../format/index.ts"
-import type { Instr } from "../instr/index.ts"
+import * as Instrs from "../instr/index.ts"
 
 export function checkBlockTerminator(block: Block): void {
   if (block.instrs.length === 0) {
@@ -11,14 +11,10 @@ export function checkBlockTerminator(block: Block): void {
   }
 
   const lastInstr = block.instrs[block.instrs.length - 1]
-  if (!isTerminator(lastInstr)) {
+  if (!Instrs.isTerminator(lastInstr)) {
     let message = `[checkBlockTerminator] block must end with terminator instruction`
     message += `\n  instr: ${formatInstr(lastInstr)}`
     if (lastInstr.meta) throw new X.ErrorWithMeta(message, lastInstr.meta)
     else throw new Error(message)
   }
-}
-
-function isTerminator(instr: Instr): boolean {
-  return ["Return", "Goto", "Branch"].includes(instr.op)
 }

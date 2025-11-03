@@ -1,9 +1,8 @@
 import assert from "node:assert"
 import { frameGoto, frameLookup, framePut } from "../execute/index.ts"
-import type { Instr } from "../instr/index.ts"
-import { instrOperands } from "../instr/index.ts"
+import { instrOperands, type Instr } from "../instr/index.ts"
 import { modLookupDefinition } from "../mod/index.ts"
-import type { Value } from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 import {
   contextCurrentFrame,
   contextIsFinished,

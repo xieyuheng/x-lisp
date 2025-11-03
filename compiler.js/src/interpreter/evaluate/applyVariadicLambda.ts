@@ -1,6 +1,6 @@
 import { envPut } from "../env/index.ts"
-import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
 export function applyVariadicLambda(

@@ -1,5 +1,5 @@
-import type { Block } from "../block/index.ts"
-import type { Value } from "../value/index.ts"
+import { type Block } from "../block/index.ts"
+import { type Value } from "../value/index.ts"
 
 export type Definition = FunctionDefinition | PrimitiveFunctionDefinition
 

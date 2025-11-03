@@ -1,5 +1,5 @@
 import { isAtom } from "./atomHelper.ts"
-import type { Value } from "./Value.ts"
+import { type Value } from "./Value.ts"
 
 export function isSexp(value: Value): boolean {
   if (isAtom(value)) return true

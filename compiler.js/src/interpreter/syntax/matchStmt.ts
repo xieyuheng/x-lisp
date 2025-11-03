@@ -2,7 +2,7 @@ import * as X from "@xieyuheng/x-sexp.js"
 import * as Exps from "../exp/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
-import type { DataField } from "../value/AboutData.ts"
+import { type DataField } from "../value/AboutData.ts"
 import { matchExp } from "./matchExp.ts"
 
 export function matchStmt(sexp: X.Sexp): Stmt {

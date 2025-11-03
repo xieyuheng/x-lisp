@@ -1,7 +1,7 @@
 import assert from "node:assert"
-import type { Mod } from "../mod/index.ts"
-import type { Value } from "../value/index.ts"
-import type { Frame } from "./Frame.ts"
+import { type Mod } from "../mod/index.ts"
+import { type Value } from "../value/index.ts"
+import { type Frame } from "./Frame.ts"
 
 export type Context = {
   mod: Mod
