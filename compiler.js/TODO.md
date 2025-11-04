@@ -2,6 +2,10 @@
 
 [backend] `Tael` -- `Curry` follow the same logic
 
+- need `ExposeAllocationPass` after `012-LiftLambdaPass`,
+  or maybe we should call it `ExposeCollectionPass`,
+  to hand literal collection-like data such as `@tael` and `@curry`.
+
 # frontend
 
 [frontend] `030-ExplicateControlPass`
