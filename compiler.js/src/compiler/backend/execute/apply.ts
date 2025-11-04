@@ -28,7 +28,8 @@ export function apply(
 
     case "FunctionRef": {
       if (args.length < target.arity) {
-        return Values.Curry(target, target.arity, args)
+        const newArity = target.arity - args.length
+        return Values.Curry(target, newArity, args)
       } else if (args.length === target.arity) {
         return call(context, target.name, args)
       } else {
