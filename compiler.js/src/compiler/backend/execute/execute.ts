@@ -8,6 +8,7 @@ import { modLookupDefinition } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import { type Context } from "./Context.ts"
 import { type Frame } from "./Frame.ts"
+import { apply } from "./apply.ts"
 import { callDefinition } from "./call.ts"
 
 export function execute(context: Context, frame: Frame, instr: Instr): null {
@@ -111,15 +112,12 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
         frameLookup(frame, x),
       )
 
-      throw new Error()
-      // apply(context, target, args)
-      // if (instr.dest !== undefined) {
-      //   assert(context.result)
-      //   frame.env.set(instr.dest, context.result)
-      //   delete context.result
-      // }
+      const result = apply(context, target, args)
+      if (instr.dest !== undefined) {
+        frame.env.set(instr.dest, result)
+      }
 
-      // return null
+      return null
     }
   }
 }
