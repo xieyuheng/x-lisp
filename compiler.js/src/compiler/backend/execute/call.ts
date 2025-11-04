@@ -12,7 +12,7 @@ export function call(context: Context, name: string, args: Array<Value>): void {
     let message = `(call) undefined name`
     message += `\n  name: ${name}`
     message += `\n  args: ${formatValues(args)}`
-    throw Error(message)
+    throw new Error(message)
   }
 
   callDefinition(context, definition, args)

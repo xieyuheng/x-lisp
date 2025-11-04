@@ -3,7 +3,23 @@ import { type Value } from "../value/index.ts"
 
 export type Meta = TokenMeta
 
-export type Instr = Const | Assert | Return | Goto | Branch | Call
+export type Instr = Argument | Const | Assert | Return | Goto | Branch | Call
+
+export type Argument = {
+  op: "Argument"
+  index: number
+  dest: string
+  meta?: Meta
+}
+
+export function Argument(index: number, dest: string, meta?: Meta): Argument {
+  return {
+    op: "Argument",
+    index,
+    dest,
+    meta,
+  }
+}
 
 export type Const = {
   op: "Const"

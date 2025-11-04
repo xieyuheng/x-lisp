@@ -5,11 +5,7 @@ import { type Stmt } from "../stmt/index.ts"
 
 export function stage1(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "DefineFunction") {
-    const definition = Definitions.FunctionDefinition(
-      stmt.name,
-      stmt.parameters,
-      stmt.blocks,
-    )
+    const definition = Definitions.FunctionDefinition(stmt.name, stmt.blocks)
     for (const block of stmt.blocks.values()) {
       checkBlockTerminator(block)
     }

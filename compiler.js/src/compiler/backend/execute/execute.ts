@@ -12,6 +12,19 @@ import { callDefinition } from "./call.ts"
 
 export function execute(context: Context, frame: Frame, instr: Instr): null {
   switch (instr.op) {
+    case "Argument": {
+      const value = frame.args[instr.index]
+      if (value === undefined) {
+        let message = `[execute] (argument) missing argument`
+        message += `\n  index: ${instr.index}`
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
+      }
+
+      framePut(frame, instr.dest, value)
+      return null
+    }
+
     case "Const": {
       framePut(frame, instr.dest, instr.value)
       return null
@@ -21,16 +34,16 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       const [x] = instrOperands(instr)
       const value = frameLookup(frame, x)
       if (!Values.isBool(value)) {
-        let message = `(assert) value is not bool`
+        let message = `[execute] (assert) value is not bool`
         message += `\n  value: ${formatValue(value)}`
         if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
-        else throw Error(message)
+        else throw new Error(message)
       }
 
       if (Values.isFalse(value)) {
-        let message = `(assert) assertion fail`
+        let message = `[execute] (assert) assertion fail`
         if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
-        else throw Error(message)
+        else throw new Error(message)
       }
 
       return null
@@ -67,20 +80,20 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     case "Call": {
       const definition = modLookupDefinition(context.mod, instr.name)
       if (definition === undefined) {
-        let message = `(execute/call) undefined name`
+        let message = `[execute] (call) undefined name`
         message += `\n  name: ${instr.name}`
         if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
-        else throw Error(message)
+        else throw new Error(message)
       }
 
       const args = instrOperands(instr).map((x) => frameLookup(frame, x))
       const arity = definitionArity(definition)
       if (args.length !== arity) {
-        let message = `(execute/call) arity mismatch`
+        let message = `[execute] (call) arity mismatch`
         message += `\n  arity: ${arity}`
         message += `\n  args length: ${args.length}`
         if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
-        else throw Error(message)
+        else throw new Error(message)
       }
 
       callDefinition(context, definition, args)

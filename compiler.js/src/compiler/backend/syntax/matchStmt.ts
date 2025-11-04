@@ -10,16 +10,18 @@ export function matchStmt(sexp: X.Sexp): Stmt {
 
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
-    "(cons* 'define-function (cons* name parameters) blocks)",
-    ({ name, parameters, blocks }, { sexp }) => {
+    "(cons* 'define-function name blocks)",
+    ({ name, blocks }, { sexp }) => {
+      const keyword = X.asTael(sexp).elements[1]
+      const meta = X.tokenMetaFromSexpMeta(keyword.meta)
       return Stmts.DefineFunction(
         X.symbolContent(name),
-        X.listElements(parameters).map(X.symbolContent),
         new Map(
           X.listElements(blocks)
             .map(matchBlock)
             .map((block) => [block.label, block]),
         ),
+        meta,
       )
     },
   ),

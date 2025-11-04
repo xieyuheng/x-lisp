@@ -1,3 +1,4 @@
+import * as X from "@xieyuheng/x-sexp.js"
 import assert from "node:assert"
 import { type Block } from "../block/index.ts"
 import { type FunctionDefinition } from "../definition/index.ts"
@@ -9,6 +10,7 @@ export type Frame = {
   blocks: Map<string, Block>
   block: Block
   index: number
+  args: Array<Value>
   env: Map<string, Value>
 }
 
@@ -24,11 +26,10 @@ export function createFrame(
   args: Array<Value>,
 ): Frame {
   const entryBlock = definition.blocks.get("entry")
-  assert(entryBlock)
-  const env: Map<string, Value> = new Map()
-  for (const [index, parameter] of definition.parameters.entries()) {
-    assert(args[index])
-    env.set(parameter, args[index])
+  if (entryBlock === undefined) {
+    let message = `[createFrame] missing entry block`
+    if (definition.meta) throw new X.ErrorWithMeta(message, definition.meta)
+    else throw new Error(message)
   }
 
   return {
@@ -36,7 +37,8 @@ export function createFrame(
     blocks: definition.blocks,
     block: entryBlock,
     index: 0,
-    env,
+    args,
+    env: new Map(),
   }
 }
 

@@ -1,25 +1,28 @@
+import { type TokenMeta } from "@xieyuheng/x-sexp.js"
 import { type Block } from "../block/index.ts"
 import { type Value } from "../value/index.ts"
+
+type Meta = TokenMeta
 
 export type Definition = FunctionDefinition | PrimitiveFunctionDefinition
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
   name: string
-  parameters: Array<string>
   blocks: Map<string, Block>
+  meta?: Meta
 }
 
 export function FunctionDefinition(
   name: string,
-  parameters: Array<string>,
   blocks: Map<string, Block>,
+  meta?: Meta,
 ): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
     name,
-    parameters,
     blocks,
+    meta,
   }
 }
 

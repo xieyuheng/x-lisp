@@ -3,6 +3,10 @@ import { formatValue } from "./formatValue.ts"
 
 export function formatInstr(instr: Instr): string {
   switch (instr.op) {
+    case "Argument": {
+      return `(= ${instr.dest} (argument ${instr.index}))`
+    }
+
     case "Const": {
       return `(= ${instr.dest} (const ${formatValue(instr.value)}))`
     }

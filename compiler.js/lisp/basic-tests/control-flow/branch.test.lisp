@@ -1,4 +1,4 @@
-(define-function (main)
+(define-function main
   (block entry
     (= one (const 1))
     (= zero (const 0))
@@ -9,8 +9,9 @@
     (assert y)
     (return)))
 
-(define-function (zero? x)
+(define-function zero?
   (block entry
+    (= x (argument 0))
     (= zero (const 0))
     (= b (call equal? x zero))
     (branch b then else))

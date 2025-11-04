@@ -8,6 +8,17 @@ export function matchInstr(sexp: X.Sexp): Instr {
   return X.match(
     X.matcherChoice<Instr>([
       X.matcher(
+        "`(= ,dest (argument ,index))",
+        ({ dest, index }, { sexp, meta }) => {
+          return Instrs.Argument(
+            X.numberContent(index),
+            X.symbolContent(dest),
+            meta,
+          )
+        },
+      ),
+
+      X.matcher(
         "`(= ,dest (const ,value))",
         ({ dest, value }, { sexp, meta }) => {
           return Instrs.Const(matchValue(value), X.symbolContent(dest), meta)

@@ -1,4 +1,4 @@
-(execute/call) arity mismatch
+[execute] (call) arity mismatch
   arity: 2
   args length: 1
   --> lisp/basic-tests/errors/arity-mismatch.error.lisp:4:5
