@@ -1,5 +1,3 @@
-[backend] `syntax/` -- `matchValue` -- handle `FunctionRef` and `Curry`
-
 # frontend
 
 [frontend] `030-ExplicateControlPass`

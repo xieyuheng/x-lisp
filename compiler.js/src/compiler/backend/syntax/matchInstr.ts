@@ -1,8 +1,7 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import * as Instrs from "../instr/index.ts"
 import { type Instr } from "../instr/index.ts"
-import * as Values from "../value/index.ts"
-import { type Value } from "../value/index.ts"
+import { matchValue } from "./matchValue.ts"
 
 export function matchInstr(sexp: X.Sexp): Instr {
   return X.match(
@@ -77,16 +76,13 @@ export function matchInstr(sexp: X.Sexp): Instr {
         },
       ),
 
-      X.matcher(
-        "(cons* 'apply operands)",
-        ({ operands }, { sexp, meta }) => {
-          return Instrs.Apply(
-            X.listElements(operands).map(X.symbolContent),
-            undefined,
-            meta,
-          )
-        },
-      ),
+      X.matcher("(cons* 'apply operands)", ({ operands }, { sexp, meta }) => {
+        return Instrs.Apply(
+          X.listElements(operands).map(X.symbolContent),
+          undefined,
+          meta,
+        )
+      }),
 
       X.matcher(
         "`(= ,dest ,(cons* 'apply operands))",
@@ -101,39 +97,4 @@ export function matchInstr(sexp: X.Sexp): Instr {
     ]),
     sexp,
   )
-}
-
-function matchValue(sexp: X.Sexp): Value {
-  const meta = X.tokenMetaFromSexpMeta(sexp.meta)
-
-  switch (sexp.kind) {
-    case "Hashtag": {
-      const content = X.hashtagContent(sexp)
-      if (content === "t") {
-        return Values.Bool(true)
-      } else if (content === "f") {
-        return Values.Bool(false)
-      } else if (content === "void") {
-        return Values.Void()
-      } else {
-        let message = `[matchValue] unknown hashtag`
-        message += `\n  hashtag: #${content}`
-        throw new X.ErrorWithMeta(message, meta)
-      }
-    }
-
-    case "Int": {
-      return Values.Int(X.numberContent(sexp))
-    }
-
-    case "Float": {
-      return Values.Float(X.numberContent(sexp))
-    }
-
-    default: {
-      let message = `[matchValue] unknown sexp`
-      message += `\n  sexp: #${X.formatSexp(sexp)}`
-      throw new X.ErrorWithMeta(message, meta)
-    }
-  }
 }

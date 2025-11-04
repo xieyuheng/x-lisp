@@ -1,5 +1,5 @@
-import * as Values from "../value/index.ts"
 import { formatValue, formatValues } from "../format/index.ts"
+import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { call } from "./call.ts"
 import { type Context } from "./Context.ts"
