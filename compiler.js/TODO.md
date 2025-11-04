@@ -1,7 +1,5 @@
 [backend] `call` -- call `name` instead of `target`
 
-ambr executeInstr execute
-
 [backend] fix `formatInstr`
 
 [backend] add explicit `(argument)` instr

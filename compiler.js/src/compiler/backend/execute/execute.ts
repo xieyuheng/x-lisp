@@ -19,10 +19,10 @@ export function executeOneStep(context: Context): void {
 
   const frame = contextCurrentFrame(context)
   const instr = frameNextInstr(frame)
-  executeInstr(context, frame, instr)
+  execute(context, frame, instr)
 }
 
-export function executeInstr(
+export function execute(
   context: Context,
   frame: Frame,
   instr: Instr,
