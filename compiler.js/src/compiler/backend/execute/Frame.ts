@@ -1,5 +1,4 @@
 import * as X from "@xieyuheng/x-sexp.js"
-import assert from "node:assert"
 import { type Block } from "../block/index.ts"
 import { type FunctionDefinition } from "../definition/index.ts"
 import { type Instr } from "../instr/index.ts"
