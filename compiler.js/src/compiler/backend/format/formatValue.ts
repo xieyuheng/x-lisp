@@ -25,5 +25,19 @@ export function formatValue(value: Value): string {
         return value.content.toString()
       }
     }
+
+    case "FunctionRef": {
+      return `(@function ${value.name} ${value.arity})`
+    }
+
+    case "Curry": {
+      const target = formatValue(value.target)
+      const args = formatValues(value.args)
+      if (args === "") {
+        return `(@curry ${target} ${value.arity})`
+      } else {
+        return `(@curry ${target} ${value.arity} ${args})`
+      }
+    }      
   }
 }

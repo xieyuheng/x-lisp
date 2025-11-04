@@ -1,5 +1,3 @@
-[backend] add `FunctionRef` to `Value`
-[backend] add `Curry` to `Value`
 [backend] add `Apply` to `instr`
 
 # frontend
