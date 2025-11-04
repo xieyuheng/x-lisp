@@ -10,7 +10,9 @@ import {
   type Context,
 } from "./Context.ts"
 import { frameNextInstr, type Frame } from "./Frame.ts"
-import { call } from "./call.ts"
+import { call, callDefinition } from "./call.ts"
+import { modLookupDefinition } from "../mod/index.ts"
+import { definitionArity } from "../definition/definitionHelpers.ts"
 
 export function executeOneStep(context: Context): void {
   if (contextIsFinished(context)) return
@@ -79,8 +81,25 @@ export function executeInstr(
     }
 
     case "Call": {
+      const definition = modLookupDefinition(context.mod, instr.target)
+      if (definition === undefined) {
+        let message = `(execute/call) undefined name`
+        message += `\n  name: ${instr.target}`
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw Error(message)
+      }
+
       const args = instrOperands(instr).map((x) => frameLookup(frame, x))
-      call(context, instr.target, args)
+      const arity = definitionArity(definition)
+      if (args.length !== arity) {
+        let message = `(execute/call) arity mismatch`
+        message += `\n  arity: ${arity}`
+        message += `\n  args length: ${args.length}`
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw Error(message)
+      }
+
+      callDefinition(context, definition, args)
       if (instr.dest !== undefined) {
         assert(context.result)
         framePut(frame, instr.dest, context.result)
