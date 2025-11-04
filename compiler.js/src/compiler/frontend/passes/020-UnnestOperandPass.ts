@@ -118,18 +118,15 @@ type Entry = [string, Exp]
 
 function unnestAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
   switch (exp.kind) {
-    case "Symbol":
-    case "Hashtag":
-    case "String":
-    case "Int":
-    case "Float": {
-      return [[], exp]
-    }
-
     case "Var": {
       return [[], exp]
     }
 
+    case "Symbol":
+    case "Hashtag":
+    case "String":
+    case "Int":
+    case "Float":
     case "FunctionRef":
     case "Begin":
     case "If": {

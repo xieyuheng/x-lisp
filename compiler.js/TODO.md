@@ -4,13 +4,7 @@
 
 # frontend
 
-[frontend] `020-UnnestOperandPass` -- also unnest atom value -- to use `const` in basic-lisp
 [frontend] `030-ExplicateControlPass`
-
-# backend -- SSA
-
-[backend] `aboutSSA` -- `put!` and `use`
-[backend] `checkSSA` -- single `use`
 
 # backend -- module
 

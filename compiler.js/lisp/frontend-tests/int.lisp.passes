@@ -34,7 +34,8 @@ UnnestOperandPass:
     
     (define (main)
       (@let1 _₁ (@function square 1)
-        (@let1 _₂ (@function square 1) (@let1 _₃ (_₂ 3) (_₁ _₃)))))
+        (@let1 _₂ (@function square 1)
+          (@let1 _₃ 3 (@let1 _₄ (_₂ _₃) (_₁ _₄))))))
 
 ExplicateControlPass:
 
