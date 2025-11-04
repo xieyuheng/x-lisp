@@ -1,5 +1,3 @@
-[backend] `call` -- call `name` instead of `target`
-
 [backend] fix `formatInstr`
 
 [backend] add explicit `(argument)` instr

@@ -3,7 +3,7 @@ import { formatValues } from "../format/index.ts"
 import { modLookupDefinition } from "../mod/index.ts"
 import { type Value } from "../value/index.ts"
 import { type Context } from "./Context.ts"
-import { executeOneStep } from "./execute.ts"
+import { executeOneStep } from "./executeOneStep.ts"
 import { createFrame } from "./Frame.ts"
 
 export function call(context: Context, name: string, args: Array<Value>): void {

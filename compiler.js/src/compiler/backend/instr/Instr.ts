@@ -88,21 +88,21 @@ export function Branch(
 
 export type Call = {
   op: "Call"
-  target: string
+  name: string
   operands: Array<string>
   dest?: string
   meta?: Meta
 }
 
 export function Call(
-  target: string,
+  name: string,
   operands: Array<string>,
   dest?: string,
   meta?: Meta,
 ): Call {
   return {
     op: "Call",
-    target,
+    name,
     operands,
     dest,
     meta,

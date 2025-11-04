@@ -6,21 +6,9 @@ import { formatValue } from "../format/index.ts"
 import { instrOperands, type Instr } from "../instr/index.ts"
 import { modLookupDefinition } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
-import {
-  contextCurrentFrame,
-  contextIsFinished,
-  type Context,
-} from "./Context.ts"
-import { frameNextInstr, type Frame } from "./Frame.ts"
+import { type Context } from "./Context.ts"
+import { type Frame } from "./Frame.ts"
 import { callDefinition } from "./call.ts"
-
-export function executeOneStep(context: Context): void {
-  if (contextIsFinished(context)) return
-
-  const frame = contextCurrentFrame(context)
-  const instr = frameNextInstr(frame)
-  execute(context, frame, instr)
-}
 
 export function execute(context: Context, frame: Frame, instr: Instr): null {
   switch (instr.op) {
@@ -77,10 +65,10 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     }
 
     case "Call": {
-      const definition = modLookupDefinition(context.mod, instr.target)
+      const definition = modLookupDefinition(context.mod, instr.name)
       if (definition === undefined) {
         let message = `(execute/call) undefined name`
-        message += `\n  name: ${instr.target}`
+        message += `\n  name: ${instr.name}`
         if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
         else throw Error(message)
       }
