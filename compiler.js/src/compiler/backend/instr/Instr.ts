@@ -3,7 +3,15 @@ import { type Value } from "../value/index.ts"
 
 export type Meta = TokenMeta
 
-export type Instr = Argument | Const | Assert | Return | Goto | Branch | Call
+export type Instr =
+  | Argument
+  | Const
+  | Assert
+  | Return
+  | Goto
+  | Branch
+  | Call
+  | Apply
 
 export type Argument = {
   op: "Argument"
@@ -119,6 +127,27 @@ export function Call(
   return {
     op: "Call",
     name,
+    operands,
+    dest,
+    meta,
+  }
+}
+
+export type Apply = {
+  op: "Apply"
+  operands: Array<string>
+  dest?: string
+  meta?: Meta
+}
+
+export function Apply(
+  name: string,
+  operands: Array<string>,
+  dest?: string,
+  meta?: Meta,
+): Apply {
+  return {
+    op: "Apply",
     operands,
     dest,
     meta,

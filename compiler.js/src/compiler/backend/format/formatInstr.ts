@@ -1,3 +1,4 @@
+import assert from "node:assert"
 import { instrOperands, type Instr } from "../instr/index.ts"
 import { formatValue } from "./formatValue.ts"
 
@@ -40,6 +41,13 @@ export function formatInstr(instr: Instr): string {
         operands === ""
           ? `(call ${instr.name})`
           : `(call ${instr.name} ${operands})`
+      return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+    }
+
+    case "Apply": {
+      assert(instr.operands.length > 0)
+      const operands = instr.operands.join(" ")
+      const rhs = `(apply ${operands})`
       return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
     }
   }

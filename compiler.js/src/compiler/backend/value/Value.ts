@@ -3,15 +3,12 @@ import { type Atom } from "./Atom.ts"
 export type Value = Atom | FunctionRef | Curry
 
 export type FunctionRef = {
-  kind: "FunctionRef",
+  kind: "FunctionRef"
   name: string
   arity: number
 }
 
-export function FunctionRef(
-  name: string,
-  arity: number,
-): FunctionRef {
+export function FunctionRef(name: string, arity: number): FunctionRef {
   return {
     kind: "FunctionRef",
     name,
@@ -26,11 +23,7 @@ export type Curry = {
   args: Array<Value>
 }
 
-export function Curry(
-  target: Value,
-  arity: number,
-  args: Array<Value>,
-): Curry {
+export function Curry(target: Value, arity: number, args: Array<Value>): Curry {
   return {
     kind: "Curry",
     target,

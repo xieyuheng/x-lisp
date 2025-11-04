@@ -38,6 +38,6 @@ export function formatValue(value: Value): string {
       } else {
         return `(@curry ${target} ${value.arity} ${args})`
       }
-    }      
+    }
   }
 }

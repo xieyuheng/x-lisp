@@ -105,5 +105,21 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
 
       return null
     }
+
+    case "Apply": {
+      const [target, ...args] = instrOperands(instr).map((x) =>
+        frameLookup(frame, x),
+      )
+
+      throw new Error()
+      // apply(context, target, args)
+      // if (instr.dest !== undefined) {
+      //   assert(context.result)
+      //   frame.env.set(instr.dest, context.result)
+      //   delete context.result
+      // }
+
+      // return null
+    }
   }
 }
