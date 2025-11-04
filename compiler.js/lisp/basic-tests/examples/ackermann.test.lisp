@@ -1,7 +1,7 @@
 ;; Compute the Ackermann function recursively.
 ;; WARNING: Will quickly exceed stack size
 
-(define (main)
+(define-function (main)
   (block entry
     (= x (const 3))
     (= y (const 6))
@@ -11,7 +11,7 @@
     (assert ok)
     (return)))
 
-(define (ack m n)
+(define-function (ack m n)
   (block entry
     (= zero (const 0))
     (= one (const 1))

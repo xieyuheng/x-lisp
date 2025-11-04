@@ -1,4 +1,4 @@
-(define (main)
+(define-function (main)
   (block entry
     ;; bool
     (= _ (const #t))

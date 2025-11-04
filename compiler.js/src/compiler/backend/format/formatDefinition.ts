@@ -8,7 +8,7 @@ export function formatDefinition(definition: Definition): string {
       const blocks = Array.from(
         definition.blocks.values().map(formatBlock),
       ).join(" ")
-      return `(define (${head}) ${blocks})`
+      return `(define-function (${head}) ${blocks})`
     }
 
     case "PrimitiveFunctionDefinition": {

@@ -1,4 +1,4 @@
-(define (main)
+(define-function (main)
   (block entry
     (= one (const 1))
     (= zero (const 0))
@@ -9,7 +9,7 @@
     (assert y)
     (return)))
 
-(define (zero? x)
+(define-function (zero? x)
   (block entry
     (= zero (const 0))
     (= b (call equal? x zero))

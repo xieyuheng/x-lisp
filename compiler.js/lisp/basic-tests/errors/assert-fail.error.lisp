@@ -1,4 +1,4 @@
-(define (main)
+(define-function (main)
   (block entry
     (= true (const #t))
     (assert true)

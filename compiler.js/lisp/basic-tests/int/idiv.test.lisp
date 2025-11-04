@@ -1,4 +1,4 @@
-(define (main)
+(define-function (main)
   (block entry
     (= v0 (const 9))
     (= v1 (const -20))

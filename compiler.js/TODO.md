@@ -1,4 +1,4 @@
-[backend] add explicit `(argument)` instr
+[backend] add explicit `(argument)` instr -- use count (from 1) instead of index (from 0)
 [backend] add `Curry` to `Value`
 [backend] add `Apply` to `instr`
 

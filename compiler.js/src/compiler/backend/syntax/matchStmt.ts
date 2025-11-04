@@ -10,7 +10,7 @@ export function matchStmt(sexp: X.Sexp): Stmt {
 
 const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   X.matcher(
-    "(cons* 'define (cons* name parameters) blocks)",
+    "(cons* 'define-function (cons* name parameters) blocks)",
     ({ name, parameters, blocks }, { sexp }) => {
       return Stmts.DefineFunction(
         X.symbolContent(name),

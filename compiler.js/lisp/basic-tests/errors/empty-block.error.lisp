@@ -1,2 +1,2 @@
-(define (main)
+(define-function (main)
   (block entry))

@@ -1,4 +1,4 @@
-(define (main)
+(define-function (main)
   (block entry
     (= n (const 6))
     (= x (call sum-of-cubes n))
@@ -7,7 +7,7 @@
     (assert ok)
     (return)))
 
-(define (sum-of-cubes n)
+(define-function (sum-of-cubes n)
   (block entry
     (= v0 (const 1))
     (= v1 (const 2))
