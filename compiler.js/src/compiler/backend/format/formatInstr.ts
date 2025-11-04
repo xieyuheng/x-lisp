@@ -1,12 +1,42 @@
-import { instrDest, instrOperands, type Instr } from "../instr/index.ts"
+import { instrOperands, type Instr } from "../instr/index.ts"
+import { formatValue } from "./formatValue.ts"
 
 export function formatInstr(instr: Instr): string {
-  const dest = instrDest(instr)
-  if (dest) {
-    const operands = instrOperands(instr).join(" ")
-    return `(= ${dest} (${instr.op} ${operands}))`
-  } else {
-    const operands = instrOperands(instr).join(" ")
-    return `(${instr.op} ${operands})`
+  switch (instr.op) {
+    case "Const": {
+      return `(= ${instr.dest} (const ${formatValue(instr.value)}))`
+    }
+
+    case "Assert": {
+      const [x] = instrOperands(instr)
+      return `(assert ${x})`
+    }
+
+    case "Return": {
+      if (instrOperands(instr).length > 0) {
+        const [x] = instrOperands(instr)
+        return `(return ${x})`
+      }
+
+      return `(return)`
+    }
+
+    case "Goto": {
+      return `(goto ${instr.label})`
+    }
+
+    case "Branch": {
+      const [conditionx] = instrOperands(instr)
+      return `(branch ${conditionx} ${instr.thenLabel} ${instr.elseLabel})`
+    }
+
+    case "Call": {
+      const operands = instr.operands.join(" ")
+      const rhs =
+        operands === ""
+          ? `(call ${instr.name})`
+          : `(call ${instr.name} ${operands})`
+      return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+    }
   }
 }

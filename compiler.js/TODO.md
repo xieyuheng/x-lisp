@@ -1,5 +1,3 @@
-[backend] fix `formatInstr`
-
 [backend] add explicit `(argument)` instr
 [backend] add `Curry` to `Value`
 [backend] add `Apply` to `instr`
