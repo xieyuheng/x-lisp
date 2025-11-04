@@ -1,3 +1,4 @@
+import assert from "node:assert"
 import { type Definition } from "../definition/index.ts"
 import { formatValues } from "../format/index.ts"
 import { modLookupDefinition } from "../mod/index.ts"
@@ -6,7 +7,11 @@ import { type Context } from "./Context.ts"
 import { executeOneStep } from "./executeOneStep.ts"
 import { createFrame } from "./Frame.ts"
 
-export function call(context: Context, name: string, args: Array<Value>): void {
+export function call(
+  context: Context,
+  name: string,
+  args: Array<Value>,
+): Value {
   const definition = modLookupDefinition(context.mod, name)
   if (definition === undefined) {
     let message = `(call) undefined name`
@@ -15,14 +20,14 @@ export function call(context: Context, name: string, args: Array<Value>): void {
     throw new Error(message)
   }
 
-  callDefinition(context, definition, args)
+  return callDefinition(context, definition, args)
 }
 
 export function callDefinition(
   context: Context,
   definition: Definition,
   args: Array<Value>,
-): null {
+): Value {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const base = context.frames.length
@@ -31,12 +36,14 @@ export function callDefinition(
         executeOneStep(context)
       }
 
-      return null
+      const result = context.result
+      assert(result)
+      delete context.result
+      return result
     }
 
     case "PrimitiveFunctionDefinition": {
-      context.result = definition.fn(...args)
-      return null
+      return definition.fn(...args)
     }
   }
 }

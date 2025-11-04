@@ -50,7 +50,9 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     }
 
     case "Return": {
-      if (instrOperands(instr).length > 0) {
+      if (instrOperands(instr).length === 0) {
+        context.result = Values.Void()
+      } else if (instrOperands(instr).length > 0) {
         const [x] = instrOperands(instr)
         context.result = frameLookup(frame, x)
       }
@@ -96,11 +98,9 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
         else throw new Error(message)
       }
 
-      callDefinition(context, definition, args)
+      const result = callDefinition(context, definition, args)
       if (instr.dest !== undefined) {
-        assert(context.result)
-        frame.env.set(instr.dest, context.result)
-        delete context.result
+        frame.env.set(instr.dest, result)
       }
 
       return null

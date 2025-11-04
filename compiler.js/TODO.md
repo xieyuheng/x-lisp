@@ -1,4 +1,3 @@
-[backend] `call` should return `Value`
 [backend] `execute` -- handle `Apply`
 [backend] `syntax/` -- `matchValue` -- handle `FunctionRef` and `Curry`
 [backend] `syntax/` -- `matchInstr` -- handle `Apply`
