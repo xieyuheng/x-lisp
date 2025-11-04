@@ -16,7 +16,13 @@ export type Frame = {
 
 export function frameNextInstr(frame: Frame): Instr {
   const instr = frame.block.instrs[frame.index]
-  assert(instr)
+  if (instr === undefined) {
+    let message = `[frameNextInstr] no more instructions`
+    message += `\n  frame.name: ${frame.name}`
+    message += `\n  frame.index: ${frame.index}`
+    throw new Error(message)
+  }
+
   frame.index++
   return instr
 }
@@ -42,14 +48,6 @@ export function createFrame(
   }
 }
 
-export function frameGet(frame: Frame, name: string): Value | undefined {
-  return frame.env.get(name)
-}
-
-export function framePut(frame: Frame, name: string, value: Value): void {
-  frame.env.set(name, value)
-}
-
 export function frameGoto(frame: Frame, label: string): void {
   const block = frame.blocks.get(label)
   if (block === undefined) {
@@ -63,7 +61,7 @@ export function frameGoto(frame: Frame, label: string): void {
 }
 
 export function frameLookup(frame: Frame, name: string): Value {
-  const value = frameGet(frame, name)
+  const value = frame.env.get(name)
   if (value === undefined) {
     let message = "[frameLookup] undefined variable"
     message += `\n  name: ${name}`

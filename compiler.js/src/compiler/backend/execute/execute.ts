@@ -1,7 +1,7 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import assert from "node:assert"
 import { definitionArity } from "../definition/definitionHelpers.ts"
-import { frameGoto, frameLookup, framePut } from "../execute/index.ts"
+import { frameGoto, frameLookup } from "../execute/index.ts"
 import { formatValue } from "../format/index.ts"
 import { instrOperands, type Instr } from "../instr/index.ts"
 import { modLookupDefinition } from "../mod/index.ts"
@@ -21,12 +21,12 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
         else throw new Error(message)
       }
 
-      framePut(frame, instr.dest, value)
+      frame.env.set(instr.dest, value)
       return null
     }
 
     case "Const": {
-      framePut(frame, instr.dest, instr.value)
+      frame.env.set(instr.dest, instr.value)
       return null
     }
 
@@ -91,7 +91,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       if (args.length !== arity) {
         let message = `[execute] (call) arity mismatch`
         message += `\n  arity: ${arity}`
-        message += `\n  args length: ${args.length}`
+        message += `\n  args.length: ${args.length}`
         if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
         else throw new Error(message)
       }
@@ -99,7 +99,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       callDefinition(context, definition, args)
       if (instr.dest !== undefined) {
         assert(context.result)
-        framePut(frame, instr.dest, context.result)
+        frame.env.set(instr.dest, context.result)
         delete context.result
       }
 

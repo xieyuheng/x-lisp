@@ -1,4 +1,3 @@
-[backend] inline `framePut` and `frameGet`
 [backend] add `Curry` to `Value`
 [backend] add `Apply` to `instr`
 
