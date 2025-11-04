@@ -1,8 +1,10 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import assert from "node:assert"
+import { definitionArity } from "../definition/definitionHelpers.ts"
 import { frameGoto, frameLookup, framePut } from "../execute/index.ts"
 import { formatValue } from "../format/index.ts"
 import { instrOperands, type Instr } from "../instr/index.ts"
+import { modLookupDefinition } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import {
   contextCurrentFrame,
@@ -10,9 +12,7 @@ import {
   type Context,
 } from "./Context.ts"
 import { frameNextInstr, type Frame } from "./Frame.ts"
-import { call, callDefinition } from "./call.ts"
-import { modLookupDefinition } from "../mod/index.ts"
-import { definitionArity } from "../definition/definitionHelpers.ts"
+import { callDefinition } from "./call.ts"
 
 export function executeOneStep(context: Context): void {
   if (contextIsFinished(context)) return
@@ -22,11 +22,7 @@ export function executeOneStep(context: Context): void {
   execute(context, frame, instr)
 }
 
-export function execute(
-  context: Context,
-  frame: Frame,
-  instr: Instr,
-): null {
+export function execute(context: Context, frame: Frame, instr: Instr): null {
   switch (instr.op) {
     case "Const": {
       framePut(frame, instr.dest, instr.value)
