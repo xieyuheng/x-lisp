@@ -1,4 +1,7 @@
-[backend] call handle arity-mismatch
+[backend] `call` handle arity-mismatch
+
+- `definitionArity`
+
 [backend] fix `formatInstr`
 
 [backend] add explicit `(argument)` instr

@@ -3,15 +3,14 @@ import assert from "node:assert"
 import { frameGoto, frameLookup, framePut } from "../execute/index.ts"
 import { formatValue } from "../format/index.ts"
 import { instrOperands, type Instr } from "../instr/index.ts"
-import { modLookupDefinition } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
-import { type Value } from "../value/index.ts"
 import {
   contextCurrentFrame,
   contextIsFinished,
   type Context,
 } from "./Context.ts"
-import { createFrame, frameNextInstr, type Frame } from "./Frame.ts"
+import { frameNextInstr, type Frame } from "./Frame.ts"
+import { call } from "./call.ts"
 
 export function executeOneStep(context: Context): void {
   if (contextIsFinished(context)) return
@@ -88,28 +87,6 @@ export function executeInstr(
         delete context.result
       }
 
-      return null
-    }
-  }
-}
-
-export function call(context: Context, name: string, args: Array<Value>): null {
-  const definition = modLookupDefinition(context.mod, name)
-  assert(definition)
-
-  switch (definition.kind) {
-    case "FunctionDefinition": {
-      const base = context.frames.length
-      context.frames.push(createFrame(definition, args))
-      while (context.frames.length > base) {
-        executeOneStep(context)
-      }
-
-      return null
-    }
-
-    case "PrimitiveFunctionDefinition": {
-      context.result = definition.fn(...args)
       return null
     }
   }
