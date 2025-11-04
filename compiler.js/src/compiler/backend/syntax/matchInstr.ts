@@ -14,6 +14,10 @@ export function matchInstr(sexp: X.Sexp): Instr {
         },
       ),
 
+      X.matcher("`(assert ,ok)", ({ ok }, { sexp, meta }) => {
+        return Instrs.Assert([X.symbolContent(ok)], meta)
+      }),
+
       X.matcher("`(goto ,label)", ({ label }, { sexp, meta }) => {
         return Instrs.Goto(X.symbolContent(label), meta)
       }),

@@ -1,7 +1,10 @@
+import * as X from "@xieyuheng/x-sexp.js"
 import assert from "node:assert"
 import { frameGoto, frameLookup, framePut } from "../execute/index.ts"
+import { formatValue } from "../format/index.ts"
 import { instrOperands, type Instr } from "../instr/index.ts"
 import { modLookupDefinition } from "../mod/index.ts"
+import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import {
   contextCurrentFrame,
@@ -22,11 +25,30 @@ export function executeInstr(
   context: Context,
   frame: Frame,
   instr: Instr,
-): void {
+): null {
   switch (instr.op) {
     case "Const": {
       framePut(frame, instr.dest, instr.value)
-      return
+      return null
+    }
+
+    case "Assert": {
+      const [x] = instrOperands(instr)
+      const value = frameLookup(frame, x)
+      if (!Values.isBool(value)) {
+        let message = `(assert) value is not bool`
+        message += `\n  value: ${formatValue(value)}`
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw Error(message)
+      }
+
+      if (Values.isFalse(value)) {
+        let message = `(assert) assertion fail`
+        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        else throw Error(message)
+      }
+
+      return null
     }
 
     case "Return": {
@@ -36,12 +58,12 @@ export function executeInstr(
       }
 
       context.frames.pop()
-      return
+      return null
     }
 
     case "Goto": {
       frameGoto(frame, instr.label)
-      return
+      return null
     }
 
     case "Branch": {
@@ -54,7 +76,7 @@ export function executeInstr(
         frameGoto(frame, instr.elseLabel)
       }
 
-      return
+      return null
     }
 
     case "Call": {
@@ -66,12 +88,12 @@ export function executeInstr(
         delete context.result
       }
 
-      return
+      return null
     }
   }
 }
 
-export function call(context: Context, name: string, args: Array<Value>): void {
+export function call(context: Context, name: string, args: Array<Value>): null {
   const definition = modLookupDefinition(context.mod, name)
   assert(definition)
 
@@ -83,12 +105,12 @@ export function call(context: Context, name: string, args: Array<Value>): void {
         executeOneStep(context)
       }
 
-      return
+      return null
     }
 
     case "PrimitiveFunctionDefinition": {
       context.result = definition.fn(...args)
-      return
+      return null
     }
   }
 }

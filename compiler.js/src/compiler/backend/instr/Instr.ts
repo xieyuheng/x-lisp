@@ -3,7 +3,7 @@ import { type Value } from "../value/index.ts"
 
 export type Meta = TokenMeta
 
-export type Instr = Const | Return | Goto | Branch | Call
+export type Instr = Const | Assert | Return | Goto | Branch | Call
 
 export type Const = {
   op: "Const"
@@ -17,6 +17,20 @@ export function Const(value: Value, dest: string, meta?: Meta): Const {
     op: "Const",
     value,
     dest,
+    meta,
+  }
+}
+
+export type Assert = {
+  op: "Assert"
+  operands: [string]
+  meta?: Meta
+}
+
+export function Assert(operands: [string], meta?: Meta): Assert {
+  return {
+    op: "Assert",
+    operands,
     meta,
   }
 }

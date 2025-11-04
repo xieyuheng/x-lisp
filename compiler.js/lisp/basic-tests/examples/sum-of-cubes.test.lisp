@@ -4,7 +4,7 @@
     (= x (call sum-of-cubes n))
     (= expected (const 441))
     (= ok (call equal? expected x))
-    (call assert ok)
+    (assert ok)
     (return)))
 
 (define (sum-of-cubes n)
