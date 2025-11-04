@@ -141,7 +141,6 @@ export type Apply = {
 }
 
 export function Apply(
-  name: string,
   operands: Array<string>,
   dest?: string,
   meta?: Meta,

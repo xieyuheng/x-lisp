@@ -1,5 +1,4 @@
 [backend] `syntax/` -- `matchValue` -- handle `FunctionRef` and `Curry`
-[backend] `syntax/` -- `matchInstr` -- handle `Apply`
 
 # frontend
 

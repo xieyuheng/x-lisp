@@ -76,6 +76,28 @@ export function matchInstr(sexp: X.Sexp): Instr {
           )
         },
       ),
+
+      X.matcher(
+        "(cons* 'apply operands)",
+        ({ operands }, { sexp, meta }) => {
+          return Instrs.Apply(
+            X.listElements(operands).map(X.symbolContent),
+            undefined,
+            meta,
+          )
+        },
+      ),
+
+      X.matcher(
+        "`(= ,dest ,(cons* 'apply operands))",
+        ({ operands, dest }, { sexp, meta }) => {
+          return Instrs.Apply(
+            X.listElements(operands).map(X.symbolContent),
+            X.symbolContent(dest),
+            meta,
+          )
+        },
+      ),
     ]),
     sexp,
   )
