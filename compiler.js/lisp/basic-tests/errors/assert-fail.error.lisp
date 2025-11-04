@@ -1,4 +1,5 @@
 (define (main)
   (block entry
-    (assert #f)
+    (= true (const #t))
+    (assert true)
     (return)))

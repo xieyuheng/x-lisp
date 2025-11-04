@@ -1,3 +1,3 @@
-(print 1)
-(print 2)
-(print 3)
+(call print 1)
+(call print 2)
+(call print 3)

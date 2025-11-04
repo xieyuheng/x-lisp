@@ -1,4 +1,4 @@
-[backend] fix basic-tests/
+[backend] call handle arity-mismatch
 [backend] fix `formatInstr`
 
 [backend] add explicit `(argument)` instr

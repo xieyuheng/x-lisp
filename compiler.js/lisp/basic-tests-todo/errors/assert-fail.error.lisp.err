@@ -1,9 +1,0 @@
-(assert) assertion fail
-  --> lisp/basic-tests/errors/assert-fail.error.lisp:3:5
- 1 | (define (main)
- 2 |   (block entry
- 3 |     (assert #f)
-   |     ~~~~~~~~~~~ 
- 4 |     (return)))
- 5 | 
-

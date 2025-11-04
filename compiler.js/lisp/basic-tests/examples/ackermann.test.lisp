@@ -3,8 +3,11 @@
 
 (define (main)
   (block entry
-    (= x (call ack 3 6))
-    (= ok (equal? 509 x))
+    (= x (const 3))
+    (= y (const 6))
+    (= result (call ack x y))
+    (= expected (const 509))
+    (= ok (call equal? result expected))
     (assert ok)
     (return)))
 
@@ -12,25 +15,25 @@
   (block entry
     (= zero (const 0))
     (= one (const 1))
-    (= cond-m (equal? m zero))
+    (= cond-m (call equal? m zero))
     (branch cond-m m-zero m-nonzero))
 
   (block m-zero
-    (= tmp (iadd n one))
+    (= tmp (call iadd n one))
     (return tmp))
 
   (block m-nonzero
-    (= cond-n (equal? n zero))
+    (= cond-n (call equal? n zero))
     (branch cond-n n-zero n-nonzero))
 
   (block n-zero
-    (= m1 (isub m one))
+    (= m1 (call isub m one))
     (= tmp (call ack m1 one))
     (return tmp))
 
   (block n-nonzero
-    (= m1 (isub m one))
-    (= n1 (isub n one))
+    (= m1 (call isub m one))
+    (= n1 (call isub n one))
     (= t1 (call ack m n1))
     (= t2 (call ack m1 t1))
     (return t2)))
