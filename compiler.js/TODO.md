@@ -1,6 +1,5 @@
 # frontend
 
-[frontend] `030-ExplicateControlPass` -- `inBegin`
 [frontend] `030-ExplicateControlPass` -- `inIf`
 
 # backend -- module

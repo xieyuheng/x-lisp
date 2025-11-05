@@ -186,5 +186,20 @@ function inBegin(
   head: Exp,
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
-  throw new Error()
+  switch (head.kind) {
+    case "Apply": {
+      const operands = [
+        Exps.varName(head.target),
+        ...head.args.map((e) => Exps.varName(e)),
+      ]
+      return [B.Apply(operands), ...cont]
+    }
+
+    default: {
+      let message = `[inBegin] unhandled head exp`
+      message += `\n  exp: ${formatExp(head)}`
+      if (head.meta) throw new X.ErrorWithMeta(message, head.meta)
+      else throw new Error(message)
+    }
+  }
 }
