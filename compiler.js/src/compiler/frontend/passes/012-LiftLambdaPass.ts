@@ -76,12 +76,10 @@ function onExp(state: State, exp: Exp): Exp {
       )
       state.lifted.set(newFunctionName, newDefinition)
 
-      const freeVariables = freeNames.map((name) => Exps.Var(name))
-      return Exps.Curry(
+      return makeCurry(
         Exps.FunctionRef(newFunctionName, arity),
         arity,
-        freeVariables,
-        exp.meta,
+        freeNames.map((name) => Exps.Var(name)),
       )
     }
 
@@ -126,4 +124,22 @@ function onExp(state: State, exp: Exp): Exp {
       else throw new Error(message)
     }
   }
+}
+
+function makeCurry(target: Exp, arity: number, args: Array<Exp>): Exp {
+  let result = Exps.Apply(Exps.FunctionRef("make-curry", 3), [
+    target,
+    Exps.Int(arity),
+    Exps.Int(args.length),
+  ])
+
+  for (const [index, arg] of args.entries()) {
+    result = Exps.Apply(Exps.FunctionRef("curry-put!", 3), [
+      Exps.Int(index),
+      arg,
+      result,
+    ])
+  }
+
+  return result
 }

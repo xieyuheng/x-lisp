@@ -56,14 +56,25 @@ LiftLambdaPass:
 
     (define (swap f x y) (f y x))
     
-    (define (drop f) (@curry (@function drop/λ₁ 2) 2 f))
+    (define (drop f)
+      ((@function curry-put! 3)
+       0
+       f
+       ((@function make-curry 3) (@function drop/λ₁ 2) 2 1)))
     
     (define (drop/λ₁ f dropped₁)
-      (@curry (@function drop/λ₁/λ₁ 2) 2 f))
+      ((@function curry-put! 3)
+       0
+       f
+       ((@function make-curry 3) (@function drop/λ₁/λ₁ 2) 2 1)))
     
     (define (drop/λ₁/λ₁ f x₁) (f x₁))
     
-    (define (dup f) (@curry (@function dup/λ₁ 2) 2 f))
+    (define (dup f)
+      ((@function curry-put! 3)
+       0
+       f
+       ((@function make-curry 3) (@function dup/λ₁ 2) 2 1)))
     
     (define (dup/λ₁ f x₁) (f x₁ x₁))
     
@@ -79,14 +90,30 @@ UnnestOperandPass:
     (define (swap f x y) (f y x))
     
     (define (drop f)
-      (@let1 _₁ (@function drop/λ₁ 2) (@curry _₁ 2 f)))
+      (@let1 _₁ (@function curry-put! 3)
+        (@let1 _₂ 0
+          (@let1 _₃ (@function make-curry 3)
+            (@let1 _₄ (@function drop/λ₁ 2)
+              (@let1 _₅ 2
+                (@let1 _₆ 1 (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
     
     (define (drop/λ₁ f dropped₁)
-      (@let1 _₁ (@function drop/λ₁/λ₁ 2) (@curry _₁ 2 f)))
+      (@let1 _₁ (@function curry-put! 3)
+        (@let1 _₂ 0
+          (@let1 _₃ (@function make-curry 3)
+            (@let1 _₄ (@function drop/λ₁/λ₁ 2)
+              (@let1 _₅ 2
+                (@let1 _₆ 1 (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
     
     (define (drop/λ₁/λ₁ f x₁) (f x₁))
     
-    (define (dup f) (@let1 _₁ (@function dup/λ₁ 2) (@curry _₁ 2 f)))
+    (define (dup f)
+      (@let1 _₁ (@function curry-put! 3)
+        (@let1 _₂ 0
+          (@let1 _₃ (@function make-curry 3)
+            (@let1 _₄ (@function dup/λ₁ 2)
+              (@let1 _₅ 2
+                (@let1 _₆ 1 (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
     
     (define (dup/λ₁ f x₁) (f x₁ x₁))
     
