@@ -5,6 +5,7 @@ import { CompilePassesCommand } from "./commands/CompilePassesCommand.ts"
 import { CompileToBasicCommand } from "./commands/CompileToBasicCommand.ts"
 import { InterpretBasicCommand } from "./commands/InterpretBasicCommand.ts"
 import { InterpretCommand } from "./commands/InterpretCommand.ts"
+import { InterpretViaBasicCommand } from "./commands/InterpretViaBasicCommand.ts"
 import { ReplCommand } from "./commands/ReplCommand.ts"
 
 async function main() {
@@ -13,6 +14,7 @@ async function main() {
   commander.use(ReplCommand)
   commander.use(InterpretCommand)
   commander.use(InterpretBasicCommand)
+  commander.use(InterpretViaBasicCommand)
   commander.use(CompilePassesCommand)
   commander.use(CompileToBasicCommand)
 
