@@ -1,9 +1,17 @@
-import { builtinFunctionArities } from "./builtinFunctionArities.ts"
+import assert from "node:assert"
+import * as B from "../../backend/index.ts"
 
 export function getBuiltinFunctionArity(name: string): number | undefined {
-  return builtinFunctionArities[name]
+  const definition = B.modLookupDefinition(B.useBuiltinMod(), name)
+  if (!definition) {
+    return undefined
+  }
+
+  return B.definitionArity(definition)
+
 }
 
 export function hasBuiltinFunction(name: string): Boolean {
-  return builtinFunctionArities[name] !== undefined
+  const definition = B.modLookupDefinition(B.useBuiltinMod(), name)
+  return definition !== undefined
 }
