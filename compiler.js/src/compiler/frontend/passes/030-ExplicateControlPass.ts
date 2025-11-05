@@ -25,14 +25,19 @@ type State = {
 function onDefinition(backendMod: B.Mod, definition: Definition): void {
   const fn = B.FunctionDefinition(definition.name, new Map())
   backendMod.definitions.set(definition.name, fn)
+  const initialInstrs = Array.from(
+    definition.parameters
+      .entries()
+      .map(([index, name]) => B.Argument(index, name)),
+  )
+  const block = B.Block("entry", initialInstrs)
   const state = { fn }
-  const instrs = inTail(state, definition.body)
-  const block = B.Block("entry", instrs)
+  block.instrs.push(...inTail(state, definition.body))
   addBlock(state, block)
 }
 
 function addBlock(state: State, block: B.Block): void {
-  // B.checkBlockTerminator(block)
+  B.checkBlockTerminator(block)
   state.fn.blocks.set(block.label, block)
 }
 
