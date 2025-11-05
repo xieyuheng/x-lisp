@@ -4,6 +4,7 @@ import { aboutConsole } from "./aboutConsole.ts"
 import { aboutCurry } from "./aboutCurry.ts"
 import { aboutFloat } from "./aboutFloat.ts"
 import { aboutInt } from "./aboutInt.ts"
+import { aboutRandom } from "./aboutRandom.ts"
 import { aboutValue } from "./aboutValue.ts"
 
 let mod: Mod | undefined = undefined
@@ -19,6 +20,7 @@ export function useBuiltinMod(): Mod {
   aboutInt(mod)
   aboutFloat(mod)
   aboutCurry(mod)
+  aboutRandom(mod)
 
   return mod
 }

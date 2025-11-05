@@ -1,3 +1,6 @@
+ShrinkPass -- support (and) and (or)
+test if by test of eoc
+
 # backend -- module
 
 [backend] `Stmt` -- `Import`

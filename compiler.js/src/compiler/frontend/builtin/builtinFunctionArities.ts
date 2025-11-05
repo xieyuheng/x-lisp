@@ -11,4 +11,6 @@ export const builtinFunctionArities: Record<string, number> = {
 
   "make-curry": 3,
   "curry-put!": 3,
+
+  "random-dice": 0,
 }
