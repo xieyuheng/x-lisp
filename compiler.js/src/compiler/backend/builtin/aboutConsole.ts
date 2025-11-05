@@ -9,14 +9,14 @@ export function aboutConsole(mod: Mod) {
     return Values.Void()
   })
 
-  definePrimitiveFunction(mod, "print-non-void", 1, (value) => {
+  definePrimitiveFunction(mod, "println-non-void", 1, (value) => {
     if (!Values.isVoid(value)) {
       process.stdout.write(formatValue(value))
+      process.stdout.write("\n")
     }
 
     return Values.Void()
   })
-
 
   definePrimitiveFunction(mod, "newline", 0, () => {
     process.stdout.write("\n")
