@@ -12,7 +12,6 @@ export type Exp =
   | Float
   | Lambda
   | Apply
-  | Curry
   | Begin
   | Let1
   | BeginSugar
@@ -158,29 +157,6 @@ export function Apply(target: Exp, args: Array<Exp>, meta?: Meta): Apply {
   return {
     kind: "Apply",
     target,
-    args,
-    meta,
-  }
-}
-
-export type Curry = {
-  kind: "Curry"
-  target: Exp
-  arity: number
-  args: Array<Exp>
-  meta?: Meta
-}
-
-export function Curry(
-  target: Exp,
-  arity: number,
-  args: Array<Exp>,
-  meta?: Meta,
-): Curry {
-  return {
-    kind: "Curry",
-    target,
-    arity,
     args,
     meta,
   }

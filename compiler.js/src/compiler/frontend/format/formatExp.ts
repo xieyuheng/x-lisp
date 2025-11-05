@@ -58,16 +58,6 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "Curry": {
-      const target = formatExp(exp.target)
-      const args = formatExps(exp.args)
-      if (args === "") {
-        return `(@curry ${target} ${exp.arity})`
-      } else {
-        return `(@curry ${target} ${exp.arity} ${args})`
-      }
-    }
-
     case "Begin": {
       const head = formatExp(exp.head)
       const body = formatExp(exp.body)

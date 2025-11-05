@@ -52,15 +52,6 @@ function onExp(state: State, exp: Exp): Exp {
       return exp
     }
 
-    case "Curry": {
-      const [targetEntries, newTarget] = forAtom(state, exp.target)
-      const [argEntries, newArgs] = forAtomMany(state, exp.args)
-      return prependLets(
-        [...targetEntries, ...argEntries],
-        Exps.Curry(newTarget, exp.arity, newArgs, exp.meta),
-      )
-    }
-
     case "Apply": {
       const [targetEntries, newTarget] = forAtom(state, exp.target)
       const [argEntries, newArgs] = forAtomMany(state, exp.args)
@@ -133,20 +124,6 @@ function forAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, onExp(state, exp)]
       return [[entry], Exps.Var(freshName, exp.meta)]
-    }
-
-    case "Curry": {
-      const [targetEntries, newTarget] = forAtom(state, exp.target)
-      const [argEntries, newArgs] = forAtomMany(state, exp.args)
-      const freshName = generateFreshName(state)
-      const entry: Entry = [
-        freshName,
-        Exps.Curry(newTarget, exp.arity, newArgs, exp.meta),
-      ]
-      return [
-        [...targetEntries, ...argEntries, entry],
-        Exps.Var(freshName, exp.meta),
-      ]
     }
 
     case "Apply": {
