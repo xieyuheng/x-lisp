@@ -18,7 +18,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "test:node": "node --test 'lib/**/*.test.js'",
+    "test:node": "node --test 'src/**/*.test.ts'",
     "test:all": "bash scripts/test-all.sh",
     "test": "npm run test:node && npm run test:all",
     "format": "prettier src --write"
