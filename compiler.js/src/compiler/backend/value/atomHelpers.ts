@@ -5,8 +5,8 @@ import { type Value } from "./index.ts"
 export function isAtom(value: any): value is Values.Atom {
   return (
     value.kind === "Hashtag" ||
-    // value.kind === "Symbol" ||
-    // value.kind === "String" ||
+    value.kind === "Symbol" ||
+    value.kind === "String" ||
     value.kind === "Int" ||
     value.kind === "Float"
   )

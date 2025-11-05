@@ -1,4 +1,16 @@
-export type Atom = Hashtag | Int | Float
+export type Atom = Symbol | Hashtag | String | Int | Float
+
+export type Symbol = {
+  kind: "Symbol"
+  content: string
+}
+
+export function Symbol(content: string): Symbol {
+  return {
+    kind: "Symbol",
+    content,
+  }
+}
 
 export type Hashtag = {
   kind: "Hashtag"
@@ -8,6 +20,18 @@ export type Hashtag = {
 export function Hashtag(content: string): Hashtag {
   return {
     kind: "Hashtag",
+    content,
+  }
+}
+
+export type String = {
+  kind: "String"
+  content: string
+}
+
+export function String(content: string): String {
+  return {
+    kind: "String",
     content,
   }
 }

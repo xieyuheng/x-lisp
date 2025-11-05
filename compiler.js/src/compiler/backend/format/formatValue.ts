@@ -1,27 +1,17 @@
+import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
+import { formatAtom } from "./formatAtom.ts"
 
 export function formatValues(values: Array<Value>): string {
   return values.map(formatValue).join(" ")
 }
 
 export function formatValue(value: Value): string {
+  if (Values.isAtom(value)) {
+    return formatAtom(value)
+  }
+
   switch (value.kind) {
-    case "Hashtag": {
-      return `#${value.content}`
-    }
-
-    case "Int": {
-      return value.content.toString()
-    }
-
-    case "Float": {
-      if (Number.isInteger(value.content)) {
-        return `${value.content.toString()}.0`
-      } else {
-        return value.content.toString()
-      }
-    }
-
     case "FunctionRef": {
       return `(@function ${value.name} ${value.arity})`
     }

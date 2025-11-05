@@ -1,3 +1,4 @@
+export * from "./formatAtom.ts"
 export * from "./formatBlock.ts"
 export * from "./formatDefinition.ts"
 export * from "./formatInstr.ts"

@@ -51,7 +51,7 @@ function generateLabel(
 
 function atomToValue(exp: Exp): B.Value {
   assert(Exps.isAtom(exp))
-  throw new Error()
+  return exp
 }
 
 function inTail(state: State, exp: Exp): Array<B.Instr> {
