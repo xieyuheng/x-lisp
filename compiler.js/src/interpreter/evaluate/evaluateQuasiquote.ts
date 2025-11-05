@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import { recordMapValue } from "../../helpers/record/recordMapValue.ts"
-import { matchExp } from "../syntax/index.ts"
+import { parseExp } from "../parse/index.ts"
 import * as Values from "../value/index.ts"
 import { evaluate, resultValue, type Effect } from "./evaluate.ts"
 
@@ -19,7 +19,7 @@ export function evaluateQuasiquote(sexp: X.Sexp): Effect {
       sexp.elements[0].content === "@unquote"
     ) {
       const firstSexp = X.asTael(sexp).elements[1]
-      const exp = matchExp(firstSexp)
+      const exp = parseExp(firstSexp)
       return evaluate(exp)
     } else {
       return (mod, env) => {

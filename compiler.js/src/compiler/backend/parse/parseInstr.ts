@@ -1,9 +1,9 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import * as Instrs from "../instr/index.ts"
 import { type Instr } from "../instr/index.ts"
-import { matchValue } from "./matchValue.ts"
+import { parseValue } from "./parseValue.ts"
 
-export function matchInstr(sexp: X.Sexp): Instr {
+export function parseInstr(sexp: X.Sexp): Instr {
   return X.match(
     X.matcherChoice<Instr>([
       X.matcher(
@@ -20,7 +20,7 @@ export function matchInstr(sexp: X.Sexp): Instr {
       X.matcher(
         "`(= ,dest (const ,value))",
         ({ dest, value }, { sexp, meta }) => {
-          return Instrs.Const(matchValue(value), X.symbolContent(dest), meta)
+          return Instrs.Const(parseValue(value), X.symbolContent(dest), meta)
         },
       ),
 

@@ -3,9 +3,9 @@ import * as Exps from "../exp/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { type DataField } from "../value/AboutData.ts"
-import { matchExp } from "./matchExp.ts"
+import { parseExp } from "./parseExp.ts"
 
-export function matchStmt(sexp: X.Sexp): Stmt {
+export function parseStmt(sexp: X.Sexp): Stmt {
   return X.match(stmtMatcher, sexp)
 }
 
@@ -19,7 +19,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
         return Stmts.Define(
           X.symbolContent(name),
           Exps.NullaryLambda(
-            Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
+            Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
             meta,
           ),
           meta,
@@ -28,8 +28,8 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
         return Stmts.Define(
           X.symbolContent(name),
           Exps.Lambda(
-            X.listElements(parameters).map(matchExp),
-            Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
+            X.listElements(parameters).map(parseExp),
+            Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
             meta,
           ),
           meta,
@@ -39,7 +39,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   ),
 
   X.matcher("`(define ,name ,exp)", ({ name, exp }, { meta }) => {
-    return Stmts.Define(X.symbolContent(name), matchExp(exp), meta)
+    return Stmts.Define(X.symbolContent(name), parseExp(exp), meta)
   }),
 
   X.matcher(
@@ -104,11 +104,11 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
   ),
 
   X.matcher("`(claim ,name ,schema)", ({ name, schema }, { meta }) => {
-    return Stmts.Claim(X.symbolContent(name), matchExp(schema), meta)
+    return Stmts.Claim(X.symbolContent(name), parseExp(schema), meta)
   }),
 
   X.matcher("exp", ({ exp }, { meta }) => {
-    return Stmts.Compute(matchExp(exp), meta)
+    return Stmts.Compute(parseExp(exp), meta)
   }),
 ])
 
@@ -182,7 +182,7 @@ function matchDataField(sexp: X.Sexp): DataField {
       X.matcher("`(,name ,exp)", ({ name, exp }, { meta }) => {
         return {
           name: X.symbolContent(name),
-          predicate: matchExp(exp),
+          predicate: parseExp(exp),
         }
       }),
     ]),

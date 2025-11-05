@@ -2,7 +2,7 @@ import * as X from "@xieyuheng/x-sexp.js"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 
-export function matchExp(sexp: X.Sexp): Exp {
+export function parseExp(sexp: X.Sexp): Exp {
   return X.match(expMatcher, sexp)
 }
 
@@ -14,7 +14,7 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
       const meta = X.tokenMetaFromSexpMeta(keyword.meta)
       return Exps.Lambda(
         X.listElements(parameters).map(X.symbolContent),
-        Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
+        Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
         meta,
       )
     },
@@ -24,9 +24,9 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     "`(if ,condition ,consequent ,alternative)",
     ({ condition, consequent, alternative }, { meta }) => {
       return Exps.If(
-        matchExp(condition),
-        matchExp(consequent),
-        matchExp(alternative),
+        parseExp(condition),
+        parseExp(consequent),
+        parseExp(alternative),
         meta,
       )
     },
@@ -34,8 +34,8 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
 
   X.matcher("(cons* 'when condition body)", ({ condition, body }, { meta }) => {
     return Exps.When(
-      matchExp(condition),
-      Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
+      parseExp(condition),
+      Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
       meta,
     )
   }),
@@ -44,33 +44,33 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     "(cons* 'unless condition body)",
     ({ condition, body }, { meta }) => {
       return Exps.Unless(
-        matchExp(condition),
-        Exps.BeginSugar(X.listElements(body).map(matchExp), meta),
+        parseExp(condition),
+        Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
         meta,
       )
     },
   ),
 
   X.matcher("(cons* 'and exps)", ({ exps }, { meta }) => {
-    return Exps.And(X.listElements(exps).map(matchExp), meta)
+    return Exps.And(X.listElements(exps).map(parseExp), meta)
   }),
 
   X.matcher("(cons* 'or exps)", ({ exps }, { meta }) => {
-    return Exps.Or(X.listElements(exps).map(matchExp), meta)
+    return Exps.Or(X.listElements(exps).map(parseExp), meta)
   }),
 
   X.matcher("`(= ,name ,rhs)", ({ name, rhs }, { meta }) => {
-    return Exps.AssignSugar(X.symbolContent(name), matchExp(rhs), meta)
+    return Exps.AssignSugar(X.symbolContent(name), parseExp(rhs), meta)
   }),
 
   X.matcher("(cons* 'begin body)", ({ body }, { meta }) => {
-    return Exps.BeginSugar(X.listElements(body).map(matchExp), meta)
+    return Exps.BeginSugar(X.listElements(body).map(parseExp), meta)
   }),
 
   X.matcher("(cons* target args)", ({ target, args }, { meta }) => {
     return Exps.Apply(
-      matchExp(target),
-      X.listElements(args).map(matchExp),
+      parseExp(target),
+      X.listElements(args).map(parseExp),
       meta,
     )
   }),

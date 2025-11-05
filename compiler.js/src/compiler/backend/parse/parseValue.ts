@@ -2,7 +2,7 @@ import * as X from "@xieyuheng/x-sexp.js"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 
-export function matchValue(sexp: X.Sexp): Value {
+export function parseValue(sexp: X.Sexp): Value {
   return X.match(valueMatcher, sexp)
 }
 
