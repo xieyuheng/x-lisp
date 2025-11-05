@@ -1,12 +1,12 @@
 import { type Command } from "@xieyuheng/commander.js"
 import { compilePasses } from "../compiler/compile/index.ts"
-import { load } from "../compiler/frontend/load/index.ts"
+import * as F from "../compiler/frontend/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
 export const CompilePassesCommand: Command = {
   name: "compile-passes",
-  description: "output all compiler passes for snapshot testing",
+  description: "Output all compiler passes for snapshot testing",
   help(commander) {
     let message = `The ${this.name} command compile a x-lisp file to see all the passes.`
     message += `\n`
@@ -24,7 +24,7 @@ export const CompilePassesCommand: Command = {
 
     try {
       const url = createUrlOrFileUrl(commander.args[0])
-      const mod = load(url)
+      const mod = F.load(url)
       compilePasses(mod)
     } catch (error) {
       console.log(errorReport(error))

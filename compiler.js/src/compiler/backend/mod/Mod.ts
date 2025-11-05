@@ -36,7 +36,7 @@ export function modPublicDefinitions(mod: Mod): Map<string, Definition> {
 
 export function logMod(tag: string, mod: Mod): Mod {
   console.log(`${tag}:`)
-  console.log(formatIndent(4, "\n" + prettyMod(64, mod)))
+  console.log(formatIndent(4, "\n" + prettyMod(60, mod)))
   console.log()
   return mod
 }

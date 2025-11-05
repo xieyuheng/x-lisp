@@ -1,13 +1,15 @@
 import { type Command } from "@xieyuheng/commander.js"
 import * as B from "../compiler/backend/index.ts"
+import { compileToBasic } from "../compiler/compile/index.ts"
+import * as F from "../compiler/frontend/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
-export const InterpretBasicCommand: Command = {
-  name: "interpret-basic",
-  description: "Interpret a basic-lisp file",
+export const CompileToBasicCommand: Command = {
+  name: "compile-to-basic",
+  description: "Compile x-lisp code to basic-lisp",
   help(commander) {
-    let message = `The ${this.name} command interpret a basic-lisp file.`
+    let message = `The ${this.name} command compile a x-lisp file to basic-lisp.`
     message += `\n`
     message += `\n  ${commander.name} ${this.name} <file>`
     message += `\n`
@@ -16,16 +18,16 @@ export const InterpretBasicCommand: Command = {
 
   async run(commander) {
     if (typeof commander.args[0] !== "string") {
-      let message = `[interpret-basic] expect the first argument to be a path`
+      let message = `[compile-to-basic] expect the first argument to be a path`
       message += `\n  first argument: ${commander.args[0]}`
       throw new Error(message)
     }
 
     try {
       const url = createUrlOrFileUrl(commander.args[0])
-      const mod = B.load(url)
-      const context = B.createContext(mod)
-      B.call(context, "main", [])
+      const mod = F.load(url)
+      const basicMod = compileToBasic(mod)
+      console.log(B.prettyMod(60, basicMod))
     } catch (error) {
       console.log(errorReport(error))
       process.exit(1)

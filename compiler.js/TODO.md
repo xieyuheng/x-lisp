@@ -1,4 +1,3 @@
-CompileToBasicCommand
 InterpretViaBasicCommand
 
 # backend -- module
