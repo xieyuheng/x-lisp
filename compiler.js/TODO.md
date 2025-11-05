@@ -1,5 +1,3 @@
-[frontend] migrate eoc test -- 02-integers-and-variables
-
 # backend -- module
 
 [backend] `Stmt` -- `Import`
