@@ -2,40 +2,46 @@ Input:
 
     (define (square x) (imul x x))
     
-    (define (main) (square (square 3)))
+    (define (main) (print (square (square 3))))
 
 ShrinkPass:
 
     (define (square x) (imul x x))
     
-    (define (main) (square (square 3)))
+    (define (main) (print (square (square 3))))
 
 UniquifyPass:
 
     (define (square x) (imul x x))
     
-    (define (main) (square (square 3)))
+    (define (main) (print (square (square 3))))
 
 RevealFunctionPass:
 
     (define (square x) ((@function imul 2) x x))
     
-    (define (main) ((@function square 1) ((@function square 1) 3)))
+    (define (main)
+      ((@function print 1)
+       ((@function square 1) ((@function square 1) 3))))
 
 LiftLambdaPass:
 
     (define (square x) ((@function imul 2) x x))
     
-    (define (main) ((@function square 1) ((@function square 1) 3)))
+    (define (main)
+      ((@function print 1)
+       ((@function square 1) ((@function square 1) 3))))
 
 UnnestOperandPass:
 
     (define (square x) (@let1 _₁ (@function imul 2) (_₁ x x)))
     
     (define (main)
-      (@let1 _₁ (@function square 1)
+      (@let1 _₁ (@function print 1)
         (@let1 _₂ (@function square 1)
-          (@let1 _₃ 3 (@let1 _₄ (_₂ _₃) (_₁ _₄))))))
+          (@let1 _₃ (@function square 1)
+            (@let1 _₄ 3
+              (@let1 _₅ (_₃ _₄) (@let1 _₆ (_₂ _₅) (_₁ _₆))))))))
 
 ExplicateControlPass:
 
@@ -48,10 +54,12 @@ ExplicateControlPass:
     
     (define-function main
       (block entry
-        (= _₁ (const (@function square 1)))
+        (= _₁ (const (@function print 1)))
         (= _₂ (const (@function square 1)))
-        (= _₃ (const 3))
-        (= _₄ (apply _₂ _₃))
-        (= _↩ (apply _₁ _₄))
+        (= _₃ (const (@function square 1)))
+        (= _₄ (const 3))
+        (= _₅ (apply _₃ _₄))
+        (= _₆ (apply _₂ _₅))
+        (= _↩ (apply _₁ _₆))
         (return _↩)))
 

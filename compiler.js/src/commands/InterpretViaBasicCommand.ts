@@ -62,6 +62,7 @@ export const InterpretViaBasicCommand: Command = {
       const context = B.createContext(basicMod)
       B.call(context, "main", [])
     } catch (error) {
+      console.log(error)
       console.log(errorReport(error))
       process.exit(1)
     }

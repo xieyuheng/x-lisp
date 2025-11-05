@@ -8,5 +8,6 @@ export function compileToBasic(mod: F.Mod): B.Mod {
   mod = F.LiftLambdaPass(mod)
   mod = F.UnnestOperandPass(mod)
   let basicMod = F.ExplicateControlPass(mod)
+  B.importBuiltin(basicMod)
   return basicMod
 }
