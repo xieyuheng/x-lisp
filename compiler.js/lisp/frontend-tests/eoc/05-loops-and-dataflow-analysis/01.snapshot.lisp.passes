@@ -1,4 +1,4 @@
-Input:
+;;; Input
 
 (define (main)
   (println-non-void
@@ -11,7 +11,7 @@ Input:
      (newline)
      666)))
 
-ShrinkPass:
+;;; ShrinkPass
 
 (define (main)
   (println-non-void
@@ -21,7 +21,7 @@ ShrinkPass:
          (@let1 _∅ (newline)
            (@let1 _∅ (print 3) (@let1 _∅ (newline) 666))))))))
 
-UniquifyPass:
+;;; UniquifyPass
 
 (define (main)
   (println-non-void
@@ -31,7 +31,7 @@ UniquifyPass:
          (@let1 _∅₄ (newline)
            (@let1 _∅₅ (print 3) (@let1 _∅₆ (newline) 666))))))))
 
-RevealFunctionPass:
+;;; RevealFunctionPass
 
 (define (main)
   ((@function println-non-void 1)
@@ -42,7 +42,7 @@ RevealFunctionPass:
            (@let1 _∅₅ ((@function print 1) 3)
              (@let1 _∅₆ ((@function newline 0)) 666))))))))
 
-LiftLambdaPass:
+;;; LiftLambdaPass
 
 (define (main)
   ((@function println-non-void 1)
@@ -53,7 +53,7 @@ LiftLambdaPass:
            (@let1 _∅₅ ((@function print 1) 3)
              (@let1 _∅₆ ((@function newline 0)) 666))))))))
 
-UnnestOperandPass:
+;;; UnnestOperandPass
 
 (define (main)
   (@let1 _₁ (@function println-non-void 1)
@@ -71,7 +71,7 @@ UnnestOperandPass:
                   (@let1 _₁₀ (@function newline 0) (_₁₀))
                 (@let1 _₁₁ 666 (_₁ _₁₁))))))))))
 
-ExplicateControlPass:
+;;; ExplicateControlPass
 
 (define-function main
   (block entry
