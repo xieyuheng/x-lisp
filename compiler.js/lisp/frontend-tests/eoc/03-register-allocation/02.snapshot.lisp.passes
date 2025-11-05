@@ -1,0 +1,67 @@
+Input:
+
+    (define (main)
+      (println-non-void
+       (begin
+         (= x (random-dice))
+         (= y (random-dice))
+         (iadd (iadd x y) 42))))
+
+ShrinkPass:
+
+    (define (main)
+      (println-non-void
+       (@let1 x (random-dice)
+         (@let1 y (random-dice) (iadd (iadd x y) 42)))))
+
+UniquifyPass:
+
+    (define (main)
+      (println-non-void
+       (@let1 x₁ (random-dice)
+         (@let1 y₁ (random-dice) (iadd (iadd x₁ y₁) 42)))))
+
+RevealFunctionPass:
+
+    (define (main)
+      ((@function println-non-void 1)
+       (@let1 x₁ ((@function random-dice 0))
+         (@let1 y₁ ((@function random-dice 0))
+           ((@function iadd 2) ((@function iadd 2) x₁ y₁) 42)))))
+
+LiftLambdaPass:
+
+    (define (main)
+      ((@function println-non-void 1)
+       (@let1 x₁ ((@function random-dice 0))
+         (@let1 y₁ ((@function random-dice 0))
+           ((@function iadd 2) ((@function iadd 2) x₁ y₁) 42)))))
+
+UnnestOperandPass:
+
+    (define (main)
+      (@let1 _₁ (@function println-non-void 1)
+        (@let1 x₁ (@let1 _₂ (@function random-dice 0) (_₂))
+          (@let1 y₁ (@let1 _₃ (@function random-dice 0) (_₃))
+            (@let1 _₄ (@function iadd 2)
+              (@let1 _₅ (@function iadd 2)
+                (@let1 _₆ (_₅ x₁ y₁)
+                  (@let1 _₇ 42 (@let1 _₈ (_₄ _₆ _₇) (_₁ _₈))))))))))
+
+ExplicateControlPass:
+
+    (define-function main
+      (block entry
+        (= _₁ (const (@function println-non-void 1)))
+        (= _₂ (const (@function random-dice 0)))
+        (= x₁ (apply _₂))
+        (= _₃ (const (@function random-dice 0)))
+        (= y₁ (apply _₃))
+        (= _₄ (const (@function iadd 2)))
+        (= _₅ (const (@function iadd 2)))
+        (= _₆ (apply _₅ x₁ y₁))
+        (= _₇ (const 42))
+        (= _₈ (apply _₄ _₆ _₇))
+        (= _↩ (apply _₁ _₈))
+        (return _↩)))
+
