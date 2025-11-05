@@ -27,15 +27,12 @@ function onDefinition(basicMod: B.Mod, definition: Definition): void {
       .entries()
       .map(([index, name]) => B.Argument(index, name)),
   )
-  const block = B.Block("entry", initialInstrs)
-  const state = { fn }
-  block.instrs.push(...inTail(state, definition.body))
-  addBlock(state, block)
-}
 
-function addBlock(state: State, block: B.Block): void {
-  B.checkBlockTerminator(block)
+  const state = { fn }
+  const block = B.Block("entry", initialInstrs)
   state.fn.blocks.set(block.label, block)
+  block.instrs.push(...inTail(state, definition.body))
+  B.checkBlockTerminator(block)
 }
 
 function generateLabel(
@@ -46,7 +43,8 @@ function generateLabel(
   const subscript = stringToSubscript(state.fn.blocks.size.toString())
   const label = `${state.fn.name}/${name}${subscript}`
   const block = B.Block(label, instrs)
-  addBlock(state, block)
+  B.checkBlockTerminator(block)
+  state.fn.blocks.set(block.label, block)
   return label
 }
 
