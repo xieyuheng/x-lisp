@@ -43,10 +43,7 @@ function onExp(state: State, exp: Exp): Exp {
     case "Hashtag":
     case "String":
     case "Int":
-    case "Float": {
-      return exp
-    }
-
+    case "Float":
     case "FunctionRef":
     case "Var": {
       return exp

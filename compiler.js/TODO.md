@@ -1,5 +1,7 @@
 # frontend
 
+[frontend] `030-ExplicateControlPass` -- `atomToValue`
+
 [frontend] `030-ExplicateControlPass` -- `inTail`
 [frontend] `030-ExplicateControlPass` -- `inLet1`
 [frontend] `030-ExplicateControlPass` -- `inBegin`

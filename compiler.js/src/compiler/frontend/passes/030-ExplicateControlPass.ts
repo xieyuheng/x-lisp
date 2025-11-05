@@ -1,7 +1,11 @@
+import * as X from "@xieyuheng/x-sexp.js"
+import assert from "node:assert"
 import { stringToSubscript } from "../../../helpers/string/stringToSubscript.ts"
 import * as B from "../../backend/index.ts"
 import type { Definition } from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
+import * as Exps from "../exp/index.ts"
+import { formatExp } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function ExplicateControlPass(mod: Mod): B.Mod {
@@ -45,6 +49,22 @@ function generateLabel(
   return label
 }
 
+function atomToValue(exp: Exp): B.Value {
+  assert(Exps.isAtom(exp))
+  throw new Error()
+}
+
 function inTail(state: State, exp: Exp): Array<B.Instr> {
-  return []
+  switch (exp.kind) {
+    case "Var": {
+      return [B.Return([exp.name])]
+    }
+
+    default: {
+      let message = `[inTail] unhandled exp`
+      message += `\n  exp: ${formatExp(exp)}`
+      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      else throw new Error(message)
+    }
+  }
 }
