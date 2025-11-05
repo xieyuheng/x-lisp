@@ -1,6 +1,8 @@
-[frontend] parse `And` and `Or`
 [frontend] `ShrinkPass` -- support `(and)` and `(or)`
 [frontend] test `if` by test of eoc
+
+rename match functions to parse functions
+rename syntax/ to parse/
 
 # backend -- module
 
