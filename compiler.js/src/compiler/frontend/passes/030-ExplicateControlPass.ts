@@ -121,13 +121,11 @@ function inLet1(
     // }
 
     case "Apply": {
-      return [
-        B.Apply(
-          [Exps.varName(rhs.target), ...rhs.args.map((e) => Exps.varName(e))],
-          name,
-        ),
-        ...cont,
+      const operands = [
+        Exps.varName(rhs.target),
+        ...rhs.args.map((e) => Exps.varName(e)),
       ]
+      return [B.Apply(operands, name), ...cont]
     }
 
     case "Let1": {
