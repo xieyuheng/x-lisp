@@ -1,5 +1,5 @@
 # frontend
-[frontend] remove Curry from Exp
+
 [frontend] `030-ExplicateControlPass`
 
 # backend -- module
