@@ -2,7 +2,6 @@ import { formatValue } from "../format/index.ts"
 import * as Values from "./index.ts"
 import { type Value } from "./index.ts"
 
-
 export function isCurry(value: Value): value is Values.Curry {
   return value.kind === "Curry"
 }

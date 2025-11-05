@@ -1,5 +1,4 @@
 import { definePrimitiveFunction } from "../define/index.ts"
-import { equal } from "../equal/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
