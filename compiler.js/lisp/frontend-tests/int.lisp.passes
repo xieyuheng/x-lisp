@@ -43,8 +43,8 @@ ExplicateControlPass:
       (block entry
         (= x (argument 0))
         (= _₁ (const (@function imul 2)))
-        (= result (apply _₁ x x))
-        (return result)))
+        (= _↩ (apply _₁ x x))
+        (return _↩)))
     
     (define-function main
       (block entry
@@ -52,6 +52,6 @@ ExplicateControlPass:
         (= _₂ (const (@function square 1)))
         (= _₃ (const 3))
         (= _₄ (apply _₂ _₃))
-        (= result (apply _₁ _₄))
-        (return result)))
+        (= _↩ (apply _₁ _₄))
+        (return _↩)))
 

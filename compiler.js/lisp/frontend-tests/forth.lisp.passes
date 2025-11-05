@@ -133,8 +133,8 @@ ExplicateControlPass:
         (= f (argument 0))
         (= x (argument 1))
         (= y (argument 2))
-        (= result (apply f y x))
-        (return result)))
+        (= _↩ (apply f y x))
+        (return _↩)))
     
     (define-function drop
       (block entry
@@ -146,8 +146,8 @@ ExplicateControlPass:
         (= _₅ (const 2))
         (= _₆ (const 1))
         (= _₇ (apply _₃ _₄ _₅ _₆))
-        (= result (apply _₁ _₂ f _₇))
-        (return result)))
+        (= _↩ (apply _₁ _₂ f _₇))
+        (return _↩)))
     
     (define-function drop/λ₁
       (block entry
@@ -160,15 +160,15 @@ ExplicateControlPass:
         (= _₅ (const 2))
         (= _₆ (const 1))
         (= _₇ (apply _₃ _₄ _₅ _₆))
-        (= result (apply _₁ _₂ f _₇))
-        (return result)))
+        (= _↩ (apply _₁ _₂ f _₇))
+        (return _↩)))
     
     (define-function drop/λ₁/λ₁
       (block entry
         (= f (argument 0))
         (= x₁ (argument 1))
-        (= result (apply f x₁))
-        (return result)))
+        (= _↩ (apply f x₁))
+        (return _↩)))
     
     (define-function dup
       (block entry
@@ -180,15 +180,15 @@ ExplicateControlPass:
         (= _₅ (const 2))
         (= _₆ (const 1))
         (= _₇ (apply _₃ _₄ _₅ _₆))
-        (= result (apply _₁ _₂ f _₇))
-        (return result)))
+        (= _↩ (apply _₁ _₂ f _₇))
+        (return _↩)))
     
     (define-function dup/λ₁
       (block entry
         (= f (argument 0))
         (= x₁ (argument 1))
-        (= result (apply f x₁ x₁))
-        (return result)))
+        (= _↩ (apply f x₁ x₁))
+        (return _↩)))
     
     (define-function identity
       (block entry (= x (argument 0)) (return x)))
@@ -199,6 +199,6 @@ ExplicateControlPass:
         (= _₁ (const (@function dup 1)))
         (= _₂ (const (@function identity 1)))
         (= g₁ (apply _₁ _₂))
-        (= result (apply g₁ f₁ f₁))
-        (return result)))
+        (= _↩ (apply g₁ f₁ f₁))
+        (return _↩)))
 

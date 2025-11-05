@@ -80,7 +80,7 @@ function inTail(state: State, exp: Exp): Array<B.Instr> {
     }
 
     case "Apply": {
-      const name = "result"
+      const name = "_↩"
       const operands = [
         Exps.varName(exp.target),
         ...exp.args.map((e) => Exps.varName(e)),
