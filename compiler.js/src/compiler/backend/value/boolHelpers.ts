@@ -25,25 +25,3 @@ export function asBool(value: Value): Values.Hashtag {
   if (isBool(value)) return value as Values.Hashtag
   throw new Error(`[asBool] fail on: ${formatValue(value)}`)
 }
-
-export function Void(): Values.Hashtag {
-  return {
-    kind: "Hashtag",
-    content: "void",
-  }
-}
-
-export function isVoid(value: Value): boolean {
-  return value.kind === "Hashtag" && value.content === "void"
-}
-
-export function Null(): Values.Hashtag {
-  return {
-    kind: "Hashtag",
-    content: "null",
-  }
-}
-
-export function isNull(value: Value): boolean {
-  return value.kind === "Hashtag" && value.content === "null"
-}

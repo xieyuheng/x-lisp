@@ -1,12 +1,18 @@
 # backend
 
-[backend] `Tael` -- `Curry` follow the same logic
-
-- need `ExposeAllocationPass` after `UnnestOperandPass`,
-  or maybe we should call it `ExposeCollectionPass`,
-  to hand literal collection-like data such as `@tael` and `@curry`.
+[frontend] builtin -- make-curry curry-put! curry-get
+[backend] builtin -- make-curry curry-put! curry-get
 
 # frontend
+
+[frontend] `LiftLambdaPass` -- `makeCurry`
+
+```scheme
+(@curry (@function Y/λ₂/λ₁ 2) 2 x₁)
+=>
+(@let1 curry (make-curry (@function Y/λ₂/λ₁ 2) 2 1)
+  (curry-put! 0 x₁ (make-curry (@function Y/λ₂/λ₁ 2) 2 1)))
+```
 
 [frontend] `030-ExplicateControlPass`
 

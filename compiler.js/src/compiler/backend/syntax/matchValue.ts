@@ -16,18 +16,7 @@ const valueMatcher: X.Matcher<Value> = X.matcherChoice<Value>([
 
     switch (sexp.kind) {
       case "Hashtag": {
-        const content = X.hashtagContent(sexp)
-        if (content === "t") {
-          return Values.Bool(true)
-        } else if (content === "f") {
-          return Values.Bool(false)
-        } else if (content === "void") {
-          return Values.Void()
-        } else {
-          let message = `[matchValue] unknown hashtag`
-          message += `\n  hashtag: #${content}`
-          throw new X.ErrorWithMeta(message, meta)
-        }
+        return Values.Hashtag(X.hashtagContent(sexp))
       }
 
       case "Int": {

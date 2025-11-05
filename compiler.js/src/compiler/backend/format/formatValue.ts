@@ -6,12 +6,8 @@ export function formatValues(values: Array<Value>): string {
 
 export function formatValue(value: Value): string {
   switch (value.kind) {
-    case "Bool": {
-      return value.content ? "#t" : "#f"
-    }
-
-    case "Void": {
-      return "#void"
+    case "Hashtag": {
+      return `#${value.content}`
     }
 
     case "Int": {

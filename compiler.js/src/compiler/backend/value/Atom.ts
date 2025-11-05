@@ -1,24 +1,14 @@
-export type Atom = Bool | Void | Int | Float
+export type Atom = Hashtag | Int | Float
 
-export type Bool = {
-  kind: "Bool"
-  content: boolean
+export type Hashtag = {
+  kind: "Hashtag"
+  content: string
 }
 
-export function Bool(content: boolean): Bool {
+export function Hashtag(content: string): Hashtag {
   return {
-    kind: "Bool",
+    kind: "Hashtag",
     content,
-  }
-}
-
-export type Void = {
-  kind: "Void"
-}
-
-export function Void(): Void {
-  return {
-    kind: "Void",
   }
 }
 

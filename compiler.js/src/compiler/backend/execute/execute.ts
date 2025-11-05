@@ -70,8 +70,8 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     case "Branch": {
       const [x] = instrOperands(instr)
       const condition = frameLookup(frame, x)
-      assert(condition.kind === "Bool")
-      if (condition.content) {
+      assert(Values.isBool(condition))
+      if (Values.isTrue(condition)) {
         frameGoto(frame, instr.thenLabel)
       } else {
         frameGoto(frame, instr.elseLabel)
