@@ -40,20 +40,18 @@ UnnestOperandPass:
 ExplicateControlPass:
 
     (define-function square
-      (block
-       entry
-       (= x (argument 0))
-       (= _₁ (const (@function imul 2)))
-       (= result (apply _₁ x x))
-       (return result)))
+      (block entry
+        (= x (argument 0))
+        (= _₁ (const (@function imul 2)))
+        (= result (apply _₁ x x))
+        (return result)))
     
     (define-function main
-      (block
-       entry
-       (= _₁ (const (@function square 1)))
-       (= _₂ (const (@function square 1)))
-       (= _₃ (const 3))
-       (= _₄ (apply _₂ _₃))
-       (= result (apply _₁ _₄))
-       (return result)))
+      (block entry
+        (= _₁ (const (@function square 1)))
+        (= _₂ (const (@function square 1)))
+        (= _₃ (const 3))
+        (= _₄ (apply _₂ _₃))
+        (= result (apply _₁ _₄))
+        (return result)))
 
