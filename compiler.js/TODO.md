@@ -1,5 +1,4 @@
-ambr backendMod basicMod
-[compiler] `ExplicateControlPass` take `backendMod` as argument
+[compiler] `ExplicateControlPass` take `basicMod` as argument
 
 [backend] fix `print` -- no newline
 [backend] add `newline` to builtin

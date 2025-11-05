@@ -8,23 +8,23 @@ import { formatExp } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function ExplicateControlPass(mod: Mod): B.Mod {
-  const backendMod = B.createMod(mod.url)
+  const basicMod = B.createMod(mod.url)
   for (const definition of mod.definitions.values()) {
     if (definition.kind === "FunctionDefinition") {
-      onDefinition(backendMod, definition)
+      onDefinition(basicMod, definition)
     }
   }
 
-  return backendMod
+  return basicMod
 }
 
 type State = {
   fn: B.FunctionDefinition
 }
 
-function onDefinition(backendMod: B.Mod, definition: Definition): void {
+function onDefinition(basicMod: B.Mod, definition: Definition): void {
   const fn = B.FunctionDefinition(definition.name, new Map())
-  backendMod.definitions.set(definition.name, fn)
+  basicMod.definitions.set(definition.name, fn)
   const initialInstrs = Array.from(
     definition.parameters
       .entries()
