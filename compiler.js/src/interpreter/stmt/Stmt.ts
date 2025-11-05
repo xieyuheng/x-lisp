@@ -1,8 +1,6 @@
-import { type TokenMeta } from "@xieyuheng/x-sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import { type Exp } from "../exp/index.ts"
 import { type DataField } from "../value/index.ts"
-
-export type Meta = TokenMeta
 
 export type Stmt =
   | Compute

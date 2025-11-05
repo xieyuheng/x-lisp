@@ -1,4 +1,5 @@
-import { type Meta, type Value } from "./Value.ts"
+import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
+import { type Value } from "./Value.ts"
 
 export function valueMaybeMeta(value: Value): Meta | undefined {
   switch (value.kind) {

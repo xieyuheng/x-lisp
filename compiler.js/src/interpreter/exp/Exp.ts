@@ -1,6 +1,4 @@
-import { type Sexp, type TokenMeta } from "@xieyuheng/x-sexp.js"
-
-export type Meta = TokenMeta
+import { type TokenMeta as Meta, type Sexp } from "@xieyuheng/x-sexp.js"
 
 export type Attributes = Record<string, Exp>
 
