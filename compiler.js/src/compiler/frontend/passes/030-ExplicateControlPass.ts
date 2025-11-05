@@ -1,3 +1,4 @@
+import { stringToSubscript } from "../../../helpers/string/stringToSubscript.ts"
 import * as B from "../../backend/index.ts"
 import type { Definition } from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
@@ -30,6 +31,18 @@ function onDefinition(backendMod: B.Mod, definition: Definition): void {
 function addBlock(state: State, block: B.Block): void {
   // B.checkBlockTerminator(block)
   state.fn.blocks.set(block.label, block)
+}
+
+function generateLabel(
+  state: State,
+  name: string,
+  instrs: Array<B.Instr>,
+): string {
+  const subscript = stringToSubscript(state.fn.blocks.size.toString())
+  const label = `${state.fn.name}/${name}${subscript}`
+  const block = B.Block(label, instrs)
+  addBlock(state, block)
+  return label
 }
 
 function inTail(state: State, exp: Exp): Array<B.Instr> {
