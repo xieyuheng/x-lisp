@@ -1,5 +1,3 @@
-[backend] builtin -- make-curry curry-put!
-
 # frontend
 
 [frontend] `LiftLambdaPass` -- `makeCurry`
