@@ -65,7 +65,32 @@ date: 2025-10-22
   - [x] reveal-function
   - [x] lift-lambda
   - [x] unnest-operand
-  - [ ] explicate-control
+  - [x] explicate-control
+
+总结 [2025-11-06]：
+
+- 完成这个 milestone 大概花了一周时间。
+  主要工作是 port EOC 的代码到 js/ts。
+
+- 先实现一个小的核心，也就是 lambda calculus 很重要。
+  这让我们能够不怕重头开始写编译器，
+  而不是重用 interpreter 的代码。
+
+- 遇到的一个难点是在需要写 explicate-control 的时候，
+  basic-lisp 的设计还没完全确定。
+  推迟确定设计可以获得更多实践中的信息，
+  但是设计和研究的时间是不确定的，
+  会让项目用时不确定。
+
+- explicate-control 在处理 if 的时候与 EOC 有区别，
+  因为 basic-lisp if 的 condition 只能是 variable。
+  这样就没有了 EOC 中那个避免两次 compare 的优化：
+  - 一次 compare 返回 bool variable；
+  - 一次 compare 选择 branch。
+  但是这应该可以在后续 basic-lisp 的优化 pass 中实现。
+
+- desugar 到一个简单的核心语法很重要，
+  比如核心语法中没有 `begin` 和 `=`，只有 `let1`。
 
 # milestone 2 -- module system and bundling
 
