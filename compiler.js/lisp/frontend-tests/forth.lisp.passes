@@ -1,212 +1,215 @@
 Input:
 
-    (define (swap f x y) (f y x))
-    
-    (define (drop f) (lambda (dropped) (lambda (x) (f x))))
-    
-    (define (dup f) (lambda (x) (f x x)))
-    
-    (define (identity x) x)
-    
-    (define (main)
-      (println-non-void
-       (begin (= f identity) (= g (dup identity)) (g f f))))
+(define (swap f x y) (f y x))
+
+(define (drop f) (lambda (dropped) (lambda (x) (f x))))
+
+(define (dup f) (lambda (x) (f x x)))
+
+(define (identity x) x)
+
+(define (main)
+  (println-non-void
+   (begin (= f identity) (= g (dup identity)) (g f f))))
 
 ShrinkPass:
 
-    (define (swap f x y) (f y x))
-    
-    (define (drop f) (lambda (dropped) (lambda (x) (f x))))
-    
-    (define (dup f) (lambda (x) (f x x)))
-    
-    (define (identity x) x)
-    
-    (define (main)
-      (println-non-void
-       (@let1 f identity (@let1 g (dup identity) (g f f)))))
+(define (swap f x y) (f y x))
+
+(define (drop f) (lambda (dropped) (lambda (x) (f x))))
+
+(define (dup f) (lambda (x) (f x x)))
+
+(define (identity x) x)
+
+(define (main)
+  (println-non-void
+   (@let1 f identity (@let1 g (dup identity) (g f f)))))
 
 UniquifyPass:
 
-    (define (swap f x y) (f y x))
-    
-    (define (drop f) (lambda (dropped₁) (lambda (x₁) (f x₁))))
-    
-    (define (dup f) (lambda (x₁) (f x₁ x₁)))
-    
-    (define (identity x) x)
-    
-    (define (main)
-      (println-non-void
-       (@let1 f₁ identity (@let1 g₁ (dup identity) (g₁ f₁ f₁)))))
+(define (swap f x y) (f y x))
+
+(define (drop f) (lambda (dropped₁) (lambda (x₁) (f x₁))))
+
+(define (dup f) (lambda (x₁) (f x₁ x₁)))
+
+(define (identity x) x)
+
+(define (main)
+  (println-non-void
+   (@let1 f₁ identity (@let1 g₁ (dup identity) (g₁ f₁ f₁)))))
 
 RevealFunctionPass:
 
-    (define (swap f x y) (f y x))
-    
-    (define (drop f) (lambda (dropped₁) (lambda (x₁) (f x₁))))
-    
-    (define (dup f) (lambda (x₁) (f x₁ x₁)))
-    
-    (define (identity x) x)
-    
-    (define (main)
-      ((@function println-non-void 1)
-       (@let1 f₁ (@function identity 1)
-         (@let1 g₁ ((@function dup 1) (@function identity 1))
-           (g₁ f₁ f₁)))))
+(define (swap f x y) (f y x))
+
+(define (drop f) (lambda (dropped₁) (lambda (x₁) (f x₁))))
+
+(define (dup f) (lambda (x₁) (f x₁ x₁)))
+
+(define (identity x) x)
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 f₁ (@function identity 1)
+     (@let1 g₁ ((@function dup 1) (@function identity 1))
+       (g₁ f₁ f₁)))))
 
 LiftLambdaPass:
 
-    (define (swap f x y) (f y x))
-    
-    (define (drop f)
-      ((@function curry-put! 3)
-       0
-       f
-       ((@function make-curry 3) (@function drop/λ₁ 2) 2 1)))
-    
-    (define (drop/λ₁ f dropped₁)
-      ((@function curry-put! 3)
-       0
-       f
-       ((@function make-curry 3) (@function drop/λ₁/λ₁ 2) 2 1)))
-    
-    (define (drop/λ₁/λ₁ f x₁) (f x₁))
-    
-    (define (dup f)
-      ((@function curry-put! 3)
-       0
-       f
-       ((@function make-curry 3) (@function dup/λ₁ 2) 2 1)))
-    
-    (define (dup/λ₁ f x₁) (f x₁ x₁))
-    
-    (define (identity x) x)
-    
-    (define (main)
-      ((@function println-non-void 1)
-       (@let1 f₁ (@function identity 1)
-         (@let1 g₁ ((@function dup 1) (@function identity 1))
-           (g₁ f₁ f₁)))))
+(define (swap f x y) (f y x))
+
+(define (drop f)
+  ((@function curry-put! 3)
+   0
+   f
+   ((@function make-curry 3) (@function drop/λ₁ 2) 2 1)))
+
+(define (drop/λ₁ f dropped₁)
+  ((@function curry-put! 3)
+   0
+   f
+   ((@function make-curry 3) (@function drop/λ₁/λ₁ 2) 2 1)))
+
+(define (drop/λ₁/λ₁ f x₁) (f x₁))
+
+(define (dup f)
+  ((@function curry-put! 3)
+   0
+   f
+   ((@function make-curry 3) (@function dup/λ₁ 2) 2 1)))
+
+(define (dup/λ₁ f x₁) (f x₁ x₁))
+
+(define (identity x) x)
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 f₁ (@function identity 1)
+     (@let1 g₁ ((@function dup 1) (@function identity 1))
+       (g₁ f₁ f₁)))))
 
 UnnestOperandPass:
 
-    (define (swap f x y) (f y x))
-    
-    (define (drop f)
-      (@let1 _₁ (@function curry-put! 3)
-        (@let1 _₂ 0
-          (@let1 _₃ (@function make-curry 3)
-            (@let1 _₄ (@function drop/λ₁ 2)
-              (@let1 _₅ 2
-                (@let1 _₆ 1 (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
-    
-    (define (drop/λ₁ f dropped₁)
-      (@let1 _₁ (@function curry-put! 3)
-        (@let1 _₂ 0
-          (@let1 _₃ (@function make-curry 3)
-            (@let1 _₄ (@function drop/λ₁/λ₁ 2)
-              (@let1 _₅ 2
-                (@let1 _₆ 1 (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
-    
-    (define (drop/λ₁/λ₁ f x₁) (f x₁))
-    
-    (define (dup f)
-      (@let1 _₁ (@function curry-put! 3)
-        (@let1 _₂ 0
-          (@let1 _₃ (@function make-curry 3)
-            (@let1 _₄ (@function dup/λ₁ 2)
-              (@let1 _₅ 2
-                (@let1 _₆ 1 (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
-    
-    (define (dup/λ₁ f x₁) (f x₁ x₁))
-    
-    (define (identity x) x)
-    
-    (define (main)
-      (@let1 _₁ (@function println-non-void 1)
-        (@let1 f₁ (@function identity 1)
-          (@let1 g₁
-              (@let1 _₂ (@function dup 1)
-                (@let1 _₃ (@function identity 1) (_₂ _₃)))
-            (@let1 _₄ (g₁ f₁ f₁) (_₁ _₄))))))
+(define (swap f x y) (f y x))
+
+(define (drop f)
+  (@let1 _₁ (@function curry-put! 3)
+    (@let1 _₂ 0
+      (@let1 _₃ (@function make-curry 3)
+        (@let1 _₄ (@function drop/λ₁ 2)
+          (@let1 _₅ 2
+            (@let1 _₆ 1
+              (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
+
+(define (drop/λ₁ f dropped₁)
+  (@let1 _₁ (@function curry-put! 3)
+    (@let1 _₂ 0
+      (@let1 _₃ (@function make-curry 3)
+        (@let1 _₄ (@function drop/λ₁/λ₁ 2)
+          (@let1 _₅ 2
+            (@let1 _₆ 1
+              (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
+
+(define (drop/λ₁/λ₁ f x₁) (f x₁))
+
+(define (dup f)
+  (@let1 _₁ (@function curry-put! 3)
+    (@let1 _₂ 0
+      (@let1 _₃ (@function make-curry 3)
+        (@let1 _₄ (@function dup/λ₁ 2)
+          (@let1 _₅ 2
+            (@let1 _₆ 1
+              (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
+
+(define (dup/λ₁ f x₁) (f x₁ x₁))
+
+(define (identity x) x)
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 f₁ (@function identity 1)
+      (@let1 g₁
+          (@let1 _₂ (@function dup 1)
+            (@let1 _₃ (@function identity 1) (_₂ _₃)))
+        (@let1 _₄ (g₁ f₁ f₁) (_₁ _₄))))))
 
 ExplicateControlPass:
 
-    (define-function swap
-      (block entry
-        (= f (argument 0))
-        (= x (argument 1))
-        (= y (argument 2))
-        (= _↩ (apply f y x))
-        (return _↩)))
-    
-    (define-function drop
-      (block entry
-        (= f (argument 0))
-        (= _₁ (const (@function curry-put! 3)))
-        (= _₂ (const 0))
-        (= _₃ (const (@function make-curry 3)))
-        (= _₄ (const (@function drop/λ₁ 2)))
-        (= _₅ (const 2))
-        (= _₆ (const 1))
-        (= _₇ (apply _₃ _₄ _₅ _₆))
-        (= _↩ (apply _₁ _₂ f _₇))
-        (return _↩)))
-    
-    (define-function drop/λ₁
-      (block entry
-        (= f (argument 0))
-        (= dropped₁ (argument 1))
-        (= _₁ (const (@function curry-put! 3)))
-        (= _₂ (const 0))
-        (= _₃ (const (@function make-curry 3)))
-        (= _₄ (const (@function drop/λ₁/λ₁ 2)))
-        (= _₅ (const 2))
-        (= _₆ (const 1))
-        (= _₇ (apply _₃ _₄ _₅ _₆))
-        (= _↩ (apply _₁ _₂ f _₇))
-        (return _↩)))
-    
-    (define-function drop/λ₁/λ₁
-      (block entry
-        (= f (argument 0))
-        (= x₁ (argument 1))
-        (= _↩ (apply f x₁))
-        (return _↩)))
-    
-    (define-function dup
-      (block entry
-        (= f (argument 0))
-        (= _₁ (const (@function curry-put! 3)))
-        (= _₂ (const 0))
-        (= _₃ (const (@function make-curry 3)))
-        (= _₄ (const (@function dup/λ₁ 2)))
-        (= _₅ (const 2))
-        (= _₆ (const 1))
-        (= _₇ (apply _₃ _₄ _₅ _₆))
-        (= _↩ (apply _₁ _₂ f _₇))
-        (return _↩)))
-    
-    (define-function dup/λ₁
-      (block entry
-        (= f (argument 0))
-        (= x₁ (argument 1))
-        (= _↩ (apply f x₁ x₁))
-        (return _↩)))
-    
-    (define-function identity
-      (block entry (= x (argument 0)) (return x)))
-    
-    (define-function main
-      (block entry
-        (= _₁ (const (@function println-non-void 1)))
-        (= f₁ (const (@function identity 1)))
-        (= _₂ (const (@function dup 1)))
-        (= _₃ (const (@function identity 1)))
-        (= g₁ (apply _₂ _₃))
-        (= _₄ (apply g₁ f₁ f₁))
-        (= _↩ (apply _₁ _₄))
-        (return _↩)))
+(define-function swap
+  (block entry
+    (= f (argument 0))
+    (= x (argument 1))
+    (= y (argument 2))
+    (= _↩ (apply f y x))
+    (return _↩)))
+
+(define-function drop
+  (block entry
+    (= f (argument 0))
+    (= _₁ (const (@function curry-put! 3)))
+    (= _₂ (const 0))
+    (= _₃ (const (@function make-curry 3)))
+    (= _₄ (const (@function drop/λ₁ 2)))
+    (= _₅ (const 2))
+    (= _₆ (const 1))
+    (= _₇ (apply _₃ _₄ _₅ _₆))
+    (= _↩ (apply _₁ _₂ f _₇))
+    (return _↩)))
+
+(define-function drop/λ₁
+  (block entry
+    (= f (argument 0))
+    (= dropped₁ (argument 1))
+    (= _₁ (const (@function curry-put! 3)))
+    (= _₂ (const 0))
+    (= _₃ (const (@function make-curry 3)))
+    (= _₄ (const (@function drop/λ₁/λ₁ 2)))
+    (= _₅ (const 2))
+    (= _₆ (const 1))
+    (= _₇ (apply _₃ _₄ _₅ _₆))
+    (= _↩ (apply _₁ _₂ f _₇))
+    (return _↩)))
+
+(define-function drop/λ₁/λ₁
+  (block entry
+    (= f (argument 0))
+    (= x₁ (argument 1))
+    (= _↩ (apply f x₁))
+    (return _↩)))
+
+(define-function dup
+  (block entry
+    (= f (argument 0))
+    (= _₁ (const (@function curry-put! 3)))
+    (= _₂ (const 0))
+    (= _₃ (const (@function make-curry 3)))
+    (= _₄ (const (@function dup/λ₁ 2)))
+    (= _₅ (const 2))
+    (= _₆ (const 1))
+    (= _₇ (apply _₃ _₄ _₅ _₆))
+    (= _↩ (apply _₁ _₂ f _₇))
+    (return _↩)))
+
+(define-function dup/λ₁
+  (block entry
+    (= f (argument 0))
+    (= x₁ (argument 1))
+    (= _↩ (apply f x₁ x₁))
+    (return _↩)))
+
+(define-function identity
+  (block entry (= x (argument 0)) (return x)))
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= f₁ (const (@function identity 1)))
+    (= _₂ (const (@function dup 1)))
+    (= _₃ (const (@function identity 1)))
+    (= g₁ (apply _₂ _₃))
+    (= _₄ (apply g₁ f₁ f₁))
+    (= _↩ (apply _₁ _₄))
+    (return _↩)))
 
