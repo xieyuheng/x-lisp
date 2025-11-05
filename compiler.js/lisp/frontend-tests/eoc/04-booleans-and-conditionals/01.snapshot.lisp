@@ -1,0 +1,6 @@
+(begin
+  (= x (random-dice))
+  (= y (random-dice))
+  (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+    (iadd y 2)
+    (iadd y 10)))
