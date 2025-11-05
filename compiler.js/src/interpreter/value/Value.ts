@@ -1,4 +1,4 @@
-import { type TokenMeta } from "@xieyuheng/x-sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -8,8 +8,6 @@ import { type AboutSchema } from "./AboutSchema.ts"
 import { type Atom } from "./Atom.ts"
 import { type Hash } from "./Hash.ts"
 import { type Set } from "./Set.ts"
-
-export type Meta = TokenMeta
 
 export type Attributes = Record<string, Value>
 

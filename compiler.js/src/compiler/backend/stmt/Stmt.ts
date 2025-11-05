@@ -1,7 +1,5 @@
-import { type TokenMeta } from "@xieyuheng/x-sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import { type Block } from "../block/index.ts"
-
-type Meta = TokenMeta
 
 export type Stmt = DefineFunction
 

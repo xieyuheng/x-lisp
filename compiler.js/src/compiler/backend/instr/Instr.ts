@@ -1,7 +1,5 @@
-import { type TokenMeta } from "@xieyuheng/x-sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import { type Value } from "../value/index.ts"
-
-export type Meta = TokenMeta
 
 export type Instr =
   | Argument
