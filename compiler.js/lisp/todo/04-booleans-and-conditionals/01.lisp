@@ -1,0 +1,5 @@
+(let ((x (random-dice)))
+  (let ((y (random-dice)))
+    (if (if (lt? x 1) (equal? x 0) (equal? x 2))
+      (iadd y 2)
+      (iadd y 10))))
