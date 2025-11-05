@@ -83,10 +83,27 @@ function onExp(exp: Exp): Exp {
       else throw new Error(message)
     }
 
+    case "When": {
+      return Exps.If(
+        onExp(exp.condition),
+        onExp(exp.consequent),
+        Exps.Void(),
+        exp.meta,
+      )
+    }
+
+    case "Unless": {
+      return Exps.If(
+        onExp(exp.condition),
+        Exps.Void(),
+        onExp(exp.consequent),
+        exp.meta,
+      )
+    }
+
     case "And": {
       return desugarAnd(exp.exps.map(onExp), exp.meta)
     }
-
 
     case "Or": {
       return desugarOr(exp.exps.map(onExp), exp.meta)

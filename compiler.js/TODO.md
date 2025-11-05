@@ -1,5 +1,3 @@
-[frontend] `ShrinkPass` -- support `(when)` & `(unless)`
-
 [frontend] test `if` by test of eoc
 
 fix import of Meta
