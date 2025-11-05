@@ -116,9 +116,9 @@ function inLet1(
       return [B.Const(expToValue(rhs), name), ...cont]
     }
 
-    // case "Var": {
-    //   return [B.Identity(rhs.name, name), ...cont]
-    // }
+    case "Var": {
+      return [B.Call("identity", [rhs.name], name), ...cont]
+    }
 
     case "Apply": {
       const operands = [
