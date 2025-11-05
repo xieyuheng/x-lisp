@@ -1,4 +1,3 @@
-[frontend] wrap `main` exps by `println-non-void`
 [frontend] add `And` and `Or` to `Exp`
 [frontend] `ShrinkPass` -- support `(and)` and `(or)`
 [frontend] test `if` by test of eoc
