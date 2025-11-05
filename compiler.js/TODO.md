@@ -1,3 +1,6 @@
+CompileToBasicCommand
+InterpretViaBasicCommand
+
 # backend -- module
 
 [backend] `Stmt` -- `Import`
