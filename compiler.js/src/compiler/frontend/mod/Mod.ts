@@ -54,7 +54,7 @@ export function modFlatMapDefinitionEntry(
 }
 
 export function logMod(tag: string, mod: Mod): Mod {
-  console.log(`${tag}:`)
+  console.log(`;;; ${tag}`)
   console.log()
   console.log(prettyMod(60, mod))
   console.log()

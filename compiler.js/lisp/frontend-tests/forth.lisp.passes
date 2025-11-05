@@ -1,4 +1,4 @@
-Input:
+;;; Input
 
 (define (swap f x y) (f y x))
 
@@ -12,7 +12,7 @@ Input:
   (println-non-void
    (begin (= f identity) (= g (dup identity)) (g f f))))
 
-ShrinkPass:
+;;; ShrinkPass
 
 (define (swap f x y) (f y x))
 
@@ -26,7 +26,7 @@ ShrinkPass:
   (println-non-void
    (@let1 f identity (@let1 g (dup identity) (g f f)))))
 
-UniquifyPass:
+;;; UniquifyPass
 
 (define (swap f x y) (f y x))
 
@@ -40,7 +40,7 @@ UniquifyPass:
   (println-non-void
    (@let1 f₁ identity (@let1 g₁ (dup identity) (g₁ f₁ f₁)))))
 
-RevealFunctionPass:
+;;; RevealFunctionPass
 
 (define (swap f x y) (f y x))
 
@@ -56,7 +56,7 @@ RevealFunctionPass:
      (@let1 g₁ ((@function dup 1) (@function identity 1))
        (g₁ f₁ f₁)))))
 
-LiftLambdaPass:
+;;; LiftLambdaPass
 
 (define (swap f x y) (f y x))
 
@@ -90,7 +90,7 @@ LiftLambdaPass:
      (@let1 g₁ ((@function dup 1) (@function identity 1))
        (g₁ f₁ f₁)))))
 
-UnnestOperandPass:
+;;; UnnestOperandPass
 
 (define (swap f x y) (f y x))
 
@@ -135,7 +135,7 @@ UnnestOperandPass:
             (@let1 _₃ (@function identity 1) (_₂ _₃)))
         (@let1 _₄ (g₁ f₁ f₁) (_₁ _₄))))))
 
-ExplicateControlPass:
+;;; ExplicateControlPass
 
 (define-function swap
   (block entry

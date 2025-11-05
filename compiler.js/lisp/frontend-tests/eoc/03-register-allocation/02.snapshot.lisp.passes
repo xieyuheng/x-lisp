@@ -1,4 +1,4 @@
-Input:
+;;; Input
 
 (define (main)
   (println-non-void
@@ -7,21 +7,21 @@ Input:
      (= y (random-dice))
      (iadd (iadd x y) 42))))
 
-ShrinkPass:
+;;; ShrinkPass
 
 (define (main)
   (println-non-void
    (@let1 x (random-dice)
      (@let1 y (random-dice) (iadd (iadd x y) 42)))))
 
-UniquifyPass:
+;;; UniquifyPass
 
 (define (main)
   (println-non-void
    (@let1 x₁ (random-dice)
      (@let1 y₁ (random-dice) (iadd (iadd x₁ y₁) 42)))))
 
-RevealFunctionPass:
+;;; RevealFunctionPass
 
 (define (main)
   ((@function println-non-void 1)
@@ -29,7 +29,7 @@ RevealFunctionPass:
      (@let1 y₁ ((@function random-dice 0))
        ((@function iadd 2) ((@function iadd 2) x₁ y₁) 42)))))
 
-LiftLambdaPass:
+;;; LiftLambdaPass
 
 (define (main)
   ((@function println-non-void 1)
@@ -37,7 +37,7 @@ LiftLambdaPass:
      (@let1 y₁ ((@function random-dice 0))
        ((@function iadd 2) ((@function iadd 2) x₁ y₁) 42)))))
 
-UnnestOperandPass:
+;;; UnnestOperandPass
 
 (define (main)
   (@let1 _₁ (@function println-non-void 1)
@@ -48,7 +48,7 @@ UnnestOperandPass:
             (@let1 _₆ (_₅ x₁ y₁)
               (@let1 _₇ 42 (@let1 _₈ (_₄ _₆ _₇) (_₁ _₈))))))))))
 
-ExplicateControlPass:
+;;; ExplicateControlPass
 
 (define-function main
   (block entry

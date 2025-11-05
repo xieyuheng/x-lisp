@@ -1,28 +1,28 @@
-Input:
+;;; Input
 
 (define (Y f)
   ((lambda (u) (u u))
    (lambda (x) (f (lambda (t) ((x x) t))))))
 
-ShrinkPass:
+;;; ShrinkPass
 
 (define (Y f)
   ((lambda (u) (u u))
    (lambda (x) (f (lambda (t) ((x x) t))))))
 
-UniquifyPass:
+;;; UniquifyPass
 
 (define (Y f)
   ((lambda (u₁) (u₁ u₁))
    (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
 
-RevealFunctionPass:
+;;; RevealFunctionPass
 
 (define (Y f)
   ((lambda (u₁) (u₁ u₁))
    (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
 
-LiftLambdaPass:
+;;; LiftLambdaPass
 
 (define (Y f)
   (((@function make-curry 3) (@function Y/λ₁ 1) 1 0)
@@ -41,7 +41,7 @@ LiftLambdaPass:
 
 (define (Y/λ₂/λ₁ x₁ t₁) ((x₁ x₁) t₁))
 
-UnnestOperandPass:
+;;; UnnestOperandPass
 
 (define (Y f)
   (@let1 _₁ (@function make-curry 3)
@@ -72,7 +72,7 @@ UnnestOperandPass:
 
 (define (Y/λ₂/λ₁ x₁ t₁) (@let1 _₁ (x₁ x₁) (_₁ t₁)))
 
-ExplicateControlPass:
+;;; ExplicateControlPass
 
 (define-function Y
   (block entry
