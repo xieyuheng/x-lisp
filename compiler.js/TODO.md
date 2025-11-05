@@ -1,9 +1,12 @@
+[backend] Identity as a Instr
+
 # frontend
 
-[frontend] `030-ExplicateControlPass` -- `inTail`
 [frontend] `030-ExplicateControlPass` -- `inLet1`
 [frontend] `030-ExplicateControlPass` -- `inBegin`
 [frontend] `030-ExplicateControlPass` -- `inIf`
+
+[frontend] `030-ExplicateControlPass` -- `onDefinition` -- add `Argument` instr
 
 [frontend] `030-ExplicateControlPass` -- `addBlock` -- enable `checkBlockTerminator`
 

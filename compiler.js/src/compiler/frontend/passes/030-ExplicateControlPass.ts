@@ -1,10 +1,8 @@
 import * as X from "@xieyuheng/x-sexp.js"
-import assert from "node:assert"
 import { stringToSubscript } from "../../../helpers/string/stringToSubscript.ts"
 import * as B from "../../backend/index.ts"
 import type { Definition } from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
-import * as Exps from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 
@@ -49,15 +47,47 @@ function generateLabel(
   return label
 }
 
-function atomToValue(exp: Exp): B.Value {
-  assert(Exps.isAtom(exp))
-  return exp
+function expToValue(exp: Exp): B.Value {
+  switch (exp.kind) {
+    case "Symbol":
+    case "Hashtag":
+    case "String":
+    case "Int":
+    case "Float":
+    case "FunctionRef": {
+      return exp
+    }
+
+    default: {
+      let message = `[expToValue] unhandled exp`
+      message += `\n  exp: ${formatExp(exp)}`
+      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      else throw new Error(message)
+    }
+  }
 }
 
 function inTail(state: State, exp: Exp): Array<B.Instr> {
   switch (exp.kind) {
     case "Var": {
       return [B.Return([exp.name])]
+    }
+
+    case "Let1": {
+      return inLet1(state, exp.name, exp.rhs, inTail(state, exp.body))
+    }
+
+    case "Begin": {
+      return inBegin(state, exp.head, inTail(state, exp.body))
+    }
+
+    case "If": {
+      return inIf(
+        state,
+        exp.condition,
+        inTail(state, exp.consequent),
+        inTail(state, exp.alternative),
+      )
     }
 
     default: {
@@ -67,4 +97,82 @@ function inTail(state: State, exp: Exp): Array<B.Instr> {
       else throw new Error(message)
     }
   }
+}
+
+function inLet1(
+  state: State,
+  name: string,
+  rhs: Exp,
+  cont: Array<B.Instr>,
+): Array<B.Instr> {
+  switch (rhs.kind) {
+    case "Symbol":
+    case "Hashtag":
+    case "String":
+    case "Int":
+    case "Float":
+    case "FunctionRef": {
+      return [B.Const(expToValue(rhs), name), ...cont]
+    }
+
+    // case "Var": {
+    //   return [B.Identity(rhs.name, name), ...cont]
+    // }
+
+    // | Apply
+
+    case "Let1": {
+      return inLet1(
+        state,
+        rhs.name,
+        rhs.rhs,
+        inLet1(state, name, rhs.body, cont),
+      )
+    }
+
+    case "Begin": {
+      return inBegin(state, rhs.head, inLet1(state, name, rhs.body, cont))
+    }
+
+    case "If": {
+      const letBodyLabel = generateLabel(state, "let-body", cont)
+      return inIf(
+        state,
+        rhs.condition,
+        inLet1(state, name, rhs.consequent, [B.Goto(letBodyLabel)]),
+        inLet1(state, name, rhs.alternative, [B.Goto(letBodyLabel)]),
+      )
+    }
+
+    default: {
+      let message = `[inLet1] unhandled rhs exp`
+      message += `\n  exp: ${formatExp(rhs)}`
+      if (rhs.meta) throw new X.ErrorWithMeta(message, rhs.meta)
+      else throw new Error(message)
+    }
+  }
+}
+
+function inIf(
+  state: State,
+  condition: Exp,
+  thenCont: Array<B.Instr>,
+  elseCont: Array<B.Instr>,
+): Array<B.Instr> {
+  switch (condition.kind) {
+    default: {
+      let message = `[inIf] unhandled condition exp`
+      message += `\n  exp: ${formatExp(condition)}`
+      if (condition.meta) throw new X.ErrorWithMeta(message, condition.meta)
+      else throw new Error(message)
+    }
+  }
+}
+
+function inBegin(
+  state: State,
+  head: Exp,
+  cont: Array<B.Instr>,
+): Array<B.Instr> {
+  throw new Error()
 }
