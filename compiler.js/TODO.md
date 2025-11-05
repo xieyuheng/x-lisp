@@ -1,7 +1,3 @@
-# frontend
-
-[frontend] `030-ExplicateControlPass` -- `inIf`
-
 # backend -- module
 
 [backend] `Stmt` -- `Import`

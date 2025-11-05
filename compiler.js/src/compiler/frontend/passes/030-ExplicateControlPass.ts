@@ -79,6 +79,15 @@ function inTail(state: State, exp: Exp): Array<B.Instr> {
       return [B.Return([exp.name])]
     }
 
+    case "Apply": {
+      const name = "result"
+      const operands = [
+        Exps.varName(exp.target),
+        ...exp.args.map((e) => Exps.varName(e)),
+      ]
+      return [B.Apply(operands, name), B.Return([name])]
+    }
+
     case "Let1": {
       return inLet1(state, exp.name, exp.rhs, inTail(state, exp.body))
     }
@@ -171,7 +180,49 @@ function inIf(
   thenCont: Array<B.Instr>,
   elseCont: Array<B.Instr>,
 ): Array<B.Instr> {
+  if (Exps.isBool(condition)) {
+    return Exps.isTrue(condition) ? thenCont : elseCont
+  }
+
   switch (condition.kind) {
+    case "Var": {
+      return [
+        B.Branch(
+          [condition.name],
+          generateLabel(state, "then", thenCont),
+          generateLabel(state, "else", elseCont),
+        ),
+      ]
+    }
+
+    case "Let1": {
+      return inLet1(
+        state,
+        condition.name,
+        condition.rhs,
+        inIf(state, condition.body, thenCont, elseCont),
+      )
+    }
+
+    case "Begin": {
+      return inBegin(
+        state,
+        condition.head,
+        inIf(state, condition.body, thenCont, elseCont),
+      )
+    }
+
+    case "If": {
+      thenCont = [B.Goto(generateLabel(state, "then", thenCont))]
+      elseCont = [B.Goto(generateLabel(state, "else", elseCont))]
+      return inIf(
+        state,
+        condition.condition,
+        inIf(state, condition.consequent, thenCont, elseCont),
+        inIf(state, condition.alternative, thenCont, elseCont),
+      )
+    }
+
     default: {
       let message = `[inIf] unhandled condition exp`
       message += `\n  exp: ${formatExp(condition)}`

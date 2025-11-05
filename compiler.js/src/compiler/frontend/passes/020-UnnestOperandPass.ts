@@ -58,6 +58,19 @@ function onExp(state: State, exp: Exp): Exp {
       )
     }
 
+    case "If": {
+      const [conditionEntries, newCondition] = forAtom(state, exp.condition)
+      return prependLets(
+        conditionEntries,
+        Exps.If(
+          newCondition,
+          onExp(state, exp.consequent),
+          onExp(state, exp.alternative),
+          exp.meta,
+        ),
+      )
+    }
+
     case "Begin": {
       return Exps.Begin(
         onExp(state, exp.head),
@@ -71,15 +84,6 @@ function onExp(state: State, exp: Exp): Exp {
         exp.name,
         onExp(state, exp.rhs),
         onExp(state, exp.body),
-        exp.meta,
-      )
-    }
-
-    case "If": {
-      return Exps.If(
-        onExp(state, exp.condition),
-        onExp(state, exp.consequent),
-        onExp(state, exp.alternative),
         exp.meta,
       )
     }

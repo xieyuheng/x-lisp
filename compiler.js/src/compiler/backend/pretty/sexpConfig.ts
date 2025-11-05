@@ -2,6 +2,9 @@ import * as X from "@xieyuheng/x-sexp.js"
 
 export const sexpConfig: X.Config = {
   keywords: [
+    ["define-function", 1],
+    ["block", 1],
+
     ["export", 0],
     ["import-all", 0],
     ["include-all", 0],
