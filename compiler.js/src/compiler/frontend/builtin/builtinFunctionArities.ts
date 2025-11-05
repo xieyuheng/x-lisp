@@ -5,7 +5,10 @@ export const builtinFunctionArities: Record<string, number> = {
   imul: 2,
   idiv: 2,
   imod: 2,
+
+  newline: 0,
   print: 1,
+
   "make-curry": 3,
   "curry-put!": 3,
 }
