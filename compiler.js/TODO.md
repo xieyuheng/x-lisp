@@ -1,7 +1,4 @@
-# backend
-
-[frontend] builtin -- make-curry curry-put! curry-get
-[backend] builtin -- make-curry curry-put! curry-get
+[backend] builtin -- make-curry curry-put!
 
 # frontend
 
