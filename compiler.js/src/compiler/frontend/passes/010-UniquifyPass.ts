@@ -68,14 +68,6 @@ function onExp(
       )
     }
 
-    case "Begin": {
-      return Exps.Begin(
-        onExp(nameCounts, nameTable, exp.head),
-        onExp(nameCounts, nameTable, exp.body),
-        exp.meta,
-      )
-    }
-
     case "Let1": {
       const newNameCounts = countName(nameCounts, exp.name)
       const newName = generateNameInCounts(newNameCounts, exp.name)

@@ -58,12 +58,6 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "Begin": {
-      const head = formatExp(exp.head)
-      const body = formatExp(exp.body)
-      return `(@begin ${head} ${body})`
-    }
-
     case "Let1": {
       const rhs = formatExp(exp.rhs)
       const body = formatExp(exp.body)

@@ -89,10 +89,6 @@ function inTail(state: State, exp: Exp): Array<B.Instr> {
       return inLet1(state, exp.name, exp.rhs, inTail(state, exp.body))
     }
 
-    case "Begin": {
-      return inBegin(state, exp.head, inTail(state, exp.body))
-    }
-
     case "If": {
       return inIf(
         state,
@@ -148,10 +144,6 @@ function inLet1(
       )
     }
 
-    case "Begin": {
-      return inBegin(state, rhs.head, inLet1(state, name, rhs.body, cont))
-    }
-
     case "If": {
       const letBodyLabel = generateLabel(state, "let-body", cont)
       return inIf(
@@ -201,14 +193,6 @@ function inIf(
       )
     }
 
-    case "Begin": {
-      return inBegin(
-        state,
-        condition.head,
-        inIf(state, condition.body, thenCont, elseCont),
-      )
-    }
-
     case "If": {
       thenCont = [B.Goto(generateLabel(state, "then", thenCont))]
       elseCont = [B.Goto(generateLabel(state, "else", elseCont))]
@@ -224,29 +208,6 @@ function inIf(
       let message = `[inIf] unhandled condition exp`
       message += `\n  exp: ${formatExp(condition)}`
       if (condition.meta) throw new X.ErrorWithMeta(message, condition.meta)
-      else throw new Error(message)
-    }
-  }
-}
-
-function inBegin(
-  state: State,
-  head: Exp,
-  cont: Array<B.Instr>,
-): Array<B.Instr> {
-  switch (head.kind) {
-    case "Apply": {
-      const operands = [
-        Exps.varName(head.target),
-        ...head.args.map((e) => Exps.varName(e)),
-      ]
-      return [B.Apply(operands), ...cont]
-    }
-
-    default: {
-      let message = `[inBegin] unhandled head exp`
-      message += `\n  exp: ${formatExp(head)}`
-      if (head.meta) throw new X.ErrorWithMeta(message, head.meta)
       else throw new Error(message)
     }
   }

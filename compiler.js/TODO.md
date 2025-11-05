@@ -1,5 +1,3 @@
-[frontend] remove `Begin` from `Exp` -- just use `Let1`
-
 # backend -- module
 
 [backend] `Stmt` -- `Import`

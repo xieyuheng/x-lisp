@@ -85,14 +85,6 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
       )
     }
 
-    case "Begin": {
-      return Exps.Begin(
-        onExp(mod, boundNames, exp.head),
-        onExp(mod, boundNames, exp.body),
-        exp.meta,
-      )
-    }
-
     case "Let1": {
       const newBoundNames = setAdd(boundNames, exp.name)
       return Exps.Let1(

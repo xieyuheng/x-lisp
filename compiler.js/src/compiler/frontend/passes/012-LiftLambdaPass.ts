@@ -88,14 +88,6 @@ function onExp(state: State, exp: Exp): Exp {
       )
     }
 
-    case "Begin": {
-      return Exps.Begin(
-        onExp(state, exp.head),
-        onExp(state, exp.body),
-        exp.meta,
-      )
-    }
-
     case "Let1": {
       return Exps.Let1(
         exp.name,

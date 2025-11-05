@@ -41,13 +41,6 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       ])
     }
 
-    case "Begin": {
-      return setUnionMany([
-        expFreeNames(boundNames, exp.head),
-        expFreeNames(boundNames, exp.body),
-      ])
-    }
-
     case "Let1": {
       const newBoundNames = setAdd(boundNames, exp.name)
       return setUnionMany([

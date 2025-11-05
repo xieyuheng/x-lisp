@@ -49,10 +49,6 @@ function onExp(exp: Exp): Exp {
       )
     }
 
-    case "Begin": {
-      return Exps.Begin(onExp(exp.head), onExp(exp.body), exp.meta)
-    }
-
     case "Let1": {
       return Exps.Let1(exp.name, onExp(exp.rhs), onExp(exp.body), exp.meta)
     }

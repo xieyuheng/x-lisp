@@ -9,7 +9,6 @@ export type Exp =
   | FunctionRef
   | Lambda
   | Apply
-  | Begin
   | Let1
   | BeginSugar
   | AssignSugar
@@ -81,22 +80,6 @@ export function Apply(target: Exp, args: Array<Exp>, meta?: Meta): Apply {
     kind: "Apply",
     target,
     args,
-    meta,
-  }
-}
-
-export type Begin = {
-  kind: "Begin"
-  head: Exp
-  body: Exp
-  meta?: Meta
-}
-
-export function Begin(head: Exp, body: Exp, meta?: Meta): Begin {
-  return {
-    kind: "Begin",
-    head,
-    body,
     meta,
   }
 }
