@@ -1,4 +1,5 @@
 InterpretViaBasicCommand
+test InterpretViaBasicCommand
 
 # backend -- module
 
