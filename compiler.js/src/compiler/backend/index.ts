@@ -1,4 +1,5 @@
 export * from "./block/index.ts"
+export * from "./check/index.ts"
 export * from "./definition/index.ts"
 export * from "./format/index.ts"
 export * from "./instr/index.ts"

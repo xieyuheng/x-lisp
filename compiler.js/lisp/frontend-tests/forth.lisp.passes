@@ -128,5 +128,19 @@ UnnestOperandPass:
 
 ExplicateControlPass:
 
+    (define-function swap (block entry))
     
+    (define-function drop (block entry))
+    
+    (define-function drop/λ₁ (block entry))
+    
+    (define-function drop/λ₁/λ₁ (block entry))
+    
+    (define-function dup (block entry))
+    
+    (define-function dup/λ₁ (block entry))
+    
+    (define-function identity (block entry))
+    
+    (define-function main (block entry))
 

@@ -39,5 +39,7 @@ UnnestOperandPass:
 
 ExplicateControlPass:
 
+    (define-function square (block entry))
     
+    (define-function main (block entry))
 

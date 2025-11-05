@@ -72,5 +72,11 @@ UnnestOperandPass:
 
 ExplicateControlPass:
 
+    (define-function Y (block entry))
     
+    (define-function Y/λ₁ (block entry))
+    
+    (define-function Y/λ₂ (block entry))
+    
+    (define-function Y/λ₂/λ₁ (block entry))
 

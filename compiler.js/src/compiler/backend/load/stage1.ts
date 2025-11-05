@@ -1,4 +1,4 @@
-import { checkBlockTerminator } from "../check/checkBlockTerminator.ts"
+import { checkBlockTerminator } from "../check/index.ts"
 import * as Definitions from "../definition/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
