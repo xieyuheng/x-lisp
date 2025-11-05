@@ -9,7 +9,8 @@ Input:
     (define (identity x) x)
     
     (define (main)
-      (begin (= f identity) (= g (dup identity)) (g f f)))
+      (println-non-void
+       (begin (= f identity) (= g (dup identity)) (g f f))))
 
 ShrinkPass:
 
@@ -22,7 +23,8 @@ ShrinkPass:
     (define (identity x) x)
     
     (define (main)
-      (@let1 f identity (@let1 g (dup identity) (g f f))))
+      (println-non-void
+       (@let1 f identity (@let1 g (dup identity) (g f f)))))
 
 UniquifyPass:
 
@@ -35,7 +37,8 @@ UniquifyPass:
     (define (identity x) x)
     
     (define (main)
-      (@let1 f₁ identity (@let1 g₁ (dup identity) (g₁ f₁ f₁))))
+      (println-non-void
+       (@let1 f₁ identity (@let1 g₁ (dup identity) (g₁ f₁ f₁)))))
 
 RevealFunctionPass:
 
@@ -48,9 +51,10 @@ RevealFunctionPass:
     (define (identity x) x)
     
     (define (main)
-      (@let1 f₁ (@function identity 1)
-        (@let1 g₁ ((@function dup 1) (@function identity 1))
-          (g₁ f₁ f₁))))
+      ((@function println-non-void 1)
+       (@let1 f₁ (@function identity 1)
+         (@let1 g₁ ((@function dup 1) (@function identity 1))
+           (g₁ f₁ f₁)))))
 
 LiftLambdaPass:
 
@@ -81,9 +85,10 @@ LiftLambdaPass:
     (define (identity x) x)
     
     (define (main)
-      (@let1 f₁ (@function identity 1)
-        (@let1 g₁ ((@function dup 1) (@function identity 1))
-          (g₁ f₁ f₁))))
+      ((@function println-non-void 1)
+       (@let1 f₁ (@function identity 1)
+         (@let1 g₁ ((@function dup 1) (@function identity 1))
+           (g₁ f₁ f₁)))))
 
 UnnestOperandPass:
 
@@ -120,11 +125,12 @@ UnnestOperandPass:
     (define (identity x) x)
     
     (define (main)
-      (@let1 f₁ (@function identity 1)
-        (@let1 g₁
-            (@let1 _₁ (@function dup 1)
-              (@let1 _₂ (@function identity 1) (_₁ _₂)))
-          (g₁ f₁ f₁))))
+      (@let1 _₁ (@function println-non-void 1)
+        (@let1 f₁ (@function identity 1)
+          (@let1 g₁
+              (@let1 _₂ (@function dup 1)
+                (@let1 _₃ (@function identity 1) (_₂ _₃)))
+            (@let1 _₄ (g₁ f₁ f₁) (_₁ _₄))))))
 
 ExplicateControlPass:
 
@@ -195,10 +201,12 @@ ExplicateControlPass:
     
     (define-function main
       (block entry
+        (= _₁ (const (@function println-non-void 1)))
         (= f₁ (const (@function identity 1)))
-        (= _₁ (const (@function dup 1)))
-        (= _₂ (const (@function identity 1)))
-        (= g₁ (apply _₁ _₂))
-        (= _↩ (apply g₁ f₁ f₁))
+        (= _₂ (const (@function dup 1)))
+        (= _₃ (const (@function identity 1)))
+        (= g₁ (apply _₂ _₃))
+        (= _₄ (apply g₁ f₁ f₁))
+        (= _↩ (apply _₁ _₄))
         (return _↩)))
 

@@ -2,23 +2,24 @@ import * as X from "@xieyuheng/x-sexp.js"
 import assert from "node:assert"
 import { FunctionDefinition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
+import { type Exp } from "../exp/index.ts"
 import { modLookupDefinition, type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 
+function wrapTopLevelExp(exp: Exp): Exp {
+  return Exps.Apply(Exps.Var("println-non-void"), [exp])
+}
+
 export function stage1(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Compute") {
+    const exp = wrapTopLevelExp(stmt.exp)
     const found = modLookupDefinition(mod, "main")
     if (found) {
       assert(found.body.kind === "BeginSugar")
-      found.body.sequence.push(stmt.exp)
+      found.body.sequence.push(exp)
     } else {
-      const sequence = [stmt.exp]
-      const main = FunctionDefinition(
-        "main",
-        [],
-        Exps.BeginSugar(sequence, stmt.meta),
-        stmt.meta,
-      )
+      const body = Exps.BeginSugar([exp], stmt.meta)
+      const main = FunctionDefinition("main", [], body, stmt.meta)
       mod.definitions.set("main", main)
     }
   }
