@@ -13,25 +13,23 @@ import {
 } from "../mod/index.ts"
 
 export function RevealFunctionPass(mod: Mod): Mod {
-  return modMapDefinition(mod, (definition) =>
-    revealDefinition(mod, definition),
-  )
+  return modMapDefinition(mod, (definition) => onDefinition(mod, definition))
 }
 
-function revealDefinition(mod: Mod, definition: Definition): Definition {
+function onDefinition(mod: Mod, definition: Definition): Definition {
   switch (definition.kind) {
     case "FunctionDefinition": {
       return Definitions.FunctionDefinition(
         definition.name,
         definition.parameters,
-        revealExp(mod, new Set(definition.parameters), definition.body),
+        onExp(mod, new Set(definition.parameters), definition.body),
         definition.meta,
       )
     }
   }
 }
 
-function revealExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
+function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -74,23 +72,23 @@ function revealExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
       const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
       return Exps.Lambda(
         exp.parameters,
-        revealExp(mod, newBoundNames, exp.body),
+        onExp(mod, newBoundNames, exp.body),
         exp.meta,
       )
     }
 
     case "Apply": {
       return Exps.Apply(
-        revealExp(mod, boundNames, exp.target),
-        exp.args.map((e) => revealExp(mod, boundNames, e)),
+        onExp(mod, boundNames, exp.target),
+        exp.args.map((e) => onExp(mod, boundNames, e)),
         exp.meta,
       )
     }
 
     case "Begin": {
       return Exps.Begin(
-        revealExp(mod, boundNames, exp.head),
-        revealExp(mod, boundNames, exp.body),
+        onExp(mod, boundNames, exp.head),
+        onExp(mod, boundNames, exp.body),
         exp.meta,
       )
     }
@@ -99,17 +97,17 @@ function revealExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
       const newBoundNames = setAdd(boundNames, exp.name)
       return Exps.Let1(
         exp.name,
-        revealExp(mod, newBoundNames, exp.rhs),
-        revealExp(mod, newBoundNames, exp.body),
+        onExp(mod, newBoundNames, exp.rhs),
+        onExp(mod, newBoundNames, exp.body),
         exp.meta,
       )
     }
 
     case "If": {
       return Exps.If(
-        revealExp(mod, boundNames, exp.condition),
-        revealExp(mod, boundNames, exp.consequent),
-        revealExp(mod, boundNames, exp.alternative),
+        onExp(mod, boundNames, exp.condition),
+        onExp(mod, boundNames, exp.consequent),
+        onExp(mod, boundNames, exp.alternative),
         exp.meta,
       )
     }

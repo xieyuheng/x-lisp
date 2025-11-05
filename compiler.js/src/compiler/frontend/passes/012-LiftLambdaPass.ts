@@ -14,7 +14,7 @@ import {
 } from "../mod/index.ts"
 
 export function LiftLambdaPass(mod: Mod): Mod {
-  return modFlatMapDefinitionEntry(mod, liftDefinitionEntry)
+  return modFlatMapDefinitionEntry(mod, onDefinitionEntry)
 }
 
 type State = {
@@ -22,7 +22,7 @@ type State = {
   definition: Definitions.FunctionDefinition
 }
 
-function liftDefinitionEntry([
+function onDefinitionEntry([
   name,
   definition,
 ]: DefinitionEntry): Array<DefinitionEntry> {
@@ -30,7 +30,7 @@ function liftDefinitionEntry([
     case "FunctionDefinition": {
       const lifted: Map<string, Definition> = new Map()
       const state = { lifted, definition }
-      const newBody = liftExp(state, definition.body)
+      const newBody = onExp(state, definition.body)
       const newDefinition = Definitions.FunctionDefinition(
         definition.name,
         definition.parameters,
@@ -39,13 +39,13 @@ function liftDefinitionEntry([
       )
       return [
         [name, newDefinition],
-        ...mapFlatMap(lifted, liftDefinitionEntry).entries(),
+        ...mapFlatMap(lifted, onDefinitionEntry).entries(),
       ]
     }
   }
 }
 
-function liftExp(state: State, exp: Exp): Exp {
+function onExp(state: State, exp: Exp): Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -87,16 +87,16 @@ function liftExp(state: State, exp: Exp): Exp {
 
     case "Apply": {
       return Exps.Apply(
-        liftExp(state, exp.target),
-        exp.args.map((e) => liftExp(state, e)),
+        onExp(state, exp.target),
+        exp.args.map((e) => onExp(state, e)),
         exp.meta,
       )
     }
 
     case "Begin": {
       return Exps.Begin(
-        liftExp(state, exp.head),
-        liftExp(state, exp.body),
+        onExp(state, exp.head),
+        onExp(state, exp.body),
         exp.meta,
       )
     }
@@ -104,17 +104,17 @@ function liftExp(state: State, exp: Exp): Exp {
     case "Let1": {
       return Exps.Let1(
         exp.name,
-        liftExp(state, exp.rhs),
-        liftExp(state, exp.body),
+        onExp(state, exp.rhs),
+        onExp(state, exp.body),
         exp.meta,
       )
     }
 
     case "If": {
       return Exps.If(
-        liftExp(state, exp.condition),
-        liftExp(state, exp.consequent),
-        liftExp(state, exp.alternative),
+        onExp(state, exp.condition),
+        onExp(state, exp.consequent),
+        onExp(state, exp.alternative),
         exp.meta,
       )
     }

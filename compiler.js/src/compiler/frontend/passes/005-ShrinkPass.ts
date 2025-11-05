@@ -7,23 +7,23 @@ import { formatExp } from "../format/index.ts"
 import { modMapDefinition, type Mod } from "../mod/index.ts"
 
 export function ShrinkPass(mod: Mod): Mod {
-  return modMapDefinition(mod, shrinkDefinition)
+  return modMapDefinition(mod, onDefinition)
 }
 
-function shrinkDefinition(definition: Definition): Definition {
+function onDefinition(definition: Definition): Definition {
   switch (definition.kind) {
     case "FunctionDefinition": {
       return Definitions.FunctionDefinition(
         definition.name,
         definition.parameters,
-        shrinkExp(definition.body),
+        onExp(definition.body),
         definition.meta,
       )
     }
   }
 }
 
-function shrinkExp(exp: Exp): Exp {
+function onExp(exp: Exp): Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -38,28 +38,23 @@ function shrinkExp(exp: Exp): Exp {
     }
 
     case "Lambda": {
-      return Exps.Lambda(exp.parameters, shrinkExp(exp.body), exp.meta)
+      return Exps.Lambda(exp.parameters, onExp(exp.body), exp.meta)
     }
 
     case "Apply": {
       return Exps.Apply(
-        shrinkExp(exp.target),
-        exp.args.map((e) => shrinkExp(e)),
+        onExp(exp.target),
+        exp.args.map((e) => onExp(e)),
         exp.meta,
       )
     }
 
     case "Begin": {
-      return Exps.Begin(shrinkExp(exp.head), shrinkExp(exp.body), exp.meta)
+      return Exps.Begin(onExp(exp.head), onExp(exp.body), exp.meta)
     }
 
     case "Let1": {
-      return Exps.Let1(
-        exp.name,
-        shrinkExp(exp.rhs),
-        shrinkExp(exp.body),
-        exp.meta,
-      )
+      return Exps.Let1(exp.name, onExp(exp.rhs), onExp(exp.body), exp.meta)
     }
 
     case "BeginSugar": {
@@ -72,20 +67,15 @@ function shrinkExp(exp: Exp): Exp {
 
       const [head, ...rest] = exp.sequence
       if (rest.length === 0) {
-        return shrinkExp(head)
+        return onExp(head)
       }
 
       const body = Exps.BeginSugar(rest, exp.meta)
 
       if (head.kind === "AssignSugar") {
-        return Exps.Let1(
-          head.name,
-          shrinkExp(head.rhs),
-          shrinkExp(body),
-          exp.meta,
-        )
+        return Exps.Let1(head.name, onExp(head.rhs), onExp(body), exp.meta)
       } else {
-        return Exps.Begin(shrinkExp(head), shrinkExp(body), head.meta)
+        return Exps.Begin(onExp(head), onExp(body), head.meta)
       }
     }
 
@@ -98,9 +88,9 @@ function shrinkExp(exp: Exp): Exp {
 
     case "If": {
       return Exps.If(
-        shrinkExp(exp.condition),
-        shrinkExp(exp.consequent),
-        shrinkExp(exp.alternative),
+        onExp(exp.condition),
+        onExp(exp.consequent),
+        onExp(exp.alternative),
         exp.meta,
       )
     }

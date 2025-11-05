@@ -10,21 +10,21 @@ import { formatExp } from "../format/index.ts"
 import { modMapDefinition, type Mod } from "../mod/index.ts"
 
 export function UnnestOperandPass(mod: Mod): Mod {
-  return modMapDefinition(mod, (definition) => unnestDefinition(definition))
+  return modMapDefinition(mod, (definition) => onDefinition(definition))
 }
 
 type State = {
   freshNameCount: number
 }
 
-function unnestDefinition(definition: Definition): Definition {
+function onDefinition(definition: Definition): Definition {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const state = { freshNameCount: 0 }
       return Definitions.FunctionDefinition(
         definition.name,
         definition.parameters,
-        unnestExp(state, definition.body),
+        onExp(state, definition.body),
         definition.meta,
       )
     }
@@ -37,7 +37,7 @@ function generateFreshName(state: State): string {
   return `_${subscript}`
 }
 
-function unnestExp(state: State, exp: Exp): Exp {
+function onExp(state: State, exp: Exp): Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -53,8 +53,8 @@ function unnestExp(state: State, exp: Exp): Exp {
     }
 
     case "Curry": {
-      const [targetEntries, newTarget] = unnestAtom(state, exp.target)
-      const [argEntries, newArgs] = unnestAtomMany(state, exp.args)
+      const [targetEntries, newTarget] = forAtom(state, exp.target)
+      const [argEntries, newArgs] = forAtomMany(state, exp.args)
       return prependLets(
         [...targetEntries, ...argEntries],
         Exps.Curry(newTarget, exp.arity, newArgs, exp.meta),
@@ -62,8 +62,8 @@ function unnestExp(state: State, exp: Exp): Exp {
     }
 
     case "Apply": {
-      const [targetEntries, newTarget] = unnestAtom(state, exp.target)
-      const [argEntries, newArgs] = unnestAtomMany(state, exp.args)
+      const [targetEntries, newTarget] = forAtom(state, exp.target)
+      const [argEntries, newArgs] = forAtomMany(state, exp.args)
       return prependLets(
         [...targetEntries, ...argEntries],
         Exps.Apply(newTarget, newArgs, exp.meta),
@@ -72,8 +72,8 @@ function unnestExp(state: State, exp: Exp): Exp {
 
     case "Begin": {
       return Exps.Begin(
-        unnestExp(state, exp.head),
-        unnestExp(state, exp.body),
+        onExp(state, exp.head),
+        onExp(state, exp.body),
         exp.meta,
       )
     }
@@ -81,17 +81,17 @@ function unnestExp(state: State, exp: Exp): Exp {
     case "Let1": {
       return Exps.Let1(
         exp.name,
-        unnestExp(state, exp.rhs),
-        unnestExp(state, exp.body),
+        onExp(state, exp.rhs),
+        onExp(state, exp.body),
         exp.meta,
       )
     }
 
     case "If": {
       return Exps.If(
-        unnestExp(state, exp.condition),
-        unnestExp(state, exp.consequent),
-        unnestExp(state, exp.alternative),
+        onExp(state, exp.condition),
+        onExp(state, exp.consequent),
+        onExp(state, exp.alternative),
         exp.meta,
       )
     }
@@ -116,7 +116,7 @@ function prependLets(entries: Array<Entry>, exp: Exp): Exp {
 
 type Entry = [string, Exp]
 
-function unnestAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
+function forAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
   switch (exp.kind) {
     case "Var": {
       return [[], exp]
@@ -131,13 +131,13 @@ function unnestAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
     case "Begin":
     case "If": {
       const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, unnestExp(state, exp)]
+      const entry: Entry = [freshName, onExp(state, exp)]
       return [[entry], Exps.Var(freshName, exp.meta)]
     }
 
     case "Curry": {
-      const [targetEntries, newTarget] = unnestAtom(state, exp.target)
-      const [argEntries, newArgs] = unnestAtomMany(state, exp.args)
+      const [targetEntries, newTarget] = forAtom(state, exp.target)
+      const [argEntries, newArgs] = forAtomMany(state, exp.args)
       const freshName = generateFreshName(state)
       const entry: Entry = [
         freshName,
@@ -150,8 +150,8 @@ function unnestAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
     }
 
     case "Apply": {
-      const [targetEntries, newTarget] = unnestAtom(state, exp.target)
-      const [argEntries, newArgs] = unnestAtomMany(state, exp.args)
+      const [targetEntries, newTarget] = forAtom(state, exp.target)
+      const [argEntries, newArgs] = forAtomMany(state, exp.args)
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, Exps.Apply(newTarget, newArgs, exp.meta)]
       return [
@@ -161,8 +161,8 @@ function unnestAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
     }
 
     case "Let1": {
-      const rhsEntry: Entry = [exp.name, unnestExp(state, exp.rhs)]
-      const [bodyEntries, newBody] = unnestAtom(state, exp.body)
+      const rhsEntry: Entry = [exp.name, onExp(state, exp.rhs)]
+      const [bodyEntries, newBody] = forAtom(state, exp.body)
       return [[rhsEntry, ...bodyEntries], newBody]
     }
 
@@ -175,12 +175,10 @@ function unnestAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
   }
 }
 
-function unnestAtomMany(
+function forAtomMany(
   state: State,
   exps: Array<Exp>,
 ): [Array<Entry>, Array<Exp>] {
-  const [entriesArray, newExps] = arrayUnzip(
-    exps.map((e) => unnestAtom(state, e)),
-  )
+  const [entriesArray, newExps] = arrayUnzip(exps.map((e) => forAtom(state, e)))
   return [arrayConcat(entriesArray), newExps]
 }

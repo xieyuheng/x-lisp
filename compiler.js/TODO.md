@@ -1,5 +1,3 @@
-[frontend] be explicit about structural recursion in passes
-
 # backend
 
 [backend] `Tael` -- `Curry` follow the same logic

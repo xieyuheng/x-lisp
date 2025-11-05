@@ -9,23 +9,23 @@ import { formatExp } from "../format/index.ts"
 import { modMapDefinition, type Mod } from "../mod/index.ts"
 
 export function UniquifyPass(mod: Mod): Mod {
-  return modMapDefinition(mod, uniquifyDefinition)
+  return modMapDefinition(mod, onDefinition)
 }
 
-function uniquifyDefinition(definition: Definition): Definition {
+function onDefinition(definition: Definition): Definition {
   switch (definition.kind) {
     case "FunctionDefinition": {
       return Definitions.FunctionDefinition(
         definition.name,
         definition.parameters,
-        uniquifyExp({}, {}, definition.body),
+        onExp({}, {}, definition.body),
         definition.meta,
       )
     }
   }
 }
 
-function uniquifyExp(
+function onExp(
   nameCounts: Record<string, number>,
   nameTable: Record<string, string>,
   exp: Exp,
@@ -55,23 +55,23 @@ function uniquifyExp(
       }
       return Exps.Lambda(
         parameters,
-        uniquifyExp(newNameCounts, newNameTable, exp.body),
+        onExp(newNameCounts, newNameTable, exp.body),
         exp.meta,
       )
     }
 
     case "Apply": {
       return Exps.Apply(
-        uniquifyExp(nameCounts, nameTable, exp.target),
-        exp.args.map((e) => uniquifyExp(nameCounts, nameTable, e)),
+        onExp(nameCounts, nameTable, exp.target),
+        exp.args.map((e) => onExp(nameCounts, nameTable, e)),
         exp.meta,
       )
     }
 
     case "Begin": {
       return Exps.Begin(
-        uniquifyExp(nameCounts, nameTable, exp.head),
-        uniquifyExp(nameCounts, nameTable, exp.body),
+        onExp(nameCounts, nameTable, exp.head),
+        onExp(nameCounts, nameTable, exp.body),
         exp.meta,
       )
     }
@@ -82,17 +82,17 @@ function uniquifyExp(
       const newNameTable = { ...nameTable, [exp.name]: newName }
       return Exps.Let1(
         newName,
-        uniquifyExp(newNameCounts, nameTable, exp.rhs),
-        uniquifyExp(newNameCounts, newNameTable, exp.body),
+        onExp(newNameCounts, nameTable, exp.rhs),
+        onExp(newNameCounts, newNameTable, exp.body),
         exp.meta,
       )
     }
 
     case "If": {
       return Exps.If(
-        uniquifyExp(nameCounts, nameTable, exp.condition),
-        uniquifyExp(nameCounts, nameTable, exp.consequent),
-        uniquifyExp(nameCounts, nameTable, exp.alternative),
+        onExp(nameCounts, nameTable, exp.condition),
+        onExp(nameCounts, nameTable, exp.consequent),
+        onExp(nameCounts, nameTable, exp.alternative),
         exp.meta,
       )
     }
