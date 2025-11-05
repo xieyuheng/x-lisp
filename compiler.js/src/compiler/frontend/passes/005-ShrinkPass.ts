@@ -1,4 +1,5 @@
 import * as X from "@xieyuheng/x-sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import * as Definitions from "../definition/index.ts"
 import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
@@ -82,6 +83,15 @@ function onExp(exp: Exp): Exp {
       else throw new Error(message)
     }
 
+    case "And": {
+      return desugarAnd(exp.exps.map(onExp), exp.meta)
+    }
+
+
+    case "Or": {
+      return desugarOr(exp.exps.map(onExp), exp.meta)
+    }
+
     case "If": {
       return Exps.If(
         onExp(exp.condition),
@@ -98,4 +108,18 @@ function onExp(exp: Exp): Exp {
       else throw new Error(message)
     }
   }
+}
+
+function desugarAnd(exps: Array<Exp>, meta?: Meta): Exp {
+  if (exps.length === 0) return Exps.Bool(true, meta)
+  if (exps.length === 1) return exps[0]
+  const [head, ...restExps] = exps
+  return Exps.If(head, desugarAnd(restExps, meta), Exps.Bool(false, meta), meta)
+}
+
+function desugarOr(exps: Array<Exp>, meta?: Meta): Exp {
+  if (exps.length === 0) return Exps.Bool(false, meta)
+  if (exps.length === 1) return exps[0]
+  const [head, ...restExps] = exps
+  return Exps.If(head, Exps.Bool(true, meta), desugarOr(restExps, meta), meta)
 }

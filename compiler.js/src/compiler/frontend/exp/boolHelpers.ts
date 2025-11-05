@@ -1,12 +1,10 @@
+import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import { formatExp } from "../format/index.ts"
 import * as Exps from "./index.ts"
 import { type Exp } from "./index.ts"
 
-export function Bool(bool: boolean): Exps.Hashtag {
-  return {
-    kind: "Hashtag",
-    content: bool ? "t" : "f",
-  }
+export function Bool(bool: boolean, meta?: Meta): Exps.Hashtag {
+  return Exps.Hashtag(bool ? "t" : "f", meta)
 }
 
 export function isBool(exp: Exp): boolean {
