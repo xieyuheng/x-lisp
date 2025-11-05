@@ -1,7 +1,7 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import { type Mod } from "../mod/index.ts"
-import { type Stmt } from "../stmt/index.ts"
 import { parseStmt } from "../parse/index.ts"
+import { type Stmt } from "../stmt/index.ts"
 import { stage1 } from "./stage1.ts"
 import { stage2 } from "./stage2.ts"
 import { stage3 } from "./stage3.ts"
