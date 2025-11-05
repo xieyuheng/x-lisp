@@ -1,5 +1,7 @@
-ShrinkPass -- support (and) and (or)
-test if by test of eoc
+[frontend] wrap `main` exps by `print-non-void`
+[frontend] add `And` and `Or` to `Exp`
+[frontend] `ShrinkPass` -- support `(and)` and `(or)`
+[frontend] test `if` by test of eoc
 
 # backend -- module
 
@@ -12,4 +14,4 @@ test if by test of eoc
 
 # compiler
 
-[compiler] `compileMod`
+[compiler] `compileToX86Assembly`
