@@ -1,6 +1,6 @@
 import * as X from "@xieyuheng/x-sexp.js"
 import { recordMapValue } from "../../helpers/record/recordMapValue.ts"
-import { matchExp } from "../syntax/index.ts"
+import { parseExp } from "../parse/index.ts"
 import * as Patterns from "./Pattern.ts"
 import { patternize, type Effect } from "./patternize.ts"
 
@@ -19,7 +19,7 @@ export function patternizeQuasiquote(sexp: X.Sexp): Effect {
       sexp.elements[0].content === "@unquote"
     ) {
       const firstSexp = X.asTael(sexp).elements[1]
-      const exp = matchExp(firstSexp)
+      const exp = parseExp(firstSexp)
       return patternize(exp)
     } else {
       return (mod, env) => {
