@@ -1,8 +1,9 @@
 [backend] Identity as a Instr
 
+- [frontend] `030-ExplicateControlPass` -- fix `inLet1`
+
 # frontend
 
-[frontend] `030-ExplicateControlPass` -- `inLet1`
 [frontend] `030-ExplicateControlPass` -- `inBegin`
 [frontend] `030-ExplicateControlPass` -- `inIf`
 
