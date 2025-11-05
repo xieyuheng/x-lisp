@@ -1,4 +1,4 @@
-[frontend] add `And` and `Or` to `Exp`
+[frontend] parse `And` and `Or`
 [frontend] `ShrinkPass` -- support `(and)` and `(or)`
 [frontend] test `if` by test of eoc
 

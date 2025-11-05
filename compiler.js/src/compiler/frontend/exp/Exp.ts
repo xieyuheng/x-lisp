@@ -13,6 +13,10 @@ export type Exp =
   | BeginSugar
   | AssignSugar
   | If
+  | When
+  | Unless
+  | And
+  | Or
 
 export type Var = {
   kind: "Var"
@@ -151,6 +155,66 @@ export function If(
     condition,
     consequent,
     alternative,
+    meta,
+  }
+}
+
+export type When = {
+  kind: "When"
+  condition: Exp
+  consequent: Exp
+  meta?: Meta
+}
+
+export function When(condition: Exp, consequent: Exp, meta?: Meta): When {
+  return {
+    kind: "When",
+    condition,
+    consequent,
+    meta,
+  }
+}
+
+export type Unless = {
+  kind: "Unless"
+  condition: Exp
+  consequent: Exp
+  meta?: Meta
+}
+
+export function Unless(condition: Exp, consequent: Exp, meta?: Meta): Unless {
+  return {
+    kind: "Unless",
+    condition,
+    consequent,
+    meta,
+  }
+}
+
+export type And = {
+  kind: "And"
+  exps: Array<Exp>
+  meta?: Meta
+}
+
+export function And(exps: Array<Exp>, meta?: Meta): And {
+  return {
+    kind: "And",
+    exps,
+    meta,
+  }
+}
+
+export type Or = {
+  kind: "Or"
+  exps: Array<Exp>
+  meta?: Meta
+}
+
+export function Or(exps: Array<Exp>, meta?: Meta): Or {
+  return {
+    kind: "Or",
+    exps,
     meta,
   }
 }
