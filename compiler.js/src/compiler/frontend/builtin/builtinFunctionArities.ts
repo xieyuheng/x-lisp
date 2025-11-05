@@ -8,9 +8,11 @@ export const builtinFunctionArities: Record<string, number> = {
 
   newline: 0,
   print: 1,
+  "print-non-void": 1,
 
   "make-curry": 3,
   "curry-put!": 3,
 
   "random-dice": 0,
+
 }
