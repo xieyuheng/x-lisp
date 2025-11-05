@@ -72,7 +72,7 @@ function onExp(exp: Exp): Exp {
       if (head.kind === "AssignSugar") {
         return Exps.Let1(head.name, onExp(head.rhs), onExp(body), exp.meta)
       } else {
-        return Exps.Let1("_", onExp(head), onExp(body), head.meta)
+        return Exps.Let1("_∅", onExp(head), onExp(body), head.meta)
       }
     }
 

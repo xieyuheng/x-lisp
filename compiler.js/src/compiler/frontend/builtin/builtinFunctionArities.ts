@@ -6,6 +6,8 @@ export const builtinFunctionArities: Record<string, number> = {
   idiv: 2,
   imod: 2,
 
+  "equal?": 2,
+
   newline: 0,
   print: 1,
   "println-non-void": 1,
