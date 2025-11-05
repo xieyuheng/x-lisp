@@ -1,4 +1,3 @@
-import { formatIndent } from "../../../helpers/format/formatIndent.ts"
 import { type Definition } from "../definition/index.ts"
 import { prettyMod } from "../pretty/index.ts"
 
@@ -36,7 +35,8 @@ export function modPublicDefinitions(mod: Mod): Map<string, Definition> {
 
 export function logMod(tag: string, mod: Mod): Mod {
   console.log(`${tag}:`)
-  console.log(formatIndent(4, "\n" + prettyMod(60, mod)))
+  console.log()
+  console.log(prettyMod(60, mod))
   console.log()
   return mod
 }

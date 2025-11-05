@@ -1,122 +1,124 @@
 Input:
 
-    (define (Y f)
-      ((lambda (u) (u u)) (lambda (x) (f (lambda (t) ((x x) t))))))
+(define (Y f)
+  ((lambda (u) (u u))
+   (lambda (x) (f (lambda (t) ((x x) t))))))
 
 ShrinkPass:
 
-    (define (Y f)
-      ((lambda (u) (u u)) (lambda (x) (f (lambda (t) ((x x) t))))))
+(define (Y f)
+  ((lambda (u) (u u))
+   (lambda (x) (f (lambda (t) ((x x) t))))))
 
 UniquifyPass:
 
-    (define (Y f)
-      ((lambda (u₁) (u₁ u₁))
-       (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
+(define (Y f)
+  ((lambda (u₁) (u₁ u₁))
+   (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
 
 RevealFunctionPass:
 
-    (define (Y f)
-      ((lambda (u₁) (u₁ u₁))
-       (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
+(define (Y f)
+  ((lambda (u₁) (u₁ u₁))
+   (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
 
 LiftLambdaPass:
 
-    (define (Y f)
-      (((@function make-curry 3) (@function Y/λ₁ 1) 1 0)
-       ((@function curry-put! 3)
-        0
-        f
-        ((@function make-curry 3) (@function Y/λ₂ 2) 2 1))))
-    
-    (define (Y/λ₁ u₁) (u₁ u₁))
-    
-    (define (Y/λ₂ f x₁)
-      (f ((@function curry-put! 3)
-          0
-          x₁
-          ((@function make-curry 3) (@function Y/λ₂/λ₁ 2) 2 1))))
-    
-    (define (Y/λ₂/λ₁ x₁ t₁) ((x₁ x₁) t₁))
+(define (Y f)
+  (((@function make-curry 3) (@function Y/λ₁ 1) 1 0)
+   ((@function curry-put! 3)
+    0
+    f
+    ((@function make-curry 3) (@function Y/λ₂ 2) 2 1))))
+
+(define (Y/λ₁ u₁) (u₁ u₁))
+
+(define (Y/λ₂ f x₁)
+  (f ((@function curry-put! 3)
+      0
+      x₁
+      ((@function make-curry 3) (@function Y/λ₂/λ₁ 2) 2 1))))
+
+(define (Y/λ₂/λ₁ x₁ t₁) ((x₁ x₁) t₁))
 
 UnnestOperandPass:
 
-    (define (Y f)
-      (@let1 _₁ (@function make-curry 3)
-        (@let1 _₂ (@function Y/λ₁ 1)
-          (@let1 _₃ 1
-            (@let1 _₄ 0
-              (@let1 _₅ (_₁ _₂ _₃ _₄)
-                (@let1 _₆ (@function curry-put! 3)
-                  (@let1 _₇ 0
-                    (@let1 _₈ (@function make-curry 3)
-                      (@let1 _₉ (@function Y/λ₂ 2)
-                        (@let1 _₁₀ 2
-                          (@let1 _₁₁ 1
-                            (@let1 _₁₂ (_₈ _₉ _₁₀ _₁₁)
-                              (@let1 _₁₃ (_₆ _₇ f _₁₂) (_₅ _₁₃)))))))))))))))
-    
-    (define (Y/λ₁ u₁) (u₁ u₁))
-    
-    (define (Y/λ₂ f x₁)
-      (@let1 _₁ (@function curry-put! 3)
-        (@let1 _₂ 0
-          (@let1 _₃ (@function make-curry 3)
-            (@let1 _₄ (@function Y/λ₂/λ₁ 2)
-              (@let1 _₅ 2
-                (@let1 _₆ 1
-                  (@let1 _₇ (_₃ _₄ _₅ _₆)
-                    (@let1 _₈ (_₁ _₂ x₁ _₇) (f _₈))))))))))
-    
-    (define (Y/λ₂/λ₁ x₁ t₁) (@let1 _₁ (x₁ x₁) (_₁ t₁)))
+(define (Y f)
+  (@let1 _₁ (@function make-curry 3)
+    (@let1 _₂ (@function Y/λ₁ 1)
+      (@let1 _₃ 1
+        (@let1 _₄ 0
+          (@let1 _₅ (_₁ _₂ _₃ _₄)
+            (@let1 _₆ (@function curry-put! 3)
+              (@let1 _₇ 0
+                (@let1 _₈ (@function make-curry 3)
+                  (@let1 _₉ (@function Y/λ₂ 2)
+                    (@let1 _₁₀ 2
+                      (@let1 _₁₁ 1
+                        (@let1 _₁₂ (_₈ _₉ _₁₀ _₁₁)
+                          (@let1 _₁₃ (_₆ _₇ f _₁₂) (_₅ _₁₃)))))))))))))))
+
+(define (Y/λ₁ u₁) (u₁ u₁))
+
+(define (Y/λ₂ f x₁)
+  (@let1 _₁ (@function curry-put! 3)
+    (@let1 _₂ 0
+      (@let1 _₃ (@function make-curry 3)
+        (@let1 _₄ (@function Y/λ₂/λ₁ 2)
+          (@let1 _₅ 2
+            (@let1 _₆ 1
+              (@let1 _₇ (_₃ _₄ _₅ _₆)
+                (@let1 _₈ (_₁ _₂ x₁ _₇) (f _₈))))))))))
+
+(define (Y/λ₂/λ₁ x₁ t₁) (@let1 _₁ (x₁ x₁) (_₁ t₁)))
 
 ExplicateControlPass:
 
-    (define-function Y
-      (block entry
-        (= f (argument 0))
-        (= _₁ (const (@function make-curry 3)))
-        (= _₂ (const (@function Y/λ₁ 1)))
-        (= _₃ (const 1))
-        (= _₄ (const 0))
-        (= _₅ (apply _₁ _₂ _₃ _₄))
-        (= _₆ (const (@function curry-put! 3)))
-        (= _₇ (const 0))
-        (= _₈ (const (@function make-curry 3)))
-        (= _₉ (const (@function Y/λ₂ 2)))
-        (= _₁₀ (const 2))
-        (= _₁₁ (const 1))
-        (= _₁₂ (apply _₈ _₉ _₁₀ _₁₁))
-        (= _₁₃ (apply _₆ _₇ f _₁₂))
-        (= _↩ (apply _₅ _₁₃))
-        (return _↩)))
-    
-    (define-function Y/λ₁
-      (block entry
-        (= u₁ (argument 0))
-        (= _↩ (apply u₁ u₁))
-        (return _↩)))
-    
-    (define-function Y/λ₂
-      (block entry
-        (= f (argument 0))
-        (= x₁ (argument 1))
-        (= _₁ (const (@function curry-put! 3)))
-        (= _₂ (const 0))
-        (= _₃ (const (@function make-curry 3)))
-        (= _₄ (const (@function Y/λ₂/λ₁ 2)))
-        (= _₅ (const 2))
-        (= _₆ (const 1))
-        (= _₇ (apply _₃ _₄ _₅ _₆))
-        (= _₈ (apply _₁ _₂ x₁ _₇))
-        (= _↩ (apply f _₈))
-        (return _↩)))
-    
-    (define-function Y/λ₂/λ₁
-      (block entry
-        (= x₁ (argument 0))
-        (= t₁ (argument 1))
-        (= _₁ (apply x₁ x₁))
-        (= _↩ (apply _₁ t₁))
-        (return _↩)))
+(define-function Y
+  (block entry
+    (= f (argument 0))
+    (= _₁ (const (@function make-curry 3)))
+    (= _₂ (const (@function Y/λ₁ 1)))
+    (= _₃ (const 1))
+    (= _₄ (const 0))
+    (= _₅ (apply _₁ _₂ _₃ _₄))
+    (= _₆ (const (@function curry-put! 3)))
+    (= _₇ (const 0))
+    (= _₈ (const (@function make-curry 3)))
+    (= _₉ (const (@function Y/λ₂ 2)))
+    (= _₁₀ (const 2))
+    (= _₁₁ (const 1))
+    (= _₁₂ (apply _₈ _₉ _₁₀ _₁₁))
+    (= _₁₃ (apply _₆ _₇ f _₁₂))
+    (= _↩ (apply _₅ _₁₃))
+    (return _↩)))
+
+(define-function Y/λ₁
+  (block entry
+    (= u₁ (argument 0))
+    (= _↩ (apply u₁ u₁))
+    (return _↩)))
+
+(define-function Y/λ₂
+  (block entry
+    (= f (argument 0))
+    (= x₁ (argument 1))
+    (= _₁ (const (@function curry-put! 3)))
+    (= _₂ (const 0))
+    (= _₃ (const (@function make-curry 3)))
+    (= _₄ (const (@function Y/λ₂/λ₁ 2)))
+    (= _₅ (const 2))
+    (= _₆ (const 1))
+    (= _₇ (apply _₃ _₄ _₅ _₆))
+    (= _₈ (apply _₁ _₂ x₁ _₇))
+    (= _↩ (apply f _₈))
+    (return _↩)))
+
+(define-function Y/λ₂/λ₁
+  (block entry
+    (= x₁ (argument 0))
+    (= t₁ (argument 1))
+    (= _₁ (apply x₁ x₁))
+    (= _↩ (apply _₁ t₁))
+    (return _↩)))
 
