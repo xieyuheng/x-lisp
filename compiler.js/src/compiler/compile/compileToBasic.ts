@@ -7,7 +7,9 @@ export function compileToBasic(mod: F.Mod): B.Mod {
   mod = F.RevealFunctionPass(mod)
   mod = F.LiftLambdaPass(mod)
   mod = F.UnnestOperandPass(mod)
-  let basicMod = F.ExplicateControlPass(mod)
+
+  const basicMod = B.createMod(mod.url)
   B.importBuiltin(basicMod)
+  F.ExplicateControlPass(mod, basicMod)
   return basicMod
 }

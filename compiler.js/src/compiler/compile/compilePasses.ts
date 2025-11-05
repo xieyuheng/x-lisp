@@ -8,5 +8,8 @@ export function compilePasses(mod: F.Mod): void {
   mod = F.logMod("RevealFunctionPass", F.RevealFunctionPass(mod))
   mod = F.logMod("LiftLambdaPass", F.LiftLambdaPass(mod))
   mod = F.logMod("UnnestOperandPass", F.UnnestOperandPass(mod))
-  let basicMod = B.logMod("ExplicateControlPass", F.ExplicateControlPass(mod))
+
+  const basicMod = B.createMod(mod.url)
+  F.ExplicateControlPass(mod, basicMod)
+  B.logMod("ExplicateControlPass", basicMod)
 }

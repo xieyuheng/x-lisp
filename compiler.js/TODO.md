@@ -1,7 +1,5 @@
-[compiler] `ExplicateControlPass` take `basicMod` as argument
-
-[backend] fix `print` -- no newline
 [backend] add `newline` to builtin
+[backend] fix `print` -- no newline
 
 # backend -- module
 

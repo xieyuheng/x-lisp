@@ -7,15 +7,12 @@ import * as Exps from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 
-export function ExplicateControlPass(mod: Mod): B.Mod {
-  const basicMod = B.createMod(mod.url)
+export function ExplicateControlPass(mod: Mod, basicMod: B.Mod): void {
   for (const definition of mod.definitions.values()) {
     if (definition.kind === "FunctionDefinition") {
       onDefinition(basicMod, definition)
     }
   }
-
-  return basicMod
 }
 
 type State = {
