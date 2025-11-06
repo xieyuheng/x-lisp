@@ -14,6 +14,7 @@ date: 2025-10-22
 - rewrite system
 - propagator model
 - logic constraint programming
+- reactive programming
 
 方便用 C 扩展，可以作为 app 的脚本语言：
 
