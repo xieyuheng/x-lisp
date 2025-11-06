@@ -1,6 +1,9 @@
 # binary
 
+[binary] `SchemaType` be like json-schema
+[binary] `SchemaType` -- support `endian`
 [binary] `binaryEncode`
+[binary] test by writing an ELF parser
 
 # frontend -- module
 
