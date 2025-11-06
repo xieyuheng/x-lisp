@@ -10,7 +10,7 @@ export function binaryDecode(buffer: ArrayBuffer, exp: Exp): any {
 
 function execute(context: Context, exp: Exp): null {
   switch (exp.kind) {
-    case "SequenceExp": {
+    case "Sequence": {
       for (const childExp of exp.exps) {
         execute(context, childExp)
       }
@@ -18,12 +18,12 @@ function execute(context: Context, exp: Exp): null {
       return null
     }
 
-    case "AttributeExp": {
+    case "Attribute": {
       executeAttribute(context, exp.name, exp.type)
       return null
     }
 
-    case "DependentExp": {
+    case "Dependent": {
       execute(context, exp.fn(context.data))
       return null
     }

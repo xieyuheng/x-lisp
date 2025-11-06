@@ -1,41 +1,41 @@
 import type { Type } from "./Type.ts"
 
-export type Exp = SequenceExp | AttributeExp | DependentExp
+export type Exp = Sequence | Attribute | Dependent
 
-export type SequenceExp = {
-  kind: "SequenceExp"
+export type Sequence = {
+  kind: "Sequence"
   exps: Array<Exp>
 }
 
-export function SequenceExp(exps: Array<Exp>): SequenceExp {
+export function Sequence(exps: Array<Exp>): Sequence {
   return {
-    kind: "SequenceExp",
+    kind: "Sequence",
     exps,
   }
 }
 
-export type AttributeExp = {
-  kind: "AttributeExp"
+export type Attribute = {
+  kind: "Attribute"
   name: string
   type: Type
 }
 
-export function AttributeExp(name: string, type: Type): AttributeExp {
+export function Attribute(name: string, type: Type): Attribute {
   return {
-    kind: "AttributeExp",
+    kind: "Attribute",
     name,
     type,
   }
 }
 
-export type DependentExp = {
-  kind: "DependentExp"
+export type Dependent = {
+  kind: "Dependent"
   fn: (data: any) => Exp
 }
 
-export function DependentExp(fn: (data: any) => Exp): DependentExp {
+export function Dependent(fn: (data: any) => Exp): Dependent {
   return {
-    kind: "DependentExp",
+    kind: "Dependent",
     fn,
   }
 }
