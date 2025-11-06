@@ -6,8 +6,9 @@ export type State = {
   data: any
 }
 
-export type Position = { byteIndex: number; bitOffset: number }
 export type Endian = "LittleEndian" | "BigEndian"
+
+export type Position = { byteIndex: number; bitOffset: number }
 
 export function createState(buffer: ArrayBuffer, data: any): State {
   return {
@@ -17,4 +18,9 @@ export function createState(buffer: ArrayBuffer, data: any): State {
     endianStack: ["LittleEndian"],
     data,
   }
+}
+
+export function positionAdvance(position: Position, byteCount: number): void {
+  position.byteIndex += byteCount
+  position.bitOffset = 0
 }

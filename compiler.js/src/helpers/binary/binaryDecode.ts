@@ -1,6 +1,6 @@
 import assert from "node:assert"
 import type { Exp } from "./Exp.ts"
-import { createState, type State } from "./State.ts"
+import { createState, positionAdvance, type State } from "./State.ts"
 import type { Type } from "./Type.ts"
 
 export function binaryDecode(buffer: ArrayBuffer, exp: Exp): any {
@@ -55,19 +55,19 @@ function executeAttribute(state: State, name: string, type: Type): null {
   switch (type.type) {
     case "Int8": {
       state.data[name] = state.view.getInt8(position.byteIndex)
-      position.byteIndex += 1
+      positionAdvance(position, 1)
       return null
     }
 
     case "Int16": {
       state.data[name] = state.view.getInt16(position.byteIndex, LittleEndian)
-      position.byteIndex += 2
+      positionAdvance(position, 2)
       return null
     }
 
     case "Int32": {
       state.data[name] = state.view.getInt32(position.byteIndex, LittleEndian)
-      position.byteIndex += 4
+      positionAdvance(position, 4)
       return null
     }
 
@@ -76,25 +76,25 @@ function executeAttribute(state: State, name: string, type: Type): null {
         position.byteIndex,
         LittleEndian,
       )
-      position.byteIndex += 8
+      positionAdvance(position, 8)
       return null
     }
 
     case "Uint8": {
       state.data[name] = state.view.getUint8(position.byteIndex)
-      position.byteIndex += 1
+      positionAdvance(position, 1)
       return null
     }
 
     case "Uint16": {
       state.data[name] = state.view.getUint16(position.byteIndex, LittleEndian)
-      position.byteIndex += 2
+      positionAdvance(position, 2)
       return null
     }
 
     case "Uint32": {
       state.data[name] = state.view.getUint32(position.byteIndex, LittleEndian)
-      position.byteIndex += 4
+      positionAdvance(position, 4)
       return null
     }
 
@@ -103,25 +103,25 @@ function executeAttribute(state: State, name: string, type: Type): null {
         position.byteIndex,
         LittleEndian,
       )
-      position.byteIndex += 8
+      positionAdvance(position, 8)
       return null
     }
 
     case "Float16": {
       state.data[name] = state.view.getFloat16(position.byteIndex, LittleEndian)
-      position.byteIndex += 2
+      positionAdvance(position, 2)
       return null
     }
 
     case "Float32": {
       state.data[name] = state.view.getFloat32(position.byteIndex, LittleEndian)
-      position.byteIndex += 4
+      positionAdvance(position, 4)
       return null
     }
 
     case "Float64": {
       state.data[name] = state.view.getFloat64(position.byteIndex, LittleEndian)
-      position.byteIndex += 8
+      positionAdvance(position, 8)
       return null
     }
   }
