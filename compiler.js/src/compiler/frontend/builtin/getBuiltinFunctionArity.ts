@@ -1,4 +1,3 @@
-import assert from "node:assert"
 import * as B from "../../backend/index.ts"
 
 export function getBuiltinFunctionArity(name: string): number | undefined {
@@ -8,7 +7,6 @@ export function getBuiltinFunctionArity(name: string): number | undefined {
   }
 
   return B.definitionArity(definition)
-
 }
 
 export function hasBuiltinFunction(name: string): Boolean {

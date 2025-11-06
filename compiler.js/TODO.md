@@ -1,3 +1,13 @@
+# binary
+
+[binary] `BinaryContext`
+- Context = { buffer: ArrayBuffer, index: number, bitIndex: number, result: any }
+[binary] `BinarySchema`
+- attribute(name, binary-type)
+[binary] `parseBinarySchema`
+[binary] `binaryEncode`
+[binary] `binaryDecode`
+
 # frontend -- module
 
 [frontend] `Stmt` -- `Import`
