@@ -113,7 +113,24 @@ date: 2025-10-22
   - [ ] module system
   - [ ] bundling
 
-# milestone 3 -- codegen
+# milestone 3 -- machine-lisp
+
+成果：
+
+- 一个 GAS 语法 lisp 化的汇编器。
+  代码就是简单的对这个语言的 format。
+
+范围：
+
+- 不考虑扩展，先忠实的翻译 GAS 语法。
+
+任务：
+
+- [ ] machine-lisp
+  - [ ] language design
+  - [ ] format to GAS
+
+# milestone 4 -- codegen
 
 成果：
 

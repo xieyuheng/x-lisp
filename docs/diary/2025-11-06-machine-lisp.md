@@ -10,6 +10,16 @@ date: 2025-11-06
 我也需要专门为代码生成设计一个更接近汇编语言的 lisp，
 也就是 machine-lisp。
 
+# 范围
+
+由于现在 x-lisp 还没完全独立，
+所以先不考虑用 x-lisp 扩展 machine-lisp。
+
+machine-lisp 因此没有 macro 功能，
+所有的语法扩展都暂时用 JS/TS 实现。
+
+这与 basic-lisp 的情况相同。
+
 # (define-code)
 
 汇编语言的本质是 layout bytes，
@@ -122,6 +132,25 @@ layout 格式所描述的是一个 sequence 的数据，
 
 一般的，任何二进制格式的编码和解码都需要这两个功能。
 
-TODO 设计 bit pattern 语法。
+好像这个功能就是 C 的 struct 语法。
 
-TODO 设计 byte pattern 语法。
+但是这与现在 x-lisp 已有的谓词系统不同，
+因为谓词的职责是单一的，没法用来描述格式。
+
+这也与未来想要实现的 meta-lisp 中的类型不同，
+因为类型系统假设了每个 object 类型都是指针。
+
+指针类型的定义可以递归，
+byte pattern 好像也需要指针，
+比如可以描述整个 heap 的 dump。
+
+我可以先尝试在 JS/TS 中实现 DLS 来解析二进制文件。
+以 ELF 为主要例子，目的是让汇编器能够生成 ELF object file。
+
+# 行动
+
+第一个阶段，可以使用系统汇编器，
+就是直接把 gas 的语法 lisp 化。
+
+但是在这个 lisp 化的过程中要保持 machine-lisp 的语言设计，
+只不过这个阶段 instruction 都是写死的，而不扩展的。
