@@ -1,7 +1,7 @@
 # binary
 
+[binary] test `binaryDecode`
 [binary] `binaryEncode`
-[binary] `binaryDecode`
 
 # frontend -- module
 
