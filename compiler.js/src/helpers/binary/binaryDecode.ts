@@ -1,6 +1,6 @@
 import { createBinaryContext, type BinaryContext } from "./BinaryContext.ts"
 import type { BinarySchema } from "./BinarySchema.ts"
-import type { SchemaType } from "./SchemaType.ts"
+import type { Type } from "./Type.ts"
 
 export function binaryDecode(buffer: ArrayBuffer, schema: BinarySchema): any {
   const context = createBinaryContext(buffer, {})
@@ -33,7 +33,7 @@ function execute(context: BinaryContext, schema: BinarySchema): null {
 function executeAttribute(
   context: BinaryContext,
   name: string,
-  type: SchemaType,
+  type: Type,
 ): null {
   switch (type.type) {
     case "Int8": {

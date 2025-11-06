@@ -1,4 +1,4 @@
-import type { SchemaType } from "./SchemaType.ts"
+import type { Type } from "./Type.ts"
 
 export type BinarySchema = SequenceSchema | AttributeSchema | DependentSchema
 
@@ -17,13 +17,10 @@ export function SequenceSchema(schemas: Array<BinarySchema>): SequenceSchema {
 export type AttributeSchema = {
   kind: "AttributeSchema"
   name: string
-  type: SchemaType
+  type: Type
 }
 
-export function AttributeSchema(
-  name: string,
-  type: SchemaType,
-): AttributeSchema {
+export function AttributeSchema(name: string, type: Type): AttributeSchema {
   return {
     kind: "AttributeSchema",
     name,

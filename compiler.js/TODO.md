@@ -1,6 +1,8 @@
 # binary
 
-[binary] `SchemaType` -- support `endian`
+[binary] rename BinarySchema to Exp
+[binary] `bigEndian` and `littleEndian`
+[binary] `Type` -- support `endian`
 
 [binary] `Position` should have `byteIndex` and `bitOffset`
 [binary] `Offset` -- `Context` should have a `positionStack`
