@@ -1,7 +1,6 @@
 import assert from "node:assert"
 import { test } from "node:test"
 import * as b from "./index.ts"
-import { binaryDecode } from "./index.ts"
 
 test("binaryDecode", () => {
   const bytes = new Uint8Array([1, 2, 3])
@@ -18,7 +17,7 @@ test("binaryDecode", () => {
 
 test("binaryDecode -- dependent", () => {
   const bytes = new Uint8Array([1, 2, 3])
-  const data = binaryDecode(
+  const data = b.binaryDecode(
     bytes.buffer,
     b.Sequence([
       b.Dependent(() => b.Attribute("x", b.Uint8())),

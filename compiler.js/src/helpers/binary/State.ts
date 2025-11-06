@@ -4,7 +4,10 @@ export type State = {
   index: number
   bitOffset: number
   data: any
+  endianStack: Array<Endian>
 }
+
+export type Endian = "BigEndian" | "LittleEndian"
 
 export function createState(buffer: ArrayBuffer, data: any): State {
   return {
@@ -13,5 +16,6 @@ export function createState(buffer: ArrayBuffer, data: any): State {
     index: 0,
     bitOffset: 0,
     data,
+    endianStack: ["LittleEndian"]
   }
 }

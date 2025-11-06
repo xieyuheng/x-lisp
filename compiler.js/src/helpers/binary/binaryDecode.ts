@@ -31,6 +31,8 @@ function execute(state: State, exp: Exp): null {
 }
 
 function executeAttribute(state: State, name: string, type: Type): null {
+  const endianness = state.endianStack.at(-1) === "LittleEndian"
+
   switch (type.type) {
     case "Int8": {
       state.data[name] = state.view.getInt8(state.index)
@@ -39,19 +41,19 @@ function executeAttribute(state: State, name: string, type: Type): null {
     }
 
     case "Int16": {
-      state.data[name] = state.view.getInt16(state.index, true)
+      state.data[name] = state.view.getInt16(state.index, endianness)
       state.index += 2
       return null
     }
 
     case "Int32": {
-      state.data[name] = state.view.getInt32(state.index, true)
+      state.data[name] = state.view.getInt32(state.index, endianness)
       state.index += 4
       return null
     }
 
     case "BigInt64": {
-      state.data[name] = state.view.getBigInt64(state.index, true)
+      state.data[name] = state.view.getBigInt64(state.index, endianness)
       state.index += 8
       return null
     }
@@ -63,37 +65,37 @@ function executeAttribute(state: State, name: string, type: Type): null {
     }
 
     case "Uint16": {
-      state.data[name] = state.view.getUint16(state.index, true)
+      state.data[name] = state.view.getUint16(state.index, endianness)
       state.index += 2
       return null
     }
 
     case "Uint32": {
-      state.data[name] = state.view.getUint32(state.index, true)
+      state.data[name] = state.view.getUint32(state.index, endianness)
       state.index += 4
       return null
     }
 
     case "BigUint64": {
-      state.data[name] = state.view.getBigUint64(state.index, true)
+      state.data[name] = state.view.getBigUint64(state.index, endianness)
       state.index += 8
       return null
     }
 
     case "Float16": {
-      state.data[name] = state.view.getFloat16(state.index, true)
+      state.data[name] = state.view.getFloat16(state.index, endianness)
       state.index += 2
       return null
     }
 
     case "Float32": {
-      state.data[name] = state.view.getFloat32(state.index, true)
+      state.data[name] = state.view.getFloat32(state.index, endianness)
       state.index += 4
       return null
     }
 
     case "Float64": {
-      state.data[name] = state.view.getFloat64(state.index, true)
+      state.data[name] = state.view.getFloat64(state.index, endianness)
       state.index += 8
       return null
     }
