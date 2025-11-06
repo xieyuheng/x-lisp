@@ -20,15 +20,38 @@ machine-lisp 因此没有 macro 功能，
 
 这与 basic-lisp 的情况相同。
 
-# (define-code)
+# 语法
 
 汇编语言的本质是 layout bytes，
 同时要支持用 label 给某段代码命名。
-因此基础语法设计如下：
+
+但是还是要有函数的概念，
+函数内的 label 以函数为 scope，
+通过自动以函数 name 为前缀来实现 scope。
 
 ```scheme
-(define-code <label>
+(define-function <name>
+  (block <label>
+    <directive>
+    ...)
+  ...)
+```
+
+另外还要能在函数之外定义数据：
+
+```scheme
+(define-data <label>
   <directive>
+  ...)
+```
+
+但是也许 data 也需要 scope，因为可以考虑统一的：
+
+```scheme
+(define-code <name>
+  (block <label>
+    <directive>
+    ...)
   ...)
 ```
 
