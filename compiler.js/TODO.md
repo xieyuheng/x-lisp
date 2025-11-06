@@ -1,16 +1,3 @@
-# elf
-
-[elf] `Elf`
-[elf] `parseElf` -- parser elf by `binaryDecode`
-
-# binary
-
-[binary] `encode`
-
-# elf
-
-[elf] [maybe] write an online ELF viewer
-
 # frontend -- module
 
 [frontend] `Stmt` -- `Import`

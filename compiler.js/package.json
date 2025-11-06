@@ -7,10 +7,7 @@
   "files": [
     "src",
     "lib",
-    "builtin",
-    "prelude",
-    "examples",
-    "std"
+    "lisp"
   ],
   "bin": {
     "x-lisp.js": "lib/main.js"
