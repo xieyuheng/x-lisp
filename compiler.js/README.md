@@ -19,14 +19,6 @@ commands:
   interpret-basic -- Interpret a basic-lisp file
 ```
 
-## Development
-
-```
-$ npm install
-$ npm run build
-$ npm run test
-```
-
 ## Syntax
 
 ### Parser Level Syntax Sugar
