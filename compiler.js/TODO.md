@@ -1,11 +1,7 @@
 # binary
 
-[binary] exp -- `BigEndian` and `LittleEndian`
-[binary] `Type` -- support `endian`
-
 [binary] `Position` should have `byteIndex` and `bitOffset`
 [binary] `Offset` -- `State` should have a `positionStack`
-
 [binary] `binaryEncode`
 
 # elf
