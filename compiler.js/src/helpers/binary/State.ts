@@ -1,4 +1,4 @@
-export type Context = {
+export type State = {
   buffer: ArrayBuffer
   view: DataView
   index: number
@@ -6,7 +6,7 @@ export type Context = {
   data: any
 }
 
-export function createContext(buffer: ArrayBuffer, data: any): Context {
+export function createState(buffer: ArrayBuffer, data: any): State {
   return {
     buffer,
     view: new DataView(buffer),

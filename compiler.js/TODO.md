@@ -1,11 +1,11 @@
 # binary
 
-[binary] `Context` has endian stack
+[binary] `State` has endian stack
 [binary] exp -- `BigEndian` and `BittleEndian`
 [binary] `Type` -- support `endian`
 
 [binary] `Position` should have `byteIndex` and `bitOffset`
-[binary] `Offset` -- `Context` should have a `positionStack`
+[binary] `Offset` -- `State` should have a `positionStack`
 
 [binary] `binaryEncode`
 
