@@ -1,6 +1,6 @@
 # binary
 
-[binary] rename BinarySchema to Exp
+[binary] rename `BinaryContext` to `Context`
 [binary] `bigEndian` and `littleEndian`
 [binary] `Type` -- support `endian`
 

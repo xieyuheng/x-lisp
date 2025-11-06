@@ -1,6 +1,6 @@
 export * from "./BinaryContext.ts"
 export * from "./binaryDecode.ts"
 export * from "./binaryEncode.ts"
-export * from "./BinarySchema.ts"
+export * from "./Exp.ts"
 export * from "./syntax.ts"
 export * from "./Type.ts"

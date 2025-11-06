@@ -1,17 +1,15 @@
-import type { BinarySchema } from "./BinarySchema.ts"
-import * as Schemas from "./BinarySchema.ts"
+import type { Exp } from "./Exp.ts"
+import * as Exps from "./Exp.ts"
 import type { Type } from "./Type.ts"
 
-export function sequence(schemas: Array<BinarySchema>): Schemas.SequenceSchema {
-  return Schemas.SequenceSchema(schemas)
+export function sequence(exps: Array<Exp>): Exps.SequenceExp {
+  return Exps.SequenceExp(exps)
 }
 
-export function attribute(name: string, type: Type): Schemas.AttributeSchema {
-  return Schemas.AttributeSchema(name, type)
+export function attribute(name: string, type: Type): Exps.AttributeExp {
+  return Exps.AttributeExp(name, type)
 }
 
-export function dependent(
-  fn: (data: any) => BinarySchema,
-): Schemas.DependentSchema {
-  return Schemas.DependentSchema(fn)
+export function dependent(fn: (data: any) => Exp): Exps.DependentExp {
+  return Exps.DependentExp(fn)
 }
