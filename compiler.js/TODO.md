@@ -1,6 +1,8 @@
 # binary
 
-[binary] `bigEndian` and `littleEndian`
+[binary] remove `syntax`
+[binary] `Context` has endian stack
+[binary] exp -- `BigEndian` and `BittleEndian`
 [binary] `Type` -- support `endian`
 
 [binary] `Position` should have `byteIndex` and `bitOffset`
