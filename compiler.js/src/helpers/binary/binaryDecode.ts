@@ -1,30 +1,30 @@
 import { createBinaryContext, type BinaryContext } from "./BinaryContext.ts"
-import type { BinarySchema } from "./BinarySchema.ts"
+import type { Exp } from "./Exp.ts"
 import type { Type } from "./Type.ts"
 
-export function binaryDecode(buffer: ArrayBuffer, schema: BinarySchema): any {
+export function binaryDecode(buffer: ArrayBuffer, exp: Exp): any {
   const context = createBinaryContext(buffer, {})
-  execute(context, schema)
+  execute(context, exp)
   return context.data
 }
 
-function execute(context: BinaryContext, schema: BinarySchema): null {
-  switch (schema.kind) {
-    case "SequenceSchema": {
-      for (const childSchema of schema.schemas) {
-        execute(context, childSchema)
+function execute(context: BinaryContext, exp: Exp): null {
+  switch (exp.kind) {
+    case "SequenceExp": {
+      for (const childExp of exp.exps) {
+        execute(context, childExp)
       }
 
       return null
     }
 
-    case "AttributeSchema": {
-      executeAttribute(context, schema.name, schema.type)
+    case "AttributeExp": {
+      executeAttribute(context, exp.name, exp.type)
       return null
     }
 
-    case "DependentSchema": {
-      execute(context, schema.fn(context.data))
+    case "DependentExp": {
+      execute(context, exp.fn(context.data))
       return null
     }
   }
