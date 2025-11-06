@@ -1,6 +1,5 @@
 # binary
 
-[binary] `parseBinarySchema`
 [binary] `binaryEncode`
 [binary] `binaryDecode`
 
