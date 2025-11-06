@@ -1,7 +1,6 @@
 # binary
 
-[binary] `State` has endian stack
-[binary] exp -- `BigEndian` and `BittleEndian`
+[binary] exp -- `BigEndian` and `LittleEndian`
 [binary] `Type` -- support `endian`
 
 [binary] `Position` should have `byteIndex` and `bitOffset`
