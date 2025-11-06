@@ -1,6 +1,5 @@
 # binary
 
-[binary] `createBinaryContext`
 [binary] `BinarySchema`
 - attribute(name, binary-type)
 [binary] `parseBinarySchema`
