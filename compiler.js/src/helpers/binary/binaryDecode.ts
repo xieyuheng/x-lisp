@@ -35,7 +35,7 @@ function executeAttribute(
   name: string,
   type: SchemaType,
 ): null {
-  switch (type) {
+  switch (type.type) {
     case "Int8": {
       context.data[name] = context.view.getInt8(context.index)
       context.index += 1

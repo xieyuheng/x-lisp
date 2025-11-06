@@ -1,6 +1,5 @@
 # binary
 
-[binary] `SchemaType` be like json-schema
 [binary] `SchemaType` -- support `endian`
 
 [binary] `Position` should have `byteIndex` and `bitOffset`
