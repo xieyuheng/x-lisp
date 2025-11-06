@@ -1,7 +1,6 @@
 # binary
 
-[binary] `Position` should have `byteIndex` and `bitOffset`
-[binary] `Offset` -- `State` should have a `positionStack`
+[binary] extract `positionAdvance` -- to reset `bitOffset`
 [binary] `binaryEncode`
 
 # elf

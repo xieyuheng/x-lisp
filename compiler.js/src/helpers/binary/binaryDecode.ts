@@ -1,3 +1,4 @@
+import assert from "node:assert"
 import type { Exp } from "./Exp.ts"
 import { createState, type State } from "./State.ts"
 import type { Type } from "./Type.ts"
@@ -45,72 +46,82 @@ function execute(state: State, exp: Exp): null {
 }
 
 function executeAttribute(state: State, name: string, type: Type): null {
-  const endianness = state.endianStack.at(-1) === "LittleEndian"
+  const endian = state.endianStack.at(-1)
+  assert(endian)
+  const LittleEndian = endian === "LittleEndian"
+  const position = state.positionStack.at(-1)
+  assert(position)
 
   switch (type.type) {
     case "Int8": {
-      state.data[name] = state.view.getInt8(state.index)
-      state.index += 1
+      state.data[name] = state.view.getInt8(position.byteIndex)
+      position.byteIndex += 1
       return null
     }
 
     case "Int16": {
-      state.data[name] = state.view.getInt16(state.index, endianness)
-      state.index += 2
+      state.data[name] = state.view.getInt16(position.byteIndex, LittleEndian)
+      position.byteIndex += 2
       return null
     }
 
     case "Int32": {
-      state.data[name] = state.view.getInt32(state.index, endianness)
-      state.index += 4
+      state.data[name] = state.view.getInt32(position.byteIndex, LittleEndian)
+      position.byteIndex += 4
       return null
     }
 
     case "BigInt64": {
-      state.data[name] = state.view.getBigInt64(state.index, endianness)
-      state.index += 8
+      state.data[name] = state.view.getBigInt64(
+        position.byteIndex,
+        LittleEndian,
+      )
+      position.byteIndex += 8
       return null
     }
 
     case "Uint8": {
-      state.data[name] = state.view.getUint8(state.index)
-      state.index += 1
+      state.data[name] = state.view.getUint8(position.byteIndex)
+      position.byteIndex += 1
       return null
     }
 
     case "Uint16": {
-      state.data[name] = state.view.getUint16(state.index, endianness)
-      state.index += 2
+      state.data[name] = state.view.getUint16(position.byteIndex, LittleEndian)
+      position.byteIndex += 2
       return null
     }
 
     case "Uint32": {
-      state.data[name] = state.view.getUint32(state.index, endianness)
-      state.index += 4
+      state.data[name] = state.view.getUint32(position.byteIndex, LittleEndian)
+      position.byteIndex += 4
       return null
     }
 
     case "BigUint64": {
-      state.data[name] = state.view.getBigUint64(state.index, endianness)
-      state.index += 8
+      state.data[name] = state.view.getBigUint64(
+        position.byteIndex,
+        LittleEndian,
+      )
+      position.byteIndex += 8
       return null
     }
 
     case "Float16": {
-      state.data[name] = state.view.getFloat16(state.index, endianness)
-      state.index += 2
+      state.data[name] = state.view.getFloat16(position.byteIndex, LittleEndian)
+      position.byteIndex += 2
       return null
     }
 
     case "Float32": {
-      state.data[name] = state.view.getFloat32(state.index, endianness)
-      state.index += 4
+      state.data[name] = state.view.getFloat32(position.byteIndex, LittleEndian)
+      position.byteIndex += 4
       return null
     }
 
     case "Float64": {
-      state.data[name] = state.view.getFloat64(state.index, endianness)
-      state.index += 8
+      state.data[name] = state.view.getFloat64(position.byteIndex, LittleEndian)
+      position.byteIndex += 8
       return null
     }
   }
