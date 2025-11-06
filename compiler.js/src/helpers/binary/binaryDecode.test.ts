@@ -16,7 +16,7 @@ test("binaryDecode", () => {
   assert.deepEqual(data, { x: 1, y: 2, z: 3 })
 })
 
-test("binaryDecode -- DependentSchema", () => {
+test("binaryDecode -- dependent", () => {
   const bytes = new Uint8Array([1, 2, 3])
   const data = binaryDecode(
     bytes.buffer,

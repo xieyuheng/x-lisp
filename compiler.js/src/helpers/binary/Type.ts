@@ -1,4 +1,4 @@
-export type SchemaType =
+export type Type =
   | Int8
   | Int16
   | Int32
