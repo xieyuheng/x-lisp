@@ -1,7 +1,5 @@
 # binary
 
-[binary] `BinarySchema`
-- attribute(name, binary-type)
 [binary] `parseBinarySchema`
 [binary] `binaryEncode`
 [binary] `binaryDecode`
