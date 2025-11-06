@@ -1,5 +1,5 @@
 export * from "./binaryDecode.ts"
 export * from "./binaryEncode.ts"
-export * from "./State.ts"
 export * from "./Exp.ts"
+export * from "./State.ts"
 export * from "./Type.ts"

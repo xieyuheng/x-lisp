@@ -1,5 +1,5 @@
-import { createState, type State } from "./State.ts"
 import type { Exp } from "./Exp.ts"
+import { createState, type State } from "./State.ts"
 import type { Type } from "./Type.ts"
 
 export function binaryDecode(buffer: ArrayBuffer, exp: Exp): any {
