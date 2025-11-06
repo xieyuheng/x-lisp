@@ -1,10 +1,11 @@
 # elf
 
+[elf] `Elf`
 [elf] `parseElf` -- parser elf by `binaryDecode`
 
 # binary
 
-[binary] `binaryEncode`
+[binary] `encode`
 
 # elf
 

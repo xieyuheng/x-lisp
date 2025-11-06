@@ -3,7 +3,7 @@ import type { Exp } from "./Exp.ts"
 import { createState, positionAdvance, type State } from "./State.ts"
 import type { Type } from "./Type.ts"
 
-export function binaryDecode(buffer: ArrayBuffer, exp: Exp): any {
+export function decode(buffer: ArrayBuffer, exp: Exp): any {
   const state = createState(buffer, {})
   execute(state, exp)
   return state.data
