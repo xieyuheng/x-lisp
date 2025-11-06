@@ -8,9 +8,9 @@ test("binaryDecode", () => {
   const data = b.binaryDecode(
     bytes.buffer,
     b.sequence([
-      b.attribute("x", "Uint8"),
-      b.attribute("y", "Uint8"),
-      b.attribute("z", "Uint8"),
+      b.attribute("x", b.Uint8()),
+      b.attribute("y", b.Uint8()),
+      b.attribute("z", b.Uint8()),
     ]),
   )
   assert.deepEqual(data, { x: 1, y: 2, z: 3 })
@@ -21,9 +21,9 @@ test("binaryDecode -- DependentSchema", () => {
   const data = binaryDecode(
     bytes.buffer,
     b.sequence([
-      b.dependent(() => b.attribute("x", "Uint8")),
-      b.dependent(() => b.attribute("y", "Uint8")),
-      b.dependent(() => b.attribute("z", "Uint8")),
+      b.dependent(() => b.attribute("x", b.Uint8())),
+      b.dependent(() => b.attribute("y", b.Uint8())),
+      b.dependent(() => b.attribute("z", b.Uint8())),
     ]),
   )
   assert.deepEqual(data, { x: 1, y: 2, z: 3 })
