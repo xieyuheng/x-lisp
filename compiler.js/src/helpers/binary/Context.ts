@@ -1,4 +1,4 @@
-export type BinaryContext = {
+export type Context = {
   buffer: ArrayBuffer
   view: DataView
   index: number
@@ -6,10 +6,7 @@ export type BinaryContext = {
   data: any
 }
 
-export function createBinaryContext(
-  buffer: ArrayBuffer,
-  data: any,
-): BinaryContext {
+export function createContext(buffer: ArrayBuffer, data: any): Context {
   return {
     buffer,
     view: new DataView(buffer),
