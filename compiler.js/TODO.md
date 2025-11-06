@@ -1,6 +1,5 @@
 # binary
 
-[binary] extract `positionAdvance` -- to reset `bitOffset`
 [binary] `binaryEncode`
 
 # elf
