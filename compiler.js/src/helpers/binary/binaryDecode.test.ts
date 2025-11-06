@@ -7,10 +7,10 @@ test("binaryDecode", () => {
   const bytes = new Uint8Array([1, 2, 3])
   const data = b.binaryDecode(
     bytes.buffer,
-    b.sequence([
-      b.attribute("x", b.Uint8()),
-      b.attribute("y", b.Uint8()),
-      b.attribute("z", b.Uint8()),
+    b.Sequence([
+      b.Attribute("x", b.Uint8()),
+      b.Attribute("y", b.Uint8()),
+      b.Attribute("z", b.Uint8()),
     ]),
   )
   assert.deepEqual(data, { x: 1, y: 2, z: 3 })
@@ -20,10 +20,10 @@ test("binaryDecode -- dependent", () => {
   const bytes = new Uint8Array([1, 2, 3])
   const data = binaryDecode(
     bytes.buffer,
-    b.sequence([
-      b.dependent(() => b.attribute("x", b.Uint8())),
-      b.dependent(() => b.attribute("y", b.Uint8())),
-      b.dependent(() => b.attribute("z", b.Uint8())),
+    b.Sequence([
+      b.Dependent(() => b.Attribute("x", b.Uint8())),
+      b.Dependent(() => b.Attribute("y", b.Uint8())),
+      b.Dependent(() => b.Attribute("z", b.Uint8())),
     ]),
   )
   assert.deepEqual(data, { x: 1, y: 2, z: 3 })
