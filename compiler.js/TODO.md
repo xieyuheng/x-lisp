@@ -1,10 +1,13 @@
+# elf
+
+[elf] `parseElf` -- parser elf by `binaryDecode`
+
 # binary
 
 [binary] `binaryEncode`
 
 # elf
 
-[elf] parser file header first
 [elf] [maybe] write an online ELF viewer
 
 # frontend -- module
