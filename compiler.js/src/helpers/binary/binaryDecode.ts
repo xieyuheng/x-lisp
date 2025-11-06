@@ -1,14 +1,14 @@
-import { createBinaryContext, type BinaryContext } from "./BinaryContext.ts"
+import { createContext, type Context } from "./Context.ts"
 import type { Exp } from "./Exp.ts"
 import type { Type } from "./Type.ts"
 
 export function binaryDecode(buffer: ArrayBuffer, exp: Exp): any {
-  const context = createBinaryContext(buffer, {})
+  const context = createContext(buffer, {})
   execute(context, exp)
   return context.data
 }
 
-function execute(context: BinaryContext, exp: Exp): null {
+function execute(context: Context, exp: Exp): null {
   switch (exp.kind) {
     case "SequenceExp": {
       for (const childExp of exp.exps) {
@@ -30,11 +30,7 @@ function execute(context: BinaryContext, exp: Exp): null {
   }
 }
 
-function executeAttribute(
-  context: BinaryContext,
-  name: string,
-  type: Type,
-): null {
+function executeAttribute(context: Context, name: string, type: Type): null {
   switch (type.type) {
     case "Int8": {
       context.data[name] = context.view.getInt8(context.index)
