@@ -10,6 +10,20 @@ export function binaryDecode(buffer: ArrayBuffer, exp: Exp): any {
 
 function execute(state: State, exp: Exp): null {
   switch (exp.kind) {
+    case "LittleEndian": {
+      state.endianStack.push("LittleEndian")
+      execute(state, exp.exp)
+      state.endianStack.pop()
+      return null
+    }
+
+    case "BigEndian": {
+      state.endianStack.push("BigEndian")
+      execute(state, exp.exp)
+      state.endianStack.pop()
+      return null
+    }
+
     case "Sequence": {
       for (const childExp of exp.exps) {
         execute(state, childExp)
