@@ -1,11 +1,9 @@
 import { createBinaryContext, type BinaryContext } from "./BinaryContext.ts"
 import type { BinarySchema } from "./BinarySchema.ts"
-import { parseBinarySchema, type SchemaSyntax } from "./parseBinarySchema.ts"
 import type { SchemaType } from "./SchemaType.ts"
 
-export function binaryDecode(buffer: ArrayBuffer, syntax: SchemaSyntax): any {
+export function binaryDecode(buffer: ArrayBuffer, schema: BinarySchema): any {
   const context = createBinaryContext(buffer, {})
-  const schema = parseBinarySchema(syntax)
   execute(context, schema)
   return context.data
 }

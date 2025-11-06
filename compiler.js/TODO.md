@@ -2,8 +2,16 @@
 
 [binary] `SchemaType` be like json-schema
 [binary] `SchemaType` -- support `endian`
+
+[binary] `Position` should have `byteIndex` and `bitOffset`
+[binary] `Offset` -- `Context` should have a `positionStack`
+
 [binary] `binaryEncode`
-[binary] test by writing an ELF parser
+
+# elf
+
+[elf] parser file header first
+[elf] [maybe] write an online ELF viewer
 
 # frontend -- module
 
