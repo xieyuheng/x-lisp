@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import type { Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 
@@ -9,6 +9,6 @@ export function varName(exp: Exp): string {
 
   let message = `[varName] exp is not Var`
   message += `\n  exp: ${formatExp(exp)}`
-  if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+  if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
   else throw new Error(message)
 }

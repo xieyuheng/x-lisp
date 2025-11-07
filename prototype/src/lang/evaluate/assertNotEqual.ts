@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { globals } from "../../globals.ts"
 import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { equal } from "../equal/index.ts"
@@ -21,6 +21,6 @@ export function assertNotEqual(lhs: Exp, rhs: Exp): Effect {
     message += formatUnderTag(2, `rhs exp:`, prettyExp(maxWidth, rhs))
     message += formatUnderTag(2, `lhs value:`, prettyValue(maxWidth, lhsValue))
     message += formatUnderTag(2, `rhs value:`, prettyValue(maxWidth, rhsValue))
-    throw new X.ErrorWithMeta(message, rhs.meta)
+    throw new S.ErrorWithMeta(message, rhs.meta)
   }
 }

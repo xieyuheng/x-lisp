@@ -1,6 +1,6 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 
-export const sexpConfig: X.Config = {
+export const sexpConfig: S.Config = {
   keywords: [
     ["export", 0],
     ["import-all", 0],

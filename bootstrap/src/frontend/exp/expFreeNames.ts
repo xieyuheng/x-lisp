@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { setAdd, setUnion, setUnionMany } from "../../helpers/set/setAlgebra.ts"
 import { formatExp } from "../format/index.ts"
 import { type Exp } from "./Exp.ts"
@@ -56,7 +56,7 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
     default: {
       let message = `[expFreeNames] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
-      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }

@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { arrayZip } from "../../helpers/array/arrayZip.ts"
 import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import * as Definitions from "../definition/index.ts"
@@ -92,7 +92,7 @@ function onExp(
     default: {
       let message = `[UniquifyPass] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
-      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }

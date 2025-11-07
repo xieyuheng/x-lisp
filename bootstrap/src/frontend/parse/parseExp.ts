@@ -1,26 +1,26 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 
-export function parseExp(sexp: X.Sexp): Exp {
-  return X.match(expMatcher, sexp)
+export function parseExp(sexp: S.Sexp): Exp {
+  return S.match(expMatcher, sexp)
 }
 
-const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
-  X.matcher(
+const expMatcher: S.Matcher<Exp> = S.matcherChoice<Exp>([
+  S.matcher(
     "(cons* 'lambda parameters body)",
     ({ parameters, body }, { sexp }) => {
-      const keyword = X.asTael(sexp).elements[0]
-      const meta = X.tokenMetaFromSexpMeta(keyword.meta)
+      const keyword = S.asTael(sexp).elements[0]
+      const meta = S.tokenMetaFromSexpMeta(keyword.meta)
       return Exps.Lambda(
-        X.listElements(parameters).map(X.symbolContent),
-        Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
+        S.listElements(parameters).map(S.symbolContent),
+        Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
         meta,
       )
     },
   ),
 
-  X.matcher(
+  S.matcher(
     "`(if ,condition ,consequent ,alternative)",
     ({ condition, consequent, alternative }, { meta }) => {
       return Exps.If(
@@ -32,61 +32,61 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     },
   ),
 
-  X.matcher("(cons* 'when condition body)", ({ condition, body }, { meta }) => {
+  S.matcher("(cons* 'when condition body)", ({ condition, body }, { meta }) => {
     return Exps.When(
       parseExp(condition),
-      Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
+      Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
       meta,
     )
   }),
 
-  X.matcher(
+  S.matcher(
     "(cons* 'unless condition body)",
     ({ condition, body }, { meta }) => {
       return Exps.Unless(
         parseExp(condition),
-        Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
+        Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
         meta,
       )
     },
   ),
 
-  X.matcher("(cons* 'and exps)", ({ exps }, { meta }) => {
-    return Exps.And(X.listElements(exps).map(parseExp), meta)
+  S.matcher("(cons* 'and exps)", ({ exps }, { meta }) => {
+    return Exps.And(S.listElements(exps).map(parseExp), meta)
   }),
 
-  X.matcher("(cons* 'or exps)", ({ exps }, { meta }) => {
-    return Exps.Or(X.listElements(exps).map(parseExp), meta)
+  S.matcher("(cons* 'or exps)", ({ exps }, { meta }) => {
+    return Exps.Or(S.listElements(exps).map(parseExp), meta)
   }),
 
-  X.matcher("`(= ,name ,rhs)", ({ name, rhs }, { meta }) => {
-    return Exps.AssignSugar(X.symbolContent(name), parseExp(rhs), meta)
+  S.matcher("`(= ,name ,rhs)", ({ name, rhs }, { meta }) => {
+    return Exps.AssignSugar(S.symbolContent(name), parseExp(rhs), meta)
   }),
 
-  X.matcher("(cons* 'begin body)", ({ body }, { meta }) => {
-    return Exps.BeginSugar(X.listElements(body).map(parseExp), meta)
+  S.matcher("(cons* 'begin body)", ({ body }, { meta }) => {
+    return Exps.BeginSugar(S.listElements(body).map(parseExp), meta)
   }),
 
-  X.matcher("(cons* target args)", ({ target, args }, { meta }) => {
+  S.matcher("(cons* target args)", ({ target, args }, { meta }) => {
     return Exps.Apply(
       parseExp(target),
-      X.listElements(args).map(parseExp),
+      S.listElements(args).map(parseExp),
       meta,
     )
   }),
 
-  X.matcher("data", ({ data }, { meta }) => {
+  S.matcher("data", ({ data }, { meta }) => {
     switch (data.kind) {
       case "Hashtag":
-        return Exps.Hashtag(X.hashtagContent(data), meta)
+        return Exps.Hashtag(S.hashtagContent(data), meta)
       case "Int":
-        return Exps.Int(X.numberContent(data), meta)
+        return Exps.Int(S.numberContent(data), meta)
       case "Float":
-        return Exps.Float(X.numberContent(data), meta)
+        return Exps.Float(S.numberContent(data), meta)
       case "String":
-        return Exps.String(X.stringContent(data), meta)
+        return Exps.String(S.stringContent(data), meta)
       case "Symbol": {
-        return Exps.Var(X.symbolContent(data), meta)
+        return Exps.Var(S.symbolContent(data), meta)
       }
     }
   }),

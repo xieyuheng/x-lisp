@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import * as pp from "../../helpers/ppml/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
@@ -13,8 +13,8 @@ export function renderExps(exps: Array<Exp>): pp.Node {
 }
 
 export function renderExp(exp: Exp): pp.Node {
-  const sexp = X.parseSexp(formatExp(exp))
-  return X.renderSexp(sexp)(sexpConfig)
+  const sexp = S.parseSexp(formatExp(exp))
+  return S.renderSexp(sexp)(sexpConfig)
 }
 
 export function renderBody(body: Exp): pp.Node {

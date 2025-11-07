@@ -1,24 +1,24 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { recordMapValue } from "../../helpers/record/recordMapValue.ts"
 import { parseExp } from "../parse/index.ts"
 import * as Patterns from "./Pattern.ts"
 import { patternize, type Effect } from "./patternize.ts"
 
-export function patternizeQuasiquote(sexp: X.Sexp): Effect {
-  if (X.isAtom(sexp)) {
+export function patternizeQuasiquote(sexp: S.Sexp): Effect {
+  if (S.isAtom(sexp)) {
     return (mod, env) => {
       return Patterns.LiteralPattern(sexp)
     }
   }
 
-  if (X.isTael(sexp)) {
+  if (S.isTael(sexp)) {
     if (
       sexp.kind === "Tael" &&
       sexp.elements.length >= 2 &&
       sexp.elements[0].kind === "Symbol" &&
       sexp.elements[0].content === "@unquote"
     ) {
-      const firstSexp = X.asTael(sexp).elements[1]
+      const firstSexp = S.asTael(sexp).elements[1]
       const exp = parseExp(firstSexp)
       return patternize(exp)
     } else {

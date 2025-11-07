@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { type Mod } from "../mod/index.ts"
 import { parseStmt } from "../parse/index.ts"
 import { type Stmt } from "../stmt/index.ts"
@@ -7,12 +7,12 @@ import { stage2 } from "./stage2.ts"
 import { stage3 } from "./stage3.ts"
 
 export function runCode(mod: Mod, code: string): void {
-  return runSexps(mod, X.parseSexps(code, { url: mod.url }))
+  return runSexps(mod, S.parseSexps(code, { url: mod.url }))
 }
 
 export function runSexps(
   mod: Mod,
-  sexps: Array<X.Sexp>,
+  sexps: Array<S.Sexp>,
   options: { resultPrompt?: string } = {},
 ): void {
   const stmts = sexps.map<Stmt>(parseStmt)

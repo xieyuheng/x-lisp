@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { globals } from "../../globals.ts"
 import { arrayMapZip } from "../../helpers/array/arrayMapZip.ts"
 import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
@@ -33,7 +33,7 @@ export function applyWithSchema(
       message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
       message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
       message += formatUnderTag(2, `return:`, prettyValue(maxWidth, ret))
-      if (meta) throw new X.ErrorWithMeta(message, meta)
+      if (meta) throw new S.ErrorWithMeta(message, meta)
       else throw new Error(message)
     }
 
@@ -62,7 +62,7 @@ export function applyWithSchema(
           prettyValues(maxWidth, spilledArgs),
         )
         message += formatUnderTag(2, `return:`, prettyValue(maxWidth, ret))
-        if (meta) throw new X.ErrorWithMeta(message, meta)
+        if (meta) throw new S.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
 
@@ -79,7 +79,7 @@ export function applyWithSchema(
         message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
         message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
         message += formatUnderTag(2, `return:`, prettyValue(maxWidth, ret))
-        if (meta) throw new X.ErrorWithMeta(message, meta)
+        if (meta) throw new S.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
 
@@ -99,7 +99,7 @@ export function applyWithSchema(
   message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
   message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
   message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
-  if (meta) throw new X.ErrorWithMeta(message, meta)
+  if (meta) throw new S.ErrorWithMeta(message, meta)
   else throw new Error(message)
 }
 
@@ -149,6 +149,6 @@ function validateArgs(
     message += formatUnderTag(4, `arg:`, prettyValue(maxWidth, arg))
   }
 
-  if (meta) throw new X.ErrorWithMeta(message, meta)
+  if (meta) throw new S.ErrorWithMeta(message, meta)
   else throw new Error(message)
 }

@@ -1,11 +1,11 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { test } from "node:test"
 import { type Exp } from "../exp/index.ts"
 import { parseExp } from "../parse/index.ts"
 import { prettyExp } from "./index.ts"
 
 function testWidths(widths: Array<number>, code: string) {
-  const sexps = X.parseSexps(code)
+  const sexps = S.parseSexps(code)
   const exps = sexps.map<Exp>(parseExp)
 
   for (const exp of exps) {

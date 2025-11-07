@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import fs from "node:fs"
 import { importBuiltin } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
@@ -18,7 +18,7 @@ export function load(url: URL): Mod {
 
   importBuiltin(mod)
 
-  const sexps = X.parseSexps(text, { url: mod.url })
+  const sexps = S.parseSexps(text, { url: mod.url })
   const stmts = sexps.map<Stmt>(parseStmt)
   for (const stmt of stmts) stage1(mod, stmt)
 

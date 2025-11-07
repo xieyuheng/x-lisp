@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { formatIndent } from "../../helpers/format/formatIndent.ts"
 import { urlRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 import { include } from "../define/index.ts"
@@ -15,7 +15,7 @@ function checkRedefine(
   mod: Mod,
   name: string,
   definition: Definition,
-  meta: X.TokenMeta,
+  meta: S.TokenMeta,
 ): void {
   const found = mod.definitions.get(name)
   if (found === undefined) return
@@ -26,7 +26,7 @@ function checkRedefine(
   message += formatIndent(4, formatDefinition(found))
   message += `\n  new definition:`
   message += formatIndent(4, formatDefinition(definition))
-  throw new X.ErrorWithMeta(message, meta)
+  throw new S.ErrorWithMeta(message, meta)
 }
 
 export function stage2(mod: Mod, stmt: Stmt): void {
@@ -38,7 +38,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
         let message = `(import) undefined name: ${name}`
         message += `\n  path: ${stmt.path}`
         message += `\n  by mod: ${urlRelativeToCwd(mod.url)}`
-        throw new X.ErrorWithMeta(message, stmt.meta)
+        throw new S.ErrorWithMeta(message, stmt.meta)
       }
 
       checkRedefine(mod, name, definition, stmt.meta)
@@ -84,7 +84,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
         let message = `(include) undefined name: ${name}`
         message += `\n  path: ${stmt.path}`
         message += `\n  by mod: ${urlRelativeToCwd(mod.url)}`
-        throw new X.ErrorWithMeta(message, stmt.meta)
+        throw new S.ErrorWithMeta(message, stmt.meta)
       }
 
       checkRedefine(mod, name, definition, stmt.meta)

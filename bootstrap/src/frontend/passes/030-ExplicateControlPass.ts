@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import * as B from "../../backend/index.ts"
 import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import type { Definition } from "../definition/index.ts"
@@ -62,7 +62,7 @@ function expToValue(exp: Exp): B.Value {
     default: {
       let message = `[expToValue] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
-      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }
@@ -99,7 +99,7 @@ function inTail(state: State, exp: Exp): Array<B.Instr> {
     default: {
       let message = `[inTail] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
-      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }
@@ -155,7 +155,7 @@ function inLet1(
     default: {
       let message = `[inLet1] unhandled rhs exp`
       message += `\n  exp: ${formatExp(rhs)}`
-      if (rhs.meta) throw new X.ErrorWithMeta(message, rhs.meta)
+      if (rhs.meta) throw new S.ErrorWithMeta(message, rhs.meta)
       else throw new Error(message)
     }
   }
@@ -205,7 +205,7 @@ function inIf(
     default: {
       let message = `[inIf] unhandled condition exp`
       message += `\n  exp: ${formatExp(condition)}`
-      if (condition.meta) throw new X.ErrorWithMeta(message, condition.meta)
+      if (condition.meta) throw new S.ErrorWithMeta(message, condition.meta)
       else throw new Error(message)
     }
   }

@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import * as Definitions from "../definition/index.ts"
 import { type Definition } from "../definition/index.ts"
@@ -58,7 +58,7 @@ function onExp(exp: Exp): Exp {
       if (exp.sequence.length === 0) {
         let message = `[shrink] (begin) must not be empty`
         message += `\n  exp: ${formatExp(exp)}`
-        if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+        if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
         else throw new Error(message)
       }
 
@@ -79,7 +79,7 @@ function onExp(exp: Exp): Exp {
     case "AssignSugar": {
       let message = `[shrink] (=) must occur be in head of (begin)`
       message += `\n  exp: ${formatExp(exp)}`
-      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
 
@@ -121,7 +121,7 @@ function onExp(exp: Exp): Exp {
     default: {
       let message = `[ShrinkPass] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
-      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }

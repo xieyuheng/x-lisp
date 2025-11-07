@@ -1,95 +1,95 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import * as Instrs from "../instr/index.ts"
 import { type Instr } from "../instr/index.ts"
 import { parseValue } from "./parseValue.ts"
 
-export function parseInstr(sexp: X.Sexp): Instr {
-  return X.match(
-    X.matcherChoice<Instr>([
-      X.matcher(
+export function parseInstr(sexp: S.Sexp): Instr {
+  return S.match(
+    S.matcherChoice<Instr>([
+      S.matcher(
         "`(= ,dest (argument ,index))",
         ({ dest, index }, { sexp, meta }) => {
           return Instrs.Argument(
-            X.numberContent(index),
-            X.symbolContent(dest),
+            S.numberContent(index),
+            S.symbolContent(dest),
             meta,
           )
         },
       ),
 
-      X.matcher(
+      S.matcher(
         "`(= ,dest (const ,value))",
         ({ dest, value }, { sexp, meta }) => {
-          return Instrs.Const(parseValue(value), X.symbolContent(dest), meta)
+          return Instrs.Const(parseValue(value), S.symbolContent(dest), meta)
         },
       ),
 
-      X.matcher("`(assert ,ok)", ({ ok }, { sexp, meta }) => {
-        return Instrs.Assert([X.symbolContent(ok)], meta)
+      S.matcher("`(assert ,ok)", ({ ok }, { sexp, meta }) => {
+        return Instrs.Assert([S.symbolContent(ok)], meta)
       }),
 
-      X.matcher("`(goto ,label)", ({ label }, { sexp, meta }) => {
-        return Instrs.Goto(X.symbolContent(label), meta)
+      S.matcher("`(goto ,label)", ({ label }, { sexp, meta }) => {
+        return Instrs.Goto(S.symbolContent(label), meta)
       }),
 
-      X.matcher("`(return ,result)", ({ result }, { sexp, meta }) => {
-        return Instrs.Return([X.symbolContent(result)], meta)
+      S.matcher("`(return ,result)", ({ result }, { sexp, meta }) => {
+        return Instrs.Return([S.symbolContent(result)], meta)
       }),
 
-      X.matcher("`(return)", ({}, { sexp, meta }) => {
+      S.matcher("`(return)", ({}, { sexp, meta }) => {
         return Instrs.Return([], meta)
       }),
 
-      X.matcher(
+      S.matcher(
         "`(branch ,condition ,thenLabel ,elseLabel)",
         ({ condition, thenLabel, elseLabel }, { sexp, meta }) => {
           return Instrs.Branch(
-            [X.symbolContent(condition)],
-            X.symbolContent(thenLabel),
-            X.symbolContent(elseLabel),
+            [S.symbolContent(condition)],
+            S.symbolContent(thenLabel),
+            S.symbolContent(elseLabel),
             meta,
           )
         },
       ),
 
-      X.matcher(
+      S.matcher(
         "(cons* 'call target operands)",
         ({ target, operands }, { sexp, meta }) => {
           return Instrs.Call(
-            X.symbolContent(target),
-            X.listElements(operands).map(X.symbolContent),
+            S.symbolContent(target),
+            S.listElements(operands).map(S.symbolContent),
             undefined,
             meta,
           )
         },
       ),
 
-      X.matcher(
+      S.matcher(
         "`(= ,dest ,(cons* 'call target operands))",
         ({ target, operands, dest }, { sexp, meta }) => {
           return Instrs.Call(
-            X.symbolContent(target),
-            X.listElements(operands).map(X.symbolContent),
-            X.symbolContent(dest),
+            S.symbolContent(target),
+            S.listElements(operands).map(S.symbolContent),
+            S.symbolContent(dest),
             meta,
           )
         },
       ),
 
-      X.matcher("(cons* 'apply operands)", ({ operands }, { sexp, meta }) => {
+      S.matcher("(cons* 'apply operands)", ({ operands }, { sexp, meta }) => {
         return Instrs.Apply(
-          X.listElements(operands).map(X.symbolContent),
+          S.listElements(operands).map(S.symbolContent),
           undefined,
           meta,
         )
       }),
 
-      X.matcher(
+      S.matcher(
         "`(= ,dest ,(cons* 'apply operands))",
         ({ operands, dest }, { sexp, meta }) => {
           return Instrs.Apply(
-            X.listElements(operands).map(X.symbolContent),
-            X.symbolContent(dest),
+            S.listElements(operands).map(S.symbolContent),
+            S.symbolContent(dest),
             meta,
           )
         },

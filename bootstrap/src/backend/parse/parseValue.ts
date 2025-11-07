@@ -1,36 +1,36 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 
-export function parseValue(sexp: X.Sexp): Value {
-  return X.match(valueMatcher, sexp)
+export function parseValue(sexp: S.Sexp): Value {
+  return S.match(valueMatcher, sexp)
 }
 
-const valueMatcher: X.Matcher<Value> = X.matcherChoice<Value>([
-  X.matcher("`(@function ,name ,arity)", ({ name, arity }, { meta }) => {
-    return Values.FunctionRef(X.symbolContent(name), X.numberContent(arity))
+const valueMatcher: S.Matcher<Value> = S.matcherChoice<Value>([
+  S.matcher("`(@function ,name ,arity)", ({ name, arity }, { meta }) => {
+    return Values.FunctionRef(S.symbolContent(name), S.numberContent(arity))
   }),
 
-  X.matcher("else", ({}, { sexp }) => {
-    const meta = X.tokenMetaFromSexpMeta(sexp.meta)
+  S.matcher("else", ({}, { sexp }) => {
+    const meta = S.tokenMetaFromSexpMeta(sexp.meta)
 
     switch (sexp.kind) {
       case "Hashtag": {
-        return Values.Hashtag(X.hashtagContent(sexp))
+        return Values.Hashtag(S.hashtagContent(sexp))
       }
 
       case "Int": {
-        return Values.Int(X.numberContent(sexp))
+        return Values.Int(S.numberContent(sexp))
       }
 
       case "Float": {
-        return Values.Float(X.numberContent(sexp))
+        return Values.Float(S.numberContent(sexp))
       }
 
       default: {
         let message = `[matchValue] unknown sexp`
-        message += `\n  sexp: #${X.formatSexp(sexp)}`
-        throw new X.ErrorWithMeta(message, meta)
+        message += `\n  sexp: #${S.formatSexp(sexp)}`
+        throw new S.ErrorWithMeta(message, meta)
       }
     }
   }),

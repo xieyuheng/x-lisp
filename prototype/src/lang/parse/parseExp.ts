@@ -1,80 +1,80 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { arrayGroup2 } from "../../helpers/array/arrayGroup2.ts"
 import { arrayPickLast } from "../../helpers/array/arrayPickLast.ts"
 import { recordMapValue } from "../../helpers/record/recordMapValue.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 
-export function parseExp(sexp: X.Sexp): Exp {
-  return X.match(expMatcher, sexp)
+export function parseExp(sexp: S.Sexp): Exp {
+  return S.match(expMatcher, sexp)
 }
 
-const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
-  X.matcher(
+const expMatcher: S.Matcher<Exp> = S.matcherChoice<Exp>([
+  S.matcher(
     "(cons* 'lambda parameters body)",
     ({ parameters, body }, { sexp }) => {
-      const keyword = X.asTael(sexp).elements[0]
-      const meta = X.tokenMetaFromSexpMeta(keyword.meta)
+      const keyword = S.asTael(sexp).elements[0]
+      const meta = S.tokenMetaFromSexpMeta(keyword.meta)
 
-      if (X.isSymbol(parameters)) {
+      if (S.isSymbol(parameters)) {
         return Exps.VariadicLambda(
-          X.symbolContent(parameters),
-          Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
+          S.symbolContent(parameters),
+          Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
           meta,
         )
       }
 
-      if (X.listElements(parameters).length === 0) {
+      if (S.listElements(parameters).length === 0) {
         return Exps.NullaryLambda(
-          Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
+          Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
           meta,
         )
       }
 
       return Exps.Lambda(
-        X.listElements(parameters).map(parseExp),
-        Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
+        S.listElements(parameters).map(parseExp),
+        Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
         meta,
       )
     },
   ),
 
-  X.matcher("`(@quote ,sexp)", ({ sexp }, { meta }) => {
+  S.matcher("`(@quote ,sexp)", ({ sexp }, { meta }) => {
     return Exps.Quote(sexp, meta)
   }),
 
-  X.matcher("(cons* '@comment sexps)", ({ sexps }, { meta }) => {
-    return Exps.Comment(X.listElements(sexps), meta)
+  S.matcher("(cons* '@comment sexps)", ({ sexps }, { meta }) => {
+    return Exps.Comment(S.listElements(sexps), meta)
   }),
 
-  X.matcher("`(@quasiquote ,sexp)", ({ sexp }, { meta }) => {
+  S.matcher("`(@quasiquote ,sexp)", ({ sexp }, { meta }) => {
     return Exps.Quasiquote(sexp, meta)
   }),
 
-  X.matcher("`(@pattern ,pattern)", ({ pattern }, { meta }) => {
+  S.matcher("`(@pattern ,pattern)", ({ pattern }, { meta }) => {
     return Exps.Pattern(parseExp(pattern), meta)
   }),
 
-  X.matcher(
+  S.matcher(
     "`(polymorphic ,parameters ,schema)",
     ({ parameters, schema }, { meta }) => {
       return Exps.Polymorphic(
-        X.listElements(parameters).map(X.symbolContent),
+        S.listElements(parameters).map(S.symbolContent),
         parseExp(schema),
         meta,
       )
     },
   ),
 
-  X.matcher("(cons* 'specific target args)", ({ target, args }, { meta }) => {
+  S.matcher("(cons* 'specific target args)", ({ target, args }, { meta }) => {
     return Exps.Specific(
       parseExp(target),
-      X.listElements(args).map(parseExp),
+      S.listElements(args).map(parseExp),
       meta,
     )
   }),
 
-  X.matcher(
+  S.matcher(
     "`(if ,condition ,consequent ,alternative)",
     ({ condition, consequent, alternative }, { meta }) => {
       return Exps.If(
@@ -86,157 +86,157 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     },
   ),
 
-  X.matcher("(cons* 'when condition body)", ({ condition, body }, { meta }) => {
+  S.matcher("(cons* 'when condition body)", ({ condition, body }, { meta }) => {
     return Exps.When(
       parseExp(condition),
-      Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
+      Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
       meta,
     )
   }),
 
-  X.matcher(
+  S.matcher(
     "(cons* 'unless condition body)",
     ({ condition, body }, { meta }) => {
       return Exps.Unless(
         parseExp(condition),
-        Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
+        Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
         meta,
       )
     },
   ),
 
-  X.matcher("(cons* 'and exps)", ({ exps }, { meta }) => {
-    return Exps.And(X.listElements(exps).map(parseExp), meta)
+  S.matcher("(cons* 'and exps)", ({ exps }, { meta }) => {
+    return Exps.And(S.listElements(exps).map(parseExp), meta)
   }),
 
-  X.matcher("(cons* 'or exps)", ({ exps }, { meta }) => {
-    return Exps.Or(X.listElements(exps).map(parseExp), meta)
+  S.matcher("(cons* 'or exps)", ({ exps }, { meta }) => {
+    return Exps.Or(S.listElements(exps).map(parseExp), meta)
   }),
 
-  X.matcher("(cons* '-> exps)", ({ exps }, { meta }) => {
+  S.matcher("(cons* '-> exps)", ({ exps }, { meta }) => {
     const [argSchemas, retSchema] = arrayPickLast(
-      X.listElements(exps).map(parseExp),
+      S.listElements(exps).map(parseExp),
     )
     return Exps.Arrow(argSchemas, retSchema, meta)
   }),
 
-  X.matcher(
+  S.matcher(
     "`(*-> ,argSchema ,retSchema)",
     ({ argSchema, retSchema }, { meta }) => {
       return Exps.VariadicArrow(parseExp(argSchema), parseExp(retSchema), meta)
     },
   ),
 
-  X.matcher("(cons* 'assert exps)", ({ exps }, { meta }) => {
-    const args = X.listElements(exps).map(parseExp)
+  S.matcher("(cons* 'assert exps)", ({ exps }, { meta }) => {
+    const args = S.listElements(exps).map(parseExp)
     if (args.length !== 1) {
       const message = "(assert) must take one argument\n"
-      throw new X.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithMeta(message, meta)
     }
 
     return Exps.Assert(args[0], meta)
   }),
 
-  X.matcher("(cons* 'assert-not exps)", ({ exps }, { meta }) => {
-    const args = X.listElements(exps).map(parseExp)
+  S.matcher("(cons* 'assert-not exps)", ({ exps }, { meta }) => {
+    const args = S.listElements(exps).map(parseExp)
     if (args.length !== 1) {
       const message = "(assert-not) must take one argument\n"
-      throw new X.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithMeta(message, meta)
     }
 
     return Exps.AssertNot(args[0], meta)
   }),
 
-  X.matcher("(cons* 'assert-equal exps)", ({ exps }, { meta }) => {
-    const args = X.listElements(exps).map(parseExp)
+  S.matcher("(cons* 'assert-equal exps)", ({ exps }, { meta }) => {
+    const args = S.listElements(exps).map(parseExp)
     if (args.length !== 2) {
       const message = "(assert-equal) must take two arguments\n"
-      throw new X.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithMeta(message, meta)
     }
 
     const [lhs, rhs] = args
     return Exps.AssertEqual(lhs, rhs, meta)
   }),
 
-  X.matcher("(cons* 'assert-not-equal exps)", ({ exps }, { meta }) => {
-    const args = X.listElements(exps).map(parseExp)
+  S.matcher("(cons* 'assert-not-equal exps)", ({ exps }, { meta }) => {
+    const args = S.listElements(exps).map(parseExp)
     if (args.length !== 2) {
       const message = "(assert-not-equal) must take two arguments\n"
-      throw new X.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithMeta(message, meta)
     }
 
     return Exps.AssertNotEqual(args[0], args[1], meta)
   }),
 
-  X.matcher("(cons* 'assert-the exps)", ({ exps }, { meta }) => {
-    const args = X.listElements(exps).map(parseExp)
+  S.matcher("(cons* 'assert-the exps)", ({ exps }, { meta }) => {
+    const args = S.listElements(exps).map(parseExp)
     if (args.length !== 2) {
       const message = "(assert-not-equal) must take two arguments\n"
-      throw new X.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithMeta(message, meta)
     }
 
     return Exps.AssertThe(args[0], args[1], meta)
   }),
 
-  X.matcher("`(= ,lhs ,rhs)", ({ lhs, rhs }, { meta }) => {
+  S.matcher("`(= ,lhs ,rhs)", ({ lhs, rhs }, { meta }) => {
     return Exps.Assign(parseExp(lhs), parseExp(rhs), meta)
   }),
 
-  X.matcher("`(the ,schema ,exp)", ({ schema, exp }, { meta }) => {
+  S.matcher("`(the ,schema ,exp)", ({ schema, exp }, { meta }) => {
     return Exps.The(parseExp(schema), parseExp(exp), meta)
   }),
 
-  X.matcher("(cons* '@tael elements)", ({ elements }, { sexp, meta }) => {
+  S.matcher("(cons* '@tael elements)", ({ elements }, { sexp, meta }) => {
     return Exps.Tael(
-      X.listElements(elements).map(parseExp),
-      recordMapValue(X.asTael(sexp).attributes, parseExp),
+      S.listElements(elements).map(parseExp),
+      recordMapValue(S.asTael(sexp).attributes, parseExp),
       meta,
     )
   }),
 
-  X.matcher("(cons* '@list elements)", ({ elements }, { sexp, meta }) => {
-    if (Object.keys(X.asTael(sexp).attributes).length > 0) {
+  S.matcher("(cons* '@list elements)", ({ elements }, { sexp, meta }) => {
+    if (Object.keys(S.asTael(sexp).attributes).length > 0) {
       let message = `(@list) literal list can not have attributes`
-      throw new X.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithMeta(message, meta)
     }
 
-    return Exps.Tael(X.listElements(elements).map(parseExp), {}, meta)
+    return Exps.Tael(S.listElements(elements).map(parseExp), {}, meta)
   }),
 
-  X.matcher("(cons* '@record elements)", ({ elements }, { sexp, meta }) => {
-    if (X.listElements(elements).length > 0) {
+  S.matcher("(cons* '@record elements)", ({ elements }, { sexp, meta }) => {
+    if (S.listElements(elements).length > 0) {
       let message = `(@record) literal record can not have elements`
-      throw new X.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithMeta(message, meta)
     }
 
     return Exps.Tael(
       [],
-      recordMapValue(X.asTael(sexp).attributes, parseExp),
+      recordMapValue(S.asTael(sexp).attributes, parseExp),
       meta,
     )
   }),
 
-  X.matcher("(cons* '@set elements)", ({ elements }, { sexp, meta }) => {
-    if (Object.keys(X.asTael(sexp).attributes).length > 0) {
+  S.matcher("(cons* '@set elements)", ({ elements }, { sexp, meta }) => {
+    if (Object.keys(S.asTael(sexp).attributes).length > 0) {
       let message = `(@set) can not have attributes`
-      throw new X.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithMeta(message, meta)
     }
 
-    return Exps.Set(X.listElements(elements).map(parseExp), meta)
+    return Exps.Set(S.listElements(elements).map(parseExp), meta)
   }),
 
-  X.matcher("(cons* '@hash elements)", ({ elements }, { sexp, meta }) => {
-    if (Object.keys(X.asTael(sexp).attributes).length > 0) {
+  S.matcher("(cons* '@hash elements)", ({ elements }, { sexp, meta }) => {
+    if (Object.keys(S.asTael(sexp).attributes).length > 0) {
       let message = `(@hash) can not have attributes`
-      throw new X.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithMeta(message, meta)
     }
 
-    if (X.listElements(elements).length % 2 === 1) {
+    if (S.listElements(elements).length % 2 === 1) {
       let message = `(@hash) body length must be even`
-      throw new X.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithMeta(message, meta)
     }
 
-    const entries = arrayGroup2(X.listElements(elements)).map(
+    const entries = arrayGroup2(S.listElements(elements)).map(
       ([key, value]) => ({
         key: parseExp(key),
         value: parseExp(value),
@@ -245,71 +245,71 @@ const expMatcher: X.Matcher<Exp> = X.matcherChoice<Exp>([
     return Exps.Hash(entries, meta)
   }),
 
-  X.matcher("(cons* 'tau elements)", ({ elements }, { sexp, meta }) => {
+  S.matcher("(cons* 'tau elements)", ({ elements }, { sexp, meta }) => {
     return Exps.Tau(
-      X.listElements(elements).map(parseExp),
-      recordMapValue(X.asTael(sexp).attributes, parseExp),
+      S.listElements(elements).map(parseExp),
+      recordMapValue(S.asTael(sexp).attributes, parseExp),
       meta,
     )
   }),
 
-  X.matcher("(cons* 'begin body)", ({ body }, { meta }) => {
-    return Exps.BeginSugar(X.listElements(body).map(parseExp), meta)
+  S.matcher("(cons* 'begin body)", ({ body }, { meta }) => {
+    return Exps.BeginSugar(S.listElements(body).map(parseExp), meta)
   }),
 
-  X.matcher("(cons* 'cond lines)", ({ lines }, { sexp }) => {
-    const keyword = X.asTael(sexp).elements[1]
-    const meta = X.tokenMetaFromSexpMeta(keyword.meta)
-    return Exps.Cond(X.listElements(lines).map(matchCondLine), meta)
+  S.matcher("(cons* 'cond lines)", ({ lines }, { sexp }) => {
+    const keyword = S.asTael(sexp).elements[1]
+    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+    return Exps.Cond(S.listElements(lines).map(matchCondLine), meta)
   }),
 
-  X.matcher("(cons* 'match target lines)", ({ target, lines }, { sexp }) => {
-    const keyword = X.asTael(sexp).elements[1]
-    const meta = X.tokenMetaFromSexpMeta(keyword.meta)
+  S.matcher("(cons* 'match target lines)", ({ target, lines }, { sexp }) => {
+    const keyword = S.asTael(sexp).elements[1]
+    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
     return Exps.Match(
       parseExp(target),
-      X.listElements(lines).map(matchMatchLine),
+      S.listElements(lines).map(matchMatchLine),
       meta,
     )
   }),
 
-  X.matcher("(cons* target args)", ({ target, args }, { meta }) => {
+  S.matcher("(cons* target args)", ({ target, args }, { meta }) => {
     return Exps.Apply(
       parseExp(target),
-      X.listElements(args).map(parseExp),
+      S.listElements(args).map(parseExp),
       meta,
     )
   }),
 
-  X.matcher("data", ({ data }, { meta }) => {
+  S.matcher("data", ({ data }, { meta }) => {
     switch (data.kind) {
       case "Hashtag":
-        return Exps.Hashtag(X.hashtagContent(data), meta)
+        return Exps.Hashtag(S.hashtagContent(data), meta)
       case "Int":
-        return Exps.Int(X.numberContent(data), meta)
+        return Exps.Int(S.numberContent(data), meta)
       case "Float":
-        return Exps.Float(X.numberContent(data), meta)
+        return Exps.Float(S.numberContent(data), meta)
       case "String":
-        return Exps.String(X.stringContent(data), meta)
+        return Exps.String(S.stringContent(data), meta)
       case "Symbol": {
-        return Exps.Var(X.symbolContent(data), meta)
+        return Exps.Var(S.symbolContent(data), meta)
       }
     }
   }),
 ])
 
-export function matchCondLine(sexp: X.Sexp): Exps.CondLine {
-  return X.match(
-    X.matcher("(cons* question body)", ({ question, body }, { meta }) => {
+export function matchCondLine(sexp: S.Sexp): Exps.CondLine {
+  return S.match(
+    S.matcher("(cons* question body)", ({ question, body }, { meta }) => {
       if (question.kind === "Symbol" && question.content === "else") {
         return {
           question: Exps.Hashtag("t", meta),
-          answer: Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
+          answer: Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
         }
       } else {
         return {
           question: parseExp(question),
-          answer: Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
+          answer: Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
         }
       }
     }),
@@ -317,12 +317,12 @@ export function matchCondLine(sexp: X.Sexp): Exps.CondLine {
   )
 }
 
-export function matchMatchLine(sexp: X.Sexp): Exps.MatchLine {
-  return X.match(
-    X.matcher("(cons* pattern body)", ({ pattern, body }, { meta }) => {
+export function matchMatchLine(sexp: S.Sexp): Exps.MatchLine {
+  return S.match(
+    S.matcher("(cons* pattern body)", ({ pattern, body }, { meta }) => {
       return {
         pattern: parseExp(pattern),
-        body: Exps.BeginSugar(X.listElements(body).map(parseExp), meta),
+        body: Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
       }
     }),
     sexp,

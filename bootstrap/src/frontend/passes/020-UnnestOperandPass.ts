@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { arrayConcat } from "../../helpers/array/arrayConcat.ts"
 import { arrayUnzip } from "../../helpers/array/arrayUnzip.ts"
 import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
@@ -83,7 +83,7 @@ function onExp(state: State, exp: Exp): Exp {
     default: {
       let message = `[UnnestOperandPass] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
-      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }
@@ -138,7 +138,7 @@ function forAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
     default: {
       let message = `[unnestAtom] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
-      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }
