@@ -4,7 +4,7 @@ import { flags } from "../flags.ts"
 import { globals } from "../globals.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { getPackageJson } from "../helpers/node/getPackageJson.ts"
-import { aboutModule } from "../interpreter/builtin/aboutModule.ts"
+import { builtinModule } from "../interpreter/builtin/builtinModule.ts"
 import { importBuiltin } from "../interpreter/builtin/index.ts"
 import { runSexps } from "../interpreter/load/index.ts"
 import { createMod } from "../interpreter/mod/index.ts"
@@ -30,7 +30,7 @@ export const ReplCommand: Command = {
 
     const url = new URL("repl:")
     const mod = createMod(url)
-    aboutModule(mod)
+    builtinModule(mod)
     importBuiltin(mod)
     if (!flags["no-prelude"]) {
       importPrelude(mod)

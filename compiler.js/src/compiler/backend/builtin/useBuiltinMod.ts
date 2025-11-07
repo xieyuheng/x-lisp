@@ -1,11 +1,11 @@
 import { createMod, type Mod } from "../mod/index.ts"
-import { aboutBool } from "./aboutBool.ts"
-import { aboutConsole } from "./aboutConsole.ts"
-import { aboutCurry } from "./aboutCurry.ts"
-import { aboutFloat } from "./aboutFloat.ts"
-import { aboutInt } from "./aboutInt.ts"
-import { aboutRandom } from "./aboutRandom.ts"
-import { aboutValue } from "./aboutValue.ts"
+import { builtinBool } from "./builtinBool.ts"
+import { builtinConsole } from "./builtinConsole.ts"
+import { builtinCurry } from "./builtinCurry.ts"
+import { builtinFloat } from "./builtinFloat.ts"
+import { builtinInt } from "./builtinInt.ts"
+import { builtinRandom } from "./builtinRandom.ts"
+import { builtinValue } from "./builtinValue.ts"
 
 let mod: Mod | undefined = undefined
 
@@ -14,13 +14,13 @@ export function useBuiltinMod(): Mod {
 
   mod = createMod(new URL("builtin:prelude"))
 
-  aboutValue(mod)
-  aboutConsole(mod)
-  aboutBool(mod)
-  aboutInt(mod)
-  aboutFloat(mod)
-  aboutCurry(mod)
-  aboutRandom(mod)
+  builtinValue(mod)
+  builtinConsole(mod)
+  builtinBool(mod)
+  builtinInt(mod)
+  builtinFloat(mod)
+  builtinCurry(mod)
+  builtinRandom(mod)
 
   return mod
 }
