@@ -1,9 +1,9 @@
 import { type Command } from "@xieyuheng/commander.js"
 import * as B from "../basic/index.ts"
 import { compileToBasic } from "../compile/index.ts"
-import * as L from "../lang/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
+import * as L from "../lang/index.ts"
 
 export const CompileToBasicCommand: Command = {
   name: "compile-to-basic",
