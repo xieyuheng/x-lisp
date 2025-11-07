@@ -5,11 +5,7 @@ import { urlRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 import { include } from "../define/index.ts"
 import { type Definition } from "../definition/index.ts"
 import { formatDefinition } from "../format/index.ts"
-import {
-  modLookupPublicDefinition,
-  modPublicDefinitions,
-  type Mod,
-} from "../mod/index.ts"
+import { modPublicDefinitions, type Mod } from "../mod/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { load } from "./index.ts"
@@ -24,17 +20,13 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   const definitionEntries = modPublicDefinitions(importedMod).entries()
 
   if (stmt.kind === "Import") {
-    for (const name of stmt.names) {
-      const definition = modLookupPublicDefinition(importedMod, name)
-      if (definition === undefined) {
-        let message = `(import) undefined name: ${name}`
-        message += `\n  path: ${stmt.path}`
-        message += `\n  by mod: ${urlRelativeToCwd(mod.url)}`
-        throw new S.ErrorWithMeta(message, stmt.meta)
-      }
+    checkUndefinedNames(mod, importedMod, stmt.names, stmt.meta)
 
-      checkRedefine(mod, importedMod, name, definition, stmt.meta)
-      mod.definitions.set(name, definition)
+    for (const [name, definition] of definitionEntries) {
+      if (stmt.names.includes(name)) {
+        checkRedefine(mod, importedMod, name, definition, stmt.meta)
+        mod.definitions.set(name, definition)
+      }
     }
   }
 
@@ -56,23 +48,25 @@ export function stage2(mod: Mod, stmt: Stmt): void {
 
   if (stmt.kind === "ImportAs") {
     for (const [name, definition] of definitionEntries) {
-      checkRedefine(mod, importedMod, `${stmt.name}/${name}`, definition, stmt.meta)
+      checkRedefine(
+        mod,
+        importedMod,
+        `${stmt.name}/${name}`,
+        definition,
+        stmt.meta,
+      )
       mod.definitions.set(`${stmt.name}/${name}`, definition)
     }
   }
 
   if (stmt.kind === "Include") {
-    for (const name of stmt.names) {
-      const definition = modLookupPublicDefinition(importedMod, name)
-      if (definition === undefined) {
-        let message = `(include) undefined name: ${name}`
-        message += `\n  path: ${stmt.path}`
-        message += `\n  by mod: ${urlRelativeToCwd(mod.url)}`
-        throw new S.ErrorWithMeta(message, stmt.meta)
-      }
+    checkUndefinedNames(mod, importedMod, stmt.names, stmt.meta)
 
-      checkRedefine(mod, importedMod, name, definition, stmt.meta)
-      include(mod, name, definition)
+    for (const [name, definition] of definitionEntries) {
+      if (stmt.names.includes(name)) {
+        checkRedefine(mod, importedMod, name, definition, stmt.meta)
+        include(mod, name, definition)
+      }
     }
   }
 
@@ -94,7 +88,13 @@ export function stage2(mod: Mod, stmt: Stmt): void {
 
   if (stmt.kind === "IncludeAs") {
     for (const [name, definition] of definitionEntries) {
-      checkRedefine(mod, importedMod, `${stmt.name}/${name}`, definition, stmt.meta)
+      checkRedefine(
+        mod,
+        importedMod,
+        `${stmt.name}/${name}`,
+        definition,
+        stmt.meta,
+      )
       include(mod, `${stmt.name}/${name}`, definition)
     }
   }
@@ -121,6 +121,23 @@ function urlRelativeToMod(path: string, mod: Mod): URL {
   }
 
   return createUrlOrFileUrl(path)
+}
+
+function checkUndefinedNames(
+  mod: Mod,
+  importedMod: Mod,
+  names: Array<string>,
+  meta: S.TokenMeta,
+): void {
+  const definedNames = new Set(modPublicDefinitions(importedMod).keys())
+  const undefinedNames = names.filter((name) => !definedNames.has(name))
+  if (undefinedNames.length === 0) return
+
+  let message = `[checkUndefinedNames] can not redefine during import`
+  message += `\n  mod.url: ${urlRelativeToCwd(mod.url)}`
+  message += `\n  importedMod.url: ${urlRelativeToCwd(importedMod.url)}`
+  message += `\n  undefinedNames: ${undefinedNames.join(" ")}`
+  throw new S.ErrorWithMeta(message, meta)
 }
 
 function checkRedefine(

@@ -17,10 +17,6 @@ export function createMod(url: URL): Mod {
   }
 }
 
-export function modNames(mod: Mod): Set<string> {
-  return new Set(mod.definitions.keys())
-}
-
 export function modLookupValue(mod: Mod, name: string): Value | undefined {
   const definition = mod.definitions.get(name)
   if (definition === undefined) {
