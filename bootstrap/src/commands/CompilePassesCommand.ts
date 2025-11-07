@@ -1,6 +1,6 @@
 import { type Command } from "@xieyuheng/commander.js"
 import { compilePasses } from "../compile/index.ts"
-import * as F from "../lang/index.ts"
+import * as L from "../lang/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
@@ -24,7 +24,7 @@ export const CompilePassesCommand: Command = {
 
     try {
       const url = createUrlOrFileUrl(commander.args[0])
-      const mod = F.load(url)
+      const mod = L.load(url)
       compilePasses(mod)
     } catch (error) {
       console.log(errorReport(error))

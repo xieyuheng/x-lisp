@@ -1,7 +1,7 @@
 import { type Command } from "@xieyuheng/commander.js"
 import * as B from "../basic/index.ts"
 import { compileToBasic } from "../compile/index.ts"
-import * as F from "../lang/index.ts"
+import * as L from "../lang/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
@@ -55,7 +55,7 @@ export const RunViaBasicCommand: Command = {
 
     try {
       const url = createUrlOrFileUrl(commander.args[0])
-      const mod = F.load(url)
+      const mod = L.load(url)
       const basicMod = compileToBasic(mod)
       const context = B.createContext(basicMod)
       B.call(context, "main", [])

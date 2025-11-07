@@ -1,15 +1,15 @@
 import * as B from "../basic/index.ts"
-import * as F from "../lang/index.ts"
+import * as L from "../lang/index.ts"
 
-export function compilePasses(mod: F.Mod): void {
-  F.logMod("Input", mod)
-  mod = F.logMod("ShrinkPass", F.ShrinkPass(mod))
-  mod = F.logMod("UniquifyPass", F.UniquifyPass(mod))
-  mod = F.logMod("RevealFunctionPass", F.RevealFunctionPass(mod))
-  mod = F.logMod("LiftLambdaPass", F.LiftLambdaPass(mod))
-  mod = F.logMod("UnnestOperandPass", F.UnnestOperandPass(mod))
+export function compilePasses(mod: L.Mod): void {
+  L.logMod("Input", mod)
+  mod = L.logMod("ShrinkPass", L.ShrinkPass(mod))
+  mod = L.logMod("UniquifyPass", L.UniquifyPass(mod))
+  mod = L.logMod("RevealFunctionPass", L.RevealFunctionPass(mod))
+  mod = L.logMod("LiftLambdaPass", L.LiftLambdaPass(mod))
+  mod = L.logMod("UnnestOperandPass", L.UnnestOperandPass(mod))
 
   const basicMod = B.createMod(mod.url)
-  F.ExplicateControlPass(mod, basicMod)
+  L.ExplicateControlPass(mod, basicMod)
   B.logMod("ExplicateControlPass", basicMod)
 }
