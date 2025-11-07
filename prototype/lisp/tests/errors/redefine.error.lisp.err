@@ -2,7 +2,7 @@
   new exp:
     2
   old definition:
-    origin: lisp/tests/errors/redefine.error.lisp
+    mod: lisp/tests/errors/redefine.error.lisp
     name: x
     exp:
       1

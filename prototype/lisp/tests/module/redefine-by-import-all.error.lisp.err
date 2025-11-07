@@ -1,11 +1,11 @@
 [checkRedefine] can not redefine name: one
   old definition:
-    origin: lisp/tests/module/module-one.lisp
+    mod: lisp/tests/module/module-one.lisp
     name: one
     exp:
       1
   new definition:
-    origin: lisp/tests/module/module-two.lisp
+    mod: lisp/tests/module/module-two.lisp
     name: one
     exp:
       1

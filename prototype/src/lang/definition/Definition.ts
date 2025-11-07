@@ -9,7 +9,7 @@ export type Definition = ValueDefinition | LazyDefinition
 
 export type ValueDefinition = {
   kind: "ValueDefinition"
-  origin: Mod
+  mod: Mod
   name: string
   value: Value
   schema?: Value
@@ -17,13 +17,13 @@ export type ValueDefinition = {
 }
 
 export function ValueDefinition(
-  origin: Mod,
+  mod: Mod,
   name: string,
   value: Value,
 ): ValueDefinition {
   return {
     kind: "ValueDefinition",
-    origin,
+    mod,
     name,
     value,
   }
@@ -31,7 +31,7 @@ export function ValueDefinition(
 
 export type LazyDefinition = {
   kind: "LazyDefinition"
-  origin: Mod
+  mod: Mod
   name: string
   exp: Exp
   value?: Value
@@ -40,13 +40,13 @@ export type LazyDefinition = {
 }
 
 export function LazyDefinition(
-  origin: Mod,
+  mod: Mod,
   name: string,
   exp: Exp,
 ): LazyDefinition {
   return {
     kind: "LazyDefinition",
-    origin,
+    mod,
     name,
     exp,
   }
