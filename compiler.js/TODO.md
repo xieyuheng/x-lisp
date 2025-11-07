@@ -1,18 +1,6 @@
+[interpreter] remove `ImportEntry`
+
 # backend -- module
-
-[backend] `Stmt` -- `Import`
-
-  | Import
-  | ImportExcept
-  | ImportAll
-  | ImportAs
-
-[backend] `Stmt` -- `Include`
-
-  | Include
-  | IncludeExcept
-  | IncludeAll
-  | IncludeAs
 
 [backend] `Ref` -- has `name` `from` `as`
 [backend] `Mod` has `importedRefs` and `includedRefs`
