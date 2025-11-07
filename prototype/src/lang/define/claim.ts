@@ -23,11 +23,11 @@ export function claim(mod: Mod, name: string, schema: Value): void {
 
   const definition = mod.definitions.get(name)
 
-  if (definition && definition.origin === mod) {
+  if (definition && definition.mod === mod) {
     definition.schema = schema
   }
 
-  if (definition && definition.origin !== mod) {
+  if (definition && definition.mod !== mod) {
     let message = `[claim] can not claim name of other module`
     message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
     message += `\n  name: ${name}`

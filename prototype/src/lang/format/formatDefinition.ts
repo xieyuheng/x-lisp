@@ -9,7 +9,7 @@ export function formatDefinition(definition: Definition): string {
   switch (definition.kind) {
     case "ValueDefinition": {
       let message = ""
-      message += `\norigin: ${urlRelativeToCwd(definition.origin.url)}`
+      message += `\nmod: ${urlRelativeToCwd(definition.mod.url)}`
       message += `\nname: ${definition.name}`
       message += formatUnderTag(
         0,
@@ -33,7 +33,7 @@ export function formatDefinition(definition: Definition): string {
 
     case "LazyDefinition": {
       let message = ""
-      message += `\norigin: ${urlRelativeToCwd(definition.origin.url)}`
+      message += `\nmod: ${urlRelativeToCwd(definition.mod.url)}`
       message += `\nname: ${definition.name}`
       message += formatUnderTag(0, `exp:`, prettyExp(maxWidth, definition.exp))
       if (definition.value)

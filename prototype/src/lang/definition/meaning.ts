@@ -33,7 +33,7 @@ export function meaning(mod: Mod, definition: Definition): Value {
         return definition.value
       } else {
         definition.value = resultValue(
-          evaluate(definition.exp)(definition.origin, emptyEnv()),
+          evaluate(definition.exp)(definition.mod, emptyEnv()),
         )
         return meaning(mod, definition)
       }

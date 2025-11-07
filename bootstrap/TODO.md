@@ -1,5 +1,9 @@
 # basic -- module
 
+[basic] `Mod` remove `Ref` be like the module system of prototype interpreter
+
+[basic] `Definition` has reference to `mod`
+
 [basic] `load` -- `stage2` -- handle `Import`
 [basic] `load` -- `stage2` -- handle `Include`
 
@@ -21,14 +25,15 @@
 
 [lang] `Mod` has `dependencies`
 
-[lang] [maybe] do side effect on passes -- to have a stable `Mod` reference
+[lang] do side effect on passes -- to have a stable `Mod` reference
 
 - `modUpdateDefinition` instead of `modMapDefinition`
 
   - remove `modFlatMapDefinitionEntry`
 
-- reference to name in another module should be indirect,
-  thus reference to `Definition` no need to be stable
+[lang] reference to name in another module is direct via `Definition`
+
+- thus reference to `Definition` also need to be stable
 
 [lang] `011-RevealFunctionPass` -- check imported names
 [lang] `030-ExplicateControlPass` -- translate module statements
