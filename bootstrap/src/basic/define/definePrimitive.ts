@@ -10,6 +10,6 @@ export function definePrimitiveFunction(
 ): void {
   mod.definitions.set(
     name,
-    Definitions.PrimitiveFunctionDefinition(name, arity, fn),
+    Definitions.PrimitiveFunctionDefinition(mod, name, arity, fn),
   )
 }

@@ -1,7 +1,5 @@
 # basic -- module
 
-[basic] `Definition` has reference to `mod`
-
 [basic] `load` -- `stage2` -- handle `Import`
 [basic] `load` -- `stage2` -- handle `Include`
 

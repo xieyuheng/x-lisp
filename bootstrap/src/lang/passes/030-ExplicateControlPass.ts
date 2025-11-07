@@ -20,7 +20,7 @@ type State = {
 }
 
 function onDefinition(basicMod: B.Mod, definition: Definition): void {
-  const fn = B.FunctionDefinition(definition.name, new Map())
+  const fn = B.FunctionDefinition(basicMod, definition.name, new Map())
   basicMod.definitions.set(definition.name, fn)
   const initialInstrs = Array.from(
     definition.parameters
