@@ -1,5 +1,5 @@
 import { type Command } from "@xieyuheng/commander.js"
-import * as B from "../compiler/backend/index.ts"
+import * as B from "../backend/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 

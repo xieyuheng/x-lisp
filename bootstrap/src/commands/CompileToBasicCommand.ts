@@ -1,7 +1,7 @@
 import { type Command } from "@xieyuheng/commander.js"
-import * as B from "../compiler/backend/index.ts"
-import { compileToBasic } from "../compiler/compile/index.ts"
-import * as F from "../compiler/frontend/index.ts"
+import * as B from "../backend/index.ts"
+import { compileToBasic } from "../compile/index.ts"
+import * as F from "../frontend/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 

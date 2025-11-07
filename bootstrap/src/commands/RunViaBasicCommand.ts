@@ -1,9 +1,7 @@
 import { type Command } from "@xieyuheng/commander.js"
-import { call, createContext } from "../compiler/backend/execute/index.ts"
-import * as B from "../compiler/backend/index.ts"
-import { load } from "../compiler/backend/load/index.ts"
-import { compileToBasic } from "../compiler/compile/index.ts"
-import * as F from "../compiler/frontend/index.ts"
+import * as B from "../backend/index.ts"
+import { compileToBasic } from "../compile/index.ts"
+import * as F from "../frontend/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
@@ -27,9 +25,9 @@ export const RunBasicCommand: Command = {
 
     try {
       const url = createUrlOrFileUrl(commander.args[0])
-      const mod = load(url)
-      const context = createContext(mod)
-      call(context, "main", [])
+      const mod = B.load(url)
+      const context = B.createContext(mod)
+      B.call(context, "main", [])
     } catch (error) {
       console.log(errorReport(error))
       process.exit(1)
