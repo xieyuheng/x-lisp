@@ -1,5 +1,5 @@
 import * as S from "@xieyuheng/x-sexp.js"
-import * as B from "../../backend/index.ts"
+import * as B from "../../basic/index.ts"
 import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import type { Definition } from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"

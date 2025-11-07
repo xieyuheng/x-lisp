@@ -1,4 +1,4 @@
-import * as B from "../../backend/index.ts"
+import * as B from "../../basic/index.ts"
 
 export function getBuiltinFunctionArity(name: string): number | undefined {
   const definition = B.modLookupDefinition(B.useBuiltinMod(), name)

@@ -1,15 +1,15 @@
-# backend -- module
+# basic -- module
 
-[backend] `Ref` -- has `name` `from` `as`
-[backend] `Mod` has `importedRefs` and `includedRefs` and `exportedNames`
-[backend] `Mod` has `dependencies` -- `Map` of
-[backend] `load` -- handle import and include statements
+[basic] `Ref` -- has `name` `from` `as`
+[basic] `Mod` has `importedRefs` and `includedRefs` and `exportedNames`
+[basic] `Mod` has `dependencies` -- `Map` of
+[basic] `load` -- handle import and include statements
 
-# backend -- bundling
+# basic -- bundling
 
-[backend] `bundle` -- setup
-[backend] `bundle` -- take `mod` and `loader`
-[backend] `bundle` -- use `§` as prefix
+[basic] `bundle` -- setup
+[basic] `bundle` -- take `mod` and `loader`
+[basic] `bundle` -- use `§` as prefix
 
 # frontend -- module
 

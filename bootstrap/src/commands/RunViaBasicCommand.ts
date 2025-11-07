@@ -1,5 +1,5 @@
 import { type Command } from "@xieyuheng/commander.js"
-import * as B from "../backend/index.ts"
+import * as B from "../basic/index.ts"
 import { compileToBasic } from "../compile/index.ts"
 import * as F from "../frontend/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
