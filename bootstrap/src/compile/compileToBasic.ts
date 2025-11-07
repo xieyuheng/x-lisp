@@ -1,5 +1,5 @@
 import * as B from "../basic/index.ts"
-import * as F from "../frontend/index.ts"
+import * as F from "../lang/index.ts"
 
 export function compileToBasic(mod: F.Mod): B.Mod {
   mod = F.ShrinkPass(mod)
