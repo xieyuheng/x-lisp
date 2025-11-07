@@ -1,7 +1,8 @@
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import { type Exp } from "../exp/index.ts"
+import type { AboutModule } from "./AboutModule.ts"
 
-export type Stmt = Compute | DefineFunction
+export type Stmt = Compute | DefineFunction | AboutModule
 
 export type Compute = {
   kind: "Compute"
