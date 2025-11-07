@@ -18,10 +18,13 @@
 [backend] `Mod` has `importedRefs` and `includedRefs`
 [backend] `Mod` has `dependencies`
 
+[backend] `load` -- handle import and include statements
+
 # backend -- bundling
 
 [backend] `bundle` -- setup
 [backend] `bundle` -- take `mod` and `loader`
+[backend] `bundle` -- use `§` as prefix
 
 # frontend -- module
 

@@ -3,7 +3,7 @@ import Path from "node:path"
 import { flags } from "../../flags.ts"
 import { setDifference } from "../../helpers/set/setAlgebra.ts"
 import { urlRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
-import { aboutModule } from "../builtin/aboutModule.ts"
+import { builtinModule } from "../builtin/builtinModule.ts"
 import { importBuiltin } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
 import { importPrelude } from "../prelude/importPrelude.ts"
@@ -21,7 +21,7 @@ export function load(url: URL): Mod {
 
   const text = maybeIgnoreShebang(loadText(url))
   const mod = createMod(url)
-  aboutModule(mod)
+  builtinModule(mod)
   importBuiltin(mod)
   if (!flags["no-prelude"]) {
     importPrelude(mod)
