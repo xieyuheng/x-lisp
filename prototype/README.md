@@ -15,8 +15,8 @@ $ x-lisp-proto
 commands:
   help -- display help for a command
   repl -- Start x-lisp REPL
-  interpret -- Interpret a x-lisp file
-  interpret-basic -- Interpret a basic-lisp file
+  run -- Run a x-lisp file
+  run-basic -- Run a basic-lisp file
 ```
 
 ## Syntax

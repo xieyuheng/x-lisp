@@ -2,6 +2,6 @@
 
 set -e
 
-sh scripts/test-interpret-prelude.sh
-sh scripts/test-interpret-std.sh
-sh scripts/test-interpret-tests.sh
+sh scripts/test-run-prelude.sh
+sh scripts/test-run-std.sh
+sh scripts/test-run-tests.sh
