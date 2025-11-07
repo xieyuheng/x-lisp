@@ -10,8 +10,8 @@ import {
   modPublicDefinitions,
   type Mod,
 } from "../mod/index.ts"
-import { type Stmt } from "../stmt/index.ts"
 import * as Stmts from "../stmt/index.ts"
+import { type Stmt } from "../stmt/index.ts"
 import { load } from "./index.ts"
 import { resolveModPath } from "./resolveModPath.ts"
 
@@ -42,6 +42,15 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const [name, definition] of definitionEntries) {
       checkRedefine(mod, name, definition, stmt.meta)
       mod.definitions.set(name, definition)
+    }
+  }
+
+  if (stmt.kind === "ImportExcept") {
+    for (const [name, definition] of definitionEntries) {
+      if (!stmt.names.includes(name)) {
+        checkRedefine(mod, name, definition, stmt.meta)
+        mod.definitions.set(name, definition)
+      }
     }
   }
 

@@ -1,17 +1,14 @@
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
-import { type Exp } from "../exp/index.ts"
 
-export type AboutModule =
-  | AboutImport
-  | Export
-
+export type AboutModule = AboutImport | Export
 
 export type AboutImport =
   | Import
   | ImportAll
+  | ImportExcept
   | ImportAs
-  | IncludeAll
   | Include
+  | IncludeAll
   | IncludeExcept
   | IncludeAs
 
@@ -45,6 +42,26 @@ export function ImportAll(path: string, meta: Meta): ImportAll {
   }
 }
 
+export function ImportExcept(
+  path: string,
+  names: Array<string>,
+  meta: Meta,
+): ImportExcept {
+  return {
+    kind: "ImportExcept",
+    path,
+    names,
+    meta,
+  }
+}
+
+export type ImportExcept = {
+  kind: "ImportExcept"
+  path: string
+  names: Array<string>
+  meta: Meta
+}
+
 export type ImportAs = {
   kind: "ImportAs"
   path: string
@@ -57,20 +74,6 @@ export function ImportAs(path: string, name: string, meta: Meta): ImportAs {
     kind: "ImportAs",
     path,
     name,
-    meta,
-  }
-}
-
-export type IncludeAll = {
-  kind: "IncludeAll"
-  path: string
-  meta: Meta
-}
-
-export function IncludeAll(path: string, meta: Meta): IncludeAll {
-  return {
-    kind: "IncludeAll",
-    path,
     meta,
   }
 }
@@ -91,6 +94,20 @@ export function Include(
     kind: "Include",
     path,
     names,
+    meta,
+  }
+}
+
+export type IncludeAll = {
+  kind: "IncludeAll"
+  path: string
+  meta: Meta
+}
+
+export function IncludeAll(path: string, meta: Meta): IncludeAll {
+  return {
+    kind: "IncludeAll",
+    path,
     meta,
   }
 }
