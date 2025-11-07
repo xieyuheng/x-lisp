@@ -1,0 +1,2 @@
+(write "abc")
+(newline)

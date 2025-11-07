@@ -1,0 +1,10 @@
+[assertTrue] fail
+  exp:
+    (not #t)
+  --> lisp/tests/assert/assert.error.lisp:2:9
+ 1 | (assert #t)
+ 2 | (assert (not #t))
+   |         ~~~~~~~~  
+ 3 | (assert (not #t))
+ 4 | (assert #t)
+

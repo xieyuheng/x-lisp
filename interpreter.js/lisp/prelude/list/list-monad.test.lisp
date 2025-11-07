@@ -1,0 +1,12 @@
+(import-all "../function")
+(import-all "list-monad")
+
+(assert-equal (list-lift list-unit [1 2 3]) [1 2 3])
+(assert-equal ((specific list-lift int? int?)
+               list-unit [1 2 3]) [1 2 3])
+
+(assert-equal (list-unit 1) [1])
+(assert-equal ((specific list-unit int?) 1) [1])
+
+(assert-equal ((list-lift list-unit) [1 2 3]) [1 2 3])
+(assert-equal (pipe [1 2 3] (list-lift list-unit)) [1 2 3])

@@ -1,0 +1,107 @@
+import { globals } from "../../globals.ts"
+import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
+import { equal } from "../equal/index.ts"
+import { prettyValue } from "../pretty/index.ts"
+import * as Values from "../value/index.ts"
+import { type Value } from "../value/index.ts"
+import { apply } from "./apply.ts"
+
+type Result = { kind: "Ok"; value: Value } | { kind: "Err" }
+
+export function isValid(schema: Value, value: Value): boolean {
+  const result = validate(schema, value)
+  return result.kind === "Ok"
+}
+
+export function validateOrFail(schema: Value, value: Value): Value {
+  const maxWidth = globals.maxWidth
+  const result = validate(schema, value)
+  if (result.kind === "Ok") {
+    return result.value
+  }
+
+  let message = `[validateOrFail] assertion fail`
+  message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
+  message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
+  throw new Error(message)
+}
+
+export function validate(schema: Value, value: Value): Result {
+  const maxWidth = globals.maxWidth
+
+  if (schema.kind === "Arrow") {
+    return { kind: "Ok", value: Values.The(schema, value) }
+  }
+
+  if (schema.kind === "VariadicArrow") {
+    return { kind: "Ok", value: Values.The(schema, value) }
+  }
+
+  if (schema.kind === "Polymorphic") {
+    return { kind: "Ok", value: Values.The(schema, value) }
+  }
+
+  if (Values.isAtom(schema)) {
+    if (equal(schema, value)) {
+      return { kind: "Ok", value: value }
+    } else {
+      return { kind: "Err" }
+    }
+  }
+
+  if (schema.kind === "Tau") {
+    // Should not return new `Tael` on `Tau`,
+    // because function schema might do
+    // side effect on the old value.
+
+    if (value.kind !== "Tael") {
+      return { kind: "Err" }
+    }
+
+    if (schema.elementSchemas.length !== value.elements.length) {
+      return { kind: "Err" }
+    }
+
+    for (const index of value.elements.keys()) {
+      const elementSchema = schema.elementSchemas[index]
+      const element = value.elements[index]
+      const result = validate(elementSchema, element)
+      if (result.kind === "Ok") {
+        value.elements[index] = result.value
+      } else {
+        return { kind: "Err" }
+      }
+    }
+
+    for (const key of Object.keys(schema.attributeSchemas)) {
+      const attributeSchema = schema.attributeSchemas[key]
+      const attribute = value.attributes[key] || Values.Null()
+      const result = validate(attributeSchema, attribute)
+      if (result.kind === "Ok" && !Values.isNull(attribute)) {
+        value.attributes[key] = result.value
+      } else {
+        return { kind: "Err" }
+      }
+    }
+
+    return {
+      kind: "Ok",
+      value,
+    }
+  }
+
+  const result = apply(schema, [value])
+  if (Values.isBool(result)) {
+    if (Values.isTrue(result)) {
+      return { kind: "Ok", value }
+    } else {
+      return { kind: "Err" }
+    }
+  }
+
+  let message = `[validate] predicate schema must return bool`
+  message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
+  message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
+  message += formatUnderTag(2, `result:`, prettyValue(maxWidth, result))
+  throw new Error(message)
+}
