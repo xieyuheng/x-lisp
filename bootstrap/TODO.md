@@ -1,8 +1,7 @@
 # basic -- module
 
-[basic] `load` -- handle `Export`
-[basic] `load` -- handle `Import`
-[basic] `load` -- handle `Include`
+[basic] `load` -- `stage2` -- handle `Import`
+[basic] `load` -- `stage2` -- handle `Include`
 
 [basic] `Mod` has `dependencies` -- `Map` of `Mod`
 [basic] `load` -- take `dependencies` as argument
