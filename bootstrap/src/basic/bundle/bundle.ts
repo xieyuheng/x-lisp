@@ -1,6 +1,5 @@
 import assert from "node:assert"
 import { mapMapValue } from "../../helpers/map/mapMapValue.ts"
-import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import { Block } from "../block/index.js"
 import { importBuiltin, useBuiltinMod } from "../builtin/index.ts"
 import * as Definitions from "../definition/index.ts"
@@ -85,9 +84,7 @@ export function addDependencyMod(bundleMod: Mod, context: Context): void {
 function dependencyPrefix(dependencies: Map<string, Mod>, mod: Mod): string {
   const index = dependencyIndex(dependencies, mod)
   const count = index + 1
-  const subscript = stringToSubscript(count.toString())
-  const prefix = `§${subscript}`
-  return prefix
+  return `§${count}`
 }
 
 function dependencyIndex(dependencies: Map<string, Mod>, mod: Mod): number {
