@@ -1,4 +1,4 @@
-import * as B from "../backend/index.ts"
+import * as B from "../basic/index.ts"
 import * as F from "../frontend/index.ts"
 
 export function compileToBasic(mod: F.Mod): B.Mod {
