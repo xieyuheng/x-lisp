@@ -10,12 +10,18 @@ export type Ref = {
 export type Mod = {
   url: URL
   definitions: Map<string, Definition>
+  importedRefs: Map<string, Ref>
+  includedRefs: Map<string, Ref>
+  exportedNames: Set<string>
 }
 
 export function createMod(url: URL): Mod {
   return {
     url,
     definitions: new Map(),
+    importedRefs: new Map(),
+    includedRefs: new Map(),
+    exportedNames: new Set(),
   }
 }
 

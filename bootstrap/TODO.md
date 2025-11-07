@@ -1,6 +1,5 @@
 # basic -- module
 
-[basic] `Mod` has `importedRefs` and `includedRefs` and `exportedNames`
 [basic] `load` -- handle `Import` and `Include` and `Export` -- setup `Mod`
 
 [basic] `Mod` has `dependencies` -- `Map` of `Mod`
