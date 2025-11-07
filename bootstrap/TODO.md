@@ -1,11 +1,7 @@
 # basic -- bundling
 
-[basic] `bundle` -- `qualifyValue`
-[basic] `bundle` -- `qualifyName`
-
-[basic] `BundleBasicCommand`
-
 [basic] always run module via `bundle`
+[basic] `BundleBasicCommand`
 
 # lang -- module
 

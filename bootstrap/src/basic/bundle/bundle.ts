@@ -2,12 +2,13 @@ import assert from "node:assert"
 import { mapMapValue } from "../../helpers/map/mapMapValue.ts"
 import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import { Block } from "../block/index.js"
-import { importBuiltin } from "../builtin/index.ts"
+import { importBuiltin, useBuiltinMod } from "../builtin/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Instr } from "../instr/index.ts"
 import * as Instrs from "../instr/index.ts"
-import { createMod, modPublicDefinitions, type Mod } from "../mod/index.ts"
+import { createMod, modLookupDefinition, modPublicDefinitions, type Mod } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
+import * as Values from "../value/index.ts"
 
 type Context = {
   entryMod: Mod
@@ -60,10 +61,7 @@ export function addEntryMod(bundleMod: Mod, context: Context): void {
 
 export function addDependencyMod(bundleMod: Mod, context: Context): void {
   // name in a dependency mod will be prefixed.
-  const index = dependencyIndex(context.dependencies, context.mod)
-  const count = index + 1
-  const subscript = stringToSubscript(count.toString())
-  const prefix = `§${subscript}`
+  const prefix = dependencyPrefix(context.dependencies, context.mod)
   for (const definition of modPublicDefinitions(context.mod).values()) {
     const name = `${prefix}/${definition.name}`
     assert(definition.kind === "FunctionDefinition")
@@ -79,12 +77,17 @@ export function addDependencyMod(bundleMod: Mod, context: Context): void {
   }
 }
 
-function dependencyIndex(
-  dependencies: Map<string, Mod>,
-  dependencyMod: Mod,
-): number {
+function dependencyPrefix(dependencies: Map<string, Mod>, mod: Mod): string {
+  const index = dependencyIndex(dependencies, mod)
+  const count = index + 1
+  const subscript = stringToSubscript(count.toString())
+  const prefix = `§${subscript}`
+  return prefix
+}
+
+function dependencyIndex(dependencies: Map<string, Mod>, mod: Mod): number {
   const keys = Array.from(dependencies.keys())
-  const index = keys.indexOf(dependencyMod.url.href)
+  const index = keys.indexOf(mod.url.href)
   assert(index >= 0)
   return index
 }
@@ -124,6 +127,10 @@ function qualifyInstr(context: Context, instr: Instr): Instr {
 
 function qualifyValue(context: Context, value: Value): Value {
   switch (value.kind) {
+    case "FunctionRef": {
+      return Values.FunctionRef(qualifyName(context, value.name), value.arity)
+    }
+
     default: {
       return value
     }
@@ -131,5 +138,14 @@ function qualifyValue(context: Context, value: Value): Value {
 }
 
 function qualifyName(context: Context, name: string): string {
-  return name
+  if (context.mod === context.entryMod) {
+    return name
+  } else if (context.mod === useBuiltinMod()) {
+    return name
+  } else {
+    const definition = modLookupDefinition(context.mod, name)
+    assert(definition)
+    const prefix = dependencyPrefix(context.dependencies, definition.mod)
+    return `${prefix}/${name}`
+  }
 }
