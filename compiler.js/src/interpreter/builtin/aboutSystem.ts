@@ -1,4 +1,4 @@
-import { spawnSync } from "child_process"
+import { spawnSync } from "node:child_process"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
