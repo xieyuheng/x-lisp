@@ -7,11 +7,11 @@ import * as F from "../compiler/frontend/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
-export const InterpretBasicCommand: Command = {
-  name: "interpret-basic",
-  description: "Interpret a basic-lisp file",
+export const RunBasicCommand: Command = {
+  name: "run-basic",
+  description: "Run a basic-lisp file",
   help(commander) {
-    let message = `The ${this.name} command interpret a basic-lisp file.`
+    let message = `The ${this.name} command run a basic-lisp file.`
     message += `\n`
     message += `\n  ${commander.name} ${this.name} <file>`
     message += `\n`
@@ -20,7 +20,7 @@ export const InterpretBasicCommand: Command = {
 
   async run(commander) {
     if (typeof commander.args[0] !== "string") {
-      let message = `[interpret-basic] expect the first argument to be a path`
+      let message = `[run-basic] expect the first argument to be a path`
       message += `\n  first argument: ${commander.args[0]}`
       throw new Error(message)
     }
@@ -37,11 +37,11 @@ export const InterpretBasicCommand: Command = {
   },
 }
 
-export const InterpretViaBasicCommand: Command = {
-  name: "interpret-via-basic",
-  description: "Interpret x-lisp code via basic-lisp",
+export const RunViaBasicCommand: Command = {
+  name: "run-via-basic",
+  description: "Run x-lisp code via basic-lisp",
   help(commander) {
-    let message = `The ${this.name} command interpret a x-lisp file via basic-lisp.`
+    let message = `The ${this.name} command run a x-lisp file via basic-lisp.`
     message += `\n`
     message += `\n  ${commander.name} ${this.name} <file>`
     message += `\n`
