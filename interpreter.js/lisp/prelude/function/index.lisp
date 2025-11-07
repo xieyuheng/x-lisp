@@ -1,0 +1,5 @@
+(include-all "identity")
+(include-all "constant")
+(include-all "forth")
+(include-all "compose")
+(include-all "pipe")

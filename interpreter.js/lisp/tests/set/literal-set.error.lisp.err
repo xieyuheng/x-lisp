@@ -1,0 +1,6 @@
+(@set) can not have attributes
+  --> lisp/tests/set/literal-set.error.lisp:1:1
+ 1 | (@set 1 2 3 :x 1 :y 2)
+   | ~~~~~~~~~~~~~~~~~~~~~~ 
+ 2 | 
+

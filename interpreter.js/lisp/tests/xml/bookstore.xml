@@ -1,0 +1,14 @@
+<bookstore>
+  <book id="b101" category="fiction" lang="en">
+    <title>The Great Novel</title>
+    <author>Bill Authorette</author>
+    <year>2021</year>
+    <price currency="USD">24.99</price>
+  </book>
+  <book id="b102" category="non-fiction" lang="fr">
+    <title>Learning XML</title>
+    <author>Pierre Document</author>
+    <year>2019</year>
+    <price currency="EUR">19.50</price>
+  </book>
+</bookstore>

@@ -1,0 +1,9 @@
+[applyDataPutter] result data cannot possibly pass data predicate
+  putter:
+    put-li-tail!
+  putting value:
+    2
+  result data:
+    [#li 1 2]
+  data predicate:
+    my-list?

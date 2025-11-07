@@ -1,0 +1,4 @@
+(import-all "my-list")
+
+nil
+(li 1 (li 2 (li 3 nil)))

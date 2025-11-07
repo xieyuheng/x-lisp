@@ -1,0 +1,5 @@
+(assert (null? null))
+(assert (null? #null))
+(assert-not (null? #t))
+(assert-not (null? #f))
+(assert-not (null? #void))

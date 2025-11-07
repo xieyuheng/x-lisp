@@ -1,0 +1,16 @@
+import { provide } from "../define/index.ts"
+import { runCode } from "../load/index.ts"
+import { type Mod } from "../mod/index.ts"
+
+export function builtinOptional(mod: Mod) {
+  provide(mod, ["optional?"])
+
+  runCode(
+    mod,
+    `
+(define (optional? p x)
+  (or (null? x)
+      (valid? p x)))
+`,
+  )
+}
