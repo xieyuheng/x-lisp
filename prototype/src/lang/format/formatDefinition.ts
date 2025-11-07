@@ -1,8 +1,8 @@
 import { globals } from "../../globals.ts"
 import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { urlRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
+import type { Definition } from "../definition/index.ts"
 import { prettyExp, prettyValue } from "../pretty/index.ts"
-import { type Definition } from "./index.ts"
 
 export function formatDefinition(definition: Definition): string {
   const maxWidth = globals.maxWidth

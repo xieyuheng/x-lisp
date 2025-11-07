@@ -15,6 +15,8 @@
 [basic] `bundle` -- take `mod` and `loader`
 [basic] `bundle` -- use `§` as prefix
 
+[basic] always run module via `bundle`
+
 # lang -- module
 
 [lang] `Mod` has `dependencies`

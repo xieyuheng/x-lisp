@@ -2,7 +2,8 @@ import * as S from "@xieyuheng/x-sexp.js"
 import { formatIndent } from "../../helpers/format/formatIndent.ts"
 import { urlRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 import { include } from "../define/index.ts"
-import { formatDefinition, type Definition } from "../definition/index.ts"
+import { type Definition } from "../definition/index.ts"
+import { formatDefinition } from "../format/index.ts"
 import {
   modLookupPublicDefinition,
   modPublicDefinitions,
