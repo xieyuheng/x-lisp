@@ -1,6 +1,5 @@
 # basic -- bundling
 
-[basic] always run module via `bundle`
 [basic] `BundleBasicCommand`
 
 # lang -- module

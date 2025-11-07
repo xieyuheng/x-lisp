@@ -5,7 +5,7 @@ import { urlRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 import { include } from "../define/index.ts"
 import { type Definition } from "../definition/index.ts"
 import { formatDefinition } from "../format/index.ts"
-import { modPublicDefinitions, type Mod } from "../mod/index.ts"
+import { modPublicDefinitionEntries, type Mod } from "../mod/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { load } from "./index.ts"
@@ -17,7 +17,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 
   const importedMod = importBy(stmt.path, mod)
-  const definitionEntries = modPublicDefinitions(importedMod).entries()
+  const definitionEntries = modPublicDefinitionEntries(importedMod)
 
   if (stmt.kind === "Import") {
     checkUndefinedNames(mod, importedMod, stmt.names, stmt.meta)
@@ -129,7 +129,9 @@ function checkUndefinedNames(
   names: Array<string>,
   meta: S.TokenMeta,
 ): void {
-  const definedNames = new Set(modPublicDefinitions(importedMod).keys())
+  const definedNames = new Set(
+    modPublicDefinitionEntries(importedMod).map(([key]) => key),
+  )
   const undefinedNames = names.filter((name) => !definedNames.has(name))
   if (undefinedNames.length === 0) return
 
