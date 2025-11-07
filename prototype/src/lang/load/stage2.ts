@@ -12,24 +12,6 @@ import {
 import { type Stmt } from "../stmt/index.ts"
 import { importByMod } from "./importByMod.ts"
 
-function checkRedefine(
-  mod: Mod,
-  name: string,
-  definition: Definition,
-  meta: S.TokenMeta,
-): void {
-  const found = mod.definitions.get(name)
-  if (found === undefined) return
-  if (found === definition) return
-
-  let message = `[checkRedefine] can not redefine name: ${name}`
-  message += `\n  old definition:`
-  message += formatIndent(4, formatDefinition(found))
-  message += `\n  new definition:`
-  message += formatIndent(4, formatDefinition(definition))
-  throw new S.ErrorWithMeta(message, meta)
-}
-
 export function stage2(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Import") {
     const importedMod = importByMod(stmt.path, mod)
@@ -114,4 +96,22 @@ export function stage2(mod: Mod, stmt: Stmt): void {
       include(mod, `${stmt.name}/${name}`, definition)
     }
   }
+}
+
+function checkRedefine(
+  mod: Mod,
+  name: string,
+  definition: Definition,
+  meta: S.TokenMeta,
+): void {
+  const found = mod.definitions.get(name)
+  if (found === undefined) return
+  if (found === definition) return
+
+  let message = `[checkRedefine] can not redefine name: ${name}`
+  message += `\n  old definition:`
+  message += formatIndent(4, formatDefinition(found))
+  message += `\n  new definition:`
+  message += formatIndent(4, formatDefinition(definition))
+  throw new S.ErrorWithMeta(message, meta)
 }
