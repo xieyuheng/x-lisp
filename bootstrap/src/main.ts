@@ -3,14 +3,14 @@
 import { Commander } from "@xieyuheng/commander.js"
 import { CompilePassesCommand } from "./commands/CompilePassesCommand.ts"
 import { CompileToBasicCommand } from "./commands/CompileToBasicCommand.ts"
-import { InterpretBasicCommand } from "./commands/InterpretBasicCommand.ts"
-import { InterpretViaBasicCommand } from "./commands/InterpretViaBasicCommand.ts"
+import { RunBasicCommand } from "./commands/RunBasicCommand.ts"
+import { RunViaBasicCommand } from "./commands/RunViaBasicCommand.ts"
 
 async function main() {
   const commander = new Commander()
 
-  commander.use(InterpretBasicCommand)
-  commander.use(InterpretViaBasicCommand)
+  commander.use(RunBasicCommand)
+  commander.use(RunViaBasicCommand)
   commander.use(CompilePassesCommand)
   commander.use(CompileToBasicCommand)
 
