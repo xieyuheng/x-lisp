@@ -1,7 +1,7 @@
 # basic -- bundling
 
-[basic] `bundle` -- `qualifyInstr` -- `Call`
 [basic] `bundle` -- `qualifyValue`
+[basic] `bundle` -- `qualifyName`
 
 [basic] `BundleBasicCommand`
 
