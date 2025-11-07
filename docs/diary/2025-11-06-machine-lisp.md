@@ -55,6 +55,14 @@ machine-lisp 因此没有 macro 功能，
   ...)
 ```
 
+machine-lisp 应该可以成为一个一般的工具，可以用于反汇编。
+
+比如：
+
+- 从只有 `define-block` 的代码，
+  通过计算图的联通分支，
+  解析出来 control flow graph。
+
 # data directive
 
 directive 首先要考虑最基本的 bytes layout：
