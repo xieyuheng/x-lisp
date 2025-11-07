@@ -1,5 +1,3 @@
-[interpreter] remove `ImportEntry`
-
 # backend -- module
 
 [backend] `Ref` -- has `name` `from` `as`
