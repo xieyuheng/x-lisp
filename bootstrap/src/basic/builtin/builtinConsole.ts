@@ -1,9 +1,11 @@
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinConsole(mod: Mod) {
+  provide(mod, ["print", "println-non-void", "write", "newline"])
+
   definePrimitiveFunction(mod, "print", 1, (value) => {
     process.stdout.write(formatValue(value))
     return Values.Void()
@@ -15,6 +17,11 @@ export function builtinConsole(mod: Mod) {
       process.stdout.write("\n")
     }
 
+    return Values.Void()
+  })
+
+  definePrimitiveFunction(mod, "write", 1, (string) => {
+    process.stdout.write(Values.asString(string).content)
     return Values.Void()
   })
 

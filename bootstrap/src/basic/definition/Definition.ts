@@ -1,7 +1,7 @@
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import { type Block } from "../block/index.ts"
-import { type Value } from "../value/index.ts"
 import type { Mod } from "../mod/index.ts"
+import { type Value } from "../value/index.ts"
 
 export type Definition = FunctionDefinition | PrimitiveFunctionDefinition
 

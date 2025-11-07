@@ -1,10 +1,12 @@
 import { randomFloat } from "../../helpers/random/randomFloat.ts"
 import { randomInt } from "../../helpers/random/randomInt.ts"
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinRandom(mod: Mod) {
+  provide(mod, ["random-dice", "random-int", "random-float"])
+
   definePrimitiveFunction(mod, "random-dice", 0, () => {
     return Values.Int(6)
   })

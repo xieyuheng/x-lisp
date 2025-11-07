@@ -34,10 +34,7 @@ export function modLookupDefinition(
   mod: Mod,
   name: string,
 ): Definition | undefined {
-  const definition = mod.definitions.get(name)
-  if (definition) return definition
-
-  return undefined
+  return mod.definitions.get(name)
 }
 
 export function modLookupPublicDefinition(

@@ -1,8 +1,33 @@
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinInt(mod: Mod) {
+  provide(mod, [
+    "int?",
+    "int-positive?",
+    "int-non-negative?",
+    "int-non-zero?",
+    "ineg",
+    "iadd",
+    "isub",
+    "imul",
+    "idiv",
+    "imod",
+    "int-max",
+    "int-min",
+    "int-greater?",
+    "int-less?",
+    "int-greater-equal?",
+    "int-less-equal?",
+    "int-compare-ascending",
+    "int-compare-descending",
+  ])
+
+  definePrimitiveFunction(mod, "int?", 1, (value) => {
+    return Values.Bool(Values.isInt(value))
+  })
+
   definePrimitiveFunction(mod, "int-positive?", 1, (x) => {
     return Values.Bool(Values.isInt(x) && Values.asInt(x).content > 0)
   })
@@ -67,5 +92,25 @@ export function builtinInt(mod: Mod) {
 
   definePrimitiveFunction(mod, "int-less-equal?", 2, (x, y) => {
     return Values.Bool(Values.asInt(x).content <= Values.asInt(y).content)
+  })
+
+  definePrimitiveFunction(mod, "int-compare-ascending", 2, (x, y) => {
+    if (Values.asInt(x).content < Values.asInt(y).content) {
+      return Values.Int(-1)
+    } else if (Values.asInt(x).content > Values.asInt(y).content) {
+      return Values.Int(1)
+    } else {
+      return Values.Int(0)
+    }
+  })
+
+  definePrimitiveFunction(mod, "int-compare-descending", 2, (x, y) => {
+    if (Values.asInt(x).content < Values.asInt(y).content) {
+      return Values.Int(1)
+    } else if (Values.asInt(x).content > Values.asInt(y).content) {
+      return Values.Int(-1)
+    } else {
+      return Values.Int(0)
+    }
   })
 }

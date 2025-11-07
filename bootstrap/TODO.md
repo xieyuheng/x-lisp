@@ -1,6 +1,7 @@
 # basic -- module
 
-[basic] `load` -- `stage2` -- handle `Import`
+[basic] `load` -- `stage2` -- copy code from prototype
+[basic] `load` -- `stage2` -- handle import expectedcopy code from prototype
 [basic] `load` -- `stage2` -- handle `Include`
 
 [basic] `Mod` has `dependencies` -- `Map` of `Mod`
