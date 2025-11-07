@@ -93,7 +93,12 @@ function dependencyPrefix(dependencies: Map<string, Mod>, mod: Mod): string {
 function dependencyIndex(dependencies: Map<string, Mod>, mod: Mod): number {
   const keys = Array.from(dependencies.keys())
   const index = keys.indexOf(mod.url.href)
-  assert(index >= 0)
+  if (index === -1) {
+    let message = `[bundle/dependencyIndex] internal error`
+    message += `\n  keys: ${keys}`
+    message += `\n  mod: ${mod.url}`
+    throw new Error(message)
+  }
   return index
 }
 
@@ -143,13 +148,19 @@ function qualifyValue(context: Context, value: Value): Value {
 }
 
 function qualifyName(context: Context, name: string): string {
-  if (context.mod === context.entryMod) {
+  const definition = modLookupDefinition(context.mod, name)
+  if (definition === undefined) {
+    let message = `[bundle/qualifyName] undefined name`
+    message += `\n  current mod: ${context.mod.url}`
+    message += `\n  name: ${name}`
+    throw new Error(message)
+  }
+
+  if (definition.mod === context.entryMod) {
     return name
-  } else if (context.mod === useBuiltinMod()) {
+  } else if (definition.mod === useBuiltinMod()) {
     return name
   } else {
-    const definition = modLookupDefinition(context.mod, name)
-    assert(definition)
     const prefix = dependencyPrefix(context.dependencies, definition.mod)
     return `${prefix}/${name}`
   }
