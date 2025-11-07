@@ -14,20 +14,6 @@
 
 # frontend -- module
 
-[frontend] `Stmt` -- `Import`
-
-  | Import
-  | ImportExcept
-  | ImportAll
-  | ImportAs
-
-[frontend] `Stmt` -- `Include`
-
-  | Include
-  | IncludeExcept
-  | IncludeAll
-  | IncludeAs
-
 [frontend] `Mod` has `dependencies`
 
 [frontend] [maybe] do side effect on passes -- to have a stable `Mod` reference
