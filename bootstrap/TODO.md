@@ -1,10 +1,3 @@
-# basic -- module
-
-[basic] `load` -- take `dependencies` as argument
-
-[basic] `load` -- `Include` recursive `load`
-[basic] `load` -- `Import` recursive `load`
-
 # basic -- bundling
 
 [basic] `bundle` -- setup

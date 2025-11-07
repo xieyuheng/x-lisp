@@ -106,7 +106,7 @@ function importBy(path: string, mod: Mod): Mod {
     url.pathname = resolveModPath(url.pathname)
   }
 
-  return load(url)
+  return load(url, mod.dependencies)
 }
 
 function urlRelativeToMod(path: string, mod: Mod): URL {

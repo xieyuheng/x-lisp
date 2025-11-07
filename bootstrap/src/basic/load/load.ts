@@ -7,15 +7,13 @@ import { type Stmt } from "../stmt/index.ts"
 import { stage1 } from "./stage1.ts"
 import { stage2 } from "./stage2.ts"
 
-const globalLoadedMods: Map<string, Mod> = new Map()
-
-export function load(url: URL): Mod {
-  const found = globalLoadedMods.get(url.href)
+export function load(url: URL, dependencies: Map<string, Mod>): Mod {
+  const found = dependencies.get(url.href)
   if (found !== undefined) return found
 
   const text = loadText(url)
   const mod = createMod(url)
-  globalLoadedMods.set(url.href, mod)
+  dependencies.set(url.href, mod)
 
   importBuiltin(mod)
 
