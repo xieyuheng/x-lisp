@@ -1,5 +1,5 @@
 import fs from "node:fs"
-import Path from "path"
+import Path from "node:path"
 import { pathRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 
 export function resolveModPath(inputPath: string): string {
