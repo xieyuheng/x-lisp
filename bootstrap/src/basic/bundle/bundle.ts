@@ -12,7 +12,6 @@ import {
   modOwnDefinitions,
   type Mod,
 } from "../mod/index.ts"
-import { prettyMod } from "../pretty/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 
