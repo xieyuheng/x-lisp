@@ -1,4 +1,7 @@
-[checkRedefine] can not redefine name: one
+[checkRedefine] can not redefine during import
+  mod.url: lisp/tests/module/redefine-by-import.error.lisp
+  importedMod.url: lisp/tests/module/module-two.lisp
+  name: one
   old definition:
     mod: lisp/tests/module/module-one.lisp
     name: one
