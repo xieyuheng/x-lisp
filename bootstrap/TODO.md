@@ -1,7 +1,3 @@
-# basic -- bundling
-
-[basic] `BundleBasicCommand`
-
 # lang -- module
 
 [lang] `Mod` has `dependencies`
@@ -18,6 +14,8 @@
 
 [lang] `011-RevealFunctionPass` -- check imported names
 [lang] `030-ExplicateControlPass` -- translate module statements
+
+[lang] `RunViaBasicCommand` -- use `bundle`
 
 # machine
 
