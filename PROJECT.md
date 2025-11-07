@@ -112,6 +112,8 @@ date: 2025-10-22
 - [ ] basic-lisp interpreter
   - [ ] module system
   - [ ] bundling
+- [ ] x-lisp compiler
+  - [ ] module system
 
 # milestone 3 -- machine-lisp
 
