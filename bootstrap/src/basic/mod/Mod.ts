@@ -32,11 +32,24 @@ export function modLookupPublicDefinition(
   return modLookupDefinition(mod, name)
 }
 
-export function modPublicDefinitions(mod: Mod): Map<string, Definition> {
-  const definitions: Map<string, Definition> = new Map()
+export function modPublicDefinitionEntries(
+  mod: Mod,
+): Array<[string, Definition]> {
+  const entries: Array<[string, Definition]> = []
   for (const [name, definition] of mod.definitions.entries()) {
     if (mod.exported.has(name)) {
-      definitions.set(name, definition)
+      entries.push([name, definition])
+    }
+  }
+
+  return entries
+}
+
+export function modOwnDefinitions(mod: Mod): Array<Definition> {
+  const definitions: Array<Definition> = []
+  for (const definition of mod.definitions.values()) {
+    if (definition.mod === mod) {
+      definitions.push(definition)
     }
   }
 

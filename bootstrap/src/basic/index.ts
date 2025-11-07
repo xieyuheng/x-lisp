@@ -1,5 +1,6 @@
 export * from "./block/index.ts"
 export * from "./builtin/index.ts"
+export * from "./bundle/index.ts"
 export * from "./check/index.ts"
 export * from "./definition/index.ts"
 export * from "./execute/index.ts"

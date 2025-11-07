@@ -6,7 +6,13 @@ import { importBuiltin, useBuiltinMod } from "../builtin/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Instr } from "../instr/index.ts"
 import * as Instrs from "../instr/index.ts"
-import { createMod, modLookupDefinition, modPublicDefinitions, type Mod } from "../mod/index.ts"
+import {
+  createMod,
+  modLookupDefinition,
+  modOwnDefinitions,
+  type Mod,
+} from "../mod/index.ts"
+import { prettyMod } from "../pretty/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 
@@ -44,7 +50,7 @@ export function addBuiltinMod(bundleMod: Mod): void {
 export function addEntryMod(bundleMod: Mod, context: Context): void {
   const { entryMod } = context
   // name in the entry mod should be kept.
-  for (const definition of modPublicDefinitions(entryMod).values()) {
+  for (const definition of modOwnDefinitions(entryMod)) {
     const name = definition.name
     assert(definition.kind === "FunctionDefinition")
     bundleMod.definitions.set(
@@ -62,7 +68,7 @@ export function addEntryMod(bundleMod: Mod, context: Context): void {
 export function addDependencyMod(bundleMod: Mod, context: Context): void {
   // name in a dependency mod will be prefixed.
   const prefix = dependencyPrefix(context.dependencies, context.mod)
-  for (const definition of modPublicDefinitions(context.mod).values()) {
+  for (const definition of modOwnDefinitions(context.mod)) {
     const name = `${prefix}/${definition.name}`
     assert(definition.kind === "FunctionDefinition")
     bundleMod.definitions.set(

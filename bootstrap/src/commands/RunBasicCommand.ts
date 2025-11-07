@@ -24,7 +24,7 @@ export const RunBasicCommand: Command = {
     try {
       const url = createUrlOrFileUrl(commander.args[0])
       const dependencies = new Map()
-      const mod = B.load(url, dependencies)
+      const mod = B.bundle(B.load(url, dependencies))
       const context = B.createContext(mod)
       B.call(context, "main", [])
     } catch (error) {
