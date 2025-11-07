@@ -23,6 +23,68 @@ const stmtMatcher: S.Matcher<Stmt> = S.matcherChoice<Stmt>([
     },
   ),
 
+
+  S.matcher("(cons* 'export names)", ({ names }, { meta }) => {
+    return Stmts.Export(S.listElements(names).map(S.symbolContent), meta)
+  }),
+
+  S.matcher("`(import-all ,source)", ({ source }, { meta }) => {
+    return Stmts.ImportAll(S.stringContent(source), meta)
+  }),
+
+  S.matcher("`(include-all ,source)", ({ source }, { meta }) => {
+    return Stmts.IncludeAll(S.stringContent(source), meta)
+  }),
+
+  S.matcher(
+    "(cons* 'import source entries)",
+    ({ source, entries }, { meta }) => {
+      return Stmts.Import(
+        S.stringContent(source),
+        S.listElements(entries).map(S.symbolContent),
+        meta,
+      )
+    },
+  ),
+
+  S.matcher("(cons* 'include source names)", ({ source, names }, { meta }) => {
+    return Stmts.Include(
+      S.stringContent(source),
+      S.listElements(names).map(S.symbolContent),
+      meta,
+    )
+  }),
+
+  S.matcher(
+    "(cons* 'import-except source names)",
+    ({ source, names }, { meta }) => {
+      return Stmts.ImportExcept(
+        S.stringContent(source),
+        S.listElements(names).map(S.symbolContent),
+        meta,
+      )
+    },
+  ),
+
+  S.matcher(
+    "(cons* 'include-except source names)",
+    ({ source, names }, { meta }) => {
+      return Stmts.IncludeExcept(
+        S.stringContent(source),
+        S.listElements(names).map(S.symbolContent),
+        meta,
+      )
+    },
+  ),
+
+  S.matcher("`(import-as ,source ,name)", ({ source, name }, { meta }) => {
+    return Stmts.ImportAs(S.stringContent(source), S.symbolContent(name), meta)
+  }),
+
+  S.matcher("`(include-as ,source ,name)", ({ source, name }, { meta }) => {
+    return Stmts.IncludeAs(S.stringContent(source), S.symbolContent(name), meta)
+  }),
+
   S.matcher("exp", ({ exp }, { meta }) => {
     return Stmts.Compute(parseExp(exp), meta)
   }),
