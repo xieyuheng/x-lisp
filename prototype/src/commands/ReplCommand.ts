@@ -37,7 +37,7 @@ export const ReplCommand: Command = {
     }
 
     const repl = X.createRepl({
-      welcome: `Welcome to x-lisp.js ${getPackageJson().version}`,
+      welcome: `Welcome to x-lisp-proto ${getPackageJson().version}`,
       prompt: ">> ",
       async onSexps(sexps) {
         try {

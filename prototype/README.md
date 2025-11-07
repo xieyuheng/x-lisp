@@ -5,13 +5,13 @@
 Install it by the following command:
 
 ```
-$ npm install -g @xieyuheng/x-lisp.js
+$ npm install -g @xieyuheng/x-lisp-proto
 ```
 
 The command-line interface:
 
 ```
-$ x-lisp.js
+$ x-lisp-proto
 commands:
   help -- display help for a command
   repl -- Start x-lisp REPL
