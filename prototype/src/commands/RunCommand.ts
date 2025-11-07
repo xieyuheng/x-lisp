@@ -3,13 +3,13 @@ import { flags } from "../flags.ts"
 import { globals } from "../globals.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
-import { load } from "../interpreter/load/index.ts"
+import { load } from "../lang/load/index.ts"
 
-export const InterpretCommand: Command = {
-  name: "interpret",
-  description: "Interpret a x-lisp file",
+export const RunCommand: Command = {
+  name: "run",
+  description: "Run a x-lisp file",
   help(commander) {
-    let message = `The ${this.name} command interpret a x-lisp file.`
+    let message = `The ${this.name} command run a x-lisp file.`
     message += `\n`
     message += `\n  ${commander.name} ${this.name} <file>`
     message += `\n`
@@ -28,7 +28,7 @@ export const InterpretCommand: Command = {
     }
 
     if (typeof commander.args[0] !== "string") {
-      let message = `[interpret] expect the first argument to be a path`
+      let message = `[run] expect the first argument to be a path`
       message += `\n  first argument: ${commander.args[0]}`
       throw new Error(message)
     }
