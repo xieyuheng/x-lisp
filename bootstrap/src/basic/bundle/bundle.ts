@@ -12,35 +12,36 @@ import type { Value } from "../value/index.ts"
 type Context = {
   entryMod: Mod
   dependencies: Map<string, Mod>
+  mod: Mod
 }
 
 export function bundle(entryMod: Mod): Mod {
   const dependencies = entryMod.dependencies
-  const context = { entryMod, dependencies }
-
   const bundleMod = createMod(new URL(`boundle:${entryMod.url}`))
   bundleMod.exported = entryMod.exported
 
-  addEntryMod(context, bundleMod, entryMod)
-  addBuiltinMod(context, bundleMod)
+  addEntryMod(bundleMod, { entryMod, dependencies, mod: entryMod })
+
+  addBuiltinMod(bundleMod)
 
   for (const dependencyMod of dependencies.values()) {
-    addDependencyMod(context, bundleMod, dependencyMod)
+    addDependencyMod(bundleMod, {
+      entryMod,
+      dependencies,
+      mod: dependencyMod,
+    })
   }
 
   return bundleMod
 }
 
-export function addBuiltinMod(context: Context, bundleMod: Mod): void {
+export function addBuiltinMod(bundleMod: Mod): void {
   // name in the builtin mod should be kept.
   importBuiltin(bundleMod)
 }
 
-export function addEntryMod(
-  context: Context,
-  bundleMod: Mod,
-  entryMod: Mod,
-): void {
+export function addEntryMod(bundleMod: Mod, context: Context): void {
+  const { entryMod } = context
   // name in the entry mod should be kept.
   for (const definition of modPublicDefinitions(entryMod).values()) {
     const name = definition.name
@@ -57,17 +58,13 @@ export function addEntryMod(
   }
 }
 
-export function addDependencyMod(
-  context: Context,
-  bundleMod: Mod,
-  dependencyMod: Mod,
-): void {
+export function addDependencyMod(bundleMod: Mod, context: Context): void {
   // name in a dependency mod will be prefixed.
-  const index = dependencyIndex(context.dependencies, dependencyMod)
+  const index = dependencyIndex(context.dependencies, context.mod)
   const count = index + 1
   const subscript = stringToSubscript(count.toString())
   const prefix = `§${subscript}`
-  for (const definition of modPublicDefinitions(dependencyMod).values()) {
+  for (const definition of modPublicDefinitions(context.mod).values()) {
     const name = `${prefix}/${definition.name}`
     assert(definition.kind === "FunctionDefinition")
     bundleMod.definitions.set(
@@ -105,7 +102,8 @@ function qualifyInstr(context: Context, instr: Instr): Instr {
     case "Const": {
       return Instrs.Const(
         qualifyValue(context, instr.value),
-        instr.dest, instr.meta,
+        instr.dest,
+        instr.meta,
       )
     }
 
@@ -121,7 +119,6 @@ function qualifyInstr(context: Context, instr: Instr): Instr {
 
 function qualifyValue(context: Context, value: Value): Value {
   switch (value.kind) {
-
     default: {
       return value
     }
