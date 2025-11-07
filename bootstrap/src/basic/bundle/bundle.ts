@@ -108,7 +108,12 @@ function qualifyInstr(context: Context, instr: Instr): Instr {
     }
 
     case "Call": {
-      //
+      return Instrs.Call(
+        qualifyName(context, instr.name),
+        instr.operands,
+        instr.dest,
+        instr.meta,
+      )
     }
 
     default: {
@@ -123,4 +128,8 @@ function qualifyValue(context: Context, value: Value): Value {
       return value
     }
   }
+}
+
+function qualifyName(context: Context, name: string): string {
+  return name
 }
