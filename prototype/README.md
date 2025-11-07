@@ -16,7 +16,6 @@ commands:
   help -- display help for a command
   repl -- Start x-lisp REPL
   run -- Run a x-lisp file
-  run-basic -- Run a basic-lisp file
 ```
 
 ## Syntax
