@@ -1,6 +1,12 @@
 import { type Definition } from "../definition/index.ts"
 import { prettyMod } from "../pretty/index.ts"
 
+export type Ref = {
+  name: string
+  as: string
+  from: URL
+}
+
 export type Mod = {
   url: URL
   definitions: Map<string, Definition>
