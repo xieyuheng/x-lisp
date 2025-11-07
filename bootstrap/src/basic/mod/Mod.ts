@@ -3,16 +3,20 @@ import { prettyMod } from "../pretty/index.ts"
 
 export type Mod = {
   url: URL
-  definitions: Map<string, Definition>
   exported: Set<string>
+  definitions: Map<string, Definition>
 }
 
 export function createMod(url: URL): Mod {
   return {
     url,
-    definitions: new Map(),
     exported: new Set(),
+    definitions: new Map(),
   }
+}
+
+export function modNames(mod: Mod): Set<string> {
+  return new Set(mod.definitions.keys())
 }
 
 export function modLookupDefinition(
@@ -22,14 +26,20 @@ export function modLookupDefinition(
   return mod.definitions.get(name)
 }
 
+export function modLookupPublicDefinition(
+  mod: Mod,
+  name: string,
+): Definition | undefined {
+  if (!mod.exported.has(name)) return undefined
+  return modLookupDefinition(mod, name)
+}
+
 export function modPublicDefinitions(mod: Mod): Map<string, Definition> {
   const definitions: Map<string, Definition> = new Map()
   for (const [name, definition] of mod.definitions.entries()) {
-    definitions.set(name, definition)
-
-    // if (mod.exported.has(name)) {
-    //   definitions.set(name, definition)
-    // }
+    if (mod.exported.has(name)) {
+      definitions.set(name, definition)
+    }
   }
 
   return definitions

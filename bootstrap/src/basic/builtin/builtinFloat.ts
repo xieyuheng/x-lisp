@@ -1,8 +1,32 @@
-import { definePrimitiveFunction } from "../define/index.ts"
+import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinFloat(mod: Mod) {
+  provide(mod, [
+    "float?",
+    "float-positive?",
+    "float-non-negative?",
+    "float-non-zero?",
+    "fneg",
+    "fadd",
+    "fsub",
+    "fmul",
+    "fdiv",
+    "float-max",
+    "float-min",
+    "float-greater?",
+    "float-less?",
+    "float-greater-equal?",
+    "float-less-equal?",
+    "float-compare-ascending",
+    "float-compare-descending",
+  ])
+
+  definePrimitiveFunction(mod, "float?", 1, (value) => {
+    return Values.Bool(Values.isFloat(value))
+  })
+
   definePrimitiveFunction(mod, "float-positive?", 1, (x) => {
     return Values.Bool(Values.isFloat(x) && Values.asFloat(x).content > 0)
   })
@@ -61,5 +85,25 @@ export function builtinFloat(mod: Mod) {
 
   definePrimitiveFunction(mod, "float-less-equal?", 2, (x, y) => {
     return Values.Bool(Values.asFloat(x).content <= Values.asFloat(y).content)
+  })
+
+  definePrimitiveFunction(mod, "float-compare-ascending", 2, (x, y) => {
+    if (Values.asFloat(x).content < Values.asFloat(y).content) {
+      return Values.Int(-1)
+    } else if (Values.asFloat(x).content > Values.asFloat(y).content) {
+      return Values.Int(1)
+    } else {
+      return Values.Int(0)
+    }
+  })
+
+  definePrimitiveFunction(mod, "float-compare-descending", 2, (x, y) => {
+    if (Values.asFloat(x).content < Values.asFloat(y).content) {
+      return Values.Int(1)
+    } else if (Values.asFloat(x).content > Values.asFloat(y).content) {
+      return Values.Int(-1)
+    } else {
+      return Values.Int(0)
+    }
   })
 }
