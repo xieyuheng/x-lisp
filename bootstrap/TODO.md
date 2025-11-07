@@ -1,6 +1,5 @@
 # basic -- bundling
 
-[basic] `bundle` -- extract `Context` -- for `qualify*` functions
 [basic] `bundle` -- `qualifyBlock`
 [basic] `bundle` -- `qualifyInstr`
 
