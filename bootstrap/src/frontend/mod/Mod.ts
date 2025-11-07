@@ -1,4 +1,4 @@
-import { mapMapValue } from "../../../helpers/map/mapMapValue.ts"
+import { mapMapValue } from "../../helpers/map/mapMapValue.ts"
 import { type Definition } from "../definition/index.ts"
 import { prettyMod } from "../pretty/index.ts"
 
