@@ -1,10 +1,11 @@
 # basic -- module
 
-[basic] `Ref` -- has `name` `from` `as`
 [basic] `Mod` has `importedRefs` and `includedRefs` and `exportedNames`
+[basic] `load` -- handle `Import` and `Include` and `Export` -- setup `Mod`
+
 [basic] `Mod` has `dependencies` -- `Map` of `Mod`
 [basic] `load` -- take `dependencies` as argument
-[basic] `load` -- handle import and include statements
+[basic] `load` -- handle `Import` and `Include` and `Export` -- recursive `load`
 
 # basic -- bundling
 
