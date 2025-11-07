@@ -1,7 +1,0 @@
-[checkBlockTerminator] block must end with terminator instruction
-  --> lisp/basic-tests/errors/empty-block.error.lisp:2:10
- 1 | (define-function main
- 2 |   (block entry))
-   |          ~~~~~   
- 3 | 
-

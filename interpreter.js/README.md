@@ -1,4 +1,4 @@
-# x-lisp / bootstrap compiler
+# x-lisp / prototype interpreter
 
 ## Install
 
