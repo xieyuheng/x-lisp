@@ -133,10 +133,10 @@ function checkUndefinedNames(
   const undefinedNames = names.filter((name) => !definedNames.has(name))
   if (undefinedNames.length === 0) return
 
-  let message = `[checkUndefinedNames] can not redefine during import`
-  message += `\n  mod.url: ${urlRelativeToCwd(mod.url)}`
-  message += `\n  importedMod.url: ${urlRelativeToCwd(importedMod.url)}`
-  message += `\n  undefinedNames: ${undefinedNames.join(" ")}`
+  let message = `[checkUndefinedNames] found undefined names during importing`
+  message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
+  message += `\n  importing from mod: ${urlRelativeToCwd(importedMod.url)}`
+  message += `\n  undefined names: [${undefinedNames.join(" ")}]`
   throw new S.ErrorWithMeta(message, meta)
 }
 
@@ -151,9 +151,9 @@ function checkRedefine(
   if (found === undefined) return
   if (found === definition) return
 
-  let message = `[checkRedefine] can not redefine during import`
-  message += `\n  mod.url: ${urlRelativeToCwd(mod.url)}`
-  message += `\n  importedMod.url: ${urlRelativeToCwd(importedMod.url)}`
+  let message = `[checkRedefine] can not redefine during importing`
+  message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
+  message += `\n  importing from mod: ${urlRelativeToCwd(importedMod.url)}`
   message += `\n  name: ${name}`
   message += `\n  old definition:`
   message += formatIndent(4, formatDefinition(found))

@@ -1,0 +1,10 @@
+[checkUndefinedNames] found undefined names during importing
+  mod: lisp/tests/module/import-undefined-name.error.lisp
+  importing from mod: lisp/tests/module/module-one.lisp
+  undefined names: [two]
+  --> lisp/tests/module/import-undefined-name.error.lisp:1:1
+ 1 | (import "module-one" two)
+   | ~~~~~~~~~~~~~~~~~~~~~~~~~ 
+ 2 | 
+ 3 | (assert-equal two 2)
+
