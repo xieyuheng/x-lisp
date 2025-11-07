@@ -4,28 +4,36 @@ import * as Definitions from "../definition/index.ts"
 import { createMod, modPublicDefinitions, type Mod } from "../mod/index.ts"
 import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 
+type Context = {
+  entryMod: Mod
+  dependencies: Map<string, Mod>
+}
+
 export function bundle(entryMod: Mod): Mod {
   const dependencies = entryMod.dependencies
+  const context = { entryMod, dependencies }
+
   const bundleMod = createMod(new URL(`boundle:${entryMod.url}`))
   bundleMod.exported = entryMod.exported
 
-  addEntryMod(bundleMod, dependencies, entryMod)
-  addBuiltinMod(bundleMod)
+  addEntryMod(context, bundleMod, entryMod)
+  addBuiltinMod(context, bundleMod)
+
   for (const dependencyMod of dependencies.values()) {
-    addDependencyMod(bundleMod, dependencies, dependencyMod)
+    addDependencyMod(context, bundleMod, dependencyMod)
   }
 
   return bundleMod
 }
 
-export function addBuiltinMod(bundleMod: Mod): void {
+export function addBuiltinMod(context: Context, bundleMod: Mod): void {
   // name in the builtin mod should be kept.
   importBuiltin(bundleMod)
 }
 
 export function addEntryMod(
+  context: Context,
   bundleMod: Mod,
-  dependencies: Map<string, Mod>,
   entryMod: Mod,
 ): void {
   // name in the entry mod should be kept.
@@ -45,12 +53,12 @@ export function addEntryMod(
 }
 
 export function addDependencyMod(
+  context: Context,
   bundleMod: Mod,
-  dependencies: Map<string, Mod>,
   dependencyMod: Mod,
 ): void {
   // name in a dependency mod will be prefixed.
-  const index = dependencyIndex(dependencies, dependencyMod)
+  const index = dependencyIndex(context.dependencies, dependencyMod)
   const count = index + 1
   const subscript = stringToSubscript(count.toString())
   const prefix = `§${subscript}`
