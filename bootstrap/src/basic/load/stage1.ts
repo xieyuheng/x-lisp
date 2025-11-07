@@ -12,4 +12,10 @@ export function stage1(mod: Mod, stmt: Stmt): void {
 
     mod.definitions.set(stmt.name, definition)
   }
+
+  if (stmt.kind === "Export") {
+    for (const name of stmt.names) {
+      mod.exportedNames.add(name)
+    }
+  }
 }
