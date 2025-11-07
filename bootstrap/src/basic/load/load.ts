@@ -5,6 +5,7 @@ import { createMod, type Mod } from "../mod/index.ts"
 import { parseStmt } from "../parse/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { stage1 } from "./stage1.ts"
+import { stage2 } from "./stage2.ts"
 
 const globalLoadedMods: Map<string, Mod> = new Map()
 
@@ -20,7 +21,9 @@ export function load(url: URL): Mod {
 
   const sexps = S.parseSexps(text, { url: mod.url })
   const stmts = sexps.map<Stmt>(parseStmt)
+
   for (const stmt of stmts) stage1(mod, stmt)
+  for (const stmt of stmts) stage2(mod, stmt)
 
   return mod
 }
