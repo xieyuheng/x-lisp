@@ -1,11 +1,9 @@
 # basic -- bundling
 
-[basic] `bundle` -- take `entryMod` and `dependencies`
+[basic] `bundle` -- extract `Context` -- for `qualify*` functions
+[basic] `bundle` -- `qualifyBlock`
+[basic] `bundle` -- `qualifyInstr`
 
-- name in `entryMod` will not be changed
-- name in the builtin mod will also not be changed
-
-[basic] `bundle` -- use `§` as prefix
 [basic] always run module via `bundle`
 
 # lang -- module
