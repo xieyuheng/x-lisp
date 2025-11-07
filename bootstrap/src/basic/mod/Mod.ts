@@ -1,27 +1,17 @@
 import { type Definition } from "../definition/index.ts"
 import { prettyMod } from "../pretty/index.ts"
 
-export type Ref = {
-  name: string
-  as: string
-  from: URL
-}
-
 export type Mod = {
   url: URL
   definitions: Map<string, Definition>
-  importedRefs: Map<string, Ref>
-  includedRefs: Map<string, Ref>
-  exportedNames: Set<string>
+  exported: Set<string>
 }
 
 export function createMod(url: URL): Mod {
   return {
     url,
     definitions: new Map(),
-    importedRefs: new Map(),
-    includedRefs: new Map(),
-    exportedNames: new Set(),
+    exported: new Set(),
   }
 }
 

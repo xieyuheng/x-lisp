@@ -15,7 +15,7 @@ export function stage1(mod: Mod, stmt: Stmt): void {
 
   if (stmt.kind === "Export") {
     for (const name of stmt.names) {
-      mod.exportedNames.add(name)
+      mod.exported.add(name)
     }
   }
 }

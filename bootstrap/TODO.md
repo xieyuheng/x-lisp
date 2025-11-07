@@ -1,7 +1,5 @@
 # basic -- module
 
-[basic] `Mod` remove `Ref` be like the module system of prototype interpreter
-
 [basic] `Definition` has reference to `mod`
 
 [basic] `load` -- `stage2` -- handle `Import`
