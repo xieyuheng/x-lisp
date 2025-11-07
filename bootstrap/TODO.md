@@ -1,7 +1,5 @@
 # basic -- module
 
-[basic] `load` -- `stage2` -- handle `ImportExcept`
-
 [basic] `Mod` has `dependencies` -- `Map` of `Mod`
 [basic] `load` -- take `dependencies` as argument
 
