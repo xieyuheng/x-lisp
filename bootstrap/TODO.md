@@ -1,6 +1,9 @@
 # basic -- bundling
 
-[basic] `bundle` -- `qualifyInstr`
+[basic] `bundle` -- `qualifyInstr` -- `Call`
+[basic] `bundle` -- `qualifyValue`
+
+[basic] `BundleBasicCommand`
 
 [basic] always run module via `bundle`
 

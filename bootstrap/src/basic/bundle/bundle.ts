@@ -4,8 +4,10 @@ import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import { Block } from "../block/index.js"
 import { importBuiltin } from "../builtin/index.ts"
 import * as Definitions from "../definition/index.ts"
-import { createMod, modPublicDefinitions, type Mod } from "../mod/index.ts"
 import type { Instr } from "../instr/index.ts"
+import * as Instrs from "../instr/index.ts"
+import { createMod, modPublicDefinitions, type Mod } from "../mod/index.ts"
+import type { Value } from "../value/index.ts"
 
 type Context = {
   entryMod: Mod
@@ -99,5 +101,29 @@ function qualifyBlock(context: Context, block: Block): Block {
 }
 
 function qualifyInstr(context: Context, instr: Instr): Instr {
-  return instr
+  switch (instr.op) {
+    case "Const": {
+      return Instrs.Const(
+        qualifyValue(context, instr.value),
+        instr.dest, instr.meta,
+      )
+    }
+
+    case "Call": {
+      //
+    }
+
+    default: {
+      return instr
+    }
+  }
+}
+
+function qualifyValue(context: Context, value: Value): Value {
+  switch (value.kind) {
+
+    default: {
+      return value
+    }
+  }
 }
