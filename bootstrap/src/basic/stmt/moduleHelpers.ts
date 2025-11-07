@@ -4,7 +4,6 @@ export function isAboutImport(stmt: Stmt): stmt is AboutImport {
   return (
     stmt.kind === "Import" ||
     stmt.kind === "ImportAll" ||
-    stmt.kind === "ImportExcept" ||
     stmt.kind === "ImportAs" ||
     stmt.kind === "IncludeAll" ||
     stmt.kind === "Include" ||

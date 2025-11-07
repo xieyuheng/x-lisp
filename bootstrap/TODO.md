@@ -1,7 +1,5 @@
 # basic -- module
 
-[basic] `Stmts.isAboutImport` to help `stage2`
-
 `stage2` -- report all undefined names at once
 
 [basic] `Mod` has `dependencies` -- `Map` of `Mod`

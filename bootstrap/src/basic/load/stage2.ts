@@ -10,13 +10,20 @@ import {
   modPublicDefinitions,
   type Mod,
 } from "../mod/index.ts"
+import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { load } from "./index.ts"
 import { resolveModPath } from "./resolveModPath.ts"
 
 export function stage2(mod: Mod, stmt: Stmt): void {
+  if (!Stmts.isAboutImport(stmt)) {
+    return
+  }
+
+  const importedMod = importBy(stmt.path, mod)
+  const definitionEntries = modPublicDefinitions(importedMod).entries()
+
   if (stmt.kind === "Import") {
-    const importedMod = importBy(stmt.path, mod)
     for (const name of stmt.names) {
       const definition = modLookupPublicDefinition(importedMod, name)
       if (definition === undefined) {
@@ -31,9 +38,14 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     }
   }
 
+  if (stmt.kind === "ImportAll") {
+    for (const [name, definition] of definitionEntries) {
+      checkRedefine(mod, name, definition, stmt.meta)
+      mod.definitions.set(name, definition)
+    }
+  }
+
   if (stmt.kind === "ImportExcept") {
-    const importedMod = importBy(stmt.path, mod)
-    const definitionEntries = modPublicDefinitions(importedMod).entries()
     for (const [name, definition] of definitionEntries) {
       if (!stmt.names.includes(name)) {
         checkRedefine(mod, name, definition, stmt.meta)
@@ -42,18 +54,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     }
   }
 
-  if (stmt.kind === "ImportAll") {
-    const importedMod = importBy(stmt.path, mod)
-    const definitionEntries = modPublicDefinitions(importedMod).entries()
-    for (const [name, definition] of definitionEntries) {
-      checkRedefine(mod, name, definition, stmt.meta)
-      mod.definitions.set(name, definition)
-    }
-  }
-
   if (stmt.kind === "ImportAs") {
-    const importedMod = importBy(stmt.path, mod)
-    const definitionEntries = modPublicDefinitions(importedMod).entries()
     for (const [name, definition] of definitionEntries) {
       checkRedefine(mod, `${stmt.name}/${name}`, definition, stmt.meta)
       mod.definitions.set(`${stmt.name}/${name}`, definition)
@@ -61,8 +62,6 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "IncludeAll") {
-    const importedMod = importBy(stmt.path, mod)
-    const definitionEntries = modPublicDefinitions(importedMod).entries()
     for (const [name, definition] of definitionEntries) {
       checkRedefine(mod, name, definition, stmt.meta)
       include(mod, name, definition)
@@ -70,7 +69,6 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "Include") {
-    const importedMod = importBy(stmt.path, mod)
     for (const name of stmt.names) {
       const definition = modLookupPublicDefinition(importedMod, name)
       if (definition === undefined) {
@@ -86,8 +84,6 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "IncludeExcept") {
-    const importedMod = importBy(stmt.path, mod)
-    const definitionEntries = modPublicDefinitions(importedMod).entries()
     for (const [name, definition] of definitionEntries) {
       if (!stmt.names.includes(name)) {
         checkRedefine(mod, name, definition, stmt.meta)
@@ -97,8 +93,6 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "IncludeAs") {
-    const importedMod = importBy(stmt.path, mod)
-    const definitionEntries = modPublicDefinitions(importedMod).entries()
     for (const [name, definition] of definitionEntries) {
       checkRedefine(mod, `${stmt.name}/${name}`, definition, stmt.meta)
       include(mod, `${stmt.name}/${name}`, definition)
