@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { globals } from "../../globals.ts"
 import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { emptyEnv, envUpdate } from "../env/index.ts"
@@ -25,7 +25,7 @@ export function applyLambda(lambda: Values.Lambda, args: Array<Value>): Value {
         `arg value:`,
         prettyValue(maxWidth, args[index]),
       )
-      throw new X.ErrorWithMeta(message, parameter.meta)
+      throw new S.ErrorWithMeta(message, parameter.meta)
     }
 
     env = envUpdate(env, resultEnv)

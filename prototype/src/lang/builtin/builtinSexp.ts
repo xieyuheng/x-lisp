@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { formatSexp } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -12,11 +12,11 @@ export function builtinSexp(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "parse-sexp", 1, (string) => {
-    return X.parseSexp(Values.asString(string).content)
+    return S.parseSexp(Values.asString(string).content)
   })
 
   definePrimitiveFunction(mod, "parse-sexps", 1, (string) => {
-    return Values.List(X.parseSexps(Values.asString(string).content))
+    return Values.List(S.parseSexps(Values.asString(string).content))
   })
 
   definePrimitiveFunction(mod, "format-sexp", 1, (sexp) => {

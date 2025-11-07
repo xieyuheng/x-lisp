@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import assert from "node:assert"
 import { FunctionDefinition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
@@ -28,7 +28,7 @@ export function stage1(mod: Mod, stmt: Stmt): void {
     if (mod.definitions.has(stmt.name)) {
       let message = `[stage1/DefineFunction] can not redefine`
       message += `\n  name: ${stmt.name}`
-      throw new X.ErrorWithMeta(message, stmt.meta)
+      throw new S.ErrorWithMeta(message, stmt.meta)
     } else {
       mod.definitions.set(
         stmt.name,

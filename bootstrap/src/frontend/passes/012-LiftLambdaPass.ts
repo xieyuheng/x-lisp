@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import assert from "node:assert"
 import { mapFlatMap } from "../../helpers/map/mapFlatMap.ts"
 import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
@@ -109,7 +109,7 @@ function onExp(state: State, exp: Exp): Exp {
     default: {
       let message = `[LiftLambdaPass] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
-      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }

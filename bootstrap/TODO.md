@@ -1,9 +1,8 @@
 # backend -- module
 
 [backend] `Ref` -- has `name` `from` `as`
-[backend] `Mod` has `importedRefs` and `includedRefs`
-[backend] `Mod` has `dependencies`
-
+[backend] `Mod` has `importedRefs` and `includedRefs` and `exportedNames`
+[backend] `Mod` has `dependencies` -- `Map` of
 [backend] `load` -- handle import and include statements
 
 # backend -- bundling

@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { setAdd, setUnion } from "../../helpers/set/setAlgebra.ts"
 import { getBuiltinFunctionArity } from "../builtin/index.ts"
 import * as Definitions from "../definition/index.ts"
@@ -53,14 +53,14 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
       if (definition === undefined) {
         let message = `[reveal-function] undefined name`
         message += `\n  name: ${exp.name}`
-        if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+        if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
         else throw new Error(message)
       }
 
       if (definition.kind !== "FunctionDefinition") {
         let message = `[reveal-function] global name must be function for now`
         message += `\n  name: ${exp.name}`
-        if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+        if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
         else throw new Error(message)
       }
 
@@ -107,7 +107,7 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
     default: {
       let message = `[RevealFunctionPass] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`
-      if (exp.meta) throw new X.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }

@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import fs from "node:fs"
 import { createMod, type Mod } from "../mod/index.ts"
 import { parseStmt } from "../parse/index.ts"
@@ -9,7 +9,7 @@ export function load(url: URL): Mod {
   const mod = createMod(url)
   const text = loadText(url)
 
-  const sexps = X.parseSexps(text, { url: mod.url })
+  const sexps = S.parseSexps(text, { url: mod.url })
   const stmts = sexps.map<Stmt>(parseStmt)
   for (const stmt of stmts) stage1(mod, stmt)
 

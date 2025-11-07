@@ -1,5 +1,5 @@
 import { type Command } from "@xieyuheng/commander.js"
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { flags } from "../flags.ts"
 import { globals } from "../globals.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
@@ -36,7 +36,7 @@ export const ReplCommand: Command = {
       importPrelude(mod)
     }
 
-    const repl = X.createRepl({
+    const repl = S.createRepl({
       welcome: `Welcome to x-lisp-proto ${getPackageJson().version}`,
       prompt: ">> ",
       async onSexps(sexps) {
@@ -48,6 +48,6 @@ export const ReplCommand: Command = {
       },
     })
 
-    X.replStart(repl)
+    S.replStart(repl)
   },
 }

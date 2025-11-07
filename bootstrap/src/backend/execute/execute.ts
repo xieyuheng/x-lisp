@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import assert from "node:assert"
 import { definitionArity } from "../definition/definitionHelpers.ts"
 import { frameGoto, frameLookup } from "../execute/index.ts"
@@ -18,7 +18,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       if (value === undefined) {
         let message = `[execute] (argument) missing argument`
         message += `\n  index: ${instr.index}`
-        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
         else throw new Error(message)
       }
 
@@ -37,13 +37,13 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       if (!Values.isBool(value)) {
         let message = `[execute] (assert) value is not bool`
         message += `\n  value: ${formatValue(value)}`
-        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
         else throw new Error(message)
       }
 
       if (Values.isFalse(value)) {
         let message = `[execute] (assert) assertion fail`
-        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
         else throw new Error(message)
       }
 
@@ -85,7 +85,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       if (definition === undefined) {
         let message = `[execute] (call) undefined name`
         message += `\n  name: ${instr.name}`
-        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
         else throw new Error(message)
       }
 
@@ -95,7 +95,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
         let message = `[execute] (call) arity mismatch`
         message += `\n  arity: ${arity}`
         message += `\n  args.length: ${args.length}`
-        if (instr.meta) throw new X.ErrorWithMeta(message, instr.meta)
+        if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
         else throw new Error(message)
       }
 

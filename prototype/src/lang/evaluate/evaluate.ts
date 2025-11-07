@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { globals } from "../../globals.ts"
 import { arrayPickLast } from "../../helpers/array/arrayPickLast.ts"
 import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
@@ -47,7 +47,7 @@ export function evaluate(exp: Exp): Effect {
 
         let message = `[evaluate] undefined`
         message += `\n  name: ${exp.name}`
-        throw new X.ErrorWithMeta(message, exp.meta)
+        throw new S.ErrorWithMeta(message, exp.meta)
       }
     }
 
@@ -115,7 +115,7 @@ export function evaluate(exp: Exp): Effect {
             `rhs value:`,
             prettyValue(maxWidth, value),
           )
-          throw new X.ErrorWithMeta(message, exp.meta)
+          throw new S.ErrorWithMeta(message, exp.meta)
         }
 
         return [envUpdate(env, resultEnv), Values.Void()]
@@ -149,7 +149,7 @@ export function evaluate(exp: Exp): Effect {
           let message = `(assert-the) validation fail`
           message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
           message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
-          throw new X.ErrorWithMeta(message, exp.meta)
+          throw new S.ErrorWithMeta(message, exp.meta)
         }
       }
     }
@@ -180,7 +180,7 @@ export function evaluate(exp: Exp): Effect {
               `element:`,
               prettyValue(maxWidth, elementValue),
             )
-            throw new X.ErrorWithMeta(message, element.meta)
+            throw new S.ErrorWithMeta(message, element.meta)
           }
         }
 
@@ -198,7 +198,7 @@ export function evaluate(exp: Exp): Effect {
             let message = `[evaluate] Key in (@hash) is not hashable`
             message += formatUnderTag(2, `key:`, prettyValue(maxWidth, k))
             message += formatUnderTag(2, `value:`, prettyValue(maxWidth, v))
-            throw new X.ErrorWithMeta(message, entry.key.meta)
+            throw new S.ErrorWithMeta(message, entry.key.meta)
           }
 
           Values.hashPut(hash, k, v)
@@ -234,7 +234,7 @@ export function evaluate(exp: Exp): Effect {
             `condition:`,
             prettyValue(maxWidth, condition),
           )
-          throw new X.ErrorWithMeta(message, exp.meta)
+          throw new S.ErrorWithMeta(message, exp.meta)
         }
 
         if (Values.isTrue(condition)) {
@@ -255,7 +255,7 @@ export function evaluate(exp: Exp): Effect {
             `condition:`,
             prettyValue(maxWidth, condition),
           )
-          throw new X.ErrorWithMeta(message, exp.meta)
+          throw new S.ErrorWithMeta(message, exp.meta)
         }
 
         if (Values.isTrue(condition)) {
@@ -276,7 +276,7 @@ export function evaluate(exp: Exp): Effect {
             `condition:`,
             prettyValue(maxWidth, condition),
           )
-          throw new X.ErrorWithMeta(message, exp.meta)
+          throw new S.ErrorWithMeta(message, exp.meta)
         }
 
         if (Values.isFalse(condition)) {
@@ -294,7 +294,7 @@ export function evaluate(exp: Exp): Effect {
           if (!Values.isBool(value)) {
             let message = `[evaluate] The subexpressions of (and) must evaluate to bool`
             message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
-            throw new X.ErrorWithMeta(message, exp.meta)
+            throw new S.ErrorWithMeta(message, exp.meta)
           }
 
           if (Values.isFalse(value)) {
@@ -313,7 +313,7 @@ export function evaluate(exp: Exp): Effect {
           if (!Values.isBool(value)) {
             let message = `[evaluate] The subexpressions of (or) must evaluate to bool`
             message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
-            throw new X.ErrorWithMeta(message, exp.meta)
+            throw new S.ErrorWithMeta(message, exp.meta)
           }
 
           if (Values.isTrue(value)) {
@@ -332,7 +332,7 @@ export function evaluate(exp: Exp): Effect {
           if (!Values.isBool(value)) {
             let message = `[evaluate] The question part of a (cond) line must evaluate to bool`
             message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
-            throw new X.ErrorWithMeta(message, exp.meta)
+            throw new S.ErrorWithMeta(message, exp.meta)
           }
 
           if (Values.isTrue(value)) {
@@ -341,7 +341,7 @@ export function evaluate(exp: Exp): Effect {
         }
 
         let message = `[evaluate] All questions of a (cond) failed`
-        throw new X.ErrorWithMeta(message, exp.meta)
+        throw new S.ErrorWithMeta(message, exp.meta)
       }
     }
 
@@ -358,7 +358,7 @@ export function evaluate(exp: Exp): Effect {
 
         let message = `[evaluate] (match) mismatch`
         message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
-        throw new X.ErrorWithMeta(message, exp.meta)
+        throw new S.ErrorWithMeta(message, exp.meta)
       }
     }
 
@@ -403,7 +403,7 @@ export function evaluate(exp: Exp): Effect {
           let message = `(the) validation fail`
           message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
           message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
-          throw new X.ErrorWithMeta(message, exp.meta)
+          throw new S.ErrorWithMeta(message, exp.meta)
         }
       }
     }
@@ -430,7 +430,7 @@ export function evaluate(exp: Exp): Effect {
           let message = `[evaluate] specific application expect target to be contracted -- (the) value`
           message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
           message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
-          throw new X.ErrorWithMeta(message, exp.meta)
+          throw new S.ErrorWithMeta(message, exp.meta)
         }
 
         if (target.schema.kind !== "Polymorphic") {
@@ -442,7 +442,7 @@ export function evaluate(exp: Exp): Effect {
           )
           message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
           message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
-          throw new X.ErrorWithMeta(message, exp.meta)
+          throw new S.ErrorWithMeta(message, exp.meta)
         }
 
         return [

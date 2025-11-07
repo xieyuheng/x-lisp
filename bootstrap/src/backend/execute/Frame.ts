@@ -1,4 +1,4 @@
-import * as X from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/x-sexp.js"
 import { type Block } from "../block/index.ts"
 import { type FunctionDefinition } from "../definition/index.ts"
 import { type Instr } from "../instr/index.ts"
@@ -33,7 +33,7 @@ export function createFrame(
   const entryBlock = definition.blocks.get("entry")
   if (entryBlock === undefined) {
     let message = `[createFrame] missing entry block`
-    if (definition.meta) throw new X.ErrorWithMeta(message, definition.meta)
+    if (definition.meta) throw new S.ErrorWithMeta(message, definition.meta)
     else throw new Error(message)
   }
 
