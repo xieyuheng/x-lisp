@@ -1,6 +1,10 @@
 # basic -- bundling
 
-[basic] `bundle` -- take `mod` and `dependencies`
+[basic] `bundle` -- take `entryMod` and `dependencies`
+
+- name in `entryMod` will not be changed
+- name in the builtin mod will also not be changed
+
 [basic] `bundle` -- use `§` as prefix
 [basic] always run module via `bundle`
 

@@ -22,7 +22,6 @@ export const RunBasicCommand: Command = {
     }
 
     try {
-
       const url = createUrlOrFileUrl(commander.args[0])
       const dependencies = new Map()
       const mod = B.load(url, dependencies)

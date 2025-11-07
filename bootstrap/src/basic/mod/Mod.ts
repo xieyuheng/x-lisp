@@ -13,7 +13,7 @@ export function createMod(url: URL): Mod {
     url,
     exported: new Set(),
     definitions: new Map(),
-    dependencies: new Map()
+    dependencies: new Map(),
   }
 }
 
