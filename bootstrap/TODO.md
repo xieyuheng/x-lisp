@@ -1,5 +1,6 @@
 # basic -- module
 
+`stage2` -- report all undefined names at once
 [basic] `Mod` has `dependencies` -- `Map` of `Mod`
 [basic] `load` -- take `dependencies` as argument
 
