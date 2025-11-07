@@ -1,7 +1,0 @@
-[evaluate] All questions of a (cond) failed
-  --> lisp/tests/misc/cond-missmatch.error.lisp:1:7
- 1 | (cond (#f 1)
-   |       ~~~~~~ 
- 2 |       (#f 2))
- 3 | 
-

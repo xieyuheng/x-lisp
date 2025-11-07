@@ -1,1 +1,0 @@
-(polymorphic (A) (-> A A))

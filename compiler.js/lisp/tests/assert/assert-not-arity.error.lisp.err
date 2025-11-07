@@ -1,7 +1,0 @@
-(assert-not) must take one argument
-
-  --> lisp/tests/assert/assert-not-arity.error.lisp:1:1
- 1 | (assert-not #f #f)
-   | ~~~~~~~~~~~~~~~~~~ 
- 2 | 
-
