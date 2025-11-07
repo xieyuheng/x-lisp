@@ -5,6 +5,7 @@ export type Mod = {
   url: URL
   exported: Set<string>
   definitions: Map<string, Definition>
+  dependencies: Map<string, Mod>
 }
 
 export function createMod(url: URL): Mod {
@@ -12,6 +13,7 @@ export function createMod(url: URL): Mod {
     url,
     exported: new Set(),
     definitions: new Map(),
+    dependencies: new Map()
   }
 }
 

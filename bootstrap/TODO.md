@@ -1,6 +1,5 @@
 # basic -- module
 
-[basic] `Mod` has `dependencies` -- `Map` of `Mod`
 [basic] `load` -- take `dependencies` as argument
 
 [basic] `load` -- `Include` recursive `load`
