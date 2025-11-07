@@ -33,14 +33,14 @@ export function stage2(mod: Mod, stmt: Stmt): void {
         throw new S.ErrorWithMeta(message, stmt.meta)
       }
 
-      checkRedefine(mod, name, definition, stmt.meta)
+      checkRedefine(mod, importedMod, name, definition, stmt.meta)
       mod.definitions.set(name, definition)
     }
   }
 
   if (stmt.kind === "ImportAll") {
     for (const [name, definition] of definitionEntries) {
-      checkRedefine(mod, name, definition, stmt.meta)
+      checkRedefine(mod, importedMod, name, definition, stmt.meta)
       mod.definitions.set(name, definition)
     }
   }
@@ -48,7 +48,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "ImportExcept") {
     for (const [name, definition] of definitionEntries) {
       if (!stmt.names.includes(name)) {
-        checkRedefine(mod, name, definition, stmt.meta)
+        checkRedefine(mod, importedMod, name, definition, stmt.meta)
         mod.definitions.set(name, definition)
       }
     }
@@ -56,15 +56,8 @@ export function stage2(mod: Mod, stmt: Stmt): void {
 
   if (stmt.kind === "ImportAs") {
     for (const [name, definition] of definitionEntries) {
-      checkRedefine(mod, `${stmt.name}/${name}`, definition, stmt.meta)
+      checkRedefine(mod, importedMod, `${stmt.name}/${name}`, definition, stmt.meta)
       mod.definitions.set(`${stmt.name}/${name}`, definition)
-    }
-  }
-
-  if (stmt.kind === "IncludeAll") {
-    for (const [name, definition] of definitionEntries) {
-      checkRedefine(mod, name, definition, stmt.meta)
-      include(mod, name, definition)
     }
   }
 
@@ -78,7 +71,14 @@ export function stage2(mod: Mod, stmt: Stmt): void {
         throw new S.ErrorWithMeta(message, stmt.meta)
       }
 
-      checkRedefine(mod, name, definition, stmt.meta)
+      checkRedefine(mod, importedMod, name, definition, stmt.meta)
+      include(mod, name, definition)
+    }
+  }
+
+  if (stmt.kind === "IncludeAll") {
+    for (const [name, definition] of definitionEntries) {
+      checkRedefine(mod, importedMod, name, definition, stmt.meta)
       include(mod, name, definition)
     }
   }
@@ -86,7 +86,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "IncludeExcept") {
     for (const [name, definition] of definitionEntries) {
       if (!stmt.names.includes(name)) {
-        checkRedefine(mod, name, definition, stmt.meta)
+        checkRedefine(mod, importedMod, name, definition, stmt.meta)
         include(mod, name, definition)
       }
     }
@@ -94,7 +94,7 @@ export function stage2(mod: Mod, stmt: Stmt): void {
 
   if (stmt.kind === "IncludeAs") {
     for (const [name, definition] of definitionEntries) {
-      checkRedefine(mod, `${stmt.name}/${name}`, definition, stmt.meta)
+      checkRedefine(mod, importedMod, `${stmt.name}/${name}`, definition, stmt.meta)
       include(mod, `${stmt.name}/${name}`, definition)
     }
   }
@@ -125,6 +125,7 @@ function urlRelativeToMod(path: string, mod: Mod): URL {
 
 function checkRedefine(
   mod: Mod,
+  importedMod: Mod,
   name: string,
   definition: Definition,
   meta: S.TokenMeta,
@@ -133,7 +134,10 @@ function checkRedefine(
   if (found === undefined) return
   if (found === definition) return
 
-  let message = `[checkRedefine] can not redefine name: ${name}`
+  let message = `[checkRedefine] can not redefine during import`
+  message += `\n  mod.url: ${urlRelativeToCwd(mod.url)}`
+  message += `\n  importedMod.url: ${urlRelativeToCwd(importedMod.url)}`
+  message += `\n  name: ${name}`
   message += `\n  old definition:`
   message += formatIndent(4, formatDefinition(found))
   message += `\n  new definition:`
