@@ -1,9 +1,7 @@
 # basic -- bundling
 
-[basic] `bundle` -- setup
-[basic] `bundle` -- take `mod` and `loader`
+[basic] `bundle` -- take `mod` and `dependencies`
 [basic] `bundle` -- use `§` as prefix
-
 [basic] always run module via `bundle`
 
 # lang -- module
