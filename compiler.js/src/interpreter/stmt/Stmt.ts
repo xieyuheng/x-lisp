@@ -49,25 +49,15 @@ export function Define(name: string, exp: Exp, meta: Meta): Define {
 export type Import = {
   kind: "Import"
   path: string
-  entries: Array<ImportEntry>
+  names: Array<string>
   meta: Meta
 }
 
-export type ImportEntry = {
-  name: string
-  rename?: string
-  meta: Meta
-}
-
-export function Import(
-  path: string,
-  entries: Array<ImportEntry>,
-  meta: Meta,
-): Import {
+export function Import(path: string, names: Array<string>, meta: Meta): Import {
   return {
     kind: "Import",
     path,
-    entries,
+    names,
     meta,
   }
 }
@@ -123,6 +113,19 @@ export type Include = {
   meta: Meta
 }
 
+export function Include(
+  path: string,
+  names: Array<string>,
+  meta: Meta,
+): Include {
+  return {
+    kind: "Include",
+    path,
+    names,
+    meta,
+  }
+}
+
 export function IncludeExcept(
   path: string,
   names: Array<string>,
@@ -141,19 +144,6 @@ export type IncludeExcept = {
   path: string
   names: Array<string>
   meta: Meta
-}
-
-export function Include(
-  path: string,
-  names: Array<string>,
-  meta: Meta,
-): Include {
-  return {
-    kind: "Include",
-    path,
-    names,
-    meta,
-  }
 }
 
 export type IncludeAs = {

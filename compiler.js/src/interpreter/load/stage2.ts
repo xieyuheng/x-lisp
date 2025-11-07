@@ -32,16 +32,15 @@ function checkRedefine(
 export function stage2(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Import") {
     const importedMod = importByMod(stmt.path, mod)
-    for (const entry of stmt.entries) {
-      const definition = modLookupPublicDefinition(importedMod, entry.name)
+    for (const name of stmt.names) {
+      const definition = modLookupPublicDefinition(importedMod, name)
       if (definition === undefined) {
-        let message = `(import) undefined name: ${entry.name}`
+        let message = `(import) undefined name: ${name}`
         message += `\n  path: ${stmt.path}`
         message += `\n  by mod: ${urlRelativeToCwd(mod.url)}`
         throw new X.ErrorWithMeta(message, stmt.meta)
       }
 
-      const name = entry.rename || entry.name
       checkRedefine(mod, name, definition, stmt.meta)
       mod.definitions.set(name, definition)
     }

@@ -47,7 +47,7 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     ({ source, entries }, { meta }) => {
       return Stmts.Import(
         X.stringContent(source),
-        X.listElements(entries).map(matchImportEntry),
+        X.listElements(entries).map(X.symbolContent),
         meta,
       )
     },
@@ -111,28 +111,6 @@ const stmtMatcher: X.Matcher<Stmt> = X.matcherChoice<Stmt>([
     return Stmts.Compute(parseExp(exp), meta)
   }),
 ])
-
-function matchImportEntry(sexp: X.Sexp): Stmts.ImportEntry {
-  return X.match(
-    X.matcherChoice([
-      X.matcher("`(rename ,name ,rename)", ({ name, rename }, { meta }) => {
-        return {
-          name: X.symbolContent(name),
-          rename: X.symbolContent(rename),
-          meta,
-        }
-      }),
-
-      X.matcher("name", ({ name }, { meta }) => {
-        return {
-          name: X.symbolContent(name),
-          meta,
-        }
-      }),
-    ]),
-    sexp,
-  )
-}
 
 function matchDataPredicate(sexp: X.Sexp): Stmts.DataPredicateSpec {
   return X.match(
