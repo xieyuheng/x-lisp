@@ -2,7 +2,8 @@
 
 [basic] `Ref` -- has `name` `from` `as`
 [basic] `Mod` has `importedRefs` and `includedRefs` and `exportedNames`
-[basic] `Mod` has `dependencies` -- `Map` of
+[basic] `Mod` has `dependencies` -- `Map` of `Mod`
+[basic] `load` -- take `dependencies` as argument
 [basic] `load` -- handle import and include statements
 
 # basic -- bundling
