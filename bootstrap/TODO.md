@@ -1,6 +1,5 @@
 # basic -- bundling
 
-[basic] `bundle` -- `qualifyBlock`
 [basic] `bundle` -- `qualifyInstr`
 
 [basic] always run module via `bundle`

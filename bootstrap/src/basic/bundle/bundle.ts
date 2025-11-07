@@ -1,8 +1,11 @@
 import assert from "node:assert"
+import { mapMapValue } from "../../helpers/map/mapMapValue.ts"
+import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
+import { Block } from "../block/index.js"
 import { importBuiltin } from "../builtin/index.ts"
 import * as Definitions from "../definition/index.ts"
 import { createMod, modPublicDefinitions, type Mod } from "../mod/index.ts"
-import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
+import type { Instr } from "../instr/index.ts"
 
 type Context = {
   entryMod: Mod
@@ -45,7 +48,7 @@ export function addEntryMod(
       Definitions.FunctionDefinition(
         bundleMod,
         name,
-        definition.blocks, // TODO
+        mapMapValue(definition.blocks, (block) => qualifyBlock(context, block)),
         definition.meta,
       ),
     )
@@ -70,8 +73,7 @@ export function addDependencyMod(
       Definitions.FunctionDefinition(
         bundleMod,
         name,
-        definition.blocks,
-        // mapMapValue(definition.blocks, block => qualifyBlock(context, block)),
+        mapMapValue(definition.blocks, (block) => qualifyBlock(context, block)),
         definition.meta,
       ),
     )
@@ -86,4 +88,16 @@ function dependencyIndex(
   const index = keys.indexOf(dependencyMod.url.href)
   assert(index >= 0)
   return index
+}
+
+function qualifyBlock(context: Context, block: Block): Block {
+  return Block(
+    block.label,
+    block.instrs.map((instr) => qualifyInstr(context, instr)),
+    block.meta,
+  )
+}
+
+function qualifyInstr(context: Context, instr: Instr): Instr {
+  return instr
 }
