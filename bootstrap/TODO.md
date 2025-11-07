@@ -1,10 +1,14 @@
 # basic -- module
 
-[basic] `load` -- handle `Import` and `Include` and `Export` -- setup `Mod`
+[basic] `load` -- handle `Export`
+[basic] `load` -- handle `Import`
+[basic] `load` -- handle `Include`
 
 [basic] `Mod` has `dependencies` -- `Map` of `Mod`
 [basic] `load` -- take `dependencies` as argument
-[basic] `load` -- handle `Import` and `Include` and `Export` -- recursive `load`
+
+[basic] `load` -- `Include` recursive `load`
+[basic] `load` -- `Import` recursive `load`
 
 # basic -- bundling
 
