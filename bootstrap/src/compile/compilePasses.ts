@@ -1,5 +1,5 @@
 import * as B from "../basic/index.ts"
-import * as F from "../frontend/index.ts"
+import * as F from "../lang/index.ts"
 
 export function compilePasses(mod: F.Mod): void {
   F.logMod("Input", mod)

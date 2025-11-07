@@ -11,11 +11,11 @@
 [basic] `bundle` -- take `mod` and `loader`
 [basic] `bundle` -- use `§` as prefix
 
-# frontend -- module
+# lang -- module
 
-[frontend] `Mod` has `dependencies`
+[lang] `Mod` has `dependencies`
 
-[frontend] [maybe] do side effect on passes -- to have a stable `Mod` reference
+[lang] [maybe] do side effect on passes -- to have a stable `Mod` reference
 
 - `modUpdateDefinition` instead of `modMapDefinition`
 
@@ -24,8 +24,8 @@
 - reference to name in another module should be indirect,
   thus reference to `Definition` no need to be stable
 
-[frontend] `011-RevealFunctionPass` -- check imported names
-[frontend] `030-ExplicateControlPass` -- translate module statements
+[lang] `011-RevealFunctionPass` -- check imported names
+[lang] `030-ExplicateControlPass` -- translate module statements
 
 # machine
 
