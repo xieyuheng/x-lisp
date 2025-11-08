@@ -112,7 +112,7 @@ date: 2025-10-22
 - [x] basic-lisp interpreter
   - [x] module system
   - [x] bundling
-- [ ] x-lisp compiler
+- [x] x-lisp compiler
   - [ ] module system
 
 总结 [2025-11-08]：
@@ -124,10 +124,15 @@ date: 2025-10-22
 
 - 下面需要实现 x-lisp 的模块系统，
   但是在这之前，可能需要有 project 的概念了。
+
   因为 x-lisp 需要生成中间文件，
   如果不想修改后缀，就要有专门的地方存放中间文件，
   如果不想每次都在命令行重复存放中间文件的地方，
   就要有配置文件，也就是 project 的概念。
+
+  也可以尝试跳过 project 的概念，
+  以更直接的方式解决问题，
+  也就是要把命令行的参数保存成配置文件。
 
 # milestone 3 -- machine-lisp
 
