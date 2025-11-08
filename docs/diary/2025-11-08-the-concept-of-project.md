@@ -64,3 +64,15 @@ date: 2025-11-08
 可以让所有的 entry 都按照管理，而不用配置。
 需要被编译成 bin 的就用 `<name>.bin.lisp`，
 这些编译好之后会保存在 `build/bin/<name>` 下。
+
+# 行动
+
+下面要实现 x-lisp 的模块系统。
+然后解析 project.json，并且实现 project 的概念。
+
+注意：
+
+- compile 一类的命令可以不依赖 project.json 就运行。
+- build 和 test 一类的命令，需要依赖 project.json 才能运行。
+
+因此，依然使用不依赖 project.json 的 url 作为 module 的 id。
