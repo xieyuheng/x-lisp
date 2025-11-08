@@ -21,29 +21,46 @@ date: 2025-11-08
 
 这就需要引入「项目」的概念。
 
-# 需求
+# project.json
 
-- 以项目为对象完成编译。
+以项目为对象完成编译。
 
-- 支持现有的测试约定：
+用 project.json 配置文件作为项目标识。
 
-  - .test.lisp
-  - .snapshot.lisp
-  - .error.lisp
+```json
+{
+  "name": "my-project",
+  "version": "0.1.0",
+  "build": {
+    "output-directory": "build",
+    "root-directory": "."
+  }
+}
+```
 
-- 保持可扩展。
+# 扩展
 
-  - 之后要能描述项目所依赖的外部文件。
-  - 之后还可能要支持包管理。
+保持可扩展：
 
-# 方案
+- 之后要能描述项目所依赖的外部文件。
+- 之后还可能要支持包管理。
 
-- 用 project.json 配置文件作为项目标识。
+# testing entries
 
-- project.json 的配置项：
+现有的测试约定是：
 
-  - build-directory -- 默认为 "build"。
-  - root-directory -- 默认 project.json 所在路径。
+- `.test.lisp`
+- `.snapshot.lisp`
+- `.error.lisp`
 
-- TODO
+这些 test 都是不只需要编译，
+还需要运行的代码。
 
+所以也会被处理为 bundler 的 entry，
+并且编译出二进制文件。
+
+# bin entries
+
+可以让所有的 entry 都按照管理，而不用配置。
+需要被编译成 bin 的就用 `<name>.bin.lisp`，
+这些编译好之后会保存在 `build/bin/<name>` 下。
