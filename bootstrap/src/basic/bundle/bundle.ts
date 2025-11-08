@@ -86,7 +86,7 @@ function dependencyPrefix(dependencies: Map<string, Mod>, mod: Mod): string {
   const index = dependencyIndex(dependencies, mod)
   const count = index + 1
   const subscript = stringToSubscript(count.toString())
-  const prefix = `≡${subscript}`
+  const prefix = `§${subscript}`
   return prefix
 }
 
