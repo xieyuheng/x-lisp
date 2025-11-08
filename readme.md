@@ -4,4 +4,4 @@ My list processing language.
 
 ## License
 
-[GPLv3](LICENSE)
+[GPLv3](license)
