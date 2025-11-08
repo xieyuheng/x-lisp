@@ -109,11 +109,25 @@ date: 2025-10-22
 
 任务：
 
-- [ ] basic-lisp interpreter
-  - [ ] module system
-  - [ ] bundling
+- [x] basic-lisp interpreter
+  - [x] module system
+  - [x] bundling
 - [ ] x-lisp compiler
   - [ ] module system
+
+总结 [2025-11-08]：
+
+- 完成 basic-lisp 的 bundling。
+  由于解释器的 module system 的语义是
+  name 到 definition 的 key-value 映射，
+  所以实现 bundler 也很简单。
+
+- 下面需要实现 x-lisp 的模块系统，
+  但是在这之前，可能需要有 project 的概念了。
+  因为 x-lisp 需要生成中间文件，
+  如果不想修改后缀，就要有专门的地方存放中间文件，
+  如果不想每次都在命令行重复存放中间文件的地方，
+  就要有配置文件，也就是 project 的概念。
 
 # milestone 3 -- machine-lisp
 
