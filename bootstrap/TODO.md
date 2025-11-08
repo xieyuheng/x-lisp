@@ -14,6 +14,8 @@ rename bundle-basic to basic:bundle
 
 # lang -- module
 
+[lang] generated `main` should have a generated prefix
+
 [lang] `Mod` has `dependencies`
 
 [lang] do side effect on passes -- to have a stable `Mod` reference
