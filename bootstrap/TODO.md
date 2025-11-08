@@ -1,3 +1,6 @@
+rename run-basic to basic:run
+rename bundle-basic to basic:bundle
+
 # basic -- bundle
 
 [basic] refactor `bundle`
