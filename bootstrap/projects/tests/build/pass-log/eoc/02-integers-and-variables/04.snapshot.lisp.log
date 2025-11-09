@@ -64,3 +64,333 @@
     (= _↩ (apply _₁ _₅))
     (return _↩)))
 
+;;; Input
+
+(define (main)
+  (println-non-void
+   (begin
+     (= z (begin (= y (begin (= x (ineg 42)) x)) y))
+     (ineg z))))
+
+;;; ShrinkPass
+
+(define (main)
+  (println-non-void
+   (@let1 z (@let1 y (@let1 x (ineg 42) x) y) (ineg z))))
+
+;;; UniquifyPass
+
+(define (main)
+  (println-non-void
+   (@let1 z₁ (@let1 y₁ (@let1 x₁ (ineg 42) x₁) y₁)
+     (ineg z₁))))
+
+;;; RevealFunctionPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 z₁
+       (@let1 y₁ (@let1 x₁ ((@function ineg 1) 42) x₁) y₁)
+     ((@function ineg 1) z₁))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 z₁
+       (@let1 y₁ (@let1 x₁ ((@function ineg 1) 42) x₁) y₁)
+     ((@function ineg 1) z₁))))
+
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 z₁
+        (@let1 y₁
+            (@let1 x₁
+                (@let1 _₂ (@function ineg 1)
+                  (@let1 _₃ 42 (_₂ _₃)))
+              x₁)
+          y₁)
+      (@let1 _₄ (@function ineg 1)
+        (@let1 _₅ (_₄ z₁) (_₁ _₅))))))
+
+;;; ExplicateControlPass
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function ineg 1)))
+    (= _₃ (const 42))
+    (= x₁ (apply _₂ _₃))
+    (= y₁ (call identity x₁))
+    (= z₁ (call identity y₁))
+    (= _₄ (const (@function ineg 1)))
+    (= _₅ (apply _₄ z₁))
+    (= _↩ (apply _₁ _₅))
+    (return _↩)))
+
+;;; Input
+
+(define (main)
+  (println-non-void
+   (begin
+     (= z (begin (= y (begin (= x (ineg 42)) x)) y))
+     (ineg z))))
+
+;;; ShrinkPass
+
+(define (main)
+  (println-non-void
+   (@let1 z (@let1 y (@let1 x (ineg 42) x) y) (ineg z))))
+
+;;; UniquifyPass
+
+(define (main)
+  (println-non-void
+   (@let1 z₁ (@let1 y₁ (@let1 x₁ (ineg 42) x₁) y₁)
+     (ineg z₁))))
+
+;;; RevealFunctionPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 z₁
+       (@let1 y₁ (@let1 x₁ ((@function ineg 1) 42) x₁) y₁)
+     ((@function ineg 1) z₁))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 z₁
+       (@let1 y₁ (@let1 x₁ ((@function ineg 1) 42) x₁) y₁)
+     ((@function ineg 1) z₁))))
+
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 z₁
+        (@let1 y₁
+            (@let1 x₁
+                (@let1 _₂ (@function ineg 1)
+                  (@let1 _₃ 42 (_₂ _₃)))
+              x₁)
+          y₁)
+      (@let1 _₄ (@function ineg 1)
+        (@let1 _₅ (_₄ z₁) (_₁ _₅))))))
+
+;;; ExplicateControlPass
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function ineg 1)))
+    (= _₃ (const 42))
+    (= x₁ (apply _₂ _₃))
+    (= y₁ (call identity x₁))
+    (= z₁ (call identity y₁))
+    (= _₄ (const (@function ineg 1)))
+    (= _₅ (apply _₄ z₁))
+    (= _↩ (apply _₁ _₅))
+    (return _↩)))
+
+;;; Input
+
+(define (main)
+  (println-non-void
+   (begin
+     (= z (begin (= y (begin (= x (ineg 42)) x)) y))
+     (ineg z))))
+
+;;; ShrinkPass
+
+(define (main)
+  (println-non-void
+   (@let1 z (@let1 y (@let1 x (ineg 42) x) y) (ineg z))))
+
+;;; UniquifyPass
+
+(define (main)
+  (println-non-void
+   (@let1 z₁ (@let1 y₁ (@let1 x₁ (ineg 42) x₁) y₁)
+     (ineg z₁))))
+
+;;; RevealFunctionPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 z₁
+       (@let1 y₁ (@let1 x₁ ((@function ineg 1) 42) x₁) y₁)
+     ((@function ineg 1) z₁))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 z₁
+       (@let1 y₁ (@let1 x₁ ((@function ineg 1) 42) x₁) y₁)
+     ((@function ineg 1) z₁))))
+
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 z₁
+        (@let1 y₁
+            (@let1 x₁
+                (@let1 _₂ (@function ineg 1)
+                  (@let1 _₃ 42 (_₂ _₃)))
+              x₁)
+          y₁)
+      (@let1 _₄ (@function ineg 1)
+        (@let1 _₅ (_₄ z₁) (_₁ _₅))))))
+
+;;; ExplicateControlPass
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function ineg 1)))
+    (= _₃ (const 42))
+    (= x₁ (apply _₂ _₃))
+    (= y₁ (call identity x₁))
+    (= z₁ (call identity y₁))
+    (= _₄ (const (@function ineg 1)))
+    (= _₅ (apply _₄ z₁))
+    (= _↩ (apply _₁ _₅))
+    (return _↩)))
+
+;;; Input
+
+(define (main)
+  (println-non-void
+   (begin
+     (= z (begin (= y (begin (= x (ineg 42)) x)) y))
+     (ineg z))))
+
+;;; ShrinkPass
+
+(define (main)
+  (println-non-void
+   (@let1 z (@let1 y (@let1 x (ineg 42) x) y) (ineg z))))
+
+;;; UniquifyPass
+
+(define (main)
+  (println-non-void
+   (@let1 z₁ (@let1 y₁ (@let1 x₁ (ineg 42) x₁) y₁)
+     (ineg z₁))))
+
+;;; RevealFunctionPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 z₁
+       (@let1 y₁ (@let1 x₁ ((@function ineg 1) 42) x₁) y₁)
+     ((@function ineg 1) z₁))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 z₁
+       (@let1 y₁ (@let1 x₁ ((@function ineg 1) 42) x₁) y₁)
+     ((@function ineg 1) z₁))))
+
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 z₁
+        (@let1 y₁
+            (@let1 x₁
+                (@let1 _₂ (@function ineg 1)
+                  (@let1 _₃ 42 (_₂ _₃)))
+              x₁)
+          y₁)
+      (@let1 _₄ (@function ineg 1)
+        (@let1 _₅ (_₄ z₁) (_₁ _₅))))))
+
+;;; ExplicateControlPass
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function ineg 1)))
+    (= _₃ (const 42))
+    (= x₁ (apply _₂ _₃))
+    (= y₁ (call identity x₁))
+    (= z₁ (call identity y₁))
+    (= _₄ (const (@function ineg 1)))
+    (= _₅ (apply _₄ z₁))
+    (= _↩ (apply _₁ _₅))
+    (return _↩)))
+
+;;; Input
+
+(define (main)
+  (println-non-void
+   (begin
+     (= z (begin (= y (begin (= x (ineg 42)) x)) y))
+     (ineg z))))
+
+;;; ShrinkPass
+
+(define (main)
+  (println-non-void
+   (@let1 z (@let1 y (@let1 x (ineg 42) x) y) (ineg z))))
+
+;;; UniquifyPass
+
+(define (main)
+  (println-non-void
+   (@let1 z₁ (@let1 y₁ (@let1 x₁ (ineg 42) x₁) y₁)
+     (ineg z₁))))
+
+;;; RevealFunctionPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 z₁
+       (@let1 y₁ (@let1 x₁ ((@function ineg 1) 42) x₁) y₁)
+     ((@function ineg 1) z₁))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 z₁
+       (@let1 y₁ (@let1 x₁ ((@function ineg 1) 42) x₁) y₁)
+     ((@function ineg 1) z₁))))
+
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 z₁
+        (@let1 y₁
+            (@let1 x₁
+                (@let1 _₂ (@function ineg 1)
+                  (@let1 _₃ 42 (_₂ _₃)))
+              x₁)
+          y₁)
+      (@let1 _₄ (@function ineg 1)
+        (@let1 _₅ (_₄ z₁) (_₁ _₅))))))
+
+;;; ExplicateControlPass
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function ineg 1)))
+    (= _₃ (const 42))
+    (= x₁ (apply _₂ _₃))
+    (= y₁ (call identity x₁))
+    (= z₁ (call identity y₁))
+    (= _₄ (const (@function ineg 1)))
+    (= _₅ (apply _₄ z₁))
+    (= _↩ (apply _₁ _₅))
+    (return _↩)))
+

@@ -1,5 +1,3 @@
-remove test-compile-to-pass-log.sh
-
 [project] `run` command
 [project] `test` command
 

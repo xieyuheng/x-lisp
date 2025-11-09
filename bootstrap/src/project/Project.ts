@@ -54,7 +54,7 @@ export class Project {
     for (const sourceFile of this.sourceFiles) {
       const inputFile = Path.join(this.sourceDirectory(), sourceFile)
       const outputFile = Path.join(this.outputDirectory(), prefix, sourceFile)
-      console.log(`[${prefix}] ${outputFile}`)
+      console.log(`[${prefix}] ${Path.relative(process.cwd(), outputFile)}`)
 
       const url = createUrlOrFileUrl(inputFile)
       const dependencies = new Map()
@@ -72,7 +72,7 @@ export class Project {
       const inputFile = Path.join(this.sourceDirectory(), sourceFile)
       const logFile =
         Path.join(this.outputDirectory(), prefix, sourceFile) + ".log"
-      console.log(`[${prefix}] ${logFile}`)
+      console.log(`[${prefix}] ${Path.relative(process.cwd(), logFile)}`)
 
       const url = createUrlOrFileUrl(inputFile)
       const dependencies = new Map()

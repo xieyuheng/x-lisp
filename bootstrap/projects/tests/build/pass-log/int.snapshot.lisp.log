@@ -63,3 +63,328 @@
     (= _↩ (apply _₁ _₆))
     (return _↩)))
 
+;;; Input
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; ShrinkPass
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; UniquifyPass
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; RevealFunctionPass
+
+(define (square x) ((@function imul 2) x x))
+
+(define (main)
+  ((@function println-non-void 1)
+   ((@function square 1) ((@function square 1) 3))))
+
+;;; LiftLambdaPass
+
+(define (square x) ((@function imul 2) x x))
+
+(define (main)
+  ((@function println-non-void 1)
+   ((@function square 1) ((@function square 1) 3))))
+
+;;; UnnestOperandPass
+
+(define (square x) (@let1 _₁ (@function imul 2) (_₁ x x)))
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 _₂ (@function square 1)
+      (@let1 _₃ (@function square 1)
+        (@let1 _₄ 3
+          (@let1 _₅ (_₃ _₄) (@let1 _₆ (_₂ _₅) (_₁ _₆))))))))
+
+;;; ExplicateControlPass
+
+(define-function square
+  (block entry
+    (= x (argument 0))
+    (= _₁ (const (@function imul 2)))
+    (= _↩ (apply _₁ x x))
+    (return _↩)))
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function square 1)))
+    (= _₃ (const (@function square 1)))
+    (= _₄ (const 3))
+    (= _₅ (apply _₃ _₄))
+    (= _₆ (apply _₂ _₅))
+    (= _↩ (apply _₁ _₆))
+    (return _↩)))
+
+;;; Input
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; ShrinkPass
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; UniquifyPass
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; RevealFunctionPass
+
+(define (square x) ((@function imul 2) x x))
+
+(define (main)
+  ((@function println-non-void 1)
+   ((@function square 1) ((@function square 1) 3))))
+
+;;; LiftLambdaPass
+
+(define (square x) ((@function imul 2) x x))
+
+(define (main)
+  ((@function println-non-void 1)
+   ((@function square 1) ((@function square 1) 3))))
+
+;;; UnnestOperandPass
+
+(define (square x) (@let1 _₁ (@function imul 2) (_₁ x x)))
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 _₂ (@function square 1)
+      (@let1 _₃ (@function square 1)
+        (@let1 _₄ 3
+          (@let1 _₅ (_₃ _₄) (@let1 _₆ (_₂ _₅) (_₁ _₆))))))))
+
+;;; ExplicateControlPass
+
+(define-function square
+  (block entry
+    (= x (argument 0))
+    (= _₁ (const (@function imul 2)))
+    (= _↩ (apply _₁ x x))
+    (return _↩)))
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function square 1)))
+    (= _₃ (const (@function square 1)))
+    (= _₄ (const 3))
+    (= _₅ (apply _₃ _₄))
+    (= _₆ (apply _₂ _₅))
+    (= _↩ (apply _₁ _₆))
+    (return _↩)))
+
+;;; Input
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; ShrinkPass
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; UniquifyPass
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; RevealFunctionPass
+
+(define (square x) ((@function imul 2) x x))
+
+(define (main)
+  ((@function println-non-void 1)
+   ((@function square 1) ((@function square 1) 3))))
+
+;;; LiftLambdaPass
+
+(define (square x) ((@function imul 2) x x))
+
+(define (main)
+  ((@function println-non-void 1)
+   ((@function square 1) ((@function square 1) 3))))
+
+;;; UnnestOperandPass
+
+(define (square x) (@let1 _₁ (@function imul 2) (_₁ x x)))
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 _₂ (@function square 1)
+      (@let1 _₃ (@function square 1)
+        (@let1 _₄ 3
+          (@let1 _₅ (_₃ _₄) (@let1 _₆ (_₂ _₅) (_₁ _₆))))))))
+
+;;; ExplicateControlPass
+
+(define-function square
+  (block entry
+    (= x (argument 0))
+    (= _₁ (const (@function imul 2)))
+    (= _↩ (apply _₁ x x))
+    (return _↩)))
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function square 1)))
+    (= _₃ (const (@function square 1)))
+    (= _₄ (const 3))
+    (= _₅ (apply _₃ _₄))
+    (= _₆ (apply _₂ _₅))
+    (= _↩ (apply _₁ _₆))
+    (return _↩)))
+
+;;; Input
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; ShrinkPass
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; UniquifyPass
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; RevealFunctionPass
+
+(define (square x) ((@function imul 2) x x))
+
+(define (main)
+  ((@function println-non-void 1)
+   ((@function square 1) ((@function square 1) 3))))
+
+;;; LiftLambdaPass
+
+(define (square x) ((@function imul 2) x x))
+
+(define (main)
+  ((@function println-non-void 1)
+   ((@function square 1) ((@function square 1) 3))))
+
+;;; UnnestOperandPass
+
+(define (square x) (@let1 _₁ (@function imul 2) (_₁ x x)))
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 _₂ (@function square 1)
+      (@let1 _₃ (@function square 1)
+        (@let1 _₄ 3
+          (@let1 _₅ (_₃ _₄) (@let1 _₆ (_₂ _₅) (_₁ _₆))))))))
+
+;;; ExplicateControlPass
+
+(define-function square
+  (block entry
+    (= x (argument 0))
+    (= _₁ (const (@function imul 2)))
+    (= _↩ (apply _₁ x x))
+    (return _↩)))
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function square 1)))
+    (= _₃ (const (@function square 1)))
+    (= _₄ (const 3))
+    (= _₅ (apply _₃ _₄))
+    (= _₆ (apply _₂ _₅))
+    (= _↩ (apply _₁ _₆))
+    (return _↩)))
+
+;;; Input
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; ShrinkPass
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; UniquifyPass
+
+(define (square x) (imul x x))
+
+(define (main) (println-non-void (square (square 3))))
+
+;;; RevealFunctionPass
+
+(define (square x) ((@function imul 2) x x))
+
+(define (main)
+  ((@function println-non-void 1)
+   ((@function square 1) ((@function square 1) 3))))
+
+;;; LiftLambdaPass
+
+(define (square x) ((@function imul 2) x x))
+
+(define (main)
+  ((@function println-non-void 1)
+   ((@function square 1) ((@function square 1) 3))))
+
+;;; UnnestOperandPass
+
+(define (square x) (@let1 _₁ (@function imul 2) (_₁ x x)))
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 _₂ (@function square 1)
+      (@let1 _₃ (@function square 1)
+        (@let1 _₄ 3
+          (@let1 _₅ (_₃ _₄) (@let1 _₆ (_₂ _₅) (_₁ _₆))))))))
+
+;;; ExplicateControlPass
+
+(define-function square
+  (block entry
+    (= x (argument 0))
+    (= _₁ (const (@function imul 2)))
+    (= _↩ (apply _₁ x x))
+    (return _↩)))
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function square 1)))
+    (= _₃ (const (@function square 1)))
+    (= _₄ (const 3))
+    (= _₅ (apply _₃ _₄))
+    (= _₆ (apply _₂ _₅))
+    (= _↩ (apply _₁ _₆))
+    (return _↩)))
+
