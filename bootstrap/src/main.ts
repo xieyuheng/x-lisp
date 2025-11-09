@@ -20,7 +20,6 @@ const routes = {
   clean: "file -- clean a x-lisp project (project.json)",
   "basic:run": "file -- run a basic-lisp file",
   "basic:bundle": "file -- bundle a basic-lisp file",
-  "run-via-basic": "file -- run x-lisp code via basic-lisp",
   "compile-to-pass-log": "file -- log passes for snapshot testing",
   "compile-to-basic": "file -- compile x-lisp code to basic-lisp",
 }
@@ -28,7 +27,6 @@ const routes = {
 router.bind(routes, {
   test: async ([file]) => {
     const project = await loadProject(file)
-    await project.build()
     await project.test()
   },
   build: async ([file]) => {
@@ -54,15 +52,6 @@ router.bind(routes, {
     const mod = B.load(url, dependencies)
     const bundleMod = B.bundle(mod)
     console.log(B.prettyMod(globals.maxWidth, bundleMod))
-  },
-  "run-via-basic": ([file]) => {
-    const url = createUrlOrFileUrl(file)
-    const dependencies = new Map()
-    const mod = L.load(url, dependencies)
-    const basicMod = compileToBasic(mod)
-    B.run(basicMod)
-    const output = B.console.consumeOutput()
-    process.stdout.write(output)
   },
   "compile-to-pass-log": ([file]) => {
     const url = createUrlOrFileUrl(file)
