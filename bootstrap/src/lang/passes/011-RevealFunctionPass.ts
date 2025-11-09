@@ -8,12 +8,12 @@ import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import {
   modLookupDefinition,
-  modMapDefinition,
+  modUpdateDefinition,
   type Mod,
 } from "../mod/index.ts"
 
 export function RevealFunctionPass(mod: Mod): Mod {
-  return modMapDefinition(mod, (definition) => onDefinition(mod, definition))
+  return modUpdateDefinition(mod, (definition) => onDefinition(mod, definition))
 }
 
 function onDefinition(mod: Mod, definition: Definition): Definition {

@@ -1,14 +1,11 @@
 # lang -- module
 
-[lang] do side effect on passes -- to have a stable `Mod` reference
+[lang] remove `modFlatMapDefinitionEntry`
+[lang] `compile` -- no need to update `mod` variable
+[lang] `onDefinition` update definition inplace
 
-- `modUpdateDefinition` instead of `modMapDefinition`
-
-  - remove `modFlatMapDefinitionEntry`
-
-[lang] reference to name in another module is direct via `Definition`
-
-- thus reference to `Definition` also need to be stable
+- reference to name in another module is direct via `Definition`,
+  thus reference to `Definition` also need to be stable.
 
 [lang] `011-RevealFunctionPass` -- check imported names
 [lang] `030-ExplicateControlPass` -- translate module statements
