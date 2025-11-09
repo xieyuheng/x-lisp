@@ -7,8 +7,8 @@ import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import { modUpdateDefinition, type Mod } from "../mod/index.ts"
 
-export function ShrinkPass(mod: Mod): Mod {
-  return modUpdateDefinition(mod, onDefinition)
+export function ShrinkPass(mod: Mod): void {
+  modUpdateDefinition(mod, onDefinition)
 }
 
 function onDefinition(definition: Definition): Definition {

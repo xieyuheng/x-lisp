@@ -12,8 +12,8 @@ import {
   type Mod,
 } from "../mod/index.ts"
 
-export function RevealFunctionPass(mod: Mod): Mod {
-  return modUpdateDefinition(mod, (definition) => onDefinition(mod, definition))
+export function RevealFunctionPass(mod: Mod): void {
+  modUpdateDefinition(mod, (definition) => onDefinition(mod, definition))
 }
 
 function onDefinition(mod: Mod, definition: Definition): Definition {

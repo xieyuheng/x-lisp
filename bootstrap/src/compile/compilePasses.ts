@@ -3,11 +3,21 @@ import * as L from "../lang/index.ts"
 
 export function compilePasses(mod: L.Mod): void {
   L.logMod("Input", mod)
-  mod = L.logMod("ShrinkPass", L.ShrinkPass(mod))
-  mod = L.logMod("UniquifyPass", L.UniquifyPass(mod))
-  mod = L.logMod("RevealFunctionPass", L.RevealFunctionPass(mod))
-  mod = L.logMod("LiftLambdaPass", L.LiftLambdaPass(mod))
-  mod = L.logMod("UnnestOperandPass", L.UnnestOperandPass(mod))
+
+  L.ShrinkPass(mod)
+  L.logMod("ShrinkPass", (mod))
+
+  L.UniquifyPass(mod)
+  L.logMod("UniquifyPass", mod)
+
+  L.RevealFunctionPass(mod)
+  L.logMod("RevealFunctionPass", mod)
+
+  L.LiftLambdaPass(mod)
+  L.logMod("LiftLambdaPass", mod)
+
+  L.UnnestOperandPass(mod)
+  L.logMod("UnnestOperandPass", mod)
 
   const basicMod = B.createMod(mod.url)
   L.ExplicateControlPass(mod, basicMod)

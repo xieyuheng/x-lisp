@@ -9,8 +9,8 @@ import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import { modUpdateDefinition, type Mod } from "../mod/index.ts"
 
-export function UnnestOperandPass(mod: Mod): Mod {
-  return modUpdateDefinition(mod, (definition) => onDefinition(definition))
+export function UnnestOperandPass(mod: Mod): void {
+  modUpdateDefinition(mod, (definition) => onDefinition(definition))
 }
 
 type State = {
