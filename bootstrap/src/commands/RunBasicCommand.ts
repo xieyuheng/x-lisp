@@ -4,7 +4,7 @@ import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
 export const RunBasicCommand: Command = {
-  name: "run-basic",
+  name: "basic:run",
   description: "Run a basic-lisp file",
   help(commander) {
     let message = `The ${this.name} command run a basic-lisp file.`
@@ -16,7 +16,7 @@ export const RunBasicCommand: Command = {
 
   async run(commander) {
     if (typeof commander.args[0] !== "string") {
-      let message = `[run-basic] expect the first argument to be a path`
+      let message = `[basic:run] expect the first argument to be a path`
       message += `\n  first argument: ${commander.args[0]}`
       throw new Error(message)
     }

@@ -1,16 +1,9 @@
-rename run-basic to basic:run
 rename bundle-basic to basic:bundle
 
 # basic -- bundle
 
 [basic] refactor `bundle`
-
 [basic] more tests about module
-
-[basic] support `Comment` -- `Stmt`
-[basic] `Mod` -- `CommentDefinition` to format with comment in order
-[basic] `formatMod` -- support `Comment`
-[basic] `bundle` -- save prefix map in `Comment`
 
 # lang -- module
 
