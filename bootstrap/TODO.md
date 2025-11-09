@@ -1,5 +1,3 @@
-[basic] export `suffix` -- `.basic`
-
 [project] get `project.json` from current directory by default
 
 # machine

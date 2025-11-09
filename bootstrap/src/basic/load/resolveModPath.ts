@@ -2,7 +2,7 @@ import fs from "node:fs"
 import Path from "node:path"
 import { pathRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 
-export const suffix = ".lisp"
+export const suffix = ".basic"
 
 export function resolveModPath(inputPath: string): string {
   let path = inputPath
