@@ -8,13 +8,13 @@ export type DefineFunction = {
   kind: "DefineFunction"
   name: string
   blocks: Map<string, Block>
-  meta?: Meta
+  meta: Meta
 }
 
 export function DefineFunction(
   name: string,
   blocks: Map<string, Block>,
-  meta?: Meta,
+  meta: Meta,
 ): DefineFunction {
   return {
     kind: "DefineFunction",
