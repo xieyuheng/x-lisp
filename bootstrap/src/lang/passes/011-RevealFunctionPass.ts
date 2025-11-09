@@ -1,7 +1,6 @@
 import * as S from "@xieyuheng/x-sexp.js"
 import { setAdd, setUnion } from "../../helpers/set/setAlgebra.ts"
 import { getBuiltinFunctionArity } from "../builtin/index.ts"
-import * as Definitions from "../definition/index.ts"
 import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
@@ -17,7 +16,11 @@ export function RevealFunctionPass(mod: Mod): void {
 function onDefinition(mod: Mod, definition: Definition): null {
   switch (definition.kind) {
     case "FunctionDefinition": {
-      definition.body= onExp(mod, new Set(definition.parameters), definition.body)
+      definition.body = onExp(
+        mod,
+        new Set(definition.parameters),
+        definition.body,
+      )
       return null
     }
   }
