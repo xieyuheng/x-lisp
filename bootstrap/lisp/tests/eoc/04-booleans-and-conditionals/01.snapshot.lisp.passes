@@ -1,6 +1,6 @@
 ;;; Input
 
-(define (_∑-top-level-computation)
+(define (main)
   (println-non-void
    (begin
      (= x (random-dice))
@@ -11,7 +11,7 @@
 
 ;;; ShrinkPass
 
-(define (_∑-top-level-computation)
+(define (main)
   (println-non-void
    (@let1 x (random-dice)
      (@let1 y (random-dice)
@@ -21,7 +21,7 @@
 
 ;;; UniquifyPass
 
-(define (_∑-top-level-computation)
+(define (main)
   (println-non-void
    (@let1 x₁ (random-dice)
      (@let1 y₁ (random-dice)
@@ -31,7 +31,7 @@
 
 ;;; RevealFunctionPass
 
-(define (_∑-top-level-computation)
+(define (main)
   ((@function println-non-void 1)
    (@let1 x₁ ((@function random-dice 0))
      (@let1 y₁ ((@function random-dice 0))
@@ -44,7 +44,7 @@
 
 ;;; LiftLambdaPass
 
-(define (_∑-top-level-computation)
+(define (main)
   ((@function println-non-void 1)
    (@let1 x₁ ((@function random-dice 0))
      (@let1 y₁ ((@function random-dice 0))
@@ -57,7 +57,7 @@
 
 ;;; UnnestOperandPass
 
-(define (_∑-top-level-computation)
+(define (main)
   (@let1 _₁ (@function println-non-void 1)
     (@let1 x₁ (@let1 _₂ (@function random-dice 0) (_₂))
       (@let1 y₁ (@let1 _₃ (@function random-dice 0) (_₃))
@@ -80,7 +80,7 @@
 
 ;;; ExplicateControlPass
 
-(define-function _∑-top-level-computation
+(define-function main
   (block entry
     (= _₁ (const (@function println-non-void 1)))
     (= _₂ (const (@function random-dice 0)))
@@ -90,36 +90,27 @@
     (= _₆ (const (@function int-less? 2)))
     (= _₇ (const 1))
     (= _₈ (apply _₆ x₁ _₇))
-    (branch
-     _₈
-     _∑-top-level-computation/then₅
-     _∑-top-level-computation/else₆))
-  (block _∑-top-level-computation/let-body₁
-    (= _↩ (apply _₁ _₄))
-    (return _↩))
-  (block _∑-top-level-computation/then₂
+    (branch _₈ main/then₅ main/else₆))
+  (block main/let-body₁ (= _↩ (apply _₁ _₄)) (return _↩))
+  (block main/then₂
     (= _₁₃ (const (@function iadd 2)))
     (= _₁₄ (const 2))
     (= _₄ (apply _₁₃ y₁ _₁₄))
-    (goto _∑-top-level-computation/let-body₁))
-  (block _∑-top-level-computation/else₃
+    (goto main/let-body₁))
+  (block main/else₃
     (= _₁₅ (const (@function iadd 2)))
     (= _₁₆ (const 10))
     (= _₄ (apply _₁₅ y₁ _₁₆))
-    (goto _∑-top-level-computation/let-body₁))
-  (block _∑-top-level-computation/let-body₄
-    (branch
-     _₅
-     _∑-top-level-computation/then₂
-     _∑-top-level-computation/else₃))
-  (block _∑-top-level-computation/then₅
+    (goto main/let-body₁))
+  (block main/let-body₄ (branch _₅ main/then₂ main/else₃))
+  (block main/then₅
     (= _₉ (const (@function equal? 2)))
     (= _₁₀ (const 0))
     (= _₅ (apply _₉ x₁ _₁₀))
-    (goto _∑-top-level-computation/let-body₄))
-  (block _∑-top-level-computation/else₆
+    (goto main/let-body₄))
+  (block main/else₆
     (= _₁₁ (const (@function equal? 2)))
     (= _₁₂ (const 2))
     (= _₅ (apply _₁₁ x₁ _₁₂))
-    (goto _∑-top-level-computation/let-body₄)))
+    (goto main/let-body₄)))
 

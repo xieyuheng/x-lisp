@@ -8,7 +8,7 @@
 
 (define (identity x) x)
 
-(define (_∑-top-level-computation)
+(define (main)
   (println-non-void
    (begin (= f identity) (= g (dup identity)) (g f f))))
 
@@ -22,7 +22,7 @@
 
 (define (identity x) x)
 
-(define (_∑-top-level-computation)
+(define (main)
   (println-non-void
    (@let1 f identity (@let1 g (dup identity) (g f f)))))
 
@@ -36,7 +36,7 @@
 
 (define (identity x) x)
 
-(define (_∑-top-level-computation)
+(define (main)
   (println-non-void
    (@let1 f₁ identity (@let1 g₁ (dup identity) (g₁ f₁ f₁)))))
 
@@ -50,7 +50,7 @@
 
 (define (identity x) x)
 
-(define (_∑-top-level-computation)
+(define (main)
   ((@function println-non-void 1)
    (@let1 f₁ (@function identity 1)
      (@let1 g₁ ((@function dup 1) (@function identity 1))
@@ -84,7 +84,7 @@
 
 (define (identity x) x)
 
-(define (_∑-top-level-computation)
+(define (main)
   ((@function println-non-void 1)
    (@let1 f₁ (@function identity 1)
      (@let1 g₁ ((@function dup 1) (@function identity 1))
@@ -127,7 +127,7 @@
 
 (define (identity x) x)
 
-(define (_∑-top-level-computation)
+(define (main)
   (@let1 _₁ (@function println-non-void 1)
     (@let1 f₁ (@function identity 1)
       (@let1 g₁
@@ -202,7 +202,7 @@
 (define-function identity
   (block entry (= x (argument 0)) (return x)))
 
-(define-function _∑-top-level-computation
+(define-function main
   (block entry
     (= _₁ (const (@function println-non-void 1)))
     (= f₁ (const (@function identity 1)))

@@ -1,21 +1,21 @@
 ;;; Input
 
-(define (_∑-top-level-computation)
+(define (main)
   (println-non-void (iadd (random-dice) (random-dice))))
 
 ;;; ShrinkPass
 
-(define (_∑-top-level-computation)
+(define (main)
   (println-non-void (iadd (random-dice) (random-dice))))
 
 ;;; UniquifyPass
 
-(define (_∑-top-level-computation)
+(define (main)
   (println-non-void (iadd (random-dice) (random-dice))))
 
 ;;; RevealFunctionPass
 
-(define (_∑-top-level-computation)
+(define (main)
   ((@function println-non-void 1)
    ((@function iadd 2)
     ((@function random-dice 0))
@@ -23,7 +23,7 @@
 
 ;;; LiftLambdaPass
 
-(define (_∑-top-level-computation)
+(define (main)
   ((@function println-non-void 1)
    ((@function iadd 2)
     ((@function random-dice 0))
@@ -31,7 +31,7 @@
 
 ;;; UnnestOperandPass
 
-(define (_∑-top-level-computation)
+(define (main)
   (@let1 _₁ (@function println-non-void 1)
     (@let1 _₂ (@function iadd 2)
       (@let1 _₃ (@function random-dice 0)
@@ -41,7 +41,7 @@
 
 ;;; ExplicateControlPass
 
-(define-function _∑-top-level-computation
+(define-function main
   (block entry
     (= _₁ (const (@function println-non-void 1)))
     (= _₂ (const (@function iadd 2)))

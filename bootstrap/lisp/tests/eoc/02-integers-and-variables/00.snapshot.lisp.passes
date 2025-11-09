@@ -1,34 +1,32 @@
 ;;; Input
 
-(define (_∑-top-level-computation) (println-non-void 42))
+(define (main) (println-non-void 42))
 
 ;;; ShrinkPass
 
-(define (_∑-top-level-computation) (println-non-void 42))
+(define (main) (println-non-void 42))
 
 ;;; UniquifyPass
 
-(define (_∑-top-level-computation) (println-non-void 42))
+(define (main) (println-non-void 42))
 
 ;;; RevealFunctionPass
 
-(define (_∑-top-level-computation)
-  ((@function println-non-void 1) 42))
+(define (main) ((@function println-non-void 1) 42))
 
 ;;; LiftLambdaPass
 
-(define (_∑-top-level-computation)
-  ((@function println-non-void 1) 42))
+(define (main) ((@function println-non-void 1) 42))
 
 ;;; UnnestOperandPass
 
-(define (_∑-top-level-computation)
+(define (main)
   (@let1 _₁ (@function println-non-void 1)
     (@let1 _₂ 42 (_₁ _₂))))
 
 ;;; ExplicateControlPass
 
-(define-function _∑-top-level-computation
+(define-function main
   (block entry
     (= _₁ (const (@function println-non-void 1)))
     (= _₂ (const 42))

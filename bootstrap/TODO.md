@@ -1,4 +1,10 @@
+# basic -- bundle
+
+[basic] more tests about module
+
 # lang -- module
+
+[lang] generated `main` should have a generated prefix
 
 [lang] `Mod` has `dependencies`
 
@@ -16,11 +22,6 @@
 [lang] `030-ExplicateControlPass` -- translate module statements
 
 [lang] `RunViaBasicCommand` -- use `bundle`
-
-# project
-
-[project] setup
-[project] load project.json
 
 # machine
 
