@@ -1,1 +1,0 @@
-(ineg (random-dice))
