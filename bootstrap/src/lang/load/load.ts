@@ -2,8 +2,8 @@ import * as S from "@xieyuheng/x-sexp.js"
 import fs from "node:fs"
 import { createMod, type Mod } from "../mod/index.ts"
 import { parseStmt } from "../parse/index.ts"
-import { type Stmt } from "../stmt/index.ts"
 import { stage1 } from "./stage1.ts"
+import { stage2 } from "./stage2.ts"
 
 export function load(url: URL, dependencies: Map<string, Mod>): Mod {
   const found = dependencies.get(url.href)
@@ -14,8 +14,10 @@ export function load(url: URL, dependencies: Map<string, Mod>): Mod {
   dependencies.set(url.href, mod)
 
   const sexps = S.parseSexps(text, { url: mod.url })
-  const stmts = sexps.map<Stmt>(parseStmt)
-  for (const stmt of stmts) stage1(mod, stmt)
+
+  mod.stmts = sexps.map(parseStmt)
+  for (const stmt of mod.stmts) stage1(mod, stmt)
+  for (const stmt of mod.stmts) stage2(mod, stmt)
 
   return mod
 }
