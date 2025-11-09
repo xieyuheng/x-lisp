@@ -1,10 +1,4 @@
-# basic -- bundle
-
-[basic] more tests about module
-
 # lang -- module
-
-[lang] generated `main` should have a generated prefix
 
 [lang] `Mod` has `dependencies`
 
