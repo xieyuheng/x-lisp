@@ -1,8 +1,6 @@
-`compileToPassLog` -- take `logFile`
+`compileToPassLog` -- merge `logBasicMod` with `logLangMod`
 
 [project] `build` -- compile `<output>/passes`
-
-`compileToPassLog` -- one pass one file
 
 remove test-compile-to-pass-log.sh
 
@@ -12,6 +10,9 @@ remove test-compile-to-pass-log.sh
 remove test-run-via-basic.sh
 
 [lang] remove `run-via-basic`
+
+use `.basic` for basic-lisp files -- config via `globals`
+use `.lisp` for x-lisp files -- config via `globals`
 
 # machine
 
