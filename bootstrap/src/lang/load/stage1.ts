@@ -10,21 +10,17 @@ function wrapTopLevelExp(exp: Exp): Exp {
   return Exps.Apply(Exps.Var("println-non-void"), [exp])
 }
 
-export const TopLevelComputationName = "_∑-top-level-computation"
-
 export function stage1(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "Compute") {
     const exp = wrapTopLevelExp(stmt.exp)
-    const found = modLookupDefinition(mod, TopLevelComputationName)
+    const found = modLookupDefinition(mod, "main")
     if (found) {
       assert(found.body.kind === "BeginSugar")
       found.body.sequence.push(exp)
     } else {
       const body = Exps.BeginSugar([exp], stmt.meta)
-      mod.definitions.set(
-        TopLevelComputationName,
-        FunctionDefinition(TopLevelComputationName, [], body, stmt.meta),
-      )
+      const main = FunctionDefinition("main", [], body, stmt.meta)
+      mod.definitions.set("main", main)
     }
   }
 
