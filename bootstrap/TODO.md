@@ -1,4 +1,3 @@
-[lang] inline `include`
 [basic] inline `include`
 
 # lang -- module
