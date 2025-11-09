@@ -1,4 +1,3 @@
-[lang] `030-ExplicateControlPass` -- translate module statements
 [lang] `RunViaBasicCommand` -- use `bundle`
 
 # project
