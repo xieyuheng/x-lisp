@@ -4,10 +4,10 @@ import { CommandRouter } from "@xieyuheng/command-router.js"
 import * as B from "./basic/index.ts"
 import { compilePasses, compileToBasic } from "./compile/index.ts"
 import { errorReport } from "./helpers/error/errorReport.ts"
+import { getPackageJson } from "./helpers/node/getPackageJson.ts"
 import { createUrlOrFileUrl } from "./helpers/url/createUrlOrFileUrl.ts"
 import * as L from "./lang/index.ts"
 import { loadProject } from "./project/index.ts"
-import { getPackageJson } from "./helpers/node/getPackageJson.ts"
 
 const { version } = getPackageJson()
 
@@ -24,74 +24,50 @@ const routes = {
 
 router.bind(routes, {
   build: async ([file]) => {
-    try {
-      const ProjectConfig = await loadProject(file)
-      console.log(ProjectConfig)
-    } catch (error) {
-      console.log(errorReport(error))
-      process.exit(1)
-    }
+    const ProjectConfig = await loadProject(file)
+    console.log(ProjectConfig)
   },
   "basic:run": ([file]) => {
-    try {
-      const url = createUrlOrFileUrl(file)
-      const dependencies = new Map()
-      const mod = B.bundle(B.load(url, dependencies))
-      const context = B.createContext(mod)
-      B.call(context, "main", [])
-    } catch (error) {
-      console.log(errorReport(error))
-      process.exit(1)
-    }
+    const url = createUrlOrFileUrl(file)
+    const dependencies = new Map()
+    const mod = B.load(url, dependencies)
+    const bundleMod = B.bundle(mod)
+    const context = B.createContext(bundleMod)
+    B.call(context, "main", [])
   },
   "basic:bundle": ([file]) => {
-    try {
-      const url = createUrlOrFileUrl(file)
-      const dependencies = new Map()
-      const mod = B.bundle(B.load(url, dependencies))
-      console.log(B.prettyMod(60, mod))
-    } catch (error) {
-      console.log(errorReport(error))
-      process.exit(1)
-    }
+    const url = createUrlOrFileUrl(file)
+    const dependencies = new Map()
+    const mod = B.load(url, dependencies)
+    const bundleMod = B.bundle(mod)
+    console.log(B.prettyMod(60, bundleMod))
   },
   "run-via-basic": ([file]) => {
-    try {
-      const url = createUrlOrFileUrl(file)
-      const dependencies = new Map()
-      const mod = L.load(url, dependencies)
-      const basicMod = compileToBasic(mod)
-      const context = B.createContext(basicMod)
-      B.call(context, "main", [])
-    } catch (error) {
-      console.log(error)
-      console.log(errorReport(error))
-      process.exit(1)
-    }
+    const url = createUrlOrFileUrl(file)
+    const dependencies = new Map()
+    const mod = L.load(url, dependencies)
+    const basicMod = compileToBasic(mod)
+    const context = B.createContext(basicMod)
+    B.call(context, "main", [])
   },
   "compile-passes": ([file]) => {
-    try {
-      const url = createUrlOrFileUrl(file)
-      const dependencies = new Map()
-      const mod = L.load(url, dependencies)
-      compilePasses(mod)
-    } catch (error) {
-      console.log(errorReport(error))
-      process.exit(1)
-    }
+    const url = createUrlOrFileUrl(file)
+    const dependencies = new Map()
+    const mod = L.load(url, dependencies)
+    compilePasses(mod)
   },
   "compile-to-basic": ([file]) => {
-    try {
-      const url = createUrlOrFileUrl(file)
-      const dependencies = new Map()
-      const mod = L.load(url, dependencies)
-      const basicMod = compileToBasic(mod)
-      console.log(B.prettyMod(60, basicMod))
-    } catch (error) {
-      console.log(errorReport(error))
-      process.exit(1)
-    }
+    const url = createUrlOrFileUrl(file)
+    const dependencies = new Map()
+    const mod = L.load(url, dependencies)
+    const basicMod = compileToBasic(mod)
+    console.log(B.prettyMod(60, basicMod))
   },
 })
 
-await router.run(process.argv.slice(2))
+try {
+  await router.run(process.argv.slice(2))
+} catch (error) {
+  console.log(errorReport(error))
+  process.exit(1)
+}

@@ -58,6 +58,10 @@ function loadText(url: URL): string {
     return fs.readFileSync(url.pathname, "utf8")
   }
 
+  if (url.protocol === "repl:") {
+    return ""
+  }
+
   throw new Error(`[loadText] not supported protocol: ${url}`)
 }
 

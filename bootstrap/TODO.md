@@ -1,7 +1,3 @@
-[bootstrap] update `command-router.js` to use error handler
-
-extract `services/` from `commands/`
-
 # lang
 
 [lang] `build` command -- compile to `<output>/basic`
