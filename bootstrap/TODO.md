@@ -1,6 +1,4 @@
-# project
-
-[project] load `project.json` to `ProjectConfig` -- using `zod`
+[project] `Project` -- has source files
 
 [lang] `BuildCommand`
 [lang] remove `RunViaBasicCommand`

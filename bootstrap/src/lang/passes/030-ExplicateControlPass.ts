@@ -4,9 +4,9 @@ import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import type { Definition } from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
 import * as Exps from "../exp/index.ts"
-import * as Stmts from "../stmt/index.ts"
 import { formatExp } from "../format/index.ts"
 import { modOwnDefinitions, type Mod } from "../mod/index.ts"
+import * as Stmts from "../stmt/index.ts"
 
 export function ExplicateControlPass(mod: Mod, basicMod: B.Mod): void {
   for (const stmt of mod.stmts) {
