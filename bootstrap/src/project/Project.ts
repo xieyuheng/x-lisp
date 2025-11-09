@@ -10,7 +10,6 @@ import { type ProjectConfig } from "./ProjectConfig.ts"
 export class Project {
   rootDirectory: string
   config: ProjectConfig
-  sourceFiles: Array<string> = []
 
   constructor(rootDirectory: string, config: ProjectConfig) {
     this.rootDirectory = rootDirectory
@@ -31,8 +30,8 @@ export class Project {
     )
   }
 
-  async loadSourceFiles(): Promise<void> {
-    this.sourceFiles = fs
+  sourceFiles(): Array<string> {
+    return fs
       .readdirSync(this.sourceDirectory(), {
         encoding: "utf8",
         recursive: true,
@@ -49,14 +48,13 @@ export class Project {
   }
 
   async build(): Promise<void> {
-    await this.loadSourceFiles()
-    await this.buildBasic()
     await this.buildPassLog()
+    await this.buildBasic()
   }
 
   async buildBasic(): Promise<void> {
     const prefix = "basic"
-    for (const sourceFile of this.sourceFiles) {
+    for (const sourceFile of this.sourceFiles()) {
       const inputFile = Path.join(this.sourceDirectory(), sourceFile)
       const outputFile = Path.join(this.outputDirectory(), prefix, sourceFile)
       console.log(`[${prefix}] ${Path.relative(process.cwd(), outputFile)}`)
@@ -71,9 +69,11 @@ export class Project {
     }
   }
 
+  async buildBasicBundle(): Promise<void> {}
+
   async buildPassLog(): Promise<void> {
     const prefix = "pass-log"
-    for (const sourceFile of this.sourceFiles) {
+    for (const sourceFile of this.sourceFiles()) {
       const inputFile = Path.join(this.sourceDirectory(), sourceFile)
       const logFile =
         Path.join(this.outputDirectory(), prefix, sourceFile) + ".log"
@@ -83,7 +83,7 @@ export class Project {
       const dependencies = new Map()
       const mod = L.load(url, dependencies)
       fs.mkdirSync(Path.dirname(logFile), { recursive: true })
-      fs.writeFileSync(logFile, '')
+      fs.writeFileSync(logFile, "")
       compileToPassLog(mod, logFile)
     }
   }
