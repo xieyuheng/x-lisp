@@ -3,8 +3,8 @@ import * as B from "../basic/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
-export const BundleBasicCommand: Command = {
-  name: "bundle-basic",
+export const BasicBundleCommand: Command = {
+  name: "basic:bundle",
   description: "Bundle a basic-lisp file",
   help(commander) {
     let message = `The ${this.name} command bundle a basic-lisp file.`
@@ -16,7 +16,7 @@ export const BundleBasicCommand: Command = {
 
   async run(commander) {
     if (typeof commander.args[0] !== "string") {
-      let message = `[bundle-basic] expect the first argument to be a path`
+      let message = `[basic:bundle] expect the first argument to be a path`
       message += `\n  first argument: ${commander.args[0]}`
       throw new Error(message)
     }
