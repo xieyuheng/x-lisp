@@ -3,6 +3,7 @@
 import { CommandRouter } from "@xieyuheng/command-router.js"
 import * as B from "./basic/index.ts"
 import { compilePasses, compileToBasic } from "./compile/index.ts"
+import { globals } from "./globals.ts"
 import { errorReport } from "./helpers/error/errorReport.ts"
 import { getPackageJson } from "./helpers/node/getPackageJson.ts"
 import { createUrlOrFileUrl } from "./helpers/url/createUrlOrFileUrl.ts"
@@ -40,7 +41,7 @@ router.bind(routes, {
     const dependencies = new Map()
     const mod = B.load(url, dependencies)
     const bundleMod = B.bundle(mod)
-    console.log(B.prettyMod(60, bundleMod))
+    console.log(B.prettyMod(globals.maxWidth, bundleMod))
   },
   "run-via-basic": ([file]) => {
     const url = createUrlOrFileUrl(file)
@@ -61,7 +62,7 @@ router.bind(routes, {
     const dependencies = new Map()
     const mod = L.load(url, dependencies)
     const basicMod = compileToBasic(mod)
-    console.log(B.prettyMod(60, basicMod))
+    console.log(B.prettyMod(globals.maxWidth, basicMod))
   },
 })
 
