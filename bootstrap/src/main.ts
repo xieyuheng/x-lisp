@@ -19,6 +19,15 @@ const routes = {
   "compile-to-basic": "file -- compile x-lisp code to basic-lisp",
 }
 
+// const routes = [
+//   "build file -- build a x-lisp project",
+//   "basic:run file -- run a basic-lisp file",
+//   "basic:bundle file -- bundle a basic-lisp file",
+//   "run-via-basic file -- run x-lisp code via basic-lisp",
+//   "compile-passes file -- output all compiler passes for snapshot testing",
+//   "compile-to-basic file -- compile x-lisp code to basic-lisp",
+// ]
+
 router.bind(routes, {
   build: async ([file]) => {
     try {
@@ -43,7 +52,7 @@ router.bind(routes, {
     }
   },
 
-  "basic:bundle": async ([file]) => {
+  "basic:bundle":  ([file]) => {
     try {
       const url = createUrlOrFileUrl(file)
       const dependencies = new Map()
@@ -55,7 +64,7 @@ router.bind(routes, {
     }
   },
 
-  "run-via-basic": async ([file]) => {
+  "run-via-basic":  ([file]) => {
     try {
       const url = createUrlOrFileUrl(file)
       const dependencies = new Map()
@@ -70,7 +79,7 @@ router.bind(routes, {
     }
   },
 
-  "compile-passes": async ([file]) => {
+  "compile-passes":  ([file]) => {
     try {
       const url = createUrlOrFileUrl(file)
       const dependencies = new Map()
@@ -82,7 +91,7 @@ router.bind(routes, {
     }
   },
 
-  "compile-to-basic": async ([file]) => {
+  "compile-to-basic":  ([file]) => {
     try {
       const url = createUrlOrFileUrl(file)
       const dependencies = new Map()
