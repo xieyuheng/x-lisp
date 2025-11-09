@@ -1,6 +1,4 @@
-# lang
-
-[lang] `build` command -- compile to `<output>/basic`
+[project] `build` -- compile to `<output>/basic`
 [lang] fix `run-via-basic`
 
 # machine
