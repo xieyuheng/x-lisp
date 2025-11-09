@@ -7,10 +7,10 @@ import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
-import { modMapDefinition, type Mod } from "../mod/index.ts"
+import { modUpdateDefinition, type Mod } from "../mod/index.ts"
 
 export function UnnestOperandPass(mod: Mod): Mod {
-  return modMapDefinition(mod, (definition) => onDefinition(definition))
+  return modUpdateDefinition(mod, (definition) => onDefinition(definition))
 }
 
 type State = {

@@ -32,13 +32,15 @@ export function modLookupDefinition(
   return undefined
 }
 
-export function modMapDefinition(
+export function modUpdateDefinition(
   mod: Mod,
   f: (definition: Definition) => Definition,
 ): Mod {
-  const newMod = createMod(mod.url)
-  newMod.definitions = mapMapValue(mod.definitions, f)
-  return newMod
+  for (const [name, definition] of mod.definitions.entries()) {
+    mod.definitions.set(name, f(definition))
+  }
+
+  return mod
 }
 
 export type DefinitionEntry = [string, Definition]

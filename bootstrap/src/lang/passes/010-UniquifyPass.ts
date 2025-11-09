@@ -6,10 +6,10 @@ import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
-import { modMapDefinition, type Mod } from "../mod/index.ts"
+import { modUpdateDefinition, type Mod } from "../mod/index.ts"
 
 export function UniquifyPass(mod: Mod): Mod {
-  return modMapDefinition(mod, onDefinition)
+  return modUpdateDefinition(mod, onDefinition)
 }
 
 function onDefinition(definition: Definition): Definition {
