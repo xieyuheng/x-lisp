@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "@xieyuheng/commander.js": "^0.1.5",
-    "@xieyuheng/x-sexp.js": "^0.5.5"
+    "@xieyuheng/x-sexp.js": "^0.5.5",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/node": "^24.10.0",
