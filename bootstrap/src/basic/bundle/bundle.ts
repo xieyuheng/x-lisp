@@ -1,7 +1,7 @@
 import assert from "node:assert"
 import { mapMapValue } from "../../helpers/map/mapMapValue.ts"
 import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
-import { Block } from "../block/index.js"
+import { Block } from "../block/index.ts"
 import { importBuiltin, useBuiltinMod } from "../builtin/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Instr } from "../instr/index.ts"
