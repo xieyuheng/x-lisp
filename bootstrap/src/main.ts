@@ -7,8 +7,11 @@ import { errorReport } from "./helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "./helpers/url/createUrlOrFileUrl.ts"
 import * as L from "./lang/index.ts"
 import { loadProject } from "./project/index.ts"
+import { getPackageJson } from "./helpers/node/getPackageJson.ts"
 
-const router = new CommandRouter("x-lisp-boot", "")
+const { version } = getPackageJson()
+
+const router = new CommandRouter("x-lisp-boot", version)
 
 const routes = {
   build: "file -- build a x-lisp project",
@@ -18,15 +21,6 @@ const routes = {
   "compile-passes": "file -- output all compiler passes for snapshot testing",
   "compile-to-basic": "file -- compile x-lisp code to basic-lisp",
 }
-
-// const routes = [
-//   "build file -- build a x-lisp project",
-//   "basic:run file -- run a basic-lisp file",
-//   "basic:bundle file -- bundle a basic-lisp file",
-//   "run-via-basic file -- run x-lisp code via basic-lisp",
-//   "compile-passes file -- output all compiler passes for snapshot testing",
-//   "compile-to-basic file -- compile x-lisp code to basic-lisp",
-// ]
 
 router.bind(routes, {
   build: async ([file]) => {
@@ -38,7 +32,6 @@ router.bind(routes, {
       process.exit(1)
     }
   },
-
   "basic:run": ([file]) => {
     try {
       const url = createUrlOrFileUrl(file)
@@ -51,8 +44,7 @@ router.bind(routes, {
       process.exit(1)
     }
   },
-
-  "basic:bundle":  ([file]) => {
+  "basic:bundle": ([file]) => {
     try {
       const url = createUrlOrFileUrl(file)
       const dependencies = new Map()
@@ -63,8 +55,7 @@ router.bind(routes, {
       process.exit(1)
     }
   },
-
-  "run-via-basic":  ([file]) => {
+  "run-via-basic": ([file]) => {
     try {
       const url = createUrlOrFileUrl(file)
       const dependencies = new Map()
@@ -78,8 +69,7 @@ router.bind(routes, {
       process.exit(1)
     }
   },
-
-  "compile-passes":  ([file]) => {
+  "compile-passes": ([file]) => {
     try {
       const url = createUrlOrFileUrl(file)
       const dependencies = new Map()
@@ -90,8 +80,7 @@ router.bind(routes, {
       process.exit(1)
     }
   },
-
-  "compile-to-basic":  ([file]) => {
+  "compile-to-basic": ([file]) => {
     try {
       const url = createUrlOrFileUrl(file)
       const dependencies = new Map()
