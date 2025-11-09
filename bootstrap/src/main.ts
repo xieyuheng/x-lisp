@@ -15,7 +15,8 @@ const { version } = getPackageJson()
 const router = new CommandRouter("x-lisp-boot", version)
 
 const routes = {
-  build: "file -- build a x-lisp project",
+  test: "file -- test a x-lisp project (project.json)",
+  build: "file -- build a x-lisp project (project.json)",
   "basic:run": "file -- run a basic-lisp file",
   "basic:bundle": "file -- bundle a basic-lisp file",
   "run-via-basic": "file -- run x-lisp code via basic-lisp",
@@ -24,6 +25,11 @@ const routes = {
 }
 
 router.bind(routes, {
+  test: async ([file]) => {
+    const project = await loadProject(file)
+    await project.build()
+    await project.test()
+  },
   build: async ([file]) => {
     const project = await loadProject(file)
     await project.build()

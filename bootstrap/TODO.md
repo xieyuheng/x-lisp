@@ -1,8 +1,6 @@
-[project] `run` command
-[project] `test` command
+[project] `project.test`
 
 remove test-run-via-basic.sh
-
 [lang] remove `run-via-basic`
 
 use `.basic` for basic-lisp files -- config via `globals`
