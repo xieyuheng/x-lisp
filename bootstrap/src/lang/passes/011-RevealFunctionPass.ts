@@ -6,14 +6,12 @@ import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
-import {
-  modLookupDefinition,
-  modUpdateDefinition,
-  type Mod,
-} from "../mod/index.ts"
+import { modLookupDefinition, type Mod } from "../mod/index.ts"
 
 export function RevealFunctionPass(mod: Mod): void {
-  modUpdateDefinition(mod, (definition) => onDefinition(mod, definition))
+  for (const [name, definition] of mod.definitions.entries()) {
+    mod.definitions.set(name, onDefinition(mod, definition))
+  }
 }
 
 function onDefinition(mod: Mod, definition: Definition): Definition {

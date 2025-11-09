@@ -1,6 +1,5 @@
 import * as S from "@xieyuheng/x-sexp.js"
 import assert from "node:assert"
-import { mapFlatMap } from "../../helpers/map/mapFlatMap.ts"
 import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import * as Definitions from "../definition/index.ts"
 import { type Definition } from "../definition/index.ts"
@@ -29,10 +28,7 @@ function onDefinition(definition: Definition): Array<Definition> {
       const lifted: Array<Definition> = []
       const state = { lifted, definition }
       definition.body = onExp(state, definition.body)
-      return [
-        definition,
-        ...lifted.flatMap(onDefinition),
-      ]
+      return [definition, ...lifted.flatMap(onDefinition)]
     }
   }
 }
@@ -57,12 +53,14 @@ function onExp(state: State, exp: Exp): Exp {
       const newParameters = [...freeNames, ...exp.parameters]
       const arity = newParameters.length
       assert(exp.meta)
-      state.lifted.push(Definitions.FunctionDefinition(
-        newFunctionName,
-        newParameters,
-        exp.body,
-        exp.meta,
-      ))
+      state.lifted.push(
+        Definitions.FunctionDefinition(
+          newFunctionName,
+          newParameters,
+          exp.body,
+          exp.meta,
+        ),
+      )
 
       return makeCurry(
         Exps.FunctionRef(newFunctionName, arity),
