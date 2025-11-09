@@ -1,3 +1,4 @@
+import fs from "node:fs"
 import Path from "path"
 import { type ProjectConfig } from "./ProjectConfig.ts"
 
@@ -23,5 +24,18 @@ export class Project {
       this.rootDirectory,
       this.config["build"]["output-directory"],
     )
+  }
+
+  loadSourceFiles(): void {
+    this.sourceFiles = fs
+      .readdirSync(this.sourceDirectory(), {
+        encoding: "utf8",
+        recursive: true,
+      })
+      .filter((file) => file.endsWith(".lisp"))
+  }
+
+  async build(): Promise<void> {
+    console.log(this)
   }
 }

@@ -25,8 +25,8 @@ const routes = {
 
 router.bind(routes, {
   build: async ([file]) => {
-    const ProjectConfig = await loadProject(file)
-    console.log(ProjectConfig)
+    const project = await loadProject(file)
+    await project.build()
   },
   "basic:run": ([file]) => {
     const url = createUrlOrFileUrl(file)
