@@ -1,6 +1,6 @@
 # lang -- module
 
-[lang] `Mod` has `dependencies`
+[lang] `load` take `dependencies`
 
 [lang] do side effect on passes -- to have a stable `Mod` reference
 
