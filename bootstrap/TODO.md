@@ -1,6 +1,5 @@
 # lang -- module
 
-[lang] remove `modFlatMapDefinitionEntry`
 [lang] `compile` -- no need to update `mod` variable
 [lang] `onDefinition` update definition inplace
 

@@ -1,4 +1,3 @@
-import { mapMapValue } from "../../helpers/map/mapMapValue.ts"
 import { type Definition } from "../definition/index.ts"
 import { prettyMod } from "../pretty/index.ts"
 
@@ -41,22 +40,6 @@ export function modUpdateDefinition(
   }
 
   return mod
-}
-
-export type DefinitionEntry = [string, Definition]
-
-export function modFlatMapDefinitionEntry(
-  mod: Mod,
-  f: (entry: DefinitionEntry) => Array<DefinitionEntry>,
-): Mod {
-  const newMod = createMod(mod.url)
-  for (const entry of mod.definitions.entries()) {
-    for (const [name, definition] of f(entry)) {
-      newMod.definitions.set(name, definition)
-    }
-  }
-
-  return newMod
 }
 
 export function logMod(tag: string, mod: Mod): Mod {
