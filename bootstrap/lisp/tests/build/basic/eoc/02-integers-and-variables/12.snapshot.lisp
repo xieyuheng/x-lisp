@@ -1,0 +1,18 @@
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function iadd 2)))
+    (= _₃ (const (@function iadd 2)))
+    (= _₄ (const 1))
+    (= _₅ (const 2))
+    (= _₆ (apply _₃ _₄ _₅))
+    (= _₇ (const (@function iadd 2)))
+    (= _₈ (const 3))
+    (= _₉ (const (@function iadd 2)))
+    (= _₁₀ (const 4))
+    (= _₁₁ (const 5))
+    (= _₁₂ (apply _₉ _₁₀ _₁₁))
+    (= _₁₃ (apply _₇ _₈ _₁₂))
+    (= _₁₄ (apply _₂ _₆ _₁₃))
+    (= _↩ (apply _₁ _₁₄))
+    (return _↩)))

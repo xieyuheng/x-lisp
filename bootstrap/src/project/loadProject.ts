@@ -5,7 +5,5 @@ import { Project } from "./Project.ts"
 export async function loadProject(configFile: string): Promise<Project> {
   const config = await loadProjectConfig(configFile)
   const rootDirectory = Path.resolve(Path.dirname(configFile))
-  const project = new Project(rootDirectory, config)
-  project.loadSourceFiles()
-  return project
+  return new Project(rootDirectory, config)
 }
