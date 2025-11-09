@@ -1,6 +1,6 @@
 import { type Command } from "@xieyuheng/commander.js"
 import { errorReport } from "../helpers/error/errorReport.ts"
-import { loadProjectConfig } from "../project/index.ts"
+import { loadProject } from "../project/index.ts"
 
 export const BuildCommand: Command = {
   name: "build",
@@ -22,7 +22,7 @@ export const BuildCommand: Command = {
 
     try {
       const path = commander.args[0]
-      const ProjectConfig = await loadProjectConfig(path)
+      const ProjectConfig = await loadProject(path)
       console.log(ProjectConfig)
     } catch (error) {
       console.log(errorReport(error))

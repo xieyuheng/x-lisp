@@ -20,7 +20,7 @@ export const ProjectConfigSchema = z.object({
 })
 
 export async function loadProjectConfig(file: string): Promise<ProjectConfig> {
-  const text = await fs.readFileSync(file, "utf8")
+  const text = fs.readFileSync(file, "utf8")
   const data = JSON.parse(text)
   return ProjectConfigSchema.parse(data)
 }

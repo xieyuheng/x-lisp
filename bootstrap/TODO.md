@@ -1,6 +1,3 @@
-[project] `loadProject`
-
-[lang] `BuildCommand` -- call `loadProject`
 [lang] `BuildCommand` -- build as far as we can
 
 [lang] remove `RunViaBasicCommand`
