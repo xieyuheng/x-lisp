@@ -1,4 +1,4 @@
-[project] `build` -- compile to `<output>/basic`
+[project] `build` -- compile `<output>/passes`
 [lang] fix `run-via-basic`
 
 # machine

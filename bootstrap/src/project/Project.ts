@@ -1,6 +1,11 @@
+import * as B from "../basic/index.ts"
+import * as L from "../lang/index.ts"
 import fs from "node:fs"
 import Path from "path"
 import { type ProjectConfig } from "./ProjectConfig.ts"
+import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
+import { compileToBasic } from "../compile/index.ts"
+import { globals } from "../globals.ts"
 
 export class Project {
   rootDirectory: string
@@ -26,16 +31,35 @@ export class Project {
     )
   }
 
-  loadSourceFiles(): void {
+  async loadSourceFiles(): Promise<void> {
     this.sourceFiles = fs
       .readdirSync(this.sourceDirectory(), {
         encoding: "utf8",
         recursive: true,
       })
+      .filter((file) => !file.startsWith(this.config["build"]["output-directory"]))
       .filter((file) => file.endsWith(".lisp"))
+
   }
 
   async build(): Promise<void> {
-    console.log(this)
+    await this.loadSourceFiles()
+    await this.buildBasic()
+  }
+
+  async buildBasic(): Promise<void> {
+    const outputPrefix  = "basic"
+    for (const sourceFile of this.sourceFiles) {
+      console.log(`[${outputPrefix}] ${sourceFile}`)
+      const inputFile = Path.join(this.sourceDirectory(), sourceFile)
+      const url = createUrlOrFileUrl(inputFile)
+      const dependencies = new Map()
+      const mod = L.load(url, dependencies)
+      const basicMod = compileToBasic(mod)
+      const outputText = B.prettyMod(globals.maxWidth, basicMod)
+      const outputFile = Path.join(this.outputDirectory(), outputPrefix, sourceFile)
+      fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
+      fs.writeFileSync(outputFile, outputText)
+    }
   }
 }

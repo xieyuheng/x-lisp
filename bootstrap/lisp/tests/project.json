@@ -2,7 +2,7 @@
   "name": "x-lisp/tests",
   "version": "0.1.0",
   "build": {
-    "output-directory": "output",
+    "output-directory": "build",
     "source-directory": "."
   }
 }
