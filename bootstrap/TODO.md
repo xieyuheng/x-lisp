@@ -1,4 +1,3 @@
-[project] `project.buildBasicBundle`
 [project] `project.test`
 
 remove test-run-via-basic.sh

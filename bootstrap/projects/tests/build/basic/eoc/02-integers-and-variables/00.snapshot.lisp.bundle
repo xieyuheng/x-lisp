@@ -1,0 +1,6 @@
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const 42))
+    (= _↩ (apply _₁ _₂))
+    (return _↩)))

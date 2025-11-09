@@ -54,6 +54,7 @@ export class Project {
   async build(): Promise<void> {
     await this.buildPassLog()
     await this.buildBasic()
+    await this.buildBasicBundle()
   }
 
   async buildBasic(): Promise<void> {
@@ -73,7 +74,29 @@ export class Project {
     }
   }
 
-  async buildBasicBundle(): Promise<void> { }
+  async buildBasicBundle(): Promise<void> {
+    const prefix = "basic"
+    for (const sourceId of this.sourceIds()) {
+      if (
+        sourceId.endsWith(".test.lisp") ||
+        sourceId.endsWith(".snapshot.lisp") ||
+        sourceId.endsWith(".error.lisp")
+      ) {
+
+        const inputFile = Path.join(this.outputDirectory(), prefix, sourceId)
+        const outputFile = Path.join(this.outputDirectory(), prefix, sourceId) + ".bundle"
+        console.log(`[${prefix}/bundle] ${Path.relative(process.cwd(), outputFile)}`)
+
+        const url = createUrlOrFileUrl(inputFile)
+        const dependencies = new Map()
+        const mod = B.load(url, dependencies)
+        const bundleMod = B.bundle(mod)
+        const outputText = (B.prettyMod(globals.maxWidth, bundleMod))
+        fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
+        fs.writeFileSync(outputFile, outputText)
+      }
+    }
+  }
 
   async buildPassLog(): Promise<void> {
     const prefix = "pass-log"
