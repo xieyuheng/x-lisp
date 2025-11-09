@@ -1,6 +1,6 @@
 {
   "name": "@xieyuheng/x-lisp-boot",
-  "version": "0.6.33",
+  "version": "0.6.35",
   "repository": "github:xieyuheng/x-lisp-boot",
   "license": "GPL-3.0-or-later",
   "type": "module",
