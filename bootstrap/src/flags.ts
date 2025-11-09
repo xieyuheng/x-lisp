@@ -1,4 +1,4 @@
 export const flags = {
-  debug: false,
-  "no-prelude": false,
+  // debug: false,
+  // "no-prelude": false,
 }
