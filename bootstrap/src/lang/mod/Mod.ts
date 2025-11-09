@@ -27,6 +27,38 @@ export function modLookupDefinition(
   return undefined
 }
 
+export function modLookupPublicDefinition(
+  mod: Mod,
+  name: string,
+): Definition | undefined {
+  if (!mod.exported.has(name)) return undefined
+  return modLookupDefinition(mod, name)
+}
+
+export function modPublicDefinitionEntries(
+  mod: Mod,
+): Array<[string, Definition]> {
+  const entries: Array<[string, Definition]> = []
+  for (const [name, definition] of mod.definitions.entries()) {
+    if (mod.exported.has(name)) {
+      entries.push([name, definition])
+    }
+  }
+
+  return entries
+}
+
+export function modOwnDefinitions(mod: Mod): Array<Definition> {
+  const definitions: Array<Definition> = []
+  for (const definition of mod.definitions.values()) {
+    if (definition.mod === mod) {
+      definitions.push(definition)
+    }
+  }
+
+  return definitions
+}
+
 export function logMod(tag: string, mod: Mod): Mod {
   console.log(`;;; ${tag}`)
   console.log()

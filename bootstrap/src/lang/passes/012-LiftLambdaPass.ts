@@ -6,29 +6,32 @@ import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
-import { type Mod } from "../mod/index.ts"
+import { modOwnDefinitions, type Mod } from "../mod/index.ts"
 
-export function LiftLambdaPass(mod: Mod): Mod {
-  const oldDefinitions = Array.from(mod.definitions.values())
-  const newDefinitions = oldDefinitions.flatMap(onDefinition)
+export function LiftLambdaPass(mod: Mod): void {
   mod.definitions = new Map(
-    newDefinitions.map((definition) => [definition.name, definition]),
+    modOwnDefinitions(mod)
+      .flatMap((definition) => onDefinition(mod, definition))
+      .map((definition) => [definition.name, definition]),
   )
-  return mod
 }
 
 type State = {
+  mod: Mod
   lifted: Array<Definition>
   definition: Definitions.FunctionDefinition
 }
 
-function onDefinition(definition: Definition): Array<Definition> {
+function onDefinition(mod: Mod, definition: Definition): Array<Definition> {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const lifted: Array<Definition> = []
-      const state = { lifted, definition }
+      const state = { mod, lifted, definition }
       definition.body = onExp(state, definition.body)
-      return [definition, ...lifted.flatMap(onDefinition)]
+      return [
+        definition,
+        ...lifted.flatMap((definition) => onDefinition(mod, definition)),
+      ]
     }
   }
 }
@@ -55,6 +58,7 @@ function onExp(state: State, exp: Exp): Exp {
       assert(exp.meta)
       state.lifted.push(
         Definitions.FunctionDefinition(
+          state.mod,
           newFunctionName,
           newParameters,
           exp.body,

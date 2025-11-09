@@ -1,7 +1,5 @@
 # lang -- module
 
-[lang] `modOwnDefinitions`
-
 [lang] `011-RevealFunctionPass` -- check imported names
 [lang] `030-ExplicateControlPass` -- translate module statements
 

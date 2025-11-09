@@ -5,10 +5,10 @@ import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
-import { type Mod } from "../mod/index.ts"
+import { modOwnDefinitions, type Mod } from "../mod/index.ts"
 
 export function UniquifyPass(mod: Mod): void {
-  for (const definition of mod.definitions.values()) {
+  for (const definition of modOwnDefinitions(mod)) {
     onDefinition(definition)
   }
 }

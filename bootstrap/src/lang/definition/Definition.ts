@@ -1,10 +1,12 @@
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import { type Exp } from "../exp/index.ts"
+import type { Mod } from "../mod/index.ts"
 
 export type Definition = FunctionDefinition
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
+  mod: Mod
   name: string
   parameters: Array<string>
   body: Exp
@@ -12,6 +14,7 @@ export type FunctionDefinition = {
 }
 
 export function FunctionDefinition(
+  mod: Mod,
   name: string,
   parameters: Array<string>,
   body: Exp,
@@ -19,6 +22,7 @@ export function FunctionDefinition(
 ): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
+    mod,
     name,
     parameters,
     body,
