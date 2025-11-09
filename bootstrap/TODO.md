@@ -1,8 +1,8 @@
 # lang -- module
 
+[lang] `load` -- `stage2` handle module system
 [lang] `011-RevealFunctionPass` -- check imported names
 [lang] `030-ExplicateControlPass` -- translate module statements
-
 [lang] `RunViaBasicCommand` -- use `bundle`
 
 # machine

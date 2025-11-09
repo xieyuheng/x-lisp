@@ -16,7 +16,7 @@ function dependencyIndex(dependencies: Map<string, Mod>, mod: Mod): number {
   const keys = Array.from(dependencies.keys())
   const index = keys.indexOf(mod.url.href)
   if (index === -1) {
-    let message = `[bundle/dependencyIndex] internal error`
+    let message = `[dependencyIndex] internal error`
     message += `\n  keys: ${keys}`
     message += `\n  mod: ${mod.url}`
     throw new Error(message)
