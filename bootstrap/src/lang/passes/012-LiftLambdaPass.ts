@@ -7,39 +7,31 @@ import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
-import {
-  modFlatMapDefinitionEntry,
-  type DefinitionEntry,
-  type Mod,
-} from "../mod/index.ts"
+import { type Mod } from "../mod/index.ts"
 
 export function LiftLambdaPass(mod: Mod): Mod {
-  return modFlatMapDefinitionEntry(mod, onDefinitionEntry)
+  const oldDefinitions = Array.from(mod.definitions.values())
+  const newDefinitions = oldDefinitions.flatMap(onDefinition)
+  mod.definitions = new Map(
+    newDefinitions.map((definition) => [definition.name, definition]),
+  )
+  return mod
 }
 
 type State = {
-  lifted: Map<string, Definition>
+  lifted: Array<Definition>
   definition: Definitions.FunctionDefinition
 }
 
-function onDefinitionEntry([
-  name,
-  definition,
-]: DefinitionEntry): Array<DefinitionEntry> {
+function onDefinition(definition: Definition): Array<Definition> {
   switch (definition.kind) {
     case "FunctionDefinition": {
-      const lifted: Map<string, Definition> = new Map()
+      const lifted: Array<Definition> = []
       const state = { lifted, definition }
-      const newBody = onExp(state, definition.body)
-      const newDefinition = Definitions.FunctionDefinition(
-        definition.name,
-        definition.parameters,
-        newBody,
-        definition.meta,
-      )
+      definition.body = onExp(state, definition.body)
       return [
-        [name, newDefinition],
-        ...mapFlatMap(lifted, onDefinitionEntry).entries(),
+        definition,
+        ...lifted.flatMap(onDefinition),
       ]
     }
   }
@@ -59,19 +51,18 @@ function onExp(state: State, exp: Exp): Exp {
 
     case "Lambda": {
       const freeNames = Array.from(Exps.expFreeNames(new Set(), exp))
-      const liftedCount = state.lifted.size + 1
+      const liftedCount = state.lifted.length + 1
       const subscript = stringToSubscript(liftedCount.toString())
       const newFunctionName = `${state.definition.name}/λ${subscript}`
       const newParameters = [...freeNames, ...exp.parameters]
       const arity = newParameters.length
       assert(exp.meta)
-      const newDefinition = Definitions.FunctionDefinition(
+      state.lifted.push(Definitions.FunctionDefinition(
         newFunctionName,
         newParameters,
         exp.body,
         exp.meta,
-      )
-      state.lifted.set(newFunctionName, newDefinition)
+      ))
 
       return makeCurry(
         Exps.FunctionRef(newFunctionName, arity),
