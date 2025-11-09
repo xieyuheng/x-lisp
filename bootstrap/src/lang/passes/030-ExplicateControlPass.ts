@@ -5,10 +5,10 @@ import type { Definition } from "../definition/index.ts"
 import type { Exp } from "../exp/index.ts"
 import * as Exps from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
-import { type Mod } from "../mod/index.ts"
+import { modOwnDefinitions, type Mod } from "../mod/index.ts"
 
 export function ExplicateControlPass(mod: Mod, basicMod: B.Mod): void {
-  for (const definition of mod.definitions.values()) {
+  for (const definition of modOwnDefinitions(mod)) {
     if (definition.kind === "FunctionDefinition") {
       onDefinition(basicMod, definition)
     }
