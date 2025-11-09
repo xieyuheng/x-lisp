@@ -113,7 +113,8 @@ date: 2025-10-22
   - [x] module system
   - [x] bundling
 - [x] x-lisp compiler
-  - [ ] module system
+  - [x] module system
+- [ ] project.json
 
 总结 [2025-11-08]：
 

@@ -1,9 +1,10 @@
-[lang] `RunViaBasicCommand` -- use `bundle`
-
 # project
 
-[project] setup
+[project] `ProjectConfig`
 [project] load `project.json`
+
+[lang] `BuildCommand`
+[lang] remove `RunViaBasicCommand`
 
 # machine
 
