@@ -43,6 +43,11 @@ export class Project {
       .filter((file) => file.endsWith(".lisp"))
   }
 
+  async test(): Promise<void> {
+    await this.build()
+    // TODO
+  }
+
   async build(): Promise<void> {
     await this.loadSourceFiles()
     await this.buildBasic()
