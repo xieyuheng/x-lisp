@@ -1,6 +1,6 @@
 ;;; Input
 
-(define (main)
+(define (_∑-top-level-computation)
   (println-non-void
    (if
        (begin
@@ -16,7 +16,7 @@
 
 ;;; ShrinkPass
 
-(define (main)
+(define (_∑-top-level-computation)
   (println-non-void
    (if
        (@let1 _∅ (print 1)
@@ -32,7 +32,7 @@
 
 ;;; UniquifyPass
 
-(define (main)
+(define (_∑-top-level-computation)
   (println-non-void
    (if
        (@let1 _∅₁ (print 1)
@@ -48,7 +48,7 @@
 
 ;;; RevealFunctionPass
 
-(define (main)
+(define (_∑-top-level-computation)
   ((@function println-non-void 1)
    (if
        (@let1 _∅₁ ((@function print 1) 1)
@@ -67,7 +67,7 @@
 
 ;;; LiftLambdaPass
 
-(define (main)
+(define (_∑-top-level-computation)
   ((@function println-non-void 1)
    (if
        (@let1 _∅₁ ((@function print 1) 1)
@@ -86,7 +86,7 @@
 
 ;;; UnnestOperandPass
 
-(define (main)
+(define (_∑-top-level-computation)
   (@let1 _₁ (@function println-non-void 1)
     (@let1 _₂
         (@let1 _∅₁
@@ -141,7 +141,7 @@
 
 ;;; ExplicateControlPass
 
-(define-function main
+(define-function _∑-top-level-computation
   (block entry
     (= _₁ (const (@function println-non-void 1)))
     (= _₃ (const (@function print 1)))
@@ -163,9 +163,14 @@
     (= _₁₃ (const 1))
     (= _₁₄ (const 2))
     (= _₁₅ (apply _₁₂ _₁₃ _₁₄))
-    (branch _₁₅ main/then₂ main/else₃))
-  (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
-  (block main/then₂
+    (branch
+     _₁₅
+     _∑-top-level-computation/then₂
+     _∑-top-level-computation/else₃))
+  (block _∑-top-level-computation/let-body₁
+    (= _↩ (apply _₁ _₂))
+    (return _↩))
+  (block _∑-top-level-computation/then₂
     (= _₁₆ (const (@function print 1)))
     (= _₁₇ (const 111))
     (= _∅₁ (apply _₁₆ _₁₇))
@@ -175,8 +180,8 @@
     (= _₂₀ (const 1))
     (= _₂₁ (const 2))
     (= _₂ (apply _₁₉ _₂₀ _₂₁))
-    (goto main/let-body₁))
-  (block main/else₃
+    (goto _∑-top-level-computation/let-body₁))
+  (block _∑-top-level-computation/else₃
     (= _₂₂ (const (@function print 1)))
     (= _₂₃ (const 222))
     (= _∅₁ (apply _₂₂ _₂₃))
@@ -186,5 +191,5 @@
     (= _₂₆ (const 1))
     (= _₂₇ (const 2))
     (= _₂ (apply _₂₅ _₂₆ _₂₇))
-    (goto main/let-body₁)))
+    (goto _∑-top-level-computation/let-body₁)))
 
