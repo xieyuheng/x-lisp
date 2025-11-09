@@ -13,7 +13,9 @@ import { load, runSexps } from "./lang/load/index.ts"
 import { createMod } from "./lang/mod/index.ts"
 import { importPrelude } from "./lang/prelude/importPrelude.ts"
 
-const router = new CommandRouter("x-lisp-proto", "")
+const {version } = getPackageJson()
+
+const router = new CommandRouter("x-lisp-proto", version)
 
 const routes = {
   run: "file --debug --no-prelude -- run a x-lisp file",
@@ -66,7 +68,7 @@ router.bind(routes, {
     }
 
     const repl = S.createRepl({
-      welcome: `Welcome to x-lisp-proto ${getPackageJson().version}`,
+      welcome: `Welcome to x-lisp-proto ${version}`,
       prompt: ">> ",
       async onSexps(sexps) {
         try {
