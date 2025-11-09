@@ -82,16 +82,18 @@ export class Project {
         sourceId.endsWith(".snapshot.lisp") ||
         sourceId.endsWith(".error.lisp")
       ) {
-
         const inputFile = Path.join(this.outputDirectory(), prefix, sourceId)
-        const outputFile = Path.join(this.outputDirectory(), prefix, sourceId) + ".bundle"
-        console.log(`[${prefix}/bundle] ${Path.relative(process.cwd(), outputFile)}`)
+        const outputFile =
+          Path.join(this.outputDirectory(), prefix, sourceId) + ".bundle"
+        console.log(
+          `[${prefix}/bundle] ${Path.relative(process.cwd(), outputFile)}`,
+        )
 
         const url = createUrlOrFileUrl(inputFile)
         const dependencies = new Map()
         const mod = B.load(url, dependencies)
         const bundleMod = B.bundle(mod)
-        const outputText = (B.prettyMod(globals.maxWidth, bundleMod))
+        const outputText = B.prettyMod(globals.maxWidth, bundleMod)
         fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
         fs.writeFileSync(outputFile, outputText)
       }
