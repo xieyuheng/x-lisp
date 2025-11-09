@@ -1,2 +1,2 @@
-export * from "./compileToPassLog.ts"
 export * from "./compileToBasic.ts"
+export * from "./compileToPassLog.ts"

@@ -25,7 +25,7 @@ export function compileToPassLog(mod: L.Mod): void {
   logBasicMod("ExplicateControlPass", basicMod)
 }
 
-export function logBasicMod(tag: string, mod: B.Mod): B.Mod {
+function logBasicMod(tag: string, mod: B.Mod): B.Mod {
   console.log(`;;; ${tag}`)
   console.log()
   console.log(B.prettyMod(globals.maxWidth, mod))
@@ -33,7 +33,7 @@ export function logBasicMod(tag: string, mod: B.Mod): B.Mod {
   return mod
 }
 
-export function logLangMod(tag: string, mod: L.Mod): L.Mod {
+function logLangMod(tag: string, mod: L.Mod): L.Mod {
   console.log(`;;; ${tag}`)
   console.log()
   console.log(L.prettyMod(globals.maxWidth, mod))

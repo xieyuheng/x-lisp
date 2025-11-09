@@ -2,7 +2,7 @@
 
 import { CommandRouter } from "@xieyuheng/command-router.js"
 import * as B from "./basic/index.ts"
-import { compileToPassLog, compileToBasic } from "./compile/index.ts"
+import { compileToBasic, compileToPassLog } from "./compile/index.ts"
 import { globals } from "./globals.ts"
 import { errorReport } from "./helpers/error/errorReport.ts"
 import { getPackageJson } from "./helpers/node/getPackageJson.ts"
@@ -19,7 +19,7 @@ const routes = {
   "basic:run": "file -- run a basic-lisp file",
   "basic:bundle": "file -- bundle a basic-lisp file",
   "run-via-basic": "file -- run x-lisp code via basic-lisp",
-  "compile-to-pass-log": "file -- output all compiler passes for snapshot testing",
+  "compile-to-pass-log": "file -- log passes for snapshot testing",
   "compile-to-basic": "file -- compile x-lisp code to basic-lisp",
 }
 
