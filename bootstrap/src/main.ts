@@ -1,6 +1,7 @@
 #!/usr/bin/env -S node --stack-size=65536
 
 import { CommandRouter } from "@xieyuheng/command-router.js"
+import Path from "node:path"
 import * as B from "./basic/index.ts"
 import { compileToBasic, compileToPassLog } from "./compile/index.ts"
 import { globals } from "./globals.ts"
@@ -15,9 +16,9 @@ const { version } = getPackageJson()
 const router = new CommandRouter("x-lisp-boot", version)
 
 const routes = {
-  test: "file -- test a x-lisp project (project.json)",
-  build: "file -- build a x-lisp project (project.json)",
-  clean: "file -- clean a x-lisp project (project.json)",
+  test: "--project -- test a project",
+  build: "--project -- build a project",
+  clean: "--project -- clean a project",
   "basic:run": "file -- run a basic-lisp file",
   "basic:bundle": "file -- bundle a basic-lisp file",
   "compile-to-pass-log": "file -- log passes for snapshot testing",
@@ -25,16 +26,22 @@ const routes = {
 }
 
 router.bind(routes, {
-  test: async ([file]) => {
-    const project = await loadProject(file)
+  test: async (args, options) => {
+    const projectFile =
+      options["--project"] || Path.join(process.cwd(), "project.json")
+    const project = await loadProject(projectFile)
     await project.test()
   },
-  build: async ([file]) => {
-    const project = await loadProject(file)
+  build: async (args, options) => {
+    const projectFile =
+      options["--project"] || Path.join(process.cwd(), "project.json")
+    const project = await loadProject(projectFile)
     await project.build()
   },
-  clean: async ([file]) => {
-    const project = await loadProject(file)
+  clean: async (args, options) => {
+    const projectFile =
+      options["--project"] || Path.join(process.cwd(), "project.json")
+    const project = await loadProject(projectFile)
     await project.clean()
   },
   "basic:run": ([file]) => {

@@ -1,5 +1,3 @@
-[project] get `project.json` from current directory by default
-
 # machine
 
 [machine] setup
