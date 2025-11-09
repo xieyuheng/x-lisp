@@ -1,22 +1,27 @@
 import Path from "path"
 import { type ProjectConfig } from "./ProjectConfig.ts"
 
-export type Project = {
+export class Project {
   rootDirectory: string
   config: ProjectConfig
-  sourceFiles: Array<string>
-}
+  sourceFiles: Array<string> = []
 
-export function projectSourceDirectory(project: Project): string {
-  return Path.resolve(
-    project.rootDirectory,
-    project.config["build"]["source-directory"],
-  )
-}
+  constructor(rootDirectory: string, config: ProjectConfig) {
+    this.rootDirectory = rootDirectory
+    this.config = config
+  }
 
-export function projectOutputDirectory(project: Project): string {
-  return Path.resolve(
-    project.rootDirectory,
-    project.config["build"]["output-directory"],
-  )
+  sourceDirectory(): string {
+    return Path.resolve(
+      this.rootDirectory,
+      this.config["build"]["source-directory"],
+    )
+  }
+
+  outputDirectory(): string {
+    return Path.resolve(
+      this.rootDirectory,
+      this.config["build"]["output-directory"],
+    )
+  }
 }
