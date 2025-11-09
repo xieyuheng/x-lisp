@@ -48,7 +48,8 @@ export class Project {
 
   async test(): Promise<void> {
     await this.build()
-    // TODO
+    await this.runTest()
+    await this.runSnapshot()
   }
 
   async build(): Promise<void> {
@@ -114,6 +115,49 @@ export class Project {
       fs.mkdirSync(Path.dirname(logFile), { recursive: true })
       fs.writeFileSync(logFile, "")
       compileToPassLog(mod, logFile)
+    }
+  }
+
+  async runTest(): Promise<void> {
+    const prefix = "basic"
+    for (const sourceId of this.sourceIds()) {
+      if (sourceId.endsWith(".test.lisp")) {
+        const inputFile =
+          Path.join(this.outputDirectory(), prefix, sourceId) + ".bundle"
+        console.log(
+          `[${prefix}/test] ${Path.relative(process.cwd(), inputFile)}`,
+        )
+
+        const url = createUrlOrFileUrl(inputFile)
+        const dependencies = new Map()
+        const mod = B.load(url, dependencies)
+        B.run(mod)
+        const output = B.console.consumeOutput()
+        process.stdout.write(output)
+      }
+    }
+  }
+
+  async runSnapshot(): Promise<void> {
+    const prefix = "basic"
+    for (const sourceId of this.sourceIds()) {
+      if (sourceId.endsWith(".snapshot.lisp")) {
+        const inputFile =
+          Path.join(this.outputDirectory(), prefix, sourceId) + ".bundle"
+        const outputFile =
+          Path.join(this.sourceDirectory(), sourceId) + ".out"
+        console.log(
+          `[${prefix}/snapshot] ${Path.relative(process.cwd(), outputFile)}`,
+        )
+
+        const url = createUrlOrFileUrl(inputFile)
+        const dependencies = new Map()
+        const mod = B.load(url, dependencies)
+        B.run(mod)
+        const outputText = B.console.consumeOutput()
+        fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
+        fs.writeFileSync(outputFile, outputText)
+      }
     }
   }
 }

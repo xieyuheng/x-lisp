@@ -1,8 +1,8 @@
 import { definePrimitiveFunction, provide } from "../define/index.ts"
+import * as devices from "../devices/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
-import * as devices from "../devices/index.ts"
 
 export function builtinConsole(mod: Mod) {
   provide(mod, ["print", "println-non-void", "write", "newline"])
