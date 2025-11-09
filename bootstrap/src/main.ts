@@ -2,7 +2,7 @@
 
 import { CommandRouter } from "@xieyuheng/command-router.js"
 import * as B from "./basic/index.ts"
-import { compilePasses, compileToBasic } from "./compile/index.ts"
+import { compileToPassLog, compileToBasic } from "./compile/index.ts"
 import { globals } from "./globals.ts"
 import { errorReport } from "./helpers/error/errorReport.ts"
 import { getPackageJson } from "./helpers/node/getPackageJson.ts"
@@ -19,7 +19,7 @@ const routes = {
   "basic:run": "file -- run a basic-lisp file",
   "basic:bundle": "file -- bundle a basic-lisp file",
   "run-via-basic": "file -- run x-lisp code via basic-lisp",
-  "compile-passes": "file -- output all compiler passes for snapshot testing",
+  "compile-to-pass-log": "file -- output all compiler passes for snapshot testing",
   "compile-to-basic": "file -- compile x-lisp code to basic-lisp",
 }
 
@@ -51,11 +51,11 @@ router.bind(routes, {
     const context = B.createContext(basicMod)
     B.call(context, "main", [])
   },
-  "compile-passes": ([file]) => {
+  "compile-to-pass-log": ([file]) => {
     const url = createUrlOrFileUrl(file)
     const dependencies = new Map()
     const mod = L.load(url, dependencies)
-    compilePasses(mod)
+    compileToPassLog(mod)
   },
   "compile-to-basic": ([file]) => {
     const url = createUrlOrFileUrl(file)
