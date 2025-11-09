@@ -1,6 +1,3 @@
-[lang] `formatMod` -- format module stmt
-[basic] `formatMod` -- format module stmt
-
 [lang] `030-ExplicateControlPass` -- translate module statements
 [lang] `RunViaBasicCommand` -- use `bundle`
 
