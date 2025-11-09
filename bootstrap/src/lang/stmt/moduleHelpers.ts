@@ -1,4 +1,4 @@
-import type { AboutImport, Stmt } from "./index.ts"
+import type { AboutImport, AboutModule, Stmt } from "./index.ts"
 
 export function isAboutImport(stmt: Stmt): stmt is AboutImport {
   return (
@@ -10,4 +10,8 @@ export function isAboutImport(stmt: Stmt): stmt is AboutImport {
     stmt.kind === "IncludeExcept" ||
     stmt.kind === "IncludeAs"
   )
+}
+
+export function isAboutModule(stmt: Stmt): stmt is AboutModule {
+  return isAboutImport(stmt) || stmt.kind === "Export"
 }
