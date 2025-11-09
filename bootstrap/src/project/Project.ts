@@ -51,6 +51,11 @@ export class Project {
     return Path.join(this.outputDirectory(), "basic", basicId)
   }
 
+  getBasicBundleFile(sourceId: string): string {
+    const bundleId = sourceId.slice(0, -L.suffix.length) + ".bundle" + B.suffix
+    return Path.join(this.outputDirectory(), "basic", bundleId)
+  }
+
   async clean(): Promise<void> {
     fs.rmSync(this.outputDirectory(), { recursive: true, force: true })
   }
@@ -81,7 +86,7 @@ export class Project {
     for (const sourceId of this.sourceIds()) {
       if (this.isTest(sourceId) || this.isSnapshot(sourceId)) {
         const inputFile = this.getBasicFile(sourceId)
-        const outputFile = inputFile + ".bundle"
+        const outputFile = this.getBasicBundleFile(sourceId)
         console.log(`[bundle] ${Path.relative(process.cwd(), outputFile)}`)
 
         const url = createUrlOrFileUrl(inputFile)
@@ -131,7 +136,7 @@ export class Project {
   async runTest(): Promise<void> {
     for (const sourceId of this.sourceIds()) {
       if (this.isTest(sourceId)) {
-        const inputFile = this.getBasicFile(sourceId) + ".bundle"
+        const inputFile = this.getBasicBundleFile(sourceId)
         console.log(`[test] ${Path.relative(process.cwd(), inputFile)}`)
 
         const url = createUrlOrFileUrl(inputFile)
@@ -147,7 +152,7 @@ export class Project {
   async runSnapshot(): Promise<void> {
     for (const sourceId of this.sourceIds()) {
       if (this.isSnapshot(sourceId)) {
-        const inputFile = this.getBasicFile(sourceId) + ".bundle"
+        const inputFile = this.getBasicBundleFile(sourceId)
         const outputFile = this.getSourceFile(sourceId) + ".out"
         console.log(`[snapshot] ${Path.relative(process.cwd(), outputFile)}`)
 
