@@ -56,7 +56,8 @@ export const RunViaBasicCommand: Command = {
 
     try {
       const url = createUrlOrFileUrl(commander.args[0])
-      const mod = L.load(url)
+      const dependencies = new Map()
+      const mod = L.load(url, dependencies)
       const basicMod = compileToBasic(mod)
       const context = B.createContext(basicMod)
       B.call(context, "main", [])
