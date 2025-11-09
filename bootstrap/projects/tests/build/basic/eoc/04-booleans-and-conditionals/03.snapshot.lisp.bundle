@@ -1,0 +1,21 @@
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₄ (const (@function equal? 2)))
+    (= _₅ (const (@function random-dice 0)))
+    (= _₆ (apply _₅))
+    (= _₇ (const 1))
+    (= _₈ (apply _₄ _₆ _₇))
+    (branch _₈ main/then₅ main/else₆))
+  (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
+  (block main/then₂ (= _₂ (const 0)) (goto main/let-body₁))
+  (block main/else₃ (= _₂ (const 42)) (goto main/let-body₁))
+  (block main/let-body₄ (branch _₃ main/then₂ main/else₃))
+  (block main/then₅
+    (= _₉ (const (@function equal? 2)))
+    (= _₁₀ (const (@function random-dice 0)))
+    (= _₁₁ (apply _₁₀))
+    (= _₁₂ (const 2))
+    (= _₃ (apply _₉ _₁₁ _₁₂))
+    (goto main/let-body₄))
+  (block main/else₆ (= _₃ (const #f)) (goto main/let-body₄)))
