@@ -1,4 +1,5 @@
-[prototype] use `command-router.js` instead of `commander.js`
+[prototype] & [bootstrap] command router use package version
+[bootstrap] update `command-router.js` to use error handler
 
 extract `services/` from `commands/`
 
