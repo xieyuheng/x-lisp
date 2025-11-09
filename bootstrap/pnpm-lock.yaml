@@ -14,6 +14,9 @@ importers:
       '@xieyuheng/x-sexp.js':
         specifier: ^0.5.5
         version: 0.5.5
+      zod:
+        specifier: ^4.1.12
+        version: 4.1.12
     devDependencies:
       '@types/node':
         specifier: ^24.10.0
@@ -71,6 +74,9 @@ packages:
     resolution: {integrity: sha512-rwu/ClNdSMpkSrUb+d6BRsSkLUq1fmfsY6TOpYzTwvwkg1/NRG85KBy3kq++A8LKQwX6lsu+aWad+2khvuXrqw==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=23}
 
+  zod@4.1.12:
+    resolution: {integrity: sha512-JInaHOamG8pt5+Ey8kGmdcAcg3OL9reK8ltczgHTAwNhMys/6ThXHityHxVV2p3fkw/c+MAvBHFVYHFZDmjMCQ==}
+
 snapshots:
 
   '@types/node@24.10.0':
@@ -100,3 +106,5 @@ snapshots:
   undici-types@7.16.0: {}
 
   yargs-parser@22.0.0: {}
+
+  zod@4.1.12: {}

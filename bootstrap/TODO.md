@@ -1,15 +1,13 @@
 # project
 
-[project] `ProjectConfig`
-[project] load `project.json`
+[project] load `project.json` to `ProjectConfig` -- using `zod`
 
 [lang] `BuildCommand`
 [lang] remove `RunViaBasicCommand`
 
 # machine
 
-[machine] setup compiler/machine
-[machine] no function just block
+[machine] setup
 
 # compiler
 
