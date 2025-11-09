@@ -45,6 +45,8 @@ router.bind(routes, {
     const mod = B.load(url, dependencies)
     const bundleMod = B.bundle(mod)
     B.run(bundleMod)
+    const output = B.console.consumeOutput()
+    process.stdout.write(output)
   },
   "basic:bundle": ([file]) => {
     const url = createUrlOrFileUrl(file)
@@ -59,6 +61,8 @@ router.bind(routes, {
     const mod = L.load(url, dependencies)
     const basicMod = compileToBasic(mod)
     B.run(basicMod)
+    const output = B.console.consumeOutput()
+    process.stdout.write(output)
   },
   "compile-to-pass-log": ([file]) => {
     const url = createUrlOrFileUrl(file)
