@@ -30,7 +30,7 @@ export class Project {
     )
   }
 
-  sourceFiles(): Array<string> {
+  sourceIds(): Array<string> {
     return fs
       .readdirSync(this.sourceDirectory(), {
         encoding: "utf8",
@@ -54,9 +54,9 @@ export class Project {
 
   async buildBasic(): Promise<void> {
     const prefix = "basic"
-    for (const sourceFile of this.sourceFiles()) {
-      const inputFile = Path.join(this.sourceDirectory(), sourceFile)
-      const outputFile = Path.join(this.outputDirectory(), prefix, sourceFile)
+    for (const sourceId of this.sourceIds()) {
+      const inputFile = Path.join(this.sourceDirectory(), sourceId)
+      const outputFile = Path.join(this.outputDirectory(), prefix, sourceId)
       console.log(`[${prefix}] ${Path.relative(process.cwd(), outputFile)}`)
 
       const url = createUrlOrFileUrl(inputFile)
@@ -73,10 +73,10 @@ export class Project {
 
   async buildPassLog(): Promise<void> {
     const prefix = "pass-log"
-    for (const sourceFile of this.sourceFiles()) {
-      const inputFile = Path.join(this.sourceDirectory(), sourceFile)
+    for (const sourceId of this.sourceIds()) {
+      const inputFile = Path.join(this.sourceDirectory(), sourceId)
       const logFile =
-        Path.join(this.outputDirectory(), prefix, sourceFile) + ".log"
+        Path.join(this.outputDirectory(), prefix, sourceId) + ".log"
       console.log(`[${prefix}] ${Path.relative(process.cwd(), logFile)}`)
 
       const url = createUrlOrFileUrl(inputFile)
