@@ -1,5 +1,3 @@
-`compileToPassLog` -- merge `logBasicMod` with `logLangMod`
-
 [project] `build` -- compile `<output>/passes`
 
 remove test-compile-to-pass-log.sh
