@@ -1,10 +1,11 @@
+[prototype] use `command-router.js` instead of `commander.js`
+
 extract `services/` from `commands/`
-update `commander.js` -- `help` should be optional
 
 # lang
 
-[lang] `BuildCommand` -- compile to `<output>/basic`
-[lang] remove `RunViaBasicCommand`
+[lang] `build` command -- compile to `<output>/basic`
+[lang] fix `run-via-basic`
 
 # machine
 
