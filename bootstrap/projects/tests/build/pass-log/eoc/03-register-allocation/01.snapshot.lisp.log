@@ -1,0 +1,90 @@
+;;; Input
+
+(define (main)
+  (println-non-void
+   (begin
+     (= v 1)
+     (= w 42)
+     (= x (iadd v 7))
+     (= y x)
+     (= z (iadd x w))
+     (iadd z (ineg y)))))
+
+;;; ShrinkPass
+
+(define (main)
+  (println-non-void
+   (@let1 v 1
+     (@let1 w 42
+       (@let1 x (iadd v 7)
+         (@let1 y x (@let1 z (iadd x w) (iadd z (ineg y)))))))))
+
+;;; UniquifyPass
+
+(define (main)
+  (println-non-void
+   (@let1 v₁ 1
+     (@let1 w₁ 42
+       (@let1 x₁ (iadd v₁ 7)
+         (@let1 y₁ x₁
+           (@let1 z₁ (iadd x₁ w₁) (iadd z₁ (ineg y₁)))))))))
+
+;;; RevealFunctionPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 v₁ 1
+     (@let1 w₁ 42
+       (@let1 x₁ ((@function iadd 2) v₁ 7)
+         (@let1 y₁ x₁
+           (@let1 z₁ ((@function iadd 2) x₁ w₁)
+             ((@function iadd 2) z₁ ((@function ineg 1) y₁)))))))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 v₁ 1
+     (@let1 w₁ 42
+       (@let1 x₁ ((@function iadd 2) v₁ 7)
+         (@let1 y₁ x₁
+           (@let1 z₁ ((@function iadd 2) x₁ w₁)
+             ((@function iadd 2) z₁ ((@function ineg 1) y₁)))))))))
+
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 v₁ 1
+      (@let1 w₁ 42
+        (@let1 x₁
+            (@let1 _₂ (@function iadd 2)
+              (@let1 _₃ 7 (_₂ v₁ _₃)))
+          (@let1 y₁ x₁
+            (@let1 z₁
+                (@let1 _₄ (@function iadd 2) (_₄ x₁ w₁))
+              (@let1 _₅ (@function iadd 2)
+                (@let1 _₆ (@function ineg 1)
+                  (@let1 _₇ (_₆ y₁)
+                    (@let1 _₈ (_₅ z₁ _₇) (_₁ _₈))))))))))))
+
+;;; ExplicateControlPass
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= v₁ (const 1))
+    (= w₁ (const 42))
+    (= _₂ (const (@function iadd 2)))
+    (= _₃ (const 7))
+    (= x₁ (apply _₂ v₁ _₃))
+    (= y₁ (call identity x₁))
+    (= _₄ (const (@function iadd 2)))
+    (= z₁ (apply _₄ x₁ w₁))
+    (= _₅ (const (@function iadd 2)))
+    (= _₆ (const (@function ineg 1)))
+    (= _₇ (apply _₆ y₁))
+    (= _₈ (apply _₅ z₁ _₇))
+    (= _↩ (apply _₁ _₈))
+    (return _↩)))
+
