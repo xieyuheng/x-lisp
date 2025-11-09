@@ -2,7 +2,6 @@ import * as S from "@xieyuheng/x-sexp.js"
 import { formatIndent } from "../../helpers/format/formatIndent.ts"
 import { createUrlOrFileUrl } from "../../helpers/url/createUrlOrFileUrl.ts"
 import { urlRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
-import { include } from "../define/index.ts"
 import { type Definition } from "../definition/index.ts"
 import { formatDefinition } from "../format/index.ts"
 import { modPublicDefinitionEntries, type Mod } from "../mod/index.ts"
@@ -65,7 +64,8 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const [name, definition] of definitionEntries) {
       if (stmt.names.includes(name)) {
         checkRedefine(mod, importedMod, name, definition, stmt.meta)
-        include(mod, name, definition)
+        mod.definitions.set(name, definition)
+        mod.exported.add(name)
       }
     }
   }
@@ -73,7 +73,8 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "IncludeAll") {
     for (const [name, definition] of definitionEntries) {
       checkRedefine(mod, importedMod, name, definition, stmt.meta)
-      include(mod, name, definition)
+      mod.definitions.set(name, definition)
+      mod.exported.add(name)
     }
   }
 
@@ -81,7 +82,8 @@ export function stage2(mod: Mod, stmt: Stmt): void {
     for (const [name, definition] of definitionEntries) {
       if (!stmt.names.includes(name)) {
         checkRedefine(mod, importedMod, name, definition, stmt.meta)
-        include(mod, name, definition)
+        mod.definitions.set(name, definition)
+        mod.exported.add(name)
       }
     }
   }
@@ -95,7 +97,8 @@ export function stage2(mod: Mod, stmt: Stmt): void {
         definition,
         stmt.meta,
       )
-      include(mod, `${stmt.name}/${name}`, definition)
+      mod.definitions.set(`${stmt.name}/${name}`, definition)
+      mod.exported.add(`${stmt.name}/${name}`)
     }
   }
 }
