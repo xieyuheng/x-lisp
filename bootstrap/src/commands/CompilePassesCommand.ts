@@ -24,7 +24,8 @@ export const CompilePassesCommand: Command = {
 
     try {
       const url = createUrlOrFileUrl(commander.args[0])
-      const mod = L.load(url)
+      const dependencies = new Map()
+      const mod = L.load(url, dependencies)
       compilePasses(mod)
     } catch (error) {
       console.log(errorReport(error))

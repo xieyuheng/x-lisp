@@ -25,7 +25,8 @@ export const CompileToBasicCommand: Command = {
 
     try {
       const url = createUrlOrFileUrl(commander.args[0])
-      const mod = L.load(url)
+      const dependencies = new Map()
+      const mod = L.load(url, dependencies)
       const basicMod = compileToBasic(mod)
       console.log(B.prettyMod(60, basicMod))
     } catch (error) {

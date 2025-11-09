@@ -5,9 +5,13 @@ import { parseStmt } from "../parse/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { stage1 } from "./stage1.ts"
 
-export function load(url: URL): Mod {
-  const mod = createMod(url)
+export function load(url: URL, dependencies: Map<string, Mod>): Mod {
+  const found = dependencies.get(url.href)
+  if (found !== undefined) return found
+
   const text = loadText(url)
+  const mod = createMod(url)
+  dependencies.set(url.href, mod)
 
   const sexps = S.parseSexps(text, { url: mod.url })
   const stmts = sexps.map<Stmt>(parseStmt)
