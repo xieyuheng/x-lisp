@@ -78,6 +78,7 @@ export class Project {
       const dependencies = new Map()
       const mod = L.load(url, dependencies)
       fs.mkdirSync(Path.dirname(logFile), { recursive: true })
+      fs.writeFileSync(logFile, '')
       compileToPassLog(mod, logFile)
     }
   }
