@@ -34,12 +34,10 @@ export function modLookupDefinition(
 export function modUpdateDefinition(
   mod: Mod,
   f: (definition: Definition) => Definition,
-): Mod {
+): void {
   for (const [name, definition] of mod.definitions.entries()) {
     mod.definitions.set(name, f(definition))
   }
-
-  return mod
 }
 
 export function logMod(tag: string, mod: Mod): Mod {

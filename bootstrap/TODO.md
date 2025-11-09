@@ -1,6 +1,5 @@
 # lang -- module
 
-[lang] `compile` -- no need to update `mod` variable
 [lang] `onDefinition` update definition inplace
 
 - reference to name in another module is direct via `Definition`,
