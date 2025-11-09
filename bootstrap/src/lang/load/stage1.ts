@@ -7,6 +7,12 @@ import { modLookupDefinition, type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 
 export function stage1(mod: Mod, stmt: Stmt): void {
+  if (stmt.kind === "Export") {
+    for (const name of stmt.names) {
+      mod.exported.add(name)
+    }
+  }
+
   if (stmt.kind === "DefineFunction") {
     if (mod.definitions.has(stmt.name)) {
       let message = `[stage1/DefineFunction] can not redefine`
