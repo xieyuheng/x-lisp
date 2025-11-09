@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "build": {
     "output-directory": "output",
-    "root-directory": "."
+    "source-directory": "."
   }
 }

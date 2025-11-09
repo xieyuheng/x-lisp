@@ -33,7 +33,7 @@ date: 2025-11-08
   "version": "0.1.0",
   "build": {
     "output-directory": "build",
-    "root-directory": "."
+    "source-directory": "."
   }
 }
 ```
