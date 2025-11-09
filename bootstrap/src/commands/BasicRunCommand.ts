@@ -3,7 +3,7 @@ import * as B from "../basic/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
 
-export const RunBasicCommand: Command = {
+export const BasicRunCommand: Command = {
   name: "basic:run",
   description: "Run a basic-lisp file",
   help(commander) {
