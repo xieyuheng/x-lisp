@@ -17,25 +17,16 @@ export function bundle(entryMod: Mod): Mod {
   const bundleMod = createMod(new URL(`boundle:${entryMod.url}`))
   bundleMod.exported = entryMod.exported
 
-  addBuiltinMod(bundleMod)
-  addEntryMod(bundleMod, { entryMod, dependencies, mod: entryMod })
-  for (const dependencyMod of dependencies.values()) {
-    addDependencyMod(bundleMod, {
-      entryMod,
-      dependencies,
-      mod: dependencyMod,
-    })
+  importBuiltin(bundleMod)
+  mergeEntryMod(bundleMod, { entryMod, dependencies, mod: entryMod })
+  for (const mod of dependencies.values()) {
+    mergeDependencyMod(bundleMod, { entryMod, dependencies, mod })
   }
 
   return bundleMod
 }
 
-export function addBuiltinMod(bundleMod: Mod): void {
-  // name in the builtin mod should be kept.
-  importBuiltin(bundleMod)
-}
-
-export function addEntryMod(bundleMod: Mod, context: BundleContext): void {
+function mergeEntryMod(bundleMod: Mod, context: BundleContext): void {
   const { entryMod } = context
   // name in the entry mod should be kept.
   for (const definition of modOwnDefinitions(entryMod)) {
@@ -53,7 +44,7 @@ export function addEntryMod(bundleMod: Mod, context: BundleContext): void {
   }
 }
 
-export function addDependencyMod(bundleMod: Mod, context: BundleContext): void {
+function mergeDependencyMod(bundleMod: Mod, context: BundleContext): void {
   // name in a dependency mod will be prefixed.
   const prefix = dependencyPrefix(context.dependencies, context.mod)
   for (const definition of modOwnDefinitions(context.mod)) {

@@ -56,7 +56,7 @@ function qualifyValue(context: BundleContext, value: Value): Value {
 function qualifyName(context: BundleContext, name: string): string {
   const definition = modLookupDefinition(context.mod, name)
   if (definition === undefined) {
-    let message = `[bundle/qualifyName] undefined name`
+    let message = `[qualifyName] undefined name`
     message += `\n  current mod: ${context.mod.url}`
     message += `\n  name: ${name}`
     throw new Error(message)
