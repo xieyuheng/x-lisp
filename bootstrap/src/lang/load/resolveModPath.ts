@@ -2,14 +2,16 @@ import fs from "node:fs"
 import Path from "node:path"
 import { pathRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 
+export const fileExtension = "lisp"
+
 export function resolveModPath(inputPath: string): string {
   let path = inputPath
   if (fs.existsSync(path) && fs.lstatSync(path).isDirectory()) {
-    path = `${path}/index.lisp`
+    path = `${path}/index.${fileExtension}`
   }
 
   if (Path.extname(path) === "") {
-    path = `${path}.lisp`
+    path = `${path}.${fileExtension}`
   }
 
   if (!fs.existsSync(path)) {

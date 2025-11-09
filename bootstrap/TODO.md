@@ -1,7 +1,6 @@
-[project] get project.json from current directory by default
+[basic] export fileExtension -- `basic`
 
-use `.basic` for basic-lisp files -- config via `globals`
-use `.lisp` for x-lisp files -- config via `globals`
+[project] get project.json from current directory by default
 
 # machine
 
