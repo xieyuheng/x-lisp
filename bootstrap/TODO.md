@@ -1,5 +1,3 @@
-[basic] inline `include`
-
 # lang -- module
 
 [lang] `011-RevealFunctionPass` -- check imported names
