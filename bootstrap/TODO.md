@@ -1,6 +1,8 @@
+[lang] inline `include`
+[basic] inline `include`
+
 # lang -- module
 
-[lang] `load` -- `stage2` handle `Import` and `Include`
 [lang] `011-RevealFunctionPass` -- check imported names
 [lang] `030-ExplicateControlPass` -- translate module statements
 [lang] `RunViaBasicCommand` -- use `bundle`

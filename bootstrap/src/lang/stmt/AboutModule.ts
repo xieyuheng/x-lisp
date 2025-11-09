@@ -1,29 +1,16 @@
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 
-export type AboutModule =
-  | ImportAll
+export type AboutModule = AboutImport | Export
+
+export type AboutImport =
   | Import
+  | ImportAll
   | ImportExcept
   | ImportAs
-  | IncludeAll
   | Include
+  | IncludeAll
   | IncludeExcept
   | IncludeAs
-  | Export
-
-export type ImportAll = {
-  kind: "ImportAll"
-  path: string
-  meta: Meta
-}
-
-export function ImportAll(path: string, meta: Meta): ImportAll {
-  return {
-    kind: "ImportAll",
-    path,
-    meta,
-  }
-}
 
 export type Import = {
   kind: "Import"
@@ -37,6 +24,20 @@ export function Import(path: string, names: Array<string>, meta: Meta): Import {
     kind: "Import",
     path,
     names,
+    meta,
+  }
+}
+
+export type ImportAll = {
+  kind: "ImportAll"
+  path: string
+  meta: Meta
+}
+
+export function ImportAll(path: string, meta: Meta): ImportAll {
+  return {
+    kind: "ImportAll",
+    path,
     meta,
   }
 }
@@ -77,20 +78,6 @@ export function ImportAs(path: string, name: string, meta: Meta): ImportAs {
   }
 }
 
-export type IncludeAll = {
-  kind: "IncludeAll"
-  path: string
-  meta: Meta
-}
-
-export function IncludeAll(path: string, meta: Meta): IncludeAll {
-  return {
-    kind: "IncludeAll",
-    path,
-    meta,
-  }
-}
-
 export type Include = {
   kind: "Include"
   path: string
@@ -107,6 +94,20 @@ export function Include(
     kind: "Include",
     path,
     names,
+    meta,
+  }
+}
+
+export type IncludeAll = {
+  kind: "IncludeAll"
+  path: string
+  meta: Meta
+}
+
+export function IncludeAll(path: string, meta: Meta): IncludeAll {
+  return {
+    kind: "IncludeAll",
+    path,
     meta,
   }
 }
