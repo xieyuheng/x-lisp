@@ -39,17 +39,20 @@ export class Project {
       .filter(
         (file) => !file.startsWith(this.config["build"]["output-directory"]),
       )
-      .filter((file) => file.endsWith(".lisp"))
+      .filter((file) => file.endsWith(L.suffix))
+  }
+
+  getSourceFile(sourceId: string): string {
+    return Path.join(this.sourceDirectory(), sourceId)
+  }
+
+  getBasicFile(sourceId: string): string {
+    const basicId = sourceId.slice(0, -L.suffix.length) + B.suffix
+    return Path.join(this.outputDirectory(), "basic", basicId)
   }
 
   async clean(): Promise<void> {
     fs.rmSync(this.outputDirectory(), { recursive: true, force: true })
-  }
-
-  async test(): Promise<void> {
-    await this.build()
-    await this.runTest()
-    await this.runSnapshot()
   }
 
   async build(): Promise<void> {
@@ -59,11 +62,10 @@ export class Project {
   }
 
   async buildBasic(): Promise<void> {
-    const prefix = "basic"
     for (const sourceId of this.sourceIds()) {
-      const inputFile = Path.join(this.sourceDirectory(), sourceId)
-      const outputFile = Path.join(this.outputDirectory(), prefix, sourceId)
-      console.log(`[${prefix}] ${Path.relative(process.cwd(), outputFile)}`)
+      const inputFile = this.getSourceFile(sourceId)
+      const outputFile = this.getBasicFile(sourceId)
+      console.log(`[basic] ${Path.relative(process.cwd(), outputFile)}`)
 
       const url = createUrlOrFileUrl(inputFile)
       const dependencies = new Map()
@@ -76,19 +78,11 @@ export class Project {
   }
 
   async buildBasicBundle(): Promise<void> {
-    const prefix = "basic"
     for (const sourceId of this.sourceIds()) {
-      if (
-        sourceId.endsWith(".test.lisp") ||
-        sourceId.endsWith(".snapshot.lisp") ||
-        sourceId.endsWith(".error.lisp")
-      ) {
-        const inputFile = Path.join(this.outputDirectory(), prefix, sourceId)
-        const outputFile =
-          Path.join(this.outputDirectory(), prefix, sourceId) + ".bundle"
-        console.log(
-          `[${prefix}/bundle] ${Path.relative(process.cwd(), outputFile)}`,
-        )
+      if (this.isTest(sourceId) || this.isSnapshot(sourceId)) {
+        const inputFile = this.getBasicFile(sourceId)
+        const outputFile = inputFile + ".bundle"
+        console.log(`[bundle] ${Path.relative(process.cwd(), outputFile)}`)
 
         const url = createUrlOrFileUrl(inputFile)
         const dependencies = new Map()
@@ -101,13 +95,23 @@ export class Project {
     }
   }
 
+  getPassLogFile(sourceId: string): string {
+    return Path.join(this.outputDirectory(), "pass-log", sourceId) + ".log"
+  }
+
+  isTest(sourceId: string): boolean {
+    return sourceId.endsWith("test" + L.suffix)
+  }
+
+  isSnapshot(sourceId: string): boolean {
+    return sourceId.endsWith("snapshot" + L.suffix)
+  }
+
   async buildPassLog(): Promise<void> {
-    const prefix = "pass-log"
     for (const sourceId of this.sourceIds()) {
-      const inputFile = Path.join(this.sourceDirectory(), sourceId)
-      const logFile =
-        Path.join(this.outputDirectory(), prefix, sourceId) + ".log"
-      console.log(`[${prefix}] ${Path.relative(process.cwd(), logFile)}`)
+      const inputFile = this.getSourceFile(sourceId)
+      const logFile = this.getPassLogFile(sourceId)
+      console.log(`[pass-log] ${Path.relative(process.cwd(), logFile)}`)
 
       const url = createUrlOrFileUrl(inputFile)
       const dependencies = new Map()
@@ -118,15 +122,17 @@ export class Project {
     }
   }
 
+  async test(): Promise<void> {
+    await this.build()
+    await this.runTest()
+    await this.runSnapshot()
+  }
+
   async runTest(): Promise<void> {
-    const prefix = "basic"
     for (const sourceId of this.sourceIds()) {
-      if (sourceId.endsWith(".test.lisp")) {
-        const inputFile =
-          Path.join(this.outputDirectory(), prefix, sourceId) + ".bundle"
-        console.log(
-          `[${prefix}/test] ${Path.relative(process.cwd(), inputFile)}`,
-        )
+      if (this.isTest(sourceId)) {
+        const inputFile = this.getBasicFile(sourceId) + ".bundle"
+        console.log(`[test] ${Path.relative(process.cwd(), inputFile)}`)
 
         const url = createUrlOrFileUrl(inputFile)
         const dependencies = new Map()
@@ -139,16 +145,11 @@ export class Project {
   }
 
   async runSnapshot(): Promise<void> {
-    const prefix = "basic"
     for (const sourceId of this.sourceIds()) {
-      if (sourceId.endsWith(".snapshot.lisp")) {
-        const inputFile =
-          Path.join(this.outputDirectory(), prefix, sourceId) + ".bundle"
-        const outputFile =
-          Path.join(this.sourceDirectory(), sourceId) + ".out"
-        console.log(
-          `[${prefix}/snapshot] ${Path.relative(process.cwd(), outputFile)}`,
-        )
+      if (this.isSnapshot(sourceId)) {
+        const inputFile = this.getBasicFile(sourceId) + ".bundle"
+        const outputFile = this.getSourceFile(sourceId) + ".out"
+        console.log(`[snapshot] ${Path.relative(process.cwd(), outputFile)}`)
 
         const url = createUrlOrFileUrl(inputFile)
         const dependencies = new Map()
