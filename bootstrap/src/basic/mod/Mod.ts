@@ -1,8 +1,10 @@
 import { type Definition } from "../definition/index.ts"
 import { prettyMod } from "../pretty/index.ts"
+import { type Stmt } from "../stmt/index.ts"
 
 export type Mod = {
   url: URL
+  stmts: Array<Stmt>
   exported: Set<string>
   definitions: Map<string, Definition>
   dependencies: Map<string, Mod>
@@ -11,6 +13,7 @@ export type Mod = {
 export function createMod(url: URL): Mod {
   return {
     url,
+    stmts: [],
     exported: new Set(),
     definitions: new Map(),
     dependencies: new Map(),

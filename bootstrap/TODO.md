@@ -1,6 +1,3 @@
-[lang] `Mod` -- has `stmts`
-[basic] `Mod` -- has `stmts`
-
 [lang] `formatMod` -- format module stmt
 [basic] `formatMod` -- format module stmt
 
