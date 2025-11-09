@@ -31,15 +31,6 @@ export function modLookupDefinition(
   return undefined
 }
 
-export function modUpdateDefinition(
-  mod: Mod,
-  f: (definition: Definition) => Definition,
-): void {
-  for (const [name, definition] of mod.definitions.entries()) {
-    mod.definitions.set(name, f(definition))
-  }
-}
-
 export function logMod(tag: string, mod: Mod): Mod {
   console.log(`;;; ${tag}`)
   console.log()

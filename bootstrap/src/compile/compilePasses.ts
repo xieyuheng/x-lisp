@@ -5,7 +5,7 @@ export function compilePasses(mod: L.Mod): void {
   L.logMod("Input", mod)
 
   L.ShrinkPass(mod)
-  L.logMod("ShrinkPass", (mod))
+  L.logMod("ShrinkPass", mod)
 
   L.UniquifyPass(mod)
   L.logMod("UniquifyPass", mod)
