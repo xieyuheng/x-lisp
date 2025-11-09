@@ -1,6 +1,6 @@
-[basic] export fileExtension -- `basic`
+[basic] export `suffix` -- `.basic`
 
-[project] get project.json from current directory by default
+[project] get `project.json` from current directory by default
 
 # machine
 
