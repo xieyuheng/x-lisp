@@ -1,5 +1,3 @@
-[project] `build` -- compile `<output>/passes`
-
 remove test-compile-to-pass-log.sh
 
 [project] `run` command

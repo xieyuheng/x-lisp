@@ -1,0 +1,116 @@
+;;; Input
+
+(define (main)
+  (println-non-void
+   (begin
+     (= x (random-dice))
+     (= y (random-dice))
+     (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+       (iadd y 2)
+       (iadd y 10)))))
+
+;;; ShrinkPass
+
+(define (main)
+  (println-non-void
+   (@let1 x (random-dice)
+     (@let1 y (random-dice)
+       (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+         (iadd y 2)
+         (iadd y 10))))))
+
+;;; UniquifyPass
+
+(define (main)
+  (println-non-void
+   (@let1 x₁ (random-dice)
+     (@let1 y₁ (random-dice)
+       (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
+         (iadd y₁ 2)
+         (iadd y₁ 10))))))
+
+;;; RevealFunctionPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 x₁ ((@function random-dice 0))
+     (@let1 y₁ ((@function random-dice 0))
+       (if
+           (if ((@function int-less? 2) x₁ 1)
+             ((@function equal? 2) x₁ 0)
+             ((@function equal? 2) x₁ 2))
+         ((@function iadd 2) y₁ 2)
+         ((@function iadd 2) y₁ 10))))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 x₁ ((@function random-dice 0))
+     (@let1 y₁ ((@function random-dice 0))
+       (if
+           (if ((@function int-less? 2) x₁ 1)
+             ((@function equal? 2) x₁ 0)
+             ((@function equal? 2) x₁ 2))
+         ((@function iadd 2) y₁ 2)
+         ((@function iadd 2) y₁ 10))))))
+
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 x₁ (@let1 _₂ (@function random-dice 0) (_₂))
+      (@let1 y₁ (@let1 _₃ (@function random-dice 0) (_₃))
+        (@let1 _₄
+            (@let1 _₅
+                (@let1 _₆ (@function int-less? 2)
+                  (@let1 _₇ 1
+                    (@let1 _₈ (_₆ x₁ _₇)
+                      (if _₈
+                        (@let1 _₉ (@function equal? 2)
+                          (@let1 _₁₀ 0 (_₉ x₁ _₁₀)))
+                        (@let1 _₁₁ (@function equal? 2)
+                          (@let1 _₁₂ 2 (_₁₁ x₁ _₁₂)))))))
+              (if _₅
+                (@let1 _₁₃ (@function iadd 2)
+                  (@let1 _₁₄ 2 (_₁₃ y₁ _₁₄)))
+                (@let1 _₁₅ (@function iadd 2)
+                  (@let1 _₁₆ 10 (_₁₅ y₁ _₁₆)))))
+          (_₁ _₄))))))
+
+;;; ExplicateControlPass
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= _₂ (const (@function random-dice 0)))
+    (= x₁ (apply _₂))
+    (= _₃ (const (@function random-dice 0)))
+    (= y₁ (apply _₃))
+    (= _₆ (const (@function int-less? 2)))
+    (= _₇ (const 1))
+    (= _₈ (apply _₆ x₁ _₇))
+    (branch _₈ main/then₅ main/else₆))
+  (block main/let-body₁ (= _↩ (apply _₁ _₄)) (return _↩))
+  (block main/then₂
+    (= _₁₃ (const (@function iadd 2)))
+    (= _₁₄ (const 2))
+    (= _₄ (apply _₁₃ y₁ _₁₄))
+    (goto main/let-body₁))
+  (block main/else₃
+    (= _₁₅ (const (@function iadd 2)))
+    (= _₁₆ (const 10))
+    (= _₄ (apply _₁₅ y₁ _₁₆))
+    (goto main/let-body₁))
+  (block main/let-body₄ (branch _₅ main/then₂ main/else₃))
+  (block main/then₅
+    (= _₉ (const (@function equal? 2)))
+    (= _₁₀ (const 0))
+    (= _₅ (apply _₉ x₁ _₁₀))
+    (goto main/let-body₄))
+  (block main/else₆
+    (= _₁₁ (const (@function equal? 2)))
+    (= _₁₂ (const 2))
+    (= _₅ (apply _₁₁ x₁ _₁₂))
+    (goto main/let-body₄)))
+

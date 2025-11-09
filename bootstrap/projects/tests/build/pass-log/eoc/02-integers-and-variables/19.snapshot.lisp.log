@@ -1,0 +1,77 @@
+;;; Input
+
+(define (main)
+  (println-non-void
+   (begin
+     (= x 1)
+     (iadd
+      x
+      (begin (= x (begin (= x 5) (iadd x x))) (iadd x 100))))))
+
+;;; ShrinkPass
+
+(define (main)
+  (println-non-void
+   (@let1 x 1
+     (iadd x (@let1 x (@let1 x 5 (iadd x x)) (iadd x 100))))))
+
+;;; UniquifyPass
+
+(define (main)
+  (println-non-void
+   (@let1 x₁ 1
+     (iadd
+      x₁
+      (@let1 x₂ (@let1 x₃ 5 (iadd x₃ x₃)) (iadd x₂ 100))))))
+
+;;; RevealFunctionPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 x₁ 1
+     ((@function iadd 2)
+      x₁
+      (@let1 x₂ (@let1 x₃ 5 ((@function iadd 2) x₃ x₃))
+        ((@function iadd 2) x₂ 100))))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  ((@function println-non-void 1)
+   (@let1 x₁ 1
+     ((@function iadd 2)
+      x₁
+      (@let1 x₂ (@let1 x₃ 5 ((@function iadd 2) x₃ x₃))
+        ((@function iadd 2) x₂ 100))))))
+
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 _₁ (@function println-non-void 1)
+    (@let1 x₁ 1
+      (@let1 _₂ (@function iadd 2)
+        (@let1 x₂
+            (@let1 x₃ 5
+              (@let1 _₃ (@function iadd 2) (_₃ x₃ x₃)))
+          (@let1 _₄ (@function iadd 2)
+            (@let1 _₅ 100
+              (@let1 _₆ (_₄ x₂ _₅)
+                (@let1 _₇ (_₂ x₁ _₆) (_₁ _₇))))))))))
+
+;;; ExplicateControlPass
+
+(define-function main
+  (block entry
+    (= _₁ (const (@function println-non-void 1)))
+    (= x₁ (const 1))
+    (= _₂ (const (@function iadd 2)))
+    (= x₃ (const 5))
+    (= _₃ (const (@function iadd 2)))
+    (= x₂ (apply _₃ x₃ x₃))
+    (= _₄ (const (@function iadd 2)))
+    (= _₅ (const 100))
+    (= _₆ (apply _₄ x₂ _₅))
+    (= _₇ (apply _₂ x₁ _₆))
+    (= _↩ (apply _₁ _₇))
+    (return _↩)))
+

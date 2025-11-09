@@ -22,10 +22,14 @@ export function compileToPassLog(mod: L.Mod, logFile?: string): void {
   logMod("UnnestOperandPass", L.prettyMod(globals.maxWidth, mod), logFile)
 
   const basicMod = B.createMod(mod.url)
-  L.ExplicateControlPass(mod, basicMod)
-  logMod("ExplicateControlPass", B.prettyMod(globals.maxWidth, basicMod), logFile)
-}
 
+  L.ExplicateControlPass(mod, basicMod)
+  logMod(
+    "ExplicateControlPass",
+    B.prettyMod(globals.maxWidth, basicMod),
+    logFile,
+  )
+}
 
 function logMod(tag: string, modText: string, logFile?: string): void {
   log(`;;; ${tag}\n`, logFile)
@@ -39,6 +43,6 @@ function log(text: string, logFile?: string): void {
   if (logFile === undefined) {
     process.stdout.write(text)
   } else {
-    process.stdout.write(text)
+    fs.appendFileSync(logFile, text)
   }
 }
