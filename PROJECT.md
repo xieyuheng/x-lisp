@@ -114,7 +114,7 @@ date: 2025-10-22
   - [x] bundling
 - [x] x-lisp compiler
   - [x] module system
-- [ ] project.json
+- [x] project.json
 
 总结 [2025-11-08]：
 
@@ -135,16 +135,31 @@ date: 2025-10-22
   以更直接的方式解决问题，
   也就是要把命令行的参数保存成配置文件。
 
+总结 [2025-11-10]：
+
+- 完成 x-lisp 模块系统。
+
+- 需要支持 project 概念，这是任务开始时没有预料到的。
+
+- 这个 milestone 内，还完成了：
+
+  - `x-binary.js` 项目的 decode 部分，之后用来解析 ELF。
+  - 新的命令行工具 `CommandRouter`。
+
+  如果足够专心推进主线，速度还可以更快。
+
 # milestone 3 -- machine-lisp
+
+这个 milestone 也是为 codegen 做准备。
 
 成果：
 
-- 一个 GAS 语法 lisp 化的汇编器。
-  代码就是简单的对这个语言的 format。
+- 一个将 GAS 语法 lisp 化的汇编器。
 
 范围：
 
 - 不考虑扩展，先忠实的翻译 GAS 语法。
+- 不直接编译到 ELF，先依赖 GAS。
 
 任务：
 
@@ -171,7 +186,12 @@ date: 2025-10-22
   - [ ] GC
 - [ ] basic-lisp codegen (to x86 via GNU assembler)
   - [ ] select-instruction
+  - [ ] uncover-live
+  - [ ] build-interference
   - [ ] allocate-register
+  - [ ] assign-home
+  - [ ] patch-instruction
+  - [ ] prolog-and-epilog
 
 # milestone 待定 -- SSA
 
