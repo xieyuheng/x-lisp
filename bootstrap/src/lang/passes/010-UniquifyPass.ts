@@ -1,7 +1,6 @@
 import * as S from "@xieyuheng/x-sexp.js"
 import { arrayZip } from "../../helpers/array/arrayZip.ts"
 import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
-import * as Definitions from "../definition/index.ts"
 import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
@@ -9,20 +8,16 @@ import { formatExp } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function UniquifyPass(mod: Mod): void {
-  for (const [name, definition] of mod.definitions.entries()) {
-    mod.definitions.set(name, onDefinition(definition))
+  for (const definition of mod.definitions.values()) {
+    onDefinition(definition)
   }
 }
 
-function onDefinition(definition: Definition): Definition {
+function onDefinition(definition: Definition): null {
   switch (definition.kind) {
     case "FunctionDefinition": {
-      return Definitions.FunctionDefinition(
-        definition.name,
-        definition.parameters,
-        onExp({}, {}, definition.body),
-        definition.meta,
-      )
+      definition.body = onExp({}, {}, definition.body)
+      return null
     }
   }
 }
