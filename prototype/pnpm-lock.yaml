@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@xieyuheng/command-router.js':
-        specifier: ^0.1.8
-        version: 0.1.8
+        specifier: ^0.1.9
+        version: 0.1.9
       '@xieyuheng/x-sexp.js':
         specifier: ^0.5.5
         version: 0.5.5
@@ -36,8 +36,8 @@ packages:
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
 
-  '@xieyuheng/command-router.js@0.1.8':
-    resolution: {integrity: sha512-+eFYnRikcvDRRtOrM1wDmk98YqkKXm0WjmNnSlr9PHGj4gg9lwqYaUczGE1IvdGK/QktUbaiesSaULarp8I07A==}
+  '@xieyuheng/command-router.js@0.1.9':
+    resolution: {integrity: sha512-uiiFm+VOoMA9lG3d0Iwf4QRQWz7X5kAz9mAb+TbCI5ghXDQ9P7yB3Ho5NBe5ZQttV6uqbNft1TRcPiKvCrdjTA==}
 
   '@xieyuheng/commander.js@0.1.5':
     resolution: {integrity: sha512-xNURLT7rXD3vhiCijYouYz/GSak5+tR30ZkrPC1iR4t3SWyRo5Z3OsLY3NMf/l02vtIDJYFo8xful1UmTDuGuQ==}
@@ -82,7 +82,7 @@ snapshots:
 
   '@types/yargs-parser@21.0.3': {}
 
-  '@xieyuheng/command-router.js@0.1.8': {}
+  '@xieyuheng/command-router.js@0.1.9': {}
 
   '@xieyuheng/commander.js@0.1.5':
     dependencies:

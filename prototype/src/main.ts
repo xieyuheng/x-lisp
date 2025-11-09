@@ -20,7 +20,7 @@ const routes = {
 
 router.bind(routes, {
   run: ([file], options, tokens) => {
-    globals.commandLineArgs = tokens.slice(1)
+    globals.commandLineArgs = tokens
 
     if (options["--debug"] !== undefined) flags["debug"] = true
     if (options["--no-prelude"] !== undefined) flags["no-prelude"] = true
