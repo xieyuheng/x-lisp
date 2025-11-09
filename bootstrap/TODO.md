@@ -1,8 +1,16 @@
-# lang -- module
+[lang] `Mod` -- has `stmts`
+[basic] `Mod` -- has `stmts`
 
-[lang] `011-RevealFunctionPass` -- check imported names
+[lang] `formatMod` -- format module stmt
+[basic] `formatMod` -- format module stmt
+
 [lang] `030-ExplicateControlPass` -- translate module statements
 [lang] `RunViaBasicCommand` -- use `bundle`
+
+# project
+
+[project] setup
+[project] load `project.json`
 
 # machine
 
