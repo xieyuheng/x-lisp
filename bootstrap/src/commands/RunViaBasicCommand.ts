@@ -28,7 +28,7 @@ export const BasicRunCommand: Command = {
       const dependencies = new Map()
       const mod = B.load(url, dependencies)
       const context = B.createContext(mod)
-      B.call(context, "main", [])
+      B.call(context, L.TopLevelComputationName, [])
     } catch (error) {
       console.log(errorReport(error))
       process.exit(1)
