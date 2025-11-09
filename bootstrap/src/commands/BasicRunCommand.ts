@@ -2,6 +2,7 @@ import { type Command } from "@xieyuheng/commander.js"
 import * as B from "../basic/index.ts"
 import { errorReport } from "../helpers/error/errorReport.ts"
 import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
+import * as L from "../lang/index.ts"
 
 export const BasicRunCommand: Command = {
   name: "basic:run",
@@ -26,7 +27,7 @@ export const BasicRunCommand: Command = {
       const dependencies = new Map()
       const mod = B.bundle(B.load(url, dependencies))
       const context = B.createContext(mod)
-      B.call(context, "main", [])
+      B.call(context, L.TopLevelComputationName, [])
     } catch (error) {
       console.log(errorReport(error))
       process.exit(1)
