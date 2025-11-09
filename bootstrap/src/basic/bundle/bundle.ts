@@ -1,21 +1,12 @@
 import assert from "node:assert"
 import { mapMapValue } from "../../helpers/map/mapMapValue.ts"
-import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
-import { Block } from "../block/index.ts"
-import { importBuiltin, useBuiltinMod } from "../builtin/index.ts"
+import { importBuiltin } from "../builtin/index.ts"
 import * as Definitions from "../definition/index.ts"
-import type { Instr } from "../instr/index.ts"
-import * as Instrs from "../instr/index.ts"
-import {
-  createMod,
-  modLookupDefinition,
-  modOwnDefinitions,
-  type Mod,
-} from "../mod/index.ts"
-import type { Value } from "../value/index.ts"
-import * as Values from "../value/index.ts"
+import { createMod, modOwnDefinitions, type Mod } from "../mod/index.ts"
+import { dependencyPrefix } from "./dependencyHelpers.ts"
+import { qualifyBlock } from "./qualify.ts"
 
-type Context = {
+export type BundleContext = {
   entryMod: Mod
   dependencies: Map<string, Mod>
   mod: Mod
@@ -26,10 +17,8 @@ export function bundle(entryMod: Mod): Mod {
   const bundleMod = createMod(new URL(`boundle:${entryMod.url}`))
   bundleMod.exported = entryMod.exported
 
-  addEntryMod(bundleMod, { entryMod, dependencies, mod: entryMod })
-
   addBuiltinMod(bundleMod)
-
+  addEntryMod(bundleMod, { entryMod, dependencies, mod: entryMod })
   for (const dependencyMod of dependencies.values()) {
     addDependencyMod(bundleMod, {
       entryMod,
@@ -46,7 +35,7 @@ export function addBuiltinMod(bundleMod: Mod): void {
   importBuiltin(bundleMod)
 }
 
-export function addEntryMod(bundleMod: Mod, context: Context): void {
+export function addEntryMod(bundleMod: Mod, context: BundleContext): void {
   const { entryMod } = context
   // name in the entry mod should be kept.
   for (const definition of modOwnDefinitions(entryMod)) {
@@ -64,7 +53,7 @@ export function addEntryMod(bundleMod: Mod, context: Context): void {
   }
 }
 
-export function addDependencyMod(bundleMod: Mod, context: Context): void {
+export function addDependencyMod(bundleMod: Mod, context: BundleContext): void {
   // name in a dependency mod will be prefixed.
   const prefix = dependencyPrefix(context.dependencies, context.mod)
   for (const definition of modOwnDefinitions(context.mod)) {
@@ -79,89 +68,5 @@ export function addDependencyMod(bundleMod: Mod, context: Context): void {
         definition.meta,
       ),
     )
-  }
-}
-
-function dependencyPrefix(dependencies: Map<string, Mod>, mod: Mod): string {
-  const index = dependencyIndex(dependencies, mod)
-  const count = index + 1
-  const subscript = stringToSubscript(count.toString())
-  const prefix = `§${subscript}`
-  return prefix
-}
-
-function dependencyIndex(dependencies: Map<string, Mod>, mod: Mod): number {
-  const keys = Array.from(dependencies.keys())
-  const index = keys.indexOf(mod.url.href)
-  if (index === -1) {
-    let message = `[bundle/dependencyIndex] internal error`
-    message += `\n  keys: ${keys}`
-    message += `\n  mod: ${mod.url}`
-    throw new Error(message)
-  }
-  return index
-}
-
-function qualifyBlock(context: Context, block: Block): Block {
-  return Block(
-    block.label,
-    block.instrs.map((instr) => qualifyInstr(context, instr)),
-    block.meta,
-  )
-}
-
-function qualifyInstr(context: Context, instr: Instr): Instr {
-  switch (instr.op) {
-    case "Const": {
-      return Instrs.Const(
-        qualifyValue(context, instr.value),
-        instr.dest,
-        instr.meta,
-      )
-    }
-
-    case "Call": {
-      return Instrs.Call(
-        qualifyName(context, instr.name),
-        instr.operands,
-        instr.dest,
-        instr.meta,
-      )
-    }
-
-    default: {
-      return instr
-    }
-  }
-}
-
-function qualifyValue(context: Context, value: Value): Value {
-  switch (value.kind) {
-    case "FunctionRef": {
-      return Values.FunctionRef(qualifyName(context, value.name), value.arity)
-    }
-
-    default: {
-      return value
-    }
-  }
-}
-
-function qualifyName(context: Context, name: string): string {
-  const definition = modLookupDefinition(context.mod, name)
-  if (definition === undefined) {
-    let message = `[bundle/qualifyName] undefined name`
-    message += `\n  current mod: ${context.mod.url}`
-    message += `\n  name: ${name}`
-    throw new Error(message)
-  }
-
-  if (definition.mod === context.entryMod) {
-    return name
-  } else if (definition.mod === useBuiltinMod()) {
-    return name
-  } else {
-    const prefix = dependencyPrefix(context.dependencies, definition.mod)
-    return `${prefix}/${name}`
   }
 }
