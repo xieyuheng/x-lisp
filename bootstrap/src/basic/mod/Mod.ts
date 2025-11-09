@@ -46,14 +46,9 @@ export function modPublicDefinitionEntries(
 }
 
 export function modOwnDefinitions(mod: Mod): Array<Definition> {
-  const definitions: Array<Definition> = []
-  for (const definition of mod.definitions.values()) {
-    if (definition.mod === mod) {
-      definitions.push(definition)
-    }
-  }
-
-  return definitions
+  return Array.from(
+    mod.definitions.values().filter((definition) => definition.mod === mod),
+  )
 }
 
 export function logMod(tag: string, mod: Mod): Mod {
