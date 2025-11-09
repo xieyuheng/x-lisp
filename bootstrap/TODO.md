@@ -1,6 +1,10 @@
+[lang] `BuildCommand` -- setup
+[lang] `BuildCommand` -- `loadProjectConfig`
+
 [project] `Project` -- has source files
 
-[lang] `BuildCommand`
+[lang] `BuildCommand` -- build as far as we can
+
 [lang] remove `RunViaBasicCommand`
 
 # machine
