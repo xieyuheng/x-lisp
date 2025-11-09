@@ -42,6 +42,10 @@ export class Project {
       .filter((file) => file.endsWith(".lisp"))
   }
 
+  async clean(): Promise<void> {
+    fs.rmSync(this.outputDirectory(), { recursive: true, force: true })
+  }
+
   async test(): Promise<void> {
     await this.build()
     // TODO
@@ -69,7 +73,7 @@ export class Project {
     }
   }
 
-  async buildBasicBundle(): Promise<void> {}
+  async buildBasicBundle(): Promise<void> { }
 
   async buildPassLog(): Promise<void> {
     const prefix = "pass-log"
