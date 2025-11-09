@@ -1,4 +1,4 @@
-[project] `project.test`
+[project] `project.test` -- save console output to file
 
 remove test-run-via-basic.sh
 [lang] remove `run-via-basic`
