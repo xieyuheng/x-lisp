@@ -1,6 +1,4 @@
-import { globals } from "../../globals.ts"
 import { type Definition } from "../definition/index.ts"
-import { prettyMod } from "../pretty/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 
 export type Mod = {
@@ -53,12 +51,4 @@ export function modOwnDefinitions(mod: Mod): Array<Definition> {
   return Array.from(
     mod.definitions.values().filter((definition) => definition.mod === mod),
   )
-}
-
-export function logMod(tag: string, mod: Mod): Mod {
-  console.log(`;;; ${tag}`)
-  console.log()
-  console.log(prettyMod(globals.maxWidth, mod))
-  console.log()
-  return mod
 }
