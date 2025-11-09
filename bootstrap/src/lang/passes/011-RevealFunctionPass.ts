@@ -9,20 +9,16 @@ import { formatExp } from "../format/index.ts"
 import { modLookupDefinition, type Mod } from "../mod/index.ts"
 
 export function RevealFunctionPass(mod: Mod): void {
-  for (const [name, definition] of mod.definitions.entries()) {
-    mod.definitions.set(name, onDefinition(mod, definition))
+  for (const definition of mod.definitions.values()) {
+    onDefinition(mod, definition)
   }
 }
 
-function onDefinition(mod: Mod, definition: Definition): Definition {
+function onDefinition(mod: Mod, definition: Definition): null {
   switch (definition.kind) {
     case "FunctionDefinition": {
-      return Definitions.FunctionDefinition(
-        definition.name,
-        definition.parameters,
-        onExp(mod, new Set(definition.parameters), definition.body),
-        definition.meta,
-      )
+      definition.body= onExp(mod, new Set(definition.parameters), definition.body)
+      return null
     }
   }
 }

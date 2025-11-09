@@ -17,10 +17,6 @@ export function createMod(url: URL): Mod {
   }
 }
 
-export function modNames(mod: Mod): Set<string> {
-  return new Set(mod.definitions.keys())
-}
-
 export function modLookupDefinition(
   mod: Mod,
   name: string,

@@ -10,8 +10,8 @@ import { formatExp } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function UnnestOperandPass(mod: Mod): void {
-  for (const [name, definition] of mod.definitions.entries()) {
-    mod.definitions.set(name, onDefinition(definition))
+  for (const definition of mod.definitions.values()) {
+    onDefinition(definition)
   }
 }
 
@@ -19,16 +19,12 @@ type State = {
   freshNameCount: number
 }
 
-function onDefinition(definition: Definition): Definition {
+function onDefinition(definition: Definition): null {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const state = { freshNameCount: 0 }
-      return Definitions.FunctionDefinition(
-        definition.name,
-        definition.parameters,
-        onExp(state, definition.body),
-        definition.meta,
-      )
+      definition.body = onExp(state, definition.body)
+      return null
     }
   }
 }

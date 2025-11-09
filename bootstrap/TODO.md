@@ -1,9 +1,6 @@
 # lang -- module
 
-[lang] `onDefinition` update definition inplace
-
-- reference to name in another module is direct via `Definition`,
-  thus reference to `Definition` also need to be stable.
+[lang] `modOwnDefinitions`
 
 [lang] `011-RevealFunctionPass` -- check imported names
 [lang] `030-ExplicateControlPass` -- translate module statements
