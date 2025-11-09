@@ -1,4 +1,3 @@
-ambr 'prettyMod(60'  'prettyMod(globals.maxWidth
 # lang
 
 [lang] `build` command -- compile to `<output>/basic`
