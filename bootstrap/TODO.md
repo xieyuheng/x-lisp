@@ -1,4 +1,3 @@
-[prototype] remove ppml
 move `prettySexpByFormat` to x-sexp.js
 
 # machine

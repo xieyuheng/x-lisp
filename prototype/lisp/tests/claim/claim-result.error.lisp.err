@@ -4,7 +4,8 @@
   target:
     (lambda (x y) 'abc)
   args:
-    1 1
+    1
+    1
   return:
     'abc
   --> lisp/tests/claim/claim-result.error.lisp:2:9

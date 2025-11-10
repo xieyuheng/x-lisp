@@ -4,7 +4,8 @@
   target:
     (lambda (left right) (list-append left right))
   args:
-    [1 2] [3 4]
+    [1 2]
+    [3 4]
   failed args:
   - count: 1
     schema:
