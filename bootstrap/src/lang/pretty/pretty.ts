@@ -1,6 +1,6 @@
 import { formatDefinition, formatExp, formatMod } from "../format/index.ts"
-import { prettyByFormat } from "./prettyByFormat.ts"
+import { prettySexpByFormat } from "./prettySexpByFormat.ts"
 
-export const prettyExp = prettyByFormat(formatExp)
-export const prettyDefinition = prettyByFormat(formatDefinition)
-export const prettyMod = prettyByFormat(formatMod)
+export const prettyExp = prettySexpByFormat(formatExp)
+export const prettyDefinition = prettySexpByFormat(formatDefinition)
+export const prettyMod = prettySexpByFormat(formatMod)

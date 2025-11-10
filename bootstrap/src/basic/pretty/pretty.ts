@@ -1,5 +1,5 @@
 import { formatDefinition, formatMod } from "../format/index.ts"
-import { prettyByFormat } from "./prettyByFormat.ts"
+import { prettySexpByFormat } from "./prettySexpByFormat.ts"
 
-export const prettyDefinition = prettyByFormat(formatDefinition)
-export const prettyMod = prettyByFormat(formatMod)
+export const prettyDefinition = prettySexpByFormat(formatDefinition)
+export const prettyMod = prettySexpByFormat(formatMod)
