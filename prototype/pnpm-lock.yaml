@@ -12,8 +12,8 @@ importers:
         specifier: ^0.1.9
         version: 0.1.9
       '@xieyuheng/x-sexp.js':
-        specifier: ^0.5.5
-        version: 0.5.5
+        specifier: ^0.5.6
+        version: 0.5.6
     devDependencies:
       '@types/node':
         specifier: ^24.10.0
@@ -43,8 +43,8 @@ packages:
     resolution: {integrity: sha512-xNURLT7rXD3vhiCijYouYz/GSak5+tR30ZkrPC1iR4t3SWyRo5Z3OsLY3NMf/l02vtIDJYFo8xful1UmTDuGuQ==}
     hasBin: true
 
-  '@xieyuheng/x-sexp.js@0.5.5':
-    resolution: {integrity: sha512-fs6NHnzzSO/68tfO+Idr61jMjSocNmJ7mjCCe1QU0ev3IGtNh8QaOjIGn+8Viv2gcBtzwemIUrEyEp0Nbel/lQ==}
+  '@xieyuheng/x-sexp.js@0.5.6':
+    resolution: {integrity: sha512-KXI0+mt1R8NLaEFmpwOh3XY4syS4iu9T19/eOIjyuSAqlwsCXV/i2N2PnmNmWYU5lbjezxkQOx6myj5eiImYcg==}
     hasBin: true
 
   prettier-plugin-organize-imports@4.3.0:
@@ -89,7 +89,7 @@ snapshots:
       '@types/yargs-parser': 21.0.3
       yargs-parser: 22.0.0
 
-  '@xieyuheng/x-sexp.js@0.5.5':
+  '@xieyuheng/x-sexp.js@0.5.6':
     dependencies:
       '@xieyuheng/commander.js': 0.1.5
 

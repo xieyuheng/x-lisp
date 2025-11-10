@@ -1,5 +1,3 @@
-[prototype]  use `prettySexpByFormat` from x-sexp.js
-
 # machine
 
 [machine] `instr` -- totally generic
