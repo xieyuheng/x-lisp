@@ -1,3 +1,6 @@
+[prototype] remove ppml
+move `prettySexpByFormat` to x-sexp.js
+
 # machine
 
 [machine] `instr` -- totally generic

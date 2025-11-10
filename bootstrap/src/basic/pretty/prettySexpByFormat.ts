@@ -4,7 +4,7 @@ import { sexpConfig } from "./sexpConfig.ts"
 type Format<A> = (x: A) => string
 type Pretty<A> = (maxWidth: number, x: A) => string
 
-export function prettyByFormat<A>(format: Format<A>): Pretty<A> {
+export function prettySexpByFormat<A>(format: Format<A>): Pretty<A> {
   return (maxWidth, x) => {
     const sexps = S.parseSexps(format(x))
     return sexps
