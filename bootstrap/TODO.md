@@ -1,4 +1,4 @@
-move `prettySexpByFormat` to x-sexp.js
+[prototype]  use `prettySexpByFormat` from x-sexp.js
 
 # machine
 

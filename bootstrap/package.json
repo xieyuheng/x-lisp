@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@xieyuheng/command-router.js": "^0.1.9",
-    "@xieyuheng/x-sexp.js": "^0.5.5",
+    "@xieyuheng/x-sexp.js": "^0.5.6",
     "zod": "^4.1.12"
   },
   "devDependencies": {
