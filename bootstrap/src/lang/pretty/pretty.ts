@@ -1,6 +1,10 @@
+import * as S from "@xieyuheng/x-sexp.js"
 import { formatDefinition, formatExp, formatMod } from "../format/index.ts"
-import { prettySexpByFormat } from "./prettySexpByFormat.ts"
+import { sexpConfig } from "./sexpConfig.ts"
 
-export const prettyExp = prettySexpByFormat(formatExp)
-export const prettyDefinition = prettySexpByFormat(formatDefinition)
-export const prettyMod = prettySexpByFormat(formatMod)
+export const prettyExp = S.prettySexpByFormat(formatExp, sexpConfig)
+export const prettyDefinition = S.prettySexpByFormat(
+  formatDefinition,
+  sexpConfig,
+)
+export const prettyMod = S.prettySexpByFormat(formatMod, sexpConfig)
