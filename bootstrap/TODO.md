@@ -1,9 +1,7 @@
 # machine
 
-[machine] `instr` -- totally generic
-
+[machine] `Instr` -- totally generic
 [machine] `Operand` -- support `Label`
-
 [machine] `Mod`
 [machine] `Block`
 [machine] `Definition` & `FunctionDefinition`

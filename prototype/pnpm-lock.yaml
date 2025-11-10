@@ -12,8 +12,8 @@ importers:
         specifier: ^0.1.10
         version: 0.1.10
       '@xieyuheng/x-sexp.js':
-        specifier: ^0.5.6
-        version: 0.5.6
+        specifier: ^0.5.7
+        version: 0.5.7
     devDependencies:
       '@types/node':
         specifier: ^24.10.0
@@ -33,18 +33,11 @@ packages:
   '@types/node@24.10.0':
     resolution: {integrity: sha512-qzQZRBqkFsYyaSWXuEHc2WR9c0a0CXwiE5FWUvn7ZM+vdy1uZLfCunD38UzhuB7YN/J11ndbDBcTmOdxJo9Q7A==}
 
-  '@types/yargs-parser@21.0.3':
-    resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
-
   '@xieyuheng/command-router.js@0.1.10':
     resolution: {integrity: sha512-kucsG1vxOt4xSSoy17qXkXLhuYFNVPo6EcUfatiQW5kB3mffPRbYcTt0Hey5MpcU5JgpZqxlFXyWHnCwoaNd2g==}
 
-  '@xieyuheng/commander.js@0.1.5':
-    resolution: {integrity: sha512-xNURLT7rXD3vhiCijYouYz/GSak5+tR30ZkrPC1iR4t3SWyRo5Z3OsLY3NMf/l02vtIDJYFo8xful1UmTDuGuQ==}
-    hasBin: true
-
-  '@xieyuheng/x-sexp.js@0.5.6':
-    resolution: {integrity: sha512-KXI0+mt1R8NLaEFmpwOh3XY4syS4iu9T19/eOIjyuSAqlwsCXV/i2N2PnmNmWYU5lbjezxkQOx6myj5eiImYcg==}
+  '@xieyuheng/x-sexp.js@0.5.7':
+    resolution: {integrity: sha512-RvChRenDvMSIOghIQ+Zyq1Gun8qrWD0biKXksFpSuKsAS6yWDWREJMr6u+ocTn5MKlcKF1pYVjFpfps57xLimQ==}
     hasBin: true
 
   prettier-plugin-organize-imports@4.3.0:
@@ -70,28 +63,17 @@ packages:
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
-  yargs-parser@22.0.0:
-    resolution: {integrity: sha512-rwu/ClNdSMpkSrUb+d6BRsSkLUq1fmfsY6TOpYzTwvwkg1/NRG85KBy3kq++A8LKQwX6lsu+aWad+2khvuXrqw==}
-    engines: {node: ^20.19.0 || ^22.12.0 || >=23}
-
 snapshots:
 
   '@types/node@24.10.0':
     dependencies:
       undici-types: 7.16.0
 
-  '@types/yargs-parser@21.0.3': {}
-
   '@xieyuheng/command-router.js@0.1.10': {}
 
-  '@xieyuheng/commander.js@0.1.5':
+  '@xieyuheng/x-sexp.js@0.5.7':
     dependencies:
-      '@types/yargs-parser': 21.0.3
-      yargs-parser: 22.0.0
-
-  '@xieyuheng/x-sexp.js@0.5.6':
-    dependencies:
-      '@xieyuheng/commander.js': 0.1.5
+      '@xieyuheng/command-router.js': 0.1.10
 
   prettier-plugin-organize-imports@4.3.0(prettier@3.6.2)(typescript@5.9.3):
     dependencies:
@@ -103,5 +85,3 @@ snapshots:
   typescript@5.9.3: {}
 
   undici-types@7.16.0: {}
-
-  yargs-parser@22.0.0: {}
