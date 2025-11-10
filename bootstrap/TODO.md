@@ -1,7 +1,8 @@
 # machine
 
-[machine] `Operand` -- support `Label`
 [machine] `instr` -- totally generic
+
+[machine] `Operand` -- support `Label`
 
 [machine] `Mod`
 [machine] `Block`
