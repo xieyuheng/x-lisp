@@ -1,3 +1,19 @@
+instruction database
+
+use a general typed document database
+
+```typescript
+const InstrDb = defineDatabase({
+  <table-name>: defineTable({
+    <attribute>: <schema>,
+    ...
+  }),
+  ...
+})
+
+InstrDb.<table-name>.get(<opcode>)
+```
+
 # machine
 
 [machine] setup
