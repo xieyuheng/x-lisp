@@ -8,8 +8,8 @@ export const isImm = (operand: Operand): operand is Operands.Imm =>
 export const isVar = (operand: Operand): operand is Operands.Var =>
   operand.kind === "Var"
 
-export const isRegister = (operand: Operand): operand is Operands.Register =>
-  operand.kind === "Register"
+export const isReg = (operand: Operand): operand is Operands.Reg =>
+  operand.kind === "Reg"
 
 export const isDeref = (operand: Operand): operand is Operands.Deref =>
   operand.kind === "Deref"
@@ -27,9 +27,9 @@ export const asVar = (operand: Operand): Operands.Var => {
   else throw new Error(`[asVar] fail on: ${formatOperand(operand)}`)
 }
 
-export const asRegister = (operand: Operand): Operands.Register => {
-  if (isRegister(operand)) return operand
-  else throw new Error(`[asRegister] fail on: ${formatOperand(operand)}`)
+export const asReg = (operand: Operand): Operands.Reg => {
+  if (isReg(operand)) return operand
+  else throw new Error(`[asReg] fail on: ${formatOperand(operand)}`)
 }
 
 export const asDeref = (operand: Operand): Operands.Deref => {

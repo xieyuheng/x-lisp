@@ -2,7 +2,11 @@
 
 [machine] `parse`
 [machine] `load`
-[machine] `transpile` -- `transpileToX86Gas`
+
+[machine] `transpile` -- `transpileToX86Assembly`
+
+[machine] `machine:transpile-to-x86-assembly` command
+[machine] `machine:assemble-x86` command
 
 # compiler
 

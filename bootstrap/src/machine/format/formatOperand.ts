@@ -10,12 +10,12 @@ export function formatOperand(operand: Operand): string {
       return `${operand.name}`
     }
 
-    case "Register": {
-      return `(@register ${operand.name})`
+    case "Reg": {
+      return `(@reg ${operand.name})`
     }
 
     case "Deref": {
-      return `(@deref ${operand.registerName} ${operand.offset})`
+      return `(@deref ${operand.regName} ${operand.offset})`
     }
 
     case "Label": {
