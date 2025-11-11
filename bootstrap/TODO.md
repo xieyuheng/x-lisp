@@ -1,6 +1,5 @@
 # machine
 
-[machine] `transpile` -- `transpileDefinition`
 [machine] `transpile` -- `transpileBlock`
 [machine] `transpile` -- `transpileInstr`
 [machine] `transpile` -- `transpileOperand`
