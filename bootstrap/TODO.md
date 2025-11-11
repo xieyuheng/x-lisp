@@ -1,8 +1,9 @@
 # machine
 
-[machine] `load`
+[machine] `format`
 [machine] `parse`
-[machine] `format` & `pretty`
+[machine] `pretty`
+[machine] `load`
 [machine] `formatToX86Gas`
 
 # compiler
