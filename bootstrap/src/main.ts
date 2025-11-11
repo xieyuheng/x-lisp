@@ -1,7 +1,6 @@
 #!/usr/bin/env -S node --stack-size=65536
 
 import * as cmd from "@xieyuheng/command.js"
-import Path from "node:path"
 import * as B from "./basic/index.ts"
 import { compileToBasic, compileToPassLog } from "./compile/index.ts"
 import { globals } from "./globals.ts"
@@ -17,33 +16,27 @@ const { version } = getPackageJson()
 const router = cmd.createRouter("x-lisp-boot", version)
 
 const routes = [
-  "test --project -- test a project",
-  "build --project -- build a project",
-  "clean --project -- clean a project",
-  "lisp:compile-to-pass-log file -- log passes for snapshot testing",
-  "lisp:compile-to-basic file -- compile x-lisp code to basic-lisp",
-  "basic:run file -- run a basic-lisp file",
-  "basic:bundle file -- bundle a basic-lisp file",
-  "machine:transpile-to-x86-assembly file -- transpile machine-lisp to x86 assembly",
+  "test --project",
+  "build --project",
+  "clean --project",
+  "lisp:compile-to-pass-log file",
+  "lisp:compile-to-basic file",
+  "basic:run file",
+  "basic:bundle file",
+  "machine:transpile-to-x86-assembly file",
 ]
 
 router.bind(routes, {
   test: async (args, options) => {
-    const projectFile =
-      options["--project"] || Path.join(process.cwd(), "project.json")
-    const project = await loadProject(projectFile)
+    const project = await loadProject(options["--project"])
     await project.test()
   },
   build: async (args, options) => {
-    const projectFile =
-      options["--project"] || Path.join(process.cwd(), "project.json")
-    const project = await loadProject(projectFile)
+    const project = await loadProject(options["--project"])
     await project.build()
   },
   clean: async (args, options) => {
-    const projectFile =
-      options["--project"] || Path.join(process.cwd(), "project.json")
-    const project = await loadProject(projectFile)
+    const project = await loadProject(options["--project"])
     await project.clean()
   },
   "lisp:compile-to-pass-log": ([file]) => {
@@ -52,25 +45,20 @@ router.bind(routes, {
   },
   "lisp:compile-to-basic": ([file]) => {
     const mod = L.loadEntry(createUrl(file))
-    const basicMod = compileToBasic(mod)
-    console.log(B.prettyMod(globals.maxWidth, basicMod))
+    console.log(B.prettyMod(globals.maxWidth, compileToBasic(mod)))
   },
   "basic:run": ([file]) => {
     const mod = B.loadEntry(createUrl(file))
-    const bundleMod = B.bundle(mod)
-    B.run(bundleMod)
-    const output = B.console.consumeOutput()
-    process.stdout.write(output)
+    B.run(B.bundle(mod))
+    process.stdout.write(B.console.consumeOutput())
   },
   "basic:bundle": ([file]) => {
     const mod = B.loadEntry(createUrl(file))
-    const bundleMod = B.bundle(mod)
-    console.log(B.prettyMod(globals.maxWidth, bundleMod))
+    console.log(B.prettyMod(globals.maxWidth, B.bundle(mod)))
   },
   "machine:transpile-to-x86-assembly": ([file]) => {
     const mod = M.load(createUrl(file))
-    const assemblyCode = M.transpileToX86Assembly(mod)
-    console.log(assemblyCode)
+    console.log(M.transpileToX86Assembly(mod))
   },
 })
 

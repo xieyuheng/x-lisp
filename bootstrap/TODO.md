@@ -1,5 +1,4 @@
 [prototype] update command.js to use middleware
-[bootstrap] extract `services/`
 
 # machine
 
