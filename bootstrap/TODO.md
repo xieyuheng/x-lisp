@@ -1,6 +1,5 @@
 # machine
 
-[machine] `Stmt`
 [machine] `load`
 [machine] `parse`
 [machine] `format` & `pretty`
