@@ -1,20 +1,44 @@
+import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
+
 export type Operand = Imm | Var | Reg | Deref | Label
 
-export type Imm = { kind: "Imm"; value: number }
-export const Imm = (value: number): Imm => ({ kind: "Imm", value })
+export type Imm = { kind: "Imm"; value: number; meta?: Meta }
+export const Imm = (value: number, meta?: Meta): Imm => ({
+  kind: "Imm",
+  value,
+  meta,
+})
 
-export type Var = { kind: "Var"; name: string }
-export const Var = (name: string): Var => ({ kind: "Var", name })
+export type Var = { kind: "Var"; name: string; meta?: Meta }
+export const Var = (name: string, meta?: Meta): Var => ({
+  kind: "Var",
+  name,
+  meta,
+})
 
-export type Reg = { kind: "Reg"; name: string }
-export const Reg = (name: string): Reg => ({ kind: "Reg", name })
+export type Reg = { kind: "Reg"; name: string; meta?: Meta }
+export const Reg = (name: string, meta?: Meta): Reg => ({
+  kind: "Reg",
+  name,
+  meta,
+})
 
-export type Deref = { kind: "Deref"; regName: string; offset: number }
-export const Deref = (regName: string, offset: number): Deref => ({
+export type Deref = {
+  kind: "Deref"
+  regName: string
+  offset: number
+  meta?: Meta
+}
+export const Deref = (regName: string, offset: number, meta?: Meta): Deref => ({
   kind: "Deref",
   regName,
   offset,
+  meta,
 })
 
-export type Label = { kind: "Label"; name: string }
-export const Label = (name: string): Label => ({ kind: "Label", name })
+export type Label = { kind: "Label"; name: string; meta?: Meta }
+export const Label = (name: string, meta?: Meta): Label => ({
+  kind: "Label",
+  name,
+  meta,
+})

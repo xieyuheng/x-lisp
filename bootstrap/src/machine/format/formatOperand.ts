@@ -3,11 +3,11 @@ import type { Operand } from "../operand/index.ts"
 export function formatOperand(operand: Operand): string {
   switch (operand.kind) {
     case "Imm": {
-      return `${operand.value}`
+      return `(@imm ${operand.value})`
     }
 
     case "Var": {
-      return `${operand.name}`
+      return `(@var ${operand.name})`
     }
 
     case "Reg": {
@@ -15,7 +15,7 @@ export function formatOperand(operand: Operand): string {
     }
 
     case "Deref": {
-      return `(@deref ${operand.regName} ${operand.offset})`
+      return `(@deref (@reg ${operand.regName}) ${operand.offset})`
     }
 
     case "Label": {

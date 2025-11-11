@@ -1,6 +1,5 @@
 # machine
 
-[machine] `parse`
 [machine] `load`
 
 [machine] `transpile` -- `transpileToX86Assembly`
