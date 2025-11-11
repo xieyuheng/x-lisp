@@ -1,10 +1,9 @@
 # machine
 
-[machine] `format`
-[machine] `parse`
 [machine] `pretty`
+[machine] `parse`
 [machine] `load`
-[machine] `formatToX86Gas`
+[machine] `transpile` -- `transpileToX86Gas`
 
 # compiler
 
