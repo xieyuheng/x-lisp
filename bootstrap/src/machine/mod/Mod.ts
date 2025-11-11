@@ -1,13 +1,16 @@
 import { type Definition } from "../definition/index.ts"
+import { type Stmt } from "../stmt/index.ts"
 
 export type Mod = {
   url: URL
+  stmts: Array<Stmt>
   definitions: Map<string, Definition>
 }
 
 export function createMod(url: URL): Mod {
   return {
     url,
+    stmts: [],
     definitions: new Map(),
   }
 }
