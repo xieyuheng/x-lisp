@@ -1,6 +1,6 @@
 #!/usr/bin/env -S node --stack-size=65536
 
-import { CommandRouter } from "@xieyuheng/command-router.js"
+import * as cmd from "@xieyuheng/command.js"
 import * as S from "@xieyuheng/x-sexp.js"
 import { flags } from "./flags.ts"
 import { globals } from "./globals.ts"
@@ -11,12 +11,12 @@ import { load, runSexps } from "./lang/load/index.ts"
 
 const { version } = getPackageJson()
 
-const router = new CommandRouter("x-lisp-proto", version)
+const router = cmd.createRouter("x-lisp-proto", version)
 
-const routes = {
-  run: "file --debug --no-prelude -- run a x-lisp file",
-  repl: "--no-prelude -- start x-lisp repl",
-}
+const routes = [
+  "run file --debug --no-prelude -- run a x-lisp file",
+  "repl --no-prelude -- start x-lisp repl",
+]
 
 router.bind(routes, {
   run: ([file], options, tokens) => {

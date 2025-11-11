@@ -1,5 +1,3 @@
-[prototype] update command.js
-
 [bootstrap] extract `services/`
 [prototype] extract `services/`
 
