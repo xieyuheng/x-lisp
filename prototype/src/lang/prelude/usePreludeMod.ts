@@ -1,7 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import { createUrlOrFileUrl } from "../../helpers/url/createUrlOrFileUrl.ts"
+import { createUrl } from "../../helpers/url/createUrl.ts"
 import { builtinModule } from "../builtin/builtinModule.ts"
 import { importBuiltin } from "../builtin/importBuiltin.ts"
 import { runCode } from "../load/index.ts"
@@ -18,7 +18,7 @@ export function usePreludeMod(): Mod {
   if (mod) return mod
 
   const preludeFile = path.join(usePreludeDirectory(), "index.lisp")
-  const url = createUrlOrFileUrl(preludeFile)
+  const url = createUrl(preludeFile)
   const text = fs.readFileSync(preludeFile, "utf-8")
   mod = createMod(url)
   builtinModule(mod)

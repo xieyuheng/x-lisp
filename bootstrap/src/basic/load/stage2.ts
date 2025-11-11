@@ -1,6 +1,6 @@
 import * as S from "@xieyuheng/x-sexp.js"
 import { formatIndent } from "../../helpers/format/formatIndent.ts"
-import { createUrlOrFileUrl } from "../../helpers/url/createUrlOrFileUrl.ts"
+import { createUrl } from "../../helpers/url/createUrl.ts"
 import { urlRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 import { type Definition } from "../definition/index.ts"
 import { formatDefinition } from "../format/index.ts"
@@ -123,7 +123,7 @@ function urlRelativeToMod(path: string, mod: Mod): URL {
     return url
   }
 
-  return createUrlOrFileUrl(path)
+  return createUrl(path)
 }
 
 function checkUndefinedNames(

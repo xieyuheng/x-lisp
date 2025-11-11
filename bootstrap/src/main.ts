@@ -7,7 +7,7 @@ import { compileToBasic, compileToPassLog } from "./compile/index.ts"
 import { globals } from "./globals.ts"
 import { errorReport } from "./helpers/error/errorReport.ts"
 import { getPackageJson } from "./helpers/node/getPackageJson.ts"
-import { createUrlOrFileUrl } from "./helpers/url/createUrlOrFileUrl.ts"
+import { createUrl } from "./helpers/url/createUrl.ts"
 import * as L from "./lang/index.ts"
 import * as M from "./machine/index.ts"
 import { loadProject } from "./project/index.ts"
@@ -47,20 +47,20 @@ router.bind(routes, {
     await project.clean()
   },
   "lisp:compile-to-pass-log": ([file]) => {
-    const url = createUrlOrFileUrl(file)
+    const url = createUrl(file)
     const dependencies = new Map()
     const mod = L.load(url, dependencies)
     compileToPassLog(mod)
   },
   "lisp:compile-to-basic": ([file]) => {
-    const url = createUrlOrFileUrl(file)
+    const url = createUrl(file)
     const dependencies = new Map()
     const mod = L.load(url, dependencies)
     const basicMod = compileToBasic(mod)
     console.log(B.prettyMod(globals.maxWidth, basicMod))
   },
   "basic:run": ([file]) => {
-    const url = createUrlOrFileUrl(file)
+    const url = createUrl(file)
     const dependencies = new Map()
     const mod = B.load(url, dependencies)
     const bundleMod = B.bundle(mod)
@@ -69,14 +69,14 @@ router.bind(routes, {
     process.stdout.write(output)
   },
   "basic:bundle": ([file]) => {
-    const url = createUrlOrFileUrl(file)
+    const url = createUrl(file)
     const dependencies = new Map()
     const mod = B.load(url, dependencies)
     const bundleMod = B.bundle(mod)
     console.log(B.prettyMod(globals.maxWidth, bundleMod))
   },
   "machine:transpile-to-x86-assembly": ([file]) => {
-    const url = createUrlOrFileUrl(file)
+    const url = createUrl(file)
     const mod = M.load(url)
     const assemblyCode = M.transpileToX86Assembly(mod)
     console.log(assemblyCode)
