@@ -1,5 +1,7 @@
-update command.js
-extract `services/`
+[prototype] update command.js
+
+[bootstrap] extract `services/`
+[prototype] extract `services/`
 
 # machine
 
