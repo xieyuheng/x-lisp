@@ -5,6 +5,10 @@ import { parseStmt } from "../parse/index.ts"
 import { stage1 } from "./stage1.ts"
 import { stage2 } from "./stage2.ts"
 
+export function loadEntry(url: URL): Mod {
+  return load(url, new Map())
+}
+
 export function load(url: URL, dependencies: Map<string, Mod>): Mod {
   const found = dependencies.get(url.href)
   if (found !== undefined) return found
