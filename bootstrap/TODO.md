@@ -1,6 +1,5 @@
 # machine
 
-[machine] `Mod`
 [machine] `Block`
 [machine] `Definition` -- `CodeDefinition` `DataDefinition`
 [machine] `Stmt`
