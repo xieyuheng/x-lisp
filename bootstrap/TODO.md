@@ -1,4 +1,9 @@
+[prototype] update command.js to use middleware
+
+ambr createUrlOrFileUrl createUrl
+
 [bootstrap] extract `services/`
+[bootstrap] extract `loadEntry`
 
 # machine
 
