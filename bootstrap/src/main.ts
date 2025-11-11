@@ -28,15 +28,15 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  test: async (args, options) => {
+  test: async (_, options) => {
     const project = await loadProject(options["--project"])
     await project.test()
   },
-  build: async (args, options) => {
+  build: async (_, options) => {
     const project = await loadProject(options["--project"])
     await project.build()
   },
-  clean: async (args, options) => {
+  clean: async (_, options) => {
     const project = await loadProject(options["--project"])
     await project.clean()
   },
