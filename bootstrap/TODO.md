@@ -1,9 +1,9 @@
 # machine
 
-[machine] `Operand` -- support `Label`
+[machine] `operandHelpers`
 [machine] `Mod`
 [machine] `Block`
-[machine] `Definition` & `FunctionDefinition`
+[machine] `Definition` -- `CodeDefinition` `DataDefinition`
 [machine] `Stmt`
 [machine] `load`
 [machine] `parse`
