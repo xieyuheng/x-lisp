@@ -1,0 +1,19 @@
+import * as S from "@xieyuheng/x-sexp.js"
+import * as Instrs from "../instr/index.ts"
+import { type Instr } from "../instr/index.ts"
+import { parseOperand } from "./parseOperand.ts"
+
+export function parseInstr(sexp: S.Sexp): Instr {
+  return S.match(
+    S.matcherChoice<Instr>([
+      S.matcher("(cons* op operands)", ({ op, operands }, { meta }) => {
+        return Instrs.Instr(
+          S.symbolContent(op),
+          S.listElements(operands).map(parseOperand),
+          meta,
+        )
+      }),
+    ]),
+    sexp,
+  )
+}
