@@ -1,6 +1,6 @@
-# machine
+inline `loadText`
 
-[machine] `load`
+# machine
 
 [machine] `transpile` -- `transpileToX86Assembly`
 
