@@ -1,0 +1,7 @@
+(export _start)
+
+(define-code _start
+  (block entry
+    (movq (imm 60) (reg rax))
+    (movq (imm 6) (reg rdi))
+    (syscall)))
