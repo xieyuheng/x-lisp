@@ -9,6 +9,7 @@ import { errorReport } from "./helpers/error/errorReport.ts"
 import { getPackageJson } from "./helpers/node/getPackageJson.ts"
 import { createUrlOrFileUrl } from "./helpers/url/createUrlOrFileUrl.ts"
 import * as L from "./lang/index.ts"
+import * as M from "./machine/index.ts"
 import { loadProject } from "./project/index.ts"
 
 const { version } = getPackageJson()
@@ -19,10 +20,12 @@ const routes = {
   test: "--project -- test a project",
   build: "--project -- build a project",
   clean: "--project -- clean a project",
+  "lisp:compile-to-pass-log": "file -- log passes for snapshot testing",
+  "lisp:compile-to-basic": "file -- compile x-lisp code to basic-lisp",
   "basic:run": "file -- run a basic-lisp file",
   "basic:bundle": "file -- bundle a basic-lisp file",
-  "compile-to-pass-log": "file -- log passes for snapshot testing",
-  "compile-to-basic": "file -- compile x-lisp code to basic-lisp",
+  "machine:transpile-to-x86-assembly":
+    "file -- transpile machine-lisp to x86 assembly (AT&T syntax)",
 }
 
 router.bind(routes, {
@@ -44,6 +47,19 @@ router.bind(routes, {
     const project = await loadProject(projectFile)
     await project.clean()
   },
+  "lisp:compile-to-pass-log": ([file]) => {
+    const url = createUrlOrFileUrl(file)
+    const dependencies = new Map()
+    const mod = L.load(url, dependencies)
+    compileToPassLog(mod)
+  },
+  "lisp:compile-to-basic": ([file]) => {
+    const url = createUrlOrFileUrl(file)
+    const dependencies = new Map()
+    const mod = L.load(url, dependencies)
+    const basicMod = compileToBasic(mod)
+    console.log(B.prettyMod(globals.maxWidth, basicMod))
+  },
   "basic:run": ([file]) => {
     const url = createUrlOrFileUrl(file)
     const dependencies = new Map()
@@ -60,18 +76,11 @@ router.bind(routes, {
     const bundleMod = B.bundle(mod)
     console.log(B.prettyMod(globals.maxWidth, bundleMod))
   },
-  "compile-to-pass-log": ([file]) => {
+  "machine:transpile-to-x86-assembly": ([file]) => {
     const url = createUrlOrFileUrl(file)
-    const dependencies = new Map()
-    const mod = L.load(url, dependencies)
-    compileToPassLog(mod)
-  },
-  "compile-to-basic": ([file]) => {
-    const url = createUrlOrFileUrl(file)
-    const dependencies = new Map()
-    const mod = L.load(url, dependencies)
-    const basicMod = compileToBasic(mod)
-    console.log(B.prettyMod(globals.maxWidth, basicMod))
+    const mod = M.load(url)
+    const assemblyCode = M.transpileToX86Assembly(mod)
+    console.log(assemblyCode)
   },
 })
 
