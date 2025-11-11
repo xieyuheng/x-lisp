@@ -7,8 +7,8 @@ export function assembleX86GasFile(file: string): void {
     throw new Error(message)
   }
 
-  const objectFile = file.slice(-2) + ".o"
-  const executableFile = file.slice(-2)
+  const objectFile = file.slice(0, -2) + ".o"
+  const executableFile = file.slice(0, -2)
 
   {
     const result = systemShellRun("as", [file, "-o", objectFile])
