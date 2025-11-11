@@ -1,3 +1,5 @@
+        .global start
+
         .text
 
 start:
