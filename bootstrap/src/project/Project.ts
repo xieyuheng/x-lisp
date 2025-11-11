@@ -3,7 +3,7 @@ import Path from "path"
 import * as B from "../basic/index.ts"
 import { compileToBasic, compileToPassLog } from "../compile/index.ts"
 import { globals } from "../globals.ts"
-import { createUrlOrFileUrl } from "../helpers/url/createUrlOrFileUrl.ts"
+import { createUrl } from "../helpers/url/createUrl.ts"
 import * as L from "../lang/index.ts"
 import { type ProjectConfig } from "./ProjectConfig.ts"
 
@@ -72,7 +72,7 @@ export class Project {
       const outputFile = this.getBasicFile(sourceId)
       console.log(`[basic] ${Path.relative(process.cwd(), outputFile)}`)
 
-      const url = createUrlOrFileUrl(inputFile)
+      const url = createUrl(inputFile)
       const dependencies = new Map()
       const mod = L.load(url, dependencies)
       const basicMod = compileToBasic(mod)
@@ -89,7 +89,7 @@ export class Project {
         const outputFile = this.getBasicBundleFile(sourceId)
         console.log(`[bundle] ${Path.relative(process.cwd(), outputFile)}`)
 
-        const url = createUrlOrFileUrl(inputFile)
+        const url = createUrl(inputFile)
         const dependencies = new Map()
         const mod = B.load(url, dependencies)
         const bundleMod = B.bundle(mod)
@@ -118,7 +118,7 @@ export class Project {
       const logFile = this.getPassLogFile(sourceId)
       console.log(`[pass-log] ${Path.relative(process.cwd(), logFile)}`)
 
-      const url = createUrlOrFileUrl(inputFile)
+      const url = createUrl(inputFile)
       const dependencies = new Map()
       const mod = L.load(url, dependencies)
       fs.mkdirSync(Path.dirname(logFile), { recursive: true })
@@ -139,7 +139,7 @@ export class Project {
         const inputFile = this.getBasicBundleFile(sourceId)
         console.log(`[test] ${Path.relative(process.cwd(), inputFile)}`)
 
-        const url = createUrlOrFileUrl(inputFile)
+        const url = createUrl(inputFile)
         const dependencies = new Map()
         const mod = B.load(url, dependencies)
         B.run(mod)
@@ -156,7 +156,7 @@ export class Project {
         const outputFile = this.getSourceFile(sourceId) + ".out"
         console.log(`[snapshot] ${Path.relative(process.cwd(), outputFile)}`)
 
-        const url = createUrlOrFileUrl(inputFile)
+        const url = createUrl(inputFile)
         const dependencies = new Map()
         const mod = B.load(url, dependencies)
         B.run(mod)

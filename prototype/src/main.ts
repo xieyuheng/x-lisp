@@ -5,7 +5,7 @@ import { flags } from "./flags.ts"
 import { globals } from "./globals.ts"
 import { errorReport } from "./helpers/error/errorReport.ts"
 import { getPackageJson } from "./helpers/node/getPackageJson.ts"
-import { createUrlOrFileUrl } from "./helpers/url/createUrlOrFileUrl.ts"
+import { createUrl } from "./helpers/url/createUrl.ts"
 import { load } from "./lang/load/index.ts"
 import { startRepl } from "./services/startRepl.ts"
 
@@ -25,7 +25,7 @@ router.bind(routes, {
     if (options["--debug"] !== undefined) flags["debug"] = true
     if (options["--no-prelude"] !== undefined) flags["no-prelude"] = true
 
-    const url = createUrlOrFileUrl(file)
+    const url = createUrl(file)
     load(url)
   },
   repl: (args, options, tokens) => {
@@ -40,11 +40,11 @@ router.bind(routes, {
 
 // router.bind(routes, {
 //   run: {
-//     middlewares: [setupGlobals(), setupFlags()],
-//     handler: ([file]) => load(createUrlOrFileUrl(file)),
+//     middleware: [setupGlobals(), setupFlags()],
+//     handler: ([file]) => load(createUrl(file)),
 //   },
 //   repl: {
-//     middlewares: [setupGlobals(), setupFlags(), enableDebug()],
+//     middleware: [setupGlobals(), setupFlags(), enableDebug()],
 //     handler: () => startRepl(),
 //   },
 // })
