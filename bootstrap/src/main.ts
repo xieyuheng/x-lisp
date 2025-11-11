@@ -47,37 +47,28 @@ router.bind(routes, {
     await project.clean()
   },
   "lisp:compile-to-pass-log": ([file]) => {
-    const url = createUrl(file)
-    const dependencies = new Map()
-    const mod = L.load(url, dependencies)
+    const mod = L.loadEntry(createUrl(file))
     compileToPassLog(mod)
   },
   "lisp:compile-to-basic": ([file]) => {
-    const url = createUrl(file)
-    const dependencies = new Map()
-    const mod = L.load(url, dependencies)
+    const mod = L.loadEntry(createUrl(file))
     const basicMod = compileToBasic(mod)
     console.log(B.prettyMod(globals.maxWidth, basicMod))
   },
   "basic:run": ([file]) => {
-    const url = createUrl(file)
-    const dependencies = new Map()
-    const mod = B.load(url, dependencies)
+    const mod = B.loadEntry(createUrl(file))
     const bundleMod = B.bundle(mod)
     B.run(bundleMod)
     const output = B.console.consumeOutput()
     process.stdout.write(output)
   },
   "basic:bundle": ([file]) => {
-    const url = createUrl(file)
-    const dependencies = new Map()
-    const mod = B.load(url, dependencies)
+    const mod = B.loadEntry(createUrl(file))
     const bundleMod = B.bundle(mod)
     console.log(B.prettyMod(globals.maxWidth, bundleMod))
   },
   "machine:transpile-to-x86-assembly": ([file]) => {
-    const url = createUrl(file)
-    const mod = M.load(url)
+    const mod = M.load(createUrl(file))
     const assemblyCode = M.transpileToX86Assembly(mod)
     console.log(assemblyCode)
   },
