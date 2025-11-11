@@ -13,19 +13,34 @@ type Context = {
   definition: Definitions.CodeDefinition
 }
 
+function transpileIdentifier(identifier: string): string {
+  return identifier.split("").map(transpileChar).join("")
+}
+
+function transpileChar(char: string): string {
+  switch (char) {
+    case "-": return "_"
+    case "/": return "."
+    default: return char
+  }
+}
+
 function transpileDefinition(definition: Definition): string {
+  const name = transpileIdentifier(definition.name)
   const context = { definition }
   const blocks = Array.from(definition.blocks.values())
     .map((block) => transpileBlock(context, block))
     .join("\n")
-  return `${definition.name}:\n${blocks}`
+  return `${name}:\n${blocks}`
 }
 
 function transpileBlock(context: Context, block: Block): string {
+  const name = transpileIdentifier(context.definition.name)
+  const label = transpileIdentifier(block.label)
   const instrs = block.instrs
     .map((instr) => transpileInstr(context, instr))
     .join("\n")
-  return `${context.definition.name}.${block.label}:\n${instrs}`
+  return `${name}.${label}:\n${instrs}`
 }
 
 function transpileInstr(context: Context, instr: Instr): string {
