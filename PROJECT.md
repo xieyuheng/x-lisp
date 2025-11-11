@@ -154,7 +154,8 @@ date: 2025-10-22
 
 成果：
 
-- 一个将 GAS 语法 lisp 化的汇编器。
+- 我将能够用 lisp 语法写汇编代码，
+  这将成为我们未来的独立的汇编器的基础。
 
 范围：
 
@@ -164,8 +165,8 @@ date: 2025-10-22
 
 任务：
 
-- [ ] machine-lisp
-  - [ ] language design
+- [x] machine-lisp
+  - [x] language design
   - [ ] format to GAS
 
 # milestone 4 -- codegen
