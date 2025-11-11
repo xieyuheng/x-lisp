@@ -88,9 +88,14 @@ function transpileOperand(context: Context, operand: Operand): string {
     }
 
     case "Label": {
-      const name = transpileIdentifier(context.definition.name)
-      const label = transpileIdentifier(operand.name)
-      return `${name}.${label}`
+      if (context.definition.blocks.has(operand.name)) {
+        const name = transpileIdentifier(context.definition.name)
+        const label = transpileIdentifier(operand.name)
+        return `${name}.${label}`
+      } else {
+        const label = transpileIdentifier(operand.name)
+        return `${label}`
+      }
     }
   }
 }
