@@ -3,6 +3,8 @@ import type { Definition } from "../definition/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Instr } from "../instr/index.ts"
 import { modDefinitions, type Mod } from "../mod/index.ts"
+import type { Operand } from "../operand/index.ts"
+import * as Operands from "../operand/index.ts"
 
 export function transpileToX86Assembly(mod: Mod): string {
   const definitions = modDefinitions(mod).map(transpileDefinition).join("\n\n")
@@ -44,5 +46,10 @@ function transpileBlock(context: Context, block: Block): string {
 }
 
 function transpileInstr(context: Context, instr: Instr): string {
+  const operands = instr.operands.map(operand => transpileOperand(context, operand))
+  return `${instr.op} ${operands}`
+}
+
+function transpileOperand(context: Context, operand: Operand): string {
   return "TODO"
 }

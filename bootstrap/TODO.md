@@ -1,6 +1,5 @@
 # machine
 
-[machine] `transpile` -- `transpileInstr`
 [machine] `transpile` -- `transpileOperand`
 
 [machine] `machine:assemble-x86` command
