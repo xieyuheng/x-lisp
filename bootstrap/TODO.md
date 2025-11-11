@@ -1,6 +1,5 @@
 # machine
 
-[machine] `pretty`
 [machine] `parse`
 [machine] `load`
 [machine] `transpile` -- `transpileToX86Gas`
