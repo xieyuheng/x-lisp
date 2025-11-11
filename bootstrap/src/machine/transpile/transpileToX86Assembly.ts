@@ -6,9 +6,11 @@ import type { Instr } from "../instr/index.ts"
 import { modDefinitions, type Mod } from "../mod/index.ts"
 import type { Operand } from "../operand/index.ts"
 
+const indentation = " ".repeat(8)
+
 export function transpileToX86Assembly(mod: Mod): string {
   const definitions = modDefinitions(mod).map(transpileDefinition).join("\n\n")
-  return definitions
+  return [`${indentation}.text`, definitions].join("\n\n")
 }
 
 type Context = {
@@ -52,7 +54,7 @@ function transpileInstr(context: Context, instr: Instr): string {
   const operands = instr.operands
     .map((operand) => transpileOperand(context, operand))
     .join(", ")
-  return `${instr.op} ${operands}`
+  return `${indentation}${instr.op} ${operands}`
 }
 
 function transpileOperand(context: Context, operand: Operand): string {
