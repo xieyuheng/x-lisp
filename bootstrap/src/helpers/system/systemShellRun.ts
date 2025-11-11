@@ -7,7 +7,7 @@ type Result = {
 }
 
 export function systemShellRun(name: string, args: Array<string>): Result {
-  const result = spawnSync([name, args].join(" "), { shell: true })
+  const result = spawnSync([name, ...args].join(" "), { shell: true })
   return {
     status: result.status,
     stdout: result.stdout.toString(),

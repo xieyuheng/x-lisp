@@ -16,8 +16,9 @@ export function transpileToX86Assembly(mod: Mod): string {
     .filter(Stmts.isAboutModule)
     .map(transpileModuleStmt)
   const definitions = modDefinitions(mod).map(transpileDefinition).join("\n\n")
-  return [moduleStmts.join("\n"), `${indentation}.text`, definitions].join(
-    "\n\n",
+  return (
+    [moduleStmts.join("\n"), `${indentation}.text`, definitions].join("\n\n") +
+    "\n"
   )
 }
 

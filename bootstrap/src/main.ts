@@ -1,9 +1,11 @@
 import * as cmd from "@xieyuheng/command.js"
+import fs from "node:fs"
 import * as B from "./basic/index.ts"
 import { compileToBasic, compileToPassLog } from "./compile/index.ts"
 import { globals } from "./globals.ts"
 import { errorReport } from "./helpers/error/errorReport.ts"
 import { getPackageJson } from "./helpers/node/getPackageJson.ts"
+import { systemShellRun } from "./helpers/system/systemShellRun.ts"
 import { createUrl } from "./helpers/url/createUrl.ts"
 import * as L from "./lang/index.ts"
 import * as M from "./machine/index.ts"
@@ -22,6 +24,7 @@ router.defineRoutes([
   "basic:run file",
   "basic:bundle file",
   "machine:transpile-to-x86-assembly file",
+  "machine:assemble-x86 file",
 ])
 
 router.defineHandlers({
@@ -56,7 +59,35 @@ router.defineHandlers({
   },
   "machine:transpile-to-x86-assembly": ([file]) => {
     const mod = M.load(createUrl(file))
-    console.log(M.transpileToX86Assembly(mod))
+    const assembleCode = M.transpileToX86Assembly(mod)
+    console.log(assembleCode)
+  },
+  "machine:assemble-x86": ([file]) => {
+    const mod = M.load(createUrl(file))
+    const assembleCode = M.transpileToX86Assembly(mod)
+    fs.writeFileSync(file + ".x86.s", assembleCode)
+
+    {
+      const result = systemShellRun("as", [
+        file + ".x86.s",
+        "-o",
+        file + ".x86.o",
+      ])
+      if (result.stdout) console.log(result.stdout)
+      if (result.stderr) console.error(result.stderr)
+      if (result.status !== 0) process.exit(result.status)
+    }
+
+    {
+      const result = systemShellRun("ld", [
+        file + ".x86.o",
+        "-o",
+        file + ".x86",
+      ])
+      if (result.stdout) console.log(result.stdout)
+      if (result.stderr) console.error(result.stderr)
+      if (result.status !== 0) process.exit(result.status)
+    }
   },
 })
 
