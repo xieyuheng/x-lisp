@@ -38,6 +38,17 @@ router.bind(routes, {
   },
 })
 
+// router.bind(routes, {
+//   run: {
+//     middlewares: [setupGlobals(), setupFlags()],
+//     handler: ([file]) => load(createUrlOrFileUrl(file)),
+//   },
+//   repl: {
+//     middlewares: [setupGlobals(), setupFlags(), enableDebug()],
+//     handler: () => startRepl(),
+//   },
+// })
+
 try {
   await router.run(process.argv.slice(2))
 } catch (error) {
