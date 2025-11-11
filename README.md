@@ -1,4 +1,4 @@
-# x-lisp.js
+# x-lisp
 
 My list processing language.
 
