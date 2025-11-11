@@ -1,5 +1,4 @@
 [bootstrap] extract `services/`
-[prototype] extract `services/`
 
 # machine
 

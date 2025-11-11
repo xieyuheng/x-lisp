@@ -1,13 +1,13 @@
 #!/usr/bin/env -S node --stack-size=65536
 
 import * as cmd from "@xieyuheng/command.js"
-import * as S from "@xieyuheng/x-sexp.js"
 import { flags } from "./flags.ts"
 import { globals } from "./globals.ts"
 import { errorReport } from "./helpers/error/errorReport.ts"
 import { getPackageJson } from "./helpers/node/getPackageJson.ts"
 import { createUrlOrFileUrl } from "./helpers/url/createUrlOrFileUrl.ts"
-import { load, runSexps } from "./lang/load/index.ts"
+import { load } from "./lang/load/index.ts"
+import { startRepl } from "./services/startRepl.ts"
 
 const { version } = getPackageJson()
 
@@ -34,20 +34,7 @@ router.bind(routes, {
     flags["debug"] = true
     if (options["--no-prelude"] !== undefined) flags["no-prelude"] = true
 
-    const url = new URL("repl:")
-    const mod = load(url)
-    const repl = S.createRepl({
-      welcome: `Welcome to x-lisp-proto ${version}`,
-      prompt: ">> ",
-      onSexps: (sexps) => {
-        try {
-          runSexps(mod, sexps, { resultPrompt: "=> " })
-        } catch (error) {
-          console.log(errorReport(error))
-        }
-      },
-    })
-    S.replStart(repl)
+    startRepl()
   },
 })
 
