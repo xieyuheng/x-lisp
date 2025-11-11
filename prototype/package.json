@@ -19,7 +19,7 @@
     "format": "prettier src --write"
   },
   "dependencies": {
-    "@xieyuheng/command.js": "^0.1.11",
+    "@xieyuheng/command.js": "^0.2.3",
     "@xieyuheng/x-sexp.js": "^0.5.7"
   },
   "devDependencies": {

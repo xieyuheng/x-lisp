@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@xieyuheng/command.js':
-        specifier: ^0.1.11
-        version: 0.1.11
+        specifier: ^0.2.3
+        version: 0.2.3
       '@xieyuheng/x-sexp.js':
         specifier: ^0.5.7
         version: 0.5.7
@@ -36,8 +36,8 @@ packages:
   '@xieyuheng/command-router.js@0.1.10':
     resolution: {integrity: sha512-kucsG1vxOt4xSSoy17qXkXLhuYFNVPo6EcUfatiQW5kB3mffPRbYcTt0Hey5MpcU5JgpZqxlFXyWHnCwoaNd2g==}
 
-  '@xieyuheng/command.js@0.1.11':
-    resolution: {integrity: sha512-ciKuaDwvr8A0b71acqJmC2MNk+2q9OjruBujoAe/3gIr5Of983kqX/nTzrK/kfJqsOoP62cyUUGc6zCXNTbZLA==}
+  '@xieyuheng/command.js@0.2.3':
+    resolution: {integrity: sha512-2pyhP7NW/DV0FDPGO4tRWFRldxd5F04xq389GBsuWGQCrNacOjmU/nlR8tJKl/rATZJV5bwuyKXZ72jMdMsFnQ==}
 
   '@xieyuheng/x-sexp.js@0.5.7':
     resolution: {integrity: sha512-RvChRenDvMSIOghIQ+Zyq1Gun8qrWD0biKXksFpSuKsAS6yWDWREJMr6u+ocTn5MKlcKF1pYVjFpfps57xLimQ==}
@@ -74,7 +74,7 @@ snapshots:
 
   '@xieyuheng/command-router.js@0.1.10': {}
 
-  '@xieyuheng/command.js@0.1.11': {}
+  '@xieyuheng/command.js@0.2.3': {}
 
   '@xieyuheng/x-sexp.js@0.5.7':
     dependencies:

@@ -1,5 +1,3 @@
-[prototype] update command.js to use middleware
-
 # machine
 
 [machine] `transpile` -- `transpileToX86Assembly`
