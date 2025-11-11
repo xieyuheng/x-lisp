@@ -144,7 +144,7 @@ date: 2025-10-22
 - 这个 milestone 内，还完成了：
 
   - `x-binary.js` 项目的 decode 部分，之后用来解析 ELF。
-  - 新的命令行工具 `CommandRouter`。
+  - 新的命令行工具 `command-router`。
 
   如果足够专心推进主线，速度还可以更快。
 
