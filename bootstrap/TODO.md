@@ -1,6 +1,5 @@
 # machine
 
-[machine] `Block`
 [machine] `Stmt`
 [machine] `load`
 [machine] `parse`
