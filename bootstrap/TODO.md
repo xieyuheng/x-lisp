@@ -1,4 +1,3 @@
-[machine] support `.global`
 [machine] `machine:assemble-x86` command
 
 # compiler

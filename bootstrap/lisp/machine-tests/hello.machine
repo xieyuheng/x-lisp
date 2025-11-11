@@ -1,3 +1,5 @@
+(export start)
+
 (define-code start
   (block entry
     (movq (imm 1) (reg rax))

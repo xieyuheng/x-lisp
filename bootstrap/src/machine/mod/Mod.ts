@@ -4,6 +4,7 @@ import { type Stmt } from "../stmt/index.ts"
 export type Mod = {
   url: URL
   stmts: Array<Stmt>
+  exported: Set<string>
   definitions: Map<string, Definition>
 }
 
@@ -11,6 +12,7 @@ export function createMod(url: URL): Mod {
   return {
     url,
     stmts: [],
+    exported: new Set(),
     definitions: new Map(),
   }
 }
