@@ -1,7 +1,6 @@
 # machine
 
 [machine] `Block`
-[machine] `Definition` -- `CodeDefinition` `DataDefinition`
 [machine] `Stmt`
 [machine] `load`
 [machine] `parse`
