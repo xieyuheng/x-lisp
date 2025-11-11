@@ -13,10 +13,7 @@ const { version } = getPackageJson()
 
 const router = cmd.createRouter("x-lisp-proto", version)
 
-const routes = [
-  "run file --debug --no-prelude -- run a x-lisp file",
-  "repl --no-prelude -- start x-lisp repl",
-]
+const routes = ["run file --debug --no-prelude", "repl --no-prelude"]
 
 router.bind(routes, {
   run: ([file], options, tokens) => {
