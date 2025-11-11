@@ -1,3 +1,6 @@
+update command.js
+extract `services/`
+
 # machine
 
 [machine] `transpile` -- `transpileToX86Assembly`
