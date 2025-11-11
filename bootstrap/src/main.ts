@@ -15,7 +15,7 @@ const { version } = getPackageJson()
 
 const router = cmd.createRouter("x-lisp-boot", version)
 
-const routes = [
+router.defineRoutes([
   "test --project",
   "build --project",
   "clean --project",
@@ -24,9 +24,9 @@ const routes = [
   "basic:run file",
   "basic:bundle file",
   "machine:transpile-to-x86-assembly file",
-]
+])
 
-router.bind(routes, {
+router.defineHandlers({
   test: async (args, options) => {
     const project = await loadProject(options["--project"])
     await project.test()
