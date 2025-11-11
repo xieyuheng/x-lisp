@@ -1,5 +1,3 @@
-#!/usr/bin/env -S node --stack-size=65536
-
 import * as cmd from "@xieyuheng/command.js"
 import * as B from "./basic/index.ts"
 import { compileToBasic, compileToPassLog } from "./compile/index.ts"

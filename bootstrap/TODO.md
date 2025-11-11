@@ -1,6 +1,10 @@
 # machine
 
-[machine] `transpile` -- `transpileToX86Assembly`
+[machine] `transpile` -- `transpileDefinition`
+[machine] `transpile` -- `transpileBlock`
+[machine] `transpile` -- `transpileInstr`
+[machine] `transpile` -- `transpileOperand`
+
 [machine] `machine:assemble-x86` command
 
 # compiler

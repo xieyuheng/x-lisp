@@ -22,11 +22,6 @@ export function modLookupDefinition(
   return mod.definitions.get(name)
 }
 
-export function modDefinitionEntries(mod: Mod): Array<[string, Definition]> {
-  const entries: Array<[string, Definition]> = []
-  for (const [name, definition] of mod.definitions.entries()) {
-    entries.push([name, definition])
-  }
-
-  return entries
+export function modDefinitions(mod: Mod): Array<Definition> {
+  return Array.from(mod.definitions.values())
 }
