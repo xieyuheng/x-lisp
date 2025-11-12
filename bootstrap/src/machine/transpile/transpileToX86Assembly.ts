@@ -36,7 +36,7 @@ function transpileModuleStmt(stmt: Stmt): string {
 function transpileDefinition(definition: Definition): string {
   switch (definition.kind) {
     case "CodeDefinition": {
-      const name = transpileIdentifier(definition.name)
+      const name = transpileIdentifier([definition.name])
       const blocks = Array.from(definition.blocks.values())
         .map((block) => transpileBlock({ definition }, block))
         .join("\n")
@@ -44,7 +44,7 @@ function transpileDefinition(definition: Definition): string {
     }
 
     case "DataDefinition": {
-      const name = transpileIdentifier(definition.name)
+      const name = transpileIdentifier([definition.name])
       const chunks = Array.from(definition.chunks.values())
         .map((chunk) => transpileChunk({ definition }, chunk))
         .join("\n")

@@ -8,12 +8,11 @@ type Context = {
 }
 
 export function transpileChunk(context: Context, chunk: Chunk): string {
-  const name = transpileIdentifier(context.definition.name)
-  const label = transpileIdentifier(chunk.label)
+  const name = transpileIdentifier([context.definition.name, chunk.label])
   const directives = chunk.directives
     .map((directive) => transpileDirective(context, directive))
     .join("\n")
-  return `${name}.${label}:\n${directives}`
+  return `${name}:\n${directives}`
 }
 
 function transpileDirective(context: Context, directive: Directive): string {
