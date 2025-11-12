@@ -104,9 +104,9 @@ function transpileOperand(context: Context, operand: Operand): string {
       return `%${operand.name}`
     }
 
-    case "Deref": {
+    case "Mem": {
       if (!Number.isInteger(operand.offset)) {
-        let message = `[transpileOperand/Deref] expect offset to be integer`
+        let message = `[transpileOperand/Mem] expect offset to be integer`
         message += `\n  value: ${operand.offset}`
         throw new Error(message)
       }

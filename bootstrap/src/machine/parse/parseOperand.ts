@@ -17,16 +17,13 @@ export function parseOperand(sexp: S.Sexp): Operand {
         return Operands.Reg(S.symbolContent(name), meta)
       }),
 
-      S.matcher(
-        "`(deref ,regName ,offset)",
-        ({ regName, offset }, { meta }) => {
-          return Operands.Deref(
-            S.symbolContent(regName),
-            S.numberContent(offset),
-            meta,
-          )
-        },
-      ),
+      S.matcher("`(mem ,regName ,offset)", ({ regName, offset }, { meta }) => {
+        return Operands.Mem(
+          S.symbolContent(regName),
+          S.numberContent(offset),
+          meta,
+        )
+      }),
 
       S.matcher("`(label ,name)", ({ name }, { meta }) => {
         return Operands.Label(S.symbolContent(name), meta)
