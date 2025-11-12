@@ -186,6 +186,11 @@ date: 2025-10-22
   对于 machine-lisp 的通用的 `Instr`，可以实现 instr-db 的概念。
   用来描述在编译时所需要知道的，每个 instruction 的各个方面的信息。
 
+- 这个任务的代码很简单，很多可以抄 basic-lisp。
+
+  任务的难点在于想要在未来作为通用的汇编器，
+  因此要理解 instruction encoding 本身。
+
 - 了解了一下 X86 的 instruction encoding：
 
   - https://wiki.osdev.org/X86-64_Instruction_Encoding
