@@ -12,8 +12,8 @@ _start:
 _start.entry:
         movq $1, %rax
         movq $1, %rdi
-        movq $_message, %rsi
-        movq $14, %rdx
+        leaq _message(%rip), %rsi
+        movq _message.length(%rip), %rdx
         syscall 
         movq $60, %rax
         movq $0, %rdi
