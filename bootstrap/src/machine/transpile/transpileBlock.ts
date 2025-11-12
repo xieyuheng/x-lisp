@@ -38,6 +38,11 @@ function transpileOperand(context: Context, operand: Operand): string {
       return `$${operand.value}`
     }
 
+    case "ImmLabel": {
+      const label = transpileLabel(context, operand.value)
+      return `$${label}`
+    }
+
     case "Var": {
       let message = `[transpileOperand/Var] var should be home before transpiling`
       message += `\n  variable: ${formatOperand(operand)}`
@@ -58,12 +63,21 @@ function transpileOperand(context: Context, operand: Operand): string {
       return `${operand.offset}(%${operand.regName})`
     }
 
-    case "Label": {
-      if (context.definition.blocks.has(operand.name)) {
-        return transpileIdentifier([context.definition.name, operand.name])
-      } else {
-        return transpileIdentifier([operand.name])
-      }
+    case "DerefLabel": {
+      const label = transpileLabel(context, operand.label)
+      return `${label}(%rip)`
     }
+
+    case "Label": {
+      return transpileLabel(context, operand.name)
+    }
+  }
+}
+
+function transpileLabel(context: Context, label: string): string {
+  if (context.definition.blocks.has(label)) {
+    return transpileIdentifier([context.definition.name, label])
+  } else {
+    return transpileIdentifier([label])
   }
 }

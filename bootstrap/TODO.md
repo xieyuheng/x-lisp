@@ -1,6 +1,3 @@
-[machine] imm-label
-[machine] deref-label
-
 [machine] use instruction database to support pseudo instruction
 
 - jmp-indirect
