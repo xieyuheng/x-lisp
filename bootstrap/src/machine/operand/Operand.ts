@@ -1,6 +1,6 @@
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 
-export type Operand = Imm | Var | Reg | Mem | Label
+export type Operand = Imm | Var | Reg | Deref | Label
 
 export type Imm = { kind: "Imm"; value: number; meta?: Meta }
 export const Imm = (value: number, meta?: Meta): Imm => ({
@@ -23,14 +23,14 @@ export const Reg = (name: string, meta?: Meta): Reg => ({
   meta,
 })
 
-export type Mem = {
-  kind: "Mem"
+export type Deref = {
+  kind: "Deref"
   regName: string
   offset: number
   meta?: Meta
 }
-export const Mem = (regName: string, offset: number, meta?: Meta): Mem => ({
-  kind: "Mem",
+export const Deref = (regName: string, offset: number, meta?: Meta): Deref => ({
+  kind: "Deref",
   regName,
   offset,
   meta,

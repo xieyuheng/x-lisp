@@ -27,7 +27,7 @@ function transpileModuleStmt(stmt: Stmt): string {
   switch (stmt.kind) {
     case "Export": {
       return stmt.names
-        .map((name) => `${indentation}.global ${name}`)
+        .map((name) => `${indentation}.global ${transpileIdentifier([name])}`)
         .join("\n")
     }
   }

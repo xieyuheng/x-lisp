@@ -1,0 +1,16 @@
+(export start)
+
+(define-data message
+  (chunk entry
+    (string "Hello, World!\n")))
+
+(define-code start
+  (block entry
+    (movq (imm 1) (reg rax))
+    (movq (imm 1) (reg rdi))
+    (movq (label message.entry) (reg rsi))
+    (movq (imm 14) (reg rdx))
+    (syscall)
+    (movq (imm 60) (reg rax))
+    (movq (imm 0) (reg rdi))
+    (syscall)))

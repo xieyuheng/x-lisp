@@ -3,6 +3,8 @@ import * as Definitions from "../definition/index.ts"
 import type { Directive } from "../directive/index.ts"
 import { transpileIdentifier } from "./transpileIdentifier.ts"
 
+const indentation = " ".repeat(8)
+
 type Context = {
   definition: Definitions.DataDefinition
 }
@@ -19,26 +21,27 @@ function transpileDirective(context: Context, directive: Directive): string {
   switch (directive.kind) {
     case "Db": {
       const values = directive.values.map(String).join(" ")
-      return `.byte ${values}`
+      return `${indentation}.byte ${values}`
     }
 
     case "Dw": {
       const values = directive.values.map(String).join(" ")
-      return `.word ${values}`
+      return `${indentation}.word ${values}`
     }
 
     case "Dd": {
       const values = directive.values.map(String).join(" ")
-      return `.long ${values}`
+      return `${indentation}.long ${values}`
     }
 
     case "Dq": {
       const values = directive.values.map(String).join(" ")
-      return `.quad ${values}`
+      return `${indentation}.quad ${values}`
     }
 
     case "String": {
-      return `.ascii ${directive.content}`
+      const content = JSON.stringify(directive.content)
+      return `${indentation}.ascii ${content}`
     }
   }
 }

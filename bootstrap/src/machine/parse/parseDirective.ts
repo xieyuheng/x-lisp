@@ -20,6 +20,10 @@ export function parseDirective(sexp: S.Sexp): Directive {
       S.matcher("(cons* 'dq values)", ({ values }, { meta }) => {
         return Directives.Dq(S.listElements(values).map(S.numberContent), meta)
       }),
+
+      S.matcher("`(string ,content)", ({ content }, { meta }) => {
+        return Directives.String(S.stringContent(content), meta)
+      }),
     ]),
     sexp,
   )
