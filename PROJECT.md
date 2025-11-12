@@ -215,6 +215,11 @@ date: 2025-10-22
 
 任务：
 
+- [ ] graph libraries
+  - [ ] graph
+  - [ ] graph-coloring
+  - [ ] digraph
+  - [ ] digraph-topological-order
 - [ ] C runtime (with GC)
   - [ ] value tag encoding
   - [ ] builtin
