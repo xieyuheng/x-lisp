@@ -1,4 +1,4 @@
-export type Directive = Db | Dw | Dd | Dq
+export type Directive = Db | Dw | Dd | Dq | String
 
 type Values = Array<number>
 
@@ -13,3 +13,6 @@ export const Dd = (values: Values): Dd => ({ kind: "Dd", values })
 
 export type Dq = { kind: "Dq"; values: Values }
 export const Dq = (values: Values): Dq => ({ kind: "Dq", values })
+
+export type String = { kind: "String"; content: string }
+export const String = (content: string): String => ({ kind: "String", content })
