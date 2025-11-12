@@ -1,6 +1,6 @@
-[machine] [maybe] rename `deref` to `mem`
+[machine] `Directive`
 
-[machine] [maybe] support `define-data` -- `dd` as directive (not instruction)
+[machine] support `define-data` -- `dd` as directive (not instruction)
 
 [machine] how to support pseudo instruction? -- use instruction database!
 

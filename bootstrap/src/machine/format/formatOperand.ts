@@ -14,8 +14,8 @@ export function formatOperand(operand: Operand): string {
       return `(reg ${operand.name})`
     }
 
-    case "Deref": {
-      return `(deref (reg ${operand.regName}) ${operand.offset})`
+    case "Mem": {
+      return `(mem (reg ${operand.regName}) ${operand.offset})`
     }
 
     case "Label": {
