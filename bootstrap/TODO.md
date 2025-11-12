@@ -1,6 +1,7 @@
+[machine] fix `transpileIdentifier` -- should take `parts` and add `_` in the front
+
 [machine] `Stmt` -- `DefineData`
 [machine] `parseStmt` -- `define-data`
-[machine] `transpileDefinition` --  `DataDefinition`
 
 [machine] use instruction database to support pseudo instruction
 
