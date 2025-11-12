@@ -141,13 +141,6 @@ date: 2025-10-22
 
 - 需要支持 project 概念，这是任务开始时没有预料到的。
 
-- 这个 milestone 内，还完成了：
-
-  - `x-binary.js` 项目的 decode 部分，之后用来解析 ELF。
-  - 新的命令行工具 `command-router`。
-
-  如果足够专心推进主线，速度还可以更快。
-
 # milestone 3 -- machine-lisp
 
 这个 milestone 也是为 codegen 做准备。
@@ -212,6 +205,44 @@ date: 2025-10-22
 范围：
 
 - GC 可以只支持 tagged value。
+- allocate-register 被当作一个优化，之后再做。
+- 完全不考虑速度，所有的 builtin 都翻译成函数调用，
+  就算是简单的算术运算也是如此。
+
+任务：
+
+- [ ] C runtime (with GC)
+  - [ ] value tag encoding
+  - [ ] builtin
+  - [ ] GC
+- [ ] basic-lisp codegen (to x86 via GNU assembler)
+  - [ ] select-instruction
+  - [ ] assign-home
+  - [ ] patch-instruction
+  - [ ] prolog-and-epilog
+
+# milestone 待定 -- feature complete
+
+根据 prototype 解释器，补全语言的功能。
+
+成果：
+
+- 这时我们将可以编译完整的项目。
+
+任务：
+
+- [ ] feature complete
+  - [ ] claim
+  - [ ] tael
+  - [ ] hash
+  - [ ] set
+
+# milestone 待定 -- allocate-register
+
+成果：
+
+- 作为第一个重要的优化，
+  语言的运行效率会增加很多。
 
 任务：
 
@@ -220,18 +251,10 @@ date: 2025-10-22
   - [ ] graph-coloring
   - [ ] digraph
   - [ ] digraph-topological-order
-- [ ] C runtime (with GC)
-  - [ ] value tag encoding
-  - [ ] builtin
-  - [ ] GC
 - [ ] basic-lisp codegen (to x86 via GNU assembler)
-  - [ ] select-instruction
   - [ ] uncover-live
   - [ ] build-interference
   - [ ] allocate-register
-  - [ ] assign-home
-  - [ ] patch-instruction
-  - [ ] prolog-and-epilog
 
 # milestone 待定 -- SSA
 
