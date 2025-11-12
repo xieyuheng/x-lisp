@@ -1,10 +1,17 @@
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 
-export type Operand = Imm | Var | Reg | Deref | Label
+export type Operand = Imm | ImmLabel | Var | Reg | Deref | DerefLabel | Label
 
 export type Imm = { kind: "Imm"; value: number; meta?: Meta }
 export const Imm = (value: number, meta?: Meta): Imm => ({
   kind: "Imm",
+  value,
+  meta,
+})
+
+export type ImmLabel = { kind: "ImmLabel"; value: string; meta?: Meta }
+export const ImmLabel = (value: string, meta?: Meta): ImmLabel => ({
+  kind: "ImmLabel",
   value,
   meta,
 })
@@ -33,6 +40,17 @@ export const Deref = (regName: string, offset: number, meta?: Meta): Deref => ({
   kind: "Deref",
   regName,
   offset,
+  meta,
+})
+
+export type DerefLabel = {
+  kind: "DerefLabel"
+  label: string
+  meta?: Meta
+}
+export const DerefLabel = (label: string, meta?: Meta): DerefLabel => ({
+  kind: "DerefLabel",
+  label,
   meta,
 })
 
