@@ -1,5 +1,3 @@
-[machine] `Directive`
-
 [machine] support `define-data` -- `dd` as directive (not instruction)
 
 [machine] how to support pseudo instruction? -- use instruction database!
