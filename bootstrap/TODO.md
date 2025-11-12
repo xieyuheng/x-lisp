@@ -1,18 +1,15 @@
 # basic
 
 [basic] select-instruction
+[basic] assign-home
+[basic] patch-instruction
+[basic] prolog-and-epilog
 
 # runtime
 
 [runtime] value tag encoding
 [runtime] GC
 [runtime] builtin
-
-# basic
-
-[basic] assign-home
-[basic] patch-instruction
-[basic] prolog-and-epilog
 
 # later
 
