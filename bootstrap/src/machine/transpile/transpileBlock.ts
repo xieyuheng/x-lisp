@@ -12,12 +12,11 @@ type Context = {
 }
 
 export function transpileBlock(context: Context, block: Block): string {
-  const name = transpileIdentifier(context.definition.name)
-  const label = transpileIdentifier(block.label)
+  const name = transpileIdentifier([context.definition.name, block.label])
   const instrs = block.instrs
     .map((instr) => transpileInstr(context, instr))
     .join("\n")
-  return `${name}.${label}:\n${instrs}`
+  return `${name}:\n${instrs}`
 }
 
 function transpileInstr(context: Context, instr: Instr): string {
@@ -61,12 +60,9 @@ function transpileOperand(context: Context, operand: Operand): string {
 
     case "Label": {
       if (context.definition.blocks.has(operand.name)) {
-        const name = transpileIdentifier(context.definition.name)
-        const label = transpileIdentifier(operand.name)
-        return `${name}.${label}`
+        return transpileIdentifier([context.definition.name, operand.name])
       } else {
-        const label = transpileIdentifier(operand.name)
-        return `${label}`
+        return transpileIdentifier([operand.name])
       }
     }
   }

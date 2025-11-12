@@ -1,5 +1,9 @@
-export function transpileIdentifier(identifier: string): string {
-  return identifier.split("").map(transpileChar).join("")
+export function transpileIdentifier(parts: Array<string>): string {
+  return "_" + parts.map(transpilePart).join(".")
+}
+
+function transpilePart(part: string): string {
+  return part.split("").map(transpileChar).join("")
 }
 
 function transpileChar(char: string): string {
