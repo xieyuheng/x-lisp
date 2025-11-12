@@ -1,7 +1,7 @@
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import { type Block } from "../block/index.ts"
-import type { Mod } from "../mod/index.ts"
 import type { Chunk } from "../chunk/index.ts"
+import type { Mod } from "../mod/index.ts"
 
 export type Definition = CodeDefinition | DataDefinition
 
