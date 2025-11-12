@@ -1,5 +1,4 @@
-[machine] `DataDefinition`
-[machine] `DefineData`
+[machine] `Stmt` -- `DefineData`
 [machine] `parseStmt` -- `define-data`
 [machine] `formatDefinition` -- `DataDefinition`
 [machine] `transpileDefinition` --  `DataDefinition`
