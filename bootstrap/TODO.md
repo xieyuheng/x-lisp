@@ -1,6 +1,5 @@
 [machine] `Stmt` -- `DefineData`
 [machine] `parseStmt` -- `define-data`
-[machine] `formatDefinition` -- `DataDefinition`
 [machine] `transpileDefinition` --  `DataDefinition`
 
 [machine] use instruction database to support pseudo instruction
