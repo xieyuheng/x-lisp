@@ -1,6 +1,10 @@
-[machine] support `define-data` -- `dd` as directive (not instruction)
+[machine] `DataDefinition`
+[machine] `DefineData`
+[machine] `parseStmt` -- `define-data`
+[machine] `formatDefinition` -- `DataDefinition`
+[machine] `transpileDefinition` --  `DataDefinition`
 
-[machine] how to support pseudo instruction? -- use instruction database!
+[machine] use instruction database to support pseudo instruction
 
 - jmp-indirect
 - jmp-if -- cc as operand
