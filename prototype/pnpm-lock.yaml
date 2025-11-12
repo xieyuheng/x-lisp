@@ -16,8 +16,8 @@ importers:
         version: 0.5.7
     devDependencies:
       '@types/node':
-        specifier: ^24.10.0
-        version: 24.10.0
+        specifier: ^24.10.1
+        version: 24.10.1
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
@@ -30,8 +30,8 @@ importers:
 
 packages:
 
-  '@types/node@24.10.0':
-    resolution: {integrity: sha512-qzQZRBqkFsYyaSWXuEHc2WR9c0a0CXwiE5FWUvn7ZM+vdy1uZLfCunD38UzhuB7YN/J11ndbDBcTmOdxJo9Q7A==}
+  '@types/node@24.10.1':
+    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
 
   '@xieyuheng/command-router.js@0.1.10':
     resolution: {integrity: sha512-kucsG1vxOt4xSSoy17qXkXLhuYFNVPo6EcUfatiQW5kB3mffPRbYcTt0Hey5MpcU5JgpZqxlFXyWHnCwoaNd2g==}
@@ -68,7 +68,7 @@ packages:
 
 snapshots:
 
-  '@types/node@24.10.0':
+  '@types/node@24.10.1':
     dependencies:
       undici-types: 7.16.0
 
