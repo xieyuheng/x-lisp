@@ -1,5 +1,3 @@
-[machine] `parseStmt` -- `define-data`
-
 [machine] use instruction database to support pseudo instruction
 
 - jmp-indirect

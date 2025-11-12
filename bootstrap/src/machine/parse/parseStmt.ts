@@ -1,8 +1,8 @@
 import * as S from "@xieyuheng/x-sexp.js"
-import { Block } from "../block/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
-import { parseInstr } from "./parseInstr.ts"
+import { parseBlock } from "./parseBlock.ts"
+import { parseChunk } from "./parseChunk.ts"
 
 export function parseStmt(sexp: S.Sexp): Stmt {
   return S.match(stmtMatcher, sexp)
@@ -29,18 +29,21 @@ const stmtMatcher: S.Matcher<Stmt> = S.matcherChoice<Stmt>([
       )
     },
   ),
-])
 
-function parseBlock(sexp: S.Sexp): Block {
-  return S.match(
-    S.matcher("(cons* 'block label instrs)", ({ label, instrs }) => {
-      const meta = S.tokenMetaFromSexpMeta(label.meta)
-      return Block(
-        S.symbolContent(label),
-        S.listElements(instrs).map(parseInstr),
+  S.matcher(
+    "(cons* 'define-data name chunks)",
+    ({ name, chunks }, { sexp }) => {
+      const keyword = S.asTael(sexp).elements[1]
+      const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+      return Stmts.DefineData(
+        S.symbolContent(name),
+        new Map(
+          S.listElements(chunks)
+            .map(parseChunk)
+            .map((chunk) => [chunk.label, chunk]),
+        ),
         meta,
       )
-    }),
-    sexp,
-  )
-}
+    },
+  ),
+])
