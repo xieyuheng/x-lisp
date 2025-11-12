@@ -1,4 +1,6 @@
-[machine] use instruction database to support pseudo instruction
+[machine] `instr-db/` setup
+
+[machine] `instr-db/` support pseudo instructions
 
 - jmp-indirect
 - jmp-if -- cc as operand

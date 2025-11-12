@@ -167,7 +167,35 @@ date: 2025-10-22
 
 - [x] machine-lisp
   - [x] language design
-  - [ ] format to GAS
+  - [x] format to GAS
+
+总结 [2025-11-12]：
+
+- 现在所实现的 machine-lisp 可以用来作为编译器的后端工具，
+  但是还不能用来手写汇编代码，因为没有像 GAS 一样的编译时变量功能。
+  比如，根据当前地址，计算字符串的长度，并且保存在编译时的变量中。
+
+  这个最好在未来用 x-lisp 扩展，
+  就是把 x-lisp 作为汇编器的 meta language。
+
+- machine-lisp 与 basic-lisp 是完全相反的两个底层语言：
+
+  - machine-lisp 的 `Instr` 数据类型是通用的 -- `op` + `operands`，
+  - basic-lisp 的 `Operand` 数据类型是通用的 -- 就是 `string`。
+
+  对于 machine-lisp 的通用的 `Instr`，可以实现 instr-db 的概念。
+  用来描述在编译时所需要知道的，每个 instruction 的各个方面的信息。
+
+- 了解了一下 X86 的 instruction encoding：
+
+  - https://wiki.osdev.org/X86-64_Instruction_Encoding
+  - https://blog.yossarian.net/2020/06/13/How-x86_64-addresses-memory
+
+  确实非常复杂，
+  「machine-lisp 作为独立的汇编器」这个项目，
+  是需要在 x-lisp 完成之后再做的。
+
+- 想要实现一般的汇编语言，只知道 x86 是不行的，还需要知道 risc-v。
 
 # milestone 4 -- codegen
 
