@@ -10,6 +10,7 @@ import { type Context } from "./Context.ts"
 import { type Frame } from "./Frame.ts"
 import { apply } from "./apply.ts"
 import { callDefinition } from "./call.ts"
+import { applyNullary } from "./applyNullary.ts"
 
 export function execute(context: Context, frame: Frame, instr: Instr): null {
   switch (instr.op) {
@@ -50,7 +51,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     }
 
     case "Return": {
-      if ((instr).result === undefined) {
+      if (instr.result === undefined) {
         context.result = Values.Void()
       } else {
         context.result = frameLookup(frame, instr.result)
@@ -66,7 +67,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     }
 
     case "Branch": {
-      const condition = frameLookup(frame, (instr.condition))
+      const condition = frameLookup(frame, instr.condition)
       assert(Values.isBool(condition))
       if (Values.isTrue(condition)) {
         frameGoto(frame, instr.thenLabel)
@@ -86,7 +87,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
         else throw new Error(message)
       }
 
-      const args = (instr.args).map((x) => frameLookup(frame, x))
+      const args = instr.args.map((x) => frameLookup(frame, x))
       const arity = definitionArity(definition)
       if (args.length !== arity) {
         let message = `[execute] (call) arity mismatch`
@@ -106,7 +107,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
 
     case "NullaryApply": {
       const target = frameLookup(frame, instr.target)
-      const result = apply(context, target, [])
+      const result = applyNullary(context, target)
       if (instr.dest !== undefined) {
         frame.env.set(instr.dest, result)
       }
@@ -117,7 +118,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     case "Apply": {
       const target = frameLookup(frame, instr.target)
       const arg = frameLookup(frame, instr.arg)
-      const result = apply(context, target, [arg])
+      const result = apply(context, target, arg)
       if (instr.dest !== undefined) {
         frame.env.set(instr.dest, result)
       }

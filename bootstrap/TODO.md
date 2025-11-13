@@ -1,8 +1,3 @@
-# fix apply -- for codegen
-
-[basic] `evaluate/` -- `applyNullary`
-[basic] `evaluate/` -- `apply` should only take two operands
-
 # basic -- codegen
 
 [basic] `passes/` setup

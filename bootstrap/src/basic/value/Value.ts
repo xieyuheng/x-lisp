@@ -18,12 +18,12 @@ export function FunctionRef(name: string, arity: number): FunctionRef {
 
 export type Curry = {
   kind: "Curry"
-  target: Value
+  target: FunctionRef
   arity: number
   args: Array<Value>
 }
 
-export function Curry(target: Value, arity: number, args: Array<Value>): Curry {
+export function Curry(target: FunctionRef, arity: number, args: Array<Value>): Curry {
   return {
     kind: "Curry",
     target,

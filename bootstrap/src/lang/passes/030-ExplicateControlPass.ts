@@ -83,7 +83,10 @@ function inTail(state: State, exp: Exp): Array<B.Instr> {
 
     case "Apply": {
       const name = "_↩"
-      return [B.Apply(Exps.varName(exp.target), Exps.varName(exp.arg), name), B.Return(name)]
+      return [
+        B.Apply(Exps.varName(exp.target), Exps.varName(exp.arg), name),
+        B.Return(name),
+      ]
     }
 
     case "NullaryApply": {
@@ -134,7 +137,10 @@ function inLet1(
     }
 
     case "Apply": {
-      return [B.Apply(Exps.varName(rhs.target), Exps.varName(rhs.arg), name), ...cont]
+      return [
+        B.Apply(Exps.varName(rhs.target), Exps.varName(rhs.arg), name),
+        ...cont,
+      ]
     }
 
     case "NullaryApply": {

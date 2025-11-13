@@ -1,4 +1,3 @@
-import assert from "node:assert"
 import { type Instr } from "../instr/index.ts"
 import { formatValue } from "./formatValue.ts"
 
@@ -17,7 +16,7 @@ export function formatInstr(instr: Instr): string {
     }
 
     case "Return": {
-      if ((instr.result) !== undefined) {
+      if (instr.result !== undefined) {
         return `(return ${instr.result})`
       }
 
@@ -35,9 +34,7 @@ export function formatInstr(instr: Instr): string {
     case "Call": {
       const args = instr.args.join(" ")
       const rhs =
-        args === ""
-          ? `(call ${instr.name})`
-          : `(call ${instr.name} ${args})`
+        args === "" ? `(call ${instr.name})` : `(call ${instr.name} ${args})`
       return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
     }
 

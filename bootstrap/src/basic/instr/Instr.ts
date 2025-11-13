@@ -154,8 +154,8 @@ export function NullaryApply(
 
 export type Apply = {
   op: "Apply"
-  target: string,
-  arg: string,
+  target: string
+  arg: string
   dest?: string
   meta?: Meta
 }
