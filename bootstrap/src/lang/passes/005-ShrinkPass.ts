@@ -39,8 +39,8 @@ function onExp(exp: Exp): Exp {
       return Exps.Lambda(exp.parameters, onExp(exp.body), exp.meta)
     }
 
-    case "Apply": {
-      return Exps.Apply(
+    case "ApplySugar": {
+      return Exps.ApplySugar(
         onExp(exp.target),
         exp.args.map((e) => onExp(e)),
         exp.meta,

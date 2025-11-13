@@ -46,12 +46,12 @@ function onExp(state: State, exp: Exp): Exp {
       return exp
     }
 
-    case "Apply": {
+    case "ApplySugar": {
       const [targetEntries, newTarget] = forAtom(state, exp.target)
       const [argEntries, newArgs] = forAtomMany(state, exp.args)
       return prependLets(
         [...targetEntries, ...argEntries],
-        Exps.Apply(newTarget, newArgs, exp.meta),
+        Exps.ApplySugar(newTarget, newArgs, exp.meta),
       )
     }
 
@@ -115,11 +115,14 @@ function forAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
       return [[entry], Exps.Var(freshName, exp.meta)]
     }
 
-    case "Apply": {
+    case "ApplySugar": {
       const [targetEntries, newTarget] = forAtom(state, exp.target)
       const [argEntries, newArgs] = forAtomMany(state, exp.args)
       const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, Exps.Apply(newTarget, newArgs, exp.meta)]
+      const entry: Entry = [
+        freshName,
+        Exps.ApplySugar(newTarget, newArgs, exp.meta),
+      ]
       return [
         [...targetEntries, ...argEntries, entry],
         Exps.Var(freshName, exp.meta),

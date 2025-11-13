@@ -81,7 +81,7 @@ function inTail(state: State, exp: Exp): Array<B.Instr> {
       return [B.Return([exp.name])]
     }
 
-    case "Apply": {
+    case "ApplySugar": {
       const name = "_↩"
       const operands = [
         Exps.varName(exp.target),
@@ -132,7 +132,7 @@ function inLet1(
       return [B.Call("identity", [rhs.name], name), ...cont]
     }
 
-    case "Apply": {
+    case "ApplySugar": {
       const operands = [
         Exps.varName(rhs.target),
         ...rhs.args.map((e) => Exps.varName(e)),

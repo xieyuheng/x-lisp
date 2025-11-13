@@ -48,7 +48,7 @@ export function formatExp(exp: Exp): string {
       return `(lambda (${parameters}) ${body})`
     }
 
-    case "Apply": {
+    case "ApplySugar": {
       const target = formatExp(exp.target)
       const args = formatExps(exp.args)
       if (args === "") {

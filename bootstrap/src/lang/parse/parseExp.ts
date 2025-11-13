@@ -68,7 +68,7 @@ const expMatcher: S.Matcher<Exp> = S.matcherChoice<Exp>([
   }),
 
   S.matcher("(cons* target args)", ({ target, args }, { meta }) => {
-    return Exps.Apply(
+    return Exps.ApplySugar(
       parseExp(target),
       S.listElements(args).map(parseExp),
       meta,

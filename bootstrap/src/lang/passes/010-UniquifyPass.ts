@@ -57,8 +57,8 @@ function onExp(
       )
     }
 
-    case "Apply": {
-      return Exps.Apply(
+    case "ApplySugar": {
+      return Exps.ApplySugar(
         onExp(nameCounts, nameTable, exp.target),
         exp.args.map((e) => onExp(nameCounts, nameTable, e)),
         exp.meta,
