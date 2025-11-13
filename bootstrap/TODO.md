@@ -1,9 +1,12 @@
 # basic -- codegen
 
 [basic] `010-SelectInstructionPass`
-[basic] `070-AssignHomePass`
-[basic] `080-PatchInstructionPass`
-[basic] `090-PrologAndEpilogPass`
+
+# machine
+
+[machine] `070-AssignHomePass`
+[machine] `080-PatchInstructionPass`
+[machine] `090-PrologAndEpilogPass`
 
 # runtime
 
