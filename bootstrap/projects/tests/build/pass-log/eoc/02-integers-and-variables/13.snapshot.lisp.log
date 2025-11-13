@@ -8,27 +8,29 @@
 
 (define (main)
   (println-non-void
-   (@let1 x (iadd 42 (ineg 10)) (iadd x 10))))
+   (@let1 x ((iadd 42) (ineg 10)) ((iadd x) 10))))
 
 ;;; UniquifyPass
 
 (define (main)
   (println-non-void
-   (@let1 x₁ (iadd 42 (ineg 10)) (iadd x₁ 10))))
+   (@let1 x₁ ((iadd 42) (ineg 10)) ((iadd x₁) 10))))
 
 ;;; RevealFunctionPass
 
 (define (main)
   ((@function println-non-void 1)
-   (@let1 x₁ ((@function iadd 2) 42 ((@function ineg 1) 10))
-     ((@function iadd 2) x₁ 10))))
+   (@let1 x₁
+       (((@function iadd 2) 42) ((@function ineg 1) 10))
+     (((@function iadd 2) x₁) 10))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@function println-non-void 1)
-   (@let1 x₁ ((@function iadd 2) 42 ((@function ineg 1) 10))
-     ((@function iadd 2) x₁ 10))))
+   (@let1 x₁
+       (((@function iadd 2) 42) ((@function ineg 1) 10))
+     (((@function iadd 2) x₁) 10))))
 
 ;;; UnnestOperandPass
 
@@ -37,10 +39,12 @@
     (@let1 x₁
         (@let1 _₂ (@function iadd 2)
           (@let1 _₃ 42
-            (@let1 _₄ (@function ineg 1)
-              (@let1 _₅ 10 (@let1 _₆ (_₄ _₅) (_₂ _₃ _₆))))))
-      (@let1 _₇ (@function iadd 2)
-        (@let1 _₈ 10 (@let1 _₉ (_₇ x₁ _₈) (_₁ _₉)))))))
+            (@let1 _₄ (_₂ _₃)
+              (@let1 _₅ (@function ineg 1)
+                (@let1 _₆ 10 (@let1 _₇ (_₅ _₆) (_₄ _₇)))))))
+      (@let1 _₈ (@function iadd 2)
+        (@let1 _₉ (_₈ x₁)
+          (@let1 _₁₀ 10 (@let1 _₁₁ (_₉ _₁₀) (_₁ _₁₁))))))))
 
 ;;; ExplicateControlPass
 
@@ -49,13 +53,15 @@
     (= _₁ (const (@function println-non-void 1)))
     (= _₂ (const (@function iadd 2)))
     (= _₃ (const 42))
-    (= _₄ (const (@function ineg 1)))
-    (= _₅ (const 10))
-    (= _₆ (apply _₄ _₅))
-    (= x₁ (apply _₂ _₃ _₆))
-    (= _₇ (const (@function iadd 2)))
-    (= _₈ (const 10))
-    (= _₉ (apply _₇ x₁ _₈))
-    (= _↩ (apply _₁ _₉))
+    (= _₄ (apply _₂ _₃))
+    (= _₅ (const (@function ineg 1)))
+    (= _₆ (const 10))
+    (= _₇ (apply _₅ _₆))
+    (= x₁ (apply _₄ _₇))
+    (= _₈ (const (@function iadd 2)))
+    (= _₉ (apply _₈ x₁))
+    (= _₁₀ (const 10))
+    (= _₁₁ (apply _₉ _₁₀))
+    (= _↩ (apply _₁ _₁₁))
     (return _↩)))
 

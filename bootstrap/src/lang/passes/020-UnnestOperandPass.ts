@@ -46,12 +46,17 @@ function onExp(state: State, exp: Exp): Exp {
       return exp
     }
 
-    case "ApplySugar": {
+    case "NullaryApply": {
       const [targetEntries, newTarget] = forAtom(state, exp.target)
-      const [argEntries, newArgs] = forAtomMany(state, exp.args)
+      return prependLets(targetEntries, Exps.NullaryApply(newTarget, exp.meta))
+    }
+
+    case "Apply": {
+      const [targetEntries, newTarget] = forAtom(state, exp.target)
+      const [argEntries, newArg] = forAtom(state, exp.arg)
       return prependLets(
         [...targetEntries, ...argEntries],
-        Exps.ApplySugar(newTarget, newArgs, exp.meta),
+        Exps.Apply(newTarget, newArg, exp.meta),
       )
     }
 
@@ -115,14 +120,18 @@ function forAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
       return [[entry], Exps.Var(freshName, exp.meta)]
     }
 
-    case "ApplySugar": {
+    case "NullaryApply": {
       const [targetEntries, newTarget] = forAtom(state, exp.target)
-      const [argEntries, newArgs] = forAtomMany(state, exp.args)
       const freshName = generateFreshName(state)
-      const entry: Entry = [
-        freshName,
-        Exps.ApplySugar(newTarget, newArgs, exp.meta),
-      ]
+      const entry: Entry = [freshName, Exps.NullaryApply(newTarget, exp.meta)]
+      return [[...targetEntries, entry], Exps.Var(freshName, exp.meta)]
+    }
+
+    case "Apply": {
+      const [targetEntries, newTarget] = forAtom(state, exp.target)
+      const [argEntries, newArg] = forAtom(state, exp.arg)
+      const freshName = generateFreshName(state)
+      const entry: Entry = [freshName, Exps.Apply(newTarget, newArg, exp.meta)]
       return [
         [...targetEntries, ...argEntries, entry],
         Exps.Var(freshName, exp.meta),

@@ -4,6 +4,7 @@
     (= x₁ (const 20))
     (= z₁ (const 22))
     (= _₂ (const (@function iadd 2)))
-    (= y₁ (apply _₂ x₁ z₁))
+    (= _₃ (apply _₂ x₁))
+    (= y₁ (apply _₃ z₁))
     (= _↩ (apply _₁ y₁))
     (return _↩)))

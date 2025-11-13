@@ -6,28 +6,26 @@
 ;;; ShrinkPass
 
 (define (main)
-  (println-non-void (iadd (iadd 1 2) (iadd 3 4))))
+  (println-non-void ((iadd ((iadd 1) 2)) ((iadd 3) 4))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (println-non-void (iadd (iadd 1 2) (iadd 3 4))))
+  (println-non-void ((iadd ((iadd 1) 2)) ((iadd 3) 4))))
 
 ;;; RevealFunctionPass
 
 (define (main)
   ((@function println-non-void 1)
-   ((@function iadd 2)
-    ((@function iadd 2) 1 2)
-    ((@function iadd 2) 3 4))))
+   (((@function iadd 2) (((@function iadd 2) 1) 2))
+    (((@function iadd 2) 3) 4))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@function println-non-void 1)
-   ((@function iadd 2)
-    ((@function iadd 2) 1 2)
-    ((@function iadd 2) 3 4))))
+   (((@function iadd 2) (((@function iadd 2) 1) 2))
+    (((@function iadd 2) 3) 4))))
 
 ;;; UnnestOperandPass
 
@@ -36,13 +34,16 @@
     (@let1 _₂ (@function iadd 2)
       (@let1 _₃ (@function iadd 2)
         (@let1 _₄ 1
-          (@let1 _₅ 2
-            (@let1 _₆ (_₃ _₄ _₅)
-              (@let1 _₇ (@function iadd 2)
-                (@let1 _₈ 3
-                  (@let1 _₉ 4
-                    (@let1 _₁₀ (_₇ _₈ _₉)
-                      (@let1 _₁₁ (_₂ _₆ _₁₀) (_₁ _₁₁)))))))))))))
+          (@let1 _₅ (_₃ _₄)
+            (@let1 _₆ 2
+              (@let1 _₇ (_₅ _₆)
+                (@let1 _₈ (_₂ _₇)
+                  (@let1 _₉ (@function iadd 2)
+                    (@let1 _₁₀ 3
+                      (@let1 _₁₁ (_₉ _₁₀)
+                        (@let1 _₁₂ 4
+                          (@let1 _₁₃ (_₁₁ _₁₂)
+                            (@let1 _₁₄ (_₈ _₁₃) (_₁ _₁₄))))))))))))))))
 
 ;;; ExplicateControlPass
 
@@ -52,13 +53,16 @@
     (= _₂ (const (@function iadd 2)))
     (= _₃ (const (@function iadd 2)))
     (= _₄ (const 1))
-    (= _₅ (const 2))
-    (= _₆ (apply _₃ _₄ _₅))
-    (= _₇ (const (@function iadd 2)))
-    (= _₈ (const 3))
-    (= _₉ (const 4))
-    (= _₁₀ (apply _₇ _₈ _₉))
-    (= _₁₁ (apply _₂ _₆ _₁₀))
-    (= _↩ (apply _₁ _₁₁))
+    (= _₅ (apply _₃ _₄))
+    (= _₆ (const 2))
+    (= _₇ (apply _₅ _₆))
+    (= _₈ (apply _₂ _₇))
+    (= _₉ (const (@function iadd 2)))
+    (= _₁₀ (const 3))
+    (= _₁₁ (apply _₉ _₁₀))
+    (= _₁₂ (const 4))
+    (= _₁₃ (apply _₁₁ _₁₂))
+    (= _₁₄ (apply _₈ _₁₃))
+    (= _↩ (apply _₁ _₁₄))
     (return _↩)))
 

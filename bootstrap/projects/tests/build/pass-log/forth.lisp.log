@@ -14,39 +14,40 @@
 
 ;;; ShrinkPass
 
-(define (swap f x y) (f y x))
+(define (swap f x y) ((f y) x))
 
 (define (drop f) (lambda (dropped) (lambda (x) (f x))))
 
-(define (dup f) (lambda (x) (f x x)))
+(define (dup f) (lambda (x) ((f x) x)))
 
 (define (identity x) x)
 
 (define (main)
   (println-non-void
-   (@let1 f identity (@let1 g (dup identity) (g f f)))))
+   (@let1 f identity (@let1 g (dup identity) ((g f) f)))))
 
 ;;; UniquifyPass
 
-(define (swap f x y) (f y x))
+(define (swap f x y) ((f y) x))
 
 (define (drop f) (lambda (dropped₁) (lambda (x₁) (f x₁))))
 
-(define (dup f) (lambda (x₁) (f x₁ x₁)))
+(define (dup f) (lambda (x₁) ((f x₁) x₁)))
 
 (define (identity x) x)
 
 (define (main)
   (println-non-void
-   (@let1 f₁ identity (@let1 g₁ (dup identity) (g₁ f₁ f₁)))))
+   (@let1 f₁ identity
+     (@let1 g₁ (dup identity) ((g₁ f₁) f₁)))))
 
 ;;; RevealFunctionPass
 
-(define (swap f x y) (f y x))
+(define (swap f x y) ((f y) x))
 
 (define (drop f) (lambda (dropped₁) (lambda (x₁) (f x₁))))
 
-(define (dup f) (lambda (x₁) (f x₁ x₁)))
+(define (dup f) (lambda (x₁) ((f x₁) x₁)))
 
 (define (identity x) x)
 
@@ -54,33 +55,28 @@
   ((@function println-non-void 1)
    (@let1 f₁ (@function identity 1)
      (@let1 g₁ ((@function dup 1) (@function identity 1))
-       (g₁ f₁ f₁)))))
+       ((g₁ f₁) f₁)))))
 
 ;;; LiftLambdaPass
 
-(define (swap f x y) (f y x))
+(define (swap f x y) ((f y) x))
 
 (define (drop f)
-  ((@function curry-put! 3)
-   0
-   f
-   ((@function make-curry 3) (@function drop/λ₁ 2) 2 1)))
+  ((((@function curry-put! 3) 0) f)
+   ((((@function make-curry 3) (@function drop/λ₁ 2)) 2) 1)))
 
 (define (drop/λ₁ f dropped₁)
-  ((@function curry-put! 3)
-   0
-   f
-   ((@function make-curry 3) (@function drop/λ₁/λ₁ 2) 2 1)))
+  ((((@function curry-put! 3) 0) f)
+   ((((@function make-curry 3) (@function drop/λ₁/λ₁ 2)) 2)
+    1)))
 
 (define (drop/λ₁/λ₁ f x₁) (f x₁))
 
 (define (dup f)
-  ((@function curry-put! 3)
-   0
-   f
-   ((@function make-curry 3) (@function dup/λ₁ 2) 2 1)))
+  ((((@function curry-put! 3) 0) f)
+   ((((@function make-curry 3) (@function dup/λ₁ 2)) 2) 1)))
 
-(define (dup/λ₁ f x₁) (f x₁ x₁))
+(define (dup/λ₁ f x₁) ((f x₁) x₁))
 
 (define (identity x) x)
 
@@ -88,42 +84,54 @@
   ((@function println-non-void 1)
    (@let1 f₁ (@function identity 1)
      (@let1 g₁ ((@function dup 1) (@function identity 1))
-       (g₁ f₁ f₁)))))
+       ((g₁ f₁) f₁)))))
 
 ;;; UnnestOperandPass
 
-(define (swap f x y) (f y x))
+(define (swap f x y) (@let1 _₁ (f y) (_₁ x)))
 
 (define (drop f)
   (@let1 _₁ (@function curry-put! 3)
     (@let1 _₂ 0
-      (@let1 _₃ (@function make-curry 3)
-        (@let1 _₄ (@function drop/λ₁ 2)
-          (@let1 _₅ 2
-            (@let1 _₆ 1
-              (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
+      (@let1 _₃ (_₁ _₂)
+        (@let1 _₄ (_₃ f)
+          (@let1 _₅ (@function make-curry 3)
+            (@let1 _₆ (@function drop/λ₁ 2)
+              (@let1 _₇ (_₅ _₆)
+                (@let1 _₈ 2
+                  (@let1 _₉ (_₇ _₈)
+                    (@let1 _₁₀ 1
+                      (@let1 _₁₁ (_₉ _₁₀) (_₄ _₁₁)))))))))))))
 
 (define (drop/λ₁ f dropped₁)
   (@let1 _₁ (@function curry-put! 3)
     (@let1 _₂ 0
-      (@let1 _₃ (@function make-curry 3)
-        (@let1 _₄ (@function drop/λ₁/λ₁ 2)
-          (@let1 _₅ 2
-            (@let1 _₆ 1
-              (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
+      (@let1 _₃ (_₁ _₂)
+        (@let1 _₄ (_₃ f)
+          (@let1 _₅ (@function make-curry 3)
+            (@let1 _₆ (@function drop/λ₁/λ₁ 2)
+              (@let1 _₇ (_₅ _₆)
+                (@let1 _₈ 2
+                  (@let1 _₉ (_₇ _₈)
+                    (@let1 _₁₀ 1
+                      (@let1 _₁₁ (_₉ _₁₀) (_₄ _₁₁)))))))))))))
 
 (define (drop/λ₁/λ₁ f x₁) (f x₁))
 
 (define (dup f)
   (@let1 _₁ (@function curry-put! 3)
     (@let1 _₂ 0
-      (@let1 _₃ (@function make-curry 3)
-        (@let1 _₄ (@function dup/λ₁ 2)
-          (@let1 _₅ 2
-            (@let1 _₆ 1
-              (@let1 _₇ (_₃ _₄ _₅ _₆) (_₁ _₂ f _₇)))))))))
+      (@let1 _₃ (_₁ _₂)
+        (@let1 _₄ (_₃ f)
+          (@let1 _₅ (@function make-curry 3)
+            (@let1 _₆ (@function dup/λ₁ 2)
+              (@let1 _₇ (_₅ _₆)
+                (@let1 _₈ 2
+                  (@let1 _₉ (_₇ _₈)
+                    (@let1 _₁₀ 1
+                      (@let1 _₁₁ (_₉ _₁₀) (_₄ _₁₁)))))))))))))
 
-(define (dup/λ₁ f x₁) (f x₁ x₁))
+(define (dup/λ₁ f x₁) (@let1 _₁ (f x₁) (_₁ x₁)))
 
 (define (identity x) x)
 
@@ -133,7 +141,7 @@
       (@let1 g₁
           (@let1 _₂ (@function dup 1)
             (@let1 _₃ (@function identity 1) (_₂ _₃)))
-        (@let1 _₄ (g₁ f₁ f₁) (_₁ _₄))))))
+        (@let1 _₄ (g₁ f₁) (@let1 _₅ (_₄ f₁) (_₁ _₅)))))))
 
 ;;; ExplicateControlPass
 
@@ -142,7 +150,8 @@
     (= f (argument 0))
     (= x (argument 1))
     (= y (argument 2))
-    (= _↩ (apply f y x))
+    (= _₁ (apply f y))
+    (= _↩ (apply _₁ x))
     (return _↩)))
 
 (define-function drop
@@ -150,12 +159,16 @@
     (= f (argument 0))
     (= _₁ (const (@function curry-put! 3)))
     (= _₂ (const 0))
-    (= _₃ (const (@function make-curry 3)))
-    (= _₄ (const (@function drop/λ₁ 2)))
-    (= _₅ (const 2))
-    (= _₆ (const 1))
-    (= _₇ (apply _₃ _₄ _₅ _₆))
-    (= _↩ (apply _₁ _₂ f _₇))
+    (= _₃ (apply _₁ _₂))
+    (= _₄ (apply _₃ f))
+    (= _₅ (const (@function make-curry 3)))
+    (= _₆ (const (@function drop/λ₁ 2)))
+    (= _₇ (apply _₅ _₆))
+    (= _₈ (const 2))
+    (= _₉ (apply _₇ _₈))
+    (= _₁₀ (const 1))
+    (= _₁₁ (apply _₉ _₁₀))
+    (= _↩ (apply _₄ _₁₁))
     (return _↩)))
 
 (define-function drop/λ₁
@@ -164,12 +177,16 @@
     (= dropped₁ (argument 1))
     (= _₁ (const (@function curry-put! 3)))
     (= _₂ (const 0))
-    (= _₃ (const (@function make-curry 3)))
-    (= _₄ (const (@function drop/λ₁/λ₁ 2)))
-    (= _₅ (const 2))
-    (= _₆ (const 1))
-    (= _₇ (apply _₃ _₄ _₅ _₆))
-    (= _↩ (apply _₁ _₂ f _₇))
+    (= _₃ (apply _₁ _₂))
+    (= _₄ (apply _₃ f))
+    (= _₅ (const (@function make-curry 3)))
+    (= _₆ (const (@function drop/λ₁/λ₁ 2)))
+    (= _₇ (apply _₅ _₆))
+    (= _₈ (const 2))
+    (= _₉ (apply _₇ _₈))
+    (= _₁₀ (const 1))
+    (= _₁₁ (apply _₉ _₁₀))
+    (= _↩ (apply _₄ _₁₁))
     (return _↩)))
 
 (define-function drop/λ₁/λ₁
@@ -184,19 +201,24 @@
     (= f (argument 0))
     (= _₁ (const (@function curry-put! 3)))
     (= _₂ (const 0))
-    (= _₃ (const (@function make-curry 3)))
-    (= _₄ (const (@function dup/λ₁ 2)))
-    (= _₅ (const 2))
-    (= _₆ (const 1))
-    (= _₇ (apply _₃ _₄ _₅ _₆))
-    (= _↩ (apply _₁ _₂ f _₇))
+    (= _₃ (apply _₁ _₂))
+    (= _₄ (apply _₃ f))
+    (= _₅ (const (@function make-curry 3)))
+    (= _₆ (const (@function dup/λ₁ 2)))
+    (= _₇ (apply _₅ _₆))
+    (= _₈ (const 2))
+    (= _₉ (apply _₇ _₈))
+    (= _₁₀ (const 1))
+    (= _₁₁ (apply _₉ _₁₀))
+    (= _↩ (apply _₄ _₁₁))
     (return _↩)))
 
 (define-function dup/λ₁
   (block entry
     (= f (argument 0))
     (= x₁ (argument 1))
-    (= _↩ (apply f x₁ x₁))
+    (= _₁ (apply f x₁))
+    (= _↩ (apply _₁ x₁))
     (return _↩)))
 
 (define-function identity
@@ -209,7 +231,8 @@
     (= _₂ (const (@function dup 1)))
     (= _₃ (const (@function identity 1)))
     (= g₁ (apply _₂ _₃))
-    (= _₄ (apply g₁ f₁ f₁))
-    (= _↩ (apply _₁ _₄))
+    (= _₄ (apply g₁ f₁))
+    (= _₅ (apply _₄ f₁))
+    (= _↩ (apply _₁ _₅))
     (return _↩)))
 

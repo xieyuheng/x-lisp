@@ -5,23 +5,24 @@
 
 ;;; ShrinkPass
 
-(define (main) (println-non-void (@let1 x 4 (iadd 8 x))))
+(define (main) (println-non-void (@let1 x 4 ((iadd 8) x))))
 
 ;;; UniquifyPass
 
-(define (main) (println-non-void (@let1 x₁ 4 (iadd 8 x₁))))
+(define (main)
+  (println-non-void (@let1 x₁ 4 ((iadd 8) x₁))))
 
 ;;; RevealFunctionPass
 
 (define (main)
   ((@function println-non-void 1)
-   (@let1 x₁ 4 ((@function iadd 2) 8 x₁))))
+   (@let1 x₁ 4 (((@function iadd 2) 8) x₁))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@function println-non-void 1)
-   (@let1 x₁ 4 ((@function iadd 2) 8 x₁))))
+   (@let1 x₁ 4 (((@function iadd 2) 8) x₁))))
 
 ;;; UnnestOperandPass
 
@@ -29,7 +30,8 @@
   (@let1 _₁ (@function println-non-void 1)
     (@let1 x₁ 4
       (@let1 _₂ (@function iadd 2)
-        (@let1 _₃ 8 (@let1 _₄ (_₂ _₃ x₁) (_₁ _₄)))))))
+        (@let1 _₃ 8
+          (@let1 _₄ (_₂ _₃) (@let1 _₅ (_₄ x₁) (_₁ _₅))))))))
 
 ;;; ExplicateControlPass
 
@@ -39,7 +41,8 @@
     (= x₁ (const 4))
     (= _₂ (const (@function iadd 2)))
     (= _₃ (const 8))
-    (= _₄ (apply _₂ _₃ x₁))
-    (= _↩ (apply _₁ _₄))
+    (= _₄ (apply _₂ _₃))
+    (= _₅ (apply _₄ x₁))
+    (= _↩ (apply _₁ _₅))
     (return _↩)))
 

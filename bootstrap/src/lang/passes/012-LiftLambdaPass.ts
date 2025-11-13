@@ -7,6 +7,7 @@ import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 import { modOwnDefinitions, type Mod } from "../mod/index.ts"
+import { desugarApply } from "./005-ShrinkPass.ts"
 
 export function LiftLambdaPass(mod: Mod): void {
   mod.definitions = new Map(
@@ -73,12 +74,16 @@ function onExp(state: State, exp: Exp): Exp {
       )
     }
 
-    case "ApplySugar": {
-      return Exps.ApplySugar(
+    case "Apply": {
+      return Exps.Apply(
         onExp(state, exp.target),
-        exp.args.map((e) => onExp(state, e)),
+        onExp(state, exp.arg),
         exp.meta,
       )
+    }
+
+    case "NullaryApply": {
+      return Exps.NullaryApply(onExp(state, exp.target), exp.meta)
     }
 
     case "Let1": {
@@ -109,14 +114,14 @@ function onExp(state: State, exp: Exp): Exp {
 }
 
 function makeCurry(target: Exp, arity: number, args: Array<Exp>): Exp {
-  let result = Exps.ApplySugar(Exps.FunctionRef("make-curry", 3), [
+  let result = desugarApply(Exps.FunctionRef("make-curry", 3), [
     target,
     Exps.Int(arity),
     Exps.Int(args.length),
   ])
 
   for (const [index, arg] of args.entries()) {
-    result = Exps.ApplySugar(Exps.FunctionRef("curry-put!", 3), [
+    result = desugarApply(Exps.FunctionRef("curry-put!", 3), [
       Exps.Int(index),
       arg,
       result,

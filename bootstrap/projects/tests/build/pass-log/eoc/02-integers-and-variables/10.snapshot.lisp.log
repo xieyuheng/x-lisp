@@ -8,33 +8,32 @@
 
 (define (main)
   (println-non-void
-   (@let1 x (iadd (iadd 1 2) (iadd 3 4)) (iadd x 5))))
+   (@let1 x ((iadd ((iadd 1) 2)) ((iadd 3) 4)) ((iadd x) 5))))
 
 ;;; UniquifyPass
 
 (define (main)
   (println-non-void
-   (@let1 x₁ (iadd (iadd 1 2) (iadd 3 4)) (iadd x₁ 5))))
+   (@let1 x₁ ((iadd ((iadd 1) 2)) ((iadd 3) 4))
+     ((iadd x₁) 5))))
 
 ;;; RevealFunctionPass
 
 (define (main)
   ((@function println-non-void 1)
    (@let1 x₁
-       ((@function iadd 2)
-        ((@function iadd 2) 1 2)
-        ((@function iadd 2) 3 4))
-     ((@function iadd 2) x₁ 5))))
+       (((@function iadd 2) (((@function iadd 2) 1) 2))
+        (((@function iadd 2) 3) 4))
+     (((@function iadd 2) x₁) 5))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@function println-non-void 1)
    (@let1 x₁
-       ((@function iadd 2)
-        ((@function iadd 2) 1 2)
-        ((@function iadd 2) 3 4))
-     ((@function iadd 2) x₁ 5))))
+       (((@function iadd 2) (((@function iadd 2) 1) 2))
+        (((@function iadd 2) 3) 4))
+     (((@function iadd 2) x₁) 5))))
 
 ;;; UnnestOperandPass
 
@@ -44,14 +43,18 @@
         (@let1 _₂ (@function iadd 2)
           (@let1 _₃ (@function iadd 2)
             (@let1 _₄ 1
-              (@let1 _₅ 2
-                (@let1 _₆ (_₃ _₄ _₅)
-                  (@let1 _₇ (@function iadd 2)
-                    (@let1 _₈ 3
-                      (@let1 _₉ 4
-                        (@let1 _₁₀ (_₇ _₈ _₉) (_₂ _₆ _₁₀))))))))))
-      (@let1 _₁₁ (@function iadd 2)
-        (@let1 _₁₂ 5 (@let1 _₁₃ (_₁₁ x₁ _₁₂) (_₁ _₁₃)))))))
+              (@let1 _₅ (_₃ _₄)
+                (@let1 _₆ 2
+                  (@let1 _₇ (_₅ _₆)
+                    (@let1 _₈ (_₂ _₇)
+                      (@let1 _₉ (@function iadd 2)
+                        (@let1 _₁₀ 3
+                          (@let1 _₁₁ (_₉ _₁₀)
+                            (@let1 _₁₂ 4
+                              (@let1 _₁₃ (_₁₁ _₁₂) (_₈ _₁₃)))))))))))))
+      (@let1 _₁₄ (@function iadd 2)
+        (@let1 _₁₅ (_₁₄ x₁)
+          (@let1 _₁₆ 5 (@let1 _₁₇ (_₁₅ _₁₆) (_₁ _₁₇))))))))
 
 ;;; ExplicateControlPass
 
@@ -61,16 +64,20 @@
     (= _₂ (const (@function iadd 2)))
     (= _₃ (const (@function iadd 2)))
     (= _₄ (const 1))
-    (= _₅ (const 2))
-    (= _₆ (apply _₃ _₄ _₅))
-    (= _₇ (const (@function iadd 2)))
-    (= _₈ (const 3))
-    (= _₉ (const 4))
-    (= _₁₀ (apply _₇ _₈ _₉))
-    (= x₁ (apply _₂ _₆ _₁₀))
-    (= _₁₁ (const (@function iadd 2)))
-    (= _₁₂ (const 5))
-    (= _₁₃ (apply _₁₁ x₁ _₁₂))
-    (= _↩ (apply _₁ _₁₃))
+    (= _₅ (apply _₃ _₄))
+    (= _₆ (const 2))
+    (= _₇ (apply _₅ _₆))
+    (= _₈ (apply _₂ _₇))
+    (= _₉ (const (@function iadd 2)))
+    (= _₁₀ (const 3))
+    (= _₁₁ (apply _₉ _₁₀))
+    (= _₁₂ (const 4))
+    (= _₁₃ (apply _₁₁ _₁₂))
+    (= x₁ (apply _₈ _₁₃))
+    (= _₁₄ (const (@function iadd 2)))
+    (= _₁₅ (apply _₁₄ x₁))
+    (= _₁₆ (const 5))
+    (= _₁₇ (apply _₁₅ _₁₆))
+    (= _↩ (apply _₁ _₁₇))
     (return _↩)))
 

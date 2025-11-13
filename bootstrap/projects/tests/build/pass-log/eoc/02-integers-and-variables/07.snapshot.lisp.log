@@ -6,27 +6,25 @@
 ;;; ShrinkPass
 
 (define (main)
-  (println-non-void (iadd (random-dice) (random-dice))))
+  (println-non-void ((iadd (random-dice)) (random-dice))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (println-non-void (iadd (random-dice) (random-dice))))
+  (println-non-void ((iadd (random-dice)) (random-dice))))
 
 ;;; RevealFunctionPass
 
 (define (main)
   ((@function println-non-void 1)
-   ((@function iadd 2)
-    ((@function random-dice 0))
+   (((@function iadd 2) ((@function random-dice 0)))
     ((@function random-dice 0)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@function println-non-void 1)
-   ((@function iadd 2)
-    ((@function random-dice 0))
+   (((@function iadd 2) ((@function random-dice 0)))
     ((@function random-dice 0)))))
 
 ;;; UnnestOperandPass
@@ -36,8 +34,9 @@
     (@let1 _₂ (@function iadd 2)
       (@let1 _₃ (@function random-dice 0)
         (@let1 _₄ (_₃)
-          (@let1 _₅ (@function random-dice 0)
-            (@let1 _₆ (_₅) (@let1 _₇ (_₂ _₄ _₆) (_₁ _₇)))))))))
+          (@let1 _₅ (_₂ _₄)
+            (@let1 _₆ (@function random-dice 0)
+              (@let1 _₇ (_₆) (@let1 _₈ (_₅ _₇) (_₁ _₈))))))))))
 
 ;;; ExplicateControlPass
 
@@ -47,9 +46,10 @@
     (= _₂ (const (@function iadd 2)))
     (= _₃ (const (@function random-dice 0)))
     (= _₄ (apply _₃))
-    (= _₅ (const (@function random-dice 0)))
-    (= _₆ (apply _₅))
-    (= _₇ (apply _₂ _₄ _₆))
-    (= _↩ (apply _₁ _₇))
+    (= _₅ (apply _₂ _₄))
+    (= _₆ (const (@function random-dice 0)))
+    (= _₇ (apply _₆))
+    (= _₈ (apply _₅ _₇))
+    (= _↩ (apply _₁ _₈))
     (return _↩)))
 

@@ -12,14 +12,14 @@
 (define (main)
   (println-non-void
    (@let1 x (random-dice)
-     (@let1 y (random-dice) (iadd (iadd x y) 42)))))
+     (@let1 y (random-dice) ((iadd ((iadd x) y)) 42)))))
 
 ;;; UniquifyPass
 
 (define (main)
   (println-non-void
    (@let1 x₁ (random-dice)
-     (@let1 y₁ (random-dice) (iadd (iadd x₁ y₁) 42)))))
+     (@let1 y₁ (random-dice) ((iadd ((iadd x₁) y₁)) 42)))))
 
 ;;; RevealFunctionPass
 
@@ -27,7 +27,7 @@
   ((@function println-non-void 1)
    (@let1 x₁ ((@function random-dice 0))
      (@let1 y₁ ((@function random-dice 0))
-       ((@function iadd 2) ((@function iadd 2) x₁ y₁) 42)))))
+       (((@function iadd 2) (((@function iadd 2) x₁) y₁)) 42)))))
 
 ;;; LiftLambdaPass
 
@@ -35,7 +35,7 @@
   ((@function println-non-void 1)
    (@let1 x₁ ((@function random-dice 0))
      (@let1 y₁ ((@function random-dice 0))
-       ((@function iadd 2) ((@function iadd 2) x₁ y₁) 42)))))
+       (((@function iadd 2) (((@function iadd 2) x₁) y₁)) 42)))))
 
 ;;; UnnestOperandPass
 
@@ -45,8 +45,10 @@
       (@let1 y₁ (@let1 _₃ (@function random-dice 0) (_₃))
         (@let1 _₄ (@function iadd 2)
           (@let1 _₅ (@function iadd 2)
-            (@let1 _₆ (_₅ x₁ y₁)
-              (@let1 _₇ 42 (@let1 _₈ (_₄ _₆ _₇) (_₁ _₈))))))))))
+            (@let1 _₆ (_₅ x₁)
+              (@let1 _₇ (_₆ y₁)
+                (@let1 _₈ (_₄ _₇)
+                  (@let1 _₉ 42 (@let1 _₁₀ (_₈ _₉) (_₁ _₁₀))))))))))))
 
 ;;; ExplicateControlPass
 
@@ -59,9 +61,11 @@
     (= y₁ (apply _₃))
     (= _₄ (const (@function iadd 2)))
     (= _₅ (const (@function iadd 2)))
-    (= _₆ (apply _₅ x₁ y₁))
-    (= _₇ (const 42))
-    (= _₈ (apply _₄ _₆ _₇))
-    (= _↩ (apply _₁ _₈))
+    (= _₆ (apply _₅ x₁))
+    (= _₇ (apply _₆ y₁))
+    (= _₈ (apply _₄ _₇))
+    (= _₉ (const 42))
+    (= _₁₀ (apply _₈ _₉))
+    (= _↩ (apply _₁ _₁₀))
     (return _↩)))
 

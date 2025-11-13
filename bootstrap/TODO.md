@@ -1,9 +1,7 @@
 # fix apply -- for codegen
 
-[lang] `ApplySugar` -- desugar to `Apply` and `NullaryApply`
-
-[basic] `Apply` should only take two `operands`
-[lang] fix `030-ExplicateControlPass` for 2-arity `Apply`
+[basic] `NullaryApply` -- should only take one operand
+[basic] `Apply` -- should only take two operands
 
 # basic -- codegen
 

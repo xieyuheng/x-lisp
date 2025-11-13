@@ -8,31 +8,32 @@
 
 (export square)
 
-(define (square x) (imul x x))
+(define (square x) ((imul x) x))
 
 ;;; UniquifyPass
 
 (export square)
 
-(define (square x) (imul x x))
+(define (square x) ((imul x) x))
 
 ;;; RevealFunctionPass
 
 (export square)
 
-(define (square x) ((@function imul 2) x x))
+(define (square x) (((@function imul 2) x) x))
 
 ;;; LiftLambdaPass
 
 (export square)
 
-(define (square x) ((@function imul 2) x x))
+(define (square x) (((@function imul 2) x) x))
 
 ;;; UnnestOperandPass
 
 (export square)
 
-(define (square x) (@let1 _₁ (@function imul 2) (_₁ x x)))
+(define (square x)
+  (@let1 _₁ (@function imul 2) (@let1 _₂ (_₁ x) (_₂ x))))
 
 ;;; ExplicateControlPass
 
@@ -42,6 +43,7 @@
   (block entry
     (= x (argument 0))
     (= _₁ (const (@function imul 2)))
-    (= _↩ (apply _₁ x x))
+    (= _₂ (apply _₁ x))
+    (= _↩ (apply _₂ x))
     (return _↩)))
 
