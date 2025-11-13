@@ -7,6 +7,7 @@ export type Exp =
   | FunctionRef
   | Lambda
   | ApplySugar
+  | NullaryApply
   | Let1
   | BeginSugar
   | AssignSugar
@@ -86,6 +87,20 @@ export function ApplySugar(
     kind: "ApplySugar",
     target,
     args,
+    meta,
+  }
+}
+
+export type NullaryApply = {
+  kind: "NullaryApply"
+  target: Exp
+  meta?: Meta
+}
+
+export function NullaryApply(target: Exp, meta?: Meta): NullaryApply {
+  return {
+    kind: "NullaryApply",
+    target,
     meta,
   }
 }
