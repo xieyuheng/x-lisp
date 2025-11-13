@@ -1,6 +1,7 @@
 import * as M from "../../machine/index.ts"
 import type { Block } from "../block/index.ts"
 import type { Definition } from "../definition/index.ts"
+import type { Instr } from "../instr/index.ts"
 import { modOwnDefinitions, type Mod } from "../mod/index.ts"
 
 export function SelectInstructionPass(mod: Mod, machineMod: M.Mod): void {
@@ -38,5 +39,14 @@ function onDefinition(machineMod: M.Mod, definition: Definition): null {
 }
 
 function onBlock(state: State, block: Block): void {
-  //
+  const machineBlock = M.Block(
+    block.label,
+    block.instrs.flatMap((instr) => onInstr(state, instr)),
+    block.meta,
+  )
+  state.code.blocks.set(machineBlock.label, machineBlock)
+}
+
+function onInstr(state: State, instr: Instr): Array<M.Instr> {
+  return []
 }
