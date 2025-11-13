@@ -3,7 +3,6 @@
 [lang] `NullaryApply`
 [lang] `NullaryLambda`
 
-[lang] rename `Apply` to `ApplySugar`
 [lang] `Apply` -- should only take `target` and `arg`
 [lang] `ApplySugar` -- desugar to `Apply` and `NullaryApply`
 

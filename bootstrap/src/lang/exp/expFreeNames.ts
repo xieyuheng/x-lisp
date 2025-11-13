@@ -30,7 +30,7 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       return expFreeNames(newBoundNames, exp.body)
     }
 
-    case "Apply": {
+    case "ApplySugar": {
       return setUnionMany([
         expFreeNames(boundNames, exp.target),
         ...exp.args.map((e) => expFreeNames(boundNames, e)),

@@ -41,5 +41,5 @@ export function stage1(mod: Mod, stmt: Stmt): void {
 }
 
 function wrapTopLevelExp(exp: Exp): Exp {
-  return Exps.Apply(Exps.Var("println-non-void"), [exp])
+  return Exps.ApplySugar(Exps.Var("println-non-void"), [exp])
 }

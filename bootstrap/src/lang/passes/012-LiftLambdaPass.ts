@@ -73,8 +73,8 @@ function onExp(state: State, exp: Exp): Exp {
       )
     }
 
-    case "Apply": {
-      return Exps.Apply(
+    case "ApplySugar": {
+      return Exps.ApplySugar(
         onExp(state, exp.target),
         exp.args.map((e) => onExp(state, e)),
         exp.meta,
@@ -109,14 +109,14 @@ function onExp(state: State, exp: Exp): Exp {
 }
 
 function makeCurry(target: Exp, arity: number, args: Array<Exp>): Exp {
-  let result = Exps.Apply(Exps.FunctionRef("make-curry", 3), [
+  let result = Exps.ApplySugar(Exps.FunctionRef("make-curry", 3), [
     target,
     Exps.Int(arity),
     Exps.Int(args.length),
   ])
 
   for (const [index, arg] of args.entries()) {
-    result = Exps.Apply(Exps.FunctionRef("curry-put!", 3), [
+    result = Exps.ApplySugar(Exps.FunctionRef("curry-put!", 3), [
       Exps.Int(index),
       arg,
       result,
