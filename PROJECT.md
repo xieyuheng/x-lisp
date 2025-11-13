@@ -49,8 +49,7 @@ date: 2025-10-22
 
 成果：
 
-- 获得用 basic-lisp 的解释器来运行代码的能力。
-- 给命令行新增一个命令来区分两种运行模式。
+- 能够 basic-lisp 的解释器来运行代码。
 
 范围：
 
@@ -104,8 +103,7 @@ date: 2025-10-22
 
 成果：
 
-- 这个 milestone 会使得 x-lisp
-  可以编译带有 module system 的代码 到 basic-lisp。
+- 能够编译带有 module system 的 x-lisp 代码到 basic-lisp。
 
 任务：
 
@@ -147,8 +145,7 @@ date: 2025-10-22
 
 成果：
 
-- 我将能够用 lisp 语法写汇编代码，
-  这将成为我们未来的独立的汇编器的基础。
+- 能够用 lisp 语法写汇编代码，这将成为我们未来的独立的汇编器的基础。
 
 范围：
 
@@ -199,8 +196,7 @@ date: 2025-10-22
 
 成果：
 
-- 使得 x-lisp 可以完全脱离 js 的 runtime。
-  这时我们「独立自主」的目标已经达成了。
+- 能够完全脱离 js 的 runtime。
 
 范围：
 
@@ -211,23 +207,21 @@ date: 2025-10-22
 
 任务：
 
-- [ ] C runtime (with GC)
-  - [ ] value tag encoding
-  - [ ] builtin
-  - [ ] GC
-- [ ] basic-lisp codegen (to x86 via GNU assembler)
+- [ ] basic-lisp to machine-lisp
   - [ ] select-instruction
   - [ ] assign-home
   - [ ] patch-instruction
   - [ ] prolog-and-epilog
+- [ ] C runtime (with GC)
+  - [ ] value tag encoding
+  - [ ] builtin
+  - [ ] GC
 
 # milestone 待定 -- feature complete
 
-根据 prototype 解释器，补全语言的功能。
-
 成果：
 
-- 这时我们将可以编译完整的项目。
+- 从一个可扩展的 lambda calculus 核心，变成完整的 x-lisp。
 
 任务：
 
