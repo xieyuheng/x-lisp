@@ -1,5 +1,6 @@
 import fs from "node:fs"
 import * as B from "../basic/index.ts"
+import * as M from "../machine/index.ts"
 import { globals } from "../globals.ts"
 import * as L from "../lang/index.ts"
 
@@ -26,6 +27,11 @@ export function compileToPassLog(mod: L.Mod, logFile?: string): void {
 
   L.ExplicateControlPass(mod, basicMod)
   logBasicMod("ExplicateControlPass", basicMod, logFile)
+
+  const machineMod = M.createMod(mod.url)
+
+  B.SelectInstructionPass(basicMod, machineMod)
+  logMachineMod("SelectInstructionPass", machineMod, logFile)
 }
 
 function logLangMod(tag: string, mod: L.Mod, logFile?: string): void {
@@ -34,6 +40,10 @@ function logLangMod(tag: string, mod: L.Mod, logFile?: string): void {
 
 function logBasicMod(tag: string, mod: B.Mod, logFile?: string): void {
   logCode(tag, B.prettyMod(globals.maxWidth, mod), logFile)
+}
+
+function logMachineMod(tag: string, mod: M.Mod, logFile?: string): void {
+  logCode(tag, M.prettyMod(globals.maxWidth, mod), logFile)
 }
 
 function logCode(tag: string, modText: string, logFile?: string): void {

@@ -222,3 +222,20 @@
     (= _₆ (apply _₁₅ _₁₆))
     (goto main/let-body₁₀)))
 
+;;; SelectInstructionPass
+
+(define-code main
+  (block entry)
+  (block main/let-body₁ (ret (var _↩)))
+  (block main/then₂)
+  (block main/else₃)
+  (block main/let-body₄)
+  (block main/then₅)
+  (block main/else₆)
+  (block main/let-body₇)
+  (block main/then₈)
+  (block main/else₉)
+  (block main/let-body₁₀)
+  (block main/then₁₁)
+  (block main/else₁₂))
+

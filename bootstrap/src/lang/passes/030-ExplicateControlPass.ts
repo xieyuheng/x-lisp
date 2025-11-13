@@ -33,7 +33,7 @@ function onDefinition(basicMod: B.Mod, definition: Definition): null {
         new Map(),
         definition.meta,
       )
-      basicMod.definitions.set(definition.name, fn)
+      basicMod.definitions.set(fn.name, fn)
       const initialInstrs = Array.from(
         definition.parameters
           .entries()

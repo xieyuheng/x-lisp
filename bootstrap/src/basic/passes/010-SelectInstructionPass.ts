@@ -6,7 +6,7 @@ import { modOwnDefinitions, type Mod } from "../mod/index.ts"
 
 export function SelectInstructionPass(mod: Mod, machineMod: M.Mod): void {
   for (const definition of modOwnDefinitions(mod)) {
-    onDefinition(machineMod, definition)
+     onDefinition(machineMod, definition)
   }
 }
 
@@ -23,6 +23,7 @@ function onDefinition(machineMod: M.Mod, definition: Definition): null {
         new Map(),
         definition.meta,
       )
+      machineMod.definitions.set(code.name, code)
       const state = { code }
       for (const block of definition.blocks.values()) {
         onBlock(state, block)
@@ -48,5 +49,72 @@ function onBlock(state: State, block: Block): void {
 }
 
 function onInstr(state: State, instr: Instr): Array<M.Instr> {
-  return []
+  switch (instr.op) {
+    case "Argument": {
+      // return `(= ${instr.dest} (argument ${instr.index}))`
+
+      // TODO
+      return []
+    }
+
+    case "Const": {
+      // return `(= ${instr.dest} (const ${formatValue(instr.value)}))`
+
+      // TODO
+      return []
+    }
+
+    case "Assert": {
+      // TODO
+      return []
+    }
+
+    case "Return": {
+      if (instr.result !== undefined) {
+        return [M.Instr("ret", [M.Var(instr.result)])]
+      }
+
+      return [M.Instr("ret", [])]
+    }
+
+    case "Goto": {
+      // return `(goto ${instr.label})`
+
+      // TODO
+      return []
+    }
+
+    case "Branch": {
+      // return `(branch ${instr.condition} ${instr.thenLabel} ${instr.elseLabel})`
+
+      // TODO
+      return []
+    }
+
+    case "Call": {
+      // const args = instr.args.join(" ")
+      // const rhs =
+      //   args === "" ? `(call ${instr.name})` : `(call ${instr.name} ${args})`
+      // return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+
+      // TODO
+      return []
+    }
+
+    case "Apply": {
+      // const rhs = `(apply ${instr.target} ${instr.arg})`
+      // return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+
+      // TODO
+      return []
+    }
+
+    case "NullaryApply": {
+      // const rhs = `(nullary-apply ${instr.target})`
+      // return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+
+      // TODO
+      return []
+    }
+  }
 }
