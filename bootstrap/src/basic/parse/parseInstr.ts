@@ -6,23 +6,17 @@ import { parseValue } from "./parseValue.ts"
 export function parseInstr(sexp: S.Sexp): Instr {
   return S.match(
     S.matcherChoice<Instr>([
-      S.matcher(
-        "`(= ,dest (argument ,index))",
-        ({ dest, index }, { meta }) => {
-          return Instrs.Argument(
-            S.numberContent(index),
-            S.symbolContent(dest),
-            meta,
-          )
-        },
-      ),
+      S.matcher("`(= ,dest (argument ,index))", ({ dest, index }, { meta }) => {
+        return Instrs.Argument(
+          S.numberContent(index),
+          S.symbolContent(dest),
+          meta,
+        )
+      }),
 
-      S.matcher(
-        "`(= ,dest (const ,value))",
-        ({ dest, value }, { meta }) => {
-          return Instrs.Const(parseValue(value), S.symbolContent(dest), meta)
-        },
-      ),
+      S.matcher("`(= ,dest (const ,value))", ({ dest, value }, { meta }) => {
+        return Instrs.Const(parseValue(value), S.symbolContent(dest), meta)
+      }),
 
       S.matcher("`(assert ,ok)", ({ ok }, { meta }) => {
         return Instrs.Assert(S.symbolContent(ok), meta)
@@ -36,7 +30,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
         return Instrs.Return(S.symbolContent(result), meta)
       }),
 
-      S.matcher("`(return)", ({ }, { meta }) => {
+      S.matcher("`(return)", ({}, { meta }) => {
         return Instrs.Return(undefined, meta)
       }),
 
@@ -52,17 +46,14 @@ export function parseInstr(sexp: S.Sexp): Instr {
         },
       ),
 
-      S.matcher(
-        "(cons* 'call target args)",
-        ({ target, args }, { meta }) => {
-          return Instrs.Call(
-            S.symbolContent(target),
-            S.listElements(args).map(S.symbolContent),
-            undefined,
-            meta,
-          )
-        },
-      ),
+      S.matcher("(cons* 'call target args)", ({ target, args }, { meta }) => {
+        return Instrs.Call(
+          S.symbolContent(target),
+          S.listElements(args).map(S.symbolContent),
+          undefined,
+          meta,
+        )
+      }),
 
       S.matcher(
         "`(= ,dest ,(cons* 'call target args))",
@@ -98,11 +89,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
       ),
 
       S.matcher("`(nullary-apply ,target)", ({ target }, { meta }) => {
-        return Instrs.NullaryApply(
-          S.symbolContent(target),
-          undefined,
-          meta,
-        )
+        return Instrs.NullaryApply(S.symbolContent(target), undefined, meta)
       }),
 
       S.matcher(
