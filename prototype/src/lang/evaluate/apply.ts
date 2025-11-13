@@ -7,14 +7,14 @@ import { match } from "../pattern/index.ts"
 import { prettyValue, prettyValues } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
+import { applyClosure } from "./applyClosure.ts"
 import { applyDataConstructor } from "./applyDataConstructor.ts"
 import { applyDataConstructorPredicate } from "./applyDataConstructorPredicate.ts"
 import { applyDataGetter } from "./applyDataGetter.ts"
 import { applyDataPredicate } from "./applyDataPredicate.ts"
 import { applyDataPutter } from "./applyDataPutter.ts"
-import { applyLambda } from "./applyLambda.ts"
 import { applyNullary } from "./applyNullary.ts"
-import { applyVariadicLambda } from "./applyVariadicLambda.ts"
+import { applyVariadicClosure } from "./applyVariadicClosure.ts"
 import { applyWithSchema } from "./applyWithSchema.ts"
 import { supply } from "./supply.ts"
 import { validate } from "./validate.ts"
@@ -46,17 +46,17 @@ export function apply(target: Value, args: Array<Value>): Value {
     }
   }
 
-  if (target.kind === "Lambda") {
+  if (target.kind === "Closure") {
     const arity = target.parameters.length
     if (arity === args.length) {
-      return applyLambda(target, args)
+      return applyClosure(target, args)
     } else {
       return supply(target, arity, args)
     }
   }
 
-  if (target.kind === "VariadicLambda") {
-    return applyVariadicLambda(target, args)
+  if (target.kind === "VariadicClosure") {
+    return applyVariadicClosure(target, args)
   }
 
   if (target.kind === "The") {

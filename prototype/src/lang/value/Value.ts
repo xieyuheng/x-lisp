@@ -16,9 +16,9 @@ export type Value =
   | Tael
   | Set
   | Hash
-  | Lambda
-  | VariadicLambda
-  | NullaryLambda
+  | Closure
+  | VariadicClosure
+  | NullaryClosure
   | PrimitiveFunction
   | PrimitiveNullaryFunction
   | Curry
@@ -40,8 +40,8 @@ export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
   }
 }
 
-export type Lambda = {
-  kind: "Lambda"
+export type Closure = {
+  kind: "Closure"
   mod: Mod
   env: Env
   parameters: Array<Exp>
@@ -49,15 +49,15 @@ export type Lambda = {
   meta?: Meta
 }
 
-export function Lambda(
+export function Closure(
   mod: Mod,
   env: Env,
   parameters: Array<Exp>,
   body: Exp,
   meta?: Meta,
-): Lambda {
+): Closure {
   return {
-    kind: "Lambda",
+    kind: "Closure",
     mod,
     env,
     parameters,
@@ -66,8 +66,8 @@ export function Lambda(
   }
 }
 
-export type VariadicLambda = {
-  kind: "VariadicLambda"
+export type VariadicClosure = {
+  kind: "VariadicClosure"
   mod: Mod
   env: Env
   variadicParameter: string
@@ -75,15 +75,15 @@ export type VariadicLambda = {
   meta?: Meta
 }
 
-export function VariadicLambda(
+export function VariadicClosure(
   mod: Mod,
   env: Env,
   variadicParameter: string,
   body: Exp,
   meta?: Meta,
-): VariadicLambda {
+): VariadicClosure {
   return {
-    kind: "VariadicLambda",
+    kind: "VariadicClosure",
     mod,
     env,
     variadicParameter,
@@ -92,22 +92,22 @@ export function VariadicLambda(
   }
 }
 
-export type NullaryLambda = {
-  kind: "NullaryLambda"
+export type NullaryClosure = {
+  kind: "NullaryClosure"
   mod: Mod
   env: Env
   body: Exp
   meta?: Meta
 }
 
-export function NullaryLambda(
+export function NullaryClosure(
   mod: Mod,
   env: Env,
   body: Exp,
   meta?: Meta,
-): NullaryLambda {
+): NullaryClosure {
   return {
-    kind: "NullaryLambda",
+    kind: "NullaryClosure",
     mod,
     env,
     body,

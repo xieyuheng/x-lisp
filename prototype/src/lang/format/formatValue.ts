@@ -106,15 +106,15 @@ export function formatValue(value: Value, options: Options = {}): string {
       }
     }
 
-    case "Lambda": {
+    case "Closure": {
       return `(lambda (${formatExps(value.parameters)}) ${formatBody(value.body)})`
     }
 
-    case "VariadicLambda": {
+    case "VariadicClosure": {
       return `(lambda ${value.variadicParameter} ${formatBody(value.body)})`
     }
 
-    case "NullaryLambda": {
+    case "NullaryClosure": {
       return `(lambda () ${formatBody(value.body)})`
     }
 

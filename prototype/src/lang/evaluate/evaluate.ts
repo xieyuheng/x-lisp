@@ -55,7 +55,7 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         return [
           env,
-          Values.Lambda(mod, env, exp.parameters, exp.body, exp.meta),
+          Values.Closure(mod, env, exp.parameters, exp.body, exp.meta),
         ]
       }
     }
@@ -64,7 +64,7 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         return [
           env,
-          Values.VariadicLambda(
+          Values.VariadicClosure(
             mod,
             env,
             exp.variadicParameter,
@@ -77,7 +77,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "NullaryLambda": {
       return (mod, env) => {
-        return [env, Values.NullaryLambda(mod, env, exp.body, exp.meta)]
+        return [env, Values.NullaryClosure(mod, env, exp.body, exp.meta)]
       }
     }
 
