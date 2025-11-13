@@ -81,12 +81,15 @@ function inTail(state: State, exp: Exp): Array<B.Instr> {
       return [B.Return([exp.name])]
     }
 
-    case "ApplySugar": {
+    case "Apply": {
       const name = "_↩"
-      const operands = [
-        Exps.varName(exp.target),
-        ...exp.args.map((e) => Exps.varName(e)),
-      ]
+      const operands = [Exps.varName(exp.target), Exps.varName(exp.arg)]
+      return [B.Apply(operands, name), B.Return([name])]
+    }
+
+    case "NullaryApply": {
+      const name = "_↩"
+      const operands = [Exps.varName(exp.target)]
       return [B.Apply(operands, name), B.Return([name])]
     }
 
@@ -132,11 +135,13 @@ function inLet1(
       return [B.Call("identity", [rhs.name], name), ...cont]
     }
 
-    case "ApplySugar": {
-      const operands = [
-        Exps.varName(rhs.target),
-        ...rhs.args.map((e) => Exps.varName(e)),
-      ]
+    case "Apply": {
+      const operands = [Exps.varName(rhs.target), Exps.varName(rhs.arg)]
+      return [B.Apply(operands, name), ...cont]
+    }
+
+    case "NullaryApply": {
+      const operands = [Exps.varName(rhs.target)]
       return [B.Apply(operands, name), ...cont]
     }
 

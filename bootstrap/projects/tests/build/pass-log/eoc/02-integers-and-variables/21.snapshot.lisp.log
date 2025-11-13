@@ -10,14 +10,14 @@
 
 (define (main)
   (println-non-void
-   (@let1 y 6 (@let1 x (@let1 y (ineg 42) y) (iadd x y)))))
+   (@let1 y 6 (@let1 x (@let1 y (ineg 42) y) ((iadd x) y)))))
 
 ;;; UniquifyPass
 
 (define (main)
   (println-non-void
    (@let1 y₁ 6
-     (@let1 x₁ (@let1 y₂ (ineg 42) y₂) (iadd x₁ y₁)))))
+     (@let1 x₁ (@let1 y₂ (ineg 42) y₂) ((iadd x₁) y₁)))))
 
 ;;; RevealFunctionPass
 
@@ -25,7 +25,7 @@
   ((@function println-non-void 1)
    (@let1 y₁ 6
      (@let1 x₁ (@let1 y₂ ((@function ineg 1) 42) y₂)
-       ((@function iadd 2) x₁ y₁)))))
+       (((@function iadd 2) x₁) y₁)))))
 
 ;;; LiftLambdaPass
 
@@ -33,7 +33,7 @@
   ((@function println-non-void 1)
    (@let1 y₁ 6
      (@let1 x₁ (@let1 y₂ ((@function ineg 1) 42) y₂)
-       ((@function iadd 2) x₁ y₁)))))
+       (((@function iadd 2) x₁) y₁)))))
 
 ;;; UnnestOperandPass
 
@@ -46,7 +46,7 @@
                 (@let1 _₃ 42 (_₂ _₃)))
             y₂)
         (@let1 _₄ (@function iadd 2)
-          (@let1 _₅ (_₄ x₁ y₁) (_₁ _₅)))))))
+          (@let1 _₅ (_₄ x₁) (@let1 _₆ (_₅ y₁) (_₁ _₆))))))))
 
 ;;; ExplicateControlPass
 
@@ -59,7 +59,8 @@
     (= y₂ (apply _₂ _₃))
     (= x₁ (call identity y₂))
     (= _₄ (const (@function iadd 2)))
-    (= _₅ (apply _₄ x₁ y₁))
-    (= _↩ (apply _₁ _₅))
+    (= _₅ (apply _₄ x₁))
+    (= _₆ (apply _₅ y₁))
+    (= _↩ (apply _₁ _₆))
     (return _↩)))
 

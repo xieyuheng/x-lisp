@@ -13,8 +13,8 @@
 (define (main)
   (println-non-void
    (if
-       (if (equal? (random-dice) 1)
-         (equal? (random-dice) 2)
+       (if ((equal? (random-dice)) 1)
+         ((equal? (random-dice)) 2)
          #f)
      0
      42)))
@@ -24,8 +24,8 @@
 (define (main)
   (println-non-void
    (if
-       (if (equal? (random-dice) 1)
-         (equal? (random-dice) 2)
+       (if ((equal? (random-dice)) 1)
+         ((equal? (random-dice)) 2)
          #f)
      0
      42)))
@@ -36,10 +36,11 @@
   ((@function println-non-void 1)
    (if
        (if
-           ((@function equal? 2)
-            ((@function random-dice 0))
+           (((@function equal? 2)
+             ((@function random-dice 0)))
             1)
-         ((@function equal? 2) ((@function random-dice 0)) 2)
+         (((@function equal? 2) ((@function random-dice 0)))
+          2)
          #f)
      0
      42)))
@@ -50,10 +51,11 @@
   ((@function println-non-void 1)
    (if
        (if
-           ((@function equal? 2)
-            ((@function random-dice 0))
+           (((@function equal? 2)
+             ((@function random-dice 0)))
             1)
-         ((@function equal? 2) ((@function random-dice 0)) 2)
+         (((@function equal? 2) ((@function random-dice 0)))
+          2)
          #f)
      0
      42)))
@@ -67,15 +69,17 @@
             (@let1 _₄ (@function equal? 2)
               (@let1 _₅ (@function random-dice 0)
                 (@let1 _₆ (_₅)
-                  (@let1 _₇ 1
-                    (@let1 _₈ (_₄ _₆ _₇)
-                      (if _₈
-                        (@let1 _₉ (@function equal? 2)
-                          (@let1 _₁₀
-                              (@function random-dice 0)
-                            (@let1 _₁₁ (_₁₀)
-                              (@let1 _₁₂ 2 (_₉ _₁₁ _₁₂)))))
-                        #f))))))
+                  (@let1 _₇ (_₄ _₆)
+                    (@let1 _₈ 1
+                      (@let1 _₉ (_₇ _₈)
+                        (if _₉
+                          (@let1 _₁₀ (@function equal? 2)
+                            (@let1 _₁₁
+                                (@function random-dice 0)
+                              (@let1 _₁₂ (_₁₁)
+                                (@let1 _₁₃ (_₁₀ _₁₂)
+                                  (@let1 _₁₄ 2 (_₁₃ _₁₄))))))
+                          #f)))))))
           (if _₃ 0 42))
       (_₁ _₂))))
 
@@ -87,19 +91,21 @@
     (= _₄ (const (@function equal? 2)))
     (= _₅ (const (@function random-dice 0)))
     (= _₆ (apply _₅))
-    (= _₇ (const 1))
-    (= _₈ (apply _₄ _₆ _₇))
-    (branch _₈ main/then₅ main/else₆))
+    (= _₇ (apply _₄ _₆))
+    (= _₈ (const 1))
+    (= _₉ (apply _₇ _₈))
+    (branch _₉ main/then₅ main/else₆))
   (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
   (block main/then₂ (= _₂ (const 0)) (goto main/let-body₁))
   (block main/else₃ (= _₂ (const 42)) (goto main/let-body₁))
   (block main/let-body₄ (branch _₃ main/then₂ main/else₃))
   (block main/then₅
-    (= _₉ (const (@function equal? 2)))
-    (= _₁₀ (const (@function random-dice 0)))
-    (= _₁₁ (apply _₁₀))
-    (= _₁₂ (const 2))
-    (= _₃ (apply _₉ _₁₁ _₁₂))
+    (= _₁₀ (const (@function equal? 2)))
+    (= _₁₁ (const (@function random-dice 0)))
+    (= _₁₂ (apply _₁₁))
+    (= _₁₃ (apply _₁₀ _₁₂))
+    (= _₁₄ (const 2))
+    (= _₃ (apply _₁₃ _₁₄))
     (goto main/let-body₄))
   (block main/else₆ (= _₃ (const #f)) (goto main/let-body₄)))
 

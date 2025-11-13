@@ -6,19 +6,19 @@
 
 ;;; ShrinkPass
 
-(define (square x) (imul x x))
+(define (square x) ((imul x) x))
 
 (define (main) (println-non-void (square (square 3))))
 
 ;;; UniquifyPass
 
-(define (square x) (imul x x))
+(define (square x) ((imul x) x))
 
 (define (main) (println-non-void (square (square 3))))
 
 ;;; RevealFunctionPass
 
-(define (square x) ((@function imul 2) x x))
+(define (square x) (((@function imul 2) x) x))
 
 (define (main)
   ((@function println-non-void 1)
@@ -26,7 +26,7 @@
 
 ;;; LiftLambdaPass
 
-(define (square x) ((@function imul 2) x x))
+(define (square x) (((@function imul 2) x) x))
 
 (define (main)
   ((@function println-non-void 1)
@@ -34,7 +34,8 @@
 
 ;;; UnnestOperandPass
 
-(define (square x) (@let1 _₁ (@function imul 2) (_₁ x x)))
+(define (square x)
+  (@let1 _₁ (@function imul 2) (@let1 _₂ (_₁ x) (_₂ x))))
 
 (define (main)
   (@let1 _₁ (@function println-non-void 1)
@@ -49,7 +50,8 @@
   (block entry
     (= x (argument 0))
     (= _₁ (const (@function imul 2)))
-    (= _↩ (apply _₁ x x))
+    (= _₂ (apply _₁ x))
+    (= _↩ (apply _₂ x))
     (return _↩)))
 
 (define-function main

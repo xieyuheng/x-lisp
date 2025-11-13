@@ -78,10 +78,14 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
       )
     }
 
-    case "ApplySugar": {
-      return Exps.ApplySugar(
+    case "NullaryApply": {
+      return Exps.NullaryApply(onExp(mod, boundNames, exp.target), exp.meta)
+    }
+
+    case "Apply": {
+      return Exps.Apply(
         onExp(mod, boundNames, exp.target),
-        exp.args.map((e) => onExp(mod, boundNames, e)),
+        onExp(mod, boundNames, exp.arg),
         exp.meta,
       )
     }

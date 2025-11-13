@@ -8,36 +8,36 @@
 
 (define (main)
   (println-non-void
-   (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
+   ((iadd ((iadd ((iadd ((iadd (random-dice)) 1)) 1)) 1)) 1)))
 
 ;;; UniquifyPass
 
 (define (main)
   (println-non-void
-   (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
+   ((iadd ((iadd ((iadd ((iadd (random-dice)) 1)) 1)) 1)) 1)))
 
 ;;; RevealFunctionPass
 
 (define (main)
   ((@function println-non-void 1)
-   ((@function iadd 2)
-    ((@function iadd 2)
-     ((@function iadd 2)
-      ((@function iadd 2) ((@function random-dice 0)) 1)
-      1)
-     1)
+   (((@function iadd 2)
+     (((@function iadd 2)
+       (((@function iadd 2)
+         (((@function iadd 2) ((@function random-dice 0))) 1))
+        1))
+      1))
     1)))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@function println-non-void 1)
-   ((@function iadd 2)
-    ((@function iadd 2)
-     ((@function iadd 2)
-      ((@function iadd 2) ((@function random-dice 0)) 1)
-      1)
-     1)
+   (((@function iadd 2)
+     (((@function iadd 2)
+       (((@function iadd 2)
+         (((@function iadd 2) ((@function random-dice 0))) 1))
+        1))
+      1))
     1)))
 
 ;;; UnnestOperandPass
@@ -50,15 +50,19 @@
           (@let1 _₅ (@function iadd 2)
             (@let1 _₆ (@function random-dice 0)
               (@let1 _₇ (_₆)
-                (@let1 _₈ 1
-                  (@let1 _₉ (_₅ _₇ _₈)
-                    (@let1 _₁₀ 1
-                      (@let1 _₁₁ (_₄ _₉ _₁₀)
+                (@let1 _₈ (_₅ _₇)
+                  (@let1 _₉ 1
+                    (@let1 _₁₀ (_₈ _₉)
+                      (@let1 _₁₁ (_₄ _₁₀)
                         (@let1 _₁₂ 1
-                          (@let1 _₁₃ (_₃ _₁₁ _₁₂)
-                            (@let1 _₁₄ 1
-                              (@let1 _₁₅ (_₂ _₁₃ _₁₄)
-                                (_₁ _₁₅)))))))))))))))))
+                          (@let1 _₁₃ (_₁₁ _₁₂)
+                            (@let1 _₁₄ (_₃ _₁₃)
+                              (@let1 _₁₅ 1
+                                (@let1 _₁₆ (_₁₄ _₁₅)
+                                  (@let1 _₁₇ (_₂ _₁₆)
+                                    (@let1 _₁₈ 1
+                                      (@let1 _₁₉ (_₁₇ _₁₈)
+                                        (_₁ _₁₉)))))))))))))))))))))
 
 ;;; ExplicateControlPass
 
@@ -71,14 +75,18 @@
     (= _₅ (const (@function iadd 2)))
     (= _₆ (const (@function random-dice 0)))
     (= _₇ (apply _₆))
-    (= _₈ (const 1))
-    (= _₉ (apply _₅ _₇ _₈))
-    (= _₁₀ (const 1))
-    (= _₁₁ (apply _₄ _₉ _₁₀))
+    (= _₈ (apply _₅ _₇))
+    (= _₉ (const 1))
+    (= _₁₀ (apply _₈ _₉))
+    (= _₁₁ (apply _₄ _₁₀))
     (= _₁₂ (const 1))
-    (= _₁₃ (apply _₃ _₁₁ _₁₂))
-    (= _₁₄ (const 1))
-    (= _₁₅ (apply _₂ _₁₃ _₁₄))
-    (= _↩ (apply _₁ _₁₅))
+    (= _₁₃ (apply _₁₁ _₁₂))
+    (= _₁₄ (apply _₃ _₁₃))
+    (= _₁₅ (const 1))
+    (= _₁₆ (apply _₁₄ _₁₅))
+    (= _₁₇ (apply _₂ _₁₆))
+    (= _₁₈ (const 1))
+    (= _₁₉ (apply _₁₇ _₁₈))
+    (= _↩ (apply _₁ _₁₉))
     (return _↩)))
 

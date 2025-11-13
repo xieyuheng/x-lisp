@@ -19,13 +19,19 @@
   (println-non-void
    (@let1 x (random-dice)
      (@let1 y (random-dice)
-       (iadd
-        (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
-          (iadd y 2)
-          (iadd y 10))
-        (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
-          (iadd y 2)
-          (iadd y 10)))))))
+       ((iadd
+         (if
+             (if ((int-less? x) 1)
+               ((equal? x) 0)
+               ((equal? x) 2))
+           ((iadd y) 2)
+           ((iadd y) 10)))
+        (if
+            (if ((int-less? x) 1)
+              ((equal? x) 0)
+              ((equal? x) 2))
+          ((iadd y) 2)
+          ((iadd y) 10)))))))
 
 ;;; UniquifyPass
 
@@ -33,19 +39,19 @@
   (println-non-void
    (@let1 x₁ (random-dice)
      (@let1 y₁ (random-dice)
-       (iadd
+       ((iadd
+         (if
+             (if ((int-less? x₁) 1)
+               ((equal? x₁) 0)
+               ((equal? x₁) 2))
+           ((iadd y₁) 2)
+           ((iadd y₁) 10)))
         (if
-            (if (int-less? x₁ 1)
-              (equal? x₁ 0)
-              (equal? x₁ 2))
-          (iadd y₁ 2)
-          (iadd y₁ 10))
-        (if
-            (if (int-less? x₁ 1)
-              (equal? x₁ 0)
-              (equal? x₁ 2))
-          (iadd y₁ 2)
-          (iadd y₁ 10)))))))
+            (if ((int-less? x₁) 1)
+              ((equal? x₁) 0)
+              ((equal? x₁) 2))
+          ((iadd y₁) 2)
+          ((iadd y₁) 10)))))))
 
 ;;; RevealFunctionPass
 
@@ -53,19 +59,19 @@
   ((@function println-non-void 1)
    (@let1 x₁ ((@function random-dice 0))
      (@let1 y₁ ((@function random-dice 0))
-       ((@function iadd 2)
+       (((@function iadd 2)
+         (if
+             (if (((@function int-less? 2) x₁) 1)
+               (((@function equal? 2) x₁) 0)
+               (((@function equal? 2) x₁) 2))
+           (((@function iadd 2) y₁) 2)
+           (((@function iadd 2) y₁) 10)))
         (if
-            (if ((@function int-less? 2) x₁ 1)
-              ((@function equal? 2) x₁ 0)
-              ((@function equal? 2) x₁ 2))
-          ((@function iadd 2) y₁ 2)
-          ((@function iadd 2) y₁ 10))
-        (if
-            (if ((@function int-less? 2) x₁ 1)
-              ((@function equal? 2) x₁ 0)
-              ((@function equal? 2) x₁ 2))
-          ((@function iadd 2) y₁ 2)
-          ((@function iadd 2) y₁ 10)))))))
+            (if (((@function int-less? 2) x₁) 1)
+              (((@function equal? 2) x₁) 0)
+              (((@function equal? 2) x₁) 2))
+          (((@function iadd 2) y₁) 2)
+          (((@function iadd 2) y₁) 10)))))))
 
 ;;; LiftLambdaPass
 
@@ -73,19 +79,19 @@
   ((@function println-non-void 1)
    (@let1 x₁ ((@function random-dice 0))
      (@let1 y₁ ((@function random-dice 0))
-       ((@function iadd 2)
+       (((@function iadd 2)
+         (if
+             (if (((@function int-less? 2) x₁) 1)
+               (((@function equal? 2) x₁) 0)
+               (((@function equal? 2) x₁) 2))
+           (((@function iadd 2) y₁) 2)
+           (((@function iadd 2) y₁) 10)))
         (if
-            (if ((@function int-less? 2) x₁ 1)
-              ((@function equal? 2) x₁ 0)
-              ((@function equal? 2) x₁ 2))
-          ((@function iadd 2) y₁ 2)
-          ((@function iadd 2) y₁ 10))
-        (if
-            (if ((@function int-less? 2) x₁ 1)
-              ((@function equal? 2) x₁ 0)
-              ((@function equal? 2) x₁ 2))
-          ((@function iadd 2) y₁ 2)
-          ((@function iadd 2) y₁ 10)))))))
+            (if (((@function int-less? 2) x₁) 1)
+              (((@function equal? 2) x₁) 0)
+              (((@function equal? 2) x₁) 2))
+          (((@function iadd 2) y₁) 2)
+          (((@function iadd 2) y₁) 10)))))))
 
 ;;; UnnestOperandPass
 
@@ -97,34 +103,47 @@
           (@let1 _₅
               (@let1 _₆
                   (@let1 _₇ (@function int-less? 2)
-                    (@let1 _₈ 1
-                      (@let1 _₉ (_₇ x₁ _₈)
-                        (if _₉
-                          (@let1 _₁₀ (@function equal? 2)
-                            (@let1 _₁₁ 0 (_₁₀ x₁ _₁₁)))
-                          (@let1 _₁₂ (@function equal? 2)
-                            (@let1 _₁₃ 2 (_₁₂ x₁ _₁₃)))))))
+                    (@let1 _₈ (_₇ x₁)
+                      (@let1 _₉ 1
+                        (@let1 _₁₀ (_₈ _₉)
+                          (if _₁₀
+                            (@let1 _₁₁ (@function equal? 2)
+                              (@let1 _₁₂ (_₁₁ x₁)
+                                (@let1 _₁₃ 0 (_₁₂ _₁₃))))
+                            (@let1 _₁₄ (@function equal? 2)
+                              (@let1 _₁₅ (_₁₄ x₁)
+                                (@let1 _₁₆ 2 (_₁₅ _₁₆)))))))))
                 (if _₆
-                  (@let1 _₁₄ (@function iadd 2)
-                    (@let1 _₁₅ 2 (_₁₄ y₁ _₁₅)))
-                  (@let1 _₁₆ (@function iadd 2)
-                    (@let1 _₁₇ 10 (_₁₆ y₁ _₁₇)))))
-            (@let1 _₁₈
-                (@let1 _₁₉
-                    (@let1 _₂₀ (@function int-less? 2)
-                      (@let1 _₂₁ 1
-                        (@let1 _₂₂ (_₂₀ x₁ _₂₁)
-                          (if _₂₂
-                            (@let1 _₂₃ (@function equal? 2)
-                              (@let1 _₂₄ 0 (_₂₃ x₁ _₂₄)))
-                            (@let1 _₂₅ (@function equal? 2)
-                              (@let1 _₂₆ 2 (_₂₅ x₁ _₂₆)))))))
-                  (if _₁₉
-                    (@let1 _₂₇ (@function iadd 2)
-                      (@let1 _₂₈ 2 (_₂₇ y₁ _₂₈)))
-                    (@let1 _₂₉ (@function iadd 2)
-                      (@let1 _₃₀ 10 (_₂₉ y₁ _₃₀)))))
-              (@let1 _₃₁ (_₄ _₅ _₁₈) (_₁ _₃₁)))))))))
+                  (@let1 _₁₇ (@function iadd 2)
+                    (@let1 _₁₈ (_₁₇ y₁)
+                      (@let1 _₁₉ 2 (_₁₈ _₁₉))))
+                  (@let1 _₂₀ (@function iadd 2)
+                    (@let1 _₂₁ (_₂₀ y₁)
+                      (@let1 _₂₂ 10 (_₂₁ _₂₂))))))
+            (@let1 _₂₃ (_₄ _₅)
+              (@let1 _₂₄
+                  (@let1 _₂₅
+                      (@let1 _₂₆ (@function int-less? 2)
+                        (@let1 _₂₇ (_₂₆ x₁)
+                          (@let1 _₂₈ 1
+                            (@let1 _₂₉ (_₂₇ _₂₈)
+                              (if _₂₉
+                                (@let1 _₃₀
+                                    (@function equal? 2)
+                                  (@let1 _₃₁ (_₃₀ x₁)
+                                    (@let1 _₃₂ 0 (_₃₁ _₃₂))))
+                                (@let1 _₃₃
+                                    (@function equal? 2)
+                                  (@let1 _₃₄ (_₃₃ x₁)
+                                    (@let1 _₃₅ 2 (_₃₄ _₃₅)))))))))
+                    (if _₂₅
+                      (@let1 _₃₆ (@function iadd 2)
+                        (@let1 _₃₇ (_₃₆ y₁)
+                          (@let1 _₃₈ 2 (_₃₇ _₃₈))))
+                      (@let1 _₃₉ (@function iadd 2)
+                        (@let1 _₄₀ (_₃₉ y₁)
+                          (@let1 _₄₁ 10 (_₄₀ _₄₁))))))
+                (@let1 _₄₂ (_₂₃ _₂₄) (_₁ _₄₂))))))))))
 
 ;;; ExplicateControlPass
 
@@ -137,58 +156,69 @@
     (= y₁ (apply _₃))
     (= _₄ (const (@function iadd 2)))
     (= _₇ (const (@function int-less? 2)))
-    (= _₈ (const 1))
-    (= _₉ (apply _₇ x₁ _₈))
-    (branch _₉ main/then₁₁ main/else₁₂))
+    (= _₈ (apply _₇ x₁))
+    (= _₉ (const 1))
+    (= _₁₀ (apply _₈ _₉))
+    (branch _₁₀ main/then₁₁ main/else₁₂))
   (block main/let-body₁
-    (= _₃₁ (apply _₄ _₅ _₁₈))
-    (= _↩ (apply _₁ _₃₁))
+    (= _₄₂ (apply _₂₃ _₂₄))
+    (= _↩ (apply _₁ _₄₂))
     (return _↩))
   (block main/then₂
-    (= _₂₇ (const (@function iadd 2)))
-    (= _₂₈ (const 2))
-    (= _₁₈ (apply _₂₇ y₁ _₂₈))
+    (= _₃₆ (const (@function iadd 2)))
+    (= _₃₇ (apply _₃₆ y₁))
+    (= _₃₈ (const 2))
+    (= _₂₄ (apply _₃₇ _₃₈))
     (goto main/let-body₁))
   (block main/else₃
-    (= _₂₉ (const (@function iadd 2)))
-    (= _₃₀ (const 10))
-    (= _₁₈ (apply _₂₉ y₁ _₃₀))
+    (= _₃₉ (const (@function iadd 2)))
+    (= _₄₀ (apply _₃₉ y₁))
+    (= _₄₁ (const 10))
+    (= _₂₄ (apply _₄₀ _₄₁))
     (goto main/let-body₁))
-  (block main/let-body₄ (branch _₁₉ main/then₂ main/else₃))
+  (block main/let-body₄ (branch _₂₅ main/then₂ main/else₃))
   (block main/then₅
-    (= _₂₃ (const (@function equal? 2)))
-    (= _₂₄ (const 0))
-    (= _₁₉ (apply _₂₃ x₁ _₂₄))
+    (= _₃₀ (const (@function equal? 2)))
+    (= _₃₁ (apply _₃₀ x₁))
+    (= _₃₂ (const 0))
+    (= _₂₅ (apply _₃₁ _₃₂))
     (goto main/let-body₄))
   (block main/else₆
-    (= _₂₅ (const (@function equal? 2)))
-    (= _₂₆ (const 2))
-    (= _₁₉ (apply _₂₅ x₁ _₂₆))
+    (= _₃₃ (const (@function equal? 2)))
+    (= _₃₄ (apply _₃₃ x₁))
+    (= _₃₅ (const 2))
+    (= _₂₅ (apply _₃₄ _₃₅))
     (goto main/let-body₄))
   (block main/let-body₇
-    (= _₂₀ (const (@function int-less? 2)))
-    (= _₂₁ (const 1))
-    (= _₂₂ (apply _₂₀ x₁ _₂₁))
-    (branch _₂₂ main/then₅ main/else₆))
+    (= _₂₃ (apply _₄ _₅))
+    (= _₂₆ (const (@function int-less? 2)))
+    (= _₂₇ (apply _₂₆ x₁))
+    (= _₂₈ (const 1))
+    (= _₂₉ (apply _₂₇ _₂₈))
+    (branch _₂₉ main/then₅ main/else₆))
   (block main/then₈
-    (= _₁₄ (const (@function iadd 2)))
-    (= _₁₅ (const 2))
-    (= _₅ (apply _₁₄ y₁ _₁₅))
+    (= _₁₇ (const (@function iadd 2)))
+    (= _₁₈ (apply _₁₇ y₁))
+    (= _₁₉ (const 2))
+    (= _₅ (apply _₁₈ _₁₉))
     (goto main/let-body₇))
   (block main/else₉
-    (= _₁₆ (const (@function iadd 2)))
-    (= _₁₇ (const 10))
-    (= _₅ (apply _₁₆ y₁ _₁₇))
+    (= _₂₀ (const (@function iadd 2)))
+    (= _₂₁ (apply _₂₀ y₁))
+    (= _₂₂ (const 10))
+    (= _₅ (apply _₂₁ _₂₂))
     (goto main/let-body₇))
   (block main/let-body₁₀ (branch _₆ main/then₈ main/else₉))
   (block main/then₁₁
-    (= _₁₀ (const (@function equal? 2)))
-    (= _₁₁ (const 0))
-    (= _₆ (apply _₁₀ x₁ _₁₁))
+    (= _₁₁ (const (@function equal? 2)))
+    (= _₁₂ (apply _₁₁ x₁))
+    (= _₁₃ (const 0))
+    (= _₆ (apply _₁₂ _₁₃))
     (goto main/let-body₁₀))
   (block main/else₁₂
-    (= _₁₂ (const (@function equal? 2)))
-    (= _₁₃ (const 2))
-    (= _₆ (apply _₁₂ x₁ _₁₃))
+    (= _₁₄ (const (@function equal? 2)))
+    (= _₁₅ (apply _₁₄ x₁))
+    (= _₁₆ (const 2))
+    (= _₆ (apply _₁₅ _₁₆))
     (goto main/let-body₁₀)))
 

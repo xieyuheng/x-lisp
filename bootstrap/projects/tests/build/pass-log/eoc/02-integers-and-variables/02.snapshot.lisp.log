@@ -10,13 +10,13 @@
 
 (define (main)
   (println-non-void
-   (@let1 y (@let1 x 20 (iadd x (@let1 x 22 x))) y)))
+   (@let1 y (@let1 x 20 ((iadd x) (@let1 x 22 x))) y)))
 
 ;;; UniquifyPass
 
 (define (main)
   (println-non-void
-   (@let1 y₁ (@let1 x₁ 20 (iadd x₁ (@let1 x₂ 22 x₂))) y₁)))
+   (@let1 y₁ (@let1 x₁ 20 ((iadd x₁) (@let1 x₂ 22 x₂))) y₁)))
 
 ;;; RevealFunctionPass
 
@@ -24,7 +24,7 @@
   ((@function println-non-void 1)
    (@let1 y₁
        (@let1 x₁ 20
-         ((@function iadd 2) x₁ (@let1 x₂ 22 x₂)))
+         (((@function iadd 2) x₁) (@let1 x₂ 22 x₂)))
      y₁)))
 
 ;;; LiftLambdaPass
@@ -33,7 +33,7 @@
   ((@function println-non-void 1)
    (@let1 y₁
        (@let1 x₁ 20
-         ((@function iadd 2) x₁ (@let1 x₂ 22 x₂)))
+         (((@function iadd 2) x₁) (@let1 x₂ 22 x₂)))
      y₁)))
 
 ;;; UnnestOperandPass
@@ -43,7 +43,7 @@
     (@let1 y₁
         (@let1 x₁ 20
           (@let1 _₂ (@function iadd 2)
-            (@let1 x₂ 22 (_₂ x₁ x₂))))
+            (@let1 _₃ (_₂ x₁) (@let1 x₂ 22 (_₃ x₂)))))
       (_₁ y₁))))
 
 ;;; ExplicateControlPass
@@ -53,8 +53,9 @@
     (= _₁ (const (@function println-non-void 1)))
     (= x₁ (const 20))
     (= _₂ (const (@function iadd 2)))
+    (= _₃ (apply _₂ x₁))
     (= x₂ (const 22))
-    (= y₁ (apply _₂ x₁ x₂))
+    (= y₁ (apply _₃ x₂))
     (= _↩ (apply _₁ y₁))
     (return _↩)))
 
