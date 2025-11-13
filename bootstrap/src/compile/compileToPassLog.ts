@@ -1,8 +1,8 @@
 import fs from "node:fs"
 import * as B from "../basic/index.ts"
-import * as M from "../machine/index.ts"
 import { globals } from "../globals.ts"
 import * as L from "../lang/index.ts"
+import * as M from "../machine/index.ts"
 
 export function compileToPassLog(mod: L.Mod, logFile?: string): void {
   logLangMod("Input", mod, logFile)

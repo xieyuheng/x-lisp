@@ -1,12 +1,13 @@
 import * as M from "../../machine/index.ts"
 import type { Block } from "../block/index.ts"
 import type { Definition } from "../definition/index.ts"
+import { formatInstr } from "../format/index.ts"
 import type { Instr } from "../instr/index.ts"
 import { modOwnDefinitions, type Mod } from "../mod/index.ts"
 
 export function SelectInstructionPass(mod: Mod, machineMod: M.Mod): void {
   for (const definition of modOwnDefinitions(mod)) {
-     onDefinition(machineMod, definition)
+    onDefinition(machineMod, definition)
   }
 }
 
@@ -51,10 +52,17 @@ function onBlock(state: State, block: Block): void {
 function onInstr(state: State, instr: Instr): Array<M.Instr> {
   switch (instr.op) {
     case "Argument": {
-      // return `(= ${instr.dest} (argument ${instr.index}))`
+      if (instr.index > 6) {
+        let message = `[onInstr] can not handle more then 6 argument yet`
+        message += `\n  instr: ${formatInstr(instr)}`
+        throw new Error(message)
+      }
 
-      // TODO
-      return []
+      const regName = M.ABIs["x86-64-sysv"]["argument-reg-names"][instr.index]
+      return [
+        M.Instr("movq", [M.Reg(regName), M.Var(instr.dest)]),
+        M.Instr("retq", []),
+      ]
     }
 
     case "Const": {
@@ -71,10 +79,13 @@ function onInstr(state: State, instr: Instr): Array<M.Instr> {
 
     case "Return": {
       if (instr.result !== undefined) {
-        return [M.Instr("ret", [M.Var(instr.result)])]
+        return [
+          M.Instr("movq", [M.Var(instr.result), M.Reg("rax")]),
+          M.Instr("retq", []),
+        ]
       }
 
-      return [M.Instr("ret", [])]
+      return [M.Instr("retq", [])]
     }
 
     case "Goto": {
