@@ -16,9 +16,7 @@ export function ExplicateControlPass(mod: Mod, basicMod: B.Mod): void {
   }
 
   for (const definition of modOwnDefinitions(mod)) {
-    if (definition.kind === "FunctionDefinition") {
-      onDefinition(basicMod, definition)
-    }
+    onDefinition(basicMod, definition)
   }
 }
 
@@ -26,20 +24,30 @@ type State = {
   fn: B.FunctionDefinition
 }
 
-function onDefinition(basicMod: B.Mod, definition: Definition): void {
-  const fn = B.FunctionDefinition(basicMod, definition.name, new Map())
-  basicMod.definitions.set(definition.name, fn)
-  const initialInstrs = Array.from(
-    definition.parameters
-      .entries()
-      .map(([index, name]) => B.Argument(index, name)),
-  )
+function onDefinition(basicMod: B.Mod, definition: Definition): null {
+  switch (definition.kind) {
+    case "FunctionDefinition": {
+      const fn = B.FunctionDefinition(
+        basicMod,
+        definition.name,
+        new Map(),
+        definition.meta,
+      )
+      basicMod.definitions.set(definition.name, fn)
+      const initialInstrs = Array.from(
+        definition.parameters
+          .entries()
+          .map(([index, name]) => B.Argument(index, name)),
+      )
 
-  const state = { fn }
-  const block = B.Block("entry", initialInstrs)
-  state.fn.blocks.set(block.label, block)
-  block.instrs.push(...inTail(state, definition.body))
-  B.checkBlockTerminator(block)
+      const state = { fn }
+      const block = B.Block("entry", initialInstrs)
+      state.fn.blocks.set(block.label, block)
+      block.instrs.push(...inTail(state, definition.body))
+      B.checkBlockTerminator(block)
+      return null
+    }
+  }
 }
 
 function generateLabel(
