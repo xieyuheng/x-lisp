@@ -9,15 +9,18 @@ import { type Value } from "../value/index.ts"
 import { apply } from "./apply.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
-export function applyLambda(lambda: Values.Lambda, args: Array<Value>): Value {
+export function applyClosure(
+  closure: Values.Closure,
+  args: Array<Value>,
+): Value {
   const maxWidth = globals.maxWidth
-  const mod = lambda.mod
-  let env = lambda.env
-  for (const [index, parameter] of lambda.parameters.entries()) {
+  const mod = closure.mod
+  let env = closure.env
+  for (const [index, parameter] of closure.parameters.entries()) {
     const pattern = patternize(parameter)(mod, env)
     const resultEnv = match(pattern, args[index])(emptyEnv())
     if (resultEnv === undefined) {
-      let message = `[applyLambda] pattern mismatch`
+      let message = `[applyClosure] pattern mismatch`
       message += `\n  parameter index: ${index}`
       message += formatUnderTag(2, `parameter:`, prettyExp(maxWidth, parameter))
       message += formatUnderTag(
@@ -31,9 +34,9 @@ export function applyLambda(lambda: Values.Lambda, args: Array<Value>): Value {
     env = envUpdate(env, resultEnv)
   }
 
-  const arity = lambda.parameters.length
+  const arity = closure.parameters.length
   const restArgs = args.slice(arity)
-  const result = resultValue(evaluate(lambda.body)(lambda.mod, env))
+  const result = resultValue(evaluate(closure.body)(closure.mod, env))
   if (restArgs.length === 0) {
     return result
   } else {

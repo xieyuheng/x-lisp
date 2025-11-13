@@ -1,9 +1,23 @@
-# basic
+# fix apply -- for codegen
 
-[basic] select-instruction
-[basic] assign-home
-[basic] patch-instruction
-[basic] prolog-and-epilog
+[lang] `NullaryApply`
+[lang] `NullaryLambda`
+
+[lang] rename `Apply` to `ApplySugar`
+[lang] `Apply` -- should only take `target` and `arg`
+[lang] `ApplySugar` -- desugar to `Apply` and `NullaryApply`
+
+[basic] `Apply` should only take two `operands`
+[lang] fix `030-ExplicateControlPass` for 2-arity `Apply`
+
+# basic -- codegen
+
+[basic] `passes/` setup
+
+[basic] `SelectInstructionPass`
+[basic] `AssignHomePass`
+[basic] `PatchInstructionPass`
+[basic] `PrologAndEpilogPass`
 
 # runtime
 

@@ -4,18 +4,18 @@ import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { prettyValue } from "../pretty/index.ts"
 import { type Value } from "../value/index.ts"
 import { applyNullaryWithSchema } from "./applyNullaryWithSchema.ts"
-import { applyVariadicLambda } from "./applyVariadicLambda.ts"
+import { applyVariadicClosure } from "./applyVariadicClosure.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
 export function applyNullary(target: Value): Value {
   const maxWidth = globals.maxWidth
 
-  if (target.kind === "NullaryLambda") {
+  if (target.kind === "NullaryClosure") {
     return resultValue(evaluate(target.body)(target.mod, target.env))
   }
 
-  if (target.kind === "VariadicLambda") {
-    return applyVariadicLambda(target, [])
+  if (target.kind === "VariadicClosure") {
+    return applyVariadicClosure(target, [])
   }
 
   if (target.kind === "PrimitiveNullaryFunction") {
