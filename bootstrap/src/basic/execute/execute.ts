@@ -3,7 +3,7 @@ import assert from "node:assert"
 import { definitionArity } from "../definition/definitionHelpers.ts"
 import { frameGoto, frameLookup } from "../execute/index.ts"
 import { formatValue } from "../format/index.ts"
-import { instrOperands, type Instr } from "../instr/index.ts"
+import { type Instr } from "../instr/index.ts"
 import { modLookupDefinition } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import { type Context } from "./Context.ts"
@@ -32,8 +32,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     }
 
     case "Assert": {
-      const [x] = instrOperands(instr)
-      const value = frameLookup(frame, x)
+      const value = frameLookup(frame, instr.condition)
       if (!Values.isBool(value)) {
         let message = `[execute] (assert) value is not bool`
         message += `\n  value: ${formatValue(value)}`
@@ -51,11 +50,10 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     }
 
     case "Return": {
-      if (instrOperands(instr).length === 0) {
+      if ((instr).result === undefined) {
         context.result = Values.Void()
-      } else if (instrOperands(instr).length > 0) {
-        const [x] = instrOperands(instr)
-        context.result = frameLookup(frame, x)
+      } else {
+        context.result = frameLookup(frame, instr.result)
       }
 
       context.frames.pop()
@@ -68,8 +66,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     }
 
     case "Branch": {
-      const [x] = instrOperands(instr)
-      const condition = frameLookup(frame, x)
+      const condition = frameLookup(frame, (instr.condition))
       assert(Values.isBool(condition))
       if (Values.isTrue(condition)) {
         frameGoto(frame, instr.thenLabel)
@@ -89,7 +86,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
         else throw new Error(message)
       }
 
-      const args = instrOperands(instr).map((x) => frameLookup(frame, x))
+      const args = (instr.args).map((x) => frameLookup(frame, x))
       const arity = definitionArity(definition)
       if (args.length !== arity) {
         let message = `[execute] (call) arity mismatch`
@@ -108,11 +105,8 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     }
 
     case "NullaryApply": {
-      const [target, ...args] = instrOperands(instr).map((x) =>
-        frameLookup(frame, x),
-      )
-
-      const result = apply(context, target, args)
+      const target = frameLookup(frame, instr.target)
+      const result = apply(context, target, [])
       if (instr.dest !== undefined) {
         frame.env.set(instr.dest, result)
       }
@@ -121,11 +115,9 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     }
 
     case "Apply": {
-      const [target, ...args] = instrOperands(instr).map((x) =>
-        frameLookup(frame, x),
-      )
-
-      const result = apply(context, target, args)
+      const target = frameLookup(frame, instr.target)
+      const arg = frameLookup(frame, instr.arg)
+      const result = apply(context, target, [arg])
       if (instr.dest !== undefined) {
         frame.env.set(instr.dest, result)
       }

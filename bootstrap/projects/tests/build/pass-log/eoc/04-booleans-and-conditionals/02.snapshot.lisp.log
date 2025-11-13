@@ -151,9 +151,9 @@
   (block entry
     (= _₁ (const (@function println-non-void 1)))
     (= _₂ (const (@function random-dice 0)))
-    (= x₁ (apply _₂))
+    (= x₁ (nullary-apply _₂))
     (= _₃ (const (@function random-dice 0)))
-    (= y₁ (apply _₃))
+    (= y₁ (nullary-apply _₃))
     (= _₄ (const (@function iadd 2)))
     (= _₇ (const (@function int-less? 2)))
     (= _₈ (apply _₇ x₁))

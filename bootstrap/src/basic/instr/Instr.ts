@@ -46,28 +46,28 @@ export function Const(value: Value, dest: string, meta?: Meta): Const {
 
 export type Assert = {
   op: "Assert"
-  operands: [string]
+  condition: string
   meta?: Meta
 }
 
-export function Assert(operands: [string], meta?: Meta): Assert {
+export function Assert(condition: string, meta?: Meta): Assert {
   return {
     op: "Assert",
-    operands,
+    condition,
     meta,
   }
 }
 
 export type Return = {
   op: "Return"
-  operands: Array<string>
+  result?: string
   meta?: Meta
 }
 
-export function Return(operands: Array<string>, meta?: Meta): Return {
+export function Return(result?: string, meta?: Meta): Return {
   return {
     op: "Return",
-    operands,
+    result,
     meta,
   }
 }
@@ -88,21 +88,21 @@ export function Goto(label: string, meta?: Meta): Goto {
 
 export type Branch = {
   op: "Branch"
-  operands: [string]
+  condition: string
   thenLabel: string
   elseLabel: string
   meta?: Meta
 }
 
 export function Branch(
-  operands: [string],
+  condition: string,
   thenLabel: string,
   elseLabel: string,
   meta?: Meta,
 ): Branch {
   return {
     op: "Branch",
-    operands,
+    condition,
     thenLabel,
     elseLabel,
     meta,
@@ -112,21 +112,21 @@ export function Branch(
 export type Call = {
   op: "Call"
   name: string
-  operands: Array<string>
+  args: Array<string>
   dest?: string
   meta?: Meta
 }
 
 export function Call(
   name: string,
-  operands: Array<string>,
+  args: Array<string>,
   dest?: string,
   meta?: Meta,
 ): Call {
   return {
     op: "Call",
     name,
-    operands,
+    args,
     dest,
     meta,
   }
@@ -134,19 +134,19 @@ export function Call(
 
 export type NullaryApply = {
   op: "NullaryApply"
-  operands: Array<string>
+  target: string
   dest?: string
   meta?: Meta
 }
 
 export function NullaryApply(
-  operands: Array<string>,
+  target: string,
   dest?: string,
   meta?: Meta,
 ): NullaryApply {
   return {
     op: "NullaryApply",
-    operands,
+    target,
     dest,
     meta,
   }
@@ -154,19 +154,22 @@ export function NullaryApply(
 
 export type Apply = {
   op: "Apply"
-  operands: Array<string>
+  target: string,
+  arg: string,
   dest?: string
   meta?: Meta
 }
 
 export function Apply(
-  operands: Array<string>,
+  target: string,
+  arg: string,
   dest?: string,
   meta?: Meta,
 ): Apply {
   return {
     op: "Apply",
-    operands,
+    target,
+    arg,
     dest,
     meta,
   }

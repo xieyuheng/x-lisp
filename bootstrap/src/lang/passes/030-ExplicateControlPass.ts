@@ -78,19 +78,17 @@ function expToValue(exp: Exp): B.Value {
 function inTail(state: State, exp: Exp): Array<B.Instr> {
   switch (exp.kind) {
     case "Var": {
-      return [B.Return([exp.name])]
+      return [B.Return(exp.name)]
     }
 
     case "Apply": {
       const name = "_↩"
-      const operands = [Exps.varName(exp.target), Exps.varName(exp.arg)]
-      return [B.Apply(operands, name), B.Return([name])]
+      return [B.Apply(Exps.varName(exp.target), Exps.varName(exp.arg), name), B.Return(name)]
     }
 
     case "NullaryApply": {
       const name = "_↩"
-      const operands = [Exps.varName(exp.target)]
-      return [B.Apply(operands, name), B.Return([name])]
+      return [B.Apply(Exps.varName(exp.target), name), B.Return(name)]
     }
 
     case "Let1": {
@@ -136,13 +134,11 @@ function inLet1(
     }
 
     case "Apply": {
-      const operands = [Exps.varName(rhs.target), Exps.varName(rhs.arg)]
-      return [B.Apply(operands, name), ...cont]
+      return [B.Apply(Exps.varName(rhs.target), Exps.varName(rhs.arg), name), ...cont]
     }
 
     case "NullaryApply": {
-      const operands = [Exps.varName(rhs.target)]
-      return [B.Apply(operands, name), ...cont]
+      return [B.NullaryApply(Exps.varName(rhs.target), name), ...cont]
     }
 
     case "Let1": {
@@ -187,7 +183,7 @@ function inIf(
     case "Var": {
       return [
         B.Branch(
-          [condition.name],
+          condition.name,
           generateLabel(state, "then", thenCont),
           generateLabel(state, "else", elseCont),
         ),

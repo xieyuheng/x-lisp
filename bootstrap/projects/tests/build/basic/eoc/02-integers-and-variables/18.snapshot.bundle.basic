@@ -6,7 +6,7 @@
     (= _₄ (const (@function iadd 2)))
     (= _₅ (const (@function iadd 2)))
     (= _₆ (const (@function random-dice 0)))
-    (= _₇ (apply _₆))
+    (= _₇ (nullary-apply _₆))
     (= _₈ (apply _₅ _₇))
     (= _₉ (const 1))
     (= _₁₀ (apply _₈ _₉))

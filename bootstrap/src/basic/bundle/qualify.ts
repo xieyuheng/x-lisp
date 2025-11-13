@@ -29,7 +29,7 @@ function qualifyInstr(context: BundleContext, instr: Instr): Instr {
     case "Call": {
       return Instrs.Call(
         qualifyName(context, instr.name),
-        instr.operands,
+        instr.args,
         instr.dest,
         instr.meta,
       )

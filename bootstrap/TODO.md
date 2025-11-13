@@ -1,7 +1,5 @@
 # fix apply -- for codegen
 
-[basic] `Instr` -- should not have generic `operands` field
-
 [basic] `evaluate/` -- `applyNullary`
 [basic] `evaluate/` -- `apply` should only take two operands
 
