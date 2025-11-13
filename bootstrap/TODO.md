@@ -1,7 +1,9 @@
 # fix apply -- for codegen
 
-[basic] `NullaryApply` -- should only take one operand
-[basic] `Apply` -- should only take two operands
+[basic] `Instr` -- should not have generic `operands` field
+
+[basic] `evaluate/` -- `applyNullary`
+[basic] `evaluate/` -- `apply` should only take two operands
 
 # basic -- codegen
 

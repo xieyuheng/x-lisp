@@ -9,6 +9,7 @@ export type Instr =
   | Goto
   | Branch
   | Call
+  | NullaryApply
   | Apply
 
 export type Argument = {
@@ -125,6 +126,26 @@ export function Call(
   return {
     op: "Call",
     name,
+    operands,
+    dest,
+    meta,
+  }
+}
+
+export type NullaryApply = {
+  op: "NullaryApply"
+  operands: Array<string>
+  dest?: string
+  meta?: Meta
+}
+
+export function NullaryApply(
+  operands: Array<string>,
+  dest?: string,
+  meta?: Meta,
+): NullaryApply {
+  return {
+    op: "NullaryApply",
     operands,
     dest,
     meta,
