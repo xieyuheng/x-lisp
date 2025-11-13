@@ -36,6 +36,17 @@ export function parseOperand(sexp: S.Sexp): Operand {
         return Operands.DerefLabel(S.symbolContent(label), meta)
       }),
 
+      S.matcher("`(cc ,code)", ({ code }, { meta }) => {
+        const conditionCode = S.symbolContent(code)
+        if (!Operands.isConditionCode(conditionCode)) {
+          let message = `[parseOperand] in valid condition code`
+          message += `\n  code: ${conditionCode}`
+          throw new S.ErrorWithMeta(message, meta)
+        }
+
+        return Operands.Cc(conditionCode, meta)
+      }),
+
       S.matcher("label", ({ label }, { meta }) => {
         return Operands.Label(S.symbolContent(label), meta)
       }),

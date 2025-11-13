@@ -71,6 +71,12 @@ function transpileOperand(context: Context, operand: Operand): string {
     case "Label": {
       return transpileLabel(context, operand.name)
     }
+
+    default: {
+      let message = `[transpileOperand] unhandled operand`
+      message += `\n  operand: ${formatOperand(operand)}`
+      throw new Error(message)
+    }
   }
 }
 

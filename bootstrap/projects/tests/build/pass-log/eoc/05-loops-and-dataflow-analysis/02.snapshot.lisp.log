@@ -176,5 +176,29 @@
 
 ;;; SelectInstructionPass
 
-(define-code main (block entry (ret (var _↩))))
+(define-code main
+  (block entry
+    (leaq (deref-label println-non-void) (var _₁))
+    (leaq (deref-label print) (var _₂))
+    (movq (imm 1) (var _₃))
+    (leaq (deref-label newline) (var _₄))
+    (leaq (deref-label print) (var _₅))
+    (movq (imm 2) (var _₆))
+    (leaq (deref-label newline) (var _₇))
+    (leaq (deref-label print) (var _₈))
+    (movq (imm 3) (var _₉))
+    (leaq (deref-label newline) (var _₁₀))
+    (movq (imm 6) (var x₁))
+    (leaq (deref-label print) (var _₁₁))
+    (movq (imm 4) (var _₁₂))
+    (leaq (deref-label newline) (var _₁₃))
+    (leaq (deref-label print) (var _₁₄))
+    (movq (imm 5) (var _₁₅))
+    (leaq (deref-label newline) (var _₁₆))
+    (leaq (deref-label print) (var _₁₇))
+    (movq (imm 6) (var _₁₈))
+    (leaq (deref-label newline) (var _₁₉))
+    (leaq (deref-label iadd) (var _₂₀))
+    (movq (var _↩) (reg rax))
+    (retq)))
 

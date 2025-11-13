@@ -17,6 +17,9 @@ export const isDeref = (operand: Operand): operand is Operands.Deref =>
 export const isLabel = (operand: Operand): operand is Operands.Label =>
   operand.kind === "Label"
 
+export const isCc = (operand: Operand): operand is Operands.Cc =>
+  operand.kind === "Cc"
+
 export const asImm = (operand: Operand): Operands.Imm => {
   if (isImm(operand)) return operand
   else throw new Error(`[asImm] fail on: ${formatOperand(operand)}`)
@@ -36,7 +39,18 @@ export const asDeref = (operand: Operand): Operands.Deref => {
   if (isDeref(operand)) return operand
   else throw new Error(`[asDeref] fail on: ${formatOperand(operand)}`)
 }
+
 export const asLabel = (operand: Operand): Operands.Label => {
   if (isLabel(operand)) return operand
   else throw new Error(`[asLabel] fail on: ${formatOperand(operand)}`)
+}
+
+export const asCc = (operand: Operand): Operands.Cc => {
+  if (isCc(operand)) return operand
+  else throw new Error(`[asCc] fail on: ${formatOperand(operand)}`)
+}
+
+
+export function isConditionCode(code: string): code is Operands.ConditionCode {
+  return ["e", "l", "le", "g", "ge"].includes(code)
 }

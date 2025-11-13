@@ -133,11 +133,32 @@
 ;;; SelectInstructionPass
 
 (define-code main
-  (block entry)
-  (block main/let-body₁ (ret (var _↩)))
-  (block main/then₂)
-  (block main/else₃)
-  (block main/let-body₄)
-  (block main/then₅)
-  (block main/else₆))
+  (block entry
+    (leaq (deref-label println-non-void) (var _₁))
+    (leaq (deref-label random-dice) (var _₂))
+    (leaq (deref-label random-dice) (var _₃))
+    (leaq (deref-label int-less?) (var _₆))
+    (movq (imm 1) (var _₈))
+    (cmpq (var _₉) (imm 1))
+    (branch-if (cc e) main/then₅ main/else₆))
+  (block main/let-body₁ (movq (var _↩) (reg rax)) (retq))
+  (block main/then₂
+    (leaq (deref-label iadd) (var _₁₆))
+    (movq (imm 2) (var _₁₈))
+    (jmp main/let-body₁))
+  (block main/else₃
+    (leaq (deref-label iadd) (var _₁₉))
+    (movq (imm 10) (var _₂₁))
+    (jmp main/let-body₁))
+  (block main/let-body₄
+    (cmpq (var _₅) (imm 1))
+    (branch-if (cc e) main/then₂ main/else₃))
+  (block main/then₅
+    (leaq (deref-label equal?) (var _₁₀))
+    (movq (imm 0) (var _₁₂))
+    (jmp main/let-body₄))
+  (block main/else₆
+    (leaq (deref-label equal?) (var _₁₃))
+    (movq (imm 2) (var _₁₅))
+    (jmp main/let-body₄)))
 

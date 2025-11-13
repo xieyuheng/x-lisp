@@ -1,27 +1,17 @@
-# basic -- codegen
+# codegen
 
-[basic] `010-SelectInstructionPass` -- `onInstr` -- Const
-[basic] `010-SelectInstructionPass` -- `onInstr` -- Assert
-[basic] `010-SelectInstructionPass` -- `onInstr` -- Goto
-[basic] `010-SelectInstructionPass` -- `onInstr` -- Branch
 [basic] `010-SelectInstructionPass` -- `onInstr` -- Call
 [basic] `010-SelectInstructionPass` -- `onInstr` -- NullaryApply
 [basic] `010-SelectInstructionPass` -- `onInstr` -- Apply
 
-
 # machine
 
-[machine] `instr-db/` setup
-
-[machine] `instr-db/` support pseudo instructions
-
-- callq-n
-- set-if -- cc as operand
-- jmp-if -- cc as operand
-- branch-if
-
-- jmp-indirect
-- jmp-indirect-if -- cc as operand
+[machine] transpile -- callq-n
+[machine] transpile -- set-if -- take cc
+[machine] transpile -- jmp-if -- take cc
+[machine] transpile -- branch-if
+[machine] transpile -- jmp-indirect
+[machine] transpile -- jmp-indirect-if -- take cc
 
 # machine
 
