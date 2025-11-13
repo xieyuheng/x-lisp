@@ -1,5 +1,5 @@
 import fs from "node:fs"
-import Path from "path"
+import Path from "node:path"
 import * as B from "../basic/index.ts"
 import { compileToBasic, compileToPassLog } from "../compile/index.ts"
 import { globals } from "../globals.ts"

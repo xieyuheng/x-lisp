@@ -1,4 +1,4 @@
-import Path from "path"
+import Path from "node:path"
 import { loadProjectConfig } from "./loadProjectConfig.ts"
 import { Project } from "./Project.ts"
 
