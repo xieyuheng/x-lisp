@@ -4,34 +4,39 @@ import { globals } from "../globals.ts"
 import * as L from "../lang/index.ts"
 
 export function compileToPassLog(mod: L.Mod, logFile?: string): void {
-  logMod("Input", L.prettyMod(globals.maxWidth, mod), logFile)
+  logLangMod("Input", mod, logFile)
 
   L.ShrinkPass(mod)
-  logMod("ShrinkPass", L.prettyMod(globals.maxWidth, mod), logFile)
+  logLangMod("ShrinkPass", mod, logFile)
 
   L.UniquifyPass(mod)
-  logMod("UniquifyPass", L.prettyMod(globals.maxWidth, mod), logFile)
+  logLangMod("UniquifyPass", mod, logFile)
 
   L.RevealFunctionPass(mod)
-  logMod("RevealFunctionPass", L.prettyMod(globals.maxWidth, mod), logFile)
+  logLangMod("RevealFunctionPass", mod, logFile)
 
   L.LiftLambdaPass(mod)
-  logMod("LiftLambdaPass", L.prettyMod(globals.maxWidth, mod), logFile)
+  logLangMod("LiftLambdaPass", mod, logFile)
 
   L.UnnestOperandPass(mod)
-  logMod("UnnestOperandPass", L.prettyMod(globals.maxWidth, mod), logFile)
+  logLangMod("UnnestOperandPass", mod, logFile)
 
   const basicMod = B.createMod(mod.url)
+  B.importBuiltin(basicMod)
 
   L.ExplicateControlPass(mod, basicMod)
-  logMod(
-    "ExplicateControlPass",
-    B.prettyMod(globals.maxWidth, basicMod),
-    logFile,
-  )
+  logBasicMod("ExplicateControlPass", basicMod, logFile)
 }
 
-function logMod(tag: string, modText: string, logFile?: string): void {
+function logLangMod(tag: string, mod: L.Mod, logFile?: string): void {
+  logCode(tag, L.prettyMod(globals.maxWidth, mod), logFile)
+}
+
+function logBasicMod(tag: string, mod: B.Mod, logFile?: string): void {
+  logCode(tag, B.prettyMod(globals.maxWidth, mod), logFile)
+}
+
+function logCode(tag: string, modText: string, logFile?: string): void {
   log(`;;; ${tag}\n`, logFile)
   log("\n", logFile)
   log(modText, logFile)
