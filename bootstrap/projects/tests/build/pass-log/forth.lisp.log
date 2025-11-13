@@ -145,6 +145,9 @@
 
 ;;; ExplicateControlPass
 
+(define-function identity
+  (block entry (= x (argument 0)) (return x)))
+
 (define-function swap
   (block entry
     (= f (argument 0))
@@ -220,9 +223,6 @@
     (= _₁ (apply f x₁))
     (= _↩ (apply _₁ x₁))
     (return _↩)))
-
-(define-function identity
-  (block entry (= x (argument 0)) (return x)))
 
 (define-function main
   (block entry
