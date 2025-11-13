@@ -17,7 +17,7 @@ export function formatValue(value: Value): string {
     }
 
     case "Curry": {
-      const target = formatValue(value.target)
+      const target = formatValue(value.fn)
       const args = formatValues(value.args)
       if (args === "") {
         return `(@curry ${target} ${value.arity})`
