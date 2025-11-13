@@ -1,6 +1,6 @@
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 
-export type Operand = Imm | ImmLabel | Var | Reg | Deref | DerefLabel | Label
+export type Operand = Imm | ImmLabel | Var | Reg | Deref | DerefLabel | Label | Cc
 
 export type Imm = { kind: "Imm"; value: number; meta?: Meta }
 export const Imm = (value: number, meta?: Meta): Imm => ({
@@ -58,5 +58,14 @@ export type Label = { kind: "Label"; name: string; meta?: Meta }
 export const Label = (name: string, meta?: Meta): Label => ({
   kind: "Label",
   name,
+  meta,
+})
+
+export type ConditionCode = "e" | "l" | "le" | "g" | "ge"
+
+export type Cc = { kind: "Cc"; code: ConditionCode; meta?: Meta }
+export const Cc = (code: ConditionCode, meta?: Meta): Cc => ({
+  kind: "Cc",
+  code,
   meta,
 })

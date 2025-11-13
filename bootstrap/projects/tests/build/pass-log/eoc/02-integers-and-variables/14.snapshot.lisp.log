@@ -51,5 +51,12 @@
 
 ;;; SelectInstructionPass
 
-(define-code main (block entry (ret (var _↩))))
+(define-code main
+  (block entry
+    (leaq (deref-label println-non-void) (var _₁))
+    (movq (imm 32) (var x₁))
+    (leaq (deref-label iadd) (var _₂))
+    (movq (imm 10) (var x₂))
+    (movq (var _↩) (reg rax))
+    (retq)))
 

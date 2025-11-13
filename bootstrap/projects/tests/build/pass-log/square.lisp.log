@@ -49,5 +49,10 @@
 
 ;;; SelectInstructionPass
 
-(define-code square (block entry (ret (var _↩))))
+(define-code square
+  (block entry
+    (movq (reg rdi) (var x))
+    (leaq (deref-label imul) (var _₁))
+    (movq (var _↩) (reg rax))
+    (retq)))
 

@@ -1,7 +1,8 @@
 import * as M from "../../machine/index.ts"
 import type { Block } from "../block/index.ts"
+import * as Values from "../value/index.ts"
 import type { Definition } from "../definition/index.ts"
-import { formatInstr } from "../format/index.ts"
+import { formatInstr, formatValue } from "../format/index.ts"
 import type { Instr } from "../instr/index.ts"
 import { modOwnDefinitions, type Mod } from "../mod/index.ts"
 
@@ -59,17 +60,36 @@ function onInstr(state: State, instr: Instr): Array<M.Instr> {
       }
 
       const regName = M.ABIs["x86-64-sysv"]["argument-reg-names"][instr.index]
-      return [
-        M.Instr("movq", [M.Reg(regName), M.Var(instr.dest)]),
-        M.Instr("retq", []),
-      ]
+      return [M.Instr("movq", [M.Reg(regName), M.Var(instr.dest)])]
     }
 
     case "Const": {
-      // return `(= ${instr.dest} (const ${formatValue(instr.value)}))`
+      // TODO use tagged value
 
-      // TODO
-      return []
+      if (Values.isBool(instr.value)) {
+        if (Values.isTrue(instr.value)) {
+          return [M.Instr("movq", [M.Imm(1), M.Var(instr.dest)])]
+        } else {
+          return [M.Instr("movq", [M.Imm(0), M.Var(instr.dest)])]
+        }
+      }
+
+      switch (instr.value.kind) {
+        case "Int": {
+          return [M.Instr("movq", [M.Imm(instr.value.content), M.Var(instr.dest)])]
+        }
+
+        case "FunctionRef": {
+          return [M.Instr("leaq", [M.DerefLabel(instr.value.name), M.Var(instr.dest)])]
+        }
+
+        default: {
+          let message = `[onInstr/Const] unhandled value`
+          message += `\n  value: ${formatValue(instr.value)}`
+          message += `\n  dest: ${(instr.dest)}`
+          throw new Error(message)
+        }
+      }
     }
 
     case "Assert": {
@@ -89,17 +109,15 @@ function onInstr(state: State, instr: Instr): Array<M.Instr> {
     }
 
     case "Goto": {
-      // return `(goto ${instr.label})`
-
-      // TODO
-      return []
+      return [M.Instr("jmp", [M.Label(instr.label)])]
     }
 
     case "Branch": {
-      // return `(branch ${instr.condition} ${instr.thenLabel} ${instr.elseLabel})`
-
-      // TODO
-      return []
+      // TODO use tagged value
+      return [
+        M.Instr("cmpq", [M.Var(instr.condition), M.Imm(1)]),
+        M.Instr("branch-if", [M.Cc("e"), M.Label(instr.thenLabel), M.Label(instr.elseLabel)]),
+      ]
     }
 
     case "Call": {

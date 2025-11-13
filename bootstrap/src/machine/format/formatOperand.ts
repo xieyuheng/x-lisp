@@ -23,11 +23,15 @@ export function formatOperand(operand: Operand): string {
     }
 
     case "DerefLabel": {
-      return `(deref-label (reg ${operand.label}))`
+      return `(deref-label ${operand.label})`
     }
 
     case "Label": {
       return `${operand.name}`
+    }
+
+    case "Cc": {
+      return `(cc ${operand.code})`
     }
   }
 }
