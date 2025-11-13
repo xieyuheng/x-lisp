@@ -140,3 +140,13 @@
     (= _↩ (apply _₁ t₁))
     (return _↩)))
 
+;;; SelectInstructionPass
+
+(define-code Y (block entry (ret (var _↩))))
+
+(define-code Y/λ₁ (block entry (ret (var _↩))))
+
+(define-code Y/λ₂ (block entry (ret (var _↩))))
+
+(define-code Y/λ₂/λ₁ (block entry (ret (var _↩))))
+

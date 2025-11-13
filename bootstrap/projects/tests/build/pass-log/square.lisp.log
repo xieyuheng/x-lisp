@@ -47,3 +47,7 @@
     (= _↩ (apply _₂ x))
     (return _↩)))
 
+;;; SelectInstructionPass
+
+(define-code square (block entry (ret (var _↩))))
+

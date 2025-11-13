@@ -109,3 +109,14 @@
     (goto main/let-body₄))
   (block main/else₆ (= _₃ (const #f)) (goto main/let-body₄)))
 
+;;; SelectInstructionPass
+
+(define-code main
+  (block entry)
+  (block main/let-body₁ (ret (var _↩)))
+  (block main/then₂)
+  (block main/else₃)
+  (block main/let-body₄)
+  (block main/then₅)
+  (block main/else₆))
+

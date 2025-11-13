@@ -41,3 +41,7 @@
     (= _↩ (apply _₁ b₁))
     (return _↩)))
 
+;;; SelectInstructionPass
+
+(define-code main (block entry (ret (var _↩))))
+

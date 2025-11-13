@@ -198,3 +198,11 @@
     (= _₂ (apply _₂₉ _₃₀))
     (goto main/let-body₁)))
 
+;;; SelectInstructionPass
+
+(define-code main
+  (block entry)
+  (block main/let-body₁ (ret (var _↩)))
+  (block main/then₂)
+  (block main/else₃))
+

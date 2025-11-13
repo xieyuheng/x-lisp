@@ -236,3 +236,21 @@
     (= _↩ (apply _₁ _₅))
     (return _↩)))
 
+;;; SelectInstructionPass
+
+(define-code identity (block entry (ret (var x))))
+
+(define-code swap (block entry (ret (var _↩))))
+
+(define-code drop (block entry (ret (var _↩))))
+
+(define-code drop/λ₁ (block entry (ret (var _↩))))
+
+(define-code drop/λ₁/λ₁ (block entry (ret (var _↩))))
+
+(define-code dup (block entry (ret (var _↩))))
+
+(define-code dup/λ₁ (block entry (ret (var _↩))))
+
+(define-code main (block entry (ret (var _↩))))
+
