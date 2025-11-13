@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import { instrOperands, type Instr } from "../instr/index.ts"
+import { type Instr } from "../instr/index.ts"
 import { formatValue } from "./formatValue.ts"
 
 export function formatInstr(instr: Instr): string {
@@ -13,14 +13,12 @@ export function formatInstr(instr: Instr): string {
     }
 
     case "Assert": {
-      const [x] = instrOperands(instr)
-      return `(assert ${x})`
+      return `(assert ${instr.condition})`
     }
 
     case "Return": {
-      if (instrOperands(instr).length > 0) {
-        const [x] = instrOperands(instr)
-        return `(return ${x})`
+      if ((instr.result) !== undefined) {
+        return `(return ${instr.result})`
       }
 
       return `(return)`
@@ -31,30 +29,25 @@ export function formatInstr(instr: Instr): string {
     }
 
     case "Branch": {
-      const [conditionx] = instrOperands(instr)
-      return `(branch ${conditionx} ${instr.thenLabel} ${instr.elseLabel})`
+      return `(branch ${instr.condition} ${instr.thenLabel} ${instr.elseLabel})`
     }
 
     case "Call": {
-      const operands = instr.operands.join(" ")
+      const args = instr.args.join(" ")
       const rhs =
-        operands === ""
+        args === ""
           ? `(call ${instr.name})`
-          : `(call ${instr.name} ${operands})`
+          : `(call ${instr.name} ${args})`
       return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
     }
 
     case "Apply": {
-      assert(instr.operands.length > 0)
-      const operands = instr.operands.join(" ")
-      const rhs = `(apply ${operands})`
+      const rhs = `(apply ${instr.target} ${instr.arg})`
       return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
     }
 
     case "NullaryApply": {
-      assert(instr.operands.length > 0)
-      const operands = instr.operands.join(" ")
-      const rhs = `(nullary-apply ${operands})`
+      const rhs = `(nullary-apply ${instr.target})`
       return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
     }
   }

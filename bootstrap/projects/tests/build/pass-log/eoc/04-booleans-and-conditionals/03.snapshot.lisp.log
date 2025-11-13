@@ -90,7 +90,7 @@
     (= _₁ (const (@function println-non-void 1)))
     (= _₄ (const (@function equal? 2)))
     (= _₅ (const (@function random-dice 0)))
-    (= _₆ (apply _₅))
+    (= _₆ (nullary-apply _₅))
     (= _₇ (apply _₄ _₆))
     (= _₈ (const 1))
     (= _₉ (apply _₇ _₈))
@@ -102,7 +102,7 @@
   (block main/then₅
     (= _₁₀ (const (@function equal? 2)))
     (= _₁₁ (const (@function random-dice 0)))
-    (= _₁₂ (apply _₁₁))
+    (= _₁₂ (nullary-apply _₁₁))
     (= _₁₃ (apply _₁₀ _₁₂))
     (= _₁₄ (const 2))
     (= _₃ (apply _₁₃ _₁₄))
