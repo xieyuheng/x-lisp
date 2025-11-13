@@ -1,7 +1,7 @@
 # basic -- codegen
 
-[basic] `010-SelectInstructionPass` -- setup
-[basic] `010-SelectInstructionPass`
+[basic] `010-SelectInstructionPass` -- `onBlock`
+[basic] `010-SelectInstructionPass` -- `onInstr`
 
 # machine
 
