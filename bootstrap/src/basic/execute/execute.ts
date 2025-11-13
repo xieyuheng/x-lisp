@@ -107,6 +107,19 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       return null
     }
 
+    case "NullaryApply": {
+      const [target, ...args] = instrOperands(instr).map((x) =>
+        frameLookup(frame, x),
+      )
+
+      const result = apply(context, target, args)
+      if (instr.dest !== undefined) {
+        frame.env.set(instr.dest, result)
+      }
+
+      return null
+    }
+
     case "Apply": {
       const [target, ...args] = instrOperands(instr).map((x) =>
         frameLookup(frame, x),

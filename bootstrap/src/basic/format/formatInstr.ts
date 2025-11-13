@@ -50,5 +50,12 @@ export function formatInstr(instr: Instr): string {
       const rhs = `(apply ${operands})`
       return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
     }
+
+    case "NullaryApply": {
+      assert(instr.operands.length > 0)
+      const operands = instr.operands.join(" ")
+      const rhs = `(nullary-apply ${operands})`
+      return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+    }
   }
 }
