@@ -1,7 +1,5 @@
 # fix apply -- for codegen
 
-[lang] `Apply` -- should only take `target` and `arg`
-
 [lang] `ApplySugar` -- desugar to `Apply` and `NullaryApply`
 
 [basic] `Apply` should only take two `operands`

@@ -63,6 +63,12 @@ export function formatExp(exp: Exp): string {
       return `(${target})`
     }
 
+    case "Apply": {
+      const target = formatExp(exp.target)
+      const arg = formatExp(exp.arg)
+      return `(${target} ${arg})`
+    }
+
     case "Let1": {
       const rhs = formatExp(exp.rhs)
       const body = formatExp(exp.body)
