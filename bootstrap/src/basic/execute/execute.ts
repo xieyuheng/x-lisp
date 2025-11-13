@@ -9,8 +9,8 @@ import * as Values from "../value/index.ts"
 import { type Context } from "./Context.ts"
 import { type Frame } from "./Frame.ts"
 import { apply } from "./apply.ts"
-import { callDefinition } from "./call.ts"
 import { applyNullary } from "./applyNullary.ts"
+import { callDefinition } from "./call.ts"
 
 export function execute(context: Context, frame: Frame, instr: Instr): null {
   switch (instr.op) {

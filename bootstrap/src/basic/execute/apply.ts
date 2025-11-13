@@ -1,25 +1,22 @@
 import assert from "node:assert"
-import { formatValue, formatValues } from "../format/index.ts"
+import { formatValue } from "../format/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { call } from "./call.ts"
 import { type Context } from "./Context.ts"
 
-export function apply(
-  context: Context,
-  target: Value,
-  arg: Value,
-): Value {
+export function apply(context: Context, target: Value, arg: Value): Value {
   switch (target.kind) {
     case "Curry": {
       if (target.arity > 1) {
         const newArity = target.arity - 1
         const newArgs = [...target.args, arg]
-        return Values.Curry(target.target, newArity, newArgs)
+        return Values.Curry(target.fn, newArity, newArgs)
       } else {
         assert(target.arity === 1)
         const newArgs = [...target.args, arg]
-        return call(context, target.target.name, newArgs)
+        assert(target.fn.arity === newArgs.length)
+        return call(context, target.fn.name, newArgs)
       }
     }
 
