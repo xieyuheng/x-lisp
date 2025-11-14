@@ -128,7 +128,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
           .map(([index, arg]) =>
             M.Instr("movq", [M.Var(arg), selectArgReg(index)]),
           ),
-        M.Instr("callq-with-arity", [
+        M.Instr("callq-n", [
           M.Label(instr.name),
           M.Arity(instr.args.length),
         ]),
@@ -137,19 +137,20 @@ function onInstr(instr: Instr): Array<M.Instr> {
     }
 
     case "Apply": {
-      // const rhs = `(apply ${instr.target} ${instr.arg})`
-      // return `(= ${instr.dest} ${rhs})`
-
-      // TODO
-      return []
+      return [
+        M.Instr("movq", [M.Var(instr.target), selectArgReg(0)]),
+        M.Instr("movq", [M.Var(instr.arg), selectArgReg(1)]),
+        M.Instr("callq-n", [M.Label("x_apply"), M.Arity(2)]),
+        M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
+      ]
     }
 
     case "NullaryApply": {
-      // const rhs = `(nullary-apply ${instr.target})`
-      // return `(= ${instr.dest} ${rhs})`
-
-      // TODO
-      return []
+      return [
+        M.Instr("movq", [M.Var(instr.target), selectArgReg(0)]),
+        M.Instr("callq-n", [M.Label("x_nullary_apply"), M.Arity(1)]),
+        M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
+      ]
     }
   }
 }
