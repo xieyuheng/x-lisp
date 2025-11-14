@@ -47,6 +47,9 @@
   (block entry
     (leaq (deref-label println-non-void) (var _₁))
     (movq (imm 42) (var a₁))
+    (movq (var a₁) (reg rdi))
+    (callq-with-arity identity (arity 1))
+    (movq (reg rax) (var b₁))
     (movq (var _↩) (reg rax))
     (retq)))
 

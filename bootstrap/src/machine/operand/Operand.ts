@@ -8,7 +8,8 @@ export type Operand =
   | Deref
   | DerefLabel
   | Label
-  | Cc | Arity
+  | Cc
+  | Arity
 
 export type Imm = { kind: "Imm"; value: number; meta?: Meta }
 export const Imm = (value: number, meta?: Meta): Imm => ({
