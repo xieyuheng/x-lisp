@@ -1,5 +1,3 @@
-[machine] remove `Extern` `Stmt`
-
 [runtime] value tag encoding -- copy from inet-lisp
 [runtime] builtin
 [runtime] GC -- mark and sweep
