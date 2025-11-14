@@ -8,15 +8,15 @@ main.entry:
         leaq x_iadd(%rip), @(var _₂)
         movq @(var _₂), %rdi
         movq @(var x₁), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _₃)
         movq @(var _₃), %rdi
         movq @(var z₁), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var y₁)
         movq @(var _₁), %rdi
         movq @(var y₁), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 
