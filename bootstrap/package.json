@@ -16,7 +16,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "test": "node --test 'src/**/*.test.ts'",
-    "test-suite": "node --stack-size=65536 src/main.ts test --project projects/tests/project.json",
+    "test-suite": "node --stack-size=65536 src/main.ts test --project projects/x-lisp-test-suite/project.json",
     "format": "prettier src --write"
   },
   "dependencies": {
