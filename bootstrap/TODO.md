@@ -1,6 +1,7 @@
-build -- support machine
-
-# codegen
+[bootstrap] be explicit about compile source in function name
+[bootstrap] compileBasicToX86Machine
+[bootstrap] compileBasicToX86Assembly
+[bootstrap] build -- support machine
 
 [machine] transpile -- callq-n -- take arity
 [machine] transpile -- set-if -- take cc
@@ -9,9 +10,9 @@ build -- support machine
 [machine] transpile -- jmp-indirect
 [machine] transpile -- jmp-indirect-if -- take cc
 
-[runtime] value tag encoding
-[runtime] GC
+[runtime] value tag encoding -- copy from inet-lisp
 [runtime] builtin
+[runtime] GC
 
 [basic] `010-SelectInstructionPass` -- `onInstr` -- fix tagged value encoding
 
