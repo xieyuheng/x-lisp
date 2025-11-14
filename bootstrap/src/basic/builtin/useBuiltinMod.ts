@@ -6,6 +6,7 @@ import { builtinFloat } from "./builtinFloat.ts"
 import { builtinInt } from "./builtinInt.ts"
 import { builtinRandom } from "./builtinRandom.ts"
 import { builtinValue } from "./builtinValue.ts"
+import { builtinFunction } from "./builtinFunction.ts"
 
 let mod: Mod | undefined = undefined
 
@@ -21,6 +22,7 @@ export function useBuiltinMod(): Mod {
   builtinFloat(mod)
   builtinCurry(mod)
   builtinRandom(mod)
+  builtinFunction(mod)
 
   return mod
 }
