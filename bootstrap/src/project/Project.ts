@@ -75,7 +75,7 @@ export class Project {
       const url = createUrl(inputFile)
       const dependencies = new Map()
       const mod = L.load(url, dependencies)
-      const basicMod = Services.compileToBasic(mod)
+      const basicMod = Services.compileLangToBasic(mod)
       const outputText = B.prettyMod(globals.maxWidth, basicMod)
       fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
       fs.writeFileSync(outputFile, outputText)
@@ -123,7 +123,7 @@ export class Project {
       const mod = L.load(url, dependencies)
       fs.mkdirSync(Path.dirname(logFile), { recursive: true })
       fs.writeFileSync(logFile, "")
-      Services.compileToPassLog(mod, logFile)
+      Services.compileLangToPassLog(mod, logFile)
     }
   }
 

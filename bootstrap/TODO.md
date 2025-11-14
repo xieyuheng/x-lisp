@@ -1,4 +1,3 @@
-[bootstrap] be explicit about compile source in function name
 [bootstrap] compileBasicToX86Machine
 [bootstrap] compileBasicToX86Assembly
 [bootstrap] build -- support machine

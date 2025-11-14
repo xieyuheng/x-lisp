@@ -1,7 +1,7 @@
 import * as B from "../basic/index.ts"
 import * as L from "../lang/index.ts"
 
-export function compileToBasic(mod: L.Mod): B.Mod {
+export function compileLangToBasic(mod: L.Mod): B.Mod {
   L.ShrinkPass(mod)
   L.UniquifyPass(mod)
   L.RevealFunctionPass(mod)

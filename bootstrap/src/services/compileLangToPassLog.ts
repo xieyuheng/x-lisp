@@ -4,7 +4,7 @@ import { globals } from "../globals.ts"
 import * as L from "../lang/index.ts"
 import * as M from "../machine/index.ts"
 
-export function compileToPassLog(mod: L.Mod, logFile?: string): void {
+export function compileLangToPassLog(mod: L.Mod, logFile?: string): void {
   logLangMod("Input", mod, logFile)
 
   L.ShrinkPass(mod)
