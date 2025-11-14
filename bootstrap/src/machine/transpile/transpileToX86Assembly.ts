@@ -2,7 +2,7 @@ import type { Definition } from "../definition/index.ts"
 import { modDefinitions, type Mod } from "../mod/index.ts"
 import { transpileBlock } from "./transpileBlock.ts"
 import { transpileChunk } from "./transpileChunk.ts"
-import { transpileIdentifier } from "./transpileIdentifier.ts"
+import { transpileIdentifier } from "./transpileName.ts"
 
 const indentation = " ".repeat(8)
 
