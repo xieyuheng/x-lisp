@@ -18,8 +18,8 @@ export function formatOperand(operand: Operand): string {
       return `(reg ${operand.name})`
     }
 
-    case "Deref": {
-      return `(deref (reg ${operand.regName}) ${operand.offset})`
+    case "DerefReg": {
+      return `(deref-reg (reg ${operand.regName}) ${operand.offset})`
     }
 
     case "DerefLabel": {

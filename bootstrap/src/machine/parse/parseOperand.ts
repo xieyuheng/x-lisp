@@ -22,9 +22,9 @@ export function parseOperand(sexp: S.Sexp): Operand {
       }),
 
       S.matcher(
-        "`(deref ,regName ,offset)",
+        "`(deref-reg ,regName ,offset)",
         ({ regName, offset }, { meta }) => {
-          return Operands.Deref(
+          return Operands.DerefReg(
             S.symbolContent(regName),
             S.numberContent(offset),
             meta,

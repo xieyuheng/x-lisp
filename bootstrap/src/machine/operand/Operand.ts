@@ -5,7 +5,7 @@ export type Operand =
   | ImmLabel
   | Var
   | Reg
-  | Deref
+  | DerefReg
   | DerefLabel
   | Label
   | Cc
@@ -39,14 +39,14 @@ export const Reg = (name: string, meta?: Meta): Reg => ({
   meta,
 })
 
-export type Deref = {
-  kind: "Deref"
+export type DerefReg = {
+  kind: "DerefReg"
   regName: string
   offset: number
   meta?: Meta
 }
-export const Deref = (regName: string, offset: number, meta?: Meta): Deref => ({
-  kind: "Deref",
+export const DerefReg = (regName: string, offset: number, meta?: Meta): DerefReg => ({
+  kind: "DerefReg",
   regName,
   offset,
   meta,
