@@ -66,7 +66,7 @@ router.defineHandlers({
 try {
   await router.run(process.argv.slice(2))
 } catch (error) {
-  // console.log(errorReport(error))
-  console.log(error)
+  console.log(errorReport(error))
+  // console.log(error)
   process.exit(1)
 }

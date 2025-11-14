@@ -13,5 +13,9 @@ export function formatModuleStmt(stmt: Stmt): string {
     case "Export": {
       return `(export ${stmt.names.join(" ")})`
     }
+
+    case "Extern": {
+      return `(extern ${stmt.names.join(" ")})`
+    }
   }
 }
