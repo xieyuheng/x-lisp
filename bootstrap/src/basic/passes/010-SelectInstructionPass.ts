@@ -50,9 +50,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
         throw new Error(message)
       }
 
-      const argRegName =
-        M.ABIs["x86-64-sysv"]["argument-reg-names"][instr.index]
-      return [M.Instr("movq", [M.Reg(argRegName), M.Var(instr.dest)])]
+      return [M.Instr("movq", [selectArgReg(instr.index), M.Var(instr.dest)])]
     }
 
     case "Const": {
@@ -125,10 +123,11 @@ function onInstr(instr: Instr): Array<M.Instr> {
 
     case "Call": {
       return [
-        ...instr.args.entries().map(([index, arg]) => {
-          const argRegName = M.ABIs["x86-64-sysv"]["argument-reg-names"][index]
-          return M.Instr("movq", [M.Var(arg), M.Reg(argRegName)])
-        }),
+        ...instr.args
+          .entries()
+          .map(([index, arg]) =>
+            M.Instr("movq", [M.Var(arg), selectArgReg(index)]),
+          ),
         M.Instr("callq-with-arity", [
           M.Label(instr.name),
           M.Arity(instr.args.length),
@@ -153,4 +152,9 @@ function onInstr(instr: Instr): Array<M.Instr> {
       return []
     }
   }
+}
+
+function selectArgReg(index: number): M.Reg {
+  const argRegName = M.ABIs["x86-64-sysv"]["argument-reg-names"][index]
+  return M.Reg(argRegName)
 }
