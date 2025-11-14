@@ -1,4 +1,8 @@
-[runtime] value tag encoding -- copy from inet-lisp
+[runtime] `value` -- tag copy from inet-lisp
+[runtime] `value` -- remove unused value
+[runtime] `value` -- fix naming
+[runtime] `value` -- fix tag encoding
+[runtime] `value` -- encoding small hashtag inline
 
 [basic] `010-SelectInstructionPass` -- `onInstr` -- fix tagged value encoding
 
