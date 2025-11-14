@@ -71,7 +71,15 @@ function onInstr(instr: Instr): Array<M.Instr> {
           ]
         }
 
-        case "PrimitiveFunctionRef":
+        case "PrimitiveFunctionRef": {
+          return [
+            M.Instr("leaq", [
+              M.DerefLabel(M.Label(instr.value.name)),
+              M.Var(instr.dest),
+            ]),
+          ]
+        }
+          
         case "FunctionRef": {
           return [
             M.Instr("leaq", [
