@@ -1,10 +1,10 @@
 import fs from "node:fs"
 import Path from "node:path"
 import * as B from "../basic/index.ts"
-import { compileToBasic, compileToPassLog } from "../compile/index.ts"
 import { globals } from "../globals.ts"
 import { createUrl } from "../helpers/url/createUrl.ts"
 import * as L from "../lang/index.ts"
+import { compileToBasic, compileToPassLog } from "../services/index.ts"
 import { type ProjectConfig } from "./ProjectConfig.ts"
 
 export class Project {

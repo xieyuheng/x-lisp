@@ -1,7 +1,6 @@
 import * as cmd from "@xieyuheng/command.js"
 import fs from "node:fs"
 import * as B from "./basic/index.ts"
-import { compileToBasic, compileToPassLog } from "./compile/index.ts"
 import { globals } from "./globals.ts"
 import { errorReport } from "./helpers/error/errorReport.ts"
 import { getPackageJson } from "./helpers/node/getPackageJson.ts"
@@ -9,7 +8,7 @@ import { createUrl } from "./helpers/url/createUrl.ts"
 import * as L from "./lang/index.ts"
 import * as M from "./machine/index.ts"
 import { loadProject } from "./project/index.ts"
-import { assembleX86GasFile } from "./services/assembleX86GasFile.ts"
+import * as Services from "./services/index.ts"
 
 const { version } = getPackageJson()
 
@@ -42,11 +41,11 @@ router.defineHandlers({
   },
   "lisp:compile-to-pass-log": ([file]) => {
     const mod = L.loadEntry(createUrl(file))
-    compileToPassLog(mod)
+    Services.compileToPassLog(mod)
   },
   "lisp:compile-to-basic": ([file]) => {
     const mod = L.loadEntry(createUrl(file))
-    console.log(B.prettyMod(globals.maxWidth, compileToBasic(mod)))
+    console.log(B.prettyMod(globals.maxWidth, Services.compileToBasic(mod)))
   },
   "basic:run": ([file]) => {
     const mod = B.loadEntry(createUrl(file))
@@ -67,7 +66,7 @@ router.defineHandlers({
     const assemblyCode = M.transpileToX86Assembly(mod)
     const assemblyFile = file + ".x86.s"
     fs.writeFileSync(assemblyFile, assemblyCode)
-    assembleX86GasFile(assemblyFile)
+    Services.assembleX86GasFile(assemblyFile)
   },
 })
 
