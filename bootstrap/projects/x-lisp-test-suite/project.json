@@ -1,5 +1,5 @@
 {
-  "name": "x-lisp/test",
+  "name": "x-lisp-test-suite",
   "version": "0.1.0",
   "build": {
     "output-directory": "build",
