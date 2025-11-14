@@ -8,13 +8,6 @@ export function stage1(mod: Mod, stmt: Stmt): void {
       mod.exported.add(name)
     }
   }
-
-  if (stmt.kind === "Extern") {
-    for (const name of stmt.names) {
-      mod.externed.add(name)
-    }
-  }
-
   if (stmt.kind === "DefineCode") {
     const definition = Definitions.CodeDefinition(
       mod,

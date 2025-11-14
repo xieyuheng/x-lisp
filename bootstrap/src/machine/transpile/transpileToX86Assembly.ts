@@ -19,12 +19,6 @@ export function transpileToX86Assembly(mod: Mod): string {
     code += "\n"
   }
 
-  code += "\n"
-
-  for (const name of mod.externed) {
-    code += `.extern ${transpileIdentifier([name])}\n`
-  }
-
   return code
 }
 
