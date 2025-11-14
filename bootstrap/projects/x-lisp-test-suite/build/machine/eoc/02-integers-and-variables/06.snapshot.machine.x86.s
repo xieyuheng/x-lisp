@@ -2,9 +2,9 @@
 .text
 main:
 main.entry:
-        leaq println_non_void(%rip), @(var _₁)
-        leaq ineg(%rip), @(var _₂)
-        leaq random_dice(%rip), @(var _₃)
+        leaq x_println_non_void(%rip), @(var _₁)
+        leaq x_ineg(%rip), @(var _₂)
+        leaq x_random_dice(%rip), @(var _₃)
         movq @(var _₃), %rdi
         callq nullary_apply
         movq %rax, @(var _₄)

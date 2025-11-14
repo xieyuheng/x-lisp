@@ -2,17 +2,17 @@
 .text
 main:
 main.entry:
-        leaq println_non_void(%rip), @(var _₁)
-        leaq random_dice(%rip), @(var _₂)
+        leaq x_println_non_void(%rip), @(var _₁)
+        leaq x_random_dice(%rip), @(var _₂)
         movq @(var _₂), %rdi
         callq nullary_apply
         movq %rax, @(var x₁)
-        leaq random_dice(%rip), @(var _₃)
+        leaq x_random_dice(%rip), @(var _₃)
         movq @(var _₃), %rdi
         callq nullary_apply
         movq %rax, @(var y₁)
-        leaq iadd(%rip), @(var _₄)
-        leaq iadd(%rip), @(var _₅)
+        leaq x_iadd(%rip), @(var _₄)
+        leaq x_iadd(%rip), @(var _₅)
         movq @(var _₅), %rdi
         movq @(var x₁), %rsi
         callq apply

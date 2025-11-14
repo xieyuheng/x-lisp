@@ -2,17 +2,17 @@
 .text
 main:
 main.entry:
-        leaq println_non_void(%rip), @(var _₁)
-        leaq random_dice(%rip), @(var _₂)
+        leaq x_println_non_void(%rip), @(var _₁)
+        leaq x_random_dice(%rip), @(var _₂)
         movq @(var _₂), %rdi
         callq nullary_apply
         movq %rax, @(var x₁)
-        leaq random_dice(%rip), @(var _₃)
+        leaq x_random_dice(%rip), @(var _₃)
         movq @(var _₃), %rdi
         callq nullary_apply
         movq %rax, @(var y₁)
-        leaq iadd(%rip), @(var _₄)
-        leaq int_less_p(%rip), @(var _₇)
+        leaq x_iadd(%rip), @(var _₄)
+        leaq x_int_less_p(%rip), @(var _₇)
         movq @(var _₇), %rdi
         movq @(var x₁), %rsi
         callq apply
@@ -37,7 +37,7 @@ main.main.let_body₁:
         movq @(var _↩), %rax
         retq 
 main.main.then₂:
-        leaq iadd(%rip), @(var _₃₆)
+        leaq x_iadd(%rip), @(var _₃₆)
         movq @(var _₃₆), %rdi
         movq @(var y₁), %rsi
         callq apply
@@ -49,7 +49,7 @@ main.main.then₂:
         movq %rax, @(var _₂₄)
         jmp main.main.let_body₁
 main.main.else₃:
-        leaq iadd(%rip), @(var _₃₉)
+        leaq x_iadd(%rip), @(var _₃₉)
         movq @(var _₃₉), %rdi
         movq @(var y₁), %rsi
         callq apply
@@ -65,7 +65,7 @@ main.main.let_body₄:
         jmpe main.main.then₂
         jmp main.main.else₃
 main.main.then₅:
-        leaq equal_p(%rip), @(var _₃₀)
+        leaq x_equal_p(%rip), @(var _₃₀)
         movq @(var _₃₀), %rdi
         movq @(var x₁), %rsi
         callq apply
@@ -77,7 +77,7 @@ main.main.then₅:
         movq %rax, @(var _₂₅)
         jmp main.main.let_body₄
 main.main.else₆:
-        leaq equal_p(%rip), @(var _₃₃)
+        leaq x_equal_p(%rip), @(var _₃₃)
         movq @(var _₃₃), %rdi
         movq @(var x₁), %rsi
         callq apply
@@ -93,7 +93,7 @@ main.main.let_body₇:
         movq @(var _₅), %rsi
         callq apply
         movq %rax, @(var _₂₃)
-        leaq int_less_p(%rip), @(var _₂₆)
+        leaq x_int_less_p(%rip), @(var _₂₆)
         movq @(var _₂₆), %rdi
         movq @(var x₁), %rsi
         callq apply
@@ -107,7 +107,7 @@ main.main.let_body₇:
         jmpe main.main.then₅
         jmp main.main.else₆
 main.main.then₈:
-        leaq iadd(%rip), @(var _₁₇)
+        leaq x_iadd(%rip), @(var _₁₇)
         movq @(var _₁₇), %rdi
         movq @(var y₁), %rsi
         callq apply
@@ -119,7 +119,7 @@ main.main.then₈:
         movq %rax, @(var _₅)
         jmp main.main.let_body₇
 main.main.else₉:
-        leaq iadd(%rip), @(var _₂₀)
+        leaq x_iadd(%rip), @(var _₂₀)
         movq @(var _₂₀), %rdi
         movq @(var y₁), %rsi
         callq apply
@@ -135,7 +135,7 @@ main.main.let_body₁₀:
         jmpe main.main.then₈
         jmp main.main.else₉
 main.main.then₁₁:
-        leaq equal_p(%rip), @(var _₁₁)
+        leaq x_equal_p(%rip), @(var _₁₁)
         movq @(var _₁₁), %rdi
         movq @(var x₁), %rsi
         callq apply
@@ -147,7 +147,7 @@ main.main.then₁₁:
         movq %rax, @(var _₆)
         jmp main.main.let_body₁₀
 main.main.else₁₂:
-        leaq equal_p(%rip), @(var _₁₄)
+        leaq x_equal_p(%rip), @(var _₁₄)
         movq @(var _₁₄), %rdi
         movq @(var x₁), %rsi
         callq apply

@@ -2,9 +2,9 @@
 .text
 main:
 main.entry:
-        leaq println_non_void(%rip), @(var _₁)
-        leaq iadd(%rip), @(var _₂)
-        leaq iadd(%rip), @(var _₃)
+        leaq x_println_non_void(%rip), @(var _₁)
+        leaq x_iadd(%rip), @(var _₂)
+        leaq x_iadd(%rip), @(var _₃)
         movq $1, @(var _₄)
         movq @(var _₃), %rdi
         movq @(var _₄), %rsi
@@ -19,13 +19,13 @@ main.entry:
         movq @(var _₇), %rsi
         callq apply
         movq %rax, @(var _₈)
-        leaq iadd(%rip), @(var _₉)
+        leaq x_iadd(%rip), @(var _₉)
         movq $3, @(var _₁₀)
         movq @(var _₉), %rdi
         movq @(var _₁₀), %rsi
         callq apply
         movq %rax, @(var _₁₁)
-        leaq iadd(%rip), @(var _₁₂)
+        leaq x_iadd(%rip), @(var _₁₂)
         movq $4, @(var _₁₃)
         movq @(var _₁₂), %rdi
         movq @(var _₁₃), %rsi

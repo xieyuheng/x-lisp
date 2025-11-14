@@ -2,15 +2,15 @@
 .text
 main:
 main.entry:
-        leaq println_non_void(%rip), @(var _₁)
-        leaq iadd(%rip), @(var _₂)
+        leaq x_println_non_void(%rip), @(var _₁)
+        leaq x_iadd(%rip), @(var _₂)
         movq $1, @(var _₃)
         movq @(var _₂), %rdi
         movq @(var _₃), %rsi
         callq apply
         movq %rax, @(var _₄)
-        leaq iadd(%rip), @(var _₅)
-        leaq random_dice(%rip), @(var _₆)
+        leaq x_iadd(%rip), @(var _₅)
+        leaq x_random_dice(%rip), @(var _₆)
         movq @(var _₆), %rdi
         callq nullary_apply
         movq %rax, @(var _₇)

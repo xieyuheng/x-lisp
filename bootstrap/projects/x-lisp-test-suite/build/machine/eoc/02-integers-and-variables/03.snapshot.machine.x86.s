@@ -2,10 +2,10 @@
 .text
 main:
 main.entry:
-        leaq println_non_void(%rip), @(var _₁)
+        leaq x_println_non_void(%rip), @(var _₁)
         movq $20, @(var x₁)
         movq $22, @(var z₁)
-        leaq iadd(%rip), @(var _₂)
+        leaq x_iadd(%rip), @(var _₂)
         movq @(var _₂), %rdi
         movq @(var x₁), %rsi
         callq apply

@@ -2,9 +2,9 @@
 
 (define-code main
   (block entry
-    (leaq (deref-label (label println-non-void)) (var _₁))
+    (leaq (deref-label (label x-println-non-void)) (var _₁))
     (movq (imm 6) (var y₁))
-    (leaq (deref-label (label ineg)) (var _₂))
+    (leaq (deref-label (label x-ineg)) (var _₂))
     (movq (imm 42) (var _₃))
     (movq (var _₂) (reg rdi))
     (movq (var _₃) (reg rsi))
@@ -13,7 +13,7 @@
     (movq (var y₂) (reg rdi))
     (callq-n (label identity) (arity 1))
     (movq (reg rax) (var x₁))
-    (leaq (deref-label (label iadd)) (var _₄))
+    (leaq (deref-label (label x-iadd)) (var _₄))
     (movq (var _₄) (reg rdi))
     (movq (var x₁) (reg rsi))
     (callq-n (label apply) (arity 2))

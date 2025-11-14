@@ -276,7 +276,7 @@
 (define-code drop
   (block entry
     (movq (reg rdi) (var f))
-    (leaq (deref-label (label curry-put!)) (var _₁))
+    (leaq (deref-label (label x-curry-put!)) (var _₁))
     (movq (imm 0) (var _₂))
     (movq (var _₁) (reg rdi))
     (movq (var _₂) (reg rsi))
@@ -286,7 +286,7 @@
     (movq (var f) (reg rsi))
     (callq-n (label apply) (arity 2))
     (movq (reg rax) (var _₄))
-    (leaq (deref-label (label make-curry)) (var _₅))
+    (leaq (deref-label (label x-make-curry)) (var _₅))
     (leaq (deref-label (label drop/λ₁)) (var _₆))
     (movq (var _₅) (reg rdi))
     (movq (var _₆) (reg rsi))
@@ -313,7 +313,7 @@
   (block entry
     (movq (reg rdi) (var f))
     (movq (reg rsi) (var dropped₁))
-    (leaq (deref-label (label curry-put!)) (var _₁))
+    (leaq (deref-label (label x-curry-put!)) (var _₁))
     (movq (imm 0) (var _₂))
     (movq (var _₁) (reg rdi))
     (movq (var _₂) (reg rsi))
@@ -323,7 +323,7 @@
     (movq (var f) (reg rsi))
     (callq-n (label apply) (arity 2))
     (movq (reg rax) (var _₄))
-    (leaq (deref-label (label make-curry)) (var _₅))
+    (leaq (deref-label (label x-make-curry)) (var _₅))
     (leaq (deref-label (label drop/λ₁/λ₁)) (var _₆))
     (movq (var _₅) (reg rdi))
     (movq (var _₆) (reg rsi))
@@ -360,7 +360,7 @@
 (define-code dup
   (block entry
     (movq (reg rdi) (var f))
-    (leaq (deref-label (label curry-put!)) (var _₁))
+    (leaq (deref-label (label x-curry-put!)) (var _₁))
     (movq (imm 0) (var _₂))
     (movq (var _₁) (reg rdi))
     (movq (var _₂) (reg rsi))
@@ -370,7 +370,7 @@
     (movq (var f) (reg rsi))
     (callq-n (label apply) (arity 2))
     (movq (reg rax) (var _₄))
-    (leaq (deref-label (label make-curry)) (var _₅))
+    (leaq (deref-label (label x-make-curry)) (var _₅))
     (leaq (deref-label (label dup/λ₁)) (var _₆))
     (movq (var _₅) (reg rdi))
     (movq (var _₆) (reg rsi))
@@ -410,10 +410,10 @@
 
 (define-code main
   (block entry
-    (leaq (deref-label (label println-non-void)) (var _₁))
-    (leaq (deref-label (label identity)) (var f₁))
+    (leaq (deref-label (label x-println-non-void)) (var _₁))
+    (leaq (deref-label (label x-identity)) (var f₁))
     (leaq (deref-label (label dup)) (var _₂))
-    (leaq (deref-label (label identity)) (var _₃))
+    (leaq (deref-label (label x-identity)) (var _₃))
     (movq (var _₂) (reg rdi))
     (movq (var _₃) (reg rsi))
     (callq-n (label apply) (arity 2))
