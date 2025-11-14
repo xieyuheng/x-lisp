@@ -1,9 +1,6 @@
 # codegen
 
-[basic] `010-SelectInstructionPass` -- `onInstr` -- NullaryApply
-[basic] `010-SelectInstructionPass` -- `onInstr` -- Apply
-
-[machine] transpile -- callq-with-arity -- take arity
+[machine] transpile -- callq-n -- take arity
 [machine] transpile -- set-if -- take cc
 [machine] transpile -- jmp-if -- take cc
 [machine] transpile -- branch-if
