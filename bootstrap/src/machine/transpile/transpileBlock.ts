@@ -2,6 +2,7 @@ import type { Block } from "../block/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Operand } from "../operand/index.ts"
+import * as Operands from "../operand/index.ts"
 import { transpileIdentifier } from "./transpileIdentifier.ts"
 
 const indentation = " ".repeat(8)
@@ -23,6 +24,18 @@ function transpileInstr(context: Context, instr: Instr): string {
     case "callq-n": {
       const [label] = instr.operands
       return `${indentation}callq ${transpileOperand(context, label)}`
+    }
+
+    case "set-if": {
+      const [cc, dest] = instr.operands
+      const code = Operands.asCc(cc).code
+      return `${indentation}set${code} ${transpileOperand(context, dest)}`
+    }
+
+    case "jmp-if": {
+      const [cc, label] = instr.operands
+      const code = Operands.asCc(cc).code
+      return `${indentation}jmp${code} ${transpileOperand(context, label)}`
     }
 
     default: {
