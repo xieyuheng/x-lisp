@@ -1,7 +1,5 @@
 # codegen
 
-[machine] `Arity` as `Operand`
-
 [basic] `010-SelectInstructionPass` -- `onInstr` -- Call
 [basic] `010-SelectInstructionPass` -- `onInstr` -- NullaryApply
 [basic] `010-SelectInstructionPass` -- `onInstr` -- Apply

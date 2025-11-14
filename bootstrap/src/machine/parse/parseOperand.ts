@@ -47,6 +47,10 @@ export function parseOperand(sexp: S.Sexp): Operand {
         return Operands.Cc(conditionCode, meta)
       }),
 
+      S.matcher("`(arity ,value)", ({ value }, { meta }) => {
+        return Operands.Arity(S.numberContent(value), meta)
+      }),
+
       S.matcher("label", ({ label }, { meta }) => {
         return Operands.Label(S.symbolContent(label), meta)
       }),

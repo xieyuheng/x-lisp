@@ -8,7 +8,7 @@ export type Operand =
   | Deref
   | DerefLabel
   | Label
-  | Cc
+  | Cc | Arity
 
 export type Imm = { kind: "Imm"; value: number; meta?: Meta }
 export const Imm = (value: number, meta?: Meta): Imm => ({
@@ -75,5 +75,12 @@ export type Cc = { kind: "Cc"; code: ConditionCode; meta?: Meta }
 export const Cc = (code: ConditionCode, meta?: Meta): Cc => ({
   kind: "Cc",
   code,
+  meta,
+})
+
+export type Arity = { kind: "Arity"; value: number; meta?: Meta }
+export const Arity = (value: number, meta?: Meta): Arity => ({
+  kind: "Arity",
+  value,
   meta,
 })
