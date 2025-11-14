@@ -24,3 +24,8 @@ export function useBuiltinMod(): Mod {
 
   return mod
 }
+
+export function useBuiltinNames(): Array<string> {
+  const builtinMod = useBuiltinMod()
+  return Array.from(builtinMod.definitions.keys())
+}

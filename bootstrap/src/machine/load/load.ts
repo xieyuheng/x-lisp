@@ -13,9 +13,9 @@ export function load(url: URL): Mod {
   const mod = createMod(url)
 
   const sexps = S.parseSexps(text, { url: mod.url })
-  mod.stmts = sexps.map(parseStmt)
+  const stmts = sexps.map(parseStmt)
 
-  for (const stmt of mod.stmts) stage1(mod, stmt)
+  for (const stmt of stmts) stage1(mod, stmt)
 
   return mod
 }

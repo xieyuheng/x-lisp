@@ -3,6 +3,8 @@ import * as S from "@xieyuheng/x-sexp.js"
 export const sexpConfig: S.Config = {
   keywords: [
     ["define-code", 1],
+    ["define-data", 1],
+    ["extern", 0],
 
     ["define-function", 1],
     ["block", 1],
