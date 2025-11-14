@@ -35,17 +35,17 @@ export function formatInstr(instr: Instr): string {
       const args = instr.args.join(" ")
       const rhs =
         args === "" ? `(call ${instr.name})` : `(call ${instr.name} ${args})`
-      return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+      return `(= ${instr.dest} ${rhs})`
     }
 
     case "Apply": {
       const rhs = `(apply ${instr.target} ${instr.arg})`
-      return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+      return `(= ${instr.dest} ${rhs})`
     }
 
     case "NullaryApply": {
       const rhs = `(nullary-apply ${instr.target})`
-      return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+      return `(= ${instr.dest} ${rhs})`
     }
   }
 }

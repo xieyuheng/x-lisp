@@ -1,6 +1,14 @@
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 
-export type Operand = Imm | ImmLabel | Var | Reg | Deref | DerefLabel | Label | Cc
+export type Operand =
+  | Imm
+  | ImmLabel
+  | Var
+  | Reg
+  | Deref
+  | DerefLabel
+  | Label
+  | Cc
 
 export type Imm = { kind: "Imm"; value: number; meta?: Meta }
 export const Imm = (value: number, meta?: Meta): Imm => ({

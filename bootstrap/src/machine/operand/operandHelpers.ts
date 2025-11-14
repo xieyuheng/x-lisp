@@ -50,7 +50,6 @@ export const asCc = (operand: Operand): Operands.Cc => {
   else throw new Error(`[asCc] fail on: ${formatOperand(operand)}`)
 }
 
-
 export function isConditionCode(code: string): code is Operands.ConditionCode {
   return ["e", "l", "le", "g", "ge"].includes(code)
 }

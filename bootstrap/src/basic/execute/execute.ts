@@ -98,20 +98,14 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       }
 
       const result = callDefinition(context, definition, args)
-      if (instr.dest !== undefined) {
-        frame.env.set(instr.dest, result)
-      }
-
+      frame.env.set(instr.dest, result)
       return null
     }
 
     case "NullaryApply": {
       const target = frameLookup(frame, instr.target)
       const result = applyNullary(context, target)
-      if (instr.dest !== undefined) {
-        frame.env.set(instr.dest, result)
-      }
-
+      frame.env.set(instr.dest, result)
       return null
     }
 
@@ -119,10 +113,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       const target = frameLookup(frame, instr.target)
       const arg = frameLookup(frame, instr.arg)
       const result = apply(context, target, arg)
-      if (instr.dest !== undefined) {
-        frame.env.set(instr.dest, result)
-      }
-
+      frame.env.set(instr.dest, result)
       return null
     }
   }

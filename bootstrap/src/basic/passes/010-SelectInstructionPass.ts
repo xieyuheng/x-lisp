@@ -1,10 +1,10 @@
 import * as M from "../../machine/index.ts"
 import type { Block } from "../block/index.ts"
-import * as Values from "../value/index.ts"
 import type { Definition } from "../definition/index.ts"
 import { formatInstr, formatValue } from "../format/index.ts"
 import type { Instr } from "../instr/index.ts"
 import { modOwnDefinitions, type Mod } from "../mod/index.ts"
+import * as Values from "../value/index.ts"
 
 export function SelectInstructionPass(mod: Mod, machineMod: M.Mod): void {
   for (const definition of modOwnDefinitions(mod)) {
@@ -76,17 +76,24 @@ function onInstr(state: State, instr: Instr): Array<M.Instr> {
 
       switch (instr.value.kind) {
         case "Int": {
-          return [M.Instr("movq", [M.Imm(instr.value.content), M.Var(instr.dest)])]
+          return [
+            M.Instr("movq", [M.Imm(instr.value.content), M.Var(instr.dest)]),
+          ]
         }
 
         case "FunctionRef": {
-          return [M.Instr("leaq", [M.DerefLabel(instr.value.name), M.Var(instr.dest)])]
+          return [
+            M.Instr("leaq", [
+              M.DerefLabel(instr.value.name),
+              M.Var(instr.dest),
+            ]),
+          ]
         }
 
         default: {
           let message = `[onInstr/Const] unhandled value`
           message += `\n  value: ${formatValue(instr.value)}`
-          message += `\n  dest: ${(instr.dest)}`
+          message += `\n  dest: ${instr.dest}`
           throw new Error(message)
         }
       }
@@ -116,7 +123,11 @@ function onInstr(state: State, instr: Instr): Array<M.Instr> {
       // TODO use tagged value
       return [
         M.Instr("cmpq", [M.Var(instr.condition), M.Imm(1)]),
-        M.Instr("branch-if", [M.Cc("e"), M.Label(instr.thenLabel), M.Label(instr.elseLabel)]),
+        M.Instr("branch-if", [
+          M.Cc("e"),
+          M.Label(instr.thenLabel),
+          M.Label(instr.elseLabel),
+        ]),
       ]
     }
 
@@ -124,7 +135,7 @@ function onInstr(state: State, instr: Instr): Array<M.Instr> {
       // const args = instr.args.join(" ")
       // const rhs =
       //   args === "" ? `(call ${instr.name})` : `(call ${instr.name} ${args})`
-      // return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+      // return `(= ${instr.dest} ${rhs})`
 
       // TODO
       return []
@@ -132,7 +143,7 @@ function onInstr(state: State, instr: Instr): Array<M.Instr> {
 
     case "Apply": {
       // const rhs = `(apply ${instr.target} ${instr.arg})`
-      // return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+      // return `(= ${instr.dest} ${rhs})`
 
       // TODO
       return []
@@ -140,7 +151,7 @@ function onInstr(state: State, instr: Instr): Array<M.Instr> {
 
     case "NullaryApply": {
       // const rhs = `(nullary-apply ${instr.target})`
-      // return instr.dest ? `(= ${instr.dest} ${rhs})` : rhs
+      // return `(= ${instr.dest} ${rhs})`
 
       // TODO
       return []
