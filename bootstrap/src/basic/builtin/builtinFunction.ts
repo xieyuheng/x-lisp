@@ -1,17 +1,25 @@
-// import { definePrimitiveFunction, provide } from "../define/index.ts"
-// import { apply } from "../execute/index.ts"
-// import { applyNullary } from "../execute/index.ts"
-// import { type Mod } from "../mod/index.ts"
-// import * as Values from "../value/index.ts"
+import { definePrimitiveFunctionWithContext, provide } from "../define/index.ts"
+import { apply, applyNullary } from "../execute/index.ts"
+import { type Mod } from "../mod/index.ts"
 
-// export function builtinFunction(mod: Mod) {
-//   provide(mod, ["apply-nullary", "apply-unary"])
+export function builtinFunction(mod: Mod) {
+  provide(mod, ["apply-nullary", "apply-unary"])
 
-//   definePrimitiveFunction(mod, "apply-nullary", 1, (f) => {
-//     return applyNullary(f)
-//   })
+  definePrimitiveFunctionWithContext(
+    mod,
+    "apply-nullary",
+    1,
+    (context) => (f) => {
+      return applyNullary(context, f)
+    },
+  )
 
-//   definePrimitiveFunction(mod, "apply-unary", 2, (f, arg) => {
-//     return apply(f, arg)
-//   })
-// }
+  definePrimitiveFunctionWithContext(
+    mod,
+    "apply-unary",
+    2,
+    (context) => (f, arg) => {
+      return apply(context, f, arg)
+    },
+  )
+}

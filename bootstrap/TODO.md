@@ -1,7 +1,3 @@
-[basic] `definePrimitiveFunctionWithContext`
-
-[basic] builtin -- apply-nullary & apply-unary
-
 [runtime] value tag encoding -- copy from inet-lisp
 
 [basic] `010-SelectInstructionPass` -- `onInstr` -- fix tagged value encoding
