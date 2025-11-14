@@ -10,11 +10,24 @@ import { transpileIdentifier } from "./transpileIdentifier.ts"
 const indentation = " ".repeat(8)
 
 export function transpileToX86Assembly(mod: Mod): string {
+  let code = ''
+
   const moduleStmts = mod.stmts
-    .filter(Stmts.isAboutModule)
-    .map(transpileModuleStmt)
-  const definitions = modDefinitions(mod).map(transpileDefinition).join("\n\n")
-  return [moduleStmts.join("\n"), definitions].join("\n\n") + "\n"
+
+  for (const stmt of mod.stmts) {
+    if (Stmts.isAboutModule(stmt)) {
+      code += transpileModuleStmt(stmt)
+      code += "\n"
+    }
+  }
+
+  for (const definition of modDefinitions(mod)) {
+    code += "\n"
+    code += transpileDefinition(definition)
+    code += "\n"
+  }
+
+  return code
 }
 
 function transpileModuleStmt(stmt: Stmt): string {

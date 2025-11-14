@@ -44,9 +44,7 @@ function transpileOperand(context: Context, operand: Operand): string {
     }
 
     case "Var": {
-      let message = `[transpileOperand/Var] var should be home before transpiling`
-      message += `\n  variable: ${formatOperand(operand)}`
-      throw new Error(message)
+      return `@(var ${operand.name})`
     }
 
     case "Reg": {
@@ -72,10 +70,12 @@ function transpileOperand(context: Context, operand: Operand): string {
       return transpileLabel(context, operand.name)
     }
 
-    default: {
-      let message = `[transpileOperand] unhandled operand`
-      message += `\n  operand: ${formatOperand(operand)}`
-      throw new Error(message)
+    case "Arity": {
+      return `@(arity ${operand.value})`
+    }
+
+    case "Cc": {
+      return `@(cc ${operand.code})`
     }
   }
 }
