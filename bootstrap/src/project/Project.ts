@@ -4,7 +4,7 @@ import * as B from "../basic/index.ts"
 import { globals } from "../globals.ts"
 import { createUrl } from "../helpers/url/createUrl.ts"
 import * as L from "../lang/index.ts"
-import { compileToBasic, compileToPassLog } from "../services/index.ts"
+import * as Services from "../services/index.ts"
 import { type ProjectConfig } from "./ProjectConfig.ts"
 
 export class Project {
@@ -75,7 +75,7 @@ export class Project {
       const url = createUrl(inputFile)
       const dependencies = new Map()
       const mod = L.load(url, dependencies)
-      const basicMod = compileToBasic(mod)
+      const basicMod = Services.compileToBasic(mod)
       const outputText = B.prettyMod(globals.maxWidth, basicMod)
       fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
       fs.writeFileSync(outputFile, outputText)
@@ -123,7 +123,7 @@ export class Project {
       const mod = L.load(url, dependencies)
       fs.mkdirSync(Path.dirname(logFile), { recursive: true })
       fs.writeFileSync(logFile, "")
-      compileToPassLog(mod, logFile)
+      Services.compileToPassLog(mod, logFile)
     }
   }
 
