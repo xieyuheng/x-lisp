@@ -30,7 +30,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
         return Instrs.Return(S.symbolContent(result), meta)
       }),
 
-      S.matcher("`(return)", ({ }, { meta }) => {
+      S.matcher("`(return)", ({}, { meta }) => {
         return Instrs.Return(undefined, meta)
       }),
 
