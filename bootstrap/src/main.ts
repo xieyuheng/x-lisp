@@ -18,8 +18,8 @@ router.defineRoutes([
   "test --project",
   "build --project",
   "clean --project",
-  "lisp:compile-to-pass-log file",
-  "lisp:compile-to-basic file",
+  "lang:compile-to-pass-log file",
+  "lang:compile-to-basic file",
   "basic:run file",
   "basic:bundle file",
   "machine:transpile-to-x86-assembly file",
@@ -39,11 +39,11 @@ router.defineHandlers({
     const project = await loadProject(options["--project"])
     await project.clean()
   },
-  "lisp:compile-to-pass-log": ([file]) => {
+  "lang:compile-to-pass-log": ([file]) => {
     const mod = L.loadEntry(createUrl(file))
     Services.compileLangToPassLog(mod)
   },
-  "lisp:compile-to-basic": ([file]) => {
+  "lang:compile-to-basic": ([file]) => {
     const mod = L.loadEntry(createUrl(file))
     console.log(B.prettyMod(globals.maxWidth, Services.compileLangToBasic(mod)))
   },

@@ -7,11 +7,8 @@ export function compileLangToBasic(mod: L.Mod): B.Mod {
   L.RevealFunctionPass(mod)
   L.LiftLambdaPass(mod)
   L.UnnestOperandPass(mod)
-
   const basicMod = B.createMod(mod.url)
   B.importBuiltin(basicMod)
-
   L.ExplicateControlPass(mod, basicMod)
-
   return basicMod
 }
