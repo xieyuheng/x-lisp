@@ -1,5 +1,3 @@
-[bootstrap] compileBasicToX86Machine
-[bootstrap] compileBasicToX86Assembly
 [bootstrap] build -- support machine
 
 [machine] transpile -- callq-n -- take arity

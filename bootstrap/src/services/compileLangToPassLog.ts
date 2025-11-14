@@ -6,30 +6,21 @@ import * as M from "../machine/index.ts"
 
 export function compileLangToPassLog(mod: L.Mod, logFile?: string): void {
   logLangMod("Input", mod, logFile)
-
   L.ShrinkPass(mod)
   logLangMod("ShrinkPass", mod, logFile)
-
   L.UniquifyPass(mod)
   logLangMod("UniquifyPass", mod, logFile)
-
   L.RevealFunctionPass(mod)
   logLangMod("RevealFunctionPass", mod, logFile)
-
   L.LiftLambdaPass(mod)
   logLangMod("LiftLambdaPass", mod, logFile)
-
   L.UnnestOperandPass(mod)
   logLangMod("UnnestOperandPass", mod, logFile)
-
   const basicMod = B.createMod(mod.url)
   B.importBuiltin(basicMod)
-
   L.ExplicateControlPass(mod, basicMod)
   logBasicMod("ExplicateControlPass", basicMod, logFile)
-
   const machineMod = M.createMod(mod.url)
-
   B.SelectInstructionPass(basicMod, machineMod)
   logMachineMod("SelectInstructionPass", machineMod, logFile)
 }
