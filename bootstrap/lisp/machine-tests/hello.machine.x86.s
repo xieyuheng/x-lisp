@@ -1,4 +1,4 @@
-        .global _start
+.global _start
 
 .data
 _message:
@@ -18,3 +18,4 @@ _start.entry:
         movq $60, %rax
         movq $0, %rdi
         syscall 
+

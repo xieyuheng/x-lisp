@@ -12,6 +12,10 @@ function transpileChar(char: string): string {
       return "_"
     case "/":
       return "."
+    case "?":
+      return "_p"
+    case "!":
+      return "_mut"
     default:
       return char
   }
