@@ -12,7 +12,7 @@ _main.entry:
         callq _nullary_apply
         movq %rax, @(var y₁)
         leaq _iadd(%rip), @(var _₄)
-        leaq _int_less?(%rip), @(var _₇)
+        leaq _int_less_p(%rip), @(var _₇)
         movq @(var _₇), %rdi
         movq @(var x₁), %rsi
         callq _apply
@@ -65,7 +65,7 @@ _main.main.let_body₄:
         jmpe _main.main.then₂
         jmp _main.main.else₃
 _main.main.then₅:
-        leaq _equal?(%rip), @(var _₃₀)
+        leaq _equal_p(%rip), @(var _₃₀)
         movq @(var _₃₀), %rdi
         movq @(var x₁), %rsi
         callq _apply
@@ -77,7 +77,7 @@ _main.main.then₅:
         movq %rax, @(var _₂₅)
         jmp _main.main.let_body₄
 _main.main.else₆:
-        leaq _equal?(%rip), @(var _₃₃)
+        leaq _equal_p(%rip), @(var _₃₃)
         movq @(var _₃₃), %rdi
         movq @(var x₁), %rsi
         callq _apply
@@ -93,7 +93,7 @@ _main.main.let_body₇:
         movq @(var _₅), %rsi
         callq _apply
         movq %rax, @(var _₂₃)
-        leaq _int_less?(%rip), @(var _₂₆)
+        leaq _int_less_p(%rip), @(var _₂₆)
         movq @(var _₂₆), %rdi
         movq @(var x₁), %rsi
         callq _apply
@@ -135,7 +135,7 @@ _main.main.let_body₁₀:
         jmpe _main.main.then₈
         jmp _main.main.else₉
 _main.main.then₁₁:
-        leaq _equal?(%rip), @(var _₁₁)
+        leaq _equal_p(%rip), @(var _₁₁)
         movq @(var _₁₁), %rdi
         movq @(var x₁), %rsi
         callq _apply
@@ -147,7 +147,7 @@ _main.main.then₁₁:
         movq %rax, @(var _₆)
         jmp _main.main.let_body₁₀
 _main.main.else₁₂:
-        leaq _equal?(%rip), @(var _₁₄)
+        leaq _equal_p(%rip), @(var _₁₄)
         movq @(var _₁₄), %rdi
         movq @(var x₁), %rsi
         callq _apply
@@ -160,20 +160,20 @@ _main.main.else₁₂:
         jmp _main.main.let_body₁₀
 
 .extern _identity
-.extern _same?
-.extern _equal?
-.extern _atom?
-.extern _anything?
+.extern _same_p
+.extern _equal_p
+.extern _atom_p
+.extern _anything_p
 .extern _print
 .extern _println_non_void
 .extern _write
 .extern _newline
-.extern _bool?
+.extern _bool_p
 .extern _not
-.extern _int?
-.extern _int_positive?
-.extern _int_non_negative?
-.extern _int_non_zero?
+.extern _int_p
+.extern _int_positive_p
+.extern _int_non_negative_p
+.extern _int_non_zero_p
 .extern _ineg
 .extern _iadd
 .extern _isub
@@ -182,16 +182,16 @@ _main.main.else₁₂:
 .extern _imod
 .extern _int_max
 .extern _int_min
-.extern _int_greater?
-.extern _int_less?
-.extern _int_greater_equal?
-.extern _int_less_equal?
+.extern _int_greater_p
+.extern _int_less_p
+.extern _int_greater_equal_p
+.extern _int_less_equal_p
 .extern _int_compare_ascending
 .extern _int_compare_descending
-.extern _float?
-.extern _float_positive?
-.extern _float_non_negative?
-.extern _float_non_zero?
+.extern _float_p
+.extern _float_positive_p
+.extern _float_non_negative_p
+.extern _float_non_zero_p
 .extern _fneg
 .extern _fadd
 .extern _fsub
@@ -199,14 +199,14 @@ _main.main.else₁₂:
 .extern _fdiv
 .extern _float_max
 .extern _float_min
-.extern _float_greater?
-.extern _float_less?
-.extern _float_greater_equal?
-.extern _float_less_equal?
+.extern _float_greater_p
+.extern _float_less_p
+.extern _float_greater_equal_p
+.extern _float_less_equal_p
 .extern _float_compare_ascending
 .extern _float_compare_descending
 .extern _make_curry
-.extern _curry_put!
+.extern _curry_put_mut
 .extern _random_dice
 .extern _random_int
 .extern _random_float
