@@ -1,4 +1,4 @@
-[machine] `010-SelectInstructionPass` -- prefix `PrimitiveFunctionRef` with `x-`
+[machine] remove `Extern` `Stmt`
 
 [runtime] value tag encoding -- copy from inet-lisp
 [runtime] builtin

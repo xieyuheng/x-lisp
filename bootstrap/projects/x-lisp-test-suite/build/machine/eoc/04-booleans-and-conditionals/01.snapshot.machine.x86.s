@@ -2,16 +2,16 @@
 .text
 main:
 main.entry:
-        leaq println_non_void(%rip), @(var _₁)
-        leaq random_dice(%rip), @(var _₂)
+        leaq x_println_non_void(%rip), @(var _₁)
+        leaq x_random_dice(%rip), @(var _₂)
         movq @(var _₂), %rdi
         callq nullary_apply
         movq %rax, @(var x₁)
-        leaq random_dice(%rip), @(var _₃)
+        leaq x_random_dice(%rip), @(var _₃)
         movq @(var _₃), %rdi
         callq nullary_apply
         movq %rax, @(var y₁)
-        leaq int_less_p(%rip), @(var _₆)
+        leaq x_int_less_p(%rip), @(var _₆)
         movq @(var _₆), %rdi
         movq @(var x₁), %rsi
         callq apply
@@ -32,7 +32,7 @@ main.main.let_body₁:
         movq @(var _↩), %rax
         retq 
 main.main.then₂:
-        leaq iadd(%rip), @(var _₁₆)
+        leaq x_iadd(%rip), @(var _₁₆)
         movq @(var _₁₆), %rdi
         movq @(var y₁), %rsi
         callq apply
@@ -44,7 +44,7 @@ main.main.then₂:
         movq %rax, @(var _₄)
         jmp main.main.let_body₁
 main.main.else₃:
-        leaq iadd(%rip), @(var _₁₉)
+        leaq x_iadd(%rip), @(var _₁₉)
         movq @(var _₁₉), %rdi
         movq @(var y₁), %rsi
         callq apply
@@ -60,7 +60,7 @@ main.main.let_body₄:
         jmpe main.main.then₂
         jmp main.main.else₃
 main.main.then₅:
-        leaq equal_p(%rip), @(var _₁₀)
+        leaq x_equal_p(%rip), @(var _₁₀)
         movq @(var _₁₀), %rdi
         movq @(var x₁), %rsi
         callq apply
@@ -72,7 +72,7 @@ main.main.then₅:
         movq %rax, @(var _₅)
         jmp main.main.let_body₄
 main.main.else₆:
-        leaq equal_p(%rip), @(var _₁₃)
+        leaq x_equal_p(%rip), @(var _₁₃)
         movq @(var _₁₃), %rdi
         movq @(var x₁), %rsi
         callq apply

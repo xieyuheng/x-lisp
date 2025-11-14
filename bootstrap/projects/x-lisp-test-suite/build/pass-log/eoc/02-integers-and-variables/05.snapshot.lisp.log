@@ -47,7 +47,7 @@
 
 (define-code main
   (block entry
-    (leaq (deref-label (label println-non-void)) (var _₁))
+    (leaq (deref-label (label x-println-non-void)) (var _₁))
     (movq (imm 42) (var a₁))
     (movq (var a₁) (reg rdi))
     (callq-n (label identity) (arity 1))

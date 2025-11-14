@@ -2,7 +2,7 @@
 .text
 main:
 main.entry:
-        leaq println_non_void(%rip), @(var _₁)
+        leaq x_println_non_void(%rip), @(var _₁)
         movq $42, @(var a₁)
         movq @(var a₁), %rdi
         callq identity

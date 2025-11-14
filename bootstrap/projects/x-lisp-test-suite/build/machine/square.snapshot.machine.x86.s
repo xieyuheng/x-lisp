@@ -2,7 +2,7 @@
 .text
 main:
 main.entry:
-        leaq println_non_void(%rip), @(var _₁)
+        leaq x_println_non_void(%rip), @(var _₁)
         leaq §₁.square(%rip), @(var _₂)
         leaq §₁.square(%rip), @(var _₃)
         movq $3, @(var _₄)
@@ -25,7 +25,7 @@ main.entry:
 §₁.square:
 §₁.square.entry:
         movq %rdi, @(var x)
-        leaq imul(%rip), @(var _₁)
+        leaq x_imul(%rip), @(var _₁)
         movq @(var _₁), %rdi
         movq @(var x), %rsi
         callq apply

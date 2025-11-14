@@ -2,9 +2,9 @@
 .text
 main:
 main.entry:
-        leaq println_non_void(%rip), @(var _₁)
-        leaq equal_p(%rip), @(var _₄)
-        leaq random_dice(%rip), @(var _₅)
+        leaq x_println_non_void(%rip), @(var _₁)
+        leaq x_equal_p(%rip), @(var _₄)
+        leaq x_random_dice(%rip), @(var _₅)
         movq @(var _₅), %rdi
         callq nullary_apply
         movq %rax, @(var _₆)
@@ -38,8 +38,8 @@ main.main.let_body₄:
         jmpe main.main.then₂
         jmp main.main.else₃
 main.main.then₅:
-        leaq equal_p(%rip), @(var _₁₀)
-        leaq random_dice(%rip), @(var _₁₁)
+        leaq x_equal_p(%rip), @(var _₁₀)
+        leaq x_random_dice(%rip), @(var _₁₁)
         movq @(var _₁₁), %rdi
         callq nullary_apply
         movq %rax, @(var _₁₂)
