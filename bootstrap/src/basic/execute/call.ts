@@ -54,7 +54,7 @@ export function callDefinition(
     }
 
     case "PrimitiveFunctionDefinition": {
-      return definition.fn(...args)
+      return definition.fn(context)(...args)
     }
   }
 }
