@@ -1,3 +1,5 @@
+[basic] `definePrimitiveFunctionWithContext`
+
 [basic] builtin -- apply-nullary & apply-unary
 
 [runtime] value tag encoding -- copy from inet-lisp
