@@ -38,6 +38,15 @@ function transpileInstr(context: Context, instr: Instr): string {
       return `${indentation}jmp${code} ${transpileOperand(context, label)}`
     }
 
+    case "branch-if": {
+      const [cc, thenLabel, elseLabel] = instr.operands
+      const code = Operands.asCc(cc).code
+      return [
+        `${indentation}jmp${code} ${transpileOperand(context, thenLabel)}`,
+        `${indentation}jmp ${transpileOperand(context, elseLabel)}`,
+      ].join("\n")
+    }
+
     default: {
       const operands = instr.operands
         .map((operand) => transpileOperand(context, operand))

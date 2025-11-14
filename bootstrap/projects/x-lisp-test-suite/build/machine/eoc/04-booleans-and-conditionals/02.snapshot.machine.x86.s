@@ -23,7 +23,8 @@ _main.entry:
         callq _apply
         movq %rax, @(var _₁₀)
         cmpq @(var _₁₀), $1
-        branch-if @(cc e), _main.main.then₁₁, _main.main.else₁₂
+        jmpe _main.main.then₁₁
+        jmp _main.main.else₁₂
 _main.main.let_body₁:
         movq @(var _₂₃), %rdi
         movq @(var _₂₄), %rsi
@@ -61,7 +62,8 @@ _main.main.else₃:
         jmp _main.main.let_body₁
 _main.main.let_body₄:
         cmpq @(var _₂₅), $1
-        branch-if @(cc e), _main.main.then₂, _main.main.else₃
+        jmpe _main.main.then₂
+        jmp _main.main.else₃
 _main.main.then₅:
         leaq _equal?(%rip), @(var _₃₀)
         movq @(var _₃₀), %rdi
@@ -102,7 +104,8 @@ _main.main.let_body₇:
         callq _apply
         movq %rax, @(var _₂₉)
         cmpq @(var _₂₉), $1
-        branch-if @(cc e), _main.main.then₅, _main.main.else₆
+        jmpe _main.main.then₅
+        jmp _main.main.else₆
 _main.main.then₈:
         leaq _iadd(%rip), @(var _₁₇)
         movq @(var _₁₇), %rdi
@@ -129,7 +132,8 @@ _main.main.else₉:
         jmp _main.main.let_body₇
 _main.main.let_body₁₀:
         cmpq @(var _₆), $1
-        branch-if @(cc e), _main.main.then₈, _main.main.else₉
+        jmpe _main.main.then₈
+        jmp _main.main.else₉
 _main.main.then₁₁:
         leaq _equal?(%rip), @(var _₁₁)
         movq @(var _₁₁), %rdi
