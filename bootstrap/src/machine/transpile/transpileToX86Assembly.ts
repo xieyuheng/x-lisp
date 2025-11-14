@@ -1,8 +1,5 @@
-import * as S from "@xieyuheng/x-sexp.js"
 import type { Definition } from "../definition/index.ts"
 import { modDefinitions, type Mod } from "../mod/index.ts"
-import type { Stmt } from "../stmt/index.ts"
-import * as Stmts from "../stmt/index.ts"
 import { transpileBlock } from "./transpileBlock.ts"
 import { transpileChunk } from "./transpileChunk.ts"
 import { transpileIdentifier } from "./transpileIdentifier.ts"
@@ -12,13 +9,8 @@ const indentation = " ".repeat(8)
 export function transpileToX86Assembly(mod: Mod): string {
   let code = ""
 
-  const moduleStmts = mod.stmts
-
-  for (const stmt of mod.stmts) {
-    if (Stmts.isAboutModule(stmt)) {
-      code += transpileModuleStmt(stmt)
-      code += "\n"
-    }
+  for (const name of mod.exported) {
+    code += `.global ${transpileIdentifier([name])}\n`
   }
 
   for (const definition of modDefinitions(mod)) {
@@ -27,29 +19,13 @@ export function transpileToX86Assembly(mod: Mod): string {
     code += "\n"
   }
 
+  code += "\n"
+
+  for (const name of mod.externed) {
+    code += `.extern ${transpileIdentifier([name])}\n`
+  }
+
   return code
-}
-
-function transpileModuleStmt(stmt: Stmt): string {
-  if (!Stmts.isAboutModule(stmt)) {
-    let message = `[transpileModuleStmt] non module stmt`
-    message += `\n  stmt kind: ${stmt.kind}`
-    throw new S.ErrorWithMeta(message, stmt.meta)
-  }
-
-  switch (stmt.kind) {
-    case "Export": {
-      return stmt.names
-        .map((name) => `${indentation}.global ${transpileIdentifier([name])}`)
-        .join("\n")
-    }
-
-    case "Extern": {
-      return stmt.names
-        .map((name) => `${indentation}.extern ${transpileIdentifier([name])}`)
-        .join("\n")
-    }
-  }
 }
 
 function transpileDefinition(definition: Definition): string {

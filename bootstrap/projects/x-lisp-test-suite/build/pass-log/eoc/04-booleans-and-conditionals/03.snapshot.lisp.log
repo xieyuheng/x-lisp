@@ -116,6 +116,8 @@
 
 ;;; SelectInstructionPass
 
+(export)
+
 (define-code main
   (block entry
     (leaq (deref-label (label println-non-void)) (var _₁))
@@ -170,4 +172,57 @@
   (block main/else₆
     (movq (imm 0) (var _₃))
     (jmp (label main/let-body₄))))
+
+(extern
+  identity
+  same?
+  equal?
+  atom?
+  anything?
+  print
+  println-non-void
+  write
+  newline
+  bool?
+  not
+  int?
+  int-positive?
+  int-non-negative?
+  int-non-zero?
+  ineg
+  iadd
+  isub
+  imul
+  idiv
+  imod
+  int-max
+  int-min
+  int-greater?
+  int-less?
+  int-greater-equal?
+  int-less-equal?
+  int-compare-ascending
+  int-compare-descending
+  float?
+  float-positive?
+  float-non-negative?
+  float-non-zero?
+  fneg
+  fadd
+  fsub
+  fmul
+  fdiv
+  float-max
+  float-min
+  float-greater?
+  float-less?
+  float-greater-equal?
+  float-less-equal?
+  float-compare-ascending
+  float-compare-descending
+  make-curry
+  curry-put!
+  random-dice
+  random-int
+  random-float)
 

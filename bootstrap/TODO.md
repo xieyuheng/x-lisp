@@ -1,4 +1,3 @@
-[basic] `010-SelectInstructionPass` -- add `PrimitiveFunctionRef` to `Extern` of `machineMod`
 [machine] `transpile` -- prefix `PrimitiveFunctionRef` with `x_`
 
 [runtime] value tag encoding -- copy from inet-lisp

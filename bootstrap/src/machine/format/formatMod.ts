@@ -1,12 +1,9 @@
 import { type Mod } from "../mod/index.ts"
-import * as Stmts from "../stmt/index.ts"
 import { formatDefinition } from "./formatDefinition.ts"
-import { formatModuleStmt } from "./formatModuleStmt.ts"
 
 export function formatMod(mod: Mod): string {
-  const moduleStmts = mod.stmts
-    .filter(Stmts.isAboutModule)
-    .map(formatModuleStmt)
+  const exported = `(export ${Array.from(mod.exported).join(" ")})`
+  const externed = `(extern ${Array.from(mod.externed).join(" ")})`
   const definitions = mod.definitions.values().map(formatDefinition)
-  return Array.from([...moduleStmts, ...definitions]).join(" ")
+  return Array.from([exported, ...definitions, externed]).join(" ")
 }
