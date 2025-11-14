@@ -11,22 +11,22 @@ export function apply(context: Context, target: Value, arg: Value): Value {
       if (target.arity > 1) {
         const newArity = target.arity - 1
         const newArgs = [...target.args, arg]
-        return Values.Curry(target.fn, newArity, newArgs)
+        return Values.Curry(target.target, newArity, newArgs)
       } else {
         assert(target.arity === 1)
         const newArgs = [...target.args, arg]
-        assert(target.fn.arity === newArgs.length)
-        return call(context, target.fn.name, newArgs)
+        return call(context, target.target, newArgs)
       }
     }
 
+    case "PrimitiveFunctionRef":
     case "FunctionRef": {
       if (target.arity > 1) {
         const newArity = target.arity - 1
         return Values.Curry(target, newArity, [arg])
       } else {
         assert(target.arity === 1)
-        return call(context, target.name, [arg])
+        return call(context, target, [arg])
       }
     }
 

@@ -33,43 +33,43 @@
 ;;; RevealFunctionPass
 
 (define (main)
-  ((@function println-non-void 1)
+  ((@primitive-function println-non-void 1)
    (@let1 v₁ 1
      (@let1 w₁ 42
-       (@let1 x₁ (((@function iadd 2) v₁) 7)
+       (@let1 x₁ (((@primitive-function iadd 2) v₁) 7)
          (@let1 y₁ x₁
-           (@let1 z₁ (((@function iadd 2) x₁) w₁)
-             (((@function iadd 2) z₁)
-              ((@function ineg 1) y₁)))))))))
+           (@let1 z₁ (((@primitive-function iadd 2) x₁) w₁)
+             (((@primitive-function iadd 2) z₁)
+              ((@primitive-function ineg 1) y₁)))))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@function println-non-void 1)
+  ((@primitive-function println-non-void 1)
    (@let1 v₁ 1
      (@let1 w₁ 42
-       (@let1 x₁ (((@function iadd 2) v₁) 7)
+       (@let1 x₁ (((@primitive-function iadd 2) v₁) 7)
          (@let1 y₁ x₁
-           (@let1 z₁ (((@function iadd 2) x₁) w₁)
-             (((@function iadd 2) z₁)
-              ((@function ineg 1) y₁)))))))))
+           (@let1 z₁ (((@primitive-function iadd 2) x₁) w₁)
+             (((@primitive-function iadd 2) z₁)
+              ((@primitive-function ineg 1) y₁)))))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ (@function println-non-void 1)
+  (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 v₁ 1
       (@let1 w₁ 42
         (@let1 x₁
-            (@let1 _₂ (@function iadd 2)
+            (@let1 _₂ (@primitive-function iadd 2)
               (@let1 _₃ (_₂ v₁) (@let1 _₄ 7 (_₃ _₄))))
           (@let1 y₁ x₁
             (@let1 z₁
-                (@let1 _₅ (@function iadd 2)
+                (@let1 _₅ (@primitive-function iadd 2)
                   (@let1 _₆ (_₅ x₁) (_₆ w₁)))
-              (@let1 _₇ (@function iadd 2)
+              (@let1 _₇ (@primitive-function iadd 2)
                 (@let1 _₈ (_₇ z₁)
-                  (@let1 _₉ (@function ineg 1)
+                  (@let1 _₉ (@primitive-function ineg 1)
                     (@let1 _₁₀ (_₉ y₁)
                       (@let1 _₁₁ (_₈ _₁₀) (_₁ _₁₁)))))))))))))
 
@@ -77,20 +77,20 @@
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
     (= v₁ (const 1))
     (= w₁ (const 42))
-    (= _₂ (const (@function iadd 2)))
+    (= _₂ (const (@primitive-function iadd 2)))
     (= _₃ (apply _₂ v₁))
     (= _₄ (const 7))
     (= x₁ (apply _₃ _₄))
     (= y₁ (call identity x₁))
-    (= _₅ (const (@function iadd 2)))
+    (= _₅ (const (@primitive-function iadd 2)))
     (= _₆ (apply _₅ x₁))
     (= z₁ (apply _₆ w₁))
-    (= _₇ (const (@function iadd 2)))
+    (= _₇ (const (@primitive-function iadd 2)))
     (= _₈ (apply _₇ z₁))
-    (= _₉ (const (@function ineg 1)))
+    (= _₉ (const (@primitive-function ineg 1)))
     (= _₁₀ (apply _₉ y₁))
     (= _₁₁ (apply _₈ _₁₀))
     (= _↩ (apply _₁ _₁₁))

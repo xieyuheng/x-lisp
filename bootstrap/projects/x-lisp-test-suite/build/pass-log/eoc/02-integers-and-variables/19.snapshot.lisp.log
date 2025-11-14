@@ -27,33 +27,37 @@
 ;;; RevealFunctionPass
 
 (define (main)
-  ((@function println-non-void 1)
+  ((@primitive-function println-non-void 1)
    (@let1 x₁ 1
-     (((@function iadd 2) x₁)
-      (@let1 x₂ (@let1 x₃ 5 (((@function iadd 2) x₃) x₃))
-        (((@function iadd 2) x₂) 100))))))
+     (((@primitive-function iadd 2) x₁)
+      (@let1 x₂
+          (@let1 x₃ 5
+            (((@primitive-function iadd 2) x₃) x₃))
+        (((@primitive-function iadd 2) x₂) 100))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@function println-non-void 1)
+  ((@primitive-function println-non-void 1)
    (@let1 x₁ 1
-     (((@function iadd 2) x₁)
-      (@let1 x₂ (@let1 x₃ 5 (((@function iadd 2) x₃) x₃))
-        (((@function iadd 2) x₂) 100))))))
+     (((@primitive-function iadd 2) x₁)
+      (@let1 x₂
+          (@let1 x₃ 5
+            (((@primitive-function iadd 2) x₃) x₃))
+        (((@primitive-function iadd 2) x₂) 100))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ (@function println-non-void 1)
+  (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 x₁ 1
-      (@let1 _₂ (@function iadd 2)
+      (@let1 _₂ (@primitive-function iadd 2)
         (@let1 _₃ (_₂ x₁)
           (@let1 x₂
               (@let1 x₃ 5
-                (@let1 _₄ (@function iadd 2)
+                (@let1 _₄ (@primitive-function iadd 2)
                   (@let1 _₅ (_₄ x₃) (_₅ x₃))))
-            (@let1 _₆ (@function iadd 2)
+            (@let1 _₆ (@primitive-function iadd 2)
               (@let1 _₇ (_₆ x₂)
                 (@let1 _₈ 100
                   (@let1 _₉ (_₇ _₈)
@@ -63,15 +67,15 @@
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
     (= x₁ (const 1))
-    (= _₂ (const (@function iadd 2)))
+    (= _₂ (const (@primitive-function iadd 2)))
     (= _₃ (apply _₂ x₁))
     (= x₃ (const 5))
-    (= _₄ (const (@function iadd 2)))
+    (= _₄ (const (@primitive-function iadd 2)))
     (= _₅ (apply _₄ x₃))
     (= x₂ (apply _₅ x₃))
-    (= _₆ (const (@function iadd 2)))
+    (= _₆ (const (@primitive-function iadd 2)))
     (= _₇ (apply _₆ x₂))
     (= _₈ (const 100))
     (= _₉ (apply _₇ _₈))

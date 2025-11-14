@@ -11,6 +11,16 @@ const valueMatcher: S.Matcher<Value> = S.matcherChoice<Value>([
     return Values.FunctionRef(S.symbolContent(name), S.numberContent(arity))
   }),
 
+  S.matcher(
+    "`(@primitive-function ,name ,arity)",
+    ({ name, arity }, { meta }) => {
+      return Values.PrimitiveFunctionRef(
+        S.symbolContent(name),
+        S.numberContent(arity),
+      )
+    },
+  ),
+
   S.matcher("else", ({}, { sexp }) => {
     const meta = S.tokenMetaFromSexpMeta(sexp.meta)
 

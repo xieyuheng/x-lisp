@@ -49,62 +49,69 @@
 ;;; RevealFunctionPass
 
 (define (main)
-  ((@function println-non-void 1)
+  ((@primitive-function println-non-void 1)
    (if
-       (@let1 _∅₁ ((@function print 1) 1)
-         (@let1 _∅₂ ((@function newline 0))
-           (@let1 _∅₃ ((@function print 1) 2)
-             (@let1 _∅₄ ((@function newline 0))
-               (@let1 _∅₅ ((@function print 1) 3)
-                 (@let1 _∅₆ ((@function newline 0))
-                   (((@function equal? 2) 1) 2)))))))
-     (@let1 _∅₁ ((@function print 1) 111)
-       (@let1 _∅₂ ((@function newline 0))
-         (((@function equal? 2) 1) 2)))
-     (@let1 _∅₁ ((@function print 1) 222)
-       (@let1 _∅₂ ((@function newline 0))
-         (((@function equal? 2) 1) 2))))))
+       (@let1 _∅₁ ((@primitive-function print 1) 1)
+         (@let1 _∅₂ ((@primitive-function newline 0))
+           (@let1 _∅₃ ((@primitive-function print 1) 2)
+             (@let1 _∅₄ ((@primitive-function newline 0))
+               (@let1 _∅₅ ((@primitive-function print 1) 3)
+                 (@let1 _∅₆
+                     ((@primitive-function newline 0))
+                   (((@primitive-function equal? 2) 1) 2)))))))
+     (@let1 _∅₁ ((@primitive-function print 1) 111)
+       (@let1 _∅₂ ((@primitive-function newline 0))
+         (((@primitive-function equal? 2) 1) 2)))
+     (@let1 _∅₁ ((@primitive-function print 1) 222)
+       (@let1 _∅₂ ((@primitive-function newline 0))
+         (((@primitive-function equal? 2) 1) 2))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@function println-non-void 1)
+  ((@primitive-function println-non-void 1)
    (if
-       (@let1 _∅₁ ((@function print 1) 1)
-         (@let1 _∅₂ ((@function newline 0))
-           (@let1 _∅₃ ((@function print 1) 2)
-             (@let1 _∅₄ ((@function newline 0))
-               (@let1 _∅₅ ((@function print 1) 3)
-                 (@let1 _∅₆ ((@function newline 0))
-                   (((@function equal? 2) 1) 2)))))))
-     (@let1 _∅₁ ((@function print 1) 111)
-       (@let1 _∅₂ ((@function newline 0))
-         (((@function equal? 2) 1) 2)))
-     (@let1 _∅₁ ((@function print 1) 222)
-       (@let1 _∅₂ ((@function newline 0))
-         (((@function equal? 2) 1) 2))))))
+       (@let1 _∅₁ ((@primitive-function print 1) 1)
+         (@let1 _∅₂ ((@primitive-function newline 0))
+           (@let1 _∅₃ ((@primitive-function print 1) 2)
+             (@let1 _∅₄ ((@primitive-function newline 0))
+               (@let1 _∅₅ ((@primitive-function print 1) 3)
+                 (@let1 _∅₆
+                     ((@primitive-function newline 0))
+                   (((@primitive-function equal? 2) 1) 2)))))))
+     (@let1 _∅₁ ((@primitive-function print 1) 111)
+       (@let1 _∅₂ ((@primitive-function newline 0))
+         (((@primitive-function equal? 2) 1) 2)))
+     (@let1 _∅₁ ((@primitive-function print 1) 222)
+       (@let1 _∅₂ ((@primitive-function newline 0))
+         (((@primitive-function equal? 2) 1) 2))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ (@function println-non-void 1)
+  (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 _₂
         (@let1 _∅₁
-            (@let1 _₃ (@function print 1)
+            (@let1 _₃ (@primitive-function print 1)
               (@let1 _₄ 1 (_₃ _₄)))
-          (@let1 _∅₂ (@let1 _₅ (@function newline 0) (_₅))
+          (@let1 _∅₂
+              (@let1 _₅ (@primitive-function newline 0)
+                (_₅))
             (@let1 _∅₃
-                (@let1 _₆ (@function print 1)
+                (@let1 _₆ (@primitive-function print 1)
                   (@let1 _₇ 2 (_₆ _₇)))
               (@let1 _∅₄
-                  (@let1 _₈ (@function newline 0) (_₈))
+                  (@let1 _₈ (@primitive-function newline 0)
+                    (_₈))
                 (@let1 _∅₅
-                    (@let1 _₉ (@function print 1)
+                    (@let1 _₉ (@primitive-function print 1)
                       (@let1 _₁₀ 3 (_₉ _₁₀)))
                   (@let1 _∅₆
-                      (@let1 _₁₁ (@function newline 0)
+                      (@let1 _₁₁
+                          (@primitive-function newline 0)
                         (_₁₁))
-                    (@let1 _₁₂ (@function equal? 2)
+                    (@let1 _₁₂
+                        (@primitive-function equal? 2)
                       (@let1 _₁₃ 1
                         (@let1 _₁₄ (_₁₂ _₁₃)
                           (@let1 _₁₅ 2
@@ -112,34 +119,42 @@
                               (if _₁₆
                                 (@let1 _∅₁
                                     (@let1 _₁₇
-                                        (@function print 1)
+                                        (@primitive-function
+                                         print
+                                         1)
                                       (@let1 _₁₈ 111
                                         (_₁₇ _₁₈)))
                                   (@let1 _∅₂
                                       (@let1 _₁₉
-                                          (@function
+                                          (@primitive-function
                                            newline
                                            0)
                                         (_₁₉))
                                     (@let1 _₂₀
-                                        (@function equal? 2)
+                                        (@primitive-function
+                                         equal?
+                                         2)
                                       (@let1 _₂₁ 1
                                         (@let1 _₂₂ (_₂₀ _₂₁)
                                           (@let1 _₂₃ 2
                                             (_₂₂ _₂₃)))))))
                                 (@let1 _∅₁
                                     (@let1 _₂₄
-                                        (@function print 1)
+                                        (@primitive-function
+                                         print
+                                         1)
                                       (@let1 _₂₅ 222
                                         (_₂₄ _₂₅)))
                                   (@let1 _∅₂
                                       (@let1 _₂₆
-                                          (@function
+                                          (@primitive-function
                                            newline
                                            0)
                                         (_₂₆))
                                     (@let1 _₂₇
-                                        (@function equal? 2)
+                                        (@primitive-function
+                                         equal?
+                                         2)
                                       (@let1 _₂₈ 1
                                         (@let1 _₂₉ (_₂₇ _₂₈)
                                           (@let1 _₃₀ 2
@@ -150,23 +165,23 @@
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
-    (= _₃ (const (@function print 1)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₃ (const (@primitive-function print 1)))
     (= _₄ (const 1))
     (= _∅₁ (apply _₃ _₄))
-    (= _₅ (const (@function newline 0)))
+    (= _₅ (const (@primitive-function newline 0)))
     (= _∅₂ (nullary-apply _₅))
-    (= _₆ (const (@function print 1)))
+    (= _₆ (const (@primitive-function print 1)))
     (= _₇ (const 2))
     (= _∅₃ (apply _₆ _₇))
-    (= _₈ (const (@function newline 0)))
+    (= _₈ (const (@primitive-function newline 0)))
     (= _∅₄ (nullary-apply _₈))
-    (= _₉ (const (@function print 1)))
+    (= _₉ (const (@primitive-function print 1)))
     (= _₁₀ (const 3))
     (= _∅₅ (apply _₉ _₁₀))
-    (= _₁₁ (const (@function newline 0)))
+    (= _₁₁ (const (@primitive-function newline 0)))
     (= _∅₆ (nullary-apply _₁₁))
-    (= _₁₂ (const (@function equal? 2)))
+    (= _₁₂ (const (@primitive-function equal? 2)))
     (= _₁₃ (const 1))
     (= _₁₄ (apply _₁₂ _₁₃))
     (= _₁₅ (const 2))
@@ -174,24 +189,24 @@
     (branch _₁₆ main/then₂ main/else₃))
   (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
   (block main/then₂
-    (= _₁₇ (const (@function print 1)))
+    (= _₁₇ (const (@primitive-function print 1)))
     (= _₁₈ (const 111))
     (= _∅₁ (apply _₁₇ _₁₈))
-    (= _₁₉ (const (@function newline 0)))
+    (= _₁₉ (const (@primitive-function newline 0)))
     (= _∅₂ (nullary-apply _₁₉))
-    (= _₂₀ (const (@function equal? 2)))
+    (= _₂₀ (const (@primitive-function equal? 2)))
     (= _₂₁ (const 1))
     (= _₂₂ (apply _₂₀ _₂₁))
     (= _₂₃ (const 2))
     (= _₂ (apply _₂₂ _₂₃))
     (goto main/let-body₁))
   (block main/else₃
-    (= _₂₄ (const (@function print 1)))
+    (= _₂₄ (const (@primitive-function print 1)))
     (= _₂₅ (const 222))
     (= _∅₁ (apply _₂₄ _₂₅))
-    (= _₂₆ (const (@function newline 0)))
+    (= _₂₆ (const (@primitive-function newline 0)))
     (= _∅₂ (nullary-apply _₂₆))
-    (= _₂₇ (const (@function equal? 2)))
+    (= _₂₇ (const (@primitive-function equal? 2)))
     (= _₂₈ (const 1))
     (= _₂₉ (apply _₂₇ _₂₈))
     (= _₃₀ (const 2))

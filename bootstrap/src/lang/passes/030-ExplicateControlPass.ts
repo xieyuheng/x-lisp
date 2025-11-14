@@ -70,7 +70,8 @@ function expToValue(exp: Exp): B.Value {
     case "String":
     case "Int":
     case "Float":
-    case "FunctionRef": {
+    case "FunctionRef":
+    case "PrimitiveFunctionRef": {
       return exp
     }
 
@@ -136,7 +137,8 @@ function inLet1(
     case "String":
     case "Int":
     case "Float":
-    case "FunctionRef": {
+    case "FunctionRef":
+    case "PrimitiveFunctionRef": {
       return [B.Const(expToValue(rhs), name), ...cont]
     }
 

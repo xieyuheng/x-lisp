@@ -18,6 +18,10 @@ export function formatExp(exp: Exp): string {
       return `(@function ${exp.name} ${exp.arity})`
     }
 
+    case "PrimitiveFunctionRef": {
+      return `(@primitive-function ${exp.name} ${exp.arity})`
+    }
+
     case "Hashtag": {
       return `#${exp.content}`
     }

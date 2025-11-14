@@ -16,38 +16,40 @@
 ;;; RevealFunctionPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (((@function iadd 2) ((@function random-dice 0)))
-    ((@function random-dice 0)))))
+  ((@primitive-function println-non-void 1)
+   (((@primitive-function iadd 2)
+     ((@primitive-function random-dice 0)))
+    ((@primitive-function random-dice 0)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (((@function iadd 2) ((@function random-dice 0)))
-    ((@function random-dice 0)))))
+  ((@primitive-function println-non-void 1)
+   (((@primitive-function iadd 2)
+     ((@primitive-function random-dice 0)))
+    ((@primitive-function random-dice 0)))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ (@function println-non-void 1)
-    (@let1 _₂ (@function iadd 2)
-      (@let1 _₃ (@function random-dice 0)
+  (@let1 _₁ (@primitive-function println-non-void 1)
+    (@let1 _₂ (@primitive-function iadd 2)
+      (@let1 _₃ (@primitive-function random-dice 0)
         (@let1 _₄ (_₃)
           (@let1 _₅ (_₂ _₄)
-            (@let1 _₆ (@function random-dice 0)
+            (@let1 _₆ (@primitive-function random-dice 0)
               (@let1 _₇ (_₆) (@let1 _₈ (_₅ _₇) (_₁ _₈))))))))))
 
 ;;; ExplicateControlPass
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
-    (= _₂ (const (@function iadd 2)))
-    (= _₃ (const (@function random-dice 0)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₂ (const (@primitive-function iadd 2)))
+    (= _₃ (const (@primitive-function random-dice 0)))
     (= _₄ (nullary-apply _₃))
     (= _₅ (apply _₂ _₄))
-    (= _₆ (const (@function random-dice 0)))
+    (= _₆ (const (@primitive-function random-dice 0)))
     (= _₇ (nullary-apply _₆))
     (= _₈ (apply _₅ _₇))
     (= _↩ (apply _₁ _₈))

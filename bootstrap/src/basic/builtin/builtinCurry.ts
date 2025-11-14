@@ -7,7 +7,7 @@ export function builtinCurry(mod: Mod) {
 
   definePrimitiveFunction(mod, "make-curry", 3, (target, arity, size) => {
     return Values.Curry(
-      Values.asFunctionRef(target),
+      target,
       Values.asInt(arity).content,
       Array(size).fill(Values.Null()),
     )

@@ -71,6 +71,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
           ]
         }
 
+        case "PrimitiveFunctionRef":
         case "FunctionRef": {
           return [
             M.Instr("leaq", [

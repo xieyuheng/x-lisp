@@ -13,11 +13,11 @@
 (define-function drop
   (block entry
     (= f (argument 0))
-    (= _₁ (const (@function curry-put! 3)))
+    (= _₁ (const (@primitive-function curry-put! 3)))
     (= _₂ (const 0))
     (= _₃ (apply _₁ _₂))
     (= _₄ (apply _₃ f))
-    (= _₅ (const (@function make-curry 3)))
+    (= _₅ (const (@primitive-function make-curry 3)))
     (= _₆ (const (@function drop/λ₁ 2)))
     (= _₇ (apply _₅ _₆))
     (= _₈ (const 2))
@@ -31,11 +31,11 @@
   (block entry
     (= f (argument 0))
     (= dropped₁ (argument 1))
-    (= _₁ (const (@function curry-put! 3)))
+    (= _₁ (const (@primitive-function curry-put! 3)))
     (= _₂ (const 0))
     (= _₃ (apply _₁ _₂))
     (= _₄ (apply _₃ f))
-    (= _₅ (const (@function make-curry 3)))
+    (= _₅ (const (@primitive-function make-curry 3)))
     (= _₆ (const (@function drop/λ₁/λ₁ 2)))
     (= _₇ (apply _₅ _₆))
     (= _₈ (const 2))
@@ -55,11 +55,11 @@
 (define-function dup
   (block entry
     (= f (argument 0))
-    (= _₁ (const (@function curry-put! 3)))
+    (= _₁ (const (@primitive-function curry-put! 3)))
     (= _₂ (const 0))
     (= _₃ (apply _₁ _₂))
     (= _₄ (apply _₃ f))
-    (= _₅ (const (@function make-curry 3)))
+    (= _₅ (const (@primitive-function make-curry 3)))
     (= _₆ (const (@function dup/λ₁ 2)))
     (= _₇ (apply _₅ _₆))
     (= _₈ (const 2))
@@ -79,10 +79,10 @@
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
-    (= f₁ (const (@function identity 1)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= f₁ (const (@primitive-function identity 1)))
     (= _₂ (const (@function dup 1)))
-    (= _₃ (const (@function identity 1)))
+    (= _₃ (const (@primitive-function identity 1)))
     (= g₁ (apply _₂ _₃))
     (= _₄ (apply g₁ f₁))
     (= _₅ (apply _₄ f₁))

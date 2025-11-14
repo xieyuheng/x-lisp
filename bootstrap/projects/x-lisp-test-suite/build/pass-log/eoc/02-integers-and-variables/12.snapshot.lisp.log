@@ -18,32 +18,37 @@
 ;;; RevealFunctionPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (((@function iadd 2) (((@function iadd 2) 1) 2))
-    (((@function iadd 2) 3) (((@function iadd 2) 4) 5)))))
+  ((@primitive-function println-non-void 1)
+   (((@primitive-function iadd 2)
+     (((@primitive-function iadd 2) 1) 2))
+    (((@primitive-function iadd 2) 3)
+     (((@primitive-function iadd 2) 4) 5)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (((@function iadd 2) (((@function iadd 2) 1) 2))
-    (((@function iadd 2) 3) (((@function iadd 2) 4) 5)))))
+  ((@primitive-function println-non-void 1)
+   (((@primitive-function iadd 2)
+     (((@primitive-function iadd 2) 1) 2))
+    (((@primitive-function iadd 2) 3)
+     (((@primitive-function iadd 2) 4) 5)))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ (@function println-non-void 1)
-    (@let1 _₂ (@function iadd 2)
-      (@let1 _₃ (@function iadd 2)
+  (@let1 _₁ (@primitive-function println-non-void 1)
+    (@let1 _₂ (@primitive-function iadd 2)
+      (@let1 _₃ (@primitive-function iadd 2)
         (@let1 _₄ 1
           (@let1 _₅ (_₃ _₄)
             (@let1 _₆ 2
               (@let1 _₇ (_₅ _₆)
                 (@let1 _₈ (_₂ _₇)
-                  (@let1 _₉ (@function iadd 2)
+                  (@let1 _₉ (@primitive-function iadd 2)
                     (@let1 _₁₀ 3
                       (@let1 _₁₁ (_₉ _₁₀)
-                        (@let1 _₁₂ (@function iadd 2)
+                        (@let1 _₁₂
+                            (@primitive-function iadd 2)
                           (@let1 _₁₃ 4
                             (@let1 _₁₄ (_₁₂ _₁₃)
                               (@let1 _₁₅ 5
@@ -56,18 +61,18 @@
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
-    (= _₂ (const (@function iadd 2)))
-    (= _₃ (const (@function iadd 2)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₂ (const (@primitive-function iadd 2)))
+    (= _₃ (const (@primitive-function iadd 2)))
     (= _₄ (const 1))
     (= _₅ (apply _₃ _₄))
     (= _₆ (const 2))
     (= _₇ (apply _₅ _₆))
     (= _₈ (apply _₂ _₇))
-    (= _₉ (const (@function iadd 2)))
+    (= _₉ (const (@primitive-function iadd 2)))
     (= _₁₀ (const 3))
     (= _₁₁ (apply _₉ _₁₀))
-    (= _₁₂ (const (@function iadd 2)))
+    (= _₁₂ (const (@primitive-function iadd 2)))
     (= _₁₃ (const 4))
     (= _₁₄ (apply _₁₂ _₁₃))
     (= _₁₅ (const 5))

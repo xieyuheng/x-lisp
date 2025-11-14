@@ -5,6 +5,7 @@ export type Exp =
   | Atom
   | Var
   | FunctionRef
+  | PrimitiveFunctionRef
   | Lambda
   | ApplySugar
   | NullaryApply
@@ -46,6 +47,26 @@ export function FunctionRef(
 ): FunctionRef {
   return {
     kind: "FunctionRef",
+    name,
+    arity,
+    meta,
+  }
+}
+
+export type PrimitiveFunctionRef = {
+  kind: "PrimitiveFunctionRef"
+  name: string
+  arity: number
+  meta?: Meta
+}
+
+export function PrimitiveFunctionRef(
+  name: string,
+  arity: number,
+  meta?: Meta,
+): PrimitiveFunctionRef {
+  return {
+    kind: "PrimitiveFunctionRef",
     name,
     arity,
     meta,

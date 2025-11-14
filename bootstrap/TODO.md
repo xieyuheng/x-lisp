@@ -1,11 +1,6 @@
-[lang] add `PrimitiveFunctionRef` to `Exp`
-
-[basic] add `PrimitiveFunctionRef` to `Value`
-[basic] prefix `PrimitiveFunctionRef` with `x_`
-[basic] `010-SelectInstructionPass` -- add `PrimitiveFunctionRef` to `Extern` of `machineMod`
-
 [machine] add `Extern` to `Stmt`
-[machine] `transpile` -- no prefix for extern name
+[basic] `010-SelectInstructionPass` -- add `PrimitiveFunctionRef` to `Extern` of `machineMod`
+[machine] `transpile` -- prefix `PrimitiveFunctionRef` with `x_`
 
 [runtime] value tag encoding -- copy from inet-lisp
 [runtime] builtin
