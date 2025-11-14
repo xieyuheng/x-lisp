@@ -1,8 +1,8 @@
-[machine] transpile -- set-if -- take cc
-[machine] transpile -- jmp-if -- take cc
 [machine] transpile -- branch-if
 [machine] transpile -- jmp-indirect
 [machine] transpile -- jmp-indirect-if -- take cc
+
+[lang] `FunctionRef` vs `PrimitiveFunctionRef`
 
 [runtime] value tag encoding -- copy from inet-lisp
 [runtime] builtin
