@@ -52,14 +52,14 @@
 (define-code square
   (block entry
     (movq (reg rdi) (var x))
-    (leaq (deref-label imul) (var _₁))
+    (leaq (deref-label (label imul)) (var _₁))
     (movq (var _₁) (reg rdi))
     (movq (var x) (reg rsi))
-    (callq-n apply (arity 2))
+    (callq-n (label apply) (arity 2))
     (movq (reg rax) (var _₂))
     (movq (var _₂) (reg rdi))
     (movq (var x) (reg rsi))
-    (callq-n apply (arity 2))
+    (callq-n (label apply) (arity 2))
     (movq (reg rax) (var _↩))
     (movq (var _↩) (reg rax))
     (retq)))
