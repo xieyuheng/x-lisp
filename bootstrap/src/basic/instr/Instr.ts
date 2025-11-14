@@ -113,14 +113,14 @@ export type Call = {
   op: "Call"
   name: string
   args: Array<string>
-  dest?: string
+  dest: string
   meta?: Meta
 }
 
 export function Call(
   name: string,
   args: Array<string>,
-  dest?: string,
+  dest: string,
   meta?: Meta,
 ): Call {
   return {
@@ -135,13 +135,13 @@ export function Call(
 export type NullaryApply = {
   op: "NullaryApply"
   target: string
-  dest?: string
+  dest: string
   meta?: Meta
 }
 
 export function NullaryApply(
   target: string,
-  dest?: string,
+  dest: string,
   meta?: Meta,
 ): NullaryApply {
   return {
@@ -156,14 +156,14 @@ export type Apply = {
   op: "Apply"
   target: string
   arg: string
-  dest?: string
+  dest: string
   meta?: Meta
 }
 
 export function Apply(
   target: string,
   arg: string,
-  dest?: string,
+  dest: string,
   meta?: Meta,
 ): Apply {
   return {
