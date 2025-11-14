@@ -92,12 +92,10 @@ export class Project {
       const logFile = this.getPassLogFile(sourceId)
       console.log(`[pass-log] ${Path.relative(process.cwd(), logFile)}`)
 
-      const url = createUrl(inputFile)
-      const dependencies = new Map()
-      const mod = L.load(url, dependencies)
+      const langMod = L.loadEntry(createUrl(inputFile))
       fs.mkdirSync(Path.dirname(logFile), { recursive: true })
       fs.writeFileSync(logFile, "")
-      Services.compileLangToPassLog(mod, logFile)
+      Services.compileLangToPassLog(langMod, logFile)
     }
   }
 
@@ -107,10 +105,8 @@ export class Project {
       const outputFile = this.getBasicFile(sourceId)
       console.log(`[basic] ${Path.relative(process.cwd(), outputFile)}`)
 
-      const url = createUrl(inputFile)
-      const dependencies = new Map()
-      const mod = L.load(url, dependencies)
-      const basicMod = Services.compileLangToBasic(mod)
+      const langMod = L.loadEntry(createUrl(inputFile))
+      const basicMod = Services.compileLangToBasic(langMod)
       const outputText = B.prettyMod(globals.maxWidth, basicMod)
       fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
       fs.writeFileSync(outputFile, outputText)
@@ -124,11 +120,9 @@ export class Project {
         const outputFile = this.getBasicBundleFile(sourceId)
         console.log(`[bundle] ${Path.relative(process.cwd(), outputFile)}`)
 
-        const url = createUrl(inputFile)
-        const dependencies = new Map()
-        const mod = B.load(url, dependencies)
-        const bundleMod = B.bundle(mod)
-        const outputText = B.prettyMod(globals.maxWidth, bundleMod)
+        const basicMod = B.loadEntry(createUrl(inputFile))
+        const basicBundleMod = B.bundle(basicMod)
+        const outputText = B.prettyMod(globals.maxWidth, basicBundleMod)
         fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
         fs.writeFileSync(outputFile, outputText)
       }
@@ -142,8 +136,8 @@ export class Project {
         const outputFile = this.getMachineFile(sourceId)
         console.log(`[machine] ${Path.relative(process.cwd(), outputFile)}`)
 
-        const basicMod = B.loadEntry(createUrl(inputFile))
-        const machineMod = Services.compileBasicToX86Machine(basicMod)
+        const basicBundleMod = B.loadEntry(createUrl(inputFile))
+        const machineMod = Services.compileBasicToX86Machine(basicBundleMod)
         const outputText = M.prettyMod(globals.maxWidth, machineMod)
         fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
         fs.writeFileSync(outputFile, outputText)
@@ -171,10 +165,8 @@ export class Project {
         const inputFile = this.getBasicBundleFile(sourceId)
         console.log(`[test] ${Path.relative(process.cwd(), inputFile)}`)
 
-        const url = createUrl(inputFile)
-        const dependencies = new Map()
-        const mod = B.load(url, dependencies)
-        B.run(mod)
+        const basicBundleMod = B.loadEntry(createUrl(inputFile))
+        B.run(basicBundleMod)
         const output = B.console.consumeOutput()
         process.stdout.write(output)
       }
@@ -188,10 +180,8 @@ export class Project {
         const outputFile = this.getSourceFile(sourceId) + ".out"
         console.log(`[snapshot] ${Path.relative(process.cwd(), outputFile)}`)
 
-        const url = createUrl(inputFile)
-        const dependencies = new Map()
-        const mod = B.load(url, dependencies)
-        B.run(mod)
+        const basicBundleMod = B.loadEntry(createUrl(inputFile))
+        B.run(basicBundleMod)
         const outputText = B.console.consumeOutput()
         fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
         fs.writeFileSync(outputFile, outputText)
