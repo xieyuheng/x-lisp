@@ -4,43 +4,43 @@ import { globals } from "../globals.ts"
 import * as L from "../lang/index.ts"
 import * as M from "../machine/index.ts"
 
-export function compileLangToPassLog(mod: L.Mod, logFile?: string): void {
-  logLangMod("Input", mod, logFile)
-  L.ShrinkPass(mod)
-  logLangMod("ShrinkPass", mod, logFile)
-  L.UniquifyPass(mod)
-  logLangMod("UniquifyPass", mod, logFile)
-  L.RevealFunctionPass(mod)
-  logLangMod("RevealFunctionPass", mod, logFile)
-  L.LiftLambdaPass(mod)
-  logLangMod("LiftLambdaPass", mod, logFile)
-  L.UnnestOperandPass(mod)
-  logLangMod("UnnestOperandPass", mod, logFile)
-  const basicMod = B.createMod(mod.url)
+export function compileLangToPassLog(langMod: L.Mod, logFile?: string): void {
+  logLangMod("Input", langMod, logFile)
+  L.ShrinkPass(langMod)
+  logLangMod("ShrinkPass", langMod, logFile)
+  L.UniquifyPass(langMod)
+  logLangMod("UniquifyPass", langMod, logFile)
+  L.RevealFunctionPass(langMod)
+  logLangMod("RevealFunctionPass", langMod, logFile)
+  L.LiftLambdaPass(langMod)
+  logLangMod("LiftLambdaPass", langMod, logFile)
+  L.UnnestOperandPass(langMod)
+  logLangMod("UnnestOperandPass", langMod, logFile)
+  const basicMod = B.createMod(langMod.url)
   B.importBuiltin(basicMod)
-  L.ExplicateControlPass(mod, basicMod)
+  L.ExplicateControlPass(langMod, basicMod)
   logBasicMod("ExplicateControlPass", basicMod, logFile)
-  const machineMod = M.createMod(mod.url)
+  const machineMod = M.createMod(langMod.url)
   B.SelectInstructionPass(basicMod, machineMod)
   logMachineMod("SelectInstructionPass", machineMod, logFile)
 }
 
-function logLangMod(tag: string, mod: L.Mod, logFile?: string): void {
-  logCode(tag, L.prettyMod(globals.maxWidth, mod), logFile)
+function logLangMod(tag: string, langMod: L.Mod, logFile?: string): void {
+  logCode(tag, L.prettyMod(globals.maxWidth, langMod), logFile)
 }
 
-function logBasicMod(tag: string, mod: B.Mod, logFile?: string): void {
-  logCode(tag, B.prettyMod(globals.maxWidth, mod), logFile)
+function logBasicMod(tag: string, basicMod: B.Mod, logFile?: string): void {
+  logCode(tag, B.prettyMod(globals.maxWidth, basicMod), logFile)
 }
 
-function logMachineMod(tag: string, mod: M.Mod, logFile?: string): void {
-  logCode(tag, M.prettyMod(globals.maxWidth, mod), logFile)
+function logMachineMod(tag: string, machineMod: M.Mod, logFile?: string): void {
+  logCode(tag, M.prettyMod(globals.maxWidth, machineMod), logFile)
 }
 
-function logCode(tag: string, modText: string, logFile?: string): void {
+function logCode(tag: string, code: string, logFile?: string): void {
   log(`;;; ${tag}\n`, logFile)
   log("\n", logFile)
-  log(modText, logFile)
+  log(code, logFile)
   log("\n", logFile)
   log("\n", logFile)
 }
