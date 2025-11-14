@@ -1,3 +1,6 @@
+[machine] be explicit about label operand -- all operand equal
+build -- support machine
+
 # codegen
 
 [machine] transpile -- callq-n -- take arity
@@ -16,7 +19,3 @@
 [machine] `070-AssignHomePass`
 [machine] `080-PatchInstructionPass`
 [machine] `090-PrologAndEpilogPass`
-
-# later
-
-[compiler] `compileToX86Assembly`
