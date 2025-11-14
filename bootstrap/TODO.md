@@ -1,4 +1,6 @@
-[bootstrap] build -- support machine
+[bootstrap] build -- output machine.x86.s
+
+[project] improve api
 
 [machine] transpile -- callq-n -- take arity
 [machine] transpile -- set-if -- take cc

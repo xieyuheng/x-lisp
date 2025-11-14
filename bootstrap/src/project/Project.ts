@@ -4,6 +4,7 @@ import * as B from "../basic/index.ts"
 import { globals } from "../globals.ts"
 import { createUrl } from "../helpers/url/createUrl.ts"
 import * as L from "../lang/index.ts"
+import * as M from "../machine/index.ts"
 import * as Services from "../services/index.ts"
 import { type ProjectConfig } from "./ProjectConfig.ts"
 
@@ -46,14 +47,32 @@ export class Project {
     return Path.join(this.sourceDirectory(), sourceId)
   }
 
+  getPassLogFile(sourceId: string): string {
+    return Path.join(this.outputDirectory(), "pass-log", sourceId) + ".log"
+  }
+
   getBasicFile(sourceId: string): string {
-    const basicId = sourceId.slice(0, -L.suffix.length) + B.suffix
-    return Path.join(this.outputDirectory(), "basic", basicId)
+    return Path.join(
+      this.outputDirectory(),
+      "basic",
+      sourceId.slice(0, -L.suffix.length) + B.suffix,
+    )
   }
 
   getBasicBundleFile(sourceId: string): string {
-    const bundleId = sourceId.slice(0, -L.suffix.length) + ".bundle" + B.suffix
-    return Path.join(this.outputDirectory(), "basic", bundleId)
+    return Path.join(
+      this.outputDirectory(),
+      "basic",
+      sourceId.slice(0, -L.suffix.length) + ".bundle" + B.suffix,
+    )
+  }
+
+  getMachineFile(sourceId: string): string {
+    return Path.join(
+      this.outputDirectory(),
+      "machine",
+      sourceId.slice(0, -L.suffix.length) + M.suffix,
+    )
   }
 
   async clean(): Promise<void> {
@@ -64,6 +83,22 @@ export class Project {
     await this.buildPassLog()
     await this.buildBasic()
     await this.buildBasicBundle()
+    await this.buildMachine()
+  }
+
+  async buildPassLog(): Promise<void> {
+    for (const sourceId of this.sourceIds()) {
+      const inputFile = this.getSourceFile(sourceId)
+      const logFile = this.getPassLogFile(sourceId)
+      console.log(`[pass-log] ${Path.relative(process.cwd(), logFile)}`)
+
+      const url = createUrl(inputFile)
+      const dependencies = new Map()
+      const mod = L.load(url, dependencies)
+      fs.mkdirSync(Path.dirname(logFile), { recursive: true })
+      fs.writeFileSync(logFile, "")
+      Services.compileLangToPassLog(mod, logFile)
+    }
   }
 
   async buildBasic(): Promise<void> {
@@ -100,8 +135,20 @@ export class Project {
     }
   }
 
-  getPassLogFile(sourceId: string): string {
-    return Path.join(this.outputDirectory(), "pass-log", sourceId) + ".log"
+  async buildMachine(): Promise<void> {
+    for (const sourceId of this.sourceIds()) {
+      if (this.isTest(sourceId) || this.isSnapshot(sourceId)) {
+        const inputFile = this.getBasicBundleFile(sourceId)
+        const outputFile = this.getMachineFile(sourceId)
+        console.log(`[machine] ${Path.relative(process.cwd(), outputFile)}`)
+
+        const basicMod = B.loadEntry(createUrl(inputFile))
+        const machineMod = Services.compileBasicToX86Machine(basicMod)
+        const outputText = M.prettyMod(globals.maxWidth, machineMod)
+        fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
+        fs.writeFileSync(outputFile, outputText)
+      }
+    }
   }
 
   isTest(sourceId: string): boolean {
@@ -110,21 +157,6 @@ export class Project {
 
   isSnapshot(sourceId: string): boolean {
     return sourceId.endsWith("snapshot" + L.suffix)
-  }
-
-  async buildPassLog(): Promise<void> {
-    for (const sourceId of this.sourceIds()) {
-      const inputFile = this.getSourceFile(sourceId)
-      const logFile = this.getPassLogFile(sourceId)
-      console.log(`[pass-log] ${Path.relative(process.cwd(), logFile)}`)
-
-      const url = createUrl(inputFile)
-      const dependencies = new Map()
-      const mod = L.load(url, dependencies)
-      fs.mkdirSync(Path.dirname(logFile), { recursive: true })
-      fs.writeFileSync(logFile, "")
-      Services.compileLangToPassLog(mod, logFile)
-    }
   }
 
   async test(): Promise<void> {
