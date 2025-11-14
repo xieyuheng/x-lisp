@@ -140,7 +140,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
       return [
         M.Instr("movq", [M.Var(instr.target), selectArgReg(0)]),
         M.Instr("movq", [M.Var(instr.arg), selectArgReg(1)]),
-        M.Instr("callq-n", [M.Label("x_apply"), M.Arity(2)]),
+        M.Instr("callq-n", [M.Label("apply"), M.Arity(2)]),
         M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
       ]
     }
@@ -148,7 +148,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
     case "NullaryApply": {
       return [
         M.Instr("movq", [M.Var(instr.target), selectArgReg(0)]),
-        M.Instr("callq-n", [M.Label("x_nullary_apply"), M.Arity(1)]),
+        M.Instr("callq-n", [M.Label("nullary-apply"), M.Arity(1)]),
         M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
       ]
     }

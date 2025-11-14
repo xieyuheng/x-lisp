@@ -52,7 +52,7 @@
     (movq (reg rax) (var b₁))
     (movq (var _₁) (reg rdi))
     (movq (var b₁) (reg rsi))
-    (callq-n x_apply (arity 2))
+    (callq-n apply (arity 2))
     (movq (reg rax) (var _↩))
     (movq (var _↩) (reg rax))
     (retq)))
