@@ -45,7 +45,8 @@ _main.entry:
         callq _apply
         movq %rax, @(var _₁₆)
         cmpq @(var _₁₆), $1
-        branch-if @(cc e), _main.main.then₂, _main.main.else₃
+        jmpe _main.main.then₂
+        jmp _main.main.else₃
 _main.main.let_body₁:
         movq @(var _₁), %rdi
         movq @(var _₂), %rsi

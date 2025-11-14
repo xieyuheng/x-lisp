@@ -1,4 +1,3 @@
-[machine] transpile -- branch-if
 [machine] transpile -- jmp-indirect
 [machine] transpile -- jmp-indirect-if -- take cc
 

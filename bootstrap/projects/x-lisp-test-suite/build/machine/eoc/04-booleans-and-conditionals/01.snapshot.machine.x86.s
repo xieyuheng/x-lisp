@@ -22,7 +22,8 @@ _main.entry:
         callq _apply
         movq %rax, @(var _₉)
         cmpq @(var _₉), $1
-        branch-if @(cc e), _main.main.then₅, _main.main.else₆
+        jmpe _main.main.then₅
+        jmp _main.main.else₆
 _main.main.let_body₁:
         movq @(var _₁), %rdi
         movq @(var _₄), %rsi
@@ -56,7 +57,8 @@ _main.main.else₃:
         jmp _main.main.let_body₁
 _main.main.let_body₄:
         cmpq @(var _₅), $1
-        branch-if @(cc e), _main.main.then₂, _main.main.else₃
+        jmpe _main.main.then₂
+        jmp _main.main.else₃
 _main.main.then₅:
         leaq _equal?(%rip), @(var _₁₀)
         movq @(var _₁₀), %rdi
