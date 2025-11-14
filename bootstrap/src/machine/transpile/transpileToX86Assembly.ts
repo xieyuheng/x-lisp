@@ -43,6 +43,12 @@ function transpileModuleStmt(stmt: Stmt): string {
         .map((name) => `${indentation}.global ${transpileIdentifier([name])}`)
         .join("\n")
     }
+
+    case "Extern": {
+      return stmt.names
+        .map((name) => `${indentation}.extern ${transpileIdentifier([name])}`)
+        .join("\n")
+    }
   }
 }
 
