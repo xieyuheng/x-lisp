@@ -84,19 +84,19 @@ export class Project {
     )
   }
 
-  async clean(): Promise<void> {
+  clean(): void {
     fs.rmSync(this.outputDirectory(), { recursive: true, force: true })
   }
 
-  async build(): Promise<void> {
-    await this.buildPassLog()
-    await this.buildBasic()
-    await this.buildBasicBundle()
-    await this.buildMachine()
-    await this.buildMachineX86assembly()
+  build(): void {
+    this.buildPassLog()
+    this.buildBasic()
+    this.buildBasicBundle()
+    this.buildMachine()
+    this.buildMachineX86assembly()
   }
 
-  async buildPassLog(): Promise<void> {
+  buildPassLog(): void {
     for (const sourceId of this.sourceIds()) {
       const inputFile = this.getSourceFile(sourceId)
       const outputFile = this.getPassLogFile(sourceId)
@@ -107,7 +107,7 @@ export class Project {
     }
   }
 
-  async buildBasic(): Promise<void> {
+  buildBasic(): void {
     for (const sourceId of this.sourceIds()) {
       const inputFile = this.getSourceFile(sourceId)
       const outputFile = this.getBasicFile(sourceId)
@@ -119,7 +119,7 @@ export class Project {
     }
   }
 
-  async buildBasicBundle(): Promise<void> {
+  buildBasicBundle(): void {
     for (const sourceId of this.sourceIds()) {
       if (this.isTest(sourceId) || this.isSnapshot(sourceId)) {
         const inputFile = this.getBasicFile(sourceId)
@@ -133,7 +133,7 @@ export class Project {
     }
   }
 
-  async buildMachine(): Promise<void> {
+  buildMachine(): void {
     for (const sourceId of this.sourceIds()) {
       if (this.isTest(sourceId) || this.isSnapshot(sourceId)) {
         const inputFile = this.getBasicBundleFile(sourceId)
@@ -147,7 +147,7 @@ export class Project {
     }
   }
 
-  async buildMachineX86assembly(): Promise<void> {
+  buildMachineX86assembly(): void {
     for (const sourceId of this.sourceIds()) {
       if (this.isTest(sourceId) || this.isSnapshot(sourceId)) {
         const inputFile = this.getMachineFile(sourceId)
@@ -168,13 +168,13 @@ export class Project {
     return sourceId.endsWith("snapshot" + L.suffix)
   }
 
-  async test(): Promise<void> {
-    await this.build()
-    await this.runTest()
-    await this.runSnapshot()
+  test(): void {
+    this.build()
+    this.runTest()
+    this.runSnapshot()
   }
 
-  async runTest(): Promise<void> {
+  runTest(): void {
     for (const sourceId of this.sourceIds()) {
       if (this.isTest(sourceId)) {
         const inputFile = this.getBasicBundleFile(sourceId)
@@ -187,7 +187,7 @@ export class Project {
     }
   }
 
-  async runSnapshot(): Promise<void> {
+  runSnapshot(): void {
     for (const sourceId of this.sourceIds()) {
       if (this.isSnapshot(sourceId)) {
         const inputFile = this.getBasicBundleFile(sourceId)

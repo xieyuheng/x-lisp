@@ -29,18 +29,9 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  test: async (_, options) => {
-    const project = await loadProject(options["--project"])
-    await project.test()
-  },
-  build: async (_, options) => {
-    const project = await loadProject(options["--project"])
-    await project.build()
-  },
-  clean: async (_, options) => {
-    const project = await loadProject(options["--project"])
-    await project.clean()
-  },
+  test: (_, options) => loadProject(options["--project"]).test(),
+  build: (_, options) => loadProject(options["--project"]).build(),
+  clean: (_, options) => loadProject(options["--project"]).clean(),
   "lang:compile-to-pass-log": ([file]) => {
     const mod = L.loadEntry(createUrl(file))
     Services.compileLangToPassLog(mod)
