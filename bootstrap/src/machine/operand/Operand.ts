@@ -18,10 +18,10 @@ export const Imm = (value: number, meta?: Meta): Imm => ({
   meta,
 })
 
-export type ImmLabel = { kind: "ImmLabel"; value: string; meta?: Meta }
-export const ImmLabel = (value: string, meta?: Meta): ImmLabel => ({
+export type ImmLabel = { kind: "ImmLabel"; label: Label; meta?: Meta }
+export const ImmLabel = (label: Label, meta?: Meta): ImmLabel => ({
   kind: "ImmLabel",
-  value,
+  label,
   meta,
 })
 
@@ -41,23 +41,23 @@ export const Reg = (name: string, meta?: Meta): Reg => ({
 
 export type DerefReg = {
   kind: "DerefReg"
-  regName: string
+  reg: Reg
   offset: number
   meta?: Meta
 }
-export const DerefReg = (regName: string, offset: number, meta?: Meta): DerefReg => ({
+export const DerefReg = (reg: Reg, offset: number, meta?: Meta): DerefReg => ({
   kind: "DerefReg",
-  regName,
+  reg,
   offset,
   meta,
 })
 
 export type DerefLabel = {
   kind: "DerefLabel"
-  label: string
+  label: Label
   meta?: Meta
 }
-export const DerefLabel = (label: string, meta?: Meta): DerefLabel => ({
+export const DerefLabel = (label: Label, meta?: Meta): DerefLabel => ({
   kind: "DerefLabel",
   label,
   meta,

@@ -10,7 +10,7 @@
   (block entry
     (movq (imm 1) (reg rax))
     (movq (imm 1) (reg rdi))
-    (movq (imm-label message) (reg rsi))
+    (movq (imm-label (label message)) (reg rsi))
     (movq (imm 14) (reg rdx))
     (syscall)
     (movq (imm 60) (reg rax))

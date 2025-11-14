@@ -1,4 +1,3 @@
-[machine] be explicit about label operand -- all operand equal
 build -- support machine
 
 # codegen

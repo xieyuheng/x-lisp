@@ -39,7 +39,7 @@ function transpileOperand(context: Context, operand: Operand): string {
     }
 
     case "ImmLabel": {
-      const label = transpileLabel(context, operand.value)
+      const label = transpileLabel(context, operand.label.name)
       return `$${label}`
     }
 
@@ -60,11 +60,11 @@ function transpileOperand(context: Context, operand: Operand): string {
         throw new Error(message)
       }
 
-      return `${operand.offset}(%${operand.regName})`
+      return `${operand.offset}(%${operand.reg.name})`
     }
 
     case "DerefLabel": {
-      const label = transpileLabel(context, operand.label)
+      const label = transpileLabel(context, operand.label.name)
       return `${label}(%rip)`
     }
 
