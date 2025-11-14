@@ -1,8 +1,8 @@
-.global start
+.global _start
 
 .text
-start:
-start.entry:
+_start:
+_start.entry:
         movq $60, %rax
         movq $6, %rdi
         syscall 
