@@ -1,5 +1,5 @@
 {
-  "name": "x-lisp/tests",
+  "name": "x-lisp/test",
   "version": "0.1.0",
   "build": {
     "output-directory": "build",
