@@ -88,116 +88,108 @@ export class Project {
     fs.rmSync(this.outputDirectory(), { recursive: true, force: true })
   }
 
-  build(): void {
-    this.buildPassLog()
-    this.buildBasic()
-    this.buildBasicBundle()
-    this.buildMachine()
-    this.buildMachineX86assembly()
-  }
-
-  buildPassLog(): void {
-    for (const sourceId of this.sourceIds()) {
-      const inputFile = this.getSourceFile(sourceId)
-      const outputFile = this.getPassLogFile(sourceId)
-      this.logFile("pass-log", outputFile)
-      const langMod = L.loadEntry(createUrl(inputFile))
-      this.writeFile(outputFile, "")
-      Services.compileLangToPassLog(langMod, outputFile)
+  forEachSource(f: (id: string) => void) {
+    for (const id of this.sourceIds()) {
+      f(id)
     }
   }
 
-  buildBasic(): void {
-    for (const sourceId of this.sourceIds()) {
-      const inputFile = this.getSourceFile(sourceId)
-      const outputFile = this.getBasicFile(sourceId)
-      this.logFile("basic", outputFile)
-      const langMod = L.loadEntry(createUrl(inputFile))
-      const basicMod = Services.compileLangToBasic(langMod)
-      const outputText = B.prettyMod(globals.maxWidth, basicMod)
+  build(): void {
+    this.forEachSource(this.buildPassLog.bind(this))
+    this.forEachSource(this.buildBasic.bind(this))
+    this.forEachSource(this.buildBasicBundle.bind(this))
+    this.forEachSource(this.buildMachine.bind(this))
+    this.forEachSource(this.buildMachineX86assembly.bind(this))
+  }
+
+  buildPassLog(id: string): void {
+    const inputFile = this.getSourceFile(id)
+    const outputFile = this.getPassLogFile(id)
+    this.logFile("pass-log", outputFile)
+    const langMod = L.loadEntry(createUrl(inputFile))
+    this.writeFile(outputFile, "")
+    Services.compileLangToPassLog(langMod, outputFile)
+  }
+
+  buildBasic(id: string): void {
+    const inputFile = this.getSourceFile(id)
+    const outputFile = this.getBasicFile(id)
+    this.logFile("basic", outputFile)
+    const langMod = L.loadEntry(createUrl(inputFile))
+    const basicMod = Services.compileLangToBasic(langMod)
+    const outputText = B.prettyMod(globals.maxWidth, basicMod)
+    this.writeFile(outputFile, outputText)
+  }
+
+  buildBasicBundle(id: string): void {
+    if (this.isTest(id) || this.isSnapshot(id)) {
+      const inputFile = this.getBasicFile(id)
+      const outputFile = this.getBasicBundleFile(id)
+      this.logFile("basic-bundle", outputFile)
+      const basicMod = B.loadEntry(createUrl(inputFile))
+      const basicBundleMod = B.bundle(basicMod)
+      const outputText = B.prettyMod(globals.maxWidth, basicBundleMod)
       this.writeFile(outputFile, outputText)
     }
   }
 
-  buildBasicBundle(): void {
-    for (const sourceId of this.sourceIds()) {
-      if (this.isTest(sourceId) || this.isSnapshot(sourceId)) {
-        const inputFile = this.getBasicFile(sourceId)
-        const outputFile = this.getBasicBundleFile(sourceId)
-        this.logFile("basic-bundle", outputFile)
-        const basicMod = B.loadEntry(createUrl(inputFile))
-        const basicBundleMod = B.bundle(basicMod)
-        const outputText = B.prettyMod(globals.maxWidth, basicBundleMod)
-        this.writeFile(outputFile, outputText)
-      }
+  buildMachine(id: string): void {
+    if (this.isTest(id) || this.isSnapshot(id)) {
+      const inputFile = this.getBasicBundleFile(id)
+      const outputFile = this.getMachineFile(id)
+      this.logFile("machine", outputFile)
+      const basicBundleMod = B.loadEntry(createUrl(inputFile))
+      const machineMod = Services.compileBasicToX86Machine(basicBundleMod)
+      const outputText = M.prettyMod(globals.maxWidth, machineMod)
+      this.writeFile(outputFile, outputText)
     }
   }
 
-  buildMachine(): void {
-    for (const sourceId of this.sourceIds()) {
-      if (this.isTest(sourceId) || this.isSnapshot(sourceId)) {
-        const inputFile = this.getBasicBundleFile(sourceId)
-        const outputFile = this.getMachineFile(sourceId)
-        this.logFile("machine", outputFile)
-        const basicBundleMod = B.loadEntry(createUrl(inputFile))
-        const machineMod = Services.compileBasicToX86Machine(basicBundleMod)
-        const outputText = M.prettyMod(globals.maxWidth, machineMod)
-        this.writeFile(outputFile, outputText)
-      }
+  buildMachineX86assembly(id: string): void {
+    if (this.isTest(id) || this.isSnapshot(id)) {
+      const inputFile = this.getMachineFile(id)
+      const outputFile = this.getMachineFile(id) + ".x86.s"
+      this.logFile("x86-assembly", outputFile)
+      const machineMod = M.loadEntry(createUrl(inputFile))
+      const outputText = M.transpileToX86Assembly(machineMod)
+      this.writeFile(outputFile, outputText)
     }
   }
 
-  buildMachineX86assembly(): void {
-    for (const sourceId of this.sourceIds()) {
-      if (this.isTest(sourceId) || this.isSnapshot(sourceId)) {
-        const inputFile = this.getMachineFile(sourceId)
-        const outputFile = this.getMachineFile(sourceId) + ".x86.s"
-        this.logFile("x86-assembly", outputFile)
-        const machineMod = M.loadEntry(createUrl(inputFile))
-        const outputText = M.transpileToX86Assembly(machineMod)
-        this.writeFile(outputFile, outputText)
-      }
-    }
+  isTest(id: string): boolean {
+    return id.endsWith("test" + L.suffix)
   }
 
-  isTest(sourceId: string): boolean {
-    return sourceId.endsWith("test" + L.suffix)
-  }
-
-  isSnapshot(sourceId: string): boolean {
-    return sourceId.endsWith("snapshot" + L.suffix)
+  isSnapshot(id: string): boolean {
+    return id.endsWith("snapshot" + L.suffix)
   }
 
   test(): void {
     this.build()
-    this.runTest()
-    this.runSnapshot()
+    this.forEachSource(this.runTest.bind(this))
+    this.forEachSource(this.runSnapshot.bind(this))
   }
 
-  runTest(): void {
-    for (const sourceId of this.sourceIds()) {
-      if (this.isTest(sourceId)) {
-        const inputFile = this.getBasicBundleFile(sourceId)
-        this.logFile("test", inputFile)
-        const basicBundleMod = B.loadEntry(createUrl(inputFile))
-        B.run(basicBundleMod)
-        const output = B.console.consumeOutput()
-        process.stdout.write(output)
-      }
+  runTest(id: string): void {
+    if (this.isTest(id)) {
+      const inputFile = this.getBasicBundleFile(id)
+      this.logFile("test", inputFile)
+      const basicBundleMod = B.loadEntry(createUrl(inputFile))
+      B.run(basicBundleMod)
+      const output = B.console.consumeOutput()
+      process.stdout.write(output)
     }
   }
 
-  runSnapshot(): void {
-    for (const sourceId of this.sourceIds()) {
-      if (this.isSnapshot(sourceId)) {
-        const inputFile = this.getBasicBundleFile(sourceId)
-        const outputFile = this.getSourceFile(sourceId) + ".out"
-        this.logFile("snapshot", outputFile)
-        const basicBundleMod = B.loadEntry(createUrl(inputFile))
-        B.run(basicBundleMod)
-        const outputText = B.console.consumeOutput()
-        this.writeFile(outputFile, outputText)
-      }
+  runSnapshot(id: string): void {
+    if (this.isSnapshot(id)) {
+      const inputFile = this.getBasicBundleFile(id)
+      const outputFile = this.getSourceFile(id) + ".out"
+      this.logFile("snapshot", outputFile)
+      const basicBundleMod = B.loadEntry(createUrl(inputFile))
+      B.run(basicBundleMod)
+      const outputText = B.console.consumeOutput()
+      this.writeFile(outputFile, outputText)
     }
   }
 }
