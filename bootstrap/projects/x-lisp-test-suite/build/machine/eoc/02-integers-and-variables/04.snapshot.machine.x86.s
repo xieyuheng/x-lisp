@@ -7,7 +7,7 @@ main.entry:
         movq $42, @(var _₃)
         movq @(var _₂), %rdi
         movq @(var _₃), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var x₁)
         movq @(var x₁), %rdi
         callq identity
@@ -18,11 +18,11 @@ main.entry:
         leaq x_ineg(%rip), @(var _₄)
         movq @(var _₄), %rdi
         movq @(var z₁), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _₅)
         movq @(var _₁), %rdi
         movq @(var _₅), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 

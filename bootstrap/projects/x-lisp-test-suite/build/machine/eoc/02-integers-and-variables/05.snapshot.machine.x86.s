@@ -9,7 +9,7 @@ main.entry:
         movq %rax, @(var b₁)
         movq @(var _₁), %rdi
         movq @(var b₁), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 

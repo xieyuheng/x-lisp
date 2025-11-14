@@ -8,15 +8,15 @@ main.entry:
         movq $3, @(var _₄)
         movq @(var _₃), %rdi
         movq @(var _₄), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _₅)
         movq @(var _₂), %rdi
         movq @(var _₅), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _₆)
         movq @(var _₁), %rdi
         movq @(var _₆), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 
@@ -28,11 +28,11 @@ main.entry:
         leaq x_imul(%rip), @(var _₁)
         movq @(var _₁), %rdi
         movq @(var x), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _₂)
         movq @(var _₂), %rdi
         movq @(var x), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 

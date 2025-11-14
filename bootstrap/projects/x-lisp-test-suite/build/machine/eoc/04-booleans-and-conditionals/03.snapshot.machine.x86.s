@@ -6,16 +6,16 @@ main.entry:
         leaq x_equal_p(%rip), @(var _₄)
         leaq x_random_dice(%rip), @(var _₅)
         movq @(var _₅), %rdi
-        callq nullary_apply
+        callq x_apply_nullary
         movq %rax, @(var _₆)
         movq @(var _₄), %rdi
         movq @(var _₆), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _₇)
         movq $1, @(var _₈)
         movq @(var _₇), %rdi
         movq @(var _₈), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _₉)
         cmpq @(var _₉), $1
         jmpe main.main.then₅
@@ -23,7 +23,7 @@ main.entry:
 main.main.let_body₁:
         movq @(var _₁), %rdi
         movq @(var _₂), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 
@@ -41,16 +41,16 @@ main.main.then₅:
         leaq x_equal_p(%rip), @(var _₁₀)
         leaq x_random_dice(%rip), @(var _₁₁)
         movq @(var _₁₁), %rdi
-        callq nullary_apply
+        callq x_apply_nullary
         movq %rax, @(var _₁₂)
         movq @(var _₁₀), %rdi
         movq @(var _₁₂), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _₁₃)
         movq $2, @(var _₁₄)
         movq @(var _₁₃), %rdi
         movq @(var _₁₄), %rsi
-        callq apply
+        callq x_apply_unary
         movq %rax, @(var _₃)
         jmp main.main.let_body₄
 main.main.else₆:
