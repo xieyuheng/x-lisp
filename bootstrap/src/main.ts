@@ -41,11 +41,11 @@ router.defineHandlers({
   },
   "lisp:compile-to-pass-log": ([file]) => {
     const mod = L.loadEntry(createUrl(file))
-    Services.compileToPassLog(mod)
+    Services.compileLangToPassLog(mod)
   },
   "lisp:compile-to-basic": ([file]) => {
     const mod = L.loadEntry(createUrl(file))
-    console.log(B.prettyMod(globals.maxWidth, Services.compileToBasic(mod)))
+    console.log(B.prettyMod(globals.maxWidth, Services.compileLangToBasic(mod)))
   },
   "basic:run": ([file]) => {
     const mod = B.loadEntry(createUrl(file))
