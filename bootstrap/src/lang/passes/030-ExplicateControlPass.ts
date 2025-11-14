@@ -99,7 +99,7 @@ function inTail(state: State, exp: Exp): Array<B.Instr> {
 
     case "NullaryApply": {
       const name = "_↩"
-      return [B.Apply(Exps.varName(exp.target), name), B.Return(name)]
+      return [B.NullaryApply(Exps.varName(exp.target), name), B.Return(name)]
     }
 
     case "Let1": {

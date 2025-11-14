@@ -30,7 +30,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
         return Instrs.Return(S.symbolContent(result), meta)
       }),
 
-      S.matcher("`(return)", ({}, { meta }) => {
+      S.matcher("`(return)", ({ }, { meta }) => {
         return Instrs.Return(undefined, meta)
       }),
 
@@ -50,7 +50,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
         return Instrs.Call(
           S.symbolContent(target),
           S.listElements(args).map(S.symbolContent),
-          undefined,
+          "_∅",
           meta,
         )
       }),
@@ -71,7 +71,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
         return Instrs.Apply(
           S.symbolContent(target),
           S.symbolContent(arg),
-          undefined,
+          "_∅",
           meta,
         )
       }),
@@ -89,7 +89,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
       ),
 
       S.matcher("`(nullary-apply ,target)", ({ target }, { meta }) => {
-        return Instrs.NullaryApply(S.symbolContent(target), undefined, meta)
+        return Instrs.NullaryApply(S.symbolContent(target), "_∅", meta)
       }),
 
       S.matcher(
