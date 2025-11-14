@@ -84,6 +84,7 @@ export class Project {
     await this.buildBasic()
     await this.buildBasicBundle()
     await this.buildMachine()
+    await this.buildMachineX86assembly()
   }
 
   async buildPassLog(): Promise<void> {
@@ -118,7 +119,9 @@ export class Project {
       if (this.isTest(sourceId) || this.isSnapshot(sourceId)) {
         const inputFile = this.getBasicFile(sourceId)
         const outputFile = this.getBasicBundleFile(sourceId)
-        console.log(`[bundle] ${Path.relative(process.cwd(), outputFile)}`)
+        console.log(
+          `[basic-bundle] ${Path.relative(process.cwd(), outputFile)}`,
+        )
 
         const basicMod = B.loadEntry(createUrl(inputFile))
         const basicBundleMod = B.bundle(basicMod)
@@ -139,6 +142,23 @@ export class Project {
         const basicBundleMod = B.loadEntry(createUrl(inputFile))
         const machineMod = Services.compileBasicToX86Machine(basicBundleMod)
         const outputText = M.prettyMod(globals.maxWidth, machineMod)
+        fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
+        fs.writeFileSync(outputFile, outputText)
+      }
+    }
+  }
+
+  async buildMachineX86assembly(): Promise<void> {
+    for (const sourceId of this.sourceIds()) {
+      if (this.isTest(sourceId) || this.isSnapshot(sourceId)) {
+        const inputFile = this.getMachineFile(sourceId)
+        const outputFile = this.getMachineFile(sourceId) + ".x86.s"
+        console.log(
+          `[x86-assembly] ${Path.relative(process.cwd(), outputFile)}`,
+        )
+
+        const machineMod = M.loadEntry(createUrl(inputFile))
+        const outputText = M.transpileToX86Assembly(machineMod)
         fs.mkdirSync(Path.dirname(outputFile), { recursive: true })
         fs.writeFileSync(outputFile, outputText)
       }

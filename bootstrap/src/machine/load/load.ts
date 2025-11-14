@@ -4,6 +4,10 @@ import { createMod, type Mod } from "../mod/index.ts"
 import { parseStmt } from "../parse/index.ts"
 import { stage1 } from "./stage1.ts"
 
+export function loadEntry(url: URL): Mod {
+  return load(url)
+}
+
 export function load(url: URL): Mod {
   const text = loadText(url)
   const mod = createMod(url)
