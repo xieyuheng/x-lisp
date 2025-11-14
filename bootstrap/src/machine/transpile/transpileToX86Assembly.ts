@@ -10,7 +10,7 @@ import { transpileIdentifier } from "./transpileIdentifier.ts"
 const indentation = " ".repeat(8)
 
 export function transpileToX86Assembly(mod: Mod): string {
-  let code = ''
+  let code = ""
 
   const moduleStmts = mod.stmts
 
