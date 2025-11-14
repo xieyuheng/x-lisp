@@ -7,29 +7,29 @@ _main.entry:
         movq $1, @(var _₃)
         movq @(var _₂), %rdi
         movq @(var _₃), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₄)
         leaq _iadd(%rip), @(var _₅)
         leaq _random_dice(%rip), @(var _₆)
         movq @(var _₆), %rdi
-        callq-n _nullary_apply, @(arity 1)
+        callq _nullary_apply
         movq %rax, @(var _₇)
         movq @(var _₅), %rdi
         movq @(var _₇), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₈)
         movq $1, @(var _₉)
         movq @(var _₈), %rdi
         movq @(var _₉), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₁₀)
         movq @(var _₄), %rdi
         movq @(var _₁₀), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₁₁)
         movq @(var _₁), %rdi
         movq @(var _₁₁), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 

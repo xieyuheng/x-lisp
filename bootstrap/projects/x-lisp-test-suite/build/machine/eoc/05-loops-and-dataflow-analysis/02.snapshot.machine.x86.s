@@ -7,75 +7,75 @@ _main.entry:
         movq $1, @(var _₃)
         movq @(var _₂), %rdi
         movq @(var _₃), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _∅₁)
         leaq _newline(%rip), @(var _₄)
         movq @(var _₄), %rdi
-        callq-n _nullary_apply, @(arity 1)
+        callq _nullary_apply
         movq %rax, @(var _∅₂)
         leaq _print(%rip), @(var _₅)
         movq $2, @(var _₆)
         movq @(var _₅), %rdi
         movq @(var _₆), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _∅₃)
         leaq _newline(%rip), @(var _₇)
         movq @(var _₇), %rdi
-        callq-n _nullary_apply, @(arity 1)
+        callq _nullary_apply
         movq %rax, @(var _∅₄)
         leaq _print(%rip), @(var _₈)
         movq $3, @(var _₉)
         movq @(var _₈), %rdi
         movq @(var _₉), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _∅₅)
         leaq _newline(%rip), @(var _₁₀)
         movq @(var _₁₀), %rdi
-        callq-n _nullary_apply, @(arity 1)
+        callq _nullary_apply
         movq %rax, @(var _∅₆)
         movq $6, @(var x₁)
         leaq _print(%rip), @(var _₁₁)
         movq $4, @(var _₁₂)
         movq @(var _₁₁), %rdi
         movq @(var _₁₂), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _∅₁)
         leaq _newline(%rip), @(var _₁₃)
         movq @(var _₁₃), %rdi
-        callq-n _nullary_apply, @(arity 1)
+        callq _nullary_apply
         movq %rax, @(var _∅₂)
         leaq _print(%rip), @(var _₁₄)
         movq $5, @(var _₁₅)
         movq @(var _₁₄), %rdi
         movq @(var _₁₅), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _∅₃)
         leaq _newline(%rip), @(var _₁₆)
         movq @(var _₁₆), %rdi
-        callq-n _nullary_apply, @(arity 1)
+        callq _nullary_apply
         movq %rax, @(var _∅₄)
         leaq _print(%rip), @(var _₁₇)
         movq $6, @(var _₁₈)
         movq @(var _₁₇), %rdi
         movq @(var _₁₈), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _∅₅)
         leaq _newline(%rip), @(var _₁₉)
         movq @(var _₁₉), %rdi
-        callq-n _nullary_apply, @(arity 1)
+        callq _nullary_apply
         movq %rax, @(var _∅₆)
         leaq _iadd(%rip), @(var _₂₀)
         movq @(var _₂₀), %rdi
         movq @(var x₁), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₂₁)
         movq @(var _₂₁), %rdi
         movq @(var x₁), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₂₂)
         movq @(var _₁), %rdi
         movq @(var _₂₂), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 

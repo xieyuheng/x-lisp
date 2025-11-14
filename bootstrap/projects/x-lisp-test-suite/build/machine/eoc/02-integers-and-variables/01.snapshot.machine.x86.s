@@ -8,15 +8,15 @@ _main.entry:
         movq $8, @(var _₃)
         movq @(var _₂), %rdi
         movq @(var _₃), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₄)
         movq @(var _₄), %rdi
         movq @(var x₁), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₅)
         movq @(var _₁), %rdi
         movq @(var _₅), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 

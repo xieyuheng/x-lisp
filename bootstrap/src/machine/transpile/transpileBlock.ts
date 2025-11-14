@@ -19,10 +19,19 @@ export function transpileBlock(context: Context, block: Block): string {
 }
 
 function transpileInstr(context: Context, instr: Instr): string {
-  const operands = instr.operands
-    .map((operand) => transpileOperand(context, operand))
-    .join(", ")
-  return `${indentation}${instr.op} ${operands}`
+  switch (instr.op) {
+    case "callq-n": {
+      const [label] = instr.operands
+      return `${indentation}callq ${transpileOperand(context, label)}`
+    }
+
+    default: {
+      const operands = instr.operands
+        .map((operand) => transpileOperand(context, operand))
+        .join(", ")
+      return `${indentation}${instr.op} ${operands}`
+    }
+  }
 }
 
 function transpileOperand(context: Context, operand: Operand): string {

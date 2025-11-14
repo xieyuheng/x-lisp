@@ -7,16 +7,16 @@ _main.entry:
         movq $20, @(var _₃)
         movq @(var _₂), %rdi
         movq @(var _₃), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₄)
         movq $22, @(var _₅)
         movq @(var _₄), %rdi
         movq @(var _₅), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₆)
         movq @(var _₁), %rdi
         movq @(var _₆), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 
