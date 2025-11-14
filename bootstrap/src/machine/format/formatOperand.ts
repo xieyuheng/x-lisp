@@ -33,5 +33,9 @@ export function formatOperand(operand: Operand): string {
     case "Cc": {
       return `(cc ${operand.code})`
     }
+
+    case "Arity": {
+      return `(arity ${operand.value})`
+    }
   }
 }
