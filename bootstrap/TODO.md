@@ -1,5 +1,3 @@
-[project] improve api
-
 [machine] transpile -- callq-n -- take arity
 [machine] transpile -- set-if -- take cc
 [machine] transpile -- jmp-if -- take cc
