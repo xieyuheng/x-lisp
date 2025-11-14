@@ -21,16 +21,13 @@ export function parseOperand(sexp: S.Sexp): Operand {
         return Operands.Reg(S.symbolContent(name), meta)
       }),
 
-      S.matcher(
-        "`(deref-reg ,reg ,offset)",
-        ({ reg, offset }, { meta }) => {
-          return Operands.DerefReg(
-            Operands.asReg(parseOperand(reg)),
-            S.numberContent(offset),
-            meta,
-          )
-        },
-      ),
+      S.matcher("`(deref-reg ,reg ,offset)", ({ reg, offset }, { meta }) => {
+        return Operands.DerefReg(
+          Operands.asReg(parseOperand(reg)),
+          S.numberContent(offset),
+          meta,
+        )
+      }),
 
       S.matcher("`(deref-label ,label)", ({ label }, { meta }) => {
         return Operands.DerefLabel(Operands.asLabel(parseOperand(label)), meta)
