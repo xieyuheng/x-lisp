@@ -1,4 +1,4 @@
-.global start
+.global _start
 
 .data
 message:
@@ -8,8 +8,8 @@ message.length:
         .quad 14
 
 .text
-start:
-start.entry:
+_start:
+_start.entry:
         movq $1, %rax
         movq $1, %rdi
         movq $message, %rsi
