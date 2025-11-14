@@ -1,5 +1,5 @@
 export function transpileIdentifier(parts: Array<string>): string {
-  return "_" + parts.map(transpilePart).join(".")
+  return parts.map(transpilePart).join(".")
 }
 
 function transpilePart(part: string): string {
