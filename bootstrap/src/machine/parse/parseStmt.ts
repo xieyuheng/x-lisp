@@ -13,10 +13,6 @@ const stmtMatcher: S.Matcher<Stmt> = S.matcherChoice<Stmt>([
     return Stmts.Export(S.listElements(names).map(S.symbolContent), meta)
   }),
 
-  S.matcher("(cons* 'extern names)", ({ names }, { meta }) => {
-    return Stmts.Extern(S.listElements(names).map(S.symbolContent), meta)
-  }),
-
   S.matcher(
     "(cons* 'define-code name blocks)",
     ({ name, blocks }, { sexp }) => {

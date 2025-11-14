@@ -21,7 +21,6 @@ export function compileLangToPassLog(langMod: L.Mod, logFile?: string): void {
   L.ExplicateControlPass(langMod, basicMod)
   logBasicMod("ExplicateControlPass", basicMod, logFile)
   const machineMod = M.createMod(langMod.url)
-  M.externBuiltin(machineMod)
   B.SelectInstructionPass(basicMod, machineMod)
   logMachineMod("SelectInstructionPass", machineMod, logFile)
 }
