@@ -12,10 +12,6 @@ export function SelectInstructionPass(mod: Mod, machineMod: M.Mod): void {
   }
 }
 
-type State = {
-  code: M.CodeDefinition
-}
-
 function onDefinition(machineMod: M.Mod, definition: Definition): null {
   switch (definition.kind) {
     case "FunctionDefinition": {
@@ -26,9 +22,9 @@ function onDefinition(machineMod: M.Mod, definition: Definition): null {
         definition.meta,
       )
       machineMod.definitions.set(code.name, code)
-      const state = { code }
       for (const block of definition.blocks.values()) {
-        onBlock(state, block)
+        const machineBlock = onBlock(block)
+        code.blocks.set(machineBlock.label, machineBlock)
       }
       return null
     }
@@ -41,16 +37,11 @@ function onDefinition(machineMod: M.Mod, definition: Definition): null {
   }
 }
 
-function onBlock(state: State, block: Block): void {
-  const machineBlock = M.Block(
-    block.label,
-    block.instrs.flatMap((instr) => onInstr(state, instr)),
-    block.meta,
-  )
-  state.code.blocks.set(machineBlock.label, machineBlock)
+function onBlock(block: Block): M.Block {
+  return M.Block(block.label, block.instrs.flatMap(onInstr), block.meta)
 }
 
-function onInstr(state: State, instr: Instr): Array<M.Instr> {
+function onInstr(instr: Instr): Array<M.Instr> {
   switch (instr.op) {
     case "Argument": {
       if (instr.index > 6) {
