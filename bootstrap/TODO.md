@@ -1,4 +1,3 @@
-[machine] rename transpileIdentifier to transpileLabel
 [machine] `010-SelectInstructionPass` -- prefix `PrimitiveFunctionRef` with `x-`
 
 [runtime] value tag encoding -- copy from inet-lisp

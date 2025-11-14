@@ -1,7 +1,7 @@
 import type { Chunk } from "../chunk/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Directive } from "../directive/index.ts"
-import { transpileIdentifier } from "./transpileIdentifier.ts"
+import { transpileIdentifier as transpileName } from "./transpileName.ts"
 
 const indentation = " ".repeat(8)
 
@@ -10,7 +10,7 @@ type Context = {
 }
 
 export function transpileChunk(context: Context, chunk: Chunk): string {
-  const name = transpileIdentifier([context.definition.name, chunk.label])
+  const name = transpileName([context.definition.name, chunk.label])
   const directives = chunk.directives
     .map((directive) => transpileDirective(context, directive))
     .join("\n")

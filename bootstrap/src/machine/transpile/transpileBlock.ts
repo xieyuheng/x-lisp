@@ -3,7 +3,7 @@ import * as Definitions from "../definition/index.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Operand } from "../operand/index.ts"
 import * as Operands from "../operand/index.ts"
-import { transpileIdentifier } from "./transpileIdentifier.ts"
+import { transpileIdentifier } from "./transpileName.ts"
 
 const indentation = " ".repeat(8)
 
