@@ -3,7 +3,7 @@
 (define-function square
   (block entry
     (= x (argument 0))
-    (= _₁ (const (@function imul 2)))
+    (= _₁ (const (@primitive-function imul 2)))
     (= _₂ (apply _₁ x))
     (= _↩ (apply _₂ x))
     (return _↩)))

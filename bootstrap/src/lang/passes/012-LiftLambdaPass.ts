@@ -45,6 +45,7 @@ function onExp(state: State, exp: Exp): Exp {
     case "Int":
     case "Float":
     case "FunctionRef":
+    case "PrimitiveFunctionRef":
     case "Var": {
       return exp
     }
@@ -114,14 +115,14 @@ function onExp(state: State, exp: Exp): Exp {
 }
 
 function makeCurry(target: Exp, arity: number, args: Array<Exp>): Exp {
-  let result = desugarApply(Exps.FunctionRef("make-curry", 3), [
+  let result = desugarApply(Exps.PrimitiveFunctionRef("make-curry", 3), [
     target,
     Exps.Int(arity),
     Exps.Int(args.length),
   ])
 
   for (const [index, arg] of args.entries()) {
-    result = desugarApply(Exps.FunctionRef("curry-put!", 3), [
+    result = desugarApply(Exps.PrimitiveFunctionRef("curry-put!", 3), [
       Exps.Int(index),
       arg,
       result,

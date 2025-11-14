@@ -1,8 +1,8 @@
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
-    (= _₄ (const (@function equal? 2)))
-    (= _₅ (const (@function random-dice 0)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₄ (const (@primitive-function equal? 2)))
+    (= _₅ (const (@primitive-function random-dice 0)))
     (= _₆ (nullary-apply _₅))
     (= _₇ (apply _₄ _₆))
     (= _₈ (const 1))
@@ -13,8 +13,8 @@
   (block main/else₃ (= _₂ (const 42)) (goto main/let-body₁))
   (block main/let-body₄ (branch _₃ main/then₂ main/else₃))
   (block main/then₅
-    (= _₁₀ (const (@function equal? 2)))
-    (= _₁₁ (const (@function random-dice 0)))
+    (= _₁₀ (const (@primitive-function equal? 2)))
+    (= _₁₁ (const (@primitive-function random-dice 0)))
     (= _₁₂ (nullary-apply _₁₁))
     (= _₁₃ (apply _₁₀ _₁₂))
     (= _₁₄ (const 2))

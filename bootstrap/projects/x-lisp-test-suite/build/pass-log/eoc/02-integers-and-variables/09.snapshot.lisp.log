@@ -15,23 +15,25 @@
 ;;; RevealFunctionPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (((@function iadd 2) 20) (((@function iadd 2) 11) 11))))
+  ((@primitive-function println-non-void 1)
+   (((@primitive-function iadd 2) 20)
+    (((@primitive-function iadd 2) 11) 11))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (((@function iadd 2) 20) (((@function iadd 2) 11) 11))))
+  ((@primitive-function println-non-void 1)
+   (((@primitive-function iadd 2) 20)
+    (((@primitive-function iadd 2) 11) 11))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ (@function println-non-void 1)
-    (@let1 _₂ (@function iadd 2)
+  (@let1 _₁ (@primitive-function println-non-void 1)
+    (@let1 _₂ (@primitive-function iadd 2)
       (@let1 _₃ 20
         (@let1 _₄ (_₂ _₃)
-          (@let1 _₅ (@function iadd 2)
+          (@let1 _₅ (@primitive-function iadd 2)
             (@let1 _₆ 11
               (@let1 _₇ (_₅ _₆)
                 (@let1 _₈ 11
@@ -42,11 +44,11 @@
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
-    (= _₂ (const (@function iadd 2)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₂ (const (@primitive-function iadd 2)))
     (= _₃ (const 20))
     (= _₄ (apply _₂ _₃))
-    (= _₅ (const (@function iadd 2)))
+    (= _₅ (const (@primitive-function iadd 2)))
     (= _₆ (const 11))
     (= _₇ (apply _₅ _₆))
     (= _₈ (const 11))

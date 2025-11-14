@@ -25,15 +25,21 @@
 ;;; LiftLambdaPass
 
 (define (Y f)
-  (((((@function make-curry 3) (@function Y/λ₁ 1)) 1) 0)
-   ((((@function curry-put! 3) 0) f)
-    ((((@function make-curry 3) (@function Y/λ₂ 2)) 2) 1))))
+  (((((@primitive-function make-curry 3) (@function Y/λ₁ 1))
+     1)
+    0)
+   ((((@primitive-function curry-put! 3) 0) f)
+    ((((@primitive-function make-curry 3) (@function Y/λ₂ 2))
+      2)
+     1))))
 
 (define (Y/λ₁ u₁) (u₁ u₁))
 
 (define (Y/λ₂ f x₁)
-  (f ((((@function curry-put! 3) 0) x₁)
-      ((((@function make-curry 3) (@function Y/λ₂/λ₁ 2)) 2)
+  (f ((((@primitive-function curry-put! 3) 0) x₁)
+      ((((@primitive-function make-curry 3)
+         (@function Y/λ₂/λ₁ 2))
+        2)
        1))))
 
 (define (Y/λ₂/λ₁ x₁ t₁) ((x₁ x₁) t₁))
@@ -41,18 +47,21 @@
 ;;; UnnestOperandPass
 
 (define (Y f)
-  (@let1 _₁ (@function make-curry 3)
+  (@let1 _₁ (@primitive-function make-curry 3)
     (@let1 _₂ (@function Y/λ₁ 1)
       (@let1 _₃ (_₁ _₂)
         (@let1 _₄ 1
           (@let1 _₅ (_₃ _₄)
             (@let1 _₆ 0
               (@let1 _₇ (_₅ _₆)
-                (@let1 _₈ (@function curry-put! 3)
+                (@let1 _₈ (@primitive-function curry-put! 3)
                   (@let1 _₉ 0
                     (@let1 _₁₀ (_₈ _₉)
                       (@let1 _₁₁ (_₁₀ f)
-                        (@let1 _₁₂ (@function make-curry 3)
+                        (@let1 _₁₂
+                            (@primitive-function
+                             make-curry
+                             3)
                           (@let1 _₁₃ (@function Y/λ₂ 2)
                             (@let1 _₁₄ (_₁₂ _₁₃)
                               (@let1 _₁₅ 2
@@ -65,11 +74,11 @@
 (define (Y/λ₁ u₁) (u₁ u₁))
 
 (define (Y/λ₂ f x₁)
-  (@let1 _₁ (@function curry-put! 3)
+  (@let1 _₁ (@primitive-function curry-put! 3)
     (@let1 _₂ 0
       (@let1 _₃ (_₁ _₂)
         (@let1 _₄ (_₃ x₁)
-          (@let1 _₅ (@function make-curry 3)
+          (@let1 _₅ (@primitive-function make-curry 3)
             (@let1 _₆ (@function Y/λ₂/λ₁ 2)
               (@let1 _₇ (_₅ _₆)
                 (@let1 _₈ 2
@@ -85,18 +94,18 @@
 (define-function Y
   (block entry
     (= f (argument 0))
-    (= _₁ (const (@function make-curry 3)))
+    (= _₁ (const (@primitive-function make-curry 3)))
     (= _₂ (const (@function Y/λ₁ 1)))
     (= _₃ (apply _₁ _₂))
     (= _₄ (const 1))
     (= _₅ (apply _₃ _₄))
     (= _₆ (const 0))
     (= _₇ (apply _₅ _₆))
-    (= _₈ (const (@function curry-put! 3)))
+    (= _₈ (const (@primitive-function curry-put! 3)))
     (= _₉ (const 0))
     (= _₁₀ (apply _₈ _₉))
     (= _₁₁ (apply _₁₀ f))
-    (= _₁₂ (const (@function make-curry 3)))
+    (= _₁₂ (const (@primitive-function make-curry 3)))
     (= _₁₃ (const (@function Y/λ₂ 2)))
     (= _₁₄ (apply _₁₂ _₁₃))
     (= _₁₅ (const 2))
@@ -117,11 +126,11 @@
   (block entry
     (= f (argument 0))
     (= x₁ (argument 1))
-    (= _₁ (const (@function curry-put! 3)))
+    (= _₁ (const (@primitive-function curry-put! 3)))
     (= _₂ (const 0))
     (= _₃ (apply _₁ _₂))
     (= _₄ (apply _₃ x₁))
-    (= _₅ (const (@function make-curry 3)))
+    (= _₅ (const (@primitive-function make-curry 3)))
     (= _₆ (const (@function Y/λ₂/λ₁ 2)))
     (= _₇ (apply _₅ _₆))
     (= _₈ (const 2))

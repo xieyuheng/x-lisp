@@ -1,14 +1,14 @@
 (define-function square
   (block entry
     (= x (argument 0))
-    (= _₁ (const (@function imul 2)))
+    (= _₁ (const (@primitive-function imul 2)))
     (= _₂ (apply _₁ x))
     (= _↩ (apply _₂ x))
     (return _↩)))
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
     (= _₂ (const (@function square 1)))
     (= _₃ (const (@function square 1)))
     (= _₄ (const 3))

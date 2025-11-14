@@ -47,6 +47,10 @@ function qualifyValue(context: BundleContext, value: Value): Value {
       return Values.FunctionRef(qualifyName(context, value.name), value.arity)
     }
 
+    case "PrimitiveFunctionRef": {
+      return value
+    }
+
     default: {
       return value
     }

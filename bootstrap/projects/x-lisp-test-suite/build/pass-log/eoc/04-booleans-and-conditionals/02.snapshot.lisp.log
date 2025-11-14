@@ -56,91 +56,108 @@
 ;;; RevealFunctionPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (@let1 x₁ ((@function random-dice 0))
-     (@let1 y₁ ((@function random-dice 0))
-       (((@function iadd 2)
+  ((@primitive-function println-non-void 1)
+   (@let1 x₁ ((@primitive-function random-dice 0))
+     (@let1 y₁ ((@primitive-function random-dice 0))
+       (((@primitive-function iadd 2)
          (if
-             (if (((@function int-less? 2) x₁) 1)
-               (((@function equal? 2) x₁) 0)
-               (((@function equal? 2) x₁) 2))
-           (((@function iadd 2) y₁) 2)
-           (((@function iadd 2) y₁) 10)))
+             (if (((@primitive-function int-less? 2) x₁) 1)
+               (((@primitive-function equal? 2) x₁) 0)
+               (((@primitive-function equal? 2) x₁) 2))
+           (((@primitive-function iadd 2) y₁) 2)
+           (((@primitive-function iadd 2) y₁) 10)))
         (if
-            (if (((@function int-less? 2) x₁) 1)
-              (((@function equal? 2) x₁) 0)
-              (((@function equal? 2) x₁) 2))
-          (((@function iadd 2) y₁) 2)
-          (((@function iadd 2) y₁) 10)))))))
+            (if (((@primitive-function int-less? 2) x₁) 1)
+              (((@primitive-function equal? 2) x₁) 0)
+              (((@primitive-function equal? 2) x₁) 2))
+          (((@primitive-function iadd 2) y₁) 2)
+          (((@primitive-function iadd 2) y₁) 10)))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (@let1 x₁ ((@function random-dice 0))
-     (@let1 y₁ ((@function random-dice 0))
-       (((@function iadd 2)
+  ((@primitive-function println-non-void 1)
+   (@let1 x₁ ((@primitive-function random-dice 0))
+     (@let1 y₁ ((@primitive-function random-dice 0))
+       (((@primitive-function iadd 2)
          (if
-             (if (((@function int-less? 2) x₁) 1)
-               (((@function equal? 2) x₁) 0)
-               (((@function equal? 2) x₁) 2))
-           (((@function iadd 2) y₁) 2)
-           (((@function iadd 2) y₁) 10)))
+             (if (((@primitive-function int-less? 2) x₁) 1)
+               (((@primitive-function equal? 2) x₁) 0)
+               (((@primitive-function equal? 2) x₁) 2))
+           (((@primitive-function iadd 2) y₁) 2)
+           (((@primitive-function iadd 2) y₁) 10)))
         (if
-            (if (((@function int-less? 2) x₁) 1)
-              (((@function equal? 2) x₁) 0)
-              (((@function equal? 2) x₁) 2))
-          (((@function iadd 2) y₁) 2)
-          (((@function iadd 2) y₁) 10)))))))
+            (if (((@primitive-function int-less? 2) x₁) 1)
+              (((@primitive-function equal? 2) x₁) 0)
+              (((@primitive-function equal? 2) x₁) 2))
+          (((@primitive-function iadd 2) y₁) 2)
+          (((@primitive-function iadd 2) y₁) 10)))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ (@function println-non-void 1)
-    (@let1 x₁ (@let1 _₂ (@function random-dice 0) (_₂))
-      (@let1 y₁ (@let1 _₃ (@function random-dice 0) (_₃))
-        (@let1 _₄ (@function iadd 2)
+  (@let1 _₁ (@primitive-function println-non-void 1)
+    (@let1 x₁
+        (@let1 _₂ (@primitive-function random-dice 0) (_₂))
+      (@let1 y₁
+          (@let1 _₃ (@primitive-function random-dice 0)
+            (_₃))
+        (@let1 _₄ (@primitive-function iadd 2)
           (@let1 _₅
               (@let1 _₆
-                  (@let1 _₇ (@function int-less? 2)
+                  (@let1 _₇
+                      (@primitive-function int-less? 2)
                     (@let1 _₈ (_₇ x₁)
                       (@let1 _₉ 1
                         (@let1 _₁₀ (_₈ _₉)
                           (if _₁₀
-                            (@let1 _₁₁ (@function equal? 2)
+                            (@let1 _₁₁
+                                (@primitive-function
+                                 equal?
+                                 2)
                               (@let1 _₁₂ (_₁₁ x₁)
                                 (@let1 _₁₃ 0 (_₁₂ _₁₃))))
-                            (@let1 _₁₄ (@function equal? 2)
+                            (@let1 _₁₄
+                                (@primitive-function
+                                 equal?
+                                 2)
                               (@let1 _₁₅ (_₁₄ x₁)
                                 (@let1 _₁₆ 2 (_₁₅ _₁₆)))))))))
                 (if _₆
-                  (@let1 _₁₇ (@function iadd 2)
+                  (@let1 _₁₇ (@primitive-function iadd 2)
                     (@let1 _₁₈ (_₁₇ y₁)
                       (@let1 _₁₉ 2 (_₁₈ _₁₉))))
-                  (@let1 _₂₀ (@function iadd 2)
+                  (@let1 _₂₀ (@primitive-function iadd 2)
                     (@let1 _₂₁ (_₂₀ y₁)
                       (@let1 _₂₂ 10 (_₂₁ _₂₂))))))
             (@let1 _₂₃ (_₄ _₅)
               (@let1 _₂₄
                   (@let1 _₂₅
-                      (@let1 _₂₆ (@function int-less? 2)
+                      (@let1 _₂₆
+                          (@primitive-function int-less? 2)
                         (@let1 _₂₇ (_₂₆ x₁)
                           (@let1 _₂₈ 1
                             (@let1 _₂₉ (_₂₇ _₂₈)
                               (if _₂₉
                                 (@let1 _₃₀
-                                    (@function equal? 2)
+                                    (@primitive-function
+                                     equal?
+                                     2)
                                   (@let1 _₃₁ (_₃₀ x₁)
                                     (@let1 _₃₂ 0 (_₃₁ _₃₂))))
                                 (@let1 _₃₃
-                                    (@function equal? 2)
+                                    (@primitive-function
+                                     equal?
+                                     2)
                                   (@let1 _₃₄ (_₃₃ x₁)
                                     (@let1 _₃₅ 2 (_₃₄ _₃₅)))))))))
                     (if _₂₅
-                      (@let1 _₃₆ (@function iadd 2)
+                      (@let1 _₃₆
+                          (@primitive-function iadd 2)
                         (@let1 _₃₇ (_₃₆ y₁)
                           (@let1 _₃₈ 2 (_₃₇ _₃₈))))
-                      (@let1 _₃₉ (@function iadd 2)
+                      (@let1 _₃₉
+                          (@primitive-function iadd 2)
                         (@let1 _₄₀ (_₃₉ y₁)
                           (@let1 _₄₁ 10 (_₄₀ _₄₁))))))
                 (@let1 _₄₂ (_₂₃ _₂₄) (_₁ _₄₂))))))))))
@@ -149,13 +166,13 @@
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
-    (= _₂ (const (@function random-dice 0)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₂ (const (@primitive-function random-dice 0)))
     (= x₁ (nullary-apply _₂))
-    (= _₃ (const (@function random-dice 0)))
+    (= _₃ (const (@primitive-function random-dice 0)))
     (= y₁ (nullary-apply _₃))
-    (= _₄ (const (@function iadd 2)))
-    (= _₇ (const (@function int-less? 2)))
+    (= _₄ (const (@primitive-function iadd 2)))
+    (= _₇ (const (@primitive-function int-less? 2)))
     (= _₈ (apply _₇ x₁))
     (= _₉ (const 1))
     (= _₁₀ (apply _₈ _₉))
@@ -165,58 +182,58 @@
     (= _↩ (apply _₁ _₄₂))
     (return _↩))
   (block main/then₂
-    (= _₃₆ (const (@function iadd 2)))
+    (= _₃₆ (const (@primitive-function iadd 2)))
     (= _₃₇ (apply _₃₆ y₁))
     (= _₃₈ (const 2))
     (= _₂₄ (apply _₃₇ _₃₈))
     (goto main/let-body₁))
   (block main/else₃
-    (= _₃₉ (const (@function iadd 2)))
+    (= _₃₉ (const (@primitive-function iadd 2)))
     (= _₄₀ (apply _₃₉ y₁))
     (= _₄₁ (const 10))
     (= _₂₄ (apply _₄₀ _₄₁))
     (goto main/let-body₁))
   (block main/let-body₄ (branch _₂₅ main/then₂ main/else₃))
   (block main/then₅
-    (= _₃₀ (const (@function equal? 2)))
+    (= _₃₀ (const (@primitive-function equal? 2)))
     (= _₃₁ (apply _₃₀ x₁))
     (= _₃₂ (const 0))
     (= _₂₅ (apply _₃₁ _₃₂))
     (goto main/let-body₄))
   (block main/else₆
-    (= _₃₃ (const (@function equal? 2)))
+    (= _₃₃ (const (@primitive-function equal? 2)))
     (= _₃₄ (apply _₃₃ x₁))
     (= _₃₅ (const 2))
     (= _₂₅ (apply _₃₄ _₃₅))
     (goto main/let-body₄))
   (block main/let-body₇
     (= _₂₃ (apply _₄ _₅))
-    (= _₂₆ (const (@function int-less? 2)))
+    (= _₂₆ (const (@primitive-function int-less? 2)))
     (= _₂₇ (apply _₂₆ x₁))
     (= _₂₈ (const 1))
     (= _₂₉ (apply _₂₇ _₂₈))
     (branch _₂₉ main/then₅ main/else₆))
   (block main/then₈
-    (= _₁₇ (const (@function iadd 2)))
+    (= _₁₇ (const (@primitive-function iadd 2)))
     (= _₁₈ (apply _₁₇ y₁))
     (= _₁₉ (const 2))
     (= _₅ (apply _₁₈ _₁₉))
     (goto main/let-body₇))
   (block main/else₉
-    (= _₂₀ (const (@function iadd 2)))
+    (= _₂₀ (const (@primitive-function iadd 2)))
     (= _₂₁ (apply _₂₀ y₁))
     (= _₂₂ (const 10))
     (= _₅ (apply _₂₁ _₂₂))
     (goto main/let-body₇))
   (block main/let-body₁₀ (branch _₆ main/then₈ main/else₉))
   (block main/then₁₁
-    (= _₁₁ (const (@function equal? 2)))
+    (= _₁₁ (const (@primitive-function equal? 2)))
     (= _₁₂ (apply _₁₁ x₁))
     (= _₁₃ (const 0))
     (= _₆ (apply _₁₂ _₁₃))
     (goto main/let-body₁₀))
   (block main/else₁₂
-    (= _₁₄ (const (@function equal? 2)))
+    (= _₁₄ (const (@primitive-function equal? 2)))
     (= _₁₅ (apply _₁₄ x₁))
     (= _₁₆ (const 2))
     (= _₆ (apply _₁₅ _₁₆))

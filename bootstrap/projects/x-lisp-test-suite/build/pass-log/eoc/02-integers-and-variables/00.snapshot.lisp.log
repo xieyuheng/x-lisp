@@ -12,23 +12,25 @@
 
 ;;; RevealFunctionPass
 
-(define (main) ((@function println-non-void 1) 42))
+(define (main)
+  ((@primitive-function println-non-void 1) 42))
 
 ;;; LiftLambdaPass
 
-(define (main) ((@function println-non-void 1) 42))
+(define (main)
+  ((@primitive-function println-non-void 1) 42))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ (@function println-non-void 1)
+  (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 _₂ 42 (_₁ _₂))))
 
 ;;; ExplicateControlPass
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
     (= _₂ (const 42))
     (= _↩ (apply _₁ _₂))
     (return _↩)))

@@ -34,62 +34,69 @@
 ;;; RevealFunctionPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (@let1 _∅₁ ((@function print 1) 1)
-     (@let1 _∅₂ ((@function newline 0))
-       (@let1 _∅₃ ((@function print 1) 2)
-         (@let1 _∅₄ ((@function newline 0))
-           (@let1 _∅₅ ((@function print 1) 3)
-             (@let1 _∅₆ ((@function newline 0)) 666))))))))
+  ((@primitive-function println-non-void 1)
+   (@let1 _∅₁ ((@primitive-function print 1) 1)
+     (@let1 _∅₂ ((@primitive-function newline 0))
+       (@let1 _∅₃ ((@primitive-function print 1) 2)
+         (@let1 _∅₄ ((@primitive-function newline 0))
+           (@let1 _∅₅ ((@primitive-function print 1) 3)
+             (@let1 _∅₆ ((@primitive-function newline 0))
+               666))))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (@let1 _∅₁ ((@function print 1) 1)
-     (@let1 _∅₂ ((@function newline 0))
-       (@let1 _∅₃ ((@function print 1) 2)
-         (@let1 _∅₄ ((@function newline 0))
-           (@let1 _∅₅ ((@function print 1) 3)
-             (@let1 _∅₆ ((@function newline 0)) 666))))))))
+  ((@primitive-function println-non-void 1)
+   (@let1 _∅₁ ((@primitive-function print 1) 1)
+     (@let1 _∅₂ ((@primitive-function newline 0))
+       (@let1 _∅₃ ((@primitive-function print 1) 2)
+         (@let1 _∅₄ ((@primitive-function newline 0))
+           (@let1 _∅₅ ((@primitive-function print 1) 3)
+             (@let1 _∅₆ ((@primitive-function newline 0))
+               666))))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ (@function println-non-void 1)
+  (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 _∅₁
-        (@let1 _₂ (@function print 1) (@let1 _₃ 1 (_₂ _₃)))
-      (@let1 _∅₂ (@let1 _₄ (@function newline 0) (_₄))
+        (@let1 _₂ (@primitive-function print 1)
+          (@let1 _₃ 1 (_₂ _₃)))
+      (@let1 _∅₂
+          (@let1 _₄ (@primitive-function newline 0) (_₄))
         (@let1 _∅₃
-            (@let1 _₅ (@function print 1)
+            (@let1 _₅ (@primitive-function print 1)
               (@let1 _₆ 2 (_₅ _₆)))
-          (@let1 _∅₄ (@let1 _₇ (@function newline 0) (_₇))
+          (@let1 _∅₄
+              (@let1 _₇ (@primitive-function newline 0)
+                (_₇))
             (@let1 _∅₅
-                (@let1 _₈ (@function print 1)
+                (@let1 _₈ (@primitive-function print 1)
                   (@let1 _₉ 3 (_₈ _₉)))
               (@let1 _∅₆
-                  (@let1 _₁₀ (@function newline 0) (_₁₀))
+                  (@let1 _₁₀ (@primitive-function newline 0)
+                    (_₁₀))
                 (@let1 _₁₁ 666 (_₁ _₁₁))))))))))
 
 ;;; ExplicateControlPass
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
-    (= _₂ (const (@function print 1)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₂ (const (@primitive-function print 1)))
     (= _₃ (const 1))
     (= _∅₁ (apply _₂ _₃))
-    (= _₄ (const (@function newline 0)))
+    (= _₄ (const (@primitive-function newline 0)))
     (= _∅₂ (nullary-apply _₄))
-    (= _₅ (const (@function print 1)))
+    (= _₅ (const (@primitive-function print 1)))
     (= _₆ (const 2))
     (= _∅₃ (apply _₅ _₆))
-    (= _₇ (const (@function newline 0)))
+    (= _₇ (const (@primitive-function newline 0)))
     (= _∅₄ (nullary-apply _₇))
-    (= _₈ (const (@function print 1)))
+    (= _₈ (const (@primitive-function print 1)))
     (= _₉ (const 3))
     (= _∅₅ (apply _₈ _₉))
-    (= _₁₀ (const (@function newline 0)))
+    (= _₁₀ (const (@primitive-function newline 0)))
     (= _∅₆ (nullary-apply _₁₀))
     (= _₁₁ (const 666))
     (= _↩ (apply _₁ _₁₁))

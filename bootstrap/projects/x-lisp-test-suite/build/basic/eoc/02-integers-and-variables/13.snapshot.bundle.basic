@@ -1,14 +1,14 @@
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
-    (= _₂ (const (@function iadd 2)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₂ (const (@primitive-function iadd 2)))
     (= _₃ (const 42))
     (= _₄ (apply _₂ _₃))
-    (= _₅ (const (@function ineg 1)))
+    (= _₅ (const (@primitive-function ineg 1)))
     (= _₆ (const 10))
     (= _₇ (apply _₅ _₆))
     (= x₁ (apply _₄ _₇))
-    (= _₈ (const (@function iadd 2)))
+    (= _₈ (const (@primitive-function iadd 2)))
     (= _₉ (apply _₈ x₁))
     (= _₁₀ (const 10))
     (= _₁₁ (apply _₉ _₁₀))

@@ -16,8 +16,12 @@ export function formatValue(value: Value): string {
       return `(@function ${value.name} ${value.arity})`
     }
 
+    case "PrimitiveFunctionRef": {
+      return `(@primitive-function ${value.name} ${value.arity})`
+    }
+
     case "Curry": {
-      const target = formatValue(value.fn)
+      const target = formatValue(value.target)
       const args = formatValues(value.args)
       if (args === "") {
         return `(@curry ${target} ${value.arity})`

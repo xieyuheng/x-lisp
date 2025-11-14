@@ -24,27 +24,34 @@
 ;;; RevealFunctionPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (@let1 x₁ ((@function random-dice 0))
-     (@let1 y₁ ((@function random-dice 0))
-       (((@function iadd 2) (((@function iadd 2) x₁) y₁)) 42)))))
+  ((@primitive-function println-non-void 1)
+   (@let1 x₁ ((@primitive-function random-dice 0))
+     (@let1 y₁ ((@primitive-function random-dice 0))
+       (((@primitive-function iadd 2)
+         (((@primitive-function iadd 2) x₁) y₁))
+        42)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@function println-non-void 1)
-   (@let1 x₁ ((@function random-dice 0))
-     (@let1 y₁ ((@function random-dice 0))
-       (((@function iadd 2) (((@function iadd 2) x₁) y₁)) 42)))))
+  ((@primitive-function println-non-void 1)
+   (@let1 x₁ ((@primitive-function random-dice 0))
+     (@let1 y₁ ((@primitive-function random-dice 0))
+       (((@primitive-function iadd 2)
+         (((@primitive-function iadd 2) x₁) y₁))
+        42)))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ (@function println-non-void 1)
-    (@let1 x₁ (@let1 _₂ (@function random-dice 0) (_₂))
-      (@let1 y₁ (@let1 _₃ (@function random-dice 0) (_₃))
-        (@let1 _₄ (@function iadd 2)
-          (@let1 _₅ (@function iadd 2)
+  (@let1 _₁ (@primitive-function println-non-void 1)
+    (@let1 x₁
+        (@let1 _₂ (@primitive-function random-dice 0) (_₂))
+      (@let1 y₁
+          (@let1 _₃ (@primitive-function random-dice 0)
+            (_₃))
+        (@let1 _₄ (@primitive-function iadd 2)
+          (@let1 _₅ (@primitive-function iadd 2)
             (@let1 _₆ (_₅ x₁)
               (@let1 _₇ (_₆ y₁)
                 (@let1 _₈ (_₄ _₇)
@@ -54,13 +61,13 @@
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
-    (= _₂ (const (@function random-dice 0)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₂ (const (@primitive-function random-dice 0)))
     (= x₁ (nullary-apply _₂))
-    (= _₃ (const (@function random-dice 0)))
+    (= _₃ (const (@primitive-function random-dice 0)))
     (= y₁ (nullary-apply _₃))
-    (= _₄ (const (@function iadd 2)))
-    (= _₅ (const (@function iadd 2)))
+    (= _₄ (const (@primitive-function iadd 2)))
+    (= _₅ (const (@primitive-function iadd 2)))
     (= _₆ (apply _₅ x₁))
     (= _₇ (apply _₆ y₁))
     (= _₈ (apply _₄ _₇))

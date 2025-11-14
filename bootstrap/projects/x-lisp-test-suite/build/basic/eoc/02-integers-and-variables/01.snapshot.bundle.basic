@@ -1,8 +1,8 @@
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
     (= x₁ (const 4))
-    (= _₂ (const (@function iadd 2)))
+    (= _₂ (const (@primitive-function iadd 2)))
     (= _₃ (const 8))
     (= _₄ (apply _₂ _₃))
     (= _₅ (apply _₄ x₁))

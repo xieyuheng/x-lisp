@@ -33,13 +33,14 @@
 ;;; RevealFunctionPass
 
 (define (main)
-  ((@function println-non-void 1)
+  ((@primitive-function println-non-void 1)
    (if
        (if
-           (((@function equal? 2)
-             ((@function random-dice 0)))
+           (((@primitive-function equal? 2)
+             ((@primitive-function random-dice 0)))
             1)
-         (((@function equal? 2) ((@function random-dice 0)))
+         (((@primitive-function equal? 2)
+           ((@primitive-function random-dice 0)))
           2)
          #f)
      0
@@ -48,13 +49,14 @@
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@function println-non-void 1)
+  ((@primitive-function println-non-void 1)
    (if
        (if
-           (((@function equal? 2)
-             ((@function random-dice 0)))
+           (((@primitive-function equal? 2)
+             ((@primitive-function random-dice 0)))
             1)
-         (((@function equal? 2) ((@function random-dice 0)))
+         (((@primitive-function equal? 2)
+           ((@primitive-function random-dice 0)))
           2)
          #f)
      0
@@ -63,19 +65,22 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ (@function println-non-void 1)
+  (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 _₂
         (@let1 _₃
-            (@let1 _₄ (@function equal? 2)
-              (@let1 _₅ (@function random-dice 0)
+            (@let1 _₄ (@primitive-function equal? 2)
+              (@let1 _₅ (@primitive-function random-dice 0)
                 (@let1 _₆ (_₅)
                   (@let1 _₇ (_₄ _₆)
                     (@let1 _₈ 1
                       (@let1 _₉ (_₇ _₈)
                         (if _₉
-                          (@let1 _₁₀ (@function equal? 2)
+                          (@let1 _₁₀
+                              (@primitive-function equal? 2)
                             (@let1 _₁₁
-                                (@function random-dice 0)
+                                (@primitive-function
+                                 random-dice
+                                 0)
                               (@let1 _₁₂ (_₁₁)
                                 (@let1 _₁₃ (_₁₀ _₁₂)
                                   (@let1 _₁₄ 2 (_₁₃ _₁₄))))))
@@ -87,9 +92,9 @@
 
 (define-function main
   (block entry
-    (= _₁ (const (@function println-non-void 1)))
-    (= _₄ (const (@function equal? 2)))
-    (= _₅ (const (@function random-dice 0)))
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₄ (const (@primitive-function equal? 2)))
+    (= _₅ (const (@primitive-function random-dice 0)))
     (= _₆ (nullary-apply _₅))
     (= _₇ (apply _₄ _₆))
     (= _₈ (const 1))
@@ -100,8 +105,8 @@
   (block main/else₃ (= _₂ (const 42)) (goto main/let-body₁))
   (block main/let-body₄ (branch _₃ main/then₂ main/else₃))
   (block main/then₅
-    (= _₁₀ (const (@function equal? 2)))
-    (= _₁₁ (const (@function random-dice 0)))
+    (= _₁₀ (const (@primitive-function equal? 2)))
+    (= _₁₁ (const (@primitive-function random-dice 0)))
     (= _₁₂ (nullary-apply _₁₁))
     (= _₁₃ (apply _₁₀ _₁₂))
     (= _₁₄ (const 2))
