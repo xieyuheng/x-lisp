@@ -1,4 +1,3 @@
-[runtime] `value` -- tag copy from inet-lisp
 [runtime] `value` -- remove unused value
 [runtime] `value` -- fix naming
 [runtime] `value` -- fix tag encoding
