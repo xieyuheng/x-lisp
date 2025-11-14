@@ -7,26 +7,26 @@ _main.entry:
         leaq _iadd(%rip), @(var _₂)
         movq @(var _₂), %rdi
         movq @(var x₂), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₃)
         movq $1, @(var _₄)
         movq @(var _₃), %rdi
         movq @(var _₄), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var x₁)
         leaq _iadd(%rip), @(var _₅)
         movq @(var _₅), %rdi
         movq @(var x₁), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₆)
         movq $2, @(var _₇)
         movq @(var _₆), %rdi
         movq @(var _₇), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _₈)
         movq @(var _₁), %rdi
         movq @(var _₈), %rsi
-        callq-n _apply, @(arity 2)
+        callq _apply
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 
