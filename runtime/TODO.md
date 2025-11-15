@@ -1,5 +1,3 @@
-[runtime] `x_float_compare_ascending` & `x_float_compare_descending`
-
 [runtime] `x_same_p`
 [runtime] `x_equal_p`
 

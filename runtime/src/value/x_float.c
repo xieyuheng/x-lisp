@@ -105,6 +105,28 @@ x_float_non_negative_p(value_t x) {
 }
 
 value_t
+x_float_compare_ascending(value_t x, value_t y) {
+    if (to_double(x) < to_double(y)) {
+        return x_int(-1);
+    } else if (to_double(x) > to_double(y)) {
+        return x_int(1);
+    } else {
+        return x_int(0);
+    }
+}
+
+value_t
+x_float_compare_descending(value_t x, value_t y) {
+    if (to_double(x) < to_double(y)) {
+        return x_int(1);
+    } else if (to_double(x) > to_double(y)) {
+        return x_int(-1);
+    } else {
+        return x_int(0);
+    }
+}
+
+value_t
 x_float_to_int(value_t x) {
     if (!x_float_p(x)) {
         who_printf("type mismatch\n");

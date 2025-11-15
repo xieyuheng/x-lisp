@@ -19,4 +19,6 @@ value_t x_float_greater_equal_p(value_t x, value_t y);
 value_t x_float_less_equal_p(value_t x, value_t y);
 value_t x_float_positive_p(value_t x);
 value_t x_float_non_negative_p(value_t x);
+value_t x_float_compare_ascending(value_t x, value_t y);
+value_t x_float_compare_descending(value_t x, value_t y);
 value_t x_float_to_int(value_t x);
