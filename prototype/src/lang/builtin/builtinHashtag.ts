@@ -3,13 +3,13 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinHashtag(mod: Mod) {
-  provide(mod, ["hashtag?", "hashtag-string"])
+  provide(mod, ["hashtag?", "hashtag-to-string"])
 
   definePrimitiveFunction(mod, "hashtag?", 1, (value) => {
     return Values.Bool(Values.isHashtag(value))
   })
 
-  definePrimitiveFunction(mod, "hashtag-string", 1, (value) => {
+  definePrimitiveFunction(mod, "hashtag-to-string", 1, (value) => {
     return Values.String(Values.asHashtag(value).content)
   })
 }
