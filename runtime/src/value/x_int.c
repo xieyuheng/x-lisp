@@ -94,6 +94,28 @@ x_int_non_negative_p(value_t x) {
 }
 
 value_t
+x_int_compare_ascending(value_t x, value_t y) {
+    if (to_int64(x) < to_int64(y)) {
+        return x_int(-1);
+    } else if (to_int64(x) > to_int64(y)) {
+        return x_int(1);
+    } else {
+        return x_int(0);
+    }
+}
+
+value_t
+x_int_compare_descending(value_t x, value_t y) {
+    if (to_int64(x) < to_int64(y)) {
+        return x_int(1);
+    } else if (to_int64(x) > to_int64(y)) {
+        return x_int(-1);
+    } else {
+        return x_int(0);
+    }
+}
+
+value_t
 x_int_to_float(value_t x) {
     if (!x_int_p(x)) {
         who_printf("type mismatch\n");
