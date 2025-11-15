@@ -15,6 +15,7 @@ run(commander_t *commander) {
     (void) commander;
 
     test_gc();
+    test_value();
 
     return 0;
 }
