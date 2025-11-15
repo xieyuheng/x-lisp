@@ -3,7 +3,7 @@ import * as Definitions from "../definition/index.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Operand } from "../operand/index.ts"
 import * as Operands from "../operand/index.ts"
-import { transpileIdentifier } from "./transpileName.ts"
+import { transpileName } from "./transpileName.ts"
 
 const indentation = " ".repeat(8)
 
@@ -12,7 +12,7 @@ type Context = {
 }
 
 export function transpileBlock(context: Context, block: Block): string {
-  const name = transpileIdentifier([context.definition.name, block.label])
+  const name = transpileName([context.definition.name, block.label])
   const instrs = block.instrs
     .map((instr) => transpileInstr(context, instr))
     .join("\n")
@@ -123,8 +123,8 @@ function transpileOperand(context: Context, operand: Operand): string {
 
 function transpileLabel(context: Context, label: string): string {
   if (context.definition.blocks.has(label)) {
-    return transpileIdentifier([context.definition.name, label])
+    return transpileName([context.definition.name, label])
   } else {
-    return transpileIdentifier([label])
+    return transpileName([label])
   }
 }

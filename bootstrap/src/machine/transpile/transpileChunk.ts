@@ -1,7 +1,7 @@
 import type { Chunk } from "../chunk/index.ts"
 import * as Definitions from "../definition/index.ts"
 import type { Directive } from "../directive/index.ts"
-import { transpileIdentifier as transpileName } from "./transpileName.ts"
+import { transpileName as transpileName } from "./transpileName.ts"
 
 const indentation = " ".repeat(8)
 
