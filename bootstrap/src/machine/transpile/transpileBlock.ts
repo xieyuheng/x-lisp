@@ -3,7 +3,7 @@ import * as Definitions from "../definition/index.ts"
 import type { Instr } from "../instr/index.ts"
 import type { Operand } from "../operand/index.ts"
 import * as Operands from "../operand/index.ts"
-import { transpileOwnName } from "./transpileOwnName.ts"
+import { transpileExternalName, transpileOwnName } from "./transpileOwnName.ts"
 
 const indentation = " ".repeat(8)
 
@@ -80,7 +80,7 @@ function transpileOperand(context: Context, operand: Operand): string {
     }
 
     case "LabelImm": {
-      const label = transpileLabel(context, operand.label.name)
+      const label = transpileLabel(context, operand.label)
       return `$${label}`
     }
 
@@ -103,12 +103,12 @@ function transpileOperand(context: Context, operand: Operand): string {
     }
 
     case "LabelDeref": {
-      const label = transpileLabel(context, operand.label.name)
+      const label = transpileLabel(context, operand.label)
       return `${label}(%rip)`
     }
 
     case "Label": {
-      return transpileLabel(context, operand.name)
+      return transpileLabel(context, operand)
     }
 
     case "Arity": {
@@ -121,10 +121,14 @@ function transpileOperand(context: Context, operand: Operand): string {
   }
 }
 
-function transpileLabel(context: Context, label: string): string {
-  if (context.definition.blocks.has(label)) {
-    return transpileOwnName([context.definition.name, label])
+function transpileLabel(context: Context, label: Operands.Label): string {
+  if (label.attributes.isExternal) {
+    return transpileExternalName([label.name])
   } else {
-    return transpileOwnName([label])
+    if (context.definition.blocks.has(label.name)) {
+      return transpileOwnName([context.definition.name, label.name])
+    } else {
+      return transpileOwnName([label.name])
+    }
   }
 }

@@ -27,7 +27,11 @@ export function formatOperand(operand: Operand): string {
     }
 
     case "Label": {
-      return `(label ${operand.name})`
+      if (operand.attributes.isExternal) {
+        return `(external-label ${operand.name})`
+      } else {
+        return `(label ${operand.name})`
+      }
     }
 
     case "Cc": {

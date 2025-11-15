@@ -2,6 +2,10 @@ export function transpileOwnName(parts: Array<string>): string {
   return "_" + parts.map(transpilePart).join(".")
 }
 
+export function transpileExternalName(parts: Array<string>): string {
+  return parts.map(transpilePart).join(".")
+}
+
 function transpilePart(part: string): string {
   return part.split("").map(transpileChar).join("")
 }

@@ -2,54 +2,54 @@
 .text
 _main:
 _main.entry:
-        leaq _x_println_non_void(%rip), @(var _₁)
-        leaq _x_iadd(%rip), @(var _₂)
-        leaq _x_iadd(%rip), @(var _₃)
-        leaq _x_iadd(%rip), @(var _₄)
-        leaq _x_iadd(%rip), @(var _₅)
-        leaq _x_random_dice(%rip), @(var _₆)
+        leaq x_println_non_void(%rip), @(var _₁)
+        leaq x_iadd(%rip), @(var _₂)
+        leaq x_iadd(%rip), @(var _₃)
+        leaq x_iadd(%rip), @(var _₄)
+        leaq x_iadd(%rip), @(var _₅)
+        leaq x_random_dice(%rip), @(var _₆)
         movq @(var _₆), %rdi
-        callq _x_apply_nullary
+        callq x_apply_nullary
         movq %rax, @(var _₇)
         movq @(var _₅), %rdi
         movq @(var _₇), %rsi
-        callq _x_apply_unary
+        callq x_apply_unary
         movq %rax, @(var _₈)
         movq $1, @(var _₉)
         movq @(var _₈), %rdi
         movq @(var _₉), %rsi
-        callq _x_apply_unary
+        callq x_apply_unary
         movq %rax, @(var _₁₀)
         movq @(var _₄), %rdi
         movq @(var _₁₀), %rsi
-        callq _x_apply_unary
+        callq x_apply_unary
         movq %rax, @(var _₁₁)
         movq $1, @(var _₁₂)
         movq @(var _₁₁), %rdi
         movq @(var _₁₂), %rsi
-        callq _x_apply_unary
+        callq x_apply_unary
         movq %rax, @(var _₁₃)
         movq @(var _₃), %rdi
         movq @(var _₁₃), %rsi
-        callq _x_apply_unary
+        callq x_apply_unary
         movq %rax, @(var _₁₄)
         movq $1, @(var _₁₅)
         movq @(var _₁₄), %rdi
         movq @(var _₁₅), %rsi
-        callq _x_apply_unary
+        callq x_apply_unary
         movq %rax, @(var _₁₆)
         movq @(var _₂), %rdi
         movq @(var _₁₆), %rsi
-        callq _x_apply_unary
+        callq x_apply_unary
         movq %rax, @(var _₁₇)
         movq $1, @(var _₁₈)
         movq @(var _₁₇), %rdi
         movq @(var _₁₈), %rsi
-        callq _x_apply_unary
+        callq x_apply_unary
         movq %rax, @(var _₁₉)
         movq @(var _₁), %rdi
         movq @(var _₁₉), %rsi
-        callq _x_apply_unary
+        callq x_apply_unary
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 

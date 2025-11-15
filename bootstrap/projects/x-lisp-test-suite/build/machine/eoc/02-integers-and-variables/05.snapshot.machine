@@ -2,14 +2,16 @@
 
 (define-code main
   (block entry
-    (leaq (label-deref (label x-println-non-void)) (var _₁))
+    (leaq
+     (label-deref (external-label x-println-non-void))
+     (var _₁))
     (movq (imm 42) (var a₁))
     (movq (var a₁) (reg rdi))
-    (callq-n (label identity) (arity 1))
+    (callq-n (external-label identity) (arity 1))
     (movq (reg rax) (var b₁))
     (movq (var _₁) (reg rdi))
     (movq (var b₁) (reg rsi))
-    (callq-n (label x-apply-unary) (arity 2))
+    (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _↩))
     (movq (var _↩) (reg rax))
     (retq)))
