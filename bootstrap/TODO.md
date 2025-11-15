@@ -1,3 +1,12 @@
+[bootstrap] docs about x-lisp -- builtin and prelude
+[bootstrap] docs about x-lisp -- standard libraries
+
+[bootstrap] docs about basic-lisp -- top level statement
+[bootstrap] docs about basic-lisp -- instructions
+
+[bootstrap] docs about machine-lisp -- top level statement
+[bootstrap] docs about machine-lisp -- operands
+
 [basic] `010-SelectInstructionPass` -- `onInstr` -- fix tagged value encoding
 
 [machine] `070-AssignHomePass`
