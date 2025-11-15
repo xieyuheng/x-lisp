@@ -1,4 +1,4 @@
-export function transpileIdentifier(parts: Array<string>): string {
+export function transpileName(parts: Array<string>): string {
   return parts.map(transpilePart).join(".")
 }
 
