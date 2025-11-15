@@ -493,6 +493,44 @@
 ;; (digraph-acyclic? digraph)
 ```
 
-## basic-lisp
+## basic-lisp / syntax
+
+```lisp
+;;; top level statement
+
+(define-function )
+(import <source> <names>)
+(import-all <source>)
+(import-except <source> <names>)
+(import-as <source> <prefix>)
+(export <names>)
+(include <source> <names>)
+(include-all <source>)
+(include-except <source> <names>)
+(include-as <source> <prefix>)
+
+;;; instruction
+
+(= <dest> (argument <index>))
+(= <dest> (const <value>))
+(assert <condition>)
+(return <var>)
+(goto <label>)
+(branch <var> <label> <label>)
+(= <dest> (call <function-ref> <var> ...))
+(= <dest> (nullary-apply <var>))
+(= <dest> (apply <var> <var>))
+
+;;; value
+
+<symbol>
+<hashtag>
+<string>
+<int>
+<float>
+(@function <name> <arity>)
+(@primitive-function <name> <arity>)
+(@curry <value> <arity> <arg> ...)
+```
 
 ## machine-lisp
