@@ -13,4 +13,8 @@ value_t x_idiv(value_t x, value_t y);
 value_t x_imod(value_t x, value_t y);
 value_t x_int_max(value_t x, value_t y);
 value_t x_int_min(value_t x, value_t y);
+value_t x_int_greater_p(value_t x, value_t y);
+value_t x_int_less_p(value_t x, value_t y);
+value_t x_int_greater_equal_p(value_t x, value_t y);
+value_t x_int_less_equal_p(value_t x, value_t y);
 value_t x_int_to_float(value_t x);
