@@ -1,4 +1,3 @@
-[runtime] `x_ineg`
 [runtime] `x_int_max`
 [runtime] `x_int_min`
 [runtime] `x_int_greater_p`
@@ -10,7 +9,6 @@
 [runtime] `x_int_compare_ascending`
 [runtime] `x_int_compare_descending`
 
-[runtime] `x_fneg`
 [runtime] `x_float_max`
 [runtime] `x_float_min`
 [runtime] `x_float_greater_p`
