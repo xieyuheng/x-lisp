@@ -1,6 +1,3 @@
-[bootstrap] docs about x-lisp -- builtin and prelude
-[bootstrap] docs about x-lisp -- standard libraries
-
 [bootstrap] docs about basic-lisp -- top level statement
 [bootstrap] docs about basic-lisp -- instructions
 

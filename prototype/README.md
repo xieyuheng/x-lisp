@@ -1,6 +1,6 @@
 # x-lisp / prototype interpreter
 
-## Syntax
+## x-lisp / syntax
 
 ```lisp
 ;;; parser level syntax sugar
@@ -60,20 +60,18 @@
 (<target> <args>)
 ```
 
-## builtin and prelude
-
-### Bool
+## x-lisp / builtin and prelude
 
 ```lisp
+;;; bool
+
 true
 false
 (bool? value)
 (not bool)
-```
 
-### Int
+;;; int
 
-```lisp
 (int? value)
 (ineg x)
 (iadd x y)
@@ -91,11 +89,9 @@ false
 (int-non-negative? x)
 (int-compare-ascending x y)
 (int-compare-descending x y)
-```
 
-### Float
+;;; float
 
-```lisp
 (float? value)
 (fneg x)
 (fadd x y)
@@ -112,28 +108,22 @@ false
 (float-non-negative? x)
 (float-compare-ascending x y)
 (float-compare-descending x y)
-```
 
-### Hashtag
+;;; hashtag
 
-```lisp
 (hashtag? value)
 (hashtag-to-string hashtag)
-```
 
-### Symbol
+;;; symbol
 
-```lisp
 (symbol? value)
 (symbol-length symbol)
 (symbol-to-string symbol)
 (symbol-append left right)
 (symbol-concat list)
-```
 
-### String
+;;; string
 
-```lisp
 (string? value)
 (string-length string)
 (string-to-symbol string)
@@ -144,26 +134,20 @@ false
 (string-compare-lexical x y)
 ;; prelude
 (string-repeat n string)
-```
 
-### Value
+;;; value
 
-```lisp
 (same? lhs rhs)
 (equal? lhs rhs)
 (atom? value)
 (anything? value)
-```
 
-### Schema
+;;; schema
 
-```lisp
 (valid? schema value)
-```
 
-### List
+;;; list
 
-```lisp
 (list? element-p target)
 (car list)
 (cdr list)
@@ -216,11 +200,9 @@ false
 (list-group f list)
 (list-foremost compare list)
 (list-rearmost compare list)
-```
 
-### Set
+;;; set
 
-```lisp
 (set? element-p value)
 (set-size set)
 (set-empty? set)
@@ -244,11 +226,9 @@ false
 (set-reject p set)
 (set-all? p set)
 (set-any? p set)
-```
 
-### Record
+;;; record
 
-```lisp
 (record? value-p target)
 (record-length record)
 (record-keys record)
@@ -283,11 +263,9 @@ false
 (record-each-key f record)
 (record-each f record)
 (record-find-key p record)
-```
 
-### Hash
+;;; hash
 
-```lisp
 (hash? key-p value-p target)
 (hash-empty? hash)
 (hash-length hash)
@@ -322,29 +300,23 @@ false
 (hash-invert hash)
 (hash-invert-group hash)
 (hash-find-key p hash)
-```
 
-### Predicate
+;;; predicate
 
-```lisp
 ;; prelude
 (negate p x)
 (union ...ps)
 (inter ...ps)
-```
 
-### Sexp
+;;; sexp
 
-```lisp
 (sexp? value)
 (parse-sexp string)
 (parse-sexps string)
 (format-sexp sexp)
-```
 
-### File
+;;; file
 
-```lisp
 (file-exists? path)
 (file-size path)
 (file-load path)
@@ -359,63 +331,47 @@ false
 (directory-files-recursively path)
 (directory-directories path)
 (directory-directories-recursively path)
-```
 
-### Path
+;;; path
 
-```lisp
 (path-join list)
-```
 
-### Process
+;;; process
 
-```lisp
 (current-working-directory)
 (current-command-line-args)
 (exit info)
-```
 
-### Module
+;;; module
 
-```lisp
 (current-module-file)
 (current-module-directory)
-```
 
-### Console
+;;; console
 
-```lisp
 (print value)
 (write string)
 (newline)
-```
 
-### Void
+;;; void
 
-```lisp
 void
 (void? value)
-```
 
-### Null
+;;; null
 
-```lisp
 null
 (null? value)
-```
 
-### Optional
+;;; optional
 
-```lisp
 (optional? p x)
 ;; prelude
 (optional-lift f x)
 (optional-bind x f)
-```
 
-### Function
+;;; function
 
-```lisp
 (apply f args)
 ;; prelude
 (identity x)
@@ -427,32 +383,24 @@ null
 (dup f)
 (compose ...fs)
 (pipe x ...fs)
-```
 
-### Format
+;;; format
 
-```lisp
 (format value)
 (format-subscript n)
 (format-superscript n)
-```
 
-### Random
+;;; random
 
-```lisp
 (random-int start end)
 (random-float start end)
-```
 
-### System
+;;; system
 
-```lisp
 (system-shell-run command args)
-```
 
-### Sort Order
+;;; sort order
 
-```lisp
 (ordering? value)
 (ordering-before? value)
 (ordering-same? value)
@@ -461,20 +409,18 @@ null
 (ordering-reverse compare x y)
 ;; prelude
 (chain-compare ...fs)
-```
 
-### Pretty
+;;; pretty
 
-```lisp
 (pretty-print max-width value)
 (pretty max-width value)
 ```
 
-## Standard Libraries
-
-### Priority Queue
+## x-lisp / standard libraries
 
 ```lisp
+;;; priority queue
+
 (priority-queue? key-p priority-p value)
 (make-priority-queue compare)
 (priority-queue-empty? queue)
@@ -484,11 +430,9 @@ null
 (priority-queue-peek queue)
 (priority-queue-poll! queue)
 (priority-queue-delete! key queue)
-```
 
-### Graph
+;;; graph
 
-```lisp
 (graph? vertex-p value)
 (graph-edge? vertex-p edge)
 (make-graph vertices edges)
@@ -514,11 +458,9 @@ null
 (graph-max-degree graph)
 (graph-coloring! coloring vertices graph)
 (graph-coloring graph)
-```
 
-### Digraph
+;;; digraph
 
-```scheme
 (digraph? vertex-p value)
 (digraph-edge? vertex-p value)
 (make-empty-digraph)
