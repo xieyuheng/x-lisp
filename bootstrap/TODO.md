@@ -1,5 +1,3 @@
-[bootstrap] docs about machine-lisp
-
 [basic] `010-SelectInstructionPass` -- `onInstr` -- fix tagged value encoding
 
 [machine] `070-AssignHomePass`

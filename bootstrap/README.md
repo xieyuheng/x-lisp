@@ -17,14 +17,14 @@
 ;; (define <name> <exp>)
 (define (<name> <parameters>) <body>)
 ;; (define-data <predicate> <constructors>)
-(import <source> <names>)
+(import <source> <name> ...)
 (import-all <source>)
-(import-except <source> <names>)
+(import-except <source> <name> ...)
 (import-as <source> <prefix>)
-(export <names>)
-(include <source> <names>)
+(export <name> ...)
+(include <source> <name> ...)
 (include-all <source>)
-(include-except <source> <names>)
+(include-except <source> <name> ...)
 (include-as <source> <prefix>)
 
 ;;; expression
@@ -50,8 +50,8 @@
 (if <condition> <consequent> <alternative>)
 (when <condition> <consequent>)
 (unless <condition> <consequent>)
-(and <exps>)
-(or <exps>)
+(and <exp> ...)
+(or <exp> ...)
 ;; (assert <exp>)
 ;; (assert-not <exp>)
 ;; (assert-equal <lhs> <rhs>)
@@ -498,15 +498,15 @@
 ```lisp
 ;;; top level statement
 
-(define-function )
-(import <source> <names>)
+(define-function <name> <block> ...)
+(import <source> <name> ...)
 (import-all <source>)
-(import-except <source> <names>)
+(import-except <source> <name> ...)
 (import-as <source> <prefix>)
-(export <names>)
-(include <source> <names>)
+(export <name> ...)
+(include <source> <name> ...)
 (include-all <source>)
-(include-except <source> <names>)
+(include-except <source> <name> ...)
 (include-as <source> <prefix>)
 
 ;;; instruction
@@ -533,4 +533,28 @@
 (@curry <value> <arity> <arg> ...)
 ```
 
-## machine-lisp
+## machine-lisp / syntax
+
+```lisp
+;;; top level statement
+
+(define-code <name> <block> ...)
+(define-data <name> <chunk> ...)
+
+;;; instruction
+
+(<op> <operand> ...)
+
+;;; operand
+
+(imm <int>)
+(label-imm <label>)
+(var <name>)
+(reg <name>)
+(reg-deref <reg> <offset>)
+(label-deref <label>)
+(label <name>)
+(external-label <name>)
+(cc <condition-code>)
+(arity <int>)
+```
