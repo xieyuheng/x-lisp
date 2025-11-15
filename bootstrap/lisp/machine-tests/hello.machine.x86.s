@@ -1,18 +1,18 @@
-.global _start
+.global __start
 
 .data
-message:
-message.entry:
+_message:
+_message.entry:
         .ascii "Hello, World!\n"
-message.length:
+_message.length:
         .quad 14
 
 .text
-_start:
-_start.entry:
+__start:
+__start.entry:
         movq $1, %rax
         movq $1, %rdi
-        movq $message, %rsi
+        movq $_message, %rsi
         movq $14, %rdx
         syscall 
         movq $60, %rax
