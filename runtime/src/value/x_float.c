@@ -95,6 +95,16 @@ x_float_less_equal_p(value_t x, value_t y) {
 }
 
 value_t
+x_float_positive_p(value_t x) {
+    return x_bool(to_double(x) > 0);
+}
+
+value_t
+x_float_non_negative_p(value_t x) {
+    return x_bool(to_double(x) >= 0);
+}
+
+value_t
 x_float_to_int(value_t x) {
     if (!x_float_p(x)) {
         who_printf("type mismatch\n");
