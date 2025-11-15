@@ -75,6 +75,26 @@ x_float_min(value_t x, value_t y) {
 }
 
 value_t
+x_float_greater_p(value_t x, value_t y) {
+    return x_bool(to_double(x) > to_double(y));
+}
+
+value_t
+x_float_less_p(value_t x, value_t y) {
+    return x_bool(to_double(x) < to_double(y));
+}
+
+value_t
+x_float_greater_equal_p(value_t x, value_t y) {
+    return x_bool(to_double(x) >= to_double(y));
+}
+
+value_t
+x_float_less_equal_p(value_t x, value_t y) {
+    return x_bool(to_double(x) <= to_double(y));
+}
+
+value_t
 x_float_to_int(value_t x) {
     if (!x_float_p(x)) {
         who_printf("type mismatch\n");

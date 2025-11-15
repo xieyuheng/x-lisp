@@ -1,5 +1,3 @@
-[runtime] `x_float_greater_p` & `x_float_less_p` & `x_float_greater_equal_p` & `x_float_less_equal_p`
-
 [runtime] `x_int_positive_p` & `x_int_non_negative_p`
 [runtime] `x_int_compare_ascending` & `x_int_compare_descending`
 

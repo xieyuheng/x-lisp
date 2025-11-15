@@ -13,4 +13,8 @@ value_t x_fdiv(value_t x, value_t y);
 value_t x_fmod(value_t x, value_t y);
 value_t x_float_max(value_t x, value_t y);
 value_t x_float_min(value_t x, value_t y);
+value_t x_float_greater_p(value_t x, value_t y);
+value_t x_float_less_p(value_t x, value_t y);
+value_t x_float_greater_equal_p(value_t x, value_t y);
+value_t x_float_less_equal_p(value_t x, value_t y);
 value_t x_float_to_int(value_t x);
