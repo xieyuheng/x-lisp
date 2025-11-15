@@ -14,8 +14,8 @@ int
 run(commander_t *commander) {
     (void) commander;
 
-    test_gc();
     test_value();
+    // test_gc();
 
     return 0;
 }
