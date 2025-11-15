@@ -4,22 +4,22 @@ tag_t value_tag(value_t value);
 
 void
 value_print(value_t value, file_t *file) {
-    if (value == xtrue) {
+    if (value == x_true) {
         fprintf(file, "true");
         return;
     }
 
-    if (value == xfalse) {
+    if (value == x_false) {
         fprintf(file, "false");
         return;
     }
 
-    if (is_xint(value)) {
+    if (x_int_p(value)) {
         fprintf(file, "%ld", to_int64(value));
         return;
     }
 
-    if (is_xfloat(value)) {
+    if (x_float_p(value)) {
         char buffer[64];
         sprintf(buffer, "%.17g", to_double(value));
         if (!string_has_char(buffer, '.')) {
@@ -33,7 +33,7 @@ value_print(value_t value, file_t *file) {
         return;
     }
 
-    if (is_xobject(value)) {
+    if (x_object_p(value)) {
         object_t *object = as_object(value);
         if (object->spec->print_fn) {
             object->spec->print_fn(object, file);

@@ -1,2 +1,3 @@
-[value] runtime tagged value encoding
-[gc] mark swap gc
+[runtime] `value` -- encoding small hashtag inline
+[runtime] builtin
+[runtime] GC -- mark and sweep

@@ -1,0 +1,59 @@
+#include "index.h"
+
+// int64_t but truncate the lower 3 bits
+
+value_t
+x_int(int64_t target) {
+    return (value_t) ((target << 3) | X_INT);
+}
+
+bool
+int_p(value_t value) {
+    return value_tag(value) == X_INT;
+}
+
+int64_t
+to_int64(value_t value) {
+    assert(int_p(value));
+    return ((int64_t) value) >> 3;
+}
+
+value_t
+x_int_p(value_t value) {
+    return x_bool(int_p(value));
+}
+
+value_t
+x_iadd(value_t x, value_t y) {
+    return x_int(to_int64(x) + to_int64(y));
+}
+
+value_t
+x_isub(value_t x, value_t y) {
+    return x_int(to_int64(x) - to_int64(y));
+}
+
+value_t
+x_imul(value_t x, value_t y) {
+    return x_int(to_int64(x) * to_int64(y));
+}
+
+value_t
+x_idiv(value_t x, value_t y) {
+    return x_int(to_int64(x) / to_int64(y));
+}
+
+value_t
+x_imod(value_t x, value_t y) {
+    return x_int(to_int64(x) % to_int64(y));
+}
+
+value_t
+x_int_to_float(value_t x) {
+    if (!x_int_p(x)) {
+        who_printf("type mismatch\n");
+        exit(1);
+    }
+
+    return x_float((double) to_int64(x));
+}

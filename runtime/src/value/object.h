@@ -12,17 +12,17 @@ struct object_t {
 };
 
 inline value_t
-xobject(object_t *target) {
+x_object(object_t *target) {
     return target;
 }
 
 inline bool
-is_xobject(value_t value) {
-    return value != NULL && value_tag(value) == XOBJECT;
+x_object_p(value_t value) {
+    return value_tag(value) == X_OBJECT;
 }
 
 inline object_t *
 as_object(value_t value) {
-    assert(is_xobject(value));
+    assert(x_object_p(value));
     return value;
 }

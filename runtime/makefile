@@ -1,4 +1,4 @@
-cc = cc
+cc = gcc
 ifeq ($(STATIC), true)
 static_ldflags = \
 	-static
@@ -17,7 +17,7 @@ ldflags = \
 cflags = \
 	-g \
 	-O3 \
-	-std=c2x \
+	-std=c23 \
 	-I/usr/local/include \
 	-Wall \
 	-Wwrite-strings \

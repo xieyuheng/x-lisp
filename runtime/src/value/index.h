@@ -4,7 +4,7 @@
 #include "types.h"
 #include "value.h"
 
-#include "xbool.h"
-#include "xint.h"
-#include "xfloat.h"
-#include "xobject.h"
+#include "bool.h"
+#include "int.h"
+#include "float.h"
+#include "object.h"
