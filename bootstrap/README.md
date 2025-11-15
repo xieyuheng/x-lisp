@@ -72,13 +72,13 @@
 
 ;;; int
 
-;; (int? value)
+(int? value)
 ;; (ineg x)
-;; (iadd x y)
-;; (isub x y)
-;; (imul x y)
-;; (idiv x y)
-;; (imod x y)
+(iadd x y)
+(isub x y)
+(imul x y)
+(idiv x y)
+(imod x y)
 ;; (int-max x y)
 ;; (int-min x y)
 ;; (int-greater? x y)
@@ -92,12 +92,12 @@
 
 ;;; float
 
-;; (float? value)
+(float? value)
 ;; (fneg x)
-;; (fadd x y)
-;; (fsub x y)
-;; (fmul x y)
-;; (fdiv x y)
+(fadd x y)
+(fsub x y)
+(fmul x y)
+(fdiv x y)
 ;; (float-max x y)
 ;; (float-min x y)
 ;; (float-greater? x y)

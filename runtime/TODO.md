@@ -1,3 +1,32 @@
-[runtime] complete builtin
-[runtime] curry
+[runtime] `x_ineg`
+[runtime] `x_int_max`
+[runtime] `x_int_min`
+[runtime] `x_int_greater_p`
+[runtime] `x_int_less_p`
+[runtime] `x_int_greater_equal_p`
+[runtime] `x_int_less_equal_p`
+[runtime] `x_int_positive_p`
+[runtime] `x_int_non_negative_p`
+[runtime] `x_int_compare_ascending`
+[runtime] `x_int_compare_descending`
+
+[runtime] `x_fneg`
+[runtime] `x_float_max`
+[runtime] `x_float_min`
+[runtime] `x_float_greater_p`
+[runtime] `x_float_less_p`
+[runtime] `x_float_greater_equal_p`
+[runtime] `x_float_less_equal_p`
+[runtime] `x_float_positive_p`
+[runtime] `x_float_non_negative_p`
+[runtime] `x_float_compare_ascending`
+[runtime] `x_float_compare_descending`
+
+[runtime] `x_same_p`
+[runtime] `x_equal_p`
+
+[runtime] curry -- setup
+[runtime] `x_make_curry`
+[runtime] `x_curry_put_mut`
+
 [runtime] gc -- mark and sweep
