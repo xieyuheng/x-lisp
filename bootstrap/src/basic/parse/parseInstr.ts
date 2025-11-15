@@ -1,5 +1,6 @@
 import * as S from "@xieyuheng/x-sexp.js"
 import * as Instrs from "../instr/index.ts"
+import * as Values from "../value/index.ts"
 import { type Instr } from "../instr/index.ts"
 import { parseValue } from "./parseValue.ts"
 
@@ -30,7 +31,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
         return Instrs.Return(S.symbolContent(result), meta)
       }),
 
-      S.matcher("`(return)", ({}, { meta }) => {
+      S.matcher("`(return)", ({ }, { meta }) => {
         return Instrs.Return(undefined, meta)
       }),
 
@@ -46,9 +47,10 @@ export function parseInstr(sexp: S.Sexp): Instr {
         },
       ),
 
-      S.matcher("(cons* 'call target args)", ({ target, args }, { meta }) => {
+      S.matcher("(cons* 'call fn args)", ({ fn, args }, { meta }) => {
+
         return Instrs.Call(
-          S.symbolContent(target),
+          Values.asFunctionRef(parseValue(fn)),
           S.listElements(args).map(S.symbolContent),
           "_∅",
           meta,
@@ -56,10 +58,10 @@ export function parseInstr(sexp: S.Sexp): Instr {
       }),
 
       S.matcher(
-        "`(= ,dest ,(cons* 'call target args))",
-        ({ target, args, dest }, { meta }) => {
+        "`(= ,dest ,(cons* 'call fn args))",
+        ({ fn, args, dest }, { meta }) => {
           return Instrs.Call(
-            S.symbolContent(target),
+            Values.asFunctionRef(parseValue(fn)),
             S.listElements(args).map(S.symbolContent),
             S.symbolContent(dest),
             meta,

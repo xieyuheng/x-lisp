@@ -59,7 +59,7 @@
     (= _₂ (const (@primitive-function ineg 1)))
     (= _₃ (const 42))
     (= y₂ (apply _₂ _₃))
-    (= x₁ (call identity y₂))
+    (= x₁ (call (@primitive-function identity 1) y₂))
     (= _₄ (const (@primitive-function iadd 2)))
     (= _₅ (apply _₄ x₁))
     (= _₆ (apply _₅ y₁))

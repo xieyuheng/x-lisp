@@ -28,7 +28,7 @@ function qualifyInstr(context: BundleContext, instr: Instr): Instr {
 
     case "Call": {
       return Instrs.Call(
-        qualifyName(context, instr.name),
+        qualifyFunctionRef(context, instr.fn),
         instr.args,
         instr.dest,
         instr.meta,
@@ -41,18 +41,23 @@ function qualifyInstr(context: BundleContext, instr: Instr): Instr {
   }
 }
 
+function qualifyFunctionRef(
+  context: BundleContext,
+  fn: Values.FunctionRef,
+): Values.FunctionRef {
+  if (fn.attributes.isPrimitive) {
+    return fn
+  } else {
+    return Values.FunctionRef(qualifyName(context, fn.name), fn.arity, {
+      isPrimitive: false,
+    })
+  }
+}
+
 function qualifyValue(context: BundleContext, value: Value): Value {
   switch (value.kind) {
     case "FunctionRef": {
-      if (value.attributes.isPrimitive) {
-        return value
-      } else {
-        return Values.FunctionRef(
-          qualifyName(context, value.name),
-          value.arity,
-          { isPrimitive: false },
-        )
-      }
+      return qualifyFunctionRef(context, value)
     }
 
     default: {

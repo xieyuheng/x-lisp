@@ -2,10 +2,10 @@
   (block entry
     (= one (const 1))
     (= zero (const 0))
-    (= x (call zero? one))
-    (= x.1 (call not x))
+    (= x (call (@primitive-function zero? 1) one))
+    (= x.1 (call (@primitive-function not 1) x))
     (assert x.1)
-    (= y (call zero? zero))
+    (= y (call (@primitive-function zero? 1) zero))
     (assert y)
     (return)))
 
@@ -13,7 +13,7 @@
   (block entry
     (= x (argument 0))
     (= zero (const 0))
-    (= b (call equal? x zero))
+    (= b (call (@primitive-function equal? 2) x zero))
     (branch b then else))
 
   (block then

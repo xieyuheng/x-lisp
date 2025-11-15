@@ -79,10 +79,10 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
     }
 
     case "Call": {
-      const definition = modLookupDefinition(context.mod, instr.name)
+      const definition = modLookupDefinition(context.mod, instr.fn.name)
       if (definition === undefined) {
-        let message = `[execute] (call) undefined name`
-        message += `\n  name: ${instr.name}`
+        let message = `[execute] (call) undefined function name`
+        message += `\n  function name: ${instr.fn.name}`
         if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
         else throw new Error(message)
       }

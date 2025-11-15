@@ -2,4 +2,4 @@
   (block entry
     (= one (const 1))
     (= two (const 2))
-    (= x (call iadd one two))))
+    (= x (call (@primitive-function iadd 2) one two))))
