@@ -5,7 +5,6 @@ import { type Context } from "./Context.ts"
 
 export function applyNullary(context: Context, target: Value): Value {
   switch (target.kind) {
-    case "PrimitiveFunctionRef":
     case "FunctionRef": {
       return call(context, target, [])
     }

@@ -44,11 +44,15 @@ function qualifyInstr(context: BundleContext, instr: Instr): Instr {
 function qualifyValue(context: BundleContext, value: Value): Value {
   switch (value.kind) {
     case "FunctionRef": {
-      return Values.FunctionRef(qualifyName(context, value.name), value.arity)
-    }
-
-    case "PrimitiveFunctionRef": {
-      return value
+      if (value.attributes.isPrimitive) {
+        return value
+      } else {
+        return Values.FunctionRef(
+          qualifyName(context, value.name),
+          value.arity,
+          { isPrimitive: false },
+        )
+      }
     }
 
     default: {

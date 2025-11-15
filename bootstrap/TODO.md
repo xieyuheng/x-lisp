@@ -1,5 +1,3 @@
-[basic] `FunctionRef` has `isPrimitive` -- remove `PrimitiveFunctionRef`
-
 [basic] `Call` take `FunctionRef`
 
 [machine] `Label` has `isExternal`

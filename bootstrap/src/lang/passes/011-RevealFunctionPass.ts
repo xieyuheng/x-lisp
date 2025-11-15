@@ -47,7 +47,12 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
 
       const builtinArity = getBuiltinFunctionArity(exp.name)
       if (builtinArity !== undefined) {
-        return Exps.FunctionRef(exp.name, builtinArity, { isPrimitive: true }, exp.meta)
+        return Exps.FunctionRef(
+          exp.name,
+          builtinArity,
+          { isPrimitive: true },
+          exp.meta,
+        )
       }
 
       const definition = modLookupDefinition(mod, exp.name)

@@ -19,7 +19,6 @@ export function apply(context: Context, target: Value, arg: Value): Value {
       }
     }
 
-    case "PrimitiveFunctionRef":
     case "FunctionRef": {
       if (target.arity > 1) {
         const newArity = target.arity - 1
