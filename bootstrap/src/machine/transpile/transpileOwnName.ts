@@ -1,4 +1,4 @@
-export function transpileName(parts: Array<string>): string {
+export function transpileOwnName(parts: Array<string>): string {
   return "_" + parts.map(transpilePart).join(".")
 }
 
