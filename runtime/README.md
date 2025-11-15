@@ -1,12 +1,12 @@
 # x-lisp / runtime
 
-## Development
+## development
 
 ```shell
-make -j       # compile src/ files to lib/ and bin/
-make run      # compile and run the command-line program
-make test     # compile and run test
-make clean    # clean up compiled files
+make -j
+make run
+make test
+make clean
 ```
 
 Using [tsan (ThreadSanitizer)](https://github.com/google/sanitizers/wiki/threadsanitizercppmanual)
