@@ -8,16 +8,17 @@ export function parseValue(sexp: S.Sexp): Value {
 
 const valueMatcher: S.Matcher<Value> = S.matcherChoice<Value>([
   S.matcher("`(@function ,name ,arity)", ({ name, arity }, { meta }) => {
-    return Values.FunctionRef(S.symbolContent(name), S.numberContent(arity))
+    return Values.FunctionRef(S.symbolContent(name), S.numberContent(arity), {
+      isPrimitive: false,
+    })
   }),
 
   S.matcher(
     "`(@primitive-function ,name ,arity)",
     ({ name, arity }, { meta }) => {
-      return Values.PrimitiveFunctionRef(
-        S.symbolContent(name),
-        S.numberContent(arity),
-      )
+      return Values.FunctionRef(S.symbolContent(name), S.numberContent(arity), {
+        isPrimitive: true,
+      })
     },
   ),
 

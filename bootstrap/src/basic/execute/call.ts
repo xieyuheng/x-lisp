@@ -13,7 +13,6 @@ export function call(
   args: Array<Value>,
 ): Value {
   switch (target.kind) {
-    case "PrimitiveFunctionRef":
     case "FunctionRef": {
       const definition = modLookupDefinition(context.mod, target.name)
       if (definition === undefined) {

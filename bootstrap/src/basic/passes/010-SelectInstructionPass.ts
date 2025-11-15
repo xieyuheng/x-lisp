@@ -71,22 +71,22 @@ function onInstr(instr: Instr): Array<M.Instr> {
           ]
         }
 
-        case "PrimitiveFunctionRef": {
-          return [
-            M.Instr("leaq", [
-              M.DerefLabel(M.Label(`x-${instr.value.name}`)),
-              M.Var(instr.dest),
-            ]),
-          ]
-        }
-
         case "FunctionRef": {
-          return [
-            M.Instr("leaq", [
-              M.DerefLabel(M.Label(instr.value.name)),
-              M.Var(instr.dest),
-            ]),
-          ]
+          if (instr.value.attributes.isPrimitive) {
+            return [
+              M.Instr("leaq", [
+                M.DerefLabel(M.Label(`x-${instr.value.name}`)),
+                M.Var(instr.dest),
+              ]),
+            ]
+          } else {
+            return [
+              M.Instr("leaq", [
+                M.DerefLabel(M.Label(instr.value.name)),
+                M.Var(instr.dest),
+              ]),
+            ]
+          }
         }
 
         default: {

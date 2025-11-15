@@ -74,15 +74,8 @@ function expToValue(exp: Exp): B.Value {
     }
 
     case "FunctionRef": {
-      if (exp.attributes.isPrimitive) {
-        return B.PrimitiveFunctionRef(exp.name, exp.arity)
-      } else {
-        return B.FunctionRef(exp.name, exp.arity)
-      }
-
+      return exp
     }
-
-
 
     default: {
       let message = `[expToValue] unhandled exp`

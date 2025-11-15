@@ -13,11 +13,11 @@ export function formatValue(value: Value): string {
 
   switch (value.kind) {
     case "FunctionRef": {
-      return `(@function ${value.name} ${value.arity})`
-    }
-
-    case "PrimitiveFunctionRef": {
-      return `(@primitive-function ${value.name} ${value.arity})`
+      if (value.attributes.isPrimitive) {
+        return `(@primitive-function ${value.name} ${value.arity})`
+      } else {
+        return `(@function ${value.name} ${value.arity})`
+      }
     }
 
     case "Curry": {
