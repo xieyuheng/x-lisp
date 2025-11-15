@@ -35,28 +35,28 @@ lib = $(patsubst src/%, lib/%, $(patsubst %.c, %.o, $(src)))
 
 .PHONY: all run test clean
 
-all: bundle
+all: bin/bundle
 
-run: bundle
-	./bundle
+run: bin/bundle
+	./bin/bundle
 
-test: tester
-	./tester test-self
+test: bin/tester
+	./bin/tester test-self
 
-tester: tester.c $(lib)
+bin/tester: bin/tester.c $(lib)
+	$(cc) $^ $(cflags) $(ldflags) -o $@
+
+bin/bundle: bin/runtime.o bin/bundle.o
 	$(cc) $^ $(ldflags) -o $@
 
-bundle: runtime.o bundle.o
-	$(cc) $^ $(ldflags) -o $@
+bin/bundle.o: bin/bundle.c
+	$(cc) -r $^ $(cflags) -o bin/bundle.o
 
-bundle.o: bundle.c
-	$(cc) -r $^ $(ldflags) -o bundle.o
-
-runtime.o: runtime.c $(lib)
-	$(cc) -r $^ $(ldflags) -o runtime.o
+bin/runtime.o: bin/runtime.c $(lib)
+	$(cc) -r $^ $(cflags) -o bin/runtime.o
 
 lib/%.o: src/%.c $(headers)
 	mkdir -p $(dir $@); $(cc) -c $(cflags) $< -o $@
 
 clean:
-	rm -rf lib *.o bundle tester
+	rm -rf lib bin/*.o bin/bundle bin/tester

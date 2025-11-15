@@ -1,16 +1,16 @@
 # c
-tmp
 
+tmp
 *.o
 
 # build
 
-bundle
-tester
-bin
+bin/bundle
+bin/tester
 lib
 
 # emacs
+
 *~
 *#*
 .#*
