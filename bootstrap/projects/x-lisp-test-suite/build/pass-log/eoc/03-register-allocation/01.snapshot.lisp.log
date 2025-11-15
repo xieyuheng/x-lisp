@@ -84,7 +84,7 @@
     (= _₃ (apply _₂ v₁))
     (= _₄ (const 7))
     (= x₁ (apply _₃ _₄))
-    (= y₁ (call identity x₁))
+    (= y₁ (call (@primitive-function identity 1) x₁))
     (= _₅ (const (@primitive-function iadd 2)))
     (= _₆ (apply _₅ x₁))
     (= z₁ (apply _₆ w₁))

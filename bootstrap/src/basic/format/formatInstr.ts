@@ -32,9 +32,9 @@ export function formatInstr(instr: Instr): string {
     }
 
     case "Call": {
+      const fn = formatValue(instr.fn)
       const args = instr.args.join(" ")
-      const rhs =
-        args === "" ? `(call ${instr.name})` : `(call ${instr.name} ${args})`
+      const rhs = args === "" ? `(call ${fn})` : `(call ${fn} ${args})`
       return `(= ${instr.dest} ${rhs})`
     }
 

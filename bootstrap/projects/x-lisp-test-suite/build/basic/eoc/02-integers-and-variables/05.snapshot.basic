@@ -2,6 +2,6 @@
   (block entry
     (= _₁ (const (@primitive-function println-non-void 1)))
     (= a₁ (const 42))
-    (= b₁ (call identity a₁))
+    (= b₁ (call (@primitive-function identity 1) a₁))
     (= _↩ (apply _₁ b₁))
     (return _↩)))

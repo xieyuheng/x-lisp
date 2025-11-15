@@ -144,7 +144,7 @@ function inLet1(
     }
 
     case "Var": {
-      return [B.Call("identity", [rhs.name], name), ...cont]
+      return [B.Call(B.FunctionRef("identity", 1, { isPrimitive: true }), [rhs.name], name), ...cont]
     }
 
     case "Apply": {

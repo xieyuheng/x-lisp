@@ -137,7 +137,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
           .map(([index, arg]) =>
             M.Instr("movq", [M.Var(arg), selectArgReg(index)]),
           ),
-        M.Instr("callq-n", [M.Label(instr.name), M.Arity(instr.args.length)]),
+        M.Instr("callq-n", [M.Label(instr.fn.name), M.Arity(instr.args.length)]),
         M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
       ]
     }

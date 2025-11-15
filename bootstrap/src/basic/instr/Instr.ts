@@ -1,5 +1,5 @@
 import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
-import { type Value } from "../value/index.ts"
+import { FunctionRef, type Value } from "../value/index.ts"
 
 export type Instr =
   | Argument
@@ -111,21 +111,21 @@ export function Branch(
 
 export type Call = {
   op: "Call"
-  name: string
+  fn: FunctionRef
   args: Array<string>
   dest: string
   meta?: Meta
 }
 
 export function Call(
-  name: string,
+  fn: FunctionRef,
   args: Array<string>,
   dest: string,
   meta?: Meta,
 ): Call {
   return {
     op: "Call",
-    name,
+    fn,
     args,
     dest,
     meta,

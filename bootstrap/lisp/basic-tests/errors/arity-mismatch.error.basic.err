@@ -4,8 +4,8 @@
   --> lisp/basic-tests/errors/arity-mismatch.error.basic:4:5
  2 |   (block entry
  3 |     (= one (const 1))
- 4 |     (= x (call iadd one))
-   |     ~~~~~~~~~~~~~~~~~~~~~ 
- 5 |     (call print x)
+ 4 |     (= x (call (@primitive-function iadd 2) one))
+   |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+ 5 |     (call (@primitive-function print 1) x)
  6 |     (return)))
 
