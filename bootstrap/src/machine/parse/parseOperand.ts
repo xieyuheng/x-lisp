@@ -49,7 +49,11 @@ export function parseOperand(sexp: S.Sexp): Operand {
       }),
 
       S.matcher("`(label ,name)", ({ name }, { meta }) => {
-        return Operands.Label(S.symbolContent(name), meta)
+        return Operands.Label(S.symbolContent(name), { isExternal: false }, meta)
+      }),
+
+      S.matcher("`(external-label ,name)", ({ name }, { meta }) => {
+        return Operands.Label(S.symbolContent(name), { isExternal: true }, meta)
       }),
     ]),
     sexp,

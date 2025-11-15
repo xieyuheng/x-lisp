@@ -63,10 +63,20 @@ export const LabelDeref = (label: Label, meta?: Meta): LabelDeref => ({
   meta,
 })
 
-export type Label = { kind: "Label"; name: string; meta?: Meta }
-export const Label = (name: string, meta?: Meta): Label => ({
+export type Label = {
+  kind: "Label"
+  name: string
+  attributes: { isExternal: boolean }
+  meta?: Meta
+}
+export const Label = (
+  name: string,
+  attributes: { isExternal: boolean },
+  meta?: Meta,
+): Label => ({
   kind: "Label",
   name,
+  attributes,
   meta,
 })
 
