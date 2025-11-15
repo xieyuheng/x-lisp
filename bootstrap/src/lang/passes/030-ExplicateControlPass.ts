@@ -69,11 +69,20 @@ function expToValue(exp: Exp): B.Value {
     case "Hashtag":
     case "String":
     case "Int":
-    case "Float":
-    case "FunctionRef":
-    case "PrimitiveFunctionRef": {
+    case "Float": {
       return exp
     }
+
+    case "FunctionRef": {
+      if (exp.attributes.isPrimitive) {
+        return B.PrimitiveFunctionRef(exp.name, exp.arity)
+      } else {
+        return B.FunctionRef(exp.name, exp.arity)
+      }
+
+    }
+
+
 
     default: {
       let message = `[expToValue] unhandled exp`
@@ -137,8 +146,7 @@ function inLet1(
     case "String":
     case "Int":
     case "Float":
-    case "FunctionRef":
-    case "PrimitiveFunctionRef": {
+    case "FunctionRef": {
       return [B.Const(expToValue(rhs), name), ...cont]
     }
 

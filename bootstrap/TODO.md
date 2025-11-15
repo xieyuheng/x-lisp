@@ -1,4 +1,3 @@
-[lang] `FunctionRef` has `isPrimitive` -- remove `PrimitiveFunctionRef`
 [basic] `FunctionRef` has `isPrimitive` -- remove `PrimitiveFunctionRef`
 
 [basic] `Call` take `FunctionRef`
