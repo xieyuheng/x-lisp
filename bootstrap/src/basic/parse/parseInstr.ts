@@ -1,7 +1,7 @@
 import * as S from "@xieyuheng/x-sexp.js"
 import * as Instrs from "../instr/index.ts"
-import * as Values from "../value/index.ts"
 import { type Instr } from "../instr/index.ts"
+import * as Values from "../value/index.ts"
 import { parseValue } from "./parseValue.ts"
 
 export function parseInstr(sexp: S.Sexp): Instr {
@@ -31,7 +31,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
         return Instrs.Return(S.symbolContent(result), meta)
       }),
 
-      S.matcher("`(return)", ({ }, { meta }) => {
+      S.matcher("`(return)", ({}, { meta }) => {
         return Instrs.Return(undefined, meta)
       }),
 
@@ -48,7 +48,6 @@ export function parseInstr(sexp: S.Sexp): Instr {
       ),
 
       S.matcher("(cons* 'call fn args)", ({ fn, args }, { meta }) => {
-
         return Instrs.Call(
           Values.asFunctionRef(parseValue(fn)),
           S.listElements(args).map(S.symbolContent),

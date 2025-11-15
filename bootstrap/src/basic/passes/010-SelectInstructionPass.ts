@@ -75,14 +75,14 @@ function onInstr(instr: Instr): Array<M.Instr> {
           if (instr.value.attributes.isPrimitive) {
             return [
               M.Instr("leaq", [
-                M.LabelDeref(M.Label(`x-${instr.value.name}`)),
+                M.LabelDeref(M.Label(`x-${instr.value.name}`, { isExternal: true })),
                 M.Var(instr.dest),
               ]),
             ]
           } else {
             return [
               M.Instr("leaq", [
-                M.LabelDeref(M.Label(instr.value.name)),
+                M.LabelDeref(M.Label(instr.value.name, { isExternal: false })),
                 M.Var(instr.dest),
               ]),
             ]
@@ -115,7 +115,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
     }
 
     case "Goto": {
-      return [M.Instr("jmp", [M.Label(instr.label)])]
+      return [M.Instr("jmp", [M.Label(instr.label, { isExternal: false })])]
     }
 
     case "Branch": {
@@ -124,8 +124,8 @@ function onInstr(instr: Instr): Array<M.Instr> {
         M.Instr("cmpq", [M.Var(instr.condition), M.Imm(1)]),
         M.Instr("branch-if", [
           M.Cc("e"),
-          M.Label(instr.thenLabel),
-          M.Label(instr.elseLabel),
+          M.Label(instr.thenLabel, { isExternal: false }),
+          M.Label(instr.elseLabel, { isExternal: false }),
         ]),
       ]
     }
@@ -137,7 +137,12 @@ function onInstr(instr: Instr): Array<M.Instr> {
           .map(([index, arg]) =>
             M.Instr("movq", [M.Var(arg), selectArgReg(index)]),
           ),
-        M.Instr("callq-n", [M.Label(instr.fn.name), M.Arity(instr.args.length)]),
+        M.Instr("callq-n", [
+          M.Label(instr.fn.name, {
+            isExternal: instr.fn.attributes.isPrimitive
+          }),
+          M.Arity(instr.args.length),
+        ]),
         M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
       ]
     }
@@ -146,7 +151,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
       return [
         M.Instr("movq", [M.Var(instr.target), selectArgReg(0)]),
         M.Instr("movq", [M.Var(instr.arg), selectArgReg(1)]),
-        M.Instr("callq-n", [M.Label("x-apply-unary"), M.Arity(2)]),
+        M.Instr("callq-n", [M.Label("x-apply-unary", { isExternal: true }), M.Arity(2)]),
         M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
       ]
     }
@@ -154,7 +159,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
     case "NullaryApply": {
       return [
         M.Instr("movq", [M.Var(instr.target), selectArgReg(0)]),
-        M.Instr("callq-n", [M.Label("x-apply-nullary"), M.Arity(1)]),
+        M.Instr("callq-n", [M.Label("x-apply-nullary", { isExternal: true }), M.Arity(1)]),
         M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
       ]
     }
