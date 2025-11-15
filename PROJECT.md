@@ -207,13 +207,13 @@ date: 2025-10-22
 
 任务：
 
-- [ ] basic-lisp to machine-lisp
-  - [ ] select-instruction
+- [x] basic-lisp to machine-lisp
+  - [x] select-instruction
   - [ ] assign-home
   - [ ] patch-instruction
   - [ ] prolog-and-epilog
-- [ ] C runtime (with GC)
-  - [ ] value tag encoding
+- [x] C runtime (with GC)
+  - [x] value tag encoding
   - [ ] builtin
   - [ ] GC
 

@@ -1,55 +1,34 @@
 # x-lisp / prototype interpreter
 
-## Install
-
-Install it by the following command:
-
-```
-$ npm install -g @xieyuheng/x-lisp-proto
-```
-
-The command-line interface:
-
-```
-$ x-lisp-proto
-commands:
-  help -- display help for a command
-  repl -- Start x-lisp REPL
-  run -- Run a x-lisp file
-```
-
 ## Syntax
 
-### Parser Level Syntax Sugar
-
 ```lisp
+;;; parser level syntax sugar
+
 '<sexp> => (@quote <sexp>)
 `<sexp> => (@quasiquote <sexp>)
 ,<sexp> => (@unquote <sexp>)
 [<elements> <attributes>] => (@tael <elements> <attributes>)
 {<elements>} => (@set <elements>)
-```
 
-### Top Level Statement Keywords
+;;; top level statement
 
-```lisp
 (claim <name> <schema>)
 (define <name> <exp>)
 (define (<name> <parameters>) <body>)
 (define-data <predicate> <constructors>)
-(import <source> <entries>)
+(import <source> <names>)
 (import-all <source>)
-(import-as <source> <name>)
+(import-except <source> <names>)
+(import-as <source> <prefix>)
 (export <names>)
 (include <source> <names>)
 (include-all <source>)
-(include-as <source> <name>)
 (include-except <source> <names>)
-```
+(include-as <source> <prefix>)
 
-### Expression Keywords
+;;; expression
 
-```lisp
 (lambda (<parameters>) <body>)
 (= <lhs> <rhs>)
 (the <schema> <exp>)
@@ -81,7 +60,7 @@ commands:
 (<target> <args>)
 ```
 
-## API
+## builtin and prelude
 
 ### Bool
 
@@ -537,7 +516,7 @@ null
 (graph-coloring graph)
 ```
 
-## Digraph
+### Digraph
 
 ```scheme
 (digraph? vertex-p value)
