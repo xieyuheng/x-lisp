@@ -1,5 +1,8 @@
 #pragma once
 
+int64_t int_max(int64_t x, int64_t y);
+int64_t int_min(int64_t x, int64_t y);
+
 uint64_t uint_max(uint64_t x, uint64_t y);
 uint64_t uint_min(uint64_t x, uint64_t y);
 

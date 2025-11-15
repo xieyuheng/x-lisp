@@ -11,4 +11,6 @@ value_t x_isub(value_t x, value_t y);
 value_t x_imul(value_t x, value_t y);
 value_t x_idiv(value_t x, value_t y);
 value_t x_imod(value_t x, value_t y);
+value_t x_int_max(value_t x, value_t y);
+value_t x_int_min(value_t x, value_t y);
 value_t x_int_to_float(value_t x);
