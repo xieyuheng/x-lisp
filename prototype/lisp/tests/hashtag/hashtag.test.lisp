@@ -7,4 +7,4 @@
 (assert-not (hashtag? 't))
 (assert-not (hashtag? 'f))
 
-(assert-equal "abc" (hashtag-string #abc))
+(assert-equal "abc" (hashtag-to-string #abc))

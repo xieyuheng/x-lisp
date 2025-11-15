@@ -36,9 +36,10 @@ export function useBuiltinMod(): Mod {
 
   mod = createMod(new URL("builtin:"))
 
-  builtinBool(mod)
   builtinInt(mod)
   builtinFloat(mod)
+  builtinHashtag(mod)
+  builtinBool(mod)
   builtinSymbol(mod)
   builtinString(mod)
   builtinValue(mod)
@@ -59,7 +60,6 @@ export function useBuiltinMod(): Mod {
   builtinRandom(mod)
   builtinSystem(mod)
   builtinSet(mod)
-  builtinHashtag(mod)
   builtinHash(mod)
 
   const currentDir = path.dirname(fileURLToPath(import.meta.url))

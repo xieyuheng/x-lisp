@@ -135,6 +135,13 @@ false
 (float-compare-descending x y)
 ```
 
+### Hashtag
+
+```lisp
+(hashtag? value)
+(hashtag-to-string hashtag)
+```
+
 ### Symbol
 
 ```lisp
