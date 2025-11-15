@@ -15,11 +15,11 @@ export function formatExp(exp: Exp): string {
     }
 
     case "FunctionRef": {
-      return `(@function ${exp.name} ${exp.arity})`
-    }
-
-    case "PrimitiveFunctionRef": {
-      return `(@primitive-function ${exp.name} ${exp.arity})`
+      if (exp.attributes.isPrimitive) {
+        return `(@primitive-function ${exp.name} ${exp.arity})`
+      } else {
+        return `(@function ${exp.name} ${exp.arity})`
+      }
     }
 
     case "Hashtag": {

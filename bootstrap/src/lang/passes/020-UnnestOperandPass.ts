@@ -42,7 +42,6 @@ function onExp(state: State, exp: Exp): Exp {
     case "Int":
     case "Float":
     case "FunctionRef":
-    case "PrimitiveFunctionRef":
     case "Var": {
       return exp
     }
@@ -115,7 +114,6 @@ function forAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
     case "Int":
     case "Float":
     case "FunctionRef":
-    case "PrimitiveFunctionRef":
     case "If": {
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, onExp(state, exp)]
