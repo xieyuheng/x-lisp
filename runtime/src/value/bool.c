@@ -6,14 +6,19 @@ x_bool(bool target) {
 }
 
 bool
-x_bool_p(value_t value) {
+bool_p(value_t value) {
     return value == x_true || value == x_false;
 }
 
 bool
 to_bool(value_t value) {
-    assert(x_bool_p(value));
+    assert(bool_p(value));
     return value == x_true;
+}
+
+value_t
+x_bool_p(value_t value) {
+    return x_bool(bool_p(value));
 }
 
 value_t x_not(value_t x) {
