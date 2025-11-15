@@ -9,7 +9,7 @@ main(int argc, char *argv[]) {
     commander_t *commander = commander_new("tester", RUNTIME_VERSION, argc, argv);
 
     commander_use(commander, cmd_test_self);
-    commander_use(commander, cmd_test_packages);
+    commander_use(commander, cmd_test_helpers);
     commander_use(commander, cmd_default_version);
     commander_use(commander, cmd_default_help);
 
