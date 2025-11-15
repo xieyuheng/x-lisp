@@ -35,6 +35,11 @@ x_float_p(value_t value) {
 }
 
 value_t
+x_fneg(value_t x) {
+    return x_float(-to_double(x));
+}
+
+value_t
 x_fadd(value_t x, value_t y) {
     return x_float(to_double(x) + to_double(y));
 }

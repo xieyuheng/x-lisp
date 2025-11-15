@@ -5,6 +5,7 @@ bool float_p(value_t value);
 double to_double(value_t value);
 
 value_t x_float_p(value_t x);
+value_t x_fneg(value_t x);
 value_t x_fadd(value_t x, value_t y);
 value_t x_fsub(value_t x, value_t y);
 value_t x_fmul(value_t x, value_t y);

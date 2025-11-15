@@ -24,6 +24,11 @@ x_int_p(value_t value) {
 }
 
 value_t
+x_ineg(value_t x) {
+    return x_int(-to_int64(x));
+}
+
+value_t
 x_iadd(value_t x, value_t y) {
     return x_int(to_int64(x) + to_int64(y));
 }
