@@ -1,4 +1,4 @@
-(export _start)
+(export start)
 
 (define-data message
   (chunk entry
@@ -6,7 +6,7 @@
   (chunk length
     (dq 14)))
 
-(define-code _start
+(define-code start
   (block entry
     (movq (imm 1) (reg rax))
     (movq (imm 1) (reg rdi))

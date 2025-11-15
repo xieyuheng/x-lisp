@@ -1,6 +1,6 @@
-(export _start)
+(export start)
 
-(define-code _start
+(define-code start
   (block entry
     (movq (imm 60) (reg rax))
     (movq (imm 6) (reg rdi))

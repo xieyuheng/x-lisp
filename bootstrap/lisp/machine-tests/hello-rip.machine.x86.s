@@ -1,4 +1,4 @@
-.global __start
+.global _start
 
 .data
 _message:
@@ -8,8 +8,8 @@ _message.length:
         .quad 14
 
 .text
-__start:
-__start.entry:
+_start:
+_start.entry:
         movq $1, %rax
         movq $1, %rdi
         leaq _message(%rip), %rsi
