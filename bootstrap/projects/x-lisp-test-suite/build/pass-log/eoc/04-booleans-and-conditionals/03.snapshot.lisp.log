@@ -120,9 +120,9 @@
 
 (define-code main
   (block entry
-    (leaq (deref-label (label x-println-non-void)) (var _₁))
-    (leaq (deref-label (label x-equal?)) (var _₄))
-    (leaq (deref-label (label x-random-dice)) (var _₅))
+    (leaq (label-deref (label x-println-non-void)) (var _₁))
+    (leaq (label-deref (label x-equal?)) (var _₄))
+    (leaq (label-deref (label x-random-dice)) (var _₅))
     (movq (var _₅) (reg rdi))
     (callq-n (label x-apply-nullary) (arity 1))
     (movq (reg rax) (var _₆))
@@ -154,8 +154,8 @@
     (cmpq (var _₃) (imm 1))
     (branch-if (cc e) (label main/then₂) (label main/else₃)))
   (block main/then₅
-    (leaq (deref-label (label x-equal?)) (var _₁₀))
-    (leaq (deref-label (label x-random-dice)) (var _₁₁))
+    (leaq (label-deref (label x-equal?)) (var _₁₀))
+    (leaq (label-deref (label x-random-dice)) (var _₁₁))
     (movq (var _₁₁) (reg rdi))
     (callq-n (label x-apply-nullary) (arity 1))
     (movq (reg rax) (var _₁₂))

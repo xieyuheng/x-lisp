@@ -72,9 +72,9 @@
 
 (define-code main
   (block entry
-    (leaq (deref-label (label x-println-non-void)) (var _₁))
-    (leaq (deref-label (label square)) (var _₂))
-    (leaq (deref-label (label square)) (var _₃))
+    (leaq (label-deref (label x-println-non-void)) (var _₁))
+    (leaq (label-deref (label square)) (var _₂))
+    (leaq (label-deref (label square)) (var _₃))
     (movq (imm 3) (var _₄))
     (movq (var _₃) (reg rdi))
     (movq (var _₄) (reg rsi))

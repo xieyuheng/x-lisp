@@ -245,17 +245,17 @@
 
 (define-code main
   (block entry
-    (leaq (deref-label (label x-println-non-void)) (var _₁))
-    (leaq (deref-label (label x-random-dice)) (var _₂))
+    (leaq (label-deref (label x-println-non-void)) (var _₁))
+    (leaq (label-deref (label x-random-dice)) (var _₂))
     (movq (var _₂) (reg rdi))
     (callq-n (label x-apply-nullary) (arity 1))
     (movq (reg rax) (var x₁))
-    (leaq (deref-label (label x-random-dice)) (var _₃))
+    (leaq (label-deref (label x-random-dice)) (var _₃))
     (movq (var _₃) (reg rdi))
     (callq-n (label x-apply-nullary) (arity 1))
     (movq (reg rax) (var y₁))
-    (leaq (deref-label (label x-iadd)) (var _₄))
-    (leaq (deref-label (label x-int-less?)) (var _₇))
+    (leaq (label-deref (label x-iadd)) (var _₄))
+    (leaq (label-deref (label x-int-less?)) (var _₇))
     (movq (var _₇) (reg rdi))
     (movq (var x₁) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))
@@ -282,7 +282,7 @@
     (movq (var _↩) (reg rax))
     (retq))
   (block main/then₂
-    (leaq (deref-label (label x-iadd)) (var _₃₆))
+    (leaq (label-deref (label x-iadd)) (var _₃₆))
     (movq (var _₃₆) (reg rdi))
     (movq (var y₁) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))
@@ -294,7 +294,7 @@
     (movq (reg rax) (var _₂₄))
     (jmp (label main/let-body₁)))
   (block main/else₃
-    (leaq (deref-label (label x-iadd)) (var _₃₉))
+    (leaq (label-deref (label x-iadd)) (var _₃₉))
     (movq (var _₃₉) (reg rdi))
     (movq (var y₁) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))
@@ -309,7 +309,7 @@
     (cmpq (var _₂₅) (imm 1))
     (branch-if (cc e) (label main/then₂) (label main/else₃)))
   (block main/then₅
-    (leaq (deref-label (label x-equal?)) (var _₃₀))
+    (leaq (label-deref (label x-equal?)) (var _₃₀))
     (movq (var _₃₀) (reg rdi))
     (movq (var x₁) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))
@@ -321,7 +321,7 @@
     (movq (reg rax) (var _₂₅))
     (jmp (label main/let-body₄)))
   (block main/else₆
-    (leaq (deref-label (label x-equal?)) (var _₃₃))
+    (leaq (label-deref (label x-equal?)) (var _₃₃))
     (movq (var _₃₃) (reg rdi))
     (movq (var x₁) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))
@@ -337,7 +337,7 @@
     (movq (var _₅) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))
     (movq (reg rax) (var _₂₃))
-    (leaq (deref-label (label x-int-less?)) (var _₂₆))
+    (leaq (label-deref (label x-int-less?)) (var _₂₆))
     (movq (var _₂₆) (reg rdi))
     (movq (var x₁) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))
@@ -350,7 +350,7 @@
     (cmpq (var _₂₉) (imm 1))
     (branch-if (cc e) (label main/then₅) (label main/else₆)))
   (block main/then₈
-    (leaq (deref-label (label x-iadd)) (var _₁₇))
+    (leaq (label-deref (label x-iadd)) (var _₁₇))
     (movq (var _₁₇) (reg rdi))
     (movq (var y₁) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))
@@ -362,7 +362,7 @@
     (movq (reg rax) (var _₅))
     (jmp (label main/let-body₇)))
   (block main/else₉
-    (leaq (deref-label (label x-iadd)) (var _₂₀))
+    (leaq (label-deref (label x-iadd)) (var _₂₀))
     (movq (var _₂₀) (reg rdi))
     (movq (var y₁) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))
@@ -377,7 +377,7 @@
     (cmpq (var _₆) (imm 1))
     (branch-if (cc e) (label main/then₈) (label main/else₉)))
   (block main/then₁₁
-    (leaq (deref-label (label x-equal?)) (var _₁₁))
+    (leaq (label-deref (label x-equal?)) (var _₁₁))
     (movq (var _₁₁) (reg rdi))
     (movq (var x₁) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))
@@ -389,7 +389,7 @@
     (movq (reg rax) (var _₆))
     (jmp (label main/let-body₁₀)))
   (block main/else₁₂
-    (leaq (deref-label (label x-equal?)) (var _₁₄))
+    (leaq (label-deref (label x-equal?)) (var _₁₄))
     (movq (var _₁₄) (reg rdi))
     (movq (var x₁) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))

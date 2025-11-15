@@ -11,8 +11,8 @@ export const isVar = (operand: Operand): operand is Operands.Var =>
 export const isReg = (operand: Operand): operand is Operands.Reg =>
   operand.kind === "Reg"
 
-export const isDerefReg = (operand: Operand): operand is Operands.DerefReg =>
-  operand.kind === "DerefReg"
+export const isRegDeref = (operand: Operand): operand is Operands.RegDeref =>
+  operand.kind === "RegDeref"
 
 export const isLabel = (operand: Operand): operand is Operands.Label =>
   operand.kind === "Label"
@@ -35,9 +35,9 @@ export const asReg = (operand: Operand): Operands.Reg => {
   else throw new Error(`[asReg] fail on: ${formatOperand(operand)}`)
 }
 
-export const asDerefReg = (operand: Operand): Operands.DerefReg => {
-  if (isDerefReg(operand)) return operand
-  else throw new Error(`[asDerefReg] fail on: ${formatOperand(operand)}`)
+export const asRegDeref = (operand: Operand): Operands.RegDeref => {
+  if (isRegDeref(operand)) return operand
+  else throw new Error(`[asRegDeref] fail on: ${formatOperand(operand)}`)
 }
 
 export const asLabel = (operand: Operand): Operands.Label => {
