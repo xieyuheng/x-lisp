@@ -17,4 +17,6 @@ value_t x_int_greater_p(value_t x, value_t y);
 value_t x_int_less_p(value_t x, value_t y);
 value_t x_int_greater_equal_p(value_t x, value_t y);
 value_t x_int_less_equal_p(value_t x, value_t y);
+value_t x_int_positive_p(value_t x);
+value_t x_int_non_negative_p(value_t x);
 value_t x_int_to_float(value_t x);
