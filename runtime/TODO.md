@@ -1,5 +1,3 @@
-[runtime] `x_float_max` & `x_float_min`
-
 [runtime] `x_int_greater_p`
 [runtime] `x_int_less_p`
 [runtime] `x_int_greater_equal_p`
