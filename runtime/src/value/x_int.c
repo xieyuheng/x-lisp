@@ -54,6 +54,16 @@ x_imod(value_t x, value_t y) {
 }
 
 value_t
+x_int_max(value_t x, value_t y) {
+    return x_int(int_max(to_int64(x), to_int64(y)));
+}
+
+value_t
+x_int_min(value_t x, value_t y) {
+    return x_int(int_min(to_int64(x), to_int64(y)));
+}
+
+value_t
 x_int_to_float(value_t x) {
     if (!x_int_p(x)) {
         who_printf("type mismatch\n");

@@ -1,5 +1,17 @@
 #include "index.h"
 
+int64_t
+int_max(int64_t x, int64_t y) {
+    if (x > y) return x;
+    else return y;
+}
+
+int64_t
+int_min(int64_t x, int64_t y) {
+    if (x < y) return x;
+    else return y;
+}
+
 uint64_t
 uint_max(uint64_t x, uint64_t y) {
     if (x > y) return x;
