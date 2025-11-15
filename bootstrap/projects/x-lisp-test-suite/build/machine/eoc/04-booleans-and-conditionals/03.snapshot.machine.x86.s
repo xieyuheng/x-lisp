@@ -1,58 +1,58 @@
 
 .text
-main:
-main.entry:
-        leaq x_println_non_void(%rip), @(var _₁)
-        leaq x_equal_p(%rip), @(var _₄)
-        leaq x_random_dice(%rip), @(var _₅)
+_main:
+_main.entry:
+        leaq _x_println_non_void(%rip), @(var _₁)
+        leaq _x_equal_p(%rip), @(var _₄)
+        leaq _x_random_dice(%rip), @(var _₅)
         movq @(var _₅), %rdi
-        callq x_apply_nullary
+        callq _x_apply_nullary
         movq %rax, @(var _₆)
         movq @(var _₄), %rdi
         movq @(var _₆), %rsi
-        callq x_apply_unary
+        callq _x_apply_unary
         movq %rax, @(var _₇)
         movq $1, @(var _₈)
         movq @(var _₇), %rdi
         movq @(var _₈), %rsi
-        callq x_apply_unary
+        callq _x_apply_unary
         movq %rax, @(var _₉)
         cmpq @(var _₉), $1
-        jmpe main.main.then₅
-        jmp main.main.else₆
-main.main.let_body₁:
+        jmpe _main.main.then₅
+        jmp _main.main.else₆
+_main.main.let_body₁:
         movq @(var _₁), %rdi
         movq @(var _₂), %rsi
-        callq x_apply_unary
+        callq _x_apply_unary
         movq %rax, @(var _↩)
         movq @(var _↩), %rax
         retq 
-main.main.then₂:
+_main.main.then₂:
         movq $0, @(var _₂)
-        jmp main.main.let_body₁
-main.main.else₃:
+        jmp _main.main.let_body₁
+_main.main.else₃:
         movq $42, @(var _₂)
-        jmp main.main.let_body₁
-main.main.let_body₄:
+        jmp _main.main.let_body₁
+_main.main.let_body₄:
         cmpq @(var _₃), $1
-        jmpe main.main.then₂
-        jmp main.main.else₃
-main.main.then₅:
-        leaq x_equal_p(%rip), @(var _₁₀)
-        leaq x_random_dice(%rip), @(var _₁₁)
+        jmpe _main.main.then₂
+        jmp _main.main.else₃
+_main.main.then₅:
+        leaq _x_equal_p(%rip), @(var _₁₀)
+        leaq _x_random_dice(%rip), @(var _₁₁)
         movq @(var _₁₁), %rdi
-        callq x_apply_nullary
+        callq _x_apply_nullary
         movq %rax, @(var _₁₂)
         movq @(var _₁₀), %rdi
         movq @(var _₁₂), %rsi
-        callq x_apply_unary
+        callq _x_apply_unary
         movq %rax, @(var _₁₃)
         movq $2, @(var _₁₄)
         movq @(var _₁₃), %rdi
         movq @(var _₁₄), %rsi
-        callq x_apply_unary
+        callq _x_apply_unary
         movq %rax, @(var _₃)
-        jmp main.main.let_body₄
-main.main.else₆:
+        jmp _main.main.let_body₄
+_main.main.else₆:
         movq $0, @(var _₃)
-        jmp main.main.let_body₄
+        jmp _main.main.let_body₄

@@ -1,4 +1,4 @@
-[machine] add `_` preifx back to `transpileName`
+[machine] `Extern` as `Operand`
 [machine] should not add `_` prefix for primitive name
 
 [basic] `010-SelectInstructionPass` -- `onInstr` -- fix tagged value encoding

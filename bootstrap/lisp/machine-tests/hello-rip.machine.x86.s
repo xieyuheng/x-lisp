@@ -1,19 +1,19 @@
-.global _start
+.global __start
 
 .data
-message:
-message.entry:
+_message:
+_message.entry:
         .ascii "Hello, World!\n"
-message.length:
+_message.length:
         .quad 14
 
 .text
-_start:
-_start.entry:
+__start:
+__start.entry:
         movq $1, %rax
         movq $1, %rdi
-        leaq message(%rip), %rsi
-        movq message.length(%rip), %rdx
+        leaq _message(%rip), %rsi
+        movq _message.length(%rip), %rdx
         syscall 
         movq $60, %rax
         movq $0, %rdi
