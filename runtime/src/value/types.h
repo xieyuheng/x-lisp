@@ -10,11 +10,11 @@ typedef void *value_t;
 typedef enum {
     X_INT         = 0b000,
     X_FLOAT       = 0b001,
-    // TODO      = 0b010,
-    // TODO      = 0b011,
-    // TODO      = 0b100,
-    // TODO      = 0b101,
-    // TODO      = 0b110,
+    X_LITTLE      = 0b010,
+    // TODO       = 0b011,
+    // TODO       = 0b100,
+    // TODO       = 0b101,
+    // TODO       = 0b110,
     X_OBJECT      = 0b111,
 } tag_t;
 
