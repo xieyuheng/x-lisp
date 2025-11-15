@@ -10,8 +10,8 @@
   (block entry
     (movq (imm 1) (reg rax))
     (movq (imm 1) (reg rdi))
-    (leaq (deref-label (label message)) (reg rsi))
-    (movq (deref-label (label message.length)) (reg rdx))
+    (leaq (label-deref (label message)) (reg rsi))
+    (movq (label-deref (label message.length)) (reg rdx))
     (syscall)
     (movq (imm 60) (reg rax))
     (movq (imm 0) (reg rdi))

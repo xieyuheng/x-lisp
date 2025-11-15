@@ -55,7 +55,7 @@
 (define-code square
   (block entry
     (movq (reg rdi) (var x))
-    (leaq (deref-label (label x-imul)) (var _₁))
+    (leaq (label-deref (label x-imul)) (var _₁))
     (movq (var _₁) (reg rdi))
     (movq (var x) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))

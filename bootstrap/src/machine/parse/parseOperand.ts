@@ -9,8 +9,8 @@ export function parseOperand(sexp: S.Sexp): Operand {
         return Operands.Imm(S.numberContent(value), meta)
       }),
 
-      S.matcher("`(imm-label ,label)", ({ label }, { meta }) => {
-        return Operands.ImmLabel(Operands.asLabel(parseOperand(label)), meta)
+      S.matcher("`(label-imm ,label)", ({ label }, { meta }) => {
+        return Operands.LabelImm(Operands.asLabel(parseOperand(label)), meta)
       }),
 
       S.matcher("`(var ,name)", ({ name }, { meta }) => {
@@ -21,16 +21,16 @@ export function parseOperand(sexp: S.Sexp): Operand {
         return Operands.Reg(S.symbolContent(name), meta)
       }),
 
-      S.matcher("`(deref-reg ,reg ,offset)", ({ reg, offset }, { meta }) => {
-        return Operands.DerefReg(
+      S.matcher("`(reg-deref ,reg ,offset)", ({ reg, offset }, { meta }) => {
+        return Operands.RegDeref(
           Operands.asReg(parseOperand(reg)),
           S.numberContent(offset),
           meta,
         )
       }),
 
-      S.matcher("`(deref-label ,label)", ({ label }, { meta }) => {
-        return Operands.DerefLabel(Operands.asLabel(parseOperand(label)), meta)
+      S.matcher("`(label-deref ,label)", ({ label }, { meta }) => {
+        return Operands.LabelDeref(Operands.asLabel(parseOperand(label)), meta)
       }),
 
       S.matcher("`(cc ,code)", ({ code }, { meta }) => {

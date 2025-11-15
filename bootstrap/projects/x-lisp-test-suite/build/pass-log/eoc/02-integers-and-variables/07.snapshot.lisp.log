@@ -61,9 +61,9 @@
 
 (define-code main
   (block entry
-    (leaq (deref-label (label x-println-non-void)) (var _₁))
-    (leaq (deref-label (label x-iadd)) (var _₂))
-    (leaq (deref-label (label x-random-dice)) (var _₃))
+    (leaq (label-deref (label x-println-non-void)) (var _₁))
+    (leaq (label-deref (label x-iadd)) (var _₂))
+    (leaq (label-deref (label x-random-dice)) (var _₃))
     (movq (var _₃) (reg rdi))
     (callq-n (label x-apply-nullary) (arity 1))
     (movq (reg rax) (var _₄))
@@ -71,7 +71,7 @@
     (movq (var _₄) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))
     (movq (reg rax) (var _₅))
-    (leaq (deref-label (label x-random-dice)) (var _₆))
+    (leaq (label-deref (label x-random-dice)) (var _₆))
     (movq (var _₆) (reg rdi))
     (callq-n (label x-apply-nullary) (arity 1))
     (movq (reg rax) (var _₇))

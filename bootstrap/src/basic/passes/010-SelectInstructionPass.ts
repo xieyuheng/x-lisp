@@ -75,14 +75,14 @@ function onInstr(instr: Instr): Array<M.Instr> {
           if (instr.value.attributes.isPrimitive) {
             return [
               M.Instr("leaq", [
-                M.DerefLabel(M.Label(`x-${instr.value.name}`)),
+                M.LabelDeref(M.Label(`x-${instr.value.name}`)),
                 M.Var(instr.dest),
               ]),
             ]
           } else {
             return [
               M.Instr("leaq", [
-                M.DerefLabel(M.Label(instr.value.name)),
+                M.LabelDeref(M.Label(instr.value.name)),
                 M.Var(instr.dest),
               ]),
             ]

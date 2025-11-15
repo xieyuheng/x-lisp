@@ -6,8 +6,8 @@ export function formatOperand(operand: Operand): string {
       return `(imm ${operand.value})`
     }
 
-    case "ImmLabel": {
-      return `(imm-label ${formatOperand(operand.label)})`
+    case "LabelImm": {
+      return `(label-imm ${formatOperand(operand.label)})`
     }
 
     case "Var": {
@@ -18,12 +18,12 @@ export function formatOperand(operand: Operand): string {
       return `(reg ${operand.name})`
     }
 
-    case "DerefReg": {
-      return `(deref-reg ${formatOperand(operand.reg)} ${operand.offset})`
+    case "RegDeref": {
+      return `(reg-deref ${formatOperand(operand.reg)} ${operand.offset})`
     }
 
-    case "DerefLabel": {
-      return `(deref-label ${formatOperand(operand.label)})`
+    case "LabelDeref": {
+      return `(label-deref ${formatOperand(operand.label)})`
     }
 
     case "Label": {

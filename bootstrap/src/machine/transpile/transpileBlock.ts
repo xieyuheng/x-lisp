@@ -79,7 +79,7 @@ function transpileOperand(context: Context, operand: Operand): string {
       return `$${operand.value}`
     }
 
-    case "ImmLabel": {
+    case "LabelImm": {
       const label = transpileLabel(context, operand.label.name)
       return `$${label}`
     }
@@ -92,9 +92,9 @@ function transpileOperand(context: Context, operand: Operand): string {
       return `%${operand.name}`
     }
 
-    case "DerefReg": {
+    case "RegDeref": {
       if (!Number.isInteger(operand.offset)) {
-        let message = `[transpileOperand/DerefReg] expect offset to be integer`
+        let message = `[transpileOperand/RegDeref] expect offset to be integer`
         message += `\n  value: ${operand.offset}`
         throw new Error(message)
       }
@@ -102,7 +102,7 @@ function transpileOperand(context: Context, operand: Operand): string {
       return `${operand.offset}(%${operand.reg.name})`
     }
 
-    case "DerefLabel": {
+    case "LabelDeref": {
       const label = transpileLabel(context, operand.label.name)
       return `${label}(%rip)`
     }

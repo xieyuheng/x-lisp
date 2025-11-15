@@ -2,9 +2,9 @@
 
 (define-code main
   (block entry
-    (leaq (deref-label (label x-println-non-void)) (var _₁))
-    (leaq (deref-label (label §₁/square)) (var _₂))
-    (leaq (deref-label (label §₁/square)) (var _₃))
+    (leaq (label-deref (label x-println-non-void)) (var _₁))
+    (leaq (label-deref (label §₁/square)) (var _₂))
+    (leaq (label-deref (label §₁/square)) (var _₃))
     (movq (imm 3) (var _₄))
     (movq (var _₃) (reg rdi))
     (movq (var _₄) (reg rsi))
@@ -24,7 +24,7 @@
 (define-code §₁/square
   (block entry
     (movq (reg rdi) (var x))
-    (leaq (deref-label (label x-imul)) (var _₁))
+    (leaq (label-deref (label x-imul)) (var _₁))
     (movq (var _₁) (reg rdi))
     (movq (var x) (reg rsi))
     (callq-n (label x-apply-unary) (arity 2))

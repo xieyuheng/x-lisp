@@ -2,11 +2,11 @@ import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 
 export type Operand =
   | Imm
-  | ImmLabel
+  | LabelImm
   | Var
   | Reg
-  | DerefReg
-  | DerefLabel
+  | RegDeref
+  | LabelDeref
   | Label
   | Cc
   | Arity
@@ -18,9 +18,9 @@ export const Imm = (value: number, meta?: Meta): Imm => ({
   meta,
 })
 
-export type ImmLabel = { kind: "ImmLabel"; label: Label; meta?: Meta }
-export const ImmLabel = (label: Label, meta?: Meta): ImmLabel => ({
-  kind: "ImmLabel",
+export type LabelImm = { kind: "LabelImm"; label: Label; meta?: Meta }
+export const LabelImm = (label: Label, meta?: Meta): LabelImm => ({
+  kind: "LabelImm",
   label,
   meta,
 })
@@ -39,26 +39,26 @@ export const Reg = (name: string, meta?: Meta): Reg => ({
   meta,
 })
 
-export type DerefReg = {
-  kind: "DerefReg"
+export type RegDeref = {
+  kind: "RegDeref"
   reg: Reg
   offset: number
   meta?: Meta
 }
-export const DerefReg = (reg: Reg, offset: number, meta?: Meta): DerefReg => ({
-  kind: "DerefReg",
+export const RegDeref = (reg: Reg, offset: number, meta?: Meta): RegDeref => ({
+  kind: "RegDeref",
   reg,
   offset,
   meta,
 })
 
-export type DerefLabel = {
-  kind: "DerefLabel"
+export type LabelDeref = {
+  kind: "LabelDeref"
   label: Label
   meta?: Meta
 }
-export const DerefLabel = (label: Label, meta?: Meta): DerefLabel => ({
-  kind: "DerefLabel",
+export const LabelDeref = (label: Label, meta?: Meta): LabelDeref => ({
+  kind: "LabelDeref",
   label,
   meta,
 })
