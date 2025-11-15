@@ -65,6 +65,16 @@ x_fmod(value_t x, value_t y) {
 }
 
 value_t
+x_float_max(value_t x, value_t y) {
+    return x_float(fmax(to_double(x), to_double(y)));
+}
+
+value_t
+x_float_min(value_t x, value_t y) {
+    return x_float(fmin(to_double(x), to_double(y)));
+}
+
+value_t
 x_float_to_int(value_t x) {
     if (!x_float_p(x)) {
         who_printf("type mismatch\n");
