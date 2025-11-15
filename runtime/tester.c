@@ -1,5 +1,4 @@
-#include "src/deps.h"
-#include "src/commands/index.h"
+#include "src/index.h"
 
 int
 main(int argc, char *argv[]) {

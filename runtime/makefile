@@ -35,10 +35,10 @@ lib = $(patsubst src/%, lib/%, $(patsubst %.c, %.o, $(src)))
 
 .PHONY: all run test clean
 
-all: begin
+all: bundle
 
-run: begin
-	./begin
+run: bundle
+	./bundle
 
 test: tester
 	./tester test-self
@@ -46,11 +46,11 @@ test: tester
 tester: tester.c $(lib)
 	$(cc) $^ $(ldflags) -o $@
 
-begin: runtime.o begin.o
+bundle: runtime.o bundle.o
 	$(cc) $^ $(ldflags) -o $@
 
-begin.o: begin.c
-	$(cc) -r $^ $(ldflags) -o begin.o
+bundle.o: bundle.c
+	$(cc) -r $^ $(ldflags) -o bundle.o
 
 runtime.o: runtime.c $(lib)
 	$(cc) -r $^ $(ldflags) -o runtime.o
@@ -59,4 +59,4 @@ lib/%.o: src/%.c $(headers)
 	mkdir -p $(dir $@); $(cc) -c $(cflags) $< -o $@
 
 clean:
-	rm -rf lib *.o begin tester
+	rm -rf lib *.o bundle tester
