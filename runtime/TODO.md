@@ -1,4 +1,3 @@
-[runtime] `x_newline`
 [runtime] `x_print`
 [runtime] `x_println_non_void`
 
