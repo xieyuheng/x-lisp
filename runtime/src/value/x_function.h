@@ -18,3 +18,6 @@ value_3_ary_fn_t *to_3_ary_fn(value_t value);
 value_4_ary_fn_t *to_4_ary_fn(value_t value);
 value_5_ary_fn_t *to_5_ary_fn(value_t value);
 value_6_ary_fn_t *to_6_ary_fn(value_t value);
+
+value_t x_unary_apply(value_t target, value_t arg);
+value_t x_nullary_apply(value_t target);

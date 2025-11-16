@@ -1,5 +1,4 @@
-[runtime] `x_unary_apply` -- need to cast to function pointer
-[runtime] `x_nullary_apply`
+[runtime] `x_unary_apply`
 
 # later
 
