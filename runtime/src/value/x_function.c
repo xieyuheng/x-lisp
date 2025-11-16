@@ -25,8 +25,20 @@ x_nullary_apply(value_t target) {
 
 
 static value_t
-call_with_extra_arg(value_t target, size_t arity, value_t *args, value_t arg) {
-    //
+call_with_extra_arg(value_t target, size_t arity, value_t *args, value_t extra_arg) {
+    assert(arity > 0);
+    if (arity == 1) return to_1_ary_fn(target)(extra_arg);
+    if (arity == 2) return to_2_ary_fn(target)(args[0], extra_arg);
+    if (arity == 3) return to_3_ary_fn(target)(args[0], args[1], extra_arg);
+    if (arity == 4) return to_4_ary_fn(target)(args[0], args[1], args[2], extra_arg);
+    if (arity == 5) return to_5_ary_fn(target)(args[0], args[1], args[2], args[3], extra_arg);
+    if (arity == 6) return to_6_ary_fn(target)(args[0], args[1], args[2], args[3], args[4], extra_arg);
+
+    who_printf("can not handle arity\n");
+    printf("   target: "); value_print(target, stdout); printf("\n");
+    printf("   arity: %ld", arity); printf("\n");
+    printf("   extra_arg: "); value_print(extra_arg, stdout); printf("\n");
+    assert(false && "can not apply target");
 }
 
 value_t

@@ -1,5 +1,3 @@
-[runtime] `call_with_extra_arg`
-
 # later
 
 [runtime] gc -- mark and sweep
