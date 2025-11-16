@@ -1,5 +1,4 @@
-[runtime] `x_make_curry`
-[runtime] `x_curry_put_mut`
+[runtime] extract `to_curry`
 
 [runtime] `object_t` -- has `equal_fn` and `same_fn` (for immutable object like string)
 
