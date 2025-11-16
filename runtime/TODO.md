@@ -1,6 +1,3 @@
-[runtime] `x_function` setup
-[runtime] `x_make_function`
-
 # later
 
 [runtime] gc -- mark and sweep
