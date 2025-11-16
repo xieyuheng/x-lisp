@@ -19,7 +19,7 @@ value_5_ary_fn_t *to_5_ary_fn(value_t value) { return (value_5_ary_fn_t *) ((uin
 value_6_ary_fn_t *to_6_ary_fn(value_t value) { return (value_6_ary_fn_t *) ((uint64_t) value & PAYLOAD_MASK); }
 
 value_t
-x_nullary_apply(value_t target) {
+x_apply_nullary(value_t target) {
     return to_0_ary_fn(target)();
 }
 
@@ -42,7 +42,7 @@ call_with_extra_arg(value_t target, size_t arity, value_t *args, value_t extra_a
 }
 
 value_t
-x_unary_apply(value_t target, value_t arg) {
+x_apply_unary(value_t target, value_t arg) {
     if (curry_p(target)) {
         curry_t *curry = to_curry(target);
         if (curry->arity > 1) {

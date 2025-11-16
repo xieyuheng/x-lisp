@@ -95,26 +95,19 @@ function onInstr(instr: Instr): Array<M.Instr> {
     }
 
     case "Apply": {
-      return [
-        M.Instr("movq", [M.Var(instr.target), selectArgReg(0)]),
-        M.Instr("movq", [M.Var(instr.arg), selectArgReg(1)]),
-        M.Instr("callq-n", [
-          M.Label("x-apply-unary", { isExternal: true }),
-          M.Arity(2),
-        ]),
-        M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
-      ]
+      return selectCall(
+        instr.dest,
+        Values.Function("x-apply-unary", 2, { isPrimitive: true }),
+        [instr.target, instr.arg],
+      )
     }
 
     case "NullaryApply": {
-      return [
-        M.Instr("movq", [M.Var(instr.target), selectArgReg(0)]),
-        M.Instr("callq-n", [
-          M.Label("x-apply-nullary", { isExternal: true }),
-          M.Arity(1),
-        ]),
-        M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
-      ]
+      return selectCall(
+        instr.dest,
+        Values.Function("x-apply-nullary", 1, { isPrimitive: true }),
+        [instr.target],
+      )
     }
   }
 }
@@ -124,16 +117,14 @@ function selectCall(
   fn: Values.Function,
   args: Array<string>,
 ): Array<M.Instr> {
+  const prepareArguments = Array.from(args.entries()).map(([index, arg]) =>
+    M.Instr("movq", [M.Var(arg), selectArgReg(index)]),
+  )
+
   return [
-    ...args
-      .entries()
-      .map(([index, arg]) =>
-        M.Instr("movq", [M.Var(arg), selectArgReg(index)]),
-      ),
+    ...prepareArguments,
     M.Instr("callq-n", [
-      M.Label(fn.name, {
-        isExternal: fn.attributes.isPrimitive,
-      }),
+      M.Label(fn.name, { isExternal: fn.attributes.isPrimitive }),
       M.Arity(args.length),
     ]),
     M.Instr("movq", [M.Reg("rax"), M.Var(dest)]),
