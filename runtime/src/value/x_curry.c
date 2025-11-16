@@ -21,3 +21,8 @@ curry_free(curry_t *self) {
     free(self->args);
     free(self);
 }
+
+void
+curry_put(curry_t *self, size_t index, value_t arg) {
+    self->args[index] = arg;
+}
