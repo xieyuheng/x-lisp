@@ -1,4 +1,3 @@
-[runtime] `x_anything_p`
 [runtime] `x_same_p`
 [runtime] `x_equal_p` -- just call `x_same_p` for now
 
