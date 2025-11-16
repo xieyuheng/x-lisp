@@ -1,5 +1,3 @@
-[runtime] `x_equal_p` -- handle `object_t` -- call `equal_fn`
-
 [runtime] `curry_t` -- has `equal_fn`
 
 [runtime] `x_unary_apply` -- need to cast to function pointer
