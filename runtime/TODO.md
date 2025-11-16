@@ -1,5 +1,3 @@
-[runtime] extract `to_curry`
-
 [runtime] `object_t` -- has `equal_fn` and `same_fn` (for immutable object like string)
 
 [runtime] `x_same_p` -- handle immutable `object_t` -- call `same_fn`

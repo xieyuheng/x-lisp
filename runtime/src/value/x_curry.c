@@ -27,6 +27,19 @@ curry_put(curry_t *self, size_t index, value_t value) {
     self->args[index] = value;
 }
 
+bool
+curry_p(value_t value) {
+    object_t *object = to_object(value);
+    return object->spec == &curry_object_spec;
+}
+
+curry_t *
+to_curry(value_t value) {
+    object_t *object = to_object(value);
+    assert(curry_p(object));
+    return (curry_t *) object;
+}
+
 value_t
 x_make_curry(value_t target, value_t arity, value_t size) {
     curry_t *curry = make_curry(target, to_int64(arity), to_int64(size));
@@ -34,14 +47,7 @@ x_make_curry(value_t target, value_t arity, value_t size) {
 }
 
 value_t
-x_curry_put_mut(value_t index, value_t value, value_t object) {
-    curry_t *curry = (curry_t *) to_object(object);
-    curry->args[to_int64(index)] = value;
+x_curry_put_mut(value_t index, value_t value, value_t curry) {
+    to_curry(curry)->args[to_int64(index)] = value;
     return x_void;
 }
-
-// value_t
-// x_curry_put_mut(value_t index, value_t value, value_t curry) {
-//     to_curry(curry)->args[to_int64(index)] = value;
-//     return x_void;
-// }
