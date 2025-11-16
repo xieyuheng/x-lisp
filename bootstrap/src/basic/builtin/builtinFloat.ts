@@ -13,6 +13,7 @@ export function builtinFloat(mod: Mod) {
     "fsub",
     "fmul",
     "fdiv",
+    "fmod",
     "float-max",
     "float-min",
     "float-greater?",
@@ -57,6 +58,10 @@ export function builtinFloat(mod: Mod) {
 
   definePrimitiveFunction(mod, "fdiv", 2, (x, y) => {
     return Values.Float(Values.asFloat(x).content / Values.asFloat(y).content)
+  })
+
+  definePrimitiveFunction(mod, "fmod", 2, (x, y) => {
+    return Values.Float(Values.asFloat(x).content % Values.asFloat(y).content)
   })
 
   definePrimitiveFunction(mod, "float-max", 2, (x, y) => {
