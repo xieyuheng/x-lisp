@@ -1,11 +1,10 @@
+[runtime] `x_newline`
 [runtime] `x_print`
 [runtime] `x_println_non_void`
-[runtime] `x_newline`
 
 [runtime] `x_unary_apply` -- need to cast to function pointer
 [runtime] `x_nullary_apply`
 
-[runtime] `x_random` -- setup
 [runtime] `x_random_dice`
 [runtime] `x_random_int`
 [runtime] `x_random_float`

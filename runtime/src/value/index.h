@@ -14,5 +14,6 @@
 #include "x_value.h"
 #include "x_console.h"
 #include "x_function.h"
+#include "x_random.h"
 
 #include "test_value.h"
