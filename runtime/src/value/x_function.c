@@ -17,3 +17,13 @@ value_3_ary_fn_t *to_3_ary_fn(value_t value) { return (value_3_ary_fn_t *) ((uin
 value_4_ary_fn_t *to_4_ary_fn(value_t value) { return (value_4_ary_fn_t *) ((uint64_t) value & PAYLOAD_MASK); }
 value_5_ary_fn_t *to_5_ary_fn(value_t value) { return (value_5_ary_fn_t *) ((uint64_t) value & PAYLOAD_MASK); }
 value_6_ary_fn_t *to_6_ary_fn(value_t value) { return (value_6_ary_fn_t *) ((uint64_t) value & PAYLOAD_MASK); }
+
+// value_t
+// x_unary_apply(value_t target, value_t arg) {
+
+// }
+
+value_t
+x_nullary_apply(value_t target) {
+    return to_0_ary_fn(target)();
+}
