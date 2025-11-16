@@ -14,32 +14,32 @@ export type Instr =
 
 export type Argument = {
   op: "Argument"
-  index: number
   dest: string
+  index: number
   meta?: Meta
 }
 
-export function Argument(index: number, dest: string, meta?: Meta): Argument {
+export function Argument(dest: string, index: number, meta?: Meta): Argument {
   return {
     op: "Argument",
-    index,
     dest,
+    index,
     meta,
   }
 }
 
 export type Const = {
   op: "Const"
-  value: Value
   dest: string
+  value: Value
   meta?: Meta
 }
 
-export function Const(value: Value, dest: string, meta?: Meta): Const {
+export function Const(dest: string, value: Value, meta?: Meta): Const {
   return {
     op: "Const",
-    value,
     dest,
+    value,
     meta,
   }
 }
@@ -111,66 +111,66 @@ export function Branch(
 
 export type Call = {
   op: "Call"
+  dest: string
   fn: Function
   args: Array<string>
-  dest: string
   meta?: Meta
 }
 
 export function Call(
+  dest: string,
   fn: Function,
   args: Array<string>,
-  dest: string,
   meta?: Meta,
 ): Call {
   return {
     op: "Call",
+    dest,
     fn,
     args,
-    dest,
     meta,
   }
 }
 
 export type NullaryApply = {
   op: "NullaryApply"
-  target: string
   dest: string
+  target: string
   meta?: Meta
 }
 
 export function NullaryApply(
-  target: string,
   dest: string,
+  target: string,
   meta?: Meta,
 ): NullaryApply {
   return {
     op: "NullaryApply",
-    target,
     dest,
+    target,
     meta,
   }
 }
 
 export type Apply = {
   op: "Apply"
+  dest: string
   target: string
   arg: string
-  dest: string
   meta?: Meta
 }
 
 export function Apply(
+  dest: string,
   target: string,
   arg: string,
-  dest: string,
   meta?: Meta,
 ): Apply {
   return {
     op: "Apply",
+    dest,
     target,
     arg,
-    dest,
     meta,
   }
 }

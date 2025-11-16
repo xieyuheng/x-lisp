@@ -20,17 +20,17 @@ function qualifyInstr(context: BundleContext, instr: Instr): Instr {
   switch (instr.op) {
     case "Const": {
       return Instrs.Const(
-        qualifyValue(context, instr.value),
         instr.dest,
+        qualifyValue(context, instr.value),
         instr.meta,
       )
     }
 
     case "Call": {
       return Instrs.Call(
+        instr.dest,
         qualifyFunction(context, instr.fn),
         instr.args,
-        instr.dest,
         instr.meta,
       )
     }

@@ -9,14 +9,14 @@ export function parseInstr(sexp: S.Sexp): Instr {
     S.matcherChoice<Instr>([
       S.matcher("`(= ,dest (argument ,index))", ({ dest, index }, { meta }) => {
         return Instrs.Argument(
-          S.numberContent(index),
           S.symbolContent(dest),
+          S.numberContent(index),
           meta,
         )
       }),
 
       S.matcher("`(= ,dest (const ,value))", ({ dest, value }, { meta }) => {
-        return Instrs.Const(parseValue(value), S.symbolContent(dest), meta)
+        return Instrs.Const(S.symbolContent(dest), parseValue(value), meta)
       }),
 
       S.matcher("`(assert ,ok)", ({ ok }, { meta }) => {
@@ -49,9 +49,9 @@ export function parseInstr(sexp: S.Sexp): Instr {
 
       S.matcher("(cons* 'call fn args)", ({ fn, args }, { meta }) => {
         return Instrs.Call(
+          "_∅",
           Values.asFunction(parseValue(fn)),
           S.listElements(args).map(S.symbolContent),
-          "_∅",
           meta,
         )
       }),
@@ -60,9 +60,9 @@ export function parseInstr(sexp: S.Sexp): Instr {
         "`(= ,dest ,(cons* 'call fn args))",
         ({ fn, args, dest }, { meta }) => {
           return Instrs.Call(
+            S.symbolContent(dest),
             Values.asFunction(parseValue(fn)),
             S.listElements(args).map(S.symbolContent),
-            S.symbolContent(dest),
             meta,
           )
         },
@@ -70,9 +70,9 @@ export function parseInstr(sexp: S.Sexp): Instr {
 
       S.matcher("`(apply ,target ,arg)", ({ target, arg }, { meta }) => {
         return Instrs.Apply(
+          "_∅",
           S.symbolContent(target),
           S.symbolContent(arg),
-          "_∅",
           meta,
         )
       }),
@@ -81,24 +81,24 @@ export function parseInstr(sexp: S.Sexp): Instr {
         "`(= ,dest (apply ,target ,arg))",
         ({ target, arg, dest }, { meta }) => {
           return Instrs.Apply(
+            S.symbolContent(dest),
             S.symbolContent(target),
             S.symbolContent(arg),
-            S.symbolContent(dest),
             meta,
           )
         },
       ),
 
       S.matcher("`(nullary-apply ,target)", ({ target }, { meta }) => {
-        return Instrs.NullaryApply(S.symbolContent(target), "_∅", meta)
+        return Instrs.NullaryApply("_∅", S.symbolContent(target), meta)
       }),
 
       S.matcher(
         "`(= ,dest (nullary-apply ,target))",
         ({ target, arg, dest }, { meta }) => {
           return Instrs.NullaryApply(
-            S.symbolContent(target),
             S.symbolContent(dest),
+            S.symbolContent(target),
             meta,
           )
         },

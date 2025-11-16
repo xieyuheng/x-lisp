@@ -37,7 +37,7 @@ function onDefinition(basicMod: B.Mod, definition: Definition): null {
       const initialInstrs = Array.from(
         definition.parameters
           .entries()
-          .map(([index, name]) => B.Argument(index, name)),
+          .map(([index, name]) => B.Argument(name, index)),
       )
 
       const state = { fn }
@@ -95,14 +95,14 @@ function inTail(state: State, exp: Exp): Array<B.Instr> {
     case "Apply": {
       const name = "_↩"
       return [
-        B.Apply(Exps.varName(exp.target), Exps.varName(exp.arg), name),
+        B.Apply(name, Exps.varName(exp.target), Exps.varName(exp.arg)),
         B.Return(name),
       ]
     }
 
     case "NullaryApply": {
       const name = "_↩"
-      return [B.NullaryApply(Exps.varName(exp.target), name), B.Return(name)]
+      return [B.NullaryApply(name, Exps.varName(exp.target)), B.Return(name)]
     }
 
     case "Let1": {
@@ -140,29 +140,27 @@ function inLet1(
     case "Int":
     case "Float":
     case "Function": {
-      return [B.Const(expToValue(rhs), name), ...cont]
+      return [B.Const(name, expToValue(rhs)), ...cont]
     }
 
     case "Var": {
       return [
-        B.Call(
-          B.Function("identity", 1, { isPrimitive: true }),
-          [rhs.name],
-          name,
-        ),
+        B.Call(name, B.Function("identity", 1, { isPrimitive: true }), [
+          rhs.name,
+        ]),
         ...cont,
       ]
     }
 
     case "Apply": {
       return [
-        B.Apply(Exps.varName(rhs.target), Exps.varName(rhs.arg), name),
+        B.Apply(name, Exps.varName(rhs.target), Exps.varName(rhs.arg)),
         ...cont,
       ]
     }
 
     case "NullaryApply": {
-      return [B.NullaryApply(Exps.varName(rhs.target), name), ...cont]
+      return [B.NullaryApply(name, Exps.varName(rhs.target)), ...cont]
     }
 
     case "Let1": {
