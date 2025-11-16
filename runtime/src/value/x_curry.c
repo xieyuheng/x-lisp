@@ -2,7 +2,9 @@
 
 object_spec_t curry_object_spec = {
     .name = "curry",
-    .print_fn = (object_print_fn_t *) NULL,
+    .print_fn = NULL,
+    .same_fn =  NULL,
+    .equal_fn =  NULL,
 };
 
 curry_t *
