@@ -1,5 +1,3 @@
-[runtime] `is_function`
-
 [runtime] `to_<n>_ary_fn`
 
 primitive_1_ary_fn_t
