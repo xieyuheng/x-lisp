@@ -33,6 +33,7 @@
 (claim fsub (-> float? float? float?))
 (claim fmul (-> float? float? float?))
 (claim fdiv (-> float? float-non-zero? float?))
+(claim fmod (-> float? float-non-zero? float?))
 (claim float-max (-> float? float? float?))
 (claim float-min (-> float? float? float?))
 (claim float-greater? (-> float? float? bool?))

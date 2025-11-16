@@ -98,6 +98,7 @@ false
 (fsub x y)
 (fmul x y)
 (fdiv x y)
+(fmod x y)
 (float-max x y)
 (float-min x y)
 (float-greater? x y)

@@ -1,5 +1,3 @@
-[prototype] add `fmod`
-
 [basic] add `fmod`
 
 [bootstrap] the `target` of `apply` must be `Curry`
