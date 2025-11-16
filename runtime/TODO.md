@@ -1,5 +1,3 @@
-[runtime] `x_equal_p` -- just call `x_same_p` for now
-
 [runtime] `x_console` -- setup
 [runtime] `x_print`
 [runtime] `x_println_non_void`
@@ -17,7 +15,7 @@
 [runtime] curry -- setup
 [runtime] `x_make_curry`
 [runtime] `x_curry_put_mut`
-[runtime] fix `x_equal_p` for curry
+[runtime] `x_equal_p` -- handle `curry_t`
 
 # later
 
@@ -26,4 +24,4 @@
 # later
 
 [runtime] `x_write` -- need string
-[runtime] fix `x_same_p` -- for immutable object value
+[runtime] `x_same_p` -- handle immutable object value
