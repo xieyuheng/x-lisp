@@ -106,6 +106,11 @@ function onInstr(instr: Instr): Array<M.Instr> {
   }
 }
 
+function selectArgReg(index: number): M.Reg {
+  const argRegName = M.ABIs["x86-64-sysv"]["argument-reg-names"][index]
+  return M.Reg(argRegName)
+}
+
 function selectCall(
   dest: string,
   fn: Values.Function,
@@ -142,21 +147,7 @@ function selectConst(dest: string, value: Value): Array<M.Instr> {
     }
 
     case "Function": {
-      if (value.attributes.isPrimitive) {
-        return [
-          M.Instr("leaq", [
-            M.LabelDeref(M.Label(`x-${value.name}`, { isExternal: true })),
-            M.Var(dest),
-          ]),
-        ]
-      } else {
-        return [
-          M.Instr("leaq", [
-            M.LabelDeref(M.Label(value.name, { isExternal: false })),
-            M.Var(dest),
-          ]),
-        ]
-      }
+      return selectConstFunction(dest, value)
     }
 
     default: {
@@ -168,7 +159,23 @@ function selectConst(dest: string, value: Value): Array<M.Instr> {
   }
 }
 
-function selectArgReg(index: number): M.Reg {
-  const argRegName = M.ABIs["x86-64-sysv"]["argument-reg-names"][index]
-  return M.Reg(argRegName)
+function selectConstFunction(
+  dest: string,
+  fn: Values.Function,
+): Array<M.Instr> {
+  // TODO use tagged value
+
+  const address = fn.attributes.isPrimitive
+    ? M.LabelDeref(M.Label(`x-${fn.name}`, { isExternal: true }))
+    : M.LabelDeref(M.Label(fn.name, { isExternal: false }))
+
+  return [
+    M.Instr("leaq", [address, selectArgReg(0)]),
+    M.Instr("movq", [M.Imm(fn.arity), selectArgReg(1)]),
+    M.Instr("callq-n", [
+      M.Label("x-make-function", { isExternal: true }),
+      M.Arity(2),
+    ]),
+    M.Instr("movq", [M.Reg("rax"), M.Var(dest)]),
+  ]
 }

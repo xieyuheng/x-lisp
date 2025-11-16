@@ -2,38 +2,62 @@
 .text
 _main:
 _main.entry:
-        leaq x_println_non_void(%rip), @(var _₁)
-        leaq x_print(%rip), @(var _₃)
+        leaq x_println_non_void(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₁)
+        leaq x_print(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₃)
         movq $1, @(var _₄)
         movq @(var _₃), %rdi
         movq @(var _₄), %rsi
         callq x_apply_unary
         movq %rax, @(var _∅₁)
-        leaq x_newline(%rip), @(var _₅)
+        leaq x_newline(%rip), %rdi
+        movq $0, %rsi
+        callq x_make_function
+        movq %rax, @(var _₅)
         movq @(var _₅), %rdi
         callq x_apply_nullary
         movq %rax, @(var _∅₂)
-        leaq x_print(%rip), @(var _₆)
+        leaq x_print(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₆)
         movq $2, @(var _₇)
         movq @(var _₆), %rdi
         movq @(var _₇), %rsi
         callq x_apply_unary
         movq %rax, @(var _∅₃)
-        leaq x_newline(%rip), @(var _₈)
+        leaq x_newline(%rip), %rdi
+        movq $0, %rsi
+        callq x_make_function
+        movq %rax, @(var _₈)
         movq @(var _₈), %rdi
         callq x_apply_nullary
         movq %rax, @(var _∅₄)
-        leaq x_print(%rip), @(var _₉)
+        leaq x_print(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₉)
         movq $3, @(var _₁₀)
         movq @(var _₉), %rdi
         movq @(var _₁₀), %rsi
         callq x_apply_unary
         movq %rax, @(var _∅₅)
-        leaq x_newline(%rip), @(var _₁₁)
+        leaq x_newline(%rip), %rdi
+        movq $0, %rsi
+        callq x_make_function
+        movq %rax, @(var _₁₁)
         movq @(var _₁₁), %rdi
         callq x_apply_nullary
         movq %rax, @(var _∅₆)
-        leaq x_equal_p(%rip), @(var _₁₂)
+        leaq x_equal_p(%rip), %rdi
+        movq $2, %rsi
+        callq x_make_function
+        movq %rax, @(var _₁₂)
         movq $1, @(var _₁₃)
         movq @(var _₁₂), %rdi
         movq @(var _₁₃), %rsi
@@ -55,17 +79,26 @@ _main.main.let_body₁:
         movq @(var _↩), %rax
         retq 
 _main.main.then₂:
-        leaq x_print(%rip), @(var _₁₇)
+        leaq x_print(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₁₇)
         movq $111, @(var _₁₈)
         movq @(var _₁₇), %rdi
         movq @(var _₁₈), %rsi
         callq x_apply_unary
         movq %rax, @(var _∅₁)
-        leaq x_newline(%rip), @(var _₁₉)
+        leaq x_newline(%rip), %rdi
+        movq $0, %rsi
+        callq x_make_function
+        movq %rax, @(var _₁₉)
         movq @(var _₁₉), %rdi
         callq x_apply_nullary
         movq %rax, @(var _∅₂)
-        leaq x_equal_p(%rip), @(var _₂₀)
+        leaq x_equal_p(%rip), %rdi
+        movq $2, %rsi
+        callq x_make_function
+        movq %rax, @(var _₂₀)
         movq $1, @(var _₂₁)
         movq @(var _₂₀), %rdi
         movq @(var _₂₁), %rsi
@@ -78,17 +111,26 @@ _main.main.then₂:
         movq %rax, @(var _₂)
         jmp _main.main.let_body₁
 _main.main.else₃:
-        leaq x_print(%rip), @(var _₂₄)
+        leaq x_print(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₂₄)
         movq $222, @(var _₂₅)
         movq @(var _₂₄), %rdi
         movq @(var _₂₅), %rsi
         callq x_apply_unary
         movq %rax, @(var _∅₁)
-        leaq x_newline(%rip), @(var _₂₆)
+        leaq x_newline(%rip), %rdi
+        movq $0, %rsi
+        callq x_make_function
+        movq %rax, @(var _₂₆)
         movq @(var _₂₆), %rdi
         callq x_apply_nullary
         movq %rax, @(var _∅₂)
-        leaq x_equal_p(%rip), @(var _₂₇)
+        leaq x_equal_p(%rip), %rdi
+        movq $2, %rsi
+        callq x_make_function
+        movq %rax, @(var _₂₇)
         movq $1, @(var _₂₈)
         movq @(var _₂₇), %rdi
         movq @(var _₂₈), %rsi

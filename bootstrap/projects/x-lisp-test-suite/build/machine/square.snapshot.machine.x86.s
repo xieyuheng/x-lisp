@@ -2,9 +2,18 @@
 .text
 _main:
 _main.entry:
-        leaq x_println_non_void(%rip), @(var _₁)
-        leaq _§₁.square(%rip), @(var _₂)
-        leaq _§₁.square(%rip), @(var _₃)
+        leaq x_println_non_void(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₁)
+        leaq _§₁.square(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₂)
+        leaq _§₁.square(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₃)
         movq $3, @(var _₄)
         movq @(var _₃), %rdi
         movq @(var _₄), %rsi
@@ -25,7 +34,10 @@ _main.entry:
 _§₁.square:
 _§₁.square.entry:
         movq %rdi, @(var x)
-        leaq x_imul(%rip), @(var _₁)
+        leaq x_imul(%rip), %rdi
+        movq $2, %rsi
+        callq x_make_function
+        movq %rax, @(var _₁)
         movq @(var _₁), %rdi
         movq @(var x), %rsi
         callq x_apply_unary

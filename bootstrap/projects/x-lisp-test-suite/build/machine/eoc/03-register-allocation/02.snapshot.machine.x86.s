@@ -2,17 +2,32 @@
 .text
 _main:
 _main.entry:
-        leaq x_println_non_void(%rip), @(var _₁)
-        leaq x_random_dice(%rip), @(var _₂)
+        leaq x_println_non_void(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₁)
+        leaq x_random_dice(%rip), %rdi
+        movq $0, %rsi
+        callq x_make_function
+        movq %rax, @(var _₂)
         movq @(var _₂), %rdi
         callq x_apply_nullary
         movq %rax, @(var x₁)
-        leaq x_random_dice(%rip), @(var _₃)
+        leaq x_random_dice(%rip), %rdi
+        movq $0, %rsi
+        callq x_make_function
+        movq %rax, @(var _₃)
         movq @(var _₃), %rdi
         callq x_apply_nullary
         movq %rax, @(var y₁)
-        leaq x_iadd(%rip), @(var _₄)
-        leaq x_iadd(%rip), @(var _₅)
+        leaq x_iadd(%rip), %rdi
+        movq $2, %rsi
+        callq x_make_function
+        movq %rax, @(var _₄)
+        leaq x_iadd(%rip), %rdi
+        movq $2, %rsi
+        callq x_make_function
+        movq %rax, @(var _₅)
         movq @(var _₅), %rdi
         movq @(var x₁), %rsi
         callq x_apply_unary

@@ -2,9 +2,15 @@
 .text
 _main:
 _main.entry:
-        leaq x_println_non_void(%rip), @(var _₁)
+        leaq x_println_non_void(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₁)
         movq $6, @(var y₁)
-        leaq x_ineg(%rip), @(var _₂)
+        leaq x_ineg(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₂)
         movq $42, @(var _₃)
         movq @(var _₂), %rdi
         movq @(var _₃), %rsi
@@ -13,7 +19,10 @@ _main.entry:
         movq @(var y₂), %rdi
         callq identity
         movq %rax, @(var x₁)
-        leaq x_iadd(%rip), @(var _₄)
+        leaq x_iadd(%rip), %rdi
+        movq $2, %rsi
+        callq x_make_function
+        movq %rax, @(var _₄)
         movq @(var _₄), %rdi
         movq @(var x₁), %rsi
         callq x_apply_unary

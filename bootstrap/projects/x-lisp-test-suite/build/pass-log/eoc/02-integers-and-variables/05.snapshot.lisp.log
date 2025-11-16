@@ -49,7 +49,10 @@
   (block entry
     (leaq
      (label-deref (external-label x-println-non-void))
-     (var _₁))
+     (reg rdi))
+    (movq (imm 1) (reg rsi))
+    (callq-n (external-label x-make-function) (arity 2))
+    (movq (reg rax) (var _₁))
     (movq (imm 42) (var a₁))
     (movq (var a₁) (reg rdi))
     (callq-n (external-label identity) (arity 1))

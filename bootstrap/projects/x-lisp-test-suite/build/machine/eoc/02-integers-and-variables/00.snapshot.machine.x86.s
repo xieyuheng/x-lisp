@@ -2,7 +2,10 @@
 .text
 _main:
 _main.entry:
-        leaq x_println_non_void(%rip), @(var _₁)
+        leaq x_println_non_void(%rip), %rdi
+        movq $1, %rsi
+        callq x_make_function
+        movq %rax, @(var _₁)
         movq $42, @(var _₂)
         movq @(var _₁), %rdi
         movq @(var _₂), %rsi
