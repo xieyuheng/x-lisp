@@ -18,12 +18,43 @@ value_4_ary_fn_t *to_4_ary_fn(value_t value) { return (value_4_ary_fn_t *) ((uin
 value_5_ary_fn_t *to_5_ary_fn(value_t value) { return (value_5_ary_fn_t *) ((uint64_t) value & PAYLOAD_MASK); }
 value_6_ary_fn_t *to_6_ary_fn(value_t value) { return (value_6_ary_fn_t *) ((uint64_t) value & PAYLOAD_MASK); }
 
-// value_t
-// x_unary_apply(value_t target, value_t arg) {
-
-// }
-
 value_t
 x_nullary_apply(value_t target) {
     return to_0_ary_fn(target)();
+}
+
+
+static value_t
+call_with_extra_arg(value_t target, size_t arity, value_t *args, value_t arg) {
+    //
+}
+
+value_t
+x_unary_apply(value_t target, value_t arg) {
+    if (curry_p(target)) {
+        curry_t *curry = to_curry(target);
+        if (curry->arity > 1) {
+            size_t new_arity = curry->arity - 1;
+            size_t new_size = curry->size + 1;
+            curry_t *new_curry = make_curry(curry->target, new_arity, new_size);
+            for (size_t i = 0; i < curry->size; i++) {
+                new_curry->args[i] = curry->args[i];
+            }
+
+            new_curry->args[new_size - 1] = arg;
+            return new_curry;
+        } else {
+            assert(curry->arity == 1);
+            return call_with_extra_arg(
+                curry->target,
+                curry->size + 1,
+                curry->args,
+                arg);
+        }
+    }
+
+    who_printf("can not apply target\n");
+    printf("   target: "); value_print(target, stdout); printf("\n");
+    printf("   arg: "); value_print(arg, stdout); printf("\n");
+    assert(false && "can not apply target");
 }
