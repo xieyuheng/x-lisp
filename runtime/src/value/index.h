@@ -12,5 +12,7 @@
 #include "x_null.h"
 #include "x_object.h"
 #include "x_value.h"
+#include "x_console.h"
+#include "x_function.h"
 
 #include "test_value.h"

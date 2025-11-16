@@ -1,9 +1,7 @@
-[runtime] `x_console` -- setup
 [runtime] `x_print`
 [runtime] `x_println_non_void`
 [runtime] `x_newline`
 
-[runtime] `x_function` -- setup
 [runtime] `x_unary_apply` -- need to cast to function pointer
 [runtime] `x_nullary_apply`
 
