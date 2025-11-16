@@ -1,8 +1,8 @@
 #pragma once
 
 typedef void (object_print_fn_t)(object_t *object, file_t *file);
-typedef bool (object_same_fn_t)(object_t *x, object_t *y);
-typedef bool (object_equal_fn_t)(object_t *x, object_t *y);
+typedef bool (object_same_fn_t)(object_t *lhs, object_t *rhs);
+typedef bool (object_equal_fn_t)(object_t *lhs, object_t *rhs);
 
 struct object_spec_t {
     const char *name;

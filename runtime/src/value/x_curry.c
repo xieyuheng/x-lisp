@@ -4,7 +4,7 @@ object_spec_t curry_object_spec = {
     .name = "curry",
     .print_fn = NULL,
     .same_fn =  NULL,
-    .equal_fn =  NULL,
+    .equal_fn =  (object_equal_fn_t *) curry_equal,
 };
 
 curry_t *
@@ -27,6 +27,20 @@ curry_free(curry_t *self) {
 void
 curry_put(curry_t *self, size_t index, value_t value) {
     self->args[index] = value;
+}
+
+bool
+curry_equal(curry_t *lhs, curry_t *rhs) {
+    if (!equal_p(lhs->target, rhs->target)) return false;
+    if (lhs->arity != rhs->arity) return false;
+    if (lhs->size != rhs->size) return false;
+    if (lhs->args == rhs->args) return true;
+
+    for (size_t i = 0; i < lhs->size; i++) {
+        if (!equal_p(lhs->args[i], rhs->args[i])) return false;
+    }
+
+    return true;
 }
 
 bool

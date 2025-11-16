@@ -1,5 +1,31 @@
 #include "index.h"
 
+bool
+same_p(value_t lhs, value_t rhs) {
+    if (x_object_p(lhs) &&
+        x_object_p(lhs) &&
+        to_object(lhs)->spec == to_object(rhs)->spec &&
+        to_object(lhs)->spec->same_fn != NULL)
+    {
+        return to_object(lhs)->spec->same_fn(to_object(lhs), to_object(rhs));
+    }
+
+    return lhs == rhs;
+}
+
+bool
+equal_p(value_t lhs, value_t rhs) {
+    if (x_object_p(lhs) &&
+        x_object_p(lhs) &&
+        to_object(lhs)->spec == to_object(rhs)->spec &&
+        to_object(lhs)->spec->equal_fn != NULL)
+    {
+        return to_object(lhs)->spec->equal_fn(to_object(lhs), to_object(rhs));
+    }
+
+    return same_p(lhs, rhs);
+}
+
 value_t
 x_identity(value_t x) {
     return x;
@@ -12,27 +38,27 @@ x_anything_p(value_t x) {
 }
 
 value_t
-x_same_p(value_t x, value_t y) {
-    if (x_object_p(x) &&
-        x_object_p(x) &&
-        to_object(x)->spec == to_object(y)->spec &&
-        to_object(x)->spec->same_fn != NULL)
+x_same_p(value_t lhs, value_t rhs) {
+    if (x_object_p(lhs) &&
+        x_object_p(lhs) &&
+        to_object(lhs)->spec == to_object(rhs)->spec &&
+        to_object(lhs)->spec->same_fn != NULL)
     {
-        return x_bool(to_object(x)->spec->same_fn(to_object(x), to_object(y)));
+        return x_bool(to_object(lhs)->spec->same_fn(to_object(lhs), to_object(rhs)));
     }
 
-    return x_bool(x == y);
+    return x_bool(lhs == rhs);
 }
 
 value_t
-x_equal_p(value_t x, value_t y) {
-    if (x_object_p(x) &&
-        x_object_p(x) &&
-        to_object(x)->spec == to_object(y)->spec &&
-        to_object(x)->spec->equal_fn != NULL)
+x_equal_p(value_t lhs, value_t rhs) {
+    if (x_object_p(lhs) &&
+        x_object_p(lhs) &&
+        to_object(lhs)->spec == to_object(rhs)->spec &&
+        to_object(lhs)->spec->equal_fn != NULL)
     {
-        return x_bool(to_object(x)->spec->equal_fn(to_object(x), to_object(y)));
+        return x_bool(to_object(lhs)->spec->equal_fn(to_object(lhs), to_object(rhs)));
     }
 
-    return x_same_p(x, y);
+    return x_same_p(lhs, rhs);
 }
