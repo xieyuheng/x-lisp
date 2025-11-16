@@ -1,4 +1,4 @@
-[runtime] `new_curry`
+[runtime] `curry_put`
 
 [runtime] `x_make_curry`
 [runtime] `x_curry_put_mut`
@@ -10,6 +10,7 @@
 # later
 
 [runtime] gc -- mark and sweep
+[runtime] `make_curry` -- use gc
 
 # later
 
