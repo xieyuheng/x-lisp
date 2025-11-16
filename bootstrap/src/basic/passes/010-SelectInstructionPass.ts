@@ -91,20 +91,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
     }
 
     case "Call": {
-      return [
-        ...instr.args
-          .entries()
-          .map(([index, arg]) =>
-            M.Instr("movq", [M.Var(arg), selectArgReg(index)]),
-          ),
-        M.Instr("callq-n", [
-          M.Label(instr.fn.name, {
-            isExternal: instr.fn.attributes.isPrimitive,
-          }),
-          M.Arity(instr.args.length),
-        ]),
-        M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
-      ]
+      return selectCall(instr.dest, instr.fn, instr.args)
     }
 
     case "Apply": {
@@ -132,6 +119,27 @@ function onInstr(instr: Instr): Array<M.Instr> {
   }
 }
 
+function selectCall(
+  dest: string,
+  fn: Values.Function,
+  args: Array<string>,
+): Array<M.Instr> {
+  return [
+    ...args
+      .entries()
+      .map(([index, arg]) =>
+        M.Instr("movq", [M.Var(arg), selectArgReg(index)]),
+      ),
+    M.Instr("callq-n", [
+      M.Label(fn.name, {
+        isExternal: fn.attributes.isPrimitive,
+      }),
+      M.Arity(args.length),
+    ]),
+    M.Instr("movq", [M.Reg("rax"), M.Var(dest)]),
+  ]
+}
+
 function selectConst(dest: string, value: Value): Array<M.Instr> {
   // TODO use tagged value
 
@@ -145,18 +153,14 @@ function selectConst(dest: string, value: Value): Array<M.Instr> {
 
   switch (value.kind) {
     case "Int": {
-      return [
-        M.Instr("movq", [M.Imm(value.content), M.Var(dest)]),
-      ]
+      return [M.Instr("movq", [M.Imm(value.content), M.Var(dest)])]
     }
 
     case "Function": {
       if (value.attributes.isPrimitive) {
         return [
           M.Instr("leaq", [
-            M.LabelDeref(
-              M.Label(`x-${value.name}`, { isExternal: true }),
-            ),
+            M.LabelDeref(M.Label(`x-${value.name}`, { isExternal: true })),
             M.Var(dest),
           ]),
         ]
