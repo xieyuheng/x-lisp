@@ -11,5 +11,6 @@
 #include "x_void.h"
 #include "x_null.h"
 #include "x_object.h"
+#include "x_value.h"
 
 #include "test_value.h"

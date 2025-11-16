@@ -1,4 +1,3 @@
-[runtime] `x_value` -- setup
 [runtime] `x_identity`
 [runtime] `x_anything_p`
 [runtime] `x_same_p`
@@ -30,3 +29,4 @@
 # later
 
 [runtime] `x_write` -- need string
+[runtime] fix `x_same_p` -- for immutable object value
