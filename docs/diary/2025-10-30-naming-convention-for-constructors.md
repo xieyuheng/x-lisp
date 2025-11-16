@@ -51,6 +51,9 @@ variant 就是特殊的 constructor。
 可能 `new` 也应该前置，
 应该写 `new_list` 而不是 `list_new`。
 
+或者写 `make_list` 这个动词短语，
+这样可以继续用 `new_list` 来命名变量。
+
 这样能在两种语言的代码中保持命名惯例一致。
 
 同样，scalable c 中的 setter 也应该改成 putter。

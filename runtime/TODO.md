@@ -1,5 +1,3 @@
-fix naming of data constructors
-
 [runtime] `new_curry`
 
 [runtime] `x_make_curry`
