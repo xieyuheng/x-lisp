@@ -1,5 +1,4 @@
-[lang] move makeCurry to exp/functionHelpers.ts
-[lang] exp/functionHelpers.ts -- wrapFunctionRef
+[lang] wrapFunctionRef
 [lang] the `target` of `apply` must be `Curry`
 
 - `011-RevealFunctionPass` -- wrap function ref in curry

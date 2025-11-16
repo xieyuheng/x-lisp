@@ -66,7 +66,7 @@ function onExp(state: State, exp: Exp): Exp {
         ),
       )
 
-      return makeCurry(
+      return Exps.makeCurry(
         Exps.FunctionRef(newFunctionName, arity, { isPrimitive: false }),
         arity,
         freeNames.map((name) => Exps.Var(name)),
@@ -110,20 +110,4 @@ function onExp(state: State, exp: Exp): Exp {
       else throw new Error(message)
     }
   }
-}
-
-function makeCurry(target: Exp, arity: number, args: Array<Exp>): Exp {
-  let result = Exps.desugarApply(
-    Exps.FunctionRef("make-curry", 3, { isPrimitive: true }),
-    [target, Exps.Int(arity), Exps.Int(args.length)],
-  )
-
-  for (const [index, arg] of args.entries()) {
-    result = Exps.desugarApply(
-      Exps.FunctionRef("curry-put!", 3, { isPrimitive: true }),
-      [Exps.Int(index), arg, result],
-    )
-  }
-
-  return result
 }
