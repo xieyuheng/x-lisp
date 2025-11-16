@@ -4,11 +4,13 @@ _main:
 _main.entry:
         leaq x_println_non_void(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁)
         leaq x_print(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₃)
         movq $1, @(var _₄)
         movq @(var _₃), %rdi
@@ -17,14 +19,16 @@ _main.entry:
         movq %rax, @(var _∅₁)
         leaq x_newline(%rip), %rdi
         movq $0, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₅)
         movq @(var _₅), %rdi
         callq x_apply_nullary
         movq %rax, @(var _∅₂)
         leaq x_print(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₆)
         movq $2, @(var _₇)
         movq @(var _₆), %rdi
@@ -33,14 +37,16 @@ _main.entry:
         movq %rax, @(var _∅₃)
         leaq x_newline(%rip), %rdi
         movq $0, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₈)
         movq @(var _₈), %rdi
         callq x_apply_nullary
         movq %rax, @(var _∅₄)
         leaq x_print(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₉)
         movq $3, @(var _₁₀)
         movq @(var _₉), %rdi
@@ -49,14 +55,16 @@ _main.entry:
         movq %rax, @(var _∅₅)
         leaq x_newline(%rip), %rdi
         movq $0, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁₁)
         movq @(var _₁₁), %rdi
         callq x_apply_nullary
         movq %rax, @(var _∅₆)
         leaq x_equal_p(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁₂)
         movq $1, @(var _₁₃)
         movq @(var _₁₂), %rdi
@@ -81,7 +89,8 @@ _main.main.let_body₁:
 _main.main.then₂:
         leaq x_print(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁₇)
         movq $111, @(var _₁₈)
         movq @(var _₁₇), %rdi
@@ -90,14 +99,16 @@ _main.main.then₂:
         movq %rax, @(var _∅₁)
         leaq x_newline(%rip), %rdi
         movq $0, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁₉)
         movq @(var _₁₉), %rdi
         callq x_apply_nullary
         movq %rax, @(var _∅₂)
         leaq x_equal_p(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₂₀)
         movq $1, @(var _₂₁)
         movq @(var _₂₀), %rdi
@@ -113,7 +124,8 @@ _main.main.then₂:
 _main.main.else₃:
         leaq x_print(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₂₄)
         movq $222, @(var _₂₅)
         movq @(var _₂₄), %rdi
@@ -122,14 +134,16 @@ _main.main.else₃:
         movq %rax, @(var _∅₁)
         leaq x_newline(%rip), %rdi
         movq $0, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₂₆)
         movq @(var _₂₆), %rdi
         callq x_apply_nullary
         movq %rax, @(var _∅₂)
         leaq x_equal_p(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₂₇)
         movq $1, @(var _₂₈)
         movq @(var _₂₇), %rdi

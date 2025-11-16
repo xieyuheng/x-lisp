@@ -4,15 +4,18 @@ _main:
 _main.entry:
         leaq x_println_non_void(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁)
         leaq x_ineg(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₂)
         leaq x_random_dice(%rip), %rdi
         movq $0, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₃)
         movq @(var _₃), %rdi
         callq x_apply_nullary

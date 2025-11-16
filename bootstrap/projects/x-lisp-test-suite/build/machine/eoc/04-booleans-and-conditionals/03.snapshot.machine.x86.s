@@ -4,15 +4,18 @@ _main:
 _main.entry:
         leaq x_println_non_void(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁)
         leaq x_equal_p(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₄)
         leaq x_random_dice(%rip), %rdi
         movq $0, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₅)
         movq @(var _₅), %rdi
         callq x_apply_nullary
@@ -49,11 +52,13 @@ _main.main.let_body₄:
 _main.main.then₅:
         leaq x_equal_p(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁₀)
         leaq x_random_dice(%rip), %rdi
         movq $0, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁₁)
         movq @(var _₁₁), %rdi
         callq x_apply_nullary

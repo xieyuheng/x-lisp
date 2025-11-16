@@ -4,25 +4,29 @@ _main:
 _main.entry:
         leaq x_println_non_void(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁)
         leaq x_random_dice(%rip), %rdi
         movq $0, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₂)
         movq @(var _₂), %rdi
         callq x_apply_nullary
         movq %rax, @(var x₁)
         leaq x_random_dice(%rip), %rdi
         movq $0, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₃)
         movq @(var _₃), %rdi
         callq x_apply_nullary
         movq %rax, @(var y₁)
         leaq x_int_less_p(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₆)
         movq @(var _₆), %rdi
         movq @(var x₁), %rsi
@@ -46,7 +50,8 @@ _main.main.let_body₁:
 _main.main.then₂:
         leaq x_iadd(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁₆)
         movq @(var _₁₆), %rdi
         movq @(var y₁), %rsi
@@ -61,7 +66,8 @@ _main.main.then₂:
 _main.main.else₃:
         leaq x_iadd(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁₉)
         movq @(var _₁₉), %rdi
         movq @(var y₁), %rsi
@@ -80,7 +86,8 @@ _main.main.let_body₄:
 _main.main.then₅:
         leaq x_equal_p(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁₀)
         movq @(var _₁₀), %rdi
         movq @(var x₁), %rsi
@@ -95,7 +102,8 @@ _main.main.then₅:
 _main.main.else₆:
         leaq x_equal_p(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁₃)
         movq @(var _₁₃), %rdi
         movq @(var x₁), %rsi

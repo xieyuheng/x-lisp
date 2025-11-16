@@ -4,11 +4,13 @@ _main:
 _main.entry:
         leaq x_println_non_void(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₁)
         leaq x_iadd(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₂)
         movq $42, @(var _₃)
         movq @(var _₂), %rdi
@@ -17,7 +19,8 @@ _main.entry:
         movq %rax, @(var _₄)
         leaq x_ineg(%rip), %rdi
         movq $1, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₅)
         movq $10, @(var _₆)
         movq @(var _₅), %rdi
@@ -30,7 +33,8 @@ _main.entry:
         movq %rax, @(var x₁)
         leaq x_iadd(%rip), %rdi
         movq $2, %rsi
-        callq x_make_function
+        movq $0, %rdx
+        callq x_make_curry
         movq %rax, @(var _₈)
         movq @(var _₈), %rdi
         movq @(var x₁), %rsi

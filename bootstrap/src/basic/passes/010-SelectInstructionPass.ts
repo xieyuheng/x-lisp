@@ -172,9 +172,10 @@ function selectConstFunction(
   return [
     M.Instr("leaq", [address, selectArgReg(0)]),
     M.Instr("movq", [M.Imm(fn.arity), selectArgReg(1)]),
+    M.Instr("movq", [M.Imm(0), selectArgReg(2)]),
     M.Instr("callq-n", [
-      M.Label("x-make-function", { isExternal: true }),
-      M.Arity(2),
+      M.Label("x-make-curry", { isExternal: true }),
+      M.Arity(3),
     ]),
     M.Instr("movq", [M.Reg("rax"), M.Var(dest)]),
   ]

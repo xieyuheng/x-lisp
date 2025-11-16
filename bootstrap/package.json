@@ -16,7 +16,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "test": "node --test 'src/**/*.test.ts'",
-    "test-suite": "node --stack-size=65536 src/main.ts test --project projects/x-lisp-test-suite/project.json",
+    "test-suite:node": "node --stack-size=65536 src/main.ts test --project projects/x-lisp-test-suite/project.json",
     "test-suite:bun": "bun --stack-size=65536 src/main.ts test --project projects/x-lisp-test-suite/project.json",
     "test-suite:deno": "deno --allow-all --v8-flags='--stack-size=65536' src/main.ts test --project projects/x-lisp-test-suite/project.json",
     "format": "prettier src --write"
