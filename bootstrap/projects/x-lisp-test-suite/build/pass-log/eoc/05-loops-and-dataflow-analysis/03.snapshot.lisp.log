@@ -295,7 +295,8 @@
     (movq (var _₁₅) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _₁₆))
-    (cmpq (var _₁₆) (imm 1))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (var _₁₆) (reg rax))
     (branch-if (cc e) (label main/then₂) (label main/else₃)))
   (block main/let-body₁
     (movq (var _₁) (reg rdi))

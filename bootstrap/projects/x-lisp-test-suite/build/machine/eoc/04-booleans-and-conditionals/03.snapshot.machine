@@ -33,7 +33,8 @@
     (movq (var _₈) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _₉))
-    (cmpq (var _₉) (imm 1))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (var _₉) (reg rax))
     (branch-if (cc e) (label main/then₅) (label main/else₆)))
   (block main/let-body₁
     (movq (var _₁) (reg rdi))
@@ -49,7 +50,8 @@
     (movq (imm 42) (var _₂))
     (jmp (label main/let-body₁)))
   (block main/let-body₄
-    (cmpq (var _₃) (imm 1))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (var _₃) (reg rax))
     (branch-if (cc e) (label main/then₂) (label main/else₃)))
   (block main/then₅
     (leaq (label-deref (external-label x-equal?)) (reg rdi))

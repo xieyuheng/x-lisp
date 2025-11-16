@@ -76,7 +76,8 @@ _main.entry:
         movq @(var _₁₅), %rsi
         callq x_apply_unary
         movq %rax, @(var _₁₆)
-        cmpq @(var _₁₆), $1
+        movq x_true(%rip), %rax
+        cmpq @(var _₁₆), %rax
         jmpe _main.main.then₂
         jmp _main.main.else₃
 _main.main.let_body₁:

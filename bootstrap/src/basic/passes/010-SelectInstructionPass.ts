@@ -79,9 +79,12 @@ function onInstr(instr: Instr): Array<M.Instr> {
     }
 
     case "Branch": {
-      // TODO use tagged value
       return [
-        M.Instr("cmpq", [M.Var(instr.condition), M.Imm(1)]),
+        M.Instr("movq", [
+          M.LabelDeref(M.Label(`x-true`, { isExternal: true })),
+          M.Reg("rax"),
+        ]),
+        M.Instr("cmpq", [M.Var(instr.condition), M.Reg("rax")]),
         M.Instr("branch-if", [
           M.Cc("e"),
           M.Label(instr.thenLabel, { isExternal: false }),

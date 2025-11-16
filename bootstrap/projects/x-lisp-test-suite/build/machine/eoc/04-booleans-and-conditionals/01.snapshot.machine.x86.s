@@ -37,7 +37,8 @@ _main.entry:
         movq @(var _₈), %rsi
         callq x_apply_unary
         movq %rax, @(var _₉)
-        cmpq @(var _₉), $1
+        movq x_true(%rip), %rax
+        cmpq @(var _₉), %rax
         jmpe _main.main.then₅
         jmp _main.main.else₆
 _main.main.let_body₁:
@@ -80,7 +81,8 @@ _main.main.else₃:
         movq %rax, @(var _₄)
         jmp _main.main.let_body₁
 _main.main.let_body₄:
-        cmpq @(var _₅), $1
+        movq x_true(%rip), %rax
+        cmpq @(var _₅), %rax
         jmpe _main.main.then₂
         jmp _main.main.else₃
 _main.main.then₅:
