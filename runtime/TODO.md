@@ -1,5 +1,7 @@
 [runtime] `object_t` -- has `equal_fn` and `same_fn` (for immutable object like string)
 
+- of type `object_equal_fn_t` and `object_same_fn_t`
+
 [runtime] `x_same_p` -- handle immutable `object_t` -- call `same_fn`
 [runtime] `x_equal_p` -- handle `object_t` -- call `equal_fn`
 
