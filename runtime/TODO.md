@@ -1,4 +1,3 @@
-[runtime] `x_apply` setup
 [runtime] `x_function` setup
 [runtime] `x_make_function`
 
