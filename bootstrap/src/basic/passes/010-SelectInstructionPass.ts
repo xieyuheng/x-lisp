@@ -4,6 +4,7 @@ import type { Definition } from "../definition/index.ts"
 import { formatInstr, formatValue } from "../format/index.ts"
 import type { Instr } from "../instr/index.ts"
 import { modOwnDefinitions, type Mod } from "../mod/index.ts"
+import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 
 export function SelectInstructionPass(mod: Mod, machineMod: M.Mod): void {
@@ -54,50 +55,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
     }
 
     case "Const": {
-      // TODO use tagged value
-
-      if (Values.isBool(instr.value)) {
-        if (Values.isTrue(instr.value)) {
-          return [M.Instr("movq", [M.Imm(1), M.Var(instr.dest)])]
-        } else {
-          return [M.Instr("movq", [M.Imm(0), M.Var(instr.dest)])]
-        }
-      }
-
-      switch (instr.value.kind) {
-        case "Int": {
-          return [
-            M.Instr("movq", [M.Imm(instr.value.content), M.Var(instr.dest)]),
-          ]
-        }
-
-        case "Function": {
-          if (instr.value.attributes.isPrimitive) {
-            return [
-              M.Instr("leaq", [
-                M.LabelDeref(
-                  M.Label(`x-${instr.value.name}`, { isExternal: true }),
-                ),
-                M.Var(instr.dest),
-              ]),
-            ]
-          } else {
-            return [
-              M.Instr("leaq", [
-                M.LabelDeref(M.Label(instr.value.name, { isExternal: false })),
-                M.Var(instr.dest),
-              ]),
-            ]
-          }
-        }
-
-        default: {
-          let message = `[onInstr/Const] unhandled value`
-          message += `\n  value: ${formatValue(instr.value)}`
-          message += `\n  dest: ${instr.dest}`
-          throw new Error(message)
-        }
-      }
+      return selectConst(instr.dest, instr.value)
     }
 
     case "Assert": {
@@ -170,6 +128,53 @@ function onInstr(instr: Instr): Array<M.Instr> {
         ]),
         M.Instr("movq", [M.Reg("rax"), M.Var(instr.dest)]),
       ]
+    }
+  }
+}
+
+function selectConst(dest: string, value: Value): Array<M.Instr> {
+  // TODO use tagged value
+
+  if (Values.isBool(value)) {
+    if (Values.isTrue(value)) {
+      return [M.Instr("movq", [M.Imm(1), M.Var(dest)])]
+    } else {
+      return [M.Instr("movq", [M.Imm(0), M.Var(dest)])]
+    }
+  }
+
+  switch (value.kind) {
+    case "Int": {
+      return [
+        M.Instr("movq", [M.Imm(value.content), M.Var(dest)]),
+      ]
+    }
+
+    case "Function": {
+      if (value.attributes.isPrimitive) {
+        return [
+          M.Instr("leaq", [
+            M.LabelDeref(
+              M.Label(`x-${value.name}`, { isExternal: true }),
+            ),
+            M.Var(dest),
+          ]),
+        ]
+      } else {
+        return [
+          M.Instr("leaq", [
+            M.LabelDeref(M.Label(value.name, { isExternal: false })),
+            M.Var(dest),
+          ]),
+        ]
+      }
+    }
+
+    default: {
+      let message = `[selectConst] unhandled value`
+      message += `\n  value: ${formatValue(value)}`
+      message += `\n  dest: ${dest}`
+      throw new Error(message)
     }
   }
 }
