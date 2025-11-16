@@ -1,13 +1,13 @@
 #include "index.h"
 
 value_t
-x_function(void *pointer) {
-    return (value_t) ((uint64_t) pointer | X_FUNCTION);
+x_address(void *pointer) {
+    return (value_t) ((uint64_t) pointer | X_ADDRESS);
 }
 
 bool
-function_p(value_t value) {
-    return value_tag(value) == X_FUNCTION;
+address_p(value_t value) {
+    return value_tag(value) == X_ADDRESS;
 }
 
 value_0_ary_fn_t *to_0_ary_fn(value_t value) { return (value_0_ary_fn_t *) ((uint64_t) value & PAYLOAD_MASK); }
