@@ -43,7 +43,7 @@ function onExp(state: State, exp: Exp): Exp {
     case "String":
     case "Int":
     case "Float":
-    case "FunctionRef":
+    case "Function":
     case "Var": {
       return exp
     }
@@ -67,7 +67,7 @@ function onExp(state: State, exp: Exp): Exp {
       )
 
       return Exps.makeCurry(
-        Exps.FunctionRef(newFunctionName, arity, { isPrimitive: false }),
+        Exps.Function(newFunctionName, arity, { isPrimitive: false }),
         arity,
         freeNames.map((name) => Exps.Var(name)),
       )

@@ -47,7 +47,7 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
 
       const builtinArity = getBuiltinFunctionArity(exp.name)
       if (builtinArity !== undefined) {
-        return Exps.FunctionRef(
+        return Exps.Function(
           exp.name,
           builtinArity,
           { isPrimitive: true },
@@ -71,7 +71,7 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
       }
 
       const arity = definition.parameters.length
-      return Exps.FunctionRef(exp.name, arity, { isPrimitive: false }, exp.meta)
+      return Exps.Function(exp.name, arity, { isPrimitive: false }, exp.meta)
     }
 
     case "Lambda": {

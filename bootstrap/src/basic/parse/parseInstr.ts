@@ -49,7 +49,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
 
       S.matcher("(cons* 'call fn args)", ({ fn, args }, { meta }) => {
         return Instrs.Call(
-          Values.asFunctionRef(parseValue(fn)),
+          Values.asFunction(parseValue(fn)),
           S.listElements(args).map(S.symbolContent),
           "_∅",
           meta,
@@ -60,7 +60,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
         "`(= ,dest ,(cons* 'call fn args))",
         ({ fn, args, dest }, { meta }) => {
           return Instrs.Call(
-            Values.asFunctionRef(parseValue(fn)),
+            Values.asFunction(parseValue(fn)),
             S.listElements(args).map(S.symbolContent),
             S.symbolContent(dest),
             meta,

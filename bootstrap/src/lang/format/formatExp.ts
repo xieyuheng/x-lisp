@@ -14,7 +14,7 @@ export function formatExp(exp: Exp): string {
       return exp.name
     }
 
-    case "FunctionRef": {
+    case "Function": {
       if (exp.attributes.isPrimitive) {
         return `(@primitive-function ${exp.name} ${exp.arity})`
       } else {

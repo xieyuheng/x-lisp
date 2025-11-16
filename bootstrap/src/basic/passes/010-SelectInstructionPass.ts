@@ -71,7 +71,7 @@ function onInstr(instr: Instr): Array<M.Instr> {
           ]
         }
 
-        case "FunctionRef": {
+        case "Function": {
           if (instr.value.attributes.isPrimitive) {
             return [
               M.Instr("leaq", [

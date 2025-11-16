@@ -13,7 +13,7 @@ export function call(
   args: Array<Value>,
 ): Value {
   switch (target.kind) {
-    case "FunctionRef": {
+    case "Function": {
       const definition = modLookupDefinition(context.mod, target.name)
       if (definition === undefined) {
         let message = `(call) undefined name`

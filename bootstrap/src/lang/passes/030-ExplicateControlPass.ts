@@ -73,7 +73,7 @@ function expToValue(exp: Exp): B.Value {
       return exp
     }
 
-    case "FunctionRef": {
+    case "Function": {
       return exp
     }
 
@@ -139,14 +139,14 @@ function inLet1(
     case "String":
     case "Int":
     case "Float":
-    case "FunctionRef": {
+    case "Function": {
       return [B.Const(expToValue(rhs), name), ...cont]
     }
 
     case "Var": {
       return [
         B.Call(
-          B.FunctionRef("identity", 1, { isPrimitive: true }),
+          B.Function("identity", 1, { isPrimitive: true }),
           [rhs.name],
           name,
         ),

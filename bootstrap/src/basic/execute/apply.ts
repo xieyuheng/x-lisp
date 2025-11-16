@@ -19,7 +19,7 @@ export function apply(context: Context, target: Value, arg: Value): Value {
       }
     }
 
-    case "FunctionRef": {
+    case "Function": {
       if (target.arity > 1) {
         const newArity = target.arity - 1
         return Values.Curry(target, newArity, [arg])

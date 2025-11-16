@@ -1,9 +1,4 @@
-[lang] wrapFunctionRef
-[lang] the `target` of `apply` must be `Curry`
-
-- `011-RevealFunctionPass` -- wrap function ref in curry
-
-  - nullary function ref no need to be wrapped
+[basic] `010-SelectInstructionPass` -- translate const of function  to call of make-function
 
 [basic] `010-SelectInstructionPass` -- `onInstr` -- fix tagged value encoding
 

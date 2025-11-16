@@ -4,7 +4,7 @@ import type { Atom } from "./Atom.ts"
 export type Exp =
   | Atom
   | Var
-  | FunctionRef
+  | Function
   | Lambda
   | ApplySugar
   | NullaryApply
@@ -32,8 +32,8 @@ export function Var(name: string, meta?: Meta): Var {
   }
 }
 
-export type FunctionRef = {
-  kind: "FunctionRef"
+export type Function = {
+  kind: "Function"
   name: string
   arity: number
   attributes: {
@@ -42,16 +42,16 @@ export type FunctionRef = {
   meta?: Meta
 }
 
-export function FunctionRef(
+export function Function(
   name: string,
   arity: number,
   attributes: {
     isPrimitive: boolean
   },
   meta?: Meta,
-): FunctionRef {
+): Function {
   return {
-    kind: "FunctionRef",
+    kind: "Function",
     name,
     arity,
     attributes,
