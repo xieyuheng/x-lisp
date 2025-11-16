@@ -8,7 +8,7 @@ import { builtinConsole } from "./builtinConsole.ts"
 import { builtinFile } from "./builtinFile.ts"
 import { builtinFloat } from "./builtinFloat.ts"
 import { builtinFormat } from "./builtinFormat.ts"
-import { builtinFunction } from "./builtinFunction.ts"
+import { builtinApply } from "./builtinApply.ts"
 import { builtinHash } from "./builtinHash.ts"
 import { builtinHashtag } from "./builtinHashtag.ts"
 import { builtinInt } from "./builtinInt.ts"
@@ -55,7 +55,7 @@ export function useBuiltinMod(): Mod {
   builtinVoid(mod)
   builtinNull(mod)
   builtinOptional(mod)
-  builtinFunction(mod)
+  builtinApply(mod)
   builtinFormat(mod)
   builtinRandom(mod)
   builtinSystem(mod)

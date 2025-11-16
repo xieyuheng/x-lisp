@@ -2,7 +2,7 @@ import { definePrimitiveFunctionWithContext, provide } from "../define/index.ts"
 import { apply, applyNullary } from "../execute/index.ts"
 import { type Mod } from "../mod/index.ts"
 
-export function builtinFunction(mod: Mod) {
+export function builtinApply(mod: Mod) {
   provide(mod, ["apply-nullary", "apply-unary"])
 
   definePrimitiveFunctionWithContext(

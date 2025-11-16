@@ -1,4 +1,5 @@
-[runtime] `x_function` setup again
+[runtime] `x_apply` setup
+[runtime] `x_function` setup
 [runtime] `x_make_function`
 
 # later

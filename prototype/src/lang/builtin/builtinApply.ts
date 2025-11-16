@@ -3,7 +3,7 @@ import { apply } from "../evaluate/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
-export function builtinFunction(mod: Mod) {
+export function builtinApply(mod: Mod) {
   provide(mod, ["apply"])
 
   definePrimitiveFunction(mod, "apply", 2, (f, args) => {
