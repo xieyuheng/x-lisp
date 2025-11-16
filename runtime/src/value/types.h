@@ -20,3 +20,4 @@ typedef enum {
 
 typedef struct object_spec_t object_spec_t;
 typedef struct object_t object_t;
+typedef struct curry_t curry_t;
