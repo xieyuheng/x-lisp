@@ -95,19 +95,13 @@ function onInstr(instr: Instr): Array<M.Instr> {
     }
 
     case "Apply": {
-      return selectCall(
-        instr.dest,
-        Values.Function("x-apply-unary", 2, { isPrimitive: true }),
-        [instr.target, instr.arg],
-      )
+      const fn = Values.Function("x-apply-unary", 2, { isPrimitive: true })
+      return selectCall(instr.dest, fn, [instr.target, instr.arg])
     }
 
     case "NullaryApply": {
-      return selectCall(
-        instr.dest,
-        Values.Function("x-apply-nullary", 1, { isPrimitive: true }),
-        [instr.target],
-      )
+      const fn = Values.Function("x-apply-nullary", 1, { isPrimitive: true })
+      return selectCall(instr.dest, fn, [instr.target])
     }
   }
 }
