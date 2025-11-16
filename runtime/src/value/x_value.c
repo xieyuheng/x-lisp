@@ -13,6 +13,14 @@ x_anything_p(value_t x) {
 
 value_t
 x_same_p(value_t x, value_t y) {
+    if (x_object_p(x) &&
+        x_object_p(x) &&
+        to_object(x)->spec == to_object(y)->spec &&
+        to_object(x)->spec->same_fn != NULL)
+    {
+        return x_bool(to_object(x)->spec->same_fn(to_object(x), to_object(y)));
+    }
+
     // TODO handle immutable object value
     return x_bool(x == y);
 }

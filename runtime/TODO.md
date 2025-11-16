@@ -1,4 +1,3 @@
-[runtime] `x_same_p` -- handle immutable `object_t` -- call `same_fn`
 [runtime] `x_equal_p` -- handle `object_t` -- call `equal_fn`
 
 [runtime] `curry_t` -- has `equal_fn`
