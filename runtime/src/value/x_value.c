@@ -10,3 +10,8 @@ x_anything_p(value_t x) {
     (void) x;
     return x_bool(true);
 }
+
+value_t
+x_same_p(value_t x, value_t y) {
+    return x_bool(x == y);
+}
