@@ -1,10 +1,5 @@
-[runtime] `function_t`
-[runtime] `make_function`
-[runtime] `function_free`
-
+[runtime] `x_function` setup
 [runtime] `x_make_function`
-
-[runtime] fix `x_apply_unary` for `function_t`
 
 # later
 
