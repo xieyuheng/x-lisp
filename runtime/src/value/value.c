@@ -34,7 +34,7 @@ value_print(value_t value, file_t *file) {
     }
 
     if (x_object_p(value)) {
-        object_t *object = as_object(value);
+        object_t *object = to_object(value);
         if (object->spec->print_fn) {
             object->spec->print_fn(object, file);
             return;

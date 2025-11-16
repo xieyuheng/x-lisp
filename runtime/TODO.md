@@ -1,4 +1,4 @@
-[runtime] curry -- setup
+[runtime] `curry_t`
 [runtime] `x_make_curry`
 [runtime] `x_curry_put_mut`
 [runtime] `x_equal_p` -- handle `curry_t`

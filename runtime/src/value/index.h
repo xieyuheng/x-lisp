@@ -15,5 +15,6 @@
 #include "x_console.h"
 #include "x_function.h"
 #include "x_random.h"
+#include "x_curry.h"
 
 #include "test_value.h"
