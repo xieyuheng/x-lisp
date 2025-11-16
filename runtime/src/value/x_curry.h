@@ -11,3 +11,6 @@ struct curry_t {
 };
 
 curry_t *make_curry(value_t target, size_t arity, size_t size);
+void curry_free(curry_t *self);
+
+void curry_put(curry_t *self, size_t index, value_t arg);
