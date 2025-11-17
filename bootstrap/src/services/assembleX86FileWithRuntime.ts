@@ -1,0 +1,26 @@
+import Path from "node:path"
+import { fileURLToPath } from "node:url"
+import { systemShellRun } from "../helpers/system/systemShellRun.ts"
+
+export function assembleX86FileWithRuntime(file: string): void {
+  if (!file.endsWith(".s")) {
+    let message = `[assembleX86FileWithRuntime] expect file to end with .s`
+    message += `\n  file: ${file}`
+    throw new Error(message)
+  }
+
+  const binaryFile = file.slice(0, -2)
+  const inputFiles = [file, useRuntimeFile()]
+  const ldflags = ["-lm", "-pthread"]
+  const args = [...inputFiles, ...ldflags, "-o", binaryFile]
+  const result = systemShellRun("cc", args)
+  if (result.stdout) console.log(result.stdout)
+  if (result.stderr) console.error(result.stderr)
+  if (result.status !== 0) process.exit(result.status)
+}
+
+function useRuntimeFile(): string {
+  const currentDir = Path.dirname(fileURLToPath(import.meta.url))
+  const runtimeFile = Path.join(currentDir, "../../../runtime/bin/runtime.o")
+  return runtimeFile
+}

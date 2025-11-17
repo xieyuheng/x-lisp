@@ -1,5 +1,6 @@
 import assert from "node:assert"
 import { mapMapValue } from "../../helpers/map/mapMapValue.ts"
+import * as B from "../../basic/index.ts"
 import { importBuiltin } from "../builtin/index.ts"
 import * as Definitions from "../definition/index.ts"
 import { createMod, modOwnDefinitions, type Mod } from "../mod/index.ts"
@@ -15,7 +16,7 @@ export type BundleContext = {
 export function bundle(entryMod: Mod): Mod {
   const dependencies = entryMod.dependencies
   const bundleMod = createMod(new URL(`boundle:${entryMod.url}`))
-  bundleMod.exported = entryMod.exported
+  bundleMod.stmts.push(B.Export(["main"]))
 
   importBuiltin(bundleMod)
   mergeEntryMod(bundleMod, { entryMod, dependencies, mod: entryMod })

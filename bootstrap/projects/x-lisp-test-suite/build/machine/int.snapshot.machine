@@ -1,4 +1,4 @@
-(export)
+(export main)
 
 (define-code square
   (block prolog

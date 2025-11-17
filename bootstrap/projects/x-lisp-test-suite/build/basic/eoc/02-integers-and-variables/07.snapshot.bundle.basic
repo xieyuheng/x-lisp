@@ -1,3 +1,5 @@
+(export main)
+
 (define-function main
   (block body
     (= _₁ (const (@primitive-function println-non-void 1)))

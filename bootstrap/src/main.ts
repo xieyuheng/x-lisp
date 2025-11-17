@@ -59,7 +59,7 @@ router.defineHandlers({
     const assemblyCode = M.transpileToX86Assembly(mod)
     const assemblyFile = file + ".x86.s"
     fs.writeFileSync(assemblyFile, assemblyCode)
-    Services.assembleX86GasFile(assemblyFile)
+    Services.assembleX86File(assemblyFile)
   },
 })
 

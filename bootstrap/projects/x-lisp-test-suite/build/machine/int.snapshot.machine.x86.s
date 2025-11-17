@@ -1,3 +1,4 @@
+.global _main
 
 .text
 _square:

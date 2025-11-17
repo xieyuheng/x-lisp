@@ -100,6 +100,7 @@ export class Project {
     this.forEachSource(this.buildBasicBundle.bind(this))
     this.forEachSource(this.buildMachine.bind(this))
     this.forEachSource(this.buildMachineX86assembly.bind(this))
+    this.forEachSource(this.buildMachineX86Binary.bind(this))
   }
 
   buildPassLog(id: string): void {
@@ -153,6 +154,15 @@ export class Project {
       const machineMod = M.loadEntry(createUrl(inputFile))
       const outputText = M.transpileToX86Assembly(machineMod)
       this.writeFile(outputFile, outputText)
+    }
+  }
+
+  buildMachineX86Binary(id: string): void {
+    if (this.isTest(id) || this.isSnapshot(id)) {
+      const inputFile = this.getMachineFile(id) + ".x86.s"
+      const outputFile = this.getMachineFile(id) + ".x86"
+      this.logFile("x86-binary", outputFile)
+      // Services.assembleX86FileWithRuntime(inputFile)
     }
   }
 

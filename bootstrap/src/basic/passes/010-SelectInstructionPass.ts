@@ -8,6 +8,8 @@ import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 
 export function SelectInstructionPass(mod: Mod, machineMod: M.Mod): void {
+  machineMod.exported = mod.exported
+
   for (const definition of modOwnDefinitions(mod)) {
     onDefinition(machineMod, definition)
   }

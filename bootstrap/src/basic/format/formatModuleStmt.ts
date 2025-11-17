@@ -6,7 +6,8 @@ export function formatModuleStmt(stmt: Stmt): string {
   if (!Stmts.isAboutModule(stmt)) {
     let message = `[formatModuleStmt] non module stmt`
     message += `\n  stmt kind: ${stmt.kind}`
-    throw new S.ErrorWithMeta(message, stmt.meta)
+    if (stmt.meta) throw new S.ErrorWithMeta(message, stmt.meta)
+    else throw new Error(message)
   }
 
   switch (stmt.kind) {

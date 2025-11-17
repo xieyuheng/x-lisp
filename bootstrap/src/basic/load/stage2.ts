@@ -130,7 +130,7 @@ function checkUndefinedNames(
   mod: Mod,
   importedMod: Mod,
   names: Array<string>,
-  meta: S.TokenMeta,
+  meta?: S.TokenMeta,
 ): void {
   const definedNames = new Set(
     modPublicDefinitionEntries(importedMod).map(([key]) => key),
@@ -142,7 +142,8 @@ function checkUndefinedNames(
   message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
   message += `\n  importing from mod: ${urlRelativeToCwd(importedMod.url)}`
   message += `\n  undefined names: [${undefinedNames.join(" ")}]`
-  throw new S.ErrorWithMeta(message, meta)
+  if (meta) throw new S.ErrorWithMeta(message, meta)
+  else throw new Error(message)
 }
 
 function checkRedefine(
@@ -150,7 +151,7 @@ function checkRedefine(
   importedMod: Mod,
   name: string,
   definition: Definition,
-  meta: S.TokenMeta,
+  meta?: S.TokenMeta,
 ): void {
   const found = mod.definitions.get(name)
   if (found === undefined) return
@@ -164,5 +165,6 @@ function checkRedefine(
   message += formatIndent(4, formatDefinition(found))
   message += `\n  new definition:`
   message += formatIndent(4, formatDefinition(definition))
-  throw new S.ErrorWithMeta(message, meta)
+  if (meta) throw new S.ErrorWithMeta(message, meta)
+  else throw new Error(message)
 }
