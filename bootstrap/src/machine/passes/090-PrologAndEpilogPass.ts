@@ -43,7 +43,11 @@ function patchBlock(block: M.Block): M.Block {
 
 function patchInstr(instr: M.Instr): M.Instr {
   if (instr.op === "retq") {
-    return M.Instr("jmp", [M.Label("epilog", { isExternal: false })], instr.meta)
+    return M.Instr(
+      "jmp",
+      [M.Label("epilog", { isExternal: false })],
+      instr.meta,
+    )
   }
 
   return instr
