@@ -1,3 +1,4 @@
+import { systemShellRun } from "../helpers/system/systemShellRun.ts"
 import fs from "node:fs"
 import Path from "node:path"
 import * as B from "../basic/index.ts"
@@ -176,14 +177,16 @@ export class Project {
 
   test(): void {
     this.build()
-    this.forEachSource(this.runTest.bind(this))
-    this.forEachSource(this.runSnapshot.bind(this))
+    this.forEachSource(this.runBasicTest.bind(this))
+    this.forEachSource(this.runBasicSnapshot.bind(this))
+    this.forEachSource(this.runX86Test.bind(this))
+    this.forEachSource(this.runX86Snapshot.bind(this))
   }
 
-  runTest(id: string): void {
+  runBasicTest(id: string): void {
     if (this.isTest(id)) {
       const inputFile = this.getBasicBundleFile(id)
-      this.logFile("test", inputFile)
+      this.logFile("basic-test", inputFile)
       const basicBundleMod = B.loadEntry(createUrl(inputFile))
       B.run(basicBundleMod)
       const output = B.console.consumeOutput()
@@ -191,15 +194,32 @@ export class Project {
     }
   }
 
-  runSnapshot(id: string): void {
+  runBasicSnapshot(id: string): void {
     if (this.isSnapshot(id)) {
       const inputFile = this.getBasicBundleFile(id)
-      const outputFile = this.getBasicBundleFile(id) + ".out"
-      this.logFile("snapshot", outputFile)
+      const outputFile = inputFile + ".out"
+      this.logFile("basic-snapshot", outputFile)
       const basicBundleMod = B.loadEntry(createUrl(inputFile))
       B.run(basicBundleMod)
       const outputText = B.console.consumeOutput()
       this.writeFile(outputFile, outputText)
+    }
+  }
+
+  runX86Test(id: string): void {
+    if (this.isTest(id)) {
+      const inputFile = this.getMachineFile(id) + ".x86"
+      this.logFile("x86-test", inputFile)
+      systemShellRun(inputFile, [])
+    }
+  }
+
+  runX86Snapshot(id: string): void {
+    if (this.isSnapshot(id)) {
+      const inputFile = this.getMachineFile(id) + ".x86"
+      const outputFile = inputFile + ".out"
+      this.logFile("x86-snapshot", outputFile)
+      systemShellRun(inputFile, [">", outputFile])
     }
   }
 }

@@ -1,1 +1,0 @@
-[project] snapshot to machine
