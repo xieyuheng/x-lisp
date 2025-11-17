@@ -14,6 +14,15 @@ export const isReg = (operand: Operand): operand is Operands.Reg =>
 export const isRegDeref = (operand: Operand): operand is Operands.RegDeref =>
   operand.kind === "RegDeref"
 
+export const isLabelDeref = (
+  operand: Operand,
+): operand is Operands.LabelDeref => operand.kind === "LabelDeref"
+
+export const isDeref = (
+  operand: Operand,
+): operand is Operands.RegDeref | Operands.LabelDeref =>
+  isRegDeref(operand) || isLabelDeref(operand)
+
 export const isLabel = (operand: Operand): operand is Operands.Label =>
   operand.kind === "Label"
 
