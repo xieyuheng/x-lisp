@@ -30,9 +30,10 @@ export function createFrame(
   definition: FunctionDefinition,
   args: Array<Value>,
 ): Frame {
-  const entryBlock = definition.blocks.get("entry")
-  if (entryBlock === undefined) {
-    let message = `[createFrame] missing entry block`
+  const blocks = Array.from(definition.blocks.values())
+  const firstBlock = blocks[0]
+  if (firstBlock === undefined) {
+    let message = `[createFrame] the definition has no first block`
     if (definition.meta) throw new S.ErrorWithMeta(message, definition.meta)
     else throw new Error(message)
   }
@@ -40,7 +41,7 @@ export function createFrame(
   return {
     name: definition.name,
     blocks: definition.blocks,
-    block: entryBlock,
+    block: firstBlock,
     index: 0,
     args,
     env: new Map(),
