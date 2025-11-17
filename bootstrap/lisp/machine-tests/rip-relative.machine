@@ -1,0 +1,18 @@
+(export start)
+
+(define-data message
+  (chunk entry
+    (string "Hello, World!\n"))
+  (chunk length
+    (dq 14)))
+
+(define-code start
+  (block entry
+    (leaq (label-deref (label message)) (reg rsi))
+    (nop)
+    (nop)
+    (nop)
+    (leaq (label-deref (label message)) (reg rdi))
+    (movq (imm 60) (reg rax))
+    (subq (reg rsi) (reg rdi))
+    (syscall)))

@@ -11,7 +11,7 @@ export function assembleX86File(file: string): void {
   const binaryFile = file.slice(0, -2)
 
   {
-    const result = systemShellRun("as", [file, "-o", objectFile])
+    const result = systemShellRun("as", ["-g", file, "-o", objectFile])
     if (result.stdout) console.log(result.stdout)
     if (result.stderr) console.error(result.stderr)
     if (result.status !== 0) process.exit(result.status)
