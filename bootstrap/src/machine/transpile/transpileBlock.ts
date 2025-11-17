@@ -35,7 +35,7 @@ function transpileInstr(context: Context, instr: Instr): string {
     case "jmp-if": {
       const [cc, label] = instr.operands
       const code = Operands.asCc(cc).code
-      return `${indentation}jmp${code} ${transpileOperand(context, label)}`
+      return `${indentation}j${code} ${transpileOperand(context, label)}`
     }
 
     case "jmp-indirect": {
@@ -46,14 +46,14 @@ function transpileInstr(context: Context, instr: Instr): string {
     case "jmp-indirect-if": {
       const [cc, label] = instr.operands
       const code = Operands.asCc(cc).code
-      return `${indentation}jmp${code} *${transpileOperand(context, label)}`
+      return `${indentation}j${code} *${transpileOperand(context, label)}`
     }
 
     case "branch-if": {
       const [cc, thenLabel, elseLabel] = instr.operands
       const code = Operands.asCc(cc).code
       return [
-        `${indentation}jmp${code} ${transpileOperand(context, thenLabel)}`,
+        `${indentation}j${code} ${transpileOperand(context, thenLabel)}`,
         `${indentation}jmp ${transpileOperand(context, elseLabel)}`,
       ].join("\n")
     }

@@ -50,7 +50,7 @@ _main.body:
         movq %rax, -112(%rbp)
         movq x_true(%rip), %rax
         cmpq -112(%rbp), %rax
-        jmpe _main.main.then₅
+        je _main.main.then₅
         jmp _main.main.else₆
 _main.main.let_body₁:
         movq -64(%rbp), %rdi
@@ -68,7 +68,7 @@ _main.main.else₃:
 _main.main.let_body₄:
         movq x_true(%rip), %rax
         cmpq -64(%rbp), %rax
-        jmpe _main.main.then₂
+        je _main.main.then₂
         jmp _main.main.else₃
 _main.main.then₅:
         leaq x_equal_p(%rip), %rdi
@@ -99,7 +99,8 @@ _main.main.then₅:
         movq %rax, -104(%rbp)
         jmp _main.main.let_body₄
 _main.main.else₆:
-        movq x_false(%rip), -64(%rbp)
+        movq x_false(%rip), %rax
+        movq %rax, -64(%rbp)
         jmp _main.main.let_body₄
 _main.epilog:
         addq $56, %rsp

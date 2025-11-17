@@ -60,7 +60,7 @@ _main.body:
         movq %rax, -128(%rbp)
         movq x_true(%rip), %rax
         cmpq -128(%rbp), %rax
-        jmpe _main.main.then₅
+        je _main.main.then₅
         jmp _main.main.else₆
 _main.main.let_body₁:
         movq -64(%rbp), %rdi
@@ -108,7 +108,7 @@ _main.main.else₃:
 _main.main.let_body₄:
         movq x_true(%rip), %rax
         cmpq -64(%rbp), %rax
-        jmpe _main.main.then₂
+        je _main.main.then₂
         jmp _main.main.else₃
 _main.main.then₅:
         leaq x_equal_p(%rip), %rdi

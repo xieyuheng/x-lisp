@@ -19,7 +19,11 @@ export type Import = {
   meta?: Meta
 }
 
-export function Import(path: string, names: Array<string>, meta?: Meta): Import {
+export function Import(
+  path: string,
+  names: Array<string>,
+  meta?: Meta,
+): Import {
   return {
     kind: "Import",
     path,

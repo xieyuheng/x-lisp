@@ -107,7 +107,7 @@ _main.body:
         movq %rax, -224(%rbp)
         movq x_true(%rip), %rax
         cmpq -224(%rbp), %rax
-        jmpe _main.main.then₂
+        je _main.main.then₂
         jmp _main.main.else₃
 _main.main.let_body₁:
         movq -64(%rbp), %rdi

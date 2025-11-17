@@ -67,7 +67,7 @@ _main.body:
         movq %rax, -136(%rbp)
         movq x_true(%rip), %rax
         cmpq -136(%rbp), %rax
-        jmpe _main.main.then₁₁
+        je _main.main.then₁₁
         jmp _main.main.else₁₂
 _main.main.let_body₁:
         movq -64(%rbp), %rdi
@@ -119,7 +119,7 @@ _main.main.else₃:
 _main.main.let_body₄:
         movq x_true(%rip), %rax
         cmpq -64(%rbp), %rax
-        jmpe _main.main.then₂
+        je _main.main.then₂
         jmp _main.main.else₃
 _main.main.then₅:
         leaq x_equal_p(%rip), %rdi
@@ -180,7 +180,7 @@ _main.main.let_body₇:
         movq %rax, -120(%rbp)
         movq x_true(%rip), %rax
         cmpq -120(%rbp), %rax
-        jmpe _main.main.then₅
+        je _main.main.then₅
         jmp _main.main.else₆
 _main.main.then₈:
         leaq x_iadd(%rip), %rdi
@@ -221,7 +221,7 @@ _main.main.else₉:
 _main.main.let_body₁₀:
         movq x_true(%rip), %rax
         cmpq -64(%rbp), %rax
-        jmpe _main.main.then₈
+        je _main.main.then₈
         jmp _main.main.else₉
 _main.main.then₁₁:
         leaq x_equal_p(%rip), %rdi

@@ -100,12 +100,12 @@ function onInstr(instr: Instr): Array<M.Instr> {
     }
 
     case "Apply": {
-      const fn = Values.Function("x-apply-unary", 2, { isPrimitive: true })
+      const fn = Values.Function("apply-unary", 2, { isPrimitive: true })
       return selectCall(instr.dest, fn, [instr.target, instr.arg])
     }
 
     case "NullaryApply": {
-      const fn = Values.Function("x-apply-nullary", 1, { isPrimitive: true })
+      const fn = Values.Function("apply-nullary", 1, { isPrimitive: true })
       return selectCall(instr.dest, fn, [instr.target])
     }
   }
@@ -127,10 +127,7 @@ function selectCall(
 
   return [
     ...prepareArguments,
-    M.Instr("callq-n", [
-      M.Label(fn.name, { isExternal: fn.attributes.isPrimitive }),
-      M.Arity(args.length),
-    ]),
+    M.Instr("callq-n", [selectFunctionLabel(fn), M.Arity(args.length)]),
     M.Instr("movq", [M.Reg("rax"), M.Var(dest)]),
   ]
 }
@@ -183,12 +180,8 @@ function selectConstFunction(
   dest: string,
   fn: Values.Function,
 ): Array<M.Instr> {
-  const address = fn.attributes.isPrimitive
-    ? M.LabelDeref(M.Label(`x-${fn.name}`, { isExternal: true }))
-    : M.LabelDeref(M.Label(fn.name, { isExternal: false }))
-
   return [
-    M.Instr("leaq", [address, selectArgReg(0)]),
+    M.Instr("leaq", [M.LabelDeref(selectFunctionLabel(fn)), selectArgReg(0)]),
     ...selectTagEncoding(selectArgReg(0), M.AddressTag),
     M.Instr("movq", [M.Imm(M.encodeInt(fn.arity)), selectArgReg(1)]),
     M.Instr("movq", [M.Imm(M.encodeInt(0)), selectArgReg(2)]),
@@ -198,4 +191,10 @@ function selectConstFunction(
     ]),
     M.Instr("movq", [M.Reg("rax"), M.Var(dest)]),
   ]
+}
+
+function selectFunctionLabel(fn: Values.Function): M.Label {
+  return fn.attributes.isPrimitive
+    ? M.Label(`x-${fn.name}`, { isExternal: true })
+    : M.Label(fn.name, { isExternal: false })
 }

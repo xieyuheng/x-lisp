@@ -35,10 +35,10 @@ _main.body:
         callq x_apply_unary
         movq %rax, -88(%rbp)
         movq -88(%rbp), %rdi
-        callq identity
+        callq x_identity
         movq %rax, -96(%rbp)
         movq -96(%rbp), %rdi
-        callq identity
+        callq x_identity
         movq %rax, -104(%rbp)
         leaq x_ineg(%rip), %rdi
         salq $3, %rdi

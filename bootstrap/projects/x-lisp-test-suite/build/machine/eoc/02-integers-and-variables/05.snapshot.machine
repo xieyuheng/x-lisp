@@ -25,7 +25,7 @@
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (movq (imm 336) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rdi))
-    (callq-n (external-label identity) (arity 1))
+    (callq-n (external-label x-identity) (arity 1))
     (movq (reg rax) (reg-deref (reg rbp) -80))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -80) (reg rsi))

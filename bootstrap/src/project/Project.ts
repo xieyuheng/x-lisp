@@ -162,7 +162,7 @@ export class Project {
       const inputFile = this.getMachineFile(id) + ".x86.s"
       const outputFile = this.getMachineFile(id) + ".x86"
       this.logFile("x86-binary", outputFile)
-      // Services.assembleX86FileWithRuntime(inputFile)
+      Services.assembleX86FileWithRuntime(inputFile)
     }
   }
 

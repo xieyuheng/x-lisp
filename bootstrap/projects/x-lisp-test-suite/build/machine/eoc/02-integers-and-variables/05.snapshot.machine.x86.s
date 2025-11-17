@@ -24,7 +24,7 @@ _main.body:
         movq %rax, -64(%rbp)
         movq $336, -72(%rbp)
         movq -72(%rbp), %rdi
-        callq identity
+        callq x_identity
         movq %rax, -80(%rbp)
         movq -64(%rbp), %rdi
         movq -80(%rbp), %rsi

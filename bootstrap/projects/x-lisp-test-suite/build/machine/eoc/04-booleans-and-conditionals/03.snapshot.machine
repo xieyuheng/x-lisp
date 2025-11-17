@@ -102,9 +102,8 @@
     (movq (reg rax) (reg-deref (reg rbp) -104))
     (jmp (label main/let-body₄)))
   (block main/else₆
-    (movq
-     (label-deref (external-label x-false))
-     (reg-deref (reg rbp) -64))
+    (movq (label-deref (external-label x-false)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
     (jmp (label main/let-body₄)))
   (block epilog
     (addq (imm 56) (reg rsp))
