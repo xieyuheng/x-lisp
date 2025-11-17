@@ -1,7 +1,7 @@
 (export square)
 
 (define-function square
-  (block entry
+  (block body
     (= x (argument 0))
     (= _₁ (const (@primitive-function imul 2)))
     (= _₂ (apply _₁ x))

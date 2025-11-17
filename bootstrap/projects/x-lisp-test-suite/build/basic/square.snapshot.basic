@@ -1,7 +1,7 @@
 (import "square" square)
 
 (define-function main
-  (block entry
+  (block body
     (= _₁ (const (@primitive-function println-non-void 1)))
     (= _₂ (const (@function square 1)))
     (= _₃ (const (@function square 1)))

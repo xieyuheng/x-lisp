@@ -1,5 +1,5 @@
 (define-function square
-  (block entry
+  (block body
     (= x (argument 0))
     (= _₁ (const (@primitive-function imul 2)))
     (= _₂ (apply _₁ x))
@@ -7,7 +7,7 @@
     (return _↩)))
 
 (define-function main
-  (block entry
+  (block body
     (= _₁ (const (@primitive-function println-non-void 1)))
     (= _₂ (const (@function square 1)))
     (= _₃ (const (@function square 1)))

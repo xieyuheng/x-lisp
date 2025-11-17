@@ -1,7 +1,7 @@
 (export)
 
 (define-code main
-  (block entry
+  (block body
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
@@ -42,7 +42,7 @@
     (retq)))
 
 (define-code §₁/square
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq (label-deref (external-label x-imul)) (reg rdi))
     (salq (imm 3) (reg rdi))

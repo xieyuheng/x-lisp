@@ -41,7 +41,7 @@
 (export square)
 
 (define-function square
-  (block entry
+  (block body
     (= x (argument 0))
     (= _₁ (const (@primitive-function imul 2)))
     (= _₂ (apply _₁ x))
@@ -53,7 +53,7 @@
 (export)
 
 (define-code square
-  (block entry
+  (block body
     (movq (reg rdi) (var x))
     (leaq (label-deref (external-label x-imul)) (reg rdi))
     (salq (imm 3) (reg rdi))
@@ -78,7 +78,7 @@
 (export)
 
 (define-code square
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq (label-deref (external-label x-imul)) (reg rdi))
     (salq (imm 3) (reg rdi))
@@ -103,7 +103,7 @@
 (export)
 
 (define-code square
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq (label-deref (external-label x-imul)) (reg rdi))
     (salq (imm 3) (reg rdi))
@@ -128,7 +128,7 @@
 (export)
 
 (define-code square
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq (label-deref (external-label x-imul)) (reg rdi))
     (salq (imm 3) (reg rdi))

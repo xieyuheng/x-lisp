@@ -41,7 +41,7 @@ function onDefinition(basicMod: B.Mod, definition: Definition): null {
       )
 
       const state = { fn }
-      const block = B.Block("entry", initialInstrs)
+      const block = B.Block("body", initialInstrs)
       state.fn.blocks.set(block.label, block)
       block.instrs.push(...inTail(state, definition.body))
       B.checkBlockTerminator(block)

@@ -34,7 +34,7 @@
 ;;; ExplicateControlPass
 
 (define-function main
-  (block entry
+  (block body
     (= _₁ (const (@primitive-function println-non-void 1)))
     (= a₁ (const 42))
     (= b₁ (call (@primitive-function identity 1) a₁))
@@ -46,7 +46,7 @@
 (export)
 
 (define-code main
-  (block entry
+  (block body
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
@@ -72,7 +72,7 @@
 (export)
 
 (define-code main
-  (block entry
+  (block body
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
@@ -98,7 +98,7 @@
 (export)
 
 (define-code main
-  (block entry
+  (block body
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
@@ -124,7 +124,7 @@
 (export)
 
 (define-code main
-  (block entry
+  (block body
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))

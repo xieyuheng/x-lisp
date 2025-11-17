@@ -1,5 +1,5 @@
 (define-function main
-  (block entry
+  (block body
     (= _₁ (const (@primitive-function println-non-void 1)))
     (= _₄ (const (@primitive-function equal? 2)))
     (= _₅ (const (@primitive-function random-dice 0)))

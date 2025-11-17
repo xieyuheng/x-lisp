@@ -1,5 +1,5 @@
 (define-function main
-  (block entry
+  (block body
     (= _₁ (const (@primitive-function println-non-void 1)))
     (= v₁ (const 1))
     (= w₁ (const 42))

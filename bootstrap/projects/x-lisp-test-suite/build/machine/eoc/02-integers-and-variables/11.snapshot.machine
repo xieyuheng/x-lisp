@@ -1,7 +1,7 @@
 (export)
 
 (define-code main
-  (block entry
+  (block body
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))

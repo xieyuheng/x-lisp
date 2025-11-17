@@ -1,7 +1,7 @@
 
 .text
 _main:
-_main.entry:
+_main.body:
         leaq x_println_non_void(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi

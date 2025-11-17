@@ -92,7 +92,7 @@
 ;;; ExplicateControlPass
 
 (define-function Y
-  (block entry
+  (block body
     (= f (argument 0))
     (= _₁ (const (@primitive-function make-curry 3)))
     (= _₂ (const (@function Y/λ₁ 1)))
@@ -117,13 +117,13 @@
     (return _↩)))
 
 (define-function Y/λ₁
-  (block entry
+  (block body
     (= u₁ (argument 0))
     (= _↩ (apply u₁ u₁))
     (return _↩)))
 
 (define-function Y/λ₂
-  (block entry
+  (block body
     (= f (argument 0))
     (= x₁ (argument 1))
     (= _₁ (const (@primitive-function curry-put! 3)))
@@ -142,7 +142,7 @@
     (return _↩)))
 
 (define-function Y/λ₂/λ₁
-  (block entry
+  (block body
     (= x₁ (argument 0))
     (= t₁ (argument 1))
     (= _₁ (apply x₁ x₁))
@@ -154,7 +154,7 @@
 (export)
 
 (define-code Y
-  (block entry
+  (block body
     (movq (reg rdi) (var f))
     (leaq
      (label-deref (external-label x-make-curry))
@@ -246,7 +246,7 @@
     (retq)))
 
 (define-code Y/λ₁
-  (block entry
+  (block body
     (movq (reg rdi) (var u₁))
     (movq (var u₁) (reg rdi))
     (movq (var u₁) (reg rsi))
@@ -256,7 +256,7 @@
     (retq)))
 
 (define-code Y/λ₂
-  (block entry
+  (block body
     (movq (reg rdi) (var f))
     (movq (reg rsi) (var x₁))
     (leaq
@@ -319,7 +319,7 @@
     (retq)))
 
 (define-code Y/λ₂/λ₁
-  (block entry
+  (block body
     (movq (reg rdi) (var x₁))
     (movq (reg rsi) (var t₁))
     (movq (var x₁) (reg rdi))
@@ -338,7 +338,7 @@
 (export)
 
 (define-code Y
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq
      (label-deref (external-label x-make-curry))
@@ -430,7 +430,7 @@
     (retq)))
 
 (define-code Y/λ₁
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -64) (reg rsi))
@@ -440,7 +440,7 @@
     (retq)))
 
 (define-code Y/λ₂
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
     (leaq
@@ -503,7 +503,7 @@
     (retq)))
 
 (define-code Y/λ₂/λ₁
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
@@ -522,7 +522,7 @@
 (export)
 
 (define-code Y
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq
      (label-deref (external-label x-make-curry))
@@ -614,7 +614,7 @@
     (retq)))
 
 (define-code Y/λ₁
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -64) (reg rsi))
@@ -624,7 +624,7 @@
     (retq)))
 
 (define-code Y/λ₂
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
     (leaq
@@ -687,7 +687,7 @@
     (retq)))
 
 (define-code Y/λ₂/λ₁
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
@@ -706,7 +706,7 @@
 (export)
 
 (define-code Y
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq
      (label-deref (external-label x-make-curry))
@@ -798,7 +798,7 @@
     (retq)))
 
 (define-code Y/λ₁
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -64) (reg rsi))
@@ -808,7 +808,7 @@
     (retq)))
 
 (define-code Y/λ₂
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
     (leaq
@@ -871,7 +871,7 @@
     (retq)))
 
 (define-code Y/λ₂/λ₁
-  (block entry
+  (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -64) (reg rdi))

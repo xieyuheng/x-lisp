@@ -1,8 +1,8 @@
 (define-function identity
-  (block entry (= x (argument 0)) (return x)))
+  (block body (= x (argument 0)) (return x)))
 
 (define-function swap
-  (block entry
+  (block body
     (= f (argument 0))
     (= x (argument 1))
     (= y (argument 2))
@@ -11,7 +11,7 @@
     (return _↩)))
 
 (define-function drop
-  (block entry
+  (block body
     (= f (argument 0))
     (= _₁ (const (@primitive-function curry-put! 3)))
     (= _₂ (const 0))
@@ -28,7 +28,7 @@
     (return _↩)))
 
 (define-function drop/λ₁
-  (block entry
+  (block body
     (= f (argument 0))
     (= dropped₁ (argument 1))
     (= _₁ (const (@primitive-function curry-put! 3)))
@@ -46,14 +46,14 @@
     (return _↩)))
 
 (define-function drop/λ₁/λ₁
-  (block entry
+  (block body
     (= f (argument 0))
     (= x₁ (argument 1))
     (= _↩ (apply f x₁))
     (return _↩)))
 
 (define-function dup
-  (block entry
+  (block body
     (= f (argument 0))
     (= _₁ (const (@primitive-function curry-put! 3)))
     (= _₂ (const 0))
@@ -70,7 +70,7 @@
     (return _↩)))
 
 (define-function dup/λ₁
-  (block entry
+  (block body
     (= f (argument 0))
     (= x₁ (argument 1))
     (= _₁ (apply f x₁))
@@ -78,7 +78,7 @@
     (return _↩)))
 
 (define-function main
-  (block entry
+  (block body
     (= _₁ (const (@primitive-function println-non-void 1)))
     (= f₁ (const (@primitive-function identity 1)))
     (= _₂ (const (@function dup 1)))

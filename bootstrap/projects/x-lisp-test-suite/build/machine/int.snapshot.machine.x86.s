@@ -1,7 +1,7 @@
 
 .text
 _square:
-_square.entry:
+_square.body:
         movq %rdi, -64(%rbp)
         leaq x_imul(%rip), %rdi
         salq $3, %rdi
@@ -23,7 +23,7 @@ _square.entry:
 
 .text
 _main:
-_main.entry:
+_main.body:
         leaq x_println_non_void(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
