@@ -181,8 +181,6 @@ function selectConstFunction(
   dest: string,
   fn: Values.Function,
 ): Array<M.Instr> {
-  // TODO use tagged value
-
   const address = fn.attributes.isPrimitive
     ? M.LabelDeref(M.Label(`x-${fn.name}`, { isExternal: true }))
     : M.LabelDeref(M.Label(fn.name, { isExternal: false }))
