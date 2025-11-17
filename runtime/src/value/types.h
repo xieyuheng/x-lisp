@@ -11,7 +11,7 @@ typedef enum {
     X_INT         = 0b000,
     X_FLOAT       = 0b001,
     X_LITTLE      = 0b010,
-    X_ADDRESS    = 0b011,
+    X_ADDRESS     = 0b011,
     //            = 0b100,
     //            = 0b101,
     //            = 0b110,
