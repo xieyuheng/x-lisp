@@ -10,12 +10,10 @@ export function PatchInstructionPass(mod: M.Mod): void {
 function onDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "CodeDefinition": {
-      // const blocks = Array.from(definition.blocks.values())
-      // for (const block of blocks) {
-      //   const locationMap = createLocationMap(definition)
-      //   const context: Context = { locationMap }
-      //   definition.blocks.set(block.label, onBlock(context, block))
-      // }
+      const blocks = Array.from(definition.blocks.values())
+      for (const block of blocks) {
+        definition.blocks.set(block.label, onBlock(block))
+      }
 
       return null
     }
@@ -24,4 +22,16 @@ function onDefinition(definition: M.Definition): null {
       return null
     }
   }
+}
+
+function onBlock(block: M.Block): M.Block {
+  return M.Block(
+    block.label,
+    block.instrs.flatMap(onInstr),
+    block.meta,
+  )
+}
+
+function onInstr(instr: M.Instr): Array<M.Instr> {
+  return [instr]
 }
