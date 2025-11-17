@@ -1,5 +1,6 @@
 .global _start
 
+.align 8
 .text
 _start:
 _start.entry:

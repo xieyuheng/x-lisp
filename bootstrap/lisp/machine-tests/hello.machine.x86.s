@@ -1,5 +1,6 @@
 .global _start
 
+.align 8
 .data
 _message:
 _message.entry:
@@ -7,6 +8,7 @@ _message.entry:
 _message.length:
         .quad 14
 
+.align 8
 .text
 _start:
 _start.entry:
