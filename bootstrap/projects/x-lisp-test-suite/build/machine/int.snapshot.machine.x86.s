@@ -1,6 +1,18 @@
 
 .text
 _square:
+_square.prolog:
+        pushq %rbp
+        movq %rsp, %rbp
+        pushq %rsp
+        pushq %rbp
+        pushq %rbx
+        pushq %r12
+        pushq %r13
+        pushq %r14
+        pushq %r15
+        subq $56, %rsp
+        jmp _square.body
 _square.body:
         movq %rdi, -64(%rbp)
         leaq x_imul(%rip), %rdi
@@ -20,9 +32,32 @@ _square.body:
         movq %rax, -88(%rbp)
         movq -88(%rbp), %rax
         retq 
+_square.epilog:
+        addq $56, %rsp
+        popq %r15
+        popq %r14
+        popq %r13
+        popq %r12
+        popq %rbx
+        popq %rbp
+        popq %rsp
+        popq %rbp
+        retq 
 
 .text
 _main:
+_main.prolog:
+        pushq %rbp
+        movq %rsp, %rbp
+        pushq %rsp
+        pushq %rbp
+        pushq %rbx
+        pushq %r12
+        pushq %r13
+        pushq %r14
+        pushq %r15
+        subq $56, %rsp
+        jmp _main.body
 _main.body:
         leaq x_println_non_void(%rip), %rdi
         salq $3, %rdi
@@ -59,4 +94,15 @@ _main.body:
         callq x_apply_unary
         movq %rax, -112(%rbp)
         movq -112(%rbp), %rax
+        retq 
+_main.epilog:
+        addq $56, %rsp
+        popq %r15
+        popq %r14
+        popq %r13
+        popq %r12
+        popq %rbx
+        popq %rbp
+        popq %rsp
+        popq %rbp
         retq 

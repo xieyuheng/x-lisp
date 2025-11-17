@@ -30,7 +30,7 @@ function onDefinition(definition: M.Definition): null {
   }
 }
 
-function createLocationMap(
+export function createLocationMap(
   definition: M.CodeDefinition,
 ): Map<string, M.Operand> {
   const locationMap = new Map()

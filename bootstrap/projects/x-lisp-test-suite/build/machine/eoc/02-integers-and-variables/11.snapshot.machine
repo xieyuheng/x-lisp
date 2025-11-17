@@ -1,6 +1,18 @@
 (export)
 
 (define-code main
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 56) (reg rsp))
+    (jmp (label body)))
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -65,4 +77,15 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -176))
     (movq (reg-deref (reg rbp) -176) (reg rax))
+    (retq))
+  (block epilog
+    (addq (imm 56) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
     (retq)))

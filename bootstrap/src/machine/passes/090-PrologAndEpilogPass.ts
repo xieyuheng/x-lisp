@@ -6,15 +6,22 @@ export function PrologAndEpilogPass(mod: M.Mod): void {
   }
 }
 
+type RegisterInfo = {
+  calleeSavedRegs: Array<M.Reg>
+  spillCount: number
+}
+
 function onDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "CodeDefinition": {
-      // const blocks = Array.from(definition.blocks.values())
-      // for (const block of blocks) {
-      //   const locationMap = createLocationMap(definition)
-      //   const context: Context = { locationMap }
-      //   definition.blocks.set(block.label, onBlock(context, block))
-      // }
+      const info = createRegisterInfo(definition)
+      const prologBlock = createPrologBlock(info)
+      const epilogBlock = createEpilogBlock(info)
+      definition.blocks = new Map([
+        [prologBlock.label, prologBlock],
+        ...definition.blocks.entries(),
+        [epilogBlock.label, epilogBlock],
+      ])
 
       return null
     }
@@ -23,4 +30,50 @@ function onDefinition(definition: M.Definition): null {
       return null
     }
   }
+}
+
+function createRegisterInfo(definition: M.CodeDefinition): RegisterInfo {
+  // TODO save all for now
+  const calleeSavedRegNames = M.ABIs["x86-64-sysv"]["callee-saved-reg-names"]
+  const calleeSavedRegs = calleeSavedRegNames.map((name) => M.Reg(name))
+
+  // TODO all variables are spilled for now
+  const spillCount = M.createLocationMap(definition).size
+
+  return {
+    calleeSavedRegs,
+    spillCount,
+  }
+}
+
+function leaveStackSpace(info: RegisterInfo): number {
+  let stackSpace = 0
+  stackSpace += info.calleeSavedRegs.length * 8
+  stackSpace += info.spillCount * 8
+  return stackSpace
+}
+
+function createPrologBlock(info: RegisterInfo): M.Block {
+  const instrs: Array<M.Instr> = []
+  instrs.push(M.Instr("pushq", [M.Reg("rbp")]))
+  instrs.push(M.Instr("movq", [M.Reg("rsp"), M.Reg("rbp")]))
+  instrs.push(...info.calleeSavedRegs.map((reg) => M.Instr("pushq", [reg])))
+  const stackSpace = leaveStackSpace(info)
+  if (stackSpace !== 0)
+    instrs.push(M.Instr("subq", [M.Imm(stackSpace), M.Reg("rsp")]))
+  instrs.push(M.Instr("jmp", [M.Label("body", { isExternal: false })]))
+  return M.Block("prolog", instrs)
+}
+
+function createEpilogBlock(info: RegisterInfo): M.Block {
+  const instrs: Array<M.Instr> = []
+  const stackSpace = leaveStackSpace(info)
+  if (stackSpace !== 0)
+    instrs.push(M.Instr("addq", [M.Imm(stackSpace), M.Reg("rsp")]))
+  instrs.push(
+    ...info.calleeSavedRegs.map((reg) => M.Instr("popq", [reg])).toReversed(),
+  )
+  instrs.push(M.Instr("popq", [M.Reg("rbp")]))
+  instrs.push(M.Instr("retq", []))
+  return M.Block("epilog", instrs)
 }

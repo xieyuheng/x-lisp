@@ -1098,12 +1098,47 @@
 (export)
 
 (define-code identity
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 56) (reg rsp))
+    (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg-deref (reg rbp) -64) (reg rax))
+    (retq))
+  (block epilog
+    (addq (imm 56) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
     (retq)))
 
 (define-code swap
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 56) (reg rsp))
+    (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
@@ -1117,9 +1152,32 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -96))
     (movq (reg-deref (reg rbp) -96) (reg rax))
+    (retq))
+  (block epilog
+    (addq (imm 56) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
     (retq)))
 
 (define-code drop
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 56) (reg rsp))
+    (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq
@@ -1175,9 +1233,32 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -160))
     (movq (reg-deref (reg rbp) -160) (reg rax))
+    (retq))
+  (block epilog
+    (addq (imm 56) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
     (retq)))
 
 (define-code drop/λ₁
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 56) (reg rsp))
+    (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
@@ -1234,9 +1315,32 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -168))
     (movq (reg-deref (reg rbp) -168) (reg rax))
+    (retq))
+  (block epilog
+    (addq (imm 56) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
     (retq)))
 
 (define-code drop/λ₁/λ₁
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 56) (reg rsp))
+    (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
@@ -1245,9 +1349,32 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -80))
     (movq (reg-deref (reg rbp) -80) (reg rax))
+    (retq))
+  (block epilog
+    (addq (imm 56) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
     (retq)))
 
 (define-code dup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 56) (reg rsp))
+    (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq
@@ -1303,9 +1430,32 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -160))
     (movq (reg-deref (reg rbp) -160) (reg rax))
+    (retq))
+  (block epilog
+    (addq (imm 56) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
     (retq)))
 
 (define-code dup/λ₁
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 56) (reg rsp))
+    (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
@@ -1318,9 +1468,32 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -88) (reg rax))
+    (retq))
+  (block epilog
+    (addq (imm 56) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
     (retq)))
 
 (define-code main
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 56) (reg rsp))
+    (jmp (label body)))
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -1373,5 +1546,16 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -120))
     (movq (reg-deref (reg rbp) -120) (reg rax))
+    (retq))
+  (block epilog
+    (addq (imm 56) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
     (retq)))
 
