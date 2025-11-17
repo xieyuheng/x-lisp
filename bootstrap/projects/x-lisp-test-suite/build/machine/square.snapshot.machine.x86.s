@@ -8,55 +8,55 @@ _main.entry:
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁)
+        movq %rax, -64(%rbp)
         leaq _§₁.square(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₂)
+        movq %rax, -72(%rbp)
         leaq _§₁.square(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₃)
-        movq $24, @(var _₄)
-        movq @(var _₃), %rdi
-        movq @(var _₄), %rsi
+        movq %rax, -80(%rbp)
+        movq $24, -88(%rbp)
+        movq -80(%rbp), %rdi
+        movq -88(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₅)
-        movq @(var _₂), %rdi
-        movq @(var _₅), %rsi
+        movq %rax, -96(%rbp)
+        movq -72(%rbp), %rdi
+        movq -96(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₆)
-        movq @(var _₁), %rdi
-        movq @(var _₆), %rsi
+        movq %rax, -104(%rbp)
+        movq -64(%rbp), %rdi
+        movq -104(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _↩)
-        movq @(var _↩), %rax
+        movq %rax, -112(%rbp)
+        movq -112(%rbp), %rax
         retq 
 
 .text
 _§₁.square:
 _§₁.square.entry:
-        movq %rdi, @(var x)
+        movq %rdi, -64(%rbp)
         leaq x_imul(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁)
-        movq @(var _₁), %rdi
-        movq @(var x), %rsi
+        movq %rax, -72(%rbp)
+        movq -72(%rbp), %rdi
+        movq -64(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₂)
-        movq @(var _₂), %rdi
-        movq @(var x), %rsi
+        movq %rax, -80(%rbp)
+        movq -80(%rbp), %rdi
+        movq -64(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _↩)
-        movq @(var _↩), %rax
+        movq %rax, -88(%rbp)
+        movq -88(%rbp), %rax
         retq 

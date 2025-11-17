@@ -8,53 +8,53 @@ _main.entry:
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁)
+        movq %rax, -64(%rbp)
         leaq x_random_dice(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₂)
-        movq @(var _₂), %rdi
+        movq %rax, -72(%rbp)
+        movq -72(%rbp), %rdi
         callq x_apply_nullary
-        movq %rax, @(var x₁)
+        movq %rax, -80(%rbp)
         leaq x_random_dice(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₃)
-        movq @(var _₃), %rdi
+        movq %rax, -88(%rbp)
+        movq -88(%rbp), %rdi
         callq x_apply_nullary
-        movq %rax, @(var y₁)
+        movq %rax, -96(%rbp)
         leaq x_int_less_p(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₆)
-        movq @(var _₆), %rdi
-        movq @(var x₁), %rsi
+        movq %rax, -104(%rbp)
+        movq -104(%rbp), %rdi
+        movq -80(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₇)
-        movq $8, @(var _₈)
-        movq @(var _₇), %rdi
-        movq @(var _₈), %rsi
+        movq %rax, -112(%rbp)
+        movq $8, -120(%rbp)
+        movq -112(%rbp), %rdi
+        movq -120(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₉)
+        movq %rax, -128(%rbp)
         movq x_true(%rip), %rax
-        cmpq @(var _₉), %rax
+        cmpq -128(%rbp), %rax
         jmpe _main.main.then₅
         jmp _main.main.else₆
 _main.main.let_body₁:
-        movq @(var _₁), %rdi
-        movq @(var _₄), %rsi
+        movq -64(%rbp), %rdi
+        movq -72(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _↩)
-        movq @(var _↩), %rax
+        movq %rax, -80(%rbp)
+        movq -80(%rbp), %rax
         retq 
 _main.main.then₂:
         leaq x_iadd(%rip), %rdi
@@ -63,16 +63,16 @@ _main.main.then₂:
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁₆)
-        movq @(var _₁₆), %rdi
-        movq @(var y₁), %rsi
+        movq %rax, -64(%rbp)
+        movq -64(%rbp), %rdi
+        movq -72(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₁₇)
-        movq $16, @(var _₁₈)
-        movq @(var _₁₇), %rdi
-        movq @(var _₁₈), %rsi
+        movq %rax, -80(%rbp)
+        movq $16, -88(%rbp)
+        movq -80(%rbp), %rdi
+        movq -88(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₄)
+        movq %rax, -96(%rbp)
         jmp _main.main.let_body₁
 _main.main.else₃:
         leaq x_iadd(%rip), %rdi
@@ -81,20 +81,20 @@ _main.main.else₃:
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁₉)
-        movq @(var _₁₉), %rdi
-        movq @(var y₁), %rsi
+        movq %rax, -64(%rbp)
+        movq -64(%rbp), %rdi
+        movq -72(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₂₀)
-        movq $80, @(var _₂₁)
-        movq @(var _₂₀), %rdi
-        movq @(var _₂₁), %rsi
+        movq %rax, -80(%rbp)
+        movq $80, -88(%rbp)
+        movq -80(%rbp), %rdi
+        movq -88(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₄)
+        movq %rax, -96(%rbp)
         jmp _main.main.let_body₁
 _main.main.let_body₄:
         movq x_true(%rip), %rax
-        cmpq @(var _₅), %rax
+        cmpq -64(%rbp), %rax
         jmpe _main.main.then₂
         jmp _main.main.else₃
 _main.main.then₅:
@@ -104,16 +104,16 @@ _main.main.then₅:
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁₀)
-        movq @(var _₁₀), %rdi
-        movq @(var x₁), %rsi
+        movq %rax, -64(%rbp)
+        movq -64(%rbp), %rdi
+        movq -72(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₁₁)
-        movq $0, @(var _₁₂)
-        movq @(var _₁₁), %rdi
-        movq @(var _₁₂), %rsi
+        movq %rax, -80(%rbp)
+        movq $0, -88(%rbp)
+        movq -80(%rbp), %rdi
+        movq -88(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₅)
+        movq %rax, -96(%rbp)
         jmp _main.main.let_body₄
 _main.main.else₆:
         leaq x_equal_p(%rip), %rdi
@@ -122,14 +122,14 @@ _main.main.else₆:
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁₃)
-        movq @(var _₁₃), %rdi
-        movq @(var x₁), %rsi
+        movq %rax, -64(%rbp)
+        movq -64(%rbp), %rdi
+        movq -72(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₁₄)
-        movq $16, @(var _₁₅)
-        movq @(var _₁₄), %rdi
-        movq @(var _₁₅), %rsi
+        movq %rax, -80(%rbp)
+        movq $16, -88(%rbp)
+        movq -80(%rbp), %rdi
+        movq -88(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₅)
+        movq %rax, -96(%rbp)
         jmp _main.main.let_body₄

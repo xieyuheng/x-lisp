@@ -8,27 +8,27 @@ _main.entry:
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁)
-        movq $160, @(var x₁)
-        movq $176, @(var z₁)
+        movq %rax, -64(%rbp)
+        movq $160, -72(%rbp)
+        movq $176, -80(%rbp)
         leaq x_iadd(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₂)
-        movq @(var _₂), %rdi
-        movq @(var x₁), %rsi
+        movq %rax, -88(%rbp)
+        movq -88(%rbp), %rdi
+        movq -72(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₃)
-        movq @(var _₃), %rdi
-        movq @(var z₁), %rsi
+        movq %rax, -96(%rbp)
+        movq -96(%rbp), %rdi
+        movq -80(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var y₁)
-        movq @(var _₁), %rdi
-        movq @(var y₁), %rsi
+        movq %rax, -104(%rbp)
+        movq -64(%rbp), %rdi
+        movq -104(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _↩)
-        movq @(var _↩), %rax
+        movq %rax, -112(%rbp)
+        movq -112(%rbp), %rax
         retq 

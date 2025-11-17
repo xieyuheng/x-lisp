@@ -8,14 +8,14 @@ _main.entry:
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁)
-        movq $336, @(var a₁)
-        movq @(var a₁), %rdi
+        movq %rax, -64(%rbp)
+        movq $336, -72(%rbp)
+        movq -72(%rbp), %rdi
         callq identity
-        movq %rax, @(var b₁)
-        movq @(var _₁), %rdi
-        movq @(var b₁), %rsi
+        movq %rax, -80(%rbp)
+        movq -64(%rbp), %rdi
+        movq -80(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _↩)
-        movq @(var _↩), %rax
+        movq %rax, -88(%rbp)
+        movq -88(%rbp), %rax
         retq 

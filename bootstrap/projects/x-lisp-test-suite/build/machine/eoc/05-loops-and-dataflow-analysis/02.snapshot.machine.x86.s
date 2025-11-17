@@ -8,158 +8,158 @@ _main.entry:
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁)
+        movq %rax, -64(%rbp)
         leaq x_print(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₂)
-        movq $8, @(var _₃)
-        movq @(var _₂), %rdi
-        movq @(var _₃), %rsi
+        movq %rax, -72(%rbp)
+        movq $8, -80(%rbp)
+        movq -72(%rbp), %rdi
+        movq -80(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _∅₁)
+        movq %rax, -88(%rbp)
         leaq x_newline(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₄)
-        movq @(var _₄), %rdi
+        movq %rax, -96(%rbp)
+        movq -96(%rbp), %rdi
         callq x_apply_nullary
-        movq %rax, @(var _∅₂)
+        movq %rax, -104(%rbp)
         leaq x_print(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₅)
-        movq $16, @(var _₆)
-        movq @(var _₅), %rdi
-        movq @(var _₆), %rsi
+        movq %rax, -112(%rbp)
+        movq $16, -120(%rbp)
+        movq -112(%rbp), %rdi
+        movq -120(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _∅₃)
+        movq %rax, -128(%rbp)
         leaq x_newline(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₇)
-        movq @(var _₇), %rdi
+        movq %rax, -136(%rbp)
+        movq -136(%rbp), %rdi
         callq x_apply_nullary
-        movq %rax, @(var _∅₄)
+        movq %rax, -144(%rbp)
         leaq x_print(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₈)
-        movq $24, @(var _₉)
-        movq @(var _₈), %rdi
-        movq @(var _₉), %rsi
+        movq %rax, -152(%rbp)
+        movq $24, -160(%rbp)
+        movq -152(%rbp), %rdi
+        movq -160(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _∅₅)
+        movq %rax, -168(%rbp)
         leaq x_newline(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁₀)
-        movq @(var _₁₀), %rdi
+        movq %rax, -176(%rbp)
+        movq -176(%rbp), %rdi
         callq x_apply_nullary
-        movq %rax, @(var _∅₆)
-        movq $48, @(var x₁)
+        movq %rax, -184(%rbp)
+        movq $48, -192(%rbp)
         leaq x_print(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁₁)
-        movq $32, @(var _₁₂)
-        movq @(var _₁₁), %rdi
-        movq @(var _₁₂), %rsi
+        movq %rax, -200(%rbp)
+        movq $32, -208(%rbp)
+        movq -200(%rbp), %rdi
+        movq -208(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _∅₁)
+        movq %rax, -88(%rbp)
         leaq x_newline(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁₃)
-        movq @(var _₁₃), %rdi
+        movq %rax, -216(%rbp)
+        movq -216(%rbp), %rdi
         callq x_apply_nullary
-        movq %rax, @(var _∅₂)
+        movq %rax, -104(%rbp)
         leaq x_print(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁₄)
-        movq $40, @(var _₁₅)
-        movq @(var _₁₄), %rdi
-        movq @(var _₁₅), %rsi
+        movq %rax, -224(%rbp)
+        movq $40, -232(%rbp)
+        movq -224(%rbp), %rdi
+        movq -232(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _∅₃)
+        movq %rax, -128(%rbp)
         leaq x_newline(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁₆)
-        movq @(var _₁₆), %rdi
+        movq %rax, -240(%rbp)
+        movq -240(%rbp), %rdi
         callq x_apply_nullary
-        movq %rax, @(var _∅₄)
+        movq %rax, -144(%rbp)
         leaq x_print(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁₇)
-        movq $48, @(var _₁₈)
-        movq @(var _₁₇), %rdi
-        movq @(var _₁₈), %rsi
+        movq %rax, -248(%rbp)
+        movq $48, -256(%rbp)
+        movq -248(%rbp), %rdi
+        movq -256(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _∅₅)
+        movq %rax, -168(%rbp)
         leaq x_newline(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₁₉)
-        movq @(var _₁₉), %rdi
+        movq %rax, -264(%rbp)
+        movq -264(%rbp), %rdi
         callq x_apply_nullary
-        movq %rax, @(var _∅₆)
+        movq %rax, -184(%rbp)
         leaq x_iadd(%rip), %rdi
         salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, @(var _₂₀)
-        movq @(var _₂₀), %rdi
-        movq @(var x₁), %rsi
+        movq %rax, -272(%rbp)
+        movq -272(%rbp), %rdi
+        movq -192(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₂₁)
-        movq @(var _₂₁), %rdi
-        movq @(var x₁), %rsi
+        movq %rax, -280(%rbp)
+        movq -280(%rbp), %rdi
+        movq -192(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _₂₂)
-        movq @(var _₁), %rdi
-        movq @(var _₂₂), %rsi
+        movq %rax, -288(%rbp)
+        movq -64(%rbp), %rdi
+        movq -288(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, @(var _↩)
-        movq @(var _↩), %rax
+        movq %rax, -296(%rbp)
+        movq -296(%rbp), %rax
         retq 
