@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/x-sexp.js"
 import * as M from "../../machine/index.ts"
 
 export function PrologAndEpilogPass(mod: M.Mod): void {
