@@ -14,7 +14,7 @@ export function assembleX86FileWithRuntime(file: string): void {
   const ldflags = ["-lm", "-pthread"]
   const cflags = ["-g"]
   const args = [...inputFiles, ...cflags, ...ldflags, "-o", binaryFile]
-  const result = systemShellRun("cc", args)
+  const result = systemShellRun("gcc", args)
   if (result.stdout) console.log(result.stdout)
   if (result.stderr) console.error(result.stderr)
   if (result.status !== 0) process.exit(result.status)
