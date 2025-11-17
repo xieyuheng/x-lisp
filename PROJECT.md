@@ -209,13 +209,26 @@ date: 2025-10-22
 
 - [x] basic-lisp to machine-lisp
   - [x] select-instruction
-  - [ ] assign-home
-  - [ ] patch-instruction
-  - [ ] prolog-and-epilog
+  - [x] assign-home
+  - [x] patch-instruction
+  - [x] prolog-and-epilog
 - [x] C runtime (with GC)
   - [x] value tag encoding
-  - [ ] builtin
+  - [x] builtin
   - [ ] GC
+
+总结 [2025-11-17]：
+
+- 可以编译出来 binary 了（经过 GAS）。
+  还差 GC 没有完成。
+
+- 汇编定义的函数不会自动 align 到 8，
+  生成 GAS 代码时，需要明确 `.align 8`。
+
+  由于忘记了这个 align，debug 了很久，差点对自己产生怀疑。
+  我 gdb 使用地不熟练，我的汇编底层知识也不熟练。
+  之后可以尝试逆向一下 gcc 和 clang 所编译出来的汇编，
+  补充底层汇编的知识。
 
 # milestone 待定 -- feature complete
 
