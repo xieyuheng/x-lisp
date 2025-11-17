@@ -3,17 +3,21 @@
 _main:
 _main.entry:
         leaq x_println_non_void(%rip), %rdi
-        movq $1, %rsi
+        salq $3, %rdi
+        orq $3, %rdi
+        movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, @(var _₁)
-        movq $6, @(var y₁)
+        movq $48, @(var y₁)
         leaq x_ineg(%rip), %rdi
-        movq $1, %rsi
+        salq $3, %rdi
+        orq $3, %rdi
+        movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, @(var _₂)
-        movq $42, @(var _₃)
+        movq $336, @(var _₃)
         movq @(var _₂), %rdi
         movq @(var _₃), %rsi
         callq x_apply_unary
@@ -22,7 +26,9 @@ _main.entry:
         callq identity
         movq %rax, @(var x₁)
         leaq x_iadd(%rip), %rdi
-        movq $2, %rsi
+        salq $3, %rdi
+        orq $3, %rdi
+        movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, @(var _₄)

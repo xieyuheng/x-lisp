@@ -3,26 +3,32 @@
 _main:
 _main.entry:
         leaq x_println_non_void(%rip), %rdi
-        movq $1, %rsi
+        salq $3, %rdi
+        orq $3, %rdi
+        movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, @(var _₁)
         leaq x_iadd(%rip), %rdi
-        movq $2, %rsi
+        salq $3, %rdi
+        orq $3, %rdi
+        movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, @(var _₂)
         leaq x_iadd(%rip), %rdi
-        movq $2, %rsi
+        salq $3, %rdi
+        orq $3, %rdi
+        movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, @(var _₃)
-        movq $1, @(var _₄)
+        movq $8, @(var _₄)
         movq @(var _₃), %rdi
         movq @(var _₄), %rsi
         callq x_apply_unary
         movq %rax, @(var _₅)
-        movq $2, @(var _₆)
+        movq $16, @(var _₆)
         movq @(var _₅), %rdi
         movq @(var _₆), %rsi
         callq x_apply_unary
@@ -32,16 +38,18 @@ _main.entry:
         callq x_apply_unary
         movq %rax, @(var _₈)
         leaq x_iadd(%rip), %rdi
-        movq $2, %rsi
+        salq $3, %rdi
+        orq $3, %rdi
+        movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, @(var _₉)
-        movq $3, @(var _₁₀)
+        movq $24, @(var _₁₀)
         movq @(var _₉), %rdi
         movq @(var _₁₀), %rsi
         callq x_apply_unary
         movq %rax, @(var _₁₁)
-        movq $4, @(var _₁₂)
+        movq $32, @(var _₁₂)
         movq @(var _₁₁), %rdi
         movq @(var _₁₂), %rsi
         callq x_apply_unary
@@ -51,7 +59,9 @@ _main.entry:
         callq x_apply_unary
         movq %rax, @(var x₁)
         leaq x_iadd(%rip), %rdi
-        movq $2, %rsi
+        salq $3, %rdi
+        orq $3, %rdi
+        movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, @(var _₁₄)
@@ -59,7 +69,7 @@ _main.entry:
         movq @(var x₁), %rsi
         callq x_apply_unary
         movq %rax, @(var _₁₅)
-        movq $5, @(var _₁₆)
+        movq $40, @(var _₁₆)
         movq @(var _₁₅), %rdi
         movq @(var _₁₆), %rsi
         callq x_apply_unary

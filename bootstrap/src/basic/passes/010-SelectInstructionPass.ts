@@ -134,19 +134,27 @@ function selectCall(
 }
 
 function selectConst(dest: string, value: Value): Array<M.Instr> {
-  // TODO use tagged value
-
   if (Values.isBool(value)) {
     if (Values.isTrue(value)) {
-      return [M.Instr("movq", [M.Imm(1), M.Var(dest)])]
+      return [
+        M.Instr("movq", [
+          M.LabelDeref(M.Label(`x-true`, { isExternal: true })),
+          M.Var(dest),
+        ]),
+      ]
     } else {
-      return [M.Instr("movq", [M.Imm(0), M.Var(dest)])]
+      return [
+        M.Instr("movq", [
+          M.LabelDeref(M.Label(`x-false`, { isExternal: true })),
+          M.Var(dest),
+        ]),
+      ]
     }
   }
 
   switch (value.kind) {
     case "Int": {
-      return [M.Instr("movq", [M.Imm(value.content), M.Var(dest)])]
+      return [M.Instr("movq", [M.Imm(M.encodeInt(value.content)), M.Var(dest)])]
     }
 
     case "Function": {
@@ -162,6 +170,13 @@ function selectConst(dest: string, value: Value): Array<M.Instr> {
   }
 }
 
+function selectTagEncoding(operand: M.Operand, tag: M.Tag): Array<M.Instr> {
+  return [
+    M.Instr("salq", [M.Imm(3), operand]),
+    M.Instr("orq", [M.Imm(tag), operand]),
+  ]
+}
+
 function selectConstFunction(
   dest: string,
   fn: Values.Function,
@@ -174,8 +189,9 @@ function selectConstFunction(
 
   return [
     M.Instr("leaq", [address, selectArgReg(0)]),
-    M.Instr("movq", [M.Imm(fn.arity), selectArgReg(1)]),
-    M.Instr("movq", [M.Imm(0), selectArgReg(2)]),
+    ...selectTagEncoding(selectArgReg(0), M.AddressTag),
+    M.Instr("movq", [M.Imm(M.encodeInt(fn.arity)), selectArgReg(1)]),
+    M.Instr("movq", [M.Imm(M.encodeInt(0)), selectArgReg(2)]),
     M.Instr("callq-n", [
       M.Label("x-make-curry", { isExternal: true }),
       M.Arity(3),
