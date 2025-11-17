@@ -222,6 +222,28 @@ date: 2025-10-22
 - 可以编译出来 binary 了（经过 GAS）。
   还差 GC 没有完成。
 
+- 注意，在 runtime 只能有固定参数个数的 apply 函数，
+  比如 `apply-unary` 和 `apply-nullary`。
+
+- 另外没有预料到的一点是：
+  `apply` 的 target 不能是单纯的 function 地址，
+  因为在 `apply` 的过程中可能要形成 `make-curry`，
+  而 `make-curry` 需要知道 function 的 arity，
+  但是单纯的 function 地址是不带 arity 的。
+
+  EOC 中虽然没有 auto currying，
+  但是 flat closure 也需要 arity，
+  所以也面临同样的问题。
+  解决方案是把每个 function ref 都包在 curry（closure）中。
+
+  只有有了全局变量机制之后，
+  可以把所构造的 curry 处理为全局变量，
+  以避免在每次引用 function 时都构造 curry。
+
+  - 之前设想的是通过 overload application 来扩展语言的语义，
+    但是目前 apply 的 target 只能是 curry（closure）。
+    这让我怀疑 overload application 的想法是否正确。
+
 - 汇编定义的函数不会自动 align 到 8，
   生成 GAS 代码时，需要明确 `.align 8`。
 
@@ -239,10 +261,14 @@ date: 2025-10-22
 任务：
 
 - [ ] feature complete
-  - [ ] claim
+  - [ ] global variable
+  - [ ] symbol
+  - [ ] hashtag
+  - [ ] string
   - [ ] tael
   - [ ] hash
   - [ ] set
+  - [ ] claim
 
 # milestone 待定 -- allocate-register
 
