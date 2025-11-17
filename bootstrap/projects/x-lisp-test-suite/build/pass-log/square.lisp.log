@@ -56,7 +56,6 @@
   (block body
     (movq (reg rdi) (var x))
     (leaq (label-deref (external-label x-imul)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -81,7 +80,6 @@
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq (label-deref (external-label x-imul)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -106,7 +104,6 @@
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq (label-deref (external-label x-imul)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -143,7 +140,6 @@
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (leaq (label-deref (external-label x-imul)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -158,7 +154,7 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -88) (reg rax))
-    (retq))
+    (jmp (label epilog)))
   (block epilog
     (addq (imm 56) (reg rsp))
     (popq (reg r15))

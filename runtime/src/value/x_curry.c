@@ -2,7 +2,7 @@
 
 object_spec_t curry_object_spec = {
     .name = "curry",
-    .print_fn = NULL,
+    .print_fn = (object_print_fn_t *) curry_print,
     .same_fn =  NULL,
     .equal_fn =  (object_equal_fn_t *) curry_equal,
 };
@@ -43,16 +43,32 @@ curry_equal(curry_t *lhs, curry_t *rhs) {
     return true;
 }
 
+void
+curry_print(curry_t *self, file_t *file) {
+    printf("(@curry ");
+    value_print(self->target, file);
+    printf(" %ld", self->arity);
+    for (size_t i = 0; i < self->size; i++) {
+        printf(" ");
+        value_print(self->args[i], file);
+    }
+
+    printf(")");
+}
+
 bool
 curry_p(value_t value) {
+    if (!object_p(value)) return false;
+
     object_t *object = to_object(value);
     return object->spec == &curry_object_spec;
 }
 
 curry_t *
 to_curry(value_t value) {
+    assert(curry_p(value));
+
     object_t *object = to_object(value);
-    assert(curry_p(object));
     return (curry_t *) object;
 }
 

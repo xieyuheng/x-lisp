@@ -14,12 +14,16 @@ type RegisterInfo = {
 function onDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "CodeDefinition": {
+      const blockEntries = definition.blocks
+        .values()
+        .map(patchBlock)
+        .map<[string, M.Block]>((block) => [block.label, block])
       const info = createRegisterInfo(definition)
       const prologBlock = createPrologBlock(info)
       const epilogBlock = createEpilogBlock(info)
       definition.blocks = new Map([
         [prologBlock.label, prologBlock],
-        ...definition.blocks.entries(),
+        ...blockEntries,
         [epilogBlock.label, epilogBlock],
       ])
 
@@ -30,6 +34,18 @@ function onDefinition(definition: M.Definition): null {
       return null
     }
   }
+}
+
+function patchBlock(block: M.Block): M.Block {
+  return M.Block(block.label, block.instrs.map(patchInstr), block.meta)
+}
+
+function patchInstr(instr: M.Instr): M.Instr {
+  if (instr.op === "retq") {
+    return M.Instr("jmp", [M.Label("epilog", { isExternal: false })], instr.meta)
+  }
+
+  return instr
 }
 
 function createRegisterInfo(definition: M.CodeDefinition): RegisterInfo {

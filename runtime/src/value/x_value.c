@@ -2,8 +2,8 @@
 
 bool
 same_p(value_t lhs, value_t rhs) {
-    if (x_object_p(lhs) &&
-        x_object_p(lhs) &&
+    if (object_p(lhs) &&
+        object_p(lhs) &&
         to_object(lhs)->spec == to_object(rhs)->spec &&
         to_object(lhs)->spec->same_fn != NULL)
     {
@@ -15,8 +15,8 @@ same_p(value_t lhs, value_t rhs) {
 
 bool
 equal_p(value_t lhs, value_t rhs) {
-    if (x_object_p(lhs) &&
-        x_object_p(lhs) &&
+    if (object_p(lhs) &&
+        object_p(lhs) &&
         to_object(lhs)->spec == to_object(rhs)->spec &&
         to_object(lhs)->spec->equal_fn != NULL)
     {
@@ -39,8 +39,8 @@ x_anything_p(value_t x) {
 
 value_t
 x_same_p(value_t lhs, value_t rhs) {
-    if (x_object_p(lhs) &&
-        x_object_p(lhs) &&
+    if (object_p(lhs) &&
+        object_p(lhs) &&
         to_object(lhs)->spec == to_object(rhs)->spec &&
         to_object(lhs)->spec->same_fn != NULL)
     {
@@ -52,8 +52,8 @@ x_same_p(value_t lhs, value_t rhs) {
 
 value_t
 x_equal_p(value_t lhs, value_t rhs) {
-    if (x_object_p(lhs) &&
-        x_object_p(lhs) &&
+    if (object_p(lhs) &&
+        object_p(lhs) &&
         to_object(lhs)->spec == to_object(rhs)->spec &&
         to_object(lhs)->spec->equal_fn != NULL)
     {

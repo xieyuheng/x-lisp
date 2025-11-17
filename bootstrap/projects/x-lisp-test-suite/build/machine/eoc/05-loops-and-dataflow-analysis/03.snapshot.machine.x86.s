@@ -16,14 +16,12 @@ _main.prolog:
         jmp _main.body
 _main.body:
         leaq x_println_non_void(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, -64(%rbp)
         leaq x_print(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
@@ -35,7 +33,6 @@ _main.body:
         callq x_apply_unary
         movq %rax, -88(%rbp)
         leaq x_newline(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -45,7 +42,6 @@ _main.body:
         callq x_apply_nullary
         movq %rax, -104(%rbp)
         leaq x_print(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
@@ -57,7 +53,6 @@ _main.body:
         callq x_apply_unary
         movq %rax, -128(%rbp)
         leaq x_newline(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -67,7 +62,6 @@ _main.body:
         callq x_apply_nullary
         movq %rax, -144(%rbp)
         leaq x_print(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
@@ -79,7 +73,6 @@ _main.body:
         callq x_apply_unary
         movq %rax, -168(%rbp)
         leaq x_newline(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -89,7 +82,6 @@ _main.body:
         callq x_apply_nullary
         movq %rax, -184(%rbp)
         leaq x_equal_p(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -115,10 +107,9 @@ _main.main.let_body₁:
         callq x_apply_unary
         movq %rax, -80(%rbp)
         movq -80(%rbp), %rax
-        retq 
+        jmp _main.epilog
 _main.main.then₂:
         leaq x_print(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
@@ -130,7 +121,6 @@ _main.main.then₂:
         callq x_apply_unary
         movq %rax, -80(%rbp)
         leaq x_newline(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -140,7 +130,6 @@ _main.main.then₂:
         callq x_apply_nullary
         movq %rax, -96(%rbp)
         leaq x_equal_p(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -159,7 +148,6 @@ _main.main.then₂:
         jmp _main.main.let_body₁
 _main.main.else₃:
         leaq x_print(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
@@ -171,7 +159,6 @@ _main.main.else₃:
         callq x_apply_unary
         movq %rax, -80(%rbp)
         leaq x_newline(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -181,7 +168,6 @@ _main.main.else₃:
         callq x_apply_nullary
         movq %rax, -96(%rbp)
         leaq x_equal_p(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx

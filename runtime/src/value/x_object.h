@@ -21,12 +21,12 @@ x_object(object_t *target) {
 }
 
 inline bool
-x_object_p(value_t value) {
+object_p(value_t value) {
     return value_tag(value) == X_OBJECT;
 }
 
 inline object_t *
 to_object(value_t value) {
-    assert(x_object_p(value));
+    assert(object_p(value));
     return (object_t *) ((uint64_t) value & PAYLOAD_MASK);
 }

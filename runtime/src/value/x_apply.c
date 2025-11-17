@@ -8,6 +8,7 @@ x_apply_nullary(value_t target) {
 static value_t
 call_with_extra_arg(value_t target, size_t arity, value_t *args, value_t extra_arg) {
     assert(arity > 0);
+
     if (arity == 1)
         return to_1_ary_fn(target)(extra_arg);
     if (arity == 2)
@@ -41,7 +42,7 @@ x_apply_unary(value_t target, value_t arg) {
             }
 
             new_curry->args[new_size - 1] = arg;
-            return new_curry;
+            return x_object((object_t *) new_curry);
         } else {
             assert(curry->arity == 1);
             return call_with_extra_arg(

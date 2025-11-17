@@ -16,14 +16,12 @@ _main.prolog:
         jmp _main.body
 _main.body:
         leaq x_println_non_void(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, -64(%rbp)
         leaq x_print(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
@@ -35,7 +33,6 @@ _main.body:
         callq x_apply_unary
         movq %rax, -88(%rbp)
         leaq x_newline(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -45,7 +42,6 @@ _main.body:
         callq x_apply_nullary
         movq %rax, -104(%rbp)
         leaq x_print(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
@@ -57,7 +53,6 @@ _main.body:
         callq x_apply_unary
         movq %rax, -128(%rbp)
         leaq x_newline(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -67,7 +62,6 @@ _main.body:
         callq x_apply_nullary
         movq %rax, -144(%rbp)
         leaq x_print(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
@@ -79,7 +73,6 @@ _main.body:
         callq x_apply_unary
         movq %rax, -168(%rbp)
         leaq x_newline(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -94,7 +87,7 @@ _main.body:
         callq x_apply_unary
         movq %rax, -200(%rbp)
         movq -200(%rbp), %rax
-        retq 
+        jmp _main.epilog
 _main.epilog:
         addq $56, %rsp
         popq %r15

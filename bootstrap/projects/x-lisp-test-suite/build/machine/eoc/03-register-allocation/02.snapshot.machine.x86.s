@@ -16,14 +16,12 @@ _main.prolog:
         jmp _main.body
 _main.body:
         leaq x_println_non_void(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, -64(%rbp)
         leaq x_random_dice(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -33,7 +31,6 @@ _main.body:
         callq x_apply_nullary
         movq %rax, -80(%rbp)
         leaq x_random_dice(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -43,14 +40,12 @@ _main.body:
         callq x_apply_nullary
         movq %rax, -96(%rbp)
         leaq x_iadd(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, -104(%rbp)
         leaq x_iadd(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -78,7 +73,7 @@ _main.body:
         callq x_apply_unary
         movq %rax, -160(%rbp)
         movq -160(%rbp), %rax
-        retq 
+        jmp _main.epilog
 _main.epilog:
         addq $56, %rsp
         popq %r15

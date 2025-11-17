@@ -144,7 +144,6 @@
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -153,7 +152,6 @@
     (leaq
      (label-deref (external-label x-random-dice))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 0) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -165,7 +163,6 @@
     (leaq
      (label-deref (external-label x-random-dice))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 0) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -177,7 +174,6 @@
     (leaq
      (label-deref (external-label x-int-less?))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -204,7 +200,6 @@
     (retq))
   (block main/then₂
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -222,7 +217,6 @@
     (jmp (label main/let-body₁)))
   (block main/else₃
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -244,7 +238,6 @@
     (branch-if (cc e) (label main/then₂) (label main/else₃)))
   (block main/then₅
     (leaq (label-deref (external-label x-equal?)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -262,7 +255,6 @@
     (jmp (label main/let-body₄)))
   (block main/else₆
     (leaq (label-deref (external-label x-equal?)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -288,7 +280,6 @@
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -297,7 +288,6 @@
     (leaq
      (label-deref (external-label x-random-dice))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 0) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -309,7 +299,6 @@
     (leaq
      (label-deref (external-label x-random-dice))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 0) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -321,7 +310,6 @@
     (leaq
      (label-deref (external-label x-int-less?))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -348,7 +336,6 @@
     (retq))
   (block main/then₂
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -366,7 +353,6 @@
     (jmp (label main/let-body₁)))
   (block main/else₃
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -388,7 +374,6 @@
     (branch-if (cc e) (label main/then₂) (label main/else₃)))
   (block main/then₅
     (leaq (label-deref (external-label x-equal?)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -406,7 +391,6 @@
     (jmp (label main/let-body₄)))
   (block main/else₆
     (leaq (label-deref (external-label x-equal?)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -432,7 +416,6 @@
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -441,7 +424,6 @@
     (leaq
      (label-deref (external-label x-random-dice))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 0) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -453,7 +435,6 @@
     (leaq
      (label-deref (external-label x-random-dice))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 0) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -465,7 +446,6 @@
     (leaq
      (label-deref (external-label x-int-less?))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -492,7 +472,6 @@
     (retq))
   (block main/then₂
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -510,7 +489,6 @@
     (jmp (label main/let-body₁)))
   (block main/else₃
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -532,7 +510,6 @@
     (branch-if (cc e) (label main/then₂) (label main/else₃)))
   (block main/then₅
     (leaq (label-deref (external-label x-equal?)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -550,7 +527,6 @@
     (jmp (label main/let-body₄)))
   (block main/else₆
     (leaq (label-deref (external-label x-equal?)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -588,7 +564,6 @@
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -597,7 +572,6 @@
     (leaq
      (label-deref (external-label x-random-dice))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 0) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -609,7 +583,6 @@
     (leaq
      (label-deref (external-label x-random-dice))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 0) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -621,7 +594,6 @@
     (leaq
      (label-deref (external-label x-int-less?))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -645,10 +617,9 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -80))
     (movq (reg-deref (reg rbp) -80) (reg rax))
-    (retq))
+    (jmp (label epilog)))
   (block main/then₂
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -666,7 +637,6 @@
     (jmp (label main/let-body₁)))
   (block main/else₃
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -688,7 +658,6 @@
     (branch-if (cc e) (label main/then₂) (label main/else₃)))
   (block main/then₅
     (leaq (label-deref (external-label x-equal?)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -706,7 +675,6 @@
     (jmp (label main/let-body₄)))
   (block main/else₆
     (leaq (label-deref (external-label x-equal?)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))

@@ -15,6 +15,7 @@ void curry_free(curry_t *self);
 
 void curry_put(curry_t *self, size_t index, value_t value);
 bool curry_equal(curry_t *lhs, curry_t *rhs);
+void curry_print(curry_t *self, file_t *file);
 
 bool curry_p(value_t value);
 curry_t *to_curry(value_t value);

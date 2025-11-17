@@ -170,10 +170,14 @@ function selectConst(dest: string, value: Value): Array<M.Instr> {
 }
 
 function selectTagEncoding(operand: M.Operand, tag: M.Tag): Array<M.Instr> {
-  return [
-    M.Instr("salq", [M.Imm(3), operand]),
-    M.Instr("orq", [M.Imm(tag), operand]),
-  ]
+  if (tag === M.AddressTag || tag === M.ObjectTag) {
+    return [M.Instr("orq", [M.Imm(tag), operand])]
+  } else {
+    return [
+      M.Instr("salq", [M.Imm(3), operand]),
+      M.Instr("orq", [M.Imm(tag), operand]),
+    ]
+  }
 }
 
 function selectConstFunction(

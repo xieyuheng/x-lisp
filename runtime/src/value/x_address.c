@@ -10,6 +10,12 @@ address_p(value_t value) {
     return value_tag(value) == X_ADDRESS;
 }
 
+uintptr_t
+to_address(value_t value) {
+    assert(address_p(value));
+    return ((uintptr_t) value & PAYLOAD_MASK);
+}
+
 value_0_ary_fn_t *
 to_0_ary_fn(value_t value) {
     assert(address_p(value));
@@ -19,7 +25,7 @@ to_0_ary_fn(value_t value) {
 value_1_ary_fn_t *
 to_1_ary_fn(value_t value) {
     assert(address_p(value));
-    return (value_1_ary_fn_t *) ((uint64_t) value & PAYLOAD_MASK);
+    return (value_1_ary_fn_t *) to_address(value);
 }
 
 value_2_ary_fn_t *

@@ -5,21 +5,31 @@ tag_t value_tag(value_t value);
 void
 value_print(value_t value, file_t *file) {
     if (value == x_true) {
-        fprintf(file, "true");
+        fprintf(file, "#true");
         return;
     }
 
     if (value == x_false) {
-        fprintf(file, "false");
+        fprintf(file, "#false");
         return;
     }
 
-    if (x_int_p(value)) {
+    if (value == x_void) {
+        fprintf(file, "#void");
+        return;
+    }
+
+    if (value == x_null) {
+        fprintf(file, "#null");
+        return;
+    }
+
+    if (int_p(value)) {
         fprintf(file, "%ld", to_int64(value));
         return;
     }
 
-    if (x_float_p(value)) {
+    if (float_p(value)) {
         char buffer[64];
         sprintf(buffer, "%.17g", to_double(value));
         if (!string_has_char(buffer, '.')) {
@@ -33,7 +43,12 @@ value_print(value_t value, file_t *file) {
         return;
     }
 
-    if (x_object_p(value)) {
+    if (address_p(value)) {
+        fprintf(file, "(@address %p)", (void *) to_address(value));
+        return;
+    }
+
+    if (object_p(value)) {
         object_t *object = to_object(value);
         if (object->spec->print_fn) {
             object->spec->print_fn(object, file);

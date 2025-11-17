@@ -68,7 +68,6 @@
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -76,7 +75,6 @@
     (movq (reg rax) (var _₁))
     (movq (imm 160) (var x₁))
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -107,7 +105,6 @@
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -115,7 +112,6 @@
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (movq (imm 160) (reg-deref (reg rbp) -72))
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -146,7 +142,6 @@
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -154,7 +149,6 @@
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (movq (imm 160) (reg-deref (reg rbp) -72))
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -197,7 +191,6 @@
     (leaq
      (label-deref (external-label x-println-non-void))
      (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -205,7 +198,6 @@
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (movq (imm 160) (reg-deref (reg rbp) -72))
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
-    (salq (imm 3) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -225,7 +217,7 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -112))
     (movq (reg-deref (reg rbp) -112) (reg rax))
-    (retq))
+    (jmp (label epilog)))
   (block epilog
     (addq (imm 56) (reg rsp))
     (popq (reg r15))

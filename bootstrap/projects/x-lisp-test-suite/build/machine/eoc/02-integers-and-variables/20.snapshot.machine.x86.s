@@ -16,7 +16,6 @@ _main.prolog:
         jmp _main.body
 _main.body:
         leaq x_println_non_void(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
@@ -24,7 +23,6 @@ _main.body:
         movq %rax, -64(%rbp)
         movq $8, -72(%rbp)
         leaq x_iadd(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -36,7 +34,6 @@ _main.body:
         movq %rax, -88(%rbp)
         movq $40, -96(%rbp)
         leaq x_iadd(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -51,7 +48,6 @@ _main.body:
         callq x_apply_unary
         movq %rax, -120(%rbp)
         leaq x_iadd(%rip), %rdi
-        salq $3, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -75,7 +71,7 @@ _main.body:
         callq x_apply_unary
         movq %rax, -168(%rbp)
         movq -168(%rbp), %rax
-        retq 
+        jmp _main.epilog
 _main.epilog:
         addq $56, %rsp
         popq %r15
