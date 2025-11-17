@@ -194,7 +194,7 @@ export class Project {
   runSnapshot(id: string): void {
     if (this.isSnapshot(id)) {
       const inputFile = this.getBasicBundleFile(id)
-      const outputFile = this.getSourceFile(id) + ".out"
+      const outputFile = this.getBasicBundleFile(id) + ".out"
       this.logFile("snapshot", outputFile)
       const basicBundleMod = B.loadEntry(createUrl(inputFile))
       B.run(basicBundleMod)
