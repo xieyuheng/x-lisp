@@ -98,3 +98,42 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
+;;; AssignHomePass
+
+(export)
+
+(define-code main
+  (block entry
+    (leaq
+     (label-deref (external-label x-println-non-void))
+     (reg rdi))
+    (salq (imm 3) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 8) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var _₁))
+    (movq (imm 160) (var x₁))
+    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (salq (imm 3) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var _₂))
+    (movq (var _₂) (reg rdi))
+    (movq (var x₁) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (var _₃))
+    (movq (imm 176) (var x₂))
+    (movq (var _₃) (reg rdi))
+    (movq (var x₂) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (var y₁))
+    (movq (var _₁) (reg rdi))
+    (movq (var y₁) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (var _↩))
+    (movq (var _↩) (reg rax))
+    (retq)))
+

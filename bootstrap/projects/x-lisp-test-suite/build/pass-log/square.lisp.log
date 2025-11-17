@@ -73,3 +73,28 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
+;;; AssignHomePass
+
+(export)
+
+(define-code square
+  (block entry
+    (movq (reg rdi) (var x))
+    (leaq (label-deref (external-label x-imul)) (reg rdi))
+    (salq (imm 3) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var _₁))
+    (movq (var _₁) (reg rdi))
+    (movq (var x) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (var _₂))
+    (movq (var _₂) (reg rdi))
+    (movq (var x) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (var _↩))
+    (movq (var _↩) (reg rax))
+    (retq)))
+
