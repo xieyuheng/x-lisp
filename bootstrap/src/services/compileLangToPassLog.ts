@@ -25,10 +25,10 @@ export function compileLangToPassLog(langMod: L.Mod, logFile?: string): void {
   logMachineMod("SelectInstructionPass", machineMod, logFile)
   M.AssignHomePass(machineMod)
   logMachineMod("AssignHomePass", machineMod, logFile)
-  // M.PatchInstructionPass(machineMod)
-  // logMachineMod("PatchInstructionPass", machineMod, logFile)
-  // M.PrologAndEpilogPass(machineMod)
-  // logMachineMod("PrologAndEpilogPass", machineMod, logFile)
+  M.PatchInstructionPass(machineMod)
+  logMachineMod("PatchInstructionPass", machineMod, logFile)
+  M.PrologAndEpilogPass(machineMod)
+  logMachineMod("PrologAndEpilogPass", machineMod, logFile)
 }
 
 function logLangMod(tag: string, langMod: L.Mod, logFile?: string): void {

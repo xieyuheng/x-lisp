@@ -129,3 +129,81 @@
     (movq (reg-deref (reg rbp) -112) (reg rax))
     (retq)))
 
+;;; PatchInstructionPass
+
+(export)
+
+(define-code main
+  (block entry
+    (leaq
+     (label-deref (external-label x-println-non-void))
+     (reg rdi))
+    (salq (imm 3) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 8) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (imm 256) (reg-deref (reg rbp) -72))
+    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (salq (imm 3) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (imm 80) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -80) (reg rdi))
+    (movq (reg-deref (reg rbp) -88) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -104))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -104) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -112))
+    (movq (reg-deref (reg rbp) -112) (reg rax))
+    (retq)))
+
+;;; PrologAndEpilogPass
+
+(export)
+
+(define-code main
+  (block entry
+    (leaq
+     (label-deref (external-label x-println-non-void))
+     (reg rdi))
+    (salq (imm 3) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 8) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (imm 256) (reg-deref (reg rbp) -72))
+    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (salq (imm 3) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (imm 80) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -80) (reg rdi))
+    (movq (reg-deref (reg rbp) -88) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -104))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -104) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -112))
+    (movq (reg-deref (reg rbp) -112) (reg rax))
+    (retq)))
+
