@@ -12,7 +12,7 @@ _main.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $64, %rsp
+        subq $176, %rsp
         jmp _main.body
 _main.body:
         leaq x_println_non_void(%rip), %rdi
@@ -51,20 +51,20 @@ _main.body:
         jmp _main.main.else₆
 _main.main.let_body₁:
         movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq -120(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -128(%rbp)
+        movq -128(%rbp), %rax
         jmp _main.epilog
 _main.main.then₂:
-        movq $0, -64(%rbp)
+        movq $0, -120(%rbp)
         jmp _main.main.let_body₁
 _main.main.else₃:
-        movq $336, -64(%rbp)
+        movq $336, -120(%rbp)
         jmp _main.main.let_body₁
 _main.main.let_body₄:
         movq x_true(%rip), %rax
-        cmpq -64(%rbp), %rax
+        cmpq -136(%rbp), %rax
         je _main.main.then₂
         jmp _main.main.else₃
 _main.main.then₅:
@@ -73,32 +73,32 @@ _main.main.then₅:
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, -64(%rbp)
+        movq %rax, -144(%rbp)
         leaq x_random_dice(%rip), %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, -72(%rbp)
-        movq -72(%rbp), %rdi
+        movq %rax, -152(%rbp)
+        movq -152(%rbp), %rdi
         callq x_apply_nullary
-        movq %rax, -80(%rbp)
-        movq -64(%rbp), %rdi
-        movq -80(%rbp), %rsi
+        movq %rax, -160(%rbp)
+        movq -144(%rbp), %rdi
+        movq -160(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -88(%rbp)
-        movq $16, -96(%rbp)
-        movq -88(%rbp), %rdi
-        movq -96(%rbp), %rsi
+        movq %rax, -168(%rbp)
+        movq $16, -176(%rbp)
+        movq -168(%rbp), %rdi
+        movq -176(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -104(%rbp)
+        movq %rax, -136(%rbp)
         jmp _main.main.let_body₄
 _main.main.else₆:
         movq x_false(%rip), %rax
-        movq %rax, -64(%rbp)
+        movq %rax, -136(%rbp)
         jmp _main.main.let_body₄
 _main.epilog:
-        addq $64, %rsp
+        addq $176, %rsp
         popq %r15
         popq %r14
         popq %r13

@@ -1,0 +1,53 @@
+(export main)
+
+(define-code main
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 88) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (leaq
+     (label-deref (external-label x-println-non-void))
+     (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 8) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (reg-deref (reg rbp) -72) (reg rax))
+    (branch-if (cc e) (label main/then₂) (label main/else₃)))
+  (block main/let-body₁
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -80) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (jmp (label epilog)))
+  (block main/then₂
+    (movq (imm 8) (reg-deref (reg rbp) -80))
+    (jmp (label main/let-body₁)))
+  (block main/else₃
+    (movq (imm 16) (reg-deref (reg rbp) -80))
+    (jmp (label main/let-body₁)))
+  (block epilog
+    (addq (imm 88) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))

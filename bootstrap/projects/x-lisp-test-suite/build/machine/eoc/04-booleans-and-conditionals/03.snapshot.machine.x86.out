@@ -1,3 +1,1 @@
-[x_apply_unary] can not apply target
-   target: 42
-   arg: (@curry (@address 0x5596aea16fb0) 2 [])
+42

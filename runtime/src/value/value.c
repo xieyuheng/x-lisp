@@ -5,12 +5,12 @@ tag_t value_tag(value_t value);
 void
 value_print(value_t value, file_t *file) {
     if (value == x_true) {
-        fprintf(file, "#true");
+        fprintf(file, "#t");
         return;
     }
 
     if (value == x_false) {
-        fprintf(file, "#false");
+        fprintf(file, "#f");
         return;
     }
 

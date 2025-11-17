@@ -14,10 +14,11 @@ type Info = {
 function onDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "CodeDefinition": {
+      const info = { "home-locations": createHomeLocations(definition) }
+      definition.info = { ...definition.info, ...info }
+
       const blocks = Array.from(definition.blocks.values())
       for (const block of blocks) {
-        const info = { "home-locations": createHomeLocations(definition) }
-        definition.info = { ...definition.info, ...info }
         definition.blocks.set(block.label, onBlock(info, block))
       }
 
