@@ -2,7 +2,15 @@
 
 value_t
 x_apply_nullary(value_t target) {
-    return to_0_ary_fn(target)();
+    if (curry_p(target)) {
+        curry_t *curry = to_curry(target);
+        assert(curry->arity == 0);
+        return to_0_ary_fn(curry->target)();
+    }
+
+    who_printf("can not apply target\n");
+    printf("   target: "); value_print(target, stdout); printf("\n");
+    assert(false && "can not apply target");
 }
 
 static value_t

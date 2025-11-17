@@ -284,7 +284,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 176) (reg rsp))
     (jmp (label body)))
   (block body
     (leaq
@@ -348,7 +348,7 @@
     (movq (reg-deref (reg rbp) -176) (reg rax))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 176) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))

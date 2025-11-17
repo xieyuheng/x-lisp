@@ -2,6 +2,7 @@ import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
 import { type Block } from "../block/index.ts"
 import type { Chunk } from "../chunk/index.ts"
 import type { Mod } from "../mod/index.ts"
+import type { Operand } from "../operand/index.ts"
 
 export type Definition = CodeDefinition | DataDefinition
 
@@ -10,6 +11,9 @@ export type CodeDefinition = {
   mod: Mod
   name: string
   blocks: Map<string, Block>
+  info: Partial<{
+    "home-locations": Map<string, Operand>
+  }>
   meta?: Meta
 }
 
@@ -24,6 +28,7 @@ export function CodeDefinition(
     mod,
     name,
     blocks,
+    info: {},
     meta,
   }
 }

@@ -7,8 +7,8 @@ export function AssignHomePass(mod: M.Mod): void {
   }
 }
 
-type Context = {
-  locationMap: Map<string, M.Operand>
+type Info = {
+  "home-locations": Map<string, M.Operand>
 }
 
 function onDefinition(definition: M.Definition): null {
@@ -16,9 +16,9 @@ function onDefinition(definition: M.Definition): null {
     case "CodeDefinition": {
       const blocks = Array.from(definition.blocks.values())
       for (const block of blocks) {
-        const locationMap = createLocationMap(definition)
-        const context: Context = { locationMap }
-        definition.blocks.set(block.label, onBlock(context, block))
+        const info = { "home-locations": createHomeLocations(definition) }
+        definition.info = { ...definition.info, ...info }
+        definition.blocks.set(block.label, onBlock(info, block))
       }
 
       return null
@@ -30,50 +30,50 @@ function onDefinition(definition: M.Definition): null {
   }
 }
 
-export function createLocationMap(
+export function createHomeLocations(
   definition: M.CodeDefinition,
 ): Map<string, M.Operand> {
-  const locationMap = new Map()
+  const homeLocations = new Map()
   for (const block of definition.blocks.values()) {
     for (const instr of block.instrs) {
       for (const operand of instr.operands) {
         if (operand.kind === "Var") {
-          const found = locationMap.get(operand.name)
+          const found = homeLocations.get(operand.name)
           if (found === undefined) {
             const baseIndex =
               M.ABIs["x86-64-sysv"]["callee-saved-reg-names"].length
-            const index = baseIndex + locationMap.size
+            const index = baseIndex + homeLocations.size
             const offset = -8 * (index + 1)
             const location = M.RegDeref(M.Reg("rbp"), offset, operand.meta)
-            locationMap.set(operand.name, location)
+            homeLocations.set(operand.name, location)
           }
         }
       }
     }
   }
 
-  return locationMap
+  return homeLocations
 }
 
-function onBlock(context: Context, block: M.Block): M.Block {
+function onBlock(info: Info, block: M.Block): M.Block {
   return M.Block(
     block.label,
-    block.instrs.map((instr) => onInstr(context, instr)),
+    block.instrs.map((instr) => onInstr(info, instr)),
     block.meta,
   )
 }
 
-function onInstr(context: Context, instr: M.Instr): M.Instr {
+function onInstr(info: Info, instr: M.Instr): M.Instr {
   return M.Instr(
     instr.op,
-    instr.operands.map((operand) => onOperand(context, operand)),
+    instr.operands.map((operand) => onOperand(info, operand)),
     instr.meta,
   )
 }
 
-function onOperand(context: Context, operand: M.Operand): M.Operand {
+function onOperand(info: Info, operand: M.Operand): M.Operand {
   if (operand.kind === "Var") {
-    const location = context.locationMap.get(operand.name)
+    const location = info["home-locations"].get(operand.name)
     if (location === undefined) {
       let message = `[onOperand] undefined location`
       message += `\n  name: ${operand.name}`

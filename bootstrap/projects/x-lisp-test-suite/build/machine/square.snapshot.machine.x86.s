@@ -12,7 +12,7 @@ _main.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $56, %rsp
+        subq $112, %rsp
         jmp _main.body
 _main.body:
         leaq x_println_non_void(%rip), %rdi
@@ -49,7 +49,7 @@ _main.body:
         movq -112(%rbp), %rax
         jmp _main.epilog
 _main.epilog:
-        addq $56, %rsp
+        addq $112, %rsp
         popq %r15
         popq %r14
         popq %r13
@@ -72,7 +72,7 @@ _§₁.square.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $56, %rsp
+        subq $88, %rsp
         jmp _§₁.square.body
 _§₁.square.body:
         movq %rdi, -64(%rbp)
@@ -93,7 +93,7 @@ _§₁.square.body:
         movq -88(%rbp), %rax
         jmp _§₁.square.epilog
 _§₁.square.epilog:
-        addq $56, %rsp
+        addq $88, %rsp
         popq %r15
         popq %r14
         popq %r13

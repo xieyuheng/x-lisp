@@ -48,11 +48,12 @@ curry_print(curry_t *self, file_t *file) {
     printf("(@curry ");
     value_print(self->target, file);
     printf(" %ld", self->arity);
+    printf(" [");
     for (size_t i = 0; i < self->size; i++) {
-        printf(" ");
+        if (i > 0) printf(" ");
         value_print(self->args[i], file);
     }
-
+    printf("]");
     printf(")");
 }
 

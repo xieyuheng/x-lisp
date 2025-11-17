@@ -1,3 +1,4 @@
+import assert from "node:assert"
 import * as M from "../../machine/index.ts"
 
 export function PrologAndEpilogPass(mod: M.Mod): void {
@@ -54,7 +55,8 @@ function createRegisterInfo(definition: M.CodeDefinition): RegisterInfo {
   const calleeSavedRegs = calleeSavedRegNames.map((name) => M.Reg(name))
 
   // TODO all variables are spilled for now
-  const spillCount = M.createLocationMap(definition).size
+  assert(definition.info["home-locations"])
+  const spillCount = definition.info["home-locations"].size
 
   return {
     calleeSavedRegs,

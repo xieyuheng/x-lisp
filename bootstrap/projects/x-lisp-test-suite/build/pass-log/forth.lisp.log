@@ -1069,14 +1069,14 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 64) (reg rsp))
     (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg-deref (reg rbp) -64) (reg rax))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 64) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -1098,7 +1098,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 96) (reg rsp))
     (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
@@ -1115,7 +1115,7 @@
     (movq (reg-deref (reg rbp) -96) (reg rax))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 96) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -1137,7 +1137,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 160) (reg rsp))
     (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
@@ -1193,7 +1193,7 @@
     (movq (reg-deref (reg rbp) -160) (reg rax))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 160) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -1215,7 +1215,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 168) (reg rsp))
     (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
@@ -1272,7 +1272,7 @@
     (movq (reg-deref (reg rbp) -168) (reg rax))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 168) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -1294,7 +1294,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
@@ -1306,7 +1306,7 @@
     (movq (reg-deref (reg rbp) -80) (reg rax))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 80) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -1328,7 +1328,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 160) (reg rsp))
     (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
@@ -1384,7 +1384,7 @@
     (movq (reg-deref (reg rbp) -160) (reg rax))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 160) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -1406,7 +1406,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 88) (reg rsp))
     (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
@@ -1422,7 +1422,7 @@
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 88) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -1444,7 +1444,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 120) (reg rsp))
     (jmp (label body)))
   (block body
     (leaq
@@ -1496,7 +1496,7 @@
     (movq (reg-deref (reg rbp) -120) (reg rax))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 120) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))

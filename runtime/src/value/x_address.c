@@ -18,7 +18,11 @@ to_address(value_t value) {
 
 value_0_ary_fn_t *
 to_0_ary_fn(value_t value) {
-    assert(address_p(value));
+    if (!address_p(value)) {
+        who_printf("value is not address:"); value_print(value, stdout); printf("\n");
+        assert(false && "value is not address");
+    }
+
     return (value_0_ary_fn_t *) to_address(value);
 }
 

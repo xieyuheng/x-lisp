@@ -992,7 +992,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 96) (reg rsp))
     (jmp (label body)))
   (block body
     (leaq
@@ -1235,7 +1235,7 @@
     (movq (reg rax) (reg-deref (reg rbp) -96))
     (jmp (label main/let-body₁₀)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 96) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))

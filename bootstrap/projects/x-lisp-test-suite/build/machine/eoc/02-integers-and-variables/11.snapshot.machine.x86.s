@@ -12,7 +12,7 @@ _main.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $56, %rsp
+        subq $176, %rsp
         jmp _main.body
 _main.body:
         leaq x_println_non_void(%rip), %rdi
@@ -74,7 +74,7 @@ _main.body:
         movq -176(%rbp), %rax
         jmp _main.epilog
 _main.epilog:
-        addq $56, %rsp
+        addq $176, %rsp
         popq %r15
         popq %r14
         popq %r13
