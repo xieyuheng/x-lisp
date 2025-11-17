@@ -9,6 +9,8 @@ object_spec_t curry_object_spec = {
 
 curry_t *
 make_curry(value_t target, size_t arity, size_t size) {
+    assert(address_p(target));
+
     curry_t *self = new(curry_t);
     self->spec = &curry_object_spec;
     self->target = target;

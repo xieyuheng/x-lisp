@@ -1,5 +1,6 @@
 .global _main
 
+.align 8
 .text
 _main:
 _main.prolog:
@@ -60,6 +61,7 @@ _main.epilog:
         popq %rbp
         retq 
 
+.align 8
 .text
 _§₁.square:
 _§₁.square.prolog:

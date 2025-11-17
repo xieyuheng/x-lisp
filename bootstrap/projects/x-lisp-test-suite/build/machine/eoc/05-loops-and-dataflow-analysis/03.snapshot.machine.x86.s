@@ -1,5 +1,6 @@
 .global _main
 
+.align 8
 .text
 _main:
 _main.prolog:
