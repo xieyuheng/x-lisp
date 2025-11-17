@@ -1,6 +1,6 @@
 import { Block } from "../block/index.ts";
 import type { Definition } from "../definition/index.ts";
-import type { Instr } from "../instr/index.ts";
+import { Instr } from "../instr/index.js";
 import type { Mod } from "../mod/index.ts";
 import { modDefinitions } from "../mod/index.ts"
 import type { Operand } from "../operand/index.ts";
@@ -43,5 +43,13 @@ function onBlock(context: Context, block: Block): Block {
 }
 
 function onInstr(context: Context, instr: Instr): Instr {
-  return instr
+  return Instr(
+    instr.op,
+    instr.operands.map(operand => onOperand(context, operand)),
+    instr.meta,
+  )
+}
+
+function onOperand(context: Context, operand: Operand): Operand {
+  return operand
 }
