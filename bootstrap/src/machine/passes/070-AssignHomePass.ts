@@ -1,9 +1,9 @@
-import { Block } from "../block/index.ts";
-import type { Definition } from "../definition/index.ts";
-import { Instr } from "../instr/index.js";
-import type { Mod } from "../mod/index.ts";
+import { Block } from "../block/index.ts"
+import type { Definition } from "../definition/index.ts"
+import { Instr } from "../instr/index.ts"
+import type { Mod } from "../mod/index.ts"
 import { modDefinitions } from "../mod/index.ts"
-import type { Operand } from "../operand/index.ts";
+import type { Operand } from "../operand/index.ts"
 
 export function AssignHomePass(mod: Mod): void {
   for (const definition of modDefinitions(mod)) {
@@ -37,7 +37,7 @@ function onDefinition(definition: Definition): null {
 function onBlock(context: Context, block: Block): Block {
   return Block(
     block.label,
-    block.instrs.map(instr => onInstr(context, instr)),
+    block.instrs.map((instr) => onInstr(context, instr)),
     block.meta,
   )
 }
@@ -45,11 +45,25 @@ function onBlock(context: Context, block: Block): Block {
 function onInstr(context: Context, instr: Instr): Instr {
   return Instr(
     instr.op,
-    instr.operands.map(operand => onOperand(context, operand)),
+    instr.operands.map((operand) => onOperand(context, operand)),
     instr.meta,
   )
 }
 
 function onOperand(context: Context, operand: Operand): Operand {
-  return operand
+  if (operand.kind === "Var") {
+    const location = context.locationMap.get(operand.name)
+    if (location === undefined) {
+      return operand
+
+      // let message = `[onOperand] undefined location`
+      // message += `\n  name: ${operand.name}`
+      // if (operand.meta) throw new S.ErrorWithMeta(message, operand.meta)
+      // else throw new Error(message, operand.meta)
+    }
+
+    return location
+  } else {
+    return operand
+  }
 }
