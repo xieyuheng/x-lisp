@@ -1,5 +1,6 @@
-import type { Block } from "../block/index.ts";
+import { Block } from "../block/index.ts";
 import type { Definition } from "../definition/index.ts";
+import type { Instr } from "../instr/index.ts";
 import type { Mod } from "../mod/index.ts";
 import { modDefinitions } from "../mod/index.ts"
 import type { Operand } from "../operand/index.ts";
@@ -34,5 +35,13 @@ function onDefinition(definition: Definition): null {
 }
 
 function onBlock(context: Context, block: Block): Block {
-  return block
+  return Block(
+    block.label,
+    block.instrs.map(instr => onInstr(context, instr)),
+    block.meta,
+  )
+}
+
+function onInstr(context: Context, instr: Instr): Instr {
+  return instr
 }
