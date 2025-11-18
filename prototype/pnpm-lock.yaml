@@ -12,8 +12,8 @@ importers:
         specifier: ^0.2.3
         version: 0.2.3
       '@xieyuheng/x-sexp.js':
-        specifier: ^0.5.7
-        version: 0.5.7
+        specifier: ^0.5.8
+        version: 0.5.8
     devDependencies:
       '@types/node':
         specifier: ^24.10.1
@@ -33,14 +33,11 @@ packages:
   '@types/node@24.10.1':
     resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
 
-  '@xieyuheng/command-router.js@0.1.10':
-    resolution: {integrity: sha512-kucsG1vxOt4xSSoy17qXkXLhuYFNVPo6EcUfatiQW5kB3mffPRbYcTt0Hey5MpcU5JgpZqxlFXyWHnCwoaNd2g==}
-
   '@xieyuheng/command.js@0.2.3':
     resolution: {integrity: sha512-2pyhP7NW/DV0FDPGO4tRWFRldxd5F04xq389GBsuWGQCrNacOjmU/nlR8tJKl/rATZJV5bwuyKXZ72jMdMsFnQ==}
 
-  '@xieyuheng/x-sexp.js@0.5.7':
-    resolution: {integrity: sha512-RvChRenDvMSIOghIQ+Zyq1Gun8qrWD0biKXksFpSuKsAS6yWDWREJMr6u+ocTn5MKlcKF1pYVjFpfps57xLimQ==}
+  '@xieyuheng/x-sexp.js@0.5.8':
+    resolution: {integrity: sha512-JVxLCthStDtx7fpGybgXJQxbHeP1NbT4b1NHAn3nNVEmiWlbK/fyjugN+Mx/nbneMycb4AiyRbqWZgSj18SWnA==}
     hasBin: true
 
   prettier-plugin-organize-imports@4.3.0:
@@ -72,13 +69,11 @@ snapshots:
     dependencies:
       undici-types: 7.16.0
 
-  '@xieyuheng/command-router.js@0.1.10': {}
-
   '@xieyuheng/command.js@0.2.3': {}
 
-  '@xieyuheng/x-sexp.js@0.5.7':
+  '@xieyuheng/x-sexp.js@0.5.8':
     dependencies:
-      '@xieyuheng/command-router.js': 0.1.10
+      '@xieyuheng/command.js': 0.2.3
 
   prettier-plugin-organize-imports@4.3.0(prettier@3.6.2)(typescript@5.9.3):
     dependencies:

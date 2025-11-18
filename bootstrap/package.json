@@ -7,14 +7,15 @@
   "files": [
     "src",
     "lib",
-    "lisp"
+    "lisp",
+    "bin"
   ],
   "bin": {
     "x-lisp-boot": "lib/main.js"
   },
   "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
+    "build": "cp ../runtime/bin/runtime.o bin && tsc",
+    "build:watch": "cp ../runtime/bin/runtime.o bin && tsc --watch",
     "test": "node --test 'src/**/*.test.ts'",
     "test-suite:bun": "bun src/main.ts project:test --config ../test-suite/project.json",
     "test-suite:node": "node --stack-size=65536 src/main.ts project:test --config ../test-suite/project.json",
@@ -23,7 +24,7 @@
   },
   "dependencies": {
     "@xieyuheng/command.js": "^0.2.3",
-    "@xieyuheng/x-sexp.js": "^0.5.7",
+    "@xieyuheng/x-sexp.js": "^0.5.8",
     "zod": "^4.1.12"
   },
   "devDependencies": {

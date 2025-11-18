@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@xieyuheng/command.js": "^0.2.3",
-    "@xieyuheng/x-sexp.js": "^0.5.7"
+    "@xieyuheng/x-sexp.js": "^0.5.8"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",

@@ -22,6 +22,6 @@ export function assembleX86FileWithRuntime(file: string): void {
 
 function useRuntimeFile(): string {
   const currentDir = Path.dirname(fileURLToPath(import.meta.url))
-  const runtimeFile = Path.join(currentDir, "../../../runtime/bin/runtime.o")
+  const runtimeFile = Path.join(currentDir, "../../bin/runtime.o")
   return runtimeFile
 }
