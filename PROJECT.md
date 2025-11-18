@@ -244,6 +244,11 @@ date: 2025-10-22
     但是目前 apply 的 target 只能是 curry（closure）。
     这让我怀疑 overload application 的想法是否正确。
 
+    因为不能使用带有可变参数的 apply，而只能使用 apply-unary，
+    意味着 apply overload 到不同 arity 的语义只能是「形成 curry」。
+    而 inet-lisp 和 propagator-lisp 中「返回多个值」的语义，
+    可能要用新的语法关键词才能表达出来。
+
 - 汇编定义的函数不会自动 align 到 8，
   生成 GAS 代码时，需要明确 `.align 8`。
 

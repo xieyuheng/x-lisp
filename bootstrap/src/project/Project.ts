@@ -37,9 +37,9 @@ export class Project {
   outputDirectory(): string {
     return this.config["build"]["output-directory"]
       ? Path.resolve(
-        this.rootDirectory,
-        this.config["build"]["output-directory"],
-      )
+          this.rootDirectory,
+          this.config["build"]["output-directory"],
+        )
       : this.sourceDirectory()
   }
 
