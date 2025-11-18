@@ -73,41 +73,41 @@
 ;;; int
 
 (int? value)
-;; (ineg x)
+(ineg x)
 (iadd x y)
 (isub x y)
 (imul x y)
 (idiv x y)
 (imod x y)
-;; (int-max x y)
-;; (int-min x y)
-;; (int-greater? x y)
-;; (int-less? x y)
-;; (int-greater-equal? x y)
-;; (int-less-equal? x y)
-;; (int-positive? x)
-;; (int-non-negative? x)
-;; (int-compare-ascending x y)
-;; (int-compare-descending x y)
+(int-max x y)
+(int-min x y)
+(int-greater? x y)
+(int-less? x y)
+(int-greater-equal? x y)
+(int-less-equal? x y)
+(int-positive? x)
+(int-non-negative? x)
+(int-compare-ascending x y)
+(int-compare-descending x y)
 
 ;;; float
 
 (float? value)
-;; (fneg x)
+(fneg x)
 (fadd x y)
 (fsub x y)
 (fmul x y)
 (fdiv x y)
-;; (float-max x y)
-;; (float-min x y)
-;; (float-greater? x y)
-;; (float-less? x y)
-;; (float-greater-equal? x y)
-;; (float-less-equal? x y)
-;; (float-positive? x)
-;; (float-non-negative? x)
-;; (float-compare-ascending x y)
-;; (float-compare-descending x y)
+(float-max x y)
+(float-min x y)
+(float-greater? x y)
+(float-less? x y)
+(float-greater-equal? x y)
+(float-less-equal? x y)
+(float-positive? x)
+(float-non-negative? x)
+(float-compare-ascending x y)
+(float-compare-descending x y)
 
 ;;; hashtag
 
@@ -137,10 +137,10 @@
 
 ;;; value
 
-;; (same? lhs rhs)
-;; (equal? lhs rhs)
+(same? lhs rhs)
+(equal? lhs rhs)
 ;; (atom? value)
-;; (anything? value)
+(anything? value)
 
 ;;; schema
 
@@ -349,10 +349,10 @@
 
 ;;; console
 
-;; (print value)
-;; (println-non-void value)
+(print value)
+(println-non-void value)
 ;; (write string)
-;; (newline)
+(newline)
 
 ;;; void
 
