@@ -22,6 +22,10 @@ export function projectOutputDirectory(project: Project): string {
 }
 
 export function projectSourceIds(project: Project): Array<string> {
+  if (project.sourceIds) {
+    return project.sourceIds
+  }
+
   return fs
     .readdirSync(projectSourceDirectory(project), {
       encoding: "utf8",

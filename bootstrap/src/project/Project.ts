@@ -3,6 +3,7 @@ import { type ProjectConfig } from "./ProjectConfig.ts"
 export type Project = {
   rootDirectory: string
   config: ProjectConfig
+  sourceIds?: Array<string>
 }
 
 export function createProject(
