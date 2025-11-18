@@ -19,8 +19,8 @@
     "format": "prettier src --write"
   },
   "dependencies": {
-    "@xieyuheng/command.js": "^0.2.3",
-    "@xieyuheng/x-sexp.js": "^0.5.8"
+    "@xieyuheng/command.js": "^0.3.1",
+    "@xieyuheng/x-sexp.js": "^0.7.1"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",

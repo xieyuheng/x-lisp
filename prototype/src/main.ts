@@ -18,7 +18,7 @@ router.defineRoutes(["run file --debug --no-prelude", "repl --no-prelude"])
 router.defineHandlers({
   run: {
     middleware: [setupGlobals(), setupFlags()],
-    handler: ([file]) => load(createUrl(file)),
+    handler: ({ args: [file] }) => load(createUrl(file)),
   },
   repl: {
     middleware: [setupGlobals(), setupFlags(), enableDebug()],
@@ -38,22 +38,22 @@ try {
 // Middleware
 
 function setupGlobals(): Cmd.Middleware {
-  return (args, options, context, continuation) => {
-    globals.commandLineArgs = context.tokens
-    return continuation(args, options, context)
+  return (ctx, next) => {
+    globals.commandLineArgs = ctx.tokens
+    return next(ctx)
   }
 }
 
 function setupFlags(): Cmd.Middleware {
-  return (args, options, context, continuation) => {
-    if (options["--debug"] !== undefined) flags["debug"] = true
-    if (options["--no-prelude"] !== undefined) flags["no-prelude"] = true
-    return continuation(args, options, context)
+  return (ctx, next) => {
+    if (ctx.options["--debug"] !== undefined) flags["debug"] = true
+    if (ctx.options["--no-prelude"] !== undefined) flags["no-prelude"] = true
+    return next(ctx)
   }
 }
 function enableDebug(): Cmd.Middleware {
-  return (args, options, context, continuation) => {
+  return (ctx, next) => {
     flags["debug"] = true
-    return continuation(args, options, context)
+    return next(ctx)
   }
 }
