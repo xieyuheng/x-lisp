@@ -109,9 +109,9 @@ export class Project {
     }
   }
 
-  forEachSource(f: (id: string) => void) {
+  forEachSource(f: (project: Project, id: string) => void) {
     for (const id of this.sourceIds()) {
-      f(id)
+      f(this, id)
     }
   }
 
@@ -124,65 +124,65 @@ export class Project {
     this.forEachSource(this.buildMachineX86Binary.bind(this))
   }
 
-  buildPassLog(id: string): void {
-    const inputFile = this.getSourceFile(id)
-    const outputFile = this.getPassLogFile(id)
-    this.logFile("pass-log", outputFile)
+  buildPassLog(project: Project, id: string): void {
+    const inputFile = project.getSourceFile(id)
+    const outputFile = project.getPassLogFile(id)
+    project.logFile("pass-log", outputFile)
     const langMod = L.loadEntry(createUrl(inputFile))
-    this.writeFile(outputFile, "")
+    project.writeFile(outputFile, "")
     Services.compileLangToPassLog(langMod, outputFile)
   }
 
-  buildBasic(id: string): void {
-    const inputFile = this.getSourceFile(id)
-    const outputFile = this.getBasicFile(id)
-    this.logFile("basic", outputFile)
+  buildBasic(project: Project, id: string): void {
+    const inputFile = project.getSourceFile(id)
+    const outputFile = project.getBasicFile(id)
+    project.logFile("basic", outputFile)
     const langMod = L.loadEntry(createUrl(inputFile))
     const basicMod = Services.compileLangToBasic(langMod)
     const outputText = B.prettyMod(globals.maxWidth, basicMod)
-    this.writeFile(outputFile, outputText)
+    project.writeFile(outputFile, outputText)
   }
 
-  buildBasicBundle(id: string): void {
-    if (this.isTest(id) || this.isSnapshot(id)) {
-      const inputFile = this.getBasicFile(id)
-      const outputFile = this.getBasicBundleFile(id)
-      this.logFile("basic-bundle", outputFile)
+  buildBasicBundle(project: Project, id: string): void {
+    if (project.isTest(id) || project.isSnapshot(id)) {
+      const inputFile = project.getBasicFile(id)
+      const outputFile = project.getBasicBundleFile(id)
+      project.logFile("basic-bundle", outputFile)
       const basicMod = B.loadEntry(createUrl(inputFile))
       const basicBundleMod = B.bundle(basicMod)
       const outputText = B.prettyMod(globals.maxWidth, basicBundleMod)
-      this.writeFile(outputFile, outputText)
+      project.writeFile(outputFile, outputText)
     }
   }
 
-  buildMachine(id: string): void {
-    if (this.isTest(id) || this.isSnapshot(id)) {
-      const inputFile = this.getBasicBundleFile(id)
-      const outputFile = this.getMachineFile(id)
-      this.logFile("machine", outputFile)
+  buildMachine(project: Project, id: string): void {
+    if (project.isTest(id) || project.isSnapshot(id)) {
+      const inputFile = project.getBasicBundleFile(id)
+      const outputFile = project.getMachineFile(id)
+      project.logFile("machine", outputFile)
       const basicBundleMod = B.loadEntry(createUrl(inputFile))
       const machineMod = Services.compileBasicToX86Machine(basicBundleMod)
       const outputText = M.prettyMod(globals.maxWidth, machineMod)
-      this.writeFile(outputFile, outputText)
+      project.writeFile(outputFile, outputText)
     }
   }
 
-  buildMachineX86assembly(id: string): void {
-    if (this.isTest(id) || this.isSnapshot(id)) {
-      const inputFile = this.getMachineFile(id)
-      const outputFile = this.getMachineFile(id) + ".x86.s"
-      this.logFile("x86-assembly", outputFile)
+  buildMachineX86assembly(project: Project, id: string): void {
+    if (project.isTest(id) || project.isSnapshot(id)) {
+      const inputFile = project.getMachineFile(id)
+      const outputFile = project.getMachineFile(id) + ".x86.s"
+      project.logFile("x86-assembly", outputFile)
       const machineMod = M.loadEntry(createUrl(inputFile))
       const outputText = M.transpileToX86Assembly(machineMod)
-      this.writeFile(outputFile, outputText)
+      project.writeFile(outputFile, outputText)
     }
   }
 
-  buildMachineX86Binary(id: string): void {
-    if (this.isTest(id) || this.isSnapshot(id)) {
-      const inputFile = this.getMachineFile(id) + ".x86.s"
-      const outputFile = this.getMachineFile(id) + ".x86"
-      this.logFile("x86-binary", outputFile)
+  buildMachineX86Binary(project: Project, id: string): void {
+    if (project.isTest(id) || project.isSnapshot(id)) {
+      const inputFile = project.getMachineFile(id) + ".x86.s"
+      const outputFile = project.getMachineFile(id) + ".x86"
+      project.logFile("x86-binary", outputFile)
       Services.assembleX86FileWithRuntime(inputFile)
     }
   }
@@ -203,10 +203,10 @@ export class Project {
     this.forEachSource(this.runX86Snapshot.bind(this))
   }
 
-  runBasicTest(id: string): void {
-    if (this.isTest(id)) {
-      const inputFile = this.getBasicBundleFile(id)
-      this.logFile("basic-test", inputFile)
+  runBasicTest(project: Project, id: string): void {
+    if (project.isTest(id)) {
+      const inputFile = project.getBasicBundleFile(id)
+      project.logFile("basic-test", inputFile)
       const basicBundleMod = B.loadEntry(createUrl(inputFile))
       B.run(basicBundleMod)
       const output = B.console.consumeOutput()
@@ -214,31 +214,31 @@ export class Project {
     }
   }
 
-  runBasicSnapshot(id: string): void {
-    if (this.isSnapshot(id)) {
-      const inputFile = this.getBasicBundleFile(id)
+  runBasicSnapshot(project: Project, id: string): void {
+    if (project.isSnapshot(id)) {
+      const inputFile = project.getBasicBundleFile(id)
       const outputFile = inputFile + ".out"
-      this.logFile("basic-snapshot", outputFile)
+      project.logFile("basic-snapshot", outputFile)
       const basicBundleMod = B.loadEntry(createUrl(inputFile))
       B.run(basicBundleMod)
       const outputText = B.console.consumeOutput()
-      this.writeFile(outputFile, outputText)
+      project.writeFile(outputFile, outputText)
     }
   }
 
-  runX86Test(id: string): void {
-    if (this.isTest(id)) {
-      const inputFile = this.getMachineFile(id) + ".x86"
-      this.logFile("x86-test", inputFile)
+  runX86Test(project: Project, id: string): void {
+    if (project.isTest(id)) {
+      const inputFile = project.getMachineFile(id) + ".x86"
+      project.logFile("x86-test", inputFile)
       systemShellRun(inputFile, [])
     }
   }
 
-  runX86Snapshot(id: string): void {
-    if (this.isSnapshot(id)) {
-      const inputFile = this.getMachineFile(id) + ".x86"
+  runX86Snapshot(project: Project, id: string): void {
+    if (project.isSnapshot(id)) {
+      const inputFile = project.getMachineFile(id) + ".x86"
       const outputFile = inputFile + ".out"
-      this.logFile("x86-snapshot", outputFile)
+      project.logFile("x86-snapshot", outputFile)
       systemShellRun(inputFile, [">", outputFile])
     }
   }

@@ -1,5 +1,3 @@
-[bootstrap] `project` -- `forEachSource` -- pass `project` to callback function
-
 [bootstrap] extract `projectClean`
 [bootstrap] extract `projectBuild`
 [bootstrap] extract `projectTest`
