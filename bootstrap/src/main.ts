@@ -15,6 +15,10 @@ import {
   projectClean,
   projectTest,
 } from "./project/index.ts"
+import {
+  moduleProjectBuild,
+  moduleProjectTest,
+} from "./project/loadModuleProject.ts"
 import * as Services from "./services/index.ts"
 
 const { version } = getPackageJson()
@@ -22,6 +26,7 @@ const { version } = getPackageJson()
 const router = cmd.createRouter("x-lisp-boot", version)
 
 router.defineRoutes([
+  "module:test file",
   "module:build file",
   "project:test --config",
   "project:build --config",
@@ -35,7 +40,8 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  "module:build": ([file]) => Services.moduleBuild(file),
+  "module:test": ([file]) => moduleProjectTest(file),
+  "module:build": ([file]) => moduleProjectBuild(file),
   "project:test": (_, options) => projectTest(loadProject(options["--config"])),
   "project:build": (_, options) =>
     projectBuild(loadProject(options["--config"])),
