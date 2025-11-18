@@ -1,3 +1,5 @@
+#!/usr/bin/env -S bun
+
 import * as cmd from "@xieyuheng/command.js"
 import fs from "node:fs"
 import * as B from "./basic/index.ts"
