@@ -37,36 +37,36 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  "module:test": ([file]) => projectTest(loadModuleProject(file)),
-  "module:build": ([file]) => projectBuild(loadModuleProject(file)),
-  "project:test": (_, options) => projectTest(loadProject(options["--config"])),
-  "project:build": (_, options) =>
+  "module:test": ({ args: [file] }) => projectTest(loadModuleProject(file)),
+  "module:build": ({ args: [file] }) => projectBuild(loadModuleProject(file)),
+  "project:test": ({ options }) => projectTest(loadProject(options["--config"])),
+  "project:build": ({ options }) =>
     projectBuild(loadProject(options["--config"])),
-  "project:clean": (_, options) =>
+  "project:clean": ({ options }) =>
     projectClean(loadProject(options["--config"])),
-  "lisp:compile-to-pass-log": ([file]) => {
+  "lisp:compile-to-pass-log": ({ args: [file] }) => {
     const mod = L.loadEntry(createUrl(file))
     Services.compileLangToPassLog(mod)
   },
-  "lisp:compile-to-basic": ([file]) => {
+  "lisp:compile-to-basic": ({ args: [file] }) => {
     const mod = L.loadEntry(createUrl(file))
     console.log(B.prettyMod(globals.maxWidth, Services.compileLangToBasic(mod)))
   },
-  "basic:run": ([file]) => {
+  "basic:run": ({ args: [file] }) => {
     const mod = B.loadEntry(createUrl(file))
     B.run(B.bundle(mod))
     process.stdout.write(B.console.consumeOutput())
   },
-  "basic:bundle": ([file]) => {
+  "basic:bundle": ({ args: [file] }) => {
     const mod = B.loadEntry(createUrl(file))
     console.log(B.prettyMod(globals.maxWidth, B.bundle(mod)))
   },
-  "machine:transpile-to-x86-assembly": ([file]) => {
+  "machine:transpile-to-x86-assembly": ({ args: [file] }) => {
     const mod = M.load(createUrl(file))
     const assemblyCode = M.transpileToX86Assembly(mod)
     console.log(assemblyCode)
   },
-  "machine:assemble-x86": ([file]) => {
+  "machine:assemble-x86": ({ args: [file] }) => {
     const mod = M.load(createUrl(file))
     const assemblyCode = M.transpileToX86Assembly(mod)
     const assemblyFile = file + ".x86.s"
