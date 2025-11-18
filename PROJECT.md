@@ -249,6 +249,10 @@ date: 2025-10-22
     而 inet-lisp 和 propagator-lisp 中「返回多个值」的语义，
     可能要用新的语法关键词才能表达出来。
 
+    或者可以 overload assignment，
+    也就是 `(= (f x y))` 这种语法组合，
+    而不是 overload apply 本身。
+
 - 汇编定义的函数不会自动 align 到 8，
   生成 GAS 代码时，需要明确 `.align 8`。
 
