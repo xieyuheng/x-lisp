@@ -1,13 +1,12 @@
 import fs from "node:fs"
 import Path from "node:path"
 import * as B from "../basic/index.ts"
-import { globals } from "../globals.ts"
 import { systemShellRun } from "../helpers/system/systemShellRun.ts"
 import { createUrl } from "../helpers/url/createUrl.ts"
 import * as L from "../lang/index.ts"
 import * as M from "../machine/index.ts"
-import * as Services from "../services/index.ts"
 import { type ProjectConfig } from "./ProjectConfig.ts"
+import { projectBuild } from "./index.ts"
 
 export class Project {
   rootDirectory: string
@@ -87,78 +86,6 @@ export class Project {
     }
   }
 
-  build(): void {
-    this.forEachSource(this.buildPassLog.bind(this))
-    this.forEachSource(this.buildBasic.bind(this))
-    this.forEachSource(this.buildBasicBundle.bind(this))
-    this.forEachSource(this.buildMachine.bind(this))
-    this.forEachSource(this.buildMachineX86assembly.bind(this))
-    this.forEachSource(this.buildMachineX86Binary.bind(this))
-  }
-
-  buildPassLog(project: Project, id: string): void {
-    const inputFile = project.getSourceFile(id)
-    const outputFile = project.getPassLogFile(id)
-    project.logFile("pass-log", outputFile)
-    const langMod = L.loadEntry(createUrl(inputFile))
-    project.writeFile(outputFile, "")
-    Services.compileLangToPassLog(langMod, outputFile)
-  }
-
-  buildBasic(project: Project, id: string): void {
-    const inputFile = project.getSourceFile(id)
-    const outputFile = project.getBasicFile(id)
-    project.logFile("basic", outputFile)
-    const langMod = L.loadEntry(createUrl(inputFile))
-    const basicMod = Services.compileLangToBasic(langMod)
-    const outputText = B.prettyMod(globals.maxWidth, basicMod)
-    project.writeFile(outputFile, outputText)
-  }
-
-  buildBasicBundle(project: Project, id: string): void {
-    if (project.isTest(id) || project.isSnapshot(id)) {
-      const inputFile = project.getBasicFile(id)
-      const outputFile = project.getBasicBundleFile(id)
-      project.logFile("basic-bundle", outputFile)
-      const basicMod = B.loadEntry(createUrl(inputFile))
-      const basicBundleMod = B.bundle(basicMod)
-      const outputText = B.prettyMod(globals.maxWidth, basicBundleMod)
-      project.writeFile(outputFile, outputText)
-    }
-  }
-
-  buildMachine(project: Project, id: string): void {
-    if (project.isTest(id) || project.isSnapshot(id)) {
-      const inputFile = project.getBasicBundleFile(id)
-      const outputFile = project.getMachineFile(id)
-      project.logFile("machine", outputFile)
-      const basicBundleMod = B.loadEntry(createUrl(inputFile))
-      const machineMod = Services.compileBasicToX86Machine(basicBundleMod)
-      const outputText = M.prettyMod(globals.maxWidth, machineMod)
-      project.writeFile(outputFile, outputText)
-    }
-  }
-
-  buildMachineX86assembly(project: Project, id: string): void {
-    if (project.isTest(id) || project.isSnapshot(id)) {
-      const inputFile = project.getMachineFile(id)
-      const outputFile = project.getMachineFile(id) + ".x86.s"
-      project.logFile("x86-assembly", outputFile)
-      const machineMod = M.loadEntry(createUrl(inputFile))
-      const outputText = M.transpileToX86Assembly(machineMod)
-      project.writeFile(outputFile, outputText)
-    }
-  }
-
-  buildMachineX86Binary(project: Project, id: string): void {
-    if (project.isTest(id) || project.isSnapshot(id)) {
-      const inputFile = project.getMachineFile(id) + ".x86.s"
-      const outputFile = project.getMachineFile(id) + ".x86"
-      project.logFile("x86-binary", outputFile)
-      Services.assembleX86FileWithRuntime(inputFile)
-    }
-  }
-
   isTest(id: string): boolean {
     return id.endsWith("test" + L.suffix)
   }
@@ -168,7 +95,7 @@ export class Project {
   }
 
   test(): void {
-    this.build()
+    projectBuild(this)
     this.forEachSource(this.runBasicTest.bind(this))
     this.forEachSource(this.runBasicSnapshot.bind(this))
     this.forEachSource(this.runX86Test.bind(this))
