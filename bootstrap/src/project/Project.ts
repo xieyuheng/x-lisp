@@ -58,13 +58,12 @@ export class Project {
   }
 
   getPassLogFile(sourceId: string): string {
-    return Path.join(this.outputDirectory(), "pass-log", sourceId) + ".log"
+    return Path.join(this.outputDirectory(), sourceId) + ".log"
   }
 
   getBasicFile(sourceId: string): string {
     return Path.join(
       this.outputDirectory(),
-      "basic",
       sourceId.slice(0, -L.suffix.length) + B.suffix,
     )
   }
@@ -72,7 +71,6 @@ export class Project {
   getBasicBundleFile(sourceId: string): string {
     return Path.join(
       this.outputDirectory(),
-      "basic",
       sourceId.slice(0, -L.suffix.length) + ".bundle" + B.suffix,
     )
   }
@@ -80,7 +78,6 @@ export class Project {
   getMachineFile(sourceId: string): string {
     return Path.join(
       this.outputDirectory(),
-      "machine",
       sourceId.slice(0, -L.suffix.length) + M.suffix,
     )
   }
