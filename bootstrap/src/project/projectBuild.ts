@@ -43,7 +43,7 @@ function buildBasic(project: Project, id: string): void {
   const langMod = L.loadEntry(createUrl(inputFile))
   const basicMod = Services.compileLangToBasic(langMod)
   const outputText = B.prettyMod(globals.maxWidth, basicMod)
-  writeFile(outputFile, outputText)
+  writeFile(outputFile, outputText + "\n")
 }
 
 function buildBasicBundle(project: Project, id: string): void {
@@ -54,7 +54,7 @@ function buildBasicBundle(project: Project, id: string): void {
     const basicMod = B.loadEntry(createUrl(inputFile))
     const basicBundleMod = B.bundle(basicMod)
     const outputText = B.prettyMod(globals.maxWidth, basicBundleMod)
-    writeFile(outputFile, outputText)
+    writeFile(outputFile, outputText + "\n")
   }
 }
 
@@ -66,7 +66,7 @@ function buildMachine(project: Project, id: string): void {
     const basicBundleMod = B.loadEntry(createUrl(inputFile))
     const machineMod = Services.compileBasicToX86Machine(basicBundleMod)
     const outputText = M.prettyMod(globals.maxWidth, machineMod)
-    writeFile(outputFile, outputText)
+    writeFile(outputFile, outputText + "\n")
   }
 }
 
