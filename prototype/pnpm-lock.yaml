@@ -1,0 +1,87 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@xieyuheng/command.js':
+        specifier: ^0.2.3
+        version: 0.2.3
+      '@xieyuheng/x-sexp.js':
+        specifier: ^0.5.8
+        version: 0.5.8
+    devDependencies:
+      '@types/node':
+        specifier: ^24.10.1
+        version: 24.10.1
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
+      prettier-plugin-organize-imports:
+        specifier: ^4.3.0
+        version: 4.3.0(prettier@3.6.2)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+packages:
+
+  '@types/node@24.10.1':
+    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
+
+  '@xieyuheng/command.js@0.2.3':
+    resolution: {integrity: sha512-2pyhP7NW/DV0FDPGO4tRWFRldxd5F04xq389GBsuWGQCrNacOjmU/nlR8tJKl/rATZJV5bwuyKXZ72jMdMsFnQ==}
+
+  '@xieyuheng/x-sexp.js@0.5.8':
+    resolution: {integrity: sha512-JVxLCthStDtx7fpGybgXJQxbHeP1NbT4b1NHAn3nNVEmiWlbK/fyjugN+Mx/nbneMycb4AiyRbqWZgSj18SWnA==}
+    hasBin: true
+
+  prettier-plugin-organize-imports@4.3.0:
+    resolution: {integrity: sha512-FxFz0qFhyBsGdIsb697f/EkvHzi5SZOhWAjxcx2dLt+Q532bAlhswcXGYB1yzjZ69kW8UoadFBw7TyNwlq96Iw==}
+    peerDependencies:
+      prettier: '>=2.0'
+      typescript: '>=2.9'
+      vue-tsc: ^2.1.0 || 3
+    peerDependenciesMeta:
+      vue-tsc:
+        optional: true
+
+  prettier@3.6.2:
+    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
+
+snapshots:
+
+  '@types/node@24.10.1':
+    dependencies:
+      undici-types: 7.16.0
+
+  '@xieyuheng/command.js@0.2.3': {}
+
+  '@xieyuheng/x-sexp.js@0.5.8':
+    dependencies:
+      '@xieyuheng/command.js': 0.2.3
+
+  prettier-plugin-organize-imports@4.3.0(prettier@3.6.2)(typescript@5.9.3):
+    dependencies:
+      prettier: 3.6.2
+      typescript: 5.9.3
+
+  prettier@3.6.2: {}
+
+  typescript@5.9.3: {}
+
+  undici-types@7.16.0: {}
