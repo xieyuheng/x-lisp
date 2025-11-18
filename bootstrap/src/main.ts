@@ -10,15 +10,12 @@ import { createUrl } from "./helpers/url/createUrl.ts"
 import * as L from "./lang/index.ts"
 import * as M from "./machine/index.ts"
 import {
+  loadModuleProject,
   loadProject,
   projectBuild,
   projectClean,
   projectTest,
 } from "./project/index.ts"
-import {
-  moduleProjectBuild,
-  moduleProjectTest,
-} from "./project/loadModuleProject.ts"
 import * as Services from "./services/index.ts"
 
 const { version } = getPackageJson()
@@ -40,8 +37,8 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  "module:test": ([file]) => moduleProjectTest(file),
-  "module:build": ([file]) => moduleProjectBuild(file),
+  "module:test": ([file]) => projectTest(loadModuleProject(file)),
+  "module:build": ([file]) => projectBuild(loadModuleProject(file)),
   "project:test": (_, options) => projectTest(loadProject(options["--config"])),
   "project:build": (_, options) =>
     projectBuild(loadProject(options["--config"])),

@@ -1,4 +1,5 @@
 export * from "./helpers.ts"
+export * from "./loadModuleProject.ts"
 export * from "./loadProject.ts"
 export * from "./loadProjectConfig.ts"
 export * from "./Project.ts"
