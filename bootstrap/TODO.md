@@ -1,4 +1,3 @@
-[bootstrap] extract `projectClean`
 [bootstrap] extract `projectBuild`
 [bootstrap] extract `projectTest`
 

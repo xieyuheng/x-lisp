@@ -1,4 +1,5 @@
 export * from "./loadProject.ts"
 export * from "./loadProjectConfig.ts"
 export * from "./Project.ts"
+export * from "./projectClean.ts"
 export * from "./ProjectConfig.ts"

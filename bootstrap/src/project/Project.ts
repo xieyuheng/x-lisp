@@ -81,34 +81,6 @@ export class Project {
     )
   }
 
-  clean(): void {
-    if (this.outputDirectory() !== this.sourceDirectory()) {
-      fs.rmSync(this.outputDirectory(), { recursive: true, force: true })
-    } else {
-      const outputSuffixes = [
-        ".lisp.log",
-        ".basic",
-        ".machine",
-        ".machine.x86",
-        ".machine.x86.s",
-        ".out",
-      ]
-
-      fs.readdirSync(this.sourceDirectory(), {
-        encoding: "utf8",
-        recursive: true,
-      })
-        .filter((file) =>
-          outputSuffixes.some((suffix) => file.endsWith(suffix)),
-        )
-        .forEach((file) => {
-          const outputFile = Path.join(this.outputDirectory(), file)
-          this.logFile("clean", outputFile)
-          fs.rmSync(outputFile, { force: true })
-        })
-    }
-  }
-
   forEachSource(f: (project: Project, id: string) => void) {
     for (const id of this.sourceIds()) {
       f(this, id)

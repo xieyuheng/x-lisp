@@ -9,7 +9,7 @@ import { getPackageJson } from "./helpers/node/getPackageJson.ts"
 import { createUrl } from "./helpers/url/createUrl.ts"
 import * as L from "./lang/index.ts"
 import * as M from "./machine/index.ts"
-import { loadProject } from "./project/index.ts"
+import { loadProject, projectClean } from "./project/index.ts"
 import * as Services from "./services/index.ts"
 
 const { version } = getPackageJson()
@@ -31,7 +31,7 @@ router.defineRoutes([
 router.defineHandlers({
   "project:test": (_, options) => loadProject(options["--config"]).test(),
   "project:build": (_, options) => loadProject(options["--config"]).build(),
-  "project:clean": (_, options) => loadProject(options["--config"]).clean(),
+  "project:clean": (_, options) => projectClean(loadProject(options["--config"])),
   "lisp:compile-to-pass-log": ([file]) => {
     const mod = L.loadEntry(createUrl(file))
     Services.compileLangToPassLog(mod)
