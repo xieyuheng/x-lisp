@@ -1,6 +1,7 @@
 import fs from "node:fs"
 import Path from "node:path"
 import { Project } from "./Project.ts"
+import { logFile } from "./index.ts"
 
 export function projectClean(project: Project): void {
   if (project.outputDirectory() !== project.sourceDirectory()) {
@@ -22,7 +23,7 @@ export function projectClean(project: Project): void {
       .filter((file) => outputSuffixes.some((suffix) => file.endsWith(suffix)))
       .forEach((file) => {
         const outputFile = Path.join(project.outputDirectory(), file)
-        project.logFile("clean", outputFile)
+        logFile("clean", outputFile)
         fs.rmSync(outputFile, { force: true })
       })
   }

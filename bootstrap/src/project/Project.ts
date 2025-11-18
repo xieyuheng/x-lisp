@@ -14,15 +14,6 @@ export class Project {
     this.config = config
   }
 
-  writeFile(file: string, text: string): void {
-    fs.mkdirSync(Path.dirname(file), { recursive: true })
-    fs.writeFileSync(file, text)
-  }
-
-  logFile(tag: string, file: string): void {
-    console.log(`[${tag}] ${Path.relative(process.cwd(), file)}`)
-  }
-
   sourceDirectory(): string {
     return Path.resolve(
       this.rootDirectory,
@@ -81,13 +72,5 @@ export class Project {
     for (const id of this.sourceIds()) {
       f(this, id)
     }
-  }
-
-  isTest(id: string): boolean {
-    return id.endsWith("test" + L.suffix)
-  }
-
-  isSnapshot(id: string): boolean {
-    return id.endsWith("snapshot" + L.suffix)
   }
 }
