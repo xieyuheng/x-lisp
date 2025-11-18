@@ -1,6 +1,6 @@
 import fs from "node:fs"
 import Path from "node:path"
-import { Project } from "./Project.ts"
+import { type Project } from "./Project.ts"
 import {
   logFile,
   projectOutputDirectory,

@@ -1,11 +1,16 @@
 import { type ProjectConfig } from "./ProjectConfig.ts"
 
-export class Project {
+export type Project = {
   rootDirectory: string
   config: ProjectConfig
+}
 
-  constructor(rootDirectory: string, config: ProjectConfig) {
-    this.rootDirectory = rootDirectory
-    this.config = config
+export function createProject(
+  rootDirectory: string,
+  config: ProjectConfig,
+): Project {
+  return {
+    rootDirectory,
+    config,
   }
 }
