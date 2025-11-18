@@ -6,8 +6,7 @@ export function dependencyPrefix(
   mod: Mod,
 ): string {
   const index = dependencyIndex(dependencies, mod)
-  const count = index + 1
-  const subscript = stringToSubscript(count.toString())
+  const subscript = stringToSubscript(index.toString())
   const prefix = `§${subscript}`
   return prefix
 }

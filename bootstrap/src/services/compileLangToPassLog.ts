@@ -16,7 +16,7 @@ export function compileLangToPassLog(langMod: L.Mod, logFile?: string): void {
   logLangMod("LiftLambdaPass", langMod, logFile)
   L.UnnestOperandPass(langMod)
   logLangMod("UnnestOperandPass", langMod, logFile)
-  const basicMod = B.createMod(langMod.url)
+  const basicMod = B.createMod(langMod.url, new Map())
   B.importBuiltin(basicMod)
   L.ExplicateControlPass(langMod, basicMod)
   logBasicMod("ExplicateControlPass", basicMod, logFile)

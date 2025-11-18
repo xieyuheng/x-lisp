@@ -13,7 +13,7 @@ let mod: Mod | undefined = undefined
 export function useBuiltinMod(): Mod {
   if (mod) return mod
 
-  mod = createMod(new URL("builtin:"))
+  mod = createMod(new URL("builtin:"), new Map())
 
   builtinValue(mod)
   builtinConsole(mod)

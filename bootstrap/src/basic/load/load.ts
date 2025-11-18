@@ -15,7 +15,7 @@ export function load(url: URL, dependencies: Map<string, Mod>): Mod {
   if (found !== undefined) return found
 
   const text = loadText(url)
-  const mod = createMod(url)
+  const mod = createMod(url, dependencies)
   dependencies.set(url.href, mod)
 
   importBuiltin(mod)

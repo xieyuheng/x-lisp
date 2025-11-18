@@ -9,13 +9,13 @@ export type Mod = {
   dependencies: Map<string, Mod>
 }
 
-export function createMod(url: URL): Mod {
+export function createMod(url: URL, dependencies: Map<string, Mod>): Mod {
   return {
     url,
     stmts: [],
     exported: new Set(),
     definitions: new Map(),
-    dependencies: new Map(),
+    dependencies,
   }
 }
 

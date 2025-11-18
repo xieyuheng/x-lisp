@@ -15,13 +15,15 @@ export type BundleContext = {
 
 export function bundle(entryMod: Mod): Mod {
   const dependencies = entryMod.dependencies
-  const bundleMod = createMod(new URL(`boundle:${entryMod.url}`))
+  const bundleMod = createMod(new URL(`boundle:${entryMod.url}`), new Map())
   bundleMod.stmts.push(B.Export(["main"]))
 
   importBuiltin(bundleMod)
   mergeEntryMod(bundleMod, { entryMod, dependencies, mod: entryMod })
   for (const mod of dependencies.values()) {
-    mergeDependencyMod(bundleMod, { entryMod, dependencies, mod })
+    if (mod !== entryMod) {
+      mergeDependencyMod(bundleMod, { entryMod, dependencies, mod })
+    }
   }
 
   return bundleMod
