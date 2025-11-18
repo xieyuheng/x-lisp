@@ -37,9 +37,9 @@ export class Project {
   outputDirectory(): string {
     return this.config["build"]["output-directory"]
       ? Path.resolve(
-          this.rootDirectory,
-          this.config["build"]["output-directory"],
-        )
+        this.rootDirectory,
+        this.config["build"]["output-directory"],
+      )
       : this.sourceDirectory()
   }
 
@@ -82,7 +82,31 @@ export class Project {
   }
 
   clean(): void {
-    fs.rmSync(this.outputDirectory(), { recursive: true, force: true })
+    if (this.outputDirectory() !== this.sourceDirectory()) {
+      fs.rmSync(this.outputDirectory(), { recursive: true, force: true })
+    } else {
+      const outputSuffixes = [
+        ".lisp.log",
+        ".basic",
+        ".machine",
+        ".machine.x86",
+        ".machine.x86.s",
+        ".out",
+      ]
+
+      fs.readdirSync(this.sourceDirectory(), {
+        encoding: "utf8",
+        recursive: true,
+      })
+        .filter((file) =>
+          outputSuffixes.some((suffix) => file.endsWith(suffix)),
+        )
+        .forEach((file) => {
+          const outputFile = Path.join(this.outputDirectory(), file)
+          this.logFile("clean", outputFile)
+          fs.rmSync(outputFile, { force: true })
+        })
+    }
   }
 
   forEachSource(f: (id: string) => void) {
