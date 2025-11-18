@@ -3,7 +3,12 @@ lib
 
 # x-lisp
 *.o
-*.x86
+*.lisp.log
+*.basic
+*.machine
+*.machine.x86
+*.machine.x86.s
+*.out
 
 # vitest
 coverage
