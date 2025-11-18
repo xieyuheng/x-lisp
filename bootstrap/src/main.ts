@@ -35,7 +35,7 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  "module:build": ([file]) => Services.buildModule(file),
+  "module:build": ([file]) => Services.moduleBuild(file),
   "project:test": (_, options) => projectTest(loadProject(options["--config"])),
   "project:build": (_, options) =>
     projectBuild(loadProject(options["--config"])),
