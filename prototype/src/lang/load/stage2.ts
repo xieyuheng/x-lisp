@@ -48,14 +48,9 @@ export function stage2(mod: Mod, stmt: Stmt): void {
 
   if (stmt.kind === "ImportAs") {
     for (const [name, definition] of definitionEntries) {
-      checkRedefine(
-        mod,
-        importedMod,
-        `${stmt.name}/${name}`,
-        definition,
-        stmt.meta,
-      )
-      mod.definitions.set(`${stmt.name}/${name}`, definition)
+      const fullName = `${stmt.prefix}${name}`
+      checkRedefine(mod, importedMod, fullName, definition, stmt.meta)
+      mod.definitions.set(fullName, definition)
     }
   }
 
@@ -88,14 +83,9 @@ export function stage2(mod: Mod, stmt: Stmt): void {
 
   if (stmt.kind === "IncludeAs") {
     for (const [name, definition] of definitionEntries) {
-      checkRedefine(
-        mod,
-        importedMod,
-        `${stmt.name}/${name}`,
-        definition,
-        stmt.meta,
-      )
-      include(mod, `${stmt.name}/${name}`, definition)
+      const fullName = `${stmt.prefix}${name}`
+      checkRedefine(mod, importedMod, fullName, definition, stmt.meta)
+      include(mod, fullName, definition)
     }
   }
 }

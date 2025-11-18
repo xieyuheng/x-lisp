@@ -65,15 +65,15 @@ export type ImportExcept = {
 export type ImportAs = {
   kind: "ImportAs"
   path: string
-  name: string
+  prefix: string
   meta: Meta
 }
 
-export function ImportAs(path: string, name: string, meta: Meta): ImportAs {
+export function ImportAs(path: string, prefix: string, meta: Meta): ImportAs {
   return {
     kind: "ImportAs",
     path,
-    name,
+    prefix,
     meta,
   }
 }
@@ -135,15 +135,15 @@ export type IncludeExcept = {
 export type IncludeAs = {
   kind: "IncludeAs"
   path: string
-  name: string
+  prefix: string
   meta: Meta
 }
 
-export function IncludeAs(path: string, name: string, meta: Meta): IncludeAs {
+export function IncludeAs(path: string, prefix: string, meta: Meta): IncludeAs {
   return {
     kind: "IncludeAs",
     path,
-    name,
+    prefix,
     meta,
   }
 }

@@ -1,4 +1,4 @@
-(import-as "module-four" mod)
+(import-as "module-four" mod/)
 
 (assert-equal mod/one 1)
 (assert-equal mod/two 2)

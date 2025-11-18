@@ -2,4 +2,4 @@
 (include "module-two" two)
 (include-except "module-three" one two)
 (include "module-four" four)
-(include-as "module-four" f)
+(include-as "module-four" f/)
