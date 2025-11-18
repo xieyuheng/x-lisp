@@ -7,20 +7,23 @@ import {
   isTest,
   logFile,
   projectBuild,
+  projectForEachSource,
+  projectGetBasicBundleFile,
+  projectGetMachineFile,
   writeFile,
 } from "./index.ts"
 
 export function projectTest(project: Project): void {
   projectBuild(project)
-  project.forEachSource(runBasicTest)
-  project.forEachSource(runBasicSnapshot)
-  project.forEachSource(runX86Test)
-  project.forEachSource(runX86Snapshot)
+  projectForEachSource(project, runBasicTest)
+  projectForEachSource(project, runBasicSnapshot)
+  projectForEachSource(project, runX86Test)
+  projectForEachSource(project, runX86Snapshot)
 }
 
 function runBasicTest(project: Project, id: string): void {
   if (isTest(id)) {
-    const inputFile = project.getBasicBundleFile(id)
+    const inputFile = projectGetBasicBundleFile(project, id)
     logFile("basic-test", inputFile)
     const basicBundleMod = B.loadEntry(createUrl(inputFile))
     B.run(basicBundleMod)
@@ -31,7 +34,7 @@ function runBasicTest(project: Project, id: string): void {
 
 function runBasicSnapshot(project: Project, id: string): void {
   if (isSnapshot(id)) {
-    const inputFile = project.getBasicBundleFile(id)
+    const inputFile = projectGetBasicBundleFile(project, id)
     const outputFile = inputFile + ".out"
     logFile("basic-snapshot", outputFile)
     const basicBundleMod = B.loadEntry(createUrl(inputFile))
@@ -43,7 +46,7 @@ function runBasicSnapshot(project: Project, id: string): void {
 
 function runX86Test(project: Project, id: string): void {
   if (isTest(id)) {
-    const inputFile = project.getMachineFile(id) + ".x86"
+    const inputFile = projectGetMachineFile(project, id) + ".x86"
     logFile("x86-test", inputFile)
     systemShellRun(inputFile, [])
   }
@@ -51,7 +54,7 @@ function runX86Test(project: Project, id: string): void {
 
 function runX86Snapshot(project: Project, id: string): void {
   if (isSnapshot(id)) {
-    const inputFile = project.getMachineFile(id) + ".x86"
+    const inputFile = projectGetMachineFile(project, id) + ".x86"
     const outputFile = inputFile + ".out"
     logFile("x86-snapshot", outputFile)
     systemShellRun(inputFile, [">", outputFile])

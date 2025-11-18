@@ -1,11 +1,15 @@
 import fs from "node:fs"
 import Path from "node:path"
 import { Project } from "./Project.ts"
-import { logFile } from "./index.ts"
+import {
+  logFile,
+  projectOutputDirectory,
+  projectSourceDirectory,
+} from "./index.ts"
 
 export function projectClean(project: Project): void {
-  if (project.outputDirectory() !== project.sourceDirectory()) {
-    fs.rmSync(project.outputDirectory(), { recursive: true, force: true })
+  if (projectOutputDirectory(project) !== projectSourceDirectory(project)) {
+    fs.rmSync(projectOutputDirectory(project), { recursive: true, force: true })
   } else {
     const outputSuffixes = [
       ".lisp.log",
@@ -16,13 +20,13 @@ export function projectClean(project: Project): void {
       ".out",
     ]
 
-    fs.readdirSync(project.sourceDirectory(), {
+    fs.readdirSync(projectSourceDirectory(project), {
       encoding: "utf8",
       recursive: true,
     })
       .filter((file) => outputSuffixes.some((suffix) => file.endsWith(suffix)))
       .forEach((file) => {
-        const outputFile = Path.join(project.outputDirectory(), file)
+        const outputFile = Path.join(projectOutputDirectory(project), file)
         logFile("clean", outputFile)
         fs.rmSync(outputFile, { force: true })
       })
