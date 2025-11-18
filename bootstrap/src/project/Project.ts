@@ -35,10 +35,12 @@ export class Project {
   }
 
   outputDirectory(): string {
-    return Path.resolve(
-      this.rootDirectory,
-      this.config["build"]["output-directory"],
-    )
+    return this.config["build"]["output-directory"]
+      ? Path.resolve(
+          this.rootDirectory,
+          this.config["build"]["output-directory"],
+        )
+      : this.sourceDirectory()
   }
 
   sourceIds(): Array<string> {
@@ -47,9 +49,6 @@ export class Project {
         encoding: "utf8",
         recursive: true,
       })
-      .filter(
-        (file) => !file.startsWith(this.config["build"]["output-directory"]),
-      )
       .filter((file) => file.endsWith(L.suffix))
   }
 
