@@ -76,12 +76,20 @@ const stmtMatcher: S.Matcher<Stmt> = S.matcherChoice<Stmt>([
     },
   ),
 
-  S.matcher("`(import-as ,source ,name)", ({ source, name }, { meta }) => {
-    return Stmts.ImportAs(S.stringContent(source), S.symbolContent(name), meta)
+  S.matcher("`(import-as ,source ,prefix)", ({ source, prefix }, { meta }) => {
+    return Stmts.ImportAs(
+      S.stringContent(source),
+      S.symbolContent(prefix),
+      meta,
+    )
   }),
 
-  S.matcher("`(include-as ,source ,name)", ({ source, name }, { meta }) => {
-    return Stmts.IncludeAs(S.stringContent(source), S.symbolContent(name), meta)
+  S.matcher("`(include-as ,source ,prefix)", ({ source, prefix }, { meta }) => {
+    return Stmts.IncludeAs(
+      S.stringContent(source),
+      S.symbolContent(prefix),
+      meta,
+    )
   }),
 
   S.matcher("exp", ({ exp }, { meta }) => {

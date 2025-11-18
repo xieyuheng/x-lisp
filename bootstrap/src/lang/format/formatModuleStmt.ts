@@ -27,7 +27,7 @@ export function formatModuleStmt(stmt: Stmt): string {
     }
 
     case "ImportAs": {
-      return `(import-as "${stmt.path}" ${stmt.name})`
+      return `(import-as "${stmt.path}" ${stmt.prefix})`
     }
 
     case "Include": {
@@ -43,7 +43,7 @@ export function formatModuleStmt(stmt: Stmt): string {
     }
 
     case "IncludeAs": {
-      return `(include-as "${stmt.path}" ${stmt.name})`
+      return `(include-as "${stmt.path}" ${stmt.prefix})`
     }
   }
 }
