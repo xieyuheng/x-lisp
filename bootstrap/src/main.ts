@@ -22,6 +22,7 @@ const { version } = getPackageJson()
 const router = cmd.createRouter("x-lisp-boot", version)
 
 router.defineRoutes([
+  "module:build file",
   "project:test --config",
   "project:build --config",
   "project:clean --config",
@@ -34,6 +35,7 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
+  "module:build": ([file]) => Services.buildModule(file),
   "project:test": (_, options) => projectTest(loadProject(options["--config"])),
   "project:build": (_, options) =>
     projectBuild(loadProject(options["--config"])),

@@ -1,3 +1,3 @@
+[bootstrap] `buildModule` -- create project from dependencies, and reuse project method
 [bootstrap] `createProjectFromSourceFiles`
-[bootstrap] module:build -- create project from dependencies, and reuse project method
 [design] more example about cicada-lisp
