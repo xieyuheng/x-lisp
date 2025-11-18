@@ -17,9 +17,9 @@ const { version } = getPackageJson()
 const router = cmd.createRouter("x-lisp-boot", version)
 
 router.defineRoutes([
-  "test --project",
-  "build --project",
-  "clean --project",
+  "project:test --config",
+  "project:build --config",
+  "project:clean --config",
   "lang:compile-to-pass-log file",
   "lang:compile-to-basic file",
   "basic:run file",
@@ -29,9 +29,9 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  test: (_, options) => loadProject(options["--project"]).test(),
-  build: (_, options) => loadProject(options["--project"]).build(),
-  clean: (_, options) => loadProject(options["--project"]).clean(),
+  "project:test": (_, options) => loadProject(options["--config"]).test(),
+  "project:build": (_, options) => loadProject(options["--config"]).build(),
+  "project:clean": (_, options) => loadProject(options["--config"]).clean(),
   "lang:compile-to-pass-log": ([file]) => {
     const mod = L.loadEntry(createUrl(file))
     Services.compileLangToPassLog(mod)
