@@ -1,4 +1,3 @@
-[bootstrap] extract `projectTest`
 [bootstrap] extract `projectHelpers`
 [bootstrap] project should not be a class
 
