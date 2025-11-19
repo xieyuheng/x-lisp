@@ -28,6 +28,15 @@ date: 2025-09-21
 
 - 支持 auto currying。
 
+  这是看似非常小的一点，
+  但是其实是哲学意义上最重要的一点。
+
+  lisp 起初是为了 lambda calculus 而设计，
+  但是 lambda calculus 的 combinator logic 一面一直被 lisp 忽视了。
+
+  auto currying 对于 combinator logic 非常重要，
+  而 combinator logic 的哲学意义就在于如何用组合子来表达 composition。
+
 - 所基础的 structural 数据结构：
   - primitive: bool, int, float, symbol, string
   - compound: set, tael -- list with attribute
@@ -44,6 +53,11 @@ date: 2025-09-21
   其实是翻译成 list 或 vector。
 
   这种设计差异是 structural vs nominal 的差异。
+
+  - [2025-11-19] 目前的实现中，
+    algebraic data type 也是纯粹 structural 的。
+    也就是说，我们依旧没有方式向全集中添加新元素。
+    在新的设计中，这也成了 x-lisp 的重要特点之一。
 
 - claim 与谓词所构成的 optional runtime assertion 系统。
   包括：tau, inter, union 等等谓词构造子。
