@@ -1,7 +1,10 @@
 # later
 
 [runtime] gc -- mark and sweep
-[runtime] `make_curry` -- use gc
+
+[runtime] `make_tael`
+[runtime] `make_curry`
+[runtime] `make_string`
 
 # later
 

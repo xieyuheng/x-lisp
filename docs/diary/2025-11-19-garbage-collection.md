@@ -8,11 +8,15 @@ date: 2025-11-19
 方案：
 
 - 由于目的之一是可以方便用 c 扩展，
-  所以使用最简单的 mark sweep gc。
+  所以使用最简单的 mark-sweep gc。
 
-  - 每个 c 所扩展的 object pointer 都记录在 gc 中。
+  - 每个 c 所扩展的 object pointer 都记录在 gc space 中。
     可以是一个简单的 pointer 的 array，
     因为有一层间接，所以 object pointer 本身的地址是稳定的。
+
+    - 每个 object pointer 都应该有一个到 gc space 中的 pointer，
+      记录自己在 space 中的位置，也就是双向连接。
+      space 的位置中，pointer 还保存 mark-sweep 所用到的 mark。
 
 - 使用 shadow stack。
   每次 spill local variable 的时候，都放到 shadow stack 中。
