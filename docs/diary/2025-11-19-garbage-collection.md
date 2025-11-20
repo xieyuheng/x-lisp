@@ -3,6 +3,8 @@ title: garbage collection
 date: 2025-11-19
 ---
 
+# garbage collection
+
 马上就要实现 garbage collection 了，总结一下所选的方案。
 
 方案：
@@ -43,3 +45,22 @@ date: 2025-11-19
   - 如果不行，就需要拆分判断 gc 的函数和进行 gc 的函数，
     然后在生成汇编代码时，先判断是否需要 gc，
     如果需要，再保存寄存器，然后调用 gc。
+
+# reference counting
+
+[2025-11-20]
+
+读了很多论文之后：
+
+- 2001-constant-time-root-scanning-for-deterministic-garbage-collection.md
+- 1984-reference-count-garbage-collection.md
+- 2002-accurate-garbage-collection-in-an-uncooperative-environment.md
+- 2009-accurate-garbage-collection-in-uncooperative-environments-revisited.md
+
+我决定用 1984-reference-count-garbage-collection.md 的方案。
+
+也就是纯运行时的方案。
+
+因为我觉得 GC 的 root scanning 问题，
+对于带有 GC 但是没有静态类型系统的语言而言，
+root scanning 问题太难了，还是用 VM 实现比较好。
