@@ -64,3 +64,15 @@ date: 2025-11-19
 因为我觉得 GC 的 root scanning 问题，
 对于带有 GC 但是没有静态类型系统的语言而言，
 root scanning 问题太难了，还是用 VM 实现比较好。
+
+但是这也不太对。
+因为每个 assignment 都潜在地需要 reference counting：
+
+- const instruction：
+  可以根据 value 的类型决定是否需要 reference counting。
+
+- call 和 apply instruction：
+  每次返回值，都要在运行时检查是否需要 reference counting。
+
+  - primitive function  的 call，
+    有时可以确定返回值是否是 object。
