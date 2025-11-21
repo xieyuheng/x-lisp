@@ -1,8 +1,10 @@
-x-sexp.js -- use helpers.js
-command.js -- use helpers.js
+x-sexp.js -- use local helpers.js
+x-sexp.js -- use local command.js
 
-use x-sexp.js
-use command.js
+move binary.js to packages
+
+x-lisp-boot.js -- use local packages
+x-lisp-proto.js -- use local packages
 
 setup monorepo for c code
 

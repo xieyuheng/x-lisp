@@ -9,6 +9,10 @@ importers:
   .: {}
 
   projects/command.js:
+    dependencies:
+      '@xieyuheng/helpers.js':
+        specifier: workspace:*
+        version: link:../helpers.js
     devDependencies:
       '@types/node':
         specifier: ^24.10.1

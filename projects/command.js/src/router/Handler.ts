@@ -1,4 +1,4 @@
-import type { MaybePromise } from "../helpers/promise/index.ts"
+import type { MaybePromise } from "@xieyuheng/helpers.js/promise"
 import { applyMiddleware, type Middleware } from "./Middleware.ts"
 import type { Route } from "./Route.ts"
 import type { Router } from "./Router.ts"
