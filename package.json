@@ -3,6 +3,9 @@
   "scripts": {
     "build": "pnpm run -r build",
     "test": "pnpm run -r --parallel --aggregate-output test",
-    "format": "pnpm run -r --parallel --aggregate-output format"
+    "format": "pnpm run -r --parallel --aggregate-output format",
+    "test-suite:bun": "bun projects/x-lisp-boot.js/src/main.ts project:test --config projects/x-lisp-test-suite/project.json",
+    "test-suite:node": "node --stack-size=65536 projects/x-lisp-boot.js/src/main.ts project:test --config projects/x-lisp-test-suite/project.json",
+    "test-suite:deno": "deno --allow-all --v8-flags='--stack-size=65536' projects/x-lisp-boot.js/src/main.ts project:test --config projects/x-lisp-test-suite/project.json"
   }
 }

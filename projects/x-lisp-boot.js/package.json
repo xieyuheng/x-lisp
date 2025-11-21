@@ -17,9 +17,6 @@
     "build": "cp ../runtime/bin/runtime.o bin && tsc",
     "build:watch": "cp ../runtime/bin/runtime.o bin && tsc --watch",
     "test": "node --test 'src/**/*.test.ts'",
-    "test-suite:bun": "bun src/main.ts project:test --config ../x-lisp-test-suite/project.json",
-    "test-suite:node": "node --stack-size=65536 src/main.ts project:test --config ../x-lisp-test-suite/project.json",
-    "test-suite:deno": "deno --allow-all --v8-flags='--stack-size=65536' src/main.ts project:test --config ../x-lisp-test-suite/project.json",
     "format": "prettier src --write"
   },
   "dependencies": {
