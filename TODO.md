@@ -1,5 +1,3 @@
-move binary.js to packages
-
 setup monorepo for c code
 
 review inet-lisp diary
