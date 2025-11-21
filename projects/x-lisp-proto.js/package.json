@@ -1,7 +1,7 @@
 {
-  "name": "@xieyuheng/x-lisp-proto",
+  "name": "@xieyuheng/x-lisp-proto.js",
   "version": "0.7.0",
-  "repository": "github:xieyuheng/x-lisp-proto",
+  "repository": "github:xieyuheng/x-lisp",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "files": [
@@ -10,7 +10,7 @@
     "lisp"
   ],
   "bin": {
-    "x-lisp-proto": "lib/main.js"
+    "x-lisp-proto.js": "lib/main.js"
   },
   "scripts": {
     "build": "tsc",
