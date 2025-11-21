@@ -1,0 +1,24 @@
+{
+  "name": "@xieyuheng/command.js",
+  "version": "0.3.1",
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "repository": "github:xieyuheng/command-router.js",
+  "main": "lib/index.js",
+  "files": [
+    "src",
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "test": "node --test 'src/**/*.test.ts'",
+    "format": "prettier src --write"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "prettier": "^3.6.2",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "typescript": "^5.9.3"
+  }
+}

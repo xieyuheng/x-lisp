@@ -1,4 +1,5 @@
-move command.js to monorepo
+x-sexp.js -- use helpers.js
+command.js -- use helpers.js
 
 use x-sexp.js
 use command.js
