@@ -1,5 +1,4 @@
-import { randomFloat } from "../../helpers/random/randomFloat.ts"
-import { randomInt } from "../../helpers/random/randomInt.ts"
+import { randomFloat, randomInt } from "@xieyuheng/helpers.js/random"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"

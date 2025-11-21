@@ -1,4 +1,4 @@
-import { stringHasBlank } from "../../helpers/string/stringHasBlank.ts"
+import { stringHasBlank } from "@xieyuheng/helpers.js/string"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"

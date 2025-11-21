@@ -1,10 +1,11 @@
+import { errorReport } from "@xieyuheng/helpers.js/error"
+import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import * as S from "@xieyuheng/x-sexp.js"
-import { errorReport } from "../helpers/error/errorReport.ts"
-import { getPackageJson } from "../helpers/node/getPackageJson.ts"
+import { fileURLToPath } from "node:url"
 import { load, runSexps } from "../lang/load/index.ts"
 
 export function startRepl(): void {
-  const { version } = getPackageJson()
+  const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
   const url = new URL("repl:")
   const mod = load(url)

@@ -1,7 +1,7 @@
+import { createUrl } from "@xieyuheng/helpers.js/url"
 import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import { createUrl } from "../../helpers/url/createUrl.ts"
 import { builtinModule } from "../builtin/builtinModule.ts"
 import { importBuiltin } from "../builtin/importBuiltin.ts"
 import { runCode } from "../load/index.ts"

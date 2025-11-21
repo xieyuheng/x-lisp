@@ -1,7 +1,6 @@
+import { arrayGroup2, arrayPickLast } from "@xieyuheng/helpers.js/array"
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/x-sexp.js"
-import { arrayGroup2 } from "../../helpers/array/arrayGroup2.ts"
-import { arrayPickLast } from "../../helpers/array/arrayPickLast.ts"
-import { recordMapValue } from "../../helpers/record/recordMapValue.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 

@@ -1,6 +1,6 @@
+import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import * as S from "@xieyuheng/x-sexp.js"
 import { globals } from "../../globals.ts"
-import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { type Exp } from "../exp/index.ts"
 import { prettyExp, prettyValue } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"

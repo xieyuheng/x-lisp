@@ -1,5 +1,3 @@
-x-lisp-proto.js -- use helper.js
-
 move x-sexp.js to monorepo
 move command.js to monorepo
 

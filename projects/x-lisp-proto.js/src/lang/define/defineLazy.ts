@@ -1,7 +1,6 @@
+import { formatIndent, formatUnderTag } from "@xieyuheng/helpers.js/format"
 import { ErrorWithMeta } from "@xieyuheng/x-sexp.js"
 import { globals } from "../../globals.ts"
-import { formatIndent } from "../../helpers/format/formatIndent.ts"
-import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { LazyDefinition } from "../definition/Definition.ts"
 import { type Exp } from "../exp/Exp.ts"
 import { formatDefinition } from "../format/index.ts"

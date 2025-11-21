@@ -1,15 +1,16 @@
 #!/usr/bin/env -S node --stack-size=65536
 
 import * as Cmd from "@xieyuheng/command.js"
+import { errorReport } from "@xieyuheng/helpers.js/error"
+import { getPackageJson } from "@xieyuheng/helpers.js/node"
+import { createUrl } from "@xieyuheng/helpers.js/url"
+import { fileURLToPath } from "node:url"
 import { flags } from "./flags.ts"
 import { globals } from "./globals.ts"
-import { errorReport } from "./helpers/error/errorReport.ts"
-import { getPackageJson } from "./helpers/node/getPackageJson.ts"
-import { createUrl } from "./helpers/url/createUrl.ts"
 import { load } from "./lang/load/index.ts"
 import { startRepl } from "./services/startRepl.ts"
 
-const { version } = getPackageJson()
+const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
 const router = Cmd.createRouter("x-lisp-proto", version)
 

@@ -1,6 +1,6 @@
+import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import { flags } from "../../flags.ts"
 import { globals } from "../../globals.ts"
-import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { prettyValue } from "../pretty/index.ts"
 import { type Value } from "../value/index.ts"
 import { applyNullaryWithSchema } from "./applyNullaryWithSchema.ts"

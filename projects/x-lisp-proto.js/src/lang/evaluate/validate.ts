@@ -1,5 +1,5 @@
+import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import { globals } from "../../globals.ts"
-import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { equal } from "../equal/index.ts"
 import { prettyValue } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"

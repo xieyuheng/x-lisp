@@ -1,6 +1,6 @@
+import { formatUnderTag } from "@xieyuheng/helpers.js/format"
+import { urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import { globals } from "../../globals.ts"
-import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
-import { urlRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 import type { Definition } from "../definition/index.ts"
 import { prettyExp, prettyValue } from "../pretty/index.ts"
 

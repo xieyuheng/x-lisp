@@ -1,5 +1,7 @@
-import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
-import { stringToSuperscript } from "../../helpers/string/stringToSuperscript.ts"
+import {
+  stringToSubscript,
+  stringToSuperscript,
+} from "@xieyuheng/helpers.js/string"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"

@@ -1,4 +1,4 @@
-import { arrayZip } from "../../helpers/array/arrayZip.ts"
+import { arrayZip } from "@xieyuheng/helpers.js/array"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { isValid } from "../evaluate/index.ts"
 import { type Mod } from "../mod/index.ts"

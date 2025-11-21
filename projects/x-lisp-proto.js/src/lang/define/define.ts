@@ -1,6 +1,5 @@
+import { formatIndent, formatUnderTag } from "@xieyuheng/helpers.js/format"
 import { globals } from "../../globals.ts"
-import { formatIndent } from "../../helpers/format/formatIndent.ts"
-import { formatUnderTag } from "../../helpers/format/formatUnderTag.ts"
 import { ValueDefinition } from "../definition/index.ts"
 import { formatDefinition } from "../format/index.ts"
 import { modLookupDefinition, type Mod } from "../mod/index.ts"
