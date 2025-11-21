@@ -1,0 +1,26 @@
+{
+  "name": "@xieyuheng/helpers.js",
+  "version": "0.1.1",
+  "repository": "github:xieyuheng/helpers.js",
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    "./**/*": "./lib/**/*.js"
+  },
+  "files": [
+    "src",
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "test": "node --test src/**/*.test.ts",
+    "format": "prettier src --write"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "prettier": "^3.6.2",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "typescript": "^5.9.3"
+  }
+}
