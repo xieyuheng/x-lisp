@@ -1,1 +1,6 @@
-{ "private": true }
+{
+  "private": true,
+  "scripts": {
+    "format": "pnpm run -r --aggregate-output --parallel format"
+  }
+}
