@@ -1,6 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "format": "pnpm run -r --aggregate-output --parallel format"
+    "build": "pnpm run -r build",
+    "test": "pnpm run -r --parallel --aggregate-output test",
+    "format": "pnpm run -r --parallel --aggregate-output format"
   }
 }
