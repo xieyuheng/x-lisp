@@ -1,4 +1,6 @@
-x-lisp-boot use helper.js
+x-lisp-proto.js -- use helper.js
+
+helper.js -- fix `getPackageJson`
 
 move x-sexp.js to monorepo
 move command.js to monorepo

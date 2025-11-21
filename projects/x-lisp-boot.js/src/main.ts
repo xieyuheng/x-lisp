@@ -1,12 +1,12 @@
 #!/usr/bin/env -S node --stack-size=65536
 
 import * as cmd from "@xieyuheng/command.js"
+import { errorReport } from "@xieyuheng/helpers.js/error"
+import { getPackageJson } from "@xieyuheng/helpers.js/node"
+import { createUrl } from "@xieyuheng/helpers.js/url"
 import fs from "node:fs"
 import * as B from "./basic/index.ts"
 import { globals } from "./globals.ts"
-import { errorReport } from "./helpers/error/errorReport.ts"
-import { getPackageJson } from "./helpers/node/getPackageJson.ts"
-import { createUrl } from "./helpers/url/createUrl.ts"
 import * as L from "./lang/index.ts"
 import * as M from "./machine/index.ts"
 import {
@@ -39,7 +39,8 @@ router.defineRoutes([
 router.defineHandlers({
   "module:test": ({ args: [file] }) => projectTest(loadModuleProject(file)),
   "module:build": ({ args: [file] }) => projectBuild(loadModuleProject(file)),
-  "project:test": ({ options }) => projectTest(loadProject(options["--config"])),
+  "project:test": ({ options }) =>
+    projectTest(loadProject(options["--config"])),
   "project:build": ({ options }) =>
     projectBuild(loadProject(options["--config"])),
   "project:clean": ({ options }) =>

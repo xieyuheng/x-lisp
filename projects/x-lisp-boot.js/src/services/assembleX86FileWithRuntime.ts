@@ -1,6 +1,6 @@
+import { systemShellRun } from "@xieyuheng/helpers.js/system"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
-import { systemShellRun } from "../helpers/system/systemShellRun.ts"
 
 export function assembleX86FileWithRuntime(file: string): void {
   if (!file.endsWith(".s")) {

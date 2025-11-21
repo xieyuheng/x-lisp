@@ -1,4 +1,4 @@
-import { createUrl } from "../helpers/url/createUrl.ts"
+import { createUrl } from "@xieyuheng/helpers.js/url"
 import * as L from "../lang/index.ts"
 import { projectFromSourceFiles, type Project } from "./index.ts"
 

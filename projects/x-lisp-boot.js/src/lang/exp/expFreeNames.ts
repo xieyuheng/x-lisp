@@ -1,5 +1,5 @@
+import { setAdd, setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/x-sexp.js"
-import { setAdd, setUnion, setUnionMany } from "../../helpers/set/setAlgebra.ts"
 import { formatExp } from "../format/index.ts"
 import { type Exp } from "./Exp.ts"
 

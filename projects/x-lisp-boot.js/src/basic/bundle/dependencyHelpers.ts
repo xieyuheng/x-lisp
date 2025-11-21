@@ -1,4 +1,4 @@
-import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
+import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import { type Mod } from "../mod/index.ts"
 
 export function dependencyPrefix(

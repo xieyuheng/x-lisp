@@ -1,6 +1,6 @@
+import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/x-sexp.js"
 import assert from "node:assert"
-import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import * as Definitions from "../definition/index.ts"
 import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"

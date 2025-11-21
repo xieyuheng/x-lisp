@@ -1,6 +1,6 @@
+import { arrayZip } from "@xieyuheng/helpers.js/array"
+import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/x-sexp.js"
-import { arrayZip } from "../../helpers/array/arrayZip.ts"
-import { stringToSubscript } from "../../helpers/string/stringToSubscript.ts"
 import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"

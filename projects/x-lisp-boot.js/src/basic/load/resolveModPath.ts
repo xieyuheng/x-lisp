@@ -1,6 +1,6 @@
+import { pathRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import fs from "node:fs"
 import Path from "node:path"
-import { pathRelativeToCwd } from "../../helpers/url/urlRelativeToCwd.ts"
 
 export const suffix = ".basic"
 

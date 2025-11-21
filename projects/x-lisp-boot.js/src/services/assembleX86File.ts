@@ -1,4 +1,4 @@
-import { systemShellRun } from "../helpers/system/systemShellRun.ts"
+import { systemShellRun } from "@xieyuheng/helpers.js/system"
 
 export function assembleX86File(file: string): void {
   if (!file.endsWith(".s")) {
