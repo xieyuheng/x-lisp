@@ -1,0 +1,36 @@
+(@pattern x)
+
+(@pattern _)
+
+(@pattern [a b c :x x :y y])
+
+(@pattern [a b c :x x :y y :z z])
+
+(@pattern 1)
+
+(@pattern "a")
+
+(@pattern #void)
+
+(@pattern #null)
+
+(@pattern 'a)
+
+(@pattern '(a b c))
+
+(@pattern (cons head tail))
+
+(@pattern (cons* first second tail))
+
+(@pattern (cons* first (@escape (iadd 1 1)) tail))
+
+(@pattern (cons* first (@escape (iadd 1 2)) tail))
+
+(@pattern (@escape null))
+
+(@pattern `(,first ,(@escape (iadd 1 1)) 3))
+
+(@pattern `(,first ,(@escape (iadd 1 2)) 3))
+
+(@pattern [x x])
+

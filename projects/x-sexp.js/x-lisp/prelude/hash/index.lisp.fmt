@@ -1,0 +1,18 @@
+(include-all "hash-put-entries")
+
+(include-all "hash-update")
+
+(include-all "hash-from-entries")
+
+(include-all "hash-from-map")
+
+(include-all "hash-append")
+
+(include-all "hash-map")
+
+(include-all "hash-each")
+
+(include-all "hash-invert")
+
+(include-all "hash-select")
+

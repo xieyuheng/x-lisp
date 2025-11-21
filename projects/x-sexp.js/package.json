@@ -1,0 +1,31 @@
+{
+  "name": "@xieyuheng/x-sexp.js",
+  "version": "0.7.1",
+  "repository": "github:xieyuheng/x-lisp",
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "main": "./lib/index.js",
+  "files": [
+    "src",
+    "lib"
+  ],
+  "bin": {
+    "x-sexp.js": "lib/main.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "test": "node --test 'src/**/*.test.ts'",
+    "format": "prettier src --write"
+  },
+  "dependencies": {
+    "@xieyuheng/helpers.js": "workspace:*",
+    "@xieyuheng/command.js": "^0.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "prettier": "^3.6.2",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "typescript": "^5.9.3"
+  }
+}
