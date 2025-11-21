@@ -1,4 +1,4 @@
-import { stringIsBlank } from "../../../helpers/string/stringIsBlank.ts"
+import { stringIsBlank } from "@xieyuheng/helpers.js/string"
 import type { Consumer } from "../Consumer.ts"
 import type { Lexer } from "../Lexer.ts"
 

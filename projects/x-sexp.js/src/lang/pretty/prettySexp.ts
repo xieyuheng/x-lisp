@@ -1,4 +1,4 @@
-import { recordIsEmpty } from "../../helpers/record/recordIsEmpty.ts"
+import { recordIsEmpty } from "@xieyuheng/helpers.js/record"
 import * as pp from "../../ppml/index.ts"
 import { formatSexp } from "../format/index.ts"
 import { isAtom, type Sexp } from "../sexp/index.ts"

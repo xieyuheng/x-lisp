@@ -1,6 +1,6 @@
+import { errorReport } from "@xieyuheng/helpers.js/error"
 import assert from "node:assert"
 import { test } from "node:test"
-import { errorReport } from "../helpers/error/errorReport.ts"
 import * as S from "../index.ts"
 
 type Exp = Var | Lambda | Apply | Let

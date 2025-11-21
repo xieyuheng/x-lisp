@@ -1,7 +1,7 @@
+import { errorReport } from "@xieyuheng/helpers.js/error"
 import assert from "node:assert"
 import process from "node:process"
 import * as Readline from "node:readline"
-import { errorReport } from "../helpers/error/errorReport.ts"
 import * as S from "../lang/index.ts"
 
 type ReplOptions = {

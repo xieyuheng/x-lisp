@@ -1,10 +1,11 @@
 import * as Cmd from "@xieyuheng/command.js"
+import { errorReport } from "@xieyuheng/helpers.js/error"
+import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import fs from "node:fs"
-import { errorReport } from "./helpers/error/errorReport.ts"
-import { getPackageJson } from "./helpers/node/getPackageJson.ts"
+import { fileURLToPath } from "node:url"
 import * as S from "./index.ts"
 
-const { version } = getPackageJson()
+const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
 const router = Cmd.createRouter("x-sexp.js", version)
 

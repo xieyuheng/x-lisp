@@ -1,4 +1,4 @@
-import { jsonParseString } from "../../../helpers/json/jsonParse.ts"
+import { jsonParseString } from "@xieyuheng/helpers.js/json"
 import { ErrorWithMeta } from "../../errors/ErrorWithMeta.ts"
 import { positionForwardChar } from "../../span/Position.ts"
 import type { Consumer } from "../Consumer.ts"

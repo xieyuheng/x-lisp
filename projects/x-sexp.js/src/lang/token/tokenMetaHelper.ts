@@ -1,5 +1,5 @@
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import assert from "node:assert"
-import { recordMapValue } from "../../helpers/record/recordMapValue.ts"
 import * as S from "../sexp/index.ts"
 import { type TokenMeta } from "./Token.ts"
 

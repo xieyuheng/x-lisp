@@ -1,4 +1,3 @@
-x-sexp.js -- use local helpers.js
 x-sexp.js -- use local command.js
 
 move binary.js to packages
