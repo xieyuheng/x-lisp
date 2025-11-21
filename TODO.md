@@ -1,5 +1,3 @@
-x-lisp-boot.js -- add .js to bin name
-
 move x-sexp.js to monorepo
 move command.js to monorepo
 
