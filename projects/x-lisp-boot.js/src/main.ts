@@ -5,6 +5,7 @@ import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import fs from "node:fs"
+import { fileURLToPath } from "node:url"
 import * as B from "./basic/index.ts"
 import { globals } from "./globals.ts"
 import * as L from "./lang/index.ts"
@@ -18,7 +19,7 @@ import {
 } from "./project/index.ts"
 import * as Services from "./services/index.ts"
 
-const { version } = getPackageJson()
+const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
 const router = cmd.createRouter("x-lisp-boot", version)
 
