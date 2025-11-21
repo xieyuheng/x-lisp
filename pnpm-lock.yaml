@@ -45,14 +45,14 @@ importers:
   projects/x-lisp-boot.js:
     dependencies:
       '@xieyuheng/command.js':
-        specifier: ^0.3.1
-        version: 0.3.1
+        specifier: workspace:*
+        version: link:../command.js
       '@xieyuheng/helpers.js':
         specifier: workspace:*
         version: link:../helpers.js
       '@xieyuheng/x-sexp.js':
-        specifier: ^0.7.1
-        version: 0.7.1
+        specifier: workspace:*
+        version: link:../x-sexp.js
       zod:
         specifier: ^4.1.12
         version: 4.1.12
@@ -73,14 +73,14 @@ importers:
   projects/x-lisp-proto.js:
     dependencies:
       '@xieyuheng/command.js':
-        specifier: ^0.3.1
-        version: 0.3.1
+        specifier: workspace:*
+        version: link:../command.js
       '@xieyuheng/helpers.js':
         specifier: workspace:*
         version: link:../helpers.js
       '@xieyuheng/x-sexp.js':
-        specifier: ^0.7.1
-        version: 0.7.1
+        specifier: workspace:*
+        version: link:../x-sexp.js
     devDependencies:
       '@types/node':
         specifier: ^24.10.1
@@ -98,8 +98,8 @@ importers:
   projects/x-sexp.js:
     dependencies:
       '@xieyuheng/command.js':
-        specifier: ^0.3.1
-        version: 0.3.1
+        specifier: workspace:*
+        version: link:../command.js
       '@xieyuheng/helpers.js':
         specifier: workspace:*
         version: link:../helpers.js
@@ -121,13 +121,6 @@ packages:
 
   '@types/node@24.10.1':
     resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
-
-  '@xieyuheng/command.js@0.3.1':
-    resolution: {integrity: sha512-0btkuYwfeTpBnbnDQFeeYYEpsILffjcgArHZJ8isAvctDxtXeG1eRQnXP8w/XVGnOugtVPT7AMIMC7KVM2xLSw==}
-
-  '@xieyuheng/x-sexp.js@0.7.1':
-    resolution: {integrity: sha512-XHn/W4jUfmZeQ2ujYdi8lMrBFtJ4BNvwGiEpJ0EhV4heu6Hykb5/KWOO9V3bbuXEs1zugy3Rp8lFGJqjtSlvPg==}
-    hasBin: true
 
   prettier-plugin-organize-imports@4.3.0:
     resolution: {integrity: sha512-FxFz0qFhyBsGdIsb697f/EkvHzi5SZOhWAjxcx2dLt+Q532bAlhswcXGYB1yzjZ69kW8UoadFBw7TyNwlq96Iw==}
@@ -160,12 +153,6 @@ snapshots:
   '@types/node@24.10.1':
     dependencies:
       undici-types: 7.16.0
-
-  '@xieyuheng/command.js@0.3.1': {}
-
-  '@xieyuheng/x-sexp.js@0.7.1':
-    dependencies:
-      '@xieyuheng/command.js': 0.3.1
 
   prettier-plugin-organize-imports@4.3.0(prettier@3.6.2)(typescript@5.9.3):
     dependencies:
