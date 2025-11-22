@@ -79,3 +79,17 @@ date: 2025-09-21
 
 最简单的实现方式，可能就是编译到一个
 forth-like stack virtual machine。
+
+# 总结
+
+[2025-11-22]
+
+总结 x-lisp 想表达的核心 ideas：
+
+| idea                       | supporting feature    |
+|----------------------------|-----------------------|
+| combinators                | auto currying         |
+| contract based development | claim require ensure  |
+| data first decoupling      | structural types      |
+| algebraic data type        | define-data and match |
+| generic dispatching        | define-generic        |
