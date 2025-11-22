@@ -2,6 +2,7 @@
 *.o
 *.a
 *.test
+*.snapshot
 
 # GNU global
 GPATH

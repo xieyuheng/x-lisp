@@ -2,8 +2,6 @@
 
 int
 main(void) {
-    test_start();
-
     {
         const char *code = "(a b c)";
         where_printf("code: %s\n", code);
@@ -17,6 +15,4 @@ main(void) {
         where_printf("echo: ");
         sexp_print(sexp_parse(code), stdout); printf("\n");
     }
-
-    test_end();
 }
