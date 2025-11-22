@@ -1,7 +1,7 @@
 #include "index.h"
 
-void
-test_text(void) {
+int
+main(void) {
     test_start();
 
     {

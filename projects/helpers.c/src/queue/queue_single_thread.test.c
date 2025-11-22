@@ -1,7 +1,7 @@
 #include "index.h"
 
-void
-test_queue_single_thread(void) {
+int
+main(void) {
     test_start();
 
     queue_t *queue = make_queue(4);

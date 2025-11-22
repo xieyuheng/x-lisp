@@ -1,7 +1,7 @@
 #include "index.h"
 
-void
-test_utf8(void) {
+int
+main(void) {
     test_start();
 
     assert(utf8_char_length('a') == 1);

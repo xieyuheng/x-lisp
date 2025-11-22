@@ -1,7 +1,7 @@
 #include "index.h"
 
-void
-test_lexer(void) {
+int
+main(void) {
     test_start();
 
     lexer_t *lexer = make_lexer();

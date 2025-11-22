@@ -1,7 +1,7 @@
 #include "index.h"
 
-void
-test_set(void) {
+int
+main(void) {
     test_start();
 
     {

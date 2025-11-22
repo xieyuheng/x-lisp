@@ -1,7 +1,7 @@
 #include "index.h"
 
-void
-test_array(void) {
+int
+main(void) {
     test_start();
 
     array_t *array = make_array_with(

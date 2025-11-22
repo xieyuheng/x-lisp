@@ -1,7 +1,7 @@
 #include "index.h"
 
-void
-test_list(void) {
+int
+main(void) {
     test_start();
 
     list_t *list = make_list();

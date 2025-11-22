@@ -22,8 +22,8 @@ thread_fn(thread_t *thread) {
     }
 }
 
-void
-test_mutex(void) {
+int
+main(void) {
     test_start();
 
     mutex_t *mutex = make_mutex();

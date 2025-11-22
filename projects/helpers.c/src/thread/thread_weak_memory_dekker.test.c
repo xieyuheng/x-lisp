@@ -19,15 +19,15 @@ thread_fn_2(thread_t *thread) {
     relaxed_store(&b, relaxed_load(&x));
 }
 
-void
-test_thread_weak_memory_dekker(void) {
+int
+main(void) {
     test_start();
 
     // comment the follow early `return` to run this test.
     // due to weak memory model, the program exit the follow loop,
     // and report after how many loops an unintuitive behavior occurred.
 
-    return;
+    return 0;
 
     size_t count = 0;
 

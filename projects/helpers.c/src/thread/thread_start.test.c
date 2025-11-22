@@ -6,8 +6,8 @@ thread_fn(thread_t *thread) {
     printf("[thread_fn] %s\n", message);
 }
 
-void
-test_thread_start(void) {
+int
+main(void) {
     test_start();
 
     char *message = string_copy("hello thread");

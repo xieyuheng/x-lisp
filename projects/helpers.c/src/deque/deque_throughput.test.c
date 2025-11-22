@@ -28,8 +28,8 @@ uint_consumer(thread_t *thread) {
     }
 }
 
-void
-test_deque_throughput(void) {
+int
+main(void) {
     test_start();
 
     deque_t *deque = make_deque();

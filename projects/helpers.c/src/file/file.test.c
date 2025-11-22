@@ -1,7 +1,7 @@
 #include "index.h"
 
-void
-test_file(void) {
+int
+main(void) {
     test_start();
 
     char *base = dirname(string_copy(__FILE__));

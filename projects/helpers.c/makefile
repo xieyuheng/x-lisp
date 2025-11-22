@@ -31,15 +31,25 @@ targets = $(shell find src -name '*.c' -not -name '*.test.c')
 objects = $(patsubst %.c, %.o, $(targets))
 headers = $(shell find src -name '*.h')
 
+parallel = parallel -v --halt now,fail=1
+test_targets = $(shell find src -name '*.test.c')
+tests = $(patsubst %.c, %, $(test_targets))
+
 .PHONY: all run test clean
 
-all: src/index.a
+all: test
+
+test: $(tests)
+	$(parallel) ::: $(tests)
+
+src/%.test: src/%.test.c src/index.a
+	$(cc) $(cflags) $(ldflags) $^ -o $@
 
 src/index.a: $(objects)
 	ar rcs $@ $^
 
 src/%.o: src/%.c $(headers)
-	mkdir -p $(dir $@); $(cc) -c $(cflags) $< -o $@
+	$(cc) -c $(cflags) $< -o $@
 
 clean:
 	rm -rf $(objects) src/index.a

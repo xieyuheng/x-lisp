@@ -1,7 +1,7 @@
 #include "index.h"
 
-void
-test_string(void) {
+int
+main(void) {
     test_start();
 
     assert(string_equal("abc", "abc"));

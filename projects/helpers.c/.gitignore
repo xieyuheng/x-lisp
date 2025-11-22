@@ -1,6 +1,7 @@
 # c
 *.o
 *.a
+*.test
 
 # GNU global
 GPATH

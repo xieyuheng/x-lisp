@@ -7,8 +7,8 @@ struct vec2_t {
 
 typedef struct vec2_t vec2_t;
 
-void
-test_memory(void) {
+int
+main(void) {
     test_start();
 
     {

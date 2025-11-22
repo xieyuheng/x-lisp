@@ -12,8 +12,8 @@ thread_fn(thread_t *thread) {
     }
 }
 
-void
-test_stats_counter(void) {
+int
+main(void) {
     test_start();
 
     stats_counter = make_stats_counter(THREAD_COUNT);

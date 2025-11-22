@@ -23,8 +23,8 @@ thread_fn(thread_t *thread) {
     }
 }
 
-void
-test_allocator_throughput(void) {
+int
+main(void) {
     test_start();
 
     allocator_t *allocator = make_allocator(CACHE_SIZE);

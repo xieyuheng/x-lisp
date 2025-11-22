@@ -63,8 +63,8 @@ string_consumer(thread_t *thread) {
     }
 }
 
-void
-test_queue_multi_thread(void) {
+int
+main(void) {
     test_start();
 
     queue_t *queue = make_queue(QUEUE_SIZE);
