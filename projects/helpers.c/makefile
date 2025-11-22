@@ -37,17 +37,23 @@ tests = $(patsubst %.c, %, $(test_sources))
 snapshot_sources = $(shell find src -name '*.snapshot.c')
 snapshots = $(patsubst %.c, %, $(snapshot_sources))
 
+exe_sources = $(shell find src -name '*.exe.c')
+exes = $(patsubst %.c, %, $(exe_sources))
+
 parallel = parallel -v --halt now,fail=1
 
 .PHONY: all test snapshot clean
 
-all: test snapshot
+all: $(exes) test snapshot
 
 test: $(tests)
 	echo $(tests) | tr [:space:] '\n' | $(parallel) {}
 
 snapshot: $(snapshots)
 	echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
+
+src/%.exe: src/%.exe.c src/index.a
+	$(cc) $(cflags) $(ldflags) $^ -o $@
 
 src/%.test: src/%.test.c src/index.a
 	$(cc) $(cflags) $(ldflags) $^ -o $@
@@ -62,4 +68,4 @@ src/%.o: src/%.c $(headers)
 	$(cc) -c $(cflags) $< -o $@
 
 clean:
-	rm -rf $(objects) $(tests) $(snapshots) src/index.a
+	rm -rf $(objects) $(exes) $(tests) $(snapshots) src/index.a
