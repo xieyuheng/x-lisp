@@ -16,6 +16,11 @@ node_modules
 *#*
 .#*
 
+# GNU global
+GPATH
+GRTAGS
+GTAGS
+
 # vscode
 .vscode
 

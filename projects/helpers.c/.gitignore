@@ -2,6 +2,11 @@
 *.o
 *.a
 
+# GNU global
+GPATH
+GRTAGS
+GTAGS
+
 # emacs
 *~
 *#*
