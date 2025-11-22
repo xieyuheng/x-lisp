@@ -1,50 +1,55 @@
 cc = gcc
-ifeq ($(STATIC), true)
-static_ldflags = \
-	-static
+
+cflags = -std=c23
+cflags += -g
+cflags += -O3
+cflags += -I/usr/local/include
+cflags += -Wall
+cflags += -Wwrite-strings
+cflags += -Wextra
+cflags += -Werror
+cflags += -Wpedantic
+cflags += -D_POSIX_C_SOURCE=200809L
+cflags += -D_TIME_BITS=64
+cflags += -D_FILE_OFFSET_BITS=64
+cflags += $(CFLAGS)
+
+ldflags = -L/usr/local/lib
+ldflags += -lm -pthread
+ldflags += $(LDFLAGS)
+
+ifdef TSAN
+ldflags += -fsanitize=thread
+cflags += -fsanitize=thread
 endif
-ifeq ($(TSAN), true)
-tsan_ldflags = -fsanitize=thread
-tsan_cflags= -fsanitize=thread
+
+STATIC = 1
+ifdef STATIC
+ldflags += -static
 endif
-ldflags = \
-	-L/usr/local/lib \
-	-lm \
-	-pthread \
-	$(static_ldflags) \
-	$(tsan_ldflags) \
-	$(LDFLAGS)
-cflags = \
-	-g \
-	-O3 \
-	-std=c23 \
-	-I/usr/local/include \
-	-Wall \
-	-Wwrite-strings \
-	-Wextra \
-	-Werror \
-	-Wpedantic \
-	-D_POSIX_C_SOURCE=200809L \
-	-D_TIME_BITS=64 \
-	-D_FILE_OFFSET_BITS=64 \
-	$(tsan_cflags) \
-	$(CFLAGS)
-src = $(shell find src -name '*.c')
+
+sources = $(shell find src -name '*.c' -not -name '*.test.c' -not -name '*.snapshot.c' -not -name '*.exe.c')
+objects = $(patsubst %.c, %.o, $(sources))
 headers = $(shell find src -name '*.h')
-lib = $(patsubst src/%, lib/%, $(patsubst %.c, %.o, $(src)))
-extlib = ../helpers.c/lib/libhelpers.a
 
-.PHONY: all run test clean
+test_sources = $(shell find src -name '*.test.c')
+tests = $(patsubst %.c, %, $(test_sources))
 
-all: bin/bundle
+snapshot_sources = $(shell find src -name '*.snapshot.c')
+snapshots = $(patsubst %.c, %, $(snapshot_sources))
 
-run: bin/bundle
-	./bin/bundle
+exe_sources = $(shell find src -name '*.exe.c')
+exes = $(patsubst %.c, %, $(exe_sources))
 
-test: bin/tester
-	./bin/tester test-self
+parallel = parallel -v --halt now,fail=1
 
-bin/tester: bin/tester.c $(lib)
+extlib = ../helpers.c/src/index.a
+
+.PHONY: all test snapshot clean
+
+all: $(exes) test snapshot
+
+bin/tester: bin/tester.c src/index.a
 	$(cc) $^ $(extlib) $(cflags) $(ldflags) -o $@
 
 bin/bundle: bin/runtime.o bin/bundle.o
@@ -53,11 +58,31 @@ bin/bundle: bin/runtime.o bin/bundle.o
 bin/bundle.o: bin/bundle.c
 	$(cc) -r $^ $(cflags) -o bin/bundle.o
 
-bin/runtime.o: bin/runtime.c $(lib)
+bin/runtime.o: bin/runtime.c src/index.a
 	$(cc) -r $^ $(extlib) $(cflags) -o bin/runtime.o
 
-lib/%.o: src/%.c $(headers)
-	mkdir -p $(dir $@); $(cc) -c $(cflags) $< -o $@
+test: $(tests)
+	echo $(tests) | tr [:space:] '\n' | $(parallel) {}
 
+snapshot: $(snapshots)
+	echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
+
+src/%.exe: src/%.exe.c src/index.a
+	$(cc) $(cflags) $(ldflags) $^ -o $@
+
+src/%.test: src/%.test.c src/index.a
+	$(cc) $(cflags) $(ldflags) $^ -o $@
+
+src/%.snapshot: src/%.snapshot.c src/index.a
+	$(cc) $(cflags) $(ldflags) $^ -o $@
+
+src/index.a: $(objects)
+	ar rcs $@ $^
+
+src/%.o: src/%.c $(headers)
+	$(cc) -c $(cflags) $< -o $@
 clean:
-	rm -rf lib bin/*.o bin/bundle bin/tester
+	rm -rf $(objects) $(exes) $(tests) $(snapshots) src/index.a
+	rm -rf bin/*.o bin/bundle bin/tester
+
+

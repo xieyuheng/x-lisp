@@ -1,16 +1,18 @@
-# c
-
-tmp
-*.o
-
-# build
-
-bin/bundle
 bin/tester
-lib
+bin/bundle
+
+# c
+*.o
+*.a
+*.test
+*.snapshot
+
+# GNU global
+GPATH
+GRTAGS
+GTAGS
 
 # emacs
-
 *~
 *#*
 .#*
