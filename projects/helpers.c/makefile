@@ -43,6 +43,8 @@ exes = $(patsubst %.c, %, $(exe_sources))
 
 parallel = parallel -v --halt now,fail=1
 
+deps =
+
 .PHONY: all test snapshot clean
 
 all: $(exes) test snapshot
@@ -53,20 +55,20 @@ test: $(tests)
 snapshot: $(snapshots)
 	echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
 
-src/%.exe: src/%.exe.c src/index.po
-	$(cc) $(cflags) $^ $(ldflags) -o $@
+src/%.exe: src/%.exe.c src/index.a
+	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/%.test: src/%.test.c src/index.po
-	$(cc) $(cflags) $^ $(ldflags) -o $@
+src/%.test: src/%.test.c src/index.a
+	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/%.snapshot: src/%.snapshot.c src/index.po
-	$(cc) $(cflags) $^ $(ldflags) -o $@
+src/%.snapshot: src/%.snapshot.c src/index.a
+	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/index.po: $(objects)
+src/index.a: $(objects)
 	ld -r $^ -o $@
 
 src/%.o: src/%.c $(headers)
 	$(cc) -c $(cflags) $< -o $@
 
 clean:
-	rm -rf $(objects) $(exes) $(tests) $(snapshots) src/index.po
+	rm -rf $(objects) $(exes) $(tests) $(snapshots) src/index.a
