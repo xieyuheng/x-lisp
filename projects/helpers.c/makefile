@@ -31,7 +31,7 @@ cflags = \
 	$(CFLAGS)
 src = $(shell find src -name '*.c')
 headers = $(shell find src -name '*.h')
-lib = $(patsubst src/%, lib/%, $(patsubst %.c, %.o, $(src)))
+lib = $(patsubst %.c, %.o, $(src))
 
 .PHONY: all run test clean
 
@@ -40,14 +40,14 @@ all: test
 test: bin/tester
 	./bin/tester test-self
 
-bin/tester: bin/tester.c lib/libhelpers.a
+bin/tester: bin/tester.c src/libhelpers.a
 	$(cc) $^ $(cflags) $(ldflags) -o $@
 
-lib/libhelpers.a: $(lib)
+src/libhelpers.a: $(lib)
 	ar rcs $@ $^
 
-lib/%.o: src/%.c $(headers)
+src/%.o: src/%.c $(headers)
 	mkdir -p $(dir $@); $(cc) -c $(cflags) $< -o $@
 
 clean:
-	rm -rf lib bin/*.o bin/tester
+	rm -rf $(lib) src/libhelpers.a bin/tester
