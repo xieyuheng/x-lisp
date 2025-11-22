@@ -27,13 +27,13 @@ ifeq ($(STATIC), true)
 ldflags += -static
 endif
 
-targets = $(shell find src -name '*.c' -not -name '*.test.c')
-objects = $(patsubst %.c, %.o, $(targets))
+sources = $(shell find src -name '*.c' -not -name '*.test.c')
+objects = $(patsubst %.c, %.o, $(sources))
 headers = $(shell find src -name '*.h')
 
 parallel = parallel -v --halt now,fail=1
-test_targets = $(shell find src -name '*.test.c')
-tests = $(patsubst %.c, %, $(test_targets))
+test_sources = $(shell find src -name '*.test.c')
+tests = $(patsubst %.c, %, $(test_sources))
 
 .PHONY: all run test clean
 
