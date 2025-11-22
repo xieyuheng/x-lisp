@@ -21,7 +21,7 @@
   "dependencies": {
     "@xieyuheng/helpers.js": "workspace:*",
     "@xieyuheng/command.js": "workspace:*",
-    "@xieyuheng/x-sexp.js": "workspace:*"
+    "@xieyuheng/sexp.js": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",

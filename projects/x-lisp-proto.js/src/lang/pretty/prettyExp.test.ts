@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { test } from "node:test"
 import { type Exp } from "../exp/index.ts"
 import { parseExp } from "../parse/index.ts"

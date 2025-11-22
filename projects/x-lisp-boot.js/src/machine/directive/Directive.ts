@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 
 export type Directive = Db | Dw | Dd | Dq | String
 

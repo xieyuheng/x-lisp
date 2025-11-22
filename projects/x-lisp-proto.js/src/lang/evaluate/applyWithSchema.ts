@@ -1,6 +1,6 @@
 import { arrayMapZip } from "@xieyuheng/helpers.js/array"
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { globals } from "../../globals.ts"
 import { prettyValue, prettyValues } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"

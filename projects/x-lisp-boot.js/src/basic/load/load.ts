@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import fs from "node:fs"
 import { importBuiltin } from "../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"

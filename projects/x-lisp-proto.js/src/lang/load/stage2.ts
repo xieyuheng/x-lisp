@@ -1,6 +1,6 @@
 import { formatIndent } from "@xieyuheng/helpers.js/format"
 import { createUrl, urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { include } from "../define/index.ts"
 import { type Definition } from "../definition/index.ts"
 import { formatDefinition } from "../format/index.ts"

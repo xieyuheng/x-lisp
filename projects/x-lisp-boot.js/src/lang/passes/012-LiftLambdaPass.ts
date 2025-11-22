@@ -1,5 +1,5 @@
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as Definitions from "../definition/index.ts"
 import { type Definition } from "../definition/index.ts"

@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { test } from "node:test"
 import { emptyEnv } from "../env/index.ts"
 import { evaluate, resultValue } from "../evaluate/index.ts"

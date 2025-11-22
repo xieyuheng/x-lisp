@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 

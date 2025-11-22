@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import * as Instrs from "../instr/index.ts"
 import { type Instr } from "../instr/index.ts"
 import * as Values from "../value/index.ts"

@@ -1,5 +1,5 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { parseExp } from "../parse/index.ts"
 import * as Patterns from "./Pattern.ts"
 import { patternize, type Effect } from "./patternize.ts"

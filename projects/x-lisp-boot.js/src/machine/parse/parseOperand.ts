@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import * as Operands from "../operand/index.ts"
 import { type Operand } from "../operand/index.ts"
 

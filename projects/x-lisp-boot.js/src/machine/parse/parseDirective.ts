@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import * as Directives from "../directive/index.ts"
 import { type Directive } from "../directive/index.ts"
 

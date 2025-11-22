@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
 import { type FunctionDefinition } from "../definition/index.ts"
 import { type Instr } from "../instr/index.ts"

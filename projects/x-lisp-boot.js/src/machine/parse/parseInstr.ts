@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { Instr } from "../instr/index.ts"
 import { parseOperand } from "./parseOperand.ts"
 

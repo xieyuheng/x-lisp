@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Value } from "./Value.ts"
 
 export function valueMaybeMeta(value: Value): Meta | undefined {

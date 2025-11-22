@@ -1,5 +1,5 @@
 import { setAdd, setUnion } from "@xieyuheng/helpers.js/set"
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { getBuiltinFunctionArity } from "../builtin/index.ts"
 import { type Definition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"

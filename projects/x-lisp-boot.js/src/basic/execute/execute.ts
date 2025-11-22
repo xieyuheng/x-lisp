@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import { definitionArity } from "../definition/definitionHelpers.ts"
 import { frameGoto, frameLookup } from "../execute/index.ts"

@@ -7,7 +7,7 @@ import * as S from "./index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = Cmd.createRouter("x-sexp.js", version)
+const router = Cmd.createRouter("sexp.js", version)
 
 router.defineRoutes(["format file -- format a file"])
 

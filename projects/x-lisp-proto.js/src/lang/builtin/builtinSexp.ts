@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { formatSexp } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"

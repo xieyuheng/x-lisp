@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { type Mod } from "../mod/index.ts"
 import { parseStmt } from "../parse/index.ts"
 import { type Stmt } from "../stmt/index.ts"

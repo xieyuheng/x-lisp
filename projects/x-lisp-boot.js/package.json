@@ -22,7 +22,7 @@
   "dependencies": {
     "@xieyuheng/helpers.js": "workspace:*",
     "@xieyuheng/command.js": "workspace:*",
-    "@xieyuheng/x-sexp.js": "workspace:*",
+    "@xieyuheng/sexp.js": "workspace:*",
     "zod": "^4.1.12"
   },
   "devDependencies": {

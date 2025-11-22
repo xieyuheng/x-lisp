@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import * as M from "../../machine/index.ts"
 
 export function AssignHomePass(mod: M.Mod): void {

@@ -1,5 +1,5 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { globals } from "../../globals.ts"
 import { equal } from "../equal/index.ts"
 import { type Exp } from "../exp/index.ts"

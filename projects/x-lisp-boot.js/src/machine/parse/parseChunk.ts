@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { Chunk } from "../chunk/index.ts"
 import { parseDirective } from "./parseDirective.ts"
 

@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/x-sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
 

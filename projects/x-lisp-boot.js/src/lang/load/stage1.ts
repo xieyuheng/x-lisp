@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import { FunctionDefinition } from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"

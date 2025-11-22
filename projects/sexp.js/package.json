@@ -1,5 +1,5 @@
 {
-  "name": "@xieyuheng/x-sexp.js",
+  "name": "@xieyuheng/sexp.js",
   "version": "0.7.1",
   "repository": "github:xieyuheng/x-lisp",
   "license": "GPL-3.0-or-later",
@@ -10,7 +10,7 @@
     "lib"
   ],
   "bin": {
-    "x-sexp.js": "lib/main.js"
+    "sexp.js": "lib/main.js"
   },
   "scripts": {
     "build": "tsc",

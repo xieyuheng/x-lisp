@@ -1,7 +1,7 @@
 import { arrayPickLast } from "@xieyuheng/helpers.js/array"
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { globals } from "../../globals.ts"
 import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"

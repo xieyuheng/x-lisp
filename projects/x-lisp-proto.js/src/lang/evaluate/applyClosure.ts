@@ -1,5 +1,5 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { globals } from "../../globals.ts"
 import { emptyEnv, envUpdate } from "../env/index.ts"
 import { match, patternize } from "../pattern/index.ts"

@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import type { Exp } from "../exp/index.ts"
 import { formatExp } from "../format/index.ts"
 

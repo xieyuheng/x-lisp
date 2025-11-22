@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import { formatDefinition, formatMod } from "../format/index.ts"
 import { sexpConfig } from "./sexpConfig.ts"
 

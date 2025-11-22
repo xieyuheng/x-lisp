@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/x-sexp.js"
+import * as S from "@xieyuheng/sexp.js"
 import process from "node:process"
 import { globals } from "../../globals.ts"
 import {
