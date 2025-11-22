@@ -1,53 +1,45 @@
 cc = gcc
-ifeq ($(STATIC), true)
-static_ldflags = \
-	-static
-endif
+
+cflags = -std=c23
+cflags += -g
+cflags += -O3
+cflags += -I/usr/local/include
+cflags += -Wall
+cflags += -Wwrite-strings
+cflags += -Wextra
+cflags += -Werror
+cflags += -Wpedantic
+cflags += -D_POSIX_C_SOURCE=200809L
+cflags += -D_TIME_BITS=64
+cflags += -D_FILE_OFFSET_BITS=64
+cflags += $(CFLAGS)
+
+ldflags = -L/usr/local/lib
+ldflags += -lm -pthread
+ldflags += $(LDFLAGS)
+
 ifeq ($(TSAN), true)
-tsan_ldflags = -fsanitize=thread
-tsan_cflags= -fsanitize=thread
+ldflags += -fsanitize=thread
+cflags += -fsanitize=thread
 endif
-ldflags = \
-	-L/usr/local/lib \
-	-lm \
-	-pthread \
-	$(static_ldflags) \
-	$(tsan_ldflags) \
-	$(LDFLAGS)
-cflags = \
-	-g \
-	-O3 \
-	-std=c23 \
-	-I/usr/local/include \
-	-Wall \
-	-Wwrite-strings \
-	-Wextra \
-	-Werror \
-	-Wpedantic \
-	-D_POSIX_C_SOURCE=200809L \
-	-D_TIME_BITS=64 \
-	-D_FILE_OFFSET_BITS=64 \
-	$(tsan_cflags) \
-	$(CFLAGS)
-src = $(shell find src -name '*.c')
+
+ifeq ($(STATIC), true)
+ldflags += -static
+endif
+
+targets = $(shell find src -name '*.c' -not -name '*.test.c')
+objects = $(patsubst %.c, %.o, $(targets))
 headers = $(shell find src -name '*.h')
-lib = $(patsubst %.c, %.o, $(src))
 
 .PHONY: all run test clean
 
-all: test
+all: src/index.a
 
-test: bin/tester
-	./bin/tester test-self
-
-bin/tester: bin/tester.c src/libhelpers.a
-	$(cc) $^ $(cflags) $(ldflags) -o $@
-
-src/libhelpers.a: $(lib)
+src/index.a: $(objects)
 	ar rcs $@ $^
 
 src/%.o: src/%.c $(headers)
 	mkdir -p $(dir $@); $(cc) -c $(cflags) $< -o $@
 
 clean:
-	rm -rf $(lib) src/libhelpers.a bin/tester
+	rm -rf $(objects) src/index.a
