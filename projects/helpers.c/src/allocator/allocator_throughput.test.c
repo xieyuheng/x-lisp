@@ -47,9 +47,9 @@ main(void) {
         thread_join(T);
     }
 
-    who_printf("thread_count: %lu\n", thread_count);
+    where_printf("thread_count: %lu\n", thread_count);
     double throughput = REPEATION_COUNT * BATCH_SIZE / 1000 / time_passed_second(start_second);
-    who_printf("throughput: %.f k/s\n", throughput);
+    where_printf("throughput: %.f k/s\n", throughput);
 
     allocator_destroy(&allocator);
 

@@ -70,7 +70,7 @@ main(void) {
     queue_t *queue = make_queue(QUEUE_SIZE);
 
     {
-        who_printf("uint_producer vs. uint_consumer\n");
+        where_printf("uint_producer vs. uint_consumer\n");
 
         thread_t *producer_thread = thread_start(uint_producer, queue);
         thread_t *consumer_thread = thread_start(uint_consumer, queue);
@@ -80,7 +80,7 @@ main(void) {
     }
 
     {
-        who_printf("string_producer vs. string_consumer\n");
+        where_printf("string_producer vs. string_consumer\n");
 
         thread_t *producer_thread = thread_start(string_producer, queue);
         thread_t *consumer_thread = thread_start(string_consumer, queue);

@@ -59,7 +59,7 @@ main(void) {
     }
 
 
-    who_printf("thread_count: %lu\n", thread_count);
+    where_printf("thread_count: %lu\n", thread_count);
 
     allocator_destroy(&allocator);
 

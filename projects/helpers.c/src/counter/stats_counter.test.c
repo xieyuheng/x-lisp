@@ -24,7 +24,7 @@ main(void) {
 
     {
         size_t total = stats_counter_total(stats_counter);
-        who_printf("current total: %lu\n", total);
+        where_printf("current total: %lu\n", total);
     }
 
     thread_pool_join_all(thread_pool);
@@ -32,7 +32,7 @@ main(void) {
     {
         size_t total = stats_counter_total(stats_counter);
         assert(total == THREAD_COUNT * PER_THREAD_COUNT_LIMIT);
-        who_printf("final total: %lu\n", total);
+        where_printf("final total: %lu\n", total);
     }
 
     thread_pool_destroy(&thread_pool);

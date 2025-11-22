@@ -43,7 +43,7 @@ main(void) {
     thread_join(consumer_thread);
 
     double throughput = LENGTH / 1000 / time_passed_second(start_second);
-    who_printf("throughput: %.f k/s\n", throughput);
+    where_printf("throughput: %.f k/s\n", throughput);
 
     deque_destroy(&deque);
 

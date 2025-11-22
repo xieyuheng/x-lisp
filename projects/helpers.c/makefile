@@ -52,4 +52,4 @@ src/%.o: src/%.c $(headers)
 	$(cc) -c $(cflags) $< -o $@
 
 clean:
-	rm -rf $(objects) src/index.a
+	rm -rf $(objects) $(tests) src/index.a
