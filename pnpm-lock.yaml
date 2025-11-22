@@ -66,9 +66,6 @@ importers:
 
   projects/sexp.js:
     dependencies:
-      '@xieyuheng/command.js':
-        specifier: workspace:*
-        version: link:../command.js
       '@xieyuheng/helpers.js':
         specifier: workspace:*
         version: link:../helpers.js

@@ -1,1 +1,0 @@
-(assert #t #t)
