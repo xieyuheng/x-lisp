@@ -5,6 +5,13 @@ lib
 *.o
 *.exe
 
+# c
+*.o
+*.a
+*.po
+*.test
+*.snapshot
+
 # npm
 node_modules
 
