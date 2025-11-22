@@ -3,7 +3,7 @@ lib
 
 # x-lisp
 *.o
-*.x86
+*.exe
 
 # npm
 node_modules
