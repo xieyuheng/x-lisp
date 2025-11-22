@@ -55,20 +55,20 @@ test: $(tests)
 snapshot: $(snapshots)
 	echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
 
-src/%.exe: src/%.exe.c src/index.a
+src/%.exe: src/%.exe.c src/index.po
 	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/%.test: src/%.test.c src/index.a
+src/%.test: src/%.test.c src/index.po
 	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/%.snapshot: src/%.snapshot.c src/index.a
+src/%.snapshot: src/%.snapshot.c src/index.po
 	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/index.a: $(objects)
+src/index.po: $(objects)
 	ld -r $^ -o $@
 
 src/%.o: src/%.c $(headers)
 	$(cc) -c $(cflags) $< -o $@
 
 clean:
-	rm -rf $(objects) $(exes) $(tests) $(snapshots) src/index.a
+	rm -rf $(objects) $(exes) $(tests) $(snapshots) src/index.po

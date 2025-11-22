@@ -11,9 +11,9 @@ export function assembleX86FileWithRuntime(file: string): void {
 
   const binaryFile = file.slice(0, -2)
   const inputFiles = [file, useRuntimeFile()]
-  const ldflags = ["-lm", "-pthread"]
+  const ldflags = ["-lm", "-pthread", "-static"]
   const cflags = ["-g"]
-  const args = [...inputFiles, ...cflags, ...ldflags, "-o", binaryFile]
+  const args = [...cflags, ...inputFiles, ...ldflags, "-o", binaryFile]
   const result = systemShellRun("gcc", args)
   if (result.stdout) console.log(result.stdout)
   if (result.stderr) console.error(result.stderr)
