@@ -15,9 +15,9 @@ export function projectSourceDirectory(project: Project): string {
 export function projectOutputDirectory(project: Project): string {
   return project.config["build"]["output-directory"]
     ? Path.resolve(
-        project.rootDirectory,
-        project.config["build"]["output-directory"],
-      )
+      project.rootDirectory,
+      project.config["build"]["output-directory"],
+    )
     : projectSourceDirectory(project)
 }
 
@@ -68,13 +68,13 @@ export function projectGetBasicBundleFile(
   )
 }
 
-export function projectGetMachineFile(
+export function projectGetX86MachineFile(
   project: Project,
   sourceId: string,
 ): string {
   return Path.join(
     projectOutputDirectory(project),
-    sourceId.slice(0, -L.suffix.length) + M.suffix,
+    sourceId.slice(0, -L.suffix.length) + ".x86" + M.suffix,
   )
 }
 

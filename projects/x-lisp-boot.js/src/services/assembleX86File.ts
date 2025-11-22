@@ -8,7 +8,7 @@ export function assembleX86File(file: string): void {
   }
 
   const objectFile = file.slice(0, -2) + ".o"
-  const binaryFile = file.slice(0, -2)
+  const binaryFile = file.slice(0, -2) + ".exe"
 
   {
     const result = systemShellRun("as", ["-g", file, "-o", objectFile])

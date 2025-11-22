@@ -9,7 +9,7 @@ import {
   projectBuild,
   projectForEachSource,
   projectGetBasicBundleFile,
-  projectGetMachineFile,
+  projectGetX86MachineFile,
   writeFile,
 } from "./index.ts"
 
@@ -46,7 +46,7 @@ function runBasicSnapshot(project: Project, id: string): void {
 
 function runX86Test(project: Project, id: string): void {
   if (isTest(id)) {
-    const inputFile = projectGetMachineFile(project, id) + ".x86"
+    const inputFile = projectGetX86MachineFile(project, id) + ".exe"
     logFile("x86-test", inputFile)
     systemShellRun(inputFile, [])
   }
@@ -54,7 +54,7 @@ function runX86Test(project: Project, id: string): void {
 
 function runX86Snapshot(project: Project, id: string): void {
   if (isSnapshot(id)) {
-    const inputFile = projectGetMachineFile(project, id) + ".x86"
+    const inputFile = projectGetX86MachineFile(project, id) + ".exe"
     const outputFile = inputFile + ".out"
     logFile("x86-snapshot", outputFile)
     systemShellRun(inputFile, [">", outputFile])

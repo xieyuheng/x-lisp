@@ -15,8 +15,8 @@ export function projectClean(project: Project): void {
       ".lisp.log",
       ".basic",
       ".machine",
-      ".machine.x86",
-      ".machine.x86.s",
+      ".exe",
+      ".s",
       ".out",
     ]
 

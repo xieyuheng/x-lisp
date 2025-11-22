@@ -11,7 +11,7 @@ import {
   projectForEachSource,
   projectGetBasicBundleFile,
   projectGetBasicFile,
-  projectGetMachineFile,
+  projectGetX86MachineFile,
   projectGetPassLogFile,
   projectGetSourceFile,
   writeFile,
@@ -22,9 +22,9 @@ export function projectBuild(project: Project): void {
   projectForEachSource(project, buildPassLog)
   projectForEachSource(project, buildBasic)
   projectForEachSource(project, buildBasicBundle)
-  projectForEachSource(project, buildMachine)
-  projectForEachSource(project, buildMachineX86assembly)
-  projectForEachSource(project, buildMachineX86Binary)
+  projectForEachSource(project, buildX86Machine)
+  projectForEachSource(project, buildX86Machineassembly)
+  projectForEachSource(project, buildX86MachineBinary)
 }
 
 function buildPassLog(project: Project, id: string): void {
@@ -58,10 +58,10 @@ function buildBasicBundle(project: Project, id: string): void {
   }
 }
 
-function buildMachine(project: Project, id: string): void {
+function buildX86Machine(project: Project, id: string): void {
   if (isTest(id) || isSnapshot(id)) {
     const inputFile = projectGetBasicBundleFile(project, id)
-    const outputFile = projectGetMachineFile(project, id)
+    const outputFile = projectGetX86MachineFile(project, id)
     logFile("machine", outputFile)
     const basicBundleMod = B.loadEntry(createUrl(inputFile))
     const machineMod = Services.compileBasicToX86Machine(basicBundleMod)
@@ -70,10 +70,10 @@ function buildMachine(project: Project, id: string): void {
   }
 }
 
-function buildMachineX86assembly(project: Project, id: string): void {
+function buildX86Machineassembly(project: Project, id: string): void {
   if (isTest(id) || isSnapshot(id)) {
-    const inputFile = projectGetMachineFile(project, id)
-    const outputFile = projectGetMachineFile(project, id) + ".x86.s"
+    const inputFile = projectGetX86MachineFile(project, id)
+    const outputFile = projectGetX86MachineFile(project, id) + ".s"
     logFile("x86-assembly", outputFile)
     const machineMod = M.loadEntry(createUrl(inputFile))
     const outputText = M.transpileToX86Assembly(machineMod)
@@ -81,11 +81,11 @@ function buildMachineX86assembly(project: Project, id: string): void {
   }
 }
 
-function buildMachineX86Binary(project: Project, id: string): void {
+function buildX86MachineBinary(project: Project, id: string): void {
   if (isTest(id) || isSnapshot(id)) {
-    const inputFile = projectGetMachineFile(project, id) + ".x86.s"
-    const outputFile = projectGetMachineFile(project, id) + ".x86"
+    const inputFile = projectGetX86MachineFile(project, id) + ".s"
+    const outputFile = projectGetX86MachineFile(project, id) + ".exe"
     logFile("x86-binary", outputFile)
-    Services.assembleX86FileWithRuntime(inputFile)
+    Services.assembleX86FileWithRuntime(inputFile, outputFile)
   }
 }
