@@ -18,12 +18,13 @@ ldflags = -L/usr/local/lib
 ldflags += -lm -pthread
 ldflags += $(LDFLAGS)
 
-ifeq ($(TSAN), true)
+ifdef TSAN
 ldflags += -fsanitize=thread
 cflags += -fsanitize=thread
 endif
 
-ifeq ($(STATIC), true)
+STATIC = 1
+ifdef STATIC
 ldflags += -static
 endif
 
