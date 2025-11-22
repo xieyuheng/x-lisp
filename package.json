@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "build": "pnpm run -r build",
+    "make": "make -C projects/helpers.c -j && make -C projects/runtime -j",
+    "build": "pnpm run make && pnpm run -r build",
     "test": "pnpm run -r --parallel --aggregate-output test",
     "format": "pnpm run -r --parallel --aggregate-output format",
     "test-suite:bun": "bun projects/x-lisp-boot.js/src/main.ts project:test --config projects/x-lisp-test-suite/project.json",

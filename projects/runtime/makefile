@@ -47,7 +47,7 @@ deps = ../helpers.c/src/index.po
 
 .PHONY: all test snapshot clean
 
-all: $(exes) test
+all: $(exes) test bin/runtime.o bin/bundle
 
 bin/bundle: bin/runtime.o bin/bundle.o
 	$(cc) $^ $(ldflags) -o $@
