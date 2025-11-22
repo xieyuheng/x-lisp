@@ -1,5 +1,3 @@
-[runtime] use test.c
-
 # later
 
 [runtime] gc -- mark and sweep

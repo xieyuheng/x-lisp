@@ -43,14 +43,11 @@ exes = $(patsubst %.c, %, $(exe_sources))
 
 parallel = parallel -v --halt now,fail=1
 
-extlib = ../helpers.c/src/index.a
+deps = ../helpers.c/src/index.po
 
 .PHONY: all test snapshot clean
 
-all: $(exes) test snapshot
-
-bin/tester: bin/tester.c src/index.a
-	$(cc) $^ $(extlib) $(cflags) $(ldflags) -o $@
+all: $(exes) test
 
 bin/bundle: bin/runtime.o bin/bundle.o
 	$(cc) $^ $(ldflags) -o $@
@@ -58,8 +55,8 @@ bin/bundle: bin/runtime.o bin/bundle.o
 bin/bundle.o: bin/bundle.c
 	$(cc) -r $^ $(cflags) -o bin/bundle.o
 
-bin/runtime.o: bin/runtime.c src/index.a
-	$(cc) -r $^ $(extlib) $(cflags) -o bin/runtime.o
+bin/runtime.o: bin/runtime.c src/index.po
+	$(cc) -r $^ $(deps) $(cflags) -o bin/runtime.o
 
 test: $(tests)
 	echo $(tests) | tr [:space:] '\n' | $(parallel) {}
@@ -67,22 +64,21 @@ test: $(tests)
 snapshot: $(snapshots)
 	echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
 
-src/%.exe: src/%.exe.c src/index.a
-	$(cc) $(cflags) $(ldflags) $^ -o $@
+src/%.exe: src/%.exe.c src/index.po
+	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/%.test: src/%.test.c src/index.a
-	$(cc) $(cflags) $(ldflags) $^ -o $@
+src/%.test: src/%.test.c src/index.po
+	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/%.snapshot: src/%.snapshot.c src/index.a
-	$(cc) $(cflags) $(ldflags) $^ -o $@
+src/%.snapshot: src/%.snapshot.c src/index.po
+	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/index.a: $(objects)
-	ar rcs $@ $^
+src/index.po: $(objects)
+	ld -r $^ -o $@
 
 src/%.o: src/%.c $(headers)
 	$(cc) -c $(cflags) $< -o $@
+
 clean:
-	rm -rf $(objects) $(exes) $(tests) $(snapshots) src/index.a
-	rm -rf bin/*.o bin/bundle bin/tester
-
-
+	rm -rf $(objects) $(exes) $(tests) $(snapshots) src/index.po
+	rm -rf bin/*.o bin/bundle

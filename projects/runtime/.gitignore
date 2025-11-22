@@ -4,6 +4,7 @@ bin/bundle
 # c
 *.o
 *.a
+*.po
 *.test
 *.snapshot
 

@@ -17,5 +17,3 @@
 #include "x_apply.h"
 #include "x_random.h"
 #include "x_curry.h"
-
-#include "test_value.h"

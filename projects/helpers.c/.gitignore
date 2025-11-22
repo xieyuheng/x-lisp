@@ -1,6 +1,7 @@
 # c
 *.o
 *.a
+*.po
 *.test
 *.snapshot
 

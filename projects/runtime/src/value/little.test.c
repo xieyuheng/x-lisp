@@ -1,7 +1,7 @@
 #include "index.h"
 
-void
-test_little(void) {
+int
+main(void) {
     test_start();
 
     char *string = string_copy("_______");
