@@ -1,3 +1,4 @@
-setup monorepo for c code -- extract helpers.c
+[helpers.c] self test should not depends on commander
+[helpers.c] move libraries to to level
 xvm.c
 sexp.c

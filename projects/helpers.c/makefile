@@ -32,32 +32,22 @@ cflags = \
 src = $(shell find src -name '*.c')
 headers = $(shell find src -name '*.h')
 lib = $(patsubst src/%, lib/%, $(patsubst %.c, %.o, $(src)))
-extlib = ../helpers.c/lib/libhelpers.a
 
 .PHONY: all run test clean
 
-all: bin/bundle
-
-run: bin/bundle
-	./bin/bundle
+all: test
 
 test: bin/tester
 	./bin/tester test-self
 
-bin/tester: bin/tester.c $(lib)
-	$(cc) $^ $(extlib) $(cflags) $(ldflags) -o $@
+bin/tester: bin/tester.c lib/libhelpers.a
+	$(cc) $^ $(cflags) $(ldflags) -o $@
 
-bin/bundle: bin/runtime.o bin/bundle.o
-	$(cc) $^ $(ldflags) -o $@
-
-bin/bundle.o: bin/bundle.c
-	$(cc) -r $^ $(cflags) -o bin/bundle.o
-
-bin/runtime.o: bin/runtime.c $(lib)
-	$(cc) -r $^ $(extlib) $(cflags) -o bin/runtime.o
+lib/libhelpers.a: $(lib)
+	ar rcs $@ $^
 
 lib/%.o: src/%.c $(headers)
 	mkdir -p $(dir $@); $(cc) -c $(cflags) $< -o $@
 
 clean:
-	rm -rf lib bin/*.o bin/bundle bin/tester
+	rm -rf lib bin/*.o bin/tester
