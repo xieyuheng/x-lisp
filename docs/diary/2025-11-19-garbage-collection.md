@@ -22,6 +22,12 @@ date: 2025-11-19
     gc space 中通过保存 slot 来简洁保存 object，
     这样 gc space 中的 slot 就是可以移动的了。
 
+  - 也许应该完全使用 directed graph 的术语：
+
+    - object graph (gc space)
+    - object (node) (object pointer)
+    - direct predecessors
+
 - 使用 shadow stack。
   每次 spill local variable 的时候，都放到 shadow stack 中。
   shadow stack 就是 GC 的 root stack。

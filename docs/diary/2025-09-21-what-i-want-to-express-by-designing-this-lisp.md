@@ -93,3 +93,9 @@ forth-like stack virtual machine。
 | data first decoupling      | structural types      |
 | algebraic data type        | define-data and match |
 | generic dispatching        | define-generic        |
+
+强调程序语言与集合论之间的联系：
+
+- 用 predicate 代表数据类型（数据的集合），而不是用 type theory。
+- 有「全集」的概念，说这说「全部数据的集合」的概念，
+  即所有的 structural data（不包含 function）。
