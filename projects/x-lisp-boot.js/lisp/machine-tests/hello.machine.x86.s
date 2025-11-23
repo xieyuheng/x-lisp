@@ -1,15 +1,19 @@
 .global _start
 
-.align 8
 .data
+.align 8
+.type _message, @object
 _message:
 _message.entry:
         .ascii "Hello, World!\n"
 _message.length:
         .quad 14
+.size _message, . - _message
 
-.align 8
+
 .text
+.align 8
+.type _start, @function
 _start:
 _start.entry:
         movq $1, %rax
@@ -20,3 +24,5 @@ _start.entry:
         movq $60, %rax
         movq $0, %rdi
         syscall 
+.size _start, . - _start
+

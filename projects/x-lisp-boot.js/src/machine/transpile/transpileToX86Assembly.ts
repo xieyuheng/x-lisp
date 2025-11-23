@@ -29,7 +29,13 @@ function transpileDefinition(definition: Definition): string {
       const blocks = Array.from(definition.blocks.values())
         .map((block) => transpileBlock({ definition }, block))
         .join("\n")
-      return `.align 8\n.text\n${name}:\n${blocks}`
+      let code = `.text\n`
+      code += `.align 8\n`
+      code += `.type ${name}, @function\n`
+      code += `${name}:\n`
+      code += `${blocks}\n`
+      code += `.size ${name}, . - ${name}\n`
+      return code
     }
 
     case "DataDefinition": {
@@ -37,7 +43,13 @@ function transpileDefinition(definition: Definition): string {
       const chunks = Array.from(definition.chunks.values())
         .map((chunk) => transpileChunk({ definition }, chunk))
         .join("\n")
-      return `.align 8\n.data\n${name}:\n${chunks}`
+      let code = `.data\n`
+      code += `.align 8\n`
+      code += `.type ${name}, @object\n`
+      code +=  `${name}:\n`
+      code +=  `${chunks}\n`
+      code += `.size ${name}, . - ${name}\n`
+      return code
     }
   }
 }

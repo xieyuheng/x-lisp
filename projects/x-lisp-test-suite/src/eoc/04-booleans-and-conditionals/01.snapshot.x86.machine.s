@@ -1,7 +1,8 @@
 .global _main
 
-.align 8
 .text
+.align 8
+.type _main, @function
 _main:
 _main.prolog:
         pushq %rbp
@@ -150,3 +151,5 @@ _main.epilog:
         popq %rsp
         popq %rbp
         retq 
+.size _main, . - _main
+
