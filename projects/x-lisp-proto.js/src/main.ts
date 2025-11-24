@@ -12,7 +12,7 @@ import { startRepl } from "./services/startRepl.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = Cmd.createRouter("x-lisp-proto", version)
+const router = Cmd.createRouter("x-lisp-proto.js", version)
 
 router.defineRoutes(["run file --debug --no-prelude", "repl --no-prelude"])
 

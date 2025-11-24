@@ -10,7 +10,7 @@ import { globals } from "./globals.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = cmd.createRouter("x-lisp-boot", version)
+const router = cmd.createRouter("basic-lisp.js", version)
 
 router.defineRoutes(["run file", "bundle file"])
 

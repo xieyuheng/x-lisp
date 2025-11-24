@@ -11,7 +11,7 @@ import * as Services from "./services/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = cmd.createRouter("x-lisp-boot", version)
+const router = cmd.createRouter("machine-lisp.js", version)
 
 router.defineRoutes(["transpile-to-x86-assembly file", "assemble-x86 file"])
 
