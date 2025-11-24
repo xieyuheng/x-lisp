@@ -6,8 +6,6 @@ settings:
 
 importers:
 
-  .: {}
-
   projects/binary.js:
     dependencies:
       '@xieyuheng/command.js':
