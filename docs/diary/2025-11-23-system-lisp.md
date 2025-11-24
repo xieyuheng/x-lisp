@@ -1,6 +1,6 @@
 ---
 title: system-lisp
-date: 2025-11-24
+date: 2025-11-23
 ---
 
 为什么需要 system-lisp？
