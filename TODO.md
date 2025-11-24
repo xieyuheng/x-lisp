@@ -5,7 +5,7 @@
 
 [basic] `FunctionDefinition` -- compiles to many sections
 
-- .bss -- `<name>.const`
+- .bss -- `<name>.value`
 - .text -- `<name>`
 
 `function_t` -- has `address` and `arity` and `is_primitive`

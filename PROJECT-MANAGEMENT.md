@@ -36,14 +36,16 @@ date: 2025-10-22
 第二个阶段实现 self compiler，
 可以直接把 js/ts 代码 port 到 x-lisp。
 
-# 项目管理之前已完成的部分
+# 说明
+
+项目管理之前已完成的部分：
 
 - [x] x-lisp language design
 - [x] x-lisp interpreter
 - [x] basic-lisp language design
 - [x] basic-lisp interpreter (no module system)
 
-# milestone 1 -- compiler frontend
+# 关卡 1 -- 编译器前端
 
 从 x-lisp 编译到 basic-lisp。
 
@@ -69,7 +71,7 @@ date: 2025-10-22
 
 总结 [2025-11-06]：
 
-- 完成这个 milestone 大概花了一周时间。
+- 完成这个 关卡 大概花了一周时间。
   主要工作是 port EOC 的代码到 js/ts。
 
 - 先实现一个小的核心，也就是 lambda calculus 很重要。
@@ -92,9 +94,9 @@ date: 2025-10-22
 - desugar 到一个简单的核心语法很重要，
   比如核心语法中没有 `begin` 和 `=`，只有 `let1`。
 
-# milestone 2 -- module system and bundling
+# 关卡 2 -- 模块系统
 
-这是补全上一个 milestone 没有完成的任务，
+这是补全上一个 关卡 没有完成的任务，
 也是为 codegen 做准备。
 
 难点：
@@ -139,9 +141,9 @@ date: 2025-10-22
 
 - 需要支持 project 概念，这是任务开始时没有预料到的。
 
-# milestone 3 -- machine-lisp
+# 关卡 3 -- machine-lisp
 
-这个 milestone 也是为 codegen 做准备。
+这个 关卡 也是为 codegen 做准备。
 
 成果：
 
@@ -192,7 +194,7 @@ date: 2025-10-22
 
 - 想要实现一般的汇编语言，只知道 x86 是不行的，还需要知道 risc-v。
 
-# milestone 4 -- codegen
+# 关卡 4 -- 代码生成
 
 成果：
 
@@ -215,7 +217,7 @@ date: 2025-10-22
 - [x] C runtime (with GC)
   - [x] value tag encoding
   - [x] builtin
-  - [ ] GC
+  - [-] GC
 
 总结 [2025-11-17]：
 
@@ -261,7 +263,30 @@ date: 2025-10-22
   之后可以尝试逆向一下 gcc 和 clang 所编译出来的汇编，
   补充底层汇编的知识。
 
-# milestone 待定 -- feature complete
+总结 [2025-11-24]：
+
+- GC 卡了很久，拆分到一个新的关卡来做。
+
+# 关卡 5 -- 垃圾回收器
+
+为下一个关卡用 C 扩展语言做准备。
+
+成果：
+
+- 能够自动回收动态分配的内存。
+
+范围：
+
+- GC 只需要支持 tagged value。
+
+任务：
+
+- [x] C runtime
+  - [ ] GC
+
+# 关卡 6 -- 功能完备
+
+用 C 扩展语言。
 
 成果：
 
@@ -279,7 +304,7 @@ date: 2025-10-22
   - [ ] set
   - [ ] claim
 
-# milestone 待定 -- allocate-register
+# 关卡 待定 -- 寄存器分配
 
 成果：
 
@@ -298,7 +323,7 @@ date: 2025-10-22
   - [ ] build-interference
   - [ ] allocate-register
 
-# milestone 待定 -- SSA
+# 关卡 待定 -- SSA
 
 SSA 是后续所有 optimization 的前提。
 
@@ -317,6 +342,6 @@ SSA 是后续所有 optimization 的前提。
 - [ ] basic-lisp interpreter
   - [ ] SSA
 
-# milestone 待定 -- optimization
+# 关卡 待定 -- 优化
 
 优化放到最后，具体任务待定。
