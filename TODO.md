@@ -1,4 +1,3 @@
-[basic-lisp.js] move passes/ to top level
 [machine-lisp.js] move transpile to top level passes/
 
 [x-lisp-boot.js] compile `(define <name>)` to `(define-variable <name>)` and init-function

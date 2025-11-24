@@ -1,21 +1,15 @@
 import * as M from "@xieyuheng/machine-lisp.js"
-import type { Block } from "../block/index.ts"
-import type { Definition } from "../definition/index.ts"
-import { formatInstr, formatValue } from "../format/index.ts"
-import type { Instr } from "../instr/index.ts"
-import { modOwnDefinitions, type Mod } from "../mod/index.ts"
-import type { Value } from "../value/index.ts"
-import * as Values from "../value/index.ts"
+import * as B from "../index.ts"
 
-export function SelectInstructionPass(mod: Mod, machineMod: M.Mod): void {
+export function SelectInstructionPass(mod: B.Mod, machineMod: M.Mod): void {
   machineMod.exported = mod.exported
 
-  for (const definition of modOwnDefinitions(mod)) {
+  for (const definition of B.modOwnDefinitions(mod)) {
     onDefinition(machineMod, definition)
   }
 }
 
-function onDefinition(machineMod: M.Mod, definition: Definition): null {
+function onDefinition(machineMod: M.Mod, definition: B.Definition): null {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const code = M.CodeDefinition(
@@ -40,16 +34,16 @@ function onDefinition(machineMod: M.Mod, definition: Definition): null {
   }
 }
 
-function onBlock(block: Block): M.Block {
+function onBlock(block: B.Block): M.Block {
   return M.Block(block.label, block.instrs.flatMap(onInstr), block.meta)
 }
 
-function onInstr(instr: Instr): Array<M.Instr> {
+function onInstr(instr: B.Instr): Array<M.Instr> {
   switch (instr.op) {
     case "Argument": {
       if (instr.index > 6) {
         let message = `[onInstr] can not handle more then 6 argument yet`
-        message += `\n  instr: ${formatInstr(instr)}`
+        message += `\n  instr: ${B.formatInstr(instr)}`
         throw new Error(message)
       }
 
@@ -100,12 +94,12 @@ function onInstr(instr: Instr): Array<M.Instr> {
     }
 
     case "Apply": {
-      const fn = Values.Function("apply-unary", 2, { isPrimitive: true })
+      const fn = B.Function("apply-unary", 2, { isPrimitive: true })
       return selectCall(instr.dest, fn, [instr.target, instr.arg])
     }
 
     case "NullaryApply": {
-      const fn = Values.Function("apply-nullary", 1, { isPrimitive: true })
+      const fn = B.Function("apply-nullary", 1, { isPrimitive: true })
       return selectCall(instr.dest, fn, [instr.target])
     }
   }
@@ -118,7 +112,7 @@ function selectArgReg(index: number): M.Reg {
 
 function selectCall(
   dest: string,
-  fn: Values.Function,
+  fn: B.Function,
   args: Array<string>,
 ): Array<M.Instr> {
   const prepareArguments = Array.from(args.entries()).map(([index, arg]) =>
@@ -132,9 +126,9 @@ function selectCall(
   ]
 }
 
-function selectConst(dest: string, value: Value): Array<M.Instr> {
-  if (Values.isBool(value)) {
-    if (Values.isTrue(value)) {
+function selectConst(dest: string, value: B.Value): Array<M.Instr> {
+  if (B.isBool(value)) {
+    if (B.isTrue(value)) {
       return [
         M.Instr("movq", [
           M.LabelDeref(M.Label(`x-true`, { isExternal: true })),
@@ -162,7 +156,7 @@ function selectConst(dest: string, value: Value): Array<M.Instr> {
 
     default: {
       let message = `[selectConst] unhandled value`
-      message += `\n  value: ${formatValue(value)}`
+      message += `\n  value: ${B.formatValue(value)}`
       message += `\n  dest: ${dest}`
       throw new Error(message)
     }
@@ -180,10 +174,7 @@ function selectTagEncoding(operand: M.Operand, tag: M.Tag): Array<M.Instr> {
   }
 }
 
-function selectConstFunction(
-  dest: string,
-  fn: Values.Function,
-): Array<M.Instr> {
+function selectConstFunction(dest: string, fn: B.Function): Array<M.Instr> {
   return [
     M.Instr("leaq", [M.LabelDeref(selectFunctionLabel(fn)), selectArgReg(0)]),
     ...selectTagEncoding(selectArgReg(0), M.AddressTag),
@@ -197,7 +188,7 @@ function selectConstFunction(
   ]
 }
 
-function selectFunctionLabel(fn: Values.Function): M.Label {
+function selectFunctionLabel(fn: B.Function): M.Label {
   return fn.attributes.isPrimitive
     ? M.Label(`x-${fn.name}`, { isExternal: true })
     : M.Label(fn.name, { isExternal: false })
