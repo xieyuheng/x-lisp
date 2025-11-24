@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import * as M from "../../lang/index.ts"
+import * as M from "../index.ts"
 
 export function PrologAndEpilogPass(mod: M.Mod): void {
   for (const definition of M.modDefinitions(mod)) {

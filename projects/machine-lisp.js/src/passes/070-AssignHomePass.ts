@@ -1,5 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as M from "../../lang/index.ts"
+import * as M from "../index.ts"
 
 export function AssignHomePass(mod: M.Mod): void {
   for (const definition of M.modDefinitions(mod)) {
