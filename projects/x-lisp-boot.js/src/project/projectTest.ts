@@ -1,6 +1,6 @@
+import * as B from "@xieyuheng/basic-lisp.js"
 import { systemShellRun } from "@xieyuheng/helpers.js/system"
 import { createUrl } from "@xieyuheng/helpers.js/url"
-import * as B from "../basic/index.ts"
 import type { Project } from "./index.ts"
 import {
   isSnapshot,

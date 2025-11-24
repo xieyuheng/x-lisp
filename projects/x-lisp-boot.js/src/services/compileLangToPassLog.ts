@@ -1,6 +1,6 @@
+import * as B from "@xieyuheng/basic-lisp.js"
 import * as M from "@xieyuheng/machine-lisp.js"
 import fs from "node:fs"
-import * as B from "../basic/index.ts"
 import { globals } from "../globals.ts"
 import * as L from "../lang/index.ts"
 

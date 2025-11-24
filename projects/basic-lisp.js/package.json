@@ -1,5 +1,5 @@
 {
-  "name": "@xieyuheng/x-lisp-boot.js",
+  "name": "@xieyuheng/basic-lisp.js",
   "version": "0.11.1",
   "repository": "github:xieyuheng/x-lisp",
   "license": "GPL-3.0-or-later",
@@ -8,15 +8,14 @@
   "files": [
     "src",
     "lib",
-    "lisp",
-    "bin"
+    "lisp"
   ],
   "bin": {
-    "x-lisp-boot.js": "lib/main.js"
+    "basic-lisp.js": "lib/main.js"
   },
   "scripts": {
-    "build": "cp ../runtime/bin/runtime.o bin && tsc",
-    "build:watch": "cp ../runtime/bin/runtime.o bin && tsc --watch",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
     "test": "node --test 'src/**/*.test.ts'",
     "test:cli": "bash scripts/test-all.sh",
     "format": "prettier src --write"
@@ -25,7 +24,6 @@
     "@xieyuheng/command.js": "workspace:*",
     "@xieyuheng/helpers.js": "workspace:*",
     "@xieyuheng/machine-lisp.js": "workspace:*",
-    "@xieyuheng/basic-lisp.js": "workspace:*",
     "@xieyuheng/sexp.js": "workspace:*",
     "zod": "^4.1.13"
   },

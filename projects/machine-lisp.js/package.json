@@ -8,15 +8,14 @@
   "files": [
     "src",
     "lib",
-    "lisp",
-    "bin"
+    "lisp"
   ],
   "bin": {
     "machine-lisp.js": "lib/main.js"
   },
   "scripts": {
-    "build": "cp ../runtime/bin/runtime.o bin && tsc",
-    "build:watch": "cp ../runtime/bin/runtime.o bin && tsc --watch",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
     "test": "node --test 'src/**/*.test.ts'",
     "test:cli": "bash scripts/test-all.sh",
     "format": "prettier src --write"

@@ -1,5 +1,3 @@
-extract basic-lisp.js project
-
 [basic-lisp.js]  add `ValueDefinition` to `Definition`
 
 [basic-lisp.js]  parse `define-value`

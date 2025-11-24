@@ -1,4 +1,4 @@
-import * as B from "../basic/index.ts"
+import * as B from "@xieyuheng/basic-lisp.js"
 import * as L from "../lang/index.ts"
 
 export function compileLangToBasic(langMod: L.Mod): B.Mod {

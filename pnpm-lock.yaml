@@ -6,6 +6,37 @@ settings:
 
 importers:
 
+  projects/basic-lisp.js:
+    dependencies:
+      '@xieyuheng/command.js':
+        specifier: workspace:*
+        version: link:../command.js
+      '@xieyuheng/helpers.js':
+        specifier: workspace:*
+        version: link:../helpers.js
+      '@xieyuheng/machine-lisp.js':
+        specifier: workspace:*
+        version: link:../machine-lisp.js
+      '@xieyuheng/sexp.js':
+        specifier: workspace:*
+        version: link:../sexp.js
+      zod:
+        specifier: ^4.1.13
+        version: 4.1.13
+    devDependencies:
+      '@types/node':
+        specifier: ^24.10.1
+        version: 24.10.1
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
+      prettier-plugin-organize-imports:
+        specifier: ^4.3.0
+        version: 4.3.0(prettier@3.6.2)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   projects/binary.js:
     dependencies:
       '@xieyuheng/command.js':
@@ -108,6 +139,9 @@ importers:
 
   projects/x-lisp-boot.js:
     dependencies:
+      '@xieyuheng/basic-lisp.js':
+        specifier: workspace:*
+        version: link:../basic-lisp.js
       '@xieyuheng/command.js':
         specifier: workspace:*
         version: link:../command.js

@@ -1,11 +1,11 @@
 #!/usr/bin/env -S node --stack-size=65536
 
+import * as B from "@xieyuheng/basic-lisp.js"
 import * as cmd from "@xieyuheng/command.js"
 import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import { fileURLToPath } from "node:url"
-import * as B from "./basic/index.ts"
 import { globals } from "./globals.ts"
 import * as L from "./lang/index.ts"
 import {
