@@ -28,7 +28,7 @@
 (return <var>)
 (goto <label>)
 (branch <var> <label> <label>)
-(= <dest> (call <function-ref> <var> ...))
+(= <dest> (call <function> <var> ...))
 (= <dest> (nullary-apply <var>))
 (= <dest> (apply <var> <var>))
 

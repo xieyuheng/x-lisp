@@ -1,10 +1,13 @@
-[basic-lisp.js] add `ValueDefinition` to `Definition`
-[basic-lisp.js] parse `define-value`
+[basic-lisp.js] rename `const` to `value` -- leave space for `define-constant`
+
+[basic-lisp.js] add `ConstantDefinition` to `Definition` -- like `FunctionDefinition` but without arguments
+[basic-lisp.js] parse `define-constant`
+[basic-lisp.js] `load-constant` instruction
 
 [machine-lisp.js] support `define-space`
 [machine-lisp.js] `define-space` -- transpile to .bss
 
-[basic-lisp.js]  `ValueDefinition` -- compiles to many sections
+[basic-lisp.js]  `ConstantDefinition` -- compiles to many sections
 
 - `define-space` -- .bss -- `<name>`
 - `define-code` -- .text -- `<name>.init_function`
