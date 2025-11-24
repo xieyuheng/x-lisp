@@ -1,8 +1,8 @@
+import * as M from "@xieyuheng/machine-lisp.js"
 import fs from "node:fs"
 import Path from "node:path"
 import * as B from "../basic/index.ts"
 import * as L from "../lang/index.ts"
-import * as M from "../machine/index.ts"
 import type { Project } from "./index.ts"
 
 export function projectSourceDirectory(project: Project): string {

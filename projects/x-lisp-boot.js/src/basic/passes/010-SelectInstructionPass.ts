@@ -1,4 +1,4 @@
-import * as M from "../../machine/index.ts"
+import * as M from "@xieyuheng/machine-lisp.js"
 import type { Block } from "../block/index.ts"
 import type { Definition } from "../definition/index.ts"
 import { formatInstr, formatValue } from "../format/index.ts"

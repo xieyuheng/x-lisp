@@ -1,6 +1,6 @@
 # x-lisp / prototype interpreter
 
-## x-lisp / syntax
+## syntax
 
 ```lisp
 ;;; parser level syntax sugar
@@ -60,7 +60,7 @@
 (<target> <args>)
 ```
 
-## x-lisp / builtin and prelude
+## builtin and prelude
 
 ```lisp
 ;;; bool
@@ -417,7 +417,7 @@ null
 (pretty max-width value)
 ```
 
-## x-lisp / standard libraries
+## standard libraries
 
 ```lisp
 ;;; priority queue

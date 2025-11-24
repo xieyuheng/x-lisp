@@ -62,6 +62,31 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  projects/machine-lisp.js:
+    dependencies:
+      '@xieyuheng/command.js':
+        specifier: workspace:*
+        version: link:../command.js
+      '@xieyuheng/helpers.js':
+        specifier: workspace:*
+        version: link:../helpers.js
+      '@xieyuheng/sexp.js':
+        specifier: workspace:*
+        version: link:../sexp.js
+    devDependencies:
+      '@types/node':
+        specifier: ^24.10.1
+        version: 24.10.1
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
+      prettier-plugin-organize-imports:
+        specifier: ^4.3.0
+        version: 4.3.0(prettier@3.6.2)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   projects/sexp.js:
     dependencies:
       '@xieyuheng/helpers.js':
@@ -89,12 +114,15 @@ importers:
       '@xieyuheng/helpers.js':
         specifier: workspace:*
         version: link:../helpers.js
+      '@xieyuheng/machine-lisp.js':
+        specifier: workspace:*
+        version: link:../machine-lisp.js
       '@xieyuheng/sexp.js':
         specifier: workspace:*
         version: link:../sexp.js
       zod:
-        specifier: ^4.1.12
-        version: 4.1.12
+        specifier: ^4.1.13
+        version: 4.1.13
     devDependencies:
       '@types/node':
         specifier: ^24.10.1
@@ -162,8 +190,8 @@ packages:
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
-  zod@4.1.12:
-    resolution: {integrity: sha512-JInaHOamG8pt5+Ey8kGmdcAcg3OL9reK8ltczgHTAwNhMys/6ThXHityHxVV2p3fkw/c+MAvBHFVYHFZDmjMCQ==}
+  zod@4.1.13:
+    resolution: {integrity: sha512-AvvthqfqrAhNH9dnfmrfKzX5upOdjUVJYFqNSlkmGf64gRaTzlPwz99IHYnVs28qYAybvAlBV+H7pn0saFY4Ig==}
 
 snapshots:
 
@@ -182,4 +210,4 @@ snapshots:
 
   undici-types@7.16.0: {}
 
-  zod@4.1.12: {}
+  zod@4.1.13: {}

@@ -1,5 +1,4 @@
 extract basic-lisp.js project
-extract machine-lisp.js project
 
 [basic-lisp.js]  add `ValueDefinition` to `Definition`
 

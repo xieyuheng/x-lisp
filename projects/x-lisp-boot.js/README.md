@@ -1,6 +1,6 @@
 # x-lisp / bootstrap compiler
 
-## x-lisp / syntax
+## syntax
 
 ```lisp
 ;;; parser level syntax sugar
@@ -60,7 +60,7 @@
 (<target> <args>)
 ```
 
-## x-lisp / builtin and prelude
+## builtin and prelude
 
 ```lisp
 ;;; bool
@@ -417,7 +417,7 @@
 ;; (pretty max-width value)
 ```
 
-## x-lisp / standard libraries
+## standard libraries
 
 ```lisp
 ;;; priority queue
@@ -535,46 +535,4 @@
 (@function <name> <arity>)
 (@primitive-function <name> <arity>)
 (@curry <value> <arity> <arg> ...)
-```
-
-## machine-lisp / syntax
-
-```lisp
-;;; top level statement
-
-(define-code <name> <block> ...)
-(define-data <name> <chunk> ...)
-
-;;; block
-
-(block <name> <instr> ...)
-
-;;; instruction
-
-(<op> <operand> ...)
-
-;;; operand
-
-(imm <int>)
-(label-imm <label>)
-(var <name>)
-(reg <name>)
-(reg-deref <reg> <offset>)
-(label-deref <label>)
-(label <name>)
-(external-label <name>)
-(cc <condition-code>)
-(arity <int>)
-
-;;; chunk
-
-(chunk <name> <directive> ...)
-
-;;; directive
-
-(db <byte> ...)
-(dw <word> ...)
-(dd <double-word> ...)
-(dq <quadruple-word> ...)
-(string <string>)
 ```
