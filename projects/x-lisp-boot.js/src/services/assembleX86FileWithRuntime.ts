@@ -2,7 +2,10 @@ import { systemShellRun } from "@xieyuheng/helpers.js/system"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 
-export function assembleX86FileWithRuntime(file: string, outputFile: string): void {
+export function assembleX86FileWithRuntime(
+  file: string,
+  outputFile: string,
+): void {
   if (!file.endsWith(".s")) {
     let message = `[assembleX86FileWithRuntime] expect file to end with .s`
     message += `\n  file: ${file}`

@@ -46,8 +46,8 @@ function transpileDefinition(definition: Definition): string {
       let code = `.data\n`
       code += `.align 8\n`
       code += `.type ${name}, @object\n`
-      code +=  `${name}:\n`
-      code +=  `${chunks}\n`
+      code += `${name}:\n`
+      code += `${chunks}\n`
       code += `.size ${name}, . - ${name}\n`
       return code
     }

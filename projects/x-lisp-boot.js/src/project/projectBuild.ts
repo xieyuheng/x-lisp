@@ -11,9 +11,9 @@ import {
   projectForEachSource,
   projectGetBasicBundleFile,
   projectGetBasicFile,
-  projectGetX86MachineFile,
   projectGetPassLogFile,
   projectGetSourceFile,
+  projectGetX86MachineFile,
   writeFile,
   type Project,
 } from "./index.ts"
