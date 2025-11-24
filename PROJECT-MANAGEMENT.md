@@ -1,5 +1,5 @@
 ---
-title: x-lisp project
+title: x-lisp -- project management
 date: 2025-10-22
 ---
 
