@@ -2,6 +2,6 @@
 
 set -e
 
-bash scripts/test-run-prelude.sh
-bash scripts/test-run-std.sh
-bash scripts/test-run-tests.sh
+bash scripts/run-prelude.sh
+bash scripts/run-std.sh
+bash scripts/run-tests.sh

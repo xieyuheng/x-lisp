@@ -2,4 +2,4 @@
 
 set -e
 
-bash scripts/test-run-tests.sh
+bash scripts/run-tests.sh
