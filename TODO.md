@@ -1,20 +1,29 @@
-[basic] support `ValueDefinition` -- compiles to many sections
+extract basic-lisp.js project
+extract machine-lisp.js project
 
-- .bss -- `<name>`
-- .text -- `<name>.init_function`
+[basic-lisp.js]  add `ValueDefinition` to `Definition`
 
-[basic] `FunctionDefinition` -- compiles to many sections
+[basic-lisp.js]  parse `define-value`
 
-- .bss -- `<name>.value`
-- .text -- `<name>`
+[machine-lisp.js] support `define-space`
 
-`function_t` -- has `address` and `arity` and `is_primitive`
+[basic-lisp.js]  `ValueDefinition` -- compiles to many sections
+
+- `define-space` -- .bss -- `<name>`
+- `define-code` -- .text -- `<name>.init_function`
+
+[basic-lisp.js]  `FunctionDefinition` -- compiles to many sections
+
+- `define-space` -- .bss -- `<name>.value`
+- `define-code` -- .text -- `<name>`
+
+# runtime
+
+[runtime] `function_t` -- has `address` and `arity` and `is_primitive`
 
 - [maybe] use inline union for `address` to avoid casting
 
-`curry_t` -- has `function_t` instead of `address_t`
+[runtime] `curry_t` -- has `function_t` instead of `address_t`
 
-in assembly -- global variable can save `function_t`
-
-`object_spec_t` -- has `get_slot_fn`
-`function_t` -- has register map
+[runtime] `object_spec_t` -- has `get_slot_fn`
+[runtime] `function_t` -- has register map
