@@ -4,23 +4,23 @@ import fs from "node:fs"
 import { globals } from "../globals.ts"
 import * as X from "../lang/index.ts"
 
-export function compileLangToPassLog(langMod: X.Mod, logFile?: string): void {
-  logLangMod("Input", langMod, logFile)
-  X.ShrinkPass(langMod)
-  logLangMod("ShrinkPass", langMod, logFile)
-  X.UniquifyPass(langMod)
-  logLangMod("UniquifyPass", langMod, logFile)
-  X.RevealFunctionPass(langMod)
-  logLangMod("RevealFunctionPass", langMod, logFile)
-  X.LiftLambdaPass(langMod)
-  logLangMod("LiftLambdaPass", langMod, logFile)
-  X.UnnestOperandPass(langMod)
-  logLangMod("UnnestOperandPass", langMod, logFile)
-  const basicMod = B.createMod(langMod.url, new Map())
+export function compileLangToPassLog(xMod: X.Mod, logFile?: string): void {
+  logXMod("Input", xMod, logFile)
+  X.ShrinkPass(xMod)
+  logXMod("ShrinkPass", xMod, logFile)
+  X.UniquifyPass(xMod)
+  logXMod("UniquifyPass", xMod, logFile)
+  X.RevealFunctionPass(xMod)
+  logXMod("RevealFunctionPass", xMod, logFile)
+  X.LiftLambdaPass(xMod)
+  logXMod("LiftLambdaPass", xMod, logFile)
+  X.UnnestOperandPass(xMod)
+  logXMod("UnnestOperandPass", xMod, logFile)
+  const basicMod = B.createMod(xMod.url, new Map())
   B.importBuiltin(basicMod)
-  X.ExplicateControlPass(langMod, basicMod)
+  X.ExplicateControlPass(xMod, basicMod)
   logBasicMod("ExplicateControlPass", basicMod, logFile)
-  const machineMod = M.createMod(langMod.url)
+  const machineMod = M.createMod(xMod.url)
   B.SelectInstructionPass(basicMod, machineMod)
   logMachineMod("SelectInstructionPass", machineMod, logFile)
   M.AssignHomePass(machineMod)
@@ -31,8 +31,8 @@ export function compileLangToPassLog(langMod: X.Mod, logFile?: string): void {
   logMachineMod("PrologAndEpilogPass", machineMod, logFile)
 }
 
-function logLangMod(tag: string, langMod: X.Mod, logFile?: string): void {
-  logCode(tag, X.prettyMod(globals.maxWidth, langMod), logFile)
+function logXMod(tag: string, xMod: X.Mod, logFile?: string): void {
+  logCode(tag, X.prettyMod(globals.maxWidth, xMod), logFile)
 }
 
 function logBasicMod(tag: string, basicMod: B.Mod, logFile?: string): void {

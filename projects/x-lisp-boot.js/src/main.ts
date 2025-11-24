@@ -46,7 +46,7 @@ router.defineHandlers({
   },
   "lisp:compile-to-basic": ({ args: [file] }) => {
     const mod = X.loadEntry(createUrl(file))
-    console.log(B.prettyMod(globals.maxWidth, Services.compileLangToBasic(mod)))
+    console.log(B.prettyMod(globals.maxWidth, Services.compileXToBasic(mod)))
   },
 })
 

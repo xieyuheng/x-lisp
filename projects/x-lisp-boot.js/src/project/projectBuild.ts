@@ -31,17 +31,17 @@ function buildPassLog(project: Project, id: string): void {
   const inputFile = projectGetSourceFile(project, id)
   const outputFile = projectGetPassLogFile(project, id)
   logFile("pass-log", outputFile)
-  const langMod = X.loadEntry(createUrl(inputFile))
+  const xMod = X.loadEntry(createUrl(inputFile))
   writeFile(outputFile, "")
-  Services.compileLangToPassLog(langMod, outputFile)
+  Services.compileLangToPassLog(xMod, outputFile)
 }
 
 function buildBasic(project: Project, id: string): void {
   const inputFile = projectGetSourceFile(project, id)
   const outputFile = projectGetBasicFile(project, id)
   logFile("basic", outputFile)
-  const langMod = X.loadEntry(createUrl(inputFile))
-  const basicMod = Services.compileLangToBasic(langMod)
+  const xMod = X.loadEntry(createUrl(inputFile))
+  const basicMod = Services.compileXToBasic(xMod)
   const outputText = B.prettyMod(globals.maxWidth, basicMod)
   writeFile(outputFile, outputText + "\n")
 }

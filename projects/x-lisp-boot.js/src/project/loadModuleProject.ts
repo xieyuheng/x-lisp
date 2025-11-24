@@ -3,9 +3,9 @@ import * as X from "../lang/index.ts"
 import { projectFromSourceFiles, type Project } from "./index.ts"
 
 export function loadModuleProject(file: string): Project {
-  const langMod = X.loadEntry(createUrl(file))
-  const dependencyMods = Array.from(langMod.dependencies.values())
+  const xMod = X.loadEntry(createUrl(file))
+  const dependencyMods = Array.from(xMod.dependencies.values())
   const sourceFiles = dependencyMods.map((mod) => mod.url.pathname)
-  const entryFile = langMod.url.pathname
+  const entryFile = xMod.url.pathname
   return projectFromSourceFiles(entryFile, sourceFiles)
 }
