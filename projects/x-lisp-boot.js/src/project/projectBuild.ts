@@ -2,7 +2,7 @@ import * as B from "@xieyuheng/basic-lisp.js"
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import * as M from "@xieyuheng/machine-lisp.js"
 import { globals } from "../globals.ts"
-import * as L from "../lang/index.ts"
+import * as X from "../lang/index.ts"
 import * as Services from "../services/index.ts"
 import {
   isSnapshot,
@@ -31,7 +31,7 @@ function buildPassLog(project: Project, id: string): void {
   const inputFile = projectGetSourceFile(project, id)
   const outputFile = projectGetPassLogFile(project, id)
   logFile("pass-log", outputFile)
-  const langMod = L.loadEntry(createUrl(inputFile))
+  const langMod = X.loadEntry(createUrl(inputFile))
   writeFile(outputFile, "")
   Services.compileLangToPassLog(langMod, outputFile)
 }
@@ -40,7 +40,7 @@ function buildBasic(project: Project, id: string): void {
   const inputFile = projectGetSourceFile(project, id)
   const outputFile = projectGetBasicFile(project, id)
   logFile("basic", outputFile)
-  const langMod = L.loadEntry(createUrl(inputFile))
+  const langMod = X.loadEntry(createUrl(inputFile))
   const basicMod = Services.compileLangToBasic(langMod)
   const outputText = B.prettyMod(globals.maxWidth, basicMod)
   writeFile(outputFile, outputText + "\n")

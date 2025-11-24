@@ -2,7 +2,7 @@ import * as B from "@xieyuheng/basic-lisp.js"
 import * as M from "@xieyuheng/machine-lisp.js"
 import fs from "node:fs"
 import Path from "node:path"
-import * as L from "../lang/index.ts"
+import * as X from "../lang/index.ts"
 import type { Project } from "./index.ts"
 
 export function projectSourceDirectory(project: Project): string {
@@ -31,7 +31,7 @@ export function projectSourceIds(project: Project): Array<string> {
       encoding: "utf8",
       recursive: true,
     })
-    .filter((file) => file.endsWith(L.suffix))
+    .filter((file) => file.endsWith(X.suffix))
 }
 
 export function projectGetSourceFile(
@@ -54,7 +54,7 @@ export function projectGetBasicFile(
 ): string {
   return Path.join(
     projectOutputDirectory(project),
-    sourceId.slice(0, -L.suffix.length) + B.suffix,
+    sourceId.slice(0, -X.suffix.length) + B.suffix,
   )
 }
 
@@ -64,7 +64,7 @@ export function projectGetBasicBundleFile(
 ): string {
   return Path.join(
     projectOutputDirectory(project),
-    sourceId.slice(0, -L.suffix.length) + ".bundle" + B.suffix,
+    sourceId.slice(0, -X.suffix.length) + ".bundle" + B.suffix,
   )
 }
 
@@ -74,7 +74,7 @@ export function projectGetX86MachineFile(
 ): string {
   return Path.join(
     projectOutputDirectory(project),
-    sourceId.slice(0, -L.suffix.length) + ".x86" + M.suffix,
+    sourceId.slice(0, -X.suffix.length) + ".x86" + M.suffix,
   )
 }
 

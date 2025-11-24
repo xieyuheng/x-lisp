@@ -7,7 +7,7 @@ import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import { fileURLToPath } from "node:url"
 import { globals } from "./globals.ts"
-import * as L from "./lang/index.ts"
+import * as X from "./lang/index.ts"
 import {
   loadModuleProject,
   loadProject,
@@ -41,11 +41,11 @@ router.defineHandlers({
   "project:clean": ({ options }) =>
     projectClean(loadProject(options["--config"])),
   "lisp:compile-to-pass-log": ({ args: [file] }) => {
-    const mod = L.loadEntry(createUrl(file))
+    const mod = X.loadEntry(createUrl(file))
     Services.compileLangToPassLog(mod)
   },
   "lisp:compile-to-basic": ({ args: [file] }) => {
-    const mod = L.loadEntry(createUrl(file))
+    const mod = X.loadEntry(createUrl(file))
     console.log(B.prettyMod(globals.maxWidth, Services.compileLangToBasic(mod)))
   },
 })

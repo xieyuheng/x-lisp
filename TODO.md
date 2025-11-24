@@ -1,5 +1,3 @@
-[x-lisp-boot.js] use X instead of L as prefix
-
 [basic-lisp.js] add `ValueDefinition` to `Definition`
 [basic-lisp.js] parse `define-value`
 

@@ -2,23 +2,23 @@ import * as B from "@xieyuheng/basic-lisp.js"
 import * as M from "@xieyuheng/machine-lisp.js"
 import fs from "node:fs"
 import { globals } from "../globals.ts"
-import * as L from "../lang/index.ts"
+import * as X from "../lang/index.ts"
 
-export function compileLangToPassLog(langMod: L.Mod, logFile?: string): void {
+export function compileLangToPassLog(langMod: X.Mod, logFile?: string): void {
   logLangMod("Input", langMod, logFile)
-  L.ShrinkPass(langMod)
+  X.ShrinkPass(langMod)
   logLangMod("ShrinkPass", langMod, logFile)
-  L.UniquifyPass(langMod)
+  X.UniquifyPass(langMod)
   logLangMod("UniquifyPass", langMod, logFile)
-  L.RevealFunctionPass(langMod)
+  X.RevealFunctionPass(langMod)
   logLangMod("RevealFunctionPass", langMod, logFile)
-  L.LiftLambdaPass(langMod)
+  X.LiftLambdaPass(langMod)
   logLangMod("LiftLambdaPass", langMod, logFile)
-  L.UnnestOperandPass(langMod)
+  X.UnnestOperandPass(langMod)
   logLangMod("UnnestOperandPass", langMod, logFile)
   const basicMod = B.createMod(langMod.url, new Map())
   B.importBuiltin(basicMod)
-  L.ExplicateControlPass(langMod, basicMod)
+  X.ExplicateControlPass(langMod, basicMod)
   logBasicMod("ExplicateControlPass", basicMod, logFile)
   const machineMod = M.createMod(langMod.url)
   B.SelectInstructionPass(basicMod, machineMod)
@@ -31,8 +31,8 @@ export function compileLangToPassLog(langMod: L.Mod, logFile?: string): void {
   logMachineMod("PrologAndEpilogPass", machineMod, logFile)
 }
 
-function logLangMod(tag: string, langMod: L.Mod, logFile?: string): void {
-  logCode(tag, L.prettyMod(globals.maxWidth, langMod), logFile)
+function logLangMod(tag: string, langMod: X.Mod, logFile?: string): void {
+  logCode(tag, X.prettyMod(globals.maxWidth, langMod), logFile)
 }
 
 function logBasicMod(tag: string, basicMod: B.Mod, logFile?: string): void {
