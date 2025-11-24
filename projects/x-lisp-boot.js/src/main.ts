@@ -29,8 +29,6 @@ router.defineRoutes([
   "project:clean --config",
   "lisp:compile-to-pass-log file",
   "lisp:compile-to-basic file",
-  "basic:run file",
-  "basic:bundle file",
 ])
 
 router.defineHandlers({
@@ -49,15 +47,6 @@ router.defineHandlers({
   "lisp:compile-to-basic": ({ args: [file] }) => {
     const mod = L.loadEntry(createUrl(file))
     console.log(B.prettyMod(globals.maxWidth, Services.compileLangToBasic(mod)))
-  },
-  "basic:run": ({ args: [file] }) => {
-    const mod = B.loadEntry(createUrl(file))
-    B.run(B.bundle(mod))
-    process.stdout.write(B.console.consumeOutput())
-  },
-  "basic:bundle": ({ args: [file] }) => {
-    const mod = B.loadEntry(createUrl(file))
-    console.log(B.prettyMod(globals.maxWidth, B.bundle(mod)))
   },
 })
 
