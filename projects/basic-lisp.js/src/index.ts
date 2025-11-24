@@ -1,1 +1,1 @@
-export * from "./basic/index.ts"
+export * from "./lang/index.ts"

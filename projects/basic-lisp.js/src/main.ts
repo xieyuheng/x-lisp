@@ -5,8 +5,8 @@ import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import { fileURLToPath } from "node:url"
-import * as B from "./basic/index.ts"
 import { globals } from "./globals.ts"
+import * as B from "./lang/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 

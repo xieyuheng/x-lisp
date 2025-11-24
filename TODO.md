@@ -1,8 +1,10 @@
-[basic-lisp.js]  add `ValueDefinition` to `Definition`
+[x-lisp-boot.js] use X instead of L as prefix
 
-[basic-lisp.js]  parse `define-value`
+[basic-lisp.js] add `ValueDefinition` to `Definition`
+[basic-lisp.js] parse `define-value`
 
 [machine-lisp.js] support `define-space`
+[machine-lisp.js] `define-space` -- transpile to .bss
 
 [basic-lisp.js]  `ValueDefinition` -- compiles to many sections
 

@@ -1,4 +1,4 @@
-import * as M from "../../machine/index.ts"
+import * as M from "../../lang/index.ts"
 
 export function PatchInstructionPass(mod: M.Mod): void {
   for (const definition of M.modDefinitions(mod)) {

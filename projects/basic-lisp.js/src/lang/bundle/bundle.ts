@@ -1,6 +1,6 @@
 import { mapMapValue } from "@xieyuheng/helpers.js/map"
 import assert from "node:assert"
-import * as B from "../../basic/index.ts"
+import * as B from "../../lang/index.ts"
 import { importBuiltin } from "../builtin/index.ts"
 import * as Definitions from "../definition/index.ts"
 import { createMod, modOwnDefinitions, type Mod } from "../mod/index.ts"
