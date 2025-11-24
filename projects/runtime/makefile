@@ -47,7 +47,7 @@ deps = ../helpers.c/src/index.po
 
 .PHONY: all test snapshot clean
 
-all: $(exes) test bin/runtime.o bin/bundle
+all: $(exes) $(tests) $(snapshots) bin/runtime.o bin/bundle
 
 bin/bundle: bin/runtime.o bin/bundle.o
 	$(cc) $^ $(ldflags) -o $@
@@ -58,11 +58,9 @@ bin/bundle.o: bin/bundle.c
 bin/runtime.o: bin/runtime.c src/index.po
 	$(cc) -r $(cflags) $^ $(deps) -o bin/runtime.o
 
-test: $(tests)
+test: $(tests) $(snapshots)
 	echo $(tests) | tr [:space:] '\n' | $(parallel) {}
-
-snapshot: $(snapshots)
-	echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
+#	echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
 
 src/%.exe: src/%.exe.c src/index.po
 	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@

@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "clean": "make -C projects/helpers.c clean && make -C projects/runtime clean",
-    "make": "make -C projects/helpers.c -j && make -C projects/runtime -j",
+    "clean": "make --directory projects/helpers.c clean && make --directory projects/runtime clean",
+    "make": "make --directory projects/helpers.c -j && make --directory projects/runtime -j",
     "build": "pnpm run make && pnpm run -r build",
     "test": "pnpm run -r --parallel --aggregate-output test",
     "format": "pnpm run -r --parallel --aggregate-output format",

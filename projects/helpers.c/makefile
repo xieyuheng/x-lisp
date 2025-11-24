@@ -45,14 +45,12 @@ parallel = parallel -v --halt now,fail=1
 
 deps =
 
-.PHONY: all test snapshot clean
+.PHONY: all test clean
 
-all: $(exes) test snapshot
+all: $(exes) $(tests) $(snapshots)
 
-test: $(tests)
+test: $(tests) $(snapshots)
 	echo $(tests) | tr [:space:] '\n' | $(parallel) {}
-
-snapshot: $(snapshots)
 	echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
 
 src/%.exe: src/%.exe.c src/index.po

@@ -1,4 +1,6 @@
-make default to make build
+move scripts from package.json to scripts/
+
+- test -- both js and c
 
 [basic] support `ValueDefinition` -- compiles to many sections
 
