@@ -2,5 +2,5 @@
 
 set -e
 
-sh scripts/test-run-basic-tests.sh
-sh scripts/test-run-machine-tests.sh
+bash scripts/test-run-basic-tests.sh
+bash scripts/test-run-machine-tests.sh

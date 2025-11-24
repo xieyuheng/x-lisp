@@ -1,16 +1,12 @@
-move scripts from package.json to scripts/
-
-- test -- both js and c
-
 [basic] support `ValueDefinition` -- compiles to many sections
 
 - .bss -- `<name>.const`
-- .text -- `<name>.address`
+- .text -- `<name>.init_function`
 
 [basic] `FunctionDefinition` -- compiles to many sections
 
 - .bss -- `<name>.const`
-- .text -- `<name>.address`
+- .text -- `<name>.function`
 
 `function_t` -- has `address` and `arity` and `is_primitive`
 
