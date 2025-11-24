@@ -1,6 +1,6 @@
 {
   "name": "@xieyuheng/basic-lisp.js",
-  "version": "0.11.1",
+  "version": "0.11.2",
   "repository": "github:xieyuheng/x-lisp",
   "license": "GPL-3.0-or-later",
   "type": "module",
