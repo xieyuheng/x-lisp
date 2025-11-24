@@ -1,19 +1,15 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
-import { type Definition } from "../definition/index.ts"
-import * as Exps from "../exp/index.ts"
-import { type Exp } from "../exp/index.ts"
-import { formatExp } from "../format/index.ts"
-import { modOwnDefinitions, type Mod } from "../mod/index.ts"
+import * as X from "../index.ts"
 
-export function UniquifyPass(mod: Mod): void {
-  for (const definition of modOwnDefinitions(mod)) {
+export function UniquifyPass(mod: X.Mod): void {
+  for (const definition of X.modOwnDefinitions(mod)) {
     onDefinition(definition)
   }
 }
 
-function onDefinition(definition: Definition): null {
+function onDefinition(definition: X.Definition): null {
   switch (definition.kind) {
     case "FunctionDefinition": {
       definition.body = onExp({}, {}, definition.body)
@@ -25,8 +21,8 @@ function onDefinition(definition: Definition): null {
 function onExp(
   nameCounts: Record<string, number>,
   nameTable: Record<string, string>,
-  exp: Exp,
-): Exp {
+  exp: X.Exp,
+): X.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -38,7 +34,7 @@ function onExp(
 
     case "Var": {
       const foundName = nameTable[exp.name]
-      return foundName ? Exps.Var(foundName, exp.meta) : exp
+      return foundName ? X.Var(foundName, exp.meta) : exp
     }
 
     case "Lambda": {
@@ -50,7 +46,7 @@ function onExp(
         ...nameTable,
         ...Object.fromEntries(arrayZip(exp.parameters, parameters)),
       }
-      return Exps.Lambda(
+      return X.Lambda(
         parameters,
         onExp(newNameCounts, newNameTable, exp.body),
         exp.meta,
@@ -58,14 +54,11 @@ function onExp(
     }
 
     case "NullaryApply": {
-      return Exps.NullaryApply(
-        onExp(nameCounts, nameTable, exp.target),
-        exp.meta,
-      )
+      return X.NullaryApply(onExp(nameCounts, nameTable, exp.target), exp.meta)
     }
 
     case "Apply": {
-      return Exps.Apply(
+      return X.Apply(
         onExp(nameCounts, nameTable, exp.target),
         onExp(nameCounts, nameTable, exp.arg),
         exp.meta,
@@ -76,7 +69,7 @@ function onExp(
       const newNameCounts = countName(nameCounts, exp.name)
       const newName = generateNameInCounts(newNameCounts, exp.name)
       const newNameTable = { ...nameTable, [exp.name]: newName }
-      return Exps.Let1(
+      return X.Let1(
         newName,
         onExp(newNameCounts, nameTable, exp.rhs),
         onExp(newNameCounts, newNameTable, exp.body),
@@ -85,7 +78,7 @@ function onExp(
     }
 
     case "If": {
-      return Exps.If(
+      return X.If(
         onExp(nameCounts, nameTable, exp.condition),
         onExp(nameCounts, nameTable, exp.consequent),
         onExp(nameCounts, nameTable, exp.alternative),
@@ -95,7 +88,7 @@ function onExp(
 
     default: {
       let message = `[UniquifyPass] unhandled exp`
-      message += `\n  exp: ${formatExp(exp)}`
+      message += `\n  exp: ${X.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }

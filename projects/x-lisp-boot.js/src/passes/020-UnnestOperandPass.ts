@@ -1,14 +1,9 @@
-import { arrayConcat, arrayUnzip } from "@xieyuheng/helpers.js/array"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
-import { type Definition } from "../definition/index.ts"
-import * as Exps from "../exp/index.ts"
-import { type Exp } from "../exp/index.ts"
-import { formatExp } from "../format/index.ts"
-import { modOwnDefinitions, type Mod } from "../mod/index.ts"
+import * as X from "../index.ts"
 
-export function UnnestOperandPass(mod: Mod): void {
-  for (const definition of modOwnDefinitions(mod)) {
+export function UnnestOperandPass(mod: X.Mod): void {
+  for (const definition of X.modOwnDefinitions(mod)) {
     onDefinition(definition)
   }
 }
@@ -17,7 +12,7 @@ type State = {
   freshNameCount: number
 }
 
-function onDefinition(definition: Definition): null {
+function onDefinition(definition: X.Definition): null {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const state = { freshNameCount: 0 }
@@ -33,7 +28,7 @@ function generateFreshName(state: State): string {
   return `_${subscript}`
 }
 
-function onExp(state: State, exp: Exp): Exp {
+function onExp(state: State, exp: X.Exp): X.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -47,7 +42,7 @@ function onExp(state: State, exp: Exp): Exp {
 
     case "NullaryApply": {
       const [targetEntries, newTarget] = forAtom(state, exp.target)
-      return prependLets(targetEntries, Exps.NullaryApply(newTarget, exp.meta))
+      return prependLets(targetEntries, X.NullaryApply(newTarget, exp.meta))
     }
 
     case "Apply": {
@@ -55,7 +50,7 @@ function onExp(state: State, exp: Exp): Exp {
       const [argEntries, newArg] = forAtom(state, exp.arg)
       return prependLets(
         [...targetEntries, ...argEntries],
-        Exps.Apply(newTarget, newArg, exp.meta),
+        X.Apply(newTarget, newArg, exp.meta),
       )
     }
 
@@ -63,7 +58,7 @@ function onExp(state: State, exp: Exp): Exp {
       const [conditionEntries, newCondition] = forAtom(state, exp.condition)
       return prependLets(
         conditionEntries,
-        Exps.If(
+        X.If(
           newCondition,
           onExp(state, exp.consequent),
           onExp(state, exp.alternative),
@@ -73,7 +68,7 @@ function onExp(state: State, exp: Exp): Exp {
     }
 
     case "Let1": {
-      return Exps.Let1(
+      return X.Let1(
         exp.name,
         onExp(state, exp.rhs),
         onExp(state, exp.body),
@@ -83,25 +78,25 @@ function onExp(state: State, exp: Exp): Exp {
 
     default: {
       let message = `[UnnestOperandPass] unhandled exp`
-      message += `\n  exp: ${formatExp(exp)}`
+      message += `\n  exp: ${X.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }
 }
 
-function prependLets(entries: Array<Entry>, exp: Exp): Exp {
+function prependLets(entries: Array<Entry>, exp: X.Exp): X.Exp {
   if (entries.length === 0) {
     return exp
   }
 
   const [[name, rhs], ...restEntries] = entries
-  return Exps.Let1(name, rhs, prependLets(restEntries, exp))
+  return X.Let1(name, rhs, prependLets(restEntries, exp))
 }
 
-type Entry = [string, Exp]
+type Entry = [string, X.Exp]
 
-function forAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
+function forAtom(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
   switch (exp.kind) {
     case "Var": {
       return [[], exp]
@@ -116,24 +111,24 @@ function forAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
     case "If": {
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, onExp(state, exp)]
-      return [[entry], Exps.Var(freshName, exp.meta)]
+      return [[entry], X.Var(freshName, exp.meta)]
     }
 
     case "NullaryApply": {
       const [targetEntries, newTarget] = forAtom(state, exp.target)
       const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, Exps.NullaryApply(newTarget, exp.meta)]
-      return [[...targetEntries, entry], Exps.Var(freshName, exp.meta)]
+      const entry: Entry = [freshName, X.NullaryApply(newTarget, exp.meta)]
+      return [[...targetEntries, entry], X.Var(freshName, exp.meta)]
     }
 
     case "Apply": {
       const [targetEntries, newTarget] = forAtom(state, exp.target)
       const [argEntries, newArg] = forAtom(state, exp.arg)
       const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, Exps.Apply(newTarget, newArg, exp.meta)]
+      const entry: Entry = [freshName, X.Apply(newTarget, newArg, exp.meta)]
       return [
         [...targetEntries, ...argEntries, entry],
-        Exps.Var(freshName, exp.meta),
+        X.Var(freshName, exp.meta),
       ]
     }
 
@@ -145,17 +140,9 @@ function forAtom(state: State, exp: Exp): [Array<Entry>, Exp] {
 
     default: {
       let message = `[unnestAtom] unhandled exp`
-      message += `\n  exp: ${formatExp(exp)}`
+      message += `\n  exp: ${X.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }
-}
-
-function forAtomMany(
-  state: State,
-  exps: Array<Exp>,
-): [Array<Entry>, Array<Exp>] {
-  const [entriesArray, newExps] = arrayUnzip(exps.map((e) => forAtom(state, e)))
-  return [arrayConcat(entriesArray), newExps]
 }

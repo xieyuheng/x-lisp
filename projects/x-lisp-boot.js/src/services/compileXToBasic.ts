@@ -1,5 +1,5 @@
 import * as B from "@xieyuheng/basic-lisp.js"
-import * as X from "../lang/index.ts"
+import * as X from "../index.ts"
 
 export function compileXToBasic(xMod: X.Mod): B.Mod {
   X.ShrinkPass(xMod)

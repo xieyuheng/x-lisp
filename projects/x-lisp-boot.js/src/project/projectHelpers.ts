@@ -2,7 +2,7 @@ import * as B from "@xieyuheng/basic-lisp.js"
 import * as M from "@xieyuheng/machine-lisp.js"
 import fs from "node:fs"
 import Path from "node:path"
-import * as X from "../lang/index.ts"
+import * as X from "../index.ts"
 import type { Project } from "./index.ts"
 
 export function projectSourceDirectory(project: Project): string {

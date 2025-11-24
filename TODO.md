@@ -1,13 +1,18 @@
-[basic-lisp.js] rename `const` to `value` -- leave space for `define-constant`
+[basic-lisp.js] move passes/ to top level
+[machine-lisp.js] move transpile to top level passes/
 
-[basic-lisp.js] add `ConstantDefinition` to `Definition` -- like `FunctionDefinition` but without arguments
-[basic-lisp.js] parse `define-constant`
-[basic-lisp.js] `load-constant` instruction
+[x-lisp-boot.js] compile `(define <name>)` to `(define-variable <name>)` and init-function
+[x-lisp-boot.js] call init-function of variable in main
+[x-lisp-boot.js] `RevealGlobalVariablePass`
+
+[basic-lisp.js] add `VariableDefinition` to `Definition` -- like `FunctionDefinition` but without arguments
+[basic-lisp.js] parse `define-variable`
+[basic-lisp.js] `load` and `store` instruction -- for variable? for pointer?
 
 [machine-lisp.js] support `define-space`
 [machine-lisp.js] `define-space` -- transpile to .bss
 
-[basic-lisp.js]  `ConstantDefinition` -- compiles to many sections
+[basic-lisp.js]  `VariableDefinition` -- compiles to many sections
 
 - `define-space` -- .bss -- `<name>`
 - `define-code` -- .text -- `<name>.init_function`

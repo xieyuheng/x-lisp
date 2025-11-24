@@ -1,23 +1,14 @@
 import { setAdd, setUnion } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
-import { getBuiltinFunctionArity } from "../builtin/index.ts"
-import { type Definition } from "../definition/index.ts"
-import * as Exps from "../exp/index.ts"
-import { type Exp } from "../exp/index.ts"
-import { formatExp } from "../format/index.ts"
-import {
-  modLookupDefinition,
-  modOwnDefinitions,
-  type Mod,
-} from "../mod/index.ts"
+import * as X from "../index.ts"
 
-export function RevealFunctionPass(mod: Mod): void {
-  for (const definition of modOwnDefinitions(mod)) {
+export function RevealFunctionPass(mod: X.Mod): void {
+  for (const definition of X.modOwnDefinitions(mod)) {
     onDefinition(mod, definition)
   }
 }
 
-function onDefinition(mod: Mod, definition: Definition): null {
+function onDefinition(mod: X.Mod, definition: X.Definition): null {
   switch (definition.kind) {
     case "FunctionDefinition": {
       definition.body = onExp(
@@ -30,7 +21,7 @@ function onDefinition(mod: Mod, definition: Definition): null {
   }
 }
 
-function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
+function onExp(mod: X.Mod, boundNames: Set<string>, exp: X.Exp): X.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -45,9 +36,9 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
         return exp
       }
 
-      const builtinArity = getBuiltinFunctionArity(exp.name)
+      const builtinArity = X.getBuiltinFunctionArity(exp.name)
       if (builtinArity !== undefined) {
-        return Exps.Function(
+        return X.Function(
           exp.name,
           builtinArity,
           { isPrimitive: true },
@@ -55,7 +46,7 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
         )
       }
 
-      const definition = modLookupDefinition(mod, exp.name)
+      const definition = X.modLookupDefinition(mod, exp.name)
       if (definition === undefined) {
         let message = `[reveal-function] undefined name`
         message += `\n  name: ${exp.name}`
@@ -71,12 +62,12 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
       }
 
       const arity = definition.parameters.length
-      return Exps.Function(exp.name, arity, { isPrimitive: false }, exp.meta)
+      return X.Function(exp.name, arity, { isPrimitive: false }, exp.meta)
     }
 
     case "Lambda": {
       const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
-      return Exps.Lambda(
+      return X.Lambda(
         exp.parameters,
         onExp(mod, newBoundNames, exp.body),
         exp.meta,
@@ -84,11 +75,11 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
     }
 
     case "NullaryApply": {
-      return Exps.NullaryApply(onExp(mod, boundNames, exp.target), exp.meta)
+      return X.NullaryApply(onExp(mod, boundNames, exp.target), exp.meta)
     }
 
     case "Apply": {
-      return Exps.Apply(
+      return X.Apply(
         onExp(mod, boundNames, exp.target),
         onExp(mod, boundNames, exp.arg),
         exp.meta,
@@ -97,7 +88,7 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
 
     case "Let1": {
       const newBoundNames = setAdd(boundNames, exp.name)
-      return Exps.Let1(
+      return X.Let1(
         exp.name,
         onExp(mod, newBoundNames, exp.rhs),
         onExp(mod, newBoundNames, exp.body),
@@ -106,7 +97,7 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
     }
 
     case "If": {
-      return Exps.If(
+      return X.If(
         onExp(mod, boundNames, exp.condition),
         onExp(mod, boundNames, exp.consequent),
         onExp(mod, boundNames, exp.alternative),
@@ -116,7 +107,7 @@ function onExp(mod: Mod, boundNames: Set<string>, exp: Exp): Exp {
 
     default: {
       let message = `[RevealFunctionPass] unhandled exp`
-      message += `\n  exp: ${formatExp(exp)}`
+      message += `\n  exp: ${X.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }

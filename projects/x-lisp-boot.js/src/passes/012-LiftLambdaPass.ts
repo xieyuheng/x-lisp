@@ -1,31 +1,29 @@
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
-import * as Definitions from "../definition/index.ts"
-import { type Definition } from "../definition/index.ts"
-import * as Exps from "../exp/index.ts"
-import { type Exp } from "../exp/index.ts"
-import { formatExp } from "../format/index.ts"
-import { modOwnDefinitions, type Mod } from "../mod/index.ts"
+import * as X from "../index.ts"
 
-export function LiftLambdaPass(mod: Mod): void {
+export function LiftLambdaPass(mod: X.Mod): void {
   mod.definitions = new Map(
-    modOwnDefinitions(mod)
+    X.modOwnDefinitions(mod)
       .flatMap((definition) => onDefinition(mod, definition))
       .map((definition) => [definition.name, definition]),
   )
 }
 
 type State = {
-  mod: Mod
-  lifted: Array<Definition>
-  definition: Definitions.FunctionDefinition
+  mod: X.Mod
+  lifted: Array<X.Definition>
+  definition: X.FunctionDefinition
 }
 
-function onDefinition(mod: Mod, definition: Definition): Array<Definition> {
+function onDefinition(
+  mod: X.Mod,
+  definition: X.Definition,
+): Array<X.Definition> {
   switch (definition.kind) {
     case "FunctionDefinition": {
-      const lifted: Array<Definition> = []
+      const lifted: Array<X.Definition> = []
       const state = { mod, lifted, definition }
       definition.body = onExp(state, definition.body)
       return [
@@ -36,7 +34,7 @@ function onDefinition(mod: Mod, definition: Definition): Array<Definition> {
   }
 }
 
-function onExp(state: State, exp: Exp): Exp {
+function onExp(state: State, exp: X.Exp): X.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -49,7 +47,7 @@ function onExp(state: State, exp: Exp): Exp {
     }
 
     case "Lambda": {
-      const freeNames = Array.from(Exps.expFreeNames(new Set(), exp))
+      const freeNames = Array.from(X.expFreeNames(new Set(), exp))
       const liftedCount = state.lifted.length + 1
       const subscript = stringToSubscript(liftedCount.toString())
       const newFunctionName = `${state.definition.name}/λ${subscript}`
@@ -57,7 +55,7 @@ function onExp(state: State, exp: Exp): Exp {
       const arity = newParameters.length
       assert(exp.meta)
       state.lifted.push(
-        Definitions.FunctionDefinition(
+        X.FunctionDefinition(
           state.mod,
           newFunctionName,
           newParameters,
@@ -66,27 +64,23 @@ function onExp(state: State, exp: Exp): Exp {
         ),
       )
 
-      return Exps.makeCurry(
-        Exps.Function(newFunctionName, arity, { isPrimitive: false }),
+      return X.makeCurry(
+        X.Function(newFunctionName, arity, { isPrimitive: false }),
         arity,
-        freeNames.map((name) => Exps.Var(name)),
+        freeNames.map((name) => X.Var(name)),
       )
     }
 
     case "Apply": {
-      return Exps.Apply(
-        onExp(state, exp.target),
-        onExp(state, exp.arg),
-        exp.meta,
-      )
+      return X.Apply(onExp(state, exp.target), onExp(state, exp.arg), exp.meta)
     }
 
     case "NullaryApply": {
-      return Exps.NullaryApply(onExp(state, exp.target), exp.meta)
+      return X.NullaryApply(onExp(state, exp.target), exp.meta)
     }
 
     case "Let1": {
-      return Exps.Let1(
+      return X.Let1(
         exp.name,
         onExp(state, exp.rhs),
         onExp(state, exp.body),
@@ -95,7 +89,7 @@ function onExp(state: State, exp: Exp): Exp {
     }
 
     case "If": {
-      return Exps.If(
+      return X.If(
         onExp(state, exp.condition),
         onExp(state, exp.consequent),
         onExp(state, exp.alternative),
@@ -105,7 +99,7 @@ function onExp(state: State, exp: Exp): Exp {
 
     default: {
       let message = `[LiftLambdaPass] unhandled exp`
-      message += `\n  exp: ${formatExp(exp)}`
+      message += `\n  exp: ${X.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }

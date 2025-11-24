@@ -2,7 +2,7 @@ import * as B from "@xieyuheng/basic-lisp.js"
 import * as M from "@xieyuheng/machine-lisp.js"
 import fs from "node:fs"
 import { globals } from "../globals.ts"
-import * as X from "../lang/index.ts"
+import * as X from "../index.ts"
 
 export function compileLangToPassLog(xMod: X.Mod, logFile?: string): void {
   logXMod("Input", xMod, logFile)
