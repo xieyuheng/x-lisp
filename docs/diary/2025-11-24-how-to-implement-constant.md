@@ -33,3 +33,9 @@ date: 2025-11-24
 
 同时这也要求我们，每当考虑一个语言功能的时候，
 要在一个语言层次所构成的整体中考虑。
+
+可能还是需要 `define-variable` 和 init
+来避免在每次遇到 function 时都构造新的 curry。
+
+如果想直接把 `define-cached-value` 编译成一个函数，
+那么好像就还需要 `define-variable`。

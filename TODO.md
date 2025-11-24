@@ -1,13 +1,17 @@
-[basic-lisp.js] add `ConstantDefinition` to `Definition` -- like `FunctionDefinition` but without arguments
-[basic-lisp.js] parse `define-constant`
-[basic-lisp.js] `load` and `store` instruction -- for variable? for pointer?
-[basic-lisp.js]  `ConstantDefinition` -- compiles `define-space` and init function
+[basic-lisp.js] add `VariableDefinition` to `Definition`
+[basic-lisp.js] `define-variable`
+[basic-lisp.js]  `VariableDefinition` -- compiles `define-space`
+[basic-lisp.js] `load` and `store` instruction -- for variable
 
 [machine-lisp.js] support `define-space`
 [machine-lisp.js] `define-space` -- transpile to .bss
 
+[basic-lisp.js] add `CachedValueDefinition` to `Definition` -- like `FunctionDefinition` but without arguments
+[basic-lisp.js] parse `define-cached-value`
+[basic-lisp.js]  `CachedValueDefinition` -- compiles `define-space` and init function
+
 [x-lisp-boot.js] `ValueDefinition`
-[x-lisp-boot.js] compile `(define <name>)` to `(define-constant <name>)`
+[x-lisp-boot.js] compile `(define <name>)` to `(define-cached-value <name>)`
 
 [x-lisp-boot.js] every mod has generated `init` function
 [basic-lisp.js] `bundle` should merge `init` functions
