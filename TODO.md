@@ -1,5 +1,3 @@
-[machine-lisp.js] move transpile to top level passes/
-
 [x-lisp-boot.js] compile `(define <name>)` to `(define-variable <name>)` and init-function
 [x-lisp-boot.js] call init-function of variable in main
 [x-lisp-boot.js] `RevealGlobalVariablePass`

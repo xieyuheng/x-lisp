@@ -6,7 +6,7 @@ import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import fs from "node:fs"
 import { fileURLToPath } from "node:url"
-import * as M from "./lang/index.ts"
+import * as M from "./index.ts"
 import * as Services from "./services/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))

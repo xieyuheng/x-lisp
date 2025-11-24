@@ -1,15 +1,13 @@
-import type { Chunk } from "../chunk/index.ts"
-import * as Definitions from "../definition/index.ts"
-import type { Directive } from "../directive/index.ts"
+import * as M from "../index.ts"
 import { transpileOwnName } from "./transpileOwnName.ts"
 
 const indentation = " ".repeat(8)
 
 type Context = {
-  definition: Definitions.DataDefinition
+  definition: M.DataDefinition
 }
 
-export function transpileChunk(context: Context, chunk: Chunk): string {
+export function transpileChunk(context: Context, chunk: M.Chunk): string {
   const name = transpileOwnName([context.definition.name, chunk.label])
   const directives = chunk.directives
     .map((directive) => transpileDirective(context, directive))
@@ -17,7 +15,7 @@ export function transpileChunk(context: Context, chunk: Chunk): string {
   return `${name}:\n${directives}`
 }
 
-function transpileDirective(context: Context, directive: Directive): string {
+function transpileDirective(context: Context, directive: M.Directive): string {
   switch (directive.kind) {
     case "Db": {
       const values = directive.values.map(String).join(" ")

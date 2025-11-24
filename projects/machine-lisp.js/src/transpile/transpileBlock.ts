@@ -1,17 +1,13 @@
-import type { Block } from "../block/index.ts"
-import * as Definitions from "../definition/index.ts"
-import type { Instr } from "../instr/index.ts"
-import type { Operand } from "../operand/index.ts"
-import * as Operands from "../operand/index.ts"
+import * as M from "../index.ts"
 import { transpileExternalName, transpileOwnName } from "./transpileOwnName.ts"
 
 const indentation = " ".repeat(8)
 
 type Context = {
-  definition: Definitions.CodeDefinition
+  definition: M.CodeDefinition
 }
 
-export function transpileBlock(context: Context, block: Block): string {
+export function transpileBlock(context: Context, block: M.Block): string {
   const name = transpileOwnName([context.definition.name, block.label])
   const instrs = block.instrs
     .map((instr) => transpileInstr(context, instr))
@@ -19,7 +15,7 @@ export function transpileBlock(context: Context, block: Block): string {
   return `${name}:\n${instrs}`
 }
 
-function transpileInstr(context: Context, instr: Instr): string {
+function transpileInstr(context: Context, instr: M.Instr): string {
   switch (instr.op) {
     case "callq-n": {
       const [label] = instr.operands
@@ -28,13 +24,13 @@ function transpileInstr(context: Context, instr: Instr): string {
 
     case "set-if": {
       const [cc, dest] = instr.operands
-      const code = Operands.asCc(cc).code
+      const code = M.asCc(cc).code
       return `${indentation}set${code} ${transpileOperand(context, dest)}`
     }
 
     case "jmp-if": {
       const [cc, label] = instr.operands
-      const code = Operands.asCc(cc).code
+      const code = M.asCc(cc).code
       return `${indentation}j${code} ${transpileOperand(context, label)}`
     }
 
@@ -45,13 +41,13 @@ function transpileInstr(context: Context, instr: Instr): string {
 
     case "jmp-indirect-if": {
       const [cc, label] = instr.operands
-      const code = Operands.asCc(cc).code
+      const code = M.asCc(cc).code
       return `${indentation}j${code} *${transpileOperand(context, label)}`
     }
 
     case "branch-if": {
       const [cc, thenLabel, elseLabel] = instr.operands
-      const code = Operands.asCc(cc).code
+      const code = M.asCc(cc).code
       return [
         `${indentation}j${code} ${transpileOperand(context, thenLabel)}`,
         `${indentation}jmp ${transpileOperand(context, elseLabel)}`,
@@ -67,7 +63,7 @@ function transpileInstr(context: Context, instr: Instr): string {
   }
 }
 
-function transpileOperand(context: Context, operand: Operand): string {
+function transpileOperand(context: Context, operand: M.Operand): string {
   switch (operand.kind) {
     case "Imm": {
       if (!Number.isInteger(operand.value)) {
@@ -121,7 +117,7 @@ function transpileOperand(context: Context, operand: Operand): string {
   }
 }
 
-function transpileLabel(context: Context, label: Operands.Label): string {
+function transpileLabel(context: Context, label: M.Label): string {
   if (label.attributes.isExternal) {
     return transpileExternalName([label.name])
   } else {
