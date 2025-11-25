@@ -1,7 +1,5 @@
 # variable
 
-[machine-lisp.js] `define-space` -- `transpile` to .bss
-
 [basic-lisp.js] `VariableDefinition` -- compiles `define-space`
 [basic-lisp.js] `load` and `store` instruction -- for variable
 

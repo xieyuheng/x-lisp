@@ -50,5 +50,14 @@ function transpileDefinition(definition: M.Definition): string {
       code += `.size ${name}, . - ${name}\n`
       return code
     }
+
+    case 'SpaceDefinition': {
+      const name = transpileOwnName([definition.name])
+      let code = `.bss\n`
+      code += `.align 8\n`
+      code += `${name}:\n`
+      code += `${indentation}.zero ${definition.size}\n`
+      return code
+    }
   }
 }
