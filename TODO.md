@@ -1,22 +1,27 @@
+# variable
+
 [basic-lisp.js] add `VariableDefinition` to `Definition`
 [basic-lisp.js] `define-variable`
-[basic-lisp.js]  `VariableDefinition` -- compiles `define-space`
+[basic-lisp.js] `VariableDefinition` -- compiles `define-space`
 [basic-lisp.js] `load` and `store` instruction -- for variable
 
 [machine-lisp.js] support `define-space`
 [machine-lisp.js] `define-space` -- transpile to .bss
 
+# cached-value
+
 [basic-lisp.js] add `CachedValueDefinition` to `Definition` -- like `FunctionDefinition` but without arguments
 [basic-lisp.js] parse `define-cached-value`
 [basic-lisp.js]  `CachedValueDefinition` -- compiles `define-space` and init function
 
+[x-lisp-boot.js] `RevealCachedValuePass`
+
+# function
+
+[basic-lisp.js] every mod have initialization code
+
 [x-lisp-boot.js] `ValueDefinition`
 [x-lisp-boot.js] compile `(define <name>)` to `(define-cached-value <name>)`
-
-[x-lisp-boot.js] every mod has generated `init` function
-[basic-lisp.js] `bundle` should merge `init` functions
-
-[x-lisp-boot.js] `RevealGlobalVariablePass`
 
 # runtime
 
