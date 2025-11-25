@@ -1,8 +1,10 @@
-import { call, createContext } from "../execute/index.ts"
-import { type Mod } from "../mod/index.ts"
-import * as Values from "../value/index.ts"
+import assert from "node:assert"
+import { callDefinition, createContext } from "../execute/index.ts"
+import { modLookupDefinition, type Mod } from "../mod/index.ts"
 
 export function run(mod: Mod): void {
   const context = createContext(mod)
-  call(context, Values.Function("main", 0, { isPrimitive: false }), [])
+  const definition = modLookupDefinition(context.mod, "main")
+  assert(definition)
+  callDefinition(context, definition, [])
 }
