@@ -1,6 +1,5 @@
 # variable
 
-[machine-lisp.js] parse `define-space`
 [machine-lisp.js] fix passes for `SpaceDefinition`
 [machine-lisp.js] `define-space` -- `transpile` to .bss
 
