@@ -2,7 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import { definitionArity } from "../definition/definitionHelpers.ts"
 import { frameGoto, frameLookup } from "../execute/index.ts"
-import { formatValue } from "../format/index.ts"
+import { formatInstr, formatValue } from "../format/index.ts"
 import { type Instr } from "../instr/index.ts"
 import { modLookupDefinition } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
@@ -82,7 +82,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       const definition = modLookupDefinition(context.mod, instr.fn.name)
       if (definition === undefined) {
         let message = `[execute] (call) undefined function name`
-        message += `\n  function name: ${instr.fn.name}`
+        message += `\n  instruction: ${formatInstr(instr)}`
         if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
         else throw new Error(message)
       }
@@ -117,14 +117,53 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       return null
     }
 
-
     case "Load": {
-      // TODO
+      const definition = modLookupDefinition(context.mod, instr.name)
+      if (definition === undefined) {
+        let message = `[execute] (load) undefined variable name`
+        message += `\n  instruction: ${formatInstr(instr)}`
+        if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
+      }
+
+      if (definition.kind !== "VariableDefinition") {
+        let message = `[execute] (load) expect VaribaleDefinition`
+        message += `\n  definition kind: ${definition.kind}`
+        message += `\n  instruction: ${formatInstr(instr)}`
+        if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
+      }
+
+      if (Values.isUndefined(definition.value)) {
+        let message = `[execute] (load) uninitialized varibale`
+        message += `\n  definition kind: ${definition.kind}`
+        message += `\n  instruction: ${formatInstr(instr)}`
+        if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
+      }
+
+      frame.env.set(instr.dest, definition.value)
       return null
     }
 
     case "Store": {
-      // TODO
+      const definition = modLookupDefinition(context.mod, instr.name)
+      if (definition === undefined) {
+        let message = `[execute] (store) undefined variable name`
+        message += `\n  instruction: ${formatInstr(instr)}`
+        if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
+      }
+
+      if (definition.kind !== "VariableDefinition") {
+        let message = `[execute] (load) expect VaribaleDefinition`
+        message += `\n  definition kind: ${definition.kind}`
+        message += `\n  instruction: ${formatInstr(instr)}`
+        if (instr.meta) throw new S.ErrorWithMeta(message, instr.meta)
+        else throw new Error(message)
+      }
+
+      definition.value = frameLookup(frame, instr.source)
       return null
     }
   }

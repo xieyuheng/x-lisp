@@ -69,7 +69,7 @@ function onExp(exp: X.Exp): X.Exp {
     }
 
     case "AssignSugar": {
-      let message = `[shrink] (=) must occur be in head of (begin)`
+      let message = `[shrink] (=) must occur in the head of (begin)`
       message += `\n  exp: ${X.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)

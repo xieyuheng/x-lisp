@@ -25,17 +25,23 @@ date: 2025-11-24
 
 # 实现
 
-也就是说这个功能需要在 basic-lisp 来实现。
-用 `define-cached-value` 这个语法关键词来明显表达。
-
 我们有三层语言 x-lisp -> basic-lisp -> machine-lisp，
 这使得我们在解决某个语言功能的实现问题时，多了一个设计的维度。
 
 同时这也要求我们，每当考虑一个语言功能的时候，
 要在一个语言层次所构成的整体中考虑。
 
-可能还是需要 `define-variable` 和 init
-来避免在每次遇到 function 时都构造新的 curry。
+实现计划：
 
-如果想直接把 `define-cached-value` 编译成一个函数，
-那么好像就还需要 `define-variable`。
+- 给 basic-lisp 增加 `define-variable` 功能。
+
+- 在 x-lisp 的编译器中把 `(define <name> <exp>)` 翻译成函数，
+  把对如此定义的 name 的引用翻译成函数调用。
+
+- 给 basic-lisp 的 bundle 增加 initialization 功能，
+  每个 mod 都有 initialization 代码。
+
+- 在 x-lisp 中编译函数到为：
+
+  - 一个 `define-variable` -- apply 用到（需要 initialization）。
+  - 一个 `define-function` -- call 用到。

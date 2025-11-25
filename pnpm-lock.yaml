@@ -14,9 +14,6 @@ importers:
       '@xieyuheng/helpers.js':
         specifier: workspace:*
         version: link:../helpers.js
-      '@xieyuheng/machine-lisp.js':
-        specifier: workspace:*
-        version: link:../machine-lisp.js
       '@xieyuheng/sexp.js':
         specifier: workspace:*
         version: link:../sexp.js

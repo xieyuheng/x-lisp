@@ -184,11 +184,7 @@ export type Load = {
   meta?: Meta
 }
 
-export function Load(
-  dest: string,
-  name: string,
-  meta?: Meta,
-): Load {
+export function Load(dest: string, name: string, meta?: Meta): Load {
   return {
     op: "Load",
     dest,
@@ -200,19 +196,15 @@ export function Load(
 export type Store = {
   op: "Store"
   name: string
-  value: Value
+  source: string
   meta?: Meta
 }
 
-export function Store(
-  name: string,
-  value: Value,
-  meta?: Meta,
-): Store {
+export function Store(name: string, source: string, meta?: Meta): Store {
   return {
     op: "Store",
     name,
-    value,
+    source,
     meta,
   }
 }

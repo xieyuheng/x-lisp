@@ -1,16 +1,14 @@
 # variable
 
-[basic-lisp.js] `execute` -- handle `Load` and `Store`
 [basic-lisp.js] test `define-variable`
+[basic-lisp.js] inline `call`
+[basic-lisp.js] rename `callDefinition` to `call`
+
 [x-lisp-boot.js] `SelectInstructionPass` -- handle `Load` and `Store`
 
-# cached-value
-
-[basic-lisp.js] add `CachedValueDefinition` to `Definition` -- like `FunctionDefinition` but without arguments
-[basic-lisp.js] parse `define-cached-value`
-[basic-lisp.js]  `CachedValueDefinition` -- compiles `define-space` and init function
-
+[x-lisp-boot.js] compile `(define <name> <exp>)` to function
 [x-lisp-boot.js] `RevealCachedValuePass`
+[x-lisp-boot.js] compile reference to `ValueDefinition` to function call
 
 # function
 

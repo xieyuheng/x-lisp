@@ -1,5 +1,5 @@
-import assert from "node:assert"
 import * as M from "@xieyuheng/machine-lisp.js"
+import assert from "node:assert"
 
 export function PrologAndEpilogPass(mod: M.Mod): void {
   for (const definition of M.modDefinitions(mod)) {

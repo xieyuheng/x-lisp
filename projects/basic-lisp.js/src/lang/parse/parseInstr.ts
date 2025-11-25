@@ -31,7 +31,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
         return Instrs.Return(S.symbolContent(result), meta)
       }),
 
-      S.matcher("`(return)", ({ }, { meta }) => {
+      S.matcher("`(return)", ({}, { meta }) => {
         return Instrs.Return(undefined, meta)
       }),
 
@@ -104,15 +104,17 @@ export function parseInstr(sexp: S.Sexp): Instr {
         },
       ),
 
-
       S.matcher("`(= ,dest (load ,name))", ({ dest, name }, { meta }) => {
         return Instrs.Load(S.symbolContent(dest), S.symbolContent(name), meta)
       }),
 
-      S.matcher("`(store ,name, value)", ({ name, value }, { meta }) => {
-        return Instrs.Store(S.symbolContent(name), parseValue(value), meta)
+      S.matcher("`(store ,name, source)", ({ name, source }, { meta }) => {
+        return Instrs.Store(
+          S.symbolContent(name),
+          S.symbolContent(source),
+          meta,
+        )
       }),
-
     ]),
     sexp,
   )

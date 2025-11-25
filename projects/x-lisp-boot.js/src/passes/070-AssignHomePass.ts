@@ -1,5 +1,5 @@
-import * as S from "@xieyuheng/sexp.js"
 import * as M from "@xieyuheng/machine-lisp.js"
+import * as S from "@xieyuheng/sexp.js"
 
 export function AssignHomePass(mod: M.Mod): void {
   for (const definition of M.modDefinitions(mod)) {

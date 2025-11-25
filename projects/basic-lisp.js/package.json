@@ -24,7 +24,6 @@
   "dependencies": {
     "@xieyuheng/command.js": "workspace:*",
     "@xieyuheng/helpers.js": "workspace:*",
-    "@xieyuheng/machine-lisp.js": "workspace:*",
     "@xieyuheng/sexp.js": "workspace:*",
     "zod": "^4.1.13"
   },

@@ -54,7 +54,7 @@ export function formatInstr(instr: Instr): string {
     }
 
     case "Store": {
-      return `(store ${instr.name} ${formatValue(instr.value)})`
+      return `(store ${instr.name} ${instr.source})`
     }
   }
 }
