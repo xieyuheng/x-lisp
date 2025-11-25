@@ -1,5 +1,3 @@
-[machine-lisp.js] move passes/ to x-lisp-boot.js
-
 # variable
 
 [basic-lisp.js] `Load` and `Store` instruction -- for variable
