@@ -52,9 +52,9 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
 
     case "Return": {
       if (instr.result === undefined) {
-        context.result = Values.Void()
+        context.returnValue = Values.Void()
       } else {
-        context.result = frameLookup(frame, instr.result)
+        context.returnValue = frameLookup(frame, instr.result)
       }
 
       context.frames.pop()

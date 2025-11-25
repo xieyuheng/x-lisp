@@ -6,14 +6,14 @@ import { type Frame } from "./Frame.ts"
 export type Context = {
   mod: Mod
   frames: Array<Frame>
-  result?: Value
+  returnValue?: Value
 }
 
 export function createContext(mod: Mod): Context {
   return {
     mod,
     frames: [],
-    result: undefined,
+    returnValue: undefined,
   }
 }
 

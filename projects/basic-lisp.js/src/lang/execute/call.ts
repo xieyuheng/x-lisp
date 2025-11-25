@@ -46,9 +46,9 @@ export function callDefinition(
         executeOneStep(context)
       }
 
-      const result = context.result
+      const result = context.returnValue
       assert(result)
-      delete context.result
+      delete context.returnValue
       return result
     }
 
