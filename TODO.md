@@ -1,6 +1,5 @@
 # variable
 
-[basic-lisp.js] test `define-variable`
 [basic-lisp.js] inline `call`
 [basic-lisp.js] rename `callDefinition` to `call`
 

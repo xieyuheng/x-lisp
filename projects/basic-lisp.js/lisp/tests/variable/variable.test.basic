@@ -2,6 +2,16 @@
 
 (define-function main
   (block entry
-    (= v0 (const 1))
-    (= v1 (const 2))
+    (= expected (const 3))
+    (= res (load x))
+    (= ok (call (@primitive-function equal? 2) res expected))
+    (assert ok)
+
+    (= v (const 6))
+    (store x v)
+    (= expected (const 6))
+    (= res (load x))
+    (= ok (call (@primitive-function equal? 2) res expected))
+    (assert ok)
+
     (return)))
