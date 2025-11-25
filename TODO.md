@@ -1,7 +1,5 @@
 # variable
 
-[basic-lisp.js] fix the use of `callDefinition` -- should not use host stack
-
 [basic-lisp.js] `Undefined` as Value -- for `VariableDefinition`
 [basic-lisp.js] parse `define-variable`
 [basic-lisp.js] `VariableDefinition` -- compiles `define-space`

@@ -3,6 +3,8 @@ import { type Mod } from "../mod/index.ts"
 import { type Value } from "../value/index.ts"
 import { type Frame } from "./Frame.ts"
 
+// We still need to use JS stack in `apply`.
+
 export type Context = {
   mod: Mod
   frames: Array<Frame>
