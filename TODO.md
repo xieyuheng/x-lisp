@@ -1,4 +1,3 @@
-[basic-lisp.js] move passes/ to x-lisp-boot.js
 [machine-lisp.js] move passes/ to x-lisp-boot.js
 
 # variable

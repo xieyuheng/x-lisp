@@ -1,5 +1,5 @@
+import * as B from "@xieyuheng/basic-lisp.js"
 import * as M from "@xieyuheng/machine-lisp.js"
-import * as B from "../index.ts"
 
 export function SelectInstructionPass(mod: B.Mod, machineMod: M.Mod): void {
   machineMod.exported = mod.exported

@@ -3,6 +3,7 @@ import * as M from "@xieyuheng/machine-lisp.js"
 import fs from "node:fs"
 import { globals } from "../globals.ts"
 import * as X from "../index.ts"
+import * as Passes from "../passes/index.ts"
 
 export function compileLangToPassLog(mod: X.Mod, logFile?: string): void {
   logXMod("Input", mod, logFile)
@@ -21,7 +22,7 @@ export function compileLangToPassLog(mod: X.Mod, logFile?: string): void {
   X.ExplicateControlPass(mod, basicMod)
   logBasicMod("ExplicateControlPass", basicMod, logFile)
   const machineMod = M.createMod(mod.url)
-  B.SelectInstructionPass(basicMod, machineMod)
+  Passes.SelectInstructionPass(basicMod, machineMod)
   logMachineMod("SelectInstructionPass", machineMod, logFile)
   M.AssignHomePass(machineMod)
   logMachineMod("AssignHomePass", machineMod, logFile)
