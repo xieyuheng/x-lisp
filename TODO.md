@@ -1,6 +1,5 @@
 # variable
 
-[basic-lisp.js] parse `(= dest (load name))` and `(store name value)`
 [basic-lisp.js] `execute` -- handle `Load` and `Store`
 [basic-lisp.js] test `define-variable`
 [x-lisp-boot.js] `SelectInstructionPass` -- handle `Load` and `Store`
