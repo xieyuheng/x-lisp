@@ -87,8 +87,10 @@ date: 2025-10-22
 - explicate-control 在处理 if 的时候与 EOC 有区别，
   因为 basic-lisp if 的 condition 只能是 variable。
   这样就没有了 EOC 中那个避免两次 compare 的优化：
+
   - 一次 compare 返回 bool variable；
   - 一次 compare 选择 branch。
+
   但是这应该可以在后续 basic-lisp 的优化 pass 中实现。
 
 - desugar 到一个简单的核心语法很重要，
@@ -128,7 +130,7 @@ date: 2025-10-22
 
   因为 x-lisp 需要生成中间文件，
   如果不想修改后缀，就要有专门的地方存放中间文件，
-  如果不想每次都在命令行重复存放中间文件的地方，
+  如果不想每次都在命令行参数中重复指明存放中间文件的地方，
   就要有配置文件，也就是 project 的概念。
 
   也可以尝试跳过 project 的概念，
@@ -140,6 +142,14 @@ date: 2025-10-22
 - 完成 x-lisp 模块系统。
 
 - 需要支持 project 概念，这是任务开始时没有预料到的。
+
+反思 [2025-11-25]：
+
+- 其实还是需要「修改后缀并且把中间文件保存在源代码文件旁边」这个功能。
+
+  这对于对比输出和做 snapshot testing 来说都很方便。
+
+  所以说，在解决一个问题时，大多数时候都应该先考虑最简单的方案。
 
 # 关卡 3 -- machine-lisp
 
@@ -159,7 +169,7 @@ date: 2025-10-22
 
 - [x] machine-lisp
   - [x] language design
-  - [x] format to GAS
+  - [x] transpile to GAS
 
 总结 [2025-11-12]：
 

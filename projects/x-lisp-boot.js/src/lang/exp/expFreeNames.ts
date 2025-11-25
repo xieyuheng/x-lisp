@@ -30,7 +30,7 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       return expFreeNames(newBoundNames, exp.body)
     }
 
-    case "NullaryApply": {
+    case "ApplyNullary": {
       return setUnionMany([expFreeNames(boundNames, exp.target)])
     }
 

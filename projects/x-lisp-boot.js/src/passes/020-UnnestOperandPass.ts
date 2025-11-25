@@ -40,9 +40,9 @@ function onExp(state: State, exp: X.Exp): X.Exp {
       return exp
     }
 
-    case "NullaryApply": {
+    case "ApplyNullary": {
       const [targetEntries, newTarget] = forAtom(state, exp.target)
-      return prependLets(targetEntries, X.NullaryApply(newTarget, exp.meta))
+      return prependLets(targetEntries, X.ApplyNullary(newTarget, exp.meta))
     }
 
     case "Apply": {
@@ -114,10 +114,10 @@ function forAtom(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
       return [[entry], X.Var(freshName, exp.meta)]
     }
 
-    case "NullaryApply": {
+    case "ApplyNullary": {
       const [targetEntries, newTarget] = forAtom(state, exp.target)
       const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, X.NullaryApply(newTarget, exp.meta)]
+      const entry: Entry = [freshName, X.ApplyNullary(newTarget, exp.meta)]
       return [[...targetEntries, entry], X.Var(freshName, exp.meta)]
     }
 

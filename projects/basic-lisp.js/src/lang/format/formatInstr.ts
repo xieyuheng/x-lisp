@@ -43,8 +43,8 @@ export function formatInstr(instr: Instr): string {
       return `(= ${instr.dest} ${rhs})`
     }
 
-    case "NullaryApply": {
-      const rhs = `(nullary-apply ${instr.target})`
+    case "ApplyNullary": {
+      const rhs = `(apply-nullary ${instr.target})`
       return `(= ${instr.dest} ${rhs})`
     }
   }

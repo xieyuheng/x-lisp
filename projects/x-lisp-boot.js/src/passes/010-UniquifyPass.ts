@@ -53,8 +53,8 @@ function onExp(
       )
     }
 
-    case "NullaryApply": {
-      return X.NullaryApply(onExp(nameCounts, nameTable, exp.target), exp.meta)
+    case "ApplyNullary": {
+      return X.ApplyNullary(onExp(nameCounts, nameTable, exp.target), exp.meta)
     }
 
     case "Apply": {

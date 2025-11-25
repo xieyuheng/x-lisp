@@ -62,7 +62,7 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "NullaryApply": {
+    case "ApplyNullary": {
       const target = formatExp(exp.target)
       return `(${target})`
     }

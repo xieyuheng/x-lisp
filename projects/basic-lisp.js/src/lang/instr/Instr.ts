@@ -9,7 +9,7 @@ export type Instr =
   | Goto
   | Branch
   | Call
-  | NullaryApply
+  | ApplyNullary
   | Apply
 
 export type Argument = {
@@ -132,20 +132,20 @@ export function Call(
   }
 }
 
-export type NullaryApply = {
-  op: "NullaryApply"
+export type ApplyNullary = {
+  op: "ApplyNullary"
   dest: string
   target: string
   meta?: Meta
 }
 
-export function NullaryApply(
+export function ApplyNullary(
   dest: string,
   target: string,
   meta?: Meta,
-): NullaryApply {
+): ApplyNullary {
   return {
-    op: "NullaryApply",
+    op: "ApplyNullary",
     dest,
     target,
     meta,

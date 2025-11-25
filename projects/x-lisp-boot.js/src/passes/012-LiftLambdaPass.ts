@@ -75,8 +75,8 @@ function onExp(state: State, exp: X.Exp): X.Exp {
       return X.Apply(onExp(state, exp.target), onExp(state, exp.arg), exp.meta)
     }
 
-    case "NullaryApply": {
-      return X.NullaryApply(onExp(state, exp.target), exp.meta)
+    case "ApplyNullary": {
+      return X.ApplyNullary(onExp(state, exp.target), exp.meta)
     }
 
     case "Let1": {

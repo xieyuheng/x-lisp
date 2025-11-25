@@ -102,7 +102,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       return null
     }
 
-    case "NullaryApply": {
+    case "ApplyNullary": {
       const target = frameLookup(frame, instr.target)
       const result = applyNullary(context, target)
       frame.env.set(instr.dest, result)

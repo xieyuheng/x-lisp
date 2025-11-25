@@ -89,14 +89,14 @@ export function parseInstr(sexp: S.Sexp): Instr {
         },
       ),
 
-      S.matcher("`(nullary-apply ,target)", ({ target }, { meta }) => {
-        return Instrs.NullaryApply("_∅", S.symbolContent(target), meta)
+      S.matcher("`(apply-nullary ,target)", ({ target }, { meta }) => {
+        return Instrs.ApplyNullary("_∅", S.symbolContent(target), meta)
       }),
 
       S.matcher(
-        "`(= ,dest (nullary-apply ,target))",
+        "`(= ,dest (apply-nullary ,target))",
         ({ target, arg, dest }, { meta }) => {
-          return Instrs.NullaryApply(
+          return Instrs.ApplyNullary(
             S.symbolContent(dest),
             S.symbolContent(target),
             meta,

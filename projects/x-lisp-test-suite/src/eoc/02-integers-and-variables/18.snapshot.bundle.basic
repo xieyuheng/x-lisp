@@ -8,7 +8,7 @@
     (= _₄ (const (@primitive-function iadd 2)))
     (= _₅ (const (@primitive-function iadd 2)))
     (= _₆ (const (@primitive-function random-dice 0)))
-    (= _₇ (nullary-apply _₆))
+    (= _₇ (apply-nullary _₆))
     (= _₈ (apply _₅ _₇))
     (= _₉ (const 1))
     (= _₁₀ (apply _₈ _₉))

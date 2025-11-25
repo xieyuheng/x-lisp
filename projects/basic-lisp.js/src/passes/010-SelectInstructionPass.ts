@@ -98,7 +98,7 @@ function onInstr(instr: B.Instr): Array<M.Instr> {
       return selectCall(instr.dest, fn, [instr.target, instr.arg])
     }
 
-    case "NullaryApply": {
+    case "ApplyNullary": {
       const fn = B.Function("apply-nullary", 1, { isPrimitive: true })
       return selectCall(instr.dest, fn, [instr.target])
     }

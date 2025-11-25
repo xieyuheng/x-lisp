@@ -74,8 +74,8 @@ function onExp(mod: X.Mod, boundNames: Set<string>, exp: X.Exp): X.Exp {
       )
     }
 
-    case "NullaryApply": {
-      return X.NullaryApply(onExp(mod, boundNames, exp.target), exp.meta)
+    case "ApplyNullary": {
+      return X.ApplyNullary(onExp(mod, boundNames, exp.target), exp.meta)
     }
 
     case "Apply": {

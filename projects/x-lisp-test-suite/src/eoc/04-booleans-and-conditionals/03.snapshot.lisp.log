@@ -95,7 +95,7 @@
     (= _₁ (const (@primitive-function println-non-void 1)))
     (= _₄ (const (@primitive-function equal? 2)))
     (= _₅ (const (@primitive-function random-dice 0)))
-    (= _₆ (nullary-apply _₅))
+    (= _₆ (apply-nullary _₅))
     (= _₇ (apply _₄ _₆))
     (= _₈ (const 1))
     (= _₉ (apply _₇ _₈))
@@ -107,7 +107,7 @@
   (block main/then₅
     (= _₁₀ (const (@primitive-function equal? 2)))
     (= _₁₁ (const (@primitive-function random-dice 0)))
-    (= _₁₂ (nullary-apply _₁₁))
+    (= _₁₂ (apply-nullary _₁₁))
     (= _₁₃ (apply _₁₀ _₁₂))
     (= _₁₄ (const 2))
     (= _₃ (apply _₁₃ _₁₄))

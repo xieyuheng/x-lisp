@@ -39,7 +39,7 @@
     (= _₁ (const (@primitive-function println-non-void 1)))
     (= _₂ (const (@primitive-function ineg 1)))
     (= _₃ (const (@primitive-function random-dice 0)))
-    (= _₄ (nullary-apply _₃))
+    (= _₄ (apply-nullary _₃))
     (= _₅ (apply _₂ _₄))
     (= _↩ (apply _₁ _₅))
     (return _↩)))

@@ -3,7 +3,7 @@ import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 
 export function desugarApply(target: Exp, args: Array<Exp>, meta?: Meta): Exp {
-  if (args.length === 0) return Exps.NullaryApply(target, meta)
+  if (args.length === 0) return Exps.ApplyNullary(target, meta)
   if (args.length === 1) return Exps.Apply(target, args[0], meta)
   const [arg, ...restArgs] = args
   return desugarApply(Exps.Apply(target, arg, meta), restArgs, meta)

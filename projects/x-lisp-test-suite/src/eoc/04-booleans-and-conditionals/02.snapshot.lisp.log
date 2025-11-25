@@ -168,9 +168,9 @@
   (block body
     (= _₁ (const (@primitive-function println-non-void 1)))
     (= _₂ (const (@primitive-function random-dice 0)))
-    (= x₁ (nullary-apply _₂))
+    (= x₁ (apply-nullary _₂))
     (= _₃ (const (@primitive-function random-dice 0)))
-    (= y₁ (nullary-apply _₃))
+    (= y₁ (apply-nullary _₃))
     (= _₄ (const (@primitive-function iadd 2)))
     (= _₇ (const (@primitive-function int-less? 2)))
     (= _₈ (apply _₇ x₁))

@@ -29,7 +29,7 @@
 (goto <label>)
 (branch <var> <label> <label>)
 (= <dest> (call <function> <var> ...))
-(= <dest> (nullary-apply <var>))
+(= <dest> (apply-nullary <var>))
 (= <dest> (apply <var> <var>))
 
 ;;; value
