@@ -15,8 +15,10 @@
     "x-lisp-boot.js": "lib/main.js"
   },
   "scripts": {
-    "build": "cp ../runtime/bin/runtime.o bin && tsc",
-    "build:watch": "cp ../runtime/bin/runtime.o bin && tsc --watch",
+    "clean": "rm -rf lib",
+    "build:prepare": "cp ../runtime/bin/runtime.o bin",
+    "build": "pnpm build:prepare && tsc",
+    "build:watch": "pnpm build:prepare && tsc --watch",
     "test": "node --test 'src/**/*.test.ts'",
     "test:cli": "bash scripts/test-all.sh",
     "format": "prettier src --write"

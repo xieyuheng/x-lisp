@@ -14,6 +14,7 @@
     "machine-lisp.js": "lib/main.js"
   },
   "scripts": {
+    "clean": "rm -rf lib",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "test": "node --test 'src/**/*.test.ts'",
