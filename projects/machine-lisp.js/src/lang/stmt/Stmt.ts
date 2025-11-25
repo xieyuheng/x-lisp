@@ -3,7 +3,7 @@ import { type Block } from "../block/index.ts"
 import type { Chunk } from "../chunk/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
 
-export type Stmt = DefineCode | DefineData | AboutModule
+export type Stmt = AboutModule | DefineCode | DefineData | DefineSpace
 
 export type DefineCode = {
   kind: "DefineCode"
@@ -41,6 +41,26 @@ export function DefineData(
     kind: "DefineData",
     name,
     chunks,
+    meta,
+  }
+}
+
+export type DefineSpace = {
+  kind: "DefineSpace"
+  name: string
+  size: number
+  meta: Meta
+}
+
+export function DefineSpace(
+  name: string,
+  size: number,
+  meta: Meta,
+): DefineSpace {
+  return {
+    kind: "DefineSpace",
+    name,
+    size,
     meta,
   }
 }
