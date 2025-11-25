@@ -1,4 +1,4 @@
-export type Atom = Symbol | Hashtag | String | Int | Float
+export type Atom = Symbol | Hashtag | String | Int | Float | Undefined
 
 export type Symbol = {
   kind: "Symbol"
@@ -57,5 +57,17 @@ export function Float(content: number): Float {
   return {
     kind: "Float",
     content,
+  }
+}
+
+export type Undefined = {
+  kind: "Undefined"
+  content: undefined
+}
+
+export function Undefined(): Undefined {
+  return {
+    kind: "Undefined",
+    content: undefined,
   }
 }

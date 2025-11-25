@@ -8,7 +8,8 @@ export function isAtom(value: any): value is Atom {
     value.kind === "Symbol" ||
     value.kind === "String" ||
     value.kind === "Int" ||
-    value.kind === "Float"
+    value.kind === "Float" ||
+    value.kind === "Undefined"
   )
 }
 
@@ -30,6 +31,10 @@ export function isInt(value: Value): value is Values.Int {
 
 export function isFloat(value: Value): value is Values.Float {
   return value.kind === "Float"
+}
+
+export function isUndefined(value: Value): value is Values.Undefined {
+  return value.kind === "Undefined"
 }
 
 export function asHashtag(value: Value): Values.Hashtag {
@@ -55,4 +60,9 @@ export function asInt(value: Value): Values.Int {
 export function asFloat(value: Value): Values.Float {
   if (isFloat(value)) return value
   throw new Error(`[asFloat] fail on: ${formatValue(value)}`)
+}
+
+export function asUndefined(value: Value): Values.Undefined {
+  if (isUndefined(value)) return value
+  throw new Error(`[asUndefined] fail on: ${formatValue(value)}`)
 }

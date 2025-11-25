@@ -25,5 +25,9 @@ export function formatAtom(value: Atom): string {
         return value.content.toString()
       }
     }
+
+    case "Undefined": {
+      return `<undefined>`
+    }
   }
 }

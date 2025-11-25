@@ -1,6 +1,5 @@
 # variable
 
-[basic-lisp.js] `Undefined` as Value -- for `VariableDefinition`
 [basic-lisp.js] parse `define-variable`
 [basic-lisp.js] `VariableDefinition` -- compiles `define-space`
 [basic-lisp.js] `load` and `store` instruction -- for variable
