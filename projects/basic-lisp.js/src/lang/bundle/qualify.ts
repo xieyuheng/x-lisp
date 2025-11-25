@@ -1,12 +1,48 @@
+import { mapMapValue } from "@xieyuheng/helpers.js/map"
 import { Block } from "../block/index.ts"
 import { useBuiltinMod } from "../builtin/index.ts"
+import type { Definition } from "../definition/index.ts"
+import * as Definitions from "../definition/index.ts"
 import type { Instr } from "../instr/index.ts"
 import * as Instrs from "../instr/index.ts"
-import { modLookupDefinition } from "../mod/index.ts"
+import { modLookupDefinition, type Mod } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
 import * as Values from "../value/index.ts"
 import type { BundleContext } from "./bundle.ts"
 import { dependencyPrefix } from "./dependencyHelpers.ts"
+
+export function qualifyDefinition(
+  bundleMod: Mod,
+  context: BundleContext,
+  qualifiedName: string,
+  definition: Definition,
+): Definition {
+  switch (definition.kind) {
+    case "FunctionDefinition": {
+      return Definitions.FunctionDefinition(
+        bundleMod,
+        qualifiedName,
+        mapMapValue(definition.blocks, (block) => qualifyBlock(context, block)),
+        definition.meta,
+      )
+    }
+
+    case "VariableDefinition": {
+      return Definitions.VariableDefinition(
+        bundleMod,
+        qualifiedName,
+        qualifyValue(context, definition.value),
+        definition.meta,
+      )
+    }
+
+    default: {
+      let message = `[qualifyDefinition] unhandled definition kind`
+      message += `\n  kind: ${definition.kind}`
+      throw new Error(message)
+    }
+  }
+}
 
 export function qualifyBlock(context: BundleContext, block: Block): Block {
   return Block(

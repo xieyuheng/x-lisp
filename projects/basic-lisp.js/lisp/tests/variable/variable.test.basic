@@ -1,0 +1,7 @@
+(define-variable x 3)
+
+(define-function main
+  (block entry
+    (= v0 (const 1))
+    (= v1 (const 2))
+    (return)))

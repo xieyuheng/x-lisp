@@ -1,11 +1,8 @@
-import { mapMapValue } from "@xieyuheng/helpers.js/map"
-import assert from "node:assert"
 import * as B from "../../lang/index.ts"
 import { importBuiltin } from "../builtin/index.ts"
-import * as Definitions from "../definition/index.ts"
 import { createMod, modOwnDefinitions, type Mod } from "../mod/index.ts"
 import { dependencyPrefix } from "./dependencyHelpers.ts"
-import { qualifyBlock } from "./qualify.ts"
+import { qualifyDefinition } from "./qualify.ts"
 
 export type BundleContext = {
   entryMod: Mod
@@ -33,16 +30,10 @@ function mergeEntryMod(bundleMod: Mod, context: BundleContext): void {
   const { entryMod } = context
   // name in the entry mod should be kept.
   for (const definition of modOwnDefinitions(entryMod)) {
-    const name = definition.name
-    assert(definition.kind === "FunctionDefinition")
+    const qualifiedName = definition.name
     bundleMod.definitions.set(
-      name,
-      Definitions.FunctionDefinition(
-        bundleMod,
-        name,
-        mapMapValue(definition.blocks, (block) => qualifyBlock(context, block)),
-        definition.meta,
-      ),
+      qualifiedName,
+      qualifyDefinition(bundleMod, context, qualifiedName, definition),
     )
   }
 }
@@ -51,16 +42,10 @@ function mergeDependencyMod(bundleMod: Mod, context: BundleContext): void {
   // name in a dependency mod will be prefixed.
   const prefix = dependencyPrefix(context.dependencies, context.mod)
   for (const definition of modOwnDefinitions(context.mod)) {
-    const name = `${prefix}/${definition.name}`
-    assert(definition.kind === "FunctionDefinition")
+    const qualifiedName = `${prefix}/${definition.name}`
     bundleMod.definitions.set(
-      name,
-      Definitions.FunctionDefinition(
-        bundleMod,
-        name,
-        mapMapValue(definition.blocks, (block) => qualifyBlock(context, block)),
-        definition.meta,
-      ),
+      qualifiedName,
+      qualifyDefinition(bundleMod, context, qualifiedName, definition),
     )
   }
 }

@@ -1,7 +1,9 @@
+[basic-lisp.js] move passes/ to x-lisp-boot.js
+[machine-lisp.js] move passes/ to x-lisp-boot.js
+
 # variable
 
-[basic-lisp.js] `VariableDefinition` -- compile to `define-space` or `define-data`
-[basic-lisp.js] `load` and `store` instruction -- for variable
+[basic-lisp.js] `Load` and `Store` instruction -- for variable
 [basic-lisp.js] test `define-variable`
 
 # cached-value

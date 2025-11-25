@@ -26,6 +26,29 @@ function onDefinition(machineMod: M.Mod, definition: B.Definition): null {
       return null
     }
 
+    case "VariableDefinition": {
+      if (B.isUndefined(definition.value)) {
+        machineMod.definitions.set(
+          definition.name,
+          M.SpaceDefinition(machineMod, definition.name, 8, definition.meta),
+        )
+      } else {
+        const value = B.asInt(definition.value).content
+        const chunk = M.Chunk("entry", [M.Dq([value])], definition.meta)
+        machineMod.definitions.set(
+          definition.name,
+          M.DataDefinition(
+            machineMod,
+            definition.name,
+            new Map([[chunk.label, chunk]]),
+            definition.meta,
+          ),
+        )
+      }
+
+      return null
+    }
+
     default: {
       let message = `[onDefinition] unhandled definition`
       message += `\n  definition kind: ${definition.kind}`
