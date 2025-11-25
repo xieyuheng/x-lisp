@@ -125,6 +125,20 @@ function onInstr(instr: B.Instr): Array<M.Instr> {
       const fn = B.Function("apply-nullary", 1, { isPrimitive: true })
       return selectCall(instr.dest, fn, [instr.target])
     }
+
+    case "Load": {
+      const variableLabel = M.Label(instr.name, { isExternal: false })
+      return [
+        M.Instr("movq", [M.LabelDeref(variableLabel), M.Var(instr.dest)]),
+      ]
+    }
+
+    case "Store": {
+      const variableLabel = M.Label(instr.name, { isExternal: false })
+      return [
+        M.Instr("movq", [M.Var(instr.source), M.LabelDeref(variableLabel)])
+      ]
+    }
   }
 }
 

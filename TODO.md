@@ -1,6 +1,5 @@
 # variable
 
-[x-lisp-boot.js] `SelectInstructionPass` -- handle `Load` and `Store`
 [x-lisp-boot.js] compile `(define <name> <exp>)` to variable and function
 [x-lisp-boot.js] `RevealCachedValuePass`
 [x-lisp-boot.js] compile reference to `ValueDefinition` to function call
