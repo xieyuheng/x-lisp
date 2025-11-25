@@ -51,7 +51,7 @@ function transpileDefinition(definition: M.Definition): string {
       return code
     }
 
-    case 'SpaceDefinition': {
+    case "SpaceDefinition": {
       const name = transpileOwnName([definition.name])
       let code = `.bss\n`
       code += `.align 8\n`
