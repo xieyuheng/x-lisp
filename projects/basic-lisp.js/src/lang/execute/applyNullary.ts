@@ -2,7 +2,7 @@ import assert from "node:assert"
 import { formatValue } from "../format/index.ts"
 import { modLookupDefinition } from "../mod/index.ts"
 import { type Value } from "../value/index.ts"
-import { callDefinition } from "./call.ts"
+import { call } from "./call.ts"
 import { type Context } from "./Context.ts"
 
 export function applyNullary(context: Context, target: Value): Value {
@@ -11,7 +11,7 @@ export function applyNullary(context: Context, target: Value): Value {
       const fn = target
       const definition = modLookupDefinition(context.mod, fn.name)
       assert(definition)
-      return callDefinition(context, definition, [])
+      return call(context, definition, [])
     }
 
     default: {

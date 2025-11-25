@@ -5,7 +5,7 @@ import { type Context } from "./Context.ts"
 import { executeOneStep } from "./executeOneStep.ts"
 import { createFrame } from "./Frame.ts"
 
-export function callDefinition(
+export function call(
   context: Context,
   definition: Definition,
   args: Array<Value>,

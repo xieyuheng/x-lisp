@@ -3,7 +3,7 @@ import { formatValue } from "../format/index.ts"
 import { modLookupDefinition } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
-import { callDefinition } from "./call.ts"
+import { call } from "./call.ts"
 import { type Context } from "./Context.ts"
 
 export function apply(context: Context, target: Value, arg: Value): Value {
@@ -19,7 +19,7 @@ export function apply(context: Context, target: Value, arg: Value): Value {
         const fn = Values.asFunction(target.target)
         const definition = modLookupDefinition(context.mod, fn.name)
         assert(definition)
-        return callDefinition(context, definition, newArgs)
+        return call(context, definition, newArgs)
       }
     }
 
@@ -32,7 +32,7 @@ export function apply(context: Context, target: Value, arg: Value): Value {
         const fn = target
         const definition = modLookupDefinition(context.mod, fn.name)
         assert(definition)
-        return callDefinition(context, definition, [arg])
+        return call(context, definition, [arg])
       }
     }
 

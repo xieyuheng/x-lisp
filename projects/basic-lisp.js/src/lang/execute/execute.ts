@@ -10,7 +10,7 @@ import { type Context } from "./Context.ts"
 import { type Frame } from "./Frame.ts"
 import { apply } from "./apply.ts"
 import { applyNullary } from "./applyNullary.ts"
-import { callDefinition } from "./call.ts"
+import { call } from "./call.ts"
 
 export function execute(context: Context, frame: Frame, instr: Instr): null {
   switch (instr.op) {
@@ -97,7 +97,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
         else throw new Error(message)
       }
 
-      const result = callDefinition(context, definition, args)
+      const result = call(context, definition, args)
       frame.env.set(instr.dest, result)
       return null
     }
