@@ -1,7 +1,9 @@
 # variable
 
-[machine-lisp.js] support `define-space`
-[machine-lisp.js] `define-space` -- transpile to .bss
+[machine-lisp.js] `DefineSpace` as `Stmt`
+[machine-lisp.js] parse `define-space`
+[machine-lisp.js] fix passes for `SpaceDefinition`
+[machine-lisp.js] `define-space` -- `transpile` to .bss
 
 [basic-lisp.js] `VariableDefinition` -- compiles `define-space`
 [basic-lisp.js] `load` and `store` instruction -- for variable

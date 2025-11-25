@@ -17,5 +17,9 @@ export function formatDefinition(definition: Definition): string {
       ).join(" ")
       return `(define-data ${definition.name} ${blocks})`
     }
+
+    case "SpaceDefinition": {
+      return `(define-space ${definition.name} ${definition.size})`
+    }
   }
 }

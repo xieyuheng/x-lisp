@@ -4,7 +4,7 @@ import type { Chunk } from "../chunk/index.ts"
 import type { Mod } from "../mod/index.ts"
 import type { Operand } from "../operand/index.ts"
 
-export type Definition = CodeDefinition | DataDefinition
+export type Definition = CodeDefinition | DataDefinition | SpaceDefinition
 
 export type CodeDefinition = {
   kind: "CodeDefinition"
@@ -52,6 +52,29 @@ export function DataDefinition(
     mod,
     name,
     chunks,
+    meta,
+  }
+}
+
+export type SpaceDefinition = {
+  kind: "SpaceDefinition"
+  mod: Mod
+  name: string
+  size: number
+  meta?: Meta
+}
+
+export function SpaceDefinition(
+  mod: Mod,
+  name: string,
+  size: number,
+  meta?: Meta,
+): SpaceDefinition {
+  return {
+    kind: "SpaceDefinition",
+    mod,
+    name,
+    size,
     meta,
   }
 }
