@@ -15,7 +15,6 @@ export function transpileToX86Assembly(mod: M.Mod): string {
   for (const definition of M.modDefinitions(mod)) {
     code += "\n"
     code += transpileDefinition(definition)
-    code += "\n"
   }
 
   return code

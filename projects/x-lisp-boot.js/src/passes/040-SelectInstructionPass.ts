@@ -128,15 +128,13 @@ function onInstr(instr: B.Instr): Array<M.Instr> {
 
     case "Load": {
       const variableLabel = M.Label(instr.name, { isExternal: false })
-      return [
-        M.Instr("movq", [M.LabelDeref(variableLabel), M.Var(instr.dest)]),
-      ]
+      return [M.Instr("movq", [M.LabelDeref(variableLabel), M.Var(instr.dest)])]
     }
 
     case "Store": {
       const variableLabel = M.Label(instr.name, { isExternal: false })
       return [
-        M.Instr("movq", [M.Var(instr.source), M.LabelDeref(variableLabel)])
+        M.Instr("movq", [M.Var(instr.source), M.LabelDeref(variableLabel)]),
       ]
     }
   }

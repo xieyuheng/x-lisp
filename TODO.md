@@ -1,13 +1,20 @@
-# variable
+[x-lisp-boot.js] `ValueDefinition`
+[x-lisp-boot.js] parse `(define <name> <exp>)`
 
-[x-lisp-boot.js] compile `(define <name> <exp>)` to variable and function
+[x-lisp-boot.js] compile `ValueDefinition` to a variable, a flag and a function
+
+```scheme
+(define-variable <name>)
+(define-variable <name>/flag) ;; with generateLabel
+(define-variable )
+```
+
 [x-lisp-boot.js] `RevealCachedValuePass`
 [x-lisp-boot.js] compile reference to `ValueDefinition` to function call
 
 # function
 
 [basic-lisp.js] every mod have initialization code
-
 [x-lisp-boot.js] `ValueDefinition`
 [x-lisp-boot.js] compile `(define <name>)` to `(define-cached-value <name>)`
 

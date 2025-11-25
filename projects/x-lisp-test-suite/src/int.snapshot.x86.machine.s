@@ -47,7 +47,6 @@ _square.epilog:
         retq 
 .size _square, . - _square
 
-
 .text
 .align 8
 .type _main, @function
@@ -100,4 +99,3 @@ _main.epilog:
         popq %rbp
         retq 
 .size _main, . - _main
-

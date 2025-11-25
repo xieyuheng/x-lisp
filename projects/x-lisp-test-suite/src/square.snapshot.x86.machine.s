@@ -63,7 +63,6 @@ _main.epilog:
         retq 
 .size _main, . - _main
 
-
 .text
 .align 8
 .type _§₁.square, @function
@@ -110,4 +109,3 @@ _§₁.square.epilog:
         popq %rbp
         retq 
 .size _§₁.square, . - _§₁.square
-
