@@ -28,6 +28,10 @@ function onDefinition(definition: M.Definition): null {
     case "DataDefinition": {
       return null
     }
+
+    case "SpaceDefinition": {
+      return null
+    }
   }
 }
 
