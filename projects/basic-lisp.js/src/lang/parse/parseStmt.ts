@@ -1,8 +1,10 @@
 import * as S from "@xieyuheng/sexp.js"
 import { Block } from "../block/index.ts"
+import * as Values from "../value/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { parseInstr } from "./parseInstr.ts"
+import { parseValue } from "./parseValue.ts"
 
 export function parseStmt(sexp: S.Sexp): Stmt {
   return S.match(stmtMatcher, sexp)
@@ -21,6 +23,33 @@ const stmtMatcher: S.Matcher<Stmt> = S.matcherChoice<Stmt>([
             .map(parseBlock)
             .map((block) => [block.label, block]),
         ),
+        meta,
+      )
+    },
+  ),
+
+  S.matcher(
+    "(cons* 'define-variable name value)",
+    ({ name, value }, { sexp }) => {
+      const keyword = S.asTael(sexp).elements[1]
+      const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+      return Stmts.DefineVariable(
+        S.symbolContent(name),
+        parseValue(value),
+        meta,
+      )
+    },
+  ),
+
+
+  S.matcher(
+    "(cons* 'define-variable name)",
+    ({ name }, { sexp }) => {
+      const keyword = S.asTael(sexp).elements[1]
+      const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+      return Stmts.DefineVariable(
+        S.symbolContent(name),
+        Values.Undefined(),
         meta,
       )
     },
