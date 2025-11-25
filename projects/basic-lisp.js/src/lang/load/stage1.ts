@@ -22,4 +22,11 @@ export function stage1(mod: Mod, stmt: Stmt): void {
 
     mod.definitions.set(stmt.name, definition)
   }
+
+  if (stmt.kind === "DefineVariable") {
+    mod.definitions.set(
+      stmt.name,
+      Definitions.VariableDefinition(mod, stmt.name, stmt.value),
+    )
+  }
 }

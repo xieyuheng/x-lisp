@@ -47,7 +47,7 @@ const stmtMatcher: S.Matcher<Stmt> = S.matcherChoice<Stmt>([
     },
   ),
 
-  S.matcher("(cons* 'define-space name size)", ({ name, size }, { sexp }) => {
+  S.matcher("`(define-space ,name ,size)", ({ name, size }, { sexp }) => {
     const keyword = S.asTael(sexp).elements[1]
     const meta = S.tokenMetaFromSexpMeta(keyword.meta)
     return Stmts.DefineSpace(S.symbolContent(name), S.numberContent(size), meta)

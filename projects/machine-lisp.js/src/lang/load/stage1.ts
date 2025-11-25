@@ -8,23 +8,25 @@ export function stage1(mod: Mod, stmt: Stmt): void {
       mod.exported.add(name)
     }
   }
+
   if (stmt.kind === "DefineCode") {
-    const definition = Definitions.CodeDefinition(
-      mod,
+    mod.definitions.set(
       stmt.name,
-      stmt.blocks,
-      stmt.meta,
+      Definitions.CodeDefinition(mod, stmt.name, stmt.blocks, stmt.meta),
     )
-    mod.definitions.set(stmt.name, definition)
   }
 
   if (stmt.kind === "DefineData") {
-    const definition = Definitions.DataDefinition(
-      mod,
+    mod.definitions.set(
       stmt.name,
-      stmt.chunks,
-      stmt.meta,
+      Definitions.DataDefinition(mod, stmt.name, stmt.chunks, stmt.meta),
     )
-    mod.definitions.set(stmt.name, definition)
+  }
+
+  if (stmt.kind === "DefineSpace") {
+    mod.definitions.set(
+      stmt.name,
+      Definitions.SpaceDefinition(mod, stmt.name, stmt.size, stmt.meta),
+    )
   }
 }

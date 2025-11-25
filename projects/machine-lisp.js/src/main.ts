@@ -18,6 +18,7 @@ router.defineRoutes(["transpile-to-x86-assembly file", "assemble-x86 file"])
 router.defineHandlers({
   "transpile-to-x86-assembly": ({ args: [file] }) => {
     const mod = M.load(createUrl(file))
+    console.log(mod)
     const assemblyCode = M.transpileToX86Assembly(mod)
     console.log(assemblyCode)
   },

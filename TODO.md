@@ -1,7 +1,5 @@
 # variable
 
-[machine-lisp.js] test `define-space`
-
 [basic-lisp.js] `VariableDefinition` -- compile to `define-space` or `define-data`
 [basic-lisp.js] `load` and `store` instruction -- for variable
 [basic-lisp.js] test `define-variable`

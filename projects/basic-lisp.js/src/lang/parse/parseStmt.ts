@@ -28,20 +28,13 @@ const stmtMatcher: S.Matcher<Stmt> = S.matcherChoice<Stmt>([
     },
   ),
 
-  S.matcher(
-    "(cons* 'define-variable name value)",
-    ({ name, value }, { sexp }) => {
-      const keyword = S.asTael(sexp).elements[1]
-      const meta = S.tokenMetaFromSexpMeta(keyword.meta)
-      return Stmts.DefineVariable(
-        S.symbolContent(name),
-        parseValue(value),
-        meta,
-      )
-    },
-  ),
+  S.matcher("`(define-variable ,name ,value)", ({ name, value }, { sexp }) => {
+    const keyword = S.asTael(sexp).elements[1]
+    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+    return Stmts.DefineVariable(S.symbolContent(name), parseValue(value), meta)
+  }),
 
-  S.matcher("(cons* 'define-variable name)", ({ name }, { sexp }) => {
+  S.matcher("`(define-variable ,name)", ({ name }, { sexp }) => {
     const keyword = S.asTael(sexp).elements[1]
     const meta = S.tokenMetaFromSexpMeta(keyword.meta)
     return Stmts.DefineVariable(S.symbolContent(name), Values.Undefined(), meta)
