@@ -55,5 +55,11 @@ export function callDefinition(
     case "PrimitiveFunctionDefinition": {
       return definition.fn(context)(...args)
     }
+
+    default: {
+      let message = `[callDefinition] unhandle kind`
+      message += `\n  definition kind: ${definition.kind}`
+      throw new Error(message)
+    }
   }
 }

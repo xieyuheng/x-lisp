@@ -1,5 +1,6 @@
 import { type Definition } from "../definition/index.ts"
 import { formatBlock } from "./formatBlock.ts"
+import { formatValue } from "./formatValue.ts"
 
 export function formatDefinition(definition: Definition): string {
   switch (definition.kind) {
@@ -12,6 +13,10 @@ export function formatDefinition(definition: Definition): string {
 
     case "PrimitiveFunctionDefinition": {
       return `(define-primitive ${definition.name} ${definition.arity})`
+    }
+
+    case "VariableDefinition": {
+      return `(define-variable ${definition.name} ${formatValue(definition.value)})`
     }
   }
 }

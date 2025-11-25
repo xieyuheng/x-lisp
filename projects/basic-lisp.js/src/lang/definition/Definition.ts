@@ -4,7 +4,10 @@ import type { Context } from "../execute/index.ts"
 import type { Mod } from "../mod/index.ts"
 import { type Value } from "../value/index.ts"
 
-export type Definition = FunctionDefinition | PrimitiveFunctionDefinition
+export type Definition =
+  | FunctionDefinition
+  | PrimitiveFunctionDefinition
+  | VariableDefinition
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
@@ -49,5 +52,28 @@ export function PrimitiveFunctionDefinition(
     name,
     arity,
     fn,
+  }
+}
+
+export type VariableDefinition = {
+  kind: "VariableDefinition"
+  mod: Mod
+  name: string
+  value: Value
+  meta?: Meta
+}
+
+export function VariableDefinition(
+  mod: Mod,
+  name: string,
+  value: Value,
+  meta?: Meta,
+): VariableDefinition {
+  return {
+    kind: "VariableDefinition",
+    mod,
+    name,
+    value,
+    meta,
   }
 }

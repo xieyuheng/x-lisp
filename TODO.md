@@ -1,7 +1,9 @@
 # variable
 
-[basic-lisp.js] add `VariableDefinition` to `Definition`
-[basic-lisp.js] `define-variable`
+[basic-lisp.js] fix the use of `callDefinition` -- should not use host stack
+
+[basic-lisp.js] `Undefined` as Value -- for `VariableDefinition`
+[basic-lisp.js] parse `define-variable`
 [basic-lisp.js] `VariableDefinition` -- compiles `define-space`
 [basic-lisp.js] `load` and `store` instruction -- for variable
 

@@ -16,5 +16,11 @@ export function definitionArity(definition: Definition): number {
     case "PrimitiveFunctionDefinition": {
       return definition.arity
     }
+
+    default: {
+      let message = `[definitionArity] unhandle kind`
+      message += `\n  definition kind: ${definition.kind}`
+      throw new Error(message)
+    }
   }
 }
