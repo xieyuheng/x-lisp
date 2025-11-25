@@ -116,5 +116,16 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       frame.env.set(instr.dest, result)
       return null
     }
+
+
+    case "Load": {
+      // TODO
+      return null
+    }
+
+    case "Store": {
+      // TODO
+      return null
+    }
   }
 }

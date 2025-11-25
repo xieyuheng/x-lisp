@@ -11,6 +11,8 @@ export type Instr =
   | Call
   | ApplyNullary
   | Apply
+  | Load
+  | Store
 
 export type Argument = {
   op: "Argument"
@@ -171,6 +173,46 @@ export function Apply(
     dest,
     target,
     arg,
+    meta,
+  }
+}
+
+export type Load = {
+  op: "Load"
+  dest: string
+  name: string
+  meta?: Meta
+}
+
+export function Load(
+  dest: string,
+  name: string,
+  meta?: Meta,
+): Load {
+  return {
+    op: "Load",
+    dest,
+    name,
+    meta,
+  }
+}
+
+export type Store = {
+  op: "Store"
+  name: string
+  value: Value
+  meta?: Meta
+}
+
+export function Store(
+  name: string,
+  value: Value,
+  meta?: Meta,
+): Store {
+  return {
+    op: "Store",
+    name,
+    value,
     meta,
   }
 }

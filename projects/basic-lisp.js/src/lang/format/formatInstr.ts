@@ -47,5 +47,14 @@ export function formatInstr(instr: Instr): string {
       const rhs = `(apply-nullary ${instr.target})`
       return `(= ${instr.dest} ${rhs})`
     }
+
+    case "Load": {
+      const rhs = `(load ${instr.name})`
+      return `(= ${instr.dest} ${rhs})`
+    }
+
+    case "Store": {
+      return `(store ${instr.name} ${formatValue(instr.value)})`
+    }
   }
 }
