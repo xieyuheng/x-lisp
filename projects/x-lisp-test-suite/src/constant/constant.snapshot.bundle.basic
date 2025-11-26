@@ -2,76 +2,76 @@
 
 (define-variable one)
 
-(define-variable ©one/flag #f)
+(define-variable _one/flag #f)
 
-(define-function ©one/get
+(define-function _one/get
   (block body
-    (= flag (load ©one/flag))
+    (= flag (load _one/flag))
     (branch flag cached init))
   (block cached (= result (load one)) (return result))
   (block init
-    (= result (call (@function ©one/function 0)))
+    (= result (call (@function _one/function 0)))
     (store one result)
     (= true (const #t))
-    (store ©one/flag true)
+    (store _one/flag true)
     (return result)))
 
-(define-function ©one/function
+(define-function _one/function
   (block body (= _↩ (const 1)) (return _↩)))
 
 (define-variable two)
 
-(define-variable ©two/flag #f)
+(define-variable _two/flag #f)
 
-(define-function ©two/get
+(define-function _two/get
   (block body
-    (= flag (load ©two/flag))
+    (= flag (load _two/flag))
     (branch flag cached init))
   (block cached (= result (load two)) (return result))
   (block init
-    (= result (call (@function ©two/function 0)))
+    (= result (call (@function _two/function 0)))
     (store two result)
     (= true (const #t))
-    (store ©two/flag true)
+    (store _two/flag true)
     (return result)))
 
-(define-function ©two/function
+(define-function _two/function
   (block body
     (= _₁ (const (@primitive-function iadd 2)))
     (= _₂ (const 1))
     (= _₃ (apply _₁ _₂))
-    (= _₄ (call (@function ©one/get 0)))
+    (= _₄ (call (@function _one/get 0)))
     (= _↩ (apply _₃ _₄))
     (return _↩)))
 
 (define-variable three)
 
-(define-variable ©three/flag #f)
+(define-variable _three/flag #f)
 
-(define-function ©three/get
+(define-function _three/get
   (block body
-    (= flag (load ©three/flag))
+    (= flag (load _three/flag))
     (branch flag cached init))
   (block cached (= result (load three)) (return result))
   (block init
-    (= result (call (@function ©three/function 0)))
+    (= result (call (@function _three/function 0)))
     (store three result)
     (= true (const #t))
-    (store ©three/flag true)
+    (store _three/flag true)
     (return result)))
 
-(define-function ©three/function
+(define-function _three/function
   (block body
     (= _₁ (const (@primitive-function iadd 2)))
     (= _₂ (const 1))
     (= _₃ (apply _₁ _₂))
-    (= _₄ (call (@function ©two/get 0)))
+    (= _₄ (call (@function _two/get 0)))
     (= _↩ (apply _₃ _₄))
     (return _↩)))
 
 (define-function main
   (block body
     (= _₁ (const (@primitive-function println-non-void 1)))
-    (= _₂ (call (@function ©three/get 0)))
+    (= _₂ (call (@function _three/get 0)))
     (= _↩ (apply _₁ _₂))
     (return _↩)))

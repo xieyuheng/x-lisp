@@ -14,7 +14,7 @@
 - setup to `make-curry` for now
 
 ```scheme
-(define-variable ©<name>/constant)
+(define-variable _<name>/constant)
 (define-function <name>)
 ```
 
