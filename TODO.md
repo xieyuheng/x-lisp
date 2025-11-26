@@ -1,5 +1,3 @@
-[x-lisp-boot.js] `DefineConstant`
-[x-lisp-boot.js] load `DefineConstant`
 [x-lisp-boot.js] parse `(define <name> <exp>)`
 [x-lisp-boot.js] `ExplicateControlPass` -- compile `ConstantDefinition` to a variable, a flag and a function
 

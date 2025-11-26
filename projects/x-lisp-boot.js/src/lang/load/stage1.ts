@@ -1,6 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
-import { FunctionDefinition } from "../definition/index.ts"
+import * as Definitions from "../definition/index.ts"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { modLookupDefinition, type Mod } from "../mod/index.ts"
@@ -22,7 +22,20 @@ export function stage1(mod: Mod, stmt: Stmt): void {
 
     mod.definitions.set(
       stmt.name,
-      FunctionDefinition(mod, stmt.name, stmt.parameters, stmt.body, stmt.meta),
+      Definitions.FunctionDefinition(mod, stmt.name, stmt.parameters, stmt.body, stmt.meta),
+    )
+  }
+
+  if (stmt.kind === "DefineConstant") {
+    if (mod.definitions.has(stmt.name)) {
+      let message = `[stage1/DefineConstant] can not redefine`
+      message += `\n  name: ${stmt.name}`
+      throw new S.ErrorWithMeta(message, stmt.meta)
+    }
+
+    mod.definitions.set(
+      stmt.name,
+      Definitions.ConstantDefinition(mod, stmt.name, stmt.body, stmt.meta),
     )
   }
 
@@ -34,7 +47,7 @@ export function stage1(mod: Mod, stmt: Stmt): void {
       found.body.sequence.push(exp)
     } else {
       const body = Exps.BeginSugar([exp], stmt.meta)
-      const main = FunctionDefinition(mod, "main", [], body, stmt.meta)
+      const main = Definitions.FunctionDefinition(mod, "main", [], body, stmt.meta)
       mod.definitions.set("main", main)
     }
   }
