@@ -26,6 +26,37 @@ function onDefinition(mod: X.Mod, definition: X.Definition): null {
   }
 }
 
+function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
+  const builtinArity = X.getBuiltinFunctionArity(variable.name)
+  if (builtinArity !== undefined) {
+    return X.Function(
+      variable.name,
+      builtinArity,
+      { isPrimitive: true },
+      variable.meta,
+    )
+  }
+
+  const definition = X.modLookupDefinition(mod, variable.name)
+  if (definition === undefined) {
+    let message = `[RevealGlobalPass] [revealGlobalVariable] undefined name`
+    message += `\n  variable name: ${variable.name}`
+    if (variable.meta) throw new S.ErrorWithMeta(message, variable.meta)
+    else throw new Error(message)
+  }
+
+  switch (definition.kind) {
+    case "FunctionDefinition": {
+      const arity = definition.parameters.length
+      return X.Function(variable.name, arity, { isPrimitive: false }, variable.meta)
+    }
+
+    case "ConstantDefinition": {
+      return X.Constant(variable.name, { isPrimitive: false }, variable.meta)
+    }
+  }
+}
+
 function onExp(mod: X.Mod, boundNames: Set<string>, exp: X.Exp): X.Exp {
   switch (exp.kind) {
     case "Symbol":
@@ -41,33 +72,7 @@ function onExp(mod: X.Mod, boundNames: Set<string>, exp: X.Exp): X.Exp {
         return exp
       }
 
-      const builtinArity = X.getBuiltinFunctionArity(exp.name)
-      if (builtinArity !== undefined) {
-        return X.Function(
-          exp.name,
-          builtinArity,
-          { isPrimitive: true },
-          exp.meta,
-        )
-      }
-
-      const definition = X.modLookupDefinition(mod, exp.name)
-      if (definition === undefined) {
-        let message = `[reveal-function] undefined name`
-        message += `\n  name: ${exp.name}`
-        if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
-        else throw new Error(message)
-      }
-
-      if (definition.kind !== "FunctionDefinition") {
-        let message = `[reveal-function] global name must be function for now`
-        message += `\n  name: ${exp.name}`
-        if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
-        else throw new Error(message)
-      }
-
-      const arity = definition.parameters.length
-      return X.Function(exp.name, arity, { isPrimitive: false }, exp.meta)
+      return revealGlobalVariable(mod, exp)
     }
 
     case "Lambda": {
