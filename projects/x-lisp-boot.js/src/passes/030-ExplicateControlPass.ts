@@ -65,24 +65,89 @@ function onConstantDefinition(
   basicMod: B.Mod,
   definition: X.ConstantDefinition,
 ): Array<B.Definition> {
-  const variable = B.VariableDefinition(
-    basicMod,
-    definition.name,
-    B.Undefined(),
-    definition.meta,
-  )
-
-  const initFlag = B.VariableDefinition(
-    basicMod,
-    `©${definition.name}/init-flag`,
-    B.Bool(false),
-    definition.meta,
-  )
+  // (define <name> <body>)
 
   return [
-    variable,
-    initFlag,
-    // initFunction,
+    // (define-variable <name>)
+    B.VariableDefinition(
+      basicMod,
+      definition.name,
+      B.Undefined(),
+      definition.meta,
+    ),
+
+    // (define-variable ©<name>/flag false)
+    B.VariableDefinition(
+      basicMod,
+      `©${definition.name}/flag`,
+      B.Bool(false),
+      definition.meta,
+    ),
+
+    // (define-function ©<name>/get
+    //   (block guard
+    //     (= flag (load ©<name>/flag))
+    //     (branch flag cached init))
+    //   (block cached
+    //     (= result (load <name>))
+    //     (return result))
+    //   (block init
+    //     (= result (call ©<name>/function))
+    //     (store <name> result)
+    //     (= true (const #t))
+    //     (store ©<name>/flag true)
+    //     (return result)))
+    B.FunctionDefinition(
+      basicMod,
+      `©${definition.name}/get`,
+      new Map([
+        [
+          "guard",
+          B.Block("guard", [
+            B.Load("flag", `©${definition.name}/flat`),
+            B.Branch("flag", "cached", "init"),
+          ]),
+        ],
+        [
+          "cached",
+          B.Block("cached", [
+            B.Load("result", definition.name),
+            B.Return("result"),
+          ]),
+        ],
+        [
+          "init",
+          B.Block("init", [
+            B.Call(
+              "result",
+              B.Function(`©${definition.name}/function`, 0, {
+                isPrimitive: false,
+              }),
+              [],
+            ),
+            B.Store(definition.name, "result"),
+            B.Const("true", B.Bool(true)),
+            B.Store(`©${definition.name}/flat`, "true"),
+            B.Return("result"),
+          ]),
+        ],
+      ]),
+      definition.meta,
+    ),
+
+    // (define-function ©<name>/function
+    //   (block body
+    //     (compile <body>)))
+    ...onFunctionDefinition(
+      basicMod,
+      X.FunctionDefinition(
+        definition.mod,
+        `©${definition.name}/function`,
+        [],
+        definition.body,
+        definition.meta,
+      ),
+    ),
   ]
 }
 
