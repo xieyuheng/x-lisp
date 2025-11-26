@@ -55,7 +55,7 @@
              (@let1 _∅₅ (print 6)
                (@let1 _∅₆ (newline) ((iadd x₁) x₁))))))))))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1)

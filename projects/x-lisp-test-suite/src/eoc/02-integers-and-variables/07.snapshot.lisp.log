@@ -13,7 +13,7 @@
 (define (main)
   (println-non-void ((iadd (random-dice)) (random-dice))))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1)

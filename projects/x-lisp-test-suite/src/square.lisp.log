@@ -16,7 +16,7 @@
 
 (define (square x) ((imul x) x))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (export square)
 

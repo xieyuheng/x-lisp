@@ -1,6 +1,5 @@
 # define constant
 
-[x-lisp-boot.js] rename `011-RevealFunctionPass` to `011-RevealGlobalPass`
 [x-lisp-boot.js] `011-RevealGlobalPass` -- handle `Constant`
 
 [x-lisp-boot.js] test define constant -- `(define <name> <body>)`

@@ -13,7 +13,7 @@
 (define (main)
   (println-non-void ((iadd ((iadd 1) 2)) ((iadd 3) 4))))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1)

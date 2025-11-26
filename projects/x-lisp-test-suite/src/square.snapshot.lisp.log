@@ -22,7 +22,7 @@
 
 (define (square x) (imul x x))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (import "square" square)
 

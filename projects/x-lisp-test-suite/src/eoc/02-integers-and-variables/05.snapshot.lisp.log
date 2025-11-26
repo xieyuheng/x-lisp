@@ -13,7 +13,7 @@
 (define (main)
   (println-non-void (@let1 a₁ 42 (@let1 b₁ a₁ b₁))))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1)

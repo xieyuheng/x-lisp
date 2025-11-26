@@ -2,7 +2,7 @@ import { setAdd, setUnion } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import * as X from "../index.ts"
 
-export function RevealFunctionPass(mod: X.Mod): void {
+export function RevealGlobalPass(mod: X.Mod): void {
   for (const definition of X.modOwnDefinitions(mod)) {
     onDefinition(mod, definition)
   }
@@ -111,7 +111,7 @@ function onExp(mod: X.Mod, boundNames: Set<string>, exp: X.Exp): X.Exp {
     }
 
     default: {
-      let message = `[RevealFunctionPass] unhandled exp`
+      let message = `[RevealGlobalPass] unhandled exp`
       message += `\n  exp: ${X.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)

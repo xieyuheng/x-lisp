@@ -16,7 +16,7 @@
   (println-non-void
    ((iadd ((iadd ((iadd ((iadd (random-dice)) 1)) 1)) 1)) 1)))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1)

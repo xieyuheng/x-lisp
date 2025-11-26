@@ -41,7 +41,7 @@
    (@let1 f₁ identity
      (@let1 g₁ (dup identity) ((g₁ f₁) f₁)))))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (swap f x y) ((f y) x))
 

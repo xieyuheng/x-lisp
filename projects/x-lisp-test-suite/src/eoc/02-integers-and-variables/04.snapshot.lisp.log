@@ -19,7 +19,7 @@
    (@let1 z₁ (@let1 y₁ (@let1 x₁ (ineg 42) x₁) y₁)
      (ineg z₁))))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1)

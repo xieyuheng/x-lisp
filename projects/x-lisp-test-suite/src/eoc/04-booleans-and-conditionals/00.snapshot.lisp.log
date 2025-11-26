@@ -10,7 +10,7 @@
 
 (define (main) (println-non-void (if #t 1 2)))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1) (if #t 1 2)))

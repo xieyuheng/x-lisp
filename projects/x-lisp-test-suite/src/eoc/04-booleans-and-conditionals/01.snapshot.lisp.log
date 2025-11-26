@@ -35,7 +35,7 @@
          ((iadd y₁) 2)
          ((iadd y₁) 10))))))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1)

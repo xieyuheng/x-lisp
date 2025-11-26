@@ -21,7 +21,7 @@
    (@let1 x₁ (random-dice)
      (@let1 y₁ (random-dice) ((iadd ((iadd x₁) y₁)) 42)))))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1)

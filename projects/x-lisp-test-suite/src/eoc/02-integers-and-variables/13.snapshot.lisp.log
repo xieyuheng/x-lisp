@@ -16,7 +16,7 @@
   (println-non-void
    (@let1 x₁ ((iadd 42) (ineg 10)) ((iadd x₁) 10))))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1)

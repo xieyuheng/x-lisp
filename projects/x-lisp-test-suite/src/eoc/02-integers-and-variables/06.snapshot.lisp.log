@@ -10,7 +10,7 @@
 
 (define (main) (println-non-void (ineg (random-dice))))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1)

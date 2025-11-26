@@ -31,7 +31,7 @@
          (@let1 _∅₄ (newline)
            (@let1 _∅₅ (print 3) (@let1 _∅₆ (newline) 666))))))))
 
-;;; RevealFunctionPass
+;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-function println-non-void 1)
