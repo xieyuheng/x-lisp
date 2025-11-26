@@ -90,6 +90,10 @@ function onInstr(instr: B.Instr): Array<M.Instr> {
       return selectLiteral(instr.dest, instr.value)
     }
 
+    case "Identity": {
+      return [M.Instr("movq", [M.Var(instr.source), M.Var(instr.dest)])]
+    }
+
     case "Assert": {
       // TODO
       return []

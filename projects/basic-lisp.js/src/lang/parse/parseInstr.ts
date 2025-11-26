@@ -19,6 +19,17 @@ export function parseInstr(sexp: S.Sexp): Instr {
         return Instrs.Literal(S.symbolContent(dest), parseValue(value), meta)
       }),
 
+      S.matcher(
+        "`(= ,dest (identity ,source))",
+        ({ dest, source }, { meta }) => {
+          return Instrs.Identity(
+            S.symbolContent(dest),
+            S.symbolContent(source),
+            meta,
+          )
+        },
+      ),
+
       S.matcher("`(assert ,ok)", ({ ok }, { meta }) => {
         return Instrs.Assert(S.symbolContent(ok), meta)
       }),
