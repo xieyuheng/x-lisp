@@ -86,7 +86,7 @@ function createPrologBlock(info: RegisterInfo): M.Block {
   instrs.push(...info.calleeSavedRegs.map((reg) => M.Instr("pushq", [reg])))
   const stackSpace = leaveStackSpace(info)
   if (stackSpace !== 0)
-    instrs.push(M.Instr("subq", [M.Imm(stackSpace), M.Reg("rsp")]))
+    instrs.push(M.Instr("subq", [M.Imm(BigInt(stackSpace)), M.Reg("rsp")]))
   instrs.push(M.Instr("jmp", [M.Label("body", { isExternal: false })]))
   return M.Block("prolog", instrs)
 }
@@ -95,7 +95,7 @@ function createEpilogBlock(info: RegisterInfo): M.Block {
   const instrs: Array<M.Instr> = []
   const stackSpace = leaveStackSpace(info)
   if (stackSpace !== 0)
-    instrs.push(M.Instr("addq", [M.Imm(stackSpace), M.Reg("rsp")]))
+    instrs.push(M.Instr("addq", [M.Imm(BigInt(stackSpace)), M.Reg("rsp")]))
   instrs.push(
     ...info.calleeSavedRegs.map((reg) => M.Instr("popq", [reg])).toReversed(),
   )

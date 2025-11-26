@@ -18,44 +18,11 @@ function onDefinition(
 ): Array<M.Definition> {
   switch (definition.kind) {
     case "FunctionDefinition": {
-      const code = M.CodeDefinition(
-        machineMod,
-        definition.name,
-        new Map(),
-        definition.meta,
-      )
-      for (const block of definition.blocks.values()) {
-        const machineBlock = onBlock(block)
-        code.blocks.set(machineBlock.label, machineBlock)
-      }
-      return [code]
+      return onFunctionDefinition(machineMod, definition)
     }
 
     case "VariableDefinition": {
-      if (B.isUndefined(definition.value)) {
-        return [
-          M.SpaceDefinition(machineMod, definition.name, 8, definition.meta),
-        ]
-      } else {
-        const chunk = M.Chunk("entry", [], definition.meta)
-        if (B.isInt(definition.value)) {
-          const value = B.asInt(definition.value).content
-          chunk.directives.push(M.Dq([value]))
-        } else {
-          let message = `[SelectInstructionPass] can not handle variable value`
-          message += `\n  value: ${B.formatValue(definition.value)}`
-          throw new Error(message)
-        }
-
-        return [
-          M.DataDefinition(
-            machineMod,
-            definition.name,
-            new Map([[chunk.label, chunk]]),
-            definition.meta,
-          ),
-        ]
-      }
+      return onVariableDefinition(machineMod, definition)
     }
 
     default: {
@@ -63,6 +30,43 @@ function onDefinition(
       message += `\n  definition kind: ${definition.kind}`
       throw new Error(message)
     }
+  }
+}
+
+function onFunctionDefinition(
+  machineMod: M.Mod,
+  definition: B.FunctionDefinition,
+): Array<M.Definition> {
+  const code = M.CodeDefinition(
+    machineMod,
+    definition.name,
+    new Map(),
+    definition.meta,
+  )
+  for (const block of definition.blocks.values()) {
+    const machineBlock = onBlock(block)
+    code.blocks.set(machineBlock.label, machineBlock)
+  }
+  return [code]
+}
+
+function onVariableDefinition(
+  machineMod: M.Mod,
+  definition: B.VariableDefinition,
+): Array<M.Definition> {
+  if (B.isUndefined(definition.value)) {
+    return [M.SpaceDefinition(machineMod, definition.name, 8, definition.meta)]
+  } else {
+    const value = R.encodeValue(definition.value)
+    const chunk = M.Chunk("entry", [M.Dq([value])], definition.meta)
+    return [
+      M.DataDefinition(
+        machineMod,
+        definition.name,
+        new Map([[chunk.label, chunk]]),
+        definition.meta,
+      ),
+    ]
   }
 }
 
@@ -212,7 +216,7 @@ function selectTagEncoding(operand: M.Operand, tag: R.Tag): Array<M.Instr> {
     return [M.Instr("orq", [M.Imm(tag), operand])]
   } else {
     return [
-      M.Instr("salq", [M.Imm(3), operand]),
+      M.Instr("salq", [M.Imm(BigInt(3)), operand]),
       M.Instr("orq", [M.Imm(tag), operand]),
     ]
   }

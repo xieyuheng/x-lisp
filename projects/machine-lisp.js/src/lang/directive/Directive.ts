@@ -2,7 +2,7 @@ import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 
 export type Directive = Db | Dw | Dd | Dq | String
 
-type Values = Array<number>
+type Values = Array<bigint>
 
 export type Db = { kind: "Db"; values: Values; meta?: Meta }
 export const Db = (values: Values, meta?: Meta): Db => ({

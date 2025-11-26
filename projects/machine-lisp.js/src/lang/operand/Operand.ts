@@ -11,8 +11,8 @@ export type Operand =
   | Cc
   | Arity
 
-export type Imm = { kind: "Imm"; value: number; meta?: Meta }
-export const Imm = (value: number, meta?: Meta): Imm => ({
+export type Imm = { kind: "Imm"; value: bigint; meta?: Meta }
+export const Imm = (value: bigint, meta?: Meta): Imm => ({
   kind: "Imm",
   value,
   meta,

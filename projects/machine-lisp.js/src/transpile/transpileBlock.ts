@@ -66,12 +66,6 @@ function transpileInstr(context: Context, instr: M.Instr): string {
 function transpileOperand(context: Context, operand: M.Operand): string {
   switch (operand.kind) {
     case "Imm": {
-      if (!Number.isInteger(operand.value)) {
-        let message = `[transpileOperand/Imm] expect value to be integer`
-        message += `\n  value: ${operand.value}`
-        throw new Error(message)
-      }
-
       return `$${operand.value}`
     }
 
@@ -89,12 +83,6 @@ function transpileOperand(context: Context, operand: M.Operand): string {
     }
 
     case "RegDeref": {
-      if (!Number.isInteger(operand.offset)) {
-        let message = `[transpileOperand/RegDeref] expect offset to be integer`
-        message += `\n  value: ${operand.offset}`
-        throw new Error(message)
-      }
-
       return `${operand.offset}(%${operand.reg.name})`
     }
 

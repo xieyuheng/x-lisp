@@ -6,7 +6,7 @@ export function parseOperand(sexp: S.Sexp): Operand {
   return S.match(
     S.matcherChoice<Operand>([
       S.matcher("`(imm ,value)", ({ value }, { meta }) => {
-        return Operands.Imm(S.numberContent(value), meta)
+        return Operands.Imm(BigInt(S.numberContent(value)), meta)
       }),
 
       S.matcher("`(label-imm ,label)", ({ label }, { meta }) => {

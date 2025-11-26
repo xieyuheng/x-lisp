@@ -6,19 +6,31 @@ export function parseDirective(sexp: S.Sexp): Directive {
   return S.match(
     S.matcherChoice<Directive>([
       S.matcher("(cons* 'db values)", ({ values }, { meta }) => {
-        return Directives.Db(S.listElements(values).map(S.numberContent), meta)
+        return Directives.Db(
+          S.listElements(values).map((value) => BigInt(S.numberContent(value))),
+          meta,
+        )
       }),
 
       S.matcher("(cons* 'dw values)", ({ values }, { meta }) => {
-        return Directives.Dw(S.listElements(values).map(S.numberContent), meta)
+        return Directives.Dw(
+          S.listElements(values).map((value) => BigInt(S.numberContent(value))),
+          meta,
+        )
       }),
 
       S.matcher("(cons* 'dd values)", ({ values }, { meta }) => {
-        return Directives.Dd(S.listElements(values).map(S.numberContent), meta)
+        return Directives.Dd(
+          S.listElements(values).map((value) => BigInt(S.numberContent(value))),
+          meta,
+        )
       }),
 
       S.matcher("(cons* 'dq values)", ({ values }, { meta }) => {
-        return Directives.Dq(S.listElements(values).map(S.numberContent), meta)
+        return Directives.Dq(
+          S.listElements(values).map((value) => BigInt(S.numberContent(value))),
+          meta,
+        )
       }),
 
       S.matcher("`(string ,content)", ({ content }, { meta }) => {

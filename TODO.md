@@ -1,9 +1,10 @@
 # define constant
 
-[x-lisp-boot.js] [maybe] should not compile to `(@primitive-function identity 1)`
-[x-lisp-boot.js] `040-SelectInstructionPass` -- `onVariableDefinition` vs `onFunctionDefinition`
-[x-lisp-boot.js] `040-SelectInstructionPass` -- `onVariableDefinition` -- need to encode value by tag
 [x-lisp-boot.js] test define constant -- `(define <name> <body>)`
+
+[x-lisp-boot.js] [maybe] should not compile to `(@primitive-function identity 1)`
+
+- review notes about how to design SSA
 
 # function constant
 
