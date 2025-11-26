@@ -1,11 +1,28 @@
 # define constant
 
-[x-lisp-boot.js] `030-ExplicateControlPass` -- compile `ConstantDefinition` to a variable, a flag and a function
+[x-lisp-boot.js] `030-ExplicateControlPass` -- compile `ConstantDefinition`
 
 ```scheme
+(define <name> <body>)
+=>
 (define-variable <name>)
-(define-variable ©<name>/init-flag)
-(define-function ©<name>/init-function)
+(define-variable ©<name>/init-flag false)
+(define-function ©<name>/get
+  (block guard
+    (= flag (load ©<name>/init-flag))
+    (branch flag cached body))
+  (block cached
+    (= result (load <name>))
+    (return result))
+  (block body
+    (= result (call ©<name>/function))
+    (store <name> result)
+    (= true (const #t))
+    (store ©<name>/init-flag true)
+    (return result)))
+(define-function ©<name>/function
+  (block body
+    (compile <body>)))
 ```
 
 [x-lisp-boot.js] test writing define constant -- `(define <name> <body>)`

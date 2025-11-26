@@ -5,13 +5,13 @@ export function SelectInstructionPass(mod: B.Mod, machineMod: M.Mod): void {
   machineMod.exported = mod.exported
 
   for (const definition of B.modOwnDefinitions(mod)) {
-    for (const machineDefinition of forDefinition(machineMod, definition)) {
+    for (const machineDefinition of onDefinition(machineMod, definition)) {
       machineMod.definitions.set(machineDefinition.name, machineDefinition)
     }
   }
 }
 
-function forDefinition(
+function onDefinition(
   machineMod: M.Mod,
   definition: B.Definition,
 ): Array<M.Definition> {

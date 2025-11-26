@@ -11,7 +11,7 @@ export function ExplicateControlPass(mod: X.Mod, basicMod: B.Mod): void {
   }
 
   for (const definition of X.modOwnDefinitions(mod)) {
-    for (const basicDefinition of forDefinition(basicMod, definition)) {
+    for (const basicDefinition of onDefinition(basicMod, definition)) {
       basicMod.definitions.set(basicDefinition.name, basicDefinition)
     }
   }
@@ -21,39 +21,69 @@ type State = {
   fn: B.FunctionDefinition
 }
 
-function forDefinition(
+function onDefinition(
   basicMod: B.Mod,
   definition: X.Definition,
 ): Array<B.Definition> {
   switch (definition.kind) {
     case "FunctionDefinition": {
-      const fn = B.FunctionDefinition(
-        basicMod,
-        definition.name,
-        new Map(),
-        definition.meta,
-      )
-
-      const initialInstrs = Array.from(
-        definition.parameters
-          .entries()
-          .map(([index, name]) => B.Argument(name, index)),
-      )
-
-      const state = { fn }
-      const block = B.Block("body", initialInstrs)
-      state.fn.blocks.set(block.label, block)
-      block.instrs.push(...inTail(state, definition.body))
-      B.checkBlockTerminator(block)
-      return [fn]
+      return onFunctionDefinition(basicMod, definition)
     }
 
     case "ConstantDefinition": {
-      // TODO
-
-      return []
+      return onConstantDefinition(basicMod, definition)
     }
   }
+}
+
+function onFunctionDefinition(
+  basicMod: B.Mod,
+  definition: X.FunctionDefinition,
+): Array<B.Definition> {
+  const fn = B.FunctionDefinition(
+    basicMod,
+    definition.name,
+    new Map(),
+    definition.meta,
+  )
+
+  const initialInstrs = Array.from(
+    definition.parameters
+      .entries()
+      .map(([index, name]) => B.Argument(name, index)),
+  )
+
+  const state = { fn }
+  const block = B.Block("body", initialInstrs)
+  state.fn.blocks.set(block.label, block)
+  block.instrs.push(...inTail(state, definition.body))
+  B.checkBlockTerminator(block)
+  return [fn]
+}
+
+function onConstantDefinition(
+  basicMod: B.Mod,
+  definition: X.ConstantDefinition,
+): Array<B.Definition> {
+  const variable = B.VariableDefinition(
+    basicMod,
+    definition.name,
+    B.Undefined(),
+    definition.meta,
+  )
+
+  const initFlag = B.VariableDefinition(
+    basicMod,
+    `©${definition.name}/init-flag`,
+    B.Bool(false),
+    definition.meta,
+  )
+
+  return [
+    variable,
+    initFlag,
+    // initFunction,
+  ]
 }
 
 function generateLabel(
