@@ -22,7 +22,13 @@ export function stage1(mod: Mod, stmt: Stmt): void {
 
     mod.definitions.set(
       stmt.name,
-      Definitions.FunctionDefinition(mod, stmt.name, stmt.parameters, stmt.body, stmt.meta),
+      Definitions.FunctionDefinition(
+        mod,
+        stmt.name,
+        stmt.parameters,
+        stmt.body,
+        stmt.meta,
+      ),
     )
   }
 
@@ -47,7 +53,13 @@ export function stage1(mod: Mod, stmt: Stmt): void {
       found.body.sequence.push(exp)
     } else {
       const body = Exps.BeginSugar([exp], stmt.meta)
-      const main = Definitions.FunctionDefinition(mod, "main", [], body, stmt.meta)
+      const main = Definitions.FunctionDefinition(
+        mod,
+        "main",
+        [],
+        body,
+        stmt.meta,
+      )
       mod.definitions.set("main", main)
     }
   }

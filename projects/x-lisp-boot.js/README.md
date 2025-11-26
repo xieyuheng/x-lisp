@@ -14,7 +14,7 @@
 ;;; top level statement
 
 ;; (claim <name> <schema>)
-;; (define <name> <exp>)
+;; (define <name> <body>)
 (define (<name> <parameters>) <body>)
 ;; (define-data <predicate> <constructors>)
 (import <source> <name> ...)

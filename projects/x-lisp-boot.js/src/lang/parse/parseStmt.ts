@@ -23,6 +23,16 @@ const stmtMatcher: S.Matcher<Stmt> = S.matcherChoice<Stmt>([
     },
   ),
 
+  S.matcher("(cons* 'define name body)", ({ name, body }, { sexp }) => {
+    const keyword = S.asTael(sexp).elements[1]
+    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+    return Stmts.DefineConstant(
+      S.symbolContent(name),
+      Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
+      meta,
+    )
+  }),
+
   S.matcher("(cons* 'export names)", ({ names }, { meta }) => {
     return Stmts.Export(S.listElements(names).map(S.symbolContent), meta)
   }),
