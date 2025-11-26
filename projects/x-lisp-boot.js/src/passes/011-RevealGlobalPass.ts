@@ -48,7 +48,12 @@ function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const arity = definition.parameters.length
-      return X.Function(variable.name, arity, { isPrimitive: false }, variable.meta)
+      return X.Function(
+        variable.name,
+        arity,
+        { isPrimitive: false },
+        variable.meta,
+      )
     }
 
     case "ConstantDefinition": {

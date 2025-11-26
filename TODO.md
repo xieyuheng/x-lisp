@@ -1,6 +1,5 @@
 # define constant
 
-[x-lisp-boot.js] `030-ExplicateControlPass` -- compile `Constant` load call getter
 [x-lisp-boot.js] test define constant -- `(define <name> <body>)`
 
 # function constant

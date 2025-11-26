@@ -244,6 +244,11 @@ function inLet1(
       return [B.Const(name, expToValue(rhs)), ...cont]
     }
 
+    case "Constant": {
+      const getter = B.Function(`©${rhs.name}/get`, 0, { isPrimitive: false })
+      return [B.Call(name, getter, []), ...cont]
+    }
+
     case "Var": {
       return [
         B.Call(name, B.Function("identity", 1, { isPrimitive: true }), [
