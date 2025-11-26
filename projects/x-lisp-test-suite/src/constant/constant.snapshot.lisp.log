@@ -88,12 +88,12 @@
   (block init
     (= result (call (@function _one/function 0)))
     (store one result)
-    (= true (const #t))
+    (= true (literal #t))
     (store _one/flag true)
     (return result)))
 
 (define-function _one/function
-  (block body (= _↩ (const 1)) (return _↩)))
+  (block body (= _↩ (literal 1)) (return _↩)))
 
 (define-variable two)
 
@@ -107,14 +107,14 @@
   (block init
     (= result (call (@function _two/function 0)))
     (store two result)
-    (= true (const #t))
+    (= true (literal #t))
     (store _two/flag true)
     (return result)))
 
 (define-function _two/function
   (block body
-    (= _₁ (const (@primitive-function iadd 2)))
-    (= _₂ (const 1))
+    (= _₁ (literal (@primitive-function iadd 2)))
+    (= _₂ (literal 1))
     (= _₃ (apply _₁ _₂))
     (= _₄ (call (@function _one/get 0)))
     (= _↩ (apply _₃ _₄))
@@ -132,14 +132,14 @@
   (block init
     (= result (call (@function _three/function 0)))
     (store three result)
-    (= true (const #t))
+    (= true (literal #t))
     (store _three/flag true)
     (return result)))
 
 (define-function _three/function
   (block body
-    (= _₁ (const (@primitive-function iadd 2)))
-    (= _₂ (const 1))
+    (= _₁ (literal (@primitive-function iadd 2)))
+    (= _₂ (literal 1))
     (= _₃ (apply _₁ _₂))
     (= _₄ (call (@function _two/get 0)))
     (= _↩ (apply _₃ _₄))
@@ -147,7 +147,7 @@
 
 (define-function main
   (block body
-    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₂ (call (@function _three/get 0)))
     (= _↩ (apply _₁ _₂))
     (return _↩)))

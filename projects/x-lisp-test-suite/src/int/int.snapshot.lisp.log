@@ -48,16 +48,16 @@
 (define-function square
   (block body
     (= x (argument 0))
-    (= _₁ (const (@primitive-function imul 2)))
+    (= _₁ (literal (@primitive-function imul 2)))
     (= _₂ (apply _₁ x))
     (= _↩ (apply _₂ x))
     (return _↩)))
 
 (define-function main
   (block body
-    (= _₁ (const (@primitive-function println-non-void 1)))
-    (= _₂ (const (@function square 1)))
-    (= _₃ (const 3))
+    (= _₁ (literal (@primitive-function println-non-void 1)))
+    (= _₂ (literal (@function square 1)))
+    (= _₃ (literal 3))
     (= _₄ (apply _₂ _₃))
     (= _↩ (apply _₁ _₄))
     (return _↩)))

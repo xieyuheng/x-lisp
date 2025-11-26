@@ -7,8 +7,8 @@
   (block entry
     (= m (argument 0))
     (= n (argument 1))
-    (= zero (const 0))
-    (= one (const 1))
+    (= zero (literal 0))
+    (= one (literal 1))
     (= cond-m (call (@primitive-function equal? 2) m zero))
     (branch cond-m m-zero m-nonzero))
 

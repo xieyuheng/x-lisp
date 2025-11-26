@@ -7,8 +7,8 @@ export function formatInstr(instr: Instr): string {
       return `(= ${instr.dest} (argument ${instr.index}))`
     }
 
-    case "Const": {
-      return `(= ${instr.dest} (const ${formatValue(instr.value)}))`
+    case "Literal": {
+      return `(= ${instr.dest} (literal ${formatValue(instr.value)}))`
     }
 
     case "Assert": {

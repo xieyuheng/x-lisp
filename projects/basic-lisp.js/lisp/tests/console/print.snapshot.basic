@@ -1,32 +1,32 @@
 (define-function main
   (block entry
     ;; bool
-    (= _ (const #t))
+    (= _ (literal #t))
     (call (@primitive-function print 1) _)
     (call (@primitive-function newline 0))
-    (= _ (const #f))
+    (= _ (literal #f))
     (call (@primitive-function print 1) _)
     (call (@primitive-function newline 0))
 
     ;; int
-    (= _ (const 0))
+    (= _ (literal 0))
     (call (@primitive-function print 1) _)
     (call (@primitive-function newline 0))
-    (= _ (const 1))
+    (= _ (literal 1))
     (call (@primitive-function print 1) _)
     (call (@primitive-function newline 0))
-    (= _ (const -1))
+    (= _ (literal -1))
     (call (@primitive-function print 1) _)
     (call (@primitive-function newline 0))
 
     ;; float
-    (= _ (const 0.0))
+    (= _ (literal 0.0))
     (call (@primitive-function print 1) _)
     (call (@primitive-function newline 0))
-    (= _ (const 1.0))
+    (= _ (literal 1.0))
     (call (@primitive-function print 1) _)
     (call (@primitive-function newline 0))
-    (= _ (const -1.0))
+    (= _ (literal -1.0))
     (call (@primitive-function print 1) _)
     (call (@primitive-function newline 0))
     (return)))

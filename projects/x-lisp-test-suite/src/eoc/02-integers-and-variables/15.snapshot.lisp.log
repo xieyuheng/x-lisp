@@ -48,15 +48,15 @@
 
 (define-function main
   (block body
-    (= _₁ (const (@primitive-function println-non-void 1)))
-    (= x₂ (const 4))
-    (= _₂ (const (@primitive-function iadd 2)))
+    (= _₁ (literal (@primitive-function println-non-void 1)))
+    (= x₂ (literal 4))
+    (= _₂ (literal (@primitive-function iadd 2)))
     (= _₃ (apply _₂ x₂))
-    (= _₄ (const 1))
+    (= _₄ (literal 1))
     (= x₁ (apply _₃ _₄))
-    (= _₅ (const (@primitive-function iadd 2)))
+    (= _₅ (literal (@primitive-function iadd 2)))
     (= _₆ (apply _₅ x₁))
-    (= _₇ (const 2))
+    (= _₇ (literal 2))
     (= _₈ (apply _₆ _₇))
     (= _↩ (apply _₁ _₈))
     (return _↩)))

@@ -44,12 +44,12 @@
 
 (define-function main
   (block body
-    (= _₁ (const (@primitive-function println-non-void 1)))
-    (= _₂ (const (@primitive-function iadd 2)))
-    (= _₃ (const (@primitive-function random-dice 0)))
+    (= _₁ (literal (@primitive-function println-non-void 1)))
+    (= _₂ (literal (@primitive-function iadd 2)))
+    (= _₃ (literal (@primitive-function random-dice 0)))
     (= _₄ (apply-nullary _₃))
     (= _₅ (apply _₂ _₄))
-    (= _₆ (const (@primitive-function random-dice 0)))
+    (= _₆ (literal (@primitive-function random-dice 0)))
     (= _₇ (apply-nullary _₆))
     (= _₈ (apply _₅ _₇))
     (= _↩ (apply _₁ _₈))

@@ -2,10 +2,10 @@
 
 (define-function main
   (block body
-    (= _₁ (const (@primitive-function println-non-void 1)))
-    (= _₂ (const (@function §₁/square 1)))
-    (= _₃ (const (@function §₁/square 1)))
-    (= _₄ (const 3))
+    (= _₁ (literal (@primitive-function println-non-void 1)))
+    (= _₂ (literal (@function §₁/square 1)))
+    (= _₃ (literal (@function §₁/square 1)))
+    (= _₄ (literal 3))
     (= _₅ (apply _₃ _₄))
     (= _₆ (apply _₂ _₅))
     (= _↩ (apply _₁ _₆))
@@ -14,7 +14,7 @@
 (define-function §₁/square
   (block body
     (= x (argument 0))
-    (= _₁ (const (@primitive-function imul 2)))
+    (= _₁ (literal (@primitive-function imul 2)))
     (= _₂ (apply _₁ x))
     (= _↩ (apply _₂ x))
     (return _↩)))

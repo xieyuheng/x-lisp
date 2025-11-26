@@ -1,7 +1,7 @@
 (define-function main
   (block entry
-    (= one (const 1))
-    (= zero (const 0))
+    (= one (literal 1))
+    (= zero (literal 0))
     (= x (call (@primitive-function zero? 1) one))
     (= x.1 (call (@primitive-function not 1) x))
     (assert x.1)
@@ -12,14 +12,14 @@
 (define-function zero?
   (block entry
     (= x (argument 0))
-    (= zero (const 0))
+    (= zero (literal 0))
     (= b (call (@primitive-function equal? 2) x zero))
     (branch b then else))
 
   (block then
-    (= true (const #t))
+    (= true (literal #t))
     (return true))
 
   (block else
-    (= false (const #f))
+    (= false (literal #f))
     (return false)))

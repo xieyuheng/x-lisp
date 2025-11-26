@@ -27,7 +27,7 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       return null
     }
 
-    case "Const": {
+    case "Literal": {
       frame.env.set(instr.dest, instr.value)
       return null
     }

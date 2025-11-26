@@ -2,24 +2,30 @@
 
 (define-function main
   (block body
-    (= _₁ (const (@primitive-function println-non-void 1)))
-    (= _₄ (const (@primitive-function equal? 2)))
-    (= _₅ (const (@primitive-function random-dice 0)))
+    (= _₁ (literal (@primitive-function println-non-void 1)))
+    (= _₄ (literal (@primitive-function equal? 2)))
+    (= _₅ (literal (@primitive-function random-dice 0)))
     (= _₆ (apply-nullary _₅))
     (= _₇ (apply _₄ _₆))
-    (= _₈ (const 1))
+    (= _₈ (literal 1))
     (= _₉ (apply _₇ _₈))
     (branch _₉ main/then₅ main/else₆))
   (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
-  (block main/then₂ (= _₂ (const 0)) (goto main/let-body₁))
-  (block main/else₃ (= _₂ (const 42)) (goto main/let-body₁))
+  (block main/then₂
+    (= _₂ (literal 0))
+    (goto main/let-body₁))
+  (block main/else₃
+    (= _₂ (literal 42))
+    (goto main/let-body₁))
   (block main/let-body₄ (branch _₃ main/then₂ main/else₃))
   (block main/then₅
-    (= _₁₀ (const (@primitive-function equal? 2)))
-    (= _₁₁ (const (@primitive-function random-dice 0)))
+    (= _₁₀ (literal (@primitive-function equal? 2)))
+    (= _₁₁ (literal (@primitive-function random-dice 0)))
     (= _₁₂ (apply-nullary _₁₁))
     (= _₁₃ (apply _₁₀ _₁₂))
-    (= _₁₄ (const 2))
+    (= _₁₄ (literal 2))
     (= _₃ (apply _₁₃ _₁₄))
     (goto main/let-body₄))
-  (block main/else₆ (= _₃ (const #f)) (goto main/let-body₄)))
+  (block main/else₆
+    (= _₃ (literal #f))
+    (goto main/let-body₄)))

@@ -35,8 +35,8 @@
 
 (define-function main
   (block body
-    (= _₁ (const (@primitive-function println-non-void 1)))
-    (= a₁ (const 42))
+    (= _₁ (literal (@primitive-function println-non-void 1)))
+    (= a₁ (literal 42))
     (= b₁ (call (@primitive-function identity 1) a₁))
     (= _↩ (apply _₁ b₁))
     (return _↩)))

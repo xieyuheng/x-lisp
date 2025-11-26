@@ -1,5 +1,5 @@
 (define-function main
   (block entry
-    (= true (const #t))
+    (= true (literal #t))
     (assert true)
     (return)))

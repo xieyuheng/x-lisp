@@ -126,7 +126,7 @@ function onConstantDefinition(
               [],
             ),
             B.Store(definition.name, "result"),
-            B.Const("true", B.Bool(true)),
+            B.Literal("true", B.Bool(true)),
             B.Store(`_${definition.name}/flag`, "true"),
             B.Return("result"),
           ]),
@@ -199,7 +199,7 @@ function inTail(state: State, exp: X.Exp): Array<B.Instr> {
     case "Int":
     case "Float": {
       const name = "_↩"
-      return [B.Const(name, expToValue(exp)), B.Return(name)]
+      return [B.Literal(name, expToValue(exp)), B.Return(name)]
     }
 
     case "Apply": {
@@ -250,7 +250,7 @@ function inLet1(
     case "Int":
     case "Float":
     case "Function": {
-      return [B.Const(name, expToValue(rhs)), ...cont]
+      return [B.Literal(name, expToValue(rhs)), ...cont]
     }
 
     case "Constant": {

@@ -1,11 +1,11 @@
 (define-function main
   (block entry
-    (= one (const 1))
-    (= iadd-fn (const (@function iadd 2)))
+    (= one (literal 1))
+    (= iadd-fn (literal (@function iadd 2)))
     (= iadd1 (apply iadd-fn one))
-    (= x (const 5))
+    (= x (literal 5))
     (= result (apply iadd1 x))
-    (= expected (const 6))
+    (= expected (literal 6))
     (= ok (call (@primitive-function equal? 2) result expected))
     (assert ok)
     (return)))

@@ -86,8 +86,8 @@ function onInstr(instr: B.Instr): Array<M.Instr> {
       return [M.Instr("movq", [selectArgReg(instr.index), M.Var(instr.dest)])]
     }
 
-    case "Const": {
-      return selectConst(instr.dest, instr.value)
+    case "Literal": {
+      return selectLiteral(instr.dest, instr.value)
     }
 
     case "Assert": {
@@ -174,7 +174,7 @@ function selectCall(
   ]
 }
 
-function selectConst(dest: string, value: B.Value): Array<M.Instr> {
+function selectLiteral(dest: string, value: B.Value): Array<M.Instr> {
   if (B.isBool(value)) {
     if (B.isTrue(value)) {
       return [

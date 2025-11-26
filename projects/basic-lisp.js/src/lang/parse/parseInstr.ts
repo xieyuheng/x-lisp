@@ -15,8 +15,8 @@ export function parseInstr(sexp: S.Sexp): Instr {
         )
       }),
 
-      S.matcher("`(= ,dest (const ,value))", ({ dest, value }, { meta }) => {
-        return Instrs.Const(S.symbolContent(dest), parseValue(value), meta)
+      S.matcher("`(= ,dest (literal ,value))", ({ dest, value }, { meta }) => {
+        return Instrs.Literal(S.symbolContent(dest), parseValue(value), meta)
       }),
 
       S.matcher("`(assert ,ok)", ({ ok }, { meta }) => {

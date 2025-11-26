@@ -3,7 +3,7 @@ import { Function, type Value } from "../value/index.ts"
 
 export type Instr =
   | Argument
-  | Const
+  | Literal
   | Assert
   | Return
   | Goto
@@ -30,16 +30,16 @@ export function Argument(dest: string, index: number, meta?: Meta): Argument {
   }
 }
 
-export type Const = {
-  op: "Const"
+export type Literal = {
+  op: "Literal"
   dest: string
   value: Value
   meta?: Meta
 }
 
-export function Const(dest: string, value: Value, meta?: Meta): Const {
+export function Literal(dest: string, value: Value, meta?: Meta): Literal {
   return {
-    op: "Const",
+    op: "Literal",
     dest,
     value,
     meta,

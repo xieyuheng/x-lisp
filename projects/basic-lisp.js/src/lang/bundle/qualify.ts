@@ -54,8 +54,8 @@ export function qualifyBlock(context: BundleContext, block: Block): Block {
 
 function qualifyInstr(context: BundleContext, instr: Instr): Instr {
   switch (instr.op) {
-    case "Const": {
-      return Instrs.Const(
+    case "Literal": {
+      return Instrs.Literal(
         instr.dest,
         qualifyValue(context, instr.value),
         instr.meta,

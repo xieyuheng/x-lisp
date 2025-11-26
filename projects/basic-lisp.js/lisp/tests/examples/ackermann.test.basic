@@ -2,10 +2,10 @@
 
 (define-function main
   (block entry
-    (= x (const 3))
-    (= y (const 6))
+    (= x (literal 3))
+    (= y (literal 6))
     (= result (call (@function ackermann 2) x y))
-    (= expected (const 509))
+    (= expected (literal 509))
     (= ok (call (@primitive-function equal? 2) result expected))
     (assert ok)
     (return)))

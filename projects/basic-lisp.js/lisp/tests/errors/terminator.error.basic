@@ -1,5 +1,5 @@
 (define-function main
   (block entry
-    (= one (const 1))
-    (= two (const 2))
+    (= one (literal 1))
+    (= two (literal 2))
     (= x (call (@primitive-function iadd 2) one two))))

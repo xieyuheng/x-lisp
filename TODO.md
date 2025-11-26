@@ -1,4 +1,4 @@
-# later
+[basic-lisp.js] add `Identity` `Instr`
 
 [x-lisp-boot.js] [maybe] should not compile to `(@primitive-function identity 1)`
 

@@ -1,8 +1,8 @@
 (define-function main
   (block entry
-    (= n (const 6))
+    (= n (literal 6))
     (= x (call (@function sum-of-cubes 1) n))
-    (= expected (const 441))
+    (= expected (literal 441))
     (= ok (call (@primitive-function equal? 2) expected x))
     (assert ok)
     (return)))
@@ -10,8 +10,8 @@
 (define-function sum-of-cubes
   (block entry
     (= n (argument 0))
-    (= v0 (const 1))
-    (= v1 (const 2))
+    (= v0 (literal 1))
+    (= v1 (literal 2))
     (= v2 (call (@primitive-function identity 1) n))
     (= v3 (call (@primitive-function iadd 2) v0 v2)) ; n + 1
     (= v4 (call (@primitive-function imul 2) v2 v3)) ; n(n+1)

@@ -2,15 +2,15 @@
 
 (define-function main
   (block body
-    (= _₁ (const (@primitive-function println-non-void 1)))
-    (= _₂ (const (@primitive-function iadd 2)))
-    (= _₃ (const 1))
+    (= _₁ (literal (@primitive-function println-non-void 1)))
+    (= _₂ (literal (@primitive-function iadd 2)))
+    (= _₃ (literal 1))
     (= _₄ (apply _₂ _₃))
-    (= _₅ (const (@primitive-function iadd 2)))
-    (= _₆ (const (@primitive-function random-dice 0)))
+    (= _₅ (literal (@primitive-function iadd 2)))
+    (= _₆ (literal (@primitive-function random-dice 0)))
     (= _₇ (apply-nullary _₆))
     (= _₈ (apply _₅ _₇))
-    (= _₉ (const 1))
+    (= _₉ (literal 1))
     (= _₁₀ (apply _₈ _₉))
     (= _₁₁ (apply _₄ _₁₀))
     (= _↩ (apply _₁ _₁₁))

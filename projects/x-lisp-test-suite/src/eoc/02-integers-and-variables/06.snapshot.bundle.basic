@@ -2,9 +2,9 @@
 
 (define-function main
   (block body
-    (= _₁ (const (@primitive-function println-non-void 1)))
-    (= _₂ (const (@primitive-function ineg 1)))
-    (= _₃ (const (@primitive-function random-dice 0)))
+    (= _₁ (literal (@primitive-function println-non-void 1)))
+    (= _₂ (literal (@primitive-function ineg 1)))
+    (= _₃ (literal (@primitive-function random-dice 0)))
     (= _₄ (apply-nullary _₃))
     (= _₅ (apply _₂ _₄))
     (= _↩ (apply _₁ _₅))

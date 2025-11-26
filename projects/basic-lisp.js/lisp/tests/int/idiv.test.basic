@@ -1,9 +1,9 @@
 (define-function main
   (block entry
-    (= v0 (const 9))
-    (= v1 (const -20))
+    (= v0 (literal 9))
+    (= v1 (literal -20))
     (= res (call (@primitive-function idiv 2) v0 v1))
-    (= expected (const 0))
+    (= expected (literal 0))
     (= ok (call (@primitive-function equal? 2) res expected))
     (assert ok)
     (return)))

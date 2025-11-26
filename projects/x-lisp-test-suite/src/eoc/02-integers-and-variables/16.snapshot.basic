@@ -1,10 +1,10 @@
 (define-function main
   (block body
-    (= _₁ (const (@primitive-function println-non-void 1)))
-    (= _₂ (const (@primitive-function isub 2)))
-    (= _₃ (const 50))
+    (= _₁ (literal (@primitive-function println-non-void 1)))
+    (= _₂ (literal (@primitive-function isub 2)))
+    (= _₃ (literal 50))
     (= _₄ (apply _₂ _₃))
-    (= _₅ (const 8))
+    (= _₅ (literal 8))
     (= _₆ (apply _₄ _₅))
     (= _↩ (apply _₁ _₆))
     (return _↩)))

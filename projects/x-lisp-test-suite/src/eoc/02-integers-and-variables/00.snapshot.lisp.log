@@ -30,8 +30,8 @@
 
 (define-function main
   (block body
-    (= _₁ (const (@primitive-function println-non-void 1)))
-    (= _₂ (const 42))
+    (= _₁ (literal (@primitive-function println-non-void 1)))
+    (= _₂ (literal 42))
     (= _↩ (apply _₁ _₂))
     (return _↩)))
 
