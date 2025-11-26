@@ -42,18 +42,18 @@ function onExp(state: State, exp: X.Exp): X.Exp {
     case "Float":
     case "Function":
     case "Constant": {
-      const [entries, newExp] = forAtom(state, exp)
+      const [entries, newExp] = forVar(state, exp)
       return prependLets(entries, newExp)
     }
 
     case "ApplyNullary": {
-      const [targetEntries, newTarget] = forAtom(state, exp.target)
+      const [targetEntries, newTarget] = forVar(state, exp.target)
       return prependLets(targetEntries, X.ApplyNullary(newTarget, exp.meta))
     }
 
     case "Apply": {
-      const [targetEntries, newTarget] = forAtom(state, exp.target)
-      const [argEntries, newArg] = forAtom(state, exp.arg)
+      const [targetEntries, newTarget] = forVar(state, exp.target)
+      const [argEntries, newArg] = forVar(state, exp.arg)
       return prependLets(
         [...targetEntries, ...argEntries],
         X.Apply(newTarget, newArg, exp.meta),
@@ -61,7 +61,7 @@ function onExp(state: State, exp: X.Exp): X.Exp {
     }
 
     case "If": {
-      const [conditionEntries, newCondition] = forAtom(state, exp.condition)
+      const [conditionEntries, newCondition] = forVar(state, exp.condition)
       return prependLets(
         conditionEntries,
         X.If(
@@ -102,7 +102,7 @@ function prependLets(entries: Array<Entry>, exp: X.Exp): X.Exp {
 
 type Entry = [string, X.Exp]
 
-function forAtom(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
+function forVar(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
   switch (exp.kind) {
     case "Var": {
       return [[], exp]
@@ -114,23 +114,22 @@ function forAtom(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
     case "Int":
     case "Float":
     case "Function":
-    case "Constant":
-    case "If": {
+    case "Constant": {
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, exp]
       return [[entry], X.Var(freshName, exp.meta)]
     }
 
     case "ApplyNullary": {
-      const [targetEntries, newTarget] = forAtom(state, exp.target)
+      const [targetEntries, newTarget] = forVar(state, exp.target)
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, X.ApplyNullary(newTarget, exp.meta)]
       return [[...targetEntries, entry], X.Var(freshName, exp.meta)]
     }
 
     case "Apply": {
-      const [targetEntries, newTarget] = forAtom(state, exp.target)
-      const [argEntries, newArg] = forAtom(state, exp.arg)
+      const [targetEntries, newTarget] = forVar(state, exp.target)
+      const [argEntries, newArg] = forVar(state, exp.arg)
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, X.Apply(newTarget, newArg, exp.meta)]
       return [
@@ -141,8 +140,14 @@ function forAtom(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
 
     case "Let1": {
       const rhsEntry: Entry = [exp.name, onExp(state, exp.rhs)]
-      const [bodyEntries, newBody] = forAtom(state, exp.body)
+      const [bodyEntries, newBody] = forVar(state, exp.body)
       return [[rhsEntry, ...bodyEntries], newBody]
+    }
+
+    case "If": {
+      const freshName = generateFreshName(state)
+      const entry: Entry = [freshName, onExp(state, exp)]
+      return [[entry], X.Var(freshName, exp.meta)]
     }
 
     default: {

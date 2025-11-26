@@ -11,7 +11,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 88) (reg rsp))
+    (subq (imm 104) (reg rsp))
     (jmp (label body)))
   (block body
     (leaq
@@ -35,13 +35,19 @@
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (jmp (label epilog)))
   (block main/then₂
-    (movq (imm 8) (reg-deref (reg rbp) -80))
+    (movq (imm 8) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rdi))
+    (callq-n (external-label x-identity) (arity 1))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
     (jmp (label main/let-body₁)))
   (block main/else₃
-    (movq (imm 16) (reg-deref (reg rbp) -80))
+    (movq (imm 16) (reg-deref (reg rbp) -104))
+    (movq (reg-deref (reg rbp) -104) (reg rdi))
+    (callq-n (external-label x-identity) (arity 1))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
     (jmp (label main/let-body₁)))
   (block epilog
-    (addq (imm 88) (reg rsp))
+    (addq (imm 104) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))

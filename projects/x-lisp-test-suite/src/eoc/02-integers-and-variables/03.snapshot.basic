@@ -1,10 +1,12 @@
 (define-function main
   (block body
     (= _₁ (const (@primitive-function println-non-void 1)))
-    (= x₁ (const 20))
-    (= z₁ (const 22))
-    (= _₂ (const (@primitive-function iadd 2)))
-    (= _₃ (apply _₂ x₁))
-    (= y₁ (apply _₃ z₁))
+    (= _₂ (const 20))
+    (= x₁ (call (@primitive-function identity 1) _₂))
+    (= _₃ (const 22))
+    (= z₁ (call (@primitive-function identity 1) _₃))
+    (= _₄ (const (@primitive-function iadd 2)))
+    (= _₅ (apply _₄ x₁))
+    (= y₁ (apply _₅ z₁))
     (= _↩ (apply _₁ y₁))
     (return _↩)))

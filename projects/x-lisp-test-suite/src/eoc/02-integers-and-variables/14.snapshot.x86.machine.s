@@ -14,7 +14,7 @@ _main.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $112, %rsp
+        subq $128, %rsp
         jmp _main.body
 _main.body:
         leaq x_println_non_void(%rip), %rdi
@@ -24,29 +24,35 @@ _main.body:
         callq x_make_curry
         movq %rax, -64(%rbp)
         movq $256, -72(%rbp)
+        movq -72(%rbp), %rdi
+        callq x_identity
+        movq %rax, -80(%rbp)
         leaq x_iadd(%rip), %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
-        movq %rax, -80(%rbp)
-        movq $80, -88(%rbp)
-        movq -80(%rbp), %rdi
-        movq -88(%rbp), %rsi
-        callq x_apply_unary
-        movq %rax, -96(%rbp)
+        movq %rax, -88(%rbp)
+        movq $80, -96(%rbp)
         movq -96(%rbp), %rdi
-        movq -72(%rbp), %rsi
-        callq x_apply_unary
+        callq x_identity
         movq %rax, -104(%rbp)
-        movq -64(%rbp), %rdi
+        movq -88(%rbp), %rdi
         movq -104(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -112(%rbp)
-        movq -112(%rbp), %rax
+        movq -112(%rbp), %rdi
+        movq -80(%rbp), %rsi
+        callq x_apply_unary
+        movq %rax, -120(%rbp)
+        movq -64(%rbp), %rdi
+        movq -120(%rbp), %rsi
+        callq x_apply_unary
+        movq %rax, -128(%rbp)
+        movq -128(%rbp), %rax
         jmp _main.epilog
 _main.epilog:
-        addq $112, %rsp
+        addq $128, %rsp
         popq %r15
         popq %r14
         popq %r13

@@ -24,7 +24,10 @@
 
 (define (main)
   (@let1 _₁ (@primitive-function println-non-void 1)
-    (@let1 _₂ (@let1 _₃ #t (if _₃ 1 2)) (_₁ _₂))))
+    (@let1 _₂
+        (@let1 _₃ #t
+          (if _₃ (@let1 _₄ 1 _₄) (@let1 _₅ 2 _₅)))
+      (_₁ _₂))))
 
 ;;; ExplicateControlPass
 
@@ -34,8 +37,14 @@
     (= _₃ (const #t))
     (branch _₃ main/then₂ main/else₃))
   (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
-  (block main/then₂ (= _₂ (const 1)) (goto main/let-body₁))
-  (block main/else₃ (= _₂ (const 2)) (goto main/let-body₁)))
+  (block main/then₂
+    (= _₄ (const 1))
+    (= _₂ (call (@primitive-function identity 1) _₄))
+    (goto main/let-body₁))
+  (block main/else₃
+    (= _₅ (const 2))
+    (= _₂ (call (@primitive-function identity 1) _₅))
+    (goto main/let-body₁)))
 
 ;;; SelectInstructionPass
 
@@ -63,10 +72,16 @@
     (movq (var _↩) (reg rax))
     (retq))
   (block main/then₂
-    (movq (imm 8) (var _₂))
+    (movq (imm 8) (var _₄))
+    (movq (var _₄) (reg rdi))
+    (callq-n (external-label x-identity) (arity 1))
+    (movq (reg rax) (var _₂))
     (jmp (label main/let-body₁)))
   (block main/else₃
-    (movq (imm 16) (var _₂))
+    (movq (imm 16) (var _₅))
+    (movq (var _₅) (reg rdi))
+    (callq-n (external-label x-identity) (arity 1))
+    (movq (reg rax) (var _₂))
     (jmp (label main/let-body₁))))
 
 ;;; AssignHomePass
@@ -97,10 +112,16 @@
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (retq))
   (block main/then₂
-    (movq (imm 8) (reg-deref (reg rbp) -80))
+    (movq (imm 8) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rdi))
+    (callq-n (external-label x-identity) (arity 1))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
     (jmp (label main/let-body₁)))
   (block main/else₃
-    (movq (imm 16) (reg-deref (reg rbp) -80))
+    (movq (imm 16) (reg-deref (reg rbp) -104))
+    (movq (reg-deref (reg rbp) -104) (reg rdi))
+    (callq-n (external-label x-identity) (arity 1))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
     (jmp (label main/let-body₁))))
 
 ;;; PatchInstructionPass
@@ -130,10 +151,16 @@
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (retq))
   (block main/then₂
-    (movq (imm 8) (reg-deref (reg rbp) -80))
+    (movq (imm 8) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rdi))
+    (callq-n (external-label x-identity) (arity 1))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
     (jmp (label main/let-body₁)))
   (block main/else₃
-    (movq (imm 16) (reg-deref (reg rbp) -80))
+    (movq (imm 16) (reg-deref (reg rbp) -104))
+    (movq (reg-deref (reg rbp) -104) (reg rdi))
+    (callq-n (external-label x-identity) (arity 1))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
     (jmp (label main/let-body₁))))
 
 ;;; PrologAndEpilogPass
@@ -151,7 +178,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 88) (reg rsp))
+    (subq (imm 104) (reg rsp))
     (jmp (label body)))
   (block body
     (leaq
@@ -175,13 +202,19 @@
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (jmp (label epilog)))
   (block main/then₂
-    (movq (imm 8) (reg-deref (reg rbp) -80))
+    (movq (imm 8) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rdi))
+    (callq-n (external-label x-identity) (arity 1))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
     (jmp (label main/let-body₁)))
   (block main/else₃
-    (movq (imm 16) (reg-deref (reg rbp) -80))
+    (movq (imm 16) (reg-deref (reg rbp) -104))
+    (movq (reg-deref (reg rbp) -104) (reg rdi))
+    (callq-n (external-label x-identity) (arity 1))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
     (jmp (label main/let-body₁)))
   (block epilog
-    (addq (imm 88) (reg rsp))
+    (addq (imm 104) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))

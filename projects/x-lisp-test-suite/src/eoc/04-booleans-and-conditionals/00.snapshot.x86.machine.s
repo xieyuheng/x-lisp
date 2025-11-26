@@ -14,7 +14,7 @@ _main.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $88, %rsp
+        subq $104, %rsp
         jmp _main.body
 _main.body:
         leaq x_println_non_void(%rip), %rdi
@@ -37,13 +37,19 @@ _main.main.let_body₁:
         movq -88(%rbp), %rax
         jmp _main.epilog
 _main.main.then₂:
-        movq $8, -80(%rbp)
+        movq $8, -96(%rbp)
+        movq -96(%rbp), %rdi
+        callq x_identity
+        movq %rax, -80(%rbp)
         jmp _main.main.let_body₁
 _main.main.else₃:
-        movq $16, -80(%rbp)
+        movq $16, -104(%rbp)
+        movq -104(%rbp), %rdi
+        callq x_identity
+        movq %rax, -80(%rbp)
         jmp _main.main.let_body₁
 _main.epilog:
-        addq $88, %rsp
+        addq $104, %rsp
         popq %r15
         popq %r14
         popq %r13

@@ -1,5 +1,6 @@
 import * as B from "@xieyuheng/basic-lisp.js"
 import * as M from "@xieyuheng/machine-lisp.js"
+import * as R from "../runtime/index.ts"
 
 export function SelectInstructionPass(mod: B.Mod, machineMod: M.Mod): void {
   machineMod.exported = mod.exported
@@ -190,7 +191,7 @@ function selectConst(dest: string, value: B.Value): Array<M.Instr> {
 
   switch (value.kind) {
     case "Int": {
-      return [M.Instr("movq", [M.Imm(M.encodeInt(value.content)), M.Var(dest)])]
+      return [M.Instr("movq", [M.Imm(R.encodeInt(value.content)), M.Var(dest)])]
     }
 
     case "Function": {
@@ -206,8 +207,8 @@ function selectConst(dest: string, value: B.Value): Array<M.Instr> {
   }
 }
 
-function selectTagEncoding(operand: M.Operand, tag: M.Tag): Array<M.Instr> {
-  if (tag === M.AddressTag || tag === M.ObjectTag) {
+function selectTagEncoding(operand: M.Operand, tag: R.Tag): Array<M.Instr> {
+  if (tag === R.AddressTag || tag === R.ObjectTag) {
     return [M.Instr("orq", [M.Imm(tag), operand])]
   } else {
     return [
@@ -220,9 +221,9 @@ function selectTagEncoding(operand: M.Operand, tag: M.Tag): Array<M.Instr> {
 function selectConstFunction(dest: string, fn: B.Function): Array<M.Instr> {
   return [
     M.Instr("leaq", [M.LabelDeref(selectFunctionLabel(fn)), selectArgReg(0)]),
-    ...selectTagEncoding(selectArgReg(0), M.AddressTag),
-    M.Instr("movq", [M.Imm(M.encodeInt(fn.arity)), selectArgReg(1)]),
-    M.Instr("movq", [M.Imm(M.encodeInt(0)), selectArgReg(2)]),
+    ...selectTagEncoding(selectArgReg(0), R.AddressTag),
+    M.Instr("movq", [M.Imm(R.encodeInt(fn.arity)), selectArgReg(1)]),
+    M.Instr("movq", [M.Imm(R.encodeInt(0)), selectArgReg(2)]),
     M.Instr("callq-n", [
       M.Label("x-make-curry", { isExternal: true }),
       M.Arity(3),
