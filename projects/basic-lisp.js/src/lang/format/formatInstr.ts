@@ -11,6 +11,10 @@ export function formatInstr(instr: Instr): string {
       return `(= ${instr.dest} (literal ${formatValue(instr.value)}))`
     }
 
+    case "Identity": {
+      return `(= ${instr.dest} (identity ${instr.source}))`
+    }
+
     case "Assert": {
       return `(assert ${instr.condition})`
     }

@@ -4,6 +4,7 @@ import { Function, type Value } from "../value/index.ts"
 export type Instr =
   | Argument
   | Literal
+  | Identity
   | Assert
   | Return
   | Goto
@@ -42,6 +43,22 @@ export function Literal(dest: string, value: Value, meta?: Meta): Literal {
     op: "Literal",
     dest,
     value,
+    meta,
+  }
+}
+
+export type Identity = {
+  op: "Identity"
+  dest: string
+  source: string
+  meta?: Meta
+}
+
+export function Identity(dest: string, source: string, meta?: Meta): Identity {
+  return {
+    op: "Identity",
+    dest,
+    source,
     meta,
   }
 }

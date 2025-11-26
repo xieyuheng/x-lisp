@@ -32,6 +32,12 @@ export function execute(context: Context, frame: Frame, instr: Instr): null {
       return null
     }
 
+    case "Identity": {
+      const value = frameLookup(frame, instr.source)
+      frame.env.set(instr.dest, value)
+      return null
+    }
+
     case "Assert": {
       const value = frameLookup(frame, instr.condition)
       if (!Values.isBool(value)) {

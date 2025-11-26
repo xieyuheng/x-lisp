@@ -1,8 +1,4 @@
-[basic-lisp.js] add `Identity` `Instr`
-
-[x-lisp-boot.js] [maybe] should not compile to `(@primitive-function identity 1)`
-
-- review notes about how to design SSA
+[x-lisp-boot.js] compile to `Identity` instead of `(@primitive-function identity 1)`
 
 # function constant
 
