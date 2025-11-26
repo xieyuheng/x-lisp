@@ -18,6 +18,11 @@ function onDefinition(mod: X.Mod, definition: X.Definition): null {
       )
       return null
     }
+
+    case "ConstantDefinition": {
+      definition.body = onExp(mod, new Set(), definition.body)
+      return null
+    }
   }
 }
 

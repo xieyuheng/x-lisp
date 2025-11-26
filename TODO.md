@@ -1,9 +1,7 @@
-# constant
-
-[x-lisp-boot.js] `ConstantDefinition`
 [x-lisp-boot.js] `DefineConstant`
+[x-lisp-boot.js] load `DefineConstant`
 [x-lisp-boot.js] parse `(define <name> <exp>)`
-[x-lisp-boot.js] compile `ConstantDefinition` to a variable, a flag and a function
+[x-lisp-boot.js] `ExplicateControlPass` -- compile `ConstantDefinition` to a variable, a flag and a function
 
 ```scheme
 (define-variable <name>)
@@ -14,7 +12,7 @@
 [x-lisp-boot.js] `RevealConstantPass`
 [x-lisp-boot.js] compile `Constant` to function call
 
-# function
+# function constant
 
 [basic-lisp.js] `(setup <exp> ...)` every mod have setup code
 [basic-lisp.js] bundle merge setup code -- order does not matter
@@ -28,7 +26,7 @@
 (define-function <name>)
 ```
 
-# runtime
+# `function_t` instead of `curry_t`
 
 [runtime] `function_t` -- has `address` and `arity` and `is_primitive`
 - [maybe] use inline union for `address` to avoid casting
@@ -37,3 +35,10 @@
 [runtime] `function_t` -- has register map
 
 [x-lisp-boot.js] setup funtion to `make-function`
+
+# scan call stack
+
+primitive funtion to test scan call stack -- print stack trace
+
+- when we have register allocation, before calling stack trace,
+  all registers need to be saved to a context object.

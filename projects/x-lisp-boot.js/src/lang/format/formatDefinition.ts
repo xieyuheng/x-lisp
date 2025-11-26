@@ -9,5 +9,11 @@ export function formatDefinition(definition: Definition): string {
       const body = formatBody(definition.body)
       return `(define (${name} ${parameters}) ${body})`
     }
+
+    case "ConstantDefinition": {
+      const name = definition.name
+      const body = formatBody(definition.body)
+      return `(define ${name} ${body})`
+    }
   }
 }

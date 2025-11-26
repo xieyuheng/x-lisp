@@ -14,7 +14,7 @@ export function LiftLambdaPass(mod: X.Mod): void {
 type State = {
   mod: X.Mod
   lifted: Array<X.Definition>
-  definition: X.FunctionDefinition
+  definition: X.Definition
 }
 
 function onDefinition(
@@ -22,7 +22,8 @@ function onDefinition(
   definition: X.Definition,
 ): Array<X.Definition> {
   switch (definition.kind) {
-    case "FunctionDefinition": {
+    case "FunctionDefinition":
+    case "ConstantDefinition": {
       const lifted: Array<X.Definition> = []
       const state = { mod, lifted, definition }
       definition.body = onExp(state, definition.body)

@@ -42,6 +42,12 @@ function onDefinition(basicMod: B.Mod, definition: X.Definition): null {
       B.checkBlockTerminator(block)
       return null
     }
+
+    case "ConstantDefinition": {
+      // TODO
+
+      return null
+    }
   }
 }
 

@@ -11,7 +11,8 @@ export function UniquifyPass(mod: X.Mod): void {
 
 function onDefinition(definition: X.Definition): null {
   switch (definition.kind) {
-    case "FunctionDefinition": {
+    case "FunctionDefinition":
+    case "ConstantDefinition": {
       definition.body = onExp({}, {}, definition.body)
       return null
     }

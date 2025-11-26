@@ -14,7 +14,8 @@ type State = {
 
 function onDefinition(definition: X.Definition): null {
   switch (definition.kind) {
-    case "FunctionDefinition": {
+    case "FunctionDefinition":
+    case "ConstantDefinition": {
       const state = { freshNameCount: 0 }
       definition.body = onExp(state, definition.body)
       return null
