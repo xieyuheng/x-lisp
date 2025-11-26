@@ -203,7 +203,7 @@ function selectLiteral(dest: string, value: B.Value): Array<M.Instr> {
     }
 
     case "Function": {
-      return selectConstFunction(dest, value)
+      return selectLiteralFunction(dest, value)
     }
 
     default: {
@@ -226,7 +226,7 @@ function selectTagEncoding(operand: M.Operand, tag: R.Tag): Array<M.Instr> {
   }
 }
 
-function selectConstFunction(dest: string, fn: B.Function): Array<M.Instr> {
+function selectLiteralFunction(dest: string, fn: B.Function): Array<M.Instr> {
   return [
     M.Instr("leaq", [M.LabelDeref(selectFunctionLabel(fn)), selectArgReg(0)]),
     ...selectTagEncoding(selectArgReg(0), R.AddressTag),

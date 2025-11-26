@@ -35,13 +35,15 @@ date: 2025-11-24
 
 - 给 basic-lisp 增加 `define-variable` 功能。
 
-- 在 x-lisp 的编译器中把 `(define <name> <exp>)` 翻译成函数，
+- 在 x-lisp 的编译器中把 `(define <name> <body>)` 翻译成函数，
   把对如此定义的 name 的引用翻译成函数调用。
 
-- 给 basic-lisp 的 bundle 增加 initialization 功能，
-  每个 mod 都有 initialization 代码。
+- 给 basic-lisp 的 bundle 增加 setup 功能，
+  每个 module 都可以有多段 setup 代码。
+  bundle 的时候 merge 所有 module 的 setup 代码。
+  假设 setup 代码没有相互依赖。
 
 - 在 x-lisp 中编译函数到为：
 
-  - 一个 `define-variable` -- apply 用到（需要 initialization）。
+  - 一个 `define-variable` -- apply 用到（需要 setup）。
   - 一个 `define-function` -- call 用到。

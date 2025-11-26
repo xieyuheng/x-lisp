@@ -291,7 +291,14 @@ date: 2025-10-22
 
 任务：
 
-- [x] C runtime
+- [x] machine-lisp.js
+  - [x] define-space
+- [x] basic-lisp.js
+  - [x] define-variable
+  - [ ] module setup code
+- [x] x-lisp-boot.js
+  - [x] `(define <name> <body>)`
+- [x] runtime
   - [ ] scan stack for root objects
   - [ ] GC
 
