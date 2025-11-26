@@ -6,11 +6,5 @@
     (= _₃ (const #t))
     (branch _₃ main/then₂ main/else₃))
   (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
-  (block main/then₂
-    (= _₄ (const 1))
-    (= _₂ (call (@primitive-function identity 1) _₄))
-    (goto main/let-body₁))
-  (block main/else₃
-    (= _₅ (const 2))
-    (= _₂ (call (@primitive-function identity 1) _₅))
-    (goto main/let-body₁)))
+  (block main/then₂ (= _₂ (const 1)) (goto main/let-body₁))
+  (block main/else₃ (= _₂ (const 2)) (goto main/let-body₁)))

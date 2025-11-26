@@ -9,14 +9,8 @@
     (= _₉ (apply _₇ _₈))
     (branch _₉ main/then₅ main/else₆))
   (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
-  (block main/then₂
-    (= _₁₆ (const 0))
-    (= _₂ (call (@primitive-function identity 1) _₁₆))
-    (goto main/let-body₁))
-  (block main/else₃
-    (= _₁₇ (const 42))
-    (= _₂ (call (@primitive-function identity 1) _₁₇))
-    (goto main/let-body₁))
+  (block main/then₂ (= _₂ (const 0)) (goto main/let-body₁))
+  (block main/else₃ (= _₂ (const 42)) (goto main/let-body₁))
   (block main/let-body₄ (branch _₃ main/then₂ main/else₃))
   (block main/then₅
     (= _₁₀ (const (@primitive-function equal? 2)))
@@ -26,7 +20,4 @@
     (= _₁₄ (const 2))
     (= _₃ (apply _₁₃ _₁₄))
     (goto main/let-body₄))
-  (block main/else₆
-    (= _₁₅ (const #f))
-    (= _₃ (call (@primitive-function identity 1) _₁₅))
-    (goto main/let-body₄)))
+  (block main/else₆ (= _₃ (const #f)) (goto main/let-body₄)))

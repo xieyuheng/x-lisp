@@ -2,7 +2,6 @@
 
 import * as B from "@xieyuheng/basic-lisp.js"
 import * as cmd from "@xieyuheng/command.js"
-import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import { fileURLToPath } from "node:url"

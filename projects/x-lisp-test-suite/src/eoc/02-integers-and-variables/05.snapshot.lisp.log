@@ -29,15 +29,14 @@
 
 (define (main)
   (@let1 _₁ (@primitive-function println-non-void 1)
-    (@let1 a₁ (@let1 _₂ 42 _₂) (@let1 b₁ a₁ (_₁ b₁)))))
+    (@let1 a₁ 42 (@let1 b₁ a₁ (_₁ b₁)))))
 
 ;;; ExplicateControlPass
 
 (define-function main
   (block body
     (= _₁ (const (@primitive-function println-non-void 1)))
-    (= _₂ (const 42))
-    (= a₁ (call (@primitive-function identity 1) _₂))
+    (= a₁ (const 42))
     (= b₁ (call (@primitive-function identity 1) a₁))
     (= _↩ (apply _₁ b₁))
     (return _↩)))
@@ -56,10 +55,7 @@
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (var _₁))
-    (movq (imm 336) (var _₂))
-    (movq (var _₂) (reg rdi))
-    (callq-n (external-label x-identity) (arity 1))
-    (movq (reg rax) (var a₁))
+    (movq (imm 336) (var a₁))
     (movq (var a₁) (reg rdi))
     (callq-n (external-label x-identity) (arity 1))
     (movq (reg rax) (var b₁))
@@ -88,14 +84,11 @@
     (movq (reg-deref (reg rbp) -72) (reg rdi))
     (callq-n (external-label x-identity) (arity 1))
     (movq (reg rax) (reg-deref (reg rbp) -80))
-    (movq (reg-deref (reg rbp) -80) (reg rdi))
-    (callq-n (external-label x-identity) (arity 1))
-    (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
-    (movq (reg-deref (reg rbp) -88) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
-    (movq (reg rax) (reg-deref (reg rbp) -96))
-    (movq (reg-deref (reg rbp) -96) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
     (retq)))
 
 ;;; PatchInstructionPass
@@ -116,14 +109,11 @@
     (movq (reg-deref (reg rbp) -72) (reg rdi))
     (callq-n (external-label x-identity) (arity 1))
     (movq (reg rax) (reg-deref (reg rbp) -80))
-    (movq (reg-deref (reg rbp) -80) (reg rdi))
-    (callq-n (external-label x-identity) (arity 1))
-    (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
-    (movq (reg-deref (reg rbp) -88) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
-    (movq (reg rax) (reg-deref (reg rbp) -96))
-    (movq (reg-deref (reg rbp) -96) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
     (retq)))
 
 ;;; PrologAndEpilogPass
@@ -141,7 +131,7 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 96) (reg rsp))
+    (subq (imm 88) (reg rsp))
     (jmp (label body)))
   (block body
     (leaq
@@ -156,17 +146,14 @@
     (movq (reg-deref (reg rbp) -72) (reg rdi))
     (callq-n (external-label x-identity) (arity 1))
     (movq (reg rax) (reg-deref (reg rbp) -80))
-    (movq (reg-deref (reg rbp) -80) (reg rdi))
-    (callq-n (external-label x-identity) (arity 1))
-    (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
-    (movq (reg-deref (reg rbp) -88) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
-    (movq (reg rax) (reg-deref (reg rbp) -96))
-    (movq (reg-deref (reg rbp) -96) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 96) (reg rsp))
+    (addq (imm 88) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))

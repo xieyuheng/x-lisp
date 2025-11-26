@@ -39,7 +39,10 @@ function onExp(state: State, exp: X.Exp): X.Exp {
     case "Hashtag":
     case "String":
     case "Int":
-    case "Float":
+    case "Float": {
+      return exp
+    }
+
     case "Function":
     case "Constant": {
       const [entries, newExp] = forVar(state, exp)

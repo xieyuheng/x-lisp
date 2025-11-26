@@ -193,6 +193,15 @@ function inTail(state: State, exp: X.Exp): Array<B.Instr> {
       return [B.Return(exp.name)]
     }
 
+    case "Symbol":
+    case "Hashtag":
+    case "String":
+    case "Int":
+    case "Float": {
+      const name = "_↩"
+      return [B.Const(name, expToValue(exp)), B.Return(name)]
+    }
+
     case "Apply": {
       const name = "_↩"
       return [
