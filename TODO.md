@@ -1,13 +1,21 @@
-[x-lisp-boot.js] `ExplicateControlPass` -- compile `ConstantDefinition` to a variable, a flag and a function
+# define constant
+
+[x-lisp-boot.js] `040-SelectInstructionPass` -- rename `onDefinition` to `forDefinition` -- return list of `M.Definition`
+[x-lisp-boot.js] `030-ExplicateControlPass` -- compile `ConstantDefinition` to a variable, a flag and a function
 
 ```scheme
 (define-variable <name>)
 (define-variable ©<name>/init-flag)
-(define-variable ©<name>/init-function)
+(define-function ©<name>/init-function)
 ```
 
+[x-lisp-boot.js] test writing define constant -- `(define <name> <body>)`
+
+[x-lisp-boot.js] `Constant` as `Exp` -- like `Function`
 [x-lisp-boot.js] `RevealConstantPass`
 [x-lisp-boot.js] compile `Constant` to function call
+
+[x-lisp-boot.js] test using define constant -- `(define <name> <body>)`
 
 # function constant
 

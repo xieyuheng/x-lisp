@@ -11,7 +11,9 @@ export function ExplicateControlPass(mod: X.Mod, basicMod: B.Mod): void {
   }
 
   for (const definition of X.modOwnDefinitions(mod)) {
-    onDefinition(basicMod, definition)
+    for (const basicDefinition of forDefinition(basicMod, definition)) {
+      basicMod.definitions.set(basicDefinition.name, basicDefinition)
+    }
   }
 }
 
@@ -19,7 +21,10 @@ type State = {
   fn: B.FunctionDefinition
 }
 
-function onDefinition(basicMod: B.Mod, definition: X.Definition): null {
+function forDefinition(
+  basicMod: B.Mod,
+  definition: X.Definition,
+): Array<B.Definition> {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const fn = B.FunctionDefinition(
@@ -28,7 +33,7 @@ function onDefinition(basicMod: B.Mod, definition: X.Definition): null {
         new Map(),
         definition.meta,
       )
-      basicMod.definitions.set(fn.name, fn)
+
       const initialInstrs = Array.from(
         definition.parameters
           .entries()
@@ -40,13 +45,13 @@ function onDefinition(basicMod: B.Mod, definition: X.Definition): null {
       state.fn.blocks.set(block.label, block)
       block.instrs.push(...inTail(state, definition.body))
       B.checkBlockTerminator(block)
-      return null
+      return [fn]
     }
 
     case "ConstantDefinition": {
       // TODO
 
-      return null
+      return []
     }
   }
 }
