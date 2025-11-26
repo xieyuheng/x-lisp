@@ -13,7 +13,8 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       return new Set()
     }
 
-    case "Function": {
+    case "Function":
+    case "Constant": {
       return new Set()
     }
 

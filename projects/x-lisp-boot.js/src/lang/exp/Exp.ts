@@ -5,6 +5,7 @@ export type Exp =
   | Atom
   | Var
   | Function
+  | Constant
   | Lambda
   | ApplySugar
   | ApplyNullary
@@ -54,6 +55,30 @@ export function Function(
     kind: "Function",
     name,
     arity,
+    attributes,
+    meta,
+  }
+}
+
+export type Constant = {
+  kind: "Constant"
+  name: string
+  attributes: {
+    isPrimitive: boolean
+  }
+  meta?: Meta
+}
+
+export function Constant(
+  name: string,
+  attributes: {
+    isPrimitive: boolean
+  },
+  meta?: Meta,
+): Constant {
+  return {
+    kind: "Constant",
+    name,
     attributes,
     meta,
   }

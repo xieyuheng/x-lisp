@@ -1,12 +1,9 @@
 # define constant
 
-[x-lisp-boot.js] test writing define constant -- `(define <name> <body>)`
+[x-lisp-boot.js] rename `011-RevealFunctionPass` to `011-RevealGlobalPass`
+[x-lisp-boot.js] `011-RevealGlobalPass` -- handle `Constant`
 
-[x-lisp-boot.js] `Constant` as `Exp` -- like `Function`
-[x-lisp-boot.js] `RevealConstantPass`
-[x-lisp-boot.js] compile `Constant` to function call
-
-[x-lisp-boot.js] test using define constant -- `(define <name> <body>)`
+[x-lisp-boot.js] test define constant -- `(define <name> <body>)`
 
 # function constant
 

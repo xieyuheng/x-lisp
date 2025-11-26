@@ -22,6 +22,14 @@ export function formatExp(exp: Exp): string {
       }
     }
 
+    case "Constant": {
+      if (exp.attributes.isPrimitive) {
+        return `(@primitive-constant ${exp.name})`
+      } else {
+        return `(@constant ${exp.name})`
+      }
+    }
+
     case "Hashtag": {
       return `#${exp.content}`
     }
