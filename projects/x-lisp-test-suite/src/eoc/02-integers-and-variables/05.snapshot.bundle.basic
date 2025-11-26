@@ -4,6 +4,6 @@
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= a₁ (literal 42))
-    (= b₁ (call (@primitive-function identity 1) a₁))
+    (= b₁ (identity a₁))
     (= _↩ (apply _₁ b₁))
     (return _↩)))

@@ -81,7 +81,7 @@
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₂ (literal (@primitive-function identity 1)))
-    (= f₁ (call (@primitive-function identity 1) _₂))
+    (= f₁ (identity _₂))
     (= _₃ (literal (@function dup 1)))
     (= _₄ (literal (@primitive-function identity 1)))
     (= g₁ (apply _₃ _₄))

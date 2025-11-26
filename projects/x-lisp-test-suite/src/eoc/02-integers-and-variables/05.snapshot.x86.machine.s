@@ -24,8 +24,7 @@ _main.body:
         callq x_make_curry
         movq %rax, -64(%rbp)
         movq $336, -72(%rbp)
-        movq -72(%rbp), %rdi
-        callq x_identity
+        movq -72(%rbp), %rax
         movq %rax, -80(%rbp)
         movq -64(%rbp), %rdi
         movq -80(%rbp), %rsi

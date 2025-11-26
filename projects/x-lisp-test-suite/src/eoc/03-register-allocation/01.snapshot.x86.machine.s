@@ -40,8 +40,7 @@ _main.body:
         movq -104(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -112(%rbp)
-        movq -112(%rbp), %rdi
-        callq x_identity
+        movq -112(%rbp), %rax
         movq %rax, -120(%rbp)
         leaq x_iadd(%rip), %rdi
         orq $3, %rdi

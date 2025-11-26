@@ -1,5 +1,3 @@
-[x-lisp-boot.js] compile to `Identity` instead of `(@primitive-function identity 1)`
-
 # function constant
 
 [basic-lisp.js] `(setup <exp> ...)` every mod have setup code

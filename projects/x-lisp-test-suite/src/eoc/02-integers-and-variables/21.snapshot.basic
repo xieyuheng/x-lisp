@@ -5,7 +5,7 @@
     (= _₂ (literal (@primitive-function ineg 1)))
     (= _₃ (literal 42))
     (= y₂ (apply _₂ _₃))
-    (= x₁ (call (@primitive-function identity 1) y₂))
+    (= x₁ (identity y₂))
     (= _₄ (literal (@primitive-function iadd 2)))
     (= _₅ (apply _₄ x₁))
     (= _₆ (apply _₅ y₁))
