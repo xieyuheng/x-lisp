@@ -1,0 +1,955 @@
+;;; Input
+
+(define one 1)
+
+(define two (iadd 1 one))
+
+(define three (iadd 1 two))
+
+(define (main) (println-non-void three))
+
+;;; ShrinkPass
+
+(define one 1)
+
+(define two ((iadd 1) one))
+
+(define three ((iadd 1) two))
+
+(define (main) (println-non-void three))
+
+;;; UniquifyPass
+
+(define one 1)
+
+(define two ((iadd 1) one))
+
+(define three ((iadd 1) two))
+
+(define (main) (println-non-void three))
+
+;;; RevealGlobalPass
+
+(define one 1)
+
+(define two
+  (((@primitive-function iadd 2) 1) (@constant one)))
+
+(define three
+  (((@primitive-function iadd 2) 1) (@constant two)))
+
+(define (main)
+  ((@primitive-function println-non-void 1)
+   (@constant three)))
+
+;;; LiftLambdaPass
+
+(define one 1)
+
+(define two
+  (((@primitive-function iadd 2) 1) (@constant one)))
+
+(define three
+  (((@primitive-function iadd 2) 1) (@constant two)))
+
+(define (main)
+  ((@primitive-function println-non-void 1)
+   (@constant three)))
+
+;;; UnnestOperandPass
+
+(define one 1)
+
+(define two
+  (@let1 _₁ (@primitive-function iadd 2)
+    (@let1 _₂ 1
+      (@let1 _₃ (_₁ _₂) (@let1 _₄ (@constant one) (_₃ _₄))))))
+
+(define three
+  (@let1 _₁ (@primitive-function iadd 2)
+    (@let1 _₂ 1
+      (@let1 _₃ (_₁ _₂) (@let1 _₄ (@constant two) (_₃ _₄))))))
+
+(define (main)
+  (@let1 _₁ (@primitive-function println-non-void 1)
+    (@let1 _₂ (@constant three) (_₁ _₂))))
+
+;;; ExplicateControlPass
+
+(define-variable one)
+
+(define-variable ©one/flag #f)
+
+(define-function ©one/get
+  (block body
+    (= flag (load ©one/flag))
+    (branch flag cached init))
+  (block cached (= result (load one)) (return result))
+  (block init
+    (= result (call (@function ©one/function 0)))
+    (store one result)
+    (= true (const #t))
+    (store ©one/flag true)
+    (return result)))
+
+(define-function ©one/function
+  (block body (= _↩ (const 1)) (return _↩)))
+
+(define-variable two)
+
+(define-variable ©two/flag #f)
+
+(define-function ©two/get
+  (block body
+    (= flag (load ©two/flag))
+    (branch flag cached init))
+  (block cached (= result (load two)) (return result))
+  (block init
+    (= result (call (@function ©two/function 0)))
+    (store two result)
+    (= true (const #t))
+    (store ©two/flag true)
+    (return result)))
+
+(define-function ©two/function
+  (block body
+    (= _₁ (const (@primitive-function iadd 2)))
+    (= _₂ (const 1))
+    (= _₃ (apply _₁ _₂))
+    (= _₄ (call (@function ©one/get 0)))
+    (= _↩ (apply _₃ _₄))
+    (return _↩)))
+
+(define-variable three)
+
+(define-variable ©three/flag #f)
+
+(define-function ©three/get
+  (block body
+    (= flag (load ©three/flag))
+    (branch flag cached init))
+  (block cached (= result (load three)) (return result))
+  (block init
+    (= result (call (@function ©three/function 0)))
+    (store three result)
+    (= true (const #t))
+    (store ©three/flag true)
+    (return result)))
+
+(define-function ©three/function
+  (block body
+    (= _₁ (const (@primitive-function iadd 2)))
+    (= _₂ (const 1))
+    (= _₃ (apply _₁ _₂))
+    (= _₄ (call (@function ©two/get 0)))
+    (= _↩ (apply _₃ _₄))
+    (return _↩)))
+
+(define-function main
+  (block body
+    (= _₁ (const (@primitive-function println-non-void 1)))
+    (= _₂ (call (@function ©three/get 0)))
+    (= _↩ (apply _₁ _₂))
+    (return _↩)))
+
+;;; SelectInstructionPass
+
+(export)
+
+(define-space one 8)
+
+(define-data ©one/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©one/get
+  (block body
+    (movq (label-deref (label ©one/flag)) (var flag))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (var flag) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq (label-deref (label one)) (var result))
+    (movq (var result) (reg rax))
+    (retq))
+  (block init
+    (callq-n (label ©one/function) (arity 0))
+    (movq (reg rax) (var result))
+    (movq (var result) (label-deref (label one)))
+    (movq (label-deref (external-label x-true)) (var true))
+    (movq (var true) (label-deref (label ©one/flag)))
+    (movq (var result) (reg rax))
+    (retq)))
+
+(define-code ©one/function
+  (block body
+    (movq (imm 8) (var _↩))
+    (movq (var _↩) (reg rax))
+    (retq)))
+
+(define-space two 8)
+
+(define-data ©two/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©two/get
+  (block body
+    (movq (label-deref (label ©two/flag)) (var flag))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (var flag) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq (label-deref (label two)) (var result))
+    (movq (var result) (reg rax))
+    (retq))
+  (block init
+    (callq-n (label ©two/function) (arity 0))
+    (movq (reg rax) (var result))
+    (movq (var result) (label-deref (label two)))
+    (movq (label-deref (external-label x-true)) (var true))
+    (movq (var true) (label-deref (label ©two/flag)))
+    (movq (var result) (reg rax))
+    (retq)))
+
+(define-code ©two/function
+  (block body
+    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var _₁))
+    (movq (imm 8) (var _₂))
+    (movq (var _₁) (reg rdi))
+    (movq (var _₂) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (var _₃))
+    (callq-n (label ©one/get) (arity 0))
+    (movq (reg rax) (var _₄))
+    (movq (var _₃) (reg rdi))
+    (movq (var _₄) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (var _↩))
+    (movq (var _↩) (reg rax))
+    (retq)))
+
+(define-space three 8)
+
+(define-data ©three/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©three/get
+  (block body
+    (movq (label-deref (label ©three/flag)) (var flag))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (var flag) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq (label-deref (label three)) (var result))
+    (movq (var result) (reg rax))
+    (retq))
+  (block init
+    (callq-n (label ©three/function) (arity 0))
+    (movq (reg rax) (var result))
+    (movq (var result) (label-deref (label three)))
+    (movq (label-deref (external-label x-true)) (var true))
+    (movq (var true) (label-deref (label ©three/flag)))
+    (movq (var result) (reg rax))
+    (retq)))
+
+(define-code ©three/function
+  (block body
+    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var _₁))
+    (movq (imm 8) (var _₂))
+    (movq (var _₁) (reg rdi))
+    (movq (var _₂) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (var _₃))
+    (callq-n (label ©two/get) (arity 0))
+    (movq (reg rax) (var _₄))
+    (movq (var _₃) (reg rdi))
+    (movq (var _₄) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (var _↩))
+    (movq (var _↩) (reg rax))
+    (retq)))
+
+(define-code main
+  (block body
+    (leaq
+     (label-deref (external-label x-println-non-void))
+     (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 8) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var _₁))
+    (callq-n (label ©three/get) (arity 0))
+    (movq (reg rax) (var _₂))
+    (movq (var _₁) (reg rdi))
+    (movq (var _₂) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (var _↩))
+    (movq (var _↩) (reg rax))
+    (retq)))
+
+;;; AssignHomePass
+
+(export)
+
+(define-space one 8)
+
+(define-data ©one/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©one/get
+  (block body
+    (movq
+     (label-deref (label ©one/flag))
+     (reg-deref (reg rbp) -64))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (reg-deref (reg rbp) -64) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq
+     (label-deref (label one))
+     (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq))
+  (block init
+    (callq-n (label ©one/function) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq
+     (reg-deref (reg rbp) -72)
+     (label-deref (label one)))
+    (movq
+     (label-deref (external-label x-true))
+     (reg-deref (reg rbp) -80))
+    (movq
+     (reg-deref (reg rbp) -80)
+     (label-deref (label ©one/flag)))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq)))
+
+(define-code ©one/function
+  (block body
+    (movq (imm 8) (reg-deref (reg rbp) -64))
+    (movq (reg-deref (reg rbp) -64) (reg rax))
+    (retq)))
+
+(define-space two 8)
+
+(define-data ©two/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©two/get
+  (block body
+    (movq
+     (label-deref (label ©two/flag))
+     (reg-deref (reg rbp) -64))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (reg-deref (reg rbp) -64) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq
+     (label-deref (label two))
+     (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq))
+  (block init
+    (callq-n (label ©two/function) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq
+     (reg-deref (reg rbp) -72)
+     (label-deref (label two)))
+    (movq
+     (label-deref (external-label x-true))
+     (reg-deref (reg rbp) -80))
+    (movq
+     (reg-deref (reg rbp) -80)
+     (label-deref (label ©two/flag)))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq)))
+
+(define-code ©two/function
+  (block body
+    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (callq-n (label ©one/get) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -80) (reg rdi))
+    (movq (reg-deref (reg rbp) -88) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rax))
+    (retq)))
+
+(define-space three 8)
+
+(define-data ©three/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©three/get
+  (block body
+    (movq
+     (label-deref (label ©three/flag))
+     (reg-deref (reg rbp) -64))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (reg-deref (reg rbp) -64) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq
+     (label-deref (label three))
+     (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq))
+  (block init
+    (callq-n (label ©three/function) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq
+     (reg-deref (reg rbp) -72)
+     (label-deref (label three)))
+    (movq
+     (label-deref (external-label x-true))
+     (reg-deref (reg rbp) -80))
+    (movq
+     (reg-deref (reg rbp) -80)
+     (label-deref (label ©three/flag)))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq)))
+
+(define-code ©three/function
+  (block body
+    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (callq-n (label ©two/get) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -80) (reg rdi))
+    (movq (reg-deref (reg rbp) -88) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rax))
+    (retq)))
+
+(define-code main
+  (block body
+    (leaq
+     (label-deref (external-label x-println-non-void))
+     (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 8) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label ©three/get) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
+    (retq)))
+
+;;; PatchInstructionPass
+
+(export)
+
+(define-space one 8)
+
+(define-data ©one/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©one/get
+  (block body
+    (movq (label-deref (label ©one/flag)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (reg-deref (reg rbp) -64) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq (label-deref (label one)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq))
+  (block init
+    (callq-n (label ©one/function) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (movq (reg rax) (label-deref (label one)))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
+    (movq (reg rax) (label-deref (label ©one/flag)))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq)))
+
+(define-code ©one/function
+  (block body
+    (movq (imm 8) (reg-deref (reg rbp) -64))
+    (movq (reg-deref (reg rbp) -64) (reg rax))
+    (retq)))
+
+(define-space two 8)
+
+(define-data ©two/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©two/get
+  (block body
+    (movq (label-deref (label ©two/flag)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (reg-deref (reg rbp) -64) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq (label-deref (label two)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq))
+  (block init
+    (callq-n (label ©two/function) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (movq (reg rax) (label-deref (label two)))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
+    (movq (reg rax) (label-deref (label ©two/flag)))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq)))
+
+(define-code ©two/function
+  (block body
+    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (callq-n (label ©one/get) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -80) (reg rdi))
+    (movq (reg-deref (reg rbp) -88) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rax))
+    (retq)))
+
+(define-space three 8)
+
+(define-data ©three/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©three/get
+  (block body
+    (movq (label-deref (label ©three/flag)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (reg-deref (reg rbp) -64) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq (label-deref (label three)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq))
+  (block init
+    (callq-n (label ©three/function) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (movq (reg rax) (label-deref (label three)))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
+    (movq (reg rax) (label-deref (label ©three/flag)))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (retq)))
+
+(define-code ©three/function
+  (block body
+    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (callq-n (label ©two/get) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -80) (reg rdi))
+    (movq (reg-deref (reg rbp) -88) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rax))
+    (retq)))
+
+(define-code main
+  (block body
+    (leaq
+     (label-deref (external-label x-println-non-void))
+     (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 8) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label ©three/get) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
+    (retq)))
+
+;;; PrologAndEpilogPass
+
+(export)
+
+(define-space one 8)
+
+(define-data ©one/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©one/get
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 80) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq (label-deref (label ©one/flag)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (reg-deref (reg rbp) -64) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq (label-deref (label one)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (jmp (label epilog)))
+  (block init
+    (callq-n (label ©one/function) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (movq (reg rax) (label-deref (label one)))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
+    (movq (reg rax) (label-deref (label ©one/flag)))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 80) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
+(define-code ©one/function
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 64) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq (imm 8) (reg-deref (reg rbp) -64))
+    (movq (reg-deref (reg rbp) -64) (reg rax))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 64) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
+(define-space two 8)
+
+(define-data ©two/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©two/get
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 80) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq (label-deref (label ©two/flag)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (reg-deref (reg rbp) -64) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq (label-deref (label two)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (jmp (label epilog)))
+  (block init
+    (callq-n (label ©two/function) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (movq (reg rax) (label-deref (label two)))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
+    (movq (reg rax) (label-deref (label ©two/flag)))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 80) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
+(define-code ©two/function
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 96) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (callq-n (label ©one/get) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -80) (reg rdi))
+    (movq (reg-deref (reg rbp) -88) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rax))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 96) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
+(define-space three 8)
+
+(define-data ©three/flag
+  (chunk entry (dq 2550726238951964700)))
+
+(define-code ©three/get
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 80) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq (label-deref (label ©three/flag)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (cmpq (reg-deref (reg rbp) -64) (reg rax))
+    (branch-if (cc e) (label cached) (label init)))
+  (block cached
+    (movq (label-deref (label three)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (jmp (label epilog)))
+  (block init
+    (callq-n (label ©three/function) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (movq (reg rax) (label-deref (label three)))
+    (movq (label-deref (external-label x-true)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
+    (movq (reg rax) (label-deref (label ©three/flag)))
+    (movq (reg-deref (reg rbp) -72) (reg rax))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 80) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
+(define-code ©three/function
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 96) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 16) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (callq-n (label ©two/get) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -80) (reg rdi))
+    (movq (reg-deref (reg rbp) -88) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -96))
+    (movq (reg-deref (reg rbp) -96) (reg rax))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 96) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
+(define-code main
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 80) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (leaq
+     (label-deref (external-label x-println-non-void))
+     (reg rdi))
+    (orq (imm 3) (reg rdi))
+    (movq (imm 8) (reg rsi))
+    (movq (imm 0) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label ©three/get) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -72))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (callq-n (external-label x-apply-unary) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 80) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+

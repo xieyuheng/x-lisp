@@ -1,4 +1,5 @@
 import { type Definition } from "../definition/index.ts"
+import * as Values from "../value/index.ts"
 import { formatBlock } from "./formatBlock.ts"
 import { formatValue } from "./formatValue.ts"
 
@@ -16,7 +17,11 @@ export function formatDefinition(definition: Definition): string {
     }
 
     case "VariableDefinition": {
-      return `(define-variable ${definition.name} ${formatValue(definition.value)})`
+      if (Values.isUndefined(definition.value)) {
+        return `(define-variable ${definition.name})`
+      } else {
+        return `(define-variable ${definition.name} ${formatValue(definition.value)})`
+      }
     }
   }
 }

@@ -85,7 +85,7 @@ function onConstantDefinition(
     ),
 
     // (define-function ©<name>/get
-    //   (block guard
+    //   (block body
     //     (= flag (load ©<name>/flag))
     //     (branch flag cached init))
     //   (block cached
@@ -102,9 +102,9 @@ function onConstantDefinition(
       `©${definition.name}/get`,
       new Map([
         [
-          "guard",
-          B.Block("guard", [
-            B.Load("flag", `©${definition.name}/flat`),
+          "body",
+          B.Block("body", [
+            B.Load("flag", `©${definition.name}/flag`),
             B.Branch("flag", "cached", "init"),
           ]),
         ],
@@ -127,7 +127,7 @@ function onConstantDefinition(
             ),
             B.Store(definition.name, "result"),
             B.Const("true", B.Bool(true)),
-            B.Store(`©${definition.name}/flat`, "true"),
+            B.Store(`©${definition.name}/flag`, "true"),
             B.Return("result"),
           ]),
         ],

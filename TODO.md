@@ -1,6 +1,4 @@
-# define constant
-
-[x-lisp-boot.js] test define constant -- `(define <name> <body>)`
+# later
 
 [x-lisp-boot.js] [maybe] should not compile to `(@primitive-function identity 1)`
 

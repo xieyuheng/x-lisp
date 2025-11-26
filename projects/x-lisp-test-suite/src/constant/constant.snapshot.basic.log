@@ -1,0 +1,90 @@
+;;; Input
+
+(define (main)
+  (println-non-void (define-variable one))
+  (println-non-void (define-variable ©one/flag #f))
+  (println-non-void
+   (define-function
+    ©one/get
+    (block
+     guard
+     (= flag (load ©one/flag))
+     (branch flag cached init))
+    (block cached (= result (load one)) (return result))
+    (block
+     init
+     (= result (call (@function ©one/function 0)))
+     (store one result)
+     (= true (const #t))
+     (store ©one/flag true)
+     (return result))))
+  (println-non-void
+   (define-function
+    ©one/function
+    (block body (= _↩ (const 1)) (return _↩))))
+  (println-non-void (define-variable two))
+  (println-non-void (define-variable ©two/flag #f))
+  (println-non-void
+   (define-function
+    ©two/get
+    (block
+     guard
+     (= flag (load ©two/flag))
+     (branch flag cached init))
+    (block cached (= result (load two)) (return result))
+    (block
+     init
+     (= result (call (@function ©two/function 0)))
+     (store two result)
+     (= true (const #t))
+     (store ©two/flag true)
+     (return result))))
+  (println-non-void
+   (define-function
+    ©two/function
+    (block
+     body
+     (= _₁ (const (@primitive-function iadd 2)))
+     (= _₂ (const 1))
+     (= _₃ (apply _₁ _₂))
+     (= _₄ (call (@function ©one/get 0)))
+     (= _↩ (apply _₃ _₄))
+     (return _↩))))
+  (println-non-void (define-variable three))
+  (println-non-void (define-variable ©three/flag #f))
+  (println-non-void
+   (define-function
+    ©three/get
+    (block
+     guard
+     (= flag (load ©three/flag))
+     (branch flag cached init))
+    (block cached (= result (load three)) (return result))
+    (block
+     init
+     (= result (call (@function ©three/function 0)))
+     (store three result)
+     (= true (const #t))
+     (store ©three/flag true)
+     (return result))))
+  (println-non-void
+   (define-function
+    ©three/function
+    (block
+     body
+     (= _₁ (const (@primitive-function iadd 2)))
+     (= _₂ (const 1))
+     (= _₃ (apply _₁ _₂))
+     (= _₄ (call (@function ©two/get 0)))
+     (= _↩ (apply _₃ _₄))
+     (return _↩))))
+  (println-non-void
+   (define-function
+    main
+    (block
+     body
+     (= _₁ (const (@primitive-function println-non-void 1)))
+     (= _₂ (call (@function ©three/get 0)))
+     (= _↩ (apply _₁ _₂))
+     (return _↩)))))
+
