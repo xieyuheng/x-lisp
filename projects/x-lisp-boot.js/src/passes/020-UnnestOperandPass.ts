@@ -31,14 +31,19 @@ function generateFreshName(state: State): string {
 
 function onExp(state: State, exp: X.Exp): X.Exp {
   switch (exp.kind) {
+    case "Var": {
+      return exp
+    }
+
     case "Symbol":
     case "Hashtag":
     case "String":
     case "Int":
     case "Float":
     case "Function":
-    case "Var": {
-      return exp
+    case "Constant": {
+      const [entries, newExp] = forAtom(state, exp)
+      return prependLets(entries, newExp)
     }
 
     case "ApplyNullary": {
@@ -109,9 +114,10 @@ function forAtom(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
     case "Int":
     case "Float":
     case "Function":
+    case "Constant":
     case "If": {
       const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, onExp(state, exp)]
+      const entry: Entry = [freshName, exp]
       return [[entry], X.Var(freshName, exp.meta)]
     }
 
@@ -140,7 +146,7 @@ function forAtom(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
     }
 
     default: {
-      let message = `[unnestAtom] unhandled exp`
+      let message = `[UnnestOperandPass] unhandled exp`
       message += `\n  exp: ${X.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)

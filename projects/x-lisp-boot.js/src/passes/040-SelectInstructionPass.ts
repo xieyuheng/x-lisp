@@ -36,8 +36,16 @@ function onDefinition(
           M.SpaceDefinition(machineMod, definition.name, 8, definition.meta),
         ]
       } else {
-        const value = B.asInt(definition.value).content
-        const chunk = M.Chunk("entry", [M.Dq([value])], definition.meta)
+        const chunk = M.Chunk("entry", [], definition.meta)
+        if (B.isInt(definition.value)) {
+          const value = B.asInt(definition.value).content
+          chunk.directives.push(M.Dq([value]))
+        } else {
+          let message = `[SelectInstructionPass] can not handle variable value`
+          message += `\n  value: ${B.formatValue(definition.value)}`
+          throw new Error(message)
+        }
+
         return [
           M.DataDefinition(
             machineMod,
