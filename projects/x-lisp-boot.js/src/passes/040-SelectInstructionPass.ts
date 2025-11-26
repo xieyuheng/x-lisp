@@ -5,11 +5,16 @@ export function SelectInstructionPass(mod: B.Mod, machineMod: M.Mod): void {
   machineMod.exported = mod.exported
 
   for (const definition of B.modOwnDefinitions(mod)) {
-    onDefinition(machineMod, definition)
+    for (const machineDefinition of forDefinition(machineMod, definition)) {
+      machineMod.definitions.set(machineDefinition.name, machineDefinition)
+    }
   }
 }
 
-function onDefinition(machineMod: M.Mod, definition: B.Definition): null {
+function forDefinition(
+  machineMod: M.Mod,
+  definition: B.Definition,
+): Array<M.Definition> {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const code = M.CodeDefinition(
@@ -18,35 +23,30 @@ function onDefinition(machineMod: M.Mod, definition: B.Definition): null {
         new Map(),
         definition.meta,
       )
-      machineMod.definitions.set(code.name, code)
       for (const block of definition.blocks.values()) {
         const machineBlock = onBlock(block)
         code.blocks.set(machineBlock.label, machineBlock)
       }
-      return null
+      return [code]
     }
 
     case "VariableDefinition": {
       if (B.isUndefined(definition.value)) {
-        machineMod.definitions.set(
-          definition.name,
+        return [
           M.SpaceDefinition(machineMod, definition.name, 8, definition.meta),
-        )
+        ]
       } else {
         const value = B.asInt(definition.value).content
         const chunk = M.Chunk("entry", [M.Dq([value])], definition.meta)
-        machineMod.definitions.set(
-          definition.name,
+        return [
           M.DataDefinition(
             machineMod,
             definition.name,
             new Map([[chunk.label, chunk]]),
             definition.meta,
           ),
-        )
+        ]
       }
-
-      return null
     }
 
     default: {

@@ -1,6 +1,5 @@
 # define constant
 
-[x-lisp-boot.js] `040-SelectInstructionPass` -- rename `onDefinition` to `forDefinition` -- return list of `M.Definition`
 [x-lisp-boot.js] `030-ExplicateControlPass` -- compile `ConstantDefinition` to a variable, a flag and a function
 
 ```scheme
