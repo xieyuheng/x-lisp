@@ -8,12 +8,10 @@ _message.entry:
         .ascii "Hello, World!\n"
 .size _message, . - _message
 
-
 .bss
 .align 8
 _message.length:
         .zero 8
-
 
 .text
 .align 8
@@ -31,4 +29,3 @@ _start.entry:
         movq $0, %rdi
         syscall 
 .size _start, . - _start
-

@@ -9,4 +9,3 @@ _start.entry:
         movq $6, %rdi
         syscall 
 .size _start, . - _start
-

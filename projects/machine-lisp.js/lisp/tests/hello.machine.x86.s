@@ -10,7 +10,6 @@ _message.length:
         .quad 14
 .size _message, . - _message
 
-
 .text
 .align 8
 .type _start, @function
@@ -25,4 +24,3 @@ _start.entry:
         movq $0, %rdi
         syscall 
 .size _start, . - _start
-
