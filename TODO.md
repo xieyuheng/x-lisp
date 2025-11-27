@@ -1,17 +1,50 @@
 # module setup code
 
-[basic-lisp.js] `(define-setup-function <name> <block> ...)`
+[basic-lisp.js] `SetupDefinition`
+[basic-lisp.js] `DefineSetup`
+[basic-lisp.js] parse `(define-setup <name> <block> ...)`
+
 [basic-lisp.js] bundle merge setup code -- order does not matter
+
+[x-lisp-boot.js] `main` should not be preserved name
+
+[x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.SetupDefinition` to `setup` function -- like `main`
+
+[runtime] call `_setup` in the `main` of c
+
+[x-lisp-boot.js] setup constant flag variable to runtime bool value
 
 # address value
 
 [basic-lisp.js] `Address` as `Value`
 
+# define-metadata
+
+[machine-lisp.js] more data directives -- preparing for `MetadataDefinition`
+
+- `Int` `Float`
+- `Pointer` -- local or global
+- `String` -- always null ended
+
+[basic-lisp.js] `MetadataDefinition` -- for untagged data
+
+[basic-lisp.js] `DefineMetadata`
+[basic-lisp.js] parse `define-metadata`
+
+[basic-lisp.js] `Chunk` for `MetadataDefinition`
+
+[basic-lisp.js] `Directive` for `MetadataDefinition`
+
+- `Int` `Float`
+- `Pointer` -- local or global
+- `String` -- always null ended
+- `StringPointer` -- append `Chunk` to the end of this `MetadataDefinition`
+
+[x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.MetadataDefinition` to `M.DataDefinition`
+
 # function constant
 
-[x-lisp-boot.js] `ExplicateControlPass` -- setup `FunctionDefinition`
-
-- setup to `make-curry` for now
+[x-lisp-boot.js] `ExplicateControlPass` -- setup `FunctionDefinition` to `make-curry` for now
 
 ```scheme
 (define-function <name>)
@@ -21,8 +54,29 @@
     (= address (literal (@address <name>)))
     (= arity (literal <arity>))
     (= size (literal 0))
-    (= curry (call (@primitive-function make-curry 3) make-curry arity size))
+    (= curry (call (@primitive-function make-curry 3) address arity size))
     (store _<name>/constant curry)
+    (return)))
+```
+
+[x-lisp-boot.js] `ExplicateControlPass` -- setup `FunctionDefinition` to `make-function`
+
+```scheme
+(define-function <name>)
+(define-metadata _<name>/metadata
+  (chunk arity (int <arity>))
+  (chunk name (string-pointer "<name>"))
+  (chunk address (pointer <label>))
+  (chunk variable-array (int ...) (pointer variable-names))
+  (chunk register-info (pointer _<name>/register-info))
+  (chunk variable-names (string-pointer "<name>") (string-pointer "<name>") ...))
+(define-variable _<name>/constant)
+(define-setup-function _<name>/setup
+  (block body
+    (= address (literal (@address <name>)))
+    (= metadata (literal (@address _<name>/metadata)))
+    (= function (call (@primitive-function make-function 2) address metadata))
+    (store _<name>/constant function)
     (return)))
 ```
 

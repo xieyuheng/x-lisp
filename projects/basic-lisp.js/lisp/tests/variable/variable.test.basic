@@ -6,12 +6,10 @@
     (= res (load x))
     (= ok (call (@primitive-function equal? 2) res expected))
     (assert ok)
-
     (= v (literal 6))
     (store x v)
     (= expected (literal 6))
     (= res (load x))
     (= ok (call (@primitive-function equal? 2) res expected))
     (assert ok)
-
     (return)))
