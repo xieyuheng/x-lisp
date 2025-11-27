@@ -1,6 +1,5 @@
 # module setup code
 
-[basic-lisp.js] `SetupDefinition`
 [basic-lisp.js] `DefineSetup`
 [basic-lisp.js] parse `(define-setup <name> <block> ...)`
 

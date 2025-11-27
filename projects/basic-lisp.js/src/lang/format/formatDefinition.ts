@@ -12,6 +12,13 @@ export function formatDefinition(definition: Definition): string {
       return `(define-function ${definition.name} ${blocks})`
     }
 
+    case "SetupDefinition": {
+      const blocks = Array.from(
+        definition.blocks.values().map(formatBlock),
+      ).join(" ")
+      return `(define-setup ${definition.name} ${blocks})`
+    }
+
     case "PrimitiveFunctionDefinition": {
       return `(define-primitive ${definition.name} ${definition.arity})`
     }

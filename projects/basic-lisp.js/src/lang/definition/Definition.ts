@@ -8,6 +8,7 @@ export type Definition =
   | FunctionDefinition
   | PrimitiveFunctionDefinition
   | VariableDefinition
+  | SetupDefinition
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
@@ -74,6 +75,29 @@ export function VariableDefinition(
     mod,
     name,
     value,
+    meta,
+  }
+}
+
+export type SetupDefinition = {
+  kind: "SetupDefinition"
+  mod: Mod
+  name: string
+  blocks: Map<string, Block>
+  meta?: Meta
+}
+
+export function SetupDefinition(
+  mod: Mod,
+  name: string,
+  blocks: Map<string, Block>,
+  meta?: Meta,
+): SetupDefinition {
+  return {
+    kind: "SetupDefinition",
+    mod,
+    name,
+    blocks,
     meta,
   }
 }
