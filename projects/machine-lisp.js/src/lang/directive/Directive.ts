@@ -1,6 +1,6 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 
-export type Directive = Db | Dw | Dd | Dq | String
+export type Directive = Db | Dw | Dd | Dq | String | Int | Float
 
 type Values = Array<bigint>
 
@@ -35,6 +35,20 @@ export const Dq = (values: Values, meta?: Meta): Dq => ({
 export type String = { kind: "String"; content: string; meta?: Meta }
 export const String = (content: string, meta?: Meta): String => ({
   kind: "String",
+  content,
+  meta,
+})
+
+export type Int = { kind: "Int"; content: bigint; meta?: Meta }
+export const Int = (content: bigint, meta?: Meta): Int => ({
+  kind: "Int",
+  content,
+  meta,
+})
+
+export type Float = { kind: "Float"; content: number; meta?: Meta }
+export const Float = (content: number, meta?: Meta): Float => ({
+  kind: "Float",
   content,
   meta,
 })

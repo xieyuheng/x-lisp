@@ -36,6 +36,14 @@ export function parseDirective(sexp: S.Sexp): Directive {
       S.matcher("`(string ,content)", ({ content }, { meta }) => {
         return Directives.String(S.stringContent(content), meta)
       }),
+
+      S.matcher("`(int ,content)", ({ content }, { meta }) => {
+        return Directives.Int(BigInt(S.numberContent(content)), meta)
+      }),
+
+      S.matcher("`(float ,content)", ({ content }, { meta }) => {
+        return Directives.Float((S.numberContent(content)), meta)
+      }),
     ]),
     sexp,
   )

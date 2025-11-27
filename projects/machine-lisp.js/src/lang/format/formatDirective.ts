@@ -25,5 +25,13 @@ export function formatDirective(directive: Directive): string {
     case "String": {
       return `(string ${directive.content})`
     }
+
+    case "Int": {
+      return `(int ${directive.content})`
+    }
+
+    case "Float": {
+      return `(float ${directive.content})`
+    }
   }
 }
