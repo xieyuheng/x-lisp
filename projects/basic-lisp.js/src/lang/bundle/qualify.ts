@@ -27,6 +27,15 @@ export function qualifyDefinition(
       )
     }
 
+    case "SetupDefinition": {
+      return Definitions.SetupDefinition(
+        bundleMod,
+        qualifiedName,
+        mapMapValue(definition.blocks, (block) => qualifyBlock(context, block)),
+        definition.meta,
+      )
+    }
+
     case "VariableDefinition": {
       return Definitions.VariableDefinition(
         bundleMod,

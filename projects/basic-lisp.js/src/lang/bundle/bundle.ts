@@ -1,4 +1,3 @@
-import * as B from "../../lang/index.ts"
 import { importBuiltin } from "../builtin/index.ts"
 import { createMod, modOwnDefinitions, type Mod } from "../mod/index.ts"
 import { dependencyPrefix } from "./dependencyHelpers.ts"
@@ -13,7 +12,6 @@ export type BundleContext = {
 export function bundle(entryMod: Mod): Mod {
   const dependencies = entryMod.dependencies
   const bundleMod = createMod(new URL(`boundle:${entryMod.url}`), new Map())
-  bundleMod.stmts.push(B.Export(["_main"]))
 
   importBuiltin(bundleMod)
   mergeEntryMod(bundleMod, { entryMod, dependencies, mod: entryMod })

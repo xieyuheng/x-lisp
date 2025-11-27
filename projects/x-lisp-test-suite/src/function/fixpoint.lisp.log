@@ -151,7 +151,7 @@
 
 ;;; SelectInstructionPass
 
-(export)
+(export _setup _main)
 
 (define-code Y
   (block body
@@ -325,9 +325,11 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
+(define-code _setup (block body))
+
 ;;; AssignHomePass
 
-(export)
+(export _setup _main)
 
 (define-code Y
   (block body
@@ -500,10 +502,12 @@
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (retq)))
+
+(define-code _setup (block body))
 
 ;;; PatchInstructionPass
 
-(export)
+(export _setup _main)
 
 (define-code Y
   (block body
@@ -677,9 +681,11 @@
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (retq)))
 
+(define-code _setup (block body))
+
 ;;; PrologAndEpilogPass
 
-(export)
+(export _setup _main)
 
 (define-code Y
   (block prolog
@@ -935,6 +941,32 @@
     (jmp (label epilog)))
   (block epilog
     (addq (imm 88) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
+(define-code _setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 56) (reg rsp))
+    (jmp (label body)))
+  (block body)
+  (block epilog
+    (addq (imm 56) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))

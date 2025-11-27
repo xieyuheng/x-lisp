@@ -2,5 +2,10 @@
 
 void
 __main(void) {
-    printf("hi\n");
+    printf("[main] from testing bundle\n");
+}
+
+void
+__setup(void) {
+    printf("[setup] from testing bundle\n");
 }

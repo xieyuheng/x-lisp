@@ -1,8 +1,5 @@
 # module setup code
 
-[basic-lisp.js] bundle merge setup code -- order does not matter
-[x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.SetupDefinition` to `_setup` function -- like `_main`
-[runtime] call `_setup` in the `main` of c
 [x-lisp-boot.js] setup constant flag variable to runtime bool value
 
 # address value
@@ -73,12 +70,12 @@
 
 # function object
 
-[runtime] `function_t` -- has `address` and `arity` and `is_primitive`
-[runtime] `curry_t` -- has `function_t` instead of `address_t`
-[runtime] `object_spec_t` -- has `get_slot_fn`
-[runtime] `function_t` -- has register map
+[runtime.c] `function_t` -- has `address` and `arity` and `is_primitive`
+[runtime.c] `curry_t` -- has `function_t` instead of `address_t`
+[runtime.c] `object_spec_t` -- has `get_slot_fn`
+[runtime.c] `function_t` -- has register map
 
-[runtime] [maybe] use inline union for `address` to avoid casting
+[runtime.c] [maybe] use inline union for `address` to avoid casting
 
 # setup funtion
 

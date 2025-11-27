@@ -3,6 +3,9 @@ import * as M from "@xieyuheng/machine-lisp.js"
 import * as R from "../runtime/index.ts"
 
 export function SelectInstructionPass(mod: B.Mod, machineMod: M.Mod): void {
+  generateSetupFunction(mod)
+  mod.exported.add("_main")
+
   machineMod.exported = mod.exported
 
   for (const definition of B.modOwnDefinitions(mod)) {
@@ -12,6 +15,22 @@ export function SelectInstructionPass(mod: B.Mod, machineMod: M.Mod): void {
   }
 }
 
+function generateSetupFunction(mod: B.Mod): void {
+  const instrs = []
+  for (const definition of B.modOwnDefinitions(mod)) {
+    if (definition.kind === "SetupDefinition") {
+      instrs.push(
+        B.Call("_", B.Function(definition.name, 0, { isPrimitive: false }), []),
+      )
+    }
+  }
+
+  const name = "_setup"
+  const blocks = new Map([["body", B.Block("body", instrs)]])
+  mod.definitions.set(name, B.FunctionDefinition(mod, name, blocks))
+  mod.exported.add(name)
+}
+
 function onDefinition(
   machineMod: M.Mod,
   definition: B.Definition,
@@ -19,6 +38,10 @@ function onDefinition(
   switch (definition.kind) {
     case "FunctionDefinition": {
       return onFunctionDefinition(machineMod, definition)
+    }
+
+    case "SetupDefinition": {
+      return onSetupDefinition(machineMod, definition)
     }
 
     case "VariableDefinition": {
@@ -36,6 +59,23 @@ function onDefinition(
 function onFunctionDefinition(
   machineMod: M.Mod,
   definition: B.FunctionDefinition,
+): Array<M.Definition> {
+  const code = M.CodeDefinition(
+    machineMod,
+    definition.name,
+    new Map(),
+    definition.meta,
+  )
+  for (const block of definition.blocks.values()) {
+    const machineBlock = onBlock(block)
+    code.blocks.set(machineBlock.label, machineBlock)
+  }
+  return [code]
+}
+
+function onSetupDefinition(
+  machineMod: M.Mod,
+  definition: B.SetupDefinition,
 ): Array<M.Definition> {
   const code = M.CodeDefinition(
     machineMod,

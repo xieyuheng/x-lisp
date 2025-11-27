@@ -1,0 +1,15 @@
+(define-variable five)
+
+(define-setup iadd1/setup
+  (block body
+    (= x (literal 5))
+    (store five x)
+    (return)))
+
+(define-function _main
+  (block entry
+    (= result (load five))
+    (= expected (literal 5))
+    (= ok (call (@primitive-function equal? 2) result expected))
+    (assert ok)
+    (return)))

@@ -1,3 +1,4 @@
+.global __setup
 .global __main
 
 .bss
@@ -369,3 +370,34 @@ __main.epilog:
         popq %rbp
         retq 
 .size __main, . - __main
+
+.text
+.align 8
+.type __setup, @function
+__setup:
+__setup.prolog:
+        pushq %rbp
+        movq %rsp, %rbp
+        pushq %rsp
+        pushq %rbp
+        pushq %rbx
+        pushq %r12
+        pushq %r13
+        pushq %r14
+        pushq %r15
+        subq $56, %rsp
+        jmp __setup.body
+__setup.body:
+
+__setup.epilog:
+        addq $56, %rsp
+        popq %r15
+        popq %r14
+        popq %r13
+        popq %r12
+        popq %rbx
+        popq %rbp
+        popq %rsp
+        popq %rbp
+        retq 
+.size __setup, . - __setup
