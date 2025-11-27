@@ -1,6 +1,6 @@
 import { type Atom } from "./Atom.ts"
 
-export type Value = Atom | Function | Curry
+export type Value = Atom | Function | Curry | Address
 
 export type Function = {
   kind: "Function"
@@ -39,5 +39,20 @@ export function Curry(target: Value, arity: number, args: Array<Value>): Curry {
     target,
     arity,
     args,
+  }
+}
+
+
+export type Address = {
+  kind: "Address"
+  name: string
+}
+
+export function Address(
+  name: string,
+): Address {
+  return {
+    kind: "Address",
+    name,
   }
 }

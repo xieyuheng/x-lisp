@@ -20,6 +20,10 @@ export function formatValue(value: Value): string {
       }
     }
 
+    case "Address": {
+      return `(@address ${value.name})`
+    }
+
     case "Curry": {
       const target = formatValue(value.target)
       const args = formatValues(value.args)

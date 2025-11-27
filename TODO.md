@@ -1,7 +1,3 @@
-# address value
-
-[basic-lisp.js] `Address` as `Value`
-
 # define-metadata
 
 [machine-lisp.js] more data directives -- preparing for `MetadataDefinition`
