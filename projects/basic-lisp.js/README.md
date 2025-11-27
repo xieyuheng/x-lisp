@@ -6,6 +6,12 @@
 ;;; top level statement
 
 (define-function <name> <block> ...)
+(define-variable <name>)
+(define-variable <name> <value>)
+(define-metadata <name> <chunk> ...)
+
+;; module syntax statement
+
 (import <source> <name> ...)
 (import-all <source>)
 (import-except <source> <name> ...)
@@ -23,7 +29,7 @@
 ;;; instruction
 
 (= <dest> (argument <index>))
-(= <dest> (const <value>))
+(= <dest> (literal <value>))
 (assert <condition>)
 (return <var>)
 (goto <label>)
@@ -42,4 +48,17 @@
 (@function <name> <arity>)
 (@primitive-function <name> <arity>)
 (@curry <value> <arity> <arg> ...)
+(@address <name>)
+
+;;; chunk
+
+(chunk <name> <directive> ...)
+
+;;; directive
+
+(string <string>)
+(int <int>)
+(float <float>)
+(pointer <name>)
+(string-pointer <string>)
 ```

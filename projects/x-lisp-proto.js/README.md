@@ -17,6 +17,9 @@
 (define <name> <exp>)
 (define (<name> <parameters>) <body>)
 (define-data <predicate> <constructors>)
+
+;; module syntax statement
+
 (import <source> <name> ...)
 (import-all <source>)
 (import-except <source> <name> ...)

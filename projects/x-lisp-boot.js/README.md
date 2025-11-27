@@ -14,9 +14,12 @@
 ;;; top level statement
 
 ;; (claim <name> <schema>)
-;; (define <name> <body>)
+(define <name> <body>)
 (define (<name> <parameters>) <body>)
 ;; (define-data <predicate> <constructors>)
+
+;; module syntax statement
+
 (import <source> <name> ...)
 (import-all <source>)
 (import-except <source> <name> ...)

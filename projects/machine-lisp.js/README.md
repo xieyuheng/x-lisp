@@ -7,6 +7,7 @@
 
 (define-code <name> <block> ...)
 (define-data <name> <chunk> ...)
+(define-space <name> <size>)
 
 ;;; block
 
@@ -40,4 +41,7 @@
 (dd <double-word> ...)
 (dq <quadruple-word> ...)
 (string <string>)
+(int <int>)
+(float <float>)
+(pointer <name>)
 ```
