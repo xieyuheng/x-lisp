@@ -1,6 +1,9 @@
 import * as S from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
-import { type FunctionDefinition } from "../definition/index.ts"
+import {
+  SetupDefinition,
+  type FunctionDefinition,
+} from "../definition/index.ts"
 import { type Instr } from "../instr/index.ts"
 import { type Value } from "../value/index.ts"
 
@@ -27,7 +30,7 @@ export function frameNextInstr(frame: Frame): Instr {
 }
 
 export function createFrame(
-  definition: FunctionDefinition,
+  definition: FunctionDefinition | SetupDefinition,
   args: Array<Value>,
 ): Frame {
   const blocks = Array.from(definition.blocks.values())

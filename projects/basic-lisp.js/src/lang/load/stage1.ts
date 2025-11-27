@@ -24,13 +24,8 @@ export function stage1(mod: Mod, stmt: Stmt): void {
     mod.definitions.set(stmt.name, definition)
   }
 
-
   if (stmt.kind === "DefineSetup") {
-    const definition = Definitions.SetupDefinition(
-      mod,
-      stmt.name,
-      stmt.blocks,
-    )
+    const definition = Definitions.SetupDefinition(mod, stmt.name, stmt.blocks)
 
     for (const block of stmt.blocks.values()) {
       checkBlockTerminator(block)

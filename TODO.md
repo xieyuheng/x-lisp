@@ -1,7 +1,5 @@
 # module setup code
 
-[basic-lisp.js] `execute` -- run all `SetupDefinition` before `main`
-
 [basic-lisp.js] bundle merge setup code -- order does not matter
 [x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.SetupDefinition` to `_setup` function -- like `_main`
 [runtime] call `_setup` in the `main` of c

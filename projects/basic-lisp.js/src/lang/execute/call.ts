@@ -11,7 +11,8 @@ export function call(
   args: Array<Value>,
 ): Value {
   switch (definition.kind) {
-    case "FunctionDefinition": {
+    case "FunctionDefinition":
+    case "SetupDefinition": {
       const base = context.frames.length
       context.frames.push(createFrame(definition, args))
       while (context.frames.length > base) {

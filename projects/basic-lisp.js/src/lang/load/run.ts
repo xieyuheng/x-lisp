@@ -1,10 +1,21 @@
-import assert from "node:assert"
 import { call, createContext } from "../execute/index.ts"
-import { modLookupDefinition, type Mod } from "../mod/index.ts"
+import {
+  modLookupDefinition,
+  modOwnDefinitions,
+  type Mod,
+} from "../mod/index.ts"
 
 export function run(mod: Mod): void {
-  const context = createContext(mod)
-  const definition = modLookupDefinition(context.mod, "_main")
-  assert(definition)
-  call(context, definition, [])
+  for (const definition of modOwnDefinitions(mod)) {
+    if (definition.kind === "SetupDefinition") {
+      const context = createContext(mod)
+      call(context, definition, [])
+    }
+  }
+
+  const definition = modLookupDefinition(mod, "_main")
+  if (definition !== undefined) {
+    const context = createContext(mod)
+    call(context, definition, [])
+  }
 }
