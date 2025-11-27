@@ -1,4 +1,4 @@
-(define-function main
+(define-function _main
   (block entry
     (= n (literal 6))
     (= x (call (@function sum-of-cubes 1) n))

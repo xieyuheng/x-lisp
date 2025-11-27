@@ -2,7 +2,7 @@
 
 (import "square" square)
 
-(define (main) (println-non-void (square (square 3))))
+(define (_main) (println-non-void (square (square 3))))
 
 (define (square x) (imul x x))
 
@@ -10,7 +10,7 @@
 
 (import "square" square)
 
-(define (main) (println-non-void (square (square 3))))
+(define (_main) (println-non-void (square (square 3))))
 
 (define (square x) (imul x x))
 
@@ -18,7 +18,7 @@
 
 (import "square" square)
 
-(define (main) (println-non-void (square (square 3))))
+(define (_main) (println-non-void (square (square 3))))
 
 (define (square x) (imul x x))
 
@@ -26,7 +26,7 @@
 
 (import "square" square)
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1)
    ((@function square 1) ((@function square 1) 3))))
 
@@ -36,7 +36,7 @@
 
 (import "square" square)
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1)
    ((@function square 1) ((@function square 1) 3))))
 
@@ -44,7 +44,7 @@
 
 (import "square" square)
 
-(define (main)
+(define (_main)
   (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 _₂ (@function square 1)
       (@let1 _₃ (@function square 1)
@@ -55,7 +55,7 @@
 
 (import "square" square)
 
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₂ (literal (@function square 1)))
@@ -70,7 +70,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -112,7 +112,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -154,7 +154,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -196,7 +196,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))

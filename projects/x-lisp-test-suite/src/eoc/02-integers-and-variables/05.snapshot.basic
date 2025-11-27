@@ -1,4 +1,4 @@
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= a₁ (literal 42))

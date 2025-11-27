@@ -1,5 +1,3 @@
-[basic-lisp.js] rename `main` to `_main` -- `main` should not be preserved name
-
 # module setup code
 
 [basic-lisp.js] `DefineSetup`

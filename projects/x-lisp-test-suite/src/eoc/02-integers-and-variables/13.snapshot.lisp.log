@@ -1,24 +1,24 @@
 ;;; Input
 
-(define (main)
+(define (_main)
   (println-non-void
    (begin (= x (iadd 42 (ineg 10))) (iadd x 10))))
 
 ;;; ShrinkPass
 
-(define (main)
+(define (_main)
   (println-non-void
    (@let1 x ((iadd 42) (ineg 10)) ((iadd x) 10))))
 
 ;;; UniquifyPass
 
-(define (main)
+(define (_main)
   (println-non-void
    (@let1 x₁ ((iadd 42) (ineg 10)) ((iadd x₁) 10))))
 
 ;;; RevealGlobalPass
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1)
    (@let1 x₁
        (((@primitive-function iadd 2) 42)
@@ -27,7 +27,7 @@
 
 ;;; LiftLambdaPass
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1)
    (@let1 x₁
        (((@primitive-function iadd 2) 42)
@@ -36,7 +36,7 @@
 
 ;;; UnnestOperandPass
 
-(define (main)
+(define (_main)
   (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 x₁
         (@let1 _₂ (@primitive-function iadd 2)
@@ -50,7 +50,7 @@
 
 ;;; ExplicateControlPass
 
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₂ (literal (@primitive-function iadd 2)))
@@ -71,7 +71,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -133,7 +133,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -195,7 +195,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -257,7 +257,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))

@@ -1,6 +1,6 @@
-(export main)
+(export _main)
 
-(define-code main
+(define-code _main
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -50,25 +50,31 @@
     (movq (reg rax) (reg-deref (reg rbp) -112))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -112) (reg rax))
-    (branch-if (cc e) (label main/then₅) (label main/else₆)))
-  (block main/let-body₁
+    (branch-if
+     (cc e)
+     (label _main/then₅)
+     (label _main/else₆)))
+  (block _main/let-body₁
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -120) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -128))
     (movq (reg-deref (reg rbp) -128) (reg rax))
     (jmp (label epilog)))
-  (block main/then₂
+  (block _main/then₂
     (movq (imm 0) (reg-deref (reg rbp) -120))
-    (jmp (label main/let-body₁)))
-  (block main/else₃
+    (jmp (label _main/let-body₁)))
+  (block _main/else₃
     (movq (imm 336) (reg-deref (reg rbp) -120))
-    (jmp (label main/let-body₁)))
-  (block main/let-body₄
+    (jmp (label _main/let-body₁)))
+  (block _main/let-body₄
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -136) (reg rax))
-    (branch-if (cc e) (label main/then₂) (label main/else₃)))
-  (block main/then₅
+    (branch-if
+     (cc e)
+     (label _main/then₂)
+     (label _main/else₃)))
+  (block _main/then₅
     (leaq (label-deref (external-label x-equal?)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
@@ -95,11 +101,11 @@
     (movq (reg-deref (reg rbp) -176) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -136))
-    (jmp (label main/let-body₄)))
-  (block main/else₆
+    (jmp (label _main/let-body₄)))
+  (block _main/else₆
     (movq (label-deref (external-label x-false)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -136))
-    (jmp (label main/let-body₄)))
+    (jmp (label _main/let-body₄)))
   (block epilog
     (addq (imm 176) (reg rsp))
     (popq (reg r15))

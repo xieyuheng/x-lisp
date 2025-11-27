@@ -1,6 +1,6 @@
 (define-variable x 3)
 
-(define-function main
+(define-function _main
   (block entry
     (= expected (literal 3))
     (= res (load x))

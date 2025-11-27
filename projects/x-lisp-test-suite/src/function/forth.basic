@@ -77,7 +77,7 @@
     (= _↩ (apply _₁ x₁))
     (return _↩)))
 
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₂ (literal (@primitive-function identity 1)))

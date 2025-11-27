@@ -1,6 +1,6 @@
 #include "../src/index.h"
 
-void _main(void);
+void __main(void);
 
 int
 main(int argc, char *argv[]) {
@@ -10,7 +10,7 @@ main(int argc, char *argv[]) {
     file_disable_buffer(stdout);
     file_disable_buffer(stderr);
 
-    _main();
+    __main();
 
     return 0;
 }

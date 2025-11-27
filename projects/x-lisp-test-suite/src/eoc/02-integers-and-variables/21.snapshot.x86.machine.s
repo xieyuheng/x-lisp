@@ -1,10 +1,10 @@
-.global _main
+.global __main
 
 .text
 .align 8
-.type _main, @function
-_main:
-_main.prolog:
+.type __main, @function
+__main:
+__main.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -15,8 +15,8 @@ _main.prolog:
         pushq %r14
         pushq %r15
         subq $136, %rsp
-        jmp _main.body
-_main.body:
+        jmp __main.body
+__main.body:
         leaq x_println_non_void(%rip), %rdi
         orq $3, %rdi
         movq $8, %rsi
@@ -56,8 +56,8 @@ _main.body:
         callq x_apply_unary
         movq %rax, -136(%rbp)
         movq -136(%rbp), %rax
-        jmp _main.epilog
-_main.epilog:
+        jmp __main.epilog
+__main.epilog:
         addq $136, %rsp
         popq %r15
         popq %r14
@@ -68,4 +68,4 @@ _main.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _main, . - _main
+.size __main, . - __main

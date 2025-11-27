@@ -1,10 +1,10 @@
-.global _main
+.global __main
 
 .text
 .align 8
-.type _main, @function
-_main:
-_main.prolog:
+.type __main, @function
+__main:
+__main.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -15,8 +15,8 @@ _main.prolog:
         pushq %r14
         pushq %r15
         subq $416, %rsp
-        jmp _main.body
-_main.body:
+        jmp __main.body
+__main.body:
         leaq x_println_non_void(%rip), %rdi
         orq $3, %rdi
         movq $8, %rsi
@@ -64,9 +64,9 @@ _main.body:
         movq %rax, -136(%rbp)
         movq x_true(%rip), %rax
         cmpq -136(%rbp), %rax
-        je _main.main.then₁₁
-        jmp _main.main.else₁₂
-_main.main.let_body₁:
+        je __main._main.then₁₁
+        jmp __main._main.else₁₂
+__main._main.let_body₁:
         movq -144(%rbp), %rdi
         movq -152(%rbp), %rsi
         callq x_apply_unary
@@ -76,8 +76,8 @@ _main.main.let_body₁:
         callq x_apply_unary
         movq %rax, -168(%rbp)
         movq -168(%rbp), %rax
-        jmp _main.epilog
-_main.main.then₂:
+        jmp __main.epilog
+__main._main.then₂:
         leaq x_iadd(%rip), %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -93,8 +93,8 @@ _main.main.then₂:
         movq -192(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -152(%rbp)
-        jmp _main.main.let_body₁
-_main.main.else₃:
+        jmp __main._main.let_body₁
+__main._main.else₃:
         leaq x_iadd(%rip), %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -110,13 +110,13 @@ _main.main.else₃:
         movq -216(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -152(%rbp)
-        jmp _main.main.let_body₁
-_main.main.let_body₄:
+        jmp __main._main.let_body₁
+__main._main.let_body₄:
         movq x_true(%rip), %rax
         cmpq -224(%rbp), %rax
-        je _main.main.then₂
-        jmp _main.main.else₃
-_main.main.then₅:
+        je __main._main.then₂
+        jmp __main._main.else₃
+__main._main.then₅:
         leaq x_equal_p(%rip), %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -132,8 +132,8 @@ _main.main.then₅:
         movq -248(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -224(%rbp)
-        jmp _main.main.let_body₄
-_main.main.else₆:
+        jmp __main._main.let_body₄
+__main._main.else₆:
         leaq x_equal_p(%rip), %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -149,8 +149,8 @@ _main.main.else₆:
         movq -272(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -224(%rbp)
-        jmp _main.main.let_body₄
-_main.main.let_body₇:
+        jmp __main._main.let_body₄
+__main._main.let_body₇:
         movq -104(%rbp), %rdi
         movq -280(%rbp), %rsi
         callq x_apply_unary
@@ -172,9 +172,9 @@ _main.main.let_body₇:
         movq %rax, -312(%rbp)
         movq x_true(%rip), %rax
         cmpq -312(%rbp), %rax
-        je _main.main.then₅
-        jmp _main.main.else₆
-_main.main.then₈:
+        je __main._main.then₅
+        jmp __main._main.else₆
+__main._main.then₈:
         leaq x_iadd(%rip), %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -190,8 +190,8 @@ _main.main.then₈:
         movq -336(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -280(%rbp)
-        jmp _main.main.let_body₇
-_main.main.else₉:
+        jmp __main._main.let_body₇
+__main._main.else₉:
         leaq x_iadd(%rip), %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -207,13 +207,13 @@ _main.main.else₉:
         movq -360(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -280(%rbp)
-        jmp _main.main.let_body₇
-_main.main.let_body₁₀:
+        jmp __main._main.let_body₇
+__main._main.let_body₁₀:
         movq x_true(%rip), %rax
         cmpq -368(%rbp), %rax
-        je _main.main.then₈
-        jmp _main.main.else₉
-_main.main.then₁₁:
+        je __main._main.then₈
+        jmp __main._main.else₉
+__main._main.then₁₁:
         leaq x_equal_p(%rip), %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -229,8 +229,8 @@ _main.main.then₁₁:
         movq -392(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -368(%rbp)
-        jmp _main.main.let_body₁₀
-_main.main.else₁₂:
+        jmp __main._main.let_body₁₀
+__main._main.else₁₂:
         leaq x_equal_p(%rip), %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -246,8 +246,8 @@ _main.main.else₁₂:
         movq -416(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -368(%rbp)
-        jmp _main.main.let_body₁₀
-_main.epilog:
+        jmp __main._main.let_body₁₀
+__main.epilog:
         addq $416, %rsp
         popq %r15
         popq %r14
@@ -258,4 +258,4 @@ _main.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _main, . - _main
+.size __main, . - __main

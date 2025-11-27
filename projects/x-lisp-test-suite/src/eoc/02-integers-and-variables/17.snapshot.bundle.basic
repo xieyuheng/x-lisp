@@ -1,6 +1,6 @@
-(export main)
+(export _main)
 
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₂ (literal (@primitive-function iadd 2)))

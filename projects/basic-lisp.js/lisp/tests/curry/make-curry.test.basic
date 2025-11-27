@@ -1,4 +1,4 @@
-(define-function main
+(define-function _main
   (block entry
     (= zero (literal 0))
     (= one (literal 1))

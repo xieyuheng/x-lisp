@@ -1,6 +1,6 @@
-(export main)
+(export _main)
 
-(define-code main
+(define-code _main
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))

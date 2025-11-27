@@ -1,6 +1,6 @@
 ;;; Input
 
-(define (main)
+(define (_main)
   (println-non-void
    (begin
      (= x (random-dice))
@@ -9,21 +9,21 @@
 
 ;;; ShrinkPass
 
-(define (main)
+(define (_main)
   (println-non-void
    (@let1 x (random-dice)
      (@let1 y (random-dice) ((iadd ((iadd x) y)) 42)))))
 
 ;;; UniquifyPass
 
-(define (main)
+(define (_main)
   (println-non-void
    (@let1 x₁ (random-dice)
      (@let1 y₁ (random-dice) ((iadd ((iadd x₁) y₁)) 42)))))
 
 ;;; RevealGlobalPass
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1)
    (@let1 x₁ ((@primitive-function random-dice 0))
      (@let1 y₁ ((@primitive-function random-dice 0))
@@ -33,7 +33,7 @@
 
 ;;; LiftLambdaPass
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1)
    (@let1 x₁ ((@primitive-function random-dice 0))
      (@let1 y₁ ((@primitive-function random-dice 0))
@@ -43,7 +43,7 @@
 
 ;;; UnnestOperandPass
 
-(define (main)
+(define (_main)
   (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 x₁
         (@let1 _₂ (@primitive-function random-dice 0) (_₂))
@@ -59,7 +59,7 @@
 
 ;;; ExplicateControlPass
 
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₂ (literal (@primitive-function random-dice 0)))
@@ -80,7 +80,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -152,7 +152,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -224,7 +224,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -296,7 +296,7 @@
 
 (export)
 
-(define-code main
+(define-code _main
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))

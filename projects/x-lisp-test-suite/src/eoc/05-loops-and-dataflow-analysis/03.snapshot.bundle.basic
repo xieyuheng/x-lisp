@@ -1,6 +1,6 @@
-(export main)
+(export _main)
 
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₃ (literal (@primitive-function print 1)))
@@ -23,9 +23,9 @@
     (= _₁₄ (apply _₁₂ _₁₃))
     (= _₁₅ (literal 2))
     (= _₁₆ (apply _₁₄ _₁₅))
-    (branch _₁₆ main/then₂ main/else₃))
-  (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
-  (block main/then₂
+    (branch _₁₆ _main/then₂ _main/else₃))
+  (block _main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
+  (block _main/then₂
     (= _₁₇ (literal (@primitive-function print 1)))
     (= _₁₈ (literal 111))
     (= _∅₁ (apply _₁₇ _₁₈))
@@ -36,8 +36,8 @@
     (= _₂₂ (apply _₂₀ _₂₁))
     (= _₂₃ (literal 2))
     (= _₂ (apply _₂₂ _₂₃))
-    (goto main/let-body₁))
-  (block main/else₃
+    (goto _main/let-body₁))
+  (block _main/else₃
     (= _₂₄ (literal (@primitive-function print 1)))
     (= _₂₅ (literal 222))
     (= _∅₁ (apply _₂₄ _₂₅))
@@ -48,4 +48,4 @@
     (= _₂₉ (apply _₂₇ _₂₈))
     (= _₃₀ (literal 2))
     (= _₂ (apply _₂₉ _₃₀))
-    (goto main/let-body₁)))
+    (goto _main/let-body₁)))

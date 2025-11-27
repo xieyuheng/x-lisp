@@ -6,7 +6,7 @@
 
 (define three (iadd 1 two))
 
-(define (main) (println-non-void three))
+(define (_main) (println-non-void three))
 
 ;;; ShrinkPass
 
@@ -16,7 +16,7 @@
 
 (define three ((iadd 1) two))
 
-(define (main) (println-non-void three))
+(define (_main) (println-non-void three))
 
 ;;; UniquifyPass
 
@@ -26,7 +26,7 @@
 
 (define three ((iadd 1) two))
 
-(define (main) (println-non-void three))
+(define (_main) (println-non-void three))
 
 ;;; RevealGlobalPass
 
@@ -38,7 +38,7 @@
 (define three
   (((@primitive-function iadd 2) 1) (@constant two)))
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1)
    (@constant three)))
 
@@ -52,7 +52,7 @@
 (define three
   (((@primitive-function iadd 2) 1) (@constant two)))
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1)
    (@constant three)))
 
@@ -70,7 +70,7 @@
     (@let1 _₂ 1
       (@let1 _₃ (_₁ _₂) (@let1 _₄ (@constant two) (_₃ _₄))))))
 
-(define (main)
+(define (_main)
   (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 _₂ (@constant three) (_₁ _₂))))
 
@@ -145,7 +145,7 @@
     (= _↩ (apply _₃ _₄))
     (return _↩)))
 
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₂ (call (@function _three/get 0)))
@@ -278,7 +278,7 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -453,7 +453,7 @@
     (movq (reg-deref (reg rbp) -96) (reg rax))
     (retq)))
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -613,7 +613,7 @@
     (movq (reg-deref (reg rbp) -96) (reg rax))
     (retq)))
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -911,7 +911,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code main
+(define-code _main
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))

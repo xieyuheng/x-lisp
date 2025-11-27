@@ -1,4 +1,4 @@
-(export main)
+(export _main)
 
 (define-code square
   (block prolog
@@ -43,7 +43,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code main
+(define-code _main
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))

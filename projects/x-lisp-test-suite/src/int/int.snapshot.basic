@@ -6,7 +6,7 @@
     (= _↩ (apply _₂ x))
     (return _↩)))
 
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₂ (literal (@function square 1)))

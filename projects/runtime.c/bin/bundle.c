@@ -1,6 +1,6 @@
 #include "../src/index.h"
 
 void
-_main(void) {
+__main(void) {
     printf("hi\n");
 }

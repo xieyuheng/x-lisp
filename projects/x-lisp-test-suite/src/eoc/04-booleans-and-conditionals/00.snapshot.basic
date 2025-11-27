@@ -1,12 +1,12 @@
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₃ (literal #t))
-    (branch _₃ main/then₂ main/else₃))
-  (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
-  (block main/then₂
+    (branch _₃ _main/then₂ _main/else₃))
+  (block _main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
+  (block _main/then₂
     (= _₂ (literal 1))
-    (goto main/let-body₁))
-  (block main/else₃
+    (goto _main/let-body₁))
+  (block _main/else₃
     (= _₂ (literal 2))
-    (goto main/let-body₁)))
+    (goto _main/let-body₁)))

@@ -1,6 +1,6 @@
-(export main)
+(export _main)
 
-(define-code main
+(define-code _main
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -100,15 +100,18 @@
     (movq (reg rax) (reg-deref (reg rbp) -224))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -224) (reg rax))
-    (branch-if (cc e) (label main/then₂) (label main/else₃)))
-  (block main/let-body₁
+    (branch-if
+     (cc e)
+     (label _main/then₂)
+     (label _main/else₃)))
+  (block _main/let-body₁
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -232) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -240))
     (movq (reg-deref (reg rbp) -240) (reg rax))
     (jmp (label epilog)))
-  (block main/then₂
+  (block _main/then₂
     (leaq (label-deref (external-label x-print)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -145,8 +148,8 @@
     (movq (reg-deref (reg rbp) -296) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -232))
-    (jmp (label main/let-body₁)))
-  (block main/else₃
+    (jmp (label _main/let-body₁)))
+  (block _main/else₃
     (leaq (label-deref (external-label x-print)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -183,7 +186,7 @@
     (movq (reg-deref (reg rbp) -352) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -232))
-    (jmp (label main/let-body₁)))
+    (jmp (label _main/let-body₁)))
   (block epilog
     (addq (imm 352) (reg rsp))
     (popq (reg r15))

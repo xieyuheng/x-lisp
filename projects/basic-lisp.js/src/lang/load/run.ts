@@ -4,7 +4,7 @@ import { modLookupDefinition, type Mod } from "../mod/index.ts"
 
 export function run(mod: Mod): void {
   const context = createContext(mod)
-  const definition = modLookupDefinition(context.mod, "main")
+  const definition = modLookupDefinition(context.mod, "_main")
   assert(definition)
   call(context, definition, [])
 }

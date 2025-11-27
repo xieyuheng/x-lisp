@@ -47,20 +47,22 @@ export function stage1(mod: Mod, stmt: Stmt): void {
 
   if (stmt.kind === "Compute") {
     const exp = wrapTopLevelExp(stmt.exp)
-    const found = modLookupDefinition(mod, "main")
+    const mainName = "_main"
+    const found = modLookupDefinition(mod, mainName)
     if (found) {
       assert(found.body.kind === "BeginSugar")
       found.body.sequence.push(exp)
     } else {
-      const body = Exps.BeginSugar([exp], stmt.meta)
-      const main = Definitions.FunctionDefinition(
-        mod,
-        "main",
-        [],
-        body,
-        stmt.meta,
+      mod.definitions.set(
+        mainName,
+        Definitions.FunctionDefinition(
+          mod,
+          mainName,
+          [],
+          Exps.BeginSugar([exp], stmt.meta),
+          stmt.meta,
+        ),
       )
-      mod.definitions.set("main", main)
     }
   }
 }

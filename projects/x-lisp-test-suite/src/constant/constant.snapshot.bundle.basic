@@ -1,4 +1,4 @@
-(export main)
+(export _main)
 
 (define-variable one)
 
@@ -69,7 +69,7 @@
     (= _↩ (apply _₃ _₄))
     (return _↩)))
 
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₂ (call (@function _three/get 0)))

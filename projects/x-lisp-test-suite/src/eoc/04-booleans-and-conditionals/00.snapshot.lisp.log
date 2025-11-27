@@ -1,51 +1,51 @@
 ;;; Input
 
-(define (main) (println-non-void (if #t 1 2)))
+(define (_main) (println-non-void (if #t 1 2)))
 
 ;;; ShrinkPass
 
-(define (main) (println-non-void (if #t 1 2)))
+(define (_main) (println-non-void (if #t 1 2)))
 
 ;;; UniquifyPass
 
-(define (main) (println-non-void (if #t 1 2)))
+(define (_main) (println-non-void (if #t 1 2)))
 
 ;;; RevealGlobalPass
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1) (if #t 1 2)))
 
 ;;; LiftLambdaPass
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1) (if #t 1 2)))
 
 ;;; UnnestOperandPass
 
-(define (main)
+(define (_main)
   (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 _₂ (@let1 _₃ #t (if _₃ 1 2)) (_₁ _₂))))
 
 ;;; ExplicateControlPass
 
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₃ (literal #t))
-    (branch _₃ main/then₂ main/else₃))
-  (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
-  (block main/then₂
+    (branch _₃ _main/then₂ _main/else₃))
+  (block _main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
+  (block _main/then₂
     (= _₂ (literal 1))
-    (goto main/let-body₁))
-  (block main/else₃
+    (goto _main/let-body₁))
+  (block _main/else₃
     (= _₂ (literal 2))
-    (goto main/let-body₁)))
+    (goto _main/let-body₁)))
 
 ;;; SelectInstructionPass
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -58,26 +58,29 @@
     (movq (label-deref (external-label x-true)) (var _₃))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (var _₃) (reg rax))
-    (branch-if (cc e) (label main/then₂) (label main/else₃)))
-  (block main/let-body₁
+    (branch-if
+     (cc e)
+     (label _main/then₂)
+     (label _main/else₃)))
+  (block _main/let-body₁
     (movq (var _₁) (reg rdi))
     (movq (var _₂) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _↩))
     (movq (var _↩) (reg rax))
     (retq))
-  (block main/then₂
+  (block _main/then₂
     (movq (imm 8) (var _₂))
-    (jmp (label main/let-body₁)))
-  (block main/else₃
+    (jmp (label _main/let-body₁)))
+  (block _main/else₃
     (movq (imm 16) (var _₂))
-    (jmp (label main/let-body₁))))
+    (jmp (label _main/let-body₁))))
 
 ;;; AssignHomePass
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -92,26 +95,29 @@
      (reg-deref (reg rbp) -72))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -72) (reg rax))
-    (branch-if (cc e) (label main/then₂) (label main/else₃)))
-  (block main/let-body₁
+    (branch-if
+     (cc e)
+     (label _main/then₂)
+     (label _main/else₃)))
+  (block _main/let-body₁
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -80) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (retq))
-  (block main/then₂
+  (block _main/then₂
     (movq (imm 8) (reg-deref (reg rbp) -80))
-    (jmp (label main/let-body₁)))
-  (block main/else₃
+    (jmp (label _main/let-body₁)))
+  (block _main/else₃
     (movq (imm 16) (reg-deref (reg rbp) -80))
-    (jmp (label main/let-body₁))))
+    (jmp (label _main/let-body₁))))
 
 ;;; PatchInstructionPass
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -125,26 +131,29 @@
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -72) (reg rax))
-    (branch-if (cc e) (label main/then₂) (label main/else₃)))
-  (block main/let-body₁
+    (branch-if
+     (cc e)
+     (label _main/then₂)
+     (label _main/else₃)))
+  (block _main/let-body₁
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -80) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (retq))
-  (block main/then₂
+  (block _main/then₂
     (movq (imm 8) (reg-deref (reg rbp) -80))
-    (jmp (label main/let-body₁)))
-  (block main/else₃
+    (jmp (label _main/let-body₁)))
+  (block _main/else₃
     (movq (imm 16) (reg-deref (reg rbp) -80))
-    (jmp (label main/let-body₁))))
+    (jmp (label _main/let-body₁))))
 
 ;;; PrologAndEpilogPass
 
 (export)
 
-(define-code main
+(define-code _main
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -170,20 +179,23 @@
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -72) (reg rax))
-    (branch-if (cc e) (label main/then₂) (label main/else₃)))
-  (block main/let-body₁
+    (branch-if
+     (cc e)
+     (label _main/then₂)
+     (label _main/else₃)))
+  (block _main/let-body₁
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -80) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (jmp (label epilog)))
-  (block main/then₂
+  (block _main/then₂
     (movq (imm 8) (reg-deref (reg rbp) -80))
-    (jmp (label main/let-body₁)))
-  (block main/else₃
+    (jmp (label _main/let-body₁)))
+  (block _main/else₃
     (movq (imm 16) (reg-deref (reg rbp) -80))
-    (jmp (label main/let-body₁)))
+    (jmp (label _main/let-body₁)))
   (block epilog
     (addq (imm 88) (reg rsp))
     (popq (reg r15))

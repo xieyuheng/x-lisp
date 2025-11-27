@@ -1,6 +1,6 @@
 ;;; Input
 
-(define (main)
+(define (_main)
   (println-non-void
    (if
        (begin
@@ -16,7 +16,7 @@
 
 ;;; ShrinkPass
 
-(define (main)
+(define (_main)
   (println-non-void
    (if
        (@let1 _∅ (print 1)
@@ -32,7 +32,7 @@
 
 ;;; UniquifyPass
 
-(define (main)
+(define (_main)
   (println-non-void
    (if
        (@let1 _∅₁ (print 1)
@@ -48,7 +48,7 @@
 
 ;;; RevealGlobalPass
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1)
    (if
        (@let1 _∅₁ ((@primitive-function print 1) 1)
@@ -68,7 +68,7 @@
 
 ;;; LiftLambdaPass
 
-(define (main)
+(define (_main)
   ((@primitive-function println-non-void 1)
    (if
        (@let1 _∅₁ ((@primitive-function print 1) 1)
@@ -88,7 +88,7 @@
 
 ;;; UnnestOperandPass
 
-(define (main)
+(define (_main)
   (@let1 _₁ (@primitive-function println-non-void 1)
     (@let1 _₂
         (@let1 _∅₁
@@ -163,7 +163,7 @@
 
 ;;; ExplicateControlPass
 
-(define-function main
+(define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
     (= _₃ (literal (@primitive-function print 1)))
@@ -186,9 +186,9 @@
     (= _₁₄ (apply _₁₂ _₁₃))
     (= _₁₅ (literal 2))
     (= _₁₆ (apply _₁₄ _₁₅))
-    (branch _₁₆ main/then₂ main/else₃))
-  (block main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
-  (block main/then₂
+    (branch _₁₆ _main/then₂ _main/else₃))
+  (block _main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
+  (block _main/then₂
     (= _₁₇ (literal (@primitive-function print 1)))
     (= _₁₈ (literal 111))
     (= _∅₁ (apply _₁₇ _₁₈))
@@ -199,8 +199,8 @@
     (= _₂₂ (apply _₂₀ _₂₁))
     (= _₂₃ (literal 2))
     (= _₂ (apply _₂₂ _₂₃))
-    (goto main/let-body₁))
-  (block main/else₃
+    (goto _main/let-body₁))
+  (block _main/else₃
     (= _₂₄ (literal (@primitive-function print 1)))
     (= _₂₅ (literal 222))
     (= _∅₁ (apply _₂₄ _₂₅))
@@ -211,13 +211,13 @@
     (= _₂₉ (apply _₂₇ _₂₈))
     (= _₃₀ (literal 2))
     (= _₂ (apply _₂₉ _₃₀))
-    (goto main/let-body₁)))
+    (goto _main/let-body₁)))
 
 ;;; SelectInstructionPass
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -305,15 +305,18 @@
     (movq (reg rax) (var _₁₆))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (var _₁₆) (reg rax))
-    (branch-if (cc e) (label main/then₂) (label main/else₃)))
-  (block main/let-body₁
+    (branch-if
+     (cc e)
+     (label _main/then₂)
+     (label _main/else₃)))
+  (block _main/let-body₁
     (movq (var _₁) (reg rdi))
     (movq (var _₂) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _↩))
     (movq (var _↩) (reg rax))
     (retq))
-  (block main/then₂
+  (block _main/then₂
     (leaq (label-deref (external-label x-print)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -350,8 +353,8 @@
     (movq (var _₂₃) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _₂))
-    (jmp (label main/let-body₁)))
-  (block main/else₃
+    (jmp (label _main/let-body₁)))
+  (block _main/else₃
     (leaq (label-deref (external-label x-print)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -388,13 +391,13 @@
     (movq (var _₃₀) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _₂))
-    (jmp (label main/let-body₁))))
+    (jmp (label _main/let-body₁))))
 
 ;;; AssignHomePass
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -482,15 +485,18 @@
     (movq (reg rax) (reg-deref (reg rbp) -224))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -224) (reg rax))
-    (branch-if (cc e) (label main/then₂) (label main/else₃)))
-  (block main/let-body₁
+    (branch-if
+     (cc e)
+     (label _main/then₂)
+     (label _main/else₃)))
+  (block _main/let-body₁
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -232) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -240))
     (movq (reg-deref (reg rbp) -240) (reg rax))
     (retq))
-  (block main/then₂
+  (block _main/then₂
     (leaq (label-deref (external-label x-print)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -527,8 +533,8 @@
     (movq (reg-deref (reg rbp) -296) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -232))
-    (jmp (label main/let-body₁)))
-  (block main/else₃
+    (jmp (label _main/let-body₁)))
+  (block _main/else₃
     (leaq (label-deref (external-label x-print)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -565,13 +571,13 @@
     (movq (reg-deref (reg rbp) -352) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -232))
-    (jmp (label main/let-body₁))))
+    (jmp (label _main/let-body₁))))
 
 ;;; PatchInstructionPass
 
 (export)
 
-(define-code main
+(define-code _main
   (block body
     (leaq
      (label-deref (external-label x-println-non-void))
@@ -659,15 +665,18 @@
     (movq (reg rax) (reg-deref (reg rbp) -224))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -224) (reg rax))
-    (branch-if (cc e) (label main/then₂) (label main/else₃)))
-  (block main/let-body₁
+    (branch-if
+     (cc e)
+     (label _main/then₂)
+     (label _main/else₃)))
+  (block _main/let-body₁
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -232) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -240))
     (movq (reg-deref (reg rbp) -240) (reg rax))
     (retq))
-  (block main/then₂
+  (block _main/then₂
     (leaq (label-deref (external-label x-print)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -704,8 +713,8 @@
     (movq (reg-deref (reg rbp) -296) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -232))
-    (jmp (label main/let-body₁)))
-  (block main/else₃
+    (jmp (label _main/let-body₁)))
+  (block _main/else₃
     (leaq (label-deref (external-label x-print)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -742,13 +751,13 @@
     (movq (reg-deref (reg rbp) -352) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -232))
-    (jmp (label main/let-body₁))))
+    (jmp (label _main/let-body₁))))
 
 ;;; PrologAndEpilogPass
 
 (export)
 
-(define-code main
+(define-code _main
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -848,15 +857,18 @@
     (movq (reg rax) (reg-deref (reg rbp) -224))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -224) (reg rax))
-    (branch-if (cc e) (label main/then₂) (label main/else₃)))
-  (block main/let-body₁
+    (branch-if
+     (cc e)
+     (label _main/then₂)
+     (label _main/else₃)))
+  (block _main/let-body₁
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -232) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -240))
     (movq (reg-deref (reg rbp) -240) (reg rax))
     (jmp (label epilog)))
-  (block main/then₂
+  (block _main/then₂
     (leaq (label-deref (external-label x-print)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -893,8 +905,8 @@
     (movq (reg-deref (reg rbp) -296) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -232))
-    (jmp (label main/let-body₁)))
-  (block main/else₃
+    (jmp (label _main/let-body₁)))
+  (block _main/else₃
     (leaq (label-deref (external-label x-print)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -931,7 +943,7 @@
     (movq (reg-deref (reg rbp) -352) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -232))
-    (jmp (label main/let-body₁)))
+    (jmp (label _main/let-body₁)))
   (block epilog
     (addq (imm 352) (reg rsp))
     (popq (reg r15))
