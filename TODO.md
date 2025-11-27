@@ -1,5 +1,3 @@
-[machine-lisp.js] `Directive` -- use function syntax
-
 [machine-lisp.js] more data directives -- `Pointer` -- resolve like label
 
 # define-metadata
