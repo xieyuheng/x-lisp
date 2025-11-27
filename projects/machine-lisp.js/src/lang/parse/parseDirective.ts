@@ -44,6 +44,10 @@ export function parseDirective(sexp: S.Sexp): Directive {
       S.matcher("`(float ,content)", ({ content }, { meta }) => {
         return Directives.Float(S.numberContent(content), meta)
       }),
+
+      S.matcher("`(pointer ,name)", ({ name }, { meta }) => {
+        return Directives.Pointer(S.symbolContent(name), meta)
+      }),
     ]),
     sexp,
   )

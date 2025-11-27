@@ -33,5 +33,9 @@ export function formatDirective(directive: Directive): string {
     case "Float": {
       return `(float ${directive.content})`
     }
+
+    case "Pointer": {
+      return `(pointer ${directive.name})`
+    }
   }
 }

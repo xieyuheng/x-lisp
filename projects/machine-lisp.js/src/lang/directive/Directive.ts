@@ -1,6 +1,6 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 
-export type Directive = Db | Dw | Dd | Dq | String | Int | Float
+export type Directive = Db | Dw | Dd | Dq | String | Int | Float | Pointer
 
 type Values = Array<bigint>
 
@@ -94,6 +94,20 @@ export function Float(content: number, meta?: Meta): Float {
   return {
     kind: "Float",
     content,
+    meta,
+  }
+}
+
+export type Pointer = {
+  kind: "Pointer"
+  name: string
+  meta?: Meta
+}
+
+export function Pointer(name: string, meta?: Meta): Pointer {
+  return {
+    kind: "Pointer",
+    name,
     meta,
   }
 }

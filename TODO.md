@@ -1,5 +1,3 @@
-[machine-lisp.js] more data directives -- `Pointer` -- resolve like label
-
 # define-metadata
 
 [basic-lisp.js] `MetadataDefinition` -- for untagged data
@@ -10,7 +8,7 @@
 [basic-lisp.js] `Directive` for `MetadataDefinition`
 
 - `Int` `Float`
-- `Pointer` -- resolve like label
+- `Pointer` -- resolve like label (but no external)
 - `String` -- always null ended
 - `StringPointer` -- append `Chunk` to the end of this `MetadataDefinition`
 

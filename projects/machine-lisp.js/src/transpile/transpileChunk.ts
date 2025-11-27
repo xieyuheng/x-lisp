@@ -49,5 +49,13 @@ function transpileDirective(context: Context, directive: M.Directive): string {
     case "Float": {
       return `${indentation}.double ${directive.content}`
     }
+
+    case "Pointer": {
+      if (context.definition.chunks.has(directive.name)) {
+        return `${indentation}.quad ${transpileOwnName([context.definition.name, directive.name])}`
+      } else {
+        return `${indentation}.quad ${transpileOwnName([directive.name])}`
+      }
+    }
   }
 }
