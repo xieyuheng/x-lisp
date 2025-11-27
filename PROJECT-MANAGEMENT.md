@@ -295,9 +295,10 @@ date: 2025-10-22
   - [x] define-space
 - [x] basic-lisp.js
   - [x] define-variable
-  - [ ] module setup code
+  - [x] define-setup
 - [x] x-lisp-boot.js
   - [x] `(define <name> <body>)`
+  - [ ] setup code for function definition
 - [x] runtime
   - [ ] scan stack for root objects
   - [ ] GC
