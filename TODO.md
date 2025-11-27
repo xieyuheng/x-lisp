@@ -1,7 +1,5 @@
 # module setup code
 
-[basic-lisp.js] parse `(define-setup <name> <block> ...)`
-
 [basic-lisp.js] `execute` -- run all `SetupDefinition` before `main`
 
 [basic-lisp.js] bundle merge setup code -- order does not matter
