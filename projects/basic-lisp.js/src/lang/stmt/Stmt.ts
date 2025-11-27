@@ -3,7 +3,7 @@ import { type Block } from "../block/index.ts"
 import type { Value } from "../value/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
 
-export type Stmt = AboutModule | DefineFunction | DefineVariable
+export type Stmt = AboutModule | DefineFunction | DefineVariable | DefineSetup
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -41,6 +41,26 @@ export function DefineVariable(
     kind: "DefineVariable",
     name,
     value,
+    meta,
+  }
+}
+
+export type DefineSetup = {
+  kind: "DefineSetup"
+  name: string
+  blocks: Map<string, Block>
+  meta?: Meta
+}
+
+export function DefineSetup(
+  name: string,
+  blocks: Map<string, Block>,
+  meta?: Meta,
+): DefineSetup {
+  return {
+    kind: "DefineSetup",
+    name,
+    blocks,
     meta,
   }
 }
