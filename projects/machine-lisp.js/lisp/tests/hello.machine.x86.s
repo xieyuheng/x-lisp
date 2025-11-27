@@ -5,7 +5,7 @@
 .type _message, @object
 _message:
 _message.entry:
-        .ascii "Hello, World!\n"
+        .string "Hello, World!\n"
 _message.length:
         .quad 14
 .size _message, . - _message

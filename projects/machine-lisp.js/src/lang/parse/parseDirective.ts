@@ -42,7 +42,7 @@ export function parseDirective(sexp: S.Sexp): Directive {
       }),
 
       S.matcher("`(float ,content)", ({ content }, { meta }) => {
-        return Directives.Float((S.numberContent(content)), meta)
+        return Directives.Float(S.numberContent(content), meta)
       }),
     ]),
     sexp,

@@ -39,7 +39,7 @@ function transpileDirective(context: Context, directive: M.Directive): string {
 
     case "String": {
       const content = JSON.stringify(directive.content)
-      return `${indentation}.ascii ${content}`
+      return `${indentation}.string ${content}`
     }
 
     case "Int": {

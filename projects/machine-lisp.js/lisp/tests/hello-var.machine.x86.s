@@ -5,7 +5,7 @@
 .type _message, @object
 _message:
 _message.entry:
-        .ascii "Hello, World!\n"
+        .string "Hello, World!\n"
 .size _message, . - _message
 
 .bss

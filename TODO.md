@@ -1,5 +1,4 @@
 [machine-lisp.js] more data directives -- `Pointer` -- local or global
-[machine-lisp.js] `String` -- always null ended
 
 # define-metadata
 
