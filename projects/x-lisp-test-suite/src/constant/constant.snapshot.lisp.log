@@ -80,12 +80,11 @@
 
 (define-variable _one/flag)
 
-(define-setup
- _one/flag-setup
- (block body
-   (= false (literal #f))
-   (store _one/flag false)
-   (return)))
+(define-setup _one/flag-setup
+  (block body
+    (= false (literal #f))
+    (store _one/flag false)
+    (return)))
 
 (define-function _one/get
   (block body
@@ -106,12 +105,11 @@
 
 (define-variable _two/flag)
 
-(define-setup
- _two/flag-setup
- (block body
-   (= false (literal #f))
-   (store _two/flag false)
-   (return)))
+(define-setup _two/flag-setup
+  (block body
+    (= false (literal #f))
+    (store _two/flag false)
+    (return)))
 
 (define-function _two/get
   (block body
@@ -138,12 +136,11 @@
 
 (define-variable _three/flag)
 
-(define-setup
- _three/flag-setup
- (block body
-   (= false (literal #f))
-   (store _three/flag false)
-   (return)))
+(define-setup _three/flag-setup
+  (block body
+    (= false (literal #f))
+    (store _three/flag false)
+    (return)))
 
 (define-function _three/get
   (block body

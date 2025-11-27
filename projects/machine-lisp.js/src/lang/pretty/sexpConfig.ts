@@ -4,9 +4,8 @@ export const sexpConfig: S.Config = {
   keywords: [
     ["define-code", 1],
     ["define-data", 1],
-    ["extern", 0],
-
-    ["define-function", 1],
+    ["define-space", 1],
+    ["chunk", 1],
     ["block", 1],
 
     ["export", 0],
