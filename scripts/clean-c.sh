@@ -3,4 +3,4 @@
 set -e
 
 make --directory projects/helpers.c clean
-make --directory projects/runtime clean
+make --directory projects/runtime.c clean

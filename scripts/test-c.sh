@@ -3,4 +3,4 @@
 set -e
 
 make --directory projects/helpers.c test
-make --directory projects/runtime test
+make --directory projects/runtime.c test
