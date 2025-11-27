@@ -1,4 +1,6 @@
-[machine-lisp.js] more data directives -- `Pointer` -- local or global
+[machine-lisp.js] `Directive` -- use function syntax
+
+[machine-lisp.js] more data directives -- `Pointer` -- resolve like label
 
 # define-metadata
 
@@ -6,10 +8,11 @@
 [basic-lisp.js] `DefineMetadata`
 [basic-lisp.js] parse `define-metadata`
 [basic-lisp.js] `Chunk` for `MetadataDefinition`
+
 [basic-lisp.js] `Directive` for `MetadataDefinition`
 
 - `Int` `Float`
-- `Pointer` -- local or global
+- `Pointer` -- resolve like label
 - `String` -- always null ended
 - `StringPointer` -- append `Chunk` to the end of this `MetadataDefinition`
 

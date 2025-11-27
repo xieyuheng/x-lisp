@@ -11,33 +11,61 @@ export type Operand =
   | Cc
   | Arity
 
-export type Imm = { kind: "Imm"; value: bigint; meta?: Meta }
-export const Imm = (value: bigint, meta?: Meta): Imm => ({
-  kind: "Imm",
-  value,
-  meta,
-})
+export type Imm = {
+  kind: "Imm"
+  value: bigint
+  meta?: Meta
+}
 
-export type LabelImm = { kind: "LabelImm"; label: Label; meta?: Meta }
-export const LabelImm = (label: Label, meta?: Meta): LabelImm => ({
-  kind: "LabelImm",
-  label,
-  meta,
-})
+export function Imm(value: bigint, meta?: Meta): Imm {
+  return {
+    kind: "Imm",
+    value,
+    meta,
+  }
+}
 
-export type Var = { kind: "Var"; name: string; meta?: Meta }
-export const Var = (name: string, meta?: Meta): Var => ({
-  kind: "Var",
-  name,
-  meta,
-})
+export type LabelImm = {
+  kind: "LabelImm"
+  label: Label
+  meta?: Meta
+}
 
-export type Reg = { kind: "Reg"; name: string; meta?: Meta }
-export const Reg = (name: string, meta?: Meta): Reg => ({
-  kind: "Reg",
-  name,
-  meta,
-})
+export function LabelImm(label: Label, meta?: Meta): LabelImm {
+  return {
+    kind: "LabelImm",
+    label,
+    meta,
+  }
+}
+
+export type Var = {
+  kind: "Var"
+  name: string
+  meta?: Meta
+}
+
+export function Var(name: string, meta?: Meta): Var {
+  return {
+    kind: "Var",
+    name,
+    meta,
+  }
+}
+
+export type Reg = {
+  kind: "Reg"
+  name: string
+  meta?: Meta
+}
+
+export function Reg(name: string, meta?: Meta): Reg {
+  return {
+    kind: "Reg",
+    name,
+    meta,
+  }
+}
 
 export type RegDeref = {
   kind: "RegDeref"
@@ -45,23 +73,29 @@ export type RegDeref = {
   offset: number
   meta?: Meta
 }
-export const RegDeref = (reg: Reg, offset: number, meta?: Meta): RegDeref => ({
-  kind: "RegDeref",
-  reg,
-  offset,
-  meta,
-})
+
+export function RegDeref(reg: Reg, offset: number, meta?: Meta): RegDeref {
+  return {
+    kind: "RegDeref",
+    reg,
+    offset,
+    meta,
+  }
+}
 
 export type LabelDeref = {
   kind: "LabelDeref"
   label: Label
   meta?: Meta
 }
-export const LabelDeref = (label: Label, meta?: Meta): LabelDeref => ({
-  kind: "LabelDeref",
-  label,
-  meta,
-})
+
+export function LabelDeref(label: Label, meta?: Meta): LabelDeref {
+  return {
+    kind: "LabelDeref",
+    label,
+    meta,
+  }
+}
 
 export type Label = {
   kind: "Label"
@@ -69,29 +103,46 @@ export type Label = {
   attributes: { isExternal: boolean }
   meta?: Meta
 }
-export const Label = (
+
+export function Label(
   name: string,
   attributes: { isExternal: boolean },
   meta?: Meta,
-): Label => ({
-  kind: "Label",
-  name,
-  attributes,
-  meta,
-})
+): Label {
+  return {
+    kind: "Label",
+    name,
+    attributes,
+    meta,
+  }
+}
 
 export type ConditionCode = "e" | "l" | "le" | "g" | "ge"
 
-export type Cc = { kind: "Cc"; code: ConditionCode; meta?: Meta }
-export const Cc = (code: ConditionCode, meta?: Meta): Cc => ({
-  kind: "Cc",
-  code,
-  meta,
-})
+export type Cc = {
+  kind: "Cc"
+  code: ConditionCode
+  meta?: Meta
+}
 
-export type Arity = { kind: "Arity"; value: number; meta?: Meta }
-export const Arity = (value: number, meta?: Meta): Arity => ({
-  kind: "Arity",
-  value,
-  meta,
-})
+export function Cc(code: ConditionCode, meta?: Meta): Cc {
+  return {
+    kind: "Cc",
+    code,
+    meta,
+  }
+}
+
+export type Arity = {
+  kind: "Arity"
+  value: number
+  meta?: Meta
+}
+
+export function Arity(value: number, meta?: Meta): Arity {
+  return {
+    kind: "Arity",
+    value,
+    meta,
+  }
+}
