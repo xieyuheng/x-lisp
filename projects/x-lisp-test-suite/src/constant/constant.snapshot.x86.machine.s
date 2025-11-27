@@ -6,13 +6,45 @@
 _one:
         .zero 8
 
-.data
+.bss
 .align 8
-.type __one.flag, @object
 __one.flag:
-__one.flag.entry:
-        .quad 2550726238951964672
-.size __one.flag, . - __one.flag
+        .zero 8
+
+.text
+.align 8
+.type __one.flag_setup, @function
+__one.flag_setup:
+__one.flag_setup.prolog:
+        pushq %rbp
+        movq %rsp, %rbp
+        pushq %rsp
+        pushq %rbp
+        pushq %rbx
+        pushq %r12
+        pushq %r13
+        pushq %r14
+        pushq %r15
+        subq $64, %rsp
+        jmp __one.flag_setup.body
+__one.flag_setup.body:
+        movq x_false(%rip), %rax
+        movq %rax, -64(%rbp)
+        movq -64(%rbp), %rax
+        movq %rax, __one.flag(%rip)
+        jmp __one.flag_setup.epilog
+__one.flag_setup.epilog:
+        addq $64, %rsp
+        popq %r15
+        popq %r14
+        popq %r13
+        popq %r12
+        popq %rbx
+        popq %rbp
+        popq %rsp
+        popq %rbp
+        retq 
+.size __one.flag_setup, . - __one.flag_setup
 
 .text
 .align 8
@@ -104,13 +136,45 @@ __one.function.epilog:
 _two:
         .zero 8
 
-.data
+.bss
 .align 8
-.type __two.flag, @object
 __two.flag:
-__two.flag.entry:
-        .quad 2550726238951964672
-.size __two.flag, . - __two.flag
+        .zero 8
+
+.text
+.align 8
+.type __two.flag_setup, @function
+__two.flag_setup:
+__two.flag_setup.prolog:
+        pushq %rbp
+        movq %rsp, %rbp
+        pushq %rsp
+        pushq %rbp
+        pushq %rbx
+        pushq %r12
+        pushq %r13
+        pushq %r14
+        pushq %r15
+        subq $64, %rsp
+        jmp __two.flag_setup.body
+__two.flag_setup.body:
+        movq x_false(%rip), %rax
+        movq %rax, -64(%rbp)
+        movq -64(%rbp), %rax
+        movq %rax, __two.flag(%rip)
+        jmp __two.flag_setup.epilog
+__two.flag_setup.epilog:
+        addq $64, %rsp
+        popq %r15
+        popq %r14
+        popq %r13
+        popq %r12
+        popq %rbx
+        popq %rbp
+        popq %rsp
+        popq %rbp
+        retq 
+.size __two.flag_setup, . - __two.flag_setup
 
 .text
 .align 8
@@ -218,13 +282,45 @@ __two.function.epilog:
 _three:
         .zero 8
 
-.data
+.bss
 .align 8
-.type __three.flag, @object
 __three.flag:
-__three.flag.entry:
-        .quad 2550726238951964672
-.size __three.flag, . - __three.flag
+        .zero 8
+
+.text
+.align 8
+.type __three.flag_setup, @function
+__three.flag_setup:
+__three.flag_setup.prolog:
+        pushq %rbp
+        movq %rsp, %rbp
+        pushq %rsp
+        pushq %rbp
+        pushq %rbx
+        pushq %r12
+        pushq %r13
+        pushq %r14
+        pushq %r15
+        subq $64, %rsp
+        jmp __three.flag_setup.body
+__three.flag_setup.body:
+        movq x_false(%rip), %rax
+        movq %rax, -64(%rbp)
+        movq -64(%rbp), %rax
+        movq %rax, __three.flag(%rip)
+        jmp __three.flag_setup.epilog
+__three.flag_setup.epilog:
+        addq $64, %rsp
+        popq %r15
+        popq %r14
+        popq %r13
+        popq %r12
+        popq %rbx
+        popq %rbp
+        popq %rsp
+        popq %rbp
+        retq 
+.size __three.flag_setup, . - __three.flag_setup
 
 .text
 .align 8
@@ -385,12 +481,17 @@ __setup.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $56, %rsp
+        subq $64, %rsp
         jmp __setup.body
 __setup.body:
-
+        callq __one.flag_setup
+        movq %rax, -64(%rbp)
+        callq __two.flag_setup
+        movq %rax, -64(%rbp)
+        callq __three.flag_setup
+        movq %rax, -64(%rbp)
 __setup.epilog:
-        addq $56, %rsp
+        addq $64, %rsp
         popq %r15
         popq %r14
         popq %r13

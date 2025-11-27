@@ -1,7 +1,3 @@
-# module setup code
-
-[x-lisp-boot.js] setup constant flag variable to runtime bool value
-
 # address value
 
 [basic-lisp.js] `Address` as `Value`
@@ -88,3 +84,13 @@ primitive funtion to test scan call stack -- print stack trace
 
 - when we have register allocation, before calling stack trace,
   all registers need to be saved to a context object.
+
+# later
+
+[x-lisp-boot.js] `030-ExplicateControlPass` -- compile constant to non-lazy setup code
+
+- if we can ensure all function setup runs before constant setup
+
+  - `define-setup` -- take stage as argument
+
+[x-lisp-boot.js] `encodeValue` -- need sexp.js to really support js `bigint`

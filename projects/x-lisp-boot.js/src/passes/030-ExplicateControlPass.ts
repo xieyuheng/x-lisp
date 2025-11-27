@@ -76,11 +76,28 @@ function onConstantDefinition(
       definition.meta,
     ),
 
-    // (define-variable _<name>/flag false)
+    // (define-variable _<name>/flag)
     B.VariableDefinition(
       basicMod,
       `_${definition.name}/flag`,
-      B.Bool(false),
+      B.Undefined(),
+      definition.meta,
+    ),
+
+    // (define-setup _<name>/flag-setup)
+    B.SetupDefinition(
+      basicMod,
+      `_${definition.name}/flag-setup`,
+      new Map([
+        [
+          "body",
+          B.Block("body", [
+            B.Literal("false", B.Bool(false)),
+            B.Store(`_${definition.name}/flag`, "false"),
+            B.Return(),
+          ]),
+        ],
+      ]),
       definition.meta,
     ),
 

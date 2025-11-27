@@ -78,7 +78,14 @@
 
 (define-variable one)
 
-(define-variable _one/flag #f)
+(define-variable _one/flag)
+
+(define-setup
+ _one/flag-setup
+ (block body
+   (= false (literal #f))
+   (store _one/flag false)
+   (return)))
 
 (define-function _one/get
   (block body
@@ -97,7 +104,14 @@
 
 (define-variable two)
 
-(define-variable _two/flag #f)
+(define-variable _two/flag)
+
+(define-setup
+ _two/flag-setup
+ (block body
+   (= false (literal #f))
+   (store _two/flag false)
+   (return)))
 
 (define-function _two/get
   (block body
@@ -122,7 +136,14 @@
 
 (define-variable three)
 
-(define-variable _three/flag #f)
+(define-variable _three/flag)
+
+(define-setup
+ _three/flag-setup
+ (block body
+   (= false (literal #f))
+   (store _three/flag false)
+   (return)))
 
 (define-function _three/get
   (block body
@@ -158,8 +179,13 @@
 
 (define-space one 8)
 
-(define-data _one/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _one/flag 8)
+
+(define-code _one/flag-setup
+  (block body
+    (movq (label-deref (external-label x-false)) (var false))
+    (movq (var false) (label-deref (label _one/flag)))
+    (retq)))
 
 (define-code _one/get
   (block body
@@ -188,8 +214,13 @@
 
 (define-space two 8)
 
-(define-data _two/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _two/flag 8)
+
+(define-code _two/flag-setup
+  (block body
+    (movq (label-deref (external-label x-false)) (var false))
+    (movq (var false) (label-deref (label _two/flag)))
+    (retq)))
 
 (define-code _two/get
   (block body
@@ -234,8 +265,13 @@
 
 (define-space three 8)
 
-(define-data _three/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _three/flag 8)
+
+(define-code _three/flag-setup
+  (block body
+    (movq (label-deref (external-label x-false)) (var false))
+    (movq (var false) (label-deref (label _three/flag)))
+    (retq)))
 
 (define-code _three/get
   (block body
@@ -297,7 +333,14 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
-(define-code _setup (block body))
+(define-code _setup
+  (block body
+    (callq-n (label _one/flag-setup) (arity 0))
+    (movq (reg rax) (var _))
+    (callq-n (label _two/flag-setup) (arity 0))
+    (movq (reg rax) (var _))
+    (callq-n (label _three/flag-setup) (arity 0))
+    (movq (reg rax) (var _))))
 
 ;;; AssignHomePass
 
@@ -305,8 +348,17 @@
 
 (define-space one 8)
 
-(define-data _one/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _one/flag 8)
+
+(define-code _one/flag-setup
+  (block body
+    (movq
+     (label-deref (external-label x-false))
+     (reg-deref (reg rbp) -64))
+    (movq
+     (reg-deref (reg rbp) -64)
+     (label-deref (label _one/flag)))
+    (retq)))
 
 (define-code _one/get
   (block body
@@ -345,8 +397,17 @@
 
 (define-space two 8)
 
-(define-data _two/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _two/flag 8)
+
+(define-code _two/flag-setup
+  (block body
+    (movq
+     (label-deref (external-label x-false))
+     (reg-deref (reg rbp) -64))
+    (movq
+     (reg-deref (reg rbp) -64)
+     (label-deref (label _two/flag)))
+    (retq)))
 
 (define-code _two/get
   (block body
@@ -401,8 +462,17 @@
 
 (define-space three 8)
 
-(define-data _three/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _three/flag 8)
+
+(define-code _three/flag-setup
+  (block body
+    (movq
+     (label-deref (external-label x-false))
+     (reg-deref (reg rbp) -64))
+    (movq
+     (reg-deref (reg rbp) -64)
+     (label-deref (label _three/flag)))
+    (retq)))
 
 (define-code _three/get
   (block body
@@ -474,7 +544,14 @@
     (movq (reg-deref (reg rbp) -80) (reg rax))
     (retq)))
 
-(define-code _setup (block body))
+(define-code _setup
+  (block body
+    (callq-n (label _one/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _two/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _three/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))))
 
 ;;; PatchInstructionPass
 
@@ -482,8 +559,15 @@
 
 (define-space one 8)
 
-(define-data _one/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _one/flag 8)
+
+(define-code _one/flag-setup
+  (block body
+    (movq (label-deref (external-label x-false)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (reg-deref (reg rbp) -64) (reg rax))
+    (movq (reg rax) (label-deref (label _one/flag)))
+    (retq)))
 
 (define-code _one/get
   (block body
@@ -517,8 +601,15 @@
 
 (define-space two 8)
 
-(define-data _two/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _two/flag 8)
+
+(define-code _two/flag-setup
+  (block body
+    (movq (label-deref (external-label x-false)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (reg-deref (reg rbp) -64) (reg rax))
+    (movq (reg rax) (label-deref (label _two/flag)))
+    (retq)))
 
 (define-code _two/get
   (block body
@@ -568,8 +659,15 @@
 
 (define-space three 8)
 
-(define-data _three/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _three/flag 8)
+
+(define-code _three/flag-setup
+  (block body
+    (movq (label-deref (external-label x-false)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (reg-deref (reg rbp) -64) (reg rax))
+    (movq (reg rax) (label-deref (label _three/flag)))
+    (retq)))
 
 (define-code _three/get
   (block body
@@ -636,7 +734,14 @@
     (movq (reg-deref (reg rbp) -80) (reg rax))
     (retq)))
 
-(define-code _setup (block body))
+(define-code _setup
+  (block body
+    (callq-n (label _one/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _two/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _three/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))))
 
 ;;; PrologAndEpilogPass
 
@@ -644,8 +749,38 @@
 
 (define-space one 8)
 
-(define-data _one/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _one/flag 8)
+
+(define-code _one/flag-setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 64) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq (label-deref (external-label x-false)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (reg-deref (reg rbp) -64) (reg rax))
+    (movq (reg rax) (label-deref (label _one/flag)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 64) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
 
 (define-code _one/get
   (block prolog
@@ -725,8 +860,38 @@
 
 (define-space two 8)
 
-(define-data _two/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _two/flag 8)
+
+(define-code _two/flag-setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 64) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq (label-deref (external-label x-false)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (reg-deref (reg rbp) -64) (reg rax))
+    (movq (reg rax) (label-deref (label _two/flag)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 64) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
 
 (define-code _two/get
   (block prolog
@@ -822,8 +987,38 @@
 
 (define-space three 8)
 
-(define-data _three/flag
-  (chunk entry (dq 2550726238951964700)))
+(define-space _three/flag 8)
+
+(define-code _three/flag-setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 64) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq (label-deref (external-label x-false)) (reg rax))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (movq (reg-deref (reg rbp) -64) (reg rax))
+    (movq (reg rax) (label-deref (label _three/flag)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 64) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
 
 (define-code _three/get
   (block prolog
@@ -970,11 +1165,17 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 64) (reg rsp))
     (jmp (label body)))
-  (block body)
+  (block body
+    (callq-n (label _one/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _two/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _three/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 64) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))

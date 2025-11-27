@@ -1,6 +1,13 @@
 (define-variable one)
 
-(define-variable _one/flag #f)
+(define-variable _one/flag)
+
+(define-setup
+ _one/flag-setup
+ (block body
+   (= false (literal #f))
+   (store _one/flag false)
+   (return)))
 
 (define-function _one/get
   (block body
@@ -19,7 +26,14 @@
 
 (define-variable two)
 
-(define-variable _two/flag #f)
+(define-variable _two/flag)
+
+(define-setup
+ _two/flag-setup
+ (block body
+   (= false (literal #f))
+   (store _two/flag false)
+   (return)))
 
 (define-function _two/get
   (block body
@@ -44,7 +58,14 @@
 
 (define-variable three)
 
-(define-variable _three/flag #f)
+(define-variable _three/flag)
+
+(define-setup
+ _three/flag-setup
+ (block body
+   (= false (literal #f))
+   (store _three/flag false)
+   (return)))
 
 (define-function _three/get
   (block body
