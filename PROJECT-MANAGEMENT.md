@@ -296,6 +296,7 @@ date: 2025-10-22
 - [x] basic-lisp.js
   - [x] define-variable
   - [x] define-setup
+  - [ ] define-metadata
 - [x] x-lisp-boot.js
   - [x] `(define <name> <body>)`
   - [ ] setup code for function definition
