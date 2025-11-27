@@ -42,15 +42,12 @@ export function Curry(target: Value, arity: number, args: Array<Value>): Curry {
   }
 }
 
-
 export type Address = {
   kind: "Address"
   name: string
 }
 
-export function Address(
-  name: string,
-): Address {
+export function Address(name: string): Address {
   return {
     kind: "Address",
     name,

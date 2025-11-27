@@ -198,7 +198,7 @@ function onInstr(instr: B.Instr): Array<M.Instr> {
 }
 
 function selectArgReg(index: number): M.Reg {
-  const argRegName = M.ABIs["x86-64-sysv"]["argument-reg-names"][index]
+  const argRegName = R.ABIs["x86-64-sysv"]["argument-reg-names"][index]
   return M.Reg(argRegName)
 }
 

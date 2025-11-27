@@ -1,18 +1,13 @@
+[machine-lisp.js] more data directives -- `Int` `Float`
+[machine-lisp.js] more data directives -- `Pointer` -- local or global
+[machine-lisp.js] more data directives -- `String` -- always null ended
+
 # define-metadata
 
-[machine-lisp.js] more data directives -- preparing for `MetadataDefinition`
-
-- `Int` `Float`
-- `Pointer` -- local or global
-- `String` -- always null ended
-
 [basic-lisp.js] `MetadataDefinition` -- for untagged data
-
 [basic-lisp.js] `DefineMetadata`
 [basic-lisp.js] parse `define-metadata`
-
 [basic-lisp.js] `Chunk` for `MetadataDefinition`
-
 [basic-lisp.js] `Directive` for `MetadataDefinition`
 
 - `Int` `Float`

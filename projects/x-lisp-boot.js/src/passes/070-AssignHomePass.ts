@@ -1,5 +1,6 @@
 import * as M from "@xieyuheng/machine-lisp.js"
 import * as S from "@xieyuheng/sexp.js"
+import * as R from "../runtime/index.ts"
 
 export function AssignHomePass(mod: M.Mod): void {
   for (const definition of M.modDefinitions(mod)) {
@@ -46,7 +47,7 @@ export function createHomeLocations(
           const found = homeLocations.get(operand.name)
           if (found === undefined) {
             const baseIndex =
-              M.ABIs["x86-64-sysv"]["callee-saved-reg-names"].length
+              R.ABIs["x86-64-sysv"]["callee-saved-reg-names"].length
             const index = baseIndex + homeLocations.size
             const offset = -8 * (index + 1)
             const location = M.RegDeref(M.Reg("rbp"), offset, operand.meta)
