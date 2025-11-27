@@ -1,9 +1,12 @@
 # define-metadata
 
 [basic-lisp.js] `MetadataDefinition` -- for untagged data
+
 [basic-lisp.js] `DefineMetadata`
-[basic-lisp.js] parse `define-metadata`
+[basic-lisp.js] parse `(define-metadata)`
+
 [basic-lisp.js] `Chunk` for `MetadataDefinition`
+[basic-lisp.js] parse `(chunk)`
 
 [basic-lisp.js] `Directive` for `MetadataDefinition`
 
@@ -11,6 +14,8 @@
 - `Pointer` -- resolve like label (but no external)
 - `String` -- always null ended
 - `StringPointer` -- append `Chunk` to the end of this `MetadataDefinition`
+
+[basic-lisp.js] parse directives
 
 [x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.MetadataDefinition` to `M.DataDefinition`
 
