@@ -1,16 +1,15 @@
+[basic-lisp.js] rename `main` to `_main` -- `main` should not be preserved name
+
 # module setup code
 
 [basic-lisp.js] `DefineSetup`
 [basic-lisp.js] parse `(define-setup <name> <block> ...)`
+[basic-lisp.js] `load` -- handle `SetupDefinition`
+[basic-lisp.js] `execute` -- run all `SetupDefinition` before `main`
 
 [basic-lisp.js] bundle merge setup code -- order does not matter
-
-[x-lisp-boot.js] `main` should not be preserved name
-
-[x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.SetupDefinition` to `setup` function -- like `main`
-
+[x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.SetupDefinition` to `_setup` function -- like `_main`
 [runtime] call `_setup` in the `main` of c
-
 [x-lisp-boot.js] setup constant flag variable to runtime bool value
 
 # address value
@@ -48,7 +47,7 @@
 ```scheme
 (define-function <name>)
 (define-variable _<name>/constant)
-(define-setup-function _<name>/setup
+(define-setup _<name>/setup
   (block body
     (= address (literal (@address <name>)))
     (= arity (literal <arity>))
@@ -70,7 +69,7 @@
   (chunk register-info (pointer _<name>/register-info))
   (chunk variable-names (string-pointer "<name>") (string-pointer "<name>") ...))
 (define-variable _<name>/constant)
-(define-setup-function _<name>/setup
+(define-setup _<name>/setup
   (block body
     (= address (literal (@address <name>)))
     (= metadata (literal (@address _<name>/metadata)))
