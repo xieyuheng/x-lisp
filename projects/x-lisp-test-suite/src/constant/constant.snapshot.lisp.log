@@ -92,13 +92,13 @@
     (branch flag cached init))
   (block cached (= result (load one)) (return result))
   (block init
-    (= result (call (@function _one/function 0)))
+    (= result (call (@function _one/init-function 0)))
     (store one result)
     (= true (literal #t))
     (store _one/flag true)
     (return result)))
 
-(define-function _one/function
+(define-function _one/init-function
   (block body (= _↩ (literal 1)) (return _↩)))
 
 (define-variable two)
@@ -117,13 +117,13 @@
     (branch flag cached init))
   (block cached (= result (load two)) (return result))
   (block init
-    (= result (call (@function _two/function 0)))
+    (= result (call (@function _two/init-function 0)))
     (store two result)
     (= true (literal #t))
     (store _two/flag true)
     (return result)))
 
-(define-function _two/function
+(define-function _two/init-function
   (block body
     (= _₁ (literal (@primitive-function iadd 2)))
     (= _₂ (literal 1))
@@ -148,13 +148,13 @@
     (branch flag cached init))
   (block cached (= result (load three)) (return result))
   (block init
-    (= result (call (@function _three/function 0)))
+    (= result (call (@function _three/init-function 0)))
     (store three result)
     (= true (literal #t))
     (store _three/flag true)
     (return result)))
 
-(define-function _three/function
+(define-function _three/init-function
   (block body
     (= _₁ (literal (@primitive-function iadd 2)))
     (= _₂ (literal 1))
@@ -195,7 +195,7 @@
     (movq (var result) (reg rax))
     (retq))
   (block init
-    (callq-n (label _one/function) (arity 0))
+    (callq-n (label _one/init-function) (arity 0))
     (movq (reg rax) (var result))
     (movq (var result) (label-deref (label one)))
     (movq (label-deref (external-label x-true)) (var true))
@@ -203,7 +203,7 @@
     (movq (var result) (reg rax))
     (retq)))
 
-(define-code _one/function
+(define-code _one/init-function
   (block body
     (movq (imm 8) (var _↩))
     (movq (var _↩) (reg rax))
@@ -230,7 +230,7 @@
     (movq (var result) (reg rax))
     (retq))
   (block init
-    (callq-n (label _two/function) (arity 0))
+    (callq-n (label _two/init-function) (arity 0))
     (movq (reg rax) (var result))
     (movq (var result) (label-deref (label two)))
     (movq (label-deref (external-label x-true)) (var true))
@@ -238,7 +238,7 @@
     (movq (var result) (reg rax))
     (retq)))
 
-(define-code _two/function
+(define-code _two/init-function
   (block body
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
@@ -281,7 +281,7 @@
     (movq (var result) (reg rax))
     (retq))
   (block init
-    (callq-n (label _three/function) (arity 0))
+    (callq-n (label _three/init-function) (arity 0))
     (movq (reg rax) (var result))
     (movq (var result) (label-deref (label three)))
     (movq (label-deref (external-label x-true)) (var true))
@@ -289,7 +289,7 @@
     (movq (var result) (reg rax))
     (retq)))
 
-(define-code _three/function
+(define-code _three/init-function
   (block body
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
@@ -372,7 +372,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq))
   (block init
-    (callq-n (label _one/function) (arity 0))
+    (callq-n (label _one/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq
      (reg-deref (reg rbp) -72)
@@ -386,7 +386,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq)))
 
-(define-code _one/function
+(define-code _one/init-function
   (block body
     (movq (imm 8) (reg-deref (reg rbp) -64))
     (movq (reg-deref (reg rbp) -64) (reg rax))
@@ -421,7 +421,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq))
   (block init
-    (callq-n (label _two/function) (arity 0))
+    (callq-n (label _two/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq
      (reg-deref (reg rbp) -72)
@@ -435,7 +435,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq)))
 
-(define-code _two/function
+(define-code _two/init-function
   (block body
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
@@ -486,7 +486,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq))
   (block init
-    (callq-n (label _three/function) (arity 0))
+    (callq-n (label _three/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq
      (reg-deref (reg rbp) -72)
@@ -500,7 +500,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq)))
 
-(define-code _three/function
+(define-code _three/init-function
   (block body
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
@@ -579,7 +579,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq))
   (block init
-    (callq-n (label _one/function) (arity 0))
+    (callq-n (label _one/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label one)))
@@ -590,7 +590,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq)))
 
-(define-code _one/function
+(define-code _one/init-function
   (block body
     (movq (imm 8) (reg-deref (reg rbp) -64))
     (movq (reg-deref (reg rbp) -64) (reg rax))
@@ -621,7 +621,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq))
   (block init
-    (callq-n (label _two/function) (arity 0))
+    (callq-n (label _two/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label two)))
@@ -632,7 +632,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq)))
 
-(define-code _two/function
+(define-code _two/init-function
   (block body
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
@@ -679,7 +679,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq))
   (block init
-    (callq-n (label _three/function) (arity 0))
+    (callq-n (label _three/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label three)))
@@ -690,7 +690,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (retq)))
 
-(define-code _three/function
+(define-code _three/init-function
   (block body
     (leaq (label-deref (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
@@ -804,7 +804,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block init
-    (callq-n (label _one/function) (arity 0))
+    (callq-n (label _one/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label one)))
@@ -826,7 +826,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _one/function
+(define-code _one/init-function
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -915,7 +915,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block init
-    (callq-n (label _two/function) (arity 0))
+    (callq-n (label _two/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label two)))
@@ -937,7 +937,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _two/function
+(define-code _two/init-function
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -1042,7 +1042,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block init
-    (callq-n (label _three/function) (arity 0))
+    (callq-n (label _three/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label three)))
@@ -1064,7 +1064,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _three/function
+(define-code _three/init-function
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))

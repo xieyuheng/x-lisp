@@ -1,3 +1,20 @@
+# function constant
+
+[x-lisp-boot.js] `ExplicateControlPass` -- setup `FunctionDefinition` to `make-curry` for now
+
+```scheme
+(define-function <name>)
+(define-variable _<name>/constant)
+(define-setup _<name>/setup
+  (block body
+    (= address (literal (@address <name>)))
+    (= arity (literal <arity>))
+    (= size (literal 0))
+    (= curry (call (@primitive-function make-curry 3) address arity size))
+    (store _<name>/constant curry)
+    (return)))
+```
+
 # define-metadata
 
 [basic-lisp.js] `MetadataDefinition` -- for untagged data
@@ -16,21 +33,6 @@
 [x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.MetadataDefinition` to `M.DataDefinition`
 
 # function constant
-
-[x-lisp-boot.js] `ExplicateControlPass` -- setup `FunctionDefinition` to `make-curry` for now
-
-```scheme
-(define-function <name>)
-(define-variable _<name>/constant)
-(define-setup _<name>/setup
-  (block body
-    (= address (literal (@address <name>)))
-    (= arity (literal <arity>))
-    (= size (literal 0))
-    (= curry (call (@primitive-function make-curry 3) address arity size))
-    (store _<name>/constant curry)
-    (return)))
-```
 
 [x-lisp-boot.js] `ExplicateControlPass` -- setup `FunctionDefinition` to `make-function`
 

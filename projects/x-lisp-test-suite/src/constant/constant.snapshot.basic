@@ -14,13 +14,13 @@
     (branch flag cached init))
   (block cached (= result (load one)) (return result))
   (block init
-    (= result (call (@function _one/function 0)))
+    (= result (call (@function _one/init-function 0)))
     (store one result)
     (= true (literal #t))
     (store _one/flag true)
     (return result)))
 
-(define-function _one/function
+(define-function _one/init-function
   (block body (= _↩ (literal 1)) (return _↩)))
 
 (define-variable two)
@@ -39,13 +39,13 @@
     (branch flag cached init))
   (block cached (= result (load two)) (return result))
   (block init
-    (= result (call (@function _two/function 0)))
+    (= result (call (@function _two/init-function 0)))
     (store two result)
     (= true (literal #t))
     (store _two/flag true)
     (return result)))
 
-(define-function _two/function
+(define-function _two/init-function
   (block body
     (= _₁ (literal (@primitive-function iadd 2)))
     (= _₂ (literal 1))
@@ -70,13 +70,13 @@
     (branch flag cached init))
   (block cached (= result (load three)) (return result))
   (block init
-    (= result (call (@function _three/function 0)))
+    (= result (call (@function _three/init-function 0)))
     (store three result)
     (= true (literal #t))
     (store _three/flag true)
     (return result)))
 
-(define-function _three/function
+(define-function _three/init-function
   (block body
     (= _₁ (literal (@primitive-function iadd 2)))
     (= _₂ (literal 1))

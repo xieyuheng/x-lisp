@@ -40,6 +40,13 @@ function onFunctionDefinition(
   basicMod: B.Mod,
   definition: X.FunctionDefinition,
 ): Array<B.Definition> {
+  return [explicateFunctionDefinition(basicMod, definition)]
+}
+
+function explicateFunctionDefinition(
+  basicMod: B.Mod,
+  definition: X.FunctionDefinition,
+): B.Definition {
   const fn = B.FunctionDefinition(
     basicMod,
     definition.name,
@@ -47,18 +54,17 @@ function onFunctionDefinition(
     definition.meta,
   )
 
+  const state = { fn }
   const initialInstrs = Array.from(
     definition.parameters
       .entries()
       .map(([index, name]) => B.Argument(name, index)),
   )
-
-  const state = { fn }
   const block = B.Block("body", initialInstrs)
   state.fn.blocks.set(block.label, block)
   block.instrs.push(...inTail(state, definition.body))
   B.checkBlockTerminator(block)
-  return [fn]
+  return fn
 }
 
 function onConstantDefinition(
@@ -109,7 +115,7 @@ function onConstantDefinition(
     //     (= result (load <name>))
     //     (return result))
     //   (block init
-    //     (= result (call _<name>/function))
+    //     (= result (call _<name>/init-function))
     //     (store <name> result)
     //     (= true (const #t))
     //     (store _<name>/flag true)
@@ -137,7 +143,7 @@ function onConstantDefinition(
           B.Block("init", [
             B.Call(
               "result",
-              B.Function(`_${definition.name}/function`, 0, {
+              B.Function(`_${definition.name}/init-function`, 0, {
                 isPrimitive: false,
               }),
               [],
@@ -152,14 +158,14 @@ function onConstantDefinition(
       definition.meta,
     ),
 
-    // (define-function _<name>/function
+    // (define-function _<name>/init-function
     //   (block body
     //     (compile <body>)))
-    ...onFunctionDefinition(
+    explicateFunctionDefinition(
       basicMod,
       X.FunctionDefinition(
         definition.mod,
-        `_${definition.name}/function`,
+        `_${definition.name}/init-function`,
         [],
         definition.body,
         definition.meta,

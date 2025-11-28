@@ -60,7 +60,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block init
-    (callq-n (label _one/function) (arity 0))
+    (callq-n (label _one/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label one)))
@@ -82,7 +82,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _one/function
+(define-code _one/init-function
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -171,7 +171,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block init
-    (callq-n (label _two/function) (arity 0))
+    (callq-n (label _two/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label two)))
@@ -193,7 +193,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _two/function
+(define-code _two/init-function
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -298,7 +298,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block init
-    (callq-n (label _three/function) (arity 0))
+    (callq-n (label _three/init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label three)))
@@ -320,7 +320,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _three/function
+(define-code _three/init-function
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))

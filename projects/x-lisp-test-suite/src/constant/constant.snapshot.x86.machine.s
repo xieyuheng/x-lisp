@@ -75,7 +75,7 @@ __one.get.cached:
         movq -72(%rbp), %rax
         jmp __one.get.epilog
 __one.get.init:
-        callq __one.function
+        callq __one.init_function
         movq %rax, -72(%rbp)
         movq -72(%rbp), %rax
         movq %rax, _one(%rip)
@@ -100,9 +100,9 @@ __one.get.epilog:
 
 .text
 .align 8
-.type __one.function, @function
-__one.function:
-__one.function.prolog:
+.type __one.init_function, @function
+__one.init_function:
+__one.init_function.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -113,12 +113,12 @@ __one.function.prolog:
         pushq %r14
         pushq %r15
         subq $64, %rsp
-        jmp __one.function.body
-__one.function.body:
+        jmp __one.init_function.body
+__one.init_function.body:
         movq $8, -64(%rbp)
         movq -64(%rbp), %rax
-        jmp __one.function.epilog
-__one.function.epilog:
+        jmp __one.init_function.epilog
+__one.init_function.epilog:
         addq $64, %rsp
         popq %r15
         popq %r14
@@ -129,7 +129,7 @@ __one.function.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size __one.function, . - __one.function
+.size __one.init_function, . - __one.init_function
 
 .bss
 .align 8
@@ -205,7 +205,7 @@ __two.get.cached:
         movq -72(%rbp), %rax
         jmp __two.get.epilog
 __two.get.init:
-        callq __two.function
+        callq __two.init_function
         movq %rax, -72(%rbp)
         movq -72(%rbp), %rax
         movq %rax, _two(%rip)
@@ -230,9 +230,9 @@ __two.get.epilog:
 
 .text
 .align 8
-.type __two.function, @function
-__two.function:
-__two.function.prolog:
+.type __two.init_function, @function
+__two.init_function:
+__two.init_function.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -243,8 +243,8 @@ __two.function.prolog:
         pushq %r14
         pushq %r15
         subq $96, %rsp
-        jmp __two.function.body
-__two.function.body:
+        jmp __two.init_function.body
+__two.init_function.body:
         leaq x_iadd(%rip), %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -263,8 +263,8 @@ __two.function.body:
         callq x_apply_unary
         movq %rax, -96(%rbp)
         movq -96(%rbp), %rax
-        jmp __two.function.epilog
-__two.function.epilog:
+        jmp __two.init_function.epilog
+__two.init_function.epilog:
         addq $96, %rsp
         popq %r15
         popq %r14
@@ -275,7 +275,7 @@ __two.function.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size __two.function, . - __two.function
+.size __two.init_function, . - __two.init_function
 
 .bss
 .align 8
@@ -351,7 +351,7 @@ __three.get.cached:
         movq -72(%rbp), %rax
         jmp __three.get.epilog
 __three.get.init:
-        callq __three.function
+        callq __three.init_function
         movq %rax, -72(%rbp)
         movq -72(%rbp), %rax
         movq %rax, _three(%rip)
@@ -376,9 +376,9 @@ __three.get.epilog:
 
 .text
 .align 8
-.type __three.function, @function
-__three.function:
-__three.function.prolog:
+.type __three.init_function, @function
+__three.init_function:
+__three.init_function.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -389,8 +389,8 @@ __three.function.prolog:
         pushq %r14
         pushq %r15
         subq $96, %rsp
-        jmp __three.function.body
-__three.function.body:
+        jmp __three.init_function.body
+__three.init_function.body:
         leaq x_iadd(%rip), %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -409,8 +409,8 @@ __three.function.body:
         callq x_apply_unary
         movq %rax, -96(%rbp)
         movq -96(%rbp), %rax
-        jmp __three.function.epilog
-__three.function.epilog:
+        jmp __three.init_function.epilog
+__three.init_function.epilog:
         addq $96, %rsp
         popq %r15
         popq %r14
@@ -421,7 +421,7 @@ __three.function.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size __three.function, . - __three.function
+.size __three.init_function, . - __three.init_function
 
 .text
 .align 8
