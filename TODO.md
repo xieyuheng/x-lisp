@@ -1,3 +1,22 @@
+fix `prettyMod` -- should not apply to list of sexp
+
+[runtime.c] complete builtin
+
+```
+x_atom_p
+x_write
+x_int_non_zero_p
+x_float_non_zero_p
+x_random_int
+x_random_float
+x_atom_p
+x_write
+x_int_non_zero_p
+x_float_non_zero_p
+x_random_int
+x_random_float
+```
+
 # function constant
 
 [x-lisp-boot.js] `030-ExplicateControlPass` -- setup constant for primitive function

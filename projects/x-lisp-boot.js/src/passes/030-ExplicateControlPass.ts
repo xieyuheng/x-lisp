@@ -10,6 +10,18 @@ export function ExplicateControlPass(mod: X.Mod, basicMod: B.Mod): void {
     }
   }
 
+  for (const definition of Array.from(basicMod.definitions.values())) {
+    if (definition.kind === "PrimitiveFunctionDefinition") {
+      for (const basicDefinition of setupPrimitiveFunction(
+        basicMod,
+        definition,
+      )) {
+        // TODO
+        // basicMod.definitions.set(basicDefinition.name, basicDefinition)
+      }
+    }
+  }
+
   for (const definition of X.modOwnDefinitions(mod)) {
     for (const basicDefinition of onDefinition(basicMod, definition)) {
       basicMod.definitions.set(basicDefinition.name, basicDefinition)
@@ -34,6 +46,54 @@ function onDefinition(
       return onConstantDefinition(basicMod, definition)
     }
   }
+}
+
+function setupPrimitiveFunction(
+  basicMod: B.Mod,
+  definition: B.PrimitiveFunctionDefinition,
+): Array<B.Definition> {
+  return [
+    // (define-variable <name>©constant)
+    B.VariableDefinition(
+      basicMod,
+      `${definition.name}©constant`,
+      B.Undefined(),
+    ),
+
+    // (define-setup <name>©setup
+    //   (block body
+    //     (= function-address (literal (@address <name>)))
+    //     (= arity (literal <arity>))
+    //     (= size (literal 0))
+    //     (= curry (call (@primitive-function make-curry 3)
+    //                function-address arity size))
+    //     (store <name>©constant curry)
+    //     (return)))
+    B.SetupDefinition(
+      basicMod,
+      `${definition.name}©setup`,
+      new Map([
+        [
+          "body",
+          B.Block("body", [
+            B.Literal(
+              "function-address",
+              B.Address(definition.name, { isPrimitive: true }),
+            ),
+            B.Literal("arity", B.Int(definition.arity)),
+            B.Literal("size", B.Int(0)),
+            B.Call(
+              "curry",
+              B.Function("make-curry", 3, { isPrimitive: true }),
+              ["function-address", "arity", "size"],
+            ),
+            B.Store(`${definition.name}©constant`, "curry"),
+            B.Return(),
+          ]),
+        ],
+      ]),
+    ),
+  ]
 }
 
 function onFunctionDefinition(
