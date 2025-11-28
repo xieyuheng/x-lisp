@@ -10,3 +10,19 @@
   (block _main/else₃
     (= _₂ (literal 2))
     (goto _main/let-body₁)))
+
+(define-variable __main/constant)
+
+(define-setup __main/setup
+  (block body
+    (= function-address (literal (@address _main)))
+    (= arity (literal 0))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store __main/constant curry)
+    (return)))

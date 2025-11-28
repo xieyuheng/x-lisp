@@ -80,6 +80,22 @@ function qualifyInstr(context: BundleContext, instr: Instr): Instr {
       )
     }
 
+    case "Load": {
+      return Instrs.Load(
+        instr.dest,
+        qualifyName(context, instr.name),
+        instr.meta,
+      )
+    }
+
+    case "Store": {
+      return Instrs.Store(
+        qualifyName(context, instr.name),
+        instr.source,
+        instr.meta,
+      )
+    }
+
     default: {
       return instr
     }
@@ -99,10 +115,21 @@ function qualifyFunction(
   }
 }
 
+function qualifyAddress(
+  context: BundleContext,
+  address: Values.Address,
+): Values.Address {
+  return Values.Address(qualifyName(context, address.name))
+}
+
 function qualifyValue(context: BundleContext, value: Value): Value {
   switch (value.kind) {
     case "Function": {
       return qualifyFunction(context, value)
+    }
+
+    case "Address": {
+      return qualifyAddress(context, value)
     }
 
     default: {

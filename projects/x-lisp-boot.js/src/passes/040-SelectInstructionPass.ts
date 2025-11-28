@@ -241,12 +241,46 @@ function selectLiteral(dest: string, value: B.Value): Array<M.Instr> {
       return [M.Instr("movq", [M.Imm(R.encodeInt(value.content)), M.Var(dest)])]
     }
 
+    case "Address": {
+      return [
+        M.Instr("movq", [
+          M.LabelImm(M.Label(value.name, { isExternal: false })),
+          M.Var(dest),
+        ]),
+        ...selectTagEncoding(M.Var(dest), R.AddressTag),
+      ]
+    }
+
+    // case "Function": {
+    //   return [
+    //     M.Instr("movq", [
+    //       M.LabelDeref(
+    //         M.Label(`_${value.name}/constant`, { isExternal: false }),
+    //       ),
+    //       M.Var(dest),
+    //     ]),
+    //   ]
+    // }
+
     case "Function": {
-      return selectLiteralFunction(dest, value)
+      return [
+        M.Instr("movq", [
+          M.LabelImm(selectFunctionLabel(value)),
+          selectArgReg(0),
+        ]),
+        ...selectTagEncoding(selectArgReg(0), R.AddressTag),
+        M.Instr("movq", [M.Imm(R.encodeInt(value.arity)), selectArgReg(1)]),
+        M.Instr("movq", [M.Imm(R.encodeInt(0)), selectArgReg(2)]),
+        M.Instr("callq-n", [
+          M.Label("x-make-curry", { isExternal: true }),
+          M.Arity(3),
+        ]),
+        M.Instr("movq", [M.Reg("rax"), M.Var(dest)]),
+      ]
     }
 
     default: {
-      let message = `[selectConst] unhandled value`
+      let message = `[selectLiteral] unhandled value`
       message += `\n  value: ${B.formatValue(value)}`
       message += `\n  dest: ${dest}`
       throw new Error(message)
@@ -263,20 +297,6 @@ function selectTagEncoding(operand: M.Operand, tag: R.Tag): Array<M.Instr> {
       M.Instr("orq", [M.Imm(tag), operand]),
     ]
   }
-}
-
-function selectLiteralFunction(dest: string, fn: B.Function): Array<M.Instr> {
-  return [
-    M.Instr("leaq", [M.LabelDeref(selectFunctionLabel(fn)), selectArgReg(0)]),
-    ...selectTagEncoding(selectArgReg(0), R.AddressTag),
-    M.Instr("movq", [M.Imm(R.encodeInt(fn.arity)), selectArgReg(1)]),
-    M.Instr("movq", [M.Imm(R.encodeInt(0)), selectArgReg(2)]),
-    M.Instr("callq-n", [
-      M.Label("x-make-curry", { isExternal: true }),
-      M.Arity(3),
-    ]),
-    M.Instr("movq", [M.Reg("rax"), M.Var(dest)]),
-  ]
 }
 
 function selectFunctionLabel(fn: B.Function): M.Label {

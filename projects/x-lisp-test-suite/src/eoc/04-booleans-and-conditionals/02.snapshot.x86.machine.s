@@ -18,13 +18,13 @@ __main.prolog:
         subq $416, %rsp
         jmp __main.body
 __main.body:
-        leaq x_println_non_void(%rip), %rdi
+        movq $x_println_non_void, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, -64(%rbp)
-        leaq x_random_dice(%rip), %rdi
+        movq $x_random_dice, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -33,7 +33,7 @@ __main.body:
         movq -72(%rbp), %rdi
         callq x_apply_nullary
         movq %rax, -80(%rbp)
-        leaq x_random_dice(%rip), %rdi
+        movq $x_random_dice, %rdi
         orq $3, %rdi
         movq $0, %rsi
         movq $0, %rdx
@@ -42,13 +42,13 @@ __main.body:
         movq -88(%rbp), %rdi
         callq x_apply_nullary
         movq %rax, -96(%rbp)
-        leaq x_iadd(%rip), %rdi
+        movq $x_iadd, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, -104(%rbp)
-        leaq x_int_less_p(%rip), %rdi
+        movq $x_int_less_p, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -79,7 +79,7 @@ __main._main.let_body₁:
         movq -168(%rbp), %rax
         jmp __main.epilog
 __main._main.then₂:
-        leaq x_iadd(%rip), %rdi
+        movq $x_iadd, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -96,7 +96,7 @@ __main._main.then₂:
         movq %rax, -152(%rbp)
         jmp __main._main.let_body₁
 __main._main.else₃:
-        leaq x_iadd(%rip), %rdi
+        movq $x_iadd, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -118,7 +118,7 @@ __main._main.let_body₄:
         je __main._main.then₂
         jmp __main._main.else₃
 __main._main.then₅:
-        leaq x_equal_p(%rip), %rdi
+        movq $x_equal_p, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -135,7 +135,7 @@ __main._main.then₅:
         movq %rax, -224(%rbp)
         jmp __main._main.let_body₄
 __main._main.else₆:
-        leaq x_equal_p(%rip), %rdi
+        movq $x_equal_p, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -156,7 +156,7 @@ __main._main.let_body₇:
         movq -280(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -144(%rbp)
-        leaq x_int_less_p(%rip), %rdi
+        movq $x_int_less_p, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -176,7 +176,7 @@ __main._main.let_body₇:
         je __main._main.then₅
         jmp __main._main.else₆
 __main._main.then₈:
-        leaq x_iadd(%rip), %rdi
+        movq $x_iadd, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -193,7 +193,7 @@ __main._main.then₈:
         movq %rax, -280(%rbp)
         jmp __main._main.let_body₇
 __main._main.else₉:
-        leaq x_iadd(%rip), %rdi
+        movq $x_iadd, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -215,7 +215,7 @@ __main._main.let_body₁₀:
         je __main._main.then₈
         jmp __main._main.else₉
 __main._main.then₁₁:
-        leaq x_equal_p(%rip), %rdi
+        movq $x_equal_p, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -232,7 +232,7 @@ __main._main.then₁₁:
         movq %rax, -368(%rbp)
         jmp __main._main.let_body₁₀
 __main._main.else₁₂:
-        leaq x_equal_p(%rip), %rdi
+        movq $x_equal_p, %rdi
         orq $3, %rdi
         movq $16, %rsi
         movq $0, %rdx
@@ -261,6 +261,53 @@ __main.epilog:
         retq 
 .size __main, . - __main
 
+.bss
+.align 8
+___main.constant:
+        .zero 8
+
+.text
+.align 8
+.type ___main.setup, @function
+___main.setup:
+___main.setup.prolog:
+        pushq %rbp
+        movq %rsp, %rbp
+        pushq %rsp
+        pushq %rbp
+        pushq %rbx
+        pushq %r12
+        pushq %r13
+        pushq %r14
+        pushq %r15
+        subq $88, %rsp
+        jmp ___main.setup.body
+___main.setup.body:
+        movq $__main, -64(%rbp)
+        orq $3, -64(%rbp)
+        movq $0, -72(%rbp)
+        movq $0, -80(%rbp)
+        movq -64(%rbp), %rdi
+        movq -72(%rbp), %rsi
+        movq -80(%rbp), %rdx
+        callq x_make_curry
+        movq %rax, -88(%rbp)
+        movq -88(%rbp), %rax
+        movq %rax, ___main.constant(%rip)
+        jmp ___main.setup.epilog
+___main.setup.epilog:
+        addq $88, %rsp
+        popq %r15
+        popq %r14
+        popq %r13
+        popq %r12
+        popq %rbx
+        popq %rbp
+        popq %rsp
+        popq %rbp
+        retq 
+.size ___main.setup, . - ___main.setup
+
 .text
 .align 8
 .type __setup, @function
@@ -275,12 +322,13 @@ __setup.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $56, %rsp
+        subq $64, %rsp
         jmp __setup.body
 __setup.body:
-
+        callq ___main.setup
+        movq %rax, -64(%rbp)
 __setup.epilog:
-        addq $56, %rsp
+        addq $64, %rsp
         popq %r15
         popq %r14
         popq %r13

@@ -7,3 +7,19 @@
     (= _₂ (apply _₁ x))
     (= _↩ (apply _₂ x))
     (return _↩)))
+
+(define-variable _square/constant)
+
+(define-setup _square/setup
+  (block body
+    (= function-address (literal (@address square)))
+    (= arity (literal 1))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store _square/constant curry)
+    (return)))

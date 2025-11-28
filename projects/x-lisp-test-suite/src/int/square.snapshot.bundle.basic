@@ -9,6 +9,22 @@
     (= _↩ (apply _₁ _₆))
     (return _↩)))
 
+(define-variable __main/constant)
+
+(define-setup __main/setup
+  (block body
+    (= function-address (literal (@address _main)))
+    (= arity (literal 0))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store __main/constant curry)
+    (return)))
+
 (define-function §₁/square
   (block body
     (= x (argument 0))
@@ -16,3 +32,19 @@
     (= _₂ (apply _₁ x))
     (= _↩ (apply _₂ x))
     (return _↩)))
+
+(define-variable §₁/_square/constant)
+
+(define-setup §₁/_square/setup
+  (block body
+    (= function-address (literal (@address §₁/square)))
+    (= arity (literal 1))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store §₁/_square/constant curry)
+    (return)))

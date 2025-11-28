@@ -168,6 +168,22 @@
     (= _↩ (apply _₁ x))
     (return _↩)))
 
+(define-variable _swap/constant)
+
+(define-setup _swap/setup
+  (block body
+    (= function-address (literal (@address swap)))
+    (= arity (literal 3))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store _swap/constant curry)
+    (return)))
+
 (define-function drop
   (block body
     (= f (argument 0))
@@ -184,6 +200,22 @@
     (= _₁₁ (apply _₉ _₁₀))
     (= _↩ (apply _₄ _₁₁))
     (return _↩)))
+
+(define-variable _drop/constant)
+
+(define-setup _drop/setup
+  (block body
+    (= function-address (literal (@address drop)))
+    (= arity (literal 1))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store _drop/constant curry)
+    (return)))
 
 (define-function drop/λ₁
   (block body
@@ -203,12 +235,44 @@
     (= _↩ (apply _₄ _₁₁))
     (return _↩)))
 
+(define-variable _drop/λ₁/constant)
+
+(define-setup _drop/λ₁/setup
+  (block body
+    (= function-address (literal (@address drop/λ₁)))
+    (= arity (literal 2))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store _drop/λ₁/constant curry)
+    (return)))
+
 (define-function drop/λ₁/λ₁
   (block body
     (= f (argument 0))
     (= x₁ (argument 1))
     (= _↩ (apply f x₁))
     (return _↩)))
+
+(define-variable _drop/λ₁/λ₁/constant)
+
+(define-setup _drop/λ₁/λ₁/setup
+  (block body
+    (= function-address (literal (@address drop/λ₁/λ₁)))
+    (= arity (literal 2))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store _drop/λ₁/λ₁/constant curry)
+    (return)))
 
 (define-function dup
   (block body
@@ -227,6 +291,22 @@
     (= _↩ (apply _₄ _₁₁))
     (return _↩)))
 
+(define-variable _dup/constant)
+
+(define-setup _dup/setup
+  (block body
+    (= function-address (literal (@address dup)))
+    (= arity (literal 1))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store _dup/constant curry)
+    (return)))
+
 (define-function dup/λ₁
   (block body
     (= f (argument 0))
@@ -234,6 +314,38 @@
     (= _₁ (apply f x₁))
     (= _↩ (apply _₁ x₁))
     (return _↩)))
+
+(define-variable _dup/λ₁/constant)
+
+(define-setup _dup/λ₁/setup
+  (block body
+    (= function-address (literal (@address dup/λ₁)))
+    (= arity (literal 2))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store _dup/λ₁/constant curry)
+    (return)))
+
+(define-variable _identity/constant)
+
+(define-setup _identity/setup
+  (block body
+    (= function-address (literal (@address identity)))
+    (= arity (literal 1))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store _identity/constant curry)
+    (return)))
 
 (define-function _main
   (block body
@@ -247,6 +359,22 @@
     (= _₆ (apply _₅ f₁))
     (= _↩ (apply _₁ _₆))
     (return _↩)))
+
+(define-variable __main/constant)
+
+(define-setup __main/setup
+  (block body
+    (= function-address (literal (@address _main)))
+    (= arity (literal 0))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store __main/constant curry)
+    (return)))
 
 ;;; SelectInstructionPass
 
@@ -274,11 +402,27 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
+(define-space _swap/constant 8)
+
+(define-code _swap/setup
+  (block body
+    (movq (label-imm (label swap)) (var function-address))
+    (orq (imm 3) (var function-address))
+    (movq (imm 24) (var arity))
+    (movq (imm 0) (var size))
+    (movq (var function-address) (reg rdi))
+    (movq (var arity) (reg rsi))
+    (movq (var size) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var curry))
+    (movq (var curry) (label-deref (label _swap/constant)))
+    (retq)))
+
 (define-code drop
   (block body
     (movq (reg rdi) (var f))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -294,15 +438,15 @@
     (movq (var f) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _₄))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (var _₅))
-    (leaq (label-deref (label drop/λ₁)) (reg rdi))
+    (movq (label-imm (label drop/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -329,12 +473,28 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
+(define-space _drop/constant 8)
+
+(define-code _drop/setup
+  (block body
+    (movq (label-imm (label drop)) (var function-address))
+    (orq (imm 3) (var function-address))
+    (movq (imm 8) (var arity))
+    (movq (imm 0) (var size))
+    (movq (var function-address) (reg rdi))
+    (movq (var arity) (reg rsi))
+    (movq (var size) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var curry))
+    (movq (var curry) (label-deref (label _drop/constant)))
+    (retq)))
+
 (define-code drop/λ₁
   (block body
     (movq (reg rdi) (var f))
     (movq (reg rsi) (var dropped₁))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -350,15 +510,15 @@
     (movq (var f) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _₄))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (var _₅))
-    (leaq (label-deref (label drop/λ₁/λ₁)) (reg rdi))
+    (movq (label-imm (label drop/λ₁/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -383,6 +543,24 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _↩))
     (movq (var _↩) (reg rax))
+    (retq)))
+
+(define-space _drop/λ₁/constant 8)
+
+(define-code _drop/λ₁/setup
+  (block body
+    (movq (label-imm (label drop/λ₁)) (var function-address))
+    (orq (imm 3) (var function-address))
+    (movq (imm 16) (var arity))
+    (movq (imm 0) (var size))
+    (movq (var function-address) (reg rdi))
+    (movq (var arity) (reg rsi))
+    (movq (var size) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var curry))
+    (movq
+     (var curry)
+     (label-deref (label _drop/λ₁/constant)))
     (retq)))
 
 (define-code drop/λ₁/λ₁
@@ -396,11 +574,31 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
+(define-space _drop/λ₁/λ₁/constant 8)
+
+(define-code _drop/λ₁/λ₁/setup
+  (block body
+    (movq
+     (label-imm (label drop/λ₁/λ₁))
+     (var function-address))
+    (orq (imm 3) (var function-address))
+    (movq (imm 16) (var arity))
+    (movq (imm 0) (var size))
+    (movq (var function-address) (reg rdi))
+    (movq (var arity) (reg rsi))
+    (movq (var size) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var curry))
+    (movq
+     (var curry)
+     (label-deref (label _drop/λ₁/λ₁/constant)))
+    (retq)))
+
 (define-code dup
   (block body
     (movq (reg rdi) (var f))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -416,15 +614,15 @@
     (movq (var f) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _₄))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (var _₅))
-    (leaq (label-deref (label dup/λ₁)) (reg rdi))
+    (movq (label-imm (label dup/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -449,6 +647,22 @@
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (var _↩))
     (movq (var _↩) (reg rax))
+    (retq)))
+
+(define-space _dup/constant 8)
+
+(define-code _dup/setup
+  (block body
+    (movq (label-imm (label dup)) (var function-address))
+    (orq (imm 3) (var function-address))
+    (movq (imm 8) (var arity))
+    (movq (imm 0) (var size))
+    (movq (var function-address) (reg rdi))
+    (movq (var arity) (reg rsi))
+    (movq (var size) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var curry))
+    (movq (var curry) (label-deref (label _dup/constant)))
     (retq)))
 
 (define-code dup/λ₁
@@ -466,34 +680,66 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
+(define-space _dup/λ₁/constant 8)
+
+(define-code _dup/λ₁/setup
+  (block body
+    (movq (label-imm (label dup/λ₁)) (var function-address))
+    (orq (imm 3) (var function-address))
+    (movq (imm 16) (var arity))
+    (movq (imm 0) (var size))
+    (movq (var function-address) (reg rdi))
+    (movq (var arity) (reg rsi))
+    (movq (var size) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var curry))
+    (movq (var curry) (label-deref (label _dup/λ₁/constant)))
+    (retq)))
+
+(define-space _identity/constant 8)
+
+(define-code _identity/setup
+  (block body
+    (movq
+     (label-imm (label identity))
+     (var function-address))
+    (orq (imm 3) (var function-address))
+    (movq (imm 8) (var arity))
+    (movq (imm 0) (var size))
+    (movq (var function-address) (reg rdi))
+    (movq (var arity) (reg rsi))
+    (movq (var size) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var curry))
+    (movq
+     (var curry)
+     (label-deref (label _identity/constant)))
+    (retq)))
+
 (define-code _main
   (block body
-    (leaq
-     (label-deref (external-label x-println-non-void))
+    (movq
+     (label-imm (external-label x-println-non-void))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (var _₁))
-    (leaq
-     (label-deref (external-label x-identity))
-     (reg rdi))
+    (movq (label-imm (external-label x-identity)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (var _₂))
     (movq (var _₂) (var f₁))
-    (leaq (label-deref (label dup)) (reg rdi))
+    (movq (label-imm (label dup)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (var _₃))
-    (leaq
-     (label-deref (external-label x-identity))
-     (reg rdi))
+    (movq (label-imm (external-label x-identity)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -518,7 +764,40 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
-(define-code _setup (block body))
+(define-space __main/constant 8)
+
+(define-code __main/setup
+  (block body
+    (movq (label-imm (label _main)) (var function-address))
+    (orq (imm 3) (var function-address))
+    (movq (imm 0) (var arity))
+    (movq (imm 0) (var size))
+    (movq (var function-address) (reg rdi))
+    (movq (var arity) (reg rsi))
+    (movq (var size) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var curry))
+    (movq (var curry) (label-deref (label __main/constant)))
+    (retq)))
+
+(define-code _setup
+  (block body
+    (callq-n (label _swap/setup) (arity 0))
+    (movq (reg rax) (var _))
+    (callq-n (label _drop/setup) (arity 0))
+    (movq (reg rax) (var _))
+    (callq-n (label _drop/λ₁/setup) (arity 0))
+    (movq (reg rax) (var _))
+    (callq-n (label _drop/λ₁/λ₁/setup) (arity 0))
+    (movq (reg rax) (var _))
+    (callq-n (label _dup/setup) (arity 0))
+    (movq (reg rax) (var _))
+    (callq-n (label _dup/λ₁/setup) (arity 0))
+    (movq (reg rax) (var _))
+    (callq-n (label _identity/setup) (arity 0))
+    (movq (reg rax) (var _))
+    (callq-n (label __main/setup) (arity 0))
+    (movq (reg rax) (var _))))
 
 ;;; AssignHomePass
 
@@ -546,11 +825,29 @@
     (movq (reg-deref (reg rbp) -96) (reg rax))
     (retq)))
 
+(define-space _swap/constant 8)
+
+(define-code _swap/setup
+  (block body
+    (movq (label-imm (label swap)) (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 24) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq
+     (reg-deref (reg rbp) -88)
+     (label-deref (label _swap/constant)))
+    (retq)))
+
 (define-code drop
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -566,15 +863,15 @@
     (movq (reg-deref (reg rbp) -64) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -96))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -104))
-    (leaq (label-deref (label drop/λ₁)) (reg rdi))
+    (movq (label-imm (label drop/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -601,12 +898,30 @@
     (movq (reg-deref (reg rbp) -160) (reg rax))
     (retq)))
 
+(define-space _drop/constant 8)
+
+(define-code _drop/setup
+  (block body
+    (movq (label-imm (label drop)) (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq
+     (reg-deref (reg rbp) -88)
+     (label-deref (label _drop/constant)))
+    (retq)))
+
 (define-code drop/λ₁
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -622,15 +937,15 @@
     (movq (reg-deref (reg rbp) -64) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -104))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -112))
-    (leaq (label-deref (label drop/λ₁/λ₁)) (reg rdi))
+    (movq (label-imm (label drop/λ₁/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -657,6 +972,26 @@
     (movq (reg-deref (reg rbp) -168) (reg rax))
     (retq)))
 
+(define-space _drop/λ₁/constant 8)
+
+(define-code _drop/λ₁/setup
+  (block body
+    (movq
+     (label-imm (label drop/λ₁))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 16) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq
+     (reg-deref (reg rbp) -88)
+     (label-deref (label _drop/λ₁/constant)))
+    (retq)))
+
 (define-code drop/λ₁/λ₁
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
@@ -668,11 +1003,31 @@
     (movq (reg-deref (reg rbp) -80) (reg rax))
     (retq)))
 
+(define-space _drop/λ₁/λ₁/constant 8)
+
+(define-code _drop/λ₁/λ₁/setup
+  (block body
+    (movq
+     (label-imm (label drop/λ₁/λ₁))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 16) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq
+     (reg-deref (reg rbp) -88)
+     (label-deref (label _drop/λ₁/λ₁/constant)))
+    (retq)))
+
 (define-code dup
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -688,15 +1043,15 @@
     (movq (reg-deref (reg rbp) -64) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -96))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -104))
-    (leaq (label-deref (label dup/λ₁)) (reg rdi))
+    (movq (label-imm (label dup/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -723,6 +1078,24 @@
     (movq (reg-deref (reg rbp) -160) (reg rax))
     (retq)))
 
+(define-space _dup/constant 8)
+
+(define-code _dup/setup
+  (block body
+    (movq (label-imm (label dup)) (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq
+     (reg-deref (reg rbp) -88)
+     (label-deref (label _dup/constant)))
+    (retq)))
+
 (define-code dup/λ₁
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
@@ -738,19 +1111,57 @@
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (retq)))
 
+(define-space _dup/λ₁/constant 8)
+
+(define-code _dup/λ₁/setup
+  (block body
+    (movq
+     (label-imm (label dup/λ₁))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 16) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq
+     (reg-deref (reg rbp) -88)
+     (label-deref (label _dup/λ₁/constant)))
+    (retq)))
+
+(define-space _identity/constant 8)
+
+(define-code _identity/setup
+  (block body
+    (movq
+     (label-imm (label identity))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq
+     (reg-deref (reg rbp) -88)
+     (label-deref (label _identity/constant)))
+    (retq)))
+
 (define-code _main
   (block body
-    (leaq
-     (label-deref (external-label x-println-non-void))
+    (movq
+     (label-imm (external-label x-println-non-void))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -64))
-    (leaq
-     (label-deref (external-label x-identity))
-     (reg rdi))
+    (movq (label-imm (external-label x-identity)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -759,15 +1170,13 @@
     (movq
      (reg-deref (reg rbp) -72)
      (reg-deref (reg rbp) -80))
-    (leaq (label-deref (label dup)) (reg rdi))
+    (movq (label-imm (label dup)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -88))
-    (leaq
-     (label-deref (external-label x-identity))
-     (reg rdi))
+    (movq (label-imm (external-label x-identity)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -792,7 +1201,44 @@
     (movq (reg-deref (reg rbp) -128) (reg rax))
     (retq)))
 
-(define-code _setup (block body))
+(define-space __main/constant 8)
+
+(define-code __main/setup
+  (block body
+    (movq
+     (label-imm (label _main))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 0) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq
+     (reg-deref (reg rbp) -88)
+     (label-deref (label __main/constant)))
+    (retq)))
+
+(define-code _setup
+  (block body
+    (callq-n (label _swap/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _drop/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _drop/λ₁/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _drop/λ₁/λ₁/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _dup/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _dup/λ₁/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _identity/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label __main/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))))
 
 ;;; PatchInstructionPass
 
@@ -820,11 +1266,28 @@
     (movq (reg-deref (reg rbp) -96) (reg rax))
     (retq)))
 
+(define-space _swap/constant 8)
+
+(define-code _swap/setup
+  (block body
+    (movq (label-imm (label swap)) (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 24) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _swap/constant)))
+    (retq)))
+
 (define-code drop
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -840,15 +1303,15 @@
     (movq (reg-deref (reg rbp) -64) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -96))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -104))
-    (leaq (label-deref (label drop/λ₁)) (reg rdi))
+    (movq (label-imm (label drop/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -875,12 +1338,29 @@
     (movq (reg-deref (reg rbp) -160) (reg rax))
     (retq)))
 
+(define-space _drop/constant 8)
+
+(define-code _drop/setup
+  (block body
+    (movq (label-imm (label drop)) (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _drop/constant)))
+    (retq)))
+
 (define-code drop/λ₁
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -896,15 +1376,15 @@
     (movq (reg-deref (reg rbp) -64) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -104))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -112))
-    (leaq (label-deref (label drop/λ₁/λ₁)) (reg rdi))
+    (movq (label-imm (label drop/λ₁/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -931,6 +1411,25 @@
     (movq (reg-deref (reg rbp) -168) (reg rax))
     (retq)))
 
+(define-space _drop/λ₁/constant 8)
+
+(define-code _drop/λ₁/setup
+  (block body
+    (movq
+     (label-imm (label drop/λ₁))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 16) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _drop/λ₁/constant)))
+    (retq)))
+
 (define-code drop/λ₁/λ₁
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
@@ -942,11 +1441,32 @@
     (movq (reg-deref (reg rbp) -80) (reg rax))
     (retq)))
 
+(define-space _drop/λ₁/λ₁/constant 8)
+
+(define-code _drop/λ₁/λ₁/setup
+  (block body
+    (movq
+     (label-imm (label drop/λ₁/λ₁))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 16) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq
+     (reg rax)
+     (label-deref (label _drop/λ₁/λ₁/constant)))
+    (retq)))
+
 (define-code dup
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -962,15 +1482,15 @@
     (movq (reg-deref (reg rbp) -64) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -96))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -104))
-    (leaq (label-deref (label dup/λ₁)) (reg rdi))
+    (movq (label-imm (label dup/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -997,6 +1517,23 @@
     (movq (reg-deref (reg rbp) -160) (reg rax))
     (retq)))
 
+(define-space _dup/constant 8)
+
+(define-code _dup/setup
+  (block body
+    (movq (label-imm (label dup)) (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _dup/constant)))
+    (retq)))
+
 (define-code dup/λ₁
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
@@ -1012,19 +1549,55 @@
     (movq (reg-deref (reg rbp) -88) (reg rax))
     (retq)))
 
+(define-space _dup/λ₁/constant 8)
+
+(define-code _dup/λ₁/setup
+  (block body
+    (movq
+     (label-imm (label dup/λ₁))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 16) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _dup/λ₁/constant)))
+    (retq)))
+
+(define-space _identity/constant 8)
+
+(define-code _identity/setup
+  (block body
+    (movq
+     (label-imm (label identity))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _identity/constant)))
+    (retq)))
+
 (define-code _main
   (block body
-    (leaq
-     (label-deref (external-label x-println-non-void))
+    (movq
+     (label-imm (external-label x-println-non-void))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -64))
-    (leaq
-     (label-deref (external-label x-identity))
-     (reg rdi))
+    (movq (label-imm (external-label x-identity)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -1032,15 +1605,13 @@
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -80))
-    (leaq (label-deref (label dup)) (reg rdi))
+    (movq (label-imm (label dup)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -88))
-    (leaq
-     (label-deref (external-label x-identity))
-     (reg rdi))
+    (movq (label-imm (external-label x-identity)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -1065,7 +1636,43 @@
     (movq (reg-deref (reg rbp) -128) (reg rax))
     (retq)))
 
-(define-code _setup (block body))
+(define-space __main/constant 8)
+
+(define-code __main/setup
+  (block body
+    (movq
+     (label-imm (label _main))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 0) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label __main/constant)))
+    (retq)))
+
+(define-code _setup
+  (block body
+    (callq-n (label _swap/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _drop/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _drop/λ₁/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _drop/λ₁/λ₁/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _dup/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _dup/λ₁/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _identity/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label __main/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))))
 
 ;;; PrologAndEpilogPass
 
@@ -1139,6 +1746,46 @@
     (popq (reg rbp))
     (retq)))
 
+(define-space _swap/constant 8)
+
+(define-code _swap/setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 88) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq (label-imm (label swap)) (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 24) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _swap/constant)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 88) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
 (define-code drop
   (block prolog
     (pushq (reg rbp))
@@ -1154,8 +1801,8 @@
     (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -1171,15 +1818,15 @@
     (movq (reg-deref (reg rbp) -64) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -96))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -104))
-    (leaq (label-deref (label drop/λ₁)) (reg rdi))
+    (movq (label-imm (label drop/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -1217,6 +1864,46 @@
     (popq (reg rbp))
     (retq)))
 
+(define-space _drop/constant 8)
+
+(define-code _drop/setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 88) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq (label-imm (label drop)) (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _drop/constant)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 88) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
 (define-code drop/λ₁
   (block prolog
     (pushq (reg rbp))
@@ -1233,8 +1920,8 @@
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
     (movq (reg rsi) (reg-deref (reg rbp) -72))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -1250,15 +1937,15 @@
     (movq (reg-deref (reg rbp) -64) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -104))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -112))
-    (leaq (label-deref (label drop/λ₁/λ₁)) (reg rdi))
+    (movq (label-imm (label drop/λ₁/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -1286,6 +1973,48 @@
     (jmp (label epilog)))
   (block epilog
     (addq (imm 168) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
+(define-space _drop/λ₁/constant 8)
+
+(define-code _drop/λ₁/setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 88) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq
+     (label-imm (label drop/λ₁))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 16) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _drop/λ₁/constant)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 88) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -1330,6 +2059,50 @@
     (popq (reg rbp))
     (retq)))
 
+(define-space _drop/λ₁/λ₁/constant 8)
+
+(define-code _drop/λ₁/λ₁/setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 88) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq
+     (label-imm (label drop/λ₁/λ₁))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 16) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq
+     (reg rax)
+     (label-deref (label _drop/λ₁/λ₁/constant)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 88) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
 (define-code dup
   (block prolog
     (pushq (reg rbp))
@@ -1345,8 +2118,8 @@
     (jmp (label body)))
   (block body
     (movq (reg rdi) (reg-deref (reg rbp) -64))
-    (leaq
-     (label-deref (external-label x-curry-put!))
+    (movq
+     (label-imm (external-label x-curry-put!))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
@@ -1362,15 +2135,15 @@
     (movq (reg-deref (reg rbp) -64) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -96))
-    (leaq
-     (label-deref (external-label x-make-curry))
+    (movq
+     (label-imm (external-label x-make-curry))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 24) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -104))
-    (leaq (label-deref (label dup/λ₁)) (reg rdi))
+    (movq (label-imm (label dup/λ₁)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -1398,6 +2171,46 @@
     (jmp (label epilog)))
   (block epilog
     (addq (imm 160) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
+(define-space _dup/constant 8)
+
+(define-code _dup/setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 88) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq (label-imm (label dup)) (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _dup/constant)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 88) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -1446,6 +2259,90 @@
     (popq (reg rbp))
     (retq)))
 
+(define-space _dup/λ₁/constant 8)
+
+(define-code _dup/λ₁/setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 88) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq
+     (label-imm (label dup/λ₁))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 16) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _dup/λ₁/constant)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 88) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
+(define-space _identity/constant 8)
+
+(define-code _identity/setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 88) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq
+     (label-imm (label identity))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 8) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label _identity/constant)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 88) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
 (define-code _main
   (block prolog
     (pushq (reg rbp))
@@ -1460,17 +2357,15 @@
     (subq (imm 128) (reg rsp))
     (jmp (label body)))
   (block body
-    (leaq
-     (label-deref (external-label x-println-non-void))
+    (movq
+     (label-imm (external-label x-println-non-void))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -64))
-    (leaq
-     (label-deref (external-label x-identity))
-     (reg rdi))
+    (movq (label-imm (external-label x-identity)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -1478,15 +2373,13 @@
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -80))
-    (leaq (label-deref (label dup)) (reg rdi))
+    (movq (label-imm (label dup)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -88))
-    (leaq
-     (label-deref (external-label x-identity))
-     (reg rdi))
+    (movq (label-imm (external-label x-identity)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -1522,6 +2415,48 @@
     (popq (reg rbp))
     (retq)))
 
+(define-space __main/constant 8)
+
+(define-code __main/setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 88) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq
+     (label-imm (label _main))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 0) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label __main/constant)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 88) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
 (define-code _setup
   (block prolog
     (pushq (reg rbp))
@@ -1533,11 +2468,27 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 56) (reg rsp))
+    (subq (imm 64) (reg rsp))
     (jmp (label body)))
-  (block body)
+  (block body
+    (callq-n (label _swap/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _drop/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _drop/λ₁/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _drop/λ₁/λ₁/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _dup/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _dup/λ₁/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label _identity/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label __main/setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64)))
   (block epilog
-    (addq (imm 56) (reg rsp))
+    (addq (imm 64) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))

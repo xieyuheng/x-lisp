@@ -170,6 +170,22 @@
     (= _↩ (apply _₁ _₂))
     (return _↩)))
 
+(define-variable __main/constant)
+
+(define-setup __main/setup
+  (block body
+    (= function-address (literal (@address _main)))
+    (= arity (literal 0))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store __main/constant curry)
+    (return)))
+
 ;;; SelectInstructionPass
 
 (export _setup _main)
@@ -240,7 +256,7 @@
 
 (define-code _two/init-function
   (block body
-    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (movq (label-imm (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -291,7 +307,7 @@
 
 (define-code _three/init-function
   (block body
-    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (movq (label-imm (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -313,8 +329,8 @@
 
 (define-code _main
   (block body
-    (leaq
-     (label-deref (external-label x-println-non-void))
+    (movq
+     (label-imm (external-label x-println-non-void))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -330,6 +346,22 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
+(define-space __main/constant 8)
+
+(define-code __main/setup
+  (block body
+    (movq (label-imm (label _main)) (var function-address))
+    (orq (imm 3) (var function-address))
+    (movq (imm 0) (var arity))
+    (movq (imm 0) (var size))
+    (movq (var function-address) (reg rdi))
+    (movq (var arity) (reg rsi))
+    (movq (var size) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (var curry))
+    (movq (var curry) (label-deref (label __main/constant)))
+    (retq)))
+
 (define-code _setup
   (block body
     (callq-n (label _one/flag-setup) (arity 0))
@@ -337,6 +369,8 @@
     (callq-n (label _two/flag-setup) (arity 0))
     (movq (reg rax) (var _))
     (callq-n (label _three/flag-setup) (arity 0))
+    (movq (reg rax) (var _))
+    (callq-n (label __main/setup) (arity 0))
     (movq (reg rax) (var _))))
 
 ;;; AssignHomePass
@@ -437,7 +471,7 @@
 
 (define-code _two/init-function
   (block body
-    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (movq (label-imm (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -502,7 +536,7 @@
 
 (define-code _three/init-function
   (block body
-    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (movq (label-imm (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -524,8 +558,8 @@
 
 (define-code _main
   (block body
-    (leaq
-     (label-deref (external-label x-println-non-void))
+    (movq
+     (label-imm (external-label x-println-non-void))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -541,6 +575,26 @@
     (movq (reg-deref (reg rbp) -80) (reg rax))
     (retq)))
 
+(define-space __main/constant 8)
+
+(define-code __main/setup
+  (block body
+    (movq
+     (label-imm (label _main))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 0) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq
+     (reg-deref (reg rbp) -88)
+     (label-deref (label __main/constant)))
+    (retq)))
+
 (define-code _setup
   (block body
     (callq-n (label _one/flag-setup) (arity 0))
@@ -548,6 +602,8 @@
     (callq-n (label _two/flag-setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (callq-n (label _three/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label __main/setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))))
 
 ;;; PatchInstructionPass
@@ -634,7 +690,7 @@
 
 (define-code _two/init-function
   (block body
-    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (movq (label-imm (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -692,7 +748,7 @@
 
 (define-code _three/init-function
   (block body
-    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (movq (label-imm (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -714,8 +770,8 @@
 
 (define-code _main
   (block body
-    (leaq
-     (label-deref (external-label x-println-non-void))
+    (movq
+     (label-imm (external-label x-println-non-void))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -731,6 +787,25 @@
     (movq (reg-deref (reg rbp) -80) (reg rax))
     (retq)))
 
+(define-space __main/constant 8)
+
+(define-code __main/setup
+  (block body
+    (movq
+     (label-imm (label _main))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 0) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label __main/constant)))
+    (retq)))
+
 (define-code _setup
   (block body
     (callq-n (label _one/flag-setup) (arity 0))
@@ -738,6 +813,8 @@
     (callq-n (label _two/flag-setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (callq-n (label _three/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label __main/setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))))
 
 ;;; PrologAndEpilogPass
@@ -951,7 +1028,7 @@
     (subq (imm 96) (reg rsp))
     (jmp (label body)))
   (block body
-    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (movq (label-imm (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -1078,7 +1155,7 @@
     (subq (imm 96) (reg rsp))
     (jmp (label body)))
   (block body
-    (leaq (label-deref (external-label x-iadd)) (reg rdi))
+    (movq (label-imm (external-label x-iadd)) (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 16) (reg rsi))
     (movq (imm 0) (reg rdx))
@@ -1123,8 +1200,8 @@
     (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
-    (leaq
-     (label-deref (external-label x-println-non-void))
+    (movq
+     (label-imm (external-label x-println-non-void))
      (reg rdi))
     (orq (imm 3) (reg rdi))
     (movq (imm 8) (reg rsi))
@@ -1141,6 +1218,48 @@
     (jmp (label epilog)))
   (block epilog
     (addq (imm 80) (reg rsp))
+    (popq (reg r15))
+    (popq (reg r14))
+    (popq (reg r13))
+    (popq (reg r12))
+    (popq (reg rbx))
+    (popq (reg rbp))
+    (popq (reg rsp))
+    (popq (reg rbp))
+    (retq)))
+
+(define-space __main/constant 8)
+
+(define-code __main/setup
+  (block prolog
+    (pushq (reg rbp))
+    (movq (reg rsp) (reg rbp))
+    (pushq (reg rsp))
+    (pushq (reg rbp))
+    (pushq (reg rbx))
+    (pushq (reg r12))
+    (pushq (reg r13))
+    (pushq (reg r14))
+    (pushq (reg r15))
+    (subq (imm 88) (reg rsp))
+    (jmp (label body)))
+  (block body
+    (movq
+     (label-imm (label _main))
+     (reg-deref (reg rbp) -64))
+    (orq (imm 3) (reg-deref (reg rbp) -64))
+    (movq (imm 0) (reg-deref (reg rbp) -72))
+    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -64) (reg rdi))
+    (movq (reg-deref (reg rbp) -72) (reg rsi))
+    (movq (reg-deref (reg rbp) -80) (reg rdx))
+    (callq-n (external-label x-make-curry) (arity 3))
+    (movq (reg rax) (reg-deref (reg rbp) -88))
+    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (movq (reg rax) (label-deref (label __main/constant)))
+    (jmp (label epilog)))
+  (block epilog
+    (addq (imm 88) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -1170,6 +1289,8 @@
     (callq-n (label _two/flag-setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (callq-n (label _three/flag-setup) (arity 0))
+    (movq (reg rax) (reg-deref (reg rbp) -64))
+    (callq-n (label __main/setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64)))
   (block epilog
     (addq (imm 64) (reg rsp))

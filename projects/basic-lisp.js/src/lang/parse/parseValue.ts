@@ -13,6 +13,10 @@ const valueMatcher: S.Matcher<Value> = S.matcherChoice<Value>([
     })
   }),
 
+  S.matcher("`(@address ,name)", ({ name }, { meta }) => {
+    return Values.Address(S.symbolContent(name))
+  }),
+
   S.matcher(
     "`(@primitive-function ,name ,arity)",
     ({ name, arity }, { meta }) => {
