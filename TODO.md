@@ -1,3 +1,10 @@
+setup xvm.c project
+
+- risc isa
+- with tag support
+- learn from mmix
+- use machine-lisp.js as assembly language
+
 # define-metadata
 
 [basic-lisp.js] `MetadataDefinition` -- for untagged data
