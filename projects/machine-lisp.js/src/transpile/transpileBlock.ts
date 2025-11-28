@@ -1,5 +1,5 @@
 import * as M from "../index.ts"
-import { transpileExternalName, transpileOwnName } from "./transpileOwnName.ts"
+import { transpileName } from "./transpileName.ts"
 
 const indentation = " ".repeat(8)
 
@@ -8,7 +8,7 @@ type Context = {
 }
 
 export function transpileBlock(context: Context, block: M.Block): string {
-  const name = transpileOwnName([context.definition.name, block.label])
+  const name = transpileName([context.definition.name, block.label])
   const instrs = block.instrs
     .map((instr) => transpileInstr(context, instr))
     .join("\n")
@@ -107,12 +107,12 @@ function transpileOperand(context: Context, operand: M.Operand): string {
 
 function transpileLabel(context: Context, label: M.Label): string {
   if (label.attributes.isExternal) {
-    return transpileExternalName([label.name])
+    return transpileName([label.name])
   } else {
     if (context.definition.blocks.has(label.name)) {
-      return transpileOwnName([context.definition.name, label.name])
+      return transpileName([context.definition.name, label.name])
     } else {
-      return transpileOwnName([label.name])
+      return transpileName([label.name])
     }
   }
 }

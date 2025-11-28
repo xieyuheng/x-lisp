@@ -1,11 +1,11 @@
 #include "../src/index.h"
 
 void
-__main(void) {
+_main(void) {
     printf("[main] from testing bundle\n");
 }
 
 void
-__setup(void) {
+_setup(void) {
     printf("[setup] from testing bundle\n");
 }

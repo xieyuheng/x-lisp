@@ -1,11 +1,11 @@
-.global __setup
-.global __main
+.global _setup
+.global _main
 
 .text
 .align 8
-.type _square, @function
-_square:
-_square.prolog:
+.type square, @function
+square:
+square.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -16,8 +16,8 @@ _square.prolog:
         pushq %r14
         pushq %r15
         subq $88, %rsp
-        jmp _square.body
-_square.body:
+        jmp square.body
+square.body:
         movq %rdi, -64(%rbp)
         movq $x_imul, %rdi
         orq $3, %rdi
@@ -34,8 +34,8 @@ _square.body:
         callq x_apply_unary
         movq %rax, -88(%rbp)
         movq -88(%rbp), %rax
-        jmp _square.epilog
-_square.epilog:
+        jmp square.epilog
+square.epilog:
         addq $88, %rsp
         popq %r15
         popq %r14
@@ -46,18 +46,18 @@ _square.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _square, . - _square
+.size square, . - square
 
 .bss
 .align 8
-__square.constant:
+_square.constant:
         .zero 8
 
 .text
 .align 8
-.type __square.setup, @function
-__square.setup:
-__square.setup.prolog:
+.type _square.setup, @function
+_square.setup:
+_square.setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -68,9 +68,9 @@ __square.setup.prolog:
         pushq %r14
         pushq %r15
         subq $88, %rsp
-        jmp __square.setup.body
-__square.setup.body:
-        movq $_square, -64(%rbp)
+        jmp _square.setup.body
+_square.setup.body:
+        movq $square, -64(%rbp)
         orq $3, -64(%rbp)
         movq $8, -72(%rbp)
         movq $0, -80(%rbp)
@@ -80,9 +80,9 @@ __square.setup.body:
         callq x_make_curry
         movq %rax, -88(%rbp)
         movq -88(%rbp), %rax
-        movq %rax, __square.constant(%rip)
-        jmp __square.setup.epilog
-__square.setup.epilog:
+        movq %rax, _square.constant(%rip)
+        jmp _square.setup.epilog
+_square.setup.epilog:
         addq $88, %rsp
         popq %r15
         popq %r14
@@ -93,13 +93,13 @@ __square.setup.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size __square.setup, . - __square.setup
+.size _square.setup, . - _square.setup
 
 .text
 .align 8
-.type __main, @function
-__main:
-__main.prolog:
+.type _main, @function
+_main:
+_main.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -110,15 +110,15 @@ __main.prolog:
         pushq %r14
         pushq %r15
         subq $96, %rsp
-        jmp __main.body
-__main.body:
+        jmp _main.body
+_main.body:
         movq $x_println_non_void, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
         callq x_make_curry
         movq %rax, -64(%rbp)
-        movq $_square, %rdi
+        movq $square, %rdi
         orq $3, %rdi
         movq $8, %rsi
         movq $0, %rdx
@@ -134,8 +134,8 @@ __main.body:
         callq x_apply_unary
         movq %rax, -96(%rbp)
         movq -96(%rbp), %rax
-        jmp __main.epilog
-__main.epilog:
+        jmp _main.epilog
+_main.epilog:
         addq $96, %rsp
         popq %r15
         popq %r14
@@ -146,18 +146,18 @@ __main.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size __main, . - __main
+.size _main, . - _main
 
 .bss
 .align 8
-___main.constant:
+__main.constant:
         .zero 8
 
 .text
 .align 8
-.type ___main.setup, @function
-___main.setup:
-___main.setup.prolog:
+.type __main.setup, @function
+__main.setup:
+__main.setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -168,9 +168,9 @@ ___main.setup.prolog:
         pushq %r14
         pushq %r15
         subq $88, %rsp
-        jmp ___main.setup.body
-___main.setup.body:
-        movq $__main, -64(%rbp)
+        jmp __main.setup.body
+__main.setup.body:
+        movq $_main, -64(%rbp)
         orq $3, -64(%rbp)
         movq $0, -72(%rbp)
         movq $0, -80(%rbp)
@@ -180,9 +180,9 @@ ___main.setup.body:
         callq x_make_curry
         movq %rax, -88(%rbp)
         movq -88(%rbp), %rax
-        movq %rax, ___main.constant(%rip)
-        jmp ___main.setup.epilog
-___main.setup.epilog:
+        movq %rax, __main.constant(%rip)
+        jmp __main.setup.epilog
+__main.setup.epilog:
         addq $88, %rsp
         popq %r15
         popq %r14
@@ -193,13 +193,13 @@ ___main.setup.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size ___main.setup, . - ___main.setup
+.size __main.setup, . - __main.setup
 
 .text
 .align 8
-.type __setup, @function
-__setup:
-__setup.prolog:
+.type _setup, @function
+_setup:
+_setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -210,13 +210,13 @@ __setup.prolog:
         pushq %r14
         pushq %r15
         subq $64, %rsp
-        jmp __setup.body
-__setup.body:
-        callq __square.setup
+        jmp _setup.body
+_setup.body:
+        callq _square.setup
         movq %rax, -64(%rbp)
-        callq ___main.setup
+        callq __main.setup
         movq %rax, -64(%rbp)
-__setup.epilog:
+_setup.epilog:
         addq $64, %rsp
         popq %r15
         popq %r14
@@ -227,4 +227,4 @@ __setup.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size __setup, . - __setup
+.size _setup, . - _setup

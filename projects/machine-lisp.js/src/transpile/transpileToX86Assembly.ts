@@ -1,7 +1,7 @@
 import * as M from "../index.ts"
 import { transpileBlock } from "./transpileBlock.ts"
 import { transpileDirective } from "./transpileDirective.ts"
-import { transpileOwnName } from "./transpileOwnName.ts"
+import { transpileName } from "./transpileName.ts"
 
 const indentation = " ".repeat(8)
 
@@ -9,7 +9,7 @@ export function transpileToX86Assembly(mod: M.Mod): string {
   let code = ""
 
   for (const name of mod.exported) {
-    code += `.global ${transpileOwnName([name])}\n`
+    code += `.global ${transpileName([name])}\n`
   }
 
   for (const definition of M.modDefinitions(mod)) {
@@ -23,7 +23,7 @@ export function transpileToX86Assembly(mod: M.Mod): string {
 function transpileDefinition(definition: M.Definition): string {
   switch (definition.kind) {
     case "CodeDefinition": {
-      const name = transpileOwnName([definition.name])
+      const name = transpileName([definition.name])
       const blocks = Array.from(definition.blocks.values())
         .map((block) => transpileBlock({ definition }, block))
         .join("\n")
@@ -37,7 +37,7 @@ function transpileDefinition(definition: M.Definition): string {
     }
 
     case "DataDefinition": {
-      const name = transpileOwnName([definition.name])
+      const name = transpileName([definition.name])
       const directives = definition.directives
         .map((directive) => transpileDirective({ definition }, directive))
         .join("\n")
@@ -51,7 +51,7 @@ function transpileDefinition(definition: M.Definition): string {
     }
 
     case "SpaceDefinition": {
-      const name = transpileOwnName([definition.name])
+      const name = transpileName([definition.name])
       let code = `.bss\n`
       code += `.align 8\n`
       code += `${name}:\n`

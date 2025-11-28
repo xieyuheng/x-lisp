@@ -1,5 +1,5 @@
 import * as M from "../index.ts"
-import { transpileOwnName } from "./transpileOwnName.ts"
+import { transpileName } from "./transpileName.ts"
 
 const indentation = " ".repeat(8)
 
@@ -46,7 +46,7 @@ export function transpileDirective(
     }
 
     case "Pointer": {
-      return `${indentation}.quad ${transpileOwnName([directive.name])}`
+      return `${indentation}.quad ${transpileName([directive.name])}`
     }
   }
 }

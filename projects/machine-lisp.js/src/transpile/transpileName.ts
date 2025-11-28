@@ -1,8 +1,4 @@
-export function transpileOwnName(parts: Array<string>): string {
-  return "_" + parts.map(transpilePart).join(".")
-}
-
-export function transpileExternalName(parts: Array<string>): string {
+export function transpileName(parts: Array<string>): string {
   return parts.map(transpilePart).join(".")
 }
 

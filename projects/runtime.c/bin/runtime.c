@@ -1,7 +1,7 @@
 #include "../src/index.h"
 
-void __setup(void);
-void __main(void);
+void _setup(void);
+void _main(void);
 
 int
 main(int argc, char *argv[]) {
@@ -11,8 +11,8 @@ main(int argc, char *argv[]) {
     file_disable_buffer(stdout);
     file_disable_buffer(stderr);
 
-    __setup();
-    __main();
+    _setup();
+    _main();
 
     return 0;
 }

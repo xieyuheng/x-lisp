@@ -1,7 +1,3 @@
-[machine-lisp.js] `transpileName` -- merge `transpileOwnName` and `transpileExternalName`
-
-- no need to add _ prefix to not exported names
-
 [x-lisp-boot.js] use `©` for compiler generated global names
 
 # function constant
