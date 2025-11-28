@@ -74,11 +74,11 @@ function onPrimitiveFunctionDefinition(
 
     // (define-setup <name>©setup
     //   (block body
-    //     (= function-address (literal (@address <name>)))
+    //     (= address (literal (@address <name>)))
     //     (= arity (literal <arity>))
     //     (= size (literal 0))
     //     (= curry (call (@primitive-function make-curry 3)
-    //                function-address arity size))
+    //                address arity size))
     //     (store <name>©constant curry)
     //     (return)))
     B.SetupDefinition(
@@ -89,7 +89,7 @@ function onPrimitiveFunctionDefinition(
           "body",
           B.Block("body", [
             B.Literal(
-              "function-address",
+              "address",
               B.Address(definition.name, { isPrimitive: true }),
             ),
             B.Literal("arity", B.Int(definition.arity)),
@@ -97,7 +97,7 @@ function onPrimitiveFunctionDefinition(
             B.Call(
               "curry",
               B.Function("make-curry", 3, { isPrimitive: true }),
-              ["function-address", "arity", "size"],
+              ["address", "arity", "size"],
             ),
             B.Store(`${definition.name}©constant`, "curry"),
             B.Return(),

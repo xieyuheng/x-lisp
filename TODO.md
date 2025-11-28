@@ -2,16 +2,18 @@
 
 [basic-lisp.js] `MetadataDefinition` -- for untagged data
 
+- `Metadata` -- subset of JS object
+
+  - `Int` -- `bigint`
+  - `Float` -- `number`
+  - `String` -- `string`
+  - `Pointer` -- resolve to `Metadata`
+
 [basic-lisp.js] `DefineMetadata`
 [basic-lisp.js] parse `(define-metadata)`
 
-[basic-lisp.js] `Directive` for `MetadataDefinition`
-
-- `Int` `Float`
-- `Pointer` -- resolve like label (but no external)
-- `String` -- always null ended
-
-[basic-lisp.js] parse directives
+[basic-lisp.js] `execute` -- deref `Address` to metadata
+[basic-lisp.js] test metadata by `execute`
 
 [x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.MetadataDefinition` to `M.DataDefinition`
 
@@ -21,21 +23,21 @@
 
 ```scheme
 (define-function <name>)
-(define-metadata _<name>/metadata
-  (int <arity>)
-  (string-pointer "<name>")
-  (pointer <label>))
-(define-metadata _<name>/variable-array (int ...) (pointer variable-names))
-(define-metadata _<name>/register-info (pointer _<name>/register-info))
-(define-metadata _<name>/variable-names (string-pointer "<name>") (string-pointer "<name>") ...)
+(define-metadata <name>©metadata
+  (arity <arity>)
+  (name "<name>")
+  (variable-names (pointer <name>)))
+(define-metadata <name>©variable-array (int ...) (pointer variable-names))
+(define-metadata <name>©register-info (pointer <name>©register-info))
+(define-metadata <name>©variable-names (string-pointer "<name>") (string-pointer "<name>") ...)
 
-(define-variable _<name>/constant)
-(define-setup _<name>/setup
+(define-variable <name>©constant)
+(define-setup <name>©setup
   (block body
     (= address (literal (@address <name>)))
-    (= metadata (literal (@address _<name>/metadata)))
+    (= metadata (literal (@address <name>©metadata)))
     (= function (call (@primitive-function make-function 2) address metadata))
-    (store _<name>/constant function)
+    (store <name>©constant function)
     (return)))
 ```
 
