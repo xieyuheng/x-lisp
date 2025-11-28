@@ -10,9 +10,9 @@
     (= _↩ (apply _₁ x))
     (return _↩)))
 
-(define-variable _swap/constant)
+(define-variable swap©constant)
 
-(define-setup _swap/setup
+(define-setup swap©setup
   (block body
     (= function-address (literal (@address swap)))
     (= arity (literal 3))
@@ -23,7 +23,7 @@
         function-address
         arity
         size))
-    (store _swap/constant curry)
+    (store swap©constant curry)
     (return)))
 
 (define-function drop
@@ -34,7 +34,7 @@
     (= _₃ (apply _₁ _₂))
     (= _₄ (apply _₃ f))
     (= _₅ (literal (@primitive-function make-curry 3)))
-    (= _₆ (literal (@function drop/λ₁ 2)))
+    (= _₆ (literal (@function drop©λ₁ 2)))
     (= _₇ (apply _₅ _₆))
     (= _₈ (literal 2))
     (= _₉ (apply _₇ _₈))
@@ -43,9 +43,9 @@
     (= _↩ (apply _₄ _₁₁))
     (return _↩)))
 
-(define-variable _drop/constant)
+(define-variable drop©constant)
 
-(define-setup _drop/setup
+(define-setup drop©setup
   (block body
     (= function-address (literal (@address drop)))
     (= arity (literal 1))
@@ -56,10 +56,10 @@
         function-address
         arity
         size))
-    (store _drop/constant curry)
+    (store drop©constant curry)
     (return)))
 
-(define-function drop/λ₁
+(define-function drop©λ₁
   (block body
     (= f (argument 0))
     (= dropped₁ (argument 1))
@@ -68,7 +68,7 @@
     (= _₃ (apply _₁ _₂))
     (= _₄ (apply _₃ f))
     (= _₅ (literal (@primitive-function make-curry 3)))
-    (= _₆ (literal (@function drop/λ₁/λ₁ 2)))
+    (= _₆ (literal (@function drop©λ₁©λ₁ 2)))
     (= _₇ (apply _₅ _₆))
     (= _₈ (literal 2))
     (= _₉ (apply _₇ _₈))
@@ -77,11 +77,11 @@
     (= _↩ (apply _₄ _₁₁))
     (return _↩)))
 
-(define-variable _drop/λ₁/constant)
+(define-variable drop©λ₁©constant)
 
-(define-setup _drop/λ₁/setup
+(define-setup drop©λ₁©setup
   (block body
-    (= function-address (literal (@address drop/λ₁)))
+    (= function-address (literal (@address drop©λ₁)))
     (= arity (literal 2))
     (= size (literal 0))
     (= curry
@@ -90,21 +90,21 @@
         function-address
         arity
         size))
-    (store _drop/λ₁/constant curry)
+    (store drop©λ₁©constant curry)
     (return)))
 
-(define-function drop/λ₁/λ₁
+(define-function drop©λ₁©λ₁
   (block body
     (= f (argument 0))
     (= x₁ (argument 1))
     (= _↩ (apply f x₁))
     (return _↩)))
 
-(define-variable _drop/λ₁/λ₁/constant)
+(define-variable drop©λ₁©λ₁©constant)
 
-(define-setup _drop/λ₁/λ₁/setup
+(define-setup drop©λ₁©λ₁©setup
   (block body
-    (= function-address (literal (@address drop/λ₁/λ₁)))
+    (= function-address (literal (@address drop©λ₁©λ₁)))
     (= arity (literal 2))
     (= size (literal 0))
     (= curry
@@ -113,7 +113,7 @@
         function-address
         arity
         size))
-    (store _drop/λ₁/λ₁/constant curry)
+    (store drop©λ₁©λ₁©constant curry)
     (return)))
 
 (define-function dup
@@ -124,7 +124,7 @@
     (= _₃ (apply _₁ _₂))
     (= _₄ (apply _₃ f))
     (= _₅ (literal (@primitive-function make-curry 3)))
-    (= _₆ (literal (@function dup/λ₁ 2)))
+    (= _₆ (literal (@function dup©λ₁ 2)))
     (= _₇ (apply _₅ _₆))
     (= _₈ (literal 2))
     (= _₉ (apply _₇ _₈))
@@ -133,9 +133,9 @@
     (= _↩ (apply _₄ _₁₁))
     (return _↩)))
 
-(define-variable _dup/constant)
+(define-variable dup©constant)
 
-(define-setup _dup/setup
+(define-setup dup©setup
   (block body
     (= function-address (literal (@address dup)))
     (= arity (literal 1))
@@ -146,10 +146,10 @@
         function-address
         arity
         size))
-    (store _dup/constant curry)
+    (store dup©constant curry)
     (return)))
 
-(define-function dup/λ₁
+(define-function dup©λ₁
   (block body
     (= f (argument 0))
     (= x₁ (argument 1))
@@ -157,11 +157,11 @@
     (= _↩ (apply _₁ x₁))
     (return _↩)))
 
-(define-variable _dup/λ₁/constant)
+(define-variable dup©λ₁©constant)
 
-(define-setup _dup/λ₁/setup
+(define-setup dup©λ₁©setup
   (block body
-    (= function-address (literal (@address dup/λ₁)))
+    (= function-address (literal (@address dup©λ₁)))
     (= arity (literal 2))
     (= size (literal 0))
     (= curry
@@ -170,12 +170,12 @@
         function-address
         arity
         size))
-    (store _dup/λ₁/constant curry)
+    (store dup©λ₁©constant curry)
     (return)))
 
-(define-variable _identity/constant)
+(define-variable identity©constant)
 
-(define-setup _identity/setup
+(define-setup identity©setup
   (block body
     (= function-address (literal (@address identity)))
     (= arity (literal 1))
@@ -186,7 +186,7 @@
         function-address
         arity
         size))
-    (store _identity/constant curry)
+    (store identity©constant curry)
     (return)))
 
 (define-function _main
@@ -202,9 +202,9 @@
     (= _↩ (apply _₁ _₆))
     (return _↩)))
 
-(define-variable __main/constant)
+(define-variable _main©constant)
 
-(define-setup __main/setup
+(define-setup _main©setup
   (block body
     (= function-address (literal (@address _main)))
     (= arity (literal 0))
@@ -215,5 +215,5 @@
         function-address
         arity
         size))
-    (store __main/constant curry)
+    (store _main©constant curry)
     (return)))

@@ -8,14 +8,14 @@ one:
 
 .bss
 .align 8
-_one.flag:
+one©flag:
         .zero 8
 
 .text
 .align 8
-.type _one.flag_setup, @function
-_one.flag_setup:
-_one.flag_setup.prolog:
+.type one©flag_setup, @function
+one©flag_setup:
+one©flag_setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -26,14 +26,14 @@ _one.flag_setup.prolog:
         pushq %r14
         pushq %r15
         subq $64, %rsp
-        jmp _one.flag_setup.body
-_one.flag_setup.body:
+        jmp one©flag_setup.body
+one©flag_setup.body:
         movq x_false(%rip), %rax
         movq %rax, -64(%rbp)
         movq -64(%rbp), %rax
-        movq %rax, _one.flag(%rip)
-        jmp _one.flag_setup.epilog
-_one.flag_setup.epilog:
+        movq %rax, one©flag(%rip)
+        jmp one©flag_setup.epilog
+one©flag_setup.epilog:
         addq $64, %rsp
         popq %r15
         popq %r14
@@ -44,13 +44,13 @@ _one.flag_setup.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _one.flag_setup, . - _one.flag_setup
+.size one©flag_setup, . - one©flag_setup
 
 .text
 .align 8
-.type _one.get, @function
-_one.get:
-_one.get.prolog:
+.type one©get, @function
+one©get:
+one©get.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -61,31 +61,31 @@ _one.get.prolog:
         pushq %r14
         pushq %r15
         subq $80, %rsp
-        jmp _one.get.body
-_one.get.body:
-        movq _one.flag(%rip), %rax
+        jmp one©get.body
+one©get.body:
+        movq one©flag(%rip), %rax
         movq %rax, -64(%rbp)
         movq x_true(%rip), %rax
         cmpq -64(%rbp), %rax
-        je _one.get.cached
-        jmp _one.get.init
-_one.get.cached:
+        je one©get.cached
+        jmp one©get.init
+one©get.cached:
         movq one(%rip), %rax
         movq %rax, -72(%rbp)
         movq -72(%rbp), %rax
-        jmp _one.get.epilog
-_one.get.init:
-        callq _one.init_function
+        jmp one©get.epilog
+one©get.init:
+        callq one©init_function
         movq %rax, -72(%rbp)
         movq -72(%rbp), %rax
         movq %rax, one(%rip)
         movq x_true(%rip), %rax
         movq %rax, -80(%rbp)
         movq -80(%rbp), %rax
-        movq %rax, _one.flag(%rip)
+        movq %rax, one©flag(%rip)
         movq -72(%rbp), %rax
-        jmp _one.get.epilog
-_one.get.epilog:
+        jmp one©get.epilog
+one©get.epilog:
         addq $80, %rsp
         popq %r15
         popq %r14
@@ -96,13 +96,13 @@ _one.get.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _one.get, . - _one.get
+.size one©get, . - one©get
 
 .text
 .align 8
-.type _one.init_function, @function
-_one.init_function:
-_one.init_function.prolog:
+.type one©init_function, @function
+one©init_function:
+one©init_function.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -113,12 +113,12 @@ _one.init_function.prolog:
         pushq %r14
         pushq %r15
         subq $64, %rsp
-        jmp _one.init_function.body
-_one.init_function.body:
+        jmp one©init_function.body
+one©init_function.body:
         movq $8, -64(%rbp)
         movq -64(%rbp), %rax
-        jmp _one.init_function.epilog
-_one.init_function.epilog:
+        jmp one©init_function.epilog
+one©init_function.epilog:
         addq $64, %rsp
         popq %r15
         popq %r14
@@ -129,7 +129,7 @@ _one.init_function.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _one.init_function, . - _one.init_function
+.size one©init_function, . - one©init_function
 
 .bss
 .align 8
@@ -138,14 +138,14 @@ two:
 
 .bss
 .align 8
-_two.flag:
+two©flag:
         .zero 8
 
 .text
 .align 8
-.type _two.flag_setup, @function
-_two.flag_setup:
-_two.flag_setup.prolog:
+.type two©flag_setup, @function
+two©flag_setup:
+two©flag_setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -156,14 +156,14 @@ _two.flag_setup.prolog:
         pushq %r14
         pushq %r15
         subq $64, %rsp
-        jmp _two.flag_setup.body
-_two.flag_setup.body:
+        jmp two©flag_setup.body
+two©flag_setup.body:
         movq x_false(%rip), %rax
         movq %rax, -64(%rbp)
         movq -64(%rbp), %rax
-        movq %rax, _two.flag(%rip)
-        jmp _two.flag_setup.epilog
-_two.flag_setup.epilog:
+        movq %rax, two©flag(%rip)
+        jmp two©flag_setup.epilog
+two©flag_setup.epilog:
         addq $64, %rsp
         popq %r15
         popq %r14
@@ -174,13 +174,13 @@ _two.flag_setup.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _two.flag_setup, . - _two.flag_setup
+.size two©flag_setup, . - two©flag_setup
 
 .text
 .align 8
-.type _two.get, @function
-_two.get:
-_two.get.prolog:
+.type two©get, @function
+two©get:
+two©get.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -191,31 +191,31 @@ _two.get.prolog:
         pushq %r14
         pushq %r15
         subq $80, %rsp
-        jmp _two.get.body
-_two.get.body:
-        movq _two.flag(%rip), %rax
+        jmp two©get.body
+two©get.body:
+        movq two©flag(%rip), %rax
         movq %rax, -64(%rbp)
         movq x_true(%rip), %rax
         cmpq -64(%rbp), %rax
-        je _two.get.cached
-        jmp _two.get.init
-_two.get.cached:
+        je two©get.cached
+        jmp two©get.init
+two©get.cached:
         movq two(%rip), %rax
         movq %rax, -72(%rbp)
         movq -72(%rbp), %rax
-        jmp _two.get.epilog
-_two.get.init:
-        callq _two.init_function
+        jmp two©get.epilog
+two©get.init:
+        callq two©init_function
         movq %rax, -72(%rbp)
         movq -72(%rbp), %rax
         movq %rax, two(%rip)
         movq x_true(%rip), %rax
         movq %rax, -80(%rbp)
         movq -80(%rbp), %rax
-        movq %rax, _two.flag(%rip)
+        movq %rax, two©flag(%rip)
         movq -72(%rbp), %rax
-        jmp _two.get.epilog
-_two.get.epilog:
+        jmp two©get.epilog
+two©get.epilog:
         addq $80, %rsp
         popq %r15
         popq %r14
@@ -226,13 +226,13 @@ _two.get.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _two.get, . - _two.get
+.size two©get, . - two©get
 
 .text
 .align 8
-.type _two.init_function, @function
-_two.init_function:
-_two.init_function.prolog:
+.type two©init_function, @function
+two©init_function:
+two©init_function.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -243,8 +243,8 @@ _two.init_function.prolog:
         pushq %r14
         pushq %r15
         subq $96, %rsp
-        jmp _two.init_function.body
-_two.init_function.body:
+        jmp two©init_function.body
+two©init_function.body:
         movq $x_iadd, %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -256,15 +256,15 @@ _two.init_function.body:
         movq -72(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -80(%rbp)
-        callq _one.get
+        callq one©get
         movq %rax, -88(%rbp)
         movq -80(%rbp), %rdi
         movq -88(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -96(%rbp)
         movq -96(%rbp), %rax
-        jmp _two.init_function.epilog
-_two.init_function.epilog:
+        jmp two©init_function.epilog
+two©init_function.epilog:
         addq $96, %rsp
         popq %r15
         popq %r14
@@ -275,7 +275,7 @@ _two.init_function.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _two.init_function, . - _two.init_function
+.size two©init_function, . - two©init_function
 
 .bss
 .align 8
@@ -284,14 +284,14 @@ three:
 
 .bss
 .align 8
-_three.flag:
+three©flag:
         .zero 8
 
 .text
 .align 8
-.type _three.flag_setup, @function
-_three.flag_setup:
-_three.flag_setup.prolog:
+.type three©flag_setup, @function
+three©flag_setup:
+three©flag_setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -302,14 +302,14 @@ _three.flag_setup.prolog:
         pushq %r14
         pushq %r15
         subq $64, %rsp
-        jmp _three.flag_setup.body
-_three.flag_setup.body:
+        jmp three©flag_setup.body
+three©flag_setup.body:
         movq x_false(%rip), %rax
         movq %rax, -64(%rbp)
         movq -64(%rbp), %rax
-        movq %rax, _three.flag(%rip)
-        jmp _three.flag_setup.epilog
-_three.flag_setup.epilog:
+        movq %rax, three©flag(%rip)
+        jmp three©flag_setup.epilog
+three©flag_setup.epilog:
         addq $64, %rsp
         popq %r15
         popq %r14
@@ -320,13 +320,13 @@ _three.flag_setup.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _three.flag_setup, . - _three.flag_setup
+.size three©flag_setup, . - three©flag_setup
 
 .text
 .align 8
-.type _three.get, @function
-_three.get:
-_three.get.prolog:
+.type three©get, @function
+three©get:
+three©get.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -337,31 +337,31 @@ _three.get.prolog:
         pushq %r14
         pushq %r15
         subq $80, %rsp
-        jmp _three.get.body
-_three.get.body:
-        movq _three.flag(%rip), %rax
+        jmp three©get.body
+three©get.body:
+        movq three©flag(%rip), %rax
         movq %rax, -64(%rbp)
         movq x_true(%rip), %rax
         cmpq -64(%rbp), %rax
-        je _three.get.cached
-        jmp _three.get.init
-_three.get.cached:
+        je three©get.cached
+        jmp three©get.init
+three©get.cached:
         movq three(%rip), %rax
         movq %rax, -72(%rbp)
         movq -72(%rbp), %rax
-        jmp _three.get.epilog
-_three.get.init:
-        callq _three.init_function
+        jmp three©get.epilog
+three©get.init:
+        callq three©init_function
         movq %rax, -72(%rbp)
         movq -72(%rbp), %rax
         movq %rax, three(%rip)
         movq x_true(%rip), %rax
         movq %rax, -80(%rbp)
         movq -80(%rbp), %rax
-        movq %rax, _three.flag(%rip)
+        movq %rax, three©flag(%rip)
         movq -72(%rbp), %rax
-        jmp _three.get.epilog
-_three.get.epilog:
+        jmp three©get.epilog
+three©get.epilog:
         addq $80, %rsp
         popq %r15
         popq %r14
@@ -372,13 +372,13 @@ _three.get.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _three.get, . - _three.get
+.size three©get, . - three©get
 
 .text
 .align 8
-.type _three.init_function, @function
-_three.init_function:
-_three.init_function.prolog:
+.type three©init_function, @function
+three©init_function:
+three©init_function.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -389,8 +389,8 @@ _three.init_function.prolog:
         pushq %r14
         pushq %r15
         subq $96, %rsp
-        jmp _three.init_function.body
-_three.init_function.body:
+        jmp three©init_function.body
+three©init_function.body:
         movq $x_iadd, %rdi
         orq $3, %rdi
         movq $16, %rsi
@@ -402,15 +402,15 @@ _three.init_function.body:
         movq -72(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -80(%rbp)
-        callq _two.get
+        callq two©get
         movq %rax, -88(%rbp)
         movq -80(%rbp), %rdi
         movq -88(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -96(%rbp)
         movq -96(%rbp), %rax
-        jmp _three.init_function.epilog
-_three.init_function.epilog:
+        jmp three©init_function.epilog
+three©init_function.epilog:
         addq $96, %rsp
         popq %r15
         popq %r14
@@ -421,7 +421,7 @@ _three.init_function.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size _three.init_function, . - _three.init_function
+.size three©init_function, . - three©init_function
 
 .text
 .align 8
@@ -446,7 +446,7 @@ _main.body:
         movq $0, %rdx
         callq x_make_curry
         movq %rax, -64(%rbp)
-        callq _three.get
+        callq three©get
         movq %rax, -72(%rbp)
         movq -64(%rbp), %rdi
         movq -72(%rbp), %rsi
@@ -469,14 +469,14 @@ _main.epilog:
 
 .bss
 .align 8
-__main.constant:
+_main©constant:
         .zero 8
 
 .text
 .align 8
-.type __main.setup, @function
-__main.setup:
-__main.setup.prolog:
+.type _main©setup, @function
+_main©setup:
+_main©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -487,8 +487,8 @@ __main.setup.prolog:
         pushq %r14
         pushq %r15
         subq $88, %rsp
-        jmp __main.setup.body
-__main.setup.body:
+        jmp _main©setup.body
+_main©setup.body:
         movq $_main, -64(%rbp)
         orq $3, -64(%rbp)
         movq $0, -72(%rbp)
@@ -499,9 +499,9 @@ __main.setup.body:
         callq x_make_curry
         movq %rax, -88(%rbp)
         movq -88(%rbp), %rax
-        movq %rax, __main.constant(%rip)
-        jmp __main.setup.epilog
-__main.setup.epilog:
+        movq %rax, _main©constant(%rip)
+        jmp _main©setup.epilog
+_main©setup.epilog:
         addq $88, %rsp
         popq %r15
         popq %r14
@@ -512,7 +512,7 @@ __main.setup.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size __main.setup, . - __main.setup
+.size _main©setup, . - _main©setup
 
 .text
 .align 8
@@ -531,13 +531,13 @@ _setup.prolog:
         subq $64, %rsp
         jmp _setup.body
 _setup.body:
-        callq _one.flag_setup
+        callq one©flag_setup
         movq %rax, -64(%rbp)
-        callq _two.flag_setup
+        callq two©flag_setup
         movq %rax, -64(%rbp)
-        callq _three.flag_setup
+        callq three©flag_setup
         movq %rax, -64(%rbp)
-        callq __main.setup
+        callq _main©setup
         movq %rax, -64(%rbp)
 _setup.epilog:
         addq $64, %rsp

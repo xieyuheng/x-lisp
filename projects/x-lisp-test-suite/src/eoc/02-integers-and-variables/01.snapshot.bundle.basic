@@ -9,9 +9,9 @@
     (= _↩ (apply _₁ _₅))
     (return _↩)))
 
-(define-variable __main/constant)
+(define-variable _main©constant)
 
-(define-setup __main/setup
+(define-setup _main©setup
   (block body
     (= function-address (literal (@address _main)))
     (= arity (literal 0))
@@ -22,5 +22,5 @@
         function-address
         arity
         size))
-    (store __main/constant curry)
+    (store _main©constant curry)
     (return)))

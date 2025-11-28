@@ -91,9 +91,9 @@
     (popq (reg rbp))
     (retq)))
 
-(define-space __main/constant 8)
+(define-space _main©constant 8)
 
-(define-code __main/setup
+(define-code _main©setup
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -119,7 +119,7 @@
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -88) (reg rax))
-    (movq (reg rax) (label-deref (label __main/constant)))
+    (movq (reg rax) (label-deref (label _main©constant)))
     (jmp (label epilog)))
   (block epilog
     (addq (imm 88) (reg rsp))
@@ -147,7 +147,7 @@
     (subq (imm 64) (reg rsp))
     (jmp (label body)))
   (block body
-    (callq-n (label __main/setup) (arity 0))
+    (callq-n (label _main©setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64)))
   (block epilog
     (addq (imm 64) (reg rsp))

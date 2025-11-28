@@ -64,9 +64,9 @@
     (= _↩ (apply _₁ _₁₁))
     (return _↩)))
 
-(define-variable __main/constant)
+(define-variable _main©constant)
 
-(define-setup __main/setup
+(define-setup _main©setup
   (block body
     (= function-address (literal (@address _main)))
     (= arity (literal 0))
@@ -77,7 +77,7 @@
         function-address
         arity
         size))
-    (store __main/constant curry)
+    (store _main©constant curry)
     (return)))
 
 ;;; SelectInstructionPass
@@ -142,9 +142,9 @@
     (movq (var _↩) (reg rax))
     (retq)))
 
-(define-space __main/constant 8)
+(define-space _main©constant 8)
 
-(define-code __main/setup
+(define-code _main©setup
   (block body
     (movq (label-imm (label _main)) (var function-address))
     (orq (imm 3) (var function-address))
@@ -155,12 +155,12 @@
     (movq (var size) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (var curry))
-    (movq (var curry) (label-deref (label __main/constant)))
+    (movq (var curry) (label-deref (label _main©constant)))
     (retq)))
 
 (define-code _setup
   (block body
-    (callq-n (label __main/setup) (arity 0))
+    (callq-n (label _main©setup) (arity 0))
     (movq (reg rax) (var _))))
 
 ;;; AssignHomePass
@@ -225,9 +225,9 @@
     (movq (reg-deref (reg rbp) -152) (reg rax))
     (retq)))
 
-(define-space __main/constant 8)
+(define-space _main©constant 8)
 
-(define-code __main/setup
+(define-code _main©setup
   (block body
     (movq
      (label-imm (label _main))
@@ -242,12 +242,12 @@
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq
      (reg-deref (reg rbp) -88)
-     (label-deref (label __main/constant)))
+     (label-deref (label _main©constant)))
     (retq)))
 
 (define-code _setup
   (block body
-    (callq-n (label __main/setup) (arity 0))
+    (callq-n (label _main©setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))))
 
 ;;; PatchInstructionPass
@@ -312,9 +312,9 @@
     (movq (reg-deref (reg rbp) -152) (reg rax))
     (retq)))
 
-(define-space __main/constant 8)
+(define-space _main©constant 8)
 
-(define-code __main/setup
+(define-code _main©setup
   (block body
     (movq
      (label-imm (label _main))
@@ -328,12 +328,12 @@
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -88) (reg rax))
-    (movq (reg rax) (label-deref (label __main/constant)))
+    (movq (reg rax) (label-deref (label _main©constant)))
     (retq)))
 
 (define-code _setup
   (block body
-    (callq-n (label __main/setup) (arity 0))
+    (callq-n (label _main©setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))))
 
 ;;; PrologAndEpilogPass
@@ -421,9 +421,9 @@
     (popq (reg rbp))
     (retq)))
 
-(define-space __main/constant 8)
+(define-space _main©constant 8)
 
-(define-code __main/setup
+(define-code _main©setup
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -449,7 +449,7 @@
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -88) (reg rax))
-    (movq (reg rax) (label-deref (label __main/constant)))
+    (movq (reg rax) (label-deref (label _main©constant)))
     (jmp (label epilog)))
   (block epilog
     (addq (imm 88) (reg rsp))
@@ -477,7 +477,7 @@
     (subq (imm 64) (reg rsp))
     (jmp (label body)))
   (block body
-    (callq-n (label __main/setup) (arity 0))
+    (callq-n (label _main©setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64)))
   (block epilog
     (addq (imm 64) (reg rsp))

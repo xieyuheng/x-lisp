@@ -255,7 +255,7 @@ function selectLiteral(dest: string, value: B.Value): Array<M.Instr> {
     //   return [
     //     M.Instr("movq", [
     //       M.LabelDeref(
-    //         M.Label(`_${value.name}/constant`, { isExternal: false }),
+    //         M.Label(`${value.name}©constant`, { isExternal: false }),
     //       ),
     //       M.Var(dest),
     //     ]),

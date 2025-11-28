@@ -52,7 +52,7 @@ function onExp(state: State, exp: X.Exp): X.Exp {
       const freeNames = Array.from(X.expFreeNames(new Set(), exp))
       const liftedCount = state.lifted.length + 1
       const subscript = stringToSubscript(liftedCount.toString())
-      const newFunctionName = `${state.definition.name}/λ${subscript}`
+      const newFunctionName = `${state.definition.name}©λ${subscript}`
       const newParameters = [...freeNames, ...exp.parameters]
       const arity = newParameters.length
       assert(exp.meta)

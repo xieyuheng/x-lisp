@@ -1,100 +1,100 @@
 (define-variable one)
 
-(define-variable _one/flag)
+(define-variable one©flag)
 
-(define-setup _one/flag-setup
+(define-setup one©flag-setup
   (block body
     (= false (literal #f))
-    (store _one/flag false)
+    (store one©flag false)
     (return)))
 
-(define-function _one/get
+(define-function one©get
   (block body
-    (= flag (load _one/flag))
+    (= flag (load one©flag))
     (branch flag cached init))
   (block cached (= result (load one)) (return result))
   (block init
-    (= result (call (@function _one/init-function 0)))
+    (= result (call (@function one©init-function 0)))
     (store one result)
     (= true (literal #t))
-    (store _one/flag true)
+    (store one©flag true)
     (return result)))
 
-(define-function _one/init-function
+(define-function one©init-function
   (block body (= _↩ (literal 1)) (return _↩)))
 
 (define-variable two)
 
-(define-variable _two/flag)
+(define-variable two©flag)
 
-(define-setup _two/flag-setup
+(define-setup two©flag-setup
   (block body
     (= false (literal #f))
-    (store _two/flag false)
+    (store two©flag false)
     (return)))
 
-(define-function _two/get
+(define-function two©get
   (block body
-    (= flag (load _two/flag))
+    (= flag (load two©flag))
     (branch flag cached init))
   (block cached (= result (load two)) (return result))
   (block init
-    (= result (call (@function _two/init-function 0)))
+    (= result (call (@function two©init-function 0)))
     (store two result)
     (= true (literal #t))
-    (store _two/flag true)
+    (store two©flag true)
     (return result)))
 
-(define-function _two/init-function
+(define-function two©init-function
   (block body
     (= _₁ (literal (@primitive-function iadd 2)))
     (= _₂ (literal 1))
     (= _₃ (apply _₁ _₂))
-    (= _₄ (call (@function _one/get 0)))
+    (= _₄ (call (@function one©get 0)))
     (= _↩ (apply _₃ _₄))
     (return _↩)))
 
 (define-variable three)
 
-(define-variable _three/flag)
+(define-variable three©flag)
 
-(define-setup _three/flag-setup
+(define-setup three©flag-setup
   (block body
     (= false (literal #f))
-    (store _three/flag false)
+    (store three©flag false)
     (return)))
 
-(define-function _three/get
+(define-function three©get
   (block body
-    (= flag (load _three/flag))
+    (= flag (load three©flag))
     (branch flag cached init))
   (block cached (= result (load three)) (return result))
   (block init
-    (= result (call (@function _three/init-function 0)))
+    (= result (call (@function three©init-function 0)))
     (store three result)
     (= true (literal #t))
-    (store _three/flag true)
+    (store three©flag true)
     (return result)))
 
-(define-function _three/init-function
+(define-function three©init-function
   (block body
     (= _₁ (literal (@primitive-function iadd 2)))
     (= _₂ (literal 1))
     (= _₃ (apply _₁ _₂))
-    (= _₄ (call (@function _two/get 0)))
+    (= _₄ (call (@function two©get 0)))
     (= _↩ (apply _₃ _₄))
     (return _↩)))
 
 (define-function _main
   (block body
     (= _₁ (literal (@primitive-function println-non-void 1)))
-    (= _₂ (call (@function _three/get 0)))
+    (= _₂ (call (@function three©get 0)))
     (= _↩ (apply _₁ _₂))
     (return _↩)))
 
-(define-variable __main/constant)
+(define-variable _main©constant)
 
-(define-setup __main/setup
+(define-setup _main©setup
   (block body
     (= function-address (literal (@address _main)))
     (= arity (literal 0))
@@ -105,5 +105,5 @@
         function-address
         arity
         size))
-    (store __main/constant curry)
+    (store _main©constant curry)
     (return)))

@@ -44,26 +44,26 @@ function onFunctionDefinition(
     // (define-function <name> ...)
     explicateFunctionDefinition(basicMod, definition),
 
-    // (define-variable _<name>/constant)
+    // (define-variable <name>©constant)
     B.VariableDefinition(
       basicMod,
-      `_${definition.name}/constant`,
+      `${definition.name}©constant`,
       B.Undefined(),
       definition.meta,
     ),
 
-    // (define-setup _<name>/setup
+    // (define-setup <name>©setup
     //   (block body
     //     (= function-address (literal (@address <name>)))
     //     (= arity (literal <arity>))
     //     (= size (literal 0))
     //     (= curry (call (@primitive-function make-curry 3)
     //                function-address arity size))
-    //     (store _<name>/constant curry)
+    //     (store <name>©constant curry)
     //     (return)))
     B.SetupDefinition(
       basicMod,
-      `_${definition.name}/setup`,
+      `${definition.name}©setup`,
       new Map([
         [
           "body",
@@ -76,7 +76,7 @@ function onFunctionDefinition(
               B.Function("make-curry", 3, { isPrimitive: true }),
               ["function-address", "arity", "size"],
             ),
-            B.Store(`_${definition.name}/constant`, "curry"),
+            B.Store(`${definition.name}©constant`, "curry"),
             B.Return(),
           ]),
         ],
@@ -125,24 +125,24 @@ function onConstantDefinition(
       definition.meta,
     ),
 
-    // (define-variable _<name>/flag)
+    // (define-variable <name>©flag)
     B.VariableDefinition(
       basicMod,
-      `_${definition.name}/flag`,
+      `${definition.name}©flag`,
       B.Undefined(),
       definition.meta,
     ),
 
-    // (define-setup _<name>/flag-setup)
+    // (define-setup <name>©flag-setup)
     B.SetupDefinition(
       basicMod,
-      `_${definition.name}/flag-setup`,
+      `${definition.name}©flag-setup`,
       new Map([
         [
           "body",
           B.Block("body", [
             B.Literal("false", B.Bool(false)),
-            B.Store(`_${definition.name}/flag`, "false"),
+            B.Store(`${definition.name}©flag`, "false"),
             B.Return(),
           ]),
         ],
@@ -150,27 +150,27 @@ function onConstantDefinition(
       definition.meta,
     ),
 
-    // (define-function _<name>/get
+    // (define-function <name>©get
     //   (block body
-    //     (= flag (load _<name>/flag))
+    //     (= flag (load <name>©flag))
     //     (branch flag cached init))
     //   (block cached
     //     (= result (load <name>))
     //     (return result))
     //   (block init
-    //     (= result (call _<name>/init-function))
+    //     (= result (call <name>©init-function))
     //     (store <name> result)
     //     (= true (const #t))
-    //     (store _<name>/flag true)
+    //     (store <name>©flag true)
     //     (return result)))
     B.FunctionDefinition(
       basicMod,
-      `_${definition.name}/get`,
+      `${definition.name}©get`,
       new Map([
         [
           "body",
           B.Block("body", [
-            B.Load("flag", `_${definition.name}/flag`),
+            B.Load("flag", `${definition.name}©flag`),
             B.Branch("flag", "cached", "init"),
           ]),
         ],
@@ -186,14 +186,14 @@ function onConstantDefinition(
           B.Block("init", [
             B.Call(
               "result",
-              B.Function(`_${definition.name}/init-function`, 0, {
+              B.Function(`${definition.name}©init-function`, 0, {
                 isPrimitive: false,
               }),
               [],
             ),
             B.Store(definition.name, "result"),
             B.Literal("true", B.Bool(true)),
-            B.Store(`_${definition.name}/flag`, "true"),
+            B.Store(`${definition.name}©flag`, "true"),
             B.Return("result"),
           ]),
         ],
@@ -201,14 +201,14 @@ function onConstantDefinition(
       definition.meta,
     ),
 
-    // (define-function _<name>/init-function
+    // (define-function <name>©init-function
     //   (block body
     //     (compile <body>)))
     explicateFunctionDefinition(
       basicMod,
       X.FunctionDefinition(
         definition.mod,
-        `_${definition.name}/init-function`,
+        `${definition.name}©init-function`,
         [],
         definition.body,
         definition.meta,
@@ -320,7 +320,7 @@ function inLet1(
     }
 
     case "Constant": {
-      const getter = B.Function(`_${rhs.name}/get`, 0, { isPrimitive: false })
+      const getter = B.Function(`${rhs.name}©get`, 0, { isPrimitive: false })
       return [B.Call(name, getter, []), ...cont]
     }
 

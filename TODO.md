@@ -1,5 +1,3 @@
-[x-lisp-boot.js] use `©` for compiler generated global names
-
 # function constant
 
 [x-lisp-boot.js] `040-SelectInstructionPass` -- `selectLiteral` handle `Address`

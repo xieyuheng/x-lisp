@@ -2,7 +2,7 @@
   (block body
     (= f (argument 0))
     (= _₁ (literal (@primitive-function make-curry 3)))
-    (= _₂ (literal (@function Y/λ₁ 1)))
+    (= _₂ (literal (@function Y©λ₁ 1)))
     (= _₃ (apply _₁ _₂))
     (= _₄ (literal 1))
     (= _₅ (apply _₃ _₄))
@@ -13,7 +13,7 @@
     (= _₁₀ (apply _₈ _₉))
     (= _₁₁ (apply _₁₀ f))
     (= _₁₂ (literal (@primitive-function make-curry 3)))
-    (= _₁₃ (literal (@function Y/λ₂ 2)))
+    (= _₁₃ (literal (@function Y©λ₂ 2)))
     (= _₁₄ (apply _₁₂ _₁₃))
     (= _₁₅ (literal 2))
     (= _₁₆ (apply _₁₄ _₁₅))
@@ -23,9 +23,9 @@
     (= _↩ (apply _₇ _₁₉))
     (return _↩)))
 
-(define-variable _Y/constant)
+(define-variable Y©constant)
 
-(define-setup _Y/setup
+(define-setup Y©setup
   (block body
     (= function-address (literal (@address Y)))
     (= arity (literal 1))
@@ -36,20 +36,20 @@
         function-address
         arity
         size))
-    (store _Y/constant curry)
+    (store Y©constant curry)
     (return)))
 
-(define-function Y/λ₁
+(define-function Y©λ₁
   (block body
     (= u₁ (argument 0))
     (= _↩ (apply u₁ u₁))
     (return _↩)))
 
-(define-variable _Y/λ₁/constant)
+(define-variable Y©λ₁©constant)
 
-(define-setup _Y/λ₁/setup
+(define-setup Y©λ₁©setup
   (block body
-    (= function-address (literal (@address Y/λ₁)))
+    (= function-address (literal (@address Y©λ₁)))
     (= arity (literal 1))
     (= size (literal 0))
     (= curry
@@ -58,10 +58,10 @@
         function-address
         arity
         size))
-    (store _Y/λ₁/constant curry)
+    (store Y©λ₁©constant curry)
     (return)))
 
-(define-function Y/λ₂
+(define-function Y©λ₂
   (block body
     (= f (argument 0))
     (= x₁ (argument 1))
@@ -70,7 +70,7 @@
     (= _₃ (apply _₁ _₂))
     (= _₄ (apply _₃ x₁))
     (= _₅ (literal (@primitive-function make-curry 3)))
-    (= _₆ (literal (@function Y/λ₂/λ₁ 2)))
+    (= _₆ (literal (@function Y©λ₂©λ₁ 2)))
     (= _₇ (apply _₅ _₆))
     (= _₈ (literal 2))
     (= _₉ (apply _₇ _₈))
@@ -80,11 +80,11 @@
     (= _↩ (apply f _₁₂))
     (return _↩)))
 
-(define-variable _Y/λ₂/constant)
+(define-variable Y©λ₂©constant)
 
-(define-setup _Y/λ₂/setup
+(define-setup Y©λ₂©setup
   (block body
-    (= function-address (literal (@address Y/λ₂)))
+    (= function-address (literal (@address Y©λ₂)))
     (= arity (literal 2))
     (= size (literal 0))
     (= curry
@@ -93,10 +93,10 @@
         function-address
         arity
         size))
-    (store _Y/λ₂/constant curry)
+    (store Y©λ₂©constant curry)
     (return)))
 
-(define-function Y/λ₂/λ₁
+(define-function Y©λ₂©λ₁
   (block body
     (= x₁ (argument 0))
     (= t₁ (argument 1))
@@ -104,11 +104,11 @@
     (= _↩ (apply _₁ t₁))
     (return _↩)))
 
-(define-variable _Y/λ₂/λ₁/constant)
+(define-variable Y©λ₂©λ₁©constant)
 
-(define-setup _Y/λ₂/λ₁/setup
+(define-setup Y©λ₂©λ₁©setup
   (block body
-    (= function-address (literal (@address Y/λ₂/λ₁)))
+    (= function-address (literal (@address Y©λ₂©λ₁)))
     (= arity (literal 2))
     (= size (literal 0))
     (= curry
@@ -117,5 +117,5 @@
         function-address
         arity
         size))
-    (store _Y/λ₂/λ₁/constant curry)
+    (store Y©λ₂©λ₁©constant curry)
     (return)))

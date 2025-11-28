@@ -2,9 +2,9 @@
 
 (define-space one 8)
 
-(define-space _one/flag 8)
+(define-space one©flag 8)
 
-(define-code _one/flag-setup
+(define-code one©flag-setup
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -21,7 +21,7 @@
     (movq (label-deref (external-label x-false)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (movq (reg-deref (reg rbp) -64) (reg rax))
-    (movq (reg rax) (label-deref (label _one/flag)))
+    (movq (reg rax) (label-deref (label one©flag)))
     (jmp (label epilog)))
   (block epilog
     (addq (imm 64) (reg rsp))
@@ -35,7 +35,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _one/get
+(define-code one©get
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -49,7 +49,7 @@
     (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
-    (movq (label-deref (label _one/flag)) (reg rax))
+    (movq (label-deref (label one©flag)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -64) (reg rax))
@@ -60,14 +60,14 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block init
-    (callq-n (label _one/init-function) (arity 0))
+    (callq-n (label one©init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label one)))
     (movq (label-deref (external-label x-true)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -80))
     (movq (reg-deref (reg rbp) -80) (reg rax))
-    (movq (reg rax) (label-deref (label _one/flag)))
+    (movq (reg rax) (label-deref (label one©flag)))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block epilog
@@ -82,7 +82,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _one/init-function
+(define-code one©init-function
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -113,9 +113,9 @@
 
 (define-space two 8)
 
-(define-space _two/flag 8)
+(define-space two©flag 8)
 
-(define-code _two/flag-setup
+(define-code two©flag-setup
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -132,7 +132,7 @@
     (movq (label-deref (external-label x-false)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (movq (reg-deref (reg rbp) -64) (reg rax))
-    (movq (reg rax) (label-deref (label _two/flag)))
+    (movq (reg rax) (label-deref (label two©flag)))
     (jmp (label epilog)))
   (block epilog
     (addq (imm 64) (reg rsp))
@@ -146,7 +146,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _two/get
+(define-code two©get
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -160,7 +160,7 @@
     (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
-    (movq (label-deref (label _two/flag)) (reg rax))
+    (movq (label-deref (label two©flag)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -64) (reg rax))
@@ -171,14 +171,14 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block init
-    (callq-n (label _two/init-function) (arity 0))
+    (callq-n (label two©init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label two)))
     (movq (label-deref (external-label x-true)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -80))
     (movq (reg-deref (reg rbp) -80) (reg rax))
-    (movq (reg rax) (label-deref (label _two/flag)))
+    (movq (reg rax) (label-deref (label two©flag)))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block epilog
@@ -193,7 +193,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _two/init-function
+(define-code two©init-function
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -218,7 +218,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -80))
-    (callq-n (label _one/get) (arity 0))
+    (callq-n (label one©get) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -80) (reg rdi))
     (movq (reg-deref (reg rbp) -88) (reg rsi))
@@ -240,9 +240,9 @@
 
 (define-space three 8)
 
-(define-space _three/flag 8)
+(define-space three©flag 8)
 
-(define-code _three/flag-setup
+(define-code three©flag-setup
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -259,7 +259,7 @@
     (movq (label-deref (external-label x-false)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (movq (reg-deref (reg rbp) -64) (reg rax))
-    (movq (reg rax) (label-deref (label _three/flag)))
+    (movq (reg rax) (label-deref (label three©flag)))
     (jmp (label epilog)))
   (block epilog
     (addq (imm 64) (reg rsp))
@@ -273,7 +273,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _three/get
+(define-code three©get
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -287,7 +287,7 @@
     (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
-    (movq (label-deref (label _three/flag)) (reg rax))
+    (movq (label-deref (label three©flag)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -64) (reg rax))
@@ -298,14 +298,14 @@
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block init
-    (callq-n (label _three/init-function) (arity 0))
+    (callq-n (label three©init-function) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (movq (reg rax) (label-deref (label three)))
     (movq (label-deref (external-label x-true)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -80))
     (movq (reg-deref (reg rbp) -80) (reg rax))
-    (movq (reg rax) (label-deref (label _three/flag)))
+    (movq (reg rax) (label-deref (label three©flag)))
     (movq (reg-deref (reg rbp) -72) (reg rax))
     (jmp (label epilog)))
   (block epilog
@@ -320,7 +320,7 @@
     (popq (reg rbp))
     (retq)))
 
-(define-code _three/init-function
+(define-code three©init-function
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -345,7 +345,7 @@
     (movq (reg-deref (reg rbp) -72) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -80))
-    (callq-n (label _two/get) (arity 0))
+    (callq-n (label two©get) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -80) (reg rdi))
     (movq (reg-deref (reg rbp) -88) (reg rsi))
@@ -387,7 +387,7 @@
     (movq (imm 0) (reg rdx))
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -64))
-    (callq-n (label _three/get) (arity 0))
+    (callq-n (label three©get) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -72) (reg rsi))
@@ -407,9 +407,9 @@
     (popq (reg rbp))
     (retq)))
 
-(define-space __main/constant 8)
+(define-space _main©constant 8)
 
-(define-code __main/setup
+(define-code _main©setup
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -435,7 +435,7 @@
     (callq-n (external-label x-make-curry) (arity 3))
     (movq (reg rax) (reg-deref (reg rbp) -88))
     (movq (reg-deref (reg rbp) -88) (reg rax))
-    (movq (reg rax) (label-deref (label __main/constant)))
+    (movq (reg rax) (label-deref (label _main©constant)))
     (jmp (label epilog)))
   (block epilog
     (addq (imm 88) (reg rsp))
@@ -463,13 +463,13 @@
     (subq (imm 64) (reg rsp))
     (jmp (label body)))
   (block body
-    (callq-n (label _one/flag-setup) (arity 0))
+    (callq-n (label one©flag-setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))
-    (callq-n (label _two/flag-setup) (arity 0))
+    (callq-n (label two©flag-setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))
-    (callq-n (label _three/flag-setup) (arity 0))
+    (callq-n (label three©flag-setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))
-    (callq-n (label __main/setup) (arity 0))
+    (callq-n (label _main©setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64)))
   (block epilog
     (addq (imm 64) (reg rsp))
