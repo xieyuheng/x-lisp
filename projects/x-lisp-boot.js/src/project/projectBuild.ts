@@ -3,6 +3,7 @@ import { createUrl } from "@xieyuheng/helpers.js/url"
 import * as M from "@xieyuheng/machine-lisp.js"
 import { globals } from "../globals.ts"
 import * as X from "../index.ts"
+import * as Passes from "../passes/index.ts"
 import * as Services from "../services/index.ts"
 import {
   isSnapshot,
@@ -53,6 +54,7 @@ function buildBasicBundle(project: Project, id: string): void {
     logFile("basic-bundle", outputFile)
     const basicMod = B.loadEntry(createUrl(inputFile))
     const basicBundleMod = B.bundle(basicMod)
+    Passes.SetupPrimitiveFunction(basicBundleMod)
     const outputText = B.prettyMod(globals.maxWidth, basicBundleMod)
     writeFile(outputFile, outputText + "\n")
   }

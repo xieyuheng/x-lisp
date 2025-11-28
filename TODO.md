@@ -1,8 +1,3 @@
-# function constant
-
-[x-lisp-boot.js] `030-ExplicateControlPass` -- setup constant for primitive function
-[x-lisp-boot.js] `040-SelectInstructionPass` -- `selectLiteral` handle `Address`
-
 # define-metadata
 
 [basic-lisp.js] `MetadataDefinition` -- for untagged data

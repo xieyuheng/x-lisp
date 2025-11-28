@@ -18,23 +18,11 @@ _main.prolog:
         subq $176, %rsp
         jmp _main.body
 _main.body:
-        movq $x_println_non_void, %rdi
-        orq $3, %rdi
-        movq $8, %rsi
-        movq $0, %rdx
-        callq x_make_curry
+        movq println_non_void©constant(%rip), %rax
         movq %rax, -64(%rbp)
-        movq $x_equal_p, %rdi
-        orq $3, %rdi
-        movq $16, %rsi
-        movq $0, %rdx
-        callq x_make_curry
+        movq equal_p©constant(%rip), %rax
         movq %rax, -72(%rbp)
-        movq $x_random_dice, %rdi
-        orq $3, %rdi
-        movq $0, %rsi
-        movq $0, %rdx
-        callq x_make_curry
+        movq random_dice©constant(%rip), %rax
         movq %rax, -80(%rbp)
         movq -80(%rbp), %rdi
         callq x_apply_nullary
@@ -71,17 +59,9 @@ _main._main.let_body₄:
         je _main._main.then₂
         jmp _main._main.else₃
 _main._main.then₅:
-        movq $x_equal_p, %rdi
-        orq $3, %rdi
-        movq $16, %rsi
-        movq $0, %rdx
-        callq x_make_curry
+        movq equal_p©constant(%rip), %rax
         movq %rax, -144(%rbp)
-        movq $x_random_dice, %rdi
-        orq $3, %rdi
-        movq $0, %rsi
-        movq $0, %rdx
-        callq x_make_curry
+        movq random_dice©constant(%rip), %rax
         movq %rax, -152(%rbp)
         movq -152(%rbp), %rdi
         callq x_apply_nullary
@@ -160,6 +140,194 @@ _main©setup.epilog:
         retq 
 .size _main©setup, . - _main©setup
 
+.bss
+.align 8
+equal_p©constant:
+        .zero 8
+
+.text
+.align 8
+.type equal_p©setup, @function
+equal_p©setup:
+equal_p©setup.prolog:
+        pushq %rbp
+        movq %rsp, %rbp
+        pushq %rsp
+        pushq %rbp
+        pushq %rbx
+        pushq %r12
+        pushq %r13
+        pushq %r14
+        pushq %r15
+        subq $88, %rsp
+        jmp equal_p©setup.body
+equal_p©setup.body:
+        movq $x_equal_p, -64(%rbp)
+        orq $3, -64(%rbp)
+        movq $16, -72(%rbp)
+        movq $0, -80(%rbp)
+        movq -64(%rbp), %rdi
+        movq -72(%rbp), %rsi
+        movq -80(%rbp), %rdx
+        callq x_make_curry
+        movq %rax, -88(%rbp)
+        movq -88(%rbp), %rax
+        movq %rax, equal_p©constant(%rip)
+        jmp equal_p©setup.epilog
+equal_p©setup.epilog:
+        addq $88, %rsp
+        popq %r15
+        popq %r14
+        popq %r13
+        popq %r12
+        popq %rbx
+        popq %rbp
+        popq %rsp
+        popq %rbp
+        retq 
+.size equal_p©setup, . - equal_p©setup
+
+.bss
+.align 8
+println_non_void©constant:
+        .zero 8
+
+.text
+.align 8
+.type println_non_void©setup, @function
+println_non_void©setup:
+println_non_void©setup.prolog:
+        pushq %rbp
+        movq %rsp, %rbp
+        pushq %rsp
+        pushq %rbp
+        pushq %rbx
+        pushq %r12
+        pushq %r13
+        pushq %r14
+        pushq %r15
+        subq $88, %rsp
+        jmp println_non_void©setup.body
+println_non_void©setup.body:
+        movq $x_println_non_void, -64(%rbp)
+        orq $3, -64(%rbp)
+        movq $8, -72(%rbp)
+        movq $0, -80(%rbp)
+        movq -64(%rbp), %rdi
+        movq -72(%rbp), %rsi
+        movq -80(%rbp), %rdx
+        callq x_make_curry
+        movq %rax, -88(%rbp)
+        movq -88(%rbp), %rax
+        movq %rax, println_non_void©constant(%rip)
+        jmp println_non_void©setup.epilog
+println_non_void©setup.epilog:
+        addq $88, %rsp
+        popq %r15
+        popq %r14
+        popq %r13
+        popq %r12
+        popq %rbx
+        popq %rbp
+        popq %rsp
+        popq %rbp
+        retq 
+.size println_non_void©setup, . - println_non_void©setup
+
+.bss
+.align 8
+make_curry©constant:
+        .zero 8
+
+.text
+.align 8
+.type make_curry©setup, @function
+make_curry©setup:
+make_curry©setup.prolog:
+        pushq %rbp
+        movq %rsp, %rbp
+        pushq %rsp
+        pushq %rbp
+        pushq %rbx
+        pushq %r12
+        pushq %r13
+        pushq %r14
+        pushq %r15
+        subq $88, %rsp
+        jmp make_curry©setup.body
+make_curry©setup.body:
+        movq $x_make_curry, -64(%rbp)
+        orq $3, -64(%rbp)
+        movq $24, -72(%rbp)
+        movq $0, -80(%rbp)
+        movq -64(%rbp), %rdi
+        movq -72(%rbp), %rsi
+        movq -80(%rbp), %rdx
+        callq x_make_curry
+        movq %rax, -88(%rbp)
+        movq -88(%rbp), %rax
+        movq %rax, make_curry©constant(%rip)
+        jmp make_curry©setup.epilog
+make_curry©setup.epilog:
+        addq $88, %rsp
+        popq %r15
+        popq %r14
+        popq %r13
+        popq %r12
+        popq %rbx
+        popq %rbp
+        popq %rsp
+        popq %rbp
+        retq 
+.size make_curry©setup, . - make_curry©setup
+
+.bss
+.align 8
+random_dice©constant:
+        .zero 8
+
+.text
+.align 8
+.type random_dice©setup, @function
+random_dice©setup:
+random_dice©setup.prolog:
+        pushq %rbp
+        movq %rsp, %rbp
+        pushq %rsp
+        pushq %rbp
+        pushq %rbx
+        pushq %r12
+        pushq %r13
+        pushq %r14
+        pushq %r15
+        subq $88, %rsp
+        jmp random_dice©setup.body
+random_dice©setup.body:
+        movq $x_random_dice, -64(%rbp)
+        orq $3, -64(%rbp)
+        movq $0, -72(%rbp)
+        movq $0, -80(%rbp)
+        movq -64(%rbp), %rdi
+        movq -72(%rbp), %rsi
+        movq -80(%rbp), %rdx
+        callq x_make_curry
+        movq %rax, -88(%rbp)
+        movq -88(%rbp), %rax
+        movq %rax, random_dice©constant(%rip)
+        jmp random_dice©setup.epilog
+random_dice©setup.epilog:
+        addq $88, %rsp
+        popq %r15
+        popq %r14
+        popq %r13
+        popq %r12
+        popq %rbx
+        popq %rbp
+        popq %rsp
+        popq %rbp
+        retq 
+.size random_dice©setup, . - random_dice©setup
+
 .text
 .align 8
 .type _setup, @function
@@ -178,6 +346,14 @@ _setup.prolog:
         jmp _setup.body
 _setup.body:
         callq _main©setup
+        movq %rax, -64(%rbp)
+        callq equal_p©setup
+        movq %rax, -64(%rbp)
+        callq println_non_void©setup
+        movq %rax, -64(%rbp)
+        callq make_curry©setup
+        movq %rax, -64(%rbp)
+        callq random_dice©setup
         movq %rax, -64(%rbp)
 _setup.epilog:
         addq $64, %rsp

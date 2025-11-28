@@ -35,3 +35,70 @@
         size))
     (store _main©constant curry)
     (return)))
+
+(define-variable print©constant)
+
+(define-setup print©setup
+  (block body
+    (= function-address (literal (@primitive-address print)))
+    (= arity (literal 1))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store print©constant curry)
+    (return)))
+
+(define-variable println-non-void©constant)
+
+(define-setup println-non-void©setup
+  (block body
+    (= function-address
+       (literal (@primitive-address println-non-void)))
+    (= arity (literal 1))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store println-non-void©constant curry)
+    (return)))
+
+(define-variable newline©constant)
+
+(define-setup newline©setup
+  (block body
+    (= function-address
+       (literal (@primitive-address newline)))
+    (= arity (literal 0))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store newline©constant curry)
+    (return)))
+
+(define-variable make-curry©constant)
+
+(define-setup make-curry©setup
+  (block body
+    (= function-address
+       (literal (@primitive-address make-curry)))
+    (= arity (literal 3))
+    (= size (literal 0))
+    (= curry
+       (call
+        (@primitive-function make-curry 3)
+        function-address
+        arity
+        size))
+    (store make-curry©constant curry)
+    (return)))
