@@ -21,7 +21,11 @@ export function formatValue(value: Value): string {
     }
 
     case "Address": {
-      return `(@address ${value.name})`
+      if (value.attributes.isPrimitive) {
+        return `(@primitive-address ${value.name})`
+      } else {
+        return `(@address ${value.name})`
+      }
     }
 
     case "Curry": {

@@ -119,7 +119,13 @@ function qualifyAddress(
   context: BundleContext,
   address: Values.Address,
 ): Values.Address {
-  return Values.Address(qualifyName(context, address.name))
+  if (address.attributes.isPrimitive) {
+    return address
+  } else {
+    return Values.Address(qualifyName(context, address.name), {
+      isPrimitive: false,
+    })
+  }
 }
 
 function qualifyValue(context: BundleContext, value: Value): Value {

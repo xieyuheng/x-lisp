@@ -68,7 +68,10 @@ function onFunctionDefinition(
         [
           "body",
           B.Block("body", [
-            B.Literal("function-address", B.Address(definition.name)),
+            B.Literal(
+              "function-address",
+              B.Address(definition.name, { isPrimitive: false }),
+            ),
             B.Literal("arity", B.Int(definition.parameters.length)),
             B.Literal("size", B.Int(0)),
             B.Call(

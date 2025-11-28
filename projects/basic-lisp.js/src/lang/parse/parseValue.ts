@@ -14,7 +14,11 @@ const valueMatcher: S.Matcher<Value> = S.matcherChoice<Value>([
   }),
 
   S.matcher("`(@address ,name)", ({ name }, { meta }) => {
-    return Values.Address(S.symbolContent(name))
+    return Values.Address(S.symbolContent(name), { isPrimitive: false })
+  }),
+
+  S.matcher("`(@primitive-address ,name)", ({ name }, { meta }) => {
+    return Values.Address(S.symbolContent(name), { isPrimitive: true })
   }),
 
   S.matcher(

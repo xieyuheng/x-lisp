@@ -243,10 +243,7 @@ function selectLiteral(dest: string, value: B.Value): Array<M.Instr> {
 
     case "Address": {
       return [
-        M.Instr("movq", [
-          M.LabelImm(M.Label(value.name, { isExternal: false })),
-          M.Var(dest),
-        ]),
+        M.Instr("movq", [M.LabelImm(selectAddressLabel(value)), M.Var(dest)]),
         ...selectTagEncoding(M.Var(dest), R.AddressTag),
       ]
     }
@@ -303,4 +300,10 @@ function selectFunctionLabel(fn: B.Function): M.Label {
   return fn.attributes.isPrimitive
     ? M.Label(`x-${fn.name}`, { isExternal: true })
     : M.Label(fn.name, { isExternal: false })
+}
+
+function selectAddressLabel(address: B.Address): M.Label {
+  return address.attributes.isPrimitive
+    ? M.Label(`x-${address.name}`, { isExternal: true })
+    : M.Label(address.name, { isExternal: false })
 }
