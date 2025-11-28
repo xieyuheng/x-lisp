@@ -7,15 +7,10 @@ type Context = {
   definition: M.DataDefinition
 }
 
-export function transpileChunk(context: Context, chunk: M.Chunk): string {
-  const name = transpileOwnName([context.definition.name, chunk.label])
-  const directives = chunk.directives
-    .map((directive) => transpileDirective(context, directive))
-    .join("\n")
-  return `${name}:\n${directives}`
-}
-
-function transpileDirective(context: Context, directive: M.Directive): string {
+export function transpileDirective(
+  context: Context,
+  directive: M.Directive,
+): string {
   switch (directive.kind) {
     case "Db": {
       const values = directive.values.map(String).join(" ")
@@ -51,11 +46,7 @@ function transpileDirective(context: Context, directive: M.Directive): string {
     }
 
     case "Pointer": {
-      if (context.definition.chunks.has(directive.name)) {
-        return `${indentation}.quad ${transpileOwnName([context.definition.name, directive.name])}`
-      } else {
-        return `${indentation}.quad ${transpileOwnName([directive.name])}`
-      }
+      return `${indentation}.quad ${transpileOwnName([directive.name])}`
     }
   }
 }

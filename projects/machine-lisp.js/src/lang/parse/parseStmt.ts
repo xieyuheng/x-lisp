@@ -2,7 +2,7 @@ import * as S from "@xieyuheng/sexp.js"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { parseBlock } from "./parseBlock.ts"
-import { parseChunk } from "./parseChunk.ts"
+import { parseDirective } from "./parseDirective.ts"
 
 export function parseStmt(sexp: S.Sexp): Stmt {
   return S.match(stmtMatcher, sexp)
@@ -31,17 +31,13 @@ const stmtMatcher: S.Matcher<Stmt> = S.matcherChoice<Stmt>([
   ),
 
   S.matcher(
-    "(cons* 'define-data name chunks)",
-    ({ name, chunks }, { sexp }) => {
+    "(cons* 'define-data name directives)",
+    ({ name, directives }, { sexp }) => {
       const keyword = S.asTael(sexp).elements[1]
       const meta = S.tokenMetaFromSexpMeta(keyword.meta)
       return Stmts.DefineData(
         S.symbolContent(name),
-        new Map(
-          S.listElements(chunks)
-            .map(parseChunk)
-            .map((chunk) => [chunk.label, chunk]),
-        ),
+        S.listElements(directives).map(parseDirective),
         meta,
       )
     },

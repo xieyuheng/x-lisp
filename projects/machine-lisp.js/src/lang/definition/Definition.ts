@@ -1,6 +1,6 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
-import type { Chunk } from "../chunk/index.ts"
+import type { Directive } from "../directive/index.ts"
 import type { Mod } from "../mod/index.ts"
 import type { Operand } from "../operand/index.ts"
 
@@ -37,21 +37,21 @@ export type DataDefinition = {
   kind: "DataDefinition"
   mod: Mod
   name: string
-  chunks: Map<string, Chunk>
+  directives: Array<Directive>
   meta?: Meta
 }
 
 export function DataDefinition(
   mod: Mod,
   name: string,
-  chunks: Map<string, Chunk>,
+  directives: Array<Directive>,
   meta?: Meta,
 ): DataDefinition {
   return {
     kind: "DataDefinition",
     mod,
     name,
-    chunks,
+    directives,
     meta,
   }
 }

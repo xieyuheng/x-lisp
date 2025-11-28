@@ -4,7 +4,6 @@
 .align 8
 .type _message, @object
 _message:
-_message.entry:
         .string "Hello, World!\n"
 .size _message, . - _message
 

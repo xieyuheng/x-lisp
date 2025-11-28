@@ -4,11 +4,15 @@
 .align 8
 .type _message, @object
 _message:
-_message.entry:
         .string "Hello, World!\n"
+.size _message, . - _message
+
+.data
+.align 8
+.type _message.length, @object
 _message.length:
         .quad 14
-.size _message, . - _message
+.size _message.length, . - _message.length
 
 .text
 .align 8

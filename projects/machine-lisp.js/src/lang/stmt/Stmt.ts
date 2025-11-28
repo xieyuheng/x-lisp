@@ -1,6 +1,6 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
-import type { Chunk } from "../chunk/index.ts"
+import type { Directive } from "../directive/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
 
 export type Stmt = AboutModule | DefineCode | DefineData | DefineSpace
@@ -28,19 +28,19 @@ export function DefineCode(
 export type DefineData = {
   kind: "DefineData"
   name: string
-  chunks: Map<string, Chunk>
+  directives: Array<Directive>
   meta: Meta
 }
 
 export function DefineData(
   name: string,
-  chunks: Map<string, Chunk>,
+  directives: Array<Directive>,
   meta: Meta,
 ): DefineData {
   return {
     kind: "DefineData",
     name,
-    chunks,
+    directives,
     meta,
   }
 }

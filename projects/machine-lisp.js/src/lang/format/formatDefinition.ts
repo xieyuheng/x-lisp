@@ -1,6 +1,6 @@
 import { type Definition } from "../definition/index.ts"
 import { formatBlock } from "./formatBlock.ts"
-import { formatChunk } from "./formatChunk.ts"
+import { formatDirective } from "./formatDirective.ts"
 
 export function formatDefinition(definition: Definition): string {
   switch (definition.kind) {
@@ -12,10 +12,10 @@ export function formatDefinition(definition: Definition): string {
     }
 
     case "DataDefinition": {
-      const blocks = Array.from(
-        definition.chunks.values().map(formatChunk),
+      const directives = Array.from(
+        definition.directives.map(formatDirective),
       ).join(" ")
-      return `(define-data ${definition.name} ${blocks})`
+      return `(define-data ${definition.name} ${directives})`
     }
 
     case "SpaceDefinition": {

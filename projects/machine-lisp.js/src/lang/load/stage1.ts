@@ -19,7 +19,7 @@ export function stage1(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "DefineData") {
     mod.definitions.set(
       stmt.name,
-      Definitions.DataDefinition(mod, stmt.name, stmt.chunks, stmt.meta),
+      Definitions.DataDefinition(mod, stmt.name, stmt.directives, stmt.meta),
     )
   }
 

@@ -1,9 +1,6 @@
 (export start)
 
-(define-data message
-  (chunk entry
-    (string "Hello, World!\n")))
-
+(define-data message (string "Hello, World!\n"))
 (define-space message.length 8)
 
 (define-code start

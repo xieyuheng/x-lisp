@@ -1,10 +1,7 @@
 (export start)
 
-(define-data message
-  (chunk entry
-    (string "Hello, World!\n"))
-  (chunk length
-    (dq 14)))
+(define-data message (string "Hello, World!\n"))
+(define-data message.length (dq 14))
 
 (define-code start
   (block entry

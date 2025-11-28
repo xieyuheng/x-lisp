@@ -1,7 +1,6 @@
 #!/usr/bin/env -S node --stack-size=65536
 
 import * as cmd from "@xieyuheng/command.js"
-import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import fs from "node:fs"
@@ -31,10 +30,11 @@ router.defineHandlers({
   },
 })
 
-try {
-  await router.run(process.argv.slice(2))
-} catch (error) {
-  console.log(errorReport(error))
-  // console.log(error)
-  process.exit(1)
-}
+await router.run(process.argv.slice(2))
+
+// try {
+//   await router.run(process.argv.slice(2))
+// } catch (error) {
+//   console.log(errorReport(error))
+//   process.exit(1)
+// }

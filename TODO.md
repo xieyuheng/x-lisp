@@ -5,15 +5,11 @@
 [basic-lisp.js] `DefineMetadata`
 [basic-lisp.js] parse `(define-metadata)`
 
-[basic-lisp.js] `Chunk` for `MetadataDefinition`
-[basic-lisp.js] parse `(chunk)`
-
 [basic-lisp.js] `Directive` for `MetadataDefinition`
 
 - `Int` `Float`
 - `Pointer` -- resolve like label (but no external)
 - `String` -- always null ended
-- `StringPointer` -- append `Chunk` to the end of this `MetadataDefinition`
 
 [basic-lisp.js] parse directives
 
@@ -41,12 +37,13 @@
 ```scheme
 (define-function <name>)
 (define-metadata _<name>/metadata
-  (chunk arity (int <arity>))
-  (chunk name (string-pointer "<name>"))
-  (chunk address (pointer <label>))
-  (chunk variable-array (int ...) (pointer variable-names))
-  (chunk register-info (pointer _<name>/register-info))
-  (chunk variable-names (string-pointer "<name>") (string-pointer "<name>") ...))
+  (int <arity>)
+  (string-pointer "<name>")
+  (pointer <label>))
+(define-metadata _<name>/variable-array (int ...) (pointer variable-names))
+(define-metadata _<name>/register-info (pointer _<name>/register-info))
+(define-metadata _<name>/variable-names (string-pointer "<name>") (string-pointer "<name>") ...)
+
 (define-variable _<name>/constant)
 (define-setup _<name>/setup
   (block body

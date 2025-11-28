@@ -1,5 +1,4 @@
 export * from "./block/index.ts"
-export * from "./chunk/index.ts"
 export * from "./definition/index.ts"
 export * from "./directive/index.ts"
 export * from "./instr/index.ts"

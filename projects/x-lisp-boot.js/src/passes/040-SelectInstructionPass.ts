@@ -98,12 +98,11 @@ function onVariableDefinition(
     return [M.SpaceDefinition(machineMod, definition.name, 8, definition.meta)]
   } else {
     const value = R.encodeValue(definition.value)
-    const chunk = M.Chunk("entry", [M.Dq([value])], definition.meta)
     return [
       M.DataDefinition(
         machineMod,
         definition.name,
-        new Map([[chunk.label, chunk]]),
+        [M.Dq([value])],
         definition.meta,
       ),
     ]

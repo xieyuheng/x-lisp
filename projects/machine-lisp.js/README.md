@@ -6,7 +6,7 @@
 ;;; top level statement
 
 (define-code <name> <block> ...)
-(define-data <name> <chunk> ...)
+(define-data <name> <directive> ...)
 (define-space <name> <size>)
 
 ;;; block
@@ -29,10 +29,6 @@
 (external-label <name>)
 (cc <condition-code>)
 (arity <int>)
-
-;;; chunk
-
-(chunk <name> <directive> ...)
 
 ;;; directive
 

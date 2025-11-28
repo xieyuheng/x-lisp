@@ -1,6 +1,6 @@
 import * as M from "../index.ts"
 import { transpileBlock } from "./transpileBlock.ts"
-import { transpileChunk } from "./transpileChunk.ts"
+import { transpileDirective } from "./transpileDirective.ts"
 import { transpileOwnName } from "./transpileOwnName.ts"
 
 const indentation = " ".repeat(8)
@@ -38,14 +38,14 @@ function transpileDefinition(definition: M.Definition): string {
 
     case "DataDefinition": {
       const name = transpileOwnName([definition.name])
-      const chunks = Array.from(definition.chunks.values())
-        .map((chunk) => transpileChunk({ definition }, chunk))
+      const directives = definition.directives
+        .map((directive) => transpileDirective({ definition }, directive))
         .join("\n")
       let code = `.data\n`
       code += `.align 8\n`
       code += `.type ${name}, @object\n`
       code += `${name}:\n`
-      code += `${chunks}\n`
+      code += `${directives}\n`
       code += `.size ${name}, . - ${name}\n`
       return code
     }
