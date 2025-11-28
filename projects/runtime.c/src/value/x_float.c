@@ -105,6 +105,11 @@ x_float_non_negative_p(value_t x) {
 }
 
 value_t
+x_float_non_zero_p(value_t x) {
+    return x_bool(to_double(x) != 0);
+}
+
+value_t
 x_float_compare_ascending(value_t x, value_t y) {
     if (to_double(x) < to_double(y)) {
         return x_int(-1);

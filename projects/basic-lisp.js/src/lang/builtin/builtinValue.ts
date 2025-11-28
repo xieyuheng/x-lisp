@@ -4,7 +4,13 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinValue(mod: Mod) {
-  provide(mod, ["identity", "same?", "equal?", "atom?", "anything?"])
+  provide(mod, [
+    "identity",
+    "same?",
+    "equal?",
+    // "atom?",
+    "anything?",
+  ])
 
   definePrimitiveFunction(mod, "identity", 1, (value) => {
     return value
@@ -18,9 +24,9 @@ export function builtinValue(mod: Mod) {
     return Values.Bool(equal(lhs, rhs))
   })
 
-  definePrimitiveFunction(mod, "atom?", 1, (value) => {
-    return Values.Bool(Values.isAtom(value))
-  })
+  // definePrimitiveFunction(mod, "atom?", 1, (value) => {
+  //   return Values.Bool(Values.isAtom(value))
+  // })
 
   definePrimitiveFunction(mod, "anything?", 1, (value) => {
     return Values.Bool(true)

@@ -94,6 +94,11 @@ x_int_non_negative_p(value_t x) {
 }
 
 value_t
+x_int_non_zero_p(value_t x) {
+    return x_bool(to_int64(x) != 0);
+}
+
+value_t
 x_int_compare_ascending(value_t x, value_t y) {
     if (to_int64(x) < to_int64(y)) {
         return x_int(-1);
