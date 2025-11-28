@@ -9,13 +9,13 @@
 
 (define-setup _main©setup
   (block body
-    (= function-address (literal (@address _main)))
+    (= address (literal (@address _main)))
     (= arity (literal 0))
     (= size (literal 0))
     (= curry
        (call
         (@primitive-function make-curry 3)
-        function-address
+        address
         arity
         size))
     (store _main©constant curry)

@@ -2,12 +2,18 @@
 
 [basic-lisp.js] `MetadataDefinition` -- for untagged data
 
-- `Metadata` -- subset of JS object
+- `Metadata` -- subset of `Sexp`
+
+  during `execute`:
 
   - `Int` -- `bigint`
   - `Float` -- `number`
   - `String` -- `string`
-  - `Pointer` -- resolve to `Metadata`
+  - `Symbol` -- as pointer to other `Metadata` or `Function`
+  - `List`
+  - `Record`
+
+  when compile to machine-lisp -- like untagged sexp in memory.
 
 [basic-lisp.js] `DefineMetadata`
 [basic-lisp.js] parse `(define-metadata)`
@@ -23,15 +29,16 @@
 
 ```scheme
 (define-function <name>)
+
 (define-metadata <name>©metadata
-  (arity <arity>)
-  (name "<name>")
-  (variable-names (pointer <name>)))
-(define-metadata <name>©variable-array (int ...) (pointer variable-names))
-(define-metadata <name>©register-info (pointer <name>©register-info))
-(define-metadata <name>©variable-names (string-pointer "<name>") (string-pointer "<name>") ...)
+  :arity <arity>
+  :name "<name>"
+  :variable-count ...
+  :variable-names [...]
+  :register-info <name>©register-info)
 
 (define-variable <name>©constant)
+
 (define-setup <name>©setup
   (block body
     (= address (literal (@address <name>)))

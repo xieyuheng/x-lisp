@@ -12,13 +12,13 @@
 
 (define-setup square©setup
   (block body
-    (= function-address (literal (@address square)))
+    (= address (literal (@address square)))
     (= arity (literal 1))
     (= size (literal 0))
     (= curry
        (call
         (@primitive-function make-curry 3)
-        function-address
+        address
         arity
         size))
     (store square©constant curry)

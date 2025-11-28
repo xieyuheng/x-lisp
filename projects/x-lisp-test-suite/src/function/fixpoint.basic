@@ -27,13 +27,13 @@
 
 (define-setup Y©setup
   (block body
-    (= function-address (literal (@address Y)))
+    (= address (literal (@address Y)))
     (= arity (literal 1))
     (= size (literal 0))
     (= curry
        (call
         (@primitive-function make-curry 3)
-        function-address
+        address
         arity
         size))
     (store Y©constant curry)
@@ -49,13 +49,13 @@
 
 (define-setup Y©λ₁©setup
   (block body
-    (= function-address (literal (@address Y©λ₁)))
+    (= address (literal (@address Y©λ₁)))
     (= arity (literal 1))
     (= size (literal 0))
     (= curry
        (call
         (@primitive-function make-curry 3)
-        function-address
+        address
         arity
         size))
     (store Y©λ₁©constant curry)
@@ -84,13 +84,13 @@
 
 (define-setup Y©λ₂©setup
   (block body
-    (= function-address (literal (@address Y©λ₂)))
+    (= address (literal (@address Y©λ₂)))
     (= arity (literal 2))
     (= size (literal 0))
     (= curry
        (call
         (@primitive-function make-curry 3)
-        function-address
+        address
         arity
         size))
     (store Y©λ₂©constant curry)
@@ -108,13 +108,13 @@
 
 (define-setup Y©λ₂©λ₁©setup
   (block body
-    (= function-address (literal (@address Y©λ₂©λ₁)))
+    (= address (literal (@address Y©λ₂©λ₁)))
     (= arity (literal 2))
     (= size (literal 0))
     (= curry
        (call
         (@primitive-function make-curry 3)
-        function-address
+        address
         arity
         size))
     (store Y©λ₂©λ₁©constant curry)

@@ -15,13 +15,13 @@
 
 (define-setup _main©setup
   (block body
-    (= function-address (literal (@address _main)))
+    (= address (literal (@address _main)))
     (= arity (literal 0))
     (= size (literal 0))
     (= curry
        (call
         (@primitive-function make-curry 3)
-        function-address
+        address
         arity
         size))
     (store _main©constant curry)
@@ -31,14 +31,14 @@
 
 (define-setup println-non-void©setup
   (block body
-    (= function-address
+    (= address
        (literal (@primitive-address println-non-void)))
     (= arity (literal 1))
     (= size (literal 0))
     (= curry
        (call
         (@primitive-function make-curry 3)
-        function-address
+        address
         arity
         size))
     (store println-non-void©constant curry)
@@ -48,13 +48,13 @@
 
 (define-setup iadd©setup
   (block body
-    (= function-address (literal (@primitive-address iadd)))
+    (= address (literal (@primitive-address iadd)))
     (= arity (literal 2))
     (= size (literal 0))
     (= curry
        (call
         (@primitive-function make-curry 3)
-        function-address
+        address
         arity
         size))
     (store iadd©constant curry)
@@ -64,14 +64,13 @@
 
 (define-setup make-curry©setup
   (block body
-    (= function-address
-       (literal (@primitive-address make-curry)))
+    (= address (literal (@primitive-address make-curry)))
     (= arity (literal 3))
     (= size (literal 0))
     (= curry
        (call
         (@primitive-function make-curry 3)
-        function-address
+        address
         arity
         size))
     (store make-curry©constant curry)
@@ -81,14 +80,13 @@
 
 (define-setup random-dice©setup
   (block body
-    (= function-address
-       (literal (@primitive-address random-dice)))
+    (= address (literal (@primitive-address random-dice)))
     (= arity (literal 0))
     (= size (literal 0))
     (= curry
        (call
         (@primitive-function make-curry 3)
-        function-address
+        address
         arity
         size))
     (store random-dice©constant curry)
