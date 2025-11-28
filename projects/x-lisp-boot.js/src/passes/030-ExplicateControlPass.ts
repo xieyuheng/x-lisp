@@ -16,7 +16,6 @@ export function ExplicateControlPass(mod: X.Mod, basicMod: B.Mod): void {
         basicMod,
         definition,
       )) {
-        // TODO
         // basicMod.definitions.set(basicDefinition.name, basicDefinition)
       }
     }
