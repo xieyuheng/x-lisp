@@ -12,13 +12,14 @@ date: 2025-09-21
   所以这些不是想要表达的。
 
 - 我还可以想象这个 lisp 有两个版本，
-  一个支持副作用，一个是完全禁止副作用的纯函数版本。
+  一个是支持副作用，
+  另一个是完全禁止副作用的纯函数版本。
   所以是否是纯函数也不是我想要表达的。
 
 想要表达的，其实是与具体实现方式无关的：
 
 - 命名惯例，少用缩写。
-  比如用 @list 来避免使用 list 这个变量名的时候不得不缩写。
+  比如用 `@list` 来避免使用 `list` 这个变量名的时候不得不缩写为 `lst`。
   以及目前所带有的 built function 的命名方式
   -- `<topic>-<name>`。
 
@@ -37,7 +38,8 @@ date: 2025-09-21
   auto currying 对于 combinator logic 非常重要，
   而 combinator logic 的哲学意义就在于如何用组合子来表达 composition。
 
-- 所基础的 structural 数据结构：
+- 基础的 structural 数据结构：
+
   - primitive: bool, int, float, symbol, string
   - compound: set, tael -- list with attribute
 

@@ -1,21 +1,21 @@
 # define-metadata
 
+[basic-lisp.js] `Metadata` -- subset of `Sexp`
+
+```
+IntMetadata
+FloatMetadata
+StringMetadata
+
+VarMetadata
+
+RecordMetadata
+ListMetadata
+```
+
 [basic-lisp.js] `MetadataDefinition` -- for untagged data
 
-- top level is always a record
-
-- `Metadata` -- subset of `Sexp`
-
-  during `execute`:
-
-  - `Int` -- `bigint`
-  - `Float` -- `number`
-  - `String` -- `string`
-  - `Symbol` -- as pointer to other `Metadata` or `Function`
-  - `List`
-  - `Record`
-
-  when compile to machine-lisp -- like untagged sexp in memory.
+- top level is always a RecordMetadata
 
 [basic-lisp.js] `DefineMetadata`
 [basic-lisp.js] parse `(define-metadata)`
