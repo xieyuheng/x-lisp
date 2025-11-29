@@ -1,7 +1,11 @@
-2025-11-29-xth-project.md
+# xvi
 
-setup xvi.c
-setup xth.c
+xvi.c -- setup c project
+
+# xth
+
+xth.c -- setup c project
+xth.c -- port code from xvm
 
 # define-metadata
 
