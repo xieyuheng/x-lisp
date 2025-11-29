@@ -1,3 +1,8 @@
+2025-11-29-xth-project.md
+
+setup xvi.c
+setup xth.c
+
 # define-metadata
 
 [basic-lisp.js] `Metadata` -- subset of `Sexp`
