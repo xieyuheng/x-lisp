@@ -81,3 +81,8 @@ square: @dup @mul @ret
 ```
 
 此时所实现的，其实是一个 stack-based byte code interpreter 的汇编器。
+
+要求，所有的 value 都是 tagged。
+
+由于是变长指令集，所以可以用特殊的 op code 来处理 string literal，
+比如 `@string "..."`，其中 `"..."` 就是 byte array end with null。
