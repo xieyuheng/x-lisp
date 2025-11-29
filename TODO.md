@@ -1,10 +1,3 @@
-setup xvm.c project
-
-- risc isa
-- with tag support
-- learn from mmix
-- use machine-lisp.js as assembly language
-
 # define-metadata
 
 [basic-lisp.js] `MetadataDefinition` -- for untagged data
@@ -96,3 +89,8 @@ x_write
 x_random_int
 x_random_float
 ```
+
+# maybe
+
+[x-lisp-boot.js] add `Curry` back to `Exp` -- fix all passes
+[x-lisp-boot.js] `040-SelectInstructionPass` -- `selectLiteral` -- handle curry
