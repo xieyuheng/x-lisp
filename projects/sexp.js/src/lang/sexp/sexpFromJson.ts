@@ -1,4 +1,4 @@
-import { isJsonArray, isJsonObject } from "@xieyuheng/helpers.js/json"
+import { isArrayJson, isJsonObject } from "@xieyuheng/helpers.js/json"
 import * as S from "../sexp/index.ts"
 
 // Can not handle null and undefined,
@@ -29,7 +29,7 @@ export function sexpFromJson(json: any): S.Sexp {
     }
   }
 
-  if (isJsonArray(json)) {
+  if (isArrayJson(json)) {
     return S.Tael(json.map(sexpFromJson), {})
   }
 

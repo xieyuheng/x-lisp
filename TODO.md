@@ -2,6 +2,8 @@
 
 [basic-lisp.js] `MetadataDefinition` -- for untagged data
 
+- top level is always a record
+
 - `Metadata` -- subset of `Sexp`
 
   during `execute`:

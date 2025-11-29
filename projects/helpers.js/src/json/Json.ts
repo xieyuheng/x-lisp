@@ -1,15 +1,15 @@
-export type Json = JsonAtom | JsonArray | JsonObject
+export type Json = AtomJson | ArrayJson | JsonObject
 
-export type JsonAtom = string | number | boolean | null | undefined
+export type AtomJson = string | number | boolean | null | undefined
 
-export type JsonArray = Array<Json>
+export type ArrayJson = Array<Json>
 
 export type JsonObject = { [x: string]: Json }
 
 export function isJsonObject(json: Json): json is JsonObject {
-  return typeof json === "object" && json !== null && !isJsonArray(json)
+  return typeof json === "object" && json !== null && !isArrayJson(json)
 }
 
-export function isJsonArray(json: Json): json is JsonArray {
+export function isArrayJson(json: Json): json is ArrayJson {
   return json instanceof Array
 }
