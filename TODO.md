@@ -1,17 +1,14 @@
 # define-metadata
 
-[basic-lisp.js] `execute` -- deref `Address` to metadata
-[basic-lisp.js] test metadata by `execute`
-
 [x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.MetadataDefinition` to `M.DataDefinition`
+[basic-lisp.js] test metadata by `execute`
+[basic-lisp.js] `builtin` -- `make-function` -- create `Function` from `Address`
 
 # function object
 
 [runtime.c] `curry_t` -- has any value as target
 [runtime.c] `function_metadata_t`
 [runtime.c] `function_t` -- has `address` and `metadata`
-[runtime.c] `function_t` -- has register map
-[runtime.c] [maybe] use inline union for `address` to avoid casting
 [runtime.c] `x_make_function`
 
 # function constant
@@ -25,8 +22,7 @@
   :arity <arity>
   :name "<name>"
   :variable-count ...
-  :variable-names [...]
-  :register-info <name>©register-info)
+  :variable-names [...])
 
 (define-variable <name>©constant)
 
@@ -82,3 +78,5 @@ xth.c -- port code from xvm
 # gc
 
 [runtime.c] `object_spec_t` -- has `get_slot_fn`
+[runtime.c] `function_t` -- has register map
+[runtime.c] [maybe] use inline union for `address` to avoid casting
