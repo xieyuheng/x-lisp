@@ -54,17 +54,17 @@ _main.epilog:
 .align 8
 .type _main©metadata, @object
 _main©metadata:
-        .quad _main©metadata©name
+        .quad _main©metadata.name
         .quad 0
         .quad 0
 .size _main©metadata, . - _main©metadata
 
 .data
 .align 8
-.type _main©metadata©name, @object
-_main©metadata©name:
+.type _main©metadata.name, @object
+_main©metadata.name:
         .string "_main"
-.size _main©metadata©name, . - _main©metadata©name
+.size _main©metadata.name, . - _main©metadata.name
 
 .bss
 .align 8
@@ -117,17 +117,17 @@ _main©setup.epilog:
 .align 8
 .type println_non_void©metadata, @object
 println_non_void©metadata:
-        .quad println_non_void©metadata©name
+        .quad println_non_void©metadata.name
         .quad 1
         .quad 1
 .size println_non_void©metadata, . - println_non_void©metadata
 
 .data
 .align 8
-.type println_non_void©metadata©name, @object
-println_non_void©metadata©name:
+.type println_non_void©metadata.name, @object
+println_non_void©metadata.name:
         .string "println-non-void"
-.size println_non_void©metadata©name, . - println_non_void©metadata©name
+.size println_non_void©metadata.name, . - println_non_void©metadata.name
 
 .bss
 .align 8
@@ -180,17 +180,17 @@ println_non_void©setup.epilog:
 .align 8
 .type ineg©metadata, @object
 ineg©metadata:
-        .quad ineg©metadata©name
+        .quad ineg©metadata.name
         .quad 1
         .quad 1
 .size ineg©metadata, . - ineg©metadata
 
 .data
 .align 8
-.type ineg©metadata©name, @object
-ineg©metadata©name:
+.type ineg©metadata.name, @object
+ineg©metadata.name:
         .string "ineg"
-.size ineg©metadata©name, . - ineg©metadata©name
+.size ineg©metadata.name, . - ineg©metadata.name
 
 .bss
 .align 8
@@ -243,17 +243,17 @@ ineg©setup.epilog:
 .align 8
 .type make_curry©metadata, @object
 make_curry©metadata:
-        .quad make_curry©metadata©name
+        .quad make_curry©metadata.name
         .quad 3
         .quad 1
 .size make_curry©metadata, . - make_curry©metadata
 
 .data
 .align 8
-.type make_curry©metadata©name, @object
-make_curry©metadata©name:
+.type make_curry©metadata.name, @object
+make_curry©metadata.name:
         .string "make-curry"
-.size make_curry©metadata©name, . - make_curry©metadata©name
+.size make_curry©metadata.name, . - make_curry©metadata.name
 
 .bss
 .align 8
@@ -306,17 +306,17 @@ make_curry©setup.epilog:
 .align 8
 .type random_dice©metadata, @object
 random_dice©metadata:
-        .quad random_dice©metadata©name
+        .quad random_dice©metadata.name
         .quad 0
         .quad 1
 .size random_dice©metadata, . - random_dice©metadata
 
 .data
 .align 8
-.type random_dice©metadata©name, @object
-random_dice©metadata©name:
+.type random_dice©metadata.name, @object
+random_dice©metadata.name:
         .string "random-dice"
-.size random_dice©metadata©name, . - random_dice©metadata©name
+.size random_dice©metadata.name, . - random_dice©metadata.name
 
 .bss
 .align 8

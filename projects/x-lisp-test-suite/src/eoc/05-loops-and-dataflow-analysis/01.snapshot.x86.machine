@@ -74,11 +74,11 @@
     (retq)))
 
 (define-data _main©metadata
-  (pointer _main©metadata©name)
+  (pointer _main©metadata/name)
   (int 0)
   (int 0))
 
-(define-data _main©metadata©name (string "_main"))
+(define-data _main©metadata/name (string "_main"))
 
 (define-space _main©constant 8)
 
@@ -123,11 +123,11 @@
     (retq)))
 
 (define-data print©metadata
-  (pointer print©metadata©name)
+  (pointer print©metadata/name)
   (int 1)
   (int 1))
 
-(define-data print©metadata©name (string "print"))
+(define-data print©metadata/name (string "print"))
 
 (define-space print©constant 8)
 
@@ -172,11 +172,11 @@
     (retq)))
 
 (define-data println-non-void©metadata
-  (pointer println-non-void©metadata©name)
+  (pointer println-non-void©metadata/name)
   (int 1)
   (int 1))
 
-(define-data println-non-void©metadata©name
+(define-data println-non-void©metadata/name
   (string "println-non-void"))
 
 (define-space println-non-void©constant 8)
@@ -224,11 +224,11 @@
     (retq)))
 
 (define-data newline©metadata
-  (pointer newline©metadata©name)
+  (pointer newline©metadata/name)
   (int 0)
   (int 1))
 
-(define-data newline©metadata©name (string "newline"))
+(define-data newline©metadata/name (string "newline"))
 
 (define-space newline©constant 8)
 
@@ -273,11 +273,11 @@
     (retq)))
 
 (define-data make-curry©metadata
-  (pointer make-curry©metadata©name)
+  (pointer make-curry©metadata/name)
   (int 3)
   (int 1))
 
-(define-data make-curry©metadata©name (string "make-curry"))
+(define-data make-curry©metadata/name (string "make-curry"))
 
 (define-space make-curry©constant 8)
 

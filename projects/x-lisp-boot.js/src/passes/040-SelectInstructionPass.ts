@@ -145,7 +145,7 @@ function onMetadata(
     }
 
     case "StringMetadata": {
-      const name = [root.name, ...path].join("©")
+      const name = [root.name, ...path].join("/")
       return [
         M.Pointer(name),
         [M.DataDefinition(machineMod, name, [M.String(metadata.content)])],
@@ -157,7 +157,7 @@ function onMetadata(
     }
 
     case "ListMetadata": {
-      const name = [root.name, ...path].join("©")
+      const name = [root.name, ...path].join("/")
       const [directives, definitionArrays] = arrayUnzip(
         Array.from(
           metadata.elements
@@ -183,7 +183,7 @@ function onMetadata(
     }
 
     case "RecordMetadata": {
-      const name = [root.name, ...path].join("©")
+      const name = [root.name, ...path].join("/")
       const [directives, definitionArrays] = arrayUnzip(
         Object.entries(metadata.attributes).map(([key, element]) =>
           onMetadata(machineMod, root, [...path, key], element),

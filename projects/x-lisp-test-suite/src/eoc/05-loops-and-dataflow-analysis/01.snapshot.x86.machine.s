@@ -80,17 +80,17 @@ _main.epilog:
 .align 8
 .type _main©metadata, @object
 _main©metadata:
-        .quad _main©metadata©name
+        .quad _main©metadata.name
         .quad 0
         .quad 0
 .size _main©metadata, . - _main©metadata
 
 .data
 .align 8
-.type _main©metadata©name, @object
-_main©metadata©name:
+.type _main©metadata.name, @object
+_main©metadata.name:
         .string "_main"
-.size _main©metadata©name, . - _main©metadata©name
+.size _main©metadata.name, . - _main©metadata.name
 
 .bss
 .align 8
@@ -143,17 +143,17 @@ _main©setup.epilog:
 .align 8
 .type print©metadata, @object
 print©metadata:
-        .quad print©metadata©name
+        .quad print©metadata.name
         .quad 1
         .quad 1
 .size print©metadata, . - print©metadata
 
 .data
 .align 8
-.type print©metadata©name, @object
-print©metadata©name:
+.type print©metadata.name, @object
+print©metadata.name:
         .string "print"
-.size print©metadata©name, . - print©metadata©name
+.size print©metadata.name, . - print©metadata.name
 
 .bss
 .align 8
@@ -206,17 +206,17 @@ print©setup.epilog:
 .align 8
 .type println_non_void©metadata, @object
 println_non_void©metadata:
-        .quad println_non_void©metadata©name
+        .quad println_non_void©metadata.name
         .quad 1
         .quad 1
 .size println_non_void©metadata, . - println_non_void©metadata
 
 .data
 .align 8
-.type println_non_void©metadata©name, @object
-println_non_void©metadata©name:
+.type println_non_void©metadata.name, @object
+println_non_void©metadata.name:
         .string "println-non-void"
-.size println_non_void©metadata©name, . - println_non_void©metadata©name
+.size println_non_void©metadata.name, . - println_non_void©metadata.name
 
 .bss
 .align 8
@@ -269,17 +269,17 @@ println_non_void©setup.epilog:
 .align 8
 .type newline©metadata, @object
 newline©metadata:
-        .quad newline©metadata©name
+        .quad newline©metadata.name
         .quad 0
         .quad 1
 .size newline©metadata, . - newline©metadata
 
 .data
 .align 8
-.type newline©metadata©name, @object
-newline©metadata©name:
+.type newline©metadata.name, @object
+newline©metadata.name:
         .string "newline"
-.size newline©metadata©name, . - newline©metadata©name
+.size newline©metadata.name, . - newline©metadata.name
 
 .bss
 .align 8
@@ -332,17 +332,17 @@ newline©setup.epilog:
 .align 8
 .type make_curry©metadata, @object
 make_curry©metadata:
-        .quad make_curry©metadata©name
+        .quad make_curry©metadata.name
         .quad 3
         .quad 1
 .size make_curry©metadata, . - make_curry©metadata
 
 .data
 .align 8
-.type make_curry©metadata©name, @object
-make_curry©metadata©name:
+.type make_curry©metadata.name, @object
+make_curry©metadata.name:
         .string "make-curry"
-.size make_curry©metadata©name, . - make_curry©metadata©name
+.size make_curry©metadata.name, . - make_curry©metadata.name
 
 .bss
 .align 8

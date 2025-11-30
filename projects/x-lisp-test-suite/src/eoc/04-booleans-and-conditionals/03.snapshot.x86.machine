@@ -99,11 +99,11 @@
     (retq)))
 
 (define-data _main©metadata
-  (pointer _main©metadata©name)
+  (pointer _main©metadata/name)
   (int 0)
   (int 0))
 
-(define-data _main©metadata©name (string "_main"))
+(define-data _main©metadata/name (string "_main"))
 
 (define-space _main©constant 8)
 
@@ -148,11 +148,11 @@
     (retq)))
 
 (define-data equal?©metadata
-  (pointer equal?©metadata©name)
+  (pointer equal?©metadata/name)
   (int 2)
   (int 1))
 
-(define-data equal?©metadata©name (string "equal?"))
+(define-data equal?©metadata/name (string "equal?"))
 
 (define-space equal?©constant 8)
 
@@ -197,11 +197,11 @@
     (retq)))
 
 (define-data println-non-void©metadata
-  (pointer println-non-void©metadata©name)
+  (pointer println-non-void©metadata/name)
   (int 1)
   (int 1))
 
-(define-data println-non-void©metadata©name
+(define-data println-non-void©metadata/name
   (string "println-non-void"))
 
 (define-space println-non-void©constant 8)
@@ -249,11 +249,11 @@
     (retq)))
 
 (define-data make-curry©metadata
-  (pointer make-curry©metadata©name)
+  (pointer make-curry©metadata/name)
   (int 3)
   (int 1))
 
-(define-data make-curry©metadata©name (string "make-curry"))
+(define-data make-curry©metadata/name (string "make-curry"))
 
 (define-space make-curry©constant 8)
 
@@ -300,11 +300,11 @@
     (retq)))
 
 (define-data random-dice©metadata
-  (pointer random-dice©metadata©name)
+  (pointer random-dice©metadata/name)
   (int 0)
   (int 1))
 
-(define-data random-dice©metadata©name
+(define-data random-dice©metadata/name
   (string "random-dice"))
 
 (define-space random-dice©constant 8)
