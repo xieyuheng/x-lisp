@@ -1,3 +1,21 @@
+[x-lisp-boot.js] `ExplicateControlPass` -- `FunctionDefinition` compile to metadata
+
+```scheme
+(define-metadata <name>©metadata
+  :name "<name>"
+  :arity <arity>
+  :is-primitive 0 or 1
+  :variable-info <name>©variable-info)
+```
+
+[x-lisp-boot.js] add a pass to save `variable-info`
+
+```scheme
+(define-metadata <name>©variable-info
+  :count ...
+  :names [...])
+```
+
 # function object
 
 [runtime.c] `curry_t` -- has any value as target
@@ -11,12 +29,6 @@
 
 ```scheme
 (define-function <name>)
-
-(define-metadata <name>©metadata
-  :arity <arity>
-  :name "<name>"
-  :variable-count ...
-  :variable-names [...])
 
 (define-variable <name>©constant)
 

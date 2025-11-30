@@ -15,7 +15,7 @@ type Info = {
 function onDefinition(definition: M.Definition): null {
   switch (definition.kind) {
     case "CodeDefinition": {
-      const info = { "home-locations": createHomeLocations(definition) }
+      const info = { "home-locations": getHomeLocations(definition) }
       definition.info = { ...definition.info, ...info }
 
       const blocks = Array.from(definition.blocks.values())
@@ -36,25 +36,33 @@ function onDefinition(definition: M.Definition): null {
   }
 }
 
-export function createHomeLocations(
-  definition: M.CodeDefinition,
-): Map<string, M.Operand> {
-  const homeLocations = new Map()
+export function getVarNames(definition: M.CodeDefinition): Set<string> {
+  const varNames: Set<string> = new Set()
   for (const block of definition.blocks.values()) {
     for (const instr of block.instrs) {
       for (const operand of instr.operands) {
         if (operand.kind === "Var") {
-          const found = homeLocations.get(operand.name)
-          if (found === undefined) {
-            const baseIndex =
-              R.ABIs["x86-64-sysv"]["callee-saved-reg-names"].length
-            const index = baseIndex + homeLocations.size
-            const offset = -8 * (index + 1)
-            const location = M.RegDeref(M.Reg("rbp"), offset, operand.meta)
-            homeLocations.set(operand.name, location)
-          }
+          varNames.add(operand.name)
         }
       }
+    }
+  }
+
+  return varNames
+}
+
+export function getHomeLocations(
+  definition: M.CodeDefinition,
+): Map<string, M.Operand> {
+  const homeLocations = new Map()
+  for (const name of getVarNames(definition)) {
+    const found = homeLocations.get(name)
+    if (found === undefined) {
+      const baseIndex = R.ABIs["x86-64-sysv"]["callee-saved-reg-names"].length
+      const index = baseIndex + homeLocations.size
+      const offset = -8 * (index + 1)
+      const location = M.RegDeref(M.Reg("rbp"), offset)
+      homeLocations.set(name, location)
     }
   }
 
