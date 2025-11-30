@@ -1,8 +1,32 @@
 import * as S from "@xieyuheng/sexp.js"
+import * as B from "../index.ts"
 import type { Metadata } from "../metadata/index.ts"
 
-export function parseMetadataAttributes(
-  sexp: S.Sexp,
-): Record<string, Metadata> {
-  throw new Error("TODO")
+export function parseMetadata(sexp: S.Sexp): Metadata {
+  if (S.isInt(sexp)) {
+    return B.IntMetadata(BigInt(sexp.content))
+  } else if (S.isFloat(sexp)) {
+    return B.FloatMetadata(sexp.content)
+  } else if (S.isString(sexp)) {
+    return B.StringMetadata(sexp.content)
+  } else if (S.isSymbol(sexp)) {
+    return B.VarMetadata(sexp.content)
+  } else if (S.isTael(sexp)) {
+    if (Object.keys(sexp.attributes).length === 0) {
+      return B.ListMetadata(sexp.elements.map(parseMetadata))
+    } else {
+      return B.RecordMetadata(
+        Object.fromEntries(
+          Object.entries(sexp.attributes).map(([k, v]) => [
+            k,
+            parseMetadata(v),
+          ]),
+        ),
+      )
+    }
+  } else {
+    let message = `[parseMetadata] unhandled sexp`
+    message += `\n  sexp: ${S.formatSexp(sexp)}`
+    throw new Error(message)
+  }
 }

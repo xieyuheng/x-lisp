@@ -1,6 +1,7 @@
+[x-lisp-boot.js] `encodeValue` -- need sexp.js to really support js `bigint`
+
 # define-metadata
 
-[basic-lisp.js] `parseMetadata` & `parseMetadataAttributes`
 [basic-lisp.js] `execute` -- deref `Address` to metadata
 [basic-lisp.js] test metadata by `execute`
 
@@ -54,8 +55,6 @@ primitive funtion to test scan call stack -- print stack trace
 - if we can ensure all function setup runs before constant setup
 
   - `define-setup` -- take stage as argument
-
-[x-lisp-boot.js] `encodeValue` -- need sexp.js to really support js `bigint`
 
 # later
 

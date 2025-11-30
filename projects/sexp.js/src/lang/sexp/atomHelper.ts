@@ -32,25 +32,25 @@ export function isHashtag(sexp: S.Sexp): sexp is S.Hashtag {
 
 export function asSymbol(sexp: S.Sexp): S.Symbol {
   if (sexp.kind === "Symbol") return sexp
-  throw new Error(`[asSymbol] fail on: ${sexp.kind}`)
+  throw new Error(`[asSymbol] fail on: ${S.formatSexp(sexp)}`)
 }
 
 export function asString(sexp: S.Sexp): S.String {
   if (sexp.kind === "String") return sexp
-  throw new Error(`[asString] fail on: ${sexp.kind}`)
+  throw new Error(`[asString] fail on: ${S.formatSexp(sexp)}`)
 }
 
 export function asInt(sexp: S.Sexp): S.Int {
   if (sexp.kind === "Int") return sexp
-  throw new Error(`[asInt] fail on: ${sexp.kind}`)
+  throw new Error(`[asInt] fail on: ${S.formatSexp(sexp)}`)
 }
 
 export function asFloat(sexp: S.Sexp): S.Float {
   if (sexp.kind === "Float") return sexp
-  throw new Error(`[asFloat] fail on: ${sexp.kind}`)
+  throw new Error(`[asFloat] fail on: ${S.formatSexp(sexp)}`)
 }
 
 export function asHashtag(sexp: S.Sexp): S.Hashtag {
   if (sexp.kind === "Hashtag") return sexp
-  throw new Error(`[asHashtag] fail on: ${sexp.kind}`)
+  throw new Error(`[asHashtag] fail on: ${S.formatSexp(sexp)}`)
 }

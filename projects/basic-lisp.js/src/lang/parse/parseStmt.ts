@@ -1,10 +1,11 @@
 import * as S from "@xieyuheng/sexp.js"
 import { Block } from "../block/index.ts"
+import * as B from "../index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import * as Values from "../value/index.ts"
 import { parseInstr } from "./parseInstr.ts"
-import { parseMetadataAttributes } from "./parseMetadata.ts"
+import { parseMetadata } from "./parseMetadata.ts"
 import { parseValue } from "./parseValue.ts"
 
 export function parseStmt(sexp: S.Sexp): Stmt {
@@ -51,7 +52,7 @@ export function parseStmt(sexp: S.Sexp): Stmt {
           const meta = S.tokenMetaFromSexpMeta(keyword.meta)
           return Stmts.DefineMetadata(
             S.symbolContent(name),
-            parseMetadataAttributes(attributes),
+            B.asRecordMetadata(parseMetadata(attributes)).attributes,
             meta,
           )
         },
