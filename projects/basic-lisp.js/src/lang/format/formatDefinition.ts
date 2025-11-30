@@ -30,5 +30,9 @@ export function formatDefinition(definition: Definition): string {
         return `(define-variable ${definition.name} ${formatValue(definition.value)})`
       }
     }
+
+    case "MetadataDefinition": {
+      throw new Error("TODO")
+    }
   }
 }

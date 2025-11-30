@@ -1,9 +1,7 @@
 # define-metadata
 
-[basic-lisp.js] `MetadataDefinition` -- for untagged data
-
-- top level is always a `RecordMetadata`
-
+[basic-lisp.js] `formatMetadata`
+[basic-lisp.js] `formatDefinition` -- handle `MetadataDefinition`
 [basic-lisp.js] `DefineMetadata`
 [basic-lisp.js] parse `(define-metadata)`
 
