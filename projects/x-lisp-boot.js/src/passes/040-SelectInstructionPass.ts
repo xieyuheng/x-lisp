@@ -118,13 +118,22 @@ function onMetadataDefinition(
   machineMod: M.Mod,
   definition: B.MetadataDefinition,
 ): Array<M.Definition> {
+  return setupMetadata(machineMod, definition.name, definition.attributes)
+}
+
+export function setupMetadata(
+  machineMod: M.Mod,
+  rootName: string,
+  attributes: Record<string, B.Metadata>,
+): Array<M.Definition> {
   const [directives, definitionArrays] = arrayUnzip(
-    Object.entries(definition.attributes).map(([key, metadata]) =>
-      onMetadata(machineMod, definition.name, [key], metadata),
+    Object.entries(attributes).map(([key, metadata]) =>
+      onMetadata(machineMod, rootName, [key], metadata),
     ),
   )
+
   return [
-    M.DataDefinition(machineMod, definition.name, directives, definition.meta),
+    M.DataDefinition(machineMod, rootName, directives),
     ...definitionArrays.flatMap((array) => array),
   ]
 }
