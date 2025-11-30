@@ -130,9 +130,14 @@
 (define-data _main©metadata
   (pointer _main©metadata/name)
   (int 0)
-  (int 0))
+  (int 0)
+  (pointer _main©variable-info))
 
 (define-data _main©metadata/name (string "_main"))
+
+(define-data _main©variable-info
+  (int 24)
+  (pointer _main©variable-info/names))
 
 (define-space _main©constant 8)
 
@@ -179,9 +184,12 @@
 (define-data equal?©metadata
   (pointer equal?©metadata/name)
   (int 2)
-  (int 1))
+  (int 1)
+  (pointer equal?©variable-info))
 
 (define-data equal?©metadata/name (string "equal?"))
+
+(define-data equal?©variable-info)
 
 (define-space equal?©constant 8)
 
@@ -228,10 +236,13 @@
 (define-data println-non-void©metadata
   (pointer println-non-void©metadata/name)
   (int 1)
-  (int 1))
+  (int 1)
+  (pointer println-non-void©variable-info))
 
 (define-data println-non-void©metadata/name
   (string "println-non-void"))
+
+(define-data println-non-void©variable-info)
 
 (define-space println-non-void©constant 8)
 
@@ -280,9 +291,12 @@
 (define-data iadd©metadata
   (pointer iadd©metadata/name)
   (int 2)
-  (int 1))
+  (int 1)
+  (pointer iadd©variable-info))
 
 (define-data iadd©metadata/name (string "iadd"))
+
+(define-data iadd©variable-info)
 
 (define-space iadd©constant 8)
 
@@ -329,9 +343,12 @@
 (define-data int-less?©metadata
   (pointer int-less?©metadata/name)
   (int 2)
-  (int 1))
+  (int 1)
+  (pointer int-less?©variable-info))
 
 (define-data int-less?©metadata/name (string "int-less?"))
+
+(define-data int-less?©variable-info)
 
 (define-space int-less?©constant 8)
 
@@ -378,9 +395,12 @@
 (define-data make-curry©metadata
   (pointer make-curry©metadata/name)
   (int 3)
-  (int 1))
+  (int 1)
+  (pointer make-curry©variable-info))
 
 (define-data make-curry©metadata/name (string "make-curry"))
+
+(define-data make-curry©variable-info)
 
 (define-space make-curry©constant 8)
 
@@ -429,10 +449,13 @@
 (define-data random-dice©metadata
   (pointer random-dice©metadata/name)
   (int 0)
-  (int 1))
+  (int 1)
+  (pointer random-dice©variable-info))
 
 (define-data random-dice©metadata/name
   (string "random-dice"))
+
+(define-data random-dice©variable-info)
 
 (define-space random-dice©constant 8)
 
@@ -517,3 +540,240 @@
     (popq (reg rsp))
     (popq (reg rbp))
     (retq)))
+
+(define-data _main©variable-info/names
+  (pointer _main©variable-info/names/0)
+  (pointer _main©variable-info/names/1)
+  (pointer _main©variable-info/names/2)
+  (pointer _main©variable-info/names/3)
+  (pointer _main©variable-info/names/4)
+  (pointer _main©variable-info/names/5)
+  (pointer _main©variable-info/names/6)
+  (pointer _main©variable-info/names/7)
+  (pointer _main©variable-info/names/8)
+  (pointer _main©variable-info/names/9)
+  (pointer _main©variable-info/names/10)
+  (pointer _main©variable-info/names/11)
+  (pointer _main©variable-info/names/12)
+  (pointer _main©variable-info/names/13)
+  (pointer _main©variable-info/names/14)
+  (pointer _main©variable-info/names/15)
+  (pointer _main©variable-info/names/16)
+  (pointer _main©variable-info/names/17)
+  (pointer _main©variable-info/names/18)
+  (pointer _main©variable-info/names/19)
+  (pointer _main©variable-info/names/20)
+  (pointer _main©variable-info/names/21)
+  (pointer _main©variable-info/names/22)
+  (pointer _main©variable-info/names/23))
+
+(define-data _main©variable-info/names/0 (string "_₁"))
+
+(define-data _main©variable-info/names/1 (string "_₂"))
+
+(define-data _main©variable-info/names/2 (string "x₁"))
+
+(define-data _main©variable-info/names/3 (string "_₃"))
+
+(define-data _main©variable-info/names/4 (string "y₁"))
+
+(define-data _main©variable-info/names/5 (string "_₆"))
+
+(define-data _main©variable-info/names/6 (string "_₇"))
+
+(define-data _main©variable-info/names/7 (string "_₈"))
+
+(define-data _main©variable-info/names/8 (string "_₉"))
+
+(define-data _main©variable-info/names/9 (string "_₄"))
+
+(define-data _main©variable-info/names/10 (string "_↩"))
+
+(define-data _main©variable-info/names/11 (string "_₁₆"))
+
+(define-data _main©variable-info/names/12 (string "_₁₇"))
+
+(define-data _main©variable-info/names/13 (string "_₁₈"))
+
+(define-data _main©variable-info/names/14 (string "_₁₉"))
+
+(define-data _main©variable-info/names/15 (string "_₂₀"))
+
+(define-data _main©variable-info/names/16 (string "_₂₁"))
+
+(define-data _main©variable-info/names/17 (string "_₅"))
+
+(define-data _main©variable-info/names/18 (string "_₁₀"))
+
+(define-data _main©variable-info/names/19 (string "_₁₁"))
+
+(define-data _main©variable-info/names/20 (string "_₁₂"))
+
+(define-data _main©variable-info/names/21 (string "_₁₃"))
+
+(define-data _main©variable-info/names/22 (string "_₁₄"))
+
+(define-data _main©variable-info/names/23 (string "_₁₅"))
+
+(define-data _main©setup©variable-info
+  (int 4)
+  (pointer _main©setup©variable-info/names))
+
+(define-data _main©setup©variable-info/names
+  (pointer _main©setup©variable-info/names/0)
+  (pointer _main©setup©variable-info/names/1)
+  (pointer _main©setup©variable-info/names/2)
+  (pointer _main©setup©variable-info/names/3))
+
+(define-data _main©setup©variable-info/names/0
+  (string "address"))
+
+(define-data _main©setup©variable-info/names/1
+  (string "arity"))
+
+(define-data _main©setup©variable-info/names/2
+  (string "size"))
+
+(define-data _main©setup©variable-info/names/3
+  (string "curry"))
+
+(define-data equal?©setup©variable-info
+  (int 4)
+  (pointer equal?©setup©variable-info/names))
+
+(define-data equal?©setup©variable-info/names
+  (pointer equal?©setup©variable-info/names/0)
+  (pointer equal?©setup©variable-info/names/1)
+  (pointer equal?©setup©variable-info/names/2)
+  (pointer equal?©setup©variable-info/names/3))
+
+(define-data equal?©setup©variable-info/names/0
+  (string "address"))
+
+(define-data equal?©setup©variable-info/names/1
+  (string "arity"))
+
+(define-data equal?©setup©variable-info/names/2
+  (string "size"))
+
+(define-data equal?©setup©variable-info/names/3
+  (string "curry"))
+
+(define-data println-non-void©setup©variable-info
+  (int 4)
+  (pointer println-non-void©setup©variable-info/names))
+
+(define-data println-non-void©setup©variable-info/names
+  (pointer println-non-void©setup©variable-info/names/0)
+  (pointer println-non-void©setup©variable-info/names/1)
+  (pointer println-non-void©setup©variable-info/names/2)
+  (pointer println-non-void©setup©variable-info/names/3))
+
+(define-data println-non-void©setup©variable-info/names/0
+  (string "address"))
+
+(define-data println-non-void©setup©variable-info/names/1
+  (string "arity"))
+
+(define-data println-non-void©setup©variable-info/names/2
+  (string "size"))
+
+(define-data println-non-void©setup©variable-info/names/3
+  (string "curry"))
+
+(define-data iadd©setup©variable-info
+  (int 4)
+  (pointer iadd©setup©variable-info/names))
+
+(define-data iadd©setup©variable-info/names
+  (pointer iadd©setup©variable-info/names/0)
+  (pointer iadd©setup©variable-info/names/1)
+  (pointer iadd©setup©variable-info/names/2)
+  (pointer iadd©setup©variable-info/names/3))
+
+(define-data iadd©setup©variable-info/names/0
+  (string "address"))
+
+(define-data iadd©setup©variable-info/names/1
+  (string "arity"))
+
+(define-data iadd©setup©variable-info/names/2
+  (string "size"))
+
+(define-data iadd©setup©variable-info/names/3
+  (string "curry"))
+
+(define-data int-less?©setup©variable-info
+  (int 4)
+  (pointer int-less?©setup©variable-info/names))
+
+(define-data int-less?©setup©variable-info/names
+  (pointer int-less?©setup©variable-info/names/0)
+  (pointer int-less?©setup©variable-info/names/1)
+  (pointer int-less?©setup©variable-info/names/2)
+  (pointer int-less?©setup©variable-info/names/3))
+
+(define-data int-less?©setup©variable-info/names/0
+  (string "address"))
+
+(define-data int-less?©setup©variable-info/names/1
+  (string "arity"))
+
+(define-data int-less?©setup©variable-info/names/2
+  (string "size"))
+
+(define-data int-less?©setup©variable-info/names/3
+  (string "curry"))
+
+(define-data make-curry©setup©variable-info
+  (int 4)
+  (pointer make-curry©setup©variable-info/names))
+
+(define-data make-curry©setup©variable-info/names
+  (pointer make-curry©setup©variable-info/names/0)
+  (pointer make-curry©setup©variable-info/names/1)
+  (pointer make-curry©setup©variable-info/names/2)
+  (pointer make-curry©setup©variable-info/names/3))
+
+(define-data make-curry©setup©variable-info/names/0
+  (string "address"))
+
+(define-data make-curry©setup©variable-info/names/1
+  (string "arity"))
+
+(define-data make-curry©setup©variable-info/names/2
+  (string "size"))
+
+(define-data make-curry©setup©variable-info/names/3
+  (string "curry"))
+
+(define-data random-dice©setup©variable-info
+  (int 4)
+  (pointer random-dice©setup©variable-info/names))
+
+(define-data random-dice©setup©variable-info/names
+  (pointer random-dice©setup©variable-info/names/0)
+  (pointer random-dice©setup©variable-info/names/1)
+  (pointer random-dice©setup©variable-info/names/2)
+  (pointer random-dice©setup©variable-info/names/3))
+
+(define-data random-dice©setup©variable-info/names/0
+  (string "address"))
+
+(define-data random-dice©setup©variable-info/names/1
+  (string "arity"))
+
+(define-data random-dice©setup©variable-info/names/2
+  (string "size"))
+
+(define-data random-dice©setup©variable-info/names/3
+  (string "curry"))
+
+(define-data _setup©variable-info
+  (int 1)
+  (pointer _setup©variable-info/names))
+
+(define-data _setup©variable-info/names
+  (pointer _setup©variable-info/names/0))
+
+(define-data _setup©variable-info/names/0 (string "_"))

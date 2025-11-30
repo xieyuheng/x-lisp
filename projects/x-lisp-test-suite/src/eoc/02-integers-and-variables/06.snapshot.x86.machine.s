@@ -57,6 +57,7 @@ _main©metadata:
         .quad _main©metadata.name
         .quad 0
         .quad 0
+        .quad _main©variable_info
 .size _main©metadata, . - _main©metadata
 
 .data
@@ -65,6 +66,14 @@ _main©metadata:
 _main©metadata.name:
         .string "_main"
 .size _main©metadata.name, . - _main©metadata.name
+
+.data
+.align 8
+.type _main©variable_info, @object
+_main©variable_info:
+        .quad 6
+        .quad _main©variable_info.names
+.size _main©variable_info, . - _main©variable_info
 
 .bss
 .align 8
@@ -120,6 +129,7 @@ println_non_void©metadata:
         .quad println_non_void©metadata.name
         .quad 1
         .quad 1
+        .quad println_non_void©variable_info
 .size println_non_void©metadata, . - println_non_void©metadata
 
 .data
@@ -128,6 +138,13 @@ println_non_void©metadata:
 println_non_void©metadata.name:
         .string "println-non-void"
 .size println_non_void©metadata.name, . - println_non_void©metadata.name
+
+.data
+.align 8
+.type println_non_void©variable_info, @object
+println_non_void©variable_info:
+
+.size println_non_void©variable_info, . - println_non_void©variable_info
 
 .bss
 .align 8
@@ -183,6 +200,7 @@ ineg©metadata:
         .quad ineg©metadata.name
         .quad 1
         .quad 1
+        .quad ineg©variable_info
 .size ineg©metadata, . - ineg©metadata
 
 .data
@@ -191,6 +209,13 @@ ineg©metadata:
 ineg©metadata.name:
         .string "ineg"
 .size ineg©metadata.name, . - ineg©metadata.name
+
+.data
+.align 8
+.type ineg©variable_info, @object
+ineg©variable_info:
+
+.size ineg©variable_info, . - ineg©variable_info
 
 .bss
 .align 8
@@ -246,6 +271,7 @@ make_curry©metadata:
         .quad make_curry©metadata.name
         .quad 3
         .quad 1
+        .quad make_curry©variable_info
 .size make_curry©metadata, . - make_curry©metadata
 
 .data
@@ -254,6 +280,13 @@ make_curry©metadata:
 make_curry©metadata.name:
         .string "make-curry"
 .size make_curry©metadata.name, . - make_curry©metadata.name
+
+.data
+.align 8
+.type make_curry©variable_info, @object
+make_curry©variable_info:
+
+.size make_curry©variable_info, . - make_curry©variable_info
 
 .bss
 .align 8
@@ -309,6 +342,7 @@ random_dice©metadata:
         .quad random_dice©metadata.name
         .quad 0
         .quad 1
+        .quad random_dice©variable_info
 .size random_dice©metadata, . - random_dice©metadata
 
 .data
@@ -317,6 +351,13 @@ random_dice©metadata:
 random_dice©metadata.name:
         .string "random-dice"
 .size random_dice©metadata.name, . - random_dice©metadata.name
+
+.data
+.align 8
+.type random_dice©variable_info, @object
+random_dice©variable_info:
+
+.size random_dice©variable_info, . - random_dice©variable_info
 
 .bss
 .align 8
@@ -404,3 +445,309 @@ _setup.epilog:
         popq %rbp
         retq 
 .size _setup, . - _setup
+
+.data
+.align 8
+.type _main©variable_info.names, @object
+_main©variable_info.names:
+        .quad _main©variable_info.names.0
+        .quad _main©variable_info.names.1
+        .quad _main©variable_info.names.2
+        .quad _main©variable_info.names.3
+        .quad _main©variable_info.names.4
+        .quad _main©variable_info.names.5
+.size _main©variable_info.names, . - _main©variable_info.names
+
+.data
+.align 8
+.type _main©variable_info.names.0, @object
+_main©variable_info.names.0:
+        .string "_₁"
+.size _main©variable_info.names.0, . - _main©variable_info.names.0
+
+.data
+.align 8
+.type _main©variable_info.names.1, @object
+_main©variable_info.names.1:
+        .string "_₂"
+.size _main©variable_info.names.1, . - _main©variable_info.names.1
+
+.data
+.align 8
+.type _main©variable_info.names.2, @object
+_main©variable_info.names.2:
+        .string "_₃"
+.size _main©variable_info.names.2, . - _main©variable_info.names.2
+
+.data
+.align 8
+.type _main©variable_info.names.3, @object
+_main©variable_info.names.3:
+        .string "_₄"
+.size _main©variable_info.names.3, . - _main©variable_info.names.3
+
+.data
+.align 8
+.type _main©variable_info.names.4, @object
+_main©variable_info.names.4:
+        .string "_₅"
+.size _main©variable_info.names.4, . - _main©variable_info.names.4
+
+.data
+.align 8
+.type _main©variable_info.names.5, @object
+_main©variable_info.names.5:
+        .string "_↩"
+.size _main©variable_info.names.5, . - _main©variable_info.names.5
+
+.data
+.align 8
+.type _main©setup©variable_info, @object
+_main©setup©variable_info:
+        .quad 4
+        .quad _main©setup©variable_info.names
+.size _main©setup©variable_info, . - _main©setup©variable_info
+
+.data
+.align 8
+.type _main©setup©variable_info.names, @object
+_main©setup©variable_info.names:
+        .quad _main©setup©variable_info.names.0
+        .quad _main©setup©variable_info.names.1
+        .quad _main©setup©variable_info.names.2
+        .quad _main©setup©variable_info.names.3
+.size _main©setup©variable_info.names, . - _main©setup©variable_info.names
+
+.data
+.align 8
+.type _main©setup©variable_info.names.0, @object
+_main©setup©variable_info.names.0:
+        .string "address"
+.size _main©setup©variable_info.names.0, . - _main©setup©variable_info.names.0
+
+.data
+.align 8
+.type _main©setup©variable_info.names.1, @object
+_main©setup©variable_info.names.1:
+        .string "arity"
+.size _main©setup©variable_info.names.1, . - _main©setup©variable_info.names.1
+
+.data
+.align 8
+.type _main©setup©variable_info.names.2, @object
+_main©setup©variable_info.names.2:
+        .string "size"
+.size _main©setup©variable_info.names.2, . - _main©setup©variable_info.names.2
+
+.data
+.align 8
+.type _main©setup©variable_info.names.3, @object
+_main©setup©variable_info.names.3:
+        .string "curry"
+.size _main©setup©variable_info.names.3, . - _main©setup©variable_info.names.3
+
+.data
+.align 8
+.type println_non_void©setup©variable_info, @object
+println_non_void©setup©variable_info:
+        .quad 4
+        .quad println_non_void©setup©variable_info.names
+.size println_non_void©setup©variable_info, . - println_non_void©setup©variable_info
+
+.data
+.align 8
+.type println_non_void©setup©variable_info.names, @object
+println_non_void©setup©variable_info.names:
+        .quad println_non_void©setup©variable_info.names.0
+        .quad println_non_void©setup©variable_info.names.1
+        .quad println_non_void©setup©variable_info.names.2
+        .quad println_non_void©setup©variable_info.names.3
+.size println_non_void©setup©variable_info.names, . - println_non_void©setup©variable_info.names
+
+.data
+.align 8
+.type println_non_void©setup©variable_info.names.0, @object
+println_non_void©setup©variable_info.names.0:
+        .string "address"
+.size println_non_void©setup©variable_info.names.0, . - println_non_void©setup©variable_info.names.0
+
+.data
+.align 8
+.type println_non_void©setup©variable_info.names.1, @object
+println_non_void©setup©variable_info.names.1:
+        .string "arity"
+.size println_non_void©setup©variable_info.names.1, . - println_non_void©setup©variable_info.names.1
+
+.data
+.align 8
+.type println_non_void©setup©variable_info.names.2, @object
+println_non_void©setup©variable_info.names.2:
+        .string "size"
+.size println_non_void©setup©variable_info.names.2, . - println_non_void©setup©variable_info.names.2
+
+.data
+.align 8
+.type println_non_void©setup©variable_info.names.3, @object
+println_non_void©setup©variable_info.names.3:
+        .string "curry"
+.size println_non_void©setup©variable_info.names.3, . - println_non_void©setup©variable_info.names.3
+
+.data
+.align 8
+.type ineg©setup©variable_info, @object
+ineg©setup©variable_info:
+        .quad 4
+        .quad ineg©setup©variable_info.names
+.size ineg©setup©variable_info, . - ineg©setup©variable_info
+
+.data
+.align 8
+.type ineg©setup©variable_info.names, @object
+ineg©setup©variable_info.names:
+        .quad ineg©setup©variable_info.names.0
+        .quad ineg©setup©variable_info.names.1
+        .quad ineg©setup©variable_info.names.2
+        .quad ineg©setup©variable_info.names.3
+.size ineg©setup©variable_info.names, . - ineg©setup©variable_info.names
+
+.data
+.align 8
+.type ineg©setup©variable_info.names.0, @object
+ineg©setup©variable_info.names.0:
+        .string "address"
+.size ineg©setup©variable_info.names.0, . - ineg©setup©variable_info.names.0
+
+.data
+.align 8
+.type ineg©setup©variable_info.names.1, @object
+ineg©setup©variable_info.names.1:
+        .string "arity"
+.size ineg©setup©variable_info.names.1, . - ineg©setup©variable_info.names.1
+
+.data
+.align 8
+.type ineg©setup©variable_info.names.2, @object
+ineg©setup©variable_info.names.2:
+        .string "size"
+.size ineg©setup©variable_info.names.2, . - ineg©setup©variable_info.names.2
+
+.data
+.align 8
+.type ineg©setup©variable_info.names.3, @object
+ineg©setup©variable_info.names.3:
+        .string "curry"
+.size ineg©setup©variable_info.names.3, . - ineg©setup©variable_info.names.3
+
+.data
+.align 8
+.type make_curry©setup©variable_info, @object
+make_curry©setup©variable_info:
+        .quad 4
+        .quad make_curry©setup©variable_info.names
+.size make_curry©setup©variable_info, . - make_curry©setup©variable_info
+
+.data
+.align 8
+.type make_curry©setup©variable_info.names, @object
+make_curry©setup©variable_info.names:
+        .quad make_curry©setup©variable_info.names.0
+        .quad make_curry©setup©variable_info.names.1
+        .quad make_curry©setup©variable_info.names.2
+        .quad make_curry©setup©variable_info.names.3
+.size make_curry©setup©variable_info.names, . - make_curry©setup©variable_info.names
+
+.data
+.align 8
+.type make_curry©setup©variable_info.names.0, @object
+make_curry©setup©variable_info.names.0:
+        .string "address"
+.size make_curry©setup©variable_info.names.0, . - make_curry©setup©variable_info.names.0
+
+.data
+.align 8
+.type make_curry©setup©variable_info.names.1, @object
+make_curry©setup©variable_info.names.1:
+        .string "arity"
+.size make_curry©setup©variable_info.names.1, . - make_curry©setup©variable_info.names.1
+
+.data
+.align 8
+.type make_curry©setup©variable_info.names.2, @object
+make_curry©setup©variable_info.names.2:
+        .string "size"
+.size make_curry©setup©variable_info.names.2, . - make_curry©setup©variable_info.names.2
+
+.data
+.align 8
+.type make_curry©setup©variable_info.names.3, @object
+make_curry©setup©variable_info.names.3:
+        .string "curry"
+.size make_curry©setup©variable_info.names.3, . - make_curry©setup©variable_info.names.3
+
+.data
+.align 8
+.type random_dice©setup©variable_info, @object
+random_dice©setup©variable_info:
+        .quad 4
+        .quad random_dice©setup©variable_info.names
+.size random_dice©setup©variable_info, . - random_dice©setup©variable_info
+
+.data
+.align 8
+.type random_dice©setup©variable_info.names, @object
+random_dice©setup©variable_info.names:
+        .quad random_dice©setup©variable_info.names.0
+        .quad random_dice©setup©variable_info.names.1
+        .quad random_dice©setup©variable_info.names.2
+        .quad random_dice©setup©variable_info.names.3
+.size random_dice©setup©variable_info.names, . - random_dice©setup©variable_info.names
+
+.data
+.align 8
+.type random_dice©setup©variable_info.names.0, @object
+random_dice©setup©variable_info.names.0:
+        .string "address"
+.size random_dice©setup©variable_info.names.0, . - random_dice©setup©variable_info.names.0
+
+.data
+.align 8
+.type random_dice©setup©variable_info.names.1, @object
+random_dice©setup©variable_info.names.1:
+        .string "arity"
+.size random_dice©setup©variable_info.names.1, . - random_dice©setup©variable_info.names.1
+
+.data
+.align 8
+.type random_dice©setup©variable_info.names.2, @object
+random_dice©setup©variable_info.names.2:
+        .string "size"
+.size random_dice©setup©variable_info.names.2, . - random_dice©setup©variable_info.names.2
+
+.data
+.align 8
+.type random_dice©setup©variable_info.names.3, @object
+random_dice©setup©variable_info.names.3:
+        .string "curry"
+.size random_dice©setup©variable_info.names.3, . - random_dice©setup©variable_info.names.3
+
+.data
+.align 8
+.type _setup©variable_info, @object
+_setup©variable_info:
+        .quad 1
+        .quad _setup©variable_info.names
+.size _setup©variable_info, . - _setup©variable_info
+
+.data
+.align 8
+.type _setup©variable_info.names, @object
+_setup©variable_info.names:
+        .quad _setup©variable_info.names.0
+.size _setup©variable_info.names, . - _setup©variable_info.names
+
+.data
+.align 8
+.type _setup©variable_info.names.0, @object
+_setup©variable_info.names.0:
+        .string "_"
+.size _setup©variable_info.names.0, . - _setup©variable_info.names.0

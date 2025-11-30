@@ -11,7 +11,10 @@
 (define-metadata square©metadata
   :name "square"
   :arity 1
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info square©variable-info)
+
+(define-metadata square©variable-info)
 
 (define-variable square©constant)
 

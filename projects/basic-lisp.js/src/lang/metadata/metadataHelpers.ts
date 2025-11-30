@@ -31,13 +31,15 @@ export function asStringMetadata(metadata: B.Metadata): B.StringMetadata {
   throw new Error(`[asStringMetadata] fail on: ${B.formatMetadata(metadata)}`)
 }
 
-export function isVarMetadata(metadata: B.Metadata): metadata is B.VarMetadata {
-  return metadata.kind === "VarMetadata"
+export function isPointerMetadata(
+  metadata: B.Metadata,
+): metadata is B.PointerMetadata {
+  return metadata.kind === "PointerMetadata"
 }
 
-export function asVarMetadata(metadata: B.Metadata): B.VarMetadata {
-  if (metadata.kind === "VarMetadata") return metadata
-  throw new Error(`[asVarMetadata] fail on: ${B.formatMetadata(metadata)}`)
+export function asPointerMetadata(metadata: B.Metadata): B.PointerMetadata {
+  if (metadata.kind === "PointerMetadata") return metadata
+  throw new Error(`[asPointerMetadata] fail on: ${B.formatMetadata(metadata)}`)
 }
 
 export function isListMetadata(

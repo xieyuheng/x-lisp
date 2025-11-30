@@ -2,7 +2,7 @@ export type Metadata =
   | IntMetadata
   | FloatMetadata
   | StringMetadata
-  | VarMetadata
+  | PointerMetadata
   | ListMetadata
   | RecordMetadata
 
@@ -42,14 +42,14 @@ export function StringMetadata(content: string): StringMetadata {
   }
 }
 
-export type VarMetadata = {
-  kind: "VarMetadata"
+export type PointerMetadata = {
+  kind: "PointerMetadata"
   name: string
 }
 
-export function VarMetadata(name: string): VarMetadata {
+export function PointerMetadata(name: string): PointerMetadata {
   return {
-    kind: "VarMetadata",
+    kind: "PointerMetadata",
     name,
   }
 }

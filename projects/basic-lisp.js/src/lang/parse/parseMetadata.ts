@@ -11,7 +11,7 @@ export function parseMetadata(sexp: S.Sexp): Metadata {
   } else if (S.isString(sexp)) {
     return B.StringMetadata(sexp.content)
   } else if (S.isSymbol(sexp)) {
-    return B.VarMetadata(sexp.content)
+    return B.PointerMetadata(sexp.content)
   } else if (S.isTael(sexp)) {
     if (Object.keys(sexp.attributes).length === 0) {
       return B.ListMetadata(sexp.elements.map(parseMetadata))

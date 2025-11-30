@@ -13,7 +13,10 @@
 (define-metadata swap©metadata
   :name "swap"
   :arity 3
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info swap©variable-info)
+
+(define-metadata swap©variable-info)
 
 (define-variable swap©constant)
 
@@ -51,7 +54,10 @@
 (define-metadata drop©metadata
   :name "drop"
   :arity 1
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info drop©variable-info)
+
+(define-metadata drop©variable-info)
 
 (define-variable drop©constant)
 
@@ -90,7 +96,10 @@
 (define-metadata drop©λ₁©metadata
   :name "drop©λ₁"
   :arity 2
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info drop©λ₁©variable-info)
+
+(define-metadata drop©λ₁©variable-info)
 
 (define-variable drop©λ₁©constant)
 
@@ -118,7 +127,10 @@
 (define-metadata drop©λ₁©λ₁©metadata
   :name "drop©λ₁©λ₁"
   :arity 2
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info drop©λ₁©λ₁©variable-info)
+
+(define-metadata drop©λ₁©λ₁©variable-info)
 
 (define-variable drop©λ₁©λ₁©constant)
 
@@ -156,7 +168,10 @@
 (define-metadata dup©metadata
   :name "dup"
   :arity 1
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info dup©variable-info)
+
+(define-metadata dup©variable-info)
 
 (define-variable dup©constant)
 
@@ -185,7 +200,10 @@
 (define-metadata dup©λ₁©metadata
   :name "dup©λ₁"
   :arity 2
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info dup©λ₁©variable-info)
+
+(define-metadata dup©λ₁©variable-info)
 
 (define-variable dup©λ₁©constant)
 
@@ -206,7 +224,10 @@
 (define-metadata identity©metadata
   :name "identity"
   :arity 1
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info identity©variable-info)
+
+(define-metadata identity©variable-info)
 
 (define-variable identity©constant)
 
@@ -240,7 +261,10 @@
 (define-metadata _main©metadata
   :name "_main"
   :arity 0
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info _main©variable-info)
+
+(define-metadata _main©variable-info)
 
 (define-variable _main©constant)
 

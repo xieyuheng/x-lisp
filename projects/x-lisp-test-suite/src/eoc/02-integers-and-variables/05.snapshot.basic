@@ -9,7 +9,10 @@
 (define-metadata _main©metadata
   :name "_main"
   :arity 0
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info _main©variable-info)
+
+(define-metadata _main©variable-info)
 
 (define-variable _main©constant)
 

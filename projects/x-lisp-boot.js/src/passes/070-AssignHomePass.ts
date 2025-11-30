@@ -1,6 +1,7 @@
 import * as M from "@xieyuheng/machine-lisp.js"
 import * as S from "@xieyuheng/sexp.js"
 import * as R from "../runtime/index.ts"
+import { getVarNames } from "./069-SetupVariableInfo.ts"
 
 export function AssignHomePass(mod: M.Mod): void {
   for (const definition of M.modDefinitions(mod)) {
@@ -36,22 +37,7 @@ function onDefinition(definition: M.Definition): null {
   }
 }
 
-export function getVarNames(definition: M.CodeDefinition): Set<string> {
-  const varNames: Set<string> = new Set()
-  for (const block of definition.blocks.values()) {
-    for (const instr of block.instrs) {
-      for (const operand of instr.operands) {
-        if (operand.kind === "Var") {
-          varNames.add(operand.name)
-        }
-      }
-    }
-  }
-
-  return varNames
-}
-
-export function getHomeLocations(
+function getHomeLocations(
   definition: M.CodeDefinition,
 ): Map<string, M.Operand> {
   const homeLocations = new Map()

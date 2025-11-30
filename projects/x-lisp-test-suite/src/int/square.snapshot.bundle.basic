@@ -12,7 +12,10 @@
 (define-metadata _main©metadata
   :name "_main"
   :arity 0
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info _main©variable-info)
+
+(define-metadata _main©variable-info)
 
 (define-variable _main©constant)
 
@@ -41,7 +44,10 @@
 (define-metadata §₁/square©metadata
   :name "square"
   :arity 1
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info §₁/square©variable-info)
+
+(define-metadata §₁/square©variable-info)
 
 (define-variable §₁/square©constant)
 
@@ -62,7 +68,10 @@
 (define-metadata println-non-void©metadata
   :name "println-non-void"
   :arity 1
-  :is-primitive 1)
+  :is-primitive 1
+  :variable-info println-non-void©variable-info)
+
+(define-metadata println-non-void©variable-info)
 
 (define-variable println-non-void©constant)
 
@@ -84,7 +93,10 @@
 (define-metadata imul©metadata
   :name "imul"
   :arity 2
-  :is-primitive 1)
+  :is-primitive 1
+  :variable-info imul©variable-info)
+
+(define-metadata imul©variable-info)
 
 (define-variable imul©constant)
 
@@ -105,7 +117,10 @@
 (define-metadata make-curry©metadata
   :name "make-curry"
   :arity 3
-  :is-primitive 1)
+  :is-primitive 1
+  :variable-info make-curry©variable-info)
+
+(define-metadata make-curry©variable-info)
 
 (define-variable make-curry©constant)
 

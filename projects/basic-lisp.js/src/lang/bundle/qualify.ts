@@ -74,8 +74,8 @@ function qualifyMetadata(
       return metadata
     }
 
-    case "VarMetadata": {
-      return B.VarMetadata(qualifyName(context, metadata.name))
+    case "PointerMetadata": {
+      return B.PointerMetadata(qualifyName(context, metadata.name))
     }
 
     case "ListMetadata": {

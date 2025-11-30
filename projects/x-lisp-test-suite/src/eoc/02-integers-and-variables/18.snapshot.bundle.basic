@@ -25,7 +25,10 @@
 (define-metadata _main©metadata
   :name "_main"
   :arity 0
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info _main©variable-info)
+
+(define-metadata _main©variable-info)
 
 (define-variable _main©constant)
 
@@ -46,7 +49,10 @@
 (define-metadata println-non-void©metadata
   :name "println-non-void"
   :arity 1
-  :is-primitive 1)
+  :is-primitive 1
+  :variable-info println-non-void©variable-info)
+
+(define-metadata println-non-void©variable-info)
 
 (define-variable println-non-void©constant)
 
@@ -68,7 +74,10 @@
 (define-metadata iadd©metadata
   :name "iadd"
   :arity 2
-  :is-primitive 1)
+  :is-primitive 1
+  :variable-info iadd©variable-info)
+
+(define-metadata iadd©variable-info)
 
 (define-variable iadd©constant)
 
@@ -89,7 +98,10 @@
 (define-metadata make-curry©metadata
   :name "make-curry"
   :arity 3
-  :is-primitive 1)
+  :is-primitive 1
+  :variable-info make-curry©variable-info)
+
+(define-metadata make-curry©variable-info)
 
 (define-variable make-curry©constant)
 
@@ -110,7 +122,10 @@
 (define-metadata random-dice©metadata
   :name "random-dice"
   :arity 0
-  :is-primitive 1)
+  :is-primitive 1
+  :variable-info random-dice©variable-info)
+
+(define-metadata random-dice©variable-info)
 
 (define-variable random-dice©constant)
 

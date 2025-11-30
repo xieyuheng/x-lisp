@@ -161,7 +161,7 @@ function onMetadata(
       ]
     }
 
-    case "VarMetadata": {
+    case "PointerMetadata": {
       return [M.Pointer(metadata.name), []]
     }
 

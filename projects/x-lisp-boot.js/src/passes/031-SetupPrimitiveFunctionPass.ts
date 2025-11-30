@@ -74,8 +74,11 @@ function onPrimitiveFunctionDefinition(
       name: B.StringMetadata(definition.name),
       arity: B.IntMetadata(BigInt(definition.arity)),
       "is-primitive": B.IntMetadata(1n),
-      // "variable-info": B.Pointer(`${definition.name}©variable-info`),
+      "variable-info": B.PointerMetadata(`${definition.name}©variable-info`),
     }),
+
+    // (define-metadata <name>©variable-info)
+    B.MetadataDefinition(basicMod, `${definition.name}©variable-info`, {}),
 
     // (define-variable <name>©constant)
     B.VariableDefinition(

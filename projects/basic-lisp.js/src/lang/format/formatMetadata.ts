@@ -18,7 +18,7 @@ export function formatMetadata(metadata: Metadata): string {
       return JSON.stringify(metadata.content)
     }
 
-    case "VarMetadata": {
+    case "PointerMetadata": {
       return metadata.name
     }
 

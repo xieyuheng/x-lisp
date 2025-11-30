@@ -62,9 +62,14 @@
 (define-data _main©metadata
   (pointer _main©metadata/name)
   (int 0)
-  (int 0))
+  (int 0)
+  (pointer _main©variable-info))
 
 (define-data _main©metadata/name (string "_main"))
+
+(define-data _main©variable-info
+  (int 11)
+  (pointer _main©variable-info/names))
 
 (define-space _main©constant 8)
 
@@ -111,10 +116,13 @@
 (define-data println-non-void©metadata
   (pointer println-non-void©metadata/name)
   (int 1)
-  (int 1))
+  (int 1)
+  (pointer println-non-void©variable-info))
 
 (define-data println-non-void©metadata/name
   (string "println-non-void"))
+
+(define-data println-non-void©variable-info)
 
 (define-space println-non-void©constant 8)
 
@@ -163,9 +171,12 @@
 (define-data iadd©metadata
   (pointer iadd©metadata/name)
   (int 2)
-  (int 1))
+  (int 1)
+  (pointer iadd©variable-info))
 
 (define-data iadd©metadata/name (string "iadd"))
+
+(define-data iadd©variable-info)
 
 (define-space iadd©constant 8)
 
@@ -212,9 +223,12 @@
 (define-data make-curry©metadata
   (pointer make-curry©metadata/name)
   (int 3)
-  (int 1))
+  (int 1)
+  (pointer make-curry©variable-info))
 
 (define-data make-curry©metadata/name (string "make-curry"))
+
+(define-data make-curry©variable-info)
 
 (define-space make-curry©constant 8)
 
@@ -293,3 +307,135 @@
     (popq (reg rsp))
     (popq (reg rbp))
     (retq)))
+
+(define-data _main©variable-info/names
+  (pointer _main©variable-info/names/0)
+  (pointer _main©variable-info/names/1)
+  (pointer _main©variable-info/names/2)
+  (pointer _main©variable-info/names/3)
+  (pointer _main©variable-info/names/4)
+  (pointer _main©variable-info/names/5)
+  (pointer _main©variable-info/names/6)
+  (pointer _main©variable-info/names/7)
+  (pointer _main©variable-info/names/8)
+  (pointer _main©variable-info/names/9)
+  (pointer _main©variable-info/names/10))
+
+(define-data _main©variable-info/names/0 (string "_₁"))
+
+(define-data _main©variable-info/names/1 (string "_₂"))
+
+(define-data _main©variable-info/names/2 (string "_₃"))
+
+(define-data _main©variable-info/names/3 (string "_₄"))
+
+(define-data _main©variable-info/names/4 (string "_₅"))
+
+(define-data _main©variable-info/names/5 (string "_₆"))
+
+(define-data _main©variable-info/names/6 (string "_₇"))
+
+(define-data _main©variable-info/names/7 (string "_₈"))
+
+(define-data _main©variable-info/names/8 (string "_₉"))
+
+(define-data _main©variable-info/names/9 (string "_₁₀"))
+
+(define-data _main©variable-info/names/10 (string "_↩"))
+
+(define-data _main©setup©variable-info
+  (int 4)
+  (pointer _main©setup©variable-info/names))
+
+(define-data _main©setup©variable-info/names
+  (pointer _main©setup©variable-info/names/0)
+  (pointer _main©setup©variable-info/names/1)
+  (pointer _main©setup©variable-info/names/2)
+  (pointer _main©setup©variable-info/names/3))
+
+(define-data _main©setup©variable-info/names/0
+  (string "address"))
+
+(define-data _main©setup©variable-info/names/1
+  (string "arity"))
+
+(define-data _main©setup©variable-info/names/2
+  (string "size"))
+
+(define-data _main©setup©variable-info/names/3
+  (string "curry"))
+
+(define-data println-non-void©setup©variable-info
+  (int 4)
+  (pointer println-non-void©setup©variable-info/names))
+
+(define-data println-non-void©setup©variable-info/names
+  (pointer println-non-void©setup©variable-info/names/0)
+  (pointer println-non-void©setup©variable-info/names/1)
+  (pointer println-non-void©setup©variable-info/names/2)
+  (pointer println-non-void©setup©variable-info/names/3))
+
+(define-data println-non-void©setup©variable-info/names/0
+  (string "address"))
+
+(define-data println-non-void©setup©variable-info/names/1
+  (string "arity"))
+
+(define-data println-non-void©setup©variable-info/names/2
+  (string "size"))
+
+(define-data println-non-void©setup©variable-info/names/3
+  (string "curry"))
+
+(define-data iadd©setup©variable-info
+  (int 4)
+  (pointer iadd©setup©variable-info/names))
+
+(define-data iadd©setup©variable-info/names
+  (pointer iadd©setup©variable-info/names/0)
+  (pointer iadd©setup©variable-info/names/1)
+  (pointer iadd©setup©variable-info/names/2)
+  (pointer iadd©setup©variable-info/names/3))
+
+(define-data iadd©setup©variable-info/names/0
+  (string "address"))
+
+(define-data iadd©setup©variable-info/names/1
+  (string "arity"))
+
+(define-data iadd©setup©variable-info/names/2
+  (string "size"))
+
+(define-data iadd©setup©variable-info/names/3
+  (string "curry"))
+
+(define-data make-curry©setup©variable-info
+  (int 4)
+  (pointer make-curry©setup©variable-info/names))
+
+(define-data make-curry©setup©variable-info/names
+  (pointer make-curry©setup©variable-info/names/0)
+  (pointer make-curry©setup©variable-info/names/1)
+  (pointer make-curry©setup©variable-info/names/2)
+  (pointer make-curry©setup©variable-info/names/3))
+
+(define-data make-curry©setup©variable-info/names/0
+  (string "address"))
+
+(define-data make-curry©setup©variable-info/names/1
+  (string "arity"))
+
+(define-data make-curry©setup©variable-info/names/2
+  (string "size"))
+
+(define-data make-curry©setup©variable-info/names/3
+  (string "curry"))
+
+(define-data _setup©variable-info
+  (int 1)
+  (pointer _setup©variable-info/names))
+
+(define-data _setup©variable-info/names
+  (pointer _setup©variable-info/names/0))
+
+(define-data _setup©variable-info/names/0 (string "_"))

@@ -1,10 +1,4 @@
-[x-lisp-boot.js] add a pass to save `variable-info`
-
-```scheme
-(define-metadata <name>©variable-info
-  :count ...
-  :names [...])
-```
+`NullMetadata`
 
 # function object
 

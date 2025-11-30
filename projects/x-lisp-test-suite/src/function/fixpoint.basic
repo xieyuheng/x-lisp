@@ -26,7 +26,10 @@
 (define-metadata Y©metadata
   :name "Y"
   :arity 1
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info Y©variable-info)
+
+(define-metadata Y©variable-info)
 
 (define-variable Y©constant)
 
@@ -53,7 +56,10 @@
 (define-metadata Y©λ₁©metadata
   :name "Y©λ₁"
   :arity 1
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info Y©λ₁©variable-info)
+
+(define-metadata Y©λ₁©variable-info)
 
 (define-variable Y©λ₁©constant)
 
@@ -93,7 +99,10 @@
 (define-metadata Y©λ₂©metadata
   :name "Y©λ₂"
   :arity 2
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info Y©λ₂©variable-info)
+
+(define-metadata Y©λ₂©variable-info)
 
 (define-variable Y©λ₂©constant)
 
@@ -122,7 +131,10 @@
 (define-metadata Y©λ₂©λ₁©metadata
   :name "Y©λ₂©λ₁"
   :arity 2
-  :is-primitive 0)
+  :is-primitive 0
+  :variable-info Y©λ₂©λ₁©variable-info)
+
+(define-metadata Y©λ₂©λ₁©variable-info)
 
 (define-variable Y©λ₂©λ₁©constant)
 
