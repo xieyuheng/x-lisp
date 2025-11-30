@@ -1,5 +1,3 @@
-[x-lisp-proto.js] parse/ -- inline matchers
-
 # define-metadata
 
 [basic-lisp.js] `parseMetadata` & `parseMetadataAttributes`
