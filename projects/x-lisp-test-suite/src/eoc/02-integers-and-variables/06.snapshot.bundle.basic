@@ -36,9 +36,7 @@
   :name "println-non-void"
   :arity 1
   :is-primitive 1
-  :variable-info println-non-void©variable-info)
-
-(define-metadata println-non-void©variable-info)
+  :variable-info 0)
 
 (define-variable println-non-void©constant)
 
@@ -61,9 +59,7 @@
   :name "ineg"
   :arity 1
   :is-primitive 1
-  :variable-info ineg©variable-info)
-
-(define-metadata ineg©variable-info)
+  :variable-info 0)
 
 (define-variable ineg©constant)
 
@@ -85,9 +81,7 @@
   :name "make-curry"
   :arity 3
   :is-primitive 1
-  :variable-info make-curry©variable-info)
-
-(define-metadata make-curry©variable-info)
+  :variable-info 0)
 
 (define-variable make-curry©constant)
 
@@ -109,9 +103,7 @@
   :name "random-dice"
   :arity 0
   :is-primitive 1
-  :variable-info random-dice©variable-info)
-
-(define-metadata random-dice©variable-info)
+  :variable-info 0)
 
 (define-variable random-dice©constant)
 

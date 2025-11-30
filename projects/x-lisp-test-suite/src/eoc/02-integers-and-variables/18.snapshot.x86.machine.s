@@ -167,7 +167,7 @@ println_non_void©metadata:
         .quad println_non_void©metadata.name
         .quad 1
         .quad 1
-        .quad println_non_void©variable_info
+        .quad 0
 .size println_non_void©metadata, . - println_non_void©metadata
 
 .data
@@ -176,13 +176,6 @@ println_non_void©metadata:
 println_non_void©metadata.name:
         .string "println-non-void"
 .size println_non_void©metadata.name, . - println_non_void©metadata.name
-
-.data
-.align 8
-.type println_non_void©variable_info, @object
-println_non_void©variable_info:
-
-.size println_non_void©variable_info, . - println_non_void©variable_info
 
 .bss
 .align 8
@@ -238,7 +231,7 @@ iadd©metadata:
         .quad iadd©metadata.name
         .quad 2
         .quad 1
-        .quad iadd©variable_info
+        .quad 0
 .size iadd©metadata, . - iadd©metadata
 
 .data
@@ -247,13 +240,6 @@ iadd©metadata:
 iadd©metadata.name:
         .string "iadd"
 .size iadd©metadata.name, . - iadd©metadata.name
-
-.data
-.align 8
-.type iadd©variable_info, @object
-iadd©variable_info:
-
-.size iadd©variable_info, . - iadd©variable_info
 
 .bss
 .align 8
@@ -309,7 +295,7 @@ make_curry©metadata:
         .quad make_curry©metadata.name
         .quad 3
         .quad 1
-        .quad make_curry©variable_info
+        .quad 0
 .size make_curry©metadata, . - make_curry©metadata
 
 .data
@@ -318,13 +304,6 @@ make_curry©metadata:
 make_curry©metadata.name:
         .string "make-curry"
 .size make_curry©metadata.name, . - make_curry©metadata.name
-
-.data
-.align 8
-.type make_curry©variable_info, @object
-make_curry©variable_info:
-
-.size make_curry©variable_info, . - make_curry©variable_info
 
 .bss
 .align 8
@@ -380,7 +359,7 @@ random_dice©metadata:
         .quad random_dice©metadata.name
         .quad 0
         .quad 1
-        .quad random_dice©variable_info
+        .quad 0
 .size random_dice©metadata, . - random_dice©metadata
 
 .data
@@ -389,13 +368,6 @@ random_dice©metadata:
 random_dice©metadata.name:
         .string "random-dice"
 .size random_dice©metadata.name, . - random_dice©metadata.name
-
-.data
-.align 8
-.type random_dice©variable_info, @object
-random_dice©variable_info:
-
-.size random_dice©variable_info, . - random_dice©variable_info
 
 .bss
 .align 8

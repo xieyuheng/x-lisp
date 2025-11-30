@@ -1,11 +1,10 @@
-`NullMetadata`
-
 # function object
 
-[runtime.c] `curry_t` -- has any value as target
 [runtime.c] `function_metadata_t`
 [runtime.c] `function_t` -- has `address` and `metadata`
 [runtime.c] `x_make_function`
+
+[runtime.c] `x_apply_unary` can take `function_t`
 
 # function constant
 

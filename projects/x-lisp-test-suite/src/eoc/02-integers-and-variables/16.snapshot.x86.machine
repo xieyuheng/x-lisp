@@ -106,12 +106,10 @@
   (pointer println-non-void©metadata/name)
   (int 1)
   (int 1)
-  (pointer println-non-void©variable-info))
+  (int 0))
 
 (define-data println-non-void©metadata/name
   (string "println-non-void"))
-
-(define-data println-non-void©variable-info)
 
 (define-space println-non-void©constant 8)
 
@@ -161,11 +159,9 @@
   (pointer isub©metadata/name)
   (int 2)
   (int 1)
-  (pointer isub©variable-info))
+  (int 0))
 
 (define-data isub©metadata/name (string "isub"))
-
-(define-data isub©variable-info)
 
 (define-space isub©constant 8)
 
@@ -213,11 +209,9 @@
   (pointer make-curry©metadata/name)
   (int 3)
   (int 1)
-  (pointer make-curry©variable-info))
+  (int 0))
 
 (define-data make-curry©metadata/name (string "make-curry"))
-
-(define-data make-curry©variable-info)
 
 (define-space make-curry©constant 8)
 

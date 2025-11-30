@@ -76,9 +76,7 @@
   :name "equal?"
   :arity 2
   :is-primitive 1
-  :variable-info equal?©variable-info)
-
-(define-metadata equal?©variable-info)
+  :variable-info 0)
 
 (define-variable equal?©constant)
 
@@ -100,9 +98,7 @@
   :name "print"
   :arity 1
   :is-primitive 1
-  :variable-info print©variable-info)
-
-(define-metadata print©variable-info)
+  :variable-info 0)
 
 (define-variable print©constant)
 
@@ -124,9 +120,7 @@
   :name "println-non-void"
   :arity 1
   :is-primitive 1
-  :variable-info println-non-void©variable-info)
-
-(define-metadata println-non-void©variable-info)
+  :variable-info 0)
 
 (define-variable println-non-void©constant)
 
@@ -149,9 +143,7 @@
   :name "newline"
   :arity 0
   :is-primitive 1
-  :variable-info newline©variable-info)
-
-(define-metadata newline©variable-info)
+  :variable-info 0)
 
 (define-variable newline©constant)
 
@@ -173,9 +165,7 @@
   :name "make-curry"
   :arity 3
   :is-primitive 1
-  :variable-info make-curry©variable-info)
-
-(define-metadata make-curry©variable-info)
+  :variable-info 0)
 
 (define-variable make-curry©constant)
 

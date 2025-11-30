@@ -185,11 +185,9 @@
   (pointer equal?©metadata/name)
   (int 2)
   (int 1)
-  (pointer equal?©variable-info))
+  (int 0))
 
 (define-data equal?©metadata/name (string "equal?"))
-
-(define-data equal?©variable-info)
 
 (define-space equal?©constant 8)
 
@@ -237,12 +235,10 @@
   (pointer println-non-void©metadata/name)
   (int 1)
   (int 1)
-  (pointer println-non-void©variable-info))
+  (int 0))
 
 (define-data println-non-void©metadata/name
   (string "println-non-void"))
-
-(define-data println-non-void©variable-info)
 
 (define-space println-non-void©constant 8)
 
@@ -292,11 +288,9 @@
   (pointer iadd©metadata/name)
   (int 2)
   (int 1)
-  (pointer iadd©variable-info))
+  (int 0))
 
 (define-data iadd©metadata/name (string "iadd"))
-
-(define-data iadd©variable-info)
 
 (define-space iadd©constant 8)
 
@@ -344,11 +338,9 @@
   (pointer int-less?©metadata/name)
   (int 2)
   (int 1)
-  (pointer int-less?©variable-info))
+  (int 0))
 
 (define-data int-less?©metadata/name (string "int-less?"))
-
-(define-data int-less?©variable-info)
 
 (define-space int-less?©constant 8)
 
@@ -396,11 +388,9 @@
   (pointer make-curry©metadata/name)
   (int 3)
   (int 1)
-  (pointer make-curry©variable-info))
+  (int 0))
 
 (define-data make-curry©metadata/name (string "make-curry"))
-
-(define-data make-curry©variable-info)
 
 (define-space make-curry©constant 8)
 
@@ -450,12 +440,10 @@
   (pointer random-dice©metadata/name)
   (int 0)
   (int 1)
-  (pointer random-dice©variable-info))
+  (int 0))
 
 (define-data random-dice©metadata/name
   (string "random-dice"))
-
-(define-data random-dice©variable-info)
 
 (define-space random-dice©constant 8)
 
