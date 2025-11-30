@@ -24,7 +24,7 @@ export function builtinString(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "string-length", 1, (string) => {
-    return Values.Int(Values.asString(string).content.length)
+    return Values.Int(BigInt(Values.asString(string).content.length))
   })
 
   definePrimitiveFunction(mod, "string-to-symbol", 1, (string) => {
@@ -109,11 +109,11 @@ export function builtinString(mod: Mod) {
 
   definePrimitiveFunction(mod, "string-compare-lexical", 2, (x, y) => {
     if (Values.asString(x).content < Values.asString(y).content) {
-      return Values.Int(-1)
+      return Values.Int(-1n)
     } else if (Values.asString(x).content > Values.asString(y).content) {
-      return Values.Int(1)
+      return Values.Int(1n)
     } else {
-      return Values.Int(0)
+      return Values.Int(0n)
     }
   })
 }

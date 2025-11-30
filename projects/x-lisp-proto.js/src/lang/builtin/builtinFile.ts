@@ -45,7 +45,7 @@ export function builtinFile(mod: Mod) {
       throw new Error(`(file-size) file does not exist: ${pathString}`)
     }
 
-    return Values.Int(stats.size)
+    return Values.Int(BigInt(stats.size))
   })
 
   definePrimitiveFunction(mod, "file-load", 1, (path) => {

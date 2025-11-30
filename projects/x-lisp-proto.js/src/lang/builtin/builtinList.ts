@@ -117,7 +117,7 @@ export function builtinList(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "list-length", 1, (list) => {
-    return Values.Int(Values.asTael(list).elements.length)
+    return Values.Int(BigInt(Values.asTael(list).elements.length))
   })
 
   definePrimitiveFunction(mod, "list-copy", 1, (list) => {
@@ -128,7 +128,7 @@ export function builtinList(mod: Mod) {
     const elements = Values.asTael(list).elements
     const i = Values.asInt(index).content
     if (i < elements.length) {
-      return elements[i]
+      return elements[Number(i)]
     } else {
       let message = `(list-get) index out of bound`
       message += `\n  index: ${formatValue(index)}`
@@ -147,7 +147,7 @@ export function builtinList(mod: Mod) {
       throw new Error(message)
     }
 
-    elements[i] = value
+    elements[Number(i)] = value
     return Values.Tael(elements, Values.asTael(list).attributes)
   })
 
@@ -161,7 +161,7 @@ export function builtinList(mod: Mod) {
       throw new Error(message)
     }
 
-    elements[i] = value
+    elements[Number(i)] = value
     return list
   })
 
@@ -211,7 +211,7 @@ export function builtinList(mod: Mod) {
   definePrimitiveFunction(mod, "list-sort!", 2, (compare, list) => {
     Values.asTael(list).elements.sort((x, y) => {
       const result = apply(compare, [x, y])
-      return Values.asInt(result).content
+      return Number(Values.asInt(result).content)
     })
     return list
   })
@@ -220,7 +220,7 @@ export function builtinList(mod: Mod) {
     return Values.List(
       Values.asTael(list).elements.toSorted((x, y) => {
         const result = apply(compare, [x, y])
-        return Values.asInt(result).content
+        return Number(Values.asInt(result).content)
       }),
     )
   })

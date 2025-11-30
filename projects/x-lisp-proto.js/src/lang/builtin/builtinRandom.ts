@@ -8,7 +8,12 @@ export function builtinRandom(mod: Mod) {
 
   definePrimitiveFunction(mod, "random-int", 2, (start, end) => {
     return Values.Int(
-      randomInt(Values.asInt(start).content, Values.asInt(end).content),
+      BigInt(
+        randomInt(
+          Number(Values.asInt(start).content),
+          Number(Values.asInt(end).content),
+        ),
+      ),
     )
   })
 

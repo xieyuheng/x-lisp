@@ -1,5 +1,3 @@
-[x-lisp-proto.js] use `bigint` for `Int`
-
 # define-metadata
 
 [basic-lisp.js] `execute` -- deref `Address` to metadata

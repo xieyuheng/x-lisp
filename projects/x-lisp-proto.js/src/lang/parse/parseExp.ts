@@ -296,9 +296,9 @@ export function parseExp(sexp: S.Sexp): Exp {
           case "Hashtag":
             return Exps.Hashtag(S.hashtagContent(data), meta)
           case "Int":
-            return Exps.Int(S.numberContent(data), meta)
+            return Exps.Int(S.intContent(data), meta)
           case "Float":
-            return Exps.Float(S.numberContent(data), meta)
+            return Exps.Float(S.floatContent(data), meta)
           case "String":
             return Exps.String(S.stringContent(data), meta)
           case "Symbol": {

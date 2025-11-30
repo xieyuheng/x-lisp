@@ -44,7 +44,7 @@ export function builtinHash(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "hash-length", 1, (hash) => {
-    return Values.Int(Values.hashEntries(Values.asHash(hash)).length)
+    return Values.Int(BigInt(Values.hashEntries(Values.asHash(hash)).length))
   })
 
   definePrimitiveFunction(mod, "hash-get", 2, (key, hash) => {

@@ -17,7 +17,7 @@ export function builtinSystem(mod: Mod) {
       { shell: true },
     )
     const exitCode =
-      result.status === null ? Values.Null() : Values.Int(result.status)
+      result.status === null ? Values.Null() : Values.Int(BigInt(result.status))
     const stdout = Values.String(result.stdout.toString())
     const stderr = Values.String(result.stderr.toString())
     return Values.Record({

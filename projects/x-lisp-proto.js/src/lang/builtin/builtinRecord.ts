@@ -40,7 +40,7 @@ export function builtinRecord(mod: Mod) {
     const values = Object.values(Values.asTael(record).attributes).filter(
       (value) => !Values.isNull(value),
     )
-    return Values.Int(values.length)
+    return Values.Int(BigInt(values.length))
   })
 
   definePrimitiveFunction(mod, "record-keys", 1, (record) => {

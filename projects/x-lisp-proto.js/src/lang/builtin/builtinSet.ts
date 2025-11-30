@@ -45,7 +45,7 @@ export function builtinSet(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "set-size", 1, (value) => {
-    return Values.Int(Values.setElements(value).length)
+    return Values.Int(BigInt(Values.setElements(value).length))
   })
 
   definePrimitiveFunction(mod, "set-empty?", 1, (value) => {

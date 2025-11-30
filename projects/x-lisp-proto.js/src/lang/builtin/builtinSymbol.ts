@@ -16,7 +16,7 @@ export function builtinSymbol(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "symbol-length", 1, (symbol) => {
-    return Values.Int(Values.asSymbol(symbol).content.length)
+    return Values.Int(BigInt(Values.asSymbol(symbol).content.length))
   })
 
   definePrimitiveFunction(mod, "symbol-to-string", 1, (symbol) => {
