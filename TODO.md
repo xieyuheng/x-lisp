@@ -1,6 +1,5 @@
 # define-metadata
 
-[x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.MetadataDefinition` to `M.DataDefinition`
 [basic-lisp.js] test metadata by `execute`
 [basic-lisp.js] `builtin` -- `make-function` -- create `Function` from `Address`
 

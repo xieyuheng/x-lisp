@@ -1,4 +1,5 @@
 import * as B from "@xieyuheng/basic-lisp.js"
+import { arrayUnzip } from "@xieyuheng/helpers.js/array"
 import * as M from "@xieyuheng/machine-lisp.js"
 import * as R from "../runtime/index.ts"
 
@@ -46,6 +47,10 @@ function onDefinition(
 
     case "VariableDefinition": {
       return onVariableDefinition(machineMod, definition)
+    }
+
+    case "MetadataDefinition": {
+      return onMetadataDefinition(machineMod, definition)
     }
 
     default: {
@@ -106,6 +111,93 @@ function onVariableDefinition(
         definition.meta,
       ),
     ]
+  }
+}
+
+function onMetadataDefinition(
+  machineMod: M.Mod,
+  definition: B.MetadataDefinition,
+): Array<M.Definition> {
+  const [directives, definitionArrays] = arrayUnzip(
+    Object.entries(definition.attributes).map(([key, metadata]) =>
+      onMetadata(machineMod, definition, [key], metadata),
+    ),
+  )
+  return [
+    M.DataDefinition(machineMod, definition.name, directives, definition.meta),
+    ...definitionArrays.flatMap((array) => array),
+  ]
+}
+
+function onMetadata(
+  machineMod: M.Mod,
+  root: B.MetadataDefinition,
+  path: Array<string>,
+  metadata: B.Metadata,
+): [M.Directive, Array<M.Definition>] {
+  switch (metadata.kind) {
+    case "IntMetadata": {
+      return [M.Int(metadata.content), []]
+    }
+
+    case "FloatMetadata": {
+      return [M.Float(metadata.content), []]
+    }
+
+    case "StringMetadata": {
+      const name = [root.name, ...path].join("©")
+      return [
+        M.Pointer(name),
+        [M.DataDefinition(machineMod, name, [M.String(metadata.content)])],
+      ]
+    }
+
+    case "VarMetadata": {
+      return [M.Pointer(metadata.name), []]
+    }
+
+    case "ListMetadata": {
+      const name = [root.name, ...path].join("©")
+      const [directives, definitionArrays] = arrayUnzip(
+        Array.from(
+          metadata.elements
+            .entries()
+            .map(([index, element]) =>
+              onMetadata(
+                machineMod,
+                root,
+                [...path, index.toString()],
+                element,
+              ),
+            ),
+        ),
+      )
+
+      return [
+        M.Pointer(name),
+        [
+          M.DataDefinition(machineMod, name, directives),
+          ...definitionArrays.flatMap((array) => array),
+        ],
+      ]
+    }
+
+    case "RecordMetadata": {
+      const name = [root.name, ...path].join("©")
+      const [directives, definitionArrays] = arrayUnzip(
+        Object.entries(metadata.attributes).map(([key, element]) =>
+          onMetadata(machineMod, root, [...path, key], element),
+        ),
+      )
+
+      return [
+        M.Pointer(name),
+        [
+          M.DataDefinition(machineMod, name, directives),
+          ...definitionArrays.flatMap((array) => array),
+        ],
+      ]
+    }
   }
 }
 
