@@ -1,21 +1,8 @@
 # define-metadata
 
-[basic-lisp.js] `Metadata` -- subset of `Sexp`
-
-```
-IntMetadata
-FloatMetadata
-StringMetadata
-
-VarMetadata
-
-RecordMetadata
-ListMetadata
-```
-
 [basic-lisp.js] `MetadataDefinition` -- for untagged data
 
-- top level is always a RecordMetadata
+- top level is always a `RecordMetadata`
 
 [basic-lisp.js] `DefineMetadata`
 [basic-lisp.js] parse `(define-metadata)`
