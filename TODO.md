@@ -1,12 +1,3 @@
-# xvi
-
-xvi.c -- setup c project
-
-# xth
-
-xth.c -- setup c project
-xth.c -- port code from xvm
-
 # define-metadata
 
 [basic-lisp.js] `Metadata` -- subset of `Sexp`
@@ -34,6 +25,15 @@ ListMetadata
 
 [x-lisp-boot.js] `040-SelectInstructionPass` -- translate `B.MetadataDefinition` to `M.DataDefinition`
 
+# function object
+
+[runtime.c] `function_t` -- has `address` and `arity` and `is_primitive`
+[runtime.c] `curry_t` -- has `function_t` instead of `address_t`
+[runtime.c] `object_spec_t` -- has `get_slot_fn`
+[runtime.c] `function_t` -- has register map
+
+[runtime.c] [maybe] use inline union for `address` to avoid casting
+
 # function constant
 
 [x-lisp-boot.js] `ExplicateControlPass` -- setup `FunctionDefinition` to `make-function`
@@ -58,20 +58,6 @@ ListMetadata
     (store <name>©constant function)
     (return)))
 ```
-
-# function object
-
-[runtime.c] `function_t` -- has `address` and `arity` and `is_primitive`
-[runtime.c] `curry_t` -- has `function_t` instead of `address_t`
-[runtime.c] `object_spec_t` -- has `get_slot_fn`
-[runtime.c] `function_t` -- has register map
-
-[runtime.c] [maybe] use inline union for `address` to avoid casting
-
-# setup funtion
-
-[x-lisp-boot.js] `040-SelectInstructionPass` -- literal address instead of literal function
-[x-lisp-boot.js] setup funtion to `make-function`
 
 # scan call stack
 
@@ -105,3 +91,12 @@ x_random_float
 
 [x-lisp-boot.js] add `Curry` back to `Exp` -- fix all passes
 [x-lisp-boot.js] `040-SelectInstructionPass` -- `selectLiteral` -- handle curry
+
+# xvi
+
+xvi.c -- setup c project
+
+# xth
+
+xth.c -- setup c project
+xth.c -- port code from xvm
