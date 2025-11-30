@@ -34,7 +34,9 @@ export function formatMetadata(metadata: Metadata): string {
   }
 }
 
-export function formatMetadataAttributes(attributes: Record<string, Metadata>): string {
+export function formatMetadataAttributes(
+  attributes: Record<string, Metadata>,
+): string {
   return Object.entries(attributes)
     .map(([k, v]) => `:${k} ${formatMetadata(v)}`)
     .join(" ")

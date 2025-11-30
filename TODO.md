@@ -1,8 +1,6 @@
 # define-metadata
 
-[basic-lisp.js] `DefineMetadata`
 [basic-lisp.js] parse `(define-metadata)`
-
 [basic-lisp.js] `execute` -- deref `Address` to metadata
 [basic-lisp.js] test metadata by `execute`
 

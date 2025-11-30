@@ -1,7 +1,7 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
 import type { Context } from "../execute/index.ts"
-import type { Metadata, RecordMetadata } from "../metadata/index.ts"
+import type { Metadata } from "../metadata/index.ts"
 import type { Mod } from "../mod/index.ts"
 import { type Value } from "../value/index.ts"
 

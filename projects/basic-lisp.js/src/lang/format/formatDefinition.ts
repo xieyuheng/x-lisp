@@ -1,7 +1,7 @@
 import { type Definition } from "../definition/index.ts"
 import * as Values from "../value/index.ts"
 import { formatBlock } from "./formatBlock.ts"
-import { formatMetadata, formatMetadataAttributes } from "./formatMetadata.ts"
+import { formatMetadataAttributes } from "./formatMetadata.ts"
 import { formatValue } from "./formatValue.ts"
 
 export function formatDefinition(definition: Definition): string {
@@ -34,7 +34,6 @@ export function formatDefinition(definition: Definition): string {
 
     case "MetadataDefinition": {
       return `(define-metadata ${definition.name} ${formatMetadataAttributes(definition.attributes)})`
-
     }
   }
 }

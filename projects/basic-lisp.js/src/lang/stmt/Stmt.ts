@@ -1,9 +1,15 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
+import type { Metadata } from "../metadata/index.ts"
 import type { Value } from "../value/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
 
-export type Stmt = AboutModule | DefineFunction | DefineVariable | DefineSetup
+export type Stmt =
+  | AboutModule
+  | DefineFunction
+  | DefineVariable
+  | DefineSetup
+  | DefineMetadata
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -61,6 +67,26 @@ export function DefineSetup(
     kind: "DefineSetup",
     name,
     blocks,
+    meta,
+  }
+}
+
+export type DefineMetadata = {
+  kind: "DefineMetadata"
+  name: string
+  attributes: Record<string, Metadata>
+  meta?: Meta
+}
+
+export function DefineMetadata(
+  name: string,
+  attributes: Record<string, Metadata>,
+  meta?: Meta,
+): DefineMetadata {
+  return {
+    kind: "DefineMetadata",
+    name,
+    attributes,
     meta,
   }
 }

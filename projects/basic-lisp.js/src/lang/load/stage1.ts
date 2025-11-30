@@ -15,6 +15,7 @@ export function stage1(mod: Mod, stmt: Stmt): void {
       mod,
       stmt.name,
       stmt.blocks,
+      stmt.meta,
     )
 
     for (const block of stmt.blocks.values()) {
@@ -25,7 +26,12 @@ export function stage1(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "DefineSetup") {
-    const definition = Definitions.SetupDefinition(mod, stmt.name, stmt.blocks)
+    const definition = Definitions.SetupDefinition(
+      mod,
+      stmt.name,
+      stmt.blocks,
+      stmt.meta,
+    )
 
     for (const block of stmt.blocks.values()) {
       checkBlockTerminator(block)
@@ -37,7 +43,19 @@ export function stage1(mod: Mod, stmt: Stmt): void {
   if (stmt.kind === "DefineVariable") {
     mod.definitions.set(
       stmt.name,
-      Definitions.VariableDefinition(mod, stmt.name, stmt.value),
+      Definitions.VariableDefinition(mod, stmt.name, stmt.value, stmt.meta),
+    )
+  }
+
+  if (stmt.kind === "DefineMetadata") {
+    mod.definitions.set(
+      stmt.name,
+      Definitions.MetadataDefinition(
+        mod,
+        stmt.name,
+        stmt.attributes,
+        stmt.meta,
+      ),
     )
   }
 }
