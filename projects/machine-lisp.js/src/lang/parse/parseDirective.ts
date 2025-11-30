@@ -4,7 +4,7 @@ import { type Directive } from "../directive/index.ts"
 
 export function parseDirective(sexp: S.Sexp): Directive {
   return S.match(
-    S.matcherChoice([
+    S.matcherChoice<Directive>([
       S.matcher("(cons* 'db values)", ({ values }, { meta }) => {
         return Directives.Db(
           S.listElements(values).map((value) => BigInt(S.numberContent(value))),
