@@ -23,9 +23,7 @@ export function formatMetadata(metadata: Metadata): string {
     }
 
     case "RecordMetadata": {
-      const attributes = Object.entries(metadata.attributes)
-        .map(([k, v]) => `:${k} ${formatMetadata(v)}`)
-        .join(" ")
+      const attributes = formatMetadataAttributes(metadata.attributes)
       return `{${attributes}}`
     }
 
@@ -34,4 +32,10 @@ export function formatMetadata(metadata: Metadata): string {
       return `[${elements}]`
     }
   }
+}
+
+export function formatMetadataAttributes(attributes: Record<string, Metadata>): string {
+  return Object.entries(attributes)
+    .map(([k, v]) => `:${k} ${formatMetadata(v)}`)
+    .join(" ")
 }

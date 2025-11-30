@@ -1,7 +1,7 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
 import type { Context } from "../execute/index.ts"
-import type { RecordMetadata } from "../metadata/index.ts"
+import type { Metadata, RecordMetadata } from "../metadata/index.ts"
 import type { Mod } from "../mod/index.ts"
 import { type Value } from "../value/index.ts"
 
@@ -108,21 +108,21 @@ export type MetadataDefinition = {
   kind: "MetadataDefinition"
   mod: Mod
   name: string
-  record: RecordMetadata
+  attributes: Record<string, Metadata>
   meta?: Meta
 }
 
 export function MetadataDefinition(
   mod: Mod,
   name: string,
-  record: RecordMetadata,
+  attributes: Record<string, Metadata>,
   meta?: Meta,
 ): MetadataDefinition {
   return {
     kind: "MetadataDefinition",
     mod,
     name,
-    record,
+    attributes,
     meta,
   }
 }

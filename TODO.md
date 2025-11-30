@@ -1,6 +1,5 @@
 # define-metadata
 
-[basic-lisp.js] `formatDefinition` -- handle `MetadataDefinition`
 [basic-lisp.js] `DefineMetadata`
 [basic-lisp.js] parse `(define-metadata)`
 
