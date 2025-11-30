@@ -1,4 +1,3 @@
-[machine-lisp.js] parse/ -- inline matchers
 [x-lisp-boot.js] parse/ -- inline matchers
 [x-lisp-proto.js] parse/ -- inline matchers
 

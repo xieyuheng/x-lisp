@@ -4,7 +4,7 @@ import { parseOperand } from "./parseOperand.ts"
 
 export function parseInstr(sexp: S.Sexp): Instr {
   return S.match(
-    S.matcherChoice<Instr>([
+    S.matcherChoice([
       S.matcher("(cons* op operands)", ({ op, operands }, { meta }) => {
         return Instr(
           S.symbolContent(op),

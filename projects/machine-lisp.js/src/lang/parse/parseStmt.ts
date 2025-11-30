@@ -5,47 +5,52 @@ import { parseBlock } from "./parseBlock.ts"
 import { parseDirective } from "./parseDirective.ts"
 
 export function parseStmt(sexp: S.Sexp): Stmt {
-  return S.match(stmtMatcher, sexp)
+  return S.match(
+    S.matcherChoice([
+      S.matcher("(cons* 'export names)", ({ names }, { meta }) => {
+        return Stmts.Export(S.listElements(names).map(S.symbolContent), meta)
+      }),
+
+      S.matcher(
+        "(cons* 'define-code name blocks)",
+        ({ name, blocks }, { sexp }) => {
+          const keyword = S.asTael(sexp).elements[1]
+          const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+          return Stmts.DefineCode(
+            S.symbolContent(name),
+            new Map(
+              S.listElements(blocks)
+                .map(parseBlock)
+                .map((block) => [block.label, block]),
+            ),
+            meta,
+          )
+        },
+      ),
+
+      S.matcher(
+        "(cons* 'define-data name directives)",
+        ({ name, directives }, { sexp }) => {
+          const keyword = S.asTael(sexp).elements[1]
+          const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+          return Stmts.DefineData(
+            S.symbolContent(name),
+            S.listElements(directives).map(parseDirective),
+            meta,
+          )
+        },
+      ),
+
+      S.matcher("`(define-space ,name ,size)", ({ name, size }, { sexp }) => {
+        const keyword = S.asTael(sexp).elements[1]
+        const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+        return Stmts.DefineSpace(
+          S.symbolContent(name),
+          S.numberContent(size),
+          meta,
+        )
+      }),
+    ]),
+    sexp,
+  )
 }
-
-const stmtMatcher: S.Matcher<Stmt> = S.matcherChoice<Stmt>([
-  S.matcher("(cons* 'export names)", ({ names }, { meta }) => {
-    return Stmts.Export(S.listElements(names).map(S.symbolContent), meta)
-  }),
-
-  S.matcher(
-    "(cons* 'define-code name blocks)",
-    ({ name, blocks }, { sexp }) => {
-      const keyword = S.asTael(sexp).elements[1]
-      const meta = S.tokenMetaFromSexpMeta(keyword.meta)
-      return Stmts.DefineCode(
-        S.symbolContent(name),
-        new Map(
-          S.listElements(blocks)
-            .map(parseBlock)
-            .map((block) => [block.label, block]),
-        ),
-        meta,
-      )
-    },
-  ),
-
-  S.matcher(
-    "(cons* 'define-data name directives)",
-    ({ name, directives }, { sexp }) => {
-      const keyword = S.asTael(sexp).elements[1]
-      const meta = S.tokenMetaFromSexpMeta(keyword.meta)
-      return Stmts.DefineData(
-        S.symbolContent(name),
-        S.listElements(directives).map(parseDirective),
-        meta,
-      )
-    },
-  ),
-
-  S.matcher("`(define-space ,name ,size)", ({ name, size }, { sexp }) => {
-    const keyword = S.asTael(sexp).elements[1]
-    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
-    return Stmts.DefineSpace(S.symbolContent(name), S.numberContent(size), meta)
-  }),
-])

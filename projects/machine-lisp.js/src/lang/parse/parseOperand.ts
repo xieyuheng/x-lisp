@@ -4,7 +4,7 @@ import { type Operand } from "../operand/index.ts"
 
 export function parseOperand(sexp: S.Sexp): Operand {
   return S.match(
-    S.matcherChoice<Operand>([
+    S.matcherChoice([
       S.matcher("`(imm ,value)", ({ value }, { meta }) => {
         return Operands.Imm(BigInt(S.numberContent(value)), meta)
       }),
