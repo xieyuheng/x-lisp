@@ -5,6 +5,7 @@ import { type Stmt } from "../stmt/index.ts"
 import * as Values from "../value/index.ts"
 import { parseInstr } from "./parseInstr.ts"
 import { parseValue } from "./parseValue.ts"
+import { parseMetadataAttributes } from "./parseMetadata.ts"
 
 export function parseStmt(sexp: S.Sexp): Stmt {
   return S.match(stmtMatcher, sexp)
@@ -40,6 +41,20 @@ const stmtMatcher: S.Matcher<Stmt> = S.matcherChoice<Stmt>([
             .map(parseBlock)
             .map((block) => [block.label, block]),
         ),
+        meta,
+      )
+    },
+  ),
+
+
+  S.matcher(
+    "(cons* 'define-metadata name attributes)",
+    ({ name, attributes }, { sexp }) => {
+      const keyword = S.asTael(sexp).elements[1]
+      const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+      return Stmts.DefineMetadata(
+        S.symbolContent(name),
+        parseMetadataAttributes(attributes),
         meta,
       )
     },
