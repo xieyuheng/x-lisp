@@ -1,6 +1,8 @@
+[machine-lisp.js] parse/ -- inline matchers
+[x-lisp-boot.js] parse/ -- inline matchers
+
 # define-metadata
 
-[basic-lisp.js] parse/ -- inline matchers
 [basic-lisp.js] `parseMetadata` & `parseMetadataAttributes`
 [basic-lisp.js] `execute` -- deref `Address` to metadata
 [basic-lisp.js] test metadata by `execute`
