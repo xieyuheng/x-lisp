@@ -1,4 +1,4 @@
-import * as S from "./Sexp.ts"
+import * as S from "../index.ts"
 
 export function isAtom(sexp: S.Sexp): sexp is S.Atom {
   return (
