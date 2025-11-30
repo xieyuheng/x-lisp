@@ -1,5 +1,6 @@
 [machine-lisp.js] parse/ -- inline matchers
 [x-lisp-boot.js] parse/ -- inline matchers
+[x-lisp-proto.js] parse/ -- inline matchers
 
 # define-metadata
 
@@ -11,12 +12,12 @@
 
 # function object
 
-[runtime.c] `function_t` -- has `address` and `arity` and `is_primitive`
-[runtime.c] `curry_t` -- has `function_t` instead of `address_t`
-[runtime.c] `object_spec_t` -- has `get_slot_fn`
+[runtime.c] `curry_t` -- has any value as target
+[runtime.c] `function_metadata_t`
+[runtime.c] `function_t` -- has `address` and `metadata`
 [runtime.c] `function_t` -- has register map
-
 [runtime.c] [maybe] use inline union for `address` to avoid casting
+[runtime.c] `x_make_function`
 
 # function constant
 
@@ -84,3 +85,7 @@ xvi.c -- setup c project
 
 xth.c -- setup c project
 xth.c -- port code from xvm
+
+# gc
+
+[runtime.c] `object_spec_t` -- has `get_slot_fn`
