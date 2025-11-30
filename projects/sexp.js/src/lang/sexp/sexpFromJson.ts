@@ -15,7 +15,7 @@ export function sexpFromJson(json: any): S.Sexp {
 
   if (typeof json === "number") {
     if (Number.isInteger(json)) {
-      return S.Int(json)
+      return S.Int(BigInt(json))
     } else {
       return S.Float(json)
     }

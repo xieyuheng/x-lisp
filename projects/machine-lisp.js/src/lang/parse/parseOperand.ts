@@ -6,7 +6,7 @@ export function parseOperand(sexp: S.Sexp): Operand {
   return S.match(
     S.matcherChoice<Operand>([
       S.matcher("`(imm ,value)", ({ value }, { meta }) => {
-        return Operands.Imm(BigInt(S.numberContent(value)), meta)
+        return Operands.Imm(S.intContent(value), meta)
       }),
 
       S.matcher("`(label-imm ,label)", ({ label }, { meta }) => {
@@ -24,7 +24,7 @@ export function parseOperand(sexp: S.Sexp): Operand {
       S.matcher("`(reg-deref ,reg ,offset)", ({ reg, offset }, { meta }) => {
         return Operands.RegDeref(
           Operands.asReg(parseOperand(reg)),
-          S.numberContent(offset),
+          Number(S.intContent(offset)),
           meta,
         )
       }),
@@ -45,7 +45,7 @@ export function parseOperand(sexp: S.Sexp): Operand {
       }),
 
       S.matcher("`(arity ,value)", ({ value }, { meta }) => {
-        return Operands.Arity(S.numberContent(value), meta)
+        return Operands.Arity(Number(S.intContent(value)), meta)
       }),
 
       S.matcher("`(label ,name)", ({ name }, { meta }) => {

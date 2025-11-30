@@ -92,8 +92,8 @@ function onPrimitiveFunctionDefinition(
               "address",
               B.Address(definition.name, { isPrimitive: true }),
             ),
-            B.Literal("arity", B.Int(definition.arity)),
-            B.Literal("size", B.Int(0)),
+            B.Literal("arity", B.Int(BigInt(definition.arity))),
+            B.Literal("size", B.Int(0n)),
             B.Call(
               "curry",
               B.Function("make-curry", 3, { isPrimitive: true }),

@@ -7,6 +7,10 @@ import * as S from "../sexp/index.ts"
 // not non-empty list or atom mixed with attributes.
 
 export function sexpToJson(sexp: S.Sexp): Json {
+  if (S.isInt(sexp)) {
+    return Number(sexp.content)
+  }
+
   if (S.isAtom(sexp)) {
     return sexp.content
   }
@@ -44,9 +48,17 @@ export function stringContent(sexp: S.Sexp): string {
   return sexp.content
 }
 
-export function numberContent(sexp: S.Sexp): number {
-  if (sexp.kind !== "Int" && sexp.kind !== "Float") {
-    throw new Error(`[numberContent] wrong sexp kind: ${sexp.kind}`)
+export function intContent(sexp: S.Sexp): bigint {
+  if (sexp.kind !== "Int") {
+    throw new Error(`[intContent] wrong sexp kind: ${sexp.kind}`)
+  }
+
+  return sexp.content
+}
+
+export function floatContent(sexp: S.Sexp): number {
+  if (sexp.kind !== "Float") {
+    throw new Error(`[floatContent] wrong sexp kind: ${sexp.kind}`)
   }
 
   return sexp.content

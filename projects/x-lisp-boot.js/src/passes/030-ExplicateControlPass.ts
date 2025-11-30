@@ -72,8 +72,8 @@ function onFunctionDefinition(
               "address",
               B.Address(definition.name, { isPrimitive: false }),
             ),
-            B.Literal("arity", B.Int(definition.parameters.length)),
-            B.Literal("size", B.Int(0)),
+            B.Literal("arity", B.Int(BigInt(definition.parameters.length))),
+            B.Literal("size", B.Int(0n)),
             B.Call(
               "curry",
               B.Function("make-curry", 3, { isPrimitive: true }),

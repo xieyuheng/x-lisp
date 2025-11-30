@@ -6,9 +6,13 @@ export function parseValue(sexp: S.Sexp): Value {
   return S.match(
     S.matcherChoice<Value>([
       S.matcher("`(@function ,name ,arity)", ({ name, arity }, { meta }) => {
-        return Values.Function(S.symbolContent(name), S.numberContent(arity), {
-          isPrimitive: false,
-        })
+        return Values.Function(
+          S.symbolContent(name),
+          Number(S.intContent(arity)),
+          {
+            isPrimitive: false,
+          },
+        )
       }),
 
       S.matcher("`(@address ,name)", ({ name }, { meta }) => {
@@ -24,7 +28,7 @@ export function parseValue(sexp: S.Sexp): Value {
         ({ name, arity }, { meta }) => {
           return Values.Function(
             S.symbolContent(name),
-            S.numberContent(arity),
+            Number(S.intContent(arity)),
             {
               isPrimitive: true,
             },
@@ -41,11 +45,11 @@ export function parseValue(sexp: S.Sexp): Value {
           }
 
           case "Int": {
-            return Values.Int(S.numberContent(sexp))
+            return Values.Int(S.intContent(sexp))
           }
 
           case "Float": {
-            return Values.Float(S.numberContent(sexp))
+            return Values.Float(S.floatContent(sexp))
           }
 
           default: {

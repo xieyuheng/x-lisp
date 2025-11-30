@@ -94,21 +94,21 @@ export function builtinFloat(mod: Mod) {
 
   definePrimitiveFunction(mod, "float-compare-ascending", 2, (x, y) => {
     if (Values.asFloat(x).content < Values.asFloat(y).content) {
-      return Values.Int(-1)
+      return Values.Int(-1n)
     } else if (Values.asFloat(x).content > Values.asFloat(y).content) {
-      return Values.Int(1)
+      return Values.Int(1n)
     } else {
-      return Values.Int(0)
+      return Values.Int(0n)
     }
   })
 
   definePrimitiveFunction(mod, "float-compare-descending", 2, (x, y) => {
     if (Values.asFloat(x).content < Values.asFloat(y).content) {
-      return Values.Int(1)
+      return Values.Int(1n)
     } else if (Values.asFloat(x).content > Values.asFloat(y).content) {
-      return Values.Int(-1)
+      return Values.Int(-1n)
     } else {
-      return Values.Int(0)
+      return Values.Int(0n)
     }
   })
 }

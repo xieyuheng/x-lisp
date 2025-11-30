@@ -14,9 +14,9 @@ test("sexpFromJson", () => {
   assert.deepStrictEqual(
     sexpFromJson({ a: 1, b: 2, c: 3 }),
     S.Record({
-      a: S.Int(1),
-      b: S.Int(2),
-      c: S.Int(3),
+      a: S.Int(1n),
+      b: S.Int(2n),
+      c: S.Int(3n),
     }),
   )
 })

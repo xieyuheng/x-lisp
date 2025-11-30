@@ -46,7 +46,7 @@ export function parseStmt(sexp: S.Sexp): Stmt {
         const meta = S.tokenMetaFromSexpMeta(keyword.meta)
         return Stmts.DefineSpace(
           S.symbolContent(name),
-          S.numberContent(size),
+          Number(S.intContent(size)),
           meta,
         )
       }),

@@ -34,15 +34,11 @@ export function String(content: string, meta: Attributes = {}): String {
 
 export type Int = {
   kind: "Int"
-  content: number
+  content: bigint
   meta: Attributes
 }
 
-export function Int(content: number, meta: Attributes = {}): Int {
-  if (!Number.isInteger(content)) {
-    throw new Error(`[intAtom] expect number be int: ${content}.`)
-  }
-
+export function Int(content: bigint, meta: Attributes = {}): Int {
   return {
     kind: "Int",
     content,

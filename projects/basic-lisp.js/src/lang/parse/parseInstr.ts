@@ -10,7 +10,7 @@ export function parseInstr(sexp: S.Sexp): Instr {
       S.matcher("`(= ,dest (argument ,index))", ({ dest, index }, { meta }) => {
         return Instrs.Argument(
           S.symbolContent(dest),
-          S.numberContent(index),
+          Number(S.intContent(index)),
           meta,
         )
       }),

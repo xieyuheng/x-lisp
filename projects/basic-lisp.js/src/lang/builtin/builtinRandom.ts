@@ -10,7 +10,7 @@ export function builtinRandom(mod: Mod) {
   ])
 
   definePrimitiveFunction(mod, "random-dice", 0, () => {
-    return Values.Int(6)
+    return Values.Int(6n)
   })
 
   // definePrimitiveFunction(mod, "random-int", 2, (start, end) => {

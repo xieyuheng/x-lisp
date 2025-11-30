@@ -46,15 +46,11 @@ export function Hashtag(content: string, meta?: Meta): Hashtag {
 
 export type Int = {
   kind: "Int"
-  content: number
+  content: bigint
   meta?: Meta
 }
 
-export function Int(content: number, meta?: Meta): Int {
-  if (!Number.isInteger(content)) {
-    throw new Error(`[intAtom] expect number be int: ${content}.`)
-  }
-
+export function Int(content: bigint, meta?: Meta): Int {
   return {
     kind: "Int",
     content,

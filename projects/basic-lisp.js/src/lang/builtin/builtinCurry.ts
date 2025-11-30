@@ -8,14 +8,14 @@ export function builtinCurry(mod: Mod) {
   definePrimitiveFunction(mod, "make-curry", 3, (target, arity, size) => {
     return Values.Curry(
       target,
-      Values.asInt(arity).content,
+      Number(Values.asInt(arity).content),
       Array(size).fill(Values.Null()),
     )
   })
 
   definePrimitiveFunction(mod, "curry-put!", 3, (index, value, curry) => {
     const { args } = Values.asCurry(curry)
-    args[Values.asInt(index).content] = value
+    args[Number(Values.asInt(index).content)] = value
     return curry
   })
 }

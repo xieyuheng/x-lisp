@@ -1,3 +1,4 @@
+import { stringIsBigInt, stringIsNumber } from "@xieyuheng/helpers.js/string"
 import { ErrorWithMeta } from "../errors/index.ts"
 import { Lexer, lexerMatchBrackets } from "../lexer/index.ts"
 import * as S from "../sexp/index.ts"
@@ -45,23 +46,22 @@ export class Parser {
       }
 
       case "Number": {
-        const value = JSON.parse(token.value)
-        if (typeof value !== "number") {
-          let message = `I expect value to be a JSON number: ${value}\n`
-          throw new Error(message)
+        if (stringIsBigInt(token.value)) {
+          return {
+            sexp: S.Int(BigInt(token.value), tokenMetaToSexpMeta(token.meta)),
+            remain: tokens.slice(1),
+          }
         }
 
-        if (token.value.includes(".") || token.value.includes("e")) {
+        if (stringIsNumber(token.value)) {
           return {
-            sexp: S.Float(value, tokenMetaToSexpMeta(token.meta)),
-            remain: tokens.slice(1),
-          }
-        } else {
-          return {
-            sexp: S.Int(value, tokenMetaToSexpMeta(token.meta)),
+            sexp: S.Float(Number(token.value), tokenMetaToSexpMeta(token.meta)),
             remain: tokens.slice(1),
           }
         }
+
+        let message = `I expect value to be a bigint or number: ${token.value}\n`
+        throw new Error(message)
       }
 
       case "DoubleQoutedString": {

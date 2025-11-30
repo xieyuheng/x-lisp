@@ -31,9 +31,9 @@ test("parse -- hashtag", () => {
 })
 
 test("parse -- number", () => {
-  assertParse("1", S.Int(1))
-  assertParse("0", S.Int(0))
-  assertParse("-1", S.Int(-1))
+  assertParse("1", S.Int(1n))
+  assertParse("0", S.Int(0n))
+  assertParse("-1", S.Int(-1n))
   assertParse("0.0", S.Float(0.0))
   assertParse("3.14", S.Float(3.14))
 })
@@ -64,12 +64,12 @@ test("parse -- flower brackets", () => {
 })
 
 test("parse -- list with attributes", () => {
-  assertParse("(:x 1 :y 2)", S.Record({ x: S.Int(1), y: S.Int(2) }))
+  assertParse("(:x 1 :y 2)", S.Record({ x: S.Int(1n), y: S.Int(2n) }))
   assertParse(
     "(a b c :x 1 :y 2)",
     S.Tael([S.Symbol("a"), S.Symbol("b"), S.Symbol("c")], {
-      x: S.Int(1),
-      y: S.Int(2),
+      x: S.Int(1n),
+      y: S.Int(2n),
     }),
   )
 })

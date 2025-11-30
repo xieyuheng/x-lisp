@@ -7,28 +7,28 @@ export function parseDirective(sexp: S.Sexp): Directive {
     S.matcherChoice<Directive>([
       S.matcher("(cons* 'db values)", ({ values }, { meta }) => {
         return Directives.Db(
-          S.listElements(values).map((value) => BigInt(S.numberContent(value))),
+          S.listElements(values).map((value) => S.intContent(value)),
           meta,
         )
       }),
 
       S.matcher("(cons* 'dw values)", ({ values }, { meta }) => {
         return Directives.Dw(
-          S.listElements(values).map((value) => BigInt(S.numberContent(value))),
+          S.listElements(values).map((value) => S.intContent(value)),
           meta,
         )
       }),
 
       S.matcher("(cons* 'dd values)", ({ values }, { meta }) => {
         return Directives.Dd(
-          S.listElements(values).map((value) => BigInt(S.numberContent(value))),
+          S.listElements(values).map((value) => S.intContent(value)),
           meta,
         )
       }),
 
       S.matcher("(cons* 'dq values)", ({ values }, { meta }) => {
         return Directives.Dq(
-          S.listElements(values).map((value) => BigInt(S.numberContent(value))),
+          S.listElements(values).map((value) => S.intContent(value)),
           meta,
         )
       }),
@@ -38,11 +38,11 @@ export function parseDirective(sexp: S.Sexp): Directive {
       }),
 
       S.matcher("`(int ,content)", ({ content }, { meta }) => {
-        return Directives.Int(BigInt(S.numberContent(content)), meta)
+        return Directives.Int(S.intContent(content), meta)
       }),
 
       S.matcher("`(float ,content)", ({ content }, { meta }) => {
-        return Directives.Float(S.numberContent(content), meta)
+        return Directives.Float(S.floatContent(content), meta)
       }),
 
       S.matcher("`(pointer ,name)", ({ name }, { meta }) => {

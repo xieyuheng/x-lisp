@@ -1,4 +1,4 @@
-[x-lisp-boot.js] `encodeValue` -- need sexp.js to really support js `bigint`
+[x-lisp-proto.js] use `bigint` for `Int`
 
 # define-metadata
 

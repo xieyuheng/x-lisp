@@ -38,10 +38,10 @@ export function String(content: string): String {
 
 export type Int = {
   kind: "Int"
-  content: number
+  content: bigint
 }
 
-export function Int(content: number): Int {
+export function Int(content: bigint): Int {
   return {
     kind: "Int",
     content,

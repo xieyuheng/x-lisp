@@ -37,7 +37,7 @@ export function builtinInt(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "int-non-zero?", 1, (x) => {
-    return Values.Bool(Values.isInt(x) && Values.asInt(x).content !== 0)
+    return Values.Bool(Values.isInt(x) && Values.asInt(x).content !== 0n)
   })
 
   definePrimitiveFunction(mod, "ineg", 1, (x) => {
@@ -57,9 +57,7 @@ export function builtinInt(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "idiv", 2, (x, y) => {
-    return Values.Int(
-      Math.trunc(Values.asInt(x).content / Values.asInt(y).content),
-    )
+    return Values.Int(Values.asInt(x).content / Values.asInt(y).content)
   })
 
   definePrimitiveFunction(mod, "imod", 2, (x, y) => {
@@ -67,15 +65,19 @@ export function builtinInt(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "int-max", 2, (x, y) => {
-    return Values.Int(
-      Math.max(Values.asInt(x).content, Values.asInt(y).content),
-    )
+    if (Values.asInt(x).content > Values.asInt(y).content) {
+      return Values.Int(Values.asInt(x).content)
+    } else {
+      return Values.Int(Values.asInt(y).content)
+    }
   })
 
   definePrimitiveFunction(mod, "int-min", 2, (x, y) => {
-    return Values.Int(
-      Math.min(Values.asInt(x).content, Values.asInt(y).content),
-    )
+    if (Values.asInt(x).content < Values.asInt(y).content) {
+      return Values.Int(Values.asInt(x).content)
+    } else {
+      return Values.Int(Values.asInt(y).content)
+    }
   })
 
   definePrimitiveFunction(mod, "int-greater?", 2, (x, y) => {
@@ -96,21 +98,21 @@ export function builtinInt(mod: Mod) {
 
   definePrimitiveFunction(mod, "int-compare-ascending", 2, (x, y) => {
     if (Values.asInt(x).content < Values.asInt(y).content) {
-      return Values.Int(-1)
+      return Values.Int(-1n)
     } else if (Values.asInt(x).content > Values.asInt(y).content) {
-      return Values.Int(1)
+      return Values.Int(1n)
     } else {
-      return Values.Int(0)
+      return Values.Int(0n)
     }
   })
 
   definePrimitiveFunction(mod, "int-compare-descending", 2, (x, y) => {
     if (Values.asInt(x).content < Values.asInt(y).content) {
-      return Values.Int(1)
+      return Values.Int(1n)
     } else if (Values.asInt(x).content > Values.asInt(y).content) {
-      return Values.Int(-1)
+      return Values.Int(-1n)
     } else {
-      return Values.Int(0)
+      return Values.Int(0n)
     }
   })
 }
