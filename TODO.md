@@ -1,3 +1,5 @@
+[x-lisp-boot.js] `040-SelectInstructionPass` -- extract `setupMetadata`
+
 [x-lisp-boot.js] add a pass to save `variable-info`
 
 ```scheme

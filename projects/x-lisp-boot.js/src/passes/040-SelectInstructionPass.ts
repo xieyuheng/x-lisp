@@ -120,7 +120,7 @@ function onMetadataDefinition(
 ): Array<M.Definition> {
   const [directives, definitionArrays] = arrayUnzip(
     Object.entries(definition.attributes).map(([key, metadata]) =>
-      onMetadata(machineMod, definition, [key], metadata),
+      onMetadata(machineMod, definition.name, [key], metadata),
     ),
   )
   return [
@@ -131,7 +131,7 @@ function onMetadataDefinition(
 
 function onMetadata(
   machineMod: M.Mod,
-  root: B.MetadataDefinition,
+  rootName: string,
   path: Array<string>,
   metadata: B.Metadata,
 ): [M.Directive, Array<M.Definition>] {
@@ -145,7 +145,7 @@ function onMetadata(
     }
 
     case "StringMetadata": {
-      const name = [root.name, ...path].join("/")
+      const name = [rootName, ...path].join("/")
       return [
         M.Pointer(name),
         [M.DataDefinition(machineMod, name, [M.String(metadata.content)])],
@@ -157,7 +157,7 @@ function onMetadata(
     }
 
     case "ListMetadata": {
-      const name = [root.name, ...path].join("/")
+      const name = [rootName, ...path].join("/")
       const [directives, definitionArrays] = arrayUnzip(
         Array.from(
           metadata.elements
@@ -165,7 +165,7 @@ function onMetadata(
             .map(([index, element]) =>
               onMetadata(
                 machineMod,
-                root,
+                rootName,
                 [...path, index.toString()],
                 element,
               ),
@@ -183,10 +183,10 @@ function onMetadata(
     }
 
     case "RecordMetadata": {
-      const name = [root.name, ...path].join("/")
+      const name = [rootName, ...path].join("/")
       const [directives, definitionArrays] = arrayUnzip(
         Object.entries(metadata.attributes).map(([key, element]) =>
-          onMetadata(machineMod, root, [...path, key], element),
+          onMetadata(machineMod, rootName, [...path, key], element),
         ),
       )
 
