@@ -59,6 +59,11 @@
     (store _main©constant curry)
     (return)))
 
+(define-metadata print©metadata
+  :name "print"
+  :arity 1
+  :is-primitive 1)
+
 (define-variable print©constant)
 
 (define-setup print©setup
@@ -74,6 +79,11 @@
         size))
     (store print©constant curry)
     (return)))
+
+(define-metadata println-non-void©metadata
+  :name "println-non-void"
+  :arity 1
+  :is-primitive 1)
 
 (define-variable println-non-void©constant)
 
@@ -92,6 +102,11 @@
     (store println-non-void©constant curry)
     (return)))
 
+(define-metadata newline©metadata
+  :name "newline"
+  :arity 0
+  :is-primitive 1)
+
 (define-variable newline©constant)
 
 (define-setup newline©setup
@@ -108,6 +123,11 @@
     (store newline©constant curry)
     (return)))
 
+(define-metadata iadd©metadata
+  :name "iadd"
+  :arity 2
+  :is-primitive 1)
+
 (define-variable iadd©constant)
 
 (define-setup iadd©setup
@@ -123,6 +143,11 @@
         size))
     (store iadd©constant curry)
     (return)))
+
+(define-metadata make-curry©metadata
+  :name "make-curry"
+  :arity 3
+  :is-primitive 1)
 
 (define-variable make-curry©constant)
 

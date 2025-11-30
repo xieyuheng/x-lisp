@@ -59,6 +59,11 @@
     (store _main©constant curry)
     (return)))
 
+(define-metadata equal?©metadata
+  :name "equal?"
+  :arity 2
+  :is-primitive 1)
+
 (define-variable equal?©constant)
 
 (define-setup equal?©setup
@@ -74,6 +79,11 @@
         size))
     (store equal?©constant curry)
     (return)))
+
+(define-metadata println-non-void©metadata
+  :name "println-non-void"
+  :arity 1
+  :is-primitive 1)
 
 (define-variable println-non-void©constant)
 
@@ -92,6 +102,11 @@
     (store println-non-void©constant curry)
     (return)))
 
+(define-metadata iadd©metadata
+  :name "iadd"
+  :arity 2
+  :is-primitive 1)
+
 (define-variable iadd©constant)
 
 (define-setup iadd©setup
@@ -107,6 +122,11 @@
         size))
     (store iadd©constant curry)
     (return)))
+
+(define-metadata int-less?©metadata
+  :name "int-less?"
+  :arity 2
+  :is-primitive 1)
 
 (define-variable int-less?©constant)
 
@@ -124,6 +144,11 @@
     (store int-less?©constant curry)
     (return)))
 
+(define-metadata make-curry©metadata
+  :name "make-curry"
+  :arity 3
+  :is-primitive 1)
+
 (define-variable make-curry©constant)
 
 (define-setup make-curry©setup
@@ -139,6 +164,11 @@
         size))
     (store make-curry©constant curry)
     (return)))
+
+(define-metadata random-dice©metadata
+  :name "random-dice"
+  :arity 0
+  :is-primitive 1)
 
 (define-variable random-dice©constant)
 

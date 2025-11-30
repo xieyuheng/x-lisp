@@ -57,6 +57,11 @@
     (store _main©constant curry)
     (return)))
 
+(define-metadata println-non-void©metadata
+  :name "println-non-void"
+  :arity 1
+  :is-primitive 1)
+
 (define-variable println-non-void©constant)
 
 (define-setup println-non-void©setup
@@ -74,6 +79,11 @@
     (store println-non-void©constant curry)
     (return)))
 
+(define-metadata imul©metadata
+  :name "imul"
+  :arity 2
+  :is-primitive 1)
+
 (define-variable imul©constant)
 
 (define-setup imul©setup
@@ -89,6 +99,11 @@
         size))
     (store imul©constant curry)
     (return)))
+
+(define-metadata make-curry©metadata
+  :name "make-curry"
+  :arity 3
+  :is-primitive 1)
 
 (define-variable make-curry©constant)
 

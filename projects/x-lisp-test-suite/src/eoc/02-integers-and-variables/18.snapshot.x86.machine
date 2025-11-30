@@ -136,6 +136,14 @@
     (popq (reg rbp))
     (retq)))
 
+(define-data println-non-void©metadata
+  (pointer println-non-void©metadata©name)
+  (int 1)
+  (int 1))
+
+(define-data println-non-void©metadata©name
+  (string "println-non-void"))
+
 (define-space println-non-void©constant 8)
 
 (define-code println-non-void©setup
@@ -180,6 +188,13 @@
     (popq (reg rbp))
     (retq)))
 
+(define-data iadd©metadata
+  (pointer iadd©metadata©name)
+  (int 2)
+  (int 1))
+
+(define-data iadd©metadata©name (string "iadd"))
+
 (define-space iadd©constant 8)
 
 (define-code iadd©setup
@@ -221,6 +236,13 @@
     (popq (reg rsp))
     (popq (reg rbp))
     (retq)))
+
+(define-data make-curry©metadata
+  (pointer make-curry©metadata©name)
+  (int 3)
+  (int 1))
+
+(define-data make-curry©metadata©name (string "make-curry"))
 
 (define-space make-curry©constant 8)
 
@@ -265,6 +287,14 @@
     (popq (reg rsp))
     (popq (reg rbp))
     (retq)))
+
+(define-data random-dice©metadata
+  (pointer random-dice©metadata©name)
+  (int 0)
+  (int 1))
+
+(define-data random-dice©metadata©name
+  (string "random-dice"))
 
 (define-space random-dice©constant 8)
 

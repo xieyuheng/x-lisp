@@ -122,6 +122,22 @@ _main©setup.epilog:
         retq 
 .size _main©setup, . - _main©setup
 
+.data
+.align 8
+.type println_non_void©metadata, @object
+println_non_void©metadata:
+        .quad println_non_void©metadata©name
+        .quad 1
+        .quad 1
+.size println_non_void©metadata, . - println_non_void©metadata
+
+.data
+.align 8
+.type println_non_void©metadata©name, @object
+println_non_void©metadata©name:
+        .string "println-non-void"
+.size println_non_void©metadata©name, . - println_non_void©metadata©name
+
 .bss
 .align 8
 println_non_void©constant:
@@ -168,6 +184,22 @@ println_non_void©setup.epilog:
         popq %rbp
         retq 
 .size println_non_void©setup, . - println_non_void©setup
+
+.data
+.align 8
+.type iadd©metadata, @object
+iadd©metadata:
+        .quad iadd©metadata©name
+        .quad 2
+        .quad 1
+.size iadd©metadata, . - iadd©metadata
+
+.data
+.align 8
+.type iadd©metadata©name, @object
+iadd©metadata©name:
+        .string "iadd"
+.size iadd©metadata©name, . - iadd©metadata©name
 
 .bss
 .align 8
@@ -216,6 +248,22 @@ iadd©setup.epilog:
         retq 
 .size iadd©setup, . - iadd©setup
 
+.data
+.align 8
+.type make_curry©metadata, @object
+make_curry©metadata:
+        .quad make_curry©metadata©name
+        .quad 3
+        .quad 1
+.size make_curry©metadata, . - make_curry©metadata
+
+.data
+.align 8
+.type make_curry©metadata©name, @object
+make_curry©metadata©name:
+        .string "make-curry"
+.size make_curry©metadata©name, . - make_curry©metadata©name
+
 .bss
 .align 8
 make_curry©constant:
@@ -262,6 +310,22 @@ make_curry©setup.epilog:
         popq %rbp
         retq 
 .size make_curry©setup, . - make_curry©setup
+
+.data
+.align 8
+.type random_dice©metadata, @object
+random_dice©metadata:
+        .quad random_dice©metadata©name
+        .quad 0
+        .quad 1
+.size random_dice©metadata, . - random_dice©metadata
+
+.data
+.align 8
+.type random_dice©metadata©name, @object
+random_dice©metadata©name:
+        .string "random-dice"
+.size random_dice©metadata©name, . - random_dice©metadata©name
 
 .bss
 .align 8

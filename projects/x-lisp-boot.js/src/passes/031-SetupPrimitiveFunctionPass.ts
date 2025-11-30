@@ -65,6 +65,18 @@ function onPrimitiveFunctionDefinition(
   definition: B.PrimitiveFunctionDefinition,
 ): Array<B.Definition> {
   return [
+    // (define-metadata <name>©metadata
+    //   :name "<name>"
+    //   :arity <arity>
+    //   :is-primitive 1
+    //   :variable-info <name>©variable-info),
+    B.MetadataDefinition(basicMod, `${definition.name}©metadata`, {
+      name: B.StringMetadata(definition.name),
+      arity: B.IntMetadata(BigInt(definition.arity)),
+      "is-primitive": B.IntMetadata(1n),
+      // "variable-info": B.Pointer(`${definition.name}©variable-info`),
+    }),
+
     // (define-variable <name>©constant)
     B.VariableDefinition(
       basicMod,

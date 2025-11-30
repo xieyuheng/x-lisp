@@ -114,6 +114,22 @@ _main©setup.epilog:
         retq 
 .size _main©setup, . - _main©setup
 
+.data
+.align 8
+.type println_non_void©metadata, @object
+println_non_void©metadata:
+        .quad println_non_void©metadata©name
+        .quad 1
+        .quad 1
+.size println_non_void©metadata, . - println_non_void©metadata
+
+.data
+.align 8
+.type println_non_void©metadata©name, @object
+println_non_void©metadata©name:
+        .string "println-non-void"
+.size println_non_void©metadata©name, . - println_non_void©metadata©name
+
 .bss
 .align 8
 println_non_void©constant:
@@ -161,6 +177,22 @@ println_non_void©setup.epilog:
         retq 
 .size println_non_void©setup, . - println_non_void©setup
 
+.data
+.align 8
+.type isub©metadata, @object
+isub©metadata:
+        .quad isub©metadata©name
+        .quad 2
+        .quad 1
+.size isub©metadata, . - isub©metadata
+
+.data
+.align 8
+.type isub©metadata©name, @object
+isub©metadata©name:
+        .string "isub"
+.size isub©metadata©name, . - isub©metadata©name
+
 .bss
 .align 8
 isub©constant:
@@ -207,6 +239,22 @@ isub©setup.epilog:
         popq %rbp
         retq 
 .size isub©setup, . - isub©setup
+
+.data
+.align 8
+.type make_curry©metadata, @object
+make_curry©metadata:
+        .quad make_curry©metadata©name
+        .quad 3
+        .quad 1
+.size make_curry©metadata, . - make_curry©metadata
+
+.data
+.align 8
+.type make_curry©metadata©name, @object
+make_curry©metadata©name:
+        .string "make-curry"
+.size make_curry©metadata©name, . - make_curry©metadata©name
 
 .bss
 .align 8
