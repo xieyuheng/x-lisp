@@ -1,8 +1,3 @@
-# define-metadata
-
-[basic-lisp.js] test metadata by `execute`
-[basic-lisp.js] `builtin` -- `make-function` -- create `Function` from `Address`
-
 # function object
 
 [runtime.c] `curry_t` -- has any value as target

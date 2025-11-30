@@ -4,6 +4,7 @@ import { builtinBool } from "./builtinBool.ts"
 import { builtinConsole } from "./builtinConsole.ts"
 import { builtinCurry } from "./builtinCurry.ts"
 import { builtinFloat } from "./builtinFloat.ts"
+import { builtinFunction } from "./builtinFunction.ts"
 import { builtinInt } from "./builtinInt.ts"
 import { builtinRandom } from "./builtinRandom.ts"
 import { builtinValue } from "./builtinValue.ts"
@@ -21,6 +22,7 @@ export function useBuiltinMod(): Mod {
   builtinInt(mod)
   builtinFloat(mod)
   builtinCurry(mod)
+  builtinFunction(mod)
   builtinRandom(mod)
   builtinApply(mod)
 
