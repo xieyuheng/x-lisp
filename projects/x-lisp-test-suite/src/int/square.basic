@@ -8,6 +8,11 @@
     (= _↩ (apply _₂ x))
     (return _↩)))
 
+(define-metadata square©metadata
+  :name "square"
+  :arity 1
+  :is-primitive 0)
+
 (define-variable square©constant)
 
 (define-setup square©setup

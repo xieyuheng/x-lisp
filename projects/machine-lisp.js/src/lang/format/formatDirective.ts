@@ -23,7 +23,7 @@ export function formatDirective(directive: Directive): string {
     }
 
     case "String": {
-      return `(string ${directive.content})`
+      return `(string "${directive.content}")`
     }
 
     case "Int": {

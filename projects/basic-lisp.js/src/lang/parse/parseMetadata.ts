@@ -1,3 +1,4 @@
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../index.ts"
 import type { Metadata } from "../metadata/index.ts"
@@ -15,14 +16,7 @@ export function parseMetadata(sexp: S.Sexp): Metadata {
     if (Object.keys(sexp.attributes).length === 0) {
       return B.ListMetadata(sexp.elements.map(parseMetadata))
     } else {
-      return B.RecordMetadata(
-        Object.fromEntries(
-          Object.entries(sexp.attributes).map(([k, v]) => [
-            k,
-            parseMetadata(v),
-          ]),
-        ),
-      )
+      return B.RecordMetadata(recordMapValue(sexp.attributes, parseMetadata))
     }
   } else {
     let message = `[parseMetadata] unhandled sexp`

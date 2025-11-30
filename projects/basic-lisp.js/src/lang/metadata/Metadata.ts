@@ -3,8 +3,8 @@ export type Metadata =
   | FloatMetadata
   | StringMetadata
   | VarMetadata
-  | RecordMetadata
   | ListMetadata
+  | RecordMetadata
 
 export type IntMetadata = {
   kind: "IntMetadata"
@@ -54,6 +54,18 @@ export function VarMetadata(name: string): VarMetadata {
   }
 }
 
+export type ListMetadata = {
+  kind: "ListMetadata"
+  elements: Array<Metadata>
+}
+
+export function ListMetadata(elements: Array<Metadata>): ListMetadata {
+  return {
+    kind: "ListMetadata",
+    elements,
+  }
+}
+
 export type RecordMetadata = {
   kind: "RecordMetadata"
   attributes: Record<string, Metadata>
@@ -65,17 +77,5 @@ export function RecordMetadata(
   return {
     kind: "RecordMetadata",
     attributes,
-  }
-}
-
-export type ListMetadata = {
-  kind: "ListMetadata"
-  elements: Array<Metadata>
-}
-
-export function ListMetadata(elements: Array<Metadata>): ListMetadata {
-  return {
-    kind: "ListMetadata",
-    elements,
   }
 }

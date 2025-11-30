@@ -49,6 +49,13 @@
     (popq (reg rbp))
     (retq)))
 
+(define-data _main©metadata
+  (pointer _main©metadata©name)
+  (int 0)
+  (int 0))
+
+(define-data _main©metadata©name (string "_main"))
+
 (define-space _main©constant 8)
 
 (define-code _main©setup
@@ -129,6 +136,13 @@
     (popq (reg rsp))
     (popq (reg rbp))
     (retq)))
+
+(define-data §₁/square©metadata
+  (pointer §₁/square©metadata©name)
+  (int 1)
+  (int 0))
+
+(define-data §₁/square©metadata©name (string "square"))
 
 (define-space §₁/square©constant 8)
 

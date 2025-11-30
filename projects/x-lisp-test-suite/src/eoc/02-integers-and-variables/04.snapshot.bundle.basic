@@ -11,6 +11,11 @@
     (= _↩ (apply _₁ _₅))
     (return _↩)))
 
+(define-metadata _main©metadata
+  :name "_main"
+  :arity 0
+  :is-primitive 0)
+
 (define-variable _main©constant)
 
 (define-setup _main©setup

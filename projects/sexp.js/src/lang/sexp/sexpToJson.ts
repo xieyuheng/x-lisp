@@ -1,6 +1,6 @@
 import { type Json } from "@xieyuheng/helpers.js/json"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import * as S from "../sexp/index.ts"
+import * as S from "../index.ts"
 
 // Only translate those sexp that can be translated to JSON,
 // i.e. only pure list and pure record,
@@ -26,7 +26,7 @@ export function sexpToJson(sexp: S.Sexp): Json {
 
 export function symbolContent(sexp: S.Sexp): string {
   if (sexp.kind !== "Symbol") {
-    throw new Error(`[symbolContent] wrong sexp kind: ${sexp.kind}`)
+    throw new Error(`[symbolContent] wrong sexp: ${S.formatSexp(sexp)}`)
   }
 
   return sexp.content
@@ -34,7 +34,7 @@ export function symbolContent(sexp: S.Sexp): string {
 
 export function hashtagContent(sexp: S.Sexp): string {
   if (sexp.kind !== "Hashtag") {
-    throw new Error(`[hashtagContent] wrong sexp kind: ${sexp.kind}`)
+    throw new Error(`[hashtagContent] wrong sexp: ${S.formatSexp(sexp)}`)
   }
 
   return sexp.content
@@ -42,7 +42,7 @@ export function hashtagContent(sexp: S.Sexp): string {
 
 export function stringContent(sexp: S.Sexp): string {
   if (sexp.kind !== "String") {
-    throw new Error(`[stringContent] wrong sexp kind: ${sexp.kind}`)
+    throw new Error(`[stringContent] wrong sexp: ${S.formatSexp(sexp)}`)
   }
 
   return sexp.content
@@ -50,7 +50,7 @@ export function stringContent(sexp: S.Sexp): string {
 
 export function intContent(sexp: S.Sexp): bigint {
   if (sexp.kind !== "Int") {
-    throw new Error(`[intContent] wrong sexp kind: ${sexp.kind}`)
+    throw new Error(`[intContent] wrong sexp: ${S.formatSexp(sexp)}`)
   }
 
   return sexp.content
@@ -58,7 +58,7 @@ export function intContent(sexp: S.Sexp): bigint {
 
 export function floatContent(sexp: S.Sexp): number {
   if (sexp.kind !== "Float") {
-    throw new Error(`[floatContent] wrong sexp kind: ${sexp.kind}`)
+    throw new Error(`[floatContent] wrong sexp: ${S.formatSexp(sexp)}`)
   }
 
   return sexp.content
@@ -66,7 +66,7 @@ export function floatContent(sexp: S.Sexp): number {
 
 export function listElements(sexp: S.Sexp): Array<S.Sexp> {
   if (sexp.kind !== "Tael") {
-    throw new Error(`[listElements] wrong sexp kind: ${sexp.kind}`)
+    throw new Error(`[listElements] wrong sexp: ${S.formatSexp(sexp)}`)
   }
 
   return sexp.elements

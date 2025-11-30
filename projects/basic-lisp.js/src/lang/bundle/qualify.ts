@@ -1,25 +1,18 @@
 import { mapMapValue } from "@xieyuheng/helpers.js/map"
-import { Block } from "../block/index.ts"
-import { useBuiltinMod } from "../builtin/index.ts"
-import type { Definition } from "../definition/index.ts"
-import * as Definitions from "../definition/index.ts"
-import type { Instr } from "../instr/index.ts"
-import * as Instrs from "../instr/index.ts"
-import { modLookupDefinition, type Mod } from "../mod/index.ts"
-import type { Value } from "../value/index.ts"
-import * as Values from "../value/index.ts"
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
+import * as B from "../index.ts"
 import type { BundleContext } from "./bundle.ts"
 import { dependencyPrefix } from "./dependencyHelpers.ts"
 
 export function qualifyDefinition(
-  bundleMod: Mod,
+  bundleMod: B.Mod,
   context: BundleContext,
   qualifiedName: string,
-  definition: Definition,
-): Definition {
+  definition: B.Definition,
+): B.Definition {
   switch (definition.kind) {
     case "FunctionDefinition": {
-      return Definitions.FunctionDefinition(
+      return B.FunctionDefinition(
         bundleMod,
         qualifiedName,
         mapMapValue(definition.blocks, (block) => qualifyBlock(context, block)),
@@ -28,7 +21,7 @@ export function qualifyDefinition(
     }
 
     case "SetupDefinition": {
-      return Definitions.SetupDefinition(
+      return B.SetupDefinition(
         bundleMod,
         qualifiedName,
         mapMapValue(definition.blocks, (block) => qualifyBlock(context, block)),
@@ -37,7 +30,7 @@ export function qualifyDefinition(
     }
 
     case "VariableDefinition": {
-      return Definitions.VariableDefinition(
+      return B.VariableDefinition(
         bundleMod,
         qualifiedName,
         qualifyValue(context, definition.value),
@@ -45,7 +38,18 @@ export function qualifyDefinition(
       )
     }
 
-    default: {
+    case "MetadataDefinition": {
+      return B.MetadataDefinition(
+        bundleMod,
+        qualifiedName,
+        recordMapValue(definition.attributes, (metadata) =>
+          qualifyMetadata(context, metadata),
+        ),
+        definition.meta,
+      )
+    }
+
+    case "PrimitiveFunctionDefinition": {
       let message = `[qualifyDefinition] unhandled definition kind`
       message += `\n  kind: ${definition.kind}`
       throw new Error(message)
@@ -53,18 +57,53 @@ export function qualifyDefinition(
   }
 }
 
-export function qualifyBlock(context: BundleContext, block: Block): Block {
-  return Block(
+function qualifyMetadata(
+  context: BundleContext,
+  metadata: B.Metadata,
+): B.Metadata {
+  switch (metadata.kind) {
+    case "IntMetadata": {
+      return metadata
+    }
+
+    case "FloatMetadata": {
+      return metadata
+    }
+
+    case "StringMetadata": {
+      return metadata
+    }
+
+    case "VarMetadata": {
+      return B.VarMetadata(qualifyName(context, metadata.name))
+    }
+
+    case "ListMetadata": {
+      return B.ListMetadata(
+        metadata.elements.map((element) => qualifyMetadata(context, element)),
+      )
+    }
+
+    case "RecordMetadata": {
+      return B.RecordMetadata(
+        recordMapValue(metadata.attributes, (v) => qualifyMetadata(context, v)),
+      )
+    }
+  }
+}
+
+function qualifyBlock(context: BundleContext, block: B.Block): B.Block {
+  return B.Block(
     block.label,
     block.instrs.map((instr) => qualifyInstr(context, instr)),
     block.meta,
   )
 }
 
-function qualifyInstr(context: BundleContext, instr: Instr): Instr {
+function qualifyInstr(context: BundleContext, instr: B.Instr): B.Instr {
   switch (instr.op) {
     case "Literal": {
-      return Instrs.Literal(
+      return B.Literal(
         instr.dest,
         qualifyValue(context, instr.value),
         instr.meta,
@@ -72,7 +111,7 @@ function qualifyInstr(context: BundleContext, instr: Instr): Instr {
     }
 
     case "Call": {
-      return Instrs.Call(
+      return B.Call(
         instr.dest,
         qualifyFunction(context, instr.fn),
         instr.args,
@@ -81,19 +120,11 @@ function qualifyInstr(context: BundleContext, instr: Instr): Instr {
     }
 
     case "Load": {
-      return Instrs.Load(
-        instr.dest,
-        qualifyName(context, instr.name),
-        instr.meta,
-      )
+      return B.Load(instr.dest, qualifyName(context, instr.name), instr.meta)
     }
 
     case "Store": {
-      return Instrs.Store(
-        qualifyName(context, instr.name),
-        instr.source,
-        instr.meta,
-      )
+      return B.Store(qualifyName(context, instr.name), instr.source, instr.meta)
     }
 
     default: {
@@ -102,33 +133,27 @@ function qualifyInstr(context: BundleContext, instr: Instr): Instr {
   }
 }
 
-function qualifyFunction(
-  context: BundleContext,
-  fn: Values.Function,
-): Values.Function {
+function qualifyFunction(context: BundleContext, fn: B.Function): B.Function {
   if (fn.attributes.isPrimitive) {
     return fn
   } else {
-    return Values.Function(qualifyName(context, fn.name), fn.arity, {
+    return B.Function(qualifyName(context, fn.name), fn.arity, {
       isPrimitive: false,
     })
   }
 }
 
-function qualifyAddress(
-  context: BundleContext,
-  address: Values.Address,
-): Values.Address {
+function qualifyAddress(context: BundleContext, address: B.Address): B.Address {
   if (address.attributes.isPrimitive) {
     return address
   } else {
-    return Values.Address(qualifyName(context, address.name), {
+    return B.Address(qualifyName(context, address.name), {
       isPrimitive: false,
     })
   }
 }
 
-function qualifyValue(context: BundleContext, value: Value): Value {
+function qualifyValue(context: BundleContext, value: B.Value): B.Value {
   switch (value.kind) {
     case "Function": {
       return qualifyFunction(context, value)
@@ -145,7 +170,7 @@ function qualifyValue(context: BundleContext, value: Value): Value {
 }
 
 function qualifyName(context: BundleContext, name: string): string {
-  const definition = modLookupDefinition(context.mod, name)
+  const definition = B.modLookupDefinition(context.mod, name)
   if (definition === undefined) {
     let message = `[qualifyName] undefined name`
     message += `\n  current mod: ${context.mod.url}`
@@ -155,7 +180,7 @@ function qualifyName(context: BundleContext, name: string): string {
 
   if (definition.mod === context.entryMod) {
     return name
-  } else if (definition.mod === useBuiltinMod()) {
+  } else if (definition.mod === B.useBuiltinMod()) {
     return name
   } else {
     const prefix = dependencyPrefix(context.dependencies, definition.mod)

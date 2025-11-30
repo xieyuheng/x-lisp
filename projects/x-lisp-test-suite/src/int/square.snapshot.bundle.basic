@@ -9,6 +9,11 @@
     (= _↩ (apply _₁ _₆))
     (return _↩)))
 
+(define-metadata _main©metadata
+  :name "_main"
+  :arity 0
+  :is-primitive 0)
+
 (define-variable _main©constant)
 
 (define-setup _main©setup
@@ -32,6 +37,11 @@
     (= _₂ (apply _₁ x))
     (= _↩ (apply _₂ x))
     (return _↩)))
+
+(define-metadata §₁/square©metadata
+  :name "square"
+  :arity 1
+  :is-primitive 0)
 
 (define-variable §₁/square©constant)
 

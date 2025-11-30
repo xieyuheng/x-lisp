@@ -1,6 +1,6 @@
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import { Block } from "../block/index.ts"
-import * as B from "../index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import * as Values from "../value/index.ts"
@@ -45,18 +45,16 @@ export function parseStmt(sexp: S.Sexp): Stmt {
         },
       ),
 
-      S.matcher(
-        "(cons* 'define-metadata name attributes)",
-        ({ name, attributes }, { sexp }) => {
-          const keyword = S.asTael(sexp).elements[1]
-          const meta = S.tokenMetaFromSexpMeta(keyword.meta)
-          return Stmts.DefineMetadata(
-            S.symbolContent(name),
-            B.asRecordMetadata(parseMetadata(attributes)).attributes,
-            meta,
-          )
-        },
-      ),
+      S.matcher("(cons* 'define-metadata name _tail)", ({ name }, { sexp }) => {
+        const keyword = S.asTael(sexp).elements[1]
+        const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+        const attributes = S.asTael(sexp).attributes
+        return Stmts.DefineMetadata(
+          S.symbolContent(name),
+          recordMapValue(attributes, parseMetadata),
+          meta,
+        )
+      }),
 
       S.matcher(
         "`(define-variable ,name ,value)",

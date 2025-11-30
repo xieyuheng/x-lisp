@@ -81,6 +81,13 @@
     (popq (reg rbp))
     (retq)))
 
+(define-data _main©metadata
+  (pointer _main©metadata©name)
+  (int 0)
+  (int 0))
+
+(define-data _main©metadata©name (string "_main"))
+
 (define-space _main©constant 8)
 
 (define-code _main©setup

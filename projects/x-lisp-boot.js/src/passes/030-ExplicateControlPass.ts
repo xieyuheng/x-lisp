@@ -44,6 +44,23 @@ function onFunctionDefinition(
     // (define-function <name> ...)
     explicateFunctionDefinition(basicMod, definition),
 
+    // (define-metadata <name>©metadata
+    //   :name "<name>"
+    //   :arity <arity>
+    //   :is-primitive 0
+    //   :variable-info <name>©variable-info),
+    B.MetadataDefinition(
+      basicMod,
+      `${definition.name}©metadata`,
+      {
+        name: B.StringMetadata(definition.name),
+        arity: B.IntMetadata(BigInt(definition.parameters.length)),
+        "is-primitive": B.IntMetadata(0n),
+        // "variable-info": B.Pointer(`${definition.name}©variable-info`),
+      },
+      definition.meta,
+    ),
+
     // (define-variable <name>©constant)
     B.VariableDefinition(
       basicMod,

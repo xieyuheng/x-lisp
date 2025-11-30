@@ -1,10 +1,10 @@
-[x-lisp-boot.js] `ExplicateControlPass` -- `FunctionDefinition` compile to metadata
+[x-lisp-boot.js] `031-SetupPrimitiveFunctionPass` -- compile to metadata
 
 ```scheme
 (define-metadata <name>©metadata
   :name "<name>"
   :arity <arity>
-  :is-primitive 0 or 1
+  :is-primitive 1
   :variable-info <name>©variable-info)
 ```
 

@@ -144,6 +144,22 @@ _main.epilog:
         retq 
 .size _main, . - _main
 
+.data
+.align 8
+.type _main©metadata, @object
+_main©metadata:
+        .quad _main©metadata©name
+        .quad 0
+        .quad 0
+.size _main©metadata, . - _main©metadata
+
+.data
+.align 8
+.type _main©metadata©name, @object
+_main©metadata©name:
+        .string "_main"
+.size _main©metadata©name, . - _main©metadata©name
+
 .bss
 .align 8
 _main©constant:

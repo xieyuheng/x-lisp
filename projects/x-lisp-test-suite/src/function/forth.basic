@@ -10,6 +10,11 @@
     (= _↩ (apply _₁ x))
     (return _↩)))
 
+(define-metadata swap©metadata
+  :name "swap"
+  :arity 3
+  :is-primitive 0)
+
 (define-variable swap©constant)
 
 (define-setup swap©setup
@@ -42,6 +47,11 @@
     (= _₁₁ (apply _₉ _₁₀))
     (= _↩ (apply _₄ _₁₁))
     (return _↩)))
+
+(define-metadata drop©metadata
+  :name "drop"
+  :arity 1
+  :is-primitive 0)
 
 (define-variable drop©constant)
 
@@ -77,6 +87,11 @@
     (= _↩ (apply _₄ _₁₁))
     (return _↩)))
 
+(define-metadata drop©λ₁©metadata
+  :name "drop©λ₁"
+  :arity 2
+  :is-primitive 0)
+
 (define-variable drop©λ₁©constant)
 
 (define-setup drop©λ₁©setup
@@ -99,6 +114,11 @@
     (= x₁ (argument 1))
     (= _↩ (apply f x₁))
     (return _↩)))
+
+(define-metadata drop©λ₁©λ₁©metadata
+  :name "drop©λ₁©λ₁"
+  :arity 2
+  :is-primitive 0)
 
 (define-variable drop©λ₁©λ₁©constant)
 
@@ -133,6 +153,11 @@
     (= _↩ (apply _₄ _₁₁))
     (return _↩)))
 
+(define-metadata dup©metadata
+  :name "dup"
+  :arity 1
+  :is-primitive 0)
+
 (define-variable dup©constant)
 
 (define-setup dup©setup
@@ -157,6 +182,11 @@
     (= _↩ (apply _₁ x₁))
     (return _↩)))
 
+(define-metadata dup©λ₁©metadata
+  :name "dup©λ₁"
+  :arity 2
+  :is-primitive 0)
+
 (define-variable dup©λ₁©constant)
 
 (define-setup dup©λ₁©setup
@@ -172,6 +202,11 @@
         size))
     (store dup©λ₁©constant curry)
     (return)))
+
+(define-metadata identity©metadata
+  :name "identity"
+  :arity 1
+  :is-primitive 0)
 
 (define-variable identity©constant)
 
@@ -201,6 +236,11 @@
     (= _₆ (apply _₅ f₁))
     (= _↩ (apply _₁ _₆))
     (return _↩)))
+
+(define-metadata _main©metadata
+  :name "_main"
+  :arity 0
+  :is-primitive 0)
 
 (define-variable _main©constant)
 

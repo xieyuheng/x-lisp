@@ -52,6 +52,22 @@ _main.epilog:
         retq 
 .size _main, . - _main
 
+.data
+.align 8
+.type _main©metadata, @object
+_main©metadata:
+        .quad _main©metadata©name
+        .quad 0
+        .quad 0
+.size _main©metadata, . - _main©metadata
+
+.data
+.align 8
+.type _main©metadata©name, @object
+_main©metadata©name:
+        .string "_main"
+.size _main©metadata©name, . - _main©metadata©name
+
 .bss
 .align 8
 _main©constant:
@@ -141,6 +157,22 @@ _main©setup.epilog:
         popq %rbp
         retq 
 .size §₁.square, . - §₁.square
+
+.data
+.align 8
+.type §₁.square©metadata, @object
+§₁.square©metadata:
+        .quad §₁.square©metadata©name
+        .quad 1
+        .quad 0
+.size §₁.square©metadata, . - §₁.square©metadata
+
+.data
+.align 8
+.type §₁.square©metadata©name, @object
+§₁.square©metadata©name:
+        .string "square"
+.size §₁.square©metadata©name, . - §₁.square©metadata©name
 
 .bss
 .align 8
