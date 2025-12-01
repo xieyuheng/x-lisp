@@ -1,6 +1,5 @@
 import * as M from "@xieyuheng/machine-lisp.js"
 import assert from "node:assert"
-import * as R from "../runtime/index.ts"
 
 export function PrologAndEpilogPass(mod: M.Mod): void {
   for (const definition of M.modDefinitions(mod)) {
@@ -59,9 +58,8 @@ function patchInstr(instr: M.Instr): M.Instr {
 }
 
 function createRegisterInfo(definition: M.CodeDefinition): RegisterInfo {
-  // TODO save all for now
-  const calleeSavedRegNames = R.ABIs["x86-64-sysv"]["callee-saved-reg-names"]
-  const calleeSavedRegs = calleeSavedRegNames.map((name) => M.Reg(name))
+  // TODO no callee saved for now
+  const calleeSavedRegs: Array<M.Reg> = []
 
   // TODO all variables are spilled for now
   assert(definition.info["home-locations"])

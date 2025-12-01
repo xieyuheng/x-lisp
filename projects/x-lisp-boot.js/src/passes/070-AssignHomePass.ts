@@ -1,6 +1,5 @@
 import * as M from "@xieyuheng/machine-lisp.js"
 import * as S from "@xieyuheng/sexp.js"
-import * as R from "../runtime/index.ts"
 import { getVarNames } from "./069-SetupVariableInfo.ts"
 
 export function AssignHomePass(mod: M.Mod): void {
@@ -44,7 +43,7 @@ function getHomeLocations(
   for (const name of getVarNames(definition)) {
     const found = homeLocations.get(name)
     if (found === undefined) {
-      const baseIndex = R.ABIs["x86-64-sysv"]["callee-saved-reg-names"].length
+      const baseIndex = 0
       const index = baseIndex + homeLocations.size
       const offset = -8 * (index + 1)
       const location = M.RegDeref(M.Reg("rbp"), offset)

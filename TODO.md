@@ -1,3 +1,5 @@
+[x-lisp-boot.js] 16 aligned stack before function call
+
 [basic-lisp.js] `PlaceholderDefinition`
 [basic-lisp.js] `DefinePlaceholder`
 [basic-lisp.js] parse `define-placeholder`

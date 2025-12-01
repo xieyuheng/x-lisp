@@ -18,30 +18,16 @@ one©flag_setup:
 one©flag_setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $64, %rsp
+        subq $8, %rsp
         jmp one©flag_setup.body
 one©flag_setup.body:
         movq x_false(%rip), %rax
-        movq %rax, -64(%rbp)
-        movq -64(%rbp), %rax
+        movq %rax, -8(%rbp)
+        movq -8(%rbp), %rax
         movq %rax, one©flag(%rip)
         jmp one©flag_setup.epilog
 one©flag_setup.epilog:
-        addq $64, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $8, %rsp
         popq %rbp
         retq 
 .size one©flag_setup, . - one©flag_setup
@@ -53,47 +39,33 @@ one©get:
 one©get.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp one©get.body
 one©get.body:
         movq one©flag(%rip), %rax
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         movq x_true(%rip), %rax
-        cmpq -64(%rbp), %rax
+        cmpq -8(%rbp), %rax
         je one©get.cached
         jmp one©get.init
 one©get.cached:
         movq one(%rip), %rax
-        movq %rax, -72(%rbp)
-        movq -72(%rbp), %rax
+        movq %rax, -16(%rbp)
+        movq -16(%rbp), %rax
         jmp one©get.epilog
 one©get.init:
         callq one©init_function
-        movq %rax, -72(%rbp)
-        movq -72(%rbp), %rax
+        movq %rax, -16(%rbp)
+        movq -16(%rbp), %rax
         movq %rax, one(%rip)
         movq x_true(%rip), %rax
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, one©flag(%rip)
-        movq -72(%rbp), %rax
+        movq -16(%rbp), %rax
         jmp one©get.epilog
 one©get.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size one©get, . - one©get
@@ -105,28 +77,14 @@ one©init_function:
 one©init_function.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $64, %rsp
+        subq $8, %rsp
         jmp one©init_function.body
 one©init_function.body:
-        movq $8, -64(%rbp)
-        movq -64(%rbp), %rax
+        movq $8, -8(%rbp)
+        movq -8(%rbp), %rax
         jmp one©init_function.epilog
 one©init_function.epilog:
-        addq $64, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $8, %rsp
         popq %rbp
         retq 
 .size one©init_function, . - one©init_function
@@ -148,30 +106,16 @@ two©flag_setup:
 two©flag_setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $64, %rsp
+        subq $8, %rsp
         jmp two©flag_setup.body
 two©flag_setup.body:
         movq x_false(%rip), %rax
-        movq %rax, -64(%rbp)
-        movq -64(%rbp), %rax
+        movq %rax, -8(%rbp)
+        movq -8(%rbp), %rax
         movq %rax, two©flag(%rip)
         jmp two©flag_setup.epilog
 two©flag_setup.epilog:
-        addq $64, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $8, %rsp
         popq %rbp
         retq 
 .size two©flag_setup, . - two©flag_setup
@@ -183,47 +127,33 @@ two©get:
 two©get.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp two©get.body
 two©get.body:
         movq two©flag(%rip), %rax
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         movq x_true(%rip), %rax
-        cmpq -64(%rbp), %rax
+        cmpq -8(%rbp), %rax
         je two©get.cached
         jmp two©get.init
 two©get.cached:
         movq two(%rip), %rax
-        movq %rax, -72(%rbp)
-        movq -72(%rbp), %rax
+        movq %rax, -16(%rbp)
+        movq -16(%rbp), %rax
         jmp two©get.epilog
 two©get.init:
         callq two©init_function
-        movq %rax, -72(%rbp)
-        movq -72(%rbp), %rax
+        movq %rax, -16(%rbp)
+        movq -16(%rbp), %rax
         movq %rax, two(%rip)
         movq x_true(%rip), %rax
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, two©flag(%rip)
-        movq -72(%rbp), %rax
+        movq -16(%rbp), %rax
         jmp two©get.epilog
 two©get.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size two©get, . - two©get
@@ -235,40 +165,26 @@ two©init_function:
 two©init_function.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $96, %rsp
+        subq $40, %rsp
         jmp two©init_function.body
 two©init_function.body:
         movq iadd©constant(%rip), %rax
-        movq %rax, -64(%rbp)
-        movq $8, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq %rax, -8(%rbp)
+        movq $8, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -80(%rbp)
+        movq %rax, -24(%rbp)
         callq one©get
-        movq %rax, -88(%rbp)
-        movq -80(%rbp), %rdi
-        movq -88(%rbp), %rsi
+        movq %rax, -32(%rbp)
+        movq -24(%rbp), %rdi
+        movq -32(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -96(%rbp)
-        movq -96(%rbp), %rax
+        movq %rax, -40(%rbp)
+        movq -40(%rbp), %rax
         jmp two©init_function.epilog
 two©init_function.epilog:
-        addq $96, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $40, %rsp
         popq %rbp
         retq 
 .size two©init_function, . - two©init_function
@@ -290,30 +206,16 @@ three©flag_setup:
 three©flag_setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $64, %rsp
+        subq $8, %rsp
         jmp three©flag_setup.body
 three©flag_setup.body:
         movq x_false(%rip), %rax
-        movq %rax, -64(%rbp)
-        movq -64(%rbp), %rax
+        movq %rax, -8(%rbp)
+        movq -8(%rbp), %rax
         movq %rax, three©flag(%rip)
         jmp three©flag_setup.epilog
 three©flag_setup.epilog:
-        addq $64, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $8, %rsp
         popq %rbp
         retq 
 .size three©flag_setup, . - three©flag_setup
@@ -325,47 +227,33 @@ three©get:
 three©get.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp three©get.body
 three©get.body:
         movq three©flag(%rip), %rax
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         movq x_true(%rip), %rax
-        cmpq -64(%rbp), %rax
+        cmpq -8(%rbp), %rax
         je three©get.cached
         jmp three©get.init
 three©get.cached:
         movq three(%rip), %rax
-        movq %rax, -72(%rbp)
-        movq -72(%rbp), %rax
+        movq %rax, -16(%rbp)
+        movq -16(%rbp), %rax
         jmp three©get.epilog
 three©get.init:
         callq three©init_function
-        movq %rax, -72(%rbp)
-        movq -72(%rbp), %rax
+        movq %rax, -16(%rbp)
+        movq -16(%rbp), %rax
         movq %rax, three(%rip)
         movq x_true(%rip), %rax
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, three©flag(%rip)
-        movq -72(%rbp), %rax
+        movq -16(%rbp), %rax
         jmp three©get.epilog
 three©get.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size three©get, . - three©get
@@ -377,40 +265,26 @@ three©init_function:
 three©init_function.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $96, %rsp
+        subq $40, %rsp
         jmp three©init_function.body
 three©init_function.body:
         movq iadd©constant(%rip), %rax
-        movq %rax, -64(%rbp)
-        movq $8, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq %rax, -8(%rbp)
+        movq $8, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -80(%rbp)
+        movq %rax, -24(%rbp)
         callq two©get
-        movq %rax, -88(%rbp)
-        movq -80(%rbp), %rdi
-        movq -88(%rbp), %rsi
+        movq %rax, -32(%rbp)
+        movq -24(%rbp), %rdi
+        movq -32(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -96(%rbp)
-        movq -96(%rbp), %rax
+        movq %rax, -40(%rbp)
+        movq -40(%rbp), %rax
         jmp three©init_function.epilog
 three©init_function.epilog:
-        addq $96, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $40, %rsp
         popq %rbp
         retq 
 .size three©init_function, . - three©init_function
@@ -422,35 +296,21 @@ _main:
 _main.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp _main.body
 _main.body:
         movq println_non_void©constant(%rip), %rax
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq three©get
-        movq %rax, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq %rax, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         jmp _main.epilog
 _main.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size _main, . - _main
@@ -492,36 +352,22 @@ _main©setup:
 _main©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp _main©setup.body
 _main©setup.body:
-        movq $_main, -64(%rbp)
-        orq $3, -64(%rbp)
-        movq $_main©metadata, -72(%rbp)
-        orq $3, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq $_main, -8(%rbp)
+        orq $3, -8(%rbp)
+        movq $_main©metadata, -16(%rbp)
+        orq $3, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_make_function
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, _main©constant(%rip)
         jmp _main©setup.epilog
 _main©setup.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size _main©setup, . - _main©setup
@@ -555,36 +401,22 @@ println_non_void©setup:
 println_non_void©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp println_non_void©setup.body
 println_non_void©setup.body:
-        movq $x_println_non_void, -64(%rbp)
-        orq $3, -64(%rbp)
-        movq $println_non_void©metadata, -72(%rbp)
-        orq $3, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq $x_println_non_void, -8(%rbp)
+        orq $3, -8(%rbp)
+        movq $println_non_void©metadata, -16(%rbp)
+        orq $3, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_make_function
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, println_non_void©constant(%rip)
         jmp println_non_void©setup.epilog
 println_non_void©setup.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size println_non_void©setup, . - println_non_void©setup
@@ -618,36 +450,22 @@ iadd©setup:
 iadd©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp iadd©setup.body
 iadd©setup.body:
-        movq $x_iadd, -64(%rbp)
-        orq $3, -64(%rbp)
-        movq $iadd©metadata, -72(%rbp)
-        orq $3, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq $x_iadd, -8(%rbp)
+        orq $3, -8(%rbp)
+        movq $iadd©metadata, -16(%rbp)
+        orq $3, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_make_function
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, iadd©constant(%rip)
         jmp iadd©setup.epilog
 iadd©setup.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size iadd©setup, . - iadd©setup
@@ -681,36 +499,22 @@ make_function©setup:
 make_function©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp make_function©setup.body
 make_function©setup.body:
-        movq $x_make_function, -64(%rbp)
-        orq $3, -64(%rbp)
-        movq $make_function©metadata, -72(%rbp)
-        orq $3, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq $x_make_function, -8(%rbp)
+        orq $3, -8(%rbp)
+        movq $make_function©metadata, -16(%rbp)
+        orq $3, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_make_function
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, make_function©constant(%rip)
         jmp make_function©setup.epilog
 make_function©setup.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size make_function©setup, . - make_function©setup
@@ -722,39 +526,25 @@ _setup:
 _setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $64, %rsp
+        subq $8, %rsp
         jmp _setup.body
 _setup.body:
         callq one©flag_setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq two©flag_setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq three©flag_setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq _main©setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq println_non_void©setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq iadd©setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq make_function©setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
 _setup.epilog:
-        addq $64, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $8, %rsp
         popq %rbp
         retq 
 .size _setup, . - _setup

@@ -8,199 +8,185 @@ _main:
 _main.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $416, %rsp
+        subq $360, %rsp
         jmp _main.body
 _main.body:
         movq println_non_void©constant(%rip), %rax
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         movq random_dice©constant(%rip), %rax
-        movq %rax, -72(%rbp)
-        movq -72(%rbp), %rdi
+        movq %rax, -16(%rbp)
+        movq -16(%rbp), %rdi
         callq x_apply_nullary
-        movq %rax, -80(%rbp)
+        movq %rax, -24(%rbp)
         movq random_dice©constant(%rip), %rax
-        movq %rax, -88(%rbp)
-        movq -88(%rbp), %rdi
+        movq %rax, -32(%rbp)
+        movq -32(%rbp), %rdi
         callq x_apply_nullary
-        movq %rax, -96(%rbp)
+        movq %rax, -40(%rbp)
         movq iadd©constant(%rip), %rax
-        movq %rax, -104(%rbp)
+        movq %rax, -48(%rbp)
         movq int_less_p©constant(%rip), %rax
-        movq %rax, -112(%rbp)
-        movq -112(%rbp), %rdi
-        movq -80(%rbp), %rsi
+        movq %rax, -56(%rbp)
+        movq -56(%rbp), %rdi
+        movq -24(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -120(%rbp)
-        movq $8, -128(%rbp)
-        movq -120(%rbp), %rdi
-        movq -128(%rbp), %rsi
+        movq %rax, -64(%rbp)
+        movq $8, -72(%rbp)
+        movq -64(%rbp), %rdi
+        movq -72(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -136(%rbp)
+        movq %rax, -80(%rbp)
         movq x_true(%rip), %rax
-        cmpq -136(%rbp), %rax
+        cmpq -80(%rbp), %rax
         je _main._main.then₁₁
         jmp _main._main.else₁₂
 _main._main.let_body₁:
-        movq -144(%rbp), %rdi
-        movq -152(%rbp), %rsi
+        movq -88(%rbp), %rdi
+        movq -96(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -160(%rbp)
-        movq -64(%rbp), %rdi
-        movq -160(%rbp), %rsi
+        movq %rax, -104(%rbp)
+        movq -8(%rbp), %rdi
+        movq -104(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -168(%rbp)
-        movq -168(%rbp), %rax
+        movq %rax, -112(%rbp)
+        movq -112(%rbp), %rax
         jmp _main.epilog
 _main._main.then₂:
         movq iadd©constant(%rip), %rax
-        movq %rax, -176(%rbp)
-        movq -176(%rbp), %rdi
-        movq -96(%rbp), %rsi
+        movq %rax, -120(%rbp)
+        movq -120(%rbp), %rdi
+        movq -40(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -184(%rbp)
-        movq $16, -192(%rbp)
-        movq -184(%rbp), %rdi
-        movq -192(%rbp), %rsi
+        movq %rax, -128(%rbp)
+        movq $16, -136(%rbp)
+        movq -128(%rbp), %rdi
+        movq -136(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -152(%rbp)
+        movq %rax, -96(%rbp)
         jmp _main._main.let_body₁
 _main._main.else₃:
         movq iadd©constant(%rip), %rax
-        movq %rax, -200(%rbp)
-        movq -200(%rbp), %rdi
-        movq -96(%rbp), %rsi
-        callq x_apply_unary
-        movq %rax, -208(%rbp)
-        movq $80, -216(%rbp)
-        movq -208(%rbp), %rdi
-        movq -216(%rbp), %rsi
+        movq %rax, -144(%rbp)
+        movq -144(%rbp), %rdi
+        movq -40(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -152(%rbp)
+        movq $80, -160(%rbp)
+        movq -152(%rbp), %rdi
+        movq -160(%rbp), %rsi
+        callq x_apply_unary
+        movq %rax, -96(%rbp)
         jmp _main._main.let_body₁
 _main._main.let_body₄:
         movq x_true(%rip), %rax
-        cmpq -224(%rbp), %rax
+        cmpq -168(%rbp), %rax
         je _main._main.then₂
         jmp _main._main.else₃
 _main._main.then₅:
         movq equal_p©constant(%rip), %rax
-        movq %rax, -232(%rbp)
-        movq -232(%rbp), %rdi
-        movq -80(%rbp), %rsi
+        movq %rax, -176(%rbp)
+        movq -176(%rbp), %rdi
+        movq -24(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -240(%rbp)
-        movq $0, -248(%rbp)
-        movq -240(%rbp), %rdi
-        movq -248(%rbp), %rsi
+        movq %rax, -184(%rbp)
+        movq $0, -192(%rbp)
+        movq -184(%rbp), %rdi
+        movq -192(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -224(%rbp)
+        movq %rax, -168(%rbp)
         jmp _main._main.let_body₄
 _main._main.else₆:
         movq equal_p©constant(%rip), %rax
-        movq %rax, -256(%rbp)
-        movq -256(%rbp), %rdi
-        movq -80(%rbp), %rsi
+        movq %rax, -200(%rbp)
+        movq -200(%rbp), %rdi
+        movq -24(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -264(%rbp)
-        movq $16, -272(%rbp)
-        movq -264(%rbp), %rdi
-        movq -272(%rbp), %rsi
+        movq %rax, -208(%rbp)
+        movq $16, -216(%rbp)
+        movq -208(%rbp), %rdi
+        movq -216(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -224(%rbp)
+        movq %rax, -168(%rbp)
         jmp _main._main.let_body₄
 _main._main.let_body₇:
-        movq -104(%rbp), %rdi
-        movq -280(%rbp), %rsi
+        movq -48(%rbp), %rdi
+        movq -224(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -144(%rbp)
+        movq %rax, -88(%rbp)
         movq int_less_p©constant(%rip), %rax
-        movq %rax, -288(%rbp)
-        movq -288(%rbp), %rdi
-        movq -80(%rbp), %rsi
+        movq %rax, -232(%rbp)
+        movq -232(%rbp), %rdi
+        movq -24(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -296(%rbp)
-        movq $8, -304(%rbp)
-        movq -296(%rbp), %rdi
-        movq -304(%rbp), %rsi
+        movq %rax, -240(%rbp)
+        movq $8, -248(%rbp)
+        movq -240(%rbp), %rdi
+        movq -248(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -312(%rbp)
+        movq %rax, -256(%rbp)
         movq x_true(%rip), %rax
-        cmpq -312(%rbp), %rax
+        cmpq -256(%rbp), %rax
         je _main._main.then₅
         jmp _main._main.else₆
 _main._main.then₈:
         movq iadd©constant(%rip), %rax
-        movq %rax, -320(%rbp)
-        movq -320(%rbp), %rdi
-        movq -96(%rbp), %rsi
+        movq %rax, -264(%rbp)
+        movq -264(%rbp), %rdi
+        movq -40(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -328(%rbp)
-        movq $16, -336(%rbp)
-        movq -328(%rbp), %rdi
-        movq -336(%rbp), %rsi
+        movq %rax, -272(%rbp)
+        movq $16, -280(%rbp)
+        movq -272(%rbp), %rdi
+        movq -280(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -280(%rbp)
+        movq %rax, -224(%rbp)
         jmp _main._main.let_body₇
 _main._main.else₉:
         movq iadd©constant(%rip), %rax
-        movq %rax, -344(%rbp)
-        movq -344(%rbp), %rdi
-        movq -96(%rbp), %rsi
+        movq %rax, -288(%rbp)
+        movq -288(%rbp), %rdi
+        movq -40(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -352(%rbp)
-        movq $80, -360(%rbp)
-        movq -352(%rbp), %rdi
-        movq -360(%rbp), %rsi
+        movq %rax, -296(%rbp)
+        movq $80, -304(%rbp)
+        movq -296(%rbp), %rdi
+        movq -304(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -280(%rbp)
+        movq %rax, -224(%rbp)
         jmp _main._main.let_body₇
 _main._main.let_body₁₀:
         movq x_true(%rip), %rax
-        cmpq -368(%rbp), %rax
+        cmpq -312(%rbp), %rax
         je _main._main.then₈
         jmp _main._main.else₉
 _main._main.then₁₁:
         movq equal_p©constant(%rip), %rax
-        movq %rax, -376(%rbp)
-        movq -376(%rbp), %rdi
-        movq -80(%rbp), %rsi
+        movq %rax, -320(%rbp)
+        movq -320(%rbp), %rdi
+        movq -24(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -384(%rbp)
-        movq $0, -392(%rbp)
-        movq -384(%rbp), %rdi
-        movq -392(%rbp), %rsi
+        movq %rax, -328(%rbp)
+        movq $0, -336(%rbp)
+        movq -328(%rbp), %rdi
+        movq -336(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -368(%rbp)
+        movq %rax, -312(%rbp)
         jmp _main._main.let_body₁₀
 _main._main.else₁₂:
         movq equal_p©constant(%rip), %rax
-        movq %rax, -400(%rbp)
-        movq -400(%rbp), %rdi
-        movq -80(%rbp), %rsi
+        movq %rax, -344(%rbp)
+        movq -344(%rbp), %rdi
+        movq -24(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -408(%rbp)
-        movq $16, -416(%rbp)
-        movq -408(%rbp), %rdi
-        movq -416(%rbp), %rsi
+        movq %rax, -352(%rbp)
+        movq $16, -360(%rbp)
+        movq -352(%rbp), %rdi
+        movq -360(%rbp), %rsi
         callq x_apply_unary
-        movq %rax, -368(%rbp)
+        movq %rax, -312(%rbp)
         jmp _main._main.let_body₁₀
 _main.epilog:
-        addq $416, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $360, %rsp
         popq %rbp
         retq 
 .size _main, . - _main
@@ -242,36 +228,22 @@ _main©setup:
 _main©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp _main©setup.body
 _main©setup.body:
-        movq $_main, -64(%rbp)
-        orq $3, -64(%rbp)
-        movq $_main©metadata, -72(%rbp)
-        orq $3, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq $_main, -8(%rbp)
+        orq $3, -8(%rbp)
+        movq $_main©metadata, -16(%rbp)
+        orq $3, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_make_function
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, _main©constant(%rip)
         jmp _main©setup.epilog
 _main©setup.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size _main©setup, . - _main©setup
@@ -305,36 +277,22 @@ equal_p©setup:
 equal_p©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp equal_p©setup.body
 equal_p©setup.body:
-        movq $x_equal_p, -64(%rbp)
-        orq $3, -64(%rbp)
-        movq $equal_p©metadata, -72(%rbp)
-        orq $3, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq $x_equal_p, -8(%rbp)
+        orq $3, -8(%rbp)
+        movq $equal_p©metadata, -16(%rbp)
+        orq $3, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_make_function
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, equal_p©constant(%rip)
         jmp equal_p©setup.epilog
 equal_p©setup.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size equal_p©setup, . - equal_p©setup
@@ -368,36 +326,22 @@ println_non_void©setup:
 println_non_void©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp println_non_void©setup.body
 println_non_void©setup.body:
-        movq $x_println_non_void, -64(%rbp)
-        orq $3, -64(%rbp)
-        movq $println_non_void©metadata, -72(%rbp)
-        orq $3, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq $x_println_non_void, -8(%rbp)
+        orq $3, -8(%rbp)
+        movq $println_non_void©metadata, -16(%rbp)
+        orq $3, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_make_function
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, println_non_void©constant(%rip)
         jmp println_non_void©setup.epilog
 println_non_void©setup.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size println_non_void©setup, . - println_non_void©setup
@@ -431,36 +375,22 @@ iadd©setup:
 iadd©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp iadd©setup.body
 iadd©setup.body:
-        movq $x_iadd, -64(%rbp)
-        orq $3, -64(%rbp)
-        movq $iadd©metadata, -72(%rbp)
-        orq $3, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq $x_iadd, -8(%rbp)
+        orq $3, -8(%rbp)
+        movq $iadd©metadata, -16(%rbp)
+        orq $3, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_make_function
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, iadd©constant(%rip)
         jmp iadd©setup.epilog
 iadd©setup.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size iadd©setup, . - iadd©setup
@@ -494,36 +424,22 @@ int_less_p©setup:
 int_less_p©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp int_less_p©setup.body
 int_less_p©setup.body:
-        movq $x_int_less_p, -64(%rbp)
-        orq $3, -64(%rbp)
-        movq $int_less_p©metadata, -72(%rbp)
-        orq $3, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq $x_int_less_p, -8(%rbp)
+        orq $3, -8(%rbp)
+        movq $int_less_p©metadata, -16(%rbp)
+        orq $3, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_make_function
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, int_less_p©constant(%rip)
         jmp int_less_p©setup.epilog
 int_less_p©setup.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size int_less_p©setup, . - int_less_p©setup
@@ -557,36 +473,22 @@ make_function©setup:
 make_function©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp make_function©setup.body
 make_function©setup.body:
-        movq $x_make_function, -64(%rbp)
-        orq $3, -64(%rbp)
-        movq $make_function©metadata, -72(%rbp)
-        orq $3, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq $x_make_function, -8(%rbp)
+        orq $3, -8(%rbp)
+        movq $make_function©metadata, -16(%rbp)
+        orq $3, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_make_function
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, make_function©constant(%rip)
         jmp make_function©setup.epilog
 make_function©setup.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size make_function©setup, . - make_function©setup
@@ -620,36 +522,22 @@ random_dice©setup:
 random_dice©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $80, %rsp
+        subq $24, %rsp
         jmp random_dice©setup.body
 random_dice©setup.body:
-        movq $x_random_dice, -64(%rbp)
-        orq $3, -64(%rbp)
-        movq $random_dice©metadata, -72(%rbp)
-        orq $3, -72(%rbp)
-        movq -64(%rbp), %rdi
-        movq -72(%rbp), %rsi
+        movq $x_random_dice, -8(%rbp)
+        orq $3, -8(%rbp)
+        movq $random_dice©metadata, -16(%rbp)
+        orq $3, -16(%rbp)
+        movq -8(%rbp), %rdi
+        movq -16(%rbp), %rsi
         callq x_make_function
-        movq %rax, -80(%rbp)
-        movq -80(%rbp), %rax
+        movq %rax, -24(%rbp)
+        movq -24(%rbp), %rax
         movq %rax, random_dice©constant(%rip)
         jmp random_dice©setup.epilog
 random_dice©setup.epilog:
-        addq $80, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $24, %rsp
         popq %rbp
         retq 
 .size random_dice©setup, . - random_dice©setup
@@ -661,39 +549,25 @@ _setup:
 _setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        pushq %rsp
-        pushq %rbp
-        pushq %rbx
-        pushq %r12
-        pushq %r13
-        pushq %r14
-        pushq %r15
-        subq $64, %rsp
+        subq $8, %rsp
         jmp _setup.body
 _setup.body:
         callq _main©setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq equal_p©setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq println_non_void©setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq iadd©setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq int_less_p©setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq make_function©setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
         callq random_dice©setup
-        movq %rax, -64(%rbp)
+        movq %rax, -8(%rbp)
 _setup.epilog:
-        addq $64, %rsp
-        popq %r15
-        popq %r14
-        popq %r13
-        popq %r12
-        popq %rbx
-        popq %rbp
-        popq %rsp
+        addq $8, %rsp
         popq %rbp
         retq 
 .size _setup, . - _setup
