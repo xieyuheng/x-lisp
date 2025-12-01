@@ -1,9 +1,9 @@
-.global _setup
-.global _main
+        .global _setup
+        .global _main
 
-.text
-.align 8
-.type _main, @function
+        .section .text
+        .align 8
+        .type _main, @function
 _main:
 _main.prolog:
         pushq %rbp
@@ -35,33 +35,33 @@ _main.epilog:
         addq $64, %rsp
         popq %rbp
         retq 
-.size _main, . - _main
+        .size _main, . - _main
 
-.data
-.align 8
-.type _main©metadata, @object
+        .section .data
+        .align 8
+        .type _main©metadata, @object
 _main©metadata:
         .quad _main©metadata.name
         .quad 0
         .quad 0
         .quad _main©variable_info
-.size _main©metadata, . - _main©metadata
+        .size _main©metadata, . - _main©metadata
 
-.data
-.align 8
-.type _main©metadata.name, @object
+        .section .data
+        .align 8
+        .type _main©metadata.name, @object
 _main©metadata.name:
         .string "_main"
-.size _main©metadata.name, . - _main©metadata.name
+        .size _main©metadata.name, . - _main©metadata.name
 
-.bss
-.align 8
+        .section .bss
+        .align 8
 _main©constant:
         .zero 8
 
-.text
-.align 8
-.type _main©setup, @function
+        .section .text
+        .align 8
+        .type _main©setup, @function
 _main©setup:
 _main©setup.prolog:
         pushq %rbp
@@ -84,33 +84,33 @@ _main©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
-.size _main©setup, . - _main©setup
+        .size _main©setup, . - _main©setup
 
-.data
-.align 8
-.type println_non_void©metadata, @object
+        .section .data
+        .align 8
+        .type println_non_void©metadata, @object
 println_non_void©metadata:
         .quad println_non_void©metadata.name
         .quad 1
         .quad 1
         .quad 0
-.size println_non_void©metadata, . - println_non_void©metadata
+        .size println_non_void©metadata, . - println_non_void©metadata
 
-.data
-.align 8
-.type println_non_void©metadata.name, @object
+        .section .data
+        .align 8
+        .type println_non_void©metadata.name, @object
 println_non_void©metadata.name:
         .string "println-non-void"
-.size println_non_void©metadata.name, . - println_non_void©metadata.name
+        .size println_non_void©metadata.name, . - println_non_void©metadata.name
 
-.bss
-.align 8
+        .section .bss
+        .align 8
 println_non_void©constant:
         .zero 8
 
-.text
-.align 8
-.type println_non_void©setup, @function
+        .section .text
+        .align 8
+        .type println_non_void©setup, @function
 println_non_void©setup:
 println_non_void©setup.prolog:
         pushq %rbp
@@ -133,33 +133,33 @@ println_non_void©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
-.size println_non_void©setup, . - println_non_void©setup
+        .size println_non_void©setup, . - println_non_void©setup
 
-.data
-.align 8
-.type isub©metadata, @object
+        .section .data
+        .align 8
+        .type isub©metadata, @object
 isub©metadata:
         .quad isub©metadata.name
         .quad 2
         .quad 1
         .quad 0
-.size isub©metadata, . - isub©metadata
+        .size isub©metadata, . - isub©metadata
 
-.data
-.align 8
-.type isub©metadata.name, @object
+        .section .data
+        .align 8
+        .type isub©metadata.name, @object
 isub©metadata.name:
         .string "isub"
-.size isub©metadata.name, . - isub©metadata.name
+        .size isub©metadata.name, . - isub©metadata.name
 
-.bss
-.align 8
+        .section .bss
+        .align 8
 isub©constant:
         .zero 8
 
-.text
-.align 8
-.type isub©setup, @function
+        .section .text
+        .align 8
+        .type isub©setup, @function
 isub©setup:
 isub©setup.prolog:
         pushq %rbp
@@ -182,33 +182,33 @@ isub©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
-.size isub©setup, . - isub©setup
+        .size isub©setup, . - isub©setup
 
-.data
-.align 8
-.type make_function©metadata, @object
+        .section .data
+        .align 8
+        .type make_function©metadata, @object
 make_function©metadata:
         .quad make_function©metadata.name
         .quad 2
         .quad 1
         .quad 0
-.size make_function©metadata, . - make_function©metadata
+        .size make_function©metadata, . - make_function©metadata
 
-.data
-.align 8
-.type make_function©metadata.name, @object
+        .section .data
+        .align 8
+        .type make_function©metadata.name, @object
 make_function©metadata.name:
         .string "make-function"
-.size make_function©metadata.name, . - make_function©metadata.name
+        .size make_function©metadata.name, . - make_function©metadata.name
 
-.bss
-.align 8
+        .section .bss
+        .align 8
 make_function©constant:
         .zero 8
 
-.text
-.align 8
-.type make_function©setup, @function
+        .section .text
+        .align 8
+        .type make_function©setup, @function
 make_function©setup:
 make_function©setup.prolog:
         pushq %rbp
@@ -231,11 +231,11 @@ make_function©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
-.size make_function©setup, . - make_function©setup
+        .size make_function©setup, . - make_function©setup
 
-.text
-.align 8
-.type _setup, @function
+        .section .text
+        .align 8
+        .type _setup, @function
 _setup:
 _setup.prolog:
         pushq %rbp
@@ -255,19 +255,19 @@ _setup.epilog:
         addq $16, %rsp
         popq %rbp
         retq 
-.size _setup, . - _setup
+        .size _setup, . - _setup
 
-.data
-.align 8
-.type _main©variable_info, @object
+        .section .data
+        .align 8
+        .type _main©variable_info, @object
 _main©variable_info:
         .quad 7
         .quad _main©variable_info.names
-.size _main©variable_info, . - _main©variable_info
+        .size _main©variable_info, . - _main©variable_info
 
-.data
-.align 8
-.type _main©variable_info.names, @object
+        .section .data
+        .align 8
+        .type _main©variable_info.names, @object
 _main©variable_info.names:
         .quad _main©variable_info.names.0
         .quad _main©variable_info.names.1
@@ -276,227 +276,227 @@ _main©variable_info.names:
         .quad _main©variable_info.names.4
         .quad _main©variable_info.names.5
         .quad _main©variable_info.names.6
-.size _main©variable_info.names, . - _main©variable_info.names
+        .size _main©variable_info.names, . - _main©variable_info.names
 
-.data
-.align 8
-.type _main©variable_info.names.0, @object
+        .section .data
+        .align 8
+        .type _main©variable_info.names.0, @object
 _main©variable_info.names.0:
         .string "_₁"
-.size _main©variable_info.names.0, . - _main©variable_info.names.0
+        .size _main©variable_info.names.0, . - _main©variable_info.names.0
 
-.data
-.align 8
-.type _main©variable_info.names.1, @object
+        .section .data
+        .align 8
+        .type _main©variable_info.names.1, @object
 _main©variable_info.names.1:
         .string "_₂"
-.size _main©variable_info.names.1, . - _main©variable_info.names.1
+        .size _main©variable_info.names.1, . - _main©variable_info.names.1
 
-.data
-.align 8
-.type _main©variable_info.names.2, @object
+        .section .data
+        .align 8
+        .type _main©variable_info.names.2, @object
 _main©variable_info.names.2:
         .string "_₃"
-.size _main©variable_info.names.2, . - _main©variable_info.names.2
+        .size _main©variable_info.names.2, . - _main©variable_info.names.2
 
-.data
-.align 8
-.type _main©variable_info.names.3, @object
+        .section .data
+        .align 8
+        .type _main©variable_info.names.3, @object
 _main©variable_info.names.3:
         .string "_₄"
-.size _main©variable_info.names.3, . - _main©variable_info.names.3
+        .size _main©variable_info.names.3, . - _main©variable_info.names.3
 
-.data
-.align 8
-.type _main©variable_info.names.4, @object
+        .section .data
+        .align 8
+        .type _main©variable_info.names.4, @object
 _main©variable_info.names.4:
         .string "_₅"
-.size _main©variable_info.names.4, . - _main©variable_info.names.4
+        .size _main©variable_info.names.4, . - _main©variable_info.names.4
 
-.data
-.align 8
-.type _main©variable_info.names.5, @object
+        .section .data
+        .align 8
+        .type _main©variable_info.names.5, @object
 _main©variable_info.names.5:
         .string "_₆"
-.size _main©variable_info.names.5, . - _main©variable_info.names.5
+        .size _main©variable_info.names.5, . - _main©variable_info.names.5
 
-.data
-.align 8
-.type _main©variable_info.names.6, @object
+        .section .data
+        .align 8
+        .type _main©variable_info.names.6, @object
 _main©variable_info.names.6:
         .string "_↩"
-.size _main©variable_info.names.6, . - _main©variable_info.names.6
+        .size _main©variable_info.names.6, . - _main©variable_info.names.6
 
-.data
-.align 8
-.type _main©setup©variable_info, @object
+        .section .data
+        .align 8
+        .type _main©setup©variable_info, @object
 _main©setup©variable_info:
         .quad 3
         .quad _main©setup©variable_info.names
-.size _main©setup©variable_info, . - _main©setup©variable_info
+        .size _main©setup©variable_info, . - _main©setup©variable_info
 
-.data
-.align 8
-.type _main©setup©variable_info.names, @object
+        .section .data
+        .align 8
+        .type _main©setup©variable_info.names, @object
 _main©setup©variable_info.names:
         .quad _main©setup©variable_info.names.0
         .quad _main©setup©variable_info.names.1
         .quad _main©setup©variable_info.names.2
-.size _main©setup©variable_info.names, . - _main©setup©variable_info.names
+        .size _main©setup©variable_info.names, . - _main©setup©variable_info.names
 
-.data
-.align 8
-.type _main©setup©variable_info.names.0, @object
+        .section .data
+        .align 8
+        .type _main©setup©variable_info.names.0, @object
 _main©setup©variable_info.names.0:
         .string "address"
-.size _main©setup©variable_info.names.0, . - _main©setup©variable_info.names.0
+        .size _main©setup©variable_info.names.0, . - _main©setup©variable_info.names.0
 
-.data
-.align 8
-.type _main©setup©variable_info.names.1, @object
+        .section .data
+        .align 8
+        .type _main©setup©variable_info.names.1, @object
 _main©setup©variable_info.names.1:
         .string "metadata"
-.size _main©setup©variable_info.names.1, . - _main©setup©variable_info.names.1
+        .size _main©setup©variable_info.names.1, . - _main©setup©variable_info.names.1
 
-.data
-.align 8
-.type _main©setup©variable_info.names.2, @object
+        .section .data
+        .align 8
+        .type _main©setup©variable_info.names.2, @object
 _main©setup©variable_info.names.2:
         .string "function"
-.size _main©setup©variable_info.names.2, . - _main©setup©variable_info.names.2
+        .size _main©setup©variable_info.names.2, . - _main©setup©variable_info.names.2
 
-.data
-.align 8
-.type println_non_void©setup©variable_info, @object
+        .section .data
+        .align 8
+        .type println_non_void©setup©variable_info, @object
 println_non_void©setup©variable_info:
         .quad 3
         .quad println_non_void©setup©variable_info.names
-.size println_non_void©setup©variable_info, . - println_non_void©setup©variable_info
+        .size println_non_void©setup©variable_info, . - println_non_void©setup©variable_info
 
-.data
-.align 8
-.type println_non_void©setup©variable_info.names, @object
+        .section .data
+        .align 8
+        .type println_non_void©setup©variable_info.names, @object
 println_non_void©setup©variable_info.names:
         .quad println_non_void©setup©variable_info.names.0
         .quad println_non_void©setup©variable_info.names.1
         .quad println_non_void©setup©variable_info.names.2
-.size println_non_void©setup©variable_info.names, . - println_non_void©setup©variable_info.names
+        .size println_non_void©setup©variable_info.names, . - println_non_void©setup©variable_info.names
 
-.data
-.align 8
-.type println_non_void©setup©variable_info.names.0, @object
+        .section .data
+        .align 8
+        .type println_non_void©setup©variable_info.names.0, @object
 println_non_void©setup©variable_info.names.0:
         .string "address"
-.size println_non_void©setup©variable_info.names.0, . - println_non_void©setup©variable_info.names.0
+        .size println_non_void©setup©variable_info.names.0, . - println_non_void©setup©variable_info.names.0
 
-.data
-.align 8
-.type println_non_void©setup©variable_info.names.1, @object
+        .section .data
+        .align 8
+        .type println_non_void©setup©variable_info.names.1, @object
 println_non_void©setup©variable_info.names.1:
         .string "metadata"
-.size println_non_void©setup©variable_info.names.1, . - println_non_void©setup©variable_info.names.1
+        .size println_non_void©setup©variable_info.names.1, . - println_non_void©setup©variable_info.names.1
 
-.data
-.align 8
-.type println_non_void©setup©variable_info.names.2, @object
+        .section .data
+        .align 8
+        .type println_non_void©setup©variable_info.names.2, @object
 println_non_void©setup©variable_info.names.2:
         .string "function"
-.size println_non_void©setup©variable_info.names.2, . - println_non_void©setup©variable_info.names.2
+        .size println_non_void©setup©variable_info.names.2, . - println_non_void©setup©variable_info.names.2
 
-.data
-.align 8
-.type isub©setup©variable_info, @object
+        .section .data
+        .align 8
+        .type isub©setup©variable_info, @object
 isub©setup©variable_info:
         .quad 3
         .quad isub©setup©variable_info.names
-.size isub©setup©variable_info, . - isub©setup©variable_info
+        .size isub©setup©variable_info, . - isub©setup©variable_info
 
-.data
-.align 8
-.type isub©setup©variable_info.names, @object
+        .section .data
+        .align 8
+        .type isub©setup©variable_info.names, @object
 isub©setup©variable_info.names:
         .quad isub©setup©variable_info.names.0
         .quad isub©setup©variable_info.names.1
         .quad isub©setup©variable_info.names.2
-.size isub©setup©variable_info.names, . - isub©setup©variable_info.names
+        .size isub©setup©variable_info.names, . - isub©setup©variable_info.names
 
-.data
-.align 8
-.type isub©setup©variable_info.names.0, @object
+        .section .data
+        .align 8
+        .type isub©setup©variable_info.names.0, @object
 isub©setup©variable_info.names.0:
         .string "address"
-.size isub©setup©variable_info.names.0, . - isub©setup©variable_info.names.0
+        .size isub©setup©variable_info.names.0, . - isub©setup©variable_info.names.0
 
-.data
-.align 8
-.type isub©setup©variable_info.names.1, @object
+        .section .data
+        .align 8
+        .type isub©setup©variable_info.names.1, @object
 isub©setup©variable_info.names.1:
         .string "metadata"
-.size isub©setup©variable_info.names.1, . - isub©setup©variable_info.names.1
+        .size isub©setup©variable_info.names.1, . - isub©setup©variable_info.names.1
 
-.data
-.align 8
-.type isub©setup©variable_info.names.2, @object
+        .section .data
+        .align 8
+        .type isub©setup©variable_info.names.2, @object
 isub©setup©variable_info.names.2:
         .string "function"
-.size isub©setup©variable_info.names.2, . - isub©setup©variable_info.names.2
+        .size isub©setup©variable_info.names.2, . - isub©setup©variable_info.names.2
 
-.data
-.align 8
-.type make_function©setup©variable_info, @object
+        .section .data
+        .align 8
+        .type make_function©setup©variable_info, @object
 make_function©setup©variable_info:
         .quad 3
         .quad make_function©setup©variable_info.names
-.size make_function©setup©variable_info, . - make_function©setup©variable_info
+        .size make_function©setup©variable_info, . - make_function©setup©variable_info
 
-.data
-.align 8
-.type make_function©setup©variable_info.names, @object
+        .section .data
+        .align 8
+        .type make_function©setup©variable_info.names, @object
 make_function©setup©variable_info.names:
         .quad make_function©setup©variable_info.names.0
         .quad make_function©setup©variable_info.names.1
         .quad make_function©setup©variable_info.names.2
-.size make_function©setup©variable_info.names, . - make_function©setup©variable_info.names
+        .size make_function©setup©variable_info.names, . - make_function©setup©variable_info.names
 
-.data
-.align 8
-.type make_function©setup©variable_info.names.0, @object
+        .section .data
+        .align 8
+        .type make_function©setup©variable_info.names.0, @object
 make_function©setup©variable_info.names.0:
         .string "address"
-.size make_function©setup©variable_info.names.0, . - make_function©setup©variable_info.names.0
+        .size make_function©setup©variable_info.names.0, . - make_function©setup©variable_info.names.0
 
-.data
-.align 8
-.type make_function©setup©variable_info.names.1, @object
+        .section .data
+        .align 8
+        .type make_function©setup©variable_info.names.1, @object
 make_function©setup©variable_info.names.1:
         .string "metadata"
-.size make_function©setup©variable_info.names.1, . - make_function©setup©variable_info.names.1
+        .size make_function©setup©variable_info.names.1, . - make_function©setup©variable_info.names.1
 
-.data
-.align 8
-.type make_function©setup©variable_info.names.2, @object
+        .section .data
+        .align 8
+        .type make_function©setup©variable_info.names.2, @object
 make_function©setup©variable_info.names.2:
         .string "function"
-.size make_function©setup©variable_info.names.2, . - make_function©setup©variable_info.names.2
+        .size make_function©setup©variable_info.names.2, . - make_function©setup©variable_info.names.2
 
-.data
-.align 8
-.type _setup©variable_info, @object
+        .section .data
+        .align 8
+        .type _setup©variable_info, @object
 _setup©variable_info:
         .quad 1
         .quad _setup©variable_info.names
-.size _setup©variable_info, . - _setup©variable_info
+        .size _setup©variable_info, . - _setup©variable_info
 
-.data
-.align 8
-.type _setup©variable_info.names, @object
+        .section .data
+        .align 8
+        .type _setup©variable_info.names, @object
 _setup©variable_info.names:
         .quad _setup©variable_info.names.0
-.size _setup©variable_info.names, . - _setup©variable_info.names
+        .size _setup©variable_info.names, . - _setup©variable_info.names
 
-.data
-.align 8
-.type _setup©variable_info.names.0, @object
+        .section .data
+        .align 8
+        .type _setup©variable_info.names.0, @object
 _setup©variable_info.names.0:
         .string "_"
-.size _setup©variable_info.names.0, . - _setup©variable_info.names.0
+        .size _setup©variable_info.names.0, . - _setup©variable_info.names.0

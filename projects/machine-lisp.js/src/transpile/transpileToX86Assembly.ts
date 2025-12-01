@@ -9,7 +9,7 @@ export function transpileToX86Assembly(mod: M.Mod): string {
   let code = ""
 
   for (const name of mod.exported) {
-    code += `.global ${transpileName([name])}\n`
+    code += `${indentation}.global ${transpileName([name])}\n`
   }
 
   for (const definition of M.modDefinitions(mod)) {
@@ -27,12 +27,12 @@ function transpileDefinition(definition: M.Definition): string {
       const blocks = Array.from(definition.blocks.values())
         .map((block) => transpileBlock({ definition }, block))
         .join("\n")
-      let code = `.text\n`
-      code += `.align 8\n`
-      code += `.type ${name}, @function\n`
+      let code = `${indentation}.section .text\n`
+      code += `${indentation}.align 8\n`
+      code += `${indentation}.type ${name}, @function\n`
       code += `${name}:\n`
       code += `${blocks}\n`
-      code += `.size ${name}, . - ${name}\n`
+      code += `${indentation}.size ${name}, . - ${name}\n`
       return code
     }
 
@@ -41,19 +41,19 @@ function transpileDefinition(definition: M.Definition): string {
       const directives = definition.directives
         .map((directive) => transpileDirective({ definition }, directive))
         .join("\n")
-      let code = `.data\n`
-      code += `.align 8\n`
-      code += `.type ${name}, @object\n`
+      let code = `${indentation}.section .data\n`
+      code += `${indentation}.align 8\n`
+      code += `${indentation}.type ${name}, @object\n`
       code += `${name}:\n`
       code += `${directives}\n`
-      code += `.size ${name}, . - ${name}\n`
+      code += `${indentation}.size ${name}, . - ${name}\n`
       return code
     }
 
     case "SpaceDefinition": {
       const name = transpileName([definition.name])
-      let code = `.bss\n`
-      code += `.align 8\n`
+      let code = `${indentation}.section .bss\n`
+      code += `${indentation}.align 8\n`
       code += `${name}:\n`
       code += `${indentation}.zero ${definition.size}\n`
       return code
