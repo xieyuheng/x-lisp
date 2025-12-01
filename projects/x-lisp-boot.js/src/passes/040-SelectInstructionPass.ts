@@ -53,6 +53,10 @@ function onDefinition(
       return onMetadataDefinition(machineMod, definition)
     }
 
+    case "PlaceholderDefinition": {
+      return []
+    }
+
     default: {
       let message = `[onDefinition] unhandled definition`
       message += `\n  definition kind: ${definition.kind}`
