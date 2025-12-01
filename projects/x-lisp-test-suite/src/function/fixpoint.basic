@@ -36,15 +36,13 @@
 (define-setup Y©setup
   (block body
     (= address (literal (@address Y)))
-    (= arity (literal 1))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address Y©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store Y©constant curry)
+        metadata))
+    (store Y©constant function)
     (return)))
 
 (define-function Y©λ₁
@@ -66,15 +64,13 @@
 (define-setup Y©λ₁©setup
   (block body
     (= address (literal (@address Y©λ₁)))
-    (= arity (literal 1))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address Y©λ₁©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store Y©λ₁©constant curry)
+        metadata))
+    (store Y©λ₁©constant function)
     (return)))
 
 (define-function Y©λ₂
@@ -109,15 +105,13 @@
 (define-setup Y©λ₂©setup
   (block body
     (= address (literal (@address Y©λ₂)))
-    (= arity (literal 2))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address Y©λ₂©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store Y©λ₂©constant curry)
+        metadata))
+    (store Y©λ₂©constant function)
     (return)))
 
 (define-function Y©λ₂©λ₁
@@ -141,13 +135,11 @@
 (define-setup Y©λ₂©λ₁©setup
   (block body
     (= address (literal (@address Y©λ₂©λ₁)))
-    (= arity (literal 2))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address Y©λ₂©λ₁©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store Y©λ₂©λ₁©constant curry)
+        metadata))
+    (store Y©λ₂©λ₁©constant function)
     (return)))

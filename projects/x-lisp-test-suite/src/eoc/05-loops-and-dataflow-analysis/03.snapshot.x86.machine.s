@@ -188,23 +188,22 @@ _main©setup.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $88, %rsp
+        subq $80, %rsp
         jmp _main©setup.body
 _main©setup.body:
         movq $_main, -64(%rbp)
         orq $3, -64(%rbp)
-        movq $0, -72(%rbp)
-        movq $0, -80(%rbp)
+        movq $_main©metadata, -72(%rbp)
+        orq $3, -72(%rbp)
         movq -64(%rbp), %rdi
         movq -72(%rbp), %rsi
-        movq -80(%rbp), %rdx
-        callq x_make_curry
-        movq %rax, -88(%rbp)
-        movq -88(%rbp), %rax
+        callq x_make_function
+        movq %rax, -80(%rbp)
+        movq -80(%rbp), %rax
         movq %rax, _main©constant(%rip)
         jmp _main©setup.epilog
 _main©setup.epilog:
-        addq $88, %rsp
+        addq $80, %rsp
         popq %r15
         popq %r14
         popq %r13
@@ -252,23 +251,22 @@ equal_p©setup.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $88, %rsp
+        subq $80, %rsp
         jmp equal_p©setup.body
 equal_p©setup.body:
         movq $x_equal_p, -64(%rbp)
         orq $3, -64(%rbp)
-        movq $16, -72(%rbp)
-        movq $0, -80(%rbp)
+        movq $equal_p©metadata, -72(%rbp)
+        orq $3, -72(%rbp)
         movq -64(%rbp), %rdi
         movq -72(%rbp), %rsi
-        movq -80(%rbp), %rdx
-        callq x_make_curry
-        movq %rax, -88(%rbp)
-        movq -88(%rbp), %rax
+        callq x_make_function
+        movq %rax, -80(%rbp)
+        movq -80(%rbp), %rax
         movq %rax, equal_p©constant(%rip)
         jmp equal_p©setup.epilog
 equal_p©setup.epilog:
-        addq $88, %rsp
+        addq $80, %rsp
         popq %r15
         popq %r14
         popq %r13
@@ -316,23 +314,22 @@ print©setup.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $88, %rsp
+        subq $80, %rsp
         jmp print©setup.body
 print©setup.body:
         movq $x_print, -64(%rbp)
         orq $3, -64(%rbp)
-        movq $8, -72(%rbp)
-        movq $0, -80(%rbp)
+        movq $print©metadata, -72(%rbp)
+        orq $3, -72(%rbp)
         movq -64(%rbp), %rdi
         movq -72(%rbp), %rsi
-        movq -80(%rbp), %rdx
-        callq x_make_curry
-        movq %rax, -88(%rbp)
-        movq -88(%rbp), %rax
+        callq x_make_function
+        movq %rax, -80(%rbp)
+        movq -80(%rbp), %rax
         movq %rax, print©constant(%rip)
         jmp print©setup.epilog
 print©setup.epilog:
-        addq $88, %rsp
+        addq $80, %rsp
         popq %r15
         popq %r14
         popq %r13
@@ -380,23 +377,22 @@ println_non_void©setup.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $88, %rsp
+        subq $80, %rsp
         jmp println_non_void©setup.body
 println_non_void©setup.body:
         movq $x_println_non_void, -64(%rbp)
         orq $3, -64(%rbp)
-        movq $8, -72(%rbp)
-        movq $0, -80(%rbp)
+        movq $println_non_void©metadata, -72(%rbp)
+        orq $3, -72(%rbp)
         movq -64(%rbp), %rdi
         movq -72(%rbp), %rsi
-        movq -80(%rbp), %rdx
-        callq x_make_curry
-        movq %rax, -88(%rbp)
-        movq -88(%rbp), %rax
+        callq x_make_function
+        movq %rax, -80(%rbp)
+        movq -80(%rbp), %rax
         movq %rax, println_non_void©constant(%rip)
         jmp println_non_void©setup.epilog
 println_non_void©setup.epilog:
-        addq $88, %rsp
+        addq $80, %rsp
         popq %r15
         popq %r14
         popq %r13
@@ -444,23 +440,22 @@ newline©setup.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $88, %rsp
+        subq $80, %rsp
         jmp newline©setup.body
 newline©setup.body:
         movq $x_newline, -64(%rbp)
         orq $3, -64(%rbp)
-        movq $0, -72(%rbp)
-        movq $0, -80(%rbp)
+        movq $newline©metadata, -72(%rbp)
+        orq $3, -72(%rbp)
         movq -64(%rbp), %rdi
         movq -72(%rbp), %rsi
-        movq -80(%rbp), %rdx
-        callq x_make_curry
-        movq %rax, -88(%rbp)
-        movq -88(%rbp), %rax
+        callq x_make_function
+        movq %rax, -80(%rbp)
+        movq -80(%rbp), %rax
         movq %rax, newline©constant(%rip)
         jmp newline©setup.epilog
 newline©setup.epilog:
-        addq $88, %rsp
+        addq $80, %rsp
         popq %r15
         popq %r14
         popq %r13
@@ -474,31 +469,31 @@ newline©setup.epilog:
 
 .data
 .align 8
-.type make_curry©metadata, @object
-make_curry©metadata:
-        .quad make_curry©metadata.name
-        .quad 3
+.type make_function©metadata, @object
+make_function©metadata:
+        .quad make_function©metadata.name
+        .quad 2
         .quad 1
         .quad 0
-.size make_curry©metadata, . - make_curry©metadata
+.size make_function©metadata, . - make_function©metadata
 
 .data
 .align 8
-.type make_curry©metadata.name, @object
-make_curry©metadata.name:
-        .string "make-curry"
-.size make_curry©metadata.name, . - make_curry©metadata.name
+.type make_function©metadata.name, @object
+make_function©metadata.name:
+        .string "make-function"
+.size make_function©metadata.name, . - make_function©metadata.name
 
 .bss
 .align 8
-make_curry©constant:
+make_function©constant:
         .zero 8
 
 .text
 .align 8
-.type make_curry©setup, @function
-make_curry©setup:
-make_curry©setup.prolog:
+.type make_function©setup, @function
+make_function©setup:
+make_function©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
         pushq %rsp
@@ -508,23 +503,22 @@ make_curry©setup.prolog:
         pushq %r13
         pushq %r14
         pushq %r15
-        subq $88, %rsp
-        jmp make_curry©setup.body
-make_curry©setup.body:
-        movq $x_make_curry, -64(%rbp)
+        subq $80, %rsp
+        jmp make_function©setup.body
+make_function©setup.body:
+        movq $x_make_function, -64(%rbp)
         orq $3, -64(%rbp)
-        movq $24, -72(%rbp)
-        movq $0, -80(%rbp)
+        movq $make_function©metadata, -72(%rbp)
+        orq $3, -72(%rbp)
         movq -64(%rbp), %rdi
         movq -72(%rbp), %rsi
-        movq -80(%rbp), %rdx
-        callq x_make_curry
-        movq %rax, -88(%rbp)
-        movq -88(%rbp), %rax
-        movq %rax, make_curry©constant(%rip)
-        jmp make_curry©setup.epilog
-make_curry©setup.epilog:
-        addq $88, %rsp
+        callq x_make_function
+        movq %rax, -80(%rbp)
+        movq -80(%rbp), %rax
+        movq %rax, make_function©constant(%rip)
+        jmp make_function©setup.epilog
+make_function©setup.epilog:
+        addq $80, %rsp
         popq %r15
         popq %r14
         popq %r13
@@ -534,7 +528,7 @@ make_curry©setup.epilog:
         popq %rsp
         popq %rbp
         retq 
-.size make_curry©setup, . - make_curry©setup
+.size make_function©setup, . - make_function©setup
 
 .text
 .align 8
@@ -563,7 +557,7 @@ _setup.body:
         movq %rax, -64(%rbp)
         callq newline©setup
         movq %rax, -64(%rbp)
-        callq make_curry©setup
+        callq make_function©setup
         movq %rax, -64(%rbp)
 _setup.epilog:
         addq $64, %rsp
@@ -884,7 +878,7 @@ _main©variable_info.names.36:
 .align 8
 .type _main©setup©variable_info, @object
 _main©setup©variable_info:
-        .quad 4
+        .quad 3
         .quad _main©setup©variable_info.names
 .size _main©setup©variable_info, . - _main©setup©variable_info
 
@@ -895,7 +889,6 @@ _main©setup©variable_info.names:
         .quad _main©setup©variable_info.names.0
         .quad _main©setup©variable_info.names.1
         .quad _main©setup©variable_info.names.2
-        .quad _main©setup©variable_info.names.3
 .size _main©setup©variable_info.names, . - _main©setup©variable_info.names
 
 .data
@@ -909,28 +902,21 @@ _main©setup©variable_info.names.0:
 .align 8
 .type _main©setup©variable_info.names.1, @object
 _main©setup©variable_info.names.1:
-        .string "arity"
+        .string "metadata"
 .size _main©setup©variable_info.names.1, . - _main©setup©variable_info.names.1
 
 .data
 .align 8
 .type _main©setup©variable_info.names.2, @object
 _main©setup©variable_info.names.2:
-        .string "size"
+        .string "function"
 .size _main©setup©variable_info.names.2, . - _main©setup©variable_info.names.2
-
-.data
-.align 8
-.type _main©setup©variable_info.names.3, @object
-_main©setup©variable_info.names.3:
-        .string "curry"
-.size _main©setup©variable_info.names.3, . - _main©setup©variable_info.names.3
 
 .data
 .align 8
 .type equal_p©setup©variable_info, @object
 equal_p©setup©variable_info:
-        .quad 4
+        .quad 3
         .quad equal_p©setup©variable_info.names
 .size equal_p©setup©variable_info, . - equal_p©setup©variable_info
 
@@ -941,7 +927,6 @@ equal_p©setup©variable_info.names:
         .quad equal_p©setup©variable_info.names.0
         .quad equal_p©setup©variable_info.names.1
         .quad equal_p©setup©variable_info.names.2
-        .quad equal_p©setup©variable_info.names.3
 .size equal_p©setup©variable_info.names, . - equal_p©setup©variable_info.names
 
 .data
@@ -955,28 +940,21 @@ equal_p©setup©variable_info.names.0:
 .align 8
 .type equal_p©setup©variable_info.names.1, @object
 equal_p©setup©variable_info.names.1:
-        .string "arity"
+        .string "metadata"
 .size equal_p©setup©variable_info.names.1, . - equal_p©setup©variable_info.names.1
 
 .data
 .align 8
 .type equal_p©setup©variable_info.names.2, @object
 equal_p©setup©variable_info.names.2:
-        .string "size"
+        .string "function"
 .size equal_p©setup©variable_info.names.2, . - equal_p©setup©variable_info.names.2
-
-.data
-.align 8
-.type equal_p©setup©variable_info.names.3, @object
-equal_p©setup©variable_info.names.3:
-        .string "curry"
-.size equal_p©setup©variable_info.names.3, . - equal_p©setup©variable_info.names.3
 
 .data
 .align 8
 .type print©setup©variable_info, @object
 print©setup©variable_info:
-        .quad 4
+        .quad 3
         .quad print©setup©variable_info.names
 .size print©setup©variable_info, . - print©setup©variable_info
 
@@ -987,7 +965,6 @@ print©setup©variable_info.names:
         .quad print©setup©variable_info.names.0
         .quad print©setup©variable_info.names.1
         .quad print©setup©variable_info.names.2
-        .quad print©setup©variable_info.names.3
 .size print©setup©variable_info.names, . - print©setup©variable_info.names
 
 .data
@@ -1001,28 +978,21 @@ print©setup©variable_info.names.0:
 .align 8
 .type print©setup©variable_info.names.1, @object
 print©setup©variable_info.names.1:
-        .string "arity"
+        .string "metadata"
 .size print©setup©variable_info.names.1, . - print©setup©variable_info.names.1
 
 .data
 .align 8
 .type print©setup©variable_info.names.2, @object
 print©setup©variable_info.names.2:
-        .string "size"
+        .string "function"
 .size print©setup©variable_info.names.2, . - print©setup©variable_info.names.2
-
-.data
-.align 8
-.type print©setup©variable_info.names.3, @object
-print©setup©variable_info.names.3:
-        .string "curry"
-.size print©setup©variable_info.names.3, . - print©setup©variable_info.names.3
 
 .data
 .align 8
 .type println_non_void©setup©variable_info, @object
 println_non_void©setup©variable_info:
-        .quad 4
+        .quad 3
         .quad println_non_void©setup©variable_info.names
 .size println_non_void©setup©variable_info, . - println_non_void©setup©variable_info
 
@@ -1033,7 +1003,6 @@ println_non_void©setup©variable_info.names:
         .quad println_non_void©setup©variable_info.names.0
         .quad println_non_void©setup©variable_info.names.1
         .quad println_non_void©setup©variable_info.names.2
-        .quad println_non_void©setup©variable_info.names.3
 .size println_non_void©setup©variable_info.names, . - println_non_void©setup©variable_info.names
 
 .data
@@ -1047,28 +1016,21 @@ println_non_void©setup©variable_info.names.0:
 .align 8
 .type println_non_void©setup©variable_info.names.1, @object
 println_non_void©setup©variable_info.names.1:
-        .string "arity"
+        .string "metadata"
 .size println_non_void©setup©variable_info.names.1, . - println_non_void©setup©variable_info.names.1
 
 .data
 .align 8
 .type println_non_void©setup©variable_info.names.2, @object
 println_non_void©setup©variable_info.names.2:
-        .string "size"
+        .string "function"
 .size println_non_void©setup©variable_info.names.2, . - println_non_void©setup©variable_info.names.2
-
-.data
-.align 8
-.type println_non_void©setup©variable_info.names.3, @object
-println_non_void©setup©variable_info.names.3:
-        .string "curry"
-.size println_non_void©setup©variable_info.names.3, . - println_non_void©setup©variable_info.names.3
 
 .data
 .align 8
 .type newline©setup©variable_info, @object
 newline©setup©variable_info:
-        .quad 4
+        .quad 3
         .quad newline©setup©variable_info.names
 .size newline©setup©variable_info, . - newline©setup©variable_info
 
@@ -1079,7 +1041,6 @@ newline©setup©variable_info.names:
         .quad newline©setup©variable_info.names.0
         .quad newline©setup©variable_info.names.1
         .quad newline©setup©variable_info.names.2
-        .quad newline©setup©variable_info.names.3
 .size newline©setup©variable_info.names, . - newline©setup©variable_info.names
 
 .data
@@ -1093,68 +1054,53 @@ newline©setup©variable_info.names.0:
 .align 8
 .type newline©setup©variable_info.names.1, @object
 newline©setup©variable_info.names.1:
-        .string "arity"
+        .string "metadata"
 .size newline©setup©variable_info.names.1, . - newline©setup©variable_info.names.1
 
 .data
 .align 8
 .type newline©setup©variable_info.names.2, @object
 newline©setup©variable_info.names.2:
-        .string "size"
+        .string "function"
 .size newline©setup©variable_info.names.2, . - newline©setup©variable_info.names.2
 
 .data
 .align 8
-.type newline©setup©variable_info.names.3, @object
-newline©setup©variable_info.names.3:
-        .string "curry"
-.size newline©setup©variable_info.names.3, . - newline©setup©variable_info.names.3
+.type make_function©setup©variable_info, @object
+make_function©setup©variable_info:
+        .quad 3
+        .quad make_function©setup©variable_info.names
+.size make_function©setup©variable_info, . - make_function©setup©variable_info
 
 .data
 .align 8
-.type make_curry©setup©variable_info, @object
-make_curry©setup©variable_info:
-        .quad 4
-        .quad make_curry©setup©variable_info.names
-.size make_curry©setup©variable_info, . - make_curry©setup©variable_info
+.type make_function©setup©variable_info.names, @object
+make_function©setup©variable_info.names:
+        .quad make_function©setup©variable_info.names.0
+        .quad make_function©setup©variable_info.names.1
+        .quad make_function©setup©variable_info.names.2
+.size make_function©setup©variable_info.names, . - make_function©setup©variable_info.names
 
 .data
 .align 8
-.type make_curry©setup©variable_info.names, @object
-make_curry©setup©variable_info.names:
-        .quad make_curry©setup©variable_info.names.0
-        .quad make_curry©setup©variable_info.names.1
-        .quad make_curry©setup©variable_info.names.2
-        .quad make_curry©setup©variable_info.names.3
-.size make_curry©setup©variable_info.names, . - make_curry©setup©variable_info.names
-
-.data
-.align 8
-.type make_curry©setup©variable_info.names.0, @object
-make_curry©setup©variable_info.names.0:
+.type make_function©setup©variable_info.names.0, @object
+make_function©setup©variable_info.names.0:
         .string "address"
-.size make_curry©setup©variable_info.names.0, . - make_curry©setup©variable_info.names.0
+.size make_function©setup©variable_info.names.0, . - make_function©setup©variable_info.names.0
 
 .data
 .align 8
-.type make_curry©setup©variable_info.names.1, @object
-make_curry©setup©variable_info.names.1:
-        .string "arity"
-.size make_curry©setup©variable_info.names.1, . - make_curry©setup©variable_info.names.1
+.type make_function©setup©variable_info.names.1, @object
+make_function©setup©variable_info.names.1:
+        .string "metadata"
+.size make_function©setup©variable_info.names.1, . - make_function©setup©variable_info.names.1
 
 .data
 .align 8
-.type make_curry©setup©variable_info.names.2, @object
-make_curry©setup©variable_info.names.2:
-        .string "size"
-.size make_curry©setup©variable_info.names.2, . - make_curry©setup©variable_info.names.2
-
-.data
-.align 8
-.type make_curry©setup©variable_info.names.3, @object
-make_curry©setup©variable_info.names.3:
-        .string "curry"
-.size make_curry©setup©variable_info.names.3, . - make_curry©setup©variable_info.names.3
+.type make_function©setup©variable_info.names.2, @object
+make_function©setup©variable_info.names.2:
+        .string "function"
+.size make_function©setup©variable_info.names.2, . - make_function©setup©variable_info.names.2
 
 .data
 .align 8

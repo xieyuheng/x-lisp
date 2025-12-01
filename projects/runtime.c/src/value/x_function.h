@@ -8,14 +8,14 @@ struct function_t {
     function_metadata_t *metadata;
 };
 
-struct function_metadata_t {
+struct __attribute__((packed)) function_metadata_t {
     char *name;
     uint64_t arity;
     uint64_t is_primitive;
     variable_info_t *variable_info;
 };
 
-struct variable_info_t {
+struct __attribute__((packed)) variable_info_t {
     uint64_t count;
     char **names;
 };

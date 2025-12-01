@@ -9,8 +9,6 @@ object_spec_t function_object_spec = {
 
 function_t *
 make_function(uintptr_t address, function_metadata_t *metadata) {
-    assert(address_p((value_t) address));
-
     function_t *self = new(function_t);
     self->spec = &function_object_spec;
     self->address = address;
@@ -55,6 +53,14 @@ to_function(value_t value) {
 
 value_t
 x_make_function(value_t address, value_t metadata) {
+    // where_printf("address: ");
+    // value_print(address, stdout);
+    // printf("\n");
+
+    // where_printf("metadata: ");
+    // value_print(metadata, stdout);
+    // printf("\n");
+
     function_t *function = make_function(to_address(address), (void *) to_address(metadata));
     return x_object((object_t *) function);
 }

@@ -23,15 +23,13 @@
 (define-setup swap©setup
   (block body
     (= address (literal (@address swap)))
-    (= arity (literal 3))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address swap©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store swap©constant curry)
+        metadata))
+    (store swap©constant function)
     (return)))
 
 (define-function drop
@@ -64,15 +62,13 @@
 (define-setup drop©setup
   (block body
     (= address (literal (@address drop)))
-    (= arity (literal 1))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address drop©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store drop©constant curry)
+        metadata))
+    (store drop©constant function)
     (return)))
 
 (define-function drop©λ₁
@@ -106,15 +102,13 @@
 (define-setup drop©λ₁©setup
   (block body
     (= address (literal (@address drop©λ₁)))
-    (= arity (literal 2))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address drop©λ₁©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store drop©λ₁©constant curry)
+        metadata))
+    (store drop©λ₁©constant function)
     (return)))
 
 (define-function drop©λ₁©λ₁
@@ -137,15 +131,13 @@
 (define-setup drop©λ₁©λ₁©setup
   (block body
     (= address (literal (@address drop©λ₁©λ₁)))
-    (= arity (literal 2))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address drop©λ₁©λ₁©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store drop©λ₁©λ₁©constant curry)
+        metadata))
+    (store drop©λ₁©λ₁©constant function)
     (return)))
 
 (define-function dup
@@ -178,15 +170,13 @@
 (define-setup dup©setup
   (block body
     (= address (literal (@address dup)))
-    (= arity (literal 1))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address dup©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store dup©constant curry)
+        metadata))
+    (store dup©constant function)
     (return)))
 
 (define-function dup©λ₁
@@ -210,15 +200,13 @@
 (define-setup dup©λ₁©setup
   (block body
     (= address (literal (@address dup©λ₁)))
-    (= arity (literal 2))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address dup©λ₁©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store dup©λ₁©constant curry)
+        metadata))
+    (store dup©λ₁©constant function)
     (return)))
 
 (define-metadata identity©metadata
@@ -234,15 +222,13 @@
 (define-setup identity©setup
   (block body
     (= address (literal (@address identity)))
-    (= arity (literal 1))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address identity©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store identity©constant curry)
+        metadata))
+    (store identity©constant function)
     (return)))
 
 (define-function _main
@@ -271,13 +257,11 @@
 (define-setup _main©setup
   (block body
     (= address (literal (@address _main)))
-    (= arity (literal 0))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address _main©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store _main©constant curry)
+        metadata))
+    (store _main©constant function)
     (return)))

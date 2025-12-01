@@ -1,25 +1,3 @@
-# function object
-
-[runtime.c] `x_apply_unary` can take `function_t`
-
-# function constant
-
-[x-lisp-boot.js] `ExplicateControlPass` -- setup `FunctionDefinition` to `make-function`
-
-```scheme
-(define-function <name>)
-
-(define-variable <name>©constant)
-
-(define-setup <name>©setup
-  (block body
-    (= address (literal (@address <name>)))
-    (= metadata (literal (@address <name>©metadata)))
-    (= function (call (@primitive-function make-function 2) address metadata))
-    (store <name>©constant function)
-    (return)))
-```
-
 # scan call stack
 
 primitive funtion to test scan call stack -- print stack trace

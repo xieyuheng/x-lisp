@@ -22,13 +22,11 @@
 (define-setup _main©setup
   (block body
     (= address (literal (@address _main)))
-    (= arity (literal 0))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address _main©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store _main©constant curry)
+        metadata))
+    (store _main©constant function)
     (return)))

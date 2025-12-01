@@ -21,13 +21,11 @@
 (define-setup square©setup
   (block body
     (= address (literal (@address square)))
-    (= arity (literal 1))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address square©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store square©constant curry)
+        metadata))
+    (store square©constant function)
     (return)))

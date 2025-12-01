@@ -239,25 +239,26 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 88) (reg rsp))
+    (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
     (movq
      (label-imm (label _main))
      (reg-deref (reg rbp) -64))
     (orq (imm 3) (reg-deref (reg rbp) -64))
-    (movq (imm 0) (reg-deref (reg rbp) -72))
-    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq
+     (label-imm (label _main©metadata))
+     (reg-deref (reg rbp) -72))
+    (orq (imm 3) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -72) (reg rsi))
-    (movq (reg-deref (reg rbp) -80) (reg rdx))
-    (callq-n (external-label x-make-curry) (arity 3))
-    (movq (reg rax) (reg-deref (reg rbp) -88))
-    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (callq-n (external-label x-make-function) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
     (movq (reg rax) (label-deref (label _main©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 88) (reg rsp))
+    (addq (imm 80) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -289,25 +290,26 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 88) (reg rsp))
+    (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
     (movq
      (label-imm (external-label x-equal?))
      (reg-deref (reg rbp) -64))
     (orq (imm 3) (reg-deref (reg rbp) -64))
-    (movq (imm 16) (reg-deref (reg rbp) -72))
-    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq
+     (label-imm (label equal?©metadata))
+     (reg-deref (reg rbp) -72))
+    (orq (imm 3) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -72) (reg rsi))
-    (movq (reg-deref (reg rbp) -80) (reg rdx))
-    (callq-n (external-label x-make-curry) (arity 3))
-    (movq (reg rax) (reg-deref (reg rbp) -88))
-    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (callq-n (external-label x-make-function) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
     (movq (reg rax) (label-deref (label equal?©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 88) (reg rsp))
+    (addq (imm 80) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -340,27 +342,28 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 88) (reg rsp))
+    (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
     (movq
      (label-imm (external-label x-println-non-void))
      (reg-deref (reg rbp) -64))
     (orq (imm 3) (reg-deref (reg rbp) -64))
-    (movq (imm 8) (reg-deref (reg rbp) -72))
-    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq
+     (label-imm (label println-non-void©metadata))
+     (reg-deref (reg rbp) -72))
+    (orq (imm 3) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -72) (reg rsi))
-    (movq (reg-deref (reg rbp) -80) (reg rdx))
-    (callq-n (external-label x-make-curry) (arity 3))
-    (movq (reg rax) (reg-deref (reg rbp) -88))
-    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (callq-n (external-label x-make-function) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
     (movq
      (reg rax)
      (label-deref (label println-non-void©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 88) (reg rsp))
+    (addq (imm 80) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -392,25 +395,26 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 88) (reg rsp))
+    (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
     (movq
      (label-imm (external-label x-iadd))
      (reg-deref (reg rbp) -64))
     (orq (imm 3) (reg-deref (reg rbp) -64))
-    (movq (imm 16) (reg-deref (reg rbp) -72))
-    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq
+     (label-imm (label iadd©metadata))
+     (reg-deref (reg rbp) -72))
+    (orq (imm 3) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -72) (reg rsi))
-    (movq (reg-deref (reg rbp) -80) (reg rdx))
-    (callq-n (external-label x-make-curry) (arity 3))
-    (movq (reg rax) (reg-deref (reg rbp) -88))
-    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (callq-n (external-label x-make-function) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
     (movq (reg rax) (label-deref (label iadd©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 88) (reg rsp))
+    (addq (imm 80) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -442,25 +446,26 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 88) (reg rsp))
+    (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
     (movq
      (label-imm (external-label x-int-less?))
      (reg-deref (reg rbp) -64))
     (orq (imm 3) (reg-deref (reg rbp) -64))
-    (movq (imm 16) (reg-deref (reg rbp) -72))
-    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq
+     (label-imm (label int-less?©metadata))
+     (reg-deref (reg rbp) -72))
+    (orq (imm 3) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -72) (reg rsi))
-    (movq (reg-deref (reg rbp) -80) (reg rdx))
-    (callq-n (external-label x-make-curry) (arity 3))
-    (movq (reg rax) (reg-deref (reg rbp) -88))
-    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (callq-n (external-label x-make-function) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
     (movq (reg rax) (label-deref (label int-less?©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 88) (reg rsp))
+    (addq (imm 80) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -471,17 +476,18 @@
     (popq (reg rbp))
     (retq)))
 
-(define-data make-curry©metadata
-  (pointer make-curry©metadata/name)
-  (int 3)
+(define-data make-function©metadata
+  (pointer make-function©metadata/name)
+  (int 2)
   (int 1)
   (int 0))
 
-(define-data make-curry©metadata/name (string "make-curry"))
+(define-data make-function©metadata/name
+  (string "make-function"))
 
-(define-space make-curry©constant 8)
+(define-space make-function©constant 8)
 
-(define-code make-curry©setup
+(define-code make-function©setup
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
@@ -492,27 +498,28 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 88) (reg rsp))
+    (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
     (movq
-     (label-imm (external-label x-make-curry))
+     (label-imm (external-label x-make-function))
      (reg-deref (reg rbp) -64))
     (orq (imm 3) (reg-deref (reg rbp) -64))
-    (movq (imm 24) (reg-deref (reg rbp) -72))
-    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq
+     (label-imm (label make-function©metadata))
+     (reg-deref (reg rbp) -72))
+    (orq (imm 3) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -72) (reg rsi))
-    (movq (reg-deref (reg rbp) -80) (reg rdx))
-    (callq-n (external-label x-make-curry) (arity 3))
-    (movq (reg rax) (reg-deref (reg rbp) -88))
-    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (callq-n (external-label x-make-function) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
     (movq
      (reg rax)
-     (label-deref (label make-curry©constant)))
+     (label-deref (label make-function©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 88) (reg rsp))
+    (addq (imm 80) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -545,27 +552,28 @@
     (pushq (reg r13))
     (pushq (reg r14))
     (pushq (reg r15))
-    (subq (imm 88) (reg rsp))
+    (subq (imm 80) (reg rsp))
     (jmp (label body)))
   (block body
     (movq
      (label-imm (external-label x-random-dice))
      (reg-deref (reg rbp) -64))
     (orq (imm 3) (reg-deref (reg rbp) -64))
-    (movq (imm 0) (reg-deref (reg rbp) -72))
-    (movq (imm 0) (reg-deref (reg rbp) -80))
+    (movq
+     (label-imm (label random-dice©metadata))
+     (reg-deref (reg rbp) -72))
+    (orq (imm 3) (reg-deref (reg rbp) -72))
     (movq (reg-deref (reg rbp) -64) (reg rdi))
     (movq (reg-deref (reg rbp) -72) (reg rsi))
-    (movq (reg-deref (reg rbp) -80) (reg rdx))
-    (callq-n (external-label x-make-curry) (arity 3))
-    (movq (reg rax) (reg-deref (reg rbp) -88))
-    (movq (reg-deref (reg rbp) -88) (reg rax))
+    (callq-n (external-label x-make-function) (arity 2))
+    (movq (reg rax) (reg-deref (reg rbp) -80))
+    (movq (reg-deref (reg rbp) -80) (reg rax))
     (movq
      (reg rax)
      (label-deref (label random-dice©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 88) (reg rsp))
+    (addq (imm 80) (reg rsp))
     (popq (reg r15))
     (popq (reg r14))
     (popq (reg r13))
@@ -600,7 +608,7 @@
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (callq-n (label int-less?©setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))
-    (callq-n (label make-curry©setup) (arity 0))
+    (callq-n (label make-function©setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64))
     (callq-n (label random-dice©setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -64)))
@@ -754,158 +762,130 @@
 (define-data _main©variable-info/names/44 (string "_₁₆"))
 
 (define-data _main©setup©variable-info
-  (int 4)
+  (int 3)
   (pointer _main©setup©variable-info/names))
 
 (define-data _main©setup©variable-info/names
   (pointer _main©setup©variable-info/names/0)
   (pointer _main©setup©variable-info/names/1)
-  (pointer _main©setup©variable-info/names/2)
-  (pointer _main©setup©variable-info/names/3))
+  (pointer _main©setup©variable-info/names/2))
 
 (define-data _main©setup©variable-info/names/0
   (string "address"))
 
 (define-data _main©setup©variable-info/names/1
-  (string "arity"))
+  (string "metadata"))
 
 (define-data _main©setup©variable-info/names/2
-  (string "size"))
-
-(define-data _main©setup©variable-info/names/3
-  (string "curry"))
+  (string "function"))
 
 (define-data equal?©setup©variable-info
-  (int 4)
+  (int 3)
   (pointer equal?©setup©variable-info/names))
 
 (define-data equal?©setup©variable-info/names
   (pointer equal?©setup©variable-info/names/0)
   (pointer equal?©setup©variable-info/names/1)
-  (pointer equal?©setup©variable-info/names/2)
-  (pointer equal?©setup©variable-info/names/3))
+  (pointer equal?©setup©variable-info/names/2))
 
 (define-data equal?©setup©variable-info/names/0
   (string "address"))
 
 (define-data equal?©setup©variable-info/names/1
-  (string "arity"))
+  (string "metadata"))
 
 (define-data equal?©setup©variable-info/names/2
-  (string "size"))
-
-(define-data equal?©setup©variable-info/names/3
-  (string "curry"))
+  (string "function"))
 
 (define-data println-non-void©setup©variable-info
-  (int 4)
+  (int 3)
   (pointer println-non-void©setup©variable-info/names))
 
 (define-data println-non-void©setup©variable-info/names
   (pointer println-non-void©setup©variable-info/names/0)
   (pointer println-non-void©setup©variable-info/names/1)
-  (pointer println-non-void©setup©variable-info/names/2)
-  (pointer println-non-void©setup©variable-info/names/3))
+  (pointer println-non-void©setup©variable-info/names/2))
 
 (define-data println-non-void©setup©variable-info/names/0
   (string "address"))
 
 (define-data println-non-void©setup©variable-info/names/1
-  (string "arity"))
+  (string "metadata"))
 
 (define-data println-non-void©setup©variable-info/names/2
-  (string "size"))
-
-(define-data println-non-void©setup©variable-info/names/3
-  (string "curry"))
+  (string "function"))
 
 (define-data iadd©setup©variable-info
-  (int 4)
+  (int 3)
   (pointer iadd©setup©variable-info/names))
 
 (define-data iadd©setup©variable-info/names
   (pointer iadd©setup©variable-info/names/0)
   (pointer iadd©setup©variable-info/names/1)
-  (pointer iadd©setup©variable-info/names/2)
-  (pointer iadd©setup©variable-info/names/3))
+  (pointer iadd©setup©variable-info/names/2))
 
 (define-data iadd©setup©variable-info/names/0
   (string "address"))
 
 (define-data iadd©setup©variable-info/names/1
-  (string "arity"))
+  (string "metadata"))
 
 (define-data iadd©setup©variable-info/names/2
-  (string "size"))
-
-(define-data iadd©setup©variable-info/names/3
-  (string "curry"))
+  (string "function"))
 
 (define-data int-less?©setup©variable-info
-  (int 4)
+  (int 3)
   (pointer int-less?©setup©variable-info/names))
 
 (define-data int-less?©setup©variable-info/names
   (pointer int-less?©setup©variable-info/names/0)
   (pointer int-less?©setup©variable-info/names/1)
-  (pointer int-less?©setup©variable-info/names/2)
-  (pointer int-less?©setup©variable-info/names/3))
+  (pointer int-less?©setup©variable-info/names/2))
 
 (define-data int-less?©setup©variable-info/names/0
   (string "address"))
 
 (define-data int-less?©setup©variable-info/names/1
-  (string "arity"))
+  (string "metadata"))
 
 (define-data int-less?©setup©variable-info/names/2
-  (string "size"))
+  (string "function"))
 
-(define-data int-less?©setup©variable-info/names/3
-  (string "curry"))
+(define-data make-function©setup©variable-info
+  (int 3)
+  (pointer make-function©setup©variable-info/names))
 
-(define-data make-curry©setup©variable-info
-  (int 4)
-  (pointer make-curry©setup©variable-info/names))
+(define-data make-function©setup©variable-info/names
+  (pointer make-function©setup©variable-info/names/0)
+  (pointer make-function©setup©variable-info/names/1)
+  (pointer make-function©setup©variable-info/names/2))
 
-(define-data make-curry©setup©variable-info/names
-  (pointer make-curry©setup©variable-info/names/0)
-  (pointer make-curry©setup©variable-info/names/1)
-  (pointer make-curry©setup©variable-info/names/2)
-  (pointer make-curry©setup©variable-info/names/3))
-
-(define-data make-curry©setup©variable-info/names/0
+(define-data make-function©setup©variable-info/names/0
   (string "address"))
 
-(define-data make-curry©setup©variable-info/names/1
-  (string "arity"))
+(define-data make-function©setup©variable-info/names/1
+  (string "metadata"))
 
-(define-data make-curry©setup©variable-info/names/2
-  (string "size"))
-
-(define-data make-curry©setup©variable-info/names/3
-  (string "curry"))
+(define-data make-function©setup©variable-info/names/2
+  (string "function"))
 
 (define-data random-dice©setup©variable-info
-  (int 4)
+  (int 3)
   (pointer random-dice©setup©variable-info/names))
 
 (define-data random-dice©setup©variable-info/names
   (pointer random-dice©setup©variable-info/names/0)
   (pointer random-dice©setup©variable-info/names/1)
-  (pointer random-dice©setup©variable-info/names/2)
-  (pointer random-dice©setup©variable-info/names/3))
+  (pointer random-dice©setup©variable-info/names/2))
 
 (define-data random-dice©setup©variable-info/names/0
   (string "address"))
 
 (define-data random-dice©setup©variable-info/names/1
-  (string "arity"))
+  (string "metadata"))
 
 (define-data random-dice©setup©variable-info/names/2
-  (string "size"))
-
-(define-data random-dice©setup©variable-info/names/3
-  (string "curry"))
+  (string "function"))
 
 (define-data _setup©variable-info
   (int 1)

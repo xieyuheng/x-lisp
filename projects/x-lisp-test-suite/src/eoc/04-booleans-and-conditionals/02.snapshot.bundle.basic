@@ -88,15 +88,13 @@
 (define-setup _main©setup
   (block body
     (= address (literal (@address _main)))
-    (= arity (literal 0))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address _main©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store _main©constant curry)
+        metadata))
+    (store _main©constant function)
     (return)))
 
 (define-metadata equal?©metadata
@@ -110,15 +108,13 @@
 (define-setup equal?©setup
   (block body
     (= address (literal (@primitive-address equal?)))
-    (= arity (literal 2))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address equal?©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store equal?©constant curry)
+        metadata))
+    (store equal?©constant function)
     (return)))
 
 (define-metadata println-non-void©metadata
@@ -133,15 +129,14 @@
   (block body
     (= address
        (literal (@primitive-address println-non-void)))
-    (= arity (literal 1))
-    (= size (literal 0))
-    (= curry
+    (= metadata
+       (literal (@address println-non-void©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store println-non-void©constant curry)
+        metadata))
+    (store println-non-void©constant function)
     (return)))
 
 (define-metadata iadd©metadata
@@ -155,15 +150,13 @@
 (define-setup iadd©setup
   (block body
     (= address (literal (@primitive-address iadd)))
-    (= arity (literal 2))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address iadd©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store iadd©constant curry)
+        metadata))
+    (store iadd©constant function)
     (return)))
 
 (define-metadata int-less?©metadata
@@ -177,37 +170,33 @@
 (define-setup int-less?©setup
   (block body
     (= address (literal (@primitive-address int-less?)))
-    (= arity (literal 2))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address int-less?©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store int-less?©constant curry)
+        metadata))
+    (store int-less?©constant function)
     (return)))
 
-(define-metadata make-curry©metadata
-  :name "make-curry"
-  :arity 3
+(define-metadata make-function©metadata
+  :name "make-function"
+  :arity 2
   :is-primitive 1
   :variable-info 0)
 
-(define-variable make-curry©constant)
+(define-variable make-function©constant)
 
-(define-setup make-curry©setup
+(define-setup make-function©setup
   (block body
-    (= address (literal (@primitive-address make-curry)))
-    (= arity (literal 3))
-    (= size (literal 0))
-    (= curry
+    (= address (literal (@primitive-address make-function)))
+    (= metadata (literal (@address make-function©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store make-curry©constant curry)
+        metadata))
+    (store make-function©constant function)
     (return)))
 
 (define-metadata random-dice©metadata
@@ -221,13 +210,11 @@
 (define-setup random-dice©setup
   (block body
     (= address (literal (@primitive-address random-dice)))
-    (= arity (literal 0))
-    (= size (literal 0))
-    (= curry
+    (= metadata (literal (@address random-dice©metadata)))
+    (= function
        (call
-        (@primitive-function make-curry 3)
+        (@primitive-function make-function 2)
         address
-        arity
-        size))
-    (store random-dice©constant curry)
+        metadata))
+    (store random-dice©constant function)
     (return)))

@@ -360,23 +360,6 @@ function selectLiteral(dest: string, value: B.Value): Array<M.Instr> {
       ]
     }
 
-    // case "Function": {
-    //   return [
-    //     M.Instr("movq", [
-    //       M.LabelImm(selectFunctionLabel(value)),
-    //       selectArgReg(0),
-    //     ]),
-    //     ...selectTagEncoding(selectArgReg(0), R.AddressTag),
-    //     M.Instr("movq", [M.Imm(R.encodeInt(value.arity)), selectArgReg(1)]),
-    //     M.Instr("movq", [M.Imm(R.encodeInt(0)), selectArgReg(2)]),
-    //     M.Instr("callq-n", [
-    //       M.Label("x-make-curry", { isExternal: true }),
-    //       M.Arity(3),
-    //     ]),
-    //     M.Instr("movq", [M.Reg("rax"), M.Var(dest)]),
-    //   ]
-    // }
-
     default: {
       let message = `[selectLiteral] unhandled value`
       message += `\n  value: ${B.formatValue(value)}`

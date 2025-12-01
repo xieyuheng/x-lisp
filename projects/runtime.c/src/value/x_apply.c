@@ -2,10 +2,17 @@
 
 value_t
 x_apply_nullary(value_t target) {
+    if (function_p(target)) {
+        function_t *function = to_function(target);
+        assert(function->metadata->arity == 0);
+        return to_0_ary_fn(x_address((void *) function->address))();
+    }
+
     if (curry_p(target)) {
         curry_t *curry = to_curry(target);
         assert(curry->arity == 0);
-        return to_0_ary_fn(curry->target)();
+        function_t *function = to_function(curry->target);
+        return to_0_ary_fn(x_address((void *) function->address))();
     }
 
     who_printf("can not apply target\n");
@@ -39,6 +46,19 @@ call_with_extra_arg(value_t target, size_t arity, value_t *args, value_t extra_a
 
 value_t
 x_apply_unary(value_t target, value_t arg) {
+    if (function_p(target)) {
+        function_t *function = to_function(target);
+        if (function->metadata->arity > 1) {
+            size_t new_arity = function->metadata->arity - 1;
+            curry_t *new_curry = make_curry(target, new_arity, 1);
+            new_curry->args[0] = arg;
+            return x_object((object_t *) new_curry);
+        } else {
+            assert(function->metadata->arity == 1);
+            return to_1_ary_fn(x_address((void *) function->address))(arg);
+        }
+    }
+
     if (curry_p(target)) {
         curry_t *curry = to_curry(target);
         if (curry->arity > 1) {
@@ -53,8 +73,9 @@ x_apply_unary(value_t target, value_t arg) {
             return x_object((object_t *) new_curry);
         } else {
             assert(curry->arity == 1);
+            function_t *function = to_function(curry->target);
             return call_with_extra_arg(
-                curry->target,
+                x_address((void *) function->address),
                 curry->size + 1,
                 curry->args,
                 arg);

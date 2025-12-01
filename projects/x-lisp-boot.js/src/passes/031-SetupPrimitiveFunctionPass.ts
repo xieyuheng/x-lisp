@@ -87,11 +87,9 @@ function onPrimitiveFunctionDefinition(
     // (define-setup <name>©setup
     //   (block body
     //     (= address (literal (@address <name>)))
-    //     (= arity (literal <arity>))
-    //     (= size (literal 0))
-    //     (= curry (call (@primitive-function make-curry 3)
-    //                address arity size))
-    //     (store <name>©constant curry)
+    //     (= metadata (literal (@address <name>©metadata)))
+    //     (= function (call (@primitive-function make-function 2) address metadata))
+    //     (store <name>©constant function)
     //     (return)))
     B.SetupDefinition(
       basicMod,
@@ -104,14 +102,16 @@ function onPrimitiveFunctionDefinition(
               "address",
               B.Address(definition.name, { isPrimitive: true }),
             ),
-            B.Literal("arity", B.Int(BigInt(definition.arity))),
-            B.Literal("size", B.Int(0n)),
-            B.Call(
-              "curry",
-              B.Function("make-curry", 3, { isPrimitive: true }),
-              ["address", "arity", "size"],
+            B.Literal(
+              "metadata",
+              B.Address(`${definition.name}©metadata`, { isPrimitive: false }),
             ),
-            B.Store(`${definition.name}©constant`, "curry"),
+            B.Call(
+              "function",
+              B.Function("make-function", 2, { isPrimitive: true }),
+              ["address", "metadata"],
+            ),
+            B.Store(`${definition.name}©constant`, "function"),
             B.Return(),
           ]),
         ],
