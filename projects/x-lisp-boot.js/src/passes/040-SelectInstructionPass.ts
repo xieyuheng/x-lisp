@@ -172,18 +172,14 @@ function onMetadata(
     case "ListMetadata": {
       const name = [rootName, ...path].join("/")
       const [directives, definitionArrays] = arrayUnzip(
-        Array.from(
-          metadata.elements
-            .entries()
-            .map(([index, element]) =>
-              onMetadata(
-                machineMod,
-                rootName,
-                [...path, index.toString()],
-                element,
-              ),
-            ),
-        ),
+        Array.from(metadata.elements.entries()).map(([index, element]) => {
+          return onMetadata(
+            machineMod,
+            rootName,
+            [...path, index.toString()],
+            element,
+          )
+        }),
       )
 
       return [

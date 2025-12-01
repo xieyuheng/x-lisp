@@ -12,9 +12,13 @@ export function parseMetadata(sexp: S.Sexp): Metadata {
     return B.StringMetadata(sexp.content)
   } else if (S.isSymbol(sexp)) {
     return B.PointerMetadata(sexp.content)
-  } else if (S.isTael(sexp)) {
+  } else if (
+    S.isTael(sexp) &&
+    S.sexpEqual(S.asTael(sexp).elements[0], S.Symbol("@tael"))
+  ) {
     if (Object.keys(sexp.attributes).length === 0) {
-      return B.ListMetadata(sexp.elements.map(parseMetadata))
+      const elements = S.asTael(sexp).elements.slice(1)
+      return B.ListMetadata(elements.map(parseMetadata))
     } else {
       return B.RecordMetadata(recordMapValue(sexp.attributes, parseMetadata))
     }

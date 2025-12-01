@@ -1,7 +1,5 @@
 # scan call stack
 
-[basic-lisp.js] setup function table
-
 primitive function to test scan call stack -- print stack trace
 
 - when we have register allocation, before calling stack trace,

@@ -118,3 +118,5 @@
         metadata))
     (store random-dice©constant function)
     (return)))
+
+(define-metadata _function_table :length 0 :entries [])

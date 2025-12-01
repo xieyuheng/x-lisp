@@ -312,6 +312,21 @@ random_dice©setup.epilog:
 random_dice©setup.end:
         .size random_dice©setup, . - random_dice©setup
 
+        .section .data
+        .align 8
+        .type _function_table, @object
+_function_table:
+        .quad 0
+        .quad _function_table.entries
+        .size _function_table, . - _function_table
+
+        .section .data
+        .align 8
+        .type _function_table.entries, @object
+_function_table.entries:
+
+        .size _function_table.entries, . - _function_table.entries
+
         .section .text
         .align 8
         .type _setup, @function

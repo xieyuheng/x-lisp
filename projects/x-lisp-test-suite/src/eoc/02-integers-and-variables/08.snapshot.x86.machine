@@ -190,6 +190,12 @@
     (popq (reg rbp))
     (retq)))
 
+(define-data _function_table
+  (int 0)
+  (pointer _function_table/entries))
+
+(define-data _function_table/entries)
+
 (define-code _setup
   (block prolog
     (pushq (reg rbp))

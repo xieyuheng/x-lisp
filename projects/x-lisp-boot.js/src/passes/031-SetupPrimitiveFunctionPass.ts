@@ -2,12 +2,12 @@ import * as B from "@xieyuheng/basic-lisp.js"
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
 
 export function SetupPrimitiveFunction(basicMod: B.Mod): void {
-  const primitiveFunctionNames = usedFunctionNames(basicMod)
+  const usedFunctionNames = getUsedFunctionNames(basicMod)
 
   for (const definition of Array.from(basicMod.definitions.values())) {
     if (
       definition.kind === "PrimitiveFunctionDefinition" &&
-      primitiveFunctionNames.has(definition.name)
+      usedFunctionNames.has(definition.name)
     ) {
       for (const basicDefinition of onPrimitiveFunctionDefinition(
         basicMod,
@@ -19,7 +19,7 @@ export function SetupPrimitiveFunction(basicMod: B.Mod): void {
   }
 }
 
-function usedFunctionNames(basicMod: B.Mod): Set<string> {
+export function getUsedFunctionNames(basicMod: B.Mod): Set<string> {
   return setUnionMany(
     Array.from(basicMod.definitions.values()).map((definition) => {
       if (
@@ -69,7 +69,8 @@ function onPrimitiveFunctionDefinition(
     //   :name "<name>"
     //   :arity <arity>
     //   :is-primitive 1
-    //   :variable-info 0)
+    //   :variable-info 0
+    //   :end 0)
     B.MetadataDefinition(basicMod, `${definition.name}©metadata`, {
       name: B.StringMetadata(definition.name),
       arity: B.IntMetadata(BigInt(definition.arity)),

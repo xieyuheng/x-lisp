@@ -48,7 +48,8 @@ function onFunctionDefinition(
     //   :name "<name>"
     //   :arity <arity>
     //   :is-primitive 0
-    //   :variable-info <name>©variable-info),
+    //   :variable-info <name>©variable-info
+    //   :end <address>)
     B.MetadataDefinition(
       basicMod,
       `${definition.name}©metadata`,

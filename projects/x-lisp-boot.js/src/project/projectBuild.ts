@@ -55,6 +55,7 @@ function buildBasicBundle(project: Project, id: string): void {
     const basicMod = B.loadEntry(createUrl(inputFile))
     const basicBundleMod = B.bundle(basicMod)
     Passes.SetupPrimitiveFunction(basicBundleMod)
+    Passes.SetupFunctionTablePass(basicBundleMod)
     const outputText = B.prettyMod(globals.maxWidth, basicBundleMod)
     writeFile(outputFile, outputText + "\n")
   }
