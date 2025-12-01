@@ -1,3 +1,19 @@
+# xth.c
+
+> port code from xvm
+
+[xth.c] `opcode` -- setup
+[xth.c] `commands` -- setup
+[xth.c] `xth_asm` -- setup
+[xth.c] `xth_emu` -- setup
+[xth.c] `xth.exe` -- setup command
+
+# xvi.c
+
+[xvi.c] setup c project
+
+# basic-lisp
+
 [basic-lisp.js] `PlaceholderDefinition`
 [basic-lisp.js] `DefinePlaceholder`
 [basic-lisp.js] parse `define-placeholder`
@@ -37,15 +53,6 @@ x_random_float
 
 [x-lisp-boot.js] add `Curry` back to `Exp` -- fix all passes
 [x-lisp-boot.js] `040-SelectInstructionPass` -- `selectLiteral` -- handle curry
-
-# xvi
-
-xvi.c -- setup c project
-
-# xth
-
-xth.c -- setup c project
-xth.c -- port code from xvm
 
 # gc
 
