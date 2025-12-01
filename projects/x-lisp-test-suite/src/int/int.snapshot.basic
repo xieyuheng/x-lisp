@@ -10,9 +10,12 @@
   :name "square"
   :arity 1
   :is-primitive 0
-  :variable-info square©variable-info)
+  :variable-info square©variable-info
+  :end square/end)
 
 (define-placeholder square©variable-info)
+
+(define-placeholder square/end)
 
 (define-variable square©constant)
 
@@ -41,9 +44,12 @@
   :name "_main"
   :arity 0
   :is-primitive 0
-  :variable-info _main©variable-info)
+  :variable-info _main©variable-info
+  :end _main/end)
 
 (define-placeholder _main©variable-info)
+
+(define-placeholder _main/end)
 
 (define-variable _main©constant)
 

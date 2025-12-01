@@ -14,9 +14,12 @@
   :name "swap"
   :arity 3
   :is-primitive 0
-  :variable-info swap©variable-info)
+  :variable-info swap©variable-info
+  :end swap/end)
 
 (define-placeholder swap©variable-info)
+
+(define-placeholder swap/end)
 
 (define-variable swap©constant)
 
@@ -53,9 +56,12 @@
   :name "drop"
   :arity 1
   :is-primitive 0
-  :variable-info drop©variable-info)
+  :variable-info drop©variable-info
+  :end drop/end)
 
 (define-placeholder drop©variable-info)
+
+(define-placeholder drop/end)
 
 (define-variable drop©constant)
 
@@ -93,9 +99,12 @@
   :name "drop©λ₁"
   :arity 2
   :is-primitive 0
-  :variable-info drop©λ₁©variable-info)
+  :variable-info drop©λ₁©variable-info
+  :end drop©λ₁/end)
 
 (define-placeholder drop©λ₁©variable-info)
+
+(define-placeholder drop©λ₁/end)
 
 (define-variable drop©λ₁©constant)
 
@@ -122,9 +131,12 @@
   :name "drop©λ₁©λ₁"
   :arity 2
   :is-primitive 0
-  :variable-info drop©λ₁©λ₁©variable-info)
+  :variable-info drop©λ₁©λ₁©variable-info
+  :end drop©λ₁©λ₁/end)
 
 (define-placeholder drop©λ₁©λ₁©variable-info)
+
+(define-placeholder drop©λ₁©λ₁/end)
 
 (define-variable drop©λ₁©λ₁©constant)
 
@@ -161,9 +173,12 @@
   :name "dup"
   :arity 1
   :is-primitive 0
-  :variable-info dup©variable-info)
+  :variable-info dup©variable-info
+  :end dup/end)
 
 (define-placeholder dup©variable-info)
+
+(define-placeholder dup/end)
 
 (define-variable dup©constant)
 
@@ -191,9 +206,12 @@
   :name "dup©λ₁"
   :arity 2
   :is-primitive 0
-  :variable-info dup©λ₁©variable-info)
+  :variable-info dup©λ₁©variable-info
+  :end dup©λ₁/end)
 
 (define-placeholder dup©λ₁©variable-info)
+
+(define-placeholder dup©λ₁/end)
 
 (define-variable dup©λ₁©constant)
 
@@ -213,9 +231,12 @@
   :name "identity"
   :arity 1
   :is-primitive 0
-  :variable-info identity©variable-info)
+  :variable-info identity©variable-info
+  :end identity/end)
 
 (define-placeholder identity©variable-info)
+
+(define-placeholder identity/end)
 
 (define-variable identity©constant)
 
@@ -248,9 +269,12 @@
   :name "_main"
   :arity 0
   :is-primitive 0
-  :variable-info _main©variable-info)
+  :variable-info _main©variable-info
+  :end _main/end)
 
 (define-placeholder _main©variable-info)
+
+(define-placeholder _main/end)
 
 (define-variable _main©constant)
 

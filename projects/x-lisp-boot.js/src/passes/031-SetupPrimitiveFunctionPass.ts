@@ -75,6 +75,7 @@ function onPrimitiveFunctionDefinition(
       arity: B.IntMetadata(BigInt(definition.arity)),
       "is-primitive": B.IntMetadata(1n),
       "variable-info": B.IntMetadata(0n), // NULL
+      end: B.IntMetadata(0n), // NULL
     }),
 
     // (define-variable <name>©constant)

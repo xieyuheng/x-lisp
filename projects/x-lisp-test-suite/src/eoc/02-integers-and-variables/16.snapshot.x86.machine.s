@@ -46,6 +46,7 @@ _main©metadata:
         .quad 0
         .quad 0
         .quad _main©variable_info
+        .quad _main.end
         .size _main©metadata, . - _main©metadata
 
         .section .data
@@ -95,6 +96,7 @@ println_non_void©metadata:
         .quad println_non_void©metadata.name
         .quad 1
         .quad 1
+        .quad 0
         .quad 0
         .size println_non_void©metadata, . - println_non_void©metadata
 
@@ -146,6 +148,7 @@ isub©metadata:
         .quad 2
         .quad 1
         .quad 0
+        .quad 0
         .size isub©metadata, . - isub©metadata
 
         .section .data
@@ -195,6 +198,7 @@ make_function©metadata:
         .quad make_function©metadata.name
         .quad 2
         .quad 1
+        .quad 0
         .quad 0
         .size make_function©metadata, . - make_function©metadata
 

@@ -42,9 +42,12 @@
   :name "_main"
   :arity 0
   :is-primitive 0
-  :variable-info _main©variable-info)
+  :variable-info _main©variable-info
+  :end _main/end)
 
 (define-placeholder _main©variable-info)
+
+(define-placeholder _main/end)
 
 (define-variable _main©constant)
 
@@ -64,7 +67,8 @@
   :name "equal?"
   :arity 2
   :is-primitive 1
-  :variable-info 0)
+  :variable-info 0
+  :end 0)
 
 (define-variable equal?©constant)
 
@@ -84,7 +88,8 @@
   :name "println-non-void"
   :arity 1
   :is-primitive 1
-  :variable-info 0)
+  :variable-info 0
+  :end 0)
 
 (define-variable println-non-void©constant)
 
@@ -106,7 +111,8 @@
   :name "iadd"
   :arity 2
   :is-primitive 1
-  :variable-info 0)
+  :variable-info 0
+  :end 0)
 
 (define-variable iadd©constant)
 
@@ -126,7 +132,8 @@
   :name "int-less?"
   :arity 2
   :is-primitive 1
-  :variable-info 0)
+  :variable-info 0
+  :end 0)
 
 (define-variable int-less?©constant)
 
@@ -146,7 +153,8 @@
   :name "make-function"
   :arity 2
   :is-primitive 1
-  :variable-info 0)
+  :variable-info 0
+  :end 0)
 
 (define-variable make-function©constant)
 
@@ -166,7 +174,8 @@
   :name "random-dice"
   :arity 0
   :is-primitive 1
-  :variable-info 0)
+  :variable-info 0
+  :end 0)
 
 (define-variable random-dice©constant)
 

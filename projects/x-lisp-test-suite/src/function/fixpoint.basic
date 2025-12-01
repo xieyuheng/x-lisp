@@ -27,9 +27,12 @@
   :name "Y"
   :arity 1
   :is-primitive 0
-  :variable-info Y©variable-info)
+  :variable-info Y©variable-info
+  :end Y/end)
 
 (define-placeholder Y©variable-info)
+
+(define-placeholder Y/end)
 
 (define-variable Y©constant)
 
@@ -55,9 +58,12 @@
   :name "Y©λ₁"
   :arity 1
   :is-primitive 0
-  :variable-info Y©λ₁©variable-info)
+  :variable-info Y©λ₁©variable-info
+  :end Y©λ₁/end)
 
 (define-placeholder Y©λ₁©variable-info)
+
+(define-placeholder Y©λ₁/end)
 
 (define-variable Y©λ₁©constant)
 
@@ -96,9 +102,12 @@
   :name "Y©λ₂"
   :arity 2
   :is-primitive 0
-  :variable-info Y©λ₂©variable-info)
+  :variable-info Y©λ₂©variable-info
+  :end Y©λ₂/end)
 
 (define-placeholder Y©λ₂©variable-info)
+
+(define-placeholder Y©λ₂/end)
 
 (define-variable Y©λ₂©constant)
 
@@ -126,9 +135,12 @@
   :name "Y©λ₂©λ₁"
   :arity 2
   :is-primitive 0
-  :variable-info Y©λ₂©λ₁©variable-info)
+  :variable-info Y©λ₂©λ₁©variable-info
+  :end Y©λ₂©λ₁/end)
 
 (define-placeholder Y©λ₂©λ₁©variable-info)
+
+(define-placeholder Y©λ₂©λ₁/end)
 
 (define-variable Y©λ₂©λ₁©constant)
 

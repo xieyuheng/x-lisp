@@ -17,9 +17,12 @@
   :name "_main"
   :arity 0
   :is-primitive 0
-  :variable-info _main©variable-info)
+  :variable-info _main©variable-info
+  :end _main/end)
 
 (define-placeholder _main©variable-info)
+
+(define-placeholder _main/end)
 
 (define-variable _main©constant)
 

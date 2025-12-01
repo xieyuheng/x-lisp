@@ -57,6 +57,7 @@ function onFunctionDefinition(
         arity: B.IntMetadata(BigInt(definition.parameters.length)),
         "is-primitive": B.IntMetadata(0n),
         "variable-info": B.PointerMetadata(`${definition.name}©variable-info`),
+        end: B.PointerMetadata(`${definition.name}/end`),
       },
       definition.meta,
     ),
@@ -65,6 +66,13 @@ function onFunctionDefinition(
     B.PlaceholderDefinition(
       basicMod,
       `${definition.name}©variable-info`,
+      definition.meta,
+    ),
+
+    // (define-placeholder <name>/end)
+    B.PlaceholderDefinition(
+      basicMod,
+      `${definition.name}/end`,
       definition.meta,
     ),
 

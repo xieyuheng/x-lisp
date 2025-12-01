@@ -1,7 +1,6 @@
 # scan call stack
 
-[x-lisp-boot.js] use `define-placeholder` for the end label of the function
-
+[runtime.c] ambr uintptr_t uint64_t
 [basic-lisp.js] setup function table
 
 primitive function to test scan call stack -- print stack trace

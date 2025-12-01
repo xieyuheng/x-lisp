@@ -43,7 +43,8 @@
   (pointer _main©metadata/name)
   (int 0)
   (int 0)
-  (pointer _main©variable-info))
+  (pointer _main©variable-info)
+  (pointer _main/end))
 
 (define-data _main©metadata/name (string "_main"))
 
@@ -78,6 +79,7 @@
   (pointer println-non-void©metadata/name)
   (int 1)
   (int 1)
+  (int 0)
   (int 0))
 
 (define-data println-non-void©metadata/name
@@ -118,6 +120,7 @@
   (pointer ineg©metadata/name)
   (int 1)
   (int 1)
+  (int 0)
   (int 0))
 
 (define-data ineg©metadata/name (string "ineg"))
@@ -155,6 +158,7 @@
   (pointer make-function©metadata/name)
   (int 2)
   (int 1)
+  (int 0)
   (int 0))
 
 (define-data make-function©metadata/name
