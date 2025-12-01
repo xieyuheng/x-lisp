@@ -10,6 +10,7 @@ export type Stmt =
   | DefineVariable
   | DefineSetup
   | DefineMetadata
+  | DefinePlaceholder
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -87,6 +88,23 @@ export function DefineMetadata(
     kind: "DefineMetadata",
     name,
     attributes,
+    meta,
+  }
+}
+
+export type DefinePlaceholder = {
+  kind: "DefinePlaceholder"
+  name: string
+  meta?: Meta
+}
+
+export function DefinePlaceholder(
+  name: string,
+  meta?: Meta,
+): DefinePlaceholder {
+  return {
+    kind: "DefinePlaceholder",
+    name,
     meta,
   }
 }
