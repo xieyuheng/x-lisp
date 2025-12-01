@@ -1,6 +1,6 @@
 # basic-lisp
 
-[basic-lisp.js] parse `(define-placeholder)`
+[x-lisp-boot.js] `040-SelectInstructionPass` -- do not generate code for `PlaceholderDefinition`
 
 [x-lisp-boot.js] `variable-info` use `define-placeholder`
 

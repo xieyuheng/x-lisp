@@ -79,6 +79,15 @@ export function parseStmt(sexp: S.Sexp): Stmt {
         )
       }),
 
+      S.matcher("`(define-placeholder ,name)", ({ name }, { sexp }) => {
+        const keyword = S.asTael(sexp).elements[1]
+        const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+        return Stmts.DefinePlaceholder(
+          S.symbolContent(name),
+          meta,
+        )
+      }),
+
       S.matcher("(cons* 'export names)", ({ names }, { meta }) => {
         return Stmts.Export(S.listElements(names).map(S.symbolContent), meta)
       }),

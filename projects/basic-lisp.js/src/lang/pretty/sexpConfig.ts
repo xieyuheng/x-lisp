@@ -6,6 +6,7 @@ export const sexpConfig: S.Config = {
     ["define-variable", 1],
     ["define-setup", 1],
     ["define-metadata", 1],
+    ["define-placeholder", 1],
     ["block", 1],
 
     ["export", 0],
