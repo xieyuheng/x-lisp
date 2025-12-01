@@ -2,7 +2,7 @@ cc = gcc
 
 cflags = -std=c23
 cflags += -g
-cflags += -O0
+cflags += -O3
 cflags += -falign-functions=8
 cflags += -fno-omit-frame-pointer
 cflags += -I/usr/local/include
