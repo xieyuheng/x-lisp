@@ -1,6 +1,15 @@
+[basic-lisp.js] `PlaceholderDefinition`
+[basic-lisp.js] `DefinePlaceholder`
+[basic-lisp.js] parse `define-placeholder`
+[basic-lisp.js] variable-info use `define-placeholder`
+[basic-lisp.js] use `define-placeholder` for the end label of the function
+[machine-lisp.js] `transpile` -- generate function end label
+
+[basic-lisp.js] setup function table
+
 # scan call stack
 
-primitive funtion to test scan call stack -- print stack trace
+primitive function to test scan call stack -- print stack trace
 
 - when we have register allocation, before calling stack trace,
   all registers need to be saved to a context object.
