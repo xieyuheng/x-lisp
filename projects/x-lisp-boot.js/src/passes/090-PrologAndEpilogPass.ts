@@ -1,3 +1,4 @@
+import { numberAlign } from "@xieyuheng/helpers.js/number"
 import * as M from "@xieyuheng/machine-lisp.js"
 import assert from "node:assert"
 
@@ -71,11 +72,11 @@ function createRegisterInfo(definition: M.CodeDefinition): RegisterInfo {
   }
 }
 
-function leaveStackSpace(info: RegisterInfo): number {
-  let stackSpace = 0
-  stackSpace += info.calleeSavedRegs.length * 8
-  stackSpace += info.spillCount * 8
-  return stackSpace
+function computeLocalVariableStackSpace(info: RegisterInfo): number {
+  const calleeSavedSpace = info.calleeSavedRegs.length * 8
+  const spilledSpace = info.spillCount * 8
+  const totalSpace = numberAlign(16, calleeSavedSpace + spilledSpace)
+  return totalSpace - calleeSavedSpace
 }
 
 function createPrologBlock(info: RegisterInfo): M.Block {
@@ -83,7 +84,7 @@ function createPrologBlock(info: RegisterInfo): M.Block {
   instrs.push(M.Instr("pushq", [M.Reg("rbp")]))
   instrs.push(M.Instr("movq", [M.Reg("rsp"), M.Reg("rbp")]))
   instrs.push(...info.calleeSavedRegs.map((reg) => M.Instr("pushq", [reg])))
-  const stackSpace = leaveStackSpace(info)
+  const stackSpace = computeLocalVariableStackSpace(info)
   if (stackSpace !== 0)
     instrs.push(M.Instr("subq", [M.Imm(BigInt(stackSpace)), M.Reg("rsp")]))
   instrs.push(M.Instr("jmp", [M.Label("body", { isExternal: false })]))
@@ -92,7 +93,7 @@ function createPrologBlock(info: RegisterInfo): M.Block {
 
 function createEpilogBlock(info: RegisterInfo): M.Block {
   const instrs: Array<M.Instr> = []
-  const stackSpace = leaveStackSpace(info)
+  const stackSpace = computeLocalVariableStackSpace(info)
   if (stackSpace !== 0)
     instrs.push(M.Instr("addq", [M.Imm(BigInt(stackSpace)), M.Reg("rsp")]))
   instrs.push(

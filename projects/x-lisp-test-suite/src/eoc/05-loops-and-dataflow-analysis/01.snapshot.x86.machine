@@ -77,7 +77,7 @@
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
-    (subq (imm 24) (reg rsp))
+    (subq (imm 32) (reg rsp))
     (jmp (label body)))
   (block body
     (movq (label-imm (label _main)) (reg-deref (reg rbp) -8))
@@ -94,7 +94,7 @@
     (movq (reg rax) (label-deref (label _main©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 24) (reg rsp))
+    (addq (imm 32) (reg rsp))
     (popq (reg rbp))
     (retq)))
 
@@ -112,7 +112,7 @@
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
-    (subq (imm 24) (reg rsp))
+    (subq (imm 32) (reg rsp))
     (jmp (label body)))
   (block body
     (movq
@@ -131,7 +131,7 @@
     (movq (reg rax) (label-deref (label print©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 24) (reg rsp))
+    (addq (imm 32) (reg rsp))
     (popq (reg rbp))
     (retq)))
 
@@ -150,7 +150,7 @@
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
-    (subq (imm 24) (reg rsp))
+    (subq (imm 32) (reg rsp))
     (jmp (label body)))
   (block body
     (movq
@@ -171,7 +171,7 @@
      (label-deref (label println-non-void©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 24) (reg rsp))
+    (addq (imm 32) (reg rsp))
     (popq (reg rbp))
     (retq)))
 
@@ -189,7 +189,7 @@
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
-    (subq (imm 24) (reg rsp))
+    (subq (imm 32) (reg rsp))
     (jmp (label body)))
   (block body
     (movq
@@ -208,7 +208,7 @@
     (movq (reg rax) (label-deref (label newline©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 24) (reg rsp))
+    (addq (imm 32) (reg rsp))
     (popq (reg rbp))
     (retq)))
 
@@ -227,7 +227,7 @@
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
-    (subq (imm 24) (reg rsp))
+    (subq (imm 32) (reg rsp))
     (jmp (label body)))
   (block body
     (movq
@@ -248,7 +248,7 @@
      (label-deref (label make-function©constant)))
     (jmp (label epilog)))
   (block epilog
-    (addq (imm 24) (reg rsp))
+    (addq (imm 32) (reg rsp))
     (popq (reg rbp))
     (retq)))
 
@@ -256,7 +256,7 @@
   (block prolog
     (pushq (reg rbp))
     (movq (reg rsp) (reg rbp))
-    (subq (imm 8) (reg rsp))
+    (subq (imm 16) (reg rsp))
     (jmp (label body)))
   (block body
     (callq-n (label _main©setup) (arity 0))
@@ -270,7 +270,7 @@
     (callq-n (label make-function©setup) (arity 0))
     (movq (reg rax) (reg-deref (reg rbp) -8)))
   (block epilog
-    (addq (imm 8) (reg rsp))
+    (addq (imm 16) (reg rsp))
     (popq (reg rbp))
     (retq)))
 

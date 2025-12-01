@@ -111,7 +111,7 @@ _main©setup:
 _main©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        subq $24, %rsp
+        subq $32, %rsp
         jmp _main©setup.body
 _main©setup.body:
         movq $_main, -8(%rbp)
@@ -126,7 +126,7 @@ _main©setup.body:
         movq %rax, _main©constant(%rip)
         jmp _main©setup.epilog
 _main©setup.epilog:
-        addq $24, %rsp
+        addq $32, %rsp
         popq %rbp
         retq 
 .size _main©setup, . - _main©setup
@@ -160,7 +160,7 @@ println_non_void©setup:
 println_non_void©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        subq $24, %rsp
+        subq $32, %rsp
         jmp println_non_void©setup.body
 println_non_void©setup.body:
         movq $x_println_non_void, -8(%rbp)
@@ -175,7 +175,7 @@ println_non_void©setup.body:
         movq %rax, println_non_void©constant(%rip)
         jmp println_non_void©setup.epilog
 println_non_void©setup.epilog:
-        addq $24, %rsp
+        addq $32, %rsp
         popq %rbp
         retq 
 .size println_non_void©setup, . - println_non_void©setup
@@ -209,7 +209,7 @@ iadd©setup:
 iadd©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        subq $24, %rsp
+        subq $32, %rsp
         jmp iadd©setup.body
 iadd©setup.body:
         movq $x_iadd, -8(%rbp)
@@ -224,7 +224,7 @@ iadd©setup.body:
         movq %rax, iadd©constant(%rip)
         jmp iadd©setup.epilog
 iadd©setup.epilog:
-        addq $24, %rsp
+        addq $32, %rsp
         popq %rbp
         retq 
 .size iadd©setup, . - iadd©setup
@@ -258,7 +258,7 @@ make_function©setup:
 make_function©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        subq $24, %rsp
+        subq $32, %rsp
         jmp make_function©setup.body
 make_function©setup.body:
         movq $x_make_function, -8(%rbp)
@@ -273,7 +273,7 @@ make_function©setup.body:
         movq %rax, make_function©constant(%rip)
         jmp make_function©setup.epilog
 make_function©setup.epilog:
-        addq $24, %rsp
+        addq $32, %rsp
         popq %rbp
         retq 
 .size make_function©setup, . - make_function©setup
@@ -307,7 +307,7 @@ random_dice©setup:
 random_dice©setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        subq $24, %rsp
+        subq $32, %rsp
         jmp random_dice©setup.body
 random_dice©setup.body:
         movq $x_random_dice, -8(%rbp)
@@ -322,7 +322,7 @@ random_dice©setup.body:
         movq %rax, random_dice©constant(%rip)
         jmp random_dice©setup.epilog
 random_dice©setup.epilog:
-        addq $24, %rsp
+        addq $32, %rsp
         popq %rbp
         retq 
 .size random_dice©setup, . - random_dice©setup
@@ -334,7 +334,7 @@ _setup:
 _setup.prolog:
         pushq %rbp
         movq %rsp, %rbp
-        subq $8, %rsp
+        subq $16, %rsp
         jmp _setup.body
 _setup.body:
         callq _main©setup
@@ -348,7 +348,7 @@ _setup.body:
         callq random_dice©setup
         movq %rax, -8(%rbp)
 _setup.epilog:
-        addq $8, %rsp
+        addq $16, %rsp
         popq %rbp
         retq 
 .size _setup, . - _setup
