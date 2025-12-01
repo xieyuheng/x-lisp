@@ -49,6 +49,10 @@ export function qualifyDefinition(
       )
     }
 
+    case "PlaceholderDefinition": {
+      return B.PlaceholderDefinition(bundleMod, qualifiedName, definition.meta)
+    }
+
     case "PrimitiveFunctionDefinition": {
       let message = `[qualifyDefinition] unhandled definition kind`
       message += `\n  kind: ${definition.kind}`

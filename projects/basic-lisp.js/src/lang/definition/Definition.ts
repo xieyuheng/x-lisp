@@ -11,6 +11,7 @@ export type Definition =
   | VariableDefinition
   | SetupDefinition
   | MetadataDefinition
+  | PlaceholderDefinition
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
@@ -123,6 +124,26 @@ export function MetadataDefinition(
     mod,
     name,
     attributes,
+    meta,
+  }
+}
+
+export type PlaceholderDefinition = {
+  kind: "PlaceholderDefinition"
+  mod: Mod
+  name: string
+  meta?: Meta
+}
+
+export function PlaceholderDefinition(
+  mod: Mod,
+  name: string,
+  meta?: Meta,
+): PlaceholderDefinition {
+  return {
+    kind: "PlaceholderDefinition",
+    mod,
+    name,
     meta,
   }
 }

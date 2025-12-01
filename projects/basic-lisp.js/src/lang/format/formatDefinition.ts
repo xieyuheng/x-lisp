@@ -35,5 +35,9 @@ export function formatDefinition(definition: Definition): string {
     case "MetadataDefinition": {
       return `(define-metadata ${definition.name} ${formatMetadataAttributes(definition.attributes)})`
     }
+
+    case "PlaceholderDefinition": {
+      return `(define-placeholder ${definition.name})`
+    }
   }
 }

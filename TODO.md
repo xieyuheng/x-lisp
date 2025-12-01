@@ -1,10 +1,15 @@
 # basic-lisp
 
-[basic-lisp.js] `PlaceholderDefinition`
 [basic-lisp.js] `DefinePlaceholder`
-[basic-lisp.js] parse `define-placeholder`
-[basic-lisp.js] variable-info use `define-placeholder`
+
+- [basic-lisp.js] `load` -- handle `DefinePlaceholder`
+
+[basic-lisp.js] parse `(define-placeholder)`
+
+[x-lisp-boot.js] `variable-info` use `define-placeholder`
+
 [basic-lisp.js] use `define-placeholder` for the end label of the function
+
 [machine-lisp.js] `transpile` -- generate function end label
 
 [basic-lisp.js] setup function table
