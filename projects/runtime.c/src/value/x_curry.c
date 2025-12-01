@@ -4,7 +4,7 @@ object_spec_t curry_object_spec = {
     .name = "curry",
     .print_fn = (object_print_fn_t *) curry_print,
     .same_fn =  NULL,
-    .equal_fn =  (object_equal_fn_t *) curry_equal,
+    .equal_fn = (object_equal_fn_t *) curry_equal,
 };
 
 curry_t *

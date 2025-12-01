@@ -4,7 +4,7 @@ object_spec_t function_object_spec = {
     .name = "function",
     .print_fn = (object_print_fn_t *) function_print,
     .same_fn =  NULL,
-    .equal_fn =  (object_equal_fn_t *) function_equal,
+    .equal_fn = (object_equal_fn_t *) function_equal,
 };
 
 function_t *
