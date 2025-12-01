@@ -1,6 +1,5 @@
 # basic-lisp
 
-[basic-lisp.js] `load` -- handle `DefinePlaceholder`
 [basic-lisp.js] parse `(define-placeholder)`
 
 [x-lisp-boot.js] `variable-info` use `define-placeholder`

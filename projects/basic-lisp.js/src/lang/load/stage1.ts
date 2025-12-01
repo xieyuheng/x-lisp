@@ -58,4 +58,12 @@ export function stage1(mod: Mod, stmt: Stmt): void {
       ),
     )
   }
+
+
+  if (stmt.kind === "DefinePlaceholder") {
+    mod.definitions.set(
+      stmt.name,
+      Definitions.PlaceholderDefinition(mod, stmt.name, stmt.meta),
+    )
+  }
 }
