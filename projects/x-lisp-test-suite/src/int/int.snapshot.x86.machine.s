@@ -47,14 +47,6 @@ square©metadata.name:
         .string "square"
 .size square©metadata.name, . - square©metadata.name
 
-.data
-.align 8
-.type square©variable_info, @object
-square©variable_info:
-        .quad 4
-        .quad square©variable_info.names
-.size square©variable_info, . - square©variable_info
-
 .bss
 .align 8
 square©constant:
@@ -134,14 +126,6 @@ _main©metadata:
 _main©metadata.name:
         .string "_main"
 .size _main©metadata.name, . - _main©metadata.name
-
-.data
-.align 8
-.type _main©variable_info, @object
-_main©variable_info:
-        .quad 5
-        .quad _main©variable_info.names
-.size _main©variable_info, . - _main©variable_info
 
 .bss
 .align 8
@@ -350,6 +334,14 @@ _setup.epilog:
 
 .data
 .align 8
+.type square©variable_info, @object
+square©variable_info:
+        .quad 4
+        .quad square©variable_info.names
+.size square©variable_info, . - square©variable_info
+
+.data
+.align 8
 .type square©variable_info.names, @object
 square©variable_info.names:
         .quad square©variable_info.names.0
@@ -423,6 +415,14 @@ square©setup©variable_info.names.1:
 square©setup©variable_info.names.2:
         .string "function"
 .size square©setup©variable_info.names.2, . - square©setup©variable_info.names.2
+
+.data
+.align 8
+.type _main©variable_info, @object
+_main©variable_info:
+        .quad 5
+        .quad _main©variable_info.names
+.size _main©variable_info, . - _main©variable_info
 
 .data
 .align 8

@@ -69,7 +69,7 @@ function onPrimitiveFunctionDefinition(
     //   :name "<name>"
     //   :arity <arity>
     //   :is-primitive 1
-    //   :variable-info <name>©variable-info),
+    //   :variable-info 0)
     B.MetadataDefinition(basicMod, `${definition.name}©metadata`, {
       name: B.StringMetadata(definition.name),
       arity: B.IntMetadata(BigInt(definition.arity)),

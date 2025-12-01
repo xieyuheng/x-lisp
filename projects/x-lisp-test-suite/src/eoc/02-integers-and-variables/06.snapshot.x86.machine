@@ -43,10 +43,6 @@
 
 (define-data _main©metadata/name (string "_main"))
 
-(define-data _main©variable-info
-  (int 6)
-  (pointer _main©variable-info/names))
-
 (define-space _main©constant 8)
 
 (define-code _main©setup
@@ -252,6 +248,10 @@
     (addq (imm 16) (reg rsp))
     (popq (reg rbp))
     (retq)))
+
+(define-data _main©variable-info
+  (int 6)
+  (pointer _main©variable-info/names))
 
 (define-data _main©variable-info/names
   (pointer _main©variable-info/names/0)

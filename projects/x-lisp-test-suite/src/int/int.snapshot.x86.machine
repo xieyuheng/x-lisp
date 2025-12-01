@@ -33,10 +33,6 @@
 
 (define-data square©metadata/name (string "square"))
 
-(define-data square©variable-info
-  (int 4)
-  (pointer square©variable-info/names))
-
 (define-space square©constant 8)
 
 (define-code square©setup
@@ -102,10 +98,6 @@
   (pointer _main©variable-info))
 
 (define-data _main©metadata/name (string "_main"))
-
-(define-data _main©variable-info
-  (int 5)
-  (pointer _main©variable-info/names))
 
 (define-space _main©constant 8)
 
@@ -273,6 +265,10 @@
     (popq (reg rbp))
     (retq)))
 
+(define-data square©variable-info
+  (int 4)
+  (pointer square©variable-info/names))
+
 (define-data square©variable-info/names
   (pointer square©variable-info/names/0)
   (pointer square©variable-info/names/1)
@@ -304,6 +300,10 @@
 
 (define-data square©setup©variable-info/names/2
   (string "function"))
+
+(define-data _main©variable-info
+  (int 5)
+  (pointer _main©variable-info/names))
 
 (define-data _main©variable-info/names
   (pointer _main©variable-info/names/0)

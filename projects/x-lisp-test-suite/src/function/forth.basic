@@ -16,7 +16,7 @@
   :is-primitive 0
   :variable-info swap©variable-info)
 
-(define-metadata swap©variable-info)
+(define-placeholder swap©variable-info)
 
 (define-variable swap©constant)
 
@@ -55,7 +55,7 @@
   :is-primitive 0
   :variable-info drop©variable-info)
 
-(define-metadata drop©variable-info)
+(define-placeholder drop©variable-info)
 
 (define-variable drop©constant)
 
@@ -95,7 +95,7 @@
   :is-primitive 0
   :variable-info drop©λ₁©variable-info)
 
-(define-metadata drop©λ₁©variable-info)
+(define-placeholder drop©λ₁©variable-info)
 
 (define-variable drop©λ₁©constant)
 
@@ -124,7 +124,7 @@
   :is-primitive 0
   :variable-info drop©λ₁©λ₁©variable-info)
 
-(define-metadata drop©λ₁©λ₁©variable-info)
+(define-placeholder drop©λ₁©λ₁©variable-info)
 
 (define-variable drop©λ₁©λ₁©constant)
 
@@ -163,7 +163,7 @@
   :is-primitive 0
   :variable-info dup©variable-info)
 
-(define-metadata dup©variable-info)
+(define-placeholder dup©variable-info)
 
 (define-variable dup©constant)
 
@@ -193,7 +193,7 @@
   :is-primitive 0
   :variable-info dup©λ₁©variable-info)
 
-(define-metadata dup©λ₁©variable-info)
+(define-placeholder dup©λ₁©variable-info)
 
 (define-variable dup©λ₁©constant)
 
@@ -215,7 +215,7 @@
   :is-primitive 0
   :variable-info identity©variable-info)
 
-(define-metadata identity©variable-info)
+(define-placeholder identity©variable-info)
 
 (define-variable identity©constant)
 
@@ -250,7 +250,7 @@
   :is-primitive 0
   :variable-info _main©variable-info)
 
-(define-metadata _main©variable-info)
+(define-placeholder _main©variable-info)
 
 (define-variable _main©constant)
 

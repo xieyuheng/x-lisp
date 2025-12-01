@@ -29,7 +29,7 @@
   :is-primitive 0
   :variable-info Y©variable-info)
 
-(define-metadata Y©variable-info)
+(define-placeholder Y©variable-info)
 
 (define-variable Y©constant)
 
@@ -57,7 +57,7 @@
   :is-primitive 0
   :variable-info Y©λ₁©variable-info)
 
-(define-metadata Y©λ₁©variable-info)
+(define-placeholder Y©λ₁©variable-info)
 
 (define-variable Y©λ₁©constant)
 
@@ -98,7 +98,7 @@
   :is-primitive 0
   :variable-info Y©λ₂©variable-info)
 
-(define-metadata Y©λ₂©variable-info)
+(define-placeholder Y©λ₂©variable-info)
 
 (define-variable Y©λ₂©constant)
 
@@ -128,7 +128,7 @@
   :is-primitive 0
   :variable-info Y©λ₂©λ₁©variable-info)
 
-(define-metadata Y©λ₂©λ₁©variable-info)
+(define-placeholder Y©λ₂©λ₁©variable-info)
 
 (define-variable Y©λ₂©λ₁©constant)
 

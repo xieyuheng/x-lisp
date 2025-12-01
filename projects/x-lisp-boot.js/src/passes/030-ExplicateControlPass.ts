@@ -61,11 +61,10 @@ function onFunctionDefinition(
       definition.meta,
     ),
 
-    // (define-metadata <name>©variable-info)
-    B.MetadataDefinition(
+    // (define-placeholder <name>©variable-info)
+    B.PlaceholderDefinition(
       basicMod,
       `${definition.name}©variable-info`,
-      {},
       definition.meta,
     ),
 

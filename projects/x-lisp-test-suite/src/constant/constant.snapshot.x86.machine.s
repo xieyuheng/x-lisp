@@ -332,14 +332,6 @@ _main©metadata.name:
         .string "_main"
 .size _main©metadata.name, . - _main©metadata.name
 
-.data
-.align 8
-.type _main©variable_info, @object
-_main©variable_info:
-        .quad 3
-        .quad _main©variable_info.names
-.size _main©variable_info, . - _main©variable_info
-
 .bss
 .align 8
 _main©constant:
@@ -858,6 +850,14 @@ three©init_function©variable_info.names.3:
 three©init_function©variable_info.names.4:
         .string "_↩"
 .size three©init_function©variable_info.names.4, . - three©init_function©variable_info.names.4
+
+.data
+.align 8
+.type _main©variable_info, @object
+_main©variable_info:
+        .quad 3
+        .quad _main©variable_info.names
+.size _main©variable_info, . - _main©variable_info
 
 .data
 .align 8

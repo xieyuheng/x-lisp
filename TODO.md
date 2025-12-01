@@ -1,11 +1,7 @@
 # basic-lisp
 
-[x-lisp-boot.js] `variable-info` use `define-placeholder`
-
 [basic-lisp.js] use `define-placeholder` for the end label of the function
-
 [machine-lisp.js] `transpile` -- generate function end label
-
 [basic-lisp.js] setup function table
 
 # scan call stack

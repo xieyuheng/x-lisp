@@ -79,14 +79,6 @@ _main©metadata.name:
         .string "_main"
 .size _main©metadata.name, . - _main©metadata.name
 
-.data
-.align 8
-.type _main©variable_info, @object
-_main©variable_info:
-        .quad 18
-        .quad _main©variable_info.names
-.size _main©variable_info, . - _main©variable_info
-
 .bss
 .align 8
 _main©constant:
@@ -340,6 +332,14 @@ _setup.epilog:
         popq %rbp
         retq 
 .size _setup, . - _setup
+
+.data
+.align 8
+.type _main©variable_info, @object
+_main©variable_info:
+        .quad 18
+        .quad _main©variable_info.names
+.size _main©variable_info, . - _main©variable_info
 
 .data
 .align 8

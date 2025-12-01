@@ -263,10 +263,6 @@
 
 (define-data _main©metadata/name (string "_main"))
 
-(define-data _main©variable-info
-  (int 3)
-  (pointer _main©variable-info/names))
-
 (define-space _main©constant 8)
 
 (define-code _main©setup
@@ -578,6 +574,10 @@
 
 (define-data three©init-function©variable-info/names/4
   (string "_↩"))
+
+(define-data _main©variable-info
+  (int 3)
+  (pointer _main©variable-info/names))
 
 (define-data _main©variable-info/names
   (pointer _main©variable-info/names/0)

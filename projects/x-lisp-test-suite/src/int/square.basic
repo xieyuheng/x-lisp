@@ -14,7 +14,7 @@
   :is-primitive 0
   :variable-info square©variable-info)
 
-(define-metadata square©variable-info)
+(define-placeholder square©variable-info)
 
 (define-variable square©constant)
 
