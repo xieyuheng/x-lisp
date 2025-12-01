@@ -1,8 +1,14 @@
 # scan call stack
 
-primitive function to test scan call stack -- print stack trace
+[x-lisp-boot.js] `030-ExplicateControlPass` and `031-SetupPrimitiveFunctionPass` -- function metadata has `start`
 
-- when we have register allocation, before calling stack trace,
+[runtime.c] `function_metadata_t` -- has `start`
+
+[runtime.c] `x_print_stack_trace` -- to test call stack scan
+
+safepoint compile to `x_print_stack_trace` for now
+
+- TODO when we have register allocation, before calling stack trace,
   all registers need to be saved to a context object.
 
 # later
