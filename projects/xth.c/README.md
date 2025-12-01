@@ -1,3 +1,3 @@
 # xth
 
-stack-based vm.
+My stack-based forth-inspired VM.
