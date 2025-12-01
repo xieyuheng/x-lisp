@@ -8,7 +8,7 @@ object_spec_t function_object_spec = {
 };
 
 function_t *
-make_function(uintptr_t address, function_metadata_t *metadata) {
+make_function(uint64_t address, function_metadata_t *metadata) {
     function_t *self = new(function_t);
     self->spec = &function_object_spec;
     self->address = address;

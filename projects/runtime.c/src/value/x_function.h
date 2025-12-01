@@ -4,7 +4,7 @@ extern object_spec_t function_object_spec;
 
 struct function_t {
     object_spec_t *spec;
-    uintptr_t address;
+    uint64_t address;
     function_metadata_t *metadata;
 };
 
@@ -21,7 +21,7 @@ struct __attribute__((packed)) variable_info_t {
     char **names;
 };
 
-function_t *make_function(uintptr_t address, function_metadata_t *metadata);
+function_t *make_function(uint64_t address, function_metadata_t *metadata);
 void function_free(function_t *self);
 
 bool function_equal(function_t *lhs, function_t *rhs);

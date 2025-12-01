@@ -1,6 +1,5 @@
 # scan call stack
 
-[runtime.c] ambr uintptr_t uint64_t
 [basic-lisp.js] setup function table
 
 primitive function to test scan call stack -- print stack trace

@@ -2,7 +2,7 @@
 
 value_t x_address(void *pointer);
 bool address_p(value_t value);
-uintptr_t to_address(value_t value);
+uint64_t to_address(value_t value);
 
 typedef value_t (value_0_ary_fn_t)(void);
 typedef value_t (value_1_ary_fn_t)(value_t x1);
