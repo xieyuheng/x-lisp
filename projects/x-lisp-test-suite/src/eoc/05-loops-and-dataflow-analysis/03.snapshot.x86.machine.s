@@ -128,6 +128,7 @@ _main.epilog:
         addq $304, %rsp
         popq %rbp
         retq 
+_main.end:
         .size _main, . - _main
 
         .section .data
@@ -177,6 +178,7 @@ _main©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+_main©setup.end:
         .size _main©setup, . - _main©setup
 
         .section .data
@@ -226,6 +228,7 @@ equal_p©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+equal_p©setup.end:
         .size equal_p©setup, . - equal_p©setup
 
         .section .data
@@ -275,6 +278,7 @@ print©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+print©setup.end:
         .size print©setup, . - print©setup
 
         .section .data
@@ -324,6 +328,7 @@ println_non_void©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+println_non_void©setup.end:
         .size println_non_void©setup, . - println_non_void©setup
 
         .section .data
@@ -373,6 +378,7 @@ newline©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+newline©setup.end:
         .size newline©setup, . - newline©setup
 
         .section .data
@@ -422,6 +428,7 @@ make_function©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+make_function©setup.end:
         .size make_function©setup, . - make_function©setup
 
         .section .text
@@ -450,6 +457,7 @@ _setup.epilog:
         addq $16, %rsp
         popq %rbp
         retq 
+_setup.end:
         .size _setup, . - _setup
 
         .section .data

@@ -32,6 +32,7 @@ function transpileDefinition(definition: M.Definition): string {
       code += `${indentation}.type ${name}, @function\n`
       code += `${name}:\n`
       code += `${blocks}\n`
+      code += `${name}.end:\n`
       code += `${indentation}.size ${name}, . - ${name}\n`
       return code
     }

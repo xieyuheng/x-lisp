@@ -30,6 +30,7 @@ one©flag_setup.epilog:
         addq $16, %rsp
         popq %rbp
         retq 
+one©flag_setup.end:
         .size one©flag_setup, . - one©flag_setup
 
         .section .text
@@ -68,6 +69,7 @@ one©get.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+one©get.end:
         .size one©get, . - one©get
 
         .section .text
@@ -87,6 +89,7 @@ one©init_function.epilog:
         addq $16, %rsp
         popq %rbp
         retq 
+one©init_function.end:
         .size one©init_function, . - one©init_function
 
         .section .bss
@@ -118,6 +121,7 @@ two©flag_setup.epilog:
         addq $16, %rsp
         popq %rbp
         retq 
+two©flag_setup.end:
         .size two©flag_setup, . - two©flag_setup
 
         .section .text
@@ -156,6 +160,7 @@ two©get.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+two©get.end:
         .size two©get, . - two©get
 
         .section .text
@@ -187,6 +192,7 @@ two©init_function.epilog:
         addq $48, %rsp
         popq %rbp
         retq 
+two©init_function.end:
         .size two©init_function, . - two©init_function
 
         .section .bss
@@ -218,6 +224,7 @@ three©flag_setup.epilog:
         addq $16, %rsp
         popq %rbp
         retq 
+three©flag_setup.end:
         .size three©flag_setup, . - three©flag_setup
 
         .section .text
@@ -256,6 +263,7 @@ three©get.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+three©get.end:
         .size three©get, . - three©get
 
         .section .text
@@ -287,6 +295,7 @@ three©init_function.epilog:
         addq $48, %rsp
         popq %rbp
         retq 
+three©init_function.end:
         .size three©init_function, . - three©init_function
 
         .section .text
@@ -313,6 +322,7 @@ _main.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+_main.end:
         .size _main, . - _main
 
         .section .data
@@ -362,6 +372,7 @@ _main©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+_main©setup.end:
         .size _main©setup, . - _main©setup
 
         .section .data
@@ -411,6 +422,7 @@ println_non_void©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+println_non_void©setup.end:
         .size println_non_void©setup, . - println_non_void©setup
 
         .section .data
@@ -460,6 +472,7 @@ iadd©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+iadd©setup.end:
         .size iadd©setup, . - iadd©setup
 
         .section .data
@@ -509,6 +522,7 @@ make_function©setup.epilog:
         addq $32, %rsp
         popq %rbp
         retq 
+make_function©setup.end:
         .size make_function©setup, . - make_function©setup
 
         .section .text
@@ -539,6 +553,7 @@ _setup.epilog:
         addq $16, %rsp
         popq %rbp
         retq 
+_setup.end:
         .size _setup, . - _setup
 
         .section .data

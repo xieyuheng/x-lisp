@@ -1,6 +1,5 @@
 # scan call stack
 
-[machine-lisp.js] `transpile` -- generate function end label
 [x-lisp-boot.js] use `define-placeholder` for the end label of the function
 
 [basic-lisp.js] setup function table
