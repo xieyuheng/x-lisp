@@ -21,3 +21,6 @@ typedef enum {
 typedef struct object_spec_t object_spec_t;
 typedef struct object_t object_t;
 typedef struct curry_t curry_t;
+typedef struct function_t function_t;
+typedef struct function_metadata_t function_metadata_t;
+typedef struct variable_info_t variable_info_t;

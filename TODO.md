@@ -1,9 +1,5 @@
 # function object
 
-[runtime.c] `function_metadata_t`
-[runtime.c] `function_t` -- has `address` and `metadata`
-[runtime.c] `x_make_function`
-
 [runtime.c] `x_apply_unary` can take `function_t`
 
 # function constant
@@ -68,4 +64,3 @@ xth.c -- port code from xvm
 
 [runtime.c] `object_spec_t` -- has `get_slot_fn`
 [runtime.c] `function_t` -- has register map
-[runtime.c] [maybe] use inline union for `address` to avoid casting

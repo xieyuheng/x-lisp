@@ -17,3 +17,4 @@
 #include "x_apply.h"
 #include "x_random.h"
 #include "x_curry.h"
+#include "x_function.h"
