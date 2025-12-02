@@ -86,3 +86,28 @@ square: @dup @mul @ret
 
 由于是变长指令集，所以可以用特殊的 op code 来处理 string literal，
 比如 `@string "..."`，其中 `"..."` 就是 byte array end with null。
+
+# 参数顺序
+
+[2025-12-02]
+
+为了方便 curry，在 applicative 语言中，
+被 curry 的参数在前，target 通常在最后。
+
+在 concatenative 语言中，为了方便 curry，
+参数在栈中的顺序要和所对应的
+applicative 语言中 parameters 的顺序相反。
+
+比如 `(list-put index value list)`
+对应于 `list value index list-put`。
+`(list-put index value)` 是一个 curry 了的函数，
+`value index list-put` 也可以被定义为一个 curry 了的函数。
+
+但是如果在编译到 forth 时，
+反转每个 parameters 的顺序，
+这会导致认知上很大的困扰。
+
+并且不能要求每个函数的参数顺序都与 applicative 相反，
+比如 `2 1 sub` 应该对应 `(sub 2 1)`。
+
+这基本上就导致了编译到 forth 并不合适。
