@@ -14,8 +14,7 @@ main(void) {
     {
         void *pointer = allocate(10);
         assert(pointer_is_8_bytes_aligned(pointer));
-        destroy(&pointer);
-        destroy(&pointer);
+        free(pointer);
     }
 
     {
@@ -37,7 +36,7 @@ main(void) {
         assert(pointer[4] == 0);
         assert(pointer[5] == 0);
 
-        destroy((void **) &pointer);
+        free(pointer);
     }
 
     {
@@ -59,15 +58,14 @@ main(void) {
         assert(pointer[4] == 0);
         assert(pointer[5] == 0);
 
-        destroy((void **) &pointer);
+        free(pointer);
     }
 
     {
         void *pointer = allocate_page_aligned(10);
         assert(pointer_is_8_bytes_aligned(pointer));
         assert(pointer_is_page_aligned(pointer));
-        destroy(&pointer);
-        destroy(&pointer);
+        free(pointer);
     }
 
     {
@@ -76,8 +74,7 @@ main(void) {
         assert(pointer_is_8_bytes_aligned(v));
         v->x = 0.1;
         v->y = 0.1;
-        destroy((void **) &v);
-        destroy((void **) &v);
+        free(v);
     }
 
     {
@@ -87,8 +84,7 @@ main(void) {
         assert(pointer_is_page_aligned(v));
         v->x = 0.1;
         v->y = 0.1;
-        destroy((void **) &v);
-        destroy((void **) &v);
+        free(v);
     }
 
     test_end();
