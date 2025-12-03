@@ -1,13 +1,27 @@
-[helper.c] `memory` -- set `MEMORY_DEBUG` will use `memory_debug_allocate` and `memory_debug_free`
-
 # scan call stack
 
-[runtime.c] `x_print_stack_trace` -- to test call stack scan
+[runtime.c] `debug/` -- `x_print_stack_trace` -- setup
 
-safepoint compile to `x_print_stack_trace` for now
+[runtime.c] `gc/` -- setup
+[runtime.c] `x_gc_required_p` -- setup
+[runtime.c] `x_gc_collect` -- -- call `x_print_stack_trace`
 
-- TODO when we have register allocation, before calling stack trace,
+[x-lisp-boot.js] `090-PrologAndEpilogPass` -- prolog jump to first block instead of `body`
+
+[basic-lisp.js] add `gc-check` and `gc-collect` block to every function
+
+- `gc-check` -- call `x_gc_required_p`
+
+- `gc-collect` -- call `x_gc_collect`
+
+  TODO `gc-collect` when we have register allocation, before calling stack trace,
   all registers need to be saved to a context object.
+
+[runtime.c] `x_print_stack_trace`
+
+# debug in c
+
+[helper.c] `memory` -- set `MEMORY_DEBUG` will use `memory_debug_allocate` and `memory_debug_free`
 
 # later
 
@@ -28,10 +42,16 @@ x_random_int
 x_random_float
 ```
 
-# maybe
+# maybe -- about literal curry
 
 [x-lisp-boot.js] add `Curry` back to `Exp` -- fix all passes
+
+- because make-curry might be hard to optimize
+
 [x-lisp-boot.js] `040-SelectInstructionPass` -- `selectLiteral` -- handle curry
+
+- but it will be not symmetrical to `(literal (@function ...))`,
+  which is compiled to variable reference.
 
 # gc
 
