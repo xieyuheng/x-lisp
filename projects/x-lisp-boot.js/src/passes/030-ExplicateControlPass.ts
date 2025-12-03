@@ -49,6 +49,7 @@ function onFunctionDefinition(
     //   :arity <arity>
     //   :is-primitive 0
     //   :variable-info <name>©variable-info
+    //   :start <address>
     //   :end <address>)
     B.MetadataDefinition(
       basicMod,
@@ -58,6 +59,7 @@ function onFunctionDefinition(
         arity: B.IntMetadata(BigInt(definition.parameters.length)),
         "is-primitive": B.IntMetadata(0n),
         "variable-info": B.PointerMetadata(`${definition.name}©variable-info`),
+        start: B.PointerMetadata(`${definition.name}`),
         end: B.PointerMetadata(`${definition.name}/end`),
       },
       definition.meta,

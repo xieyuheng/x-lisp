@@ -13,6 +13,7 @@
   :arity 1
   :is-primitive 0
   :variable-info square©variable-info
+  :start square
   :end square/end)
 
 (define-placeholder square©variable-info)

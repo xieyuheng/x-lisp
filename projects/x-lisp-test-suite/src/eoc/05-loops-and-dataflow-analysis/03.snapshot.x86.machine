@@ -134,6 +134,7 @@
   (int 0)
   (int 0)
   (pointer _main©variable-info)
+  (pointer _main)
   (pointer _main/end))
 
 (define-data _main©metadata/name (string "_main"))
@@ -169,6 +170,7 @@
   (pointer equal?©metadata/name)
   (int 2)
   (int 1)
+  (int 0)
   (int 0)
   (int 0))
 
@@ -208,6 +210,7 @@
   (int 1)
   (int 1)
   (int 0)
+  (int 0)
   (int 0))
 
 (define-data print©metadata/name (string "print"))
@@ -245,6 +248,7 @@
   (pointer println-non-void©metadata/name)
   (int 1)
   (int 1)
+  (int 0)
   (int 0)
   (int 0))
 
@@ -287,6 +291,7 @@
   (int 0)
   (int 1)
   (int 0)
+  (int 0)
   (int 0))
 
 (define-data newline©metadata/name (string "newline"))
@@ -324,6 +329,7 @@
   (pointer make-function©metadata/name)
   (int 2)
   (int 1)
+  (int 0)
   (int 0)
   (int 0))
 

@@ -18,6 +18,7 @@
   :arity 0
   :is-primitive 0
   :variable-info _main©variable-info
+  :start _main
   :end _main/end)
 
 (define-placeholder _main©variable-info)

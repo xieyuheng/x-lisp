@@ -70,12 +70,14 @@ function onPrimitiveFunctionDefinition(
     //   :arity <arity>
     //   :is-primitive 1
     //   :variable-info 0
+    //   :start 0
     //   :end 0)
     B.MetadataDefinition(basicMod, `${definition.name}©metadata`, {
       name: B.StringMetadata(definition.name),
       arity: B.IntMetadata(BigInt(definition.arity)),
       "is-primitive": B.IntMetadata(1n),
       "variable-info": B.IntMetadata(0n), // NULL
+      start: B.IntMetadata(0n), // NULL
       end: B.IntMetadata(0n), // NULL
     }),
 

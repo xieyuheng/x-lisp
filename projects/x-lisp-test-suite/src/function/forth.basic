@@ -15,6 +15,7 @@
   :arity 3
   :is-primitive 0
   :variable-info swap©variable-info
+  :start swap
   :end swap/end)
 
 (define-placeholder swap©variable-info)
@@ -57,6 +58,7 @@
   :arity 1
   :is-primitive 0
   :variable-info drop©variable-info
+  :start drop
   :end drop/end)
 
 (define-placeholder drop©variable-info)
@@ -100,6 +102,7 @@
   :arity 2
   :is-primitive 0
   :variable-info drop©λ₁©variable-info
+  :start drop©λ₁
   :end drop©λ₁/end)
 
 (define-placeholder drop©λ₁©variable-info)
@@ -132,6 +135,7 @@
   :arity 2
   :is-primitive 0
   :variable-info drop©λ₁©λ₁©variable-info
+  :start drop©λ₁©λ₁
   :end drop©λ₁©λ₁/end)
 
 (define-placeholder drop©λ₁©λ₁©variable-info)
@@ -174,6 +178,7 @@
   :arity 1
   :is-primitive 0
   :variable-info dup©variable-info
+  :start dup
   :end dup/end)
 
 (define-placeholder dup©variable-info)
@@ -207,6 +212,7 @@
   :arity 2
   :is-primitive 0
   :variable-info dup©λ₁©variable-info
+  :start dup©λ₁
   :end dup©λ₁/end)
 
 (define-placeholder dup©λ₁©variable-info)
@@ -232,6 +238,7 @@
   :arity 1
   :is-primitive 0
   :variable-info identity©variable-info
+  :start identity
   :end identity/end)
 
 (define-placeholder identity©variable-info)
@@ -270,6 +277,7 @@
   :arity 0
   :is-primitive 0
   :variable-info _main©variable-info
+  :start _main
   :end _main/end)
 
 (define-placeholder _main©variable-info)

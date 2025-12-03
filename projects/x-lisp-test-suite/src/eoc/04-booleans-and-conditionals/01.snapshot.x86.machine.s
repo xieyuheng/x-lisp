@@ -117,6 +117,7 @@ _main©metadata:
         .quad 0
         .quad 0
         .quad _main©variable_info
+        .quad _main
         .quad _main.end
         .size _main©metadata, . - _main©metadata
 
@@ -167,6 +168,7 @@ equal_p©metadata:
         .quad equal_p©metadata.name
         .quad 2
         .quad 1
+        .quad 0
         .quad 0
         .quad 0
         .size equal_p©metadata, . - equal_p©metadata
@@ -220,6 +222,7 @@ println_non_void©metadata:
         .quad 1
         .quad 0
         .quad 0
+        .quad 0
         .size println_non_void©metadata, . - println_non_void©metadata
 
         .section .data
@@ -269,6 +272,7 @@ iadd©metadata:
         .quad iadd©metadata.name
         .quad 2
         .quad 1
+        .quad 0
         .quad 0
         .quad 0
         .size iadd©metadata, . - iadd©metadata
@@ -322,6 +326,7 @@ int_less_p©metadata:
         .quad 1
         .quad 0
         .quad 0
+        .quad 0
         .size int_less_p©metadata, . - int_less_p©metadata
 
         .section .data
@@ -373,6 +378,7 @@ make_function©metadata:
         .quad 1
         .quad 0
         .quad 0
+        .quad 0
         .size make_function©metadata, . - make_function©metadata
 
         .section .data
@@ -422,6 +428,7 @@ random_dice©metadata:
         .quad random_dice©metadata.name
         .quad 0
         .quad 1
+        .quad 0
         .quad 0
         .quad 0
         .size random_dice©metadata, . - random_dice©metadata

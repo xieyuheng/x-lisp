@@ -25,6 +25,7 @@
   :arity 0
   :is-primitive 0
   :variable-info _main©variable-info
+  :start _main
   :end _main/end)
 
 (define-placeholder _main©variable-info)
@@ -50,6 +51,7 @@
   :arity 1
   :is-primitive 1
   :variable-info 0
+  :start 0
   :end 0)
 
 (define-variable print©constant)
@@ -71,6 +73,7 @@
   :arity 1
   :is-primitive 1
   :variable-info 0
+  :start 0
   :end 0)
 
 (define-variable println-non-void©constant)
@@ -94,6 +97,7 @@
   :arity 0
   :is-primitive 1
   :variable-info 0
+  :start 0
   :end 0)
 
 (define-variable newline©constant)
@@ -115,6 +119,7 @@
   :arity 2
   :is-primitive 1
   :variable-info 0
+  :start 0
   :end 0)
 
 (define-variable make-function©constant)
