@@ -2,8 +2,6 @@
 
 # scan call stack
 
-[runtime.c] `function_metadata_t` -- has `start`
-
 [runtime.c] `x_print_stack_trace` -- to test call stack scan
 
 safepoint compile to `x_print_stack_trace` for now

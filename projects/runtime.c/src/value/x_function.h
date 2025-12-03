@@ -13,6 +13,7 @@ struct __attribute__((packed)) function_metadata_t {
     uint64_t arity;
     uint64_t is_primitive;
     variable_info_t *variable_info;
+    uint64_t start;
     uint64_t end;
 };
 
