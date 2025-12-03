@@ -18,7 +18,7 @@ thread_fn(thread_t *thread) {
 
         for (size_t i = 0; i < BATCH_SIZE; i++) {
             void *value = stack_pop(allocated_stack);
-            allocator_recycle(allocator, stack, &value);
+            allocator_recycle(allocator, stack, value);
         }
     }
 }
@@ -51,7 +51,7 @@ main(void) {
     double throughput = REPEATION_COUNT * BATCH_SIZE / 1000 / time_passed_second(start_second);
     where_printf("throughput: %.f k/s\n", throughput);
 
-    allocator_destroy(&allocator);
+    allocator_free(allocator);
 
     test_end();
 }

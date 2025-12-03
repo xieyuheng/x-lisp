@@ -2,6 +2,6 @@
 
 stack_t *
 string_make_stack(void) {
-    stack_t *self = make_stack_with((destroy_fn_t *) string_destroy);
+    stack_t *self = make_stack_with((free_fn_t *) string_free);
     return self;
 }

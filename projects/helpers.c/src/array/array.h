@@ -5,7 +5,7 @@ struct array_t {
     size_t grow_step;
     size_t cursor;
     void **values;
-    destroy_fn_t *destroy_fn;
+    free_fn_t *free_fn;
 };
 
 // growable array
@@ -14,13 +14,13 @@ array_t *make_array(size_t size);
 void array_purge(array_t *self);
 void array_free(array_t *self);
 
-void array_put_destroy_fn(array_t *self, destroy_fn_t *destroy_fn);
-array_t *make_array_with(size_t size, destroy_fn_t *destroy_fn);
+void array_put_free_fn(array_t *self, free_fn_t *free_fn);
+array_t *make_array_with(size_t size, free_fn_t *free_fn);
 
 #define ARRAY_AUTO_SIZE 64
 
 array_t *make_array_auto(void);
-array_t *make_array_auto_with(destroy_fn_t *destroy_fn);
+array_t *make_array_auto_with(free_fn_t *free_fn);
 
 inline size_t
 array_size(const array_t *self) {

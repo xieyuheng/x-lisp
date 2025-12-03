@@ -12,14 +12,9 @@ make_set(void) {
 }
 
 void
-set_destroy(set_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    set_t *self = *self_pointer;
-    hash_destroy(&self->value_hash);
+set_free(set_t *self) {
+    hash_free(self->value_hash);
     free(self);
-    *self_pointer = NULL;
 }
 
 void
@@ -28,9 +23,9 @@ set_put_hash_fn(set_t *self, hash_fn_t *hash_fn) {
 }
 
 void
-set_put_destroy_fn(set_t *self, destroy_fn_t *destroy_fn) {
+set_put_free_fn(set_t *self, free_fn_t *free_fn) {
     // key is the same as value
-    hash_put_key_destroy_fn(self->value_hash, destroy_fn);
+    hash_put_key_free_fn(self->value_hash, free_fn);
 }
 
 void
@@ -39,9 +34,9 @@ set_put_equal_fn(set_t *self, equal_fn_t *equal_fn) {
 }
 
 set_t *
-make_put_with(destroy_fn_t *destroy_fn) {
+make_put_with(free_fn_t *free_fn) {
     set_t *self = make_set();
-    set_put_destroy_fn(self, destroy_fn);
+    set_put_free_fn(self, free_fn);
     return self;
 }
 
@@ -49,7 +44,7 @@ set_t *
 string_make_set(void) {
     set_t *self = make_set();
     set_put_hash_fn(self, (hash_fn_t *) string_bernstein_hash);
-    set_put_destroy_fn(self, (destroy_fn_t *) string_destroy);
+    set_put_free_fn(self, (free_fn_t *) string_free);
     set_put_equal_fn(self, (equal_fn_t *) string_equal);
     return self;
 }

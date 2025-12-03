@@ -1,7 +1,7 @@
 #pragma once
 
 text_t *make_text(size_t length);
-void text_destroy(text_t **self_pointer);
+void text_free(text_t *self);
 
 text_t *text_from_string(const char *string);
 

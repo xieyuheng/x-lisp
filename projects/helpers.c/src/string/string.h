@@ -1,6 +1,6 @@
 #pragma once
 
-void string_destroy(char **self_pointer);
+void string_free(char *self);
 char *string_copy(const char *self);
 size_t string_length(const char *self);
 char *string_empty(void);

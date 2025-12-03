@@ -9,13 +9,8 @@ make_atom_sexp(const token_t *token) {
 }
 
 void
-atom_sexp_destroy(atom_sexp_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    atom_sexp_t *self = *self_pointer;
+atom_sexp_free(atom_sexp_t *self) {
     free(self);
-    *self_pointer = NULL;
 }
 
 list_sexp_t *
@@ -29,30 +24,21 @@ make_list_sexp(const token_t *start_token, const token_t *end_token, list_t *sex
 }
 
 void
-list_sexp_destroy(list_sexp_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    list_sexp_t *self = *self_pointer;
-    list_destroy(&self->sexp_list);
+list_sexp_free(list_sexp_t *self) {
+    list_free(self->sexp_list);
     free(self);
-    *self_pointer = NULL;
 }
 
 void
-sexp_destroy(sexp_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    sexp_t *self = *self_pointer;
+sexp_free(sexp_t *self) {
     switch (self->kind) {
     case ATOM_SEXP: {
-        atom_sexp_destroy((atom_sexp_t **) self_pointer);
+        atom_sexp_free((atom_sexp_t *) self);
         return;
     }
 
     case LIST_SEXP: {
-        list_sexp_destroy((list_sexp_t **) self_pointer);
+        list_sexp_free((list_sexp_t *) self);
         return;
     }
     }
@@ -74,7 +60,7 @@ parse_sexp(list_t *token_list) {
 
 static list_t *
 parse_list(list_t *token_list) {
-    list_t *sexp_list = make_list_with((destroy_fn_t *) sexp_destroy);
+    list_t *sexp_list = make_list_with((free_fn_t *) sexp_free);
     while (!list_is_empty(token_list)) {
         token_t *token = list_first(token_list);
         if (string_equal(token->string, ")"))
@@ -101,8 +87,8 @@ sexp_parse_list(const char *string) {
 
     list_t *result = parse_list(lexer->token_list);
     assert(list_is_empty(lexer->token_list));
-    list_destroy(&lexer->token_list);
-    lexer_destroy(&lexer);
+    list_free(lexer->token_list);
+    lexer_free(lexer);
     return result;
 }
 
@@ -110,7 +96,7 @@ sexp_t *
 sexp_parse(const char *string) {
     list_t *sexp_list = sexp_parse_list(string);
     sexp_t *sexp = list_shift(sexp_list);
-    list_destroy(&sexp_list);
+    list_free(sexp_list);
     return sexp;
 }
 

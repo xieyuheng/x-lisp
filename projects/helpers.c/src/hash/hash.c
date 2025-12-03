@@ -24,8 +24,8 @@ struct hash_t {
     void *cursor_key;
 
     hash_fn_t *hash_fn;
-    destroy_fn_t *destroy_fn;
-    destroy_fn_t *key_destroy_fn;
+    free_fn_t *free_fn;
+    free_fn_t *key_free_fn;
     equal_fn_t *key_equal_fn;
 };
 
@@ -71,13 +71,13 @@ hash_put_hash_fn(hash_t *self, hash_fn_t *hash_fn) {
 }
 
 void
-hash_put_destroy_fn(hash_t *self, destroy_fn_t *destroy_fn) {
-    self->destroy_fn = destroy_fn;
+hash_put_free_fn(hash_t *self, free_fn_t *free_fn) {
+    self->free_fn = free_fn;
 }
 
 void
-hash_put_key_destroy_fn(hash_t *self, destroy_fn_t *key_destroy_fn) {
-    self->key_destroy_fn = key_destroy_fn;
+hash_put_key_free_fn(hash_t *self, free_fn_t *key_free_fn) {
+    self->key_free_fn = key_free_fn;
 }
 
 void
@@ -88,7 +88,7 @@ hash_put_key_equal_fn(hash_t *self, equal_fn_t *key_equal_fn) {
 hash_t *
 hash_of_string_key(void) {
     hash_t* self = make_hash();
-    hash_put_key_destroy_fn(self, (destroy_fn_t *) string_destroy);
+    hash_put_key_free_fn(self, (free_fn_t *) string_free);
     hash_put_key_equal_fn(self, (equal_fn_t *) string_equal);
     hash_put_hash_fn(self, (hash_fn_t *) string_bernstein_hash);
     return self;
@@ -100,7 +100,7 @@ static void
 hash_purge_without_shrink(hash_t *self) {
     size_t limit = hash_primes[self->prime_index];
     for (size_t index = 0; index < limit; index++) {
-        // destroy all entries in this hash bucket.
+        // free all entries in this hash bucket.
         entry_t *entry = self->entries[index];
         while (entry) {
             entry_t *next = entry->next;
@@ -113,15 +113,10 @@ hash_purge_without_shrink(hash_t *self) {
 }
 
 void
-hash_destroy(hash_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    hash_t *self = *self_pointer;
+hash_free(hash_t *self) {
     hash_purge_without_shrink(self);
     free(self->entries);
     free(self);
-    *self_pointer = NULL;
 }
 
 void
@@ -259,10 +254,10 @@ hash_delete_entry(hash_t *self, entry_t *entry) {
     if (entry_pointer == &(self->entries[entry->index]))
         self->used_indexes_size--;
 
-    if (self->destroy_fn)
-        self->destroy_fn(&entry->value);
-    if (self->key_destroy_fn)
-        self->key_destroy_fn(&entry->key);
+    if (self->free_fn)
+        self->free_fn(entry->value);
+    if (self->key_free_fn)
+        self->key_free_fn(entry->key);
     free(entry);
 }
 
@@ -298,11 +293,11 @@ hash_put(hash_t *self, void *key, void *value) {
         return;
     }
 
-    if (self->key_destroy_fn)
-        self->key_destroy_fn(&key);
+    if (self->key_free_fn)
+        self->key_free_fn(key);
 
-    if (self->destroy_fn)
-        self->destroy_fn(&entry->value);
+    if (self->free_fn)
+        self->free_fn(entry->value);
 
     entry->value = value;
 }

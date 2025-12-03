@@ -6,7 +6,7 @@ struct utf8_iter_t {
 };
 
 utf8_iter_t *make_utf8_iter(const char *string);
-void utf8_iter_destroy(utf8_iter_t **self_pointer);
+void utf8_iter_free(utf8_iter_t *self);
 
 // We view code point 0 as the ending point like in c string.
 code_point_t utf8_iter_current(utf8_iter_t *self);

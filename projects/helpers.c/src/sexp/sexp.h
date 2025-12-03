@@ -24,12 +24,12 @@ struct list_sexp_t {
 };
 
 atom_sexp_t *make_atom_sexp(const token_t *token);
-void atom_sexp_destroy(atom_sexp_t **self_pointer);
+void atom_sexp_free(atom_sexp_t *self);
 
 list_sexp_t *make_list_sexp(const token_t *start_token, const token_t *end_token, list_t *sexp_list);
-void list_sexp_destroy(list_sexp_t **self_pointer);
+void list_sexp_free(list_sexp_t *self);
 
-void sexp_destroy(sexp_t **self_pointer);
+void sexp_free(sexp_t *self);
 
 list_t *sexp_parse_list(const char *string);
 sexp_t *sexp_parse(const char *string);

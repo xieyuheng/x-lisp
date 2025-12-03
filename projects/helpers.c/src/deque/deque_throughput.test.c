@@ -45,7 +45,7 @@ main(void) {
     double throughput = LENGTH / 1000 / time_passed_second(start_second);
     where_printf("throughput: %.f k/s\n", throughput);
 
-    deque_destroy(&deque);
+    deque_free(deque);
 
     test_end();
 }

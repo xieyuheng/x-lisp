@@ -16,7 +16,7 @@ commander_t *make_commander(
     const char *version,
     int argc,
     char **argv);
-void commander_destroy(commander_t **self_pointer);
+void commander_free(commander_t *self);
 
 const char *commander_command_name(const commander_t *self);
 char **commander_rest_argv(const commander_t *self);

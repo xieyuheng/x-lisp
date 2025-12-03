@@ -2,10 +2,10 @@
 
 queue_t *make_queue(size_t size);
 void queue_purge(queue_t *self);
-void queue_destroy(queue_t **self_pointer);
+void queue_free(queue_t *self);
 
-void queue_put_destroy_fn(queue_t *self, destroy_fn_t *destroy_fn);
-queue_t *make_queue_with(size_t size, destroy_fn_t *destroy_fn);
+void queue_put_free_fn(queue_t *self, free_fn_t *free_fn);
+queue_t *make_queue_with(size_t size, free_fn_t *free_fn);
 
 size_t queue_size(const queue_t *self);
 size_t queue_length(const queue_t *self);

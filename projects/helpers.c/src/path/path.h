@@ -1,7 +1,7 @@
 #pragma once
 
 path_t *make_path(const char *string);
-void path_destroy(path_t **self_pointer);
+void path_free(path_t *self);
 
 path_t *make_path_cwd(void);
 

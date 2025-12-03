@@ -7,19 +7,14 @@ make_commander(const char *name, const char *version, int argc, char **argv) {
     self->version = version;
     self->argc = argc;
     self->argv = argv;
-    self->command_list = make_list_with((destroy_fn_t *) command_destroy);
+    self->command_list = make_list_with((free_fn_t *) command_free);
     return self;
 }
 
 void
-commander_destroy(commander_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    commander_t *self = *self_pointer;
-    list_destroy(&self->command_list);
+commander_free(commander_t *self) {
+    list_free(self->command_list);
     free(self);
-    *self_pointer = NULL;
 }
 
 

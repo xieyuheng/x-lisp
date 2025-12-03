@@ -15,8 +15,7 @@ main(void) {
     assert(string_length("12") == 2);
     assert(string_length("123") == 3);
 
-    string_destroy(&abc);
-    assert(abc == NULL);
+    string_free(abc);
 
     {
         assert(string_is_int_of_base("123", 10));

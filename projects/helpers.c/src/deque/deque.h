@@ -4,7 +4,7 @@
 // thread safe double ended queue.
 
 deque_t *make_deque(void);
-void deque_destroy(deque_t **self_pointer);
+void deque_free(deque_t *self);
 
 size_t deque_length(deque_t *self);
 bool deque_is_empty(deque_t *self);

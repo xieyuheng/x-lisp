@@ -13,7 +13,7 @@ main(void) {
         assert(blob_size(blob) == 3);
         assert(string_equal(blob_string(blob), "abc"));
 
-        blob_destroy(&blob);
+        blob_free(blob);
     }
 
     {
@@ -34,8 +34,8 @@ main(void) {
 
         assert(!blob_equal(blob_1, blob_2));
 
-        blob_destroy(&blob_1);
-        blob_destroy(&blob_2);
+        blob_free(blob_1);
+        blob_free(blob_2);
     }
 
     {
@@ -53,8 +53,8 @@ main(void) {
 
         assert(!blob_equal(blob_1, blob_2));
 
-        blob_destroy(&blob_1);
-        blob_destroy(&blob_2);
+        blob_free(blob_1);
+        blob_free(blob_2);
     }
 
     test_end();

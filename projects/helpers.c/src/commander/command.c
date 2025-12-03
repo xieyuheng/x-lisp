@@ -11,11 +11,6 @@ make_command(const char *name) {
 }
 
 void
-command_destroy(command_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    command_t *self = *self_pointer;
+command_free(command_t *self) {
     free(self);
-    *self_pointer = NULL;
 }

@@ -57,8 +57,8 @@ string_consumer(thread_t *thread) {
         char *x = queue_pop_front(queue);
         char *y = uint_to_string(count);
         assert(string_equal(x, y));
-        string_destroy(&x);
-        string_destroy(&y);
+        string_free(x);
+        string_free(y);
         count++;
     }
 }
@@ -89,7 +89,7 @@ main(void) {
         thread_join(consumer_thread);
     }
 
-    queue_destroy(&queue);
+    queue_free(queue);
 
     test_end();
 }

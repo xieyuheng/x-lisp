@@ -9,16 +9,11 @@ make_spinlock(void) {
 }
 
 void
-spinlock_destroy(spinlock_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    spinlock_t *self = *self_pointer;
+spinlock_free(spinlock_t *self) {
     int errno = pthread_spin_destroy(self);
     assert(errno == 0);
     // We need to cast pointer to volatile data to normal pointer.
     free((void *) self);
-    *self_pointer = NULL;
 }
 
 void

@@ -14,9 +14,9 @@ struct allocator_t {
 };
 
 allocator_t *make_allocator(size_t cache_size);
-void allocator_destroy(allocator_t **self_pointer);
+void allocator_free(allocator_t *self);
 
 void *allocator_maybe_allocate(allocator_t *self, stack_t *stack);
 void *allocator_allocate(allocator_t *self, stack_t *stack);
 
-void allocator_recycle(allocator_t *self, stack_t *stack, void **value_pointer);
+void allocator_recycle(allocator_t *self, stack_t *stack, void *value);

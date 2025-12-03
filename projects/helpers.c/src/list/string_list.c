@@ -2,7 +2,7 @@
 
 list_t *
 string_make_list(void) {
-    return make_list_with((destroy_fn_t *) string_destroy);
+    return make_list_with((free_fn_t *) string_free);
 }
 
 list_t *

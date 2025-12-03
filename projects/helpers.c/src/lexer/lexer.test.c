@@ -10,21 +10,21 @@ main(void) {
         lexer->string = "";
         lexer_run(lexer);
         assert(list_length(lexer->token_list) == 0);
-        list_destroy(&lexer->token_list);
+        list_free(lexer->token_list);
     }
 
     {
         lexer->string = " ";
         lexer_run(lexer);
         assert(list_length(lexer->token_list) == 0);
-        list_destroy(&lexer->token_list);
+        list_free(lexer->token_list);
     }
 
     {
         lexer->string = " \n \t \n ";
         lexer_run(lexer);
         assert(list_length(lexer->token_list) == 0);
-        list_destroy(&lexer->token_list);
+        list_free(lexer->token_list);
     }
 
     {
@@ -40,10 +40,10 @@ main(void) {
         token_t *c = list_shift(token_list);
         assert(string_equal(c->string, "c"));
 
-        list_destroy(&token_list);
-        token_destroy(&a);
-        token_destroy(&b);
-        token_destroy(&c);
+        list_free(token_list);
+        token_free(a);
+        token_free(b);
+        token_free(c);
     }
 
     {
@@ -67,10 +67,10 @@ main(void) {
         assert(c->lineno == 2);
         assert(c->column == 3);
 
-        list_destroy(&token_list);
-        token_destroy(&a);
-        token_destroy(&b);
-        token_destroy(&c);
+        list_free(token_list);
+        token_free(a);
+        token_free(b);
+        token_free(c);
     }
 
     {
@@ -89,10 +89,10 @@ main(void) {
         token_t *c = list_shift(token_list);
         assert(string_equal(c->string, "c"));
 
-        list_destroy(&token_list);
-        token_destroy(&a);
-        token_destroy(&b);
-        token_destroy(&c);
+        list_free(token_list);
+        token_free(a);
+        token_free(b);
+        token_free(c);
     }
 
     {
@@ -113,10 +113,10 @@ main(void) {
         token_t *c = list_shift(token_list);
         assert(string_equal(c->string, ")"));
 
-        list_destroy(&token_list);
-        token_destroy(&a);
-        token_destroy(&b);
-        token_destroy(&c);
+        list_free(token_list);
+        token_free(a);
+        token_free(b);
+        token_free(c);
     }
 
     {
@@ -137,9 +137,9 @@ main(void) {
         assert(string_equal(b->string, "1.0"));
         assert(b->float_value == 1.0);
 
-        list_destroy(&token_list);
-        token_destroy(&a);
-        token_destroy(&b);
+        list_free(token_list);
+        token_free(a);
+        token_free(b);
     }
 
     {
@@ -162,13 +162,13 @@ main(void) {
         assert(string_equal(c->string, "\n"));
         assert(c->kind == STRING_TOKEN);
 
-        list_destroy(&token_list);
-        token_destroy(&a);
-        token_destroy(&b);
-        token_destroy(&c);
+        list_free(token_list);
+        token_free(a);
+        token_free(b);
+        token_free(c);
     }
 
-    lexer_destroy(&lexer);
+    lexer_free(lexer);
 
     test_end();
 }

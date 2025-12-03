@@ -1,7 +1,7 @@
 #pragma once
 
 blob_t *make_blob(size_t size);
-void blob_destroy(blob_t **self_pointer);
+void blob_free(blob_t *self);
 
 size_t blob_size(const blob_t *self);
 uint8_t *blob_bytes(const blob_t *self);

@@ -13,12 +13,7 @@ make_token(char *string, token_kind_t kind, size_t start, size_t end, size_t lin
 }
 
 void
-token_destroy(token_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    token_t *self = *self_pointer;
+token_free(token_t *self) {
     free(self->string);
     free(self);
-    *self_pointer = NULL;
 }

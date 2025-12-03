@@ -1,13 +1,8 @@
 #include "index.h"
 
 void
-string_destroy(char **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    char *self = *self_pointer;
+string_free(char *self) {
     free(self);
-    *self_pointer = NULL;
 }
 
 char*

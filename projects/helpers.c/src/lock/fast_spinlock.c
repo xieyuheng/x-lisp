@@ -8,13 +8,8 @@ make_fast_spinlock(void) {
 }
 
 void
-fast_spinlock_destroy(fast_spinlock_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    fast_spinlock_t *self = *self_pointer;
+fast_spinlock_free(fast_spinlock_t *self) {
     free(self);
-    *self_pointer = NULL;
 }
 
 void fast_spinlock_lock(fast_spinlock_t *self);

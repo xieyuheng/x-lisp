@@ -1,6 +1,4 @@
-[helper.c] use `free_fn` instead of `destroy_fn`
-[helper.c] debug MEMORY_DEBUG  use `_free` instead of `_destroy`
-[helper.c] `MEMORY_DEBUG` use `memory_debug_allocate` and `memory_debug_free`
+[helper.c] `memory` -- set `MEMORY_DEBUG` will use `memory_debug_allocate` and `memory_debug_free`
 
 # scan call stack
 

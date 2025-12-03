@@ -16,15 +16,10 @@ make_deque(void) {
 }
 
 void
-deque_destroy(deque_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    deque_t *self = *self_pointer;
-    fast_spinlock_destroy(&self->fast_spinlock);
-    list_destroy(&self->list);
+deque_free(deque_t *self) {
+    fast_spinlock_free(self->fast_spinlock);
+    list_free(self->list);
     free(self);
-    *self_pointer = NULL;
 }
 
 size_t

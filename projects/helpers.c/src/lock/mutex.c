@@ -13,15 +13,10 @@ make_mutex(void) {
 }
 
 void
-mutex_destroy(mutex_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    mutex_t *self = *self_pointer;
+mutex_free(mutex_t *self) {
     int errno = pthread_mutex_destroy(self);
     assert(errno == 0);
     free(self);
-    *self_pointer = NULL;
 }
 
 void

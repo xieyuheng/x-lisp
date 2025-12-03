@@ -33,7 +33,7 @@ struct queue_t {
     atomic_cursor_t *back_cursor;
     cursor_t *cached_front_cursor;
     cursor_t *cached_back_cursor;
-    destroy_fn_t *destroy_fn;
+    free_fn_t *free_fn;
 };
 
 static bool
@@ -63,17 +63,13 @@ queue_purge(queue_t *self) {
     assert(self);
     while(!queue_is_empty(self)) {
         void *value = queue_pop_front(self);
-        if (self->destroy_fn)
-            self->destroy_fn(&value);
+        if (self->free_fn)
+            self->free_fn(value);
     }
 }
 
 void
-queue_destroy(queue_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    queue_t *self = *self_pointer;
+queue_free(queue_t *self) {
     queue_purge(self);
     free(self->values);
     free(self->front_cursor);
@@ -81,18 +77,17 @@ queue_destroy(queue_t **self_pointer) {
     free(self->cached_front_cursor);
     free(self->cached_back_cursor);
     free(self);
-    *self_pointer = NULL;
 }
 
 void
-queue_put_destroy_fn(queue_t *self, destroy_fn_t *destroy_fn) {
-    self->destroy_fn = destroy_fn;
+queue_put_free_fn(queue_t *self, free_fn_t *free_fn) {
+    self->free_fn = free_fn;
 }
 
 queue_t *
-make_queue_with(size_t size, destroy_fn_t *destroy_fn) {
+make_queue_with(size_t size, free_fn_t *free_fn) {
     queue_t *self = make_queue(size);
-    self->destroy_fn = destroy_fn;
+    self->free_fn = free_fn;
     return self;
 }
 

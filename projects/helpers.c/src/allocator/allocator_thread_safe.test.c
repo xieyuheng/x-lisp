@@ -31,7 +31,7 @@ thread_fn(thread_t *thread) {
             abc[0] = 'a';
             abc[1] = 'b';
             abc[2] = 'c';
-            allocator_recycle(allocator, stack, (void **) &abc);
+            allocator_recycle(allocator, stack, abc);
         }
     }
 }
@@ -61,7 +61,7 @@ main(void) {
 
     where_printf("thread_count: %lu\n", thread_count);
 
-    allocator_destroy(&allocator);
+    allocator_free(allocator);
 
     test_end();
 }

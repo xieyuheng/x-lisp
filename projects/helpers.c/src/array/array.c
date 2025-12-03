@@ -14,11 +14,11 @@ void
 array_purge(array_t *self) {
     assert(self);
 
-    if (self->destroy_fn) {
+    if (self->free_fn) {
         for (size_t i = 0; i < self->size; i++) {
             void *value = array_get(self, i);
             if (value) {
-                self->destroy_fn(&value);
+                self->free_fn(value);
                 array_set(self, i, NULL);
             }
         }
@@ -37,14 +37,14 @@ array_free(array_t *self) {
 }
 
 void
-array_put_destroy_fn(array_t *self, destroy_fn_t *destroy_fn) {
-    self->destroy_fn = destroy_fn;
+array_put_free_fn(array_t *self, free_fn_t *free_fn) {
+    self->free_fn = free_fn;
 }
 
 array_t *
-make_array_with(size_t size, destroy_fn_t *destroy_fn) {
+make_array_with(size_t size, free_fn_t *free_fn) {
     array_t *self = make_array(size);
-    self->destroy_fn = destroy_fn;
+    self->free_fn = free_fn;
     return self;
 }
 
@@ -54,8 +54,8 @@ make_array_auto(void) {
 }
 
 array_t *
-make_array_auto_with(destroy_fn_t *destroy_fn) {
-    return make_array_with(ARRAY_AUTO_SIZE, destroy_fn);
+make_array_auto_with(free_fn_t *free_fn) {
+    return make_array_with(ARRAY_AUTO_SIZE, free_fn);
 }
 
 size_t array_size(const array_t *self);

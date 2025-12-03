@@ -77,7 +77,7 @@ utf8_string_length(const char *string) {
         code_point = utf8_iter_next(iter);
     }
 
-    utf8_iter_destroy(&iter);
+    utf8_iter_free(iter);
     return length;
 }
 

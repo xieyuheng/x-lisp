@@ -39,7 +39,7 @@ main(void) {
         assert(!set_has(set, (void *) 2));
         assert(!set_has(set, (void *) 3));
 
-        set_destroy(&set);
+        set_free(set);
     }
 
     test_end();

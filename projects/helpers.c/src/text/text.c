@@ -14,14 +14,9 @@ make_text(size_t length) {
 }
 
 void
-text_destroy(text_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    text_t *self = *self_pointer;
+text_free(text_t *self) {
     free(self->code_points);
     free(self);
-    *self_pointer = NULL;
 }
 
 text_t *
@@ -38,7 +33,7 @@ text_from_string(const char *string) {
         index++;
     }
 
-    utf8_iter_destroy(&iter);
+    utf8_iter_free(iter);
     return text;
 }
 

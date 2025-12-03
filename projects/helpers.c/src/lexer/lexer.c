@@ -21,15 +21,10 @@ make_lexer(void) {
 }
 
 void
-lexer_destroy(lexer_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    lexer_t *self = *self_pointer;
+lexer_free(lexer_t *self) {
     // keep `token_list` to be collected as return value.
     free(self->buffer);
     free(self);
-    *self_pointer = NULL;
 }
 
 void
@@ -296,7 +291,7 @@ lexer_run(lexer_t *self) {
     lexer_init(self);
 
     self->length = string_length(self->string);
-    self->token_list = make_list_with((destroy_fn_t *) token_destroy);
+    self->token_list = make_list_with((free_fn_t *) token_free);
 
     while (!is_finished(self)) {
         lexer_step(self);

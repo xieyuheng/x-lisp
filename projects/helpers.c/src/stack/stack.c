@@ -15,26 +15,21 @@ stack_purge(stack_t *self) {
 }
 
 void
-stack_destroy(stack_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    stack_t *self = *self_pointer;
+stack_free(stack_t *self) {
     stack_purge(self);
     array_free(self->array);
     free(self);
-    *self_pointer = NULL;
 }
 
 void
-stack_put_destroy_fn(stack_t *self, destroy_fn_t *destroy_fn) {
-    array_put_destroy_fn(self->array, destroy_fn);
+stack_put_free_fn(stack_t *self, free_fn_t *free_fn) {
+    array_put_free_fn(self->array, free_fn);
 }
 
 stack_t *
-make_stack_with(destroy_fn_t *destroy_fn) {
+make_stack_with(free_fn_t *free_fn) {
     stack_t *self = make_stack();
-    stack_put_destroy_fn(self, destroy_fn);
+    stack_put_free_fn(self, free_fn);
     return self;
 }
 

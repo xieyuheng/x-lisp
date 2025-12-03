@@ -16,14 +16,9 @@ make_blob(size_t size) {
 }
 
 void
-blob_destroy(blob_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    blob_t *self = *self_pointer;
+blob_free(blob_t *self) {
     free(self->bytes);
     free(self);
-    *self_pointer = NULL;
 }
 
 size_t

@@ -10,15 +10,10 @@ make_allocator(size_t cache_size) {
 }
 
 void
-allocator_destroy(allocator_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    allocator_t *self = *self_pointer;
-    mutex_destroy(&self->mutex);
-    stack_destroy(&self->stack);
+allocator_free(allocator_t *self) {
+    mutex_free(self->mutex);
+    stack_free(self->stack);
     free(self);
-    *self_pointer = NULL;
 }
 
 void *
@@ -53,8 +48,8 @@ allocator_allocate(allocator_t *self, stack_t *stack) {
     return value;
 }
 
-static void
-allocator_free(allocator_t *self, stack_t *stack, void *value) {
+void
+allocator_recycle(allocator_t *self, stack_t *stack, void *value) {
     if (stack_length(stack) >= 2 * self->cache_size) {
         mutex_lock(self->mutex);
 
@@ -66,14 +61,4 @@ allocator_free(allocator_t *self, stack_t *stack, void *value) {
     }
 
     stack_push(stack, value);
-}
-
-void
-allocator_recycle(allocator_t *self, stack_t *stack, void **value_pointer) {
-    assert(value_pointer);
-    if (*value_pointer == NULL) return;
-
-    void *value = *value_pointer;
-    allocator_free(self, stack, value);
-    *value_pointer = NULL;
 }

@@ -49,7 +49,7 @@ main(void) {
             index++;
         }
 
-        utf8_iter_destroy(&iter);
+        utf8_iter_free(iter);
     }
 
     {
@@ -57,7 +57,7 @@ main(void) {
         utf8_iter_t *iter = make_utf8_iter(string);
         code_point_t code_point = utf8_iter_first(iter);
         assert(code_point == 0);
-        utf8_iter_destroy(&iter);
+        utf8_iter_free(iter);
     }
 
     {

@@ -147,13 +147,12 @@ main(void) {
         list_push(list, bread);
         list_push(list, wine);
 
-        list_put_destroy_fn(list, (destroy_fn_t *) string_destroy);
+        list_put_free_fn(list, (free_fn_t *) string_free);
 
         list_purge(list);
         assert(list_length(list) == 0);
 
-        list_destroy(&list);
-        assert(list == NULL);
+        list_free(list);
     }
 
     {
@@ -161,7 +160,7 @@ main(void) {
         char *b = string_copy("b");
         char *c = string_copy("c");
 
-        list_t *list = make_list_with((destroy_fn_t *) string_destroy);
+        list_t *list = make_list_with((free_fn_t *) string_free);
 
         list_push(list, a);
         list_push(list, b);
@@ -210,8 +209,7 @@ main(void) {
         list_purge(list);
         assert(list_length(list) == 0);
 
-        list_destroy(&list);
-        assert(list == NULL);
+        list_free(list);
     }
 
 
@@ -224,7 +222,7 @@ main(void) {
         char *b = string_copy("b");
         char *c = string_copy("c");
 
-        list_t *list = make_list_with((destroy_fn_t *) string_destroy);
+        list_t *list = make_list_with((free_fn_t *) string_free);
         list_put_equal_fn(list, (equal_fn_t *) string_equal_mod_case);
         list_put_copy_fn(list, (copy_fn_t *) string_copy);
 
@@ -233,10 +231,10 @@ main(void) {
         list_push(list, c);
 
         list_t *copy = list_copy(list);
-        list_put_destroy_fn(copy, (destroy_fn_t *) string_destroy);
+        list_put_free_fn(copy, (free_fn_t *) string_free);
         list_put_equal_fn(copy, (equal_fn_t *) string_equal_mod_case);
 
-        list_destroy(&list);
+        list_free(list);
 
         assert(list_has(copy, "a"));
         assert(list_has(copy, "b"));
@@ -246,19 +244,18 @@ main(void) {
         assert(list_has(copy, "B"));
         assert(list_has(copy, "C"));
 
-        list_destroy(&copy);
-        assert(copy == NULL);
+        list_free(copy);
     }
 
     {
-        // list_remove with destroy_fn
+        // list_remove with free_fn
 
         char *a = string_copy("a");
         char *b = string_copy("b");
         char *c = string_copy("c");
 
         list_t *list = make_list();
-        list_put_destroy_fn(list, (destroy_fn_t *) string_destroy);
+        list_put_free_fn(list, (free_fn_t *) string_free);
         list_put_equal_fn(list, (equal_fn_t *) string_equal_mod_case);
 
         list_push(list, a);
@@ -271,8 +268,7 @@ main(void) {
         assert(!list_has(list, "B"));
         assert(list_has(list, "C"));
 
-        list_destroy(&list);
-        assert(list == NULL);
+        list_free(list);
     }
 
     test_end();

@@ -10,4 +10,4 @@ struct command_t {
 };
 
 command_t *make_command(const char *name);
-void command_destroy(command_t **self_pointer);
+void command_free(command_t *self);

@@ -13,7 +13,7 @@ struct list_t {
     node_t *last;
     node_t *cursor;
     size_t length;
-    destroy_fn_t *destroy_fn;
+    free_fn_t *free_fn;
     equal_fn_t *equal_fn;
     copy_fn_t *copy_fn;
 };
@@ -25,14 +25,9 @@ make_list(void) {
 }
 
 void
-list_destroy(list_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    list_t *self = *self_pointer;
+list_free(list_t *self) {
     list_purge(self);
     free(self);
-    *self_pointer = NULL;
 }
 
 void
@@ -42,8 +37,8 @@ list_purge(list_t *self) {
     node_t *node = self->first;
     while (node) {
         node_t *next = node->next;
-        if (self->destroy_fn)
-            self->destroy_fn(&node->value);
+        if (self->free_fn)
+            self->free_fn(node->value);
         free(node);
         node = next;
     }
@@ -55,8 +50,8 @@ list_purge(list_t *self) {
 }
 
 void
-list_put_destroy_fn(list_t *self, destroy_fn_t *destroy_fn) {
-    self->destroy_fn = destroy_fn;
+list_put_free_fn(list_t *self, free_fn_t *free_fn) {
+    self->free_fn = free_fn;
 }
 
 void
@@ -70,9 +65,9 @@ list_put_copy_fn(list_t *self, copy_fn_t *copy_fn) {
 }
 
 list_t *
-make_list_with(destroy_fn_t *destroy_fn) {
+make_list_with(free_fn_t *free_fn) {
     list_t *self = make_list();
-    self->destroy_fn = destroy_fn;
+    self->free_fn = free_fn;
     return self;
 }
 
@@ -164,8 +159,8 @@ list_remove(list_t *self, const void *value) {
     if (self->last == node)
         self->last = node->prev;
 
-    if (self->destroy_fn)
-        self->destroy_fn(&node->value);
+    if (self->free_fn)
+        self->free_fn(node->value);
 
     free(node);
     self->length--;

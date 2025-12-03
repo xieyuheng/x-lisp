@@ -17,22 +17,17 @@ make_path(const char *string) {
 }
 
 void
-path_destroy(path_t **self_pointer) {
-    assert(self_pointer);
-    if (*self_pointer == NULL) return;
-
-    path_t *self = *self_pointer;
-    stack_destroy(&self->segment_stack);
-    string_destroy(&self->string);
+path_free(path_t *self) {
+    stack_free(self->segment_stack);
+    string_free(self->string);
     free(self);
-    *self_pointer = NULL;
 }
 
 path_t *
 make_path_cwd(void) {
     char *cwd = getcwd(NULL, 0);
     path_t *cwd_path = make_path(cwd);
-    string_destroy(&cwd);
+    string_free(cwd);
     return cwd_path;
 }
 
@@ -93,7 +88,7 @@ path_update_string(path_t *self) {
         size += 1;
     }
 
-    string_destroy(&self->string);
+    string_free(self->string);
     char *string = NULL;
     if (path_is_absolute(self)) {
         // one more for ending \0
@@ -122,18 +117,18 @@ path_update_string(path_t *self) {
 static void
 path_execute(path_t *self, char *segment) {
     if (string_is_empty(segment)) {
-        string_destroy(&segment);
+        string_free(segment);
     } else if (string_equal(segment, ".")) {
-        string_destroy(&segment);
+        string_free(segment);
     } else if (string_equal(segment, "..")) {
         if (stack_is_empty(self->segment_stack) ||
             string_equal(stack_top(self->segment_stack), ".."))
         {
             stack_push(self->segment_stack, segment);
         } else {
-            string_destroy(&segment);
+            string_free(segment);
             segment = stack_pop(self->segment_stack);
-            string_destroy(&segment);
+            string_free(segment);
         }
     } else {
         stack_push(self->segment_stack, segment);
@@ -220,12 +215,12 @@ void
 path_relative_print(path_t *from, path_t *to, file_t *file) {
     path_t *relative_path = path_relative(from, to);
     fprintf(file, "%s", path_string(relative_path));
-    path_destroy(&relative_path);
+    path_free(relative_path);
 }
 
 void
 path_relative_cwd_print(path_t *to, file_t *file) {
     path_t *cwd_path = make_path_cwd();
     path_relative_print(cwd_path, to, file);
-    path_destroy(&cwd_path);
+    path_free(cwd_path);
 }

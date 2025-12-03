@@ -33,7 +33,7 @@ main(void) {
 
         hash_purge(hash);
         assert(hash_length(hash) == 0);
-        hash_destroy(&hash);
+        hash_free(hash);
     }
 
     {
@@ -50,7 +50,7 @@ main(void) {
 
         hash_purge(hash);
         assert(hash_length(hash) == 0);
-        hash_destroy(&hash);
+        hash_free(hash);
     }
 
     {
@@ -64,14 +64,14 @@ main(void) {
 
         hash_purge(hash);
         assert(hash_length(hash) == 0);
-        hash_destroy(&hash);
+        hash_free(hash);
     }
 
     {
         hash_t *hash = make_hash();
         hash_put_hash_fn(hash, (hash_fn_t *) string_bernstein_hash);
-        hash_put_destroy_fn(hash, (destroy_fn_t *) string_destroy);
-        hash_put_key_destroy_fn(hash, (destroy_fn_t *) string_destroy);
+        hash_put_free_fn(hash, (free_fn_t *) string_free);
+        hash_put_key_free_fn(hash, (free_fn_t *) string_free);
         hash_put_key_equal_fn(hash, (equal_fn_t *) string_equal);
 
         //  Insert some entries
@@ -107,7 +107,7 @@ main(void) {
 
         hash_purge(hash);
         assert(hash_length(hash) == 0);
-        hash_destroy(&hash);
+        hash_free(hash);
     }
 
     {
@@ -135,7 +135,7 @@ main(void) {
                 assert(list_has(string_list, value));
                 value = list_next(list);
             }
-            list_destroy(&list);
+            list_free(list);
         }
 
         {
@@ -146,11 +146,11 @@ main(void) {
             }
         }
 
-        list_destroy(&string_list);
+        list_free(string_list);
 
         hash_purge(hash);
         assert(hash_length(hash) == 0);
-        hash_destroy(&hash);
+        hash_free(hash);
     }
 
     test_end();

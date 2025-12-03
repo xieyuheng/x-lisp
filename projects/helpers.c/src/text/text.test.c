@@ -10,7 +10,7 @@ main(void) {
         assert(text_get(text, 0) == 0x61);
         assert(text_get(text, 1) == 0x62);
         assert(text_get(text, 2) == 0x63);
-        text_destroy(&text);
+        text_free(text);
     }
 
     {
@@ -18,7 +18,7 @@ main(void) {
         assert(text_length(text) == 2);
         assert(text_get(text, 0) == 0x4e2d);
         assert(text_get(text, 1) == 0x6587);
-        text_destroy(&text);
+        text_free(text);
     }
 
     {

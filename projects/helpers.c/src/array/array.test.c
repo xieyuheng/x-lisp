@@ -5,7 +5,7 @@ main(void) {
     test_start();
 
     array_t *array = make_array_with(
-        100, (destroy_fn_t *) string_destroy);
+        100, (free_fn_t *) string_free);
 
     assert(array);
     assert(array_size(array) == 100);
@@ -60,7 +60,7 @@ main(void) {
         char *wine = string_copy("bordeaux");
 
         array_t *array = make_array_with(
-            3, (destroy_fn_t *) string_destroy);
+            3, (free_fn_t *) string_free);
 
         assert(!array_is_full(array));
 

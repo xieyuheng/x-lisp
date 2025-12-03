@@ -4,7 +4,7 @@ int
 main(void) {
     test_start();
 
-    stack_t *stack = make_stack_with((destroy_fn_t *) string_destroy);
+    stack_t *stack = make_stack_with((free_fn_t *) string_free);
 
     assert(stack);
 
@@ -54,8 +54,7 @@ main(void) {
     assert(stack_length(stack) == 0);
     assert(stack_is_empty(stack));
 
-    stack_destroy(&stack);
-    assert(stack == NULL);
+    stack_free(stack);
 
     test_end();
 }

@@ -2,7 +2,7 @@
 
 array_t *
 string_make_array_auto(void) {
-    return make_array_auto_with((destroy_fn_t *) string_destroy);
+    return make_array_auto_with((free_fn_t *) string_free);
 }
 
 void

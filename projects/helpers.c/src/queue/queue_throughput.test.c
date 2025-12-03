@@ -48,7 +48,7 @@ main(void) {
     double throughput = LENGTH / 1000 / time_passed_second(start_second);
     where_printf("throughput: %.f k/s\n", throughput);
 
-    queue_destroy(&queue);
+    queue_free(queue);
 
     test_end();
 }

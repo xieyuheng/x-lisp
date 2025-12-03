@@ -29,7 +29,7 @@ main(void) {
 
     assert(queue_length(queue) == 0);
 
-    queue_destroy(&queue);
+    queue_free(queue);
 
     test_end();
 }
