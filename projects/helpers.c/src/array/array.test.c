@@ -52,8 +52,7 @@ main(void) {
     assert(array_length(array) == 0);
     assert(array_is_empty(array));
 
-    array_destroy(&array);
-    assert(array == NULL);
+    array_free(array);
 
     {
         char *cheese = string_copy("boursin");
@@ -69,8 +68,7 @@ main(void) {
         array_push(array, bread);   assert(!array_is_full(array));
         array_push(array, wine);    assert(array_is_full(array));
 
-        array_destroy(&array);
-        assert(array == NULL);
+        array_free(array);
     }
 
     {
@@ -86,8 +84,7 @@ main(void) {
         assert(((int64_t) array_pop(array)) == 0);
         assert(((int64_t) array_pop(array)) == 1);
 
-        array_destroy(&array);
-        assert(array == NULL);
+        array_free(array);
     }
 
     {
@@ -123,8 +120,7 @@ main(void) {
 
         assert(array_is_full(array));
 
-        array_destroy(&array);
-        assert(array == NULL);
+        array_free(array);
     }
 
     {
@@ -147,8 +143,7 @@ main(void) {
 
         assert(array_is_full(array));
 
-        array_destroy(&array);
-        assert(array == NULL);
+        array_free(array);
     }
 
     {
@@ -166,8 +161,7 @@ main(void) {
         assert(array_get(array, 4) == (void *) 1);
         assert(array_get(array, 5) == NULL);
 
-        array_destroy(&array);
-        assert(array == NULL);
+        array_free(array);
     }
 
     {
@@ -181,8 +175,7 @@ main(void) {
         assert(array_get(array, 0) == (void *) 1);
         assert(array_get(array, 1) == NULL);
 
-        array_destroy(&array);
-        assert(array == NULL);
+        array_free(array);
     }
 
     test_end();

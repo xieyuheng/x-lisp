@@ -17,7 +17,7 @@ thread_pool_destroy(thread_pool_t **self_pointer) {
     if (*self_pointer == NULL) return;
 
     thread_pool_t *self = *self_pointer;
-    array_destroy(&self->thread_array);
+    array_free(self->thread_array);
     free(self);
     *self_pointer = NULL;
 }

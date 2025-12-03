@@ -12,7 +12,7 @@ struct array_t {
 
 array_t *make_array(size_t size);
 void array_purge(array_t *self);
-void array_destroy(array_t **self_pointer);
+void array_free(array_t *self);
 
 void array_put_destroy_fn(array_t *self, destroy_fn_t *destroy_fn);
 array_t *make_array_with(size_t size, destroy_fn_t *destroy_fn);

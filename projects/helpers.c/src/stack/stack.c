@@ -21,7 +21,7 @@ stack_destroy(stack_t **self_pointer) {
 
     stack_t *self = *self_pointer;
     stack_purge(self);
-    array_destroy(&self->array);
+    array_free(self->array);
     free(self);
     *self_pointer = NULL;
 }
