@@ -8,6 +8,9 @@
 (define-function <name> <block> ...)
 (define-variable <name>)
 (define-variable <name> <value>)
+(define-setup <name> <block> ...)
+(define-metadata <name> <key> <metadata> ...)
+(define-placeholder <name>)
 
 ;; module syntax statement
 

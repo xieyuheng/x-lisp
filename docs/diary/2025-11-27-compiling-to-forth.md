@@ -222,3 +222,20 @@ applicative 语言中 parameters 的顺序相反。
 比如 `2 1 sub` 应该对应 `(sub 2 1)`。
 
 这基本上就导致了编译到 forth 并不合适。
+除非完全不考虑手写 forth 的感受，或者大量使用变量。
+
+注意，其他语言在使用 stack-based vm 时，
+会使用 explicit 指令来把参数加载到 stack 中，
+而不是直接用一个 global stack 传递参数。
+对于有局部变量的 stack vm 来说，
+这也许是合理的设计。
+
+这也可以解决 arity 的问题，
+因为函数的声明需要带有 parameter list，
+其中就带有 arity 信息了。
+
+```ruby
+def add ( x y )
+  x y add
+end
+```

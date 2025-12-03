@@ -1,3 +1,5 @@
+[helper.c] use `_free` instead of `_destroy`
+
 # scan call stack
 
 [x-lisp-boot.js] `030-ExplicateControlPass` and `031-SetupPrimitiveFunctionPass` -- function metadata has `start`
