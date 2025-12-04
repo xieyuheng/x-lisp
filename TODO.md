@@ -1,3 +1,5 @@
+[machine-lisp.js] `Function` as `Operand` -- `Label` should always be local
+
 # scan call stack
 
 [runtime.c] `debug/` -- `x_print_stack_trace` -- setup

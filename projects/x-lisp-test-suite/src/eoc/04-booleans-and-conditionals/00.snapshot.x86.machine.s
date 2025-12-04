@@ -17,21 +17,21 @@ _main.body:
         movq %rax, -16(%rbp)
         movq x_true(%rip), %rax
         cmpq -16(%rbp), %rax
-        je _main._main.then₂
-        jmp _main._main.else₃
-_main._main.let_body₁:
+        je _main.then₂
+        jmp _main.else₃
+_main.let_body₁:
         movq -8(%rbp), %rdi
         movq -24(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -32(%rbp)
         movq -32(%rbp), %rax
         jmp _main.epilog
-_main._main.then₂:
+_main.then₂:
         movq $8, -24(%rbp)
-        jmp _main._main.let_body₁
-_main._main.else₃:
+        jmp _main.let_body₁
+_main.else₃:
         movq $16, -24(%rbp)
-        jmp _main._main.let_body₁
+        jmp _main.let_body₁
 _main.epilog:
         addq $32, %rsp
         popq %rbp

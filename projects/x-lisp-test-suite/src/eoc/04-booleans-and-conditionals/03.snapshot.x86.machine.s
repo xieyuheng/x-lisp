@@ -31,27 +31,27 @@ _main.body:
         movq %rax, -56(%rbp)
         movq x_true(%rip), %rax
         cmpq -56(%rbp), %rax
-        je _main._main.then₅
-        jmp _main._main.else₆
-_main._main.let_body₁:
+        je _main.then₅
+        jmp _main.else₆
+_main.let_body₁:
         movq -8(%rbp), %rdi
         movq -64(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -72(%rbp)
         movq -72(%rbp), %rax
         jmp _main.epilog
-_main._main.then₂:
+_main.then₂:
         movq $0, -64(%rbp)
-        jmp _main._main.let_body₁
-_main._main.else₃:
+        jmp _main.let_body₁
+_main.else₃:
         movq $336, -64(%rbp)
-        jmp _main._main.let_body₁
-_main._main.let_body₄:
+        jmp _main.let_body₁
+_main.let_body₄:
         movq x_true(%rip), %rax
         cmpq -80(%rbp), %rax
-        je _main._main.then₂
-        jmp _main._main.else₃
-_main._main.then₅:
+        je _main.then₂
+        jmp _main.else₃
+_main.then₅:
         movq equal_p©constant(%rip), %rax
         movq %rax, -88(%rbp)
         movq random_dice©constant(%rip), %rax
@@ -68,11 +68,11 @@ _main._main.then₅:
         movq -120(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -80(%rbp)
-        jmp _main._main.let_body₄
-_main._main.else₆:
+        jmp _main.let_body₄
+_main.else₆:
         movq x_false(%rip), %rax
         movq %rax, -80(%rbp)
-        jmp _main._main.let_body₄
+        jmp _main.let_body₄
 _main.epilog:
         addq $128, %rsp
         popq %rbp

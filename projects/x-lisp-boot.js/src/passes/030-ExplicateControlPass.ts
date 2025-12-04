@@ -261,7 +261,7 @@ function generateLabel(
   instrs: Array<B.Instr>,
 ): string {
   const subscript = stringToSubscript(state.fn.blocks.size.toString())
-  const label = `${state.fn.name}/${name}${subscript}`
+  const label = `${name}${subscript}`
   const block = B.Block(label, instrs)
   B.checkBlockTerminator(block)
   state.fn.blocks.set(block.label, block)

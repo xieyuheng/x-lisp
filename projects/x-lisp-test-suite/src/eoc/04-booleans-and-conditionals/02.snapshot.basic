@@ -10,70 +10,68 @@
     (= _₈ (apply _₇ x₁))
     (= _₉ (literal 1))
     (= _₁₀ (apply _₈ _₉))
-    (branch _₁₀ _main/then₁₁ _main/else₁₂))
-  (block _main/let-body₁
+    (branch _₁₀ then₁₁ else₁₂))
+  (block let-body₁
     (= _₄₂ (apply _₂₃ _₂₄))
     (= _↩ (apply _₁ _₄₂))
     (return _↩))
-  (block _main/then₂
+  (block then₂
     (= _₃₆ (literal (@primitive-function iadd 2)))
     (= _₃₇ (apply _₃₆ y₁))
     (= _₃₈ (literal 2))
     (= _₂₄ (apply _₃₇ _₃₈))
-    (goto _main/let-body₁))
-  (block _main/else₃
+    (goto let-body₁))
+  (block else₃
     (= _₃₉ (literal (@primitive-function iadd 2)))
     (= _₄₀ (apply _₃₉ y₁))
     (= _₄₁ (literal 10))
     (= _₂₄ (apply _₄₀ _₄₁))
-    (goto _main/let-body₁))
-  (block _main/let-body₄
-    (branch _₂₅ _main/then₂ _main/else₃))
-  (block _main/then₅
+    (goto let-body₁))
+  (block let-body₄ (branch _₂₅ then₂ else₃))
+  (block then₅
     (= _₃₀ (literal (@primitive-function equal? 2)))
     (= _₃₁ (apply _₃₀ x₁))
     (= _₃₂ (literal 0))
     (= _₂₅ (apply _₃₁ _₃₂))
-    (goto _main/let-body₄))
-  (block _main/else₆
+    (goto let-body₄))
+  (block else₆
     (= _₃₃ (literal (@primitive-function equal? 2)))
     (= _₃₄ (apply _₃₃ x₁))
     (= _₃₅ (literal 2))
     (= _₂₅ (apply _₃₄ _₃₅))
-    (goto _main/let-body₄))
-  (block _main/let-body₇
+    (goto let-body₄))
+  (block let-body₇
     (= _₂₃ (apply _₄ _₅))
     (= _₂₆ (literal (@primitive-function int-less? 2)))
     (= _₂₇ (apply _₂₆ x₁))
     (= _₂₈ (literal 1))
     (= _₂₉ (apply _₂₇ _₂₈))
-    (branch _₂₉ _main/then₅ _main/else₆))
-  (block _main/then₈
+    (branch _₂₉ then₅ else₆))
+  (block then₈
     (= _₁₇ (literal (@primitive-function iadd 2)))
     (= _₁₈ (apply _₁₇ y₁))
     (= _₁₉ (literal 2))
     (= _₅ (apply _₁₈ _₁₉))
-    (goto _main/let-body₇))
-  (block _main/else₉
+    (goto let-body₇))
+  (block else₉
     (= _₂₀ (literal (@primitive-function iadd 2)))
     (= _₂₁ (apply _₂₀ y₁))
     (= _₂₂ (literal 10))
     (= _₅ (apply _₂₁ _₂₂))
-    (goto _main/let-body₇))
-  (block _main/let-body₁₀
-    (branch _₆ _main/then₈ _main/else₉))
-  (block _main/then₁₁
+    (goto let-body₇))
+  (block let-body₁₀ (branch _₆ then₈ else₉))
+  (block then₁₁
     (= _₁₁ (literal (@primitive-function equal? 2)))
     (= _₁₂ (apply _₁₁ x₁))
     (= _₁₃ (literal 0))
     (= _₆ (apply _₁₂ _₁₃))
-    (goto _main/let-body₁₀))
-  (block _main/else₁₂
+    (goto let-body₁₀))
+  (block else₁₂
     (= _₁₄ (literal (@primitive-function equal? 2)))
     (= _₁₅ (apply _₁₄ x₁))
     (= _₁₆ (literal 2))
     (= _₆ (apply _₁₅ _₁₆))
-    (goto _main/let-body₁₀)))
+    (goto let-body₁₀)))
 
 (define-metadata _main©metadata
   :name "_main"

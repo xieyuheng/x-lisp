@@ -38,9 +38,9 @@ _main.body:
         movq %rax, -80(%rbp)
         movq x_true(%rip), %rax
         cmpq -80(%rbp), %rax
-        je _main._main.then₁₁
-        jmp _main._main.else₁₂
-_main._main.let_body₁:
+        je _main.then₁₁
+        jmp _main.else₁₂
+_main.let_body₁:
         movq -88(%rbp), %rdi
         movq -96(%rbp), %rsi
         callq x_apply_unary
@@ -51,7 +51,7 @@ _main._main.let_body₁:
         movq %rax, -112(%rbp)
         movq -112(%rbp), %rax
         jmp _main.epilog
-_main._main.then₂:
+_main.then₂:
         movq iadd©constant(%rip), %rax
         movq %rax, -120(%rbp)
         movq -120(%rbp), %rdi
@@ -63,8 +63,8 @@ _main._main.then₂:
         movq -136(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -96(%rbp)
-        jmp _main._main.let_body₁
-_main._main.else₃:
+        jmp _main.let_body₁
+_main.else₃:
         movq iadd©constant(%rip), %rax
         movq %rax, -144(%rbp)
         movq -144(%rbp), %rdi
@@ -76,13 +76,13 @@ _main._main.else₃:
         movq -160(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -96(%rbp)
-        jmp _main._main.let_body₁
-_main._main.let_body₄:
+        jmp _main.let_body₁
+_main.let_body₄:
         movq x_true(%rip), %rax
         cmpq -168(%rbp), %rax
-        je _main._main.then₂
-        jmp _main._main.else₃
-_main._main.then₅:
+        je _main.then₂
+        jmp _main.else₃
+_main.then₅:
         movq equal_p©constant(%rip), %rax
         movq %rax, -176(%rbp)
         movq -176(%rbp), %rdi
@@ -94,8 +94,8 @@ _main._main.then₅:
         movq -192(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -168(%rbp)
-        jmp _main._main.let_body₄
-_main._main.else₆:
+        jmp _main.let_body₄
+_main.else₆:
         movq equal_p©constant(%rip), %rax
         movq %rax, -200(%rbp)
         movq -200(%rbp), %rdi
@@ -107,8 +107,8 @@ _main._main.else₆:
         movq -216(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -168(%rbp)
-        jmp _main._main.let_body₄
-_main._main.let_body₇:
+        jmp _main.let_body₄
+_main.let_body₇:
         movq -48(%rbp), %rdi
         movq -224(%rbp), %rsi
         callq x_apply_unary
@@ -126,9 +126,9 @@ _main._main.let_body₇:
         movq %rax, -256(%rbp)
         movq x_true(%rip), %rax
         cmpq -256(%rbp), %rax
-        je _main._main.then₅
-        jmp _main._main.else₆
-_main._main.then₈:
+        je _main.then₅
+        jmp _main.else₆
+_main.then₈:
         movq iadd©constant(%rip), %rax
         movq %rax, -264(%rbp)
         movq -264(%rbp), %rdi
@@ -140,8 +140,8 @@ _main._main.then₈:
         movq -280(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -224(%rbp)
-        jmp _main._main.let_body₇
-_main._main.else₉:
+        jmp _main.let_body₇
+_main.else₉:
         movq iadd©constant(%rip), %rax
         movq %rax, -288(%rbp)
         movq -288(%rbp), %rdi
@@ -153,13 +153,13 @@ _main._main.else₉:
         movq -304(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -224(%rbp)
-        jmp _main._main.let_body₇
-_main._main.let_body₁₀:
+        jmp _main.let_body₇
+_main.let_body₁₀:
         movq x_true(%rip), %rax
         cmpq -312(%rbp), %rax
-        je _main._main.then₈
-        jmp _main._main.else₉
-_main._main.then₁₁:
+        je _main.then₈
+        jmp _main.else₉
+_main.then₁₁:
         movq equal_p©constant(%rip), %rax
         movq %rax, -320(%rbp)
         movq -320(%rbp), %rdi
@@ -171,8 +171,8 @@ _main._main.then₁₁:
         movq -336(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -312(%rbp)
-        jmp _main._main.let_body₁₀
-_main._main.else₁₂:
+        jmp _main.let_body₁₀
+_main.else₁₂:
         movq equal_p©constant(%rip), %rax
         movq %rax, -344(%rbp)
         movq -344(%rbp), %rdi
@@ -184,7 +184,7 @@ _main._main.else₁₂:
         movq -360(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -312(%rbp)
-        jmp _main._main.let_body₁₀
+        jmp _main.let_body₁₀
 _main.epilog:
         addq $368, %rsp
         popq %rbp

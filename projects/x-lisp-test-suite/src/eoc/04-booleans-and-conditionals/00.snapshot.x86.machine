@@ -15,23 +15,20 @@
     (movq (reg rax) (reg-deref (reg rbp) -16))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -16) (reg rax))
-    (branch-if
-     (cc e)
-     (label _main/then₂)
-     (label _main/else₃)))
-  (block _main/let-body₁
+    (branch-if (cc e) (label then₂) (label else₃)))
+  (block let-body₁
     (movq (reg-deref (reg rbp) -8) (reg rdi))
     (movq (reg-deref (reg rbp) -24) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -32))
     (movq (reg-deref (reg rbp) -32) (reg rax))
     (jmp (label epilog)))
-  (block _main/then₂
+  (block then₂
     (movq (imm 8) (reg-deref (reg rbp) -24))
-    (jmp (label _main/let-body₁)))
-  (block _main/else₃
+    (jmp (label let-body₁)))
+  (block else₃
     (movq (imm 16) (reg-deref (reg rbp) -24))
-    (jmp (label _main/let-body₁)))
+    (jmp (label let-body₁)))
   (block epilog
     (addq (imm 32) (reg rsp))
     (popq (reg rbp))

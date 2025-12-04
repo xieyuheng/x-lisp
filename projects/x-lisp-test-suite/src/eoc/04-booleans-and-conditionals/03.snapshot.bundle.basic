@@ -7,27 +7,20 @@
     (= _₇ (apply _₄ _₆))
     (= _₈ (literal 1))
     (= _₉ (apply _₇ _₈))
-    (branch _₉ _main/then₅ _main/else₆))
-  (block _main/let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
-  (block _main/then₂
-    (= _₂ (literal 0))
-    (goto _main/let-body₁))
-  (block _main/else₃
-    (= _₂ (literal 42))
-    (goto _main/let-body₁))
-  (block _main/let-body₄
-    (branch _₃ _main/then₂ _main/else₃))
-  (block _main/then₅
+    (branch _₉ then₅ else₆))
+  (block let-body₁ (= _↩ (apply _₁ _₂)) (return _↩))
+  (block then₂ (= _₂ (literal 0)) (goto let-body₁))
+  (block else₃ (= _₂ (literal 42)) (goto let-body₁))
+  (block let-body₄ (branch _₃ then₂ else₃))
+  (block then₅
     (= _₁₀ (literal (@primitive-function equal? 2)))
     (= _₁₁ (literal (@primitive-function random-dice 0)))
     (= _₁₂ (apply-nullary _₁₁))
     (= _₁₃ (apply _₁₀ _₁₂))
     (= _₁₄ (literal 2))
     (= _₃ (apply _₁₃ _₁₄))
-    (goto _main/let-body₄))
-  (block _main/else₆
-    (= _₃ (literal #f))
-    (goto _main/let-body₄)))
+    (goto let-body₄))
+  (block else₆ (= _₃ (literal #f)) (goto let-body₄)))
 
 (define-metadata _main©metadata
   :name "_main"

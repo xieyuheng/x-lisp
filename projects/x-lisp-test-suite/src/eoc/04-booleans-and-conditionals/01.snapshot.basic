@@ -9,34 +9,33 @@
     (= _₇ (apply _₆ x₁))
     (= _₈ (literal 1))
     (= _₉ (apply _₇ _₈))
-    (branch _₉ _main/then₅ _main/else₆))
-  (block _main/let-body₁ (= _↩ (apply _₁ _₄)) (return _↩))
-  (block _main/then₂
+    (branch _₉ then₅ else₆))
+  (block let-body₁ (= _↩ (apply _₁ _₄)) (return _↩))
+  (block then₂
     (= _₁₆ (literal (@primitive-function iadd 2)))
     (= _₁₇ (apply _₁₆ y₁))
     (= _₁₈ (literal 2))
     (= _₄ (apply _₁₇ _₁₈))
-    (goto _main/let-body₁))
-  (block _main/else₃
+    (goto let-body₁))
+  (block else₃
     (= _₁₉ (literal (@primitive-function iadd 2)))
     (= _₂₀ (apply _₁₉ y₁))
     (= _₂₁ (literal 10))
     (= _₄ (apply _₂₀ _₂₁))
-    (goto _main/let-body₁))
-  (block _main/let-body₄
-    (branch _₅ _main/then₂ _main/else₃))
-  (block _main/then₅
+    (goto let-body₁))
+  (block let-body₄ (branch _₅ then₂ else₃))
+  (block then₅
     (= _₁₀ (literal (@primitive-function equal? 2)))
     (= _₁₁ (apply _₁₀ x₁))
     (= _₁₂ (literal 0))
     (= _₅ (apply _₁₁ _₁₂))
-    (goto _main/let-body₄))
-  (block _main/else₆
+    (goto let-body₄))
+  (block else₆
     (= _₁₃ (literal (@primitive-function equal? 2)))
     (= _₁₄ (apply _₁₃ x₁))
     (= _₁₅ (literal 2))
     (= _₅ (apply _₁₄ _₁₅))
-    (goto _main/let-body₄)))
+    (goto let-body₄)))
 
 (define-metadata _main©metadata
   :name "_main"

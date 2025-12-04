@@ -40,11 +40,8 @@
     (movq (reg rax) (reg-deref (reg rbp) -80))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -80) (reg rax))
-    (branch-if
-     (cc e)
-     (label _main/then₁₁)
-     (label _main/else₁₂)))
-  (block _main/let-body₁
+    (branch-if (cc e) (label then₁₁) (label else₁₂)))
+  (block let-body₁
     (movq (reg-deref (reg rbp) -88) (reg rdi))
     (movq (reg-deref (reg rbp) -96) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
@@ -55,7 +52,7 @@
     (movq (reg rax) (reg-deref (reg rbp) -112))
     (movq (reg-deref (reg rbp) -112) (reg rax))
     (jmp (label epilog)))
-  (block _main/then₂
+  (block then₂
     (movq (label-deref (label iadd©constant)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -120))
     (movq (reg-deref (reg rbp) -120) (reg rdi))
@@ -67,8 +64,8 @@
     (movq (reg-deref (reg rbp) -136) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -96))
-    (jmp (label _main/let-body₁)))
-  (block _main/else₃
+    (jmp (label let-body₁)))
+  (block else₃
     (movq (label-deref (label iadd©constant)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -144))
     (movq (reg-deref (reg rbp) -144) (reg rdi))
@@ -80,15 +77,12 @@
     (movq (reg-deref (reg rbp) -160) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -96))
-    (jmp (label _main/let-body₁)))
-  (block _main/let-body₄
+    (jmp (label let-body₁)))
+  (block let-body₄
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -168) (reg rax))
-    (branch-if
-     (cc e)
-     (label _main/then₂)
-     (label _main/else₃)))
-  (block _main/then₅
+    (branch-if (cc e) (label then₂) (label else₃)))
+  (block then₅
     (movq (label-deref (label equal?©constant)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -176))
     (movq (reg-deref (reg rbp) -176) (reg rdi))
@@ -100,8 +94,8 @@
     (movq (reg-deref (reg rbp) -192) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -168))
-    (jmp (label _main/let-body₄)))
-  (block _main/else₆
+    (jmp (label let-body₄)))
+  (block else₆
     (movq (label-deref (label equal?©constant)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -200))
     (movq (reg-deref (reg rbp) -200) (reg rdi))
@@ -113,8 +107,8 @@
     (movq (reg-deref (reg rbp) -216) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -168))
-    (jmp (label _main/let-body₄)))
-  (block _main/let-body₇
+    (jmp (label let-body₄)))
+  (block let-body₇
     (movq (reg-deref (reg rbp) -48) (reg rdi))
     (movq (reg-deref (reg rbp) -224) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
@@ -132,11 +126,8 @@
     (movq (reg rax) (reg-deref (reg rbp) -256))
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -256) (reg rax))
-    (branch-if
-     (cc e)
-     (label _main/then₅)
-     (label _main/else₆)))
-  (block _main/then₈
+    (branch-if (cc e) (label then₅) (label else₆)))
+  (block then₈
     (movq (label-deref (label iadd©constant)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -264))
     (movq (reg-deref (reg rbp) -264) (reg rdi))
@@ -148,8 +139,8 @@
     (movq (reg-deref (reg rbp) -280) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -224))
-    (jmp (label _main/let-body₇)))
-  (block _main/else₉
+    (jmp (label let-body₇)))
+  (block else₉
     (movq (label-deref (label iadd©constant)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -288))
     (movq (reg-deref (reg rbp) -288) (reg rdi))
@@ -161,15 +152,12 @@
     (movq (reg-deref (reg rbp) -304) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -224))
-    (jmp (label _main/let-body₇)))
-  (block _main/let-body₁₀
+    (jmp (label let-body₇)))
+  (block let-body₁₀
     (movq (label-deref (external-label x-true)) (reg rax))
     (cmpq (reg-deref (reg rbp) -312) (reg rax))
-    (branch-if
-     (cc e)
-     (label _main/then₈)
-     (label _main/else₉)))
-  (block _main/then₁₁
+    (branch-if (cc e) (label then₈) (label else₉)))
+  (block then₁₁
     (movq (label-deref (label equal?©constant)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -320))
     (movq (reg-deref (reg rbp) -320) (reg rdi))
@@ -181,8 +169,8 @@
     (movq (reg-deref (reg rbp) -336) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -312))
-    (jmp (label _main/let-body₁₀)))
-  (block _main/else₁₂
+    (jmp (label let-body₁₀)))
+  (block else₁₂
     (movq (label-deref (label equal?©constant)) (reg rax))
     (movq (reg rax) (reg-deref (reg rbp) -344))
     (movq (reg-deref (reg rbp) -344) (reg rdi))
@@ -194,7 +182,7 @@
     (movq (reg-deref (reg rbp) -360) (reg rsi))
     (callq-n (external-label x-apply-unary) (arity 2))
     (movq (reg rax) (reg-deref (reg rbp) -312))
-    (jmp (label _main/let-body₁₀)))
+    (jmp (label let-body₁₀)))
   (block epilog
     (addq (imm 368) (reg rsp))
     (popq (reg rbp))

@@ -63,16 +63,16 @@ _main.body:
         movq %rax, -168(%rbp)
         movq x_true(%rip), %rax
         cmpq -168(%rbp), %rax
-        je _main._main.then₂
-        jmp _main._main.else₃
-_main._main.let_body₁:
+        je _main.then₂
+        jmp _main.else₃
+_main.let_body₁:
         movq -8(%rbp), %rdi
         movq -176(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -184(%rbp)
         movq -184(%rbp), %rax
         jmp _main.epilog
-_main._main.then₂:
+_main.then₂:
         movq print©constant(%rip), %rax
         movq %rax, -192(%rbp)
         movq $888, -200(%rbp)
@@ -97,8 +97,8 @@ _main._main.then₂:
         movq -240(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -176(%rbp)
-        jmp _main._main.let_body₁
-_main._main.else₃:
+        jmp _main.let_body₁
+_main.else₃:
         movq print©constant(%rip), %rax
         movq %rax, -248(%rbp)
         movq $1776, -256(%rbp)
@@ -123,7 +123,7 @@ _main._main.else₃:
         movq -296(%rbp), %rsi
         callq x_apply_unary
         movq %rax, -176(%rbp)
-        jmp _main._main.let_body₁
+        jmp _main.let_body₁
 _main.epilog:
         addq $304, %rsp
         popq %rbp
