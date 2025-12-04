@@ -1,6 +1,5 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
-import type { Context } from "../execute/index.ts"
 import type { Metadata } from "../metadata/index.ts"
 import type { Mod } from "../mod/index.ts"
 import { type Value } from "../value/index.ts"
@@ -41,21 +40,18 @@ export type PrimitiveFunctionDefinition = {
   mod: Mod
   name: string
   arity: number
-  fn: (context: Context) => (...args: Array<Value>) => Value
 }
 
 export function PrimitiveFunctionDefinition(
   mod: Mod,
   name: string,
   arity: number,
-  fn: (context: Context) => (...args: Array<Value>) => Value,
 ): PrimitiveFunctionDefinition {
   return {
     kind: "PrimitiveFunctionDefinition",
     mod,
     name,
     arity,
-    fn,
   }
 }
 

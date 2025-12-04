@@ -1,3 +1,4 @@
+[basic-lisp.js] remove `definePrimitiveFunctionWithContext`
 [x-lisp-boot.js] setup `builtin/` -- map from x-lisp function to c function
 [basic-lisp.js] remove `builtin/`
 

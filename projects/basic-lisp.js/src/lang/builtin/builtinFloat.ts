@@ -1,6 +1,5 @@
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
-import * as Values from "../value/index.ts"
 
 export function builtinFloat(mod: Mod) {
   provide(mod, [
@@ -24,91 +23,22 @@ export function builtinFloat(mod: Mod) {
     "float-compare-descending",
   ])
 
-  definePrimitiveFunction(mod, "float?", 1, (value) => {
-    return Values.Bool(Values.isFloat(value))
-  })
-
-  definePrimitiveFunction(mod, "float-positive?", 1, (x) => {
-    return Values.Bool(Values.isFloat(x) && Values.asFloat(x).content > 0)
-  })
-
-  definePrimitiveFunction(mod, "float-non-negative?", 1, (x) => {
-    return Values.Bool(Values.isFloat(x) && Values.asFloat(x).content >= 0)
-  })
-
-  definePrimitiveFunction(mod, "float-non-zero?", 1, (x) => {
-    return Values.Bool(Values.isFloat(x) && Values.asFloat(x).content !== 0)
-  })
-
-  definePrimitiveFunction(mod, "fneg", 1, (x) => {
-    return Values.Float(-Values.asFloat(x).content)
-  })
-
-  definePrimitiveFunction(mod, "fadd", 2, (x, y) => {
-    return Values.Float(Values.asFloat(x).content + Values.asFloat(y).content)
-  })
-
-  definePrimitiveFunction(mod, "fsub", 2, (x, y) => {
-    return Values.Float(Values.asFloat(x).content - Values.asFloat(y).content)
-  })
-
-  definePrimitiveFunction(mod, "fmul", 2, (x, y) => {
-    return Values.Float(Values.asFloat(x).content * Values.asFloat(y).content)
-  })
-
-  definePrimitiveFunction(mod, "fdiv", 2, (x, y) => {
-    return Values.Float(Values.asFloat(x).content / Values.asFloat(y).content)
-  })
-
-  definePrimitiveFunction(mod, "fmod", 2, (x, y) => {
-    return Values.Float(Values.asFloat(x).content % Values.asFloat(y).content)
-  })
-
-  definePrimitiveFunction(mod, "float-max", 2, (x, y) => {
-    return Values.Float(
-      Math.max(Values.asFloat(x).content, Values.asFloat(y).content),
-    )
-  })
-
-  definePrimitiveFunction(mod, "float-min", 2, (x, y) => {
-    return Values.Float(
-      Math.min(Values.asFloat(x).content, Values.asFloat(y).content),
-    )
-  })
-
-  definePrimitiveFunction(mod, "float-greater?", 2, (x, y) => {
-    return Values.Bool(Values.asFloat(x).content > Values.asFloat(y).content)
-  })
-
-  definePrimitiveFunction(mod, "float-less?", 2, (x, y) => {
-    return Values.Bool(Values.asFloat(x).content < Values.asFloat(y).content)
-  })
-
-  definePrimitiveFunction(mod, "float-greater-equal?", 2, (x, y) => {
-    return Values.Bool(Values.asFloat(x).content >= Values.asFloat(y).content)
-  })
-
-  definePrimitiveFunction(mod, "float-less-equal?", 2, (x, y) => {
-    return Values.Bool(Values.asFloat(x).content <= Values.asFloat(y).content)
-  })
-
-  definePrimitiveFunction(mod, "float-compare-ascending", 2, (x, y) => {
-    if (Values.asFloat(x).content < Values.asFloat(y).content) {
-      return Values.Int(-1n)
-    } else if (Values.asFloat(x).content > Values.asFloat(y).content) {
-      return Values.Int(1n)
-    } else {
-      return Values.Int(0n)
-    }
-  })
-
-  definePrimitiveFunction(mod, "float-compare-descending", 2, (x, y) => {
-    if (Values.asFloat(x).content < Values.asFloat(y).content) {
-      return Values.Int(1n)
-    } else if (Values.asFloat(x).content > Values.asFloat(y).content) {
-      return Values.Int(-1n)
-    } else {
-      return Values.Int(0n)
-    }
-  })
+  definePrimitiveFunction(mod, "float?", 1)
+  definePrimitiveFunction(mod, "float-positive?", 1)
+  definePrimitiveFunction(mod, "float-non-negative?", 1)
+  definePrimitiveFunction(mod, "float-non-zero?", 1)
+  definePrimitiveFunction(mod, "fneg", 1)
+  definePrimitiveFunction(mod, "fadd", 2)
+  definePrimitiveFunction(mod, "fsub", 2)
+  definePrimitiveFunction(mod, "fmul", 2)
+  definePrimitiveFunction(mod, "fdiv", 2)
+  definePrimitiveFunction(mod, "fmod", 2)
+  definePrimitiveFunction(mod, "float-max", 2)
+  definePrimitiveFunction(mod, "float-min", 2)
+  definePrimitiveFunction(mod, "float-greater?", 2)
+  definePrimitiveFunction(mod, "float-less?", 2)
+  definePrimitiveFunction(mod, "float-greater-equal?", 2)
+  definePrimitiveFunction(mod, "float-less-equal?", 2)
+  definePrimitiveFunction(mod, "float-compare-ascending", 2)
+  definePrimitiveFunction(mod, "float-compare-descending", 2)
 }

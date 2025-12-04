@@ -1,21 +1,9 @@
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
-import * as Values from "../value/index.ts"
 
 export function builtinCurry(mod: Mod) {
   provide(mod, ["make-curry", "curry-put!"])
 
-  definePrimitiveFunction(mod, "make-curry", 3, (target, arity, size) => {
-    return Values.Curry(
-      target,
-      Number(Values.asInt(arity).content),
-      Array(size).fill(Values.Null()),
-    )
-  })
-
-  definePrimitiveFunction(mod, "curry-put!", 3, (index, value, curry) => {
-    const { args } = Values.asCurry(curry)
-    args[Number(Values.asInt(index).content)] = value
-    return curry
-  })
+  definePrimitiveFunction(mod, "make-curry", 3)
+  definePrimitiveFunction(mod, "curry-put!", 3)
 }
