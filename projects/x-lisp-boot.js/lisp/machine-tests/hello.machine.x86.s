@@ -1,22 +1,22 @@
-.global start
+        .global start
 
-.data
-.align 8
-.type message, @object
+        .section .data
+        .align 8
+        .type message, @object
 message:
         .string "Hello, World!\n"
-.size message, . - message
+        .size message, . - message
 
-.data
-.align 8
-.type message.length, @object
+        .section .data
+        .align 8
+        .type message.length, @object
 message.length:
         .quad 14
-.size message.length, . - message.length
+        .size message.length, . - message.length
 
-.text
-.align 8
-.type start, @function
+        .section .text
+        .align 8
+        .type start, @function
 start:
 start.entry:
         movq $1, %rax
@@ -27,4 +27,5 @@ start.entry:
         movq $60, %rax
         movq $0, %rdi
         syscall 
-.size start, . - start
+start.end:
+        .size start, . - start
