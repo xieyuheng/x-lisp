@@ -239,14 +239,3 @@ def add ( x y )
   x y add
 end
 ```
-
-# x-forth
-
-[2025-12-04]
-
-- stack machine
-- tagged value (64 bits)
-- extensible by c
-- 用类 forth 的方式实现，而不是用汇编器的方式。
-  - 方便定义 metadata。
-  - 函数内使用 变长指令集。
