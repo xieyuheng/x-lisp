@@ -25,43 +25,28 @@ function Let(name: string, rhs: Exp, body: Exp): Let {
   return { kind: "Let", name, rhs, body }
 }
 
-function matchExp(sexp: S.Sexp): Exp {
-  return S.match(expMatcher, sexp)
-}
-
-const keywords = ["lambda", "let"]
-
-const expMatcher: S.Matcher<Exp> = S.matcherChoice<Exp>([
-  S.matcher("`(lambda (,name) ,ret)", ({ name, ret }) =>
-    Lambda(S.symbolContent(name), S.match(expMatcher, ret)),
-  ),
-
-  S.matcher("`(let ((,name ,rhs)) ,body)", ({ name, rhs, body }) =>
-    Let(
-      S.symbolContent(name),
-      S.match(expMatcher, rhs),
-      S.match(expMatcher, body),
-    ),
-  ),
-
-  S.matcher("`(,target ,arg)", ({ target, arg }) =>
-    Apply(S.match(expMatcher, target), S.match(expMatcher, arg)),
-  ),
-
-  S.matcher("name", ({ name }, { meta }) => {
+const parseExp: S.Router<Exp> = S.createRouter<Exp>({
+  "`(lambda (,name) ,ret)": ({ name, ret }) =>
+    Lambda(S.symbolContent(name), parseExp(ret)),
+  "`(let ((,name ,rhs)) ,body)": ({ name, rhs, body }) =>
+    Let(S.symbolContent(name), parseExp(rhs), parseExp(body)),
+  "`(,target ,arg)": ({ target, arg }) =>
+    Apply(parseExp(target), parseExp(arg)),
+  name: ({ name }, { meta }) => {
     const nameSymbol = S.symbolContent(name)
     if (keywords.includes(nameSymbol)) {
       let message = "keywork should not be used as variable\n"
       throw new S.ErrorWithMeta(message, meta)
     }
-
     return Var(nameSymbol)
-  }),
-])
+  },
+})
+
+const keywords = ["lambda", "let"]
 
 function assertParse(text: string, exp: Exp): void {
   const url = new URL("test:lambda")
-  assert.deepStrictEqual(matchExp(S.parseSexp(text, { url })), exp)
+  assert.deepStrictEqual(parseExp(S.parseSexp(text, { url })), exp)
 }
 
 test("examples/lambda", () => {
@@ -85,7 +70,7 @@ test("examples/lambda", () => {
 function assertErrorWithMeta(text: string): void {
   try {
     const url = new URL("test:lambda")
-    matchExp(S.parseSexp(text, { url }))
+    parseExp(S.parseSexp(text, { url }))
   } catch (error) {
     console.log(errorReport(error))
   }
