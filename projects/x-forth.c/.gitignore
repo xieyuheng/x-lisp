@@ -1,0 +1,19 @@
+bin/tester
+bin/bundle
+
+# c
+*.o
+*.a
+*.po
+*.test
+*.snapshot
+
+# GNU global
+GPATH
+GRTAGS
+GTAGS
+
+# emacs
+*~
+*#*
+.#*
