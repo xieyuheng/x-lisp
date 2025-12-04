@@ -12,14 +12,9 @@ const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
 const router = cmd.createRouter("basic-lisp.js", version)
 
-router.defineRoutes(["run file", "bundle file"])
+router.defineRoutes(["bundle file"])
 
 router.defineHandlers({
-  run: ({ args: [file] }) => {
-    const mod = B.loadEntry(createUrl(file))
-    B.run(B.bundle(mod))
-    process.stdout.write(B.console.consumeOutput())
-  },
   bundle: ({ args: [file] }) => {
     const mod = B.loadEntry(createUrl(file))
     console.log(B.prettyMod(globals.maxWidth, B.bundle(mod)))

@@ -1,3 +1,7 @@
+[basic-lisp.js] remove `execute/`
+[x-lisp-boot.js] setup `builtin/` -- map from x-lisp function to c function
+[basic-lisp.js] remove `builtin/`
+
 [machine-lisp.js] rename `Label` to `LocalLabel`
 [machine-lisp.js] `Label` as global label
 [x-lisp-boot.js] `040-SelectInstructionPass` -- `selectFunctionLabel` & `selectAddressLabel` -- use `hasBuiltinFunction`
