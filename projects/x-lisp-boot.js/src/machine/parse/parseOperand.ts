@@ -2,64 +2,55 @@ import * as S from "@xieyuheng/sexp.js"
 import * as Operands from "../operand/index.ts"
 import { type Operand } from "../operand/index.ts"
 
-export function parseOperand(sexp: S.Sexp): Operand {
-  return S.match(
-    S.matcherChoice<Operand>([
-      S.matcher("`(imm ,value)", ({ value }, { meta }) => {
-        return Operands.Imm(S.intContent(value), meta)
-      }),
+export const parseOperand: S.Router<Operand> = S.createRouter<Operand>({
+  "`(imm ,value)": ({ value }, { meta }) => {
+    return Operands.Imm(S.intContent(value), meta)
+  },
 
-      S.matcher("`(label-imm ,label)", ({ label }, { meta }) => {
-        return Operands.LabelImm(Operands.asLabel(parseOperand(label)), meta)
-      }),
+  "`(label-imm ,label)": ({ label }, { meta }) => {
+    return Operands.LabelImm(Operands.asLabel(parseOperand(label)), meta)
+  },
 
-      S.matcher("`(var ,name)", ({ name }, { meta }) => {
-        return Operands.Var(S.symbolContent(name), meta)
-      }),
+  "`(var ,name)": ({ name }, { meta }) => {
+    return Operands.Var(S.symbolContent(name), meta)
+  },
 
-      S.matcher("`(reg ,name)", ({ name }, { meta }) => {
-        return Operands.Reg(S.symbolContent(name), meta)
-      }),
+  "`(reg ,name)": ({ name }, { meta }) => {
+    return Operands.Reg(S.symbolContent(name), meta)
+  },
 
-      S.matcher("`(reg-deref ,reg ,offset)", ({ reg, offset }, { meta }) => {
-        return Operands.RegDeref(
-          Operands.asReg(parseOperand(reg)),
-          Number(S.intContent(offset)),
-          meta,
-        )
-      }),
+  "`(reg-deref ,reg ,offset)": ({ reg, offset }, { meta }) => {
+    return Operands.RegDeref(
+      Operands.asReg(parseOperand(reg)),
+      Number(S.intContent(offset)),
+      meta,
+    )
+  },
 
-      S.matcher("`(label-deref ,label)", ({ label }, { meta }) => {
-        return Operands.LabelDeref(Operands.asLabel(parseOperand(label)), meta)
-      }),
+  "`(label-deref ,label)": ({ label }, { meta }) => {
+    return Operands.LabelDeref(Operands.asLabel(parseOperand(label)), meta)
+  },
 
-      S.matcher("`(cc ,code)", ({ code }, { meta }) => {
-        const conditionCode = S.symbolContent(code)
-        if (!Operands.isConditionCode(conditionCode)) {
-          let message = `[parseOperand] in valid condition code`
-          message += `\n  code: ${conditionCode}`
-          throw new S.ErrorWithMeta(message, meta)
-        }
+  "`(cc ,code)": ({ code }, { meta }) => {
+    const conditionCode = S.symbolContent(code)
+    if (!Operands.isConditionCode(conditionCode)) {
+      let message = `[parseOperand] in valid condition code`
+      message += `\n  code: ${conditionCode}`
+      throw new S.ErrorWithMeta(message, meta)
+    }
 
-        return Operands.Cc(conditionCode, meta)
-      }),
+    return Operands.Cc(conditionCode, meta)
+  },
 
-      S.matcher("`(arity ,value)", ({ value }, { meta }) => {
-        return Operands.Arity(Number(S.intContent(value)), meta)
-      }),
+  "`(arity ,value)": ({ value }, { meta }) => {
+    return Operands.Arity(Number(S.intContent(value)), meta)
+  },
 
-      S.matcher("`(label ,name)", ({ name }, { meta }) => {
-        return Operands.Label(
-          S.symbolContent(name),
-          { isExternal: false },
-          meta,
-        )
-      }),
+  "`(label ,name)": ({ name }, { meta }) => {
+    return Operands.Label(S.symbolContent(name), { isExternal: false }, meta)
+  },
 
-      S.matcher("`(external-label ,name)", ({ name }, { meta }) => {
-        return Operands.Label(S.symbolContent(name), { isExternal: true }, meta)
-      }),
-    ]),
-    sexp,
-  )
-}
+  "`(external-label ,name)": ({ name }, { meta }) => {
+    return Operands.Label(S.symbolContent(name), { isExternal: true }, meta)
+  },
+})
