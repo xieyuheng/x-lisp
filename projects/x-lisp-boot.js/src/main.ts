@@ -3,10 +3,12 @@
 import * as cmd from "@xieyuheng/command.js"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
+import fs from "node:fs"
 import { fileURLToPath } from "node:url"
 import * as B from "./basic/index.ts"
 import { globals } from "./globals.ts"
 import * as X from "./lang/index.ts"
+import * as M from "./machine/index.ts"
 import {
   loadModuleProject,
   loadProject,
@@ -29,6 +31,8 @@ router.defineRoutes([
   "file:compile-to-pass-log file",
   "file:compile-to-basic file",
   "basic:bundle file",
+  "machine:transpile-to-x86-assembly file",
+  "machine:assemble-x86 file",
 ])
 
 router.defineHandlers({
@@ -51,6 +55,19 @@ router.defineHandlers({
   "basic:bundle": ({ args: [file] }) => {
     const mod = B.loadEntry(createUrl(file))
     console.log(B.prettyMod(globals.maxWidth, B.bundle(mod)))
+  },
+  "machine:transpile-to-x86-assembly": ({ args: [file] }) => {
+    const mod = M.load(createUrl(file))
+    console.log(mod)
+    const assemblyCode = M.transpileToX86Assembly(mod)
+    console.log(assemblyCode)
+  },
+  "machine:assemble-x86": ({ args: [file] }) => {
+    const mod = M.load(createUrl(file))
+    const assemblyCode = M.transpileToX86Assembly(mod)
+    const assemblyFile = file + ".x86.s"
+    fs.writeFileSync(assemblyFile, assemblyCode)
+    Services.assembleX86File(assemblyFile)
   },
 })
 

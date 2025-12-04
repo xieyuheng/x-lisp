@@ -1,5 +1,5 @@
-import * as M from "@xieyuheng/machine-lisp.js"
 import * as B from "../basic/index.ts"
+import * as M from "../machine/index.ts"
 import { setupMetadata } from "./040-SelectInstructionPass.ts"
 
 export function SetupVariableInfo(mod: M.Mod): void {

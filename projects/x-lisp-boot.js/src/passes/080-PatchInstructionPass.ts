@@ -1,4 +1,4 @@
-import * as M from "@xieyuheng/machine-lisp.js"
+import * as M from "../machine/index.ts"
 
 export function PatchInstructionPass(mod: M.Mod): void {
   for (const definition of M.modDefinitions(mod)) {

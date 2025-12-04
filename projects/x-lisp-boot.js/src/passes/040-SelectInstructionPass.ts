@@ -1,6 +1,6 @@
 import { arrayUnzip } from "@xieyuheng/helpers.js/array"
-import * as M from "@xieyuheng/machine-lisp.js"
 import * as B from "../basic/index.ts"
+import * as M from "../machine/index.ts"
 import * as R from "../runtime/index.ts"
 
 export function SelectInstructionPass(mod: B.Mod, machineMod: M.Mod): void {

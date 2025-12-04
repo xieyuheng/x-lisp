@@ -1,5 +1,5 @@
-import * as M from "@xieyuheng/machine-lisp.js"
 import * as S from "@xieyuheng/sexp.js"
+import * as M from "../machine/index.ts"
 import { getVarNames } from "./069-SetupVariableInfo.ts"
 
 export function AssignHomePass(mod: M.Mod): void {
