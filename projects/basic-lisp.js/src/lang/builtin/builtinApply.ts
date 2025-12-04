@@ -1,5 +1,4 @@
 import { definePrimitiveFunctionWithContext, provide } from "../define/index.ts"
-import { apply, applyNullary } from "../execute/index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function builtinApply(mod: Mod) {
@@ -10,7 +9,7 @@ export function builtinApply(mod: Mod) {
     "apply-nullary",
     1,
     (context) => (f) => {
-      return applyNullary(context, f)
+      throw new Error()
     },
   )
 
@@ -19,7 +18,7 @@ export function builtinApply(mod: Mod) {
     "apply-unary",
     2,
     (context) => (f, arg) => {
-      return apply(context, f, arg)
+      throw new Error()
     },
   )
 }

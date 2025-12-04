@@ -1,6 +1,2 @@
-export * from "./apply.ts"
-export * from "./applyNullary.ts"
-export * from "./call.ts"
 export * from "./Context.ts"
-export * from "./execute.ts"
 export * from "./Frame.ts"

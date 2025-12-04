@@ -1,4 +1,3 @@
-[basic-lisp.js] remove `execute/`
 [x-lisp-boot.js] setup `builtin/` -- map from x-lisp function to c function
 [basic-lisp.js] remove `builtin/`
 
