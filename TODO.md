@@ -1,12 +1,31 @@
-[machine-lisp.js] `Function` as `Operand` -- `Label` should always be local
+[machine-lisp.js] rename `Label` to `LocalLabel`
+[machine-lisp.js] `Label` as global label
+[x-lisp-boot.js] `040-SelectInstructionPass` -- `selectFunctionLabel` & `selectAddressLabel` -- use `hasBuiltinFunction`
+[basic-lisp.js] `qualifyFunction` & `qualifyAddress` -- use `hasBuiltinFunction`
+[basic-lisp.js] rename `Function` to `FunctionRef` -- again
+[basic-lisp.js] `FunctionRef` and `Address` have not `attributes`
 
 # scan call stack
+
+as the current design, every builtin function must be callable from x-lisp.
+
+- this does not make sense.
+  we need a way to call function that should not be called from x-lisp:
+
+  - `make-function`
+  - `make-curry`
+  - `gc-collect`
+
+- currently we are limited by the design of basic-lisp,
+  the features of which are designed for optimization,
+  which we have not used yet.
 
 [runtime.c] `debug/` -- `x_print_stack_trace` -- setup
 
 [runtime.c] `gc/` -- setup
 [runtime.c] `x_gc_required_p` -- setup
-[runtime.c] `x_gc_collect` -- -- call `x_print_stack_trace`
+[runtime.c] `x_gc_save_registers` -- function written in assembly
+[runtime.c] `x_gc_collect` -- call `x_print_stack_trace`
 
 [x-lisp-boot.js] `090-PrologAndEpilogPass` -- prolog jump to first block instead of `body`
 
