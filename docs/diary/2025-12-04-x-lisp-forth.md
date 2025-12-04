@@ -23,6 +23,13 @@ date: 2025-12-04
   - 用类 forth 的方式实现，而不是用汇编器的方式。
     - 方便定义 metadata。
     - 函数内使用 变长指令集。
+  - 除了模仿 ruby 的语法之外，就类似传统的 forth。
+    但是不是 threaded code 而是 byte code。
+  - 使用 `<name>/<n>` 语法来做 `@fn <name> n call` 的缩写。
+  - 没有 closure 但是有 apply 所形成的 curry（flat closure）。
+  - procedure -- quoted unnamed function
+    - 这也方便编译 lambda。
+      不用 lift，可以编译在当前位置。
 
 - x-lisp-forth.js
 
