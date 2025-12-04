@@ -1,5 +1,5 @@
-import * as B from "@xieyuheng/basic-lisp.js"
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
+import * as B from "../basic/index.ts"
 
 export function SetupPrimitiveFunction(basicMod: B.Mod): void {
   const usedFunctionNames = getUsedFunctionNames(basicMod)

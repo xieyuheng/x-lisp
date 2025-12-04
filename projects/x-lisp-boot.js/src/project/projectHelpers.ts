@@ -1,7 +1,7 @@
-import * as B from "@xieyuheng/basic-lisp.js"
 import * as M from "@xieyuheng/machine-lisp.js"
 import fs from "node:fs"
 import Path from "node:path"
+import * as B from "../basic/index.ts"
 import * as X from "../index.ts"
 import type { Project } from "./index.ts"
 

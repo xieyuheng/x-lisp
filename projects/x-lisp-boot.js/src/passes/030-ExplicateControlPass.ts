@@ -1,6 +1,6 @@
-import * as B from "@xieyuheng/basic-lisp.js"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
+import * as B from "../basic/index.ts"
 import * as X from "../index.ts"
 
 export function ExplicateControlPass(mod: X.Mod, basicMod: B.Mod): void {

@@ -1,5 +1,5 @@
-import * as B from "@xieyuheng/basic-lisp.js"
 import assert from "node:assert"
+import * as B from "../basic/index.ts"
 import { getUsedFunctionNames } from "./031-SetupPrimitiveFunctionPass.ts"
 
 export function SetupFunctionTablePass(basicMod: B.Mod): void {

@@ -1,4 +1,4 @@
-move basic-lisp.js and machine-lisp.js back to x-lisp-boot.js
+move machine-lisp.js back to x-lisp-boot.js
 
 setup x-forth.c
 setup x-lisp-forth.js

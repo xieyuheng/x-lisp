@@ -1,4 +1,4 @@
-import * as B from "@xieyuheng/basic-lisp.js"
+import * as B from "../basic/index.ts"
 import * as X from "../index.ts"
 import * as Passes from "../passes/index.ts"
 

@@ -1,10 +1,10 @@
 #!/usr/bin/env -S node --stack-size=65536
 
-import * as B from "@xieyuheng/basic-lisp.js"
 import * as cmd from "@xieyuheng/command.js"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import { fileURLToPath } from "node:url"
+import * as B from "./basic/index.ts"
 import { globals } from "./globals.ts"
 import * as X from "./lang/index.ts"
 import {
@@ -28,6 +28,7 @@ router.defineRoutes([
   "project:clean --config",
   "file:compile-to-pass-log file",
   "file:compile-to-basic file",
+  "basic:bundle file",
 ])
 
 router.defineHandlers({
@@ -46,6 +47,10 @@ router.defineHandlers({
   "file:compile-to-basic": ({ args: [file] }) => {
     const mod = X.loadEntry(createUrl(file))
     console.log(B.prettyMod(globals.maxWidth, Services.compileXToBasic(mod)))
+  },
+  "basic:bundle": ({ args: [file] }) => {
+    const mod = B.loadEntry(createUrl(file))
+    console.log(B.prettyMod(globals.maxWidth, B.bundle(mod)))
   },
 })
 

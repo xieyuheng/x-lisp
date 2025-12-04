@@ -1,4 +1,4 @@
-import * as B from "@xieyuheng/basic-lisp.js"
+import * as B from "../basic/index.ts"
 import * as R from "./index.ts"
 
 export function encodeInt(x: bigint): bigint {
