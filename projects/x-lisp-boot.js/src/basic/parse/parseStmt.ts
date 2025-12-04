@@ -36,6 +36,7 @@ export const parseStmt = S.createRouter<Stmt>({
       meta,
     )
   },
+
   "(cons* 'define-metadata name _tail)": ({ name }, { sexp }) => {
     const keyword = S.asTael(sexp).elements[1]
     const meta = S.tokenMetaFromSexpMeta(keyword.meta)

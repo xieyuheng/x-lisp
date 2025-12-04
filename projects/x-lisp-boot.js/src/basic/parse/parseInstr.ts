@@ -66,6 +66,7 @@ export const parseInstr = S.createRouter<Instr>({
       meta,
     )
   },
+
   "`(apply ,target ,arg)": ({ target, arg }, { meta }) => {
     return Instrs.Apply(
       "_∅",

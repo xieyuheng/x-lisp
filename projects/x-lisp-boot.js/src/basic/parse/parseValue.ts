@@ -22,6 +22,7 @@ export const parseValue = S.createRouter<Value>({
       isPrimitive: true,
     })
   },
+
   else: ({}, { sexp }) => {
     const meta = S.tokenMetaFromSexpMeta(sexp.meta)
 
