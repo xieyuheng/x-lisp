@@ -1,4 +1,4 @@
-# lang
+# mod & definition
 
 [core] `definition_t`
 [core] `function_definition_t`
@@ -11,12 +11,7 @@
 [core] `placeholder_t`
 [core] `mod` -- have `placeholders` -- for patching undefined names
 
-# lang
-
-[lang] vm byte code design
-[lang] worker
-
-# outer interpreter
+# execute
 
 [lexer] port the lexer of sexp.js
 
@@ -28,6 +23,17 @@
 - `execute` -- call `in_mod`
 - forth outer interpreter -- run builtin functions like a calculator
 - design with repl in mind
+
+# vm
+
+[core] vm byte code design
+[core] `vm_t`
+[core] `make_vm`
+[core] `vm_free`
+
+# define
+
+[lang] `execute` -- call `in_define` on `@define`
 
 # sexp
 
