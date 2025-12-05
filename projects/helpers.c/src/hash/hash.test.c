@@ -111,7 +111,7 @@ main(void) {
     }
 
     {
-        hash_t *hash = hash_of_string_key();
+        hash_t *hash = make_hash_with_string_keys();
         assert(!hash_first(hash));
 
         //  Insert some entries

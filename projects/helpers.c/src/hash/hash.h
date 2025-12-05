@@ -9,7 +9,7 @@ void hash_put_free_fn(hash_t *self, free_fn_t *free_fn);
 void hash_put_key_free_fn(hash_t *self, free_fn_t *key_free_fn);
 void hash_put_key_equal_fn(hash_t *self, equal_fn_t *key_equal_fn);
 
-hash_t *hash_of_string_key(void);
+hash_t *make_hash_with_string_keys(void);
 
 size_t hash_length(const hash_t *self);
 

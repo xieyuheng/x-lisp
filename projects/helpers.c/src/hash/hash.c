@@ -86,7 +86,7 @@ hash_put_key_equal_fn(hash_t *self, equal_fn_t *key_equal_fn) {
 }
 
 hash_t *
-hash_of_string_key(void) {
+make_hash_with_string_keys(void) {
     hash_t* self = make_hash();
     hash_put_key_free_fn(self, (free_fn_t *) string_free);
     hash_put_key_equal_fn(self, (equal_fn_t *) string_equal);

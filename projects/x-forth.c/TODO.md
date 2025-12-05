@@ -1,6 +1,5 @@
 # lang
 
-[core] `make_mod`
 [core] `mod_free`
 
 [core] `definition_t`
