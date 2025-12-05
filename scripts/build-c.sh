@@ -4,3 +4,4 @@ set -e
 
 make --directory projects/helpers.c -j
 make --directory projects/runtime.c -j
+make --directory projects/x-forth.c -j
