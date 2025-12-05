@@ -2,5 +2,8 @@
 
 set -e
 
-bash scripts/clean-c.sh
-bash scripts/clean-js.sh
+make --directory projects/helpers.c clean
+make --directory projects/runtime.c clean
+make --directory projects/x-forth.c clean
+
+pnpm run -r --parallel --aggregate-output clean

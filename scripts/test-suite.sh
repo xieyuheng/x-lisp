@@ -2,9 +2,8 @@
 
 set -e
 
-bin="bun"
-# bin="node"
-# bin="node --stack-size=65536"
+bin="node"
+# bin="bun"
 
 $bin \
     projects/x-lisp-boot.js/src/main.ts project:test \

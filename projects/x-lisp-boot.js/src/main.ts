@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node --stack-size=65536
+#!/usr/bin/env -S node
 
 import * as cmd from "@xieyuheng/command.js"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"

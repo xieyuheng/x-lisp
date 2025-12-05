@@ -2,4 +2,4 @@
 
 set -e
 
-bash scripts/format-js.sh
+pnpm run -r --parallel --aggregate-output format

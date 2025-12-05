@@ -2,5 +2,8 @@
 
 set -e
 
-bash scripts/build-c.sh
-bash scripts/build-js.sh
+make --directory projects/helpers.c -j
+make --directory projects/runtime.c -j
+make --directory projects/x-forth.c -j
+
+pnpm run -r build
