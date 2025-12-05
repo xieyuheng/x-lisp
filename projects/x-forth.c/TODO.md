@@ -1,14 +1,15 @@
 # lang
 
-[core] `mod_free`
-
 [core] `definition_t`
 [core] `function_definition_t`
 [core] `primitive_function_definition_t`
 [core] `variable_definition_t`
 [core] `constant_definition_t`
 
+[core] `make_mod` -- setup `definition_free`
+
 [core] `placeholder_t`
+[core] `mod` -- have `placeholders` -- for patching undefined names
 
 # lang
 

@@ -16,11 +16,12 @@ size_t hash_length(const hash_t *self);
 bool hash_has(hash_t *self, const void *key);
 void *hash_get(hash_t *self, const void *key);
 
-// will own the key.
-// will not update the key if the entry exists.
 // return true if success.
+// will own the key if success.
+// will not update the key if the entry exists (fail).
 bool hash_insert(hash_t *self, void *key, void *value);
 
+// will always success.
 // will own the key.
 // auto free old key if there is `key_free_fn`.
 // auto free old value if there is `value_free_fn`.
