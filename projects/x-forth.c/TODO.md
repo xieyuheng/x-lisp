@@ -1,5 +1,3 @@
-[x-forth.c] use -flto -- move inline function to .c
-
 # mod & definition
 
 [core] `make_function_definition`
