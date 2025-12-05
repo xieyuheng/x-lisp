@@ -1,10 +1,9 @@
 # mod & definition
 
-[core] `definition_t`
-[core] `function_definition_t`
-[core] `primitive_function_definition_t`
-[core] `variable_definition_t`
-[core] `constant_definition_t`
+[core] `make_function_definition`
+[core] `make_primitive_function_definition`
+[core] `make_variable_definition`
+[core] `make_constant_definition`
 
 [core] `make_mod` -- setup `definition_free`
 
@@ -34,6 +33,11 @@
 # define
 
 [lang] `execute` -- call `in_define` on `@define`
+
+# vm
+
+do not compile to bytecode file yet,
+but keep it possible (with the helpa of placeholder).
 
 # sexp
 
