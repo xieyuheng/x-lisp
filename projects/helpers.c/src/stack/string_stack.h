@@ -1,3 +1,3 @@
 #pragma once
 
-stack_t *string_make_stack(void);
+stack_t *make_string_stack(void);

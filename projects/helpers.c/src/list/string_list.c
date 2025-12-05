@@ -1,7 +1,7 @@
 #include "index.h"
 
 list_t *
-string_make_list(void) {
+make_string_list(void) {
     return make_list_with((free_fn_t *) string_free);
 }
 

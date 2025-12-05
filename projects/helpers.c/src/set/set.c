@@ -41,7 +41,7 @@ make_put_with(free_fn_t *free_fn) {
 }
 
 set_t *
-string_make_set(void) {
+make_string_set(void) {
     set_t *self = make_set();
     set_put_hash_fn(self, (hash_fn_t *) string_bernstein_hash);
     set_put_free_fn(self, (free_fn_t *) string_free);

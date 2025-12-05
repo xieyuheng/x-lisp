@@ -2,8 +2,13 @@
 
 > port inet-forth or inet-lisp
 
-[lang] mod -- for the outer interpreter
-[lang] definition
+[vm] `mod_t` -- for the outer interpreter
+
+[vm] `definition_t`
+[vm] `function_definition_t`
+[vm] `primitive_function_definition_t`
+[vm] `variable_definition_t`
+[vm] `constant_definition_t`
 
 # lang
 

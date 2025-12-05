@@ -9,7 +9,7 @@ struct path_t {
 path_t *
 make_path(const char *string) {
     path_t *self = new(path_t);
-    self->segment_stack = string_make_stack();
+    self->segment_stack = make_string_stack();
     if (string_starts_with(string, "/"))
         self->is_absolute = true;
     path_join(self, string);

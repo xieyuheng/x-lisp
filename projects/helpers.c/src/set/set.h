@@ -8,7 +8,7 @@ void set_put_free_fn(set_t *self, free_fn_t *free_fn);
 void set_put_equal_fn(set_t *self, equal_fn_t *equal_fn);
 
 set_t *make_put_with(free_fn_t *free_fn);
-set_t *string_make_set(void);
+set_t *make_string_set(void);
 
 size_t set_length(const set_t *self);
 

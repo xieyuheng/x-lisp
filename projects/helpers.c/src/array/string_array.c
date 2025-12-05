@@ -1,7 +1,7 @@
 #include "index.h"
 
 array_t *
-string_make_array_auto(void) {
+make_string_array_auto(void) {
     return make_array_auto_with((free_fn_t *) string_free);
 }
 

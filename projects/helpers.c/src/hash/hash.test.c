@@ -116,7 +116,7 @@ main(void) {
 
         //  Insert some entries
 
-        list_t *string_list = string_make_list();
+        list_t *string_list = make_string_list();
         list_push(string_list, string_copy("dead beef"));
         list_push(string_list, string_copy("a bad cafe"));
         list_push(string_list, string_copy("coded bad"));
