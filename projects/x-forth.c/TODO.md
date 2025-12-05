@@ -1,6 +1,6 @@
 # mod & definition
 
-[core] `make_function_definition` -- has code
+[core] `make_function_definition` -- has `code` and `code_size`
 
 [core] `primitive_function_t`
 [core] `make_primitive_function_definition` -- has `primitive_function_t`
@@ -9,6 +9,14 @@
 
 [core] `placeholder_t`
 [core] `mod` -- have `placeholders` -- for patching undefined names
+
+# define
+
+[core] `define_constant`
+[core] `define_variable`
+[core] `define_function`
+[core] `define_primitive_fn`
+[core] `define_primitive_fn_<n>` -- 0 to 6
 
 # execute
 
