@@ -24,9 +24,9 @@ struct hash_t {
     void *cursor_key;
 
     hash_fn_t *hash_fn;
-    free_fn_t *free_fn;
     free_fn_t *key_free_fn;
     equal_fn_t *key_equal_fn;
+    free_fn_t *value_free_fn;
 };
 
 static size_t
@@ -71,8 +71,8 @@ hash_put_hash_fn(hash_t *self, hash_fn_t *hash_fn) {
 }
 
 void
-hash_put_free_fn(hash_t *self, free_fn_t *free_fn) {
-    self->free_fn = free_fn;
+hash_put_value_free_fn(hash_t *self, free_fn_t *value_free_fn) {
+    self->value_free_fn = value_free_fn;
 }
 
 void
@@ -254,10 +254,11 @@ hash_delete_entry(hash_t *self, entry_t *entry) {
     if (entry_pointer == &(self->entries[entry->index]))
         self->used_indexes_size--;
 
-    if (self->free_fn)
-        self->free_fn(entry->value);
     if (self->key_free_fn)
         self->key_free_fn(entry->key);
+    if (self->value_free_fn)
+        self->value_free_fn(entry->value);
+
     free(entry);
 }
 
@@ -296,8 +297,8 @@ hash_put(hash_t *self, void *key, void *value) {
     if (self->key_free_fn)
         self->key_free_fn(key);
 
-    if (self->free_fn)
-        self->free_fn(entry->value);
+    if (self->value_free_fn)
+        self->value_free_fn(entry->value);
 
     entry->value = value;
 }
