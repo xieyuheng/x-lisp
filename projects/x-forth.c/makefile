@@ -6,6 +6,7 @@ cflags += -O3
 cflags += -falign-functions=8
 cflags += -funsigned-char
 cflags += -fno-omit-frame-pointer
+cflags += -flto
 cflags += -I/usr/local/include
 cflags += -Wall
 cflags += -Wwrite-strings
