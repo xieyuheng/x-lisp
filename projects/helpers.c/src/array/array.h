@@ -102,7 +102,7 @@ array_pick(const array_t *self, size_t back_index) {
 }
 
 inline void
-array_set(array_t *self, size_t index, void *value) {
+array_put(array_t *self, size_t index, void *value) {
     if (index >= self->size)
         array_resize(self, index + self->grow_step);
 

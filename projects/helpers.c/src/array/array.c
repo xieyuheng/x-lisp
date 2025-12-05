@@ -19,7 +19,7 @@ array_purge(array_t *self) {
             void *value = array_get(self, i);
             if (value) {
                 self->free_fn(value);
-                array_set(self, i, NULL);
+                array_put(self, i, NULL);
             }
         }
     } else {
@@ -75,4 +75,4 @@ void array_push(array_t *self, void *value);
 void *array_get(const array_t *self, size_t index);
 void *array_pick(const array_t *self, size_t back_index);
 
-void array_set(array_t *self, size_t index, void *value);
+void array_put(array_t *self, size_t index, void *value);

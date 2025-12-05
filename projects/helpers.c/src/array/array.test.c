@@ -147,11 +147,11 @@ main(void) {
     }
 
     {
-        // array_set + auto grow
+        // array_put + auto grow
 
         array_t *array = make_array(3);
 
-        array_set(array, 4, (void *) 1);
+        array_put(array, 4, (void *) 1);
         assert(array_length(array) == 5);
 
         assert(array_get(array, 0) == NULL);
@@ -165,11 +165,11 @@ main(void) {
     }
 
     {
-        // array_set + auto grow -- again
+        // array_put + auto grow -- again
 
         array_t *array = make_array_auto();
 
-        array_set(array, 0, (void *) 1);
+        array_put(array, 0, (void *) 1);
         assert(array_length(array) == 1);
 
         assert(array_get(array, 0) == (void *) 1);

@@ -21,7 +21,7 @@ size_t
 thread_pool_start(thread_pool_t *self, thread_fn_t *thread_fn, void *arg) {
     thread_t *thread = thread_start(thread_fn, arg);
     size_t id = array_length(self->thread_array);
-    array_set(self->thread_array, id, thread);
+    array_put(self->thread_array, id, thread);
     thread->thread_pool = self;
     thread->id = id;
     return id;
@@ -32,7 +32,7 @@ thread_pool_join(thread_pool_t *self, size_t id) {
     thread_t *thread = array_get(self->thread_array, id);
     assert(thread);
     thread_join(thread);
-    array_set(self->thread_array, id, NULL);
+    array_put(self->thread_array, id, NULL);
 }
 
 void
