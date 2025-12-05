@@ -1,4 +1,0 @@
-src/sexp/sexp.snapshot.c:7 code: (a b c)
-src/sexp/sexp.snapshot.c:8 echo: (a b c)
-src/sexp/sexp.snapshot.c:14 code: ((a "b" c) (a . c) (1 1.2))
-src/sexp/sexp.snapshot.c:15 echo: ((a "b" c) (a . c) (1 1.2))

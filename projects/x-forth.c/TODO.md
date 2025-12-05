@@ -1,4 +1,4 @@
-move sexp and lexer from helper to x-forth
+move lexer from helper to x-forth
 
 # lang
 
@@ -17,6 +17,7 @@ move sexp and lexer from helper to x-forth
 [lexer] port the lexer of sexp.js
 
 - has full context -- `text` and `path` (or `url`)
+- support comment this time
 
 [interpreter] forth outer interpreter -- run builtin functions like a calculator
 
