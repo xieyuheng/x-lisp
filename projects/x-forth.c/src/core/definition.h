@@ -18,3 +18,8 @@ struct definition_t {
         struct { char *todo; } constant_definition;
     };
 };
+
+definition_t *make_function_definition(mod_t *mod, char *name);
+definition_t *make_primitive_function_definition(mod_t *mod, char *name);
+definition_t *make_variable_definition(mod_t *mod, char *name);
+definition_t *make_constant_definition(mod_t *mod, char *name);

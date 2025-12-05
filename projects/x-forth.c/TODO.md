@@ -1,9 +1,11 @@
 # mod & definition
 
-[core] `make_function_definition`
-[core] `make_primitive_function_definition`
-[core] `make_variable_definition`
-[core] `make_constant_definition`
+[core] `make_variable_definition` -- has value
+[core] `make_constant_definition` -- has value
+[core] `make_function_definition` -- has code
+
+[core] `primitive_function_t`
+[core] `make_primitive_function_definition` -- has `primitive_function_t`
 
 [core] `make_mod` -- setup `definition_free`
 
