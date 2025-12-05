@@ -19,7 +19,9 @@ cflags += -D_FILE_OFFSET_BITS=64
 cflags += $(CFLAGS)
 
 ldflags = -L/usr/local/lib
-ldflags += -lm -pthread
+ldflags += -flto
+ldflags += -lm
+ldflags += -pthread
 ldflags += $(LDFLAGS)
 
 ifdef TSAN

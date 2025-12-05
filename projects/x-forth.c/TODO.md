@@ -1,4 +1,3 @@
-[helper.c] use -flto -- move inline function to .c
 [runtime.c] use -flto -- move inline function to .c
 [x-forth.c] use -flto -- move inline function to .c
 
