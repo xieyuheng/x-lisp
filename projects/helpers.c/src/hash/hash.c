@@ -206,36 +206,6 @@ hash_get(hash_t *self, const void *key) {
     return entry->value;
 }
 
-// no rehash here.
-// if not exists return true,
-// if exists return false.
-static bool
-hash_put_entry_if_not_exists(hash_t *self, void *key, void *value) {
-    size_t index = hash_key_index(self, key);
-    entry_t *entry = self->entries[index];
-    if (!entry) {
-        entry_t *new_entry = make_hash_entry(self, key, value);
-        self->entries[index] = new_entry;
-        self->used_indexes_size++;
-        self->length++;
-        return true;
-    }
-
-    while (entry) {
-        if (hash_key_equal(self, entry->key, key))
-            return false;
-
-        entry = entry->next;
-    }
-
-    entry_t *new_entry = make_hash_entry(self, key, value);
-    entry_t *top_entry = self->entries[index];
-    self->entries[index] = new_entry;
-    new_entry->next = top_entry;
-    self->length++;
-    return true;
-}
-
 static void
 hash_delete_entry(hash_t *self, entry_t *entry) {
     // find previous entry since it's a singly-linked list.
@@ -279,27 +249,50 @@ hash_is_overload(hash_t *self) {
 }
 
 bool
-hash_set(hash_t *self, void *key, void *value) {
+hash_insert(hash_t *self, void *key, void *value) {
     if (hash_is_overload(self))
         hash_rehash(self, self->prime_index + 1);
 
-    return hash_put_entry_if_not_exists(self, key, value);
+    size_t index = hash_key_index(self, key);
+    entry_t *entry = self->entries[index];
+    if (!entry) {
+        entry_t *new_entry = make_hash_entry(self, key, value);
+        self->entries[index] = new_entry;
+        self->used_indexes_size++;
+        self->length++;
+        return true;
+    }
+
+    while (entry) {
+        if (hash_key_equal(self, entry->key, key))
+            return false;
+
+        entry = entry->next;
+    }
+
+    entry_t *new_entry = make_hash_entry(self, key, value);
+    entry_t *top_entry = self->entries[index];
+    self->entries[index] = new_entry;
+    new_entry->next = top_entry;
+    self->length++;
+    return true;
 }
 
 void
 hash_put(hash_t *self, void *key, void *value) {
     entry_t *entry = hash_get_entry(self, key);
     if (!entry) {
-        assert(hash_set(self, key, value));
+        assert(hash_insert(self, key, value));
         return;
     }
 
     if (self->key_free_fn)
-        self->key_free_fn(key);
+        self->key_free_fn(entry->key);
 
     if (self->value_free_fn)
         self->value_free_fn(entry->value);
 
+    entry->key = key;
     entry->value = value;
 }
 

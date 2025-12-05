@@ -56,7 +56,7 @@ set_length(const set_t *self) {
 
 bool
 set_add(set_t *self, void *value) {
-    return hash_set(self->value_hash, value, value);
+    return hash_insert(self->value_hash, value, value);
 }
 
 void
