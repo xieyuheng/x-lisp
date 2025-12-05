@@ -1,14 +1,15 @@
 # lang
 
-> port inet-forth or inet-lisp
+[core] `make_mod`
+[core] `mod_free`
 
-[vm] `mod_t` -- for the outer interpreter
+[core] `definition_t`
+[core] `function_definition_t`
+[core] `primitive_function_definition_t`
+[core] `variable_definition_t`
+[core] `constant_definition_t`
 
-[vm] `definition_t`
-[vm] `function_definition_t`
-[vm] `primitive_function_definition_t`
-[vm] `variable_definition_t`
-[vm] `constant_definition_t`
+[core] `placeholder_t`
 
 # lang
 
@@ -22,8 +23,10 @@
 - has full context -- `text` and `path` (or `url`)
 - support comment this time
 
-[interpreter] forth outer interpreter -- run builtin functions like a calculator
+[lang] `execute` -- support `primitive_function_definition_t` first
 
+- `execute` -- call `in_mod`
+- forth outer interpreter -- run builtin functions like a calculator
 - design with repl in mind
 
 # sexp
