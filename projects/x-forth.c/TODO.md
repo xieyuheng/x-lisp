@@ -1,5 +1,3 @@
-move lexer from helper to x-forth
-
 # lang
 
 > port inet-forth or inet-lisp

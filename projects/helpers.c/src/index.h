@@ -17,7 +17,6 @@
 #include "code/index.h"
 #include "utf8/index.h"
 #include "text/index.h"
-#include "lexer/index.h"
 #include "commander/index.h"
 #include "time/index.h"
 #include "thread/index.h"
