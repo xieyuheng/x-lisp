@@ -1,7 +1,5 @@
 # mod & definition
 
-[core] `make_variable_definition` -- has value
-[core] `make_constant_definition` -- has value
 [core] `make_function_definition` -- has code
 
 [core] `primitive_function_t`

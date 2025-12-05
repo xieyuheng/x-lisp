@@ -14,12 +14,12 @@ struct definition_t {
     union {
         struct { char *todo; } function_definition;
         struct { char *todo; } primitive_function_definition;
-        struct { char *todo; } variable_definition;
-        struct { char *todo; } constant_definition;
+        struct { value_t value; } variable_definition;
+        struct { value_t value; } constant_definition;
     };
 };
 
 definition_t *make_function_definition(mod_t *mod, char *name);
 definition_t *make_primitive_function_definition(mod_t *mod, char *name);
-definition_t *make_variable_definition(mod_t *mod, char *name);
-definition_t *make_constant_definition(mod_t *mod, char *name);
+definition_t *make_variable_definition(mod_t *mod, char *name, value_t value);
+definition_t *make_constant_definition(mod_t *mod, char *name, value_t value);
