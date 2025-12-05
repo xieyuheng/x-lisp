@@ -19,19 +19,15 @@ cflags += -D_FILE_OFFSET_BITS=64
 cflags += $(CFLAGS)
 
 ldflags = -L/usr/local/lib
+ldflags += -static
 ldflags += -flto
-ldflags += -lm 
+ldflags += -lm
 ldflags += -pthread
 ldflags += $(LDFLAGS)
 
 ifdef TSAN
 ldflags += -fsanitize=thread
 cflags += -fsanitize=thread
-endif
-
-STATIC = 1
-ifdef STATIC
-ldflags += -static
 endif
 
 sources = $(shell find src -name '*.c' -not -name '*.test.c' -not -name '*.snapshot.c' -not -name '*.exe.c')
