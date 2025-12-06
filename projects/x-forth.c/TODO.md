@@ -1,6 +1,5 @@
 # lexer
 
-[lexer] `make_lexer`
 [lexer] `lexer_free`
 [lexer] `lex`
 [lexer] `lexer_lex`
