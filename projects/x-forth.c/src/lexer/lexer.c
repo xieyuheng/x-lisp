@@ -6,7 +6,7 @@ make_lexer(const path_t *path, const char *string) {
     self->path = path;
     self->string = string;
     self->length = string_length(string);
-    self->position = (struct span_position_t) {
+    self->position = (struct position_t) {
         .index = 0,
         .row = 0,
         .column = 0,
@@ -22,16 +22,26 @@ lexer_free(lexer_t *self) {
     free(self);
 }
 
-void
-lexer_lex(lexer_t *self, list_t *tokens) {
+token_t *
+lexer_consume(lexer_t *self) {
     (void) self;
-    (void) tokens;
+    return NULL;
+}
+
+static bool
+lexer_is_end(lexer_t *self) {
+    return self->position.index >= self->length;
 }
 
 list_t *
 lex(const path_t *path, const char *string) {
     list_t *tokens = make_list_with((free_fn_t *) token_free);
     lexer_t *lexer = make_lexer(path, string);
-    lexer_lex(lexer, tokens);
+    while (lexer_is_end(lexer)) {
+        token_t *token = lexer_consume(lexer);
+        if (token == NULL) return NULL;
+        list_push(tokens, token);
+    }
+
     return tokens;
 }

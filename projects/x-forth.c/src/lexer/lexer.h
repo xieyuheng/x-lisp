@@ -6,7 +6,7 @@ struct lexer_t {
     const path_t *path;
     const char *string;
     size_t length;
-    struct span_position_t position;
+    struct position_t position;
     char *buffer;
     size_t buffer_length;
 };
@@ -14,5 +14,5 @@ struct lexer_t {
 lexer_t *make_lexer(const path_t *path, const char *string);
 void lexer_free(lexer_t *self);
 
-void lexer_lex(lexer_t *self, list_t *tokens);
+token_t *lexer_consume(lexer_t *self);
 list_t *lex(const path_t *path, const char *string);

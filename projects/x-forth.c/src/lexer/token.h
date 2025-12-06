@@ -16,6 +16,7 @@ typedef enum {
     QUOTATION_MARK,
     KEYWORD,
     HASHTAG,
+    LINE_COMMENT,
 } token_kind_t;
 
 struct token_t {

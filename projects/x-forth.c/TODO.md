@@ -1,5 +1,18 @@
 # lexer
 
+[lexer] `lexer_consume`
+
+[lexer] `consume_space`
+[lexer] `consume_bracket_end`
+[lexer] `consume_bracket_start`
+[lexer] `consume_hashtag`
+[lexer] `consume_keyword`
+[lexer] `consume_number`
+[lexer] `consume_quote`
+[lexer] `consume_string`
+[lexer] `consume_symbol`
+[lexer] `consume_line_comment`
+
 [lexer] `lexer_lex`
 
 # execute
