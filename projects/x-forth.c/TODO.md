@@ -2,10 +2,11 @@
 
 [lexer] `consume_bracket_end`
 [lexer] `consume_bracket_start`
+[lexer] `consume_quotation_mark`
 [lexer] `consume_hashtag`
 [lexer] `consume_keyword`
-[lexer] `consume_number`
-[lexer] `consume_quote`
+[lexer] `consume_float`
+[lexer] `consume_int`
 [lexer] `consume_string`
 [lexer] `consume_symbol`
 [lexer] `consume_line_comment`

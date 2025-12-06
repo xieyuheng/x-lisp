@@ -7,16 +7,16 @@ struct token_meta_t {
 };
 
 typedef enum {
-    SYMBOL,
-    STRING,
-    INT,
-    FLOAT,
-    BRACKET_START,
-    BRACKET_END,
-    QUOTATION_MARK,
-    KEYWORD,
-    HASHTAG,
-    LINE_COMMENT,
+    SYMBOL_TOKEN,
+    STRING_TOKEN,
+    INT_TOKEN,
+    FLOAT_TOKEN,
+    BRACKET_START_TOKEN,
+    BRACKET_END_TOKEN,
+    QUOTATION_MARK_TOKEN,
+    KEYWORD_TOKEN,
+    HASHTAG_TOKEN,
+    LINE_COMMENT_TOKEN,
 } token_kind_t;
 
 struct token_t {
