@@ -1,23 +1,31 @@
 #pragma once
 
+struct position_t { size_t index, row, column; };
+
+struct span_t { struct position_t start, end; };
+
+struct token_meta_t {
+    const path_t *path;
+    const char *string;
+    struct span_t span;
+};
+
 typedef enum {
-    GENERIC_TOKEN,
-    DELIMITER_TOKEN,
-    INT_TOKEN,
-    FLOAT_TOKEN,
-    STRING_TOKEN,
+    SYMBOL,
+    STRING,
+    INT,
+    FLOAT,
+    BRACKET_START,
+    BRACKET_END,
+    QUOTATION_MARK,
+    KEYWORD,
+    HASHTAG,
 } token_kind_t;
 
 struct token_t {
-    char *string;
     token_kind_t kind;
-    size_t start, end;
-    size_t lineno; // index from 1
-    size_t column; // index from 1, end of token
-    union {
-        int64_t int_value;
-        double float_value;
-    };
+    char *string;
+    struct token_meta_t meta;
 };
 
 // token_t *make_token(char *string, token_kind_t kind, size_t start, size_t end, size_t lineno, size_t column);

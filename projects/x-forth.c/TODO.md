@@ -2,8 +2,10 @@
 
 > port the lexer of sexp.js -- has full context -- `string` and `path`
 
-[lexer] `token_meta_t`
-[lexer] `token_t`
+ambr "DoubleQoutedString" "String"
+[lexer] `make_token`
+[lexer] `token_free`
+
 [core] `make_vm` -- setup `token_free`
 [lexer] `lexer_t`
 
@@ -43,7 +45,7 @@ setup `commands/`
 
 # define
 
-[lang] `execute` -- call `in_define` on `@define`
+[lang] `execute_token` -- dispatch to keyword `@define`
 
 # sexp
 
