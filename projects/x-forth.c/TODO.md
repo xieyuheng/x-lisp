@@ -1,6 +1,5 @@
 # lexer
 
-[lexer] `lex`
 [lexer] `lexer_lex`
 
 # execute

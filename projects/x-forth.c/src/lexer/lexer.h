@@ -12,3 +12,6 @@ struct lexer_t {
 
 lexer_t *make_lexer(const char *string);
 void lexer_free(lexer_t *self);
+
+void lexer_lex(lexer_t *self, list_t *tokens);
+list_t *lex(const char *string);
