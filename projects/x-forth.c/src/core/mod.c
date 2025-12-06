@@ -6,6 +6,7 @@ make_mod(path_t *path, char *text) {
     self->path = path;
     self->text = text;
     self->definitions = make_hash_with_string_keys();
+    hash_put_value_free_fn(self->definitions, (free_fn_t *) definition_free);
     return self;
 }
 

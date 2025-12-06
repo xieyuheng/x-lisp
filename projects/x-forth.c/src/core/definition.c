@@ -40,3 +40,23 @@ make_constant_definition(mod_t *mod, char *name, value_t value) {
     self->constant_definition.value = value;
     return self;
 }
+
+void
+definition_free(definition_t *self) {
+    free(self->name);
+
+    switch (self->kind) {
+    case FUNCTION_DEFINITION:
+        array_free(self->function_definition.parameters);
+        free(self->function_definition.program);
+        break;
+    case PRIMITIVE_FUNCTION_DEFINITION:
+        break;
+    case VARIABLE_DEFINITION:
+        break;
+    case CONSTANT_DEFINITION:
+        break;
+    }
+
+    free(self);
+}

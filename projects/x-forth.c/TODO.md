@@ -1,8 +1,5 @@
 # vm
 
-[core] `definition_free`
-[core] `make_mod` -- setup `definition_free`
-
 [core] `primitive_function_t`
 [core] `make_primitive_function_definition` -- has `primitive_function_t`
 
