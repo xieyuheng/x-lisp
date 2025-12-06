@@ -5,3 +5,4 @@
 #include "mod.h"
 #include "definition.h"
 #include "vm.h"
+#include "frame.h"

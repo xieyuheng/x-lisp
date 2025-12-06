@@ -1,6 +1,5 @@
 # vm
 
-[core] `frame_t` -- has `definition` (`function_definition`) and `pc`
 [core] `make_frame`
 [core] `frame_free`
 
@@ -13,7 +12,7 @@
 
 # mod & definition
 
-[core] `make_function_definition` -- has `code` and `code_size` -- no abstraction for code
+[core] `make_function_definition` -- has `parameters` (`string_array`) and `program` and `program_size`
 
 [core] `primitive_function_t`
 [core] `make_primitive_function_definition` -- has `primitive_function_t`
@@ -47,11 +46,6 @@
 # define
 
 [lang] `execute` -- call `in_define` on `@define`
-
-# vm
-
-do not compile to bytecode file yet,
-but keep it possible (with the helpa of placeholder).
 
 # sexp
 
