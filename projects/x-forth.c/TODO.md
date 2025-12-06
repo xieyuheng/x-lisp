@@ -1,5 +1,3 @@
-[lang] `load` -- have a local `vm`
-
 # lexer
 
 > port the lexer of sexp.js -- has full context -- `string` and `path`
