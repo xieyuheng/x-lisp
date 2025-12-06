@@ -1,7 +1,5 @@
 # vm
 
-[core] `primitive_t` -- no need name for now
-
 [core] vm byte code instruction design
 
 [core] `instr_encode`
