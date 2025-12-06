@@ -2,11 +2,11 @@
 
 > port the lexer of sexp.js -- has full context -- `string` and `path`
 
-[lexer] `make_token`
-[lexer] `token_free`
-
-[core] `make_vm` -- setup `token_free`
 [lexer] `lexer_t`
+[lexer] `make_lexer`
+[lexer] `lexer_free`
+[lexer] `lexer_lex`
+[lexer] `lex`
 
 # execute
 

@@ -24,9 +24,9 @@ typedef enum {
 
 struct token_t {
     token_kind_t kind;
-    char *string;
+    char *content;
     struct token_meta_t meta;
 };
 
-// token_t *make_token(char *string, token_kind_t kind, size_t start, size_t end, size_t lineno, size_t column);
-// void token_free(token_t *self);
+token_t *make_token(token_kind_t kind, char *content, struct token_meta_t meta);
+void token_free(token_t *self);
