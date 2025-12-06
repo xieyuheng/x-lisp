@@ -1,6 +1,5 @@
 # lexer
 
-[lexer] `consume_quotation_mark`
 [lexer] `consume_hashtag`
 [lexer] `consume_keyword`
 [lexer] `consume_float`
