@@ -13,8 +13,6 @@
 [lexer] `consume_float`
 [lexer] `consume_int`
 
-[lexer] `lexer.test`
-
 # execute
 
 [lang] `execute_token` -- call `call` on `primitive_definition_t`

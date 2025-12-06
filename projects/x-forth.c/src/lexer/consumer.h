@@ -12,6 +12,9 @@ struct consumer_t {
     consume_fn_t *consume;
 };
 
+extern struct consumer_t consumers[];
+size_t consumer_count(void);
+
 bool can_consume_space(lexer_t *); char *consume_space(lexer_t *);
 bool can_consume_quotation_mark(lexer_t *); char *consume_quotation_mark(lexer_t *);
 bool can_consume_bracket_end(lexer_t *); char *consume_bracket_end(lexer_t *);

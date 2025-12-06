@@ -21,7 +21,7 @@ cflags += $(CFLAGS)
 ldflags = -L/usr/local/lib
 ldflags += -static
 ldflags += -flto
-ldflags += -lm 
+ldflags += -lm
 ldflags += -pthread
 ldflags += $(LDFLAGS)
 
