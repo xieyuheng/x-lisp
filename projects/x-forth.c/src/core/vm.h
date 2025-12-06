@@ -6,3 +6,4 @@ struct vm_t {
 };
 
 vm_t *make_vm(void);
+void vm_free(vm_t *self);

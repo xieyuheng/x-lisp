@@ -1,7 +1,5 @@
 # vm
 
-[core] `vm_free`
-
 [core] `frame_t` -- has `definition` (`function_definition`) and `pc`
 [core] `make_frame`
 [core] `frame_free`
