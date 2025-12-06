@@ -5,16 +5,11 @@
 [lexer] `token_meta_t`
 [lexer] `token_t`
 [core] `make_vm` -- setup `token_free`
-
 [lexer] `lexer_t`
 
 # execute
 
-[lang] `load` -- call `execute`
-[lang] `execute` -- take `mod` and `vm` -- support `primitive_definition_t` first
-
-- `execute` -- call `call`
-
+[lang] `execute_token` -- call `call` on `primitive_definition_t`
 [lang] `call`
 
 # command
