@@ -212,15 +212,15 @@ path_relative(path_t *from, path_t *to) {
 }
 
 void
-path_relative_print(path_t *from, path_t *to, file_t *file) {
+path_relative_print(path_t *from, path_t *to) {
     path_t *relative_path = path_relative(from, to);
-    fprintf(file, "%s", path_string(relative_path));
+    printf("%s", path_string(relative_path));
     path_free(relative_path);
 }
 
 void
-path_relative_cwd_print(path_t *to, file_t *file) {
+path_relative_cwd_print(path_t *to) {
     path_t *cwd_path = make_path_cwd();
-    path_relative_print(cwd_path, to, file);
+    path_relative_print(cwd_path, to);
     path_free(cwd_path);
 }

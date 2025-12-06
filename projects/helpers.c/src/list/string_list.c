@@ -12,13 +12,13 @@ string_list_copy(list_t *list) {
 }
 
 void
-string_list_print(list_t *list, const char *delimiter, file_t *file) {
+string_list_print(list_t *list, const char *delimiter) {
     void *value = list_first(list);
     while (value) {
         if (list_cursor_is_end(list)) {
-            fprintf(file, "%s", (char *) value);
+            printf("%s", (char *) value);
         } else {
-            fprintf(file, "%s%s", (char *) value, delimiter);
+            printf("%s%s", (char *) value, delimiter);
         }
 
         value = list_next(list);

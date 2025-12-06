@@ -27,7 +27,6 @@ code_lineno_of_index(const char *string, size_t index) {
 
 void
 code_print_context(
-    file_t* file,
     const char *string,
     size_t start,
     size_t end
@@ -51,13 +50,13 @@ code_print_context(
             if (i == 0 || string[i-1] == '\n') {
                 if (start_lineno <= current_lineno &&
                     current_lineno <= end_lineno) {
-                    fprintf(file, "> %*lu|", (int) padding_left, current_lineno);
+                    printf("> %*lu|", (int) padding_left, current_lineno);
                 } else {
-                    fprintf(file, "  %*lu|", (int) padding_left, current_lineno);
+                    printf("  %*lu|", (int) padding_left, current_lineno);
                 }
             }
 
-            fprintf(file, "%c", c);
+            printf("%c", c);
         }
 
         if (c == '\n') current_lineno++;
