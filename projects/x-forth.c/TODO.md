@@ -1,7 +1,5 @@
 # vm
 
-[core] setup x-forth.exe -- main with sanity check
-
 [core] `definition_free`
 [core] `make_mod` -- setup `definition_free`
 
@@ -36,6 +34,8 @@
 - `execute` -- call `in_mod`
 - forth outer interpreter -- run builtin functions like a calculator
 - design with repl in mind
+
+[core] setup `commnads/`
 
 # define
 
