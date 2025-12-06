@@ -1,8 +1,6 @@
 # lexer
 
 [lexer] `span_position_forward_char`
-[lexer] `span_union`
-
 [lexer] `lexer_lex`
 
 # execute
