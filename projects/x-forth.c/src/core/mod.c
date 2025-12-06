@@ -17,3 +17,8 @@ mod_free(mod_t *self) {
     hash_free(self->definitions);
     free(self);
 }
+
+definition_t *
+mod_lookup(mod_t *self, const char *name) {
+    return hash_get(self->definitions, name);
+}
