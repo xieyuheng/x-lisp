@@ -1,5 +1,9 @@
 # lexer
 
+[lexer] extract `span`
+[lexer] `position_forward_char`
+[lexer] `span_union`
+
 [lexer] `lexer_lex`
 
 # execute
