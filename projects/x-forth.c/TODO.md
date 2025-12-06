@@ -1,3 +1,7 @@
+[helpers.c] `_print` should not take `file_t` as argument
+[runtime.c] `_print` should not take `file_t` as argument
+[x-forth.c] `_print` should not take `file_t` as argument
+
 # define
 
 [core] `define.c` -- setup
@@ -6,8 +10,6 @@
 [core] `define_function`
 [core] `define_primitive_fn`
 [core] `define_primitive_fn_<n>` -- 0 to 6
-
-[helpers.c] `_print` take `file_t` as the first argument
 
 # execute
 
