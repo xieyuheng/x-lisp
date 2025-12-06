@@ -1,4 +1,3 @@
-[core] `vm_t` -- has `mod` and `list_t *tokens`
 [lang] `load` -- have a local `vm`
 
 # lexer
@@ -7,6 +6,8 @@
 
 [lexer] `token_meta_t`
 [lexer] `token_t`
+[core] `make_vm` -- setup `token_free`
+
 [lexer] `lexer_t`
 
 # execute
