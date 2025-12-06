@@ -19,7 +19,7 @@ to_address(value_t value) {
 value_0_ary_fn_t *
 to_0_ary_fn(value_t value) {
     if (!address_p(value)) {
-        who_printf("value is not address:"); value_print(value, stdout); printf("\n");
+        who_printf("value is not address:"); value_print(value); printf("\n");
         assert(false && "value is not address");
     }
 
@@ -35,7 +35,7 @@ to_0_ary_fn(value_t value) {
 value_1_ary_fn_t *
 to_1_ary_fn(value_t value) {
     if (!address_p(value)) {
-        who_printf("value is not address:"); value_print(value, stdout); printf("\n");
+        who_printf("value is not address:"); value_print(value); printf("\n");
         assert(false && "value is not address");
     }
 

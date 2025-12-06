@@ -8,14 +8,14 @@ x_newline(void) {
 
 value_t
 x_print(value_t x) {
-    value_print(x, stdout);
+    value_print(x);
     return x_void;
 }
 
 value_t
 x_println_non_void(value_t x) {
     if (x != x_void) {
-        value_print(x, stdout);
+        value_print(x);
     }
 
     return x_void;

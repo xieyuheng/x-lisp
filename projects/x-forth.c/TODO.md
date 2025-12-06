@@ -1,5 +1,3 @@
-[x-forth.c] `_print` should not take `file_t` as argument
-
 # define
 
 [core] `define.c` -- setup

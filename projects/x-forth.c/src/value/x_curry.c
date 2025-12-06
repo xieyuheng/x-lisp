@@ -44,14 +44,14 @@ curry_equal(curry_t *lhs, curry_t *rhs) {
 }
 
 void
-curry_print(curry_t *self, file_t *file) {
+curry_print(curry_t *self) {
     printf("(@curry ");
-    value_print(self->target, file);
+    value_print(self->target);
     printf(" %ld", self->arity);
     printf(" [");
     for (size_t i = 0; i < self->size; i++) {
         if (i > 0) printf(" ");
-        value_print(self->args[i], file);
+        value_print(self->args[i]);
     }
     printf("]");
     printf(")");

@@ -16,7 +16,7 @@ x_apply_nullary(value_t target) {
     }
 
     who_printf("can not apply target\n");
-    printf("   target: "); value_print(target, stdout); printf("\n");
+    printf("   target: "); value_print(target); printf("\n");
     assert(false && "can not apply target");
 }
 
@@ -38,9 +38,9 @@ call_with_extra_arg(value_t target, size_t arity, value_t *args, value_t extra_a
         return to_6_ary_fn(target)(args[0], args[1], args[2], args[3], args[4], extra_arg);
 
     who_printf("can not handle arity\n");
-    printf("   target: "); value_print(target, stdout); printf("\n");
+    printf("   target: "); value_print(target); printf("\n");
     printf("   arity: %ld", arity); printf("\n");
-    printf("   extra_arg: "); value_print(extra_arg, stdout); printf("\n");
+    printf("   extra_arg: "); value_print(extra_arg); printf("\n");
     assert(false && "can not apply target");
 }
 
@@ -83,7 +83,7 @@ x_apply_unary(value_t target, value_t arg) {
     }
 
     who_printf("can not apply target\n");
-    printf("   target: "); value_print(target, stdout); printf("\n");
-    printf("   arg: "); value_print(arg, stdout); printf("\n");
+    printf("   target: "); value_print(target); printf("\n");
+    printf("   arg: "); value_print(arg); printf("\n");
     assert(false && "can not apply target");
 }
