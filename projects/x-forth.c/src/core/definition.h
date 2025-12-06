@@ -2,7 +2,7 @@
 
 typedef enum {
     FUNCTION_DEFINITION,
-    PRIMITIVE_FUNCTION_DEFINITION,
+    PRIMITIVE_DEFINITION,
     VARIABLE_DEFINITION,
     CONSTANT_DEFINITION,
 } definition_kind_t;
@@ -17,14 +17,14 @@ struct definition_t {
             void *program; // bytecode
             size_t program_size;
         } function_definition;
-        struct { char *todo; } primitive_function_definition;
+        struct { char *todo; } primitive_definition;
         struct { value_t value; } variable_definition;
         struct { value_t value; } constant_definition;
     };
 };
 
 definition_t *make_function_definition(mod_t *mod, char *name);
-definition_t *make_primitive_function_definition(mod_t *mod, char *name);
+definition_t *make_primitive_definition(mod_t *mod, char *name);
 definition_t *make_variable_definition(mod_t *mod, char *name, value_t value);
 definition_t *make_constant_definition(mod_t *mod, char *name, value_t value);
 

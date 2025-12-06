@@ -1,7 +1,7 @@
 # vm
 
-[core] `primitive_function_t`
-[core] `make_primitive_function_definition` -- has `primitive_function_t`
+[core] `primitive_t`
+[core] `make_primitive_definition` -- has `primitive_t`
 
 [core] vm byte code instruction design
 
@@ -26,7 +26,7 @@
 - has full context -- `text` and `path` (or `url`)
 - support comment this time
 
-[lang] `execute` -- support `primitive_function_definition_t` first
+[lang] `execute` -- support `primitive_definition_t` first
 
 - `execute` -- call `in_mod`
 - forth outer interpreter -- run builtin functions like a calculator
