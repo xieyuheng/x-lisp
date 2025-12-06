@@ -1,6 +1,5 @@
 # define
 
-[core] `define.c` -- setup
 [core] `define_constant`
 [core] `define_variable`
 [core] `define_function`
