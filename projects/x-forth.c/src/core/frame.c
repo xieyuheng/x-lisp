@@ -6,7 +6,7 @@ make_frame(const definition_t *definition) {
 
     frame_t *self = new(frame_t);
     self->definition = definition;
-    // self->pc = definition->program;
+    self->pc = definition->function_definition.program;
     self->locals = make_array_auto();
     return self;
 }

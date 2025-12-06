@@ -1,7 +1,5 @@
 # vm
 
-[core] `make_frame` -- setup `pc`
-
 [core] setup x-forth.exe -- main with sanity check
 
 [core] `definition_free`
