@@ -16,10 +16,13 @@ define_variable(mod_t *mod, const char *name, value_t *value) {
     return definition;
 }
 
-// definition_t *
-// define_function(mod_t *mod, const char *name) {
-
-// }
+definition_t *
+define_function(mod_t *mod, const char *name) {
+    definition_t *definition =
+        make_function_definition(mod, string_copy(name));
+    mod_define(mod, name, definition);
+    return definition;
+}
 
 definition_t *
 define_primitive_fn(mod_t *mod, const char *name, primitive_fn_t *fn) {

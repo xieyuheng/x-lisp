@@ -1,7 +1,3 @@
-# define
-
-[core] `define_function`
-
 # execute
 
 [lang] `load` -- have a local `vm` and call `execute`
