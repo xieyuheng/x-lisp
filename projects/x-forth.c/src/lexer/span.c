@@ -7,3 +7,17 @@ span_union(struct span_t x, struct span_t y) {
         .end = x.end.index > y.end.index ? x.end : y.end,
     };
 }
+
+struct span_position_t
+span_position_forward_char(struct span_position_t position, char c) {
+    position.index++;
+
+    if (c == '\n') {
+        position.column = 0;
+        position.row++;
+    } else {
+        position.column++;
+    }
+
+    return position;
+}

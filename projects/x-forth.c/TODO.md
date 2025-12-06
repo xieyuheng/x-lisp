@@ -1,6 +1,5 @@
 # lexer
 
-[lexer] `span_position_forward_char`
 [lexer] `lexer_lex`
 
 # execute

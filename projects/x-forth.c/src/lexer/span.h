@@ -8,4 +8,5 @@ struct span_t {
     struct span_position_t start, end;
 };
 
-struct span_t span_union(struct span_t x, struct span_t y);
+struct span_t span_union(struct span_t, struct span_t);
+struct span_position_t span_position_forward_char(struct span_position_t, char);
