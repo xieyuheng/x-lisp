@@ -27,11 +27,10 @@ function_equal(function_t *lhs, function_t *rhs) {
 }
 
 void
-function_print(function_t *self, file_t *file) {
+function_print(function_t *self) {
     printf("(@function ");
     // TODO
     (void) self;
-    (void) file;
     printf(")");
 }
 

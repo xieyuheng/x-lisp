@@ -1,4 +1,3 @@
-[runtime.c] `_print` should not take `file_t` as argument
 [x-forth.c] `_print` should not take `file_t` as argument
 
 # define

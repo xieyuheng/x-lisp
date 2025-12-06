@@ -1,6 +1,6 @@
 #pragma once
 
-typedef void (object_print_fn_t)(object_t *object, file_t *file);
+typedef void (object_print_fn_t)(object_t *object);
 typedef bool (object_same_fn_t)(object_t *lhs, object_t *rhs);
 typedef bool (object_equal_fn_t)(object_t *lhs, object_t *rhs);
 

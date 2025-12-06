@@ -26,7 +26,7 @@ function_t *make_function(uint64_t address, function_metadata_t *metadata);
 void function_free(function_t *self);
 
 bool function_equal(function_t *lhs, function_t *rhs);
-void function_print(function_t *self, file_t *file);
+void function_print(function_t *self);
 
 bool function_p(value_t value);
 function_t *to_function(value_t value);

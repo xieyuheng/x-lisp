@@ -5,29 +5,29 @@ inline tag_t value_tag(value_t value) {
 }
 
 void
-value_print(value_t value, file_t *file) {
+value_print(value_t value) {
     if (value == x_true) {
-        fprintf(file, "#t");
+        printf("#t");
         return;
     }
 
     if (value == x_false) {
-        fprintf(file, "#f");
+        printf("#f");
         return;
     }
 
     if (value == x_void) {
-        fprintf(file, "#void");
+        printf("#void");
         return;
     }
 
     if (value == x_null) {
-        fprintf(file, "#null");
+        printf("#null");
         return;
     }
 
     if (int_p(value)) {
-        fprintf(file, "%ld", to_int64(value));
+        printf("%ld", to_int64(value));
         return;
     }
 
@@ -46,21 +46,21 @@ value_print(value_t value, file_t *file) {
     }
 
     if (address_p(value)) {
-        fprintf(file, "(@address %p)", (void *) to_address(value));
+        printf("(@address %p)", (void *) to_address(value));
         return;
     }
 
     if (object_p(value)) {
         object_t *object = to_object(value);
         if (object->spec->print_fn) {
-            object->spec->print_fn(object, file);
+            object->spec->print_fn(object);
             return;
         }
 
-        fprintf(file, "(%s 0x%p)", object->spec->name, value);
+        printf("(%s 0x%p)", object->spec->name, value);
         return;
     }
 
-    fprintf(file, "(unknown-value 0x%p)", value);
+    printf("(unknown-value 0x%p)", value);
     return;
 }
