@@ -1,14 +1,5 @@
 # vm
 
-[core] `make_vm` -- setup `frame_free`
-
-[core] vm byte code instruction design
-
-[core] `instr_encode`
-[core] `instr_decode`
-
-# mod & definition
-
 [core] `make_function_definition` -- has `parameters` (`string_array`) and `program` and `program_size`
 [core] `make_frame` -- setup `pc`
 
@@ -16,6 +7,11 @@
 [core] `make_primitive_function_definition` -- has `primitive_function_t`
 
 [core] `make_mod` -- setup `definition_free`
+
+[core] vm byte code instruction design
+
+[core] `instr_encode`
+[core] `instr_decode`
 
 [core] `placeholder_t`
 [core] `mod` -- have `placeholders` -- for patching undefined names
