@@ -121,8 +121,6 @@ main(void) {
 
     {
         lexer->string = "1 1.0";
-        lexer->enable_int = true;
-        lexer->enable_float = true;
 
         lexer_run(lexer);
         list_t *token_list = lexer->token_list;
@@ -144,7 +142,6 @@ main(void) {
 
     {
         lexer->string = "\"a\" \"b\" \"\\n\"";
-        lexer->enable_string = true;
 
         lexer_run(lexer);
         list_t *token_list = lexer->token_list;

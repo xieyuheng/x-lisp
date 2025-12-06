@@ -13,9 +13,6 @@ make_lexer(void) {
     lexer_t *self = new(lexer_t);
     self->buffer = allocate(MAX_TOKEN_LENGTH + 1);
     self->delimiter_list = make_list();
-    self->enable_int = false;
-    self->enable_float = false;
-    self->enable_string = false;
     lexer_init(self);
     return self;
 }
@@ -252,7 +249,7 @@ lexer_step(lexer_t *self) {
     if (ignore_space(self)) return;
     if (ignore_comment(self)) return;
     if (collect_delimiter(self)) return;
-    if (self->enable_string && collect_string(self)) return;
+    if (collect_string(self)) return;
 
     collect_generic(self);
 }
@@ -297,9 +294,6 @@ lexer_run(lexer_t *self) {
         lexer_step(self);
     }
 
-    if (self->enable_int)
-        postprocess_int(self);
-
-    if (self->enable_float)
-        postprocess_float(self);
+    postprocess_int(self);
+    postprocess_float(self);
 }

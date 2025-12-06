@@ -1,5 +1,6 @@
 # lexer
 
+[lexer] `token_meta_t`
 [lexer] port the lexer of sexp.js
 
 - has full context -- `text` and `path` (or `url`)

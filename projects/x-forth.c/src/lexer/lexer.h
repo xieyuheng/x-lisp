@@ -15,10 +15,6 @@ struct lexer_t {
     list_t *token_list;
     const char *line_comment;
     list_t *delimiter_list;
-
-    bool enable_int;
-    bool enable_float;
-    bool enable_string;
 };
 
 lexer_t *make_lexer(void);
