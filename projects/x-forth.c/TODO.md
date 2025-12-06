@@ -1,8 +1,6 @@
 # define
 
 [core] `define_function`
-[core] `define_primitive_fn`
-[core] `define_primitive_fn_<n>` -- 0 to 6
 
 # execute
 
