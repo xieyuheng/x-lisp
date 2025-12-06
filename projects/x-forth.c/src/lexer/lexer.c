@@ -6,7 +6,7 @@ make_lexer(const path_t *path, const char *string) {
     self->path = path;
     self->string = string;
     self->length = string_length(string);
-    self->position = (struct position_t) {
+    self->position = (struct span_position_t) {
         .index = 0,
         .row = 0,
         .column = 0,

@@ -1,6 +1,5 @@
 # lexer
 
-[lexer] rename `position_t` to `span_position_t`
 [lexer] `span_position_forward_char`
 [lexer] `span_union`
 
