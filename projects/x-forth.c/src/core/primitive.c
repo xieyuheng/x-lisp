@@ -71,3 +71,8 @@ make_primitive_from_fn_6(const char *name, primitive_fn_6_t *fn_6) {
     self->fn_6 = fn_6;
     return self;
 }
+
+void
+primitive_free(primitive_t *self) {
+    free(self);
+}

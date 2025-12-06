@@ -1,7 +1,5 @@
 # vm
 
-[core] `primitive_free`
-
 [core] `make_primitive_definition` -- has `primitive_t`
 
 [core] vm byte code instruction design
