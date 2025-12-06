@@ -5,18 +5,18 @@ import type { Consumer } from "../Consumer.ts"
 import type { Lexer } from "../Lexer.ts"
 
 export class StringConsumer implements Consumer {
-  kind = "DoubleQoutedString" as const
+  kind = "String" as const
 
   canConsume(lexer: Lexer): boolean {
     return lexer.char() === '"'
   }
 
   consume(lexer: Lexer): string {
-    return consumeDoubleQoutedString(lexer)
+    return consumeString(lexer)
   }
 }
 
-export function consumeDoubleQoutedString(lexer: Lexer): string {
+export function consumeString(lexer: Lexer): string {
   const line = lexer.line()
   let index = 2 // over first `"` and the folloing char.
   while (index <= line.length) {

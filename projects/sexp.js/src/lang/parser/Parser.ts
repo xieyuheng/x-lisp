@@ -64,7 +64,7 @@ export class Parser {
         throw new Error(message)
       }
 
-      case "DoubleQoutedString": {
+      case "String": {
         return {
           sexp: S.String(token.value, tokenMetaToSexpMeta(token.meta)),
           remain: tokens.slice(1),

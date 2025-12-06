@@ -91,19 +91,19 @@ test("lexer -- keyword", () => {
 })
 
 test("lexer -- string", () => {
-  assertTokens('"abc"', [{ kind: "DoubleQoutedString", value: "abc" }])
+  assertTokens('"abc"', [{ kind: "String", value: "abc" }])
 
   assertTokens('"abc" "abc"', [
-    { kind: "DoubleQoutedString", value: "abc" },
-    { kind: "DoubleQoutedString", value: "abc" },
+    { kind: "String", value: "abc" },
+    { kind: "String", value: "abc" },
   ])
 
   assertTokens('"abc""abc"', [
-    { kind: "DoubleQoutedString", value: "abc" },
-    { kind: "DoubleQoutedString", value: "abc" },
+    { kind: "String", value: "abc" },
+    { kind: "String", value: "abc" },
   ])
 
-  assertTokens('";;"', [{ kind: "DoubleQoutedString", value: ";;" }])
+  assertTokens('";;"', [{ kind: "String", value: ";;" }])
 })
 
 test("lexer -- number", () => {

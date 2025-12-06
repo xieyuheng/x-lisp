@@ -2,7 +2,6 @@
 
 > port the lexer of sexp.js -- has full context -- `string` and `path`
 
-ambr "DoubleQoutedString" "String"
 [lexer] `make_token`
 [lexer] `token_free`
 
