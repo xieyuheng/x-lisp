@@ -1,12 +1,9 @@
 # lexer
 
-> port the lexer of sexp.js -- has full context -- `string` and `path`
-
-[lexer] `lexer_t`
 [lexer] `make_lexer`
 [lexer] `lexer_free`
-[lexer] `lexer_lex`
 [lexer] `lex`
+[lexer] `lexer_lex`
 
 # execute
 

@@ -4,15 +4,11 @@
 
 struct lexer_t {
     const char *string;
-    size_t length;
-
-    size_t index;
-    size_t row;
-    size_t column;
-
+    struct position_t position;
     char *buffer;
     size_t buffer_length;
+    list_t *tokens;
 };
 
-lexer_t *make_lexer(void);
+lexer_t *make_lexer(const char *string);
 void lexer_free(lexer_t *self);
