@@ -11,3 +11,6 @@ struct consumer_t {
     can_consume_fn_t *can_consume;
     consume_fn_t *consume;
 };
+
+
+bool can_consume_space(lexer_t *); char *consume_space(lexer_t *);

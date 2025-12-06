@@ -22,8 +22,25 @@ lexer_free(lexer_t *self) {
     free(self);
 }
 
+bool
+lexer_is_end(lexer_t *self) {
+    return self->position.index >= self->length;
+}
+
+void
+lexer_forward(lexer_t *self, size_t count) {
+    while (!lexer_is_end(self) && count) {
+        count--;
+        self->position = position_forward_char(self->position, self->string[0]);
+    }
+}
+
 struct consumer_t consumers[] = {
-    { .is_ignored = true }
+    {
+        .is_ignored = true,
+        .can_consume = can_consume_space,
+        .consume = consume_space
+    },
 };
 
 token_t *
@@ -51,11 +68,6 @@ lexer_consume(lexer_t *self) {
 
     where_printf("can not consume char: %c", self->string[0]);
     assert(false);
-}
-
-static bool
-lexer_is_end(lexer_t *self) {
-    return self->position.index >= self->length;
 }
 
 list_t *
