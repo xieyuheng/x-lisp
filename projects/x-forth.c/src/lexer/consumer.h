@@ -8,8 +8,6 @@ struct consumer_t {
     union {
         token_kind_t kind;
     };
-    can_consume_fn_t *can_consume_fn;
-    consume_fn_t *consume_fn;
+    can_consume_fn_t *can_consume;
+    consume_fn_t *consume;
 };
-
-extern struct consumer_t consumers[];

@@ -22,10 +22,35 @@ lexer_free(lexer_t *self) {
     free(self);
 }
 
+struct consumer_t consumers[] = {
+    { .is_ignored = true }
+};
+
 token_t *
 lexer_consume(lexer_t *self) {
-    (void) self;
-    return NULL;
+    size_t length = sizeof(consumers) / sizeof(consumers[0]);
+    for (size_t i = 0; i < length; i++) {
+        struct consumer_t consumer = consumers[i];
+        if (consumer.can_consume(self)) {
+            struct position_t start = self->position;
+            char *content = consumer.consume(self);
+            struct position_t end = self->position;
+            if (consumer.is_ignored) {
+                return NULL;
+            } else {
+                struct token_meta_t meta = {
+                    .path = self->path,
+                    .string = self->string,
+                    .span.start = start,
+                    .span.end = end,
+                };
+                return make_token(consumer.kind, content, meta);
+            }
+        }
+    }
+
+    where_printf("can not consume char: %c", self->string[0]);
+    assert(false);
 }
 
 static bool

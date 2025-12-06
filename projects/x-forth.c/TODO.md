@@ -1,7 +1,5 @@
 # lexer
 
-[lexer] `lexer_consume`
-
 [lexer] `consume_space`
 [lexer] `consume_bracket_end`
 [lexer] `consume_bracket_start`
