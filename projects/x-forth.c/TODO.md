@@ -1,6 +1,5 @@
 # vm
 
-[core] `make_primitive_from_fn`
 [core] `primitive_free`
 
 [core] `make_primitive_definition` -- has `primitive_t`

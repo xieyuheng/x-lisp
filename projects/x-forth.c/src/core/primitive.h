@@ -21,7 +21,7 @@ typedef enum {
 } primitive_fn_kind_t;
 
 struct primitive_t {
-    char *name;
+    const char *name;
     primitive_fn_kind_t fn_kind;
     union {
         primitive_fn_t *fn;
