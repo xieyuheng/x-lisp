@@ -1,6 +1,22 @@
+# vm
+
+[core] `make_vm`
+[core] `vm_free`
+
+[core] `vm_t` -- has `tokens` (`array_t`)
+
+[core] `frame_t` -- has `definition` (`function_definition`) and `pc`
+[core] `make_frame`
+[core] `frame_free`
+
+[core] vm byte code instruction design
+
+[core] `instr_encode`
+[core] `instr_decode`
+
 # mod & definition
 
-[core] `make_function_definition` -- has `code` and `code_size`
+[core] `make_function_definition` -- has `code` and `code_size` -- no abstraction for code
 
 [core] `primitive_function_t`
 [core] `make_primitive_function_definition` -- has `primitive_function_t`
@@ -31,13 +47,6 @@
 - forth outer interpreter -- run builtin functions like a calculator
 - design with repl in mind
 
-# vm
-
-[core] vm byte code design
-[core] `vm_t`
-[core] `make_vm`
-[core] `vm_free`
-
 # define
 
 [lang] `execute` -- call `in_define` on `@define`
@@ -53,3 +62,7 @@ but keep it possible (with the helpa of placeholder).
 
 - support comment this time
 - with router like api
+
+# cicada-forth
+
+x-forth with chinese syntax keywords
