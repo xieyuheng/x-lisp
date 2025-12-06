@@ -16,11 +16,11 @@ main(void) {
         list_free(tokens);
     }
 
-    // {
-    //     list_t *tokens = lex(NULL, " \n \t \n ");
-    //     assert(list_length(tokens) == 0);
-    //     list_free(tokens);
-    // }
+    {
+        list_t *tokens = lex(NULL, " \n \t \n ");
+        assert(list_length(tokens) == 0);
+        list_free(tokens);
+    }
 
     {
         list_t *tokens = lex(NULL, "()");
