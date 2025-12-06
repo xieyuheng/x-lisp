@@ -1,6 +1,6 @@
 # vm
 
-[core] `make_primitive_definition` -- has `primitive_t`
+[core] `primitive_t` -- no need name for now
 
 [core] vm byte code instruction design
 

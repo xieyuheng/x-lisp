@@ -13,11 +13,12 @@ make_function_definition(mod_t *mod, char *name) {
 }
 
 definition_t *
-make_primitive_definition(mod_t *mod, char *name) {
+make_primitive_definition(mod_t *mod, char *name, primitive_t *primitive) {
     definition_t *self = new(definition_t);
     self->kind = PRIMITIVE_DEFINITION;
     self->mod = mod;
     self->name = name;
+    self->primitive_definition.primitive = primitive;
     return self;
 }
 
@@ -51,6 +52,7 @@ definition_free(definition_t *self) {
         free(self->function_definition.program);
         break;
     case PRIMITIVE_DEFINITION:
+        primitive_free(self->primitive_definition.primitive);
         break;
     case VARIABLE_DEFINITION:
         break;
