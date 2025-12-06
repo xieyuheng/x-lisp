@@ -1,13 +1,13 @@
 #pragma once
 
-void define_constant(mod_t *mod, const char *name, value_t *value);
-void define_variable(mod_t *mod, const char *name, value_t *value);
-// void define_function
-// void define_primitive_fn
-// void define_primitive_fn_0
-// void define_primitive_fn_1
-// void define_primitive_fn_2
-// void define_primitive_fn_3
-// void define_primitive_fn_4
-// void define_primitive_fn_5
-// void define_primitive_fn_6
+definition_t *define_constant(mod_t *mod, const char *name, value_t *value);
+definition_t *define_variable(mod_t *mod, const char *name, value_t *value);
+// definition_t *define_function
+// definition_t *define_primitive_fn
+// definition_t *define_primitive_fn_0
+// definition_t *define_primitive_fn_1
+// definition_t *define_primitive_fn_2
+// definition_t *define_primitive_fn_3
+// definition_t *define_primitive_fn_4
+// definition_t *define_primitive_fn_5
+// definition_t *define_primitive_fn_6

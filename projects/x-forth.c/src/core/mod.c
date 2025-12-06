@@ -22,3 +22,8 @@ definition_t *
 mod_lookup(mod_t *self, const char *name) {
     return hash_get(self->definitions, name);
 }
+
+void
+mod_define(mod_t *self, const char *name, definition_t *definition) {
+    hash_insert_or_fail(self->definitions, string_copy(name), definition);
+}

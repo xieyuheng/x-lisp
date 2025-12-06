@@ -1,17 +1,17 @@
 #include "index.h"
 
-void
+definition_t *
 define_constant(mod_t *mod, const char *name, value_t *value) {
-    hash_insert_or_fail(
-        mod->definitions,
-        string_copy(name),
-        make_constant_definition(mod, string_copy(name), value));
+    definition_t *definition =
+        make_constant_definition(mod, string_copy(name), value);
+    mod_define(mod, name, definition);
+    return definition;
 }
 
-void
+definition_t *
 define_variable(mod_t *mod, const char *name, value_t *value) {
-    hash_insert_or_fail(
-        mod->definitions,
-        string_copy(name),
-        make_variable_definition(mod, string_copy(name), value));
+    definition_t *definition =
+        make_variable_definition(mod, string_copy(name), value);
+    mod_define(mod, name, definition);
+    return definition;
 }
