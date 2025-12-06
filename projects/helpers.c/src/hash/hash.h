@@ -20,6 +20,8 @@ void *hash_get(hash_t *self, const void *key);
 // will own the key if success.
 // will not update the key if the entry exists (fail).
 bool hash_insert(hash_t *self, void *key, void *value);
+void hash_insert_or_fail(hash_t *self, void *key, void *value);
+
 
 // will always success.
 // will own the key.

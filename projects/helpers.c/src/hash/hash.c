@@ -279,6 +279,11 @@ hash_insert(hash_t *self, void *key, void *value) {
 }
 
 void
+hash_insert_or_fail(hash_t *self, void *key, void *value) {
+    assert(hash_insert(self, key, value));
+}
+
+void
 hash_put(hash_t *self, void *key, void *value) {
     entry_t *entry = hash_get_entry(self, key);
     if (!entry) {
