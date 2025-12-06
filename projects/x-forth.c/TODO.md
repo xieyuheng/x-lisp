@@ -1,3 +1,6 @@
+[core] `vm_t` -- has `mod` and `list_t *tokens`
+[lang] `load` -- have a local `vm`
+
 # lexer
 
 > port the lexer of sexp.js -- has full context -- `string` and `path`
@@ -8,11 +11,10 @@
 
 # execute
 
-[lang] `load` -- have a local `vm` and call `execute`
+[lang] `load` -- call `execute`
 [lang] `execute` -- take `mod` and `vm` -- support `primitive_definition_t` first
 
-- `execute` -- call `in_mod`
-- `in_mod` -- call `call`
+- `execute` -- call `call`
 
 [lang] `call`
 
