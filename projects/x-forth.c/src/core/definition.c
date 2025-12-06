@@ -6,6 +6,9 @@ make_function_definition(mod_t *mod, char *name) {
     self->kind = FUNCTION_DEFINITION;
     self->mod = mod;
     self->name = name;
+    self->function_definition.parameters = make_string_array_auto();
+    self->function_definition.program = allocate(0);
+    self->function_definition.program_size = 0;
     return self;
 }
 

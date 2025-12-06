@@ -12,7 +12,11 @@ struct definition_t {
     mod_t *mod;
     char *name;
     union {
-        struct { char *todo; } function_definition;
+        struct {
+            array_t *parameters; // string array
+            void *program; // bytecode
+            size_t program_size;
+        } function_definition;
         struct { char *todo; } primitive_function_definition;
         struct { value_t value; } variable_definition;
         struct { value_t value; } constant_definition;
