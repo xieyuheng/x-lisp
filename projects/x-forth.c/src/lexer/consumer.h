@@ -12,7 +12,6 @@ struct consumer_t {
     consume_fn_t *consume;
 };
 
-
 bool can_consume_space(lexer_t *); char *consume_space(lexer_t *);
 bool can_consume_quotation_mark(lexer_t *); char *consume_quotation_mark(lexer_t *);
 bool can_consume_bracket_end(lexer_t *); char *consume_bracket_end(lexer_t *);

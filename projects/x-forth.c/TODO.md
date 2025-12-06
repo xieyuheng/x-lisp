@@ -1,7 +1,5 @@
 # lexer
 
-[lexer] `consume_bracket_end`
-[lexer] `consume_bracket_start`
 [lexer] `consume_quotation_mark`
 [lexer] `consume_hashtag`
 [lexer] `consume_keyword`
