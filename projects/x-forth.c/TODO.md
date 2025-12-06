@@ -1,12 +1,17 @@
+[helpers.c] `string_builder.h` -- setup
+[helpers.c] `string_builder.c`
+[helpers.c] `string_builder.test`
+
 # lexer
 
-[lexer] `consume_hashtag`
+[lexer] `consume_symbol`
 [lexer] `consume_keyword`
+[lexer] `consume_hashtag`
+
+[lexer] `consume_line_comment`
+[lexer] `consume_string`
 [lexer] `consume_float`
 [lexer] `consume_int`
-[lexer] `consume_string`
-[lexer] `consume_symbol`
-[lexer] `consume_line_comment`
 
 [lexer] `lexer.test`
 
