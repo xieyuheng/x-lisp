@@ -1,7 +1,9 @@
 #pragma once
 
 struct frame_t {
-    definition_t *definition;
-    void *pc;
-    array_t *locals;
+    const definition_t *definition;
+    void *pc; // program counter
+    array_t *locals; // array of values
 };
+
+frame_t *make_frame(const definition_t *definition);
