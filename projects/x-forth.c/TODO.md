@@ -1,16 +1,19 @@
+# lexer
+
+[lexer] port the lexer of sexp.js
+
+- has full context -- `text` and `path` (or `url`)
+- support comment this time
+
 # execute
 
 [lang] `load` -- have a local `vm` and call `execute`
 [lang] `execute` -- take `mod` and `vm` -- support `primitive_definition_t` first
 
 - `execute` -- call `in_mod`
-- forth outer interpreter -- run builtin functions like a calculator
-- design with repl in mind
+- `in_mod` -- call `call`
 
-[lexer] port the lexer of sexp.js
-
-- has full context -- `text` and `path` (or `url`)
-- support comment this time
+[lang] `call`
 
 # command
 
