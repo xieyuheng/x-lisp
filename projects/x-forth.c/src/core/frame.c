@@ -10,3 +10,9 @@ make_frame(const definition_t *definition) {
     self->locals = make_array_auto();
     return self;
 }
+
+void
+frame_free(frame_t *self) {
+    array_free(self->locals);
+    free(self);
+}

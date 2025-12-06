@@ -7,3 +7,4 @@ struct frame_t {
 };
 
 frame_t *make_frame(const definition_t *definition);
+void frame_free(frame_t *self);

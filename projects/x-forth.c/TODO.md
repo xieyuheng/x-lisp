@@ -1,7 +1,5 @@
 # vm
 
-[core] `frame_free`
-
 [core] `make_vm` -- setup `frame_free`
 
 [core] vm byte code instruction design
