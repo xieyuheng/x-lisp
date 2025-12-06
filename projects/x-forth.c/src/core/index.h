@@ -6,3 +6,4 @@
 #include "definition.h"
 #include "vm.h"
 #include "frame.h"
+#include "primitive.h"

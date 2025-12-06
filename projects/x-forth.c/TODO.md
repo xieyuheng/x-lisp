@@ -1,6 +1,8 @@
 # vm
 
-[core] `primitive_t`
+[core] `make_primitive_from_fn`
+[core] `primitive_free`
+
 [core] `make_primitive_definition` -- has `primitive_t`
 
 [core] vm byte code instruction design
@@ -33,6 +35,15 @@
 - design with repl in mind
 
 [core] setup `commnads/`
+
+# value
+
+[value] fix `function_t` -- should be reference to `definition`
+
+- maybe use `ref_t` instead of `function_t`
+- `@ref` vs `@function`
+
+[value] remove `address_t`
 
 # define
 
