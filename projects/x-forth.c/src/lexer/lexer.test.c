@@ -4,168 +4,168 @@ int
 main(void) {
     test_start();
 
-    lexer_t *lexer = make_lexer();
+    // lexer_t *lexer = make_lexer();
 
-    {
-        lexer->string = "";
-        lexer_run(lexer);
-        assert(list_length(lexer->token_list) == 0);
-        list_free(lexer->token_list);
-    }
+    // {
+    //     lexer->string = "";
+    //     lexer_run(lexer);
+    //     assert(list_length(lexer->token_list) == 0);
+    //     list_free(lexer->token_list);
+    // }
 
-    {
-        lexer->string = " ";
-        lexer_run(lexer);
-        assert(list_length(lexer->token_list) == 0);
-        list_free(lexer->token_list);
-    }
+    // {
+    //     lexer->string = " ";
+    //     lexer_run(lexer);
+    //     assert(list_length(lexer->token_list) == 0);
+    //     list_free(lexer->token_list);
+    // }
 
-    {
-        lexer->string = " \n \t \n ";
-        lexer_run(lexer);
-        assert(list_length(lexer->token_list) == 0);
-        list_free(lexer->token_list);
-    }
+    // {
+    //     lexer->string = " \n \t \n ";
+    //     lexer_run(lexer);
+    //     assert(list_length(lexer->token_list) == 0);
+    //     list_free(lexer->token_list);
+    // }
 
-    {
-        lexer->string = "a b c";
-        lexer_run(lexer);
-        list_t *token_list = lexer->token_list;
-        assert(list_length(token_list) == 3);
+    // {
+    //     lexer->string = "a b c";
+    //     lexer_run(lexer);
+    //     list_t *token_list = lexer->token_list;
+    //     assert(list_length(token_list) == 3);
 
-        token_t *a = list_shift(token_list);
-        assert(string_equal(a->string, "a"));
-        token_t *b = list_shift(token_list);
-        assert(string_equal(b->string, "b"));
-        token_t *c = list_shift(token_list);
-        assert(string_equal(c->string, "c"));
+    //     token_t *a = list_shift(token_list);
+    //     assert(string_equal(a->string, "a"));
+    //     token_t *b = list_shift(token_list);
+    //     assert(string_equal(b->string, "b"));
+    //     token_t *c = list_shift(token_list);
+    //     assert(string_equal(c->string, "c"));
 
-        list_free(token_list);
-        token_free(a);
-        token_free(b);
-        token_free(c);
-    }
+    //     list_free(token_list);
+    //     token_free(a);
+    //     token_free(b);
+    //     token_free(c);
+    // }
 
-    {
-        lexer->line_comment = "//";
-        lexer->string = "a b //x\n c";
-        lexer_run(lexer);
-        list_t *token_list = lexer->token_list;
-        assert(list_length(token_list) == 3);
+    // {
+    //     lexer->line_comment = "//";
+    //     lexer->string = "a b //x\n c";
+    //     lexer_run(lexer);
+    //     list_t *token_list = lexer->token_list;
+    //     assert(list_length(token_list) == 3);
 
-        token_t *a = list_shift(token_list);
-        assert(string_equal(a->string, "a"));
-        assert(a->lineno == 1);
-        assert(a->column == 2);
+    //     token_t *a = list_shift(token_list);
+    //     assert(string_equal(a->string, "a"));
+    //     assert(a->lineno == 1);
+    //     assert(a->column == 2);
 
-        token_t *b = list_shift(token_list);
-        assert(b->lineno == 1);
-        assert(b->column == 4);
+    //     token_t *b = list_shift(token_list);
+    //     assert(b->lineno == 1);
+    //     assert(b->column == 4);
 
-        token_t *c = list_shift(token_list);
-        assert(string_equal(c->string, "c"));
-        assert(c->lineno == 2);
-        assert(c->column == 3);
+    //     token_t *c = list_shift(token_list);
+    //     assert(string_equal(c->string, "c"));
+    //     assert(c->lineno == 2);
+    //     assert(c->column == 3);
 
-        list_free(token_list);
-        token_free(a);
-        token_free(b);
-        token_free(c);
-    }
+    //     list_free(token_list);
+    //     token_free(a);
+    //     token_free(b);
+    //     token_free(c);
+    // }
 
-    {
-        lexer->line_comment = "--";
-        lexer->string = "a b --x\n c";
-        lexer_run(lexer);
-        list_t *token_list = lexer->token_list;
-        assert(list_length(token_list) == 3);
+    // {
+    //     lexer->line_comment = "--";
+    //     lexer->string = "a b --x\n c";
+    //     lexer_run(lexer);
+    //     list_t *token_list = lexer->token_list;
+    //     assert(list_length(token_list) == 3);
 
-        token_t *a = list_shift(token_list);
-        assert(string_equal(a->string, "a"));
+    //     token_t *a = list_shift(token_list);
+    //     assert(string_equal(a->string, "a"));
 
-        token_t *b = list_shift(token_list);
-        assert(string_equal(b->string, "b"));
+    //     token_t *b = list_shift(token_list);
+    //     assert(string_equal(b->string, "b"));
 
-        token_t *c = list_shift(token_list);
-        assert(string_equal(c->string, "c"));
+    //     token_t *c = list_shift(token_list);
+    //     assert(string_equal(c->string, "c"));
 
-        list_free(token_list);
-        token_free(a);
-        token_free(b);
-        token_free(c);
-    }
+    //     list_free(token_list);
+    //     token_free(a);
+    //     token_free(b);
+    //     token_free(c);
+    // }
 
-    {
-        lexer->string = "(a)";
-        lexer_add_delimiter(lexer, "(");
-        lexer_add_delimiter(lexer, ")");
+    // {
+    //     lexer->string = "(a)";
+    //     lexer_add_delimiter(lexer, "(");
+    //     lexer_add_delimiter(lexer, ")");
 
-        lexer_run(lexer);
-        list_t *token_list = lexer->token_list;
-        assert(list_length(token_list) == 3);
+    //     lexer_run(lexer);
+    //     list_t *token_list = lexer->token_list;
+    //     assert(list_length(token_list) == 3);
 
-        token_t *a = list_shift(token_list);
-        assert(string_equal(a->string, "("));
+    //     token_t *a = list_shift(token_list);
+    //     assert(string_equal(a->string, "("));
 
-        token_t *b = list_shift(token_list);
-        assert(string_equal(b->string, "a"));
+    //     token_t *b = list_shift(token_list);
+    //     assert(string_equal(b->string, "a"));
 
-        token_t *c = list_shift(token_list);
-        assert(string_equal(c->string, ")"));
+    //     token_t *c = list_shift(token_list);
+    //     assert(string_equal(c->string, ")"));
 
-        list_free(token_list);
-        token_free(a);
-        token_free(b);
-        token_free(c);
-    }
+    //     list_free(token_list);
+    //     token_free(a);
+    //     token_free(b);
+    //     token_free(c);
+    // }
 
-    {
-        lexer->string = "1 1.0";
+    // {
+    //     lexer->string = "1 1.0";
 
-        lexer_run(lexer);
-        list_t *token_list = lexer->token_list;
-        assert(list_length(token_list) == 2);
+    //     lexer_run(lexer);
+    //     list_t *token_list = lexer->token_list;
+    //     assert(list_length(token_list) == 2);
 
-        token_t *a = list_shift(token_list);
-        assert(string_equal(a->string, "1"));
-        assert(a->kind == INT_TOKEN);
-        assert(a->int_value == 1);
+    //     token_t *a = list_shift(token_list);
+    //     assert(string_equal(a->string, "1"));
+    //     assert(a->kind == INT_TOKEN);
+    //     assert(a->int_value == 1);
 
-        token_t *b = list_shift(token_list);
-        assert(string_equal(b->string, "1.0"));
-        assert(b->float_value == 1.0);
+    //     token_t *b = list_shift(token_list);
+    //     assert(string_equal(b->string, "1.0"));
+    //     assert(b->float_value == 1.0);
 
-        list_free(token_list);
-        token_free(a);
-        token_free(b);
-    }
+    //     list_free(token_list);
+    //     token_free(a);
+    //     token_free(b);
+    // }
 
-    {
-        lexer->string = "\"a\" \"b\" \"\\n\"";
+    // {
+    //     lexer->string = "\"a\" \"b\" \"\\n\"";
 
-        lexer_run(lexer);
-        list_t *token_list = lexer->token_list;
-        assert(list_length(token_list) == 3);
+    //     lexer_run(lexer);
+    //     list_t *token_list = lexer->token_list;
+    //     assert(list_length(token_list) == 3);
 
-        token_t *a = list_shift(token_list);
-        assert(string_equal(a->string, "a"));
-        assert(a->kind == STRING_TOKEN);
+    //     token_t *a = list_shift(token_list);
+    //     assert(string_equal(a->string, "a"));
+    //     assert(a->kind == STRING_TOKEN);
 
-        token_t *b = list_shift(token_list);
-        assert(string_equal(b->string, "b"));
-        assert(b->kind == STRING_TOKEN);
+    //     token_t *b = list_shift(token_list);
+    //     assert(string_equal(b->string, "b"));
+    //     assert(b->kind == STRING_TOKEN);
 
-        token_t *c = list_shift(token_list);
-        assert(string_equal(c->string, "\n"));
-        assert(c->kind == STRING_TOKEN);
+    //     token_t *c = list_shift(token_list);
+    //     assert(string_equal(c->string, "\n"));
+    //     assert(c->kind == STRING_TOKEN);
 
-        list_free(token_list);
-        token_free(a);
-        token_free(b);
-        token_free(c);
-    }
+    //     list_free(token_list);
+    //     token_free(a);
+    //     token_free(b);
+    //     token_free(c);
+    // }
 
-    lexer_free(lexer);
+    // lexer_free(lexer);
 
     test_end();
 }

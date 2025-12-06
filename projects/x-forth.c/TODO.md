@@ -1,10 +1,10 @@
 # lexer
 
-[lexer] `token_meta_t`
-[lexer] port the lexer of sexp.js
+> port the lexer of sexp.js -- has full context -- `string` and `path`
 
-- has full context -- `text` and `path` (or `url`)
-- support comment this time
+[lexer] `token_meta_t`
+[lexer] `token_t`
+[lexer] `lexer_t`
 
 # execute
 
