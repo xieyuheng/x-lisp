@@ -1,8 +1,8 @@
 #pragma once
 
 struct vm_t {
-    path_t *path;
-    char *text;
-    hash_t *definitions;
-    // array_t *placeholders;
+    stack_t *value_stack;
+    stack_t *frame_stack;
 };
+
+vm_t *make_vm(void);

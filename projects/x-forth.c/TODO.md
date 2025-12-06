@@ -1,13 +1,12 @@
 # vm
 
-[core] `make_vm`
 [core] `vm_free`
-
-[core] `vm_t` -- has `tokens` (`array_t`)
 
 [core] `frame_t` -- has `definition` (`function_definition`) and `pc`
 [core] `make_frame`
 [core] `frame_free`
+
+[core] `make_vm` -- setup `frame_free`
 
 [core] vm byte code instruction design
 
