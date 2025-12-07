@@ -78,3 +78,25 @@ lex(const path_t *path, const char *string) {
     lexer_free(lexer);
     return tokens;
 }
+
+bool
+lexer_char_is_mark(char c) {
+    return (lexer_char_is_quotation_mark(c) ||
+            lexer_char_is_bracket_start(c) ||
+            lexer_char_is_bracket_end(c));
+}
+
+bool
+lexer_char_is_quotation_mark(char c) {
+    return c == '\'' || c == '`' || c == ',';
+}
+
+bool
+lexer_char_is_bracket_start(char c) {
+    return c == '(' || c == '[' || c == '{';
+}
+
+bool
+lexer_char_is_bracket_end(char c) {
+    return c == ')' || c == ']' || c == '}';
+}
