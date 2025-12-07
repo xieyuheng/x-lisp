@@ -268,6 +268,42 @@ main(void) {
     }
 
     {
+        // space after line comment introducer is required.
+        list_t *tokens = lex(NULL, "a b --symbol\n c");
+        assert(list_length(tokens) == 4);
+
+        {
+            token_t *token = list_shift(tokens);
+            assert(token->kind == SYMBOL_TOKEN);
+            assert(string_equal(token->content, "a"));
+            token_free(token);
+        }
+
+        {
+            token_t *token = list_shift(tokens);
+            assert(token->kind == SYMBOL_TOKEN);
+            assert(string_equal(token->content, "b"));
+            token_free(token);
+        }
+
+        {
+            token_t *token = list_shift(tokens);
+            assert(token->kind == SYMBOL_TOKEN);
+            assert(string_equal(token->content, "--symbol"));
+            token_free(token);
+        }
+
+        {
+            token_t *token = list_shift(tokens);
+            assert(token->kind == SYMBOL_TOKEN);
+            assert(string_equal(token->content, "c"));
+            token_free(token);
+        }
+
+        list_free(tokens);
+    }
+
+    {
         lexer_t *lexer = make_lexer(NULL, "a b // comment\n c");
         lexer->line_comment_introducer = "//";
         list_t *tokens = lexer_lex(lexer);
