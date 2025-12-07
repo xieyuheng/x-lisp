@@ -10,7 +10,7 @@ char *
 consume_symbol(lexer_t *lexer) {
     string_builder_t *builder = make_string_builder();
 
-    while (!lexer_is_end(lexer) &&
+    while (!lexer_is_finished(lexer) &&
            !char_is_space(lexer_next_char(lexer)) &&
            !lexer_char_is_mark(lexer_next_char(lexer)))
     {

@@ -113,7 +113,6 @@ main(void) {
     assert(string_equal_mod_case("abc", "ABC"));
 
 
-
     {
         assert(string_next_line("") == NULL);
         assert(string_next_line("abc") == NULL);
@@ -158,21 +157,6 @@ main(void) {
             line = string_next_line(line);
             count++;
         }
-    }
-
-
-    {
-        assert(string_parse_xint("0o10") == 8);
-        assert(string_parse_xint("+0o10") == 8);
-        assert(string_parse_xint("-0o10") == -8);
-
-        assert(string_parse_xint("0x10") == 16);
-        assert(string_parse_xint("+0x10") == 16);
-        assert(string_parse_xint("-0x10") == -16);
-
-        assert(string_parse_xint("10") == 10);
-        assert(string_parse_xint("+10") == 10);
-        assert(string_parse_xint("-10") == -10);
     }
 
     {

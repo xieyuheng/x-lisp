@@ -25,13 +25,13 @@ lexer_next_char(lexer_t *self) {
 }
 
 bool
-lexer_is_end(lexer_t *self) {
+lexer_is_finished(lexer_t *self) {
     return self->position.index >= self->length;
 }
 
 void
 lexer_forward(lexer_t *self, size_t count) {
-    while (!lexer_is_end(self) && count > 0) {
+    while (!lexer_is_finished(self) && count > 0) {
         count--;
         self->position = position_forward_char(
             self->position,
@@ -69,7 +69,7 @@ list_t *
 lex(const path_t *path, const char *string) {
     list_t *tokens = make_list_with((free_fn_t *) token_free);
     lexer_t *lexer = make_lexer(path, string);
-    while (!lexer_is_end(lexer)) {
+    while (!lexer_is_finished(lexer)) {
         token_t *token = lexer_consume(lexer);
         if (token == NULL) continue;
         list_push(tokens, token);
