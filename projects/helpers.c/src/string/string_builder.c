@@ -41,10 +41,12 @@ string_builder_append_char(string_builder_t *self, char c) {
     self->length++;
 }
 
-// void
-// string_builder_append_string(string_builder_t *self, char *string) {
-
-// }
+void
+string_builder_append_string(string_builder_t *self, char *string) {
+    for (size_t i = 0; i < string_length(string); i++) {
+        string_builder_append_char(self, string[i]);
+    }
+}
 
 void
 string_builder_clear(string_builder_t *self) {
