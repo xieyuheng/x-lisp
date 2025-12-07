@@ -38,9 +38,8 @@ main(void) {
         assert(string_is_int("-0x123a"));
         assert(!string_is_int("--0x123A"));
 
-        // the following test depends on the chosen c standerd,
-        // 0b is only supported by c23.
-        // assert(!string_is_int("0b10"));
+        // 0b is only supported after c23.
+        assert(string_is_int("0b10"));
 
         // 0o is not handled by c.
         assert(!string_is_int("0o10"));
