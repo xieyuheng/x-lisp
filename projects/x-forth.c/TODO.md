@@ -1,6 +1,5 @@
 # lexer
 
-[lexer] `lexer_lex` too
 [lexer] be able to config `line_comment_introducer`
 
 # execute

@@ -92,15 +92,21 @@ lexer_consume(lexer_t *self) {
 }
 
 list_t *
-lex(const path_t *path, const char *string) {
+lexer_lex(lexer_t *self) {
     list_t *tokens = make_list_with((free_fn_t *) token_free);
-    lexer_t *lexer = make_lexer(path, string);
-    while (!lexer_is_finished(lexer)) {
-        token_t *token = lexer_consume(lexer);
+    while (!lexer_is_finished(self)) {
+        token_t *token = lexer_consume(self);
         if (token == NULL) continue;
         list_push(tokens, token);
     }
 
+    return tokens;
+}
+
+list_t *
+lex(const path_t *path, const char *string) {
+    lexer_t *lexer = make_lexer(path, string);
+    list_t *tokens = lexer_lex(lexer);
     lexer_free(lexer);
     return tokens;
 }
