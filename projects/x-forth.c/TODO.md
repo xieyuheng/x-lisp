@@ -1,6 +1,5 @@
 # lexer
 
-[lexer] `consume_int`
 [lexer] `consume_string`
 [lexer] `consume_line_comment`
 

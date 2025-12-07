@@ -106,6 +106,28 @@ main(void) {
     }
 
     {
+        list_t *tokens = lex(NULL, "1 0 -1");
+        assert(list_length(tokens) == 3);
+
+        token_t *t1 = list_shift(tokens);
+        assert(t1->kind == INT_TOKEN);
+        assert(string_equal(t1->content, "1"));
+
+        token_t *t2 = list_shift(tokens);
+        assert(t2->kind == INT_TOKEN);
+        assert(string_equal(t2->content, "0"));
+
+        token_t *t3 = list_shift(tokens);
+        assert(t3->kind == INT_TOKEN);
+        assert(string_equal(t3->content, "-1"));
+
+        list_free(tokens);
+        token_free(t1);
+        token_free(t2);
+        token_free(t3);
+    }
+
+    {
         list_t *tokens = lex(NULL, "1.0 0.0 -1.0");
         assert(list_length(tokens) == 3);
 

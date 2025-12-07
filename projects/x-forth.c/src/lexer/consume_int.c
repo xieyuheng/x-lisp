@@ -8,9 +8,9 @@ can_consume_int(lexer_t *lexer) {
     return result;
 }
 
-// char *
-// consume_int(lexer_t *lexer) {
-//     char *word = lexer_next_word_string(lexer);
-//     lexer_forward(lexer, string_length(word));
-//     return word;
-// }
+char *
+consume_int(lexer_t *lexer) {
+    char *word = lexer_next_word_string(lexer);
+    lexer_forward(lexer, string_length(word));
+    return word;
+}

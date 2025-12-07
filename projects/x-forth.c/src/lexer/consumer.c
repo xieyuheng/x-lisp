@@ -33,15 +33,15 @@ struct consumer_t consumers[] = {
     //     .consume = consume_string,
     // },
     {
+        .kind = INT_TOKEN,
+        .can_consume = can_consume_int,
+        .consume = consume_int,
+    },
+    {
         .kind = FLOAT_TOKEN,
         .can_consume = can_consume_float,
         .consume = consume_float,
     },
-    // {
-    //     .kind = INT_TOKEN,
-    //     .can_consume = can_consume_int,
-    //     .consume = consume_int,
-    // },
     {
         .kind = KEYWORD_TOKEN,
         .can_consume = can_consume_keyword,
