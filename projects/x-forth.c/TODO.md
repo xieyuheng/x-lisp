@@ -1,9 +1,9 @@
+rename string_parse_int to string_parse_int_with_base
+
 # lexer
 
 [lexer] `consume_int`
-
 [lexer] `consume_string`
-
 [lexer] `consume_line_comment`
 
 # execute

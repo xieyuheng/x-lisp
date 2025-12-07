@@ -48,7 +48,7 @@ string_bernstein_hash(const char *self) {
 }
 
 bool
-string_is_int_of_base(const char *self, size_t base) {
+string_is_int_with_base(const char *self, size_t base) {
     char *end = NULL;
     strtol(self, &end, base);
     if (end == self) return false;

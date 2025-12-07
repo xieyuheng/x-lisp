@@ -18,11 +18,11 @@ main(void) {
     string_free(abc);
 
     {
-        assert(string_is_int_of_base("123", 10));
-        assert(string_is_int_of_base("-123", 10));
+        assert(string_is_int_with_base("123", 10));
+        assert(string_is_int_with_base("-123", 10));
 
-        assert(!string_is_int_of_base("123", 3));
-        assert(!string_is_int_of_base("-123", 3));
+        assert(!string_is_int_with_base("123", 3));
+        assert(!string_is_int_with_base("-123", 3));
     }
 
     {
