@@ -23,21 +23,23 @@ string_builder_free(string_builder_t *self) {
 }
 
 static void
-string_builder_ensure_capacity(string_builder_t *self) {
-    if (self->length > self->max_length) {
+string_builder_ensure_capacity(string_builder_t *self, size_t new_length) {
+    if (new_length > self->max_length) {
         self->buffer = reallocate(
             self->buffer,
             self->max_length,
             self->max_length * 2);
         self->max_length *= 2;
-        string_builder_ensure_capacity(self);
+        string_builder_ensure_capacity(self, new_length);
     }
 }
 
-// void
-// string_builder_append_char(string_builder_t *self, char c) {
-
-// }
+void
+string_builder_append_char(string_builder_t *self, char c) {
+    string_builder_ensure_capacity(self, self->length + 1);
+    self->buffer[self->length] = c;
+    self->length++;
+}
 
 // void
 // string_builder_append_string(string_builder_t *self, char *string) {
