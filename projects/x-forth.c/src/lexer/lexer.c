@@ -11,22 +11,11 @@ make_lexer(const path_t *path, const char *string) {
         .row = 0,
         .column = 0,
     };
-
-    self->quotation_mark_chars = make_array_auto();
-    array_push(self->quotation_mark_chars, (void *) '\'');
-    array_push(self->quotation_mark_chars, (void *) '`');
-    array_push(self->quotation_mark_chars, (void *) ',');
-
-    self->bracket_start_chars = make_array_auto();
-    self->bracket_end_chars = make_array_auto();
     return self;
 }
 
 void
 lexer_free(lexer_t *self) {
-    array_free(self->quotation_mark_chars);
-    array_free(self->bracket_start_chars);
-    array_free(self->bracket_end_chars);
     free(self);
 }
 
@@ -49,7 +38,7 @@ lexer_next_word_string(lexer_t *self) {
     size_t index = self->position.index;
     while (index < self->length &&
            !char_is_space(self->string[index]) &&
-           !lexer_char_is_mark(self, self->string[index]))
+           !lexer_char_is_mark(self->string[index]))
     {
         string_builder_append_char(builder, self->string[index]);
         index++;
@@ -116,31 +105,23 @@ lex(const path_t *path, const char *string) {
 }
 
 bool
-lexer_char_is_mark(lexer_t *self, char c) {
-    return (lexer_char_is_quotation_mark(self, c) ||
-            lexer_char_is_bracket_start(self, c) ||
-            lexer_char_is_bracket_end(self, c));
+lexer_char_is_mark(char c) {
+    return (lexer_char_is_quotation_mark(c) ||
+            lexer_char_is_bracket_start(c) ||
+            lexer_char_is_bracket_end(c));
 }
 
 bool
-lexer_char_is_quotation_mark(lexer_t *self, char c) {
-    for (size_t i = 0; i < array_length(self->quotation_mark_chars); i++) {
-        if ((uint64_t) array_get(self->quotation_mark_chars, i) == c) {
-            return true;
-        }
-    }
-
-    return false;
+lexer_char_is_quotation_mark(char c) {
+    return c == '\'' || c == '`' || c == ',';
 }
 
 bool
-lexer_char_is_bracket_start(lexer_t *self, char c) {
-    (void) self;
+lexer_char_is_bracket_start(char c) {
     return c == '(' || c == '[' || c == '{';
 }
 
 bool
-lexer_char_is_bracket_end(lexer_t *self, char c) {
-    (void) self;
+lexer_char_is_bracket_end(char c) {
     return c == ')' || c == ']' || c == '}';
 }

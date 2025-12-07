@@ -5,9 +5,6 @@ struct lexer_t {
     const char *string;
     size_t length;
     struct position_t position;
-    array_t *quotation_mark_chars;
-    array_t *bracket_start_chars;
-    array_t *bracket_end_chars;
 };
 
 lexer_t *make_lexer(const path_t *path, const char *string);
@@ -22,7 +19,7 @@ void lexer_forward(lexer_t *self, size_t count);
 token_t *lexer_consume(lexer_t *self);
 list_t *lex(const path_t *path, const char *string);
 
-bool lexer_char_is_mark(lexer_t *self, char c);
-bool lexer_char_is_bracket_end(lexer_t *self, char c);
-bool lexer_char_is_bracket_start(lexer_t *self, char c);
-bool lexer_char_is_quotation_mark(lexer_t *self, char c);
+bool lexer_char_is_mark(char c);
+bool lexer_char_is_bracket_end(char c);
+bool lexer_char_is_bracket_start(char c);
+bool lexer_char_is_quotation_mark(char c);

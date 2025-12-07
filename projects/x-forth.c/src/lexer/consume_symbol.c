@@ -12,7 +12,7 @@ consume_symbol(lexer_t *lexer) {
 
     while (!lexer_is_finished(lexer) &&
            !char_is_space(lexer_next_char(lexer)) &&
-           !lexer_char_is_mark(lexer, lexer_next_char(lexer)))
+           !lexer_char_is_mark(lexer_next_char(lexer)))
     {
         string_builder_append_char(builder, lexer_next_char(lexer));
         lexer_forward(lexer, 1);

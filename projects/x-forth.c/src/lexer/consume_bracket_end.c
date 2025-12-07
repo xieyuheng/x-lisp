@@ -2,7 +2,7 @@
 
 bool
 can_consume_bracket_end(lexer_t *lexer) {
-    return lexer_char_is_bracket_end(lexer, lexer_next_char(lexer));
+    return lexer_char_is_bracket_end(lexer_next_char(lexer));
 }
 
 char *

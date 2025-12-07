@@ -2,7 +2,7 @@
 
 bool
 can_consume_quotation_mark(lexer_t *lexer) {
-    return lexer_char_is_quotation_mark(lexer, lexer_next_char(lexer));
+    return lexer_char_is_quotation_mark(lexer_next_char(lexer));
 }
 
 char *
