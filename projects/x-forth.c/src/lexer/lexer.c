@@ -11,15 +11,17 @@ make_lexer(const path_t *path, const char *string) {
         .row = 0,
         .column = 0,
     };
-    self->buffer = allocate(MAX_TOKEN_LENGTH + 1);
-    self->buffer_length = 0;
     return self;
 }
 
 void
 lexer_free(lexer_t *self) {
-    free(self->buffer);
     free(self);
+}
+
+char
+lexer_next_char(lexer_t *self) {
+    return self->string[self->position.index];
 }
 
 bool
@@ -31,7 +33,9 @@ void
 lexer_forward(lexer_t *self, size_t count) {
     while (!lexer_is_end(self) && count > 0) {
         count--;
-        self->position = position_forward_char(self->position, self->string[0]);
+        self->position = position_forward_char(
+            self->position,
+            lexer_next_char(self));
     }
 }
 
@@ -57,7 +61,7 @@ lexer_consume(lexer_t *self) {
         }
     }
 
-    where_printf("can not consume char: %c", self->string[0]);
+    where_printf("can not consume char: %c", lexer_next_char(self));
     assert(false);
 }
 

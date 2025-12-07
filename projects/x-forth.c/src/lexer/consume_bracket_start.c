@@ -2,7 +2,7 @@
 
 bool
 can_consume_bracket_start(lexer_t *lexer) {
-    char c = lexer->string[0];
+    char c = lexer_next_char(lexer);
     return c == '(' || c == '[' || c == '{';
 }
 

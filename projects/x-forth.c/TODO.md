@@ -1,5 +1,10 @@
 # lexer
 
+[lexer] `lexer_char_is_mark`
+[lexer] `lexer_char_is_bracket_end`
+[lexer] `lexer_char_is_bracket_start`
+[lexer] `lexer_char_is_quotation_mark`
+
 [lexer] `consume_symbol`
 [lexer] `consume_keyword`
 [lexer] `consume_hashtag`
