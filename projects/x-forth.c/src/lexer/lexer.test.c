@@ -106,6 +106,23 @@ main(void) {
     }
 
     {
+        list_t *tokens = lex(NULL, ": #");
+        assert(list_length(tokens) == 2);
+
+        token_t *t1 = list_shift(tokens);
+        assert(t1->kind == SYMBOL_TOKEN);
+        assert(string_equal(t1->content, ":"));
+
+        token_t *t2 = list_shift(tokens);
+        assert(t2->kind == SYMBOL_TOKEN);
+        assert(string_equal(t2->content, "#"));
+
+        list_free(tokens);
+        token_free(t1);
+        token_free(t2);
+    }
+
+    {
         list_t *tokens = lex(NULL, "1 0 -1");
         assert(list_length(tokens) == 3);
 

@@ -2,7 +2,10 @@
 
 bool
 can_consume_keyword(lexer_t *lexer) {
-    return lexer_next_char(lexer) == ':';
+    if (lexer_next_char(lexer) != ':') return false;
+    char *word = lexer_next_word_string(lexer);
+    bool result = string_length(word) > 1;
+    return result;
 }
 
 char *
