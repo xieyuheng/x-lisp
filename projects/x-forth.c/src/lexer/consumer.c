@@ -27,11 +27,11 @@ struct consumer_t consumers[] = {
     //     .can_consume = can_consume_line_comment,
     //     .consume = consume_line_comment,
     // },
-    // {
-    //     .kind = STRING_TOKEN,
-    //     .can_consume = can_consume_string,
-    //     .consume = consume_string,
-    // },
+    {
+        .kind = STRING_TOKEN,
+        .can_consume = can_consume_string,
+        .consume = consume_string,
+    },
     {
         .kind = INT_TOKEN,
         .can_consume = can_consume_int,

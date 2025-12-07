@@ -166,6 +166,29 @@ main(void) {
         token_free(t3);
     }
 
+
+    {
+        list_t *tokens = lex(NULL, "\"a\" \"b\" \"\\n\"");
+        assert(list_length(tokens) == 3);
+
+        token_t *t1 = list_shift(tokens);
+        assert(t1->kind == STRING_TOKEN);
+        assert(string_equal(t1->content, "a"));
+
+        token_t *t2 = list_shift(tokens);
+        assert(t2->kind == STRING_TOKEN);
+        assert(string_equal(t2->content, "b"));
+
+        token_t *t3 = list_shift(tokens);
+        assert(t3->kind == STRING_TOKEN);
+        assert(string_equal(t3->content, "\n"));
+
+        list_free(tokens);
+        token_free(t1);
+        token_free(t2);
+        token_free(t3);
+    }
+
     // {
     //     lexer->line_comment = "//";
     //     lexer->content = "a b //x\n c";
@@ -208,31 +231,6 @@ main(void) {
 
     //     token_t *c = list_shift(tokens);
     //     assert(string_equal(c->content, "c"));
-
-    //     list_free(tokens);
-    //     token_free(a);
-    //     token_free(b);
-    //     token_free(c);
-    // }
-
-    // {
-    //     lexer->content = "\"a\" \"b\" \"\\n\"";
-
-    //     lexer_run(lexer);
-    //     list_t *tokens = lexer->tokens;
-    //     assert(list_length(tokens) == 3);
-
-    //     token_t *a = list_shift(tokens);
-    //     assert(string_equal(a->content, "a"));
-    //     assert(a->kind == STRING_TOKEN);
-
-    //     token_t *b = list_shift(tokens);
-    //     assert(string_equal(b->content, "b"));
-    //     assert(b->kind == STRING_TOKEN);
-
-    //     token_t *c = list_shift(tokens);
-    //     assert(string_equal(c->content, "\n"));
-    //     assert(c->kind == STRING_TOKEN);
 
     //     list_free(tokens);
     //     token_free(a);
