@@ -1,6 +1,8 @@
-[helpers.c] port command.js
+# outer interpreter
+
 setup `commands/`
-`cmd_run`
+`cmd_handle_run`
+setup `builtin/`
 x-forth.exe -- test outer interpreter
 
 # vm
