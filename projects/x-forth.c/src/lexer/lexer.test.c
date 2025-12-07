@@ -83,6 +83,28 @@ main(void) {
         token_free(t3);
     }
 
+    {
+        list_t *tokens = lex(NULL, "a :b #c");
+        assert(list_length(tokens) == 3);
+
+        token_t *t1 = list_shift(tokens);
+        assert(t1->kind == SYMBOL_TOKEN);
+        assert(string_equal(t1->content, "a"));
+
+        token_t *t2 = list_shift(tokens);
+        assert(t2->kind == KEYWORD_TOKEN);
+        assert(string_equal(t2->content, "b"));
+
+        token_t *t3 = list_shift(tokens);
+        assert(t3->kind == HASHTAG_TOKEN);
+        assert(string_equal(t3->content, "c"));
+
+        list_free(tokens);
+        token_free(t1);
+        token_free(t2);
+        token_free(t3);
+    }
+
     // {
     //     lexer->line_comment = "//";
     //     lexer->content = "a b //x\n c";

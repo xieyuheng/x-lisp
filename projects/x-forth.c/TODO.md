@@ -1,12 +1,11 @@
 # lexer
 
-[lexer] `consume_keyword`
-[lexer] `consume_hashtag`
-
-[lexer] `consume_line_comment`
-[lexer] `consume_string`
 [lexer] `consume_float`
 [lexer] `consume_int`
+
+[lexer] `consume_string`
+
+[lexer] `consume_line_comment`
 
 # execute
 

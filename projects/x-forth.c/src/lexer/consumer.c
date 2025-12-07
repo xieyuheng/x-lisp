@@ -42,16 +42,16 @@ struct consumer_t consumers[] = {
     //     .can_consume = can_consume_int,
     //     .consume = consume_int,
     // },
-    // {
-    //     .kind = KEYWORD_TOKEN,
-    //     .can_consume = can_consume_keyword,
-    //     .consume = consume_keyword,
-    // },
-    // {
-    //     .kind = HASHTAG_TOKEN,
-    //     .can_consume = can_consume_hashtag,
-    //     .consume = consume_hashtag,
-    // },
+    {
+        .kind = KEYWORD_TOKEN,
+        .can_consume = can_consume_keyword,
+        .consume = consume_keyword,
+    },
+    {
+        .kind = HASHTAG_TOKEN,
+        .can_consume = can_consume_hashtag,
+        .consume = consume_hashtag,
+    },
     {
         .kind = SYMBOL_TOKEN,
         .can_consume = can_consume_symbol,
