@@ -15,3 +15,9 @@ make_string_builder(void) {
     self->buffer = allocate(self->max_length + 1);
     return self;
 }
+
+void
+string_builder_free(string_builder_t *self) {
+    free(self->buffer);
+    free(self);
+}
