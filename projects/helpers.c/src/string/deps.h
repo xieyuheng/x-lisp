@@ -9,3 +9,4 @@
 #include <ctype.h>
 
 #include "../test/index.h"
+#include "../memory/index.h"
