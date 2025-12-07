@@ -76,12 +76,41 @@ main(void) {
     }
 
     {
+        assert(string_parse_int("") == 0);
+        assert(string_parse_int("-") == 0);
+        assert(string_parse_int("-1") == -1);
+        assert(string_parse_int("123") == 123);
+        assert(string_parse_int("+123") == 123);
+        assert(string_parse_int("-123") == -123);
+
+        assert(string_parse_int("0x10") == 16);
+        assert(string_parse_int("+0x10") == 16);
+        assert(string_parse_int("-0x10") == -16);
+
+        // 0o prefix is not supported.
+        assert(string_parse_int("010") == 8);
+        assert(string_parse_int("-010") == -8);
+
+        assert(string_parse_int("0b10") == 2);
+        assert(string_parse_int("-0b10") == -2);
+    }
+
+    {
         assert(string_parse_uint_with_base("", 16) == 0);
         assert(string_parse_uint_with_base("f", 16) == 15);
         assert(string_parse_uint_with_base("F", 16) == 15);
         assert(string_parse_uint_with_base("ff", 16) == 255);
         assert(string_parse_uint_with_base("FF", 16) == 255);
         assert(string_parse_uint_with_base("FF:123", 16) == 255);
+    }
+
+    {
+        assert(string_parse_uint("0x0") == 0);
+        assert(string_parse_uint("0xf") == 15);
+        assert(string_parse_uint("0xF") == 15);
+        assert(string_parse_uint("0xff") == 255);
+        assert(string_parse_uint("0xFF") == 255);
+        assert(string_parse_uint("0xFF:123") == 255);
     }
 
     char *abc123 = string_append("abc", "123");

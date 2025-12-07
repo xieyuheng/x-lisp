@@ -75,6 +75,18 @@ string_parse_uint_with_base(const char *self, size_t base) {
     return strtoul(self, &end, base);
 }
 
+int64_t
+string_parse_int(const char *self) {
+    char *end = NULL;
+    return strtol(self, &end, 0);
+}
+
+uint64_t
+string_parse_uint(const char *self) {
+    char *end = NULL;
+    return strtoul(self, &end, 0);
+}
+
 bool
 string_is_double(const char *self) {
     char *end = NULL;

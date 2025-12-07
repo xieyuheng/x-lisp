@@ -12,6 +12,8 @@ bool string_is_int_with_base(const char *self, size_t base);
 bool string_is_int(const char *self);
 int64_t string_parse_int_with_base(const char *self, size_t base);
 uint64_t string_parse_uint_with_base(const char *self, size_t base);
+int64_t string_parse_int(const char *self);
+uint64_t string_parse_uint(const char *self);
 
 bool string_is_double(const char *self);
 double string_parse_double(const char *self);
