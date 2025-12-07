@@ -1,9 +1,4 @@
-# execute
-
-[lang] `execute_token` -- call `call` on `primitive_definition_t`
-[lang] `call`
-
-# command
+[lang] `invoke` -- handle `primitive_definition_t`
 
 [helpers.c] port command.js
 setup `commands/`
