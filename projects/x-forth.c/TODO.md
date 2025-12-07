@@ -1,7 +1,3 @@
-# lexer
-
-[lexer] be able to config `line_comment_introducer`
-
 # execute
 
 [lang] `execute_token` -- call `call` on `primitive_definition_t`
