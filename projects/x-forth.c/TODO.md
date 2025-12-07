@@ -1,5 +1,3 @@
-rename string_parse_int to string_parse_int_with_base
-
 # lexer
 
 [lexer] `consume_int`

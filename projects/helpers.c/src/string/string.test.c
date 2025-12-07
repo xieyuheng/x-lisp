@@ -46,42 +46,42 @@ main(void) {
     }
 
     {
-        assert(string_parse_int("", 10) == 0);
-        assert(string_parse_int("-", 10) == 0);
-        assert(string_parse_int("-1", 10) == -1);
-        assert(string_parse_int("123", 10) == 123);
-        assert(string_parse_int("+123", 10) == 123);
-        assert(string_parse_int("-123", 10) == -123);
+        assert(string_parse_int_with_base("", 10) == 0);
+        assert(string_parse_int_with_base("-", 10) == 0);
+        assert(string_parse_int_with_base("-1", 10) == -1);
+        assert(string_parse_int_with_base("123", 10) == 123);
+        assert(string_parse_int_with_base("+123", 10) == 123);
+        assert(string_parse_int_with_base("-123", 10) == -123);
 
-        assert(string_parse_int("10", 16) == 16);
-        assert(string_parse_int("+10", 16) == 16);
-        assert(string_parse_int("-10", 16) == -16);
+        assert(string_parse_int_with_base("10", 16) == 16);
+        assert(string_parse_int_with_base("+10", 16) == 16);
+        assert(string_parse_int_with_base("-10", 16) == -16);
 
-        assert(string_parse_int("0x10", 16) == 16);
-        assert(string_parse_int("+0x10", 16) == 16);
-        assert(string_parse_int("-0x10", 16) == -16);
+        assert(string_parse_int_with_base("0x10", 16) == 16);
+        assert(string_parse_int_with_base("+0x10", 16) == 16);
+        assert(string_parse_int_with_base("-0x10", 16) == -16);
 
         // 0o prefix is not supported.
-        assert(string_parse_int("010", 8) == 8);
-        assert(string_parse_int("-010", 8) == -8);
+        assert(string_parse_int_with_base("010", 8) == 8);
+        assert(string_parse_int_with_base("-010", 8) == -8);
 
-        assert(string_parse_int("10", 8) == 8);
-        assert(string_parse_int("-10", 8) == -8);
+        assert(string_parse_int_with_base("10", 8) == 8);
+        assert(string_parse_int_with_base("-10", 8) == -8);
 
-        assert(string_parse_int("10", 2) == 2);
-        assert(string_parse_int("-10", 2) == -2);
+        assert(string_parse_int_with_base("10", 2) == 2);
+        assert(string_parse_int_with_base("-10", 2) == -2);
 
-        assert(string_parse_int("0b10", 2) == 2);
-        assert(string_parse_int("-0b10", 2) == -2);
+        assert(string_parse_int_with_base("0b10", 2) == 2);
+        assert(string_parse_int_with_base("-0b10", 2) == -2);
     }
 
     {
-        assert(string_parse_uint("", 16) == 0);
-        assert(string_parse_uint("f", 16) == 15);
-        assert(string_parse_uint("F", 16) == 15);
-        assert(string_parse_uint("ff", 16) == 255);
-        assert(string_parse_uint("FF", 16) == 255);
-        assert(string_parse_uint("FF:123", 16) == 255);
+        assert(string_parse_uint_with_base("", 16) == 0);
+        assert(string_parse_uint_with_base("f", 16) == 15);
+        assert(string_parse_uint_with_base("F", 16) == 15);
+        assert(string_parse_uint_with_base("ff", 16) == 255);
+        assert(string_parse_uint_with_base("FF", 16) == 255);
+        assert(string_parse_uint_with_base("FF:123", 16) == 255);
     }
 
     char *abc123 = string_append("abc", "123");
