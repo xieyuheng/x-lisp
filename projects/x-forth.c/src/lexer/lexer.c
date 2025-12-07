@@ -24,6 +24,14 @@ lexer_next_char(lexer_t *self) {
     return self->string[self->position.index];
 }
 
+char *
+lexer_next_char_string(lexer_t *self) {
+    return string_slice(
+        self->string,
+        self->position.index,
+        self->position.index + 1);
+}
+
 bool
 lexer_is_finished(lexer_t *self) {
     return self->position.index >= self->length;

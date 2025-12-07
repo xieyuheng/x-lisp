@@ -7,10 +7,7 @@ can_consume_bracket_end(lexer_t *lexer) {
 
 char *
 consume_bracket_end(lexer_t *lexer) {
-    char *content = string_slice(
-        lexer->string,
-        lexer->position.index,
-        lexer->position.index + 1);
+    char *content = lexer_next_char_string(lexer);
     lexer_forward(lexer, 1);
     return content;
 }
