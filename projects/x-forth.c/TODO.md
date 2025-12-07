@@ -1,7 +1,3 @@
-[helpers.c] `string_builder.h` -- setup
-[helpers.c] `string_builder.c`
-[helpers.c] `string_builder.test`
-
 # lexer
 
 [lexer] `consume_symbol`
