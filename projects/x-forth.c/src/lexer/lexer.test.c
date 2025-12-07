@@ -105,6 +105,28 @@ main(void) {
         token_free(t3);
     }
 
+    {
+        list_t *tokens = lex(NULL, "1.0 0.0 -1.0");
+        assert(list_length(tokens) == 3);
+
+        token_t *t1 = list_shift(tokens);
+        assert(t1->kind == FLOAT_TOKEN);
+        assert(string_equal(t1->content, "1.0"));
+
+        token_t *t2 = list_shift(tokens);
+        assert(t2->kind == FLOAT_TOKEN);
+        assert(string_equal(t2->content, "0.0"));
+
+        token_t *t3 = list_shift(tokens);
+        assert(t3->kind == FLOAT_TOKEN);
+        assert(string_equal(t3->content, "-1.0"));
+
+        list_free(tokens);
+        token_free(t1);
+        token_free(t2);
+        token_free(t3);
+    }
+
     // {
     //     lexer->line_comment = "//";
     //     lexer->content = "a b //x\n c";
@@ -152,27 +174,6 @@ main(void) {
     //     token_free(a);
     //     token_free(b);
     //     token_free(c);
-    // }
-
-    // {
-    //     lexer->content = "1 1.0";
-
-    //     lexer_run(lexer);
-    //     list_t *tokens = lexer->tokens;
-    //     assert(list_length(tokens) == 2);
-
-    //     token_t *a = list_shift(tokens);
-    //     assert(string_equal(a->content, "1"));
-    //     assert(a->kind == INT_TOKEN);
-    //     assert(a->int_value == 1);
-
-    //     token_t *b = list_shift(tokens);
-    //     assert(string_equal(b->content, "1.0"));
-    //     assert(b->float_value == 1.0);
-
-    //     list_free(tokens);
-    //     token_free(a);
-    //     token_free(b);
     // }
 
     // {

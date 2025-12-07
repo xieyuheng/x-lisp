@@ -1,6 +1,5 @@
 # lexer
 
-[lexer] `consume_float`
 [lexer] `consume_int`
 
 [lexer] `consume_string`

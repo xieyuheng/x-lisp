@@ -1,18 +1,18 @@
 #include "index.h"
 
 struct string_builder_t {
-    char *buffer;
-    size_t length;
     // buffer size is max_length + 1 (the null end)
     size_t max_length;
+    char *buffer;
+    size_t length;
 };
 
 string_builder_t *
 make_string_builder(void) {
     string_builder_t *self = new(string_builder_t);
     self->max_length = 64;
-    self->length = 0;
     self->buffer = allocate(self->max_length + 1);
+    self->length = 0;
     return self;
 }
 
@@ -28,7 +28,7 @@ string_builder_ensure_capacity(string_builder_t *self, size_t new_length) {
         self->buffer = reallocate(
             self->buffer,
             self->max_length,
-            self->max_length * 2);
+            self->max_length * 2 + 1);
         self->max_length *= 2;
         string_builder_ensure_capacity(self, new_length);
     }
@@ -38,6 +38,7 @@ void
 string_builder_append_char(string_builder_t *self, char c) {
     string_builder_ensure_capacity(self, self->length + 1);
     self->buffer[self->length] = c;
+    self->buffer[self->length + 1] = '\0';
     self->length++;
 }
 
@@ -51,6 +52,7 @@ string_builder_append_string(string_builder_t *self, const char *string) {
 void
 string_builder_clear(string_builder_t *self) {
     self->length = 0;
+    self->buffer[self->length] = '\0';
 }
 
 char *
