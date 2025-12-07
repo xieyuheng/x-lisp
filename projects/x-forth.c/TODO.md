@@ -1,6 +1,5 @@
 # lexer
 
-[lexer] `consume_symbol`
 [lexer] `consume_keyword`
 [lexer] `consume_hashtag`
 

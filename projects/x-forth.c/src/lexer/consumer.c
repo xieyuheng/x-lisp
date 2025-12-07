@@ -52,11 +52,11 @@ struct consumer_t consumers[] = {
     //     .can_consume = can_consume_hashtag,
     //     .consume = consume_hashtag,
     // },
-    // {
-    //     .kind = SYMBOL_TOKEN,
-    //     .can_consume = can_consume_symbol,
-    //     .consume = consume_symbol,
-    // },
+    {
+        .kind = SYMBOL_TOKEN,
+        .can_consume = can_consume_symbol,
+        .consume = consume_symbol,
+    },
 };
 
 size_t
