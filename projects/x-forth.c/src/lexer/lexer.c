@@ -11,11 +11,22 @@ make_lexer(const path_t *path, const char *string) {
         .row = 0,
         .column = 0,
     };
+
+    self->quotation_mark_chars = make_array_auto();
+    array_push(self->quotation_mark_chars, (void *) '\'');
+    array_push(self->quotation_mark_chars, (void *) '`');
+    array_push(self->quotation_mark_chars, (void *) ',');
+
+    self->bracket_start_chars = make_array_auto();
+    self->bracket_end_chars = make_array_auto();
     return self;
 }
 
 void
 lexer_free(lexer_t *self) {
+    array_free(self->quotation_mark_chars);
+    array_free(self->bracket_start_chars);
+    array_free(self->bracket_end_chars);
     free(self);
 }
 
@@ -113,8 +124,13 @@ lexer_char_is_mark(lexer_t *self, char c) {
 
 bool
 lexer_char_is_quotation_mark(lexer_t *self, char c) {
-    (void) self;
-    return c == '\'' || c == '`' || c == ',';
+    for (size_t i = 0; i < array_length(self->quotation_mark_chars); i++) {
+        if ((uint64_t) array_get(self->quotation_mark_chars, i) == c) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool

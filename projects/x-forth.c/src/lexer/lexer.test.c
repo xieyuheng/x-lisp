@@ -166,7 +166,6 @@ main(void) {
         token_free(t3);
     }
 
-
     {
         list_t *tokens = lex(NULL, "\"a\" \"b\" \"\\n\"");
         assert(list_length(tokens) == 3);

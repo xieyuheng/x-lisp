@@ -5,6 +5,9 @@ struct lexer_t {
     const char *string;
     size_t length;
     struct position_t position;
+    array_t *quotation_mark_chars;
+    array_t *bracket_start_chars;
+    array_t *bracket_end_chars;
 };
 
 lexer_t *make_lexer(const path_t *path, const char *string);
