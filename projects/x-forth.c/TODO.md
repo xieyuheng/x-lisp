@@ -1,5 +1,3 @@
-[lang] `invoke` -- handle `primitive_definition_t`
-
 [helpers.c] port command.js
 setup `commands/`
 `cmd_run`

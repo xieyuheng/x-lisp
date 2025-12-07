@@ -47,17 +47,24 @@ definition_free(definition_t *self) {
     free(self->name);
 
     switch (self->kind) {
-    case FUNCTION_DEFINITION:
+    case FUNCTION_DEFINITION: {
         array_free(self->function_definition.parameters);
         free(self->function_definition.program);
         break;
-    case PRIMITIVE_DEFINITION:
+    }
+
+    case PRIMITIVE_DEFINITION: {
         primitive_free(self->primitive_definition.primitive);
         break;
-    case VARIABLE_DEFINITION:
+    }
+
+    case VARIABLE_DEFINITION: {
         break;
-    case CONSTANT_DEFINITION:
+    }
+
+    case CONSTANT_DEFINITION: {
         break;
+    }
     }
 
     free(self);

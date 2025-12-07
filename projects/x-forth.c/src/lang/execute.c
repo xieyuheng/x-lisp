@@ -8,24 +8,6 @@ execute_token(vm_t *vm, token_t *token) {
     }
 }
 
-static void
-invoke(vm_t *vm, definition_t *definition) {
-    switch (definition->kind) {
-    case FUNCTION_DEFINITION:
-        // TODO
-        break;
-    case PRIMITIVE_DEFINITION:
-        // TODO
-        break;
-    case VARIABLE_DEFINITION:
-        // TODO
-        break;
-    case CONSTANT_DEFINITION:
-        // TODO
-        break;
-    }
-}
-
 void
 execute(vm_t *vm) {
     while (!list_is_empty(vm->tokens)) {
