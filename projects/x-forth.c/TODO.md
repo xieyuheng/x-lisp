@@ -1,7 +1,5 @@
 # lexer
 
-[lexer] `lexer_char_is_mark` take `lexer` as first argument
-
 [lexer] be able to config `quotation_mark_chars`
 [lexer] be able to config `bracket_start_chars` & `bracket_end_chars`
 [lexer] be able to config `line_comment_start_strings`

@@ -38,7 +38,7 @@ lexer_next_word_string(lexer_t *self) {
     size_t index = self->position.index;
     while (index < self->length &&
            !char_is_space(self->string[index]) &&
-           !lexer_char_is_mark(self->string[index]))
+           !lexer_char_is_mark(self, self->string[index]))
     {
         string_builder_append_char(builder, self->string[index]);
         index++;
@@ -105,23 +105,26 @@ lex(const path_t *path, const char *string) {
 }
 
 bool
-lexer_char_is_mark(char c) {
-    return (lexer_char_is_quotation_mark(c) ||
-            lexer_char_is_bracket_start(c) ||
-            lexer_char_is_bracket_end(c));
+lexer_char_is_mark(lexer_t *self, char c) {
+    return (lexer_char_is_quotation_mark(self, c) ||
+            lexer_char_is_bracket_start(self, c) ||
+            lexer_char_is_bracket_end(self, c));
 }
 
 bool
-lexer_char_is_quotation_mark(char c) {
+lexer_char_is_quotation_mark(lexer_t *self, char c) {
+    (void) self;
     return c == '\'' || c == '`' || c == ',';
 }
 
 bool
-lexer_char_is_bracket_start(char c) {
+lexer_char_is_bracket_start(lexer_t *self, char c) {
+    (void) self;
     return c == '(' || c == '[' || c == '{';
 }
 
 bool
-lexer_char_is_bracket_end(char c) {
+lexer_char_is_bracket_end(lexer_t *self, char c) {
+    (void) self;
     return c == ')' || c == ']' || c == '}';
 }
