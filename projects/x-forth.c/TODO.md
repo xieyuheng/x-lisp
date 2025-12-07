@@ -1,7 +1,5 @@
 # lexer
 
-[lexer] `lexer_next_word_string`
-
 [lexer] `consume_float`
 [lexer] `consume_int`
 

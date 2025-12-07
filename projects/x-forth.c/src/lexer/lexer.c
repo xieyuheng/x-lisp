@@ -32,6 +32,23 @@ lexer_next_char_string(lexer_t *self) {
         self->position.index + 1);
 }
 
+char *
+lexer_next_word_string(lexer_t *self) {
+    string_builder_t *builder = make_string_builder();
+    size_t index = self->position.index;
+    while (!lexer_is_finished(self) &&
+           !char_is_space(self->string[index]) &&
+           !lexer_char_is_mark(self->string[index]))
+    {
+        string_builder_append_char(builder, self->string[index]);
+        index++;
+    }
+
+    char *word = string_builder_produce(builder);
+    string_builder_free(builder);
+    return word;
+}
+
 bool
 lexer_is_finished(lexer_t *self) {
     return self->position.index >= self->length;

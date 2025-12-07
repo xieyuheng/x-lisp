@@ -12,6 +12,8 @@ void lexer_free(lexer_t *self);
 
 char lexer_next_char(lexer_t *self);
 char *lexer_next_char_string(lexer_t *self);
+char *lexer_next_word_string(lexer_t *self);
+
 bool lexer_is_finished(lexer_t *self);
 void lexer_forward(lexer_t *self, size_t count);
 token_t *lexer_consume(lexer_t *self);
