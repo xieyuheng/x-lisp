@@ -1,6 +1,7 @@
 [helpers.c] port command.js
 setup `commands/`
 `cmd_run`
+x-forth.exe -- test outer interpreter
 
 # vm
 
@@ -13,8 +14,10 @@ setup `commands/`
 [core] `instr_encode(program)`
 [core] `instr_decode(program)`
 
-[core] `placeholder_t`
-[core] `mod` -- have `placeholders` -- for patching undefined names
+[core] [maybe] `placeholder_t`
+
+- maybe we should setup a placeholder definition for every symbol that we meet
+- [core] `mod` -- have `placeholders` -- for patching undefined names
 
 # value
 
