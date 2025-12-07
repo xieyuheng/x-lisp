@@ -11,10 +11,15 @@ consume_string(lexer_t *lexer) {
 
     string_builder_t *builder = make_string_builder();
 
-    while (lexer_next_char(lexer) != '"') {
+    while (true) {
         if (lexer_is_finished(lexer)) {
             where_printf("double qouted string mismatch");
             assert(false);
+        }
+
+        if (lexer_next_char(lexer) == '"') {
+            lexer_forward(lexer, 1); // over the ending '"'
+            break;
         }
 
         char c = lexer_next_char(lexer);
@@ -42,8 +47,6 @@ consume_string(lexer_t *lexer) {
             lexer_forward(lexer, 1);
         }
     }
-
-    lexer_forward(lexer, 1); // over the ending '"'
 
     char *content = string_builder_produce(builder);
     string_builder_free(builder);

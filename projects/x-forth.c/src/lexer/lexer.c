@@ -11,6 +11,7 @@ make_lexer(const path_t *path, const char *string) {
         .row = 0,
         .column = 0,
     };
+    self->line_comment_introducer = "--";
     return self;
 }
 
