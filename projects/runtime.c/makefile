@@ -47,9 +47,11 @@ parallel = parallel -v --halt now,fail=1
 
 deps = ../helpers.c/src/index.po
 
-.PHONY: all test snapshot clean
+.PHONY: build test clean dev
 
-all: $(exes) $(tests) $(snapshots) bin/runtime.o bin/bundle
+dev: clean build test
+
+build: $(exes) $(tests) $(snapshots) bin/runtime.o bin/bundle
 
 bin/bundle: bin/runtime.o bin/bundle.o
 	$(cc) $^ $(ldflags) -o $@

@@ -2,9 +2,9 @@
 
 set -e
 
-make --directory projects/helpers.c -j
-make --directory projects/runtime.c -j
-make --directory projects/cmd.c -j
-make --directory projects/x-forth.c -j
+make --directory projects/helpers.c build -j
+make --directory projects/runtime.c build -j
+make --directory projects/cmd.c build -j
+make --directory projects/x-forth.c build -j
 
 pnpm run -r build

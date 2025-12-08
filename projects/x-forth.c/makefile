@@ -47,9 +47,11 @@ parallel = parallel -v --halt now,fail=1
 
 deps = ../helpers.c/src/index.po
 
-.PHONY: all test snapshot clean
+.PHONY: build test clean dev
 
-all: $(exes) $(tests) $(snapshots)
+dev: clean build test
+
+build: $(exes) $(tests) $(snapshots)
 
 test: $(tests) $(snapshots)
 	echo $(tests) | tr [:space:] '\n' | $(parallel) {}
