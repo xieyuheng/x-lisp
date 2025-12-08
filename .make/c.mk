@@ -57,7 +57,7 @@ build: $(exes) $(tests) $(snapshots)
 .PHONY: test
 test: $(tests) $(snapshots)
 	echo $(tests) | tr [:space:] '\n' | $(parallel) {}
-	test -n "$(snapshots)" && echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
+	if test -n "$(snapshots)"; then echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out; fi
 
 src/%.exe: src/%.exe.c src/index.po
 	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
