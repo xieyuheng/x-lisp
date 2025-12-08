@@ -2,4 +2,4 @@
 
 #include "deps.h"
 
-#include "cmd-router/index.h"
+#include "cmd/index.h"
