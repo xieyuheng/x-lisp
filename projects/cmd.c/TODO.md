@@ -1,4 +1,3 @@
-[cmd] `cmd_make_router_t`
 [cmd] `cmd_router_free`
 
 [cmd] `cmd_route_t`

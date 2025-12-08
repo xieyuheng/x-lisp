@@ -7,3 +7,5 @@ struct cmd_router_t {
     array_t *routes;
     hash_t *handlers;
 };
+
+cmd_router_t *cmd_make_router_t(const char *name, const char *version);
