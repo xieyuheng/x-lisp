@@ -56,7 +56,7 @@ build: $(exes) $(tests) $(snapshots)
 
 test: $(tests) $(snapshots)
 	echo $(tests) | tr [:space:] '\n' | $(parallel) {}
-#	echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
+	test -n "$(snapshots)" && echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
 
 src/%.exe: src/%.exe.c src/index.po
 	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
