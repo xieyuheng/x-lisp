@@ -45,15 +45,16 @@ exes = $(patsubst %.c, %, $(exe_sources))
 
 parallel = parallel -v --halt now,fail=1
 
-.PHONY: build test clean dev
-
+.PHONY: dev
 dev:
 	make clean
 	make build -j
 	make test
 
+.PHONY: build
 build: $(exes) $(tests) $(snapshots)
 
+.PHONY: test
 test: $(tests) $(snapshots)
 	echo $(tests) | tr [:space:] '\n' | $(parallel) {}
 	test -n "$(snapshots)" && echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out
@@ -73,5 +74,6 @@ src/index.po: $(objects)
 src/%.o: src/%.c $(headers)
 	$(cc) -c $(cflags) $< -o $@
 
+.PHONY: clean
 clean::
 	rm -rf $(objects) $(exes) $(tests) $(snapshots) src/index.po
