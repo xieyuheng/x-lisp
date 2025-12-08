@@ -19,7 +19,7 @@
     "format": "prettier src --write"
   },
   "dependencies": {
-    "@xieyuheng/command.js": "workspace:*",
+    "@xieyuheng/cmd.js": "workspace:*",
     "@xieyuheng/helpers.js": "workspace:*"
   },
   "devDependencies": {

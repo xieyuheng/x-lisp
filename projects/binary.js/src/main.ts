@@ -1,4 +1,4 @@
-import * as Cmd from "@xieyuheng/command.js"
+import * as Cmd from "@xieyuheng/cmd.js"
 import { errorReport } from "@xieyuheng/helpers.js/error"
 import { bufferToArrayBuffer, getPackageJson } from "@xieyuheng/helpers.js/node"
 import fs from "node:fs"

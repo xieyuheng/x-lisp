@@ -23,7 +23,7 @@
     "format": "prettier src --write"
   },
   "dependencies": {
-    "@xieyuheng/command.js": "workspace:*",
+    "@xieyuheng/cmd.js": "workspace:*",
     "@xieyuheng/helpers.js": "workspace:*",
     "@xieyuheng/sexp.js": "workspace:*",
     "zod": "^4.1.13"

@@ -1,6 +1,6 @@
 #!/usr/bin/env -S node
 
-import * as Cmd from "@xieyuheng/command.js"
+import * as Cmd from "@xieyuheng/cmd.js"
 import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
