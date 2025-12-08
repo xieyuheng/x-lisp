@@ -1,4 +1,4 @@
-[cmd] `cmd_router_free`
+[cmd] `cmd_make_router` -- setup `route_free`
 
 [cmd] `cmd_route_t`
 [cmd] `cmd_make_route`
