@@ -6,6 +6,7 @@
 #include "string/index.h"
 #include "list/index.h"
 #include "hash/index.h"
+#include "record/index.h"
 #include "set/index.h"
 #include "vec/index.h"
 #include "blob/index.h"
