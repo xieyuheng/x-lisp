@@ -1,4 +1,3 @@
-remove x_random_dice
 complete current builtin
 
 # vm
