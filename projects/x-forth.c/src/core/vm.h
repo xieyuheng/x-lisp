@@ -7,5 +7,5 @@ struct vm_t {
     stack_t *frame_stack;
 };
 
-vm_t *make_vm(mod_t *mod);
+vm_t *make_vm(mod_t *mod, list_t *tokens);
 void vm_free(vm_t *self);

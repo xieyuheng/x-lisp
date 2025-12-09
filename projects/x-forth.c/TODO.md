@@ -1,8 +1,8 @@
 # outer interpreter
 
-setup `handle_run`
-setup `builtin/`
-x-forth.exe -- test outer interpreter
+setup `builtin/` -- `newline`
+`builtin/` -- `newline` -- to test outer interpreter
+rename `execute` to `vm_run`
 
 # vm
 

@@ -12,6 +12,13 @@ config_stdio(void) {
     file_disable_buffer(stderr);
 }
 
+static void
+handle_run(cmd_ctx_t *ctx) {
+    char *file_name = cmd_arg(ctx, 0);
+    mod_t *mod = load(make_path(file_name));
+    (void) mod;
+}
+
 int
 main(int argc, char *argv[]) {
     sanity_check();
@@ -20,6 +27,8 @@ main(int argc, char *argv[]) {
     cmd_router_t *router = cmd_make_router("x-forth", "0.1.0");
 
     cmd_define_route(router, "run file -- run a file");
+
+    cmd_define_handler(router, "run", handle_run);
 
     cmd_router_run(router, argc, argv);
     cmd_router_free(router);
