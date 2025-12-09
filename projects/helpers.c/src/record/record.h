@@ -1,6 +1,8 @@
 #pragma once
 
 record_t *make_record(void);
+record_t *make_record_with(free_fn_t *free_fn);
+
 void record_purge(record_t *self);
 void record_free(record_t *self);
 

@@ -14,6 +14,13 @@ make_record(void) {
     return self;
 }
 
+record_t *
+make_record_with(free_fn_t *free_fn) {
+    record_t *self = make_record();
+    record_put_free_fn(self, free_fn);
+    return self;
+}
+
 void
 record_purge(record_t *self) {
     hash_purge(self->hash);
