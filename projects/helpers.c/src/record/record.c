@@ -34,3 +34,13 @@ size_t
 record_length(const record_t *self) {
     return hash_length(self->hash);
 }
+
+bool
+record_has(record_t *self, const char *key) {
+    return hash_has(self->hash, key);
+}
+
+void *
+record_get(record_t *self, const char *key) {
+    return hash_get(self->hash, key);
+}

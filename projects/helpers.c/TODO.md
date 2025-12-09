@@ -1,4 +1,3 @@
-`record_has` & `record_get`
 `record_insert` & `record_insert_or_fail`
 `record_put` & `record_delete`
 
