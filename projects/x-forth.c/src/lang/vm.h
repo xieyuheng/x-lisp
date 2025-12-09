@@ -9,3 +9,5 @@ struct vm_t {
 
 vm_t *make_vm(mod_t *mod, list_t *tokens);
 void vm_free(vm_t *self);
+
+void vm_run(vm_t *self);

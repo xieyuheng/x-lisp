@@ -17,3 +17,11 @@ vm_free(vm_t *self) {
     stack_free(self->frame_stack);
     free(self);
 }
+
+void
+vm_run(vm_t *self) {
+    while (!list_is_empty(self->tokens)) {
+        token_t *token = list_shift(self->tokens);
+        execute_token(self, token);
+    }
+}

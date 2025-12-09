@@ -1,5 +1,3 @@
-rename `execute` to `vm_run`
-
 # outer interpreter
 
 setup `builtin/` -- `newline`

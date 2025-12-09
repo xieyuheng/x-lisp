@@ -10,7 +10,7 @@ load(path_t *path) {
     mod_t *mod = make_mod(path);
 
     vm_t *vm = make_vm(mod, tokens);
-    execute(vm);
+    vm_run(vm);
     vm_free(vm);
 
     return mod;

@@ -1,3 +1,3 @@
 #pragma once
 
-void execute(vm_t *vm);
+void execute_token(vm_t *vm, token_t *token);
