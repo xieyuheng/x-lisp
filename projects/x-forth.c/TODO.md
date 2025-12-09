@@ -1,5 +1,3 @@
-[lang] `invoke` handle `VARIABLE_DEFINITION` & `CONSTANT_DEFINITION`
-
 [builtin] define true and false as constant
 
 # vm

@@ -16,12 +16,12 @@ invoke(vm_t *vm, definition_t *definition) {
     }
 
     case VARIABLE_DEFINITION: {
-        // TODO
+        stack_push(vm->value_stack, definition->variable_definition.value);
         break;
     }
 
     case CONSTANT_DEFINITION: {
-        // TODO
+        stack_push(vm->value_stack, definition->variable_definition.value);
         break;
     }
     }
