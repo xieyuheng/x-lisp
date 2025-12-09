@@ -16,8 +16,8 @@ importers:
         version: link:../helpers.js
     devDependencies:
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: ^24.10.2
+        version: 24.10.2
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
@@ -35,8 +35,8 @@ importers:
         version: link:../helpers.js
     devDependencies:
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: ^24.10.2
+        version: 24.10.2
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
@@ -50,8 +50,8 @@ importers:
   projects/helpers.js:
     devDependencies:
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: ^24.10.2
+        version: 24.10.2
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
@@ -69,8 +69,8 @@ importers:
         version: link:../helpers.js
     devDependencies:
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: ^24.10.2
+        version: 24.10.2
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
@@ -97,8 +97,8 @@ importers:
         version: 4.1.13
     devDependencies:
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: ^24.10.2
+        version: 24.10.2
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
@@ -125,8 +125,8 @@ importers:
         version: 4.1.13
     devDependencies:
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: ^24.10.2
+        version: 24.10.2
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
@@ -150,8 +150,8 @@ importers:
         version: link:../sexp.js
     devDependencies:
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: ^24.10.2
+        version: 24.10.2
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
@@ -164,8 +164,8 @@ importers:
 
 packages:
 
-  '@types/node@24.10.1':
-    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
+  '@types/node@24.10.2':
+    resolution: {integrity: sha512-WOhQTZ4G8xZ1tjJTvKOpyEVSGgOTvJAfDK3FNFgELyaTpzhdgHVHeqW8V+UJvzF5BT+/B54T/1S2K6gd9c7bbA==}
 
   prettier-plugin-organize-imports@4.3.0:
     resolution: {integrity: sha512-FxFz0qFhyBsGdIsb697f/EkvHzi5SZOhWAjxcx2dLt+Q532bAlhswcXGYB1yzjZ69kW8UoadFBw7TyNwlq96Iw==}
@@ -195,7 +195,7 @@ packages:
 
 snapshots:
 
-  '@types/node@24.10.1':
+  '@types/node@24.10.2':
     dependencies:
       undici-types: 7.16.0
 
