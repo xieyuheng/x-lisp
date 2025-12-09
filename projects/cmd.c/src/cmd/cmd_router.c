@@ -7,13 +7,13 @@ cmd_make_router(const char *name, const char *version) {
     self->version = version;
     self->routes = make_array_auto();
     // self->routes = make_array_auto_with((free_fn_t *) route_free);
-    self->handlers = make_hash_with_string_keys();
+    self->handlers = make_record();
     return self;
 }
 
 void
 cmd_router_free(cmd_router_t *self) {
     array_free(self->routes);
-    hash_free(self->handlers);
+    record_free(self->handlers);
     free(self);
 }
