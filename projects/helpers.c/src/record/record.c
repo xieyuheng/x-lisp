@@ -24,3 +24,13 @@ record_free(record_t *self) {
     hash_free(self->hash);
     free(self);
 }
+
+void
+record_put_free_fn(record_t *self, free_fn_t *free_fn) {
+    hash_put_value_free_fn(self->hash, free_fn);
+}
+
+size_t
+record_length(const record_t *self) {
+    return hash_length(self->hash);
+}
