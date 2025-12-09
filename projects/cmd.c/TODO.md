@@ -1,1 +1,1 @@
-[cmd] print help
+[cmd] calculator.exe.c

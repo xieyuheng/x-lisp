@@ -27,18 +27,34 @@ cmd_router_lookup(cmd_router_t *self, const char *name) {
     return NULL;
 }
 
+static void
+print_name_and_version(cmd_router_t *self) {
+    printf("%s %s\n", self->name, self->version);
+}
+
+static void
+print_commands(cmd_router_t *self) {
+    printf("commands:\n");
+    for (size_t i = 0; i < array_length(self->routes); i++) {
+        cmd_route_t *route = array_get(self->routes, i);
+        printf("  %s\n", route->command);
+    }
+}
+
 void
 cmd_router_run(cmd_router_t *self, size_t argc, char **argv) {
     if (argc < 2) {
-        where_printf("TODO print help message\n");
+        print_name_and_version(self);
+        print_commands(self);
         return;
     }
 
     const char *name = argv[1];
     cmd_route_t *route = cmd_router_lookup(self, name);
     if (!route) {
-        who_printf("unknown command name: %s\n", name);
-        // TODO print help here
+        print_name_and_version(self);
+        printf("unknown command: %s\n", name);
+        print_commands(self);
         exit(1);
     }
 
