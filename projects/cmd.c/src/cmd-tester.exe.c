@@ -22,8 +22,8 @@ main(int argc, char *argv[]) {
 
     cmd_router_t *router = cmd_make_router("cmd-tester", "0.0.0");
 
-    // cmd_define_route(router, "hello -- say hello");
-    // cmd_define_route(router, "bye -- say bye bye");
+    cmd_define_route(router, "hello -- say hello");
+    cmd_define_route(router, "bye -- say bye bye");
 
     (void) handle_hello;
     (void) handle_bye;
