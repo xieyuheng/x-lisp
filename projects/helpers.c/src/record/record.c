@@ -44,3 +44,13 @@ void *
 record_get(record_t *self, const char *key) {
     return hash_get(self->hash, key);
 }
+
+bool
+record_insert(record_t *self, const char *key, void *value) {
+    return hash_insert(self->hash, string_copy(key), value);
+}
+
+void
+record_insert_or_fail(record_t *self, const char *key, void *value) {
+    hash_insert_or_fail(self->hash, string_copy(key), value);
+}
