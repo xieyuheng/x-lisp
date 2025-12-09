@@ -1,5 +1,7 @@
 #include "index.h"
 
+extern void import_builtin(mod_t *mod);
+
 mod_t *
 load(path_t *path) {
     file_t *file = file_open_or_fail(path_string(path), "r");
@@ -8,6 +10,7 @@ load(path_t *path) {
     string_free(string);
 
     mod_t *mod = make_mod(path);
+    import_builtin(mod);
 
     vm_t *vm = make_vm(mod, tokens);
     vm_run(vm);

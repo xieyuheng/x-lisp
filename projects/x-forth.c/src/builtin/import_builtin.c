@@ -1,7 +1,7 @@
 #include "index.h"
 
 void
-import_prelude(mod_t *mod) {
+import_builtin(mod_t *mod) {
     // int
 
     define_primitive_fn_1(mod, "int?", x_int_p);

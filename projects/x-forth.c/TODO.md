@@ -1,7 +1,5 @@
 # outer interpreter
 
-`builtin/` -- `import_builtin` -- called by `load`
-
 `builtin/` -- `float`
 `builtin/` -- `console` -- `newline` `print` `println`
 
