@@ -1,13 +1,11 @@
 # outer interpreter
 
-setup `builtin/`
+`builtin/` -- `import_builtin` -- called by `load`
 
 `builtin/` -- `int`
 `builtin/` -- `float`
-
-
-
 `builtin/` -- `console` -- `newline` `print` `println`
+
 
 `scripts/test.sh` -- test outer interpreter
 
