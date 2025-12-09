@@ -20,7 +20,7 @@
     "build": "pnpm build:prepare && tsc",
     "build:watch": "pnpm build:prepare && tsc --watch",
     "test": "node --test 'src/**/*.test.ts'",
-    "test:cli": "bash scripts/test-all.sh",
+    "test:cli": "bash scripts/test.sh",
     "format": "prettier src --write"
   },
   "dependencies": {
