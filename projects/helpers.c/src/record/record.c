@@ -21,6 +21,11 @@ make_record_with(free_fn_t *free_fn) {
     return self;
 }
 
+record_t *
+make_string_record(void) {
+    return make_record_with((free_fn_t *) string_free);
+}
+
 void
 record_purge(record_t *self) {
     hash_purge(self->hash);
