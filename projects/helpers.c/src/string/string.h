@@ -32,4 +32,4 @@ char *string_to_upper_case(const char *self);
 bool string_equal_mod_case(const char *left, const char *right);
 
 char *string_next_word(const char *self, size_t *cursor_pointer);
-const char *string_next_line(const char *self);
+char *string_next_line(const char *self, size_t *cursor_pointer);

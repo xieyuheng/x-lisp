@@ -248,16 +248,29 @@ string_next_word(const char *self, size_t *cursor_pointer) {
     }
 }
 
-const char *
-string_next_line(const char *self) {
-    int newline_index = string_find_index(self, '\n');
-    if (newline_index == -1) {
-        return NULL;
+char *
+string_next_line(const char *self, size_t *cursor_pointer) {
+    size_t cursor = *cursor_pointer;
+    string_builder_t *builder = make_string_builder();
+    while (cursor < string_length(self)) {
+        char c = self[cursor];
+        if (c == '\n') {
+            cursor++;
+            break;
+        } else {
+            string_builder_append_char(builder, c);
+            cursor++;
+        }
     }
 
-    const char *next_line = self + newline_index + 1;
-    if (*next_line == '\0')
-        return NULL;
+    char *line = string_builder_produce(builder);
+    string_builder_free(builder);
+    *cursor_pointer = cursor;
 
-    return next_line;
+    if (string_length(line) == 0) {
+        string_free(line);
+        return NULL;
+    } else {
+        return line;
+    }
 }
