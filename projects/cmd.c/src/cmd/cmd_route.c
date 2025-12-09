@@ -4,9 +4,34 @@ cmd_route_t *
 cmd_parse_route(const char *command) {
     cmd_route_t *self = new(cmd_route_t);
     self->command = command;
-    self->name = NULL; // TOOD
-    self->arg_names = make_string_array_auto(); // TOOD
-    self->option_names = make_string_array_auto(); // TOOD
+
+    size_t cursor = 0;
+
+    self->name = string_next_word(command, &cursor);
+    assert(self->name);
+
+    self->arg_names = make_string_array_auto();
+    self->option_names = make_string_array_auto();
+
+    char *word = string_next_word(command, &cursor);
+    bool passed_args_p = false;
+    while (word) {
+        if (string_equal(word, "--")) {
+            string_free(word);
+            break;
+        }
+
+        if (string_starts_with(word, "-")) {
+            passed_args_p = true;
+            array_push(self->option_names, word);
+        } else {
+            assert(!passed_args_p);
+            array_push(self->arg_names, word);
+        }
+
+        string_next_word(command, &cursor);
+    }
+
     return self;
 }
 
