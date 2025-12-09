@@ -213,6 +213,41 @@ string_equal_mod_case(const char *left, const char *right) {
     return result;
 }
 
+char *
+string_next_word(const char *self, size_t *cursor_pointer) {
+    size_t cursor = *cursor_pointer;
+    while (cursor < string_length(self)) {
+        char c = self[cursor];
+        if (char_is_space(c)) {
+            cursor++;
+        } else {
+            break;
+        }
+    }
+
+    string_builder_t *builder = make_string_builder();
+    while (cursor < string_length(self)) {
+        char c = self[cursor];
+        if (char_is_space(c)) {
+            break;
+        } else {
+            string_builder_append_char(builder, c);
+            cursor++;
+        }
+    }
+
+    char *word = string_builder_produce(builder);
+    string_builder_free(builder);
+    *cursor_pointer = cursor;
+
+    if (string_length(word) == 0) {
+        string_free(word);
+        return NULL;
+    } else {
+        return word;
+    }
+}
+
 const char *
 string_next_line(const char *self) {
     int newline_index = string_find_index(self, '\n');

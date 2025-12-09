@@ -229,5 +229,31 @@ main(void) {
         assert(string_parse_double("-0.0") == 0);
     }
 
+    {
+        const char *string = "";
+        size_t cursor = 0;
+        assert(string_equal(string_next_word(string, &cursor), NULL));
+        assert(string_equal(string_next_word(string, &cursor), NULL));
+        assert(string_equal(string_next_word(string, &cursor), NULL));
+    }
+
+    {
+        const char *string = "  \n  \t  ";
+        size_t cursor = 0;
+        assert(string_equal(string_next_word(string, &cursor), NULL));
+        assert(string_equal(string_next_word(string, &cursor), NULL));
+        assert(string_equal(string_next_word(string, &cursor), NULL));
+    }
+
+    {
+        const char *string = " abc 123 ";
+        size_t cursor = 0;
+        assert(string_equal(string_next_word(string, &cursor), "abc"));
+        assert(string_equal(string_next_word(string, &cursor), "123"));
+        assert(string_equal(string_next_word(string, &cursor), NULL));
+        assert(string_equal(string_next_word(string, &cursor), NULL));
+        assert(string_equal(string_next_word(string, &cursor), NULL));
+    }
+
     test_end();
 }
