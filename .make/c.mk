@@ -46,16 +46,16 @@ exes = $(patsubst %.c, %, $(exe_sources))
 parallel = parallel -v --halt now,fail=1
 
 .PHONY: dev
-dev:
+dev::
 	make clean
 	make build -j
 	make test
 
 .PHONY: build
-build: $(exes) $(tests) $(snapshots)
+build:: $(exes) $(tests) $(snapshots)
 
 .PHONY: test
-test: $(tests) $(snapshots)
+test:: $(tests) $(snapshots)
 	echo $(tests) | tr [:space:] '\n' | $(parallel) {}
 	if test -n "$(snapshots)"; then echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out; fi
 

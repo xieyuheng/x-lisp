@@ -2,7 +2,7 @@ include ../../.make/c.mk
 
 deps = ../helpers.c/src/index.po
 
-build: bin/runtime.o bin/bundle
+build:: bin/runtime.o bin/bundle
 
 bin/bundle: bin/runtime.o bin/bundle.o
 	$(cc) $^ $(ldflags) -o $@

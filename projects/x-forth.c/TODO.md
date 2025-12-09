@@ -1,6 +1,5 @@
-# outer interpreter
-
-`scripts/test.sh` -- test outer interpreter
+remove x_random_dice
+complete current builtin
 
 # vm
 
