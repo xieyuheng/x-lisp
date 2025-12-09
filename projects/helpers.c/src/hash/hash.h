@@ -22,7 +22,6 @@ void *hash_get(hash_t *self, const void *key);
 bool hash_insert(hash_t *self, void *key, void *value);
 void hash_insert_or_fail(hash_t *self, void *key, void *value);
 
-
 // will always success.
 // will own the key.
 // auto free old key if there is `key_free_fn`.
