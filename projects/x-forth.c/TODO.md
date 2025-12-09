@@ -1,24 +1,30 @@
+rename `execute` to `vm_run`
+
 # outer interpreter
 
 setup `builtin/` -- `newline`
-`builtin/` -- `newline` -- to test outer interpreter
-rename `execute` to `vm_run`
+
+`builtin/` -- `console` -- `newline` `print` `println`
+`builtin/` -- `int`
+`builtin/` -- `float`
+
+`scripts/test.sh` -- test outer interpreter
 
 # vm
 
-[core] `instr_t`
+[lang] `instr_t`
 
 - there should be no value in `instr_t`,
   so that GC root scaning no need to scan instructions.
 
-[core] `instr_size(instr)`
-[core] `instr_encode(program)`
-[core] `instr_decode(program)`
+[lang] `instr_size(instr)`
+[lang] `instr_encode(program)`
+[lang] `instr_decode(program)`
 
-[core] [maybe] `placeholder_t`
+[lang] [maybe] `placeholder_t`
 
 - maybe we should setup a placeholder definition for every symbol that we meet
-- [core] `mod` -- have `placeholders` -- for patching undefined names
+- [lang] `mod` -- have `placeholders` -- for patching undefined names
 
 # value
 
