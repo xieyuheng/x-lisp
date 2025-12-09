@@ -27,13 +27,14 @@ cmd_router_run(cmd_router_t *self, size_t argc, const char **argv) {
     for (size_t i = 0; array_length(self->routes); i++) {
         cmd_route_t *route = array_get(self->routes, i);
         if (string_equal(name, route->name)) {
-            cmd_ctx_t *ctx = cmd_make_ctx(self, route, argc, argv);
-            // cmd_route_match(route, ctx);
             assert(route->fn);
+            cmd_ctx_t *ctx = cmd_make_ctx(self, route, argc, argv);
+            cmd_route_match(route, ctx);
             route->fn(ctx);
         }
     }
 
     who_printf("unknown command name: %s\n", name);
+    // TODO print help here
     exit(1);
 }

@@ -10,3 +10,5 @@ struct cmd_route_t {
 
 cmd_route_t *cmd_parse_route(const char *command);
 void cmd_route_free(cmd_route_t *self);
+
+void cmd_route_match(cmd_route_t *self, cmd_ctx_t *ctx);

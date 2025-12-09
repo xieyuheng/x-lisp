@@ -17,3 +17,14 @@ cmd_route_free(cmd_route_t *self) {
     array_free(self->option_names);
     free(self);
 }
+
+void
+cmd_route_match(cmd_route_t *self, cmd_ctx_t *ctx) {
+    for (size_t i = 0; i < array_length(self->arg_names); i++) {
+        const char *arg = ctx->argv[1 + i];
+        assert(arg);
+        array_push(ctx->args, string_copy(arg));
+    }
+
+    // TODO handle options
+}
