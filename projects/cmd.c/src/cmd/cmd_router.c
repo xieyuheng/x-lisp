@@ -15,6 +15,18 @@ cmd_router_free(cmd_router_t *self) {
     free(self);
 }
 
+cmd_route_t *
+cmd_router_lookup(cmd_router_t *self, const char *name) {
+    for (size_t i = 0; array_length(self->routes); i++) {
+        cmd_route_t *route = array_get(self->routes, i);
+        if (string_equal(name, route->name)) {
+            return route;
+        }
+    }
+
+    return NULL;
+}
+
 void
 cmd_router_run(cmd_router_t *self, size_t argc, char **argv) {
     if (argc < 2) {
@@ -23,18 +35,15 @@ cmd_router_run(cmd_router_t *self, size_t argc, char **argv) {
     }
 
     const char *name = argv[1];
-
-    for (size_t i = 0; array_length(self->routes); i++) {
-        cmd_route_t *route = array_get(self->routes, i);
-        if (string_equal(name, route->name)) {
-            assert(route->fn);
-            cmd_ctx_t *ctx = cmd_make_ctx(self, route, argc, argv);
-            cmd_route_match(route, ctx);
-            route->fn(ctx);
-        }
+    cmd_route_t *route = cmd_router_lookup(self, name);
+    if (!route) {
+        who_printf("unknown command name: %s\n", name);
+        // TODO print help here
+        exit(1);
     }
 
-    who_printf("unknown command name: %s\n", name);
-    // TODO print help here
-    exit(1);
+    assert(route->fn);
+    cmd_ctx_t *ctx = cmd_make_ctx(self, route, argc, argv);
+    cmd_route_match(route, ctx);
+    route->fn(ctx);
 }
