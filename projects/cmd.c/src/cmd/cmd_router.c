@@ -5,8 +5,7 @@ cmd_make_router(const char *name, const char *version) {
     cmd_router_t *self = new(cmd_router_t);
     self->name = name;
     self->version = version;
-    self->routes = make_array_auto();
-    // self->routes = make_record_with((free_fn_t *) route_free);
+    self->routes = make_array_auto_with((free_fn_t *) cmd_route_free);
     self->handlers = make_record();
     return self;
 }

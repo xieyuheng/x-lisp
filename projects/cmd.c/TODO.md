@@ -1,4 +1,3 @@
-[cmd] `cmd_make_router` -- setup `route_free`
 [cmd] `cmd_parse_route`
 
 [cmd] `cmd_route_match`
