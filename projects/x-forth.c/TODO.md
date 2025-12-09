@@ -2,7 +2,6 @@
 
 `builtin/` -- `import_builtin` -- called by `load`
 
-`builtin/` -- `int`
 `builtin/` -- `float`
 `builtin/` -- `console` -- `newline` `print` `println`
 
