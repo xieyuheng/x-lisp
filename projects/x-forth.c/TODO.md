@@ -1,7 +1,6 @@
 # outer interpreter
 
-setup `commands/`
-`cmd_handle_run`
+setup `handle_run`
 setup `builtin/`
 x-forth.exe -- test outer interpreter
 

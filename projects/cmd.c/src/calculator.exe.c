@@ -1,12 +1,12 @@
 #include "index.h"
 
-void
+static void
 sanity_check(void) {
     assert(sizeof(uint64_t) == sizeof(void *));
     assert(sizeof(uint64_t) == sizeof(size_t));
 }
 
-void
+static void
 config_stdio(void) {
     file_disable_buffer(stdout);
     file_disable_buffer(stderr);
