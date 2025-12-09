@@ -25,11 +25,8 @@ main(int argc, char *argv[]) {
     cmd_define_route(router, "hello -- say hello");
     cmd_define_route(router, "bye -- say bye bye");
 
-    (void) handle_hello;
-    (void) handle_bye;
-
-    // cmd_define_handler(router, "hello", handle_hello);
-    // cmd_define_handler(router, "bye", handle_bye);
+    cmd_define_handler(router, "hello", handle_hello);
+    cmd_define_handler(router, "bye", handle_bye);
 
     cmd_router_run(router, argc, argv);
     cmd_router_free(router);

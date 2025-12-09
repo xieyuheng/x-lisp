@@ -53,17 +53,17 @@ cmd_route_match(cmd_route_t *self, cmd_ctx_t *ctx) {
     }
 
     base += array_length(self->arg_names);
-    size_t index = base;
-    while (index < ctx->argc) {
-        const char *option_name = ctx->argv[base + index];
-        const char *option_value = ctx->argv[base + index + 1];
+    size_t cursor = base;
+    while (cursor < ctx->argc) {
+        const char *option_name = ctx->argv[cursor];
+        const char *option_value = ctx->argv[cursor + 1];
         if (option_value == NULL || string_starts_with(option_value, "-")) {
             record_insert(ctx->options, option_name, NULL);
-            index++;
+            cursor++;
         } else {
             record_insert(ctx->options, option_name, string_copy(option_value));
-            index++;
-            index++;
+            cursor++;
+            cursor++;
         }
     }
 }

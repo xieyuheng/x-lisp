@@ -17,7 +17,7 @@ cmd_router_free(cmd_router_t *self) {
 
 cmd_route_t *
 cmd_router_lookup(cmd_router_t *self, const char *name) {
-    for (size_t i = 0; array_length(self->routes); i++) {
+    for (size_t i = 0; i < array_length(self->routes); i++) {
         cmd_route_t *route = array_get(self->routes, i);
         if (string_equal(name, route->name)) {
             return route;
