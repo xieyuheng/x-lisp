@@ -29,7 +29,7 @@ cmd_parse_route(const char *command) {
             array_push(self->arg_names, word);
         }
 
-        string_next_word(command, &cursor);
+        word = string_next_word(command, &cursor);
     }
 
     return self;
@@ -45,7 +45,7 @@ cmd_route_free(cmd_route_t *self) {
 
 void
 cmd_route_match(cmd_route_t *self, cmd_ctx_t *ctx) {
-    size_t base = 1;
+    size_t base = 2;
     for (size_t i = 0; i < array_length(self->arg_names); i++) {
         const char *arg = ctx->argv[base + i];
         assert(arg);
