@@ -1,9 +1,3 @@
-fix hash api names
-
-ambr hash_cursor hash_cursor_key
-ambr hash_first   hash_first_value
-ambr hash_next hash_next_value
-
 `make_record` & `record_purge` & `record_free`
 `record_put_free_fn`
 `record_length`

@@ -302,20 +302,20 @@ hash_put(hash_t *self, void *key, void *value) {
 }
 
 void *
-hash_first(hash_t *self) {
+hash_first_value(hash_t *self) {
     assert(self);
     self->cursor_index = 0;
     self->cursor_entry = self->entries[self->cursor_index];
-    return hash_next(self);
+    return hash_next_value(self);
 }
 
 void *
-hash_cursor(hash_t *self) {
+hash_cursor_key(hash_t *self) {
     return self->cursor_key;
 }
 
 void *
-hash_next(hash_t *self) {
+hash_next_value(hash_t *self) {
     assert (self);
     // Scan forward from cursor until we find an non empty bucket
     size_t limit = hash_primes[self->prime_index];
@@ -339,10 +339,10 @@ hash_next(hash_t *self) {
 list_t *
 hash_value_list(hash_t *self) {
     list_t *list = make_list();
-    void *value = hash_first(self);
+    void *value = hash_first_value(self);
     while (value) {
         list_push(list, value);
-        value = hash_next(self);
+        value = hash_next_value(self);
     }
 
     return list;

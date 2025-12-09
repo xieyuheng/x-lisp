@@ -77,12 +77,12 @@ set_delete(set_t *self, void *value) {
 
 void *
 set_first(set_t *self) {
-    return hash_first(self->value_hash);
+    return hash_first_value(self->value_hash);
 }
 
 void *
 set_next(set_t *self) {
-    return hash_next(self->value_hash);
+    return hash_next_value(self->value_hash);
 }
 
 list_t *

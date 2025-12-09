@@ -112,7 +112,7 @@ main(void) {
 
     {
         hash_t *hash = make_hash_with_string_keys();
-        assert(!hash_first(hash));
+        assert(!hash_first_value(hash));
 
         //  Insert some entries
 
@@ -139,10 +139,10 @@ main(void) {
         }
 
         {
-            char *value = hash_first(hash);
+            char *value = hash_first_value(hash);
             while (value) {
                 assert(list_has(string_list, value));
-                value = hash_next(hash);
+                value = hash_next_value(hash);
             }
         }
 
