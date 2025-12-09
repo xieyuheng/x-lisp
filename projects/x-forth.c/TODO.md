@@ -1,10 +1,13 @@
 # outer interpreter
 
-setup `builtin/` -- `newline`
+setup `builtin/`
 
-`builtin/` -- `console` -- `newline` `print` `println`
 `builtin/` -- `int`
 `builtin/` -- `float`
+
+
+
+`builtin/` -- `console` -- `newline` `print` `println`
 
 `scripts/test.sh` -- test outer interpreter
 
