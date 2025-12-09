@@ -23,4 +23,26 @@ import_builtin(mod_t *mod) {
     define_primitive_fn_2(mod, "int-compare-ascending", x_int_compare_ascending);
     define_primitive_fn_2(mod, "int-compare-descending", x_int_compare_descending);
     define_primitive_fn_1(mod, "int-to-float", x_int_to_float);
+
+    // float
+
+    define_primitive_fn_1(mod, "float?", x_float_p);
+    define_primitive_fn_1(mod, "fneg", x_fneg);
+    define_primitive_fn_2(mod, "fadd", x_fadd);
+    define_primitive_fn_2(mod, "fsub", x_fsub);
+    define_primitive_fn_2(mod, "fmul", x_fmul);
+    define_primitive_fn_2(mod, "fdiv", x_fdiv);
+    define_primitive_fn_2(mod, "fmod", x_fmod);
+    define_primitive_fn_2(mod, "float-max", x_float_max);
+    define_primitive_fn_2(mod, "float-min", x_float_min);
+    define_primitive_fn_2(mod, "float-greater?", x_float_greater_p);
+    define_primitive_fn_2(mod, "float-less?", x_float_less_p);
+    define_primitive_fn_2(mod, "float-greater-equal?", x_float_greater_equal_p);
+    define_primitive_fn_2(mod, "float-less-equal?", x_float_less_equal_p);
+    define_primitive_fn_1(mod, "float-positive?", x_float_positive_p);
+    define_primitive_fn_1(mod, "float-non-negative?", x_float_non_negative_p);
+    define_primitive_fn_1(mod, "float-non-zero?", x_float_non_zero_p);
+    define_primitive_fn_2(mod, "float-compare-ascending", x_float_compare_ascending);
+    define_primitive_fn_2(mod, "float-compare-descending", x_float_compare_descending);
+    define_primitive_fn_1(mod, "float-to-int", x_float_to_int);
 }
