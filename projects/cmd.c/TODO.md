@@ -1,3 +1,5 @@
+[cmd] `cmd_router_t` -- use record instead of hash
+
 [cmd] `cmd_route_t`
 [cmd] `cmd_make_route`
 [cmd] `cmd_parse_route`
