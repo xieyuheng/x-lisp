@@ -1,1 +1,1 @@
-1 2 iadd
+1 2 iadd println

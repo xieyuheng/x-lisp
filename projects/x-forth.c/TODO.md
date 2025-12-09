@@ -1,7 +1,5 @@
 # outer interpreter
 
-`builtin/` -- `console` -- `newline` `print` `println`
-
 `scripts/test.sh` -- test outer interpreter
 
 # vm

@@ -13,6 +13,12 @@ x_print(value_t x) {
 }
 
 value_t
+x_println(value_t x) {
+    value_print(x);
+    return x_void;
+}
+
+value_t
 x_println_non_void(value_t x) {
     if (x != x_void) {
         value_print(x);

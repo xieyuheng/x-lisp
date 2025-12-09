@@ -45,4 +45,12 @@ import_builtin(mod_t *mod) {
     define_primitive_fn_2(mod, "float-compare-ascending", x_float_compare_ascending);
     define_primitive_fn_2(mod, "float-compare-descending", x_float_compare_descending);
     define_primitive_fn_1(mod, "float-to-int", x_float_to_int);
+
+    // console
+
+    define_primitive_fn_0(mod, "newline", x_newline);
+    define_primitive_fn_1(mod, "print", x_print);
+    define_primitive_fn_1(mod, "println", x_println);
+    define_primitive_fn_1(mod, "println-non-void", x_println_non_void);
+
 }
