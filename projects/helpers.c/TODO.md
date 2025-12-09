@@ -1,4 +1,3 @@
-`make_record` & `record_purge` & `record_free`
 `record_put_free_fn`
 `record_length`
 
