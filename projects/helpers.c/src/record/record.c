@@ -54,3 +54,13 @@ void
 record_insert_or_fail(record_t *self, const char *key, void *value) {
     hash_insert_or_fail(self->hash, string_copy(key), value);
 }
+
+void
+record_put(record_t *self, const char *key, void *value) {
+    hash_put(self->hash, string_copy(key), value);
+}
+
+bool
+record_delete(record_t *self, const char *key) {
+    return hash_delete(self->hash, key);
+}
