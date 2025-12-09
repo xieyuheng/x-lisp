@@ -6,14 +6,12 @@ cmd_make_router(const char *name, const char *version) {
     self->name = name;
     self->version = version;
     self->routes = make_array_auto_with((free_fn_t *) cmd_route_free);
-    self->handlers = make_record();
     return self;
 }
 
 void
 cmd_router_free(cmd_router_t *self) {
     array_free(self->routes);
-    record_free(self->handlers);
     free(self);
 }
 
@@ -31,9 +29,8 @@ cmd_router_run(cmd_router_t *self, size_t argc, const char **argv) {
         if (string_equal(name, route->name)) {
             cmd_ctx_t *ctx = cmd_make_ctx(self, route, argc, argv);
             // cmd_route_match(route, ctx);
-            cmd_fn_t *fn = (cmd_fn_t *) (uint64_t) record_get(self->handlers, name);
-            assert(fn);
-            fn(ctx);
+            assert(route->fn);
+            route->fn(ctx);
         }
     }
 
