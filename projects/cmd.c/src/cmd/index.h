@@ -5,3 +5,4 @@
 #include "cmd_router.h"
 #include "cmd_route.h"
 #include "cmd_ctx.h"
+#include "cmd_define.h"

@@ -16,7 +16,7 @@ cmd_router_free(cmd_router_t *self) {
 }
 
 void
-cmd_router_run(cmd_router_t *self, size_t argc, const char **argv) {
+cmd_router_run(cmd_router_t *self, size_t argc, char **argv) {
     if (argc < 2) {
         where_printf("TODO print help message\n");
         return;

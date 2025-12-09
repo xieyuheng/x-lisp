@@ -5,7 +5,7 @@ cmd_make_ctx(
     const cmd_router_t *router,
     const cmd_route_t *route,
     size_t argc,
-    const char **argv
+    char **argv
 ) {
     cmd_ctx_t *self = new(cmd_ctx_t);
     self->router = router;
