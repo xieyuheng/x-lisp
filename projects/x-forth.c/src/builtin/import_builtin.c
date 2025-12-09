@@ -48,15 +48,19 @@ import_builtin(mod_t *mod) {
 
     // bool
 
+    define_constant(mod, "true", x_true);
+    define_constant(mod, "false", x_false);
     define_primitive_fn_1(mod, "bool?", x_bool_p);
     define_primitive_fn_1(mod, "not", x_not);
 
     // null
 
+    define_constant(mod, "null", x_null);
     define_primitive_fn_1(mod, "null?", x_null_p);
 
     // void
 
+    define_constant(mod, "void", x_void);
     define_primitive_fn_1(mod, "void?", x_void_p);
 
     // value

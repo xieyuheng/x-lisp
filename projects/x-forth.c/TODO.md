@@ -1,5 +1,3 @@
-[builtin] define true and false as constant
-
 # vm
 
 [lang] `instr_t`
