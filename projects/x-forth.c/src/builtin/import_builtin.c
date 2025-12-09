@@ -46,6 +46,25 @@ import_builtin(mod_t *mod) {
     define_primitive_fn_2(mod, "float-compare-descending", x_float_compare_descending);
     define_primitive_fn_1(mod, "float-to-int", x_float_to_int);
 
+    // // bool
+
+    // value_t x_bool_p(value_t x);
+    // value_t x_not(value_t x);
+
+    // // null
+
+    // value_t x_null_p(value_t x);
+
+    // // void
+
+    // value_t x_void_p(value_t x);
+
+    // // value
+
+    // value_t x_anything_p(value_t x);
+    // value_t x_same_p(value_t lhs, value_t rhs);
+    // value_t x_equal_p(value_t lhs, value_t rhs);
+
     // console
 
     define_primitive_fn_0(mod, "newline", x_newline);
