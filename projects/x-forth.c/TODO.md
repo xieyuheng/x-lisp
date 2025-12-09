@@ -1,18 +1,3 @@
-[builtin] complete current builtin
-
-```c
-value_t x_bool_p(value_t x);
-value_t x_not(value_t x);
-
-value_t x_null_p(value_t x);
-
-value_t x_void_p(value_t x);
-
-value_t x_anything_p(value_t x);
-value_t x_same_p(value_t lhs, value_t rhs);
-value_t x_equal_p(value_t lhs, value_t rhs);
-```
-
 [lang] `invoke` handle `VARIABLE_DEFINITION` & `CONSTANT_DEFINITION`
 
 [builtin] define true and false as constant

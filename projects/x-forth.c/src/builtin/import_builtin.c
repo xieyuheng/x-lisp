@@ -46,24 +46,24 @@ import_builtin(mod_t *mod) {
     define_primitive_fn_2(mod, "float-compare-descending", x_float_compare_descending);
     define_primitive_fn_1(mod, "float-to-int", x_float_to_int);
 
-    // // bool
+    // bool
 
-    // value_t x_bool_p(value_t x);
-    // value_t x_not(value_t x);
+    define_primitive_fn_1(mod, "bool?", x_bool_p);
+    define_primitive_fn_1(mod, "not", x_not);
 
-    // // null
+    // null
 
-    // value_t x_null_p(value_t x);
+    define_primitive_fn_1(mod, "null?", x_null_p);
 
-    // // void
+    // void
 
-    // value_t x_void_p(value_t x);
+    define_primitive_fn_1(mod, "void?", x_void_p);
 
-    // // value
+    // value
 
-    // value_t x_anything_p(value_t x);
-    // value_t x_same_p(value_t lhs, value_t rhs);
-    // value_t x_equal_p(value_t lhs, value_t rhs);
+    define_primitive_fn_1(mod, "anything?", x_anything_p);
+    define_primitive_fn_2(mod, "same?", x_same_p);
+    define_primitive_fn_2(mod, "equal?", x_equal_p);
 
     // console
 
