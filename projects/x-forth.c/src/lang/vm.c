@@ -83,14 +83,45 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
-    // case OP_FADD:
-    // case OP_FSUB:
-    // case OP_FMUL:
-    // case OP_FDIV:
-    // case OP_FMOD: {
-    //     memory_store_little_endian(code + 0, instr.op);
-    //     return;
-    // }
+    case OP_FADD: {
+        value_t x2 = stack_pop(vm->value_stack);
+        value_t x1 = stack_pop(vm->value_stack);
+        value_t result = x_fadd(x1, x2);
+        stack_push(vm->value_stack, result);
+        return;
+    }
+
+    case OP_FSUB: {
+        value_t x2 = stack_pop(vm->value_stack);
+        value_t x1 = stack_pop(vm->value_stack);
+        value_t result = x_fsub(x1, x2);
+        stack_push(vm->value_stack, result);
+        return;
+    }
+
+    case OP_FMUL: {
+        value_t x2 = stack_pop(vm->value_stack);
+        value_t x1 = stack_pop(vm->value_stack);
+        value_t result = x_fmul(x1, x2);
+        stack_push(vm->value_stack, result);
+        return;
+    }
+
+    case OP_FDIV: {
+        value_t x2 = stack_pop(vm->value_stack);
+        value_t x1 = stack_pop(vm->value_stack);
+        value_t result = x_fdiv(x1, x2);
+        stack_push(vm->value_stack, result);
+        return;
+    }
+
+    case OP_FMOD: {
+        value_t x2 = stack_pop(vm->value_stack);
+        value_t x1 = stack_pop(vm->value_stack);
+        value_t result = x_fmul(x1, x2);
+        stack_push(vm->value_stack, result);
+        return;
+    }
 
     case OP_RETURN: {
         stack_pop(vm->frame_stack);

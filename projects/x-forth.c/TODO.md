@@ -1,6 +1,5 @@
 # function
 
-[lang] `vm_execute_instr` -- about float
 [lang] `vm_execute_instr` -- about call
 [lang] `vm_execute_instr` -- about jump
 
