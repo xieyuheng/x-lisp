@@ -3,14 +3,14 @@
 typedef enum {
     OP_NOP,
 
-    OP_INT,
+    OP_LITERAL_INT,
     OP_IADD,
     OP_ISUB,
     OP_IMUL,
     OP_IDIV,
     OP_IMOD,
 
-    OP_FLOAT,
+    OP_LITERAL_FLOAT,
     OP_FADD,
     OP_FSUB,
     OP_FMUL,
@@ -21,13 +21,16 @@ typedef enum {
     OP_TAIL_CALL,
     OP_RETURN,
 
+    OP_CONST_LOAD,
     OP_VAR_LOAD,
     OP_VAR_STORE,
-    OP_CONST_LOAD,
 
     OP_JUMP,
     OP_JUMP_IF_NOT,
 
-    OP_STRING,
-    // TODO
+    OP_LITERAL_STRING,
+
+    OP_LITERAL_SYMBOL,
+
+    OP_LITERAL_KEYWORD,
 } op_t;

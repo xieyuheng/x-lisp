@@ -1,13 +1,8 @@
 # function
 
-[lang] `instr_t` -- union with op as kind
-
-- there should be no value in `instr_t`,
-  so that GC root scaning no need to scan instructions.
-
-[lang] `instr_size(instr)`
-[lang] `instr_encode(program)`
-[lang] `instr_decode(program)`
+[lang] `instr_length(struct instr_t instr)`
+[lang] `void instr_encode(void *program, struct instr_t instr)`
+[lang] `struct instr_t instr_decode(void *program)`
 
 [lang] `invoke` handle `FUNCTION_DEFINITION`
 

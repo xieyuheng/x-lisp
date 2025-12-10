@@ -7,8 +7,8 @@ make_function_definition(mod_t *mod, char *name) {
     self->mod = mod;
     self->name = name;
     self->function_definition.parameters = make_string_array_auto();
-    self->function_definition.program = allocate(0);
-    self->function_definition.program_size = 0;
+    self->function_definition.code = allocate(0);
+    self->function_definition.code_size = 0;
     return self;
 }
 
@@ -49,7 +49,7 @@ definition_free(definition_t *self) {
     switch (self->kind) {
     case FUNCTION_DEFINITION: {
         array_free(self->function_definition.parameters);
-        free(self->function_definition.program);
+        free(self->function_definition.code);
         break;
     }
 
