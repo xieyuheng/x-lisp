@@ -1,6 +1,14 @@
 # compile
 
-[lang] `interpret_token` -- dispatch to keyword `@define`
+[lang] `interpret_token` -- dispatch to `x_define` on `@define`
+[lang] `compile` -- setup
+[lang] `compile_token`
+
+```ruby
+@define square ( x )
+  x x mul
+@end
+```
 
 # placeholder
 
