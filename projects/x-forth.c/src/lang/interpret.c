@@ -1,7 +1,7 @@
 #include "index.h"
 
 void
-execute_token(vm_t *vm, token_t *token) {
+interpret_token(vm_t *vm, token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
         definition_t *definition = mod_lookup(vm->mod, token->content);

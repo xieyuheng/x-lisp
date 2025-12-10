@@ -22,6 +22,6 @@ void
 vm_run(vm_t *self) {
     while (!list_is_empty(self->tokens)) {
         token_t *token = list_shift(self->tokens);
-        execute_token(self, token);
+        interpret_token(self, token);
     }
 }
