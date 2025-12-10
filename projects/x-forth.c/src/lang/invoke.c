@@ -6,7 +6,9 @@ void
 invoke(vm_t *vm, definition_t *definition) {
     switch (definition->kind) {
     case FUNCTION_DEFINITION: {
-        // TODO
+        size_t base_length = stack_length(vm->frame_stack);
+        stack_push(vm->frame_stack, make_frame(definition));
+        vm_execute_until(vm, base_length);
         break;
     }
 

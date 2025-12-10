@@ -1,7 +1,3 @@
-# function
-
-[lang] `invoke` handle `FUNCTION_DEFINITION` -- call `vm_execute_until`
-
 # compile
 
 [lang] `interpret_token` -- dispatch to keyword `@define`
