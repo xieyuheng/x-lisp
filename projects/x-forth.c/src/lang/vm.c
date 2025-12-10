@@ -159,17 +159,17 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     //     return;
     // }
 
-    // case OP_LOCAL_LOAD: {
-    //     memory_store_little_endian(code + 0, instr.op);
-    //     memory_store_little_endian(code + 1, instr.local_load.index);
-    //     return;
-    // }
+    case OP_LOCAL_LOAD: {
+        value_t value = array_get(frame->locals, instr.local_load.index);
+        stack_push(vm->value_stack, value);
+        return;
+    }
 
-    // case OP_LOCAL_STORE: {
-    //     memory_store_little_endian(code + 0, instr.op);
-    //     memory_store_little_endian(code + 1, instr.local_store.index);
-    //     return;
-    // }
+    case OP_LOCAL_STORE: {
+        value_t value = stack_pop(vm->value_stack);
+        array_put(frame->locals, instr.local_load.index, value);
+        return;
+    }
 
     // case OP_JUMP: {
     //     memory_store_little_endian(code + 0, instr.op);

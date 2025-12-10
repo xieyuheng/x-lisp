@@ -1,5 +1,6 @@
 # function
 
+[lang] `vm_execute_instr` -- about var and const
 [lang] `vm_execute_instr` -- about call
 [lang] `vm_execute_instr` -- about jump
 
