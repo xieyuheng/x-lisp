@@ -1,12 +1,16 @@
 # compile
 
-[lang] `interpret_token` -- dispatch to `x_define_function` on `@def`
-[lang] `compile` -- setup
-[lang] `compile_token`
+[builtin] `compile` -- setup
+
+[builtin] `x_define_constant` -- `@const`
+[builtin] `x_define_variable` -- `@var`
+[builtin] `x_define_function` -- `@def`
+
+[builtin] `compile_token`
 
 ```ruby
-@var x
-@const n
+1 @var x
+2 @const n
 @def square ( x )
   x x mul
 @end
