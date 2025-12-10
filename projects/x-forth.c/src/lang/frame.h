@@ -2,7 +2,7 @@
 
 struct frame_t {
     const definition_t *definition;
-    void *pc;
+    uint8_t *pc;
     array_t *locals; // array of values
 };
 

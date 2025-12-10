@@ -1,9 +1,15 @@
 # function
 
-[lang] `vm_execute_step`
-[lang] `vm_execute_instr`
+[lang] `vm_execute_instr` -- about int
+[lang] `vm_execute_instr` -- about float
+[lang] `vm_execute_instr` -- about call
+[lang] `vm_execute_instr` -- about jump
 
 [lang] `invoke` handle `FUNCTION_DEFINITION` -- call `vm_execute_until`
+
+# compile
+
+[lang] `interpret_token` -- dispatch to keyword `@define`
 
 # placeholder
 
@@ -16,9 +22,11 @@
 [lang] `OP_PLACEHOLDER` -- like `op_t` with `definition` field
 [lang] `vm_execute_instr` -- report error on `OP_PLACEHOLDER` -- find placeholder in `vm->mod`
 
-# compile
+# later
 
-[lang] `interpret_token` -- dispatch to keyword `@define`
+[lang] `vm_execute_instr` -- `OP_LITERAL_STRING`
+[lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`
+[lang] `vm_execute_instr` -- `OP_LITERAL_KEYWORD`
 
 # function as value
 

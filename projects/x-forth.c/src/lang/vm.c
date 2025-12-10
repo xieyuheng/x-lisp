@@ -26,15 +26,127 @@ vm_interpret(vm_t *self) {
     }
 }
 
-void
-vm_execute_instr(vm_t *self, struct instr_t instr) {
-    (void) self;
-    (void) instr;
+inline void
+vm_execute_instr(vm_t *self, frame_t *frame, struct instr_t instr) {
+    switch (instr.op) {
+    case OP_NOP: {
+        return;
+    }
+
+    case OP_LITERAL_INT: {
+        stack_push(self->value_stack, x_int(instr.literal_int.content));
+        return;
+    }
+
+    // case OP_IADD:
+    // case OP_ISUB:
+    // case OP_IMUL:
+    // case OP_IDIV:
+    // case OP_IMOD: {
+    //     memory_store_little_endian(code + 0, instr.op);
+    //     return;
+    // }
+
+    case OP_LITERAL_FLOAT: {
+        stack_push(self->value_stack, x_float(instr.literal_float.content));
+        return;
+    }
+
+    // case OP_FADD:
+    // case OP_FSUB:
+    // case OP_FMUL:
+    // case OP_FDIV:
+    // case OP_FMOD: {
+    //     memory_store_little_endian(code + 0, instr.op);
+    //     return;
+    // }
+
+    case OP_RETURN: {
+        stack_pop(self->frame_stack);
+        frame_free(frame);
+        return;
+    }
+
+    // case OP_CALL: {
+    //     memory_store_little_endian(code + 0, instr.op);
+    //     memory_store_little_endian(code + 1, instr.call.definition);
+    //     return;
+    // }
+
+    // case OP_TAIL_CALL: {
+    //     memory_store_little_endian(code + 0, instr.op);
+    //     memory_store_little_endian(code + 1, instr.tail_call.definition);
+    //     return;
+    // }
+
+    // case OP_CONST_LOAD: {
+    //     memory_store_little_endian(code + 0, instr.op);
+    //     memory_store_little_endian(code + 1, instr.const_load.definition);
+    //     return;
+    // }
+
+    // case OP_VAR_LOAD: {
+    //     memory_store_little_endian(code + 0, instr.op);
+    //     memory_store_little_endian(code + 1, instr.var_load.definition);
+    //     return;
+    // }
+
+    // case OP_VAR_STORE: {
+    //     memory_store_little_endian(code + 0, instr.op);
+    //     memory_store_little_endian(code + 1, instr.var_store.definition);
+    //     return;
+    // }
+
+    // case OP_LOCAL_LOAD: {
+    //     memory_store_little_endian(code + 0, instr.op);
+    //     memory_store_little_endian(code + 1, instr.local_load.index);
+    //     return;
+    // }
+
+    // case OP_LOCAL_STORE: {
+    //     memory_store_little_endian(code + 0, instr.op);
+    //     memory_store_little_endian(code + 1, instr.local_store.index);
+    //     return;
+    // }
+
+    // case OP_JUMP: {
+    //     memory_store_little_endian(code + 0, instr.op);
+    //     memory_store_little_endian(code + 1, instr.jump.offset);
+    //     return;
+    // }
+
+    // case OP_JUMP_IF_NOT: {
+    //     memory_store_little_endian(code + 0, instr.op);
+    //     memory_store_little_endian(code + 1, instr.jump_if_not.offset);
+    //     return;
+    // }
+
+    case OP_LITERAL_STRING: {
+        assert(false && "TODO");
+    }
+
+    case OP_LITERAL_SYMBOL: {
+        assert(false && "TODO");
+    }
+
+    case OP_LITERAL_KEYWORD: {
+        assert(false && "TODO");
+    }
+
+    default: {
+        assert(false && "TODO");
+    }
+    }
+
+    unreachable();
 }
 
-void
+inline void
 vm_execute_step(vm_t *self) {
-    (void) self;
+    frame_t *frame = stack_top(self->frame_stack);
+    struct instr_t instr = instr_decode(frame->pc);
+    frame->pc += instr_length(instr);
+    vm_execute_instr(self, frame, instr);
 }
 
 void

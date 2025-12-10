@@ -12,7 +12,7 @@ void vm_free(vm_t *self);
 
 void vm_interpret(vm_t *self);
 
-void vm_execute_instr(vm_t *self, struct instr_t instr);
+void vm_execute_instr(vm_t *self, frame_t *frame, struct instr_t instr);
 void vm_execute_step(vm_t *self);
 void vm_execute(vm_t *self);
 void vm_execute_until(vm_t *self, size_t base_length);
