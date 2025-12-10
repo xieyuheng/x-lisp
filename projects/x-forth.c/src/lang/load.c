@@ -13,7 +13,7 @@ load(path_t *path) {
     import_builtin(mod);
 
     vm_t *vm = make_vm(mod, tokens);
-    vm_run(vm);
+    vm_interpret(vm);
     vm_free(vm);
 
     return mod;

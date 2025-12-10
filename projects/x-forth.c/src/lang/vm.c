@@ -19,7 +19,7 @@ vm_free(vm_t *self) {
 }
 
 void
-vm_run(vm_t *self) {
+vm_interpret(vm_t *self) {
     while (!list_is_empty(self->tokens)) {
         token_t *token = list_shift(self->tokens);
         interpret_token(self, token);
