@@ -8,7 +8,8 @@ make_function_definition(mod_t *mod, char *name) {
     self->name = name;
     self->function_definition.parameters = make_string_array_auto();
     self->function_definition.code_area_size = 64;
-    self->function_definition.code_area = allocate(64);
+    self->function_definition.code_area =
+        allocate(self->function_definition.code_area_size);
     self->function_definition.code_length = 0;
     return self;
 }
@@ -69,4 +70,14 @@ definition_free(definition_t *self) {
     }
 
     free(self);
+}
+
+void
+function_definition_grow_code_area(definition_t *self) {
+    assert(self->kind == FUNCTION_DEFINITION);
+    self->function_definition.code_area =
+        reallocate(self->function_definition.code_area,
+                   self->function_definition.code_area_size,
+                   self->function_definition.code_area_size * 2);
+    self->function_definition.code_area_size *= 2;
 }
