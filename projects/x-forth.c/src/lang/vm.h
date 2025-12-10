@@ -11,3 +11,6 @@ vm_t *make_vm(mod_t *mod, list_t *tokens);
 void vm_free(vm_t *self);
 
 void vm_interpret(vm_t *self);
+
+void vm_execute_instr(vm_t *self, struct instr_t instr);
+void vm_execute_step(vm_t *self);

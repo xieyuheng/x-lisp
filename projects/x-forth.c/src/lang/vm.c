@@ -25,3 +25,14 @@ vm_interpret(vm_t *self) {
         interpret_token(self, token);
     }
 }
+
+void
+vm_execute_instr(vm_t *self, struct instr_t instr) {
+    (void) self;
+    (void) instr;
+}
+
+void
+vm_execute_step(vm_t *self) {
+    (void) self;
+}
