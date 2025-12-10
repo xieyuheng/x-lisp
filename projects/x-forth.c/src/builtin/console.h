@@ -1,6 +1,6 @@
 #pragma once
 
-value_t x_newline(void);
-value_t x_print(value_t x);
-value_t x_println(value_t x);
-value_t x_println_non_void(value_t x);
+x_fn_0_t x_newline;
+x_fn_1_t x_print;
+x_fn_1_t x_println;
+x_fn_1_t x_println_non_void;

@@ -1,8 +1,10 @@
 # compile
 
-[builtin] `x_define_constant` -- `@const`
-[builtin] `x_define_variable` -- `@var`
-[builtin] `x_define_function` -- `@def`
+[builtin] `x_define_variable` -- setup `@var`
+[builtin] `x_define_function` -- setup `@def`
+[builtin] `x_define_constant`
+[builtin] `x_define_variable`
+[builtin] `x_define_function`
 
 [builtin] `compile_token`
 

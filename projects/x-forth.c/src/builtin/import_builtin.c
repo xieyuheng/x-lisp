@@ -76,4 +76,7 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "println", x_println);
     define_primitive_1(mod, "println-non-void", x_println_non_void);
 
+    // define
+
+    define_primitive(mod, "@const", x_define_constant);
 }
