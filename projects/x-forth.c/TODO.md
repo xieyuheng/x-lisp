@@ -1,6 +1,5 @@
 # function
 
-[lang] `instr_length(struct instr_t instr)`
 [lang] `void instr_encode(void *code, struct instr_t instr)`
 [lang] `struct instr_t instr_decode(void *code)`
 

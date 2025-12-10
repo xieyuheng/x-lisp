@@ -24,6 +24,8 @@ typedef enum {
     OP_CONST_LOAD,
     OP_VAR_LOAD,
     OP_VAR_STORE,
+    OP_LOCAL_LOAD,
+    OP_LOCAL_STORE,
 
     OP_JUMP,
     OP_JUMP_IF_NOT,
