@@ -1,7 +1,5 @@
 # compile
 
-[builtin] `compile` -- setup
-
 [builtin] `x_define_constant` -- `@const`
 [builtin] `x_define_variable` -- `@var`
 [builtin] `x_define_function` -- `@def`
