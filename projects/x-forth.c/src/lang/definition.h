@@ -14,8 +14,9 @@ struct definition_t {
     union {
         struct {
             array_t *parameters; // string array
-            void *code; // bytecode
-            size_t code_size;
+            void *code_area;
+            size_t code_area_size;
+            size_t code_length;
         } function_definition;
         struct { primitive_t *primitive; } primitive_definition;
         struct { value_t value; } variable_definition;
