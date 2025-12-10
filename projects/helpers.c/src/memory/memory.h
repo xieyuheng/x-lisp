@@ -16,3 +16,16 @@ bool pointer_is_page_aligned(void *pointer);
 void *allocate_page_aligned(size_t size);
 
 void memory_clear(void *pointer, size_t size);
+
+void memory_copy(void* dest, const void* src, size_t n);
+void memory_copy_reverse(void* dest, const void* src, size_t n);
+
+bool memory_is_little_endian(void);
+
+void memory_copy_little_endian(void* dest, const void* src, size_t n);
+void memory_copy_big_endian(void* dest, const void* src, size_t n);
+
+#define memory_store_little_endian(dest, x) \
+    memory_copy_little_endian(dest, &x, sizeof x)
+#define memory_store_big_endian(dest, x) \
+    memory_copy_big_endian(dest, &x, sizeof x)

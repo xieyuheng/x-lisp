@@ -65,3 +65,40 @@ void
 memory_clear(void *pointer, size_t size) {
     memset(pointer, 0, size);
 }
+
+inline void
+memory_copy(void* dest, const void* src, size_t n) {
+    memcpy(dest, src, n);
+}
+
+inline void
+memory_copy_reverse(void* dest, const void* src, size_t n) {
+    const uint8_t *s = (const uint8_t *) src + n - 1;
+    uint8_t *d = (uint8_t *) dest;
+    while (n--) *d++ = *s--;
+}
+
+inline bool
+memory_is_little_endian(void) {
+    uint16_t one = 0x0001;
+    uint8_t first_byte = *((uint8_t *) &one);
+    return first_byte == 0x01;
+}
+
+inline void
+memory_copy_little_endian(void* dest, const void* src, size_t n) {
+    if (memory_is_little_endian()) {
+        memory_copy(dest, src, n);
+    } else {
+        memory_copy_reverse(dest, src, n);
+    }
+}
+
+inline void
+memory_copy_big_endian(void* dest, const void* src, size_t n) {
+    if (memory_is_little_endian()) {
+        memory_copy_reverse(dest, src, n);
+    } else {
+        memory_copy(dest, src, n);
+    }
+}

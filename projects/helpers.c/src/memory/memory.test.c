@@ -87,5 +87,34 @@ main(void) {
         free(v);
     }
 
+    {
+        uint16_t x = 0x0001;
+        uint16_t y;
+
+        memory_copy(&y, &x, sizeof(uint16_t));
+        assert(y == 0x0001);
+
+        memory_copy_reverse(&y, &x, sizeof(uint16_t));
+        assert(y == 0x0100);
+    }
+
+    {
+        uint16_t x = 0x0001;
+        uint16_t y1;
+        uint16_t y2;
+
+        memory_store_little_endian(&y1, x);
+        memory_store_little_endian(&y2, x);
+        assert(y1 == y2);
+
+        memory_store_big_endian(&y1, x);
+        memory_store_big_endian(&y2, x);
+        assert(y1 == y2);
+
+        memory_store_little_endian(&y1, x);
+        memory_store_big_endian(&y2, x);
+        assert(y1 != y2);
+    }
+
     test_end();
 }

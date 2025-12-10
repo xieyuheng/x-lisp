@@ -14,7 +14,7 @@ struct definition_t {
     union {
         struct {
             array_t *parameters; // string array
-            void *code_area;
+            uint8_t *code_area;
             size_t code_area_size;
             size_t code_length;
         } function_definition;
