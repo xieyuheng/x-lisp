@@ -5,21 +5,27 @@ date: 2025-12-04
 
 # 价值
 
-一个独立自主的语言。
+价值 A：
 
-适合用来写新的解释器与编译器，目的是为了探索新的计算模型。比如：
+- 一个独立自主的语言。
 
-- interaction net
-- pi-calculus
-- rewrite system
-- propagator model
-- logic constraint programming
-- reactive programming
+- 适合用来写新的解释器与编译器，目的是为了探索新的计算模型。比如：
 
-方便用 C 扩展，可以作为 app 的脚本语言：
+  - interaction net
+  - pi-calculus
+  - rewrite system
+  - propagator model
+  - logic constraint programming
+  - reactive programming
 
-- uxn 风格的 canvas
-- uxn 风格的 flash card app
+- 在 lisp 的语法框架内，可以更快地设计新语法，迭代新语言。
+
+价值 B：
+
+- 方便用 C 扩展，可以作为 app 的脚本语言：
+
+  - uxn 风格的 canvas
+  - uxn 风格的 flash card app
 
 # 范围
 
