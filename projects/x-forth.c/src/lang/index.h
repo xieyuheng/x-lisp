@@ -11,4 +11,5 @@
 #include "load.h"
 #include "invoke.h"
 #include "execute.h"
+#include "op.h"
 #include "instr.h"

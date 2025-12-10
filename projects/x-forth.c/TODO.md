@@ -1,6 +1,6 @@
-# vm
+# function
 
-[lang] `instr_t`
+[lang] `instr_t` -- union with op as kind
 
 - there should be no value in `instr_t`,
   so that GC root scaning no need to scan instructions.
@@ -11,7 +11,12 @@
 
 [lang] `invoke` handle `FUNCTION_DEFINITION`
 
-# value
+# compile
+
+[lang] `execute_token` -- dispatch to keyword `@define`
+[lang] `PLACEHOLDER_DEFINITION` -- setup a placeholder definition for every undefined symbol that we meet
+
+# function as value
 
 [value] fix `function_t` -- should be reference to `definition`
 
@@ -19,8 +24,3 @@
 - `@ref` vs `@function`
 
 [value] remove `x_address`
-
-# compile
-
-[lang] `execute_token` -- dispatch to keyword `@define`
-[lang] `PLACEHOLDER_DEFINITION` -- setup a placeholder definition for every undefined symbol that we meet
