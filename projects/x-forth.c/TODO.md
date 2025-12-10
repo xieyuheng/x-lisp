@@ -5,10 +5,25 @@
 [lang] `compile_token`
 
 ```ruby
-@import
 @variable x
 @constant n
 @function square ( x )
+  x x mul
+@end
+```
+
+```ruby
+@variable x
+@constant n
+@define square ( x )
+  x x mul
+@end
+```
+
+```ruby
+@var x
+@const n
+@def square ( x )
   x x mul
 @end
 ```
