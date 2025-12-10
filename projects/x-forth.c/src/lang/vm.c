@@ -23,6 +23,7 @@ vm_interpret(vm_t *vm) {
     while (!list_is_empty(vm->tokens)) {
         token_t *token = list_shift(vm->tokens);
         interpret_token(vm, token);
+        token_free(token);
     }
 }
 

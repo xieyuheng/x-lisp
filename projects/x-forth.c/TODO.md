@@ -1,6 +1,5 @@
 # compile
 
-[builtin] `x_define_constant`
 [builtin] `x_define_variable`
 [builtin] `x_define_function`
 
