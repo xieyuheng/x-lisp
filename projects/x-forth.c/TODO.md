@@ -1,8 +1,6 @@
 # function
 
-[lang] `vm_execute_instr` -- about jump
 [lang] `vm_execute_instr` -- about call
-
 [lang] `invoke` handle `FUNCTION_DEFINITION` -- call `vm_execute_until`
 
 # compile

@@ -171,17 +171,18 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
-    // case OP_JUMP: {
-    //     memory_store_little_endian(code + 0, instr.op);
-    //     memory_store_little_endian(code + 1, instr.jump.offset);
-    //     return;
-    // }
+    case OP_JUMP: {
+        frame->pc += instr.jump.offset;
+        return;
+    }
 
-    // case OP_JUMP_IF_NOT: {
-    //     memory_store_little_endian(code + 0, instr.op);
-    //     memory_store_little_endian(code + 1, instr.jump_if_not.offset);
-    //     return;
-    // }
+    case OP_JUMP_IF_NOT: {
+        value_t value = stack_pop(vm->value_stack);
+        if (value == x_true) {
+            frame->pc += instr.jump.offset;
+        }
+        return;
+    }
 
     case OP_LITERAL_STRING: {
         assert(false && "TODO");
