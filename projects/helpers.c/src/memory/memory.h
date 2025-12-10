@@ -29,3 +29,8 @@ void memory_copy_big_endian(void* dest, const void* src, size_t n);
     memory_copy_little_endian(dest, &x, sizeof x)
 #define memory_store_big_endian(dest, x) \
     memory_copy_big_endian(dest, &x, sizeof x)
+
+#define memory_load_little_endian(dest, x) \
+    memory_copy_little_endian(&x, dest, sizeof x)
+#define memory_load_big_endian(dest, x) \
+    memory_copy_big_endian(&x, dest, sizeof x)

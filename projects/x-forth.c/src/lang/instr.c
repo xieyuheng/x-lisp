@@ -206,7 +206,127 @@ instr_encode(uint8_t *code, struct instr_t instr) {
     unreachable();
 }
 
-// struct instr_t
-// instr_decode(void *code) {
+struct instr_t
+instr_decode(uint8_t *code) {
+    switch (code[0]) {
+    case OP_NOP: {
+        struct instr_t instr = { .op = code[0] };
+        return instr;
+    }
 
-// }
+    case OP_LITERAL_INT: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.literal_int.content);
+        return instr;
+    }
+
+    case OP_IADD:
+    case OP_ISUB:
+    case OP_IMUL:
+    case OP_IDIV:
+    case OP_IMOD: {
+        struct instr_t instr = { .op = code[0] };
+        return instr;
+    }
+
+    case OP_LITERAL_FLOAT: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.literal_float.content);
+        return instr;
+    }
+
+    case OP_FADD:
+    case OP_FSUB:
+    case OP_FMUL:
+    case OP_FDIV:
+    case OP_FMOD: {
+        struct instr_t instr = { .op = code[0] };
+        return instr;
+    }
+
+    case OP_RETURN: {
+        struct instr_t instr = { .op = code[0] };
+        return instr;
+    }
+
+    case OP_CALL: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.call.definition);
+        return instr;
+    }
+
+    case OP_TAIL_CALL: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.tail_call.definition);
+        return instr;
+    }
+
+    case OP_CONST_LOAD: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.const_load.definition);
+        return instr;
+    }
+
+    case OP_VAR_LOAD: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.var_load.definition);
+        return instr;
+    }
+
+    case OP_VAR_STORE: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.var_store.definition);
+        return instr;
+    }
+
+    case OP_LOCAL_LOAD: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.local_load.index);
+        return instr;
+    }
+
+    case OP_LOCAL_STORE: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.local_store.index);
+        return instr;
+    }
+
+    case OP_JUMP: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.jump.offset);
+        return instr;
+    }
+
+    case OP_JUMP_IF_NOT: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.jump_if_not.offset);
+        return instr;
+    }
+
+    case OP_LITERAL_STRING: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.literal_string.length);
+        instr.literal_string.content =
+            (char *) code + 1 + sizeof instr.literal_string.length;
+        return instr;
+    }
+
+    case OP_LITERAL_SYMBOL: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.literal_symbol.length);
+        instr.literal_symbol.content =
+            (char *) code + 1 + sizeof instr.literal_symbol.length;
+        return instr;
+    }
+
+    case OP_LITERAL_KEYWORD: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.literal_keyword.length);
+        instr.literal_keyword.content =
+            (char *) code + 1 + sizeof instr.literal_keyword.length;
+        return instr;
+    }
+    }
+
+    unreachable();
+}
