@@ -5,6 +5,9 @@
 [lang] `compile_token`
 
 ```ruby
+@import
+@variable x
+@constant n
 @function square ( x )
   x x mul
 @end
@@ -27,13 +30,10 @@
 [lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`
 [lang] `vm_execute_instr` -- `OP_LITERAL_KEYWORD`
 
-# function as value
+# ref as value
 
-[value] fix `function_t` -- should be reference to `definition`
-
-- maybe use `ref_t` instead of `function_t`
-- `@ref` vs `@function`
-
+[value] fix `ref_t` -- should be reference to `definition`
+[value] remove `function_t`
 [value] remove `x_address`
 
 # read-execute-loop
