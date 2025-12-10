@@ -17,13 +17,13 @@ void *record_get(record_t *self, const char *key);
 // different from hash,
 // insert and put does not own the `key` argument.
 
-// return true if success.
-// will not update the key if the entry exists (fail).
+// - return true if success.
+// - will not update the key if the entry exists (fail).
 bool record_insert(record_t *self, const char *key, void *value);
 void record_insert_or_fail(record_t *self, const char *key, void *value);
 
-// will always success.
-// auto free old value if there is `free_fn`.
+// - will always success.
+// - auto free old value if there is `free_fn`.
 void record_put(record_t *self, const char *key, void *value);
 
 bool record_delete(record_t *self, const char *key);
