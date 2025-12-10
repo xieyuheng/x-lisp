@@ -1,9 +1,7 @@
 # function
 
-[lang] `vm_execute`
-[lang] `vm_execute_until`
-[lang] `vm_execute_instr`
 [lang] `vm_execute_step`
+[lang] `vm_execute_instr`
 
 [lang] `invoke` handle `FUNCTION_DEFINITION` -- call `vm_execute_until`
 

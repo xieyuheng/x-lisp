@@ -36,3 +36,17 @@ void
 vm_execute_step(vm_t *self) {
     (void) self;
 }
+
+void
+vm_execute(vm_t *self) {
+    while (true) {
+        vm_execute_step(self);
+    }
+}
+
+void
+vm_execute_until(vm_t *self, size_t base_length) {
+    while (stack_length(self->frame_stack) > base_length) {
+        vm_execute_step(self);
+    }
+}
