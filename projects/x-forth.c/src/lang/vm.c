@@ -19,36 +19,67 @@ vm_free(vm_t *self) {
 }
 
 void
-vm_interpret(vm_t *self) {
-    while (!list_is_empty(self->tokens)) {
-        token_t *token = list_shift(self->tokens);
-        interpret_token(self, token);
+vm_interpret(vm_t *vm) {
+    while (!list_is_empty(vm->tokens)) {
+        token_t *token = list_shift(vm->tokens);
+        interpret_token(vm, token);
     }
 }
 
 inline void
-vm_execute_instr(vm_t *self, frame_t *frame, struct instr_t instr) {
+vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     switch (instr.op) {
     case OP_NOP: {
         return;
     }
 
     case OP_LITERAL_INT: {
-        stack_push(self->value_stack, x_int(instr.literal_int.content));
+        stack_push(vm->value_stack, x_int(instr.literal_int.content));
         return;
     }
 
-    // case OP_IADD:
-    // case OP_ISUB:
-    // case OP_IMUL:
-    // case OP_IDIV:
-    // case OP_IMOD: {
-    //     memory_store_little_endian(code + 0, instr.op);
-    //     return;
-    // }
+    case OP_IADD: {
+        value_t x2 = stack_pop(vm->value_stack);
+        value_t x1 = stack_pop(vm->value_stack);
+        value_t result = x_iadd(x1, x2);
+        stack_push(vm->value_stack, result);
+        return;
+    }
+
+    case OP_ISUB: {
+        value_t x2 = stack_pop(vm->value_stack);
+        value_t x1 = stack_pop(vm->value_stack);
+        value_t result = x_isub(x1, x2);
+        stack_push(vm->value_stack, result);
+        return;
+    }
+
+    case OP_IMUL: {
+        value_t x2 = stack_pop(vm->value_stack);
+        value_t x1 = stack_pop(vm->value_stack);
+        value_t result = x_imul(x1, x2);
+        stack_push(vm->value_stack, result);
+        return;
+    }
+
+    case OP_IDIV: {
+        value_t x2 = stack_pop(vm->value_stack);
+        value_t x1 = stack_pop(vm->value_stack);
+        value_t result = x_idiv(x1, x2);
+        stack_push(vm->value_stack, result);
+        return;
+    }
+
+    case OP_IMOD: {
+        value_t x2 = stack_pop(vm->value_stack);
+        value_t x1 = stack_pop(vm->value_stack);
+        value_t result = x_imod(x1, x2);
+        stack_push(vm->value_stack, result);
+        return;
+    }
 
     case OP_LITERAL_FLOAT: {
-        stack_push(self->value_stack, x_float(instr.literal_float.content));
+        stack_push(vm->value_stack, x_float(instr.literal_float.content));
         return;
     }
 
@@ -62,7 +93,7 @@ vm_execute_instr(vm_t *self, frame_t *frame, struct instr_t instr) {
     // }
 
     case OP_RETURN: {
-        stack_pop(self->frame_stack);
+        stack_pop(vm->frame_stack);
         frame_free(frame);
         return;
     }
@@ -142,23 +173,23 @@ vm_execute_instr(vm_t *self, frame_t *frame, struct instr_t instr) {
 }
 
 inline void
-vm_execute_step(vm_t *self) {
-    frame_t *frame = stack_top(self->frame_stack);
+vm_execute_step(vm_t *vm) {
+    frame_t *frame = stack_top(vm->frame_stack);
     struct instr_t instr = instr_decode(frame->pc);
     frame->pc += instr_length(instr);
-    vm_execute_instr(self, frame, instr);
+    vm_execute_instr(vm, frame, instr);
 }
 
 void
-vm_execute(vm_t *self) {
+vm_execute(vm_t *vm) {
     while (true) {
-        vm_execute_step(self);
+        vm_execute_step(vm);
     }
 }
 
 void
-vm_execute_until(vm_t *self, size_t base_length) {
-    while (stack_length(self->frame_stack) > base_length) {
-        vm_execute_step(self);
+vm_execute_until(vm_t *vm, size_t base_length) {
+    while (stack_length(vm->frame_stack) > base_length) {
+        vm_execute_step(vm);
     }
 }

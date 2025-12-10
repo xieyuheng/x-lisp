@@ -10,9 +10,9 @@ struct vm_t {
 vm_t *make_vm(mod_t *mod, list_t *tokens);
 void vm_free(vm_t *self);
 
-void vm_interpret(vm_t *self);
+void vm_interpret(vm_t *vm);
 
-void vm_execute_instr(vm_t *self, frame_t *frame, struct instr_t instr);
-void vm_execute_step(vm_t *self);
-void vm_execute(vm_t *self);
-void vm_execute_until(vm_t *self, size_t base_length);
+void vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr);
+void vm_execute_step(vm_t *vm);
+void vm_execute(vm_t *vm);
+void vm_execute_until(vm_t *vm, size_t base_length);
