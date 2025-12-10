@@ -1,11 +1,11 @@
 # compile
 
-[lang] `interpret_token` -- dispatch to `x_define` on `@define`
+[lang] `interpret_token` -- dispatch to `x_define_function` on `@define`
 [lang] `compile` -- setup
 [lang] `compile_token`
 
 ```ruby
-@define square ( x )
+@function square ( x )
   x x mul
 @end
 ```
