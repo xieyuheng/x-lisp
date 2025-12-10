@@ -1,5 +1,5 @@
 # compile
-move value/x_console to builtin/console
+
 [lang] `interpret_token` -- dispatch to `x_define_function` on `@def`
 [lang] `compile` -- setup
 [lang] `compile_token`

@@ -12,7 +12,6 @@
 #include "x_null.h"
 #include "x_object.h"
 #include "x_value.h"
-#include "x_console.h"
 #include "x_address.h"
 #include "x_apply.h"
 #include "x_random.h"
