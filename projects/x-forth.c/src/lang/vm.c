@@ -129,17 +129,17 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
-    // case OP_CALL: {
-    //     memory_store_little_endian(code + 0, instr.op);
-    //     memory_store_little_endian(code + 1, instr.call.definition);
-    //     return;
-    // }
+    case OP_CALL: {
+        stack_push(vm->frame_stack, make_frame(instr.call.definition));
+        return;
+    }
 
-    // case OP_TAIL_CALL: {
-    //     memory_store_little_endian(code + 0, instr.op);
-    //     memory_store_little_endian(code + 1, instr.tail_call.definition);
-    //     return;
-    // }
+    case OP_TAIL_CALL: {
+        stack_pop(vm->frame_stack);
+        frame_free(frame);
+        stack_push(vm->frame_stack, make_frame(instr.tail_call.definition));
+        return;
+    }
 
     case OP_CONST_LOAD: {
         value_t value = instr.const_load.definition->constant_definition.value;

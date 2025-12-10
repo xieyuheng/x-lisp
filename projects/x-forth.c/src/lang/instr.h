@@ -16,7 +16,7 @@ struct instr_t {
         struct { definition_t *definition; } var_store;
         struct { uint32_t index; } local_load;
         struct { uint32_t index; } local_store;
-        struct { int32_t offset; } jump;
+        struct { int32_t offset; } jump; // offset is based on next instr.
         struct { int32_t offset; } jump_if_not;
         struct { size_t length; char *content; } literal_string;
         struct { size_t length; char *content; } literal_symbol;
