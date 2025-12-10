@@ -15,6 +15,7 @@ x_print(value_t x) {
 value_t
 x_println(value_t x) {
     value_print(x);
+    printf("\n");
     return x_void;
 }
 

@@ -1,6 +1,7 @@
 # compile
-
-[lang] `interpret_token` -- dispatch to `x_define_function` on `@define`
+move value/x_console to builtin/console
+ambr primitive_fn x_fn
+[lang] `interpret_token` -- dispatch to `x_define_function` on `@def`
 [lang] `compile` -- setup
 [lang] `compile_token`
 
