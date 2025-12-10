@@ -1,10 +1,7 @@
 # function
 
-[lang] `void instr_encode(void *code, struct instr_t instr)`
 [lang] `struct instr_t instr_decode(void *code)`
-
 [lang] `vm_execute_instr`
-
 [lang] `invoke` handle `FUNCTION_DEFINITION`
 
 # compile
