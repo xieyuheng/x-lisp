@@ -25,3 +25,5 @@ struct instr_t {
 };
 
 size_t instr_length(struct instr_t instr);
+void instr_encode(void *code, struct instr_t instr);
+struct instr_t instr_decode(void *code);
