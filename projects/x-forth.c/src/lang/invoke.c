@@ -32,25 +32,25 @@ invoke(vm_t *vm, definition_t *definition) {
 static void
 call_primitive(vm_t *vm, const primitive_t *primitive) {
     switch (primitive->fn_kind) {
-    case PRIMITIVE_FN: {
+    case X_FN: {
         primitive->fn(vm);
         return;
     }
 
-    case PRIMITIVE_FN_0: {
+    case X_FN_0: {
         value_t result = primitive->fn_0();
         stack_push(vm->value_stack, result);
         return;
     }
 
-    case PRIMITIVE_FN_1: {
+    case X_FN_1: {
         value_t x1 = stack_pop(vm->value_stack);
         value_t result = primitive->fn_1(x1);
         stack_push(vm->value_stack, result);
         return;
     }
 
-    case PRIMITIVE_FN_2: {
+    case X_FN_2: {
         value_t x2 = stack_pop(vm->value_stack);
         value_t x1 = stack_pop(vm->value_stack);
         value_t result = primitive->fn_2(x1, x2);
@@ -58,7 +58,7 @@ call_primitive(vm_t *vm, const primitive_t *primitive) {
         return;
     }
 
-    case PRIMITIVE_FN_3: {
+    case X_FN_3: {
         value_t x3 = stack_pop(vm->value_stack);
         value_t x2 = stack_pop(vm->value_stack);
         value_t x1 = stack_pop(vm->value_stack);
@@ -67,7 +67,7 @@ call_primitive(vm_t *vm, const primitive_t *primitive) {
         return;
     }
 
-    case PRIMITIVE_FN_4: {
+    case X_FN_4: {
         value_t x4 = stack_pop(vm->value_stack);
         value_t x3 = stack_pop(vm->value_stack);
         value_t x2 = stack_pop(vm->value_stack);
@@ -77,7 +77,7 @@ call_primitive(vm_t *vm, const primitive_t *primitive) {
         return;
     }
 
-    case PRIMITIVE_FN_5: {
+    case X_FN_5: {
         value_t x5 = stack_pop(vm->value_stack);
         value_t x4 = stack_pop(vm->value_stack);
         value_t x3 = stack_pop(vm->value_stack);
@@ -88,7 +88,7 @@ call_primitive(vm_t *vm, const primitive_t *primitive) {
         return;
     }
 
-    case PRIMITIVE_FN_6: {
+    case X_FN_6: {
         value_t x6 = stack_pop(vm->value_stack);
         value_t x5 = stack_pop(vm->value_stack);
         value_t x4 = stack_pop(vm->value_stack);
