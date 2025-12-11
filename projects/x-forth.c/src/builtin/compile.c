@@ -3,8 +3,6 @@
 static void
 compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     (void) vm;
-    (void) definition;
-    // function_definition_append_instr(definition, instr);
 
     switch (token->kind) {
     case SYMBOL_TOKEN: {
@@ -18,12 +16,20 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     }
 
     case INT_TOKEN: {
-        TODO();
+        struct instr_t instr = {
+            .op = OP_LITERAL_INT,
+            .literal_int.content = string_parse_int(token->content),
+        };
+        function_definition_append_instr(definition, instr);
         return;
     }
 
     case FLOAT_TOKEN: {
-        TODO();
+        struct instr_t instr = {
+            .op = OP_LITERAL_FLOAT,
+            .literal_float.content = string_parse_double(token->content),
+        };
+        function_definition_append_instr(definition, instr);
         return;
     }
 

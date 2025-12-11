@@ -1,6 +1,5 @@
 # compile
 
-[builtin] `compile_token` -- handle int and float
 [builtin] `compile_token` -- handle symbol -- compile to call
 [builtin] `compile_token` -- handle `@tail-call <name>` -- be explicit
 [builtin] `compile_token` -- handle `@return` -- early return
