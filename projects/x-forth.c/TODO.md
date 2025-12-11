@@ -1,6 +1,5 @@
 # compile
-referred
-[builtin] `compile_token` -- handle `@return` -- early return
+
 [builtin] `compile_token` -- handle `@tail-call <name>` -- be explicit
 [lang] `function_definition` -- has `local_indexes` record
 [builtin] `compile_parameters` -- compile to local store

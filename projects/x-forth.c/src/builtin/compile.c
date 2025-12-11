@@ -1,6 +1,6 @@
 #include "index.h"
 
-static void compile_end(vm_t *vm, definition_t *definition);
+static void compile_return(vm_t *vm, definition_t *definition);
 static void compile_token(vm_t *vm, definition_t *definition, token_t *token);
 
 void
@@ -14,7 +14,7 @@ compile_function(vm_t *vm, definition_t *definition) {
 
         token_t *token = list_shift(vm->tokens);
         if (token->kind == SYMBOL_TOKEN && string_equal(token->content, "@end")) {
-            compile_end(vm, definition);
+            compile_return(vm, definition);
             token_free(token);
             return;
         } else {
@@ -25,12 +25,11 @@ compile_function(vm_t *vm, definition_t *definition) {
 }
 
 static void
-compile_end(vm_t *vm, definition_t *definition) {
+compile_return(vm_t *vm, definition_t *definition) {
     (void) vm;
     struct instr_t instr = { .op = OP_RETURN };
     function_definition_append_instr(definition, instr);
 }
-
 
 static void compile_referred(vm_t *vm, definition_t *definition, definition_t *referred);
 
@@ -38,10 +37,15 @@ static void
 compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
-        definition_t *referred = mod_lookup(vm->mod, token->content);
-        assert(referred);
-        compile_referred(vm, definition, referred);
-        return;
+        if (string_equal(token->content, "@return")) {
+            compile_return(vm, definition);
+            return;
+        } else {
+            definition_t *referred = mod_lookup(vm->mod, token->content);
+            assert(referred);
+            compile_referred(vm, definition, referred);
+            return;
+        }
     }
 
     case STRING_TOKEN: {
@@ -101,7 +105,6 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
 static void
 compile_referred(vm_t *vm, definition_t *definition, definition_t *referred) {
     (void) vm;
-
     switch (referred->kind) {
     case FUNCTION_DEFINITION: {
         struct instr_t instr = {
