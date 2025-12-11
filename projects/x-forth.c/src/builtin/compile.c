@@ -17,7 +17,11 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
         }
 
         case PRIMITIVE_DEFINITION: {
-            TODO();
+            struct instr_t instr = {
+                .op = OP_PRIMITIVE_CALL,
+                .primitive_call.definition = found_definition,
+            };
+            function_definition_append_instr(definition, instr);
             return;
         }
 
