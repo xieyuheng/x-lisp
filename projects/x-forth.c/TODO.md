@@ -1,13 +1,12 @@
 # compile
 
-[builtin] `compile_token` -- handle `@tail-call <name>` -- be explicit
 [builtin] `compile_token` -- handle `@return` -- early return
-
-```ruby
-@def iadd1 1 iadd @end
-```
-
-[builtin] `compile_parameters`
+[builtin] `compile_token` -- handle `@tail-call <name>` -- be explicit
+[lang] `function_definition` -- has `local_indexes` record
+[builtin] `compile_parameters` -- compile to local store
+[builtin] `compile_local_stores` -- compile to local store
+[builtin] `compile_token` -- handle local reference
+[test] syntax/square.test.fth
 
 ```ruby
 @def square [x]
@@ -17,11 +16,10 @@
 
 # placeholder
 
-[lang] `placeholder_t`
+[lang] `placeholder_t` -- one placeholder many places to patch
 [lang] `mod_t` -- has record of `placeholders`
-
-[lang] `mod_define` -- call `patch_definition`
-
+[lang] `placeholder_patch`
+[lang] `mod_define` -- call `placeholder_patch`
 [lang] `OP_PLACEHOLDER` -- like `op_t` with `definition` field
 [lang] `vm_execute_instr` -- report error on `OP_PLACEHOLDER` -- find placeholder in `vm->mod`
 

@@ -6,6 +6,7 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     case SYMBOL_TOKEN: {
         definition_t *found_definition = mod_lookup(vm->mod, token->content);
         assert(found_definition);
+
         switch (found_definition->kind) {
         case FUNCTION_DEFINITION: {
             struct instr_t instr = {
@@ -101,6 +102,13 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     }
 }
 
+static void
+compile_end(vm_t *vm, definition_t *definition) {
+    (void) vm;
+    struct instr_t instr = { .op = OP_RETURN };
+    function_definition_append_instr(definition, instr);
+}
+
 void
 compile_function(vm_t *vm, definition_t *definition) {
     assert(definition->kind == FUNCTION_DEFINITION);
@@ -114,8 +122,7 @@ compile_function(vm_t *vm, definition_t *definition) {
         if (token->kind == SYMBOL_TOKEN &&
             string_equal(token->content, "@end"))
         {
-            struct instr_t instr = { .op = OP_RETURN };
-            function_definition_append_instr(definition, instr);
+            compile_end(vm, definition);
             token_free(token);
             return;
         } else {
