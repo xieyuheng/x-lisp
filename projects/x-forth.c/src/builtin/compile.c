@@ -1,50 +1,50 @@
 #include "index.h"
 
+static void compile_end(vm_t *vm, definition_t *definition);
+static void compile_token(vm_t *vm, definition_t *definition, token_t *token);
+
+void
+compile_function(vm_t *vm, definition_t *definition) {
+    assert(definition->kind == FUNCTION_DEFINITION);
+    while (true) {
+        if (list_is_empty(vm->tokens)) {
+            who_printf("missing @end");
+            assert(false);
+        }
+
+        token_t *token = list_shift(vm->tokens);
+        if (token->kind == SYMBOL_TOKEN && string_equal(token->content, "@end")) {
+            compile_end(vm, definition);
+            token_free(token);
+            return;
+        } else {
+            compile_token(vm, definition, token);
+            token_free(token);
+        }
+    }
+}
+
+static void
+compile_end(vm_t *vm, definition_t *definition) {
+    (void) vm;
+    struct instr_t instr = { .op = OP_RETURN };
+    function_definition_append_instr(definition, instr);
+}
+
+
+static void
+compile_referenced_definition(
+    vm_t *vm,
+    definition_t *definition,
+    definition_t *referenced_definition);
+
 static void
 compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
-        definition_t *found_definition = mod_lookup(vm->mod, token->content);
-        assert(found_definition);
-
-        switch (found_definition->kind) {
-        case FUNCTION_DEFINITION: {
-            struct instr_t instr = {
-                .op = OP_CALL,
-                .call.definition = found_definition,
-            };
-            function_definition_append_instr(definition, instr);
-            return;
-        }
-
-        case PRIMITIVE_DEFINITION: {
-            struct instr_t instr = {
-                .op = OP_PRIMITIVE_CALL,
-                .primitive_call.definition = found_definition,
-            };
-            function_definition_append_instr(definition, instr);
-            return;
-        }
-
-        case VARIABLE_DEFINITION: {
-            struct instr_t instr = {
-                .op = OP_VAR_LOAD,
-                .var_load.definition = found_definition,
-            };
-            function_definition_append_instr(definition, instr);
-            return;
-        }
-
-        case CONSTANT_DEFINITION: {
-            struct instr_t instr = {
-                .op = OP_CONST_LOAD,
-                .const_load.definition = found_definition,
-            };
-            function_definition_append_instr(definition, instr);
-            return;
-        }
-        }
-
+        definition_t *referenced_definition = mod_lookup(vm->mod, token->content);
+        assert(referenced_definition);
+        compile_referenced_definition(vm, definition, referenced_definition);
         return;
     }
 
@@ -103,31 +103,48 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
 }
 
 static void
-compile_end(vm_t *vm, definition_t *definition) {
+compile_referenced_definition(
+    vm_t *vm,
+    definition_t *definition,
+    definition_t *referenced_definition
+) {
     (void) vm;
-    struct instr_t instr = { .op = OP_RETURN };
-    function_definition_append_instr(definition, instr);
-}
 
-void
-compile_function(vm_t *vm, definition_t *definition) {
-    assert(definition->kind == FUNCTION_DEFINITION);
-    while (true) {
-        if (list_is_empty(vm->tokens)) {
-            who_printf("missing @end");
-            assert(false);
-        }
+    switch (referenced_definition->kind) {
+    case FUNCTION_DEFINITION: {
+        struct instr_t instr = {
+            .op = OP_CALL,
+            .call.definition = referenced_definition,
+        };
+        function_definition_append_instr(definition, instr);
+        return;
+    }
 
-        token_t *token = list_shift(vm->tokens);
-        if (token->kind == SYMBOL_TOKEN &&
-            string_equal(token->content, "@end"))
-        {
-            compile_end(vm, definition);
-            token_free(token);
-            return;
-        } else {
-            compile_token(vm, definition, token);
-            token_free(token);
-        }
+    case PRIMITIVE_DEFINITION: {
+        struct instr_t instr = {
+            .op = OP_PRIMITIVE_CALL,
+            .primitive_call.definition = referenced_definition,
+        };
+        function_definition_append_instr(definition, instr);
+        return;
+    }
+
+    case VARIABLE_DEFINITION: {
+        struct instr_t instr = {
+            .op = OP_VAR_LOAD,
+            .var_load.definition = referenced_definition,
+        };
+        function_definition_append_instr(definition, instr);
+        return;
+    }
+
+    case CONSTANT_DEFINITION: {
+        struct instr_t instr = {
+            .op = OP_CONST_LOAD,
+            .const_load.definition = referenced_definition,
+        };
+        function_definition_append_instr(definition, instr);
+        return;
+    }
     }
 }
