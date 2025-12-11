@@ -130,6 +130,12 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
+    case OP_PRIMITIVE_CALL: {
+        definition_t *definition = instr.primitive_call.definition;
+        call_primitive(vm, definition->primitive_definition.primitive);
+        return;
+    }
+
     case OP_CALL: {
         stack_push(vm->frame_stack, make_frame(instr.call.definition));
         return;
