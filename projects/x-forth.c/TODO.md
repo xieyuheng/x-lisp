@@ -1,7 +1,6 @@
 # compile
 
-[builtin] `x_define_function`
-
+[builtin] `compile_function`
 [builtin] `compile_token`
 
 ```ruby
@@ -17,8 +16,7 @@
 [lang] `placeholder_t`
 [lang] `mod_t` -- has record of `placeholders`
 
-[lang] extract `define`
-[lang] `define` -- call `patch_definition`
+[lang] `mod_define` -- call `patch_definition`
 
 [lang] `OP_PLACEHOLDER` -- like `op_t` with `definition` field
 [lang] `vm_execute_instr` -- report error on `OP_PLACEHOLDER` -- find placeholder in `vm->mod`

@@ -20,5 +20,10 @@ x_define_variable(vm_t *vm) {
 
 void
 x_define_function(vm_t *vm) {
-    (void) vm;
+    token_t *token = list_shift(vm->tokens);
+    assert(token->kind == SYMBOL_TOKEN);
+    definition_t *definition = define_function(vm->mod, token->content);
+    token_free(token);
+
+    compile_function(vm, definition);
 }
