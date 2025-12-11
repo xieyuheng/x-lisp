@@ -59,16 +59,16 @@ test:: $(tests) $(snapshots)
 	echo $(tests) | tr [:space:] '\n' | $(parallel) {}
 	if test -n "$(snapshots)"; then echo $(snapshots) | tr [:space:] '\n' | $(parallel) {} ">" {}.out; fi
 
-src/%.exe: src/%.exe.c src/index.po
+src/%.exe: src/%.exe.c src/index.o
 	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/%.test: src/%.test.c src/index.po
+src/%.test: src/%.test.c src/index.o
 	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/%.snapshot: src/%.snapshot.c src/index.po
+src/%.snapshot: src/%.snapshot.c src/index.o
 	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
-src/index.po: $(objects)
+src/index.o: $(objects)
 	ld -r $^ -o $@
 
 src/%.o: src/%.c $(headers)
@@ -76,4 +76,4 @@ src/%.o: src/%.c $(headers)
 
 .PHONY: clean
 clean::
-	rm -rf $(objects) $(exes) $(tests) $(snapshots) src/index.po
+	rm -rf $(objects) $(exes) $(tests) $(snapshots) src/index.o
