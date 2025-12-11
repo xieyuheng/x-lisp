@@ -92,7 +92,13 @@ void
 function_definition_append_instr(definition_t *self, struct instr_t instr) {
     assert(self->kind == FUNCTION_DEFINITION);
 
-    function_definition_maybe_grow_code_area(self, instr_length(instr));
+    size_t length = instr_length(instr);
+    function_definition_maybe_grow_code_area(self, length);
 
-    TODO();
+    uint8_t *code =
+        self->function_definition.code_area +
+        self->function_definition.code_length;
+    instr_encode(code, instr);
+
+    self->function_definition.code_length += length;
 }

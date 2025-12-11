@@ -1,6 +1,5 @@
 # compile
 
-[lang] `function_definition_append_instr`
 [builtin] `compile_token` -- handle int and float
 [builtin] `compile_token` -- handle symbol -- compile to call
 [builtin] `compile_token` -- handle `@tail-call <name>` -- be explicit
