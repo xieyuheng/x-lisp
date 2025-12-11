@@ -1,31 +1,6 @@
 #include "index.h"
 
-static void
-invoke(vm_t *vm, definition_t *definition) {
-    switch (definition->kind) {
-    case FUNCTION_DEFINITION: {
-        size_t base_length = stack_length(vm->frame_stack);
-        stack_push(vm->frame_stack, make_frame(definition));
-        vm_execute_until(vm, base_length);
-        break;
-    }
-
-    case PRIMITIVE_DEFINITION: {
-        call_primitive(vm, definition->primitive_definition.primitive);
-        break;
-    }
-
-    case VARIABLE_DEFINITION: {
-        stack_push(vm->value_stack, definition->variable_definition.value);
-        break;
-    }
-
-    case CONSTANT_DEFINITION: {
-        stack_push(vm->value_stack, definition->variable_definition.value);
-        break;
-    }
-    }
-}
+static void invoke(vm_t *vm, definition_t *definition);
 
 void
 interpret_token(vm_t *vm, token_t *token) {
@@ -83,6 +58,33 @@ interpret_token(vm_t *vm, token_t *token) {
 
     case LINE_COMMENT_TOKEN: {
         return;
+    }
+    }
+}
+
+static void
+invoke(vm_t *vm, definition_t *definition) {
+    switch (definition->kind) {
+    case FUNCTION_DEFINITION: {
+        size_t base_length = stack_length(vm->frame_stack);
+        stack_push(vm->frame_stack, make_frame(definition));
+        vm_execute_until(vm, base_length);
+        break;
+    }
+
+    case PRIMITIVE_DEFINITION: {
+        call_primitive(vm, definition->primitive_definition.primitive);
+        break;
+    }
+
+    case VARIABLE_DEFINITION: {
+        stack_push(vm->value_stack, definition->variable_definition.value);
+        break;
+    }
+
+    case CONSTANT_DEFINITION: {
+        stack_push(vm->value_stack, definition->variable_definition.value);
+        break;
     }
     }
 }
