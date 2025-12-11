@@ -32,19 +32,15 @@ compile_end(vm_t *vm, definition_t *definition) {
 }
 
 
-static void
-compile_referenced_definition(
-    vm_t *vm,
-    definition_t *definition,
-    definition_t *referenced_definition);
+static void compile_referred(vm_t *vm, definition_t *definition, definition_t *referred);
 
 static void
 compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
-        definition_t *referenced_definition = mod_lookup(vm->mod, token->content);
-        assert(referenced_definition);
-        compile_referenced_definition(vm, definition, referenced_definition);
+        definition_t *referred = mod_lookup(vm->mod, token->content);
+        assert(referred);
+        compile_referred(vm, definition, referred);
         return;
     }
 
@@ -103,18 +99,14 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
 }
 
 static void
-compile_referenced_definition(
-    vm_t *vm,
-    definition_t *definition,
-    definition_t *referenced_definition
-) {
+compile_referred(vm_t *vm, definition_t *definition, definition_t *referred) {
     (void) vm;
 
-    switch (referenced_definition->kind) {
+    switch (referred->kind) {
     case FUNCTION_DEFINITION: {
         struct instr_t instr = {
             .op = OP_CALL,
-            .call.definition = referenced_definition,
+            .call.definition = referred,
         };
         function_definition_append_instr(definition, instr);
         return;
@@ -123,7 +115,7 @@ compile_referenced_definition(
     case PRIMITIVE_DEFINITION: {
         struct instr_t instr = {
             .op = OP_PRIMITIVE_CALL,
-            .primitive_call.definition = referenced_definition,
+            .primitive_call.definition = referred,
         };
         function_definition_append_instr(definition, instr);
         return;
@@ -132,7 +124,7 @@ compile_referenced_definition(
     case VARIABLE_DEFINITION: {
         struct instr_t instr = {
             .op = OP_VAR_LOAD,
-            .var_load.definition = referenced_definition,
+            .var_load.definition = referred,
         };
         function_definition_append_instr(definition, instr);
         return;
@@ -141,7 +133,7 @@ compile_referenced_definition(
     case CONSTANT_DEFINITION: {
         struct instr_t instr = {
             .op = OP_CONST_LOAD,
-            .const_load.definition = referenced_definition,
+            .const_load.definition = referred,
         };
         function_definition_append_instr(definition, instr);
         return;
