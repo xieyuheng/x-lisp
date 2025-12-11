@@ -11,5 +11,5 @@
 #include "primitive.h"
 #include "define.h"
 #include "load.h"
-#include "invoke.h"
+#include "call.h"
 #include "interpret.h"

@@ -1,5 +1,7 @@
 # compile
 
+move `invoke` to interpret.c -- be private to interpret.c
+
 [builtin] `compile_token` -- handle `@tail-call <name>` -- be explicit
 [lang] `function_definition` -- has `local_indexes` record
 [builtin] `compile_parameters` -- compile to local store

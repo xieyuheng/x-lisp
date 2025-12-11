@@ -2,6 +2,8 @@
 
 static void compile_return(vm_t *vm, definition_t *definition);
 static void compile_token(vm_t *vm, definition_t *definition, token_t *token);
+static void compile_referred(vm_t *vm, definition_t *definition, definition_t *referred);
+// static void compile_tail_call(vm_t *vm, definition_t *definition);
 
 void
 compile_function(vm_t *vm, definition_t *definition) {
@@ -31,8 +33,6 @@ compile_return(vm_t *vm, definition_t *definition) {
     function_definition_append_instr(definition, instr);
 }
 
-static void compile_referred(vm_t *vm, definition_t *definition, definition_t *referred);
-
 static void
 compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     switch (token->kind) {
@@ -40,6 +40,9 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
         if (string_equal(token->content, "@return")) {
             compile_return(vm, definition);
             return;
+        // } else if (string_equal(token->content, "@tail-call")) {
+        //     compile_tail_call(vm, definition);
+        //     return;
         } else {
             definition_t *referred = mod_lookup(vm->mod, token->content);
             assert(referred);
