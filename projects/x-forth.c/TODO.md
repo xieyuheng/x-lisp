@@ -1,13 +1,16 @@
 # compile
 
-[builtin] `compile_function`
 [builtin] `compile_token`
 
 ```ruby
-1 @var x
-2 @const n
+@def iadd1 1 iadd @end
+```
+
+[builtin] `compile_parameters`
+
+```ruby
 @def square ( x )
-  x x mul
+  x x imul
 @end
 ```
 
