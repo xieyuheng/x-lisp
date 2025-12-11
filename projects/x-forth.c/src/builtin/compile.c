@@ -1,9 +1,9 @@
 #include "index.h"
 
 static void compile_return(vm_t *vm, definition_t *definition);
-static void compile_token(vm_t *vm, definition_t *definition, token_t *token);
+static void compile_token(vm_t *vm, definition_t *definition, const token_t *token);
 static void compile_referred(vm_t *vm, definition_t *definition, definition_t *referred);
-// static void compile_tail_call(vm_t *vm, definition_t *definition);
+static void compile_tail_call(vm_t *vm, definition_t *definition, const char *name);
 
 void
 compile_function(vm_t *vm, definition_t *definition) {
@@ -34,15 +34,18 @@ compile_return(vm_t *vm, definition_t *definition) {
 }
 
 static void
-compile_token(vm_t *vm, definition_t *definition, token_t *token) {
+compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
         if (string_equal(token->content, "@return")) {
             compile_return(vm, definition);
             return;
-        // } else if (string_equal(token->content, "@tail-call")) {
-        //     compile_tail_call(vm, definition);
-        //     return;
+        } else if (string_equal(token->content, "@tail-call")) {
+            token_t *next_token = list_shift(vm->tokens);
+            assert(next_token->kind == SYMBOL_TOKEN);
+            compile_tail_call(vm, definition, next_token->content);
+            token_free(next_token);
+            return;
         } else {
             definition_t *referred = mod_lookup(vm->mod, token->content);
             assert(referred);
@@ -145,4 +148,11 @@ compile_referred(vm_t *vm, definition_t *definition, definition_t *referred) {
         return;
     }
     }
+}
+
+static void
+compile_tail_call(vm_t *vm, definition_t *definition, const char *name) {
+    (void) vm;
+    (void) definition;
+    (void) name;        
 }

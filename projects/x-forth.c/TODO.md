@@ -1,6 +1,6 @@
 # compile
 
-[builtin] `compile_token` -- handle `@tail-call <name>` -- be explicit
+[builtin] `compile_tail_call`
 [lang] `function_definition` -- has `local_indexes` record
 [builtin] `compile_parameters` -- compile to local store
 [builtin] `compile_local_stores` -- compile to local store
