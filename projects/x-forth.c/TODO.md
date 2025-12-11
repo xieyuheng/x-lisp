@@ -1,6 +1,7 @@
 # compile
 
-[builtin] `compile_token` -- handle symbol -- compile to call
+[lang] `OP_PRIMITIVE_CALL`
+[builtin] `compile_token` -- handle `PRIMITIVE_DEFINITION`
 [builtin] `compile_token` -- handle `@tail-call <name>` -- be explicit
 [builtin] `compile_token` -- handle `@return` -- early return
 

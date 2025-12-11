@@ -2,11 +2,44 @@
 
 static void
 compile_token(vm_t *vm, definition_t *definition, token_t *token) {
-    (void) vm;
-
     switch (token->kind) {
     case SYMBOL_TOKEN: {
-        TODO();
+        definition_t *found_definition = mod_lookup(vm->mod, token->content);
+        assert(found_definition);
+        switch (found_definition->kind) {
+        case FUNCTION_DEFINITION: {
+            struct instr_t instr = {
+                .op = OP_CALL,
+                .call.definition = found_definition,
+            };
+            function_definition_append_instr(definition, instr);
+            return;
+        }
+
+        case PRIMITIVE_DEFINITION: {
+            TODO();
+            return;
+        }
+
+        case VARIABLE_DEFINITION: {
+            struct instr_t instr = {
+                .op = OP_VAR_LOAD,
+                .var_load.definition = found_definition,
+            };
+            function_definition_append_instr(definition, instr);
+            return;
+        }
+
+        case CONSTANT_DEFINITION: {
+            struct instr_t instr = {
+                .op = OP_CONST_LOAD,
+                .const_load.definition = found_definition,
+            };
+            function_definition_append_instr(definition, instr);
+            return;
+        }
+        }
+
         return;
     }
 
@@ -77,6 +110,8 @@ compile_function(vm_t *vm, definition_t *definition) {
         if (token->kind == SYMBOL_TOKEN &&
             string_equal(token->content, "@end"))
         {
+            struct instr_t instr = { .op = OP_RETURN };
+            function_definition_append_instr(definition, instr);
             token_free(token);
             return;
         } else {
