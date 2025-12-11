@@ -4,7 +4,58 @@ static void
 compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     (void) vm;
     (void) definition;
-    (void) token;
+    // function_definition_append_instr(definition, instr);
+
+    switch (token->kind) {
+    case SYMBOL_TOKEN: {
+        TODO();
+        return;
+    }
+
+    case STRING_TOKEN: {
+        TODO();
+        return;
+    }
+
+    case INT_TOKEN: {
+        TODO();
+        return;
+    }
+
+    case FLOAT_TOKEN: {
+        TODO();
+        return;
+    }
+
+    case BRACKET_START_TOKEN: {
+        TODO();
+        return;
+    }
+
+    case BRACKET_END_TOKEN: {
+        TODO();
+        return;
+    }
+
+    case QUOTATION_MARK_TOKEN: {
+        TODO();
+        return;
+    }
+
+    case KEYWORD_TOKEN: {
+        TODO();
+        return;
+    }
+
+    case HASHTAG_TOKEN: {
+        TODO();
+        return;
+    }
+
+    case LINE_COMMENT_TOKEN: {
+        return;
+    }
+    }
 }
 
 void

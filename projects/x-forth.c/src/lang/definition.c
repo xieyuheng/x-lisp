@@ -72,12 +72,27 @@ definition_free(definition_t *self) {
     free(self);
 }
 
-void
-function_definition_grow_code_area(definition_t *self) {
+static void
+function_definition_maybe_grow_code_area(definition_t *self, size_t length) {
     assert(self->kind == FUNCTION_DEFINITION);
-    self->function_definition.code_area =
-        reallocate(self->function_definition.code_area,
-                   self->function_definition.code_area_size,
-                   self->function_definition.code_area_size * 2);
-    self->function_definition.code_area_size *= 2;
+
+    if (self->function_definition.code_area_size <
+        self->function_definition.code_length + length)
+    {
+        self->function_definition.code_area =
+            reallocate(self->function_definition.code_area,
+                       self->function_definition.code_area_size,
+                       self->function_definition.code_area_size * 2);
+        self->function_definition.code_area_size *= 2;
+        function_definition_maybe_grow_code_area(self, length);
+    }
+}
+
+void
+function_definition_append_instr(definition_t *self, struct instr_t instr) {
+    assert(self->kind == FUNCTION_DEFINITION);
+
+    function_definition_maybe_grow_code_area(self, instr_length(instr));
+
+    TODO();
 }

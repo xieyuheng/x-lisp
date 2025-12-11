@@ -2,10 +2,10 @@
 
 #include "deps.h"
 #include "types.h"
-#include "mod.h"
-#include "definition.h"
 #include "op.h"
 #include "instr.h"
+#include "definition.h"
+#include "mod.h"
 #include "vm.h"
 #include "frame.h"
 #include "primitive.h"
