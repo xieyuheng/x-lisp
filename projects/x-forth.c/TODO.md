@@ -9,7 +9,7 @@
 [builtin] `compile_parameters`
 
 ```ruby
-@def square ( x )
+@def square [x]
   x x imul
 @end
 ```
