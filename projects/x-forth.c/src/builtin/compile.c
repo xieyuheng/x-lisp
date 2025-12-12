@@ -152,7 +152,13 @@ compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
 
 static void
 compile_tail_call(vm_t *vm, definition_t *definition, const char *name) {
-    (void) vm;
-    (void) definition;
-    (void) name;
+    definition_t *found = mod_lookup(vm->mod, name);
+    assert(found);
+    assert(found->kind == FUNCTION_DEFINITION);
+
+    struct instr_t instr = {
+        .op = OP_TAIL_CALL,
+        .tail_call.definition = found,
+    };
+    function_definition_append_instr(definition, instr);
 }
