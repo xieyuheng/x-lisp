@@ -13,7 +13,9 @@ struct definition_t {
     char *name;
     union {
         struct {
-            array_t *parameters; // string array
+            // - optional string array.
+            // - first list of bindings are viewed as parameters.
+            array_t *parameters;
             uint8_t *code_area;
             size_t code_area_size;
             size_t code_length;
