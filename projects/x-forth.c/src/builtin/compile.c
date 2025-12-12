@@ -2,7 +2,7 @@
 
 static void compile_return(vm_t *vm, definition_t *definition);
 static void compile_token(vm_t *vm, definition_t *definition, const token_t *token);
-static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
+static void compile_word(vm_t *vm, definition_t *definition, const char *word);
 static void compile_tail_call(vm_t *vm, definition_t *definition);
 static void compile_parameters(vm_t *vm, definition_t *definition, const char *terminator);
 static void compile_bindings(vm_t *vm, definition_t *definition, const char *terminator);
@@ -48,7 +48,7 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
             compile_tail_call(vm, definition);
             return;
         } else {
-            compile_invoke(vm, definition, token->content);
+            compile_word(vm, definition, token->content);
             return;
         }
     }
@@ -108,9 +108,9 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
 }
 
 static void
-compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
-    if (function_definition_has_binding_index(definition, name)) {
-        size_t index = function_definition_get_binding_index(definition, name);
+compile_word(vm_t *vm, definition_t *definition, const char *word) {
+    if (function_definition_has_binding_index(definition, word)) {
+        size_t index = function_definition_get_binding_index(definition, word);
         struct instr_t instr = {
             .op = OP_LOCAL_LOAD,
             .local_load.index = index,
@@ -119,7 +119,7 @@ compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
         return;
     }
 
-    definition_t *found = mod_lookup(vm->mod, name);
+    definition_t *found = mod_lookup(vm->mod, word);
     assert(found);
 
     switch (found->kind) {
