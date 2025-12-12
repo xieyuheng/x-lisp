@@ -4,24 +4,26 @@ static void compile_return(vm_t *vm, definition_t *definition);
 static void compile_token(vm_t *vm, definition_t *definition, const token_t *token);
 static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
 static void compile_tail_call(vm_t *vm, definition_t *definition);
+static void compile_parameters(vm_t *vm, definition_t *definition, const char *terminator);
+// static void compile_bindings(vm_t *vm, definition_t *definition, const char *terminator);
 
 void
 compile_function(vm_t *vm, definition_t *definition) {
     assert(definition->kind == FUNCTION_DEFINITION);
     while (true) {
         if (list_is_empty(vm->tokens)) {
-            who_printf("missing @end");
+            who_printf("missing @end\n");
             assert(false);
         }
 
         token_t *token = list_shift(vm->tokens);
-        if (token->kind == SYMBOL_TOKEN && string_equal(token->content, "@end")) {
+        if (string_equal(token->content, "@end")) {
             compile_return(vm, definition);
             token_free(token);
             return;
-        // } else if (token->kind == SYMBOL_TOKEN && string_equal(token->content, "[")) {
-        //     compile_parameters(vm, definition);
-        //     token_free(token);
+        } else if (string_equal(token->content, "[")) {
+            compile_parameters(vm, definition, "]");
+            token_free(token);
         } else {
             compile_token(vm, definition, token);
             token_free(token);
@@ -165,3 +167,63 @@ compile_tail_call(vm_t *vm, definition_t *definition) {
     };
     function_definition_append_instr(definition, instr);
 }
+
+static void
+compile_parameters(vm_t *vm, definition_t *definition, const char *terminator) {
+    definition->function_definition.parameters = make_string_array_auto();
+
+    stack_t *local_name_stack = make_string_stack();
+
+    while (true) {
+        if (list_is_empty(vm->tokens)) {
+            who_printf("missing terminator: %s\n", terminator);
+            assert(false);
+        }
+
+        token_t *token = list_shift(vm->tokens);
+        if (string_equal(token->content, terminator)) {
+            token_free(token);
+            return;
+        }
+
+        assert(token->kind == SYMBOL_TOKEN);
+
+        array_push(definition->function_definition.parameters,
+                   string_copy(token->content));
+
+        stack_push(local_name_stack, string_copy(token->content));
+
+        if (!record_has(definition->function_definition.binding_indexes,
+                        token->content)) {
+            size_t next_index  =
+                record_length(definition->function_definition.binding_indexes);
+            record_insert(definition->function_definition.binding_indexes,
+                          token->content, (void *) next_index);
+        }
+
+        token_free(token);
+    }
+
+    while (!stack_is_empty(local_name_stack)) {
+        char *local_name = stack_pop(local_name_stack);
+        assert(record_has(definition->function_definition.binding_indexes,
+                          local_name));
+        size_t index =
+            (size_t) record_get(definition->function_definition.binding_indexes,
+                                local_name);
+
+        struct instr_t instr = {
+            .op = OP_LOCAL_STORE,
+            .local_store.index = index,
+        };
+        function_definition_append_instr(definition, instr);
+    }
+
+    stack_free(local_name_stack);
+}
+
+// static void
+// compile_bindings(vm_t *vm, definition_t *definition, const char *terminator) {
+//     (void) vm;
+//     (void) definition;
+// }
