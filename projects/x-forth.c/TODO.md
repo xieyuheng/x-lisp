@@ -1,15 +1,3 @@
-# compile
-
-[builtin] `compile_invoke` -- handle local reference
-
-[test] syntax/square.test.fth
-
-```ruby
-@def square [x]
-  x x imul
-@end
-```
-
 # placeholder
 
 [lang] `placeholder_t` -- one placeholder many places to patch

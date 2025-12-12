@@ -12,7 +12,6 @@ compile_function(vm_t *vm, definition_t *definition) {
     assert(definition->kind == FUNCTION_DEFINITION);
     while (true) {
         if (list_is_empty(vm->tokens)) {
-            who_printf("missing @end\n");
             assert(false);
         }
 
@@ -110,6 +109,16 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
 
 static void
 compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
+    if (function_definition_has_binding_index(definition, name)) {
+        size_t index = function_definition_get_binding_index(definition, name);
+        struct instr_t instr = {
+            .op = OP_LOCAL_LOAD,
+            .local_load.index = index,
+        };
+        function_definition_append_instr(definition, instr);
+        return;
+    }
+
     definition_t *found = mod_lookup(vm->mod, name);
     assert(found);
 
@@ -183,6 +192,7 @@ compile_local_store_stack(
         size_t index =
             (size_t) record_get(definition->function_definition.binding_indexes,
                                 local_name);
+        who_printf("name: %s, index: %ld\n", local_name, index);
 
         struct instr_t instr = {
             .op = OP_LOCAL_STORE,
@@ -209,22 +219,18 @@ compile_parameters(vm_t *vm, definition_t *definition, const char *terminator) {
         token_t *token = list_shift(vm->tokens);
         if (string_equal(token->content, terminator)) {
             token_free(token);
+            compile_local_store_stack(vm, definition, local_name_stack);
             return;
         }
 
         assert(token->kind == SYMBOL_TOKEN);
-
         // different from `compile_bindings`.
         array_push(definition->function_definition.parameters,
                    string_copy(token->content));
-
         stack_push(local_name_stack, string_copy(token->content));
         function_definition_add_binding(definition, token->content);
-
         token_free(token);
     }
-
-    compile_local_store_stack(vm, definition, local_name_stack);
 }
 
 static void
@@ -240,14 +246,13 @@ compile_bindings(vm_t *vm, definition_t *definition, const char *terminator) {
         token_t *token = list_shift(vm->tokens);
         if (string_equal(token->content, terminator)) {
             token_free(token);
+            compile_local_store_stack(vm, definition, local_name_stack);
             return;
         }
 
         assert(token->kind == SYMBOL_TOKEN);
-
         stack_push(local_name_stack, string_copy(token->content));
         function_definition_add_binding(definition, token->content);
-
         token_free(token);
     }
 
