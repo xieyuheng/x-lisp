@@ -110,10 +110,25 @@ void
 function_definition_add_binding(definition_t *self, const char *name) {
     assert(self->kind == FUNCTION_DEFINITION);
 
-    if (!record_has(self->function_definition.binding_indexes, name)) {
+    if (!function_definition_has_binding_index(self, name)) {
         size_t next_index =
             record_length(self->function_definition.binding_indexes);
         record_insert(self->function_definition.binding_indexes,
                       name, (void *) next_index);
     }
+}
+
+bool
+function_definition_has_binding_index(definition_t *self, const char *name) {
+    assert(self->kind == FUNCTION_DEFINITION);
+
+    return record_has(self->function_definition.binding_indexes, name);
+}
+
+size_t
+function_definition_get_binding_index(definition_t *self, const char *name) {
+    assert(self->kind == FUNCTION_DEFINITION);
+
+    assert(function_definition_has_binding_index(self, name));
+    return (size_t) record_get(self->function_definition.binding_indexes, name);
 }

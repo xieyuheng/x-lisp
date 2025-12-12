@@ -83,8 +83,8 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
     }
 
     case BRACKET_END_TOKEN: {
-        TODO();
-        return;
+        who_printf("missing BRACKET_START_TOKEN: %s\n", token->content);
+        assert(false);
     }
 
     case QUOTATION_MARK_TOKEN: {
