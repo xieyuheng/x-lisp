@@ -214,18 +214,12 @@ compile_parameters(vm_t *vm, definition_t *definition, const char *terminator) {
 
         assert(token->kind == SYMBOL_TOKEN);
 
+        // different from `compile_bindings`.
         array_push(definition->function_definition.parameters,
                    string_copy(token->content));
 
         stack_push(local_name_stack, string_copy(token->content));
-
-        if (!record_has(definition->function_definition.binding_indexes,
-                        token->content)) {
-            size_t next_index  =
-                record_length(definition->function_definition.binding_indexes);
-            record_insert(definition->function_definition.binding_indexes,
-                          token->content, (void *) next_index);
-        }
+        function_definition_add_binding(definition, token->content);
 
         token_free(token);
     }
@@ -252,14 +246,7 @@ compile_bindings(vm_t *vm, definition_t *definition, const char *terminator) {
         assert(token->kind == SYMBOL_TOKEN);
 
         stack_push(local_name_stack, string_copy(token->content));
-
-        if (!record_has(definition->function_definition.binding_indexes,
-                        token->content)) {
-            size_t next_index  =
-                record_length(definition->function_definition.binding_indexes);
-            record_insert(definition->function_definition.binding_indexes,
-                          token->content, (void *) next_index);
-        }
+        function_definition_add_binding(definition, token->content);
 
         token_free(token);
     }

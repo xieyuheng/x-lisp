@@ -105,3 +105,15 @@ function_definition_append_instr(definition_t *self, struct instr_t instr) {
 
     self->function_definition.code_length += length;
 }
+
+void
+function_definition_add_binding(definition_t *self, const char *name) {
+    assert(self->kind == FUNCTION_DEFINITION);
+
+    if (!record_has(self->function_definition.binding_indexes, name)) {
+        size_t next_index =
+            record_length(self->function_definition.binding_indexes);
+        record_insert(self->function_definition.binding_indexes,
+                      name, (void *) next_index);
+    }
+}
