@@ -222,8 +222,51 @@ compile_parameters(vm_t *vm, definition_t *definition, const char *terminator) {
     stack_free(local_name_stack);
 }
 
-// static void
-// compile_bindings(vm_t *vm, definition_t *definition, const char *terminator) {
-//     (void) vm;
-//     (void) definition;
-// }
+static void
+compile_bindings(vm_t *vm, definition_t *definition, const char *terminator) {
+    stack_t *local_name_stack = make_string_stack();
+
+    while (true) {
+        if (list_is_empty(vm->tokens)) {
+            who_printf("missing terminator: %s\n", terminator);
+            assert(false);
+        }
+
+        token_t *token = list_shift(vm->tokens);
+        if (string_equal(token->content, terminator)) {
+            token_free(token);
+            return;
+        }
+
+        assert(token->kind == SYMBOL_TOKEN);
+
+        stack_push(local_name_stack, string_copy(token->content));
+
+        if (!record_has(definition->function_definition.binding_indexes,
+                        token->content)) {
+            size_t next_index  =
+                record_length(definition->function_definition.binding_indexes);
+            record_insert(definition->function_definition.binding_indexes,
+                          token->content, (void *) next_index);
+        }
+
+        token_free(token);
+    }
+
+    while (!stack_is_empty(local_name_stack)) {
+        char *local_name = stack_pop(local_name_stack);
+        assert(record_has(definition->function_definition.binding_indexes,
+                          local_name));
+        size_t index =
+            (size_t) record_get(definition->function_definition.binding_indexes,
+                                local_name);
+
+        struct instr_t instr = {
+            .op = OP_LOCAL_STORE,
+            .local_store.index = index,
+        };
+        function_definition_append_instr(definition, instr);
+    }
+
+    stack_free(local_name_stack);
+}

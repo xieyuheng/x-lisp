@@ -1,6 +1,7 @@
 # compile
 
-[builtin] `compile_bindings` -- compile to local store
+[builtin] extract `compile_local_store_stack`
+[lang] extract `function_definition_add_binding`
 [builtin] `compile_token` -- call `compile_bindings` and handle local reference
 
 [test] syntax/square.test.fth
