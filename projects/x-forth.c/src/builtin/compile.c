@@ -2,7 +2,7 @@
 
 static void compile_return(vm_t *vm, definition_t *definition);
 static void compile_token(vm_t *vm, definition_t *definition, const token_t *token);
-static void compile_referred(vm_t *vm, definition_t *definition, definition_t *referred);
+static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
 static void compile_tail_call(vm_t *vm, definition_t *definition, const char *name);
 
 void
@@ -47,9 +47,7 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
             token_free(next_token);
             return;
         } else {
-            definition_t *referred = mod_lookup(vm->mod, token->content);
-            assert(referred);
-            compile_referred(vm, definition, referred);
+            compile_invoke(vm, definition, token->content);
             return;
         }
     }
@@ -109,13 +107,15 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
 }
 
 static void
-compile_referred(vm_t *vm, definition_t *definition, definition_t *referred) {
-    (void) vm;
-    switch (referred->kind) {
+compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
+    definition_t *found = mod_lookup(vm->mod, name);
+    assert(found);
+
+    switch (found->kind) {
     case FUNCTION_DEFINITION: {
         struct instr_t instr = {
             .op = OP_CALL,
-            .call.definition = referred,
+            .call.definition = found,
         };
         function_definition_append_instr(definition, instr);
         return;
@@ -124,7 +124,7 @@ compile_referred(vm_t *vm, definition_t *definition, definition_t *referred) {
     case PRIMITIVE_DEFINITION: {
         struct instr_t instr = {
             .op = OP_PRIMITIVE_CALL,
-            .primitive_call.definition = referred,
+            .primitive_call.definition = found,
         };
         function_definition_append_instr(definition, instr);
         return;
@@ -133,7 +133,7 @@ compile_referred(vm_t *vm, definition_t *definition, definition_t *referred) {
     case VARIABLE_DEFINITION: {
         struct instr_t instr = {
             .op = OP_VAR_LOAD,
-            .var_load.definition = referred,
+            .var_load.definition = found,
         };
         function_definition_append_instr(definition, instr);
         return;
@@ -142,7 +142,7 @@ compile_referred(vm_t *vm, definition_t *definition, definition_t *referred) {
     case CONSTANT_DEFINITION: {
         struct instr_t instr = {
             .op = OP_CONST_LOAD,
-            .const_load.definition = referred,
+            .const_load.definition = found,
         };
         function_definition_append_instr(definition, instr);
         return;
@@ -154,5 +154,5 @@ static void
 compile_tail_call(vm_t *vm, definition_t *definition, const char *name) {
     (void) vm;
     (void) definition;
-    (void) name;        
+    (void) name;
 }
