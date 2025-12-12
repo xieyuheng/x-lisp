@@ -1,3 +1,18 @@
+[lang] merge `OP_PRIMITIVE_CALL` to `OP_CALL`
+[lang] merge `OP_TAIL_CALL` support primitive function
+
+[lang] `OP_ASSERT` -- has `token`
+[lang] `OP_ASSERT_EQUAL` -- has `token`
+[lang] `OP_ASSERT_NOT_EQUAL` -- has `token`
+
+[builtin] `compile_assert`
+[builtin] `compile_assert_equal`
+[builtin] `compile_assert_not_equal`
+
+[builtin] `compile_word` -- handle instruction
+
+[builtin] `compile_if`
+
 # placeholder
 
 [lang] `placeholder_t` -- one placeholder many places to patch
@@ -6,6 +21,8 @@
 [lang] `mod_define` -- call `placeholder_patch`
 [lang] `OP_PLACEHOLDER` -- like `op_t` with `definition` field
 [lang] `vm_execute_instr` -- report error on `OP_PLACEHOLDER` -- find placeholder in `vm->mod`
+
+# gc
 
 # later
 
@@ -18,6 +35,8 @@
 [value] fix `ref_t` -- should be reference to `definition`
 [value] remove `function_t`
 [value] remove `x_address`
+
+# apply
 
 # read-execute-loop
 

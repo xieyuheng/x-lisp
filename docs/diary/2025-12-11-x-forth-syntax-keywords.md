@@ -3,6 +3,8 @@ title: x-forth syntax keywords
 date: 2025-12-11
 ---
 
+# definition
+
 方案 A：
 
 ```ruby
@@ -35,6 +37,8 @@ date: 2025-12-11
 
 选择「方案 C」。
 
+# binding
+
 用 `[x]` 来声明局部变量，
 是致敬 [de bruijn notation](https://en.wikipedia.org/wiki/De_Bruijn_notation)。
 
@@ -51,3 +55,17 @@ date: 2025-12-11
   而 `[x]` 所定义的局部变量，
   在引用时会得到函数值本身，
   需要被 explicit 作用。
+
+# apply
+
+方案 A：
+
+- 把 `definition_t` 实现为 `object_t`。
+  用 `@ref <name>` 来获得这种 value。
+
+- `apply-variadic` 作用于 @ref 和 @arity 来形成 curry：
+
+  ```ruby
+  @ref <name> 2 apply-variadic
+  @ref <name> 2 @tail-call apply-variadic
+  ```
