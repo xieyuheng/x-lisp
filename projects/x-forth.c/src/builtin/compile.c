@@ -5,7 +5,7 @@ static void compile_token(vm_t *vm, definition_t *definition, const token_t *tok
 static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
 static void compile_tail_call(vm_t *vm, definition_t *definition);
 static void compile_parameters(vm_t *vm, definition_t *definition, const char *terminator);
-// static void compile_bindings(vm_t *vm, definition_t *definition, const char *terminator);
+static void compile_bindings(vm_t *vm, definition_t *definition, const char *terminator);
 
 void
 compile_function(vm_t *vm, definition_t *definition) {
@@ -78,7 +78,7 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
     }
 
     case BRACKET_START_TOKEN: {
-        TODO();
+        compile_bindings(vm, definition, "]");
         return;
     }
 
@@ -169,6 +169,32 @@ compile_tail_call(vm_t *vm, definition_t *definition) {
 }
 
 static void
+compile_local_store_stack(
+    vm_t *vm,
+    definition_t *definition,
+    stack_t *local_name_stack)
+{
+    (void) vm;
+
+    while (!stack_is_empty(local_name_stack)) {
+        char *local_name = stack_pop(local_name_stack);
+        assert(record_has(definition->function_definition.binding_indexes,
+                          local_name));
+        size_t index =
+            (size_t) record_get(definition->function_definition.binding_indexes,
+                                local_name);
+
+        struct instr_t instr = {
+            .op = OP_LOCAL_STORE,
+            .local_store.index = index,
+        };
+        function_definition_append_instr(definition, instr);
+    }
+
+    stack_free(local_name_stack);
+}
+
+static void
 compile_parameters(vm_t *vm, definition_t *definition, const char *terminator) {
     definition->function_definition.parameters = make_string_array_auto();
 
@@ -204,22 +230,7 @@ compile_parameters(vm_t *vm, definition_t *definition, const char *terminator) {
         token_free(token);
     }
 
-    while (!stack_is_empty(local_name_stack)) {
-        char *local_name = stack_pop(local_name_stack);
-        assert(record_has(definition->function_definition.binding_indexes,
-                          local_name));
-        size_t index =
-            (size_t) record_get(definition->function_definition.binding_indexes,
-                                local_name);
-
-        struct instr_t instr = {
-            .op = OP_LOCAL_STORE,
-            .local_store.index = index,
-        };
-        function_definition_append_instr(definition, instr);
-    }
-
-    stack_free(local_name_stack);
+    compile_local_store_stack(vm, definition, local_name_stack);
 }
 
 static void
@@ -253,20 +264,5 @@ compile_bindings(vm_t *vm, definition_t *definition, const char *terminator) {
         token_free(token);
     }
 
-    while (!stack_is_empty(local_name_stack)) {
-        char *local_name = stack_pop(local_name_stack);
-        assert(record_has(definition->function_definition.binding_indexes,
-                          local_name));
-        size_t index =
-            (size_t) record_get(definition->function_definition.binding_indexes,
-                                local_name);
-
-        struct instr_t instr = {
-            .op = OP_LOCAL_STORE,
-            .local_store.index = index,
-        };
-        function_definition_append_instr(definition, instr);
-    }
-
-    stack_free(local_name_stack);
+    compile_local_store_stack(vm, definition, local_name_stack);
 }

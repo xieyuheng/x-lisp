@@ -1,6 +1,5 @@
 # compile
 
-[builtin] extract `compile_local_store_stack`
 [lang] extract `function_definition_add_binding`
 [builtin] `compile_token` -- call `compile_bindings` and handle local reference
 
