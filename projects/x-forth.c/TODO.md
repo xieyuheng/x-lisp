@@ -1,9 +1,8 @@
 # compile
 
-[builtin] `compile_function` -- handle `parameters`
 [builtin] `compile_parameters` -- compile to local store, and save parameters
 [builtin] `compile_bindings` -- compile to local store
-[builtin] `compile_token` -- handle local reference
+[builtin] `compile_token` -- call `compile_bindings` and handle local reference
 
 [test] syntax/square.test.fth
 

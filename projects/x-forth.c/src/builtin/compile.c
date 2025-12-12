@@ -3,7 +3,7 @@
 static void compile_return(vm_t *vm, definition_t *definition);
 static void compile_token(vm_t *vm, definition_t *definition, const token_t *token);
 static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
-static void compile_tail_call(vm_t *vm, definition_t *definition, const char *name);
+static void compile_tail_call(vm_t *vm, definition_t *definition);
 
 void
 compile_function(vm_t *vm, definition_t *definition) {
@@ -19,6 +19,9 @@ compile_function(vm_t *vm, definition_t *definition) {
             compile_return(vm, definition);
             token_free(token);
             return;
+        // } else if (token->kind == SYMBOL_TOKEN && string_equal(token->content, "[")) {
+        //     compile_parameters(vm, definition);
+        //     token_free(token);
         } else {
             compile_token(vm, definition, token);
             token_free(token);
@@ -41,10 +44,7 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
             compile_return(vm, definition);
             return;
         } else if (string_equal(token->content, "@tail-call")) {
-            token_t *next_token = list_shift(vm->tokens);
-            assert(next_token->kind == SYMBOL_TOKEN);
-            compile_tail_call(vm, definition, next_token->content);
-            token_free(next_token);
+            compile_tail_call(vm, definition);
             return;
         } else {
             compile_invoke(vm, definition, token->content);
@@ -151,8 +151,11 @@ compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
 }
 
 static void
-compile_tail_call(vm_t *vm, definition_t *definition, const char *name) {
-    definition_t *found = mod_lookup(vm->mod, name);
+compile_tail_call(vm_t *vm, definition_t *definition) {
+    token_t *token = list_shift(vm->tokens);
+    assert(token->kind == SYMBOL_TOKEN);
+    definition_t *found = mod_lookup(vm->mod, token->content);
+    token_free(token);
     assert(found);
     assert(found->kind == FUNCTION_DEFINITION);
 
