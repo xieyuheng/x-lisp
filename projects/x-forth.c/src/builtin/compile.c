@@ -186,14 +186,8 @@ compile_local_store_stack(
     (void) vm;
 
     while (!stack_is_empty(local_name_stack)) {
-        char *local_name = stack_pop(local_name_stack);
-        assert(record_has(definition->function_definition.binding_indexes,
-                          local_name));
-        size_t index =
-            (size_t) record_get(definition->function_definition.binding_indexes,
-                                local_name);
-        who_printf("name: %s, index: %ld\n", local_name, index);
-
+        char *name = stack_pop(local_name_stack);
+        size_t index = function_definition_get_binding_index(definition, name);
         struct instr_t instr = {
             .op = OP_LOCAL_STORE,
             .local_store.index = index,
