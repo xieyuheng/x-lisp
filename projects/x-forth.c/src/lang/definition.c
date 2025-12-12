@@ -6,6 +6,7 @@ make_function_definition(mod_t *mod, char *name) {
     self->kind = FUNCTION_DEFINITION;
     self->mod = mod;
     self->name = name;
+    self->function_definition.binding_indexes = make_record();
     self->function_definition.parameters = NULL;
     self->function_definition.code_area_size = 64;
     self->function_definition.code_area =
@@ -50,6 +51,7 @@ definition_free(definition_t *self) {
 
     switch (self->kind) {
     case FUNCTION_DEFINITION: {
+        record_free(self->function_definition.binding_indexes);
         if (self->function_definition.parameters)
             array_free(self->function_definition.parameters);
         free(self->function_definition.code_area);

@@ -1,9 +1,8 @@
 # compile
 
-[lang] `function_definition` -- has `local_indexes` record
-[builtin] `compile_parameters` -- compile to local store
+[builtin] `compile_function` -- handle `parameters`
+[builtin] `compile_parameters` -- compile to local store, and save parameters
 [builtin] `compile_bindings` -- compile to local store
-- use a flag to
 [builtin] `compile_token` -- handle local reference
 
 [test] syntax/square.test.fth

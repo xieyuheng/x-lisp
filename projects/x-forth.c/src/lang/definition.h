@@ -13,6 +13,8 @@ struct definition_t {
     char *name;
     union {
         struct {
+            // - record of indexes.
+            record_t *binding_indexes;
             // - optional string array.
             // - first list of bindings are viewed as parameters.
             array_t *parameters;
