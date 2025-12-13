@@ -11,6 +11,7 @@ interpret_token(vm_t *vm, token_t *token) {
             if (value != x_true) {
                 printf("@assert fail");
                 printf("\n  value: "); value_print(value);
+                printf("\n");
                 token_meta_report(token->meta);
                 exit(1);
             }
@@ -25,6 +26,7 @@ interpret_token(vm_t *vm, token_t *token) {
                 printf("@assert-equal fail");
                 printf("\n  lhs: "); value_print(lhs);
                 printf("\n  rhs: "); value_print(rhs);
+                printf("\n");
                 token_meta_report(token->meta);
                 exit(1);
             }
@@ -39,6 +41,7 @@ interpret_token(vm_t *vm, token_t *token) {
                 printf("@assert-not-equal fail");
                 printf("\n  lhs: "); value_print(lhs);
                 printf("\n  rhs: "); value_print(rhs);
+                printf("\n");
                 token_meta_report(token->meta);
                 exit(1);
             }

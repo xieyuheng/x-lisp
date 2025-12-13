@@ -1,4 +1,5 @@
 [lexer] `token_meta_report`
+[lexer] `token_meta_report` -- port `spanReport` of sexp.js
 [builtin] `compile_if`
 
 # placeholder
@@ -29,7 +30,5 @@
 # read-execute-loop
 
 [lang] add `read-execute-loop` function to the bottom of the stack
-
 - `read-execute-loop` must NOT be a primitive function
-
 [lang] remove `vm_execute_until`

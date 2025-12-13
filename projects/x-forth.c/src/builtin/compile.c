@@ -43,19 +43,28 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
         if (string_equal(token->content, "@assert")) {
-            struct instr_t instr = { .op = OP_ASSERT, .assert.token = token, };
+            struct instr_t instr = {
+                .op = OP_ASSERT,
+                .assert.token = token,
+            };
             function_definition_append_instr(definition, instr);
             return;
         }
 
         if (string_equal(token->content, "@assert-equal")) {
-            struct instr_t instr = { .op = OP_ASSERT_EQUAL, .assert.token = token, };
+            struct instr_t instr = {
+                .op = OP_ASSERT_EQUAL,
+                .assert.token = token,
+            };
             function_definition_append_instr(definition, instr);
             return;
         }
 
         if (string_equal(token->content, "@assert-not-equal")) {
-            struct instr_t instr = { .op = OP_ASSERT_NOT_EQUAL, .assert.token = token, };
+            struct instr_t instr = {
+                .op = OP_ASSERT_NOT_EQUAL,
+                .assert.token = token,
+            };
             function_definition_append_instr(definition, instr);
             return;
         }

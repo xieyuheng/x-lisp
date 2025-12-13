@@ -190,6 +190,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         if (value != x_true) {
             printf("@assert fail");
             printf("\n  value: "); value_print(value);
+            printf("\n");
             token_meta_report(instr.assert.token->meta);
             exit(1);
         }
@@ -204,6 +205,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
             printf("@assert-equal fail");
             printf("\n  lhs: "); value_print(lhs);
             printf("\n  rhs: "); value_print(rhs);
+            printf("\n");
             token_meta_report(instr.assert.token->meta);
             exit(1);
         }
@@ -218,6 +220,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
             printf("@assert-not-equal fail");
             printf("\n  lhs: "); value_print(lhs);
             printf("\n  rhs: "); value_print(rhs);
+            printf("\n");
             token_meta_report(instr.assert.token->meta);
             exit(1);
         }
