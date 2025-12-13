@@ -21,3 +21,9 @@ span_union(struct span_t x, struct span_t y) {
         .end = x.end.index > y.end.index ? x.end : y.end,
     };
 }
+
+void
+span_report_in_context(struct span_t span, const char *content) {
+    (void) span;
+    (void) content;
+}

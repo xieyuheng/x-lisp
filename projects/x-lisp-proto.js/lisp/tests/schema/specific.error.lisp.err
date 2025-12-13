@@ -17,7 +17,7 @@
       (list? symbol?)
     arg:
       [3 4]
-   --> lisp/tests/schema/specific.error.lisp:6:9
+lisp/tests/schema/specific.error.lisp:6:9
   4 |         (list? A))))
   5 | 
   6 | (define (my-append left right)

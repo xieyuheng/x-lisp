@@ -12,7 +12,7 @@
     name: one
     exp:
       1
-  --> lisp/tests/module/redefine-by-import.error.lisp:2:1
+lisp/tests/module/redefine-by-import.error.lisp:2:1
  1 | (import "module-one" one)
  2 | (import "module-two" one)
    | ~~~~~~~~~~~~~~~~~~~~~~~~~ 

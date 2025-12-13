@@ -1,4 +1,4 @@
 @assert-equal fail
   lhs: 3
   rhs: 2
---> forth/tests/syntax/assert-fail.error.fth:3:3
+forth/tests/syntax/assert-fail.error.fth:3:3

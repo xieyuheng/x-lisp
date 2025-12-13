@@ -17,7 +17,7 @@
       int?
     arg:
       1.0
-  --> lisp/tests/claim/claim-arguments.error.lisp:2:9
+lisp/tests/claim/claim-arguments.error.lisp:2:9
  1 | (claim my-add (-> int? int? int?))
  2 | (define (my-add x y) (iadd x y))
    |         ~~~~~~~~~~~~             

@@ -1,7 +1,7 @@
 [evaluate] (match) mismatch
   target:
     'd
-  --> lisp/tests/pattern/match-missmatch.error.lisp:1:8
+lisp/tests/pattern/match-missmatch.error.lisp:1:8
  1 | (match 'd
    |        ~  
  2 |   ('a 1)

@@ -6,12 +6,7 @@ export function tokenMetaReport(meta: TokenMeta): string {
   let message = ""
   const context = spanReport(meta.span, meta.text)
   if (meta.url) {
-    const index = context.indexOf("|")
-    if (index - 1 > 0) {
-      message += " ".repeat(index - 1)
-    }
-
-    message += `--> ${urlRelativeToCwd(meta.url)}:${formatPosition(meta.span.start)}\n`
+    message += `${urlRelativeToCwd(meta.url)}:${formatPosition(meta.span.start)}\n`
   }
 
   message += context

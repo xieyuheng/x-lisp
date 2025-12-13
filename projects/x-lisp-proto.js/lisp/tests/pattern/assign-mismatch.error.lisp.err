@@ -5,7 +5,7 @@
     1.0
   rhs value:
     1.0
-  --> lisp/tests/pattern/assign-mismatch.error.lisp:2:3
+lisp/tests/pattern/assign-mismatch.error.lisp:2:3
  1 | (begin
  2 |   (= (the int? x) 1.0)
    |   ~~~~~~~~~~~~~~~~~~~~ 

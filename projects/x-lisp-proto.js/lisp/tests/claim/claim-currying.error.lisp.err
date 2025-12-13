@@ -17,7 +17,7 @@
       int?
     arg:
       1.0
-  --> lisp/tests/claim/claim-currying.error.lisp:3:4
+lisp/tests/claim/claim-currying.error.lisp:3:4
  1 | (claim my-add (-> int? int? int?))
  2 | (define my-add
  3 |   (lambda (x)
