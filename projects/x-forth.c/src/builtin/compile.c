@@ -160,7 +160,8 @@ compile_tail_call(vm_t *vm, definition_t *definition) {
     definition_t *found = mod_lookup(vm->mod, token->content);
     token_free(token);
     assert(found);
-    assert(found->kind == FUNCTION_DEFINITION);
+    assert(found->kind == PRIMITIVE_DEFINITION ||
+           found->kind == FUNCTION_DEFINITION);
 
     struct instr_t instr = {
         .op = OP_TAIL_CALL,

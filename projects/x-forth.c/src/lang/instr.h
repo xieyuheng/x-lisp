@@ -9,7 +9,6 @@ struct instr_t {
     union {
         struct { int64_t content; } literal_int;
         struct { double content; } literal_float;
-        struct { definition_t *definition; } primitive_call;
         struct { definition_t *definition; } call;
         struct { definition_t *definition; } tail_call;
         struct { definition_t *definition; } const_load;
@@ -19,6 +18,9 @@ struct instr_t {
         struct { uint32_t index; } local_store;
         struct { int32_t offset; } jump; // offset is based on next instr.
         struct { int32_t offset; } jump_if_not;
+        struct { token_t *token; } assert;
+        struct { token_t *token; } assert_equal;
+        struct { token_t *token; } assert_not_equal;
         struct { size_t length; char *content; } literal_string;
         struct { size_t length; char *content; } literal_symbol;
         struct { size_t length; char *content; } literal_keyword;

@@ -1,7 +1,3 @@
-[lang] `OP_ASSERT` -- has `token`
-[lang] `OP_ASSERT_EQUAL` -- has `token`
-[lang] `OP_ASSERT_NOT_EQUAL` -- has `token`
-
 [builtin] `compile_assert`
 [builtin] `compile_assert_equal`
 [builtin] `compile_assert_not_equal`
