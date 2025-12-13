@@ -1,4 +1,4 @@
-[lexer] `token_meta_report` -- report in context
+[lexer] `span_report_in_context`
 [builtin] `compile_if`
 
 # placeholder

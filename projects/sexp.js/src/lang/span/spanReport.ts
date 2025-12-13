@@ -4,12 +4,12 @@ import { type Span } from "./Span.ts"
 
 type Line = {
   index: number
-  text: string
+  content: string
   underline?: string
 }
 
 export function spanReport(span: Span, context: string): string {
-  const lines = context.split("\n").map((text, index) => ({ index, text }))
+  const lines = context.split("\n").map((content, index) => ({ index, content }))
   linesMarkUnderline(lines, span)
   const prefixMargin = linesPrefixMargin(lines)
   return lines
@@ -30,7 +30,7 @@ function linesMarkUnderline(lines: Array<Line>, span: Span): void {
   let cursor = 0
   for (const line of lines) {
     const start = cursor
-    const end = cursor + line.text.length + 1
+    const end = cursor + line.content.length + 1
     line.underline = lineUnderline(line, start, end, span)
     cursor = end
   }
@@ -63,8 +63,8 @@ function formatLine(line: Line, prefixMargin: number): string {
   const prefix = leftPad(lineno.toString(), prefixMargin, " ")
   if (line.underline) {
     const emptyPrefix = leftPad("", prefixMargin, " ")
-    return `${prefix} | ${line.text}\n` + `${emptyPrefix} | ${line.underline}\n`
+    return `${prefix} | ${line.content}\n` + `${emptyPrefix} | ${line.underline}\n`
   } else {
-    return `${prefix} | ${line.text}\n`
+    return `${prefix} | ${line.content}\n`
   }
 }
