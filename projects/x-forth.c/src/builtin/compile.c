@@ -118,6 +118,52 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
     }
 }
 
+struct op_word_entry_t { const char *word; op_t op; };
+
+static struct op_word_entry_t op_word_entries[] = {
+    { "iadd", OP_IADD },
+    { "isub", OP_ISUB },
+    { "imul", OP_IMUL },
+    { "idiv", OP_IDIV },
+    { "imod", OP_IMOD },
+    { "fadd", OP_FADD },
+    { "fsub", OP_FSUB },
+    { "fmul", OP_FMUL },
+    { "fdiv", OP_FDIV },
+    { "fmod", OP_FMOD },
+};
+
+static size_t
+get_op_word_entry_count(void) {
+    return sizeof op_word_entries / sizeof(struct op_word_entry_t);
+}
+
+static bool
+is_op_word(const char *word) {
+    for (size_t i = 0; i < get_op_word_entry_count(); i++) {
+        struct op_word_entry_t op_word_entry = op_word_entries[i];
+        if (string_equal(op_word_entry.word, word)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static void
+compile_op_word(vm_t *vm, definition_t *definition, const char *word) {
+    (void) vm;
+    assert(is_op_word(word));
+
+    for (size_t i = 0; i < get_op_word_entry_count(); i++) {
+        struct op_word_entry_t op_word_entry = op_word_entries[i];
+        if (string_equal(op_word_entry.word, word)) {
+            struct instr_t instr = { .op = op_word_entry.op };
+            function_definition_append_instr(definition, instr);
+        }
+    }
+}
+
 static void
 compile_word(vm_t *vm, definition_t *definition, const char *word) {
     if (string_equal(word, "@return")) {
@@ -127,6 +173,11 @@ compile_word(vm_t *vm, definition_t *definition, const char *word) {
 
     if (string_equal(word, "@tail-call")) {
         compile_tail_call(vm, definition);
+        return;
+    }
+
+    if (is_op_word(word)) {
+        compile_op_word(vm, definition, word);
         return;
     }
 

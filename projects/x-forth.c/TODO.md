@@ -1,10 +1,9 @@
 [lexer] `token_meta_report`
-[builtin] `compile_word` -- handle instruction
 [builtin] `compile_if`
 
 # placeholder
 
-[lang] `placeholder_t` -- one placeholder many places to patch
+[lang] `placeholder_t` -- one placeholder has many places to patch
 [lang] `mod_t` -- has record of `placeholders`
 [lang] `placeholder_patch`
 [lang] `mod_define` -- call `placeholder_patch`
