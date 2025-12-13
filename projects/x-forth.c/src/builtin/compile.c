@@ -3,6 +3,7 @@
 static void compile_return(vm_t *vm, definition_t *definition);
 static void compile_token(vm_t *vm, definition_t *definition, const token_t *token);
 static void compile_word(vm_t *vm, definition_t *definition, const char *word);
+static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
 static void compile_tail_call(vm_t *vm, definition_t *definition);
 static void compile_parameters(vm_t *vm, definition_t *definition, const char *terminator);
 static void compile_bindings(vm_t *vm, definition_t *definition, const char *terminator);
@@ -41,16 +42,26 @@ static void
 compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
-        if (string_equal(token->content, "@return")) {
-            compile_return(vm, definition);
-            return;
-        } else if (string_equal(token->content, "@tail-call")) {
-            compile_tail_call(vm, definition);
-            return;
-        } else {
-            compile_word(vm, definition, token->content);
+        if (string_equal(token->content, "@assert")) {
+            struct instr_t instr = { .op = OP_ASSERT, .assert.token = token, };
+            function_definition_append_instr(definition, instr);
             return;
         }
+
+        if (string_equal(token->content, "@assert-equal")) {
+            struct instr_t instr = { .op = OP_ASSERT_EQUAL, .assert.token = token, };
+            function_definition_append_instr(definition, instr);
+            return;
+        }
+
+        if (string_equal(token->content, "@assert-not-equal")) {
+            struct instr_t instr = { .op = OP_ASSERT_NOT_EQUAL, .assert.token = token, };
+            function_definition_append_instr(definition, instr);
+            return;
+        }
+
+        compile_word(vm, definition, token->content);
+        return;
     }
 
     case STRING_TOKEN: {
@@ -109,8 +120,24 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
 
 static void
 compile_word(vm_t *vm, definition_t *definition, const char *word) {
-    if (function_definition_has_binding_index(definition, word)) {
-        size_t index = function_definition_get_binding_index(definition, word);
+    if (string_equal(word, "@return")) {
+        compile_return(vm, definition);
+        return;
+    }
+
+    if (string_equal(word, "@tail-call")) {
+        compile_tail_call(vm, definition);
+        return;
+    }
+
+    compile_invoke(vm, definition, word);
+    return;
+}
+
+static void
+compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
+    if (function_definition_has_binding_index(definition, name)) {
+        size_t index = function_definition_get_binding_index(definition, name);
         struct instr_t instr = {
             .op = OP_LOCAL_LOAD,
             .local_load.index = index,
@@ -119,7 +146,7 @@ compile_word(vm_t *vm, definition_t *definition, const char *word) {
         return;
     }
 
-    definition_t *found = mod_lookup(vm->mod, word);
+    definition_t *found = mod_lookup(vm->mod, name);
     assert(found);
 
     switch (found->kind) {

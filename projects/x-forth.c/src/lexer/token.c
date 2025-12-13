@@ -14,3 +14,8 @@ token_free(token_t *self) {
     free(self->content);
     free(self);
 }
+
+void
+token_meta_report(struct token_meta_t meta) {
+    (void) meta;
+}

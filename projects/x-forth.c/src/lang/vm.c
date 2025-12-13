@@ -185,6 +185,46 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
+    case OP_ASSERT: {
+        value_t value = stack_pop(vm->value_stack);
+        if (value != x_true) {
+            printf("@assert fail");
+            printf("\n  value: "); value_print(value);
+            token_meta_report(instr.assert.token->meta);
+            exit(1);
+        }
+
+        return;
+    }
+
+    case OP_ASSERT_EQUAL: {
+        value_t rhs = stack_pop(vm->value_stack);
+        value_t lhs = stack_pop(vm->value_stack);
+        if (!equal_p(lhs, rhs)) {
+            printf("@assert-equal fail");
+            printf("\n  lhs: "); value_print(lhs);
+            printf("\n  rhs: "); value_print(rhs);
+            token_meta_report(instr.assert.token->meta);
+            exit(1);
+        }
+
+        return;
+    }
+
+    case OP_ASSERT_NOT_EQUAL: {
+        value_t rhs = stack_pop(vm->value_stack);
+        value_t lhs = stack_pop(vm->value_stack);
+        if (equal_p(lhs, rhs)) {
+            printf("@assert-not-equal fail");
+            printf("\n  lhs: "); value_print(lhs);
+            printf("\n  rhs: "); value_print(rhs);
+            token_meta_report(instr.assert.token->meta);
+            exit(1);
+        }
+
+        return;
+    }
+
     case OP_LITERAL_STRING: {
         assert(false && "TODO");
     }
@@ -196,13 +236,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     case OP_LITERAL_KEYWORD: {
         assert(false && "TODO");
     }
-
-    default: {
-        assert(false && "TODO");
     }
-    }
-
-    unreachable();
 }
 
 inline void

@@ -1,6 +1,4 @@
-[builtin] `compile_assert`
-[builtin] `compile_assert_equal`
-[builtin] `compile_assert_not_equal`
+[lexer] `token_meta_report`
 
 [builtin] `compile_word` -- handle instruction
 
