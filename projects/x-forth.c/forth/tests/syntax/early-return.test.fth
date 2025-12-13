@@ -3,4 +3,4 @@
   1 iadd
 @end
 
-1 iadd1 println
+1 iadd1 2 @assert-equal

@@ -2,14 +2,16 @@
   1 iadd
 @end
 
-@def main
-  1 @tail-call iadd
-  iadd1
+@def f1
+  @tail-call iadd1
+  iadd1 -- should be ignored
 @end
 
--- @def main
---   1 @tail-call iadd1
---   iadd1
--- @end
+1 f1 2 @assert-equal
 
-1 main println
+@def f2
+  1 @tail-call iadd1
+  iadd1 -- should be ignored
+@end
+
+1 f2 2 @assert-equal

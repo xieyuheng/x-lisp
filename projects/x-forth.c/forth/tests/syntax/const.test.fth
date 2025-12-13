@@ -1,3 +1,3 @@
 1 @const one
 
-one print newline
+one 1 @assert-equal

@@ -1,3 +1,3 @@
 1 @var n
 
-n print newline
+n 1 @assert-equal

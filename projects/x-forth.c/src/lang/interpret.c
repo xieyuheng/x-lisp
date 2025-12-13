@@ -6,6 +6,46 @@ void
 interpret_token(vm_t *vm, token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
+        if (string_equal(token->content, "@assert")) {
+            value_t value = stack_pop(vm->value_stack);
+            if (value != x_true) {
+                printf("@assert fail");
+                printf("\n  value: "); value_print(value);
+                token_meta_report(token->meta);
+                exit(1);
+            }
+
+            return;
+        }
+
+        if (string_equal(token->content, "@assert-equal")) {
+            value_t rhs = stack_pop(vm->value_stack);
+            value_t lhs = stack_pop(vm->value_stack);
+            if (!equal_p(lhs, rhs)) {
+                printf("@assert-equal fail");
+                printf("\n  lhs: "); value_print(lhs);
+                printf("\n  rhs: "); value_print(rhs);
+                token_meta_report(token->meta);
+                exit(1);
+            }
+
+            return;
+        }
+
+        if (string_equal(token->content, "@assert-not-equal")) {
+            value_t rhs = stack_pop(vm->value_stack);
+            value_t lhs = stack_pop(vm->value_stack);
+            if (equal_p(lhs, rhs)) {
+                printf("@assert-not-equal fail");
+                printf("\n  lhs: "); value_print(lhs);
+                printf("\n  rhs: "); value_print(rhs);
+                token_meta_report(token->meta);
+                exit(1);
+            }
+
+            return;
+        }
+
         definition_t *definition = mod_lookup(vm->mod, token->content);
         if (!definition) {
             who_printf("undefined name: %s\n", token->content);
