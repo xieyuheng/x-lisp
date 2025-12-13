@@ -1,4 +1,3 @@
-[lang] merge `OP_PRIMITIVE_CALL` to `OP_CALL`
 [lang] merge `OP_TAIL_CALL` support primitive function
 
 [lang] `OP_ASSERT` -- has `token`

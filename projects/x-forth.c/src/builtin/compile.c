@@ -123,19 +123,11 @@ compile_word(vm_t *vm, definition_t *definition, const char *word) {
     assert(found);
 
     switch (found->kind) {
+    case PRIMITIVE_DEFINITION:
     case FUNCTION_DEFINITION: {
         struct instr_t instr = {
             .op = OP_CALL,
             .call.definition = found,
-        };
-        function_definition_append_instr(definition, instr);
-        return;
-    }
-
-    case PRIMITIVE_DEFINITION: {
-        struct instr_t instr = {
-            .op = OP_PRIMITIVE_CALL,
-            .primitive_call.definition = found,
         };
         function_definition_append_instr(definition, instr);
         return;
