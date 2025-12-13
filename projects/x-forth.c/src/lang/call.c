@@ -1,6 +1,19 @@
 #include "index.h"
 
-void
+inline void
+call(vm_t *vm, const definition_t *definition) {
+    if (definition->kind == PRIMITIVE_DEFINITION) {
+        call_primitive(vm, definition->primitive_definition.primitive);
+        return;
+    } else if (definition->kind == FUNCTION_DEFINITION) {
+        stack_push(vm->frame_stack, make_frame(definition));
+        return;
+    } else {
+        unreachable();
+    }
+}
+
+inline void
 call_primitive(vm_t *vm, const primitive_t *primitive) {
     switch (primitive->fn_kind) {
     case X_FN: {

@@ -1,5 +1,3 @@
-[builtin] extract `call`
-
 [lang] `OP_ASSERT` -- has `token`
 [lang] `OP_ASSERT_EQUAL` -- has `token`
 [lang] `OP_ASSERT_NOT_EQUAL` -- has `token`

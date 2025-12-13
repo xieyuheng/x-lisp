@@ -131,32 +131,15 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_CALL: {
-        definition_t *definition = instr.call.definition;
-        if (definition->kind == PRIMITIVE_DEFINITION) {
-            call_primitive(vm, definition->primitive_definition.primitive);
-            return;
-        } else if (definition->kind == FUNCTION_DEFINITION) {
-            stack_push(vm->frame_stack, make_frame(definition));
-            return;
-        } else {
-            unreachable();
-        }
+        call(vm, instr.call.definition);
+        return;
     }
 
     case OP_TAIL_CALL: {
         stack_pop(vm->frame_stack);
         frame_free(frame);
-
-        definition_t *definition = instr.call.definition;
-        if (definition->kind == PRIMITIVE_DEFINITION) {
-            call_primitive(vm, definition->primitive_definition.primitive);
-            return;
-        } else if (definition->kind == FUNCTION_DEFINITION) {
-            stack_push(vm->frame_stack, make_frame(definition));
-            return;
-        } else {
-            unreachable();
-        }
+        call(vm, instr.call.definition);
+        return;
     }
 
     case OP_CONST_LOAD: {
