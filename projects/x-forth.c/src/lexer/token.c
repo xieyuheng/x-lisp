@@ -17,5 +17,8 @@ token_free(token_t *self) {
 
 void
 token_meta_report(struct token_meta_t meta) {
-    (void) meta;
+    printf("--> %s:%ld:%ld",
+           path_string(meta.path),
+           meta.span.start.row + 1,
+           meta.span.end.row + 1);
 }

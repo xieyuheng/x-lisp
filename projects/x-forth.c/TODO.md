@@ -1,5 +1,4 @@
-[lexer] `token_meta_report`
-[lexer] `token_meta_report` -- port `spanReport` of sexp.js
+[lexer] `token_meta_report` -- report in context
 [builtin] `compile_if`
 
 # placeholder

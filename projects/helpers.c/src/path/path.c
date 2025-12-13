@@ -159,11 +159,8 @@ path_resolve(path_t *self, const char *string) {
 }
 
 const char *
-path_string(path_t *self) {
-    if (self->string)
-        return self->string;
-
-    path_update_string(self);
+path_string(const path_t *self) {
+    assert(self->string);
     return self->string;
 }
 
