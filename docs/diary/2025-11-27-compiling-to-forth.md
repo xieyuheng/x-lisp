@@ -43,7 +43,7 @@ forth 并不能让实现变简单。
 
 除非我们以汇编的形式设计 forth（类似 uxn/tal）：
 
-```ruby
+```
 @main
   LIT 2 square LIT 4 EQ OK
   LIT 3 square LIT 9 EQ OK
@@ -64,7 +64,7 @@ forth 并不能让实现变简单。
 
 或者避免用大写来区分：
 
-```ruby
+```
 main:
   @lit 2 square @lit 4 @eq @ok
   @lit 3 square @lit 9 @eq @ok
@@ -107,7 +107,7 @@ square: @dup @mul @ret
 
 - 学习 uxn/tal，用汇编器的形式来实现类 forth 语言。
 
-  ```ruby
+  ```
   main:
     @lit 2 square @lit 4 @eq @ok
     @lit 3 square @lit 9 @eq @ok
@@ -149,7 +149,7 @@ forth 更灵活，在不同的语法 context 下，
 单纯 layout bytes 的 assembly 中如何处理类似的 collection？
 也许可以让下面两种语法等价：
 
-```ruby
+```
 @hex [ 01 02 03 ]
 @hex 01 @hex 02 @hex 03
 ```
@@ -160,11 +160,11 @@ opcode 和后面跟着的 token，
 
 比如：
 
-```ruby
+```
 @lit 2 @call &square
 ```
 
-```ruby
+```
 @lit     -- layout opcode
 2        -- layout tagged value (int)
 @call    -- layout opcode
@@ -177,7 +177,7 @@ opcode 和后面跟着的 token，
 `&square` 可以写成 `@address square`。
 call 可以直接是 `@call square`。
 
-```ruby
+```
 @function main
   @int 2 square @int 4 @eq @ok
   @int 3 square @int 9 @eq @ok
@@ -234,7 +234,7 @@ applicative 语言中 parameters 的顺序相反。
 因为函数的声明需要带有 parameter list，
 其中就带有 arity 信息了。
 
-```ruby
+```
 def add ( x y )
   x y add
 end

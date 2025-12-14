@@ -7,7 +7,7 @@ date: 2025-12-11
 
 方案 A：
 
-```ruby
+```
 @variable x
 @constant n
 @function square [x]
@@ -17,7 +17,7 @@ date: 2025-12-11
 
 方案 B：
 
-```ruby
+```
 @variable x
 @constant n
 @define square [x]
@@ -27,7 +27,7 @@ date: 2025-12-11
 
 方案 C：
 
-```ruby
+```
 @var x
 @const n
 @def square [x]
@@ -56,16 +56,24 @@ date: 2025-12-11
   在引用时会得到函数值本身，
   需要被 explicit 作用。
 
-# apply
+# curry
 
 方案 A：
 
 - 把 `definition_t` 实现为 `object_t`。
   用 `@ref <name>` 来获得这种 value。
 
-- `apply-variadic` 作用于 @ref 和 @arity 来形成 curry：
+- `n-curry` 作用于 definition 和 arity 来形成 curry：
 
-  ```ruby
-  @ref <name> 2 apply-variadic
-  @ref <name> 2 @tail-call apply-variadic
+  ```
+  <arg> ... @ref <name> <arity> n-curry
+  <arg> ... @ref <name> <arity> @tail-call n-curry
+  ```
+
+- 可以考虑区分 forth 的 `n-curry` 和 lisp 的 `curry-n`，
+  因为 forth 和 lisp 对参数顺序的要求不一样。
+
+  ```
+  @ref <name> <arity> <arg> ... curry-n
+  @ref <name> <arity> <arg> ... @tail-call curry-n
   ```
