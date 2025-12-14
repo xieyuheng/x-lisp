@@ -1,7 +1,7 @@
+# outer interpreter
+
 [lexer] `span_report_in_context`
 [builtin] `compile_if`
-
-# placeholder
 
 [lang] `placeholder_t` -- one placeholder has many places to patch
 [lang] `mod_t` -- has record of `placeholders`
@@ -10,19 +10,19 @@
 [lang] `OP_PLACEHOLDER` -- like `op_t` with `definition` field
 [lang] `vm_execute_instr` -- report error on `OP_PLACEHOLDER` -- find placeholder in `vm->mod`
 
-# gc
+# garbage collection
 
-# later
+# builtin structural data
 
 [lang] `vm_execute_instr` -- `OP_LITERAL_STRING`
 [lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`
 [lang] `vm_execute_instr` -- `OP_LITERAL_KEYWORD`
 
-# ref as value
-
 [value] fix `ref_t` -- should be reference to `definition`
 [value] remove `function_t`
 [value] remove `x_address`
+
+# module system
 
 # apply
 

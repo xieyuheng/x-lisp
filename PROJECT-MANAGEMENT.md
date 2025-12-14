@@ -58,17 +58,18 @@ date: 2025-12-04
 - 只实现 imprative programming 功能，
   高级的 functional programming 功能用编译器实现。
 - 要带有模块系统，类似 basic-lisp 的生态位。
+  不像 basic-lisp 一样需要进一步编译，因此不需要 bundling。
 
 任务：
 
 - [x] x-forth
   - [x] value encoding
-  - [ ] syntex design
-  - [ ] vm
+  - [x] vm
+  - [x] syntex design
+  - [ ] outer interpreter
   - [ ] garbage collection
   - [ ] builtin structural data
   - [ ] module system
-  - [ ] bundling
 
 # 关卡 2 -- x-lisp-forth.js
 

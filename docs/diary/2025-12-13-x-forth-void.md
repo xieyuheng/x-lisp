@@ -41,3 +41,31 @@ x-forth 有多份 builtin，
 
 - prelude 可以有多份，`print` 在 prelude 中。
   注意，有些 prelude 也是 primitive function。
+
+# 方案 C
+
+把 print 之类返回 void 的函数排除在 builtin 之外，
+通过 `@import-all "std:io"` 来引用。
+
+这样只有完全能够被 x-lisp 和 x-forth 公用的才能被加入 builtin。
+比如 forth 的 drop dup swap 都不能加入 builtin。
+想要使用就要引入，比如 `@import-all "std:forth"`。
+
+或者可以用语言包来区分目前所需要的两类 primitive 函数：
+
+```
+@import-all "x:lisp"
+@import-all "x:forth"
+```
+
+# 方案 D
+
+不要用模块系统，而是指定语言包：
+
+```
+@lang forth
+@lang lisp
+```
+
+这样虽然看起来简洁，
+但是可能没有模块系统灵活。
