@@ -4,7 +4,6 @@ struct line_t {
     size_t index;
     char *content;
     char *underline;
-    bool is_close_to_span;
 };
 
 typedef struct line_t line_t;
@@ -15,7 +14,6 @@ make_line(size_t index, char *content) {
     line->index = index;
     line->content = content;
     line->underline = NULL;
-    line->is_close_to_span = false;
     return line;
 }
 
@@ -35,10 +33,16 @@ mark_underline(struct span_t span, array_t *lines) {
     (void) lines;
 }
 
-static void
-mark_close_to_span(struct span_t span, array_t *lines) {
+static bool
+line_is_close_to_span(line_t *line, struct span_t span) {
     (void) span;
-    (void) lines;
+    (void) line;
+    return true;
+}
+
+static void
+line_report(line_t *line) {
+    (void) line;
 }
 
 void
@@ -54,6 +58,13 @@ span_report_in_context(struct span_t span, const char *context) {
     }
 
     mark_underline(span, lines);
-    mark_close_to_span(span, lines);
+
+    for (size_t i = 0; i < array_length(lines); i++) {
+        line_t *line = array_get(lines, i);
+        if (line_is_close_to_span(line, span)) {
+            line_report(line);
+        }
+    }
+
     array_free(lines);
 }
