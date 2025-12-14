@@ -3,7 +3,6 @@
 [lexer] `get_prefix_margin`
 [lexer] `line_report` -- take `prefix_margin`
 [lexer] `mark_underline`
-[lexer] `line_is_close_to_span`
 
 [builtin] `compile_if`
 

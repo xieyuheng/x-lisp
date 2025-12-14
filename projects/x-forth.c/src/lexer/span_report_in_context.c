@@ -35,9 +35,8 @@ mark_underline(struct span_t span, array_t *lines) {
 
 static bool
 line_is_close_to_span(line_t *line, struct span_t span) {
-    (void) span;
-    (void) line;
-    return true;
+    return ((span.start.row - 3 < line->index) &&
+            (line->index < span.end.row + 3));
 }
 
 static void
