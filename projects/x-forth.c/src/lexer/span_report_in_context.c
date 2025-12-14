@@ -29,14 +29,28 @@ line_free(line_t *line) {
 
 static char *
 make_underline(struct span_t span, size_t start, size_t end) {
-    (void) span;
-    (void) start;
-    (void) end;
-    return NULL;
+    string_builder_t *builder = make_string_builder();
+    for (size_t i = start; i < end; i++) {
+        if (span.start.index <= i && i < span.end.index) {
+            string_builder_append_char(builder, '~');
+        } else {
+            string_builder_append_char(builder, ' ');
+        }
+    }
+
+    char *content = string_builder_produce(builder);
+    string_builder_free(builder);
+
+    if (string_is_blank(content)) {
+        string_free(content);
+        return NULL;
+    } else {
+        return content;
+    }
 }
 
 static void
-mark_underline(struct span_t span, array_t *lines) {
+lines_mark_underline(array_t *lines, struct span_t span) {
     size_t cursor = 0;
     for (size_t i = 0; i < array_length(lines); i++) {
         line_t *line = array_get(lines, i);
@@ -88,7 +102,7 @@ span_report_in_context(struct span_t span, const char *context) {
         index++;
     }
 
-    mark_underline(span, lines);
+    lines_mark_underline(lines, span);
 
     size_t prefix_margin = get_prefix_margin(lines);
     for (size_t i = 0; i < array_length(lines); i++) {

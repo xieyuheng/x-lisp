@@ -1,7 +1,5 @@
 # outer interpreter
 
-[lexer] `make_underline`
-
 [builtin] `compile_if`
 
 [lang] `placeholder_t` -- one placeholder has many places to patch

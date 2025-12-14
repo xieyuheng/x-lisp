@@ -38,6 +38,17 @@ string_is_empty(const char *self) {
     return string_equal(self, "");
 }
 
+bool
+string_is_blank(const char *self) {
+    for (size_t i = 0; i < string_length(self); i++) {
+        if (!char_is_space(self[i])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 size_t
 string_bernstein_hash(const char *self) {
     const char *pointer = (const char *) self;
