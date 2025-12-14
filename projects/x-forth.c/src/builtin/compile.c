@@ -1,6 +1,6 @@
 #include "index.h"
 
-static void compile_return(vm_t *vm, definition_t *definition);
+static void compile_return(definition_t *definition);
 static void compile_token(vm_t *vm, definition_t *definition, const token_t *token);
 static void compile_word(vm_t *vm, definition_t *definition, const char *word);
 static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
@@ -18,7 +18,7 @@ compile_function(vm_t *vm, definition_t *definition) {
 
         token_t *token = list_shift(vm->tokens);
         if (string_equal(token->content, "@end")) {
-            compile_return(vm, definition);
+            compile_return(definition);
             token_free(token);
             return;
         } else if (string_equal(token->content, "[")) {
@@ -32,8 +32,7 @@ compile_function(vm_t *vm, definition_t *definition) {
 }
 
 static void
-compile_return(vm_t *vm, definition_t *definition) {
-    (void) vm;
+compile_return(definition_t *definition) {
     struct instr_t instr = { .op = OP_RETURN };
     function_definition_append_instr(definition, instr);
 }
@@ -160,8 +159,7 @@ is_op_word(const char *word) {
 }
 
 static void
-compile_op_word(vm_t *vm, definition_t *definition, const char *word) {
-    (void) vm;
+compile_op_word(definition_t *definition, const char *word) {
     assert(is_op_word(word));
 
     for (size_t i = 0; i < get_op_word_entry_count(); i++) {
@@ -176,7 +174,7 @@ compile_op_word(vm_t *vm, definition_t *definition, const char *word) {
 static void
 compile_word(vm_t *vm, definition_t *definition, const char *word) {
     if (string_equal(word, "@return")) {
-        compile_return(vm, definition);
+        compile_return(definition);
         return;
     }
 
@@ -186,7 +184,7 @@ compile_word(vm_t *vm, definition_t *definition, const char *word) {
     }
 
     if (is_op_word(word)) {
-        compile_op_word(vm, definition, word);
+        compile_op_word(definition, word);
         return;
     }
 
@@ -258,13 +256,7 @@ compile_tail_call(vm_t *vm, definition_t *definition) {
 }
 
 static void
-compile_local_store_stack(
-    vm_t *vm,
-    definition_t *definition,
-    stack_t *local_name_stack)
-{
-    (void) vm;
-
+compile_local_store_stack(definition_t *definition, stack_t *local_name_stack) {
     while (!stack_is_empty(local_name_stack)) {
         char *name = stack_pop(local_name_stack);
         size_t index = function_definition_get_binding_index(definition, name);
@@ -293,7 +285,7 @@ compile_parameters(vm_t *vm, definition_t *definition, const char *terminator) {
         token_t *token = list_shift(vm->tokens);
         if (string_equal(token->content, terminator)) {
             token_free(token);
-            compile_local_store_stack(vm, definition, local_name_stack);
+            compile_local_store_stack(definition, local_name_stack);
             return;
         }
 
@@ -320,7 +312,7 @@ compile_bindings(vm_t *vm, definition_t *definition, const char *terminator) {
         token_t *token = list_shift(vm->tokens);
         if (string_equal(token->content, terminator)) {
             token_free(token);
-            compile_local_store_stack(vm, definition, local_name_stack);
+            compile_local_store_stack(definition, local_name_stack);
             return;
         }
 
@@ -330,5 +322,5 @@ compile_bindings(vm_t *vm, definition_t *definition, const char *terminator) {
         token_free(token);
     }
 
-    compile_local_store_stack(vm, definition, local_name_stack);
+    compile_local_store_stack(definition, local_name_stack);
 }

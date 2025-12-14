@@ -26,11 +26,7 @@ code_lineno_of_index(const char *string, size_t index) {
 }
 
 void
-code_print_context(
-    const char *string,
-    size_t start,
-    size_t end
-) {
+code_print_context(const char *string, size_t start, size_t end) {
     size_t offset = 3;
 
     size_t start_lineno = code_lineno_of_index(string, start);
