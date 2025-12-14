@@ -27,16 +27,31 @@ line_free(line_t *line) {
     free(line);
 }
 
+static char *
+make_underline(struct span_t span, size_t start, size_t end) {
+    (void) span;
+    (void) start;
+    (void) end;
+    return NULL;
+}
+
 static void
 mark_underline(struct span_t span, array_t *lines) {
-    (void) span;
-    (void) lines;
+    size_t cursor = 0;
+    for (size_t i = 0; i < array_length(lines); i++) {
+        line_t *line = array_get(lines, i);
+        size_t start = cursor;
+        size_t end = cursor + string_length(line->content) + 1;
+        line->underline = make_underline(span, start, end);
+        cursor = end;
+    }
 }
 
 static bool
 line_is_close_to_span(line_t *line, struct span_t span) {
-    return ((span.start.row - 3 < line->index) &&
-            (line->index < span.end.row + 3));
+    size_t close_height = 3;
+    return ((span.start.row < line->index + close_height) &&
+            (line->index < span.end.row + close_height));
 }
 
 static size_t
@@ -55,6 +70,10 @@ static void
 line_report(line_t *line, size_t prefix_margin) {
     size_t line_count = line->index + 1;
     printf(" %*ld | %s\n", (int) prefix_margin, line_count, line->content);
+
+    if (line->underline) {
+        printf(" %*s | %s\n", (int) prefix_margin, "", line->underline);
+    }
 }
 
 void

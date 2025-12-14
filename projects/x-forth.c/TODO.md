@@ -1,6 +1,6 @@
 # outer interpreter
 
-[lexer] `mark_underline`
+[lexer] `make_underline`
 
 [builtin] `compile_if`
 

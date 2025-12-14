@@ -1,7 +1,7 @@
 #include "index.h"
 
 static void compile_return(definition_t *definition);
-static void compile_token(vm_t *vm, definition_t *definition, const token_t *token);
+static void compile_token(vm_t *vm, definition_t *definition, token_t *token);
 static void compile_word(vm_t *vm, definition_t *definition, const char *word);
 static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
 static void compile_tail_call(vm_t *vm, definition_t *definition);
@@ -18,15 +18,14 @@ compile_function(vm_t *vm, definition_t *definition) {
 
         token_t *token = list_shift(vm->tokens);
         if (string_equal(token->content, "@end")) {
-            compile_return(definition);
             token_free(token);
+            compile_return(definition);
             return;
         } else if (string_equal(token->content, "[")) {
-            compile_parameters(vm, definition, "]");
             token_free(token);
+            compile_parameters(vm, definition, "]");
         } else {
             compile_token(vm, definition, token);
-            token_free(token);
         }
     }
 }
@@ -38,7 +37,7 @@ compile_return(definition_t *definition) {
 }
 
 static void
-compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
+compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
         if (string_equal(token->content, "@assert")) {
@@ -69,11 +68,13 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
         }
 
         compile_word(vm, definition, token->content);
+        token_free(token);
         return;
     }
 
     case STRING_TOKEN: {
         TODO();
+        token_free(token);
         return;
     }
 
@@ -82,6 +83,7 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
             .op = OP_LITERAL_INT,
             .literal_int.content = string_parse_int(token->content),
         };
+        token_free(token);
         function_definition_append_instr(definition, instr);
         return;
     }
@@ -91,36 +93,44 @@ compile_token(vm_t *vm, definition_t *definition, const token_t *token) {
             .op = OP_LITERAL_FLOAT,
             .literal_float.content = string_parse_double(token->content),
         };
+        token_free(token);
         function_definition_append_instr(definition, instr);
         return;
     }
 
     case BRACKET_START_TOKEN: {
+        assert(string_equal(token->content, "["));
+        token_free(token);
         compile_bindings(vm, definition, "]");
         return;
     }
 
     case BRACKET_END_TOKEN: {
+        token_free(token);
         who_printf("missing BRACKET_START_TOKEN: %s\n", token->content);
         assert(false);
     }
 
     case QUOTATION_MARK_TOKEN: {
         TODO();
+        token_free(token);
         return;
     }
 
     case KEYWORD_TOKEN: {
         TODO();
+        token_free(token);
         return;
     }
 
     case HASHTAG_TOKEN: {
         TODO();
+        token_free(token);
         return;
     }
 
     case LINE_COMMENT_TOKEN: {
+        token_free(token);
         return;
     }
     }
