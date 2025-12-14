@@ -53,8 +53,8 @@ get_prefix_margin(array_t *lines) {
 
 static void
 line_report(line_t *line, size_t prefix_margin) {
-    (void) prefix_margin;
-    (void) line;
+    size_t line_count = line->index + 1;
+    printf(" %*ld | %s\n", (int) prefix_margin, line_count, line->content);
 }
 
 void

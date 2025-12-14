@@ -1,6 +1,5 @@
 # outer interpreter
-[lexer] `get_prefix_margin`
-[lexer] `line_report` -- take `prefix_margin`
+
 [lexer] `mark_underline`
 
 [builtin] `compile_if`
