@@ -71,7 +71,7 @@ line_is_close_to_span(line_t *line, struct span_t span) {
 static size_t
 get_prefix_margin(array_t *lines) {
     size_t length = array_length(lines);
-    size_t digit_count = 1;
+    size_t digit_count = 0;
     while (length > 0) {
         length = length / 10;
         digit_count++;
@@ -83,10 +83,9 @@ get_prefix_margin(array_t *lines) {
 static void
 line_report(line_t *line, size_t prefix_margin) {
     size_t line_count = line->index + 1;
-    printf(" %*ld | %s\n", (int) prefix_margin, line_count, line->content);
-
+    printf("%*ld | %s\n", (int) prefix_margin, line_count, line->content);
     if (line->underline) {
-        printf(" %*s | %s\n", (int) prefix_margin, "", line->underline);
+        printf("%*s | %s\n", (int) prefix_margin, "", line->underline);
     }
 }
 
