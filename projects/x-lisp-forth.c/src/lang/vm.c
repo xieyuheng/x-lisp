@@ -148,6 +148,11 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
+    case OP_PLACEHOLDER: {
+        who_printf("undefined name: %s\n", instr.placeholder.definition->name);
+        assert(false);
+    }
+
     case OP_LOCAL_LOAD: {
         value_t value = array_get(frame->locals, instr.local_load.index);
         stack_push(vm->value_stack, value);

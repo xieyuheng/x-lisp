@@ -12,6 +12,7 @@ struct instr_t {
         struct { definition_t *definition; } call;
         struct { definition_t *definition; } tail_call;
         struct { definition_t *definition; } var_store;
+        struct { definition_t *definition; } placeholder;
         struct { uint32_t index; } local_load;
         struct { uint32_t index; } local_store;
         struct { int32_t offset; } jump; // offset is based on next instr.
