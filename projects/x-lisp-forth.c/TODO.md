@@ -1,3 +1,5 @@
+@dup @drop @swap
+
 # outer interpreter
 
 [builtin] `compile_if`
@@ -21,9 +23,10 @@
 [value] remove `function_t`
 [value] remove `x_address`
 
-# curry
+# apply
 
-`n-curry`
+`@apply`
+`@tail-apply`
 
 # module system
 

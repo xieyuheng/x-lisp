@@ -185,6 +185,26 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
+    case OP_DUP: {
+        value_t value = stack_pop(vm->value_stack);
+        stack_push(vm->value_stack, value);
+        stack_push(vm->value_stack, value);
+        return;
+    }
+
+    case OP_DROP: {
+        stack_pop(vm->value_stack);
+        return;
+    }
+
+    case OP_SWAP: {
+        value_t x2 = stack_pop(vm->value_stack);
+        value_t x1 = stack_pop(vm->value_stack);
+        stack_push(vm->value_stack, x2);
+        stack_push(vm->value_stack, x1);
+        return;
+    }
+
     case OP_ASSERT: {
         value_t value = stack_pop(vm->value_stack);
         if (value != x_true) {
