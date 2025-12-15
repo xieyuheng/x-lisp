@@ -24,6 +24,11 @@ call(vm_t *vm, const definition_t *definition) {
         stack_push(vm->value_stack, value);
         return;
     }
+
+    case PLACEHOLDER_DEFINITION: {
+        who_printf("undefined name: %s\n", definition->name);
+        assert(false);
+    }
     }
 }
 

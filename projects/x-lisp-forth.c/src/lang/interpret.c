@@ -132,22 +132,27 @@ invoke(vm_t *vm, definition_t *definition) {
         size_t base_length = stack_length(vm->frame_stack);
         stack_push(vm->frame_stack, make_frame(definition));
         vm_execute_until(vm, base_length);
-        break;
+        return;
     }
 
     case PRIMITIVE_DEFINITION: {
         call_primitive(vm, definition->primitive_definition.primitive);
-        break;
+        return;
     }
 
     case VARIABLE_DEFINITION: {
         stack_push(vm->value_stack, definition->variable_definition.value);
-        break;
+        return;
     }
 
     case CONSTANT_DEFINITION: {
         stack_push(vm->value_stack, definition->variable_definition.value);
-        break;
+        return;
+    }
+
+    case PLACEHOLDER_DEFINITION: {
+        who_printf("undefined name: %s\n", definition->name);
+        assert(false);
     }
     }
 }

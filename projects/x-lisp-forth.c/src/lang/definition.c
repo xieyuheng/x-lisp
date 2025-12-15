@@ -45,6 +45,17 @@ make_constant_definition(mod_t *mod, char *name, value_t value) {
     return self;
 }
 
+definition_t *
+make_placeholder_definition(mod_t *mod, char *name) {
+    definition_t *self = new(definition_t);
+    self->kind = PLACEHOLDER_DEFINITION;
+    self->mod = mod;
+    self->name = name;
+    self->placeholder_definition.placeholders =
+        make_array_auto_with((free_fn_t *) placeholder_free);
+    return self;
+}
+
 void
 definition_free(definition_t *self) {
     free(self->name);
@@ -55,24 +66,32 @@ definition_free(definition_t *self) {
         if (self->function_definition.parameters)
             array_free(self->function_definition.parameters);
         free(self->function_definition.code_area);
-        break;
+        free(self);
+        return;
     }
 
     case PRIMITIVE_DEFINITION: {
         primitive_free(self->primitive_definition.primitive);
-        break;
+        free(self);
+        return;
     }
 
     case VARIABLE_DEFINITION: {
-        break;
+        free(self);
+        return;
     }
 
     case CONSTANT_DEFINITION: {
-        break;
-    }
+        free(self);
+        return;
     }
 
-    free(self);
+    case PLACEHOLDER_DEFINITION: {
+        array_free(self->placeholder_definition.placeholders);
+        free(self);
+        return;
+    }
+    }
 }
 
 static void

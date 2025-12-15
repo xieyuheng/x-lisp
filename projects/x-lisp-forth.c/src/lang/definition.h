@@ -5,6 +5,7 @@ typedef enum {
     PRIMITIVE_DEFINITION,
     VARIABLE_DEFINITION,
     CONSTANT_DEFINITION,
+    PLACEHOLDER_DEFINITION,
 } definition_kind_t;
 
 struct definition_t {
@@ -25,6 +26,7 @@ struct definition_t {
         struct { primitive_t *primitive; } primitive_definition;
         struct { value_t value; } variable_definition;
         struct { value_t value; } constant_definition;
+        struct { array_t *placeholders; } placeholder_definition;
     };
 };
 
@@ -32,6 +34,7 @@ definition_t *make_function_definition(mod_t *mod, char *name);
 definition_t *make_primitive_definition(mod_t *mod, char *name, primitive_t *primitive);
 definition_t *make_variable_definition(mod_t *mod, char *name, value_t value);
 definition_t *make_constant_definition(mod_t *mod, char *name, value_t value);
+definition_t *make_placeholder_d(mod_t *mod, char *name, value_t value);
 
 void definition_free(definition_t *self);
 
