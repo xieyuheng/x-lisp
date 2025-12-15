@@ -1,7 +1,3 @@
-# note
-
-ascii note about how @if @else @then is compiled
-
 # garbage collection
 
 # builtin structural data

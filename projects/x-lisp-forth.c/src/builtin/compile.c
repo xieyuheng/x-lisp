@@ -319,6 +319,23 @@ compile_bindings(vm_t *vm, definition_t *definition, const char *end_word) {
     compile_local_store_stack(definition, local_name_stack);
 }
 
+// @if ... @then ...
+//
+//   JUMP_IF_NOT then
+//   ...
+// then:
+//   ...
+
+// @if ... @else ... @then ...
+//
+//   JUMP_IF_NOT else
+//   ...
+//   JUMP then
+// else:
+//   ...
+// then:
+//   ...
+
 static void
 compile_if(
     vm_t *vm,
