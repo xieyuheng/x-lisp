@@ -219,7 +219,10 @@ compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
     }
 
     definition_t *found = mod_lookup(vm->mod, name);
-    assert(found);
+    if (!found) {
+        who_printf("undefined name: %s\n", name);
+        assert(false);
+    }
 
     switch (found->kind) {
     case PRIMITIVE_DEFINITION:
