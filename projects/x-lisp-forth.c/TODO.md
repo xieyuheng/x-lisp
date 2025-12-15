@@ -1,6 +1,11 @@
 # outer interpreter
 
-[lang] `placeholder_t` -- one placeholder has many places to patch
+[lang] `make_place`
+[lang] `place_free`
+
+[lang] `make_placeholder`
+[lang] `placeholder_free`
+
 [lang] `mod_t` -- has record of `placeholders`
 
 [lang] `OP_PLACEHOLDER` -- like `op_t` with `definition` field

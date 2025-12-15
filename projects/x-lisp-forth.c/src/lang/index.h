@@ -5,6 +5,7 @@
 #include "op.h"
 #include "instr.h"
 #include "definition.h"
+#include "placeholder.h"
 #include "mod.h"
 #include "vm.h"
 #include "frame.h"
