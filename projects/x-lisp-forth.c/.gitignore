@@ -1,10 +1,9 @@
-bin/tester
-bin/bundle
+src/x-lisp-forth
 
 # c
 *.o
 *.a
-*.po
+*.exe
 *.test
 *.snapshot
 

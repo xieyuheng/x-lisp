@@ -1,5 +1,4 @@
-bin/tester
-bin/bundle
+src/calculator
 
 # c
 *.o
