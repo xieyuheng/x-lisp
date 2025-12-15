@@ -37,7 +37,8 @@ compile_function(vm_t *vm, definition_t *definition) {
 
 static void
 compile_return(definition_t *definition) {
-    struct instr_t instr = { .op = OP_RETURN };
+    struct instr_t instr;
+    instr.op = OP_RETURN;
     function_definition_append_instr(definition, instr);
 }
 
@@ -46,28 +47,25 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
         if (string_equal(token->content, "@assert")) {
-            struct instr_t instr = {
-                .op = OP_ASSERT,
-                .assert.token = token,
-            };
+            struct instr_t instr;
+            instr.op = OP_ASSERT;
+            instr.assert.token = token;
             function_definition_append_instr(definition, instr);
             return;
         }
 
         if (string_equal(token->content, "@assert-equal")) {
-            struct instr_t instr = {
-                .op = OP_ASSERT_EQUAL,
-                .assert.token = token,
-            };
+            struct instr_t instr;
+            instr.op = OP_ASSERT_EQUAL;
+            instr.assert_equal.token = token;
             function_definition_append_instr(definition, instr);
             return;
         }
 
         if (string_equal(token->content, "@assert-not-equal")) {
-            struct instr_t instr = {
-                .op = OP_ASSERT_NOT_EQUAL,
-                .assert.token = token,
-            };
+            struct instr_t instr;
+            instr.op = OP_ASSERT_NOT_EQUAL;
+            instr.assert_not_equal.token = token;
             function_definition_append_instr(definition, instr);
             return;
         }
@@ -84,20 +82,18 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     }
 
     case INT_TOKEN: {
-        struct instr_t instr = {
-            .op = OP_LITERAL_INT,
-            .literal_int.content = string_parse_int(token->content),
-        };
+        struct instr_t instr;
+        instr.op = OP_LITERAL_INT;
+        instr.literal_int.content = string_parse_int(token->content);
         token_free(token);
         function_definition_append_instr(definition, instr);
         return;
     }
 
     case FLOAT_TOKEN: {
-        struct instr_t instr = {
-            .op = OP_LITERAL_FLOAT,
-            .literal_float.content = string_parse_double(token->content),
-        };
+        struct instr_t instr;
+        instr.op = OP_LITERAL_FLOAT;
+        instr.literal_float.content = string_parse_double(token->content);
         token_free(token);
         function_definition_append_instr(definition, instr);
         return;
@@ -183,7 +179,8 @@ compile_op_word(definition_t *definition, const char *word) {
     for (size_t i = 0; i < get_op_word_entry_count(); i++) {
         struct op_word_entry_t op_word_entry = op_word_entries[i];
         if (string_equal(op_word_entry.word, word)) {
-            struct instr_t instr = { .op = op_word_entry.op };
+            struct instr_t instr;
+            instr.op = op_word_entry.op;
             function_definition_append_instr(definition, instr);
         }
     }
@@ -214,10 +211,9 @@ static void
 compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
     if (function_definition_has_binding_index(definition, name)) {
         size_t index = function_definition_get_binding_index(definition, name);
-        struct instr_t instr = {
-            .op = OP_LOCAL_LOAD,
-            .local_load.index = index,
-        };
+        struct instr_t instr;
+        instr.op = OP_LOCAL_LOAD;
+        instr.local_load.index = index;
         function_definition_append_instr(definition, instr);
         return;
     }
@@ -228,28 +224,25 @@ compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
     switch (found->kind) {
     case PRIMITIVE_DEFINITION:
     case FUNCTION_DEFINITION: {
-        struct instr_t instr = {
-            .op = OP_CALL,
-            .call.definition = found,
-        };
+        struct instr_t instr;
+        instr.op = OP_CALL;
+        instr.call.definition = found;
         function_definition_append_instr(definition, instr);
         return;
     }
 
     case VARIABLE_DEFINITION: {
-        struct instr_t instr = {
-            .op = OP_VAR_LOAD,
-            .var_load.definition = found,
-        };
+        struct instr_t instr;
+        instr.op = OP_VAR_LOAD;
+        instr.var_load.definition = found;
         function_definition_append_instr(definition, instr);
         return;
     }
 
     case CONSTANT_DEFINITION: {
-        struct instr_t instr = {
-            .op = OP_CONST_LOAD,
-            .const_load.definition = found,
-        };
+        struct instr_t instr;
+        instr.op = OP_CONST_LOAD;
+        instr.const_load.definition = found;
         function_definition_append_instr(definition, instr);
         return;
     }
@@ -265,11 +258,9 @@ compile_tail_call(vm_t *vm, definition_t *definition) {
     assert(found);
     assert(found->kind == PRIMITIVE_DEFINITION ||
            found->kind == FUNCTION_DEFINITION);
-
-    struct instr_t instr = {
-        .op = OP_TAIL_CALL,
-        .tail_call.definition = found,
-    };
+    struct instr_t instr;
+    instr.op = OP_TAIL_CALL;
+    instr.tail_call.definition = found;
     function_definition_append_instr(definition, instr);
 }
 
@@ -278,10 +269,9 @@ compile_local_store_stack(definition_t *definition, stack_t *local_name_stack) {
     while (!stack_is_empty(local_name_stack)) {
         char *name = stack_pop(local_name_stack);
         size_t index = function_definition_get_binding_index(definition, name);
-        struct instr_t instr = {
-            .op = OP_LOCAL_STORE,
-            .local_store.index = index,
-        };
+        struct instr_t instr;
+        instr.op = OP_LOCAL_STORE;
+        instr.local_store.index = index;
         function_definition_append_instr(definition, instr);
     }
 
@@ -352,10 +342,9 @@ compile_if(
     struct token_meta_t meta
 ) {
     size_t if_index = definition->function_definition.code_length;
-    struct instr_t instr = {
-        .op = OP_JUMP_IF_NOT,
-        .jump_if_not.offset = 0,
-    };
+    struct instr_t instr;
+    instr.op = OP_JUMP_IF_NOT;
+    instr.jump_if_not.offset = 0;
     function_definition_append_instr(definition, instr);
 
     while (true) {
@@ -367,10 +356,8 @@ compile_if(
 
         token_t *token = list_shift(vm->tokens);
         if (string_equal(token->content, then_word)) {
-            struct instr_t instr = {
-                .op = OP_JUMP_IF_NOT,
-                .jump_if_not.offset = 0,
-            };
+            struct instr_t instr;
+            instr.op = OP_JUMP_IF_NOT;
             instr.jump_if_not.offset =
                 definition->function_definition.code_length -
                 if_index - instr_length(instr);
@@ -379,17 +366,14 @@ compile_if(
             return;
         } else if (string_equal(token->content, else_word)) {
             size_t else_index = definition->function_definition.code_length;
-            struct instr_t instr = {
-                .op = OP_JUMP,
-                .jump.offset = 0,
-            };
+            struct instr_t instr;
+            instr.op = OP_JUMP;
+            instr.jump.offset = 0;
             function_definition_append_instr(definition, instr);
 
             {
-                struct instr_t instr = {
-                    .op = OP_JUMP_IF_NOT,
-                    .jump_if_not.offset = 0,
-                };
+                struct instr_t instr;
+                instr.op = OP_JUMP_IF_NOT;
                 instr.jump_if_not.offset =
                     definition->function_definition.code_length -
                     if_index - instr_length(instr);
@@ -422,10 +406,8 @@ compile_else(
 
         token_t *token = list_shift(vm->tokens);
         if (string_equal(token->content, then_word)) {
-            struct instr_t instr = {
-                .op = OP_JUMP,
-                .jump.offset = 0,
-            };
+            struct instr_t instr;
+            instr.op = OP_JUMP;
             instr.jump.offset =
                 definition->function_definition.code_length -
                 else_index - instr_length(instr);
