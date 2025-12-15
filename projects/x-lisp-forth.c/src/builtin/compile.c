@@ -149,6 +149,9 @@ static struct op_word_entry_t op_word_entries[] = {
     { "fmul", OP_FMUL },
     { "fdiv", OP_FDIV },
     { "fmod", OP_FMOD },
+    { "@dup", OP_DUP },
+    { "@drop", OP_DROP },
+    { "@swap", OP_SWAP },
 };
 
 static size_t

@@ -1,4 +1,4 @@
-@dup @drop @swap
+`interpret_token` -- @dup @drop @swap
 
 # outer interpreter
 
