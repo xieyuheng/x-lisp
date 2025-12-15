@@ -31,3 +31,9 @@ make_placeholder(void) {
     self->places = make_array_auto_with((free_fn_t *) place_free);
     return self;
 }
+
+void
+placeholder_free(placeholder_t *self) {
+    array_free(self->places);
+    free(self);
+}

@@ -1,8 +1,5 @@
 # outer interpreter
 
-[lang] `make_placeholder`
-[lang] `placeholder_free`
-
 [lang] `mod_t` -- has record of `placeholders`
 
 [lang] `OP_PLACEHOLDER` -- like `op_t` with `definition` field
