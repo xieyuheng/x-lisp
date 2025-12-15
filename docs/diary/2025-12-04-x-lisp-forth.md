@@ -31,6 +31,6 @@ date: 2025-12-04
     - 这也方便编译 lambda。
       不用 lift，可以编译在当前位置。
 
-- x-lisp-forth.js
+- x-lisp-compiler.js
 
   - compile to x-forth

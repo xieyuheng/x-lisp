@@ -69,3 +69,21 @@ x-forth 有多份 builtin，
 
 这样虽然看起来简洁，
 但是可能没有模块系统灵活。
+
+# 结论
+
+应该选择方案 A。
+
+并且项目的名字应该改为 x-lisp-forth。
+因为 x-lisp-forth 的目的不是一个一般的供人直接使用的 forth,
+而是专门作为 x-lisp 的编译对象的 forth。
+
+毕竟，遵从 x-lisp 的参数顺序，
+就已经决定了这个 forth 不适合直接使用。
+
+也就是说解释器的 stack-based vm 这一层，
+以一个类 forth 语言的形式被暴露出来了，
+而不是作为内部的 API。
+
+未来可以将中文与英文的供人直接使用的 forth 合并，
+叫做 x-forth 或 cicada-forth。

@@ -21,9 +21,11 @@
 [value] remove `function_t`
 [value] remove `x_address`
 
-# module system
+# curry
 
-# apply
+`n-curry`
+
+# module system
 
 # read-execute-loop
 

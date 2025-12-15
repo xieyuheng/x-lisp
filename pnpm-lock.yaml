@@ -109,7 +109,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  projects/x-lisp-forth.js:
+  projects/x-lisp-compiler.js:
     dependencies:
       '@xieyuheng/cmd.js':
         specifier: workspace:*

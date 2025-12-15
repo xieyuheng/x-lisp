@@ -5,31 +5,29 @@ date: 2025-12-04
 
 # 价值
 
-价值 A：
+x-lisp 的首要目标是加快新语言开发的速度。
 
-- 一个独立自主的语言。
+要适合用来写新的解释器与编译器，目的是为了探索新的计算模型。比如：
 
-- 适合用来写新的解释器与编译器，目的是为了探索新的计算模型。比如：
+- interaction net
+- pi-calculus
+- rewrite system
+- propagator model
+- logic constraint programming
+- reactive programming
 
-  - interaction net
-  - pi-calculus
-  - rewrite system
-  - propagator model
-  - logic constraint programming
-  - reactive programming
+所假设的信条是（belief）：
+在 lisp 的语法框架内，可以更快地设计和迭代新语法，
+从而加快新语言的开发速度。
 
-- 在 lisp 的语法框架内，可以更快地设计新语法，迭代新语言。
+次要目标：
 
-价值 B：
-
-- 方便用 C 扩展，可以作为 app 的脚本语言：
-
-  - uxn 风格的 canvas
-  - uxn 风格的 flash card app
+- 方便用 C 扩展，可以作为用 C 实现的 library 和 app 的脚本语言。
+- 尽量使实现独立，简化所依赖的技术栈。
 
 # 范围
 
-只实简单的 dynamic type，所有的 value 都有 tag。
+只实现简单的 dynamic type，所有的 value 都有 tag。
 
 分阶段实现：
 
@@ -71,7 +69,7 @@ date: 2025-12-04
   - [ ] builtin structural data
   - [ ] module system
 
-# 关卡 2 -- x-lisp-forth.js
+# 关卡 2 -- x-lisp-compiler.js
 
 成果：
 

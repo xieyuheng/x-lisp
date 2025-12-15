@@ -1,5 +1,5 @@
 {
-  "name": "@xieyuheng/x-lisp-forth.js",
+  "name": "@xieyuheng/x-lisp-compiler.js",
   "version": "0.1.0",
   "repository": "github:xieyuheng/x-lisp",
   "license": "GPL-3.0-or-later",
@@ -12,7 +12,7 @@
     "bin"
   ],
   "bin": {
-    "x-lisp-forth.js": "lib/main.js"
+    "x-lisp-compiler.js": "lib/main.js"
   },
   "scripts": {
     "clean": "rm -rf lib",
