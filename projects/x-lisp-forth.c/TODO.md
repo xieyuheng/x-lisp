@@ -1,6 +1,5 @@
 # outer interpreter
 
-[lang] `make_place`
 [lang] `place_free`
 
 [lang] `make_placeholder`
@@ -17,6 +16,10 @@
 [lang] `mod_define` -- call `placeholder_patch`
 
 test -- order of definition does not matter
+
+# note
+
+ascii note about how @if @else @then is compiled
 
 # garbage collection
 
