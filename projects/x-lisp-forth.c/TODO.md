@@ -1,7 +1,5 @@
 # outer interpreter
 
-[lang] `mod_t` -- has record of `placeholders`
-
 [lang] `OP_PLACEHOLDER` -- like `op_t` with `definition` field
 [lang] `vm_execute_instr` -- report error on `OP_PLACEHOLDER` -- find placeholder in `vm->mod`
 
