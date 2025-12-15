@@ -1,10 +1,9 @@
 # outer interpreter
 
-[lang] `OP_PLACEHOLDER` -- like `op_t` with `definition` field
-[lang] `vm_execute_instr` -- report error on `OP_PLACEHOLDER` -- find placeholder in `vm->mod`
-
-[lang] `compile_invoke` -- compile `OP_PLACEHOLDER`, and call `mod_undefined_place` to create placeholder
-
+[lang] `placeholder_t` -- keep `place_t`
+[lang] add `PLACEHOLDER_DEFINITION` -- has `places`
+[lang] `mod_hold_place`
+[lang] `compile_invoke` -- compile `OP_PLACEHOLDER`, and call `mod_hold_place` to create placeholder
 [lang] `placeholder_patch`
 [lang] `mod_define` -- call `placeholder_patch`
 

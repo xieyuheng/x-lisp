@@ -3,7 +3,6 @@
 struct mod_t {
     path_t *path;
     record_t *definitions;
-    record_t *placeholders;
 };
 
 mod_t *make_mod(path_t *path);
