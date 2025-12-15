@@ -17,7 +17,27 @@ mod_free(mod_t *self) {
 
 void
 mod_define(mod_t *self, const char *name, definition_t *definition) {
-    record_insert_or_fail(self->definitions, name, definition);
+    definition_t *found = record_get(self->definitions, name);
+    if (found) {
+        if (found->kind != PLACEHOLDER_DEFINITION) {
+            who_printf("can not redefine name: %s\n", name);
+            assert(false);
+
+        }
+
+        size_t length =
+            array_length(found->placeholder_definition.placeholders);
+        for (size_t i = 0; i < length; i ++) {
+            placeholder_t *placeholder =
+                array_get(found->placeholder_definition.placeholders, i);
+            function_definition_put_definition(
+                placeholder->definition,
+                placeholder->code_index,
+                definition);
+        }
+    }
+
+    record_put(self->definitions, name, definition);
 }
 
 definition_t *

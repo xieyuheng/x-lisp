@@ -1,8 +1,5 @@
 # outer interpreter
 
-[lang] `placeholder_patch`
-[lang] `mod_define` -- call `placeholder_patch`
-
 test -- order of definition does not matter
 
 # note

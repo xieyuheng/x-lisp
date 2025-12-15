@@ -40,6 +40,7 @@ void definition_free(definition_t *self);
 
 void function_definition_append_instr(definition_t *self, struct instr_t instr);
 void function_definition_put_instr(definition_t *self, size_t code_index, struct instr_t instr);
+void function_definition_put_definition(definition_t *self, size_t code_index, definition_t *definition);
 
 void function_definition_add_binding(definition_t *self, const char *name);
 bool function_definition_has_binding_index(definition_t *self, const char *name);

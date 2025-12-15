@@ -1,10 +1,5 @@
 #include "index.h"
 
-struct placeholder_t {
-    definition_t *definition;
-    size_t code_index;
-};
-
 placeholder_t *
 make_placeholder(definition_t *definition, size_t code_index) {
     assert(definition->kind == FUNCTION_DEFINITION);

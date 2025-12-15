@@ -139,6 +139,20 @@ void function_definition_put_instr(
 }
 
 void
+function_definition_put_definition(
+    definition_t *self,
+    size_t code_index,
+    definition_t *definition
+) {
+    assert(self->kind == FUNCTION_DEFINITION);
+    assert(code_index + sizeof(definition_t) <
+           self->function_definition.code_area_size);
+
+    uint8_t *code = self->function_definition.code_area + code_index;
+    memory_store_little_endian(code, definition);
+}
+
+void
 function_definition_add_binding(definition_t *self, const char *name) {
     assert(self->kind == FUNCTION_DEFINITION);
 
