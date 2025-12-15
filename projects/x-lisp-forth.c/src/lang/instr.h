@@ -11,8 +11,6 @@ struct instr_t {
         struct { double content; } literal_float;
         struct { definition_t *definition; } call;
         struct { definition_t *definition; } tail_call;
-        struct { definition_t *definition; } const_load;
-        struct { definition_t *definition; } var_load;
         struct { definition_t *definition; } var_store;
         struct { uint32_t index; } local_load;
         struct { uint32_t index; } local_store;

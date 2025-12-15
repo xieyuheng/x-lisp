@@ -17,8 +17,6 @@ typedef enum {
     OP_RETURN,
     OP_CALL,
     OP_TAIL_CALL,
-    OP_CONST_LOAD,
-    OP_VAR_LOAD,
     OP_VAR_STORE,
     OP_LOCAL_LOAD,
     OP_LOCAL_STORE,

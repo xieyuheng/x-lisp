@@ -2,14 +2,28 @@
 
 inline void
 call(vm_t *vm, const definition_t *definition) {
-    if (definition->kind == PRIMITIVE_DEFINITION) {
+    switch (definition->kind) {
+    case PRIMITIVE_DEFINITION: {
         call_primitive(vm, definition->primitive_definition.primitive);
         return;
-    } else if (definition->kind == FUNCTION_DEFINITION) {
+    }
+
+    case FUNCTION_DEFINITION: {
         stack_push(vm->frame_stack, make_frame(definition));
         return;
-    } else {
-        unreachable();
+    }
+
+    case VARIABLE_DEFINITION: {
+        value_t value = definition->variable_definition.value;
+        stack_push(vm->value_stack, value);
+        return;
+    }
+
+    case CONSTANT_DEFINITION: {
+        value_t value = definition->constant_definition.value;
+        stack_push(vm->value_stack, value);
+        return;
+    }
     }
 }
 

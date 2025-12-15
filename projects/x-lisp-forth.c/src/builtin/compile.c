@@ -224,32 +224,11 @@ compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
         assert(false);
     }
 
-    switch (found->kind) {
-    case PRIMITIVE_DEFINITION:
-    case FUNCTION_DEFINITION: {
-        struct instr_t instr;
-        instr.op = OP_CALL;
-        instr.call.definition = found;
-        function_definition_append_instr(definition, instr);
-        return;
-    }
-
-    case VARIABLE_DEFINITION: {
-        struct instr_t instr;
-        instr.op = OP_VAR_LOAD;
-        instr.var_load.definition = found;
-        function_definition_append_instr(definition, instr);
-        return;
-    }
-
-    case CONSTANT_DEFINITION: {
-        struct instr_t instr;
-        instr.op = OP_CONST_LOAD;
-        instr.const_load.definition = found;
-        function_definition_append_instr(definition, instr);
-        return;
-    }
-    }
+    struct instr_t instr;
+    instr.op = OP_CALL;
+    instr.call.definition = found;
+    function_definition_append_instr(definition, instr);
+    return;
 }
 
 static void

@@ -137,26 +137,14 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
 
     case OP_TAIL_CALL: {
         stack_pop(vm->frame_stack);
-        frame_free(frame);
         call(vm, instr.call.definition);
-        return;
-    }
-
-    case OP_CONST_LOAD: {
-        value_t value = instr.const_load.definition->constant_definition.value;
-        stack_push(vm->value_stack, value);
-        return;
-    }
-
-    case OP_VAR_LOAD: {
-        value_t value = instr.var_load.definition->variable_definition.value;
-        stack_push(vm->value_stack, value);
+        frame_free(frame);
         return;
     }
 
     case OP_VAR_STORE: {
         value_t value = stack_pop(vm->value_stack);
-        instr.var_load.definition->variable_definition.value = value;
+        instr.var_store.definition->variable_definition.value = value;
         return;
     }
 
