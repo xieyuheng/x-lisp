@@ -1,10 +1,10 @@
 @assert-equal fail
   lhs: 0
   rhs: 1
-forth/tests/syntax/assert-fail.error.fth:6:6
-  4 | 2 2 @assert-equal
-  5 | 1 1 @assert-equal
-  6 | 0 1 @assert-equal
-    |     ~~~~~~~~~~~~~ 
-  7 | 1 1 @assert-equal
-  8 | 2 2 @assert-equal
+forth/tests/syntax/assert-fail.error.fth:7:7
+  5 |   2 2 @assert-equal
+  6 |   1 1 @assert-equal
+  7 |   0 1 @assert-equal
+    |       ~~~~~~~~~~~~~ 
+  8 |   1 1 @assert-equal
+  9 |   2 2 @assert-equal
