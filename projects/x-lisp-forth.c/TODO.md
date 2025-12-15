@@ -1,7 +1,5 @@
 # outer interpreter
 
-[lang] `mod_hold_place`
-[lang] `compile_invoke` -- compile `OP_PLACEHOLDER`, and call `mod_hold_place` to create placeholder
 [lang] `placeholder_patch`
 [lang] `mod_define` -- call `placeholder_patch`
 

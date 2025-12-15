@@ -7,6 +7,7 @@ struct placeholder_t {
 
 placeholder_t *
 make_placeholder(definition_t *definition, size_t code_index) {
+    assert(definition->kind == FUNCTION_DEFINITION);
     placeholder_t *self = new(placeholder_t);
     self->definition = definition;
     self->code_index = code_index;

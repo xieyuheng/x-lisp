@@ -15,12 +15,20 @@ mod_free(mod_t *self) {
     free(self);
 }
 
+void
+mod_define(mod_t *self, const char *name, definition_t *definition) {
+    record_insert_or_fail(self->definitions, name, definition);
+}
+
 definition_t *
 mod_lookup(mod_t *self, const char *name) {
     return record_get(self->definitions, name);
 }
 
-void
-mod_define(mod_t *self, const char *name, definition_t *definition) {
-    record_insert_or_fail(self->definitions, name, definition);
+definition_t *
+mod_lookup_or_placeholder(mod_t *self, const char *name) {
+    definition_t *definition = mod_lookup(self, name);
+    if (definition) return definition;
+
+    return define_placeholder(self, name);
 }

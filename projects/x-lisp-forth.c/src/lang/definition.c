@@ -164,3 +164,15 @@ function_definition_get_binding_index(definition_t *self, const char *name) {
     assert(function_definition_has_binding_index(self, name));
     return (size_t) record_get(self->function_definition.binding_indexes, name);
 }
+
+void
+placeholder_definition_hold_place(
+    definition_t *self,
+    definition_t *definition,
+    size_t code_index
+) {
+    assert(self->kind == PLACEHOLDER_DEFINITION);
+    array_push(
+        self->placeholder_definition.placeholders,
+        make_placeholder(definition, code_index));
+}

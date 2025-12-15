@@ -34,7 +34,7 @@ definition_t *make_function_definition(mod_t *mod, char *name);
 definition_t *make_primitive_definition(mod_t *mod, char *name, primitive_t *primitive);
 definition_t *make_variable_definition(mod_t *mod, char *name, value_t value);
 definition_t *make_constant_definition(mod_t *mod, char *name, value_t value);
-definition_t *make_placeholder_d(mod_t *mod, char *name, value_t value);
+definition_t *make_placeholder_definition(mod_t *mod, char *name);
 
 void definition_free(definition_t *self);
 
@@ -44,3 +44,5 @@ void function_definition_put_instr(definition_t *self, size_t code_index, struct
 void function_definition_add_binding(definition_t *self, const char *name);
 bool function_definition_has_binding_index(definition_t *self, const char *name);
 size_t function_definition_get_binding_index(definition_t *self, const char *name);
+
+void placeholder_definition_hold_place(definition_t *self, definition_t *definition, size_t code_index);
