@@ -106,6 +106,19 @@ function_definition_append_instr(definition_t *self, struct instr_t instr) {
     self->function_definition.code_length += length;
 }
 
+void function_definition_put_instr(
+    definition_t *self,
+    size_t code_index,
+    struct instr_t instr
+) {
+    assert(self->kind == FUNCTION_DEFINITION);
+    size_t length = instr_length(instr);
+    assert(code_index + length < self->function_definition.code_area_size);
+
+    uint8_t *code = self->function_definition.code_area + code_index;
+    instr_encode(code, instr);
+}
+
 void
 function_definition_add_binding(definition_t *self, const char *name) {
     assert(self->kind == FUNCTION_DEFINITION);

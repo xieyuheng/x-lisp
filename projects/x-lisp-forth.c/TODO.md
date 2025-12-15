@@ -1,6 +1,6 @@
 # outer interpreter
 
-[builtin] `compile_if`
+[builtin] `compile_else` -- support @if @else @then
 
 [lang] `placeholder_t` -- one placeholder has many places to patch
 [lang] `mod_t` -- has record of `placeholders`
@@ -8,6 +8,8 @@
 [lang] `mod_define` -- call `placeholder_patch`
 [lang] `OP_PLACEHOLDER` -- like `op_t` with `definition` field
 [lang] `vm_execute_instr` -- report error on `OP_PLACEHOLDER` -- find placeholder in `vm->mod`
+
+test -- order of definition does not matter
 
 # garbage collection
 

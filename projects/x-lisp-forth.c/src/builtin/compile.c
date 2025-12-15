@@ -5,8 +5,9 @@ static void compile_token(vm_t *vm, definition_t *definition, token_t *token);
 static void compile_word(vm_t *vm, definition_t *definition, const char *word);
 static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
 static void compile_tail_call(vm_t *vm, definition_t *definition);
-static void compile_parameters(vm_t *vm, definition_t *definition, const char *terminator);
-static void compile_bindings(vm_t *vm, definition_t *definition, const char *terminator);
+static void compile_parameters(vm_t *vm, definition_t *definition, const char *end_word);
+static void compile_bindings(vm_t *vm, definition_t *definition, const char *end_word);
+static void compile_if(vm_t *vm, definition_t *definition, const char *else_word, const char *then_word, struct token_meta_t meta);
 
 void
 compile_function(vm_t *vm, definition_t *definition) {
@@ -21,6 +22,9 @@ compile_function(vm_t *vm, definition_t *definition) {
             token_free(token);
             compile_return(definition);
             return;
+        } else if (string_equal(token->content, "@if")) {
+            compile_if(vm, definition, "@else", "@then", token->meta);
+            token_free(token);
         } else if (string_equal(token->content, "[")) {
             token_free(token);
             compile_parameters(vm, definition, "]");
@@ -284,19 +288,19 @@ compile_local_store_stack(definition_t *definition, stack_t *local_name_stack) {
 }
 
 static void
-compile_parameters(vm_t *vm, definition_t *definition, const char *terminator) {
+compile_parameters(vm_t *vm, definition_t *definition, const char *end_word) {
     definition->function_definition.parameters = make_string_array_auto();
 
     stack_t *local_name_stack = make_string_stack();
 
     while (true) {
         if (list_is_empty(vm->tokens)) {
-            who_printf("missing terminator: %s\n", terminator);
+            who_printf("missing end_word: %s\n", end_word);
             assert(false);
         }
 
         token_t *token = list_shift(vm->tokens);
-        if (string_equal(token->content, terminator)) {
+        if (string_equal(token->content, end_word)) {
             token_free(token);
             compile_local_store_stack(definition, local_name_stack);
             return;
@@ -313,17 +317,17 @@ compile_parameters(vm_t *vm, definition_t *definition, const char *terminator) {
 }
 
 static void
-compile_bindings(vm_t *vm, definition_t *definition, const char *terminator) {
+compile_bindings(vm_t *vm, definition_t *definition, const char *end_word) {
     stack_t *local_name_stack = make_string_stack();
 
     while (true) {
         if (list_is_empty(vm->tokens)) {
-            who_printf("missing terminator: %s\n", terminator);
+            who_printf("missing end_word: %s\n", end_word);
             assert(false);
         }
 
         token_t *token = list_shift(vm->tokens);
-        if (string_equal(token->content, terminator)) {
+        if (string_equal(token->content, end_word)) {
             token_free(token);
             compile_local_store_stack(definition, local_name_stack);
             return;
@@ -336,4 +340,46 @@ compile_bindings(vm_t *vm, definition_t *definition, const char *terminator) {
     }
 
     compile_local_store_stack(definition, local_name_stack);
+}
+
+static void
+compile_if(
+    vm_t *vm,
+    definition_t *definition,
+    const char *else_word,
+    const char *then_word,
+    struct token_meta_t meta
+) {
+    size_t code_index = definition->function_definition.code_length;
+    struct instr_t instr = {
+        .op = OP_JUMP_IF_NOT,
+        .jump_if_not.offset = 0,
+    };
+    function_definition_append_instr(definition, instr);
+
+    while (true) {
+        if (list_is_empty(vm->tokens)) {
+            who_printf("missing then_word: %s\n", then_word);
+            token_meta_report(meta);
+            assert(false);
+        }
+
+        token_t *token = list_shift(vm->tokens);
+        if (string_equal(token->content, then_word)) {
+            struct instr_t instr = {
+                .op = OP_JUMP_IF_NOT,
+                .jump_if_not.offset = 0,
+            };
+            instr.jump_if_not.offset =
+                definition->function_definition.code_length -
+                code_index - instr_length(instr);
+            function_definition_put_instr(definition, code_index, instr);
+            token_free(token);
+            return;
+        } else if (string_equal(token->content, else_word)) {
+            assert(false && "TODO");
+        } else {
+            compile_token(vm, definition, token);
+        }
+    }
 }

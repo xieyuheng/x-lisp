@@ -179,7 +179,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
 
     case OP_JUMP_IF_NOT: {
         value_t value = stack_pop(vm->value_stack);
-        if (value == x_true) {
+        if (value == x_false) {
             frame->pc += instr.jump.offset;
         }
         return;
