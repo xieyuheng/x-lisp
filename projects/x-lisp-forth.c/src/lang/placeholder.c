@@ -15,6 +15,11 @@ make_place(definition_t *definition, size_t code_index) {
     return self;
 }
 
+static void
+place_free(place_t *self) {
+    free(self);
+}
+
 struct placeholder_t {
     array_t *places;
 };
@@ -23,7 +28,6 @@ placeholder_t *
 make_placeholder(void) {
     (void) make_place;
     placeholder_t *self = new(placeholder_t);
-    // self->places = make_array_auto_with();
-    self->places = make_array_auto();
+    self->places = make_array_auto_with((free_fn_t *) place_free);
     return self;
 }

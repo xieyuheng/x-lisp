@@ -1,7 +1,5 @@
 # outer interpreter
 
-[lang] `place_free`
-
 [lang] `make_placeholder`
 [lang] `placeholder_free`
 
