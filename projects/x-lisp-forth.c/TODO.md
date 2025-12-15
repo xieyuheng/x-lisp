@@ -1,3 +1,26 @@
+# definition as value
+
+[value] `definition_t` as value
+
+`OP_REF`
+
+[value] `@ref <name>` -- return `definition_t` to stack
+
+[value] remove `function_t`
+[value] remove `x_address`
+
+`OP_APPLY`
+`OP_TAIL_APPLY`
+
+`@apply`
+`@tail-apply`
+
+rename `OP_VAR_STORE` to `OP_ASSIGN` -- like `OP_APPLY`
+
+- take definition from stack
+
+`@assign`
+
 # garbage collection
 
 # builtin structural data
@@ -6,14 +29,7 @@
 [lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`
 [lang] `vm_execute_instr` -- `OP_LITERAL_KEYWORD`
 
-[value] fix `ref_t` -- should be reference to `definition`
-[value] remove `function_t`
-[value] remove `x_address`
-
-# apply
-
-`@apply`
-`@tail-apply`
+# feature complete
 
 # module system
 
