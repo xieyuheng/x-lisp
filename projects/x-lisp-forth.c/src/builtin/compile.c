@@ -218,12 +218,11 @@ compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
         return;
     }
 
-    definition_t *found = mod_lookup(vm->mod, name);
-    // definition_t *found = mod_lookup_or_placeholder(vm->mod, name);
-    // if (found->kind == PLACEHOLDER_DEFINITION) {
-    //     size_t code_index = definition->function_definition.code_length + 1;
-    //     placeholder_definition_hold_place(found, definition, code_index);
-    // }
+    definition_t *found = mod_lookup_or_placeholder(vm->mod, name);
+    if (found->kind == PLACEHOLDER_DEFINITION) {
+        size_t code_index = definition->function_definition.code_length + 1;
+        placeholder_definition_hold_place(found, definition, code_index);
+    }
 
     struct instr_t instr;
     instr.op = OP_CALL;
@@ -236,14 +235,13 @@ static void
 compile_tail_call(vm_t *vm, definition_t *definition) {
     token_t *token = list_shift(vm->tokens);
     assert(token->kind == SYMBOL_TOKEN);
-    definition_t *found = mod_lookup(vm->mod, token->content);
-    // definition_t *found = mod_lookup_or_placeholder(vm->mod, token->content);
+    definition_t *found = mod_lookup_or_placeholder(vm->mod, token->content);
     token_free(token);
 
-    // if (found->kind == PLACEHOLDER_DEFINITION) {
-    //     size_t code_index = definition->function_definition.code_length + 1;
-    //     placeholder_definition_hold_place(found, definition, code_index);
-    // }
+    if (found->kind == PLACEHOLDER_DEFINITION) {
+        size_t code_index = definition->function_definition.code_length + 1;
+        placeholder_definition_hold_place(found, definition, code_index);
+    }
 
     struct instr_t instr;
     instr.op = OP_TAIL_CALL;
