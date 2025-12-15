@@ -1,7 +1,3 @@
-# outer interpreter
-
-test -- order of definition does not matter
-
 # note
 
 ascii note about how @if @else @then is compiled

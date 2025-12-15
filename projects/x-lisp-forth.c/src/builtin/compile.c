@@ -15,7 +15,8 @@ compile_function(vm_t *vm, definition_t *definition) {
     assert(definition->kind == FUNCTION_DEFINITION);
     while (true) {
         if (list_is_empty(vm->tokens)) {
-            assert(false);
+            who_printf("missing @end\n");
+            exit(1);
         }
 
         token_t *token = list_shift(vm->tokens);
@@ -109,7 +110,7 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     case BRACKET_END_TOKEN: {
         token_free(token);
         who_printf("missing BRACKET_START_TOKEN: %s\n", token->content);
-        assert(false);
+        exit(1);
     }
 
     case QUOTATION_MARK_TOKEN: {
@@ -272,7 +273,7 @@ compile_parameters(vm_t *vm, definition_t *definition, const char *end_word) {
     while (true) {
         if (list_is_empty(vm->tokens)) {
             who_printf("missing end_word: %s\n", end_word);
-            assert(false);
+            exit(1);
         }
 
         token_t *token = list_shift(vm->tokens);
@@ -299,7 +300,7 @@ compile_bindings(vm_t *vm, definition_t *definition, const char *end_word) {
     while (true) {
         if (list_is_empty(vm->tokens)) {
             who_printf("missing end_word: %s\n", end_word);
-            assert(false);
+            exit(1);
         }
 
         token_t *token = list_shift(vm->tokens);
@@ -336,7 +337,7 @@ compile_if(
         if (list_is_empty(vm->tokens)) {
             who_printf("missing then_word: %s\n", then_word);
             token_meta_report(meta);
-            assert(false);
+            exit(1);
         }
 
         token_t *token = list_shift(vm->tokens);
@@ -386,7 +387,7 @@ compile_else(
         if (list_is_empty(vm->tokens)) {
             who_printf("missing then_word: %s\n", then_word);
             token_meta_report(meta);
-            assert(false);
+            exit(1);
         }
 
         token_t *token = list_shift(vm->tokens);

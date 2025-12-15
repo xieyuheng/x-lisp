@@ -152,7 +152,7 @@ invoke(vm_t *vm, definition_t *definition) {
 
     case PLACEHOLDER_DEFINITION: {
         who_printf("undefined name: %s\n", definition->name);
-        assert(false);
+        exit(1);
     }
     }
 }

@@ -21,7 +21,7 @@ mod_define(mod_t *self, const char *name, definition_t *definition) {
     if (found) {
         if (found->kind != PLACEHOLDER_DEFINITION) {
             who_printf("can not redefine name: %s\n", name);
-            assert(false);
+            exit(1);
 
         }
 

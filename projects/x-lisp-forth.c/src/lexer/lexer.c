@@ -88,7 +88,7 @@ lexer_consume(lexer_t *self) {
     }
 
     where_printf("can not consume char: %c", lexer_next_char(self));
-    assert(false);
+    exit(1);
 }
 
 list_t *

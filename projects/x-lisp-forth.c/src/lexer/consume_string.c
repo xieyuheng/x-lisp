@@ -14,7 +14,7 @@ consume_string(lexer_t *lexer) {
     while (true) {
         if (lexer_is_finished(lexer)) {
             where_printf("double qouted string mismatch");
-            assert(false);
+            exit(1);
         }
 
         if (lexer_next_char(lexer) == '"') {
@@ -38,7 +38,7 @@ consume_string(lexer_t *lexer) {
             else if (c == '\\') string_builder_append_char(builder, '\\');
             else {
                 where_printf("unknown escape char");
-                assert(false);
+                exit(1);
             }
 
             lexer_forward(lexer, 1);
