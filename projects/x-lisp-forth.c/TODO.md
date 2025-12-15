@@ -1,7 +1,5 @@
 # outer interpreter
 
-[builtin] `compile_else` -- support @if @else @then
-
 [lang] `placeholder_t` -- one placeholder has many places to patch
 [lang] `mod_t` -- has record of `placeholders`
 [lang] `placeholder_patch`

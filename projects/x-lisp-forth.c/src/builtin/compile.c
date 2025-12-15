@@ -8,6 +8,7 @@ static void compile_tail_call(vm_t *vm, definition_t *definition);
 static void compile_parameters(vm_t *vm, definition_t *definition, const char *end_word);
 static void compile_bindings(vm_t *vm, definition_t *definition, const char *end_word);
 static void compile_if(vm_t *vm, definition_t *definition, const char *else_word, const char *then_word, struct token_meta_t meta);
+static void compile_else(vm_t *vm, definition_t *definition, size_t else_index, const char *then_word, struct token_meta_t meta);
 
 void
 compile_function(vm_t *vm, definition_t *definition) {
@@ -350,7 +351,7 @@ compile_if(
     const char *then_word,
     struct token_meta_t meta
 ) {
-    size_t code_index = definition->function_definition.code_length;
+    size_t if_index = definition->function_definition.code_length;
     struct instr_t instr = {
         .op = OP_JUMP_IF_NOT,
         .jump_if_not.offset = 0,
@@ -372,13 +373,66 @@ compile_if(
             };
             instr.jump_if_not.offset =
                 definition->function_definition.code_length -
-                code_index - instr_length(instr);
-            function_definition_put_instr(definition, code_index, instr);
+                if_index - instr_length(instr);
+            function_definition_put_instr(definition, if_index, instr);
             token_free(token);
             return;
         } else if (string_equal(token->content, else_word)) {
-            assert(false && "TODO");
+            size_t else_index = definition->function_definition.code_length;
+            struct instr_t instr = {
+                .op = OP_JUMP,
+                .jump.offset = 0,
+            };
+            function_definition_append_instr(definition, instr);
+
+            {
+                struct instr_t instr = {
+                    .op = OP_JUMP_IF_NOT,
+                    .jump_if_not.offset = 0,
+                };
+                instr.jump_if_not.offset =
+                    definition->function_definition.code_length -
+                    if_index - instr_length(instr);
+                function_definition_put_instr(definition, if_index, instr);
+            }
+
+            compile_else(vm, definition, else_index, then_word, token->meta);
+            token_free(token);
+            return;
         } else {
+            compile_token(vm, definition, token);
+        }
+    }
+}
+
+static void
+compile_else(
+    vm_t *vm,
+    definition_t *definition,
+    size_t else_index,
+    const char *then_word,
+    struct token_meta_t meta
+) {
+    while (true) {
+        if (list_is_empty(vm->tokens)) {
+            who_printf("missing then_word: %s\n", then_word);
+            token_meta_report(meta);
+            assert(false);
+        }
+
+        token_t *token = list_shift(vm->tokens);
+        if (string_equal(token->content, then_word)) {
+            struct instr_t instr = {
+                .op = OP_JUMP,
+                .jump.offset = 0,
+            };
+            instr.jump.offset =
+                definition->function_definition.code_length -
+                else_index - instr_length(instr);
+            function_definition_put_instr(definition, else_index, instr);
+            token_free(token);
+            return;
+        }  else {
             compile_token(vm, definition, token);
         }
     }

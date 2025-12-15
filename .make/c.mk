@@ -6,7 +6,7 @@ cflags += -O3
 cflags += -falign-functions=8
 cflags += -funsigned-char
 cflags += -fno-omit-frame-pointer
-cflags += -flto
+cflags += -flto=auto
 cflags += -I/usr/local/include
 cflags += -Wall
 cflags += -Wwrite-strings
@@ -20,7 +20,7 @@ cflags += $(CFLAGS)
 
 ldflags = -L/usr/local/lib
 ldflags += -static
-ldflags += -flto
+ldflags += -flto=auto
 ldflags += -lm
 ldflags += -pthread
 ldflags += $(LDFLAGS)
