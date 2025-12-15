@@ -6,6 +6,26 @@ void
 interpret_token(vm_t *vm, token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
+        if (string_equal(token->content, "@dup")) {
+            value_t value = stack_pop(vm->value_stack);
+            stack_push(vm->value_stack, value);
+            stack_push(vm->value_stack, value);
+            return;
+        }
+
+        if (string_equal(token->content, "@drop")) {
+            stack_pop(vm->value_stack);
+            return;
+        }
+
+        if (string_equal(token->content, "@swap")) {
+            value_t x2 = stack_pop(vm->value_stack);
+            value_t x1 = stack_pop(vm->value_stack);
+            stack_push(vm->value_stack, x2);
+            stack_push(vm->value_stack, x1);
+            return;
+        }
+
         if (string_equal(token->content, "@assert")) {
             value_t value = stack_pop(vm->value_stack);
             if (value != x_true) {

@@ -1,5 +1,3 @@
-`interpret_token` -- @dup @drop @swap
-
 # outer interpreter
 
 [builtin] `compile_if`
