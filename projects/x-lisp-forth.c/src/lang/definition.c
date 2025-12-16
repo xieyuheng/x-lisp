@@ -2,8 +2,7 @@
 
 object_spec_t definition_object_spec = {
     .name = "definition",
-    .print_fn = (object_print_fn_t *) NULL,
-    .same_fn =  NULL,
+    .print_fn = (object_print_fn_t *) definition_print,
     .equal_fn = (object_equal_fn_t *) definition_equal,
 };
 
@@ -105,6 +104,11 @@ definition_equal(definition_t *lhs, definition_t *rhs) {
     return ((lhs->mod == rhs->mod) &&
             (lhs->kind == rhs->kind) &&
             (lhs->name == rhs->name));
+}
+
+void
+definition_print(definition_t *self) {
+    printf("#<definition %s>", self->name);
 }
 
 static void

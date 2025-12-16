@@ -1,7 +1,5 @@
 # definition as value
 
-[lang] `definition_print`
-
 `OP_REF`
 
 [value] `@ref <name>` -- return `definition_t` to stack
