@@ -245,7 +245,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
             printf("\n  lhs: "); value_print(lhs);
             printf("\n  rhs: "); value_print(rhs);
             printf("\n");
-            token_meta_report(instr.assert.token->meta);
+            token_meta_report(instr.assert_equal.token->meta);
             exit(1);
         }
 
@@ -260,7 +260,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
             printf("\n  lhs: "); value_print(lhs);
             printf("\n  rhs: "); value_print(rhs);
             printf("\n");
-            token_meta_report(instr.assert.token->meta);
+            token_meta_report(instr.assert_not_equal.token->meta);
             exit(1);
         }
 

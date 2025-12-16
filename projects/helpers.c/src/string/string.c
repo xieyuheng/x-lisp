@@ -262,6 +262,10 @@ string_next_word(const char *self, size_t *cursor_pointer) {
 char *
 string_next_line(const char *self, size_t *cursor_pointer) {
     size_t cursor = *cursor_pointer;
+    if (cursor >= string_length(self)) {
+        return NULL;
+    }
+
     string_builder_t *builder = make_string_builder();
     while (cursor < string_length(self)) {
         char c = self[cursor];
@@ -277,11 +281,5 @@ string_next_line(const char *self, size_t *cursor_pointer) {
     char *line = string_builder_produce(builder);
     string_builder_free(builder);
     *cursor_pointer = cursor;
-
-    if (string_length(line) == 0) {
-        string_free(line);
-        return NULL;
-    } else {
-        return line;
-    }
+    return line;
 }
