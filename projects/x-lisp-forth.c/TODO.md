@@ -1,7 +1,5 @@
 # definition as value
 
-`OP_REF`
-
 [value] `@ref <name>` -- return `definition_t` to stack
 
 - need placeholder like `@call`

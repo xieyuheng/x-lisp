@@ -15,6 +15,7 @@ typedef enum {
     OP_FDIV,
     OP_FMOD,
     OP_RETURN,
+    OP_REF,
     OP_CALL,
     OP_TAIL_CALL,
     OP_VAR_STORE,
