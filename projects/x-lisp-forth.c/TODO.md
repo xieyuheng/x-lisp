@@ -1,7 +1,5 @@
 # definition as value
 
-[lang] extract static `make_definition`
-
 [lang] `definition_equal`
 [lang] `definition_print`
 

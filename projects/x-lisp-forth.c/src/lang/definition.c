@@ -7,12 +7,19 @@ object_spec_t definition_object_spec = {
     .equal_fn = (object_equal_fn_t *) NULL,
 };
 
-definition_t *
-make_function_definition(mod_t *mod, char *name) {
+static definition_t *
+make_definition(mod_t *mod, char *name) {
     definition_t *self = new(definition_t);
-    self->kind = FUNCTION_DEFINITION;
+    self->spec = &definition_object_spec;
     self->mod = mod;
     self->name = name;
+    return self;
+}
+
+definition_t *
+make_function_definition(mod_t *mod, char *name) {
+    definition_t *self = make_definition(mod, name);
+    self->kind = FUNCTION_DEFINITION;
     self->function_definition.binding_indexes = make_record();
     self->function_definition.parameters = NULL;
     self->function_definition.code_area_size = 64;
@@ -24,40 +31,32 @@ make_function_definition(mod_t *mod, char *name) {
 
 definition_t *
 make_primitive_definition(mod_t *mod, char *name, primitive_t *primitive) {
-    definition_t *self = new(definition_t);
+    definition_t *self = make_definition(mod, name);
     self->kind = PRIMITIVE_DEFINITION;
-    self->mod = mod;
-    self->name = name;
     self->primitive_definition.primitive = primitive;
     return self;
 }
 
 definition_t *
 make_variable_definition(mod_t *mod, char *name, value_t value) {
-    definition_t *self = new(definition_t);
+    definition_t *self = make_definition(mod, name);
     self->kind = VARIABLE_DEFINITION;
-    self->mod = mod;
-    self->name = name;
     self->variable_definition.value = value;
     return self;
 }
 
 definition_t *
 make_constant_definition(mod_t *mod, char *name, value_t value) {
-    definition_t *self = new(definition_t);
+    definition_t *self = make_definition(mod, name);
     self->kind = CONSTANT_DEFINITION;
-    self->mod = mod;
-    self->name = name;
     self->constant_definition.value = value;
     return self;
 }
 
 definition_t *
 make_placeholder_definition(mod_t *mod, char *name) {
-    definition_t *self = new(definition_t);
+    definition_t *self = make_definition(mod, name);
     self->kind = PLACEHOLDER_DEFINITION;
-    self->mod = mod;
-    self->name = name;
     self->placeholder_definition.placeholders =
         make_array_auto_with((free_fn_t *) placeholder_free);
     return self;
