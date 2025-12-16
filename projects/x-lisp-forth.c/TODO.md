@@ -1,5 +1,7 @@
 # definition as value
 
+[lang] `definition_has_arity`
+[lang] `definition_arity`
 [lang] `apply_n` -- create curry if arguments are not enough
 
 # garbage collection
