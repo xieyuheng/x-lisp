@@ -13,6 +13,4 @@
 #include "x_object.h"
 #include "x_value.h"
 #include "x_address.h"
-#include "x_random.h"
 #include "x_curry.h"
-#include "x_function.h"

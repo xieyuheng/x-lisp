@@ -1,6 +1,5 @@
 # definition as value
 
-[value] remove `function_t`
 [value] remove `x_address`
 
 `OP_APPLY`
