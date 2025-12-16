@@ -1,5 +1,12 @@
 #include "index.h"
 
+object_spec_t definition_object_spec = {
+    .name = "definition",
+    .print_fn = (object_print_fn_t *) NULL,
+    .same_fn =  NULL,
+    .equal_fn = (object_equal_fn_t *) NULL,
+};
+
 definition_t *
 make_function_definition(mod_t *mod, char *name) {
     definition_t *self = new(definition_t);

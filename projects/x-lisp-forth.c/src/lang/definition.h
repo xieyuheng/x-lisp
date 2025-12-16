@@ -8,7 +8,10 @@ typedef enum {
     PLACEHOLDER_DEFINITION,
 } definition_kind_t;
 
+extern object_spec_t definition_object_spec;
+
 struct definition_t {
+    object_spec_t *spec;
     definition_kind_t kind;
     mod_t *mod;
     char *name;

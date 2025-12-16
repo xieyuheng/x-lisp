@@ -1,10 +1,15 @@
 # definition as value
 
-[value] `definition_t` as value
+[lang] extract static `make_definition`
+
+[lang] `definition_equal`
+[lang] `definition_print`
 
 `OP_REF`
 
 [value] `@ref <name>` -- return `definition_t` to stack
+
+- need placeholder like `@call`
 
 [value] remove `function_t`
 [value] remove `x_address`
