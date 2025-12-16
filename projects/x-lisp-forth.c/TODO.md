@@ -1,6 +1,5 @@
 # definition as value
 
-[lang] `definition_equal`
 [lang] `definition_print`
 
 `OP_REF`

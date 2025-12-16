@@ -4,7 +4,7 @@ object_spec_t definition_object_spec = {
     .name = "definition",
     .print_fn = (object_print_fn_t *) NULL,
     .same_fn =  NULL,
-    .equal_fn = (object_equal_fn_t *) NULL,
+    .equal_fn = (object_equal_fn_t *) definition_equal,
 };
 
 static definition_t *
@@ -98,6 +98,13 @@ definition_free(definition_t *self) {
         return;
     }
     }
+}
+
+bool
+definition_equal(definition_t *lhs, definition_t *rhs) {
+    return ((lhs->mod == rhs->mod) &&
+            (lhs->kind == rhs->kind) &&
+            (lhs->name == rhs->name));
 }
 
 static void
