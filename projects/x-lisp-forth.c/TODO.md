@@ -1,11 +1,16 @@
 # definition as value
 
-`OP_APPLY` & `OP_TAIL_APPLY`
-`@apply` & `@tail-apply`
-`OP_ASSIGN` -- like `OP_APPLY` -- take definition from stack
-`@assign`
+[builtin] `compile_function` -- `@apply` & `@tail-apply` & `@assign`
+
+[lang] `apply_n`
 
 # garbage collection
+
+[gc] `gc/` -- setup
+[gc] `gc_t`
+[gc] `make_gc`
+[gc] `gc_free`
+[gc] vm has gc
 
 # builtin structural data
 

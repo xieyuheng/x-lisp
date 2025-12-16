@@ -130,11 +130,6 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
-    case OP_REF: {
-        stack_push(vm->value_stack, x_object(instr.ref.definition));
-        return;
-    }
-
     case OP_CALL: {
         call(vm, instr.call.definition);
         return;
@@ -142,8 +137,45 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
 
     case OP_TAIL_CALL: {
         stack_pop(vm->frame_stack);
-        call(vm, instr.tail_call.definition);
         frame_free(frame);
+        call(vm, instr.tail_call.definition);
+        return;
+    }
+
+    case OP_REF: {
+        stack_push(vm->value_stack, x_object(instr.ref.definition));
+        return;
+    }
+
+    case OP_APPLY: {
+        size_t n = to_int64(stack_pop(vm->value_stack));
+        definition_t *definition =
+            (definition_t *) to_object(stack_pop(vm->value_stack));
+        apply_n(vm, definition, n);
+        return;
+    }
+
+    case OP_TAIL_APPLY: {
+        size_t n = to_int64(stack_pop(vm->value_stack));
+        definition_t *definition =
+            (definition_t *) to_object(stack_pop(vm->value_stack));
+        stack_pop(vm->frame_stack);
+        frame_free(frame);
+        apply_n(vm, definition, n);
+        return;
+    }
+
+    case OP_ASSIGN: {
+        value_t value = stack_pop(vm->value_stack);
+        definition_t *definition = (definition_t *) to_object(value);
+        if (definition->kind != VARIABLE_DEFINITION) {
+            who_printf("not VARIABLE_DEFINITION: ");
+            definition_print(definition);
+            printf("\n");
+            exit(1);
+        }
+
+        definition->variable_definition.value = stack_pop(vm->value_stack);
         return;
     }
 
