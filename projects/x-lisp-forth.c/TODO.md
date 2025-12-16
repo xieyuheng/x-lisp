@@ -1,7 +1,5 @@
 # definition as value
 
-[value] remove `x_address`
-
 `OP_APPLY`
 `OP_TAIL_APPLY`
 

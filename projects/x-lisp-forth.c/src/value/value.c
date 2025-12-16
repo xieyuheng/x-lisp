@@ -45,11 +45,6 @@ value_print(value_t value) {
         return;
     }
 
-    if (address_p(value)) {
-        printf("(@address %p)", (void *) to_address(value));
-        return;
-    }
-
     if (object_p(value)) {
         object_t *object = to_object(value);
         if (object->spec->print_fn) {
