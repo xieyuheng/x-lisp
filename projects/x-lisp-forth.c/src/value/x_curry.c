@@ -23,11 +23,6 @@ curry_free(curry_t *self) {
     free(self);
 }
 
-void
-curry_put(curry_t *self, size_t index, value_t value) {
-    self->args[index] = value;
-}
-
 bool
 curry_equal(curry_t *lhs, curry_t *rhs) {
     if (!equal_p(lhs->target, rhs->target)) return false;
@@ -70,16 +65,4 @@ to_curry(value_t value) {
 
     object_t *object = to_object(value);
     return (curry_t *) object;
-}
-
-value_t
-x_make_curry(value_t target, value_t arity, value_t size) {
-    curry_t *curry = make_curry(target, to_int64(arity), to_int64(size));
-    return x_object((object_t *) curry);
-}
-
-value_t
-x_curry_put_mut(value_t index, value_t value, value_t curry) {
-    to_curry(curry)->args[to_int64(index)] = value;
-    return x_void;
 }
