@@ -3,7 +3,7 @@
 @def main
   x 1 @assert-equal
   2 @ref x @assign
-  x 1 @assert-equal
+  x 2 @assert-equal
 @end
 
 main
