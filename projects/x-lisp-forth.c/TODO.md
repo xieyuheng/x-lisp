@@ -1,7 +1,5 @@
 # definition as value
 
-[builtin] `compile_function` -- `@apply` & `@tail-apply` & `@assign`
-
 [lang] `apply_n`
 
 # garbage collection

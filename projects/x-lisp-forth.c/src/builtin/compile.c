@@ -147,14 +147,20 @@ static struct op_word_entry_t op_word_entries[] = {
     { "imul", OP_IMUL },
     { "idiv", OP_IDIV },
     { "imod", OP_IMOD },
+
     { "fadd", OP_FADD },
     { "fsub", OP_FSUB },
     { "fmul", OP_FMUL },
     { "fdiv", OP_FDIV },
     { "fmod", OP_FMOD },
+
     { "@dup", OP_DUP },
     { "@drop", OP_DROP },
     { "@swap", OP_SWAP },
+
+    { "@apply", OP_APPLY },
+    { "@tail-apply", OP_TAIL_APPLY },
+    { "@assign", OP_ASSIGN },
 };
 
 static size_t
