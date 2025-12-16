@@ -131,7 +131,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_REF: {
-        stack_push(vm->value_stack, instr.ref.definition);
+        stack_push(vm->value_stack, x_object(instr.ref.definition));
         return;
     }
 

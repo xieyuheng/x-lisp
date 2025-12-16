@@ -4,6 +4,7 @@ static void compile_return(definition_t *definition);
 static void compile_token(vm_t *vm, definition_t *definition, token_t *token);
 static void compile_word(vm_t *vm, definition_t *definition, const char *word);
 static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
+static void compile_ref(vm_t *vm, definition_t *definition);
 static void compile_tail_call(vm_t *vm, definition_t *definition);
 static void compile_parameters(vm_t *vm, definition_t *definition, const char *end_word);
 static void compile_bindings(vm_t *vm, definition_t *definition, const char *end_word);
@@ -194,6 +195,11 @@ compile_word(vm_t *vm, definition_t *definition, const char *word) {
         return;
     }
 
+    if (string_equal(word, "@ref")) {
+        compile_ref(vm, definition);
+        return;
+    }
+
     if (string_equal(word, "@tail-call")) {
         compile_tail_call(vm, definition);
         return;
@@ -230,6 +236,24 @@ compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
     instr.call.definition = found;
     function_definition_append_instr(definition, instr);
     return;
+}
+
+static void
+compile_ref(vm_t *vm, definition_t *definition) {
+    token_t *token = list_shift(vm->tokens);
+    assert(token->kind == SYMBOL_TOKEN);
+    definition_t *found = mod_lookup_or_placeholder(vm->mod, token->content);
+    token_free(token);
+
+    if (found->kind == PLACEHOLDER_DEFINITION) {
+        size_t code_index = definition->function_definition.code_length + 1;
+        placeholder_definition_hold_place(found, definition, code_index);
+    }
+
+    struct instr_t instr;
+    instr.op = OP_REF;
+    instr.ref.definition = found;
+    function_definition_append_instr(definition, instr);
 }
 
 static void

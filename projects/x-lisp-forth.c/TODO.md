@@ -1,9 +1,5 @@
 # definition as value
 
-[value] `@ref <name>` -- return `definition_t` to stack
-
-- need placeholder like `@call`
-
 [value] remove `function_t`
 [value] remove `x_address`
 

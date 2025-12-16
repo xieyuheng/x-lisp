@@ -1,7 +1,7 @@
 #include "index.h"
 
 inline value_t
-x_object(object_t *target) {
+x_object(void *target) {
     return (value_t) ((uint64_t) target | X_OBJECT);
 }
 
