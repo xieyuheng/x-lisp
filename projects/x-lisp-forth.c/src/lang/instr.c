@@ -37,8 +37,7 @@ instr_length(struct instr_t instr) {
 
     case OP_REF:
     case OP_CALL:
-    case OP_TAIL_CALL:
-    case OP_VAR_STORE: {
+    case OP_TAIL_CALL: {
         return 1 + sizeof(definition_t *);
     }
 
@@ -147,12 +146,6 @@ instr_encode(uint8_t *code, struct instr_t instr) {
     case OP_TAIL_CALL: {
         memory_store_little_endian(code + 0, instr.op);
         memory_store_little_endian(code + 1, instr.tail_call.definition);
-        return;
-    }
-
-    case OP_VAR_STORE: {
-        memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.var_store.definition);
         return;
     }
 
@@ -294,12 +287,6 @@ instr_decode(uint8_t *code) {
     case OP_TAIL_CALL: {
         struct instr_t instr = { .op = code[0] };
         memory_load_little_endian(code + 1, instr.tail_call.definition);
-        return instr;
-    }
-
-    case OP_VAR_STORE: {
-        struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.var_store.definition);
         return instr;
     }
 

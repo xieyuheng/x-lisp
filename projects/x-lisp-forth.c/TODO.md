@@ -1,15 +1,8 @@
 # definition as value
 
-`OP_APPLY`
-`OP_TAIL_APPLY`
-
-`@apply`
-`@tail-apply`
-
-rename `OP_VAR_STORE` to `OP_ASSIGN` -- like `OP_APPLY`
-
-- take definition from stack
-
+`OP_APPLY` & `OP_TAIL_APPLY`
+`@apply` & `@tail-apply`
+`OP_ASSIGN` -- like `OP_APPLY` -- take definition from stack
 `@assign`
 
 # garbage collection

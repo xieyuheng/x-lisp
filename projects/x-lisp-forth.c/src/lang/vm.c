@@ -147,12 +147,6 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
-    case OP_VAR_STORE: {
-        value_t value = stack_pop(vm->value_stack);
-        instr.var_store.definition->variable_definition.value = value;
-        return;
-    }
-
     case OP_LOCAL_LOAD: {
         value_t value = array_get(frame->locals, instr.local_load.index);
         stack_push(vm->value_stack, value);
