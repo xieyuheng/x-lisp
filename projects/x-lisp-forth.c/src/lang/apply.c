@@ -18,7 +18,7 @@ apply(vm_t *vm, size_t n, value_t target) {
 }
 
 void
-apply_definition(vm_t *vm, size_t n, const definition_t *definition) {
+apply_definition(vm_t *vm, size_t n, definition_t *definition) {
     if (!definition_has_arity(definition)) {
         who_printf("definition has no arity: %s\n", definition->name);
         exit(1);
@@ -29,7 +29,13 @@ apply_definition(vm_t *vm, size_t n, const definition_t *definition) {
         call_definition(vm, definition);
         return;
     } else if (n < arity) {
-        assert(false);
+        curry_t *curry = make_curry(x_object(definition), arity - n, n);
+        for (size_t i = 0; i < n; i++) {
+            curry->arg[n - i - 1] = stack_pop(vm->value_stack);
+        }
+
+        stack_push(vm->value_stack, x_object(curry));
+        return;
     } else {
         assert(false);
     }
