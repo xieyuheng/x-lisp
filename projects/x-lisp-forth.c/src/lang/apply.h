@@ -1,3 +1,4 @@
 #pragma once
 
-void apply_n(vm_t *vm, const definition_t *definition, size_t n);
+void apply(vm_t *vm, size_t n, value_t target);
+void apply_definition(vm_t *vm, size_t n, const definition_t *definition);

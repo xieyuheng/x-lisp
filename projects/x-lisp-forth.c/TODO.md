@@ -1,6 +1,6 @@
 # definition as value
 
-[lang] `apply_n` -- create curry if arguments are not enough
+[lang] `apply_definition` -- create curry if arguments are not enough
 
 # garbage collection
 

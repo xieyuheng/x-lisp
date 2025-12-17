@@ -209,7 +209,7 @@ placeholder_definition_hold_place(
 }
 
 bool
-definition_has_arity(definition_t *self) {
+definition_has_arity(const definition_t *self) {
     switch (self->kind) {
     case FUNCTION_DEFINITION: {
         return self->function_definition.parameters;
@@ -230,7 +230,7 @@ definition_has_arity(definition_t *self) {
 }
 
 size_t
-definition_arity(definition_t *self) {
+definition_arity(const definition_t *self) {
     switch (self->kind) {
     case FUNCTION_DEFINITION: {
         return array_length(self->function_definition.parameters);

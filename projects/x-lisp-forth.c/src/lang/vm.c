@@ -148,20 +148,18 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_APPLY: {
-        size_t n = to_int64(stack_pop(vm->value_stack));
-        definition_t *definition =
-            (definition_t *) to_object(stack_pop(vm->value_stack));
-        apply_n(vm, definition, n);
+        value_t n = stack_pop(vm->value_stack);
+        value_t target = stack_pop(vm->value_stack);
+        apply(vm, to_int64(n), target);
         return;
     }
 
     case OP_TAIL_APPLY: {
-        size_t n = to_int64(stack_pop(vm->value_stack));
-        definition_t *definition =
-            (definition_t *) to_object(stack_pop(vm->value_stack));
+        value_t n = stack_pop(vm->value_stack);
+        value_t target = stack_pop(vm->value_stack);
         stack_pop(vm->frame_stack);
         frame_free(frame);
-        apply_n(vm, definition, n);
+        apply(vm, to_int64(n), target);
         return;
     }
 
