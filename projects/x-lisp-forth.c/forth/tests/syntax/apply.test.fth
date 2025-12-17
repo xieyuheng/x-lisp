@@ -16,6 +16,7 @@
   3 @assert-equal
 
   2 1 @ref my-isub 2 @tail-apply
+  false @assert
 @end
 
 main 1 @assert-equal
