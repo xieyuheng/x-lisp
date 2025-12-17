@@ -1,6 +1,7 @@
 # definition as value
 
-[lang] `apply_definition` -- create curry if arguments are not enough
+[lang] `apply_definition` -- n < arity -- create curry
+[lang] `apply_definition` -- n > arity -- create frame from code
 
 # garbage collection
 

@@ -24,22 +24,13 @@ apply_definition(vm_t *vm, size_t n, const definition_t *definition) {
         exit(1);
     }
 
-    switch (definition->kind) {
-    case PRIMITIVE_DEFINITION: {
-        (void) vm;
-        (void) n;
+    size_t arity = definition_arity(definition);
+    if (n == arity) {
+        call_definition(vm, definition);
         return;
-    }
-
-    case FUNCTION_DEFINITION: {
-        (void) vm;
-        (void) n;
-        return;
-    }
-
-    default: {
-        who_printf("can not apply definition: %s\n", definition->name);
-        exit(1);
-    }
+    } else if (n < arity) {
+        assert(false);
+    } else {
+        assert(false);
     }
 }

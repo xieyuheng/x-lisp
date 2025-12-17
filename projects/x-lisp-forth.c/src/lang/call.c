@@ -1,7 +1,7 @@
 #include "index.h"
 
 inline void
-call(vm_t *vm, const definition_t *definition) {
+call_definition(vm_t *vm, const definition_t *definition) {
     switch (definition->kind) {
     case PRIMITIVE_DEFINITION: {
         call_primitive(vm, definition->primitive_definition.primitive);
