@@ -1,6 +1,6 @@
 # definition as value
 
-[lang] `apply_curry`
+apply.test.fth -- test @apply and @tail-apply
 
 # garbage collection
 
