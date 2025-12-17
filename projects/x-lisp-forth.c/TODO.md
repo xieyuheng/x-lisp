@@ -1,5 +1,8 @@
 # definition as value
 
+[lang] rename `make_frame` to `make_frame_from_definition`
+[lang] `make_frame_from_code`
+
 [lang] `apply_n` -- create curry if arguments are not enough
 
 # garbage collection
