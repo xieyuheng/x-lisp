@@ -1,10 +1,9 @@
 # garbage collection
 
-[gc] `gc/` -- setup
 [gc] `gc_t`
 [gc] `make_gc`
 [gc] `gc_free`
-[gc] global gc
+[gc] vm has gc
 
 # builtin structural data
 
