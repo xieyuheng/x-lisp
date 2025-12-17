@@ -1,7 +1,5 @@
 # definition as value
 
-[lang] `make_frame_from_code`
-
 [lang] `apply_n` -- create curry if arguments are not enough
 
 # garbage collection
