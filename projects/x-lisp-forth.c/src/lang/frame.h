@@ -10,5 +10,5 @@ struct frame_t {
     array_t *locals; // array of values
 };
 
-frame_t *make_frame(const definition_t *definition);
+frame_t *make_frame_from_definition(const definition_t *definition);
 void frame_free(frame_t *self);

@@ -9,7 +9,7 @@ call(vm_t *vm, const definition_t *definition) {
     }
 
     case FUNCTION_DEFINITION: {
-        stack_push(vm->frame_stack, make_frame(definition));
+        stack_push(vm->frame_stack, make_frame_from_definition(definition));
         return;
     }
 

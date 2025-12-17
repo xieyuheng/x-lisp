@@ -1,7 +1,7 @@
 #include "index.h"
 
 frame_t *
-make_frame(const definition_t *definition) {
+make_frame_from_definition(const definition_t *definition) {
     assert(definition->kind == FUNCTION_DEFINITION);
 
     frame_t *self = new(frame_t);

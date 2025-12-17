@@ -130,7 +130,7 @@ invoke(vm_t *vm, definition_t *definition) {
     switch (definition->kind) {
     case FUNCTION_DEFINITION: {
         size_t base_length = stack_length(vm->frame_stack);
-        stack_push(vm->frame_stack, make_frame(definition));
+        stack_push(vm->frame_stack, make_frame_from_definition(definition));
         vm_execute_until(vm, base_length);
         return;
     }
