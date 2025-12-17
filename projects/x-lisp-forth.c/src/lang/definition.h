@@ -53,3 +53,6 @@ bool function_definition_has_binding_index(definition_t *self, const char *name)
 size_t function_definition_get_binding_index(definition_t *self, const char *name);
 
 void placeholder_definition_hold_place(definition_t *self, definition_t *definition, size_t code_index);
+
+bool definition_has_arity(definition_t *self);
+size_t definition_arity(definition_t *self);

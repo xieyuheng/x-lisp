@@ -1,7 +1,5 @@
 # definition as value
 
-[lang] `definition_has_arity`
-[lang] `definition_arity`
 [lang] `apply_n` -- create curry if arguments are not enough
 
 # garbage collection
@@ -10,9 +8,11 @@
 [gc] `gc_t`
 [gc] `make_gc`
 [gc] `gc_free`
-[gc] vm has gc
+[gc] global gc
 
 # builtin structural data
+
+`byte_string_t`
 
 [lang] `vm_execute_instr` -- `OP_LITERAL_STRING`
 [lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`

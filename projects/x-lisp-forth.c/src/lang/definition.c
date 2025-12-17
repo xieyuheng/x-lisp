@@ -207,3 +207,56 @@ placeholder_definition_hold_place(
         self->placeholder_definition.placeholders,
         make_placeholder(definition, code_index));
 }
+
+bool
+definition_has_arity(definition_t *self) {
+    switch (self->kind) {
+    case FUNCTION_DEFINITION: {
+        return self->function_definition.parameters;
+    }
+
+    case PRIMITIVE_DEFINITION: {
+        return self->primitive_definition.primitive->fn_kind != X_FN;
+    }
+
+    case VARIABLE_DEFINITION:
+    case CONSTANT_DEFINITION:
+    case PLACEHOLDER_DEFINITION: {
+        return false;
+    }
+    }
+
+    unreachable();
+}
+
+size_t
+definition_arity(definition_t *self) {
+    switch (self->kind) {
+    case FUNCTION_DEFINITION: {
+        return array_length(self->function_definition.parameters);
+    }
+
+    case PRIMITIVE_DEFINITION: {
+        switch (self->primitive_definition.primitive->fn_kind) {
+        case X_FN: { unreachable(); }
+        case X_FN_0: { return 0; }
+        case X_FN_1: { return 1; }
+        case X_FN_2: { return 2; }
+        case X_FN_3: { return 3; }
+        case X_FN_4: { return 4; }
+        case X_FN_5: { return 5; }
+        case X_FN_6: { return 6; }
+        }
+
+        unreachable();
+    }
+
+    case VARIABLE_DEFINITION:
+    case CONSTANT_DEFINITION:
+    case PLACEHOLDER_DEFINITION: {
+        unreachable();
+    }
+    }
+
+    unreachable();
+}
