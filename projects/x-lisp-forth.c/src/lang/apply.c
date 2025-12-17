@@ -37,7 +37,7 @@ apply_definition(vm_t *vm, size_t n, definition_t *definition) {
         stack_push(vm->value_stack, x_object(curry));
         return;
     } else {
-        uint8_t *code = make_code(2, (struct instr_t[]) {
+        uint8_t *code = make_code_from_instrs(2, (struct instr_t[]) {
                 { .op = OP_LITERAL_INT,
                   .literal_int.content = n - arity },
                 { .op = OP_TAIL_APPLY },

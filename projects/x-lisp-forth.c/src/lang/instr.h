@@ -29,4 +29,4 @@ size_t instr_length(struct instr_t instr);
 void instr_encode(uint8_t *code, struct instr_t instr);
 struct instr_t instr_decode(uint8_t *code);
 
-uint8_t *make_code(size_t length, struct instr_t instrs[]);
+uint8_t *make_code_from_instrs(size_t length, struct instr_t instrs[]);

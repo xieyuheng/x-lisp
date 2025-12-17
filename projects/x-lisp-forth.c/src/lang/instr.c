@@ -388,7 +388,7 @@ instr_decode(uint8_t *code) {
 }
 
 uint8_t *
-make_code(size_t length, struct instr_t instrs[]) {
+make_code_from_instrs(size_t length, struct instr_t instrs[]) {
     size_t size = 0;
     for (size_t i = 0; i < length; i++) {
         size += instr_length(instrs[i]);
