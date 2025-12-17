@@ -83,7 +83,7 @@ apply_curry(vm_t *vm, size_t n, curry_t *curry) {
         }
 
         stack_free(tmp_stack);
-        apply(vm, curry->size, curry->target);
+        apply(vm, n + curry->size, curry->target);
         return;
     } else if (n < curry->arity) {
         supply(vm, n, curry, curry->arity);

@@ -1,6 +1,4 @@
-# definition as value
-
-apply.test.fth -- test @apply and @tail-apply
+[lang] `interpret_token` -- support `@begin ... @end` -- for test without `main` function
 
 # garbage collection
 
