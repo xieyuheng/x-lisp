@@ -6,7 +6,8 @@ apply(vm_t *vm, size_t n, value_t target) {
         object_t *object = to_object(target);
         if (object->spec == &definition_object_spec) {
             apply_definition(vm, n, (definition_t *) object);
-            return;
+        } else if (object->spec == &curry_object_spec) {
+            apply_curry(vm, n, (curry_t *) object);
         } else {
             who_printf("can not apply object: "); value_print(target); printf("\n");
             exit(1);
@@ -46,4 +47,11 @@ apply_definition(vm_t *vm, size_t n, definition_t *definition) {
         call_definition(vm, definition);
         return;
     }
+}
+
+void
+apply_curry(vm_t *vm, size_t n, curry_t *curry) {
+    (void) vm;
+    (void) n;
+    (void) curry;
 }

@@ -1,6 +1,6 @@
 # definition as value
 
-[lang] `apply` -- call `apply_curry`
+[lang] `apply_curry`
 
 # garbage collection
 
