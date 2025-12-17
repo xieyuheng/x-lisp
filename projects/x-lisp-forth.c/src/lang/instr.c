@@ -386,3 +386,20 @@ instr_decode(uint8_t *code) {
 
     unreachable();
 }
+
+uint8_t *
+make_code(size_t length, struct instr_t instrs[]) {
+    size_t size = 0;
+    for (size_t i = 0; i < length; i++) {
+        size += instr_length(instrs[i]);
+    }
+
+    uint8_t *code = allocate(size);
+    uint8_t *pc = code;
+    for (size_t i = 0; i < length; i++) {
+        instr_encode(pc, instrs[i]);
+        pc += instr_length(instrs[i]);
+    }
+
+    return code;
+}

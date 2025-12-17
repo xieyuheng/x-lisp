@@ -31,12 +31,19 @@ apply_definition(vm_t *vm, size_t n, definition_t *definition) {
     } else if (n < arity) {
         curry_t *curry = make_curry(x_object(definition), arity - n, n);
         for (size_t i = 0; i < n; i++) {
-            curry->arg[n - i - 1] = stack_pop(vm->value_stack);
+            curry->args[n - i - 1] = stack_pop(vm->value_stack);
         }
 
         stack_push(vm->value_stack, x_object(curry));
         return;
     } else {
-        assert(false);
+        uint8_t *code = make_code(2, (struct instr_t[]) {
+                { .op = OP_LITERAL_INT,
+                  .literal_int.content = n - arity },
+                { .op = OP_TAIL_APPLY },
+            });
+        stack_push(vm->frame_stack, make_frame_from_code(code));
+        call_definition(vm, definition);
+        return;
     }
 }
