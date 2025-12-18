@@ -2,22 +2,14 @@
 
 void
 apply(vm_t *vm, size_t n, value_t target) {
-    if (object_p(target)) {
-        object_t *object = to_object(target);
-        if (object->header.name == definition_object_name) {
-            apply_definition(vm, n, (definition_t *) object);
-            return;
-        } else if (object->header.name == curry_object_name) {
-            apply_curry(vm, n, (curry_t *) object);
-            return;
-        } else {
-            who_printf("can not apply object: "); value_print(target); printf("\n");
-            exit(1);
-        }
+    if (definition_p(target)) {
+        apply_definition(vm, n, to_definition(target));
+    } else if (curry_p(target)) {
+        apply_curry(vm, n, to_curry(target));
+    } else {
+        who_printf("can not apply value: "); value_print(target); printf("\n");
+        exit(1);
     }
-
-    who_printf("can not apply value: "); value_print(target); printf("\n");
-    exit(1);
 }
 
 static void

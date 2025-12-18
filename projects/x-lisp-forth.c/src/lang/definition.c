@@ -98,6 +98,20 @@ definition_free(definition_t *self) {
 }
 
 bool
+definition_p(value_t value) {
+    if (!object_p(value)) return false;
+
+    object_t *object = to_object(value);
+    return object->header.name == definition_object_name;
+}
+
+definition_t *
+to_definition(value_t value) {
+    assert(definition_p(value));
+    return (definition_t *) to_object(value);
+}
+
+bool
 definition_equal(definition_t *lhs, definition_t *rhs) {
     return lhs == rhs;
 }

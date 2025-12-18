@@ -60,7 +60,5 @@ curry_p(value_t value) {
 curry_t *
 to_curry(value_t value) {
     assert(curry_p(value));
-
-    object_t *object = to_object(value);
-    return (curry_t *) object;
+    return (curry_t *) to_object(value);
 }
