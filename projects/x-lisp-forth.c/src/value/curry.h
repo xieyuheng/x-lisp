@@ -1,9 +1,9 @@
 #pragma once
 
-extern object_spec_t curry_object_spec;
+extern const char *curry_object_name;
 
 struct curry_t {
-    object_spec_t *spec;
+    struct object_header_t header;
     value_t target;
     size_t arity;
     size_t size;

@@ -47,12 +47,12 @@ value_print(value_t value) {
 
     if (object_p(value)) {
         object_t *object = to_object(value);
-        if (object->spec->print_fn) {
-            object->spec->print_fn(object);
+        if (object->header.print_fn) {
+            object->header.print_fn(object);
             return;
         }
 
-        printf("(%s 0x%p)", object->spec->name, value);
+        printf("(%s 0x%p)", object->header.name, value);
         return;
     }
 
@@ -69,10 +69,10 @@ bool
 equal_p(value_t lhs, value_t rhs) {
     if (object_p(lhs) &&
         object_p(lhs) &&
-        to_object(lhs)->spec == to_object(rhs)->spec &&
-        to_object(lhs)->spec->equal_fn != NULL)
+        to_object(lhs)->header.name == to_object(rhs)->header.name &&
+        to_object(lhs)->header.equal_fn != NULL)
     {
-        return to_object(lhs)->spec->equal_fn(to_object(lhs), to_object(rhs));
+        return to_object(lhs)->header.equal_fn(to_object(lhs), to_object(rhs));
     }
 
     return same_p(lhs, rhs);
@@ -93,10 +93,10 @@ value_t
 x_equal_p(value_t lhs, value_t rhs) {
     if (object_p(lhs) &&
         object_p(lhs) &&
-        to_object(lhs)->spec == to_object(rhs)->spec &&
-        to_object(lhs)->spec->equal_fn != NULL)
+        to_object(lhs)->header.name == to_object(rhs)->header.name &&
+        to_object(lhs)->header.equal_fn != NULL)
     {
-        return x_bool(to_object(lhs)->spec->equal_fn(to_object(lhs), to_object(rhs)));
+        return x_bool(to_object(lhs)->header.equal_fn(to_object(lhs), to_object(rhs)));
     }
 
     return x_same_p(lhs, rhs);

@@ -4,10 +4,10 @@ void
 apply(vm_t *vm, size_t n, value_t target) {
     if (object_p(target)) {
         object_t *object = to_object(target);
-        if (object->spec == &definition_object_spec) {
+        if (object->header.name == definition_object_name) {
             apply_definition(vm, n, (definition_t *) object);
             return;
-        } else if (object->spec == &curry_object_spec) {
+        } else if (object->header.name == curry_object_name) {
             apply_curry(vm, n, (curry_t *) object);
             return;
         } else {

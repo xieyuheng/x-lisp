@@ -1,7 +1,3 @@
-[value] let type be prefixed by x, so that it is scalable -- we can have xstring, xhash, xset and so on
-[value] xobject -- use inherit-based tagged union
-[lang] `definition_t` -- use inherit-based tagged union
-
 # garbage collection
 
 [gc] `gc_t`
@@ -11,7 +7,10 @@
 
 # builtin structural data
 
-`xstring_t`
+[value] `xstring_t`
+
+- let type be prefixed by x, so that it is scalable
+- we can have xstring, xhash, xset and so on
 
 [lang] `vm_execute_instr` -- `OP_LITERAL_STRING`
 [lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`

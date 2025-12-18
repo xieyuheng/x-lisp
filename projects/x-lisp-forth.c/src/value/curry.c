@@ -1,15 +1,13 @@
 #include "index.h"
 
-object_spec_t curry_object_spec = {
-    .name = "curry",
-    .print_fn = (object_print_fn_t *) curry_print,
-    .equal_fn = (object_equal_fn_t *) curry_equal,
-};
+const char *curry_object_name = "curry";
 
 curry_t *
 make_curry(value_t target, size_t arity, size_t size) {
     curry_t *self = new(curry_t);
-    self->spec = &curry_object_spec;
+    self->header.name = curry_object_name;
+    self->header.print_fn = (object_print_fn_t *) curry_print;
+    self->header.equal_fn = (object_equal_fn_t *) curry_equal;
     self->target = target;
     self->arity = arity;
     self->size = size;
@@ -56,7 +54,7 @@ curry_p(value_t value) {
     if (!object_p(value)) return false;
 
     object_t *object = to_object(value);
-    return object->spec == &curry_object_spec;
+    return object->header.name == curry_object_name;
 }
 
 curry_t *

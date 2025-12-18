@@ -1,15 +1,13 @@
 #include "index.h"
 
-object_spec_t definition_object_spec = {
-    .name = "definition",
-    .print_fn = (object_print_fn_t *) definition_print,
-    .equal_fn = (object_equal_fn_t *) definition_equal,
-};
+const char *definition_object_name = "definition";
 
 static definition_t *
 make_definition(mod_t *mod, char *name) {
     definition_t *self = new(definition_t);
-    self->spec = &definition_object_spec;
+    self->header.name = definition_object_name;
+    self->header.print_fn = (object_print_fn_t *) definition_print;
+    self->header.equal_fn = (object_equal_fn_t *) definition_equal;
     self->mod = mod;
     self->name = name;
     return self;
@@ -160,7 +158,7 @@ function_definition_put_definition(
     definition_t *definition
 ) {
     assert(self->kind == FUNCTION_DEFINITION);
-    assert(code_index + sizeof(definition_t) <
+    assert(code_index + sizeof(definition_t *) <
            self->function_definition.code_area_size);
 
     uint8_t *code = self->function_definition.code_area + code_index;
