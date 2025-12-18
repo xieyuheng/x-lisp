@@ -1,13 +1,15 @@
 #include "index.h"
 
-const char *definition_object_name = "definition";
+const object_class_t definition_class = {
+    .name = "definition",
+    .print_fn = (object_print_fn_t *) definition_print,
+    .equal_fn = (object_equal_fn_t *) definition_equal,
+};
 
 static definition_t *
 make_definition(mod_t *mod, char *name) {
     definition_t *self = new(definition_t);
-    self->header.name = definition_object_name;
-    self->header.print_fn = (object_print_fn_t *) definition_print;
-    self->header.equal_fn = (object_equal_fn_t *) definition_equal;
+    self->header.class = &definition_class;
     self->mod = mod;
     self->name = name;
     return self;
@@ -100,7 +102,7 @@ definition_free(definition_t *self) {
 bool
 definition_p(value_t value) {
     return object_p(value) &&
-        to_object(value)->header.name == definition_object_name;
+        to_object(value)->header.class == &definition_class;
 }
 
 definition_t *

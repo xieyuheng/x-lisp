@@ -8,7 +8,7 @@ typedef enum {
     PLACEHOLDER_DEFINITION,
 } definition_kind_t;
 
-extern const char *definition_object_name;
+extern const object_class_t definition_class;
 
 struct definition_t {
     struct object_header_t header;

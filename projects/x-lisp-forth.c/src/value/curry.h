@@ -1,6 +1,6 @@
 #pragma once
 
-extern const char *curry_object_name;
+extern const object_class_t curry_class;
 
 struct curry_t {
     struct object_header_t header;
