@@ -99,10 +99,8 @@ definition_free(definition_t *self) {
 
 bool
 definition_p(value_t value) {
-    if (!object_p(value)) return false;
-
-    object_t *object = to_object(value);
-    return object->header.name == definition_object_name;
+    return object_p(value) &&
+        to_object(value)->header.name == definition_object_name;
 }
 
 definition_t *

@@ -22,6 +22,19 @@ curry_free(curry_t *self) {
 }
 
 bool
+curry_p(value_t value) {
+    return object_p(value) &&
+        to_object(value)->header.name == curry_object_name;
+}
+
+curry_t *
+to_curry(value_t value) {
+    assert(curry_p(value));
+    return (curry_t *) to_object(value);
+}
+
+
+bool
 curry_equal(curry_t *lhs, curry_t *rhs) {
     if (!equal_p(lhs->target, rhs->target)) return false;
     if (lhs->arity != rhs->arity) return false;
@@ -47,18 +60,4 @@ curry_print(curry_t *self) {
     }
     printf("]");
     printf(")");
-}
-
-bool
-curry_p(value_t value) {
-    if (!object_p(value)) return false;
-
-    object_t *object = to_object(value);
-    return object->header.name == curry_object_name;
-}
-
-curry_t *
-to_curry(value_t value) {
-    assert(curry_p(value));
-    return (curry_t *) to_object(value);
 }
