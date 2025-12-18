@@ -62,14 +62,6 @@ value_print(value_t value) {
 
 bool
 same_p(value_t lhs, value_t rhs) {
-    if (object_p(lhs) &&
-        object_p(lhs) &&
-        to_object(lhs)->spec == to_object(rhs)->spec &&
-        to_object(lhs)->spec->same_fn != NULL)
-    {
-        return to_object(lhs)->spec->same_fn(to_object(lhs), to_object(rhs));
-    }
-
     return lhs == rhs;
 }
 
@@ -94,14 +86,6 @@ x_anything_p(value_t x) {
 
 value_t
 x_same_p(value_t lhs, value_t rhs) {
-    if (object_p(lhs) &&
-        object_p(lhs) &&
-        to_object(lhs)->spec == to_object(rhs)->spec &&
-        to_object(lhs)->spec->same_fn != NULL)
-    {
-        return x_bool(to_object(lhs)->spec->same_fn(to_object(lhs), to_object(rhs)));
-    }
-
     return x_bool(lhs == rhs);
 }
 

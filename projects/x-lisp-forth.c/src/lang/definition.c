@@ -101,9 +101,7 @@ definition_free(definition_t *self) {
 
 bool
 definition_equal(definition_t *lhs, definition_t *rhs) {
-    return ((lhs->mod == rhs->mod) &&
-            (lhs->kind == rhs->kind) &&
-            (lhs->name == rhs->name));
+    return lhs == rhs;
 }
 
 void
