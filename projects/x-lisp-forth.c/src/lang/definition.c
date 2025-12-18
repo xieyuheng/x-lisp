@@ -126,8 +126,7 @@ function_definition_maybe_grow_code_area(definition_t *self, size_t length) {
     assert(self->kind == FUNCTION_DEFINITION);
 
     if (self->function_definition.code_area_size <
-        self->function_definition.code_length + length)
-    {
+        self->function_definition.code_length + length) {
         self->function_definition.code_area =
             reallocate(self->function_definition.code_area,
                        self->function_definition.code_area_size,
@@ -145,8 +144,8 @@ function_definition_append_instr(definition_t *self, struct instr_t instr) {
     function_definition_maybe_grow_code_area(self, length);
 
     uint8_t *code =
-        self->function_definition.code_area +
-        self->function_definition.code_length;
+        self->function_definition.code_area
+        + self->function_definition.code_length;
     instr_encode(code, instr);
 
     self->function_definition.code_length += length;

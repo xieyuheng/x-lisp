@@ -67,11 +67,10 @@ same_p(value_t lhs, value_t rhs) {
 
 bool
 equal_p(value_t lhs, value_t rhs) {
-    if (object_p(lhs) &&
-        object_p(lhs) &&
-        to_object(lhs)->header.class == to_object(rhs)->header.class &&
-        to_object(lhs)->header.class->equal_fn != NULL)
-    {
+    if (object_p(lhs)
+        && object_p(rhs)
+        && to_object(lhs)->header.class == to_object(rhs)->header.class
+        && to_object(lhs)->header.class->equal_fn != NULL) {
         return to_object(lhs)->header.class->equal_fn(to_object(lhs), to_object(rhs));
     }
 
@@ -91,11 +90,10 @@ x_same_p(value_t lhs, value_t rhs) {
 
 value_t
 x_equal_p(value_t lhs, value_t rhs) {
-    if (object_p(lhs) &&
-        object_p(lhs) &&
-        to_object(lhs)->header.class == to_object(rhs)->header.class &&
-        to_object(lhs)->header.class->equal_fn != NULL)
-    {
+    if (object_p(lhs)
+        && object_p(rhs)
+        && to_object(lhs)->header.class == to_object(rhs)->header.class
+        && to_object(lhs)->header.class->equal_fn != NULL) {
         return x_bool(to_object(lhs)->header.class->equal_fn(to_object(lhs), to_object(rhs)));
     }
 
