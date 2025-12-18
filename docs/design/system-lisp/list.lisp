@@ -12,18 +12,26 @@
   (equal-fn (optional (-> A A bool-t)))
   (copy-fn (optional (-> A A))))
 
-(claim new-list (polymorphic (A) (-> (list-t A))))
+(claim make-list
+  (polymorphic (A)
+    (-> (list-t A))))
 
-(define (new-list)
-  (new list-t :length 0))
+(define (make-list)
+  (= self (allocate (size-of list-t)))
+  (list-put-length! self 0)
+  self)
 
-(claim list-free (polymorphic (A) (-> (list-t A) void-t)))
+(claim list-free
+  (polymorphic (A)
+    (-> (list-t A) void-t)))
 
 (define (list-destroy self)
   (list-purge self)
   (free self))
 
-(claim list-purge (polymorphic (A) (-> (list-t A) void-t)))
+(claim list-purge
+  (polymorphic (A)
+    (-> (list-t A) void-t)))
 
 (define (list-purge self)
   (= node (list-first self))
