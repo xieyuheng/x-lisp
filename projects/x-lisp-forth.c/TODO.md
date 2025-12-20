@@ -1,7 +1,5 @@
 # garbage collection
 
-[gc] vm has gc
-
 [gc] `vm_gc_roots` -- simply return array of object
 
 # builtin structural data

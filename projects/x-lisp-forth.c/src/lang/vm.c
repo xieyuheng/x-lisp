@@ -7,6 +7,7 @@ make_vm(mod_t *mod, list_t *tokens) {
     self->tokens = tokens;
     self->value_stack = make_stack();
     self->frame_stack = make_stack_with((free_fn_t *) frame_free);
+    self->gc = make_gc();
     return self;
 }
 
@@ -15,6 +16,7 @@ vm_free(vm_t *self) {
     list_free(self->tokens);
     stack_free(self->value_stack);
     stack_free(self->frame_stack);
+    gc_free(self->gc);
     free(self);
 }
 
