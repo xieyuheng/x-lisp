@@ -6,3 +6,4 @@ struct gc_t {
 };
 
 gc_t *make_gc(void);
+void gc_free(gc_t *self);

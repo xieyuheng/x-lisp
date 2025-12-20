@@ -7,3 +7,10 @@ make_gc(void) {
     self->gray_object_stack = make_stack();
     return self;
 }
+
+void
+gc_free(gc_t *self) {
+    array_free(self->allocated_objects);
+    stack_free(self->gray_object_stack);
+    free(self);
+}

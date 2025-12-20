@@ -1,7 +1,5 @@
 # garbage collection
 
-[gc] `gc_free`
-
 [gc] `gc_mark`
 [gc] `gc_sweep`
 
