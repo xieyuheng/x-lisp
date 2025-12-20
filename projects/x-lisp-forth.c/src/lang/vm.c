@@ -313,9 +313,30 @@ vm_gc_roots_in_value_stack(vm_t *vm, array_t *roots) {
     }
 }
 
+static void
+vm_gc_roots_in_frame_stack(vm_t *vm, array_t *roots) {
+    for (size_t i = 0; i < stack_length(vm->frame_stack); i++) {
+        frame_t *frame = stack_get(vm->frame_stack, i);
+        for (size_t i = 0; i < array_length(frame->locals); i++) {
+            value_t value = array_get(frame->locals, i);
+            if (object_p(value)) {
+                array_push(roots, to_object(value));
+            }
+        }
+    }
+}
+
+static void
+vm_gc_roots_in_mod(vm_t *vm, array_t *roots) {
+    (void) vm;
+    (void) roots;
+}
+
 array_t *
 vm_gc_roots(vm_t *vm) {
     array_t *roots = make_array_auto();
     vm_gc_roots_in_value_stack(vm, roots);
+    vm_gc_roots_in_frame_stack(vm, roots);
+    vm_gc_roots_in_mod(vm, roots);
     return roots;
 }
