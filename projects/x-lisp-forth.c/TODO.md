@@ -1,6 +1,5 @@
 # garbage collection
 
-[value] `object_class_t` -- has `free_fn_t` -- optional, null means this object is permanent
 [value] `object_class_t` -- has `child_iter_t` -- optional, null means this object has no successors
 
 [gc] `gc_t` -- has `allocated_objects` (`array_t`)
