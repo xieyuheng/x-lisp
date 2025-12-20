@@ -1,14 +1,16 @@
 # garbage collection
 
-[gc] `make_gc`
 [gc] `gc_free`
-
-[gc] `gc_init_roots`
 
 [gc] `gc_mark`
 [gc] `gc_sweep`
 
+[gc] `gc_mark_object`
+[gc] `gc_unmark_object`
+
 [gc] vm has gc
+
+[gc] `vm_gc_roots` -- simply return array of object
 
 # builtin structural data
 
