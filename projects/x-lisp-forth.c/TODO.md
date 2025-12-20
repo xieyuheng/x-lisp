@@ -1,12 +1,5 @@
 # garbage collection
 
-[value] `object_free`
-
-[gc] `gc_free` -- call `object_free`
-
-[gc] `gc_mark_object`
-[gc] `gc_unmark_object`
-
 [gc] vm has gc
 
 [gc] `vm_gc_roots` -- simply return array of object

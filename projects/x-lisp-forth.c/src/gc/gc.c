@@ -15,7 +15,11 @@ make_gc(void) {
 
 void
 gc_free(gc_t *self) {
-    // TODO call `object_free`
+    size_t length = array_length(self->allocated_objects);
+    for (size_t i = 0; i < length; i++) {
+        object_t *object = array_get(self->allocated_objects, i);
+        object_free(object);
+    }
 
     array_free(self->allocated_objects);
     stack_free(self->work_stack);
@@ -61,11 +65,7 @@ gc_sweep(gc_t *self) {
             object->header.mark = false;
             array_push(reachable_objects, object);
         } else {
-            // object_free(object);
-            const object_class_t *class = object->header.class;
-            if (class->free_fn) {
-                class->free_fn(object);
-            }
+            object_free(object);
         }
     }
 
