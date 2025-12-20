@@ -1,34 +1,34 @@
 #include "index.h"
 
 struct gc_t {
-    array_t *allocated_objects;
+    array_t *objects;
     stack_t *work_stack;
 };
 
 gc_t *
 make_gc(void) {
     gc_t *self = new(gc_t);
-    self->allocated_objects = make_array_auto();
+    self->objects = make_array_auto();
     self->work_stack = make_stack();
     return self;
 }
 
 void
 gc_free(gc_t *self) {
-    size_t length = array_length(self->allocated_objects);
+    size_t length = array_length(self->objects);
     for (size_t i = 0; i < length; i++) {
-        object_t *object = array_get(self->allocated_objects, i);
+        object_t *object = array_get(self->objects, i);
         object_free(object);
     }
 
-    array_free(self->allocated_objects);
+    array_free(self->objects);
     stack_free(self->work_stack);
     free(self);
 }
 
 void
 gc_add_object(gc_t *self, object_t *object) {
-    array_push(self->allocated_objects, object);
+    array_push(self->objects, object);
 }
 
 void
@@ -63,9 +63,9 @@ void
 gc_sweep(gc_t *self) {
     array_t *reachable_objects = make_array_auto();
 
-    size_t length = array_length(self->allocated_objects);
+    size_t length = array_length(self->objects);
     for (size_t i = 0; i < length; i++) {
-        object_t *object = array_get(self->allocated_objects, i);
+        object_t *object = array_get(self->objects, i);
         if (object->header.mark) {
             object->header.mark = false;
             array_push(reachable_objects, object);
@@ -74,6 +74,6 @@ gc_sweep(gc_t *self) {
         }
     }
 
-    array_free(self->allocated_objects);
-    self->allocated_objects = reachable_objects;
+    array_free(self->objects);
+    self->objects = reachable_objects;
 }
