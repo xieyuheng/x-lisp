@@ -302,3 +302,20 @@ vm_execute_until(vm_t *vm, size_t base_length) {
         vm_execute_step(vm);
     }
 }
+
+static void
+vm_gc_roots_in_value_stack(vm_t *vm, array_t *roots) {
+    for (size_t i = 0; i < stack_length(vm->value_stack); i++) {
+        value_t value = stack_get(vm->value_stack, i);
+        if (object_p(value)) {
+            array_push(roots, to_object(value));
+        }
+    }
+}
+
+array_t *
+vm_gc_roots(vm_t *vm) {
+    array_t *roots = make_array_auto();
+    vm_gc_roots_in_value_stack(vm, roots);
+    return roots;
+}

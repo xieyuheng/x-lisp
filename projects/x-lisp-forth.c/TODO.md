@@ -1,6 +1,7 @@
 # garbage collection
 
-[gc] `vm_gc_roots` -- simply return array of object
+[gc] `vm_gc_roots_in_mod`
+[gc] `vm_gc_roots_in_frame_stack`
 
 # builtin structural data
 
