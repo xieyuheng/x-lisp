@@ -2,7 +2,6 @@
 
 typedef void (object_print_fn_t)(object_t *self);
 typedef bool (object_equal_fn_t)(object_t *lhs, object_t *rhs);
-typedef void (object_free_fn_t)(object_t *self);
 
 typedef void *(object_child_iter_fn_t)(object_t *self);
 typedef object_t *(object_child_fn_t)(void *iter);
@@ -13,7 +12,7 @@ struct object_class_t {
     object_equal_fn_t *equal_fn;
 
     // - null means this object is permanent.
-    object_free_fn_t *free_fn;
+    free_fn_t *free_fn;
 
     // - `child_iter_fn` returns the state (`iter`) for the iterator
     //   interface functions -- `first_child_fn` and `next_child_fn`,

@@ -8,13 +8,15 @@ struct gc_t {
 gc_t *
 make_gc(void) {
     gc_t *self = new(gc_t);
-    self->allocated_objects = make_array_auto_with(free);
+    self->allocated_objects = make_array_auto();
     self->work_stack = make_stack();
     return self;
 }
 
 void
 gc_free(gc_t *self) {
+    // TODO call `object_free`
+
     array_free(self->allocated_objects);
     stack_free(self->work_stack);
     free(self);
@@ -31,7 +33,6 @@ gc_mark_object(gc_t *self, object_t *object) {
         stack_push(self->work_stack, object);
     }
 }
-// static void gc_unmark_object(gc_t *self, object_t *object);
 
 void
 gc_mark(gc_t *self) {
@@ -47,4 +48,27 @@ gc_mark(gc_t *self) {
 
         class->iter_free_fn(iter);
     }
+}
+
+void
+gc_sweep(gc_t *self) {
+    array_t *reachable_objects = make_array_auto();
+
+    size_t length = array_length(self->allocated_objects);
+    for (size_t i = 0; i < length; i++) {
+        object_t *object = array_get(self->allocated_objects, i);
+        if (object->header.mark) {
+            object->header.mark = false;
+            array_push(reachable_objects, object);
+        } else {
+            // object_free(object);
+            const object_class_t *class = object->header.class;
+            if (class->free_fn) {
+                class->free_fn(object);
+            }
+        }
+    }
+
+    array_free(self->allocated_objects);
+    self->allocated_objects = reachable_objects;
 }

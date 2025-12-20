@@ -1,6 +1,8 @@
 # garbage collection
 
-[gc] `gc_sweep`
+[value] `object_free`
+
+[gc] `gc_free` -- call `object_free`
 
 [gc] `gc_mark_object`
 [gc] `gc_unmark_object`
