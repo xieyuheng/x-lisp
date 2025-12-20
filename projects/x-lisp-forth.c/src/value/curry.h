@@ -10,7 +10,7 @@ struct curry_t {
     value_t *args;
 };
 
-curry_t *make_curry(value_t target, size_t arity, size_t size);
+curry_t *make_curry(gc_t *gc, value_t target, size_t arity, size_t size);
 void curry_free(curry_t *self);
 
 bool curry_p(value_t value);

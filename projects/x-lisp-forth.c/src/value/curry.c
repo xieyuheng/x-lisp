@@ -7,13 +7,14 @@ const object_class_t curry_class = {
 };
 
 curry_t *
-make_curry(value_t target, size_t arity, size_t size) {
+make_curry(gc_t *gc, value_t target, size_t arity, size_t size) {
     curry_t *self = new(curry_t);
     self->header.class = &curry_class;
     self->target = target;
     self->arity = arity;
     self->size = size;
     self->args = allocate_pointers(size);
+    gc_add_object(gc, (object_t *) self);
     return self;
 }
 

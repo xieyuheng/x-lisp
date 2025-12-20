@@ -16,7 +16,7 @@ static void
 supply(vm_t *vm, size_t n, value_t target, size_t arity) {
     assert(n < arity);
 
-    curry_t *curry = make_curry(target, arity - n, n);
+    curry_t *curry = make_curry(vm->gc, target, arity - n, n);
     for (size_t i = 0; i < n; i++) {
         curry->args[n - i - 1] = stack_pop(vm->value_stack);
     }

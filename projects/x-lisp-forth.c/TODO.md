@@ -1,5 +1,3 @@
-[gc] `make_curry` -- take `gc` and call `gc_add_object`
-
 # garbage collection
 
 [gc] `vm_gc_roots` -- simply return array of object
