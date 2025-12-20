@@ -27,6 +27,11 @@ gc_free(gc_t *self) {
 }
 
 void
+gc_add_object(gc_t *self, object_t *object) {
+    array_push(self->allocated_objects, object);
+}
+
+void
 gc_mark_object(gc_t *self, object_t *object) {
     if (object->header.mark) return;
 
