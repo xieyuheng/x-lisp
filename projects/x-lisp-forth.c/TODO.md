@@ -1,8 +1,5 @@
 # garbage collection
-ambr objects objects
-[gc] `gc_object_count`
 
-[gc] `vm_gc_roots_in_frame_stack`
 [gc] `vm_gc_roots_in_mod`
 
 # builtin structural data
