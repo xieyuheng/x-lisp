@@ -26,7 +26,12 @@ gc_free(gc_t *self) {
     free(self);
 }
 
-void
+inline size_t
+gc_object_count(gc_t *self) {
+    return array_length(self->objects);
+}
+
+inline void
 gc_add_object(gc_t *self, object_t *object) {
     array_push(self->objects, object);
 }
