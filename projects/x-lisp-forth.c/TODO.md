@@ -1,7 +1,5 @@
 # garbage collection
 
-[value] `object_class_t` -- has `child_iter_t` -- optional, null means this object has no successors
-
 [gc] `gc_t` -- has `allocated_objects` (`array_t`)
 [gc] `gc_t` -- has `gray_object_stack` (`stack_t`)
 

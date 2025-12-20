@@ -1,14 +1,26 @@
 #pragma once
 
-typedef void (object_print_fn_t)(object_t *object);
+typedef void (object_print_fn_t)(object_t *self);
 typedef bool (object_equal_fn_t)(object_t *lhs, object_t *rhs);
-typedef void (object_free_fn_t)(object_t *object);
+typedef void (object_free_fn_t)(object_t *self);
+
+typedef void *(object_child_iter_fn_t)(object_t *self);
+typedef object_t *(object_child_fn_t)(void *iter);
 
 struct object_class_t {
     const char *name;
     object_print_fn_t *print_fn;
     object_equal_fn_t *equal_fn;
-    object_free_fn_t *free_fn; // null means this object is permanent
+
+    // - null means this object is permanent.
+    object_free_fn_t *free_fn;
+
+    // - `child_iter_fn` returns the state (`iter`) for the iterator
+    //   interface functions -- `first_child_fn` and `next_child_fn`,
+    // - null means this object has no children.
+    object_child_iter_fn_t *child_iter_fn;
+    object_child_fn_t *first_child_fn;
+    object_child_fn_t *next_child_fn;
 };
 
 struct object_header_t {
