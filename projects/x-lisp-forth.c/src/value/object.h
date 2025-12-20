@@ -19,6 +19,7 @@ struct object_class_t {
     //   interface functions -- `first_child_fn` and `next_child_fn`,
     // - null means this object has no children.
     object_child_iter_fn_t *child_iter_fn;
+    free_fn_t *iter_free_fn;
     object_child_fn_t *first_child_fn;
     object_child_fn_t *next_child_fn;
 };

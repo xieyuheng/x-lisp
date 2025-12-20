@@ -21,9 +21,30 @@ gc_free(gc_t *self) {
 }
 
 void
-gc_add_root(gc_t *self, object_t *root) {
-    stack_push(self->work_stack, root);
-}
+gc_mark_object(gc_t *self, object_t *object) {
+    if (object->header.mark) return;
 
-// gc_mark_object
-// gc_unmark_object
+    object->header.mark = true;
+
+    const object_class_t *class = object->header.class;
+    if (class->child_iter_fn) {
+        stack_push(self->work_stack, object);
+    }
+}
+// static void gc_unmark_object(gc_t *self, object_t *object);
+
+void
+gc_mark(gc_t *self) {
+    while (!stack_is_empty(self->work_stack)) {
+        object_t *object = stack_pop(self->work_stack);
+        const object_class_t *class = object->header.class;
+        void *iter = class->child_iter_fn(object);
+        object_t *child = class->first_child_fn(iter);
+        while (child) {
+            gc_mark_object(self, child);
+            child = class->next_child_fn(iter);
+        }
+
+        class->iter_free_fn(iter);
+    }
+}

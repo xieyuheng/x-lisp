@@ -1,6 +1,5 @@
 # garbage collection
 
-[gc] `gc_mark`
 [gc] `gc_sweep`
 
 [gc] `gc_mark_object`
