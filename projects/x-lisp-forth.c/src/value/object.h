@@ -11,6 +11,7 @@ struct object_class_t {
 
 struct object_header_t {
     const object_class_t *class;
+    bool mark;
 };
 
 struct object_t {
