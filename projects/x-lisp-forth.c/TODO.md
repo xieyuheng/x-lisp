@@ -1,7 +1,3 @@
-# curry
-
-[value] fix `curry_t` for gc
-
 # tael
 
 [value] `tael_t` -- setup
