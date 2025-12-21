@@ -22,15 +22,15 @@ compile_function(vm_t *vm, definition_t *definition) {
 
         token_t *token = list_shift(vm->tokens);
         if (string_equal(token->content, "@end")) {
-            token_free(token);
             compile_return(definition);
+            token_free(token);
             return;
         } else if (string_equal(token->content, "@if")) {
             compile_if(vm, definition, "@else", "@then", token->meta);
             token_free(token);
         } else if (string_equal(token->content, "[")) {
-            token_free(token);
             compile_parameters(vm, definition, "]");
+            token_free(token);
         } else {
             compile_token(vm, definition, token);
         }
@@ -78,7 +78,11 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     }
 
     case STRING_TOKEN: {
-        TODO();
+        struct instr_t instr;
+        instr.op = OP_LITERAL_STRING;
+        instr.literal_string.length = string_length(token->content);
+        instr.literal_string.content = token->content;
+        function_definition_append_instr(definition, instr);
         token_free(token);
         return;
     }
@@ -87,8 +91,8 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
         struct instr_t instr;
         instr.op = OP_LITERAL_INT;
         instr.literal_int.content = string_parse_int(token->content);
-        token_free(token);
         function_definition_append_instr(definition, instr);
+        token_free(token);
         return;
     }
 
@@ -96,15 +100,15 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
         struct instr_t instr;
         instr.op = OP_LITERAL_FLOAT;
         instr.literal_float.content = string_parse_double(token->content);
-        token_free(token);
         function_definition_append_instr(definition, instr);
+        token_free(token);
         return;
     }
 
     case BRACKET_START_TOKEN: {
         assert(string_equal(token->content, "["));
-        token_free(token);
         compile_bindings(vm, definition, "]");
+        token_free(token);
         return;
     }
 

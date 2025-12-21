@@ -1,7 +1,3 @@
-# xstring
-
-[builtin] `compile_literal_string`
-
 # curry
 
 [value] fix `curry_t` for gc
@@ -21,6 +17,8 @@ test gc
 
 [lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`
 [lang] `vm_execute_instr` -- `OP_LITERAL_KEYWORD`
+
+[builtin] `compile_token` -- handle `KEYWORD_TOKEN`
 
 # feature complete
 
