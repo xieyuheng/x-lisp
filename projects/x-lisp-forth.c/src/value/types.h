@@ -19,3 +19,4 @@ typedef enum {
 } tag_t;
 
 typedef struct curry_t curry_t;
+typedef struct xstring_t xstring_t;

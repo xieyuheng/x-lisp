@@ -7,3 +7,6 @@ struct xstring_t {
     size_t length;
     char *string;
 };
+
+xstring_t *make_xstring(const char *string);
+void xstring_free(xstring_t *self);
