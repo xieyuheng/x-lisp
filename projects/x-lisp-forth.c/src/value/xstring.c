@@ -2,8 +2,8 @@
 
 const object_class_t xstring_class = {
     .name = "xstring",
-    // .print_fn = (object_print_fn_t *) xstring_print,
-    // .equal_fn = (object_equal_fn_t *) xstring_equal,
+    .print_fn = (object_print_fn_t *) xstring_print,
+    .equal_fn = (object_equal_fn_t *) xstring_equal,
     .free_fn = (free_fn_t *) xstring_free,
 };
 
@@ -21,4 +21,15 @@ void
 xstring_free(xstring_t *self) {
     string_free(self->string);
     free(self);
+}
+
+bool
+xstring_equal(xstring_t *lhs, xstring_t *rhs) {
+    return lhs->length == rhs->length
+        && string_equal(lhs->string, rhs->string);
+}
+
+void
+xstring_print(xstring_t *self) {
+    printf("%s", self->string);
 }
