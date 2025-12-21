@@ -72,5 +72,56 @@ main(void) {
         record_free(record);
     }
 
+    {
+        record_t *record = make_record();
+        assert(!record_first_value(record));
+
+        //  Insert some entries
+
+        list_t *string_list = make_string_list();
+        list_push(string_list, string_copy("dead beef"));
+        list_push(string_list, string_copy("a bad cafe"));
+        list_push(string_list, string_copy("coded bad"));
+        list_push(string_list, string_copy("dead food"));
+
+        assert(record_insert(record, "DEADBEEF", list_get(string_list, 0)));
+        assert(record_insert(record, "ABADCAFE", list_get(string_list, 1)));
+        assert(record_insert(record, "C0DEDBAD", list_get(string_list, 2)));
+        assert(record_insert(record, "DEADF00D", list_get(string_list, 3)));
+        assert(record_length(record) == 4);
+
+        // iterate by insertion order.
+
+        {
+            size_t i = 0;
+            char *value = record_first_value(record);
+            while (value) {
+                assert(string_equal(value, list_get(string_list, i)));
+                value = record_next_value(record);
+                i++;
+            }
+        }
+
+        // list is in insertion order.
+
+        {
+            list_t *list = record_value_list(record);
+            size_t i = 0;
+            char *value = list_first(list);
+            while (value) {
+                assert(string_equal(value, list_get(string_list, i)));
+                value = list_next(list);
+                i++;
+            }
+            list_free(list);
+        }
+
+        list_free(string_list);
+
+        record_purge(record);
+        assert(record_length(record) == 0);
+        record_free(record);
+    }
+
     test_end();
 }

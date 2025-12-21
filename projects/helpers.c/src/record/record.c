@@ -76,3 +76,18 @@ bool
 record_delete(record_t *self, const char *key) {
     return hash_delete(self->hash, key);
 }
+
+void *
+record_first_value(record_t *self) {
+    return hash_first_value(self->hash);
+}
+
+void *
+record_next_value(record_t *self) {
+    return hash_next_value(self->hash);
+}
+
+list_t *
+record_value_list(record_t *self) {
+    return hash_value_list(self->hash);
+}
