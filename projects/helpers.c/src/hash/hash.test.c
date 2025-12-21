@@ -132,22 +132,30 @@ main(void) {
         assert(hash_insert(hash, string_copy("DEADF00D"), list_get(string_list, 3)));
         assert(hash_length(hash) == 4);
 
-        {
-            list_t *list = hash_value_list(hash);
-            char *value = list_first(list);
-            while (value) {
-                assert(list_has(string_list, value));
-                value = list_next(list);
-            }
-            list_free(list);
-        }
+        // iterate by insertion order.
 
         {
+            size_t i = 0;
             char *value = hash_first_value(hash);
             while (value) {
-                assert(list_has(string_list, value));
+                assert(string_equal(value, list_get(string_list, i)));
                 value = hash_next_value(hash);
+                i++;
             }
+        }
+
+        // list is in insertion order.
+
+        {
+            list_t *list = hash_value_list(hash);
+            size_t i = 0;
+            char *value = list_first(list);
+            while (value) {
+                assert(string_equal(value, list_get(string_list, i)));
+                value = list_next(list);
+                i++;
+            }
+            list_free(list);
         }
 
         list_free(string_list);

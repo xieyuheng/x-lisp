@@ -28,7 +28,7 @@ void hash_put(hash_t *self, void *key, void *value);
 
 bool hash_delete(hash_t *self, const void *key);
 
-// - iterate by hashed order (NOT insertion order).
+// - iterate by insertion order.
 void *hash_first_value(hash_t *self);
 void *hash_next_value(hash_t *self);
 void *hash_cursor_key(hash_t *self);
