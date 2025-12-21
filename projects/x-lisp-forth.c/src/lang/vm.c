@@ -268,7 +268,10 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_LITERAL_STRING: {
-        assert(false && "TODO");
+        value_t value =
+            x_object(make_xstring(vm->gc, instr.literal_string.content));
+        stack_push(vm->value_stack, value);
+        return;
     }
 
     case OP_LITERAL_SYMBOL: {

@@ -1,6 +1,6 @@
 # xstring
 
-[lang] `vm_execute_instr` -- `OP_LITERAL_STRING`
+[builtin] `compile_literal_string`
 
 # curry
 
