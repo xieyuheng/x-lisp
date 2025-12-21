@@ -112,7 +112,7 @@ export function builtinFile(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "directory-delete-recursively", 1, (path) => {
-    fs.rmdirSync(Values.asString(path).content, { recursive: true })
+    fs.rmSync(Values.asString(path).content, { recursive: true, force: true })
     return Values.Void()
   })
 

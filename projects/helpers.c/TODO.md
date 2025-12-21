@@ -5,4 +5,3 @@
 void *record_first_value(record_t *self);
 void *record_next_value(record_t *self);
 ```
-
