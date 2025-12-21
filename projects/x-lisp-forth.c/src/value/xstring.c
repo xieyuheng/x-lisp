@@ -24,6 +24,18 @@ xstring_free(xstring_t *self) {
 }
 
 bool
+xstring_p(value_t value) {
+    return object_p(value) &&
+        to_object(value)->header.class == &xstring_class;
+}
+
+xstring_t *
+to_xstring(value_t value) {
+    assert(xstring_p(value));
+    return (xstring_t *) to_object(value);
+}
+
+bool
 xstring_equal(xstring_t *lhs, xstring_t *rhs) {
     return lhs->length == rhs->length
         && string_equal(lhs->string, rhs->string);
