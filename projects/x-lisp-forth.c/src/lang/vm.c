@@ -328,8 +328,22 @@ vm_gc_roots_in_frame_stack(vm_t *vm, array_t *roots) {
 
 static void
 vm_gc_roots_in_mod(vm_t *vm, array_t *roots) {
-    (void) vm;
-    (void) roots;
+    definition_t *definition = record_first_value(vm->mod->definitions);
+    while (definition) {
+        if (definition->kind == CONSTANT_DEFINITION) {
+            value_t value = definition->constant_definition.value;
+            if (object_p(value)) {
+                array_push(roots, to_object(value));
+            }
+        } else if (definition->kind == VARIABLE_DEFINITION) {
+            value_t value = definition->variable_definition.value;
+            if (object_p(value)) {
+                array_push(roots, to_object(value));
+            }
+        }
+
+        definition = record_next_value(vm->mod->definitions);
+    }
 }
 
 array_t *

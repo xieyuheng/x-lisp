@@ -1,7 +1,3 @@
-# garbage collection
-
-[gc] `vm_gc_roots_in_mod`
-
 # builtin structural data
 
 [value] `xstring_t`
