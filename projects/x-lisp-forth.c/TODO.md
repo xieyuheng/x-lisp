@@ -1,6 +1,7 @@
 # xstring
 
-[value] `xstring_free`
+[value] `xstring_equal`
+[value] `xstring_print`
 
 [lang] `vm_execute_instr` -- `OP_LITERAL_STRING`
 
