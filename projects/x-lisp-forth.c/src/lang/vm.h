@@ -18,4 +18,4 @@ void vm_execute_step(vm_t *vm);
 void vm_execute(vm_t *vm);
 void vm_execute_until(vm_t *vm, size_t base_length);
 
-array_t *vm_gc_roots(vm_t *vm);
+void vm_perform_gc(vm_t *vm);

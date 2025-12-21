@@ -26,6 +26,7 @@ vm_interpret(vm_t *vm) {
         token_t *token = list_shift(vm->tokens);
         interpret_token(vm, token);
         token_free(token);
+        vm_perform_gc(vm);
     }
 }
 
@@ -349,11 +350,23 @@ vm_gc_roots_in_mod(vm_t *vm, array_t *roots) {
     }
 }
 
-array_t *
+static array_t *
 vm_gc_roots(vm_t *vm) {
     array_t *roots = make_array_auto();
     vm_gc_roots_in_value_stack(vm, roots);
     vm_gc_roots_in_frame_stack(vm, roots);
     vm_gc_roots_in_mod(vm, roots);
     return roots;
+}
+
+void
+vm_perform_gc(vm_t *vm) {
+    array_t *roots = vm_gc_roots(vm);
+    for (size_t i = 0; i < array_length(roots); i++) {
+        gc_mark_object(vm->gc, array_get(roots, i));
+    }
+
+    gc_mark(vm->gc);
+    gc_sweep(vm->gc);
+    array_free(roots);
 }
