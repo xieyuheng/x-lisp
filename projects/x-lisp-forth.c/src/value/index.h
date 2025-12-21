@@ -11,3 +11,4 @@
 #include "null.h"
 #include "object.h"
 #include "curry.h"
+#include "xstring.h"

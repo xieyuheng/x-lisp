@@ -1,10 +1,5 @@
 # xstring
 
-[value] `xstring_t` -- setup
-
-- let type be prefixed by x, so that it is scalable
-- we can have xstring, xhash, xset and so on
-
 [value] `make_xstring`
 [value] `xstring_free`
 
