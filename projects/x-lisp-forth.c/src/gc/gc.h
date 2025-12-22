@@ -9,3 +9,5 @@ void gc_mark_object(gc_t *self, object_t *object);
 
 void gc_mark(gc_t *self);
 void gc_sweep(gc_t *self);
+
+void gc_report(gc_t *self);

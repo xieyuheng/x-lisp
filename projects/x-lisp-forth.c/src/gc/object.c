@@ -7,3 +7,14 @@ object_free(object_t *self) {
         class->free_fn(self);
     }
 }
+
+void
+object_print(object_t *self) {
+    if (self->header.class->print_fn) {
+        self->header.class->print_fn(self);
+        return;
+    }
+
+    printf("#<%s 0x%p>", self->header.class->name, (void *) self);
+    return;
+}

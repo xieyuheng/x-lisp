@@ -1,7 +1,5 @@
 # tael
 
-[gc] `gc_report`
-
 [value] `tael_t` -- setup
 [value] `make_tael`
 [value] `tael_free` -- shallow

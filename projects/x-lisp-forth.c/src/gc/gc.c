@@ -15,8 +15,7 @@ make_gc(void) {
 
 void
 gc_free(gc_t *self) {
-    size_t length = array_length(self->objects);
-    for (size_t i = 0; i < length; i++) {
+    for (size_t i = 0; i < array_length(self->objects); i++) {
         object_t *object = array_get(self->objects, i);
         object_free(object);
     }
@@ -68,8 +67,7 @@ void
 gc_sweep(gc_t *self) {
     array_t *reachable_objects = make_array_auto();
 
-    size_t length = array_length(self->objects);
-    for (size_t i = 0; i < length; i++) {
+    for (size_t i = 0; i < array_length(self->objects); i++) {
         object_t *object = array_get(self->objects, i);
         if (object->header.mark) {
             object->header.mark = false;
@@ -81,4 +79,18 @@ gc_sweep(gc_t *self) {
 
     array_free(self->objects);
     self->objects = reachable_objects;
+}
+
+void
+gc_report(gc_t *self) {
+    if (array_is_empty(self->objects)) {
+        printf("objects: (empty)\n");
+        return;
+    }
+
+    printf("objects:\n");
+    for (size_t i = 0; i < array_length(self->objects); i++) {
+        object_t *object = array_get(self->objects, i);
+        printf("  %ld: ", i); object_print(object); printf("\n");
+    }
 }

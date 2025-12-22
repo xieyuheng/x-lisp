@@ -361,6 +361,11 @@ vm_gc_roots(vm_t *vm) {
 
 void
 vm_perform_gc(vm_t *vm) {
+#if DEBUG_GC
+    who_printf("before\n");
+    gc_report(vm->gc);
+#endif
+
     array_t *roots = vm_gc_roots(vm);
     for (size_t i = 0; i < array_length(roots); i++) {
         gc_mark_object(vm->gc, array_get(roots, i));
@@ -369,4 +374,9 @@ vm_perform_gc(vm_t *vm) {
     gc_mark(vm->gc);
     gc_sweep(vm->gc);
     array_free(roots);
+
+#if DEBUG_GC
+    who_printf("after\n");
+    gc_report(vm->gc);
+#endif
 }

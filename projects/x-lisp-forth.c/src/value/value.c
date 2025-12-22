@@ -46,17 +46,11 @@ value_print(value_t value) {
     }
 
     if (object_p(value)) {
-        object_t *object = to_object(value);
-        if (object->header.class->print_fn) {
-            object->header.class->print_fn(object);
-            return;
-        }
-
-        printf("(%s 0x%p)", object->header.class->name, value);
+        object_print(to_object(value));
         return;
     }
 
-    printf("(unknown-value 0x%p)", value);
+    printf("#<unknown-value 0x%p>", value);
     return;
 }
 
