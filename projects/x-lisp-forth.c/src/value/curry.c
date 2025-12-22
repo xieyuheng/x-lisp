@@ -60,6 +60,7 @@ curry_print(curry_t *self) {
 
 struct curry_child_iter_t {
     const curry_t *curry;
+    bool target_consumed_p;
     size_t index;
 };
 
@@ -69,6 +70,7 @@ static curry_child_iter_t *
 make_curry_child_iter(const curry_t *curry) {
     curry_child_iter_t *self = new(curry_child_iter_t);
     self->curry = curry;
+    self->target_consumed_p = false;
     self->index = 0;
     return self;
 }
@@ -80,19 +82,20 @@ curry_child_iter_free(curry_child_iter_t *self) {
 
 static object_t *
 curry_next_child(curry_child_iter_t *iter) {
-    if (iter->index >= iter->curry->size) return NULL;
+    if (!iter->target_consumed_p) {
+        iter->target_consumed_p = true;
+        value_t value = iter->curry->target;
+        if (object_p(value)) return to_object(value);
+        else return curry_next_child(iter);
+    }
 
-    value_t arg = iter->curry->args[iter->index++];
-    if (object_p(arg)) return to_object(arg);
-    else return curry_next_child(iter);
-}
+    if (iter->index < iter->curry->size) {
+        value_t value = iter->curry->args[iter->index++];
+        if (object_p(value)) return to_object(value);
+        else return curry_next_child(iter);
+    }
 
-static object_t *
-curry_first_child(curry_child_iter_t *iter) {
-    iter->index = 0;
-    if (object_p(iter->curry->target))
-        return to_object(iter->curry->target);
-    else return curry_next_child(iter);
+    return NULL;
 }
 
 const object_class_t curry_class = {
@@ -102,6 +105,5 @@ const object_class_t curry_class = {
     .free_fn = (free_fn_t *) curry_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_curry_child_iter,
     .child_iter_free_fn = (free_fn_t *) curry_child_iter_free,
-    .first_child_fn = (object_child_fn_t *) curry_first_child,
     .next_child_fn = (object_child_fn_t *) curry_next_child,
 };

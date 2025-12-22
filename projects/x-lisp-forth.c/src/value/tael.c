@@ -44,14 +44,16 @@ tael_equal(tael_t *lhs, tael_t *rhs) {
     if (record_length(lhs->attributes) != record_length(rhs->attributes))
         return false;
 
-    const char *key = record_first_key(lhs->attributes);
+    record_iter_t iter;
+    record_iter_init(&iter, lhs->attributes);
+    const char *key = record_iter_next_key(&iter);
     while (key) {
         value_t left = record_get(lhs->attributes, key);
         value_t right = record_get(rhs->attributes, key);
         if (!equal_p(left, right))
             return false;
 
-        key = record_next_key(lhs->attributes);
+        key = record_iter_next_key(&iter);
     }
 
     return true;
@@ -68,68 +70,62 @@ tael_print(tael_t *self) {
         }
     }
 
-    const char *key = record_first_key(self->attributes);
+    record_iter_t iter;
+    record_iter_init(&iter, self->attributes);
+    const char *key = record_iter_next_key(&iter);
     while (key) {
         value_t value = record_get(self->attributes, key);
         printf(" :%s ", key);
         value_print(value);
-        key = record_next_key(self->attributes);
+        key = record_iter_next_key(&iter);
     }
 
     printf("]");
 }
 
-struct tael_child_iter_t {
-    const tael_t *tael;
-    size_t index;
-    const char *key;
-};
+// struct tael_child_iter_t {
+//     const tael_t *tael;
+//     size_t index;
+//     const char *key;
+// };
 
-typedef struct tael_child_iter_t tael_child_iter_t;
+// typedef struct tael_child_iter_t tael_child_iter_t;
 
-static tael_child_iter_t *
-make_tael_child_iter(const tael_t *tael) {
-    tael_child_iter_t *self = new(tael_child_iter_t);
-    self->tael = tael;
-    self->index = 0;
-    self->key = NULL;
-    return self;
-}
+// static tael_child_iter_t *
+// make_tael_child_iter(const tael_t *tael) {
+//     tael_child_iter_t *self = new(tael_child_iter_t);
+//     self->tael = tael;
+//     self->index = 0;
+//     self->key = NULL;
+//     return self;
+// }
 
-static void
-tael_child_iter_free(tael_child_iter_t *self) {
-    free(self);
-}
+// static void
+// tael_child_iter_free(tael_child_iter_t *self) {
+//     free(self);
+// }
 
 
-static object_t *
-tael_next_child(tael_child_iter_t *iter) {
-    if (iter->index < array_length(iter->tael->elements)) {
-        value_t element = array_get(iter->tael->elements, iter->index++);
+// static object_t *
+// tael_next_child(tael_child_iter_t *iter) {
+//     if (iter->index < array_length(iter->tael->elements)) {
+//         value_t element = array_get(iter->tael->elements, iter->index++);
 
-        // TODO need record_iter
+//         // TODO need record_iter_t
 
-        if (object_p(element)) return to_object(element);
-        else return tael_next_child(iter);
-    }
+//         if (object_p(element)) return to_object(element);
+//         else return tael_next_child(iter);
+//     }
 
-    return NULL;
-}
-
-static object_t *
-tael_first_child(tael_child_iter_t *iter) {
-    iter->index = 0;
-    iter->key = NULL;
-    return tael_next_child(iter);
-}
+//     return NULL;
+// }
 
 const object_class_t tael_class = {
     .name = "tael",
     .print_fn = (object_print_fn_t *) tael_print,
     .equal_fn = (object_equal_fn_t *) tael_equal,
     .free_fn = (free_fn_t *) tael_free,
-    .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
-    .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
-    .first_child_fn = (object_child_fn_t *) tael_first_child,
-    .next_child_fn = (object_child_fn_t *) tael_next_child,
+    // .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
+    // .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
+    // .next_child_fn = (object_child_fn_t *) tael_next_child,
 };

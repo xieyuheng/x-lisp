@@ -19,7 +19,6 @@ struct object_class_t {
     // - null means this object has no children.
     object_make_child_iter_fn_t *make_child_iter_fn;
     free_fn_t *child_iter_free_fn;
-    object_child_fn_t *first_child_fn;
     object_child_fn_t *next_child_fn;
 };
 

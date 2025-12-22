@@ -1,13 +1,11 @@
 # tael
 
-[gc] not need `first_child_fn`
-
-[gc] iter can be used without `init_*_iter` -- instead of `make_*_iter` + `*_iter_free`
-
 [value] `make_tael_child_iter` -- compose `record_iter`
 
 - remove `tael_first_child`
 - fix `tael_next_child`
+
+[gc] iter can be used without `*_iter_init` -- instead of `make_*_iter` + `*_iter_free`
 
 [builtin] `tael` -- setup
 
