@@ -1,7 +1,5 @@
 # list
 
-[helpers.c] `make_list_node` & `list_node_free`
-
 [helpers.c] `list_iter_next`
 
 [helpers.c] `list` -- remove iter state (cursor) and API functions
