@@ -31,3 +31,5 @@ bool record_delete(record_t *self, const char *key);
 // - iterate by insertion order.
 void *record_first_value(record_t *self);
 void *record_next_value(record_t *self);
+void *record_first_key(record_t *self);
+void *record_next_key(record_t *self);

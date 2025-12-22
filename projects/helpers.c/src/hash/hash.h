@@ -32,7 +32,6 @@ bool hash_delete(hash_t *self, const void *key);
 void *hash_first_value(hash_t *self);
 void *hash_next_value(hash_t *self);
 void *hash_cursor_key(hash_t *self);
-
 void *hash_first_key(hash_t *self);
 void *hash_next_key(hash_t *self);
 
