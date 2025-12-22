@@ -75,36 +75,36 @@ set_delete(set_t *self, void *value) {
     return hash_delete(self->value_hash, value);
 }
 
-void *
-set_first(set_t *self) {
-    return hash_first_value(self->value_hash);
-}
+// void *
+// set_first(set_t *self) {
+//     return hash_first_value(self->value_hash);
+// }
 
-void *
-set_next(set_t *self) {
-    return hash_next_value(self->value_hash);
-}
+// void *
+// set_next(set_t *self) {
+//     return hash_next_value(self->value_hash);
+// }
 
-list_t *
-set_to_list(set_t *self) {
-    list_t *list = make_list();
-    void *value = set_first(self);
-    while (value) {
-        list_push(list, value);
-        value = set_next(self);
-    }
+// list_t *
+// set_to_list(set_t *self) {
+//     list_t *list = make_list();
+//     void *value = set_first(self);
+//     while (value) {
+//         list_push(list, value);
+//         value = set_next(self);
+//     }
 
-    return list;
-}
+//     return list;
+// }
 
-array_t *
-set_to_array(set_t *self) {
-    array_t *array = make_array();
-    void *value = set_first(self);
-    while (value) {
-        array_push(array, value);
-        value = set_next(self);
-    }
+// array_t *
+// set_to_array(set_t *self) {
+//     array_t *array = make_array();
+//     void *value = set_first(self);
+//     while (value) {
+//         array_push(array, value);
+//         value = set_next(self);
+//     }
 
-    return array;
-}
+//     return array;
+// }

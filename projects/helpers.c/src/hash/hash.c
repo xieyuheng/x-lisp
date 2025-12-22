@@ -313,71 +313,71 @@ hash_first_entry(const hash_t *self) {
     return self->first_entry;
 }
 
-void *
-hash_first_value(hash_t *self) {
-    assert(self);
-    self->cursor_entry = self->first_entry;
-    return hash_next_value(self);
-}
+// void *
+// hash_first_value(hash_t *self) {
+//     assert(self);
+//     self->cursor_entry = self->first_entry;
+//     return hash_next_value(self);
+// }
 
-void *
-hash_next_value(hash_t *self) {
-    assert(self);
-    if (!self->cursor_entry) return NULL;
+// void *
+// hash_next_value(hash_t *self) {
+//     assert(self);
+//     if (!self->cursor_entry) return NULL;
 
-    hash_entry_t *entry = self->cursor_entry;
-    self->cursor_entry = entry->next;
-    return entry->value;
-}
+//     hash_entry_t *entry = self->cursor_entry;
+//     self->cursor_entry = entry->next;
+//     return entry->value;
+// }
 
-void *
-hash_cursor_key(hash_t *self) {
-    if (!self->cursor_entry) return NULL;
+// void *
+// hash_cursor_key(hash_t *self) {
+//     if (!self->cursor_entry) return NULL;
 
-    return self->cursor_entry->key;
-}
+//     return self->cursor_entry->key;
+// }
 
 
-void *
-hash_first_key(hash_t *self) {
-    assert(self);
-    self->cursor_entry = self->first_entry;
-    return hash_next_key(self);
-}
+// void *
+// hash_first_key(hash_t *self) {
+//     assert(self);
+//     self->cursor_entry = self->first_entry;
+//     return hash_next_key(self);
+// }
 
-void *
-hash_next_key(hash_t *self) {
-    assert(self);
-    if (!self->cursor_entry) return NULL;
+// void *
+// hash_next_key(hash_t *self) {
+//     assert(self);
+//     if (!self->cursor_entry) return NULL;
 
-    hash_entry_t *entry = self->cursor_entry;
-    self->cursor_entry = entry->next;
-    return entry->key;
-}
+//     hash_entry_t *entry = self->cursor_entry;
+//     self->cursor_entry = entry->next;
+//     return entry->key;
+// }
 
-array_t *
-hash_values(hash_t *self) {
-    array_t *values = make_array();
-    void *value = hash_first_value(self);
-    while (value) {
-        array_push(values, value);
-        value = hash_next_value(self);
-    }
+// array_t *
+// hash_values(hash_t *self) {
+//     array_t *values = make_array();
+//     void *value = hash_first_value(self);
+//     while (value) {
+//         array_push(values, value);
+//         value = hash_next_value(self);
+//     }
 
-    return values;
-}
+//     return values;
+// }
 
-array_t *
-hash_keys(hash_t *self) {
-    array_t *keys = make_array();
-    void *key = hash_first_key(self);
-    while (key) {
-        array_push(keys, key);
-        key = hash_next_key(self);
-    }
+// array_t *
+// hash_keys(hash_t *self) {
+//     array_t *keys = make_array();
+//     void *key = hash_first_key(self);
+//     while (key) {
+//         array_push(keys, key);
+//         key = hash_next_key(self);
+//     }
 
-    return keys;
-}
+//     return keys;
+// }
 
 void
 hash_report(const hash_t *self) {

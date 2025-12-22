@@ -77,32 +77,32 @@ record_delete(record_t *self, const char *key) {
     return hash_delete(self->hash, key);
 }
 
-void *
-record_first_value(record_t *self) {
-    return hash_first_value(self->hash);
-}
+// void *
+// record_first_value(record_t *self) {
+//     return hash_first_value(self->hash);
+// }
 
-void *
-record_next_value(record_t *self) {
-    return hash_next_value(self->hash);
-}
+// void *
+// record_next_value(record_t *self) {
+//     return hash_next_value(self->hash);
+// }
 
-const char *
-record_first_key(record_t *self) {
-    return hash_first_key(self->hash);
-}
+// const char *
+// record_first_key(record_t *self) {
+//     return hash_first_key(self->hash);
+// }
 
-const char *
-record_next_key(record_t *self) {
-    return hash_next_key(self->hash);
-}
+// const char *
+// record_next_key(record_t *self) {
+//     return hash_next_key(self->hash);
+// }
 
-array_t *
-record_values(record_t *self) {
-    return hash_values(self->hash);
-}
+// array_t *
+// record_values(record_t *self) {
+//     return hash_values(self->hash);
+// }
 
-array_t *
-record_keys(record_t *self) {
-    return hash_keys(self->hash);
-}
+// array_t *
+// record_keys(record_t *self) {
+//     return hash_keys(self->hash);
+// }

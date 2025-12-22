@@ -28,11 +28,11 @@ void record_put(record_t *self, const char *key, void *value);
 
 bool record_delete(record_t *self, const char *key);
 
-// - iterate by insertion order.
-void *record_first_value(record_t *self);
-void *record_next_value(record_t *self);
-const char *record_first_key(record_t *self);
-const char *record_next_key(record_t *self);
+// // - iterate by insertion order.
+// void *record_first_value(record_t *self);
+// void *record_next_value(record_t *self);
+// const char *record_first_key(record_t *self);
+// const char *record_next_key(record_t *self);
 
-array_t *record_values(record_t *self);
-array_t *record_keys(record_t *self);
+// array_t *record_values(record_t *self);
+// array_t *record_keys(record_t *self);
