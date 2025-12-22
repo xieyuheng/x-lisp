@@ -22,15 +22,11 @@ array_t *make_array_with(size_t capacity, free_fn_t *free_fn);
 array_t *make_array_auto(void);
 array_t *make_array_auto_with(free_fn_t *free_fn);
 
-size_t array_capacity(const array_t *self);
 size_t array_grow_step(const array_t *self);
 void array_put_grow_step(array_t *self, size_t grow_step);
 
 size_t array_length(const array_t *self);
 bool array_is_empty(const array_t *self);
-bool array_is_full(const array_t *self);
-
-void array_resize(array_t *self, size_t larger_size);
 
 void *array_top(array_t *self);
 void *array_pop(array_t *self);

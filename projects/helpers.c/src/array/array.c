@@ -58,11 +58,6 @@ make_array_auto_with(free_fn_t *free_fn) {
     return make_array_with(ARRAY_AUTO_SIZE, free_fn);
 }
 
-size_t
-array_capacity(const array_t *self) {
-    return self->capacity;
-}
-
 inline size_t
 array_grow_step(const array_t *self) {
     return self->grow_step;
@@ -83,12 +78,7 @@ array_is_empty(const array_t *self) {
     return self->cursor == 0;
 }
 
-inline bool
-array_is_full(const array_t *self) {
-    return self->cursor == self->capacity;
-}
-
-inline void
+static inline void
 array_resize(array_t *self, size_t larger_size) {
     assert(larger_size >= self->capacity);
     if (larger_size == self->capacity) return;
@@ -115,7 +105,7 @@ array_pop(array_t *self) {
 
 inline void
 array_push(array_t *self, void *value) {
-    if (array_is_full(self))
+    if (self->cursor == self->capacity)
         array_resize(self, self->capacity + self->grow_step);
 
     self->values[self->cursor] = value;
