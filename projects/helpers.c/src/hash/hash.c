@@ -374,6 +374,30 @@ hash_next_key(hash_t *self) {
     return entry->key;
 }
 
+array_t *
+hash_values(hash_t *self) {
+    array_t *values = make_array();
+    void *value = hash_first_value(self);
+    while (value) {
+        array_push(values, value);
+        value = hash_next_value(self);
+    }
+
+    return values;
+}
+
+array_t *
+hash_keys(hash_t *self) {
+    array_t *keys = make_array();
+    void *key = hash_first_key(self);
+    while (key) {
+        array_push(keys, key);
+        key = hash_next_key(self);
+    }
+
+    return keys;
+}
+
 void
 hash_report(const hash_t *self) {
     size_t limit = hash_primes[self->prime_index];

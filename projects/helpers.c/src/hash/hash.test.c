@@ -138,6 +138,24 @@ main(void) {
 
         assert(hash_length(hash) == 4);
 
+        {
+            array_t *keys_again = hash_keys(hash);
+            assert(string_equal(array_get(keys, 0), array_get(keys_again, 0)));
+            assert(string_equal(array_get(keys, 1), array_get(keys_again, 1)));
+            assert(string_equal(array_get(keys, 2), array_get(keys_again, 2)));
+            assert(string_equal(array_get(keys, 3), array_get(keys_again, 3)));
+            array_free(keys_again);
+        }
+
+        {
+            array_t *values_again = hash_values(hash);
+            assert(string_equal(array_get(values, 0), array_get(values_again, 0)));
+            assert(string_equal(array_get(values, 1), array_get(values_again, 1)));
+            assert(string_equal(array_get(values, 2), array_get(values_again, 2)));
+            assert(string_equal(array_get(values, 3), array_get(values_again, 3)));
+            array_free(values_again);
+        }
+
         // iterate by insertion order.
 
         {
