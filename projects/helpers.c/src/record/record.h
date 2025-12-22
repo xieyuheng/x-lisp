@@ -33,3 +33,6 @@ void *record_first_value(record_t *self);
 void *record_next_value(record_t *self);
 void *record_first_key(record_t *self);
 void *record_next_key(record_t *self);
+
+array_t *record_values(record_t *self);
+array_t *record_keys(record_t *self);

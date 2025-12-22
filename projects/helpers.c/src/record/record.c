@@ -96,3 +96,13 @@ void *
 record_next_key(record_t *self) {
     return hash_next_key(self->hash);
 }
+
+array_t *
+record_values(record_t *self) {
+    return hash_values(self->hash);
+}
+
+array_t *
+record_keys(record_t *self) {
+    return hash_keys(self->hash);
+}
