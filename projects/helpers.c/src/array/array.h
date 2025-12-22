@@ -17,13 +17,8 @@ void array_free(array_t *self);
 void array_put_free_fn(array_t *self, free_fn_t *free_fn);
 array_t *make_array_with(size_t capacity, free_fn_t *free_fn);
 
-#define ARRAY_AUTO_SIZE 64
-
 array_t *make_array_auto(void);
 array_t *make_array_auto_with(free_fn_t *free_fn);
-
-size_t array_grow_step(const array_t *self);
-void array_put_grow_step(array_t *self, size_t grow_step);
 
 size_t array_length(const array_t *self);
 bool array_is_empty(const array_t *self);

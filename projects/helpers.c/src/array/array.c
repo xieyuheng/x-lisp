@@ -1,5 +1,7 @@
 #include "index.h"
 
+#define ARRAY_AUTO_SIZE 64
+
 array_t *
 make_array(size_t capacity) {
     array_t *self = new(array_t);
@@ -56,16 +58,6 @@ make_array_auto(void) {
 array_t *
 make_array_auto_with(free_fn_t *free_fn) {
     return make_array_with(ARRAY_AUTO_SIZE, free_fn);
-}
-
-inline size_t
-array_grow_step(const array_t *self) {
-    return self->grow_step;
-}
-
-inline void
-array_put_grow_step(array_t *self, size_t grow_step) {
-    self->grow_step = grow_step;
 }
 
 inline size_t
