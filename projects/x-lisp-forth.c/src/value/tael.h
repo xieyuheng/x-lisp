@@ -10,3 +10,6 @@ struct tael_t {
 
 tael_t *make_tael(gc_t *gc);
 void tael_free(tael_t *self);
+
+bool tael_p(value_t value);
+tael_t *to_tael(value_t value);

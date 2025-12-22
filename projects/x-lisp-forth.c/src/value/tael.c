@@ -17,11 +17,23 @@ tael_free(tael_t *self) {
     free(self);
 }
 
+bool
+tael_p(value_t value) {
+    return object_p(value) &&
+        to_object(value)->header.class == &tael_class;
+}
+
+tael_t *
+to_tael(value_t value) {
+    assert(tael_p(value));
+    return (tael_t *) to_object(value);
+}
+
 const object_class_t tael_class = {
     .name = "tael",
     // .print_fn = (object_print_fn_t *) tael_print,
     // .equal_fn = (object_equal_fn_t *) tael_equal,
-    // .free_fn = (free_fn_t *) tael_free,
+    .free_fn = (free_fn_t *) tael_free,
     // .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
     // .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
     // .first_child_fn = (object_child_fn_t *) tael_first_child,
