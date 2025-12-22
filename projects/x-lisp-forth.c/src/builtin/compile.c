@@ -300,7 +300,7 @@ compile_local_store_stack(definition_t *definition, stack_t *local_name_stack) {
 
 static void
 compile_parameters(vm_t *vm, definition_t *definition, const char *end_word) {
-    definition->function_definition.parameters = make_string_array_auto();
+    definition->function_definition.parameters = make_string_array();
 
     stack_t *local_name_stack = make_string_stack();
 

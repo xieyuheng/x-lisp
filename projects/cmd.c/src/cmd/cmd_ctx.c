@@ -12,7 +12,7 @@ cmd_make_ctx(
     self->route = route;
     self->argc = argc;
     self->argv = argv;
-    self->args = make_string_array_auto();
+    self->args = make_string_array();
     self->options = make_string_record();
     return self;
 }

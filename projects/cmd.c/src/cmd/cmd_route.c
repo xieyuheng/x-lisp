@@ -10,8 +10,8 @@ cmd_parse_route(const char *command) {
     self->name = string_next_word(command, &cursor);
     assert(self->name);
 
-    self->arg_names = make_string_array_auto();
-    self->option_names = make_string_array_auto();
+    self->arg_names = make_string_array();
+    self->option_names = make_string_array();
 
     char *word = string_next_word(command, &cursor);
     bool passed_args_p = false;

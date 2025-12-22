@@ -78,13 +78,13 @@ main(void) {
 
         //  Insert some entries
 
-        array_t *keys = make_string_array_auto();
+        array_t *keys = make_string_array();
         array_push(keys, string_copy("DEADBEEF"));
         array_push(keys, string_copy("ABADCAFE"));
         array_push(keys, string_copy("C0DEDBAD"));
         array_push(keys, string_copy("DEADF00D"));
 
-        array_t *values = make_string_array_auto();
+        array_t *values = make_string_array();
         array_push(values, string_copy("dead beef"));
         array_push(values, string_copy("a bad cafe"));
         array_push(values, string_copy("coded bad"));
