@@ -1,12 +1,5 @@
 #include "index.h"
-
-typedef struct node_t node_t;
-
-struct node_t {
-    node_t *prev;
-    node_t *next;
-    void *value;
-};
+#include "node.h"
 
 struct list_t {
     node_t *first;
