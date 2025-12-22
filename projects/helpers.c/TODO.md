@@ -1,9 +1,5 @@
 # hash
 
-[helpers.c] `hash_iter_init`
-[helpers.c] `make_hash_iter`
-[helpers.c] `hash_iter_free`
-
 [helpers.c] `hash_iter_next`
 
 [helpers.c] `hash` -- remove iter state and API functions
