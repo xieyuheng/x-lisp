@@ -1,5 +1,9 @@
 #pragma once
 
+struct set_t {
+    hash_t *hash;
+};
+
 set_t *make_set(void);
 void set_free(set_t *self);
 
