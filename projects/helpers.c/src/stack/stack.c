@@ -79,10 +79,12 @@ stack_tuck_n(stack_t *self, void *target, size_t n) {
 
     stack_push(self, target);
 
-    void *value = list_first(value_list);
+    list_iter_t iter;
+    list_iter_init(&iter, value_list);
+    void *value = list_iter_next(&iter);
     while (value) {
         stack_push(self, value);
-        value = list_next(value_list);
+        value = list_iter_next(&iter);
     }
 
     list_free(value_list);

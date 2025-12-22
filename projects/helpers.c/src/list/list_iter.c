@@ -1,10 +1,5 @@
 #include "index.h"
 
-struct list_iter_t {
-    const list_t *list;
-    list_node_t *cursor;
-};
-
 list_iter_t *
 make_list_iter(const list_t *list) {
     list_iter_t *self = new(list_iter_t);

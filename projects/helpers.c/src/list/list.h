@@ -5,7 +5,6 @@
 struct list_t {
     list_node_t *first;
     list_node_t *last;
-    list_node_t *cursor;
     size_t length;
     free_fn_t *free_fn;
     equal_fn_t *equal_fn;
@@ -39,17 +38,10 @@ bool list_remove(list_t *self, const void *value);
 // Find an value in the list, searching from the start.
 // Uses the injected `equal`, if any, else compares value values directly.
 // Returns the value handle found, or NULL.
-// Sets the cursor to the found value, if any.
 void *list_find(list_t *self, const void *value);
 
-bool list_cursor_is_end(const list_t *self);
-
-// move the cursor.
-
-void *list_first(list_t *self);
-void *list_next(list_t *self);
-void *list_prev(list_t *self);
-void *list_last(list_t *self);
+void *list_first(const list_t *self);
+void *list_last(const list_t *self);
 
 // at the end of the list.
 

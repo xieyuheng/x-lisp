@@ -1,5 +1,14 @@
 #include "index.h"
 
+struct list_t {
+    list_node_t *first;
+    list_node_t *last;
+    size_t length;
+    free_fn_t *free_fn;
+    equal_fn_t *equal_fn;
+    copy_fn_t *copy_fn;
+};
+
 list_t *
 make_list(void) {
     list_t *self = new(list_t);
@@ -21,13 +30,12 @@ list_purge(list_t *self) {
         list_node_t *next = node->next;
         if (self->free_fn)
             self->free_fn(node->value);
-        list_node_free(node);
+        free(node);
         node = next;
     }
 
     self->first = NULL;
     self->last = NULL;
-    self->cursor = NULL;
     self->length = 0;
 }
 
@@ -58,15 +66,15 @@ list_copy(list_t *self) {
     if (!self) return NULL;
 
     list_t *list = make_list();
-    void *value = list_first(self);
-    while (value) {
+    list_node_t *node = self->first;
+    while (node) {
         if (self->copy_fn) {
-            list_push(list, self->copy_fn(value));
+            list_push(list, self->copy_fn(node->value));
         } else {
-            list_push(list, value);
+            list_push(list, node->value);
         }
 
-        value = list_next(self);
+        node = node->next;
     }
 
     return list;
@@ -77,15 +85,15 @@ list_copy_reversed(list_t *self) {
     if (!self) return NULL;
 
     list_t *list = make_list();
-    void *value = list_first(self);
-    while (value) {
+    list_node_t *node = self->first;
+    while (node) {
         if (self->copy_fn) {
-            list_unshift(list, self->copy_fn(value));
+            list_unshift(list, self->copy_fn(node->value));
         } else {
-            list_unshift(list, value);
+            list_unshift(list, node->value);
         }
 
-        value = list_next(self);
+        node = node->next;
     }
 
     return list;
@@ -134,8 +142,6 @@ list_remove(list_t *self, const void *value) {
     if (node->prev)
         node->prev->next = node->next;
 
-    if (self->cursor == node)
-        self->cursor = NULL;
     if (self->first == node)
         self->first = node->next;
     if (self->last == node)
@@ -144,7 +150,7 @@ list_remove(list_t *self, const void *value) {
     if (self->free_fn)
         self->free_fn(node->value);
 
-    list_node_free(node);
+    free(node);
     self->length--;
     return true;
 }
@@ -153,14 +159,11 @@ void *
 list_find(list_t *self, const void *value) {
     assert(self);
 
-    self->cursor = self->first;
-
     list_node_t *node = self->first;
     while (node) {
         if ((node->value == value) ||
             (self->equal_fn && self->equal_fn(node->value, value)))
         {
-            self->cursor = node;
             return node->value;
         }
 
@@ -170,55 +173,32 @@ list_find(list_t *self, const void *value) {
     return NULL;
 }
 
-bool
-list_cursor_is_end(const list_t *self) {
-    return self->cursor == self->last;
-}
-
-static void *
-list_current(const list_t *self) {
+void *
+list_first(const list_t *self) {
     assert(self);
-    if (self->cursor)
-        return self->cursor->value;
-    else
+    if (self->first) {
+        return self->first->value;
+    } else {
         return NULL;
+    }
 }
 
 void *
-list_first(list_t *self) {
+list_last(const list_t *self) {
     assert(self);
-    self->cursor = self->first;
-    return list_current(self);
-}
-
-void *
-list_next(list_t *self) {
-    assert(self);
-    self->cursor = self->cursor
-        ? self->cursor->next
-        : self->first;
-    return list_current(self);
-}
-
-void *
-list_prev(list_t *self) {
-    assert(self);
-    self->cursor = self->cursor
-        ? self->cursor->prev
-        : self->last;
-    return list_current(self);
-}
-
-void *
-list_last(list_t *self) {
-    assert(self);
-    self->cursor = self->last;
-    return list_current(self);
+    if (self->last) {
+        return self->last->value;
+    } else {
+        return NULL;
+    }
 }
 
 void
 list_push(list_t *self, void *value) {
-    list_node_t *node = make_list_node(value);
+    list_node_t *node = new(list_node_t);
+    assert(node);
+    node->value = value;
+
     if (self->last) {
         self->last->next = node;
         node->prev = self->last;
@@ -235,9 +215,6 @@ list_push(list_t *self, void *value) {
 
 void *
 list_pop(list_t *self) {
-    if (self->cursor == self->last)
-        self->cursor = NULL;
-
     list_node_t *node = self->last;
     if (!node) return NULL;
 
@@ -253,7 +230,7 @@ list_pop(list_t *self) {
         self->last = NULL;
     }
 
-    list_node_free(node);
+    free(node);
     self->length--;
 
     return value;
@@ -261,7 +238,10 @@ list_pop(list_t *self) {
 
 void
 list_unshift(list_t *self, void *value) {
-    list_node_t *node = make_list_node(value);
+    list_node_t *node = new(list_node_t);
+    assert(node);
+    node->value = value;
+
     if (self->first) {
         self->first->prev = node;
         node->next = self->first;
@@ -278,9 +258,6 @@ list_unshift(list_t *self, void *value) {
 
 void *
 list_shift(list_t *self) {
-    if (self->cursor == self->first)
-        self->cursor = NULL;
-
     list_node_t *node = self->first;
     if (!node) return NULL;
 
@@ -296,7 +273,7 @@ list_shift(list_t *self) {
         self->first = NULL;
     }
 
-    list_node_free(node);
+    free(node);
     self->length--;
 
     return value;

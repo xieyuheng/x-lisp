@@ -1,10 +1,4 @@
-# list
-
-[helpers.c] `list` -- remove iter state (cursor) and API functions
-
-[helpers.c] `list_first` -- should take const list
-
-- fix `list_iter_init`
+list_iter.test.c
 
 # hash
 

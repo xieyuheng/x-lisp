@@ -11,9 +11,6 @@ main(void) {
     assert(list_first(list) == NULL);
     assert(list_last(list) == NULL);
 
-    assert(list_next(list) == NULL);
-    assert(list_prev(list) == NULL);
-
     assert(list_pop(list) == NULL);
     assert(list_shift(list) == NULL);
 
@@ -42,17 +39,7 @@ main(void) {
         assert(list_has(list, bread));
         assert(list_has(list, wine));
 
-        assert(list_next(list) == cheese);
-
         assert(list_first(list) == cheese);
-        assert(list_next(list) == bread);
-
-        assert(list_first(list) == cheese);
-        assert(list_next(list) == bread);
-        assert(list_next(list) == wine);
-        assert(list_next(list) == NULL);
-        //  After we reach end of list, next wraps around
-        assert(list_next(list) == cheese);
         assert(list_length(list) == 3);
 
         list_remove(list, wine);
@@ -104,9 +91,6 @@ main(void) {
         list_push(list, wine);
 
         assert(list_first(list) == cheese);
-        assert(list_next(list) == bread);
-        assert(list_next(list) == wine);
-
         assert(list_shift(list) == cheese);
         assert(list_shift(list) == bread);
         assert(list_shift(list) == wine);
@@ -118,9 +102,6 @@ main(void) {
         list_push(list, wine);
 
         assert(list_last(list) == wine);
-        assert(list_prev(list) == bread);
-        assert(list_prev(list) == cheese);
-
         assert(list_pop(list) == wine);
         assert(list_pop(list) == bread);
         assert(list_pop(list) == cheese);

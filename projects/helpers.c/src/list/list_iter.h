@@ -1,5 +1,10 @@
 #pragma once
 
+struct list_iter_t {
+    const list_t *list;
+    list_node_t *cursor;
+};
+
 list_iter_t *make_list_iter(const list_t *list);
 void list_iter_init(list_iter_t *self, const list_t *list);
 void list_iter_free(list_iter_t *self);
