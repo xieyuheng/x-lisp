@@ -1,7 +1,3 @@
-# hash
-
-[helpers.c] `hash` -- remove iter state and API functions
-
 # record
 
 [helpers.c] `record_iter_t`

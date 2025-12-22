@@ -32,14 +32,4 @@ bool hash_delete(hash_t *self, const void *key);
 
 const hash_entry_t *hash_first_entry(const hash_t *self);
 
-// // - iterate by insertion order.
-void *hash_first_value(hash_t *self);
-// void *hash_next_value(hash_t *self);
-// void *hash_cursor_key(hash_t *self);
-// void *hash_first_key(hash_t *self);
-// void *hash_next_key(hash_t *self);
-
-// array_t *hash_values(hash_t *self);
-// array_t *hash_keys(hash_t *self);
-
 void hash_report(const hash_t *self);
