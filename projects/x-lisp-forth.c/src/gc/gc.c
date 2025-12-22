@@ -53,10 +53,10 @@ gc_mark(gc_t *self) {
         object_t *object = stack_pop(self->work_stack);
         const object_class_t *class = object->header.class;
         void *iter = class->make_child_iter_fn(object);
-        object_t *child = class->next_child_fn(iter);
+        object_t *child = class->child_iter_next_fn(iter);
         while (child) {
             gc_mark_object(self, child);
-            child = class->next_child_fn(iter);
+            child = class->child_iter_next_fn(iter);
         }
 
         class->child_iter_free_fn(iter);

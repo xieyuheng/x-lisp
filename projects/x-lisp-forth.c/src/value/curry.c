@@ -81,18 +81,20 @@ curry_child_iter_free(curry_child_iter_t *self) {
 }
 
 static object_t *
-curry_next_child(curry_child_iter_t *iter) {
+curry_child_iter_next(curry_child_iter_t *iter) {
     if (!iter->target_consumed_p) {
         iter->target_consumed_p = true;
         value_t value = iter->curry->target;
-        if (object_p(value)) return to_object(value);
-        else return curry_next_child(iter);
+        return object_p(value)
+            ? to_object(value)
+            : curry_child_iter_next(iter);
     }
 
     if (iter->index < iter->curry->size) {
         value_t value = iter->curry->args[iter->index++];
-        if (object_p(value)) return to_object(value);
-        else return curry_next_child(iter);
+        return object_p(value)
+            ? to_object(value)
+            : curry_child_iter_next(iter);
     }
 
     return NULL;
@@ -105,5 +107,5 @@ const object_class_t curry_class = {
     .free_fn = (free_fn_t *) curry_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_curry_child_iter,
     .child_iter_free_fn = (free_fn_t *) curry_child_iter_free,
-    .next_child_fn = (object_child_fn_t *) curry_next_child,
+    .child_iter_next_fn = (object_child_iter_next_fn_t *) curry_child_iter_next,
 };

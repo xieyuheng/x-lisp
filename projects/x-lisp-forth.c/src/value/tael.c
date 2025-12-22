@@ -83,49 +83,54 @@ tael_print(tael_t *self) {
     printf("]");
 }
 
-// struct tael_child_iter_t {
-//     const tael_t *tael;
-//     size_t index;
-//     const char *key;
-// };
+struct tael_child_iter_t {
+    const tael_t *tael;
+    size_t index;
+    struct record_iter_t record_iter;
+};
 
-// typedef struct tael_child_iter_t tael_child_iter_t;
+typedef struct tael_child_iter_t tael_child_iter_t;
 
-// static tael_child_iter_t *
-// make_tael_child_iter(const tael_t *tael) {
-//     tael_child_iter_t *self = new(tael_child_iter_t);
-//     self->tael = tael;
-//     self->index = 0;
-//     self->key = NULL;
-//     return self;
-// }
+static tael_child_iter_t *
+make_tael_child_iter(const tael_t *tael) {
+    tael_child_iter_t *self = new(tael_child_iter_t);
+    self->tael = tael;
+    self->index = 0;
+    record_iter_init(&self->record_iter, tael->attributes);
+    return self;
+}
 
-// static void
-// tael_child_iter_free(tael_child_iter_t *self) {
-//     free(self);
-// }
+static void
+tael_child_iter_free(tael_child_iter_t *self) {
+    free(self);
+}
 
+static object_t *
+tael_child_iter_next(tael_child_iter_t *iter) {
+    if (iter->index < array_length(iter->tael->elements)) {
+        value_t value = array_get(iter->tael->elements, iter->index++);
+        return object_p(value)
+            ? to_object(value)
+            : tael_child_iter_next(iter);
+    }
 
-// static object_t *
-// tael_next_child(tael_child_iter_t *iter) {
-//     if (iter->index < array_length(iter->tael->elements)) {
-//         value_t element = array_get(iter->tael->elements, iter->index++);
+    const hash_entry_t *entry = record_iter_next_entry(&iter->record_iter);
+    if (entry) {
+        value_t value = entry->value;
+        return object_p(value)
+            ? to_object(value)
+            : tael_child_iter_next(iter);
+    }
 
-//         // TODO need record_iter_t
-
-//         if (object_p(element)) return to_object(element);
-//         else return tael_next_child(iter);
-//     }
-
-//     return NULL;
-// }
+    return NULL;
+}
 
 const object_class_t tael_class = {
     .name = "tael",
     .print_fn = (object_print_fn_t *) tael_print,
     .equal_fn = (object_equal_fn_t *) tael_equal,
     .free_fn = (free_fn_t *) tael_free,
-    // .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
-    // .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
-    // .next_child_fn = (object_child_fn_t *) tael_next_child,
+    .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
+    .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
+    .child_iter_next_fn = (object_child_iter_next_fn_t *) tael_child_iter_next,
 };
