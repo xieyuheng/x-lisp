@@ -2,7 +2,6 @@
 
 struct array_t {
     size_t capacity;
-    size_t grow_step;
     size_t cursor;
     void **values;
     free_fn_t *free_fn;
