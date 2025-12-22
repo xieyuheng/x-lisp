@@ -2,7 +2,7 @@
 
 struct list_iter_t {
     const list_t *list;
-    const list_node_t *cursor;
+    const list_node_t *node;
 };
 
 list_iter_t *make_list_iter(const list_t *list);

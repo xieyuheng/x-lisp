@@ -1,7 +1,5 @@
 # hash
 
-[helpers.c] `hash_iter_t` -- iter should not be part of the state
-
 [helpers.c] `hash_iter_init`
 [helpers.c] `make_hash_iter`
 [helpers.c] `hash_iter_free`

@@ -10,7 +10,7 @@ make_list_iter(const list_t *list) {
 void
 list_iter_init(list_iter_t *self, const list_t *list) {
     self->list = list;
-    self->cursor = list_first_node(list);
+    self->node = list_first_node(list);
 }
 
 void
@@ -20,9 +20,9 @@ list_iter_free(list_iter_t *self) {
 
 void *
 list_iter_next(list_iter_t *self) {
-    if (self->cursor) {
-        void *value = self->cursor->value;
-        self->cursor = self->cursor->next;
+    if (self->node) {
+        void *value = self->node->value;
+        self->node = self->node->next;
         return value;
     } else {
         return NULL;
