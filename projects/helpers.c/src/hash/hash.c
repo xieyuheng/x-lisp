@@ -4,21 +4,6 @@
 #define INDEX_REHASH_PERCENTAGE 50
 #define LENGTH_REHASH_PERCENTAGE 75
 
-typedef struct hash_entry_t hash_entry_t;
-
-struct hash_entry_t {
-    size_t index;
-    void *key;
-    void *value;
-
-    // double-linked list to record insertion order.
-    hash_entry_t *prev;
-    hash_entry_t *next;
-
-    // single-linked list to resolve hash collision.
-    hash_entry_t *link;
-};
-
 struct hash_t {
     size_t prime_index;
     size_t used_indexes_size;
