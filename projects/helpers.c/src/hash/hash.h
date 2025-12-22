@@ -35,4 +35,7 @@ void *hash_cursor_key(hash_t *self);
 void *hash_first_key(hash_t *self);
 void *hash_next_key(hash_t *self);
 
+// hash_keys
+// hash_values
+
 void hash_report(const hash_t *self);

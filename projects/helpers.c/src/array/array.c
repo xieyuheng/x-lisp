@@ -58,7 +58,7 @@ make_array_auto_with(free_fn_t *free_fn) {
     return make_array_with(ARRAY_AUTO_SIZE, free_fn);
 }
 
-inline size_t
+size_t
 array_size(const array_t *self) {
     return self->size;
 }

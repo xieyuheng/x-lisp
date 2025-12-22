@@ -78,22 +78,22 @@ main(void) {
 
         //  Insert some entries
 
-        list_t *keys = make_string_list();
-        list_push(keys, string_copy("DEADBEEF"));
-        list_push(keys, string_copy("ABADCAFE"));
-        list_push(keys, string_copy("C0DEDBAD"));
-        list_push(keys, string_copy("DEADF00D"));
+        array_t *keys = make_string_array_auto();
+        array_push(keys, string_copy("DEADBEEF"));
+        array_push(keys, string_copy("ABADCAFE"));
+        array_push(keys, string_copy("C0DEDBAD"));
+        array_push(keys, string_copy("DEADF00D"));
 
-        list_t *values = make_string_list();
-        list_push(values, string_copy("dead beef"));
-        list_push(values, string_copy("a bad cafe"));
-        list_push(values, string_copy("coded bad"));
-        list_push(values, string_copy("dead food"));
+        array_t *values = make_string_array_auto();
+        array_push(values, string_copy("dead beef"));
+        array_push(values, string_copy("a bad cafe"));
+        array_push(values, string_copy("coded bad"));
+        array_push(values, string_copy("dead food"));
 
-        assert(record_insert(record, list_get(keys, 0), list_get(values, 0)));
-        assert(record_insert(record, list_get(keys, 1), list_get(values, 1)));
-        assert(record_insert(record, list_get(keys, 2), list_get(values, 2)));
-        assert(record_insert(record, list_get(keys, 3), list_get(values, 3)));
+        assert(record_insert(record, array_get(keys, 0), array_get(values, 0)));
+        assert(record_insert(record, array_get(keys, 1), array_get(values, 1)));
+        assert(record_insert(record, array_get(keys, 2), array_get(values, 2)));
+        assert(record_insert(record, array_get(keys, 3), array_get(values, 3)));
 
         assert(record_length(record) == 4);
 
@@ -103,7 +103,7 @@ main(void) {
             size_t i = 0;
             char *key = record_first_key(record);
             while (key) {
-                assert(string_equal(key, list_get(keys, i)));
+                assert(string_equal(key, array_get(keys, i)));
                 key = record_next_key(record);
                 i++;
             }
@@ -113,14 +113,14 @@ main(void) {
             size_t i = 0;
             char *value = record_first_value(record);
             while (value) {
-                assert(string_equal(value, list_get(values, i)));
+                assert(string_equal(value, array_get(values, i)));
                 value = record_next_value(record);
                 i++;
             }
         }
 
-        list_free(keys);
-        list_free(values);
+        array_free(keys);
+        array_free(values);
 
         record_purge(record);
         assert(record_length(record) == 0);
