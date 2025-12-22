@@ -1,7 +1,5 @@
 # hash
 
-[helpers.c] `hash_iter_next_value` & `hash_iter_next_key`
-
 [helpers.c] `hash` -- remove iter state and API functions
 
 # record

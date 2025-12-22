@@ -28,3 +28,15 @@ hash_iter_next(hash_iter_t *self) {
         return NULL;
     }
 }
+
+void *
+hash_iter_next_value(hash_iter_t *self) {
+    const hash_entry_t *entry = hash_iter_next(self);
+    return entry->value;
+}
+
+void *
+hash_iter_next_key(hash_iter_t *self) {
+    const hash_entry_t *entry = hash_iter_next(self);
+    return entry->key;
+}
