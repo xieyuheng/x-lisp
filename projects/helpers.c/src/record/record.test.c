@@ -119,7 +119,7 @@ main(void) {
 
         {
             size_t i = 0;
-            char *key = record_first_key(record);
+            const char *key = record_first_key(record);
             while (key) {
                 assert(string_equal(key, array_get(keys, i)));
                 key = record_next_key(record);

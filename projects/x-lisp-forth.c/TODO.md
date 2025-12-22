@@ -1,7 +1,6 @@
 # tael
 
 [value] `tael_print`
-[value] `tael_equal` -- handle `attributes`
 
 [value] `tael_child_iter_t`
 [value] `make_tael_child_iter`

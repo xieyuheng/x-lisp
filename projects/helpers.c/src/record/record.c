@@ -87,12 +87,12 @@ record_next_value(record_t *self) {
     return hash_next_value(self->hash);
 }
 
-void *
+const char *
 record_first_key(record_t *self) {
     return hash_first_key(self->hash);
 }
 
-void *
+const char *
 record_next_key(record_t *self) {
     return hash_next_key(self->hash);
 }

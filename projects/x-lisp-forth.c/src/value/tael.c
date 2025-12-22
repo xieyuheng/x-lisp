@@ -31,13 +31,28 @@ to_tael(value_t value) {
 
 bool
 tael_equal(tael_t *lhs, tael_t *rhs) {
-    if (array_length(lhs->elements) != array_length(rhs->elements)) return false;
+    if (array_length(lhs->elements) != array_length(rhs->elements))
+        return false;
+
     for (size_t i = 0; i < array_length(lhs->elements); i++) {
-        if (!equal_p(array_get(lhs->elements, i), array_get(rhs->elements, i)))
+        value_t left = array_get(lhs->elements, i);
+        value_t right = array_get(rhs->elements, i);
+        if (!equal_p(left, right))
             return false;
     }
 
-    // TODO handle record
+    if (record_length(lhs->attributes) != record_length(rhs->attributes))
+        return false;
+
+    const char *key = record_first_key(lhs->attributes);
+    while (key) {
+        value_t left = record_get(lhs->attributes, key);
+        value_t right = record_get(rhs->attributes, key);
+        if (!equal_p(left, right))
+            return false;
+
+        key = record_next_key(lhs->attributes);
+    }
 
     return true;
 }
