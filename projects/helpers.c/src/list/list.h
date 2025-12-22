@@ -2,15 +2,6 @@
 
 // double linked list.
 
-struct list_t {
-    list_node_t *first;
-    list_node_t *last;
-    size_t length;
-    free_fn_t *free_fn;
-    equal_fn_t *equal_fn;
-    copy_fn_t *copy_fn;
-};
-
 list_t *make_list(void);
 void list_free(list_t *self);
 void list_purge(list_t *self);
@@ -36,6 +27,9 @@ bool list_remove(list_t *self, const void *value);
 // - use `equal_fn` if exists, otherwise compare as pointer.
 // - return the value found, or NULL.
 void *list_find(list_t *self, const void *value);
+
+const list_node_t *list_first_node(const list_t *self);
+const list_node_t *list_last_node(const list_t *self);
 
 void *list_first(const list_t *self);
 void *list_last(const list_t *self);

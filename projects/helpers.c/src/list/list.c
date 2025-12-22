@@ -177,6 +177,16 @@ list_find(list_t *self, const void *value) {
     return NULL;
 }
 
+const list_node_t *
+list_first_node(const list_t *self) {
+    return self->first;
+}
+
+const list_node_t *
+list_last_node(const list_t *self) {
+    return self->last;
+}
+
 void *
 list_first(const list_t *self) {
     assert(self);
