@@ -1,12 +1,12 @@
 # list
 
-[helpers.c] `list_iter_init`
-[helpers.c] `make_list_iter`
-[helpers.c] `list_iter_free`
-
 [helpers.c] `list_iter_next`
 
 [helpers.c] `list` -- remove iter state (cursor) and API functions
+
+[helpers.c] `list_first` -- should take const list
+
+- fix `list_iter_init`
 
 # hash
 
