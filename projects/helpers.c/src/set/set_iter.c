@@ -17,12 +17,12 @@ set_iter_free(set_iter_t *self) {
     free(self);
 }
 
-// void *
-// set_iter_next(set_iter_t *self) {
-//     return hash_iter_next_value(&self->hash_iter);
-// }
+void *
+set_iter_next(set_iter_t *self) {
+    return hash_iter_next_value(&self->hash_iter);
+}
 
-// array_t *
-// set_values(set_t *set) {
-//     return hash_values(set->hash);
-// }
+array_t *
+set_values(const set_t *set) {
+    return hash_values(set->hash);
+}

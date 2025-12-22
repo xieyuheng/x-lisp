@@ -12,6 +12,6 @@ const hash_entry_t *record_iter_next_entry(record_iter_t *self);
 void *record_iter_next_value(record_iter_t *self);
 void *record_iter_next_key(record_iter_t *self);
 
-array_t *record_entries(record_t *record);
-array_t *record_values(record_t *record);
-array_t *record_keys(record_t *record);
+array_t *record_entries(const record_t *record);
+array_t *record_values(const record_t *record);
+array_t *record_keys(const record_t *record);

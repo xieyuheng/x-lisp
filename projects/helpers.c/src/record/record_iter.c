@@ -33,16 +33,16 @@ record_iter_next_key(record_iter_t *self) {
 }
 
 array_t *
-record_entries(record_t *record) {
+record_entries(const record_t *record) {
     return hash_entries(record->hash);
 }
 
 array_t *
-record_values(record_t *record) {
+record_values(const record_t *record) {
     return hash_values(record->hash);
 }
 
 array_t *
-record_keys(record_t *record) {
+record_keys(const record_t *record) {
     return hash_keys(record->hash);
 }

@@ -13,6 +13,6 @@ const hash_entry_t *hash_iter_next_entry(hash_iter_t *self);
 void *hash_iter_next_value(hash_iter_t *self);
 void *hash_iter_next_key(hash_iter_t *self);
 
-array_t *hash_entries(hash_t *hash);
-array_t *hash_values(hash_t *hash);
-array_t *hash_keys(hash_t *hash);
+array_t *hash_entries(const hash_t *hash);
+array_t *hash_values(const hash_t *hash);
+array_t *hash_keys(const hash_t *hash);

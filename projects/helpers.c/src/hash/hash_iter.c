@@ -50,7 +50,7 @@ hash_iter_next_key(hash_iter_t *self) {
 }
 
 array_t *
-hash_entries(hash_t *hash) {
+hash_entries(const hash_t *hash) {
     array_t *entries = make_array();
     hash_iter_t iter;
     hash_iter_init(&iter, hash);
@@ -64,7 +64,7 @@ hash_entries(hash_t *hash) {
 }
 
 array_t *
-hash_values(hash_t *hash) {
+hash_values(const hash_t *hash) {
     array_t *values = make_array();
     hash_iter_t iter;
     hash_iter_init(&iter, hash);
@@ -78,7 +78,7 @@ hash_values(hash_t *hash) {
 }
 
 array_t *
-hash_keys(hash_t *hash) {
+hash_keys(const hash_t *hash) {
     array_t *keys = make_array();
     hash_iter_t iter;
     hash_iter_init(&iter, hash);
