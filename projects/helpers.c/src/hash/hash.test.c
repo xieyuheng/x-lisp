@@ -113,38 +113,55 @@ main(void) {
     {
         hash_t *hash = make_hash();
         hash_put_hash_fn(hash, (hash_fn_t *) string_bernstein_hash);
-        hash_put_key_free_fn(hash, (free_fn_t *) string_free);
         hash_put_key_equal_fn(hash, (equal_fn_t *) string_equal);
 
         assert(!hash_first_value(hash));
 
         //  Insert some entries
 
-        list_t *string_list = make_string_list();
-        list_push(string_list, string_copy("dead beef"));
-        list_push(string_list, string_copy("a bad cafe"));
-        list_push(string_list, string_copy("coded bad"));
-        list_push(string_list, string_copy("dead food"));
+        list_t *keys = make_string_list();
+        list_push(keys, string_copy("DEADBEEF"));
+        list_push(keys, string_copy("ABADCAFE"));
+        list_push(keys, string_copy("C0DEDBAD"));
+        list_push(keys, string_copy("DEADF00D"));
 
-        assert(hash_insert(hash, string_copy("DEADBEEF"), list_get(string_list, 0)));
-        assert(hash_insert(hash, string_copy("ABADCAFE"), list_get(string_list, 1)));
-        assert(hash_insert(hash, string_copy("C0DEDBAD"), list_get(string_list, 2)));
-        assert(hash_insert(hash, string_copy("DEADF00D"), list_get(string_list, 3)));
+        list_t *values = make_string_list();
+        list_push(values, string_copy("dead beef"));
+        list_push(values, string_copy("a bad cafe"));
+        list_push(values, string_copy("coded bad"));
+        list_push(values, string_copy("dead food"));
+
+        assert(hash_insert(hash, list_get(keys, 0), list_get(values, 0)));
+        assert(hash_insert(hash, list_get(keys, 1), list_get(values, 1)));
+        assert(hash_insert(hash, list_get(keys, 2), list_get(values, 2)));
+        assert(hash_insert(hash, list_get(keys, 3), list_get(values, 3)));
+
         assert(hash_length(hash) == 4);
 
         // iterate by insertion order.
 
         {
             size_t i = 0;
+            char *key = hash_first_key(hash);
+            while (key) {
+                assert(string_equal(key, list_get(keys, i)));
+                key = hash_next_key(hash);
+                i++;
+            }
+        }
+
+        {
+            size_t i = 0;
             char *value = hash_first_value(hash);
             while (value) {
-                assert(string_equal(value, list_get(string_list, i)));
+                assert(string_equal(value, list_get(values, i)));
                 value = hash_next_value(hash);
                 i++;
             }
         }
 
-        list_free(string_list);
+        list_free(keys);
+        list_free(values);
 
         hash_purge(hash);
         assert(hash_length(hash) == 0);

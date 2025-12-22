@@ -340,13 +340,6 @@ hash_first_value(hash_t *self) {
 }
 
 void *
-hash_cursor_key(hash_t *self) {
-    if (!self->cursor_entry) return NULL;
-
-    return self->cursor_entry->key;
-}
-
-void *
 hash_next_value(hash_t *self) {
     assert(self);
     if (!self->cursor_entry) return NULL;
@@ -354,6 +347,31 @@ hash_next_value(hash_t *self) {
     entry_t *entry = self->cursor_entry;
     self->cursor_entry = entry->next;
     return entry->value;
+}
+
+void *
+hash_cursor_key(hash_t *self) {
+    if (!self->cursor_entry) return NULL;
+
+    return self->cursor_entry->key;
+}
+
+
+void *
+hash_first_key(hash_t *self) {
+    assert(self);
+    self->cursor_entry = self->first_entry;
+    return hash_next_key(self);
+}
+
+void *
+hash_next_key(hash_t *self) {
+    assert(self);
+    if (!self->cursor_entry) return NULL;
+
+    entry_t *entry = self->cursor_entry;
+    self->cursor_entry = entry->next;
+    return entry->key;
 }
 
 void
