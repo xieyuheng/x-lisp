@@ -4,31 +4,31 @@
 #define INDEX_REHASH_PERCENTAGE 50
 #define LENGTH_REHASH_PERCENTAGE 75
 
-typedef struct entry_t entry_t;
+typedef struct hash_entry_t hash_entry_t;
 
-struct entry_t {
+struct hash_entry_t {
     size_t index;
     void *key;
     void *value;
 
     // double-linked list to record insertion order.
-    entry_t *prev;
-    entry_t *next;
+    hash_entry_t *prev;
+    hash_entry_t *next;
 
     // single-linked list to resolve hash collision.
-    entry_t *link;
+    hash_entry_t *link;
 };
 
 struct hash_t {
     size_t prime_index;
     size_t used_indexes_size;
     size_t length;
-    entry_t **entries;
+    hash_entry_t **entries;
 
-    entry_t *cursor_entry;
+    hash_entry_t *cursor_entry;
 
-    entry_t *first_entry;
-    entry_t *last_entry;
+    hash_entry_t *first_entry;
+    hash_entry_t *last_entry;
 
     hash_fn_t *hash_fn;
     free_fn_t *key_free_fn;
@@ -44,9 +44,9 @@ hash_key_index(hash_t *self, const void *key) {
     return index;
 }
 
-static entry_t *
+static hash_entry_t *
 make_hash_entry(hash_t *self, void *key, void *value) {
-    entry_t *entry = new(entry_t);
+    hash_entry_t *entry = new(hash_entry_t);
     entry->index = hash_key_index(self, key);
     entry->key = key;
     entry->value = value;
@@ -91,16 +91,16 @@ hash_put_key_equal_fn(hash_t *self, equal_fn_t *key_equal_fn) {
     self->key_equal_fn = key_equal_fn;
 }
 
-static void hash_delete_entry(hash_t *self, entry_t *entry);
+static void hash_delete_entry(hash_t *self, hash_entry_t *entry);
 
 static void
 hash_purge_without_shrink(hash_t *self) {
     size_t limit = hash_primes[self->prime_index];
     for (size_t index = 0; index < limit; index++) {
         // free all entries in this hash bucket.
-        entry_t *entry = self->entries[index];
+        hash_entry_t *entry = self->entries[index];
         while (entry) {
-            entry_t *link = entry->link;
+            hash_entry_t *link = entry->link;
             hash_delete_entry(self, entry);
             entry = link;
         }
@@ -135,7 +135,7 @@ hash_rehash(hash_t *self, size_t new_prime_index) {
 
     size_t old_limit = hash_primes[self->prime_index];
     size_t new_limit = hash_primes[new_prime_index];
-    entry_t **new_entries = allocate_pointers(new_limit);
+    hash_entry_t **new_entries = allocate_pointers(new_limit);
 
     // to debug performance:
     // {
@@ -146,12 +146,12 @@ hash_rehash(hash_t *self, size_t new_prime_index) {
     self->used_indexes_size = 0;
 
     for (size_t index = 0; index < old_limit; index++) {
-        entry_t *entry = self->entries[index];
+        hash_entry_t *entry = self->entries[index];
         while (entry) {
-            entry_t *link = entry->link;
+            hash_entry_t *link = entry->link;
             size_t new_index = hash_key_index(self, entry->key);
             entry->index = new_index;
-            entry_t *top_entry = new_entries[new_index];
+            hash_entry_t *top_entry = new_entries[new_index];
             if (!top_entry)
                 self->used_indexes_size++;
 
@@ -173,10 +173,10 @@ hash_key_equal(hash_t *self, const void *key1, const void *key2) {
     return self->key_equal_fn(key1, key2);
 }
 
-static entry_t *
+static hash_entry_t *
 hash_get_entry(hash_t *self, const void *key) {
     size_t index = hash_key_index(self, key);
-    entry_t *entry = self->entries[index];
+    hash_entry_t *entry = self->entries[index];
     if (!entry) return NULL;
 
     while (entry) {
@@ -191,23 +191,23 @@ hash_get_entry(hash_t *self, const void *key) {
 
 bool
 hash_has(hash_t *self, const void *key) {
-    entry_t *entry = hash_get_entry(self, key);
+    hash_entry_t *entry = hash_get_entry(self, key);
     return entry != NULL;
 }
 
 void *
 hash_get(hash_t *self, const void *key) {
-    entry_t *entry = hash_get_entry(self, key);
+    hash_entry_t *entry = hash_get_entry(self, key);
     if (!entry) return NULL;
 
     return entry->value;
 }
 
 static void
-hash_delete_entry(hash_t *self, entry_t *entry) {
+hash_delete_entry(hash_t *self, hash_entry_t *entry) {
     // find previous entry since it's a singly-linked list.
-    entry_t **entry_pointer = &(self->entries[entry->index]);
-    entry_t *cursor_entry = self->entries[entry->index];
+    hash_entry_t **entry_pointer = &(self->entries[entry->index]);
+    hash_entry_t *cursor_entry = self->entries[entry->index];
     while (cursor_entry) {
         if (cursor_entry == entry) break;
         entry_pointer = &(cursor_entry->link);
@@ -250,7 +250,7 @@ hash_delete_entry(hash_t *self, entry_t *entry) {
 
 bool
 hash_delete(hash_t *self, const void *key) {
-    entry_t *entry = hash_get_entry(self, key);
+    hash_entry_t *entry = hash_get_entry(self, key);
     if (!entry) return false;
 
     hash_delete_entry(self, entry);
@@ -265,7 +265,7 @@ hash_is_overload(hash_t *self) {
 }
 
 static void
-hash_order_push_entry(hash_t *self, entry_t *entry) {
+hash_order_push_entry(hash_t *self, hash_entry_t *entry) {
     if (self->last_entry) {
         self->last_entry->next = entry;
         entry->prev = self->last_entry;
@@ -283,9 +283,9 @@ hash_insert(hash_t *self, void *key, void *value) {
         hash_rehash(self, self->prime_index + 1);
 
     size_t index = hash_key_index(self, key);
-    entry_t *entry = self->entries[index];
+    hash_entry_t *entry = self->entries[index];
     if (!entry) {
-        entry_t *new_entry = make_hash_entry(self, key, value);
+        hash_entry_t *new_entry = make_hash_entry(self, key, value);
         self->entries[index] = new_entry;
         self->used_indexes_size++;
         self->length++;
@@ -300,8 +300,8 @@ hash_insert(hash_t *self, void *key, void *value) {
         entry = entry->link;
     }
 
-    entry_t *new_entry = make_hash_entry(self, key, value);
-    entry_t *top_entry = self->entries[index];
+    hash_entry_t *new_entry = make_hash_entry(self, key, value);
+    hash_entry_t *top_entry = self->entries[index];
     self->entries[index] = new_entry;
     new_entry->link = top_entry;
     self->length++;
@@ -316,7 +316,7 @@ hash_insert_or_fail(hash_t *self, void *key, void *value) {
 
 void
 hash_put(hash_t *self, void *key, void *value) {
-    entry_t *entry = hash_get_entry(self, key);
+    hash_entry_t *entry = hash_get_entry(self, key);
     if (!entry) {
         assert(hash_insert(self, key, value));
         return;
@@ -344,7 +344,7 @@ hash_next_value(hash_t *self) {
     assert(self);
     if (!self->cursor_entry) return NULL;
 
-    entry_t *entry = self->cursor_entry;
+    hash_entry_t *entry = self->cursor_entry;
     self->cursor_entry = entry->next;
     return entry->value;
 }
@@ -369,7 +369,7 @@ hash_next_key(hash_t *self) {
     assert(self);
     if (!self->cursor_entry) return NULL;
 
-    entry_t *entry = self->cursor_entry;
+    hash_entry_t *entry = self->cursor_entry;
     self->cursor_entry = entry->next;
     return entry->key;
 }
@@ -414,7 +414,7 @@ hash_report(const hash_t *self) {
 
     size_t max_chain = 0;
     for (size_t i = 0; i < limit; i++) {
-        entry_t *entry = self->entries[i];
+        hash_entry_t *entry = self->entries[i];
         size_t length = 0;
         while (entry) {
             entry = entry->link;

@@ -1,9 +1,12 @@
 # hash
 
+extract hash_entry.c
 [helpers.c] `hash_iter_t` -- iter should not be part of the state
+
 [helpers.c] `hash_iter_init`
 [helpers.c] `make_hash_iter`
 [helpers.c] `hash_iter_free`
+
 [helpers.c] `hash_iter_next`
 
 [helpers.c] `hash` -- remove iter state and API functions
