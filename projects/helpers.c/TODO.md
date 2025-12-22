@@ -1,5 +1,3 @@
-list_iter.test.c
-
 # hash
 
 [helpers.c] `hash_iter_t` -- iter should not be part of the state
