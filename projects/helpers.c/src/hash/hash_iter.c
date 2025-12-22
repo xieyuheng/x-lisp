@@ -17,3 +17,14 @@ void
 hash_iter_free(hash_iter_t *self) {
     free(self);
 }
+
+const hash_entry_t *
+hash_iter_next(hash_iter_t *self) {
+    if (self->entry) {
+        const hash_entry_t *entry = self->entry;
+        self->entry = self->entry->next;
+        return entry;
+    } else {
+        return NULL;
+    }
+}
