@@ -83,20 +83,16 @@ curry_next_child(curry_child_iter_t *iter) {
     if (iter->index >= iter->curry->size) return NULL;
 
     value_t arg = iter->curry->args[iter->index++];
-    if (object_p(arg)) {
-        return to_object(arg);
-    } else {
-        return curry_next_child(iter);
-    }
+    if (object_p(arg)) return to_object(arg);
+    else return curry_next_child(iter);
 }
 
 static object_t *
 curry_first_child(curry_child_iter_t *iter) {
-    if (object_p(iter->curry->target)) {
+    iter->index = 0;
+    if (object_p(iter->curry->target))
         return to_object(iter->curry->target);
-    } else {
-        return curry_next_child(iter);
-    }
+    else return curry_next_child(iter);
 }
 
 const object_class_t curry_class = {

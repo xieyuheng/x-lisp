@@ -92,12 +92,35 @@ make_tael_child_iter(const tael_t *tael) {
     tael_child_iter_t *self = new(tael_child_iter_t);
     self->tael = tael;
     self->index = 0;
+    self->key = NULL;
     return self;
 }
 
 static void
 tael_child_iter_free(tael_child_iter_t *self) {
     free(self);
+}
+
+
+static object_t *
+tael_next_child(tael_child_iter_t *iter) {
+    if (iter->index < array_length(iter->tael->elements)) {
+        value_t element = array_get(iter->tael->elements, iter->index++);
+
+        // TODO need record_iter
+
+        if (object_p(element)) return to_object(element);
+        else return tael_next_child(iter);
+    }
+
+    return NULL;
+}
+
+static object_t *
+tael_first_child(tael_child_iter_t *iter) {
+    iter->index = 0;
+    iter->key = NULL;
+    return tael_next_child(iter);
 }
 
 const object_class_t tael_class = {
@@ -107,6 +130,6 @@ const object_class_t tael_class = {
     .free_fn = (free_fn_t *) tael_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
     .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
-    // .first_child_fn = (object_child_fn_t *) tael_first_child,
-    // .next_child_fn = (object_child_fn_t *) tael_next_child,
+    .first_child_fn = (object_child_fn_t *) tael_first_child,
+    .next_child_fn = (object_child_fn_t *) tael_next_child,
 };
