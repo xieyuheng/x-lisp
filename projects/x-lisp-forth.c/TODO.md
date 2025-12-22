@@ -1,8 +1,14 @@
 # tael
 
-[gc] iter can be used without `*_iter_init` -- instead of `make_*_iter` + `*_iter_free`
+[value] `tael_get_element` & `tael_put_element`
+[value] `tael_get_attribute` & `tael_put_attribute`
 
-[builtin] `tael` -- setup
+[builtin] `list` -- setup
+[builtin] `x_list_push_mut`
+[builtin] `x_car`
+[builtin] `x_cdr`
+
+[value] `tael_copy`
 
 [forth] tael.test.fth
 
