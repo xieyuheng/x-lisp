@@ -80,19 +80,33 @@ tael_print(tael_t *self) {
 }
 
 struct tael_child_iter_t {
+    const tael_t *tael;
     size_t index;
     const char *key;
 };
 
 typedef struct tael_child_iter_t tael_child_iter_t;
 
+static tael_child_iter_t *
+make_tael_child_iter(const tael_t *tael) {
+    tael_child_iter_t *self = new(tael_child_iter_t);
+    self->tael = tael;
+    self->index = 0;
+    return self;
+}
+
+static void
+tael_child_iter_free(tael_child_iter_t *self) {
+    free(self);
+}
+
 const object_class_t tael_class = {
     .name = "tael",
     .print_fn = (object_print_fn_t *) tael_print,
     .equal_fn = (object_equal_fn_t *) tael_equal,
     .free_fn = (free_fn_t *) tael_free,
-    // .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
-    // .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
+    .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
+    .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
     // .first_child_fn = (object_child_fn_t *) tael_first_child,
     // .next_child_fn = (object_child_fn_t *) tael_next_child,
 };

@@ -1,8 +1,5 @@
 # tael
 
-[value] `make_tael_child_iter`
-[value] `tael_child_iter_free`
-
 [value] `tael_first_child`
 [value] `tael_next_child`
 
