@@ -4,6 +4,8 @@ hash_t *make_hash(void);
 void hash_purge(hash_t *self);
 void hash_free(hash_t *self);
 
+size_t hash_key_index(hash_t *self, const void *key);
+
 void hash_put_hash_fn(hash_t *self, hash_fn_t *hash_fn);
 void hash_put_key_free_fn(hash_t *self, free_fn_t *key_free_fn);
 void hash_put_key_equal_fn(hash_t *self, equal_fn_t *key_equal_fn);

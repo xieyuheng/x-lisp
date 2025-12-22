@@ -21,21 +21,12 @@ struct hash_t {
     free_fn_t *value_free_fn;
 };
 
-static size_t
+size_t
 hash_key_index(hash_t *self, const void *key) {
     size_t base = self->hash_fn ? self->hash_fn(key) : (size_t) key;
     size_t limit = hash_primes[self->prime_index];
     size_t index = base % limit;
     return index;
-}
-
-static hash_entry_t *
-make_hash_entry(hash_t *self, void *key, void *value) {
-    hash_entry_t *entry = new(hash_entry_t);
-    entry->index = hash_key_index(self, key);
-    entry->key = key;
-    entry->value = value;
-    return entry;
 }
 
 // reused by `hash_purge` to shrink table.
@@ -230,7 +221,7 @@ hash_delete_entry(hash_t *self, hash_entry_t *entry) {
         self->last_entry = NULL;
     }
 
-    free(entry);
+    hash_entry_free(entry);
 }
 
 bool

@@ -1,8 +1,5 @@
 # hash
 
-[helpers.c] `make_hash_entry`
-[helpers.c] `hash_entry_free`
-
 [helpers.c] `hash_first_entry` -- for `hash_iter_t`
 
 [helpers.c] `hash_iter_t` -- iter should not be part of the state
