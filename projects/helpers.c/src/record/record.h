@@ -1,5 +1,9 @@
 #pragma once
 
+struct record_t {
+    hash_t *hash;
+};
+
 record_t *make_record(void);
 record_t *make_record_with(free_fn_t *free_fn);
 record_t *make_string_record(void);

@@ -1,9 +1,5 @@
 #include "index.h"
 
-struct record_t {
-    hash_t *hash;
-};
-
 record_t *
 make_record(void) {
     record_t *self = new(record_t);
