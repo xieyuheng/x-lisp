@@ -102,20 +102,6 @@ main(void) {
             }
         }
 
-        // list is in insertion order.
-
-        {
-            list_t *list = record_value_list(record);
-            size_t i = 0;
-            char *value = list_first(list);
-            while (value) {
-                assert(string_equal(value, list_get(string_list, i)));
-                value = list_next(list);
-                i++;
-            }
-            list_free(list);
-        }
-
         list_free(string_list);
 
         record_purge(record);

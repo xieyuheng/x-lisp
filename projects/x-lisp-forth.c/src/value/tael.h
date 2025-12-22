@@ -13,3 +13,6 @@ void tael_free(tael_t *self);
 
 bool tael_p(value_t value);
 tael_t *to_tael(value_t value);
+
+bool tael_equal(tael_t *lhs, tael_t *rhs);
+void tael_print(tael_t *self);

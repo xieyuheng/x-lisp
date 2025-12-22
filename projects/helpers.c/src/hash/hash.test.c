@@ -144,20 +144,6 @@ main(void) {
             }
         }
 
-        // list is in insertion order.
-
-        {
-            list_t *list = hash_value_list(hash);
-            size_t i = 0;
-            char *value = list_first(list);
-            while (value) {
-                assert(string_equal(value, list_get(string_list, i)));
-                value = list_next(list);
-                i++;
-            }
-            list_free(list);
-        }
-
         list_free(string_list);
 
         hash_purge(hash);

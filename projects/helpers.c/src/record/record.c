@@ -86,8 +86,3 @@ void *
 record_next_value(record_t *self) {
     return hash_next_value(self->hash);
 }
-
-list_t *
-record_value_list(record_t *self) {
-    return hash_value_list(self->hash);
-}

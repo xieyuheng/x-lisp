@@ -1,14 +1,13 @@
 # tael
 
 [value] `tael_print`
-[value] `tael_equal`
+[value] `tael_equal` -- handle `attributes`
 
 [value] `tael_child_iter_t`
 [value] `make_tael_child_iter`
 [value] `tael_child_iter_free`
 [value] `tael_first_child`
 [value] `tael_next_child`
-
 
 test gc
 
@@ -21,6 +20,11 @@ test gc
 [lang] `vm_execute_instr` -- `OP_LITERAL_KEYWORD`
 
 [builtin] `compile_token` -- handle `KEYWORD_TOKEN`
+
+# circular object
+
+[value] `tael_print` -- support circular
+[value] `curry_print` -- support circular
 
 # feature complete
 

@@ -29,6 +29,19 @@ to_tael(value_t value) {
     return (tael_t *) to_object(value);
 }
 
+bool
+tael_equal(tael_t *lhs, tael_t *rhs) {
+    if (array_length(lhs->elements) != array_length(rhs->elements)) return false;
+    for (size_t i = 0; i < array_length(lhs->elements); i++) {
+        if (!equal_p(array_get(lhs->elements, i), array_get(rhs->elements, i)))
+            return false;
+    }
+
+    // TODO handle record
+
+    return true;
+}
+
 const object_class_t tael_class = {
     .name = "tael",
     // .print_fn = (object_print_fn_t *) tael_print,

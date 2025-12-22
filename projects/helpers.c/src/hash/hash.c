@@ -356,18 +356,6 @@ hash_next_value(hash_t *self) {
     return entry->value;
 }
 
-list_t *
-hash_value_list(hash_t *self) {
-    list_t *list = make_list();
-    void *value = hash_first_value(self);
-    while (value) {
-        list_push(list, value);
-        value = hash_next_value(self);
-    }
-
-    return list;
-}
-
 void
 hash_report(const hash_t *self) {
     size_t limit = hash_primes[self->prime_index];
