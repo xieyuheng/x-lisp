@@ -1,8 +1,9 @@
 # tael
 
-[value] `tael_t` -- setup
 [value] `make_tael`
 [value] `tael_free` -- shallow
+
+[value] `tael_t` -- gc interface
 
 test gc
 
