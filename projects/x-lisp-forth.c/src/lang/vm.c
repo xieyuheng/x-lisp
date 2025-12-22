@@ -352,7 +352,7 @@ vm_gc_roots_in_mod(vm_t *vm, array_t *roots) {
 
 static array_t *
 vm_gc_roots(vm_t *vm) {
-    array_t *roots = make_array_auto();
+    array_t *roots = make_array();
     vm_gc_roots_in_value_stack(vm, roots);
     vm_gc_roots_in_frame_stack(vm, roots);
     vm_gc_roots_in_mod(vm, roots);

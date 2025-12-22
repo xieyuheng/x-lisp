@@ -8,7 +8,7 @@ struct gc_t {
 gc_t *
 make_gc(void) {
     gc_t *self = new(gc_t);
-    self->objects = make_array_auto();
+    self->objects = make_array();
     self->work_stack = make_stack();
     return self;
 }
@@ -65,7 +65,7 @@ gc_mark(gc_t *self) {
 
 void
 gc_sweep(gc_t *self) {
-    array_t *reachable_objects = make_array_auto();
+    array_t *reachable_objects = make_array();
 
     for (size_t i = 0; i < array_length(self->objects); i++) {
         object_t *object = array_get(self->objects, i);

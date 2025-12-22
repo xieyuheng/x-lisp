@@ -94,7 +94,7 @@ span_report_in_context(struct span_t span, const char *context) {
     size_t cursor = 0;
     size_t index = 0;
     char *content = string_next_line(context, &cursor);
-    array_t *lines = make_array_auto_with((free_fn_t *) line_free);
+    array_t *lines = make_array_with((free_fn_t *) line_free);
     while (content) {
         array_push(lines, make_line(index, content));
         content = string_next_line(context, &cursor);

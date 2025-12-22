@@ -1,10 +1,9 @@
 #include "index.h"
 
-#define ARRAY_AUTO_SIZE 64
-
 array_t *
-make_array(size_t capacity) {
+make_array(void) {
     array_t *self = new(array_t);
+    size_t capacity = 32;
     self->capacity = capacity;
     self->cursor = 0;
     self->values = allocate_pointers(capacity);
@@ -43,20 +42,10 @@ array_put_free_fn(array_t *self, free_fn_t *free_fn) {
 }
 
 array_t *
-make_array_with(size_t capacity, free_fn_t *free_fn) {
-    array_t *self = make_array(capacity);
+make_array_with(free_fn_t *free_fn) {
+    array_t *self = make_array();
     self->free_fn = free_fn;
     return self;
-}
-
-array_t *
-make_array_auto(void) {
-    return make_array(ARRAY_AUTO_SIZE);
-}
-
-array_t *
-make_array_auto_with(free_fn_t *free_fn) {
-    return make_array_with(ARRAY_AUTO_SIZE, free_fn);
 }
 
 inline size_t

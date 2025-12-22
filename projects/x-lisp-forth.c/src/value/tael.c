@@ -4,7 +4,7 @@ tael_t *
 make_tael(gc_t *gc) {
     tael_t *self = new(tael_t);
     self->header.class = &tael_class;
-    self->elements = make_array_auto();
+    self->elements = make_array();
     self->attributes = make_record();
     gc_add_object(gc, (object_t *) self);
     return self;

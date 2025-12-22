@@ -4,8 +4,7 @@ int
 main(void) {
     test_start();
 
-    array_t *array = make_array_with(
-        100, (free_fn_t *) string_free);
+    array_t *array = make_array_with((free_fn_t *) string_free);
 
     assert(array);
     assert(array_length(array) == 0);
@@ -56,7 +55,7 @@ main(void) {
     {
         // cast atom value to void *.
 
-        array_t *array = make_array(3);
+        array_t *array = make_array();
 
         array_push(array, (void *) 1);
         array_push(array, (void *) 0);
@@ -70,26 +69,9 @@ main(void) {
     }
 
     {
-        // array_push + auto grow
-
-        array_t *array = make_array(3);
-
-        array_push(array, (void *) 1);
-        array_push(array, (void *) 2);
-        array_push(array, (void *) 3);
-
-        array_push(array, (void *) 4);
-
-        array_push(array, (void *) 5);
-        array_push(array, (void *) 6);
-
-        array_free(array);
-    }
-
-    {
         // array_put + auto grow
 
-        array_t *array = make_array(3);
+        array_t *array = make_array();
 
         array_put(array, 4, (void *) 1);
         assert(array_length(array) == 5);
@@ -99,7 +81,6 @@ main(void) {
         assert(array_get(array, 2) == NULL);
         assert(array_get(array, 3) == NULL);
         assert(array_get(array, 4) == (void *) 1);
-        assert(array_get(array, 5) == NULL);
 
         array_free(array);
     }
@@ -107,7 +88,7 @@ main(void) {
     {
         // array_put + auto grow -- again
 
-        array_t *array = make_array_auto();
+        array_t *array = make_array();
 
         array_put(array, 0, (void *) 1);
         assert(array_length(array) == 1);

@@ -57,7 +57,7 @@ make_placeholder_definition(mod_t *mod, char *name) {
     definition_t *self = make_definition(mod, name);
     self->kind = PLACEHOLDER_DEFINITION;
     self->placeholder_definition.placeholders =
-        make_array_auto_with((free_fn_t *) placeholder_free);
+        make_array_with((free_fn_t *) placeholder_free);
     return self;
 }
 

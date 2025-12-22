@@ -9,15 +9,12 @@ struct array_t {
 
 // growable array
 
-array_t *make_array(size_t capacity);
+array_t *make_array(void);
 void array_purge(array_t *self);
 void array_free(array_t *self);
 
 void array_put_free_fn(array_t *self, free_fn_t *free_fn);
-array_t *make_array_with(size_t capacity, free_fn_t *free_fn);
-
-array_t *make_array_auto(void);
-array_t *make_array_auto_with(free_fn_t *free_fn);
+array_t *make_array_with(free_fn_t *free_fn);
 
 size_t array_length(const array_t *self);
 bool array_is_empty(const array_t *self);

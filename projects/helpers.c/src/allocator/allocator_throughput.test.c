@@ -36,7 +36,7 @@ main(void) {
     double start_second = time_second();
 
     size_t thread_count = 10;
-    array_t *thread_array = make_array_auto();
+    array_t *thread_array = make_array();
     for (size_t i = 0; i < thread_count; i++) {
         thread_t *T = thread_start(thread_fn, allocator);
         array_push(thread_array, T);

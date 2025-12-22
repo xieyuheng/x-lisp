@@ -8,7 +8,7 @@ make_frame_from_definition(const definition_t *definition) {
     self->definition = definition;
     self->code = definition->function_definition.code_area;
     self->pc = self->code;
-    self->locals = make_array_auto();
+    self->locals = make_array();
     return self;
 }
 
@@ -17,7 +17,7 @@ make_frame_from_code(uint8_t *code) {
     frame_t *self = new(frame_t);
     self->code = code;
     self->pc = self->code;
-    self->locals = make_array_auto();
+    self->locals = make_array();
     return self;
 }
 

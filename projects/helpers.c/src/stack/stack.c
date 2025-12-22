@@ -5,7 +5,7 @@
 stack_t *
 make_stack(void) {
     stack_t *self = new(stack_t);
-    self->array = make_array_auto();
+    self->array = make_array();
     return self;
 }
 

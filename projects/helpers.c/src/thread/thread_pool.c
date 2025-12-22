@@ -7,7 +7,7 @@ struct thread_pool_t {
 thread_pool_t *
 make_thread_pool(void) {
     thread_pool_t *self = new(thread_pool_t);
-    self->thread_array = make_array_auto();
+    self->thread_array = make_array();
     return self;
 }
 
