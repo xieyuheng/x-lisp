@@ -61,6 +61,8 @@ same_p(value_t lhs, value_t rhs) {
 
 bool
 equal_p(value_t lhs, value_t rhs) {
+    if (same_p(lhs, rhs)) return true;
+
     if (object_p(lhs)
         && object_p(rhs)
         && to_object(lhs)->header.class == to_object(rhs)->header.class
@@ -68,7 +70,7 @@ equal_p(value_t lhs, value_t rhs) {
         return to_object(lhs)->header.class->equal_fn(to_object(lhs), to_object(rhs));
     }
 
-    return same_p(lhs, rhs);
+    return false;
 }
 
 value_t
