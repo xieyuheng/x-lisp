@@ -1,17 +1,8 @@
-[value] use `tag_*` instead of `x_*`
-[value] use `untag_*` instead of `to_*`
-
-[helpers.c] `list` -- iter should not be part of the state
-
-- iter can be used without `init_*_iter` -- instead of `make_*_iter` + `*_iter_free`
-
-[helpers.c] `hash` -- iter should not be part of the state
-
-[helpers.c] `record` -- iter should not be part of the state
-
 # tael
 
 [gc] not need `first_child_fn`
+
+[gc] iter can be used without `init_*_iter` -- instead of `make_*_iter` + `*_iter_free`
 
 [value] `make_tael_child_iter` -- compose `record_iter`
 
