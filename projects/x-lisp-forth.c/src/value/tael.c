@@ -79,6 +79,13 @@ tael_print(tael_t *self) {
     printf("]");
 }
 
+struct tael_child_iter_t {
+    size_t index;
+    const char *key;
+};
+
+typedef struct tael_child_iter_t tael_child_iter_t;
+
 const object_class_t tael_class = {
     .name = "tael",
     .print_fn = (object_print_fn_t *) tael_print,

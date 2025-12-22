@@ -1,14 +1,14 @@
 # tael
 
-[value] `tael_child_iter_t`
-
 [value] `make_tael_child_iter`
 [value] `tael_child_iter_free`
 
 [value] `tael_first_child`
 [value] `tael_next_child`
 
-test gc
+[builtin] `tael` -- setup
+
+[forth] tael.test.fth
 
 # symbol and keyword
 
