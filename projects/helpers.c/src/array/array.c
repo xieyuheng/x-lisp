@@ -1,12 +1,12 @@
 #include "index.h"
 
 array_t *
-make_array(size_t size) {
+make_array(size_t capacity) {
     array_t *self = new(array_t);
-    self->size = size;
-    self->grow_step = size;
+    self->capacity = capacity;
+    self->grow_step = capacity;
     self->cursor = 0;
-    self->values = allocate_pointers(size);
+    self->values = allocate_pointers(capacity);
     return self;
 }
 
@@ -15,7 +15,7 @@ array_purge(array_t *self) {
     assert(self);
 
     if (self->free_fn) {
-        for (size_t i = 0; i < self->size; i++) {
+        for (size_t i = 0; i < self->capacity; i++) {
             void *value = array_get(self, i);
             if (value) {
                 self->free_fn(value);
@@ -23,7 +23,7 @@ array_purge(array_t *self) {
             }
         }
     } else {
-        memory_clear(self->values, self->size * sizeof(void *));
+        memory_clear(self->values, self->capacity * sizeof(void *));
     }
 
     self->cursor = 0;
@@ -42,8 +42,8 @@ array_put_free_fn(array_t *self, free_fn_t *free_fn) {
 }
 
 array_t *
-make_array_with(size_t size, free_fn_t *free_fn) {
-    array_t *self = make_array(size);
+make_array_with(size_t capacity, free_fn_t *free_fn) {
+    array_t *self = make_array(capacity);
     self->free_fn = free_fn;
     return self;
 }
@@ -59,8 +59,8 @@ make_array_auto_with(free_fn_t *free_fn) {
 }
 
 size_t
-array_size(const array_t *self) {
-    return self->size;
+array_capacity(const array_t *self) {
+    return self->capacity;
 }
 
 inline size_t
@@ -85,16 +85,16 @@ array_is_empty(const array_t *self) {
 
 inline bool
 array_is_full(const array_t *self) {
-    return self->cursor == self->size;
+    return self->cursor == self->capacity;
 }
 
 inline void
 array_resize(array_t *self, size_t larger_size) {
-    assert(larger_size >= self->size);
-    if (larger_size == self->size) return;
+    assert(larger_size >= self->capacity);
+    if (larger_size == self->capacity) return;
 
-    self->values = reallocate_pointers(self->values, self->size, larger_size);
-    self->size = larger_size;
+    self->values = reallocate_pointers(self->values, self->capacity, larger_size);
+    self->capacity = larger_size;
 }
 
 inline void *
@@ -116,7 +116,7 @@ array_pop(array_t *self) {
 inline void
 array_push(array_t *self, void *value) {
     if (array_is_full(self))
-        array_resize(self, self->size + self->grow_step);
+        array_resize(self, self->capacity + self->grow_step);
 
     self->values[self->cursor] = value;
     self->cursor++;
@@ -124,7 +124,7 @@ array_push(array_t *self, void *value) {
 
 inline void *
 array_get(const array_t *self, size_t index) {
-    if (index >= self->size)
+    if (index >= self->capacity)
         return NULL;
 
     return self->values[index];
@@ -139,7 +139,7 @@ array_pick(const array_t *self, size_t back_index) {
 
 inline void
 array_put(array_t *self, size_t index, void *value) {
-    if (index >= self->size)
+    if (index >= self->capacity)
         array_resize(self, index + self->grow_step);
 
     self->values[index] = value;

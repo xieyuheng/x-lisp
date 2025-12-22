@@ -1,4 +1,4 @@
-[helpers.c] `array` -- rename `size` to `capacity`
+[helpers.c] `array` -- hide `array_resize` function
 [helpers.c] `make_array_auto` -- should be the default
 [helpers.c] `make_string_array_auto` -- should be the default
 

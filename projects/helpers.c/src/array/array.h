@@ -1,7 +1,7 @@
 #pragma once
 
 struct array_t {
-    size_t size;
+    size_t capacity;
     size_t grow_step;
     size_t cursor;
     void **values;
@@ -10,19 +10,19 @@ struct array_t {
 
 // growable array
 
-array_t *make_array(size_t size);
+array_t *make_array(size_t capacity);
 void array_purge(array_t *self);
 void array_free(array_t *self);
 
 void array_put_free_fn(array_t *self, free_fn_t *free_fn);
-array_t *make_array_with(size_t size, free_fn_t *free_fn);
+array_t *make_array_with(size_t capacity, free_fn_t *free_fn);
 
 #define ARRAY_AUTO_SIZE 64
 
 array_t *make_array_auto(void);
 array_t *make_array_auto_with(free_fn_t *free_fn);
 
-size_t array_size(const array_t *self);
+size_t array_capacity(const array_t *self);
 size_t array_grow_step(const array_t *self);
 void array_put_grow_step(array_t *self, size_t grow_step);
 

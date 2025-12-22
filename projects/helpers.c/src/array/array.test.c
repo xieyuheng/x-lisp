@@ -8,7 +8,7 @@ main(void) {
         100, (free_fn_t *) string_free);
 
     assert(array);
-    assert(array_size(array) == 100);
+    assert(array_capacity(array) == 100);
     assert(array_length(array) == 0);
     assert(array_is_empty(array));
 
@@ -136,7 +136,7 @@ main(void) {
 
         array_push(array, (void *) 4);
         assert(!array_is_full(array));
-        assert(array_size(array) == 6);
+        assert(array_capacity(array) == 6);
 
         array_push(array, (void *) 5);
         array_push(array, (void *) 6);
