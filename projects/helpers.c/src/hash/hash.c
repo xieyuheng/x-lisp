@@ -308,6 +308,11 @@ hash_put(hash_t *self, void *key, void *value) {
     entry->value = value;
 }
 
+const hash_entry_t *
+hash_first_entry(const hash_t *self) {
+    return self->first_entry;
+}
+
 void *
 hash_first_value(hash_t *self) {
     assert(self);

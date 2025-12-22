@@ -30,6 +30,8 @@ void hash_put(hash_t *self, void *key, void *value);
 
 bool hash_delete(hash_t *self, const void *key);
 
+const hash_entry_t *hash_first_entry(const hash_t *self);
+
 // - iterate by insertion order.
 void *hash_first_value(hash_t *self);
 void *hash_next_value(hash_t *self);
