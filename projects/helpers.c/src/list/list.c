@@ -1,15 +1,5 @@
 #include "index.h"
 
-struct list_t {
-    list_node_t *first;
-    list_node_t *last;
-    list_node_t *cursor;
-    size_t length;
-    free_fn_t *free_fn;
-    equal_fn_t *equal_fn;
-    copy_fn_t *copy_fn;
-};
-
 list_t *
 make_list(void) {
     list_t *self = new(list_t);

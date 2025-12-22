@@ -1,7 +1,5 @@
 # list
 
-[helpers.c] `list_iter_next`
-
 [helpers.c] `list` -- remove iter state (cursor) and API functions
 
 [helpers.c] `list_first` -- should take const list

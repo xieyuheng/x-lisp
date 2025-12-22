@@ -15,11 +15,21 @@ make_list_iter(const list_t *list) {
 void
 list_iter_init(list_iter_t *self, const list_t *list) {
     self->list = list;
-    // self->cursor = list_first(list);
-    self->cursor = list_first((list_t *) list);
+    self->cursor = list->first;
 }
 
 void
 list_iter_free(list_iter_t *self) {
     free(self);
+}
+
+void *
+list_iter_next(list_iter_t *self) {
+    if (self->cursor) {
+        void *value = self->cursor->value;
+        self->cursor = self->cursor->next;
+        return value;
+    } else {
+        return NULL;
+    }
 }
