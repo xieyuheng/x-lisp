@@ -9,3 +9,4 @@ struct tael_t {
 };
 
 tael_t *make_tael(gc_t *gc);
+void tael_free(tael_t *self);

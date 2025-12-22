@@ -10,6 +10,13 @@ make_tael(gc_t *gc) {
     return self;
 }
 
+void
+tael_free(tael_t *self) {
+    array_free(self->elements);
+    record_free(self->attributes);
+    free(self);
+}
+
 const object_class_t tael_class = {
     .name = "tael",
     // .print_fn = (object_print_fn_t *) tael_print,
