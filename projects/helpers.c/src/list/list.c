@@ -63,9 +63,11 @@ make_list_with(free_fn_t *free_fn) {
 
 list_t *
 list_copy(list_t *self) {
-    if (!self) return NULL;
+    assert(self);
 
     list_t *list = make_list();
+    list->equal_fn = self->equal_fn;
+
     list_node_t *node = self->first;
     while (node) {
         if (self->copy_fn) {
@@ -82,9 +84,11 @@ list_copy(list_t *self) {
 
 list_t *
 list_copy_reversed(list_t *self) {
-    if (!self) return NULL;
+    assert(self);
 
     list_t *list = make_list();
+    list->equal_fn = self->equal_fn;
+
     list_node_t *node = self->first;
     while (node) {
         if (self->copy_fn) {

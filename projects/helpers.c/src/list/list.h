@@ -21,12 +21,9 @@ void list_put_copy_fn(list_t *self, copy_fn_t *copy_fn);
 
 list_t *make_list_with(free_fn_t *free_fn);
 
-// Make a copy of the list; values are copyed if you set a copy_fn for
-// the list, otherwise not. Copying a null reference returns a null
-// reference.
-// - `list_copy` should not copy callbacks,
-//   specially not `free_fn`,
-//   to avoid double free.
+// - values are copyed by `copy_fn` if exists.
+// - will copy `equal_fn` if exists.
+// - will NOT copy `free_fn`, otherwise there will be double-free.
 list_t *list_copy(list_t *self);
 list_t *list_copy_reversed(list_t *self);
 
@@ -35,25 +32,19 @@ bool list_is_empty(const list_t *self);
 bool list_has(const list_t *self, const void *value);
 bool list_remove(list_t *self, const void *value);
 
-// Find an value in the list, searching from the start.
-// Uses the injected `equal`, if any, else compares value values directly.
-// Returns the value handle found, or NULL.
+// - searching from the start.
+// - use `equal_fn` if exists, otherwise compare as pointer.
+// - return the value found, or NULL.
 void *list_find(list_t *self, const void *value);
 
 void *list_first(const list_t *self);
 void *list_last(const list_t *self);
 
-// at the end of the list.
-
 void list_push(list_t *self, void *value);
 void *list_pop(list_t *self);
 
-// at the start of the list.
-
 void list_unshift(list_t *self, void *value);
 void *list_shift(list_t *self);
-
-// at the index of the list.
 
 void *list_get(const list_t *self, size_t index);
 

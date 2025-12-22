@@ -193,11 +193,6 @@ main(void) {
         list_free(list);
     }
 
-
-    {
-        assert(list_copy(NULL) == NULL);
-    }
-
     {
         char *a = string_copy("a");
         char *b = string_copy("b");
