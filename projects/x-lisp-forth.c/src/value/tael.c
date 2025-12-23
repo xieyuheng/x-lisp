@@ -154,3 +154,48 @@ inline void
 tael_put_attribute(tael_t *self, const char *key, value_t value) {
     record_put(self->attributes, key, (void *) value);
 }
+
+tael_t *
+tael_copy(tael_t *self) {
+    tael_t *new_tael = make_tael();
+
+    for (size_t i = 0; i < array_length(self->elements); i++) {
+        array_push(new_tael->elements, (void *) tael_get_element(self, i));
+    }
+
+    record_iter_t iter;
+    record_iter_init(&iter, self->attributes);
+    const hash_entry_t *entry = record_iter_next_entry(&iter);
+    while (entry) {
+        tael_put_attribute(new_tael, entry->key, (value_t) entry->value);
+        entry = record_iter_next_entry(&iter);
+    }
+
+    return new_tael;
+}
+
+tael_t *
+tael_copy_only_elements(tael_t *self) {
+    tael_t *new_tael = make_tael();
+
+    for (size_t i = 0; i < array_length(self->elements); i++) {
+        array_push(new_tael->elements, (void *) tael_get_element(self, i));
+    }
+
+    return new_tael;
+}
+
+tael_t *
+tael_copy_only_attributes(tael_t *self) {
+    tael_t *new_tael = make_tael();
+
+    record_iter_t iter;
+    record_iter_init(&iter, self->attributes);
+    const hash_entry_t *entry = record_iter_next_entry(&iter);
+    while (entry) {
+        tael_put_attribute(new_tael, entry->key, (value_t) entry->value);
+        entry = record_iter_next_entry(&iter);
+    }
+
+    return new_tael;
+}

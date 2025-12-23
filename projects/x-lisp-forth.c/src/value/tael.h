@@ -22,3 +22,7 @@ void tael_put_element(tael_t *self, size_t index, value_t value);
 
 value_t tael_get_attribute(const tael_t *self, const char *key);
 void tael_put_attribute(tael_t *self, const char *key, value_t value);
+
+tael_t *tael_copy(tael_t *self);
+tael_t *tael_copy_only_elements(tael_t *self);
+tael_t *tael_copy_only_attributes(tael_t *self);
