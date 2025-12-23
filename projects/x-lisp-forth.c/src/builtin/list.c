@@ -6,11 +6,22 @@ x_make_list(void) {
 }
 
 value_t
-x_list_copy(value_t value) {
-    return x_object(tael_copy_only_elements(to_tael(value)));
+x_list_copy(value_t list) {
+    return x_object(tael_copy_only_elements(to_tael(list)));
 }
 
 value_t
-x_list_length(value_t value) {
-    return x_int(array_length(to_tael(value)->elements));
+x_list_length(value_t list) {
+    return x_int(array_length(to_tael(list)->elements));
+}
+
+value_t
+x_list_push_mut(value_t value, value_t list) {
+    tael_push_element(to_tael(list), value);
+    return list;
+}
+
+value_t
+x_list_pop_mut(value_t list) {
+    return tael_pop_element(to_tael(list));
 }

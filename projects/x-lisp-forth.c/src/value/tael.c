@@ -145,6 +145,16 @@ tael_put_element(tael_t *self, size_t index, value_t value) {
     array_put(self->elements, index, (void *) value);
 }
 
+inline void
+tael_push_element(tael_t *self, value_t value) {
+    array_push(self->elements, (void *) value);
+}
+
+inline value_t
+tael_pop_element(tael_t *self) {
+    return (value_t) array_pop(self->elements);
+}
+
 inline value_t
 tael_get_attribute(const tael_t *self, const char *key) {
     return (value_t) record_get(self->attributes, key);
