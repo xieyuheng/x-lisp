@@ -1,8 +1,6 @@
 1 @const one
 one 1 @assert-equal
 
-@def main
+@begin
   one 1 @assert-equal
 @end
-
-main
