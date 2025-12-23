@@ -7,27 +7,27 @@ interpret_token(vm_t *vm, token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
         if (string_equal(token->content, "@dup")) {
-            value_t value = stack_pop(vm->value_stack);
-            stack_push(vm->value_stack, value);
-            stack_push(vm->value_stack, value);
+            value_t value = vm_pop(vm);
+            vm_push(vm, value);
+            vm_push(vm, value);
             return;
         }
 
         if (string_equal(token->content, "@drop")) {
-            stack_pop(vm->value_stack);
+            vm_pop(vm);
             return;
         }
 
         if (string_equal(token->content, "@swap")) {
-            value_t x2 = stack_pop(vm->value_stack);
-            value_t x1 = stack_pop(vm->value_stack);
-            stack_push(vm->value_stack, x2);
-            stack_push(vm->value_stack, x1);
+            value_t x2 = vm_pop(vm);
+            value_t x1 = vm_pop(vm);
+            vm_push(vm, x2);
+            vm_push(vm, x1);
             return;
         }
 
         if (string_equal(token->content, "@assert")) {
-            value_t value = stack_pop(vm->value_stack);
+            value_t value = vm_pop(vm);
             if (value != x_true) {
                 printf("@assert fail");
                 printf("\n  value: "); value_print(value);
@@ -40,8 +40,8 @@ interpret_token(vm_t *vm, token_t *token) {
         }
 
         if (string_equal(token->content, "@assert-equal")) {
-            value_t rhs = stack_pop(vm->value_stack);
-            value_t lhs = stack_pop(vm->value_stack);
+            value_t rhs = vm_pop(vm);
+            value_t lhs = vm_pop(vm);
             if (!equal_p(lhs, rhs)) {
                 printf("@assert-equal fail");
                 printf("\n  lhs: "); value_print(lhs);
@@ -55,8 +55,8 @@ interpret_token(vm_t *vm, token_t *token) {
         }
 
         if (string_equal(token->content, "@assert-not-equal")) {
-            value_t rhs = stack_pop(vm->value_stack);
-            value_t lhs = stack_pop(vm->value_stack);
+            value_t rhs = vm_pop(vm);
+            value_t lhs = vm_pop(vm);
             if (equal_p(lhs, rhs)) {
                 printf("@assert-not-equal fail");
                 printf("\n  lhs: "); value_print(lhs);
@@ -85,12 +85,12 @@ interpret_token(vm_t *vm, token_t *token) {
     }
 
     case INT_TOKEN: {
-        stack_push(vm->value_stack, x_int(string_parse_int(token->content)));
+        vm_push(vm, x_int(string_parse_int(token->content)));
         return;
     }
 
     case FLOAT_TOKEN: {
-        stack_push(vm->value_stack, x_float(string_parse_double(token->content)));
+        vm_push(vm, x_float(string_parse_double(token->content)));
         return;
     }
 
@@ -141,12 +141,12 @@ invoke(vm_t *vm, definition_t *definition) {
     }
 
     case VARIABLE_DEFINITION: {
-        stack_push(vm->value_stack, definition->variable_definition.value);
+        vm_push(vm, definition->variable_definition.value);
         return;
     }
 
     case CONSTANT_DEFINITION: {
-        stack_push(vm->value_stack, definition->variable_definition.value);
+        vm_push(vm, definition->variable_definition.value);
         return;
     }
 

@@ -18,10 +18,10 @@ supply(vm_t *vm, size_t n, value_t target, size_t arity) {
 
     curry_t *curry = make_curry(target, arity - n, n);
     for (size_t i = 0; i < n; i++) {
-        curry->args[n - i - 1] = stack_pop(vm->value_stack);
+        curry->args[n - i - 1] = vm_pop(vm);
     }
 
-    stack_push(vm->value_stack, x_object(curry));
+    vm_push(vm, x_object(curry));
 }
 
 static void
@@ -63,22 +63,22 @@ apply_curry(vm_t *vm, size_t n, curry_t *curry) {
 
         stack_t *tmp_stack = make_stack();
         for (size_t i = 0; i < n; i++) {
-            stack_push(tmp_stack, stack_pop(vm->value_stack));
+            stack_push(tmp_stack, (void *) vm_pop(vm));
         }
 
         for (size_t i = 0; i < curry->size; i++) {
-            stack_push(vm->value_stack, curry->args[i]);
+            vm_push(vm, curry->args[i]);
         }
 
         while (!stack_is_empty(tmp_stack)) {
-            stack_push(vm->value_stack, stack_pop(tmp_stack));
+            vm_push(vm, (value_t) stack_pop(tmp_stack));
         }
 
         stack_free(tmp_stack);
         apply(vm, n + curry->size, curry->target);
         return;
     } else if (n < curry->arity) {
-        supply(vm, n, curry, curry->arity);
+        supply(vm, n, x_object(curry), curry->arity);
         return;
     } else {
         prepare_to_apply_again(vm, n - curry->arity);

@@ -2,7 +2,7 @@
 
 void
 x_define_constant(vm_t *vm) {
-    value_t value = stack_pop(vm->value_stack);
+    value_t value = vm_pop(vm);
     token_t *token = list_shift(vm->tokens);
     assert(token->kind == SYMBOL_TOKEN);
     define_constant(vm->mod, token->content, value);
@@ -11,7 +11,7 @@ x_define_constant(vm_t *vm) {
 
 void
 x_define_variable(vm_t *vm) {
-    value_t value = stack_pop(vm->value_stack);
+    value_t value = vm_pop(vm);
     token_t *token = list_shift(vm->tokens);
     assert(token->kind == SYMBOL_TOKEN);
     define_variable(vm->mod, token->content, value);

@@ -35,8 +35,8 @@ tael_equal(tael_t *lhs, tael_t *rhs) {
         return false;
 
     for (size_t i = 0; i < array_length(lhs->elements); i++) {
-        value_t left = array_get(lhs->elements, i);
-        value_t right = array_get(rhs->elements, i);
+        value_t left = tael_get_element(lhs, i);
+        value_t right = tael_get_element(rhs, i);
         if (!equal_p(left, right))
             return false;
     }
@@ -48,8 +48,8 @@ tael_equal(tael_t *lhs, tael_t *rhs) {
     record_iter_init(&iter, lhs->attributes);
     const char *key = record_iter_next_key(&iter);
     while (key) {
-        value_t left = record_get(lhs->attributes, key);
-        value_t right = record_get(rhs->attributes, key);
+        value_t left = tael_get_attribute(lhs, key);
+        value_t right = tael_get_attribute(rhs, key);
         if (!equal_p(left, right))
             return false;
 
@@ -64,7 +64,7 @@ tael_print(tael_t *self) {
     printf("[");
 
     for (size_t i = 0; i < array_length(self->elements); i++) {
-        value_print(array_get(self->elements, i));
+        value_print(tael_get_element(self, i));
         if (i < array_length(self->elements) - 1) {
             printf(" ");
         }
@@ -74,7 +74,7 @@ tael_print(tael_t *self) {
     record_iter_init(&iter, self->attributes);
     const char *key = record_iter_next_key(&iter);
     while (key) {
-        value_t value = record_get(self->attributes, key);
+        value_t value = tael_get_attribute(self, key);
         printf(" :%s ", key);
         value_print(value);
         key = record_iter_next_key(&iter);
@@ -108,7 +108,7 @@ tael_child_iter_free(tael_child_iter_t *self) {
 static object_t *
 tael_child_iter_next(tael_child_iter_t *iter) {
     if (iter->index < array_length(iter->tael->elements)) {
-        value_t value = array_get(iter->tael->elements, iter->index++);
+        value_t value = tael_get_element(iter->tael, iter->index++);
         return object_p(value)
             ? to_object(value)
             : tael_child_iter_next(iter);
@@ -116,7 +116,7 @@ tael_child_iter_next(tael_child_iter_t *iter) {
 
     const hash_entry_t *entry = record_iter_next_entry(&iter->record_iter);
     if (entry) {
-        value_t value = entry->value;
+        value_t value = (value_t) entry->value;
         return object_p(value)
             ? to_object(value)
             : tael_child_iter_next(iter);
@@ -135,22 +135,22 @@ const object_class_t tael_class = {
     .child_iter_next_fn = (object_child_iter_next_fn_t *) tael_child_iter_next,
 };
 
-value_t
-tael_get_element(tael_t *self, size_t index) {
-    return array_get(self->elements, index);
+inline value_t
+tael_get_element(const tael_t *self, size_t index) {
+    return (value_t) array_get(self->elements, index);
 }
 
-void
+inline void
 tael_put_element(tael_t *self, size_t index, value_t value) {
-    array_put(self->elements, index, value);
+    array_put(self->elements, index, (void *) value);
 }
 
-value_t
-tael_get_attribute(tael_t *self, const char *key) {
-    return record_get(self->attributes, key);
+inline value_t
+tael_get_attribute(const tael_t *self, const char *key) {
+    return (value_t) record_get(self->attributes, key);
 }
 
-void
+inline void
 tael_put_attribute(tael_t *self, const char *key, value_t value) {
-    record_put(self->attributes, key, value);
+    record_put(self->attributes, key, (void *) value);
 }

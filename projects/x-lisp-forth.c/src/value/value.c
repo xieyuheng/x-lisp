@@ -50,7 +50,7 @@ value_print(value_t value) {
         return;
     }
 
-    printf("#<unknown-value 0x%p>", value);
+    printf("#<unknown-value 0x%lx>", value);
     return;
 }
 

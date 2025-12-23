@@ -1,6 +1,6 @@
 #pragma once
 
-typedef void *value_t;
+typedef uint64_t value_t;
 
 // value = 61 bits payload + 3 bits tag.
 

@@ -28,6 +28,16 @@ vm_interpret(vm_t *vm) {
     }
 }
 
+inline value_t
+vm_pop(vm_t *vm) {
+    return (value_t) stack_pop(vm->value_stack);
+}
+
+inline void
+vm_push(vm_t *vm, value_t value) {
+    stack_push(vm->value_stack, (void *) value);
+}
+
 inline void
 vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     switch (instr.op) {
@@ -36,92 +46,92 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_LITERAL_INT: {
-        stack_push(vm->value_stack, x_int(instr.literal_int.content));
+        vm_push(vm, x_int(instr.literal_int.content));
         return;
     }
 
     case OP_IADD: {
-        value_t x2 = stack_pop(vm->value_stack);
-        value_t x1 = stack_pop(vm->value_stack);
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
         value_t result = x_iadd(x1, x2);
-        stack_push(vm->value_stack, result);
+        vm_push(vm, result);
         return;
     }
 
     case OP_ISUB: {
-        value_t x2 = stack_pop(vm->value_stack);
-        value_t x1 = stack_pop(vm->value_stack);
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
         value_t result = x_isub(x1, x2);
-        stack_push(vm->value_stack, result);
+        vm_push(vm, result);
         return;
     }
 
     case OP_IMUL: {
-        value_t x2 = stack_pop(vm->value_stack);
-        value_t x1 = stack_pop(vm->value_stack);
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
         value_t result = x_imul(x1, x2);
-        stack_push(vm->value_stack, result);
+        vm_push(vm, result);
         return;
     }
 
     case OP_IDIV: {
-        value_t x2 = stack_pop(vm->value_stack);
-        value_t x1 = stack_pop(vm->value_stack);
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
         value_t result = x_idiv(x1, x2);
-        stack_push(vm->value_stack, result);
+        vm_push(vm, result);
         return;
     }
 
     case OP_IMOD: {
-        value_t x2 = stack_pop(vm->value_stack);
-        value_t x1 = stack_pop(vm->value_stack);
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
         value_t result = x_imod(x1, x2);
-        stack_push(vm->value_stack, result);
+        vm_push(vm, result);
         return;
     }
 
     case OP_LITERAL_FLOAT: {
-        stack_push(vm->value_stack, x_float(instr.literal_float.content));
+        vm_push(vm, x_float(instr.literal_float.content));
         return;
     }
 
     case OP_FADD: {
-        value_t x2 = stack_pop(vm->value_stack);
-        value_t x1 = stack_pop(vm->value_stack);
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
         value_t result = x_fadd(x1, x2);
-        stack_push(vm->value_stack, result);
+        vm_push(vm, result);
         return;
     }
 
     case OP_FSUB: {
-        value_t x2 = stack_pop(vm->value_stack);
-        value_t x1 = stack_pop(vm->value_stack);
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
         value_t result = x_fsub(x1, x2);
-        stack_push(vm->value_stack, result);
+        vm_push(vm, result);
         return;
     }
 
     case OP_FMUL: {
-        value_t x2 = stack_pop(vm->value_stack);
-        value_t x1 = stack_pop(vm->value_stack);
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
         value_t result = x_fmul(x1, x2);
-        stack_push(vm->value_stack, result);
+        vm_push(vm, result);
         return;
     }
 
     case OP_FDIV: {
-        value_t x2 = stack_pop(vm->value_stack);
-        value_t x1 = stack_pop(vm->value_stack);
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
         value_t result = x_fdiv(x1, x2);
-        stack_push(vm->value_stack, result);
+        vm_push(vm, result);
         return;
     }
 
     case OP_FMOD: {
-        value_t x2 = stack_pop(vm->value_stack);
-        value_t x1 = stack_pop(vm->value_stack);
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
         value_t result = x_fmul(x1, x2);
-        stack_push(vm->value_stack, result);
+        vm_push(vm, result);
         return;
     }
 
@@ -144,20 +154,20 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_REF: {
-        stack_push(vm->value_stack, x_object(instr.ref.definition));
+        vm_push(vm, x_object(instr.ref.definition));
         return;
     }
 
     case OP_APPLY: {
-        value_t n = stack_pop(vm->value_stack);
-        value_t target = stack_pop(vm->value_stack);
+        value_t n = vm_pop(vm);
+        value_t target = vm_pop(vm);
         apply(vm, to_int64(n), target);
         return;
     }
 
     case OP_TAIL_APPLY: {
-        value_t n = stack_pop(vm->value_stack);
-        value_t target = stack_pop(vm->value_stack);
+        value_t n = vm_pop(vm);
+        value_t target = vm_pop(vm);
         stack_pop(vm->frame_stack);
         frame_free(frame);
         apply(vm, to_int64(n), target);
@@ -165,7 +175,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_ASSIGN: {
-        value_t value = stack_pop(vm->value_stack);
+        value_t value = vm_pop(vm);
         definition_t *definition = (definition_t *) to_object(value);
         if (definition->kind != VARIABLE_DEFINITION) {
             who_printf("not VARIABLE_DEFINITION: ");
@@ -174,19 +184,19 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
             exit(1);
         }
 
-        definition->variable_definition.value = stack_pop(vm->value_stack);
+        definition->variable_definition.value = vm_pop(vm);
         return;
     }
 
     case OP_LOCAL_LOAD: {
-        value_t value = array_get(frame->locals, instr.local_load.index);
-        stack_push(vm->value_stack, value);
+        value_t value = frame_get_local(frame, instr.local_load.index);
+        vm_push(vm, value);
         return;
     }
 
     case OP_LOCAL_STORE: {
-        value_t value = stack_pop(vm->value_stack);
-        array_put(frame->locals, instr.local_load.index, value);
+        value_t value = vm_pop(vm);
+        frame_put_local(frame, instr.local_store.index, value);
         return;
     }
 
@@ -196,7 +206,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_JUMP_IF_NOT: {
-        value_t value = stack_pop(vm->value_stack);
+        value_t value = vm_pop(vm);
         if (value == x_false) {
             frame->pc += instr.jump.offset;
         }
@@ -204,27 +214,27 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_DUP: {
-        value_t value = stack_pop(vm->value_stack);
-        stack_push(vm->value_stack, value);
-        stack_push(vm->value_stack, value);
+        value_t value = vm_pop(vm);
+        vm_push(vm, value);
+        vm_push(vm, value);
         return;
     }
 
     case OP_DROP: {
-        stack_pop(vm->value_stack);
+        vm_pop(vm);
         return;
     }
 
     case OP_SWAP: {
-        value_t x2 = stack_pop(vm->value_stack);
-        value_t x1 = stack_pop(vm->value_stack);
-        stack_push(vm->value_stack, x2);
-        stack_push(vm->value_stack, x1);
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
+        vm_push(vm, x2);
+        vm_push(vm, x1);
         return;
     }
 
     case OP_ASSERT: {
-        value_t value = stack_pop(vm->value_stack);
+        value_t value = vm_pop(vm);
         if (value != x_true) {
             printf("@assert fail");
             printf("\n  value: "); value_print(value);
@@ -237,8 +247,8 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_ASSERT_EQUAL: {
-        value_t rhs = stack_pop(vm->value_stack);
-        value_t lhs = stack_pop(vm->value_stack);
+        value_t rhs = vm_pop(vm);
+        value_t lhs = vm_pop(vm);
         if (!equal_p(lhs, rhs)) {
             printf("@assert-equal fail");
             printf("\n  lhs: "); value_print(lhs);
@@ -252,8 +262,8 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_ASSERT_NOT_EQUAL: {
-        value_t rhs = stack_pop(vm->value_stack);
-        value_t lhs = stack_pop(vm->value_stack);
+        value_t rhs = vm_pop(vm);
+        value_t lhs = vm_pop(vm);
         if (equal_p(lhs, rhs)) {
             printf("@assert-not-equal fail");
             printf("\n  lhs: "); value_print(lhs);
@@ -269,7 +279,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     case OP_LITERAL_STRING: {
         value_t value =
             x_object(make_xstring(instr.literal_string.content));
-        stack_push(vm->value_stack, value);
+        vm_push(vm, value);
         return;
     }
 
@@ -308,7 +318,7 @@ vm_execute_until(vm_t *vm, size_t base_length) {
 static void
 vm_gc_roots_in_value_stack(vm_t *vm, array_t *roots) {
     for (size_t i = 0; i < stack_length(vm->value_stack); i++) {
-        value_t value = stack_get(vm->value_stack, i);
+        value_t value = (value_t) stack_get(vm->value_stack, i);
         if (object_p(value)) {
             array_push(roots, to_object(value));
         }
@@ -320,7 +330,7 @@ vm_gc_roots_in_frame_stack(vm_t *vm, array_t *roots) {
     for (size_t i = 0; i < stack_length(vm->frame_stack); i++) {
         frame_t *frame = stack_get(vm->frame_stack, i);
         for (size_t i = 0; i < array_length(frame->locals); i++) {
-            value_t value = array_get(frame->locals, i);
+            value_t value = frame_get_local(frame, i);
             if (object_p(value)) {
                 array_push(roots, to_object(value));
             }

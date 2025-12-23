@@ -30,3 +30,13 @@ frame_free(frame_t *self) {
     array_free(self->locals);
     free(self);
 }
+
+inline value_t
+frame_get_local(frame_t *self, size_t index) {
+    return (value_t) array_get(self->locals, index);
+}
+
+inline void
+frame_put_local(frame_t *self, size_t index, value_t value) {
+    array_put(self->locals, index, (void *) value);
+}
