@@ -19,10 +19,17 @@ handle_run(cmd_ctx_t *ctx) {
     (void) mod;
 }
 
+static void
+init(void) {
+    global_gc = make_gc();
+}
+
 int
 main(int argc, char *argv[]) {
     sanity_check();
     config_stdio();
+
+    init();
 
     cmd_router_t *router = cmd_make_router("x-lisp-forth", "0.1.0");
 
