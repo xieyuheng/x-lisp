@@ -1,6 +1,8 @@
 @def main
-  make-list println
-  make-list list-copy println
+  make-list [list]
+  list println
+  list list-copy println
+  list list-length println
 @end
 
 main

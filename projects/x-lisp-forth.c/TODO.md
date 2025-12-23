@@ -1,5 +1,14 @@
 # list
 
+[builtin] `x_list_get`
+[builtin] `x_list_put_mut`
+
+[builtin] `x_list_push_mut`
+[builtin] `x_list_pop_mut`
+
+[builtin] `x_list_unshift_mut`
+[builtin] `x_list_shift_mut`
+
 [builtin] `x_cons`
 [builtin] `x_car`
 [builtin] `x_cdr`
