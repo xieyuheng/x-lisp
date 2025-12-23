@@ -1,16 +1,23 @@
 # tael
 
-[value] `tael_get_element` & `tael_put_element`
 [value] `tael_get_attribute` & `tael_put_attribute`
 
+# list
+
 [builtin] `list` -- setup
+[builtin] `x_make_list`
 [builtin] `x_list_push_mut`
 [builtin] `x_car`
 [builtin] `x_cdr`
 
-[value] `tael_copy`
+[value] `list_copy`
 
-[forth] tael.test.fth
+[forth] list.test.fth
+
+# record
+
+[builtin] `record` -- setup
+[builtin] `x_make_record`
 
 # symbol and keyword
 

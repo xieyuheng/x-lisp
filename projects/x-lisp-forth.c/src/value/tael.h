@@ -16,3 +16,6 @@ tael_t *to_tael(value_t value);
 
 bool tael_equal(tael_t *lhs, tael_t *rhs);
 void tael_print(tael_t *self);
+
+value_t tael_get_element(tael_t *self, size_t index);
+void tael_put_element(tael_t *self, size_t index, value_t value);

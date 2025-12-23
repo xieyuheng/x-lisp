@@ -134,3 +134,13 @@ const object_class_t tael_class = {
     .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
     .child_iter_next_fn = (object_child_iter_next_fn_t *) tael_child_iter_next,
 };
+
+value_t
+tael_get_element(tael_t *self, size_t index) {
+    return array_get(self->elements, index);
+}
+
+void
+tael_put_element(tael_t *self, size_t index, value_t value) {
+    array_put(self->elements, index, value);
+}
