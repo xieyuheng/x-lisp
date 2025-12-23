@@ -58,7 +58,7 @@ array_is_empty(const array_t *self) {
     return self->cursor == 0;
 }
 
-static inline void
+inline void
 array_double_capacity(array_t *self) {
     self->values = reallocate_pointers(
         self->values,

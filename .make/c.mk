@@ -1,4 +1,8 @@
 cc = gcc
+ld = ld
+
+#cc = clang
+#ld = ld.lld
 
 cflags = -std=c23
 cflags += -g
@@ -69,7 +73,7 @@ src/%.snapshot: src/%.snapshot.c src/index.o
 	$(cc) $(cflags) $^ $(deps) $(ldflags) -o $@
 
 src/index.o: $(objects)
-	ld -r $^ -o $@
+	$(ld) -r $^ -o $@
 
 src/%.o: src/%.c $(headers)
 	$(cc) -c $(cflags) $< -o $@
