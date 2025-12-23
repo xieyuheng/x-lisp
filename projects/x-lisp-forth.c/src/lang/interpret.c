@@ -1,7 +1,5 @@
 #include "index.h"
 
-static void invoke(vm_t *vm, definition_t *definition);
-
 void
 interpret_token(vm_t *vm, token_t *token) {
     switch (token->kind) {
@@ -75,7 +73,7 @@ interpret_token(vm_t *vm, token_t *token) {
             exit(1);
         }
 
-        invoke(vm, definition);
+        call_definition_now(vm, definition);
         return;
     }
 
@@ -121,38 +119,6 @@ interpret_token(vm_t *vm, token_t *token) {
 
     case LINE_COMMENT_TOKEN: {
         return;
-    }
-    }
-}
-
-static void
-invoke(vm_t *vm, definition_t *definition) {
-    switch (definition->kind) {
-    case FUNCTION_DEFINITION: {
-        size_t base_length = stack_length(vm->frame_stack);
-        stack_push(vm->frame_stack, make_frame_from_definition(definition));
-        vm_execute_until(vm, base_length);
-        return;
-    }
-
-    case PRIMITIVE_DEFINITION: {
-        call_primitive(vm, definition->primitive_definition.primitive);
-        return;
-    }
-
-    case VARIABLE_DEFINITION: {
-        vm_push(vm, definition->variable_definition.value);
-        return;
-    }
-
-    case CONSTANT_DEFINITION: {
-        vm_push(vm, definition->variable_definition.value);
-        return;
-    }
-
-    case PLACEHOLDER_DEFINITION: {
-        who_printf("undefined name: %s\n", definition->name);
-        exit(1);
     }
     }
 }

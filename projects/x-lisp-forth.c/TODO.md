@@ -1,3 +1,6 @@
+[builtin] rename `define/` to `syntax/`
+[builtin] `syntax/` -- `@begin` -- `x_begin` -- create call `call_definition_now`
+
 # list
 
 [builtin] `x_list_get`
