@@ -1,5 +1,3 @@
-[gc] remove gc from `vm` -- use `global_gc` instead
-
 # list
 
 [builtin] `x_make_list`

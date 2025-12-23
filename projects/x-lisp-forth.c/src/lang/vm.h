@@ -5,7 +5,6 @@ struct vm_t {
     list_t *tokens;
     stack_t *value_stack;
     stack_t *frame_stack;
-    gc_t *gc;
 };
 
 vm_t *make_vm(mod_t *mod, list_t *tokens);

@@ -7,7 +7,6 @@ make_vm(mod_t *mod, list_t *tokens) {
     self->tokens = tokens;
     self->value_stack = make_stack();
     self->frame_stack = make_stack_with((free_fn_t *) frame_free);
-    self->gc = make_gc();
     return self;
 }
 
@@ -16,7 +15,6 @@ vm_free(vm_t *self) {
     list_free(self->tokens);
     stack_free(self->value_stack);
     stack_free(self->frame_stack);
-    gc_free(self->gc);
     free(self);
 }
 
@@ -270,7 +268,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
 
     case OP_LITERAL_STRING: {
         value_t value =
-            x_object(make_xstring(vm->gc, instr.literal_string.content));
+            x_object(make_xstring(instr.literal_string.content));
         stack_push(vm->value_stack, value);
         return;
     }
@@ -365,20 +363,20 @@ void
 vm_perform_gc(vm_t *vm) {
 #if DEBUG_GC
     who_printf("before\n");
-    gc_report(vm->gc);
+    gc_report(global_gc);
 #endif
 
     array_t *roots = vm_gc_roots(vm);
     for (size_t i = 0; i < array_length(roots); i++) {
-        gc_mark_object(vm->gc, array_get(roots, i));
+        gc_mark_object(global_gc, array_get(roots, i));
     }
 
-    gc_mark(vm->gc);
-    gc_sweep(vm->gc);
+    gc_mark(global_gc);
+    gc_sweep(global_gc);
     array_free(roots);
 
 #if DEBUG_GC
     who_printf("after\n");
-    gc_report(vm->gc);
+    gc_report(global_gc);
 #endif
 }

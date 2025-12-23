@@ -8,7 +8,7 @@ struct xstring_t {
     char *string;
 };
 
-xstring_t *make_xstring(gc_t *gc, const char *string);
+xstring_t *make_xstring(const char *string);
 void xstring_free(xstring_t *self);
 
 bool xstring_p(value_t value);

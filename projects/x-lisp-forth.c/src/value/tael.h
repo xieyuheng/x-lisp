@@ -8,7 +8,7 @@ struct tael_t {
     record_t *attributes;
 };
 
-tael_t *make_tael(gc_t *gc);
+tael_t *make_tael(void);
 void tael_free(tael_t *self);
 
 bool tael_p(value_t value);

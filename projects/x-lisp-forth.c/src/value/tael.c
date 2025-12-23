@@ -1,12 +1,12 @@
 #include "index.h"
 
 tael_t *
-make_tael(gc_t *gc) {
+make_tael(void) {
     tael_t *self = new(tael_t);
     self->header.class = &tael_class;
     self->elements = make_array();
     self->attributes = make_record();
-    gc_add_object(gc, (object_t *) self);
+    gc_add_object(global_gc, (object_t *) self);
     return self;
 }
 
