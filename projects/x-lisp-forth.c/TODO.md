@@ -1,12 +1,11 @@
 # list
 
-[builtin] `list` -- setup
 [builtin] `x_make_list`
-[builtin] `x_list_push_mut`
+[builtin] `x_list_copy`
+[builtin] `x_cons`
 [builtin] `x_car`
 [builtin] `x_cdr`
-
-[value] `list_copy`
+[builtin] `x_list_push_mut`
 
 [forth] list.test.fth
 

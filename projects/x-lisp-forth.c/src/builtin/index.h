@@ -5,4 +5,5 @@
 #include "console.h"
 #include "define.h"
 #include "compile.h"
+#include "list.h"
 #include "import_builtin.h"
