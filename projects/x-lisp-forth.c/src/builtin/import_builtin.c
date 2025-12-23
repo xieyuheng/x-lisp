@@ -76,11 +76,12 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "println", x_println);
     define_primitive_1(mod, "println-non-void", x_println_non_void);
 
-    // define
+    // syntax
 
     define_primitive(mod, "@const", x_define_constant);
     define_primitive(mod, "@var", x_define_variable);
     define_primitive(mod, "@def", x_define_function);
+    define_primitive(mod, "@begin", x_begin);
 
     // list
     define_primitive_0(mod, "make-list", x_make_list);
