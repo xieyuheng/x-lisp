@@ -11,8 +11,6 @@
 [builtin] `x_cdr`
 [builtin] `x_list_push_mut`
 
-[forth] list.test.fth
-
 # record
 
 [builtin] `record` -- setup
