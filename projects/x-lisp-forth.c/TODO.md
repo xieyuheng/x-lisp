@@ -1,6 +1,5 @@
 # list
 
-[builtin] `x_list_copy`
 [builtin] `x_cons`
 [builtin] `x_car`
 [builtin] `x_cdr`
