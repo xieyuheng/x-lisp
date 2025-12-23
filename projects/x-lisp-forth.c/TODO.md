@@ -1,7 +1,3 @@
-# tael
-
-[value] `tael_get_attribute` & `tael_put_attribute`
-
 # list
 
 [builtin] `list` -- setup

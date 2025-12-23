@@ -144,3 +144,13 @@ void
 tael_put_element(tael_t *self, size_t index, value_t value) {
     array_put(self->elements, index, value);
 }
+
+value_t
+tael_get_attribute(tael_t *self, const char *key) {
+    return record_get(self->attributes, key);
+}
+
+void
+tael_put_attribute(tael_t *self, const char *key, value_t value) {
+    record_put(self->attributes, key, value);
+}
