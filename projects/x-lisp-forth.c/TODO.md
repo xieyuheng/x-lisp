@@ -3,8 +3,6 @@
 [builtin] `x_list_push`
 [builtin] `x_list_put`
 
-[builtin] `x_list_reverse` & `x_list_reverse_mut`
-
 # string
 
 [builtin] `string` -- setup

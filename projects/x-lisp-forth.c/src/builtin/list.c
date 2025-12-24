@@ -97,3 +97,14 @@ x_list_last(value_t list) {
     size_t length = array_length(to_tael(list)->elements);
     return (value_t) array_get(to_tael(list)->elements, length - 1);
 }
+
+value_t
+x_list_reverse_mut(value_t list) {
+    array_reverse(to_tael(list)->elements);
+    return list;
+}
+
+value_t
+x_list_reverse(value_t list) {
+    return x_list_reverse_mut(x_list_copy(list));
+}

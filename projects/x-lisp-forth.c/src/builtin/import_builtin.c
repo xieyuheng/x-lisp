@@ -106,6 +106,6 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "list-tail", x_list_tail);
     define_primitive_1(mod, "list-init", x_list_init);
     define_primitive_1(mod, "list-last", x_list_last);
-    // (list-reverse! list)
-    // (list-reverse list)
+    define_primitive_1(mod, "list-reverse!", x_list_reverse_mut);
+    define_primitive_1(mod, "list-reverse", x_list_reverse);
 }

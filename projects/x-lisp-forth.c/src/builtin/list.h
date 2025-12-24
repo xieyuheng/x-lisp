@@ -18,3 +18,5 @@ x_fn_1_t x_list_head;
 x_fn_1_t x_list_tail;
 x_fn_1_t x_list_init;
 x_fn_1_t x_list_last;
+x_fn_1_t x_list_reverse_mut;
+x_fn_1_t x_list_reverse;
