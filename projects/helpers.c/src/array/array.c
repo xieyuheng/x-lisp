@@ -1,5 +1,14 @@
 #include "index.h"
 
+struct array_t {
+    size_t capacity;
+    size_t mask;
+    int64_t front;
+    int64_t back;
+    void **values;
+    free_fn_t *free_fn;
+};
+
 array_t *
 make_array(void) {
     array_t *self = new(array_t);
@@ -62,7 +71,7 @@ array_is_empty(const array_t *self) {
 }
 
 inline bool
-array_is_full(const array_t *self) {
+array_is_full_capacity(const array_t *self) {
     return array_length(self) == self->capacity;
 }
 
@@ -82,7 +91,7 @@ array_double_capacity(array_t *self) {
 }
 
 inline void *
-array_top(array_t *self) {
+array_top(const array_t *self) {
     assert(!array_is_empty(self));
     return self->values[(self->back - 1) & self->mask];
 }
@@ -98,12 +107,31 @@ array_pop(array_t *self) {
 
 inline void
 array_push(array_t *self, void *value) {
-    if (array_is_full(self)) {
+    if (array_is_full_capacity(self)) {
         array_double_capacity(self);
     }
 
     self->values[self->back & self->mask] = value;
     self->back++;
+}
+
+inline void *
+array_shift(array_t *self) {
+    assert(!array_is_empty(self));
+    void *value = self->values[self->front & self->mask];
+    self->values[self->front & self->mask] = NULL;
+    self->front++;
+    return value;
+}
+
+inline void
+array_unshift(array_t *self, void *value) {
+    if (array_is_full_capacity(self)) {
+        array_double_capacity(self);
+    }
+
+    self->front--;
+    self->values[self->front & self->mask] = value;
 }
 
 inline void *
