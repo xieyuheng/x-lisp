@@ -5,6 +5,7 @@
 #include "value.h"
 #include "int.h"
 #include "float.h"
+#include "symbol.h"
 #include "little.h"
 #include "bool.h"
 #include "void.h"

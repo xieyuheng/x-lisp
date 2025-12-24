@@ -1,6 +1,6 @@
 # symbol
 
-[value] `symbol_t` -- setup
+[value] `symbol_t`
 [value] `global_symbol_hash.c`
 
 [lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`

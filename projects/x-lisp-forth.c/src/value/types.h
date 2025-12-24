@@ -18,6 +18,7 @@ typedef enum {
     X_OBJECT      = 0b111,
 } tag_t;
 
+typedef struct symbol_t symbol_t;
 typedef struct curry_t curry_t;
 typedef struct xstring_t xstring_t;
 typedef struct tael_t tael_t;
