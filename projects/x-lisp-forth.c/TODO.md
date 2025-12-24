@@ -1,7 +1,5 @@
 # string
 
-[value] `xstring_append`
-
 [builtin] `x_string_length` & `x_string_empty_p`
 [builtin] `x_string_append`
 

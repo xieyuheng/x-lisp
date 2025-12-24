@@ -56,7 +56,7 @@ xstring_is_empty(xstring_t *self) {
     return self->length == 0;
 }
 
-// xstring_t *
-// xstring_append(xstring_t *left, xstring_t *right) {
-
-// }
+xstring_t *
+xstring_append(xstring_t *left, xstring_t *right) {
+    return make_xstring(string_append(left->string, right->string));
+}
