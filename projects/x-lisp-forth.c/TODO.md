@@ -1,8 +1,3 @@
-# symbol
-
-[builtin] `x_symbol_to_string`
-[builtin] `x_symbol_append`
-
 # keyword
 
 [value] `hashtag_t`

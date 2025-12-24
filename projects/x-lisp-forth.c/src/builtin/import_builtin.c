@@ -97,8 +97,8 @@ import_builtin(mod_t *mod) {
     // symbol
     define_primitive_1(mod, "symbol?", x_symbol_p);
     define_primitive_1(mod, "symbol-length", x_symbol_length);
-    // define_primitive_1(mod, "symbol-to-string", x_symbol_to_string);
-    // define_primitive_2(mod, "symbol-append", x_symbol_append);
+    define_primitive_1(mod, "symbol-to-string", x_symbol_to_string);
+    define_primitive_2(mod, "symbol-append", x_symbol_append);
 
     // list
     define_primitive_1(mod, "anything-list?", x_anything_list_p);
