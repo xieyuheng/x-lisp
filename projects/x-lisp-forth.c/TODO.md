@@ -1,19 +1,30 @@
+[instr] `OP_LITERAL` -- create value at compile time
+
+[instr] remove `OP_LITERAL_STRING` & `OP_LITERAL_SYMBOL` & `OP_LITERAL_HASHTAG`
+[instr] remove `OP_LITERAL_INT` & `OP_LITERAL_FLOAT`
+
+[value] `make_static_xstring` -- do NOT add to `global_gc`
+
 # record
 
-[builtin] `record` -- setup
+[builtin] `record` -- setup -- use `symbol` as key
 [builtin] `x_make_record`
+
+# xhash
+
+[value] `value_hash_code`
+[value] `xhash_t`
+
+# xset
+
+[value] `xset_t`
 
 # circular object
 
 [value] `tael_print` -- support circular
 [value] `curry_print` -- support circular
-
-# feature complete
-
-[value] `value_hash_code`
-
-[value] `xhash_t`
-[value] `xset_t`
+[value] `xhash_print` -- support circular
+[value] `xset_print` -- support circular
 
 # read-execute-loop
 
