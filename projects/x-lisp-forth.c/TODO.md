@@ -1,7 +1,5 @@
 # symbol
 
-[builtin] `x_symbol_p`
-[builtin] `x_symbol_length`
 [builtin] `x_symbol_to_string`
 [builtin] `x_symbol_append`
 

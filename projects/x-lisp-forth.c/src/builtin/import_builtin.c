@@ -94,6 +94,12 @@ import_builtin(mod_t *mod) {
     // (string-compare-lexical x y)
     // (string-to-symbol string)
 
+    // symbol
+    define_primitive_1(mod, "symbol?", x_symbol_p);
+    define_primitive_1(mod, "symbol-length", x_symbol_length);
+    // define_primitive_1(mod, "symbol-to-string", x_symbol_to_string);
+    // define_primitive_2(mod, "symbol-append", x_symbol_append);
+
     // list
     define_primitive_1(mod, "anything-list?", x_anything_list_p);
     define_primitive_0(mod, "make-list", x_make_list);
