@@ -163,3 +163,14 @@ array_put(array_t *self, size_t index, void *value) {
     if (index >= array_length(self))
         self->back += index + 1 - array_length(self);
 }
+
+void
+array_reverse(array_t *self) {
+    size_t length = array_length(self);
+    for (size_t i = 0; i < length / 2; i++) {
+        void *lhs = array_get(self, i);
+        void *rhs = array_get(self, length - i - 1);
+        array_put(self, i, rhs);
+        array_put(self, length - i - 1, lhs);
+    }
+}

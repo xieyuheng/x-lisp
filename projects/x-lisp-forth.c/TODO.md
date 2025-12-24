@@ -5,8 +5,6 @@
 
 [builtin] `x_list_reverse` & `x_list_reverse_mut`
 
-- [helpers.c] `array_reverse`
-
 # string
 
 [builtin] `string` -- setup

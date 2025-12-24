@@ -24,3 +24,5 @@ void array_unshift(array_t *self, void *value);
 void *array_get(const array_t *self, size_t index);
 void *array_pick(const array_t *self, size_t back_index);
 void array_put(array_t *self, size_t index, void *value);
+
+void array_reverse(array_t *self);

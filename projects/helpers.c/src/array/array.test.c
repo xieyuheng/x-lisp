@@ -143,5 +143,30 @@ main(void) {
         array_free(array);
     }
 
+    {
+        // unshift & shift
+        array_t *array = make_array_with((free_fn_t *) string_free);
+
+        char *A = string_copy("A");
+        char *B = string_copy("B");
+        char *C = string_copy("C");
+
+        array_push(array, A);
+        array_push(array, B);
+        array_push(array, C);
+
+        assert(array_get(array, 0) == A);
+        assert(array_get(array, 1) == B);
+        assert(array_get(array, 2) == C);
+
+        array_reverse(array);
+
+        assert(array_get(array, 0) == C);
+        assert(array_get(array, 1) == B);
+        assert(array_get(array, 2) == A);
+
+        array_free(array);
+    }
+
     test_end();
 }
