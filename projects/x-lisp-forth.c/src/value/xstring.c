@@ -35,6 +35,16 @@ to_xstring(value_t value) {
     return (xstring_t *) to_object(value);
 }
 
+size_t
+xstring_length(xstring_t *self) {
+    return self->length;
+}
+
+bool
+xstring_is_empty(xstring_t *self) {
+    return self->length == 0;
+}
+
 bool
 xstring_equal(xstring_t *lhs, xstring_t *rhs) {
     return lhs->length == rhs->length

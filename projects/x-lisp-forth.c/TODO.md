@@ -1,9 +1,13 @@
 # string
 
-[builtin] `x_string_length`
+[value] `xstring_append`
+
+[builtin] `x_string_length` & `x_string_empty_p`
 [builtin] `x_string_append`
 
 # symbol and keyword
+
+maybe use hash to implement symbol and hashtag -- must be thread safe
 
 [value] `symbol_t`
 [value] `hashtag_t`

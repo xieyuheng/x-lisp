@@ -14,5 +14,8 @@ void xstring_free(xstring_t *self);
 bool xstring_p(value_t value);
 xstring_t *to_xstring(value_t value);
 
+size_t xstring_length(xstring_t *self);
+bool xstring_is_empty(xstring_t *self);
+
 bool xstring_equal(xstring_t *lhs, xstring_t *rhs);
 void xstring_print(xstring_t *self);
