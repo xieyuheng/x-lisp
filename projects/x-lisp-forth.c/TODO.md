@@ -1,6 +1,6 @@
 # symbol
 
-[builtin] `compile_token` -- handle quoted symbol
+[value] `value_print` -- print as literal value
 
 [builtin] `x_symbol_p`
 [builtin] `x_symbol_length`

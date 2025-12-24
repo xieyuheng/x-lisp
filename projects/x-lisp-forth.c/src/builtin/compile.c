@@ -2,6 +2,7 @@
 
 static void compile_return(definition_t *definition);
 static void compile_token(vm_t *vm, definition_t *definition, token_t *token);
+static void compile_quote(vm_t *vm, definition_t *definition);
 static void compile_word(vm_t *vm, definition_t *definition, const char *word);
 static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
 static void compile_ref(vm_t *vm, definition_t *definition);
@@ -119,7 +120,8 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
     }
 
     case QUOTATION_MARK_TOKEN: {
-        TODO();
+        assert(string_equal(token->content, "'"));
+        compile_quote(vm, definition);
         token_free(token);
         return;
     }
@@ -141,6 +143,18 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
         return;
     }
     }
+}
+
+void
+compile_quote(vm_t *vm, definition_t *definition) {
+    token_t *token = list_shift(vm->tokens);
+    assert(token->kind == SYMBOL_TOKEN);
+    struct instr_t instr;
+    instr.op = OP_LITERAL_SYMBOL;
+    instr.literal_symbol.length = string_length(token->content);
+    instr.literal_symbol.content = token->content;
+    function_definition_append_instr(definition, instr);
+    token_free(token);
 }
 
 struct op_word_entry_t { const char *word; op_t op; };
