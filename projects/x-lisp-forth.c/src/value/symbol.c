@@ -14,6 +14,7 @@ intern_symbol(const char *string) {
     }
 
     symbol_t *self = new(symbol_t);
+    self->header.class = &symbol_class;
     self->string = string_copy(string);
     record_insert_or_fail(global_symbol_record, string, self);
     return self;
@@ -35,18 +36,24 @@ symbol_length(const symbol_t *self) {
     return string_length(self->string);
 }
 
-inline value_t
-x_symbol(symbol_t *target) {
-    return (uint64_t) target | X_SYMBOL;
-}
-
-inline bool
+bool
 symbol_p(value_t value) {
-    return value_tag(value) == X_SYMBOL;
+    return object_p(value) &&
+        to_object(value)->header.class == &symbol_class;
 }
 
-inline symbol_t *
+symbol_t *
 to_symbol(value_t value) {
     assert(symbol_p(value));
-    return (symbol_t *) (value & PAYLOAD_MASK);
+    return (symbol_t *) to_object(value);
 }
+
+void
+symbol_print(const symbol_t *symbol) {
+    printf("'%s", symbol_string(symbol));
+}
+
+const object_class_t symbol_class = {
+    .name = "symbol",
+    .print_fn = (object_print_fn_t *) symbol_print,
+};

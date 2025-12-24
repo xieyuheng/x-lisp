@@ -22,5 +22,5 @@ x_symbol_append(value_t left, value_t right) {
         symbol_string(to_symbol(right)));
     symbol_t *symbol = intern_symbol(string);
     string_free(string);
-    return x_symbol(symbol);
+    return x_object(symbol);
 }

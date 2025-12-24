@@ -1,9 +1,21 @@
 # keyword
 
-[value] `hashtag_t`
+[value] `hashtag` -- setup
+[value] `hashtag_t` -- as object
+[value] `global_hashtag_record`
+[value] `intern_hashtag`
+[value] `hashtag_free`
+[value] `hashtag_string` & `hashtag_length`
+[value] `x_hashtag` & `hashtag_p` & `to_hashtag`
+[value] `value_print` -- handle `X_HASHTAG`
 [lang] `vm_execute_instr` -- `OP_LITERAL_HASHTAG`
 [builtin] `compile_token` -- handle `HASHTAG_TOKEN`
-[builtin] `hashtag_p`
+[value] `value_print` -- print as literal value
+[builtin] `x_hashtag_p` & `x_hashtag_length`
+[builtin] `x_hashtag_to_string` & `x_hashtag_append`
+
+[value] `x_bool` `x_void` `x_null` -- use `hashtag_t`
+[value] remove `little`
 
 # record
 
