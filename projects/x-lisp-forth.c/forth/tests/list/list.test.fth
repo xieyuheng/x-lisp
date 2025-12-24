@@ -5,6 +5,7 @@
 
   list list-copy list @assert-equal
   list list-length 0 @assert-equal
+  list list-empty? @assert
 
   1 list list-push! @drop
   2 list list-push! @drop

@@ -21,6 +21,11 @@ x_list_length(value_t list) {
 }
 
 value_t
+x_list_empty_p(value_t list) {
+    return x_bool(array_is_empty(to_tael(list)->elements));
+}
+
+value_t
 x_list_pop_mut(value_t list) {
     return tael_pop_element(to_tael(list));
 }
