@@ -1,9 +1,14 @@
 @begin
   make-list [list]
+  list list-copy list same? not @assert
+  list list-copy list equal? @assert
+@end
+
+@begin
+  make-list [list]
 
   list anything-list? @assert
 
-  list list-copy list @assert-equal
   list list-length 0 @assert-equal
   list list-empty? @assert
 
@@ -11,7 +16,6 @@
   2 list list-push! @drop
   3 list list-push! @drop
 
-  list list-copy list @assert-equal
   list list-length 3 @assert-equal
 
   list list-pop! 3 @assert-equal
