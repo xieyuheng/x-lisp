@@ -1,8 +1,5 @@
 # symbol
 
-[value] `equal_p` -- handle `X_SYMBOL`
-
-[lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`
 [builtin] `compile_token` -- handle quoted symbol
 
 [builtin] `x_symbol_p`

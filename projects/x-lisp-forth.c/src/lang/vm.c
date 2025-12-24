@@ -284,7 +284,9 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_LITERAL_SYMBOL: {
-        assert(false && "TODO");
+        value_t value = x_symbol(intern_symbol(instr.literal_symbol.content));
+        vm_push(vm, value);
+        return;
     }
 
     case OP_LITERAL_HASHTAG: {
