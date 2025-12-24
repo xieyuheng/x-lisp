@@ -84,6 +84,7 @@ import_builtin(mod_t *mod) {
     define_primitive(mod, "@begin", x_begin);
 
     // string
+
     define_primitive_1(mod, "string?", x_string_p);
     define_primitive_1(mod, "string-length", x_string_length);
     define_primitive_1(mod, "string-empty?", x_string_empty_p);
@@ -95,12 +96,21 @@ import_builtin(mod_t *mod) {
     // (string-to-symbol string)
 
     // symbol
+
     define_primitive_1(mod, "symbol?", x_symbol_p);
     define_primitive_1(mod, "symbol-length", x_symbol_length);
     define_primitive_1(mod, "symbol-to-string", x_symbol_to_string);
     define_primitive_2(mod, "symbol-append", x_symbol_append);
 
+    // hashtag
+
+    define_primitive_1(mod, "hashtag?", x_hashtag_p);
+    define_primitive_1(mod, "hashtag-length", x_hashtag_length);
+    define_primitive_1(mod, "hashtag-to-string", x_hashtag_to_string);
+    define_primitive_2(mod, "hashtag-append", x_hashtag_append);
+
     // list
+
     define_primitive_1(mod, "anything-list?", x_anything_list_p);
     define_primitive_0(mod, "make-list", x_make_list);
     define_primitive_1(mod, "list-copy", x_list_copy);
