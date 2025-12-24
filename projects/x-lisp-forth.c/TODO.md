@@ -1,9 +1,5 @@
 # symbol
 
-[value] `x_symbol`
-[value] `symbol_p`
-[value] `to_symbol`
-
 [value] `value_print` -- handle `X_SYMBOL`
 [value] `value_equal` -- handle `X_SYMBOL`
 

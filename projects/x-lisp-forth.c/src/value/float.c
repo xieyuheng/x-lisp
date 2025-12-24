@@ -10,7 +10,7 @@ x_float(double target) {
         .as_double = target
     };
 
-    return (value_t) ((the_union.as_uint64 & PAYLOAD_MASK) | X_FLOAT);
+    return (the_union.as_uint64 & PAYLOAD_MASK) | X_FLOAT;
 }
 
 inline bool

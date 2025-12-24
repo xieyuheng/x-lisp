@@ -4,7 +4,7 @@
 
 inline value_t
 x_int(int64_t target) {
-    return (value_t) ((target << 3) | X_INT);
+    return (target << 3) | X_INT;
 }
 
 inline bool

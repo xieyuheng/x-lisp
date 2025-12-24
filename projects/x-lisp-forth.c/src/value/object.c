@@ -2,7 +2,7 @@
 
 inline value_t
 x_object(void *target) {
-    return (value_t) ((uint64_t) target | X_OBJECT);
+    return (uint64_t) target | X_OBJECT;
 }
 
 inline bool
@@ -13,5 +13,5 @@ object_p(value_t value) {
 inline object_t *
 to_object(value_t value) {
     assert(object_p(value));
-    return (object_t *) ((uint64_t) value & PAYLOAD_MASK);
+    return (object_t *) (value & PAYLOAD_MASK);
 }

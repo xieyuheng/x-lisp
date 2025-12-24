@@ -34,3 +34,19 @@ size_t
 symbol_length(const symbol_t *self) {
     return string_length(self->string);
 }
+
+inline value_t
+x_symbol(symbol_t *target) {
+    return (uint64_t) target | X_SYMBOL;
+}
+
+inline bool
+symbol_p(value_t value) {
+    return value_tag(value) == X_SYMBOL;
+}
+
+inline symbol_t *
+to_symbol(value_t value) {
+    assert(symbol_p(value));
+    return (symbol_t *) (value & PAYLOAD_MASK);
+}
