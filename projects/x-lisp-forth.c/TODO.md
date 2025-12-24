@@ -1,7 +1,6 @@
 # symbol
 
-[value] `value_print` -- handle `X_SYMBOL`
-[value] `value_equal` -- handle `X_SYMBOL`
+[value] `equal_p` -- handle `X_SYMBOL`
 
 [lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`
 [builtin] `compile_token` -- handle quoted symbol

@@ -45,6 +45,11 @@ value_print(value_t value) {
         return;
     }
 
+    if (symbol_p(value)) {
+        printf("%s", symbol_string(to_symbol(value)));
+        return;
+    }
+
     if (object_p(value)) {
         object_print(to_object(value));
         return;
