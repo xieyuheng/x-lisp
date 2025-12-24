@@ -46,7 +46,7 @@ value_print(value_t value) {
     }
 
     if (symbol_p(value)) {
-        printf("%s", symbol_string(to_symbol(value)));
+        printf("'%s", symbol_string(to_symbol(value)));
         return;
     }
 
