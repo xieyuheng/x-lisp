@@ -24,3 +24,13 @@ symbol_free(symbol_t *self) {
     string_free(self->string);
     free(self);
 }
+
+const char *
+symbol_string(const symbol_t *self) {
+    return self->string;
+}
+
+size_t
+symbol_length(const symbol_t *self) {
+    return string_length(self->string);
+}
