@@ -10,8 +10,8 @@ typedef uint64_t value_t;
 typedef enum {
     X_INT         = 0b000,
     X_FLOAT       = 0b001,
-    X_LITTLE      = 0b010,
-    //            = 0b011,
+    X_SYMBOL      = 0b010,
+    X_LITTLE      = 0b011,
     //            = 0b100,
     //            = 0b101,
     //            = 0b110,

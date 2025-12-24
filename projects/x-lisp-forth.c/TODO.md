@@ -1,16 +1,17 @@
-# symbol and keyword
+# symbol
 
-use hash to implement symbol and hashtag -- must be thread safe
-
-[value] `symbol_t`
-[value] `hashtag_t`
+[value] `symbol_t` -- setup
+[value] `global_symbol_hash.c`
 
 [lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`
-[lang] `vm_execute_instr` -- `OP_LITERAL_HASHTAG`
-
-[builtin] `compile_token` -- handle `HASHTAG_TOKEN`
-
+[builtin] `compile_token` -- handle quoted symbol
 [builtin] `symbol_p`
+
+# keyword
+
+[value] `hashtag_t`
+[lang] `vm_execute_instr` -- `OP_LITERAL_HASHTAG`
+[builtin] `compile_token` -- handle `HASHTAG_TOKEN`
 [builtin] `hashtag_p`
 
 # record
