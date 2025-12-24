@@ -1,12 +1,6 @@
 # list
 
-[builtin] `x_list_get`
-[builtin] `x_list_put_mut`
-
-[builtin] `x_cons`
-[builtin] `x_car`
-[builtin] `x_cdr`
-[builtin] `x_list_push_mut`
+[builtin] `x_cons` & `x_car` & `x_cdr`
 
 # record
 
