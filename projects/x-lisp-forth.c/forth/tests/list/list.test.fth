@@ -1,6 +1,8 @@
 @begin
   make-list [list]
 
+  list anything-list? @assert
+
   list list-copy list @assert-equal
   list list-length 0 @assert-equal
 
