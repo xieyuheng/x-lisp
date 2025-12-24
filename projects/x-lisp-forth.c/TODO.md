@@ -1,5 +1,3 @@
-[builtin] `x_list_unshift_mut` & `x_list_shift_mut`
-
 # list
 
 [builtin] `x_list_get`

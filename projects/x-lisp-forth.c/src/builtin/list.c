@@ -26,13 +26,13 @@ x_list_pop_mut(value_t list) {
     return tael_pop_element(to_tael(list));
 }
 
-// value_t
-// x_list_unshift_mut(value_t value, value_t list) {
-//     tael_unshift_element(to_tael(list), value);
-//     return list;
-// }
+value_t
+x_list_unshift_mut(value_t value, value_t list) {
+    tael_unshift_element(to_tael(list), value);
+    return list;
+}
 
-// value_t
-// x_list_shift_mut(value_t list) {
-//     return tael_shift_element(to_tael(list));
-// }
+value_t
+x_list_shift_mut(value_t list) {
+    return tael_shift_element(to_tael(list));
+}
