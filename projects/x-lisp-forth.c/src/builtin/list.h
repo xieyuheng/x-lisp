@@ -14,3 +14,7 @@ x_fn_3_t x_list_put_mut;
 x_fn_1_t x_car;
 x_fn_1_t x_cdr;
 x_fn_2_t x_cons;
+x_fn_1_t x_list_head;
+x_fn_1_t x_list_tail;
+x_fn_1_t x_list_init;
+x_fn_1_t x_list_last;

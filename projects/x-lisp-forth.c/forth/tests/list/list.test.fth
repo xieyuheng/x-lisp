@@ -58,7 +58,12 @@
   3 @swap cons
   2 @swap cons
   1 @swap cons [list]
+
   list car 1 @assert-equal
   list cdr car 2 @assert-equal
   list cdr cdr car 3 @assert-equal
+
+  list list-head 1 @assert-equal
+  list list-tail list-head 2 @assert-equal
+  list list-tail list-tail list-head 3 @assert-equal
 @end

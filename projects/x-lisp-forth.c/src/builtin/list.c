@@ -74,3 +74,13 @@ value_t
 x_cons(value_t head, value_t tail) {
     return x_list_unshift_mut(head, x_list_copy(tail));
 }
+
+value_t
+x_list_head(value_t list) {
+    return x_car(list);
+}
+
+value_t
+x_list_tail(value_t list) {
+    return x_cdr(list);
+}

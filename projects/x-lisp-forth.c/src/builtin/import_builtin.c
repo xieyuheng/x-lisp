@@ -102,10 +102,10 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "car", x_car);
     define_primitive_1(mod, "cdr", x_cdr);
     define_primitive_2(mod, "cons", x_cons);
-    // (list-head list)
-    // (list-tail list)
-    // (list-init list)
-    // (list-last list)
+    define_primitive_1(mod, "list-head", x_list_head);
+    define_primitive_1(mod, "list-tail", x_list_tail);
+    // define_primitive_1(mod, "list-init", x_list_init);
+    // define_primitive_1(mod, "list-last", x_list_last);
     // (list-reverse! list)
     // (list-reverse list)
 }
