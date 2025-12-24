@@ -77,17 +77,18 @@ array_is_full_capacity(const array_t *self) {
 
 inline void
 array_double_capacity(array_t *self) {
-    self->values = reallocate_pointers(
-        self->values,
-        self->capacity,
-        self->capacity * 2);
+    void **values = allocate_pointers(self->capacity * 2);
+    size_t length = array_length(self);
+    for (size_t i = 0; i < length; i++) {
+        values[i] = array_get(self, i);
+    }
 
-    memory_copy(self->values + self->capacity,
-                self->values,
-                (self->back & self->mask) * sizeof(void *));
-
+    free(self->values);
+    self->values = values;
     self->capacity *= 2;
     self->mask = self->capacity - 1;
+    self->front = 0;
+    self->back = length;
 }
 
 inline void *
