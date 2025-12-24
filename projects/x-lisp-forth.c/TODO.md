@@ -1,8 +1,3 @@
-# list
-
-[builtin] `x_list_push`
-[builtin] `x_list_put`
-
 # string
 
 [builtin] `string` -- setup

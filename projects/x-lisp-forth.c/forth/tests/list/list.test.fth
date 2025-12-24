@@ -58,6 +58,16 @@
 @end
 
 @begin
+  make-list [list]
+
+  1 list list-push car 1 @assert-equal
+  list list-empty? @assert
+
+  0 1 list list-put car 1 @assert-equal
+  list list-empty? @assert
+@end
+
+@begin
   make-list
   3 @swap cons
   2 @swap cons
