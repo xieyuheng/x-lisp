@@ -5,3 +5,4 @@ struct symbol_t {
 };
 
 symbol_t *intern_symbol(const char *string);
+void symbol_free(symbol_t *self);

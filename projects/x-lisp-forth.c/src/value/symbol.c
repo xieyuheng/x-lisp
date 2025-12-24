@@ -18,3 +18,9 @@ intern_symbol(const char *string) {
     record_insert_or_fail(global_symbol_record, string, self);
     return self;
 }
+
+void
+symbol_free(symbol_t *self) {
+    string_free(self->string);
+    free(self);
+}

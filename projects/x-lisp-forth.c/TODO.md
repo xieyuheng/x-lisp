@@ -1,6 +1,5 @@
 # symbol
 
-[value] `symbol_free`
 [value] `symbol_string`
 [value] `symbol_length`
 
