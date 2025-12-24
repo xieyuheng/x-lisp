@@ -22,7 +22,6 @@ handle_run(cmd_ctx_t *ctx) {
 static void
 init(void) {
     global_gc = make_gc();
-    global_symbol_record = make_record();
 }
 
 int

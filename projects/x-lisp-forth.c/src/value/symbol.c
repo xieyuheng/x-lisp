@@ -1,3 +1,20 @@
 #include "index.h"
 
-record_t *global_symbol_record = NULL;
+static record_t *global_symbol_record = NULL;
+
+symbol_t *
+intern_symbol(const char *string) {
+    if (!global_symbol_record) {
+        global_symbol_record = make_record();
+    }
+
+    symbol_t *found = record_get(global_symbol_record, string);
+    if (found) {
+        return found;
+    }
+
+    symbol_t *self = new(symbol_t);
+    self->string = string_copy(string);
+    record_insert_or_fail(global_symbol_record, string, self);
+    return self;
+}

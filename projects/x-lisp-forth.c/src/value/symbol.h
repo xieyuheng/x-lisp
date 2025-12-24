@@ -1,7 +1,7 @@
 #pragma once
 
-extern record_t *global_symbol_record;
-
 struct symbol_t {
     char *string;
 };
+
+symbol_t *intern_symbol(const char *string);
