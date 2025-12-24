@@ -83,14 +83,29 @@ import_builtin(mod_t *mod) {
     define_primitive(mod, "@def", x_define_function);
     define_primitive(mod, "@begin", x_begin);
 
+
+
     // list
+    // (list? element-p target)
     define_primitive_0(mod, "make-list", x_make_list);
     define_primitive_1(mod, "list-copy", x_list_copy);
     define_primitive_1(mod, "list-length", x_list_length);
+    // (list-empty? list)
     define_primitive_1(mod, "list-pop!", x_list_pop_mut);
     define_primitive_2(mod, "list-push!", x_list_push_mut);
+    // define_primitive_2(mod, "list-push", x_list_push);
     define_primitive_1(mod, "list-shift!", x_list_shift_mut);
     define_primitive_2(mod, "list-unshift!", x_list_unshift_mut);
     define_primitive_2(mod, "list-get", x_list_get);
     define_primitive_3(mod, "list-put!", x_list_put_mut);
+    // define_primitive_3(mod, "list-put", x_list_put);
+    // (car list)
+    // (cdr list)
+    // (cons head tail)
+    // (list-head list)
+    // (list-tail list)
+    // (list-init list)
+    // (list-last list)
+    // (list-reverse! list)
+    // (list-reverse list)
 }

@@ -1,6 +1,17 @@
 # list
 
+[builtin] `x_anything_list_p`
 [builtin] `x_cons` & `x_car` & `x_cdr`
+
+[builtin] `x_list_push`
+[builtin] `x_list_put`
+
+[builtin] `x_list_head` & `x_list_tail`
+[builtin] `x_list_init` & `x_list_last`
+
+[builtin] `x_list_reverse` & `x_list_reverse_mut`
+
+- [helpers.c] `array_reverse`
 
 # record
 
