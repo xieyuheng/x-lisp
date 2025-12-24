@@ -1,7 +1,5 @@
 # list
 
-[builtin] `x_cons` & `x_car` & `x_cdr`
-
 [builtin] `x_list_push`
 [builtin] `x_list_put`
 

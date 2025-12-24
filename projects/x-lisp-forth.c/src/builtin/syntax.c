@@ -30,7 +30,8 @@ x_define_function(vm_t *vm) {
 
 void
 x_begin(vm_t *vm) {
-    definition_t *definition = define_function(vm->mod, "@begin (temporary)");
+    char *name = string_copy("@begin (temporary)");
+    definition_t *definition = make_function_definition(vm->mod, name);
     compile_function(vm, definition);
     call_definition_now(vm, definition);
     definition_free(definition);

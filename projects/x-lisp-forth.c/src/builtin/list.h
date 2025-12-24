@@ -11,3 +11,6 @@ x_fn_1_t x_list_shift_mut;
 x_fn_2_t x_list_unshift_mut;
 x_fn_2_t x_list_get;
 x_fn_3_t x_list_put_mut;
+x_fn_1_t x_car;
+x_fn_1_t x_cdr;
+x_fn_2_t x_cons;

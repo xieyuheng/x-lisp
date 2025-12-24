@@ -57,3 +57,20 @@ x_list_put_mut(value_t index, value_t value, value_t list) {
     tael_put_element(to_tael(list), to_int64(index), value);
     return list;
 }
+
+value_t
+x_car(value_t list) {
+    return (value_t) array_get(to_tael(list)->elements, 0);
+}
+
+value_t
+x_cdr(value_t list) {
+    list = x_list_copy(list);
+    x_list_shift_mut(list);
+    return list;
+}
+
+value_t
+x_cons(value_t head, value_t tail) {
+    return x_list_unshift_mut(head, x_list_copy(tail));
+}

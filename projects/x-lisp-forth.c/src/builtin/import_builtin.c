@@ -99,9 +99,9 @@ import_builtin(mod_t *mod) {
     define_primitive_2(mod, "list-get", x_list_get);
     define_primitive_3(mod, "list-put!", x_list_put_mut);
     // define_primitive_3(mod, "list-put", x_list_put);
-    // (car list)
-    // (cdr list)
-    // (cons head tail)
+    define_primitive_1(mod, "car", x_car);
+    define_primitive_1(mod, "cdr", x_cdr);
+    define_primitive_2(mod, "cons", x_cons);
     // (list-head list)
     // (list-tail list)
     // (list-init list)
