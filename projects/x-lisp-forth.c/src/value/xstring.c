@@ -8,11 +8,11 @@ const object_class_t xstring_class = {
 };
 
 xstring_t *
-make_xstring(const char *string) {
+make_xstring(char *string) {
     xstring_t *self = new(xstring_t);
     self->header.class = &xstring_class;
     self->length = string_length(string);
-    self->string = string_copy(string);
+    self->string = string;
     gc_add_object(global_gc, (object_t *) self);
     return self;
 }
@@ -35,16 +35,6 @@ to_xstring(value_t value) {
     return (xstring_t *) to_object(value);
 }
 
-size_t
-xstring_length(xstring_t *self) {
-    return self->length;
-}
-
-bool
-xstring_is_empty(xstring_t *self) {
-    return self->length == 0;
-}
-
 bool
 xstring_equal(xstring_t *lhs, xstring_t *rhs) {
     return lhs->length == rhs->length
@@ -55,3 +45,18 @@ void
 xstring_print(xstring_t *self) {
     printf("%s", self->string);
 }
+
+size_t
+xstring_length(xstring_t *self) {
+    return self->length;
+}
+
+bool
+xstring_is_empty(xstring_t *self) {
+    return self->length == 0;
+}
+
+// xstring_t *
+// xstring_append(xstring_t *left, xstring_t *right) {
+
+// }

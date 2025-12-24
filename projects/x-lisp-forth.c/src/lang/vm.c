@@ -278,7 +278,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
 
     case OP_LITERAL_STRING: {
         value_t value =
-            x_object(make_xstring(instr.literal_string.content));
+            x_object(make_xstring(string_copy(instr.literal_string.content)));
         vm_push(vm, value);
         return;
     }
