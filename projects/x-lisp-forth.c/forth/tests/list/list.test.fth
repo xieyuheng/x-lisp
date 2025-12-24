@@ -66,4 +66,8 @@
   list list-head 1 @assert-equal
   list list-tail list-head 2 @assert-equal
   list list-tail list-tail list-head 3 @assert-equal
+
+  list list-last 3 @assert-equal
+  list list-init list-last 2 @assert-equal
+  list list-init list-init list-last 1 @assert-equal
 @end

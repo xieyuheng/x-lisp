@@ -84,3 +84,16 @@ value_t
 x_list_tail(value_t list) {
     return x_cdr(list);
 }
+
+value_t
+x_list_init(value_t list) {
+    list = x_list_copy(list);
+    x_list_pop_mut(list);
+    return list;
+}
+
+value_t
+x_list_last(value_t list) {
+    size_t length = array_length(to_tael(list)->elements);
+    return (value_t) array_get(to_tael(list)->elements, length - 1);
+}
