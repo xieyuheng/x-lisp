@@ -1,9 +1,7 @@
 # symbol
 
-[value] `global_symbol_hash.c`
-[value] main init `global_symbol_hash`
-
 [value] `intern_symbol`
+[value] `symbol_free`
 [value] `symbol_string`
 [value] `symbol_length`
 
