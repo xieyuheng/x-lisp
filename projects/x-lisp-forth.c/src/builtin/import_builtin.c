@@ -85,8 +85,9 @@ import_builtin(mod_t *mod) {
 
     // string
     define_primitive_1(mod, "string?", x_string_p);
-    // (string-length string)
-    // (string-append left right)
+    define_primitive_1(mod, "string-length", x_string_length);
+    define_primitive_1(mod, "string-empty?", x_string_empty_p);
+    define_primitive_2(mod, "string-append", x_string_append);
     // (string-concat list)
     // (string-join separator list)
     // (string-chars string)
