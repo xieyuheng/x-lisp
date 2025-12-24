@@ -1,5 +1,3 @@
-[value] remove `little`
-
 # record
 
 [builtin] `record` -- setup

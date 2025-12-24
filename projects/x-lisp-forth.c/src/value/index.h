@@ -7,7 +7,6 @@
 #include "float.h"
 #include "symbol.h"
 #include "hashtag.h"
-#include "little.h"
 #include "bool.h"
 #include "void.h"
 #include "null.h"

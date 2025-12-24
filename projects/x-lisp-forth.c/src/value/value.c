@@ -6,26 +6,6 @@ inline tag_t value_tag(value_t value) {
 
 void
 value_print(value_t value) {
-    if (value == x_true) {
-        printf("#t");
-        return;
-    }
-
-    if (value == x_false) {
-        printf("#f");
-        return;
-    }
-
-    if (value == x_void) {
-        printf("#void");
-        return;
-    }
-
-    if (value == x_null) {
-        printf("#null");
-        return;
-    }
-
     if (int_p(value)) {
         printf("%ld", to_int64(value));
         return;
