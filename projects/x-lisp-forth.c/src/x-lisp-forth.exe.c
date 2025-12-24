@@ -21,7 +21,7 @@ handle_run(cmd_ctx_t *ctx) {
 
 static void
 init(void) {
-    global_gc = make_gc();
+    init_global_gc();
     x_void = x_object(intern_hashtag("#void"));
 }
 

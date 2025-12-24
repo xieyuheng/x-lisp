@@ -1,4 +1,3 @@
-[gc] init_global_gc
 [value] init_constant_value
 
 # keyword
