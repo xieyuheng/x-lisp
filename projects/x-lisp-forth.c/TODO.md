@@ -1,8 +1,3 @@
-[value] init_constant_value
-
-# keyword
-
-[value] `x_bool` `x_null` -- use `hashtag_t`
 [value] remove `little`
 
 # record

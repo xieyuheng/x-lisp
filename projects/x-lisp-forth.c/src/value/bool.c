@@ -1,16 +1,8 @@
 #include "index.h"
 
-value_t x_true =
-    ((value_t)
-     (X_LITTLE
-      | (((uint64_t) '#') << (7 * 8))
-      | (((uint64_t) 't') << (6 * 8))));
+value_t x_true;
 
-value_t x_false =
-    ((value_t)
-     (X_LITTLE
-      | (((uint64_t) '#') << (7 * 8))
-      | (((uint64_t) 'f') << (6 * 8))));
+value_t x_false;
 
 value_t
 x_bool(bool target) {

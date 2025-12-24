@@ -10,3 +10,5 @@ bool equal_p(value_t lhs, value_t rhs);
 value_t x_anything_p(value_t x);
 value_t x_same_p(value_t lhs, value_t rhs);
 value_t x_equal_p(value_t lhs, value_t rhs);
+
+void init_constant_values(void);

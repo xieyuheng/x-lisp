@@ -22,7 +22,7 @@ handle_run(cmd_ctx_t *ctx) {
 static void
 init(void) {
     init_global_gc();
-    x_void = x_object(intern_hashtag("#void"));
+    init_constant_values();
 }
 
 int
