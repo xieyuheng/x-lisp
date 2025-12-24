@@ -1,7 +1,5 @@
 # keyword
 
-[builtin] `compile_token` -- handle `HASHTAG_TOKEN`
-
 [builtin] `x_hashtag_p` & `x_hashtag_length`
 [builtin] `x_hashtag_to_string` & `x_hashtag_append`
 
