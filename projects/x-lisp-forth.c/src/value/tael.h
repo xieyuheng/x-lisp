@@ -23,6 +23,9 @@ void tael_put_element(tael_t *self, size_t index, value_t value);
 value_t tael_pop_element(tael_t *self);
 void tael_push_element(tael_t *self, value_t value);
 
+value_t tael_shift_element(tael_t *self);
+void tael_unshift_element(tael_t *self, value_t value);
+
 value_t tael_get_attribute(const tael_t *self, const char *key);
 void tael_put_attribute(tael_t *self, const char *key, value_t value);
 

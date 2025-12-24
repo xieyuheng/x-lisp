@@ -145,14 +145,24 @@ tael_put_element(tael_t *self, size_t index, value_t value) {
     array_put(self->elements, index, (void *) value);
 }
 
+inline value_t
+tael_pop_element(tael_t *self) {
+    return (value_t) array_pop(self->elements);
+}
+
 inline void
 tael_push_element(tael_t *self, value_t value) {
     array_push(self->elements, (void *) value);
 }
 
 inline value_t
-tael_pop_element(tael_t *self) {
-    return (value_t) array_pop(self->elements);
+tael_shift_element(tael_t *self) {
+    return (value_t) array_shift(self->elements);
+}
+
+inline void
+tael_unshift_element(tael_t *self, value_t value) {
+    array_unshift(self->elements, (void *) value);
 }
 
 inline value_t

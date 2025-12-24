@@ -1,4 +1,3 @@
-[value] `tael_unshift_element` & `tael_shift_element`
 [builtin] `x_list_unshift_mut` & `x_list_shift_mut`
 
 # list
