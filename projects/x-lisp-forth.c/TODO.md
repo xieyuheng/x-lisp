@@ -1,6 +1,5 @@
 # keyword
 
-[lang] `vm_execute_instr` -- `OP_LITERAL_HASHTAG`
 [builtin] `compile_token` -- handle `HASHTAG_TOKEN`
 
 [builtin] `x_hashtag_p` & `x_hashtag_length`

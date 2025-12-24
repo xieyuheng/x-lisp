@@ -290,7 +290,9 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_LITERAL_HASHTAG: {
-        assert(false && "TODO");
+        value_t value = x_object(intern_hashtag(instr.literal_hashtag.content));
+        vm_push(vm, value);
+        return;
     }
     }
 }
