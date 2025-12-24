@@ -89,4 +89,6 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "list-length", x_list_length);
     define_primitive_2(mod, "list-push!", x_list_push_mut);
     define_primitive_1(mod, "list-pop!", x_list_pop_mut);
+    // define_primitive_2(mod, "list-unshift!", x_list_unshift_mut);
+    // define_primitive_1(mod, "list-shift!", x_list_shift_mut);
 }

@@ -1,7 +1,7 @@
-# list
+[value] `tael_unshift_element` & `tael_shift_element`
+[builtin] `x_list_unshift_mut` & `x_list_shift_mut`
 
-[builtin] `x_list_unshift_mut`
-[builtin] `x_list_shift_mut`
+# list
 
 [builtin] `x_list_get`
 [builtin] `x_list_put_mut`

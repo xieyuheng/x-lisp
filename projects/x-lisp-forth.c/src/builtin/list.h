@@ -5,3 +5,5 @@ x_fn_1_t x_list_copy;
 x_fn_1_t x_list_length;
 x_fn_2_t x_list_push_mut;
 x_fn_1_t x_list_pop_mut;
+x_fn_2_t x_list_unshift_mut;
+x_fn_1_t x_list_shift_mut;
