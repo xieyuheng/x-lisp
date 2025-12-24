@@ -1,6 +1,5 @@
 # string
 
-[builtin] `x_string_p`
 [builtin] `x_string_length`
 [builtin] `x_string_append`
 
