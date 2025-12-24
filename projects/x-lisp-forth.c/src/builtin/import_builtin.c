@@ -83,7 +83,15 @@ import_builtin(mod_t *mod) {
     define_primitive(mod, "@def", x_define_function);
     define_primitive(mod, "@begin", x_begin);
 
-
+    // string
+    // define_primitive_1(mod, "string?", x_string_p);
+    // (string-length string)
+    // (string-append left right)
+    // (string-concat list)
+    // (string-join separator list)
+    // (string-chars string)
+    // (string-compare-lexical x y)
+    // (string-to-symbol string)
 
     // list
     define_primitive_1(mod, "anything-list?", x_anything_list_p);

@@ -1,11 +1,8 @@
 # string
 
-[builtin] `string` -- setup
-
-# record
-
-[builtin] `record` -- setup
-[builtin] `x_make_record`
+[builtin] `x_string_p`
+[builtin] `x_string_length`
+[builtin] `x_string_append`
 
 # symbol and keyword
 
@@ -16,6 +13,11 @@
 [lang] `vm_execute_instr` -- `OP_LITERAL_KEYWORD`
 
 [builtin] `compile_token` -- handle `KEYWORD_TOKEN`
+
+# record
+
+[builtin] `record` -- setup
+[builtin] `x_make_record`
 
 # circular object
 
