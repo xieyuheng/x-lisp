@@ -83,10 +83,10 @@ instr_length(struct instr_t instr) {
             + 1;
     }
 
-    case OP_LITERAL_KEYWORD: {
+    case OP_LITERAL_HASHTAG: {
         return 1
             + sizeof(size_t)
-            + string_length(instr.literal_keyword.content)
+            + string_length(instr.literal_hashtag.content)
             + 1;
     }
     }
@@ -229,12 +229,12 @@ instr_encode(uint8_t *code, struct instr_t instr) {
         return;
     }
 
-    case OP_LITERAL_KEYWORD: {
+    case OP_LITERAL_HASHTAG: {
         memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.literal_keyword.length);
-        memory_copy(code + 1 + sizeof instr.literal_keyword.length,
-                    instr.literal_keyword.content,
-                    instr.literal_keyword.length + 1);
+        memory_store_little_endian(code + 1, instr.literal_hashtag.length);
+        memory_copy(code + 1 + sizeof instr.literal_hashtag.length,
+                    instr.literal_hashtag.content,
+                    instr.literal_hashtag.length + 1);
         return;
     }
     }
@@ -375,11 +375,11 @@ instr_decode(uint8_t *code) {
         return instr;
     }
 
-    case OP_LITERAL_KEYWORD: {
+    case OP_LITERAL_HASHTAG: {
         struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.literal_keyword.length);
-        instr.literal_keyword.content =
-            (char *) code + 1 + sizeof instr.literal_keyword.length;
+        memory_load_little_endian(code + 1, instr.literal_hashtag.length);
+        instr.literal_hashtag.content =
+            (char *) code + 1 + sizeof instr.literal_hashtag.length;
         return instr;
     }
     }

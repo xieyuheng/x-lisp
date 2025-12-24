@@ -7,4 +7,6 @@
 #include "compile.h"
 #include "list.h"
 #include "string.h"
+#include "symbol.h"
+#include "hashtag.h"
 #include "import_builtin.h"

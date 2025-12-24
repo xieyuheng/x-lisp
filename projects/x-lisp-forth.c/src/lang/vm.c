@@ -287,7 +287,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         assert(false && "TODO");
     }
 
-    case OP_LITERAL_KEYWORD: {
+    case OP_LITERAL_HASHTAG: {
         assert(false && "TODO");
     }
     }

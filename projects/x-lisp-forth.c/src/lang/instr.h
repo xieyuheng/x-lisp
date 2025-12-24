@@ -21,7 +21,7 @@ struct instr_t {
         struct { const token_t *token; } assert_not_equal;
         struct { size_t length; char *content; } literal_string;
         struct { size_t length; char *content; } literal_symbol;
-        struct { size_t length; char *content; } literal_keyword;
+        struct { size_t length; char *content; } literal_hashtag;
     };
 };
 

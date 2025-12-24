@@ -7,12 +7,15 @@
 # symbol and keyword
 
 [value] `symbol_t`
-[value] `keyword_t`
+[value] `hashtag_t`
 
 [lang] `vm_execute_instr` -- `OP_LITERAL_SYMBOL`
-[lang] `vm_execute_instr` -- `OP_LITERAL_KEYWORD`
+[lang] `vm_execute_instr` -- `OP_LITERAL_HASHTAG`
 
-[builtin] `compile_token` -- handle `KEYWORD_TOKEN`
+[builtin] `compile_token` -- handle `HASHTAG_TOKEN`
+
+[builtin] `symbol_p`
+[builtin] `hashtag_p`
 
 # record
 
