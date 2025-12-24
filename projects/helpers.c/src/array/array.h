@@ -1,13 +1,15 @@
 #pragma once
 
+// array implemented by growable circular buffer
+
 struct array_t {
     size_t capacity;
-    size_t cursor;
+    size_t mask;
+    size_t front;
+    size_t back;
     void **values;
     free_fn_t *free_fn;
 };
-
-// growable array
 
 array_t *make_array(void);
 void array_purge(array_t *self);

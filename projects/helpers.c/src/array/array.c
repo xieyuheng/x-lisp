@@ -5,7 +5,9 @@ make_array(void) {
     array_t *self = new(array_t);
     size_t capacity = 32;
     self->capacity = capacity;
-    self->cursor = 0;
+    self->mask = capacity - 1;
+    self->front = 0;
+    self->back = 0;
     self->values = allocate_pointers(capacity);
     return self;
 }
@@ -15,7 +17,7 @@ array_purge(array_t *self) {
     assert(self);
 
     if (self->free_fn) {
-        for (size_t i = 0; i < self->capacity; i++) {
+        for (size_t i = 0; i < array_length(self); i++) {
             void *value = array_get(self, i);
             if (value) {
                 self->free_fn(value);
@@ -26,9 +28,10 @@ array_purge(array_t *self) {
         memory_clear(self->values, self->capacity * sizeof(void *));
     }
 
-    self->cursor = 0;
-
+    self->front = 0;
+    self->back = 0;
 }
+
 void
 array_free(array_t *self) {
     array_purge(self);
@@ -50,12 +53,17 @@ make_array_with(free_fn_t *free_fn) {
 
 inline size_t
 array_length(const array_t *self) {
-    return self->cursor;
+    return self->back - self->front;
 }
 
 inline bool
 array_is_empty(const array_t *self) {
-    return self->cursor == 0;
+    return self->back == self->front;
+}
+
+inline bool
+array_is_full(const array_t *self) {
+    return array_length(self) == self->capacity;
 }
 
 inline void
@@ -64,47 +72,52 @@ array_double_capacity(array_t *self) {
         self->values,
         self->capacity,
         self->capacity * 2);
+
+    memory_copy(self->values + self->capacity,
+                self->values,
+                (self->back & self->mask) * sizeof(void *));
+
     self->capacity *= 2;
+    self->mask = self->capacity - 1;
 }
 
 inline void *
 array_top(array_t *self) {
-    assert(self->cursor > 0);
-    void *value = self->values[self->cursor - 1];
-    return value;
+    assert(!array_is_empty(self));
+    return self->values[(self->back - 1) & self->mask];
 }
 
 inline void *
 array_pop(array_t *self) {
-    assert(self->cursor > 0);
-    self->cursor--;
-    void *value = self->values[self->cursor];
-    self->values[self->cursor] = NULL;
+    assert(!array_is_empty(self));
+    self->back--;
+    void *value = self->values[self->back & self->mask];
+    self->values[self->back & self->mask] = NULL;
     return value;
 }
 
 inline void
 array_push(array_t *self, void *value) {
-    if (self->cursor == self->capacity) {
+    if (array_is_full(self)) {
         array_double_capacity(self);
     }
 
-    self->values[self->cursor] = value;
-    self->cursor++;
+    self->values[self->back & self->mask] = value;
+    self->back++;
 }
 
 inline void *
 array_get(const array_t *self, size_t index) {
-    if (index >= self->capacity)
+    if (index >= array_length(self))
         return NULL;
 
-    return self->values[index];
+    return self->values[(self->front + index) & self->mask];
 }
 
 inline void *
 array_pick(const array_t *self, size_t back_index) {
-    assert(back_index < self->cursor);
-    size_t index = self->cursor - 1 - back_index;
+    assert(back_index < array_length(self));
+    size_t index = array_length(self) - 1 - back_index;
     return array_get(self, index);
 }
 
@@ -116,8 +129,8 @@ array_put(array_t *self, size_t index, void *value) {
         return;
     }
 
-    self->values[index] = value;
+    self->values[(self->front + index) & self->mask] = value;
 
-    if (index >= self->cursor)
-        self->cursor = index + 1;
+    if (index >= array_length(self))
+        self->back += index + 1 - array_length(self);
 }
