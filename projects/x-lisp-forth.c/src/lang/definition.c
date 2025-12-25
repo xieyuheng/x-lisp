@@ -45,14 +45,6 @@ make_variable_definition(mod_t *mod, char *name, value_t value) {
 }
 
 definition_t *
-make_constant_definition(mod_t *mod, char *name, value_t value) {
-    definition_t *self = make_definition(mod, name);
-    self->kind = CONSTANT_DEFINITION;
-    self->constant_definition.value = value;
-    return self;
-}
-
-definition_t *
 make_placeholder_definition(mod_t *mod, char *name) {
     definition_t *self = make_definition(mod, name);
     self->kind = PLACEHOLDER_DEFINITION;
@@ -82,11 +74,6 @@ definition_free(definition_t *self) {
     }
 
     case VARIABLE_DEFINITION: {
-        free(self);
-        return;
-    }
-
-    case CONSTANT_DEFINITION: {
         free(self);
         return;
     }
@@ -229,7 +216,6 @@ definition_has_arity(const definition_t *self) {
     }
 
     case VARIABLE_DEFINITION:
-    case CONSTANT_DEFINITION:
     case PLACEHOLDER_DEFINITION: {
         return false;
     }
@@ -261,7 +247,6 @@ definition_arity(const definition_t *self) {
     }
 
     case VARIABLE_DEFINITION:
-    case CONSTANT_DEFINITION:
     case PLACEHOLDER_DEFINITION: {
         unreachable();
     }

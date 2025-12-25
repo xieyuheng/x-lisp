@@ -366,12 +366,7 @@ vm_gc_roots_in_mod(vm_t *vm, array_t *roots) {
     record_iter_init(&iter, vm_mod(vm)->definitions);
     definition_t *definition = record_iter_next_value(&iter);
     while (definition) {
-        if (definition->kind == CONSTANT_DEFINITION) {
-            value_t value = definition->constant_definition.value;
-            if (object_p(value)) {
-                array_push(roots, to_object(value));
-            }
-        } else if (definition->kind == VARIABLE_DEFINITION) {
+        if (definition->kind == VARIABLE_DEFINITION) {
             value_t value = definition->variable_definition.value;
             if (object_p(value)) {
                 array_push(roots, to_object(value));

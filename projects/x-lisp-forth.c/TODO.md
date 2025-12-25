@@ -1,8 +1,17 @@
-# read-execute-loop
+[lang] `mod_run`
 
-[lang] add `read-execute-loop` function to the bottom of the stack
-- `read-execute-loop` must NOT be a primitive function
+- add an unnamed frame to the bottom of the stack to exit the program
+- call `main`
+
+[main] `handle_run` -- call `mod_run`
+
+- [lang] remove `vm_interpret`
+
+remove `x_begin`
+
 [lang] remove `vm_execute_until`
+
+[lang] remove `call_definition_now`
 
 # xhash
 

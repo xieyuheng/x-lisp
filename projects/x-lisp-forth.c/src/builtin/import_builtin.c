@@ -48,19 +48,19 @@ import_builtin(mod_t *mod) {
 
     // bool
 
-    define_constant(mod, "true", x_true);
-    define_constant(mod, "false", x_false);
+    define_variable(mod, "true", x_true);
+    define_variable(mod, "false", x_false);
     define_primitive_1(mod, "bool?", x_bool_p);
     define_primitive_1(mod, "not", x_not);
 
     // null
 
-    define_constant(mod, "null", x_null);
+    define_variable(mod, "null", x_null);
     define_primitive_1(mod, "null?", x_null_p);
 
     // void
 
-    define_constant(mod, "void", x_void);
+    define_variable(mod, "void", x_void);
     define_primitive_1(mod, "void?", x_void_p);
 
     // value
@@ -78,7 +78,6 @@ import_builtin(mod_t *mod) {
 
     // syntax
 
-    define_primitive(mod, "@const", x_define_constant);
     define_primitive(mod, "@var", x_define_variable);
     define_primitive(mod, "@def", x_define_function);
     define_primitive(mod, "@begin", x_begin);

@@ -1,7 +1,6 @@
 #pragma once
 
 definition_t *define_placeholder(mod_t *mod, const char *name);
-definition_t *define_constant(mod_t *mod, const char *name, value_t value);
 definition_t *define_variable(mod_t *mod, const char *name, value_t value);
 definition_t *define_function(mod_t *mod, const char *name);
 definition_t *define_primitive(mod_t *mod, const char *name, x_fn_t *fn);

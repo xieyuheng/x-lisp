@@ -19,12 +19,6 @@ call_definition(vm_t *vm, const definition_t *definition) {
         return;
     }
 
-    case CONSTANT_DEFINITION: {
-        value_t value = definition->constant_definition.value;
-        vm_push(vm, value);
-        return;
-    }
-
     case PLACEHOLDER_DEFINITION: {
         who_printf("undefined name: %s\n", definition->name);
         exit(1);
