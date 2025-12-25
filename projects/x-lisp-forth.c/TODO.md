@@ -16,7 +16,8 @@
 
 # circular object
 
-[value] `printer` -- holding state to support circular object
+[value] `printer` -- setup -- holding state to support circular object
+[value] `value_print` -- all value printing function should take `pointer` as the first argument
 
 # read-execute-loop
 
