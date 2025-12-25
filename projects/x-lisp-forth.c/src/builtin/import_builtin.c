@@ -147,7 +147,7 @@ import_builtin(mod_t *mod) {
     define_primitive_3(mod, "record-put", x_record_put);
     define_primitive_2(mod, "record-delete!", x_record_delete_mut);
     define_primitive_2(mod, "record-delete", x_record_delete);
-    define_primitive_2(mod, "record-merge", x_record_merge);
+    define_primitive_2(mod, "record-append", x_record_append);
     define_primitive_1(mod, "record-keys", x_record_keys);
     define_primitive_1(mod, "record-values", x_record_values);
     define_primitive_1(mod, "record-entries", x_record_entries);

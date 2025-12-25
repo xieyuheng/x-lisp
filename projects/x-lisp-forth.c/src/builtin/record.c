@@ -58,7 +58,7 @@ x_record_delete(value_t key, value_t record) {
 }
 
 value_t
-x_record_merge(value_t left, value_t right) {
+x_record_append(value_t left, value_t right) {
     tael_t *new_tael = tael_copy_only_attributes(to_tael(left));
 
     record_iter_t iter;
@@ -66,10 +66,7 @@ x_record_merge(value_t left, value_t right) {
     const hash_entry_t *entry = record_iter_next_entry(&iter);
     while (entry) {
         value_t value = (value_t) entry->value;
-        if (!null_p(value)) {
-            tael_put_attribute(new_tael, entry->key, value);
-        }
-
+        tael_put_attribute(new_tael, entry->key, value);
         entry = record_iter_next_entry(&iter);
     }
 

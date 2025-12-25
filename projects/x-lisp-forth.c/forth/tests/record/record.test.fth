@@ -34,19 +34,18 @@
   record2 record-length 3 @assert-equal
 @end
 
-@begin -- record-merge
+@begin -- record-append
   make-record [record]
   'a 1 record record-put! @drop
   'b 2 record record-put! @drop
   'c 3 record record-put! @drop
 
   make-record [record2]
-  'a null record2 record-put! @drop
   'x 1 record2 record-put! @drop
   'y 2 record2 record-put! @drop
   'z 3 record2 record-put! @drop
 
-  record record2 record-merge [record3]
+  record record2 record-append [record3]
 
   'a record3 record-get 1 @assert-equal
   'b record3 record-get 2 @assert-equal
