@@ -1,6 +1,5 @@
 # record
 
-[builtin] `x_anything_record_p`
 [builtin] `x_record_copy`
 [builtin] `x_record_length` & `x_record_empty_p`
 

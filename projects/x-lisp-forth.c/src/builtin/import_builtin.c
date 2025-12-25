@@ -137,7 +137,7 @@ import_builtin(mod_t *mod) {
     // record
 
     define_primitive_0(mod, "make-record", x_make_record);
-    // define_primitive_1(mod, "anything-record?", x_anything_record_p);
+    define_primitive_1(mod, "anything-record?", x_anything_record_p);
     // define_primitive_1(mod, "record-copy", x_record_copy);
     // define_primitive_1(mod, "record-length", x_record_length);
     // define_primitive_1(mod, "record-empty?", x_record_empty_p);
