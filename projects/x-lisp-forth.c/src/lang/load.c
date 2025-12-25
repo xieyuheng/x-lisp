@@ -48,7 +48,7 @@ interpret_token(vm_t *vm, token_t *token) {
     }
 
     default: {
-        who_printf("unknown top-level token: %s\n", token->content);
+        who_printf("unhandled top-level token: %s\n", token->content);
         return;
     }
     }
@@ -63,22 +63,9 @@ interpret(vm_t *vm) {
 }
 
 static void
-prepare_to_exit(vm_t *vm) {
-    definition_t *definition = mod_lookup(vm_mod(vm), "exit");
+prepare_tail_call(vm_t *vm, const char *name) {
+    definition_t *definition = mod_lookup(vm_mod(vm), name);
     assert(definition);
-
-    uint8_t *code = make_code_from_instrs(1, (struct instr_t[]) {
-            { .op = OP_TAIL_CALL,
-              .tail_call.definition = definition },
-        });
-    vm_push_frame(vm, make_frame_from_code(code));
-}
-
-static void
-prepare_main(vm_t *vm) {
-    definition_t *definition = mod_lookup(vm_mod(vm), "main");
-    if (!definition) return;
-
     uint8_t *code = make_code_from_instrs(1, (struct instr_t[]) {
             { .op = OP_TAIL_CALL,
               .tail_call.definition = definition },
@@ -88,7 +75,7 @@ prepare_main(vm_t *vm) {
 
 static void
 run(vm_t *vm) {
-    prepare_to_exit(vm);
-    prepare_main(vm);
+    prepare_tail_call(vm, "exit");
+    prepare_tail_call(vm, "main");
     vm_execute(vm);
 }

@@ -1,7 +1,12 @@
-[lang] `syntax_var` fix `@var` syntax
+[lang] `variable_definition` have optional setup code -- like function
+[lang] `load` -- call `setup_variables`
+[lang] `define_variable_with_setup`
+[lang] `syntax_var` -- call `define_variable_with_setup`
 
 - use `@var <name> <body> @end`
 - var.test.fth
+
+[lang] `interpret_token` -- use `syntax_table` to do dispatch -- instead of a list of if
 
 # xhash
 
