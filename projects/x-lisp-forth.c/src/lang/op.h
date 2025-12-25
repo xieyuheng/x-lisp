@@ -3,13 +3,11 @@
 typedef enum {
     OP_NOP,
     OP_LITERAL,
-    OP_LITERAL_INT,
     OP_IADD,
     OP_ISUB,
     OP_IMUL,
     OP_IDIV,
     OP_IMOD,
-    OP_LITERAL_FLOAT,
     OP_FADD,
     OP_FSUB,
     OP_FMUL,

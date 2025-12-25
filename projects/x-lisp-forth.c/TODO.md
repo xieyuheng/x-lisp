@@ -1,5 +1,3 @@
-[instr] remove `OP_LITERAL_INT` & `OP_LITERAL_FLOAT`
-
 # record
 
 [builtin] `record` -- setup -- use `symbol` as key

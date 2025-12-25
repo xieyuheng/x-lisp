@@ -11,22 +11,11 @@ instr_length(struct instr_t instr) {
         return 1 + sizeof(value_t);
     }
 
-    case OP_LITERAL_INT: {
-        return 1 + sizeof(int64_t);
-    }
-
     case OP_IADD:
     case OP_ISUB:
     case OP_IMUL:
     case OP_IDIV:
-    case OP_IMOD: {
-        return 1;
-    }
-
-    case OP_LITERAL_FLOAT: {
-        return 1 + sizeof(double);
-    }
-
+    case OP_IMOD:
     case OP_FADD:
     case OP_FSUB:
     case OP_FMUL:
@@ -91,27 +80,11 @@ instr_encode(uint8_t *code, struct instr_t instr) {
         return;
     }
 
-    case OP_LITERAL_INT: {
-        memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.literal_int.content);
-        return;
-    }
-
     case OP_IADD:
     case OP_ISUB:
     case OP_IMUL:
     case OP_IDIV:
-    case OP_IMOD: {
-        memory_store_little_endian(code + 0, instr.op);
-        return;
-    }
-
-    case OP_LITERAL_FLOAT: {
-        memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.literal_float.content);
-        return;
-    }
-
+    case OP_IMOD:
     case OP_FADD:
     case OP_FSUB:
     case OP_FMUL:
@@ -218,27 +191,11 @@ instr_decode(uint8_t *code) {
         return instr;
     }
 
-    case OP_LITERAL_INT: {
-        struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.literal_int.content);
-        return instr;
-    }
-
     case OP_IADD:
     case OP_ISUB:
     case OP_IMUL:
     case OP_IDIV:
-    case OP_IMOD: {
-        struct instr_t instr = { .op = code[0] };
-        return instr;
-    }
-
-    case OP_LITERAL_FLOAT: {
-        struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.literal_float.content);
-        return instr;
-    }
-
+    case OP_IMOD:
     case OP_FADD:
     case OP_FSUB:
     case OP_FMUL:

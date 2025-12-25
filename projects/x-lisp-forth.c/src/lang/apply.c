@@ -27,8 +27,8 @@ supply(vm_t *vm, size_t n, value_t target, size_t arity) {
 static void
 prepare_to_apply_again(vm_t *vm, size_t n) {
     uint8_t *code = make_code_from_instrs(2, (struct instr_t[]) {
-            { .op = OP_LITERAL_INT,
-              .literal_int.content = n },
+            { .op = OP_LITERAL,
+              .literal.value = x_int(n) },
             { .op = OP_TAIL_APPLY },
         });
     stack_push(vm->frame_stack, make_frame_from_code(code));

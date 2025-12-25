@@ -8,8 +8,6 @@ struct instr_t {
     op_t op;
     union {
         struct { value_t value; } literal;
-        struct { int64_t content; } literal_int;
-        struct { double content; } literal_float;
         struct { definition_t *definition; } ref;
         struct { definition_t *definition; } call;
         struct { definition_t *definition; } tail_call;

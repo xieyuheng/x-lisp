@@ -90,8 +90,8 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
 
     case INT_TOKEN: {
         struct instr_t instr;
-        instr.op = OP_LITERAL_INT;
-        instr.literal_int.content = string_parse_int(token->content);
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_int(string_parse_int(token->content));
         function_definition_append_instr(definition, instr);
         token_free(token);
         return;
@@ -99,8 +99,8 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
 
     case FLOAT_TOKEN: {
         struct instr_t instr;
-        instr.op = OP_LITERAL_FLOAT;
-        instr.literal_float.content = string_parse_double(token->content);
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_float(string_parse_double(token->content));
         function_definition_append_instr(definition, instr);
         token_free(token);
         return;

@@ -50,11 +50,6 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
-    case OP_LITERAL_INT: {
-        vm_push(vm, x_int(instr.literal_int.content));
-        return;
-    }
-
     case OP_IADD: {
         value_t x2 = vm_pop(vm);
         value_t x1 = vm_pop(vm);
@@ -92,11 +87,6 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         value_t x1 = vm_pop(vm);
         value_t result = x_imod(x1, x2);
         vm_push(vm, result);
-        return;
-    }
-
-    case OP_LITERAL_FLOAT: {
-        vm_push(vm, x_float(instr.literal_float.content));
         return;
     }
 
