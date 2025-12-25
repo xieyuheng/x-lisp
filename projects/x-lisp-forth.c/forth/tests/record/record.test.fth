@@ -34,7 +34,7 @@
   record2 record-length 3 @assert-equal
 @end
 
-@begin
+@begin -- record-merge
   make-record [record]
   'a 1 record record-put! @drop
   'b 2 record record-put! @drop
@@ -54,4 +54,32 @@
   'x record3 record-get 1 @assert-equal
   'y record3 record-get 2 @assert-equal
   'z record3 record-get 3 @assert-equal
+@end
+
+@begin -- record-[keys|values|entries]
+  make-record [record]
+  'a 1 record record-put! @drop
+  'b 2 record record-put! @drop
+  'c 3 record record-put! @drop
+
+  record record-keys [keys]
+  0 keys list-get 'a @assert-equal
+  1 keys list-get 'b @assert-equal
+  2 keys list-get 'c @assert-equal
+
+  record record-values [values]
+  0 values list-get 1 @assert-equal
+  1 values list-get 2 @assert-equal
+  2 values list-get 3 @assert-equal
+
+  record record-entries [entries]
+  0 entries list-get [entry]
+    0 entry list-get 'a @assert-equal
+    1 entry list-get 1 @assert-equal
+  1 entries list-get [entry]
+    0 entry list-get 'b @assert-equal
+    1 entry list-get 2 @assert-equal
+  2 entries list-get [entry]
+    0 entry list-get 'c @assert-equal
+    1 entry list-get 3 @assert-equal
 @end

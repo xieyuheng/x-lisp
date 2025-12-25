@@ -1,7 +1,3 @@
-# record
-
-[builtin] `record-[keys|values|entries]`
-
 # xhash
 
 [value] `value_hash_code`

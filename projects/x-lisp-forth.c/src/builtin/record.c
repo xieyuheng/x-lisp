@@ -60,6 +60,7 @@ x_record_delete(value_t key, value_t record) {
 value_t
 x_record_merge(value_t left, value_t right) {
     tael_t *new_tael = tael_copy_only_attributes(to_tael(left));
+
     record_iter_t iter;
     record_iter_init(&iter, to_tael(right)->attributes);
     const hash_entry_t *entry = record_iter_next_entry(&iter);
@@ -73,4 +74,56 @@ x_record_merge(value_t left, value_t right) {
     }
 
     return x_object(new_tael);
+}
+
+value_t
+x_record_keys(value_t record) {
+    tael_t *keys = make_tael();
+
+    record_iter_t iter;
+    record_iter_init(&iter, to_tael(record)->attributes);
+    const hash_entry_t *entry = record_iter_next_entry(&iter);
+    while (entry) {
+        value_t key = x_object(intern_symbol(entry->key));
+        tael_push_element(keys, key);
+        entry = record_iter_next_entry(&iter);
+    }
+
+    return x_object(keys);
+}
+
+value_t
+x_record_values(value_t record) {
+    tael_t *values = make_tael();
+
+    record_iter_t iter;
+    record_iter_init(&iter, to_tael(record)->attributes);
+    const hash_entry_t *entry = record_iter_next_entry(&iter);
+    while (entry) {
+        value_t value = (value_t) entry->value;
+        tael_push_element(values, value);
+        entry = record_iter_next_entry(&iter);
+    }
+
+    return x_object(values);
+}
+
+value_t
+x_record_entries(value_t record) {
+    tael_t *entries = make_tael();
+
+    record_iter_t iter;
+    record_iter_init(&iter, to_tael(record)->attributes);
+    const hash_entry_t *entry = record_iter_next_entry(&iter);
+    while (entry) {
+        value_t key = x_object(intern_symbol(entry->key));
+        value_t value = (value_t) entry->value;
+        tael_t *pair = make_tael();
+        tael_push_element(pair, key);
+        tael_push_element(pair, value);
+        tael_push_element(entries, x_object(pair));
+        entry = record_iter_next_entry(&iter);
+    }
+
+    return x_object(entries);
 }
