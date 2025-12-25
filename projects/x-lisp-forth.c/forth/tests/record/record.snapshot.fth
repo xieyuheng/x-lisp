@@ -1,4 +1,4 @@
-@begin
+@def main
   make-record [record]
   record println
 

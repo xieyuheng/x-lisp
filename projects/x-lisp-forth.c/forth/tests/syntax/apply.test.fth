@@ -6,7 +6,7 @@
   x y isub
 @end
 
-@def main
+@def test
   1 @ref iadd 1 @apply [iadd1]
   2 iadd1 1 @apply
   3 @assert-equal
@@ -19,4 +19,6 @@
   false @assert
 @end
 
-main 1 @assert-equal
+@def main
+  test 1 @assert-equal
+@end

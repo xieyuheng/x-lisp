@@ -1,4 +1,4 @@
-@begin
+@def main
   make-record [record]
   record record-length 0 @assert-equal
   record record-empty? @assert
@@ -32,9 +32,9 @@
   record record-length 0 @assert-equal
   'a record2 record-delete record-length 2 @assert-equal
   record2 record-length 3 @assert-equal
-@end
 
-@begin -- record-append
+  -- record-append
+
   make-record [record]
   'a 1 record record-put! @drop
   'b 2 record record-put! @drop
@@ -53,9 +53,9 @@
   'x record3 record-get 1 @assert-equal
   'y record3 record-get 2 @assert-equal
   'z record3 record-get 3 @assert-equal
-@end
 
-@begin -- record-has-key?
+  -- record-has-key?
+
   make-record [record]
   'a 1 record record-put! @drop
   'b null record record-put! @drop
@@ -63,9 +63,9 @@
 
   'b record record-has? not @assert
   'b record record-has-key? @assert
-@end
 
-@begin -- record-[keys|values|entries]
+  -- record-[keys|values|entries]
+
   make-record [record]
   'a 1 record record-put! @drop
   'b 2 record record-put! @drop

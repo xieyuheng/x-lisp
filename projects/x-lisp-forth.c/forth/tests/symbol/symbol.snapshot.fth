@@ -1,3 +1,3 @@
-@begin
+@def main
   'abc println
 @end

@@ -6,8 +6,10 @@
   @then
 @end
 
-2 my-int-positive? @assert
-1 my-int-positive? @assert
-0 my-int-positive? not @assert
--1 my-int-positive? not @assert
--2 my-int-positive? not @assert
+@def main
+  2 my-int-positive? @assert
+  1 my-int-positive? @assert
+  0 my-int-positive? not @assert
+  -1 my-int-positive? not @assert
+  -2 my-int-positive? not @assert
+@end

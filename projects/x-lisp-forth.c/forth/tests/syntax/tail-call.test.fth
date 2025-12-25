@@ -14,4 +14,6 @@
   false @assert
 @end
 
-1 f2 2 @assert-equal
+@def main
+  1 f2 2 @assert-equal
+@end

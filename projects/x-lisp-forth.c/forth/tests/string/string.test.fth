@@ -1,4 +1,4 @@
-@begin
+@def main
   "" string? @assert
   "abc" string? @assert
 

@@ -1,4 +1,4 @@
-@begin
+@def main
   make-list [list]
   list println
 

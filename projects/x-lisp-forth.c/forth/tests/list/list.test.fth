@@ -1,11 +1,7 @@
-@begin
+@def main
   make-list [list]
   list list-copy list same? not @assert
   list list-copy list equal? @assert
-@end
-
-@begin
-  make-list [list]
 
   list anything-list? @assert
 
@@ -55,9 +51,9 @@
   0 list list-get 11 @assert-equal
   1 list list-get 22 @assert-equal
   2 list list-get 33 @assert-equal
-@end
 
-@begin
+  -- list-push list-put
+
   make-list [list]
 
   1 list list-push car 1 @assert-equal
@@ -65,9 +61,9 @@
 
   0 1 list list-put car 1 @assert-equal
   list list-empty? @assert
-@end
 
-@begin
+  -- cons car cdr
+
   make-list
   3 @swap cons
   2 @swap cons
@@ -84,9 +80,9 @@
   list list-last 3 @assert-equal
   list list-init list-last 2 @assert-equal
   list list-init list-init list-last 1 @assert-equal
-@end
 
-@begin
+  -- list-reverse!
+
   make-list [list]
   1 list list-push! @drop
   2 list list-push! @drop

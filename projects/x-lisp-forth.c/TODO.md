@@ -1,7 +1,4 @@
-fix tests -- use `@def main` instead of `@begin`
-
 remove `x_begin`
-
 
 [lang] remove `vm_execute_until`
 [lang] remove `call_definition_now`

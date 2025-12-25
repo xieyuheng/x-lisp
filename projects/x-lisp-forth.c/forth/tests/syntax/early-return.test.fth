@@ -1,6 +1,8 @@
 @def iadd1
   1 iadd @return
-  1 iadd
+  false @assert
 @end
 
-1 iadd1 2 @assert-equal
+@def main
+  1 iadd1 2 @assert-equal
+@end
