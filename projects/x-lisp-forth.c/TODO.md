@@ -1,5 +1,9 @@
+[helpers.c] `hash_get_entry` & `record_get_entry`
+
 # record
-[builtin] `x_record_length` & `x_record_empty_p`
+
+[value] `tael_get_attribute` -- return null when not exists
+
 [builtin] `record` curd API
 [builtin] `record-append`
 [builtin] `record-[keys|values|entries]`

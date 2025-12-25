@@ -24,3 +24,28 @@ value_t
 x_record_empty_p(value_t record) {
     return x_bool(record_is_empty(to_tael(record)->attributes));
 }
+
+value_t
+x_record_get(value_t key, value_t record) {
+    return tael_get_attribute(to_tael(record), symbol_string(to_symbol(key)));
+}
+
+// value_t
+// x_record_has_p(value_t key, value_t record) {
+// }
+
+// value_t
+// x_record_put_mut(value_t key, value_t value, value_t record) {
+// }
+
+// value_t
+// x_record_put(value_t key, value_t value, value_t record) {
+// }
+
+// value_t
+// x_record_delete_mut(value_t key, value_t record) {
+// }
+
+// value_t
+// x_record_delete(value_t key, value_t record) {
+// }
