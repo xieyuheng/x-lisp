@@ -167,7 +167,12 @@ tael_unshift_element(tael_t *self, value_t value) {
 
 inline value_t
 tael_get_attribute(const tael_t *self, const char *key) {
-    return (value_t) record_get(self->attributes, key);
+    hash_entry_t *entry = record_get_entry(self->attributes, key);
+    if (entry) {
+        return (value_t) entry->value;
+    } else {
+        return x_null;
+    }
 }
 
 inline void

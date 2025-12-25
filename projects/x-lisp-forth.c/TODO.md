@@ -1,7 +1,5 @@
 # record
 
-[value] `tael_get_attribute` -- return null when not exists
-
 [builtin] `record` curd API
 [builtin] `record-append`
 [builtin] `record-[keys|values|entries]`
