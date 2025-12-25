@@ -1,7 +1,3 @@
-[lang] `vm_value_count`
-
-[lang] hide `vm_t`
-
 [lang] `vm_drop_frame` -- perform gc
 
 # read-execute-loop

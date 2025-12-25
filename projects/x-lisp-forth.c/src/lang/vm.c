@@ -1,5 +1,12 @@
 #include "index.h"
 
+struct vm_t {
+    mod_t *mod;
+    list_t *tokens;
+    stack_t *value_stack;
+    stack_t *frame_stack;
+};
+
 vm_t *
 make_vm(mod_t *mod, list_t *tokens) {
     vm_t *self = new(vm_t);
