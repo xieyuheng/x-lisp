@@ -50,11 +50,11 @@ string_is_blank(const char *self) {
 }
 
 size_t
-string_bernstein_hash(const char *self) {
+string_hash_code(const char *self) {
     const char *pointer = (const char *) self;
     size_t hash = 0;
     while (*pointer)
-        hash = 33 * hash ^ *pointer++;
+        hash = 33 * hash + *pointer++;
     return hash;
 }
 

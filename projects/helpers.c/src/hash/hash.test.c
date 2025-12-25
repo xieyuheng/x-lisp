@@ -69,7 +69,7 @@ main(void) {
 
     {
         hash_t *hash = make_hash();
-        hash_put_hash_fn(hash, (hash_fn_t *) string_bernstein_hash);
+        hash_put_hash_fn(hash, (hash_fn_t *) string_hash_code);
         hash_put_value_free_fn(hash, (free_fn_t *) string_free);
         hash_put_key_free_fn(hash, (free_fn_t *) string_free);
         hash_put_key_equal_fn(hash, (equal_fn_t *) string_equal);
