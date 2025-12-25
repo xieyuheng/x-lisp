@@ -49,7 +49,9 @@ xstring_equal(xstring_t *lhs, xstring_t *rhs) {
 
 void
 xstring_print(xstring_t *self) {
-    printf("\"%s\"", self->string);
+    string_print("\"");
+    string_print(self->string);
+    string_print("\"");
 }
 
 size_t

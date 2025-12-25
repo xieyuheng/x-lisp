@@ -91,6 +91,6 @@ gc_report(gc_t *self) {
     printf("objects:\n");
     for (size_t i = 0; i < array_length(self->objects); i++) {
         object_t *object = array_get(self->objects, i);
-        printf("  %ld: ", i); object_print(object); printf("\n");
+        printf("  %ld: ", i); object_print(object); newline();
     }
 }

@@ -173,9 +173,8 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         value_t value = vm_pop(vm);
         definition_t *definition = (definition_t *) to_object(value);
         if (definition->kind != VARIABLE_DEFINITION) {
-            who_printf("not VARIABLE_DEFINITION: ");
-            definition_print(definition);
-            printf("\n");
+            who_printf("expecting VARIABLE_DEFINITION\n");
+            who_printf("  definition: "); definition_print(definition); newline();
             exit(1);
         }
 

@@ -2,7 +2,7 @@
 
 value_t
 x_newline(void) {
-    printf("\n");
+    newline();
     return x_void;
 }
 
@@ -15,7 +15,7 @@ x_print(value_t x) {
 value_t
 x_println(value_t x) {
     value_print(x);
-    printf("\n");
+    newline();
     return x_void;
 }
 
