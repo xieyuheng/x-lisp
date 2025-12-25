@@ -2,6 +2,7 @@
 
 typedef enum {
     OP_NOP,
+    OP_LITERAL,
     OP_LITERAL_INT,
     OP_IADD,
     OP_ISUB,

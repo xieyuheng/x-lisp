@@ -45,6 +45,11 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
+    case OP_LITERAL: {
+        vm_push(vm, instr.literal.value);
+        return;
+    }
+
     case OP_LITERAL_INT: {
         vm_push(vm, x_int(instr.literal_int.content));
         return;

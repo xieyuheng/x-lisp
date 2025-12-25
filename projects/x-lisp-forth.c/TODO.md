@@ -1,5 +1,3 @@
-[instr] `OP_LITERAL` -- create value at compile time
-
 [instr] remove `OP_LITERAL_STRING` & `OP_LITERAL_SYMBOL` & `OP_LITERAL_HASHTAG`
 [instr] remove `OP_LITERAL_INT` & `OP_LITERAL_FLOAT`
 
