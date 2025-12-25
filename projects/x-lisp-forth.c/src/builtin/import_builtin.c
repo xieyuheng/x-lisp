@@ -135,6 +135,8 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "list-reverse", x_list_reverse);
 
     // record
+
+    // define_primitive_0(mod, "make-record", x_make_record);
     // define_primitive_1(mod, "anything-record?", x_anything_record_p);
     // define_primitive_1(mod, "record-copy", x_record_copy);
     // define_primitive_1(mod, "record-length", x_record_length);
