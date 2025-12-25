@@ -25,14 +25,25 @@ static void
 interpret_token(vm_t *vm, token_t *token) {
     switch (token->kind) {
     case LINE_COMMENT_TOKEN: {
+        token_free(token);
         return;
     }
 
     case SYMBOL_TOKEN: {
-        definition_t *definition = mod_lookup(vm_mod(vm), token->content);
-        assert(definition);
-        assert(definition->kind == PRIMITIVE_DEFINITION);
-        call_primitive(vm, definition->primitive_definition.primitive);
+        if (string_equal(token->content, "@var")) {
+            x_define_variable(vm);
+            token_free(token);
+            return;
+        }
+
+        if (string_equal(token->content, "@def")) {
+            x_define_function(vm);
+            token_free(token);
+            return;
+        }
+
+        who_printf("unknown top-level symbol: %s\n", token->content);
+        token_free(token);
         return;
     }
 
@@ -48,7 +59,6 @@ interpret(vm_t *vm) {
     while (!vm_no_more_tokens(vm)) {
         token_t *token = vm_next_token(vm);
         interpret_token(vm, token);
-        token_free(token);
     }
 }
 

@@ -80,11 +80,6 @@ import_builtin(mod_t *mod) {
 
     define_primitive_0(mod, "exit", x_exit);
 
-    // syntax
-
-    define_primitive(mod, "@var", x_define_variable);
-    define_primitive(mod, "@def", x_define_function);
-
     // string
 
     define_primitive_1(mod, "string?", x_string_p);

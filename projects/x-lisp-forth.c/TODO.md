@@ -1,5 +1,3 @@
-`interpret_token` -- dispatch to syntax function directly
-
 fix `@var` syntax -- use `@var <name> <body> @end`
 
 - var.test.fth
