@@ -283,3 +283,8 @@ string_next_line(const char *self, size_t *cursor_pointer) {
     *cursor_pointer = cursor;
     return line;
 }
+
+void
+string_print(const char *self) {
+    printf("%s", self);
+}

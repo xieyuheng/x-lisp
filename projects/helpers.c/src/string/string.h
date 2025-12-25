@@ -34,3 +34,5 @@ bool string_equal_mod_case(const char *left, const char *right);
 
 char *string_next_word(const char *self, size_t *cursor_pointer);
 char *string_next_line(const char *self, size_t *cursor_pointer);
+
+void string_print(const char *self);
