@@ -52,3 +52,8 @@ mod_lookup_or_placeholder(mod_t *self, const char *name) {
 
     return define_placeholder(self, name);
 }
+
+void
+mod_run(mod_t *mod) {
+    (void) mod;
+}

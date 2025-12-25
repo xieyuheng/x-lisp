@@ -76,6 +76,10 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "println", x_println);
     define_primitive_1(mod, "println-non-void", x_println_non_void);
 
+    // system
+
+    define_primitive_0(mod, "exit", x_exit);
+
     // syntax
 
     define_primitive(mod, "@var", x_define_variable);
