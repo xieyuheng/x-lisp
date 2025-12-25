@@ -108,3 +108,13 @@ int_relu(int64_t self) {
         return 0;
     }
 }
+
+void
+int_print(int64_t self) {
+    printf("%" PRId64, self);
+}
+
+void
+uint_print(uint64_t self) {
+    printf("%" PRIu64, self);
+}

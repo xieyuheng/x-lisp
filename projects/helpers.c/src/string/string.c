@@ -286,5 +286,5 @@ string_next_line(const char *self, size_t *cursor_pointer) {
 
 void
 string_print(const char *self) {
-    printf("%s", self);
+    printf("%s" , self);
 }

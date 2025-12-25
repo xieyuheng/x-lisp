@@ -13,3 +13,6 @@ char *uint_to_superscript(uint64_t self);
 size_t uint_decimal_length(uint64_t self);
 
 uint64_t int_relu(int64_t self);
+
+void int_print(int64_t self);
+void uint_print(uint64_t self);
