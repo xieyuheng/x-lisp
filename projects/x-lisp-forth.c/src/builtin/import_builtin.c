@@ -111,8 +111,8 @@ import_builtin(mod_t *mod) {
 
     // list
 
-    define_primitive_1(mod, "anything-list?", x_anything_list_p);
     define_primitive_0(mod, "make-list", x_make_list);
+    define_primitive_1(mod, "anything-list?", x_anything_list_p);
     define_primitive_1(mod, "list-copy", x_list_copy);
     define_primitive_1(mod, "list-length", x_list_length);
     define_primitive_1(mod, "list-empty?", x_list_empty_p);

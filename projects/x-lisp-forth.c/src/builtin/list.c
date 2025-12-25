@@ -1,13 +1,13 @@
 #include "index.h"
 
 value_t
-x_anything_list_p(value_t value) {
-    return x_bool(tael_p(value));
+x_make_list(void) {
+    return x_object(make_tael());
 }
 
 value_t
-x_make_list(void) {
-    return x_object(make_tael());
+x_anything_list_p(value_t value) {
+    return x_bool(tael_p(value));
 }
 
 value_t
