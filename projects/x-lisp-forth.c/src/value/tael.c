@@ -59,28 +59,56 @@ tael_equal(tael_t *lhs, tael_t *rhs) {
     return true;
 }
 
-void
-tael_print(tael_t *self) {
-    printf("[");
-
+static void
+tael_print_elements(tael_t *self) {
     for (size_t i = 0; i < array_length(self->elements); i++) {
         value_print(tael_get_element(self, i));
         if (i < array_length(self->elements) - 1) {
             printf(" ");
         }
     }
+}
 
+static void
+tael_print_attributes(tael_t *self) {
     record_iter_t iter;
     record_iter_init(&iter, self->attributes);
+
     const char *key = record_iter_next_key(&iter);
+
+    // no leading space for the first attribute
+    if (key) {
+        value_t value = tael_get_attribute(self, key);
+        printf(":%s ", key);
+        value_print(value);
+        key = record_iter_next_key(&iter);
+    }
+
     while (key) {
         value_t value = tael_get_attribute(self, key);
         printf(" :%s ", key);
         value_print(value);
         key = record_iter_next_key(&iter);
     }
+}
 
-    printf("]");
+void
+tael_print(tael_t *self) {
+    if (array_is_empty(self->elements)) {
+        printf("[");
+        tael_print_attributes(self);
+        printf("]");
+    } else if (record_is_empty(self->attributes)) {
+        printf("[");
+        tael_print_attributes(self);
+        printf("]");
+    } else {
+        printf("[");
+        tael_print_elements(self);
+        printf(" ");
+        tael_print_attributes(self);
+        printf("]");
+    }
 }
 
 struct tael_child_iter_t {
