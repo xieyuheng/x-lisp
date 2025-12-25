@@ -133,4 +133,20 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "list-last", x_list_last);
     define_primitive_1(mod, "list-reverse!", x_list_reverse_mut);
     define_primitive_1(mod, "list-reverse", x_list_reverse);
+
+    // record
+    // define_primitive_1(mod, "anything-record?", x_anything_record_p);
+    // define_primitive_1(mod, "record-copy", x_record_copy);
+    // define_primitive_1(mod, "record-length", x_record_length);
+    // define_primitive_1(mod, "record-empty?", x_record_empty_p);
+    // (record-keys record)
+    // (record-values record)
+    // (record-entries record)
+    // (record-append record rest)
+    // (record-get key record)
+    // (record-has? key record)
+    // (record-put key value record)
+    // (record-put! key value record)
+    // (record-delete key record)
+    // (record-delete! key record)
 }
