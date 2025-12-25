@@ -10,6 +10,8 @@ struct vm_t {
 vm_t *make_vm(mod_t *mod, list_t *tokens);
 void vm_free(vm_t *self);
 
+mod_t *vm_mod(const vm_t *self);
+
 value_t vm_pop(vm_t *vm);
 void vm_push(vm_t *vm, value_t value);
 

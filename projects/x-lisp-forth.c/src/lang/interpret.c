@@ -67,7 +67,7 @@ interpret_token(vm_t *vm, token_t *token) {
             return;
         }
 
-        definition_t *definition = mod_lookup(vm->mod, token->content);
+        definition_t *definition = mod_lookup(vm_mod(vm), token->content);
         if (!definition) {
             who_printf("undefined name: %s\n", token->content);
             exit(1);

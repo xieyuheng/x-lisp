@@ -3,8 +3,9 @@
 [lang] `vm_push_frame`
 [lang] `vm_frame_count`
 [lang] `vm_value_count`
-[lang] `vm_mod`
+
 [lang] hide `vm_t`
+
 [lang] `vm_drop_frame` -- perform gc
 
 # read-execute-loop

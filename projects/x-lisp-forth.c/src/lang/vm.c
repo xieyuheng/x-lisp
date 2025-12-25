@@ -18,14 +18,9 @@ vm_free(vm_t *self) {
     free(self);
 }
 
-void
-vm_interpret(vm_t *vm) {
-    while (!list_is_empty(vm->tokens)) {
-        token_t *token = list_shift(vm->tokens);
-        interpret_token(vm, token);
-        token_free(token);
-        vm_perform_gc(vm);
-    }
+mod_t *
+vm_mod(const vm_t *self) {
+    return self->mod;
 }
 
 inline value_t
@@ -46,6 +41,16 @@ vm_next_token(vm_t *vm) {
 bool
 vm_no_more_tokens(vm_t *vm) {
     return list_is_empty(vm->tokens);
+}
+
+void
+vm_interpret(vm_t *vm) {
+    while (!list_is_empty(vm->tokens)) {
+        token_t *token = list_shift(vm->tokens);
+        interpret_token(vm, token);
+        token_free(token);
+        vm_perform_gc(vm);
+    }
 }
 
 inline void
@@ -330,7 +335,7 @@ vm_gc_roots_in_frame_stack(vm_t *vm, array_t *roots) {
 static void
 vm_gc_roots_in_mod(vm_t *vm, array_t *roots) {
     record_iter_t iter;
-    record_iter_init(&iter, vm->mod->definitions);
+    record_iter_init(&iter, vm_mod(vm)->definitions);
     definition_t *definition = record_iter_next_value(&iter);
     while (definition) {
         if (definition->kind == CONSTANT_DEFINITION) {

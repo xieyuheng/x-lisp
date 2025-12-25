@@ -251,7 +251,7 @@ compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
         return;
     }
 
-    definition_t *found = mod_lookup_or_placeholder(vm->mod, name);
+    definition_t *found = mod_lookup_or_placeholder(vm_mod(vm), name);
     if (found->kind == PLACEHOLDER_DEFINITION) {
         size_t code_index = definition->function_definition.code_length + 1;
         placeholder_definition_hold_place(found, definition, code_index);
@@ -268,7 +268,7 @@ static void
 compile_ref(vm_t *vm, definition_t *definition) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
-    definition_t *found = mod_lookup_or_placeholder(vm->mod, token->content);
+    definition_t *found = mod_lookup_or_placeholder(vm_mod(vm), token->content);
     token_free(token);
 
     if (found->kind == PLACEHOLDER_DEFINITION) {
@@ -286,7 +286,7 @@ static void
 compile_tail_call(vm_t *vm, definition_t *definition) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
-    definition_t *found = mod_lookup_or_placeholder(vm->mod, token->content);
+    definition_t *found = mod_lookup_or_placeholder(vm_mod(vm), token->content);
     token_free(token);
 
     if (found->kind == PLACEHOLDER_DEFINITION) {
