@@ -56,3 +56,21 @@ value_t
 x_record_delete(value_t key, value_t record) {
     return x_record_delete_mut(key, x_record_copy(record));
 }
+
+value_t
+x_record_merge(value_t left, value_t right) {
+    tael_t *new_tael = tael_copy_only_attributes(to_tael(left));
+    record_iter_t iter;
+    record_iter_init(&iter, to_tael(right)->attributes);
+    const hash_entry_t *entry = record_iter_next_entry(&iter);
+    while (entry) {
+        value_t value = (value_t) entry->value;
+        if (!null_p(value)) {
+            tael_put_attribute(new_tael, entry->key, value);
+        }
+
+        entry = record_iter_next_entry(&iter);
+    }
+
+    return x_object(new_tael);
+}

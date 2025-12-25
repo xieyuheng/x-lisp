@@ -11,3 +11,4 @@ x_fn_3_t x_record_put_mut;
 x_fn_3_t x_record_put;
 x_fn_2_t x_record_delete_mut;
 x_fn_2_t x_record_delete;
+x_fn_2_t x_record_merge;

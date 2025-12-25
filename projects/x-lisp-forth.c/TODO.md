@@ -1,6 +1,5 @@
 # record
 
-[builtin] `record-append`
 [builtin] `record-[keys|values|entries]`
 
 # xhash

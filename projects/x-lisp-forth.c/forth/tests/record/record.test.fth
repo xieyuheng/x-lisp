@@ -33,3 +33,25 @@
   'a record2 record-delete record-length 2 @assert-equal
   record2 record-length 3 @assert-equal
 @end
+
+@begin
+  make-record [record]
+  'a 1 record record-put! @drop
+  'b 2 record record-put! @drop
+  'c 3 record record-put! @drop
+
+  make-record [record2]
+  'a null record2 record-put! @drop
+  'x 1 record2 record-put! @drop
+  'y 2 record2 record-put! @drop
+  'z 3 record2 record-put! @drop
+
+  record record2 record-merge [record3]
+
+  'a record3 record-get 1 @assert-equal
+  'b record3 record-get 2 @assert-equal
+  'c record3 record-get 3 @assert-equal
+  'x record3 record-get 1 @assert-equal
+  'y record3 record-get 2 @assert-equal
+  'z record3 record-get 3 @assert-equal
+@end

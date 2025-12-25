@@ -144,7 +144,7 @@ import_builtin(mod_t *mod) {
     // (record-keys record)
     // (record-values record)
     // (record-entries record)
-    // (record-append record rest)
+    define_primitive_2(mod, "record-merge", x_record_merge);
     define_primitive_2(mod, "record-get", x_record_get);
     define_primitive_2(mod, "record-has?", x_record_has_p);
     define_primitive_3(mod, "record-put!", x_record_put_mut);
