@@ -16,12 +16,12 @@ void
 compile_function(vm_t *vm, definition_t *definition) {
     assert(definition->kind == FUNCTION_DEFINITION);
     while (true) {
-        if (list_is_empty(vm->tokens)) {
+        if (vm_no_more_tokens(vm)) {
             who_printf("missing @end\n");
             exit(1);
         }
 
-        token_t *token = list_shift(vm->tokens);
+        token_t *token = vm_next_token(vm);
         if (string_equal(token->content, "@end")) {
             compile_return(definition);
             token_free(token);
@@ -150,7 +150,7 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
 
 void
 compile_quote(vm_t *vm, definition_t *definition) {
-    token_t *token = list_shift(vm->tokens);
+    token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     struct instr_t instr;
     instr.op = OP_LITERAL;
@@ -266,7 +266,7 @@ compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
 
 static void
 compile_ref(vm_t *vm, definition_t *definition) {
-    token_t *token = list_shift(vm->tokens);
+    token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     definition_t *found = mod_lookup_or_placeholder(vm->mod, token->content);
     token_free(token);
@@ -284,7 +284,7 @@ compile_ref(vm_t *vm, definition_t *definition) {
 
 static void
 compile_tail_call(vm_t *vm, definition_t *definition) {
-    token_t *token = list_shift(vm->tokens);
+    token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     definition_t *found = mod_lookup_or_placeholder(vm->mod, token->content);
     token_free(token);
@@ -321,12 +321,12 @@ compile_parameters(vm_t *vm, definition_t *definition, const char *end_word) {
     stack_t *local_name_stack = make_string_stack();
 
     while (true) {
-        if (list_is_empty(vm->tokens)) {
+        if (vm_no_more_tokens(vm)) {
             who_printf("missing end_word: %s\n", end_word);
             exit(1);
         }
 
-        token_t *token = list_shift(vm->tokens);
+        token_t *token = vm_next_token(vm);
         if (string_equal(token->content, end_word)) {
             token_free(token);
             compile_local_store_stack(definition, local_name_stack);
@@ -348,12 +348,12 @@ compile_bindings(vm_t *vm, definition_t *definition, const char *end_word) {
     stack_t *local_name_stack = make_string_stack();
 
     while (true) {
-        if (list_is_empty(vm->tokens)) {
+        if (vm_no_more_tokens(vm)) {
             who_printf("missing end_word: %s\n", end_word);
             exit(1);
         }
 
-        token_t *token = list_shift(vm->tokens);
+        token_t *token = vm_next_token(vm);
         if (string_equal(token->content, end_word)) {
             token_free(token);
             compile_local_store_stack(definition, local_name_stack);
@@ -401,13 +401,13 @@ compile_if(
     function_definition_append_instr(definition, instr);
 
     while (true) {
-        if (list_is_empty(vm->tokens)) {
+        if (vm_no_more_tokens(vm)) {
             who_printf("missing then_word: %s\n", then_word);
             token_meta_report(meta);
             exit(1);
         }
 
-        token_t *token = list_shift(vm->tokens);
+        token_t *token = vm_next_token(vm);
         if (string_equal(token->content, then_word)) {
             struct instr_t instr;
             instr.op = OP_JUMP_IF_NOT;
@@ -451,13 +451,13 @@ compile_else(
     struct token_meta_t meta
 ) {
     while (true) {
-        if (list_is_empty(vm->tokens)) {
+        if (vm_no_more_tokens(vm)) {
             who_printf("missing then_word: %s\n", then_word);
             token_meta_report(meta);
             exit(1);
         }
 
-        token_t *token = list_shift(vm->tokens);
+        token_t *token = vm_next_token(vm);
         if (string_equal(token->content, then_word)) {
             struct instr_t instr;
             instr.op = OP_JUMP;

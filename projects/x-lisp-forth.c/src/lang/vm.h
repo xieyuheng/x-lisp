@@ -13,6 +13,9 @@ void vm_free(vm_t *self);
 value_t vm_pop(vm_t *vm);
 void vm_push(vm_t *vm, value_t value);
 
+token_t *vm_next_token(vm_t *vm);
+bool vm_no_more_tokens(vm_t *vm);
+
 void vm_interpret(vm_t *vm);
 
 void vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr);

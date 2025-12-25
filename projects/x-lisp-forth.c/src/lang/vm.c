@@ -38,6 +38,16 @@ vm_push(vm_t *vm, value_t value) {
     stack_push(vm->value_stack, (void *) value);
 }
 
+token_t *
+vm_next_token(vm_t *vm) {
+    return list_shift(vm->tokens);
+}
+
+bool
+vm_no_more_tokens(vm_t *vm) {
+    return list_is_empty(vm->tokens);
+}
+
 inline void
 vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     switch (instr.op) {

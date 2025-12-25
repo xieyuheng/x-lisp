@@ -3,7 +3,7 @@
 void
 x_define_constant(vm_t *vm) {
     value_t value = vm_pop(vm);
-    token_t *token = list_shift(vm->tokens);
+    token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     define_constant(vm->mod, token->content, value);
     token_free(token);
@@ -12,7 +12,7 @@ x_define_constant(vm_t *vm) {
 void
 x_define_variable(vm_t *vm) {
     value_t value = vm_pop(vm);
-    token_t *token = list_shift(vm->tokens);
+    token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     define_variable(vm->mod, token->content, value);
     token_free(token);
@@ -20,7 +20,7 @@ x_define_variable(vm_t *vm) {
 
 void
 x_define_function(vm_t *vm) {
-    token_t *token = list_shift(vm->tokens);
+    token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     definition_t *definition = define_function(vm->mod, token->content);
     token_free(token);
