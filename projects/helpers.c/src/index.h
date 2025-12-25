@@ -4,6 +4,7 @@
 #include "memory/index.h"
 #include "char/index.h"
 #include "string/index.h"
+#include "console/index.h"
 #include "list/index.h"
 #include "hash/index.h"
 #include "record/index.h"
