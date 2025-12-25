@@ -32,7 +32,15 @@ x_record_get(value_t key, value_t record) {
 
 value_t
 x_record_has_p(value_t key, value_t record) {
-    return x_equal_p(x_record_get(key, record), x_null);
+    return x_bool(!equal_p(x_record_get(key, record), x_null));
+}
+
+value_t
+x_record_has_key_p(value_t key, value_t record) {
+    return x_bool(
+        record_has(
+            to_tael(record)->attributes,
+            symbol_string(to_symbol(key))));
 }
 
 value_t

@@ -55,6 +55,16 @@
   'z record3 record-get 3 @assert-equal
 @end
 
+@begin -- record-has-key?
+  make-record [record]
+  'a 1 record record-put! @drop
+  'b null record record-put! @drop
+  'c 3 record record-put! @drop
+
+  'b record record-has? not @assert
+  'b record record-has-key? @assert
+@end
+
 @begin -- record-[keys|values|entries]
   make-record [record]
   'a 1 record record-put! @drop
