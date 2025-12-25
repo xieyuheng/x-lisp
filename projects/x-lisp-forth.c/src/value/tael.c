@@ -180,6 +180,11 @@ tael_put_attribute(tael_t *self, const char *key, value_t value) {
     record_put(self->attributes, key, (void *) value);
 }
 
+inline void
+tael_delete_attribute(tael_t *self, const char *key) {
+    record_delete(self->attributes, key);
+}
+
 tael_t *
 tael_copy(tael_t *self) {
     tael_t *new_tael = make_tael();

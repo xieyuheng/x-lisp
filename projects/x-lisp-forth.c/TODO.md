@@ -1,6 +1,5 @@
 # record
 
-[builtin] `record` curd API
 [builtin] `record-append`
 [builtin] `record-[keys|values|entries]`
 

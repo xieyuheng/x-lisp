@@ -145,10 +145,10 @@ import_builtin(mod_t *mod) {
     // (record-values record)
     // (record-entries record)
     // (record-append record rest)
-    // define_primitive_2(mod, "record-get", x_record_get);
-    // define_primitive_2(mod, "record-has?", x_record_has_p);
-    // define_primitive_3(mod, "record-put!", x_record_put_mut);
-    // define_primitive_3(mod, "record-put", x_record_put);
-    // define_primitive_2(mod, "record-delete!", x_record_delete_mut);
-    // define_primitive_2(mod, "record-delete", x_record_delete);
+    define_primitive_2(mod, "record-get", x_record_get);
+    define_primitive_2(mod, "record-has?", x_record_has_p);
+    define_primitive_3(mod, "record-put!", x_record_put_mut);
+    define_primitive_3(mod, "record-put", x_record_put);
+    define_primitive_2(mod, "record-delete!", x_record_delete_mut);
+    define_primitive_2(mod, "record-delete", x_record_delete);
 }

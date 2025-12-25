@@ -30,22 +30,29 @@ x_record_get(value_t key, value_t record) {
     return tael_get_attribute(to_tael(record), symbol_string(to_symbol(key)));
 }
 
-// value_t
-// x_record_has_p(value_t key, value_t record) {
-// }
+value_t
+x_record_has_p(value_t key, value_t record) {
+    return x_equal_p(x_record_get(key, record), x_null);
+}
 
-// value_t
-// x_record_put_mut(value_t key, value_t value, value_t record) {
-// }
+value_t
+x_record_put_mut(value_t key, value_t value, value_t record) {
+    tael_put_attribute(to_tael(record), symbol_string(to_symbol(key)), value);
+    return record;
+}
 
-// value_t
-// x_record_put(value_t key, value_t value, value_t record) {
-// }
+value_t
+x_record_put(value_t key, value_t value, value_t record) {
+    return x_record_put_mut(key, value, x_record_copy(record));
+}
 
-// value_t
-// x_record_delete_mut(value_t key, value_t record) {
-// }
+value_t
+x_record_delete_mut(value_t key, value_t record) {
+    tael_delete_attribute(to_tael(record), symbol_string(to_symbol(key)));
+    return record;
+}
 
-// value_t
-// x_record_delete(value_t key, value_t record) {
-// }
+value_t
+x_record_delete(value_t key, value_t record) {
+    return x_record_delete_mut(key, x_record_copy(record));
+}

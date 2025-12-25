@@ -28,6 +28,7 @@ void tael_unshift_element(tael_t *self, value_t value);
 
 value_t tael_get_attribute(const tael_t *self, const char *key);
 void tael_put_attribute(tael_t *self, const char *key, value_t value);
+void tael_delete_attribute(tael_t *self, const char *key);
 
 tael_t *tael_copy(tael_t *self);
 tael_t *tael_copy_only_elements(tael_t *self);
