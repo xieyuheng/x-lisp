@@ -1,5 +1,3 @@
-[helpers.c] `hash_get_entry` & `record_get_entry`
-
 # record
 
 [value] `tael_get_attribute` -- return null when not exists

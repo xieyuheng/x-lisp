@@ -15,6 +15,7 @@ size_t hash_length(const hash_t *self);
 
 bool hash_has(hash_t *self, const void *key);
 void *hash_get(hash_t *self, const void *key);
+hash_entry_t *hash_get_entry(hash_t *self, const void *key);
 
 // - return true if success.
 // - will own the key if success.

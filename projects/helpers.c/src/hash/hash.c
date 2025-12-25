@@ -149,7 +149,7 @@ hash_key_equal(hash_t *self, const void *key1, const void *key2) {
     return self->key_equal_fn(key1, key2);
 }
 
-static hash_entry_t *
+hash_entry_t *
 hash_get_entry(hash_t *self, const void *key) {
     size_t index = hash_key_index(self, key);
     hash_entry_t *entry = self->entries[index];
