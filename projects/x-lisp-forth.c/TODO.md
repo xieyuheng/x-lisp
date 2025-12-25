@@ -21,10 +21,7 @@
 
 # circular object
 
-[value] `tael_print` -- support circular
-[value] `curry_print` -- support circular
-[value] `xhash_print` -- support circular
-[value] `xset_print` -- support circular
+[value] `printer` -- holding state to support circular object
 
 # read-execute-loop
 
