@@ -32,7 +32,4 @@ typedef enum {
     OP_ASSERT,
     OP_ASSERT_EQUAL,
     OP_ASSERT_NOT_EQUAL,
-    OP_LITERAL_STRING,
-    OP_LITERAL_SYMBOL,
-    OP_LITERAL_HASHTAG,
 } op_t;

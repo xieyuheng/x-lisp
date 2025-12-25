@@ -80,9 +80,9 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
 
     case STRING_TOKEN: {
         struct instr_t instr;
-        instr.op = OP_LITERAL_STRING;
-        instr.literal_string.length = string_length(token->content);
-        instr.literal_string.content = token->content;
+        instr.op = OP_LITERAL;
+        instr.literal.value =
+            x_object(make_static_xstring(string_copy(token->content)));
         function_definition_append_instr(definition, instr);
         token_free(token);
         return;
@@ -134,9 +134,8 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
 
     case HASHTAG_TOKEN: {
         struct instr_t instr;
-        instr.op = OP_LITERAL_HASHTAG;
-        instr.literal_hashtag.length = string_length(token->content);
-        instr.literal_hashtag.content = token->content;
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_object(intern_hashtag(token->content));
         function_definition_append_instr(definition, instr);
         token_free(token);
         return;
@@ -154,9 +153,8 @@ compile_quote(vm_t *vm, definition_t *definition) {
     token_t *token = list_shift(vm->tokens);
     assert(token->kind == SYMBOL_TOKEN);
     struct instr_t instr;
-    instr.op = OP_LITERAL_SYMBOL;
-    instr.literal_symbol.length = string_length(token->content);
-    instr.literal_symbol.content = token->content;
+    instr.op = OP_LITERAL;
+    instr.literal.value = x_object(intern_symbol(token->content));
     function_definition_append_instr(definition, instr);
     token_free(token);
 }

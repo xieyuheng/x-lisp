@@ -72,27 +72,6 @@ instr_length(struct instr_t instr) {
     case OP_ASSERT_NOT_EQUAL: {
         return 1 + sizeof(token_t *);
     }
-
-    case OP_LITERAL_STRING: {
-        return 1
-            + sizeof(size_t)
-            + string_length(instr.literal_string.content)
-            + 1;
-    }
-
-    case OP_LITERAL_SYMBOL: {
-        return 1
-            + sizeof(size_t)
-            + string_length(instr.literal_symbol.content)
-            + 1;
-    }
-
-    case OP_LITERAL_HASHTAG: {
-        return 1
-            + sizeof(size_t)
-            + string_length(instr.literal_hashtag.content)
-            + 1;
-    }
     }
 
     unreachable();
@@ -220,33 +199,6 @@ instr_encode(uint8_t *code, struct instr_t instr) {
         memory_store_little_endian(code + 1, instr.assert_not_equal.token);
         return;
     }
-
-    case OP_LITERAL_STRING: {
-        memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.literal_string.length);
-        memory_copy(code + 1 + sizeof instr.literal_string.length,
-                    instr.literal_string.content,
-                    instr.literal_string.length + 1);
-        return;
-    }
-
-    case OP_LITERAL_SYMBOL: {
-        memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.literal_symbol.length);
-        memory_copy(code + 1 + sizeof instr.literal_symbol.length,
-                    instr.literal_symbol.content,
-                    instr.literal_symbol.length + 1);
-        return;
-    }
-
-    case OP_LITERAL_HASHTAG: {
-        memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.literal_hashtag.length);
-        memory_copy(code + 1 + sizeof instr.literal_hashtag.length,
-                    instr.literal_hashtag.content,
-                    instr.literal_hashtag.length + 1);
-        return;
-    }
     }
 
     unreachable();
@@ -372,30 +324,6 @@ instr_decode(uint8_t *code) {
     case OP_ASSERT_NOT_EQUAL: {
         struct instr_t instr = { .op = code[0] };
         memory_load_little_endian(code + 1, instr.assert_not_equal.token);
-        return instr;
-    }
-
-    case OP_LITERAL_STRING: {
-        struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.literal_string.length);
-        instr.literal_string.content =
-            (char *) code + 1 + sizeof instr.literal_string.length;
-        return instr;
-    }
-
-    case OP_LITERAL_SYMBOL: {
-        struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.literal_symbol.length);
-        instr.literal_symbol.content =
-            (char *) code + 1 + sizeof instr.literal_symbol.length;
-        return instr;
-    }
-
-    case OP_LITERAL_HASHTAG: {
-        struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.literal_hashtag.length);
-        instr.literal_hashtag.content =
-            (char *) code + 1 + sizeof instr.literal_hashtag.length;
         return instr;
     }
     }

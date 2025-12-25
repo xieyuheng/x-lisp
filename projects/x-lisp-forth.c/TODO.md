@@ -1,7 +1,4 @@
-[instr] remove `OP_LITERAL_STRING` & `OP_LITERAL_SYMBOL` & `OP_LITERAL_HASHTAG`
 [instr] remove `OP_LITERAL_INT` & `OP_LITERAL_FLOAT`
-
-[value] `make_static_xstring` -- do NOT add to `global_gc`
 
 # record
 
