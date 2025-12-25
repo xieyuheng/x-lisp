@@ -49,7 +49,6 @@ interpret(vm_t *vm) {
         token_t *token = vm_next_token(vm);
         interpret_token(vm, token);
         token_free(token);
-        vm_perform_gc(vm);
     }
 }
 

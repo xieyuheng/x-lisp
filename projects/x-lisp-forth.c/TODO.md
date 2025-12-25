@@ -1,6 +1,8 @@
+`interpret_token` -- dispatch to syntax function directly
+
 fix `@var` syntax -- use `@var <name> <body> @end`
 
-fix var.test.fth
+- var.test.fth
 
 # xhash
 
