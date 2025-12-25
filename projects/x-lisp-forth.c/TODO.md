@@ -1,6 +1,8 @@
 # record
-
 [builtin] `x_record_length` & `x_record_empty_p`
+[builtin] `record` curd API
+[builtin] `record-append`
+[builtin] `record-[keys|values|entries]`
 
 # xhash
 

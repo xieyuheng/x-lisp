@@ -14,6 +14,7 @@ void record_free(record_t *self);
 void record_put_free_fn(record_t *self, free_fn_t *free_fn);
 
 size_t record_length(const record_t *self);
+bool record_is_empty(const record_t *self);
 
 bool record_has(record_t *self, const char *key);
 void *record_get(record_t *self, const char *key);

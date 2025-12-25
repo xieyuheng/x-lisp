@@ -44,6 +44,11 @@ record_length(const record_t *self) {
 }
 
 bool
+record_is_empty(const record_t *self) {
+    return hash_length(self->hash) == 0;
+}
+
+bool
 record_has(record_t *self, const char *key) {
     return hash_has(self->hash, key);
 }
