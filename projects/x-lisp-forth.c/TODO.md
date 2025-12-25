@@ -1,10 +1,20 @@
-[lang] `variable_definition` have optional setup code -- like function
-[lang] `load` -- call `setup_variables`
-[lang] `define_variable_with_setup`
-[lang] `syntax_var` -- call `define_variable_with_setup`
+[lang] `function_t` -- setup
 
-- use `@var <name> <body> @end`
-- var.test.fth
+[lang] `function_t` -- extract from `function_definition`
+
+[lang] `function_definition` -- has `function_t`
+
+- [lang] `placeholder_t` -- has `function` instead of `definition`
+- [lang] `compile` -- take `function` instead of `definition`
+
+[lang] `variable_definition` -- has optional `function_t`
+
+[lang] `stage2` call `setup_variable`
+[lang] `setup_variable`
+
+[lang] `define_variable_with_setup` -- for `@var <name> <body> @end`
+[lang] `syntax_var` -- call `define_variable_with_setup`
+[lang] var.test.fth
 
 [lang] `interpret_token` -- use `syntax_table` to do dispatch -- instead of a list of if
 
