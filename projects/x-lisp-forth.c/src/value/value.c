@@ -78,8 +78,8 @@ x_equal_p(value_t lhs, value_t rhs) {
 
 void
 init_constant_values(void) {
-    x_true = x_object(intern_hashtag("#t"));
-    x_false = x_object(intern_hashtag("#f"));
-    x_null = x_object(intern_hashtag("#null"));
-    x_void = x_object(intern_hashtag("#void"));
+    x_true = x_object(intern_hashtag("t"));
+    x_false = x_object(intern_hashtag("f"));
+    x_null = x_object(intern_hashtag("null"));
+    x_void = x_object(intern_hashtag("void"));
 }
