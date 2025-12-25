@@ -1,4 +1,4 @@
 #pragma once
 
-x_fn_t syntax_var;
-x_fn_t syntax_def;
+void syntax_var(vm_t *vm);
+void syntax_def(vm_t *vm);
