@@ -1,8 +1,5 @@
 fix `@var` syntax -- use `@var <name> <body> @end`
 
-[lang] remove `vm_execute_until`
-[lang] remove `call_definition_now`
-
 fix var.test.fth
 
 # xhash

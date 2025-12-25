@@ -1,4 +1,4 @@
--- 1 @var x
+-- @var x 1 @end
 
 -- @def main
 --   x 1 @assert-equal

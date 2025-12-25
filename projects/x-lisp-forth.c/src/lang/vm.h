@@ -19,6 +19,5 @@ bool vm_no_more_tokens(vm_t *vm);
 void vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr);
 void vm_execute_step(vm_t *vm);
 void vm_execute(vm_t *vm);
-void vm_execute_until(vm_t *vm, size_t base_length);
 
 void vm_perform_gc(vm_t *vm);

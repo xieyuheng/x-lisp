@@ -26,19 +26,6 @@ call_definition(vm_t *vm, const definition_t *definition) {
     }
 }
 
-void
-call_definition_now(vm_t *vm, definition_t *definition) {
-    if (definition->kind == FUNCTION_DEFINITION) {
-        // execute the definition now!
-        size_t base_length = vm_frame_count(vm);
-        vm_push_frame(vm, make_frame_from_definition(definition));
-        vm_execute_until(vm, base_length);
-        return;
-    }
-
-    call_definition(vm, definition);
-}
-
 inline void
 call_primitive(vm_t *vm, const primitive_t *primitive) {
     switch (primitive->fn_kind) {

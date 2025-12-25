@@ -320,13 +320,6 @@ vm_execute(vm_t *vm) {
     }
 }
 
-void
-vm_execute_until(vm_t *vm, size_t base_length) {
-    while (stack_length(vm->frame_stack) > base_length) {
-        vm_execute_step(vm);
-    }
-}
-
 static void
 vm_gc_roots_in_value_stack(vm_t *vm, array_t *roots) {
     for (size_t i = 0; i < stack_length(vm->value_stack); i++) {
