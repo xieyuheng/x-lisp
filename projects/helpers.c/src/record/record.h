@@ -18,6 +18,7 @@ bool record_is_empty(const record_t *self);
 
 bool record_has(record_t *self, const char *key);
 void *record_get(record_t *self, const char *key);
+hash_entry_t *record_get_entry(record_t *self, const char *key);
 
 // different from hash,
 // insert and put does not own the `key` argument.

@@ -58,6 +58,11 @@ record_get(record_t *self, const char *key) {
     return hash_get(self->hash, key);
 }
 
+hash_entry_t *
+record_get_entry(record_t *self, const char *key) {
+    return hash_get_entry(self->hash, key);
+}
+
 bool
 record_insert(record_t *self, const char *key, void *value) {
     return hash_insert(self->hash, string_copy(key), value);
