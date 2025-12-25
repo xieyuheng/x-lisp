@@ -1,7 +1,3 @@
-[lang] `vm_top_frame`
-[lang] `vm_drop_frame`
-[lang] `vm_push_frame`
-[lang] `vm_frame_count`
 [lang] `vm_value_count`
 
 [lang] hide `vm_t`

@@ -31,7 +31,7 @@ prepare_to_apply_again(vm_t *vm, size_t n) {
               .literal.value = x_int(n) },
             { .op = OP_TAIL_APPLY },
         });
-    stack_push(vm->frame_stack, make_frame_from_code(code));
+    vm_push_frame(vm, make_frame_from_code(code));
 }
 
 void

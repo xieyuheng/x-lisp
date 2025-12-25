@@ -15,6 +15,11 @@ mod_t *vm_mod(const vm_t *self);
 value_t vm_pop(vm_t *vm);
 void vm_push(vm_t *vm, value_t value);
 
+frame_t *vm_top_frame(const vm_t *vm);
+void vm_drop_frame(vm_t *vm);
+void vm_push_frame(vm_t *vm, frame_t *frame);
+size_t vm_frame_count(const vm_t *vm);
+
 token_t *vm_next_token(vm_t *vm);
 bool vm_no_more_tokens(vm_t *vm);
 

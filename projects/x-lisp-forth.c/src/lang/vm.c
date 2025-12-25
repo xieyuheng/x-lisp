@@ -33,6 +33,26 @@ vm_push(vm_t *vm, value_t value) {
     stack_push(vm->value_stack, (void *) value);
 }
 
+inline frame_t *
+vm_top_frame(const vm_t *vm) {
+    return stack_top(vm->frame_stack);
+}
+
+inline void
+vm_drop_frame(vm_t *vm) {
+    stack_pop(vm->frame_stack);
+}
+
+inline void
+vm_push_frame(vm_t *vm, frame_t *frame) {
+    stack_push(vm->frame_stack, frame);
+}
+
+inline size_t
+vm_frame_count(const vm_t *vm) {
+    return stack_length(vm->frame_stack);
+}
+
 token_t *
 vm_next_token(vm_t *vm) {
     return list_shift(vm->tokens);
