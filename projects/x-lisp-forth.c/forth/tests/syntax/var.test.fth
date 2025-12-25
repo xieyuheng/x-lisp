@@ -1,6 +1,7 @@
-1 @var n
-n 1 @assert-equal
+-- 1 @var x
 
-@begin
-  n 1 @assert-equal
-@end
+-- @begin
+--   x 1 @assert-equal
+--   2 @ref x @assign
+--   x 2 @assert-equal
+-- @end
