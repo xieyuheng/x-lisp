@@ -1,5 +1,6 @@
-fix `@var` syntax -- use `@var <name> <body> @end`
+[lang] `syntax_var` fix `@var` syntax
 
+- use `@var <name> <body> @end`
 - var.test.fth
 
 # xhash

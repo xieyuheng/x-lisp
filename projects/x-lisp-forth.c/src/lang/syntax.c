@@ -1,7 +1,7 @@
 #include "index.h"
 
 void
-x_define_variable(vm_t *vm) {
+syntax_var(vm_t *vm) {
     value_t value = vm_pop(vm);
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
@@ -10,7 +10,7 @@ x_define_variable(vm_t *vm) {
 }
 
 void
-x_define_function(vm_t *vm) {
+syntax_def(vm_t *vm) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     definition_t *definition = define_function(vm_mod(vm), token->content);

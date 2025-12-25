@@ -31,13 +31,13 @@ interpret_token(vm_t *vm, token_t *token) {
 
     case SYMBOL_TOKEN: {
         if (string_equal(token->content, "@var")) {
-            x_define_variable(vm);
+            syntax_var(vm);
             token_free(token);
             return;
         }
 
         if (string_equal(token->content, "@def")) {
-            x_define_function(vm);
+            syntax_def(vm);
             token_free(token);
             return;
         }
