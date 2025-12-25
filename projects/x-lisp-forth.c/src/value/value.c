@@ -21,7 +21,7 @@ value_print(value_t value) {
             buffer[end + 2] = '\0';
         }
 
-        fprintf(stdout, "%s", buffer);
+        printf("%s", buffer);
         return;
     }
 

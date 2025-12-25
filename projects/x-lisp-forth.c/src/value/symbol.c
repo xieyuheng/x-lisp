@@ -50,7 +50,8 @@ to_symbol(value_t value) {
 
 void
 symbol_print(const symbol_t *symbol) {
-    printf("'%s", symbol_string(symbol));
+    string_print("'");
+    string_print(symbol_string(symbol));
 }
 
 const object_class_t symbol_class = {

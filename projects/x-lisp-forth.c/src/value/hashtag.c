@@ -50,7 +50,8 @@ to_hashtag(value_t value) {
 
 void
 hashtag_print(const hashtag_t *hashtag) {
-    printf("#%s", hashtag_string(hashtag));
+    string_print("#");
+    string_print(hashtag_string(hashtag));
 }
 
 const object_class_t hashtag_class = {
