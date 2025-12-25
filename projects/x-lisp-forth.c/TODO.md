@@ -1,4 +1,4 @@
-[lang] `vm_next_token`
+[lang] `vm_next_token` & `vm_no_more_tokens`
 [lang] `vm_top_frame`
 [lang] `vm_drop_frame`
 [lang] `vm_push_frame`

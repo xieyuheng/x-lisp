@@ -34,8 +34,7 @@ call_definition(vm_t *vm, const definition_t *definition) {
 
 void
 call_definition_now(vm_t *vm, definition_t *definition) {
-    switch (definition->kind) {
-    case FUNCTION_DEFINITION: {
+    if (definition->kind == FUNCTION_DEFINITION) {
         // execute the definition now!
         size_t base_length = stack_length(vm->frame_stack);
         stack_push(vm->frame_stack, make_frame_from_definition(definition));
@@ -43,26 +42,7 @@ call_definition_now(vm_t *vm, definition_t *definition) {
         return;
     }
 
-    case PRIMITIVE_DEFINITION: {
-        call_primitive(vm, definition->primitive_definition.primitive);
-        return;
-    }
-
-    case VARIABLE_DEFINITION: {
-        vm_push(vm, definition->variable_definition.value);
-        return;
-    }
-
-    case CONSTANT_DEFINITION: {
-        vm_push(vm, definition->variable_definition.value);
-        return;
-    }
-
-    case PLACEHOLDER_DEFINITION: {
-        who_printf("undefined name: %s\n", definition->name);
-        exit(1);
-    }
-    }
+    call_definition(vm, definition);
 }
 
 inline void
