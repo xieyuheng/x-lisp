@@ -17,12 +17,3 @@ x_define_function(vm_t *vm) {
     compile_function(vm, definition);
     token_free(token);
 }
-
-void
-x_begin(vm_t *vm) {
-    char *name = string_copy("@begin (temporary)");
-    definition_t *definition = make_function_definition(vm_mod(vm), name);
-    compile_function(vm, definition);
-    call_definition_now(vm, definition);
-    definition_free(definition);
-}

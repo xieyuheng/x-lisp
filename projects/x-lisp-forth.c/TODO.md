@@ -1,4 +1,4 @@
-remove `x_begin`
+fix `@var` syntax -- use `@var <name> <body> @end`
 
 [lang] remove `vm_execute_until`
 [lang] remove `call_definition_now`

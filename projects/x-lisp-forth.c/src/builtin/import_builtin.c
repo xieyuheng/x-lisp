@@ -84,7 +84,6 @@ import_builtin(mod_t *mod) {
 
     define_primitive(mod, "@var", x_define_variable);
     define_primitive(mod, "@def", x_define_function);
-    define_primitive(mod, "@begin", x_begin);
 
     // string
 
