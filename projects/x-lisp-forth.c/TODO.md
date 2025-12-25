@@ -1,16 +1,12 @@
-[lang] `mod_run`
+[lang] `load` -- call `run` instead of `interpret`
 
 - add an unnamed frame to the bottom of the stack to exit the program
 - call `main`
 
-[main] `handle_run` -- call `mod_run`
-
-- [lang] remove `vm_interpret`
+fix tests -- use `@def main` instead of `@begin`
 
 remove `x_begin`
-
 [lang] remove `vm_execute_until`
-
 [lang] remove `call_definition_now`
 
 # xhash

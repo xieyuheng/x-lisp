@@ -71,16 +71,6 @@ vm_no_more_tokens(vm_t *vm) {
     return list_is_empty(vm->tokens);
 }
 
-void
-vm_interpret(vm_t *vm) {
-    while (!list_is_empty(vm->tokens)) {
-        token_t *token = list_shift(vm->tokens);
-        interpret_token(vm, token);
-        token_free(token);
-        vm_perform_gc(vm);
-    }
-}
-
 inline void
 vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     switch (instr.op) {

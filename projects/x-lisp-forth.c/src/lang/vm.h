@@ -16,8 +16,6 @@ size_t vm_frame_count(const vm_t *vm);
 token_t *vm_next_token(vm_t *vm);
 bool vm_no_more_tokens(vm_t *vm);
 
-void vm_interpret(vm_t *vm);
-
 void vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr);
 void vm_execute_step(vm_t *vm);
 void vm_execute(vm_t *vm);
