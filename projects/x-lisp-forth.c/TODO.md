@@ -1,5 +1,3 @@
-[lang] `vm_drop_frame` -- perform gc
-
 # read-execute-loop
 
 [lang] add `read-execute-loop` function to the bottom of the stack

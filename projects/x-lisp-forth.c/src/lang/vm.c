@@ -48,6 +48,7 @@ vm_top_frame(const vm_t *vm) {
 inline void
 vm_drop_frame(vm_t *vm) {
     stack_pop(vm->frame_stack);
+    vm_perform_gc(vm);
 }
 
 inline void
