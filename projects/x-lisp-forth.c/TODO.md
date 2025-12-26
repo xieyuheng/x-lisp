@@ -1,5 +1,3 @@
-[lang] `make_function` & `function_free`
-
 [lang] `function_definition` -- has `function_t`
 
 - [lang] `placeholder_t` -- has `function` instead of `definition`

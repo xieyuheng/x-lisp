@@ -12,3 +12,4 @@ struct function_t {
 };
 
 function_t *make_function(void);
+void function_free(function_t *self);
