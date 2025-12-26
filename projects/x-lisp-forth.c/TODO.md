@@ -1,5 +1,3 @@
-[lang] `variable_definition` -- has optional `function_t`
-
 [lang] `stage2` call `setup_variable`
 [lang] `setup_variable`
 

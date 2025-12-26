@@ -54,7 +54,7 @@ definition_free(definition_t *self) {
 
     switch (self->kind) {
     case FUNCTION_DEFINITION: {
-        free(self->function_definition.function);
+        function_free(self->function_definition.function);
         free(self);
         return;
     }
@@ -66,6 +66,8 @@ definition_free(definition_t *self) {
     }
 
     case VARIABLE_DEFINITION: {
+        if (self->variable_definition.function)
+            function_free(self->variable_definition.function);
         free(self);
         return;
     }
