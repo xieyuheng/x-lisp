@@ -315,7 +315,7 @@ vm_execute_step(vm_t *vm) {
 
 void
 vm_execute(vm_t *vm) {
-    while (true) {
+    while (vm_frame_count(vm) > 0) {
         vm_execute_step(vm);
     }
 }

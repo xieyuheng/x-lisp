@@ -67,7 +67,11 @@ stage1(vm_t *vm) {
 static void
 setup_variable(vm_t *vm, definition_t *definition) {
     assert(definition->kind == VARIABLE_DEFINITION);
-    (void) vm;
+    if (definition->variable_definition.function) {
+        uint8_t *code = definition->variable_definition.function->code_area;
+        vm_push_frame(vm, make_frame_from_code(code));
+        vm_execute(vm);
+    }
 }
 
 static void
@@ -97,7 +101,6 @@ prepare_tail_call(vm_t *vm, const char *name) {
 
 static void
 stage3(vm_t *vm) {
-    prepare_tail_call(vm, "exit");
     prepare_tail_call(vm, "main");
     vm_execute(vm);
 }
