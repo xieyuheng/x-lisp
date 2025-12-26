@@ -2,10 +2,11 @@
 
 void
 syntax_var(vm_t *vm) {
-    value_t value = vm_pop(vm);
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
-    define_variable(vm_mod(vm), token->content, value);
+    function_t *function = make_function();
+    define_variable_setup(vm_mod(vm), token->content, function);
+    compile_function(vm, function);
     token_free(token);
 }
 
