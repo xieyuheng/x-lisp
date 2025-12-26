@@ -71,6 +71,7 @@ setup_variable(vm_t *vm, definition_t *definition) {
         uint8_t *code = definition->variable_definition.function->code_area;
         vm_push_frame(vm, make_frame_from_code(code));
         vm_execute(vm);
+        definition->variable_definition.value = vm_pop(vm);
     }
 }
 
