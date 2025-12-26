@@ -64,9 +64,8 @@ x-lisp 的首要目标是加快新语言开发的速度。
   - [x] value encoding
   - [x] vm
   - [x] syntex design
-  - [ ] outer interpreter
-  - [ ] garbage collection
-  - [ ] builtin structural data
+  - [x] garbage collection
+  - [ ] structural datatypes
   - [ ] module system
 
 # 关卡 2 -- x-lisp-compiler.js

@@ -1,6 +1,5 @@
 # xhash
 
-[helpers.c] `array_sort` -- needed by `value_hash_code`
 [value] `value_hash_code`
 [value] `xhash_t`
 
