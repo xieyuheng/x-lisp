@@ -1,5 +1,3 @@
-[lang] `function_t` -- setup
-
 [lang] `function_t` -- extract from `function_definition`
 
 [lang] `function_definition` -- has `function_t`
