@@ -65,8 +65,23 @@ stage1(vm_t *vm) {
 }
 
 static void
-stage2(vm_t *vm) {
+setup_variable(vm_t *vm, definition_t *definition) {
+    assert(definition->kind == VARIABLE_DEFINITION);
     (void) vm;
+}
+
+static void
+stage2(vm_t *vm) {
+    record_iter_t iter;
+    record_iter_init(&iter, vm_mod(vm)->definitions);
+    definition_t *definition = record_iter_next_value(&iter);
+    while (definition) {
+        if (definition->kind == VARIABLE_DEFINITION) {
+            setup_variable(vm, definition);
+        }
+
+        definition = record_iter_next_value(&iter);
+    }
 }
 
 static void

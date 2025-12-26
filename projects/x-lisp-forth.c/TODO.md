@@ -1,4 +1,3 @@
-[lang] `stage2` call `setup_variable`
 [lang] `setup_variable`
 
 [lang] `define_variable_with_setup` -- for `@var <name> <body> @end`
