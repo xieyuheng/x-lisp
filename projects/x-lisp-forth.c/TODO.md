@@ -1,4 +1,4 @@
-[lang] `function_t` -- extract from `function_definition`
+[lang] `make_function` & `function_free`
 
 [lang] `function_definition` -- has `function_t`
 
