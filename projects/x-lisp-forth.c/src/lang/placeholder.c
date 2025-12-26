@@ -1,10 +1,9 @@
 #include "index.h"
 
 placeholder_t *
-make_placeholder(definition_t *definition, size_t code_index) {
-    assert(definition->kind == FUNCTION_DEFINITION);
+make_placeholder(function_t *function, size_t code_index) {
     placeholder_t *self = new(placeholder_t);
-    self->definition = definition;
+    self->function = function;
     self->code_index = code_index;
     return self;
 }

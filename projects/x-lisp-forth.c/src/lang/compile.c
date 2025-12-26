@@ -1,20 +1,19 @@
 #include "index.h"
 
-static void compile_return(definition_t *definition);
-static void compile_token(vm_t *vm, definition_t *definition, token_t *token);
-static void compile_quote(vm_t *vm, definition_t *definition);
-static void compile_word(vm_t *vm, definition_t *definition, const char *word);
-static void compile_invoke(vm_t *vm, definition_t *definition, const char *name);
-static void compile_ref(vm_t *vm, definition_t *definition);
-static void compile_tail_call(vm_t *vm, definition_t *definition);
-static void compile_parameters(vm_t *vm, definition_t *definition, const char *end_word);
-static void compile_bindings(vm_t *vm, definition_t *definition, const char *end_word);
-static void compile_if(vm_t *vm, definition_t *definition, const char *else_word, const char *then_word, struct token_meta_t meta);
-static void compile_else(vm_t *vm, definition_t *definition, size_t else_index, const char *then_word, struct token_meta_t meta);
+static void compile_return(function_t *function);
+static void compile_token(vm_t *vm, function_t *function, token_t *token);
+static void compile_quote(vm_t *vm, function_t *function);
+static void compile_word(vm_t *vm, function_t *function, const char *word);
+static void compile_invoke(vm_t *vm, function_t *function, const char *name);
+static void compile_ref(vm_t *vm, function_t *function);
+static void compile_tail_call(vm_t *vm, function_t *function);
+static void compile_parameters(vm_t *vm, function_t *function, const char *end_word);
+static void compile_bindings(vm_t *vm, function_t *function, const char *end_word);
+static void compile_if(vm_t *vm, function_t *function, const char *else_word, const char *then_word, struct token_meta_t meta);
+static void compile_else(vm_t *vm, function_t *function, size_t else_index, const char *then_word, struct token_meta_t meta);
 
 void
-compile_function(vm_t *vm, definition_t *definition) {
-    assert(definition->kind == FUNCTION_DEFINITION);
+compile_function(vm_t *vm, function_t *function) {
     while (true) {
         if (vm_no_more_tokens(vm)) {
             who_printf("missing @end\n");
@@ -23,37 +22,37 @@ compile_function(vm_t *vm, definition_t *definition) {
 
         token_t *token = vm_next_token(vm);
         if (string_equal(token->content, "@end")) {
-            compile_return(definition);
+            compile_return(function);
             token_free(token);
             return;
         } else if (string_equal(token->content, "@if")) {
-            compile_if(vm, definition, "@else", "@then", token->meta);
+            compile_if(vm, function, "@else", "@then", token->meta);
             token_free(token);
         } else if (string_equal(token->content, "[")) {
-            compile_parameters(vm, definition, "]");
+            compile_parameters(vm, function, "]");
             token_free(token);
         } else {
-            compile_token(vm, definition, token);
+            compile_token(vm, function, token);
         }
     }
 }
 
 static void
-compile_return(definition_t *definition) {
+compile_return(function_t *function) {
     struct instr_t instr;
     instr.op = OP_RETURN;
-    function_definition_append_instr(definition, instr);
+    function_append_instr(function, instr);
 }
 
 static void
-compile_token(vm_t *vm, definition_t *definition, token_t *token) {
+compile_token(vm_t *vm, function_t *function, token_t *token) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
         if (string_equal(token->content, "@assert")) {
             struct instr_t instr;
             instr.op = OP_ASSERT;
             instr.assert.token = token;
-            function_definition_append_instr(definition, instr);
+            function_append_instr(function, instr);
             return;
         }
 
@@ -61,7 +60,7 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
             struct instr_t instr;
             instr.op = OP_ASSERT_EQUAL;
             instr.assert_equal.token = token;
-            function_definition_append_instr(definition, instr);
+            function_append_instr(function, instr);
             return;
         }
 
@@ -69,11 +68,11 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
             struct instr_t instr;
             instr.op = OP_ASSERT_NOT_EQUAL;
             instr.assert_not_equal.token = token;
-            function_definition_append_instr(definition, instr);
+            function_append_instr(function, instr);
             return;
         }
 
-        compile_word(vm, definition, token->content);
+        compile_word(vm, function, token->content);
         token_free(token);
         return;
     }
@@ -83,7 +82,7 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
         instr.op = OP_LITERAL;
         instr.literal.value =
             x_object(make_static_xstring(string_copy(token->content)));
-        function_definition_append_instr(definition, instr);
+        function_append_instr(function, instr);
         token_free(token);
         return;
     }
@@ -92,7 +91,7 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
         struct instr_t instr;
         instr.op = OP_LITERAL;
         instr.literal.value = x_int(string_parse_int(token->content));
-        function_definition_append_instr(definition, instr);
+        function_append_instr(function, instr);
         token_free(token);
         return;
     }
@@ -101,14 +100,14 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
         struct instr_t instr;
         instr.op = OP_LITERAL;
         instr.literal.value = x_float(string_parse_double(token->content));
-        function_definition_append_instr(definition, instr);
+        function_append_instr(function, instr);
         token_free(token);
         return;
     }
 
     case BRACKET_START_TOKEN: {
         assert(string_equal(token->content, "["));
-        compile_bindings(vm, definition, "]");
+        compile_bindings(vm, function, "]");
         token_free(token);
         return;
     }
@@ -121,7 +120,7 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
 
     case QUOTATION_MARK_TOKEN: {
         assert(string_equal(token->content, "'"));
-        compile_quote(vm, definition);
+        compile_quote(vm, function);
         token_free(token);
         return;
     }
@@ -136,7 +135,7 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
         struct instr_t instr;
         instr.op = OP_LITERAL;
         instr.literal.value = x_object(intern_hashtag(token->content));
-        function_definition_append_instr(definition, instr);
+        function_append_instr(function, instr);
         token_free(token);
         return;
     }
@@ -149,13 +148,13 @@ compile_token(vm_t *vm, definition_t *definition, token_t *token) {
 }
 
 void
-compile_quote(vm_t *vm, definition_t *definition) {
+compile_quote(vm_t *vm, function_t *function) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     struct instr_t instr;
     instr.op = OP_LITERAL;
     instr.literal.value = x_object(intern_symbol(token->content));
-    function_definition_append_instr(definition, instr);
+    function_append_instr(function, instr);
     token_free(token);
 }
 
@@ -201,7 +200,7 @@ is_op_word(const char *word) {
 }
 
 static void
-compile_op_word(definition_t *definition, const char *word) {
+compile_op_word(function_t *function, const char *word) {
     assert(is_op_word(word));
 
     for (size_t i = 0; i < get_op_word_entry_count(); i++) {
@@ -209,114 +208,114 @@ compile_op_word(definition_t *definition, const char *word) {
         if (string_equal(op_word_entry.word, word)) {
             struct instr_t instr;
             instr.op = op_word_entry.op;
-            function_definition_append_instr(definition, instr);
+            function_append_instr(function, instr);
         }
     }
 }
 
 static void
-compile_word(vm_t *vm, definition_t *definition, const char *word) {
+compile_word(vm_t *vm, function_t *function, const char *word) {
     if (string_equal(word, "@return")) {
-        compile_return(definition);
+        compile_return(function);
         return;
     }
 
     if (string_equal(word, "@ref")) {
-        compile_ref(vm, definition);
+        compile_ref(vm, function);
         return;
     }
 
     if (string_equal(word, "@tail-call")) {
-        compile_tail_call(vm, definition);
+        compile_tail_call(vm, function);
         return;
     }
 
     if (is_op_word(word)) {
-        compile_op_word(definition, word);
+        compile_op_word(function, word);
         return;
     }
 
-    compile_invoke(vm, definition, word);
+    compile_invoke(vm, function, word);
     return;
 }
 
 static void
-compile_invoke(vm_t *vm, definition_t *definition, const char *name) {
-    if (function_definition_has_binding_index(definition, name)) {
-        size_t index = function_definition_get_binding_index(definition, name);
+compile_invoke(vm_t *vm, function_t *function, const char *name) {
+    if (function_has_binding_index(function, name)) {
+        size_t index = function_get_binding_index(function, name);
         struct instr_t instr;
         instr.op = OP_LOCAL_LOAD;
         instr.local_load.index = index;
-        function_definition_append_instr(definition, instr);
+        function_append_instr(function, instr);
         return;
     }
 
     definition_t *found = mod_lookup_or_placeholder(vm_mod(vm), name);
     if (found->kind == PLACEHOLDER_DEFINITION) {
-        size_t code_index = definition->function_definition.code_length + 1;
-        placeholder_definition_hold_place(found, definition, code_index);
+        size_t code_index = function->code_length + 1;
+        placeholder_definition_hold_place(found, function, code_index);
     }
 
     struct instr_t instr;
     instr.op = OP_CALL;
     instr.call.definition = found;
-    function_definition_append_instr(definition, instr);
+    function_append_instr(function, instr);
     return;
 }
 
 static void
-compile_ref(vm_t *vm, definition_t *definition) {
+compile_ref(vm_t *vm, function_t *function) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     definition_t *found = mod_lookup_or_placeholder(vm_mod(vm), token->content);
     token_free(token);
 
     if (found->kind == PLACEHOLDER_DEFINITION) {
-        size_t code_index = definition->function_definition.code_length + 1;
-        placeholder_definition_hold_place(found, definition, code_index);
+        size_t code_index = function->code_length + 1;
+        placeholder_definition_hold_place(found, function, code_index);
     }
 
     struct instr_t instr;
     instr.op = OP_REF;
     instr.ref.definition = found;
-    function_definition_append_instr(definition, instr);
+    function_append_instr(function, instr);
 }
 
 static void
-compile_tail_call(vm_t *vm, definition_t *definition) {
+compile_tail_call(vm_t *vm, function_t *function) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     definition_t *found = mod_lookup_or_placeholder(vm_mod(vm), token->content);
     token_free(token);
 
     if (found->kind == PLACEHOLDER_DEFINITION) {
-        size_t code_index = definition->function_definition.code_length + 1;
-        placeholder_definition_hold_place(found, definition, code_index);
+        size_t code_index = function->code_length + 1;
+        placeholder_definition_hold_place(found, function, code_index);
     }
 
     struct instr_t instr;
     instr.op = OP_TAIL_CALL;
     instr.tail_call.definition = found;
-    function_definition_append_instr(definition, instr);
+    function_append_instr(function, instr);
 }
 
 static void
-compile_local_store_stack(definition_t *definition, stack_t *local_name_stack) {
+compile_local_store_stack(function_t *function, stack_t *local_name_stack) {
     while (!stack_is_empty(local_name_stack)) {
         char *name = stack_pop(local_name_stack);
-        size_t index = function_definition_get_binding_index(definition, name);
+        size_t index = function_get_binding_index(function, name);
         struct instr_t instr;
         instr.op = OP_LOCAL_STORE;
         instr.local_store.index = index;
-        function_definition_append_instr(definition, instr);
+        function_append_instr(function, instr);
     }
 
     stack_free(local_name_stack);
 }
 
 static void
-compile_parameters(vm_t *vm, definition_t *definition, const char *end_word) {
-    definition->function_definition.parameters = make_string_array();
+compile_parameters(vm_t *vm, function_t *function, const char *end_word) {
+    function->parameters = make_string_array();
 
     stack_t *local_name_stack = make_string_stack();
 
@@ -329,22 +328,21 @@ compile_parameters(vm_t *vm, definition_t *definition, const char *end_word) {
         token_t *token = vm_next_token(vm);
         if (string_equal(token->content, end_word)) {
             token_free(token);
-            compile_local_store_stack(definition, local_name_stack);
+            compile_local_store_stack(function, local_name_stack);
             return;
         }
 
         assert(token->kind == SYMBOL_TOKEN);
         // different from `compile_bindings`.
-        array_push(definition->function_definition.parameters,
-                   string_copy(token->content));
+        array_push(function->parameters, string_copy(token->content));
         stack_push(local_name_stack, string_copy(token->content));
-        function_definition_add_binding(definition, token->content);
+        function_add_binding(function, token->content);
         token_free(token);
     }
 }
 
 static void
-compile_bindings(vm_t *vm, definition_t *definition, const char *end_word) {
+compile_bindings(vm_t *vm, function_t *function, const char *end_word) {
     stack_t *local_name_stack = make_string_stack();
 
     while (true) {
@@ -356,17 +354,17 @@ compile_bindings(vm_t *vm, definition_t *definition, const char *end_word) {
         token_t *token = vm_next_token(vm);
         if (string_equal(token->content, end_word)) {
             token_free(token);
-            compile_local_store_stack(definition, local_name_stack);
+            compile_local_store_stack(function, local_name_stack);
             return;
         }
 
         assert(token->kind == SYMBOL_TOKEN);
         stack_push(local_name_stack, string_copy(token->content));
-        function_definition_add_binding(definition, token->content);
+        function_add_binding(function, token->content);
         token_free(token);
     }
 
-    compile_local_store_stack(definition, local_name_stack);
+    compile_local_store_stack(function, local_name_stack);
 }
 
 // @if ... @then ...
@@ -389,16 +387,16 @@ compile_bindings(vm_t *vm, definition_t *definition, const char *end_word) {
 static void
 compile_if(
     vm_t *vm,
-    definition_t *definition,
+    function_t *function,
     const char *else_word,
     const char *then_word,
     struct token_meta_t meta
 ) {
-    size_t if_index = definition->function_definition.code_length;
+    size_t if_index = function->code_length;
     struct instr_t instr;
     instr.op = OP_JUMP_IF_NOT;
     instr.jump_if_not.offset = 0;
-    function_definition_append_instr(definition, instr);
+    function_append_instr(function, instr);
 
     while (true) {
         if (vm_no_more_tokens(vm)) {
@@ -412,32 +410,32 @@ compile_if(
             struct instr_t instr;
             instr.op = OP_JUMP_IF_NOT;
             instr.jump_if_not.offset =
-                definition->function_definition.code_length -
+                function->code_length -
                 if_index - instr_length(instr);
-            function_definition_put_instr(definition, if_index, instr);
+            function_put_instr(function, if_index, instr);
             token_free(token);
             return;
         } else if (string_equal(token->content, else_word)) {
-            size_t else_index = definition->function_definition.code_length;
+            size_t else_index = function->code_length;
             struct instr_t instr;
             instr.op = OP_JUMP;
             instr.jump.offset = 0;
-            function_definition_append_instr(definition, instr);
+            function_append_instr(function, instr);
 
             {
                 struct instr_t instr;
                 instr.op = OP_JUMP_IF_NOT;
                 instr.jump_if_not.offset =
-                    definition->function_definition.code_length -
+                    function->code_length -
                     if_index - instr_length(instr);
-                function_definition_put_instr(definition, if_index, instr);
+                function_put_instr(function, if_index, instr);
             }
 
-            compile_else(vm, definition, else_index, then_word, token->meta);
+            compile_else(vm, function, else_index, then_word, token->meta);
             token_free(token);
             return;
         } else {
-            compile_token(vm, definition, token);
+            compile_token(vm, function, token);
         }
     }
 }
@@ -445,7 +443,7 @@ compile_if(
 static void
 compile_else(
     vm_t *vm,
-    definition_t *definition,
+    function_t *function,
     size_t else_index,
     const char *then_word,
     struct token_meta_t meta
@@ -462,13 +460,13 @@ compile_else(
             struct instr_t instr;
             instr.op = OP_JUMP;
             instr.jump.offset =
-                definition->function_definition.code_length -
+                function->code_length -
                 else_index - instr_length(instr);
-            function_definition_put_instr(definition, else_index, instr);
+            function_put_instr(function, else_index, instr);
             token_free(token);
             return;
         }  else {
-            compile_token(vm, definition, token);
+            compile_token(vm, function, token);
         }
     }
 }

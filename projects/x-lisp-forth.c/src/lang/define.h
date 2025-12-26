@@ -2,7 +2,7 @@
 
 definition_t *define_placeholder(mod_t *mod, const char *name);
 definition_t *define_variable(mod_t *mod, const char *name, value_t value);
-definition_t *define_function(mod_t *mod, const char *name);
+definition_t *define_function(mod_t *mod, const char *name, function_t *function);
 definition_t *define_primitive(mod_t *mod, const char *name, x_fn_t *fn);
 definition_t *define_primitive_0(mod_t *mod, const char *name, x_fn_0_t *fn_0);
 definition_t *define_primitive_1(mod_t *mod, const char *name, x_fn_1_t *fn_1);

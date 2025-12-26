@@ -16,15 +16,10 @@ make_definition(mod_t *mod, char *name) {
 }
 
 definition_t *
-make_function_definition(mod_t *mod, char *name) {
+make_function_definition(mod_t *mod, char *name, function_t *function) {
     definition_t *self = make_definition(mod, name);
     self->kind = FUNCTION_DEFINITION;
-    self->function_definition.binding_indexes = make_record();
-    self->function_definition.parameters = NULL;
-    self->function_definition.code_area_size = 64;
-    self->function_definition.code_area =
-        allocate(self->function_definition.code_area_size);
-    self->function_definition.code_length = 0;
+    self->function_definition.function = function;
     return self;
 }
 
@@ -59,10 +54,7 @@ definition_free(definition_t *self) {
 
     switch (self->kind) {
     case FUNCTION_DEFINITION: {
-        record_free(self->function_definition.binding_indexes);
-        if (self->function_definition.parameters)
-            array_free(self->function_definition.parameters);
-        free(self->function_definition.code_area);
+        free(self->function_definition.function);
         free(self);
         return;
     }
@@ -108,107 +100,23 @@ definition_print(definition_t *self) {
     printf("#<definition %s>", self->name);
 }
 
-static void
-function_definition_maybe_grow_code_area(definition_t *self, size_t length) {
-    assert(self->kind == FUNCTION_DEFINITION);
-
-    if (self->function_definition.code_area_size <
-        self->function_definition.code_length + length) {
-        self->function_definition.code_area =
-            reallocate(self->function_definition.code_area,
-                       self->function_definition.code_area_size,
-                       self->function_definition.code_area_size * 2);
-        self->function_definition.code_area_size *= 2;
-        function_definition_maybe_grow_code_area(self, length);
-    }
-}
-
-void
-function_definition_append_instr(definition_t *self, struct instr_t instr) {
-    assert(self->kind == FUNCTION_DEFINITION);
-
-    size_t length = instr_length(instr);
-    function_definition_maybe_grow_code_area(self, length);
-
-    uint8_t *code =
-        self->function_definition.code_area
-        + self->function_definition.code_length;
-    instr_encode(code, instr);
-
-    self->function_definition.code_length += length;
-}
-
-void function_definition_put_instr(
-    definition_t *self,
-    size_t code_index,
-    struct instr_t instr
-) {
-    assert(self->kind == FUNCTION_DEFINITION);
-    size_t length = instr_length(instr);
-    assert(code_index + length < self->function_definition.code_area_size);
-
-    uint8_t *code = self->function_definition.code_area + code_index;
-    instr_encode(code, instr);
-}
-
-void
-function_definition_put_definition(
-    definition_t *self,
-    size_t code_index,
-    definition_t *definition
-) {
-    assert(self->kind == FUNCTION_DEFINITION);
-    assert(code_index + sizeof(definition_t *) <
-           self->function_definition.code_area_size);
-
-    uint8_t *code = self->function_definition.code_area + code_index;
-    memory_store_little_endian(code, definition);
-}
-
-void
-function_definition_add_binding(definition_t *self, const char *name) {
-    assert(self->kind == FUNCTION_DEFINITION);
-
-    if (!function_definition_has_binding_index(self, name)) {
-        size_t next_index =
-            record_length(self->function_definition.binding_indexes);
-        record_insert(self->function_definition.binding_indexes,
-                      name, (void *) next_index);
-    }
-}
-
-bool
-function_definition_has_binding_index(definition_t *self, const char *name) {
-    assert(self->kind == FUNCTION_DEFINITION);
-
-    return record_has(self->function_definition.binding_indexes, name);
-}
-
-size_t
-function_definition_get_binding_index(definition_t *self, const char *name) {
-    assert(self->kind == FUNCTION_DEFINITION);
-
-    assert(function_definition_has_binding_index(self, name));
-    return (size_t) record_get(self->function_definition.binding_indexes, name);
-}
-
 void
 placeholder_definition_hold_place(
     definition_t *self,
-    definition_t *definition,
+    function_t *function,
     size_t code_index
 ) {
     assert(self->kind == PLACEHOLDER_DEFINITION);
     array_push(
         self->placeholder_definition.placeholders,
-        make_placeholder(definition, code_index));
+        make_placeholder(function, code_index));
 }
 
 bool
 definition_has_arity(const definition_t *self) {
     switch (self->kind) {
     case FUNCTION_DEFINITION: {
-        return self->function_definition.parameters;
+        return self->function_definition.function->parameters;
     }
 
     case PRIMITIVE_DEFINITION: {
@@ -228,7 +136,7 @@ size_t
 definition_arity(const definition_t *self) {
     switch (self->kind) {
     case FUNCTION_DEFINITION: {
-        return array_length(self->function_definition.parameters);
+        return array_length(self->function_definition.function->parameters);
     }
 
     case PRIMITIVE_DEFINITION: {

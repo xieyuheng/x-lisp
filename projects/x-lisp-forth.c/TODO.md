@@ -1,8 +1,3 @@
-[lang] `function_definition` -- has `function_t`
-
-- [lang] `placeholder_t` -- has `function` instead of `definition`
-- [lang] `compile` -- take `function` instead of `definition`
-
 [lang] `variable_definition` -- has optional `function_t`
 
 [lang] `stage2` call `setup_variable`

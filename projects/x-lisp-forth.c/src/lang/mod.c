@@ -30,8 +30,8 @@ mod_define(mod_t *self, const char *name, definition_t *definition) {
         for (size_t i = 0; i < length; i ++) {
             placeholder_t *placeholder =
                 array_get(found->placeholder_definition.placeholders, i);
-            function_definition_put_definition(
-                placeholder->definition,
+            function_put_definition(
+                placeholder->function,
                 placeholder->code_index,
                 definition);
         }

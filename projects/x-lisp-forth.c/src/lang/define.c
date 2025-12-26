@@ -17,9 +17,9 @@ define_variable(mod_t *mod, const char *name, value_t value) {
 }
 
 definition_t *
-define_function(mod_t *mod, const char *name) {
+define_function(mod_t *mod, const char *name, function_t *function) {
     definition_t *definition =
-        make_function_definition(mod, string_copy(name));
+        make_function_definition(mod, string_copy(name), function);
     mod_define(mod, name, definition);
     return definition;
 }
