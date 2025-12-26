@@ -1,5 +1,3 @@
-[lang] `interpret_token` -- use `syntax_table` to do dispatch -- instead of a list of if
-
 # xhash
 
 [helpers.c] `array_sort` -- needed by `value_hash_code`

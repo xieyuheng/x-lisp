@@ -32,19 +32,14 @@ interpret_token(vm_t *vm, token_t *token) {
     }
 
     case SYMBOL_TOKEN: {
-        if (string_equal(token->content, "@var")) {
-            syntax_var(vm);
+        x_fn_t *handler = syntax_find_handler(token->content);
+        if (handler) {
+            handler(vm);
             token_free(token);
             return;
         }
 
-        if (string_equal(token->content, "@def")) {
-            syntax_def(vm);
-            token_free(token);
-            return;
-        }
-
-        who_printf("unknown top-level symbol: %s\n", token->content);
+        who_printf("unhandled top-level symbol: %s\n", token->content);
         token_free(token);
         return;
     }

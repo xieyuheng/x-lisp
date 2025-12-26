@@ -1,4 +1,3 @@
 #pragma once
 
-void syntax_var(vm_t *vm);
-void syntax_def(vm_t *vm);
+x_fn_t *syntax_find_handler(const char *name);
