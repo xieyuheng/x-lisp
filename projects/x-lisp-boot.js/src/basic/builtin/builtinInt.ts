@@ -17,8 +17,8 @@ export function builtinInt(mod: Mod) {
     "int-min",
     "int-greater?",
     "int-less?",
-    "int-greater-equal?",
-    "int-less-equal?",
+    "int-greater-or-equal?",
+    "int-less-or-equal?",
     "int-compare-ascending",
     "int-compare-descending",
   ])
@@ -37,8 +37,8 @@ export function builtinInt(mod: Mod) {
   definePrimitiveFunction(mod, "int-min", 2)
   definePrimitiveFunction(mod, "int-greater?", 2)
   definePrimitiveFunction(mod, "int-less?", 2)
-  definePrimitiveFunction(mod, "int-greater-equal?", 2)
-  definePrimitiveFunction(mod, "int-less-equal?", 2)
+  definePrimitiveFunction(mod, "int-greater-or-equal?", 2)
+  definePrimitiveFunction(mod, "int-less-or-equal?", 2)
   definePrimitiveFunction(mod, "int-compare-ascending", 2)
   definePrimitiveFunction(mod, "int-compare-descending", 2)
 }

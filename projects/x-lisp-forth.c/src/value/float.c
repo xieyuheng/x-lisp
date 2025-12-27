@@ -85,12 +85,12 @@ x_float_less_p(value_t x, value_t y) {
 }
 
 value_t
-x_float_greater_equal_p(value_t x, value_t y) {
+x_float_greater_or_equal_p(value_t x, value_t y) {
     return x_bool(to_double(x) >= to_double(y));
 }
 
 value_t
-x_float_less_equal_p(value_t x, value_t y) {
+x_float_less_or_equal_p(value_t x, value_t y) {
     return x_bool(to_double(x) <= to_double(y));
 }
 

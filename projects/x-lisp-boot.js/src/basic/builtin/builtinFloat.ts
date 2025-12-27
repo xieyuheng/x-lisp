@@ -17,8 +17,8 @@ export function builtinFloat(mod: Mod) {
     "float-min",
     "float-greater?",
     "float-less?",
-    "float-greater-equal?",
-    "float-less-equal?",
+    "float-greater-or-equal?",
+    "float-less-or-equal?",
     "float-compare-ascending",
     "float-compare-descending",
   ])
@@ -37,8 +37,8 @@ export function builtinFloat(mod: Mod) {
   definePrimitiveFunction(mod, "float-min", 2)
   definePrimitiveFunction(mod, "float-greater?", 2)
   definePrimitiveFunction(mod, "float-less?", 2)
-  definePrimitiveFunction(mod, "float-greater-equal?", 2)
-  definePrimitiveFunction(mod, "float-less-equal?", 2)
+  definePrimitiveFunction(mod, "float-greater-or-equal?", 2)
+  definePrimitiveFunction(mod, "float-less-or-equal?", 2)
   definePrimitiveFunction(mod, "float-compare-ascending", 2)
   definePrimitiveFunction(mod, "float-compare-descending", 2)
 }

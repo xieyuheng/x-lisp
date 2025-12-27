@@ -23,11 +23,11 @@
 (assert (int-greater? 2 1))
 (assert (int-less? 1 2))
 
-(assert (int-greater-equal? 2 1))
-(assert (int-less-equal? 1 2))
+(assert (int-greater-or-equal? 2 1))
+(assert (int-less-or-equal? 1 2))
 
-(assert (int-greater-equal? 2 2))
-(assert (int-less-equal? 1 1))
+(assert (int-greater-or-equal? 2 2))
+(assert (int-less-or-equal? 1 1))
 
 (assert (int-positive? 1))
 (assert (not (int-positive? 0)))

@@ -12,11 +12,11 @@
 (assert (float-greater? 2.0 1.0))
 (assert (float-less? 1.0 2.0))
 
-(assert (float-greater-equal? 2.0 1.0))
-(assert (float-less-equal? 1.0 2.0))
+(assert (float-greater-or-equal? 2.0 1.0))
+(assert (float-less-or-equal? 1.0 2.0))
 
-(assert (float-greater-equal? 2.0 2.0))
-(assert (float-less-equal? 1.0 1.0))
+(assert (float-greater-or-equal? 2.0 2.0))
+(assert (float-less-or-equal? 1.0 1.0))
 
 (assert (float-positive? 1.0))
 (assert (not (float-positive? 0.0)))

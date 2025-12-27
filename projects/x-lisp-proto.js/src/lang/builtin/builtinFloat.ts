@@ -18,8 +18,8 @@ export function builtinFloat(mod: Mod) {
     "float-min",
     "float-greater?",
     "float-less?",
-    "float-greater-equal?",
-    "float-less-equal?",
+    "float-greater-or-equal?",
+    "float-less-or-equal?",
     "float-compare-ascending",
     "float-compare-descending",
   ])
@@ -84,11 +84,11 @@ export function builtinFloat(mod: Mod) {
     return Values.Bool(Values.asFloat(x).content < Values.asFloat(y).content)
   })
 
-  definePrimitiveFunction(mod, "float-greater-equal?", 2, (x, y) => {
+  definePrimitiveFunction(mod, "float-greater-or-equal?", 2, (x, y) => {
     return Values.Bool(Values.asFloat(x).content >= Values.asFloat(y).content)
   })
 
-  definePrimitiveFunction(mod, "float-less-equal?", 2, (x, y) => {
+  definePrimitiveFunction(mod, "float-less-or-equal?", 2, (x, y) => {
     return Values.Bool(Values.asFloat(x).content <= Values.asFloat(y).content)
   })
 

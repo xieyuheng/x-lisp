@@ -15,8 +15,8 @@ import_builtin(mod_t *mod) {
     define_primitive_2(mod, "int-min", x_int_min);
     define_primitive_2(mod, "int-greater?", x_int_greater_p);
     define_primitive_2(mod, "int-less?", x_int_less_p);
-    define_primitive_2(mod, "int-greater-equal?", x_int_greater_equal_p);
-    define_primitive_2(mod, "int-less-equal?", x_int_less_equal_p);
+    define_primitive_2(mod, "int-greater-or-equal?", x_int_greater_or_equal_p);
+    define_primitive_2(mod, "int-less-or-equal?", x_int_less_or_equal_p);
     define_primitive_1(mod, "int-positive?", x_int_positive_p);
     define_primitive_1(mod, "int-non-negative?", x_int_non_negative_p);
     define_primitive_1(mod, "int-non-zero?", x_int_non_zero_p);
@@ -37,8 +37,8 @@ import_builtin(mod_t *mod) {
     define_primitive_2(mod, "float-min", x_float_min);
     define_primitive_2(mod, "float-greater?", x_float_greater_p);
     define_primitive_2(mod, "float-less?", x_float_less_p);
-    define_primitive_2(mod, "float-greater-equal?", x_float_greater_equal_p);
-    define_primitive_2(mod, "float-less-equal?", x_float_less_equal_p);
+    define_primitive_2(mod, "float-greater-or-equal?", x_float_greater_or_equal_p);
+    define_primitive_2(mod, "float-less-or-equal?", x_float_less_or_equal_p);
     define_primitive_1(mod, "float-positive?", x_float_positive_p);
     define_primitive_1(mod, "float-non-negative?", x_float_non_negative_p);
     define_primitive_1(mod, "float-non-zero?", x_float_non_zero_p);

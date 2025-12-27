@@ -74,12 +74,12 @@ x_int_less_p(value_t x, value_t y) {
 }
 
 value_t
-x_int_greater_equal_p(value_t x, value_t y) {
+x_int_greater_or_equal_p(value_t x, value_t y) {
     return x_bool(to_int64(x) >= to_int64(y));
 }
 
 value_t
-x_int_less_equal_p(value_t x, value_t y) {
+x_int_less_or_equal_p(value_t x, value_t y) {
     return x_bool(to_int64(x) <= to_int64(y));
 }
 
