@@ -7,7 +7,10 @@ date: 2025-12-04
 
 x-lisp 的首要目标是加快新语言开发的速度。
 
-要适合用来写新的解释器与编译器，目的是为了探索新的计算模型。比如：
+要适合用来写新的解释器与编译器，
+目的是为了探索新的计算模型。
+
+比如：
 
 - interaction net
 - pi-calculus
@@ -16,7 +19,9 @@ x-lisp 的首要目标是加快新语言开发的速度。
 - logic constraint programming
 - reactive programming
 
-所假设的信条是（belief）：
+也就是说要为今后更多的探索，建立「革命根据地」。
+
+之所以能加快新语言开发，假设是：
 在 lisp 的语法框架内，可以更快地设计和迭代新语法，
 从而加快新语言的开发速度。
 
@@ -44,7 +49,7 @@ x-lisp 的首要目标是加快新语言开发的速度。
 - [x] x-lisp language design
 - [x] x-lisp interpreter
 
-# 关卡 1 -- x-forth.c
+# 关卡 1 -- 作为编译对象的栈虚拟机（用类 forth 语言实现）
 
 成果：
 
@@ -68,16 +73,28 @@ x-lisp 的首要目标是加快新语言开发的速度。
   - [ ] structural datatypes
   - [ ] module system
 
-# 关卡 2 -- x-lisp-compiler.js
+# 关卡 2 -- 初步将 lisp 编译到 forth
 
 成果：
 
-- 编译 x-lisp 到 x-forth。
+- 可以利用 x-lisp-forth 来运行 x-lisp 代码。
 
 任务：
 
-- [ ] x-lisp-forth
+- [ ] 描述 lisp 语言
+- [ ] 描述 forth 语言
+- [ ] 将 lisp 的基础部分编译到 forth
   - [ ] lift-lambda
-  - [ ] structural algebraic data type
-  - [ ] pattern match
-  - [ ] design by contract
+
+# 关卡 3 -- 将完整的 lisp 编译到 forth
+
+成果：
+
+- 能有用 x-lisp 实现中小型项目。
+  - 可以用之前实现的 eoc 做为测试用的项目。
+
+任务：
+
+- [ ] structural algebraic data type
+- [ ] pattern match
+- [ ] design by contract
