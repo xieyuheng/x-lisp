@@ -174,3 +174,12 @@ array_reverse(array_t *self) {
         array_put(self, length - i - 1, lhs);
     }
 }
+
+inline void
+array_swap(array_t *array, size_t left, size_t right) {
+    if (left == right) return;
+    void *left_value = array_get(array, left);
+    void *right_value = array_get(array, right);
+    array_put(array, left, right_value);
+    array_put(array, right, left_value);
+}

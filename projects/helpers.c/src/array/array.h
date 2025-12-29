@@ -26,3 +26,4 @@ void *array_pick(const array_t *self, size_t back_index);
 void array_put(array_t *self, size_t index, void *value);
 
 void array_reverse(array_t *self);
+void array_swap(array_t *array, size_t left, size_t right);
