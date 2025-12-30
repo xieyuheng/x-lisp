@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node
+#!/usr/bin/env -S node --stack-size=65535
 
 import * as Cmd from "@xieyuheng/cmd.js"
 import { errorReport } from "@xieyuheng/helpers.js/error"
