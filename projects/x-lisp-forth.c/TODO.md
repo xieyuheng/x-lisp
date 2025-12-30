@@ -1,6 +1,3 @@
-fix `tael_equal` handle null the right way
-fix `hash_equal` handle null the right way
-
 # xhash
 
 [builtin] `make_hash`

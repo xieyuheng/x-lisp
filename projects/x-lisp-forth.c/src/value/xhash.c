@@ -45,6 +45,11 @@ xhash_get(const xhash_t *self, value_t key) {
 
 inline void
 xhash_put(xhash_t *self, value_t key, value_t value) {
+    if (null_p(value)) {
+        xhash_delete(self, key);
+        return;
+    }
+
     hash_put(self->hash, (void *) key, (void *) value);
 }
 
