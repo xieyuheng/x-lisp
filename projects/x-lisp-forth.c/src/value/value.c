@@ -77,6 +77,46 @@ value_hash_code(value_t value) {
     exit(1);
 }
 
+ordering_t
+value_total_compare(value_t lhs, value_t rhs) {
+    if (same_p(lhs, rhs)) return 0;
+
+    if (value_tag(lhs) != value_tag(rhs)) {
+        return value_tag(lhs) - value_tag(rhs);
+    }
+
+    if (int_p(lhs) && int_p(rhs)) {
+        return to_int64(lhs) - to_int64(rhs);
+    }
+
+    if (float_p(lhs) && float_p(rhs)) {
+        return to_double(lhs) - to_double(rhs);
+    }
+
+    if (object_p(lhs) && object_p(rhs)) {
+        if (to_object(lhs)->header.class != to_object(rhs)->header.class) {
+            return string_compare_lexical(
+                to_object(lhs)->header.class->name,
+                to_object(rhs)->header.class->name);
+        }
+
+        object_compare_fn_t *compare_fn =
+            to_object(lhs)->header.class->compare_fn;
+        if (compare_fn) {
+            return compare_fn(to_object(lhs), to_object(rhs));
+        } else {
+            who_printf("unhandled objects\n");
+            printf("  lhs: "); value_print(lhs); newline();
+            printf("  rhs: "); value_print(rhs); newline();
+        }
+    }
+
+    who_printf("unhandled values\n");
+    printf("  lhs: "); value_print(lhs); newline();
+    printf("  rhs: "); value_print(rhs); newline();
+    exit(1);
+}
+
 value_t
 x_any_p(value_t x) {
     (void) x;
