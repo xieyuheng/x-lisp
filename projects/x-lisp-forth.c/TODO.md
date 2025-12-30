@@ -1,8 +1,6 @@
 # xset
 
 [value] `xset_copy`
-[value] `xset_size`
-[value] `xset_empty_p`
 [value] `xset_add`
 [value] `xset_delete`
 [value] `xset_clear`
@@ -11,6 +9,8 @@
 [value] `set_inter`
 [value] `set_difference`
 [value] `set_disjoint_p`
+
+[builtin] `x_any_set_p`
 
 # total-compare
 

@@ -39,6 +39,16 @@ to_xset(value_t value) {
     return (xset_t *) to_object(value);
 }
 
+size_t
+xset_size(const xset_t *self) {
+    return set_size(self->set);
+}
+
+bool
+xset_empty_p(const xset_t *self) {
+    return set_is_empty(self->set);
+}
+
 // inline value_t
 // xhash_get(const xhash_t *self, value_t key) {
 //     hash_entry_t *entry = hash_get_entry(self->hash, (void *) key);

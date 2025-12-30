@@ -170,6 +170,11 @@ import_builtin(mod_t *mod) {
 
     // set
 
+    define_primitive_0(mod, "make-set", x_make_set);
+    // define_primitive_1(mod, "any-set?", x_any_set_p);
+    // define_primitive_1(mod, "set-copy", x_set_copy);
+    define_primitive_1(mod, "set-size", x_set_size);
+    define_primitive_1(mod, "set-empty?", x_set_empty_p);
     // (set? element-p value)
     // (set-size set)
     // (set-empty? set)

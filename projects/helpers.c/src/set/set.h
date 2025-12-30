@@ -14,7 +14,8 @@ void set_put_equal_fn(set_t *self, equal_fn_t *equal_fn);
 set_t *make_put_with(free_fn_t *free_fn);
 set_t *make_string_set(void);
 
-size_t set_length(const set_t *self);
+size_t set_size(const set_t *self);
+bool set_is_empty(const set_t *self);
 
 // add successes if the value is not already exist.
 bool set_add(set_t *self, void *value);

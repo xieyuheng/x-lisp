@@ -46,8 +46,13 @@ make_string_set(void) {
 }
 
 size_t
-set_length(const set_t *self) {
+set_size(const set_t *self) {
     return hash_length(self->hash);
+}
+
+bool
+set_is_empty(const set_t *self) {
+    return hash_is_empty(self->hash);
 }
 
 bool

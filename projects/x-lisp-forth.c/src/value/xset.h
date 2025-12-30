@@ -13,6 +13,9 @@ void xset_free(xset_t *self);
 bool xset_p(value_t value);
 xset_t *to_xset(value_t value);
 
+size_t xset_size(const xset_t *self);
+bool xset_empty_p(const xset_t *self);
+
 // value_t xset_get(const xset_t *self, value_t key);
 // void xset_put(xset_t *self, value_t key, value_t value);
 // void xset_delete(xset_t *self, value_t key);

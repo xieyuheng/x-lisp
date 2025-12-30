@@ -10,4 +10,5 @@
 #include "list.h"
 #include "record.h"
 #include "hash.h"
+#include "set.h"
 #include "import_builtin.h"
