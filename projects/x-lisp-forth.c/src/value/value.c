@@ -53,7 +53,7 @@ equal_p(value_t lhs, value_t rhs) {
     return false;
 }
 
-uint64_t
+uint32_t
 value_hash_code(value_t value) {
     if (int_p(value)) {
         return value;

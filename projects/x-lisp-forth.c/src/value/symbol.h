@@ -17,5 +17,5 @@ bool symbol_p(value_t value);
 symbol_t *to_symbol(value_t value);
 
 void symbol_print(const symbol_t *self);
-uint64_t symbol_hash_code(const symbol_t *self);
+hash_code_t symbol_hash_code(const symbol_t *self);
 ordering_t symbol_compare(const symbol_t *lhs, const symbol_t *rhs);

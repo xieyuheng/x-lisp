@@ -56,7 +56,7 @@ xstring_print(const xstring_t *self) {
     string_print("\"");
 }
 
-uint64_t
+hash_code_t
 xstring_hash_code(const xstring_t *self) {
     return string_hash_code(self->string);
 }

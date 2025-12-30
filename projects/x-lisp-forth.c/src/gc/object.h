@@ -2,7 +2,7 @@
 
 typedef bool (object_equal_fn_t)(object_t *lhs, object_t *rhs);
 typedef void (object_print_fn_t)(object_t *self);
-typedef uint64_t (object_hash_code_fn_t)(object_t *self);
+typedef hash_code_t (object_hash_code_fn_t)(object_t *self);
 typedef ordering_t (object_compare_fn_t)(object_t *lhs, object_t *rhs);
 
 typedef void *(object_make_child_iter_fn_t)(object_t *self);

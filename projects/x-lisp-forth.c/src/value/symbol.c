@@ -61,7 +61,7 @@ symbol_print(const symbol_t *self) {
     string_print(symbol_string(self));
 }
 
-uint64_t
+hash_code_t
 symbol_hash_code(const symbol_t *self) {
     return 3 * string_hash_code(self->string);
 }

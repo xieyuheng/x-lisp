@@ -12,7 +12,7 @@ const object_class_t xset_class = {
     .child_iter_free_fn = (free_fn_t *) xset_child_iter_free,
 };
 
-static uint64_t
+static hash_code_t
 value_hash_fn(const void *key) {
     return value_hash_code((value_t) key);
 }
@@ -138,15 +138,15 @@ compare_value(const void *lhs, const void *rhs) {
     return value_total_compare((value_t) lhs, (value_t) rhs);
 }
 
-uint64_t
+hash_code_t
 xset_hash_code(const xset_t *self) {
-    uint64_t code = 6947; // any big prime number would do.
+    hash_code_t code = 6947; // any big prime number would do.
 
     array_t *values = set_values(self->set);
     array_sort(values, compare_value);
     for (size_t i = 0; i < array_length(values); i++) {
         value_t value = (value_t) array_get(values, i);
-        code = (code << 5) + code + value_hash_code(value);
+        code = (code << 5) - code + value_hash_code(value);
     }
 
     array_free(values);

@@ -61,7 +61,7 @@ hashtag_print(const hashtag_t *self) {
     string_print(hashtag_string(self));
 }
 
-uint64_t
+hash_code_t
 hashtag_hash_code(const hashtag_t *self) {
     return 5 * string_hash_code(self->string);
 }

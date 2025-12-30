@@ -228,13 +228,13 @@ compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
     return string_compare_lexical(lhs->key, rhs->key);
 }
 
-uint64_t
+hash_code_t
 tael_hash_code(const tael_t *self) {
-    uint64_t code = 6661; // any big prime number would do.
+    hash_code_t code = 6661; // any big prime number would do.
 
     for (size_t i = 0; i < array_length(self->elements); i++) {
         value_t value = tael_get_element(self, i);
-        code = (code << 5) + code + value_hash_code(value);
+        code = (code << 5) - code + value_hash_code(value);
     }
 
     array_t *entries = record_entries(self->attributes);
@@ -245,7 +245,7 @@ tael_hash_code(const tael_t *self) {
         value_t value = (value_t) entry->value;
         if (!null_p(value)) {
             code = (code << 5) + code + string_hash_code(key);
-            code = (code << 5) + code + value_hash_code(value);
+            code = (code << 5) - code + value_hash_code(value);
         }
     }
 

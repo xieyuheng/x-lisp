@@ -25,7 +25,7 @@ xset_t *xset_copy(const xset_t *self);
 
 bool xset_equal(const xset_t *lhs, const xset_t *rhs);
 void xset_print(const xset_t *self);
-uint64_t xset_hash_code(const xset_t *self);
+hash_code_t xset_hash_code(const xset_t *self);
 ordering_t xset_compare(const xset_t *lhs, const xset_t *rhs);
 
 xset_child_iter_t *make_xset_child_iter(const xset_t *set);

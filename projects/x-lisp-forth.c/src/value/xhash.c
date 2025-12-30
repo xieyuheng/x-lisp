@@ -12,7 +12,7 @@ const object_class_t xhash_class = {
     .child_iter_free_fn = (free_fn_t *) xhash_child_iter_free,
 };
 
-static uint64_t
+static hash_code_t
 value_hash_fn(const void *key) {
     return value_hash_code((value_t) key);
 }
@@ -154,9 +154,9 @@ compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
     return value_total_compare((value_t) lhs->value, (value_t) rhs->value);
 }
 
-uint64_t
+hash_code_t
 xhash_hash_code(const xhash_t *self) {
-    uint64_t code = 7001; // any big prime number would do.
+    hash_code_t code = 7001; // any big prime number would do.
 
     array_t *entries = hash_entries(self->hash);
     array_sort(entries, (compare_fn_t *) compare_hash_entry);
@@ -166,7 +166,7 @@ xhash_hash_code(const xhash_t *self) {
         value_t value = (value_t) entry->value;
         if (!null_p(value)) {
             code = (code << 5) + code + value_hash_code(key);
-            code = (code << 5) + code + value_hash_code(value);
+            code = (code << 5) - code + value_hash_code(value);
         }
     }
 
