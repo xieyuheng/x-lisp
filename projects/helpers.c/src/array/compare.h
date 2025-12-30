@@ -2,3 +2,12 @@
 
 compare_fn_t int_compare_ascending;
 compare_fn_t int_compare_descending;
+
+compare_fn_t uint_compare_ascending;
+compare_fn_t uint_compare_descending;
+
+compare_fn_t float_compare_ascending;
+compare_fn_t float_compare_descending;
+
+compare_fn_t double_compare_ascending;
+compare_fn_t double_compare_descending;
