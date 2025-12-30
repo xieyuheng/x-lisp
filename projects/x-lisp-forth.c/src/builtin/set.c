@@ -51,3 +51,9 @@ value_t
 x_set_delete(value_t value, value_t set) {
     return x_set_delete_mut(value, x_set_copy(set));
 }
+
+value_t
+x_set_clear_mut(value_t set) {
+    xset_clear(to_xset(set));
+    return set;
+}

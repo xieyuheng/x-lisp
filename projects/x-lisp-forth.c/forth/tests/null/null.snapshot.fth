@@ -1,4 +1,4 @@
 @def main
-  null println
-  #null println
+  null println @drop
+  #null println @drop
 @end

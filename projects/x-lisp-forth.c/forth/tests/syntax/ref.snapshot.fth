@@ -1,3 +1,3 @@
 @def main
-  @ref iadd println
+  @ref iadd println @drop
 @end

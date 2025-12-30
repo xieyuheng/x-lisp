@@ -1,3 +1,3 @@
 @def main
-  'abc println
+  'abc println @drop
 @end

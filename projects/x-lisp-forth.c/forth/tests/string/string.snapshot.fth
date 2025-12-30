@@ -1,4 +1,4 @@
 @def main
-  "" println
-  "abc" println
+  "" println @drop
+  "abc" println @drop
 @end
