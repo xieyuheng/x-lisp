@@ -39,6 +39,9 @@ main(void) {
         assert(!set_member(set, (void *) 2));
         assert(!set_member(set, (void *) 3));
 
+        set_clear(set);
+        assert(set_is_empty(set));
+
         set_free(set);
     }
 

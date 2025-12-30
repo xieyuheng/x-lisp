@@ -1,7 +1,5 @@
 # xset
 
-[value] `xset_clear`
-
 [value] `set_union`
 [value] `set_inter`
 [value] `set_difference`

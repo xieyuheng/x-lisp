@@ -17,10 +17,9 @@ set_t *make_string_set(void);
 size_t set_size(const set_t *self);
 bool set_is_empty(const set_t *self);
 
+bool set_member(const set_t *self, void *value);
 // - auto free old value if there is `free_fn`.
 void set_add(set_t *self, void *value);
-
-bool set_member(set_t *self, void *value);
-
 // - return true if success.
 bool set_delete(set_t *self, void *value);
+void set_clear(set_t *self);

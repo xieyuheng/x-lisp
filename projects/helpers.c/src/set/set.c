@@ -62,11 +62,16 @@ set_add(set_t *self, void *value) {
 }
 
 bool
-set_member(set_t *self, void *value) {
+set_member(const set_t *self, void *value) {
     return hash_has(self->hash, value);
 }
 
 bool
 set_delete(set_t *self, void *value) {
     return hash_delete(self->hash, value);
+}
+
+void
+set_clear(set_t *self) {
+    hash_purge(self->hash);
 }

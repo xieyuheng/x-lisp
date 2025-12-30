@@ -64,6 +64,11 @@ xset_delete(xset_t *self, value_t value) {
     return set_delete(self->set, (void *) value);
 }
 
+inline void
+xset_clear(xset_t *self) {
+    set_clear(self->set);
+}
+
 xset_t *
 xset_copy(const xset_t *self) {
     xset_t *new_set = make_xset();
