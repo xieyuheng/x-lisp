@@ -53,25 +53,25 @@ xhash_delete(xhash_t *self, value_t key) {
     hash_delete(self->hash, (void *) key);
 }
 
-// bool
-// xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
-//     if (hash_length(lhs->hash) != hash_length(rhs->hash))
-//         return false;
+bool
+xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
+    if (hash_length(lhs->hash) != hash_length(rhs->hash))
+        return false;
 
-//     hash_iter_t iter;
-//     hash_iter_init(&iter, lhs->hash);
-//     const char *key = hash_iter_next_key(&iter);
-//     while (key) {
-//         value_t left = xhash_get(lhs, key);
-//         value_t right = xhash_get(rhs, key);
-//         if (!equal_p(left, right))
-//             return false;
+    hash_iter_t iter;
+    hash_iter_init(&iter, lhs->hash);
+    value_t key = (value_t) hash_iter_next_key(&iter);
+    while (key) {
+        value_t left = xhash_get(lhs, key);
+        value_t right = xhash_get(rhs, key);
+        if (!equal_p(left, right))
+            return false;
 
-//         key = hash_iter_next_key(&iter);
-//     }
+        key = (value_t) hash_iter_next_key(&iter);
+    }
 
-//     return true;
-// }
+    return true;
+}
 
 const object_class_t xhash_class = {
     .name = "hash",
