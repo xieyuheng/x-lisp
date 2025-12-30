@@ -49,12 +49,12 @@ string_is_blank(const char *self) {
     return true;
 }
 
-size_t
+uint64_t
 string_hash_code(const char *self) {
     const char *pointer = (const char *) self;
-    size_t code = 0;
+    uint64_t code = 0;
     while (*pointer)
-        code = 33 * code + *pointer++;
+        code = (code << 5) + code + *pointer++;
     return code;
 }
 

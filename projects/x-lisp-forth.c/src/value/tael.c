@@ -111,17 +111,29 @@ tael_print(const tael_t *self) {
     }
 }
 
+static ordering_t
+compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
+    return string_compare_lexical(lhs->key, rhs->key);
+}
+
 uint64_t
 tael_hash_code(const tael_t *self) {
-    uint64_t code = 5381;
+    uint64_t code = 5381; // any big prime number would do.
+
     for (size_t i = 0; i < array_length(self->elements); i++) {
         value_t value = tael_get_element(self, i);
-        // TODO
-        (void) value;
+        code = (code << 5) + code + value_hash_code(value);
     }
 
-    // TODO
+    array_t *entries = record_entries(self->attributes);
+    array_sort(entries, (compare_fn_t *) compare_hash_entry);
+    for (size_t i = 0; i < array_length(entries); i++) {
+        const hash_entry_t *entry = array_get(entries, i);
+        code = (code << 5) + code + string_hash_code(entry->key);
+        code = (code << 5) + code + value_hash_code((value_t) entry->value);
+    }
 
+    array_free(entries);
     return code;
 }
 

@@ -1,4 +1,3 @@
-[value] `tael_class` -- has `hash_code_fn`
 [builtin] `hash-code` -- for testing
 
 # xhash
