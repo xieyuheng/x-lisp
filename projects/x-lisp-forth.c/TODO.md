@@ -1,7 +1,5 @@
 # total-compare
 
-[builtin] `total-compare`
-
 [value] `xhash_t` -- `xhash_hash_code` -- use `value_compare`
 [value] `xset_t` -- `xset_hash_code` -- use `value_compare`
 

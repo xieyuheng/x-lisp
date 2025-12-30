@@ -69,6 +69,7 @@ import_builtin(mod_t *mod) {
     define_primitive_2(mod, "same?", x_same_p);
     define_primitive_2(mod, "equal?", x_equal_p);
     define_primitive_1(mod, "hash-code", x_hash_code);
+    define_primitive_2(mod, "total-compare", x_total_compare);
 
     // console
 

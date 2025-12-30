@@ -145,6 +145,11 @@ x_hash_code(value_t value) {
     return x_int(value_hash_code(value));
 }
 
+value_t
+x_total_compare(value_t lhs, value_t rhs) {
+    return x_int(value_total_compare(lhs, rhs));
+}
+
 void
 init_constant_values(void) {
     x_true = x_object(intern_hashtag("t"));
