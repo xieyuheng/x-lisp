@@ -178,8 +178,8 @@ import_builtin(mod_t *mod) {
     define_primitive_2(mod, "set-member?", x_set_member_p);
     define_primitive_2(mod, "set-add!", x_set_add_mut);
     define_primitive_2(mod, "set-add", x_set_add);
-    // define_primitive_2(mod, "set-delete!", x_set_delete_mut);
-    // define_primitive_2(mod, "set-delete", x_set_delete);
+    define_primitive_2(mod, "set-delete!", x_set_delete_mut);
+    define_primitive_2(mod, "set-delete", x_set_delete);
     // define_primitive_1(mod, "set-clear!", x_set_clear_mut);
     // define_primitive_2(mod, "set-union", x_set_union);
     // define_primitive_2(mod, "set-inter", x_set_inter);

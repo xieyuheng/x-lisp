@@ -1,6 +1,5 @@
 # xset
 
-[builtin] `x_set_delete_mut` & `x_set_delete`
 [builtin] `x_set_clear_mut`
 [builtin] `x_set_union` & `x_set_inter` & `x_set_difference`
 [builtin] `x_set_subset_p` & `x_set_disjoint_p`

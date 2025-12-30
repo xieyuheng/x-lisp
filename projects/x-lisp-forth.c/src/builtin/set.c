@@ -40,3 +40,14 @@ value_t
 x_set_add(value_t value, value_t set) {
     return x_set_add_mut(value, x_set_copy(set));
 }
+
+value_t
+x_set_delete_mut(value_t value, value_t set) {
+    xset_delete(to_xset(set), value);
+    return set;
+}
+
+value_t
+x_set_delete(value_t value, value_t set) {
+    return x_set_delete_mut(value, x_set_copy(set));
+}
