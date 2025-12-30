@@ -4,7 +4,7 @@ const object_class_t xset_class = {
     .name = "set",
     .equal_fn = (object_equal_fn_t *) xset_equal,
     .print_fn = (object_print_fn_t *) xset_print,
-    // .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
+    .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
     .compare_fn = (object_compare_fn_t *) xset_compare,
     .free_fn = (free_fn_t *) xset_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xset_child_iter,
@@ -131,6 +131,26 @@ xset_print(const xset_t *self) {
     printf("(@set");
     xset_print_entries(self);
     printf(")");
+}
+
+static ordering_t
+compare_value(const void *lhs, const void *rhs) {
+    return value_total_compare((value_t) lhs, (value_t) rhs);
+}
+
+uint64_t
+xset_hash_code(const xset_t *self) {
+    uint64_t code = 6947; // any big prime number would do.
+
+    array_t *values = set_values(self->set);
+    array_sort(values, compare_value);
+    for (size_t i = 0; i < array_length(values); i++) {
+        value_t value = (value_t) array_get(values, i);
+        code = (code << 5) + code + value_hash_code(value);
+    }
+
+    array_free(values);
+    return code;
 }
 
 ordering_t

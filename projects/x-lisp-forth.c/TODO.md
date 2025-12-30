@@ -1,7 +1,6 @@
 # hash-code
 
 [value] `xhash_t` -- has `hash_code_fn`
-[value] `xset_t` -- has `hash_code_fn`
 
 # circular object
 

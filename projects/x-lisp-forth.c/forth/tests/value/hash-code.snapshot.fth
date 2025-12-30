@@ -34,6 +34,12 @@
 
   record-1 hash-code record-2 hash-code @assert-equal
   record-3 hash-code record-2 hash-code @assert-equal
+
+  make-set snapshot
+  set-1 snapshot
+  set-2 snapshot
+  set-3 snapshot
+  set-nested snapshot
 @end
 
 @def list-1
@@ -99,4 +105,36 @@
   'b record-2 record record-put! @drop
   'c record-3 record record-put! @drop
   record
+@end
+
+@def set-1
+  make-set ( set )
+  1 set set-add! @drop
+  2 set set-add! @drop
+  3 set set-add! @drop
+  set
+@end
+
+@def set-2
+  make-set ( set )
+  3 set set-add! @drop
+  2 set set-add! @drop
+  1 set set-add! @drop
+  set
+@end
+
+@def set-3
+  make-set ( set )
+  "a" set set-add! @drop
+  "b" set set-add! @drop
+  "c" set set-add! @drop
+  set
+@end
+
+@def set-nested
+  make-set ( set )
+  set-1 set set-add! @drop
+  set-2 set set-add! @drop
+  set-3 set set-add! @drop
+  set
 @end
