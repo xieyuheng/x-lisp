@@ -23,6 +23,10 @@ void xset_clear(xset_t *self);
 
 xset_t *xset_copy(const xset_t *self);
 
-// bool xset_equal(const xset_t *lhs, const xset_t *rhs);
-// void xset_print(const xset_t *self);
+bool xset_equal(const xset_t *lhs, const xset_t *rhs);
+void xset_print(const xset_t *self);
 // uint64_t xset_hash_code(const xset_t *self);
+
+xset_t *xset_union(const xset_t *lhs, const xset_t *rhs);
+xset_t *xset_inter(const xset_t *lhs, const xset_t *rhs);
+xset_t *xset_difference(const xset_t *lhs, const xset_t *rhs);

@@ -164,3 +164,28 @@ const object_class_t xset_class = {
     .child_iter_next_fn = (object_child_iter_next_fn_t *) xset_child_iter_next,
     .child_iter_free_fn = (free_fn_t *) xset_child_iter_free,
 };
+
+
+xset_t *
+xset_union(const xset_t *lhs, const xset_t *rhs) {
+    xset_t *new_set = xset_copy(lhs);
+    set_iter_t iter;
+    set_iter_init(&iter, rhs->set);
+    const hash_entry_t *entry = set_iter_next_entry(&iter);
+    while (entry) {
+        xset_add(new_set, (value_t) entry->value);
+        entry = set_iter_next_entry(&iter);
+    }
+
+    return new_set;
+}
+
+// xset_t *
+// xset_inter(const xset_t *lhs, const xset_t *rhs) {
+
+// }
+
+// xset_t *
+// xset_difference(const xset_t *lhs, const xset_t *rhs) {
+
+// }
