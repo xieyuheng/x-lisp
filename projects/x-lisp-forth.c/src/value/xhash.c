@@ -73,10 +73,32 @@ xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
     return true;
 }
 
+static void
+xhash_print_entries(const xhash_t *self) {
+    hash_iter_t iter;
+    hash_iter_init(&iter, self->hash);
+
+    value_t key = (value_t) hash_iter_next_key(&iter);
+    while (key) {
+        value_t value = xhash_get(self, key);
+        value_print(key);
+        printf(" ");
+        value_print(value);
+        key = (value_t) hash_iter_next_key(&iter);
+    }
+}
+
+void
+xhash_print(const xhash_t *self) {
+    printf("(@hash");
+    xhash_print_entries(self);
+    printf(")");
+}
+
 const object_class_t xhash_class = {
     .name = "hash",
-    // .equal_fn = (object_equal_fn_t *) xhash_equal,
-    // .print_fn = (object_print_fn_t *) xhash_print,
+    .equal_fn = (object_equal_fn_t *) xhash_equal,
+    .print_fn = (object_print_fn_t *) xhash_print,
     // .hash_code_fn = (object_hash_code_fn_t *) xhash_hash_code,
     .free_fn = (free_fn_t *) xhash_free,
     // .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xhash_child_iter,

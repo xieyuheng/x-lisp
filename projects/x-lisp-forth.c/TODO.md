@@ -1,6 +1,5 @@
 # xhash
 
-tael_print
 tael_hash_code
 
 fix `tael_equal` handle null the right way
