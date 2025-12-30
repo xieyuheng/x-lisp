@@ -1,7 +1,6 @@
 #include "index.h"
 
 value_t x_true;
-
 value_t x_false;
 
 value_t

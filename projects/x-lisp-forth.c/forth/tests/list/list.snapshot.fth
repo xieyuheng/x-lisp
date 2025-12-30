@@ -1,5 +1,5 @@
 @def main
-  make-list [list]
+  make-list ( list )
   list println
 
   1 list list-push! @drop

@@ -1,5 +1,5 @@
 @def main
-  make-list [list]
+  make-list ( list )
   list list-copy list same? not @assert
   list list-copy list equal? @assert
 
@@ -54,7 +54,7 @@
 
   -- list-push list-put
 
-  make-list [list]
+  make-list ( list )
 
   1 list list-push car 1 @assert-equal
   list list-empty? @assert
@@ -67,7 +67,7 @@
   make-list
   3 @swap cons
   2 @swap cons
-  1 @swap cons [list]
+  1 @swap cons ( list )
 
   list car 1 @assert-equal
   list cdr car 2 @assert-equal
@@ -83,7 +83,7 @@
 
   -- list-reverse!
 
-  make-list [list]
+  make-list ( list )
   1 list list-push! @drop
   2 list list-push! @drop
   3 list list-push! @drop

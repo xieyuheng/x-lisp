@@ -1,5 +1,5 @@
 @def main
-  make-record [record]
+  make-record ( record )
   record println
 
   'a 1 record record-put! @drop

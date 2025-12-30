@@ -1,8 +1,8 @@
-@def square [x]
+@def square ( x )
   x x imul
 @end
 
-@def my-isub [x y]
+@def my-isub ( x y )
   x y isub
 @end
 

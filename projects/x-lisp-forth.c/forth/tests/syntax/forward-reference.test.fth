@@ -3,6 +3,6 @@
   2 square square 16 @assert-equal
 @end
 
-@def square [x]
+@def square ( x )
   x x imul
 @end

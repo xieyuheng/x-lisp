@@ -6,6 +6,14 @@
 
 [value] `xset_t`
 
+# total-compare
+
+[gc] `object_class_t` has `compare_fn`
+[value] `value_total_compare`
+[builtin] `total-compare`
+[value] `xhash_t` -- `hash_code` -- use `value_compare`
+[value] `xset_t` -- `hash_code` -- use `value_compare`
+
 # circular object
 
 [value] `printer` -- setup -- holding state to support circular object

@@ -1,4 +1,4 @@
-@def my-int-positive? [x]
+@def my-int-positive? ( x )
   x 0 int-greater? @if true @return @then
   false
 @end

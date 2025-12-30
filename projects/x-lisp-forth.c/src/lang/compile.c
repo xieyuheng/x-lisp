@@ -28,8 +28,8 @@ compile_function(vm_t *vm, function_t *function) {
         } else if (string_equal(token->content, "@if")) {
             compile_if(vm, function, "@else", "@then", token->meta);
             token_free(token);
-        } else if (string_equal(token->content, "[")) {
-            compile_parameters(vm, function, "]");
+        } else if (string_equal(token->content, "(")) {
+            compile_parameters(vm, function, ")");
             token_free(token);
         } else {
             compile_token(vm, function, token);
@@ -106,8 +106,8 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
     }
 
     case BRACKET_START_TOKEN: {
-        assert(string_equal(token->content, "["));
-        compile_bindings(vm, function, "]");
+        assert(string_equal(token->content, "("));
+        compile_bindings(vm, function, ")");
         token_free(token);
         return;
     }
