@@ -16,6 +16,7 @@ tael_t *to_tael(value_t value);
 
 bool tael_equal(const tael_t *lhs, const tael_t *rhs);
 void tael_print(const tael_t *self);
+uint64_t tael_hash_code(const tael_t *self);
 
 value_t tael_get_element(const tael_t *self, size_t index);
 void tael_put_element(tael_t *self, size_t index, value_t value);

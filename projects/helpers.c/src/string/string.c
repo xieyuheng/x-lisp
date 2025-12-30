@@ -52,10 +52,10 @@ string_is_blank(const char *self) {
 size_t
 string_hash_code(const char *self) {
     const char *pointer = (const char *) self;
-    size_t hash = 0;
+    size_t code = 0;
     while (*pointer)
-        hash = 33 * hash + *pointer++;
-    return hash;
+        code = 33 * code + *pointer++;
+    return code;
 }
 
 bool

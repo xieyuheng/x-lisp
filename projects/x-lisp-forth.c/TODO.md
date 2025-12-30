@@ -1,5 +1,5 @@
 [value] `tael_class` -- has `hash_code_fn`
-[value] `value_hash_code`
+[builtin] `hash-code` -- for testing
 
 # xhash
 

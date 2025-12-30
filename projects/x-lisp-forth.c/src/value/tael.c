@@ -111,6 +111,20 @@ tael_print(const tael_t *self) {
     }
 }
 
+uint64_t
+tael_hash_code(const tael_t *self) {
+    uint64_t code = 5381;
+    for (size_t i = 0; i < array_length(self->elements); i++) {
+        value_t value = tael_get_element(self, i);
+        // TODO
+        (void) value;
+    }
+
+    // TODO
+
+    return code;
+}
+
 struct tael_child_iter_t {
     const tael_t *tael;
     size_t index;
@@ -157,6 +171,7 @@ const object_class_t tael_class = {
     .name = "tael",
     .equal_fn = (object_equal_fn_t *) tael_equal,
     .print_fn = (object_print_fn_t *) tael_print,
+    .hash_code_fn = (object_hash_code_fn_t *) tael_hash_code,
     .free_fn = (free_fn_t *) tael_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
     .child_iter_next_fn = (object_child_iter_next_fn_t *) tael_child_iter_next,

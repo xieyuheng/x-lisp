@@ -53,6 +53,30 @@ equal_p(value_t lhs, value_t rhs) {
     return false;
 }
 
+uint64_t
+value_hash_code(value_t value) {
+    if (int_p(value)) {
+        return value;
+    }
+
+    if (float_p(value)) {
+        return value;
+    }
+
+    if (object_p(value)) {
+        object_t *object = to_object(value);
+        if (object->header.class->hash_code_fn) {
+            return object->header.class->hash_code_fn(object);
+        } else {
+            who_printf("unhandled object: "); object_print(object); newline();
+            exit(1);
+        }
+    }
+
+    who_printf("unhandled value: "); value_print(value); newline();
+    exit(1);
+}
+
 value_t
 x_anything_p(value_t x) {
     (void) x;
