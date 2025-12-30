@@ -3,7 +3,7 @@
   list list-copy list same? not @assert
   list list-copy list equal? @assert
 
-  list anything-list? @assert
+  list any-list? @assert
 
   list list-length 0 @assert-equal
   list list-empty? @assert

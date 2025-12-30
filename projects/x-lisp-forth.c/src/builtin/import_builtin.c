@@ -111,7 +111,7 @@ import_builtin(mod_t *mod) {
     // list
 
     define_primitive_0(mod, "make-list", x_make_list);
-    define_primitive_1(mod, "anything-list?", x_anything_list_p);
+    define_primitive_1(mod, "any-list?", x_any_list_p);
     define_primitive_1(mod, "list-copy", x_list_copy);
     define_primitive_1(mod, "list-length", x_list_length);
     define_primitive_1(mod, "list-empty?", x_list_empty_p);
@@ -136,7 +136,7 @@ import_builtin(mod_t *mod) {
     // record
 
     define_primitive_0(mod, "make-record", x_make_record);
-    define_primitive_1(mod, "anything-record?", x_anything_record_p);
+    define_primitive_1(mod, "any-record?", x_any_record_p);
     define_primitive_1(mod, "record-copy", x_record_copy);
     define_primitive_1(mod, "record-length", x_record_length);
     define_primitive_1(mod, "record-empty?", x_record_empty_p);

@@ -6,7 +6,7 @@ x_make_record(void) {
 }
 
 value_t
-x_anything_record_p(value_t value) {
+x_any_record_p(value_t value) {
     return x_bool(tael_p(value));
 }
 

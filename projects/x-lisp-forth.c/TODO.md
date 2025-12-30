@@ -1,5 +1,9 @@
+ambr list-all list-every
+ambr list-any list-some
+
 # xhash
 
+[value] `xhash` -- setup
 [value] `xhash_t`
 
 # xset

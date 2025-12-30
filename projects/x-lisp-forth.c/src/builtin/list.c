@@ -6,7 +6,7 @@ x_make_list(void) {
 }
 
 value_t
-x_anything_list_p(value_t value) {
+x_any_list_p(value_t value) {
     return x_bool(tael_p(value));
 }
 
