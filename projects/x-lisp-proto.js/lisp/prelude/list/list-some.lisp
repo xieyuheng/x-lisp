@@ -1,11 +1,11 @@
-(export list-any?)
+(export list-some?)
 
-(claim list-any?
+(claim list-some?
   (polymorphic (A)
     (-> (-> A bool?) (list? A)
         bool?)))
 
-(define (list-any? p list)
+(define (list-some? p list)
   (cond ((list-empty? list) false)
         ((p (car list)) true)
-        (else (list-any? p (cdr list)))))
+        (else (list-some? p (cdr list)))))

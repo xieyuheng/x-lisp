@@ -29,7 +29,7 @@
     ([] true)
     ((cons first rest)
      (and (pipe rest
-            (list-all?
+            (list-every?
              (lambda (vertex)
                (not (digraph-predecessor? vertex first digraph)))))
           (digraph-topological-ordered? rest digraph)))))

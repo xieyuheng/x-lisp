@@ -1,5 +1,4 @@
-ambr list-all list-every
-ambr list-any list-some
+ambr anything any
 
 # xhash
 

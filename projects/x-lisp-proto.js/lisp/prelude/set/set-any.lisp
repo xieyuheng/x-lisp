@@ -9,4 +9,4 @@
         bool?)))
 
 (define (set-any? p set)
-  (pipe set set-to-list (list-any? p)))
+  (pipe set set-to-list (list-some? p)))
