@@ -5,6 +5,7 @@ const object_class_t xhash_class = {
     .equal_fn = (object_equal_fn_t *) xhash_equal,
     .print_fn = (object_print_fn_t *) xhash_print,
     // .hash_code_fn = (object_hash_code_fn_t *) xhash_hash_code,
+    .compare_fn = (object_compare_fn_t *) xhash_compare,
     .free_fn = (free_fn_t *) xhash_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xhash_child_iter,
     .child_iter_next_fn = (object_child_iter_next_fn_t *) xhash_child_iter_next,
@@ -140,6 +141,59 @@ xhash_print(const xhash_t *self) {
     printf("(@hash");
     xhash_print_entries(self);
     printf(")");
+}
+
+static ordering_t
+compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
+    ordering_t ordering =
+        value_total_compare((value_t) lhs->key, (value_t) rhs->key);
+    if (ordering != 0) {
+        return ordering;
+    }
+
+    return value_total_compare((value_t) lhs->value, (value_t) rhs->value);
+}
+
+ordering_t
+xhash_compare(const xhash_t *lhs, const xhash_t *rhs) {
+    array_t *lhs_entries = hash_entries(lhs->hash);
+    array_t *rhs_entries = hash_entries(rhs->hash);
+    array_sort(lhs_entries, (compare_fn_t *) compare_hash_entry);
+    array_sort(rhs_entries, (compare_fn_t *) compare_hash_entry);
+    size_t lhs_length = array_length(lhs_entries);
+    size_t rhs_length = array_length(rhs_entries);
+
+    size_t i = 0;
+    ordering_t ordering;
+    while (true) {
+        if (i == lhs_length && i == rhs_length) {
+            ordering = 0;
+            break;
+        }
+
+        if (i == lhs_length) {
+            ordering = -1;
+            break;
+        }
+
+        if (i == rhs_length) {
+            ordering = 1;
+            break;
+        }
+
+        ordering = compare_hash_entry(
+            array_get(lhs_entries, i),
+            array_get(rhs_entries, i));
+        if (ordering != 0) {
+            break;
+        }
+
+        i++;
+    }
+
+    array_free(lhs_entries);
+    array_free(rhs_entries);
+    return ordering;
 }
 
 struct xhash_child_iter_t {

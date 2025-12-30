@@ -1,7 +1,3 @@
-# total-compare
-
-[value] `xhash_t` -- has `compare_fn`
-
 # hash-code
 
 [value] `xhash_t` -- has `hash_code_fn`

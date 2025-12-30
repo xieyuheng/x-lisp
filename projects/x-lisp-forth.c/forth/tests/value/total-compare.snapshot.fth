@@ -34,6 +34,9 @@
 
   set-1 set-1 snapshot
   set-1 set-2 snapshot
+
+  hash-1 hash-1 snapshot
+  hash-1 hash-2 snapshot
 @end
 
 @def list-1
@@ -97,4 +100,19 @@
   1 set set-add! @drop
   2 set set-add! @drop
   set
+@end
+
+@def hash-1
+  make-hash ( hash )
+  'a 1 hash hash-put! @drop
+  'b 2 hash hash-put! @drop
+  'c 3 hash hash-put! @drop
+  hash
+@end
+
+@def hash-2
+  make-hash ( hash )
+  'a 1 hash hash-put! @drop
+  'b 2 hash hash-put! @drop
+  hash
 @end
