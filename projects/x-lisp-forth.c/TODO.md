@@ -1,6 +1,5 @@
 # xset
 
-[builtin] `x_set_member_p`
 [builtin] `x_set_add_mut`
 [builtin] `x_set_add`
 [builtin] `x_set_delete_mut`

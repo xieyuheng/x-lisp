@@ -24,3 +24,8 @@ value_t
 x_set_empty_p(value_t set) {
     return x_bool(xset_empty_p(to_xset(set)));
 }
+
+value_t
+x_set_member_p(value_t value, value_t set) {
+    return x_bool(xset_member_p(to_xset(set), value));
+}
