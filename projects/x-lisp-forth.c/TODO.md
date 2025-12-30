@@ -1,10 +1,12 @@
 # xset
 
-[value] `set_union`
-[value] `set_inter`
-[value] `set_difference`
+[value] `xset_print`
 
-[value] `set_disjoint_p`
+[value] `xset_union`
+[value] `xset_inter`
+[value] `xset_difference`
+
+[value] `xset_disjoint_p`
 
 [builtin] `x_any_set_p`
 

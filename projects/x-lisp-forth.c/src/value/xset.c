@@ -83,25 +83,23 @@ xset_copy(const xset_t *self) {
     return new_set;
 }
 
-// bool
-// xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
-//     if (hash_length(lhs->hash) != hash_length(rhs->hash))
-//         return false;
+bool
+xset_equal(const xset_t *lhs, const xset_t *rhs) {
+    if (set_size(lhs->set) != set_size(rhs->set))
+        return false;
 
-//     hash_iter_t iter;
-//     hash_iter_init(&iter, lhs->hash);
-//     value_t key = (value_t) hash_iter_next_key(&iter);
-//     while (key) {
-//         value_t left = xhash_get(lhs, key);
-//         value_t right = xhash_get(rhs, key);
-//         if (!equal_p(left, right))
-//             return false;
+    set_iter_t iter;
+    set_iter_init(&iter, lhs->set);
+    const hash_entry_t *entry = set_iter_next_entry(&iter);
+    while (entry) {
+        if (!xset_member_p(rhs, (value_t) entry->value))
+            return false;
 
-//         key = (value_t) hash_iter_next_key(&iter);
-//     }
+        entry =  set_iter_next_entry(&iter);
+    }
 
-//     return true;
-// }
+    return true;
+}
 
 // static void
 // xhash_print_entries(const xhash_t *self) {
