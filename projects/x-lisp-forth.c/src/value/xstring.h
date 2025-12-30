@@ -17,6 +17,7 @@ xstring_t *to_xstring(value_t value);
 
 bool xstring_equal(xstring_t *lhs, xstring_t *rhs);
 void xstring_print(xstring_t *self);
+uint64_t xstring_hash_code(xstring_t *self);
 
 size_t xstring_length(xstring_t *self);
 bool xstring_is_empty(xstring_t *self);

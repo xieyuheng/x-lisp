@@ -4,6 +4,7 @@ const object_class_t xstring_class = {
     .name = "string",
     .print_fn = (object_print_fn_t *) xstring_print,
     .equal_fn = (object_equal_fn_t *) xstring_equal,
+    .hash_code_fn = (object_hash_code_fn_t *) xstring_hash_code,
     .free_fn = (free_fn_t *) xstring_free,
 };
 
@@ -52,6 +53,11 @@ xstring_print(xstring_t *self) {
     string_print("\"");
     string_print(self->string);
     string_print("\"");
+}
+
+uint64_t
+xstring_hash_code(xstring_t *self) {
+    return string_hash_code(self->string);
 }
 
 size_t

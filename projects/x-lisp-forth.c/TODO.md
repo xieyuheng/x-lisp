@@ -1,5 +1,3 @@
-[value] `xstring_class` -- has `hash_code_fn`
-
 [value] `symbol_class` -- has `hash_code_fn`
 [value] `hashtag_class` -- has `hash_code_fn`
 
