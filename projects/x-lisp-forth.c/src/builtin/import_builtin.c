@@ -186,5 +186,5 @@ import_builtin(mod_t *mod) {
     define_primitive_2(mod, "set-difference", x_set_difference);
     define_primitive_2(mod, "set-subset?", x_set_subset_p);
     define_primitive_2(mod, "set-disjoint?", x_set_disjoint_p);
-    // define_primitive_1(mod, "set-to-list", x_set_to_list);
+    define_primitive_1(mod, "set-to-list", x_set_to_list);
 }

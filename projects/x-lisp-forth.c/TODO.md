@@ -1,7 +1,3 @@
-# xset
-
-[builtin] `x_set_to_list`
-
 # total-compare
 
 [gc] `object_class_t` has `compare_fn`

@@ -82,3 +82,17 @@ value_t
 x_set_disjoint_p(value_t lhs, value_t rhs) {
     return x_bool(xset_disjoint_p(to_xset(lhs), to_xset(rhs)));
 }
+
+value_t
+x_set_to_list(value_t set) {
+    tael_t *tael = make_tael();
+    set_iter_t iter;
+    set_iter_init(&iter, to_xset(set)->set);
+    const hash_entry_t *entry = set_iter_next_entry(&iter);
+    while (entry) {
+        tael_push_element(tael, (value_t) entry->value);
+        entry = set_iter_next_entry(&iter);
+    }
+
+    return x_object(tael);
+}

@@ -6,4 +6,6 @@
   2 set set-add! @drop
   3 set set-add! @drop
   set println @drop
+
+  set set-to-list println @drop
 @end
