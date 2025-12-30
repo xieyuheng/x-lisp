@@ -154,7 +154,7 @@ import_builtin(mod_t *mod) {
     // hash
 
     define_primitive_0(mod, "make-hash", x_make_hash);
-    // define_primitive_1(mod, "any-hash?", x_any_hash_p);
+    define_primitive_1(mod, "any-hash?", x_any_hash_p);
     // define_primitive_1(mod, "hash-copy", x_hash_copy);
     // define_primitive_1(mod, "hash-length", x_hash_length);
     // define_primitive_1(mod, "hash-empty?", x_hash_empty_p);

@@ -1,6 +1,6 @@
 # xhash
 
-[builtin] `x_any_hash_p`
+[builtin] `x_hash_length` & `x_hash_empty_p`
 
 # xset
 
