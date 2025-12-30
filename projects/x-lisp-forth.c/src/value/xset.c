@@ -141,26 +141,18 @@ xset_child_iter_free(xset_child_iter_t *self) {
     free(self);
 }
 
-// static object_t *
-// xset_child_iter_next(xset_child_iter_t *iter) {
-//     if (iter->entry) {
-//         value_t value = (value_t) iter->entry->value;
-//         iter->entry = NULL;
-//         return object_p(value)
-//             ? to_object(value)
-//             : xset_child_iter_next(iter);
-//     }
+static object_t *
+xset_child_iter_next(xset_child_iter_t *iter) {
+    const hash_entry_t *entry = set_iter_next_entry(&iter->set_iter);
+    if (entry) {
+        value_t value = (value_t) entry->value;
+        return object_p(value)
+            ? to_object(value)
+            : xset_child_iter_next(iter);
+    }
 
-//     iter->entry = hash_iter_next_entry(&iter->hash_iter);
-//     if (iter->entry) {
-//         value_t value = (value_t) iter->entry->key;
-//         return object_p(value)
-//             ? to_object(value)
-//             : xset_child_iter_next(iter);
-//     }
-
-//     return NULL;
-// }
+    return NULL;
+}
 
 const object_class_t xset_class = {
     .name = "set",
@@ -169,6 +161,6 @@ const object_class_t xset_class = {
     // .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
     .free_fn = (free_fn_t *) xset_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xset_child_iter,
-    // .child_iter_next_fn = (object_child_iter_next_fn_t *) xset_child_iter_next,
+    .child_iter_next_fn = (object_child_iter_next_fn_t *) xset_child_iter_next,
     .child_iter_free_fn = (free_fn_t *) xset_child_iter_free,
 };

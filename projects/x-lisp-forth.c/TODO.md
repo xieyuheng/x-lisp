@@ -1,7 +1,5 @@
 # xset
 
-[value] `xset_child_iter_next`
-
 [value] `xset_union`
 [value] `xset_inter`
 [value] `xset_difference`
