@@ -1,5 +1,3 @@
-[builtin] `hash-code` -- for testing
-
 # xhash
 
 [value] `xhash_t`

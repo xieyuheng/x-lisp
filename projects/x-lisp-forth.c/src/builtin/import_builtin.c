@@ -68,10 +68,12 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "anything?", x_anything_p);
     define_primitive_2(mod, "same?", x_same_p);
     define_primitive_2(mod, "equal?", x_equal_p);
+    define_primitive_1(mod, "hash-code", x_hash_code);
 
     // console
 
     define_primitive_0(mod, "newline", x_newline);
+    define_primitive_1(mod, "write", x_write);
     define_primitive_1(mod, "print", x_print);
     define_primitive_1(mod, "println", x_println);
     define_primitive_1(mod, "println-non-void", x_println_non_void);

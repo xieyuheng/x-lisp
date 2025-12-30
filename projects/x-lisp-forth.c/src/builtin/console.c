@@ -7,6 +7,12 @@ x_newline(void) {
 }
 
 value_t
+x_write(value_t x) {
+    string_print(to_xstring(x)->string);
+    return x_void;
+}
+
+value_t
 x_print(value_t x) {
     value_print(x);
     return x_void;
