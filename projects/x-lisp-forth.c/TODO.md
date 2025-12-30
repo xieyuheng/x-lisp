@@ -1,4 +1,3 @@
-[value] `tael_t` -- move class to the top
 [value] `curry_t` -- move class to the top
 [value] `xhash_t` -- move class to the top
 [value] `xset_t` -- move class to the top

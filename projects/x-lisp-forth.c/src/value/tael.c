@@ -1,5 +1,17 @@
 #include "index.h"
 
+const object_class_t tael_class = {
+    .name = "tael",
+    .equal_fn = (object_equal_fn_t *) tael_equal,
+    .print_fn = (object_print_fn_t *) tael_print,
+    .hash_code_fn = (object_hash_code_fn_t *) tael_hash_code,
+    .compare_fn = (object_compare_fn_t *) tael_compare,
+    .free_fn = (free_fn_t *) tael_free,
+    .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
+    .child_iter_next_fn = (object_child_iter_next_fn_t *) tael_child_iter_next,
+    .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
+};
+
 tael_t *
 make_tael(void) {
     tael_t *self = new(tael_t);
@@ -330,9 +342,7 @@ struct tael_child_iter_t {
     struct record_iter_t record_iter;
 };
 
-typedef struct tael_child_iter_t tael_child_iter_t;
-
-static tael_child_iter_t *
+tael_child_iter_t *
 make_tael_child_iter(const tael_t *tael) {
     tael_child_iter_t *self = new(tael_child_iter_t);
     self->tael = tael;
@@ -341,12 +351,12 @@ make_tael_child_iter(const tael_t *tael) {
     return self;
 }
 
-static void
+void
 tael_child_iter_free(tael_child_iter_t *self) {
     free(self);
 }
 
-static object_t *
+object_t *
 tael_child_iter_next(tael_child_iter_t *iter) {
     if (iter->index < array_length(iter->tael->elements)) {
         value_t value = tael_get_element(iter->tael, iter->index++);
@@ -365,15 +375,3 @@ tael_child_iter_next(tael_child_iter_t *iter) {
 
     return NULL;
 }
-
-const object_class_t tael_class = {
-    .name = "tael",
-    .equal_fn = (object_equal_fn_t *) tael_equal,
-    .print_fn = (object_print_fn_t *) tael_print,
-    .hash_code_fn = (object_hash_code_fn_t *) tael_hash_code,
-    .compare_fn = (object_compare_fn_t *) tael_compare,
-    .free_fn = (free_fn_t *) tael_free,
-    .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
-    .child_iter_next_fn = (object_child_iter_next_fn_t *) tael_child_iter_next,
-    .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
-};

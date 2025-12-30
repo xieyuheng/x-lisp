@@ -35,3 +35,7 @@ bool tael_equal(const tael_t *lhs, const tael_t *rhs);
 void tael_print(const tael_t *self);
 uint64_t tael_hash_code(const tael_t *self);
 ordering_t tael_compare(const tael_t *lhs, const tael_t *rhs);
+
+tael_child_iter_t *make_tael_child_iter(const tael_t *tael);
+void tael_child_iter_free(tael_child_iter_t *self);
+object_t *tael_child_iter_next(tael_child_iter_t *iter);

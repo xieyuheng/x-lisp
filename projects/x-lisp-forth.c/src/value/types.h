@@ -23,5 +23,6 @@ typedef struct hashtag_t hashtag_t;
 typedef struct curry_t curry_t;
 typedef struct xstring_t xstring_t;
 typedef struct tael_t tael_t;
+typedef struct tael_child_iter_t tael_child_iter_t;
 typedef struct xhash_t xhash_t;
 typedef struct xset_t xset_t;
