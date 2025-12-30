@@ -1,6 +1,5 @@
 # xset
 
-[value] `xset_copy`
 [value] `xset_clear`
 
 [value] `set_union`

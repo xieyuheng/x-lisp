@@ -64,19 +64,19 @@ xset_delete(xset_t *self, value_t value) {
     return set_delete(self->set, (void *) value);
 }
 
-// xset_t *
-// xset_copy(const xset_t *self) {
-//     xset_t *new_set = make_xset();
-//     set_iter_t iter;
-//     set_iter_init(&iter, self->set);
-//     const hash_entry_t *value = set_iter_next(&iter);
-//     while (entry) {
-//         xset_add(new_set, (value_t) value);
-//         entry = set_iter_next(&iter);
-//     }
+xset_t *
+xset_copy(const xset_t *self) {
+    xset_t *new_set = make_xset();
+    set_iter_t iter;
+    set_iter_init(&iter, self->set);
+    const hash_entry_t *entry = set_iter_next_entry(&iter);
+    while (entry) {
+        xset_add(new_set, (value_t) entry->value);
+        entry = set_iter_next_entry(&iter);
+    }
 
-//     return new_set;
-// }
+    return new_set;
+}
 
 // bool
 // xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {

@@ -19,6 +19,7 @@ bool xset_empty_p(const xset_t *self);
 bool xset_member_p(const xset_t *self, value_t value);
 void xset_add(xset_t *self, value_t value);
 bool xset_delete(xset_t *self, value_t value);
+void xset_clear(xset_t *self);
 
 xset_t *xset_copy(const xset_t *self);
 
