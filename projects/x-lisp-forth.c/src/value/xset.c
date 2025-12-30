@@ -49,15 +49,10 @@ xset_empty_p(const xset_t *self) {
     return set_is_empty(self->set);
 }
 
-// inline value_t
-// xhash_get(const xhash_t *self, value_t key) {
-//     hash_entry_t *entry = hash_get_entry(self->hash, (void *) key);
-//     if (entry) {
-//         return (value_t) entry->value;
-//     } else {
-//         return x_null;
-//     }
-// }
+inline bool
+xset_member_p(const xset_t *self, value_t value) {
+    return x_bool(set_member(self->set, (void *) value));
+}
 
 // inline void
 // xhash_put(xhash_t *self, value_t key, value_t value) {
