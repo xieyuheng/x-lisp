@@ -59,10 +59,10 @@ xset_add(xset_t *self, value_t value) {
     set_add(self->set, (void *) value);
 }
 
-// inline void
-// xhash_delete(xhash_t *self, value_t key) {
-//     hash_delete(self->hash, (void *) key);
-// }
+inline bool
+xset_delete(xset_t *self, value_t value) {
+    return set_delete(self->set, (void *) value);
+}
 
 // xset_t *
 // xset_copy(const xset_t *self) {

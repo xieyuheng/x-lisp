@@ -1,7 +1,5 @@
 # xset
 
-[value] `xset_delete`
-
 [value] `xset_copy`
 [value] `xset_clear`
 
