@@ -1,7 +1,11 @@
 # total-compare
 
-[value] `xhash_t` -- `xhash_hash_code` -- use `value_compare`
-[value] `xset_t` -- `xset_hash_code` -- use `value_compare`
+[value] `xstring_t` -- has `compare_fn`
+[value] `symbol_t` -- has `compare_fn`
+[value] `hashtag_t` -- has `compare_fn`
+
+[value] `xhash_t` -- has `compare_fn`
+[value] `xset_t` -- has `compare_fn`
 
 # circular object
 

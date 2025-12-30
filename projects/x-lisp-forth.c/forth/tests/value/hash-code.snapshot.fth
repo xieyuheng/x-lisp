@@ -1,36 +1,36 @@
-@def echo-hash-code ( value )
+@def snapshot ( value )
   value print @drop
-  " -> " write @drop
+  " => " write @drop
   value hash-code println @drop
 @end
 
 @def main
-  1 echo-hash-code
+  1 snapshot
 
-  1.0 echo-hash-code
+  1.0 snapshot
 
-  "" echo-hash-code
-  "abc" echo-hash-code
+  "" snapshot
+  "abc" snapshot
 
-  'abc echo-hash-code
+  'abc snapshot
 
-  #abc echo-hash-code
-  #t echo-hash-code
-  #f echo-hash-code
-  #void echo-hash-code
-  #null echo-hash-code
+  #abc snapshot
+  #t snapshot
+  #f snapshot
+  #void snapshot
+  #null snapshot
 
-  make-list echo-hash-code
+  make-list snapshot
 
-  list-1 echo-hash-code
-  list-2 echo-hash-code
-  list-3 echo-hash-code
-  list-nested echo-hash-code
+  list-1 snapshot
+  list-2 snapshot
+  list-3 snapshot
+  list-nested snapshot
 
-  record-1 echo-hash-code
-  record-2 echo-hash-code
-  record-3 echo-hash-code
-  record-nested echo-hash-code
+  record-1 snapshot
+  record-2 snapshot
+  record-3 snapshot
+  record-nested snapshot
 
   record-1 hash-code record-2 hash-code @assert-equal
   record-3 hash-code record-2 hash-code @assert-equal
