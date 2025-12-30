@@ -180,12 +180,33 @@ xset_union(const xset_t *lhs, const xset_t *rhs) {
     return new_set;
 }
 
-// xset_t *
-// xset_inter(const xset_t *lhs, const xset_t *rhs) {
+xset_t *
+xset_inter(const xset_t *lhs, const xset_t *rhs) {
+    xset_t *new_set = make_xset();
+    set_iter_t iter;
+    set_iter_init(&iter, lhs->set);
+    const hash_entry_t *entry = set_iter_next_entry(&iter);
+    while (entry) {
+        if (xset_member_p(rhs, (value_t) entry->value)) {
+            xset_add(new_set, (value_t) entry->value);
+        }
 
-// }
+        entry = set_iter_next_entry(&iter);
+    }
 
-// xset_t *
-// xset_difference(const xset_t *lhs, const xset_t *rhs) {
+    return new_set;
+}
 
-// }
+xset_t *
+xset_difference(const xset_t *lhs, const xset_t *rhs) {
+    xset_t *new_set = xset_copy(lhs);
+    set_iter_t iter;
+    set_iter_init(&iter, rhs->set);
+    const hash_entry_t *entry = set_iter_next_entry(&iter);
+    while (entry) {
+        xset_delete(new_set, (value_t) entry->value);
+        entry = set_iter_next_entry(&iter);
+    }
+
+    return new_set;
+}

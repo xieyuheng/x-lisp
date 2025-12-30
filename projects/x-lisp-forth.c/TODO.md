@@ -1,8 +1,5 @@
 # xset
 
-[value] `xset_inter`
-[value] `xset_difference`
-
 [value] `xset_disjoint_p`
 
 [builtin] `x_any_set_p`
