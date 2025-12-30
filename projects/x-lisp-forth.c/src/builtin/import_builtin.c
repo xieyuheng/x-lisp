@@ -176,8 +176,8 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "set-size", x_set_size);
     define_primitive_1(mod, "set-empty?", x_set_empty_p);
     define_primitive_2(mod, "set-member?", x_set_member_p);
-    // define_primitive_2(mod, "set-add!", x_set_add_mut);
-    // define_primitive_2(mod, "set-add", x_set_add);
+    define_primitive_2(mod, "set-add!", x_set_add_mut);
+    define_primitive_2(mod, "set-add", x_set_add);
     // define_primitive_2(mod, "set-delete!", x_set_delete_mut);
     // define_primitive_2(mod, "set-delete", x_set_delete);
     // define_primitive_1(mod, "set-clear!", x_set_clear_mut);

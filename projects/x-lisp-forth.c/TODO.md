@@ -1,15 +1,9 @@
 # xset
 
-[builtin] `x_set_add_mut`
-[builtin] `x_set_add`
-[builtin] `x_set_delete_mut`
-[builtin] `x_set_delete`
+[builtin] `x_set_delete_mut` & `x_set_delete`
 [builtin] `x_set_clear_mut`
-[builtin] `x_set_union`
-[builtin] `x_set_inter`
-[builtin] `x_set_difference`
-[builtin] `x_set_subset_p`
-[builtin] `x_set_disjoint_p`
+[builtin] `x_set_union` & `x_set_inter` & `x_set_difference`
+[builtin] `x_set_subset_p` & `x_set_disjoint_p`
 [builtin] `x_set_to_list`
 
 # total-compare
