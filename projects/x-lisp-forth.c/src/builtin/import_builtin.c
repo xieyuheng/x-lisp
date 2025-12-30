@@ -167,4 +167,23 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "hash-keys", x_hash_keys);
     define_primitive_1(mod, "hash-values", x_hash_values);
     define_primitive_1(mod, "hash-entries", x_hash_entries);
+
+    // set
+
+    // (set? element-p value)
+    // (set-size set)
+    // (set-empty? set)
+    // (set-copy set)
+    // (set-member? value set)
+    // (set-include? subset set)
+    // (set-to-list set)
+    // (set-add value set)
+    // (set-add! value set)
+    // (set-delete value set)
+    // (set-delete! value set)
+    // (set-clear! set)
+    // (set-union left right)
+    // (set-inter left right)
+    // (set-difference left right)
+    // (set-disjoint? left right)
 }
