@@ -1,4 +1,1 @@
-float_compare_ascending & float_compare_descending
-double_compare_ascending & double_compare_descending
-
 string_compare_lexical
