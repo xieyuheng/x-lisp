@@ -1,8 +1,5 @@
 # xhash
 
-xhash_put
-xhash_delete
-
 tael_equal
 tael_print
 tael_hash_code

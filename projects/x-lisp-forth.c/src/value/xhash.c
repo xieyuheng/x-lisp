@@ -43,15 +43,15 @@ xhash_get(const xhash_t *self, value_t key) {
     }
 }
 
-// inline void
-// xhash_put(xhash_t *self, value_t key, value_t value) {
-//     record_put(self->attributes, key, (void *) value);
-// }
+inline void
+xhash_put(xhash_t *self, value_t key, value_t value) {
+    hash_put(self->hash, (void *) key, (void *) value);
+}
 
-// inline void
-// xhash_delete(xhash_t *self, value_t key) {
-//     record_delete(self->attributes, key);
-// }
+inline void
+xhash_delete(xhash_t *self, value_t key) {
+    hash_delete(self->hash, (void *) key);
+}
 
 // bool
 // xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
