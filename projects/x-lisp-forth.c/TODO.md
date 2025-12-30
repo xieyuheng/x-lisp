@@ -1,6 +1,6 @@
 # xhash
 
-[builtin] `make_hash`
+[builtin] `x_make_hash`
 
 # xset
 

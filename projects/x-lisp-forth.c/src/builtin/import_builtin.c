@@ -150,4 +150,8 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "record-keys", x_record_keys);
     define_primitive_1(mod, "record-values", x_record_values);
     define_primitive_1(mod, "record-entries", x_record_entries);
+
+    // hash
+
+    
 }
