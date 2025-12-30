@@ -2,8 +2,8 @@
 
 const object_class_t xstring_class = {
     .name = "string",
-    .print_fn = (object_print_fn_t *) xstring_print,
     .equal_fn = (object_equal_fn_t *) xstring_equal,
+    .print_fn = (object_print_fn_t *) xstring_print,
     .hash_code_fn = (object_hash_code_fn_t *) xstring_hash_code,
     .free_fn = (free_fn_t *) xstring_free,
 };
@@ -43,30 +43,30 @@ to_xstring(value_t value) {
 }
 
 bool
-xstring_equal(xstring_t *lhs, xstring_t *rhs) {
+xstring_equal(const xstring_t *lhs, const xstring_t *rhs) {
     return lhs->length == rhs->length
         && string_equal(lhs->string, rhs->string);
 }
 
 void
-xstring_print(xstring_t *self) {
+xstring_print(const xstring_t *self) {
     string_print("\"");
     string_print(self->string);
     string_print("\"");
 }
 
 uint64_t
-xstring_hash_code(xstring_t *self) {
+xstring_hash_code(const xstring_t *self) {
     return string_hash_code(self->string);
 }
 
 size_t
-xstring_length(xstring_t *self) {
+xstring_length(const xstring_t *self) {
     return self->length;
 }
 
 bool
-xstring_is_empty(xstring_t *self) {
+xstring_is_empty(const xstring_t *self) {
     return self->length == 0;
 }
 

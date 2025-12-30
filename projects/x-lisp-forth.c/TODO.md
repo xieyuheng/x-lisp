@@ -1,12 +1,8 @@
+[value] `xstring_t` -- has `is_static` -- no gc, no free
+
 [value] `symbol_class` -- has `hash_code_fn`
 [value] `hashtag_class` -- has `hash_code_fn`
-
-[value] `curry_class` -- has `hash_code_fn`
-
 [value] `tael_class` -- has `hash_code_fn`
-
-[lang] `definition_class` -- has `hash_code_fn`
-
 [value] `value_hash_code`
 
 # xhash

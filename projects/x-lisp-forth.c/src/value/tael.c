@@ -30,7 +30,7 @@ to_tael(value_t value) {
 }
 
 bool
-tael_equal(tael_t *lhs, tael_t *rhs) {
+tael_equal(const tael_t *lhs, const tael_t *rhs) {
     if (array_length(lhs->elements) != array_length(rhs->elements))
         return false;
 
@@ -60,7 +60,7 @@ tael_equal(tael_t *lhs, tael_t *rhs) {
 }
 
 static void
-tael_print_elements(tael_t *self) {
+tael_print_elements(const tael_t *self) {
     for (size_t i = 0; i < array_length(self->elements); i++) {
         value_print(tael_get_element(self, i));
         if (i < array_length(self->elements) - 1) {
@@ -70,7 +70,7 @@ tael_print_elements(tael_t *self) {
 }
 
 static void
-tael_print_attributes(tael_t *self) {
+tael_print_attributes(const tael_t *self) {
     record_iter_t iter;
     record_iter_init(&iter, self->attributes);
 
@@ -93,7 +93,7 @@ tael_print_attributes(tael_t *self) {
 }
 
 void
-tael_print(tael_t *self) {
+tael_print(const tael_t *self) {
     if (array_is_empty(self->elements)) {
         printf("[");
         tael_print_attributes(self);
@@ -155,12 +155,12 @@ tael_child_iter_next(tael_child_iter_t *iter) {
 
 const object_class_t tael_class = {
     .name = "tael",
-    .print_fn = (object_print_fn_t *) tael_print,
     .equal_fn = (object_equal_fn_t *) tael_equal,
+    .print_fn = (object_print_fn_t *) tael_print,
     .free_fn = (free_fn_t *) tael_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
-    .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
     .child_iter_next_fn = (object_child_iter_next_fn_t *) tael_child_iter_next,
+    .child_iter_free_fn = (free_fn_t *) tael_child_iter_free,
 };
 
 inline value_t
@@ -214,7 +214,7 @@ tael_delete_attribute(tael_t *self, const char *key) {
 }
 
 tael_t *
-tael_copy(tael_t *self) {
+tael_copy(const tael_t *self) {
     tael_t *new_tael = make_tael();
 
     for (size_t i = 0; i < array_length(self->elements); i++) {
@@ -233,7 +233,7 @@ tael_copy(tael_t *self) {
 }
 
 tael_t *
-tael_copy_only_elements(tael_t *self) {
+tael_copy_only_elements(const tael_t *self) {
     tael_t *new_tael = make_tael();
 
     for (size_t i = 0; i < array_length(self->elements); i++) {
@@ -244,7 +244,7 @@ tael_copy_only_elements(tael_t *self) {
 }
 
 tael_t *
-tael_copy_only_attributes(tael_t *self) {
+tael_copy_only_attributes(const tael_t *self) {
     tael_t *new_tael = make_tael();
 
     record_iter_t iter;

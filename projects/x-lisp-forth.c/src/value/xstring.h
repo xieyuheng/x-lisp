@@ -15,11 +15,11 @@ void xstring_free(xstring_t *self);
 bool xstring_p(value_t value);
 xstring_t *to_xstring(value_t value);
 
-bool xstring_equal(xstring_t *lhs, xstring_t *rhs);
-void xstring_print(xstring_t *self);
-uint64_t xstring_hash_code(xstring_t *self);
+bool xstring_equal(const xstring_t *lhs, const xstring_t *rhs);
+void xstring_print(const xstring_t *self);
+uint64_t xstring_hash_code(const xstring_t *self);
 
-size_t xstring_length(xstring_t *self);
-bool xstring_is_empty(xstring_t *self);
+size_t xstring_length(const xstring_t *self);
+bool xstring_is_empty(const xstring_t *self);
 
 xstring_t *xstring_append(xstring_t *left, xstring_t *right);

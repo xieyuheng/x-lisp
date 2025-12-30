@@ -31,7 +31,7 @@ to_curry(value_t value) {
 }
 
 bool
-curry_equal(curry_t *lhs, curry_t *rhs) {
+curry_equal(const curry_t *lhs, const curry_t *rhs) {
     if (!equal_p(lhs->target, rhs->target)) return false;
     if (lhs->arity != rhs->arity) return false;
     if (lhs->size != rhs->size) return false;
@@ -45,7 +45,7 @@ curry_equal(curry_t *lhs, curry_t *rhs) {
 }
 
 void
-curry_print(curry_t *self) {
+curry_print(const curry_t *self) {
     printf("(@curry ");
     value_print(self->target);
     printf(" %ld", self->arity);
@@ -102,10 +102,10 @@ curry_child_iter_next(curry_child_iter_t *iter) {
 
 const object_class_t curry_class = {
     .name = "curry",
-    .print_fn = (object_print_fn_t *) curry_print,
     .equal_fn = (object_equal_fn_t *) curry_equal,
+    .print_fn = (object_print_fn_t *) curry_print,
     .free_fn = (free_fn_t *) curry_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_curry_child_iter,
-    .child_iter_free_fn = (free_fn_t *) curry_child_iter_free,
     .child_iter_next_fn = (object_child_iter_next_fn_t *) curry_child_iter_next,
+    .child_iter_free_fn = (free_fn_t *) curry_child_iter_free,
 };

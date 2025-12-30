@@ -2,8 +2,8 @@
 
 const object_class_t definition_class = {
     .name = "definition",
-    .print_fn = (object_print_fn_t *) definition_print,
     .equal_fn = (object_equal_fn_t *) definition_equal,
+    .print_fn = (object_print_fn_t *) definition_print,
 };
 
 static definition_t *
