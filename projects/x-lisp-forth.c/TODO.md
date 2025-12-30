@@ -1,7 +1,3 @@
-# hash-code
-
-[value] `xhash_t` -- has `hash_code_fn`
-
 # circular object
 
 [value] `printer` -- setup -- holding state to support circular object

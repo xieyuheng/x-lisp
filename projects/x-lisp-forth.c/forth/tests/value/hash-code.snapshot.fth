@@ -40,6 +40,13 @@
   set-2 snapshot
   set-3 snapshot
   set-nested snapshot
+
+  make-hash snapshot
+  hash-1 snapshot
+  hash-2 snapshot
+  hash-3 snapshot
+  hash-nested-1 snapshot
+  hash-nested-2 snapshot
 @end
 
 @def list-1
@@ -137,4 +144,43 @@
   set-2 set set-add! @drop
   set-3 set set-add! @drop
   set
+@end
+
+@def hash-1
+  make-hash ( hash )
+  'a 1 hash hash-put! @drop
+  'b 2 hash hash-put! @drop
+  'c 3 hash hash-put! @drop
+  hash
+@end
+
+@def hash-2
+  make-hash ( hash )
+  'c 3 hash hash-put! @drop
+  'b 2 hash hash-put! @drop
+  'a 1 hash hash-put! @drop
+  hash
+@end
+
+@def hash-3
+  make-hash ( hash )
+  'a 1 hash hash-put! @drop
+  'b 2 hash hash-put! @drop
+  hash
+@end
+
+@def hash-nested-1
+  make-hash ( hash )
+  hash-1 hash-1 hash hash-put! @drop
+  hash-2 hash-2 hash hash-put! @drop
+  hash-3 hash-3 hash hash-put! @drop
+  hash
+@end
+
+@def hash-nested-2
+  make-hash ( hash )
+  hash-3 hash-3 hash hash-put! @drop
+  hash-2 hash-2 hash hash-put! @drop
+  hash-1 hash-1 hash hash-put! @drop
+  hash
 @end

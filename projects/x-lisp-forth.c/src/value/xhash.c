@@ -4,7 +4,7 @@ const object_class_t xhash_class = {
     .name = "hash",
     .equal_fn = (object_equal_fn_t *) xhash_equal,
     .print_fn = (object_print_fn_t *) xhash_print,
-    // .hash_code_fn = (object_hash_code_fn_t *) xhash_hash_code,
+    .hash_code_fn = (object_hash_code_fn_t *) xhash_hash_code,
     .compare_fn = (object_compare_fn_t *) xhash_compare,
     .free_fn = (free_fn_t *) xhash_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xhash_child_iter,
@@ -152,6 +152,26 @@ compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
     }
 
     return value_total_compare((value_t) lhs->value, (value_t) rhs->value);
+}
+
+uint64_t
+xhash_hash_code(const xhash_t *self) {
+    uint64_t code = 7001; // any big prime number would do.
+
+    array_t *entries = hash_entries(self->hash);
+    array_sort(entries, (compare_fn_t *) compare_hash_entry);
+    for (size_t i = 0; i < array_length(entries); i++) {
+        const hash_entry_t *entry = array_get(entries, i);
+        value_t key = (value_t) entry->value;
+        value_t value = (value_t) entry->value;
+        if (!null_p(value)) {
+            code = (code << 5) + code + value_hash_code(key);
+            code = (code << 5) + code + value_hash_code(value);
+        }
+    }
+
+    array_free(entries);
+    return code;
 }
 
 ordering_t
