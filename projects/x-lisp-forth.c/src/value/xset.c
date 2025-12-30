@@ -51,7 +51,7 @@ xset_empty_p(const xset_t *self) {
 
 inline bool
 xset_member_p(const xset_t *self, value_t value) {
-    return x_bool(set_member(self->set, (void *) value));
+    return set_member(self->set, (void *) value);
 }
 
 inline void
