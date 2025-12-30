@@ -1,9 +1,9 @@
 (export pipe)
 
 (claim pipe
-  (-> anything?
-      (*-> (-> anything? anything?)
-           anything?)))
+  (-> any?
+      (*-> (-> any? any?)
+           any?)))
 
 (define (pipe x)
   (lambda fs

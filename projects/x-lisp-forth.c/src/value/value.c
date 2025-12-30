@@ -78,7 +78,7 @@ value_hash_code(value_t value) {
 }
 
 value_t
-x_anything_p(value_t x) {
+x_any_p(value_t x) {
     (void) x;
     return x_bool(true);
 }

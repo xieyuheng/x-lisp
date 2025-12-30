@@ -7,12 +7,12 @@ export function builtinValue(mod: Mod) {
     "same?",
     "equal?",
     // "atom?",
-    "anything?",
+    "any?",
   ])
 
   definePrimitiveFunction(mod, "identity", 1)
   definePrimitiveFunction(mod, "same?", 2)
   definePrimitiveFunction(mod, "equal?", 2)
   // definePrimitiveFunction(mod, "atom?", 1)
-  definePrimitiveFunction(mod, "anything?", 1)
+  definePrimitiveFunction(mod, "any?", 1)
 }

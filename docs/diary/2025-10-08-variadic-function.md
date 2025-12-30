@@ -18,8 +18,8 @@ date: 2025-10-08
 
 ```scheme
 (claim compose
-  (*-> (-> anything? anything?)
-       (-> anything? anything?)))
+  (*-> (-> any? any?)
+       (-> any? any?)))
 
 (define compose
   (lambda fs

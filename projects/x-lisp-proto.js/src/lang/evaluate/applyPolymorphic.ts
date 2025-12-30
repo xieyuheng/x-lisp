@@ -6,7 +6,7 @@ import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
-const anything = Values.PrimitiveFunction("anything?", 1, () =>
+const isAny = Values.PrimitiveFunction("any?", 1, () =>
   Values.Bool(true),
 )
 export function applyPolymorphicWithAnythings(
@@ -14,7 +14,7 @@ export function applyPolymorphicWithAnythings(
 ): Value {
   return applyPolymorphic(
     polymorphic,
-    polymorphic.parameters.map((_) => anything),
+    polymorphic.parameters.map((_) => isAny),
   )
 }
 

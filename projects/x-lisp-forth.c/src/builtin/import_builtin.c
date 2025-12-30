@@ -65,7 +65,7 @@ import_builtin(mod_t *mod) {
 
     // value
 
-    define_primitive_1(mod, "anything?", x_anything_p);
+    define_primitive_1(mod, "any?", x_any_p);
     define_primitive_2(mod, "same?", x_same_p);
     define_primitive_2(mod, "equal?", x_equal_p);
     define_primitive_1(mod, "hash-code", x_hash_code);

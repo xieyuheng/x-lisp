@@ -2,7 +2,7 @@
 
 (claim constant
   (polymorphic (A)
-    (-> A anything?
+    (-> A any?
         A)))
 
 (define (constant x y) x)

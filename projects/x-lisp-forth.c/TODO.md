@@ -1,5 +1,3 @@
-ambr anything any
-
 # xhash
 
 [value] `xhash` -- setup

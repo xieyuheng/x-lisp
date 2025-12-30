@@ -8,7 +8,7 @@
 
 (claim hash-each-value
   (polymorphic (K V)
-    (-> (-> V anything?) (hash? K V)
+    (-> (-> V any?) (hash? K V)
         void?)))
 
 (define (hash-each-value f hash)
@@ -18,7 +18,7 @@
 
 (claim hash-each-key
   (polymorphic (K V)
-    (-> (-> K anything?) (hash? K V)
+    (-> (-> K any?) (hash? K V)
         void?)))
 
 (define (hash-each-key f hash)
@@ -28,7 +28,7 @@
 
 (claim hash-each
   (polymorphic (K V)
-    (-> (-> K V anything?) (hash? K V)
+    (-> (-> K V any?) (hash? K V)
         void?)))
 
 (define (hash-each f hash)

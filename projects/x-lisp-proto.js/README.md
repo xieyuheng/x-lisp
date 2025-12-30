@@ -144,7 +144,7 @@ false
 (same? lhs rhs)
 (equal? lhs rhs)
 (atom? value)
-(anything? value)
+(any? value)
 
 ;;; schema
 

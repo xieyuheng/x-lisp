@@ -66,7 +66,7 @@
 
 ;; schema
 
-(claim valid? (-> anything? anything? bool?))
+(claim valid? (-> any? any? bool?))
 
 ;; ordering
 
@@ -151,13 +151,13 @@
 
 ;; console
 
-(claim print (-> anything? void?))
+(claim print (-> any? void?))
 (claim write (-> string? void?))
 (claim newline (-> void?))
 
 ;; format
 
-(claim format (-> anything? string?))
+(claim format (-> any? string?))
 (claim format-subscript (-> int-non-negative? string?))
 (claim format-superscript (-> int-non-negative? string?))
 
@@ -192,7 +192,7 @@
 (claim set-difference (polymorphic (E) (-> (set? E) (set? E) (set? E))))
 (claim set-disjoint? (polymorphic (E) (-> (set? E) (set? E) bool?)))
 (claim set-map (polymorphic (E1 E2) (-> (-> E1 E2) (set? E1) (set? E2))))
-(claim set-each (polymorphic (E) (-> (-> E anything?) (set? E) void?)))
+(claim set-each (polymorphic (E) (-> (-> E any?) (set? E) void?)))
 
 ;; hash
 

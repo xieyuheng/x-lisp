@@ -8,8 +8,8 @@ date: 2025-10-16
 定义 apply 方法：
 
 ```scheme
-(define-generic apply (-> anything? (list? anything?) anything?))
-(define-method (apply (target (tau ...)) (args (list? anything?))))
+(define-generic apply (-> any? (list? any?) any?))
+(define-method (apply (target (tau ...)) (args (list? any?))))
 ```
 
 这样就可以在不脱离 sexp 基础数据类型的同时，扩展 apply 的语义。

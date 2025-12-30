@@ -11,7 +11,7 @@ date: 2025-10-08
 ```scheme
 (define-data block?
   (cons-block
-   (info anything?)
+   (info any?)
    (instrs (list? instr?))))
 ```
 
@@ -51,7 +51,7 @@ put-make-block-instrs!
 ```scheme
 (define-object block?
   (make-block
-   (info anything?)
+   (info any?)
    (instrs (list? instr?))))
 ```
 

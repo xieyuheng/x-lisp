@@ -8,7 +8,7 @@
 
 (claim record-each-value
   (polymorphic (V)
-    (-> (-> V anything?) (record? V)
+    (-> (-> V any?) (record? V)
         void?)))
 
 (define (record-each-value f record)
@@ -18,7 +18,7 @@
 
 (claim record-each-key
   (polymorphic (V)
-    (-> (-> symbol? anything?) (record? V)
+    (-> (-> symbol? any?) (record? V)
         void?)))
 
 (define (record-each-key f record)
@@ -28,7 +28,7 @@
 
 (claim record-each
   (polymorphic (V)
-    (-> (-> symbol? V anything?) (record? V)
+    (-> (-> symbol? V any?) (record? V)
         void?)))
 
 (define (record-each f record)

@@ -11,7 +11,7 @@
 (claim drop
   (polymorphic (A B)
     (-> (-> A B)
-        (-> anything? A B))))
+        (-> any? A B))))
 
 (define (drop f)
   (lambda (dropped x) (f x)))

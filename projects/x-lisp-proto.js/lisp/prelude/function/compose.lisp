@@ -1,8 +1,8 @@
 (export compose)
 
 (claim compose
-  (*-> (-> anything? anything?)
-       (-> anything? anything?)))
+  (*-> (-> any? any?)
+       (-> any? any?)))
 
 (define compose
   (lambda fs

@@ -60,7 +60,7 @@ export function applyDataPredicate(
   return Values.Bool(false)
 }
 
-const anything = Values.PrimitiveFunction("anything?", 1, () =>
+const isAny = Values.PrimitiveFunction("any?", 1, () =>
   Values.Bool(true),
 )
 
@@ -69,7 +69,7 @@ export function applyDataPredicateWithAnything(
   data: Value,
 ): Value {
   return applyDataPredicate(predicate, [
-    ...predicate.parameters.map((_) => anything),
+    ...predicate.parameters.map((_) => isAny),
     data,
   ])
 }
