@@ -5,12 +5,18 @@ value_hash_fn(const void *key) {
     return value_hash_code((value_t) key);
 }
 
+static bool
+value_equal_fn(const void *lhs, const void *rhs) {
+    return equal_p((value_t) lhs, (value_t) rhs);
+}
+
 xhash_t *
 make_xhash(void) {
     xhash_t *self = new(xhash_t);
     self->header.class = &xhash_class;
     self->hash = make_hash();
     hash_put_hash_fn(self->hash, (hash_fn_t *) value_hash_fn);
+    hash_put_key_equal_fn(self->hash, (equal_fn_t *) value_equal_fn);
     gc_add_object(global_gc, (object_t *) self);
     return self;
 }
