@@ -5,15 +5,15 @@ x_make_set(void) {
     return x_object(make_xset());
 }
 
-// value_t
-// x_any_set_p(value_t value) {
-//     return x_bool(xset_p(value));
-// }
+value_t
+x_any_set_p(value_t value) {
+    return x_bool(xset_p(value));
+}
 
-// value_t
-// x_set_copy(value_t set) {
-//     return x_object(xset_copy(to_xset(set)));
-// }
+value_t
+x_set_copy(value_t set) {
+    return x_object(xset_copy(to_xset(set)));
+}
 
 value_t
 x_set_size(value_t set) {

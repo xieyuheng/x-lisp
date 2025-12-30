@@ -1,6 +1,6 @@
 # xset
 
-[builtin] `x_any_set_p`
+[builtin] `x_set_member_p`
 
 # total-compare
 

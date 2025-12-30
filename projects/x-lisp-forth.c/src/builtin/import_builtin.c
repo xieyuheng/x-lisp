@@ -171,17 +171,11 @@ import_builtin(mod_t *mod) {
     // set
 
     define_primitive_0(mod, "make-set", x_make_set);
-    // define_primitive_1(mod, "any-set?", x_any_set_p);
-    // define_primitive_1(mod, "set-copy", x_set_copy);
+    define_primitive_1(mod, "any-set?", x_any_set_p);
+    define_primitive_1(mod, "set-copy", x_set_copy);
     define_primitive_1(mod, "set-size", x_set_size);
     define_primitive_1(mod, "set-empty?", x_set_empty_p);
-    // (set? element-p value)
-    // (set-size set)
-    // (set-empty? set)
-    // (set-copy set)
-    // (set-member? value set)
-    // (set-include? subset set)
-    // (set-to-list set)
+    // define_primitive_2(mod, "set-member?", x_set_member_p);
     // (set-add value set)
     // (set-add! value set)
     // (set-delete value set)
@@ -190,5 +184,7 @@ import_builtin(mod_t *mod) {
     // (set-union left right)
     // (set-inter left right)
     // (set-difference left right)
+    // (set-include? subset set)
     // (set-disjoint? left right)
+    // (set-to-list set)
 }
