@@ -1,5 +1,3 @@
-[value] `xstring_t` -- has `is_static` -- no gc, no free
-
 [value] `symbol_class` -- has `hash_code_fn`
 [value] `hashtag_class` -- has `hash_code_fn`
 [value] `tael_class` -- has `hash_code_fn`

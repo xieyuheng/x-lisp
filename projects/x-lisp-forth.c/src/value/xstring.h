@@ -9,7 +9,7 @@ struct xstring_t {
 };
 
 xstring_t *make_xstring(char *string);
-xstring_t *make_static_xstring(char *string);
+xstring_t *make_xstring_no_gc(char *string);
 void xstring_free(xstring_t *self);
 
 bool xstring_p(value_t value);

@@ -81,7 +81,7 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
         struct instr_t instr;
         instr.op = OP_LITERAL;
         instr.literal.value =
-            x_object(make_static_xstring(string_copy(token->content)));
+            x_object(make_xstring_no_gc(string_copy(token->content)));
         function_append_instr(function, instr);
         token_free(token);
         return;
