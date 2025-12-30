@@ -57,3 +57,18 @@ x_set_clear_mut(value_t set) {
     xset_clear(to_xset(set));
     return set;
 }
+
+value_t
+x_set_union(value_t lhs, value_t rhs) {
+    return x_object(xset_union(to_xset(lhs), to_xset(rhs)));
+}
+
+value_t
+x_set_inter(value_t lhs, value_t rhs) {
+    return x_object(xset_inter(to_xset(lhs), to_xset(rhs)));
+}
+
+value_t
+x_set_difference(value_t lhs, value_t rhs) {
+    return x_object(xset_difference(to_xset(lhs), to_xset(rhs)));
+}
