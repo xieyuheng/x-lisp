@@ -1,12 +1,9 @@
-# xhash
-
-curry_child_iter_next_value
-tael_child_iter_next_value
-xhash_child_iter_next_value
-xhash_child_iter_next
-
 fix `tael_equal` handle null the right way
 fix `hash_equal` handle null the right way
+
+# xhash
+
+[builtin] `make_hash`
 
 # xset
 

@@ -119,19 +119,21 @@ xhash_child_iter_free(xhash_child_iter_t *self) {
 
 static object_t *
 xhash_child_iter_next(xhash_child_iter_t *iter) {
-    (void) iter;
+    if (iter->entry) {
+        value_t value = (value_t) iter->entry->value;
+        iter->entry = NULL;
+        return object_p(value)
+            ? to_object(value)
+            : xhash_child_iter_next(iter);
+    }
 
-    // if (iter->entry) {
-
-    // }
-
-    // const hash_entry_t *entry = record_iter_next_entry(&iter->record_iter);
-    // if (entry) {
-    //     value_t value = (value_t) entry->value;
-    //     return object_p(value)
-    //         ? to_object(value)
-    //         : xhash_child_iter_next(iter);
-    // }
+    iter->entry = hash_iter_next_entry(&iter->hash_iter);
+    if (iter->entry) {
+        value_t value = (value_t) iter->entry->key;
+        return object_p(value)
+            ? to_object(value)
+            : xhash_child_iter_next(iter);
+    }
 
     return NULL;
 }
