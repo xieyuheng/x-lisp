@@ -100,7 +100,7 @@ tael_print(const tael_t *self) {
         printf("]");
     } else if (record_is_empty(self->attributes)) {
         printf("[");
-        tael_print_attributes(self);
+        tael_print_elements(self);
         printf("]");
     } else {
         printf("[");
@@ -118,7 +118,7 @@ compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
 
 uint64_t
 tael_hash_code(const tael_t *self) {
-    uint64_t code = 5381; // any big prime number would do.
+    uint64_t code = 6661; // any big prime number would do.
 
     for (size_t i = 0; i < array_length(self->elements); i++) {
         value_t value = tael_get_element(self, i);
@@ -129,8 +129,12 @@ tael_hash_code(const tael_t *self) {
     array_sort(entries, (compare_fn_t *) compare_hash_entry);
     for (size_t i = 0; i < array_length(entries); i++) {
         const hash_entry_t *entry = array_get(entries, i);
-        code = (code << 5) + code + string_hash_code(entry->key);
-        code = (code << 5) + code + value_hash_code((value_t) entry->value);
+        const char *key = entry->key;
+        value_t value = (value_t) entry->value;
+        if (!null_p(value)) {
+            code = (code << 5) + code + string_hash_code(key);
+            code = (code << 5) + code + value_hash_code(value);
+        }
     }
 
     array_free(entries);

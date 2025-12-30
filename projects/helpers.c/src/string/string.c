@@ -52,7 +52,7 @@ string_is_blank(const char *self) {
 uint64_t
 string_hash_code(const char *self) {
     const char *pointer = (const char *) self;
-    uint64_t code = 0;
+    uint64_t code = 5381; // any big prime number would do.
     while (*pointer)
         code = (code << 5) + code + *pointer++;
     return code;
