@@ -1,5 +1,15 @@
 #include "index.h"
 
+const object_class_t curry_class = {
+    .name = "curry",
+    .equal_fn = (object_equal_fn_t *) curry_equal,
+    .print_fn = (object_print_fn_t *) curry_print,
+    .free_fn = (free_fn_t *) curry_free,
+    .make_child_iter_fn = (object_make_child_iter_fn_t *) make_curry_child_iter,
+    .child_iter_next_fn = (object_child_iter_next_fn_t *) curry_child_iter_next,
+    .child_iter_free_fn = (free_fn_t *) curry_child_iter_free,
+};
+
 curry_t *
 make_curry(value_t target, size_t arity, size_t size) {
     curry_t *self = new(curry_t);
@@ -64,9 +74,7 @@ struct curry_child_iter_t {
     size_t index;
 };
 
-typedef struct curry_child_iter_t curry_child_iter_t;
-
-static curry_child_iter_t *
+curry_child_iter_t *
 make_curry_child_iter(const curry_t *curry) {
     curry_child_iter_t *self = new(curry_child_iter_t);
     self->curry = curry;
@@ -75,12 +83,12 @@ make_curry_child_iter(const curry_t *curry) {
     return self;
 }
 
-static void
+void
 curry_child_iter_free(curry_child_iter_t *self) {
     free(self);
 }
 
-static object_t *
+object_t *
 curry_child_iter_next(curry_child_iter_t *iter) {
     if (!iter->target_consumed_p) {
         iter->target_consumed_p = true;
@@ -99,13 +107,3 @@ curry_child_iter_next(curry_child_iter_t *iter) {
 
     return NULL;
 }
-
-const object_class_t curry_class = {
-    .name = "curry",
-    .equal_fn = (object_equal_fn_t *) curry_equal,
-    .print_fn = (object_print_fn_t *) curry_print,
-    .free_fn = (free_fn_t *) curry_free,
-    .make_child_iter_fn = (object_make_child_iter_fn_t *) make_curry_child_iter,
-    .child_iter_next_fn = (object_child_iter_next_fn_t *) curry_child_iter_next,
-    .child_iter_free_fn = (free_fn_t *) curry_child_iter_free,
-};
