@@ -60,6 +60,7 @@
   'a 1 record record-put! @drop
   'b 2 record record-put! @drop
   'c 3 record record-put! @drop
+  'd null record record-put! @drop
 
   record record-keys ( keys )
   0 keys list-get 'a @assert-equal
