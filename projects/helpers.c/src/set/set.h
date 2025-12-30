@@ -17,13 +17,10 @@ set_t *make_string_set(void);
 size_t set_size(const set_t *self);
 bool set_is_empty(const set_t *self);
 
-// add successes if the value is not already exist.
-bool set_add(set_t *self, void *value);
-
-// put auto free old value if there is free_fn
-void set_put(set_t *self, void *value);
+// - auto free old value if there is `free_fn`.
+void set_add(set_t *self, void *value);
 
 bool set_member(set_t *self, void *value);
 
-// return successful deleted or not.
+// - return true if success.
 bool set_delete(set_t *self, void *value);

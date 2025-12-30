@@ -8,15 +8,15 @@ main(void) {
         set_t *set = make_set();
         assert(set_size(set) == 0);
 
-        assert(set_add(set, (void *) 1));
-        assert(set_add(set, (void *) 2));
-        assert(set_add(set, (void *) 3));
+        set_add(set, (void *) 1);
+        set_add(set, (void *) 2);
+        set_add(set, (void *) 3);
 
         assert(set_size(set) == 3);
 
-        assert(!set_add(set, (void *) 1));
-        assert(!set_add(set, (void *) 2));
-        assert(!set_add(set, (void *) 3));
+        set_add(set, (void *) 1);
+        set_add(set, (void *) 2);
+        set_add(set, (void *) 3);
 
         assert(set_size(set) == 3);
 

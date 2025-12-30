@@ -55,13 +55,8 @@ set_is_empty(const set_t *self) {
     return hash_is_empty(self->hash);
 }
 
-bool
-set_add(set_t *self, void *value) {
-    return hash_insert(self->hash, value, value);
-}
-
 void
-set_put(set_t *self, void *value) {
+set_add(set_t *self, void *value) {
     hash_put(self->hash, value, value);
     return;
 }

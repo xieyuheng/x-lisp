@@ -16,11 +16,11 @@ xset_t *to_xset(value_t value);
 size_t xset_size(const xset_t *self);
 bool xset_empty_p(const xset_t *self);
 
-// value_t xset_get(const xset_t *self, value_t key);
-// void xset_put(xset_t *self, value_t key, value_t value);
-// void xset_delete(xset_t *self, value_t key);
+bool xset_member_p(const xset_t *self, value_t value);
+bool xset_add(xset_t *self, value_t value);
+void xset_delete(xset_t *self, value_t value);
 
-// xset_t *xset_copy(const xset_t *self);
+xset_t *xset_copy(const xset_t *self);
 
 // bool xset_equal(const xset_t *lhs, const xset_t *rhs);
 // void xset_print(const xset_t *self);

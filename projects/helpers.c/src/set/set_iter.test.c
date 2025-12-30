@@ -12,10 +12,10 @@ main(void) {
     array_push(values, string_copy("coded bad"));
     array_push(values, string_copy("dead food"));
 
-    assert(set_add(set, array_get(values, 0)));
-    assert(set_add(set, array_get(values, 1)));
-    assert(set_add(set, array_get(values, 2)));
-    assert(set_add(set, array_get(values, 3)));
+    set_add(set, array_get(values, 0));
+    set_add(set, array_get(values, 1));
+    set_add(set, array_get(values, 2));
+    set_add(set, array_get(values, 3));
 
     {
         array_t *values_again = set_values(set);
