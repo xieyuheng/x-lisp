@@ -1,6 +1,5 @@
 # xset
 
-[builtin] `x_set_subset_p` & `x_set_disjoint_p`
 [builtin] `x_set_to_list`
 
 # total-compare

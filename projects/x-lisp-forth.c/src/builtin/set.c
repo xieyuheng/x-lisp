@@ -72,3 +72,13 @@ value_t
 x_set_difference(value_t lhs, value_t rhs) {
     return x_object(xset_difference(to_xset(lhs), to_xset(rhs)));
 }
+
+value_t
+x_set_subset_p(value_t subset, value_t set) {
+    return x_bool(xset_subset_p(to_xset(subset), to_xset(set)));
+}
+
+value_t
+x_set_disjoint_p(value_t lhs, value_t rhs) {
+    return x_bool(xset_disjoint_p(to_xset(lhs), to_xset(rhs)));
+}

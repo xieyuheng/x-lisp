@@ -40,6 +40,18 @@
   set-12
   set-23 set-inter
   set-2 @assert-equal
+
+  set-12
+  set-23 set-difference
+  set-1 @assert-equal
+
+  set-12 set-23 set-subset? not @assert
+  set-12 set-123 set-subset? @assert
+  set-2 set-23 set-subset? @assert
+
+  set-12 set-23 set-disjoint? not @assert
+  set-12 set-123 set-disjoint? not @assert
+  set-1 set-23 set-disjoint? @assert
 @end
 
 @def set-1
