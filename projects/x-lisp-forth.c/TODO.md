@@ -1,4 +1,3 @@
-[value] `symbol_class` -- has `hash_code_fn`
 [value] `hashtag_class` -- has `hash_code_fn`
 [value] `tael_class` -- has `hash_code_fn`
 [value] `value_hash_code`

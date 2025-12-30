@@ -49,12 +49,18 @@ to_symbol(value_t value) {
 }
 
 void
-symbol_print(const symbol_t *symbol) {
+symbol_print(const symbol_t *self) {
     string_print("'");
-    string_print(symbol_string(symbol));
+    string_print(symbol_string(self));
+}
+
+uint64_t
+symbol_hash_code(const symbol_t *self) {
+    return 3 * string_hash_code(self->string);
 }
 
 const object_class_t symbol_class = {
     .name = "symbol",
     .print_fn = (object_print_fn_t *) symbol_print,
+    .hash_code_fn = (object_hash_code_fn_t *) symbol_hash_code,
 };

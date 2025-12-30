@@ -16,5 +16,5 @@ size_t symbol_length(const symbol_t *self);
 bool symbol_p(value_t value);
 symbol_t *to_symbol(value_t value);
 
-void symbol_print(const symbol_t *symbol);
-// uint64_t symbol_hash_code(xstring_t *self);
+void symbol_print(const symbol_t *self);
+uint64_t symbol_hash_code(const symbol_t *self);
