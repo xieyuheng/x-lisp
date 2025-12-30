@@ -1,10 +1,5 @@
 #include "index.h"
 
-static ordering_t
-int_compare(const void *lhs, const void *rhs) {
-    return (int64_t) lhs - (int64_t) rhs;
-}
-
 int
 main(void) {
     test_start();
@@ -21,7 +16,7 @@ main(void) {
         array_put(array, 7, (void *) 5);
         array_put(array, 8, (void *) 4);
 
-        array_sort(array, (compare_fn_t *) int_compare);
+        array_sort(array, int_compare_ascending);
 
         assert(array_get(array, 0) == (void *) 1);
         assert(array_get(array, 1) == (void *) 2);
@@ -32,6 +27,18 @@ main(void) {
         assert(array_get(array, 6) == (void *) 7);
         assert(array_get(array, 7) == (void *) 8);
         assert(array_get(array, 8) == (void *) 9);
+
+        array_sort(array, int_compare_descending);
+
+        assert(array_get(array, 0) == (void *) 9);
+        assert(array_get(array, 1) == (void *) 8);
+        assert(array_get(array, 2) == (void *) 7);
+        assert(array_get(array, 3) == (void *) 5);
+        assert(array_get(array, 4) == (void *) 5);
+        assert(array_get(array, 5) == (void *) 4);
+        assert(array_get(array, 6) == (void *) 3);
+        assert(array_get(array, 7) == (void *) 2);
+        assert(array_get(array, 8) == (void *) 1);
 
         array_free(array);
     }
