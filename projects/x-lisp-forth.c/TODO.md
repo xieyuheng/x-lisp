@@ -1,6 +1,9 @@
 # xhash
 
-tael_hash_code
+curry_child_iter_next_value
+tael_child_iter_next_value
+xhash_child_iter_next_value
+xhash_child_iter_next
 
 fix `tael_equal` handle null the right way
 fix `hash_equal` handle null the right way
@@ -12,10 +15,12 @@ fix `hash_equal` handle null the right way
 # total-compare
 
 [gc] `object_class_t` has `compare_fn`
+
 [value] `value_total_compare`
 [builtin] `total-compare`
-[value] `xhash_t` -- `hash_code` -- use `value_compare`
-[value] `xset_t` -- `hash_code` -- use `value_compare`
+
+[value] `xhash_t` -- `xhash_hash_code` -- use `value_compare`
+[value] `xset_t` -- `xset_hash_code` -- use `value_compare`
 
 # circular object
 

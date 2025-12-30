@@ -95,13 +95,54 @@ xhash_print(const xhash_t *self) {
     printf(")");
 }
 
+struct xhash_child_iter_t {
+    const xhash_t *hash;
+    struct hash_iter_t hash_iter;
+    const hash_entry_t *entry;
+};
+
+typedef struct xhash_child_iter_t xhash_child_iter_t;
+
+static xhash_child_iter_t *
+make_xhash_child_iter(const xhash_t *hash) {
+    xhash_child_iter_t *self = new(xhash_child_iter_t);
+    self->hash = hash;
+    hash_iter_init(&self->hash_iter, hash->hash);
+    self->entry = NULL;
+    return self;
+}
+
+static void
+xhash_child_iter_free(xhash_child_iter_t *self) {
+    free(self);
+}
+
+static object_t *
+xhash_child_iter_next(xhash_child_iter_t *iter) {
+    (void) iter;
+
+    // if (iter->entry) {
+
+    // }
+
+    // const hash_entry_t *entry = record_iter_next_entry(&iter->record_iter);
+    // if (entry) {
+    //     value_t value = (value_t) entry->value;
+    //     return object_p(value)
+    //         ? to_object(value)
+    //         : xhash_child_iter_next(iter);
+    // }
+
+    return NULL;
+}
+
 const object_class_t xhash_class = {
     .name = "hash",
     .equal_fn = (object_equal_fn_t *) xhash_equal,
     .print_fn = (object_print_fn_t *) xhash_print,
     // .hash_code_fn = (object_hash_code_fn_t *) xhash_hash_code,
     .free_fn = (free_fn_t *) xhash_free,
-    // .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xhash_child_iter,
-    // .child_iter_next_fn = (object_child_iter_next_fn_t *) xhash_child_iter_next,
-    // .child_iter_free_fn = (free_fn_t *) xhash_child_iter_free,
+    .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xhash_child_iter,
+    .child_iter_next_fn = (object_child_iter_next_fn_t *) xhash_child_iter_next,
+    .child_iter_free_fn = (free_fn_t *) xhash_child_iter_free,
 };
