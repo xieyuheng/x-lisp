@@ -31,6 +31,9 @@
   tael-1 tael-2 snapshot
   tael-1 tael-3 snapshot
   tael-2 tael-3 snapshot
+
+  set-1 set-1 snapshot
+  set-1 set-2 snapshot
 @end
 
 @def list-1
@@ -79,4 +82,19 @@
   'b 2 list record-put! @drop
   'a 1 list record-put! @drop
   list
+@end
+
+@def set-1
+  make-set ( set )
+  1 set set-add! @drop
+  2 set set-add! @drop
+  3 set set-add! @drop
+  set
+@end
+
+@def set-2
+  make-set ( set )
+  1 set set-add! @drop
+  2 set set-add! @drop
+  set
 @end
