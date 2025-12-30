@@ -5,6 +5,7 @@ const object_class_t xset_class = {
     .equal_fn = (object_equal_fn_t *) xset_equal,
     .print_fn = (object_print_fn_t *) xset_print,
     // .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
+    .compare_fn = (object_compare_fn_t *) xset_compare,
     .free_fn = (free_fn_t *) xset_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xset_child_iter,
     .child_iter_next_fn = (object_child_iter_next_fn_t *) xset_child_iter_next,
@@ -132,10 +133,44 @@ xset_print(const xset_t *self) {
     printf(")");
 }
 
-// ordering_t
-// xset_compare(const xset_t *lhs, const xset_t *rhs) {
+ordering_t
+xset_compare(const xset_t *lhs, const xset_t *rhs) {
+    array_t *lhs_values = set_values(lhs->set);
+    array_t *rhs_values = set_values(rhs->set);
+    size_t lhs_length = array_length(lhs_values);
+    size_t rhs_length = array_length(rhs_values);
+    size_t i = 0;
+    ordering_t ordering;
+    while (true) {
+        if (i == lhs_length && i == rhs_length) {
+            ordering = 0;
+            break;
+        }
 
-// }
+        if (i == lhs_length) {
+            ordering = -1;
+            break;
+        }
+
+        if (i == rhs_length) {
+            ordering = 1;
+            break;
+        }
+
+        ordering = value_total_compare(
+            (value_t) array_get(lhs_values, i),
+            (value_t) array_get(rhs_values, i));
+        if (ordering != 0) {
+            break;
+        }
+
+        i++;
+    }
+
+    array_free(lhs_values);
+    array_free(rhs_values);
+    return ordering;
+}
 
 struct xset_child_iter_t {
     const xset_t *set;
