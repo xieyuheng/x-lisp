@@ -1,7 +1,5 @@
 # total-compare
 
-[gc] `object_class_t` has `compare_fn`
-
 [value] `value_total_compare`
 [builtin] `total-compare`
 
