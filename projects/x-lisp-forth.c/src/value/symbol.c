@@ -1,5 +1,12 @@
 #include "index.h"
 
+const object_class_t symbol_class = {
+    .name = "symbol",
+    .print_fn = (object_print_fn_t *) symbol_print,
+    .hash_code_fn = (object_hash_code_fn_t *) symbol_hash_code,
+    .compare_fn = (object_compare_fn_t *) symbol_compare,
+};
+
 static record_t *global_symbol_record = NULL;
 
 symbol_t *
@@ -59,8 +66,7 @@ symbol_hash_code(const symbol_t *self) {
     return 3 * string_hash_code(self->string);
 }
 
-const object_class_t symbol_class = {
-    .name = "symbol",
-    .print_fn = (object_print_fn_t *) symbol_print,
-    .hash_code_fn = (object_hash_code_fn_t *) symbol_hash_code,
-};
+ordering_t
+symbol_compare(const symbol_t *lhs, const symbol_t *rhs) {
+    return string_compare_lexical(lhs->string, rhs->string);
+}

@@ -1,5 +1,12 @@
 #include "index.h"
 
+const object_class_t hashtag_class = {
+    .name = "hashtag",
+    .print_fn = (object_print_fn_t *) hashtag_print,
+    .hash_code_fn = (object_hash_code_fn_t *) hashtag_hash_code,
+    .compare_fn = (object_compare_fn_t *) hashtag_compare,
+};
+
 static record_t *global_hashtag_record = NULL;
 
 hashtag_t *
@@ -59,8 +66,7 @@ hashtag_hash_code(const hashtag_t *self) {
     return 5 * string_hash_code(self->string);
 }
 
-const object_class_t hashtag_class = {
-    .name = "hashtag",
-    .print_fn = (object_print_fn_t *) hashtag_print,
-    .hash_code_fn = (object_hash_code_fn_t *) hashtag_hash_code,
-};
+ordering_t
+hashtag_compare(const hashtag_t *lhs, const hashtag_t *rhs) {
+    return string_compare_lexical(lhs->string, rhs->string);
+}

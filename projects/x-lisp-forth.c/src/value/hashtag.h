@@ -18,3 +18,4 @@ hashtag_t *to_hashtag(value_t value);
 
 void hashtag_print(const hashtag_t *self);
 uint64_t hashtag_hash_code(const hashtag_t *self);
+ordering_t hashtag_compare(const hashtag_t *lhs, const hashtag_t *rhs);

@@ -4,3 +4,8 @@
 1 <=> 1.0 = -1
 "abc" <=> "abc" = 0
 "abc" <=> "def" = -3
+'abc <=> "abc" = 5
+'abc <=> 'abc = 0
+'abc <=> 'def = -3
+#abc <=> #abc = 0
+#abc <=> #def = -3

@@ -10,8 +10,17 @@
   1 1 snapshot
   1 2 snapshot
   2 1 snapshot
+
   1 1.0 snapshot
+
   "abc" "abc" snapshot
   "abc" "def" snapshot
-  -- 'abc "abc" snapshot
+
+  'abc "abc" snapshot
+
+  'abc 'abc snapshot
+  'abc 'def snapshot
+
+  #abc #abc snapshot
+  #abc #def snapshot
 @end
