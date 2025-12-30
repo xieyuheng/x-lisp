@@ -71,6 +71,11 @@ tael_get_attribute(const tael_t *self, const char *key) {
 
 inline void
 tael_put_attribute(tael_t *self, const char *key, value_t value) {
+    if (null_p(value)) {
+        tael_delete_attribute(self, key);
+        return;
+    }
+
     record_put(self->attributes, key, (void *) value);
 }
 

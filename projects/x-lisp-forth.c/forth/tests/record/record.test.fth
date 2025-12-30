@@ -54,17 +54,7 @@
   'y record3 record-get 2 @assert-equal
   'z record3 record-get 3 @assert-equal
 
-  -- record-has-key?
-
-  make-record ( record )
-  'a 1 record record-put! @drop
-  'b null record record-put! @drop
-  'c 3 record record-put! @drop
-
-  'b record record-has? not @assert
-  'b record record-has-key? @assert
-
-  -- record-( keys|values|entries )
+  -- record-[keys|values|entries]
 
   make-record ( record )
   'a 1 record record-put! @drop

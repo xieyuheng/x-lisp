@@ -7,7 +7,6 @@ x_fn_1_t x_record_length;
 x_fn_1_t x_record_empty_p;
 x_fn_2_t x_record_get;
 x_fn_2_t x_record_has_p;
-x_fn_2_t x_record_has_key_p;
 x_fn_3_t x_record_put_mut;
 x_fn_3_t x_record_put;
 x_fn_2_t x_record_delete_mut;

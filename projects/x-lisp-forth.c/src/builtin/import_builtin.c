@@ -142,7 +142,6 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "record-empty?", x_record_empty_p);
     define_primitive_2(mod, "record-get", x_record_get);
     define_primitive_2(mod, "record-has?", x_record_has_p);
-    define_primitive_2(mod, "record-has-key?", x_record_has_key_p);
     define_primitive_3(mod, "record-put!", x_record_put_mut);
     define_primitive_3(mod, "record-put", x_record_put);
     define_primitive_2(mod, "record-delete!", x_record_delete_mut);
