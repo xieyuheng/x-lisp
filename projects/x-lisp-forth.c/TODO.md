@@ -1,6 +1,18 @@
-# xhash
+[value] `xstring_class` -- has `hash_code_fn`
+
+[value] `symbol_class` -- has `hash_code_fn`
+[value] `hashtag_class` -- has `hash_code_fn`
+
+[value] `curry_class` -- has `hash_code_fn`
+
+[value] `tael_class` -- has `hash_code_fn`
+
+[lang] `definition_class` -- has `hash_code_fn`
 
 [value] `value_hash_code`
+
+# xhash
+
 [value] `xhash_t`
 
 # xset
