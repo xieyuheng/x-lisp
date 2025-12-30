@@ -104,6 +104,11 @@ hash_length(const hash_t *self) {
     return self->length;
 }
 
+bool
+hash_is_empty(const hash_t *self) {
+    return self->length == 0;
+}
+
 static void
 hash_rehash(hash_t *self, size_t new_prime_index) {
     assert(self);

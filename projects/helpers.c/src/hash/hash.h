@@ -12,6 +12,7 @@ void hash_put_key_equal_fn(hash_t *self, equal_fn_t *key_equal_fn);
 void hash_put_value_free_fn(hash_t *self, free_fn_t *value_free_fn);
 
 size_t hash_length(const hash_t *self);
+bool hash_is_empty(const hash_t *self);
 
 bool hash_has(hash_t *self, const void *key);
 void *hash_get(hash_t *self, const void *key);

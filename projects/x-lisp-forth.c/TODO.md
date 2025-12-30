@@ -1,6 +1,15 @@
 # xhash
 
-[builtin] `x_hash_length` & `x_hash_empty_p`
+[builtin] x_hash_copy
+[builtin] x_hash_get
+[builtin] x_hash_has_p
+[builtin] x_hash_put_mut
+[builtin] x_hash_put
+[builtin] x_hash_delete_mut
+[builtin] x_hash_delete
+[builtin] x_hash_keys
+[builtin] x_hash_values
+[builtin] x_hash_entries
 
 # xset
 
