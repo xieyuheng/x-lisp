@@ -302,28 +302,36 @@ tael_compare_attributes(const tael_t *lhs, const tael_t *rhs) {
     size_t rhs_length = array_length(rhs_entries);
 
     size_t i = 0;
+    ordering_t ordering;
     while (true) {
         if (i == lhs_length && i == rhs_length) {
-            return 0;
+            ordering = 0;
+            break;
         }
 
         if (i == lhs_length) {
-            return -1;
+            ordering = -1;
+            break;
         }
 
         if (i == rhs_length) {
-            return 1;
+            ordering = 1;
+            break;
         }
 
-        ordering_t ordering = compare_attribute_entry(
+        ordering = compare_attribute_entry(
             array_get(lhs_entries, i),
             array_get(rhs_entries, i));
         if (ordering != 0) {
-            return ordering;
+            break;
         }
 
         i++;
     }
+
+    array_free(lhs_entries);
+    array_free(rhs_entries);
+    return ordering;
 }
 
 ordering_t

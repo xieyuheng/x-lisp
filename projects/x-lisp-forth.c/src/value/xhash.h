@@ -25,6 +25,7 @@ xhash_t *xhash_copy(const xhash_t *self);
 bool xhash_equal(const xhash_t *lhs, const xhash_t *rhs);
 void xhash_print(const xhash_t *self);
 uint64_t xhash_hash_code(const xhash_t *self);
+ordering_t xhash_compare(const xhash_t *lhs, const xhash_t *rhs);
 
 xhash_child_iter_t *make_xhash_child_iter(const xhash_t *hash);
 void xhash_child_iter_free(xhash_child_iter_t *self);

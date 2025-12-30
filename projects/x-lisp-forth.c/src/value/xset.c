@@ -132,6 +132,11 @@ xset_print(const xset_t *self) {
     printf(")");
 }
 
+// ordering_t
+// xset_compare(const xset_t *lhs, const xset_t *rhs) {
+
+// }
+
 struct xset_child_iter_t {
     const xset_t *set;
     struct set_iter_t set_iter;
