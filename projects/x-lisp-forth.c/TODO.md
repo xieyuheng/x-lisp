@@ -1,6 +1,5 @@
 # xhash
 
-[builtin] x_hash_copy
 [builtin] x_hash_get
 [builtin] x_hash_has_p
 [builtin] x_hash_put_mut

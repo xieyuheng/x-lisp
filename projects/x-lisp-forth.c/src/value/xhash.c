@@ -58,6 +58,20 @@ xhash_delete(xhash_t *self, value_t key) {
     hash_delete(self->hash, (void *) key);
 }
 
+xhash_t *
+xhash_copy(const xhash_t *self) {
+    xhash_t *new_hash = make_xhash();
+    hash_iter_t iter;
+    hash_iter_init(&iter, self->hash);
+    const hash_entry_t *entry = hash_iter_next_entry(&iter);
+    while (entry) {
+        xhash_put(new_hash, (value_t) entry->key, (value_t) entry->value);
+        entry = hash_iter_next_entry(&iter);
+    }
+
+    return new_hash;
+}
+
 bool
 xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
     if (hash_length(lhs->hash) != hash_length(rhs->hash))
