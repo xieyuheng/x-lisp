@@ -1,5 +1,16 @@
 #include "index.h"
 
+const object_class_t xset_class = {
+    .name = "set",
+    .equal_fn = (object_equal_fn_t *) xset_equal,
+    .print_fn = (object_print_fn_t *) xset_print,
+    // .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
+    .free_fn = (free_fn_t *) xset_free,
+    .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xset_child_iter,
+    .child_iter_next_fn = (object_child_iter_next_fn_t *) xset_child_iter_next,
+    .child_iter_free_fn = (free_fn_t *) xset_child_iter_free,
+};
+
 static uint64_t
 value_hash_fn(const void *key) {
     return value_hash_code((value_t) key);
@@ -126,9 +137,7 @@ struct xset_child_iter_t {
     struct set_iter_t set_iter;
 };
 
-typedef struct xset_child_iter_t xset_child_iter_t;
-
-static xset_child_iter_t *
+xset_child_iter_t *
 make_xset_child_iter(const xset_t *set) {
     xset_child_iter_t *self = new(xset_child_iter_t);
     self->set = set;
@@ -136,12 +145,12 @@ make_xset_child_iter(const xset_t *set) {
     return self;
 }
 
-static void
+void
 xset_child_iter_free(xset_child_iter_t *self) {
     free(self);
 }
 
-static object_t *
+object_t *
 xset_child_iter_next(xset_child_iter_t *iter) {
     const hash_entry_t *entry = set_iter_next_entry(&iter->set_iter);
     if (entry) {
@@ -153,18 +162,6 @@ xset_child_iter_next(xset_child_iter_t *iter) {
 
     return NULL;
 }
-
-const object_class_t xset_class = {
-    .name = "set",
-    .equal_fn = (object_equal_fn_t *) xset_equal,
-    .print_fn = (object_print_fn_t *) xset_print,
-    // .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
-    .free_fn = (free_fn_t *) xset_free,
-    .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xset_child_iter,
-    .child_iter_next_fn = (object_child_iter_next_fn_t *) xset_child_iter_next,
-    .child_iter_free_fn = (free_fn_t *) xset_child_iter_free,
-};
-
 
 xset_t *
 xset_union(const xset_t *lhs, const xset_t *rhs) {

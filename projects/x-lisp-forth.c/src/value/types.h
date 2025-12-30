@@ -26,4 +26,6 @@ typedef struct xstring_t xstring_t;
 typedef struct tael_t tael_t;
 typedef struct tael_child_iter_t tael_child_iter_t;
 typedef struct xhash_t xhash_t;
+typedef struct xhash_child_iter_t xhash_child_iter_t;
 typedef struct xset_t xset_t;
+typedef struct xset_child_iter_t xset_child_iter_t;
