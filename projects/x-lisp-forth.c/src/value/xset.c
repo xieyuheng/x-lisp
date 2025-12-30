@@ -121,36 +121,34 @@ xset_print(const xset_t *self) {
     printf(")");
 }
 
-// struct xhash_child_iter_t {
-//     const xhash_t *hash;
-//     struct hash_iter_t hash_iter;
-//     const hash_entry_t *entry;
-// };
+struct xset_child_iter_t {
+    const xset_t *set;
+    struct set_iter_t set_iter;
+};
 
-// typedef struct xhash_child_iter_t xhash_child_iter_t;
+typedef struct xset_child_iter_t xset_child_iter_t;
 
-// static xhash_child_iter_t *
-// make_xhash_child_iter(const xhash_t *hash) {
-//     xhash_child_iter_t *self = new(xhash_child_iter_t);
-//     self->hash = hash;
-//     hash_iter_init(&self->hash_iter, hash->hash);
-//     self->entry = NULL;
-//     return self;
-// }
+static xset_child_iter_t *
+make_xset_child_iter(const xset_t *set) {
+    xset_child_iter_t *self = new(xset_child_iter_t);
+    self->set = set;
+    set_iter_init(&self->set_iter, set->set);
+    return self;
+}
 
-// static void
-// xhash_child_iter_free(xhash_child_iter_t *self) {
-//     free(self);
-// }
+static void
+xset_child_iter_free(xset_child_iter_t *self) {
+    free(self);
+}
 
 // static object_t *
-// xhash_child_iter_next(xhash_child_iter_t *iter) {
+// xset_child_iter_next(xset_child_iter_t *iter) {
 //     if (iter->entry) {
 //         value_t value = (value_t) iter->entry->value;
 //         iter->entry = NULL;
 //         return object_p(value)
 //             ? to_object(value)
-//             : xhash_child_iter_next(iter);
+//             : xset_child_iter_next(iter);
 //     }
 
 //     iter->entry = hash_iter_next_entry(&iter->hash_iter);
@@ -158,7 +156,7 @@ xset_print(const xset_t *self) {
 //         value_t value = (value_t) iter->entry->key;
 //         return object_p(value)
 //             ? to_object(value)
-//             : xhash_child_iter_next(iter);
+//             : xset_child_iter_next(iter);
 //     }
 
 //     return NULL;
@@ -168,9 +166,9 @@ const object_class_t xset_class = {
     .name = "set",
     .equal_fn = (object_equal_fn_t *) xset_equal,
     .print_fn = (object_print_fn_t *) xset_print,
-    // // .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
-    // .free_fn = (free_fn_t *) xset_free,
-    // .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xset_child_iter,
+    // .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
+    .free_fn = (free_fn_t *) xset_free,
+    .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xset_child_iter,
     // .child_iter_next_fn = (object_child_iter_next_fn_t *) xset_child_iter_next,
-    // .child_iter_free_fn = (free_fn_t *) xset_child_iter_free,
+    .child_iter_free_fn = (free_fn_t *) xset_child_iter_free,
 };
