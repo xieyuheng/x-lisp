@@ -13,4 +13,6 @@
 #include "object.h"
 #include "curry.h"
 #include "xstring.h"
+#include "xhash.h"
+#include "xset.h"
 #include "tael.h"

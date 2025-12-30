@@ -1,6 +1,5 @@
 # xhash
 
-[value] `xhash` -- setup
 [value] `xhash_t`
 
 # xset
