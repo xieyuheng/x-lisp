@@ -1,5 +1,3 @@
-[helpers.c] `set_iter_next_entry` -- for safe null
-
 # xset
 
 [value] `xset_add`
