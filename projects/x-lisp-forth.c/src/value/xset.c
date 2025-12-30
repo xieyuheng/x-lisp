@@ -54,15 +54,10 @@ xset_member_p(const xset_t *self, value_t value) {
     return x_bool(set_member(self->set, (void *) value));
 }
 
-// inline void
-// xhash_put(xhash_t *self, value_t key, value_t value) {
-//     if (null_p(value)) {
-//         xhash_delete(self, key);
-//         return;
-//     }
-
-//     hash_put(self->hash, (void *) key, (void *) value);
-// }
+inline void
+xset_add(xset_t *self, value_t value) {
+    set_add(self->set, (void *) value);
+}
 
 // inline void
 // xhash_delete(xhash_t *self, value_t key) {
