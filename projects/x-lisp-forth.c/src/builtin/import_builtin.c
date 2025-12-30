@@ -153,5 +153,18 @@ import_builtin(mod_t *mod) {
 
     // hash
 
-    
+    define_primitive_0(mod, "make-hash", x_make_hash);
+    // define_primitive_1(mod, "any-hash?", x_any_hash_p);
+    // define_primitive_1(mod, "hash-copy", x_hash_copy);
+    // define_primitive_1(mod, "hash-length", x_hash_length);
+    // define_primitive_1(mod, "hash-empty?", x_hash_empty_p);
+    // define_primitive_2(mod, "hash-get", x_hash_get);
+    // define_primitive_2(mod, "hash-has?", x_hash_has_p);
+    // define_primitive_3(mod, "hash-put!", x_hash_put_mut);
+    // define_primitive_3(mod, "hash-put", x_hash_put);
+    // define_primitive_2(mod, "hash-delete!", x_hash_delete_mut);
+    // define_primitive_2(mod, "hash-delete", x_hash_delete);
+    // define_primitive_1(mod, "hash-keys", x_hash_keys);
+    // define_primitive_1(mod, "hash-values", x_hash_values);
+    // define_primitive_1(mod, "hash-entries", x_hash_entries);
 }
