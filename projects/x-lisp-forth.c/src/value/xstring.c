@@ -5,6 +5,7 @@ const object_class_t xstring_class = {
     .equal_fn = (object_equal_fn_t *) xstring_equal,
     .print_fn = (object_print_fn_t *) xstring_print,
     .hash_code_fn = (object_hash_code_fn_t *) xstring_hash_code,
+    .compare_fn = (object_compare_fn_t *) xstring_compare,
     .free_fn = (free_fn_t *) xstring_free,
 };
 
@@ -58,6 +59,11 @@ xstring_print(const xstring_t *self) {
 uint64_t
 xstring_hash_code(const xstring_t *self) {
     return string_hash_code(self->string);
+}
+
+ordering_t
+xstring_compare(const xstring_t *lhs, const xstring_t *rhs){
+    return string_compare_lexical(lhs->string, rhs->string);
 }
 
 size_t

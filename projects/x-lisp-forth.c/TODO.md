@@ -1,6 +1,5 @@
 # total-compare
 
-[value] `xstring_t` -- has `compare_fn`
 [value] `symbol_t` -- has `compare_fn`
 [value] `hashtag_t` -- has `compare_fn`
 
