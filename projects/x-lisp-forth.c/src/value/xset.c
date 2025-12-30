@@ -101,28 +101,25 @@ xset_equal(const xset_t *lhs, const xset_t *rhs) {
     return true;
 }
 
-// static void
-// xhash_print_entries(const xhash_t *self) {
-//     hash_iter_t iter;
-//     hash_iter_init(&iter, self->hash);
+static void
+xset_print_entries(const xset_t *self) {
+    set_iter_t iter;
+    set_iter_init(&iter, self->set);
 
-//     value_t key = (value_t) hash_iter_next_key(&iter);
-//     while (key) {
-//         value_t value = xhash_get(self, key);
-//         printf(" ");
-//         value_print(key);
-//         printf(" ");
-//         value_print(value);
-//         key = (value_t) hash_iter_next_key(&iter);
-//     }
-// }
+    const hash_entry_t *entry = set_iter_next_entry(&iter);
+    while (entry) {
+        printf(" ");
+        value_print((value_t) entry->value);
+        entry = set_iter_next_entry(&iter);
+    }
+}
 
-// void
-// xhash_print(const xhash_t *self) {
-//     printf("(@hash");
-//     xhash_print_entries(self);
-//     printf(")");
-// }
+void
+xset_print(const xset_t *self) {
+    printf("(@set");
+    xset_print_entries(self);
+    printf(")");
+}
 
 // struct xhash_child_iter_t {
 //     const xhash_t *hash;
@@ -169,8 +166,8 @@ xset_equal(const xset_t *lhs, const xset_t *rhs) {
 
 const object_class_t xset_class = {
     .name = "set",
-    // .equal_fn = (object_equal_fn_t *) xset_equal,
-    // .print_fn = (object_print_fn_t *) xset_print,
+    .equal_fn = (object_equal_fn_t *) xset_equal,
+    .print_fn = (object_print_fn_t *) xset_print,
     // // .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
     // .free_fn = (free_fn_t *) xset_free,
     // .make_child_iter_fn = (object_make_child_iter_fn_t *) make_xset_child_iter,

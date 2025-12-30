@@ -1,6 +1,8 @@
 # xset
 
-[value] `xset_print`
+[value] `make_xset_child_iter`
+[value] `xset_child_iter_next`
+[value] `xset_child_iter_free`
 
 [value] `xset_union`
 [value] `xset_inter`
