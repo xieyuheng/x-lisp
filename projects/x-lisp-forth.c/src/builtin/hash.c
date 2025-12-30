@@ -56,3 +56,53 @@ value_t
 x_hash_delete(value_t key, value_t hash) {
     return x_hash_delete_mut(key, x_hash_copy(hash));
 }
+
+value_t
+x_hash_keys(value_t hash) {
+    tael_t *keys = make_tael();
+
+    hash_iter_t iter;
+    hash_iter_init(&iter, to_xhash(hash)->hash);
+    const hash_entry_t *entry = hash_iter_next_entry(&iter);
+    while (entry) {
+        tael_push_element(keys, (value_t) entry->key);
+        entry = hash_iter_next_entry(&iter);
+    }
+
+    return x_object(keys);
+}
+
+value_t
+x_hash_values(value_t hash) {
+    tael_t *keys = make_tael();
+
+    hash_iter_t iter;
+    hash_iter_init(&iter, to_xhash(hash)->hash);
+    const hash_entry_t *entry = hash_iter_next_entry(&iter);
+    while (entry) {
+        tael_push_element(keys, (value_t) entry->value);
+        entry = hash_iter_next_entry(&iter);
+    }
+
+    return x_object(keys);
+}
+
+value_t
+x_hash_entries(value_t hash) {
+    tael_t *entries = make_tael();
+
+    hash_iter_t iter;
+    hash_iter_init(&iter, to_xhash(hash)->hash);
+    const hash_entry_t *entry = hash_iter_next_entry(&iter);
+    while (entry) {
+        value_t key = (value_t) entry->key;
+        value_t value = (value_t) entry->value;
+        tael_t *pair = make_tael();
+        tael_push_element(pair, key);
+        tael_push_element(pair, value);
+        tael_push_element(entries, x_object(pair));
+        entry = hash_iter_next_entry(&iter);
+    }
+
+    return x_object(entries);
+}

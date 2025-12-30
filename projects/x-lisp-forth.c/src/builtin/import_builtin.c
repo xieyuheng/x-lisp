@@ -164,7 +164,7 @@ import_builtin(mod_t *mod) {
     define_primitive_3(mod, "hash-put", x_hash_put);
     define_primitive_2(mod, "hash-delete!", x_hash_delete_mut);
     define_primitive_2(mod, "hash-delete", x_hash_delete);
-    // define_primitive_1(mod, "hash-keys", x_hash_keys);
-    // define_primitive_1(mod, "hash-values", x_hash_values);
-    // define_primitive_1(mod, "hash-entries", x_hash_entries);
+    define_primitive_1(mod, "hash-keys", x_hash_keys);
+    define_primitive_1(mod, "hash-values", x_hash_values);
+    define_primitive_1(mod, "hash-entries", x_hash_entries);
 }

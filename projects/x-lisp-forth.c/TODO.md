@@ -1,7 +1,3 @@
-# xhash
-
-[builtin] x_hash_keys & x_hash_values & x_hash_entries
-
 # xset
 
 [value] `xset_t`
