@@ -39,6 +39,16 @@ to_xhash(value_t value) {
     return (xhash_t *) to_object(value);
 }
 
+size_t
+xhash_length(const xhash_t *self) {
+    return hash_length(self->hash);
+}
+
+bool
+xhash_empty_p(const xhash_t *self) {
+    return hash_is_empty(self->hash);
+}
+
 inline value_t
 xhash_get(const xhash_t *self, value_t key) {
     hash_entry_t *entry = hash_get_entry(self->hash, (void *) key);

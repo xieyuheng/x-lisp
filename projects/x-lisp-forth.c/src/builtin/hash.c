@@ -17,12 +17,12 @@ x_hash_copy(value_t hash) {
 
 value_t
 x_hash_length(value_t hash) {
-    return x_int(hash_length(to_xhash(hash)->hash));
+    return x_int(xhash_length(to_xhash(hash)));
 }
 
 value_t
 x_hash_empty_p(value_t hash) {
-    return x_bool(hash_is_empty(to_xhash(hash)->hash));
+    return x_bool(xhash_empty_p(to_xhash(hash)));
 }
 
 value_t
