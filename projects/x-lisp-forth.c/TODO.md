@@ -1,7 +1,5 @@
 # xset
 
-[value] `xset_disjoint_p`
-
 [builtin] `x_any_set_p`
 
 # total-compare
