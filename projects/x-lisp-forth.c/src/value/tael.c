@@ -241,6 +241,89 @@ tael_hash_code(const tael_t *self) {
     return code;
 }
 
+static ordering_t
+tael_compare_elements(const tael_t *lhs, const tael_t *rhs) {
+    size_t lhs_length = array_length(lhs->elements);
+    size_t rhs_length = array_length(rhs->elements);
+    size_t i = 0;
+    while (true) {
+        if (i == lhs_length && i == rhs_length) {
+            return 0;
+        }
+
+        if (i == lhs_length) {
+            return -1;
+        }
+
+        if (i == rhs_length) {
+            return 1;
+        }
+
+        ordering_t ordering = value_total_compare(
+            tael_get_element(lhs, i),
+            tael_get_element(rhs, i));
+        if (ordering != 0) {
+            return ordering;
+        }
+
+        i++;
+    }
+}
+
+static ordering_t
+compare_attribute_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
+    ordering_t ordering = string_compare_lexical(lhs->key, rhs->key);
+    if (ordering != 0) {
+        return ordering;
+    }
+
+    return value_total_compare((value_t) lhs->value, (value_t) rhs->value);
+}
+
+static ordering_t
+tael_compare_attributes(const tael_t *lhs, const tael_t *rhs) {
+    array_t *lhs_entries = record_entries(lhs->attributes);
+    array_t *rhs_entries = record_entries(rhs->attributes);
+    array_sort(lhs_entries, (compare_fn_t *) compare_attribute_entry);
+    array_sort(rhs_entries, (compare_fn_t *) compare_attribute_entry);
+    size_t lhs_length = array_length(lhs_entries);
+    size_t rhs_length = array_length(rhs_entries);
+
+    size_t i = 0;
+    while (true) {
+        if (i == lhs_length && i == rhs_length) {
+            return 0;
+        }
+
+        if (i == lhs_length) {
+            return -1;
+        }
+
+        if (i == rhs_length) {
+            return 1;
+        }
+
+        ordering_t ordering = compare_attribute_entry(
+            array_get(lhs_entries, i),
+            array_get(rhs_entries, i));
+        if (ordering != 0) {
+            return ordering;
+        }
+
+        i++;
+    }
+}
+
+ordering_t
+tael_compare(const tael_t *lhs, const tael_t *rhs) {
+    ordering_t ordering = tael_compare_elements(lhs, rhs);
+    if (ordering != 0) {
+        return ordering;
+    }
+
+    return tael_compare_attributes(lhs, rhs);
+}
+
 struct tael_child_iter_t {
     const tael_t *tael;
     size_t index;
@@ -288,6 +371,7 @@ const object_class_t tael_class = {
     .equal_fn = (object_equal_fn_t *) tael_equal,
     .print_fn = (object_print_fn_t *) tael_print,
     .hash_code_fn = (object_hash_code_fn_t *) tael_hash_code,
+    .compare_fn = (object_compare_fn_t *) tael_compare,
     .free_fn = (free_fn_t *) tael_free,
     .make_child_iter_fn = (object_make_child_iter_fn_t *) make_tael_child_iter,
     .child_iter_next_fn = (object_child_iter_next_fn_t *) tael_child_iter_next,
