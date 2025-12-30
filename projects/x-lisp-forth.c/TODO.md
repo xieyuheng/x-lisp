@@ -1,8 +1,11 @@
 # xhash
 
-bool tael_equal(const tael_t *lhs, const tael_t *rhs);
-void tael_print(const tael_t *self);
-uint64_t tael_hash_code(const tael_t *self);
+xhash_get
+tael_equal
+tael_print
+tael_hash_code
+
+fix `tael_equal` handle null the right way
 
 # xset
 
