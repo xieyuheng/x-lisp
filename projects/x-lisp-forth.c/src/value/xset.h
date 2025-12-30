@@ -31,4 +31,5 @@ xset_t *xset_union(const xset_t *lhs, const xset_t *rhs);
 xset_t *xset_inter(const xset_t *lhs, const xset_t *rhs);
 xset_t *xset_difference(const xset_t *lhs, const xset_t *rhs);
 
+bool xset_subset_p(const xset_t *lhs, const xset_t *rhs);
 bool xset_disjoint_p(const xset_t *lhs, const xset_t *rhs);

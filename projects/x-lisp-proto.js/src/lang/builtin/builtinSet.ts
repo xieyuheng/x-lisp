@@ -11,7 +11,7 @@ export function builtinSet(mod: Mod) {
     "set-size",
     "set-empty?",
     "set-member?",
-    "set-include?",
+    "set-subset?",
     "set-to-list",
     "set-add",
     "set-add!",
@@ -56,7 +56,7 @@ export function builtinSet(mod: Mod) {
     return Values.Bool(Values.setHas(set, value))
   })
 
-  definePrimitiveFunction(mod, "set-include?", 2, (subset, set) => {
+  definePrimitiveFunction(mod, "set-subset?", 2, (subset, set) => {
     return Values.Bool(
       Values.setElements(subset).every((value) => Values.setHas(set, value)),
     )

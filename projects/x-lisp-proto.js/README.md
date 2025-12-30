@@ -212,7 +212,7 @@ false
 (set-empty? set)
 (set-copy set)
 (set-member? value set)
-(set-include? subset set)
+(set-subset? subset set)
 (set-to-list set)
 (set-add value set)
 (set-add! value set)

@@ -13,9 +13,9 @@
 (assert (set-member? 2 {1 2 3}))
 (assert-not (set-member? 4 {1 2 3}))
 
-(assert (set-include? {1 2} {1 2 3}))
-(assert (set-include? {1 2 3} {1 2 3}))
-(assert-not (set-include? {1 4} {1 2 3}))
+(assert (set-subset? {1 2} {1 2 3}))
+(assert (set-subset? {1 2 3} {1 2 3}))
+(assert-not (set-subset? {1 4} {1 2 3}))
 
 (assert-equal [1 2 3] (set-to-list {1 2 3}))
 

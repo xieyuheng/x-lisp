@@ -176,15 +176,15 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "set-size", x_set_size);
     define_primitive_1(mod, "set-empty?", x_set_empty_p);
     // define_primitive_2(mod, "set-member?", x_set_member_p);
-    // (set-add value set)
-    // (set-add! value set)
-    // (set-delete value set)
-    // (set-delete! value set)
-    // (set-clear! set)
-    // (set-union left right)
-    // (set-inter left right)
-    // (set-difference left right)
-    // (set-include? subset set)
-    // (set-disjoint? left right)
-    // (set-to-list set)
+    // define_primitive_2(mod, "set-add!", x_set_add_mut);
+    // define_primitive_2(mod, "set-add", x_set_add);
+    // define_primitive_2(mod, "set-delete!", x_set_delete_mut);
+    // define_primitive_2(mod, "set-delete", x_set_delete);
+    // define_primitive_1(mod, "set-clear!", x_set_clear_mut);
+    // define_primitive_2(mod, "set-union", x_set_union);
+    // define_primitive_2(mod, "set-inter", x_set_inter);
+    // define_primitive_2(mod, "set-difference", x_set_difference);
+    // define_primitive_2(mod, "set-subset?", x_set_subset_p);
+    // define_primitive_2(mod, "set-disjoint?", x_set_disjoint_p);
+    // define_primitive_1(mod, "set-to-list", x_set_to_list);
 }

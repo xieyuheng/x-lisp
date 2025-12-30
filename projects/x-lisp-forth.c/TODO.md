@@ -1,5 +1,6 @@
 # xset
 
+[value] `xset_subset_p`
 [builtin] `x_set_member_p`
 
 # total-compare

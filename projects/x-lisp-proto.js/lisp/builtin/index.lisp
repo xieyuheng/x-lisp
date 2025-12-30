@@ -180,7 +180,7 @@
 (claim set-size (polymorphic (E) (-> (set? E) int?)))
 (claim set-empty? (polymorphic (E) (-> (set? E) bool?)))
 (claim set-member? (polymorphic (E) (-> E (set? E) bool?)))
-(claim set-include? (polymorphic (E) (-> (set? E) (set? E) bool?)))
+(claim set-subset? (polymorphic (E) (-> (set? E) (set? E) bool?)))
 (claim set-to-list (polymorphic (E) (-> (set? E) (list? E))))
 (claim set-add (polymorphic (E) (-> E (set? E) (set? E))))
 (claim set-add! (polymorphic (E) (-> E (set? E) (set? E))))
