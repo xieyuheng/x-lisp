@@ -1,14 +1,8 @@
 # xhash
 
-[builtin] x_hash_get
-[builtin] x_hash_has_p
-[builtin] x_hash_put_mut
-[builtin] x_hash_put
-[builtin] x_hash_delete_mut
-[builtin] x_hash_delete
-[builtin] x_hash_keys
-[builtin] x_hash_values
-[builtin] x_hash_entries
+[builtin] x_hash_put_mut & x_hash_put
+[builtin] x_hash_delete_mut &  x_hash_delete
+[builtin] x_hash_keys & x_hash_values & x_hash_entries
 
 # xset
 

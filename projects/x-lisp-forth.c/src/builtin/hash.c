@@ -24,3 +24,13 @@ value_t
 x_hash_empty_p(value_t hash) {
     return x_bool(hash_is_empty(to_xhash(hash)->hash));
 }
+
+value_t
+x_hash_get(value_t index, value_t hash) {
+    return xhash_get(to_xhash(hash), to_int64(index));
+}
+
+value_t
+x_hash_has_p(value_t index, value_t hash) {
+    return x_bool(!equal_p(x_hash_get(index, hash), x_null));
+}
