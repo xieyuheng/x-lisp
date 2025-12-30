@@ -1,10 +1,16 @@
 #include "index.h"
 
+static uint64_t
+value_hash_fn(const void *key) {
+    return value_hash_code((value_t) key);
+}
+
 xhash_t *
 make_xhash(void) {
     xhash_t *self = new(xhash_t);
     self->header.class = &xhash_class;
     self->hash = make_hash();
+    hash_put_hash_fn(self->hash, (hash_fn_t *) value_hash_fn);
     gc_add_object(global_gc, (object_t *) self);
     return self;
 }
@@ -26,6 +32,26 @@ to_xhash(value_t value) {
     assert(xhash_p(value));
     return (xhash_t *) to_object(value);
 }
+
+inline value_t
+xhash_get(const xhash_t *self, value_t key) {
+    hash_entry_t *entry = hash_get_entry(self->hash, (void *) key);
+    if (entry) {
+        return (value_t) entry->value;
+    } else {
+        return x_null;
+    }
+}
+
+// inline void
+// xhash_put(xhash_t *self, value_t key, value_t value) {
+//     record_put(self->attributes, key, (void *) value);
+// }
+
+// inline void
+// xhash_delete(xhash_t *self, value_t key) {
+//     record_delete(self->attributes, key);
+// }
 
 // bool
 // xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {

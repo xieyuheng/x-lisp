@@ -13,6 +13,10 @@ void xhash_free(xhash_t *self);
 bool xhash_p(value_t value);
 xhash_t *to_xhash(value_t value);
 
+value_t xhash_get(const xhash_t *self, value_t key);
+void xhash_put(xhash_t *self, value_t key, value_t value);
+void xhash_delete(xhash_t *self, value_t key);
+
 bool xhash_equal(const xhash_t *lhs, const xhash_t *rhs);
 void xhash_print(const xhash_t *self);
 uint64_t xhash_hash_code(const xhash_t *self);
