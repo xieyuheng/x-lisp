@@ -49,12 +49,18 @@ to_hashtag(value_t value) {
 }
 
 void
-hashtag_print(const hashtag_t *hashtag) {
+hashtag_print(const hashtag_t *self) {
     string_print("#");
-    string_print(hashtag_string(hashtag));
+    string_print(hashtag_string(self));
+}
+
+uint64_t
+hashtag_hash_code(const hashtag_t *self) {
+    return 5 * string_hash_code(self->string);
 }
 
 const object_class_t hashtag_class = {
     .name = "hashtag",
     .print_fn = (object_print_fn_t *) hashtag_print,
+    .hash_code_fn = (object_hash_code_fn_t *) hashtag_hash_code,
 };

@@ -16,4 +16,5 @@ size_t hashtag_length(const hashtag_t *self);
 bool hashtag_p(value_t value);
 hashtag_t *to_hashtag(value_t value);
 
-void hashtag_print(const hashtag_t *hashtag);
+void hashtag_print(const hashtag_t *self);
+uint64_t hashtag_hash_code(const hashtag_t *self);
