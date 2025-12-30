@@ -100,6 +100,7 @@ xhash_print_entries(const xhash_t *self) {
     value_t key = (value_t) hash_iter_next_key(&iter);
     while (key) {
         value_t value = xhash_get(self, key);
+        printf(" ");
         value_print(key);
         printf(" ");
         value_print(value);

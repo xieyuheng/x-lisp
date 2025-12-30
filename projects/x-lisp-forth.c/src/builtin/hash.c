@@ -34,3 +34,25 @@ value_t
 x_hash_has_p(value_t key, value_t hash) {
     return x_bool(!equal_p(x_hash_get(key, hash), x_null));
 }
+
+value_t
+x_hash_put_mut(value_t key, value_t value, value_t hash) {
+    xhash_put(to_xhash(hash), key, value);
+    return hash;
+}
+
+value_t
+x_hash_put(value_t key, value_t value, value_t hash) {
+    return x_hash_put_mut(key, value, x_hash_copy(hash));
+}
+
+value_t
+x_hash_delete_mut(value_t key, value_t hash) {
+    xhash_delete(to_xhash(hash), key);
+    return hash;
+}
+
+value_t
+x_hash_delete(value_t key, value_t hash) {
+    return x_hash_delete_mut(key, x_hash_copy(hash));
+}
