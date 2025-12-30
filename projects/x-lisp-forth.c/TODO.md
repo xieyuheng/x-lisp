@@ -1,10 +1,8 @@
 # xhash
 
-xhash_t *make_xhash(void);
-void xhash_free(xhash_t *self);
-
-bool xhash_p(value_t value);
-xhash_t *to_xhash(value_t value);
+bool tael_equal(const tael_t *lhs, const tael_t *rhs);
+void tael_print(const tael_t *self);
+uint64_t tael_hash_code(const tael_t *self);
 
 # xset
 
