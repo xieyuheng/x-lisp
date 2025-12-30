@@ -74,18 +74,18 @@ xset_empty_p(const xset_t *self) {
 //     hash_delete(self->hash, (void *) key);
 // }
 
-// xhash_t *
-// xhash_copy(const xhash_t *self) {
-//     xhash_t *new_hash = make_xhash();
-//     hash_iter_t iter;
-//     hash_iter_init(&iter, self->hash);
-//     const hash_entry_t *entry = hash_iter_next_entry(&iter);
+// xset_t *
+// xset_copy(const xset_t *self) {
+//     xset_t *new_set = make_xset();
+//     set_iter_t iter;
+//     set_iter_init(&iter, self->set);
+//     const hash_entry_t *value = set_iter_next(&iter);
 //     while (entry) {
-//         xhash_put(new_hash, (value_t) entry->key, (value_t) entry->value);
-//         entry = hash_iter_next_entry(&iter);
+//         xset_add(new_set, (value_t) value);
+//         entry = set_iter_next(&iter);
 //     }
 
-//     return new_hash;
+//     return new_set;
 // }
 
 // bool

@@ -67,7 +67,7 @@ set_put(set_t *self, void *value) {
 }
 
 bool
-set_has(set_t *self, void *value) {
+set_member(set_t *self, void *value) {
     return hash_has(self->hash, value);
 }
 

@@ -23,21 +23,21 @@ main(void) {
     {
         list_push(list, cheese);
         assert(list_length(list) == 1);
-        assert(list_has(list, cheese));
-        assert(!list_has(list, bread));
-        assert(!list_has(list, wine));
+        assert(list_member(list, cheese));
+        assert(!list_member(list, bread));
+        assert(!list_member(list, wine));
 
         list_push(list, bread);
         assert(list_length(list) == 2);
-        assert(list_has(list, cheese));
-        assert(list_has(list, bread));
-        assert(!list_has(list, wine));
+        assert(list_member(list, cheese));
+        assert(list_member(list, bread));
+        assert(!list_member(list, wine));
 
         list_push(list, wine);
         assert(list_length(list) == 3);
-        assert(list_has(list, cheese));
-        assert(list_has(list, bread));
-        assert(list_has(list, wine));
+        assert(list_member(list, cheese));
+        assert(list_member(list, bread));
+        assert(list_member(list, wine));
 
         assert(list_first(list) == cheese);
         assert(list_length(list) == 3);
@@ -147,27 +147,27 @@ main(void) {
         list_push(list, b);
         list_push(list, c);
 
-        assert(list_has(list, a));
-        assert(list_has(list, b));
-        assert(list_has(list, c));
+        assert(list_member(list, a));
+        assert(list_member(list, b));
+        assert(list_member(list, c));
 
-        assert(!list_has(list, "a"));
-        assert(!list_has(list, "b"));
-        assert(!list_has(list, "c"));
+        assert(!list_member(list, "a"));
+        assert(!list_member(list, "b"));
+        assert(!list_member(list, "c"));
 
-        assert(!list_has(list, "A"));
-        assert(!list_has(list, "B"));
-        assert(!list_has(list, "C"));
+        assert(!list_member(list, "A"));
+        assert(!list_member(list, "B"));
+        assert(!list_member(list, "C"));
 
         list_put_equal_fn(list, (equal_fn_t *) string_equal);
 
-        assert(list_has(list, "a"));
-        assert(list_has(list, "b"));
-        assert(list_has(list, "c"));
+        assert(list_member(list, "a"));
+        assert(list_member(list, "b"));
+        assert(list_member(list, "c"));
 
-        assert(!list_has(list, "A"));
-        assert(!list_has(list, "B"));
-        assert(!list_has(list, "C"));
+        assert(!list_member(list, "A"));
+        assert(!list_member(list, "B"));
+        assert(!list_member(list, "C"));
 
         assert(!list_find(list, "A"));
         assert(!list_find(list, "B"));
@@ -175,13 +175,13 @@ main(void) {
 
         list_put_equal_fn(list, (equal_fn_t *) string_equal_mod_case);
 
-        assert(list_has(list, "a"));
-        assert(list_has(list, "b"));
-        assert(list_has(list, "c"));
+        assert(list_member(list, "a"));
+        assert(list_member(list, "b"));
+        assert(list_member(list, "c"));
 
-        assert(list_has(list, "A"));
-        assert(list_has(list, "B"));
-        assert(list_has(list, "C"));
+        assert(list_member(list, "A"));
+        assert(list_member(list, "B"));
+        assert(list_member(list, "C"));
 
         assert(list_find(list, "A") == a);
         assert(list_find(list, "B") == b);
@@ -212,13 +212,13 @@ main(void) {
 
         list_free(list);
 
-        assert(list_has(copy, "a"));
-        assert(list_has(copy, "b"));
-        assert(list_has(copy, "c"));
+        assert(list_member(copy, "a"));
+        assert(list_member(copy, "b"));
+        assert(list_member(copy, "c"));
 
-        assert(list_has(copy, "A"));
-        assert(list_has(copy, "B"));
-        assert(list_has(copy, "C"));
+        assert(list_member(copy, "A"));
+        assert(list_member(copy, "B"));
+        assert(list_member(copy, "C"));
 
         list_free(copy);
     }
@@ -240,9 +240,9 @@ main(void) {
 
         list_remove(list, "B");
 
-        assert(list_has(list, "A"));
-        assert(!list_has(list, "B"));
-        assert(list_has(list, "C"));
+        assert(list_member(list, "A"));
+        assert(!list_member(list, "B"));
+        assert(list_member(list, "C"));
 
         list_free(list);
     }

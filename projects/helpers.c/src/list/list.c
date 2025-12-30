@@ -114,7 +114,7 @@ list_is_empty(const list_t *self) {
 }
 
 bool
-list_has(const list_t *self, const void *value) {
+list_member(const list_t *self, const void *value) {
     assert(self);
     list_node_t *node = self->first_node;
     while (node) {

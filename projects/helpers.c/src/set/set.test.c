@@ -20,12 +20,12 @@ main(void) {
 
         assert(set_size(set) == 3);
 
-        assert(set_has(set, (void *) 1));
-        assert(set_has(set, (void *) 2));
-        assert(set_has(set, (void *) 3));
+        assert(set_member(set, (void *) 1));
+        assert(set_member(set, (void *) 2));
+        assert(set_member(set, (void *) 3));
 
-        assert(!set_has(set, (void *) 0));
-        assert(!set_has(set, (void *) 4));
+        assert(!set_member(set, (void *) 0));
+        assert(!set_member(set, (void *) 4));
 
         assert(set_delete(set, (void *) 2));
         assert(set_delete(set, (void *) 3));
@@ -35,9 +35,9 @@ main(void) {
 
         assert(set_size(set) == 1);
 
-        assert(set_has(set, (void *) 1));
-        assert(!set_has(set, (void *) 2));
-        assert(!set_has(set, (void *) 3));
+        assert(set_member(set, (void *) 1));
+        assert(!set_member(set, (void *) 2));
+        assert(!set_member(set, (void *) 3));
 
         set_free(set);
     }

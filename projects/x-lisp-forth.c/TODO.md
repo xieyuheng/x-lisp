@@ -1,7 +1,9 @@
+[helpers.c] `set_iter_next_entry` -- for safe null
+
 # xset
 
-[value] `xset_copy`
 [value] `xset_add`
+[value] `xset_copy`
 [value] `xset_delete`
 [value] `xset_clear`
 [value] `xset_member_p`

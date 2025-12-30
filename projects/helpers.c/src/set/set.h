@@ -23,7 +23,7 @@ bool set_add(set_t *self, void *value);
 // put auto free old value if there is free_fn
 void set_put(set_t *self, void *value);
 
-bool set_has(set_t *self, void *value);
+bool set_member(set_t *self, void *value);
 
 // return successful deleted or not.
 bool set_delete(set_t *self, void *value);
