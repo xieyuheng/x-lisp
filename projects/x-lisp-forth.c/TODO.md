@@ -1,8 +1,5 @@
 # circular object
 
-[value] `make_printer`
-[value] `printer_free`
-
 [value] `print` -- top level API -- called by builtin
 
 - create local `printer` and call `value_print`

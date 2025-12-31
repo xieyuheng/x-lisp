@@ -7,3 +7,5 @@ struct printer_t {
     hash_t *circle_indexes;
 };
 
+printer_t *make_printer(void);
+void printer_free(printer_t *self);
