@@ -41,12 +41,71 @@ syntax_export(vm_t *vm) {
     }
 }
 
+static void
+syntax_import(vm_t *vm) {
+    token_t *token = vm_next_token(vm);
+    assert(token->kind == STRING_TOKEN);
+    mod_t *imported_mod = mod_import(vm_mod(vm), token->content);
+    token_free(token);
+
+    while (true) {
+        if (vm_no_more_tokens(vm)) {
+            who_printf("missing @end\n");
+            exit(1);
+        }
+
+        token_t *token = vm_next_token(vm);
+        if (string_equal(token->content, "@end")) {
+            token_free(token);
+            return;
+        } else {
+            assert(token->kind == SYMBOL_TOKEN);
+            mod_t *mod = vm_mod(vm);
+            char *name = string_copy(token->content);
+            import_entry_t *import_entry = make_import_entry(imported_mod, name);
+            array_push(mod->import_entries, import_entry);
+            token_free(token);
+        }
+    }
+}
+
+static void
+syntax_include(vm_t *vm) {
+    token_t *token = vm_next_token(vm);
+    assert(token->kind == STRING_TOKEN);
+    mod_t *imported_mod = mod_import(vm_mod(vm), token->content);
+    token_free(token);
+
+    while (true) {
+        if (vm_no_more_tokens(vm)) {
+            who_printf("missing @end\n");
+            exit(1);
+        }
+
+        token_t *token = vm_next_token(vm);
+        if (string_equal(token->content, "@end")) {
+            token_free(token);
+            return;
+        } else {
+            assert(token->kind == SYMBOL_TOKEN);
+            mod_t *mod = vm_mod(vm);
+            char *name = string_copy(token->content);
+            import_entry_t *import_entry = make_import_entry(imported_mod, name);
+            import_entry->is_exported = true;
+            array_push(mod->import_entries, import_entry);
+            token_free(token);
+        }
+    }
+}
+
 struct syntax_entry_t { const char *name; x_fn_t *handler; };
 
 static struct syntax_entry_t syntax_entries[] = {
     { "@var", syntax_var },
     { "@def", syntax_def },
     { "@export", syntax_export },
+    { "@import", syntax_import },
+    { "@include", syntax_include },
 };
 
 static size_t
