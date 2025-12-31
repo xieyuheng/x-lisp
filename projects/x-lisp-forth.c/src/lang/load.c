@@ -71,7 +71,7 @@ setup_variable(vm_t *vm, definition_t *definition) {
 }
 
 static void
-stage2(vm_t *vm) {
+setup_variables(vm_t *vm) {
     record_iter_t iter;
     record_iter_init(&iter, vm_mod(vm)->definitions);
     definition_t *definition = record_iter_next_value(&iter);
@@ -82,6 +82,11 @@ stage2(vm_t *vm) {
 
         definition = record_iter_next_value(&iter);
     }
+}
+
+static void
+stage2(vm_t *vm) {
+    (void) vm;
 }
 
 static void
@@ -97,6 +102,7 @@ prepare_tail_call(vm_t *vm, const char *name) {
 
 static void
 stage3(vm_t *vm) {
+    setup_variables(vm);
     prepare_tail_call(vm, "main");
     vm_execute(vm);
 }

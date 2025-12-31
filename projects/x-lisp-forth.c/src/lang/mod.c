@@ -22,7 +22,6 @@ mod_define(mod_t *self, const char *name, definition_t *definition) {
         if (found->kind != PLACEHOLDER_DEFINITION) {
             who_printf("can not redefine name: %s\n", name);
             exit(1);
-
         }
 
         size_t length =
