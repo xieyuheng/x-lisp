@@ -3,6 +3,8 @@
 struct mod_t {
     path_t *path;
     record_t *definitions;
+    array_t *import_entries;
+    set_t *exported_names;
 };
 
 mod_t *make_mod(path_t *path);

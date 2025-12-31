@@ -1,8 +1,5 @@
 # module system
 
-[lang] `mod_t` -- has `import_entries` -- array of `import_entry_t`
-[lang] `mod_t` -- has `exported_names` -- set of names
-
 [lang] `mod_import_by`
 
 [lang] `load` -- `stage2` -- handle `import_entries`
