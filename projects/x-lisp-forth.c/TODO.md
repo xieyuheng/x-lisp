@@ -1,7 +1,5 @@
 # module system
 
-[lang] `load` -- extract `load_stage*`
-
 [lang] `mod` -- `import_entry_t`
 [lang] `make_import_entry` & `import_entry_free`
 
