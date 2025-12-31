@@ -14,13 +14,13 @@ x_write(value_t x) {
 
 value_t
 x_print(value_t x) {
-    value_print(x);
+    print(x);
     return x_void;
 }
 
 value_t
 x_println(value_t x) {
-    value_print(x);
+    print(x);
     newline();
     return x_void;
 }
@@ -28,7 +28,7 @@ x_println(value_t x) {
 value_t
 x_println_non_void(value_t x) {
     if (x != x_void) {
-        value_print(x);
+        print(x);
     }
 
     return x_void;
