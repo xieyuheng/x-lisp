@@ -14,3 +14,17 @@ printer_free(printer_t *self) {
     hash_free(self->circle_indexes);
     free(self);
 }
+
+static void
+printer_collect_circle(printer_t *printer, value_t value) {
+    (void) printer;
+    (void) value;
+}
+
+void
+print(value_t value) {
+    printer_t *printer = make_printer();
+    printer_collect_circle(printer, value);
+    // value_print(printer, value);
+    printer_free(printer);
+}

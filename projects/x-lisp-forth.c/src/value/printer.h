@@ -9,3 +9,5 @@ struct printer_t {
 
 printer_t *make_printer(void);
 void printer_free(printer_t *self);
+
+void print(value_t value);
