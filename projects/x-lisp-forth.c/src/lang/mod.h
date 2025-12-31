@@ -18,5 +18,5 @@ struct import_entry_t {
     bool is_exported;
 };
 
-// make_import_entry
-// import_entry_free
+import_entry_t *make_import_entry(mod_t *mod, char *name);
+void import_entry_free(import_entry_t *self);

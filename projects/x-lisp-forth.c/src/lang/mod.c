@@ -51,3 +51,18 @@ mod_lookup_or_placeholder(mod_t *self, const char *name) {
 
     return define_placeholder(self, name);
 }
+
+import_entry_t *
+make_import_entry(mod_t *mod, char *name) {
+    import_entry_t *self = new(import_entry_t);
+    self->mod = mod;
+    self->name = name;
+    self->is_exported = false;
+    return self;
+}
+
+void
+import_entry_free(import_entry_t *self) {
+    string_free(self->name);
+    free(self);
+}
