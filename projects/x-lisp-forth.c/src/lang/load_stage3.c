@@ -6,7 +6,10 @@ static void prepare_tail_call(vm_t *vm, const char *name);
 void
 load_stage3(vm_t *vm) {
     setup_variables(vm);
-    prepare_tail_call(vm, "main");
+    if (mod_lookup(vm_mod(vm), "main")) {
+        prepare_tail_call(vm, "main");
+    }
+
     vm_execute(vm);
 }
 

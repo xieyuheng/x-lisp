@@ -58,8 +58,10 @@ mod_lookup_or_placeholder(mod_t *self, const char *name) {
 
 mod_t *
 mod_import(mod_t *self, const char *string) {
-    path_t *resolved_path = path_resolve(self->path, string);
-    return load(resolved_path);
+    path_t *path = path_copy(self->path);
+    path_join_mut(path, "..");
+    path_join_mut(path, string);
+    return load(path);
 }
 
 import_entry_t *
