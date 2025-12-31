@@ -121,7 +121,7 @@ xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
 }
 
 static void
-xhash_print_entries(const xhash_t *self) {
+xhash_print_entries(printer_t *printer, const xhash_t *self) {
     hash_iter_t iter;
     hash_iter_init(&iter, self->hash);
 
@@ -129,17 +129,17 @@ xhash_print_entries(const xhash_t *self) {
     while (key) {
         value_t value = xhash_get(self, key);
         printf(" ");
-        value_print(key);
+        value_print(printer, key);
         printf(" ");
-        value_print(value);
+        value_print(printer, value);
         key = (value_t) hash_iter_next_key(&iter);
     }
 }
 
 void
-xhash_print(const xhash_t *self) {
+xhash_print(printer_t *printer, const xhash_t *self) {
     printf("(@hash");
-    xhash_print_entries(self);
+    xhash_print_entries(printer, self);
     printf(")");
 }
 

@@ -15,7 +15,29 @@ printer_free(printer_t *self) {
     free(self);
 }
 
-static void
+bool
+printer_circle_start_p(printer_t *self, object_t *object) {
+    return hash_has(self->circle_indexes, object)
+        && !set_member(self->occurred_objects, object);
+}
+
+bool
+printer_circle_end_p(printer_t *self, object_t *object) {
+    return hash_has(self->circle_indexes, object)
+        && set_member(self->occurred_objects, object);
+}
+
+size_t
+printer_circle_index(printer_t *self, object_t *object) {
+    return (size_t) hash_get(self->circle_indexes, object);
+}
+
+void
+printer_meet(printer_t *self, object_t *object) {
+    set_add(self->occurred_objects, object);
+}
+
+void
 printer_collect_circle(printer_t *self, object_t *object) {
     if (set_member(self->occurred_objects, object)) {
         if (hash_has(self->circle_indexes, object)) return;
@@ -25,10 +47,10 @@ printer_collect_circle(printer_t *self, object_t *object) {
         return;
     }
 
-    set_add(self->occurred_objects, object);
-
     const object_class_t *class = object->header.class;
     if (class->make_child_iter_fn) {
+        set_add(self->occurred_objects, object);
+
         void *iter = class->make_child_iter_fn(object);
         object_t *child = class->child_iter_next_fn(iter);
         while (child) {
@@ -38,16 +60,4 @@ printer_collect_circle(printer_t *self, object_t *object) {
 
         class->child_iter_free_fn(iter);
     }
-}
-
-void
-print(value_t value) {
-    printer_t *printer = make_printer();
-    if (object_p(value)) {
-        printer_collect_circle(printer, to_object(value));
-    }
-
-    // value_print(printer, value);
-    value_print(value);
-    printer_free(printer);
 }

@@ -56,7 +56,8 @@ to_hashtag(value_t value) {
 }
 
 void
-hashtag_print(const hashtag_t *self) {
+hashtag_print(printer_t *printer, const hashtag_t *self) {
+    (void) printer,
     string_print("#");
     string_print(hashtag_string(self));
 }

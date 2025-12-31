@@ -7,7 +7,7 @@ apply(vm_t *vm, size_t n, value_t target) {
     } else if (curry_p(target)) {
         apply_curry(vm, n, to_curry(target));
     } else {
-        who_printf("can not apply value: "); value_print(target); newline();
+        who_printf("can not apply value: "); print(target); newline();
         exit(1);
     }
 }

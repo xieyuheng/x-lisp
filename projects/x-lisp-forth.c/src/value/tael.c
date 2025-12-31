@@ -172,9 +172,9 @@ tael_equal(const tael_t *lhs, const tael_t *rhs) {
 }
 
 static void
-tael_print_elements(const tael_t *self) {
+tael_print_elements(printer_t *printer, const tael_t *self) {
     for (size_t i = 0; i < array_length(self->elements); i++) {
-        value_print(tael_get_element(self, i));
+        value_print(printer, tael_get_element(self, i));
         if (i < array_length(self->elements) - 1) {
             printf(" ");
         }
@@ -182,7 +182,7 @@ tael_print_elements(const tael_t *self) {
 }
 
 static void
-tael_print_attributes(const tael_t *self) {
+tael_print_attributes(printer_t *printer, const tael_t *self) {
     record_iter_t iter;
     record_iter_init(&iter, self->attributes);
 
@@ -192,33 +192,33 @@ tael_print_attributes(const tael_t *self) {
     if (key) {
         value_t value = tael_get_attribute(self, key);
         printf(":%s ", key);
-        value_print(value);
+        value_print(printer, value);
         key = record_iter_next_key(&iter);
     }
 
     while (key) {
         value_t value = tael_get_attribute(self, key);
         printf(" :%s ", key);
-        value_print(value);
+        value_print(printer, value);
         key = record_iter_next_key(&iter);
     }
 }
 
 void
-tael_print(const tael_t *self) {
+tael_print(printer_t *printer, const tael_t *self) {
     if (array_is_empty(self->elements)) {
         printf("[");
-        tael_print_attributes(self);
+        tael_print_attributes(printer, self);
         printf("]");
     } else if (record_is_empty(self->attributes)) {
         printf("[");
-        tael_print_elements(self);
+        tael_print_elements(printer, self);
         printf("]");
     } else {
         printf("[");
-        tael_print_elements(self);
+        tael_print_elements(printer, self);
         printf(" ");
-        tael_print_attributes(self);
+        tael_print_attributes(printer, self);
         printf("]");
     }
 }

@@ -33,7 +33,7 @@ bool definition_p(value_t value);
 definition_t *to_definition(value_t value);
 
 bool definition_equal(definition_t *lhs, definition_t *rhs);
-void definition_print(definition_t *self);
+void definition_print(printer_t *printer, definition_t *self);
 
 void placeholder_definition_hold_place(definition_t *self, function_t *function, size_t code_index);
 

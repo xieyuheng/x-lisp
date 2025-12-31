@@ -50,7 +50,8 @@ xstring_equal(const xstring_t *lhs, const xstring_t *rhs) {
 }
 
 void
-xstring_print(const xstring_t *self) {
+xstring_print(printer_t *printer, const xstring_t *self) {
+    (void) printer;
     string_print("\"");
     string_print(self->string);
     string_print("\"");

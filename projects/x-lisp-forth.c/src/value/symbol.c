@@ -56,7 +56,8 @@ to_symbol(value_t value) {
 }
 
 void
-symbol_print(const symbol_t *self) {
+symbol_print(printer_t *printer, const symbol_t *self) {
+    (void) printer;
     string_print("'");
     string_print(symbol_string(self));
 }

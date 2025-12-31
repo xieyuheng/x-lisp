@@ -207,7 +207,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         definition_t *definition = (definition_t *) to_object(value);
         if (definition->kind != VARIABLE_DEFINITION) {
             who_printf("expecting VARIABLE_DEFINITION\n");
-            who_printf("  definition: "); definition_print(definition); newline();
+            who_printf("  definition: "); print(x_object(definition)); newline();
             exit(1);
         }
 
@@ -264,7 +264,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         value_t value = vm_pop(vm);
         if (value != x_true) {
             printf("@assert fail");
-            printf("\n  value: "); value_print(value);
+            printf("\n  value: "); print(value);
             printf("\n");
             token_meta_report(instr.assert.token->meta);
             exit(1);
@@ -278,8 +278,8 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         value_t lhs = vm_pop(vm);
         if (!equal_p(lhs, rhs)) {
             printf("@assert-equal fail");
-            printf("\n  lhs: "); value_print(lhs);
-            printf("\n  rhs: "); value_print(rhs);
+            printf("\n  lhs: "); print(lhs);
+            printf("\n  rhs: "); print(rhs);
             printf("\n");
             token_meta_report(instr.assert_equal.token->meta);
             exit(1);
@@ -293,8 +293,8 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         value_t lhs = vm_pop(vm);
         if (equal_p(lhs, rhs)) {
             printf("@assert-not-equal fail");
-            printf("\n  lhs: "); value_print(lhs);
-            printf("\n  rhs: "); value_print(rhs);
+            printf("\n  lhs: "); print(lhs);
+            printf("\n  rhs: "); print(rhs);
             printf("\n");
             token_meta_report(instr.assert_not_equal.token->meta);
             exit(1);

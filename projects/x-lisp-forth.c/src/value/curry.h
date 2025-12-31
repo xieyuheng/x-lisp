@@ -17,7 +17,7 @@ bool curry_p(value_t value);
 curry_t *to_curry(value_t value);
 
 bool curry_equal(const curry_t *lhs, const curry_t *rhs);
-void curry_print(const curry_t *self);
+void curry_print(printer_t *printer, const curry_t *self);
 
 curry_child_iter_t *make_curry_child_iter(const curry_t *curry);
 void curry_child_iter_free(curry_child_iter_t *self);

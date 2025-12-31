@@ -9,9 +9,9 @@ object_free(object_t *self) {
 }
 
 void
-object_print(object_t *self) {
+object_print(printer_t *printer, object_t *self) {
     if (self->header.class->print_fn) {
-        self->header.class->print_fn(self);
+        self->header.class->print_fn(printer, self);
         return;
     }
 

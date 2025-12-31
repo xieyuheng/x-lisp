@@ -5,7 +5,7 @@ inline tag_t value_tag(value_t value) {
 }
 
 void
-value_print(value_t value) {
+value_print(printer_t *printer, value_t value) {
     if (int_p(value)) {
         printf("%ld", to_int64(value));
         return;
@@ -26,12 +26,35 @@ value_print(value_t value) {
     }
 
     if (object_p(value)) {
-        object_print(to_object(value));
-        return;
+        object_t *object = to_object(value);
+        if (printer_circle_start_p(printer, object)) {
+            printf("#%ld=", printer_circle_index(printer, object));
+            printer_meet(printer, object);
+            object_print(printer, object);
+            return;
+        } else if (printer_circle_end_p(printer, object)) {
+            printf("#%ld#", printer_circle_index(printer, object));
+            return;
+        } else {
+            object_print(printer, object);
+            return;
+        }
     }
 
     printf("#<unknown-value 0x%lx>", value);
     return;
+}
+
+void
+print(value_t value) {
+    printer_t *printer = make_printer();
+    if (object_p(value)) {
+        printer_collect_circle(printer, to_object(value));
+        set_clear(printer->occurred_objects);
+    }
+
+    value_print(printer, value);
+    printer_free(printer);
 }
 
 bool
@@ -53,7 +76,7 @@ equal_p(value_t lhs, value_t rhs) {
     return false;
 }
 
-uint32_t
+hash_code_t
 value_hash_code(value_t value) {
     if (int_p(value)) {
         return value;
@@ -68,12 +91,12 @@ value_hash_code(value_t value) {
         if (object->header.class->hash_code_fn) {
             return object->header.class->hash_code_fn(object);
         } else {
-            who_printf("unhandled object: "); object_print(object); newline();
+            who_printf("unhandled object: "); print(value); newline();
             exit(1);
         }
     }
 
-    who_printf("unhandled value: "); value_print(value); newline();
+    who_printf("unhandled value: "); print(value); newline();
     exit(1);
 }
 
@@ -106,14 +129,14 @@ value_total_compare(value_t lhs, value_t rhs) {
             return compare_fn(to_object(lhs), to_object(rhs));
         } else {
             who_printf("unhandled objects\n");
-            printf("  lhs: "); value_print(lhs); newline();
-            printf("  rhs: "); value_print(rhs); newline();
+            printf("  lhs: "); print(lhs); newline();
+            printf("  rhs: "); print(rhs); newline();
         }
     }
 
     who_printf("unhandled values\n");
-    printf("  lhs: "); value_print(lhs); newline();
-    printf("  rhs: "); value_print(rhs); newline();
+    printf("  lhs: "); print(lhs); newline();
+    printf("  rhs: "); print(rhs); newline();
     exit(1);
 }
 

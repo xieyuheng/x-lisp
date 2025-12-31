@@ -55,14 +55,14 @@ curry_equal(const curry_t *lhs, const curry_t *rhs) {
 }
 
 void
-curry_print(const curry_t *self) {
+curry_print(printer_t *printer, const curry_t *self) {
     printf("(@curry ");
-    value_print(self->target);
+    value_print(printer, self->target);
     printf(" %ld", self->arity);
     printf(" [");
     for (size_t i = 0; i < self->size; i++) {
         if (i > 0) printf(" ");
-        value_print(self->args[i]);
+        value_print(printer, self->args[i]);
     }
     printf("]");
     printf(")");
