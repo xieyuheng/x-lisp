@@ -70,7 +70,7 @@ x-lisp 的首要目标是加快新语言开发的速度。
   - [x] vm
   - [x] syntex design
   - [x] garbage collection
-  - [ ] structural datatypes
+  - [x] structural datatypes
   - [ ] module system
 
 # 关卡 2 -- 初步将 lisp 编译到 forth
