@@ -1,6 +1,6 @@
 #include "index.h"
 
-extern void import_builtin(mod_t *mod);
+extern void import_builtin_mod(mod_t *mod);
 
 static record_t *global_loaded_mods = NULL;
 
@@ -18,7 +18,7 @@ load(path_t *path) {
     list_t *tokens = lex(path, file_read_string(file));
 
     mod_t *mod = make_mod(path);
-    import_builtin(mod);
+    import_builtin_mod(mod);
 
     record_put(global_loaded_mods, path_string(path), mod);
 
