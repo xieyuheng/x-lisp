@@ -56,6 +56,12 @@ mod_lookup_or_placeholder(mod_t *self, const char *name) {
     return define_placeholder(self, name);
 }
 
+// mod_t *
+// mod_import(mod_t *self, const char *string) {
+//     path_t *resolved_path = path_resolve_mut(self->path, string);
+//     return load(resolved_path);
+// }
+
 import_entry_t *
 make_import_entry(mod_t *mod, char *name) {
     import_entry_t *self = new(import_entry_t);

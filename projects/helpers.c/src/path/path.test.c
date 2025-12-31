@@ -38,7 +38,7 @@ main(void) {
     {
         path_t *path = make_path("a/b/c");
         assert(string_equal(path_string(path), "a/b/c"));
-        path_join(path, "d/e/f");
+        path_join_mut(path, "d/e/f");
         assert(string_equal(path_string(path), "a/b/c/d/e/f"));
         path_free(path);
     }
@@ -46,7 +46,7 @@ main(void) {
     {
         path_t *path = make_path("a/b/c");
         assert(string_equal(path_string(path), "a/b/c"));
-        path_join(path, "/d/e/f");
+        path_join_mut(path, "/d/e/f");
         assert(string_equal(path_string(path), "a/b/c/d/e/f"));
         path_free(path);
     }
@@ -54,7 +54,7 @@ main(void) {
     {
         path_t *path = make_path("/a/b/c");
         assert(string_equal(path_string(path), "/a/b/c"));
-        path_join(path, "/d/e/f");
+        path_join_mut(path, "/d/e/f");
         assert(string_equal(path_string(path), "/a/b/c/d/e/f"));
         path_free(path);
     }
@@ -62,7 +62,7 @@ main(void) {
     {
         path_t *path = make_path("/a/b/c");
         assert(string_equal(path_string(path), "/a/b/c"));
-        path_join(path, "../../d/e/f");
+        path_join_mut(path, "../../d/e/f");
         assert(string_equal(path_string(path), "/a/d/e/f"));
         path_free(path);
     }
