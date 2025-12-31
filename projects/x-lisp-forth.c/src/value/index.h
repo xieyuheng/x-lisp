@@ -3,6 +3,7 @@
 #include "deps.h"
 #include "types.h"
 #include "value.h"
+#include "printer.h"
 #include "int.h"
 #include "float.h"
 #include "symbol.h"
