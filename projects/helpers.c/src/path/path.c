@@ -42,7 +42,7 @@ path_is_absolute(const path_t *self) {
 }
 
 path_t *
-path_copy(path_t *self) {
+path_copy(const path_t *self) {
     return make_path(path_string(self));
 }
 
@@ -148,6 +148,13 @@ path_join_mut(path_t *self, const char *string) {
     path_update_string(self);
 }
 
+path_t *
+path_join(const path_t *self, const char *string) {
+    path_t *new_path = path_copy(self);
+    path_join_mut(new_path, string);
+    return new_path;
+}
+
 void
 path_resolve_mut(path_t *self, const char *string) {
     if (string_starts_with(string, "/")) {
@@ -156,6 +163,13 @@ path_resolve_mut(path_t *self, const char *string) {
     }
 
     path_join_mut(self, string);
+}
+
+path_t *
+path_resolve(const path_t *self, const char *string) {
+    path_t *new_path = path_copy(self);
+    path_resolve_mut(new_path, string);
+    return new_path;
 }
 
 const char *
