@@ -20,11 +20,33 @@ syntax_def(vm_t *vm) {
     token_free(token);
 }
 
+static void
+syntax_export(vm_t *vm) {
+    while (true) {
+        if (vm_no_more_tokens(vm)) {
+            who_printf("missing @end\n");
+            exit(1);
+        }
+
+        token_t *token = vm_next_token(vm);
+        if (string_equal(token->content, "@end")) {
+            token_free(token);
+            return;
+        } else {
+            assert(token->kind == SYMBOL_TOKEN);
+            mod_t *mod = vm_mod(vm);
+            set_add(mod->exported_names, token->content);
+            token_free(token);
+        }
+    }
+}
+
 struct syntax_entry_t { const char *name; x_fn_t *handler; };
 
 static struct syntax_entry_t syntax_entries[] = {
     { "@var", syntax_var },
     { "@def", syntax_def },
+    { "@export", syntax_export },
 };
 
 static size_t
