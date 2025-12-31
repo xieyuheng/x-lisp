@@ -1,7 +1,5 @@
 # module system
 
-[lang] `load` use `global_loaded_mods`
-
 [lang] `load_stage2` -- handle `import_entries`
 
 [lang] `compile` -- @export
