@@ -185,17 +185,17 @@ main(void) {
     {
         const char *string = "";
         size_t cursor = 0;
-        assert(string_equal(string_next_word(string, &cursor), NULL));
-        assert(string_equal(string_next_word(string, &cursor), NULL));
-        assert(string_equal(string_next_word(string, &cursor), NULL));
+        assert(string_next_word(string, &cursor) == NULL);
+        assert(string_next_word(string, &cursor) == NULL);
+        assert(string_next_word(string, &cursor) == NULL);
     }
 
     {
         const char *string = "  \n  \t  ";
         size_t cursor = 0;
-        assert(string_equal(string_next_word(string, &cursor), NULL));
-        assert(string_equal(string_next_word(string, &cursor), NULL));
-        assert(string_equal(string_next_word(string, &cursor), NULL));
+        assert(string_next_word(string, &cursor) == NULL);
+        assert(string_next_word(string, &cursor) == NULL);
+        assert(string_next_word(string, &cursor) == NULL);
     }
 
     {
@@ -203,9 +203,9 @@ main(void) {
         size_t cursor = 0;
         assert(string_equal(string_next_word(string, &cursor), "abc"));
         assert(string_equal(string_next_word(string, &cursor), "123"));
-        assert(string_equal(string_next_word(string, &cursor), NULL));
-        assert(string_equal(string_next_word(string, &cursor), NULL));
-        assert(string_equal(string_next_word(string, &cursor), NULL));
+        assert(string_next_word(string, &cursor) == NULL);
+        assert(string_next_word(string, &cursor) == NULL);
+        assert(string_next_word(string, &cursor) == NULL);
     }
 
     {
@@ -213,9 +213,9 @@ main(void) {
         size_t cursor = 0;
         assert(string_equal(string_next_word(string, &cursor), "abc"));
         assert(string_equal(string_next_word(string, &cursor), "123"));
-        assert(string_equal(string_next_word(string, &cursor), NULL));
-        assert(string_equal(string_next_word(string, &cursor), NULL));
-        assert(string_equal(string_next_word(string, &cursor), NULL));
+        assert(string_next_word(string, &cursor) == NULL);
+        assert(string_next_word(string, &cursor) == NULL);
+        assert(string_next_word(string, &cursor) == NULL);
     }
 
     {
@@ -227,9 +227,9 @@ main(void) {
         assert(string_equal(string_next_line(string, &cursor), "123"));
         assert(string_equal(string_next_line(string, &cursor), "456"));
         assert(string_equal(string_next_line(string, &cursor), "789"));
-        assert(string_equal(string_next_line(string, &cursor), NULL));
-        assert(string_equal(string_next_line(string, &cursor), NULL));
-        assert(string_equal(string_next_line(string, &cursor), NULL));
+        assert(string_next_line(string, &cursor) == NULL);
+        assert(string_next_line(string, &cursor) == NULL);
+        assert(string_next_line(string, &cursor) == NULL);
     }
 
     {
@@ -241,9 +241,9 @@ main(void) {
         assert(string_equal(string_next_line(string, &cursor), "123"));
         assert(string_equal(string_next_line(string, &cursor), ""));
         assert(string_equal(string_next_line(string, &cursor), "789"));
-        assert(string_equal(string_next_line(string, &cursor), NULL));
-        assert(string_equal(string_next_line(string, &cursor), NULL));
-        assert(string_equal(string_next_line(string, &cursor), NULL));
+        assert(string_next_line(string, &cursor) == NULL);
+        assert(string_next_line(string, &cursor) == NULL);
+        assert(string_next_line(string, &cursor) == NULL);
     }
 
     {
@@ -255,9 +255,9 @@ main(void) {
         assert(string_equal(string_next_line(string, &cursor), "123"));
         assert(string_equal(string_next_line(string, &cursor), "456"));
         assert(string_equal(string_next_line(string, &cursor), "789"));
-        assert(string_equal(string_next_line(string, &cursor), NULL));
-        assert(string_equal(string_next_line(string, &cursor), NULL));
-        assert(string_equal(string_next_line(string, &cursor), NULL));
+        assert(string_next_line(string, &cursor) == NULL);
+        assert(string_next_line(string, &cursor) == NULL);
+        assert(string_next_line(string, &cursor) == NULL);
     }
 
     test_end();

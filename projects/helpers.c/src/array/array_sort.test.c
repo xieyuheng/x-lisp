@@ -55,13 +55,13 @@ main(void) {
 
         array_sort(array, string_compare_lexical);
 
-        assert(array_get(array, 0) == (void *) "A");
-        assert(array_get(array, 1) == (void *) "AB");
-        assert(array_get(array, 2) == (void *) "ABC");
-        assert(array_get(array, 3) == (void *) "B");
-        assert(array_get(array, 4) == (void *) "BC");
-        assert(array_get(array, 5) == (void *) "C");
-        assert(array_get(array, 6) == (void *) "CB");
+        assert(string_equal(array_get(array, 0), "A"));
+        assert(string_equal(array_get(array, 1), "AB"));
+        assert(string_equal(array_get(array, 2), "ABC"));
+        assert(string_equal(array_get(array, 3), "B"));
+        assert(string_equal(array_get(array, 4), "BC"));
+        assert(string_equal(array_get(array, 5), "C"));
+        assert(string_equal(array_get(array, 6), "CB"));
 
         array_free(array);
     }

@@ -170,6 +170,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_CALL: {
+        // assert(instr.call.definition);
         call_definition(vm, instr.call.definition);
         return;
     }
@@ -177,6 +178,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     case OP_TAIL_CALL: {
         stack_pop(vm->frame_stack);
         frame_free(frame);
+        // assert(instr.tail_call.definition);
         call_definition(vm, instr.tail_call.definition);
         return;
     }

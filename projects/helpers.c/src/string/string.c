@@ -28,6 +28,9 @@ string_empty(void) {
 
 bool
 string_equal(const char *left, const char *right) {
+    assert(left);
+    assert(right);
+
     if (left == right) return true;
 
     return strcmp(left, right) == 0;
