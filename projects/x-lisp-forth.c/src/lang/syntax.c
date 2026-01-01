@@ -100,6 +100,54 @@ static void syntax_import_all(vm_t *vm) { import_all(vm, false); }
 static void syntax_include_all(vm_t *vm) { import_all(vm, true); }
 
 static void
+import_except(vm_t *vm, bool is_exported) {
+    token_t *token = vm_next_token(vm);
+    assert(token->kind == STRING_TOKEN);
+    mod_t *imported_mod = mod_load_by(vm_mod(vm), token->content);
+    token_free(token);
+
+    set_t *excepted_names = make_string_set();
+    while (true) {
+        if (vm_no_more_tokens(vm)) {
+            who_printf("missing @end\n");
+            exit(1);
+        }
+
+        token_t *token = vm_next_token(vm);
+        if (string_equal(token->content, "@end")) {
+            token_free(token);
+            break;
+        } else {
+            assert(token->kind == SYMBOL_TOKEN);
+            set_add(excepted_names, string_copy(token->content));
+            token_free(token);
+        }
+    }
+
+    mod_t *mod = vm_mod(vm);
+    record_iter_t iter;
+    record_iter_init(&iter, imported_mod->definitions);
+    definition_t *definition = record_iter_next_value(&iter);
+    while (definition) {
+        if (definition->mod == imported_mod
+            && !set_member(excepted_names, definition->name)) {
+            char *name = string_copy(definition->name);
+            import_entry_t *import_entry =
+                make_import_entry(imported_mod, name);
+            import_entry->is_exported = is_exported;
+            array_push(mod->import_entries, import_entry);
+        }
+
+        definition = record_iter_next_value(&iter);
+    }
+
+    set_free(excepted_names);
+}
+
+static void syntax_import_except(vm_t *vm) { import_except(vm, false); }
+static void syntax_include_except(vm_t *vm) { import_except(vm, true); }
+
+static void
 import_as(vm_t *vm, bool is_exported) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == STRING_TOKEN);
@@ -144,6 +192,8 @@ static struct syntax_entry_t syntax_entries[] = {
     { "@include", syntax_include },
     { "@import-all", syntax_import_all },
     { "@include-all", syntax_include_all },
+    { "@import-except", syntax_import_except },
+    { "@include-except", syntax_include_except },
     { "@import-as", syntax_import_as },
     { "@include-as", syntax_include_as },
 };
