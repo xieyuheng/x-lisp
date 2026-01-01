@@ -1,7 +1,10 @@
 #include "index.h"
 
-void
-import_builtin_mod(mod_t *mod) {
+mod_t *
+make_builtin_mod(void) {
+    path_t *path = make_path("builtin:");
+    mod_t *mod = make_mod(path);
+
     // int
 
     define_primitive_1(mod, "int?", x_int_p);
@@ -188,4 +191,23 @@ import_builtin_mod(mod_t *mod) {
     define_primitive_2(mod, "set-subset?", x_set_subset_p);
     define_primitive_2(mod, "set-disjoint?", x_set_disjoint_p);
     define_primitive_1(mod, "set-to-list", x_set_to_list);
+
+    return mod;
+}
+
+static mod_t *global_builtin_mod = NULL;
+
+void
+import_builtin_mod(mod_t *mod) {
+    if (!global_builtin_mod) {
+        global_builtin_mod = make_builtin_mod();
+    }
+
+    record_iter_t iter;
+    record_iter_init(&iter, global_builtin_mod->definitions);
+    definition_t *definition = record_iter_next_value(&iter);
+    while (definition) {
+        mod_define(mod, definition->name, definition);
+        definition = record_iter_next_value(&iter);
+    }
 }
