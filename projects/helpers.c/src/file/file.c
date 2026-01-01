@@ -1,15 +1,15 @@
 #include "index.h"
 
 bool
-file_exists(const char *file_name) {
-    return access(file_name, F_OK) != -1;
+file_exists(const char *pathname) {
+    return access(pathname, F_OK) != -1;
 }
 
 file_t *
-open_file_or_fail(const char *file_name, const char *mode) {
-    file_t *file = fopen(file_name, mode);
+open_file_or_fail(const char *pathname, const char *mode) {
+    file_t *file = fopen(pathname, mode);
     if (!file) {
-        who_printf("file name: %s\n", file_name);
+        who_printf("file name: %s\n", pathname);
         who_printf("mode: %s\n", mode);
         exit(1);
     }
