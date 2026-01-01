@@ -1,5 +1,5 @@
 # module system
-
+ambr pathname_exists pathname_ existsSync
 [lang] `mod_load_by` -- resolve path without `.fth`
 [lang] `mod_load_by` -- resolve path to directly to `index.fth`
 

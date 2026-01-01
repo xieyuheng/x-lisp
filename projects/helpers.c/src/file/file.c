@@ -1,7 +1,7 @@
 #include "index.h"
 
 bool
-file_exists(const char *pathname) {
+pathname_exists(const char *pathname) {
     return access(pathname, F_OK) != -1;
 }
 
