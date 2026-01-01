@@ -83,16 +83,16 @@ import_all(vm_t *vm, bool is_exported) {
     mod_t *mod = vm_mod(vm);
     record_iter_t iter;
     record_iter_init(&iter, imported_mod->definitions);
-    definition_t *definition = record_iter_next_value(&iter);
-    while (definition) {
-        if (definition->mod == imported_mod) {
-            char *name = string_copy(definition->name);
+    char *key = record_iter_next_key(&iter);
+    while (key) {
+        if (set_member(imported_mod->exported_names, key)) {
+            char *name = string_copy(key);
             import_entry_t *import_entry = make_import_entry(imported_mod, name);
             import_entry->is_exported = is_exported;
             array_push(mod->import_entries, import_entry);
         }
 
-        definition = record_iter_next_value(&iter);
+        key = record_iter_next_key(&iter);
     }
 }
 
@@ -127,18 +127,18 @@ import_except(vm_t *vm, bool is_exported) {
     mod_t *mod = vm_mod(vm);
     record_iter_t iter;
     record_iter_init(&iter, imported_mod->definitions);
-    definition_t *definition = record_iter_next_value(&iter);
-    while (definition) {
-        if (definition->mod == imported_mod
-            && !set_member(excepted_names, definition->name)) {
-            char *name = string_copy(definition->name);
+    char *key = record_iter_next_key(&iter);
+    while (key) {
+        if (set_member(imported_mod->exported_names, key)
+            && !set_member(excepted_names, key)) {
+            char *name = string_copy(key);
             import_entry_t *import_entry =
                 make_import_entry(imported_mod, name);
             import_entry->is_exported = is_exported;
             array_push(mod->import_entries, import_entry);
         }
 
-        definition = record_iter_next_value(&iter);
+        key = record_iter_next_key(&iter);
     }
 
     set_free(excepted_names);
@@ -162,18 +162,18 @@ import_as(vm_t *vm, bool is_exported) {
     mod_t *mod = vm_mod(vm);
     record_iter_t iter;
     record_iter_init(&iter, imported_mod->definitions);
-    definition_t *definition = record_iter_next_value(&iter);
-    while (definition) {
-        if (definition->mod == imported_mod) {
-            char *name = string_copy(definition->name);
-            char *rename = string_append(prefix, definition->name);
+    char *key = record_iter_next_key(&iter);
+    while (key) {
+        if (set_member(imported_mod->exported_names, key)) {
+            char *name = string_copy(key);
+            char *rename = string_append(prefix, key);
             import_entry_t *import_entry = make_import_entry(imported_mod, name);
             import_entry->rename = rename;
             import_entry->is_exported = is_exported;
             array_push(mod->import_entries, import_entry);
         }
 
-        definition = record_iter_next_value(&iter);
+        key = record_iter_next_key(&iter);
     }
 
     string_free(prefix);

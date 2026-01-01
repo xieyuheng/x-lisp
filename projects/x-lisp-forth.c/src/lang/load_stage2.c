@@ -17,6 +17,7 @@ handle_import_entry(mod_t *mod, const import_entry_t *import_entry) {
         : import_entry->name;
 
     mod_define(mod, name, definition);
+
     if (import_entry->is_exported) {
         set_add(mod->exported_names, string_copy(name));
     }
