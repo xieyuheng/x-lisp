@@ -9,7 +9,7 @@ main(void) {
 
 
     {
-        file_t *file = file_open_or_fail(file_name, "r");
+        file_t *file = open_file_or_fail(file_name, "r");
         char *string = file_read_string(file);
         assert(
             string_equal(
@@ -20,7 +20,7 @@ main(void) {
     }
 
     {
-        file_t *file = file_open_or_fail(file_name, "r");
+        file_t *file = open_file_or_fail(file_name, "r");
         blob_t *blob = file_read_blob(file);
         assert(
             string_equal(

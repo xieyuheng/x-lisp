@@ -1,7 +1,8 @@
 #pragma once
 
 bool file_exists(const char *file_name);
-file_t *file_open_or_fail(const char *file_name, const char *mode);
+
+file_t *open_file_or_fail(const char *file_name, const char *mode);
 off_t file_size(file_t *file);
 
 char *file_read_string(file_t *file);
