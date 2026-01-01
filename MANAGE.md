@@ -19,8 +19,6 @@ x-lisp 的首要目标是加快新语言开发的速度。
 - logic constraint programming
 - reactive programming
 
-也就是说要为今后更多的探索，建立「革命根据地」。
-
 之所以能加快新语言开发，假设是：
 在 lisp 的语法框架内，可以更快地设计和迭代新语法，
 从而加快新语言的开发速度。
