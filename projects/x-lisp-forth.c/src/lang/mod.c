@@ -80,6 +80,7 @@ make_import_entry(mod_t *mod, char *name) {
     import_entry_t *self = new(import_entry_t);
     self->mod = mod;
     self->name = name;
+    self->rename = NULL;
     self->is_exported = false;
     return self;
 }
@@ -87,5 +88,9 @@ make_import_entry(mod_t *mod, char *name) {
 void
 import_entry_free(import_entry_t *self) {
     string_free(self->name);
+    if (self->rename) {
+        string_free(self->rename);
+    }
+
     free(self);
 }

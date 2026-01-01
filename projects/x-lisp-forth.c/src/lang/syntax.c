@@ -117,8 +117,10 @@ import_as(vm_t *vm, bool is_exported) {
     definition_t *definition = record_iter_next_value(&iter);
     while (definition) {
         if (definition->mod == imported_mod) {
-            char *name = string_append(prefix, definition->name);
+            char *name = string_copy(definition->name);
+            char *rename = string_append(prefix, definition->name);
             import_entry_t *import_entry = make_import_entry(imported_mod, name);
+            import_entry->rename = rename;
             import_entry->is_exported = is_exported;
             array_push(mod->import_entries, import_entry);
         }

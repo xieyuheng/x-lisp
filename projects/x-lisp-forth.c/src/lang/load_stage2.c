@@ -11,9 +11,11 @@ static void
 handle_import_entry(mod_t *mod, const import_entry_t *import_entry) {
     definition_t *definition = mod_lookup(import_entry->mod, import_entry->name);
     assert(definition);
-    mod_define(mod, import_entry->name, definition);
+
+    char *name = import_entry->rename ? import_entry->rename : import_entry->name;
+    mod_define(mod, name, definition);
     if (import_entry->is_exported) {
-        set_add(mod->exported_names, string_copy(import_entry->name));
+        set_add(mod->exported_names, string_copy(name));
     }
 }
 

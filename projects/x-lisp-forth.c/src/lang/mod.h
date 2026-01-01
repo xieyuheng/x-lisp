@@ -19,6 +19,7 @@ mod_t *mod_load_by(mod_t *self, const char *string);
 struct import_entry_t {
     mod_t *mod;
     char *name;
+    char *rename;
     bool is_exported;
 };
 
