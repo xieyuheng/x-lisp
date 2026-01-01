@@ -45,7 +45,7 @@ static void
 syntax_import(vm_t *vm) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == STRING_TOKEN);
-    mod_t *imported_mod = mod_import(vm_mod(vm), token->content);
+    mod_t *imported_mod = mod_load_by(vm_mod(vm), token->content);
     token_free(token);
 
     while (true) {
@@ -73,7 +73,7 @@ static void
 syntax_include(vm_t *vm) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == STRING_TOKEN);
-    mod_t *imported_mod = mod_import(vm_mod(vm), token->content);
+    mod_t *imported_mod = mod_load_by(vm_mod(vm), token->content);
     token_free(token);
 
     while (true) {
@@ -98,6 +98,44 @@ syntax_include(vm_t *vm) {
     }
 }
 
+// static void
+// syntax_import_all(vm_t *vm) {
+//     token_t *token = vm_next_token(vm);
+//     assert(token->kind == STRING_TOKEN);
+//     mod_t *imported_mod = mod_load_by(vm_mod(vm), token->content);
+//     token_free(token);
+
+//     record_iter_t iter;
+//     record_iter_init(&iter, imported_mod->definitions);
+//     definition_t *definition = record_iter_next_value(&iter);
+//     while (definition) {
+//         if (definition->mod == imported_mod) {
+//             mod_define(mod, definition->name, definition);
+//         }
+
+//         definition = record_iter_next_value(&iter);
+//     }
+// }
+
+// static void
+// syntax_include_all(vm_t *vm) {
+//     token_t *token = vm_next_token(vm);
+//     assert(token->kind == STRING_TOKEN);
+//     mod_t *imported_mod = mod_load_by(vm_mod(vm), token->content);
+//     token_free(token);
+
+//     record_iter_t iter;
+//     record_iter_init(&iter, imported_mod->definitions);
+//     definition_t *definition = record_iter_next_value(&iter);
+//     while (definition) {
+//         if (definition->mod == imported_mod) {
+//             mod_define(mod, definition->name, definition);
+//         }
+
+//         definition = record_iter_next_value(&iter);
+//     }
+// }
+
 struct syntax_entry_t { const char *name; x_fn_t *handler; };
 
 static struct syntax_entry_t syntax_entries[] = {
@@ -106,6 +144,8 @@ static struct syntax_entry_t syntax_entries[] = {
     { "@export", syntax_export },
     { "@import", syntax_import },
     { "@include", syntax_include },
+    // { "@import-all", syntax_import_all },
+    // { "@include-all", syntax_include_all },
 };
 
 static size_t

@@ -57,7 +57,7 @@ mod_lookup_or_placeholder(mod_t *self, const char *name) {
 }
 
 mod_t *
-mod_import(mod_t *self, const char *string) {
+mod_load_by(mod_t *self, const char *string) {
     path_t *path = path_copy(self->path);
     path_join_mut(path, "..");
     path_join_mut(path, string);
