@@ -66,6 +66,12 @@ mod_load_by(mod_t *self, const char *string) {
         path_join_mut(path, "index.fth");
     }
 
+    if (!string_ends_with(path_top_segment(path), ".fth")) {
+        char *segment = path_pop_segment(path);
+        path_push_segment(path, string_append(segment, ".fth"));
+        string_free(segment);
+    }
+
     return load(path);
 }
 

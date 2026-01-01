@@ -1,5 +1,5 @@
-@import "module-one.fth" one @end
-@import "module-two.fth" two @end
+@import "module-one" one @end
+@import "module-two" two @end
 
 @def main
   one 1 @assert-equal

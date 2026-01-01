@@ -1,4 +1,4 @@
-@import-all "module-two.fth"
+@import-all "module-two"
 
 @def main
   one 1 @assert-equal
