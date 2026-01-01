@@ -5,6 +5,26 @@ pathname_exists(const char *pathname) {
     return access(pathname, F_OK) != -1;
 }
 
+bool
+pathname_is_file(const char *pathname) {
+    if (!pathname_exists(pathname)) return false;
+
+    struct stat st;
+    if (stat(pathname, &st) == -1) return false;
+
+    return S_ISREG(st.st_mode);
+}
+
+bool
+pathname_is_directory(const char *pathname) {
+    if (!pathname_exists(pathname)) return false;
+
+    struct stat st;
+    if (stat(pathname, &st) == -1) return false;
+
+    return S_ISDIR(st.st_mode);
+}
+
 file_t *
 open_file_or_fail(const char *pathname, const char *mode) {
     file_t *file = fopen(pathname, mode);
