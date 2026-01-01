@@ -61,6 +61,11 @@ mod_load_by(mod_t *self, const char *string) {
     path_t *path = path_copy(self->path);
     path_join_mut(path, "..");
     path_join_mut(path, string);
+
+    if (pathname_is_directory(path_string(path))) {
+        path_join_mut(path, "index.fth");
+    }
+
     return load(path);
 }
 

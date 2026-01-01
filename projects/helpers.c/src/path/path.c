@@ -178,6 +178,24 @@ path_string(const path_t *self) {
     return self->string;
 }
 
+const char *
+path_top(const path_t *self) {
+    return stack_top(self->segment_stack);
+}
+
+char *
+path_pop(path_t *self) {
+    char *segment = stack_pop(self->segment_stack);
+    path_update_string(self);
+    return segment;
+}
+
+void
+path_push(path_t *self, char *segment) {
+    stack_push(self->segment_stack, segment);
+    path_update_string(self);
+}
+
 static size_t
 find_relative_index(path_t *from, path_t *to) {
     for (size_t i = 0; i < stack_length(from->segment_stack); i++) {
