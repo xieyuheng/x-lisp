@@ -178,20 +178,25 @@ path_string(const path_t *self) {
     return self->string;
 }
 
+size_t
+path_segment_length(const path_t *self) {
+    return stack_length(self->segment_stack);
+}
+
 const char *
-path_top(const path_t *self) {
+path_top_segment(const path_t *self) {
     return stack_top(self->segment_stack);
 }
 
 char *
-path_pop(path_t *self) {
+path_pop_segment(path_t *self) {
     char *segment = stack_pop(self->segment_stack);
     path_update_string(self);
     return segment;
 }
 
 void
-path_push(path_t *self, char *segment) {
+path_push_segment(path_t *self, char *segment) {
     stack_push(self->segment_stack, segment);
     path_update_string(self);
 }
