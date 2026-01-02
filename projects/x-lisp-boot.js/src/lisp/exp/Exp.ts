@@ -34,7 +34,7 @@ export function Var(name: string, meta?: Meta): Var {
 }
 
 export type FunctionRef = {
-  kind: "Function"
+  kind: "FunctionRef"
   name: string
   arity: number
   attributes: {
@@ -52,7 +52,7 @@ export function FunctionRef(
   meta?: Meta,
 ): FunctionRef {
   return {
-    kind: "Function",
+    kind: "FunctionRef",
     name,
     arity,
     attributes,
@@ -61,7 +61,7 @@ export function FunctionRef(
 }
 
 export type ConstantRef = {
-  kind: "Constant"
+  kind: "ConstantRef"
   name: string
   attributes: {
     isPrimitive: boolean
@@ -77,7 +77,7 @@ export function ConstantRef(
   meta?: Meta,
 ): ConstantRef {
   return {
-    kind: "Constant",
+    kind: "ConstantRef",
     name,
     attributes,
     meta,

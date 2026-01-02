@@ -12,7 +12,7 @@ export function formatValue(value: Value): string {
   }
 
   switch (value.kind) {
-    case "Function": {
+    case "FunctionRef": {
       if (value.attributes.isPrimitive) {
         return `(@primitive-function ${value.name} ${value.arity})`
       } else {

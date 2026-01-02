@@ -13,11 +13,11 @@ export function expFunctionNames(exp: Exp): Set<string> {
       return new Set()
     }
 
-    case "Function": {
+    case "FunctionRef": {
       return new Set([exp.name])
     }
 
-    case "Constant": {
+    case "ConstantRef": {
       return new Set()
     }
 

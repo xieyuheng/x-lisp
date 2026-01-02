@@ -21,7 +21,7 @@ function generateSetupFunction(mod: B.Mod): void {
   for (const definition of B.modOwnDefinitions(mod)) {
     if (definition.kind === "SetupDefinition") {
       instrs.push(
-        B.Call("_", B.Function(definition.name, 0, { isPrimitive: false }), []),
+        B.Call("_", B.FunctionRef(definition.name, 0, { isPrimitive: false }), []),
       )
     }
   }
@@ -274,12 +274,12 @@ function onInstr(instr: B.Instr): Array<M.Instr> {
     }
 
     case "Apply": {
-      const fn = B.Function("apply-unary", 2, { isPrimitive: true })
+      const fn = B.FunctionRef("apply-unary", 2, { isPrimitive: true })
       return selectCall(instr.dest, fn, [instr.target, instr.arg])
     }
 
     case "ApplyNullary": {
-      const fn = B.Function("apply-nullary", 1, { isPrimitive: true })
+      const fn = B.FunctionRef("apply-nullary", 1, { isPrimitive: true })
       return selectCall(instr.dest, fn, [instr.target])
     }
 
@@ -304,7 +304,7 @@ function selectArgReg(index: number): M.Reg {
 
 function selectCall(
   dest: string,
-  fn: B.Function,
+  fn: B.FunctionRef,
   args: Array<string>,
 ): Array<M.Instr> {
   const prepareArguments = Array.from(args.entries()).map(([index, arg]) =>
@@ -349,7 +349,7 @@ function selectLiteral(dest: string, value: B.Value): Array<M.Instr> {
       ]
     }
 
-    case "Function": {
+    case "FunctionRef": {
       return [
         M.Instr("movq", [
           M.LabelDeref(
@@ -380,7 +380,7 @@ function selectTagEncoding(operand: M.Operand, tag: R.Tag): Array<M.Instr> {
   }
 }
 
-function selectFunctionLabel(fn: B.Function): M.Label {
+function selectFunctionLabel(fn: B.FunctionRef): M.Label {
   return fn.attributes.isPrimitive
     ? M.Label(`x-${fn.name}`, { isExternal: true })
     : M.Label(fn.name, { isExternal: false })

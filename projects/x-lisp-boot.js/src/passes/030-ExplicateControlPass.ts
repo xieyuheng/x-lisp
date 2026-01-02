@@ -111,7 +111,7 @@ function onFunctionDefinition(
             ),
             B.Call(
               "function",
-              B.Function("make-function", 2, { isPrimitive: true }),
+              B.FunctionRef("make-function", 2, { isPrimitive: true }),
               ["address", "metadata"],
             ),
             B.Store(`${definition.name}©constant`, "function"),
@@ -224,7 +224,7 @@ function onConstantDefinition(
           B.Block("init", [
             B.Call(
               "result",
-              B.Function(`${definition.name}©init-function`, 0, {
+              B.FunctionRef(`${definition.name}©init-function`, 0, {
                 isPrimitive: false,
               }),
               [],
@@ -278,7 +278,7 @@ function expToValue(exp: X.Exp): B.Value {
       return exp
     }
 
-    case "Function": {
+    case "FunctionRef": {
       return exp
     }
 
@@ -353,12 +353,12 @@ function inLet1(
     case "String":
     case "Int":
     case "Float":
-    case "Function": {
+    case "FunctionRef": {
       return [B.Literal(name, expToValue(rhs)), ...cont]
     }
 
-    case "Constant": {
-      const getter = B.Function(`${rhs.name}©get`, 0, { isPrimitive: false })
+    case "ConstantRef": {
+      const getter = B.FunctionRef(`${rhs.name}©get`, 0, { isPrimitive: false })
       return [B.Call(name, getter, []), ...cont]
     }
 

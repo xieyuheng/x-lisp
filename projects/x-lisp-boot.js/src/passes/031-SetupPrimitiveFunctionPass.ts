@@ -47,7 +47,7 @@ function usedInInstr(instr: B.Instr): Set<string> {
     }
 
     case "Literal": {
-      if (instr.value.kind === "Function") {
+      if (instr.value.kind === "FunctionRef") {
         return new Set([instr.value.name])
       } else {
         return new Set()
@@ -112,7 +112,7 @@ function onPrimitiveFunctionDefinition(
             ),
             B.Call(
               "function",
-              B.Function("make-function", 2, { isPrimitive: true }),
+              B.FunctionRef("make-function", 2, { isPrimitive: true }),
               ["address", "metadata"],
             ),
             B.Store(`${definition.name}©constant`, "function"),

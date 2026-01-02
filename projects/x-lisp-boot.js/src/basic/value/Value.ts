@@ -1,9 +1,9 @@
 import { type Atom } from "./Atom.ts"
 
-export type Value = Atom | Function | Curry | Address
+export type Value = Atom | FunctionRef | Curry | Address
 
-export type Function = {
-  kind: "Function"
+export type FunctionRef = {
+  kind: "FunctionRef"
   name: string
   arity: number
   attributes: {
@@ -11,15 +11,15 @@ export type Function = {
   }
 }
 
-export function Function(
+export function FunctionRef(
   name: string,
   arity: number,
   attributes: {
     isPrimitive: boolean
   },
-): Function {
+): FunctionRef {
   return {
-    kind: "Function",
+    kind: "FunctionRef",
     name,
     arity,
     attributes,

@@ -42,8 +42,8 @@ function onExp(state: State, exp: X.Exp): X.Exp {
     case "String":
     case "Int":
     case "Float":
-    case "Function":
-    case "Constant":
+    case "FunctionRef":
+    case "ConstantRef":
     case "Var": {
       return exp
     }

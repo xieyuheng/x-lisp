@@ -43,8 +43,8 @@ function onExp(state: State, exp: X.Exp): X.Exp {
       return exp
     }
 
-    case "Function":
-    case "Constant": {
+    case "FunctionRef":
+    case "ConstantRef": {
       const [entries, newExp] = forVar(state, exp)
       return prependLets(entries, newExp)
     }
@@ -116,8 +116,8 @@ function forVar(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
     case "String":
     case "Int":
     case "Float":
-    case "Function":
-    case "Constant": {
+    case "FunctionRef":
+    case "ConstantRef": {
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, exp]
       return [[entry], X.Var(freshName, exp.meta)]

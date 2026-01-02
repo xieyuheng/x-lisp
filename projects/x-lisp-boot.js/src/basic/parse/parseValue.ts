@@ -4,7 +4,7 @@ import { type Value } from "../value/index.ts"
 
 export const parseValue = S.createRouter<Value>({
   "`(@function ,name ,arity)": ({ name, arity }, { meta }) => {
-    return Values.Function(S.symbolContent(name), Number(S.intContent(arity)), {
+    return Values.FunctionRef(S.symbolContent(name), Number(S.intContent(arity)), {
       isPrimitive: false,
     })
   },
@@ -18,12 +18,12 @@ export const parseValue = S.createRouter<Value>({
   },
 
   "`(@primitive-function ,name ,arity)": ({ name, arity }, { meta }) => {
-    return Values.Function(S.symbolContent(name), Number(S.intContent(arity)), {
+    return Values.FunctionRef(S.symbolContent(name), Number(S.intContent(arity)), {
       isPrimitive: true,
     })
   },
 
-  else: ({}, { sexp }) => {
+  else: ({ }, { sexp }) => {
     const meta = S.tokenMetaFromSexpMeta(sexp.meta)
 
     switch (sexp.kind) {

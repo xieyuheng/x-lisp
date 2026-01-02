@@ -1,5 +1,3 @@
-[basic] rename `Function` to `FunctionRef` -- again
-
 # fix the use of builtin
 
 [basic] `declare-function` instead of `define-primitive-function`

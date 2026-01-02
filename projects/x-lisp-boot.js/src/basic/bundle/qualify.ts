@@ -137,11 +137,11 @@ function qualifyInstr(context: BundleContext, instr: B.Instr): B.Instr {
   }
 }
 
-function qualifyFunction(context: BundleContext, fn: B.Function): B.Function {
+function qualifyFunction(context: BundleContext, fn: B.FunctionRef): B.FunctionRef {
   if (fn.attributes.isPrimitive) {
     return fn
   } else {
-    return B.Function(qualifyName(context, fn.name), fn.arity, {
+    return B.FunctionRef(qualifyName(context, fn.name), fn.arity, {
       isPrimitive: false,
     })
   }
@@ -159,7 +159,7 @@ function qualifyAddress(context: BundleContext, address: B.Address): B.Address {
 
 function qualifyValue(context: BundleContext, value: B.Value): B.Value {
   switch (value.kind) {
-    case "Function": {
+    case "FunctionRef": {
       return qualifyFunction(context, value)
     }
 
