@@ -1,5 +1,3 @@
-[lisp] `builtinFunctionEntries`
-
 [lisp] setup test -- for pass log only
 
 [lisp] remove `Apply` (binary) and `ApplyNullary` -- keep `ApplySugar`
