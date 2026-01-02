@@ -10,6 +10,7 @@ export type Exp =
   | Lambda
   | Apply
   | Let1
+  | Begin1
   | BeginSugar
   | AssignSugar
   | If
@@ -135,6 +136,23 @@ export function Let1(name: string, rhs: Exp, body: Exp, meta?: Meta): Let1 {
     kind: "Let1",
     name,
     rhs,
+    body,
+    meta,
+  }
+}
+
+export type Begin1 = {
+  kind: "Begin1"
+  head: Exp
+  body: Exp
+  meta?: Meta
+}
+
+export function Begin1(head: Exp,
+                       body: Exp, meta?: Meta): Begin1 {
+  return {
+    kind: "Begin1",
+    head,
     body,
     meta,
   }

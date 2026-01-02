@@ -1,7 +1,3 @@
-# begin
-
-[lisp] add `Begin1` to `Exp` -- generate less names
-
 # forth
 
 [forth] `Stmt`

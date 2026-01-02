@@ -13,6 +13,7 @@ export const sexpConfig: S.Config = {
     ["let", 1],
     ["let1", 2],
     ["@let1", 2],
+    ["@begin1", 1],
     ["the", 1],
     ["assert", 0],
     ["assert-not", 0],

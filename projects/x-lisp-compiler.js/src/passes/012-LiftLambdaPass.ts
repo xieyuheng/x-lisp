@@ -98,6 +98,14 @@ function onExp(state: State, exp: L.Exp): L.Exp {
       )
     }
 
+    case "Begin1": {
+      return L.Begin1(
+        onExp(state, exp.head),
+        onExp(state, exp.body),
+        exp.meta,
+      )
+    }
+
     case "If": {
       return L.If(
         onExp(state, exp.condition),

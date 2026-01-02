@@ -46,6 +46,13 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       ])
     }
 
+    case "Begin1": {
+      return setUnionMany([
+        expFreeNames(boundNames, exp.head),
+        expFreeNames(boundNames, exp.body),
+      ])
+    }
+
     case "If": {
       return setUnionMany([
         expFreeNames(boundNames, exp.condition),

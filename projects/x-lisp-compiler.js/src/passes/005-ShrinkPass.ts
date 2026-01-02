@@ -51,6 +51,10 @@ function onExp(exp: L.Exp): L.Exp {
       return L.Let1(exp.name, onExp(exp.rhs), onExp(exp.body), exp.meta)
     }
 
+    case "Begin1": {
+      return L.Begin1(onExp(exp.head), onExp(exp.body), exp.meta)
+    }
+
     case "BeginSugar": {
       if (exp.sequence.length === 0) {
         let message = `[shrink] (begin) must not be empty`
@@ -69,7 +73,7 @@ function onExp(exp: L.Exp): L.Exp {
       if (head.kind === "AssignSugar") {
         return L.Let1(head.name, onExp(head.rhs), onExp(body), exp.meta)
       } else {
-        return L.Let1("_∅", onExp(head), onExp(body), head.meta)
+        return L.Begin1(onExp(head), onExp(body), head.meta)
       }
     }
 

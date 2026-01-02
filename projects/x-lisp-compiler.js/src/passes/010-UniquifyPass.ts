@@ -78,6 +78,14 @@ function onExp(
       )
     }
 
+    case "Begin1": {
+      return L.Begin1(
+        onExp(nameCounts, nameTable, exp.head),
+        onExp(nameCounts, nameTable, exp.body),
+        exp.meta,
+      )
+    }
+
     case "If": {
       return L.If(
         onExp(nameCounts, nameTable, exp.condition),

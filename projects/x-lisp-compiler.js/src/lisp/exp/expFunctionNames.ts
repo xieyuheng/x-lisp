@@ -43,6 +43,13 @@ export function expFunctionNames(exp: Exp): Set<string> {
       ])
     }
 
+    case "Begin1": {
+      return setUnionMany([
+        expFunctionNames(exp.head),
+        expFunctionNames(exp.body),
+      ])
+    }
+
     case "If": {
       return setUnionMany([
         expFunctionNames(exp.condition),

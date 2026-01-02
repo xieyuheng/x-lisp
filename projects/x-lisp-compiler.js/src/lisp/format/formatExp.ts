@@ -72,6 +72,12 @@ export function formatExp(exp: Exp): string {
       return `(@let1 ${exp.name} ${rhs} ${body})`
     }
 
+    case "Begin1": {
+      const head = formatExp(exp.head)
+      const body = formatExp(exp.body)
+      return `(@begin1 ${head} ${body})`
+    }
+
     case "BeginSugar": {
       const sequence = formatExps(exp.sequence)
       return `(begin ${sequence})`

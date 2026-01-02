@@ -100,6 +100,14 @@ function onExp(mod: L.Mod, boundNames: Set<string>, exp: L.Exp): L.Exp {
       )
     }
 
+    case "Begin1": {
+      return L.Begin1(
+        onExp(mod, boundNames, exp.head),
+        onExp(mod, boundNames, exp.body),
+        exp.meta,
+      )
+    }
+
     case "If": {
       return L.If(
         onExp(mod, boundNames, exp.condition),
