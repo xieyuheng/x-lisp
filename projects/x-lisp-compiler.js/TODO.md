@@ -1,7 +1,8 @@
 # builtin
 
-[lisp] `builtinMod` -- use `definePrimitive` -- instead of just a record of entries
+[lisp] `useBuiltinMod` & `globalBuiltinMod`
 [lisp] `importBuiltinMod`
+[lisp] `createBuiltinMod` -- use `definePrimitive` -- instead of just a record of entries
 
 [lisp] `Exp` -- add `PrimitiveRef`
 [lisp] `Exp` -- remove `attribute` from `FunctionRef` and `ConstantRef`
