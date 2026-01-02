@@ -1,7 +1,7 @@
 import { setAdd, setUnion } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
-import * as X from "../index.ts"
 import { getBuiltinFunctionArity } from "../builtin/index.ts"
+import * as X from "../index.ts"
 
 export function RevealGlobalPass(mod: X.Mod): void {
   for (const definition of X.modOwnDefinitions(mod)) {

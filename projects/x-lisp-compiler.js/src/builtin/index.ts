@@ -1,2 +1,2 @@
-export * from "./getBuiltinFunctionArity.ts"
 export * from "./BuiltinFunctionEntry.ts"
+export * from "./getBuiltinFunctionArity.ts"
