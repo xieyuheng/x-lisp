@@ -1,6 +1,5 @@
 # builtin
 
-[lisp] `importBuiltinMod`
 [lisp] `createBuiltinMod` -- use `definePrimitive` -- instead of just a record of entries
 
 [lisp] `Exp` -- add `PrimitiveRef`

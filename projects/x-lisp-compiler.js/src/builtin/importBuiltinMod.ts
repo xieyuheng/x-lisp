@@ -1,13 +1,11 @@
-// import assert from "node:assert";
-// import * as L from "../lisp/index.ts"
-// import { createBuiltinMod } from "./createBuiltinMod.ts";
+import assert from "node:assert";
+import * as L from "../lisp/index.ts"
+import { createBuiltinMod } from "./createBuiltinMod.ts";
+import { useBuiltinMod } from "./useBuiltinMod.ts";
 
-// let globalBuiltinMod: L.Mod | undefined = undefined;
-
-// export function importBuiltinMod(mod: L.Mod): void {
-//   if (!globalBuiltinMod) {
-//     globalBuiltinMod = createBuiltinMod();
-//   }
-
-//   return globalBuiltinMod
-// }
+export function importBuiltinMod(mod: L.Mod): void {
+  const builtinMod = useBuiltinMod()
+  for (const definition of builtinMod.definitions.values()) {
+    mod.definitions.set(definition.name, definition)
+  }
+}

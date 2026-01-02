@@ -4,7 +4,7 @@ import { createBuiltinMod } from "./createBuiltinMod.ts";
 
 let globalBuiltinMod: L.Mod | undefined = undefined;
 
-export function useBuiltinMod(mod: L.Mod): L.Mod {
+export function useBuiltinMod(): L.Mod {
   if (!globalBuiltinMod) {
     globalBuiltinMod = createBuiltinMod();
   }
