@@ -31,14 +31,10 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       return expFreeNames(newBoundNames, exp.body)
     }
 
-    case "ApplyNullary": {
-      return setUnionMany([expFreeNames(boundNames, exp.target)])
-    }
-
-    case "Apply": {
+    case "ApplySugar": {
       return setUnionMany([
         expFreeNames(boundNames, exp.target),
-        expFreeNames(boundNames, exp.arg),
+        ...exp.args.map(arg => expFreeNames(boundNames, arg)),
       ])
     }
 

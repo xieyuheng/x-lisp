@@ -9,8 +9,6 @@ export type Exp =
   | ConstantRef
   | Lambda
   | ApplySugar
-  | ApplyNullary
-  | Apply
   | Let1
   | BeginSugar
   | AssignSugar
@@ -127,36 +125,6 @@ export function ApplySugar(
     kind: "ApplySugar",
     target,
     args,
-    meta,
-  }
-}
-
-export type ApplyNullary = {
-  kind: "ApplyNullary"
-  target: Exp
-  meta?: Meta
-}
-
-export function ApplyNullary(target: Exp, meta?: Meta): ApplyNullary {
-  return {
-    kind: "ApplyNullary",
-    target,
-    meta,
-  }
-}
-
-export type Apply = {
-  kind: "Apply"
-  target: Exp
-  arg: Exp
-  meta?: Meta
-}
-
-export function Apply(target: Exp, arg: Exp, meta?: Meta): Apply {
-  return {
-    kind: "Apply",
-    target,
-    arg,
     meta,
   }
 }

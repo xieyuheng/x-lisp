@@ -40,7 +40,7 @@ function onExp(exp: L.Exp): L.Exp {
     }
 
     case "ApplySugar": {
-      return L.desugarApply(
+      return L.ApplySugar(
         onExp(exp.target),
         exp.args.map((e) => onExp(e)),
         exp.meta,

@@ -58,14 +58,10 @@ function onExp(
       )
     }
 
-    case "ApplyNullary": {
-      return L.ApplyNullary(onExp(nameCounts, nameTable, exp.target), exp.meta)
-    }
-
-    case "Apply": {
-      return L.Apply(
+    case "ApplySugar": {
+      return L.ApplySugar(
         onExp(nameCounts, nameTable, exp.target),
-        onExp(nameCounts, nameTable, exp.arg),
+        exp.args.map(arg => onExp(nameCounts, nameTable, arg)),
         exp.meta,
       )
     }

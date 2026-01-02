@@ -66,17 +66,6 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "ApplyNullary": {
-      const target = formatExp(exp.target)
-      return `(${target})`
-    }
-
-    case "Apply": {
-      const target = formatExp(exp.target)
-      const arg = formatExp(exp.arg)
-      return `(${target} ${arg})`
-    }
-
     case "Let1": {
       const rhs = formatExp(exp.rhs)
       const body = formatExp(exp.body)

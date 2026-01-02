@@ -4,29 +4,29 @@
 
 ;;; ShrinkPass
 
-(define (main)
-  (println ((iadd 1) ((iadd (random-dice)) 1))))
+(define (main) (println (iadd 1 (iadd (random-dice) 1))))
 
 ;;; UniquifyPass
 
-(define (main)
-  (println ((iadd 1) ((iadd (random-dice)) 1))))
+(define (main) (println (iadd 1 (iadd (random-dice) 1))))
 
 ;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-ref println 1)
-   (((@primitive-ref iadd 2) 1)
-    (((@primitive-ref iadd 2)
-      ((@primitive-ref random-dice 0)))
+   ((@primitive-ref iadd 2)
+    1
+    ((@primitive-ref iadd 2)
+     ((@primitive-ref random-dice 0))
      1))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@primitive-ref println 1)
-   (((@primitive-ref iadd 2) 1)
-    (((@primitive-ref iadd 2)
-      ((@primitive-ref random-dice 0)))
+   ((@primitive-ref iadd 2)
+    1
+    ((@primitive-ref iadd 2)
+     ((@primitive-ref random-dice 0))
      1))))
 

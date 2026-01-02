@@ -8,23 +8,23 @@
 
 (export square)
 
-(define (square x) ((imul x) x))
+(define (square x) (imul x x))
 
 ;;; UniquifyPass
 
 (export square)
 
-(define (square x) ((imul x) x))
+(define (square x) (imul x x))
 
 ;;; RevealGlobalPass
 
 (export square)
 
-(define (square x) (((@primitive-ref imul 2) x) x))
+(define (square x) ((@primitive-ref imul 2) x x))
 
 ;;; LiftLambdaPass
 
 (export square)
 
-(define (square x) (((@primitive-ref imul 2) x) x))
+(define (square x) ((@primitive-ref imul 2) x x))
 

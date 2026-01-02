@@ -9,15 +9,14 @@
 
 (define (main)
   (@let1 x (random-dice)
-    (@let1 y (random-dice)
-      (println ((iadd ((iadd x) y)) 42)))))
+    (@let1 y (random-dice) (println (iadd (iadd x y) 42)))))
 
 ;;; UniquifyPass
 
 (define (main)
   (@let1 x₁ (random-dice)
     (@let1 y₁ (random-dice)
-      (println ((iadd ((iadd x₁) y₁)) 42)))))
+      (println (iadd (iadd x₁ y₁) 42)))))
 
 ;;; RevealGlobalPass
 
@@ -25,8 +24,8 @@
   (@let1 x₁ ((@primitive-ref random-dice 0))
     (@let1 y₁ ((@primitive-ref random-dice 0))
       ((@primitive-ref println 1)
-       (((@primitive-ref iadd 2)
-         (((@primitive-ref iadd 2) x₁) y₁))
+       ((@primitive-ref iadd 2)
+        ((@primitive-ref iadd 2) x₁ y₁)
         42)))))
 
 ;;; LiftLambdaPass
@@ -35,7 +34,7 @@
   (@let1 x₁ ((@primitive-ref random-dice 0))
     (@let1 y₁ ((@primitive-ref random-dice 0))
       ((@primitive-ref println 1)
-       (((@primitive-ref iadd 2)
-         (((@primitive-ref iadd 2) x₁) y₁))
+       ((@primitive-ref iadd 2)
+        ((@primitive-ref iadd 2) x₁ y₁)
         42)))))
 

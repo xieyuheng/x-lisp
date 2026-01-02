@@ -1,6 +1,3 @@
-# apply
-
-[lisp] remove `Apply` (binary) and `ApplyNullary` -- keep `ApplySugar`
 [lisp] rename `ApplySugar` to `Apply`
 
 # begin

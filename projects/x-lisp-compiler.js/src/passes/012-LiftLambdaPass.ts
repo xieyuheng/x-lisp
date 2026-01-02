@@ -78,12 +78,10 @@ function onExp(state: State, exp: L.Exp): L.Exp {
       )
     }
 
-    case "Apply": {
-      return L.Apply(onExp(state, exp.target), onExp(state, exp.arg), exp.meta)
-    }
-
-    case "ApplyNullary": {
-      return L.ApplyNullary(onExp(state, exp.target), exp.meta)
+    case "ApplySugar": {
+      return L.ApplySugar(onExp(state, exp.target),
+        exp.args.map(arg => onExp(state, arg)),
+        exp.meta)
     }
 
     case "Let1": {

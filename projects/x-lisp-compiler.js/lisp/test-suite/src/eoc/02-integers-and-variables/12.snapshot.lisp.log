@@ -6,26 +6,26 @@
 ;;; ShrinkPass
 
 (define (main)
-  (println ((iadd ((iadd 1) 2)) ((iadd 3) ((iadd 4) 5)))))
+  (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (println ((iadd ((iadd 1) 2)) ((iadd 3) ((iadd 4) 5)))))
+  (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
 
 ;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-ref println 1)
-   (((@primitive-ref iadd 2) (((@primitive-ref iadd 2) 1) 2))
-    (((@primitive-ref iadd 2) 3)
-     (((@primitive-ref iadd 2) 4) 5)))))
+   ((@primitive-ref iadd 2)
+    ((@primitive-ref iadd 2) 1 2)
+    ((@primitive-ref iadd 2) 3 ((@primitive-ref iadd 2) 4 5)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@primitive-ref println 1)
-   (((@primitive-ref iadd 2) (((@primitive-ref iadd 2) 1) 2))
-    (((@primitive-ref iadd 2) 3)
-     (((@primitive-ref iadd 2) 4) 5)))))
+   ((@primitive-ref iadd 2)
+    ((@primitive-ref iadd 2) 1 2)
+    ((@primitive-ref iadd 2) 3 ((@primitive-ref iadd 2) 4 5)))))
 

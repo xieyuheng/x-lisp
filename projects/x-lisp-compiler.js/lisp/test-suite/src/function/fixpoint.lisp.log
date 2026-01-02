@@ -25,21 +25,24 @@
 ;;; LiftLambdaPass
 
 (define (Y f)
-  (((((@primitive-ref make-curry 3) (@function-ref Y©λ₁ 1))
-     1)
-    0)
-   ((((@primitive-ref curry-put! 3) 0) f)
-    ((((@primitive-ref make-curry 3) (@function-ref Y©λ₂ 2))
-      2)
+  (((@primitive-ref make-curry 3) (@function-ref Y©λ₁ 1) 1 0)
+   ((@primitive-ref curry-put! 3)
+    0
+    f
+    ((@primitive-ref make-curry 3)
+     (@function-ref Y©λ₂ 2)
+     2
      1))))
 
 (define (Y©λ₁ u₁) (u₁ u₁))
 
 (define (Y©λ₂ f x₁)
-  (f ((((@primitive-ref curry-put! 3) 0) x₁)
-      ((((@primitive-ref make-curry 3)
-         (@function-ref Y©λ₂©λ₁ 2))
-        2)
+  (f ((@primitive-ref curry-put! 3)
+      0
+      x₁
+      ((@primitive-ref make-curry 3)
+       (@function-ref Y©λ₂©λ₁ 2)
+       2
        1))))
 
 (define (Y©λ₂©λ₁ x₁ t₁) ((x₁ x₁) t₁))

@@ -90,14 +90,10 @@ function onExp(mod: L.Mod, boundNames: Set<string>, exp: L.Exp): L.Exp {
       )
     }
 
-    case "ApplyNullary": {
-      return L.ApplyNullary(onExp(mod, boundNames, exp.target), exp.meta)
-    }
-
-    case "Apply": {
-      return L.Apply(
+    case "ApplySugar": {
+      return L.ApplySugar(
         onExp(mod, boundNames, exp.target),
-        onExp(mod, boundNames, exp.arg),
+        exp.args.map(arg => onExp(mod, boundNames, arg)),
         exp.meta,
       )
     }

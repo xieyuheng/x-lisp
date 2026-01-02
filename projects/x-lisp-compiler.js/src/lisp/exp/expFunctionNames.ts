@@ -29,14 +29,11 @@ export function expFunctionNames(exp: Exp): Set<string> {
       return expFunctionNames(exp.body)
     }
 
-    case "ApplyNullary": {
-      return setUnionMany([expFunctionNames(exp.target)])
-    }
 
-    case "Apply": {
+    case "ApplySugar": {
       return setUnionMany([
         expFunctionNames(exp.target),
-        expFunctionNames(exp.arg),
+        ...exp.args.map(arg => expFunctionNames(arg)),
       ])
     }
 

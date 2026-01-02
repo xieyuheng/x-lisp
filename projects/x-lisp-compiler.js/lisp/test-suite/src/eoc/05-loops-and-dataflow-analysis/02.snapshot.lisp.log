@@ -33,7 +33,7 @@
         (@let1 _∅ (print 5)
           (@let1 _∅ (newline)
             (@let1 _∅ (print 6)
-              (@let1 _∅ (newline) ((iadd x) x)))))))))
+              (@let1 _∅ (newline) (iadd x x)))))))))
 
 ;;; UniquifyPass
 
@@ -49,7 +49,7 @@
         (@let1 _∅₃ (print 5)
           (@let1 _∅₄ (newline)
             (@let1 _∅₅ (print 6)
-              (@let1 _∅₆ (newline) ((iadd x₁) x₁)))))))))
+              (@let1 _∅₆ (newline) (iadd x₁ x₁)))))))))
 
 ;;; RevealGlobalPass
 
@@ -67,7 +67,7 @@
           (@let1 _∅₄ ((@primitive-ref newline 0))
             (@let1 _∅₅ ((@primitive-ref print 1) 6)
               (@let1 _∅₆ ((@primitive-ref newline 0))
-                (((@primitive-ref iadd 2) x₁) x₁)))))))))
+                ((@primitive-ref iadd 2) x₁ x₁)))))))))
 
 ;;; LiftLambdaPass
 
@@ -85,5 +85,5 @@
           (@let1 _∅₄ ((@primitive-ref newline 0))
             (@let1 _∅₅ ((@primitive-ref print 1) 6)
               (@let1 _∅₆ ((@primitive-ref newline 0))
-                (((@primitive-ref iadd 2) x₁) x₁)))))))))
+                ((@primitive-ref iadd 2) x₁ x₁)))))))))
 

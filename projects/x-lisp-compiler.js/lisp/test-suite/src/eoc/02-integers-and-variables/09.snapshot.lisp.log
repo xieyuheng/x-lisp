@@ -4,23 +4,25 @@
 
 ;;; ShrinkPass
 
-(define (main) (println ((iadd 20) ((iadd 11) 11))))
+(define (main) (println (iadd 20 (iadd 11 11))))
 
 ;;; UniquifyPass
 
-(define (main) (println ((iadd 20) ((iadd 11) 11))))
+(define (main) (println (iadd 20 (iadd 11 11))))
 
 ;;; RevealGlobalPass
 
 (define (main)
   ((@primitive-ref println 1)
-   (((@primitive-ref iadd 2) 20)
-    (((@primitive-ref iadd 2) 11) 11))))
+   ((@primitive-ref iadd 2)
+    20
+    ((@primitive-ref iadd 2) 11 11))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@primitive-ref println 1)
-   (((@primitive-ref iadd 2) 20)
-    (((@primitive-ref iadd 2) 11) 11))))
+   ((@primitive-ref iadd 2)
+    20
+    ((@primitive-ref iadd 2) 11 11))))
 

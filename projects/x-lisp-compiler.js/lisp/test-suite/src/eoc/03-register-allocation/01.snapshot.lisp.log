@@ -13,31 +13,31 @@
 (define (main)
   (@let1 v 1
     (@let1 w 42
-      (@let1 x ((iadd v) 7)
+      (@let1 x (iadd v 7)
         (@let1 y x
-          (@let1 z ((iadd x) w)
-            (println ((iadd z) (ineg y)))))))))
+          (@let1 z (iadd x w) (println (iadd z (ineg y)))))))))
 
 ;;; UniquifyPass
 
 (define (main)
   (@let1 v₁ 1
     (@let1 w₁ 42
-      (@let1 x₁ ((iadd v₁) 7)
+      (@let1 x₁ (iadd v₁ 7)
         (@let1 y₁ x₁
-          (@let1 z₁ ((iadd x₁) w₁)
-            (println ((iadd z₁) (ineg y₁)))))))))
+          (@let1 z₁ (iadd x₁ w₁)
+            (println (iadd z₁ (ineg y₁)))))))))
 
 ;;; RevealGlobalPass
 
 (define (main)
   (@let1 v₁ 1
     (@let1 w₁ 42
-      (@let1 x₁ (((@primitive-ref iadd 2) v₁) 7)
+      (@let1 x₁ ((@primitive-ref iadd 2) v₁ 7)
         (@let1 y₁ x₁
-          (@let1 z₁ (((@primitive-ref iadd 2) x₁) w₁)
+          (@let1 z₁ ((@primitive-ref iadd 2) x₁ w₁)
             ((@primitive-ref println 1)
-             (((@primitive-ref iadd 2) z₁)
+             ((@primitive-ref iadd 2)
+              z₁
               ((@primitive-ref ineg 1) y₁)))))))))
 
 ;;; LiftLambdaPass
@@ -45,10 +45,11 @@
 (define (main)
   (@let1 v₁ 1
     (@let1 w₁ 42
-      (@let1 x₁ (((@primitive-ref iadd 2) v₁) 7)
+      (@let1 x₁ ((@primitive-ref iadd 2) v₁ 7)
         (@let1 y₁ x₁
-          (@let1 z₁ (((@primitive-ref iadd 2) x₁) w₁)
+          (@let1 z₁ ((@primitive-ref iadd 2) x₁ w₁)
             ((@primitive-ref println 1)
-             (((@primitive-ref iadd 2) z₁)
+             ((@primitive-ref iadd 2)
+              z₁
               ((@primitive-ref ineg 1) y₁)))))))))
 
