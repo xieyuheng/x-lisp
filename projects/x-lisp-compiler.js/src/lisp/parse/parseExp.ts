@@ -58,7 +58,7 @@ export const parseExp: S.Router<Exp> = S.createRouter<Exp>({
   },
 
   "(cons* target args)": ({ target, args }, { meta }) => {
-    return Exps.ApplySugar(
+    return Exps.Apply(
       parseExp(target),
       S.listElements(args).map(parseExp),
       meta,

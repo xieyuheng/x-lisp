@@ -30,7 +30,7 @@ export function expFunctionNames(exp: Exp): Set<string> {
     }
 
 
-    case "ApplySugar": {
+    case "Apply": {
       return setUnionMany([
         expFunctionNames(exp.target),
         ...exp.args.map(arg => expFunctionNames(arg)),

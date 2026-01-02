@@ -78,8 +78,8 @@ function onExp(state: State, exp: L.Exp): L.Exp {
       )
     }
 
-    case "ApplySugar": {
-      return L.ApplySugar(onExp(state, exp.target),
+    case "Apply": {
+      return L.Apply(onExp(state, exp.target),
         exp.args.map(arg => onExp(state, arg)),
         exp.meta)
     }

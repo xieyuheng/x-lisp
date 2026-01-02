@@ -1,5 +1,3 @@
-[lisp] rename `ApplySugar` to `Apply`
-
 # begin
 
 [lisp] add `Begin1` to `Exp` -- generate less names

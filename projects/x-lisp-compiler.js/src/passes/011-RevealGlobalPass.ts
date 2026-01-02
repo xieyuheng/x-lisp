@@ -90,8 +90,8 @@ function onExp(mod: L.Mod, boundNames: Set<string>, exp: L.Exp): L.Exp {
       )
     }
 
-    case "ApplySugar": {
-      return L.ApplySugar(
+    case "Apply": {
+      return L.Apply(
         onExp(mod, boundNames, exp.target),
         exp.args.map(arg => onExp(mod, boundNames, arg)),
         exp.meta,

@@ -8,7 +8,7 @@ export type Exp =
   | PrimitiveRef
   | ConstantRef
   | Lambda
-  | ApplySugar
+  | Apply
   | Let1
   | BeginSugar
   | AssignSugar
@@ -109,20 +109,20 @@ export function Lambda(
   }
 }
 
-export type ApplySugar = {
-  kind: "ApplySugar"
+export type Apply = {
+  kind: "Apply"
   target: Exp
   args: Array<Exp>
   meta?: Meta
 }
 
-export function ApplySugar(
+export function Apply(
   target: Exp,
   args: Array<Exp>,
   meta?: Meta,
-): ApplySugar {
+): Apply {
   return {
-    kind: "ApplySugar",
+    kind: "Apply",
     target,
     args,
     meta,
