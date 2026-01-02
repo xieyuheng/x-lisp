@@ -27,7 +27,7 @@
 (import "square" square)
 
 (define (main)
-  ((@builtin-function-ref println 1)
+  ((@primitive-ref println 1)
    ((@function-ref square 1) ((@function-ref square 1) 3))))
 
 (define (square x) (imul x x))
@@ -37,6 +37,6 @@
 (import "square" square)
 
 (define (main)
-  ((@builtin-function-ref println 1)
+  ((@primitive-ref println 1)
    ((@function-ref square 1) ((@function-ref square 1) 3))))
 

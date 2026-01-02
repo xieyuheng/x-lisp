@@ -16,18 +16,16 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@builtin-function-ref println 1)
-   (((@builtin-function-ref iadd 2)
-     (((@builtin-function-ref iadd 2) 1) 2))
-    (((@builtin-function-ref iadd 2) 3)
-     (((@builtin-function-ref iadd 2) 4) 5)))))
+  ((@primitive-ref println 1)
+   (((@primitive-ref iadd 2) (((@primitive-ref iadd 2) 1) 2))
+    (((@primitive-ref iadd 2) 3)
+     (((@primitive-ref iadd 2) 4) 5)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@builtin-function-ref println 1)
-   (((@builtin-function-ref iadd 2)
-     (((@builtin-function-ref iadd 2) 1) 2))
-    (((@builtin-function-ref iadd 2) 3)
-     (((@builtin-function-ref iadd 2) 4) 5)))))
+  ((@primitive-ref println 1)
+   (((@primitive-ref iadd 2) (((@primitive-ref iadd 2) 1) 2))
+    (((@primitive-ref iadd 2) 3)
+     (((@primitive-ref iadd 2) 4) 5)))))
 

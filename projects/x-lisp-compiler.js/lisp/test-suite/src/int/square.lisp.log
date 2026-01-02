@@ -20,11 +20,11 @@
 
 (export square)
 
-(define (square x) (((@builtin-function-ref imul 2) x) x))
+(define (square x) (((@primitive-ref imul 2) x) x))
 
 ;;; LiftLambdaPass
 
 (export square)
 
-(define (square x) (((@builtin-function-ref imul 2) x) x))
+(define (square x) (((@primitive-ref imul 2) x) x))
 

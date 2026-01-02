@@ -1,10 +1,3 @@
-# builtin
-
-[lisp] `Exp` -- add `PrimitiveRef`
-[lisp] `Exp` -- remove `attribute` from `FunctionRef` and `ConstantRef`
-
-- fix `revealGlobalVariable`
-
 # apply
 
 [lisp] remove `Apply` (binary) and `ApplyNullary` -- keep `ApplySugar`

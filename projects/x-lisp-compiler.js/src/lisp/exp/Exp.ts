@@ -5,6 +5,7 @@ export type Exp =
   | Atom
   | Var
   | FunctionRef
+  | PrimitiveRef
   | ConstantRef
   | Lambda
   | ApplySugar
@@ -37,25 +38,38 @@ export type FunctionRef = {
   kind: "FunctionRef"
   name: string
   arity: number
-  attributes: {
-    isBuiltin: boolean
-  }
   meta?: Meta
 }
 
 export function FunctionRef(
   name: string,
   arity: number,
-  attributes: {
-    isBuiltin: boolean
-  },
   meta?: Meta,
 ): FunctionRef {
   return {
     kind: "FunctionRef",
     name,
     arity,
-    attributes,
+    meta,
+  }
+}
+
+export type PrimitiveRef = {
+  kind: "PrimitiveRef"
+  name: string
+  arity: number
+  meta?: Meta
+}
+
+export function PrimitiveRef(
+  name: string,
+  arity: number,
+  meta?: Meta,
+): PrimitiveRef {
+  return {
+    kind: "PrimitiveRef",
+    name,
+    arity,
     meta,
   }
 }
@@ -63,23 +77,16 @@ export function FunctionRef(
 export type ConstantRef = {
   kind: "ConstantRef"
   name: string
-  attributes: {
-    isBuiltin: boolean
-  }
   meta?: Meta
 }
 
 export function ConstantRef(
   name: string,
-  attributes: {
-    isBuiltin: boolean
-  },
   meta?: Meta,
 ): ConstantRef {
   return {
     kind: "ConstantRef",
     name,
-    attributes,
     meta,
   }
 }

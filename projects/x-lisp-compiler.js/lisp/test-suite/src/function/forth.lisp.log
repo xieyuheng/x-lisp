@@ -55,22 +55,22 @@
   (@let1 f₁ (@function-ref identity 1)
     (@let1 g₁
         ((@function-ref dup 1) (@function-ref identity 1))
-      ((@builtin-function-ref println 1) ((g₁ f₁) f₁)))))
+      ((@primitive-ref println 1) ((g₁ f₁) f₁)))))
 
 ;;; LiftLambdaPass
 
 (define (swap f x y) ((f y) x))
 
 (define (drop f)
-  ((((@builtin-function-ref curry-put! 3) 0) f)
-   ((((@builtin-function-ref make-curry 3)
+  ((((@primitive-ref curry-put! 3) 0) f)
+   ((((@primitive-ref make-curry 3)
       (@function-ref drop©λ₁ 2))
      2)
     1)))
 
 (define (drop©λ₁ f dropped₁)
-  ((((@builtin-function-ref curry-put! 3) 0) f)
-   ((((@builtin-function-ref make-curry 3)
+  ((((@primitive-ref curry-put! 3) 0) f)
+   ((((@primitive-ref make-curry 3)
       (@function-ref drop©λ₁©λ₁ 2))
      2)
     1)))
@@ -78,9 +78,8 @@
 (define (drop©λ₁©λ₁ f x₁) (f x₁))
 
 (define (dup f)
-  ((((@builtin-function-ref curry-put! 3) 0) f)
-   ((((@builtin-function-ref make-curry 3)
-      (@function-ref dup©λ₁ 2))
+  ((((@primitive-ref curry-put! 3) 0) f)
+   ((((@primitive-ref make-curry 3) (@function-ref dup©λ₁ 2))
      2)
     1)))
 
@@ -92,5 +91,5 @@
   (@let1 f₁ (@function-ref identity 1)
     (@let1 g₁
         ((@function-ref dup 1) (@function-ref identity 1))
-      ((@builtin-function-ref println 1) ((g₁ f₁) f₁)))))
+      ((@primitive-ref println 1) ((g₁ f₁) f₁)))))
 

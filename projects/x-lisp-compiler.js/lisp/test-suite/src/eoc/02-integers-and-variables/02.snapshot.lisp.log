@@ -21,16 +21,14 @@
 (define (main)
   (@let1 y₁
       (@let1 x₁ 20
-        (((@builtin-function-ref iadd 2) x₁)
-         (@let1 x₂ 22 x₂)))
-    ((@builtin-function-ref println 1) y₁)))
+        (((@primitive-ref iadd 2) x₁) (@let1 x₂ 22 x₂)))
+    ((@primitive-ref println 1) y₁)))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (@let1 y₁
       (@let1 x₁ 20
-        (((@builtin-function-ref iadd 2) x₁)
-         (@let1 x₂ 22 x₂)))
-    ((@builtin-function-ref println 1) y₁)))
+        (((@primitive-ref iadd 2) x₁) (@let1 x₂ 22 x₂)))
+    ((@primitive-ref println 1) y₁)))
 

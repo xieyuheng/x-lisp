@@ -45,22 +45,20 @@ function revealGlobalVariable(mod: L.Mod, variable: L.Var): L.Exp {
       return L.FunctionRef(
         variable.name,
         arity,
-        { isBuiltin: false },
         variable.meta,
       )
     }
 
     case "PrimitiveDefinition": {
-      return L.FunctionRef(
+      return L.PrimitiveRef(
         variable.name,
         definition.arity,
-        { isBuiltin: true },
         variable.meta,
       )
     }
 
     case "ConstantDefinition": {
-      return L.ConstantRef(variable.name, { isBuiltin: false }, variable.meta)
+      return L.ConstantRef(variable.name, variable.meta)
     }
   }
 }

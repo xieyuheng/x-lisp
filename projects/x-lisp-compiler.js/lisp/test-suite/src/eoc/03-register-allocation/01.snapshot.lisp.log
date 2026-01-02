@@ -33,22 +33,22 @@
 (define (main)
   (@let1 v₁ 1
     (@let1 w₁ 42
-      (@let1 x₁ (((@builtin-function-ref iadd 2) v₁) 7)
+      (@let1 x₁ (((@primitive-ref iadd 2) v₁) 7)
         (@let1 y₁ x₁
-          (@let1 z₁ (((@builtin-function-ref iadd 2) x₁) w₁)
-            ((@builtin-function-ref println 1)
-             (((@builtin-function-ref iadd 2) z₁)
-              ((@builtin-function-ref ineg 1) y₁)))))))))
+          (@let1 z₁ (((@primitive-ref iadd 2) x₁) w₁)
+            ((@primitive-ref println 1)
+             (((@primitive-ref iadd 2) z₁)
+              ((@primitive-ref ineg 1) y₁)))))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (@let1 v₁ 1
     (@let1 w₁ 42
-      (@let1 x₁ (((@builtin-function-ref iadd 2) v₁) 7)
+      (@let1 x₁ (((@primitive-ref iadd 2) v₁) 7)
         (@let1 y₁ x₁
-          (@let1 z₁ (((@builtin-function-ref iadd 2) x₁) w₁)
-            ((@builtin-function-ref println 1)
-             (((@builtin-function-ref iadd 2) z₁)
-              ((@builtin-function-ref ineg 1) y₁)))))))))
+          (@let1 z₁ (((@primitive-ref iadd 2) x₁) w₁)
+            ((@primitive-ref println 1)
+             (((@primitive-ref iadd 2) z₁)
+              ((@primitive-ref ineg 1) y₁)))))))))
 

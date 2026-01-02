@@ -38,26 +38,26 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@builtin-function-ref println 1)
-   (@let1 x₁ ((@builtin-function-ref random-dice 0))
-     (@let1 y₁ ((@builtin-function-ref random-dice 0))
+  ((@primitive-ref println 1)
+   (@let1 x₁ ((@primitive-ref random-dice 0))
+     (@let1 y₁ ((@primitive-ref random-dice 0))
        (if
-           (if (((@builtin-function-ref int-less? 2) x₁) 1)
-             (((@builtin-function-ref equal? 2) x₁) 0)
-             (((@builtin-function-ref equal? 2) x₁) 2))
-         (((@builtin-function-ref iadd 2) y₁) 2)
-         (((@builtin-function-ref iadd 2) y₁) 10))))))
+           (if (((@primitive-ref int-less? 2) x₁) 1)
+             (((@primitive-ref equal? 2) x₁) 0)
+             (((@primitive-ref equal? 2) x₁) 2))
+         (((@primitive-ref iadd 2) y₁) 2)
+         (((@primitive-ref iadd 2) y₁) 10))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@builtin-function-ref println 1)
-   (@let1 x₁ ((@builtin-function-ref random-dice 0))
-     (@let1 y₁ ((@builtin-function-ref random-dice 0))
+  ((@primitive-ref println 1)
+   (@let1 x₁ ((@primitive-ref random-dice 0))
+     (@let1 y₁ ((@primitive-ref random-dice 0))
        (if
-           (if (((@builtin-function-ref int-less? 2) x₁) 1)
-             (((@builtin-function-ref equal? 2) x₁) 0)
-             (((@builtin-function-ref equal? 2) x₁) 2))
-         (((@builtin-function-ref iadd 2) y₁) 2)
-         (((@builtin-function-ref iadd 2) y₁) 10))))))
+           (if (((@primitive-ref int-less? 2) x₁) 1)
+             (((@primitive-ref equal? 2) x₁) 0)
+             (((@primitive-ref equal? 2) x₁) 2))
+         (((@primitive-ref iadd 2) y₁) 2)
+         (((@primitive-ref iadd 2) y₁) 10))))))
 

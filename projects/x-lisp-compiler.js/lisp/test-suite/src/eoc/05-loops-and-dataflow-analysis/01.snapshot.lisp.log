@@ -30,22 +30,20 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  (@let1 _∅₁ ((@builtin-function-ref print 1) 1)
-    (@let1 _∅₂ ((@builtin-function-ref newline 0))
-      (@let1 _∅₃ ((@builtin-function-ref print 1) 2)
-        (@let1 _∅₄ ((@builtin-function-ref newline 0))
-          (@let1 _∅₅ ((@builtin-function-ref print 1) 3)
-            (@let1 _∅₆ ((@builtin-function-ref newline 0))
-              666)))))))
+  (@let1 _∅₁ ((@primitive-ref print 1) 1)
+    (@let1 _∅₂ ((@primitive-ref newline 0))
+      (@let1 _∅₃ ((@primitive-ref print 1) 2)
+        (@let1 _∅₄ ((@primitive-ref newline 0))
+          (@let1 _∅₅ ((@primitive-ref print 1) 3)
+            (@let1 _∅₆ ((@primitive-ref newline 0)) 666)))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (@let1 _∅₁ ((@builtin-function-ref print 1) 1)
-    (@let1 _∅₂ ((@builtin-function-ref newline 0))
-      (@let1 _∅₃ ((@builtin-function-ref print 1) 2)
-        (@let1 _∅₄ ((@builtin-function-ref newline 0))
-          (@let1 _∅₅ ((@builtin-function-ref print 1) 3)
-            (@let1 _∅₆ ((@builtin-function-ref newline 0))
-              666)))))))
+  (@let1 _∅₁ ((@primitive-ref print 1) 1)
+    (@let1 _∅₂ ((@primitive-ref newline 0))
+      (@let1 _∅₃ ((@primitive-ref print 1) 2)
+        (@let1 _∅₄ ((@primitive-ref newline 0))
+          (@let1 _∅₅ ((@primitive-ref print 1) 3)
+            (@let1 _∅₆ ((@primitive-ref newline 0)) 666)))))))
 

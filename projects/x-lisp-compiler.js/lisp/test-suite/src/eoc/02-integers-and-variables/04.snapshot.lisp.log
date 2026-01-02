@@ -20,19 +20,15 @@
 
 (define (main)
   (@let1 z₁
-      (@let1 y₁
-          (@let1 x₁ ((@builtin-function-ref ineg 1) 42) x₁)
+      (@let1 y₁ (@let1 x₁ ((@primitive-ref ineg 1) 42) x₁)
         y₁)
-    ((@builtin-function-ref println 1)
-     ((@builtin-function-ref ineg 1) z₁))))
+    ((@primitive-ref println 1) ((@primitive-ref ineg 1) z₁))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (@let1 z₁
-      (@let1 y₁
-          (@let1 x₁ ((@builtin-function-ref ineg 1) 42) x₁)
+      (@let1 y₁ (@let1 x₁ ((@primitive-ref ineg 1) 42) x₁)
         y₁)
-    ((@builtin-function-ref println 1)
-     ((@builtin-function-ref ineg 1) z₁))))
+    ((@primitive-ref println 1) ((@primitive-ref ineg 1) z₁))))
 

@@ -18,17 +18,15 @@
 
 ;;; RevealGlobalPass
 
-(define (square x) (((@builtin-function-ref imul 2) x) x))
+(define (square x) (((@primitive-ref imul 2) x) x))
 
 (define (main)
-  ((@builtin-function-ref println 1)
-   ((@function-ref square 1) 3)))
+  ((@primitive-ref println 1) ((@function-ref square 1) 3)))
 
 ;;; LiftLambdaPass
 
-(define (square x) (((@builtin-function-ref imul 2) x) x))
+(define (square x) (((@primitive-ref imul 2) x) x))
 
 (define (main)
-  ((@builtin-function-ref println 1)
-   ((@function-ref square 1) 3)))
+  ((@primitive-ref println 1) ((@function-ref square 1) 3)))
 
