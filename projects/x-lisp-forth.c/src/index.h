@@ -5,5 +5,5 @@
 #include "value/index.h"
 #include "lexer/index.h"
 #include "gc/index.h"
-#include "lang/index.h"
+#include "forth/index.h"
 #include "builtin/index.h"
