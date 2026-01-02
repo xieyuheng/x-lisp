@@ -1,5 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import fs from "node:fs"
+import { importBuiltinMod } from "../../builtin/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
 import { parseStmt } from "../parse/index.ts"
 import { stage1 } from "./stage1.ts"
@@ -17,6 +18,7 @@ export function load(url: URL, dependencies: Map<string, Mod>): Mod {
   const mod = createMod(url, dependencies)
   dependencies.set(url.href, mod)
 
+  importBuiltinMod(mod)
   const sexps = S.parseSexps(text, { url: mod.url })
 
   mod.stmts = sexps.map(parseStmt)

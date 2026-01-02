@@ -7,6 +7,6 @@ export function formatMod(mod: Mod): string {
   const moduleStmts = mod.stmts
     .filter(Stmts.isAboutModule)
     .map(formatModuleStmt)
-  const definitions = mod.definitions.values().map(formatDefinition)
+  const definitions = mod.definitions.values().filter(definition => definition.kind !== "PrimitiveDefinition").map(formatDefinition)
   return Array.from([...moduleStmts, ...definitions]).join(" ")
 }

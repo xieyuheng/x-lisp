@@ -1,12 +1,12 @@
-import assert from "node:assert";
 import * as L from "../lisp/index.ts"
-import { createBuiltinMod } from "./createBuiltinMod.ts";
+import { createBuiltinMod } from "./createBuiltinMod.ts"
 
-let globalBuiltinMod: L.Mod | undefined = undefined;
+let globalBuiltinMod: L.Mod | undefined = undefined
 
 export function useBuiltinMod(): L.Mod {
-  if (!globalBuiltinMod) {
-    globalBuiltinMod = createBuiltinMod();
+  if (globalBuiltinMod === undefined) {
+    console.log('hihihi')
+    globalBuiltinMod = createBuiltinMod()
   }
 
   return globalBuiltinMod

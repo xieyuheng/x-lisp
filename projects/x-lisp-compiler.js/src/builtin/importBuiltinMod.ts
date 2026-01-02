@@ -1,7 +1,5 @@
-import assert from "node:assert";
 import * as L from "../lisp/index.ts"
-import { createBuiltinMod } from "./createBuiltinMod.ts";
-import { useBuiltinMod } from "./useBuiltinMod.ts";
+import { useBuiltinMod } from "./useBuiltinMod.ts"
 
 export function importBuiltinMod(mod: L.Mod): void {
   const builtinMod = useBuiltinMod()

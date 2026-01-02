@@ -1,9 +1,5 @@
 import { setAdd, setUnion } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
-import {
-  getBuiltinFunctionArity,
-  hasBuiltinFunction,
-} from "../builtin/index.ts"
 import * as L from "../index.ts"
 
 export function RevealGlobalPass(mod: L.Mod): void {
@@ -35,16 +31,6 @@ function onDefinition(mod: L.Mod, definition: L.Definition): null {
 }
 
 function revealGlobalVariable(mod: L.Mod, variable: L.Var): L.Exp {
-  if (hasBuiltinFunction(variable.name)) {
-    const builtinArity = getBuiltinFunctionArity(variable.name)
-    return L.FunctionRef(
-      variable.name,
-      builtinArity,
-      { isBuiltin: true },
-      variable.meta,
-    )
-  }
-
   const definition = L.modLookupDefinition(mod, variable.name)
   if (definition === undefined) {
     let message = `[RevealGlobalPass] [revealGlobalVariable] undefined name`
