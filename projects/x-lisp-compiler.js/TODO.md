@@ -1,4 +1,6 @@
-[lisp] builtin -- for name and arity only
+[lisp] `builtin` -- map for name to arity
+[lisp] `builtin` -- fix `getBuiltinFunctionArity`
+
 [lisp] setup test -- for pass log only
 
 [lisp] remove `Apply` (binary) and `ApplyNullary` -- keep `ApplySugar`
