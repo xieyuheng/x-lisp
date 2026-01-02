@@ -1,4 +1,4 @@
-(begin
+(define (main)
   (= a 42)
   (= b a)
-  b)
+  (println b))

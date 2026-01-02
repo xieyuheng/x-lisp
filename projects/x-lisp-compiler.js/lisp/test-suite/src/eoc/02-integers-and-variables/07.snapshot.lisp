@@ -1,1 +1,2 @@
-(iadd (random-dice) (random-dice))
+(define (main)
+  (println (iadd (random-dice) (random-dice))))

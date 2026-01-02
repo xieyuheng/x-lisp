@@ -1,22 +1,21 @@
 ;;; Input
 
-(define (_main)
-  (println-non-void (iadd 1 (iadd (random-dice) 1))))
+(define (main) (println (iadd 1 (iadd (random-dice) 1))))
 
 ;;; ShrinkPass
 
-(define (_main)
-  (println-non-void ((iadd 1) ((iadd (random-dice)) 1))))
+(define (main)
+  (println ((iadd 1) ((iadd (random-dice)) 1))))
 
 ;;; UniquifyPass
 
-(define (_main)
-  (println-non-void ((iadd 1) ((iadd (random-dice)) 1))))
+(define (main)
+  (println ((iadd 1) ((iadd (random-dice)) 1))))
 
 ;;; RevealGlobalPass
 
-(define (_main)
-  ((@primitive-function println-non-void 1)
+(define (main)
+  ((@primitive-function println 1)
    (((@primitive-function iadd 2) 1)
     (((@primitive-function iadd 2)
       ((@primitive-function random-dice 0)))
@@ -24,8 +23,8 @@
 
 ;;; LiftLambdaPass
 
-(define (_main)
-  ((@primitive-function println-non-void 1)
+(define (main)
+  ((@primitive-function println 1)
    (((@primitive-function iadd 2) 1)
     (((@primitive-function iadd 2)
       ((@primitive-function random-dice 0)))

@@ -1,9 +1,11 @@
-(iadd
- (iadd
-  (iadd
+(define (main)
+  (println
    (iadd
-    (random-dice)
-    1)
-   1)
-  1)
- 1)
+    (iadd
+     (iadd
+      (iadd
+       (random-dice)
+       1)
+      1)
+     1)
+    1)))

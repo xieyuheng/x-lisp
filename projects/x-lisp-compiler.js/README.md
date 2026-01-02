@@ -353,7 +353,6 @@
 ;;; console
 
 (print value)
-(println-non-void value)
 ;; (write string)
 (newline)
 

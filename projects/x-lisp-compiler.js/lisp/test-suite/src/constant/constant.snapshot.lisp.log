@@ -6,7 +6,7 @@
 
 (define three (iadd 1 two))
 
-(define (_main) (println-non-void three))
+(define (main) (println three))
 
 ;;; ShrinkPass
 
@@ -16,7 +16,7 @@
 
 (define three ((iadd 1) two))
 
-(define (_main) (println-non-void three))
+(define (main) (println three))
 
 ;;; UniquifyPass
 
@@ -26,7 +26,7 @@
 
 (define three ((iadd 1) two))
 
-(define (_main) (println-non-void three))
+(define (main) (println three))
 
 ;;; RevealGlobalPass
 
@@ -38,9 +38,8 @@
 (define three
   (((@primitive-function iadd 2) 1) (@constant two)))
 
-(define (_main)
-  ((@primitive-function println-non-void 1)
-   (@constant three)))
+(define (main)
+  ((@primitive-function println 1) (@constant three)))
 
 ;;; LiftLambdaPass
 
@@ -52,7 +51,6 @@
 (define three
   (((@primitive-function iadd 2) 1) (@constant two)))
 
-(define (_main)
-  ((@primitive-function println-non-void 1)
-   (@constant three)))
+(define (main)
+  ((@primitive-function println 1) (@constant three)))
 

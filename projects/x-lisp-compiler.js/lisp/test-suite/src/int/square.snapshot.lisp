@@ -1,3 +1,4 @@
 (import "square" square)
 
-(square (square 3))
+(define (main)
+  (println (square (square 3))))

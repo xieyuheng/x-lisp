@@ -1,22 +1,20 @@
 ;;; Input
 
-(define (_main) (println-non-void 42))
+(define (main) (println 42))
 
 ;;; ShrinkPass
 
-(define (_main) (println-non-void 42))
+(define (main) (println 42))
 
 ;;; UniquifyPass
 
-(define (_main) (println-non-void 42))
+(define (main) (println 42))
 
 ;;; RevealGlobalPass
 
-(define (_main)
-  ((@primitive-function println-non-void 1) 42))
+(define (main) ((@primitive-function println 1) 42))
 
 ;;; LiftLambdaPass
 
-(define (_main)
-  ((@primitive-function println-non-void 1) 42))
+(define (main) ((@primitive-function println 1) 42))
 

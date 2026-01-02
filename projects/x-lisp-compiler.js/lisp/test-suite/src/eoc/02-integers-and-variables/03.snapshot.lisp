@@ -1,7 +1,7 @@
-(begin
+(define (main)
   (= y (begin
          (= x 20)
          (begin
            (= z 22)
            (iadd x z))))
-  y)
+  (println y))

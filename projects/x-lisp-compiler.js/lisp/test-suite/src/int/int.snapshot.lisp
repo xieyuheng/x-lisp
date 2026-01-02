@@ -1,4 +1,5 @@
 (define (square x)
   (imul x x))
 
-(square 3)
+(define (main)
+  (println (square 3)))

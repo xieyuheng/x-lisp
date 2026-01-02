@@ -1,57 +1,51 @@
 ;;; Input
 
-(define (_main)
-  (println-non-void
-   (begin
-     (print 1)
-     (newline)
-     (print 2)
-     (newline)
-     (print 3)
-     (newline)
-     666)))
+(define (main)
+  (print 1)
+  (newline)
+  (print 2)
+  (newline)
+  (print 3)
+  (newline)
+  666)
 
 ;;; ShrinkPass
 
-(define (_main)
-  (println-non-void
-   (@let1 _∅ (print 1)
-     (@let1 _∅ (newline)
-       (@let1 _∅ (print 2)
-         (@let1 _∅ (newline)
-           (@let1 _∅ (print 3) (@let1 _∅ (newline) 666))))))))
+(define (main)
+  (@let1 _∅ (print 1)
+    (@let1 _∅ (newline)
+      (@let1 _∅ (print 2)
+        (@let1 _∅ (newline)
+          (@let1 _∅ (print 3) (@let1 _∅ (newline) 666)))))))
 
 ;;; UniquifyPass
 
-(define (_main)
-  (println-non-void
-   (@let1 _∅₁ (print 1)
-     (@let1 _∅₂ (newline)
-       (@let1 _∅₃ (print 2)
-         (@let1 _∅₄ (newline)
-           (@let1 _∅₅ (print 3) (@let1 _∅₆ (newline) 666))))))))
+(define (main)
+  (@let1 _∅₁ (print 1)
+    (@let1 _∅₂ (newline)
+      (@let1 _∅₃ (print 2)
+        (@let1 _∅₄ (newline)
+          (@let1 _∅₅ (print 3) (@let1 _∅₆ (newline) 666)))))))
 
 ;;; RevealGlobalPass
 
-(define (_main)
-  ((@primitive-function println-non-void 1)
-   (@let1 _∅₁ ((@primitive-function print 1) 1)
-     (@let1 _∅₂ ((@primitive-function newline 0))
-       (@let1 _∅₃ ((@primitive-function print 1) 2)
-         (@let1 _∅₄ ((@primitive-function newline 0))
-           (@let1 _∅₅ ((@primitive-function print 1) 3)
-             (@let1 _∅₆ ((@primitive-function newline 0))
-               666))))))))
+(define (main)
+  (@let1 _∅₁ ((@primitive-function print 1) 1)
+    (@let1 _∅₂ ((@primitive-function newline 0))
+      (@let1 _∅₃ ((@primitive-function print 1) 2)
+        (@let1 _∅₄ ((@primitive-function newline 0))
+          (@let1 _∅₅ ((@primitive-function print 1) 3)
+            (@let1 _∅₆ ((@primitive-function newline 0))
+              666)))))))
 
 ;;; LiftLambdaPass
 
-(define (_main)
-  ((@primitive-function println-non-void 1)
-   (@let1 _∅₁ ((@primitive-function print 1) 1)
-     (@let1 _∅₂ ((@primitive-function newline 0))
-       (@let1 _∅₃ ((@primitive-function print 1) 2)
-         (@let1 _∅₄ ((@primitive-function newline 0))
-           (@let1 _∅₅ ((@primitive-function print 1) 3)
-             (@let1 _∅₆ ((@primitive-function newline 0))
-               666))))))))
+(define (main)
+  (@let1 _∅₁ ((@primitive-function print 1) 1)
+    (@let1 _∅₂ ((@primitive-function newline 0))
+      (@let1 _∅₃ ((@primitive-function print 1) 2)
+        (@let1 _∅₄ ((@primitive-function newline 0))
+          (@let1 _∅₅ ((@primitive-function print 1) 3)
+            (@let1 _∅₆ ((@primitive-function newline 0))
+              666)))))))
 

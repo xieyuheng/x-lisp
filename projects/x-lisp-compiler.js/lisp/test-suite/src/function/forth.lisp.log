@@ -8,9 +8,10 @@
 
 (define (identity x) x)
 
-(define (_main)
-  (println-non-void
-   (begin (= f identity) (= g (dup identity)) (g f f))))
+(define (main)
+  (= f identity)
+  (= g (dup identity))
+  (println (g f f)))
 
 ;;; ShrinkPass
 
@@ -22,9 +23,9 @@
 
 (define (identity x) x)
 
-(define (_main)
-  (println-non-void
-   (@let1 f identity (@let1 g (dup identity) ((g f) f)))))
+(define (main)
+  (@let1 f identity
+    (@let1 g (dup identity) (println ((g f) f)))))
 
 ;;; UniquifyPass
 
@@ -36,10 +37,9 @@
 
 (define (identity x) x)
 
-(define (_main)
-  (println-non-void
-   (@let1 f₁ identity
-     (@let1 g₁ (dup identity) ((g₁ f₁) f₁)))))
+(define (main)
+  (@let1 f₁ identity
+    (@let1 g₁ (dup identity) (println ((g₁ f₁) f₁)))))
 
 ;;; RevealGlobalPass
 
@@ -51,11 +51,10 @@
 
 (define (identity x) x)
 
-(define (_main)
-  ((@primitive-function println-non-void 1)
-   (@let1 f₁ (@function identity 1)
-     (@let1 g₁ ((@function dup 1) (@function identity 1))
-       ((g₁ f₁) f₁)))))
+(define (main)
+  (@let1 f₁ (@function identity 1)
+    (@let1 g₁ ((@function dup 1) (@function identity 1))
+      ((@primitive-function println 1) ((g₁ f₁) f₁)))))
 
 ;;; LiftLambdaPass
 
@@ -88,9 +87,8 @@
 
 (define (identity x) x)
 
-(define (_main)
-  ((@primitive-function println-non-void 1)
-   (@let1 f₁ (@function identity 1)
-     (@let1 g₁ ((@function dup 1) (@function identity 1))
-       ((g₁ f₁) f₁)))))
+(define (main)
+  (@let1 f₁ (@function identity 1)
+    (@let1 g₁ ((@function dup 1) (@function identity 1))
+      ((@primitive-function println 1) ((g₁ f₁) f₁)))))
 

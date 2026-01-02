@@ -1,4 +1,4 @@
-(begin
+(define (main)
   (print 1)
   (newline)
   (print 2)

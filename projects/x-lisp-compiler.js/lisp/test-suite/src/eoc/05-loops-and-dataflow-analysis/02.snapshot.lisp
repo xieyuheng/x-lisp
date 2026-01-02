@@ -1,4 +1,4 @@
-(begin
+(define (main)
   (= x (begin
          (print 1)
          (newline)

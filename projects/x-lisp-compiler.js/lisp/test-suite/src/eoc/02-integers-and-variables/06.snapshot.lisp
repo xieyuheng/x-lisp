@@ -1,1 +1,2 @@
-(ineg (random-dice))
+(define (main)
+  (println (ineg (random-dice))))

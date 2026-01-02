@@ -11,7 +11,7 @@
 
 (define (identity x) x)
 
-(begin
+(define (main)
   (= f identity)
   (= g (dup identity))
-  (g f f))
+  (println (g f f)))

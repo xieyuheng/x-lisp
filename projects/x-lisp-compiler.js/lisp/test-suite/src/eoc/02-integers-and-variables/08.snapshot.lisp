@@ -1,1 +1,2 @@
-(iadd 20 22)
+(define (main)
+  (println (iadd 20 22)))

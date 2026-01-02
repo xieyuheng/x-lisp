@@ -1,1 +1,2 @@
-42
+(define (main)
+  (println 42))

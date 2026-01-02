@@ -88,8 +88,4 @@ export const parseStmt = S.createRouter<Stmt>({
       meta,
     )
   },
-
-  exp: ({ exp }, { meta }) => {
-    return Stmts.Compute(parseExp(exp), meta)
-  },
 })

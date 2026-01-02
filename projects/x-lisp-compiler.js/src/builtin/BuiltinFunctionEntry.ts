@@ -78,7 +78,6 @@ export const builtinFunctionEntries: Record<string, BuiltinFunctionEntry> = {
   write: { arity: 1 },
   print: { arity: 1 },
   println: { arity: 1 },
-  "println-non-void": { arity: 1 },
 
   // system
 

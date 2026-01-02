@@ -1,56 +1,54 @@
 ;;; Input
 
-(define (_main)
-  (println-non-void
-   (begin
-     (= v 1)
-     (= w 42)
-     (= x (iadd v 7))
-     (= y x)
-     (= z (iadd x w))
-     (iadd z (ineg y)))))
+(define (main)
+  (= v 1)
+  (= w 42)
+  (= x (iadd v 7))
+  (= y x)
+  (= z (iadd x w))
+  (println (iadd z (ineg y))))
 
 ;;; ShrinkPass
 
-(define (_main)
-  (println-non-void
-   (@let1 v 1
-     (@let1 w 42
-       (@let1 x ((iadd v) 7)
-         (@let1 y x
-           (@let1 z ((iadd x) w) ((iadd z) (ineg y)))))))))
+(define (main)
+  (@let1 v 1
+    (@let1 w 42
+      (@let1 x ((iadd v) 7)
+        (@let1 y x
+          (@let1 z ((iadd x) w)
+            (println ((iadd z) (ineg y)))))))))
 
 ;;; UniquifyPass
 
-(define (_main)
-  (println-non-void
-   (@let1 v₁ 1
-     (@let1 w₁ 42
-       (@let1 x₁ ((iadd v₁) 7)
-         (@let1 y₁ x₁
-           (@let1 z₁ ((iadd x₁) w₁) ((iadd z₁) (ineg y₁)))))))))
+(define (main)
+  (@let1 v₁ 1
+    (@let1 w₁ 42
+      (@let1 x₁ ((iadd v₁) 7)
+        (@let1 y₁ x₁
+          (@let1 z₁ ((iadd x₁) w₁)
+            (println ((iadd z₁) (ineg y₁)))))))))
 
 ;;; RevealGlobalPass
 
-(define (_main)
-  ((@primitive-function println-non-void 1)
-   (@let1 v₁ 1
-     (@let1 w₁ 42
-       (@let1 x₁ (((@primitive-function iadd 2) v₁) 7)
-         (@let1 y₁ x₁
-           (@let1 z₁ (((@primitive-function iadd 2) x₁) w₁)
+(define (main)
+  (@let1 v₁ 1
+    (@let1 w₁ 42
+      (@let1 x₁ (((@primitive-function iadd 2) v₁) 7)
+        (@let1 y₁ x₁
+          (@let1 z₁ (((@primitive-function iadd 2) x₁) w₁)
+            ((@primitive-function println 1)
              (((@primitive-function iadd 2) z₁)
               ((@primitive-function ineg 1) y₁)))))))))
 
 ;;; LiftLambdaPass
 
-(define (_main)
-  ((@primitive-function println-non-void 1)
-   (@let1 v₁ 1
-     (@let1 w₁ 42
-       (@let1 x₁ (((@primitive-function iadd 2) v₁) 7)
-         (@let1 y₁ x₁
-           (@let1 z₁ (((@primitive-function iadd 2) x₁) w₁)
+(define (main)
+  (@let1 v₁ 1
+    (@let1 w₁ 42
+      (@let1 x₁ (((@primitive-function iadd 2) v₁) 7)
+        (@let1 y₁ x₁
+          (@let1 z₁ (((@primitive-function iadd 2) x₁) w₁)
+            ((@primitive-function println 1)
              (((@primitive-function iadd 2) z₁)
               ((@primitive-function ineg 1) y₁)))))))))
 

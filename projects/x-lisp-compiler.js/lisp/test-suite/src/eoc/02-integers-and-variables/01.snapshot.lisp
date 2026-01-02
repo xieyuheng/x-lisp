@@ -1,3 +1,3 @@
-(begin
+(define (main)
   (= x 4)
-  (iadd 8 x))
+  (println (iadd 8 x)))

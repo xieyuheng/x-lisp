@@ -1,1 +1,2 @@
-(isub 50 8)
+(define (main)
+  (println (isub 50 8)))

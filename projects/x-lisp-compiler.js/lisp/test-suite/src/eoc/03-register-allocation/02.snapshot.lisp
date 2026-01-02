@@ -1,6 +1,6 @@
 ;; figure-3.2
 
-(begin
+(define (main)
   (= x (random-dice))
   (= y (random-dice))
-  (iadd (iadd x y) 42))
+  (println (iadd (iadd x y) 42)))
