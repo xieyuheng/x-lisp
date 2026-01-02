@@ -34,7 +34,7 @@ function buildPassLog(project: Project, id: string): void {
   logFile("pass-log", outputFile)
   const mod = X.loadEntry(createUrl(inputFile))
   writeFile(outputFile, "")
-  Services.compileLangToPassLog(mod, outputFile)
+  Services.compileLispToPassLog(mod, outputFile)
 }
 
 function buildBasic(project: Project, id: string): void {

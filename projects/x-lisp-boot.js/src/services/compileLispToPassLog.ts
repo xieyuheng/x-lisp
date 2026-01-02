@@ -3,7 +3,7 @@ import { globals } from "../globals.ts"
 import * as X from "../index.ts"
 import * as Passes from "../passes/index.ts"
 
-export function compileLangToPassLog(mod: X.Mod, logFile?: string): void {
+export function compileLispToPassLog(mod: X.Mod, logFile?: string): void {
   logXMod("Input", mod, logFile)
   Passes.ShrinkPass(mod)
   logXMod("ShrinkPass", mod, logFile)
