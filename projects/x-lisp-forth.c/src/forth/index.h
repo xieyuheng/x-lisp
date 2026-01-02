@@ -16,4 +16,4 @@
 #include "call.h"
 #include "apply.h"
 #include "compile.h"
-#include "syntax.h"
+#include "stmt.h"

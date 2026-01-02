@@ -19,7 +19,7 @@ interpret_token(vm_t *vm, token_t *token) {
     }
 
     case SYMBOL_TOKEN: {
-        x_fn_t *handler = syntax_find_handler(token->content);
+        x_fn_t *handler = find_stmt_handler(token->content);
         if (handler) {
             handler(vm);
             token_free(token);

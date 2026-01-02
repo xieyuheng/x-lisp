@@ -1,7 +1,7 @@
 #include "index.h"
 
 static void
-syntax_var(vm_t *vm) {
+handle_var(vm_t *vm) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     function_t *function = make_function();
@@ -11,7 +11,7 @@ syntax_var(vm_t *vm) {
 }
 
 static void
-syntax_def(vm_t *vm) {
+handle_def(vm_t *vm) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     function_t *function = make_function();
@@ -21,7 +21,7 @@ syntax_def(vm_t *vm) {
 }
 
 static void
-syntax_export(vm_t *vm) {
+handle_export(vm_t *vm) {
     while (true) {
         if (vm_no_more_tokens(vm)) {
             who_printf("missing @end\n");
@@ -70,8 +70,8 @@ import(vm_t *vm, bool is_exported) {
     }
 }
 
-static void syntax_import(vm_t *vm) { import(vm, false); }
-static void syntax_include(vm_t *vm) { import(vm, true); }
+static void handle_import(vm_t *vm) { import(vm, false); }
+static void handle_include(vm_t *vm) { import(vm, true); }
 
 static void
 import_all(vm_t *vm, bool is_exported) {
@@ -96,8 +96,8 @@ import_all(vm_t *vm, bool is_exported) {
     }
 }
 
-static void syntax_import_all(vm_t *vm) { import_all(vm, false); }
-static void syntax_include_all(vm_t *vm) { import_all(vm, true); }
+static void handle_import_all(vm_t *vm) { import_all(vm, false); }
+static void handle_include_all(vm_t *vm) { import_all(vm, true); }
 
 static void
 import_except(vm_t *vm, bool is_exported) {
@@ -144,8 +144,8 @@ import_except(vm_t *vm, bool is_exported) {
     set_free(excepted_names);
 }
 
-static void syntax_import_except(vm_t *vm) { import_except(vm, false); }
-static void syntax_include_except(vm_t *vm) { import_except(vm, true); }
+static void handle_import_except(vm_t *vm) { import_except(vm, false); }
+static void handle_include_except(vm_t *vm) { import_except(vm, true); }
 
 static void
 import_as(vm_t *vm, bool is_exported) {
@@ -179,36 +179,36 @@ import_as(vm_t *vm, bool is_exported) {
     string_free(prefix);
 }
 
-static void syntax_import_as(vm_t *vm) { import_as(vm, false); }
-static void syntax_include_as(vm_t *vm) { import_as(vm, true); }
+static void handle_import_as(vm_t *vm) { import_as(vm, false); }
+static void handle_include_as(vm_t *vm) { import_as(vm, true); }
 
-struct syntax_entry_t { const char *name; x_fn_t *handler; };
+struct stmt_entry_t { const char *name; x_fn_t *handler; };
 
-static struct syntax_entry_t syntax_entries[] = {
-    { "@var", syntax_var },
-    { "@def", syntax_def },
-    { "@export", syntax_export },
-    { "@import", syntax_import },
-    { "@include", syntax_include },
-    { "@import-all", syntax_import_all },
-    { "@include-all", syntax_include_all },
-    { "@import-except", syntax_import_except },
-    { "@include-except", syntax_include_except },
-    { "@import-as", syntax_import_as },
-    { "@include-as", syntax_include_as },
+static struct stmt_entry_t stmt_entries[] = {
+    { "@var", handle_var },
+    { "@def", handle_def },
+    { "@export", handle_export },
+    { "@import", handle_import },
+    { "@include", handle_include },
+    { "@import-all", handle_import_all },
+    { "@include-all", handle_include_all },
+    { "@import-except", handle_import_except },
+    { "@include-except", handle_include_except },
+    { "@import-as", handle_import_as },
+    { "@include-as", handle_include_as },
 };
 
 static size_t
-get_syntax_entry_count(void) {
-    return sizeof syntax_entries / sizeof(struct syntax_entry_t);
+get_stmt_entry_count(void) {
+    return sizeof stmt_entries / sizeof(struct stmt_entry_t);
 }
 
 x_fn_t *
-syntax_find_handler(const char *name) {
-    for (size_t i = 0; i < get_syntax_entry_count(); i++) {
-        struct syntax_entry_t syntax_entry = syntax_entries[i];
-        if (string_equal(syntax_entry.name, name)) {
-            return syntax_entry.handler;
+find_stmt_handler(const char *name) {
+    for (size_t i = 0; i < get_stmt_entry_count(); i++) {
+        struct stmt_entry_t stmt_entry = stmt_entries[i];
+        if (string_equal(stmt_entry.name, name)) {
+            return stmt_entry.handler;
         }
     }
 
