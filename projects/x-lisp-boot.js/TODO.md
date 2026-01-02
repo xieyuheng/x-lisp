@@ -1,8 +1,7 @@
 # fix the use of builtin
 
 [basic-lisp.js] `declare-function` instead of `define-primitive-function`
-[x-lisp-boot.js] setup `builtin/` -- map from x-lisp function to c function
-- map name to name in and arity
+[x-lisp-boot.js] setup `builtin/` -- map from x-lisp function to c function -- map name to name and arity
 [x-lisp-boot.js] generate `declare-function` in basic-lisp.js
 [basic-lisp.js] remove `builtin/`
 
@@ -90,5 +89,4 @@ x_random_float
 
 # gc
 
-[runtime.c] `object_spec_t` -- has `get_slot_fn`
 [runtime.c] `function_t` -- has register map

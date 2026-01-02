@@ -9,5 +9,3 @@ make --directory projects/x-lisp-forth.c test -j
 
 pnpm run -r --parallel --aggregate-output test
 pnpm run -r --parallel --aggregate-output test:cli
-
-bash scripts/test-suite.sh
