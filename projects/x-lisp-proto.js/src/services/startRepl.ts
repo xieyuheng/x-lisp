@@ -2,7 +2,7 @@ import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import * as S from "@xieyuheng/sexp.js"
 import { fileURLToPath } from "node:url"
-import { load, runSexps } from "../lang/load/index.ts"
+import { load, runSexps } from "../lisp/load/index.ts"
 
 export function startRepl(): void {
   const { version } = getPackageJson(fileURLToPath(import.meta.url))

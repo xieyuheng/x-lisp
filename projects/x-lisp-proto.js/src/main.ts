@@ -7,7 +7,7 @@ import { createUrl } from "@xieyuheng/helpers.js/url"
 import { fileURLToPath } from "node:url"
 import { flags } from "./flags.ts"
 import { globals } from "./globals.ts"
-import { load } from "./lang/load/index.ts"
+import { load } from "./lisp/load/index.ts"
 import { startRepl } from "./services/startRepl.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
