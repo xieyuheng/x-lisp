@@ -1,0 +1,96 @@
+;;; Input
+
+(define (swap f x y) (f y x))
+
+(define (drop f) (lambda (dropped) (lambda (x) (f x))))
+
+(define (dup f) (lambda (x) (f x x)))
+
+(define (identity x) x)
+
+(define (_main)
+  (println-non-void
+   (begin (= f identity) (= g (dup identity)) (g f f))))
+
+;;; ShrinkPass
+
+(define (swap f x y) ((f y) x))
+
+(define (drop f) (lambda (dropped) (lambda (x) (f x))))
+
+(define (dup f) (lambda (x) ((f x) x)))
+
+(define (identity x) x)
+
+(define (_main)
+  (println-non-void
+   (@let1 f identity (@let1 g (dup identity) ((g f) f)))))
+
+;;; UniquifyPass
+
+(define (swap f x y) ((f y) x))
+
+(define (drop f) (lambda (dropped₁) (lambda (x₁) (f x₁))))
+
+(define (dup f) (lambda (x₁) ((f x₁) x₁)))
+
+(define (identity x) x)
+
+(define (_main)
+  (println-non-void
+   (@let1 f₁ identity
+     (@let1 g₁ (dup identity) ((g₁ f₁) f₁)))))
+
+;;; RevealGlobalPass
+
+(define (swap f x y) ((f y) x))
+
+(define (drop f) (lambda (dropped₁) (lambda (x₁) (f x₁))))
+
+(define (dup f) (lambda (x₁) ((f x₁) x₁)))
+
+(define (identity x) x)
+
+(define (_main)
+  ((@primitive-function println-non-void 1)
+   (@let1 f₁ (@function identity 1)
+     (@let1 g₁ ((@function dup 1) (@function identity 1))
+       ((g₁ f₁) f₁)))))
+
+;;; LiftLambdaPass
+
+(define (swap f x y) ((f y) x))
+
+(define (drop f)
+  ((((@primitive-function curry-put! 3) 0) f)
+   ((((@primitive-function make-curry 3)
+      (@function drop©λ₁ 2))
+     2)
+    1)))
+
+(define (drop©λ₁ f dropped₁)
+  ((((@primitive-function curry-put! 3) 0) f)
+   ((((@primitive-function make-curry 3)
+      (@function drop©λ₁©λ₁ 2))
+     2)
+    1)))
+
+(define (drop©λ₁©λ₁ f x₁) (f x₁))
+
+(define (dup f)
+  ((((@primitive-function curry-put! 3) 0) f)
+   ((((@primitive-function make-curry 3)
+      (@function dup©λ₁ 2))
+     2)
+    1)))
+
+(define (dup©λ₁ f x₁) ((f x₁) x₁))
+
+(define (identity x) x)
+
+(define (_main)
+  ((@primitive-function println-non-void 1)
+   (@let1 f₁ (@function identity 1)
+     (@let1 g₁ ((@function dup 1) (@function identity 1))
+       ((g₁ f₁) f₁)))))
+

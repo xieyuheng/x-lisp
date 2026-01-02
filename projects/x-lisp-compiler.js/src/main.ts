@@ -16,7 +16,7 @@ import * as Services from "./services/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = cmd.createRouter("x-lisp-boot.js", version)
+const router = cmd.createRouter("x-lisp-compile.js", version)
 
 router.defineRoutes([
   "module:test file",
@@ -25,10 +25,6 @@ router.defineRoutes([
   "project:build --config",
   "project:clean --config",
   "file:compile-to-pass-log file",
-  "file:compile-to-basic file",
-  "basic:bundle file",
-  "machine:transpile-to-x86-assembly file",
-  "machine:assemble-x86 file",
 ])
 
 router.defineHandlers({

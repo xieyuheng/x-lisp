@@ -1,0 +1,36 @@
+;;; Input
+
+(define (_main)
+  (println-non-void
+   (begin (= x (iadd 42 (ineg 10))) (iadd x 10))))
+
+;;; ShrinkPass
+
+(define (_main)
+  (println-non-void
+   (@let1 x ((iadd 42) (ineg 10)) ((iadd x) 10))))
+
+;;; UniquifyPass
+
+(define (_main)
+  (println-non-void
+   (@let1 x₁ ((iadd 42) (ineg 10)) ((iadd x₁) 10))))
+
+;;; RevealGlobalPass
+
+(define (_main)
+  ((@primitive-function println-non-void 1)
+   (@let1 x₁
+       (((@primitive-function iadd 2) 42)
+        ((@primitive-function ineg 1) 10))
+     (((@primitive-function iadd 2) x₁) 10))))
+
+;;; LiftLambdaPass
+
+(define (_main)
+  ((@primitive-function println-non-void 1)
+   (@let1 x₁
+       (((@primitive-function iadd 2) 42)
+        ((@primitive-function ineg 1) 10))
+     (((@primitive-function iadd 2) x₁) 10))))
+

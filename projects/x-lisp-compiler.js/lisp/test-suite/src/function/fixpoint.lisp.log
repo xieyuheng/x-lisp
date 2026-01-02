@@ -1,0 +1,46 @@
+;;; Input
+
+(define (Y f)
+  ((lambda (u) (u u))
+   (lambda (x) (f (lambda (t) ((x x) t))))))
+
+;;; ShrinkPass
+
+(define (Y f)
+  ((lambda (u) (u u))
+   (lambda (x) (f (lambda (t) ((x x) t))))))
+
+;;; UniquifyPass
+
+(define (Y f)
+  ((lambda (u₁) (u₁ u₁))
+   (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
+
+;;; RevealGlobalPass
+
+(define (Y f)
+  ((lambda (u₁) (u₁ u₁))
+   (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
+
+;;; LiftLambdaPass
+
+(define (Y f)
+  (((((@primitive-function make-curry 3) (@function Y©λ₁ 1))
+     1)
+    0)
+   ((((@primitive-function curry-put! 3) 0) f)
+    ((((@primitive-function make-curry 3) (@function Y©λ₂ 2))
+      2)
+     1))))
+
+(define (Y©λ₁ u₁) (u₁ u₁))
+
+(define (Y©λ₂ f x₁)
+  (f ((((@primitive-function curry-put! 3) 0) x₁)
+      ((((@primitive-function make-curry 3)
+         (@function Y©λ₂©λ₁ 2))
+        2)
+       1))))
+
+(define (Y©λ₂©λ₁ x₁ t₁) ((x₁ x₁) t₁))
+

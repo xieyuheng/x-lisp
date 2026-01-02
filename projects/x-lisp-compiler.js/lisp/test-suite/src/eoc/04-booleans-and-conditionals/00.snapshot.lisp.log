@@ -1,0 +1,22 @@
+;;; Input
+
+(define (_main) (println-non-void (if #t 1 2)))
+
+;;; ShrinkPass
+
+(define (_main) (println-non-void (if #t 1 2)))
+
+;;; UniquifyPass
+
+(define (_main) (println-non-void (if #t 1 2)))
+
+;;; RevealGlobalPass
+
+(define (_main)
+  ((@primitive-function println-non-void 1) (if #t 1 2)))
+
+;;; LiftLambdaPass
+
+(define (_main)
+  ((@primitive-function println-non-void 1) (if #t 1 2)))
+

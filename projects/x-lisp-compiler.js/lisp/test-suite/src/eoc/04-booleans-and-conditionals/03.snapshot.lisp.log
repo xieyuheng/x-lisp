@@ -1,0 +1,64 @@
+;;; Input
+
+(define (_main)
+  (println-non-void
+   (if
+       (and (equal? (random-dice) 1)
+            (equal? (random-dice) 2))
+     0
+     42)))
+
+;;; ShrinkPass
+
+(define (_main)
+  (println-non-void
+   (if
+       (if ((equal? (random-dice)) 1)
+         ((equal? (random-dice)) 2)
+         #f)
+     0
+     42)))
+
+;;; UniquifyPass
+
+(define (_main)
+  (println-non-void
+   (if
+       (if ((equal? (random-dice)) 1)
+         ((equal? (random-dice)) 2)
+         #f)
+     0
+     42)))
+
+;;; RevealGlobalPass
+
+(define (_main)
+  ((@primitive-function println-non-void 1)
+   (if
+       (if
+           (((@primitive-function equal? 2)
+             ((@primitive-function random-dice 0)))
+            1)
+         (((@primitive-function equal? 2)
+           ((@primitive-function random-dice 0)))
+          2)
+         #f)
+     0
+     42)))
+
+;;; LiftLambdaPass
+
+(define (_main)
+  ((@primitive-function println-non-void 1)
+   (if
+       (if
+           (((@primitive-function equal? 2)
+             ((@primitive-function random-dice 0)))
+            1)
+         (((@primitive-function equal? 2)
+           ((@primitive-function random-dice 0)))
+          2)
+         #f)
+     0
+     42)))
+

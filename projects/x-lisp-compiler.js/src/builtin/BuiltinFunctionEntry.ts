@@ -189,4 +189,7 @@ export const builtinFunctionEntries: Record<string, BuiltinFunctionEntry> = {
   "set-subset?": { arity: 2 },
   "set-disjoint?": { arity: 2 },
   "set-to-list": { arity: 1 },
+
+  // random
+  "random-dice": { arity: 0 },
 }

@@ -1,0 +1,26 @@
+;;; Input
+
+(define (_main) (println-non-void (ineg (random-dice))))
+
+;;; ShrinkPass
+
+(define (_main) (println-non-void (ineg (random-dice))))
+
+;;; UniquifyPass
+
+(define (_main) (println-non-void (ineg (random-dice))))
+
+;;; RevealGlobalPass
+
+(define (_main)
+  ((@primitive-function println-non-void 1)
+   ((@primitive-function ineg 1)
+    ((@primitive-function random-dice 0)))))
+
+;;; LiftLambdaPass
+
+(define (_main)
+  ((@primitive-function println-non-void 1)
+   ((@primitive-function ineg 1)
+    ((@primitive-function random-dice 0)))))
+
