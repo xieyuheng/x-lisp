@@ -2,7 +2,10 @@ import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Exp } from "../exp/index.ts"
 import type { Mod } from "../mod/index.ts"
 
-export type Definition = FunctionDefinition | ConstantDefinition
+export type Definition =
+  | FunctionDefinition
+  | PrimitiveDefinition
+  | ConstantDefinition
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
@@ -27,6 +30,26 @@ export function FunctionDefinition(
     parameters,
     body,
     meta,
+  }
+}
+
+export type PrimitiveDefinition = {
+  kind: "PrimitiveDefinition"
+  mod: Mod
+  name: string
+  arity: number
+}
+
+export function PrimitiveDefinition(
+  mod: Mod,
+  name: string,
+  arity: number,
+): PrimitiveDefinition {
+  return {
+    kind: "PrimitiveDefinition",
+    mod,
+    name,
+    arity,
   }
 }
 

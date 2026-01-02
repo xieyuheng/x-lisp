@@ -14,6 +14,10 @@ export function RevealGlobalPass(mod: X.Mod): void {
 
 function onDefinition(mod: X.Mod, definition: X.Definition): null {
   switch (definition.kind) {
+    case "PrimitiveDefinition": {
+      return null
+    }
+
     case "FunctionDefinition": {
       definition.body = onExp(
         mod,
@@ -56,6 +60,15 @@ function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
         variable.name,
         arity,
         { isBuiltin: false },
+        variable.meta,
+      )
+    }
+
+    case "PrimitiveDefinition": {
+      return X.FunctionRef(
+        variable.name,
+        definition.arity,
+        { isBuiltin: true },
         variable.meta,
       )
     }

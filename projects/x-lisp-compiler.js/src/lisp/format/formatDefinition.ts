@@ -10,6 +10,11 @@ export function formatDefinition(definition: Definition): string {
       return `(define (${name} ${parameters}) ${body})`
     }
 
+    case "PrimitiveDefinition": {
+      const name = definition.name
+      return `(define-primitive ${name} ${definition.arity})`
+    }
+
     case "ConstantDefinition": {
       const name = definition.name
       const body = formatBody(definition.body)

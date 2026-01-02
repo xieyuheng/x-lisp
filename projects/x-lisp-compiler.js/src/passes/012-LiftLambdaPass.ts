@@ -22,6 +22,10 @@ function onDefinition(
   definition: X.Definition,
 ): Array<X.Definition> {
   switch (definition.kind) {
+    case "PrimitiveDefinition": {
+      return [definition]
+    }
+
     case "FunctionDefinition":
     case "ConstantDefinition": {
       const lifted: Array<X.Definition> = []
