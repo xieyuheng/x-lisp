@@ -1,5 +1,4 @@
-[lisp] `builtin` -- map for name to arity
-[lisp] `builtin` -- fix `getBuiltinFunctionArity`
+[lisp] `builtinFunctionEntries`
 
 [lisp] setup test -- for pass log only
 

@@ -1,3 +1,8 @@
+import assert from "node:assert"
+import { builtinFunctionEntries } from "./index.ts"
+
 export function getBuiltinFunctionArity(name: string): number {
-  return 0
+  const entry = builtinFunctionEntries[name]
+  assert(entry)
+  return entry.arity
 }
