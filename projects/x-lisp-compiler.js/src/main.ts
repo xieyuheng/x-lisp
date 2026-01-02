@@ -3,12 +3,8 @@
 import * as cmd from "@xieyuheng/cmd.js"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
-import fs from "node:fs"
 import { fileURLToPath } from "node:url"
-import * as B from "./basic/index.ts"
-import { globals } from "./globals.ts"
 import * as X from "./lisp/index.ts"
-import * as M from "./machine/index.ts"
 import {
   loadModuleProject,
   loadProject,
@@ -48,34 +44,6 @@ router.defineHandlers({
     const mod = X.loadEntry(createUrl(file))
     Services.compileLispToPassLog(mod)
   },
-  "file:compile-to-basic": ({ args: [file] }) => {
-    const mod = X.loadEntry(createUrl(file))
-    console.log(B.prettyMod(globals.maxWidth, Services.compileXToBasic(mod)))
-  },
-  "basic:bundle": ({ args: [file] }) => {
-    const mod = B.loadEntry(createUrl(file))
-    console.log(B.prettyMod(globals.maxWidth, B.bundle(mod)))
-  },
-  "machine:transpile-to-x86-assembly": ({ args: [file] }) => {
-    const mod = M.load(createUrl(file))
-    console.log(mod)
-    const assemblyCode = M.transpileToX86Assembly(mod)
-    console.log(assemblyCode)
-  },
-  "machine:assemble-x86": ({ args: [file] }) => {
-    const mod = M.load(createUrl(file))
-    const assemblyCode = M.transpileToX86Assembly(mod)
-    const assemblyFile = file + ".x86.s"
-    fs.writeFileSync(assemblyFile, assemblyCode)
-    Services.assembleX86File(assemblyFile)
-  },
 })
 
 await router.run(process.argv.slice(2))
-
-// try {
-//   await router.run(process.argv.slice(2))
-// } catch (error) {
-//   console.log(errorReport(error))
-//   process.exit(1)
-// }

@@ -1,8 +1,6 @@
 import fs from "node:fs"
 import Path from "node:path"
-import * as B from "../basic/index.ts"
 import * as X from "../index.ts"
-import * as M from "../machine/index.ts"
 import type { Project } from "./index.ts"
 
 export function projectSourceDirectory(project: Project): string {
@@ -46,36 +44,6 @@ export function projectGetPassLogFile(
   sourceId: string,
 ): string {
   return Path.join(projectOutputDirectory(project), sourceId) + ".log"
-}
-
-export function projectGetBasicFile(
-  project: Project,
-  sourceId: string,
-): string {
-  return Path.join(
-    projectOutputDirectory(project),
-    sourceId.slice(0, -X.suffix.length) + B.suffix,
-  )
-}
-
-export function projectGetBasicBundleFile(
-  project: Project,
-  sourceId: string,
-): string {
-  return Path.join(
-    projectOutputDirectory(project),
-    sourceId.slice(0, -X.suffix.length) + ".bundle" + B.suffix,
-  )
-}
-
-export function projectGetX86MachineFile(
-  project: Project,
-  sourceId: string,
-): string {
-  return Path.join(
-    projectOutputDirectory(project),
-    sourceId.slice(0, -X.suffix.length) + ".x86" + M.suffix,
-  )
 }
 
 export function projectForEachSource(

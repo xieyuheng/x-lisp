@@ -1,7 +1,6 @@
 import { setAdd, setUnion } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import * as X from "../index.ts"
-import * as R from "../runtime/index.ts"
 
 export function RevealGlobalPass(mod: X.Mod): void {
   for (const definition of X.modOwnDefinitions(mod)) {
@@ -28,15 +27,15 @@ function onDefinition(mod: X.Mod, definition: X.Definition): null {
 }
 
 function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
-  const builtinArity = R.getBuiltinFunctionArity(variable.name)
-  if (builtinArity !== undefined) {
-    return X.Function(
-      variable.name,
-      builtinArity,
-      { isPrimitive: true },
-      variable.meta,
-    )
-  }
+  // const builtinArity = R.getBuiltinFunctionArity(variable.name)
+  // if (builtinArity !== undefined) {
+  //   return X.Function(
+  //     variable.name,
+  //     builtinArity,
+  //     { isPrimitive: true },
+  //     variable.meta,
+  //   )
+  // }
 
   const definition = X.modLookupDefinition(mod, variable.name)
   if (definition === undefined) {
