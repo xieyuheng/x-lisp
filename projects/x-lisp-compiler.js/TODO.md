@@ -1,2 +1,1 @@
-setup forth/
-setup main
+[x-lisp] review lisp
