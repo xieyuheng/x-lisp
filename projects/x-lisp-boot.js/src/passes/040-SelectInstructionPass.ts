@@ -21,7 +21,11 @@ function generateSetupFunction(mod: B.Mod): void {
   for (const definition of B.modOwnDefinitions(mod)) {
     if (definition.kind === "SetupDefinition") {
       instrs.push(
-        B.Call("_", B.FunctionRef(definition.name, 0, { isPrimitive: false }), []),
+        B.Call(
+          "_",
+          B.FunctionRef(definition.name, 0, { isPrimitive: false }),
+          [],
+        ),
       )
     }
   }

@@ -6,9 +6,7 @@ import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
-const isAny = Values.PrimitiveFunction("any?", 1, () =>
-  Values.Bool(true),
-)
+const isAny = Values.PrimitiveFunction("any?", 1, () => Values.Bool(true))
 export function applyPolymorphicWithAnythings(
   polymorphic: Values.Polymorphic,
 ): Value {

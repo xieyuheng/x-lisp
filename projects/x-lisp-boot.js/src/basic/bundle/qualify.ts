@@ -137,7 +137,10 @@ function qualifyInstr(context: BundleContext, instr: B.Instr): B.Instr {
   }
 }
 
-function qualifyFunction(context: BundleContext, fn: B.FunctionRef): B.FunctionRef {
+function qualifyFunction(
+  context: BundleContext,
+  fn: B.FunctionRef,
+): B.FunctionRef {
   if (fn.attributes.isPrimitive) {
     return fn
   } else {

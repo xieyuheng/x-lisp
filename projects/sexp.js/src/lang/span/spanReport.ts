@@ -9,7 +9,9 @@ type Line = {
 }
 
 export function spanReport(span: Span, context: string): string {
-  const lines = context.split("\n").map((content, index) => ({ index, content }))
+  const lines = context
+    .split("\n")
+    .map((content, index) => ({ index, content }))
   linesMarkUnderline(lines, span)
   const prefixMargin = linesPrefixMargin(lines)
   return lines
@@ -63,7 +65,9 @@ function formatLine(line: Line, prefixMargin: number): string {
   const prefix = leftPad(lineno.toString(), prefixMargin, " ")
   if (line.underline) {
     const emptyPrefix = leftPad("", prefixMargin, " ")
-    return `${prefix} | ${line.content}\n` + `${emptyPrefix} | ${line.underline}\n`
+    return (
+      `${prefix} | ${line.content}\n` + `${emptyPrefix} | ${line.underline}\n`
+    )
   } else {
     return `${prefix} | ${line.content}\n`
   }
