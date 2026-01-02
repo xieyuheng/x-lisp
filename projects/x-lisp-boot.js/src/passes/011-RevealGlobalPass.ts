@@ -30,7 +30,7 @@ function onDefinition(mod: X.Mod, definition: X.Definition): null {
 function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
   const builtinArity = R.getBuiltinFunctionArity(variable.name)
   if (builtinArity !== undefined) {
-    return X.Function(
+    return X.FunctionRef(
       variable.name,
       builtinArity,
       { isPrimitive: true },
@@ -49,7 +49,7 @@ function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const arity = definition.parameters.length
-      return X.Function(
+      return X.FunctionRef(
         variable.name,
         arity,
         { isPrimitive: false },
@@ -58,7 +58,7 @@ function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
     }
 
     case "ConstantDefinition": {
-      return X.Constant(variable.name, { isPrimitive: false }, variable.meta)
+      return X.ConstantRef(variable.name, { isPrimitive: false }, variable.meta)
     }
   }
 }

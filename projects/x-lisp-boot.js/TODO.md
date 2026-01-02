@@ -1,22 +1,23 @@
+[basic] rename `Function` to `FunctionRef` -- again
+
 # fix the use of builtin
 
-[basic-lisp.js] `declare-function` instead of `define-primitive-function`
-[x-lisp-boot.js] setup `builtin/` -- map from x-lisp function to c function -- map name to name and arity
-[x-lisp-boot.js] generate `declare-function` in basic-lisp.js
-[basic-lisp.js] remove `builtin/`
+[basic] `declare-function` instead of `define-primitive-function`
+[lisp] setup `builtin/` -- map from x-lisp function to c function -- map name to name and arity
+[lisp] generate `declare-function` in basic
+[basic] remove `builtin/`
 
 # fix operand of basic-lisp
 
-[basic-lisp.js] should have ADT `Operand` instead of just variable name
+[basic] should have ADT `Operand` instead of just variable name
 
 # global label (function and variable) vs. local label
 
-[machine-lisp.js] rename `Label` to `LocalLabel`
-[machine-lisp.js] `Label` as global label
-[x-lisp-boot.js] `040-SelectInstructionPass` -- `selectFunctionLabel` & `selectAddressLabel` -- use `hasBuiltinFunction`
-[basic-lisp.js] `qualifyFunction` & `qualifyAddress` -- use `hasBuiltinFunction`
-[basic-lisp.js] rename `Function` to `FunctionRef` -- again
-[basic-lisp.js] `FunctionRef` and `Address` have not `attributes`
+[machine] rename `Label` to `LocalLabel`
+[machine] `Label` as global label
+[lisp] `040-SelectInstructionPass` -- `selectFunctionLabel` & `selectAddressLabel` -- use `hasBuiltinFunction`
+[basic] `qualifyFunction` & `qualifyAddress` -- use `hasBuiltinFunction`
+[basic] `FunctionRef` and `Address` have not `attributes`
 
 # scan call stack
 
@@ -40,9 +41,9 @@ as the current design, every builtin function must be callable from x-lisp.
 [runtime.c] `x_gc_save_registers` -- function written in assembly
 [runtime.c] `x_gc_collect` -- call `x_print_stack_trace`
 
-[x-lisp-boot.js] `090-PrologAndEpilogPass` -- prolog jump to first block instead of `body`
+[lisp] `090-PrologAndEpilogPass` -- prolog jump to first block instead of `body`
 
-[basic-lisp.js] add `gc-check` and `gc-collect` block to every function
+[basic] add `gc-check` and `gc-collect` block to every function
 
 - `gc-check` -- call `x_gc_required_p`
 
@@ -59,7 +60,7 @@ as the current design, every builtin function must be callable from x-lisp.
 
 # later
 
-[x-lisp-boot.js] `030-ExplicateControlPass` -- compile constant to non-lazy setup code
+[lisp] `030-ExplicateControlPass` -- compile constant to non-lazy setup code
 
 - if we can ensure all function setup runs before constant setup
 
@@ -78,11 +79,11 @@ x_random_float
 
 # maybe -- about literal curry
 
-[x-lisp-boot.js] add `Curry` back to `Exp` -- fix all passes
+[lisp] add `Curry` back to `Exp` -- fix all passes
 
 - because make-curry might be hard to optimize
 
-[x-lisp-boot.js] `040-SelectInstructionPass` -- `selectLiteral` -- handle curry
+[lisp] `040-SelectInstructionPass` -- `selectLiteral` -- handle curry
 
 - but it will be not symmetrical to `(literal (@function ...))`,
   which is compiled to variable reference.

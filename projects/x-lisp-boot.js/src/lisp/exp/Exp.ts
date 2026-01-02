@@ -4,8 +4,8 @@ import type { Atom } from "./Atom.ts"
 export type Exp =
   | Atom
   | Var
-  | Function
-  | Constant
+  | FunctionRef
+  | ConstantRef
   | Lambda
   | ApplySugar
   | ApplyNullary
@@ -33,7 +33,7 @@ export function Var(name: string, meta?: Meta): Var {
   }
 }
 
-export type Function = {
+export type FunctionRef = {
   kind: "Function"
   name: string
   arity: number
@@ -43,14 +43,14 @@ export type Function = {
   meta?: Meta
 }
 
-export function Function(
+export function FunctionRef(
   name: string,
   arity: number,
   attributes: {
     isPrimitive: boolean
   },
   meta?: Meta,
-): Function {
+): FunctionRef {
   return {
     kind: "Function",
     name,
@@ -60,7 +60,7 @@ export function Function(
   }
 }
 
-export type Constant = {
+export type ConstantRef = {
   kind: "Constant"
   name: string
   attributes: {
@@ -69,13 +69,13 @@ export type Constant = {
   meta?: Meta
 }
 
-export function Constant(
+export function ConstantRef(
   name: string,
   attributes: {
     isPrimitive: boolean
   },
   meta?: Meta,
-): Constant {
+): ConstantRef {
   return {
     kind: "Constant",
     name,
