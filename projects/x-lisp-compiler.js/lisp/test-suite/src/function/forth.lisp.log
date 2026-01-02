@@ -52,34 +52,35 @@
 (define (identity x) x)
 
 (define (main)
-  (@let1 f₁ (@function identity 1)
-    (@let1 g₁ ((@function dup 1) (@function identity 1))
-      ((@primitive-function println 1) ((g₁ f₁) f₁)))))
+  (@let1 f₁ (@function-ref identity 1)
+    (@let1 g₁
+        ((@function-ref dup 1) (@function-ref identity 1))
+      ((@builtin-function-ref println 1) ((g₁ f₁) f₁)))))
 
 ;;; LiftLambdaPass
 
 (define (swap f x y) ((f y) x))
 
 (define (drop f)
-  ((((@primitive-function curry-put! 3) 0) f)
-   ((((@primitive-function make-curry 3)
-      (@function drop©λ₁ 2))
+  ((((@builtin-function-ref curry-put! 3) 0) f)
+   ((((@builtin-function-ref make-curry 3)
+      (@function-ref drop©λ₁ 2))
      2)
     1)))
 
 (define (drop©λ₁ f dropped₁)
-  ((((@primitive-function curry-put! 3) 0) f)
-   ((((@primitive-function make-curry 3)
-      (@function drop©λ₁©λ₁ 2))
+  ((((@builtin-function-ref curry-put! 3) 0) f)
+   ((((@builtin-function-ref make-curry 3)
+      (@function-ref drop©λ₁©λ₁ 2))
      2)
     1)))
 
 (define (drop©λ₁©λ₁ f x₁) (f x₁))
 
 (define (dup f)
-  ((((@primitive-function curry-put! 3) 0) f)
-   ((((@primitive-function make-curry 3)
-      (@function dup©λ₁ 2))
+  ((((@builtin-function-ref curry-put! 3) 0) f)
+   ((((@builtin-function-ref make-curry 3)
+      (@function-ref dup©λ₁ 2))
      2)
     1)))
 
@@ -88,7 +89,8 @@
 (define (identity x) x)
 
 (define (main)
-  (@let1 f₁ (@function identity 1)
-    (@let1 g₁ ((@function dup 1) (@function identity 1))
-      ((@primitive-function println 1) ((g₁ f₁) f₁)))))
+  (@let1 f₁ (@function-ref identity 1)
+    (@let1 g₁
+        ((@function-ref dup 1) (@function-ref identity 1))
+      ((@builtin-function-ref println 1) ((g₁ f₁) f₁)))))
 

@@ -38,7 +38,7 @@ export type FunctionRef = {
   name: string
   arity: number
   attributes: {
-    isPrimitive: boolean
+    isBuiltin: boolean
   }
   meta?: Meta
 }
@@ -47,7 +47,7 @@ export function FunctionRef(
   name: string,
   arity: number,
   attributes: {
-    isPrimitive: boolean
+    isBuiltin: boolean
   },
   meta?: Meta,
 ): FunctionRef {
@@ -64,7 +64,7 @@ export type ConstantRef = {
   kind: "ConstantRef"
   name: string
   attributes: {
-    isPrimitive: boolean
+    isBuiltin: boolean
   }
   meta?: Meta
 }
@@ -72,7 +72,7 @@ export type ConstantRef = {
 export function ConstantRef(
   name: string,
   attributes: {
-    isPrimitive: boolean
+    isBuiltin: boolean
   },
   meta?: Meta,
 ): ConstantRef {

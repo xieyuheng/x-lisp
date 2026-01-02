@@ -36,7 +36,7 @@ function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
     return X.FunctionRef(
       variable.name,
       builtinArity,
-      { isPrimitive: true },
+      { isBuiltin: true },
       variable.meta,
     )
   }
@@ -55,13 +55,13 @@ function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
       return X.FunctionRef(
         variable.name,
         arity,
-        { isPrimitive: false },
+        { isBuiltin: false },
         variable.meta,
       )
     }
 
     case "ConstantDefinition": {
-      return X.ConstantRef(variable.name, { isPrimitive: false }, variable.meta)
+      return X.ConstantRef(variable.name, { isBuiltin: false }, variable.meta)
     }
   }
 }

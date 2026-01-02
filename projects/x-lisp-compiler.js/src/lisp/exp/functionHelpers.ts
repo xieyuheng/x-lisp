@@ -3,13 +3,13 @@ import { type Exp } from "../exp/index.ts"
 
 export function makeCurry(target: Exp, arity: number, args: Array<Exp>): Exp {
   let result = Exps.desugarApply(
-    Exps.FunctionRef("make-curry", 3, { isPrimitive: true }),
+    Exps.FunctionRef("make-curry", 3, { isBuiltin: true }),
     [target, Exps.Int(BigInt(arity)), Exps.Int(BigInt(args.length))],
   )
 
   for (const [index, arg] of args.entries()) {
     result = Exps.desugarApply(
-      Exps.FunctionRef("curry-put!", 3, { isPrimitive: true }),
+      Exps.FunctionRef("curry-put!", 3, { isBuiltin: true }),
       [Exps.Int(BigInt(index)), arg, result],
     )
   }

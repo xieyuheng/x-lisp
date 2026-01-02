@@ -67,7 +67,7 @@ function onExp(state: State, exp: X.Exp): X.Exp {
       )
 
       return X.makeCurry(
-        X.FunctionRef(newFunctionName, arity, { isPrimitive: false }),
+        X.FunctionRef(newFunctionName, arity, { isBuiltin: false }),
         arity,
         freeNames.map((name) => X.Var(name)),
       )

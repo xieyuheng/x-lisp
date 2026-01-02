@@ -13,14 +13,14 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@primitive-function println 1)
-   ((@primitive-function ineg 1)
-    ((@primitive-function random-dice 0)))))
+  ((@builtin-function-ref println 1)
+   ((@builtin-function-ref ineg 1)
+    ((@builtin-function-ref random-dice 0)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@primitive-function println 1)
-   ((@primitive-function ineg 1)
-    ((@primitive-function random-dice 0)))))
+  ((@builtin-function-ref println 1)
+   ((@builtin-function-ref ineg 1)
+    ((@builtin-function-ref random-dice 0)))))
 

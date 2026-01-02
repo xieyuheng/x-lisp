@@ -15,18 +15,18 @@ export function formatExp(exp: Exp): string {
     }
 
     case "FunctionRef": {
-      if (exp.attributes.isPrimitive) {
-        return `(@primitive-function ${exp.name} ${exp.arity})`
+      if (exp.attributes.isBuiltin) {
+        return `(@builtin-function-ref ${exp.name} ${exp.arity})`
       } else {
-        return `(@function ${exp.name} ${exp.arity})`
+        return `(@function-ref ${exp.name} ${exp.arity})`
       }
     }
 
     case "ConstantRef": {
-      if (exp.attributes.isPrimitive) {
-        return `(@primitive-constant ${exp.name})`
+      if (exp.attributes.isBuiltin) {
+        return `(@primitive-constant-ref ${exp.name})`
       } else {
-        return `(@constant ${exp.name})`
+        return `(@constant-ref ${exp.name})`
       }
     }
 
