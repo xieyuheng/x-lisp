@@ -42,19 +42,11 @@ function revealGlobalVariable(mod: L.Mod, variable: L.Var): L.Exp {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const arity = definition.parameters.length
-      return L.FunctionRef(
-        variable.name,
-        arity,
-        variable.meta,
-      )
+      return L.FunctionRef(variable.name, arity, variable.meta)
     }
 
     case "PrimitiveDefinition": {
-      return L.PrimitiveRef(
-        variable.name,
-        definition.arity,
-        variable.meta,
-      )
+      return L.PrimitiveRef(variable.name, definition.arity, variable.meta)
     }
 
     case "ConstantDefinition": {
@@ -93,7 +85,7 @@ function onExp(mod: L.Mod, boundNames: Set<string>, exp: L.Exp): L.Exp {
     case "Apply": {
       return L.Apply(
         onExp(mod, boundNames, exp.target),
-        exp.args.map(arg => onExp(mod, boundNames, arg)),
+        exp.args.map((arg) => onExp(mod, boundNames, arg)),
         exp.meta,
       )
     }

@@ -71,17 +71,22 @@ function onExp(state: State, exp: L.Exp): L.Exp {
         ),
       )
 
-      return L.makeCurry(
-        L.FunctionRef(newFunctionName, arity,),
-        arity,
-        freeNames.map((name) => L.Var(name)),
-      )
+      if (freeNames.length == 0) {
+        return L.FunctionRef(newFunctionName, arity)
+      } else {
+        return L.Apply(
+          L.FunctionRef(newFunctionName, arity),
+          freeNames.map((name) => L.Var(name)),
+        )
+      }
     }
 
     case "Apply": {
-      return L.Apply(onExp(state, exp.target),
-        exp.args.map(arg => onExp(state, arg)),
-        exp.meta)
+      return L.Apply(
+        onExp(state, exp.target),
+        exp.args.map((arg) => onExp(state, arg)),
+        exp.meta,
+      )
     }
 
     case "Let1": {

@@ -61,34 +61,14 @@
 
 (define (swap f x y) (f y x))
 
-(define (drop f)
-  ((@primitive-ref curry-put! 3)
-   0
-   f
-   ((@primitive-ref make-curry 3)
-    (@function-ref drop©λ₁ 2)
-    2
-    1)))
+(define (drop f) ((@function-ref drop©λ₁ 2) f))
 
 (define (drop©λ₁ f dropped₁)
-  ((@primitive-ref curry-put! 3)
-   0
-   f
-   ((@primitive-ref make-curry 3)
-    (@function-ref drop©λ₁©λ₁ 2)
-    2
-    1)))
+  ((@function-ref drop©λ₁©λ₁ 2) f))
 
 (define (drop©λ₁©λ₁ f x₁) (f x₁))
 
-(define (dup f)
-  ((@primitive-ref curry-put! 3)
-   0
-   f
-   ((@primitive-ref make-curry 3)
-    (@function-ref dup©λ₁ 2)
-    2
-    1)))
+(define (dup f) ((@function-ref dup©λ₁ 2) f))
 
 (define (dup©λ₁ f x₁) (f x₁ x₁))
 

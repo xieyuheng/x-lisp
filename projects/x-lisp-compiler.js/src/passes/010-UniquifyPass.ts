@@ -61,7 +61,7 @@ function onExp(
     case "Apply": {
       return L.Apply(
         onExp(nameCounts, nameTable, exp.target),
-        exp.args.map(arg => onExp(nameCounts, nameTable, arg)),
+        exp.args.map((arg) => onExp(nameCounts, nameTable, arg)),
         exp.meta,
       )
     }

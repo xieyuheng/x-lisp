@@ -78,10 +78,7 @@ export type ConstantRef = {
   meta?: Meta
 }
 
-export function ConstantRef(
-  name: string,
-  meta?: Meta,
-): ConstantRef {
+export function ConstantRef(name: string, meta?: Meta): ConstantRef {
   return {
     kind: "ConstantRef",
     name,
@@ -116,11 +113,7 @@ export type Apply = {
   meta?: Meta
 }
 
-export function Apply(
-  target: Exp,
-  args: Array<Exp>,
-  meta?: Meta,
-): Apply {
+export function Apply(target: Exp, args: Array<Exp>, meta?: Meta): Apply {
   return {
     kind: "Apply",
     target,
