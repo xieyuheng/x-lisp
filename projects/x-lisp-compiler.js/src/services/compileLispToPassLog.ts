@@ -13,8 +13,6 @@ export function compileLispToPassLog(mod: X.Mod, logFile?: string): void {
   logXMod("RevealGlobalPass", mod, logFile)
   Passes.LiftLambdaPass(mod)
   logXMod("LiftLambdaPass", mod, logFile)
-  Passes.UnnestOperandPass(mod)
-  logXMod("UnnestOperandPass", mod, logFile)
 }
 
 function logXMod(tag: string, mod: X.Mod, logFile?: string): void {
