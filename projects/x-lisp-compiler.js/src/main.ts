@@ -4,7 +4,7 @@ import * as cmd from "@xieyuheng/cmd.js"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import { fileURLToPath } from "node:url"
-import * as X from "./lisp/index.ts"
+import * as L from "./lisp/index.ts"
 import {
   loadModuleProject,
   loadProject,
@@ -37,7 +37,7 @@ router.defineHandlers({
   "project:clean": ({ options }) =>
     projectClean(loadProject(options["--config"])),
   "file:compile-to-pass-log": ({ args: [file] }) => {
-    const mod = X.loadEntry(createUrl(file))
+    const mod = L.loadEntry(createUrl(file))
     Services.compileLispToPassLog(mod)
   },
 })

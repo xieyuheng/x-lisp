@@ -7,7 +7,7 @@ import fs from "node:fs"
 import { fileURLToPath } from "node:url"
 import * as B from "./basic/index.ts"
 import { globals } from "./globals.ts"
-import * as X from "./lisp/index.ts"
+import * as L from "./lisp/index.ts"
 import * as M from "./machine/index.ts"
 import {
   loadModuleProject,
@@ -45,11 +45,11 @@ router.defineHandlers({
   "project:clean": ({ options }) =>
     projectClean(loadProject(options["--config"])),
   "file:compile-to-pass-log": ({ args: [file] }) => {
-    const mod = X.loadEntry(createUrl(file))
+    const mod = L.loadEntry(createUrl(file))
     Services.compileLispToPassLog(mod)
   },
   "file:compile-to-basic": ({ args: [file] }) => {
-    const mod = X.loadEntry(createUrl(file))
+    const mod = L.loadEntry(createUrl(file))
     console.log(B.prettyMod(globals.maxWidth, Services.compileXToBasic(mod)))
   },
   "basic:bundle": ({ args: [file] }) => {

@@ -1,6 +1,6 @@
 import fs from "node:fs"
 import Path from "node:path"
-import * as X from "../index.ts"
+import * as L from "../index.ts"
 import type { Project } from "./index.ts"
 
 export function projectSourceDirectory(project: Project): string {
@@ -29,7 +29,7 @@ export function projectSourceIds(project: Project): Array<string> {
       encoding: "utf8",
       recursive: true,
     })
-    .filter((file) => file.endsWith(X.suffix))
+    .filter((file) => file.endsWith(L.suffix))
 }
 
 export function projectGetSourceFile(

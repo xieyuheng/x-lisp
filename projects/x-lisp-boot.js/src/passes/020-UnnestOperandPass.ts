@@ -1,9 +1,9 @@
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
-import * as X from "../index.ts"
+import * as L from "../index.ts"
 
-export function UnnestOperandPass(mod: X.Mod): void {
-  for (const definition of X.modOwnDefinitions(mod)) {
+export function UnnestOperandPass(mod: L.Mod): void {
+  for (const definition of L.modOwnDefinitions(mod)) {
     onDefinition(definition)
   }
 }
@@ -12,7 +12,7 @@ type State = {
   freshNameCount: number
 }
 
-function onDefinition(definition: X.Definition): null {
+function onDefinition(definition: L.Definition): null {
   switch (definition.kind) {
     case "FunctionDefinition":
     case "ConstantDefinition": {
@@ -29,7 +29,7 @@ function generateFreshName(state: State): string {
   return `_${subscript}`
 }
 
-function onExp(state: State, exp: X.Exp): X.Exp {
+function onExp(state: State, exp: L.Exp): L.Exp {
   switch (exp.kind) {
     case "Var": {
       return exp
@@ -51,7 +51,7 @@ function onExp(state: State, exp: X.Exp): X.Exp {
 
     case "ApplyNullary": {
       const [targetEntries, newTarget] = forVar(state, exp.target)
-      return prependLets(targetEntries, X.ApplyNullary(newTarget, exp.meta))
+      return prependLets(targetEntries, L.ApplyNullary(newTarget, exp.meta))
     }
 
     case "Apply": {
@@ -59,7 +59,7 @@ function onExp(state: State, exp: X.Exp): X.Exp {
       const [argEntries, newArg] = forVar(state, exp.arg)
       return prependLets(
         [...targetEntries, ...argEntries],
-        X.Apply(newTarget, newArg, exp.meta),
+        L.Apply(newTarget, newArg, exp.meta),
       )
     }
 
@@ -67,7 +67,7 @@ function onExp(state: State, exp: X.Exp): X.Exp {
       const [conditionEntries, newCondition] = forVar(state, exp.condition)
       return prependLets(
         conditionEntries,
-        X.If(
+        L.If(
           newCondition,
           onExp(state, exp.consequent),
           onExp(state, exp.alternative),
@@ -77,7 +77,7 @@ function onExp(state: State, exp: X.Exp): X.Exp {
     }
 
     case "Let1": {
-      return X.Let1(
+      return L.Let1(
         exp.name,
         onExp(state, exp.rhs),
         onExp(state, exp.body),
@@ -87,25 +87,25 @@ function onExp(state: State, exp: X.Exp): X.Exp {
 
     default: {
       let message = `[UnnestOperandPass] unhandled exp`
-      message += `\n  exp: ${X.formatExp(exp)}`
+      message += `\n  exp: ${L.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }
 }
 
-function prependLets(entries: Array<Entry>, exp: X.Exp): X.Exp {
+function prependLets(entries: Array<Entry>, exp: L.Exp): L.Exp {
   if (entries.length === 0) {
     return exp
   }
 
   const [[name, rhs], ...restEntries] = entries
-  return X.Let1(name, rhs, prependLets(restEntries, exp))
+  return L.Let1(name, rhs, prependLets(restEntries, exp))
 }
 
-type Entry = [string, X.Exp]
+type Entry = [string, L.Exp]
 
-function forVar(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
+function forVar(state: State, exp: L.Exp): [Array<Entry>, L.Exp] {
   switch (exp.kind) {
     case "Var": {
       return [[], exp]
@@ -120,24 +120,24 @@ function forVar(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
     case "ConstantRef": {
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, exp]
-      return [[entry], X.Var(freshName, exp.meta)]
+      return [[entry], L.Var(freshName, exp.meta)]
     }
 
     case "ApplyNullary": {
       const [targetEntries, newTarget] = forVar(state, exp.target)
       const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, X.ApplyNullary(newTarget, exp.meta)]
-      return [[...targetEntries, entry], X.Var(freshName, exp.meta)]
+      const entry: Entry = [freshName, L.ApplyNullary(newTarget, exp.meta)]
+      return [[...targetEntries, entry], L.Var(freshName, exp.meta)]
     }
 
     case "Apply": {
       const [targetEntries, newTarget] = forVar(state, exp.target)
       const [argEntries, newArg] = forVar(state, exp.arg)
       const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, X.Apply(newTarget, newArg, exp.meta)]
+      const entry: Entry = [freshName, L.Apply(newTarget, newArg, exp.meta)]
       return [
         [...targetEntries, ...argEntries, entry],
-        X.Var(freshName, exp.meta),
+        L.Var(freshName, exp.meta),
       ]
     }
 
@@ -150,12 +150,12 @@ function forVar(state: State, exp: X.Exp): [Array<Entry>, X.Exp] {
     case "If": {
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, onExp(state, exp)]
-      return [[entry], X.Var(freshName, exp.meta)]
+      return [[entry], L.Var(freshName, exp.meta)]
     }
 
     default: {
       let message = `[UnnestOperandPass] unhandled exp`
-      message += `\n  exp: ${X.formatExp(exp)}`
+      message += `\n  exp: ${L.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }

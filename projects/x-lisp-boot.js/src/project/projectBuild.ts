@@ -1,7 +1,7 @@
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import * as B from "../basic/index.ts"
 import { globals } from "../globals.ts"
-import * as X from "../index.ts"
+import * as L from "../index.ts"
 import * as M from "../machine/index.ts"
 import * as Passes from "../passes/index.ts"
 import * as Services from "../services/index.ts"
@@ -32,7 +32,7 @@ function buildPassLog(project: Project, id: string): void {
   const inputFile = projectGetSourceFile(project, id)
   const outputFile = projectGetPassLogFile(project, id)
   logFile("pass-log", outputFile)
-  const mod = X.loadEntry(createUrl(inputFile))
+  const mod = L.loadEntry(createUrl(inputFile))
   writeFile(outputFile, "")
   Services.compileLispToPassLog(mod, outputFile)
 }
@@ -41,7 +41,7 @@ function buildBasic(project: Project, id: string): void {
   const inputFile = projectGetSourceFile(project, id)
   const outputFile = projectGetBasicFile(project, id)
   logFile("basic", outputFile)
-  const mod = X.loadEntry(createUrl(inputFile))
+  const mod = L.loadEntry(createUrl(inputFile))
   const basicMod = Services.compileXToBasic(mod)
   const outputText = B.prettyMod(globals.maxWidth, basicMod)
   writeFile(outputFile, outputText + "\n")

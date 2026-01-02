@@ -4,15 +4,15 @@ import {
   getBuiltinFunctionArity,
   hasBuiltinFunction,
 } from "../builtin/index.ts"
-import * as X from "../index.ts"
+import * as L from "../index.ts"
 
-export function RevealGlobalPass(mod: X.Mod): void {
-  for (const definition of X.modOwnDefinitions(mod)) {
+export function RevealGlobalPass(mod: L.Mod): void {
+  for (const definition of L.modOwnDefinitions(mod)) {
     onDefinition(mod, definition)
   }
 }
 
-function onDefinition(mod: X.Mod, definition: X.Definition): null {
+function onDefinition(mod: L.Mod, definition: L.Definition): null {
   switch (definition.kind) {
     case "PrimitiveDefinition": {
       return null
@@ -34,10 +34,10 @@ function onDefinition(mod: X.Mod, definition: X.Definition): null {
   }
 }
 
-function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
+function revealGlobalVariable(mod: L.Mod, variable: L.Var): L.Exp {
   if (hasBuiltinFunction(variable.name)) {
     const builtinArity = getBuiltinFunctionArity(variable.name)
-    return X.FunctionRef(
+    return L.FunctionRef(
       variable.name,
       builtinArity,
       { isBuiltin: true },
@@ -45,7 +45,7 @@ function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
     )
   }
 
-  const definition = X.modLookupDefinition(mod, variable.name)
+  const definition = L.modLookupDefinition(mod, variable.name)
   if (definition === undefined) {
     let message = `[RevealGlobalPass] [revealGlobalVariable] undefined name`
     message += `\n  variable name: ${variable.name}`
@@ -56,7 +56,7 @@ function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
   switch (definition.kind) {
     case "FunctionDefinition": {
       const arity = definition.parameters.length
-      return X.FunctionRef(
+      return L.FunctionRef(
         variable.name,
         arity,
         { isBuiltin: false },
@@ -65,7 +65,7 @@ function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
     }
 
     case "PrimitiveDefinition": {
-      return X.FunctionRef(
+      return L.FunctionRef(
         variable.name,
         definition.arity,
         { isBuiltin: true },
@@ -74,12 +74,12 @@ function revealGlobalVariable(mod: X.Mod, variable: X.Var): X.Exp {
     }
 
     case "ConstantDefinition": {
-      return X.ConstantRef(variable.name, { isBuiltin: false }, variable.meta)
+      return L.ConstantRef(variable.name, { isBuiltin: false }, variable.meta)
     }
   }
 }
 
-function onExp(mod: X.Mod, boundNames: Set<string>, exp: X.Exp): X.Exp {
+function onExp(mod: L.Mod, boundNames: Set<string>, exp: L.Exp): L.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -99,7 +99,7 @@ function onExp(mod: X.Mod, boundNames: Set<string>, exp: X.Exp): X.Exp {
 
     case "Lambda": {
       const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
-      return X.Lambda(
+      return L.Lambda(
         exp.parameters,
         onExp(mod, newBoundNames, exp.body),
         exp.meta,
@@ -107,11 +107,11 @@ function onExp(mod: X.Mod, boundNames: Set<string>, exp: X.Exp): X.Exp {
     }
 
     case "ApplyNullary": {
-      return X.ApplyNullary(onExp(mod, boundNames, exp.target), exp.meta)
+      return L.ApplyNullary(onExp(mod, boundNames, exp.target), exp.meta)
     }
 
     case "Apply": {
-      return X.Apply(
+      return L.Apply(
         onExp(mod, boundNames, exp.target),
         onExp(mod, boundNames, exp.arg),
         exp.meta,
@@ -120,7 +120,7 @@ function onExp(mod: X.Mod, boundNames: Set<string>, exp: X.Exp): X.Exp {
 
     case "Let1": {
       const newBoundNames = setAdd(boundNames, exp.name)
-      return X.Let1(
+      return L.Let1(
         exp.name,
         onExp(mod, newBoundNames, exp.rhs),
         onExp(mod, newBoundNames, exp.body),
@@ -129,7 +129,7 @@ function onExp(mod: X.Mod, boundNames: Set<string>, exp: X.Exp): X.Exp {
     }
 
     case "If": {
-      return X.If(
+      return L.If(
         onExp(mod, boundNames, exp.condition),
         onExp(mod, boundNames, exp.consequent),
         onExp(mod, boundNames, exp.alternative),
@@ -139,7 +139,7 @@ function onExp(mod: X.Mod, boundNames: Set<string>, exp: X.Exp): X.Exp {
 
     default: {
       let message = `[RevealGlobalPass] unhandled exp`
-      message += `\n  exp: ${X.formatExp(exp)}`
+      message += `\n  exp: ${L.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }

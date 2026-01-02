@@ -1,30 +1,30 @@
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
-import * as X from "../index.ts"
+import * as L from "../index.ts"
 
-export function LiftLambdaPass(mod: X.Mod): void {
+export function LiftLambdaPass(mod: L.Mod): void {
   mod.definitions = new Map(
-    X.modOwnDefinitions(mod)
+    L.modOwnDefinitions(mod)
       .flatMap((definition) => onDefinition(mod, definition))
       .map((definition) => [definition.name, definition]),
   )
 }
 
 type State = {
-  mod: X.Mod
-  lifted: Array<X.Definition>
-  definition: X.Definition
+  mod: L.Mod
+  lifted: Array<L.Definition>
+  definition: L.Definition
 }
 
 function onDefinition(
-  mod: X.Mod,
-  definition: X.Definition,
-): Array<X.Definition> {
+  mod: L.Mod,
+  definition: L.Definition,
+): Array<L.Definition> {
   switch (definition.kind) {
     case "FunctionDefinition":
     case "ConstantDefinition": {
-      const lifted: Array<X.Definition> = []
+      const lifted: Array<L.Definition> = []
       const state = { mod, lifted, definition }
       definition.body = onExp(state, definition.body)
       return [
@@ -35,7 +35,7 @@ function onDefinition(
   }
 }
 
-function onExp(state: State, exp: X.Exp): X.Exp {
+function onExp(state: State, exp: L.Exp): L.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -49,7 +49,7 @@ function onExp(state: State, exp: X.Exp): X.Exp {
     }
 
     case "Lambda": {
-      const freeNames = Array.from(X.expFreeNames(new Set(), exp))
+      const freeNames = Array.from(L.expFreeNames(new Set(), exp))
       const liftedCount = state.lifted.length + 1
       const subscript = stringToSubscript(liftedCount.toString())
       const newFunctionName = `${state.definition.name}©λ${subscript}`
@@ -57,7 +57,7 @@ function onExp(state: State, exp: X.Exp): X.Exp {
       const arity = newParameters.length
       assert(exp.meta)
       state.lifted.push(
-        X.FunctionDefinition(
+        L.FunctionDefinition(
           state.mod,
           newFunctionName,
           newParameters,
@@ -66,23 +66,23 @@ function onExp(state: State, exp: X.Exp): X.Exp {
         ),
       )
 
-      return X.makeCurry(
-        X.FunctionRef(newFunctionName, arity, { isPrimitive: false }),
+      return L.makeCurry(
+        L.FunctionRef(newFunctionName, arity, { isPrimitive: false }),
         arity,
-        freeNames.map((name) => X.Var(name)),
+        freeNames.map((name) => L.Var(name)),
       )
     }
 
     case "Apply": {
-      return X.Apply(onExp(state, exp.target), onExp(state, exp.arg), exp.meta)
+      return L.Apply(onExp(state, exp.target), onExp(state, exp.arg), exp.meta)
     }
 
     case "ApplyNullary": {
-      return X.ApplyNullary(onExp(state, exp.target), exp.meta)
+      return L.ApplyNullary(onExp(state, exp.target), exp.meta)
     }
 
     case "Let1": {
-      return X.Let1(
+      return L.Let1(
         exp.name,
         onExp(state, exp.rhs),
         onExp(state, exp.body),
@@ -91,7 +91,7 @@ function onExp(state: State, exp: X.Exp): X.Exp {
     }
 
     case "If": {
-      return X.If(
+      return L.If(
         onExp(state, exp.condition),
         onExp(state, exp.consequent),
         onExp(state, exp.alternative),
@@ -101,7 +101,7 @@ function onExp(state: State, exp: X.Exp): X.Exp {
 
     default: {
       let message = `[LiftLambdaPass] unhandled exp`
-      message += `\n  exp: ${X.formatExp(exp)}`
+      message += `\n  exp: ${L.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }

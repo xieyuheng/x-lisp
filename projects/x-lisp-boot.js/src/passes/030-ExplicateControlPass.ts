@@ -1,16 +1,16 @@
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
 import * as B from "../basic/index.ts"
-import * as X from "../index.ts"
+import * as L from "../index.ts"
 
-export function ExplicateControlPass(mod: X.Mod, basicMod: B.Mod): void {
+export function ExplicateControlPass(mod: L.Mod, basicMod: B.Mod): void {
   for (const stmt of mod.stmts) {
-    if (X.isAboutModule(stmt)) {
+    if (L.isAboutModule(stmt)) {
       basicMod.stmts.push(stmt)
     }
   }
 
-  for (const definition of X.modOwnDefinitions(mod)) {
+  for (const definition of L.modOwnDefinitions(mod)) {
     for (const basicDefinition of onDefinition(basicMod, definition)) {
       basicMod.definitions.set(basicDefinition.name, basicDefinition)
     }
@@ -23,7 +23,7 @@ type State = {
 
 function onDefinition(
   basicMod: B.Mod,
-  definition: X.Definition,
+  definition: L.Definition,
 ): Array<B.Definition> {
   switch (definition.kind) {
     case "FunctionDefinition": {
@@ -38,7 +38,7 @@ function onDefinition(
 
 function onFunctionDefinition(
   basicMod: B.Mod,
-  definition: X.FunctionDefinition,
+  definition: L.FunctionDefinition,
 ): Array<B.Definition> {
   return [
     // (define-function <name> ...)
@@ -126,7 +126,7 @@ function onFunctionDefinition(
 
 function explicateFunctionDefinition(
   basicMod: B.Mod,
-  definition: X.FunctionDefinition,
+  definition: L.FunctionDefinition,
 ): B.Definition {
   const fn = B.FunctionDefinition(
     basicMod,
@@ -150,7 +150,7 @@ function explicateFunctionDefinition(
 
 function onConstantDefinition(
   basicMod: B.Mod,
-  definition: X.ConstantDefinition,
+  definition: L.ConstantDefinition,
 ): Array<B.Definition> {
   // (define <name> <body>)
 
@@ -244,7 +244,7 @@ function onConstantDefinition(
     //     (compile <body>)))
     explicateFunctionDefinition(
       basicMod,
-      X.FunctionDefinition(
+      L.FunctionDefinition(
         definition.mod,
         `${definition.name}©init-function`,
         [],
@@ -268,7 +268,7 @@ function generateLabel(
   return label
 }
 
-function expToValue(exp: X.Exp): B.Value {
+function expToValue(exp: L.Exp): B.Value {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -284,14 +284,14 @@ function expToValue(exp: X.Exp): B.Value {
 
     default: {
       let message = `[expToValue] unhandled exp`
-      message += `\n  exp: ${X.formatExp(exp)}`
+      message += `\n  exp: ${L.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
   }
 }
 
-function inTail(state: State, exp: X.Exp): Array<B.Instr> {
+function inTail(state: State, exp: L.Exp): Array<B.Instr> {
   switch (exp.kind) {
     case "Var": {
       return [B.Return(exp.name)]
@@ -309,14 +309,14 @@ function inTail(state: State, exp: X.Exp): Array<B.Instr> {
     case "Apply": {
       const name = "_↩"
       return [
-        B.Apply(name, X.varName(exp.target), X.varName(exp.arg)),
+        B.Apply(name, L.varName(exp.target), L.varName(exp.arg)),
         B.Return(name),
       ]
     }
 
     case "ApplyNullary": {
       const name = "_↩"
-      return [B.ApplyNullary(name, X.varName(exp.target)), B.Return(name)]
+      return [B.ApplyNullary(name, L.varName(exp.target)), B.Return(name)]
     }
 
     case "Let1": {
@@ -334,7 +334,7 @@ function inTail(state: State, exp: X.Exp): Array<B.Instr> {
 
     default: {
       let message = `[inTail] unhandled exp`
-      message += `\n  exp: ${X.formatExp(exp)}`
+      message += `\n  exp: ${L.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
@@ -344,7 +344,7 @@ function inTail(state: State, exp: X.Exp): Array<B.Instr> {
 function inLet1(
   state: State,
   name: string,
-  rhs: X.Exp,
+  rhs: L.Exp,
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
   switch (rhs.kind) {
@@ -367,11 +367,11 @@ function inLet1(
     }
 
     case "Apply": {
-      return [B.Apply(name, X.varName(rhs.target), X.varName(rhs.arg)), ...cont]
+      return [B.Apply(name, L.varName(rhs.target), L.varName(rhs.arg)), ...cont]
     }
 
     case "ApplyNullary": {
-      return [B.ApplyNullary(name, X.varName(rhs.target)), ...cont]
+      return [B.ApplyNullary(name, L.varName(rhs.target)), ...cont]
     }
 
     case "Let1": {
@@ -395,7 +395,7 @@ function inLet1(
 
     default: {
       let message = `[inLet1] unhandled rhs exp`
-      message += `\n  exp: ${X.formatExp(rhs)}`
+      message += `\n  exp: ${L.formatExp(rhs)}`
       if (rhs.meta) throw new S.ErrorWithMeta(message, rhs.meta)
       else throw new Error(message)
     }
@@ -404,12 +404,12 @@ function inLet1(
 
 function inIf(
   state: State,
-  condition: X.Exp,
+  condition: L.Exp,
   thenCont: Array<B.Instr>,
   elseCont: Array<B.Instr>,
 ): Array<B.Instr> {
-  if (X.isBool(condition)) {
-    return X.isTrue(condition) ? thenCont : elseCont
+  if (L.isBool(condition)) {
+    return L.isTrue(condition) ? thenCont : elseCont
   }
 
   switch (condition.kind) {
@@ -445,7 +445,7 @@ function inIf(
 
     default: {
       let message = `[inIf] unhandled condition exp`
-      message += `\n  exp: ${X.formatExp(condition)}`
+      message += `\n  exp: ${L.formatExp(condition)}`
       if (condition.meta) throw new S.ErrorWithMeta(message, condition.meta)
       else throw new Error(message)
     }

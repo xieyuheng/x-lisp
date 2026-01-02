@@ -1,9 +1,9 @@
 import fs from "node:fs"
 import { globals } from "../globals.ts"
-import * as X from "../index.ts"
+import * as L from "../index.ts"
 import * as Passes from "../passes/index.ts"
 
-export function compileLispToPassLog(mod: X.Mod, logFile?: string): void {
+export function compileLispToPassLog(mod: L.Mod, logFile?: string): void {
   logXMod("Input", mod, logFile)
   Passes.ShrinkPass(mod)
   logXMod("ShrinkPass", mod, logFile)
@@ -15,8 +15,8 @@ export function compileLispToPassLog(mod: X.Mod, logFile?: string): void {
   logXMod("LiftLambdaPass", mod, logFile)
 }
 
-function logXMod(tag: string, mod: X.Mod, logFile?: string): void {
-  logCode(tag, X.prettyMod(globals.maxWidth, mod), logFile)
+function logXMod(tag: string, mod: L.Mod, logFile?: string): void {
+  logCode(tag, L.prettyMod(globals.maxWidth, mod), logFile)
 }
 
 function logCode(tag: string, code: string, logFile?: string): void {

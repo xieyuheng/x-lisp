@@ -1,13 +1,13 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as X from "../index.ts"
+import * as L from "../index.ts"
 
-export function ShrinkPass(mod: X.Mod): void {
-  for (const definition of X.modOwnDefinitions(mod)) {
+export function ShrinkPass(mod: L.Mod): void {
+  for (const definition of L.modOwnDefinitions(mod)) {
     onDefinition(definition)
   }
 }
 
-function onDefinition(definition: X.Definition): null {
+function onDefinition(definition: L.Definition): null {
   switch (definition.kind) {
     case "PrimitiveDefinition": {
       return null
@@ -21,7 +21,7 @@ function onDefinition(definition: X.Definition): null {
   }
 }
 
-function onExp(exp: X.Exp): X.Exp {
+function onExp(exp: L.Exp): L.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -36,11 +36,11 @@ function onExp(exp: X.Exp): X.Exp {
     }
 
     case "Lambda": {
-      return X.Lambda(exp.parameters, onExp(exp.body), exp.meta)
+      return L.Lambda(exp.parameters, onExp(exp.body), exp.meta)
     }
 
     case "ApplySugar": {
-      return X.desugarApply(
+      return L.desugarApply(
         onExp(exp.target),
         exp.args.map((e) => onExp(e)),
         exp.meta,
@@ -48,13 +48,13 @@ function onExp(exp: X.Exp): X.Exp {
     }
 
     case "Let1": {
-      return X.Let1(exp.name, onExp(exp.rhs), onExp(exp.body), exp.meta)
+      return L.Let1(exp.name, onExp(exp.rhs), onExp(exp.body), exp.meta)
     }
 
     case "BeginSugar": {
       if (exp.sequence.length === 0) {
         let message = `[shrink] (begin) must not be empty`
-        message += `\n  exp: ${X.formatExp(exp)}`
+        message += `\n  exp: ${L.formatExp(exp)}`
         if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
         else throw new Error(message)
       }
@@ -64,50 +64,50 @@ function onExp(exp: X.Exp): X.Exp {
         return onExp(head)
       }
 
-      const body = X.BeginSugar(rest, exp.meta)
+      const body = L.BeginSugar(rest, exp.meta)
 
       if (head.kind === "AssignSugar") {
-        return X.Let1(head.name, onExp(head.rhs), onExp(body), exp.meta)
+        return L.Let1(head.name, onExp(head.rhs), onExp(body), exp.meta)
       } else {
-        return X.Let1("_∅", onExp(head), onExp(body), head.meta)
+        return L.Let1("_∅", onExp(head), onExp(body), head.meta)
       }
     }
 
     case "AssignSugar": {
       let message = `[shrink] (=) must occur in the head of (begin)`
-      message += `\n  exp: ${X.formatExp(exp)}`
+      message += `\n  exp: ${L.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
 
     case "When": {
-      return X.If(
+      return L.If(
         onExp(exp.condition),
         onExp(exp.consequent),
-        X.Void(),
+        L.Void(),
         exp.meta,
       )
     }
 
     case "Unless": {
-      return X.If(
+      return L.If(
         onExp(exp.condition),
-        X.Void(),
+        L.Void(),
         onExp(exp.consequent),
         exp.meta,
       )
     }
 
     case "And": {
-      return X.desugarAnd(exp.exps.map(onExp), exp.meta)
+      return L.desugarAnd(exp.exps.map(onExp), exp.meta)
     }
 
     case "Or": {
-      return X.desugarOr(exp.exps.map(onExp), exp.meta)
+      return L.desugarOr(exp.exps.map(onExp), exp.meta)
     }
 
     case "If": {
-      return X.If(
+      return L.If(
         onExp(exp.condition),
         onExp(exp.consequent),
         onExp(exp.alternative),
@@ -117,7 +117,7 @@ function onExp(exp: X.Exp): X.Exp {
 
     default: {
       let message = `[ShrinkPass] unhandled exp`
-      message += `\n  exp: ${X.formatExp(exp)}`
+      message += `\n  exp: ${L.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
