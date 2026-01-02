@@ -94,10 +94,11 @@ x-lisp 的首要目标是加快新语言开发的速度。
 
 任务：
 
-- [ ] 描述 lisp 语言
+- [x] 描述 lisp 语言
 - [ ] 描述 forth 语言
 - [ ] 将 lisp 的基础部分编译到 forth
-  - [ ] lift-lambda
+  - [x] LiftLambdaPass
+  - [ ] ExplicateControlPass
 
 # 关卡 3 -- 将完整的 lisp 编译到 forth
 

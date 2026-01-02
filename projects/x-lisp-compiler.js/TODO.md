@@ -1,8 +1,20 @@
 # forth
 
+[forth] `Exp`
+[forth] `Mod`
+[forth] `Definition`
 [forth] `Stmt`
-[forth] `Word`
+
+[forth] `format`
+
+[forth] `parse`
+[forth] `load`
+
+extract `ppml.js` from `sexp.js`
+
+[forth] `pretty` -- use `ppml.js` directly
 
 # compiler
 
-[pass] passes lisp to forth
+[pass] `030-ExplicateControlPass.ts` -- to forth
+[project] compile to `.fth`
