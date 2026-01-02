@@ -1,10 +1,14 @@
 # builtin
 
 [lisp] `builtinMod` -- use `definePrimitive` -- instead of just a record of entries
+[lisp] `importBuiltinMod`
+
 [lisp] `Exp` -- add `PrimitiveRef`
 [lisp] `Exp` -- remove `attribute` from `FunctionRef` and `ConstantRef`
 
 - fix `revealGlobalVariable`
+
+[lisp] `formatMod` -- should not print `PrimitiveDefinition`
 
 # apply
 
