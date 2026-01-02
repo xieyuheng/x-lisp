@@ -80,7 +80,6 @@ make_builtin_mod(void) {
     define_primitive_1(mod, "write", x_write);
     define_primitive_1(mod, "print", x_print);
     define_primitive_1(mod, "println", x_println);
-    define_primitive_1(mod, "println-non-void", x_println_non_void);
 
     // system
 

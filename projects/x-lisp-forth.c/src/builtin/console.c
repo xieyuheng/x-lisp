@@ -24,12 +24,3 @@ x_println(value_t x) {
     newline();
     return x_void;
 }
-
-value_t
-x_println_non_void(value_t x) {
-    if (x != x_void) {
-        print(x);
-    }
-
-    return x_void;
-}
