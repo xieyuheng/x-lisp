@@ -6,7 +6,7 @@ settings:
 
 importers:
 
-  projects/binary.js:
+  projects/bin.js:
     dependencies:
       '@xieyuheng/cmd.js':
         specifier: workspace:*

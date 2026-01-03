@@ -1,6 +1,6 @@
-# binary
+# bin
 
-[binary] `encode`
+[bin] `encode`
 
 # elf
 

@@ -1,4 +1,4 @@
-import * as Bin from "../binary/index.ts"
+import * as Bin from "../bin/index.ts"
 import type { Elf } from "./Elf.ts"
 import { ElfSchema } from "./ElfSchema.ts"
 

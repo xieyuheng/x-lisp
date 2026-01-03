@@ -1,4 +1,4 @@
-import * as Bin from "../binary/index.ts"
+import * as Bin from "../bin/index.ts"
 
 // references:
 // - /usr/include/elf.h

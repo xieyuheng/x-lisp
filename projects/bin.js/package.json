@@ -1,5 +1,5 @@
 {
-  "name": "@xieyuheng/binary.js",
+  "name": "@xieyuheng/bin.js",
   "version": "0.1.7",
   "repository": "github:xieyuheng/x-lisp",
   "license": "GPL-3.0-or-later",
@@ -9,7 +9,7 @@
     "lib"
   ],
   "bin": {
-    "binary.js": "lib/main.js"
+    "bin.js": "lib/main.js"
   },
   "scripts": {
     "clean": "rm -rf lib",
