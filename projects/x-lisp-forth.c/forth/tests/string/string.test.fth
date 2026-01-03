@@ -1,4 +1,4 @@
-@def main
+@define-function main
   "" string? @assert
   "abc" string? @assert
 

@@ -1,4 +1,4 @@
-@def main
+@define-function main
   make-list ( list )
   1 list list-push! @drop
   2 list list-push! @drop

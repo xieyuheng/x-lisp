@@ -1,3 +1,3 @@
 @export one @end
 
-@def one 1 @end
+@define-function one 1 @end

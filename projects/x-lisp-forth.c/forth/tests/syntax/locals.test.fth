@@ -1,12 +1,12 @@
-@def square ( x )
+@define-function square ( x )
   x x imul
 @end
 
-@def my-isub ( x y )
+@define-function my-isub ( x y )
   x y isub
 @end
 
-@def main
+@define-function main
   2 square 4 @assert-equal
   2 square square 16 @assert-equal
 

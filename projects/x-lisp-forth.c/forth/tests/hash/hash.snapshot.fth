@@ -1,4 +1,4 @@
-@def main
+@define-function main
   make-hash ( hash )
   hash println @drop
 

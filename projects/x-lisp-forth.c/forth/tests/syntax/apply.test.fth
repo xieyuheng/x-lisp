@@ -1,12 +1,12 @@
-@def my-iadd ( x y )
+@define-function my-iadd ( x y )
   x y iadd
 @end
 
-@def my-isub ( x y )
+@define-function my-isub ( x y )
   x y isub
 @end
 
-@def test
+@define-function test
   1 @ref iadd 1 @apply ( iadd1 )
   2 iadd1 1 @apply
   3 @assert-equal
@@ -19,6 +19,6 @@
   false @assert
 @end
 
-@def main
+@define-function main
   test 1 @assert-equal
 @end

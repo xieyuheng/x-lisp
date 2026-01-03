@@ -1,18 +1,18 @@
-@def iadd1
+@define-function iadd1
   1 iadd
 @end
 
-@def f1
+@define-function f1
   @tail-call iadd1
   false @assert
 @end
 
-@def f2
+@define-function f2
   1 @tail-call iadd1
   false @assert
 @end
 
-@def main
+@define-function main
   1 f1 2 @assert-equal
   1 f2 2 @assert-equal
 @end

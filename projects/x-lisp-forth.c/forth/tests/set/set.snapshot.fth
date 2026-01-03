@@ -1,4 +1,4 @@
-@def main
+@define-function main
   make-set ( set )
   set println @drop
 

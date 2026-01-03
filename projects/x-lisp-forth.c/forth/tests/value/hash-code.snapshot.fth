@@ -1,10 +1,10 @@
-@def snapshot ( value )
+@define-function snapshot ( value )
   value print @drop
   " => " write @drop
   value hash-code println @drop
 @end
 
-@def main
+@define-function main
   1 snapshot
 
   1.0 snapshot
@@ -49,7 +49,7 @@
   hash-nested-2 snapshot
 @end
 
-@def list-1
+@define-function list-1
   make-list ( list )
   1 list list-push! @drop
   2 list list-push! @drop
@@ -57,7 +57,7 @@
   list
 @end
 
-@def list-2
+@define-function list-2
   make-list ( list )
   'a list list-push! @drop
   'b list list-push! @drop
@@ -65,7 +65,7 @@
   list
 @end
 
-@def list-3
+@define-function list-3
   make-list ( list )
   "a" list list-push! @drop
   "b" list list-push! @drop
@@ -73,7 +73,7 @@
   list
 @end
 
-@def list-nested
+@define-function list-nested
   make-list ( list )
   list-1 list list-push! @drop
   list-2 list list-push! @drop
@@ -81,7 +81,7 @@
   list
 @end
 
-@def record-1
+@define-function record-1
   make-record ( record )
   'a 1 record record-put! @drop
   'b 2 record record-put! @drop
@@ -89,7 +89,7 @@
   record
 @end
 
-@def record-2
+@define-function record-2
   make-record ( record )
   'c 3 record record-put! @drop
   'b 2 record record-put! @drop
@@ -97,7 +97,7 @@
   record
 @end
 
-@def record-3
+@define-function record-3
   make-record ( record )
   'a 1 record record-put! @drop
   'b 2 record record-put! @drop
@@ -106,7 +106,7 @@
   record
 @end
 
-@def record-nested
+@define-function record-nested
   make-record ( record )
   'a record-1 record record-put! @drop
   'b record-2 record record-put! @drop
@@ -114,7 +114,7 @@
   record
 @end
 
-@def set-1
+@define-function set-1
   make-set ( set )
   1 set set-add! @drop
   2 set set-add! @drop
@@ -122,7 +122,7 @@
   set
 @end
 
-@def set-2
+@define-function set-2
   make-set ( set )
   3 set set-add! @drop
   2 set set-add! @drop
@@ -130,7 +130,7 @@
   set
 @end
 
-@def set-3
+@define-function set-3
   make-set ( set )
   "a" set set-add! @drop
   "b" set set-add! @drop
@@ -138,7 +138,7 @@
   set
 @end
 
-@def set-nested
+@define-function set-nested
   make-set ( set )
   set-1 set set-add! @drop
   set-2 set set-add! @drop
@@ -146,7 +146,7 @@
   set
 @end
 
-@def hash-1
+@define-function hash-1
   make-hash ( hash )
   'a 1 hash hash-put! @drop
   'b 2 hash hash-put! @drop
@@ -154,7 +154,7 @@
   hash
 @end
 
-@def hash-2
+@define-function hash-2
   make-hash ( hash )
   'c 3 hash hash-put! @drop
   'b 2 hash hash-put! @drop
@@ -162,14 +162,14 @@
   hash
 @end
 
-@def hash-3
+@define-function hash-3
   make-hash ( hash )
   'a 1 hash hash-put! @drop
   'b 2 hash hash-put! @drop
   hash
 @end
 
-@def hash-nested-1
+@define-function hash-nested-1
   make-hash ( hash )
   hash-1 hash-1 hash hash-put! @drop
   hash-2 hash-2 hash hash-put! @drop
@@ -177,7 +177,7 @@
   hash
 @end
 
-@def hash-nested-2
+@define-function hash-nested-2
   make-hash ( hash )
   hash-3 hash-3 hash hash-put! @drop
   hash-2 hash-2 hash hash-put! @drop

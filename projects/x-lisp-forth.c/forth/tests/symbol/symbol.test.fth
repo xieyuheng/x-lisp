@@ -1,4 +1,4 @@
-@def main
+@define-function main
   'abc symbol? @assert
   'abc 'abc same? @assert
   'abc symbol-length 3 @assert-equal

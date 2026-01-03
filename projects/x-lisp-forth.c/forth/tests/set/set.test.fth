@@ -1,4 +1,4 @@
-@def main
+@define-function main
   make-set ( set )
   set any-set? @assert
   set set-copy set equal? @assert
@@ -54,46 +54,46 @@
   set-1 set-23 set-disjoint? @assert
 @end
 
-@def set-1
+@define-function set-1
   make-set ( set )
   1 set set-add! @drop
   set
 @end
 
-@def set-2
+@define-function set-2
   make-set ( set )
   2 set set-add! @drop
   set
 @end
 
-@def set-3
+@define-function set-3
   make-set ( set )
   3 set set-add! @drop
   set
 @end
 
-@def set-12
+@define-function set-12
   make-set ( set )
   1 set set-add! @drop
   2 set set-add! @drop
   set
 @end
 
-@def set-23
+@define-function set-23
   make-set ( set )
   2 set set-add! @drop
   3 set set-add! @drop
   set
 @end
 
-@def set-31
+@define-function set-31
   make-set ( set )
   3 set set-add! @drop
   1 set set-add! @drop
   set
 @end
 
-@def set-123
+@define-function set-123
   make-set ( set )
   1 set set-add! @drop
   2 set set-add! @drop

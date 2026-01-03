@@ -1,4 +1,4 @@
-@def main
+@define-function main
   make-record ( record )
   record println @drop
 

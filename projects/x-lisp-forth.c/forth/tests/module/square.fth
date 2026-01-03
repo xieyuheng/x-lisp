@@ -1,5 +1,5 @@
 @export square @end
 
-@def square ( x )
+@define-function square ( x )
   x x imul
 @end

@@ -1,7 +1,7 @@
-@def square ( x )
+@define-function square ( x )
   x x imul
 @end
 
-@def square ( x )
+@define-function square ( x )
   x x imul
 @end

@@ -1,7 +1,7 @@
 #include "index.h"
 
 static void
-handle_var(vm_t *vm) {
+handle_define_variable(vm_t *vm) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     function_t *function = make_function();
@@ -11,7 +11,7 @@ handle_var(vm_t *vm) {
 }
 
 static void
-handle_def(vm_t *vm) {
+handle_define_function(vm_t *vm) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == SYMBOL_TOKEN);
     function_t *function = make_function();
@@ -185,8 +185,8 @@ static void handle_include_as(vm_t *vm) { import_as(vm, true); }
 struct stmt_entry_t { const char *name; x_fn_t *handler; };
 
 static struct stmt_entry_t stmt_entries[] = {
-    { "@var", handle_var },
-    { "@def", handle_def },
+    { "@define-variable", handle_define_variable },
+    { "@define-function", handle_define_function },
     { "@export", handle_export },
     { "@import", handle_import },
     { "@include", handle_include },

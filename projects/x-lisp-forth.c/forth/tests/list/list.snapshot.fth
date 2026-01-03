@@ -1,4 +1,4 @@
-@def main
+@define-function main
   make-list ( list )
   list println @drop
 

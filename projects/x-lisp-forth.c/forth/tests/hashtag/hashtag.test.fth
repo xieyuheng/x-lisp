@@ -1,4 +1,4 @@
-@def main
+@define-function main
   #abc hashtag? @assert
   #abc #abc same? @assert
   #abc hashtag-length 3 @assert-equal

@@ -1,4 +1,4 @@
-@def snapshot ( lhs rhs )
+@define-function snapshot ( lhs rhs )
   lhs print @drop
   " <=> " write @drop
   rhs print @drop
@@ -6,7 +6,7 @@
   lhs rhs total-compare println @drop
 @end
 
-@def main
+@define-function main
   1 1 snapshot
   1 2 snapshot
   2 1 snapshot
@@ -39,7 +39,7 @@
   hash-1 hash-2 snapshot
 @end
 
-@def list-1
+@define-function list-1
   make-list ( list )
   1 list list-push! @drop
   2 list list-push! @drop
@@ -47,7 +47,7 @@
   list
 @end
 
-@def list-2
+@define-function list-2
   make-list ( list )
   1 list list-push! @drop
   2 list list-push! @drop
@@ -55,7 +55,7 @@
   list
 @end
 
-@def tael-1
+@define-function tael-1
   make-list ( list )
   1 list list-push! @drop
   2 list list-push! @drop
@@ -65,7 +65,7 @@
   list
 @end
 
-@def tael-2
+@define-function tael-2
   make-list ( list )
   1 list list-push! @drop
   2 list list-push! @drop
@@ -76,7 +76,7 @@
   list
 @end
 
-@def tael-3
+@define-function tael-3
   make-list ( list )
   1 list list-push! @drop
   2 list list-push! @drop
@@ -87,7 +87,7 @@
   list
 @end
 
-@def set-1
+@define-function set-1
   make-set ( set )
   1 set set-add! @drop
   2 set set-add! @drop
@@ -95,14 +95,14 @@
   set
 @end
 
-@def set-2
+@define-function set-2
   make-set ( set )
   1 set set-add! @drop
   2 set set-add! @drop
   set
 @end
 
-@def hash-1
+@define-function hash-1
   make-hash ( hash )
   'a 1 hash hash-put! @drop
   'b 2 hash hash-put! @drop
@@ -110,7 +110,7 @@
   hash
 @end
 
-@def hash-2
+@define-function hash-2
   make-hash ( hash )
   'a 1 hash hash-put! @drop
   'b 2 hash hash-put! @drop
