@@ -1,6 +1,5 @@
 # forth
 
-[forth] `Stmt` -- `AboutModule`
 [forth] `prettyStmt`
 [forth] `prettyExp`
 [forth] `prettyMod`
