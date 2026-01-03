@@ -1,6 +1,5 @@
 # forth
 
-[forth] `Mod`
 [forth] `Stmt`
 [forth] `Definition`
 
