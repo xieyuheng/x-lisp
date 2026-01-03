@@ -1,4 +1,3 @@
-[ppml.js] remove code about sexp
 [sexp.js] use `ppml.js`
 
 # sexp.c
