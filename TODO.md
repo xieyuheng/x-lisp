@@ -1,5 +1,3 @@
-[sexp.js] use `ppml.js`
-
 # sexp.c
 
 [sexp.c] port sexp.js

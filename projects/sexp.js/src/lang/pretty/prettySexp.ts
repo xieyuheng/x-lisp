@@ -1,5 +1,5 @@
 import { recordIsEmpty } from "@xieyuheng/helpers.js/record"
-import * as Ppml from "../../ppml/index.ts"
+import * as Ppml from "@xieyuheng/ppml.js"
 import { formatSexp } from "../format/index.ts"
 import { isAtom, type Sexp } from "../sexp/index.ts"
 import { defaultConfig } from "./defaultConfig.ts"

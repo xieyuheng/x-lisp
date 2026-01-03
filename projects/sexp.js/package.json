@@ -17,7 +17,8 @@
     "format": "prettier src --write"
   },
   "dependencies": {
-    "@xieyuheng/helpers.js": "workspace:*"
+    "@xieyuheng/helpers.js": "workspace:*",
+    "@xieyuheng/ppml.js": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",
