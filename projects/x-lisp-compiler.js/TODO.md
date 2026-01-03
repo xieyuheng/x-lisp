@@ -1,7 +1,6 @@
 # forth
 
-use stmt instead of definition -- no need to run forth
-
+[forth] `Stmt` -- `AboutModule`
 [forth] `prettyStmt`
 [forth] `prettyExp`
 [forth] `prettyMod`

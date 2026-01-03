@@ -2,24 +2,24 @@ import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Exp } from "../exp/index.ts"
 import type { Mod } from "../mod/index.ts"
 
-export type Definition = FunctionDefinition | VariableDefinition
+export type Stmt = DefineFunction | DefineVariable
 
-export type FunctionDefinition = {
-  kind: "FunctionDefinition"
+export type DefineFunction = {
+  kind: "DefineFunction"
   mod: Mod
   name: string
   body: Exp
   meta: Meta
 }
 
-export function FunctionDefinition(
+export function DefineFunction(
   mod: Mod,
   name: string,
   body: Exp,
   meta: Meta,
-): FunctionDefinition {
+): DefineFunction {
   return {
-    kind: "FunctionDefinition",
+    kind: "DefineFunction",
     mod,
     name,
     body,
@@ -27,22 +27,22 @@ export function FunctionDefinition(
   }
 }
 
-export type VariableDefinition = {
-  kind: "VariableDefinition"
+export type DefineVariable = {
+  kind: "DefineVariable"
   mod: Mod
   name: string
   body: Exp
   meta: Meta
 }
 
-export function VariableDefinition(
+export function DefineVariable(
   mod: Mod,
   name: string,
   body: Exp,
   meta: Meta,
-): VariableDefinition {
+): DefineVariable {
   return {
-    kind: "VariableDefinition",
+    kind: "DefineVariable",
     mod,
     name,
     body,
