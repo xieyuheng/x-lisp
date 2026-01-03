@@ -95,11 +95,7 @@ export type If = {
   meta?: Meta
 }
 
-export function If(
-  consequent: Exp,
-  alternative: Exp,
-  meta?: Meta,
-): If {
+export function If(consequent: Exp, alternative: Exp, meta?: Meta): If {
   return {
     kind: "If",
     consequent,

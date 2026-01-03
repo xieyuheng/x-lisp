@@ -38,7 +38,7 @@ export type VariableDefinition = {
 export function VariableDefinition(
   mod: Mod,
   name: string,
-  body: Exp  ,
+  body: Exp,
   meta: Meta,
 ): VariableDefinition {
   return {

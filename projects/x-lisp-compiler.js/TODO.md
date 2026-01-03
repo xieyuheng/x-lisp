@@ -1,17 +1,10 @@
 # forth
 
-[forth] `formatExp`
-[forth] `formatDefinition`
-[forth] `formatMod`
-
-[forth] `Stmt`
-
-[forth] `parse`
-[forth] `load`
-
 extract `ppml.js` from `sexp.js`
 
-[forth] `pretty` -- use `ppml.js` directly
+[forth] `prettyDefinition`
+[forth] `prettyExp`
+[forth] `prettyMod`
 
 # compiler
 
