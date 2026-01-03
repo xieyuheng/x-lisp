@@ -10,12 +10,16 @@ export type FunctionDefinition = {
   meta: Meta
 }
 
-export function FunctionDefinition(mod: Mod, name: string,   meta: Meta): FunctionDefinition {
+export function FunctionDefinition(
+  mod: Mod,
+  name: string,
+  meta: Meta,
+): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
     mod,
     name,
-    meta
+    meta,
   }
 }
 
@@ -26,11 +30,15 @@ export type VariableDefinition = {
   meta: Meta
 }
 
-export function VariableDefinition(mod: Mod, name: string,   meta: Meta): VariableDefinition {
+export function VariableDefinition(
+  mod: Mod,
+  name: string,
+  meta: Meta,
+): VariableDefinition {
   return {
     kind: "VariableDefinition",
     mod,
     name,
-  meta
+    meta,
   }
 }
