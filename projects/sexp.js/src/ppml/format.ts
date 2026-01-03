@@ -1,7 +1,7 @@
-import * as pp from "./index.ts"
+import * as Ppml from "./index.ts"
 
-export function format(maxWidth: number, node: pp.Node): string {
-  const target: LayoutTarget = [0, "GroupingInline", pp.GroupNode(node)]
+export function format(maxWidth: number, node: Ppml.Node): string {
+  const target: LayoutTarget = [0, "GroupingInline", Ppml.GroupNode(node)]
   const parts: Array<string> = []
   layout(maxWidth, 0, [target], parts)
   return parts.join("")
@@ -9,7 +9,7 @@ export function format(maxWidth: number, node: pp.Node): string {
 
 type GroupingMode = "GroupingInline" | "GroupingBlock"
 
-type LayoutTarget = [indentation: number, mode: GroupingMode, node: pp.Node]
+type LayoutTarget = [indentation: number, mode: GroupingMode, node: Ppml.Node]
 
 function layout(
   maxWidth: number,
@@ -79,7 +79,7 @@ function layout(
   }
 }
 
-function fitInline(width: number, nodes: Array<pp.Node>): boolean {
+function fitInline(width: number, nodes: Array<Ppml.Node>): boolean {
   while (true) {
     if (width < 0) return false
     if (nodes.length === 0) return true
