@@ -1,7 +1,7 @@
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
-import * as L from "../index.ts"
+import * as L from "../lisp/index.ts"
 
 export function LiftLambdaPass(mod: L.Mod): void {
   mod.definitions = new Map(

@@ -1,6 +1,6 @@
 import fs from "node:fs"
 import Path from "node:path"
-import * as L from "../index.ts"
+import * as L from "../lisp/index.ts"
 import type { Project } from "./index.ts"
 
 export function projectSourceDirectory(project: Project): string {
@@ -13,9 +13,9 @@ export function projectSourceDirectory(project: Project): string {
 export function projectOutputDirectory(project: Project): string {
   return project.config["build"]["output-directory"]
     ? Path.resolve(
-        project.rootDirectory,
-        project.config["build"]["output-directory"],
-      )
+      project.rootDirectory,
+      project.config["build"]["output-directory"],
+    )
     : projectSourceDirectory(project)
 }
 

@@ -1,6 +1,6 @@
 import fs from "node:fs"
 import { globals } from "../globals.ts"
-import * as L from "../index.ts"
+import * as L from "../lisp/index.ts"
 import * as Passes from "../passes/index.ts"
 
 export function compileLispToPassLog(mod: L.Mod, logFile?: string): void {

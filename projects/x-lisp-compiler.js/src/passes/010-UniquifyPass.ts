@@ -1,7 +1,7 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
-import * as L from "../index.ts"
+import * as L from "../lisp/index.ts"
 
 export function UniquifyPass(mod: L.Mod): void {
   for (const definition of L.modOwnDefinitions(mod)) {

@@ -1,6 +1,6 @@
 import fs from "node:fs"
 import Path from "node:path"
-import * as L from "../index.ts"
+import * as L from "../lisp/index.ts"
 
 export function logFile(tag: string, file: string): void {
   console.log(`[${tag}] ${Path.relative(process.cwd(), file)}`)

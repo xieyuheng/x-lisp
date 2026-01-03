@@ -1,5 +1,5 @@
 import { createUrl } from "@xieyuheng/helpers.js/url"
-import * as L from "../index.ts"
+import * as L from "../lisp/index.ts"
 import { projectFromSourceFiles, type Project } from "./index.ts"
 
 export function loadModuleProject(file: string): Project {

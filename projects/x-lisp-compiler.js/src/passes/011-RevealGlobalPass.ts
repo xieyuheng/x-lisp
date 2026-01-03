@@ -1,6 +1,6 @@
 import { setAdd, setUnion } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
-import * as L from "../index.ts"
+import * as L from "../lisp/index.ts"
 
 export function RevealGlobalPass(mod: L.Mod): void {
   for (const definition of L.modOwnDefinitions(mod)) {

@@ -33,10 +33,12 @@ date: 2025-09-21
   但是其实是哲学意义上最重要的一点。
 
   lisp 起初是为了 lambda calculus 而设计，
-  但是 lambda calculus 的 combinator logic 一面一直被 lisp 忽视了。
+  但是 lambda calculus 的 combinator logic 一面，
+  一直被 lisp 忽视了。
 
   auto currying 对于 combinator logic 非常重要，
-  而 combinator logic 的哲学意义就在于如何用组合子来表达 composition。
+  而 combinator logic 的哲学意义就在于，
+  如何用组合子来表达 composition。
 
 - 基础的 structural 数据结构：
 
@@ -67,6 +69,8 @@ date: 2025-09-21
   想要强调谓词与集合之间的联系。
   因为谓词可以很方便地刻画某个集合的子集。
 
+  - 这个方面可以更进一步被设计为类似 eiffel 的 contract 系统。
+
 现在还用不到，但是未来还想要增加的核心功能：
 
 - 用 define-generic 来定义新 generic 函数，
@@ -88,13 +92,13 @@ forth-like stack virtual machine。
 
 总结 x-lisp 想表达的核心 ideas：
 
-| idea                       | supporting feature    |
-|----------------------------|-----------------------|
-| combinators                | auto currying         |
-| contract based development | claim require ensure  |
-| data first decoupling      | structural types      |
-| algebraic data type        | define-data and match |
-| generic dispatching        | define-generic        |
+| idea                       | supporting feature     |
+|----------------------------|------------------------|
+| combinators                | auto currying          |
+| contract based development | claim, require, ensure |
+| data first decoupling      | structural types       |
+| algebraic data type        | define-data and match  |
+| generic dispatching        | define-generic         |
 
 强调程序语言与集合论之间的联系：
 
@@ -123,3 +127,22 @@ forth-like stack virtual machine。
 - 并且投入到所感兴趣的领域的实践中。
   比如，研究计算模型。
 - 在实践中检验自己的理论模型是否正确。
+
+# 集合论与类型论
+
+[2026-01-03]
+
+通过与静态类型语言对比，
+可以发现这个语言想要表达一个重要思想是：
+
+就写结构良好、易于理解与维护的代码而言，类型系统并不是必须的。
+使用谓词与集合论也可以做到，
+并且这个设计方向有很多类型系统所不具备的好处，
+是值得探索的。
+
+# 范式重构
+
+[2026-01-03]
+
+deepseek 把我关于 x-lisp 的目标，总结为了「范式重构」，
+我觉得很恰当。
