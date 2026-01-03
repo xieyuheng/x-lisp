@@ -1,8 +1,8 @@
 # forth
 
-extract `ppml.js` from `sexp.js`
+use stmt instead of definition -- no need to run forth
 
-[forth] `prettyDefinition`
+[forth] `prettyStmt`
 [forth] `prettyExp`
 [forth] `prettyMod`
 

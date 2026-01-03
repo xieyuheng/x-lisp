@@ -100,6 +100,17 @@ x-lisp 的首要目标是加快新语言开发的速度。
   - [x] LiftLambdaPass
   - [ ] ExplicateControlPass
 
+总结 [2026-01-03]：
+
+- 在「描述 forth 语言」的任务中，
+  由于我们在这个阶段，
+  只需要使所描述的 forth 语言可以被翻译成 .fth 文件，
+  然后由 x-lisp-forth.c 来执行。
+
+  所以可以只描述，而不解析也不运行。
+  不必实现 parse 和 load，
+  也不必实现 forth 的解释器。
+
 # 关卡 3 -- 将完整的 lisp 编译到 forth
 
 成果：
