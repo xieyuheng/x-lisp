@@ -4,7 +4,7 @@ static void compile_return(function_t *function);
 static void compile_token(vm_t *vm, function_t *function, token_t *token);
 static void compile_quote(vm_t *vm, function_t *function);
 static void compile_word(vm_t *vm, function_t *function, const char *word);
-static void compile_invoke(vm_t *vm, function_t *function, const char *name);
+static void compile_call(vm_t *vm, function_t *function, const char *name);
 static void compile_ref(vm_t *vm, function_t *function);
 static void compile_tail_call(vm_t *vm, function_t *function);
 static void compile_parameters(vm_t *vm, function_t *function, const char *end_word);
@@ -235,12 +235,12 @@ compile_word(vm_t *vm, function_t *function, const char *word) {
         return;
     }
 
-    compile_invoke(vm, function, word);
+    compile_call(vm, function, word);
     return;
 }
 
 static void
-compile_invoke(vm_t *vm, function_t *function, const char *name) {
+compile_call(vm_t *vm, function_t *function, const char *name) {
     if (function_has_binding_index(function, name)) {
         size_t index = function_get_binding_index(function, name);
         struct instr_t instr;
@@ -391,7 +391,7 @@ compile_if(
     const char *else_word,
     const char *then_word,
     struct token_meta_t meta
-) {
+    ) {
     size_t if_index = function->code_length;
     struct instr_t instr;
     instr.op = OP_JUMP_IF_NOT;
@@ -447,7 +447,7 @@ compile_else(
     size_t else_index,
     const char *then_word,
     struct token_meta_t meta
-) {
+    ) {
     while (true) {
         if (vm_no_more_tokens(vm)) {
             who_printf("missing then_word: %s\n", then_word);

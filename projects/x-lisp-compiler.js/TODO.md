@@ -1,6 +1,5 @@
 # forth
 
-[forth] `Exp`
 [forth] `Mod`
 [forth] `Definition`
 [forth] `Stmt`

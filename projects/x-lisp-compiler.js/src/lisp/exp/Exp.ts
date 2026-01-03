@@ -148,8 +148,7 @@ export type Begin1 = {
   meta?: Meta
 }
 
-export function Begin1(head: Exp,
-                       body: Exp, meta?: Meta): Begin1 {
+export function Begin1(head: Exp, body: Exp, meta?: Meta): Begin1 {
   return {
     kind: "Begin1",
     head,

@@ -13,9 +13,9 @@ export function projectSourceDirectory(project: Project): string {
 export function projectOutputDirectory(project: Project): string {
   return project.config["build"]["output-directory"]
     ? Path.resolve(
-      project.rootDirectory,
-      project.config["build"]["output-directory"],
-    )
+        project.rootDirectory,
+        project.config["build"]["output-directory"],
+      )
     : projectSourceDirectory(project)
 }
 
