@@ -1,10 +1,10 @@
 # forth
 
-[forth] `Stmt`
-
 [forth] `formatExp`
 [forth] `formatDefinition`
 [forth] `formatMod`
+
+[forth] `Stmt`
 
 [forth] `parse`
 [forth] `load`
