@@ -39,7 +39,10 @@ export function text(content: string): Ppml.Node {
   return Ppml.TextNode(content)
 }
 
-export function indent(indentation: number, ...nodes: Array<Ppml.Node>): Ppml.Node {
+export function indent(
+  indentation: number,
+  ...nodes: Array<Ppml.Node>
+): Ppml.Node {
   return Ppml.IndentNode(indentation, concat(...nodes))
 }
 

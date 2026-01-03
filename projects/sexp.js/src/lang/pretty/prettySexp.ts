@@ -101,7 +101,9 @@ function renderTael(
 
       const footNode = recordIsEmpty(attributes)
         ? Ppml.nil()
-        : Ppml.group(Ppml.indent(1, Ppml.br(), renderAttributes(attributes)(config)))
+        : Ppml.group(
+            Ppml.indent(1, Ppml.br(), renderAttributes(attributes)(config)),
+          )
 
       return Ppml.group(Ppml.text("["), bodyNode, footNode, Ppml.text("]"))
     }
@@ -134,7 +136,9 @@ function renderSyntax(
 
     const neckNode = recordIsEmpty(attributes)
       ? Ppml.nil()
-      : Ppml.group(Ppml.indent(2, Ppml.br(), renderAttributes(attributes)(config)))
+      : Ppml.group(
+          Ppml.indent(2, Ppml.br(), renderAttributes(attributes)(config)),
+        )
 
     const bodyNode =
       body.length === 0
@@ -145,7 +149,13 @@ function renderSyntax(
             Ppml.flex(body.map((sexp) => renderSexp(sexp)(config))),
           )
 
-    return Ppml.group(Ppml.text("("), headNode, neckNode, bodyNode, Ppml.text(")"))
+    return Ppml.group(
+      Ppml.text("("),
+      headNode,
+      neckNode,
+      bodyNode,
+      Ppml.text(")"),
+    )
   }
 }
 
@@ -195,7 +205,9 @@ function renderApplication(
 
     const footNode = recordIsEmpty(attributes)
       ? Ppml.nil()
-      : Ppml.group(Ppml.indent(1, Ppml.br(), renderAttributes(attributes)(config)))
+      : Ppml.group(
+          Ppml.indent(1, Ppml.br(), renderAttributes(attributes)(config)),
+        )
 
     return Ppml.group(Ppml.text("("), bodyNode, footNode, Ppml.text(")"))
   }
