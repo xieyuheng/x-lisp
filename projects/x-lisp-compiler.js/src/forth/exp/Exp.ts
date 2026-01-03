@@ -8,6 +8,7 @@ export type Exp =
   | Call
   | TailCall
   | Bindings
+  | If
   | Return
   | Assert
   | AssertEqual
@@ -80,7 +81,31 @@ export type Bindings = {
 }
 
 export function Bindings(names: Array<string>, meta?: Meta): Bindings {
-  return { kind: "Bindings", names, meta }
+  return {
+    kind: "Bindings",
+    names,
+    meta,
+  }
+}
+
+export type If = {
+  kind: "If"
+  consequent: Exp
+  alternative: Exp
+  meta?: Meta
+}
+
+export function If(
+  consequent: Exp,
+  alternative: Exp,
+  meta?: Meta,
+): If {
+  return {
+    kind: "If",
+    consequent,
+    alternative,
+    meta,
+  }
 }
 
 export type Return = {
