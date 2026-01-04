@@ -11,4 +11,5 @@
 #include "record.h"
 #include "hash.h"
 #include "set.h"
+#include "random.h"
 #include "builtin_mod.h"

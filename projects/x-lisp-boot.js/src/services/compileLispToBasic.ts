@@ -2,7 +2,7 @@ import * as B from "../basic/index.ts"
 import * as L from "../index.ts"
 import * as Passes from "../passes/index.ts"
 
-export function compileXToBasic(mod: L.Mod): B.Mod {
+export function compileLispToBasic(mod: L.Mod): B.Mod {
   Passes.ShrinkPass(mod)
   Passes.UniquifyPass(mod)
   Passes.RevealGlobalPass(mod)

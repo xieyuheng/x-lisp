@@ -1,9 +1,12 @@
 import { createUrl } from "@xieyuheng/helpers.js/url"
+import * as F from "../forth/index.ts"
+import { globals } from "../globals.ts"
 import * as L from "../lisp/index.ts"
 import * as Services from "../services/index.ts"
 import {
   logFile,
   projectForEachSource,
+  projectGetForthFile,
   projectGetPassLogFile,
   projectGetSourceFile,
   writeFile,
@@ -12,6 +15,7 @@ import {
 
 export function projectBuild(project: Project): void {
   projectForEachSource(project, buildPassLog)
+  projectForEachSource(project, buildForth)
 }
 
 function buildPassLog(project: Project, id: string): void {
@@ -21,4 +25,14 @@ function buildPassLog(project: Project, id: string): void {
   const mod = L.loadEntry(createUrl(inputFile))
   writeFile(outputFile, "")
   Services.compileLispToPassLog(mod, outputFile)
+}
+
+function buildForth(project: Project, id: string): void {
+  const inputFile = projectGetSourceFile(project, id)
+  const outputFile = projectGetForthFile(project, id)
+  logFile("Forth", outputFile)
+  const mod = L.loadEntry(createUrl(inputFile))
+  const forthMod = Services.compileLispToForth(mod)
+  const outputText = F.prettyMod(globals.maxWidth, forthMod)
+  writeFile(outputFile, outputText + "\n")
 }

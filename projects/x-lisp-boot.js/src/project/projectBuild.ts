@@ -42,7 +42,7 @@ function buildBasic(project: Project, id: string): void {
   const outputFile = projectGetBasicFile(project, id)
   logFile("basic", outputFile)
   const mod = L.loadEntry(createUrl(inputFile))
-  const basicMod = Services.compileXToBasic(mod)
+  const basicMod = Services.compileLispToBasic(mod)
   const outputText = B.prettyMod(globals.maxWidth, basicMod)
   writeFile(outputFile, outputText + "\n")
 }

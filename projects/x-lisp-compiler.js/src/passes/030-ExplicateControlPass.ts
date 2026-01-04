@@ -37,24 +37,23 @@ function onFunctionDefinition(
   forthMod: F.Mod,
   definition: L.FunctionDefinition,
 ): Array<F.Stmt> {
-  return [
-    F.DefineFunction(
-      definition.name,
-      F.Sequence([
-        F.Bindings(definition.parameters),
-        ...inTail(definition.body),
-      ]),
-    ),
-  ]
+  const body =
+    definition.parameters.length === 0
+      ? F.Sequence(inTail(definition.body))
+      : F.Sequence([
+          F.Bindings(definition.parameters),
+          ...inTail(definition.body),
+        ])
+
+  return [F.DefineFunction(definition.name, body)]
 }
 
 function onConstantDefinition(
   forthMod: F.Mod,
   definition: L.ConstantDefinition,
 ): Array<F.Stmt> {
-  return [
-    F.DefineVariable(definition.name, F.Sequence(inTail(definition.body))),
-  ]
+  const body = F.Sequence(inTail(definition.body))
+  return [F.DefineVariable(definition.name, body)]
 }
 
 function atomToAtom(atom: L.Atom): F.Atom {
@@ -185,7 +184,7 @@ function inBody(exp: L.Exp): Array<F.Exp> {
           exp.target.kind === "PrimitiveRef") &&
         exp.args.length === exp.target.arity
       ) {
-        return [...exp.args.flatMap(inBody), F.Call(exp.target.name)]
+        return [...exp.args.flatMap(inBody), F.Var(exp.target.name)]
       } else if (
         (exp.target.kind === "FunctionRef" ||
           exp.target.kind === "PrimitiveRef") &&
@@ -194,7 +193,7 @@ function inBody(exp: L.Exp): Array<F.Exp> {
         return [
           ...exp.args.slice(exp.target.arity, exp.args.length).flatMap(inBody),
           ...exp.args.slice(0, exp.target.arity).flatMap(inBody),
-          F.Call(exp.target.name),
+          F.Var(exp.target.name),
           F.Int(BigInt(exp.args.length - exp.target.arity)),
           F.Apply(),
         ]

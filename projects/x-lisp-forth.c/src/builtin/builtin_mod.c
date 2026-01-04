@@ -85,6 +85,10 @@ make_builtin_mod(void) {
 
     define_primitive_0(mod, "exit", x_exit);
 
+    // random
+
+    define_primitive_0(mod, "random-dice", x_random_dice);
+
     // string
 
     define_primitive_1(mod, "string?", x_string_p);

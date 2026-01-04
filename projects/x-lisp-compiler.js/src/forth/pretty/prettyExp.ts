@@ -14,7 +14,7 @@ function renderExp(exp: Exp): Ppml.Node {
 
   switch (exp.kind) {
     case "Sequence": {
-      return Ppml.group(...exp.exps.map(renderExp))
+      return Ppml.group(...exp.exps.flatMap((e) => [renderExp(e), Ppml.br()]))
     }
 
     case "Ref": {
