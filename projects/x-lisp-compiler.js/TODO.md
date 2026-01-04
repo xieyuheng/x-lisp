@@ -1,6 +1,5 @@
 # forth
 
-[forth] `renderExp`
 [forth] `renderStmt`
 [forth] `renderMod`
 

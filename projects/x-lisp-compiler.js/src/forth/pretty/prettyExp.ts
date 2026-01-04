@@ -14,59 +14,73 @@ function renderExp(exp: Exp): Ppml.Node {
 
   switch (exp.kind) {
     case "Sequence": {
-      return Ppml.nil()
+      return Ppml.group(...exp.exps.map(renderExp))
     }
 
     case "Ref": {
-      return Ppml.nil()
+      return Ppml.concat(Ppml.text("@ref"), Ppml.br(), Ppml.text(exp.name))
     }
 
     case "Call": {
-      return Ppml.nil()
+      return Ppml.text(exp.name)
     }
 
     case "TailCall": {
-      return Ppml.nil()
+      return Ppml.concat(
+        Ppml.text("@tail-call"),
+        Ppml.br(),
+        Ppml.text(exp.name),
+      )
     }
 
     case "Bindings": {
-      return Ppml.nil()
+      return Ppml.concat(
+        Ppml.text("( "),
+        Ppml.text(exp.names.join(" ")),
+        Ppml.text(" )"),
+      )
     }
 
     case "If": {
-      return Ppml.nil()
+      return Ppml.group(
+        Ppml.text("@if"),
+        Ppml.indent(2, Ppml.br(), renderExp(exp.consequent)),
+        Ppml.text("@else"),
+        Ppml.indent(2, Ppml.br(), renderExp(exp.alternative)),
+        Ppml.text("@then"),
+      )
     }
 
     case "Return": {
-      return Ppml.nil()
+      return Ppml.text("@return")
     }
 
     case "Assert": {
-      return Ppml.nil()
+      return Ppml.text("@assert")
     }
 
     case "AssertEqual": {
-      return Ppml.nil()
+      return Ppml.text("@assert-equal")
     }
 
     case "AssertNotEqual": {
-      return Ppml.nil()
+      return Ppml.text("@assert-not-equal")
     }
 
     case "Drop": {
-      return Ppml.nil()
+      return Ppml.text("@drop")
     }
 
     case "Apply": {
-      return Ppml.nil()
+      return Ppml.text("@apply")
     }
 
     case "TailApply": {
-      return Ppml.nil()
+      return Ppml.text("@tail-apply")
     }
 
     case "Assign": {
-      return Ppml.nil()
+      return Ppml.text("@assign")
     }
   }
 }
