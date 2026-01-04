@@ -27,7 +27,7 @@ Pretty printing is like how HTML works:
 </concat>
 ```
 
-The context of printing include _widths_, _indentation_ and _grouping mode_.
+The context of printing include _width_, _indentation_ and _grouping mode_.
 
 - `<indent n>` -- increase current indentation by `n` spaces.
 - `<br />` -- print differently by current grouping mode.
