@@ -1,13 +1,13 @@
 import * as Ppml from "./index.ts"
 
 export function format(maxWidth: number, node: Ppml.Node): string {
-  const target: LayoutTarget = [0, "GroupingInline", Ppml.GroupNode(node)]
+  const target: LayoutTarget = [0, "Inline", Ppml.GroupNode(node)]
   const parts: Array<string> = []
   layout(maxWidth, 0, [target], parts)
   return parts.join("")
 }
 
-type GroupingMode = "GroupingInline" | "GroupingBlock"
+type GroupingMode = "Inline" | "Block"
 
 type LayoutTarget = [indentation: number, mode: GroupingMode, node: Ppml.Node]
 
@@ -52,13 +52,13 @@ function layout(
 
       case "BreakNode": {
         switch (mode) {
-          case "GroupingInline": {
+          case "Inline": {
             parts.push(node.space)
             ;((cursor = cursor + node.space.length), (targets = restTargets))
             continue
           }
 
-          case "GroupingBlock": {
+          case "Block": {
             parts.push("\n" + " ".repeat(indentation))
             cursor = indentation
             targets = restTargets
@@ -69,8 +69,8 @@ function layout(
 
       case "GroupNode": {
         const groupingMode = fitInline(maxWidth - cursor, [node.child])
-          ? "GroupingInline"
-          : "GroupingBlock"
+          ? "Inline"
+          : "Block"
 
         targets = [[indentation, groupingMode, node.child], ...restTargets]
         continue
