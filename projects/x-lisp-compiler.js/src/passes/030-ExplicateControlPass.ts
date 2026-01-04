@@ -83,29 +83,53 @@ function atomToAtom(atom: L.Atom): F.Atom {
 
 function inTail(exp: L.Exp): Array<F.Exp> {
   if (L.isAtom(exp)) {
-    return [atomToAtom(exp)]
+    return [atomToAtom(exp), F.Return()]
   }
 
   switch (exp.kind) {
     case "Var": {
-      return [F.Var(exp.name)]
+      return [F.Var(exp.name), F.Return()]
     }
 
     case "FunctionRef": {
-      return [F.Ref(exp.name)]
+      return [F.Ref(exp.name), F.Return()]
     }
 
     case "PrimitiveRef": {
-      return [F.Ref(exp.name)]
+      return [F.Ref(exp.name), F.Return()]
     }
 
     case "ConstantRef": {
-      return [F.Var(exp.name)]
+      return [F.Var(exp.name), F.Return()]
     }
 
     case "Apply": {
-      // TODO
-      return []
+      if (
+        (exp.target.kind === "FunctionRef" ||
+          exp.target.kind === "PrimitiveRef") &&
+        exp.args.length === exp.target.arity
+      ) {
+        return [...exp.args.flatMap(inBody), F.TailCall(exp.target.name)]
+      } else if (
+        (exp.target.kind === "FunctionRef" ||
+          exp.target.kind === "PrimitiveRef") &&
+        exp.args.length > exp.target.arity
+      ) {
+        return [
+          ...exp.args.slice(exp.target.arity, exp.args.length).flatMap(inBody),
+          ...exp.args.slice(0, exp.target.arity).flatMap(inBody),
+          F.TailCall(exp.target.name),
+          F.Int(BigInt(exp.args.length - exp.target.arity)),
+          F.TailApply(),
+        ]
+      } else {
+        return [
+          ...exp.args.flatMap(inBody),
+          ...inBody(exp.target),
+          F.Int(BigInt(exp.args.length)),
+          F.TailApply(),
+        ]
+      }
     }
 
     case "Let1": {
@@ -156,8 +180,32 @@ function inBody(exp: L.Exp): Array<F.Exp> {
     }
 
     case "Apply": {
-      // TODO
-      return []
+      if (
+        (exp.target.kind === "FunctionRef" ||
+          exp.target.kind === "PrimitiveRef") &&
+        exp.args.length === exp.target.arity
+      ) {
+        return [...exp.args.flatMap(inBody), F.Call(exp.target.name)]
+      } else if (
+        (exp.target.kind === "FunctionRef" ||
+          exp.target.kind === "PrimitiveRef") &&
+        exp.args.length > exp.target.arity
+      ) {
+        return [
+          ...exp.args.slice(exp.target.arity, exp.args.length).flatMap(inBody),
+          ...exp.args.slice(0, exp.target.arity).flatMap(inBody),
+          F.Call(exp.target.name),
+          F.Int(BigInt(exp.args.length - exp.target.arity)),
+          F.Apply(),
+        ]
+      } else {
+        return [
+          ...exp.args.flatMap(inBody),
+          ...inBody(exp.target),
+          F.Int(BigInt(exp.args.length)),
+          F.Apply(),
+        ]
+      }
     }
 
     case "Let1": {
