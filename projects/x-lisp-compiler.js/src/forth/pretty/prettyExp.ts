@@ -20,7 +20,24 @@ function renderExp(exp: Exp): Ppml.Node {
 
   switch (exp.kind) {
     case "Sequence": {
-      return Ppml.group(...exp.exps.flatMap((e) => [renderExp(e), Ppml.br()]))
+      const nodes: Array<Ppml.Node> = []
+      let line: Array<Ppml.Node> = []
+      for (const e of  exp.exps) {
+        if (e.kind === "Bindings") {
+          line.push(renderExp(e))
+          nodes.push(Ppml.group(...line))
+          line = []
+        } else {
+          line.push(renderExp(e))
+          line.push(Ppml.br())
+        }
+      }
+
+      if (line.length > 0) {
+          nodes.push(Ppml.group(...line))
+      }
+
+      return Ppml.flex(nodes)
     }
 
     case "Ref": {

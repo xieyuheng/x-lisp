@@ -41,14 +41,14 @@ export function prettyStmt(stmt: Stmt, options: { width: number, }): string {
 
     case "DefineFunction": {
       let s = `@define-function ${stmt.name}`
-      s += `\n` + prettyExp(stmt.body, { width: options.width, indentation: 2 })
+      s += `\n  ` + prettyExp(stmt.body, { width: options.width, indentation: 2 })
       s += `\n` + `@end`
       return s
     }
 
     case "DefineVariable": {
       let s = `@define-variable ${stmt.name}`
-      s += `\n` + prettyExp(stmt.body, { width: options.width, indentation: 2 })
+      s += `\n  ` + prettyExp(stmt.body, { width: options.width, indentation: 2 })
       s += `\n` + `@end`
       return s
     }
