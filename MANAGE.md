@@ -95,10 +95,10 @@ x-lisp 的首要目标是加快新语言开发的速度。
 任务：
 
 - [x] 描述 lisp 语言
-- [ ] 描述 forth 语言
-- [ ] 将 lisp 的基础部分编译到 forth
+- [x] 描述 forth 语言
+- [x] 将 lisp 的基础部分编译到 forth
   - [x] LiftLambdaPass
-  - [ ] ExplicateControlPass
+  - [x] ExplicateControlPass
 
 总结 [2026-01-03]：
 
@@ -111,6 +111,10 @@ x-lisp 的首要目标是加快新语言开发的速度。
   不必实现 parse 和 load，
   也不必实现 forth 的解释器。
 
+总结 [2026-01-04]：
+
+- 初步完成。
+
 # 关卡 3 -- 将完整的 lisp 编译到 forth
 
 成果：
@@ -120,6 +124,7 @@ x-lisp 的首要目标是加快新语言开发的速度。
 
 任务：
 
+- [ ] cond
 - [ ] structural algebraic data type
 - [ ] pattern match
 - [ ] design by contract
