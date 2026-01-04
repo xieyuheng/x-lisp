@@ -1,8 +1,5 @@
 # forth
 
-[forth] `prettyStmt`
-[forth] `prettyMod`
-
 [forth] `renderExp`
 [forth] `renderStmt`
 [forth] `renderMod`
