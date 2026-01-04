@@ -40,12 +40,27 @@ function onFunctionDefinition(
   forthMod: F.Mod,
   definition: L.FunctionDefinition,
 ): Array<F.Stmt> {
-  return []
+  return [
+    F.DefineFunction(definition.name, F.Sequence([
+      F.Bindings(definition.parameters),
+      ...inTail(definition.body)
+    ]))
+  ]
 }
 
 function onConstantDefinition(
   forthMod: F.Mod,
   definition: L.ConstantDefinition,
 ): Array<F.Stmt> {
+  return [
+    F.DefineVariable(definition.name, F.Sequence(inTail(definition.body)))
+  ]
+}
+
+
+function inTail(exp: L.Exp): Array<F.Exp> {
   return []
+
+  // switch (exp.kind) {
+  // }
 }
