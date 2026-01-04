@@ -20,7 +20,7 @@ export function projectTest(project: Project): void {
 const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 const forthInterpreterFile = Path.join(
   currentDir,
-  "../../../x-lisp-forth.c/src/x-lisp-forth"
+  "../../../x-lisp-forth.c/src/x-lisp-forth",
 )
 
 function runForthTest(project: Project, id: string): void {
