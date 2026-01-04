@@ -57,9 +57,122 @@ function onConstantDefinition(
   ]
 }
 
-function inTail(exp: L.Exp): Array<F.Exp> {
-  return []
+function atomToAtom(atom: L.Atom): F.Atom {
+  switch (atom.kind) {
+    case "Symbol": {
+      return F.Symbol(atom.content)
+    }
 
-  // switch (exp.kind) {
-  // }
+    case "Hashtag": {
+      return F.Hashtag(atom.content)
+    }
+
+    case "String": {
+      return F.String(atom.content)
+    }
+
+    case "Int": {
+      return F.Int(atom.content)
+    }
+
+    case "Float": {
+      return F.Float(atom.content)
+    }
+  }
+}
+
+function inBody(exp: L.Exp): Array<F.Exp> {
+  if (L.isAtom(exp)) {
+    return [atomToAtom(exp)]
+  }
+
+  switch (exp.kind) {
+    case "Var": {
+      return [F.Call(exp.name)]
+    }
+
+    case "FunctionRef": {
+      return [F.Ref(exp.name)]
+    }
+
+    case "PrimitiveRef": {
+      return [F.Ref(exp.name)]
+    }
+
+    case "ConstantRef": {
+      return [F.Call(exp.name)]
+    }
+
+    case "Apply": {
+      return []
+    }
+
+    case "Let1": {
+      return [ ...inBody(exp.rhs), F.Bindings([exp.name]), ...inBody(exp.body) ]
+    }
+
+    case "Begin1": {
+      return [...inBody(exp.head), ...inBody(exp.body)]
+    }
+
+    case "If": {
+      throw new Error()
+    }
+
+    default: {
+      let message = `[ExplicateControlPass] [inBody] unhandled exp`
+      message += `\n  exp: ${L.formatExp(exp)}`
+      throw new Error(message)
+    }
+  }
+}
+
+function inTail(exp: L.Exp): Array<F.Exp> {
+  if (L.isAtom(exp)) {
+    return [atomToAtom(exp)]
+  }
+
+  switch (exp.kind) {
+    case "Var": {
+      return [F.Call(exp.name)]
+    }
+
+    case "FunctionRef": {
+      return [F.Ref(exp.name)]
+    }
+
+    case "PrimitiveRef": {
+      return [F.Ref(exp.name)]
+    }
+
+    case "ConstantRef": {
+      return [F.Call(exp.name)]
+    }
+
+    case "Apply": {
+      return []
+    }
+
+    case "Let1": {
+      return [ ...inBody(exp.rhs), F.Bindings([exp.name]), ...inTail(exp.body) ]
+    }
+
+    case "Begin1": {
+      return [ ...inBody(exp.head), ...inTail(exp.body) ]
+    }
+
+    case "If": {
+      throw new Error()
+      // return inIf(
+      //   inTail(state, exp.consequent),
+      //   inTail(state, exp.alternative),
+      // )
+    }
+
+    default: {
+      let message = `[ExplicateControlPass] [inTail] unhandled exp`
+      message += `\n  exp: ${L.formatExp(exp)}`
+      throw new Error(message)
+    }
+  }
 }

@@ -1,8 +1,7 @@
 # compiler
 
-[pass] `030-ExplicateControlPass.ts` -- `inTail`
-[pass] `030-ExplicateControlPass.ts` -- `inLet1`
-[pass] `030-ExplicateControlPass.ts` -- `inBegin1`
-[pass] `030-ExplicateControlPass.ts` -- `inIf`
+[pass] `030-ExplicateControlPass.ts` -- `inTail` -- `Apply`
+[pass] `030-ExplicateControlPass.ts` -- `inTail` -- `If`
+[pass] `030-ExplicateControlPass.ts` -- `inBody`
 
 [project] compile to `.fth`
