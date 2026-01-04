@@ -27,7 +27,7 @@ export function builtinProcess(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "exit", 1, (info) => {
-    console.log(prettyValue(globals.maxWidth, info))
+    console.log(prettyValue(globals.width, info))
     process.exit(1)
   })
 }

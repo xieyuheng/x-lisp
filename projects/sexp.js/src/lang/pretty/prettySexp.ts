@@ -11,11 +11,11 @@ export type Config = {
 type KeywordConfig = [name: string, headerLength: number]
 
 export function prettySexp(
-  maxWidth: number,
+  width: number,
   sexp: Sexp,
   config: Config = defaultConfig,
 ): string {
-  return Ppml.format(maxWidth, renderSexp(sexp)(config))
+  return Ppml.format(width, renderSexp(sexp)(config))
 }
 
 type Render = (config: Config) => Ppml.Node

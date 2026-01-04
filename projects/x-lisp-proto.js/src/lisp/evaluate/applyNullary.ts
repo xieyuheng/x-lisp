@@ -8,7 +8,7 @@ import { applyVariadicClosure } from "./applyVariadicClosure.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
 export function applyNullary(target: Value): Value {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
 
   if (target.kind === "NullaryClosure") {
     return resultValue(evaluate(target.body)(target.mod, target.env))
@@ -31,6 +31,6 @@ export function applyNullary(target: Value): Value {
   }
 
   let message = `[applyNullary] unhandled target value kind`
-  message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
+  message += formatUnderTag(2, `target:`, prettyValue(width, target))
   throw new Error(message)
 }

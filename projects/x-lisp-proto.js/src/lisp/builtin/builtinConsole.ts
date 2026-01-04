@@ -13,7 +13,7 @@ export function builtinConsole(mod: Mod) {
   provide(mod, ["print", "write", "newline"])
 
   definePrimitiveFunction(mod, "print", 1, (value) => {
-    process.stdout.write(prettyValue(globals.maxWidth, value))
+    process.stdout.write(prettyValue(globals.width, value))
     return Values.Void()
   })
 

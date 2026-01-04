@@ -1,4 +1,4 @@
 export const globals = {
   commandLineArgs: [] as Array<string>,
-  maxWidth: 60,
+  width: 60,
 }

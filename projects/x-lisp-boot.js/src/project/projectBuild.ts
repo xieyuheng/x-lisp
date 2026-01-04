@@ -43,7 +43,7 @@ function buildBasic(project: Project, id: string): void {
   logFile("basic", outputFile)
   const mod = L.loadEntry(createUrl(inputFile))
   const basicMod = Services.compileLispToBasic(mod)
-  const outputText = B.prettyMod(globals.maxWidth, basicMod)
+  const outputText = B.prettyMod(globals.width, basicMod)
   writeFile(outputFile, outputText + "\n")
 }
 
@@ -56,7 +56,7 @@ function buildBasicBundle(project: Project, id: string): void {
     const basicBundleMod = B.bundle(basicMod)
     Passes.SetupPrimitiveFunction(basicBundleMod)
     Passes.SetupFunctionTablePass(basicBundleMod)
-    const outputText = B.prettyMod(globals.maxWidth, basicBundleMod)
+    const outputText = B.prettyMod(globals.width, basicBundleMod)
     writeFile(outputFile, outputText + "\n")
   }
 }
@@ -68,7 +68,7 @@ function buildX86Machine(project: Project, id: string): void {
     logFile("machine", outputFile)
     const basicBundleMod = B.loadEntry(createUrl(inputFile))
     const machineMod = Services.compileBasicToX86Machine(basicBundleMod)
-    const outputText = M.prettyMod(globals.maxWidth, machineMod)
+    const outputText = M.prettyMod(globals.width, machineMod)
     writeFile(outputFile, outputText + "\n")
   }
 }

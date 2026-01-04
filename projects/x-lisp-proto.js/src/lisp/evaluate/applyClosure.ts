@@ -13,7 +13,7 @@ export function applyClosure(
   closure: Values.Closure,
   args: Array<Value>,
 ): Value {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
   const mod = closure.mod
   let env = closure.env
   for (const [index, parameter] of closure.parameters.entries()) {
@@ -22,11 +22,11 @@ export function applyClosure(
     if (resultEnv === undefined) {
       let message = `[applyClosure] pattern mismatch`
       message += `\n  parameter index: ${index}`
-      message += formatUnderTag(2, `parameter:`, prettyExp(maxWidth, parameter))
+      message += formatUnderTag(2, `parameter:`, prettyExp(width, parameter))
       message += formatUnderTag(
         2,
         `arg value:`,
-        prettyValue(maxWidth, args[index]),
+        prettyValue(width, args[index]),
       )
       throw new S.ErrorWithMeta(message, parameter.meta)
     }

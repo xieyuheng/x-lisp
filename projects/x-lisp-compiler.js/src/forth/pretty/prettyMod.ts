@@ -2,11 +2,11 @@ import type { Mod } from "../mod/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { prettyStmt } from "./prettyStmt.ts"
 
-export function prettyMod(maxWidth: number, mod: Mod): string {
+export function prettyMod(width: number, mod: Mod): string {
   let s = ``
 
   for (const stmt of mod.stmts.filter(Stmts.isAboutImport)) {
-    s += prettyStmt(maxWidth, stmt)
+    s += prettyStmt(width, stmt)
     s += "\n"
   }
 
@@ -15,7 +15,7 @@ export function prettyMod(maxWidth: number, mod: Mod): string {
   }
 
   for (const stmt of mod.stmts.filter((stmt) => stmt.kind === "Export")) {
-    s += prettyStmt(maxWidth, stmt)
+    s += prettyStmt(width, stmt)
     s += "\n"
   }
 
@@ -24,7 +24,7 @@ export function prettyMod(maxWidth: number, mod: Mod): string {
   }
 
   for (const stmt of mod.stmts.filter((stmt) => !Stmts.isAboutImport(stmt))) {
-    s += prettyStmt(maxWidth, stmt)
+    s += prettyStmt(width, stmt)
     s += "\n"
     s += "\n"
   }

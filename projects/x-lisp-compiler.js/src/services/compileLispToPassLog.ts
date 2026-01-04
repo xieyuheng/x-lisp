@@ -16,7 +16,7 @@ export function compileLispToPassLog(mod: L.Mod, logFile?: string): void {
 }
 
 function logXMod(tag: string, mod: L.Mod, logFile?: string): void {
-  logCode(tag, L.prettyMod(globals.maxWidth, mod), logFile)
+  logCode(tag, L.prettyMod(globals.width, mod), logFile)
 }
 
 function logCode(tag: string, code: string, logFile?: string): void {

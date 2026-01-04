@@ -20,16 +20,16 @@ export function applyPolymorphic(
   polymorphic: Values.Polymorphic,
   args: Array<Value>,
 ): Value {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
   const arity = polymorphic.parameters.length
   if (args.length !== arity) {
     let message = `[applyPolymorphic] arity mismatch`
     message += formatUnderTag(
       2,
       `polymorphic:`,
-      prettyValue(maxWidth, polymorphic),
+      prettyValue(width, polymorphic),
     )
-    message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+    message += formatUnderTag(2, `args:`, prettyValues(width, args))
     throw new Error(message)
   }
 

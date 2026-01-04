@@ -8,12 +8,12 @@ export function applyDataGetter(
   getter: Values.DataGetter,
   args: Array<Value>,
 ): Value {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
 
   if (args.length !== 1) {
     let message = `[applyDataGetter] data getter can only take one argument`
-    message += formatUnderTag(2, `getter:`, prettyValue(maxWidth, getter))
-    message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+    message += formatUnderTag(2, `getter:`, prettyValue(width, getter))
+    message += formatUnderTag(2, `args:`, prettyValues(width, args))
     throw new Error(message)
   }
 
@@ -21,15 +21,15 @@ export function applyDataGetter(
 
   if (!Values.isData(data)) {
     let message = `[applyDataGetter] data getter can only take data as argument`
-    message += formatUnderTag(2, `getter:`, prettyValue(maxWidth, getter))
-    message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+    message += formatUnderTag(2, `getter:`, prettyValue(width, getter))
+    message += formatUnderTag(2, `args:`, prettyValues(width, args))
     throw new Error(message)
   }
 
   if (Values.dataHashtag(data).content !== getter.constructor.name) {
     let message = `[applyDataGetter] data getter constructor mismatch`
-    message += formatUnderTag(2, `getter:`, prettyValue(maxWidth, getter))
-    message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+    message += formatUnderTag(2, `getter:`, prettyValue(width, getter))
+    message += formatUnderTag(2, `args:`, prettyValues(width, args))
     throw new Error(message)
   }
 

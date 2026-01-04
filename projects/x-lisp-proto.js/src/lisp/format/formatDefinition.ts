@@ -5,7 +5,7 @@ import type { Definition } from "../definition/index.ts"
 import { prettyExp, prettyValue } from "../pretty/index.ts"
 
 export function formatDefinition(definition: Definition): string {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
   switch (definition.kind) {
     case "ValueDefinition": {
       let message = ""
@@ -14,19 +14,19 @@ export function formatDefinition(definition: Definition): string {
       message += formatUnderTag(
         0,
         `value:`,
-        prettyValue(maxWidth, definition.value),
+        prettyValue(width, definition.value),
       )
       if (definition.schema)
         message += formatUnderTag(
           0,
           `schema:`,
-          prettyValue(maxWidth, definition.schema),
+          prettyValue(width, definition.schema),
         )
       if (definition.validatedValue)
         message += formatUnderTag(
           0,
           `validated value:`,
-          prettyValue(maxWidth, definition.validatedValue),
+          prettyValue(width, definition.validatedValue),
         )
       return message
     }
@@ -35,24 +35,24 @@ export function formatDefinition(definition: Definition): string {
       let message = ""
       message += `\nmod: ${urlRelativeToCwd(definition.mod.url)}`
       message += `\nname: ${definition.name}`
-      message += formatUnderTag(0, `exp:`, prettyExp(maxWidth, definition.exp))
+      message += formatUnderTag(0, `exp:`, prettyExp(width, definition.exp))
       if (definition.value)
         message += formatUnderTag(
           0,
           `value:`,
-          prettyValue(maxWidth, definition.value),
+          prettyValue(width, definition.value),
         )
       if (definition.schema)
         message += formatUnderTag(
           0,
           `schema:`,
-          prettyValue(maxWidth, definition.schema),
+          prettyValue(width, definition.schema),
         )
       if (definition.validatedValue)
         message += formatUnderTag(
           0,
           `validated value:`,
-          prettyValue(maxWidth, definition.validatedValue),
+          prettyValue(width, definition.validatedValue),
         )
       return message
     }

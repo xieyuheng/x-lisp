@@ -50,11 +50,11 @@ router.defineHandlers({
   },
   "file:compile-to-basic": ({ args: [file] }) => {
     const mod = L.loadEntry(createUrl(file))
-    console.log(B.prettyMod(globals.maxWidth, Services.compileLispToBasic(mod)))
+    console.log(B.prettyMod(globals.width, Services.compileLispToBasic(mod)))
   },
   "basic:bundle": ({ args: [file] }) => {
     const mod = B.loadEntry(createUrl(file))
-    console.log(B.prettyMod(globals.maxWidth, B.bundle(mod)))
+    console.log(B.prettyMod(globals.width, B.bundle(mod)))
   },
   "machine:transpile-to-x86-assembly": ({ args: [file] }) => {
     const mod = M.load(createUrl(file))

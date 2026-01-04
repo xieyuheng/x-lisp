@@ -14,7 +14,7 @@ export function applyWithSchema(
   target: Value,
   args: Array<Value>,
 ): Value {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
   const meta = Values.valueMaybeMeta(target)
   const context = { schema, target, args }
 
@@ -29,10 +29,10 @@ export function applyWithSchema(
     const result = validate(schema.retSchema, ret)
     if (result.kind === "Err") {
       let message = `[applyWithSchema/VariadicArrow] fail on return value`
-      message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
-      message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
-      message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
-      message += formatUnderTag(2, `return:`, prettyValue(maxWidth, ret))
+      message += formatUnderTag(2, `schema:`, prettyValue(width, schema))
+      message += formatUnderTag(2, `target:`, prettyValue(width, target))
+      message += formatUnderTag(2, `args:`, prettyValues(width, args))
+      message += formatUnderTag(2, `return:`, prettyValue(width, ret))
       if (meta) throw new S.ErrorWithMeta(message, meta)
       else throw new Error(message)
     }
@@ -49,19 +49,19 @@ export function applyWithSchema(
       const result = validate(schema.retSchema, ret)
       if (result.kind === "Err") {
         let message = `[applyWithSchema/Arrow] fail on return value (with spilled args)`
-        message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
-        message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
+        message += formatUnderTag(2, `schema:`, prettyValue(width, schema))
+        message += formatUnderTag(2, `target:`, prettyValue(width, target))
         message += formatUnderTag(
           2,
           `used args:`,
-          prettyValues(maxWidth, usedArgs),
+          prettyValues(width, usedArgs),
         )
         message += formatUnderTag(
           2,
           `spilled args:`,
-          prettyValues(maxWidth, spilledArgs),
+          prettyValues(width, spilledArgs),
         )
-        message += formatUnderTag(2, `return:`, prettyValue(maxWidth, ret))
+        message += formatUnderTag(2, `return:`, prettyValue(width, ret))
         if (meta) throw new S.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
@@ -75,10 +75,10 @@ export function applyWithSchema(
       const result = validate(schema.retSchema, ret)
       if (result.kind === "Err") {
         let message = `[applyWithSchema/Arrow] fail on return value`
-        message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
-        message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
-        message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
-        message += formatUnderTag(2, `return:`, prettyValue(maxWidth, ret))
+        message += formatUnderTag(2, `schema:`, prettyValue(width, schema))
+        message += formatUnderTag(2, `target:`, prettyValue(width, target))
+        message += formatUnderTag(2, `args:`, prettyValues(width, args))
+        message += formatUnderTag(2, `return:`, prettyValue(width, ret))
         if (meta) throw new S.ErrorWithMeta(message, meta)
         else throw new Error(message)
       }
@@ -96,9 +96,9 @@ export function applyWithSchema(
   }
 
   let message = `[applyWithSchema] unhandled kind of schema`
-  message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
-  message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
-  message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+  message += formatUnderTag(2, `schema:`, prettyValue(width, schema))
+  message += formatUnderTag(2, `target:`, prettyValue(width, target))
+  message += formatUnderTag(2, `args:`, prettyValues(width, args))
   if (meta) throw new S.ErrorWithMeta(message, meta)
   else throw new Error(message)
 }
@@ -114,7 +114,7 @@ function validateArgs(
   argSchemas: Array<Value>,
   args: Array<Value>,
 ): Array<Value> {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
   const validatedArgs: Array<Value> = []
   const erred: Array<{ index: number; schema: Value; arg: Value }> = []
   for (const [index, result] of arrayMapZip(
@@ -139,14 +139,14 @@ function validateArgs(
 
   const meta = Values.valueMaybeMeta(context.target)
   let message = `[applyWithSchema] fail on arguments`
-  message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, context.schema))
-  message += formatUnderTag(2, `target:`, prettyValue(maxWidth, context.target))
-  message += formatUnderTag(2, `args:`, prettyValues(maxWidth, context.args))
+  message += formatUnderTag(2, `schema:`, prettyValue(width, context.schema))
+  message += formatUnderTag(2, `target:`, prettyValue(width, context.target))
+  message += formatUnderTag(2, `args:`, prettyValues(width, context.args))
   message += `\n  failed args:`
   for (const { index, schema, arg } of erred) {
     message += `\n  - count: ${index + 1}`
-    message += formatUnderTag(4, `schema:`, prettyValue(maxWidth, schema))
-    message += formatUnderTag(4, `arg:`, prettyValue(maxWidth, arg))
+    message += formatUnderTag(4, `schema:`, prettyValue(width, schema))
+    message += formatUnderTag(4, `arg:`, prettyValue(width, arg))
   }
 
   if (meta) throw new S.ErrorWithMeta(message, meta)

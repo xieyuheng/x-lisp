@@ -25,7 +25,7 @@ export function stage3(
         process.stdout.write(options.resultPrompt)
       }
 
-      console.log(prettyValue(globals.maxWidth, value))
+      console.log(prettyValue(globals.width, value))
     }
   }
 }

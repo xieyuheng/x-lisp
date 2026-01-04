@@ -54,7 +54,7 @@ export function projectGetBasicFile(
 ): string {
   return Path.join(
     projectOutputDirectory(project),
-    sourceId.slice(0, -L.suffix.length) + F.suffix,
+    sourceId.slice(0, -L.suffix.length) + B.suffix,
   )
 }
 

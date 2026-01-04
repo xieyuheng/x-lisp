@@ -20,7 +20,7 @@ import { supply } from "./supply.ts"
 import { validate } from "./validate.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
 
   if (args.length === 0) {
     return applyNullary(target)
@@ -33,8 +33,8 @@ export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "Tau") {
     if (args.length !== 1) {
       let message = `[apply] tau can only take one argument`
-      message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
-      message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+      message += formatUnderTag(2, `target:`, prettyValue(width, target))
+      message += formatUnderTag(2, `args:`, prettyValues(width, args))
       throw new Error(message)
     }
 
@@ -88,8 +88,8 @@ export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "DataConstructorPredicate") {
     if (args.length !== 1) {
       let message = `[apply] data constructor predicate can only take one argument`
-      message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
-      message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+      message += formatUnderTag(2, `target:`, prettyValue(width, target))
+      message += formatUnderTag(2, `args:`, prettyValues(width, args))
       throw new Error(message)
     }
 
@@ -121,8 +121,8 @@ export function apply(target: Value, args: Array<Value>): Value {
   if (target.kind === "Pattern") {
     if (args.length !== 1) {
       let message = `[apply] pattern can only take one argument`
-      message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
-      message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+      message += formatUnderTag(2, `target:`, prettyValue(width, target))
+      message += formatUnderTag(2, `args:`, prettyValues(width, args))
       throw new Error(message)
     }
 
@@ -143,7 +143,7 @@ export function apply(target: Value, args: Array<Value>): Value {
   }
 
   let message = `[apply] can not handle this kind of target`
-  message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
-  message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+  message += formatUnderTag(2, `target:`, prettyValue(width, target))
+  message += formatUnderTag(2, `args:`, prettyValues(width, args))
   throw new Error(message)
 }

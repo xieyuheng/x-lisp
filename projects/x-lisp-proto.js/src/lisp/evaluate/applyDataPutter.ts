@@ -11,12 +11,12 @@ export function applyDataPutter(
   putter: Values.DataPutter,
   args: Array<Value>,
 ): Value {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
 
   if (args.length !== 2) {
     let message = `[applyDataPutter] data putter can only take two arguments`
-    message += formatUnderTag(2, `putter:`, prettyValue(maxWidth, putter))
-    message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+    message += formatUnderTag(2, `putter:`, prettyValue(width, putter))
+    message += formatUnderTag(2, `args:`, prettyValues(width, args))
     throw new Error(message)
   }
 
@@ -24,15 +24,15 @@ export function applyDataPutter(
 
   if (!Values.isData(data)) {
     let message = `[applyDataPutter] data putter can only take data as the second argument`
-    message += formatUnderTag(2, `putter:`, prettyValue(maxWidth, putter))
-    message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+    message += formatUnderTag(2, `putter:`, prettyValue(width, putter))
+    message += formatUnderTag(2, `args:`, prettyValues(width, args))
     throw new Error(message)
   }
 
   if (Values.dataHashtag(data).content !== putter.constructor.name) {
     let message = `[applyDataPutter] data putter constructor mismatch`
-    message += formatUnderTag(2, `putter:`, prettyValue(maxWidth, putter))
-    message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+    message += formatUnderTag(2, `putter:`, prettyValue(width, putter))
+    message += formatUnderTag(2, `args:`, prettyValues(width, args))
     throw new Error(message)
   }
 
@@ -45,17 +45,17 @@ export function applyDataPutter(
     assert(Values.isBool(ok))
     if (Values.isFalse(ok)) {
       let message = `[applyDataPutter] result data cannot possibly pass data predicate`
-      message += formatUnderTag(2, `putter:`, prettyValue(maxWidth, putter))
+      message += formatUnderTag(2, `putter:`, prettyValue(width, putter))
       message += formatUnderTag(
         2,
         `putting value:`,
-        prettyValue(maxWidth, value),
+        prettyValue(width, value),
       )
-      message += formatUnderTag(2, `result data:`, prettyValue(maxWidth, data))
+      message += formatUnderTag(2, `result data:`, prettyValue(width, data))
       message += formatUnderTag(
         2,
         `data predicate:`,
-        prettyValue(maxWidth, predicate),
+        prettyValue(width, predicate),
       )
       throw new Error(message)
     }

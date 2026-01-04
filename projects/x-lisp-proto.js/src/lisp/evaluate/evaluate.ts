@@ -28,7 +28,7 @@ export function resultValue(result: Result): Value {
 }
 
 export function evaluate(exp: Exp): Effect {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
 
   if (Values.isAtom(exp)) {
     return (mod, env) => {
@@ -108,12 +108,12 @@ export function evaluate(exp: Exp): Effect {
         const resultEnv = match(pattern, value)(emptyEnv())
         if (resultEnv === undefined) {
           let message = `[evaluate] assignment pattern mismatch`
-          message += formatUnderTag(2, `lhs exp:`, prettyExp(maxWidth, exp.lhs))
-          message += formatUnderTag(2, `rhs exp:`, prettyExp(maxWidth, exp.rhs))
+          message += formatUnderTag(2, `lhs exp:`, prettyExp(width, exp.lhs))
+          message += formatUnderTag(2, `rhs exp:`, prettyExp(width, exp.rhs))
           message += formatUnderTag(
             2,
             `rhs value:`,
-            prettyValue(maxWidth, value),
+            prettyValue(width, value),
           )
           throw new S.ErrorWithMeta(message, exp.meta)
         }
@@ -147,8 +147,8 @@ export function evaluate(exp: Exp): Effect {
           return [env, Values.Void()]
         } else {
           let message = `(assert-the) validation fail`
-          message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
-          message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
+          message += formatUnderTag(2, `schema:`, prettyValue(width, schema))
+          message += formatUnderTag(2, `value:`, prettyValue(width, value))
           throw new S.ErrorWithMeta(message, exp.meta)
         }
       }
@@ -178,7 +178,7 @@ export function evaluate(exp: Exp): Effect {
             message += formatUnderTag(
               2,
               `element:`,
-              prettyValue(maxWidth, elementValue),
+              prettyValue(width, elementValue),
             )
             throw new S.ErrorWithMeta(message, element.meta)
           }
@@ -196,8 +196,8 @@ export function evaluate(exp: Exp): Effect {
           const v = resultValue(evaluate(entry.value)(mod, env))
           if (!Values.isHashable(k)) {
             let message = `[evaluate] Key in (@hash) is not hashable`
-            message += formatUnderTag(2, `key:`, prettyValue(maxWidth, k))
-            message += formatUnderTag(2, `value:`, prettyValue(maxWidth, v))
+            message += formatUnderTag(2, `key:`, prettyValue(width, k))
+            message += formatUnderTag(2, `value:`, prettyValue(width, v))
             throw new S.ErrorWithMeta(message, entry.key.meta)
           }
 
@@ -232,7 +232,7 @@ export function evaluate(exp: Exp): Effect {
           message += formatUnderTag(
             2,
             `condition:`,
-            prettyValue(maxWidth, condition),
+            prettyValue(width, condition),
           )
           throw new S.ErrorWithMeta(message, exp.meta)
         }
@@ -253,7 +253,7 @@ export function evaluate(exp: Exp): Effect {
           message += formatUnderTag(
             2,
             `condition:`,
-            prettyValue(maxWidth, condition),
+            prettyValue(width, condition),
           )
           throw new S.ErrorWithMeta(message, exp.meta)
         }
@@ -274,7 +274,7 @@ export function evaluate(exp: Exp): Effect {
           message += formatUnderTag(
             2,
             `condition:`,
-            prettyValue(maxWidth, condition),
+            prettyValue(width, condition),
           )
           throw new S.ErrorWithMeta(message, exp.meta)
         }
@@ -293,7 +293,7 @@ export function evaluate(exp: Exp): Effect {
           const value = resultValue(evaluate(e)(mod, env))
           if (!Values.isBool(value)) {
             let message = `[evaluate] The subexpressions of (and) must evaluate to bool`
-            message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
+            message += formatUnderTag(2, `value:`, prettyValue(width, value))
             throw new S.ErrorWithMeta(message, exp.meta)
           }
 
@@ -312,7 +312,7 @@ export function evaluate(exp: Exp): Effect {
           const value = resultValue(evaluate(e)(mod, env))
           if (!Values.isBool(value)) {
             let message = `[evaluate] The subexpressions of (or) must evaluate to bool`
-            message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
+            message += formatUnderTag(2, `value:`, prettyValue(width, value))
             throw new S.ErrorWithMeta(message, exp.meta)
           }
 
@@ -331,7 +331,7 @@ export function evaluate(exp: Exp): Effect {
           const value = resultValue(evaluate(condLine.question)(mod, env))
           if (!Values.isBool(value)) {
             let message = `[evaluate] The question part of a (cond) line must evaluate to bool`
-            message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
+            message += formatUnderTag(2, `value:`, prettyValue(width, value))
             throw new S.ErrorWithMeta(message, exp.meta)
           }
 
@@ -357,7 +357,7 @@ export function evaluate(exp: Exp): Effect {
         }
 
         let message = `[evaluate] (match) mismatch`
-        message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
+        message += formatUnderTag(2, `target:`, prettyValue(width, target))
         throw new S.ErrorWithMeta(message, exp.meta)
       }
     }
@@ -401,8 +401,8 @@ export function evaluate(exp: Exp): Effect {
           return [env, result.value]
         } else {
           let message = `(the) validation fail`
-          message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
-          message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
+          message += formatUnderTag(2, `schema:`, prettyValue(width, schema))
+          message += formatUnderTag(2, `value:`, prettyValue(width, value))
           throw new S.ErrorWithMeta(message, exp.meta)
         }
       }
@@ -428,8 +428,8 @@ export function evaluate(exp: Exp): Effect {
 
         if (target.kind !== "The") {
           let message = `[evaluate] specific application expect target to be contracted -- (the) value`
-          message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
-          message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+          message += formatUnderTag(2, `target:`, prettyValue(width, target))
+          message += formatUnderTag(2, `args:`, prettyValues(width, args))
           throw new S.ErrorWithMeta(message, exp.meta)
         }
 
@@ -438,10 +438,10 @@ export function evaluate(exp: Exp): Effect {
           message += formatUnderTag(
             2,
             `target schema:`,
-            prettyValue(maxWidth, target.schema),
+            prettyValue(width, target.schema),
           )
-          message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
-          message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
+          message += formatUnderTag(2, `target:`, prettyValue(width, target))
+          message += formatUnderTag(2, `args:`, prettyValues(width, args))
           throw new S.ErrorWithMeta(message, exp.meta)
         }
 

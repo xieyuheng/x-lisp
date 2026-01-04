@@ -7,7 +7,7 @@ import { applyPolymorphicWithAnythings } from "./applyPolymorphic.ts"
 import { validateOrFail } from "./validate.ts"
 
 export function applyNullaryWithSchema(schema: Value, target: Value): Value {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
 
   if (schema.kind === "Polymorphic") {
     return applyNullaryWithSchema(applyPolymorphicWithAnythings(schema), target)
@@ -22,7 +22,7 @@ export function applyNullaryWithSchema(schema: Value, target: Value): Value {
   }
 
   let message = `[applyNullaryWithSchema] unhandled kind of schema`
-  message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
-  message += formatUnderTag(2, `target:`, prettyValue(maxWidth, target))
+  message += formatUnderTag(2, `schema:`, prettyValue(width, schema))
+  message += formatUnderTag(2, `target:`, prettyValue(width, target))
   throw new Error(message)
 }

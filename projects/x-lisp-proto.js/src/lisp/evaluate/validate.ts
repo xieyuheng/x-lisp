@@ -14,20 +14,20 @@ export function isValid(schema: Value, value: Value): boolean {
 }
 
 export function validateOrFail(schema: Value, value: Value): Value {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
   const result = validate(schema, value)
   if (result.kind === "Ok") {
     return result.value
   }
 
   let message = `[validateOrFail] assertion fail`
-  message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
-  message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
+  message += formatUnderTag(2, `schema:`, prettyValue(width, schema))
+  message += formatUnderTag(2, `value:`, prettyValue(width, value))
   throw new Error(message)
 }
 
 export function validate(schema: Value, value: Value): Result {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
 
   if (schema.kind === "Arrow") {
     return { kind: "Ok", value: Values.The(schema, value) }
@@ -100,8 +100,8 @@ export function validate(schema: Value, value: Value): Result {
   }
 
   let message = `[validate] predicate schema must return bool`
-  message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
-  message += formatUnderTag(2, `value:`, prettyValue(maxWidth, value))
-  message += formatUnderTag(2, `result:`, prettyValue(maxWidth, result))
+  message += formatUnderTag(2, `schema:`, prettyValue(width, schema))
+  message += formatUnderTag(2, `value:`, prettyValue(width, value))
+  message += formatUnderTag(2, `result:`, prettyValue(width, result))
   throw new Error(message)
 }

@@ -7,11 +7,11 @@ import { prettyValue } from "../pretty/index.ts"
 import { type Value } from "../value/index.ts"
 
 export function define(mod: Mod, name: string, value: Value): void {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
   const found = modLookupDefinition(mod, name)
   if (found) {
     let message = `[define] can not redefine name: ${name}`
-    message += formatUnderTag(2, `new value:`, prettyValue(maxWidth, value))
+    message += formatUnderTag(2, `new value:`, prettyValue(width, value))
     message += `\n  old definition:`
     message += formatIndent(4, formatDefinition(found))
     throw new Error(message)

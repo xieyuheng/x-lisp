@@ -1,9 +1,13 @@
 import * as Ppml from "./index.ts"
 
-export function format(maxWidth: number, node: Ppml.Node): string {
+export type Options = {
+
+}
+
+export function format(width: number, node: Ppml.Node): string {
   const target: LayoutTarget = [0, "Inline", Ppml.GroupNode(node)]
   const parts: Array<string> = []
-  layout(maxWidth, 0, [target], parts)
+  layout(width, 0, [target], parts)
   return parts.join("")
 }
 
@@ -12,7 +16,7 @@ type GroupingMode = "Inline" | "Block"
 type LayoutTarget = [indentation: number, mode: GroupingMode, node: Ppml.Node]
 
 function layout(
-  maxWidth: number,
+  width: number,
   cursor: number,
   targets: Array<LayoutTarget>,
   parts: Array<string>,
@@ -68,7 +72,7 @@ function layout(
       }
 
       case "GroupNode": {
-        const groupingMode = fitInline(maxWidth - cursor, [node.child])
+        const groupingMode = fitInline(width - cursor, [node.child])
           ? "Inline"
           : "Block"
 

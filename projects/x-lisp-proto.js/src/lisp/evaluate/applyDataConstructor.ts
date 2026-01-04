@@ -11,7 +11,7 @@ export function applyDataConstructor(
   constructor: Values.DataConstructor,
   args: Array<Value>,
 ): Value {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
   const data = Values.Data(constructor, args)
 
   if (flags.debug) {
@@ -23,14 +23,14 @@ export function applyDataConstructor(
       message += formatUnderTag(
         2,
         `constructor:`,
-        prettyValue(maxWidth, constructor),
+        prettyValue(width, constructor),
       )
-      message += formatUnderTag(2, `args:`, prettyValues(maxWidth, args))
-      message += formatUnderTag(2, `result data:`, prettyValue(maxWidth, data))
+      message += formatUnderTag(2, `args:`, prettyValues(width, args))
+      message += formatUnderTag(2, `result data:`, prettyValue(width, data))
       message += formatUnderTag(
         2,
         `data predicate:`,
-        prettyValue(maxWidth, predicate),
+        prettyValue(width, predicate),
       )
       throw new Error(message)
     }

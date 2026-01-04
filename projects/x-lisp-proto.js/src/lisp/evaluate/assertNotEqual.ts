@@ -9,7 +9,7 @@ import { evaluate, resultValue, type Effect } from "./evaluate.ts"
 
 export function assertNotEqual(lhs: Exp, rhs: Exp): Effect {
   return (mod, env) => {
-    const maxWidth = globals.maxWidth
+    const width = globals.width
     const lhsValue = resultValue(evaluate(lhs)(mod, env))
     const rhsValue = resultValue(evaluate(rhs)(mod, env))
     if (!equal(lhsValue, rhsValue)) {
@@ -17,10 +17,10 @@ export function assertNotEqual(lhs: Exp, rhs: Exp): Effect {
     }
 
     let message = `[assertNotEqual] fail`
-    message += formatUnderTag(2, `lhs exp:`, prettyExp(maxWidth, lhs))
-    message += formatUnderTag(2, `rhs exp:`, prettyExp(maxWidth, rhs))
-    message += formatUnderTag(2, `lhs value:`, prettyValue(maxWidth, lhsValue))
-    message += formatUnderTag(2, `rhs value:`, prettyValue(maxWidth, rhsValue))
+    message += formatUnderTag(2, `lhs exp:`, prettyExp(width, lhs))
+    message += formatUnderTag(2, `rhs exp:`, prettyExp(width, rhs))
+    message += formatUnderTag(2, `lhs value:`, prettyValue(width, lhsValue))
+    message += formatUnderTag(2, `rhs value:`, prettyValue(width, rhsValue))
     throw new S.ErrorWithMeta(message, rhs.meta)
   }
 }

@@ -33,6 +33,6 @@ function buildForth(project: Project, id: string): void {
   logFile("Forth", outputFile)
   const mod = L.loadEntry(createUrl(inputFile))
   const forthMod = Services.compileLispToForth(mod)
-  const outputText = F.prettyMod(globals.maxWidth, forthMod)
+  const outputText = F.prettyMod(globals.width, forthMod)
   writeFile(outputFile, outputText + "\n")
 }

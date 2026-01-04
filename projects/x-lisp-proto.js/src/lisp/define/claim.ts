@@ -7,14 +7,14 @@ import { prettyValue } from "../pretty/index.ts"
 import { type Value } from "../value/index.ts"
 
 export function claim(mod: Mod, name: string, schema: Value): void {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
   const found = mod.claimed.get(name)
   if (found) {
     let message = `[claim] can not reclaim name`
     message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
     message += `\n  name: ${name}`
-    message += formatUnderTag(2, `old schema:`, prettyValue(maxWidth, found))
-    message += formatUnderTag(2, `new schema:`, prettyValue(maxWidth, schema))
+    message += formatUnderTag(2, `old schema:`, prettyValue(width, found))
+    message += formatUnderTag(2, `new schema:`, prettyValue(width, schema))
     throw new Error(message)
   }
 
@@ -30,7 +30,7 @@ export function claim(mod: Mod, name: string, schema: Value): void {
     let message = `[claim] can not claim name of other module`
     message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
     message += `\n  name: ${name}`
-    message += formatUnderTag(2, `schema:`, prettyValue(maxWidth, schema))
+    message += formatUnderTag(2, `schema:`, prettyValue(width, schema))
     message += `\n  definition:`
     message += formatIndent(4, formatDefinition(definition))
     throw new Error(message)

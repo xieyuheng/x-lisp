@@ -8,11 +8,11 @@ import { type Mod, modLookupDefinition } from "../mod/Mod.ts"
 import { prettyExp } from "../pretty/index.ts"
 
 export function defineLazy(mod: Mod, name: string, exp: Exp): void {
-  const maxWidth = globals.maxWidth
+  const width = globals.width
   const found = modLookupDefinition(mod, name)
   if (found) {
     let message = `[defineLazy] can not redefine name: ${name}`
-    message += formatUnderTag(2, `new exp:`, prettyExp(maxWidth, exp))
+    message += formatUnderTag(2, `new exp:`, prettyExp(width, exp))
     message += `\n  old definition:`
     message += formatIndent(4, formatDefinition(found))
     throw new ErrorWithMeta(message, exp.meta)
