@@ -1,8 +1,11 @@
-# forth
-
-[forth] `prettyMod.test.ts`
-
 # compiler
 
-[pass] `030-ExplicateControlPass.ts` -- to forth
+[pass] `030-ExplicateControlPass.ts` -- `onFunctionDefinition`
+[pass] `030-ExplicateControlPass.ts` -- `onConstantDefinition`
+
+[pass] `030-ExplicateControlPass.ts` -- `inTail`
+[pass] `030-ExplicateControlPass.ts` -- `inLet1`
+[pass] `030-ExplicateControlPass.ts` -- `inBegin1`
+[pass] `030-ExplicateControlPass.ts` -- `inIf`
+
 [project] compile to `.fth`
