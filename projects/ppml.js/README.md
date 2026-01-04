@@ -11,19 +11,19 @@ Pretty printing is like how HTML works:
 
 ```xml
 <concat>
-<text>begin</text>
-<indent 3>
+  <text>begin</text>
+  <indent 3>
+    <br/>
+    <group>
+      <text>stmt</text>
+      <br/>
+      <text>stmt</text>
+      <br/>
+      <text>stmt</text>
+    </group>
+  </indent>
   <br/>
-  <group>
-    <text>stmt</text>
-    <br/>
-    <text>stmt</text>
-    <br/>
-    <text>stmt</text>
-  </group>
-</indent>
-<br/>
-<text>end</text>
+  <text>end</text>
 </concat>
 ```
 
