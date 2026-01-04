@@ -9,8 +9,7 @@ y₂
 x₁
 y₁
 iadd
-@tail-call
-println
+@tail-call println
 
 @end
 

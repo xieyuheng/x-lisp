@@ -27,11 +27,9 @@
 @end
 
 @define-function main
-@ref
-identity
+@ref identity
 ( f₁ )
-@ref
-identity
+@ref identity
 dup
 ( g₁ )
 f₁
@@ -39,8 +37,7 @@ f₁
 g₁
 2
 @apply
-@tail-call
-println
+@tail-call println
 
 @end
 

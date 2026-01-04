@@ -21,8 +21,7 @@ print
 newline
 x₁
 x₁
-@tail-call
-iadd
+@tail-call iadd
 
 @end
 

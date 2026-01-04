@@ -8,8 +8,7 @@ y₁
 ( z₁ )
 z₁
 ineg
-@tail-call
-println
+@tail-call println
 
 @end
 

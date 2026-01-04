@@ -17,8 +17,7 @@ z₁
 y₁
 ineg
 iadd
-@tail-call
-println
+@tail-call println
 
 @end
 

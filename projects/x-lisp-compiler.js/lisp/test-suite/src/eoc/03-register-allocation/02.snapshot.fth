@@ -8,8 +8,7 @@ y₁
 iadd
 42
 iadd
-@tail-call
-println
+@tail-call println
 
 @end
 

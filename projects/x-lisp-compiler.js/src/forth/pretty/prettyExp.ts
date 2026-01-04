@@ -18,7 +18,7 @@ function renderExp(exp: Exp): Ppml.Node {
     }
 
     case "Ref": {
-      return Ppml.concat(Ppml.text("@ref"), Ppml.br(), Ppml.text(exp.name))
+      return Ppml.concat(Ppml.text("@ref"), Ppml.text(" "), Ppml.text(exp.name))
     }
 
     case "Var": {
@@ -28,7 +28,7 @@ function renderExp(exp: Exp): Ppml.Node {
     case "TailCall": {
       return Ppml.concat(
         Ppml.text("@tail-call"),
-        Ppml.br(),
+        Ppml.text(" "),
         Ppml.text(exp.name),
       )
     }

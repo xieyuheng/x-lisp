@@ -12,8 +12,7 @@ x₂
 100
 iadd
 iadd
-@tail-call
-println
+@tail-call println
 
 @end
 
