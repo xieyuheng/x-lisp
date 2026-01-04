@@ -8,13 +8,13 @@ export type DefineFunction = {
   kind: "DefineFunction"
   name: string
   body: Exp
-  meta: Meta
+  meta?: Meta
 }
 
 export function DefineFunction(
   name: string,
   body: Exp,
-  meta: Meta,
+  meta?: Meta,
 ): DefineFunction {
   return {
     kind: "DefineFunction",
@@ -28,13 +28,13 @@ export type DefineVariable = {
   kind: "DefineVariable"
   name: string
   body: Exp
-  meta: Meta
+  meta?: Meta
 }
 
 export function DefineVariable(
   name: string,
   body: Exp,
-  meta: Meta,
+  meta?: Meta,
 ): DefineVariable {
   return {
     kind: "DefineVariable",

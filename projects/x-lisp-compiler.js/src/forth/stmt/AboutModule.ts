@@ -16,10 +16,10 @@ export type Import = {
   kind: "Import"
   path: string
   names: Array<string>
-  meta: Meta
+  meta?: Meta
 }
 
-export function Import(path: string, names: Array<string>, meta: Meta): Import {
+export function Import(path: string, names: Array<string>, meta?: Meta): Import {
   return {
     kind: "Import",
     path,
@@ -31,10 +31,10 @@ export function Import(path: string, names: Array<string>, meta: Meta): Import {
 export type ImportAll = {
   kind: "ImportAll"
   path: string
-  meta: Meta
+  meta?: Meta
 }
 
-export function ImportAll(path: string, meta: Meta): ImportAll {
+export function ImportAll(path: string, meta?: Meta): ImportAll {
   return {
     kind: "ImportAll",
     path,
@@ -45,7 +45,7 @@ export function ImportAll(path: string, meta: Meta): ImportAll {
 export function ImportExcept(
   path: string,
   names: Array<string>,
-  meta: Meta,
+  meta?: Meta,
 ): ImportExcept {
   return {
     kind: "ImportExcept",
@@ -59,17 +59,17 @@ export type ImportExcept = {
   kind: "ImportExcept"
   path: string
   names: Array<string>
-  meta: Meta
+  meta?: Meta
 }
 
 export type ImportAs = {
   kind: "ImportAs"
   path: string
   prefix: string
-  meta: Meta
+  meta?: Meta
 }
 
-export function ImportAs(path: string, prefix: string, meta: Meta): ImportAs {
+export function ImportAs(path: string, prefix: string, meta?: Meta): ImportAs {
   return {
     kind: "ImportAs",
     path,
@@ -82,13 +82,13 @@ export type Include = {
   kind: "Include"
   path: string
   names: Array<string>
-  meta: Meta
+  meta?: Meta
 }
 
 export function Include(
   path: string,
   names: Array<string>,
-  meta: Meta,
+  meta?: Meta,
 ): Include {
   return {
     kind: "Include",
@@ -101,10 +101,10 @@ export function Include(
 export type IncludeAll = {
   kind: "IncludeAll"
   path: string
-  meta: Meta
+  meta?: Meta
 }
 
-export function IncludeAll(path: string, meta: Meta): IncludeAll {
+export function IncludeAll(path: string, meta?: Meta): IncludeAll {
   return {
     kind: "IncludeAll",
     path,
@@ -115,7 +115,7 @@ export function IncludeAll(path: string, meta: Meta): IncludeAll {
 export function IncludeExcept(
   path: string,
   names: Array<string>,
-  meta: Meta,
+  meta?: Meta,
 ): IncludeExcept {
   return {
     kind: "IncludeExcept",
@@ -129,17 +129,17 @@ export type IncludeExcept = {
   kind: "IncludeExcept"
   path: string
   names: Array<string>
-  meta: Meta
+  meta?: Meta
 }
 
 export type IncludeAs = {
   kind: "IncludeAs"
   path: string
   prefix: string
-  meta: Meta
+  meta?: Meta
 }
 
-export function IncludeAs(path: string, prefix: string, meta: Meta): IncludeAs {
+export function IncludeAs(path: string, prefix: string, meta?: Meta): IncludeAs {
   return {
     kind: "IncludeAs",
     path,
@@ -151,10 +151,10 @@ export function IncludeAs(path: string, prefix: string, meta: Meta): IncludeAs {
 export type Export = {
   kind: "Export"
   names: Array<string>
-  meta: Meta
+  meta?: Meta
 }
 
-export function Export(names: Array<string>, meta: Meta): Export {
+export function Export(names: Array<string>, meta?: Meta): Export {
   return {
     kind: "Export",
     names,

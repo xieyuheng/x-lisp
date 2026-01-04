@@ -1,7 +1,7 @@
 # forth
 
-[forth] `renderStmt`
-[forth] `renderMod`
+[forth] `prettyMod`
+[forth] `prettyMod.test.ts`
 
 # compiler
 

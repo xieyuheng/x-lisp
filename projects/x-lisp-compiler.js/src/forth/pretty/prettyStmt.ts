@@ -1,63 +1,66 @@
 import * as Ppml from "@xieyuheng/ppml.js"
 import type { Stmt } from "../stmt/index.ts"
 import * as Stmts from "../stmt/index.ts"
+import { prettyExp } from "./prettyExp.ts"
 
 export function prettyStmt(maxWidth: number, stmt: Stmt): string {
-  return Ppml.format(maxWidth, renderStmt(stmt))
-}
-
-function renderStmt(stmt: Stmt): Ppml.Node {
   if (Stmts.isAboutModule(stmt)) {
-    return renderStmtAboutModule(stmt)
+    return prettyStmtAboutModule(maxWidth, stmt)
   }
 
   switch (stmt.kind) {
     case "DefineFunction": {
-      return Ppml.nil()
+      let s = `@define-function ${stmt.name}`
+      s += `\n` + prettyExp(maxWidth, stmt.body)
+      s += `\n` + `@end`
+      return s
     }
 
     case "DefineVariable": {
-      return Ppml.nil()
+      let s = `@define-variable ${stmt.name}`
+      s += `\n` + prettyExp(maxWidth, stmt.body)
+      s += `\n` + `@end`
+      return s
     }
   }
 }
 
-function renderStmtAboutModule(stmt: Stmts.AboutModule): Ppml.Node {
+function prettyStmtAboutModule(maxWidth: number, stmt: Stmts.AboutModule): string {
   switch (stmt.kind) {
     case "Export": {
-      return Ppml.nil()
+      return `@export ${stmt.names.join(' ')} @end`
     }
 
     case "Import": {
-      return Ppml.nil()
+      return `@import "${stmt.path}" ${stmt.names.join(' ')} @end`
     }
 
     case "ImportAll": {
-      return Ppml.nil()
+      return `@import-all "${stmt.path}"`
     }
 
     case "ImportExcept": {
-      return Ppml.nil()
+      return `@import-except "${stmt.path}" ${stmt.names.join(' ')} @end`
     }
 
     case "ImportAs": {
-      return Ppml.nil()
+      return `@import-as "${stmt.path}" ${stmt.prefix}`
     }
 
     case "Include": {
-      return Ppml.nil()
+      return `@include "${stmt.path}" ${stmt.names.join(' ')} @end`
     }
 
     case "IncludeAll": {
-      return Ppml.nil()
+      return `@include-all "${stmt.path}"`
     }
 
     case "IncludeExcept": {
-      return Ppml.nil()
+      return `@include-except "${stmt.path}" ${stmt.names.join(' ')} @end`
     }
 
     case "IncludeAs": {
-      return Ppml.nil()
+      return `@include-as "${stmt.path}" ${stmt.prefix}`
     }
   }
 }
