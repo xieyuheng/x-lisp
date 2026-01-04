@@ -1,4 +1,3 @@
-import * as Ppml from "@xieyuheng/ppml.js"
 import type { Stmt } from "../stmt/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { prettyExp } from "./prettyExp.ts"
@@ -25,14 +24,17 @@ export function prettyStmt(maxWidth: number, stmt: Stmt): string {
   }
 }
 
-function prettyStmtAboutModule(maxWidth: number, stmt: Stmts.AboutModule): string {
+function prettyStmtAboutModule(
+  maxWidth: number,
+  stmt: Stmts.AboutModule,
+): string {
   switch (stmt.kind) {
     case "Export": {
-      return `@export ${stmt.names.join(' ')} @end`
+      return `@export ${stmt.names.join(" ")} @end`
     }
 
     case "Import": {
-      return `@import "${stmt.path}" ${stmt.names.join(' ')} @end`
+      return `@import "${stmt.path}" ${stmt.names.join(" ")} @end`
     }
 
     case "ImportAll": {
@@ -40,7 +42,7 @@ function prettyStmtAboutModule(maxWidth: number, stmt: Stmts.AboutModule): strin
     }
 
     case "ImportExcept": {
-      return `@import-except "${stmt.path}" ${stmt.names.join(' ')} @end`
+      return `@import-except "${stmt.path}" ${stmt.names.join(" ")} @end`
     }
 
     case "ImportAs": {
@@ -48,7 +50,7 @@ function prettyStmtAboutModule(maxWidth: number, stmt: Stmts.AboutModule): strin
     }
 
     case "Include": {
-      return `@include "${stmt.path}" ${stmt.names.join(' ')} @end`
+      return `@include "${stmt.path}" ${stmt.names.join(" ")} @end`
     }
 
     case "IncludeAll": {
@@ -56,7 +58,7 @@ function prettyStmtAboutModule(maxWidth: number, stmt: Stmts.AboutModule): strin
     }
 
     case "IncludeExcept": {
-      return `@include-except "${stmt.path}" ${stmt.names.join(' ')} @end`
+      return `@include-except "${stmt.path}" ${stmt.names.join(" ")} @end`
     }
 
     case "IncludeAs": {

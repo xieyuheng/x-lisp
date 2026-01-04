@@ -1,6 +1,5 @@
 # forth
 
-[forth] `prettyMod`
 [forth] `prettyMod.test.ts`
 
 # compiler

@@ -19,7 +19,11 @@ export type Import = {
   meta?: Meta
 }
 
-export function Import(path: string, names: Array<string>, meta?: Meta): Import {
+export function Import(
+  path: string,
+  names: Array<string>,
+  meta?: Meta,
+): Import {
   return {
     kind: "Import",
     path,
@@ -139,7 +143,11 @@ export type IncludeAs = {
   meta?: Meta
 }
 
-export function IncludeAs(path: string, prefix: string, meta?: Meta): IncludeAs {
+export function IncludeAs(
+  path: string,
+  prefix: string,
+  meta?: Meta,
+): IncludeAs {
   return {
     kind: "IncludeAs",
     path,
