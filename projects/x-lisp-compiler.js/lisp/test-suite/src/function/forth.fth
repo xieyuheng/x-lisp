@@ -28,17 +28,17 @@
 
 @define-function main
 @ref identity
-( f₁ )
-@ref identity
-dup
-( g₁ )
-f₁
-f₁
-g₁
-2
-@apply
-@tail-call println
-
+  ( f₁ )
+  @ref identity
+  dup
+  ( g₁ )
+  f₁
+  f₁
+  g₁
+  2
+  @apply
+  @tail-call println
+  
 @end
 
 

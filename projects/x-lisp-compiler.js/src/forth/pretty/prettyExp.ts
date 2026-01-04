@@ -3,8 +3,14 @@ import { formatAtom } from "../../lisp/format/formatAtom.ts"
 import type { Exp } from "../exp/index.ts"
 import * as Exps from "../exp/index.ts"
 
-export function prettyExp(width: number, exp: Exp): string {
-  return Ppml.format(width, renderExp(exp))
+export function prettyExp(
+  exp: Exp,
+  options: {
+    width: number
+    indentation?: number
+  },
+): string {
+  return Ppml.format(renderExp(exp), options)
 }
 
 function renderExp(exp: Exp): Ppml.Node {
