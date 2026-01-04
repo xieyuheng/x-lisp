@@ -29,13 +29,15 @@ Pretty printing is like how HTML works:
 
 The context of printing include _width_, _indentation_ and _grouping mode_.
 
-- `<indent n>` -- increase current indentation by `n` spaces.
-- `<br />` -- print differently by current grouping mode.
-  - in `Inline` mode -- just print a space,
-  - in `Block` mode -- print a newline and the current indentation.
-- `<group>` -- try to print in `Inline` mode first,
-  if fail (can not fitin the given width),
-  print in `Block` mode.
+- `<indent n>`
+  - increase current indentation by `n` spaces.
+- `<br />`
+  - print differently by current grouping mode.
+    - in `Inline` mode: just print a space,
+    - in `Block` mode: print a newline and the current indentation.
+- `<group>`
+  - try to print in `Inline` mode first,
+  - if can not fit in the given width, print in `Block` mode.
 
 Of course, when programming, we write XML in JavaScript:
 
