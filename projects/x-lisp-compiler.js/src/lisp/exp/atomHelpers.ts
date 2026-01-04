@@ -1,8 +1,7 @@
 import type { Atom } from "./Atom.ts"
-import type { Exp } from "./Exp.ts"
 
-export function isAtom(exp: Exp): exp is Atom {
-  return (
+export function isAtom(exp: any): exp is Atom {
+  return 'kind' in exp && (
     exp.kind === "Hashtag" ||
     exp.kind === "Symbol" ||
     exp.kind === "String" ||

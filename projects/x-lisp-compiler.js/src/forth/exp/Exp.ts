@@ -1,5 +1,5 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
-import type { Atom } from "../../lisp/index.ts"
+import type { Atom } from "../../lisp/exp/Atom.ts"
 
 export type Exp =
   | Atom

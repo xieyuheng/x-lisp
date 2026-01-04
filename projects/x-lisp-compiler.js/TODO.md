@@ -1,8 +1,11 @@
 # forth
 
 [forth] `prettyStmt`
-[forth] `prettyExp`
 [forth] `prettyMod`
+
+[forth] `renderExp`
+[forth] `renderStmt`
+[forth] `renderMod`
 
 # compiler
 

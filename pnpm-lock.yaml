@@ -139,6 +139,9 @@ importers:
       '@xieyuheng/helpers.js':
         specifier: workspace:*
         version: link:../helpers.js
+      '@xieyuheng/ppml.js':
+        specifier: workspace:*
+        version: link:../ppml.js
       '@xieyuheng/sexp.js':
         specifier: workspace:*
         version: link:../sexp.js
