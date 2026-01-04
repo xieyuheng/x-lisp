@@ -3,31 +3,6 @@ import * as Stmts from "../stmt/index.ts"
 import { prettyExp } from "./prettyExp.ts"
 
 export function prettyStmt(maxWidth: number, stmt: Stmt): string {
-  if (Stmts.isAboutModule(stmt)) {
-    return prettyStmtAboutModule(maxWidth, stmt)
-  }
-
-  switch (stmt.kind) {
-    case "DefineFunction": {
-      let s = `@define-function ${stmt.name}`
-      s += `\n` + prettyExp(maxWidth, stmt.body)
-      s += `\n` + `@end`
-      return s
-    }
-
-    case "DefineVariable": {
-      let s = `@define-variable ${stmt.name}`
-      s += `\n` + prettyExp(maxWidth, stmt.body)
-      s += `\n` + `@end`
-      return s
-    }
-  }
-}
-
-function prettyStmtAboutModule(
-  maxWidth: number,
-  stmt: Stmts.AboutModule,
-): string {
   switch (stmt.kind) {
     case "Export": {
       return `@export ${stmt.names.join(" ")} @end`
@@ -63,6 +38,20 @@ function prettyStmtAboutModule(
 
     case "IncludeAs": {
       return `@include-as "${stmt.path}" ${stmt.prefix}`
+    }
+
+    case "DefineFunction": {
+      let s = `@define-function ${stmt.name}`
+      s += `\n` + prettyExp(maxWidth, stmt.body)
+      s += `\n` + `@end`
+      return s
+    }
+
+    case "DefineVariable": {
+      let s = `@define-variable ${stmt.name}`
+      s += `\n` + prettyExp(maxWidth, stmt.body)
+      s += `\n` + `@end`
+      return s
     }
   }
 }
