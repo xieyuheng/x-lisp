@@ -1,8 +1,5 @@
-import { stringToSubscript } from "@xieyuheng/helpers.js/string"
-import * as S from "@xieyuheng/sexp.js"
-import assert from "node:assert"
-import * as L from "../lisp/index.ts"
 import * as F from "../forth/index.ts"
+import * as L from "../lisp/index.ts"
 
 export function ExplicateControlPass(mod: L.Mod, forthMod: F.Mod): void {
   for (const stmt of mod.stmts) {
@@ -41,10 +38,13 @@ function onFunctionDefinition(
   definition: L.FunctionDefinition,
 ): Array<F.Stmt> {
   return [
-    F.DefineFunction(definition.name, F.Sequence([
-      F.Bindings(definition.parameters),
-      ...inTail(definition.body)
-    ]))
+    F.DefineFunction(
+      definition.name,
+      F.Sequence([
+        F.Bindings(definition.parameters),
+        ...inTail(definition.body),
+      ]),
+    ),
   ]
 }
 
@@ -53,10 +53,9 @@ function onConstantDefinition(
   definition: L.ConstantDefinition,
 ): Array<F.Stmt> {
   return [
-    F.DefineVariable(definition.name, F.Sequence(inTail(definition.body)))
+    F.DefineVariable(definition.name, F.Sequence(inTail(definition.body))),
   ]
 }
-
 
 function inTail(exp: L.Exp): Array<F.Exp> {
   return []

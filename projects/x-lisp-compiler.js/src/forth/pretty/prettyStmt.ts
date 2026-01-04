@@ -1,5 +1,4 @@
 import type { Stmt } from "../stmt/index.ts"
-import * as Stmts from "../stmt/index.ts"
 import { prettyExp } from "./prettyExp.ts"
 
 export function prettyStmt(maxWidth: number, stmt: Stmt): string {
