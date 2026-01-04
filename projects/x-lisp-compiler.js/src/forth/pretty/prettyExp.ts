@@ -1,7 +1,7 @@
-import { formatAtom } from "../../lisp/format/formatAtom.ts"
-import type { Atom, Exp } from "../exp/index.ts"
-import * as  Exps from "../exp/index.ts"
 import * as Ppml from "@xieyuheng/ppml.js"
+import { formatAtom } from "../../lisp/format/formatAtom.ts"
+import type { Exp } from "../exp/index.ts"
+import * as Exps from "../exp/index.ts"
 
 export function prettyExp(maxWidth: number, exp: Exp): string {
   return Ppml.format(maxWidth, renderExp(exp))
@@ -68,6 +68,5 @@ function renderExp(exp: Exp): Ppml.Node {
     case "Assign": {
       return Ppml.nil()
     }
-
   }
 }

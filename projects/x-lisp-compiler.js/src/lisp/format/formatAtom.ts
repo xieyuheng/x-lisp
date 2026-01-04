@@ -1,5 +1,4 @@
-import { type Exp, type Atom } from "../exp/index.ts"
-import * as Exps from "../exp/index.ts"
+import { type Atom } from "../exp/index.ts"
 
 export function formatAtom(atom: Atom): string {
   switch (atom.kind) {

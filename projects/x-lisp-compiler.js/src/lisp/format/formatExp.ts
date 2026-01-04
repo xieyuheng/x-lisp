@@ -1,5 +1,5 @@
-import { type Exp, type Atom } from "../exp/index.ts"
 import * as Exps from "../exp/index.ts"
+import { type Exp } from "../exp/index.ts"
 import { formatAtom } from "./formatAtom.ts"
 
 export function formatExps(exps: Array<Exp>): string {
