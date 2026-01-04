@@ -21,7 +21,7 @@ function renderExp(exp: Exp): Ppml.Node {
       return Ppml.concat(Ppml.text("@ref"), Ppml.br(), Ppml.text(exp.name))
     }
 
-    case "Call": {
+    case "Var": {
       return Ppml.text(exp.name)
     }
 

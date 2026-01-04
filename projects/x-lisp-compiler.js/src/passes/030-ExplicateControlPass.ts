@@ -88,7 +88,7 @@ function inTail(exp: L.Exp): Array<F.Exp> {
 
   switch (exp.kind) {
     case "Var": {
-      return [F.Call(exp.name)]
+      return [F.Var(exp.name)]
     }
 
     case "FunctionRef": {
@@ -100,10 +100,11 @@ function inTail(exp: L.Exp): Array<F.Exp> {
     }
 
     case "ConstantRef": {
-      return [F.Call(exp.name)]
+      return [F.Var(exp.name)]
     }
 
     case "Apply": {
+      // TODO
       return []
     }
 
@@ -139,7 +140,7 @@ function inBody(exp: L.Exp): Array<F.Exp> {
 
   switch (exp.kind) {
     case "Var": {
-      return [F.Call(exp.name)]
+      return [F.Var(exp.name)]
     }
 
     case "FunctionRef": {
@@ -151,10 +152,11 @@ function inBody(exp: L.Exp): Array<F.Exp> {
     }
 
     case "ConstantRef": {
-      return [F.Call(exp.name)]
+      return [F.Var(exp.name)]
     }
 
     case "Apply": {
+      // TODO
       return []
     }
 

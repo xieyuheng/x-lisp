@@ -5,7 +5,7 @@ export type Exp =
   | Atom
   | Sequence
   | Ref
-  | Call
+  | Var
   | TailCall
   | Bindings
   | If
@@ -46,15 +46,15 @@ export function Ref(name: string, meta?: Meta): Ref {
   }
 }
 
-export type Call = {
-  kind: "Call"
+export type Var = {
+  kind: "Var"
   name: string
   meta?: Meta
 }
 
-export function Call(name: string, meta?: Meta): Call {
+export function Var(name: string, meta?: Meta): Var {
   return {
-    kind: "Call",
+    kind: "Var",
     name,
     meta,
   }
