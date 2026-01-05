@@ -25,9 +25,9 @@
   "dependencies": {
     "@xieyuheng/cmd.js": "workspace:*",
     "@xieyuheng/helpers.js": "workspace:*",
-    "@xieyuheng/sexp.js": "workspace:*",
     "@xieyuheng/ppml.js": "workspace:*",
-    "zod": "^4.3.4"
+    "@xieyuheng/sexp.js": "workspace:*",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",
