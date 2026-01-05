@@ -1,1 +1,1 @@
-export * from "./define.ts"
+export * from "./declare.ts"
