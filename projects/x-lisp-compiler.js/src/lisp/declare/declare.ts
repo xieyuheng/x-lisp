@@ -11,3 +11,7 @@ export function declarePrimitiveFunction(
     Definitions.PrimitiveFunctionDefinition(mod, name, options.arity),
   )
 }
+
+export function declarePrimitiveConstant(mod: Mod, name: string): void {
+  mod.definitions.set(name, Definitions.PrimitiveConstantDefinition(mod, name))
+}

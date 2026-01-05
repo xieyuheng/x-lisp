@@ -22,7 +22,7 @@ function renderExp(exp: Exp): Ppml.Node {
     case "Sequence": {
       const nodes: Array<Ppml.Node> = []
       let line: Array<Ppml.Node> = []
-      for (const e of  exp.exps) {
+      for (const e of exp.exps) {
         if (e.kind === "Bindings") {
           line.push(renderExp(e))
           nodes.push(Ppml.group(...line))
@@ -34,7 +34,7 @@ function renderExp(exp: Exp): Ppml.Node {
       }
 
       if (line.length > 0) {
-          nodes.push(Ppml.group(...line))
+        nodes.push(Ppml.group(...line))
       }
 
       return Ppml.flex(nodes)

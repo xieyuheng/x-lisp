@@ -20,8 +20,6 @@ export function formatDefinition(definition: Definition): string {
       return `(define (${name} ${parameters}) ${body})`
     }
 
-
-
     case "ConstantDefinition": {
       const name = definition.name
       const body = formatBody(definition.body)

@@ -42,9 +42,9 @@ function onFunctionDefinition(
     definition.parameters.length === 0
       ? F.Sequence(inTail(definition.body))
       : F.Sequence([
-        F.Bindings(definition.parameters),
-        ...inTail(definition.body),
-      ])
+          F.Bindings(definition.parameters),
+          ...inTail(definition.body),
+        ])
 
   return [F.DefineFunction(definition.name, body)]
 }

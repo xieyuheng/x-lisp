@@ -1,6 +1,3 @@
-[builtin] true and false
-[builtin] void and null
-
 # feature complete
 
 [builtin] complete current forth API

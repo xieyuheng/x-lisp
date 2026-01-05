@@ -1,5 +1,8 @@
 import * as L from "../lisp/index.ts"
-import { declarePrimitiveFunction } from "../lisp/index.ts"
+import {
+  declarePrimitiveConstant,
+  declarePrimitiveFunction,
+} from "../lisp/index.ts"
 
 export function createBuiltinMod(): L.Mod {
   const url = new URL("builtin:")
@@ -51,19 +54,19 @@ export function createBuiltinMod(): L.Mod {
 
   // bool
 
-  // define_variable(mod, "true", x_true);
-  // define_variable(mod, "false", x_false);
+  declarePrimitiveConstant(mod, "true")
+  declarePrimitiveConstant(mod, "false")
   declarePrimitiveFunction(mod, "bool?", { arity: 1 })
   declarePrimitiveFunction(mod, "not", { arity: 1 })
 
   // null
 
-  // define_variable(mod, "null", x_null);
+  declarePrimitiveConstant(mod, "null")
   declarePrimitiveFunction(mod, "null?", { arity: 1 })
 
   // void
 
-  // define_variable(mod, "void", x_void);
+  declarePrimitiveConstant(mod, "void");
   declarePrimitiveFunction(mod, "void?", { arity: 1 })
 
   // value

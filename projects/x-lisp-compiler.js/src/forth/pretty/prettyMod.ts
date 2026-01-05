@@ -2,7 +2,7 @@ import type { Mod } from "../mod/index.ts"
 import * as Stmts from "../stmt/index.ts"
 import { prettyStmt } from "./prettyStmt.ts"
 
-export function prettyMod(mod: Mod, options: { width: number, }): string {
+export function prettyMod(mod: Mod, options: { width: number }): string {
   let s = ``
 
   for (const stmt of mod.stmts.filter(Stmts.isAboutImport)) {

@@ -10,7 +10,11 @@ export function formatMod(mod: Mod): string {
 
   const definitions = mod.definitions
     .values()
-    .filter((definition) => definition.kind !== "PrimitiveFunctionDefinition")
+    .filter(
+      (definition) =>
+        definition.kind !== "PrimitiveFunctionDefinition" &&
+        definition.kind !== "PrimitiveConstantDefinition",
+    )
     .map(formatDefinition)
 
   return Array.from([...moduleStmts, ...definitions]).join(" ")
