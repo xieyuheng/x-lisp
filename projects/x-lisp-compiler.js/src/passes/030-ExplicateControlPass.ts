@@ -94,7 +94,7 @@ function inTail(exp: L.Exp): Array<F.Exp> {
       return [F.Ref(exp.name), F.Return()]
     }
 
-    case "PrimitiveRef": {
+    case "PrimitiveFunctionRef": {
       return [F.Ref(exp.name), F.Return()]
     }
 
@@ -105,13 +105,13 @@ function inTail(exp: L.Exp): Array<F.Exp> {
     case "Apply": {
       if (
         (exp.target.kind === "FunctionRef" ||
-          exp.target.kind === "PrimitiveRef") &&
+          exp.target.kind === "PrimitiveFunctionRef") &&
         exp.args.length === exp.target.arity
       ) {
         return [...exp.args.flatMap(inBody), F.TailCall(exp.target.name)]
       } else if (
         (exp.target.kind === "FunctionRef" ||
-          exp.target.kind === "PrimitiveRef") &&
+          exp.target.kind === "PrimitiveFunctionRef") &&
         exp.args.length > exp.target.arity
       ) {
         return [
@@ -170,7 +170,7 @@ function inBody(exp: L.Exp): Array<F.Exp> {
       return [F.Ref(exp.name)]
     }
 
-    case "PrimitiveRef": {
+    case "PrimitiveFunctionRef": {
       return [F.Ref(exp.name)]
     }
 
@@ -181,13 +181,13 @@ function inBody(exp: L.Exp): Array<F.Exp> {
     case "Apply": {
       if (
         (exp.target.kind === "FunctionRef" ||
-          exp.target.kind === "PrimitiveRef") &&
+          exp.target.kind === "PrimitiveFunctionRef") &&
         exp.args.length === exp.target.arity
       ) {
         return [...exp.args.flatMap(inBody), F.Var(exp.target.name)]
       } else if (
         (exp.target.kind === "FunctionRef" ||
-          exp.target.kind === "PrimitiveRef") &&
+          exp.target.kind === "PrimitiveFunctionRef") &&
         exp.args.length > exp.target.arity
       ) {
         return [

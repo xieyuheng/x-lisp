@@ -5,7 +5,7 @@ export type Exp =
   | Atom
   | Var
   | FunctionRef
-  | PrimitiveRef
+  | PrimitiveFunctionRef
   | ConstantRef
   | Lambda
   | Apply
@@ -53,20 +53,20 @@ export function FunctionRef(
   }
 }
 
-export type PrimitiveRef = {
-  kind: "PrimitiveRef"
+export type PrimitiveFunctionRef = {
+  kind: "PrimitiveFunctionRef"
   name: string
   arity: number
   meta?: Meta
 }
 
-export function PrimitiveRef(
+export function PrimitiveFunctionRef(
   name: string,
   arity: number,
   meta?: Meta,
-): PrimitiveRef {
+): PrimitiveFunctionRef {
   return {
-    kind: "PrimitiveRef",
+    kind: "PrimitiveFunctionRef",
     name,
     arity,
     meta,

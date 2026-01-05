@@ -24,7 +24,7 @@ export function formatExp(exp: Exp): string {
       return `(@function-ref ${exp.name} ${exp.arity})`
     }
 
-    case "PrimitiveRef": {
+    case "PrimitiveFunctionRef": {
       return `(@primitive-function-ref ${exp.name} ${exp.arity})`
     }
 

@@ -3,9 +3,47 @@ import { type Exp } from "../exp/index.ts"
 import type { Mod } from "../mod/index.ts"
 
 export type Definition =
-  | FunctionDefinition
   | PrimitiveFunctionDefinition
+//  | PrimitiveConstantDefinition
+  | FunctionDefinition
   | ConstantDefinition
+
+export type PrimitiveFunctionDefinition = {
+  kind: "PrimitiveFunctionDefinition"
+  mod: Mod
+  name: string
+  arity: number
+}
+
+export function PrimitiveFunctionDefinition(
+  mod: Mod,
+  name: string,
+  arity: number,
+): PrimitiveFunctionDefinition {
+  return {
+    kind: "PrimitiveFunctionDefinition",
+    mod,
+    name,
+    arity,
+  }
+}
+
+// export type PrimitiveConstantDefinition = {
+//   kind: "PrimitiveConstantDefinition"
+//   mod: Mod
+//   name: string
+// }
+
+// export function PrimitiveConstantDefinition(
+//   mod: Mod,
+//   name: string,
+// ): PrimitiveConstantDefinition {
+//   return {
+//     kind: "PrimitiveConstantDefinition",
+//     mod,
+//     name,
+//   }
+// }
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
@@ -30,26 +68,6 @@ export function FunctionDefinition(
     parameters,
     body,
     meta,
-  }
-}
-
-export type PrimitiveFunctionDefinition = {
-  kind: "PrimitiveFunctionDefinition"
-  mod: Mod
-  name: string
-  arity: number
-}
-
-export function PrimitiveFunctionDefinition(
-  mod: Mod,
-  name: string,
-  arity: number,
-): PrimitiveFunctionDefinition {
-  return {
-    kind: "PrimitiveFunctionDefinition",
-    mod,
-    name,
-    arity,
   }
 }
 

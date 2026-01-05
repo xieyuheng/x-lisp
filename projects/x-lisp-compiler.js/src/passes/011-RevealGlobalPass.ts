@@ -46,7 +46,7 @@ function revealGlobalVariable(mod: L.Mod, variable: L.Var): L.Exp {
     }
 
     case "PrimitiveFunctionDefinition": {
-      return L.PrimitiveRef(variable.name, definition.arity, variable.meta)
+      return L.PrimitiveFunctionRef(variable.name, definition.arity, variable.meta)
     }
 
     case "ConstantDefinition": {
