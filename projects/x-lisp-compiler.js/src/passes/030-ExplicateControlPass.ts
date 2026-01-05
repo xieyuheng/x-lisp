@@ -91,11 +91,15 @@ function inTail(exp: L.Exp): Array<F.Exp> {
       return [F.Var(exp.name), F.Return()]
     }
 
-    case "FunctionRef": {
+    case "PrimitiveFunctionRef": {
       return [F.Ref(exp.name), F.Return()]
     }
 
-    case "PrimitiveFunctionRef": {
+    case "PrimitiveConstantRef": {
+      return [F.Var(exp.name), F.Return()]
+    }
+
+    case "FunctionRef": {
       return [F.Ref(exp.name), F.Return()]
     }
 
@@ -167,11 +171,15 @@ function inBody(exp: L.Exp): Array<F.Exp> {
       return [F.Var(exp.name)]
     }
 
-    case "FunctionRef": {
+    case "PrimitiveFunctionRef": {
       return [F.Ref(exp.name)]
     }
 
-    case "PrimitiveFunctionRef": {
+    case "PrimitiveConstantRef": {
+      return [F.Var(exp.name)]
+    }
+
+    case "FunctionRef": {
       return [F.Ref(exp.name)]
     }
 
