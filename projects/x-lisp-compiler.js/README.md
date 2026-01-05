@@ -66,13 +66,6 @@
 ## builtin and prelude
 
 ```lisp
-;;; bool
-
-;; true
-;; false
-(bool? value)
-(not bool)
-
 ;;; int
 
 (int? value)
@@ -112,69 +105,107 @@
 (float-compare-ascending x y)
 (float-compare-descending x y)
 
+;;; bool
+
+true
+false
+(bool? value)
+(not bool)
+
+;;; null
+
+null
+(null? value)
+
+;;; void
+
+void
+(void? value)
+
+;;; value
+
+(any? value)
+(same? lhs rhs)
+(equal? lhs rhs)
+(hash-code value)
+(total-compare x y)
+
+;;; console
+
+(newline)
+(write string)
+(print value)
+(println value)
+
+;;; system
+
+(exit)
+;; (system-shell-run command args)
+
+;;; random
+
+(random-dice start end)
+;; (random-int start end)
+;; (random-float start end)
+
 ;;; hashtag
 
-;; (hashtag? value)
-;; (hashtag-to-string hashtag)
+(hashtag? value)
+(hashtag-length hashtag)
+(hashtag-to-string hashtag)
+(hashtag-append level right)
 
 ;;; symbol
 
-;; (symbol? value)
-;; (symbol-length symbol)
-;; (symbol-to-string symbol)
-;; (symbol-append left right)
+(symbol? value)
+(symbol-length symbol)
+(symbol-to-string symbol)
+(symbol-append left right)
 ;; (symbol-concat list)
 
 ;;; string
 
-;; (string? value)
-;; (string-length string)
-;; (string-to-symbol string)
-;; (string-append left right)
+(string? value)
+(string-length string)
+(string-empty? string)
+(string-append left right)
 ;; (string-concat list)
 ;; (string-join separator list)
 ;; (string-chars string)
 ;; (string-compare-lexical x y)
-;; ;; prelude
+;; (string-to-symbol string)
+;; prelude
 ;; (string-repeat n string)
-
-;;; value
-
-(same? lhs rhs)
-(equal? lhs rhs)
-;; (atom? value)
-(any? value)
-
-;;; schema
-
-;; (valid? schema value)
 
 ;;; list
 
 ;; (list? element-p target)
-;; (car list)
-;; (cdr list)
-;; (cons head tail)
-;; (list-head list)
-;; (list-tail list)
-;; (list-init list)
-;; (list-last list)
-;; (list-length list)
-;; (list-empty? list)
-;; (list-copy list)
-;; (list-get index list)
-;; (list-put index value list)
-;; (list-put! index value list)
-;; (list-push value list)
-;; (list-push! value list)
-;; (list-pop! list)
-;; (list-unshift! value list)
-;; (list-shift! list)
-;; (list-reverse list)
+(make-list)
+(any-list? value)
+(list-copy list)
+(list-length list)
+(list-empty? list)
+(list-pop! list)
+(list-push! value list)
+(list-push value list)
+(list-shift! list)
+(list-unshift! value list)
+(list-get index list)
+(list-put! index value list)
+(list-put index value list)
+(car list)
+(cdr list)
+(cons head tail)
+(list-head list)
+(list-tail list)
+(list-init list)
+(list-last list)
+(list-reverse list)
+(list-reverse! list)
 ;; (list-to-set list)
 ;; (list-sort! compare list)
 ;; (list-sort compare list)
-;; ;; prelude
+;; prelude
 ;; (list-first list)
 ;; (list-second list)
 ;; (list-third list)
@@ -204,49 +235,25 @@
 ;; (list-foremost compare list)
 ;; (list-rearmost compare list)
 
-;;; set
-
-;; (set? element-p value)
-;; (set-size set)
-;; (set-empty? set)
-;; (set-copy set)
-;; (set-member? value set)
-;; (set-subset? subset set)
-;; (set-to-list set)
-;; (set-add value set)
-;; (set-add! value set)
-;; (set-delete value set)
-;; (set-delete! value set)
-;; (set-clear! set)
-;; (set-union left right)
-;; (set-inter left right)
-;; (set-difference left right)
-;; (set-disjoint? left right)
-;; (set-map f set)
-;; (set-each f set)
-;; ;; prelude
-;; (set-select p set)
-;; (set-reject p set)
-;; (set-all? p set)
-;; (set-any? p set)
-
 ;;; record
 
 ;; (record? value-p target)
-;; (record-length record)
-;; (record-keys record)
-;; (record-values record)
-;; (record-entries record)
-;; (record-append record rest)
-;; (record-copy record)
-;; (record-empty? record)
-;; (record-get key record)
-;; (record-has? key record)
-;; (record-put key value record)
-;; (record-put! key value record)
-;; (record-delete key record)
-;; (record-delete! key record)
-;; ;; prelude
+(make-record)
+(any-record? value)
+(record-copy record)
+(record-length record)
+(record-empty? record)
+(record-get key record)
+(record-has? key record)
+(record-put! key value record)
+(record-put key value record)
+(record-delete! key record)
+(record-delete key record)
+(record-append record rest)
+(record-keys record)
+(record-values record)
+(record-entries record)
+;; prelude
 ;; (record-from-entries entries)
 ;; (record-put-entries entries record)
 ;; (record-put-entries! entries record)
@@ -270,18 +277,21 @@
 ;;; hash
 
 ;; (hash? key-p value-p target)
-;; (hash-empty? hash)
-;; (hash-length hash)
-;; (hash-get key hash)
-;; (hash-has? key hash)
-;; (hash-put key value hash)
-;; (hash-put! key value hash)
-;; (hash-delete! key hash)
-;; (hash-copy hash)
-;; (hash-entries hash)
-;; (hash-keys hash)
-;; (hash-values hash)
-;; ;; prelude
+(any-hash? target)
+(hash-empty? hash)
+(hash-copy hash)
+(hash-length hash)
+(hash-empty? hash)
+(hash-get key hash)
+(hash-has? key hash)
+(hash-put! key value hash)
+(hash-put key value hash)
+(hash-delete! key hash)
+(hash-delete key hash)
+(hash-keys hash)
+(hash-values hash)
+(hash-entries hash)
+;; prelude
 ;; (hash-put-entries entries hash)
 ;; (hash-put-entries! entries hash)
 ;; (hash-update key f hash)
@@ -303,6 +313,38 @@
 ;; (hash-invert hash)
 ;; (hash-invert-group hash)
 ;; (hash-find-key p hash)
+
+;;; set
+
+;; (set? element-p value)
+(make-set)
+(any-set? value)
+(set-copy set)
+(set-size set)
+(set-empty? set)
+(set-member? value set)
+(set-add! value set)
+(set-add value set)
+(set-delete! value set)
+(set-delete value set)
+(set-clear! set)
+(set-union left right)
+(set-inter left right)
+(set-difference left right)
+(set-subset? subset set)
+(set-disjoint? left right)
+(set-to-list set)
+;; (set-map f set)
+;; (set-each f set)
+;; ;; prelude
+;; (set-select p set)
+;; (set-reject p set)
+;; (set-all? p set)
+;; (set-any? p set)
+
+;;; schema
+
+;; (valid? schema value)
 
 ;;; predicate
 
@@ -350,22 +392,6 @@
 ;; (current-module-file)
 ;; (current-module-directory)
 
-;;; console
-
-(print value)
-;; (write string)
-(newline)
-
-;;; void
-
-;; void
-;; (void? value)
-
-;;; null
-
-;; null
-;; (null? value)
-
 ;;; optional
 
 ;; (optional? p x)
@@ -393,16 +419,7 @@
 ;; (format-subscript n)
 ;; (format-superscript n)
 
-;;; random
-
-;; (random-int start end)
-;; (random-float start end)
-
-;;; system
-
-;; (system-shell-run command args)
-
-;;; sort order
+;;; ordering
 
 ;; (ordering? value)
 ;; (ordering-before? value)

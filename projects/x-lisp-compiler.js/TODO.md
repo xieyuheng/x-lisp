@@ -2,14 +2,14 @@
 
 [builtin] complete current forth API
 
+[lisp] `Assert` as `Exp`
+
 [lisp] syntax for symbol
 [lisp] syntax for hashtag
 
 [lisp] syntax for tael
 [lisp] syntax for set
 [lisp] syntax for hash
-
-[docs] fix api list in README
 
 # cond
 

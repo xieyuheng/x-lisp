@@ -89,6 +89,20 @@ make_builtin_mod(void) {
 
     define_primitive_0(mod, "random-dice", x_random_dice);
 
+    // hashtag
+
+    define_primitive_1(mod, "hashtag?", x_hashtag_p);
+    define_primitive_1(mod, "hashtag-length", x_hashtag_length);
+    define_primitive_1(mod, "hashtag-to-string", x_hashtag_to_string);
+    define_primitive_2(mod, "hashtag-append", x_hashtag_append);
+
+    // symbol
+
+    define_primitive_1(mod, "symbol?", x_symbol_p);
+    define_primitive_1(mod, "symbol-length", x_symbol_length);
+    define_primitive_1(mod, "symbol-to-string", x_symbol_to_string);
+    define_primitive_2(mod, "symbol-append", x_symbol_append);
+
     // string
 
     define_primitive_1(mod, "string?", x_string_p);
@@ -100,20 +114,6 @@ make_builtin_mod(void) {
     // (string-chars string)
     // (string-compare-lexical x y)
     // (string-to-symbol string)
-
-    // symbol
-
-    define_primitive_1(mod, "symbol?", x_symbol_p);
-    define_primitive_1(mod, "symbol-length", x_symbol_length);
-    define_primitive_1(mod, "symbol-to-string", x_symbol_to_string);
-    define_primitive_2(mod, "symbol-append", x_symbol_append);
-
-    // hashtag
-
-    define_primitive_1(mod, "hashtag?", x_hashtag_p);
-    define_primitive_1(mod, "hashtag-length", x_hashtag_length);
-    define_primitive_1(mod, "hashtag-to-string", x_hashtag_to_string);
-    define_primitive_2(mod, "hashtag-append", x_hashtag_append);
 
     // list
 
