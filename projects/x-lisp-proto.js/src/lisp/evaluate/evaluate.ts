@@ -110,11 +110,7 @@ export function evaluate(exp: Exp): Effect {
           let message = `[evaluate] assignment pattern mismatch`
           message += formatUnderTag(2, `lhs exp:`, prettyExp(width, exp.lhs))
           message += formatUnderTag(2, `rhs exp:`, prettyExp(width, exp.rhs))
-          message += formatUnderTag(
-            2,
-            `rhs value:`,
-            prettyValue(width, value),
-          )
+          message += formatUnderTag(2, `rhs value:`, prettyValue(width, value))
           throw new S.ErrorWithMeta(message, exp.meta)
         }
 

@@ -102,8 +102,8 @@ function renderTael(
       const footNode = recordIsEmpty(attributes)
         ? Ppml.nil()
         : Ppml.group(
-          Ppml.indent(1, Ppml.br(), renderAttributes(attributes)(config)),
-        )
+            Ppml.indent(1, Ppml.br(), renderAttributes(attributes)(config)),
+          )
 
       return Ppml.group(Ppml.text("["), bodyNode, footNode, Ppml.text("]"))
     }
@@ -137,17 +137,17 @@ function renderSyntax(
     const neckNode = recordIsEmpty(attributes)
       ? Ppml.nil()
       : Ppml.group(
-        Ppml.indent(2, Ppml.br(), renderAttributes(attributes)(config)),
-      )
+          Ppml.indent(2, Ppml.br(), renderAttributes(attributes)(config)),
+        )
 
     const bodyNode =
       body.length === 0
         ? Ppml.nil()
         : Ppml.indent(
-          2,
-          Ppml.br(),
-          Ppml.flex(body.map((sexp) => renderSexp(sexp)(config))),
-        )
+            2,
+            Ppml.br(),
+            Ppml.flex(body.map((sexp) => renderSexp(sexp)(config))),
+          )
 
     return Ppml.group(
       Ppml.text("("),
@@ -175,23 +175,23 @@ function renderApplication(
         rest.length === 0
           ? Ppml.text(head.content)
           : Ppml.group(
-            Ppml.indent(
-              indentation,
-              Ppml.text(head.content),
-              Ppml.text(" "),
-              Ppml.flex(rest.map((element) => renderSexp(element)(config))),
-            ),
-          )
+              Ppml.indent(
+                indentation,
+                Ppml.text(head.content),
+                Ppml.text(" "),
+                Ppml.flex(rest.map((element) => renderSexp(element)(config))),
+              ),
+            )
 
       const footNode = recordIsEmpty(attributes)
         ? Ppml.nil()
         : Ppml.group(
-          Ppml.indent(
-            indentation,
-            Ppml.br(),
-            renderAttributes(attributes)(config),
-          ),
-        )
+            Ppml.indent(
+              indentation,
+              Ppml.br(),
+              renderAttributes(attributes)(config),
+            ),
+          )
 
       return Ppml.group(Ppml.text("("), bodyNode, footNode, Ppml.text(")"))
     }
@@ -206,8 +206,8 @@ function renderApplication(
     const footNode = recordIsEmpty(attributes)
       ? Ppml.nil()
       : Ppml.group(
-        Ppml.indent(1, Ppml.br(), renderAttributes(attributes)(config)),
-      )
+          Ppml.indent(1, Ppml.br(), renderAttributes(attributes)(config)),
+        )
 
     return Ppml.group(Ppml.text("("), bodyNode, footNode, Ppml.text(")"))
   }
@@ -218,10 +218,10 @@ function renderElementLess(attributes: Record<string, Sexp>): Render {
     return recordIsEmpty(attributes)
       ? Ppml.text("()")
       : Ppml.group(
-        Ppml.text("("),
-        Ppml.indent(1, renderAttributes(attributes)(config)),
-        Ppml.text(")"),
-      )
+          Ppml.text("("),
+          Ppml.indent(1, renderAttributes(attributes)(config)),
+          Ppml.text(")"),
+        )
   }
 }
 

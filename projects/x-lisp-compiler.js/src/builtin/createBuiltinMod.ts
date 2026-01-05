@@ -66,7 +66,7 @@ export function createBuiltinMod(): L.Mod {
 
   // void
 
-  declarePrimitiveConstant(mod, "void");
+  declarePrimitiveConstant(mod, "void")
   declarePrimitiveFunction(mod, "void?", { arity: 1 })
 
   // value

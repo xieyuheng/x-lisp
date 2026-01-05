@@ -46,11 +46,7 @@ export function applyDataPutter(
     if (Values.isFalse(ok)) {
       let message = `[applyDataPutter] result data cannot possibly pass data predicate`
       message += formatUnderTag(2, `putter:`, prettyValue(width, putter))
-      message += formatUnderTag(
-        2,
-        `putting value:`,
-        prettyValue(width, value),
-      )
+      message += formatUnderTag(2, `putting value:`, prettyValue(width, value))
       message += formatUnderTag(2, `result data:`, prettyValue(width, data))
       message += formatUnderTag(
         2,

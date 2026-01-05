@@ -2,4 +2,4 @@
 
 set -e
 
-pnpm run -r --parallel --aggregate-output format
+pnpm run -r format

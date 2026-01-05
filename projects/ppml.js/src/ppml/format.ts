@@ -1,9 +1,12 @@
 import * as Ppml from "./index.ts"
 
-export function format(node: Ppml.Node, options: {
-  width: number,
-  indentation?: number,
-}): string {
+export function format(
+  node: Ppml.Node,
+  options: {
+    width: number
+    indentation?: number
+  },
+): string {
   const indentation = options.indentation || 0
   const target: LayoutTarget = [indentation, "Inline", Ppml.GroupNode(node)]
   const parts: Array<string> = []
