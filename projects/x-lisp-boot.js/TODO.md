@@ -32,12 +32,12 @@ as the current design, every builtin function must be callable from x-lisp.
   the features of which are designed for optimization,
   which we have not used yet.
 
-[runtime.c] `debug/` -- `x_print_stack_trace` -- setup
+[x-lisp-runtime.c] `debug/` -- `x_print_stack_trace` -- setup
 
-[runtime.c] `gc/` -- setup
-[runtime.c] `x_gc_required_p` -- setup
-[runtime.c] `x_gc_save_registers` -- function written in assembly
-[runtime.c] `x_gc_collect` -- call `x_print_stack_trace`
+[x-lisp-runtime.c] `gc/` -- setup
+[x-lisp-runtime.c] `x_gc_required_p` -- setup
+[x-lisp-runtime.c] `x_gc_save_registers` -- function written in assembly
+[x-lisp-runtime.c] `x_gc_collect` -- call `x_print_stack_trace`
 
 [lisp] `090-PrologAndEpilogPass` -- prolog jump to first block instead of `body`
 
@@ -50,7 +50,7 @@ as the current design, every builtin function must be callable from x-lisp.
   TODO `gc-collect` when we have register allocation, before calling stack trace,
   all registers need to be saved to a context object.
 
-[runtime.c] `x_print_stack_trace`
+[x-lisp-runtime.c] `x_print_stack_trace`
 
 # debug in c
 
@@ -66,7 +66,7 @@ as the current design, every builtin function must be callable from x-lisp.
 
 # later
 
-[runtime.c] complete builtin
+[x-lisp-runtime.c] complete builtin
 
 ```
 x_atom_p
@@ -88,4 +88,4 @@ x_random_float
 
 # gc
 
-[runtime.c] `function_t` -- has register map
+[x-lisp-runtime.c] `function_t` -- has register map

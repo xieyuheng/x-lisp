@@ -1,1 +1,1 @@
-directory for `runtime.o`
+directory for `x-lisp-runtime.o`
