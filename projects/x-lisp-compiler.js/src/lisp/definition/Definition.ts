@@ -4,7 +4,7 @@ import type { Mod } from "../mod/index.ts"
 
 export type Definition =
   | PrimitiveFunctionDefinition
-//  | PrimitiveConstantDefinition
+  | PrimitiveConstantDefinition
   | FunctionDefinition
   | ConstantDefinition
 
@@ -28,22 +28,22 @@ export function PrimitiveFunctionDefinition(
   }
 }
 
-// export type PrimitiveConstantDefinition = {
-//   kind: "PrimitiveConstantDefinition"
-//   mod: Mod
-//   name: string
-// }
+export type PrimitiveConstantDefinition = {
+  kind: "PrimitiveConstantDefinition"
+  mod: Mod
+  name: string
+}
 
-// export function PrimitiveConstantDefinition(
-//   mod: Mod,
-//   name: string,
-// ): PrimitiveConstantDefinition {
-//   return {
-//     kind: "PrimitiveConstantDefinition",
-//     mod,
-//     name,
-//   }
-// }
+export function PrimitiveConstantDefinition(
+  mod: Mod,
+  name: string,
+): PrimitiveConstantDefinition {
+  return {
+    kind: "PrimitiveConstantDefinition",
+    mod,
+    name,
+  }
+}
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"

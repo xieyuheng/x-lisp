@@ -8,10 +8,10 @@ export function formatDefinition(definition: Definition): string {
       return `(declare-primitive-function ${name} ${definition.arity})`
     }
 
-    // case "PrimitiveConstantDefinition": {
-    //   const name = definition.name
-    //   return `(declare-primitive-constant ${name})`
-    // }
+    case "PrimitiveConstantDefinition": {
+      const name = definition.name
+      return `(declare-primitive-constant ${name})`
+    }
 
     case "FunctionDefinition": {
       const name = definition.name

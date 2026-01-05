@@ -1,5 +1,3 @@
-[lisp] add `PrimitiveConstantDefinition`
-
 [builtin] true and false
 [builtin] void and null
 

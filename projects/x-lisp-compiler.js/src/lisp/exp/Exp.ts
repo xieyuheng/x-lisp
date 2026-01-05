@@ -4,8 +4,9 @@ import type { Atom } from "./Atom.ts"
 export type Exp =
   | Atom
   | Var
-  | FunctionRef
   | PrimitiveFunctionRef
+  | PrimitiveConstantRef
+  | FunctionRef
   | ConstantRef
   | Lambda
   | Apply
@@ -33,26 +34,6 @@ export function Var(name: string, meta?: Meta): Var {
   }
 }
 
-export type FunctionRef = {
-  kind: "FunctionRef"
-  name: string
-  arity: number
-  meta?: Meta
-}
-
-export function FunctionRef(
-  name: string,
-  arity: number,
-  meta?: Meta,
-): FunctionRef {
-  return {
-    kind: "FunctionRef",
-    name,
-    arity,
-    meta,
-  }
-}
-
 export type PrimitiveFunctionRef = {
   kind: "PrimitiveFunctionRef"
   name: string
@@ -67,6 +48,43 @@ export function PrimitiveFunctionRef(
 ): PrimitiveFunctionRef {
   return {
     kind: "PrimitiveFunctionRef",
+    name,
+    arity,
+    meta,
+  }
+}
+
+export type PrimitiveConstantRef = {
+  kind: "PrimitiveConstantRef"
+  name: string
+  meta?: Meta
+}
+
+export function PrimitiveConstantRef(
+  name: string,
+  meta?: Meta,
+): PrimitiveConstantRef {
+  return {
+    kind: "PrimitiveConstantRef",
+    name,
+    meta,
+  }
+}
+
+export type FunctionRef = {
+  kind: "FunctionRef"
+  name: string
+  arity: number
+  meta?: Meta
+}
+
+export function FunctionRef(
+  name: string,
+  arity: number,
+  meta?: Meta,
+): FunctionRef {
+  return {
+    kind: "FunctionRef",
     name,
     arity,
     meta,
