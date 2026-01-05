@@ -22,7 +22,7 @@ function onDefinition(
   definition: L.Definition,
 ): Array<L.Definition> {
   switch (definition.kind) {
-    case "PrimitiveDefinition": {
+    case "PrimitiveFunctionDefinition": {
       return [definition]
     }
 

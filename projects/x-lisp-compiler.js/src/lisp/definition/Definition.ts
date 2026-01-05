@@ -4,7 +4,7 @@ import type { Mod } from "../mod/index.ts"
 
 export type Definition =
   | FunctionDefinition
-  | PrimitiveDefinition
+  | PrimitiveFunctionDefinition
   | ConstantDefinition
 
 export type FunctionDefinition = {
@@ -33,20 +33,20 @@ export function FunctionDefinition(
   }
 }
 
-export type PrimitiveDefinition = {
-  kind: "PrimitiveDefinition"
+export type PrimitiveFunctionDefinition = {
+  kind: "PrimitiveFunctionDefinition"
   mod: Mod
   name: string
   arity: number
 }
 
-export function PrimitiveDefinition(
+export function PrimitiveFunctionDefinition(
   mod: Mod,
   name: string,
   arity: number,
-): PrimitiveDefinition {
+): PrimitiveFunctionDefinition {
   return {
-    kind: "PrimitiveDefinition",
+    kind: "PrimitiveFunctionDefinition",
     mod,
     name,
     arity,

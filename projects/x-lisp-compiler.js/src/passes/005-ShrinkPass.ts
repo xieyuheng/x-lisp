@@ -9,7 +9,7 @@ export function ShrinkPass(mod: L.Mod): void {
 
 function onDefinition(definition: L.Definition): null {
   switch (definition.kind) {
-    case "PrimitiveDefinition": {
+    case "PrimitiveFunctionDefinition": {
       return null
     }
 

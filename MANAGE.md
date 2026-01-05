@@ -125,6 +125,6 @@ x-lisp 的首要目标是加快新语言开发的速度。
 任务：
 
 - [ ] cond
-- [ ] structural algebraic data type
-- [ ] pattern match
-- [ ] design by contract
+- [ ] define-data
+- [ ] match
+- [ ] claim

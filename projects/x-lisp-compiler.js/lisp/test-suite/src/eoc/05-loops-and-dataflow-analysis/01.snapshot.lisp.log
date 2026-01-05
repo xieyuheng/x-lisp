@@ -30,20 +30,22 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  (@begin1 ((@primitive-ref print 1) 1)
-    (@begin1 ((@primitive-ref newline 0))
-      (@begin1 ((@primitive-ref print 1) 2)
-        (@begin1 ((@primitive-ref newline 0))
-          (@begin1 ((@primitive-ref print 1) 3)
-            (@begin1 ((@primitive-ref newline 0)) 666)))))))
+  (@begin1 ((@primitive-function-ref print 1) 1)
+    (@begin1 ((@primitive-function-ref newline 0))
+      (@begin1 ((@primitive-function-ref print 1) 2)
+        (@begin1 ((@primitive-function-ref newline 0))
+          (@begin1 ((@primitive-function-ref print 1) 3)
+            (@begin1 ((@primitive-function-ref newline 0))
+              666)))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (@begin1 ((@primitive-ref print 1) 1)
-    (@begin1 ((@primitive-ref newline 0))
-      (@begin1 ((@primitive-ref print 1) 2)
-        (@begin1 ((@primitive-ref newline 0))
-          (@begin1 ((@primitive-ref print 1) 3)
-            (@begin1 ((@primitive-ref newline 0)) 666)))))))
+  (@begin1 ((@primitive-function-ref print 1) 1)
+    (@begin1 ((@primitive-function-ref newline 0))
+      (@begin1 ((@primitive-function-ref print 1) 2)
+        (@begin1 ((@primitive-function-ref newline 0))
+          (@begin1 ((@primitive-function-ref print 1) 3)
+            (@begin1 ((@primitive-function-ref newline 0))
+              666)))))))
 

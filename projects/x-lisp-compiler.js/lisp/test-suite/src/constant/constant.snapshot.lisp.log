@@ -32,23 +32,25 @@
 
 (define one 1)
 
-(define two ((@primitive-ref iadd 2) 1 (@constant-ref one)))
+(define two
+  ((@primitive-function-ref iadd 2) 1 (@constant-ref one)))
 
 (define three
-  ((@primitive-ref iadd 2) 1 (@constant-ref two)))
+  ((@primitive-function-ref iadd 2) 1 (@constant-ref two)))
 
 (define (main)
-  ((@primitive-ref println 1) (@constant-ref three)))
+  ((@primitive-function-ref println 1) (@constant-ref three)))
 
 ;;; LiftLambdaPass
 
 (define one 1)
 
-(define two ((@primitive-ref iadd 2) 1 (@constant-ref one)))
+(define two
+  ((@primitive-function-ref iadd 2) 1 (@constant-ref one)))
 
 (define three
-  ((@primitive-ref iadd 2) 1 (@constant-ref two)))
+  ((@primitive-function-ref iadd 2) 1 (@constant-ref two)))
 
 (define (main)
-  ((@primitive-ref println 1) (@constant-ref three)))
+  ((@primitive-function-ref println 1) (@constant-ref three)))
 

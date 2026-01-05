@@ -13,20 +13,20 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@primitive-ref println 1)
-   ((@primitive-ref iadd 2)
+  ((@primitive-function-ref println 1)
+   ((@primitive-function-ref iadd 2)
     1
-    ((@primitive-ref iadd 2)
-     ((@primitive-ref random-dice 0))
+    ((@primitive-function-ref iadd 2)
+     ((@primitive-function-ref random-dice 0))
      1))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@primitive-ref println 1)
-   ((@primitive-ref iadd 2)
+  ((@primitive-function-ref println 1)
+   ((@primitive-function-ref iadd 2)
     1
-    ((@primitive-ref iadd 2)
-     ((@primitive-ref random-dice 0))
+    ((@primitive-function-ref iadd 2)
+     ((@primitive-function-ref random-dice 0))
      1))))
 

@@ -8,6 +8,6 @@ export function definePrimitive(
 ): void {
   mod.definitions.set(
     name,
-    Definitions.PrimitiveDefinition(mod, name, options.arity),
+    Definitions.PrimitiveFunctionDefinition(mod, name, options.arity),
   )
 }

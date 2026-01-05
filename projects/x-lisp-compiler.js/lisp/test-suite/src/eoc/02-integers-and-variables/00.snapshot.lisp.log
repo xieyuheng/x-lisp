@@ -12,9 +12,9 @@
 
 ;;; RevealGlobalPass
 
-(define (main) ((@primitive-ref println 1) 42))
+(define (main) ((@primitive-function-ref println 1) 42))
 
 ;;; LiftLambdaPass
 
-(define (main) ((@primitive-ref println 1) 42))
+(define (main) ((@primitive-function-ref println 1) 42))
 
