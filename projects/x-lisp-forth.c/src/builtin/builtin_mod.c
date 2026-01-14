@@ -109,7 +109,7 @@ make_builtin_mod(void) {
     define_primitive_1(mod, "string-length", x_string_length);
     define_primitive_1(mod, "string-empty?", x_string_empty_p);
     define_primitive_2(mod, "string-append", x_string_append);
-    // (string-concat list)
+    define_primitive_1(mod, "string-concat", x_string_concat);
     // (string-join separator list)
     // (string-chars string)
     // (string-compare-lexical x y)
