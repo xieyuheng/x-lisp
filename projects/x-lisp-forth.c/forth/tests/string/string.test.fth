@@ -16,4 +16,11 @@
   "ghi" list list-push!
   list string-concat
   "abcdefghi" @assert-equal
+
+  make-list ( list )
+  "abc" list list-push!
+  "def" list list-push!
+  "ghi" list list-push!
+  "-" list string-join
+  "abc-def-ghi" @assert-equal
 @end
