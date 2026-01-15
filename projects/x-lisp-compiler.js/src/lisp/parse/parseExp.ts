@@ -94,13 +94,6 @@ export const parseExp: S.Router<Exp> = S.createRouter<Exp>({
     return Exps.BeginSugar(S.listElements(body).map(parseExp), meta)
   },
 
-  "(cons* target args)": ({ target, args }, { meta }) => {
-    return Exps.Apply(
-      parseExp(target),
-      S.listElements(args).map(parseExp),
-      meta,
-    )
-  },
   "(cons* '@tael elements)": ({ elements }, { sexp, meta }) => {
     return Exps.Tael(
       S.listElements(elements).map(parseExp),
@@ -158,6 +151,14 @@ export const parseExp: S.Router<Exp> = S.createRouter<Exp>({
       }),
     )
     return Exps.Hash(entries, meta)
+  },
+
+  "(cons* target args)": ({ target, args }, { meta }) => {
+    return Exps.Apply(
+      parseExp(target),
+      S.listElements(args).map(parseExp),
+      meta,
+    )
   },
 
   data: ({ data }, { meta }) => {

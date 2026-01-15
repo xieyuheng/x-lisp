@@ -88,6 +88,10 @@ function onExp(exp: L.Exp): L.Exp {
       return onExp(desugarOr(exp.exps.map(onExp), exp.meta))
     }
 
+    case "Tael": {
+      return onExp(desugarTael(exp.elements, exp.attributes, exp.meta))
+    }
+
     case "Quote": {
       return onExp(desugarQuote(exp.sexp, exp.meta))
     }
@@ -110,6 +114,24 @@ function desugarOr(exps: Array<L.Exp>, meta?: L.Meta): L.Exp {
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
   return L.If(head, L.Bool(true, meta), desugarOr(restExps, meta), meta)
+}
+
+function desugarTael(
+  elements: Array<L.Exp>,
+  attributes: L.Attributes,
+  meta?: L.Meta,
+): L.Exp {
+  return L.BeginSugar(
+    [
+      L.AssignSugar("tael", L.Apply(L.Var("make-list"), [])),
+      ...elements.map((e) => L.Apply(L.Var("list-push!"), [e, L.Var("tael")])),
+      ...Object.entries(attributes).map(([k, v]) =>
+        L.Apply(L.Var("record-put!"), [L.Symbol(k), v, L.Var("tael")]),
+      ),
+      L.Var("tael"),
+    ],
+    meta,
+  )
 }
 
 function desugarQuote(sexp: S.Sexp, meta?: L.Meta): L.Exp {

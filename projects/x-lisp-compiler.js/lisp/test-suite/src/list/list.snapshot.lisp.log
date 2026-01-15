@@ -5,7 +5,8 @@
   (list-push! 1 list)
   (list-push! 2 list)
   (list-push! 3 list)
-  (println list))
+  (println list)
+  (println [1 2 3]))
 
 ;;; ShrinkPass
 
@@ -13,7 +14,13 @@
   (@let1 list (make-list)
     (@begin1 (list-push! 1 list)
       (@begin1 (list-push! 2 list)
-        (@begin1 (list-push! 3 list) (println list))))))
+        (@begin1 (list-push! 3 list)
+          (@begin1 (println list)
+            (println
+             (@let1 tael (make-list)
+               (@begin1 (list-push! 1 tael)
+                 (@begin1 (list-push! 2 tael)
+                   (@begin1 (list-push! 3 tael) tael)))))))))))
 
 ;;; UniquifyPass
 
@@ -21,7 +28,13 @@
   (@let1 list₁ (make-list)
     (@begin1 (list-push! 1 list₁)
       (@begin1 (list-push! 2 list₁)
-        (@begin1 (list-push! 3 list₁) (println list₁))))))
+        (@begin1 (list-push! 3 list₁)
+          (@begin1 (println list₁)
+            (println
+             (@let1 tael₁ (make-list)
+               (@begin1 (list-push! 1 tael₁)
+                 (@begin1 (list-push! 2 tael₁)
+                   (@begin1 (list-push! 3 tael₁) tael₁)))))))))))
 
 ;;; RevealGlobalPass
 
@@ -33,7 +46,26 @@
           ((@primitive-function-ref list-push! 2) 2 list₁)
         (@begin1
             ((@primitive-function-ref list-push! 2) 3 list₁)
-          ((@primitive-function-ref println 1) list₁))))))
+          (@begin1
+              ((@primitive-function-ref println 1) list₁)
+            ((@primitive-function-ref println 1)
+             (@let1 tael₁
+                 ((@primitive-function-ref make-list 0))
+               (@begin1
+                   ((@primitive-function-ref list-push! 2)
+                    1
+                    tael₁)
+                 (@begin1
+                     ((@primitive-function-ref list-push! 2)
+                      2
+                      tael₁)
+                   (@begin1
+                       ((@primitive-function-ref
+                         list-push!
+                         2)
+                        3
+                        tael₁)
+                     tael₁)))))))))))
 
 ;;; LiftLambdaPass
 
@@ -45,5 +77,24 @@
           ((@primitive-function-ref list-push! 2) 2 list₁)
         (@begin1
             ((@primitive-function-ref list-push! 2) 3 list₁)
-          ((@primitive-function-ref println 1) list₁))))))
+          (@begin1
+              ((@primitive-function-ref println 1) list₁)
+            ((@primitive-function-ref println 1)
+             (@let1 tael₁
+                 ((@primitive-function-ref make-list 0))
+               (@begin1
+                   ((@primitive-function-ref list-push! 2)
+                    1
+                    tael₁)
+                 (@begin1
+                     ((@primitive-function-ref list-push! 2)
+                      2
+                      tael₁)
+                   (@begin1
+                       ((@primitive-function-ref
+                         list-push!
+                         2)
+                        3
+                        tael₁)
+                     tael₁)))))))))))
 
