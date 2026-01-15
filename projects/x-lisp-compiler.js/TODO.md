@@ -1,10 +1,8 @@
 # quote
 
-[lisp] `Quote` as `Exp`
+[lisp] parse symbol
 
 [pass] `005-ShrinkPass` -- compile `Quote` to sexp builder
-
-[lisp] syntax for symbol
 
 [lisp] `Quote` as `Exp`
 
@@ -14,15 +12,15 @@
 
 [pass] `005-ShrinkPass` -- compile `Tael` to tael builder
 
-[lisp] syntax for tael
+[lisp] parse tael
 
 # set and hash
 
 [lisp] `Set` as `Exp`
-[lisp] syntax for set
+[lisp] parse set
 
 [lisp] `Hash` as `Exp`
-[lisp] syntax for hash
+[lisp] parse hash
 
 # cond
 

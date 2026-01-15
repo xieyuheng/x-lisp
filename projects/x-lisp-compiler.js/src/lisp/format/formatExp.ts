@@ -1,6 +1,7 @@
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { formatAtom } from "./formatAtom.ts"
+import * as S from "@xieyuheng/sexp.js"
 
 export function formatExps(exps: Array<Exp>): string {
   return exps.map(formatExp).join(" ")
@@ -113,6 +114,10 @@ export function formatExp(exp: Exp): string {
 
     case "AssertNotEqual": {
       return `(assert-not-equal ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
+    }
+
+    case "Quote": {
+      return S.formatSexp(exp.sexp)
     }
   }
 }

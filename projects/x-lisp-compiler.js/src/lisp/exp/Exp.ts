@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
+import { type TokenMeta as Meta, type Sexp } from "@xieyuheng/sexp.js"
 import type { Atom } from "./Atom.ts"
 
 export type Exp =
@@ -22,6 +22,7 @@ export type Exp =
   | Assert
   | AssertEqual
   | AssertNotEqual
+  | Quote
 
 export type Var = {
   kind: "Var"
@@ -337,6 +338,23 @@ export function AssertNotEqual(
     kind: "AssertNotEqual",
     lhs,
     rhs,
+    meta,
+  }
+}
+
+export type Quote = {
+  kind: "Quote"
+  sexp: Sexp
+  meta?: Meta
+}
+
+export function Quote(
+  sexp: Sexp,
+  meta?: Meta,
+): Quote {
+  return {
+    kind: "Quote",
+    sexp,
     meta,
   }
 }

@@ -80,5 +80,9 @@ export function expMap(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
     case "AssertNotEqual": {
       return L.AssertNotEqual(onExp(exp.lhs), onExp(exp.rhs), exp.meta)
     }
+
+    case "Quote": {
+      return onExp(exp)
+    }
   }
 }
