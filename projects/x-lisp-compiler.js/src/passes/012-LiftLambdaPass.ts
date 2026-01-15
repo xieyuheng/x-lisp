@@ -1,5 +1,4 @@
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
-import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import * as L from "../lisp/index.ts"
 
@@ -84,7 +83,7 @@ function onExp(state: State, exp: L.Exp): L.Exp {
     }
 
     default: {
-      return L.expMap(e => onExp(state, e), exp)
+      return L.expMap((e) => onExp(state, e), exp)
     }
   }
 }

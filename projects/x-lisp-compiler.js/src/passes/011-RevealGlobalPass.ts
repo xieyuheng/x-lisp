@@ -102,7 +102,7 @@ function onExp(mod: L.Mod, boundNames: Set<string>, exp: L.Exp): L.Exp {
     }
 
     default: {
-      return L.expMap(e => onExp(mod, boundNames, e), exp)
+      return L.expMap((e) => onExp(mod, boundNames, e), exp)
     }
   }
 }

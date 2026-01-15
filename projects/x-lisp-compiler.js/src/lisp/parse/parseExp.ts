@@ -49,6 +49,37 @@ export const parseExp: S.Router<Exp> = S.createRouter<Exp>({
     return Exps.Or(S.listElements(exps).map(parseExp), meta)
   },
 
+  "(cons* 'assert exps)": ({ exps }, { meta }) => {
+    const args = S.listElements(exps).map(parseExp)
+    if (args.length !== 1) {
+      const message = "(assert) must take one argument\n"
+      throw new S.ErrorWithMeta(message, meta)
+    }
+
+    return Exps.Assert(args[0], meta)
+  },
+
+  "(cons* 'assert-equal exps)": ({ exps }, { meta }) => {
+    const args = S.listElements(exps).map(parseExp)
+    if (args.length !== 2) {
+      const message = "(assert-equal) must take two arguments\n"
+      throw new S.ErrorWithMeta(message, meta)
+    }
+
+    const [lhs, rhs] = args
+    return Exps.AssertEqual(lhs, rhs, meta)
+  },
+
+  "(cons* 'assert-not-equal exps)": ({ exps }, { meta }) => {
+    const args = S.listElements(exps).map(parseExp)
+    if (args.length !== 2) {
+      const message = "(assert-not-equal) must take two arguments\n"
+      throw new S.ErrorWithMeta(message, meta)
+    }
+
+    return Exps.AssertNotEqual(args[0], args[1], meta)
+  },
+
   "`(= ,name ,rhs)": ({ name, rhs }, { meta }) => {
     return Exps.AssignSugar(S.symbolContent(name), parseExp(rhs), meta)
   },

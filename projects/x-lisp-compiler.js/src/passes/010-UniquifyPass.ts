@@ -1,6 +1,5 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
-import * as S from "@xieyuheng/sexp.js"
 import * as L from "../lisp/index.ts"
 
 export function UniquifyPass(mod: L.Mod): void {
@@ -72,7 +71,7 @@ function onExp(
     }
 
     default: {
-      return L.expMap(e => onExp(nameCounts, nameTable, e), exp)
+      return L.expMap((e) => onExp(nameCounts, nameTable, e), exp)
     }
   }
 }

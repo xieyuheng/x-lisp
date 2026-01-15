@@ -1,7 +1,6 @@
 # feature complete
 
-[lisp] `expFold`
-[lisp] `Assert` as `Exp`
+test use (assert) and (assert-equal)
 
 [lisp] syntax for symbol
 [lisp] syntax for hashtag

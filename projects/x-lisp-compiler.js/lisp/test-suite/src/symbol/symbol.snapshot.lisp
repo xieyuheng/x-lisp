@@ -1,2 +1,2 @@
 ;; (define (main)
-;;   (println (symbol-append 'abc 'def)))
+;;   (println 'abc))

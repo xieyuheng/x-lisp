@@ -153,6 +153,18 @@ function inTail(exp: L.Exp): Array<F.Exp> {
       ]
     }
 
+    case "Assert": {
+      return [...inBody(exp.target), F.Assert()]
+    }
+
+    case "AssertEqual": {
+      return [...inBody(exp.lhs), ...inBody(exp.rhs), F.AssertEqual()]
+    }
+
+    case "AssertNotEqual": {
+      return [...inBody(exp.lhs), ...inBody(exp.rhs), F.AssertNotEqual()]
+    }
+
     default: {
       let message = `[ExplicateControlPass] [inTail] unhandled exp`
       message += `\n  exp: ${L.formatExp(exp)}`
@@ -231,6 +243,18 @@ function inBody(exp: L.Exp): Array<F.Exp> {
           F.Sequence(inBody(exp.alternative)),
         ),
       ]
+    }
+
+    case "Assert": {
+      return [...inBody(exp.target), F.Assert()]
+    }
+
+    case "AssertEqual": {
+      return [...inBody(exp.lhs), ...inBody(exp.rhs), F.AssertEqual()]
+    }
+
+    case "AssertNotEqual": {
+      return [...inBody(exp.lhs), ...inBody(exp.rhs), F.AssertNotEqual()]
     }
 
     default: {

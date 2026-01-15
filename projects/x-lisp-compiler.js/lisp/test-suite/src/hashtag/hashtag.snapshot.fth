@@ -1,5 +1,5 @@
 @define-function main
-  #abc #def hashtag-append @tail-call println 
+  #abc @tail-call println 
 @end
 
 

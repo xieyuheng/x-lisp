@@ -1,2 +1,2 @@
 (define (main)
-  (println (hashtag-append #abc #def)))
+  (println #abc))

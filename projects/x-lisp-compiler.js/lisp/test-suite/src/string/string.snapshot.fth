@@ -1,5 +1,5 @@
 @define-function main
-  "abc" "def" string-append @tail-call println 
+  "abc" @tail-call println 
 @end
 
 
