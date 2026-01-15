@@ -52,3 +52,8 @@ x_string_join(value_t separator, value_t list) {
     string_builder_free(builder);
     return result;
 }
+
+value_t
+x_string_compare_lexical(value_t x, value_t y) {
+    return x_int(xstring_compare(to_xstring(x), to_xstring(y)));
+}

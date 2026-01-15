@@ -23,4 +23,8 @@
   "ghi" list list-push!
   "-" list string-join
   "abc-def-ghi" @assert-equal
+
+  "abc" "abc" string-compare-lexical 0 @assert-equal
+  "ABC" "abc" string-compare-lexical 0 int-less? @assert
+  "abc" "ABC" string-compare-lexical 0 int-greater? @assert
 @end
