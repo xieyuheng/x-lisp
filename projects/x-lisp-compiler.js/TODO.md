@@ -1,10 +1,7 @@
 # quote
 
-[lisp] parse symbol
-
 [pass] `005-ShrinkPass` -- compile `Quote` to sexp builder
 
-[lisp] `Quote` as `Exp`
 
 # tael
 
