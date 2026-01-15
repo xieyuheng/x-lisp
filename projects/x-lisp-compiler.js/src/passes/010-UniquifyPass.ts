@@ -59,14 +59,6 @@ function onExp(
       )
     }
 
-    case "Apply": {
-      return L.Apply(
-        onExp(nameCounts, nameTable, exp.target),
-        exp.args.map((arg) => onExp(nameCounts, nameTable, arg)),
-        exp.meta,
-      )
-    }
-
     case "Let1": {
       const newNameCounts = countName(nameCounts, exp.name)
       const newName = generateNameInCounts(newNameCounts, exp.name)
@@ -79,28 +71,8 @@ function onExp(
       )
     }
 
-    case "Begin1": {
-      return L.Begin1(
-        onExp(nameCounts, nameTable, exp.head),
-        onExp(nameCounts, nameTable, exp.body),
-        exp.meta,
-      )
-    }
-
-    case "If": {
-      return L.If(
-        onExp(nameCounts, nameTable, exp.condition),
-        onExp(nameCounts, nameTable, exp.consequent),
-        onExp(nameCounts, nameTable, exp.alternative),
-        exp.meta,
-      )
-    }
-
     default: {
-      let message = `[UniquifyPass] unhandled exp`
-      message += `\n  exp: ${L.formatExp(exp)}`
-      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
-      else throw new Error(message)
+      return L.expMap(e => onExp(nameCounts, nameTable, e), exp)
     }
   }
 }

@@ -91,14 +91,6 @@ function onExp(mod: L.Mod, boundNames: Set<string>, exp: L.Exp): L.Exp {
       )
     }
 
-    case "Apply": {
-      return L.Apply(
-        onExp(mod, boundNames, exp.target),
-        exp.args.map((arg) => onExp(mod, boundNames, arg)),
-        exp.meta,
-      )
-    }
-
     case "Let1": {
       const newBoundNames = setAdd(boundNames, exp.name)
       return L.Let1(
@@ -109,28 +101,8 @@ function onExp(mod: L.Mod, boundNames: Set<string>, exp: L.Exp): L.Exp {
       )
     }
 
-    case "Begin1": {
-      return L.Begin1(
-        onExp(mod, boundNames, exp.head),
-        onExp(mod, boundNames, exp.body),
-        exp.meta,
-      )
-    }
-
-    case "If": {
-      return L.If(
-        onExp(mod, boundNames, exp.condition),
-        onExp(mod, boundNames, exp.consequent),
-        onExp(mod, boundNames, exp.alternative),
-        exp.meta,
-      )
-    }
-
     default: {
-      let message = `[RevealGlobalPass] unhandled exp`
-      message += `\n  exp: ${L.formatExp(exp)}`
-      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
-      else throw new Error(message)
+      return L.expMap(e => onExp(mod, boundNames, e), exp)
     }
   }
 }

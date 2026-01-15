@@ -19,6 +19,9 @@ export type Exp =
   | Unless
   | And
   | Or
+  | Assert
+  | AssertEqual
+  | AssertNotEqual
 
 export type Var = {
   kind: "Var"
@@ -284,6 +287,56 @@ export function Or(exps: Array<Exp>, meta?: Meta): Or {
   return {
     kind: "Or",
     exps,
+    meta,
+  }
+}
+
+export type Assert = {
+  kind: "Assert"
+  target: Exp
+  meta?: Meta
+}
+
+export function Assert(target: Exp, meta?: Meta): Assert {
+  return {
+    kind: "Assert",
+    target,
+    meta,
+  }
+}
+
+export type AssertEqual = {
+  kind: "AssertEqual"
+  lhs: Exp
+  rhs: Exp
+  meta?: Meta
+}
+
+export function AssertEqual(lhs: Exp, rhs: Exp, meta?: Meta): AssertEqual {
+  return {
+    kind: "AssertEqual",
+    lhs,
+    rhs,
+    meta,
+  }
+}
+
+export type AssertNotEqual = {
+  kind: "AssertNotEqual"
+  lhs: Exp
+  rhs: Exp
+  meta?: Meta
+}
+
+export function AssertNotEqual(
+  lhs: Exp,
+  rhs: Exp,
+  meta?: Meta,
+): AssertNotEqual {
+  return {
+    kind: "AssertNotEqual",
+    lhs,
+    rhs,
     meta,
   }
 }

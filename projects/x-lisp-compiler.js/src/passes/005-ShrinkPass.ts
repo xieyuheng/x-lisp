@@ -28,32 +28,9 @@ function onExp(exp: L.Exp): L.Exp {
     case "Hashtag":
     case "String":
     case "Int":
-    case "Float": {
-      return exp
-    }
-
+    case "Float":
     case "Var": {
       return exp
-    }
-
-    case "Lambda": {
-      return L.Lambda(exp.parameters, onExp(exp.body), exp.meta)
-    }
-
-    case "Apply": {
-      return L.Apply(
-        onExp(exp.target),
-        exp.args.map((e) => onExp(e)),
-        exp.meta,
-      )
-    }
-
-    case "Let1": {
-      return L.Let1(exp.name, onExp(exp.rhs), onExp(exp.body), exp.meta)
-    }
-
-    case "Begin1": {
-      return L.Begin1(onExp(exp.head), onExp(exp.body), exp.meta)
     }
 
     case "BeginSugar": {
@@ -111,20 +88,8 @@ function onExp(exp: L.Exp): L.Exp {
       return L.desugarOr(exp.exps.map(onExp), exp.meta)
     }
 
-    case "If": {
-      return L.If(
-        onExp(exp.condition),
-        onExp(exp.consequent),
-        onExp(exp.alternative),
-        exp.meta,
-      )
-    }
-
     default: {
-      let message = `[ShrinkPass] unhandled exp`
-      message += `\n  exp: ${L.formatExp(exp)}`
-      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
-      else throw new Error(message)
+      return L.expMap(onExp, exp)
     }
   }
 }

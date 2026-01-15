@@ -83,41 +83,8 @@ function onExp(state: State, exp: L.Exp): L.Exp {
       }
     }
 
-    case "Apply": {
-      return L.Apply(
-        onExp(state, exp.target),
-        exp.args.map((arg) => onExp(state, arg)),
-        exp.meta,
-      )
-    }
-
-    case "Let1": {
-      return L.Let1(
-        exp.name,
-        onExp(state, exp.rhs),
-        onExp(state, exp.body),
-        exp.meta,
-      )
-    }
-
-    case "Begin1": {
-      return L.Begin1(onExp(state, exp.head), onExp(state, exp.body), exp.meta)
-    }
-
-    case "If": {
-      return L.If(
-        onExp(state, exp.condition),
-        onExp(state, exp.consequent),
-        onExp(state, exp.alternative),
-        exp.meta,
-      )
-    }
-
     default: {
-      let message = `[LiftLambdaPass] unhandled exp`
-      message += `\n  exp: ${L.formatExp(exp)}`
-      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
-      else throw new Error(message)
+      return L.expMap(e => onExp(state, e), exp)
     }
   }
 }

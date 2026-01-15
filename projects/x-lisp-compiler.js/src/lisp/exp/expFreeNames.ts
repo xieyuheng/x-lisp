@@ -61,6 +61,24 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       ])
     }
 
+    case "Assert": {
+      return expFreeNames(boundNames, exp.target)
+    }
+
+    case "AssertEqual": {
+      return setUnionMany([
+        expFreeNames(boundNames, exp.lhs),
+        expFreeNames(boundNames, exp.rhs),
+      ])
+    }
+
+    case "AssertNotEqual": {
+      return setUnionMany([
+        expFreeNames(boundNames, exp.lhs),
+        expFreeNames(boundNames, exp.rhs),
+      ])
+    }
+
     default: {
       let message = `[expFreeNames] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`

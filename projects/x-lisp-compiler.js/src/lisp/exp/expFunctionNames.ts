@@ -58,6 +58,24 @@ export function expFunctionNames(exp: Exp): Set<string> {
       ])
     }
 
+    case "Assert": {
+      return expFunctionNames(exp.target)
+    }
+
+    case "AssertEqual": {
+      return setUnionMany([
+        expFunctionNames(exp.lhs),
+        expFunctionNames(exp.rhs),
+      ])
+    }
+
+    case "AssertNotEqual": {
+      return setUnionMany([
+        expFunctionNames(exp.lhs),
+        expFunctionNames(exp.rhs),
+      ])
+    }
+
     default: {
       let message = `[expFunctionNames] unhandled exp`
       message += `\n  exp: ${formatExp(exp)}`

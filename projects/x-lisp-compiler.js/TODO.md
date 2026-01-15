@@ -1,5 +1,6 @@
 # feature complete
 
+[lisp] `expFold`
 [lisp] `Assert` as `Exp`
 
 [lisp] syntax for symbol

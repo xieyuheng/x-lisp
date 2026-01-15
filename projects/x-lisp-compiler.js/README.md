@@ -55,10 +55,9 @@
 (unless <condition> <consequent>)
 (and <exp> ...)
 (or <exp> ...)
-;; (assert <exp>)
-;; (assert-not <exp>)
-;; (assert-equal <lhs> <rhs>)
-;; (assert-not-equal <lhs> <rhs>)
+(assert <exp>)
+(assert-equal <lhs> <rhs>)
+(assert-not-equal <lhs> <rhs>)
 ;; (assert-the <schema> <exp>)
 (<target> <args>)
 ```
@@ -154,6 +153,7 @@ void
 (hashtag-length hashtag)
 (hashtag-to-string hashtag)
 (hashtag-append level right)
+(hashtag-concat list)
 
 ;;; symbol
 
@@ -161,7 +161,7 @@ void
 (symbol-length symbol)
 (symbol-to-string symbol)
 (symbol-append left right)
-;; (symbol-concat list)
+(symbol-concat list)
 
 ;;; string
 
@@ -169,10 +169,10 @@ void
 (string-length string)
 (string-empty? string)
 (string-append left right)
-;; (string-concat list)
-;; (string-join separator list)
-;; (string-compare-lexical x y)
-;; (string-to-symbol string)
+(string-concat list)
+(string-join separator list)
+(string-compare-lexical x y)
+(string-to-symbol string)
 ;; prelude
 ;; (string-repeat n string)
 
