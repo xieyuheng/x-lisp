@@ -95,7 +95,7 @@ make_builtin_mod(void) {
     define_primitive_1(mod, "hashtag-length", x_hashtag_length);
     define_primitive_1(mod, "hashtag-to-string", x_hashtag_to_string);
     define_primitive_2(mod, "hashtag-append", x_hashtag_append);
-    // define_primitive_1(mod, "hashtag-concat", x_hashtag_concat);
+    define_primitive_1(mod, "hashtag-concat", x_hashtag_concat);
 
     // symbol
 
