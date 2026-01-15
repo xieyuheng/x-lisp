@@ -1,2 +1,2 @@
-;; (define (main)
-;;   (println 'abc))
+(define (main)
+  (println 'abc))

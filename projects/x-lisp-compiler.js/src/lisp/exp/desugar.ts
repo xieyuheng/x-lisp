@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
+import { type TokenMeta as Meta, type Sexp } from "@xieyuheng/sexp.js"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 
@@ -14,4 +14,16 @@ export function desugarOr(exps: Array<Exp>, meta?: Meta): Exp {
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
   return Exps.If(head, Exps.Bool(true, meta), desugarOr(restExps, meta), meta)
+}
+
+export function desugarQuote(sexp: Sexp, meta?: Meta): Exp {
+  switch (sexp.kind) {
+    case "Symbol": {
+      return Exps.Symbol(sexp.content, meta)
+    }
+
+    default: {
+      throw new Error()
+    }
+  }
 }

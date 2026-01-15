@@ -1,7 +1,7 @@
 # quote
 
-[pass] `005-ShrinkPass` -- compile `Quote` to sexp builder
-
+[pass] move `desugar*` to `005-ShrinkPass`
+[pass] `desugarQuote`
 
 # tael
 

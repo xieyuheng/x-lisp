@@ -88,6 +88,10 @@ function onExp(exp: L.Exp): L.Exp {
       return L.desugarOr(exp.exps.map(onExp), exp.meta)
     }
 
+    case "Quote": {
+      return L.desugarQuote(exp.sexp, exp.meta)
+    }
+
     default: {
       return L.expMap(onExp, exp)
     }
