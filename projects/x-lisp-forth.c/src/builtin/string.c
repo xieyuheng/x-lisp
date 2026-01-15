@@ -57,3 +57,8 @@ value_t
 x_string_compare_lexical(value_t x, value_t y) {
     return x_int(xstring_compare(to_xstring(x), to_xstring(y)));
 }
+
+value_t
+x_string_to_symbol(value_t string) {
+    return x_object(intern_symbol(to_xstring(string)->string));
+}

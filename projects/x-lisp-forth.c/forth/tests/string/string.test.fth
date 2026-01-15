@@ -27,4 +27,6 @@
   "abc" "abc" string-compare-lexical 0 @assert-equal
   "ABC" "abc" string-compare-lexical 0 int-less? @assert
   "abc" "ABC" string-compare-lexical 0 int-greater? @assert
+
+  "abc" string-to-symbol 'abc @assert-equal
 @end
