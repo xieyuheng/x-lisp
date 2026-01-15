@@ -118,3 +118,15 @@ value_t
 x_list_reverse(value_t list) {
     return x_list_reverse_mut(x_list_copy(list));
 }
+
+value_t
+x_list_to_set(value_t list) {
+    xset_t *set = make_xset();
+    size_t length = array_length(to_tael(list)->elements);
+    for (size_t i = 0; i < length; i++) {
+        value_t element = tael_get_element(to_tael(list), i);
+        xset_add(set, element);
+    }
+
+    return x_object(set);
+}

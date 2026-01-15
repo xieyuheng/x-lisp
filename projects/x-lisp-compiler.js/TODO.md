@@ -1,5 +1,5 @@
 # quote
-
+list-to-set
 [lisp] `Quote` as `Exp`
 
 [pass] `005-ShrinkPass` -- compile `Quote` to sexp builder

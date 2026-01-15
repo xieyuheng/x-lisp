@@ -97,4 +97,18 @@
   0 list list-get 3 @assert-equal
   1 list list-get 2 @assert-equal
   2 list list-get 1 @assert-equal
+
+  -- list-to-set
+
+  make-list ( list )
+  1 list list-push! @drop
+  2 list list-push! @drop
+  3 list list-push! @drop
+
+  make-set ( set )
+  1 set set-add! @drop
+  2 set set-add! @drop
+  3 set set-add! @drop
+
+  list list-to-set set @assert-equal
 @end

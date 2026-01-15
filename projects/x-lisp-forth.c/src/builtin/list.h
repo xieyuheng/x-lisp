@@ -22,3 +22,4 @@ x_fn_1_t x_list_init;
 x_fn_1_t x_list_last;
 x_fn_1_t x_list_reverse_mut;
 x_fn_1_t x_list_reverse;
+x_fn_1_t x_list_to_set;

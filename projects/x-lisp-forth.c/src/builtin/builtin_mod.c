@@ -140,6 +140,7 @@ make_builtin_mod(void) {
     define_primitive_1(mod, "list-last", x_list_last);
     define_primitive_1(mod, "list-reverse!", x_list_reverse_mut);
     define_primitive_1(mod, "list-reverse", x_list_reverse);
+    define_primitive_1(mod, "list-to-set", x_list_to_set);
 
     // record
 

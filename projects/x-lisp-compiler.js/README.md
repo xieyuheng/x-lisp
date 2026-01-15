@@ -201,7 +201,7 @@ void
 (list-last list)
 (list-reverse list)
 (list-reverse! list)
-;; (list-to-set list)
+(list-to-set list)
 ;; (list-sort! compare list)
 ;; (list-sort compare list)
 ;; prelude
