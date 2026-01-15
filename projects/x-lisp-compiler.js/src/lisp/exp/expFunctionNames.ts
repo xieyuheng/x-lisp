@@ -1,6 +1,4 @@
 import { setUnionMany } from "@xieyuheng/helpers.js/set"
-import * as S from "@xieyuheng/sexp.js"
-import { formatExp } from "../format/index.ts"
 import { type Exp } from "./Exp.ts"
 import { expChildren } from "./index.ts"
 

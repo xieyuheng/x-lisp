@@ -1,6 +1,4 @@
 import { setAdd, setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
-import * as S from "@xieyuheng/sexp.js"
-import { formatExp } from "../format/index.ts"
 import { type Exp } from "./Exp.ts"
 import { expChildren } from "./index.ts"
 
@@ -29,7 +27,8 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
 
     default: {
       return setUnionMany(
-        expChildren(exp).map(child => expFreeNames(boundNames, child)))
+        expChildren(exp).map((child) => expFreeNames(boundNames, child)),
+      )
     }
   }
 }
