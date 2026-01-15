@@ -1,0 +1,49 @@
+;;; Input
+
+(define (main)
+  (= list (make-list))
+  (list-push! 1 list)
+  (list-push! 2 list)
+  (list-push! 3 list)
+  (println list))
+
+;;; ShrinkPass
+
+(define (main)
+  (@let1 list (make-list)
+    (@begin1 (list-push! 1 list)
+      (@begin1 (list-push! 2 list)
+        (@begin1 (list-push! 3 list) (println list))))))
+
+;;; UniquifyPass
+
+(define (main)
+  (@let1 list₁ (make-list)
+    (@begin1 (list-push! 1 list₁)
+      (@begin1 (list-push! 2 list₁)
+        (@begin1 (list-push! 3 list₁) (println list₁))))))
+
+;;; RevealGlobalPass
+
+(define (main)
+  (@let1 list₁ ((@primitive-function-ref make-list 0))
+    (@begin1
+        ((@primitive-function-ref list-push! 2) 1 list₁)
+      (@begin1
+          ((@primitive-function-ref list-push! 2) 2 list₁)
+        (@begin1
+            ((@primitive-function-ref list-push! 2) 3 list₁)
+          ((@primitive-function-ref println 1) list₁))))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  (@let1 list₁ ((@primitive-function-ref make-list 0))
+    (@begin1
+        ((@primitive-function-ref list-push! 2) 1 list₁)
+      (@begin1
+          ((@primitive-function-ref list-push! 2) 2 list₁)
+        (@begin1
+            ((@primitive-function-ref list-push! 2) 3 list₁)
+          ((@primitive-function-ref println 1) list₁))))))
+
