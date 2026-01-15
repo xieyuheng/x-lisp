@@ -1,0 +1,24 @@
+;;; Input
+
+(define (main) (println (string-append "abc" "def")))
+
+;;; ShrinkPass
+
+(define (main) (println (string-append "abc" "def")))
+
+;;; UniquifyPass
+
+(define (main) (println (string-append "abc" "def")))
+
+;;; RevealGlobalPass
+
+(define (main)
+  ((@primitive-function-ref println 1)
+   ((@primitive-function-ref string-append 2) "abc" "def")))
+
+;;; LiftLambdaPass
+
+(define (main)
+  ((@primitive-function-ref println 1)
+   ((@primitive-function-ref string-append 2) "abc" "def")))
+

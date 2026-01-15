@@ -1,7 +1,5 @@
 # feature complete
 
-[builtin] complete current forth API
-
 [lisp] `Assert` as `Exp`
 
 [lisp] syntax for symbol
@@ -14,7 +12,7 @@
 # cond
 
 [lisp] `Cond` as `Exp`
-[pass] `ShrinkPass` -- support`Cond`
+[pass] `ShrinkPass` -- support `Cond`
 
 # define-data
 

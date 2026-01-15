@@ -171,7 +171,6 @@ void
 (string-append left right)
 ;; (string-concat list)
 ;; (string-join separator list)
-;; (string-chars string)
 ;; (string-compare-lexical x y)
 ;; (string-to-symbol string)
 ;; prelude

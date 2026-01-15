@@ -94,11 +94,10 @@ export function createBuiltinMod(): L.Mod {
   declarePrimitiveFunction(mod, "string-length", { arity: 1 })
   declarePrimitiveFunction(mod, "string-empty?", { arity: 1 })
   declarePrimitiveFunction(mod, "string-append", { arity: 2 })
-  // (string-concat list)
-  // (string-join separator list)
-  // (string-chars string)
-  // (string-compare-lexical x y)
-  // (string-to-symbol string)
+  declarePrimitiveFunction(mod, "string-concat", { arity: 1 })
+  declarePrimitiveFunction(mod, "string-join", { arity: 2 })
+  declarePrimitiveFunction(mod, "string-compare-lexical", { arity: 2 })
+  declarePrimitiveFunction(mod, "string-to-symbol", { arity: 1 })
 
   // symbol
 
@@ -106,6 +105,7 @@ export function createBuiltinMod(): L.Mod {
   declarePrimitiveFunction(mod, "symbol-length", { arity: 1 })
   declarePrimitiveFunction(mod, "symbol-to-string", { arity: 1 })
   declarePrimitiveFunction(mod, "symbol-append", { arity: 2 })
+  declarePrimitiveFunction(mod, "symbol-concat", { arity: 1 })
 
   // hashtag
 
@@ -113,6 +113,7 @@ export function createBuiltinMod(): L.Mod {
   declarePrimitiveFunction(mod, "hashtag-length", { arity: 1 })
   declarePrimitiveFunction(mod, "hashtag-to-string", { arity: 1 })
   declarePrimitiveFunction(mod, "hashtag-append", { arity: 2 })
+  declarePrimitiveFunction(mod, "hashtag-concat", { arity: 1 })
 
   // list
 
