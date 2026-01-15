@@ -97,6 +97,10 @@ function onExp(exp: L.Exp): L.Exp {
       return onExp(desugarSet(exp.elements, exp.meta))
     }
 
+    case "Hash": {
+      return onExp(desugarHash(exp.entries, exp.meta))
+    }
+
     case "Quote": {
       return onExp(desugarQuote(exp.sexp, exp.meta))
     }
@@ -148,6 +152,20 @@ function desugarSet(
       L.AssignSugar("set", L.Apply(L.Var("make-set"), [])),
       ...elements.map((e) => L.Apply(L.Var("set-add!"), [e, L.Var("set")])),
       L.Var("set"),
+    ],
+    meta,
+  )
+}
+
+function desugarHash(
+  entries: Array<{ key: L.Exp; value: L.Exp }>,
+  meta?: L.Meta,
+): L.Exp {
+  return L.BeginSugar(
+    [
+      L.AssignSugar("hash", L.Apply(L.Var("make-hash"), [])),
+      ...entries.map((entry) => L.Apply(L.Var("hash-put!"), [entry.key, entry.value, L.Var("hash")])),
+      L.Var("hash"),
     ],
     meta,
   )

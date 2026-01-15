@@ -1,7 +1,3 @@
-# tael
-
-[pass] `desugarHash`
-
 # cond
 
 [lisp] `Cond` as `Exp`
