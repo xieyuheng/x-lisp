@@ -1,3 +1,5 @@
+import { arrayGroup2 } from "@xieyuheng/helpers.js/array"
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
@@ -98,6 +100,64 @@ export const parseExp: S.Router<Exp> = S.createRouter<Exp>({
       S.listElements(args).map(parseExp),
       meta,
     )
+  },
+  "(cons* '@tael elements)": ({ elements }, { sexp, meta }) => {
+    return Exps.Tael(
+      S.listElements(elements).map(parseExp),
+      recordMapValue(S.asTael(sexp).attributes, parseExp),
+      meta,
+    )
+  },
+
+  "(cons* '@list elements)": ({ elements }, { sexp, meta }) => {
+    if (Object.keys(S.asTael(sexp).attributes).length > 0) {
+      let message = `(@list) literal list can not have attributes`
+      throw new S.ErrorWithMeta(message, meta)
+    }
+
+    return Exps.Tael(S.listElements(elements).map(parseExp), {}, meta)
+  },
+
+  "(cons* '@record elements)": ({ elements }, { sexp, meta }) => {
+    if (S.listElements(elements).length > 0) {
+      let message = `(@record) literal record can not have elements`
+      throw new S.ErrorWithMeta(message, meta)
+    }
+
+    return Exps.Tael(
+      [],
+      recordMapValue(S.asTael(sexp).attributes, parseExp),
+      meta,
+    )
+  },
+
+  "(cons* '@set elements)": ({ elements }, { sexp, meta }) => {
+    if (Object.keys(S.asTael(sexp).attributes).length > 0) {
+      let message = `(@set) can not have attributes`
+      throw new S.ErrorWithMeta(message, meta)
+    }
+
+    return Exps.Set(S.listElements(elements).map(parseExp), meta)
+  },
+
+  "(cons* '@hash elements)": ({ elements }, { sexp, meta }) => {
+    if (Object.keys(S.asTael(sexp).attributes).length > 0) {
+      let message = `(@hash) can not have attributes`
+      throw new S.ErrorWithMeta(message, meta)
+    }
+
+    if (S.listElements(elements).length % 2 === 1) {
+      let message = `(@hash) body length must be even`
+      throw new S.ErrorWithMeta(message, meta)
+    }
+
+    const entries = arrayGroup2(S.listElements(elements)).map(
+      ([key, value]) => ({
+        key: parseExp(key),
+        value: parseExp(value),
+      }),
+    )
+    return Exps.Hash(entries, meta)
   },
 
   data: ({ data }, { meta }) => {

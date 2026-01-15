@@ -7,6 +7,12 @@ export function formatExps(exps: Array<Exp>): string {
   return exps.map(formatExp).join(" ")
 }
 
+function formatExpAttributes(attributes: Record<string, Exp>): string {
+  return Object.entries(attributes)
+    .map(([k, e]) => `:${k} ${formatExp(e)}`)
+    .join(" ")
+}
+
 export function formatParameters(parameters: Array<string>): string {
   return parameters.join(" ")
 }
@@ -116,8 +122,38 @@ export function formatExp(exp: Exp): string {
       return `(assert-not-equal ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
     }
 
+    case "Tael": {
+      const elements = formatExps(exp.elements)
+      const attributes = formatExpAttributes(exp.attributes)
+      if (elements === "" && attributes === "") {
+        return `[]`
+      } else if (attributes === "") {
+        return `[${elements}]`
+      } else if (elements === "") {
+        return `[${attributes}]`
+      } else {
+        return `[${elements} ${attributes}]`
+      }
+    }
+
+    case "Set": {
+      const elements = formatExps(exp.elements)
+      return `{${elements}}`
+    }
+
+    case "Hash": {
+      const entries = exp.entries
+        .map(({ key, value }) => `${formatExp(key)} ${formatExp(value)}`)
+        .join(" ")
+      if (entries === "") {
+        return `(@hash)`
+      } else {
+        return `(@hash ${entries})`
+      }
+    }
+
     case "Quote": {
-      return S.formatSexp(exp.sexp)
+      return `(@quote ${S.formatSexp(exp.sexp)})`
     }
   }
 }

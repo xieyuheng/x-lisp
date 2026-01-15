@@ -1,6 +1,8 @@
 import { type TokenMeta as Meta, type Sexp } from "@xieyuheng/sexp.js"
 import type { Atom } from "./Atom.ts"
 
+export type Attributes = Record<string, Exp>
+
 export type Exp =
   | Atom
   | Var
@@ -22,6 +24,9 @@ export type Exp =
   | Assert
   | AssertEqual
   | AssertNotEqual
+  | Tael
+  | Set
+  | Hash
   | Quote
 
 export type Var = {
@@ -338,6 +343,57 @@ export function AssertNotEqual(
     kind: "AssertNotEqual",
     lhs,
     rhs,
+    meta,
+  }
+}
+
+export type Tael = {
+  kind: "Tael"
+  elements: Array<Exp>
+  attributes: Attributes
+  meta: Meta
+}
+
+export function Tael(
+  elements: Array<Exp>,
+  attributes: Attributes,
+  meta: Meta,
+): Tael {
+  return {
+    kind: "Tael",
+    elements,
+    attributes,
+    meta,
+  }
+}
+
+export type Set = {
+  kind: "Set"
+  elements: Array<Exp>
+  meta: Meta
+}
+
+export function Set(elements: Array<Exp>, meta: Meta): Set {
+  return {
+    kind: "Set",
+    elements,
+    meta,
+  }
+}
+
+export type Hash = {
+  kind: "Hash"
+  entries: Array<{ key: Exp; value: Exp }>
+  meta: Meta
+}
+
+export function Hash(
+  entries: Array<{ key: Exp; value: Exp }>,
+  meta: Meta,
+): Hash {
+  return {
+    kind: "Hash",
+    entries,
     meta,
   }
 }

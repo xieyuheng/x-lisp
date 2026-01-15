@@ -1,6 +1,6 @@
 ;;; Input
 
-(define (main) (println abc))
+(define (main) (println 'abc))
 
 ;;; ShrinkPass
 

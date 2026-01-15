@@ -1,7 +1,7 @@
 ;;; Input
 
 (define (main)
-  (assert-equal abcdef (symbol-append abc def)))
+  (assert-equal 'abcdef (symbol-append 'abc 'def)))
 
 ;;; ShrinkPass
 

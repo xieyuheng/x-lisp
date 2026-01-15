@@ -1,3 +1,4 @@
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import type { Exp } from "../index.ts"
 import * as L from "../index.ts"
 
@@ -83,6 +84,28 @@ export function expMap(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
 
     case "Quote": {
       return onExp(exp)
+    }
+
+    case "Tael": {
+      return L.Tael(
+        exp.elements.map(onExp),
+        recordMapValue(exp.attributes, onExp),
+        exp.meta,
+      )
+    }
+
+    case "Set": {
+      return L.Set(exp.elements.map(onExp), exp.meta)
+    }
+
+    case "Hash": {
+      return L.Hash(
+        exp.entries.map((entry) => ({
+          key: onExp(entry.key),
+          value: onExp(entry.value),
+        })),
+        exp.meta,
+      )
     }
   }
 }
