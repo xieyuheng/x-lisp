@@ -1,6 +1,5 @@
 # tael
 
-[pass] `desugarSet`
 [pass] `desugarHash`
 
 # cond

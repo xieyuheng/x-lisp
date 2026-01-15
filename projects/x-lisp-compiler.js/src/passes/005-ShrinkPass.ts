@@ -93,6 +93,10 @@ function onExp(exp: L.Exp): L.Exp {
       return onExp(desugarTael(exp.elements, exp.attributes, exp.meta))
     }
 
+    case "Set": {
+      return onExp(desugarSet(exp.elements, exp.meta))
+    }
+
     case "Quote": {
       return onExp(desugarQuote(exp.sexp, exp.meta))
     }
@@ -130,6 +134,20 @@ function desugarTael(
         L.Apply(L.Var("record-put!"), [L.Symbol(k), v, L.Var("tael")]),
       ),
       L.Var("tael"),
+    ],
+    meta,
+  )
+}
+
+function desugarSet(
+  elements: Array<L.Exp>,
+  meta?: L.Meta,
+): L.Exp {
+  return L.BeginSugar(
+    [
+      L.AssignSugar("set", L.Apply(L.Var("make-set"), [])),
+      ...elements.map((e) => L.Apply(L.Var("set-add!"), [e, L.Var("set")])),
+      L.Var("set"),
     ],
     meta,
   )
