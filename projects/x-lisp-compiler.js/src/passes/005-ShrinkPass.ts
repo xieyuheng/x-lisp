@@ -143,10 +143,7 @@ function desugarTael(
   )
 }
 
-function desugarSet(
-  elements: Array<L.Exp>,
-  meta?: L.Meta,
-): L.Exp {
+function desugarSet(elements: Array<L.Exp>, meta?: L.Meta): L.Exp {
   return L.BeginSugar(
     [
       L.AssignSugar("set", L.Apply(L.Var("make-set"), [])),
@@ -164,7 +161,9 @@ function desugarHash(
   return L.BeginSugar(
     [
       L.AssignSugar("hash", L.Apply(L.Var("make-hash"), [])),
-      ...entries.map((entry) => L.Apply(L.Var("hash-put!"), [entry.key, entry.value, L.Var("hash")])),
+      ...entries.map((entry) =>
+        L.Apply(L.Var("hash-put!"), [entry.key, entry.value, L.Var("hash")]),
+      ),
       L.Var("hash"),
     ],
     meta,
