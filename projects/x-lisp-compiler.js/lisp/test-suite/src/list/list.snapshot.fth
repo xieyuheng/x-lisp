@@ -23,6 +23,45 @@
   tael₁
   list-push!
   tael₁
+  println
+  make-list
+  ( tael₁ )
+  1
+  tael₁
+  list-push!
+  2
+  tael₁
+  list-push!
+  3
+  tael₁
+  list-push!
+  tael₁
+  println
+  make-list
+  ( tael₁ )
+  'a
+  tael₁
+  list-push!
+  'b
+  tael₁
+  list-push!
+  'c
+  tael₁
+  list-push!
+  tael₁
+  println
+  make-list
+  ( tael₁ )
+  'a
+  tael₁
+  list-push!
+  'b
+  tael₁
+  list-push!
+  'c
+  tael₁
+  list-push!
+  tael₁
   @tail-call println
   
 @end

@@ -1,3 +1,4 @@
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../lisp/index.ts"
 
@@ -156,11 +157,13 @@ function desugarQuote(sexp: S.Sexp, meta?: L.Meta): L.Exp {
       return L.Hashtag(sexp.content, meta)
     }
 
-    // case "Tael": {
-    //   sexp.elements
-    //   sexp.attributes
-    //   return L.Apply(L.Var("make-list"), [], meta)
-    // }
+    case "Tael": {
+      return L.Tael(
+        sexp.elements.map((e) => desugarQuote(e, meta)),
+        recordMapValue(sexp.attributes, (e) => desugarQuote(e, meta)),
+        meta,
+      )
+    }
 
     default: {
       throw new Error()

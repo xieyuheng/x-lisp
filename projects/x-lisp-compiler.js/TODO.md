@@ -1,7 +1,5 @@
 # tael
 
-[pass] `desugarQuote` -- handle `Tael` -- compile to `Tael` exp
-
 [pass] `desugarHash`
 [pass] `desugarSet`
 

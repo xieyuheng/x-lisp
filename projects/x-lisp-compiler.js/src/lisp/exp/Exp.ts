@@ -351,13 +351,13 @@ export type Tael = {
   kind: "Tael"
   elements: Array<Exp>
   attributes: Attributes
-  meta: Meta
+  meta?: Meta
 }
 
 export function Tael(
   elements: Array<Exp>,
   attributes: Attributes,
-  meta: Meta,
+  meta?: Meta,
 ): Tael {
   return {
     kind: "Tael",
@@ -370,10 +370,10 @@ export function Tael(
 export type Set = {
   kind: "Set"
   elements: Array<Exp>
-  meta: Meta
+  meta?: Meta
 }
 
-export function Set(elements: Array<Exp>, meta: Meta): Set {
+export function Set(elements: Array<Exp>, meta?: Meta): Set {
   return {
     kind: "Set",
     elements,
@@ -384,12 +384,12 @@ export function Set(elements: Array<Exp>, meta: Meta): Set {
 export type Hash = {
   kind: "Hash"
   entries: Array<{ key: Exp; value: Exp }>
-  meta: Meta
+  meta?: Meta
 }
 
 export function Hash(
   entries: Array<{ key: Exp; value: Exp }>,
-  meta: Meta,
+  meta?: Meta,
 ): Hash {
   return {
     kind: "Hash",
