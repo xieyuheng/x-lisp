@@ -348,10 +348,7 @@ export type Quote = {
   meta?: Meta
 }
 
-export function Quote(
-  sexp: Sexp,
-  meta?: Meta,
-): Quote {
+export function Quote(sexp: Sexp, meta?: Meta): Quote {
   return {
     kind: "Quote",
     sexp,
