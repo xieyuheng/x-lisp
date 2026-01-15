@@ -164,9 +164,5 @@ function desugarQuote(sexp: S.Sexp, meta?: L.Meta): L.Exp {
         meta,
       )
     }
-
-    default: {
-      throw new Error()
-    }
   }
 }
