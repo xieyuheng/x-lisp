@@ -118,6 +118,28 @@ function desugarQuote(sexp: S.Sexp, meta?: L.Meta): L.Exp {
       return L.Symbol(sexp.content, meta)
     }
 
+    case "String": {
+      return L.String(sexp.content, meta)
+    }
+
+    case "Int": {
+      return L.Int(sexp.content, meta)
+    }
+
+    case "Float": {
+      return L.Float(sexp.content, meta)
+    }
+
+    case "Hashtag": {
+      return L.Hashtag(sexp.content, meta)
+    }
+
+    // case "Tael": {
+    //   sexp.elements
+    //   sexp.attributes
+    //   return L.Apply(L.Var("make-list"), [], meta)
+    // }
+
     default: {
       throw new Error()
     }

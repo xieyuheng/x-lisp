@@ -1,14 +1,9 @@
-# quote
-
-[pass] `desugarQuote`
-
 # tael
 
 [lisp] `Tael` as `Exp`
-
-[pass] `005-ShrinkPass` -- compile `Tael` to tael builder
-
 [lisp] parse tael
+[pass] `005-ShrinkPass` -- compile `Tael` to tael builder
+[pass] `desugarQuote` -- handle `Tael` -- compile to `Tael` exp
 
 # set and hash
 
