@@ -113,24 +113,26 @@ xset_equal(const xset_t *lhs, const xset_t *rhs) {
     return true;
 }
 
-static void
-xset_print_values(printer_t *printer, const xset_t *self) {
+void
+xset_print(printer_t *printer, const xset_t *self) {
+    printf("{");
+
     set_iter_t iter;
     set_iter_init(&iter, self->set);
 
     const hash_entry_t *entry = set_iter_next_entry(&iter);
+    if (entry) {
+        value_print(printer, (value_t) entry->value);
+        entry = set_iter_next_entry(&iter);
+    }
+
     while (entry) {
         printf(" ");
         value_print(printer, (value_t) entry->value);
         entry = set_iter_next_entry(&iter);
     }
-}
 
-void
-xset_print(printer_t *printer, const xset_t *self) {
-    printf("(@set");
-    xset_print_values(printer, self);
-    printf(")");
+    printf("}");
 }
 
 static ordering_t
