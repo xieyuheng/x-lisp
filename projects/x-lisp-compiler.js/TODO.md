@@ -1,12 +1,27 @@
-# feature complete
+# quote
 
-test use (assert) and (assert-equal)
+[lisp] `Quote` as `Exp`
+
+[pass] `005-ShrinkPass` -- compile `Quote` to sexp builder
 
 [lisp] syntax for symbol
-[lisp] syntax for hashtag
+
+[lisp] `Quote` as `Exp`
+
+# tael
+
+[lisp] `Tael` as `Exp`
+
+[pass] `005-ShrinkPass` -- compile `Tael` to tael builder
 
 [lisp] syntax for tael
+
+# set and hash
+
+[lisp] `Set` as `Exp`
 [lisp] syntax for set
+
+[lisp] `Hash` as `Exp`
 [lisp] syntax for hash
 
 # cond

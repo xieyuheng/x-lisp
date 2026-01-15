@@ -1,7 +1,7 @@
 @import "square" square @end
 
 @define-function main
-  3 square square @tail-call println 
+  81 3 square square @assert-equal 
 @end
 
 

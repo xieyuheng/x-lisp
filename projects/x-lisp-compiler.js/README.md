@@ -5,11 +5,11 @@
 ```lisp
 ;;; parser level syntax sugar
 
-;; '<sexp> => (@quote <sexp>)
-;; `<sexp> => (@quasiquote <sexp>)
-;; ,<sexp> => (@unquote <sexp>)
-;; [<elements> <attributes>] => (@tael <elements> <attributes>)
-;; {<elements>} => (@set <elements>)
+'<sexp> => (@quote <sexp>)
+`<sexp> => (@quasiquote <sexp>)
+,<sexp> => (@unquote <sexp>)
+[<elements> <attributes>] => (@tael <elements> <attributes>)
+{<elements>} => (@set <elements>)
 
 ;;; top level statement
 

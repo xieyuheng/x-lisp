@@ -1,4 +1,4 @@
 (import "square" square)
 
 (define (main)
-  (println (square (square 3))))
+  (assert-equal 81 (square (square 3))))

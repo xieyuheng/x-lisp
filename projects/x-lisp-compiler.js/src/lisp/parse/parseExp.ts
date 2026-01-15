@@ -13,6 +13,10 @@ export const parseExp: S.Router<Exp> = S.createRouter<Exp>({
     )
   },
 
+  // "`(@quote ,sexp)": ({ sexp }, { meta }) => {
+  //   return Exps.Quote(sexp, meta)
+  // },
+
   "`(if ,condition ,consequent ,alternative)": (
     { condition, consequent, alternative },
     { meta },
