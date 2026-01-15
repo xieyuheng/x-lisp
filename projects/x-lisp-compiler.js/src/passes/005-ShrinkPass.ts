@@ -81,19 +81,45 @@ function onExp(exp: L.Exp): L.Exp {
     }
 
     case "And": {
-      return L.desugarAnd(exp.exps.map(onExp), exp.meta)
+      return onExp(desugarAnd(exp.exps.map(onExp), exp.meta))
     }
 
     case "Or": {
-      return L.desugarOr(exp.exps.map(onExp), exp.meta)
+      return onExp(desugarOr(exp.exps.map(onExp), exp.meta))
     }
 
     case "Quote": {
-      return L.desugarQuote(exp.sexp, exp.meta)
+      return onExp(desugarQuote(exp.sexp, exp.meta))
     }
 
     default: {
       return L.expMap(onExp, exp)
+    }
+  }
+}
+
+function desugarAnd(exps: Array<L.Exp>, meta?: L.Meta): L.Exp {
+  if (exps.length === 0) return L.Bool(true, meta)
+  if (exps.length === 1) return exps[0]
+  const [head, ...restExps] = exps
+  return L.If(head, desugarAnd(restExps, meta), L.Bool(false, meta), meta)
+}
+
+function desugarOr(exps: Array<L.Exp>, meta?: L.Meta): L.Exp {
+  if (exps.length === 0) return L.Bool(false, meta)
+  if (exps.length === 1) return exps[0]
+  const [head, ...restExps] = exps
+  return L.If(head, L.Bool(true, meta), desugarOr(restExps, meta), meta)
+}
+
+function desugarQuote(sexp: S.Sexp, meta?: L.Meta): L.Exp {
+  switch (sexp.kind) {
+    case "Symbol": {
+      return L.Symbol(sexp.content, meta)
+    }
+
+    default: {
+      throw new Error()
     }
   }
 }

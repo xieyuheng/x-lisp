@@ -1,6 +1,5 @@
 # quote
 
-[pass] move `desugar*` to `005-ShrinkPass`
 [pass] `desugarQuote`
 
 # tael
