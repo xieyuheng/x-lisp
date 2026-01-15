@@ -2,22 +2,10 @@ import { setAdd, setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
 import * as S from "@xieyuheng/sexp.js"
 import { formatExp } from "../format/index.ts"
 import { type Exp } from "./Exp.ts"
+import { expChildren } from "./index.ts"
 
 export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
   switch (exp.kind) {
-    case "Symbol":
-    case "Hashtag":
-    case "String":
-    case "Int":
-    case "Float": {
-      return new Set()
-    }
-
-    case "FunctionRef":
-    case "ConstantRef": {
-      return new Set()
-    }
-
     case "Var": {
       if (boundNames.has(exp.name)) {
         return new Set()
@@ -31,13 +19,6 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       return expFreeNames(newBoundNames, exp.body)
     }
 
-    case "Apply": {
-      return setUnionMany([
-        expFreeNames(boundNames, exp.target),
-        ...exp.args.map((arg) => expFreeNames(boundNames, arg)),
-      ])
-    }
-
     case "Let1": {
       const newBoundNames = setAdd(boundNames, exp.name)
       return setUnionMany([
@@ -46,44 +27,9 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       ])
     }
 
-    case "Begin1": {
-      return setUnionMany([
-        expFreeNames(boundNames, exp.head),
-        expFreeNames(boundNames, exp.body),
-      ])
-    }
-
-    case "If": {
-      return setUnionMany([
-        expFreeNames(boundNames, exp.condition),
-        expFreeNames(boundNames, exp.consequent),
-        expFreeNames(boundNames, exp.alternative),
-      ])
-    }
-
-    case "Assert": {
-      return expFreeNames(boundNames, exp.target)
-    }
-
-    case "AssertEqual": {
-      return setUnionMany([
-        expFreeNames(boundNames, exp.lhs),
-        expFreeNames(boundNames, exp.rhs),
-      ])
-    }
-
-    case "AssertNotEqual": {
-      return setUnionMany([
-        expFreeNames(boundNames, exp.lhs),
-        expFreeNames(boundNames, exp.rhs),
-      ])
-    }
-
     default: {
-      let message = `[expFreeNames] unhandled exp`
-      message += `\n  exp: ${formatExp(exp)}`
-      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
-      else throw new Error(message)
+      return setUnionMany(
+        expChildren(exp).map(child => expFreeNames(boundNames, child)))
     }
   }
 }
