@@ -4,4 +4,11 @@
   'abc symbol-length 3 @assert-equal
   'abc symbol-to-string "abc" @assert-equal
   'abc 'def symbol-append 'abcdef @assert-equal
+
+  make-list ( list )
+  'abc list list-push!
+  'def list list-push!
+  'ghi list list-push!
+  list symbol-concat
+  'abcdefghi @assert-equal
 @end
