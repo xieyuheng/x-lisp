@@ -39,6 +39,32 @@
   println
   make-list
   ( tael₁ )
+  1
+  tael₁
+  list-push!
+  2
+  tael₁
+  list-push!
+  3
+  tael₁
+  list-push!
+  tael₁
+  println
+  make-list
+  ( tael₁ )
+  1
+  tael₁
+  list-push!
+  2
+  tael₁
+  list-push!
+  3
+  tael₁
+  list-push!
+  tael₁
+  println
+  make-list
+  ( tael₁ )
   'a
   tael₁
   list-push!
