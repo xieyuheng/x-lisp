@@ -146,6 +146,7 @@ function inTail(exp: L.Exp): Array<F.Exp> {
 
     case "If": {
       return [
+        F.Sequence(inBody(exp.condition)),
         F.If(
           F.Sequence(inTail(exp.consequent)),
           F.Sequence(inTail(exp.alternative)),
@@ -238,6 +239,7 @@ function inBody(exp: L.Exp): Array<F.Exp> {
 
     case "If": {
       return [
+        F.Sequence(inBody(exp.condition)),
         F.If(
           F.Sequence(inBody(exp.consequent)),
           F.Sequence(inBody(exp.alternative)),

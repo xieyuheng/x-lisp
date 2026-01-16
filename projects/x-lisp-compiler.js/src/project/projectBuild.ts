@@ -14,7 +14,7 @@ import {
 } from "./index.ts"
 
 export function projectBuild(project: Project): void {
-  projectForEachSource(project, buildPassLog)
+  // projectForEachSource(project, buildPassLog)
   projectForEachSource(project, buildForth)
 }
 

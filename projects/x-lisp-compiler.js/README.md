@@ -18,7 +18,7 @@
 (define (<name> <parameters>) <body>)
 ;; (define-data <predicate> <constructors>)
 
-;; module syntax statement
+ ;; module syntax statement
 
 (import <source> <name> ...)
 (import-all <source>)
