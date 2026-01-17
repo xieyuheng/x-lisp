@@ -1,0 +1,7 @@
+(define (main)
+  (assert-equal iadd iadd)
+  (assert-equal (iadd 1) (iadd 1))
+  (assert-not-equal (iadd 1) (iadd 2))
+  (assert-equal ((iadd 1) 2) (iadd 1 2))
+  (assert-equal 1 ((isub 2) 1))
+  (assert-equal 1 (isub 2 1)))
