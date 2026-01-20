@@ -2,6 +2,8 @@
   @ref iadd
   @ref iadd
   @assert-equal
+  #void
+  @drop
   1
   @ref iadd
   1
@@ -11,6 +13,8 @@
   1
   @apply
   @assert-equal
+  #void
+  @drop
   1
   @ref iadd
   1
@@ -20,6 +24,8 @@
   1
   @apply
   @assert-not-equal
+  #void
+  @drop
   2
   1
   @ref iadd
@@ -31,6 +37,8 @@
   2
   iadd
   @assert-equal
+  #void
+  @drop
   1
   1
   2
@@ -40,11 +48,14 @@
   1
   @apply
   @assert-equal
+  #void
+  @drop
   1
   2
   1
   isub
   @assert-equal
+  #void
   
 @end
 

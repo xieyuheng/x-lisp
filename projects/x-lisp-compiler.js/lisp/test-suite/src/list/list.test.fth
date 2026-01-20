@@ -3,81 +3,131 @@
   1
   list₁
   list-push!
+  @drop
   2
   list₁
   list-push!
+  @drop
   3
   list₁
   list-push!
+  @drop
   make-list
   ( tael₁ )
   1
   tael₁
   list-push!
+  @drop
   2
   tael₁
   list-push!
+  @drop
   3
   tael₁
   list-push!
+  @drop
   tael₁
   list₁
   @assert-equal
+  #void
+  @drop
   make-list
   ( tael₁ )
   1
   tael₁
   list-push!
+  @drop
   2
   tael₁
   list-push!
+  @drop
   3
   tael₁
   list-push!
+  @drop
   tael₁
   make-list
   ( tael₁ )
   1
   tael₁
   list-push!
+  @drop
   2
   tael₁
   list-push!
+  @drop
   3
   tael₁
   list-push!
+  @drop
   tael₁
   @assert-equal
+  #void
+  @drop
   make-list
   ( tael₁ )
   'a
   tael₁
   list-push!
+  @drop
   'b
   tael₁
   list-push!
+  @drop
   'c
   tael₁
   list-push!
+  @drop
   tael₁
   make-list
   ( tael₁ )
   'a
   tael₁
   list-push!
+  @drop
   'b
   tael₁
   list-push!
+  @drop
   'c
   tael₁
   list-push!
+  @drop
   tael₁
   @assert-equal
+  #void
+  @drop
+  3
+  make-list
+  ( tael₁ )
+  1
+  tael₁
+  list-push!
+  @drop
+  2
+  tael₁
+  list-push!
+  @drop
+  3
+  tael₁
+  list-push!
+  @drop
+  tael₁
+  list-length
+  @assert-equal
+  #void
+  @drop
   0
   make-list
   ( tael₁ )
-  tael₁ list-length @assert-equal make-list ( tael₁ )
-  tael₁ list-empty? @assert 
+  tael₁
+  list-length
+  @assert-equal
+  #void
+  @drop
+  make-list
+  ( tael₁ )
+  tael₁ list-empty? @assert #void 
 @end
 
 

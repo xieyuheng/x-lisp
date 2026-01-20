@@ -141,7 +141,7 @@ function inTail(exp: L.Exp): Array<F.Exp> {
     }
 
     case "Begin1": {
-      return [...inBody(exp.head), ...inTail(exp.body)]
+      return [...inBody(exp.head), F.Drop(), ...inTail(exp.body)]
     }
 
     case "If": {
@@ -155,15 +155,25 @@ function inTail(exp: L.Exp): Array<F.Exp> {
     }
 
     case "Assert": {
-      return [...inBody(exp.target), F.Assert()]
+      return [...inBody(exp.target), F.Assert(), F.Hashtag("void")]
     }
 
     case "AssertEqual": {
-      return [...inBody(exp.lhs), ...inBody(exp.rhs), F.AssertEqual()]
+      return [
+        ...inBody(exp.lhs),
+        ...inBody(exp.rhs),
+        F.AssertEqual(),
+        F.Hashtag("void"),
+      ]
     }
 
     case "AssertNotEqual": {
-      return [...inBody(exp.lhs), ...inBody(exp.rhs), F.AssertNotEqual()]
+      return [
+        ...inBody(exp.lhs),
+        ...inBody(exp.rhs),
+        F.AssertNotEqual(),
+        F.Hashtag("void"),
+      ]
     }
 
     default: {
@@ -234,7 +244,7 @@ function inBody(exp: L.Exp): Array<F.Exp> {
     }
 
     case "Begin1": {
-      return [...inBody(exp.head), ...inBody(exp.body)]
+      return [...inBody(exp.head), F.Drop(), ...inBody(exp.body)]
     }
 
     case "If": {
@@ -248,15 +258,25 @@ function inBody(exp: L.Exp): Array<F.Exp> {
     }
 
     case "Assert": {
-      return [...inBody(exp.target), F.Assert()]
+      return [...inBody(exp.target), F.Assert(), F.Hashtag("void")]
     }
 
     case "AssertEqual": {
-      return [...inBody(exp.lhs), ...inBody(exp.rhs), F.AssertEqual()]
+      return [
+        ...inBody(exp.lhs),
+        ...inBody(exp.rhs),
+        F.AssertEqual(),
+        F.Hashtag("void"),
+      ]
     }
 
     case "AssertNotEqual": {
-      return [...inBody(exp.lhs), ...inBody(exp.rhs), F.AssertNotEqual()]
+      return [
+        ...inBody(exp.lhs),
+        ...inBody(exp.rhs),
+        F.AssertNotEqual(),
+        F.Hashtag("void"),
+      ]
     }
 
     default: {

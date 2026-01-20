@@ -4,46 +4,57 @@
   'a
   tael₁
   record-put!
+  @drop
   'y
   'b
   tael₁
   record-put!
+  @drop
   tael₁
   println
+  @drop
   make-list
   ( tael₁ )
   'x
   'a
   tael₁
   record-put!
+  @drop
   'y
   'b
   tael₁
   record-put!
+  @drop
   tael₁
   println
+  @drop
   make-list
   ( tael₁ )
   'x
   'a
   tael₁
   record-put!
+  @drop
   'y
   'b
   tael₁
   record-put!
+  @drop
   tael₁
   println
+  @drop
   make-list
   ( tael₁ )
   'x
   'a
   tael₁
   record-put!
+  @drop
   'y
   'b
   tael₁
   record-put!
+  @drop
   tael₁
   @tail-call println
   

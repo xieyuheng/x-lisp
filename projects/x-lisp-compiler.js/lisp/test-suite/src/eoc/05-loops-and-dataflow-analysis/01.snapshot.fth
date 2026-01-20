@@ -1,5 +1,22 @@
 @define-function main
-  1 print newline 2 print newline 3 print newline 666 @return 
+  1
+  print
+  @drop
+  newline
+  @drop
+  2
+  print
+  @drop
+  newline
+  @drop
+  3
+  print
+  @drop
+  newline
+  @drop
+  666
+  @return
+  
 @end
 
 
