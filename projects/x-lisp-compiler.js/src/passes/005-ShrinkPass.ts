@@ -130,7 +130,9 @@ function desugarOr(exps: Array<L.Exp>, meta?: L.Meta): L.Exp {
 }
 
 function desugarCond(condLines: Array<L.CondLine>, meta?: L.Meta): L.Exp {
-  throw new Error()
+  if (condLines.length === 0) return L.Assert(L.Bool(false), meta)
+  const [headLine, ...restLines] = condLines
+  return L.If(headLine.question, headLine.answer, desugarCond(restLines, meta))
 }
 
 function desugarTael(

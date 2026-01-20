@@ -1,6 +1,6 @@
 # cond
 
-[pass] `desugarCond`
+[pass] `desugarCond` -- report `error` about mismatch -- instead of `assert`
 
 # define-data
 
