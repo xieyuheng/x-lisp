@@ -1,6 +1,7 @@
 # cond
 
-[pass] `ShrinkPass` -- support `Cond`
+[pass] `ShrinkPass` -- support `Cond` -- call `desugarCond`
+[pass] `desugarCond`
 
 # define-data
 

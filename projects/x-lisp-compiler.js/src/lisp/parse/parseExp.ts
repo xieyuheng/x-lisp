@@ -55,6 +55,12 @@ export const parseExp: S.Router<Exp> = S.createRouter<Exp>({
     return Exps.Or(S.listElements(exps).map(parseExp), meta)
   },
 
+  "(cons* 'cond lines)": ({ lines }, { sexp }) => {
+    const keyword = S.asTael(sexp).elements[1]
+    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+    return Exps.Cond(S.listElements(lines).map(parseCondLine), meta)
+  },
+
   "(cons* 'assert exps)": ({ exps }, { meta }) => {
     const args = S.listElements(exps).map(parseExp)
     if (args.length !== 1) {
@@ -173,6 +179,22 @@ export const parseExp: S.Router<Exp> = S.createRouter<Exp>({
         return Exps.String(S.stringContent(data), meta)
       case "Symbol": {
         return Exps.Var(S.symbolContent(data), meta)
+      }
+    }
+  },
+})
+
+const parseCondLine = S.createRouter<Exps.CondLine>({
+  "(cons* question body)": ({ question, body }, { meta }) => {
+    if (question.kind === "Symbol" && question.content === "else") {
+      return {
+        question: Exps.Hashtag("t", meta),
+        answer: Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
+      }
+    } else {
+      return {
+        question: parseExp(question),
+        answer: Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
       }
     }
   },
