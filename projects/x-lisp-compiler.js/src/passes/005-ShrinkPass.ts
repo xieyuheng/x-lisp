@@ -89,6 +89,10 @@ function onExp(exp: L.Exp): L.Exp {
       return onExp(desugarOr(exp.exps.map(onExp), exp.meta))
     }
 
+    case "Cond": {
+      return onExp(desugarCond(exp.condLines, exp.meta))
+    }
+
     case "Tael": {
       return onExp(desugarTael(exp.elements, exp.attributes, exp.meta))
     }
@@ -123,6 +127,10 @@ function desugarOr(exps: Array<L.Exp>, meta?: L.Meta): L.Exp {
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
   return L.If(head, L.Bool(true, meta), desugarOr(restExps, meta), meta)
+}
+
+function desugarCond(condLines: Array<L.CondLine>, meta?: L.Meta): L.Exp {
+  throw new Error()
 }
 
 function desugarTael(
