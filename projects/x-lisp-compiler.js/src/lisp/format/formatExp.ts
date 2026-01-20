@@ -110,6 +110,11 @@ export function formatExp(exp: Exp): string {
       }
     }
 
+    case "Cond": {
+      const condLines = exp.condLines.map(formatCondLine)
+      return `(cond ${condLines.join(" ")})`
+    }
+
     case "Assert": {
       return `(assert ${formatExp(exp.target)})`
     }
@@ -164,4 +169,8 @@ export function formatBody(body: Exp): string {
   } else {
     return formatExp(body)
   }
+}
+
+function formatCondLine(condLine: Exps.CondLine): string {
+  return `(${formatExp(condLine.question)} ${formatExp(condLine.answer)})`
 }

@@ -1,6 +1,5 @@
 # cond
 
-[lisp] `Cond` as `Exp`
 [pass] `ShrinkPass` -- support `Cond`
 
 # define-data

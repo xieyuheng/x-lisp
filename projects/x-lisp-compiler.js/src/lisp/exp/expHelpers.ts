@@ -61,6 +61,16 @@ export function expMap(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return L.Or(exp.exps.map(onExp), exp.meta)
     }
 
+    case "Cond": {
+      return L.Cond(
+        exp.condLines.map((condLine) => ({
+          question: onExp(condLine.question),
+          answer: onExp(condLine.answer),
+        })),
+        exp.meta,
+      )
+    }
+
     case "If": {
       return L.If(
         onExp(exp.condition),
@@ -167,6 +177,13 @@ export function expChildren(exp: Exp): Array<Exp> {
 
     case "If": {
       return [exp.condition, exp.consequent, exp.alternative]
+    }
+
+    case "Cond": {
+      return exp.condLines.flatMap((condLine) => [
+        condLine.question,
+        condLine.answer,
+      ])
     }
 
     case "Assert": {

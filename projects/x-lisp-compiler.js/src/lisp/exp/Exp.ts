@@ -21,6 +21,7 @@ export type Exp =
   | Unless
   | And
   | Or
+  | Cond
   | Assert
   | AssertEqual
   | AssertNotEqual
@@ -293,6 +294,25 @@ export function Or(exps: Array<Exp>, meta?: Meta): Or {
   return {
     kind: "Or",
     exps,
+    meta,
+  }
+}
+
+export type Cond = {
+  kind: "Cond"
+  condLines: Array<CondLine>
+  meta: Meta
+}
+
+export type CondLine = {
+  question: Exp
+  answer: Exp
+}
+
+export function Cond(condLines: Array<CondLine>, meta: Meta): Cond {
+  return {
+    kind: "Cond",
+    condLines,
     meta,
   }
 }
