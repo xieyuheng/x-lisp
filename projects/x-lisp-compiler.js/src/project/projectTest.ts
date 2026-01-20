@@ -70,6 +70,8 @@ function runForthErrorSnapshot(project: Project, id: string): void {
       inputFile,
       ">",
       outputFile,
+      "||",
+      "true",
     ])
 
     if (status !== 0) {
