@@ -25,9 +25,6 @@ compile_function(vm_t *vm, function_t *function) {
             compile_return(function);
             token_free(token);
             return;
-        } else if (string_equal(token->content, "@if")) {
-            compile_if(vm, function, "@else", "@then", token->meta);
-            token_free(token);
         } else if (string_equal(token->content, "(")) {
             compile_parameters(vm, function, ")");
             token_free(token);
@@ -69,6 +66,12 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
             instr.op = OP_ASSERT_NOT_EQUAL;
             instr.assert_not_equal.token = token;
             function_append_instr(function, instr);
+            return;
+        }
+
+        if (string_equal(token->content, "@if")) {
+            compile_if(vm, function, "@else", "@then", token->meta);
+            token_free(token);
             return;
         }
 
