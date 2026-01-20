@@ -1,1 +1,9 @@
-[call_definition] undefined name: @if
+@assert fail
+  value: #f
+/home/xyh/projects/xieyuheng/x-lisp/projects/x-lisp-compiler.js/lisp/test-suite/src/syntax/cond-mismatch.error.fth:5:5
+ 3 |   @if
+ 4 |     1 @return @else
+ 5 |     #f  @if 2 @return @else #f @assert #void @then @then
+   |                                ~~~~~~~                   
+ 6 |   
+ 7 | @end
