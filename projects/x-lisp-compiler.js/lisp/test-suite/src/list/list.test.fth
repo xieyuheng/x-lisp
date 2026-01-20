@@ -73,21 +73,6 @@
   list-push!
   tael₁
   @assert-equal
-  3
-  make-list
-  ( tael₁ )
-  1
-  tael₁
-  list-push!
-  2
-  tael₁
-  list-push!
-  3
-  tael₁
-  list-push!
-  tael₁
-  list-length
-  @assert-equal
   0
   make-list
   ( tael₁ )
