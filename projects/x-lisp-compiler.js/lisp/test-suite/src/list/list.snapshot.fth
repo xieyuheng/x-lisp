@@ -1,5 +1,6 @@
 @define-function main
-  make-list ( list₁ )
+  make-list
+  ( list₁ )
   1
   list₁
   list-push!
@@ -116,7 +117,5 @@
   @drop
   tael₁
   @tail-call println
-  
 @end
-
 

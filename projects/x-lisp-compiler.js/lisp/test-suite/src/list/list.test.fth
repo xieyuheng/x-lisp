@@ -1,5 +1,6 @@
 @define-function main
-  make-list ( list₁ )
+  make-list
+  ( list₁ )
   1
   list₁
   list-push!
@@ -127,7 +128,9 @@
   @drop
   make-list
   ( tael₁ )
-  tael₁ list-empty? @assert #void 
+  tael₁
+  list-empty?
+  @assert
+  #void
 @end
-
 

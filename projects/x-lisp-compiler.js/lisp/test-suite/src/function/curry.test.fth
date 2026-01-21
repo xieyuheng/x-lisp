@@ -56,7 +56,5 @@
   isub
   @assert-equal
   #void
-  
 @end
-
 

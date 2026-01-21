@@ -20,24 +20,7 @@ function renderExp(exp: Exp): Ppml.Node {
 
   switch (exp.kind) {
     case "Sequence": {
-      const nodes: Array<Ppml.Node> = []
-      let line: Array<Ppml.Node> = []
-      for (const e of exp.exps) {
-        if (e.kind === "Bindings") {
-          line.push(renderExp(e))
-          nodes.push(Ppml.group(...line))
-          line = []
-        } else {
-          line.push(renderExp(e))
-          line.push(Ppml.br())
-        }
-      }
-
-      if (line.length > 0) {
-        nodes.push(Ppml.group(...line))
-      }
-
-      return Ppml.flex(nodes)
+      return Ppml.flex(exp.exps.map(renderExp))
     }
 
     case "Ref": {
@@ -65,11 +48,13 @@ function renderExp(exp: Exp): Ppml.Node {
     }
 
     case "If": {
-      return Ppml.group(
+      return Ppml.concat(
         Ppml.text("@if"),
-        Ppml.indent(2, Ppml.br(), renderExp(exp.consequent)),
+        Ppml.indent(2, Ppml.br(), Ppml.group(renderExp(exp.consequent))),
+        Ppml.br(),
         Ppml.text("@else"),
-        Ppml.indent(2, Ppml.br(), renderExp(exp.alternative)),
+        Ppml.indent(2, Ppml.br(), Ppml.group(renderExp(exp.alternative))),
+        Ppml.br(),
         Ppml.text("@then"),
       )
     }

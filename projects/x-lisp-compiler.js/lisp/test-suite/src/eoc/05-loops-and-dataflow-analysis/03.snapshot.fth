@@ -17,11 +17,10 @@
   1
   2
   equal?
-  
   @if
-    111 print @drop newline @drop 1 2 @tail-call equal? @else
-    222 print @drop newline @drop 1 2 @tail-call equal? @then
-  
+    111 print @drop newline @drop 1 2 @tail-call equal?
+  @else
+    222 print @drop newline @drop 1 2 @tail-call equal?
+  @then
 @end
-
 

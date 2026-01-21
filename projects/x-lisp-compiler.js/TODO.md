@@ -1,6 +1,9 @@
-[forth] simple format -- quit using pretty
+[forth] support explicit `@call`
+[forth] support explicit `@literal`
 
 should compile to assembly code instead of forth code
+
+- copy x-lisp-forth to x-forth
 
 # cond
 

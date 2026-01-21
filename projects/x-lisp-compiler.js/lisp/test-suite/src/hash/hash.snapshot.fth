@@ -1,6 +1,11 @@
 @define-function main
-  make-hash ( hash₁ )
-  hash₁ println @drop make-hash ( hash₁ )
+  make-hash
+  ( hash₁ )
+  hash₁
+  println
+  @drop
+  make-hash
+  ( hash₁ )
   1
   2
   hash₁
@@ -33,7 +38,5 @@
   @drop
   hash₁
   @tail-call println
-  
 @end
-
 

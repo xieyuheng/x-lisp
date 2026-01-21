@@ -1,9 +1,9 @@
 @define-function main
-  #f 
+  #f
   @if
-    1 @return @else
-    #f  @if 2 @return @else #f @assert #void @then @then
-  
+    1 @return
+  @else
+    #f @if 2 @return @else #f @assert #void @then
+  @then
 @end
-
 

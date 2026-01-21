@@ -1,28 +1,36 @@
 @define-function main
   1
-  #t 
-  @if 1 @else #t  @if 2 @else #f @assert #void @then @then
+  #t
+  @if
+    1
+  @else
+    #t @if 2 @else #f @assert #void @then
+  @then
   @assert-equal
   #void
   @drop
   2
-  #f 
-  @if 1 @else #t  @if 2 @else #f @assert #void @then @then
+  #f
+  @if
+    1
+  @else
+    #t @if 2 @else #f @assert #void @then
+  @then
   @assert-equal
   #void
   @drop
-  #t 
+  #t
   @if
-    true @assert #void @else
-    #t 
-    @if false @assert #void @else #f @assert #void @then
-    @then
+    true @assert #void
+  @else
+    #t @if false @assert #void @else #f @assert #void @then
+  @then
   @drop
-  #f 
+  #f
   @if
-    false @assert #void @else
-    #t  @if true @assert #void @else #f @assert #void @then @then
-  
+    false @assert #void
+  @else
+    #t @if true @assert #void @else #f @assert #void @then
+  @then
 @end
-
 
