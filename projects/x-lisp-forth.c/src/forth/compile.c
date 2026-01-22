@@ -5,8 +5,9 @@ static bool is_op_word(const char *word);
 static void compile_op_word(function_t *function, const char *word);
 static void compile_token(vm_t *vm, function_t *function, token_t *token);
 static void compile_quote(vm_t *vm, function_t *function);
-static void compile_call(vm_t *vm, function_t *function, const char *name);
+static void compile_name(vm_t *vm, function_t *function, const char *name);
 static void compile_ref(vm_t *vm, function_t *function);
+static void compile_call(vm_t *vm, function_t *function);
 static void compile_tail_call(vm_t *vm, function_t *function);
 static void compile_parameters(vm_t *vm, function_t *function, const char *end_word);
 static void compile_bindings(vm_t *vm, function_t *function, const char *end_word);
@@ -88,6 +89,12 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
             return;
         }
 
+        if (string_equal(token->content, "@call")) {
+            compile_call(vm, function);
+            token_free(token);
+            return;
+        }
+
         if (string_equal(token->content, "@tail-call")) {
             compile_tail_call(vm, function);
             token_free(token);
@@ -100,7 +107,7 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
             return;
         }
 
-        compile_call(vm, function, token->content);
+        compile_name(vm, function, token->content);
         token_free(token);
         return;
     }
@@ -242,7 +249,7 @@ compile_op_word(function_t *function, const char *word) {
 }
 
 static void
-compile_call(vm_t *vm, function_t *function, const char *name) {
+compile_name(vm_t *vm, function_t *function, const char *name) {
     if (function_has_binding_index(function, name)) {
         size_t index = function_get_binding_index(function, name);
         struct instr_t instr;
@@ -280,6 +287,24 @@ compile_ref(vm_t *vm, function_t *function) {
     struct instr_t instr;
     instr.op = OP_REF;
     instr.ref.definition = found;
+    function_append_instr(function, instr);
+}
+
+static void
+compile_call(vm_t *vm, function_t *function) {
+    token_t *token = vm_next_token(vm);
+    assert(token->kind == SYMBOL_TOKEN);
+    definition_t *found = mod_lookup_or_placeholder(vm_mod(vm), token->content);
+    token_free(token);
+
+    if (found->kind == PLACEHOLDER_DEFINITION) {
+        size_t code_index = function->code_length + 1;
+        placeholder_definition_hold_place(found, function, code_index);
+    }
+
+    struct instr_t instr;
+    instr.op = OP_CALL;
+    instr.call.definition = found;
     function_append_instr(function, instr);
 }
 
