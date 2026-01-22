@@ -3,7 +3,9 @@
   1
   equal?
   @if
-    random-dice 2 equal?
+    random-dice
+    2
+    equal?
   @else
     #f
   @then

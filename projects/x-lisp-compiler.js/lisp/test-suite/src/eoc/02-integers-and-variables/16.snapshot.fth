@@ -1,4 +1,7 @@
 @define-function main
-  50 8 isub @tail-call println
+  50
+  8
+  isub
+  @tail-call println
 @end
 

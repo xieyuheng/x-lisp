@@ -1,4 +1,5 @@
 @define-function main
-  void @tail-call println
+  void
+  @tail-call println
 @end
 

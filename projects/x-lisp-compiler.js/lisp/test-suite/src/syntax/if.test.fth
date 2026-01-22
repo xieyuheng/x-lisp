@@ -21,7 +21,12 @@
   @drop
   #t
   @if
-    #t @if #t @else #f @then
+    #t
+    @if
+      #t
+    @else
+      #f
+    @then
   @else
     #f
   @then
@@ -30,7 +35,12 @@
   @drop
   #t
   @if
-    #t @if #f @else #f @then
+    #t
+    @if
+      #f
+    @else
+      #f
+    @then
   @else
     #f
   @then
@@ -42,7 +52,12 @@
   @if
     #t
   @else
-    #f @if #t @else #t @then
+    #f
+    @if
+      #t
+    @else
+      #t
+    @then
   @then
   @assert
   #void
@@ -51,7 +66,12 @@
   @if
     #t
   @else
-    #f @if #t @else #f @then
+    #f
+    @if
+      #t
+    @else
+      #f
+    @then
   @then
   not
   @assert

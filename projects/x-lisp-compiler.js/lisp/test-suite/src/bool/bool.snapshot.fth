@@ -1,4 +1,8 @@
 @define-function main
-  true println @drop false @tail-call println
+  true
+  println
+  @drop
+  false
+  @tail-call println
 @end
 

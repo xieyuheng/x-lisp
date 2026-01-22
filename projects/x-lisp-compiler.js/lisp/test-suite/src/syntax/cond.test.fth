@@ -4,7 +4,14 @@
   @if
     1
   @else
-    #t @if 2 @else #f @assert #void @then
+    #t
+    @if
+      2
+    @else
+      #f
+      @assert
+      #void
+    @then
   @then
   @assert-equal
   #void
@@ -14,23 +21,52 @@
   @if
     1
   @else
-    #t @if 2 @else #f @assert #void @then
+    #t
+    @if
+      2
+    @else
+      #f
+      @assert
+      #void
+    @then
   @then
   @assert-equal
   #void
   @drop
   #t
   @if
-    true @assert #void
+    true
+    @assert
+    #void
   @else
-    #t @if false @assert #void @else #f @assert #void @then
+    #t
+    @if
+      false
+      @assert
+      #void
+    @else
+      #f
+      @assert
+      #void
+    @then
   @then
   @drop
   #f
   @if
-    false @assert #void
+    false
+    @assert
+    #void
   @else
-    #t @if true @assert #void @else #f @assert #void @then
+    #t
+    @if
+      true
+      @assert
+      #void
+    @else
+      #f
+      @assert
+      #void
+    @then
   @then
 @end
 
