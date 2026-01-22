@@ -1,3 +1,4 @@
+[diary] lisp-and-forth-double-semantic
 [x-forth] copy x-lisp-forth to x-forth
 
 # sexp.c
