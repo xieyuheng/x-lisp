@@ -4,11 +4,13 @@ static void compile_return(function_t *function);
 static bool is_op_word(const char *word);
 static void compile_op_word(function_t *function, const char *word);
 static void compile_token(vm_t *vm, function_t *function, token_t *token);
+static void compile_literal_token(function_t *function, token_t *token);
 static void compile_quote(vm_t *vm, function_t *function);
 static void compile_name(vm_t *vm, function_t *function, const char *name);
 static void compile_ref(vm_t *vm, function_t *function);
 static void compile_call(vm_t *vm, function_t *function);
 static void compile_tail_call(vm_t *vm, function_t *function);
+static void compile_literal(vm_t *vm, function_t *function);
 static void compile_parameters(vm_t *vm, function_t *function, const char *end_word);
 static void compile_bindings(vm_t *vm, function_t *function, const char *end_word);
 static void compile_if(vm_t *vm, function_t *function, const char *else_word, const char *then_word, struct token_meta_t meta);
@@ -101,6 +103,12 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
             return;
         }
 
+        if (string_equal(token->content, "@literal")) {
+            compile_literal(vm, function);
+            token_free(token);
+            return;
+        }
+
         if (is_op_word(token->content)) {
             compile_op_word(function, token->content);
             token_free(token);
@@ -112,31 +120,11 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
         return;
     }
 
-    case STRING_TOKEN: {
-        struct instr_t instr;
-        instr.op = OP_LITERAL;
-        instr.literal.value =
-            x_object(make_xstring_no_gc(string_copy(token->content)));
-        function_append_instr(function, instr);
-        token_free(token);
-        return;
-    }
-
-    case INT_TOKEN: {
-        struct instr_t instr;
-        instr.op = OP_LITERAL;
-        instr.literal.value = x_int(string_parse_int(token->content));
-        function_append_instr(function, instr);
-        token_free(token);
-        return;
-    }
-
-    case FLOAT_TOKEN: {
-        struct instr_t instr;
-        instr.op = OP_LITERAL;
-        instr.literal.value = x_float(string_parse_double(token->content));
-        function_append_instr(function, instr);
-        token_free(token);
+    case STRING_TOKEN:
+    case INT_TOKEN:
+    case FLOAT_TOKEN:
+    case HASHTAG_TOKEN: {
+        compile_literal_token(function, token);
         return;
     }
 
@@ -166,6 +154,44 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
         return;
     }
 
+    case LINE_COMMENT_TOKEN: {
+        token_free(token);
+        return;
+    }
+    }
+}
+
+static void
+compile_literal_token(function_t *function, token_t *token) {
+    switch (token->kind) {
+    case STRING_TOKEN: {
+        struct instr_t instr;
+        instr.op = OP_LITERAL;
+        instr.literal.value =
+            x_object(make_xstring_no_gc(string_copy(token->content)));
+        function_append_instr(function, instr);
+        token_free(token);
+        return;
+    }
+
+    case INT_TOKEN: {
+        struct instr_t instr;
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_int(string_parse_int(token->content));
+        function_append_instr(function, instr);
+        token_free(token);
+        return;
+    }
+
+    case FLOAT_TOKEN: {
+        struct instr_t instr;
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_float(string_parse_double(token->content));
+        function_append_instr(function, instr);
+        token_free(token);
+        return;
+    }
+
     case HASHTAG_TOKEN: {
         struct instr_t instr;
         instr.op = OP_LITERAL;
@@ -175,9 +201,10 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
         return;
     }
 
-    case LINE_COMMENT_TOKEN: {
-        token_free(token);
-        return;
+    default: {
+        who_printf("unhandled token: %s\n", token->content);
+        token_meta_report(token->meta);
+        exit(1);
     }
     }
 }
@@ -324,6 +351,13 @@ compile_tail_call(vm_t *vm, function_t *function) {
     instr.op = OP_TAIL_CALL;
     instr.tail_call.definition = found;
     function_append_instr(function, instr);
+}
+
+static void
+compile_literal(vm_t *vm, function_t *function) {
+    token_t *token = vm_next_token(vm);
+    compile_literal_token(function, token);
+    return;
 }
 
 static void
