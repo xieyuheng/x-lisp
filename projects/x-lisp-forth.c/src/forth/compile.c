@@ -1,9 +1,10 @@
 #include "index.h"
 
 static void compile_return(function_t *function);
+static bool is_op_word(const char *word);
+static void compile_op_word(function_t *function, const char *word);
 static void compile_token(vm_t *vm, function_t *function, token_t *token);
 static void compile_quote(vm_t *vm, function_t *function);
-static void compile_word(vm_t *vm, function_t *function, const char *word);
 static void compile_call(vm_t *vm, function_t *function, const char *name);
 static void compile_ref(vm_t *vm, function_t *function);
 static void compile_tail_call(vm_t *vm, function_t *function);
@@ -75,7 +76,31 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
             return;
         }
 
-        compile_word(vm, function, token->content);
+        if (string_equal(token->content, "@return")) {
+            compile_return(function);
+            token_free(token);
+            return;
+        }
+
+        if (string_equal(token->content, "@ref")) {
+            compile_ref(vm, function);
+            token_free(token);
+            return;
+        }
+
+        if (string_equal(token->content, "@tail-call")) {
+            compile_tail_call(vm, function);
+            token_free(token);
+            return;
+        }
+
+        if (is_op_word(token->content)) {
+            compile_op_word(function, token->content);
+            token_free(token);
+            return;
+        }
+
+        compile_call(vm, function, token->content);
         token_free(token);
         return;
     }
@@ -214,32 +239,6 @@ compile_op_word(function_t *function, const char *word) {
             function_append_instr(function, instr);
         }
     }
-}
-
-static void
-compile_word(vm_t *vm, function_t *function, const char *word) {
-    if (string_equal(word, "@return")) {
-        compile_return(function);
-        return;
-    }
-
-    if (string_equal(word, "@ref")) {
-        compile_ref(vm, function);
-        return;
-    }
-
-    if (string_equal(word, "@tail-call")) {
-        compile_tail_call(vm, function);
-        return;
-    }
-
-    if (is_op_word(word)) {
-        compile_op_word(function, word);
-        return;
-    }
-
-    compile_call(vm, function, word);
-    return;
 }
 
 static void
