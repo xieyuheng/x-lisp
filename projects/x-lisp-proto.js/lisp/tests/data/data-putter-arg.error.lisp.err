@@ -1,6 +1,6 @@
 [applyDataPutter] result data cannot possibly pass data predicate
   putter:
-    put-li-tail!
+    li-put-tail!
   putting value:
     2
   result data:

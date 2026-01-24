@@ -143,7 +143,7 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "DataPutter": {
-      return `put-${value.constructor.name}-${value.fieldName}!`
+      return `${value.constructor.name}-put-${value.fieldName}!`
     }
 
     case "Arrow": {
