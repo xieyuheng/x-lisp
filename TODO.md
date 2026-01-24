@@ -1,3 +1,4 @@
+[learn] read sicp register machine
 [x-forth] copy x-lisp-forth to x-forth
 
 # sexp.c
