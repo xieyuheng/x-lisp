@@ -32,11 +32,9 @@ function runForthTest(project: Project, id: string): void {
       inputFile,
     ])
 
-    if (status !== 0) {
-      process.stderr.write(stderr)
-      process.stdout.write(stdout)
-      process.exit(status)
-    }
+    if (stderr !== "") process.stderr.write(stderr)
+    if (stdout !== "") process.stdout.write(stdout)
+    if (status !== 0) process.exit(status)
   }
 }
 

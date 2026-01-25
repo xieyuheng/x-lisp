@@ -1,6 +1,5 @@
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import * as F from "../forth/index.ts"
-import { globals } from "../globals.ts"
 import * as L from "../lisp/index.ts"
 import * as Services from "../services/index.ts"
 import {
