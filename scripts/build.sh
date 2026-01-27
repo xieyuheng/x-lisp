@@ -6,5 +6,6 @@ make --directory projects/helpers.c build -j
 make --directory projects/x-lisp-runtime.c build -j
 make --directory projects/cmd.c build -j
 make --directory projects/x-forth.c build -j
+make --directory projects/basic-lisp.c build -j
 
 pnpm run -r build
