@@ -1,0 +1,18 @@
+src/x-lisp-forth
+
+# c
+*.o
+*.a
+*.exe
+*.test
+*.snapshot
+
+# GNU global
+GPATH
+GRTAGS
+GTAGS
+
+# emacs
+*~
+*#*
+.#*

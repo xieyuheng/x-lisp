@@ -1,0 +1,114 @@
+@define-function main
+  make-list ( list )
+  list list-copy list same? not @assert
+  list list-copy list equal? @assert
+
+  list any-list? @assert
+
+  list list-length 0 @assert-equal
+  list list-empty? @assert
+
+  1 list list-push! @drop
+  2 list list-push! @drop
+  3 list list-push! @drop
+
+  list list-length 3 @assert-equal
+
+  list list-pop! 3 @assert-equal
+  list list-pop! 2 @assert-equal
+  list list-pop! 1 @assert-equal
+
+  1 list list-push! @drop
+  2 list list-push! @drop
+  3 list list-push! @drop
+  list list-shift! 1 @assert-equal
+  list list-shift! 2 @assert-equal
+  list list-shift! 3 @assert-equal
+
+  1 list list-unshift! @drop
+  2 list list-unshift! @drop
+  3 list list-unshift! @drop
+  list list-shift! 3 @assert-equal
+  list list-shift! 2 @assert-equal
+  list list-shift! 1 @assert-equal
+
+  1 list list-unshift! @drop
+  2 list list-unshift! @drop
+  3 list list-unshift! @drop
+  list list-pop! 1 @assert-equal
+  list list-pop! 2 @assert-equal
+  list list-pop! 3 @assert-equal
+
+  1 list list-push! @drop
+  2 list list-push! @drop
+  3 list list-push! @drop
+  0 list list-get 1 @assert-equal
+  1 list list-get 2 @assert-equal
+  2 list list-get 3 @assert-equal
+  0 11 list list-put! @drop
+  1 22 list list-put! @drop
+  2 33 list list-put! @drop
+  0 list list-get 11 @assert-equal
+  1 list list-get 22 @assert-equal
+  2 list list-get 33 @assert-equal
+
+  -- list-push list-put
+
+  make-list ( list )
+
+  1 list list-push car 1 @assert-equal
+  list list-empty? @assert
+
+  0 1 list list-put car 1 @assert-equal
+  list list-empty? @assert
+
+  -- cons car cdr
+
+  make-list
+  3 @swap cons
+  2 @swap cons
+  1 @swap cons ( list )
+
+  list car 1 @assert-equal
+  list cdr car 2 @assert-equal
+  list cdr cdr car 3 @assert-equal
+
+  list list-head 1 @assert-equal
+  list list-tail list-head 2 @assert-equal
+  list list-tail list-tail list-head 3 @assert-equal
+
+  list list-last 3 @assert-equal
+  list list-init list-last 2 @assert-equal
+  list list-init list-init list-last 1 @assert-equal
+
+  -- list-reverse!
+
+  make-list ( list )
+  1 list list-push! @drop
+  2 list list-push! @drop
+  3 list list-push! @drop
+
+  0 list list-get 1 @assert-equal
+  1 list list-get 2 @assert-equal
+  2 list list-get 3 @assert-equal
+
+  list list-reverse!
+
+  0 list list-get 3 @assert-equal
+  1 list list-get 2 @assert-equal
+  2 list list-get 1 @assert-equal
+
+  -- list-to-set
+
+  make-list ( list )
+  1 list list-push! @drop
+  2 list list-push! @drop
+  3 list list-push! @drop
+
+  make-set ( set )
+  1 set set-add! @drop
+  2 set set-add! @drop
+  3 set set-add! @drop
+
+  list list-to-set set @assert-equal
+@end
