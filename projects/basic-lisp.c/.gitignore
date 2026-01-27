@@ -1,4 +1,4 @@
-src/x-lisp-forth
+src/basic-lisp
 
 # c
 *.o

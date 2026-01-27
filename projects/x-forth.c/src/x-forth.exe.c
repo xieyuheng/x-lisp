@@ -32,7 +32,7 @@ main(int argc, char *argv[]) {
 
     init();
 
-    cmd_router_t *router = cmd_make_router("x-lisp-forth", "0.1.0");
+    cmd_router_t *router = cmd_make_router("x-forth", "0.1.0");
 
     cmd_define_route(router, "run file -- run a file");
 

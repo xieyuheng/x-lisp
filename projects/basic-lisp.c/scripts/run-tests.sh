@@ -3,7 +3,7 @@
 set -e
 
 parallel="parallel -v --halt now,fail=1"
-bin="./src/x-lisp-forth run"
+bin="./src/basic-lisp run"
 flags=""
 
 find forth/tests -name "*.test.fth" | $parallel $bin {} $flags
