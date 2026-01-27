@@ -1,0 +1,76 @@
+;;; Input
+
+(define (main)
+  (assert-equal 1 (cond (#t (begin 1)) (#t (begin 2))))
+  (assert-equal 2 (cond (#f (begin 1)) (#t (begin 2))))
+  (cond
+    (#t (begin (assert true)))
+    (#t (begin (assert false))))
+  (cond
+    (#f (begin (assert false)))
+    (#t (begin (assert true)))))
+
+;;; ShrinkPass
+
+(define (main)
+  (@begin1 (assert-equal 1 (if #t 1 (if #t 2 (assert #f))))
+    (@begin1
+        (assert-equal 2 (if #f 1 (if #t 2 (assert #f))))
+      (@begin1
+          (if #t
+            (assert true)
+            (if #t (assert false) (assert #f)))
+        (if #f
+          (assert false)
+          (if #t (assert true) (assert #f)))))))
+
+;;; UniquifyPass
+
+(define (main)
+  (@begin1 (assert-equal 1 (if #t 1 (if #t 2 (assert #f))))
+    (@begin1
+        (assert-equal 2 (if #f 1 (if #t 2 (assert #f))))
+      (@begin1
+          (if #t
+            (assert true)
+            (if #t (assert false) (assert #f)))
+        (if #f
+          (assert false)
+          (if #t (assert true) (assert #f)))))))
+
+;;; RevealGlobalPass
+
+(define (main)
+  (@begin1 (assert-equal 1 (if #t 1 (if #t 2 (assert #f))))
+    (@begin1
+        (assert-equal 2 (if #f 1 (if #t 2 (assert #f))))
+      (@begin1
+          (if #t
+            (assert (@primitive-constant-ref true))
+            (if #t
+              (assert (@primitive-constant-ref false))
+              (assert #f)))
+        (if #f
+          (assert (@primitive-constant-ref false))
+          (if #t
+            (assert (@primitive-constant-ref true))
+            (assert #f)))))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  (@begin1 (assert-equal 1 (if #t 1 (if #t 2 (assert #f))))
+    (@begin1
+        (assert-equal 2 (if #f 1 (if #t 2 (assert #f))))
+      (@begin1
+          (if #t
+            (assert (@primitive-constant-ref true))
+            (if #t
+              (assert (@primitive-constant-ref false))
+              (assert #f)))
+        (if #f
+          (assert (@primitive-constant-ref false))
+          (if #t
+            (assert (@primitive-constant-ref true))
+            (assert #f)))))))
+

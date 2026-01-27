@@ -1,0 +1,29 @@
+;;; Input
+
+(define (main)
+  (assert-equal 'abcdef (symbol-append 'abc 'def)))
+
+;;; ShrinkPass
+
+(define (main)
+  (assert-equal 'abcdef (symbol-append 'abc 'def)))
+
+;;; UniquifyPass
+
+(define (main)
+  (assert-equal 'abcdef (symbol-append 'abc 'def)))
+
+;;; RevealGlobalPass
+
+(define (main)
+  (assert-equal
+    'abcdef
+    ((@primitive-function-ref symbol-append 2) 'abc 'def)))
+
+;;; LiftLambdaPass
+
+(define (main)
+  (assert-equal
+    'abcdef
+    ((@primitive-function-ref symbol-append 2) 'abc 'def)))
+

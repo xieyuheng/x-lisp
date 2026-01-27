@@ -1,0 +1,60 @@
+;;; Input
+
+(define (main)
+  (assert-equal (if #t 1 2) 1)
+  (assert-equal (if #f 1 2) 2)
+  (assert (and #t #t #t))
+  (assert (not (and #t #t #f)))
+  (assert (or #f #f #t))
+  (assert (not (or #f #f #f))))
+
+;;; ShrinkPass
+
+(define (main)
+  (@begin1 (assert-equal (if #t 1 2) 1)
+    (@begin1 (assert-equal (if #f 1 2) 2)
+      (@begin1 (assert (if #t (if #t #t #f) #f))
+        (@begin1 (assert (not (if #t (if #t #f #f) #f)))
+          (@begin1 (assert (if #f #t (if #f #t #t)))
+            (assert (not (if #f #t (if #f #t #f))))))))))
+
+;;; UniquifyPass
+
+(define (main)
+  (@begin1 (assert-equal (if #t 1 2) 1)
+    (@begin1 (assert-equal (if #f 1 2) 2)
+      (@begin1 (assert (if #t (if #t #t #f) #f))
+        (@begin1 (assert (not (if #t (if #t #f #f) #f)))
+          (@begin1 (assert (if #f #t (if #f #t #t)))
+            (assert (not (if #f #t (if #f #t #f))))))))))
+
+;;; RevealGlobalPass
+
+(define (main)
+  (@begin1 (assert-equal (if #t 1 2) 1)
+    (@begin1 (assert-equal (if #f 1 2) 2)
+      (@begin1 (assert (if #t (if #t #t #f) #f))
+        (@begin1
+            (assert
+              ((@primitive-function-ref not 1)
+               (if #t (if #t #f #f) #f)))
+          (@begin1 (assert (if #f #t (if #f #t #t)))
+            (assert
+              ((@primitive-function-ref not 1)
+               (if #f #t (if #f #t #f))))))))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  (@begin1 (assert-equal (if #t 1 2) 1)
+    (@begin1 (assert-equal (if #f 1 2) 2)
+      (@begin1 (assert (if #t (if #t #t #f) #f))
+        (@begin1
+            (assert
+              ((@primitive-function-ref not 1)
+               (if #t (if #t #f #f) #f)))
+          (@begin1 (assert (if #f #t (if #f #t #t)))
+            (assert
+              ((@primitive-function-ref not 1)
+               (if #f #t (if #f #t #f))))))))))
+

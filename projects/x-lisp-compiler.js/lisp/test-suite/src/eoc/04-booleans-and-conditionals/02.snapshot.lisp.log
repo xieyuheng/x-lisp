@@ -1,0 +1,89 @@
+;;; Input
+
+(define (main)
+  (println
+   (begin
+     (= x (random-dice))
+     (= y (random-dice))
+     (iadd
+      (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+        (iadd y 2)
+        (iadd y 10))
+      (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+        (iadd y 2)
+        (iadd y 10))))))
+
+;;; ShrinkPass
+
+(define (main)
+  (println
+   (@let1 x (random-dice)
+     (@let1 y (random-dice)
+       (iadd
+        (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+          (iadd y 2)
+          (iadd y 10))
+        (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+          (iadd y 2)
+          (iadd y 10)))))))
+
+;;; UniquifyPass
+
+(define (main)
+  (println
+   (@let1 x₁ (random-dice)
+     (@let1 y₁ (random-dice)
+       (iadd
+        (if
+            (if (int-less? x₁ 1)
+              (equal? x₁ 0)
+              (equal? x₁ 2))
+          (iadd y₁ 2)
+          (iadd y₁ 10))
+        (if
+            (if (int-less? x₁ 1)
+              (equal? x₁ 0)
+              (equal? x₁ 2))
+          (iadd y₁ 2)
+          (iadd y₁ 10)))))))
+
+;;; RevealGlobalPass
+
+(define (main)
+  ((@primitive-function-ref println 1)
+   (@let1 x₁ ((@primitive-function-ref random-dice 0))
+     (@let1 y₁ ((@primitive-function-ref random-dice 0))
+       ((@primitive-function-ref iadd 2)
+        (if
+            (if ((@primitive-function-ref int-less? 2) x₁ 1)
+              ((@primitive-function-ref equal? 2) x₁ 0)
+              ((@primitive-function-ref equal? 2) x₁ 2))
+          ((@primitive-function-ref iadd 2) y₁ 2)
+          ((@primitive-function-ref iadd 2) y₁ 10))
+        (if
+            (if ((@primitive-function-ref int-less? 2) x₁ 1)
+              ((@primitive-function-ref equal? 2) x₁ 0)
+              ((@primitive-function-ref equal? 2) x₁ 2))
+          ((@primitive-function-ref iadd 2) y₁ 2)
+          ((@primitive-function-ref iadd 2) y₁ 10)))))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  ((@primitive-function-ref println 1)
+   (@let1 x₁ ((@primitive-function-ref random-dice 0))
+     (@let1 y₁ ((@primitive-function-ref random-dice 0))
+       ((@primitive-function-ref iadd 2)
+        (if
+            (if ((@primitive-function-ref int-less? 2) x₁ 1)
+              ((@primitive-function-ref equal? 2) x₁ 0)
+              ((@primitive-function-ref equal? 2) x₁ 2))
+          ((@primitive-function-ref iadd 2) y₁ 2)
+          ((@primitive-function-ref iadd 2) y₁ 10))
+        (if
+            (if ((@primitive-function-ref int-less? 2) x₁ 1)
+              ((@primitive-function-ref equal? 2) x₁ 0)
+              ((@primitive-function-ref equal? 2) x₁ 2))
+          ((@primitive-function-ref iadd 2) y₁ 2)
+          ((@primitive-function-ref iadd 2) y₁ 10)))))))
+

@@ -1,0 +1,30 @@
+;;; Input
+
+(export square)
+
+(define (square x) (imul x x))
+
+;;; ShrinkPass
+
+(export square)
+
+(define (square x) (imul x x))
+
+;;; UniquifyPass
+
+(export square)
+
+(define (square x) (imul x x))
+
+;;; RevealGlobalPass
+
+(export square)
+
+(define (square x) ((@primitive-function-ref imul 2) x x))
+
+;;; LiftLambdaPass
+
+(export square)
+
+(define (square x) ((@primitive-function-ref imul 2) x x))
+

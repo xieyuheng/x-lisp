@@ -1,0 +1,39 @@
+;;; Input
+
+(define (main)
+  (= y 6)
+  (begin
+    (= x (begin (= y (ineg 42)) y))
+    (println (iadd x y))))
+
+;;; ShrinkPass
+
+(define (main)
+  (@let1 y 6
+    (@let1 x (@let1 y (ineg 42) y) (println (iadd x y)))))
+
+;;; UniquifyPass
+
+(define (main)
+  (@let1 y₁ 6
+    (@let1 x₁ (@let1 y₂ (ineg 42) y₂)
+      (println (iadd x₁ y₁)))))
+
+;;; RevealGlobalPass
+
+(define (main)
+  (@let1 y₁ 6
+    (@let1 x₁
+        (@let1 y₂ ((@primitive-function-ref ineg 1) 42) y₂)
+      ((@primitive-function-ref println 1)
+       ((@primitive-function-ref iadd 2) x₁ y₁)))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  (@let1 y₁ 6
+    (@let1 x₁
+        (@let1 y₂ ((@primitive-function-ref ineg 1) 42) y₂)
+      ((@primitive-function-ref println 1)
+       ((@primitive-function-ref iadd 2) x₁ y₁)))))
+

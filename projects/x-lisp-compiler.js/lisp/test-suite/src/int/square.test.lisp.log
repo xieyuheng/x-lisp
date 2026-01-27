@@ -1,0 +1,44 @@
+;;; Input
+
+(import "square" square)
+
+(define (main) (assert-equal 81 (square (square 3))))
+
+(define (square x) (imul x x))
+
+;;; ShrinkPass
+
+(import "square" square)
+
+(define (main) (assert-equal 81 (square (square 3))))
+
+(define (square x) (imul x x))
+
+;;; UniquifyPass
+
+(import "square" square)
+
+(define (main) (assert-equal 81 (square (square 3))))
+
+(define (square x) (imul x x))
+
+;;; RevealGlobalPass
+
+(import "square" square)
+
+(define (main)
+  (assert-equal
+    81
+    ((@function-ref square 1) ((@function-ref square 1) 3))))
+
+(define (square x) (imul x x))
+
+;;; LiftLambdaPass
+
+(import "square" square)
+
+(define (main)
+  (assert-equal
+    81
+    ((@function-ref square 1) ((@function-ref square 1) 3))))
+

@@ -1,0 +1,30 @@
+;;; Input
+
+(define (main) (println iadd) (println (iadd 1)))
+
+;;; ShrinkPass
+
+(define (main) (@begin1 (println iadd) (println (iadd 1))))
+
+;;; UniquifyPass
+
+(define (main) (@begin1 (println iadd) (println (iadd 1))))
+
+;;; RevealGlobalPass
+
+(define (main)
+  (@begin1
+      ((@primitive-function-ref println 1)
+       (@primitive-function-ref iadd 2))
+    ((@primitive-function-ref println 1)
+     ((@primitive-function-ref iadd 2) 1))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  (@begin1
+      ((@primitive-function-ref println 1)
+       (@primitive-function-ref iadd 2))
+    ((@primitive-function-ref println 1)
+     ((@primitive-function-ref iadd 2) 1))))
+

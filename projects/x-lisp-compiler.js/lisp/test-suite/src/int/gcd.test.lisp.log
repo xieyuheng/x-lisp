@@ -1,0 +1,50 @@
+;;; Input
+
+(define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
+
+(define (main)
+  (assert-equal 1 (gcd 13 7))
+  (assert-equal 4 (gcd 12 8)))
+
+;;; ShrinkPass
+
+(define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
+
+(define (main)
+  (@begin1 (assert-equal 1 (gcd 13 7))
+    (assert-equal 4 (gcd 12 8))))
+
+;;; UniquifyPass
+
+(define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
+
+(define (main)
+  (@begin1 (assert-equal 1 (gcd 13 7))
+    (assert-equal 4 (gcd 12 8))))
+
+;;; RevealGlobalPass
+
+(define (gcd a b)
+  (if ((@primitive-function-ref equal? 2) b 0)
+    a
+    ((@function-ref gcd 2)
+     b
+     ((@primitive-function-ref imod 2) a b))))
+
+(define (main)
+  (@begin1 (assert-equal 1 ((@function-ref gcd 2) 13 7))
+    (assert-equal 4 ((@function-ref gcd 2) 12 8))))
+
+;;; LiftLambdaPass
+
+(define (gcd a b)
+  (if ((@primitive-function-ref equal? 2) b 0)
+    a
+    ((@function-ref gcd 2)
+     b
+     ((@primitive-function-ref imod 2) a b))))
+
+(define (main)
+  (@begin1 (assert-equal 1 ((@function-ref gcd 2) 13 7))
+    (assert-equal 4 ((@function-ref gcd 2) 12 8))))
+

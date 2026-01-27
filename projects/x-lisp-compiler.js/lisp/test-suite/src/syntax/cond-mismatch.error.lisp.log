@@ -1,0 +1,20 @@
+;;; Input
+
+(define (main) (cond (#f (begin 1)) (#f (begin 2))))
+
+;;; ShrinkPass
+
+(define (main) (if #f 1 (if #f 2 (assert #f))))
+
+;;; UniquifyPass
+
+(define (main) (if #f 1 (if #f 2 (assert #f))))
+
+;;; RevealGlobalPass
+
+(define (main) (if #f 1 (if #f 2 (assert #f))))
+
+;;; LiftLambdaPass
+
+(define (main) (if #f 1 (if #f 2 (assert #f))))
+

@@ -4,4 +4,4 @@ set -e
 
 make --directory projects/helpers.c dev
 make --directory projects/cmd.c dev
-make --directory projects/x-lisp-forth.c dev
+make --directory projects/x-forth.c dev

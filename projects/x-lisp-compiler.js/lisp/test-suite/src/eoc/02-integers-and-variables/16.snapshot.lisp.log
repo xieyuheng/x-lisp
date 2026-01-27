@@ -1,0 +1,24 @@
+;;; Input
+
+(define (main) (println (isub 50 8)))
+
+;;; ShrinkPass
+
+(define (main) (println (isub 50 8)))
+
+;;; UniquifyPass
+
+(define (main) (println (isub 50 8)))
+
+;;; RevealGlobalPass
+
+(define (main)
+  ((@primitive-function-ref println 1)
+   ((@primitive-function-ref isub 2) 50 8)))
+
+;;; LiftLambdaPass
+
+(define (main)
+  ((@primitive-function-ref println 1)
+   ((@primitive-function-ref isub 2) 50 8)))
+

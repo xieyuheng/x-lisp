@@ -1,0 +1,84 @@
+;;; Input
+
+(define (main)
+  (assert-equal iadd iadd)
+  (assert-equal (iadd 1) (iadd 1))
+  (assert-not-equal (iadd 1) (iadd 2))
+  (assert-equal ((iadd 1) 2) (iadd 1 2))
+  (assert-equal 1 ((isub 2) 1))
+  (assert-equal 1 (isub 2 1)))
+
+;;; ShrinkPass
+
+(define (main)
+  (@begin1 (assert-equal iadd iadd)
+    (@begin1 (assert-equal (iadd 1) (iadd 1))
+      (@begin1 (assert-not-equal (iadd 1) (iadd 2))
+        (@begin1 (assert-equal ((iadd 1) 2) (iadd 1 2))
+          (@begin1 (assert-equal 1 ((isub 2) 1))
+            (assert-equal 1 (isub 2 1))))))))
+
+;;; UniquifyPass
+
+(define (main)
+  (@begin1 (assert-equal iadd iadd)
+    (@begin1 (assert-equal (iadd 1) (iadd 1))
+      (@begin1 (assert-not-equal (iadd 1) (iadd 2))
+        (@begin1 (assert-equal ((iadd 1) 2) (iadd 1 2))
+          (@begin1 (assert-equal 1 ((isub 2) 1))
+            (assert-equal 1 (isub 2 1))))))))
+
+;;; RevealGlobalPass
+
+(define (main)
+  (@begin1
+      (assert-equal
+        (@primitive-function-ref iadd 2)
+        (@primitive-function-ref iadd 2))
+    (@begin1
+        (assert-equal
+          ((@primitive-function-ref iadd 2) 1)
+          ((@primitive-function-ref iadd 2) 1))
+      (@begin1
+          (assert-not-equal
+            ((@primitive-function-ref iadd 2) 1)
+            ((@primitive-function-ref iadd 2) 2))
+        (@begin1
+            (assert-equal
+              (((@primitive-function-ref iadd 2) 1) 2)
+              ((@primitive-function-ref iadd 2) 1 2))
+          (@begin1
+              (assert-equal
+                1
+                (((@primitive-function-ref isub 2) 2) 1))
+            (assert-equal
+              1
+              ((@primitive-function-ref isub 2) 2 1))))))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  (@begin1
+      (assert-equal
+        (@primitive-function-ref iadd 2)
+        (@primitive-function-ref iadd 2))
+    (@begin1
+        (assert-equal
+          ((@primitive-function-ref iadd 2) 1)
+          ((@primitive-function-ref iadd 2) 1))
+      (@begin1
+          (assert-not-equal
+            ((@primitive-function-ref iadd 2) 1)
+            ((@primitive-function-ref iadd 2) 2))
+        (@begin1
+            (assert-equal
+              (((@primitive-function-ref iadd 2) 1) 2)
+              ((@primitive-function-ref iadd 2) 1 2))
+          (@begin1
+              (assert-equal
+                1
+                (((@primitive-function-ref isub 2) 2) 1))
+            (assert-equal
+              1
+              ((@primitive-function-ref isub 2) 2 1))))))))
+
