@@ -1,6 +1,6 @@
 ---
 title: x-lisp -- project management
-date: 2025-12-04
+date: 2025-01-28
 ---
 
 # 价值
@@ -47,75 +47,57 @@ x-lisp 的首要目标是加快新语言开发的速度。
 - [x] x-lisp language design
 - [x] x-lisp interpreter
 
-# 关卡 1 -- 作为编译对象的栈虚拟机（用类 forth 语言实现）
+# 关卡 1 -- 作为编译对象的栈虚拟机
 
 成果：
 
-- 获得一个方便用 c 扩展的类 forth 语言。
+- 获得一个方便用 c 扩展的中间语言 -- basic-lisp。
 - 可以作为 x-lisp 的编译对象。
 
 范围：
 
 - 只实现 imprative programming 功能，
   高级的 functional programming 功能用编译器实现。
-- 要带有模块系统，类似 basic-lisp 的生态位。
-  不像 basic-lisp 一样需要进一步编译，因此不需要 bundling。
+- 要带有模块系统。
 
-任务：
+从 x-forth 继承来的，已完成的部分：
 
-- [x] x-lisp-forth
+- [x] basic-lisp
   - [x] value encoding
-  - [x] vm
-  - [x] syntex design
   - [x] garbage collection
   - [x] structural datatypes
   - [x] module system
 
-总结 [2026-01-01]：
+任务：
 
-- 这个关卡从 2026-12-04 开始，到今天结束。
-  花费将近一个月，用了太长时间。
+- [x] basic-lisp
+  - [ ] vm
+  - [ ] sexp parser
 
-- 项目的压力与焦虑来自于未完成的项目。
-  因此重要是「快」：
-
-  - 简化方案，快速实现。
-  - 接受不完美的设计，不要拖延。
-
-  快速完成项目就能解除压力与焦虑。
-  项目的维护和优化是长期的工作，可以慢慢来。
-  但是项目的初步完成一定要快。
-
-# 关卡 2 -- 初步将 lisp 编译到 forth
+# 关卡 2 -- 初步将 x-lisp 编译到 basic-lisp
 
 成果：
 
-- 可以利用 x-lisp-forth 来运行 x-lisp 代码。
+- 可以利用 basic-lisp 来运行 x-lisp 代码。
+
+范围：
+
+- 由于我们在这个阶段，
+  只需要使所描述的 basic-lisp 语言可以被翻译成 .basic 文件，
+  然后由 basic-lisp.c 来执行。
+  所以可以只描述，而不解析也不运行。
+  不必实现 parse 和 load，
+  也不必实现 basic-lisp 的解释器。
 
 任务：
 
 - [x] 描述 lisp 语言
-- [x] 描述 forth 语言
-- [x] 将 lisp 的基础部分编译到 forth
-  - [x] LiftLambdaPass
-  - [x] ExplicateControlPass
+- [ ] 描述 basic-lisp 语言
+- [ ] 将 lisp 的基础部分编译到 basic-lisp
+  - [ ] LiftLambdaPass
+  - [ ] ExplicateControlPass
 
-总结 [2026-01-03]：
-
-- 在「描述 forth 语言」的任务中，
-  由于我们在这个阶段，
-  只需要使所描述的 forth 语言可以被翻译成 .fth 文件，
-  然后由 x-lisp-forth.c 来执行。
-
-  所以可以只描述，而不解析也不运行。
-  不必实现 parse 和 load，
-  也不必实现 forth 的解释器。
-
-总结 [2026-01-04]：
-
-- 初步完成。
-
-# 关卡 3 -- 将完整的 lisp 编译到 forth
+# 关卡 3 -- 将完整的 x-lisp 编译到 basic-lisp
 
 成果：
 
