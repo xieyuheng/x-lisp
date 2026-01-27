@@ -47,11 +47,12 @@ x-lisp 的首要目标是加快新语言开发的速度。
 - [x] x-lisp language design
 - [x] x-lisp interpreter
 
-# 关卡 1 -- 作为编译对象的栈虚拟机
+# 关卡 1 -- 作为编译对象的中间语言
 
 成果：
 
-- 获得一个方便用 c 扩展的中间语言 -- basic-lisp。
+- 获得一个方便用 c 扩展的，
+  专门为动态类型语言设计的中间语言 -- basic-lisp。
 - 可以作为 x-lisp 的编译对象。
 
 范围：
