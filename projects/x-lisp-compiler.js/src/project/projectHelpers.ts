@@ -1,6 +1,5 @@
 import fs from "node:fs"
 import Path from "node:path"
-import * as F from "../forth/index.ts"
 import * as L from "../lisp/index.ts"
 import type { Project } from "./index.ts"
 
@@ -45,16 +44,6 @@ export function projectGetPassLogFile(
   sourceId: string,
 ): string {
   return Path.join(projectOutputDirectory(project), sourceId) + ".log"
-}
-
-export function projectGetForthFile(
-  project: Project,
-  sourceId: string,
-): string {
-  return Path.join(
-    projectOutputDirectory(project),
-    sourceId.slice(0, -L.suffix.length) + F.suffix,
-  )
 }
 
 export function projectForEachSource(

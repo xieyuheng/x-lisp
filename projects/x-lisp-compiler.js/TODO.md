@@ -1,4 +1,3 @@
-remove forth
 setup basic
 
 # cond
