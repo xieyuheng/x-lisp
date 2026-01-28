@@ -1,7 +1,7 @@
-(define-variable one)
+(define-variable one (block entry))
 
-(define-variable two)
+(define-variable two (block entry))
 
-(define-variable three)
+(define-variable three (block entry))
 
-(define-function (main))
+(define-function (main) (block entry))

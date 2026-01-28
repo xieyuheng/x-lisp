@@ -24,20 +24,42 @@ function onDefinition(
     }
 
     case "FunctionDefinition": {
-      const blocks = new Map()
+      const state = createState()
+      const block = B.Block("entry", [])
+      addBlock(state, block)
+      block.instrs = inTail(state, definition.body)
       return [
         B.DefineFunction(
           basicMod,
           definition.name,
           definition.parameters,
-          blocks,
+          state.blocks,
         ),
       ]
     }
 
     case "VariableDefinition": {
-      const blocks = new Map()
-      return [B.DefineVariable(basicMod, definition.name, blocks)]
+      const state = createState()
+      const block = B.Block("entry", [])
+      addBlock(state, block)
+      block.instrs = inTail(state, definition.body)
+      return [B.DefineVariable(basicMod, definition.name, state.blocks)]
     }
   }
+}
+
+type State = {
+  blocks: Map<string, B.Block>
+}
+
+function createState(): State {
+  return { blocks: new Map() }
+}
+
+function addBlock(state: State, block: B.Block): void {
+  state.blocks.set(block.label, block)
+}
+
+function inTail(state: State, exp: L.Exp): Array<B.Instr> {
+  return []
 }

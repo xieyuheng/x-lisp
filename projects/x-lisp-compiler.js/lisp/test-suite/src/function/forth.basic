@@ -1,15 +1,15 @@
-(define-function (swap f x y))
+(define-function (swap f x y) (block entry))
 
-(define-function (drop f))
+(define-function (drop f) (block entry))
 
-(define-function (drop©λ₁ f dropped₁))
+(define-function (drop©λ₁ f dropped₁) (block entry))
 
-(define-function (drop©λ₁©λ₁ f x₁))
+(define-function (drop©λ₁©λ₁ f x₁) (block entry))
 
-(define-function (dup f))
+(define-function (dup f) (block entry))
 
-(define-function (dup©λ₁ f x₁))
+(define-function (dup©λ₁ f x₁) (block entry))
 
-(define-function (identity x))
+(define-function (identity x) (block entry))
 
-(define-function (main))
+(define-function (main) (block entry))
