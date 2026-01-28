@@ -167,59 +167,7 @@ function inBegin1(
   head: L.Exp,
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
-  switch (head.kind) {
-    // case "Symbol":
-    // case "Hashtag":
-    // case "String":
-    // case "Int":
-    // case "Float":
-    // case "FunctionRef": {
-    //   return [B.Literal(name, expToValue(rhs)), ...cont]
-    // }
-
-    // case "ConstantRef": {
-    //   const getter = B.FunctionRef(`${rhs.name}©get`, 0, { isPrimitive: false })
-    //   return [B.Call(name, getter, []), ...cont]
-    // }
-
-    // case "Var": {
-    //   return [B.Identity(name, rhs.name), ...cont]
-    // }
-
-    // case "Apply": {
-    //   return [B.Apply(name, L.varName(rhs.target), L.varName(rhs.arg)), ...cont]
-    // }
-
-    // case "ApplyNullary": {
-    //   return [B.ApplyNullary(name, L.varName(rhs.target)), ...cont]
-    // }
-
-    // case "Let1": {
-    //   return inLet1(
-    //     state,
-    //     rhs.name,
-    //     rhs.rhs,
-    //     inLet1(state, name, rhs.body, cont),
-    //   )
-    // }
-
-    // case "If": {
-    //   const letBodyLabel = generateLabel(state, "let-body", cont)
-    //   return inIf(
-    //     state,
-    //     rhs.condition,
-    //     inLet1(state, name, rhs.consequent, [B.Goto(letBodyLabel)]),
-    //     inLet1(state, name, rhs.alternative, [B.Goto(letBodyLabel)]),
-    //   )
-    // }
-
-    default: {
-      let message = `[inBegin1] unhandled head exp`
-      message += `\n  exp: ${L.formatExp(head)}`
-      if (head.meta) throw new S.ErrorWithMeta(message, head.meta)
-      else throw new Error(message)
-    }
-  }
+  return [B.Perform(toBasicExp(head)), ...cont]
 }
 
 function inIf(
