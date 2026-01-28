@@ -36,6 +36,7 @@ export function Perform(exp: Exp, meta?: Meta): Perform {
 export type Test = {
   kind: "Test"
   exp: Exp
+  meta?: Meta
 }
 
 export function Test(exp: Exp, meta?: Meta): Test {
@@ -49,6 +50,7 @@ export function Test(exp: Exp, meta?: Meta): Test {
 export type Branch = {
   kind: "Branch"
   exp: Exp
+  meta?: Meta
 }
 
 export function Branch(exp: Exp, meta?: Meta): Branch {
@@ -62,6 +64,7 @@ export function Branch(exp: Exp, meta?: Meta): Branch {
 export type Goto = {
   kind: "Goto"
   exp: Exp
+  meta?: Meta
 }
 
 export function Goto(exp: Exp, meta?: Meta): Goto {
@@ -75,6 +78,7 @@ export function Goto(exp: Exp, meta?: Meta): Goto {
 export type Return = {
   kind: "Return"
   exp: Exp
+  meta?: Meta
 }
 
 export function Return(exp: Exp, meta?: Meta): Return {

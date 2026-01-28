@@ -5,7 +5,7 @@
 
 (define-function (factorial n)
   (test (equal? n 1))
-  (branch (label base-case))
+  (branch (@label base-case))
   (= n1 (isub n 1))
   (= f1 (factorial n1))
   (= r (imul n f1))
