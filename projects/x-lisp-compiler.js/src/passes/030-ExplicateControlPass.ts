@@ -1,3 +1,5 @@
+import { stringToSubscript } from "@xieyuheng/helpers.js/string"
+import * as S from "@xieyuheng/sexp.js"
 import * as B from "../basic/index.ts"
 import * as L from "../lisp/index.ts"
 
@@ -60,6 +62,237 @@ function addBlock(state: State, block: B.Block): void {
   state.blocks.set(block.label, block)
 }
 
+function generateLabel(
+  state: State,
+  name: string,
+  instrs: Array<B.Instr>,
+): string {
+  const subscript = stringToSubscript(state.blocks.size.toString())
+  const label = `${name}${subscript}`
+  const block = B.Block(label, instrs)
+  addBlock(state, block)
+  return label
+}
+
+function toBasicExp(exp: L.Exp): B.Exp {
+  switch (exp.kind) {
+    case "Symbol":
+    case "Hashtag":
+    case "String":
+    case "Int":
+    case "Float": {
+      return exp
+    }
+
+    case "Var": {
+      return exp
+    }
+
+    case "Apply": {
+      return B.Apply(toBasicExp(exp.target), exp.args.map(toBasicExp))
+    }
+
+    default: {
+      let message = `[toBasicExp] unhandled exp`
+      message += `\n  exp: ${L.formatExp(exp)}`
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+      else throw new Error(message)
+    }
+  }
+}
+
 function inTail(state: State, exp: L.Exp): Array<B.Instr> {
-  return []
+  switch (exp.kind) {
+    case "Let1": {
+      return inLet1(state, exp.name, exp.rhs, inTail(state, exp.body))
+    }
+
+    case "Begin1": {
+      return inBegin1(state, exp.head, inTail(state, exp.body))
+    }
+
+    case "If": {
+      return inIf(
+        state,
+        exp.condition,
+        inTail(state, exp.consequent),
+        inTail(state, exp.alternative),
+      )
+    }
+
+    default: {
+      return [B.Return(toBasicExp(exp))]
+    }
+  }
+}
+
+function inLet1(
+  state: State,
+  name: string,
+  rhs: L.Exp,
+  cont: Array<B.Instr>,
+): Array<B.Instr> {
+  switch (rhs.kind) {
+    // case "Symbol":
+    // case "Hashtag":
+    // case "String":
+    // case "Int":
+    // case "Float":
+    // case "FunctionRef": {
+    //   return [B.Literal(name, expToValue(rhs)), ...cont]
+    // }
+
+    // case "ConstantRef": {
+    //   const getter = B.FunctionRef(`${rhs.name}©get`, 0, { isPrimitive: false })
+    //   return [B.Call(name, getter, []), ...cont]
+    // }
+
+    // case "Var": {
+    //   return [B.Identity(name, rhs.name), ...cont]
+    // }
+
+    // case "Apply": {
+    //   return [B.Apply(name, L.varName(rhs.target), L.varName(rhs.arg)), ...cont]
+    // }
+
+    // case "ApplyNullary": {
+    //   return [B.ApplyNullary(name, L.varName(rhs.target)), ...cont]
+    // }
+
+    // case "Let1": {
+    //   return inLet1(
+    //     state,
+    //     rhs.name,
+    //     rhs.rhs,
+    //     inLet1(state, name, rhs.body, cont),
+    //   )
+    // }
+
+    // case "If": {
+    //   const letBodyLabel = generateLabel(state, "let-body", cont)
+    //   return inIf(
+    //     state,
+    //     rhs.condition,
+    //     inLet1(state, name, rhs.consequent, [B.Goto(letBodyLabel)]),
+    //     inLet1(state, name, rhs.alternative, [B.Goto(letBodyLabel)]),
+    //   )
+    // }
+
+    default: {
+      let message = `[inLet1] unhandled rhs exp`
+      message += `\n  exp: ${L.formatExp(rhs)}`
+      if (rhs.meta) throw new S.ErrorWithMeta(message, rhs.meta)
+      else throw new Error(message)
+    }
+  }
+}
+
+function inBegin1(
+  state: State,
+  head: L.Exp,
+  cont: Array<B.Instr>,
+): Array<B.Instr> {
+  switch (head.kind) {
+    // case "Symbol":
+    // case "Hashtag":
+    // case "String":
+    // case "Int":
+    // case "Float":
+    // case "FunctionRef": {
+    //   return [B.Literal(name, expToValue(rhs)), ...cont]
+    // }
+
+    // case "ConstantRef": {
+    //   const getter = B.FunctionRef(`${rhs.name}©get`, 0, { isPrimitive: false })
+    //   return [B.Call(name, getter, []), ...cont]
+    // }
+
+    // case "Var": {
+    //   return [B.Identity(name, rhs.name), ...cont]
+    // }
+
+    // case "Apply": {
+    //   return [B.Apply(name, L.varName(rhs.target), L.varName(rhs.arg)), ...cont]
+    // }
+
+    // case "ApplyNullary": {
+    //   return [B.ApplyNullary(name, L.varName(rhs.target)), ...cont]
+    // }
+
+    // case "Let1": {
+    //   return inLet1(
+    //     state,
+    //     rhs.name,
+    //     rhs.rhs,
+    //     inLet1(state, name, rhs.body, cont),
+    //   )
+    // }
+
+    // case "If": {
+    //   const letBodyLabel = generateLabel(state, "let-body", cont)
+    //   return inIf(
+    //     state,
+    //     rhs.condition,
+    //     inLet1(state, name, rhs.consequent, [B.Goto(letBodyLabel)]),
+    //     inLet1(state, name, rhs.alternative, [B.Goto(letBodyLabel)]),
+    //   )
+    // }
+
+    default: {
+      let message = `[inBegin1] unhandled head exp`
+      message += `\n  exp: ${L.formatExp(head)}`
+      if (head.meta) throw new S.ErrorWithMeta(message, head.meta)
+      else throw new Error(message)
+    }
+  }
+}
+
+function inIf(
+  state: State,
+  condition: L.Exp,
+  thenCont: Array<B.Instr>,
+  elseCont: Array<B.Instr>,
+): Array<B.Instr> {
+  // if (L.isBool(condition)) {
+  //   return L.isTrue(condition) ? thenCont : elseCont
+  // }
+
+  switch (condition.kind) {
+    // case "Var": {
+    //   return [
+    //     B.Branch(
+    //       condition.name,
+    //       generateLabel(state, "then", thenCont),
+    //       generateLabel(state, "else", elseCont),
+    //     ),
+    //   ]
+    // }
+
+    // case "Let1": {
+    //   return inLet1(
+    //     state,
+    //     condition.name,
+    //     condition.rhs,
+    //     inIf(state, condition.body, thenCont, elseCont),
+    //   )
+    // }
+
+    // case "If": {
+    //   thenCont = [B.Goto(generateLabel(state, "then", thenCont))]
+    //   elseCont = [B.Goto(generateLabel(state, "else", elseCont))]
+    //   return inIf(
+    //     state,
+    //     condition.condition,
+    //     inIf(state, condition.consequent, thenCont, elseCont),
+    //     inIf(state, condition.alternative, thenCont, elseCont),
+    //   )
+    // }
+
+    default: {
+      let message = `[inIf] unhandled condition exp`
+      message += `\n  exp: ${L.formatExp(condition)}`
+      if (condition.meta) throw new S.ErrorWithMeta(message, condition.meta)
+      else throw new Error(message)
+    }
+  }
 }

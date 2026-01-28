@@ -1,4 +1,3 @@
-[pass] `030-ExplicateControlPass` -- `inTail`
 [pass] `030-ExplicateControlPass` -- `inIf`
 [pass] `030-ExplicateControlPass` -- `inLet1`
 [pass] `030-ExplicateControlPass` -- `inBegin1`
