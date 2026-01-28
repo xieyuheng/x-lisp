@@ -55,7 +55,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "FunctionRef": {
-      return `(@fn ${exp.name} ${exp.arity})`
+      return `(@function ${exp.name} ${exp.arity})`
     }
 
     case "ConstantRef": {

@@ -27,7 +27,9 @@
 (import "square" square)
 
 (define (main)
-  ((@primitive assert-equal 2) 81 ((@fn square 1) ((@fn square 1) 3))))
+  ((@primitive assert-equal 2)
+   81
+   ((@function square 1) ((@function square 1) 3))))
 
 (define (square x) (imul x x))
 
@@ -36,13 +38,15 @@
 (import "square" square)
 
 (define (main)
-  ((@primitive assert-equal 2) 81 ((@fn square 1) ((@fn square 1) 3))))
+  ((@primitive assert-equal 2)
+   81
+   ((@function square 1) ((@function square 1) 3))))
 
 ;;; UnnestOperandPass
 
 (import "square" square)
 
 (define (main)
-  (@let1 _₁ ((@fn square 1) 3)
-    (@let1 _₂ ((@fn square 1) _₁) ((@primitive assert-equal 2) 81 _₂))))
+  (@let1 _₁ ((@function square 1) 3)
+    (@let1 _₂ ((@function square 1) _₁) ((@primitive assert-equal 2) 81 _₂))))
 

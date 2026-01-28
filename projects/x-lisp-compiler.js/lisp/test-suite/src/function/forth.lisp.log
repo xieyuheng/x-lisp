@@ -46,49 +46,49 @@
 (define (identity x) x)
 
 (define (main)
-  (@let1 f₁ (@fn identity 1)
-    (@let1 g₁ ((@fn dup 1) (@fn identity 1))
+  (@let1 f₁ (@function identity 1)
+    (@let1 g₁ ((@function dup 1) (@function identity 1))
       ((@primitive println 1) (g₁ f₁ f₁)))))
 
 ;;; LiftLambdaPass
 
 (define (swap f x y) (f y x))
 
-(define (drop f) ((@fn drop©λ₁ 2) f))
+(define (drop f) ((@function drop©λ₁ 2) f))
 
-(define (drop©λ₁ f dropped₁) ((@fn drop©λ₁©λ₁ 2) f))
+(define (drop©λ₁ f dropped₁) ((@function drop©λ₁©λ₁ 2) f))
 
 (define (drop©λ₁©λ₁ f x₁) (f x₁))
 
-(define (dup f) ((@fn dup©λ₁ 2) f))
+(define (dup f) ((@function dup©λ₁ 2) f))
 
 (define (dup©λ₁ f x₁) (f x₁ x₁))
 
 (define (identity x) x)
 
 (define (main)
-  (@let1 f₁ (@fn identity 1)
-    (@let1 g₁ ((@fn dup 1) (@fn identity 1))
+  (@let1 f₁ (@function identity 1)
+    (@let1 g₁ ((@function dup 1) (@function identity 1))
       ((@primitive println 1) (g₁ f₁ f₁)))))
 
 ;;; UnnestOperandPass
 
 (define (swap f x y) (f y x))
 
-(define (drop f) ((@fn drop©λ₁ 2) f))
+(define (drop f) ((@function drop©λ₁ 2) f))
 
-(define (drop©λ₁ f dropped₁) ((@fn drop©λ₁©λ₁ 2) f))
+(define (drop©λ₁ f dropped₁) ((@function drop©λ₁©λ₁ 2) f))
 
 (define (drop©λ₁©λ₁ f x₁) (f x₁))
 
-(define (dup f) ((@fn dup©λ₁ 2) f))
+(define (dup f) ((@function dup©λ₁ 2) f))
 
 (define (dup©λ₁ f x₁) (f x₁ x₁))
 
 (define (identity x) x)
 
 (define (main)
-  (@let1 f₁ (@fn identity 1)
-    (@let1 g₁ ((@fn dup 1) (@fn identity 1))
+  (@let1 f₁ (@function identity 1)
+    (@let1 g₁ ((@function dup 1) (@function identity 1))
       (@let1 _₁ (g₁ f₁ f₁) ((@primitive println 1) _₁)))))
 

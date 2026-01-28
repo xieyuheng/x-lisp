@@ -18,21 +18,21 @@
 
 ;;; LiftLambdaPass
 
-(define (Y f) ((@fn Y©λ₁ 1) ((@fn Y©λ₂ 2) f)))
+(define (Y f) ((@function Y©λ₁ 1) ((@function Y©λ₂ 2) f)))
 
 (define (Y©λ₁ u₁) (u₁ u₁))
 
-(define (Y©λ₂ f x₁) (f ((@fn Y©λ₂©λ₁ 2) x₁)))
+(define (Y©λ₂ f x₁) (f ((@function Y©λ₂©λ₁ 2) x₁)))
 
 (define (Y©λ₂©λ₁ x₁ t₁) ((x₁ x₁) t₁))
 
 ;;; UnnestOperandPass
 
-(define (Y f) (@let1 _₁ ((@fn Y©λ₂ 2) f) ((@fn Y©λ₁ 1) _₁)))
+(define (Y f) (@let1 _₁ ((@function Y©λ₂ 2) f) ((@function Y©λ₁ 1) _₁)))
 
 (define (Y©λ₁ u₁) (u₁ u₁))
 
-(define (Y©λ₂ f x₁) (@let1 _₁ ((@fn Y©λ₂©λ₁ 2) x₁) (f _₁)))
+(define (Y©λ₂ f x₁) (@let1 _₁ ((@function Y©λ₂©λ₁ 2) x₁) (f _₁)))
 
 (define (Y©λ₂©λ₁ x₁ t₁) (@let1 _₁ (x₁ x₁) (_₁ t₁)))
 

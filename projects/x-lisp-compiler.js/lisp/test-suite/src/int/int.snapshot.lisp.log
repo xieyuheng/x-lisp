@@ -20,17 +20,17 @@
 
 (define (square x) ((@primitive imul 2) x x))
 
-(define (main) ((@primitive println 1) ((@fn square 1) 3)))
+(define (main) ((@primitive println 1) ((@function square 1) 3)))
 
 ;;; LiftLambdaPass
 
 (define (square x) ((@primitive imul 2) x x))
 
-(define (main) ((@primitive println 1) ((@fn square 1) 3)))
+(define (main) ((@primitive println 1) ((@function square 1) 3)))
 
 ;;; UnnestOperandPass
 
 (define (square x) ((@primitive imul 2) x x))
 
-(define (main) (@let1 _₁ ((@fn square 1) 3) ((@primitive println 1) _₁)))
+(define (main) (@let1 _₁ ((@function square 1) 3) ((@primitive println 1) _₁)))
 
