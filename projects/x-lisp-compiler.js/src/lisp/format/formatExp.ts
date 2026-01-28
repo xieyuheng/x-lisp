@@ -81,13 +81,15 @@ export function formatExp(exp: Exp): string {
     case "Let1": {
       const rhs = formatExp(exp.rhs)
       const body = formatExp(exp.body)
-      return `(@let1 ${exp.name} ${rhs} ${body})`
+      return `(let ((${exp.name} ${rhs})) ${body})`
+      // return `(@let1 ${exp.name} ${rhs} ${body})`
     }
 
     case "Begin1": {
       const head = formatExp(exp.head)
       const body = formatExp(exp.body)
-      return `(@begin1 ${head} ${body})`
+      // return `(@begin1 ${head} ${body})`
+      return `(begin ${head} ${body})`
     }
 
     case "BeginSugar": {

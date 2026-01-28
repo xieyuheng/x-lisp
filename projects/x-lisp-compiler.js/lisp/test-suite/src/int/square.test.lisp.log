@@ -47,7 +47,7 @@
 (import "square" square)
 
 (define (main)
-  (@let1 _₁ ((@function square 1) 3)
-    (@let1 _₂ ((@function square 1) _₁)
+  (let ((_₁ ((@function square 1) 3)))
+    (let ((_₂ ((@function square 1) _₁)))
       ((@primitive assert-equal 2) 81 _₂))))
 

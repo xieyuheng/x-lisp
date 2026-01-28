@@ -49,15 +49,15 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁
-      (if
-          (if
-              (@let1 _₂ ((@primitive random-dice 0))
-                ((@primitive equal? 2) _₂ 1))
-            (@let1 _₃ ((@primitive random-dice 0))
-              ((@primitive equal? 2) _₃ 2))
-            #f)
-        0
-        42)
+  (let
+      ((_₁ (if
+               (if
+                   (let ((_₂ ((@primitive random-dice 0))))
+                     ((@primitive equal? 2) _₂ 1))
+                 (let ((_₃ ((@primitive random-dice 0))))
+                   ((@primitive equal? 2) _₃ 2))
+                 #f)
+             0
+             42)))
     ((@primitive println 1) _₁)))
 

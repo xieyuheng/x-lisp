@@ -29,8 +29,8 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ ((@primitive random-dice 0))
-    (@let1 _₂ ((@primitive random-dice 0))
-      (@let1 _₃ ((@primitive iadd 2) _₁ _₂)
+  (let ((_₁ ((@primitive random-dice 0))))
+    (let ((_₂ ((@primitive random-dice 0))))
+      (let ((_₃ ((@primitive iadd 2) _₁ _₂)))
         ((@primitive println 1) _₃)))))
 

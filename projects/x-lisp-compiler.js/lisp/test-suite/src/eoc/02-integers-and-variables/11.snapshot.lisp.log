@@ -29,8 +29,8 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ ((@primitive iadd 2) 1 2)
-    (@let1 _₂ ((@primitive iadd 2) 3 4)
-      (@let1 _₃ ((@primitive iadd 2) _₁ _₂)
+  (let ((_₁ ((@primitive iadd 2) 1 2)))
+    (let ((_₂ ((@primitive iadd 2) 3 4)))
+      (let ((_₃ ((@primitive iadd 2) _₁ _₂)))
         ((@primitive println 1) _₃)))))
 

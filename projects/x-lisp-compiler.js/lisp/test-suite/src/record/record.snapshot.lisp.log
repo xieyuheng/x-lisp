@@ -9,123 +9,151 @@
 ;;; ShrinkPass
 
 (define (main)
-  (@begin1
+  (begin
+    (println
+     (let ((tael (make-list)))
+       (begin
+         (record-put! 'x 'a tael)
+         (begin (record-put! 'y 'b tael) tael))))
+    (begin
       (println
-       (@let1 tael (make-list)
-         (@begin1 (record-put! 'x 'a tael)
-           (@begin1 (record-put! 'y 'b tael) tael))))
-    (@begin1
+       (let ((tael (make-list)))
+         (begin
+           (record-put! 'x 'a tael)
+           (begin (record-put! 'y 'b tael) tael))))
+      (begin
         (println
-         (@let1 tael (make-list)
-           (@begin1 (record-put! 'x 'a tael)
-             (@begin1 (record-put! 'y 'b tael) tael))))
-      (@begin1
-          (println
-           (@let1 tael (make-list)
-             (@begin1 (record-put! 'x 'a tael)
-               (@begin1 (record-put! 'y 'b tael) tael))))
+         (let ((tael (make-list)))
+           (begin
+             (record-put! 'x 'a tael)
+             (begin (record-put! 'y 'b tael) tael))))
         (println
-         (@let1 tael (make-list)
-           (@begin1 (record-put! 'x 'a tael)
-             (@begin1 (record-put! 'y 'b tael) tael))))))))
+         (let ((tael (make-list)))
+           (begin
+             (record-put! 'x 'a tael)
+             (begin (record-put! 'y 'b tael) tael))))))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (@begin1
+  (begin
+    (println
+     (let ((tael₁ (make-list)))
+       (begin
+         (record-put! 'x 'a tael₁)
+         (begin (record-put! 'y 'b tael₁) tael₁))))
+    (begin
       (println
-       (@let1 tael₁ (make-list)
-         (@begin1 (record-put! 'x 'a tael₁)
-           (@begin1 (record-put! 'y 'b tael₁) tael₁))))
-    (@begin1
+       (let ((tael₁ (make-list)))
+         (begin
+           (record-put! 'x 'a tael₁)
+           (begin (record-put! 'y 'b tael₁) tael₁))))
+      (begin
         (println
-         (@let1 tael₁ (make-list)
-           (@begin1 (record-put! 'x 'a tael₁)
-             (@begin1 (record-put! 'y 'b tael₁) tael₁))))
-      (@begin1
-          (println
-           (@let1 tael₁ (make-list)
-             (@begin1 (record-put! 'x 'a tael₁)
-               (@begin1 (record-put! 'y 'b tael₁) tael₁))))
+         (let ((tael₁ (make-list)))
+           (begin
+             (record-put! 'x 'a tael₁)
+             (begin (record-put! 'y 'b tael₁) tael₁))))
         (println
-         (@let1 tael₁ (make-list)
-           (@begin1 (record-put! 'x 'a tael₁)
-             (@begin1 (record-put! 'y 'b tael₁) tael₁))))))))
+         (let ((tael₁ (make-list)))
+           (begin
+             (record-put! 'x 'a tael₁)
+             (begin (record-put! 'y 'b tael₁) tael₁))))))))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  (@begin1
+  (begin
+    ((@primitive println 1)
+     (let ((tael₁ ((@primitive make-list 0))))
+       (begin
+         ((@primitive record-put! 3) 'x 'a tael₁)
+         (begin ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))
+    (begin
       ((@primitive println 1)
-       (@let1 tael₁ ((@primitive make-list 0))
-         (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-           (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+       (let ((tael₁ ((@primitive make-list 0))))
+         (begin
+           ((@primitive record-put! 3) 'x 'a tael₁)
+           (begin
+             ((@primitive record-put! 3) 'y 'b tael₁)
              tael₁))))
-    (@begin1
+      (begin
         ((@primitive println 1)
-         (@let1 tael₁ ((@primitive make-list 0))
-           (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+         (let ((tael₁ ((@primitive make-list 0))))
+           (begin
+             ((@primitive record-put! 3) 'x 'a tael₁)
+             (begin
+               ((@primitive record-put! 3) 'y 'b tael₁)
                tael₁))))
-      (@begin1
-          ((@primitive println 1)
-           (@let1 tael₁ ((@primitive make-list 0))
-             (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-               (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
-                 tael₁))))
         ((@primitive println 1)
-         (@let1 tael₁ ((@primitive make-list 0))
-           (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+         (let ((tael₁ ((@primitive make-list 0))))
+           (begin
+             ((@primitive record-put! 3) 'x 'a tael₁)
+             (begin
+               ((@primitive record-put! 3) 'y 'b tael₁)
                tael₁))))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (@begin1
+  (begin
+    ((@primitive println 1)
+     (let ((tael₁ ((@primitive make-list 0))))
+       (begin
+         ((@primitive record-put! 3) 'x 'a tael₁)
+         (begin ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))
+    (begin
       ((@primitive println 1)
-       (@let1 tael₁ ((@primitive make-list 0))
-         (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-           (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+       (let ((tael₁ ((@primitive make-list 0))))
+         (begin
+           ((@primitive record-put! 3) 'x 'a tael₁)
+           (begin
+             ((@primitive record-put! 3) 'y 'b tael₁)
              tael₁))))
-    (@begin1
+      (begin
         ((@primitive println 1)
-         (@let1 tael₁ ((@primitive make-list 0))
-           (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+         (let ((tael₁ ((@primitive make-list 0))))
+           (begin
+             ((@primitive record-put! 3) 'x 'a tael₁)
+             (begin
+               ((@primitive record-put! 3) 'y 'b tael₁)
                tael₁))))
-      (@begin1
-          ((@primitive println 1)
-           (@let1 tael₁ ((@primitive make-list 0))
-             (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-               (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
-                 tael₁))))
         ((@primitive println 1)
-         (@let1 tael₁ ((@primitive make-list 0))
-           (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+         (let ((tael₁ ((@primitive make-list 0))))
+           (begin
+             ((@primitive record-put! 3) 'x 'a tael₁)
+             (begin
+               ((@primitive record-put! 3) 'y 'b tael₁)
                tael₁))))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@begin1
-      (@let1 tael₁ ((@primitive make-list 0))
-        (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-          (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+  (begin
+    (let ((tael₁ ((@primitive make-list 0))))
+      (begin
+        ((@primitive record-put! 3) 'x 'a tael₁)
+        (begin
+          ((@primitive record-put! 3) 'y 'b tael₁)
+          ((@primitive println 1) tael₁))))
+    (begin
+      (let ((tael₁ ((@primitive make-list 0))))
+        (begin
+          ((@primitive record-put! 3) 'x 'a tael₁)
+          (begin
+            ((@primitive record-put! 3) 'y 'b tael₁)
             ((@primitive println 1) tael₁))))
-    (@begin1
-        (@let1 tael₁ ((@primitive make-list 0))
-          (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-            (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+      (begin
+        (let ((tael₁ ((@primitive make-list 0))))
+          (begin
+            ((@primitive record-put! 3) 'x 'a tael₁)
+            (begin
+              ((@primitive record-put! 3) 'y 'b tael₁)
               ((@primitive println 1) tael₁))))
-      (@begin1
-          (@let1 tael₁ ((@primitive make-list 0))
-            (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-              (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
-                ((@primitive println 1) tael₁))))
-        (@let1 tael₁ ((@primitive make-list 0))
-          (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-            (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+        (let ((tael₁ ((@primitive make-list 0))))
+          (begin
+            ((@primitive record-put! 3) 'x 'a tael₁)
+            (begin
+              ((@primitive record-put! 3) 'y 'b tael₁)
               ((@primitive println 1) tael₁))))))))
 

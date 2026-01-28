@@ -11,70 +11,86 @@
 ;;; ShrinkPass
 
 (define (main)
-  (@begin1 (assert-equal (if #t 1 2) 1)
-    (@begin1 (assert-equal (if #f 1 2) 2)
-      (@begin1 (assert (if #t (if #t #t #f) #f))
-        (@begin1 (assert (not (if #t (if #t #f #f) #f)))
-          (@begin1 (assert (if #f #t (if #f #t #t)))
+  (begin
+    (assert-equal (if #t 1 2) 1)
+    (begin
+      (assert-equal (if #f 1 2) 2)
+      (begin
+        (assert (if #t (if #t #t #f) #f))
+        (begin
+          (assert (not (if #t (if #t #f #f) #f)))
+          (begin
+            (assert (if #f #t (if #f #t #t)))
             (assert (not (if #f #t (if #f #t #f))))))))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (@begin1 (assert-equal (if #t 1 2) 1)
-    (@begin1 (assert-equal (if #f 1 2) 2)
-      (@begin1 (assert (if #t (if #t #t #f) #f))
-        (@begin1 (assert (not (if #t (if #t #f #f) #f)))
-          (@begin1 (assert (if #f #t (if #f #t #t)))
+  (begin
+    (assert-equal (if #t 1 2) 1)
+    (begin
+      (assert-equal (if #f 1 2) 2)
+      (begin
+        (assert (if #t (if #t #t #f) #f))
+        (begin
+          (assert (not (if #t (if #t #f #f) #f)))
+          (begin
+            (assert (if #f #t (if #f #t #t)))
             (assert (not (if #f #t (if #f #t #f))))))))))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  (@begin1 ((@primitive assert-equal 2) (if #t 1 2) 1)
-    (@begin1 ((@primitive assert-equal 2) (if #f 1 2) 2)
-      (@begin1 ((@primitive assert 1) (if #t (if #t #t #f) #f))
-        (@begin1
-            ((@primitive assert 1)
-             ((@primitive not 1) (if #t (if #t #f #f) #f)))
-          (@begin1
-              ((@primitive assert 1) (if #f #t (if #f #t #t)))
+  (begin
+    ((@primitive assert-equal 2) (if #t 1 2) 1)
+    (begin
+      ((@primitive assert-equal 2) (if #f 1 2) 2)
+      (begin
+        ((@primitive assert 1) (if #t (if #t #t #f) #f))
+        (begin
+          ((@primitive assert 1)
+           ((@primitive not 1) (if #t (if #t #f #f) #f)))
+          (begin
+            ((@primitive assert 1) (if #f #t (if #f #t #t)))
             ((@primitive assert 1)
              ((@primitive not 1) (if #f #t (if #f #t #f))))))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (@begin1 ((@primitive assert-equal 2) (if #t 1 2) 1)
-    (@begin1 ((@primitive assert-equal 2) (if #f 1 2) 2)
-      (@begin1 ((@primitive assert 1) (if #t (if #t #t #f) #f))
-        (@begin1
-            ((@primitive assert 1)
-             ((@primitive not 1) (if #t (if #t #f #f) #f)))
-          (@begin1
-              ((@primitive assert 1) (if #f #t (if #f #t #t)))
+  (begin
+    ((@primitive assert-equal 2) (if #t 1 2) 1)
+    (begin
+      ((@primitive assert-equal 2) (if #f 1 2) 2)
+      (begin
+        ((@primitive assert 1) (if #t (if #t #t #f) #f))
+        (begin
+          ((@primitive assert 1)
+           ((@primitive not 1) (if #t (if #t #f #f) #f)))
+          (begin
+            ((@primitive assert 1) (if #f #t (if #f #t #t)))
             ((@primitive assert 1)
              ((@primitive not 1) (if #f #t (if #f #t #f))))))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@begin1
-      (@let1 _₁ (if #t 1 2) ((@primitive assert-equal 2) _₁ 1))
-    (@begin1
-        (@let1 _₂ (if #f 1 2)
-          ((@primitive assert-equal 2) _₂ 2))
-      (@begin1
-          (@let1 _₃ (if #t (if #t #t #f) #f)
-            ((@primitive assert 1) _₃))
-        (@begin1
-            (@let1 _₄ (if #t (if #t #f #f) #f)
-              (@let1 _₅ ((@primitive not 1) _₄)
-                ((@primitive assert 1) _₅)))
-          (@begin1
-              (@let1 _₆ (if #f #t (if #f #t #t))
-                ((@primitive assert 1) _₆))
-            (@let1 _₇ (if #f #t (if #f #t #f))
-              (@let1 _₈ ((@primitive not 1) _₇)
+  (begin
+    (let ((_₁ (if #t 1 2))) ((@primitive assert-equal 2) _₁ 1))
+    (begin
+      (let ((_₂ (if #f 1 2)))
+        ((@primitive assert-equal 2) _₂ 2))
+      (begin
+        (let ((_₃ (if #t (if #t #t #f) #f)))
+          ((@primitive assert 1) _₃))
+        (begin
+          (let ((_₄ (if #t (if #t #f #f) #f)))
+            (let ((_₅ ((@primitive not 1) _₄)))
+              ((@primitive assert 1) _₅)))
+          (begin
+            (let ((_₆ (if #f #t (if #f #t #t))))
+              ((@primitive assert 1) _₆))
+            (let ((_₇ (if #f #t (if #f #t #f))))
+              (let ((_₈ ((@primitive not 1) _₇)))
                 ((@primitive assert 1) _₈)))))))))
 

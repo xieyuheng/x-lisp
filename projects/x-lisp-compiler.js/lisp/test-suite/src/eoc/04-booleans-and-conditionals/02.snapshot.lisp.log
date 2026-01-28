@@ -17,8 +17,8 @@
 
 (define (main)
   (println
-   (@let1 x (random-dice)
-     (@let1 y (random-dice)
+   (let ((x (random-dice)))
+     (let ((y (random-dice)))
        (iadd
         (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
           (iadd y 2)
@@ -31,8 +31,8 @@
 
 (define (main)
   (println
-   (@let1 x₁ (random-dice)
-     (@let1 y₁ (random-dice)
+   (let ((x₁ (random-dice)))
+     (let ((y₁ (random-dice)))
        (iadd
         (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
           (iadd y₁ 2)
@@ -45,8 +45,8 @@
 
 (define (main)
   ((@primitive println 1)
-   (@let1 x₁ ((@primitive random-dice 0))
-     (@let1 y₁ ((@primitive random-dice 0))
+   (let ((x₁ ((@primitive random-dice 0))))
+     (let ((y₁ ((@primitive random-dice 0))))
        ((@primitive iadd 2)
         (if
             (if ((@primitive int-less? 2) x₁ 1)
@@ -65,8 +65,8 @@
 
 (define (main)
   ((@primitive println 1)
-   (@let1 x₁ ((@primitive random-dice 0))
-     (@let1 y₁ ((@primitive random-dice 0))
+   (let ((x₁ ((@primitive random-dice 0))))
+     (let ((y₁ ((@primitive random-dice 0))))
        ((@primitive iadd 2)
         (if
             (if ((@primitive int-less? 2) x₁ 1)
@@ -84,22 +84,22 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 x₁ ((@primitive random-dice 0))
-    (@let1 y₁ ((@primitive random-dice 0))
-      (@let1 _₁
-          (if
-              (if ((@primitive int-less? 2) x₁ 1)
-                ((@primitive equal? 2) x₁ 0)
-                ((@primitive equal? 2) x₁ 2))
-            ((@primitive iadd 2) y₁ 2)
-            ((@primitive iadd 2) y₁ 10))
-        (@let1 _₂
-            (if
-                (if ((@primitive int-less? 2) x₁ 1)
-                  ((@primitive equal? 2) x₁ 0)
-                  ((@primitive equal? 2) x₁ 2))
-              ((@primitive iadd 2) y₁ 2)
-              ((@primitive iadd 2) y₁ 10))
-          (@let1 _₃ ((@primitive iadd 2) _₁ _₂)
+  (let ((x₁ ((@primitive random-dice 0))))
+    (let ((y₁ ((@primitive random-dice 0))))
+      (let
+          ((_₁ (if
+                   (if ((@primitive int-less? 2) x₁ 1)
+                     ((@primitive equal? 2) x₁ 0)
+                     ((@primitive equal? 2) x₁ 2))
+                 ((@primitive iadd 2) y₁ 2)
+                 ((@primitive iadd 2) y₁ 10))))
+        (let
+            ((_₂ (if
+                     (if ((@primitive int-less? 2) x₁ 1)
+                       ((@primitive equal? 2) x₁ 0)
+                       ((@primitive equal? 2) x₁ 2))
+                   ((@primitive iadd 2) y₁ 2)
+                   ((@primitive iadd 2) y₁ 10))))
+          (let ((_₃ ((@primitive iadd 2) _₁ _₂)))
             ((@primitive println 1) _₃)))))))
 

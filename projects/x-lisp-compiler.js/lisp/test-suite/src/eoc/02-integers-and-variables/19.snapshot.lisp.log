@@ -8,43 +8,45 @@
 ;;; ShrinkPass
 
 (define (main)
-  (@let1 x 1
+  (let ((x 1))
     (println
-     (iadd x (@let1 x (@let1 x 5 (iadd x x)) (iadd x 100))))))
+     (iadd x (let ((x (let ((x 5)) (iadd x x)))) (iadd x 100))))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (@let1 x₁ 1
+  (let ((x₁ 1))
     (println
-     (iadd x₁ (@let1 x₂ (@let1 x₃ 5 (iadd x₃ x₃)) (iadd x₂ 100))))))
+     (iadd
+      x₁
+      (let ((x₂ (let ((x₃ 5)) (iadd x₃ x₃)))) (iadd x₂ 100))))))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  (@let1 x₁ 1
+  (let ((x₁ 1))
     ((@primitive println 1)
      ((@primitive iadd 2)
       x₁
-      (@let1 x₂ (@let1 x₃ 5 ((@primitive iadd 2) x₃ x₃))
+      (let ((x₂ (let ((x₃ 5)) ((@primitive iadd 2) x₃ x₃))))
         ((@primitive iadd 2) x₂ 100))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (@let1 x₁ 1
+  (let ((x₁ 1))
     ((@primitive println 1)
      ((@primitive iadd 2)
       x₁
-      (@let1 x₂ (@let1 x₃ 5 ((@primitive iadd 2) x₃ x₃))
+      (let ((x₂ (let ((x₃ 5)) ((@primitive iadd 2) x₃ x₃))))
         ((@primitive iadd 2) x₂ 100))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 x₁ 1
-    (@let1 x₂ (@let1 x₃ 5 ((@primitive iadd 2) x₃ x₃))
-      (@let1 _₁ ((@primitive iadd 2) x₂ 100)
-        (@let1 _₂ ((@primitive iadd 2) x₁ _₁)
+  (let ((x₁ 1))
+    (let ((x₂ (let ((x₃ 5)) ((@primitive iadd 2) x₃ x₃))))
+      (let ((_₁ ((@primitive iadd 2) x₂ 100)))
+        (let ((_₂ ((@primitive iadd 2) x₁ _₁)))
           ((@primitive println 1) _₂))))))
 

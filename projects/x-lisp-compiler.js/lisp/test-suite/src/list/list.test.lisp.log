@@ -15,332 +15,374 @@
 ;;; ShrinkPass
 
 (define (main)
-  (@let1 list (make-list)
-    (@begin1 (list-push! 1 list)
-      (@begin1 (list-push! 2 list)
-        (@begin1 (list-push! 3 list)
-          (@begin1
+  (let ((list (make-list)))
+    (begin
+      (list-push! 1 list)
+      (begin
+        (list-push! 2 list)
+        (begin
+          (list-push! 3 list)
+          (begin
+            (assert-equal
+              (let ((tael (make-list)))
+                (begin
+                  (list-push! 1 tael)
+                  (begin
+                    (list-push! 2 tael)
+                    (begin (list-push! 3 tael) tael))))
+              list)
+            (begin
               (assert-equal
-                (@let1 tael (make-list)
-                  (@begin1 (list-push! 1 tael)
-                    (@begin1 (list-push! 2 tael)
-                      (@begin1 (list-push! 3 tael) tael))))
-                list)
-            (@begin1
+                (let ((tael (make-list)))
+                  (begin
+                    (list-push! 1 tael)
+                    (begin
+                      (list-push! 2 tael)
+                      (begin (list-push! 3 tael) tael))))
+                (let ((tael (make-list)))
+                  (begin
+                    (list-push! 1 tael)
+                    (begin
+                      (list-push! 2 tael)
+                      (begin (list-push! 3 tael) tael)))))
+              (begin
                 (assert-equal
-                  (@let1 tael (make-list)
-                    (@begin1 (list-push! 1 tael)
-                      (@begin1 (list-push! 2 tael)
-                        (@begin1 (list-push! 3 tael) tael))))
-                  (@let1 tael (make-list)
-                    (@begin1 (list-push! 1 tael)
-                      (@begin1 (list-push! 2 tael)
-                        (@begin1 (list-push! 3 tael) tael)))))
-              (@begin1
+                  (let ((tael (make-list)))
+                    (begin
+                      (list-push! 'a tael)
+                      (begin
+                        (list-push! 'b tael)
+                        (begin (list-push! 'c tael) tael))))
+                  (let ((tael (make-list)))
+                    (begin
+                      (list-push! 'a tael)
+                      (begin
+                        (list-push! 'b tael)
+                        (begin (list-push! 'c tael) tael)))))
+                (begin
                   (assert-equal
-                    (@let1 tael (make-list)
-                      (@begin1 (list-push! 'a tael)
-                        (@begin1 (list-push! 'b tael)
-                          (@begin1 (list-push! 'c tael) tael))))
-                    (@let1 tael (make-list)
-                      (@begin1 (list-push! 'a tael)
-                        (@begin1 (list-push! 'b tael)
-                          (@begin1 (list-push! 'c tael) tael)))))
-                (@begin1
+                    3
+                    (list-length
+                     (let ((tael (make-list)))
+                       (begin
+                         (list-push! 1 tael)
+                         (begin
+                           (list-push! 2 tael)
+                           (begin (list-push! 3 tael) tael))))))
+                  (begin
                     (assert-equal
-                      3
+                      0
                       (list-length
-                       (@let1 tael (make-list)
-                         (@begin1 (list-push! 1 tael)
-                           (@begin1 (list-push! 2 tael)
-                             (@begin1 (list-push! 3 tael) tael))))))
-                  (@begin1
-                      (assert-equal
-                        0
-                        (list-length
-                         (@let1 tael (make-list) tael)))
+                       (let ((tael (make-list))) tael)))
                     (assert
-                      (list-empty? (@let1 tael (make-list) tael)))))))))))))
+                      (list-empty?
+                       (let ((tael (make-list))) tael)))))))))))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (@let1 list₁ (make-list)
-    (@begin1 (list-push! 1 list₁)
-      (@begin1 (list-push! 2 list₁)
-        (@begin1 (list-push! 3 list₁)
-          (@begin1
+  (let ((list₁ (make-list)))
+    (begin
+      (list-push! 1 list₁)
+      (begin
+        (list-push! 2 list₁)
+        (begin
+          (list-push! 3 list₁)
+          (begin
+            (assert-equal
+              (let ((tael₁ (make-list)))
+                (begin
+                  (list-push! 1 tael₁)
+                  (begin
+                    (list-push! 2 tael₁)
+                    (begin (list-push! 3 tael₁) tael₁))))
+              list₁)
+            (begin
               (assert-equal
-                (@let1 tael₁ (make-list)
-                  (@begin1 (list-push! 1 tael₁)
-                    (@begin1 (list-push! 2 tael₁)
-                      (@begin1 (list-push! 3 tael₁) tael₁))))
-                list₁)
-            (@begin1
+                (let ((tael₁ (make-list)))
+                  (begin
+                    (list-push! 1 tael₁)
+                    (begin
+                      (list-push! 2 tael₁)
+                      (begin (list-push! 3 tael₁) tael₁))))
+                (let ((tael₁ (make-list)))
+                  (begin
+                    (list-push! 1 tael₁)
+                    (begin
+                      (list-push! 2 tael₁)
+                      (begin (list-push! 3 tael₁) tael₁)))))
+              (begin
                 (assert-equal
-                  (@let1 tael₁ (make-list)
-                    (@begin1 (list-push! 1 tael₁)
-                      (@begin1 (list-push! 2 tael₁)
-                        (@begin1 (list-push! 3 tael₁) tael₁))))
-                  (@let1 tael₁ (make-list)
-                    (@begin1 (list-push! 1 tael₁)
-                      (@begin1 (list-push! 2 tael₁)
-                        (@begin1 (list-push! 3 tael₁) tael₁)))))
-              (@begin1
+                  (let ((tael₁ (make-list)))
+                    (begin
+                      (list-push! 'a tael₁)
+                      (begin
+                        (list-push! 'b tael₁)
+                        (begin (list-push! 'c tael₁) tael₁))))
+                  (let ((tael₁ (make-list)))
+                    (begin
+                      (list-push! 'a tael₁)
+                      (begin
+                        (list-push! 'b tael₁)
+                        (begin (list-push! 'c tael₁) tael₁)))))
+                (begin
                   (assert-equal
-                    (@let1 tael₁ (make-list)
-                      (@begin1 (list-push! 'a tael₁)
-                        (@begin1 (list-push! 'b tael₁)
-                          (@begin1 (list-push! 'c tael₁) tael₁))))
-                    (@let1 tael₁ (make-list)
-                      (@begin1 (list-push! 'a tael₁)
-                        (@begin1 (list-push! 'b tael₁)
-                          (@begin1 (list-push! 'c tael₁) tael₁)))))
-                (@begin1
+                    3
+                    (list-length
+                     (let ((tael₁ (make-list)))
+                       (begin
+                         (list-push! 1 tael₁)
+                         (begin
+                           (list-push! 2 tael₁)
+                           (begin (list-push! 3 tael₁) tael₁))))))
+                  (begin
                     (assert-equal
-                      3
+                      0
                       (list-length
-                       (@let1 tael₁ (make-list)
-                         (@begin1 (list-push! 1 tael₁)
-                           (@begin1 (list-push! 2 tael₁)
-                             (@begin1 (list-push! 3 tael₁)
-                               tael₁))))))
-                  (@begin1
-                      (assert-equal
-                        0
-                        (list-length
-                         (@let1 tael₁ (make-list) tael₁)))
+                       (let ((tael₁ (make-list))) tael₁)))
                     (assert
                       (list-empty?
-                       (@let1 tael₁ (make-list) tael₁)))))))))))))
+                       (let ((tael₁ (make-list))) tael₁)))))))))))))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  (@let1 list₁ ((@primitive make-list 0))
-    (@begin1 ((@primitive list-push! 2) 1 list₁)
-      (@begin1 ((@primitive list-push! 2) 2 list₁)
-        (@begin1 ((@primitive list-push! 2) 3 list₁)
-          (@begin1
+  (let ((list₁ ((@primitive make-list 0))))
+    (begin
+      ((@primitive list-push! 2) 1 list₁)
+      (begin
+        ((@primitive list-push! 2) 2 list₁)
+        (begin
+          ((@primitive list-push! 2) 3 list₁)
+          (begin
+            ((@primitive assert-equal 2)
+             (let ((tael₁ ((@primitive make-list 0))))
+               (begin
+                 ((@primitive list-push! 2) 1 tael₁)
+                 (begin
+                   ((@primitive list-push! 2) 2 tael₁)
+                   (begin
+                     ((@primitive list-push! 2) 3 tael₁)
+                     tael₁))))
+             list₁)
+            (begin
               ((@primitive assert-equal 2)
-               (@let1 tael₁ ((@primitive make-list 0))
-                 (@begin1 ((@primitive list-push! 2) 1 tael₁)
-                   (@begin1 ((@primitive list-push! 2) 2 tael₁)
-                     (@begin1
-                         ((@primitive list-push! 2) 3 tael₁)
+               (let ((tael₁ ((@primitive make-list 0))))
+                 (begin
+                   ((@primitive list-push! 2) 1 tael₁)
+                   (begin
+                     ((@primitive list-push! 2) 2 tael₁)
+                     (begin
+                       ((@primitive list-push! 2) 3 tael₁)
                        tael₁))))
-               list₁)
-            (@begin1
+               (let ((tael₁ ((@primitive make-list 0))))
+                 (begin
+                   ((@primitive list-push! 2) 1 tael₁)
+                   (begin
+                     ((@primitive list-push! 2) 2 tael₁)
+                     (begin
+                       ((@primitive list-push! 2) 3 tael₁)
+                       tael₁)))))
+              (begin
                 ((@primitive assert-equal 2)
-                 (@let1 tael₁ ((@primitive make-list 0))
-                   (@begin1 ((@primitive list-push! 2) 1 tael₁)
-                     (@begin1
-                         ((@primitive list-push! 2) 2 tael₁)
-                       (@begin1
-                           ((@primitive list-push! 2) 3 tael₁)
+                 (let ((tael₁ ((@primitive make-list 0))))
+                   (begin
+                     ((@primitive list-push! 2) 'a tael₁)
+                     (begin
+                       ((@primitive list-push! 2) 'b tael₁)
+                       (begin
+                         ((@primitive list-push! 2) 'c tael₁)
                          tael₁))))
-                 (@let1 tael₁ ((@primitive make-list 0))
-                   (@begin1 ((@primitive list-push! 2) 1 tael₁)
-                     (@begin1
-                         ((@primitive list-push! 2) 2 tael₁)
-                       (@begin1
-                           ((@primitive list-push! 2) 3 tael₁)
+                 (let ((tael₁ ((@primitive make-list 0))))
+                   (begin
+                     ((@primitive list-push! 2) 'a tael₁)
+                     (begin
+                       ((@primitive list-push! 2) 'b tael₁)
+                       (begin
+                         ((@primitive list-push! 2) 'c tael₁)
                          tael₁)))))
-              (@begin1
+                (begin
                   ((@primitive assert-equal 2)
-                   (@let1 tael₁ ((@primitive make-list 0))
-                     (@begin1
-                         ((@primitive list-push! 2) 'a tael₁)
-                       (@begin1
-                           ((@primitive list-push! 2) 'b tael₁)
-                         (@begin1
-                             ((@primitive list-push! 2) 'c tael₁)
-                           tael₁))))
-                   (@let1 tael₁ ((@primitive make-list 0))
-                     (@begin1
-                         ((@primitive list-push! 2) 'a tael₁)
-                       (@begin1
-                           ((@primitive list-push! 2) 'b tael₁)
-                         (@begin1
-                             ((@primitive list-push! 2) 'c tael₁)
-                           tael₁)))))
-                (@begin1
+                   3
+                   ((@primitive list-length 1)
+                    (let ((tael₁ ((@primitive make-list 0))))
+                      (begin
+                        ((@primitive list-push! 2) 1 tael₁)
+                        (begin
+                          ((@primitive list-push! 2) 2 tael₁)
+                          (begin
+                            ((@primitive list-push! 2) 3 tael₁)
+                            tael₁))))))
+                  (begin
                     ((@primitive assert-equal 2)
-                     3
+                     0
                      ((@primitive list-length 1)
-                      (@let1 tael₁ ((@primitive make-list 0))
-                        (@begin1
-                            ((@primitive list-push! 2) 1 tael₁)
-                          (@begin1
-                              ((@primitive list-push! 2) 2 tael₁)
-                            (@begin1
-                                ((@primitive list-push! 2)
-                                 3
-                                 tael₁)
-                              tael₁))))))
-                  (@begin1
-                      ((@primitive assert-equal 2)
-                       0
-                       ((@primitive list-length 1)
-                        (@let1 tael₁ ((@primitive make-list 0))
-                          tael₁)))
+                      (let ((tael₁ ((@primitive make-list 0))))
+                        tael₁)))
                     ((@primitive assert 1)
                      ((@primitive list-empty? 1)
-                      (@let1 tael₁ ((@primitive make-list 0))
+                      (let ((tael₁ ((@primitive make-list 0))))
                         tael₁)))))))))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (@let1 list₁ ((@primitive make-list 0))
-    (@begin1 ((@primitive list-push! 2) 1 list₁)
-      (@begin1 ((@primitive list-push! 2) 2 list₁)
-        (@begin1 ((@primitive list-push! 2) 3 list₁)
-          (@begin1
+  (let ((list₁ ((@primitive make-list 0))))
+    (begin
+      ((@primitive list-push! 2) 1 list₁)
+      (begin
+        ((@primitive list-push! 2) 2 list₁)
+        (begin
+          ((@primitive list-push! 2) 3 list₁)
+          (begin
+            ((@primitive assert-equal 2)
+             (let ((tael₁ ((@primitive make-list 0))))
+               (begin
+                 ((@primitive list-push! 2) 1 tael₁)
+                 (begin
+                   ((@primitive list-push! 2) 2 tael₁)
+                   (begin
+                     ((@primitive list-push! 2) 3 tael₁)
+                     tael₁))))
+             list₁)
+            (begin
               ((@primitive assert-equal 2)
-               (@let1 tael₁ ((@primitive make-list 0))
-                 (@begin1 ((@primitive list-push! 2) 1 tael₁)
-                   (@begin1 ((@primitive list-push! 2) 2 tael₁)
-                     (@begin1
-                         ((@primitive list-push! 2) 3 tael₁)
+               (let ((tael₁ ((@primitive make-list 0))))
+                 (begin
+                   ((@primitive list-push! 2) 1 tael₁)
+                   (begin
+                     ((@primitive list-push! 2) 2 tael₁)
+                     (begin
+                       ((@primitive list-push! 2) 3 tael₁)
                        tael₁))))
-               list₁)
-            (@begin1
+               (let ((tael₁ ((@primitive make-list 0))))
+                 (begin
+                   ((@primitive list-push! 2) 1 tael₁)
+                   (begin
+                     ((@primitive list-push! 2) 2 tael₁)
+                     (begin
+                       ((@primitive list-push! 2) 3 tael₁)
+                       tael₁)))))
+              (begin
                 ((@primitive assert-equal 2)
-                 (@let1 tael₁ ((@primitive make-list 0))
-                   (@begin1 ((@primitive list-push! 2) 1 tael₁)
-                     (@begin1
-                         ((@primitive list-push! 2) 2 tael₁)
-                       (@begin1
-                           ((@primitive list-push! 2) 3 tael₁)
+                 (let ((tael₁ ((@primitive make-list 0))))
+                   (begin
+                     ((@primitive list-push! 2) 'a tael₁)
+                     (begin
+                       ((@primitive list-push! 2) 'b tael₁)
+                       (begin
+                         ((@primitive list-push! 2) 'c tael₁)
                          tael₁))))
-                 (@let1 tael₁ ((@primitive make-list 0))
-                   (@begin1 ((@primitive list-push! 2) 1 tael₁)
-                     (@begin1
-                         ((@primitive list-push! 2) 2 tael₁)
-                       (@begin1
-                           ((@primitive list-push! 2) 3 tael₁)
+                 (let ((tael₁ ((@primitive make-list 0))))
+                   (begin
+                     ((@primitive list-push! 2) 'a tael₁)
+                     (begin
+                       ((@primitive list-push! 2) 'b tael₁)
+                       (begin
+                         ((@primitive list-push! 2) 'c tael₁)
                          tael₁)))))
-              (@begin1
+                (begin
                   ((@primitive assert-equal 2)
-                   (@let1 tael₁ ((@primitive make-list 0))
-                     (@begin1
-                         ((@primitive list-push! 2) 'a tael₁)
-                       (@begin1
-                           ((@primitive list-push! 2) 'b tael₁)
-                         (@begin1
-                             ((@primitive list-push! 2) 'c tael₁)
-                           tael₁))))
-                   (@let1 tael₁ ((@primitive make-list 0))
-                     (@begin1
-                         ((@primitive list-push! 2) 'a tael₁)
-                       (@begin1
-                           ((@primitive list-push! 2) 'b tael₁)
-                         (@begin1
-                             ((@primitive list-push! 2) 'c tael₁)
-                           tael₁)))))
-                (@begin1
+                   3
+                   ((@primitive list-length 1)
+                    (let ((tael₁ ((@primitive make-list 0))))
+                      (begin
+                        ((@primitive list-push! 2) 1 tael₁)
+                        (begin
+                          ((@primitive list-push! 2) 2 tael₁)
+                          (begin
+                            ((@primitive list-push! 2) 3 tael₁)
+                            tael₁))))))
+                  (begin
                     ((@primitive assert-equal 2)
-                     3
+                     0
                      ((@primitive list-length 1)
-                      (@let1 tael₁ ((@primitive make-list 0))
-                        (@begin1
-                            ((@primitive list-push! 2) 1 tael₁)
-                          (@begin1
-                              ((@primitive list-push! 2) 2 tael₁)
-                            (@begin1
-                                ((@primitive list-push! 2)
-                                 3
-                                 tael₁)
-                              tael₁))))))
-                  (@begin1
-                      ((@primitive assert-equal 2)
-                       0
-                       ((@primitive list-length 1)
-                        (@let1 tael₁ ((@primitive make-list 0))
-                          tael₁)))
+                      (let ((tael₁ ((@primitive make-list 0))))
+                        tael₁)))
                     ((@primitive assert 1)
                      ((@primitive list-empty? 1)
-                      (@let1 tael₁ ((@primitive make-list 0))
+                      (let ((tael₁ ((@primitive make-list 0))))
                         tael₁)))))))))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 list₁ ((@primitive make-list 0))
-    (@begin1 ((@primitive list-push! 2) 1 list₁)
-      (@begin1 ((@primitive list-push! 2) 2 list₁)
-        (@begin1 ((@primitive list-push! 2) 3 list₁)
-          (@begin1
-              (@let1 tael₁ ((@primitive make-list 0))
-                (@begin1 ((@primitive list-push! 2) 1 tael₁)
-                  (@begin1 ((@primitive list-push! 2) 2 tael₁)
-                    (@begin1 ((@primitive list-push! 2) 3 tael₁)
-                      ((@primitive assert-equal 2) tael₁ list₁)))))
-            (@begin1
-                (@let1 tael₁ ((@primitive make-list 0))
-                  (@begin1 ((@primitive list-push! 2) 1 tael₁)
-                    (@begin1 ((@primitive list-push! 2) 2 tael₁)
-                      (@begin1
-                          ((@primitive list-push! 2) 3 tael₁)
-                        (@let1 tael₁ ((@primitive make-list 0))
-                          (@begin1
-                              ((@primitive list-push! 2) 1 tael₁)
-                            (@begin1
+  (let ((list₁ ((@primitive make-list 0))))
+    (begin
+      ((@primitive list-push! 2) 1 list₁)
+      (begin
+        ((@primitive list-push! 2) 2 list₁)
+        (begin
+          ((@primitive list-push! 2) 3 list₁)
+          (begin
+            (let ((tael₁ ((@primitive make-list 0))))
+              (begin
+                ((@primitive list-push! 2) 1 tael₁)
+                (begin
+                  ((@primitive list-push! 2) 2 tael₁)
+                  (begin
+                    ((@primitive list-push! 2) 3 tael₁)
+                    ((@primitive assert-equal 2) tael₁ list₁)))))
+            (begin
+              (let ((tael₁ ((@primitive make-list 0))))
+                (begin
+                  ((@primitive list-push! 2) 1 tael₁)
+                  (begin
+                    ((@primitive list-push! 2) 2 tael₁)
+                    (begin
+                      ((@primitive list-push! 2) 3 tael₁)
+                      (let ((tael₁ ((@primitive make-list 0))))
+                        (begin
+                          ((@primitive list-push! 2) 1 tael₁)
+                          (begin
+                            ((@primitive list-push! 2) 2 tael₁)
+                            (begin
+                              ((@primitive list-push! 2) 3 tael₁)
+                              ((@primitive assert-equal 2)
+                               tael₁
+                               tael₁)))))))))
+              (begin
+                (let ((tael₁ ((@primitive make-list 0))))
+                  (begin
+                    ((@primitive list-push! 2) 'a tael₁)
+                    (begin
+                      ((@primitive list-push! 2) 'b tael₁)
+                      (begin
+                        ((@primitive list-push! 2) 'c tael₁)
+                        (let
+                            ((tael₁ ((@primitive make-list 0))))
+                          (begin
+                            ((@primitive list-push! 2) 'a tael₁)
+                            (begin
+                              ((@primitive list-push! 2)
+                               'b
+                               tael₁)
+                              (begin
                                 ((@primitive list-push! 2)
-                                 2
+                                 'c
                                  tael₁)
-                              (@begin1
-                                  ((@primitive list-push! 2)
-                                   3
-                                   tael₁)
                                 ((@primitive assert-equal 2)
                                  tael₁
                                  tael₁)))))))))
-              (@begin1
-                  (@let1 tael₁ ((@primitive make-list 0))
-                    (@begin1
-                        ((@primitive list-push! 2) 'a tael₁)
-                      (@begin1
-                          ((@primitive list-push! 2) 'b tael₁)
-                        (@begin1
-                            ((@primitive list-push! 2) 'c tael₁)
-                          (@let1 tael₁
-                              ((@primitive make-list 0))
-                            (@begin1
-                                ((@primitive list-push! 2)
-                                 'a
-                                 tael₁)
-                              (@begin1
-                                  ((@primitive list-push! 2)
-                                   'b
-                                   tael₁)
-                                (@begin1
-                                    ((@primitive list-push! 2)
-                                     'c
-                                     tael₁)
-                                  ((@primitive assert-equal 2)
-                                   tael₁
-                                   tael₁)))))))))
-                (@begin1
-                    (@let1 tael₁ ((@primitive make-list 0))
-                      (@begin1
-                          ((@primitive list-push! 2) 1 tael₁)
-                        (@begin1
-                            ((@primitive list-push! 2) 2 tael₁)
-                          (@begin1
-                              ((@primitive list-push! 2) 3 tael₁)
-                            (@let1 _₁
-                                ((@primitive list-length 1)
-                                 tael₁)
-                              ((@primitive assert-equal 2) 3 _₁))))))
-                  (@begin1
-                      (@let1 tael₁ ((@primitive make-list 0))
-                        (@let1 _₂
-                            ((@primitive list-length 1) tael₁)
-                          ((@primitive assert-equal 2) 0 _₂)))
-                    (@let1 tael₁ ((@primitive make-list 0))
-                      (@let1 _₃
-                          ((@primitive list-empty? 1) tael₁)
+                (begin
+                  (let ((tael₁ ((@primitive make-list 0))))
+                    (begin
+                      ((@primitive list-push! 2) 1 tael₁)
+                      (begin
+                        ((@primitive list-push! 2) 2 tael₁)
+                        (begin
+                          ((@primitive list-push! 2) 3 tael₁)
+                          (let
+                              ((_₁ ((@primitive list-length 1)
+                                    tael₁)))
+                            ((@primitive assert-equal 2) 3 _₁))))))
+                  (begin
+                    (let ((tael₁ ((@primitive make-list 0))))
+                      (let
+                          ((_₂ ((@primitive list-length 1) tael₁)))
+                        ((@primitive assert-equal 2) 0 _₂)))
+                    (let ((tael₁ ((@primitive make-list 0))))
+                      (let
+                          ((_₃ ((@primitive list-empty? 1) tael₁)))
                         ((@primitive assert 1) _₃)))))))))))))
 

@@ -5,75 +5,93 @@
 ;;; ShrinkPass
 
 (define (main)
-  (@begin1
-      (println
-       (@let1 set (make-set)
-         (@begin1 (set-add! 1 set)
-           (@begin1 (set-add! 2 set)
-             (@begin1 (set-add! 3 set) set)))))
+  (begin
     (println
-     (@let1 set (make-set)
-       (@begin1 (set-add! 1 set)
-         (@begin1 (set-add! 2 set)
-           (@begin1 (set-add! 3 set) set)))))))
+     (let ((set (make-set)))
+       (begin
+         (set-add! 1 set)
+         (begin (set-add! 2 set) (begin (set-add! 3 set) set)))))
+    (println
+     (let ((set (make-set)))
+       (begin
+         (set-add! 1 set)
+         (begin (set-add! 2 set) (begin (set-add! 3 set) set)))))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (@begin1
-      (println
-       (@let1 set₁ (make-set)
-         (@begin1 (set-add! 1 set₁)
-           (@begin1 (set-add! 2 set₁)
-             (@begin1 (set-add! 3 set₁) set₁)))))
+  (begin
     (println
-     (@let1 set₁ (make-set)
-       (@begin1 (set-add! 1 set₁)
-         (@begin1 (set-add! 2 set₁)
-           (@begin1 (set-add! 3 set₁) set₁)))))))
+     (let ((set₁ (make-set)))
+       (begin
+         (set-add! 1 set₁)
+         (begin
+           (set-add! 2 set₁)
+           (begin (set-add! 3 set₁) set₁)))))
+    (println
+     (let ((set₁ (make-set)))
+       (begin
+         (set-add! 1 set₁)
+         (begin
+           (set-add! 2 set₁)
+           (begin (set-add! 3 set₁) set₁)))))))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  (@begin1
-      ((@primitive println 1)
-       (@let1 set₁ ((@primitive make-set 0))
-         (@begin1 ((@primitive set-add! 2) 1 set₁)
-           (@begin1 ((@primitive set-add! 2) 2 set₁)
-             (@begin1 ((@primitive set-add! 2) 3 set₁) set₁)))))
+  (begin
     ((@primitive println 1)
-     (@let1 set₁ ((@primitive make-set 0))
-       (@begin1 ((@primitive set-add! 2) 1 set₁)
-         (@begin1 ((@primitive set-add! 2) 2 set₁)
-           (@begin1 ((@primitive set-add! 2) 3 set₁) set₁)))))))
+     (let ((set₁ ((@primitive make-set 0))))
+       (begin
+         ((@primitive set-add! 2) 1 set₁)
+         (begin
+           ((@primitive set-add! 2) 2 set₁)
+           (begin ((@primitive set-add! 2) 3 set₁) set₁)))))
+    ((@primitive println 1)
+     (let ((set₁ ((@primitive make-set 0))))
+       (begin
+         ((@primitive set-add! 2) 1 set₁)
+         (begin
+           ((@primitive set-add! 2) 2 set₁)
+           (begin ((@primitive set-add! 2) 3 set₁) set₁)))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (@begin1
-      ((@primitive println 1)
-       (@let1 set₁ ((@primitive make-set 0))
-         (@begin1 ((@primitive set-add! 2) 1 set₁)
-           (@begin1 ((@primitive set-add! 2) 2 set₁)
-             (@begin1 ((@primitive set-add! 2) 3 set₁) set₁)))))
+  (begin
     ((@primitive println 1)
-     (@let1 set₁ ((@primitive make-set 0))
-       (@begin1 ((@primitive set-add! 2) 1 set₁)
-         (@begin1 ((@primitive set-add! 2) 2 set₁)
-           (@begin1 ((@primitive set-add! 2) 3 set₁) set₁)))))))
+     (let ((set₁ ((@primitive make-set 0))))
+       (begin
+         ((@primitive set-add! 2) 1 set₁)
+         (begin
+           ((@primitive set-add! 2) 2 set₁)
+           (begin ((@primitive set-add! 2) 3 set₁) set₁)))))
+    ((@primitive println 1)
+     (let ((set₁ ((@primitive make-set 0))))
+       (begin
+         ((@primitive set-add! 2) 1 set₁)
+         (begin
+           ((@primitive set-add! 2) 2 set₁)
+           (begin ((@primitive set-add! 2) 3 set₁) set₁)))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@begin1
-      (@let1 set₁ ((@primitive make-set 0))
-        (@begin1 ((@primitive set-add! 2) 1 set₁)
-          (@begin1 ((@primitive set-add! 2) 2 set₁)
-            (@begin1 ((@primitive set-add! 2) 3 set₁)
-              ((@primitive println 1) set₁)))))
-    (@let1 set₁ ((@primitive make-set 0))
-      (@begin1 ((@primitive set-add! 2) 1 set₁)
-        (@begin1 ((@primitive set-add! 2) 2 set₁)
-          (@begin1 ((@primitive set-add! 2) 3 set₁)
+  (begin
+    (let ((set₁ ((@primitive make-set 0))))
+      (begin
+        ((@primitive set-add! 2) 1 set₁)
+        (begin
+          ((@primitive set-add! 2) 2 set₁)
+          (begin
+            ((@primitive set-add! 2) 3 set₁)
+            ((@primitive println 1) set₁)))))
+    (let ((set₁ ((@primitive make-set 0))))
+      (begin
+        ((@primitive set-add! 2) 1 set₁)
+        (begin
+          ((@primitive set-add! 2) 2 set₁)
+          (begin
+            ((@primitive set-add! 2) 3 set₁)
             ((@primitive println 1) set₁)))))))
 

@@ -23,6 +23,6 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ ((@primitive iadd 2) 20 22)
+  (let ((_₁ ((@primitive iadd 2) 20 22)))
     ((@primitive println 1) _₁)))
 

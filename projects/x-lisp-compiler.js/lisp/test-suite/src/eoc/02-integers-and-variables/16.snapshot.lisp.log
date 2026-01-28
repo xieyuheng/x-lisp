@@ -23,6 +23,6 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ ((@primitive isub 2) 50 8)
+  (let ((_₁ ((@primitive isub 2) 50 8)))
     ((@primitive println 1) _₁)))
 

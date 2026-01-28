@@ -30,6 +30,6 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ ((@primitive string-append 2) "abc" "def")
+  (let ((_₁ ((@primitive string-append 2) "abc" "def")))
     ((@primitive assert-equal 2) "abcdef" _₁)))
 

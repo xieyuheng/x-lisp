@@ -5,31 +5,31 @@
 ;;; ShrinkPass
 
 (define (main)
-  (assert (hash-empty? (@let1 hash (make-hash) hash))))
+  (assert (hash-empty? (let ((hash (make-hash))) hash))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (assert (hash-empty? (@let1 hash₁ (make-hash) hash₁))))
+  (assert (hash-empty? (let ((hash₁ (make-hash))) hash₁))))
 
 ;;; RevealGlobalPass
 
 (define (main)
   ((@primitive assert 1)
    ((@primitive hash-empty? 1)
-    (@let1 hash₁ ((@primitive make-hash 0)) hash₁))))
+    (let ((hash₁ ((@primitive make-hash 0)))) hash₁))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@primitive assert 1)
    ((@primitive hash-empty? 1)
-    (@let1 hash₁ ((@primitive make-hash 0)) hash₁))))
+    (let ((hash₁ ((@primitive make-hash 0)))) hash₁))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 hash₁ ((@primitive make-hash 0))
-    (@let1 _₁ ((@primitive hash-empty? 1) hash₁)
+  (let ((hash₁ ((@primitive make-hash 0))))
+    (let ((_₁ ((@primitive hash-empty? 1) hash₁)))
       ((@primitive assert 1) _₁))))
 

@@ -24,7 +24,8 @@
 (define (identity x) x)
 
 (define (main)
-  (@let1 f identity (@let1 g (dup identity) (println (g f f)))))
+  (let ((f identity))
+    (let ((g (dup identity))) (println (g f f)))))
 
 ;;; UniquifyPass
 
@@ -37,8 +38,8 @@
 (define (identity x) x)
 
 (define (main)
-  (@let1 f₁ identity
-    (@let1 g₁ (dup identity) (println (g₁ f₁ f₁)))))
+  (let ((f₁ identity))
+    (let ((g₁ (dup identity))) (println (g₁ f₁ f₁)))))
 
 ;;; RevealGlobalPass
 
@@ -51,8 +52,8 @@
 (define (identity x) x)
 
 (define (main)
-  (@let1 f₁ (@function identity 1)
-    (@let1 g₁ ((@function dup 1) (@function identity 1))
+  (let ((f₁ (@function identity 1)))
+    (let ((g₁ ((@function dup 1) (@function identity 1))))
       ((@primitive println 1) (g₁ f₁ f₁)))))
 
 ;;; LiftLambdaPass
@@ -72,8 +73,8 @@
 (define (identity x) x)
 
 (define (main)
-  (@let1 f₁ (@function identity 1)
-    (@let1 g₁ ((@function dup 1) (@function identity 1))
+  (let ((f₁ (@function identity 1)))
+    (let ((g₁ ((@function dup 1) (@function identity 1))))
       ((@primitive println 1) (g₁ f₁ f₁)))))
 
 ;;; UnnestOperandPass
@@ -93,7 +94,7 @@
 (define (identity x) x)
 
 (define (main)
-  (@let1 f₁ (@function identity 1)
-    (@let1 g₁ ((@function dup 1) (@function identity 1))
-      (@let1 _₁ (g₁ f₁ f₁) ((@primitive println 1) _₁)))))
+  (let ((f₁ (@function identity 1)))
+    (let ((g₁ ((@function dup 1) (@function identity 1))))
+      (let ((_₁ (g₁ f₁ f₁))) ((@primitive println 1) _₁)))))
 
