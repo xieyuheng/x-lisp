@@ -427,3 +427,169 @@
                                   tael₁)
                                tael₁))))))))))))))))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 list₁ ((@primitive-function-ref make-list 0))
+    (@begin1
+        ((@primitive-function-ref list-push! 2) 1 list₁)
+      (@begin1
+          ((@primitive-function-ref list-push! 2) 2 list₁)
+        (@begin1
+            ((@primitive-function-ref list-push! 2) 3 list₁)
+          (@begin1
+              ((@primitive-function-ref println 1) list₁)
+            (@begin1
+                (@let1 tael₁
+                    ((@primitive-function-ref make-list 0))
+                  (@begin1
+                      ((@primitive-function-ref list-push! 2)
+                       1
+                       tael₁)
+                    (@begin1
+                        ((@primitive-function-ref
+                          list-push!
+                          2)
+                         2
+                         tael₁)
+                      (@begin1
+                          ((@primitive-function-ref
+                            list-push!
+                            2)
+                           3
+                           tael₁)
+                        ((@primitive-function-ref println 1)
+                         tael₁)))))
+              (@begin1
+                  (@let1 tael₁
+                      ((@primitive-function-ref make-list 0))
+                    (@begin1
+                        ((@primitive-function-ref
+                          list-push!
+                          2)
+                         1
+                         tael₁)
+                      (@begin1
+                          ((@primitive-function-ref
+                            list-push!
+                            2)
+                           2
+                           tael₁)
+                        (@begin1
+                            ((@primitive-function-ref
+                              list-push!
+                              2)
+                             3
+                             tael₁)
+                          ((@primitive-function-ref
+                            println
+                            1)
+                           tael₁)))))
+                (@begin1
+                    (@let1 tael₁
+                        ((@primitive-function-ref
+                          make-list
+                          0))
+                      (@begin1
+                          ((@primitive-function-ref
+                            list-push!
+                            2)
+                           1
+                           tael₁)
+                        (@begin1
+                            ((@primitive-function-ref
+                              list-push!
+                              2)
+                             2
+                             tael₁)
+                          (@begin1
+                              ((@primitive-function-ref
+                                list-push!
+                                2)
+                               3
+                               tael₁)
+                            ((@primitive-function-ref
+                              println
+                              1)
+                             tael₁)))))
+                  (@begin1
+                      (@let1 tael₁
+                          ((@primitive-function-ref
+                            make-list
+                            0))
+                        (@begin1
+                            ((@primitive-function-ref
+                              list-push!
+                              2)
+                             1
+                             tael₁)
+                          (@begin1
+                              ((@primitive-function-ref
+                                list-push!
+                                2)
+                               2
+                               tael₁)
+                            (@begin1
+                                ((@primitive-function-ref
+                                  list-push!
+                                  2)
+                                 3
+                                 tael₁)
+                              ((@primitive-function-ref
+                                println
+                                1)
+                               tael₁)))))
+                    (@begin1
+                        (@let1 tael₁
+                            ((@primitive-function-ref
+                              make-list
+                              0))
+                          (@begin1
+                              ((@primitive-function-ref
+                                list-push!
+                                2)
+                               'a
+                               tael₁)
+                            (@begin1
+                                ((@primitive-function-ref
+                                  list-push!
+                                  2)
+                                 'b
+                                 tael₁)
+                              (@begin1
+                                  ((@primitive-function-ref
+                                    list-push!
+                                    2)
+                                   'c
+                                   tael₁)
+                                ((@primitive-function-ref
+                                  println
+                                  1)
+                                 tael₁)))))
+                      (@let1 tael₁
+                          ((@primitive-function-ref
+                            make-list
+                            0))
+                        (@begin1
+                            ((@primitive-function-ref
+                              list-push!
+                              2)
+                             'a
+                             tael₁)
+                          (@begin1
+                              ((@primitive-function-ref
+                                list-push!
+                                2)
+                               'b
+                               tael₁)
+                            (@begin1
+                                ((@primitive-function-ref
+                                  list-push!
+                                  2)
+                                 'c
+                                 tael₁)
+                              ((@primitive-function-ref
+                                println
+                                1)
+                               tael₁))))))))))))))))
+

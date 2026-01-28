@@ -48,3 +48,16 @@
   (@begin1 (assert-equal 1 ((@function-ref gcd 2) 13 7))
     (assert-equal 4 ((@function-ref gcd 2) 12 8))))
 
+;;; UnnestOperandPass
+
+(define (gcd a b)
+  (@let1 _₁ ((@primitive-function-ref equal? 2) b 0)
+    (if _₁
+      a
+      (@let1 _₂ ((@primitive-function-ref imod 2) a b)
+        ((@function-ref gcd 2) b _₂)))))
+
+(define (main)
+  (@begin1 (assert-equal 1 ((@function-ref gcd 2) 13 7))
+    (assert-equal 4 ((@function-ref gcd 2) 12 8))))
+

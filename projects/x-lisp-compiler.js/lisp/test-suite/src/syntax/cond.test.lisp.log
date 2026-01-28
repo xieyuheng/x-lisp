@@ -74,3 +74,21 @@
             (assert (@primitive-constant-ref true))
             (assert #f)))))))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (@begin1 (assert-equal 1 (if #t 1 (if #t 2 (assert #f))))
+    (@begin1
+        (assert-equal 2 (if #f 1 (if #t 2 (assert #f))))
+      (@begin1
+          (if #t
+            (assert (@primitive-constant-ref true))
+            (if #t
+              (assert (@primitive-constant-ref false))
+              (assert #f)))
+        (if #f
+          (assert (@primitive-constant-ref false))
+          (if #t
+            (assert (@primitive-constant-ref true))
+            (assert #f)))))))
+

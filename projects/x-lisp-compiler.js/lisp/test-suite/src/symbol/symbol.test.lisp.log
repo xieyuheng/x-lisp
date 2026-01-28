@@ -27,3 +27,10 @@
     'abcdef
     ((@primitive-function-ref symbol-append 2) 'abc 'def)))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (assert-equal
+    'abcdef
+    ((@primitive-function-ref symbol-append 2) 'abc 'def)))
+

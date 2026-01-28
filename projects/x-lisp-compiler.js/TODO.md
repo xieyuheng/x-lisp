@@ -1,6 +1,6 @@
 # compile
 
-[pass] compile x-lisp to basic-lisp
+[pass] 030-ExplicateControlPass
 
 # cond
 

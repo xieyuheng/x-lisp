@@ -4,18 +4,20 @@ import * as L from "../lisp/index.ts"
 import * as Passes from "../passes/index.ts"
 
 export function compileLispToPassLog(mod: L.Mod, logFile?: string): void {
-  logXMod("Input", mod, logFile)
+  logLispMod("Input", mod, logFile)
   Passes.ShrinkPass(mod)
-  logXMod("ShrinkPass", mod, logFile)
+  logLispMod("ShrinkPass", mod, logFile)
   Passes.UniquifyPass(mod)
-  logXMod("UniquifyPass", mod, logFile)
+  logLispMod("UniquifyPass", mod, logFile)
   Passes.RevealGlobalPass(mod)
-  logXMod("RevealGlobalPass", mod, logFile)
+  logLispMod("RevealGlobalPass", mod, logFile)
   Passes.LiftLambdaPass(mod)
-  logXMod("LiftLambdaPass", mod, logFile)
+  logLispMod("LiftLambdaPass", mod, logFile)
+  Passes.UnnestOperandPass(mod)
+  logLispMod("UnnestOperandPass", mod, logFile)
 }
 
-function logXMod(tag: string, mod: L.Mod, logFile?: string): void {
+function logLispMod(tag: string, mod: L.Mod, logFile?: string): void {
   logCode(tag, L.prettyMod(globals.width, mod), logFile)
 }
 

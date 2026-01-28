@@ -47,7 +47,27 @@ x-lisp 的首要目标是加快新语言开发的速度。
 - [x] x-lisp language design
 - [x] x-lisp interpreter
 
-# 关卡 1 -- 作为编译对象的中间语言
+# 关卡 1 -- 初步将 x-lisp 编译到 basic-lisp
+
+范围：
+
+- 由于我们在这个阶段，
+  只需要使所描述的 basic-lisp 语言可以被翻译成 .basic 文件，
+  然后由 basic-lisp.c 来执行。
+  所以可以只描述，而不解析也不运行。
+  不必实现 parse 和 load，
+  也不必实现 basic-lisp 的解释器。
+
+任务：
+
+- [x] 描述 lisp 语言
+- [x] 描述 basic-lisp 语言
+- [x] 将 lisp 的基础部分编译到 basic-lisp
+  - [x] LiftLambdaPass
+  - [x] UnnestOperandPass
+  - [ ] ExplicateControlPass
+
+# 关卡 2 -- 作为编译对象的中间语言
 
 成果：
 
@@ -74,29 +94,6 @@ x-lisp 的首要目标是加快新语言开发的速度。
 - [x] basic-lisp
   - [ ] vm
   - [ ] sexp parser
-
-# 关卡 2 -- 初步将 x-lisp 编译到 basic-lisp
-
-成果：
-
-- 可以利用 basic-lisp 来运行 x-lisp 代码。
-
-范围：
-
-- 由于我们在这个阶段，
-  只需要使所描述的 basic-lisp 语言可以被翻译成 .basic 文件，
-  然后由 basic-lisp.c 来执行。
-  所以可以只描述，而不解析也不运行。
-  不必实现 parse 和 load，
-  也不必实现 basic-lisp 的解释器。
-
-任务：
-
-- [x] 描述 lisp 语言
-- [ ] 描述 basic-lisp 语言
-- [ ] 将 lisp 的基础部分编译到 basic-lisp
-  - [ ] LiftLambdaPass
-  - [ ] ExplicateControlPass
 
 # 关卡 3 -- 将完整的 x-lisp 编译到 basic-lisp
 

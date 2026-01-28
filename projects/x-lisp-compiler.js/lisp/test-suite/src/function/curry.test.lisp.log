@@ -82,3 +82,33 @@
               1
               ((@primitive-function-ref isub 2) 2 1))))))))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (@begin1
+      (assert-equal
+        (@primitive-function-ref iadd 2)
+        (@primitive-function-ref iadd 2))
+    (@begin1
+        (assert-equal
+          ((@primitive-function-ref iadd 2) 1)
+          ((@primitive-function-ref iadd 2) 1))
+      (@begin1
+          (assert-not-equal
+            ((@primitive-function-ref iadd 2) 1)
+            ((@primitive-function-ref iadd 2) 2))
+        (@begin1
+            (assert-equal
+              (@let1 _₁ ((@primitive-function-ref iadd 2) 1)
+                (_₁ 2))
+              ((@primitive-function-ref iadd 2) 1 2))
+          (@begin1
+              (assert-equal
+                1
+                (@let1 _₂
+                    ((@primitive-function-ref isub 2) 2)
+                  (_₂ 1)))
+            (assert-equal
+              1
+              ((@primitive-function-ref isub 2) 2 1))))))))
+

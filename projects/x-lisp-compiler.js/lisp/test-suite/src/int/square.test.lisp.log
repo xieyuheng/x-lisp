@@ -42,3 +42,13 @@
     81
     ((@function-ref square 1) ((@function-ref square 1) 3))))
 
+;;; UnnestOperandPass
+
+(import "square" square)
+
+(define (main)
+  (assert-equal
+    81
+    (@let1 _₁ ((@function-ref square 1) 3)
+      ((@function-ref square 1) _₁))))
+

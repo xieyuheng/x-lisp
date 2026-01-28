@@ -54,3 +54,16 @@
 (define (main)
   ((@primitive-function-ref println 1) (@constant-ref three)))
 
+;;; UnnestOperandPass
+
+(define one 1)
+
+(define two
+  ((@primitive-function-ref iadd 2) 1 (@constant-ref one)))
+
+(define three
+  ((@primitive-function-ref iadd 2) 1 (@constant-ref two)))
+
+(define (main)
+  ((@primitive-function-ref println 1) (@constant-ref three)))
+

@@ -24,3 +24,10 @@
    ((@primitive-function-ref ineg 1)
     ((@primitive-function-ref random-dice 0)))))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 _₁ ((@primitive-function-ref random-dice 0))
+    (@let1 _₂ ((@primitive-function-ref ineg 1) _₁)
+      ((@primitive-function-ref println 1) _₂))))
+

@@ -80,3 +80,27 @@
         ((@function-ref dup 1) (@function-ref identity 1))
       ((@primitive-function-ref println 1) (g₁ f₁ f₁)))))
 
+;;; UnnestOperandPass
+
+(define (swap f x y) (f y x))
+
+(define (drop f) ((@function-ref drop©λ₁ 2) f))
+
+(define (drop©λ₁ f dropped₁)
+  ((@function-ref drop©λ₁©λ₁ 2) f))
+
+(define (drop©λ₁©λ₁ f x₁) (f x₁))
+
+(define (dup f) ((@function-ref dup©λ₁ 2) f))
+
+(define (dup©λ₁ f x₁) (f x₁ x₁))
+
+(define (identity x) x)
+
+(define (main)
+  (@let1 f₁ (@function-ref identity 1)
+    (@let1 g₁
+        ((@function-ref dup 1) (@function-ref identity 1))
+      (@let1 _₁ (g₁ f₁ f₁)
+        ((@primitive-function-ref println 1) _₁)))))
+

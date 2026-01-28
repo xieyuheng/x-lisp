@@ -28,3 +28,10 @@
      (@let1 hash₁ ((@primitive-function-ref make-hash 0))
        hash₁))))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (assert
+    (@let1 hash₁ ((@primitive-function-ref make-hash 0))
+      ((@primitive-function-ref hash-empty? 1) hash₁))))
+

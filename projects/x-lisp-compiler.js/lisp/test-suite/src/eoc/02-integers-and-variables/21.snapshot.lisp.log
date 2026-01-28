@@ -37,3 +37,12 @@
       ((@primitive-function-ref println 1)
        ((@primitive-function-ref iadd 2) x₁ y₁)))))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 y₁ 6
+    (@let1 x₁
+        (@let1 y₂ ((@primitive-function-ref ineg 1) 42) y₂)
+      (@let1 _₁ ((@primitive-function-ref iadd 2) x₁ y₁)
+        ((@primitive-function-ref println 1) _₁)))))
+

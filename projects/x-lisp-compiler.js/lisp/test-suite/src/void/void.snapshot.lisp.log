@@ -22,3 +22,9 @@
   ((@primitive-function-ref println 1)
    (@primitive-constant-ref void)))
 
+;;; UnnestOperandPass
+
+(define (main)
+  ((@primitive-function-ref println 1)
+   (@primitive-constant-ref void)))
+

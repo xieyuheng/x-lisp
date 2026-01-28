@@ -24,3 +24,10 @@
     ((@primitive-function-ref println 1)
      ((@primitive-function-ref iadd 2) 8 x₁))))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 x₁ 4
+    (@let1 _₁ ((@primitive-function-ref iadd 2) 8 x₁)
+      ((@primitive-function-ref println 1) _₁))))
+

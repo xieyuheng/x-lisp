@@ -58,3 +58,18 @@
               ((@primitive-function-ref not 1)
                (if #f #t (if #f #t #f))))))))))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (@begin1 (assert-equal (if #t 1 2) 1)
+    (@begin1 (assert-equal (if #f 1 2) 2)
+      (@begin1 (assert (if #t (if #t #t #f) #f))
+        (@begin1
+            (assert
+              (@let1 _₁ (if #t (if #t #f #f) #f)
+                ((@primitive-function-ref not 1) _₁)))
+          (@begin1 (assert (if #f #t (if #f #t #t)))
+            (assert
+              (@let1 _₂ (if #f #t (if #f #t #f))
+                ((@primitive-function-ref not 1) _₂)))))))))
+

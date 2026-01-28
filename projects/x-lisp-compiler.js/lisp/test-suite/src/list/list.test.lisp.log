@@ -468,3 +468,177 @@
                              0))
                          tael₁)))))))))))))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 list₁ ((@primitive-function-ref make-list 0))
+    (@begin1
+        ((@primitive-function-ref list-push! 2) 1 list₁)
+      (@begin1
+          ((@primitive-function-ref list-push! 2) 2 list₁)
+        (@begin1
+            ((@primitive-function-ref list-push! 2) 3 list₁)
+          (@begin1
+              (assert-equal
+                (@let1 tael₁
+                    ((@primitive-function-ref make-list 0))
+                  (@begin1
+                      ((@primitive-function-ref list-push! 2)
+                       1
+                       tael₁)
+                    (@begin1
+                        ((@primitive-function-ref
+                          list-push!
+                          2)
+                         2
+                         tael₁)
+                      (@begin1
+                          ((@primitive-function-ref
+                            list-push!
+                            2)
+                           3
+                           tael₁)
+                        tael₁))))
+                list₁)
+            (@begin1
+                (assert-equal
+                  (@let1 tael₁
+                      ((@primitive-function-ref make-list 0))
+                    (@begin1
+                        ((@primitive-function-ref
+                          list-push!
+                          2)
+                         1
+                         tael₁)
+                      (@begin1
+                          ((@primitive-function-ref
+                            list-push!
+                            2)
+                           2
+                           tael₁)
+                        (@begin1
+                            ((@primitive-function-ref
+                              list-push!
+                              2)
+                             3
+                             tael₁)
+                          tael₁))))
+                  (@let1 tael₁
+                      ((@primitive-function-ref make-list 0))
+                    (@begin1
+                        ((@primitive-function-ref
+                          list-push!
+                          2)
+                         1
+                         tael₁)
+                      (@begin1
+                          ((@primitive-function-ref
+                            list-push!
+                            2)
+                           2
+                           tael₁)
+                        (@begin1
+                            ((@primitive-function-ref
+                              list-push!
+                              2)
+                             3
+                             tael₁)
+                          tael₁)))))
+              (@begin1
+                  (assert-equal
+                    (@let1 tael₁
+                        ((@primitive-function-ref
+                          make-list
+                          0))
+                      (@begin1
+                          ((@primitive-function-ref
+                            list-push!
+                            2)
+                           'a
+                           tael₁)
+                        (@begin1
+                            ((@primitive-function-ref
+                              list-push!
+                              2)
+                             'b
+                             tael₁)
+                          (@begin1
+                              ((@primitive-function-ref
+                                list-push!
+                                2)
+                               'c
+                               tael₁)
+                            tael₁))))
+                    (@let1 tael₁
+                        ((@primitive-function-ref
+                          make-list
+                          0))
+                      (@begin1
+                          ((@primitive-function-ref
+                            list-push!
+                            2)
+                           'a
+                           tael₁)
+                        (@begin1
+                            ((@primitive-function-ref
+                              list-push!
+                              2)
+                             'b
+                             tael₁)
+                          (@begin1
+                              ((@primitive-function-ref
+                                list-push!
+                                2)
+                               'c
+                               tael₁)
+                            tael₁)))))
+                (@begin1
+                    (assert-equal
+                      3
+                      (@let1 tael₁
+                          ((@primitive-function-ref
+                            make-list
+                            0))
+                        (@begin1
+                            ((@primitive-function-ref
+                              list-push!
+                              2)
+                             1
+                             tael₁)
+                          (@begin1
+                              ((@primitive-function-ref
+                                list-push!
+                                2)
+                               2
+                               tael₁)
+                            (@begin1
+                                ((@primitive-function-ref
+                                  list-push!
+                                  2)
+                                 3
+                                 tael₁)
+                              ((@primitive-function-ref
+                                list-length
+                                1)
+                               tael₁))))))
+                  (@begin1
+                      (assert-equal
+                        0
+                        (@let1 tael₁
+                            ((@primitive-function-ref
+                              make-list
+                              0))
+                          ((@primitive-function-ref
+                            list-length
+                            1)
+                           tael₁)))
+                    (assert
+                      (@let1 tael₁
+                          ((@primitive-function-ref
+                            make-list
+                            0))
+                        ((@primitive-function-ref
+                          list-empty?
+                          1)
+                         tael₁)))))))))))))
+

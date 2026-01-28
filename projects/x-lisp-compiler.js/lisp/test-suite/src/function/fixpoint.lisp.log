@@ -33,3 +33,16 @@
 
 (define (Y©λ₂©λ₁ x₁ t₁) ((x₁ x₁) t₁))
 
+;;; UnnestOperandPass
+
+(define (Y f)
+  (@let1 _₁ ((@function-ref Y©λ₂ 2) f)
+    ((@function-ref Y©λ₁ 1) _₁)))
+
+(define (Y©λ₁ u₁) (u₁ u₁))
+
+(define (Y©λ₂ f x₁)
+  (@let1 _₁ ((@function-ref Y©λ₂©λ₁ 2) x₁) (f _₁)))
+
+(define (Y©λ₂©λ₁ x₁ t₁) (@let1 _₁ (x₁ x₁) (_₁ t₁)))
+

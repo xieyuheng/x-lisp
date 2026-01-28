@@ -124,3 +124,39 @@
                   hash₁)
                hash₁))))))))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (@begin1
+      (@let1 hash₁ ((@primitive-function-ref make-hash 0))
+        ((@primitive-function-ref println 1) hash₁))
+    (@begin1
+        (@let1 hash₁ ((@primitive-function-ref make-hash 0))
+          (@begin1
+              ((@primitive-function-ref hash-put! 3)
+               1
+               2
+               hash₁)
+            ((@primitive-function-ref println 1) hash₁)))
+      (@begin1
+          (@let1 hash₁
+              ((@primitive-function-ref make-hash 0))
+            (@begin1
+                ((@primitive-function-ref hash-put! 3)
+                 1
+                 3
+                 hash₁)
+              ((@primitive-function-ref println 1) hash₁)))
+        (@let1 hash₁ ((@primitive-function-ref make-hash 0))
+          (@begin1
+              ((@primitive-function-ref hash-put! 3)
+               1
+               2
+               hash₁)
+            (@begin1
+                ((@primitive-function-ref hash-put! 3)
+                 3
+                 4
+                 hash₁)
+              ((@primitive-function-ref println 1) hash₁))))))))
+

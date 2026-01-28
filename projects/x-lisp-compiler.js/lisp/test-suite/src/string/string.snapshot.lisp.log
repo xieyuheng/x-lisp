@@ -18,3 +18,7 @@
 
 (define (main) ((@primitive-function-ref println 1) "abc"))
 
+;;; UnnestOperandPass
+
+(define (main) ((@primitive-function-ref println 1) "abc"))
+

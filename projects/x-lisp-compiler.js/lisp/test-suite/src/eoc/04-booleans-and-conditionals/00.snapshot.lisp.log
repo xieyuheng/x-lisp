@@ -20,3 +20,9 @@
 (define (main)
   ((@primitive-function-ref println 1) (if #t 1 2)))
 
+;;; UnnestOperandPass
+
+(define (main)
+  (@let1 _₁ (if #t 1 2)
+    ((@primitive-function-ref println 1) _₁)))
+
