@@ -1,7 +1,3 @@
-# basic
-
-[basic] `prettyMod`
-
 # compile
 
 [pass] compile x-lisp to basic-lisp
