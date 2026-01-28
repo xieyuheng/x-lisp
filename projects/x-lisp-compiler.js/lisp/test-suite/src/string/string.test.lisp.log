@@ -13,20 +13,20 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@primitive-function-ref assert-equal 2)
+  ((@primitive assert-equal 2)
    "abcdef"
-   ((@primitive-function-ref string-append 2) "abc" "def")))
+   ((@primitive string-append 2) "abc" "def")))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@primitive-function-ref assert-equal 2)
+  ((@primitive assert-equal 2)
    "abcdef"
-   ((@primitive-function-ref string-append 2) "abc" "def")))
+   ((@primitive string-append 2) "abc" "def")))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ ((@primitive-function-ref string-append 2) "abc" "def")
-    ((@primitive-function-ref assert-equal 2) "abcdef" _₁)))
+  (@let1 _₁ ((@primitive string-append 2) "abc" "def")
+    ((@primitive assert-equal 2) "abcdef" _₁)))
 

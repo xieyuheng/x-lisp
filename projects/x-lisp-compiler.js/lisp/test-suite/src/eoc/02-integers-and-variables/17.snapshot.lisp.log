@@ -13,28 +13,19 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@primitive-function-ref println 1)
-   ((@primitive-function-ref iadd 2)
-    1
-    ((@primitive-function-ref iadd 2)
-     ((@primitive-function-ref random-dice 0))
-     1))))
+  ((@primitive println 1)
+   ((@primitive iadd 2) 1 ((@primitive iadd 2) ((@primitive random-dice 0)) 1))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@primitive-function-ref println 1)
-   ((@primitive-function-ref iadd 2)
-    1
-    ((@primitive-function-ref iadd 2)
-     ((@primitive-function-ref random-dice 0))
-     1))))
+  ((@primitive println 1)
+   ((@primitive iadd 2) 1 ((@primitive iadd 2) ((@primitive random-dice 0)) 1))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ ((@primitive-function-ref random-dice 0))
-    (@let1 _₂ ((@primitive-function-ref iadd 2) _₁ 1)
-      (@let1 _₃ ((@primitive-function-ref iadd 2) 1 _₂)
-        ((@primitive-function-ref println 1) _₃)))))
+  (@let1 _₁ ((@primitive random-dice 0))
+    (@let1 _₂ ((@primitive iadd 2) _₁ 1)
+      (@let1 _₃ ((@primitive iadd 2) 1 _₂) ((@primitive println 1) _₃)))))
 

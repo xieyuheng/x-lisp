@@ -47,19 +47,19 @@ export function formatExp(exp: Exp): string {
     }
 
     case "PrimitiveFunctionRef": {
-      return `(@primitive-function-ref ${exp.name} ${exp.arity})`
+      return `(@primitive ${exp.name} ${exp.arity})`
     }
 
     case "PrimitiveConstantRef": {
-      return `(@primitive-constant-ref ${exp.name})`
+      return `(@constant ${exp.name})`
     }
 
     case "FunctionRef": {
-      return `(@function-ref ${exp.name} ${exp.arity})`
+      return `(@fn ${exp.name} ${exp.arity})`
     }
 
     case "ConstantRef": {
-      return `(@constant-ref ${exp.name})`
+      return `(@constant ${exp.name})`
     }
 
     case "Lambda": {

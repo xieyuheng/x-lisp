@@ -16,15 +16,10 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@primitive-function-ref println 1)
+  ((@primitive println 1)
    (if
-       (if
-           ((@primitive-function-ref equal? 2)
-            ((@primitive-function-ref random-dice 0))
-            1)
-         ((@primitive-function-ref equal? 2)
-          ((@primitive-function-ref random-dice 0))
-          2)
+       (if ((@primitive equal? 2) ((@primitive random-dice 0)) 1)
+         ((@primitive equal? 2) ((@primitive random-dice 0)) 2)
          #f)
      0
      42)))
@@ -32,15 +27,10 @@
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@primitive-function-ref println 1)
+  ((@primitive println 1)
    (if
-       (if
-           ((@primitive-function-ref equal? 2)
-            ((@primitive-function-ref random-dice 0))
-            1)
-         ((@primitive-function-ref equal? 2)
-          ((@primitive-function-ref random-dice 0))
-          2)
+       (if ((@primitive equal? 2) ((@primitive random-dice 0)) 1)
+         ((@primitive equal? 2) ((@primitive random-dice 0)) 2)
          #f)
      0
      42)))
@@ -51,12 +41,11 @@
   (@let1 _₁
       (if
           (if
-              (@let1 _₂ ((@primitive-function-ref random-dice 0))
-                ((@primitive-function-ref equal? 2) _₂ 1))
-            (@let1 _₃ ((@primitive-function-ref random-dice 0))
-              ((@primitive-function-ref equal? 2) _₃ 2))
+              (@let1 _₂ ((@primitive random-dice 0))
+                ((@primitive equal? 2) _₂ 1))
+            (@let1 _₃ ((@primitive random-dice 0)) ((@primitive equal? 2) _₃ 2))
             #f)
         0
         42)
-    ((@primitive-function-ref println 1) _₁)))
+    ((@primitive println 1) _₁)))
 

@@ -21,39 +21,29 @@
 ;;; RevealGlobalPass
 
 (define (gcd a b)
-  (if ((@primitive-function-ref equal? 2) b 0)
-    a
-    ((@function-ref gcd 2) b ((@primitive-function-ref imod 2) a b))))
+  (if ((@primitive equal? 2) b 0) a ((@fn gcd 2) b ((@primitive imod 2) a b))))
 
 (define (main)
-  (@begin1
-      ((@primitive-function-ref assert-equal 2) 1 ((@function-ref gcd 2) 13 7))
-    ((@primitive-function-ref assert-equal 2) 4 ((@function-ref gcd 2) 12 8))))
+  (@begin1 ((@primitive assert-equal 2) 1 ((@fn gcd 2) 13 7))
+    ((@primitive assert-equal 2) 4 ((@fn gcd 2) 12 8))))
 
 ;;; LiftLambdaPass
 
 (define (gcd a b)
-  (if ((@primitive-function-ref equal? 2) b 0)
-    a
-    ((@function-ref gcd 2) b ((@primitive-function-ref imod 2) a b))))
+  (if ((@primitive equal? 2) b 0) a ((@fn gcd 2) b ((@primitive imod 2) a b))))
 
 (define (main)
-  (@begin1
-      ((@primitive-function-ref assert-equal 2) 1 ((@function-ref gcd 2) 13 7))
-    ((@primitive-function-ref assert-equal 2) 4 ((@function-ref gcd 2) 12 8))))
+  (@begin1 ((@primitive assert-equal 2) 1 ((@fn gcd 2) 13 7))
+    ((@primitive assert-equal 2) 4 ((@fn gcd 2) 12 8))))
 
 ;;; UnnestOperandPass
 
 (define (gcd a b)
-  (if ((@primitive-function-ref equal? 2) b 0)
+  (if ((@primitive equal? 2) b 0)
     a
-    (@let1 _₁ ((@primitive-function-ref imod 2) a b)
-      ((@function-ref gcd 2) b _₁))))
+    (@let1 _₁ ((@primitive imod 2) a b) ((@fn gcd 2) b _₁))))
 
 (define (main)
-  (@begin1
-      (@let1 _₁ ((@function-ref gcd 2) 13 7)
-        ((@primitive-function-ref assert-equal 2) 1 _₁))
-    (@let1 _₂ ((@function-ref gcd 2) 12 8)
-      ((@primitive-function-ref assert-equal 2) 4 _₂))))
+  (@begin1 (@let1 _₁ ((@fn gcd 2) 13 7) ((@primitive assert-equal 2) 1 _₁))
+    (@let1 _₂ ((@fn gcd 2) 12 8) ((@primitive assert-equal 2) 4 _₂))))
 

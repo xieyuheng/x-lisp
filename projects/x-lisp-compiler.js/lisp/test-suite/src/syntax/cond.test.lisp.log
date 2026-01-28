@@ -26,72 +26,66 @@
 
 (define (main)
   (@begin1
-      ((@primitive-function-ref assert-equal 2)
+      ((@primitive assert-equal 2)
        1
-       (if #t 1 (if #t 2 ((@primitive-function-ref assert 1) #f))))
+       (if #t 1 (if #t 2 ((@primitive assert 1) #f))))
     (@begin1
-        ((@primitive-function-ref assert-equal 2)
+        ((@primitive assert-equal 2)
          2
-         (if #f 1 (if #t 2 ((@primitive-function-ref assert 1) #f))))
+         (if #f 1 (if #t 2 ((@primitive assert 1) #f))))
       (@begin1
           (if #t
-            ((@primitive-function-ref assert 1) (@primitive-constant-ref true))
+            ((@primitive assert 1) (@constant true))
             (if #t
-              ((@primitive-function-ref assert 1)
-               (@primitive-constant-ref false))
-              ((@primitive-function-ref assert 1) #f)))
+              ((@primitive assert 1) (@constant false))
+              ((@primitive assert 1) #f)))
         (if #f
-          ((@primitive-function-ref assert 1) (@primitive-constant-ref false))
+          ((@primitive assert 1) (@constant false))
           (if #t
-            ((@primitive-function-ref assert 1) (@primitive-constant-ref true))
-            ((@primitive-function-ref assert 1) #f)))))))
+            ((@primitive assert 1) (@constant true))
+            ((@primitive assert 1) #f)))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (@begin1
-      ((@primitive-function-ref assert-equal 2)
+      ((@primitive assert-equal 2)
        1
-       (if #t 1 (if #t 2 ((@primitive-function-ref assert 1) #f))))
+       (if #t 1 (if #t 2 ((@primitive assert 1) #f))))
     (@begin1
-        ((@primitive-function-ref assert-equal 2)
+        ((@primitive assert-equal 2)
          2
-         (if #f 1 (if #t 2 ((@primitive-function-ref assert 1) #f))))
+         (if #f 1 (if #t 2 ((@primitive assert 1) #f))))
       (@begin1
           (if #t
-            ((@primitive-function-ref assert 1) (@primitive-constant-ref true))
+            ((@primitive assert 1) (@constant true))
             (if #t
-              ((@primitive-function-ref assert 1)
-               (@primitive-constant-ref false))
-              ((@primitive-function-ref assert 1) #f)))
+              ((@primitive assert 1) (@constant false))
+              ((@primitive assert 1) #f)))
         (if #f
-          ((@primitive-function-ref assert 1) (@primitive-constant-ref false))
+          ((@primitive assert 1) (@constant false))
           (if #t
-            ((@primitive-function-ref assert 1) (@primitive-constant-ref true))
-            ((@primitive-function-ref assert 1) #f)))))))
+            ((@primitive assert 1) (@constant true))
+            ((@primitive assert 1) #f)))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
   (@begin1
-      (@let1 _₁ (if #t 1 (if #t 2 ((@primitive-function-ref assert 1) #f)))
-        ((@primitive-function-ref assert-equal 2) 1 _₁))
+      (@let1 _₁ (if #t 1 (if #t 2 ((@primitive assert 1) #f)))
+        ((@primitive assert-equal 2) 1 _₁))
     (@begin1
-        (@let1 _₂ (if #f 1 (if #t 2 ((@primitive-function-ref assert 1) #f)))
-          ((@primitive-function-ref assert-equal 2) 2 _₂))
+        (@let1 _₂ (if #f 1 (if #t 2 ((@primitive assert 1) #f)))
+          ((@primitive assert-equal 2) 2 _₂))
       (@begin1
           (if #t
-            (@let1 _₃ (@primitive-constant-ref true)
-              ((@primitive-function-ref assert 1) _₃))
+            (@let1 _₃ (@constant true) ((@primitive assert 1) _₃))
             (if #t
-              (@let1 _₄ (@primitive-constant-ref false)
-                ((@primitive-function-ref assert 1) _₄))
-              ((@primitive-function-ref assert 1) #f)))
+              (@let1 _₄ (@constant false) ((@primitive assert 1) _₄))
+              ((@primitive assert 1) #f)))
         (if #f
-          (@let1 _₅ (@primitive-constant-ref false)
-            ((@primitive-function-ref assert 1) _₅))
+          (@let1 _₅ (@constant false) ((@primitive assert 1) _₅))
           (if #t
-            (@let1 _₆ (@primitive-constant-ref true)
-              ((@primitive-function-ref assert 1) _₆))
-            ((@primitive-function-ref assert 1) #f)))))))
+            (@let1 _₆ (@constant true) ((@primitive assert 1) _₆))
+            ((@primitive assert 1) #f)))))))
 

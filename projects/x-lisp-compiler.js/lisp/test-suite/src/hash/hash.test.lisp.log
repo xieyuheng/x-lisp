@@ -13,21 +13,18 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@primitive-function-ref assert 1)
-   ((@primitive-function-ref hash-empty? 1)
-    (@let1 hash₁ ((@primitive-function-ref make-hash 0)) hash₁))))
+  ((@primitive assert 1)
+   ((@primitive hash-empty? 1) (@let1 hash₁ ((@primitive make-hash 0)) hash₁))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@primitive-function-ref assert 1)
-   ((@primitive-function-ref hash-empty? 1)
-    (@let1 hash₁ ((@primitive-function-ref make-hash 0)) hash₁))))
+  ((@primitive assert 1)
+   ((@primitive hash-empty? 1) (@let1 hash₁ ((@primitive make-hash 0)) hash₁))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 hash₁ ((@primitive-function-ref make-hash 0))
-    (@let1 _₁ ((@primitive-function-ref hash-empty? 1) hash₁)
-      ((@primitive-function-ref assert 1) _₁))))
+  (@let1 hash₁ ((@primitive make-hash 0))
+    (@let1 _₁ ((@primitive hash-empty? 1) hash₁) ((@primitive assert 1) _₁))))
 

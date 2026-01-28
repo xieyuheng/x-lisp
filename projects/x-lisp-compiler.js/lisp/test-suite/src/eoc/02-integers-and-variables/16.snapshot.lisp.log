@@ -12,17 +12,14 @@
 
 ;;; RevealGlobalPass
 
-(define (main)
-  ((@primitive-function-ref println 1) ((@primitive-function-ref isub 2) 50 8)))
+(define (main) ((@primitive println 1) ((@primitive isub 2) 50 8)))
 
 ;;; LiftLambdaPass
 
-(define (main)
-  ((@primitive-function-ref println 1) ((@primitive-function-ref isub 2) 50 8)))
+(define (main) ((@primitive println 1) ((@primitive isub 2) 50 8)))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 _₁ ((@primitive-function-ref isub 2) 50 8)
-    ((@primitive-function-ref println 1) _₁)))
+  (@let1 _₁ ((@primitive isub 2) 50 8) ((@primitive println 1) _₁)))
 

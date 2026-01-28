@@ -12,13 +12,13 @@
 
 ;;; RevealGlobalPass
 
-(define (main) (if #f 1 (if #f 2 ((@primitive-function-ref assert 1) #f))))
+(define (main) (if #f 1 (if #f 2 ((@primitive assert 1) #f))))
 
 ;;; LiftLambdaPass
 
-(define (main) (if #f 1 (if #f 2 ((@primitive-function-ref assert 1) #f))))
+(define (main) (if #f 1 (if #f 2 ((@primitive assert 1) #f))))
 
 ;;; UnnestOperandPass
 
-(define (main) (if #f 1 (if #f 2 ((@primitive-function-ref assert 1) #f))))
+(define (main) (if #f 1 (if #f 2 ((@primitive assert 1) #f))))
 
