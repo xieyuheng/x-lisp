@@ -2,7 +2,9 @@
 
 (define (main)
   (= y 6)
-  (begin (= x (begin (= y (ineg 42)) y)) (println (iadd x y))))
+  (begin
+    (= x (begin (= y (ineg 42)) y))
+    (println (iadd x y))))
 
 ;;; ShrinkPass
 
@@ -21,21 +23,20 @@
 
 (define (main)
   (let ((y₁ 6))
-    (let ((x₁ (let ((y₂ ((@primitive ineg 1) 42))) y₂)))
-      ((@primitive println 1) ((@primitive iadd 2) x₁ y₁)))))
+    (let ((x₁ (let ((y₂ (ineg 42))) y₂)))
+      (println (iadd x₁ y₁)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (let ((y₁ 6))
-    (let ((x₁ (let ((y₂ ((@primitive ineg 1) 42))) y₂)))
-      ((@primitive println 1) ((@primitive iadd 2) x₁ y₁)))))
+    (let ((x₁ (let ((y₂ (ineg 42))) y₂)))
+      (println (iadd x₁ y₁)))))
 
 ;;; UnnestOperandPass
 
 (define (main)
   (let ((y₁ 6))
-    (let ((x₁ (let ((y₂ ((@primitive ineg 1) 42))) y₂)))
-      (let ((_₁ ((@primitive iadd 2) x₁ y₁)))
-        ((@primitive println 1) _₁)))))
+    (let ((x₁ (let ((y₂ (ineg 42))) y₂)))
+      (let ((_₁ (iadd x₁ y₁))) (println _₁)))))
 

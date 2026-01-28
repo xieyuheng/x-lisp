@@ -15,21 +15,16 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@primitive assert 1)
-   ((@primitive hash-empty? 1)
-    (let ((hash₁ ((@primitive make-hash 0)))) hash₁))))
+  (assert (hash-empty? (let ((hash₁ (make-hash))) hash₁))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@primitive assert 1)
-   ((@primitive hash-empty? 1)
-    (let ((hash₁ ((@primitive make-hash 0)))) hash₁))))
+  (assert (hash-empty? (let ((hash₁ (make-hash))) hash₁))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((hash₁ ((@primitive make-hash 0))))
-    (let ((_₁ ((@primitive hash-empty? 1) hash₁)))
-      ((@primitive assert 1) _₁))))
+  (let ((hash₁ (make-hash)))
+    (let ((_₁ (hash-empty? hash₁))) (assert _₁))))
 

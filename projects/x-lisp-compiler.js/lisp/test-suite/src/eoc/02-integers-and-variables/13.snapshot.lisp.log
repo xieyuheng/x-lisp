@@ -1,6 +1,8 @@
 ;;; Input
 
-(define (main) (= x (iadd 42 (ineg 10))) (println (iadd x 10)))
+(define (main)
+  (= x (iadd 42 (ineg 10)))
+  (println (iadd x 10)))
 
 ;;; ShrinkPass
 
@@ -15,21 +17,16 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  (let ((x₁ ((@primitive iadd 2) 42 ((@primitive ineg 1) 10))))
-    ((@primitive println 1) ((@primitive iadd 2) x₁ 10))))
+  (let ((x₁ (iadd 42 (ineg 10)))) (println (iadd x₁ 10))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (let ((x₁ ((@primitive iadd 2) 42 ((@primitive ineg 1) 10))))
-    ((@primitive println 1) ((@primitive iadd 2) x₁ 10))))
+  (let ((x₁ (iadd 42 (ineg 10)))) (println (iadd x₁ 10))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let
-      ((x₁ (let ((_₁ ((@primitive ineg 1) 10)))
-             ((@primitive iadd 2) 42 _₁))))
-    (let ((_₂ ((@primitive iadd 2) x₁ 10)))
-      ((@primitive println 1) _₂))))
+  (let ((x₁ (let ((_₁ (ineg 10))) (iadd 42 _₁))))
+    (let ((_₂ (iadd x₁ 10))) (println _₂))))
 

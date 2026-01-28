@@ -16,20 +16,16 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@primitive assert-equal 2)
-   #abcdef
-   ((@primitive hashtag-append 2) #abc #def)))
+  (assert-equal #abcdef (hashtag-append #abc #def)))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@primitive assert-equal 2)
-   #abcdef
-   ((@primitive hashtag-append 2) #abc #def)))
+  (assert-equal #abcdef (hashtag-append #abc #def)))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((_₁ ((@primitive hashtag-append 2) #abc #def)))
-    ((@primitive assert-equal 2) #abcdef _₁)))
+  (let ((_₁ (hashtag-append #abc #def)))
+    (assert-equal #abcdef _₁)))
 

@@ -1,12 +1,14 @@
 ;;; Input
 
 (define (Y f)
-  ((lambda (u) (u u)) (lambda (x) (f (lambda (t) ((x x) t))))))
+  ((lambda (u) (u u))
+   (lambda (x) (f (lambda (t) ((x x) t))))))
 
 ;;; ShrinkPass
 
 (define (Y f)
-  ((lambda (u) (u u)) (lambda (x) (f (lambda (t) ((x x) t))))))
+  ((lambda (u) (u u))
+   (lambda (x) (f (lambda (t) ((x x) t))))))
 
 ;;; UniquifyPass
 
@@ -22,23 +24,21 @@
 
 ;;; LiftLambdaPass
 
-(define (Y f) ((@function Y©λ₁ 1) ((@function Y©λ₂ 2) f)))
+(define (Y f) (Y©λ₁ (Y©λ₂ f)))
 
 (define (Y©λ₁ u₁) (u₁ u₁))
 
-(define (Y©λ₂ f x₁) (f ((@function Y©λ₂©λ₁ 2) x₁)))
+(define (Y©λ₂ f x₁) (f (Y©λ₂©λ₁ x₁)))
 
 (define (Y©λ₂©λ₁ x₁ t₁) ((x₁ x₁) t₁))
 
 ;;; UnnestOperandPass
 
-(define (Y f)
-  (let ((_₁ ((@function Y©λ₂ 2) f))) ((@function Y©λ₁ 1) _₁)))
+(define (Y f) (let ((_₁ (Y©λ₂ f))) (Y©λ₁ _₁)))
 
 (define (Y©λ₁ u₁) (u₁ u₁))
 
-(define (Y©λ₂ f x₁)
-  (let ((_₁ ((@function Y©λ₂©λ₁ 2) x₁))) (f _₁)))
+(define (Y©λ₂ f x₁) (let ((_₁ (Y©λ₂©λ₁ x₁))) (f _₁)))
 
 (define (Y©λ₂©λ₁ x₁ t₁) (let ((_₁ (x₁ x₁))) (_₁ t₁)))
 

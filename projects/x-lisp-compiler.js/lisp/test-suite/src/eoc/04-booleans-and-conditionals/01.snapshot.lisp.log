@@ -32,40 +32,34 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@primitive println 1)
-   (let ((x₁ ((@primitive random-dice 0))))
-     (let ((y₁ ((@primitive random-dice 0))))
-       (if
-           (if ((@primitive int-less? 2) x₁ 1)
-             ((@primitive equal? 2) x₁ 0)
-             ((@primitive equal? 2) x₁ 2))
-         ((@primitive iadd 2) y₁ 2)
-         ((@primitive iadd 2) y₁ 10))))))
+  (println
+   (let ((x₁ (random-dice)))
+     (let ((y₁ (random-dice)))
+       (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
+         (iadd y₁ 2)
+         (iadd y₁ 10))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@primitive println 1)
-   (let ((x₁ ((@primitive random-dice 0))))
-     (let ((y₁ ((@primitive random-dice 0))))
-       (if
-           (if ((@primitive int-less? 2) x₁ 1)
-             ((@primitive equal? 2) x₁ 0)
-             ((@primitive equal? 2) x₁ 2))
-         ((@primitive iadd 2) y₁ 2)
-         ((@primitive iadd 2) y₁ 10))))))
+  (println
+   (let ((x₁ (random-dice)))
+     (let ((y₁ (random-dice)))
+       (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
+         (iadd y₁ 2)
+         (iadd y₁ 10))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((x₁ ((@primitive random-dice 0))))
-    (let ((y₁ ((@primitive random-dice 0))))
+  (let ((x₁ (random-dice)))
+    (let ((y₁ (random-dice)))
       (let
           ((_₁ (if
-                   (if ((@primitive int-less? 2) x₁ 1)
-                     ((@primitive equal? 2) x₁ 0)
-                     ((@primitive equal? 2) x₁ 2))
-                 ((@primitive iadd 2) y₁ 2)
-                 ((@primitive iadd 2) y₁ 10))))
-        ((@primitive println 1) _₁)))))
+                   (if (int-less? x₁ 1)
+                     (equal? x₁ 0)
+                     (equal? x₁ 2))
+                 (iadd y₁ 2)
+                 (iadd y₁ 10))))
+        (println _₁)))))
 

@@ -12,13 +12,13 @@
 
 ;;; RevealGlobalPass
 
-(define (main) ((@primitive println 1) 42))
+(define (main) (println 42))
 
 ;;; LiftLambdaPass
 
-(define (main) ((@primitive println 1) 42))
+(define (main) (println 42))
 
 ;;; UnnestOperandPass
 
-(define (main) ((@primitive println 1) 42))
+(define (main) (println 42))
 

@@ -19,24 +19,18 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  (let
-      ((y₁ (let ((x₁ 20))
-             ((@primitive iadd 2) x₁ (let ((x₂ 22)) x₂)))))
-    ((@primitive println 1) y₁)))
+  (let ((y₁ (let ((x₁ 20)) (iadd x₁ (let ((x₂ 22)) x₂)))))
+    (println y₁)))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (let
-      ((y₁ (let ((x₁ 20))
-             ((@primitive iadd 2) x₁ (let ((x₂ 22)) x₂)))))
-    ((@primitive println 1) y₁)))
+  (let ((y₁ (let ((x₁ 20)) (iadd x₁ (let ((x₂ 22)) x₂)))))
+    (println y₁)))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let
-      ((y₁ (let ((x₁ 20))
-             (let ((x₂ 22)) ((@primitive iadd 2) x₁ x₂)))))
-    ((@primitive println 1) y₁)))
+  (let ((y₁ (let ((x₁ 20)) (let ((x₂ 22)) (iadd x₁ x₂)))))
+    (println y₁)))
 

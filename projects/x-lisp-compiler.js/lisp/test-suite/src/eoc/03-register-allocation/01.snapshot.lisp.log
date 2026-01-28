@@ -32,32 +32,29 @@
 (define (main)
   (let ((v₁ 1))
     (let ((w₁ 42))
-      (let ((x₁ ((@primitive iadd 2) v₁ 7)))
+      (let ((x₁ (iadd v₁ 7)))
         (let ((y₁ x₁))
-          (let ((z₁ ((@primitive iadd 2) x₁ w₁)))
-            ((@primitive println 1)
-             ((@primitive iadd 2) z₁ ((@primitive ineg 1) y₁)))))))))
+          (let ((z₁ (iadd x₁ w₁)))
+            (println (iadd z₁ (ineg y₁)))))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (let ((v₁ 1))
     (let ((w₁ 42))
-      (let ((x₁ ((@primitive iadd 2) v₁ 7)))
+      (let ((x₁ (iadd v₁ 7)))
         (let ((y₁ x₁))
-          (let ((z₁ ((@primitive iadd 2) x₁ w₁)))
-            ((@primitive println 1)
-             ((@primitive iadd 2) z₁ ((@primitive ineg 1) y₁)))))))))
+          (let ((z₁ (iadd x₁ w₁)))
+            (println (iadd z₁ (ineg y₁)))))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
   (let ((v₁ 1))
     (let ((w₁ 42))
-      (let ((x₁ ((@primitive iadd 2) v₁ 7)))
+      (let ((x₁ (iadd v₁ 7)))
         (let ((y₁ x₁))
-          (let ((z₁ ((@primitive iadd 2) x₁ w₁)))
-            (let ((_₁ ((@primitive ineg 1) y₁)))
-              (let ((_₂ ((@primitive iadd 2) z₁ _₁)))
-                ((@primitive println 1) _₂)))))))))
+          (let ((z₁ (iadd x₁ w₁)))
+            (let ((_₁ (ineg y₁)))
+              (let ((_₂ (iadd z₁ _₁))) (println _₂)))))))))
 

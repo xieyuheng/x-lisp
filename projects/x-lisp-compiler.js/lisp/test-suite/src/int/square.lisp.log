@@ -20,17 +20,17 @@
 
 (export square)
 
-(define (square x) ((@primitive imul 2) x x))
+(define (square x) (imul x x))
 
 ;;; LiftLambdaPass
 
 (export square)
 
-(define (square x) ((@primitive imul 2) x x))
+(define (square x) (imul x x))
 
 ;;; UnnestOperandPass
 
 (export square)
 
-(define (square x) ((@primitive imul 2) x x))
+(define (square x) (imul x x))
 

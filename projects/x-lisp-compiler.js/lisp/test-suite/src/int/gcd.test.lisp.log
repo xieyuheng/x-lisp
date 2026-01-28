@@ -26,40 +26,29 @@
 
 ;;; RevealGlobalPass
 
-(define (gcd a b)
-  (if ((@primitive equal? 2) b 0)
-    a
-    ((@function gcd 2) b ((@primitive imod 2) a b))))
+(define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
 
 (define (main)
   (begin
-    ((@primitive assert-equal 2) 1 ((@function gcd 2) 13 7))
-    ((@primitive assert-equal 2) 4 ((@function gcd 2) 12 8))))
+    (assert-equal 1 (gcd 13 7))
+    (assert-equal 4 (gcd 12 8))))
 
 ;;; LiftLambdaPass
 
-(define (gcd a b)
-  (if ((@primitive equal? 2) b 0)
-    a
-    ((@function gcd 2) b ((@primitive imod 2) a b))))
+(define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
 
 (define (main)
   (begin
-    ((@primitive assert-equal 2) 1 ((@function gcd 2) 13 7))
-    ((@primitive assert-equal 2) 4 ((@function gcd 2) 12 8))))
+    (assert-equal 1 (gcd 13 7))
+    (assert-equal 4 (gcd 12 8))))
 
 ;;; UnnestOperandPass
 
 (define (gcd a b)
-  (if ((@primitive equal? 2) b 0)
-    a
-    (let ((_₁ ((@primitive imod 2) a b)))
-      ((@function gcd 2) b _₁))))
+  (if (equal? b 0) a (let ((_₁ (imod a b))) (gcd b _₁))))
 
 (define (main)
   (begin
-    (let ((_₁ ((@function gcd 2) 13 7)))
-      ((@primitive assert-equal 2) 1 _₁))
-    (let ((_₂ ((@function gcd 2) 12 8)))
-      ((@primitive assert-equal 2) 4 _₂))))
+    (let ((_₁ (gcd 13 7))) (assert-equal 1 _₁))
+    (let ((_₂ (gcd 12 8))) (assert-equal 4 _₂))))
 

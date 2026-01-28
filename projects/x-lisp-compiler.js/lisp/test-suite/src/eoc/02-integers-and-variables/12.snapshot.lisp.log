@@ -1,37 +1,33 @@
 ;;; Input
 
-(define (main) (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
+(define (main)
+  (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
 
 ;;; ShrinkPass
 
-(define (main) (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
+(define (main)
+  (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
 
 ;;; UniquifyPass
 
-(define (main) (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
+(define (main)
+  (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@primitive println 1)
-   ((@primitive iadd 2)
-    ((@primitive iadd 2) 1 2)
-    ((@primitive iadd 2) 3 ((@primitive iadd 2) 4 5)))))
+  (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@primitive println 1)
-   ((@primitive iadd 2)
-    ((@primitive iadd 2) 1 2)
-    ((@primitive iadd 2) 3 ((@primitive iadd 2) 4 5)))))
+  (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((_₁ ((@primitive iadd 2) 1 2)))
-    (let ((_₂ ((@primitive iadd 2) 4 5)))
-      (let ((_₃ ((@primitive iadd 2) 3 _₂)))
-        (let ((_₄ ((@primitive iadd 2) _₁ _₃)))
-          ((@primitive println 1) _₄))))))
+  (let ((_₁ (iadd 1 2)))
+    (let ((_₂ (iadd 4 5)))
+      (let ((_₃ (iadd 3 _₂)))
+        (let ((_₄ (iadd _₁ _₃))) (println _₄))))))
 

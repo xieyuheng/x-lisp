@@ -12,25 +12,16 @@
 
 ;;; RevealGlobalPass
 
-(define (main)
-  ((@primitive println 1)
-   ((@primitive iadd 2)
-    1
-    ((@primitive iadd 2) ((@primitive random-dice 0)) 1))))
+(define (main) (println (iadd 1 (iadd (random-dice) 1))))
 
 ;;; LiftLambdaPass
 
-(define (main)
-  ((@primitive println 1)
-   ((@primitive iadd 2)
-    1
-    ((@primitive iadd 2) ((@primitive random-dice 0)) 1))))
+(define (main) (println (iadd 1 (iadd (random-dice) 1))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((_₁ ((@primitive random-dice 0))))
-    (let ((_₂ ((@primitive iadd 2) _₁ 1)))
-      (let ((_₃ ((@primitive iadd 2) 1 _₂)))
-        ((@primitive println 1) _₃)))))
+  (let ((_₁ (random-dice)))
+    (let ((_₂ (iadd _₁ 1)))
+      (let ((_₃ (iadd 1 _₂))) (println _₃)))))
 

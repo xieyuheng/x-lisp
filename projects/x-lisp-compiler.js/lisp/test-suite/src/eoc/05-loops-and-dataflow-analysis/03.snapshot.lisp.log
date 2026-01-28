@@ -25,7 +25,9 @@
             (print 2)
             (begin
               (newline)
-              (begin (print 3) (begin (newline) (equal? 1 2)))))))
+              (begin
+                (print 3)
+                (begin (newline) (equal? 1 2)))))))
     (begin (print 111) (begin (newline) (equal? 1 2)))
     (begin (print 222) (begin (newline) (equal? 1 2)))))
 
@@ -41,7 +43,9 @@
             (print 2)
             (begin
               (newline)
-              (begin (print 3) (begin (newline) (equal? 1 2)))))))
+              (begin
+                (print 3)
+                (begin (newline) (equal? 1 2)))))))
     (begin (print 111) (begin (newline) (equal? 1 2)))
     (begin (print 222) (begin (newline) (equal? 1 2)))))
 
@@ -50,82 +54,52 @@
 (define (main)
   (if
       (begin
-        ((@primitive print 1) 1)
+        (print 1)
         (begin
-          ((@primitive newline 0))
+          (newline)
           (begin
-            ((@primitive print 1) 2)
+            (print 2)
             (begin
-              ((@primitive newline 0))
+              (newline)
               (begin
-                ((@primitive print 1) 3)
-                (begin
-                  ((@primitive newline 0))
-                  ((@primitive equal? 2) 1 2)))))))
-    (begin
-      ((@primitive print 1) 111)
-      (begin
-        ((@primitive newline 0))
-        ((@primitive equal? 2) 1 2)))
-    (begin
-      ((@primitive print 1) 222)
-      (begin
-        ((@primitive newline 0))
-        ((@primitive equal? 2) 1 2)))))
+                (print 3)
+                (begin (newline) (equal? 1 2)))))))
+    (begin (print 111) (begin (newline) (equal? 1 2)))
+    (begin (print 222) (begin (newline) (equal? 1 2)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (if
       (begin
-        ((@primitive print 1) 1)
+        (print 1)
         (begin
-          ((@primitive newline 0))
+          (newline)
           (begin
-            ((@primitive print 1) 2)
+            (print 2)
             (begin
-              ((@primitive newline 0))
+              (newline)
               (begin
-                ((@primitive print 1) 3)
-                (begin
-                  ((@primitive newline 0))
-                  ((@primitive equal? 2) 1 2)))))))
-    (begin
-      ((@primitive print 1) 111)
-      (begin
-        ((@primitive newline 0))
-        ((@primitive equal? 2) 1 2)))
-    (begin
-      ((@primitive print 1) 222)
-      (begin
-        ((@primitive newline 0))
-        ((@primitive equal? 2) 1 2)))))
+                (print 3)
+                (begin (newline) (equal? 1 2)))))))
+    (begin (print 111) (begin (newline) (equal? 1 2)))
+    (begin (print 222) (begin (newline) (equal? 1 2)))))
 
 ;;; UnnestOperandPass
 
 (define (main)
   (if
       (begin
-        ((@primitive print 1) 1)
+        (print 1)
         (begin
-          ((@primitive newline 0))
+          (newline)
           (begin
-            ((@primitive print 1) 2)
+            (print 2)
             (begin
-              ((@primitive newline 0))
+              (newline)
               (begin
-                ((@primitive print 1) 3)
-                (begin
-                  ((@primitive newline 0))
-                  ((@primitive equal? 2) 1 2)))))))
-    (begin
-      ((@primitive print 1) 111)
-      (begin
-        ((@primitive newline 0))
-        ((@primitive equal? 2) 1 2)))
-    (begin
-      ((@primitive print 1) 222)
-      (begin
-        ((@primitive newline 0))
-        ((@primitive equal? 2) 1 2)))))
+                (print 3)
+                (begin (newline) (equal? 1 2)))))))
+    (begin (print 111) (begin (newline) (equal? 1 2)))
+    (begin (print 222) (begin (newline) (equal? 1 2)))))
 

@@ -32,32 +32,29 @@
 
 (define one 1)
 
-(define two ((@primitive iadd 2) 1 (@constant one)))
+(define two (iadd 1 one))
 
-(define three ((@primitive iadd 2) 1 (@constant two)))
+(define three (iadd 1 two))
 
-(define (main) ((@primitive println 1) (@constant three)))
+(define (main) (println three))
 
 ;;; LiftLambdaPass
 
 (define one 1)
 
-(define two ((@primitive iadd 2) 1 (@constant one)))
+(define two (iadd 1 one))
 
-(define three ((@primitive iadd 2) 1 (@constant two)))
+(define three (iadd 1 two))
 
-(define (main) ((@primitive println 1) (@constant three)))
+(define (main) (println three))
 
 ;;; UnnestOperandPass
 
 (define one 1)
 
-(define two
-  (let ((_₁ (@constant one))) ((@primitive iadd 2) 1 _₁)))
+(define two (let ((_₁ one)) (iadd 1 _₁)))
 
-(define three
-  (let ((_₁ (@constant two))) ((@primitive iadd 2) 1 _₁)))
+(define three (let ((_₁ two)) (iadd 1 _₁)))
 
-(define (main)
-  (let ((_₁ (@constant three))) ((@primitive println 1) _₁)))
+(define (main) (let ((_₁ three)) (println _₁)))
 

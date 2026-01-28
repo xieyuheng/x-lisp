@@ -1,32 +1,31 @@
 ;;; Input
 
-(define (main) (assert-equal 'abcdef (symbol-append 'abc 'def)))
+(define (main)
+  (assert-equal 'abcdef (symbol-append 'abc 'def)))
 
 ;;; ShrinkPass
 
-(define (main) (assert-equal 'abcdef (symbol-append 'abc 'def)))
+(define (main)
+  (assert-equal 'abcdef (symbol-append 'abc 'def)))
 
 ;;; UniquifyPass
 
-(define (main) (assert-equal 'abcdef (symbol-append 'abc 'def)))
+(define (main)
+  (assert-equal 'abcdef (symbol-append 'abc 'def)))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  ((@primitive assert-equal 2)
-   'abcdef
-   ((@primitive symbol-append 2) 'abc 'def)))
+  (assert-equal 'abcdef (symbol-append 'abc 'def)))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  ((@primitive assert-equal 2)
-   'abcdef
-   ((@primitive symbol-append 2) 'abc 'def)))
+  (assert-equal 'abcdef (symbol-append 'abc 'def)))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((_₁ ((@primitive symbol-append 2) 'abc 'def)))
-    ((@primitive assert-equal 2) 'abcdef _₁)))
+  (let ((_₁ (symbol-append 'abc 'def)))
+    (assert-equal 'abcdef _₁)))
 

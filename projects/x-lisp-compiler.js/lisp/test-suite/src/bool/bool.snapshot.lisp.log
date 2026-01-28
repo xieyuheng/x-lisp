@@ -12,22 +12,16 @@
 
 ;;; RevealGlobalPass
 
-(define (main)
-  (begin
-    ((@primitive println 1) (@constant true))
-    ((@primitive println 1) (@constant false))))
+(define (main) (begin (println true) (println false)))
 
 ;;; LiftLambdaPass
 
-(define (main)
-  (begin
-    ((@primitive println 1) (@constant true))
-    ((@primitive println 1) (@constant false))))
+(define (main) (begin (println true) (println false)))
 
 ;;; UnnestOperandPass
 
 (define (main)
   (begin
-    (let ((_₁ (@constant true))) ((@primitive println 1) _₁))
-    (let ((_₂ (@constant false))) ((@primitive println 1) _₂))))
+    (let ((_₁ true)) (println _₁))
+    (let ((_₂ false)) (println _₂))))
 

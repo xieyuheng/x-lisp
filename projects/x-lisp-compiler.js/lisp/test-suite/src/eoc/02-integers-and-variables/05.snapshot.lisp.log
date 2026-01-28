@@ -12,16 +12,13 @@
 
 ;;; RevealGlobalPass
 
-(define (main)
-  (let ((a₁ 42)) (let ((b₁ a₁)) ((@primitive println 1) b₁))))
+(define (main) (let ((a₁ 42)) (let ((b₁ a₁)) (println b₁))))
 
 ;;; LiftLambdaPass
 
-(define (main)
-  (let ((a₁ 42)) (let ((b₁ a₁)) ((@primitive println 1) b₁))))
+(define (main) (let ((a₁ 42)) (let ((b₁ a₁)) (println b₁))))
 
 ;;; UnnestOperandPass
 
-(define (main)
-  (let ((a₁ 42)) (let ((b₁ a₁)) ((@primitive println 1) b₁))))
+(define (main) (let ((a₁ 42)) (let ((b₁ a₁)) (println b₁))))
 

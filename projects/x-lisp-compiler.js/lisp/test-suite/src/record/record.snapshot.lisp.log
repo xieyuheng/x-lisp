@@ -64,96 +64,80 @@
 
 (define (main)
   (begin
-    ((@primitive println 1)
-     (let ((tael₁ ((@primitive make-list 0))))
+    (println
+     (let ((tael₁ (make-list)))
        (begin
-         ((@primitive record-put! 3) 'x 'a tael₁)
-         (begin ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))
+         (record-put! 'x 'a tael₁)
+         (begin (record-put! 'y 'b tael₁) tael₁))))
     (begin
-      ((@primitive println 1)
-       (let ((tael₁ ((@primitive make-list 0))))
+      (println
+       (let ((tael₁ (make-list)))
          (begin
-           ((@primitive record-put! 3) 'x 'a tael₁)
-           (begin
-             ((@primitive record-put! 3) 'y 'b tael₁)
-             tael₁))))
+           (record-put! 'x 'a tael₁)
+           (begin (record-put! 'y 'b tael₁) tael₁))))
       (begin
-        ((@primitive println 1)
-         (let ((tael₁ ((@primitive make-list 0))))
+        (println
+         (let ((tael₁ (make-list)))
            (begin
-             ((@primitive record-put! 3) 'x 'a tael₁)
-             (begin
-               ((@primitive record-put! 3) 'y 'b tael₁)
-               tael₁))))
-        ((@primitive println 1)
-         (let ((tael₁ ((@primitive make-list 0))))
+             (record-put! 'x 'a tael₁)
+             (begin (record-put! 'y 'b tael₁) tael₁))))
+        (println
+         (let ((tael₁ (make-list)))
            (begin
-             ((@primitive record-put! 3) 'x 'a tael₁)
-             (begin
-               ((@primitive record-put! 3) 'y 'b tael₁)
-               tael₁))))))))
+             (record-put! 'x 'a tael₁)
+             (begin (record-put! 'y 'b tael₁) tael₁))))))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (begin
-    ((@primitive println 1)
-     (let ((tael₁ ((@primitive make-list 0))))
+    (println
+     (let ((tael₁ (make-list)))
        (begin
-         ((@primitive record-put! 3) 'x 'a tael₁)
-         (begin ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))
+         (record-put! 'x 'a tael₁)
+         (begin (record-put! 'y 'b tael₁) tael₁))))
     (begin
-      ((@primitive println 1)
-       (let ((tael₁ ((@primitive make-list 0))))
+      (println
+       (let ((tael₁ (make-list)))
          (begin
-           ((@primitive record-put! 3) 'x 'a tael₁)
-           (begin
-             ((@primitive record-put! 3) 'y 'b tael₁)
-             tael₁))))
+           (record-put! 'x 'a tael₁)
+           (begin (record-put! 'y 'b tael₁) tael₁))))
       (begin
-        ((@primitive println 1)
-         (let ((tael₁ ((@primitive make-list 0))))
+        (println
+         (let ((tael₁ (make-list)))
            (begin
-             ((@primitive record-put! 3) 'x 'a tael₁)
-             (begin
-               ((@primitive record-put! 3) 'y 'b tael₁)
-               tael₁))))
-        ((@primitive println 1)
-         (let ((tael₁ ((@primitive make-list 0))))
+             (record-put! 'x 'a tael₁)
+             (begin (record-put! 'y 'b tael₁) tael₁))))
+        (println
+         (let ((tael₁ (make-list)))
            (begin
-             ((@primitive record-put! 3) 'x 'a tael₁)
-             (begin
-               ((@primitive record-put! 3) 'y 'b tael₁)
-               tael₁))))))))
+             (record-put! 'x 'a tael₁)
+             (begin (record-put! 'y 'b tael₁) tael₁))))))))
 
 ;;; UnnestOperandPass
 
 (define (main)
   (begin
-    (let ((tael₁ ((@primitive make-list 0))))
+    (let ((tael₁ (make-list)))
       (begin
-        ((@primitive record-put! 3) 'x 'a tael₁)
-        (begin
-          ((@primitive record-put! 3) 'y 'b tael₁)
-          ((@primitive println 1) tael₁))))
+        (record-put! 'x 'a tael₁)
+        (begin (record-put! 'y 'b tael₁) (println tael₁))))
     (begin
-      (let ((tael₁ ((@primitive make-list 0))))
+      (let ((tael₁ (make-list)))
         (begin
-          ((@primitive record-put! 3) 'x 'a tael₁)
-          (begin
-            ((@primitive record-put! 3) 'y 'b tael₁)
-            ((@primitive println 1) tael₁))))
+          (record-put! 'x 'a tael₁)
+          (begin (record-put! 'y 'b tael₁) (println tael₁))))
       (begin
-        (let ((tael₁ ((@primitive make-list 0))))
+        (let ((tael₁ (make-list)))
           (begin
-            ((@primitive record-put! 3) 'x 'a tael₁)
+            (record-put! 'x 'a tael₁)
             (begin
-              ((@primitive record-put! 3) 'y 'b tael₁)
-              ((@primitive println 1) tael₁))))
-        (let ((tael₁ ((@primitive make-list 0))))
+              (record-put! 'y 'b tael₁)
+              (println tael₁))))
+        (let ((tael₁ (make-list)))
           (begin
-            ((@primitive record-put! 3) 'x 'a tael₁)
+            (record-put! 'x 'a tael₁)
             (begin
-              ((@primitive record-put! 3) 'y 'b tael₁)
-              ((@primitive println 1) tael₁))))))))
+              (record-put! 'y 'b tael₁)
+              (println tael₁))))))))
 
