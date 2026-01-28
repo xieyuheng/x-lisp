@@ -1,6 +1,6 @@
-[basic] use `Block` -- so it is easier for compiler
+[basic] merge `Test` into `Branch`
 
-[pass] 030-ExplicateControlPass
+[pass] `030-ExplicateControlPass`
 
 # cond
 

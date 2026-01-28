@@ -1,4 +1,5 @@
-import { type Line, type Stmt } from "../stmt/index.ts"
+import type { Block } from "../block/index.ts"
+import { type Stmt } from "../stmt/index.ts"
 import { formatInstr } from "./formatInstr.ts"
 
 export function formatStmt(stmt: Stmt): string {
@@ -42,26 +43,21 @@ export function formatStmt(stmt: Stmt): string {
     case "DefineFunction": {
       const name = stmt.name
       const parameters = stmt.parameters.join(" ")
-      const lines = stmt.lines.map(formatLine).join(" ")
-      return `(define-function (${name} ${parameters}) ${lines})`
+      const entryBlock = formatBlock(stmt.entryBlock)
+      const blocks = Array.from(stmt.blocks.values().map(formatBlock)).join(" ")
+      return `(define-function (${name} ${parameters}) ${entryBlock} ${blocks})`
     }
 
     case "DefineVariable": {
       const name = stmt.name
-      const lines = stmt.lines.map(formatLine).join(" ")
-      return `(define-variable ${name} ${lines})`
+      const entryBlock = formatBlock(stmt.entryBlock)
+      const blocks = Array.from(stmt.blocks.values().map(formatBlock)).join(" ")
+      return `(define-variable ${name} ${entryBlock} ${blocks})`
     }
   }
 }
 
-function formatLine(line: Line): string {
-  switch (line.kind) {
-    case "Label": {
-      return line.name
-    }
-
-    default: {
-      return formatInstr(line)
-    }
-  }
+function formatBlock(block: Block): string {
+  const instrs = block.instrs.map(formatInstr).join(" ")
+  return `${block.label} ${instrs}`
 }
