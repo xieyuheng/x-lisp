@@ -1,7 +1,6 @@
 # basic
 
-[basic] `Definition` -- `FunctionDefinition` have lines
-[basic] `Line`
+[basic] `FunctionDefinition` have lines -- `Line` -- union of `Label` and `Instr`
 
 [basic] `Instr` -- target can be `Exp`
 [basic] `Exp`
