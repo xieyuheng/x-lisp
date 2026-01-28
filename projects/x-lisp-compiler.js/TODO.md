@@ -1,7 +1,7 @@
 # basic
 
-[basic] `Instr`
-[basic] `Exp`
+[basic] `Exp` -- atom literal
+[basic] `Exp` -- `Apply`
 
 [basic] `isAtom` `isCompound`
 
