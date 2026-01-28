@@ -1,5 +1,3 @@
-[basic] merge `Test` into `Branch`
-
 [pass] `030-ExplicateControlPass`
 
 # cond

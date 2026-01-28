@@ -43,16 +43,14 @@ export function formatStmt(stmt: Stmt): string {
     case "DefineFunction": {
       const name = stmt.name
       const parameters = stmt.parameters.join(" ")
-      const entryBlock = formatBlock(stmt.entryBlock)
       const blocks = Array.from(stmt.blocks.values().map(formatBlock)).join(" ")
-      return `(define-function (${name} ${parameters}) ${entryBlock} ${blocks})`
+      return `(define-function (${name} ${parameters}) ${blocks})`
     }
 
     case "DefineVariable": {
       const name = stmt.name
-      const entryBlock = formatBlock(stmt.entryBlock)
       const blocks = Array.from(stmt.blocks.values().map(formatBlock)).join(" ")
-      return `(define-variable ${name} ${entryBlock} ${blocks})`
+      return `(define-variable ${name} ${blocks})`
     }
   }
 }

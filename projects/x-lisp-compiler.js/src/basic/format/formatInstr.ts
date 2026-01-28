@@ -11,12 +11,8 @@ export function formatInstr(instr: Instr): string {
       return `(perform ${formatExp(instr.exp)})`
     }
 
-    case "Test": {
-      return `(test ${formatExp(instr.exp)})`
-    }
-
     case "Branch": {
-      return `(branch ${formatExp(instr.exp)})`
+      return `(branch ${formatExp(instr.condition)} ${formatExp(instr.consequence)} ${formatExp(instr.alternative)})`
     }
 
     case "Goto": {
