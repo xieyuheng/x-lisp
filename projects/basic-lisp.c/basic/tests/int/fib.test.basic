@@ -1,0 +1,16 @@
+;; (define (fib n)
+;;   (if (< n 2)
+;;     n
+;;     (+ (fib (- n 1)) (fib (- n 2)))))
+
+(define-function (fib n)
+  (test (int-less? n 2))
+  (branch (label base-case))
+  (= n1 (isub n 1))
+  (= f1 (fib n1))
+  (= n2 (isub n 2))
+  (= f2 (fib n2))
+  (= r (iadd n1 n2))
+  (return r)
+ base-case
+  (return n))

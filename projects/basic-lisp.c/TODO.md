@@ -1,4 +1,6 @@
-[basic] vm
+[basic] "vm.h"
+[basic] "op.h"
+[basic] "instr.h"
 
 [sexp] setup
 [sexp] port sexp.js
