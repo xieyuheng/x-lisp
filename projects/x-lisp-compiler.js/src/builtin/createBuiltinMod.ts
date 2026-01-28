@@ -1,6 +1,6 @@
 import * as L from "../lisp/index.ts"
 import {
-  declarePrimitiveConstant,
+  declarePrimitiveVariable,
   declarePrimitiveFunction,
 } from "../lisp/index.ts"
 
@@ -54,19 +54,19 @@ export function createBuiltinMod(): L.Mod {
 
   // bool
 
-  declarePrimitiveConstant(mod, "true")
-  declarePrimitiveConstant(mod, "false")
+  declarePrimitiveVariable(mod, "true")
+  declarePrimitiveVariable(mod, "false")
   declarePrimitiveFunction(mod, "bool?", { arity: 1 })
   declarePrimitiveFunction(mod, "not", { arity: 1 })
 
   // null
 
-  declarePrimitiveConstant(mod, "null")
+  declarePrimitiveVariable(mod, "null")
   declarePrimitiveFunction(mod, "null?", { arity: 1 })
 
   // void
 
-  declarePrimitiveConstant(mod, "void")
+  declarePrimitiveVariable(mod, "void")
   declarePrimitiveFunction(mod, "void?", { arity: 1 })
 
   // value

@@ -13,7 +13,7 @@ export function formatMod(mod: Mod): string {
     .filter(
       (definition) =>
         definition.kind !== "PrimitiveFunctionDefinition" &&
-        definition.kind !== "PrimitiveConstantDefinition",
+        definition.kind !== "PrimitiveVariableDefinition",
     )
     .map(formatDefinition)
 

@@ -11,12 +11,12 @@ export function UniquifyPass(mod: L.Mod): void {
 function onDefinition(definition: L.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition":
-    case "PrimitiveConstantDefinition": {
+    case "PrimitiveVariableDefinition": {
       return null
     }
 
     case "FunctionDefinition":
-    case "ConstantDefinition": {
+    case "VariableDefinition": {
       definition.body = onExp({}, {}, definition.body)
       return null
     }

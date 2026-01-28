@@ -15,12 +15,12 @@ type State = {
 function onDefinition(definition: L.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition":
-    case "PrimitiveConstantDefinition": {
+    case "PrimitiveVariableDefinition": {
       return null
     }
 
     case "FunctionDefinition":
-    case "ConstantDefinition": {
+    case "VariableDefinition": {
       const state = { freshNameCount: 0 }
       definition.body = onExp(state, definition.body)
       return null
@@ -50,8 +50,8 @@ function onExp(state: State, exp: L.Exp): L.Exp {
       return exp
     }
 
-    case "PrimitiveConstantRef":
-    case "ConstantRef": {
+    case "PrimitiveVariableRef":
+    case "VariableRef": {
       const [entries, newExp] = forAtom(state, exp)
       return prependLets(entries, newExp)
     }
@@ -102,8 +102,8 @@ function forAtom(state: State, exp: L.Exp): [Array<Entry>, L.Exp] {
       return [[], exp]
     }
 
-    case "PrimitiveConstantRef":
-    case "ConstantRef": {
+    case "PrimitiveVariableRef":
+    case "VariableRef": {
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, exp]
       return [[entry], L.Var(freshName, exp.meta)]

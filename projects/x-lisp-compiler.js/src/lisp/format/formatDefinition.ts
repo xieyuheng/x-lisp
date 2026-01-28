@@ -8,9 +8,9 @@ export function formatDefinition(definition: Definition): string {
       return `(declare-primitive-function ${name} ${definition.arity})`
     }
 
-    case "PrimitiveConstantDefinition": {
+    case "PrimitiveVariableDefinition": {
       const name = definition.name
-      return `(declare-primitive-constant ${name})`
+      return `(declare-primitive-variable ${name})`
     }
 
     case "FunctionDefinition": {
@@ -20,7 +20,7 @@ export function formatDefinition(definition: Definition): string {
       return `(define (${name} ${parameters}) ${body})`
     }
 
-    case "ConstantDefinition": {
+    case "VariableDefinition": {
       const name = definition.name
       const body = formatBody(definition.body)
       return `(define ${name} ${body})`

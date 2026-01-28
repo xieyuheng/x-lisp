@@ -2,7 +2,7 @@ import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Exp } from "../exp/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
 
-export type Stmt = AboutModule | DefineFunction | DefineConstant
+export type Stmt = AboutModule | DefineFunction | DefineVariable
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -27,20 +27,20 @@ export function DefineFunction(
   }
 }
 
-export type DefineConstant = {
-  kind: "DefineConstant"
+export type DefineVariable = {
+  kind: "DefineVariable"
   name: string
   body: Exp
   meta: Meta
 }
 
-export function DefineConstant(
+export function DefineVariable(
   name: string,
   body: Exp,
   meta: Meta,
-): DefineConstant {
+): DefineVariable {
   return {
-    kind: "DefineConstant",
+    kind: "DefineVariable",
     name,
     body,
     meta,

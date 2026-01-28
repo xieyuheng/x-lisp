@@ -10,9 +10,9 @@ export type Exp =
   | Float
   | Var
   | PrimitiveFunctionRef
-  | PrimitiveConstantRef
+  | PrimitiveVariableRef
   | FunctionRef
-  | ConstantRef
+  | VariableRef
   | Lambda
   | Apply
   | Let1
@@ -134,18 +134,18 @@ export function PrimitiveFunctionRef(
   }
 }
 
-export type PrimitiveConstantRef = {
-  kind: "PrimitiveConstantRef"
+export type PrimitiveVariableRef = {
+  kind: "PrimitiveVariableRef"
   name: string
   meta?: Meta
 }
 
-export function PrimitiveConstantRef(
+export function PrimitiveVariableRef(
   name: string,
   meta?: Meta,
-): PrimitiveConstantRef {
+): PrimitiveVariableRef {
   return {
-    kind: "PrimitiveConstantRef",
+    kind: "PrimitiveVariableRef",
     name,
     meta,
   }
@@ -171,15 +171,15 @@ export function FunctionRef(
   }
 }
 
-export type ConstantRef = {
-  kind: "ConstantRef"
+export type VariableRef = {
+  kind: "VariableRef"
   name: string
   meta?: Meta
 }
 
-export function ConstantRef(name: string, meta?: Meta): ConstantRef {
+export function VariableRef(name: string, meta?: Meta): VariableRef {
   return {
-    kind: "ConstantRef",
+    kind: "VariableRef",
     name,
     meta,
   }

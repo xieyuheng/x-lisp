@@ -51,9 +51,9 @@ export function formatExp(exp: Exp): string {
       // return `(@primitive ${exp.name} ${exp.arity})`
     }
 
-    case "PrimitiveConstantRef": {
+    case "PrimitiveVariableRef": {
       return exp.name
-      // return `(@constant ${exp.name})`
+      // return `(@variable ${exp.name})`
     }
 
     case "FunctionRef": {
@@ -61,9 +61,9 @@ export function formatExp(exp: Exp): string {
       // return `(@function ${exp.name} ${exp.arity})`
     }
 
-    case "ConstantRef": {
+    case "VariableRef": {
       return exp.name
-      // return `(@constant ${exp.name})`
+      // return `(@variable ${exp.name})`
     }
 
     case "Lambda": {

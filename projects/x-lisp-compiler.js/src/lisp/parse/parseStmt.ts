@@ -22,7 +22,7 @@ export const parseStmt = S.createRouter<Stmt>({
   "(cons* 'define name body)": ({ name, body }, { sexp }) => {
     const keyword = S.asTael(sexp).elements[1]
     const meta = S.tokenMetaFromSexpMeta(keyword.meta)
-    return Stmts.DefineConstant(
+    return Stmts.DefineVariable(
       S.symbolContent(name),
       Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
       meta,

@@ -22,12 +22,12 @@ function onDefinition(
 ): Array<L.Definition> {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition":
-    case "PrimitiveConstantDefinition": {
+    case "PrimitiveVariableDefinition": {
       return [definition]
     }
 
     case "FunctionDefinition":
-    case "ConstantDefinition": {
+    case "VariableDefinition": {
       const lifted: Array<L.Definition> = []
       const state = { mod, lifted, definition }
       definition.body = onExp(state, definition.body)
@@ -47,9 +47,9 @@ function onExp(state: State, exp: L.Exp): L.Exp {
     case "Int":
     case "Float":
     case "PrimitiveFunctionRef":
-    case "PrimitiveConstantRef":
+    case "PrimitiveVariableRef":
     case "FunctionRef":
-    case "ConstantRef":
+    case "VariableRef":
     case "Var": {
       return exp
     }

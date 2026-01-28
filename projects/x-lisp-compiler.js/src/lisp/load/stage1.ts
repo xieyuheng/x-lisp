@@ -29,16 +29,16 @@ export function stage1(mod: Mod, stmt: Stmt): void {
     )
   }
 
-  if (stmt.kind === "DefineConstant") {
+  if (stmt.kind === "DefineVariable") {
     if (mod.definitions.has(stmt.name)) {
-      let message = `[stage1/DefineConstant] can not redefine`
+      let message = `[stage1/DefineVariable] can not redefine`
       message += `\n  name: ${stmt.name}`
       throw new S.ErrorWithMeta(message, stmt.meta)
     }
 
     mod.definitions.set(
       stmt.name,
-      Definitions.ConstantDefinition(mod, stmt.name, stmt.body, stmt.meta),
+      Definitions.VariableDefinition(mod, stmt.name, stmt.body, stmt.meta),
     )
   }
 }

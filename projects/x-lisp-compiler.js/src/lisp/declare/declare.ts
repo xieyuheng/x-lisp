@@ -12,6 +12,6 @@ export function declarePrimitiveFunction(
   )
 }
 
-export function declarePrimitiveConstant(mod: Mod, name: string): void {
-  mod.definitions.set(name, Definitions.PrimitiveConstantDefinition(mod, name))
+export function declarePrimitiveVariable(mod: Mod, name: string): void {
+  mod.definitions.set(name, Definitions.PrimitiveVariableDefinition(mod, name))
 }

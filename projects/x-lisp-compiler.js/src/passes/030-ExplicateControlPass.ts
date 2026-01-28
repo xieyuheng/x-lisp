@@ -19,16 +19,18 @@ function onDefinition(
 ): Array<B.Stmt> {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition":
-    case "PrimitiveConstantDefinition": {
+    case "PrimitiveVariableDefinition": {
       return []
     }
 
     case "FunctionDefinition": {
-      return []
+      const blocks = new Map()
+      return [B.DefineFunction(basicMod, definition.name, definition.parameters, blocks)]
     }
 
-    case "ConstantDefinition": {
-      return []
+    case "VariableDefinition": {
+      const blocks = new Map()
+      return [B.DefineVariable(basicMod, definition.name, blocks)]
     }
   }
 }

@@ -4,9 +4,9 @@ import type { Mod } from "../mod/index.ts"
 
 export type Definition =
   | PrimitiveFunctionDefinition
-  | PrimitiveConstantDefinition
+  | PrimitiveVariableDefinition
   | FunctionDefinition
-  | ConstantDefinition
+  | VariableDefinition
 
 export type PrimitiveFunctionDefinition = {
   kind: "PrimitiveFunctionDefinition"
@@ -28,18 +28,18 @@ export function PrimitiveFunctionDefinition(
   }
 }
 
-export type PrimitiveConstantDefinition = {
-  kind: "PrimitiveConstantDefinition"
+export type PrimitiveVariableDefinition = {
+  kind: "PrimitiveVariableDefinition"
   mod: Mod
   name: string
 }
 
-export function PrimitiveConstantDefinition(
+export function PrimitiveVariableDefinition(
   mod: Mod,
   name: string,
-): PrimitiveConstantDefinition {
+): PrimitiveVariableDefinition {
   return {
-    kind: "PrimitiveConstantDefinition",
+    kind: "PrimitiveVariableDefinition",
     mod,
     name,
   }
@@ -71,22 +71,22 @@ export function FunctionDefinition(
   }
 }
 
-export type ConstantDefinition = {
-  kind: "ConstantDefinition"
+export type VariableDefinition = {
+  kind: "VariableDefinition"
   mod: Mod
   name: string
   body: Exp
   meta: Meta
 }
 
-export function ConstantDefinition(
+export function VariableDefinition(
   mod: Mod,
   name: string,
   body: Exp,
   meta: Meta,
-): ConstantDefinition {
+): VariableDefinition {
   return {
-    kind: "ConstantDefinition",
+    kind: "VariableDefinition",
     mod,
     name,
     body,
