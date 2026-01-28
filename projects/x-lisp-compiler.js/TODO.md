@@ -1,10 +1,9 @@
 # basic
 
-[basic] `format` -- `formatInstr`
-[basic] `format` -- `formatStmt`
-[basic] `format` -- `formatMod`
+[basic] `formatStmt`
+[basic] `formatMod`
 
-[basic] `pretty`
+[basic] `prettyMod`
 
 # compile
 
