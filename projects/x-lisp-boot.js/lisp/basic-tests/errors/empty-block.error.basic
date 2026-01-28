@@ -1,2 +1,0 @@
-(define-function _main
-  (block entry))

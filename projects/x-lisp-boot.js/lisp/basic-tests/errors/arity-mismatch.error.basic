@@ -1,6 +1,0 @@
-(define-function _main
-  (block entry
-    (= one (literal 1))
-    (= x (call (@primitive-function iadd 2) one))
-    (call (@primitive-function print 1) x)
-    (return)))

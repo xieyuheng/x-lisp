@@ -1,9 +1,0 @@
-[checkBlockTerminator] block must end with terminator instruction
-  instr: (= x (call (@primitive-function iadd 2) one two))
-  --> lisp/tests/errors/terminator.error.basic:5:5
- 3 |     (= one (literal 1))
- 4 |     (= two (literal 2))
- 5 |     (= x (call (@primitive-function iadd 2) one two))))
-   |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
- 6 | 
-
