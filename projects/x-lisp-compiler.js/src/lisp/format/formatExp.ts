@@ -1,7 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
-import { formatAtom } from "./formatAtom.ts"
 
 export function formatExps(exps: Array<Exp>): string {
   return exps.map(formatExp).join(" ")
@@ -18,11 +17,31 @@ export function formatParameters(parameters: Array<string>): string {
 }
 
 export function formatExp(exp: Exp): string {
-  if (Exps.isAtom(exp)) {
-    return formatAtom(exp)
-  }
-
   switch (exp.kind) {
+    case "Hashtag": {
+      return `#${exp.content}`
+    }
+
+    case "Symbol": {
+      return `'${exp.content}`
+    }
+
+    case "String": {
+      return JSON.stringify(exp.content)
+    }
+
+    case "Int": {
+      return exp.content.toString()
+    }
+
+    case "Float": {
+      if (Number.isInteger(exp.content)) {
+        return `${exp.content.toString()}.0`
+      } else {
+        return exp.content.toString()
+      }
+    }
+
     case "Var": {
       return exp.name
     }
