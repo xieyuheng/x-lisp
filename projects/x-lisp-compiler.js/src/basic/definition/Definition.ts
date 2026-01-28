@@ -3,6 +3,8 @@ import type { Mod } from "../mod/index.ts"
 
 export type Definition = FunctionDefinition
 
+// export type Line = Label | Instr
+
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
   mod: Mod

@@ -1,8 +1,7 @@
 # basic
 
 [basic] `FunctionDefinition` have lines -- `Line` -- union of `Label` and `Instr`
-
-[basic] `Instr` -- target can be `Exp`
+[basic] `Instr`
 [basic] `Exp`
 
 [basic] `isAtom` `isCompound`
