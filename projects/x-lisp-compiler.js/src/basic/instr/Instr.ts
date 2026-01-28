@@ -1,9 +1,7 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import type { Exp } from "../exp/index.ts"
 
-export type Instr =
-  | Assign
-  | Perform
+export type Instr = Assign | Perform
 
 export type Assign = {
   op: "Assign"
