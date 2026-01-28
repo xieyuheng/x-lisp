@@ -1,4 +1,4 @@
-# compile
+[basic] use `Block` -- so it is easier for compiler
 
 [pass] 030-ExplicateControlPass
 
