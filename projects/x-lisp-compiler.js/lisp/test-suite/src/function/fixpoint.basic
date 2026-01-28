@@ -1,0 +1,7 @@
+(define-function (Y f))
+
+(define-function (Y©λ₁ u₁))
+
+(define-function (Y©λ₂ f x₁))
+
+(define-function (Y©λ₂©λ₁ x₁ t₁))

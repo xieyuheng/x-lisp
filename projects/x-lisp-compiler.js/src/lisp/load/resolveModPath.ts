@@ -1,8 +1,7 @@
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import fs from "node:fs"
 import Path from "node:path"
-
-export const suffix = ".lisp"
+import { suffix } from "../config.ts"
 
 export function resolveModPath(inputPath: string): string {
   let path = inputPath

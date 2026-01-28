@@ -1,5 +1,5 @@
 import fs from "node:fs"
-import { globals } from "../globals.ts"
+import { textWidth } from "../config.ts"
 import * as L from "../lisp/index.ts"
 import * as Passes from "../passes/index.ts"
 
@@ -18,7 +18,7 @@ export function compileLispToPassLog(mod: L.Mod, logFile?: string): void {
 }
 
 function logLispMod(tag: string, mod: L.Mod, logFile?: string): void {
-  logCode(tag, L.prettyMod(globals.width, mod), logFile)
+  logCode(tag, L.prettyMod(textWidth, mod), logFile)
 }
 
 function logCode(tag: string, code: string, logFile?: string): void {

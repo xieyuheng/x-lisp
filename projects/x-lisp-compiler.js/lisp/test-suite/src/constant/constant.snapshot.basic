@@ -1,0 +1,7 @@
+(define-variable one)
+
+(define-variable two)
+
+(define-variable three)
+
+(define-function (main))

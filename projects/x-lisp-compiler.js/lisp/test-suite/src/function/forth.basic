@@ -1,0 +1,15 @@
+(define-function (swap f x y))
+
+(define-function (drop f))
+
+(define-function (drop©λ₁ f dropped₁))
+
+(define-function (drop©λ₁©λ₁ f x₁))
+
+(define-function (dup f))
+
+(define-function (dup©λ₁ f x₁))
+
+(define-function (identity x))
+
+(define-function (main))

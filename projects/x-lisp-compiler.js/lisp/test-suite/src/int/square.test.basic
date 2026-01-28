@@ -1,0 +1,3 @@
+(import "square" square)
+
+(define-function (main))

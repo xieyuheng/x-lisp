@@ -1,7 +1,7 @@
 import * as L from "../lisp/index.ts"
 import {
-  declarePrimitiveVariable,
   declarePrimitiveFunction,
+  declarePrimitiveVariable,
 } from "../lisp/index.ts"
 
 export function createBuiltinMod(): L.Mod {

@@ -1,3 +1,4 @@
+export * from "./config.ts"
 export * from "./exp/index.ts"
 export * from "./format/index.ts"
 export * from "./instr/index.ts"

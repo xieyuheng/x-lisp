@@ -25,7 +25,14 @@ function onDefinition(
 
     case "FunctionDefinition": {
       const blocks = new Map()
-      return [B.DefineFunction(basicMod, definition.name, definition.parameters, blocks)]
+      return [
+        B.DefineFunction(
+          basicMod,
+          definition.name,
+          definition.parameters,
+          blocks,
+        ),
+      ]
     }
 
     case "VariableDefinition": {
