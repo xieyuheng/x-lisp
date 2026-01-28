@@ -1,5 +1,3 @@
-[basic] setup -- like forth/
-
 [basic] vm
 
 [sexp] setup
