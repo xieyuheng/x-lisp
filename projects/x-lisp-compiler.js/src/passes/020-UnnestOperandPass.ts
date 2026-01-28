@@ -68,7 +68,6 @@ function onExp(state: State, exp: L.Exp): L.Exp {
       )
     }
 
-
     default: {
       return L.expMap((e) => onExp(state, e), exp)
     }
