@@ -4,6 +4,7 @@ export const sexpConfig: S.Config = {
   keywords: [
     ["define-function", 1],
     ["define-variable", 1],
+    ["block", 1],
     ["@label", 0],
 
     ["export", 0],
