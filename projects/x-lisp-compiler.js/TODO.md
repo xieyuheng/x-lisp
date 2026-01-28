@@ -1,7 +1,5 @@
 # basic
 
-[basic] `formatMod`
-
 [basic] `prettyMod`
 
 # compile
