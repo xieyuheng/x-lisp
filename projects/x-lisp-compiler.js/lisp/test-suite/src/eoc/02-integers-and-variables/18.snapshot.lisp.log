@@ -1,14 +1,17 @@
 ;;; Input
 
-(define (main) (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
+(define (main)
+  (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
 
 ;;; ShrinkPass
 
-(define (main) (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
+(define (main)
+  (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
 
 ;;; UniquifyPass
 
-(define (main) (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
+(define (main)
+  (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
 
 ;;; RevealGlobalPass
 
@@ -16,7 +19,9 @@
   ((@primitive println 1)
    ((@primitive iadd 2)
     ((@primitive iadd 2)
-     ((@primitive iadd 2) ((@primitive iadd 2) ((@primitive random-dice 0)) 1) 1)
+     ((@primitive iadd 2)
+      ((@primitive iadd 2) ((@primitive random-dice 0)) 1)
+      1)
      1)
     1)))
 
@@ -26,7 +31,9 @@
   ((@primitive println 1)
    ((@primitive iadd 2)
     ((@primitive iadd 2)
-     ((@primitive iadd 2) ((@primitive iadd 2) ((@primitive random-dice 0)) 1) 1)
+     ((@primitive iadd 2)
+      ((@primitive iadd 2) ((@primitive random-dice 0)) 1)
+      1)
      1)
     1)))
 
@@ -37,5 +44,6 @@
     (@let1 _₂ ((@primitive iadd 2) _₁ 1)
       (@let1 _₃ ((@primitive iadd 2) _₂ 1)
         (@let1 _₄ ((@primitive iadd 2) _₃ 1)
-          (@let1 _₅ ((@primitive iadd 2) _₄ 1) ((@primitive println 1) _₅)))))))
+          (@let1 _₅ ((@primitive iadd 2) _₄ 1)
+            ((@primitive println 1) _₅)))))))
 

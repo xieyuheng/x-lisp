@@ -1,8 +1,23 @@
 ;;; Input
 
 (define (main)
-  (= x (begin (print 1) (newline) (print 2) (newline) (print 3) (newline) 6))
-  (begin (print 4) (newline) (print 5) (newline) (print 6) (newline) (iadd x x)))
+  (= x
+     (begin
+       (print 1)
+       (newline)
+       (print 2)
+       (newline)
+       (print 3)
+       (newline)
+       6))
+  (begin
+    (print 4)
+    (newline)
+    (print 5)
+    (newline)
+    (print 6)
+    (newline)
+    (iadd x x)))
 
 ;;; ShrinkPass
 
@@ -11,11 +26,13 @@
       (@begin1 (print 1)
         (@begin1 (newline)
           (@begin1 (print 2)
-            (@begin1 (newline) (@begin1 (print 3) (@begin1 (newline) 6))))))
+            (@begin1 (newline)
+              (@begin1 (print 3) (@begin1 (newline) 6))))))
     (@begin1 (print 4)
       (@begin1 (newline)
         (@begin1 (print 5)
-          (@begin1 (newline) (@begin1 (print 6) (@begin1 (newline) (iadd x x)))))))))
+          (@begin1 (newline)
+            (@begin1 (print 6) (@begin1 (newline) (iadd x x)))))))))
 
 ;;; UniquifyPass
 
@@ -24,7 +41,8 @@
       (@begin1 (print 1)
         (@begin1 (newline)
           (@begin1 (print 2)
-            (@begin1 (newline) (@begin1 (print 3) (@begin1 (newline) 6))))))
+            (@begin1 (newline)
+              (@begin1 (print 3) (@begin1 (newline) 6))))))
     (@begin1 (print 4)
       (@begin1 (newline)
         (@begin1 (print 5)
@@ -46,7 +64,8 @@
         (@begin1 ((@primitive print 1) 5)
           (@begin1 ((@primitive newline 0))
             (@begin1 ((@primitive print 1) 6)
-              (@begin1 ((@primitive newline 0)) ((@primitive iadd 2) x₁ x₁)))))))))
+              (@begin1 ((@primitive newline 0))
+                ((@primitive iadd 2) x₁ x₁)))))))))
 
 ;;; LiftLambdaPass
 
@@ -63,7 +82,8 @@
         (@begin1 ((@primitive print 1) 5)
           (@begin1 ((@primitive newline 0))
             (@begin1 ((@primitive print 1) 6)
-              (@begin1 ((@primitive newline 0)) ((@primitive iadd 2) x₁ x₁)))))))))
+              (@begin1 ((@primitive newline 0))
+                ((@primitive iadd 2) x₁ x₁)))))))))
 
 ;;; UnnestOperandPass
 
@@ -80,5 +100,6 @@
         (@begin1 ((@primitive print 1) 5)
           (@begin1 ((@primitive newline 0))
             (@begin1 ((@primitive print 1) 6)
-              (@begin1 ((@primitive newline 0)) ((@primitive iadd 2) x₁ x₁)))))))))
+              (@begin1 ((@primitive newline 0))
+                ((@primitive iadd 2) x₁ x₁)))))))))
 

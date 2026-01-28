@@ -1,6 +1,13 @@
 ;;; Input
 
-(define (main) (print 1) (newline) (print 2) (newline) (print 3) (newline) 666)
+(define (main)
+  (print 1)
+  (newline)
+  (print 2)
+  (newline)
+  (print 3)
+  (newline)
+  666)
 
 ;;; ShrinkPass
 
@@ -8,7 +15,8 @@
   (@begin1 (print 1)
     (@begin1 (newline)
       (@begin1 (print 2)
-        (@begin1 (newline) (@begin1 (print 3) (@begin1 (newline) 666)))))))
+        (@begin1 (newline)
+          (@begin1 (print 3) (@begin1 (newline) 666)))))))
 
 ;;; UniquifyPass
 
@@ -16,7 +24,8 @@
   (@begin1 (print 1)
     (@begin1 (newline)
       (@begin1 (print 2)
-        (@begin1 (newline) (@begin1 (print 3) (@begin1 (newline) 666)))))))
+        (@begin1 (newline)
+          (@begin1 (print 3) (@begin1 (newline) 666)))))))
 
 ;;; RevealGlobalPass
 

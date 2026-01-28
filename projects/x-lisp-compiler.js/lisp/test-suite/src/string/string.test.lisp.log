@@ -1,14 +1,17 @@
 ;;; Input
 
-(define (main) (assert-equal "abcdef" (string-append "abc" "def")))
+(define (main)
+  (assert-equal "abcdef" (string-append "abc" "def")))
 
 ;;; ShrinkPass
 
-(define (main) (assert-equal "abcdef" (string-append "abc" "def")))
+(define (main)
+  (assert-equal "abcdef" (string-append "abc" "def")))
 
 ;;; UniquifyPass
 
-(define (main) (assert-equal "abcdef" (string-append "abc" "def")))
+(define (main)
+  (assert-equal "abcdef" (string-append "abc" "def")))
 
 ;;; RevealGlobalPass
 

@@ -52,9 +52,12 @@
 
 (define one 1)
 
-(define two (@let1 _₁ (@constant one) ((@primitive iadd 2) 1 _₁)))
+(define two
+  (@let1 _₁ (@constant one) ((@primitive iadd 2) 1 _₁)))
 
-(define three (@let1 _₁ (@constant two) ((@primitive iadd 2) 1 _₁)))
+(define three
+  (@let1 _₁ (@constant two) ((@primitive iadd 2) 1 _₁)))
 
-(define (main) (@let1 _₁ (@constant three) ((@primitive println 1) _₁)))
+(define (main)
+  (@let1 _₁ (@constant three) ((@primitive println 1) _₁)))
 

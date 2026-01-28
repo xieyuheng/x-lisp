@@ -4,11 +4,13 @@
 
 ;;; ShrinkPass
 
-(define (main) (@let1 x (iadd 42 (ineg 10)) (println (iadd x 10))))
+(define (main)
+  (@let1 x (iadd 42 (ineg 10)) (println (iadd x 10))))
 
 ;;; UniquifyPass
 
-(define (main) (@let1 x₁ (iadd 42 (ineg 10)) (println (iadd x₁ 10))))
+(define (main)
+  (@let1 x₁ (iadd 42 (ineg 10)) (println (iadd x₁ 10))))
 
 ;;; RevealGlobalPass
 
@@ -25,6 +27,9 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (@let1 x₁ (@let1 _₁ ((@primitive ineg 1) 10) ((@primitive iadd 2) 42 _₁))
-    (@let1 _₂ ((@primitive iadd 2) x₁ 10) ((@primitive println 1) _₂))))
+  (@let1 x₁
+      (@let1 _₁ ((@primitive ineg 1) 10)
+        ((@primitive iadd 2) 42 _₁))
+    (@let1 _₂ ((@primitive iadd 2) x₁ 10)
+      ((@primitive println 1) _₂))))
 

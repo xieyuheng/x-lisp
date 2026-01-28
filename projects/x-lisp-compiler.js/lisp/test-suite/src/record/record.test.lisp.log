@@ -7,9 +7,11 @@
 (define (main)
   (assert-equal
     (@let1 tael (make-list)
-      (@begin1 (record-put! 'x 'a tael) (@begin1 (record-put! 'y 'b tael) tael)))
+      (@begin1 (record-put! 'x 'a tael)
+        (@begin1 (record-put! 'y 'b tael) tael)))
     (@let1 tael (make-list)
-      (@begin1 (record-put! 'x 'a tael) (@begin1 (record-put! 'y 'b tael) tael)))))
+      (@begin1 (record-put! 'x 'a tael)
+        (@begin1 (record-put! 'y 'b tael) tael)))))
 
 ;;; UniquifyPass
 

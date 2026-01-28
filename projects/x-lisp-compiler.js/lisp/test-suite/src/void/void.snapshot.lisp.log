@@ -20,5 +20,6 @@
 
 ;;; UnnestOperandPass
 
-(define (main) (@let1 _₁ (@constant void) ((@primitive println 1) _₁)))
+(define (main)
+  (@let1 _₁ (@constant void) ((@primitive println 1) _₁)))
 

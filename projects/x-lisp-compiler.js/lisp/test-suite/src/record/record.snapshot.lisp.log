@@ -59,21 +59,25 @@
       ((@primitive println 1)
        (@let1 tael₁ ((@primitive make-list 0))
          (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-           (@begin1 ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))
+           (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+             tael₁))))
     (@begin1
         ((@primitive println 1)
          (@let1 tael₁ ((@primitive make-list 0))
            (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))
+             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+               tael₁))))
       (@begin1
           ((@primitive println 1)
            (@let1 tael₁ ((@primitive make-list 0))
              (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-               (@begin1 ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))
+               (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+                 tael₁))))
         ((@primitive println 1)
          (@let1 tael₁ ((@primitive make-list 0))
            (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))))))
+             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+               tael₁))))))))
 
 ;;; LiftLambdaPass
 
@@ -82,21 +86,25 @@
       ((@primitive println 1)
        (@let1 tael₁ ((@primitive make-list 0))
          (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-           (@begin1 ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))
+           (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+             tael₁))))
     (@begin1
         ((@primitive println 1)
          (@let1 tael₁ ((@primitive make-list 0))
            (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))
+             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+               tael₁))))
       (@begin1
           ((@primitive println 1)
            (@let1 tael₁ ((@primitive make-list 0))
              (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-               (@begin1 ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))
+               (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+                 tael₁))))
         ((@primitive println 1)
          (@let1 tael₁ ((@primitive make-list 0))
            (@begin1 ((@primitive record-put! 3) 'x 'a tael₁)
-             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁) tael₁))))))))
+             (@begin1 ((@primitive record-put! 3) 'y 'b tael₁)
+               tael₁))))))))
 
 ;;; UnnestOperandPass
 

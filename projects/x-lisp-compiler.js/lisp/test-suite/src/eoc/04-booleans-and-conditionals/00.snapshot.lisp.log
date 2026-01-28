@@ -20,5 +20,6 @@
 
 ;;; UnnestOperandPass
 
-(define (main) (@let1 _₁ (if #t 1 2) ((@primitive println 1) _₁)))
+(define (main)
+  (@let1 _₁ (if #t 1 2) ((@primitive println 1) _₁)))
 

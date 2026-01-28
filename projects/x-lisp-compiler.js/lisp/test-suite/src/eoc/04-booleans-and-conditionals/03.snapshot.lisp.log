@@ -1,24 +1,34 @@
 ;;; Input
 
 (define (main)
-  (println (if (and (equal? (random-dice) 1) (equal? (random-dice) 2)) 0 42)))
+  (println
+   (if (and (equal? (random-dice) 1) (equal? (random-dice) 2))
+     0
+     42)))
 
 ;;; ShrinkPass
 
 (define (main)
-  (println (if (if (equal? (random-dice) 1) (equal? (random-dice) 2) #f) 0 42)))
+  (println
+   (if (if (equal? (random-dice) 1) (equal? (random-dice) 2) #f)
+     0
+     42)))
 
 ;;; UniquifyPass
 
 (define (main)
-  (println (if (if (equal? (random-dice) 1) (equal? (random-dice) 2) #f) 0 42)))
+  (println
+   (if (if (equal? (random-dice) 1) (equal? (random-dice) 2) #f)
+     0
+     42)))
 
 ;;; RevealGlobalPass
 
 (define (main)
   ((@primitive println 1)
    (if
-       (if ((@primitive equal? 2) ((@primitive random-dice 0)) 1)
+       (if
+           ((@primitive equal? 2) ((@primitive random-dice 0)) 1)
          ((@primitive equal? 2) ((@primitive random-dice 0)) 2)
          #f)
      0
@@ -29,7 +39,8 @@
 (define (main)
   ((@primitive println 1)
    (if
-       (if ((@primitive equal? 2) ((@primitive random-dice 0)) 1)
+       (if
+           ((@primitive equal? 2) ((@primitive random-dice 0)) 1)
          ((@primitive equal? 2) ((@primitive random-dice 0)) 2)
          #f)
      0
@@ -43,7 +54,8 @@
           (if
               (@let1 _₂ ((@primitive random-dice 0))
                 ((@primitive equal? 2) _₂ 1))
-            (@let1 _₃ ((@primitive random-dice 0)) ((@primitive equal? 2) _₃ 2))
+            (@let1 _₃ ((@primitive random-dice 0))
+              ((@primitive equal? 2) _₃ 2))
             #f)
         0
         42)

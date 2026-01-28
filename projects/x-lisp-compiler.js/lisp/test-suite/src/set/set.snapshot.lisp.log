@@ -9,11 +9,13 @@
       (println
        (@let1 set (make-set)
          (@begin1 (set-add! 1 set)
-           (@begin1 (set-add! 2 set) (@begin1 (set-add! 3 set) set)))))
+           (@begin1 (set-add! 2 set)
+             (@begin1 (set-add! 3 set) set)))))
     (println
      (@let1 set (make-set)
        (@begin1 (set-add! 1 set)
-         (@begin1 (set-add! 2 set) (@begin1 (set-add! 3 set) set)))))))
+         (@begin1 (set-add! 2 set)
+           (@begin1 (set-add! 3 set) set)))))))
 
 ;;; UniquifyPass
 
@@ -22,11 +24,13 @@
       (println
        (@let1 set₁ (make-set)
          (@begin1 (set-add! 1 set₁)
-           (@begin1 (set-add! 2 set₁) (@begin1 (set-add! 3 set₁) set₁)))))
+           (@begin1 (set-add! 2 set₁)
+             (@begin1 (set-add! 3 set₁) set₁)))))
     (println
      (@let1 set₁ (make-set)
        (@begin1 (set-add! 1 set₁)
-         (@begin1 (set-add! 2 set₁) (@begin1 (set-add! 3 set₁) set₁)))))))
+         (@begin1 (set-add! 2 set₁)
+           (@begin1 (set-add! 3 set₁) set₁)))))))
 
 ;;; RevealGlobalPass
 

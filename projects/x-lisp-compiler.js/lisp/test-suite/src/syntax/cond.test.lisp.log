@@ -11,7 +11,10 @@
 (define (main)
   (@begin1 (assert-equal 1 (if #t 1 (if #t 2 (assert #f))))
     (@begin1 (assert-equal 2 (if #f 1 (if #t 2 (assert #f))))
-      (@begin1 (if #t (assert true) (if #t (assert false) (assert #f)))
+      (@begin1
+          (if #t
+            (assert true)
+            (if #t (assert false) (assert #f)))
         (if #f (assert false) (if #t (assert true) (assert #f)))))))
 
 ;;; UniquifyPass
@@ -19,7 +22,10 @@
 (define (main)
   (@begin1 (assert-equal 1 (if #t 1 (if #t 2 (assert #f))))
     (@begin1 (assert-equal 2 (if #f 1 (if #t 2 (assert #f))))
-      (@begin1 (if #t (assert true) (if #t (assert false) (assert #f)))
+      (@begin1
+          (if #t
+            (assert true)
+            (if #t (assert false) (assert #f)))
         (if #f (assert false) (if #t (assert true) (assert #f)))))))
 
 ;;; RevealGlobalPass
@@ -79,13 +85,17 @@
           ((@primitive assert-equal 2) 2 _₂))
       (@begin1
           (if #t
-            (@let1 _₃ (@constant true) ((@primitive assert 1) _₃))
+            (@let1 _₃ (@constant true)
+              ((@primitive assert 1) _₃))
             (if #t
-              (@let1 _₄ (@constant false) ((@primitive assert 1) _₄))
+              (@let1 _₄ (@constant false)
+                ((@primitive assert 1) _₄))
               ((@primitive assert 1) #f)))
         (if #f
-          (@let1 _₅ (@constant false) ((@primitive assert 1) _₅))
+          (@let1 _₅ (@constant false)
+            ((@primitive assert 1) _₅))
           (if #t
-            (@let1 _₆ (@constant true) ((@primitive assert 1) _₆))
+            (@let1 _₆ (@constant true)
+              ((@primitive assert 1) _₆))
             ((@primitive assert 1) #f)))))))
 

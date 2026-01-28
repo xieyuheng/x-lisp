@@ -6,8 +6,12 @@
      (= x (random-dice))
      (= y (random-dice))
      (iadd
-      (if (if (int-less? x 1) (equal? x 0) (equal? x 2)) (iadd y 2) (iadd y 10))
-      (if (if (int-less? x 1) (equal? x 0) (equal? x 2)) (iadd y 2) (iadd y 10))))))
+      (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+        (iadd y 2)
+        (iadd y 10))
+      (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+        (iadd y 2)
+        (iadd y 10))))))
 
 ;;; ShrinkPass
 
@@ -96,5 +100,6 @@
                   ((@primitive equal? 2) x₁ 2))
               ((@primitive iadd 2) y₁ 2)
               ((@primitive iadd 2) y₁ 10))
-          (@let1 _₃ ((@primitive iadd 2) _₁ _₂) ((@primitive println 1) _₃)))))))
+          (@let1 _₃ ((@primitive iadd 2) _₁ _₂)
+            ((@primitive println 1) _₃)))))))
 

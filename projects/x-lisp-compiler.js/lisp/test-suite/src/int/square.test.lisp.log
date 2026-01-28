@@ -48,5 +48,6 @@
 
 (define (main)
   (@let1 _₁ ((@function square 1) 3)
-    (@let1 _₂ ((@function square 1) _₁) ((@primitive assert-equal 2) 81 _₂))))
+    (@let1 _₂ ((@function square 1) _₁)
+      ((@primitive assert-equal 2) 81 _₂))))
 

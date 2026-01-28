@@ -1,3 +1,3 @@
 export const globals = {
-  width: 80,
+  width: 64,
 }

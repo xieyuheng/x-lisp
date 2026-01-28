@@ -6,12 +6,15 @@
 
 ;;; ShrinkPass
 
-(define (main) (@let1 y 6 (@let1 x (@let1 y (ineg 42) y) (println (iadd x y)))))
+(define (main)
+  (@let1 y 6
+    (@let1 x (@let1 y (ineg 42) y) (println (iadd x y)))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (@let1 y₁ 6 (@let1 x₁ (@let1 y₂ (ineg 42) y₂) (println (iadd x₁ y₁)))))
+  (@let1 y₁ 6
+    (@let1 x₁ (@let1 y₂ (ineg 42) y₂) (println (iadd x₁ y₁)))))
 
 ;;; RevealGlobalPass
 
@@ -32,5 +35,6 @@
 (define (main)
   (@let1 y₁ 6
     (@let1 x₁ (@let1 y₂ ((@primitive ineg 1) 42) y₂)
-      (@let1 _₁ ((@primitive iadd 2) x₁ y₁) ((@primitive println 1) _₁)))))
+      (@let1 _₁ ((@primitive iadd 2) x₁ y₁)
+        ((@primitive println 1) _₁)))))
 

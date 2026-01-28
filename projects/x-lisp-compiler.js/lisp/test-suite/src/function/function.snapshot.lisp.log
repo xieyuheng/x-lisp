@@ -26,5 +26,6 @@
 
 (define (main)
   (@begin1 ((@primitive println 1) (@primitive iadd 2))
-    (@let1 _₁ ((@primitive iadd 2) 1) ((@primitive println 1) _₁))))
+    (@let1 _₁ ((@primitive iadd 2) 1)
+      ((@primitive println 1) _₁))))
 
