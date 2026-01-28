@@ -65,7 +65,13 @@ x-lisp 的首要目标是加快新语言开发的速度。
 - [x] 将 lisp 的基础部分编译到 basic-lisp
   - [x] LiftLambdaPass
   - [x] UnnestOperandPass
-  - [ ] ExplicateControlPass
+  - [x] ExplicateControlPass
+
+总结 [2026-01-29]：
+
+- 回到了最初的类似 EOC 的编译器。
+  也许一开始就应该遵循 EOC 的设计，
+  而不是偏离到别的 SSA 类的中间语言。
 
 # 关卡 2 -- 作为编译对象的中间语言
 
