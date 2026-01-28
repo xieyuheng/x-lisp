@@ -58,60 +58,24 @@
   (@begin1
       ((@primitive-function-ref println 1)
        (@let1 tael₁ ((@primitive-function-ref make-list 0))
-         (@begin1
-             ((@primitive-function-ref record-put! 3)
-              'x
-              'a
-              tael₁)
-           (@begin1
-               ((@primitive-function-ref record-put! 3)
-                'y
-                'b
-                tael₁)
-             tael₁))))
+         (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+           (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁) tael₁))))
     (@begin1
         ((@primitive-function-ref println 1)
-         (@let1 tael₁
-             ((@primitive-function-ref make-list 0))
-           (@begin1
-               ((@primitive-function-ref record-put! 3)
-                'x
-                'a
-                tael₁)
-             (@begin1
-                 ((@primitive-function-ref record-put! 3)
-                  'y
-                  'b
-                  tael₁)
+         (@let1 tael₁ ((@primitive-function-ref make-list 0))
+           (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+             (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁)
                tael₁))))
       (@begin1
           ((@primitive-function-ref println 1)
-           (@let1 tael₁
-               ((@primitive-function-ref make-list 0))
-             (@begin1
-                 ((@primitive-function-ref record-put! 3)
-                  'x
-                  'a
-                  tael₁)
-               (@begin1
-                   ((@primitive-function-ref record-put! 3)
-                    'y
-                    'b
-                    tael₁)
+           (@let1 tael₁ ((@primitive-function-ref make-list 0))
+             (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+               (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁)
                  tael₁))))
         ((@primitive-function-ref println 1)
-         (@let1 tael₁
-             ((@primitive-function-ref make-list 0))
-           (@begin1
-               ((@primitive-function-ref record-put! 3)
-                'x
-                'a
-                tael₁)
-             (@begin1
-                 ((@primitive-function-ref record-put! 3)
-                  'y
-                  'b
-                  tael₁)
+         (@let1 tael₁ ((@primitive-function-ref make-list 0))
+           (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+             (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁)
                tael₁))))))))
 
 ;;; LiftLambdaPass
@@ -120,60 +84,24 @@
   (@begin1
       ((@primitive-function-ref println 1)
        (@let1 tael₁ ((@primitive-function-ref make-list 0))
-         (@begin1
-             ((@primitive-function-ref record-put! 3)
-              'x
-              'a
-              tael₁)
-           (@begin1
-               ((@primitive-function-ref record-put! 3)
-                'y
-                'b
-                tael₁)
-             tael₁))))
+         (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+           (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁) tael₁))))
     (@begin1
         ((@primitive-function-ref println 1)
-         (@let1 tael₁
-             ((@primitive-function-ref make-list 0))
-           (@begin1
-               ((@primitive-function-ref record-put! 3)
-                'x
-                'a
-                tael₁)
-             (@begin1
-                 ((@primitive-function-ref record-put! 3)
-                  'y
-                  'b
-                  tael₁)
+         (@let1 tael₁ ((@primitive-function-ref make-list 0))
+           (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+             (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁)
                tael₁))))
       (@begin1
           ((@primitive-function-ref println 1)
-           (@let1 tael₁
-               ((@primitive-function-ref make-list 0))
-             (@begin1
-                 ((@primitive-function-ref record-put! 3)
-                  'x
-                  'a
-                  tael₁)
-               (@begin1
-                   ((@primitive-function-ref record-put! 3)
-                    'y
-                    'b
-                    tael₁)
+           (@let1 tael₁ ((@primitive-function-ref make-list 0))
+             (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+               (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁)
                  tael₁))))
         ((@primitive-function-ref println 1)
-         (@let1 tael₁
-             ((@primitive-function-ref make-list 0))
-           (@begin1
-               ((@primitive-function-ref record-put! 3)
-                'x
-                'a
-                tael₁)
-             (@begin1
-                 ((@primitive-function-ref record-put! 3)
-                  'y
-                  'b
-                  tael₁)
+         (@let1 tael₁ ((@primitive-function-ref make-list 0))
+           (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+             (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁)
                tael₁))))))))
 
 ;;; UnnestOperandPass
@@ -181,54 +109,21 @@
 (define (main)
   (@begin1
       (@let1 tael₁ ((@primitive-function-ref make-list 0))
-        (@begin1
-            ((@primitive-function-ref record-put! 3)
-             'x
-             'a
-             tael₁)
-          (@begin1
-              ((@primitive-function-ref record-put! 3)
-               'y
-               'b
-               tael₁)
+        (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+          (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁)
             ((@primitive-function-ref println 1) tael₁))))
     (@begin1
         (@let1 tael₁ ((@primitive-function-ref make-list 0))
-          (@begin1
-              ((@primitive-function-ref record-put! 3)
-               'x
-               'a
-               tael₁)
-            (@begin1
-                ((@primitive-function-ref record-put! 3)
-                 'y
-                 'b
-                 tael₁)
+          (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+            (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁)
               ((@primitive-function-ref println 1) tael₁))))
       (@begin1
-          (@let1 tael₁
-              ((@primitive-function-ref make-list 0))
-            (@begin1
-                ((@primitive-function-ref record-put! 3)
-                 'x
-                 'a
-                 tael₁)
-              (@begin1
-                  ((@primitive-function-ref record-put! 3)
-                   'y
-                   'b
-                   tael₁)
+          (@let1 tael₁ ((@primitive-function-ref make-list 0))
+            (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+              (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁)
                 ((@primitive-function-ref println 1) tael₁))))
         (@let1 tael₁ ((@primitive-function-ref make-list 0))
-          (@begin1
-              ((@primitive-function-ref record-put! 3)
-               'x
-               'a
-               tael₁)
-            (@begin1
-                ((@primitive-function-ref record-put! 3)
-                 'y
-                 'b
-                 tael₁)
+          (@begin1 ((@primitive-function-ref record-put! 3) 'x 'a tael₁)
+            (@begin1 ((@primitive-function-ref record-put! 3) 'y 'b tael₁)
               ((@primitive-function-ref println 1) tael₁))))))))
 

@@ -2,51 +2,45 @@
 
 (define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
 
-(define (main)
-  (assert-equal 1 (gcd 13 7))
-  (assert-equal 4 (gcd 12 8)))
+(define (main) (assert-equal 1 (gcd 13 7)) (assert-equal 4 (gcd 12 8)))
 
 ;;; ShrinkPass
 
 (define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
 
 (define (main)
-  (@begin1 (assert-equal 1 (gcd 13 7))
-    (assert-equal 4 (gcd 12 8))))
+  (@begin1 (assert-equal 1 (gcd 13 7)) (assert-equal 4 (gcd 12 8))))
 
 ;;; UniquifyPass
 
 (define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
 
 (define (main)
-  (@begin1 (assert-equal 1 (gcd 13 7))
-    (assert-equal 4 (gcd 12 8))))
+  (@begin1 (assert-equal 1 (gcd 13 7)) (assert-equal 4 (gcd 12 8))))
 
 ;;; RevealGlobalPass
 
 (define (gcd a b)
   (if ((@primitive-function-ref equal? 2) b 0)
     a
-    ((@function-ref gcd 2)
-     b
-     ((@primitive-function-ref imod 2) a b))))
+    ((@function-ref gcd 2) b ((@primitive-function-ref imod 2) a b))))
 
 (define (main)
-  (@begin1 (assert-equal 1 ((@function-ref gcd 2) 13 7))
-    (assert-equal 4 ((@function-ref gcd 2) 12 8))))
+  (@begin1
+      ((@primitive-function-ref assert-equal 2) 1 ((@function-ref gcd 2) 13 7))
+    ((@primitive-function-ref assert-equal 2) 4 ((@function-ref gcd 2) 12 8))))
 
 ;;; LiftLambdaPass
 
 (define (gcd a b)
   (if ((@primitive-function-ref equal? 2) b 0)
     a
-    ((@function-ref gcd 2)
-     b
-     ((@primitive-function-ref imod 2) a b))))
+    ((@function-ref gcd 2) b ((@primitive-function-ref imod 2) a b))))
 
 (define (main)
-  (@begin1 (assert-equal 1 ((@function-ref gcd 2) 13 7))
-    (assert-equal 4 ((@function-ref gcd 2) 12 8))))
+  (@begin1
+      ((@primitive-function-ref assert-equal 2) 1 ((@function-ref gcd 2) 13 7))
+    ((@primitive-function-ref assert-equal 2) 4 ((@function-ref gcd 2) 12 8))))
 
 ;;; UnnestOperandPass
 
@@ -58,6 +52,9 @@
         ((@function-ref gcd 2) b _₂)))))
 
 (define (main)
-  (@begin1 (assert-equal 1 ((@function-ref gcd 2) 13 7))
-    (assert-equal 4 ((@function-ref gcd 2) 12 8))))
+  (@begin1
+      (@let1 _₁ ((@function-ref gcd 2) 13 7)
+        ((@primitive-function-ref assert-equal 2) 1 _₁))
+    (@let1 _₂ ((@function-ref gcd 2) 12 8)
+      ((@primitive-function-ref assert-equal 2) 4 _₂))))
 

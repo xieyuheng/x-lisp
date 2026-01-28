@@ -14,8 +14,7 @@
   (@let1 v 1
     (@let1 w 42
       (@let1 x (iadd v 7)
-        (@let1 y x
-          (@let1 z (iadd x w) (println (iadd z (ineg y)))))))))
+        (@let1 y x (@let1 z (iadd x w) (println (iadd z (ineg y)))))))))
 
 ;;; UniquifyPass
 
@@ -23,9 +22,7 @@
   (@let1 v₁ 1
     (@let1 w₁ 42
       (@let1 x₁ (iadd v₁ 7)
-        (@let1 y₁ x₁
-          (@let1 z₁ (iadd x₁ w₁)
-            (println (iadd z₁ (ineg y₁)))))))))
+        (@let1 y₁ x₁ (@let1 z₁ (iadd x₁ w₁) (println (iadd z₁ (ineg y₁)))))))))
 
 ;;; RevealGlobalPass
 
@@ -62,7 +59,6 @@
         (@let1 y₁ x₁
           (@let1 z₁ ((@primitive-function-ref iadd 2) x₁ w₁)
             (@let1 _₁ ((@primitive-function-ref ineg 1) y₁)
-              (@let1 _₂
-                  ((@primitive-function-ref iadd 2) z₁ _₁)
+              (@let1 _₂ ((@primitive-function-ref iadd 2) z₁ _₁)
                 ((@primitive-function-ref println 1) _₂)))))))))
 

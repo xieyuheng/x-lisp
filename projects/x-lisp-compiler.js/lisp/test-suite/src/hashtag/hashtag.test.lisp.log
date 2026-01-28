@@ -1,36 +1,32 @@
 ;;; Input
 
-(define (main)
-  (assert-equal #abcdef (hashtag-append #abc #def)))
+(define (main) (assert-equal #abcdef (hashtag-append #abc #def)))
 
 ;;; ShrinkPass
 
-(define (main)
-  (assert-equal #abcdef (hashtag-append #abc #def)))
+(define (main) (assert-equal #abcdef (hashtag-append #abc #def)))
 
 ;;; UniquifyPass
 
-(define (main)
-  (assert-equal #abcdef (hashtag-append #abc #def)))
+(define (main) (assert-equal #abcdef (hashtag-append #abc #def)))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  (assert-equal
-    #abcdef
-    ((@primitive-function-ref hashtag-append 2) #abc #def)))
+  ((@primitive-function-ref assert-equal 2)
+   #abcdef
+   ((@primitive-function-ref hashtag-append 2) #abc #def)))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (assert-equal
-    #abcdef
-    ((@primitive-function-ref hashtag-append 2) #abc #def)))
+  ((@primitive-function-ref assert-equal 2)
+   #abcdef
+   ((@primitive-function-ref hashtag-append 2) #abc #def)))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (assert-equal
-    #abcdef
-    ((@primitive-function-ref hashtag-append 2) #abc #def)))
+  (@let1 _₁ ((@primitive-function-ref hashtag-append 2) #abc #def)
+    ((@primitive-function-ref assert-equal 2) #abcdef _₁)))
 

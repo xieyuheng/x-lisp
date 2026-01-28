@@ -25,9 +25,6 @@ export type Exp =
   | And
   | Or
   | Cond
-  | Assert
-  | AssertEqual
-  | AssertNotEqual
   | Tael
   | Set
   | Hash
@@ -386,56 +383,6 @@ export function Cond(condLines: Array<CondLine>, meta: Meta): Cond {
   return {
     kind: "Cond",
     condLines,
-    meta,
-  }
-}
-
-export type Assert = {
-  kind: "Assert"
-  target: Exp
-  meta?: Meta
-}
-
-export function Assert(target: Exp, meta?: Meta): Assert {
-  return {
-    kind: "Assert",
-    target,
-    meta,
-  }
-}
-
-export type AssertEqual = {
-  kind: "AssertEqual"
-  lhs: Exp
-  rhs: Exp
-  meta?: Meta
-}
-
-export function AssertEqual(lhs: Exp, rhs: Exp, meta?: Meta): AssertEqual {
-  return {
-    kind: "AssertEqual",
-    lhs,
-    rhs,
-    meta,
-  }
-}
-
-export type AssertNotEqual = {
-  kind: "AssertNotEqual"
-  lhs: Exp
-  rhs: Exp
-  meta?: Meta
-}
-
-export function AssertNotEqual(
-  lhs: Exp,
-  rhs: Exp,
-  meta?: Meta,
-): AssertNotEqual {
-  return {
-    kind: "AssertNotEqual",
-    lhs,
-    rhs,
     meta,
   }
 }

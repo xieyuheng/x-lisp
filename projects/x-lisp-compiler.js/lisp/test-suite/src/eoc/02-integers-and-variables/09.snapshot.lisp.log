@@ -14,17 +14,13 @@
 
 (define (main)
   ((@primitive-function-ref println 1)
-   ((@primitive-function-ref iadd 2)
-    20
-    ((@primitive-function-ref iadd 2) 11 11))))
+   ((@primitive-function-ref iadd 2) 20 ((@primitive-function-ref iadd 2) 11 11))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@primitive-function-ref println 1)
-   ((@primitive-function-ref iadd 2)
-    20
-    ((@primitive-function-ref iadd 2) 11 11))))
+   ((@primitive-function-ref iadd 2) 20 ((@primitive-function-ref iadd 2) 11 11))))
 
 ;;; UnnestOperandPass
 

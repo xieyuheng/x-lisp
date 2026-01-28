@@ -8,10 +8,7 @@
 
 (define (identity x) x)
 
-(define (main)
-  (= f identity)
-  (= g (dup identity))
-  (println (g f f)))
+(define (main) (= f identity) (= g (dup identity)) (println (g f f)))
 
 ;;; ShrinkPass
 
@@ -23,9 +20,7 @@
 
 (define (identity x) x)
 
-(define (main)
-  (@let1 f identity
-    (@let1 g (dup identity) (println (g f f)))))
+(define (main) (@let1 f identity (@let1 g (dup identity) (println (g f f)))))
 
 ;;; UniquifyPass
 
@@ -38,8 +33,7 @@
 (define (identity x) x)
 
 (define (main)
-  (@let1 f₁ identity
-    (@let1 g₁ (dup identity) (println (g₁ f₁ f₁)))))
+  (@let1 f₁ identity (@let1 g₁ (dup identity) (println (g₁ f₁ f₁)))))
 
 ;;; RevealGlobalPass
 
@@ -53,8 +47,7 @@
 
 (define (main)
   (@let1 f₁ (@function-ref identity 1)
-    (@let1 g₁
-        ((@function-ref dup 1) (@function-ref identity 1))
+    (@let1 g₁ ((@function-ref dup 1) (@function-ref identity 1))
       ((@primitive-function-ref println 1) (g₁ f₁ f₁)))))
 
 ;;; LiftLambdaPass
@@ -63,8 +56,7 @@
 
 (define (drop f) ((@function-ref drop©λ₁ 2) f))
 
-(define (drop©λ₁ f dropped₁)
-  ((@function-ref drop©λ₁©λ₁ 2) f))
+(define (drop©λ₁ f dropped₁) ((@function-ref drop©λ₁©λ₁ 2) f))
 
 (define (drop©λ₁©λ₁ f x₁) (f x₁))
 
@@ -76,8 +68,7 @@
 
 (define (main)
   (@let1 f₁ (@function-ref identity 1)
-    (@let1 g₁
-        ((@function-ref dup 1) (@function-ref identity 1))
+    (@let1 g₁ ((@function-ref dup 1) (@function-ref identity 1))
       ((@primitive-function-ref println 1) (g₁ f₁ f₁)))))
 
 ;;; UnnestOperandPass
@@ -86,8 +77,7 @@
 
 (define (drop f) ((@function-ref drop©λ₁ 2) f))
 
-(define (drop©λ₁ f dropped₁)
-  ((@function-ref drop©λ₁©λ₁ 2) f))
+(define (drop©λ₁ f dropped₁) ((@function-ref drop©λ₁©λ₁ 2) f))
 
 (define (drop©λ₁©λ₁ f x₁) (f x₁))
 
@@ -99,8 +89,6 @@
 
 (define (main)
   (@let1 f₁ (@function-ref identity 1)
-    (@let1 g₁
-        ((@function-ref dup 1) (@function-ref identity 1))
-      (@let1 _₁ (g₁ f₁ f₁)
-        ((@primitive-function-ref println 1) _₁)))))
+    (@let1 g₁ ((@function-ref dup 1) (@function-ref identity 1))
+      (@let1 _₁ (g₁ f₁ f₁) ((@primitive-function-ref println 1) _₁)))))
 

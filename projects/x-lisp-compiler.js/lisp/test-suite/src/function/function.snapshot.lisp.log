@@ -14,26 +14,21 @@
 
 (define (main)
   (@begin1
-      ((@primitive-function-ref println 1)
-       (@primitive-function-ref iadd 2))
-    ((@primitive-function-ref println 1)
-     ((@primitive-function-ref iadd 2) 1))))
+      ((@primitive-function-ref println 1) (@primitive-function-ref iadd 2))
+    ((@primitive-function-ref println 1) ((@primitive-function-ref iadd 2) 1))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (@begin1
-      ((@primitive-function-ref println 1)
-       (@primitive-function-ref iadd 2))
-    ((@primitive-function-ref println 1)
-     ((@primitive-function-ref iadd 2) 1))))
+      ((@primitive-function-ref println 1) (@primitive-function-ref iadd 2))
+    ((@primitive-function-ref println 1) ((@primitive-function-ref iadd 2) 1))))
 
 ;;; UnnestOperandPass
 
 (define (main)
   (@begin1
-      ((@primitive-function-ref println 1)
-       (@primitive-function-ref iadd 2))
+      ((@primitive-function-ref println 1) (@primitive-function-ref iadd 2))
     (@let1 _₁ ((@primitive-function-ref iadd 2) 1)
       ((@primitive-function-ref println 1) _₁))))
 

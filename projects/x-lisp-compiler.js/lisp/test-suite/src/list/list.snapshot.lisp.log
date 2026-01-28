@@ -38,28 +38,24 @@
                      (@let1 tael (make-list)
                        (@begin1 (list-push! 1 tael)
                          (@begin1 (list-push! 2 tael)
-                           (@begin1 (list-push! 3 tael)
-                             tael)))))
+                           (@begin1 (list-push! 3 tael) tael)))))
                   (@begin1
                       (println
                        (@let1 tael (make-list)
                          (@begin1 (list-push! 1 tael)
                            (@begin1 (list-push! 2 tael)
-                             (@begin1 (list-push! 3 tael)
-                               tael)))))
+                             (@begin1 (list-push! 3 tael) tael)))))
                     (@begin1
                         (println
                          (@let1 tael (make-list)
                            (@begin1 (list-push! 'a tael)
                              (@begin1 (list-push! 'b tael)
-                               (@begin1 (list-push! 'c tael)
-                                 tael)))))
+                               (@begin1 (list-push! 'c tael) tael)))))
                       (println
                        (@let1 tael (make-list)
                          (@begin1 (list-push! 'a tael)
                            (@begin1 (list-push! 'b tael)
-                             (@begin1 (list-push! 'c tael)
-                               tael))))))))))))))))
+                             (@begin1 (list-push! 'c tael) tael))))))))))))))))
 
 ;;; UniquifyPass
 
@@ -80,191 +76,95 @@
                    (@let1 tael₁ (make-list)
                      (@begin1 (list-push! 1 tael₁)
                        (@begin1 (list-push! 2 tael₁)
-                         (@begin1 (list-push! 3 tael₁)
-                           tael₁)))))
+                         (@begin1 (list-push! 3 tael₁) tael₁)))))
                 (@begin1
                     (println
                      (@let1 tael₁ (make-list)
                        (@begin1 (list-push! 1 tael₁)
                          (@begin1 (list-push! 2 tael₁)
-                           (@begin1 (list-push! 3 tael₁)
-                             tael₁)))))
+                           (@begin1 (list-push! 3 tael₁) tael₁)))))
                   (@begin1
                       (println
                        (@let1 tael₁ (make-list)
                          (@begin1 (list-push! 1 tael₁)
                            (@begin1 (list-push! 2 tael₁)
-                             (@begin1 (list-push! 3 tael₁)
-                               tael₁)))))
+                             (@begin1 (list-push! 3 tael₁) tael₁)))))
                     (@begin1
                         (println
                          (@let1 tael₁ (make-list)
                            (@begin1 (list-push! 'a tael₁)
                              (@begin1 (list-push! 'b tael₁)
-                               (@begin1
-                                   (list-push! 'c tael₁)
-                                 tael₁)))))
+                               (@begin1 (list-push! 'c tael₁) tael₁)))))
                       (println
                        (@let1 tael₁ (make-list)
                          (@begin1 (list-push! 'a tael₁)
                            (@begin1 (list-push! 'b tael₁)
-                             (@begin1 (list-push! 'c tael₁)
-                               tael₁))))))))))))))))
+                             (@begin1 (list-push! 'c tael₁) tael₁))))))))))))))))
 
 ;;; RevealGlobalPass
 
 (define (main)
   (@let1 list₁ ((@primitive-function-ref make-list 0))
-    (@begin1
-        ((@primitive-function-ref list-push! 2) 1 list₁)
-      (@begin1
-          ((@primitive-function-ref list-push! 2) 2 list₁)
-        (@begin1
-            ((@primitive-function-ref list-push! 2) 3 list₁)
-          (@begin1
-              ((@primitive-function-ref println 1) list₁)
+    (@begin1 ((@primitive-function-ref list-push! 2) 1 list₁)
+      (@begin1 ((@primitive-function-ref list-push! 2) 2 list₁)
+        (@begin1 ((@primitive-function-ref list-push! 2) 3 list₁)
+          (@begin1 ((@primitive-function-ref println 1) list₁)
             (@begin1
                 ((@primitive-function-ref println 1)
-                 (@let1 tael₁
-                     ((@primitive-function-ref make-list 0))
-                   (@begin1
-                       ((@primitive-function-ref
-                         list-push!
-                         2)
-                        1
-                        tael₁)
-                     (@begin1
-                         ((@primitive-function-ref
-                           list-push!
-                           2)
-                          2
-                          tael₁)
-                       (@begin1
-                           ((@primitive-function-ref
-                             list-push!
-                             2)
-                            3
-                            tael₁)
+                 (@let1 tael₁ ((@primitive-function-ref make-list 0))
+                   (@begin1 ((@primitive-function-ref list-push! 2) 1 tael₁)
+                     (@begin1 ((@primitive-function-ref list-push! 2) 2 tael₁)
+                       (@begin1 ((@primitive-function-ref list-push! 2) 3 tael₁)
                          tael₁)))))
               (@begin1
                   ((@primitive-function-ref println 1)
-                   (@let1 tael₁
-                       ((@primitive-function-ref make-list 0))
-                     (@begin1
-                         ((@primitive-function-ref
-                           list-push!
-                           2)
-                          1
-                          tael₁)
-                       (@begin1
-                           ((@primitive-function-ref
-                             list-push!
-                             2)
-                            2
-                            tael₁)
+                   (@let1 tael₁ ((@primitive-function-ref make-list 0))
+                     (@begin1 ((@primitive-function-ref list-push! 2) 1 tael₁)
+                       (@begin1 ((@primitive-function-ref list-push! 2) 2 tael₁)
                          (@begin1
-                             ((@primitive-function-ref
-                               list-push!
-                               2)
-                              3
-                              tael₁)
+                             ((@primitive-function-ref list-push! 2) 3 tael₁)
                            tael₁)))))
                 (@begin1
                     ((@primitive-function-ref println 1)
-                     (@let1 tael₁
-                         ((@primitive-function-ref
-                           make-list
-                           0))
-                       (@begin1
-                           ((@primitive-function-ref
-                             list-push!
-                             2)
-                            1
-                            tael₁)
+                     (@let1 tael₁ ((@primitive-function-ref make-list 0))
+                       (@begin1 ((@primitive-function-ref list-push! 2) 1 tael₁)
                          (@begin1
-                             ((@primitive-function-ref
-                               list-push!
-                               2)
-                              2
-                              tael₁)
+                             ((@primitive-function-ref list-push! 2) 2 tael₁)
                            (@begin1
-                               ((@primitive-function-ref
-                                 list-push!
-                                 2)
-                                3
-                                tael₁)
+                               ((@primitive-function-ref list-push! 2) 3 tael₁)
                              tael₁)))))
                   (@begin1
                       ((@primitive-function-ref println 1)
-                       (@let1 tael₁
-                           ((@primitive-function-ref
-                             make-list
-                             0))
+                       (@let1 tael₁ ((@primitive-function-ref make-list 0))
                          (@begin1
-                             ((@primitive-function-ref
-                               list-push!
-                               2)
-                              1
-                              tael₁)
+                             ((@primitive-function-ref list-push! 2) 1 tael₁)
                            (@begin1
-                               ((@primitive-function-ref
-                                 list-push!
-                                 2)
-                                2
-                                tael₁)
+                               ((@primitive-function-ref list-push! 2) 2 tael₁)
                              (@begin1
-                                 ((@primitive-function-ref
-                                   list-push!
-                                   2)
-                                  3
-                                  tael₁)
+                                 ((@primitive-function-ref list-push! 2) 3 tael₁)
                                tael₁)))))
                     (@begin1
                         ((@primitive-function-ref println 1)
-                         (@let1 tael₁
-                             ((@primitive-function-ref
-                               make-list
-                               0))
+                         (@let1 tael₁ ((@primitive-function-ref make-list 0))
                            (@begin1
-                               ((@primitive-function-ref
-                                 list-push!
-                                 2)
-                                'a
-                                tael₁)
+                               ((@primitive-function-ref list-push! 2) 'a tael₁)
                              (@begin1
-                                 ((@primitive-function-ref
-                                   list-push!
-                                   2)
+                                 ((@primitive-function-ref list-push! 2)
                                   'b
                                   tael₁)
                                (@begin1
-                                   ((@primitive-function-ref
-                                     list-push!
-                                     2)
+                                   ((@primitive-function-ref list-push! 2)
                                     'c
                                     tael₁)
                                  tael₁)))))
                       ((@primitive-function-ref println 1)
-                       (@let1 tael₁
-                           ((@primitive-function-ref
-                             make-list
-                             0))
+                       (@let1 tael₁ ((@primitive-function-ref make-list 0))
                          (@begin1
-                             ((@primitive-function-ref
-                               list-push!
-                               2)
-                              'a
-                              tael₁)
+                             ((@primitive-function-ref list-push! 2) 'a tael₁)
                            (@begin1
-                               ((@primitive-function-ref
-                                 list-push!
-                                 2)
-                                'b
-                                tael₁)
+                               ((@primitive-function-ref list-push! 2) 'b tael₁)
                              (@begin1
-                                 ((@primitive-function-ref
-                                   list-push!
-                                   2)
+                                 ((@primitive-function-ref list-push! 2)
                                   'c
                                   tael₁)
                                tael₁))))))))))))))))
@@ -273,156 +173,66 @@
 
 (define (main)
   (@let1 list₁ ((@primitive-function-ref make-list 0))
-    (@begin1
-        ((@primitive-function-ref list-push! 2) 1 list₁)
-      (@begin1
-          ((@primitive-function-ref list-push! 2) 2 list₁)
-        (@begin1
-            ((@primitive-function-ref list-push! 2) 3 list₁)
-          (@begin1
-              ((@primitive-function-ref println 1) list₁)
+    (@begin1 ((@primitive-function-ref list-push! 2) 1 list₁)
+      (@begin1 ((@primitive-function-ref list-push! 2) 2 list₁)
+        (@begin1 ((@primitive-function-ref list-push! 2) 3 list₁)
+          (@begin1 ((@primitive-function-ref println 1) list₁)
             (@begin1
                 ((@primitive-function-ref println 1)
-                 (@let1 tael₁
-                     ((@primitive-function-ref make-list 0))
-                   (@begin1
-                       ((@primitive-function-ref
-                         list-push!
-                         2)
-                        1
-                        tael₁)
-                     (@begin1
-                         ((@primitive-function-ref
-                           list-push!
-                           2)
-                          2
-                          tael₁)
-                       (@begin1
-                           ((@primitive-function-ref
-                             list-push!
-                             2)
-                            3
-                            tael₁)
+                 (@let1 tael₁ ((@primitive-function-ref make-list 0))
+                   (@begin1 ((@primitive-function-ref list-push! 2) 1 tael₁)
+                     (@begin1 ((@primitive-function-ref list-push! 2) 2 tael₁)
+                       (@begin1 ((@primitive-function-ref list-push! 2) 3 tael₁)
                          tael₁)))))
               (@begin1
                   ((@primitive-function-ref println 1)
-                   (@let1 tael₁
-                       ((@primitive-function-ref make-list 0))
-                     (@begin1
-                         ((@primitive-function-ref
-                           list-push!
-                           2)
-                          1
-                          tael₁)
-                       (@begin1
-                           ((@primitive-function-ref
-                             list-push!
-                             2)
-                            2
-                            tael₁)
+                   (@let1 tael₁ ((@primitive-function-ref make-list 0))
+                     (@begin1 ((@primitive-function-ref list-push! 2) 1 tael₁)
+                       (@begin1 ((@primitive-function-ref list-push! 2) 2 tael₁)
                          (@begin1
-                             ((@primitive-function-ref
-                               list-push!
-                               2)
-                              3
-                              tael₁)
+                             ((@primitive-function-ref list-push! 2) 3 tael₁)
                            tael₁)))))
                 (@begin1
                     ((@primitive-function-ref println 1)
-                     (@let1 tael₁
-                         ((@primitive-function-ref
-                           make-list
-                           0))
-                       (@begin1
-                           ((@primitive-function-ref
-                             list-push!
-                             2)
-                            1
-                            tael₁)
+                     (@let1 tael₁ ((@primitive-function-ref make-list 0))
+                       (@begin1 ((@primitive-function-ref list-push! 2) 1 tael₁)
                          (@begin1
-                             ((@primitive-function-ref
-                               list-push!
-                               2)
-                              2
-                              tael₁)
+                             ((@primitive-function-ref list-push! 2) 2 tael₁)
                            (@begin1
-                               ((@primitive-function-ref
-                                 list-push!
-                                 2)
-                                3
-                                tael₁)
+                               ((@primitive-function-ref list-push! 2) 3 tael₁)
                              tael₁)))))
                   (@begin1
                       ((@primitive-function-ref println 1)
-                       (@let1 tael₁
-                           ((@primitive-function-ref
-                             make-list
-                             0))
+                       (@let1 tael₁ ((@primitive-function-ref make-list 0))
                          (@begin1
-                             ((@primitive-function-ref
-                               list-push!
-                               2)
-                              1
-                              tael₁)
+                             ((@primitive-function-ref list-push! 2) 1 tael₁)
                            (@begin1
-                               ((@primitive-function-ref
-                                 list-push!
-                                 2)
-                                2
-                                tael₁)
+                               ((@primitive-function-ref list-push! 2) 2 tael₁)
                              (@begin1
-                                 ((@primitive-function-ref
-                                   list-push!
-                                   2)
-                                  3
-                                  tael₁)
+                                 ((@primitive-function-ref list-push! 2) 3 tael₁)
                                tael₁)))))
                     (@begin1
                         ((@primitive-function-ref println 1)
-                         (@let1 tael₁
-                             ((@primitive-function-ref
-                               make-list
-                               0))
+                         (@let1 tael₁ ((@primitive-function-ref make-list 0))
                            (@begin1
-                               ((@primitive-function-ref
-                                 list-push!
-                                 2)
-                                'a
-                                tael₁)
+                               ((@primitive-function-ref list-push! 2) 'a tael₁)
                              (@begin1
-                                 ((@primitive-function-ref
-                                   list-push!
-                                   2)
+                                 ((@primitive-function-ref list-push! 2)
                                   'b
                                   tael₁)
                                (@begin1
-                                   ((@primitive-function-ref
-                                     list-push!
-                                     2)
+                                   ((@primitive-function-ref list-push! 2)
                                     'c
                                     tael₁)
                                  tael₁)))))
                       ((@primitive-function-ref println 1)
-                       (@let1 tael₁
-                           ((@primitive-function-ref
-                             make-list
-                             0))
+                       (@let1 tael₁ ((@primitive-function-ref make-list 0))
                          (@begin1
-                             ((@primitive-function-ref
-                               list-push!
-                               2)
-                              'a
-                              tael₁)
+                             ((@primitive-function-ref list-push! 2) 'a tael₁)
                            (@begin1
-                               ((@primitive-function-ref
-                                 list-push!
-                                 2)
-                                'b
-                                tael₁)
+                               ((@primitive-function-ref list-push! 2) 'b tael₁)
                              (@begin1
-                                 ((@primitive-function-ref
-                                   list-push!
-                                   2)
+                                 ((@primitive-function-ref list-push! 2)
                                   'c
                                   tael₁)
                                tael₁))))))))))))))))
@@ -431,165 +241,57 @@
 
 (define (main)
   (@let1 list₁ ((@primitive-function-ref make-list 0))
-    (@begin1
-        ((@primitive-function-ref list-push! 2) 1 list₁)
-      (@begin1
-          ((@primitive-function-ref list-push! 2) 2 list₁)
-        (@begin1
-            ((@primitive-function-ref list-push! 2) 3 list₁)
-          (@begin1
-              ((@primitive-function-ref println 1) list₁)
+    (@begin1 ((@primitive-function-ref list-push! 2) 1 list₁)
+      (@begin1 ((@primitive-function-ref list-push! 2) 2 list₁)
+        (@begin1 ((@primitive-function-ref list-push! 2) 3 list₁)
+          (@begin1 ((@primitive-function-ref println 1) list₁)
             (@begin1
-                (@let1 tael₁
-                    ((@primitive-function-ref make-list 0))
-                  (@begin1
-                      ((@primitive-function-ref list-push! 2)
-                       1
-                       tael₁)
-                    (@begin1
-                        ((@primitive-function-ref
-                          list-push!
-                          2)
-                         2
-                         tael₁)
-                      (@begin1
-                          ((@primitive-function-ref
-                            list-push!
-                            2)
-                           3
-                           tael₁)
-                        ((@primitive-function-ref println 1)
-                         tael₁)))))
+                (@let1 tael₁ ((@primitive-function-ref make-list 0))
+                  (@begin1 ((@primitive-function-ref list-push! 2) 1 tael₁)
+                    (@begin1 ((@primitive-function-ref list-push! 2) 2 tael₁)
+                      (@begin1 ((@primitive-function-ref list-push! 2) 3 tael₁)
+                        ((@primitive-function-ref println 1) tael₁)))))
               (@begin1
-                  (@let1 tael₁
-                      ((@primitive-function-ref make-list 0))
-                    (@begin1
-                        ((@primitive-function-ref
-                          list-push!
-                          2)
-                         1
-                         tael₁)
-                      (@begin1
-                          ((@primitive-function-ref
-                            list-push!
-                            2)
-                           2
-                           tael₁)
+                  (@let1 tael₁ ((@primitive-function-ref make-list 0))
+                    (@begin1 ((@primitive-function-ref list-push! 2) 1 tael₁)
+                      (@begin1 ((@primitive-function-ref list-push! 2) 2 tael₁)
                         (@begin1
-                            ((@primitive-function-ref
-                              list-push!
-                              2)
-                             3
-                             tael₁)
-                          ((@primitive-function-ref
-                            println
-                            1)
-                           tael₁)))))
+                            ((@primitive-function-ref list-push! 2) 3 tael₁)
+                          ((@primitive-function-ref println 1) tael₁)))))
                 (@begin1
-                    (@let1 tael₁
-                        ((@primitive-function-ref
-                          make-list
-                          0))
-                      (@begin1
-                          ((@primitive-function-ref
-                            list-push!
-                            2)
-                           1
-                           tael₁)
+                    (@let1 tael₁ ((@primitive-function-ref make-list 0))
+                      (@begin1 ((@primitive-function-ref list-push! 2) 1 tael₁)
                         (@begin1
-                            ((@primitive-function-ref
-                              list-push!
-                              2)
-                             2
-                             tael₁)
+                            ((@primitive-function-ref list-push! 2) 2 tael₁)
                           (@begin1
-                              ((@primitive-function-ref
-                                list-push!
-                                2)
-                               3
-                               tael₁)
-                            ((@primitive-function-ref
-                              println
-                              1)
-                             tael₁)))))
+                              ((@primitive-function-ref list-push! 2) 3 tael₁)
+                            ((@primitive-function-ref println 1) tael₁)))))
                   (@begin1
-                      (@let1 tael₁
-                          ((@primitive-function-ref
-                            make-list
-                            0))
+                      (@let1 tael₁ ((@primitive-function-ref make-list 0))
                         (@begin1
-                            ((@primitive-function-ref
-                              list-push!
-                              2)
-                             1
-                             tael₁)
+                            ((@primitive-function-ref list-push! 2) 1 tael₁)
                           (@begin1
-                              ((@primitive-function-ref
-                                list-push!
-                                2)
-                               2
-                               tael₁)
+                              ((@primitive-function-ref list-push! 2) 2 tael₁)
                             (@begin1
-                                ((@primitive-function-ref
-                                  list-push!
-                                  2)
-                                 3
-                                 tael₁)
-                              ((@primitive-function-ref
-                                println
-                                1)
-                               tael₁)))))
+                                ((@primitive-function-ref list-push! 2) 3 tael₁)
+                              ((@primitive-function-ref println 1) tael₁)))))
                     (@begin1
-                        (@let1 tael₁
-                            ((@primitive-function-ref
-                              make-list
-                              0))
+                        (@let1 tael₁ ((@primitive-function-ref make-list 0))
                           (@begin1
-                              ((@primitive-function-ref
-                                list-push!
-                                2)
-                               'a
-                               tael₁)
+                              ((@primitive-function-ref list-push! 2) 'a tael₁)
                             (@begin1
-                                ((@primitive-function-ref
-                                  list-push!
-                                  2)
-                                 'b
-                                 tael₁)
+                                ((@primitive-function-ref list-push! 2) 'b tael₁)
                               (@begin1
-                                  ((@primitive-function-ref
-                                    list-push!
-                                    2)
+                                  ((@primitive-function-ref list-push! 2)
                                    'c
                                    tael₁)
-                                ((@primitive-function-ref
-                                  println
-                                  1)
-                                 tael₁)))))
-                      (@let1 tael₁
-                          ((@primitive-function-ref
-                            make-list
-                            0))
+                                ((@primitive-function-ref println 1) tael₁)))))
+                      (@let1 tael₁ ((@primitive-function-ref make-list 0))
                         (@begin1
-                            ((@primitive-function-ref
-                              list-push!
-                              2)
-                             'a
-                             tael₁)
+                            ((@primitive-function-ref list-push! 2) 'a tael₁)
                           (@begin1
-                              ((@primitive-function-ref
-                                list-push!
-                                2)
-                               'b
-                               tael₁)
+                              ((@primitive-function-ref list-push! 2) 'b tael₁)
                             (@begin1
-                                ((@primitive-function-ref
-                                  list-push!
-                                  2)
-                                 'c
-                                 tael₁)
-                              ((@primitive-function-ref
-                                println
-                                1)
-                               tael₁))))))))))))))))
+                                ((@primitive-function-ref list-push! 2) 'c tael₁)
+                              ((@primitive-function-ref println 1) tael₁))))))))))))))))
 

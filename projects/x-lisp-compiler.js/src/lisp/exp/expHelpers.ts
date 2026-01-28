@@ -80,18 +80,6 @@ export function expMap(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "Assert": {
-      return L.Assert(onExp(exp.target), exp.meta)
-    }
-
-    case "AssertEqual": {
-      return L.AssertEqual(onExp(exp.lhs), onExp(exp.rhs), exp.meta)
-    }
-
-    case "AssertNotEqual": {
-      return L.AssertNotEqual(onExp(exp.lhs), onExp(exp.rhs), exp.meta)
-    }
-
     case "Quote": {
       return onExp(exp)
     }
@@ -184,18 +172,6 @@ export function expChildren(exp: Exp): Array<Exp> {
         condLine.question,
         condLine.answer,
       ])
-    }
-
-    case "Assert": {
-      return [exp.target]
-    }
-
-    case "AssertEqual": {
-      return [exp.lhs, exp.rhs]
-    }
-
-    case "AssertNotEqual": {
-      return [exp.lhs, exp.rhs]
     }
 
     case "Quote": {

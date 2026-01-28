@@ -21,16 +21,14 @@
 (define (square x) ((@primitive-function-ref imul 2) x x))
 
 (define (main)
-  ((@primitive-function-ref println 1)
-   ((@function-ref square 1) 3)))
+  ((@primitive-function-ref println 1) ((@function-ref square 1) 3)))
 
 ;;; LiftLambdaPass
 
 (define (square x) ((@primitive-function-ref imul 2) x x))
 
 (define (main)
-  ((@primitive-function-ref println 1)
-   ((@function-ref square 1) 3)))
+  ((@primitive-function-ref println 1) ((@function-ref square 1) 3)))
 
 ;;; UnnestOperandPass
 

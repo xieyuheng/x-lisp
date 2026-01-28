@@ -134,18 +134,6 @@ export function formatExp(exp: Exp): string {
       return `(cond ${condLines.join(" ")})`
     }
 
-    case "Assert": {
-      return `(assert ${formatExp(exp.target)})`
-    }
-
-    case "AssertEqual": {
-      return `(assert-equal ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
-    }
-
-    case "AssertNotEqual": {
-      return `(assert-not-equal ${formatExp(exp.lhs)} ${formatExp(exp.rhs)})`
-    }
-
     case "Tael": {
       const elements = formatExps(exp.elements)
       const attributes = formatExpAttributes(exp.attributes)

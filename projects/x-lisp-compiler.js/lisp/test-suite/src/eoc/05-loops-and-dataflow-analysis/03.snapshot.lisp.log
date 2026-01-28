@@ -21,8 +21,7 @@
         (@begin1 (newline)
           (@begin1 (print 2)
             (@begin1 (newline)
-              (@begin1 (print 3)
-                (@begin1 (newline) (equal? 1 2)))))))
+              (@begin1 (print 3) (@begin1 (newline) (equal? 1 2)))))))
     (@begin1 (print 111) (@begin1 (newline) (equal? 1 2)))
     (@begin1 (print 222) (@begin1 (newline) (equal? 1 2)))))
 
@@ -34,8 +33,7 @@
         (@begin1 (newline)
           (@begin1 (print 2)
             (@begin1 (newline)
-              (@begin1 (print 3)
-                (@begin1 (newline) (equal? 1 2)))))))
+              (@begin1 (print 3) (@begin1 (newline) (equal? 1 2)))))))
     (@begin1 (print 111) (@begin1 (newline) (equal? 1 2)))
     (@begin1 (print 222) (@begin1 (newline) (equal? 1 2)))))
 
@@ -48,8 +46,7 @@
           (@begin1 ((@primitive-function-ref print 1) 2)
             (@begin1 ((@primitive-function-ref newline 0))
               (@begin1 ((@primitive-function-ref print 1) 3)
-                (@begin1
-                    ((@primitive-function-ref newline 0))
+                (@begin1 ((@primitive-function-ref newline 0))
                   ((@primitive-function-ref equal? 2) 1 2)))))))
     (@begin1 ((@primitive-function-ref print 1) 111)
       (@begin1 ((@primitive-function-ref newline 0))
@@ -67,8 +64,7 @@
           (@begin1 ((@primitive-function-ref print 1) 2)
             (@begin1 ((@primitive-function-ref newline 0))
               (@begin1 ((@primitive-function-ref print 1) 3)
-                (@begin1
-                    ((@primitive-function-ref newline 0))
+                (@begin1 ((@primitive-function-ref newline 0))
                   ((@primitive-function-ref equal? 2) 1 2)))))))
     (@begin1 ((@primitive-function-ref print 1) 111)
       (@begin1 ((@primitive-function-ref newline 0))
@@ -86,21 +82,12 @@
         (@begin1 ((@primitive-function-ref newline 0))
           (@begin1 ((@primitive-function-ref print 1) 3)
             (@begin1 ((@primitive-function-ref newline 0))
-              (@let1 _₁
-                  ((@primitive-function-ref equal? 2) 1 2)
+              (@let1 _₁ ((@primitive-function-ref equal? 2) 1 2)
                 (if _₁
-                  (@begin1
-                      ((@primitive-function-ref print 1) 111)
-                    (@begin1
-                        ((@primitive-function-ref newline 0))
-                      ((@primitive-function-ref equal? 2)
-                       1
-                       2)))
-                  (@begin1
-                      ((@primitive-function-ref print 1) 222)
-                    (@begin1
-                        ((@primitive-function-ref newline 0))
-                      ((@primitive-function-ref equal? 2)
-                       1
-                       2))))))))))))
+                  (@begin1 ((@primitive-function-ref print 1) 111)
+                    (@begin1 ((@primitive-function-ref newline 0))
+                      ((@primitive-function-ref equal? 2) 1 2)))
+                  (@begin1 ((@primitive-function-ref print 1) 222)
+                    (@begin1 ((@primitive-function-ref newline 0))
+                      ((@primitive-function-ref equal? 2) 1 2))))))))))))
 

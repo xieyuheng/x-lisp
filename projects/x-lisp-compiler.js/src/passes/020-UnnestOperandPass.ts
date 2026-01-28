@@ -53,14 +53,14 @@ function onExp(state: State, exp: L.Exp): L.Exp {
 
     case "PrimitiveConstantRef":
     case "ConstantRef": {
-      const [entries, newExp] = forVar(state, exp)
+      const [entries, newExp] = forAtom(state, exp)
       return prependLets(entries, newExp)
     }
 
     case "Apply": {
-      const [targetEntries, newTarget] = forVar(state, exp.target)
+      const [targetEntries, newTarget] = forAtom(state, exp.target)
       const [argsEntriesArray, newArgs] = arrayUnzip(
-        exp.args.map((arg) => forVar(state, arg)),
+        exp.args.map((arg) => forAtom(state, arg)),
       )
       const argsEntries = argsEntriesArray.flatMap((entries) => entries)
       return prependLets(
@@ -70,7 +70,7 @@ function onExp(state: State, exp: L.Exp): L.Exp {
     }
 
     case "If": {
-      const [conditionEntries, newCondition] = forVar(state, exp.condition)
+      const [conditionEntries, newCondition] = forAtom(state, exp.condition)
       return prependLets(
         conditionEntries,
         L.If(
@@ -103,7 +103,7 @@ function prependLets(entries: Array<Entry>, exp: L.Exp): L.Exp {
 
 type Entry = [string | null, L.Exp]
 
-function forVar(state: State, exp: L.Exp): [Array<Entry>, L.Exp] {
+function forAtom(state: State, exp: L.Exp): [Array<Entry>, L.Exp] {
   switch (exp.kind) {
     case "Var":
     case "Symbol":
@@ -118,16 +118,15 @@ function forVar(state: State, exp: L.Exp): [Array<Entry>, L.Exp] {
 
     case "PrimitiveConstantRef":
     case "ConstantRef": {
-      return [[], exp]
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, exp]
       return [[entry], L.Var(freshName, exp.meta)]
     }
 
     case "Apply": {
-      const [targetEntries, newTarget] = forVar(state, exp.target)
+      const [targetEntries, newTarget] = forAtom(state, exp.target)
       const [argsEntriesArray, newArgs] = arrayUnzip(
-        exp.args.map((arg) => forVar(state, arg)),
+        exp.args.map((arg) => forAtom(state, arg)),
       )
       const argsEntries = argsEntriesArray.flatMap((entries) => entries)
       const freshName = generateFreshName(state)
@@ -140,27 +139,20 @@ function forVar(state: State, exp: L.Exp): [Array<Entry>, L.Exp] {
 
     case "Let1": {
       const rhsEntry: Entry = [exp.name, onExp(state, exp.rhs)]
-      const [bodyEntries, newBody] = forVar(state, exp.body)
+      const [bodyEntries, newBody] = forAtom(state, exp.body)
       return [[rhsEntry, ...bodyEntries], newBody]
     }
 
     case "Begin1": {
       const headEntry: Entry = [null, onExp(state, exp.head)]
-      const [bodyEntries, newBody] = forVar(state, exp.body)
+      const [bodyEntries, newBody] = forAtom(state, exp.body)
       return [[headEntry, ...bodyEntries], newBody]
     }
 
-    case "If": {
+    default: {
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, onExp(state, exp)]
       return [[entry], L.Var(freshName, exp.meta)]
-    }
-
-    default: {
-      let message = `[UnnestOperandPass] unhandled exp`
-      message += `\n  exp: ${L.formatExp(exp)}`
-      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
-      else throw new Error(message)
     }
   }
 }

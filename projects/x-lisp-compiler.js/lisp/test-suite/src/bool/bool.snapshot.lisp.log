@@ -13,27 +13,21 @@
 ;;; RevealGlobalPass
 
 (define (main)
-  (@begin1
-      ((@primitive-function-ref println 1)
-       (@primitive-constant-ref true))
-    ((@primitive-function-ref println 1)
-     (@primitive-constant-ref false))))
+  (@begin1 ((@primitive-function-ref println 1) (@primitive-constant-ref true))
+    ((@primitive-function-ref println 1) (@primitive-constant-ref false))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (@begin1
-      ((@primitive-function-ref println 1)
-       (@primitive-constant-ref true))
-    ((@primitive-function-ref println 1)
-     (@primitive-constant-ref false))))
+  (@begin1 ((@primitive-function-ref println 1) (@primitive-constant-ref true))
+    ((@primitive-function-ref println 1) (@primitive-constant-ref false))))
 
 ;;; UnnestOperandPass
 
 (define (main)
   (@begin1
-      ((@primitive-function-ref println 1)
-       (@primitive-constant-ref true))
-    ((@primitive-function-ref println 1)
-     (@primitive-constant-ref false))))
+      (@let1 _₁ (@primitive-constant-ref true)
+        ((@primitive-function-ref println 1) _₁))
+    (@let1 _₂ (@primitive-constant-ref false)
+      ((@primitive-function-ref println 1) _₂))))
 

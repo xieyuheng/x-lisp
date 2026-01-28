@@ -14,15 +14,13 @@
 
 (define (main)
   (@let1 x₁ 4
-    ((@primitive-function-ref println 1)
-     ((@primitive-function-ref iadd 2) 8 x₁))))
+    ((@primitive-function-ref println 1) ((@primitive-function-ref iadd 2) 8 x₁))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (@let1 x₁ 4
-    ((@primitive-function-ref println 1)
-     ((@primitive-function-ref iadd 2) 8 x₁))))
+    ((@primitive-function-ref println 1) ((@primitive-function-ref iadd 2) 8 x₁))))
 
 ;;; UnnestOperandPass
 

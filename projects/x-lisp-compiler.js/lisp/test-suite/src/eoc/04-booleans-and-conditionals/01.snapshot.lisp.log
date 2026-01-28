@@ -5,9 +5,7 @@
    (begin
      (= x (random-dice))
      (= y (random-dice))
-     (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
-       (iadd y 2)
-       (iadd y 10)))))
+     (if (if (int-less? x 1) (equal? x 0) (equal? x 2)) (iadd y 2) (iadd y 10)))))
 
 ;;; ShrinkPass
 
@@ -62,10 +60,7 @@
     (@let1 y₁ ((@primitive-function-ref random-dice 0))
       (@let1 _₁
           (@let1 _₂
-              (@let1 _₃
-                  ((@primitive-function-ref int-less? 2)
-                   x₁
-                   1)
+              (@let1 _₃ ((@primitive-function-ref int-less? 2) x₁ 1)
                 (if _₃
                   ((@primitive-function-ref equal? 2) x₁ 0)
                   ((@primitive-function-ref equal? 2) x₁ 2)))

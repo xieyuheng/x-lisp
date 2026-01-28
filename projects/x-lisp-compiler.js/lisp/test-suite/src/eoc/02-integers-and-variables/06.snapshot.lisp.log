@@ -14,15 +14,13 @@
 
 (define (main)
   ((@primitive-function-ref println 1)
-   ((@primitive-function-ref ineg 1)
-    ((@primitive-function-ref random-dice 0)))))
+   ((@primitive-function-ref ineg 1) ((@primitive-function-ref random-dice 0)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   ((@primitive-function-ref println 1)
-   ((@primitive-function-ref ineg 1)
-    ((@primitive-function-ref random-dice 0)))))
+   ((@primitive-function-ref ineg 1) ((@primitive-function-ref random-dice 0)))))
 
 ;;; UnnestOperandPass
 

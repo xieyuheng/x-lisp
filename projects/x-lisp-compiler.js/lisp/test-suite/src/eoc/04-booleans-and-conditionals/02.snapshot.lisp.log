@@ -6,12 +6,8 @@
      (= x (random-dice))
      (= y (random-dice))
      (iadd
-      (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
-        (iadd y 2)
-        (iadd y 10))
-      (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
-        (iadd y 2)
-        (iadd y 10))))))
+      (if (if (int-less? x 1) (equal? x 0) (equal? x 2)) (iadd y 2) (iadd y 10))
+      (if (if (int-less? x 1) (equal? x 0) (equal? x 2)) (iadd y 2) (iadd y 10))))))
 
 ;;; ShrinkPass
 
@@ -34,16 +30,10 @@
    (@let1 x₁ (random-dice)
      (@let1 y₁ (random-dice)
        (iadd
-        (if
-            (if (int-less? x₁ 1)
-              (equal? x₁ 0)
-              (equal? x₁ 2))
+        (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
           (iadd y₁ 2)
           (iadd y₁ 10))
-        (if
-            (if (int-less? x₁ 1)
-              (equal? x₁ 0)
-              (equal? x₁ 2))
+        (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
           (iadd y₁ 2)
           (iadd y₁ 10)))))))
 
@@ -94,10 +84,7 @@
     (@let1 y₁ ((@primitive-function-ref random-dice 0))
       (@let1 _₁
           (@let1 _₂
-              (@let1 _₃
-                  ((@primitive-function-ref int-less? 2)
-                   x₁
-                   1)
+              (@let1 _₃ ((@primitive-function-ref int-less? 2) x₁ 1)
                 (if _₃
                   ((@primitive-function-ref equal? 2) x₁ 0)
                   ((@primitive-function-ref equal? 2) x₁ 2)))
@@ -106,10 +93,7 @@
               ((@primitive-function-ref iadd 2) y₁ 10)))
         (@let1 _₄
             (@let1 _₅
-                (@let1 _₆
-                    ((@primitive-function-ref int-less? 2)
-                     x₁
-                     1)
+                (@let1 _₆ ((@primitive-function-ref int-less? 2) x₁ 1)
                   (if _₆
                     ((@primitive-function-ref equal? 2) x₁ 0)
                     ((@primitive-function-ref equal? 2) x₁ 2)))

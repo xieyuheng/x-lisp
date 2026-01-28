@@ -1,17 +1,14 @@
 ;;; Input
 
-(define (main)
-  (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
+(define (main) (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
 
 ;;; ShrinkPass
 
-(define (main)
-  (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
+(define (main) (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
 
 ;;; UniquifyPass
 
-(define (main)
-  (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
+(define (main) (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
 
 ;;; RevealGlobalPass
 
