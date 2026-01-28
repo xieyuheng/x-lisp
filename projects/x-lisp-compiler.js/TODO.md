@@ -1,4 +1,5 @@
-setup basic
+[basic] `Instr`
+[basic] `Exp`
 
 # cond
 
