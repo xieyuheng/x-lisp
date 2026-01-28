@@ -12,6 +12,7 @@ export type DefineFunction = {
   kind: "DefineFunction"
   mod: Mod
   name: string
+  parameters: Array<string>
   lines: Array<Line>
   meta?: Meta
 }
@@ -19,6 +20,7 @@ export type DefineFunction = {
 export function DefineFunction(
   mod: Mod,
   name: string,
+  parameters: Array<string>,
   lines: Array<Line>,
   meta?: Meta,
 ): DefineFunction {
@@ -26,6 +28,7 @@ export function DefineFunction(
     kind: "DefineFunction",
     mod,
     name,
+    parameters,
     lines,
     meta,
   }

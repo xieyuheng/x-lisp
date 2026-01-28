@@ -1,6 +1,5 @@
 # basic
 
-[basic] `formatStmt`
 [basic] `formatMod`
 
 [basic] `prettyMod`
