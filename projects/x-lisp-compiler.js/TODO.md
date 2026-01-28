@@ -1,7 +1,5 @@
 # basic
 
-[basic] `isAtom` `isCompound`
-
 [basic] `Mod`
 [basic] `Declaration` -- top-level
 

@@ -1,6 +1,19 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 
-export type Exp = Symbol | Hashtag | String | Int | Float | Var | Label | Apply
+export type Atom = Symbol | Hashtag | String | Int | Float | Var
+
+export function isAtom(exp: Exp): exp is Atom {
+  return (
+    exp.kind === "Symbol" ||
+    exp.kind === "Hashtag" ||
+    exp.kind === "String" ||
+    exp.kind === "Int" ||
+    exp.kind === "Float" ||
+    exp.kind === "Var"
+  )
+}
+
+export type Exp = Atom | Label | Apply
 
 export type Symbol = {
   kind: "Symbol"
