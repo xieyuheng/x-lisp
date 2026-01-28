@@ -4,16 +4,16 @@
 ;;     (+ (fib (- n 1)) (fib (- n 2)))))
 
 (define-function (fib n)
-  entry
-  (branch (int-less? n 2)
-    (@label base-case)
-    (@label recur-case))
-  base-case
-  (return n)
-  recur-case
-  (= n1 (isub n 1))
-  (= f1 (fib n1))
-  (= n2 (isub n 2))
-  (= f2 (fib n2))
-  (= r (iadd n1 n2))
-  (return r))
+  (block entry
+    (branch (int-less? n 2)
+      (@label base-case)
+      (@label recur-case)))
+  (block base-case
+    (return n))
+  (block recur-case
+    (= n1 (isub n 1))
+    (= f1 (fib n1))
+    (= n2 (isub n 2))
+    (= f2 (fib n2))
+    (= r (iadd n1 n2))
+    (return r)))

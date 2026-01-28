@@ -4,14 +4,14 @@
 ;;     (* (factorial (- n 1)) n)))
 
 (define-function (factorial n)
-  entry
-  (branch (equal? n 1)
-    (@label base-case)
-    (@label recur-case))
-  base-case
-  (return 1)
-  recur--case
-  (= n1 (isub n 1))
-  (= f1 (factorial n1))
-  (= r (imul n f1))
-  (return r))
+  (block entry
+    (branch (equal? n 1)
+      (@label base-case)
+      (@label recur-case)))
+  (block base-case
+    (return 1))
+  (block recur-case
+    (= n1 (isub n 1))
+    (= f1 (factorial n1))
+    (= r (imul n f1))
+    (return r)))

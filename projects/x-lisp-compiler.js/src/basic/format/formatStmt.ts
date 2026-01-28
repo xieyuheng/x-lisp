@@ -57,5 +57,5 @@ export function formatStmt(stmt: Stmt): string {
 
 function formatBlock(block: Block): string {
   const instrs = block.instrs.map(formatInstr).join(" ")
-  return `${block.label} ${instrs}`
+  return `(block ${block.label} ${instrs})`
 }
