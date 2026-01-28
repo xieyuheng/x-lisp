@@ -1,7 +1,5 @@
 # basic
 
-[basic] `Exp` -- atom literal
-
 [basic] `isAtom` `isCompound`
 
 [basic] `Mod`
