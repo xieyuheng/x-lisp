@@ -68,18 +68,6 @@ function onExp(state: State, exp: L.Exp): L.Exp {
       )
     }
 
-    case "If": {
-      const [conditionEntries, newCondition] = forAtom(state, exp.condition)
-      return prependLets(
-        conditionEntries,
-        L.If(
-          newCondition,
-          onExp(state, exp.consequent),
-          onExp(state, exp.alternative),
-          exp.meta,
-        ),
-      )
-    }
 
     default: {
       return L.expMap((e) => onExp(state, e), exp)

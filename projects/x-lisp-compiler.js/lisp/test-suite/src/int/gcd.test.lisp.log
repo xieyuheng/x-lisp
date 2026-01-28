@@ -45,11 +45,10 @@
 ;;; UnnestOperandPass
 
 (define (gcd a b)
-  (@let1 _₁ ((@primitive-function-ref equal? 2) b 0)
-    (if _₁
-      a
-      (@let1 _₂ ((@primitive-function-ref imod 2) a b)
-        ((@function-ref gcd 2) b _₂)))))
+  (if ((@primitive-function-ref equal? 2) b 0)
+    a
+    (@let1 _₁ ((@primitive-function-ref imod 2) a b)
+      ((@function-ref gcd 2) b _₁))))
 
 (define (main)
   (@begin1

@@ -59,13 +59,11 @@
   (@let1 x₁ ((@primitive-function-ref random-dice 0))
     (@let1 y₁ ((@primitive-function-ref random-dice 0))
       (@let1 _₁
-          (@let1 _₂
-              (@let1 _₃ ((@primitive-function-ref int-less? 2) x₁ 1)
-                (if _₃
-                  ((@primitive-function-ref equal? 2) x₁ 0)
-                  ((@primitive-function-ref equal? 2) x₁ 2)))
-            (if _₂
-              ((@primitive-function-ref iadd 2) y₁ 2)
-              ((@primitive-function-ref iadd 2) y₁ 10)))
+          (if
+              (if ((@primitive-function-ref int-less? 2) x₁ 1)
+                ((@primitive-function-ref equal? 2) x₁ 0)
+                ((@primitive-function-ref equal? 2) x₁ 2))
+            ((@primitive-function-ref iadd 2) y₁ 2)
+            ((@primitive-function-ref iadd 2) y₁ 10))
         ((@primitive-function-ref println 1) _₁)))))
 
