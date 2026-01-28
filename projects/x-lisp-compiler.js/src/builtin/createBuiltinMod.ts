@@ -196,9 +196,11 @@ export function createBuiltinMod(): L.Mod {
   declarePrimitiveFunction(mod, "set-to-list", { arity: 1 })
 
   // random
+
   declarePrimitiveFunction(mod, "random-dice", { arity: 0 })
 
   // assert
+
   declarePrimitiveFunction(mod, "assert", { arity: 1 })
   declarePrimitiveFunction(mod, "assert-equal", { arity: 2 })
   declarePrimitiveFunction(mod, "assert-not-equal", { arity: 2 })

@@ -1,6 +1,5 @@
 import { arrayUnzip } from "@xieyuheng/helpers.js/array"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
-import * as S from "@xieyuheng/sexp.js"
 import * as L from "../lisp/index.ts"
 
 export function UnnestOperandPass(mod: L.Mod): void {
