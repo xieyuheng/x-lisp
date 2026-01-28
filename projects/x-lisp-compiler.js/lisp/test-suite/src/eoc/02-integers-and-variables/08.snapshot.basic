@@ -1,1 +1,2 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry (= _₁ (iadd 20 22)) (return (println _₁))))

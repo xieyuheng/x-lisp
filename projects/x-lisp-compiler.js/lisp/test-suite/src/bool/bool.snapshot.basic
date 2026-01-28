@@ -1,1 +1,6 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry
+    (= _₁ true)
+    (perform (println _₁))
+    (= _₂ false)
+    (return (println _₂))))

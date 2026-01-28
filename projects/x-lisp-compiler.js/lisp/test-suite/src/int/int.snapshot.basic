@@ -1,3 +1,5 @@
-(define-function (square x) (block entry))
+(define-function (square x)
+  (block entry (return (imul x x))))
 
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry (= _₁ (square 3)) (return (println _₁))))

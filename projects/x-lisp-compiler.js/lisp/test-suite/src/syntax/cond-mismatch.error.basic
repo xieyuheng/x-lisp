@@ -1,1 +1,1 @@
-(define-function (main) (block entry))
+(define-function (main) (block entry (return (assert #f))))

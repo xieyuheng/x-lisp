@@ -1,1 +1,28 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry (= _₁ 1) (goto (@label let-body₁₀)))
+  (block let-body₁ (= _₈ (not _₇)) (return (assert _₈)))
+  (block let-body₂ (goto (@label let-body₁)))
+  (block let-body₃
+    (perform (assert _₆))
+    (= _₇ #f)
+    (goto (@label let-body₂)))
+  (block let-body₄ (goto (@label let-body₃)))
+  (block let-body₅
+    (= _₅ (not _₄))
+    (perform (assert _₅))
+    (= _₆ #t)
+    (goto (@label let-body₄)))
+  (block let-body₆ (goto (@label let-body₅)))
+  (block let-body₇
+    (perform (assert _₃))
+    (= _₄ #f)
+    (goto (@label let-body₆)))
+  (block let-body₈ (goto (@label let-body₇)))
+  (block let-body₉
+    (perform (assert-equal _₂ 2))
+    (= _₃ #t)
+    (goto (@label let-body₈)))
+  (block let-body₁₀
+    (perform (assert-equal _₁ 1))
+    (= _₂ 2)
+    (goto (@label let-body₉))))

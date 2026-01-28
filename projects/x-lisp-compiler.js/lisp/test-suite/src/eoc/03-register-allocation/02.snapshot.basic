@@ -1,1 +1,7 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry
+    (= x₁ (random-dice))
+    (= y₁ (random-dice))
+    (= _₁ (iadd x₁ y₁))
+    (= _₂ (iadd _₁ 42))
+    (return (println _₂))))

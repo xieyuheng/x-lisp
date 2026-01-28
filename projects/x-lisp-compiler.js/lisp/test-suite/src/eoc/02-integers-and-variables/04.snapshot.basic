@@ -1,1 +1,7 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry
+    (= x₁ (ineg 42))
+    (= y₁ x₁)
+    (= z₁ y₁)
+    (= _₁ (ineg z₁))
+    (return (println _₁))))

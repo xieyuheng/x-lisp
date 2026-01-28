@@ -1,3 +1,12 @@
-(define-function (gcd a b) (block entry))
+(define-function (gcd a b)
+  (block entry
+    (branch (equal? b 0) (@label then₁) (@label else₂)))
+  (block then₁ (return a))
+  (block else₂ (= _₁ (imod a b)) (return (gcd b _₁))))
 
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry
+    (= _₁ (gcd 13 7))
+    (perform (assert-equal 1 _₁))
+    (= _₂ (gcd 12 8))
+    (return (assert-equal 4 _₂))))

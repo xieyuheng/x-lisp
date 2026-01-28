@@ -1,1 +1,7 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry
+    (= _₁ (iadd 1 2))
+    (= _₂ (iadd 3 4))
+    (= x₁ (iadd _₁ _₂))
+    (= _₃ (iadd x₁ 5))
+    (return (println _₃))))

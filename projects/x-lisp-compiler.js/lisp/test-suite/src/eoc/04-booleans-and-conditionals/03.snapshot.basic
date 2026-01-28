@@ -1,1 +1,13 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry
+    (= _₂ (random-dice))
+    (branch (equal? _₂ 1) (@label then₆) (@label else₇)))
+  (block let-body₁ (return (println _₁)))
+  (block then₂ (= _₁ 0) (goto (@label let-body₁)))
+  (block else₃ (= _₁ 42) (goto (@label let-body₁)))
+  (block then₄ (goto (@label then₂)))
+  (block else₅ (goto (@label else₃)))
+  (block then₆
+    (= _₃ (random-dice))
+    (branch (equal? _₃ 2) (@label then₄) (@label else₅)))
+  (block else₇ (goto (@label else₃))))

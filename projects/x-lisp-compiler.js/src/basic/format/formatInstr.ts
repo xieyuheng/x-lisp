@@ -4,7 +4,7 @@ import { formatExp } from "./formatExp.ts"
 export function formatInstr(instr: Instr): string {
   switch (instr.kind) {
     case "Assign": {
-      return `(assign ${instr.dest} ${formatExp(instr.exp)})`
+      return `(= ${instr.dest} ${formatExp(instr.exp)})`
     }
 
     case "Perform": {

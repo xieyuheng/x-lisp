@@ -36,7 +36,7 @@ function onExp(exp: L.Exp): L.Exp {
 
     case "BeginSugar": {
       if (exp.sequence.length === 0) {
-        let message = `[shrink] (begin) must not be empty`
+        let message = `[ShrinkPass] (begin) must not be empty`
         message += `\n  exp: ${L.formatExp(exp)}`
         if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
         else throw new Error(message)
@@ -57,7 +57,7 @@ function onExp(exp: L.Exp): L.Exp {
     }
 
     case "AssignSugar": {
-      let message = `[shrink] (=) must occur in the head of (begin)`
+      let message = `[ShrinkPass] (=) must occur in the head of (begin)`
       message += `\n  exp: ${L.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)

@@ -1,1 +1,9 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry
+    (perform (print 1))
+    (perform (newline))
+    (perform (print 2))
+    (perform (newline))
+    (perform (print 3))
+    (perform (newline))
+    (return 666)))

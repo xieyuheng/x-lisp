@@ -1,1 +1,11 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry
+    (= set₁ (make-set))
+    (perform (set-add! 1 set₁))
+    (perform (set-add! 2 set₁))
+    (perform (set-add! 3 set₁))
+    (= set₁ (make-set))
+    (perform (set-add! 1 set₁))
+    (perform (set-add! 2 set₁))
+    (perform (set-add! 3 set₁))
+    (return (assert-equal set₁ set₁))))

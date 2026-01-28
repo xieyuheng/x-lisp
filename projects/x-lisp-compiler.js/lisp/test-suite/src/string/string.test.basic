@@ -1,1 +1,4 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry
+    (= _₁ (string-append "abc" "def"))
+    (return (assert-equal "abcdef" _₁))))

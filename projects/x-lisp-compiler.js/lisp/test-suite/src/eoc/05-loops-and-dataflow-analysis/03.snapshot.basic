@@ -1,1 +1,17 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry
+    (perform (print 1))
+    (perform (newline))
+    (perform (print 2))
+    (perform (newline))
+    (perform (print 3))
+    (perform (newline))
+    (branch (equal? 1 2) (@label then₁) (@label else₂)))
+  (block then₁
+    (perform (print 111))
+    (perform (newline))
+    (return (equal? 1 2)))
+  (block else₂
+    (perform (print 222))
+    (perform (newline))
+    (return (equal? 1 2))))

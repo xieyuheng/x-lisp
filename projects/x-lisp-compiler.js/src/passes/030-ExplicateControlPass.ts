@@ -66,12 +66,12 @@ function generateLabel(
   state: State,
   name: string,
   instrs: Array<B.Instr>,
-): string {
+): B.Label {
   const subscript = stringToSubscript(state.blocks.size.toString())
   const label = `${name}${subscript}`
   const block = B.Block(label, instrs)
   addBlock(state, block)
-  return label
+  return B.Label(label)
 }
 
 function toBasicExp(exp: L.Exp): B.Exp {
@@ -80,12 +80,16 @@ function toBasicExp(exp: L.Exp): B.Exp {
     case "Hashtag":
     case "String":
     case "Int":
-    case "Float": {
+    case "Float":
+    case "Var": {
       return exp
     }
 
-    case "Var": {
-      return exp
+    case "PrimitiveFunctionRef":
+    case "PrimitiveVariableRef":
+    case "FunctionRef":
+    case "VariableRef": {
+      return B.Var(exp.name)
     }
 
     case "Apply": {
@@ -93,7 +97,7 @@ function toBasicExp(exp: L.Exp): B.Exp {
     }
 
     default: {
-      let message = `[toBasicExp] unhandled exp`
+      let message = `[ExplicateControlPass] [toBasicExp] unhandled exp`
       message += `\n  exp: ${L.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
@@ -151,8 +155,8 @@ function inLet1(
       return inIf(
         state,
         rhs.condition,
-        inLet1(state, name, rhs.consequent, [B.Goto(B.Label(letBodyLabel))]),
-        inLet1(state, name, rhs.alternative, [B.Goto(B.Label(letBodyLabel))]),
+        inLet1(state, name, rhs.consequent, [B.Goto(letBodyLabel)]),
+        inLet1(state, name, rhs.alternative, [B.Goto(letBodyLabel)]),
       )
     }
 
@@ -167,7 +171,34 @@ function inBegin1(
   head: L.Exp,
   cont: Array<B.Instr>,
 ): Array<B.Instr> {
-  return [B.Perform(toBasicExp(head)), ...cont]
+  switch (head.kind) {
+    case "Let1": {
+      return inLet1(
+        state,
+        head.name,
+        head.rhs,
+        inBegin1(state, head.body, cont),
+      )
+    }
+
+    case "Begin1": {
+      return inBegin1(state, head.head, inBegin1(state, head.body, cont))
+    }
+
+    case "If": {
+      const letBodyLabel = generateLabel(state, "let-body", cont)
+      return inIf(
+        state,
+        head.condition,
+        inBegin1(state, head.consequent, [B.Goto(letBodyLabel)]),
+        inBegin1(state, head.alternative, [B.Goto(letBodyLabel)]),
+      )
+    }
+
+    default: {
+      return [B.Perform(toBasicExp(head)), ...cont]
+    }
+  }
 }
 
 function inIf(
@@ -176,43 +207,70 @@ function inIf(
   thenCont: Array<B.Instr>,
   elseCont: Array<B.Instr>,
 ): Array<B.Instr> {
-  // if (L.isBool(condition)) {
-  //   return L.isTrue(condition) ? thenCont : elseCont
-  // }
+  if (L.isBool(condition)) {
+    return L.isTrue(condition) ? thenCont : elseCont
+  }
 
   switch (condition.kind) {
-    // case "Var": {
-    //   return [
-    //     B.Branch(
-    //       condition.name,
-    //       generateLabel(state, "then", thenCont),
-    //       generateLabel(state, "else", elseCont),
-    //     ),
-    //   ]
-    // }
+    case "Var": {
+      return [
+        B.Branch(
+          B.Apply(B.Var("equal?"), [B.Var(condition.name), B.Hashtag("t")]),
+          generateLabel(state, "then", thenCont),
+          generateLabel(state, "else", elseCont),
+        ),
+      ]
+    }
 
-    // case "Let1": {
-    //   return inLet1(
-    //     state,
-    //     condition.name,
-    //     condition.rhs,
-    //     inIf(state, condition.body, thenCont, elseCont),
-    //   )
-    // }
+    case "Apply": {
+      if (
+        condition.target.kind === "PrimitiveFunctionRef" &&
+        condition.target.name === "not" &&
+        condition.args.length === 1
+      ) {
+        const [negatedCondition] = condition.args
+        return inIf(state, negatedCondition, elseCont, thenCont)
+      }
 
-    // case "If": {
-    //   thenCont = [B.Goto(generateLabel(state, "then", thenCont))]
-    //   elseCont = [B.Goto(generateLabel(state, "else", elseCont))]
-    //   return inIf(
-    //     state,
-    //     condition.condition,
-    //     inIf(state, condition.consequent, thenCont, elseCont),
-    //     inIf(state, condition.alternative, thenCont, elseCont),
-    //   )
-    // }
+      return [
+        B.Branch(
+          toBasicExp(condition),
+          generateLabel(state, "then", thenCont),
+          generateLabel(state, "else", elseCont),
+        ),
+      ]
+    }
+
+    case "Let1": {
+      return inLet1(
+        state,
+        condition.name,
+        condition.rhs,
+        inIf(state, condition.body, thenCont, elseCont),
+      )
+    }
+
+    case "Begin1": {
+      return inBegin1(
+        state,
+        condition.head,
+        inIf(state, condition.body, thenCont, elseCont),
+      )
+    }
+
+    case "If": {
+      thenCont = [B.Goto(generateLabel(state, "then", thenCont))]
+      elseCont = [B.Goto(generateLabel(state, "else", elseCont))]
+      return inIf(
+        state,
+        condition.condition,
+        inIf(state, condition.consequent, thenCont, elseCont),
+        inIf(state, condition.alternative, thenCont, elseCont),
+      )
+    }
 
     default: {
-      let message = `[inIf] unhandled condition exp`
+      let message = `[ExplicateControlPass] [inIf] unhandled condition exp`
       message += `\n  exp: ${L.formatExp(condition)}`
       if (condition.meta) throw new S.ErrorWithMeta(message, condition.meta)
       else throw new Error(message)

@@ -1,1 +1,18 @@
-(define-function (main) (block entry))
+(define-function (main)
+  (block entry
+    (= x₁ (random-dice))
+    (= y₁ (random-dice))
+    (branch (int-less? x₁ 1) (@label then₈) (@label else₉)))
+  (block let-body₁ (return (println _₁)))
+  (block then₂ (= _₁ (iadd y₁ 2)) (goto (@label let-body₁)))
+  (block else₃
+    (= _₁ (iadd y₁ 10))
+    (goto (@label let-body₁)))
+  (block then₄ (goto (@label then₂)))
+  (block else₅ (goto (@label else₃)))
+  (block then₆ (goto (@label then₂)))
+  (block else₇ (goto (@label else₃)))
+  (block then₈
+    (branch (equal? x₁ 0) (@label then₄) (@label else₅)))
+  (block else₉
+    (branch (equal? x₁ 2) (@label then₆) (@label else₇))))

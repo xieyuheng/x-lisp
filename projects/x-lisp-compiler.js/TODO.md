@@ -1,5 +1,3 @@
-[pass] `030-ExplicateControlPass` -- `inIf`
-
 # cond
 
 [pass] `desugarCond` -- report `error` about mismatch -- instead of `assert`

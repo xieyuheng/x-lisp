@@ -1,3 +1,4 @@
 (export square)
 
-(define-function (square x) (block entry))
+(define-function (square x)
+  (block entry (return (imul x x))))
