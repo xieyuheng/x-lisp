@@ -1,7 +1,11 @@
 # basic
 
-[basic] `Mod`
-[basic] `Declaration` -- top-level
+[basic] `format`
+[basic] `pretty`
+
+# compile
+
+[pass] compile x-lisp to basic-lisp
 
 # cond
 
