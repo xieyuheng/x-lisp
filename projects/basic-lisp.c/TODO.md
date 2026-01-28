@@ -1,5 +1,3 @@
-remove forth/
-
 [basic] setup -- like forth/
 
 [basic] vm

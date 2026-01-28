@@ -6,6 +6,6 @@ parallel="parallel -v --halt now,fail=1"
 bin="./src/basic-lisp run"
 flags=""
 
-find forth/tests -name "*.test.fth" | $parallel $bin {} $flags
-find forth/tests -name "*.snapshot.fth" | $parallel $bin {} $flags ">" {}.out
-find forth/tests -name "*.error.fth" | $parallel $bin {} $flags ">" {}.err "||" true
+find basic/tests -name "*.test.basic" | $parallel $bin {} $flags
+find basic/tests -name "*.snapshot.basic" | $parallel $bin {} $flags ">" {}.out
+find basic/tests -name "*.error.basic" | $parallel $bin {} $flags ">" {}.err "||" true
