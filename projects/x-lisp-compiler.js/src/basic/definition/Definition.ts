@@ -1,20 +1,9 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
-import type { Mod } from "../mod/index.ts"
+import type { Label } from "../exp/index.ts"
 import type { Instr } from "../instr/index.ts"
+import type { Mod } from "../mod/index.ts"
 
 export type Definition = FunctionDefinition
-
-export type Label = {
-  kind: "Label"
-  name: string
-}
-
-export function Label(name: string): Label {
-  return {
-    kind: "Label",
-    name,
-  }
-}
 
 export type Line = Label | Instr
 
