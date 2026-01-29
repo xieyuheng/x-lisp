@@ -1,5 +1,10 @@
-[basic] rename `OP_JUMP` to `OP_GOTO`
-[basic] add `OP_BRANCH`
+[x-forth] rename forth/ to vm/
+[basic-lisp] rename basic/ to vm/
+[x-forth] merge instr structs
+
+[basic] merge instr structs
+[basic] remove tokens from vm
+[basic] remove not used opcodes -- keep OP_DROP
 
 [sexp] setup
 [sexp] port sexp.js
