@@ -1,6 +1,7 @@
 # sexp
 
-[sexp] `for_sexp` -- `BRACKET_START_TOKEN`
+[sexp] `for_literal_tael`
+[sexp] `for_literal_set`
 
 [sexp] `sexp.test`
 

@@ -1,6 +1,18 @@
 #include "index.h"
 
 static value_t
+for_literal_tael(list_t *tokens) {
+    (void) tokens;
+    assert(false);
+}
+
+static value_t
+for_literal_set(list_t *tokens) {
+    (void) tokens;
+    assert(false);
+}
+
+static value_t
 for_sexp(list_t *tokens) {
     if (list_is_empty(tokens)) {
         where_printf("unexpected end of tokens");
@@ -34,7 +46,16 @@ for_sexp(list_t *tokens) {
     }
 
     case BRACKET_START_TOKEN: {
-        assert(false && "TODO");
+        if (string_equal(token->content, "[")) {
+            token_free(token);
+            return for_literal_tael(tokens);
+        } else if (string_equal(token->content, "{")) {
+            token_free(token);
+            return for_literal_set(tokens);
+        } else {
+            where_printf("unexpected bracket start: %s", token->content);
+            exit(1);
+        }
     }
 
     case BRACKET_END_TOKEN: {
