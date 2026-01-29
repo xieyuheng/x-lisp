@@ -43,18 +43,29 @@ for_sexp(list_t *tokens) {
     }
 
     case QUOTATION_MARK_TOKEN: {
-        assert(false && "TODO");
-        unreachable();
+        value_t inner_sexp = x_object(intern_hashtag(token->content));
+        value_t sexp = x_make_list();
+        value_t head_sexp = x_void;
+        if (string_equal(token->content, "'")) {
+            head_sexp = x_object(intern_symbol("@quote"));
+        } else if (string_equal(token->content, "`")) {
+            head_sexp = x_object(intern_symbol("@quasiquote"));
+        } else if (string_equal(token->content, ",")) {
+            head_sexp = x_object(intern_symbol("@unquote"));
+        } else {
+            where_printf("unexpected quasiquote mark: %s", token->content);
+            exit(1);
+        }
+
+        x_list_push(head_sexp, sexp);
+        x_list_push(inner_sexp, sexp);
+        token_free(token);
+        return sexp;
     }
 
     case KEYWORD_TOKEN: {
-        assert(false && "TODO");
-        // value_t key = x_object(intern_symbol(token->content));
-        // value_t value =
-        // x_record_put_mut(x_float(string_parse_double(token->content)), sexps);
-        // token_free(token);
-        // return;
-        unreachable();
+        where_printf("unexpected keyword: %s", token->content);
+        exit(1);
     }
 
     case HASHTAG_TOKEN: {
