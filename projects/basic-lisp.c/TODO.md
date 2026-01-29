@@ -1,6 +1,7 @@
 # sexp
 
-[sexp] `sexp.test`
+[sexp] `print_sexp`
+[sexp] `sexp.snapshot` -- call `print_sexp`
 
 # basic
 
