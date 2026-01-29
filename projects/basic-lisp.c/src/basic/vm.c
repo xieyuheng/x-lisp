@@ -2,14 +2,16 @@
 
 struct vm_t {
     mod_t *mod;
+    list_t *tokens;
     stack_t *value_stack;
     stack_t *frame_stack;
 };
 
 vm_t *
-make_vm(mod_t *mod) {
+make_vm(mod_t *mod, list_t *tokens) {
     vm_t *self = new(vm_t);
     self->mod = mod;
+    self->tokens = tokens;
     self->value_stack = make_stack();
     self->frame_stack = make_stack_with((free_fn_t *) frame_free);
     return self;
@@ -17,6 +19,7 @@ make_vm(mod_t *mod) {
 
 void
 vm_free(vm_t *self) {
+    list_free(self->tokens);
     stack_free(self->value_stack);
     stack_free(self->frame_stack);
     free(self);
@@ -58,9 +61,23 @@ vm_frame_count(const vm_t *vm) {
     return stack_length(vm->frame_stack);
 }
 
+token_t *
+vm_next_token(vm_t *vm) {
+    return list_shift(vm->tokens);
+}
+
+bool
+vm_no_more_tokens(vm_t *vm) {
+    return list_is_empty(vm->tokens);
+}
+
 inline void
 vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     switch (instr.op) {
+    case OP_NOP: {
+        return;
+    }
+
     case OP_LITERAL: {
         vm_push(vm, instr.literal.value);
         return;
@@ -222,6 +239,26 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         if (value == x_false) {
             frame->pc += instr.jump.offset;
         }
+        return;
+    }
+
+    case OP_DUP: {
+        value_t value = vm_pop(vm);
+        vm_push(vm, value);
+        vm_push(vm, value);
+        return;
+    }
+
+    case OP_DROP: {
+        vm_pop(vm);
+        return;
+    }
+
+    case OP_SWAP: {
+        value_t x2 = vm_pop(vm);
+        value_t x1 = vm_pop(vm);
+        vm_push(vm, x2);
+        vm_push(vm, x1);
         return;
     }
     }
