@@ -107,7 +107,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
-    case OP_ASSIGN: {
+    case OP_ASSIGN_VARIABLE: {
         value_t value = vm_pop(vm);
         definition_t *definition = (definition_t *) to_object(value);
         if (definition->kind != VARIABLE_DEFINITION) {

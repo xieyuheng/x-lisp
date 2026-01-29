@@ -12,7 +12,7 @@ typedef enum {
     OP_REF,
     OP_APPLY,
     OP_TAIL_APPLY,
-    OP_ASSIGN,
+    OP_ASSIGN_VARIABLE,
     OP_LOCAL_LOAD,
     OP_LOCAL_STORE,
     OP_JUMP,

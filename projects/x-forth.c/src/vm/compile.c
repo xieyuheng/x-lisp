@@ -207,7 +207,7 @@ static struct op_word_entry_t op_word_entries[] = {
 
     { "@apply", OP_APPLY },
     { "@tail-apply", OP_TAIL_APPLY },
-    { "@assign", OP_ASSIGN },
+    { "@assign", OP_ASSIGN_VARIABLE },
 };
 
 static size_t
