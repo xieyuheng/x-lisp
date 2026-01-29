@@ -1,7 +1,7 @@
 #pragma once
 
 // - instruction should be used as a struct value.
-// - there should be no value in instruction,
+// - there should be no compound value in instruction,
 //   so that GC root scaning no need to scan instructions.
 
 typedef enum {
