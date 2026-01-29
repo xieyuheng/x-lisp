@@ -1,3 +1,5 @@
+[basic] rename basic/ to vm/
+
 [sexp] setup
 [sexp] port sexp.js
 
