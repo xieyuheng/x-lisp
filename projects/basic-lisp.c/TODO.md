@@ -1,7 +1,7 @@
 # sexp
 
-[sexp] `parse_sexps_from_tokens`
 [sexp] `parse_sexp_from_tokens`
+[sexp] `sexp.test`
 
 # basic
 
