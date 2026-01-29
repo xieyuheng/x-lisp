@@ -1,4 +1,3 @@
-[basic-lisp] rename basic/ to vm/
 [x-forth] merge instr structs
 
 [basic] merge instr structs
