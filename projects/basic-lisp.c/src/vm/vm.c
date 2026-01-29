@@ -61,92 +61,8 @@ vm_frame_count(const vm_t *vm) {
 inline void
 vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     switch (instr.op) {
-    case OP_NOP: {
-        return;
-    }
-
     case OP_LITERAL: {
         vm_push(vm, instr.literal.value);
-        return;
-    }
-
-    case OP_IADD: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        value_t result = x_iadd(x1, x2);
-        vm_push(vm, result);
-        return;
-    }
-
-    case OP_ISUB: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        value_t result = x_isub(x1, x2);
-        vm_push(vm, result);
-        return;
-    }
-
-    case OP_IMUL: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        value_t result = x_imul(x1, x2);
-        vm_push(vm, result);
-        return;
-    }
-
-    case OP_IDIV: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        value_t result = x_idiv(x1, x2);
-        vm_push(vm, result);
-        return;
-    }
-
-    case OP_IMOD: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        value_t result = x_imod(x1, x2);
-        vm_push(vm, result);
-        return;
-    }
-
-    case OP_FADD: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        value_t result = x_fadd(x1, x2);
-        vm_push(vm, result);
-        return;
-    }
-
-    case OP_FSUB: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        value_t result = x_fsub(x1, x2);
-        vm_push(vm, result);
-        return;
-    }
-
-    case OP_FMUL: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        value_t result = x_fmul(x1, x2);
-        vm_push(vm, result);
-        return;
-    }
-
-    case OP_FDIV: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        value_t result = x_fdiv(x1, x2);
-        vm_push(vm, result);
-        return;
-    }
-
-    case OP_FMOD: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        value_t result = x_fmul(x1, x2);
-        vm_push(vm, result);
         return;
     }
 
@@ -229,23 +145,8 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
-    case OP_DUP: {
-        value_t value = vm_pop(vm);
-        vm_push(vm, value);
-        vm_push(vm, value);
-        return;
-    }
-
     case OP_DROP: {
         vm_pop(vm);
-        return;
-    }
-
-    case OP_SWAP: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        vm_push(vm, x2);
-        vm_push(vm, x1);
         return;
     }
     }

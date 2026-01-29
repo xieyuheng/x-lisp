@@ -3,25 +3,8 @@
 size_t
 instr_length(struct instr_t instr) {
     switch (instr.op) {
-    case OP_NOP: {
-        return 1;
-    }
-
     case OP_LITERAL: {
         return 1 + sizeof(value_t);
-    }
-
-    case OP_IADD:
-    case OP_ISUB:
-    case OP_IMUL:
-    case OP_IDIV:
-    case OP_IMOD:
-    case OP_FADD:
-    case OP_FSUB:
-    case OP_FMUL:
-    case OP_FDIV:
-    case OP_FMOD: {
-        return 1;
     }
 
     case OP_RETURN: {
@@ -50,9 +33,7 @@ instr_length(struct instr_t instr) {
         return 1 + sizeof(int32_t);
     }
 
-    case OP_DUP:
-    case OP_DROP:
-    case OP_SWAP: {
+    case OP_DROP: {
         return 1;
     }
     }
@@ -63,28 +44,9 @@ instr_length(struct instr_t instr) {
 void
 instr_encode(uint8_t *code, struct instr_t instr) {
     switch (instr.op) {
-    case OP_NOP: {
-        memory_store_little_endian(code + 0, instr.op);
-        return;
-    }
-
     case OP_LITERAL: {
         memory_store_little_endian(code + 0, instr.op);
         memory_store_little_endian(code + 1, instr.literal.value);
-        return;
-    }
-
-    case OP_IADD:
-    case OP_ISUB:
-    case OP_IMUL:
-    case OP_IDIV:
-    case OP_IMOD:
-    case OP_FADD:
-    case OP_FSUB:
-    case OP_FMUL:
-    case OP_FDIV:
-    case OP_FMOD: {
-        memory_store_little_endian(code + 0, instr.op);
         return;
     }
 
@@ -142,9 +104,7 @@ instr_encode(uint8_t *code, struct instr_t instr) {
         return;
     }
 
-    case OP_DUP:
-    case OP_DROP:
-    case OP_SWAP: {
+    case OP_DROP: {
         memory_store_little_endian(code + 0, instr.op);
         return;
     }
@@ -156,28 +116,9 @@ instr_encode(uint8_t *code, struct instr_t instr) {
 struct instr_t
 instr_decode(uint8_t *code) {
     switch (code[0]) {
-    case OP_NOP: {
-        struct instr_t instr = { .op = code[0] };
-        return instr;
-    }
-
     case OP_LITERAL: {
         struct instr_t instr = { .op = code[0] };
         memory_load_little_endian(code + 1, instr.literal.value);
-        return instr;
-    }
-
-    case OP_IADD:
-    case OP_ISUB:
-    case OP_IMUL:
-    case OP_IDIV:
-    case OP_IMOD:
-    case OP_FADD:
-    case OP_FSUB:
-    case OP_FMUL:
-    case OP_FDIV:
-    case OP_FMOD: {
-        struct instr_t instr = { .op = code[0] };
         return instr;
     }
 
@@ -235,9 +176,7 @@ instr_decode(uint8_t *code) {
         return instr;
     }
 
-    case OP_DUP:
-    case OP_DROP:
-    case OP_SWAP: {
+    case OP_DROP: {
         struct instr_t instr = { .op = code[0] };
         return instr;
     }
