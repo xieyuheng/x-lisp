@@ -6,7 +6,8 @@
     (perform (newline))
     (perform (print 3))
     (perform (newline))
-    (branch (equal? 1 2) (@label then₁) (@label else₂)))
+    (test (equal? 1 2))
+    (branch then₁ else₂))
   (block then₁
     (perform (print 111))
     (perform (newline))

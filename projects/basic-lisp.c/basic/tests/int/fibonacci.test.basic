@@ -5,9 +5,8 @@
 
 (define-function (fibonacci n)
   (block entry
-    (branch (int-less? n 2)
-      (@label base-case)
-      (@label recur-case)))
+    (test (int-less? n 2))
+    (branch base-case recur-case))
   (block base-case
     (return n))
   (block recur-case

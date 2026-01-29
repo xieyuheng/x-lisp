@@ -34,10 +34,6 @@ export function formatExp(exp: Exp): string {
       return exp.name
     }
 
-    case "Label": {
-      return `(@label ${exp.name})`
-    }
-
     case "Apply": {
       const target = formatExp(exp.target)
       const args = formatExps(exp.args)

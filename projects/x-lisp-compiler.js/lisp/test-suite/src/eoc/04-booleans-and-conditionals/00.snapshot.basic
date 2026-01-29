@@ -1,3 +1,3 @@
 (define-function (main)
-  (block entry (= _₁ 1) (goto (@label let-body₁)))
+  (block entry (= _₁ 1) (goto let-body₁))
   (block let-body₁ (return (println _₁))))

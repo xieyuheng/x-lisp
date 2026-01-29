@@ -5,9 +5,8 @@
 
 (define-function (factorial n)
   (block entry
-    (branch (equal? n 1)
-      (@label base-case)
-      (@label recur-case)))
+    (test (equal? n 1))
+    (branch base-case recur-case))
   (block base-case
     (return 1))
   (block recur-case

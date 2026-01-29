@@ -2,35 +2,27 @@
   (block entry
     (= x₁ (random-dice))
     (= y₁ (random-dice))
-    (branch (int-less? x₁ 1) (@label then₁₇) (@label else₁₈)))
+    (test (int-less? x₁ 1))
+    (branch then₁₇ else₁₈))
   (block let-body₁
     (= _₃ (iadd _₁ _₂))
     (return (println _₃)))
-  (block then₂ (= _₂ (iadd y₁ 2)) (goto (@label let-body₁)))
-  (block else₃
-    (= _₂ (iadd y₁ 10))
-    (goto (@label let-body₁)))
-  (block then₄ (goto (@label then₂)))
-  (block else₅ (goto (@label else₃)))
-  (block then₆ (goto (@label then₂)))
-  (block else₇ (goto (@label else₃)))
-  (block then₈
-    (branch (equal? x₁ 0) (@label then₄) (@label else₅)))
-  (block else₉
-    (branch (equal? x₁ 2) (@label then₆) (@label else₇)))
+  (block then₂ (= _₂ (iadd y₁ 2)) (goto let-body₁))
+  (block else₃ (= _₂ (iadd y₁ 10)) (goto let-body₁))
+  (block then₄ (goto then₂))
+  (block else₅ (goto else₃))
+  (block then₆ (goto then₂))
+  (block else₇ (goto else₃))
+  (block then₈ (test (equal? x₁ 0)) (branch then₄ else₅))
+  (block else₉ (test (equal? x₁ 2)) (branch then₆ else₇))
   (block let-body₁₀
-    (branch (int-less? x₁ 1) (@label then₈) (@label else₉)))
-  (block then₁₁
-    (= _₁ (iadd y₁ 2))
-    (goto (@label let-body₁₀)))
-  (block else₁₂
-    (= _₁ (iadd y₁ 10))
-    (goto (@label let-body₁₀)))
-  (block then₁₃ (goto (@label then₁₁)))
-  (block else₁₄ (goto (@label else₁₂)))
-  (block then₁₅ (goto (@label then₁₁)))
-  (block else₁₆ (goto (@label else₁₂)))
-  (block then₁₇
-    (branch (equal? x₁ 0) (@label then₁₃) (@label else₁₄)))
-  (block else₁₈
-    (branch (equal? x₁ 2) (@label then₁₅) (@label else₁₆))))
+    (test (int-less? x₁ 1))
+    (branch then₈ else₉))
+  (block then₁₁ (= _₁ (iadd y₁ 2)) (goto let-body₁₀))
+  (block else₁₂ (= _₁ (iadd y₁ 10)) (goto let-body₁₀))
+  (block then₁₃ (goto then₁₁))
+  (block else₁₄ (goto else₁₂))
+  (block then₁₅ (goto then₁₁))
+  (block else₁₆ (goto else₁₂))
+  (block then₁₇ (test (equal? x₁ 0)) (branch then₁₃ else₁₄))
+  (block else₁₈ (test (equal? x₁ 2)) (branch then₁₅ else₁₆)))

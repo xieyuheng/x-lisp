@@ -66,12 +66,12 @@ function generateLabel(
   state: State,
   name: string,
   instrs: Array<B.Instr>,
-): B.Label {
+): string {
   const subscript = stringToSubscript(state.blocks.size.toString())
   const label = `${name}${subscript}`
   const block = B.Block(label, instrs)
   addBlock(state, block)
-  return B.Label(label)
+  return label
 }
 
 function toBasicExp(exp: L.Exp): B.Exp {
@@ -214,8 +214,10 @@ function inIf(
   switch (condition.kind) {
     case "Var": {
       return [
-        B.Branch(
+        B.Test(
           B.Apply(B.Var("equal?"), [B.Var(condition.name), B.Hashtag("t")]),
+        ),
+        B.Branch(
           generateLabel(state, "then", thenCont),
           generateLabel(state, "else", elseCont),
         ),
@@ -233,8 +235,8 @@ function inIf(
       }
 
       return [
+        B.Test(toBasicExp(condition)),
         B.Branch(
-          toBasicExp(condition),
           generateLabel(state, "then", thenCont),
           generateLabel(state, "else", elseCont),
         ),

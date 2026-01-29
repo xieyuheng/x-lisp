@@ -1,7 +1,7 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import type { Exp } from "../exp/index.ts"
 
-export type Instr = Assign | Perform | Branch | Goto | Return
+export type Instr = Assign | Perform | Test | Branch | Goto | Return
 
 export type Assign = {
   kind: "Assign"
@@ -33,39 +33,50 @@ export function Perform(exp: Exp, meta?: Meta): Perform {
   }
 }
 
+export type Test = {
+  kind: "Test"
+  exp: Exp
+  meta?: Meta
+}
+
+export function Test(exp: Exp, meta?: Meta): Test {
+  return {
+    kind: "Test",
+    exp,
+    meta,
+  }
+}
+
 export type Branch = {
   kind: "Branch"
-  condition: Exp
-  consequence: Exp
-  alternative: Exp
+  thenLabel: string
+  elseLabel: string
   meta?: Meta
 }
 
 export function Branch(
-  condition: Exp,
-  consequence: Exp,
-  alternative: Exp,
+  thenLabel: string,
+  elseLabel: string,
   meta?: Meta,
 ): Branch {
   return {
     kind: "Branch",
-    condition,
-    consequence,
-    alternative,
+    thenLabel,
+    elseLabel,
     meta,
   }
 }
 
 export type Goto = {
   kind: "Goto"
-  exp: Exp
+  label: string
   meta?: Meta
 }
 
-export function Goto(exp: Exp, meta?: Meta): Goto {
+export function Goto(label: string, meta?: Meta): Goto {
   return {
     kind: "Goto",
-    exp,
+    label,
     meta,
   }
 }

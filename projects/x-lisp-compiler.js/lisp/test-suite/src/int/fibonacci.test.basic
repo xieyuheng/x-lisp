@@ -1,9 +1,7 @@
 (define-function (fibonacci n)
   (block entry
-    (branch
-     (int-less-or-equal? n 1)
-     (@label then₁)
-     (@label else₂)))
+    (test (int-less-or-equal? n 1))
+    (branch then₁ else₂))
   (block then₁ (return n))
   (block else₂
     (= _₁ (isub n 1))

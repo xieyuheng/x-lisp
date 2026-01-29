@@ -1,6 +1,5 @@
 (define-function (gcd a b)
-  (block entry
-    (branch (equal? b 0) (@label then₁) (@label else₂)))
+  (block entry (test (equal? b 0)) (branch then₁ else₂))
   (block then₁ (return a))
   (block else₂ (= _₁ (imod a b)) (return (gcd b _₁))))
 

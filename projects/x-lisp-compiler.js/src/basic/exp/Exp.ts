@@ -13,7 +13,7 @@ export function isAtom(exp: Exp): exp is Atom {
   )
 }
 
-export type Exp = Atom | Label | Apply
+export type Exp = Atom | Apply
 
 export type Symbol = {
   kind: "Symbol"
@@ -94,20 +94,6 @@ export type Var = {
 export function Var(name: string, meta?: Meta): Var {
   return {
     kind: "Var",
-    name,
-    meta,
-  }
-}
-
-export type Label = {
-  kind: "Label"
-  name: string
-  meta?: Meta
-}
-
-export function Label(name: string, meta?: Meta): Label {
-  return {
-    kind: "Label",
     name,
     meta,
   }

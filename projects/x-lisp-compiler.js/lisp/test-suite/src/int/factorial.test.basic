@@ -1,9 +1,7 @@
 (define-function (factorial n)
   (block entry
-    (branch
-     (int-less-or-equal? n 1)
-     (@label then₁)
-     (@label else₂)))
+    (test (int-less-or-equal? n 1))
+    (branch then₁ else₂))
   (block then₁ (return 1))
   (block else₂
     (= _₁ (isub n 1))
