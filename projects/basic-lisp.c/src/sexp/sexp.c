@@ -54,10 +54,10 @@ for_sexp(list_t *tokens) {
             return for_tael(")", tokens);
         } else if (string_equal(token->content, "[")) {
             token_free(token);
-            return x_cons(x_object(intern_hashtag("@tael")), for_tael("]", tokens));
+            return x_cons(x_object(intern_symbol("@tael")), for_tael("]", tokens));
         } else if (string_equal(token->content, "{")) {
             token_free(token);
-            return x_cons(x_object(intern_hashtag("@set")), for_tael("}", tokens));
+            return x_cons(x_object(intern_symbol("@set")), for_tael("}", tokens));
         } else {
             where_printf("unexpected bracket start: %s", token->content);
             exit(1);
@@ -70,7 +70,7 @@ for_sexp(list_t *tokens) {
     }
 
     case QUOTATION_MARK_TOKEN: {
-        value_t inner_sexp = x_object(intern_hashtag(token->content));
+        value_t inner_sexp = for_sexp(tokens);
         value_t sexp = x_make_list();
         value_t head_sexp = x_void;
         if (string_equal(token->content, "'")) {
@@ -84,8 +84,8 @@ for_sexp(list_t *tokens) {
             exit(1);
         }
 
-        x_list_push(head_sexp, sexp);
-        x_list_push(inner_sexp, sexp);
+        x_list_push_mut(head_sexp, sexp);
+        x_list_push_mut(inner_sexp, sexp);
         token_free(token);
         return sexp;
     }
@@ -133,9 +133,10 @@ for_tael(const char *end, list_t *tokens) {
             }
         } else if (token->kind == KEYWORD_TOKEN) {
             value_t key = x_object(intern_symbol(token->content));
+            token_free(token);
+            list_shift(tokens);
             value_t value = for_sexp(tokens);
             x_record_put_mut(key, value, sexp);
-            token_free(token);
         } else {
             x_list_push_mut(for_sexp(tokens), sexp);
         }
