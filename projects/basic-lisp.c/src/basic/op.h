@@ -1,7 +1,6 @@
 #pragma once
 
 typedef enum {
-    OP_NOP,
     OP_LITERAL,
     OP_IADD,
     OP_ISUB,
@@ -24,7 +23,4 @@ typedef enum {
     OP_LOCAL_STORE,
     OP_JUMP,
     OP_JUMP_IF_NOT,
-    OP_DUP,
-    OP_DROP,
-    OP_SWAP,
 } op_t;

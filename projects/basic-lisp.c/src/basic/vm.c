@@ -74,10 +74,6 @@ vm_no_more_tokens(vm_t *vm) {
 inline void
 vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     switch (instr.op) {
-    case OP_NOP: {
-        return;
-    }
-
     case OP_LITERAL: {
         vm_push(vm, instr.literal.value);
         return;
@@ -239,26 +235,6 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         if (value == x_false) {
             frame->pc += instr.jump.offset;
         }
-        return;
-    }
-
-    case OP_DUP: {
-        value_t value = vm_pop(vm);
-        vm_push(vm, value);
-        vm_push(vm, value);
-        return;
-    }
-
-    case OP_DROP: {
-        vm_pop(vm);
-        return;
-    }
-
-    case OP_SWAP: {
-        value_t x2 = vm_pop(vm);
-        value_t x1 = vm_pop(vm);
-        vm_push(vm, x2);
-        vm_push(vm, x1);
         return;
     }
     }

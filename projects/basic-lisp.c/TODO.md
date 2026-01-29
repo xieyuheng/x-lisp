@@ -1,6 +1,3 @@
-[basic] rename `OP_JUMP` to `OP_GOTO`
-[basic] add `OP_BRANCH`
-
 [sexp] setup
 [sexp] port sexp.js
 

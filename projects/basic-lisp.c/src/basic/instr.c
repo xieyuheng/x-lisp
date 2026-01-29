@@ -3,10 +3,6 @@
 size_t
 instr_length(struct instr_t instr) {
     switch (instr.op) {
-    case OP_NOP: {
-        return 1;
-    }
-
     case OP_LITERAL: {
         return 1 + sizeof(value_t);
     }
@@ -49,12 +45,6 @@ instr_length(struct instr_t instr) {
     case OP_JUMP_IF_NOT: {
         return 1 + sizeof(int32_t);
     }
-
-    case OP_DUP:
-    case OP_DROP:
-    case OP_SWAP: {
-        return 1;
-    }
     }
 
     unreachable();
@@ -63,11 +53,6 @@ instr_length(struct instr_t instr) {
 void
 instr_encode(uint8_t *code, struct instr_t instr) {
     switch (instr.op) {
-    case OP_NOP: {
-        memory_store_little_endian(code + 0, instr.op);
-        return;
-    }
-
     case OP_LITERAL: {
         memory_store_little_endian(code + 0, instr.op);
         memory_store_little_endian(code + 1, instr.literal.value);
@@ -141,13 +126,6 @@ instr_encode(uint8_t *code, struct instr_t instr) {
         memory_store_little_endian(code + 1, instr.jump.offset);
         return;
     }
-
-    case OP_DUP:
-    case OP_DROP:
-    case OP_SWAP: {
-        memory_store_little_endian(code + 0, instr.op);
-        return;
-    }
     }
 
     unreachable();
@@ -156,11 +134,6 @@ instr_encode(uint8_t *code, struct instr_t instr) {
 struct instr_t
 instr_decode(uint8_t *code) {
     switch (code[0]) {
-    case OP_NOP: {
-        struct instr_t instr = { .op = code[0] };
-        return instr;
-    }
-
     case OP_LITERAL: {
         struct instr_t instr = { .op = code[0] };
         memory_load_little_endian(code + 1, instr.literal.value);
@@ -232,13 +205,6 @@ instr_decode(uint8_t *code) {
     case OP_JUMP_IF_NOT: {
         struct instr_t instr = { .op = code[0] };
         memory_load_little_endian(code + 1, instr.jump.offset);
-        return instr;
-    }
-
-    case OP_DUP:
-    case OP_DROP:
-    case OP_SWAP: {
-        struct instr_t instr = { .op = code[0] };
         return instr;
     }
     }
