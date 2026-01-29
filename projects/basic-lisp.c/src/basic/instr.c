@@ -55,12 +55,6 @@ instr_length(struct instr_t instr) {
     case OP_SWAP: {
         return 1;
     }
-
-    case OP_ASSERT:
-    case OP_ASSERT_EQUAL:
-    case OP_ASSERT_NOT_EQUAL: {
-        return 1 + sizeof(token_t *);
-    }
     }
 
     unreachable();
@@ -154,24 +148,6 @@ instr_encode(uint8_t *code, struct instr_t instr) {
         memory_store_little_endian(code + 0, instr.op);
         return;
     }
-
-    case OP_ASSERT: {
-        memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.assert.token);
-        return;
-    }
-
-    case OP_ASSERT_EQUAL: {
-        memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.assert_equal.token);
-        return;
-    }
-
-    case OP_ASSERT_NOT_EQUAL: {
-        memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.assert_not_equal.token);
-        return;
-    }
     }
 
     unreachable();
@@ -263,24 +239,6 @@ instr_decode(uint8_t *code) {
     case OP_DROP:
     case OP_SWAP: {
         struct instr_t instr = { .op = code[0] };
-        return instr;
-    }
-
-    case OP_ASSERT: {
-        struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.assert.token);
-        return instr;
-    }
-
-    case OP_ASSERT_EQUAL: {
-        struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.assert_equal.token);
-        return instr;
-    }
-
-    case OP_ASSERT_NOT_EQUAL: {
-        struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.assert_not_equal.token);
         return instr;
     }
     }

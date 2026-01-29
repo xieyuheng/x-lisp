@@ -15,9 +15,6 @@ struct instr_t {
         struct { uint32_t index; } local_store;
         struct { int32_t offset; } jump; // offset is based on next instr.
         struct { int32_t offset; } jump_if_not;
-        struct { const token_t *token; } assert;
-        struct { const token_t *token; } assert_equal;
-        struct { const token_t *token; } assert_not_equal;
     };
 };
 

@@ -27,7 +27,4 @@ typedef enum {
     OP_DUP,
     OP_DROP,
     OP_SWAP,
-    OP_ASSERT,
-    OP_ASSERT_EQUAL,
-    OP_ASSERT_NOT_EQUAL,
 } op_t;

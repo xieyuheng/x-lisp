@@ -261,49 +261,6 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         vm_push(vm, x1);
         return;
     }
-
-    case OP_ASSERT: {
-        value_t value = vm_pop(vm);
-        if (value != x_true) {
-            printf("@assert fail");
-            printf("\n  value: "); print(value);
-            printf("\n");
-            token_meta_report(instr.assert.token->meta);
-            exit(1);
-        }
-
-        return;
-    }
-
-    case OP_ASSERT_EQUAL: {
-        value_t rhs = vm_pop(vm);
-        value_t lhs = vm_pop(vm);
-        if (!equal_p(lhs, rhs)) {
-            printf("@assert-equal fail");
-            printf("\n  lhs: "); print(lhs);
-            printf("\n  rhs: "); print(rhs);
-            printf("\n");
-            token_meta_report(instr.assert_equal.token->meta);
-            exit(1);
-        }
-
-        return;
-    }
-
-    case OP_ASSERT_NOT_EQUAL: {
-        value_t rhs = vm_pop(vm);
-        value_t lhs = vm_pop(vm);
-        if (equal_p(lhs, rhs)) {
-            printf("@assert-not-equal fail");
-            printf("\n  lhs: "); print(lhs);
-            printf("\n  rhs: "); print(rhs);
-            printf("\n");
-            token_meta_report(instr.assert_not_equal.token->meta);
-            exit(1);
-        }
-
-        return;
-    }
     }
 }
 
