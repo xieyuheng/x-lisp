@@ -9,12 +9,8 @@ struct instr_t {
     union {
         struct { value_t value; } literal;
         struct { definition_t *definition; } ref;
-        struct { definition_t *definition; } call;
-        struct { definition_t *definition; } tail_call;
-        struct { uint32_t index; } local_load;
-        struct { uint32_t index; } local_store;
+        struct { uint32_t index; } local;
         struct { int32_t offset; } jump; // offset is based on next instr.
-        struct { int32_t offset; } jump_if_not;
     };
 };
 

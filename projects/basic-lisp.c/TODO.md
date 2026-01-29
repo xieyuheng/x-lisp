@@ -1,5 +1,4 @@
 [basic] rename `OP_JUMP` to `OP_GOTO`
-[basic] merge instr structs
 [basic] add `OP_BRANCH`
 
 [sexp] setup
