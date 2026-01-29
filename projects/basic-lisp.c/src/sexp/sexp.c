@@ -1,15 +1,18 @@
 #include "index.h"
 
-static value_t
-for_literal_tael(list_t *tokens) {
-    (void) tokens;
-    assert(false);
-}
+static value_t for_sexp(list_t *tokens);
+static value_t for_tael(const char *end, list_t *tokens);
 
-static value_t
-for_literal_set(list_t *tokens) {
-    (void) tokens;
-    assert(false);
+value_t
+parse_sexps(const path_t *path, const char *string) {
+    list_t *tokens = lex(path, string);
+    value_t sexps = x_make_list();
+    while (!list_is_empty(tokens)) {
+        x_list_push_mut(for_sexp(tokens), sexps);
+    }
+
+    list_free(tokens);
+    return sexps;
 }
 
 static value_t
@@ -46,12 +49,15 @@ for_sexp(list_t *tokens) {
     }
 
     case BRACKET_START_TOKEN: {
-        if (string_equal(token->content, "[")) {
+        if (string_equal(token->content, "(")) {
             token_free(token);
-            return for_literal_tael(tokens);
+            return for_tael(")", tokens);
+        } else if (string_equal(token->content, "[")) {
+            token_free(token);
+            return x_cons(x_object(intern_hashtag("@tael")), for_tael("]", tokens));
         } else if (string_equal(token->content, "{")) {
             token_free(token);
-            return for_literal_set(tokens);
+            return x_cons(x_object(intern_hashtag("@set")), for_tael("}", tokens));
         } else {
             where_printf("unexpected bracket start: %s", token->content);
             exit(1);
@@ -104,14 +110,34 @@ for_sexp(list_t *tokens) {
     unreachable();
 }
 
-value_t
-parse_sexps(const path_t *path, const char *string) {
-    list_t *tokens = lex(path, string);
-    value_t sexps = x_make_list();
-    while (!list_is_empty(tokens)) {
-        x_list_push_mut(for_sexp(tokens), sexps);
-    }
+static value_t
+for_tael(const char *end, list_t *tokens) {
+    value_t sexp = x_make_list();
+    while (true) {
+        if (list_is_empty(tokens)) {
+            where_printf("unexpected end of tokens");
+            exit(1);
+        }
 
-    list_free(tokens);
-    return sexps;
+        token_t *token = list_first(tokens);
+        if (token->kind == BRACKET_END_TOKEN) {
+            if (string_equal(token->content, end)) {
+                token = list_shift(tokens);
+                token_free(token);
+                return sexp;
+            } else {
+                where_printf(
+                    "bracket end mismatch, expecting: %s, meet: %s",
+                    end, token->content);
+                exit(1);
+            }
+        } else if (token->kind == KEYWORD_TOKEN) {
+            value_t key = x_object(intern_symbol(token->content));
+            value_t value = for_sexp(tokens);
+            x_record_put_mut(key, value, sexp);
+            token_free(token);
+        } else {
+            x_list_push_mut(for_sexp(tokens), sexp);
+        }
+    }
 }

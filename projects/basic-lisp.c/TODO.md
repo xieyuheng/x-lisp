@@ -1,8 +1,5 @@
 # sexp
 
-[sexp] `for_literal_tael`
-[sexp] `for_literal_set`
-
 [sexp] `sexp.test`
 
 # basic
