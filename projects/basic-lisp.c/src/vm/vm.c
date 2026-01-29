@@ -2,16 +2,14 @@
 
 struct vm_t {
     mod_t *mod;
-    list_t *tokens;
     stack_t *value_stack;
     stack_t *frame_stack;
 };
 
 vm_t *
-make_vm(mod_t *mod, list_t *tokens) {
+make_vm(mod_t *mod) {
     vm_t *self = new(vm_t);
     self->mod = mod;
-    self->tokens = tokens;
     self->value_stack = make_stack();
     self->frame_stack = make_stack_with((free_fn_t *) frame_free);
     return self;
@@ -19,7 +17,6 @@ make_vm(mod_t *mod, list_t *tokens) {
 
 void
 vm_free(vm_t *self) {
-    list_free(self->tokens);
     stack_free(self->value_stack);
     stack_free(self->frame_stack);
     free(self);
@@ -59,16 +56,6 @@ vm_push_frame(vm_t *vm, frame_t *frame) {
 inline size_t
 vm_frame_count(const vm_t *vm) {
     return stack_length(vm->frame_stack);
-}
-
-token_t *
-vm_next_token(vm_t *vm) {
-    return list_shift(vm->tokens);
-}
-
-bool
-vm_no_more_tokens(vm_t *vm) {
-    return list_is_empty(vm->tokens);
 }
 
 inline void
