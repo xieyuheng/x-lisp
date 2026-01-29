@@ -6,3 +6,4 @@
 #include "lexer/index.h"
 #include "gc/index.h"
 #include "basic/index.h"
+#include "builtin/index.h"

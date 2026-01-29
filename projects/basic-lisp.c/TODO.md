@@ -1,22 +1,6 @@
-[basic] instr
-[basic] operand
-
-[basic] `instr_length`
-[basic] `instr_encode`
-[basic] `instr_decode`
-
-operand
-
-- local
-- value
-- label
-
-[basic] definition
-[basic] mod
-[basic] frame
-[basic] vm
-
-[basic] bring back builtin
+[basic] remove `OP_ASSERT`
+[basic] rename `OP_JUMP` to `OP_GOTO`
+[basic] add `OP_BRANCH`
 
 [sexp] setup
 [sexp] port sexp.js
