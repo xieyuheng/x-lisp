@@ -57,7 +57,7 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
         if (string_equal(token->content, "@assert-equal")) {
             struct instr_t instr;
             instr.op = OP_ASSERT_EQUAL;
-            instr.assert_equal.token = token;
+            instr.assert.token = token;
             function_append_instr(function, instr);
             return;
         }
@@ -65,7 +65,7 @@ compile_token(vm_t *vm, function_t *function, token_t *token) {
         if (string_equal(token->content, "@assert-not-equal")) {
             struct instr_t instr;
             instr.op = OP_ASSERT_NOT_EQUAL;
-            instr.assert_not_equal.token = token;
+            instr.assert.token = token;
             function_append_instr(function, instr);
             return;
         }
@@ -247,7 +247,7 @@ compile_call(vm_t *vm, function_t *function, const char *name) {
         size_t index = function_get_binding_index(function, name);
         struct instr_t instr;
         instr.op = OP_LOCAL_LOAD;
-        instr.local_load.index = index;
+        instr.local.index = index;
         function_append_instr(function, instr);
         return;
     }
@@ -260,7 +260,7 @@ compile_call(vm_t *vm, function_t *function, const char *name) {
 
     struct instr_t instr;
     instr.op = OP_CALL;
-    instr.call.definition = found;
+    instr.ref.definition = found;
     function_append_instr(function, instr);
     return;
 }
@@ -297,7 +297,7 @@ compile_tail_call(vm_t *vm, function_t *function) {
 
     struct instr_t instr;
     instr.op = OP_TAIL_CALL;
-    instr.tail_call.definition = found;
+    instr.ref.definition = found;
     function_append_instr(function, instr);
 }
 
@@ -308,7 +308,7 @@ compile_local_store_stack(function_t *function, stack_t *local_name_stack) {
         size_t index = function_get_binding_index(function, name);
         struct instr_t instr;
         instr.op = OP_LOCAL_STORE;
-        instr.local_store.index = index;
+        instr.local.index = index;
         function_append_instr(function, instr);
     }
 
@@ -397,7 +397,7 @@ compile_if(
     size_t if_index = function->code_length;
     struct instr_t instr;
     instr.op = OP_JUMP_IF_NOT;
-    instr.jump_if_not.offset = 0;
+    instr.jump.offset = 0;
     function_append_instr(function, instr);
 
     while (true) {
@@ -411,7 +411,7 @@ compile_if(
         if (string_equal(token->content, then_word)) {
             struct instr_t instr;
             instr.op = OP_JUMP_IF_NOT;
-            instr.jump_if_not.offset =
+            instr.jump.offset =
                 function->code_length -
                 if_index - instr_length(instr);
             function_put_instr(function, if_index, instr);
@@ -427,7 +427,7 @@ compile_if(
             {
                 struct instr_t instr;
                 instr.op = OP_JUMP_IF_NOT;
-                instr.jump_if_not.offset =
+                instr.jump.offset =
                     function->code_length -
                     if_index - instr_length(instr);
                 function_put_instr(function, if_index, instr);

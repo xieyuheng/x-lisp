@@ -170,16 +170,16 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_CALL: {
-        // assert(instr.call.definition);
-        call_definition(vm, instr.call.definition);
+        // assert(instr.ref.definition);
+        call_definition(vm, instr.ref.definition);
         return;
     }
 
     case OP_TAIL_CALL: {
         stack_pop(vm->frame_stack);
         frame_free(frame);
-        // assert(instr.tail_call.definition);
-        call_definition(vm, instr.tail_call.definition);
+        // assert(instr.ref.definition);
+        call_definition(vm, instr.ref.definition);
         return;
     }
 
@@ -218,14 +218,14 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_LOCAL_LOAD: {
-        value_t value = frame_get_local(frame, instr.local_load.index);
+        value_t value = frame_get_local(frame, instr.local.index);
         vm_push(vm, value);
         return;
     }
 
     case OP_LOCAL_STORE: {
         value_t value = vm_pop(vm);
-        frame_put_local(frame, instr.local_store.index, value);
+        frame_put_local(frame, instr.local.index, value);
         return;
     }
 
@@ -283,7 +283,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
             printf("\n  lhs: "); print(lhs);
             printf("\n  rhs: "); print(rhs);
             printf("\n");
-            token_meta_report(instr.assert_equal.token->meta);
+            token_meta_report(instr.assert.token->meta);
             exit(1);
         }
 
@@ -298,7 +298,7 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
             printf("\n  lhs: "); print(lhs);
             printf("\n  rhs: "); print(rhs);
             printf("\n");
-            token_meta_report(instr.assert_not_equal.token->meta);
+            token_meta_report(instr.assert.token->meta);
             exit(1);
         }
 

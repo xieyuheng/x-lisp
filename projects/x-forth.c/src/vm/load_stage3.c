@@ -44,7 +44,7 @@ prepare_tail_call(vm_t *vm, const char *name) {
     assert(definition);
     uint8_t *code = make_code_from_instrs(1, (struct instr_t[]) {
             { .op = OP_TAIL_CALL,
-              .tail_call.definition = definition },
+              .ref.definition = definition },
         });
     vm_push_frame(vm, make_frame_from_code(code));
 }

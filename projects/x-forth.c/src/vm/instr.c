@@ -101,13 +101,13 @@ instr_encode(uint8_t *code, struct instr_t instr) {
 
     case OP_CALL: {
         memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.call.definition);
+        memory_store_little_endian(code + 1, instr.ref.definition);
         return;
     }
 
     case OP_TAIL_CALL: {
         memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.tail_call.definition);
+        memory_store_little_endian(code + 1, instr.ref.definition);
         return;
     }
 
@@ -126,13 +126,13 @@ instr_encode(uint8_t *code, struct instr_t instr) {
 
     case OP_LOCAL_LOAD: {
         memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.local_load.index);
+        memory_store_little_endian(code + 1, instr.local.index);
         return;
     }
 
     case OP_LOCAL_STORE: {
         memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.local_store.index);
+        memory_store_little_endian(code + 1, instr.local.index);
         return;
     }
 
@@ -144,7 +144,7 @@ instr_encode(uint8_t *code, struct instr_t instr) {
 
     case OP_JUMP_IF_NOT: {
         memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.jump_if_not.offset);
+        memory_store_little_endian(code + 1, instr.jump.offset);
         return;
     }
 
@@ -163,13 +163,13 @@ instr_encode(uint8_t *code, struct instr_t instr) {
 
     case OP_ASSERT_EQUAL: {
         memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.assert_equal.token);
+        memory_store_little_endian(code + 1, instr.assert.token);
         return;
     }
 
     case OP_ASSERT_NOT_EQUAL: {
         memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.assert_not_equal.token);
+        memory_store_little_endian(code + 1, instr.assert.token);
         return;
     }
     }
@@ -212,13 +212,13 @@ instr_decode(uint8_t *code) {
 
     case OP_CALL: {
         struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.call.definition);
+        memory_load_little_endian(code + 1, instr.ref.definition);
         return instr;
     }
 
     case OP_TAIL_CALL: {
         struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.tail_call.definition);
+        memory_load_little_endian(code + 1, instr.ref.definition);
         return instr;
     }
 
@@ -237,13 +237,13 @@ instr_decode(uint8_t *code) {
 
     case OP_LOCAL_LOAD: {
         struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.local_load.index);
+        memory_load_little_endian(code + 1, instr.local.index);
         return instr;
     }
 
     case OP_LOCAL_STORE: {
         struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.local_store.index);
+        memory_load_little_endian(code + 1, instr.local.index);
         return instr;
     }
 
@@ -255,7 +255,7 @@ instr_decode(uint8_t *code) {
 
     case OP_JUMP_IF_NOT: {
         struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.jump_if_not.offset);
+        memory_load_little_endian(code + 1, instr.jump.offset);
         return instr;
     }
 
@@ -274,13 +274,13 @@ instr_decode(uint8_t *code) {
 
     case OP_ASSERT_EQUAL: {
         struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.assert_equal.token);
+        memory_load_little_endian(code + 1, instr.assert.token);
         return instr;
     }
 
     case OP_ASSERT_NOT_EQUAL: {
         struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.assert_not_equal.token);
+        memory_load_little_endian(code + 1, instr.assert.token);
         return instr;
     }
     }
