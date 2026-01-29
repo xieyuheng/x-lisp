@@ -2,7 +2,6 @@
 
 #include "deps.h"
 #include "types.h"
-#include "op.h"
 #include "instr.h"
 #include "primitive.h"
 #include "function.h"
