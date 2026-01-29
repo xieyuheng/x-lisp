@@ -1,9 +1,7 @@
 # sexp
 
-[sexp] port sexp.js
-
-- support comment this time
-- with router like api
+[sexp] `parse_sexps_from_tokens`
+[sexp] `parse_sexp_from_tokens`
 
 # basic
 
