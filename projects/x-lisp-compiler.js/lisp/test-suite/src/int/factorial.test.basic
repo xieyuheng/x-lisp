@@ -1,0 +1,26 @@
+(define-function (factorial n)
+  (block entry
+    (branch
+     (int-less-or-equal? n 1)
+     (@label then₁)
+     (@label else₂)))
+  (block then₁ (return 1))
+  (block else₂
+    (= _₁ (isub n 1))
+    (= _₂ (factorial _₁))
+    (return (imul _₂ n))))
+
+(define-function (main)
+  (block entry
+    (= _₁ (factorial 0))
+    (perform (assert-equal 1 _₁))
+    (= _₂ (factorial 1))
+    (perform (assert-equal 1 _₂))
+    (= _₃ (factorial 2))
+    (perform (assert-equal 2 _₃))
+    (= _₄ (factorial 3))
+    (perform (assert-equal 6 _₄))
+    (= _₅ (factorial 4))
+    (perform (assert-equal 24 _₅))
+    (= _₆ (factorial 6))
+    (return (assert-equal 120 _₆))))

@@ -1,9 +1,9 @@
-;; (define (fib n)
+;; (define (fibonacci n)
 ;;   (if (< n 2)
 ;;     n
-;;     (+ (fib (- n 1)) (fib (- n 2)))))
+;;     (+ (fibonacci (- n 1)) (fibonacci (- n 2)))))
 
-(define-function (fib n)
+(define-function (fibonacci n)
   (block entry
     (branch (int-less? n 2)
       (@label base-case)
@@ -12,8 +12,8 @@
     (return n))
   (block recur-case
     (= n1 (isub n 1))
-    (= f1 (fib n1))
+    (= f1 (fibonacci n1))
     (= n2 (isub n 2))
-    (= f2 (fib n2))
+    (= f2 (fibonacci n2))
     (= r (iadd n1 n2))
     (return r)))
