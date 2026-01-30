@@ -11,8 +11,5 @@
 #include "vm.h"
 #include "frame.h"
 #include "define.h"
-#include "load.h"
 #include "call.h"
 #include "apply.h"
-#include "compile.h"
-#include "stmt.h"
