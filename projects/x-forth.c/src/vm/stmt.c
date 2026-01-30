@@ -45,7 +45,7 @@ static void
 import(vm_t *vm, bool is_exported) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == STRING_TOKEN);
-    mod_t *imported_mod = mod_load_by(vm_mod(vm), token->content);
+    mod_t *imported_mod = import_by(vm_mod(vm), token->content);
     token_free(token);
 
     while (true) {
@@ -77,7 +77,7 @@ static void
 import_all(vm_t *vm, bool is_exported) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == STRING_TOKEN);
-    mod_t *imported_mod = mod_load_by(vm_mod(vm), token->content);
+    mod_t *imported_mod = import_by(vm_mod(vm), token->content);
     token_free(token);
 
     mod_t *mod = vm_mod(vm);
@@ -103,7 +103,7 @@ static void
 import_except(vm_t *vm, bool is_exported) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == STRING_TOKEN);
-    mod_t *imported_mod = mod_load_by(vm_mod(vm), token->content);
+    mod_t *imported_mod = import_by(vm_mod(vm), token->content);
     token_free(token);
 
     set_t *excepted_names = make_string_set();
@@ -151,7 +151,7 @@ static void
 import_as(vm_t *vm, bool is_exported) {
     token_t *token = vm_next_token(vm);
     assert(token->kind == STRING_TOKEN);
-    mod_t *imported_mod = mod_load_by(vm_mod(vm), token->content);
+    mod_t *imported_mod = import_by(vm_mod(vm), token->content);
     token_free(token);
 
     token = vm_next_token(vm);

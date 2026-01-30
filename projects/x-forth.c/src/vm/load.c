@@ -30,3 +30,22 @@ load(path_t *path) {
 
     return mod;
 }
+
+mod_t *
+import_by(mod_t *self, const char *string) {
+    path_t *path = path_copy(self->path);
+    path_join_mut(path, "..");
+    path_join_mut(path, string);
+
+    if (pathname_is_directory(path_string(path))) {
+        path_join_mut(path, "index.fth");
+    }
+
+    if (!string_ends_with(path_top_segment(path), ".fth")) {
+        char *segment = path_pop_segment(path);
+        path_push_segment(path, string_append(segment, ".fth"));
+        string_free(segment);
+    }
+
+    return load(path);
+}
