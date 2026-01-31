@@ -23,7 +23,7 @@ load(path_t *path) {
 
     load_stage1(mod, sexps);
     load_stage2(mod, sexps);
-    load_stage3(mod, sexps);
+    load_stage3(mod);
 
     return mod;
 }

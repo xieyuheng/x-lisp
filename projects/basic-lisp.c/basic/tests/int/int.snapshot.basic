@@ -1,0 +1,8 @@
+(define-function (main)
+  (block entry
+    (perform (println 1))
+    (perform (println 2))
+    (perform (println 3))
+    (= x (iadd 1 2))
+    (perform (println x))    
+    (return void)))

@@ -13,3 +13,13 @@
     (= n1 (isub n 1))
     (= f1 (factorial n1))
     (return (imul n f1))))
+
+(define-function (main)
+  (block entry
+    (= v (factorial 1))
+    (perform (println v))
+    (= v (factorial 2))
+    (perform (println v))
+    (= v (factorial 3))
+    (perform (println v))
+    (return #void)))

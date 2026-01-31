@@ -1,8 +1,9 @@
 # basic
 
+[basic] `function_patch_label_references`
+
 [basic] `load_stage1` -- (export)
 [basic] `load_stage2` -- (import)
-[basic] `load_stage3` -- run (main)
 
 # later
 
