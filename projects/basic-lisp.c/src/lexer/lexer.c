@@ -1,9 +1,8 @@
 #include "index.h"
 
 lexer_t *
-make_lexer(const path_t *path, const char *string) {
+make_lexer(const char *string) {
     lexer_t *self = new(lexer_t);
-    self->path = path;
     self->string = string;
     self->length = string_length(string);
     self->position = (struct position_t) {
@@ -11,7 +10,6 @@ make_lexer(const path_t *path, const char *string) {
         .row = 0,
         .column = 0,
     };
-    self->line_comment_introducer = "--";
     return self;
 }
 
@@ -105,7 +103,8 @@ lexer_lex(lexer_t *self) {
 
 list_t *
 lex(const path_t *path, const char *string) {
-    lexer_t *lexer = make_lexer(path, string);
+    lexer_t *lexer = make_lexer(string);
+    lexer->path = path;
     list_t *tokens = lexer_lex(lexer);
     lexer_free(lexer);
     return tokens;

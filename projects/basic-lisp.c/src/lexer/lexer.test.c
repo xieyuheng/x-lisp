@@ -233,81 +233,11 @@ main(void) {
     }
 
     {
-        list_t *tokens = lex(NULL, "a b -- comment\n c");
-        assert(list_length(tokens) == 4);
-
-        {
-            token_t *token = list_shift(tokens);
-            assert(token->kind == SYMBOL_TOKEN);
-            assert(string_equal(token->content, "a"));
-            token_free(token);
-        }
-
-        {
-            token_t *token = list_shift(tokens);
-            assert(token->kind == SYMBOL_TOKEN);
-            assert(string_equal(token->content, "b"));
-            token_free(token);
-        }
-
-        {
-            token_t *token = list_shift(tokens);
-            assert(token->kind == LINE_COMMENT_TOKEN);
-            assert(string_equal(token->content, "-- comment"));
-            token_free(token);
-        }
-
-        {
-            token_t *token = list_shift(tokens);
-            assert(token->kind == SYMBOL_TOKEN);
-            assert(string_equal(token->content, "c"));
-            token_free(token);
-        }
-
-        list_free(tokens);
-    }
-
-    {
-        // space after line comment introducer is required.
-        list_t *tokens = lex(NULL, "a b --symbol\n c");
-        assert(list_length(tokens) == 4);
-
-        {
-            token_t *token = list_shift(tokens);
-            assert(token->kind == SYMBOL_TOKEN);
-            assert(string_equal(token->content, "a"));
-            token_free(token);
-        }
-
-        {
-            token_t *token = list_shift(tokens);
-            assert(token->kind == SYMBOL_TOKEN);
-            assert(string_equal(token->content, "b"));
-            token_free(token);
-        }
-
-        {
-            token_t *token = list_shift(tokens);
-            assert(token->kind == SYMBOL_TOKEN);
-            assert(string_equal(token->content, "--symbol"));
-            token_free(token);
-        }
-
-        {
-            token_t *token = list_shift(tokens);
-            assert(token->kind == SYMBOL_TOKEN);
-            assert(string_equal(token->content, "c"));
-            token_free(token);
-        }
-
-        list_free(tokens);
-    }
-
-    {
-        lexer_t *lexer = make_lexer(NULL, "a b // comment\n c");
+        lexer_t *lexer = make_lexer("a b // comment\n c");
         lexer->line_comment_introducer = "//";
         list_t *tokens = lexer_lex(lexer);
         lexer_free(lexer);
+
         assert(list_length(tokens) == 4);
 
         {
@@ -328,6 +258,46 @@ main(void) {
             token_t *token = list_shift(tokens);
             assert(token->kind == LINE_COMMENT_TOKEN);
             assert(string_equal(token->content, "// comment"));
+            token_free(token);
+        }
+
+        {
+            token_t *token = list_shift(tokens);
+            assert(token->kind == SYMBOL_TOKEN);
+            assert(string_equal(token->content, "c"));
+            token_free(token);
+        }
+
+        list_free(tokens);
+    }
+
+    {
+        // space after line comment introducer is required.
+        lexer_t *lexer = make_lexer("a b //symbol\n c");
+        lexer->line_comment_introducer = "//";
+        list_t *tokens = lexer_lex(lexer);
+        lexer_free(lexer);
+
+        assert(list_length(tokens) == 4);
+
+        {
+            token_t *token = list_shift(tokens);
+            assert(token->kind == SYMBOL_TOKEN);
+            assert(string_equal(token->content, "a"));
+            token_free(token);
+        }
+
+        {
+            token_t *token = list_shift(tokens);
+            assert(token->kind == SYMBOL_TOKEN);
+            assert(string_equal(token->content, "b"));
+            token_free(token);
+        }
+
+        {
+            token_t *token = list_shift(tokens);
+            assert(token->kind == SYMBOL_TOKEN);
+            assert(string_equal(token->content, "//symbol"));
             token_free(token);
         }
 

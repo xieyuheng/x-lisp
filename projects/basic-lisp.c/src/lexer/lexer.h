@@ -8,7 +8,7 @@ struct lexer_t {
     const char *line_comment_introducer;
 };
 
-lexer_t *make_lexer(const path_t *path, const char *string);
+lexer_t *make_lexer(const char *string);
 void lexer_free(lexer_t *self);
 
 char lexer_next_char(lexer_t *self);

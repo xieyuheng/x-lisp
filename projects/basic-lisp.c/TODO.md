@@ -1,5 +1,4 @@
-[lexer] remove `lex(`
-[lexer] improve comment apiremove `lex(`
+[lexer] remove `lex`
 [sexp] fix comment
 
 # basic
