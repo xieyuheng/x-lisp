@@ -76,7 +76,7 @@ function_put_definition(
 
 void
 function_add_binding(function_t *self, const char *name) {
-    if (!function_has_binding(self, name)) {
+    if (!function_has_binding_index(self, name)) {
         size_t next_index =
             record_length(self->binding_indexes);
         record_insert(self->binding_indexes,
@@ -86,19 +86,19 @@ function_add_binding(function_t *self, const char *name) {
 }
 
 bool
-function_has_binding(function_t *self, const char *name) {
+function_has_binding_index(function_t *self, const char *name) {
     return record_has(self->binding_indexes, name);
 }
 
 size_t
 function_get_binding_index(function_t *self, const char *name) {
-    assert(function_has_binding(self, name));
+    assert(function_has_binding_index(self, name));
     return (size_t) record_get(self->binding_indexes, name);
 }
 
 void
 function_add_label(function_t *self, const char *name) {
-    if (!function_has_label(self, name)) {
+    if (!function_has_label_index(self, name)) {
         record_insert(self->label_indexes,
                       name,
                       (void *) self->code_length);
@@ -106,12 +106,12 @@ function_add_label(function_t *self, const char *name) {
 }
 
 bool
-function_has_label(function_t *self, const char *name) {
+function_has_label_index(function_t *self, const char *name) {
     return record_has(self->label_indexes, name);
 }
 
 size_t
 function_get_label_index(function_t *self, const char *name) {
-    assert(function_has_label(self, name));
+    assert(function_has_label_index(self, name));
     return (size_t) record_get(self->label_indexes, name);
 }

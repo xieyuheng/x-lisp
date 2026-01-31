@@ -243,7 +243,7 @@ compile_op_word(function_t *function, const char *word) {
 
 static void
 compile_call(vm_t *vm, function_t *function, const char *name) {
-    if (function_has_binding(function, name)) {
+    if (function_has_binding_index(function, name)) {
         size_t index = function_get_binding_index(function, name);
         struct instr_t instr;
         instr.op = OP_LOCAL_LOAD;
