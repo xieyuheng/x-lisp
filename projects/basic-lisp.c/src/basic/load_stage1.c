@@ -18,10 +18,13 @@ static void compile_function(mod_t *mod, function_t *function, value_t sexp);
 
 static void
 handle_stmt(mod_t *mod, value_t sexp) {
-    if (is_define_function(sexp))
+    if (is_define_function(sexp)) {
         handle_define_function(mod, x_cdr(sexp));
-    if (is_define_variable(sexp))
+    }
+
+    if (is_define_variable(sexp)) {
         handle_define_variable(mod, x_cdr(sexp));
+    }
 }
 
 void
@@ -131,9 +134,10 @@ compile_var(mod_t *mod, function_t *function, value_t sexp) {
 static void
 compile_literal(mod_t *mod, function_t *function, value_t sexp) {
     (void) mod;
-    (void) function;
-    print(sexp);
-    newline();
+    struct instr_t instr;
+    instr.op = OP_LITERAL;
+    instr.literal.value = sexp;
+    function_append_instr(function, instr);
 }
 
 static void
@@ -145,21 +149,47 @@ compile_apply(mod_t *mod, function_t *function, value_t sexp) {
 }
 
 static void
-compile_exp(mod_t *mod, function_t *function, value_t sexp) {
-    if (is_var(sexp))
-        compile_var(mod, function, sexp);
-    if (is_literal(sexp))
-        compile_literal(mod, function, sexp);
-    if (is_apply(sexp))
-        compile_apply(mod, function, sexp);
-}
-
-static void
-compile_tail_exp(mod_t *mod, function_t *function, value_t sexp) {
+compile_tail_apply(mod_t *mod, function_t *function, value_t sexp) {
     (void) mod;
     (void) function;
     print(sexp);
     newline();
+}
+
+static void
+compile_exp(mod_t *mod, function_t *function, value_t sexp) {
+    if (is_var(sexp)) {
+        compile_var(mod, function, sexp);
+    }
+
+    if (is_literal(sexp)) {
+        compile_literal(mod, function, sexp);
+    }
+
+    if (is_apply(sexp)) {
+        compile_apply(mod, function, sexp);
+    }
+}
+
+static void
+compile_tail_exp(mod_t *mod, function_t *function, value_t sexp) {
+    if (is_var(sexp)) {
+        compile_var(mod, function, sexp);
+        struct instr_t instr;
+        instr.op = OP_RETURN;
+        function_append_instr(function, instr);
+    }
+
+    if (is_literal(sexp)) {
+        compile_literal(mod, function, sexp);
+        struct instr_t instr;
+        instr.op = OP_RETURN;
+        function_append_instr(function, instr);
+    }
+
+    if (is_apply(sexp)) {
+        compile_tail_apply(mod, function, sexp);
+    }
 }
 
 static bool
