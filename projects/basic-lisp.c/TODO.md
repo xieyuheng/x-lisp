@@ -1,6 +1,5 @@
 # basic
 
-[basic] `load_stage1` -- `compile_var`
 [basic] `load_stage1` -- `compile_apply`
 [basic] `load_stage1` -- `compile_tail_apply`
 

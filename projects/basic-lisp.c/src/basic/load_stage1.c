@@ -125,10 +125,26 @@ is_apply(value_t sexp) {
 
 static void
 compile_var(mod_t *mod, function_t *function, value_t sexp) {
-    (void) mod;
-    (void) function;
-    print(sexp);
-    newline();
+    char *name = to_symbol(sexp)->string;
+    if (function_has_binding_index(function, name)) {
+        size_t index = function_get_binding_index(function, name);
+        struct instr_t instr;
+        instr.op = OP_LOCAL_LOAD;
+        instr.local.index = index;
+        function_append_instr(function, instr);
+        return;
+    }
+
+    definition_t *found = mod_lookup_or_placeholder(mod, name);
+    if (found->kind == PLACEHOLDER_DEFINITION) {
+        size_t code_index = function->code_length + 1;
+        placeholder_definition_hold_place(found, function, code_index);
+    }
+
+    struct instr_t instr;
+    instr.op = OP_REF;
+    instr.ref.definition = found;
+    function_append_instr(function, instr);
 }
 
 static void
