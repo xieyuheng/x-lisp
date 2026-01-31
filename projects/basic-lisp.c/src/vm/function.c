@@ -76,7 +76,7 @@ function_put_definition(
 
 void
 function_add_binding(function_t *self, const char *name) {
-    if (!function_has_binding_index(self, name)) {
+    if (!function_has_binding(self, name)) {
         size_t next_index =
             record_length(self->binding_indexes);
         record_insert(self->binding_indexes,
@@ -86,13 +86,13 @@ function_add_binding(function_t *self, const char *name) {
 }
 
 bool
-function_has_binding_index(function_t *self, const char *name) {
+function_has_binding(function_t *self, const char *name) {
     return record_has(self->binding_indexes, name);
 }
 
 size_t
 function_get_binding_index(function_t *self, const char *name) {
-    assert(function_has_binding_index(self, name));
+    assert(function_has_binding(self, name));
     return (size_t) record_get(self->binding_indexes, name);
 }
 

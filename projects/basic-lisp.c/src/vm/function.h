@@ -18,7 +18,7 @@ void function_put_instr(function_t *self, size_t code_index, struct instr_t inst
 void function_put_definition(function_t *self, size_t code_index, definition_t *definition);
 
 void function_add_binding(function_t *self, const char *name);
-bool function_has_binding_index(function_t *self, const char *name);
+bool function_has_binding(function_t *self, const char *name);
 size_t function_get_binding_index(function_t *self, const char *name);
 
 void function_add_label(function_t *self, const char *name);
