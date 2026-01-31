@@ -4,7 +4,7 @@ function_t *
 make_function(void) {
     function_t *self = new(function_t);
     self->binding_indexes = make_record();
-    self->label_offsets = make_record();
+    self->label_indexes = make_record();
     self->label_references = make_record_with((free_fn_t *) list_free);
     self->parameters = NULL;
     self->code_area_size = 64;
@@ -16,7 +16,7 @@ make_function(void) {
 void
 function_free(function_t *self) {
     record_free(self->binding_indexes);
-    record_free(self->label_offsets);
+    record_free(self->label_indexes);
     record_free(self->label_references);
     if (self->parameters)
         array_free(self->parameters);
@@ -98,20 +98,20 @@ function_get_binding_index(function_t *self, const char *name) {
 
 void
 function_add_label(function_t *self, const char *name) {
-    if (!function_has_label_offset(self, name)) {
-        record_insert(self->label_offsets,
+    if (!function_has_label_index(self, name)) {
+        record_insert(self->label_indexes,
                       name,
                       (void *) self->code_length);
     }
 }
 
 bool
-function_has_label_offset(function_t *self, const char *name) {
-    return record_has(self->label_offsets, name);
+function_has_label_index(function_t *self, const char *name) {
+    return record_has(self->label_indexes, name);
 }
 
 size_t
-function_get_label_offset(function_t *self, const char *name) {
-    assert(function_has_label_offset(self, name));
-    return (size_t) record_get(self->label_offsets, name);
+function_get_label_index(function_t *self, const char *name) {
+    assert(function_has_label_index(self, name));
+    return (size_t) record_get(self->label_indexes, name);
 }
