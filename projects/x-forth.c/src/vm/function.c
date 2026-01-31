@@ -75,8 +75,7 @@ function_add_binding(function_t *self, const char *name) {
     if (!function_has_binding_index(self, name)) {
         size_t next_index =
             record_length(self->binding_indexes);
-        record_insert(self->binding_indexes,
-                      name, (void *) next_index);
+        record_insert(self->binding_indexes, name, (void *) next_index);
     }
 }
 

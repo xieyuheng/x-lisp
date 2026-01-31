@@ -79,9 +79,7 @@ function_add_binding(function_t *self, const char *name) {
     if (!function_has_binding_index(self, name)) {
         size_t next_index =
             record_length(self->binding_indexes);
-        record_insert(self->binding_indexes,
-                      name,
-                      (void *) next_index);
+        record_insert(self->binding_indexes, name, (void *) next_index);
     }
 }
 
@@ -99,9 +97,7 @@ function_get_binding_index(function_t *self, const char *name) {
 void
 function_add_label(function_t *self, const char *name) {
     if (!function_has_label_index(self, name)) {
-        record_insert(self->label_indexes,
-                      name,
-                      (void *) self->code_length);
+        record_insert(self->label_indexes, name, (void *) self->code_length);
     }
 }
 
@@ -114,4 +110,19 @@ size_t
 function_get_label_index(function_t *self, const char *name) {
     assert(function_has_label_index(self, name));
     return (size_t) record_get(self->label_indexes, name);
+}
+
+void
+function_add_label_reference(function_t *self, const char *name, size_t index) {
+    if (!record_has(self->label_references, name)) {
+        record_insert(self->label_references, name, make_list());
+    }
+
+    list_t *reference_list = record_get(self->label_references, name);
+    list_push(reference_list, (void *) index);
+}
+
+list_t *
+function_get_label_reference_list(function_t *self, const char *name) {
+    return record_get(self->label_references, name);
 }

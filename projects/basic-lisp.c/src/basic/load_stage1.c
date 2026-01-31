@@ -176,8 +176,7 @@ compile_goto(mod_t *mod, function_t *function, value_t sexp) {
     struct instr_t instr;
     instr.op = OP_JUMP;
     instr.jump.offset = 0;
-    (void) label;
-    // function_add_label_reference(function, label, function->code_length + 1);
+    function_add_label_reference(function, label, function->code_length + 1);
     function_append_instr(function, instr);
 }
 

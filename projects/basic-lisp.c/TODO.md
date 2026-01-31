@@ -1,7 +1,5 @@
 # basic
 
-[vm] `function_add_label_reference`
-[basic] `load_stage1` -- `compile_goto`
 [basic] `load_stage1` -- `compile_branch`
 [basic] `load_stage1` -- `compile_assign`
 [basic] `load_stage1` -- `compile_return`
