@@ -1,7 +1,14 @@
+[lexer] remove `lex(`
+[lexer] improve comment apiremove `lex(`
+[sexp] fix comment
+
 # basic
 
-[basic] load
 [basic] compile
+
+[basic] `load_stage1`
+[basic] `load_stage2`
+[basic] `load_stage3`
 
 # later
 

@@ -1,0 +1,54 @@
+#include "index.h"
+
+extern void import_builtin_mod(mod_t *mod);
+
+static record_t *global_loaded_mods = NULL;
+
+mod_t *
+load(path_t *path) {
+    if (!global_loaded_mods) {
+        global_loaded_mods = make_record();
+    }
+
+    if (record_has(global_loaded_mods, path_string(path))) {
+        return record_get(global_loaded_mods, path_string(path));
+    }
+
+    file_t *file = open_file_or_fail(path_string(path), "r");
+    value_t sexps = parse_sexps(path, file_read_string(file));
+    print(sexps);
+
+    // TODO
+
+    mod_t *mod = make_mod(path);
+    import_builtin_mod(mod);
+
+    record_put(global_loaded_mods, path_string(path), mod);
+
+    vm_t *vm = make_vm(mod);
+    // load_stage1(vm);
+    // load_stage2(vm);
+    // load_stage3(vm);
+    vm_free(vm);
+
+    return mod;
+}
+
+mod_t *
+import_by(mod_t *self, const char *string) {
+    path_t *path = path_copy(self->path);
+    path_join_mut(path, "..");
+    path_join_mut(path, string);
+
+    if (pathname_is_directory(path_string(path))) {
+        path_join_mut(path, "index.fth");
+    }
+
+    if (!string_ends_with(path_top_segment(path), ".fth")) {
+        char *segment = path_pop_segment(path);
+        path_push_segment(path, string_append(segment, ".fth"));
+        string_free(segment);
+    }
+
+    return load(path);
+}
