@@ -1,29 +1,38 @@
 #include "index.h"
 
+static list_t *
+test_lex(const char *string) {
+    lexer_t *lexer = make_lexer(string);
+    lexer->line_comment_introducer = "//";
+    list_t *tokens = lexer_lex(lexer);
+    lexer_free(lexer);
+    return tokens;
+}
+
 int
 main(void) {
     test_start();
 
     {
-        list_t *tokens = lex(NULL, "");
+        list_t *tokens = test_lex("");
         assert(list_length(tokens) == 0);
         list_free(tokens);
     }
 
     {
-        list_t *tokens = lex(NULL, " ");
+        list_t *tokens = test_lex(" ");
         assert(list_length(tokens) == 0);
         list_free(tokens);
     }
 
     {
-        list_t *tokens = lex(NULL, " \n \t \n ");
+        list_t *tokens = test_lex(" \n \t \n ");
         assert(list_length(tokens) == 0);
         list_free(tokens);
     }
 
     {
-        list_t *tokens = lex(NULL, "()");
+        list_t *tokens = test_lex("()");
         assert(list_length(tokens) == 2);
 
         {
@@ -44,7 +53,7 @@ main(void) {
     }
 
     {
-        list_t *tokens = lex(NULL, "a b c");
+        list_t *tokens = test_lex("a b c");
         assert(list_length(tokens) == 3);
 
         {
@@ -72,7 +81,7 @@ main(void) {
     }
 
     {
-        list_t *tokens = lex(NULL, "(a)");
+        list_t *tokens = test_lex("(a)");
         assert(list_length(tokens) == 3);
 
         {
@@ -100,7 +109,7 @@ main(void) {
     }
 
     {
-        list_t *tokens = lex(NULL, "a :b #c");
+        list_t *tokens = test_lex("a :b #c");
         assert(list_length(tokens) == 3);
 
         {
@@ -128,7 +137,7 @@ main(void) {
     }
 
     {
-        list_t *tokens = lex(NULL, ": #");
+        list_t *tokens = test_lex(": #");
         assert(list_length(tokens) == 2);
 
         {
@@ -149,7 +158,7 @@ main(void) {
     }
 
     {
-        list_t *tokens = lex(NULL, "1 0 -1");
+        list_t *tokens = test_lex("1 0 -1");
         assert(list_length(tokens) == 3);
 
         {
@@ -177,7 +186,7 @@ main(void) {
     }
 
     {
-        list_t *tokens = lex(NULL, "1.0 0.0 -1.0");
+        list_t *tokens = test_lex("1.0 0.0 -1.0");
         assert(list_length(tokens) == 3);
 
         {
@@ -205,7 +214,7 @@ main(void) {
     }
 
     {
-        list_t *tokens = lex(NULL, "\"a\" \"b\" \"\\n\"");
+        list_t *tokens = test_lex("\"a\" \"b\" \"\\n\"");
         assert(list_length(tokens) == 3);
 
         {
@@ -233,11 +242,7 @@ main(void) {
     }
 
     {
-        lexer_t *lexer = make_lexer("a b // comment\n c");
-        lexer->line_comment_introducer = "//";
-        list_t *tokens = lexer_lex(lexer);
-        lexer_free(lexer);
-
+        list_t *tokens = test_lex("a b // comment\n c");
         assert(list_length(tokens) == 4);
 
         {
@@ -273,11 +278,7 @@ main(void) {
 
     {
         // space after line comment introducer is required.
-        lexer_t *lexer = make_lexer("a b //symbol\n c");
-        lexer->line_comment_introducer = "//";
-        list_t *tokens = lexer_lex(lexer);
-        lexer_free(lexer);
-
+        list_t *tokens = test_lex("a b //symbol\n c");
         assert(list_length(tokens) == 4);
 
         {

@@ -5,7 +5,12 @@ static value_t for_tael(const char *end, list_t *tokens);
 
 value_t
 parse_sexps(const path_t *path, const char *string) {
-    list_t *tokens = lex(path, string);
+    lexer_t *lexer = make_lexer(string);
+    lexer->path = path;
+    lexer->line_comment_introducer = ";;";
+    list_t *tokens = lexer_lex(lexer);
+    lexer_free(lexer);
+    
     value_t sexps = x_make_list();
     while (!list_is_empty(tokens)) {
         x_list_push_mut(for_sexp(tokens), sexps);

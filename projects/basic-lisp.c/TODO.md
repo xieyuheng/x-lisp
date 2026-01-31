@@ -1,6 +1,3 @@
-[lexer] remove `lex`
-[sexp] fix comment
-
 # basic
 
 [basic] compile

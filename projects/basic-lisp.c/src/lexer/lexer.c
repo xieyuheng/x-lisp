@@ -101,15 +101,6 @@ lexer_lex(lexer_t *self) {
     return tokens;
 }
 
-list_t *
-lex(const path_t *path, const char *string) {
-    lexer_t *lexer = make_lexer(string);
-    lexer->path = path;
-    list_t *tokens = lexer_lex(lexer);
-    lexer_free(lexer);
-    return tokens;
-}
-
 bool
 lexer_char_is_mark(lexer_t *self, char c) {
     return (lexer_char_is_quotation_mark(self, c) ||
