@@ -1,10 +1,8 @@
-[vm] remove placeholder
-
 # basic
 
-[basic] `load_stage1` -- `compile_apply`
-[basic] `load_stage1` -- `compile_tail_apply`
-
+[vm] remove placeholder
+[basic] `compile_apply`
+[basic] `compile_tail_apply`
 [basic] `load_stage1` -- (export)
 [basic] `load_stage2` -- (import)
 [basic] `load_stage3` -- run (main)
