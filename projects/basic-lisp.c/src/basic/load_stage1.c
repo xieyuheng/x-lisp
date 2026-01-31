@@ -94,7 +94,6 @@ compile_parameters(function_t *function, value_t parameters) {
     for (int64_t i = 0; i < to_int64(x_list_length(parameters)); i++) {
         value_t parameter = x_list_get(x_int(i), parameters);
         assert(symbol_p(parameter));
-
         array_push(function->parameters, string_copy(to_symbol(parameter)->string));
         stack_push(local_name_stack, string_copy(to_symbol(parameter)->string));
         function_add_binding(function, to_symbol(parameter)->string);
@@ -104,11 +103,113 @@ compile_parameters(function_t *function, value_t parameters) {
 }
 
 static void
-compile_instr(mod_t *mod, function_t *function, value_t instr) {
+compile_exp(mod_t *mod, function_t *function, value_t sexp) {
     (void) mod;
     (void) function;
-    print(instr);
+    print(sexp);
     newline();
+}
+
+static bool
+is_assign(value_t sexp) {
+    return equal_p(x_car(sexp), x_object(intern_symbol("=")));
+}
+
+static bool
+is_perform(value_t sexp) {
+    return equal_p(x_car(sexp), x_object(intern_symbol("perform")));
+}
+
+static bool
+is_test(value_t sexp) {
+    return equal_p(x_car(sexp), x_object(intern_symbol("test")));
+}
+
+static bool
+is_branch(value_t sexp) {
+    return equal_p(x_car(sexp), x_object(intern_symbol("branch")));
+}
+
+static bool
+is_goto(value_t sexp) {
+    return equal_p(x_car(sexp), x_object(intern_symbol("goto")));
+}
+
+static bool
+is_return(value_t sexp) {
+    return equal_p(x_car(sexp), x_object(intern_symbol("return")));
+}
+
+static void
+compile_assign(mod_t *mod, function_t *function, value_t sexp) {
+    (void) mod;
+    (void) function;
+    print(sexp);
+    newline();
+}
+
+static void
+compile_perform(mod_t *mod, function_t *function, value_t sexp) {
+    compile_exp(mod, function, x_car(sexp));
+    struct instr_t instr;
+    instr.op = OP_DROP;
+    function_append_instr(function, instr);
+}
+
+static void
+compile_test(mod_t *mod, function_t *function, value_t sexp) {
+    compile_exp(mod, function, x_car(sexp));
+}
+
+static void
+compile_branch(mod_t *mod, function_t *function, value_t sexp) {
+    (void) mod;
+    (void) function;
+    print(sexp);
+    newline();
+}
+
+static void
+compile_goto(mod_t *mod, function_t *function, value_t sexp) {
+    (void) mod;
+    (void) function;
+    print(sexp);
+    newline();
+}
+
+static void
+compile_return(mod_t *mod, function_t *function, value_t sexp) {
+    (void) mod;
+    (void) function;
+    print(sexp);
+    newline();
+}
+
+static void
+compile_instr(mod_t *mod, function_t *function, value_t sexp) {
+    if (is_assign(sexp)) {
+        compile_assign(mod, function, x_cdr(sexp));
+    }
+
+    if (is_perform(sexp)) {
+        compile_perform(mod, function, x_cdr(sexp));
+    }
+
+    if (is_test(sexp)) {
+        compile_test(mod, function, x_cdr(sexp));
+    }
+
+    if (is_branch(sexp)) {
+        compile_branch(mod, function, x_cdr(sexp));
+    }
+
+    if (is_goto(sexp)) {
+        compile_goto(mod, function, x_cdr(sexp));
+    }
+
+    if (is_return(sexp)) {
+        compile_return(mod, function, x_cdr(sexp));
+    }
 }
 
 static bool
