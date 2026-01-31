@@ -1,13 +1,9 @@
 # basic
 
-[basic] `load_stage1` -- `compile_block`
-
+[basic] `load_stage1` -- `compile_instr`
 [basic] `load_stage1` -- (export)
-
 [basic] `load_stage2` -- (import)
-
 [basic] `load_stage3` -- run (main)
-
 [basic] `compile`
 
 # later

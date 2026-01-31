@@ -103,6 +103,19 @@ compile_parameters(function_t *function, value_t parameters) {
     compile_local_store_stack(function, local_name_stack);
 }
 
+static void
+compile_instr(mod_t *mod, function_t *function, value_t instr) {
+    (void) mod;
+    (void) function;
+    print(instr);
+    newline();
+}
+
+static bool
+is_block(value_t sexp) {
+    return equal_p(x_car(sexp), x_object(intern_symbol("block")));
+}
+
 static value_t
 x_block_name(value_t sexp) {
     return x_car(x_cdr(sexp));
@@ -115,18 +128,18 @@ x_block_body(value_t sexp) {
 
 static void
 compile_block(mod_t *mod, function_t *function, value_t block) {
-    (void) mod;
-    (void) function;
-    print(x_block_name(block));
-    newline();
-    print(x_block_body(block));
-    newline();
+    function_add_label(function, to_symbol(x_block_name(block))->string);
+    for (int64_t i = 0; i < to_int64(x_list_length(x_block_body(block))); i++) {
+        value_t instr = x_list_get(x_int(i), x_block_body(block));
+        compile_instr(mod, function, instr);
+    }
 }
 
 static void
-compile_function(mod_t *mod, function_t *function, value_t blocks) {
-    for (int64_t i = 0; i < to_int64(x_list_length(blocks)); i++) {
-        value_t block = x_list_get(x_int(i), blocks);
-        compile_block(mod, function, block);
+compile_function(mod_t *mod, function_t *function, value_t body) {
+    for (int64_t i = 0; i < to_int64(x_list_length(body)); i++) {
+        value_t sexp = x_list_get(x_int(i), body);
+        assert(is_block(sexp));
+        compile_block(mod, function, sexp);
     }
 }

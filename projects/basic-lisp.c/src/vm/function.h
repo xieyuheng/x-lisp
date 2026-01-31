@@ -2,7 +2,7 @@
 
 struct function_t {
     record_t *binding_indexes;
-    record_t *label_indexes;
+    record_t *label_offsets;
     // - optional string array.
     array_t *parameters;
     uint8_t *code_area;
@@ -20,3 +20,7 @@ void function_put_definition(function_t *self, size_t code_index, definition_t *
 void function_add_binding(function_t *self, const char *name);
 bool function_has_binding_index(function_t *self, const char *name);
 size_t function_get_binding_index(function_t *self, const char *name);
+
+void function_add_label(function_t *self, const char *name);
+bool function_has_label_offset(function_t *self, const char *name);
+size_t function_get_label_offset(function_t *self, const char *name);
