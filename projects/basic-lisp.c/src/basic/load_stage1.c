@@ -110,6 +110,14 @@ compile_exp(mod_t *mod, function_t *function, value_t sexp) {
     newline();
 }
 
+static void
+compile_tail_exp(mod_t *mod, function_t *function, value_t sexp) {
+    (void) mod;
+    (void) function;
+    print(sexp);
+    newline();
+}
+
 static bool
 is_assign(value_t sexp) {
     return equal_p(x_car(sexp), x_object(intern_symbol("=")));
@@ -194,10 +202,7 @@ compile_goto(mod_t *mod, function_t *function, value_t sexp) {
 
 static void
 compile_return(mod_t *mod, function_t *function, value_t sexp) {
-    (void) mod;
-    (void) function;
-    print(sexp);
-    newline();
+    compile_tail_exp(mod, function, x_car(sexp));
 }
 
 static void

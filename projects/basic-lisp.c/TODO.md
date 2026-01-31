@@ -1,7 +1,7 @@
 # basic
 
-[basic] `load_stage1` -- `compile_return`
 [basic] `load_stage1` -- `compile_exp`
+[basic] `load_stage1` -- `compile_tail_exp`
 
 [basic] `load_stage1` -- (export)
 [basic] `load_stage2` -- (import)
