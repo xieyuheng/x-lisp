@@ -3,30 +3,23 @@
 ;;     1
 ;;     (* (factorial (- n 1)) n)))
 
-;; (define-function (factorial n)
-;;   (block entry
-;;     (test (equal? n 1))
-;;     (branch base-case recur-case))
-;;   (block base-case
-;;     (return 1))
-;;   (block recur-case
-;;     (= n1 (isub n 1))
-;;     (= f1 (factorial n1))
-;;     (return (imul n f1))))
-
-;; (define-function (main)
-;;   (block entry
-;;     (= v (factorial 1))
-;;     (perform (println v))
-;;     (= v (factorial 2))
-;;     (perform (println v))
-;;     (= v (factorial 3))
-;;     (perform (println v))
-;;     (return #void)))
+(define-function (factorial n)
+  (block entry
+    (test (equal? n 1))
+    (branch base-case recur-case))
+  (block base-case
+    (return 1))
+  (block recur-case
+    (= n1 (isub n 1))
+    (= f1 (factorial n1))
+    (return (imul n f1))))
 
 (define-function (main)
   (block entry
-     (goto base-case))
-  (block base-case
-    (perform (println 1))
-    (return 1)))
+    (= v (factorial 1))
+    (perform (println v))
+    (= v (factorial 2))
+    (perform (println v))
+    (= v (factorial 3))
+    (perform (println v))
+    (return #void)))

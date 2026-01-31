@@ -1,5 +1,7 @@
 #include "index.h"
 
+static void ignore_line_comments(list_t *tokens);
+
 static value_t for_sexp(list_t *tokens);
 static value_t for_tael(const char *end, list_t *tokens);
 
@@ -10,9 +12,14 @@ parse_sexps(const path_t *path, const char *string) {
     lexer->line_comment_introducer = ";;";
     list_t *tokens = lexer_lex(lexer);
     lexer_free(lexer);
-    
+
     value_t sexps = x_make_list();
-    while (!list_is_empty(tokens)) {
+    while (true) {
+        ignore_line_comments(tokens);
+        if (list_is_empty(tokens)) {
+            break;
+        }
+
         x_list_push_mut(for_sexp(tokens), sexps);
     }
 
@@ -20,10 +27,24 @@ parse_sexps(const path_t *path, const char *string) {
     return sexps;
 }
 
+static void
+ignore_line_comments(list_t *tokens) {
+    while (!list_is_empty(tokens)) {
+        token_t *token = list_first(tokens);
+        if (token->kind == LINE_COMMENT_TOKEN) {
+            list_shift(tokens);
+            token_free(token);
+        } else {
+            return;
+        }
+    }
+}
+
+// - assume a sexp exists (maybe after line comments)
 static value_t
 for_sexp(list_t *tokens) {
     if (list_is_empty(tokens)) {
-        where_printf("unexpected end of tokens");
+        who_printf("unexpected end of tokens");
         exit(1);
     }
 
@@ -64,13 +85,13 @@ for_sexp(list_t *tokens) {
             token_free(token);
             return x_cons(x_object(intern_symbol("@set")), for_tael("}", tokens));
         } else {
-            where_printf("unexpected bracket start: %s", token->content);
+            who_printf("unexpected bracket start: %s", token->content);
             exit(1);
         }
     }
 
     case BRACKET_END_TOKEN: {
-        where_printf("unexpected bracket end: %s", token->content);
+        who_printf("unexpected bracket end: %s", token->content);
         exit(1);
     }
 
@@ -85,7 +106,7 @@ for_sexp(list_t *tokens) {
         } else if (string_equal(token->content, ",")) {
             head_sexp = x_object(intern_symbol("@unquote"));
         } else {
-            where_printf("unexpected quasiquote mark: %s", token->content);
+            who_printf("unexpected quasiquote mark: %s", token->content);
             exit(1);
         }
 
@@ -96,7 +117,7 @@ for_sexp(list_t *tokens) {
     }
 
     case KEYWORD_TOKEN: {
-        where_printf("unexpected keyword: %s", token->content);
+        who_printf("unexpected keyword: %s", token->content);
         exit(1);
     }
 
@@ -119,8 +140,9 @@ static value_t
 for_tael(const char *end, list_t *tokens) {
     value_t sexp = x_make_list();
     while (true) {
+        ignore_line_comments(tokens);
         if (list_is_empty(tokens)) {
-            where_printf("unexpected end of tokens");
+            who_printf("unexpected end of tokens");
             exit(1);
         }
 
@@ -131,7 +153,7 @@ for_tael(const char *end, list_t *tokens) {
                 token_free(token);
                 return sexp;
             } else {
-                where_printf(
+                who_printf(
                     "bracket end mismatch, expecting: %s, meet: %s",
                     end, token->content);
                 exit(1);
