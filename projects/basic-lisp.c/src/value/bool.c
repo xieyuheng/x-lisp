@@ -14,6 +14,16 @@ bool_p(value_t value) {
 }
 
 bool
+true_p(value_t value) {
+    return value == x_true;
+}
+
+bool
+false_p(value_t value) {
+    return value == x_false;
+}
+
+bool
 to_bool(value_t value) {
     assert(bool_p(value));
     return value == x_true;
