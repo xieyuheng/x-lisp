@@ -103,11 +103,23 @@ compile_parameters(function_t *function, value_t parameters) {
     compile_local_store_stack(function, local_name_stack);
 }
 
+static value_t
+x_block_name(value_t sexp) {
+    return x_car(sexp);
+}
+
+static value_t
+x_block_body(value_t sexp) {
+    return x_cdr(sexp);
+}
+
 static void
 compile_block(mod_t *mod, function_t *function, value_t block) {
     (void) mod;
     (void) function;
-    print(block);
+    print(x_block_name(block));
+    newline();
+    print(x_block_body(block));
     newline();
 }
 

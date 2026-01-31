@@ -1,6 +1,5 @@
 # basic
 
-[basic] `load_stage1` -- x_block_name & x_block_body
 [basic] `load_stage1` -- `compile_block`
 
 [basic] `load_stage1` -- (export)
