@@ -172,9 +172,13 @@ compile_branch(mod_t *mod, function_t *function, value_t sexp) {
 static void
 compile_goto(mod_t *mod, function_t *function, value_t sexp) {
     (void) mod;
-    (void) function;
-    print(sexp);
-    newline();
+    char *label = to_symbol(x_car(sexp))->string;
+    struct instr_t instr;
+    instr.op = OP_JUMP;
+    instr.jump.offset = 0;
+    (void) label;
+    // function_add_label_reference(function, label, function->code_length + 1);
+    function_append_instr(function, instr);
 }
 
 static void

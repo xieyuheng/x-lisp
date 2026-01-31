@@ -1,5 +1,7 @@
 # basic
-
+ambr label_offsets label_indexes
+ambr label_offset label_index
+[vm] `function_add_label_reference`
 [basic] `load_stage1` -- `compile_goto`
 [basic] `load_stage1` -- `compile_branch`
 [basic] `load_stage1` -- `compile_assign`
