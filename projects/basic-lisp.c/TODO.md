@@ -1,5 +1,6 @@
 # basic
 
+[basic] `compile` -- support `(return)` as `(return void)`
 [basic] `load_stage1` -- (export)
 [basic] `load_stage2` -- (import)
 

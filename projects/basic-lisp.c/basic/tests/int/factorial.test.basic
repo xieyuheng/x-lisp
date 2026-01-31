@@ -1,11 +1,11 @@
 ;; (define (factorial n)
-;;   (if (= n 1)
+;;   (if (int-less-or-equal? n 1)
 ;;     1
-;;     (* (factorial (- n 1)) n)))
+;;     (imul (factorial (isub n 1)) n)))
 
 (define-function (factorial n)
   (block entry
-    (test (equal? n 1))
+    (test (int-less-or-equal? n 1))
     (branch base-case recur-case))
   (block base-case
     (return 1))
@@ -16,10 +16,14 @@
 
 (define-function (main)
   (block entry
+    (= v (factorial 0))
+    (perform (println v))
     (= v (factorial 1))
     (perform (println v))
     (= v (factorial 2))
     (perform (println v))
     (= v (factorial 3))
     (perform (println v))
-    (return #void)))
+    (= v (factorial 4))
+    (perform (println v))
+    (return void)))
