@@ -23,21 +23,8 @@ void
 mod_define(mod_t *self, const char *name, definition_t *definition) {
     definition_t *found = record_get(self->definitions, name);
     if (found) {
-        if (found->kind != PLACEHOLDER_DEFINITION) {
-            who_printf("can not redefine name: %s\n", name);
-            exit(1);
-        }
-
-        size_t length =
-            array_length(found->placeholder_definition.placeholders);
-        for (size_t i = 0; i < length; i ++) {
-            placeholder_t *placeholder =
-                array_get(found->placeholder_definition.placeholders, i);
-            function_put_definition(
-                placeholder->function,
-                placeholder->code_index,
-                definition);
-        }
+        who_printf("can not redefine name: %s\n", name);
+        exit(1);
     }
 
     record_put(self->definitions, name, definition);
@@ -46,14 +33,6 @@ mod_define(mod_t *self, const char *name, definition_t *definition) {
 definition_t *
 mod_lookup(mod_t *self, const char *name) {
     return record_get(self->definitions, name);
-}
-
-definition_t *
-mod_lookup_or_placeholder(mod_t *self, const char *name) {
-    definition_t *definition = mod_lookup(self, name);
-    if (definition) return definition;
-
-    return define_placeholder(self, name);
 }
 
 import_entry_t *

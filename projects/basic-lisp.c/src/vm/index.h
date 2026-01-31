@@ -6,7 +6,6 @@
 #include "primitive.h"
 #include "function.h"
 #include "definition.h"
-#include "placeholder.h"
 #include "mod.h"
 #include "vm.h"
 #include "frame.h"

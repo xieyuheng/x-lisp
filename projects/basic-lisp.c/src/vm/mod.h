@@ -12,7 +12,6 @@ void mod_free(mod_t *self);
 
 void mod_define(mod_t *self, const char *name, definition_t *definition);
 definition_t *mod_lookup(mod_t *self, const char *name);
-definition_t *mod_lookup_or_placeholder(mod_t *self, const char *name);
 
 struct import_entry_t {
     mod_t *mod;

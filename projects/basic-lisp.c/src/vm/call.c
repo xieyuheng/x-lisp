@@ -18,11 +18,6 @@ call_definition(vm_t *vm, const definition_t *definition) {
         vm_push(vm, value);
         return;
     }
-
-    case PLACEHOLDER_DEFINITION: {
-        who_printf("undefined name: %s\n", definition->name);
-        exit(1);
-    }
     }
 }
 

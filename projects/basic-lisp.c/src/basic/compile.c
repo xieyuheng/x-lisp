@@ -30,15 +30,11 @@ compile_var(mod_t *mod, function_t *function, value_t sexp) {
         return;
     }
 
-    definition_t *found = mod_lookup_or_placeholder(mod, name);
-    if (found->kind == PLACEHOLDER_DEFINITION) {
-        size_t code_index = function->code_length + 1;
-        placeholder_definition_hold_place(found, function, code_index);
-    }
-
+    definition_t *definition = mod_lookup(mod, name);
+    assert(definition);
     struct instr_t instr;
     instr.op = OP_REF;
-    instr.ref.definition = found;
+    instr.ref.definition = definition;
     function_append_instr(function, instr);
 }
 

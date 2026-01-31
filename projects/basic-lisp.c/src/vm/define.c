@@ -1,14 +1,6 @@
 #include "index.h"
 
 definition_t *
-define_placeholder(mod_t *mod, const char *name) {
-    definition_t *definition =
-        make_placeholder_definition(mod, string_copy(name));
-    mod_define(mod, name, definition);
-    return definition;
-}
-
-definition_t *
 define_variable(mod_t *mod, const char *name, value_t value) {
     definition_t *definition =
         make_variable_definition(mod, string_copy(name), value);

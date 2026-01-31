@@ -39,15 +39,6 @@ make_variable_definition(mod_t *mod, char *name, value_t value) {
     return self;
 }
 
-definition_t *
-make_placeholder_definition(mod_t *mod, char *name) {
-    definition_t *self = make_definition(mod, name);
-    self->kind = PLACEHOLDER_DEFINITION;
-    self->placeholder_definition.placeholders =
-        make_array_with((free_fn_t *) placeholder_free);
-    return self;
-}
-
 void
 definition_free(definition_t *self) {
     free(self->name);
@@ -68,12 +59,6 @@ definition_free(definition_t *self) {
     case VARIABLE_DEFINITION: {
         if (self->variable_definition.function)
             function_free(self->variable_definition.function);
-        free(self);
-        return;
-    }
-
-    case PLACEHOLDER_DEFINITION: {
-        array_free(self->placeholder_definition.placeholders);
         free(self);
         return;
     }
@@ -103,18 +88,6 @@ definition_print(printer_t *printer, definition_t *self) {
     printf("#<definition %s>", self->name);
 }
 
-void
-placeholder_definition_hold_place(
-    definition_t *self,
-    function_t *function,
-    size_t code_index
-) {
-    assert(self->kind == PLACEHOLDER_DEFINITION);
-    array_push(
-        self->placeholder_definition.placeholders,
-        make_placeholder(function, code_index));
-}
-
 bool
 definition_has_arity(const definition_t *self) {
     switch (self->kind) {
@@ -126,8 +99,7 @@ definition_has_arity(const definition_t *self) {
         return self->primitive_definition.primitive->fn_kind != X_FN;
     }
 
-    case VARIABLE_DEFINITION:
-    case PLACEHOLDER_DEFINITION: {
+    case VARIABLE_DEFINITION: {
         return false;
     }
     }
@@ -157,8 +129,7 @@ definition_arity(const definition_t *self) {
         unreachable();
     }
 
-    case VARIABLE_DEFINITION:
-    case PLACEHOLDER_DEFINITION: {
+    case VARIABLE_DEFINITION: {
         unreachable();
     }
     }

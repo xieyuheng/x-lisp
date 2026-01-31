@@ -66,7 +66,7 @@ prepare_define_function(mod_t *mod, value_t sexp) {
 static void
 handle_define_function(mod_t *mod, value_t sexp) {
     char *name = to_symbol(x_function_name(sexp))->string;
-    definition_t *definition = mod_lookup_or_placeholder(mod, name);
+    definition_t *definition = mod_lookup(mod, name);
     assert(definition->kind == FUNCTION_DEFINITION);
 
     function_t *function = definition->function_definition.function;
@@ -94,7 +94,7 @@ prepare_define_variable(mod_t *mod, value_t sexp) {
 static void
 handle_define_variable(mod_t *mod, value_t sexp) {
     char *name = to_symbol(x_function_name(sexp))->string;
-    definition_t *definition = mod_lookup_or_placeholder(mod, name);
+    definition_t *definition = mod_lookup(mod, name);
     assert(definition->kind == VARIABLE_DEFINITION);
 
     function_t *function = definition->variable_definition.function;

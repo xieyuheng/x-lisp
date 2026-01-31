@@ -1,6 +1,5 @@
 # basic
 
-[vm] remove placeholder
 [basic] `compile_apply`
 [basic] `compile_tail_apply`
 [basic] `load_stage1` -- (export)
