@@ -105,12 +105,12 @@ compile_parameters(function_t *function, value_t parameters) {
 
 static value_t
 x_block_name(value_t sexp) {
-    return x_car(sexp);
+    return x_car(x_cdr(sexp));
 }
 
 static value_t
 x_block_body(value_t sexp) {
-    return x_cdr(sexp);
+    return x_cdr(x_cdr(sexp));
 }
 
 static void
