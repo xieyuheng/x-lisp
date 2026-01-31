@@ -1,7 +1,8 @@
 # basic
 
-[basic] `load_stage1` -- (define-function)
-[basic] `load_stage1` -- (define-variable)
+[basic] `load_stage1` -- `compile_parameters`
+[basic] `load_stage1` -- `compile_function`
+
 [basic] `load_stage1` -- (export)
 
 [basic] `load_stage2` -- (import)
