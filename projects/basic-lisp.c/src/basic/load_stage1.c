@@ -164,9 +164,17 @@ compile_test(mod_t *mod, function_t *function, value_t sexp) {
 static void
 compile_branch(mod_t *mod, function_t *function, value_t sexp) {
     (void) mod;
-    (void) function;
-    print(sexp);
-    newline();
+    char *then_label = to_symbol(x_car(sexp))->string;
+    char *else_label = to_symbol(x_car(x_cdr(sexp)))->string;
+    struct instr_t instr;
+    instr.op = OP_JUMP_IF_NOT;
+    instr.jump.offset = 0;
+    function_add_label_reference(function, else_label, function->code_length + 1);
+    function_append_instr(function, instr);
+    instr.op = OP_JUMP;
+    instr.jump.offset = 0;
+    function_add_label_reference(function, then_label, function->code_length + 1);
+    function_append_instr(function, instr);
 }
 
 static void

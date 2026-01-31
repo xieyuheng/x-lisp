@@ -1,6 +1,5 @@
 # basic
 
-[basic] `load_stage1` -- `compile_branch`
 [basic] `load_stage1` -- `compile_assign`
 [basic] `load_stage1` -- `compile_return`
 [basic] `load_stage1` -- `compile_exp`
