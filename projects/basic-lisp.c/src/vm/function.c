@@ -4,7 +4,7 @@ function_t *
 make_function(void) {
     function_t *self = new(function_t);
     self->binding_indexes = make_record();
-    self->label_indexes = make_record();
+    self->label_offsets = make_record();
     self->label_references = make_record_with((free_fn_t *) list_free);
     self->parameters = NULL;
     self->code_area_size = 64;
@@ -16,7 +16,7 @@ make_function(void) {
 void
 function_free(function_t *self) {
     record_free(self->binding_indexes);
-    record_free(self->label_indexes);
+    record_free(self->label_offsets);
     record_free(self->label_references);
     if (self->parameters)
         array_free(self->parameters);
@@ -96,33 +96,54 @@ function_get_binding_index(function_t *self, const char *name) {
 
 void
 function_add_label(function_t *self, const char *name) {
-    if (!function_has_label_index(self, name)) {
-        record_insert(self->label_indexes, name, (void *) self->code_length);
+    if (!function_has_label(self, name)) {
+        record_insert(self->label_offsets, name, (void *) self->code_length);
     }
 }
 
 bool
-function_has_label_index(function_t *self, const char *name) {
-    return record_has(self->label_indexes, name);
+function_has_label(function_t *self, const char *name) {
+    return record_has(self->label_offsets, name);
 }
 
-size_t
-function_get_label_index(function_t *self, const char *name) {
-    assert(function_has_label_index(self, name));
-    return (size_t) record_get(self->label_indexes, name);
+int32_t
+function_get_label_offset(function_t *self, const char *name) {
+    assert(function_has_label(self, name));
+    return (size_t) record_get(self->label_offsets, name);
 }
 
 void
-function_add_label_reference(function_t *self, const char *name, size_t index) {
+function_add_label_reference(function_t *self, const char *name, int32_t offset) {
     if (!record_has(self->label_references, name)) {
         record_insert(self->label_references, name, make_list());
     }
 
     list_t *reference_list = record_get(self->label_references, name);
-    list_push(reference_list, (void *) index);
+    list_push(reference_list, (void *) (int64_t) offset);
 }
 
 list_t *
 function_get_label_reference_list(function_t *self, const char *name) {
     return record_get(self->label_references, name);
+}
+
+void
+function_patch_label_references(function_t *self) {
+    record_iter_t iter;
+    record_iter_init(&iter, self->label_references);
+    const hash_entry_t *entry = record_iter_next_entry(&iter);
+    while (entry) {
+        char *name = entry->key;
+        int32_t label_offset = function_get_label_offset(self, name);
+        list_t *reference_list = entry->value;
+        for (size_t i = 0; i < list_length(reference_list); i++) {
+            int32_t code_offset = (int32_t) (int64_t) list_get(reference_list, i);
+            assert(code_offset + sizeof(definition_t *) < self->code_area_size);
+            uint8_t *code = self->code_area + code_offset;
+            int32_t offset = label_offset - (code_offset + sizeof(int32_t));
+            memory_store_little_endian(code, offset);
+        }
+
+        entry = record_iter_next_entry(&iter);
+    }
 }

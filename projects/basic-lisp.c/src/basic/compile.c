@@ -394,4 +394,6 @@ compile_function(mod_t *mod, function_t *function, value_t body) {
         assert(is_block(sexp));
         compile_block(mod, function, sexp);
     }
+
+    function_patch_label_references(function);
 }
