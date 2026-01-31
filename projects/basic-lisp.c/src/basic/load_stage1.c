@@ -158,9 +158,16 @@ compile_literal(mod_t *mod, function_t *function, value_t sexp) {
 
 static void
 compile_apply(mod_t *mod, function_t *function, value_t sexp) {
+    value_t target = x_car(sexp);
+    char *name = to_symbol(target)->string;
+    value_t args = x_cdr(sexp);
+    size_t arity = to_int64(x_list_length(args));
+
     (void) mod;
     (void) function;
-    print(sexp);
+    printf("%s", name);
+    print(args);
+    printf("%ld", arity);
     newline();
 }
 

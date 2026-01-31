@@ -12,5 +12,4 @@
   (block recur-case
     (= n1 (isub n 1))
     (= f1 (factorial n1))
-    (= r (imul n f1))
-    (return r)))
+    (return (imul n f1))))
