@@ -1,6 +1,8 @@
 # basic
 
-[basic] `load_stage1` -- `compile_exp`
+[basic] `load_stage1` -- `compile_var`
+[basic] `load_stage1` -- `compile_literal`
+[basic] `load_stage1` -- `compile_apply`
 [basic] `load_stage1` -- `compile_tail_exp`
 
 [basic] `load_stage1` -- (export)

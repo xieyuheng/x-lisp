@@ -102,12 +102,56 @@ compile_parameters(function_t *function, value_t parameters) {
     compile_local_store_stack(function, local_name_stack);
 }
 
+static bool
+is_var(value_t sexp) {
+    return symbol_p(sexp);
+}
+
+static bool
+is_literal(value_t sexp) {
+    return hashtag_p(sexp)
+        || xstring_p(sexp)
+        || int_p(sexp)
+        || float_p(sexp);
+}
+
+static bool
+is_apply(value_t sexp) {
+    return tael_p(sexp);
+}
+
 static void
-compile_exp(mod_t *mod, function_t *function, value_t sexp) {
+compile_var(mod_t *mod, function_t *function, value_t sexp) {
     (void) mod;
     (void) function;
     print(sexp);
     newline();
+}
+
+static void
+compile_literal(mod_t *mod, function_t *function, value_t sexp) {
+    (void) mod;
+    (void) function;
+    print(sexp);
+    newline();
+}
+
+static void
+compile_apply(mod_t *mod, function_t *function, value_t sexp) {
+    (void) mod;
+    (void) function;
+    print(sexp);
+    newline();
+}
+
+static void
+compile_exp(mod_t *mod, function_t *function, value_t sexp) {
+    if (is_var(sexp))
+        compile_var(mod, function, sexp);
+    if (is_literal(sexp))
+        compile_literal(mod, function, sexp);
+    if (is_apply(sexp))
+        compile_apply(mod, function, sexp);
 }
 
 static void
