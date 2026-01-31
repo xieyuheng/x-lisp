@@ -70,7 +70,7 @@ handle_define_function(mod_t *mod, value_t sexp) {
     assert(definition->kind == FUNCTION_DEFINITION);
 
     function_t *function = definition->function_definition.function;
-    compile_parameters(function, x_function_parameters(sexp));
+    compile_parameters(mod, function, x_function_parameters(sexp));
     compile_function(mod, function, x_function_body(sexp));
 }
 

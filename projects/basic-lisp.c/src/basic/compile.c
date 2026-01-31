@@ -48,29 +48,142 @@ compile_literal(mod_t *mod, function_t *function, value_t sexp) {
 }
 
 static void
+compile_args(mod_t *mod, function_t *function, value_t args) {
+    for (int64_t i = 0; i < to_int64(x_list_length(args)); i++) {
+        value_t arg = x_list_get(x_int(i), args);
+        compile_exp(mod, function, arg);
+    }
+}
+
+static void
 compile_apply(mod_t *mod, function_t *function, value_t sexp) {
+    value_t args = x_cdr(sexp);
+    compile_args(mod, function, args);
+
     value_t target = x_car(sexp);
     char *name = to_symbol(target)->string;
-    value_t args = x_cdr(sexp);
-    size_t arity = to_int64(x_list_length(args));
+    if (function_has_binding_index(function, name)) {
+        size_t index = function_get_binding_index(function, name);
+        struct instr_t instr;
+        instr.op = OP_LOCAL_LOAD;
+        instr.local.index = index;
+        function_append_instr(function, instr);
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_list_length(args);
+        function_append_instr(function, instr);
+        instr.op = OP_APPLY;
+        function_append_instr(function, instr);
+        return;
+    }
 
-    (void) mod;
-    (void) function;
-    printf("%s", name);
-    print(args);
-    printf("%ld", arity);
-    newline();
+    definition_t *definition = mod_lookup(mod, name);
+    assert(definition);
+    if (!definition_has_arity(definition)) {
+        struct instr_t instr;
+        instr.op = OP_CALL;
+        instr.ref.definition = definition;
+        function_append_instr(function, instr);
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_list_length(args);
+        function_append_instr(function, instr);
+        instr.op = OP_APPLY;
+        function_append_instr(function, instr);
+        return;
+    }
+
+    size_t arity = definition_arity(definition);
+    size_t args_length = to_int64(x_list_length(args));
+    if (arity < args_length) {
+        struct instr_t instr;
+        instr.op = OP_REF;
+        instr.ref.definition = definition;
+        function_append_instr(function, instr);
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_list_length(args);
+        function_append_instr(function, instr);
+        instr.op = OP_APPLY;
+        function_append_instr(function, instr);
+        return;
+    } else if (arity == args_length) {
+        struct instr_t instr;
+        instr.op = OP_CALL;
+        instr.ref.definition = definition;
+        function_append_instr(function, instr);
+        return;
+    } else {
+        where_printf("too many arguments\n");
+        where_printf("  function: %s\n", name);
+        where_printf("  arity: %ld\n", arity);
+        where_printf("  args_length: %ld\n", args_length);
+        exit(1);
+    }
 }
 
 static void
 compile_tail_apply(mod_t *mod, function_t *function, value_t sexp) {
-    (void) mod;
-    (void) function;
-    print(sexp);
-    newline();
+    value_t args = x_cdr(sexp);
+    compile_args(mod, function, args);
+
+    value_t target = x_car(sexp);
+    char *name = to_symbol(target)->string;
+    if (function_has_binding_index(function, name)) {
+        size_t index = function_get_binding_index(function, name);
+        struct instr_t instr;
+        instr.op = OP_LOCAL_LOAD;
+        instr.local.index = index;
+        function_append_instr(function, instr);
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_list_length(args);
+        function_append_instr(function, instr);
+        instr.op = OP_TAIL_APPLY;
+        function_append_instr(function, instr);
+        return;
+    }
+
+    definition_t *definition = mod_lookup(mod, name);
+    assert(definition);
+    if (!definition_has_arity(definition)) {
+        struct instr_t instr;
+        instr.op = OP_CALL;
+        instr.ref.definition = definition;
+        function_append_instr(function, instr);
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_list_length(args);
+        function_append_instr(function, instr);
+        instr.op = OP_TAIL_APPLY;
+        function_append_instr(function, instr);
+        return;
+    }
+
+    size_t arity = definition_arity(definition);
+    size_t args_length = to_int64(x_list_length(args));
+    if (arity < args_length) {
+        struct instr_t instr;
+        instr.op = OP_REF;
+        instr.ref.definition = definition;
+        function_append_instr(function, instr);
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_list_length(args);
+        function_append_instr(function, instr);
+        instr.op = OP_TAIL_APPLY;
+        function_append_instr(function, instr);
+        return;
+    } else if (arity == args_length) {
+        struct instr_t instr;
+        instr.op = OP_TAIL_CALL;
+        instr.ref.definition = definition;
+        function_append_instr(function, instr);
+        return;
+    } else {
+        where_printf("too many arguments\n");
+        where_printf("  function: %s\n", name);
+        where_printf("  arity: %ld\n", arity);
+        where_printf("  args_length: %ld\n", args_length);
+        exit(1);
+    }
 }
 
-static void
+void
 compile_exp(mod_t *mod, function_t *function, value_t sexp) {
     if (is_var(sexp)) {
         compile_var(mod, function, sexp);
@@ -259,7 +372,8 @@ compile_local_store_stack(function_t *function, stack_t *local_name_stack) {
 }
 
 void
-compile_parameters(function_t *function, value_t parameters) {
+compile_parameters(mod_t *mod, function_t *function, value_t parameters) {
+    (void) mod;
     function->parameters = make_string_array();
     stack_t *local_name_stack = make_string_stack();
     for (int64_t i = 0; i < to_int64(x_list_length(parameters)); i++) {

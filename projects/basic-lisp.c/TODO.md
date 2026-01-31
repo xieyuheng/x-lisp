@@ -1,7 +1,5 @@
 # basic
 
-[basic] `compile_apply`
-[basic] `compile_tail_apply`
 [basic] `load_stage1` -- (export)
 [basic] `load_stage2` -- (import)
 [basic] `load_stage3` -- run (main)
