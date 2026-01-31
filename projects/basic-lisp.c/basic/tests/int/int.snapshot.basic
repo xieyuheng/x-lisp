@@ -5,4 +5,4 @@
     (perform (println 3))
     (= x (iadd 2 2))
     (perform (println x))
-    (return void)))
+    (return)))

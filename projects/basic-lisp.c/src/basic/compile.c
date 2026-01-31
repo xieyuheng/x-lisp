@@ -303,6 +303,16 @@ compile_goto(mod_t *mod, function_t *function, value_t sexp) {
 
 static void
 compile_return(mod_t *mod, function_t *function, value_t sexp) {
+    if (true_p(x_list_empty_p(sexp))) {
+        struct instr_t instr;
+        instr.op = OP_LITERAL;
+        instr.literal.value = x_void;
+        function_append_instr(function, instr);
+        instr.op = OP_RETURN;
+        function_append_instr(function, instr);
+        return;
+    }
+
     compile_tail_exp(mod, function, x_car(sexp));
 }
 

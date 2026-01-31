@@ -137,9 +137,7 @@ array_unshift(array_t *self, void *value) {
 
 inline void *
 array_get(const array_t *self, size_t index) {
-    if (index >= array_length(self))
-        return NULL;
-
+    assert(index < array_length(self));
     return self->values[(self->front + index) & self->mask];
 }
 

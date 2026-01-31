@@ -138,7 +138,6 @@ main(void) {
         assert(array_length(array) == 1);
 
         assert(array_get(array, 0) == (void *) 1);
-        assert(array_get(array, 1) == NULL);
 
         array_free(array);
     }

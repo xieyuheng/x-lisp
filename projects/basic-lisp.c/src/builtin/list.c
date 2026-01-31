@@ -70,7 +70,8 @@ x_list_put(value_t index, value_t value, value_t list) {
 
 value_t
 x_car(value_t list) {
-    return (value_t) array_get(to_tael(list)->elements, 0);
+    return tael_get_element(to_tael(list), 0);
+    // return (value_t) array_get(to_tael(list)->elements, 0);
 }
 
 value_t
