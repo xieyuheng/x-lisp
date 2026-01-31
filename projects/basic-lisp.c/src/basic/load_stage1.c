@@ -150,7 +150,7 @@ is_return(value_t sexp) {
 
 static void
 compile_assign(mod_t *mod, function_t *function, value_t sexp) {
-    compile_exp(mod, function, x_car(sexp));
+    compile_exp(mod, function, x_car(x_cdr(sexp)));
     char *name = to_symbol(x_car(sexp))->string;
     function_add_binding(function, name);
     size_t index = function_get_binding_index(function, name);
