@@ -1,7 +1,6 @@
 # basic
 
-[basic] `load_stage1` -- (export)
-[basic] `load_stage2` -- (import)
+[basic] `load_stage2` -- about module -- (import)
 
 # later
 
