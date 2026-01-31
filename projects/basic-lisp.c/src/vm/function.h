@@ -1,10 +1,9 @@
 #pragma once
 
 struct function_t {
-    // - record of indexes.
     record_t *binding_indexes;
+    record_t *label_indexes;
     // - optional string array.
-    // - first list of bindings are viewed as parameters.
     array_t *parameters;
     uint8_t *code_area;
     size_t code_area_size;
@@ -13,7 +12,6 @@ struct function_t {
 
 function_t *make_function(void);
 void function_free(function_t *self);
-
 
 void function_append_instr(function_t *self, struct instr_t instr);
 void function_put_instr(function_t *self, size_t code_index, struct instr_t instr);
