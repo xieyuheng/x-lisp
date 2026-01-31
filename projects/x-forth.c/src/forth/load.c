@@ -32,8 +32,8 @@ load(path_t *path) {
 }
 
 mod_t *
-import_by(mod_t *self, const char *string) {
-    path_t *path = path_copy(self->path);
+import_by(mod_t *mod, const char *string) {
+    path_t *path = path_copy(mod->path);
     path_join_mut(path, "..");
     path_join_mut(path, string);
 

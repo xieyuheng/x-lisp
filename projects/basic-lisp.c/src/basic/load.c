@@ -16,27 +16,21 @@ load(path_t *path) {
 
     file_t *file = open_file_or_fail(path_string(path), "r");
     value_t sexps = parse_sexps(path, file_read_string(file));
-    print(sexps);
-
-    // TODO
 
     mod_t *mod = make_mod(path);
+    record_put(global_loaded_mods, path_string(path), mod);
     import_builtin_mod(mod);
 
-    record_put(global_loaded_mods, path_string(path), mod);
-
-    vm_t *vm = make_vm(mod);
-    // load_stage1(vm);
-    // load_stage2(vm);
-    // load_stage3(vm);
-    vm_free(vm);
+    load_stage1(mod, sexps);
+    load_stage2(mod, sexps);
+    load_stage3(mod, sexps);
 
     return mod;
 }
 
 mod_t *
-import_by(mod_t *self, const char *string) {
-    path_t *path = path_copy(self->path);
+import_by(mod_t *mod, const char *string) {
+    path_t *path = path_copy(mod->path);
     path_join_mut(path, "..");
     path_join_mut(path, string);
 

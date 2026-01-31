@@ -1,10 +1,14 @@
 # basic
 
-[basic] compile
+[basic] `load_stage1` -- (define-function)
+[basic] `load_stage1` -- (define-variable)
+[basic] `load_stage1` -- (export)
 
-[basic] `load_stage1`
-[basic] `load_stage2`
-[basic] `load_stage3`
+[basic] `load_stage2` -- (import)
+
+[basic] `load_stage3` -- run (main)
+
+[basic] `compile`
 
 # later
 
