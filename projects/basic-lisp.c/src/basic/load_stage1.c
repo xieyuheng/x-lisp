@@ -104,8 +104,17 @@ compile_parameters(function_t *function, value_t parameters) {
 }
 
 static void
-compile_function(mod_t *mod, function_t *function, value_t sexp) {
+compile_block(mod_t *mod, function_t *function, value_t block) {
     (void) mod;
     (void) function;
-    (void) sexp;
+    print(block);
+    newline();
+}
+
+static void
+compile_function(mod_t *mod, function_t *function, value_t blocks) {
+    for (int64_t i = 0; i < to_int64(x_list_length(blocks)); i++) {
+        value_t block = x_list_get(x_int(i), blocks);
+        compile_block(mod, function, block);
+    }
 }
