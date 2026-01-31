@@ -22,7 +22,7 @@ bool function_has_binding(function_t *self, const char *name);
 size_t function_get_binding_index(function_t *self, const char *name);
 
 void function_add_label(function_t *self, const char *name);
-bool function_has_label_index(function_t *self, const char *name);
+bool function_has_label(function_t *self, const char *name);
 size_t function_get_label_index(function_t *self, const char *name);
 
 // void function_add_label_reference(function_t *self, const char *name, size_t index);

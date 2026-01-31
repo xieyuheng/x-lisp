@@ -98,7 +98,7 @@ function_get_binding_index(function_t *self, const char *name) {
 
 void
 function_add_label(function_t *self, const char *name) {
-    if (!function_has_label_index(self, name)) {
+    if (!function_has_label(self, name)) {
         record_insert(self->label_indexes,
                       name,
                       (void *) self->code_length);
@@ -106,12 +106,12 @@ function_add_label(function_t *self, const char *name) {
 }
 
 bool
-function_has_label_index(function_t *self, const char *name) {
+function_has_label(function_t *self, const char *name) {
     return record_has(self->label_indexes, name);
 }
 
 size_t
 function_get_label_index(function_t *self, const char *name) {
-    assert(function_has_label_index(self, name));
+    assert(function_has_label(self, name));
     return (size_t) record_get(self->label_indexes, name);
 }
