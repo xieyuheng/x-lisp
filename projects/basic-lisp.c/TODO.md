@@ -1,6 +1,4 @@
-# basic
-
-[basic] `load_stage2` -- `collect_import_as`
+[basic] test `(import)`
 
 # testing
 

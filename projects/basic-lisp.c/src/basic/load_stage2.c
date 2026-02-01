@@ -109,9 +109,26 @@ collect_import_except(mod_t *mod, value_t sexp, bool is_exported) {
 
 static void
 collect_import_as(mod_t *mod, value_t sexp, bool is_exported) {
-    (void) mod;
-    (void) sexp;
-    (void) is_exported;
+    char *imported_name = to_symbol(x_car(sexp))->string;
+    mod_t *imported_mod = import_by(mod, imported_name);
+
+    char *prefix = to_symbol(x_car(x_cdr(sexp)))->string;
+
+    record_iter_t iter;
+    record_iter_init(&iter, imported_mod->definitions);
+    char *key = record_iter_next_key(&iter);
+    while (key) {
+        if (set_member(imported_mod->exported_names, key)) {
+            char *name = string_copy(key);
+            char *rename = string_append(prefix, key);
+            import_entry_t *import_entry = make_import_entry(imported_mod, name);
+            import_entry->rename = rename;
+            import_entry->is_exported = is_exported;
+            array_push(mod->import_entries, import_entry);
+        }
+
+        key = record_iter_next_key(&iter);
+    }
 }
 
 static void
