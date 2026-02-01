@@ -1,0 +1,4 @@
+(export one two)
+
+(define-function (one) (block entry (return 1)))
+(define-function (two) (block entry (return 2)))

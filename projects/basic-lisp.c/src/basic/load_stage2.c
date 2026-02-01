@@ -42,7 +42,7 @@ is_include_as(value_t sexp) {
 
 static void
 collect_import(mod_t *mod, value_t sexp, bool is_exported) {
-    char *imported_name = to_symbol(x_car(sexp))->string;
+    char *imported_name = to_xstring(x_car(sexp))->string;
     mod_t *imported_mod = import_by(mod, imported_name);
 
     value_t body = x_cdr(sexp);
@@ -57,7 +57,7 @@ collect_import(mod_t *mod, value_t sexp, bool is_exported) {
 
 static void
 collect_import_all(mod_t *mod, value_t sexp, bool is_exported) {
-    char *imported_name = to_symbol(x_car(sexp))->string;
+    char *imported_name = to_xstring(x_car(sexp))->string;
     mod_t *imported_mod = import_by(mod, imported_name);
 
     record_iter_t iter;
@@ -77,7 +77,7 @@ collect_import_all(mod_t *mod, value_t sexp, bool is_exported) {
 
 static void
 collect_import_except(mod_t *mod, value_t sexp, bool is_exported) {
-    char *imported_name = to_symbol(x_car(sexp))->string;
+    char *imported_name = to_xstring(x_car(sexp))->string;
     mod_t *imported_mod = import_by(mod, imported_name);
 
     set_t *excepted_names = make_string_set();
@@ -109,7 +109,7 @@ collect_import_except(mod_t *mod, value_t sexp, bool is_exported) {
 
 static void
 collect_import_as(mod_t *mod, value_t sexp, bool is_exported) {
-    char *imported_name = to_symbol(x_car(sexp))->string;
+    char *imported_name = to_xstring(x_car(sexp))->string;
     mod_t *imported_mod = import_by(mod, imported_name);
 
     char *prefix = to_symbol(x_car(x_cdr(sexp)))->string;

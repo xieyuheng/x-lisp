@@ -21,8 +21,9 @@ load(path_t *path) {
     record_put(global_loaded_mods, path_string(path), mod);
     import_builtin_mod(mod);
 
-    load_stage1(mod, sexps);
     load_stage2(mod, sexps);
+    load_stage1(mod, sexps);
+
     load_stage3(mod);
 
     return mod;

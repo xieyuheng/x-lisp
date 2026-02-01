@@ -1,0 +1,10 @@
+(define-variable x
+  (block entry
+    (return 1)))
+
+(define-function (main)
+  (block entry
+    (perform (assert-equal x 1))
+    ;; 2 @ref x @assign
+    ;; (perform (assert-equal x 2))
+    (return)))

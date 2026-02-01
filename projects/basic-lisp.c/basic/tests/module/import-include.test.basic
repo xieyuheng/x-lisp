@@ -1,0 +1,11 @@
+(import-all "index")
+
+(define-function (main)
+  (block entry
+    (= x (one)) (perform (assert-equal x 1))
+    (= x (two)) (perform (assert-equal x 2))
+    (= x (three)) (perform (assert-equal x 3))
+    (= x (m/one)) (perform (assert-equal x 1))
+    (= x (m/two)) (perform (assert-equal x 2))
+    (= x (m/three)) (perform (assert-equal x 3))
+    (return)))

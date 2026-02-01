@@ -1,0 +1,8 @@
+(import "module-one" one)
+(import "module-two" two)
+
+(define-function (main)
+  (block entry
+    (= x (one)) (perform (assert-equal x 1))
+    (= x (two)) (perform (assert-equal x 2))
+    (return)))

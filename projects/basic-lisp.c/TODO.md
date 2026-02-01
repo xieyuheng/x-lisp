@@ -1,4 +1,4 @@
-[basic] test `(import)`
+[basic] fix loading order to support circular import
 
 # later
 

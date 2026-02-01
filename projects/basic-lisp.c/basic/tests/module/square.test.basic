@@ -1,0 +1,7 @@
+(import "square.basic" square)
+
+(define-function (main)
+  (block entry
+    (= x (square 2)) (perform (assert-equal 4 x))
+    (= x (square 3)) (perform (assert-equal 9 x))
+    (return)))

@@ -31,11 +31,23 @@ compile_var(mod_t *mod, function_t *function, value_t sexp) {
     }
 
     definition_t *definition = mod_lookup(mod, name);
+    if (!definition) {
+        who_printf("undefined name: %s\n", name);
+        exit(1);
+    }
+
     assert(definition);
-    struct instr_t instr;
-    instr.op = OP_REF;
-    instr.ref.definition = definition;
-    function_append_instr(function, instr);
+    if (definition->kind == VARIABLE_DEFINITION) {
+        struct instr_t instr;
+        instr.op = OP_CALL;
+        instr.ref.definition = definition;
+        function_append_instr(function, instr);
+    } else {
+        struct instr_t instr;
+        instr.op = OP_REF;
+        instr.ref.definition = definition;
+        function_append_instr(function, instr);
+    }
 }
 
 static void

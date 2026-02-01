@@ -37,6 +37,11 @@ tael_p(value_t value) {
 
 tael_t *
 to_tael(value_t value) {
+    if (!tael_p(value)) {
+        print(value);
+        newline();
+    }
+
     assert(tael_p(value));
     return (tael_t *) to_object(value);
 }
