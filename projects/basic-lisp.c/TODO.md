@@ -1,6 +1,17 @@
 # basic
 
-[basic] `load_stage2` -- about module -- (import)
+[basic] `load_stage2` -- `handle_import`
+[basic] `load_stage2` -- `handle_import_all`
+[basic] `load_stage2` -- `handle_import_except`
+[basic] `load_stage2` -- `handle_import_as`
+
+# testing
+
+[basic] support `(assert)` `(assert-equal)` `(assert-not-equal)`
+
+[basic] handle `(assert)` in `ShrinkPass`
+
+- `(assert-with-meta)` -- `(assert)` should be compiled to `(assert-with-meta)`
 
 # later
 
