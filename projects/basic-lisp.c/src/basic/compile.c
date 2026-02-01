@@ -36,7 +36,6 @@ compile_var(mod_t *mod, function_t *function, value_t sexp) {
         exit(1);
     }
 
-    assert(definition);
     if (definition->kind == VARIABLE_DEFINITION) {
         struct instr_t instr;
         instr.op = OP_CALL;
@@ -89,7 +88,11 @@ compile_apply(mod_t *mod, function_t *function, value_t sexp) {
     }
 
     definition_t *definition = mod_lookup(mod, name);
-    assert(definition);
+    if (!definition) {
+        who_printf("undefined name: %s\n", name);
+        exit(1);
+    }
+
     if (!definition_has_arity(definition)) {
         struct instr_t instr;
         instr.op = OP_CALL;
@@ -153,7 +156,11 @@ compile_tail_apply(mod_t *mod, function_t *function, value_t sexp) {
     }
 
     definition_t *definition = mod_lookup(mod, name);
-    assert(definition);
+    if (!definition) {
+        who_printf("undefined name: %s\n", name);
+        exit(1);
+    }
+
     if (!definition_has_arity(definition)) {
         struct instr_t instr;
         instr.op = OP_CALL;

@@ -13,6 +13,18 @@ x_assert(value_t value) {
 }
 
 value_t
+x_assert_not(value_t value) {
+    if (value != x_false) {
+        printf("(assert-not) fail");
+        printf("\n  value: "); print(value);
+        printf("\n");
+        exit(1);
+    }
+
+    return x_void;
+}
+
+value_t
 x_assert_equal(value_t lhs, value_t rhs) {
     if (!equal_p(lhs, rhs)) {
         printf("(assert-equal) fail");

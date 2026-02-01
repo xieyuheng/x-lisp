@@ -1,0 +1,23 @@
+(import-all "circular-even.test.basic")
+
+;; (define-function (odd? n)
+;;   (block entry
+;;     (test (equal? n 0))
+;;     (branch base-case recur-case))
+;;   (block base-case
+;;     (return false))
+;;   (block recur-case
+;;     (= n1 (isub n 1))
+;;     (return (even? n1))))
+
+;; (define-function (main)
+;;   (block entry
+;;     (= x (even? 0)) (perform (assert x))
+;;     (= x (even? 1)) (perform (assert-not x))
+;;     (= x (even? 2)) (perform (assert x))
+;;     (= x (even? 3)) (perform (assert-not x))
+;;     (= x (odd? 0)) (perform (assert-not x))
+;;     (= x (odd? 1)) (perform (assert x))
+;;     (= x (odd? 2)) (perform (assert-not x))
+;;     (= x (odd? 3)) (perform (assert x))
+;;     (return)))

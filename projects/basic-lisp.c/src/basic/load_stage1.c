@@ -35,6 +35,7 @@ prepare_define_function(mod_t *mod, value_t sexp) {
     char *name = to_symbol(x_function_name(sexp))->string;
     function_t *function = make_function();
     define_function(mod, name, function);
+    compile_parameters(mod, function, x_function_parameters(sexp));
 }
 
 static void
@@ -44,7 +45,6 @@ handle_define_function(mod_t *mod, value_t sexp) {
     assert(definition->kind == FUNCTION_DEFINITION);
 
     function_t *function = definition->function_definition.function;
-    compile_parameters(mod, function, x_function_parameters(sexp));
     compile_function(mod, function, x_function_body(sexp));
 }
 
@@ -85,7 +85,7 @@ handle_export(mod_t *mod, value_t body) {
 }
 
 void
-load_stage1(mod_t *mod, value_t sexps) {
+load_stage0(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
         value_t sexp = x_list_get(x_int(i), sexps);
         if (is_define_function(sexp)) {
@@ -95,8 +95,15 @@ load_stage1(mod_t *mod, value_t sexps) {
         if (is_define_variable(sexp)) {
             prepare_define_variable(mod, x_cdr(sexp));
         }
-    }
 
+        if (is_export(sexp)) {
+            handle_export(mod, x_cdr(sexp));
+        }
+    }
+}
+
+void
+load_stage1(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
         value_t sexp = x_list_get(x_int(i), sexps);
         if (is_define_function(sexp)) {
@@ -105,10 +112,6 @@ load_stage1(mod_t *mod, value_t sexps) {
 
         if (is_define_variable(sexp)) {
             handle_define_variable(mod, x_cdr(sexp));
-        }
-
-        if (is_export(sexp)) {
-            handle_export(mod, x_cdr(sexp));
         }
     }
 }

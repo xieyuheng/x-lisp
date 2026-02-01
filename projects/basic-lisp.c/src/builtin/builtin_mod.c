@@ -200,6 +200,7 @@ make_builtin_mod(void) {
     // assert
 
     define_primitive_1(mod, "assert", x_assert);
+    define_primitive_1(mod, "assert-not", x_assert_not);
     define_primitive_2(mod, "assert-equal", x_assert_equal);
     define_primitive_2(mod, "assert-not-equal", x_assert_not_equal);
 
