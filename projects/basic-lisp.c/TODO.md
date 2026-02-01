@@ -1,6 +1,5 @@
 # basic
 
-[basic] `load_stage2` -- `collect_import_except`
 [basic] `load_stage2` -- `collect_import_as`
 
 # testing

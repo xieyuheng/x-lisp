@@ -77,9 +77,34 @@ collect_import_all(mod_t *mod, value_t sexp, bool is_exported) {
 
 static void
 collect_import_except(mod_t *mod, value_t sexp, bool is_exported) {
-    (void) mod;
-    (void) sexp;
-    (void) is_exported;
+    char *imported_name = to_symbol(x_car(sexp))->string;
+    mod_t *imported_mod = import_by(mod, imported_name);
+
+    set_t *excepted_names = make_string_set();
+    value_t body = x_cdr(sexp);
+    for (int64_t i = 0; i < to_int64(x_list_length(body)); i++) {
+        value_t sexp = x_list_get(x_int(i), body);
+        char *name = to_symbol(sexp)->string;
+        set_add(excepted_names, string_copy(name));
+    }
+
+    record_iter_t iter;
+    record_iter_init(&iter, imported_mod->definitions);
+    char *key = record_iter_next_key(&iter);
+    while (key) {
+        if (set_member(imported_mod->exported_names, key)
+            && !set_member(excepted_names, key)) {
+            char *name = string_copy(key);
+            import_entry_t *import_entry =
+                make_import_entry(imported_mod, name);
+            import_entry->is_exported = is_exported;
+            array_push(mod->import_entries, import_entry);
+        }
+
+        key = record_iter_next_key(&iter);
+    }
+
+    set_free(excepted_names);
 }
 
 static void
