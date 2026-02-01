@@ -7,6 +7,12 @@ void
 load_stage3(mod_t *mod) {
     vm_t *vm = make_vm(mod);
     setup_variables(vm);
+    vm_free(vm);
+}
+
+void
+load_stage4(mod_t *mod) {
+    vm_t *vm = make_vm(mod);
     if (mod_lookup(vm_mod(vm), "main")) {
         prepare_tail_call(vm, "main");
     }

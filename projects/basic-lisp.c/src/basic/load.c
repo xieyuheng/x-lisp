@@ -2,31 +2,65 @@
 
 extern void import_builtin_mod(mod_t *mod);
 
-static record_t *global_loaded_mods = NULL;
+static record_t *global_prepared_mods = NULL;
+static record_t *global_mod_bodies = NULL;
 
-mod_t *
-load(path_t *path) {
-    if (!global_loaded_mods) {
-        global_loaded_mods = make_record();
+static value_t
+read_mod_body(path_t *path) {
+    if (!global_mod_bodies) {
+        global_mod_bodies = make_record();
     }
 
-    if (record_has(global_loaded_mods, path_string(path))) {
-        return record_get(global_loaded_mods, path_string(path));
+    if (record_has(global_mod_bodies, path_string(path))) {
+        return (value_t) record_get(global_mod_bodies, path_string(path));
     }
 
     file_t *file = open_file_or_fail(path_string(path), "r");
     value_t sexps = parse_sexps(path, file_read_string(file));
+    record_put(global_mod_bodies, path_string(path), (void *) sexps);
+    return sexps;
+}
 
+static mod_t *
+prepare(path_t *path) {
+    if (!global_prepared_mods) {
+        global_prepared_mods = make_record();
+    }
+
+    if (record_has(global_prepared_mods, path_string(path))) {
+        return record_get(global_prepared_mods, path_string(path));
+    }
+
+    value_t sexps = read_mod_body(path);
     mod_t *mod = make_mod(path);
-    record_put(global_loaded_mods, path_string(path), mod);
+
     import_builtin_mod(mod);
-
-    // load_stage2(mod, sexps);
     load_stage0(mod, sexps);
-    load_stage2(mod, sexps);    
-    load_stage1(mod, sexps);
-    load_stage3(mod);
+    record_put(global_prepared_mods, path_string(path), mod);
+    load_stage2(mod, sexps);
+    return mod;
+}
 
+static void
+compile_prepared_mods(void) {
+    record_iter_t iter;
+    record_iter_init(&iter, global_prepared_mods);
+    char *key = record_iter_next_key(&iter);
+    while (key) {
+        mod_t *mod = record_get(global_prepared_mods, key);
+        value_t sexps = (value_t) record_get(global_mod_bodies, key);
+        load_stage1(mod, sexps);
+
+        key = record_iter_next_key(&iter);
+    }
+}
+
+mod_t *
+load(path_t *path) {
+    mod_t *mod = prepare(path);
+    compile_prepared_mods();
+    load_stage3(mod);
+    load_stage4(mod);
     return mod;
 }
 
@@ -46,5 +80,5 @@ import_by(mod_t *mod, const char *string) {
         string_free(segment);
     }
 
-    return load(path);
+    return prepare(path);
 }

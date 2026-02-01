@@ -1,4 +1,4 @@
-[basic] fix loading order to support circular import
+[basic] refactor `load`
 
 # later
 
