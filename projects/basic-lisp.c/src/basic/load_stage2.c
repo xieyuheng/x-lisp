@@ -42,9 +42,17 @@ is_include_as(value_t sexp) {
 
 static void
 collect_import(mod_t *mod, value_t sexp, bool is_exported) {
-    (void) mod;
-    (void) sexp;
-    (void) is_exported;
+    char *imported_name = to_symbol(x_car(sexp))->string;
+    mod_t *imported_mod = import_by(mod, imported_name);
+    value_t body = x_cdr(sexp);
+
+    for (int64_t i = 0; i < to_int64(x_list_length(body)); i++) {
+        value_t sexp = x_list_get(x_int(i), body);
+        char *name = to_symbol(sexp)->string;
+        import_entry_t *import_entry = make_import_entry(imported_mod, name);
+        import_entry->is_exported = is_exported;
+        array_push(mod->import_entries, import_entry);
+    }
 }
 
 static void
