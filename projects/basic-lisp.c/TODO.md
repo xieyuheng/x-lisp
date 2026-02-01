@@ -1,9 +1,9 @@
 # basic
 
-[basic] `load_stage2` -- `handle_import`
-[basic] `load_stage2` -- `handle_import_all`
-[basic] `load_stage2` -- `handle_import_except`
-[basic] `load_stage2` -- `handle_import_as`
+[basic] `load_stage2` -- `collect_import`
+[basic] `load_stage2` -- `collect_import_all`
+[basic] `load_stage2` -- `collect_import_except`
+[basic] `load_stage2` -- `collect_import_as`
 
 # testing
 

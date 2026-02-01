@@ -41,31 +41,47 @@ is_include_as(value_t sexp) {
 }
 
 static void
-handle_import(mod_t *mod, value_t sexp, bool is_exported) {
+collect_import(mod_t *mod, value_t sexp, bool is_exported) {
     (void) mod;
     (void) sexp;
     (void) is_exported;
 }
 
 static void
-handle_import_all(mod_t *mod, value_t sexp, bool is_exported) {
+collect_import_all(mod_t *mod, value_t sexp, bool is_exported) {
     (void) mod;
     (void) sexp;
     (void) is_exported;
 }
 
 static void
-handle_import_except(mod_t *mod, value_t sexp, bool is_exported) {
+collect_import_except(mod_t *mod, value_t sexp, bool is_exported) {
     (void) mod;
     (void) sexp;
     (void) is_exported;
 }
 
 static void
-handle_import_as(mod_t *mod, value_t sexp, bool is_exported) {
+collect_import_as(mod_t *mod, value_t sexp, bool is_exported) {
     (void) mod;
     (void) sexp;
     (void) is_exported;
+}
+
+static void
+handle_import_entry(mod_t *mod, const import_entry_t *import_entry) {
+    definition_t *definition = mod_lookup(import_entry->mod, import_entry->name);
+    assert(definition);
+
+    char *name = import_entry->rename
+        ? import_entry->rename
+        : import_entry->name;
+
+    mod_define(mod, name, definition);
+
+    if (import_entry->is_exported) {
+        set_add(mod->exported_names, string_copy(name));
+    }
 }
 
 void
@@ -73,35 +89,41 @@ load_stage2(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
         value_t sexp = x_list_get(x_int(i), sexps);
         if (is_import(sexp)) {
-            handle_import(mod, x_cdr(sexp), false);
+            collect_import(mod, x_cdr(sexp), false);
         }
 
         if (is_include(sexp)) {
-            handle_import(mod, x_cdr(sexp), true);
+            collect_import(mod, x_cdr(sexp), true);
         }
 
         if (is_import_all(sexp)) {
-            handle_import_all(mod, x_cdr(sexp), false);
+            collect_import_all(mod, x_cdr(sexp), false);
         }
 
         if (is_include_all(sexp)) {
-            handle_import_all(mod, x_cdr(sexp), true);
+            collect_import_all(mod, x_cdr(sexp), true);
         }
 
         if (is_import_except(sexp)) {
-            handle_import_except(mod, x_cdr(sexp), false);
+            collect_import_except(mod, x_cdr(sexp), false);
         }
 
         if (is_include_except(sexp)) {
-            handle_import_except(mod, x_cdr(sexp), true);
+            collect_import_except(mod, x_cdr(sexp), true);
         }
 
         if (is_import_as(sexp)) {
-            handle_import_as(mod, x_cdr(sexp), false);
+            collect_import_as(mod, x_cdr(sexp), false);
         }
 
         if (is_include_as(sexp)) {
-            handle_import_as(mod, x_cdr(sexp), true);
+            collect_import_as(mod, x_cdr(sexp), true);
         }
+    }
+
+    array_t *import_entries = mod->import_entries;
+    for (size_t i = 0; i < array_length(import_entries); i++) {
+        import_entry_t *import_entry = array_get(import_entries, i);
+        handle_import_entry(mod, import_entry);
     }
 }
