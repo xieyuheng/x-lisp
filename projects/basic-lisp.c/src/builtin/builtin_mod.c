@@ -197,6 +197,12 @@ make_builtin_mod(void) {
     define_primitive_2(mod, "set-disjoint?", x_set_disjoint_p);
     define_primitive_1(mod, "set-to-list", x_set_to_list);
 
+    // assert
+
+    define_primitive_1(mod, "assert", x_assert);
+    define_primitive_2(mod, "assert-equal", x_assert_equal);
+    define_primitive_2(mod, "assert-not-equal", x_assert_not_equal);
+
     return mod;
 }
 
