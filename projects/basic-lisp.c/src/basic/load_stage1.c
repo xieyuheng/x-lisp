@@ -15,42 +15,6 @@ is_export(value_t sexp) {
     return equal_p(x_car(sexp), x_object(intern_symbol("export")));
 }
 
-static void prepare_define_function(mod_t *mod, value_t sexp);
-static void prepare_define_variable(mod_t *mod, value_t sexp);
-
-static void handle_define_function(mod_t *mod, value_t sexp);
-static void handle_define_variable(mod_t *mod, value_t sexp);
-static void handle_export(mod_t *mod, value_t sexp);
-
-void
-load_stage1(mod_t *mod, value_t sexps) {
-    for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
-        value_t sexp = x_list_get(x_int(i), sexps);
-        if (is_define_function(sexp)) {
-            prepare_define_function(mod, x_cdr(sexp));
-        }
-
-        if (is_define_variable(sexp)) {
-            prepare_define_variable(mod, x_cdr(sexp));
-        }
-    }
-
-    for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
-        value_t sexp = x_list_get(x_int(i), sexps);
-        if (is_define_function(sexp)) {
-            handle_define_function(mod, x_cdr(sexp));
-        }
-
-        if (is_define_variable(sexp)) {
-            handle_define_variable(mod, x_cdr(sexp));
-        }
-
-        if (is_export(sexp)) {
-            handle_export(mod, x_cdr(sexp));
-        }
-    }
-}
-
 static value_t
 x_function_name(value_t sexp) {
     return x_car(x_car(sexp));
@@ -117,5 +81,34 @@ handle_export(mod_t *mod, value_t body) {
         value_t sexp = x_list_get(x_int(i), body);
         char *name = to_symbol(sexp)->string;
         set_add(mod->exported_names, string_copy(name));
+    }
+}
+
+void
+load_stage1(mod_t *mod, value_t sexps) {
+    for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
+        value_t sexp = x_list_get(x_int(i), sexps);
+        if (is_define_function(sexp)) {
+            prepare_define_function(mod, x_cdr(sexp));
+        }
+
+        if (is_define_variable(sexp)) {
+            prepare_define_variable(mod, x_cdr(sexp));
+        }
+    }
+
+    for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
+        value_t sexp = x_list_get(x_int(i), sexps);
+        if (is_define_function(sexp)) {
+            handle_define_function(mod, x_cdr(sexp));
+        }
+
+        if (is_define_variable(sexp)) {
+            handle_define_variable(mod, x_cdr(sexp));
+        }
+
+        if (is_export(sexp)) {
+            handle_export(mod, x_cdr(sexp));
+        }
     }
 }
