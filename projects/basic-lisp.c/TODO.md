@@ -1,5 +1,6 @@
-[basic] `basic_load`
+[basic] move import_by to basic_import
 [basic] `basic_run`
+[basic] `basic_load`
 
 # later
 
