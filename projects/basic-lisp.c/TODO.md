@@ -1,5 +1,3 @@
-[basic] `basic_run`
-
 # later
 
 [helpers.c] improve `string_builder_t` for `format_*`
