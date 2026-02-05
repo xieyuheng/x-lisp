@@ -1,4 +1,4 @@
-`sexp_has_tag`
+extract helper function `sexp_has_tag`
 
 # mod
 

@@ -293,7 +293,6 @@ static void
 compile_assign(mod_t *mod, function_t *function, value_t sexp) {
     compile_exp(mod, function, x_car(x_cdr(sexp)));
     char *name = to_symbol(x_car(sexp))->string;
-    function_add_binding(function, name);
     size_t index = function_get_binding_index(function, name);
     struct instr_t instr;
     instr.op = OP_LOCAL_STORE;
@@ -427,8 +426,30 @@ compile_parameters(mod_t *mod, function_t *function, value_t parameters) {
     compile_local_store_stack(function, local_name_stack);
 }
 
+static void
+collect_variables_from_instr(function_t *function, value_t sexp) {
+    if (is_assign(sexp)) {
+        char *name = to_symbol(x_car(x_cdr(sexp)))->string;
+        function_add_binding(function, name);
+    }
+}
+
+static void
+collect_variables_from_block(function_t *function, value_t block) {
+    for (int64_t i = 0; i < to_int64(x_list_length(x_block_body(block))); i++) {
+        value_t instr = x_list_get(x_int(i), x_block_body(block));
+        collect_variables_from_instr(function, instr);
+    }
+}
+
 void
 compile_function(mod_t *mod, function_t *function, value_t body) {
+    for (int64_t i = 0; i < to_int64(x_list_length(body)); i++) {
+        value_t sexp = x_list_get(x_int(i), body);
+        assert(is_block(sexp));
+        collect_variables_from_block(function, sexp);
+    }
+
     for (int64_t i = 0; i < to_int64(x_list_length(body)); i++) {
         value_t sexp = x_list_get(x_int(i), body);
         assert(is_block(sexp));

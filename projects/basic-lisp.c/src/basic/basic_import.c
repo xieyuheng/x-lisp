@@ -32,17 +32,20 @@ is_import_except(value_t sexp) {
 
 static bool
 is_include_except(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("include-except")));
+    return tael_p(sexp)
+        && equal_p(x_car(sexp), x_object(intern_symbol("include-except")));
 }
 
 static bool
 is_import_as(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("import-as")));
+    return tael_p(sexp)
+        && equal_p(x_car(sexp), x_object(intern_symbol("import-as")));
 }
 
 static bool
 is_include_as(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("include-as")));
+    return tael_p(sexp)
+        && equal_p(x_car(sexp), x_object(intern_symbol("include-as")));
 }
 
 static mod_t *
