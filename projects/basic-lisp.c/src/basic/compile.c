@@ -15,8 +15,7 @@ is_literal(value_t sexp) {
 
 static bool
 is_quote(value_t sexp) {
-    return tael_p(sexp)
-        && equal_p(x_car(sexp), x_object(intern_symbol("@quote")));
+    return sexp_has_tag(sexp, "@quote");
 }
 
 static bool
@@ -261,32 +260,32 @@ compile_tail_exp(mod_t *mod, function_t *function, value_t sexp) {
 
 static bool
 is_assign(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("=")));
+    return sexp_has_tag(sexp, "=");
 }
 
 static bool
 is_perform(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("perform")));
+    return sexp_has_tag(sexp, "perform");
 }
 
 static bool
 is_test(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("test")));
+    return sexp_has_tag(sexp, "test");
 }
 
 static bool
 is_branch(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("branch")));
+    return sexp_has_tag(sexp, "branch");
 }
 
 static bool
 is_goto(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("goto")));
+    return sexp_has_tag(sexp, "goto");
 }
 
 static bool
 is_return(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("return")));
+    return sexp_has_tag(sexp, "return");
 }
 
 static void
@@ -374,7 +373,7 @@ compile_instr(mod_t *mod, function_t *function, value_t sexp) {
 
 static bool
 is_block(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("block")));
+    return sexp_has_tag(sexp, "block");
 }
 
 static value_t

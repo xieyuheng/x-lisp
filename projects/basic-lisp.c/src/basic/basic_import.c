@@ -2,50 +2,42 @@
 
 static bool
 is_import(value_t sexp) {
-    return tael_p(sexp)
-        && equal_p(x_car(sexp), x_object(intern_symbol("import")));
+    return sexp_has_tag(sexp, "import");
 }
 
 static bool
 is_include(value_t sexp) {
-    return tael_p(sexp)
-        && equal_p(x_car(sexp), x_object(intern_symbol("include")));
+    return sexp_has_tag(sexp, "include");
 }
 
 static bool
 is_import_all(value_t sexp) {
-    return tael_p(sexp)
-        && equal_p(x_car(sexp), x_object(intern_symbol("import-all")));
+    return sexp_has_tag(sexp, "import-all");
 }
 
 static bool
 is_include_all(value_t sexp) {
-    return tael_p(sexp)
-        && equal_p(x_car(sexp), x_object(intern_symbol("include-all")));
+    return sexp_has_tag(sexp, "include-all");
 }
 
 static bool
 is_import_except(value_t sexp) {
-    return tael_p(sexp)
-        && equal_p(x_car(sexp), x_object(intern_symbol("import-except")));
+    return sexp_has_tag(sexp, "import-except");
 }
 
 static bool
 is_include_except(value_t sexp) {
-    return tael_p(sexp)
-        && equal_p(x_car(sexp), x_object(intern_symbol("include-except")));
+    return sexp_has_tag(sexp, "include-except");
 }
 
 static bool
 is_import_as(value_t sexp) {
-    return tael_p(sexp)
-        && equal_p(x_car(sexp), x_object(intern_symbol("import-as")));
+    return sexp_has_tag(sexp, "import-as");
 }
 
 static bool
 is_include_as(value_t sexp) {
-    return tael_p(sexp)
-        && equal_p(x_car(sexp), x_object(intern_symbol("include-as")));
+    return sexp_has_tag(sexp, "include-as");
 }
 
 static mod_t *

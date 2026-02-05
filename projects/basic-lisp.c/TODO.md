@@ -1,5 +1,3 @@
-extract helper function `sexp_has_tag`
-
 # mod
 
 disassemble function for debug
