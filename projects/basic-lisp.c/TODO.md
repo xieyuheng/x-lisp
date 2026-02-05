@@ -1,5 +1,4 @@
 [basic] `basic_run`
-[basic] `basic_load`
 
 # later
 

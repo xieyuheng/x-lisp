@@ -1,26 +1,5 @@
 #include "index.h"
 
-static void setup_variables(vm_t *vm);
-static void prepare_tail_call(vm_t *vm, const char *name);
-
-void
-basic_setup(mod_t *mod) {
-    vm_t *vm = make_vm(mod);
-    setup_variables(vm);
-    vm_free(vm);
-}
-
-void
-basic_run_main(mod_t *mod) {
-    vm_t *vm = make_vm(mod);
-    if (mod_lookup(vm_mod(vm), "main")) {
-        prepare_tail_call(vm, "main");
-    }
-
-    vm_execute(vm);
-    vm_free(vm);
-}
-
 static void
 setup_variable(vm_t *vm, definition_t *definition) {
     assert(definition->kind == VARIABLE_DEFINITION);
@@ -55,4 +34,22 @@ prepare_tail_call(vm_t *vm, const char *name) {
               .ref.definition = definition },
         });
     vm_push_frame(vm, make_frame_from_code(code));
+}
+
+void
+basic_setup(mod_t *mod) {
+    vm_t *vm = make_vm(mod);
+    setup_variables(vm);
+    vm_free(vm);
+}
+
+void
+basic_run_main(mod_t *mod) {
+    vm_t *vm = make_vm(mod);
+    if (mod_lookup(vm_mod(vm), "main")) {
+        prepare_tail_call(vm, "main");
+    }
+
+    vm_execute(vm);
+    vm_free(vm);
 }

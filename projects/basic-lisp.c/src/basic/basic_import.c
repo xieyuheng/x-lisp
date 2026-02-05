@@ -56,7 +56,7 @@ import_by(mod_t *mod, const char *string) {
         string_free(segment);
     }
 
-    return prepare(path);
+    return basic_load(path);
 }
 
 static void

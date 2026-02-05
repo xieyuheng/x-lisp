@@ -22,7 +22,7 @@ read_mod_body(path_t *path) {
 }
 
 mod_t *
-prepare(path_t *path) {
+basic_load(path_t *path) {
     if (!prepared_mods) {
         prepared_mods = make_record();
     }
@@ -56,10 +56,8 @@ compile_prepared_mods(void) {
     }
 }
 
-mod_t *
-load(path_t *path) {
-    mod_t *mod = prepare(path);
+void
+basic_run(mod_t *mod) {
     compile_prepared_mods();
     basic_run_main(mod);
-    return mod;
 }

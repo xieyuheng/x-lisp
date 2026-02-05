@@ -15,8 +15,8 @@ config_stdio(void) {
 static void
 handle_run(cmd_ctx_t *ctx) {
     char *pathname = cmd_arg(ctx, 0);
-    mod_t *mod = load(make_path(pathname));
-    (void) mod;
+    mod_t *mod = basic_load(make_path(pathname));
+    basic_run(mod);
 }
 
 static void
