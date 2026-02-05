@@ -36,8 +36,8 @@ prepare(path_t *path) {
 
     import_builtin_mod(mod);
     record_put(global_prepared_mods, path_string(path), mod);
-    load_stage0(mod, sexps);
-    load_stage2(mod, sexps);
+    basic_prepare(mod, sexps);
+    basic_import(mod, sexps);
     return mod;
 }
 
@@ -49,8 +49,8 @@ compile_prepared_mods(void) {
     while (key) {
         mod_t *mod = record_get(global_prepared_mods, key);
         value_t sexps = (value_t) record_get(global_mod_bodies, key);
-        load_stage1(mod, sexps);
-        load_stage3(mod);
+        basic_compile(mod, sexps);
+        basic_setup(mod);
 
         key = record_iter_next_key(&iter);
     }
@@ -60,7 +60,7 @@ mod_t *
 load(path_t *path) {
     mod_t *mod = prepare(path);
     compile_prepared_mods();
-    load_stage4(mod);
+    basic_run_main(mod);
     return mod;
 }
 

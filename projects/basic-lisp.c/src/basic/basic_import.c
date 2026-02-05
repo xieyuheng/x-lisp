@@ -148,7 +148,7 @@ handle_import_entry(mod_t *mod, const import_entry_t *import_entry) {
 }
 
 void
-load_stage2(mod_t *mod, value_t sexps) {
+basic_import(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
         value_t sexp = x_list_get(x_int(i), sexps);
         if (is_import(sexp)) {

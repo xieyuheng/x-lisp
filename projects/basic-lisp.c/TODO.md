@@ -1,4 +1,7 @@
-[basic] refactor `load`
+ambr global_prepared_mods prepared_mods
+ambr global_mod_bodies mod_bodies
+[basic] `basic_load`
+[basic] `basic_run`
 
 # later
 

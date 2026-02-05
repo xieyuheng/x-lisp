@@ -85,7 +85,7 @@ handle_export(mod_t *mod, value_t body) {
 }
 
 void
-load_stage0(mod_t *mod, value_t sexps) {
+basic_prepare(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
         value_t sexp = x_list_get(x_int(i), sexps);
         if (is_define_function(sexp)) {
@@ -103,7 +103,7 @@ load_stage0(mod_t *mod, value_t sexps) {
 }
 
 void
-load_stage1(mod_t *mod, value_t sexps) {
+basic_compile(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
         value_t sexp = x_list_get(x_int(i), sexps);
         if (is_define_function(sexp)) {
