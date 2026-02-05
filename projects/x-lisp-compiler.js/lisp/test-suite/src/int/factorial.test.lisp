@@ -9,4 +9,5 @@
   (assert-equal 2 (factorial 2))
   (assert-equal 6 (factorial 3))
   (assert-equal 24 (factorial 4))
-  (assert-equal 120 (factorial 6)))
+  (assert-equal 120 (factorial 5))
+  (assert-equal 720 (factorial 6)))

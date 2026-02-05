@@ -11,7 +11,8 @@
   (assert-equal 2 (factorial 2))
   (assert-equal 6 (factorial 3))
   (assert-equal 24 (factorial 4))
-  (assert-equal 120 (factorial 6)))
+  (assert-equal 120 (factorial 5))
+  (assert-equal 720 (factorial 6)))
 
 ;;; ShrinkPass
 
@@ -31,7 +32,9 @@
           (assert-equal 6 (factorial 3))
           (begin
             (assert-equal 24 (factorial 4))
-            (assert-equal 120 (factorial 6))))))))
+            (begin
+              (assert-equal 120 (factorial 5))
+              (assert-equal 720 (factorial 6)))))))))
 
 ;;; UniquifyPass
 
@@ -51,7 +54,9 @@
           (assert-equal 6 (factorial 3))
           (begin
             (assert-equal 24 (factorial 4))
-            (assert-equal 120 (factorial 6))))))))
+            (begin
+              (assert-equal 120 (factorial 5))
+              (assert-equal 720 (factorial 6)))))))))
 
 ;;; RevealGlobalPass
 
@@ -71,7 +76,9 @@
           (assert-equal 6 (factorial 3))
           (begin
             (assert-equal 24 (factorial 4))
-            (assert-equal 120 (factorial 6))))))))
+            (begin
+              (assert-equal 120 (factorial 5))
+              (assert-equal 720 (factorial 6)))))))))
 
 ;;; LiftLambdaPass
 
@@ -91,7 +98,9 @@
           (assert-equal 6 (factorial 3))
           (begin
             (assert-equal 24 (factorial 4))
-            (assert-equal 120 (factorial 6))))))))
+            (begin
+              (assert-equal 120 (factorial 5))
+              (assert-equal 720 (factorial 6)))))))))
 
 ;;; UnnestOperandPass
 
@@ -112,5 +121,9 @@
           (let ((_₄ (factorial 3))) (assert-equal 6 _₄))
           (begin
             (let ((_₅ (factorial 4))) (assert-equal 24 _₅))
-            (let ((_₆ (factorial 6))) (assert-equal 120 _₆))))))))
+            (begin
+              (let ((_₆ (factorial 5)))
+                (assert-equal 120 _₆))
+              (let ((_₇ (factorial 6)))
+                (assert-equal 720 _₇)))))))))
 

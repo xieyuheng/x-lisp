@@ -108,7 +108,7 @@ compile_apply(mod_t *mod, function_t *function, value_t sexp) {
 
     size_t arity = definition_arity(definition);
     size_t args_length = to_int64(x_list_length(args));
-    if (arity < args_length) {
+    if (args_length < arity) {
         struct instr_t instr;
         instr.op = OP_REF;
         instr.ref.definition = definition;
@@ -119,7 +119,7 @@ compile_apply(mod_t *mod, function_t *function, value_t sexp) {
         instr.op = OP_APPLY;
         function_append_instr(function, instr);
         return;
-    } else if (arity == args_length) {
+    } else if (args_length == arity) {
         struct instr_t instr;
         instr.op = OP_CALL;
         instr.ref.definition = definition;
@@ -176,7 +176,7 @@ compile_tail_apply(mod_t *mod, function_t *function, value_t sexp) {
 
     size_t arity = definition_arity(definition);
     size_t args_length = to_int64(x_list_length(args));
-    if (arity < args_length) {
+    if (args_length < arity) {
         struct instr_t instr;
         instr.op = OP_REF;
         instr.ref.definition = definition;
@@ -187,7 +187,7 @@ compile_tail_apply(mod_t *mod, function_t *function, value_t sexp) {
         instr.op = OP_TAIL_APPLY;
         function_append_instr(function, instr);
         return;
-    } else if (arity == args_length) {
+    } else if (args_length == arity) {
         struct instr_t instr;
         instr.op = OP_TAIL_CALL;
         instr.ref.definition = definition;
