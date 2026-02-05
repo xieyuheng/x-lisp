@@ -40,6 +40,25 @@ is_include_as(value_t sexp) {
     return equal_p(x_car(sexp), x_object(intern_symbol("include-as")));
 }
 
+static mod_t *
+import_by(mod_t *mod, const char *string) {
+    path_t *path = path_copy(mod->path);
+    path_join_mut(path, "..");
+    path_join_mut(path, string);
+
+    if (pathname_is_directory(path_string(path))) {
+        path_join_mut(path, "index.basic");
+    }
+
+    if (!string_ends_with(path_top_segment(path), ".basic")) {
+        char *segment = path_pop_segment(path);
+        path_push_segment(path, string_append(segment, ".basic"));
+        string_free(segment);
+    }
+
+    return prepare(path);
+}
+
 static void
 collect_import(mod_t *mod, value_t sexp, bool is_exported) {
     char *imported_name = to_xstring(x_car(sexp))->string;

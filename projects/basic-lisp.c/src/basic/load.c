@@ -21,7 +21,7 @@ read_mod_body(path_t *path) {
     return sexps;
 }
 
-static mod_t *
+mod_t *
 prepare(path_t *path) {
     if (!prepared_mods) {
         prepared_mods = make_record();
@@ -62,23 +62,4 @@ load(path_t *path) {
     compile_prepared_mods();
     basic_run_main(mod);
     return mod;
-}
-
-mod_t *
-import_by(mod_t *mod, const char *string) {
-    path_t *path = path_copy(mod->path);
-    path_join_mut(path, "..");
-    path_join_mut(path, string);
-
-    if (pathname_is_directory(path_string(path))) {
-        path_join_mut(path, "index.basic");
-    }
-
-    if (!string_ends_with(path_top_segment(path), ".basic")) {
-        char *segment = path_pop_segment(path);
-        path_push_segment(path, string_append(segment, ".basic"));
-        string_free(segment);
-    }
-
-    return prepare(path);
 }
