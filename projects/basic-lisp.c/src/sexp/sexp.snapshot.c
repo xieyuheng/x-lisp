@@ -61,4 +61,5 @@ main(void) {
     echo("'(a b c)");
     echo(",(a b c)");
     echo("`(a ,b c)");
+    echo("(f 'a x)");
 }

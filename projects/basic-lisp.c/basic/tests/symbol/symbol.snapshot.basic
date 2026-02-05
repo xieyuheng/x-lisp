@@ -1,0 +1,6 @@
+(define-function (main)
+  (block entry
+    (perform (println 'a))
+    (perform (println 'b))
+    (perform (println 'c))
+    (return)))

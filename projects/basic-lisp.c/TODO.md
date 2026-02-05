@@ -1,3 +1,9 @@
+`sexp_has_tag`
+
+# mod
+
+disassemble function for debug
+
 # later
 
 [helpers.c] improve `string_builder_t` for `format_*`

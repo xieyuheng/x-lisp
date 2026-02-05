@@ -24,3 +24,4 @@
 [['@quote ['a 'b 'c]]]
 [['@unquote ['a 'b 'c]]]
 [['@quasiquote ['a ['@unquote 'b] 'c]]]
+[['f ['@quote 'a] 'x]]

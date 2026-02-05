@@ -14,6 +14,12 @@ is_literal(value_t sexp) {
 }
 
 static bool
+is_quote(value_t sexp) {
+    return tael_p(sexp)
+        && equal_p(x_car(sexp), x_object(intern_symbol("@quote")));
+}
+
+static bool
 is_apply(value_t sexp) {
     return tael_p(sexp);
 }
@@ -41,11 +47,13 @@ compile_var(mod_t *mod, function_t *function, value_t sexp) {
         instr.op = OP_CALL;
         instr.ref.definition = definition;
         function_append_instr(function, instr);
+        return;
     } else {
         struct instr_t instr;
         instr.op = OP_REF;
         instr.ref.definition = definition;
         function_append_instr(function, instr);
+        return;
     }
 }
 
@@ -55,6 +63,16 @@ compile_literal(mod_t *mod, function_t *function, value_t sexp) {
     struct instr_t instr;
     instr.op = OP_LITERAL;
     instr.literal.value = sexp;
+    function_append_instr(function, instr);
+}
+
+static void
+compile_quote(mod_t *mod, function_t *function, value_t sexp) {
+    (void) mod;
+    value_t value = x_car(x_cdr(sexp));
+    struct instr_t instr;
+    instr.op = OP_LITERAL;
+    instr.literal.value = value;
     function_append_instr(function, instr);
 }
 
@@ -206,13 +224,11 @@ void
 compile_exp(mod_t *mod, function_t *function, value_t sexp) {
     if (is_var(sexp)) {
         compile_var(mod, function, sexp);
-    }
-
-    if (is_literal(sexp)) {
+    } else if (is_literal(sexp)) {
         compile_literal(mod, function, sexp);
-    }
-
-    if (is_apply(sexp)) {
+    } else if (is_quote(sexp)) {
+        compile_quote(mod, function, sexp);
+    } else if (is_apply(sexp)) {
         compile_apply(mod, function, sexp);
     }
 }
@@ -224,17 +240,22 @@ compile_tail_exp(mod_t *mod, function_t *function, value_t sexp) {
         struct instr_t instr;
         instr.op = OP_RETURN;
         function_append_instr(function, instr);
-    }
-
-    if (is_literal(sexp)) {
+        return;
+    } else if (is_literal(sexp)) {
         compile_literal(mod, function, sexp);
         struct instr_t instr;
         instr.op = OP_RETURN;
         function_append_instr(function, instr);
-    }
-
-    if (is_apply(sexp)) {
+        return;
+    } else if (is_quote(sexp)) {
+        compile_quote(mod, function, sexp);
+        struct instr_t instr;
+        instr.op = OP_RETURN;
+        function_append_instr(function, instr);
+        return;
+    } else if (is_apply(sexp)) {
         compile_tail_apply(mod, function, sexp);
+        return;
     }
 }
 
@@ -339,25 +360,15 @@ static void
 compile_instr(mod_t *mod, function_t *function, value_t sexp) {
     if (is_assign(sexp)) {
         compile_assign(mod, function, x_cdr(sexp));
-    }
-
-    if (is_perform(sexp)) {
+    } else if (is_perform(sexp)) {
         compile_perform(mod, function, x_cdr(sexp));
-    }
-
-    if (is_test(sexp)) {
+    } else if (is_test(sexp)) {
         compile_test(mod, function, x_cdr(sexp));
-    }
-
-    if (is_branch(sexp)) {
+    } else if (is_branch(sexp)) {
         compile_branch(mod, function, x_cdr(sexp));
-    }
-
-    if (is_goto(sexp)) {
+    } else if (is_goto(sexp)) {
         compile_goto(mod, function, x_cdr(sexp));
-    }
-
-    if (is_return(sexp)) {
+    } else if (is_return(sexp)) {
         compile_return(mod, function, x_cdr(sexp));
     }
 }

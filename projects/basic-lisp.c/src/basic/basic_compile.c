@@ -2,17 +2,20 @@
 
 static bool
 is_define_function(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("define-function")));
+    return tael_p(sexp)
+        && equal_p(x_car(sexp), x_object(intern_symbol("define-function")));
 }
 
 static bool
 is_define_variable(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("define-variable")));
+    return tael_p(sexp)
+        && equal_p(x_car(sexp), x_object(intern_symbol("define-variable")));
 }
 
 static bool
 is_export(value_t sexp) {
-    return equal_p(x_car(sexp), x_object(intern_symbol("export")));
+    return tael_p(sexp)
+        && equal_p(x_car(sexp), x_object(intern_symbol("export")));
 }
 
 static value_t
