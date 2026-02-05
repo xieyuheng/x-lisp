@@ -1,3 +1,3 @@
 (define (main)
-  (cond (#f 1)
-        (#f 2)))
+  (cond ((equal? 1 2) 1)
+        ((equal? 1 2) 2)))

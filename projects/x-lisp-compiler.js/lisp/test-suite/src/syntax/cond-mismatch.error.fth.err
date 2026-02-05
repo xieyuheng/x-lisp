@@ -1,9 +1,0 @@
-@assert fail
-  value: #f
-/home/xyh/projects/xieyuheng/x-lisp/projects/x-lisp-compiler.js/lisp/test-suite/src/syntax/cond-mismatch.error.fth:13:13
- 11 |     @else
- 12 |       #f
- 13 |       @assert
-    |       ~~~~~~~ 
- 14 |       #void
- 15 |     @then

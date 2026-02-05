@@ -1,27 +1,35 @@
 ;;; Input
 
 (define (main)
-  (assert-equal 1 (cond (#t (begin 1)) (#t (begin 2))))
-  (assert-equal 2 (cond (#f (begin 1)) (#t (begin 2))))
+  (assert-equal
+    1
+    (cond ((equal? 1 1) (begin 1)) (#t (begin 2))))
+  (assert-equal
+    2
+    (cond ((equal? 1 2) (begin 1)) (#t (begin 2))))
   (cond
-    (#t (begin (assert true)))
+    ((equal? 1 1) (begin (assert true)))
     (#t (begin (assert false))))
   (cond
-    (#f (begin (assert false)))
+    ((equal? 1 2) (begin (assert false)))
     (#t (begin (assert true)))))
 
 ;;; ShrinkPass
 
 (define (main)
   (begin
-    (assert-equal 1 (if #t 1 (if #t 2 (assert #f))))
+    (assert-equal
+      1
+      (if (equal? 1 1) 1 (if #t 2 (assert #f))))
     (begin
-      (assert-equal 2 (if #f 1 (if #t 2 (assert #f))))
+      (assert-equal
+        2
+        (if (equal? 1 2) 1 (if #t 2 (assert #f))))
       (begin
-        (if #t
+        (if (equal? 1 1)
           (assert true)
           (if #t (assert false) (assert #f)))
-        (if #f
+        (if (equal? 1 2)
           (assert false)
           (if #t (assert true) (assert #f)))))))
 
@@ -29,14 +37,18 @@
 
 (define (main)
   (begin
-    (assert-equal 1 (if #t 1 (if #t 2 (assert #f))))
+    (assert-equal
+      1
+      (if (equal? 1 1) 1 (if #t 2 (assert #f))))
     (begin
-      (assert-equal 2 (if #f 1 (if #t 2 (assert #f))))
+      (assert-equal
+        2
+        (if (equal? 1 2) 1 (if #t 2 (assert #f))))
       (begin
-        (if #t
+        (if (equal? 1 1)
           (assert true)
           (if #t (assert false) (assert #f)))
-        (if #f
+        (if (equal? 1 2)
           (assert false)
           (if #t (assert true) (assert #f)))))))
 
@@ -44,14 +56,18 @@
 
 (define (main)
   (begin
-    (assert-equal 1 (if #t 1 (if #t 2 (assert #f))))
+    (assert-equal
+      1
+      (if (equal? 1 1) 1 (if #t 2 (assert #f))))
     (begin
-      (assert-equal 2 (if #f 1 (if #t 2 (assert #f))))
+      (assert-equal
+        2
+        (if (equal? 1 2) 1 (if #t 2 (assert #f))))
       (begin
-        (if #t
+        (if (equal? 1 1)
           (assert true)
           (if #t (assert false) (assert #f)))
-        (if #f
+        (if (equal? 1 2)
           (assert false)
           (if #t (assert true) (assert #f)))))))
 
@@ -59,14 +75,18 @@
 
 (define (main)
   (begin
-    (assert-equal 1 (if #t 1 (if #t 2 (assert #f))))
+    (assert-equal
+      1
+      (if (equal? 1 1) 1 (if #t 2 (assert #f))))
     (begin
-      (assert-equal 2 (if #f 1 (if #t 2 (assert #f))))
+      (assert-equal
+        2
+        (if (equal? 1 2) 1 (if #t 2 (assert #f))))
       (begin
-        (if #t
+        (if (equal? 1 1)
           (assert true)
           (if #t (assert false) (assert #f)))
-        (if #f
+        (if (equal? 1 2)
           (assert false)
           (if #t (assert true) (assert #f)))))))
 
@@ -74,16 +94,16 @@
 
 (define (main)
   (begin
-    (let ((_₁ (if #t 1 (if #t 2 (assert #f)))))
+    (let ((_₁ (if (equal? 1 1) 1 (if #t 2 (assert #f)))))
       (assert-equal 1 _₁))
     (begin
-      (let ((_₂ (if #f 1 (if #t 2 (assert #f)))))
+      (let ((_₂ (if (equal? 1 2) 1 (if #t 2 (assert #f)))))
         (assert-equal 2 _₂))
       (begin
-        (if #t
+        (if (equal? 1 1)
           (let ((_₃ true)) (assert _₃))
           (if #t (let ((_₄ false)) (assert _₄)) (assert #f)))
-        (if #f
+        (if (equal? 1 2)
           (let ((_₅ false)) (assert _₅))
           (if #t (let ((_₆ true)) (assert _₆)) (assert #f)))))))
 

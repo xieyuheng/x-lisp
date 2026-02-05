@@ -2,17 +2,17 @@
   (assert-equal
     1
     (cond
-     (#t 1)
+     ((equal? 1 1) 1)
      (else 2)))
   (assert-equal
     2
     (cond
-     (#f 1)
+     ((equal? 1 2) 1)
      (else 2)))
 
   (cond
-   (#t (assert true))
+   ((equal? 1 1) (assert true))
    (else (assert false)))
   (cond
-   (#f (assert false))
+   ((equal? 1 2) (assert false))
    (else (assert true))))
