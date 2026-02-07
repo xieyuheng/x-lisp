@@ -1,8 +1,5 @@
-define-function three
-  literal 3
-  return
-
 define-function main
+entry:
   call one
   local-store x
   local-load x
@@ -13,12 +10,6 @@ define-function main
   local-store x
   local-load x
   literal 2
-  call assert-equal
-  drop
-  call three
-  local-store x
-  local-load x
-  literal 3
   call assert-equal
   drop
   literal #void

@@ -1,4 +1,5 @@
 define-function main
+entry:
   call one
   local-store x
   local-load x

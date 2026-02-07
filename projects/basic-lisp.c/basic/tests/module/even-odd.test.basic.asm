@@ -1,12 +1,15 @@
 define-function even?
   local-store n
+entry:
   local-load n
   literal 0
   call equal?
-  jump-if-not 15
-  jump 0
+  jump-if-not recur-case
+  jump base-case
+base-case:
   literal #t
   return
+recur-case:
   local-load n
   literal 1
   call isub
@@ -16,13 +19,16 @@ define-function even?
 
 define-function odd?
   local-store n
+entry:
   local-load n
   literal 0
   call equal?
-  jump-if-not 15
-  jump 0
+  jump-if-not recur-case
+  jump base-case
+base-case:
   literal #f
   return
+recur-case:
   local-load n
   literal 1
   call isub
@@ -31,6 +37,7 @@ define-function odd?
   tail-call even?
 
 define-function main
+entry:
   literal 0
   call even?
   local-store x

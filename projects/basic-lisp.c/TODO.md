@@ -1,5 +1,3 @@
-`function_inspect_instr` -- improve format
-
 # later
 
 [helpers.c] improve `string_builder_t` for `format_*`

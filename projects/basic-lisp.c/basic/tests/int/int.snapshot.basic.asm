@@ -1,4 +1,5 @@
 define-function main
+entry:
   literal 1
   call println
   drop

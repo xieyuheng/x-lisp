@@ -1,12 +1,15 @@
 define-function fibonacci
   local-store n
+entry:
   local-load n
   literal 1
   call int-less-or-equal?
-  jump-if-not 11
-  jump 0
+  jump-if-not recur-case
+  jump base-case
+base-case:
   local-load n
   return
+recur-case:
   local-load n
   literal 1
   call isub
@@ -26,6 +29,7 @@ define-function fibonacci
   tail-call iadd
 
 define-function main
+entry:
   literal 0
   call fibonacci
   local-store v

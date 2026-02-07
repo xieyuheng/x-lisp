@@ -1,12 +1,15 @@
 define-function factorial
   local-store n
+entry:
   local-load n
   literal 1
   call int-less-or-equal?
-  jump-if-not 15
-  jump 0
+  jump-if-not recur-case
+  jump base-case
+base-case:
   literal 1
   return
+recur-case:
   local-load n
   literal 1
   call isub
@@ -19,6 +22,7 @@ define-function factorial
   tail-call imul
 
 define-function main
+entry:
   literal 0
   call factorial
   local-store v

@@ -108,7 +108,7 @@ function_get_binding_name_from_index(const function_t *self, size_t index) {
         entry = record_iter_next_entry(&iter);
     }
 
-    unreachable();
+    return NULL;
 }
 
 void
@@ -126,7 +126,24 @@ function_has_label(const function_t *self, const char *name) {
 int32_t
 function_get_label_offset(const function_t *self, const char *name) {
     assert(function_has_label(self, name));
-    return (size_t) record_get(self->label_offsets, name);
+    return (int64_t) record_get(self->label_offsets, name);
+}
+
+char *
+function_get_label_name_from_offset(const function_t *self, int32_t offset) {
+    record_iter_t iter;
+    record_iter_init(&iter, self->label_offsets);
+    const hash_entry_t *entry = record_iter_next_entry(&iter);
+    while (entry) {
+        char *name = entry->key;
+        if ((int32_t) (int64_t) entry->value == offset) {
+            return name;
+        }
+
+        entry = record_iter_next_entry(&iter);
+    }
+
+    return NULL;
 }
 
 void
@@ -167,6 +184,7 @@ function_patch_label_references(function_t *self) {
 
 static void function_inspect_instr(
     const function_t *function,
+    uint8_t *pc,
     struct instr_t instr
 ) {
     switch (instr.op) {
@@ -230,13 +248,17 @@ static void function_inspect_instr(
 
     case OP_JUMP: {
         string_print("jump ");
-        int_print(instr.jump.offset);
+        int32_t base = pc - function->code_area;
+        char *name = function_get_label_name_from_offset(function, base + instr.jump.offset);
+        string_print(name);
         return;
     }
 
     case OP_JUMP_IF_NOT: {
         string_print("jump-if-not ");
-        int_print(instr.jump.offset);
+        int32_t base = pc - function->code_area;
+        char *name = function_get_label_name_from_offset(function, base + instr.jump.offset);
+        string_print(name);
         return;
     }
 
@@ -253,10 +275,18 @@ void
 function_inspect(const function_t *function) {
     uint8_t *pc = function->code_area;
     while (pc < function->code_area + function->code_length) {
+        int32_t offset = pc - function->code_area;
+        char *name = function_get_label_name_from_offset(function, offset);
+        if (name) {
+            string_print(name);
+            string_print(":");
+            newline();
+        }
+
         struct instr_t instr = instr_decode(pc);
         pc += instr_length(instr);
         string_print("  ");
-        function_inspect_instr(function, instr);
+        function_inspect_instr(function, pc, instr);
         newline();
     }
 }

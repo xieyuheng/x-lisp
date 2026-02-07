@@ -1,20 +1,24 @@
-define-function odd?
+define-function even?
   local-store n
+entry:
   local-load n
   literal 0
   call equal?
-  jump-if-not 15
-  jump 0
-  call false
+  jump-if-not recur-case
+  jump base-case
+base-case:
+  literal #t
   return
+recur-case:
   local-load n
   literal 1
   call isub
   local-store n1
   local-load n1
-  tail-call even?
+  tail-call odd?
 
 define-function main
+entry:
   literal 0
   call even?
   local-store x

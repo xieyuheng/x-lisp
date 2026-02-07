@@ -1,22 +1,10 @@
-define-function main
-  call one
-  local-store x
-  local-load x
-  literal 1
-  call assert-equal
-  drop
-  call two
-  local-store x
-  local-load x
-  literal 2
-  call assert-equal
-  drop
-  call three
-  local-store x
-  local-load x
+define-function three
+entry:
   literal 3
-  call assert-equal
-  drop
+  return
+
+define-function main
+entry:
   call one
   local-store x
   local-load x

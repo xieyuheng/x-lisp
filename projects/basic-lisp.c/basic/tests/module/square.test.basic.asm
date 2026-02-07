@@ -1,14 +1,17 @@
 define-function main
-  call one
+entry:
+  literal 2
+  call square
   local-store x
+  literal 4
   local-load x
-  literal 1
   call assert-equal
   drop
-  call two
+  literal 3
+  call square
   local-store x
+  literal 9
   local-load x
-  literal 2
   call assert-equal
   drop
   literal #void

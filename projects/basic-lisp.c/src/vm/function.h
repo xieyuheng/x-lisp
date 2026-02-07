@@ -25,6 +25,7 @@ char *function_get_binding_name_from_index(const function_t *self, size_t index)
 void function_add_label(function_t *self, const char *name);
 bool function_has_label(const function_t *self, const char *name);
 int32_t function_get_label_offset(const function_t *self, const char *name);
+char *function_get_label_name_from_offset(const function_t *self, int32_t offset);
 
 void function_add_label_reference(function_t *self, const char *name, int32_t offset);
 list_t *function_get_label_reference_list(const function_t *self, const char *name);
