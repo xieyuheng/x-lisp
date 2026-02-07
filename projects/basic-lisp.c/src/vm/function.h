@@ -29,4 +29,4 @@ void function_add_label_reference(function_t *self, const char *name, int32_t of
 list_t *function_get_label_reference_list(function_t *self, const char *name);
 void function_patch_label_references(function_t *self);
 
-void function_print(const function_t *self);
+void function_inspect(const function_t *self);

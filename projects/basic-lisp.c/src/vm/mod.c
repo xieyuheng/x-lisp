@@ -54,3 +54,16 @@ import_entry_free(import_entry_t *self) {
 
     free(self);
 }
+
+void
+mod_inspect(const mod_t *mod) {
+    record_iter_t iter;
+    record_iter_init(&iter, mod->definitions);
+    const hash_entry_t *entry = record_iter_next_entry(&iter);
+    while (entry) {
+        string_print(entry->key); newline();
+        definition_inspect(entry->value);
+
+        entry = record_iter_next_entry(&iter);
+    }
+}

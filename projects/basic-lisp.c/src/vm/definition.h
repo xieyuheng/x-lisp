@@ -3,7 +3,7 @@
 typedef enum {
     FUNCTION_DEFINITION,
     PRIMITIVE_DEFINITION,
-    VARIABLE_DEFINITION,    
+    VARIABLE_DEFINITION,
 } definition_kind_t;
 
 extern const object_class_t definition_class;
@@ -34,3 +34,5 @@ void definition_print(printer_t *printer, definition_t *self);
 
 bool definition_has_arity(const definition_t *self);
 size_t definition_arity(const definition_t *self);
+
+void definition_inspect(const definition_t *self);

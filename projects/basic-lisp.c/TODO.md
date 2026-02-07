@@ -1,6 +1,7 @@
-[vm] `mod_print` -- disassemble function for debugging
 add `basic-lisp bytecode` command -- compile .basic to bytecode and show disassembled bytecode
-[vm] `function_print` -- improve disassemble format
+
+[vm] `definition_inspect` -- improve disassemble format
+[vm] `function_inspect` -- improve disassemble format
 
 # later
 

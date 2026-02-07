@@ -136,3 +136,25 @@ definition_arity(const definition_t *self) {
 
     unreachable();
 }
+
+void
+definition_inspect(const definition_t *self) {
+    switch (self->kind) {
+    case FUNCTION_DEFINITION: {
+        function_inspect(self->function_definition.function);
+        return;
+    }
+
+    case PRIMITIVE_DEFINITION: {
+        // TODO
+        return;
+    }
+
+    case VARIABLE_DEFINITION: {
+        function_inspect(self->variable_definition.function);
+        return;
+    }
+    }
+
+    unreachable();
+}

@@ -22,3 +22,5 @@ struct import_entry_t {
 
 import_entry_t *make_import_entry(mod_t *mod, char *name);
 void import_entry_free(import_entry_t *self);
+
+void mod_inspect(const mod_t *mod);
