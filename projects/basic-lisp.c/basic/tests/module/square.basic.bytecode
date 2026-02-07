@@ -1,6 +1,6 @@
-square
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        LOCAL-LOAD 0
-        TAIL-CALL imul
+@define-function square
+  (local-store 0)
+  (local-load 0)
+  (local-load 0)
+  (tail-call imul)
 

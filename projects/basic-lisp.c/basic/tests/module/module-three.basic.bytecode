@@ -1,12 +1,12 @@
-one
-        LITERAL 1
-        RETURN
+@define-function one
+  (literal 1)
+  (return)
 
-two
-        LITERAL 2
-        RETURN
+@define-function two
+  (literal 2)
+  (return)
 
-three
-        LITERAL 3
-        RETURN
+@define-function three
+  (literal 3)
+  (return)
 

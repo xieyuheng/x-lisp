@@ -1,16 +1,16 @@
-main
-        CALL one
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        LITERAL 1
-        CALL assert-equal
-        DROP
-        CALL two
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        LITERAL 2
-        CALL assert-equal
-        DROP
-        LITERAL #void
-        RETURN
+@define-function main
+  (call one)
+  (local-store 0)
+  (local-load 0)
+  (literal 1)
+  (call assert-equal)
+  (drop0)
+  (call two)
+  (local-store 0)
+  (local-load 0)
+  (literal 2)
+  (call assert-equal)
+  (drop0)
+  (literal #void)
+  (return)
 

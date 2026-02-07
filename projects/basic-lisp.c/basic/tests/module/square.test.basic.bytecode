@@ -1,18 +1,18 @@
-main
-        LITERAL 2
-        CALL square
-        LOCAL-STORE 0
-        LITERAL 4
-        LOCAL-LOAD 0
-        CALL assert-equal
-        DROP
-        LITERAL 3
-        CALL square
-        LOCAL-STORE 0
-        LITERAL 9
-        LOCAL-LOAD 0
-        CALL assert-equal
-        DROP
-        LITERAL #void
-        RETURN
+@define-function main
+  (literal 2)
+  (call square)
+  (local-store 0)
+  (literal 4)
+  (local-load 0)
+  (call assert-equal)
+  (drop0)
+  (literal 3)
+  (call square)
+  (local-store 0)
+  (literal 9)
+  (local-load 0)
+  (call assert-equal)
+  (drop0)
+  (literal #void)
+  (return)
 

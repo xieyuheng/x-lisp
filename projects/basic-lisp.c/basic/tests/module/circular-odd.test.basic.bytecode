@@ -1,68 +1,68 @@
-odd?
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        LITERAL 0
-        CALL equal?
-        JUMP-IF-NOT 15
-        JUMP 0
-        CALL false
-        RETURN
-        LOCAL-LOAD 0
-        LITERAL 1
-        CALL isub
-        LOCAL-STORE 1
-        LOCAL-LOAD 1
-        TAIL-CALL even?
+@define-function odd?
+  (local-store 0)
+  (local-load 0)
+  (literal 0)
+  (call equal?)
+  (jump-if-not 15)
+  (jump 0)
+  (call false)
+  (return)
+  (local-load 0)
+  (literal 1)
+  (call isub)
+  (local-store 1)
+  (local-load 1)
+  (tail-call even?)
 
-main
-        LITERAL 0
-        CALL even?
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL assert
-        DROP
-        LITERAL 1
-        CALL even?
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL assert-not
-        DROP
-        LITERAL 2
-        CALL even?
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL assert
-        DROP
-        LITERAL 3
-        CALL even?
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL assert-not
-        DROP
-        LITERAL 0
-        CALL odd?
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL assert-not
-        DROP
-        LITERAL 1
-        CALL odd?
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL assert
-        DROP
-        LITERAL 2
-        CALL odd?
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL assert-not
-        DROP
-        LITERAL 3
-        CALL odd?
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL assert
-        DROP
-        LITERAL #void
-        RETURN
+@define-function main
+  (literal 0)
+  (call even?)
+  (local-store 0)
+  (local-load 0)
+  (call assert)
+  (drop0)
+  (literal 1)
+  (call even?)
+  (local-store 0)
+  (local-load 0)
+  (call assert-not)
+  (drop0)
+  (literal 2)
+  (call even?)
+  (local-store 0)
+  (local-load 0)
+  (call assert)
+  (drop0)
+  (literal 3)
+  (call even?)
+  (local-store 0)
+  (local-load 0)
+  (call assert-not)
+  (drop0)
+  (literal 0)
+  (call odd?)
+  (local-store 0)
+  (local-load 0)
+  (call assert-not)
+  (drop0)
+  (literal 1)
+  (call odd?)
+  (local-store 0)
+  (local-load 0)
+  (call assert)
+  (drop0)
+  (literal 2)
+  (call odd?)
+  (local-store 0)
+  (local-load 0)
+  (call assert-not)
+  (drop0)
+  (literal 3)
+  (call odd?)
+  (local-store 0)
+  (local-load 0)
+  (call assert)
+  (drop0)
+  (literal #void)
+  (return)
 

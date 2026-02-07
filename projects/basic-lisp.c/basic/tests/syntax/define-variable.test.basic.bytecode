@@ -1,15 +1,15 @@
-x = #null
-        LITERAL 1
-        RETURN
+@define-variable x
+  (literal 1)
+  (return)
 
-main
-        CALL x
-        LITERAL 1
-        CALL assert-equal
-        DROP
-        CALL x
-        CALL println
-        DROP
-        LITERAL #void
-        RETURN
+@define-function main
+  (call x)
+  (literal 1)
+  (call assert-equal)
+  (drop0)
+  (call x)
+  (call println)
+  (drop0)
+  (literal #void)
+  (return)
 

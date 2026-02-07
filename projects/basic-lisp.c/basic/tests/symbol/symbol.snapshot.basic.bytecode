@@ -1,13 +1,13 @@
-main
-        LITERAL 'a
-        CALL println
-        DROP
-        LITERAL 'b
-        CALL println
-        DROP
-        LITERAL 'c
-        CALL println
-        DROP
-        LITERAL #void
-        RETURN
+@define-function main
+  (literal 'a)
+  (call println)
+  (drop0)
+  (literal 'b)
+  (call println)
+  (drop0)
+  (literal 'c)
+  (call println)
+  (drop0)
+  (literal #void)
+  (return)
 

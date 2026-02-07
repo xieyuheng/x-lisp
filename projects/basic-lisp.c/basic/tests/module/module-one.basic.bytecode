@@ -1,4 +1,4 @@
-one
-        LITERAL 1
-        RETURN
+@define-function one
+  (literal 1)
+  (return)
 

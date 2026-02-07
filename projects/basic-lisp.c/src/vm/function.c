@@ -153,78 +153,105 @@ static void function_inspect_instr(
     struct instr_t instr
 ) {
     (void) function;
-    
+
     switch (instr.op) {
     case OP_LITERAL: {
-        printf("LITERAL ");
+        string_print("(");
+        string_print("literal ");
         print(instr.literal.value);
+        string_print(")");
         return;
     }
 
     case OP_RETURN: {
-        printf("RETURN");
+        string_print("(");
+        string_print("return");
+        string_print(")");
         return;
     }
 
     case OP_CALL: {
-        printf("CALL ");
+        string_print("(");
+        string_print("call ");
         string_print(instr.ref.definition->name);
+        string_print(")");
         return;
     }
 
     case OP_TAIL_CALL: {
-        printf("TAIL-CALL ");
+        string_print("(");
+        string_print("tail-call ");
         string_print(instr.ref.definition->name);
+        string_print(")");
         return;
     }
 
     case OP_REF: {
-        printf("REF ");
+        string_print("(");
+        string_print("ref ");
         string_print(instr.ref.definition->name);
+        string_print(")");
         return;
     }
 
     case OP_APPLY: {
-        printf("APPLY");
+        string_print("(");
+        string_print("apply");
+        string_print(")");
         return;
     }
 
     case OP_TAIL_APPLY: {
-        printf("TAIL-APPLY");
+        string_print("(");
+        string_print("tail-apply");
+        string_print(")");
         return;
     }
 
     case OP_ASSIGN_VARIABLE: {
-        printf("ASSIGN-VARIABLE");
+        string_print("(");
+        string_print("assign-variable");
+        string_print(")");
         return;
     }
 
     case OP_LOCAL_LOAD: {
-        printf("LOCAL-LOAD ");
+        string_print("(");
+        string_print("local-load ");
         uint_print(instr.local.index);
+        string_print(")");
         return;
     }
 
     case OP_LOCAL_STORE: {
-        printf("LOCAL-STORE ");
+        string_print("(");
+        string_print("local-store ");
         uint_print(instr.local.index);
+        string_print(")");
         return;
     }
 
     case OP_JUMP: {
-        printf("JUMP ");
+        string_print("(");
+        string_print("jump ");
         int_print(instr.jump.offset);
+        string_print(")");
         return;
     }
 
     case OP_JUMP_IF_NOT: {
-        printf("JUMP-IF-NOT ");
+        string_print("(");
+        string_print("jump-if-not ");
         int_print(instr.jump.offset);
+        string_print(")");
         return;
     }
 
     case OP_DROP: {
-        printf("DROP");
+        string_print("(");
+        string_print("drop");
+        int_print(instr.jump.offset);
+        string_print(")");
         return;
     }
     }
@@ -238,7 +265,7 @@ function_inspect(const function_t *function) {
     while (pc < function->code_area + function->code_length) {
         struct instr_t instr = instr_decode(pc);
         pc += instr_length(instr);
-        string_print("        ");
+        string_print("  ");
         function_inspect_instr(function, instr);
         newline();
     }

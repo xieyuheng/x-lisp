@@ -1,54 +1,54 @@
-factorial
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        LITERAL 1
-        CALL int-less-or-equal?
-        JUMP-IF-NOT 15
-        JUMP 0
-        LITERAL 1
-        RETURN
-        LOCAL-LOAD 0
-        LITERAL 1
-        CALL isub
-        LOCAL-STORE 1
-        LOCAL-LOAD 1
-        CALL factorial
-        LOCAL-STORE 2
-        LOCAL-LOAD 0
-        LOCAL-LOAD 2
-        TAIL-CALL imul
+@define-function factorial
+  (local-store 0)
+  (local-load 0)
+  (literal 1)
+  (call int-less-or-equal?)
+  (jump-if-not 15)
+  (jump 0)
+  (literal 1)
+  (return)
+  (local-load 0)
+  (literal 1)
+  (call isub)
+  (local-store 1)
+  (local-load 1)
+  (call factorial)
+  (local-store 2)
+  (local-load 0)
+  (local-load 2)
+  (tail-call imul)
 
-main
-        LITERAL 0
-        CALL factorial
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL println
-        DROP
-        LITERAL 1
-        CALL factorial
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL println
-        DROP
-        LITERAL 2
-        CALL factorial
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL println
-        DROP
-        LITERAL 3
-        CALL factorial
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL println
-        DROP
-        LITERAL 4
-        CALL factorial
-        LOCAL-STORE 0
-        LOCAL-LOAD 0
-        CALL println
-        DROP
-        CALL void
-        RETURN
+@define-function main
+  (literal 0)
+  (call factorial)
+  (local-store 0)
+  (local-load 0)
+  (call println)
+  (drop0)
+  (literal 1)
+  (call factorial)
+  (local-store 0)
+  (local-load 0)
+  (call println)
+  (drop0)
+  (literal 2)
+  (call factorial)
+  (local-store 0)
+  (local-load 0)
+  (call println)
+  (drop0)
+  (literal 3)
+  (call factorial)
+  (local-store 0)
+  (local-load 0)
+  (call println)
+  (drop0)
+  (literal 4)
+  (call factorial)
+  (local-store 0)
+  (local-load 0)
+  (call println)
+  (drop0)
+  (call void)
+  (return)
 
