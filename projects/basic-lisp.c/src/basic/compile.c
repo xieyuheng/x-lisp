@@ -26,7 +26,7 @@ is_apply(value_t sexp) {
 static void
 compile_var(mod_t *mod, function_t *function, value_t sexp) {
     char *name = to_symbol(sexp)->string;
-    if (function_has_binding_index(function, name)) {
+    if (function_has_binding(function, name)) {
         size_t index = function_get_binding_index(function, name);
         struct instr_t instr;
         instr.op = OP_LOCAL_LOAD;
@@ -90,7 +90,7 @@ compile_apply(mod_t *mod, function_t *function, value_t sexp) {
 
     value_t target = x_car(sexp);
     char *name = to_symbol(target)->string;
-    if (function_has_binding_index(function, name)) {
+    if (function_has_binding(function, name)) {
         size_t index = function_get_binding_index(function, name);
         struct instr_t instr;
         instr.op = OP_LOCAL_LOAD;
@@ -158,7 +158,7 @@ compile_tail_apply(mod_t *mod, function_t *function, value_t sexp) {
 
     value_t target = x_car(sexp);
     char *name = to_symbol(target)->string;
-    if (function_has_binding_index(function, name)) {
+    if (function_has_binding(function, name)) {
         size_t index = function_get_binding_index(function, name);
         struct instr_t instr;
         instr.op = OP_LOCAL_LOAD;
