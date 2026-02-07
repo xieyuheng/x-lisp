@@ -148,7 +148,12 @@ function_patch_label_references(function_t *self) {
     }
 }
 
-// void
-// function_print(function_t *self) {
-
-// }
+void
+function_print(const function_t *self) {
+    uint8_t *pc = self->code_area;
+    struct instr_t instr = instr_decode(pc);
+    pc += instr_length(instr);
+    string_print("        ");
+    instr_print(instr);
+    newline();
+}
