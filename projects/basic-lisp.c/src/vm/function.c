@@ -84,14 +84,31 @@ function_add_binding(function_t *self, const char *name) {
 }
 
 bool
-function_has_binding(function_t *self, const char *name) {
+function_has_binding(const function_t *self, const char *name) {
     return record_has(self->binding_indexes, name);
 }
 
 size_t
-function_get_binding_index(function_t *self, const char *name) {
+function_get_binding_index(const function_t *self, const char *name) {
     assert(function_has_binding(self, name));
     return (size_t) record_get(self->binding_indexes, name);
+}
+
+char *
+function_get_binding_name_from_index(const function_t *self, size_t index) {
+    record_iter_t iter;
+    record_iter_init(&iter, self->binding_indexes);
+    const hash_entry_t *entry = record_iter_next_entry(&iter);
+    while (entry) {
+        char *name = entry->key;
+        if ((size_t) entry->value == index) {
+            return name;
+        }
+
+        entry = record_iter_next_entry(&iter);
+    }
+
+    unreachable();
 }
 
 void
@@ -102,12 +119,12 @@ function_add_label(function_t *self, const char *name) {
 }
 
 bool
-function_has_label(function_t *self, const char *name) {
+function_has_label(const function_t *self, const char *name) {
     return record_has(self->label_offsets, name);
 }
 
 int32_t
-function_get_label_offset(function_t *self, const char *name) {
+function_get_label_offset(const function_t *self, const char *name) {
     assert(function_has_label(self, name));
     return (size_t) record_get(self->label_offsets, name);
 }
@@ -123,7 +140,7 @@ function_add_label_reference(function_t *self, const char *name, int32_t offset)
 }
 
 list_t *
-function_get_label_reference_list(function_t *self, const char *name) {
+function_get_label_reference_list(const function_t *self, const char *name) {
     return record_get(self->label_references, name);
 }
 
@@ -152,8 +169,6 @@ static void function_inspect_instr(
     const function_t *function,
     struct instr_t instr
 ) {
-    (void) function;
-
     switch (instr.op) {
     case OP_LITERAL: {
         string_print("literal ");
@@ -201,13 +216,15 @@ static void function_inspect_instr(
 
     case OP_LOCAL_LOAD: {
         string_print("local-load ");
-        uint_print(instr.local.index);
+        char *name = function_get_binding_name_from_index(function, instr.local.index);
+        string_print(name);
         return;
     }
 
     case OP_LOCAL_STORE: {
         string_print("local-store ");
-        uint_print(instr.local.index);
+        char *name = function_get_binding_name_from_index(function, instr.local.index);
+        string_print(name);
         return;
     }
 

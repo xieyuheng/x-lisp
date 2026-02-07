@@ -1,66 +1,66 @@
 define-function even?
-  local-store 0
-  local-load 0
+  local-store n
+  local-load n
   literal 0
   call equal?
   jump-if-not 15
   jump 0
   literal #t
   return
-  local-load 0
+  local-load n
   literal 1
   call isub
-  local-store 1
-  local-load 1
+  local-store n1
+  local-load n1
   tail-call odd?
 
 define-function main
   literal 0
   call even?
-  local-store 0
-  local-load 0
+  local-store x
+  local-load x
   call assert
   drop
   literal 1
   call even?
-  local-store 0
-  local-load 0
+  local-store x
+  local-load x
   call assert-not
   drop
   literal 2
   call even?
-  local-store 0
-  local-load 0
+  local-store x
+  local-load x
   call assert
   drop
   literal 3
   call even?
-  local-store 0
-  local-load 0
+  local-store x
+  local-load x
   call assert-not
   drop
   literal 0
   call odd?
-  local-store 0
-  local-load 0
+  local-store x
+  local-load x
   call assert-not
   drop
   literal 1
   call odd?
-  local-store 0
-  local-load 0
+  local-store x
+  local-load x
   call assert
   drop
   literal 2
   call odd?
-  local-store 0
-  local-load 0
+  local-store x
+  local-load x
   call assert-not
   drop
   literal 3
   call odd?
-  local-store 0
-  local-load 0
+  local-store x
+  local-load x
   call assert
   drop
   literal #void

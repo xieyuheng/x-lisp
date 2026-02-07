@@ -18,15 +18,16 @@ void function_put_instr(function_t *self, size_t code_index, struct instr_t inst
 void function_put_definition(function_t *self, size_t code_index, definition_t *definition);
 
 void function_add_binding(function_t *self, const char *name);
-bool function_has_binding(function_t *self, const char *name);
-size_t function_get_binding_index(function_t *self, const char *name);
+bool function_has_binding(const function_t *self, const char *name);
+size_t function_get_binding_index(const function_t *self, const char *name);
+char *function_get_binding_name_from_index(const function_t *self, size_t index);
 
 void function_add_label(function_t *self, const char *name);
-bool function_has_label(function_t *self, const char *name);
-int32_t function_get_label_offset(function_t *self, const char *name);
+bool function_has_label(const function_t *self, const char *name);
+int32_t function_get_label_offset(const function_t *self, const char *name);
 
 void function_add_label_reference(function_t *self, const char *name, int32_t offset);
-list_t *function_get_label_reference_list(function_t *self, const char *name);
+list_t *function_get_label_reference_list(const function_t *self, const char *name);
 void function_patch_label_references(function_t *self);
 
 void function_inspect(const function_t *self);

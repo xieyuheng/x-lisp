@@ -1,52 +1,52 @@
 define-function factorial
-  local-store 0
-  local-load 0
+  local-store n
+  local-load n
   literal 1
   call int-less-or-equal?
   jump-if-not 15
   jump 0
   literal 1
   return
-  local-load 0
+  local-load n
   literal 1
   call isub
-  local-store 1
-  local-load 1
+  local-store n1
+  local-load n1
   call factorial
-  local-store 2
-  local-load 0
-  local-load 2
+  local-store f1
+  local-load n
+  local-load f1
   tail-call imul
 
 define-function main
   literal 0
   call factorial
-  local-store 0
-  local-load 0
+  local-store v
+  local-load v
   call println
   drop
   literal 1
   call factorial
-  local-store 0
-  local-load 0
+  local-store v
+  local-load v
   call println
   drop
   literal 2
   call factorial
-  local-store 0
-  local-load 0
+  local-store v
+  local-load v
   call println
   drop
   literal 3
   call factorial
-  local-store 0
-  local-load 0
+  local-store v
+  local-load v
   call println
   drop
   literal 4
   call factorial
-  local-store 0
-  local-load 0
+  local-store v
+  local-load v
   call println
   drop
   call void

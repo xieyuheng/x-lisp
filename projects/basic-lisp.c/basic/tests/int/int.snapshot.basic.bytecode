@@ -11,8 +11,8 @@ define-function main
   literal 2
   literal 2
   call iadd
-  local-store 0
-  local-load 0
+  local-store x
+  local-load x
   call println
   drop
   literal #void
