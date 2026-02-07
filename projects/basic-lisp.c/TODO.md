@@ -1,6 +1,5 @@
-move `instr_inspect` to `function_inspect_instr`
-`function_inspect_instr` -- replace `instr_inspect`
-`function_inspect` -- improve disassemble format
+`function_inspect` -- improve format
+`function_inspect_instr` -- improve format
 
 # later
 

@@ -148,14 +148,98 @@ function_patch_label_references(function_t *self) {
     }
 }
 
+static void function_inspect_instr(
+    const function_t *function,
+    struct instr_t instr
+) {
+    (void) function;
+    
+    switch (instr.op) {
+    case OP_LITERAL: {
+        printf("LITERAL ");
+        print(instr.literal.value);
+        return;
+    }
+
+    case OP_RETURN: {
+        printf("RETURN");
+        return;
+    }
+
+    case OP_CALL: {
+        printf("CALL ");
+        string_print(instr.ref.definition->name);
+        return;
+    }
+
+    case OP_TAIL_CALL: {
+        printf("TAIL-CALL ");
+        string_print(instr.ref.definition->name);
+        return;
+    }
+
+    case OP_REF: {
+        printf("REF ");
+        string_print(instr.ref.definition->name);
+        return;
+    }
+
+    case OP_APPLY: {
+        printf("APPLY");
+        return;
+    }
+
+    case OP_TAIL_APPLY: {
+        printf("TAIL-APPLY");
+        return;
+    }
+
+    case OP_ASSIGN_VARIABLE: {
+        printf("ASSIGN-VARIABLE");
+        return;
+    }
+
+    case OP_LOCAL_LOAD: {
+        printf("LOCAL-LOAD ");
+        uint_print(instr.local.index);
+        return;
+    }
+
+    case OP_LOCAL_STORE: {
+        printf("LOCAL-STORE ");
+        uint_print(instr.local.index);
+        return;
+    }
+
+    case OP_JUMP: {
+        printf("JUMP ");
+        int_print(instr.jump.offset);
+        return;
+    }
+
+    case OP_JUMP_IF_NOT: {
+        printf("JUMP-IF-NOT ");
+        int_print(instr.jump.offset);
+        return;
+    }
+
+    case OP_DROP: {
+        printf("DROP");
+        return;
+    }
+    }
+
+    unreachable();
+}
+
 void
-function_inspect(const function_t *self) {
-    uint8_t *pc = self->code_area;
-    while (pc < self->code_area + self->code_length) {
+function_inspect(const function_t *function) {
+    uint8_t *pc = function->code_area;
+    while (pc < function->code_area + function->code_length) {
         struct instr_t instr = instr_decode(pc);
         pc += instr_length(instr);
         string_print("        ");
-        instr_print(instr);
+        function_inspect_instr(function, instr);
         newline();
     }
 }
