@@ -1,13 +1,14 @@
-# mod
+[vm] `function_print` -- disassemble function for debugging
 
-disassemble function for debug
+add `basic-lisp bytecode` command -- compile .basic to bytecode and show disassembled bytecode
 
 # later
 
 [helpers.c] improve `string_builder_t` for `format_*`
-[sexp] `format_sexp`
-[sexp] `print_sexp`
-[sexp] `sexp.snapshot` -- call `print_sexp`
+
+[sexp] `sexp_format`
+[sexp] `sexp_print`
+[sexp] `sexp.snapshot` -- call `sexp_print`
 
 # later
 

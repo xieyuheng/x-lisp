@@ -147,3 +147,8 @@ function_patch_label_references(function_t *self) {
         entry = record_iter_next_entry(&iter);
     }
 }
+
+// void
+// function_print(function_t *self) {
+
+// }

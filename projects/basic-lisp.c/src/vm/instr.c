@@ -201,3 +201,96 @@ make_code_from_instrs(size_t length, struct instr_t instrs[]) {
 
     return code;
 }
+
+void
+instr_print(struct instr_t instr) {
+    switch (instr.op) {
+    case OP_LITERAL: {
+        printf("LITERAL ");
+        print(instr.literal.value);
+        newline();
+        return;
+    }
+
+    case OP_RETURN: {
+        printf("RETURN");
+        newline();
+        return;
+    }
+
+    case OP_CALL: {
+        printf("CALL ");
+        string_print(instr.ref.definition->name);
+        newline();
+        return;
+    }
+
+    case OP_TAIL_CALL: {
+        printf("TAIL-CALL ");
+        string_print(instr.ref.definition->name);
+        newline();
+        return;
+    }
+
+    case OP_REF: {
+        printf("REF ");
+        string_print(instr.ref.definition->name);
+        newline();
+        return;
+    }
+
+    case OP_APPLY: {
+        printf("APPLY");
+        newline();
+        return;
+    }
+
+    case OP_TAIL_APPLY: {
+        printf("TAIL-APPLY");
+        newline();
+        return;
+    }
+
+    case OP_ASSIGN_VARIABLE: {
+        printf("ASSIGN-VARIABLE");
+        newline();
+        return;
+    }
+
+    case OP_LOCAL_LOAD: {
+        printf("LOCAL-LOAD ");
+        uint_print(instr.local.index);
+        newline();
+        return;
+    }
+
+    case OP_LOCAL_STORE: {
+        printf("LOCAL-STORE ");
+        uint_print(instr.local.index);
+        newline();
+        return;
+    }
+
+    case OP_JUMP: {
+        printf("JUMP ");
+        int_print(instr.jump.offset);
+        newline();
+        return;
+    }
+
+    case OP_JUMP_IF_NOT: {
+        printf("JUMP-IF-NOT ");
+        int_print(instr.jump.offset);
+        newline();
+        return;
+    }
+
+    case OP_DROP: {
+        printf("DROP");
+        newline();
+        return;
+    }
+    }
+
+    unreachable();
+}
