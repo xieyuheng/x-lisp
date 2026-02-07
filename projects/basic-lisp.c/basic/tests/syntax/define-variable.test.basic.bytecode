@@ -1,9 +1,14 @@
-x = 1
+x = #null
+        LITERAL 1
+        RETURN
 
 main
         CALL x
         LITERAL 1
         CALL assert-equal
+        DROP
+        CALL x
+        CALL println
         DROP
         LITERAL #void
         RETURN

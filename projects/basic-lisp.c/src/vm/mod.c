@@ -96,9 +96,9 @@ mod_inspect_definition(
         print(definition->variable_definition.value);
         newline();
 
-        // if (definition->variable_definition.function) {
-        //     function_inspect(definition->variable_definition.function);
-        // }
+        if (definition->variable_definition.function) {
+            function_inspect(definition->variable_definition.function);
+        }
 
         newline();
         return;

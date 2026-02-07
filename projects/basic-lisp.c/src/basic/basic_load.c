@@ -42,24 +42,18 @@ basic_load(path_t *path) {
 }
 
 static void
-setup_variable(vm_t *vm, definition_t *definition) {
-    assert(definition->kind == VARIABLE_DEFINITION);
-    if (definition->variable_definition.function) {
-        uint8_t *code = definition->variable_definition.function->code_area;
-        vm_push_frame(vm, make_frame_from_code(code));
-        vm_execute(vm);
-        definition->variable_definition.value = vm_pop(vm);
-    }
-}
-
-static void
 setup_variables(vm_t *vm) {
     record_iter_t iter;
     record_iter_init(&iter, vm_mod(vm)->definitions);
     definition_t *definition = record_iter_next_value(&iter);
     while (definition) {
-        if (definition->kind == VARIABLE_DEFINITION) {
-            setup_variable(vm, definition);
+        if (definition->kind == VARIABLE_DEFINITION
+            && definition->variable_definition.function) {
+            uint8_t *code =
+                definition->variable_definition.function->code_area;
+            vm_push_frame(vm, make_frame_from_code(code));
+            vm_execute(vm);
+            definition->variable_definition.value = vm_pop(vm);
         }
 
         definition = record_iter_next_value(&iter);
@@ -93,6 +87,18 @@ basic_compile_loaded_mods(void) {
         mod_t *mod = record_get(loaded_mods, key);
         value_t sexps = (value_t) record_get(mod_bodies, key);
         basic_compile(mod, sexps);
+
+        key = record_iter_next_key(&iter);
+    }
+}
+
+void
+basic_setup_loaded_mods(void) {
+    record_iter_t iter;
+    record_iter_init(&iter, loaded_mods);
+    char *key = record_iter_next_key(&iter);
+    while (key) {
+        mod_t *mod = record_get(loaded_mods, key);
         basic_setup(mod);
 
         key = record_iter_next_key(&iter);
