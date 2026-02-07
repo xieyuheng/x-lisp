@@ -84,8 +84,8 @@ basic_setup(mod_t *mod) {
     vm_free(vm);
 }
 
-static void
-compile_loaded_mods(void) {
+void
+basic_compile_loaded_mods(void) {
     record_iter_t iter;
     record_iter_init(&iter, loaded_mods);
     char *key = record_iter_next_key(&iter);
@@ -101,8 +101,6 @@ compile_loaded_mods(void) {
 
 void
 basic_run(mod_t *mod) {
-    compile_loaded_mods();
-
     vm_t *vm = make_vm(mod);
     if (mod_lookup(vm_mod(vm), "main")) {
         prepare_tail_call(vm, "main");

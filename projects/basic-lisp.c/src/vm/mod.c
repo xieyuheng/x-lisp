@@ -61,8 +61,16 @@ mod_inspect(const mod_t *mod) {
     record_iter_init(&iter, mod->definitions);
     const hash_entry_t *entry = record_iter_next_entry(&iter);
     while (entry) {
-        string_print(entry->key); newline();
-        definition_inspect(entry->value);
+        char *name = entry->key;
+        definition_t *definition = entry->value;
+        string_print(name);
+        if (!string_equal(name, definition->name)) {
+            string_print(" -> ");
+            string_print(definition->name);
+        }
+        newline();
+
+        definition_inspect(definition);
 
         entry = record_iter_next_entry(&iter);
     }

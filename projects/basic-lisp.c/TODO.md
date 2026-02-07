@@ -1,5 +1,5 @@
-add `basic-lisp bytecode` command -- compile .basic to bytecode and show disassembled bytecode
-
+snapshot for `basic-lisp bytecode`
+[vm] `function_inspect_instr` -- replace `instr_inspect`
 [vm] `definition_inspect` -- improve disassemble format
 [vm] `function_inspect` -- improve disassemble format
 

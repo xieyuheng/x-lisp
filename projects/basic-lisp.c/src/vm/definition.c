@@ -151,7 +151,10 @@ definition_inspect(const definition_t *self) {
     }
 
     case VARIABLE_DEFINITION: {
-        function_inspect(self->variable_definition.function);
+        if (self->variable_definition.function) {
+            function_inspect(self->variable_definition.function);
+        }
+
         return;
     }
     }
