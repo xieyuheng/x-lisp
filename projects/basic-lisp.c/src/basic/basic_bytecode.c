@@ -11,7 +11,7 @@ basic_definition_bytecode(
 
     switch (definition->kind) {
     case FUNCTION_DEFINITION: {
-        string_print("@define-function ");
+        string_print("define-function ");
         string_print(definition->name);
         newline();
         function_inspect(definition->function_definition.function);
@@ -24,7 +24,7 @@ basic_definition_bytecode(
     }
 
     case VARIABLE_DEFINITION: {
-        string_print("@define-variable ");
+        string_print("define-variable ");
         string_print(definition->name);
         newline();
         if (definition->variable_definition.function) {

@@ -1,68 +1,68 @@
-@define-function even?
-  (local-store 0)
-  (local-load 0)
-  (literal 0)
-  (call equal?)
-  (jump-if-not 15)
-  (jump 0)
-  (literal #t)
-  (return)
-  (local-load 0)
-  (literal 1)
-  (call isub)
-  (local-store 1)
-  (local-load 1)
-  (tail-call odd?)
+define-function even?
+  local-store 0
+  local-load 0
+  literal 0
+  call equal?
+  jump-if-not 15
+  jump 0
+  literal #t
+  return
+  local-load 0
+  literal 1
+  call isub
+  local-store 1
+  local-load 1
+  tail-call odd?
 
-@define-function main
-  (literal 0)
-  (call even?)
-  (local-store 0)
-  (local-load 0)
-  (call assert)
-  (drop0)
-  (literal 1)
-  (call even?)
-  (local-store 0)
-  (local-load 0)
-  (call assert-not)
-  (drop0)
-  (literal 2)
-  (call even?)
-  (local-store 0)
-  (local-load 0)
-  (call assert)
-  (drop0)
-  (literal 3)
-  (call even?)
-  (local-store 0)
-  (local-load 0)
-  (call assert-not)
-  (drop0)
-  (literal 0)
-  (call odd?)
-  (local-store 0)
-  (local-load 0)
-  (call assert-not)
-  (drop0)
-  (literal 1)
-  (call odd?)
-  (local-store 0)
-  (local-load 0)
-  (call assert)
-  (drop0)
-  (literal 2)
-  (call odd?)
-  (local-store 0)
-  (local-load 0)
-  (call assert-not)
-  (drop0)
-  (literal 3)
-  (call odd?)
-  (local-store 0)
-  (local-load 0)
-  (call assert)
-  (drop0)
-  (literal #void)
-  (return)
+define-function main
+  literal 0
+  call even?
+  local-store 0
+  local-load 0
+  call assert
+  drop
+  literal 1
+  call even?
+  local-store 0
+  local-load 0
+  call assert-not
+  drop
+  literal 2
+  call even?
+  local-store 0
+  local-load 0
+  call assert
+  drop
+  literal 3
+  call even?
+  local-store 0
+  local-load 0
+  call assert-not
+  drop
+  literal 0
+  call odd?
+  local-store 0
+  local-load 0
+  call assert-not
+  drop
+  literal 1
+  call odd?
+  local-store 0
+  local-load 0
+  call assert
+  drop
+  literal 2
+  call odd?
+  local-store 0
+  local-load 0
+  call assert-not
+  drop
+  literal 3
+  call odd?
+  local-store 0
+  local-load 0
+  call assert
+  drop
+  literal #void
+  return
 

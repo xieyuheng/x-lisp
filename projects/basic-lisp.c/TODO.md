@@ -1,4 +1,3 @@
-`function_inspect` -- improve format
 `function_inspect_instr` -- improve format
 
 # later

@@ -156,102 +156,75 @@ static void function_inspect_instr(
 
     switch (instr.op) {
     case OP_LITERAL: {
-        string_print("(");
         string_print("literal ");
         print(instr.literal.value);
-        string_print(")");
         return;
     }
 
     case OP_RETURN: {
-        string_print("(");
         string_print("return");
-        string_print(")");
         return;
     }
 
     case OP_CALL: {
-        string_print("(");
         string_print("call ");
         string_print(instr.ref.definition->name);
-        string_print(")");
         return;
     }
 
     case OP_TAIL_CALL: {
-        string_print("(");
         string_print("tail-call ");
         string_print(instr.ref.definition->name);
-        string_print(")");
         return;
     }
 
     case OP_REF: {
-        string_print("(");
         string_print("ref ");
         string_print(instr.ref.definition->name);
-        string_print(")");
         return;
     }
 
     case OP_APPLY: {
-        string_print("(");
         string_print("apply");
-        string_print(")");
         return;
     }
 
     case OP_TAIL_APPLY: {
-        string_print("(");
         string_print("tail-apply");
-        string_print(")");
         return;
     }
 
     case OP_ASSIGN_VARIABLE: {
-        string_print("(");
         string_print("assign-variable");
-        string_print(")");
         return;
     }
 
     case OP_LOCAL_LOAD: {
-        string_print("(");
         string_print("local-load ");
         uint_print(instr.local.index);
-        string_print(")");
         return;
     }
 
     case OP_LOCAL_STORE: {
-        string_print("(");
         string_print("local-store ");
         uint_print(instr.local.index);
-        string_print(")");
         return;
     }
 
     case OP_JUMP: {
-        string_print("(");
         string_print("jump ");
         int_print(instr.jump.offset);
-        string_print(")");
         return;
     }
 
     case OP_JUMP_IF_NOT: {
-        string_print("(");
         string_print("jump-if-not ");
         int_print(instr.jump.offset);
-        string_print(")");
         return;
     }
 
     case OP_DROP: {
-        string_print("(");
         string_print("drop");
-        int_print(instr.jump.offset);
-        string_print(")");
         return;
     }
     }

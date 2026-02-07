@@ -1,20 +1,20 @@
-@define-function main
-  (literal 1)
-  (call println)
-  (drop0)
-  (literal 2)
-  (call println)
-  (drop0)
-  (literal 3)
-  (call println)
-  (drop0)
-  (literal 2)
-  (literal 2)
-  (call iadd)
-  (local-store 0)
-  (local-load 0)
-  (call println)
-  (drop0)
-  (literal #void)
-  (return)
+define-function main
+  literal 1
+  call println
+  drop
+  literal 2
+  call println
+  drop
+  literal 3
+  call println
+  drop
+  literal 2
+  literal 2
+  call iadd
+  local-store 0
+  local-load 0
+  call println
+  drop
+  literal #void
+  return
 

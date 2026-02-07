@@ -1,91 +1,91 @@
-@define-function fibonacci
-  (local-store 0)
-  (local-load 0)
-  (literal 1)
-  (call int-less-or-equal?)
-  (jump-if-not 11)
-  (jump 0)
-  (local-load 0)
-  (return)
-  (local-load 0)
-  (literal 1)
-  (call isub)
-  (local-store 1)
-  (local-load 1)
-  (call fibonacci)
-  (local-store 2)
-  (local-load 0)
-  (literal 2)
-  (call isub)
-  (local-store 3)
-  (local-load 3)
-  (call fibonacci)
-  (local-store 4)
-  (local-load 2)
-  (local-load 4)
-  (tail-call iadd)
+define-function fibonacci
+  local-store 0
+  local-load 0
+  literal 1
+  call int-less-or-equal?
+  jump-if-not 11
+  jump 0
+  local-load 0
+  return
+  local-load 0
+  literal 1
+  call isub
+  local-store 1
+  local-load 1
+  call fibonacci
+  local-store 2
+  local-load 0
+  literal 2
+  call isub
+  local-store 3
+  local-load 3
+  call fibonacci
+  local-store 4
+  local-load 2
+  local-load 4
+  tail-call iadd
 
-@define-function main
-  (literal 0)
-  (call fibonacci)
-  (local-store 0)
-  (local-load 0)
-  (call println)
-  (drop0)
-  (literal 1)
-  (call fibonacci)
-  (local-store 0)
-  (local-load 0)
-  (call println)
-  (drop0)
-  (literal 2)
-  (call fibonacci)
-  (local-store 0)
-  (local-load 0)
-  (call println)
-  (drop0)
-  (literal 3)
-  (call fibonacci)
-  (local-store 0)
-  (local-load 0)
-  (call println)
-  (drop0)
-  (literal 4)
-  (call fibonacci)
-  (local-store 0)
-  (local-load 0)
-  (call println)
-  (drop0)
-  (literal 5)
-  (call fibonacci)
-  (local-store 0)
-  (local-load 0)
-  (call println)
-  (drop0)
-  (literal 6)
-  (call fibonacci)
-  (local-store 0)
-  (local-load 0)
-  (call println)
-  (drop0)
-  (literal 7)
-  (call fibonacci)
-  (local-store 0)
-  (local-load 0)
-  (call println)
-  (drop0)
-  (literal 8)
-  (call fibonacci)
-  (local-store 0)
-  (local-load 0)
-  (call println)
-  (drop0)
-  (literal 9)
-  (call fibonacci)
-  (local-store 0)
-  (local-load 0)
-  (call println)
-  (drop0)
-  (call void)
-  (return)
+define-function main
+  literal 0
+  call fibonacci
+  local-store 0
+  local-load 0
+  call println
+  drop
+  literal 1
+  call fibonacci
+  local-store 0
+  local-load 0
+  call println
+  drop
+  literal 2
+  call fibonacci
+  local-store 0
+  local-load 0
+  call println
+  drop
+  literal 3
+  call fibonacci
+  local-store 0
+  local-load 0
+  call println
+  drop
+  literal 4
+  call fibonacci
+  local-store 0
+  local-load 0
+  call println
+  drop
+  literal 5
+  call fibonacci
+  local-store 0
+  local-load 0
+  call println
+  drop
+  literal 6
+  call fibonacci
+  local-store 0
+  local-load 0
+  call println
+  drop
+  literal 7
+  call fibonacci
+  local-store 0
+  local-load 0
+  call println
+  drop
+  literal 8
+  call fibonacci
+  local-store 0
+  local-load 0
+  call println
+  drop
+  literal 9
+  call fibonacci
+  local-store 0
+  local-load 0
+  call println
+  drop
+  call void
+  return
 

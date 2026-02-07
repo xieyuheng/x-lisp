@@ -1,8 +1,8 @@
-@define-function one
-  (literal 1)
-  (return)
+define-function one
+  literal 1
+  return
 
-@define-function two
-  (literal 2)
-  (return)
+define-function two
+  literal 2
+  return
 

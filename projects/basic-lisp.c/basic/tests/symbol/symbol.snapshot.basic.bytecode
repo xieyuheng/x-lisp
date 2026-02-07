@@ -1,13 +1,13 @@
-@define-function main
-  (literal 'a)
-  (call println)
-  (drop0)
-  (literal 'b)
-  (call println)
-  (drop0)
-  (literal 'c)
-  (call println)
-  (drop0)
-  (literal #void)
-  (return)
+define-function main
+  literal 'a
+  call println
+  drop
+  literal 'b
+  call println
+  drop
+  literal 'c
+  call println
+  drop
+  literal #void
+  return
 

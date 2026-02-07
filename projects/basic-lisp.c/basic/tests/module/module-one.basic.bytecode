@@ -1,4 +1,4 @@
-@define-function one
-  (literal 1)
-  (return)
+define-function one
+  literal 1
+  return
 

@@ -1,6 +1,6 @@
-@define-function square
-  (local-store 0)
-  (local-load 0)
-  (local-load 0)
-  (tail-call imul)
+define-function square
+  local-store 0
+  local-load 0
+  local-load 0
+  tail-call imul
 
