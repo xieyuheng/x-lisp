@@ -36,7 +36,7 @@ make_variable_definition(mod_t *mod, char *name, value_t value) {
     definition_t *self = make_definition(mod, name);
     self->kind = VARIABLE_DEFINITION;
     self->variable_definition.value = value;
-    self->variable_definition.function = NULL;    
+    self->variable_definition.function = NULL;
     return self;
 }
 
@@ -110,6 +110,8 @@ definition_has_arity(const definition_t *self) {
 
 size_t
 definition_arity(const definition_t *self) {
+    assert(definition_has_arity(self));
+
     switch (self->kind) {
     case FUNCTION_DEFINITION: {
         return array_length(self->function_definition.function->parameters);
@@ -132,6 +134,46 @@ definition_arity(const definition_t *self) {
 
     case VARIABLE_DEFINITION: {
         unreachable();
+    }
+    }
+
+    unreachable();
+}
+
+bool
+definition_has_function(const definition_t *self) {
+    switch (self->kind) {
+    case FUNCTION_DEFINITION: {
+        return true;
+    }
+
+    case PRIMITIVE_DEFINITION: {
+        return false;
+    }
+
+    case VARIABLE_DEFINITION: {
+        return self->variable_definition.function;
+    }
+    }
+
+    unreachable();
+}
+
+function_t *
+definition_function(const definition_t *self) {
+    assert(definition_has_function(self));
+
+    switch (self->kind) {
+    case FUNCTION_DEFINITION: {
+        return self->function_definition.function;
+    }
+
+    case PRIMITIVE_DEFINITION: {
+        unreachable();
+    }
+
+    case VARIABLE_DEFINITION: {
+        return self->variable_definition.function;
     }
     }
 

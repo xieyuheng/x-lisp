@@ -49,9 +49,7 @@ setup_variables(vm_t *vm) {
     while (definition) {
         if (definition->kind == VARIABLE_DEFINITION
             && definition->variable_definition.function) {
-            uint8_t *code =
-                definition->variable_definition.function->code_area;
-            vm_push_frame(vm, make_frame_from_code(code));
+            vm_push_frame(vm, make_frame_from_definition(definition));
             vm_execute(vm);
             definition->variable_definition.value = vm_pop(vm);
         }
