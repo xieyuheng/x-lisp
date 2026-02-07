@@ -1,0 +1,15 @@
+main
+        CALL one
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        LITERAL 1
+        CALL assert-equal
+        DROP
+        CALL two
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        LITERAL 2
+        CALL assert-equal
+        DROP
+        LITERAL #void
+        RETURN

@@ -1,0 +1,17 @@
+main
+        LITERAL 2
+        CALL square
+        LOCAL-STORE 0
+        LITERAL 4
+        LOCAL-LOAD 0
+        CALL assert-equal
+        DROP
+        LITERAL 3
+        CALL square
+        LOCAL-STORE 0
+        LITERAL 9
+        LOCAL-LOAD 0
+        CALL assert-equal
+        DROP
+        LITERAL #void
+        RETURN

@@ -1,0 +1,8 @@
+x
+main
+        CALL x
+        LITERAL 1
+        CALL assert-equal
+        DROP
+        LITERAL #void
+        RETURN

@@ -1,0 +1,66 @@
+even?
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        LITERAL 0
+        CALL equal?
+        JUMP-IF-NOT 15
+        JUMP 0
+        LITERAL #t
+        RETURN
+        LOCAL-LOAD 0
+        LITERAL 1
+        CALL isub
+        LOCAL-STORE 1
+        LOCAL-LOAD 1
+        TAIL-CALL odd?
+main
+        LITERAL 0
+        CALL even?
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL assert
+        DROP
+        LITERAL 1
+        CALL even?
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL assert-not
+        DROP
+        LITERAL 2
+        CALL even?
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL assert
+        DROP
+        LITERAL 3
+        CALL even?
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL assert-not
+        DROP
+        LITERAL 0
+        CALL odd?
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL assert-not
+        DROP
+        LITERAL 1
+        CALL odd?
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL assert
+        DROP
+        LITERAL 2
+        CALL odd?
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL assert-not
+        DROP
+        LITERAL 3
+        CALL odd?
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL assert
+        DROP
+        LITERAL #void
+        RETURN

@@ -1,0 +1,12 @@
+main
+        LITERAL 'a
+        CALL println
+        DROP
+        LITERAL 'b
+        CALL println
+        DROP
+        LITERAL 'c
+        CALL println
+        DROP
+        LITERAL #void
+        RETURN

@@ -34,5 +34,3 @@ void definition_print(printer_t *printer, definition_t *self);
 
 bool definition_has_arity(const definition_t *self);
 size_t definition_arity(const definition_t *self);
-
-void definition_inspect(const definition_t *self);

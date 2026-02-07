@@ -1,0 +1,89 @@
+fibonacci
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        LITERAL 1
+        CALL int-less-or-equal?
+        JUMP-IF-NOT 11
+        JUMP 0
+        LOCAL-LOAD 0
+        RETURN
+        LOCAL-LOAD 0
+        LITERAL 1
+        CALL isub
+        LOCAL-STORE 1
+        LOCAL-LOAD 1
+        CALL fibonacci
+        LOCAL-STORE 2
+        LOCAL-LOAD 0
+        LITERAL 2
+        CALL isub
+        LOCAL-STORE 3
+        LOCAL-LOAD 3
+        CALL fibonacci
+        LOCAL-STORE 4
+        LOCAL-LOAD 2
+        LOCAL-LOAD 4
+        TAIL-CALL iadd
+main
+        LITERAL 0
+        CALL fibonacci
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 1
+        CALL fibonacci
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 2
+        CALL fibonacci
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 3
+        CALL fibonacci
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 4
+        CALL fibonacci
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 5
+        CALL fibonacci
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 6
+        CALL fibonacci
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 7
+        CALL fibonacci
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 8
+        CALL fibonacci
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 9
+        CALL fibonacci
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        CALL void
+        RETURN

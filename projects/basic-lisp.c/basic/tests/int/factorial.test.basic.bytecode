@@ -1,0 +1,52 @@
+factorial
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        LITERAL 1
+        CALL int-less-or-equal?
+        JUMP-IF-NOT 15
+        JUMP 0
+        LITERAL 1
+        RETURN
+        LOCAL-LOAD 0
+        LITERAL 1
+        CALL isub
+        LOCAL-STORE 1
+        LOCAL-LOAD 1
+        CALL factorial
+        LOCAL-STORE 2
+        LOCAL-LOAD 0
+        LOCAL-LOAD 2
+        TAIL-CALL imul
+main
+        LITERAL 0
+        CALL factorial
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 1
+        CALL factorial
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 2
+        CALL factorial
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 3
+        CALL factorial
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL 4
+        CALL factorial
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        CALL void
+        RETURN

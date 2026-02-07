@@ -1,6 +1,5 @@
-snapshot for `basic-lisp bytecode`
+[vm] `mod_inspect_definition` -- improve disassemble format
 [vm] `function_inspect_instr` -- replace `instr_inspect`
-[vm] `definition_inspect` -- improve disassemble format
 [vm] `function_inspect` -- improve disassemble format
 
 # later

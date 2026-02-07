@@ -1,0 +1,5 @@
+square
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        LOCAL-LOAD 0
+        TAIL-CALL imul

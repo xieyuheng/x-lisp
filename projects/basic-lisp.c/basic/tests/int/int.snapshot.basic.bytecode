@@ -1,0 +1,19 @@
+main
+        LITERAL 1
+        CALL println
+        DROP
+        LITERAL 2
+        CALL println
+        DROP
+        LITERAL 3
+        CALL println
+        DROP
+        LITERAL 2
+        LITERAL 2
+        CALL iadd
+        LOCAL-STORE 0
+        LOCAL-LOAD 0
+        CALL println
+        DROP
+        LITERAL #void
+        RETURN

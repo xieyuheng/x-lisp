@@ -55,6 +55,29 @@ import_entry_free(import_entry_t *self) {
     free(self);
 }
 
+static void
+mod_inspect_definition(const definition_t *self) {
+    switch (self->kind) {
+    case FUNCTION_DEFINITION: {
+        function_inspect(self->function_definition.function);
+        return;
+    }
+    case PRIMITIVE_DEFINITION: {
+        return;
+    }
+
+    case VARIABLE_DEFINITION: {
+        if (self->variable_definition.function) {
+            // function_inspect(self->variable_definition.function);
+        }
+
+        return;
+    }
+    }
+
+    unreachable();
+}
+
 void
 mod_inspect(const mod_t *mod) {
     record_iter_t iter;
@@ -63,14 +86,17 @@ mod_inspect(const mod_t *mod) {
     while (entry) {
         char *name = entry->key;
         definition_t *definition = entry->value;
-        string_print(name);
-        if (!string_equal(name, definition->name)) {
-            string_print(" -> ");
-            string_print(definition->name);
-        }
-        newline();
+        if (definition->mod == mod) {
+            string_print(name);
+            if (!string_equal(name, definition->name)) {
+                string_print(" -> ");
+                string_print(definition->name);
+            }
+            newline();
 
-        definition_inspect(definition);
+            mod_inspect_definition(definition);
+        }
+
 
         entry = record_iter_next_entry(&iter);
     }
