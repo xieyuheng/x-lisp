@@ -17,6 +17,7 @@ factorial
         LOCAL-LOAD 0
         LOCAL-LOAD 2
         TAIL-CALL imul
+
 main
         LITERAL 0
         CALL factorial
@@ -50,3 +51,4 @@ main
         DROP
         CALL void
         RETURN
+

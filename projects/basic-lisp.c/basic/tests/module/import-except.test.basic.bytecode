@@ -1,6 +1,7 @@
 three
         LITERAL 3
         RETURN
+
 main
         CALL one
         LOCAL-STORE 0
@@ -22,3 +23,4 @@ main
         DROP
         LITERAL #void
         RETURN
+

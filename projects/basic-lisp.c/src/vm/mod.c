@@ -56,21 +56,51 @@ import_entry_free(import_entry_t *self) {
 }
 
 static void
-mod_inspect_definition(const definition_t *self) {
-    switch (self->kind) {
-    case FUNCTION_DEFINITION: {
-        function_inspect(self->function_definition.function);
+mod_inspect_definition(
+    const mod_t *mod,
+    const char *name,
+    const definition_t *definition
+) {
+    if (definition->mod != mod) {
         return;
     }
+
+    switch (definition->kind) {
+    case FUNCTION_DEFINITION: {
+        string_print(name);
+        if (!string_equal(name, definition->name)) {
+            string_print(" (");
+            string_print(definition->name);
+            string_print(")");
+        }
+        newline();
+
+        function_inspect(definition->function_definition.function);
+        newline();
+        return;
+    }
+
     case PRIMITIVE_DEFINITION: {
         return;
     }
 
     case VARIABLE_DEFINITION: {
-        if (self->variable_definition.function) {
-            // function_inspect(self->variable_definition.function);
+        string_print(name);
+        if (!string_equal(name, definition->name)) {
+            string_print(" (");
+            string_print(definition->name);
+            string_print(")");
         }
 
+        string_print(" = ");
+        print(definition->variable_definition.value);
+        newline();
+
+        // if (definition->variable_definition.function) {
+        //     function_inspect(definition->variable_definition.function);
+        // }
+
+        newline();
         return;
     }
     }
@@ -86,17 +116,7 @@ mod_inspect(const mod_t *mod) {
     while (entry) {
         char *name = entry->key;
         definition_t *definition = entry->value;
-        if (definition->mod == mod) {
-            string_print(name);
-            if (!string_equal(name, definition->name)) {
-                string_print(" -> ");
-                string_print(definition->name);
-            }
-            newline();
-
-            mod_inspect_definition(definition);
-        }
-
+        mod_inspect_definition(mod, name, definition);
 
         entry = record_iter_next_entry(&iter);
     }

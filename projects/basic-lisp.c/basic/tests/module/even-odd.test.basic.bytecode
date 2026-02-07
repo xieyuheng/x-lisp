@@ -13,6 +13,7 @@ even?
         LOCAL-STORE 1
         LOCAL-LOAD 1
         TAIL-CALL odd?
+
 odd?
         LOCAL-STORE 0
         LOCAL-LOAD 0
@@ -28,6 +29,7 @@ odd?
         LOCAL-STORE 1
         LOCAL-LOAD 1
         TAIL-CALL even?
+
 main
         LITERAL 0
         CALL even?
@@ -79,3 +81,4 @@ main
         DROP
         LITERAL #void
         RETURN
+

@@ -1,4 +1,4 @@
-[vm] `mod_inspect_definition` -- improve disassemble format
+[vm] `mod_inspect_definition` -- inspect setup function of variable definition
 [vm] `function_inspect_instr` -- replace `instr_inspect`
 [vm] `function_inspect` -- improve disassemble format
 

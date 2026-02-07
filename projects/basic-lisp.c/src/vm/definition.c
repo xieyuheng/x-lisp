@@ -36,6 +36,7 @@ make_variable_definition(mod_t *mod, char *name, value_t value) {
     definition_t *self = make_definition(mod, name);
     self->kind = VARIABLE_DEFINITION;
     self->variable_definition.value = value;
+    self->variable_definition.function = NULL;    
     return self;
 }
 

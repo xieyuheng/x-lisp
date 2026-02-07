@@ -1,9 +1,12 @@
 one
         LITERAL 1
         RETURN
+
 two
         LITERAL 2
         RETURN
+
 three
         LITERAL 3
         RETURN
+

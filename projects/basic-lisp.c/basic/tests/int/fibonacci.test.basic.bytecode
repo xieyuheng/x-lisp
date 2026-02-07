@@ -24,6 +24,7 @@ fibonacci
         LOCAL-LOAD 2
         LOCAL-LOAD 4
         TAIL-CALL iadd
+
 main
         LITERAL 0
         CALL fibonacci
@@ -87,3 +88,4 @@ main
         DROP
         CALL void
         RETURN
+
