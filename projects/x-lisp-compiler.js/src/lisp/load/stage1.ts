@@ -1,11 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as Definitions from "../definition/index.ts"
 import * as L from "../index.ts"
-import { type Mod } from "../mod/index.ts"
-import { type Stmt } from "../stmt/index.ts"
-import { expandDataConstructor } from "./expand.ts"
 
-export function stage1(mod: Mod, stmt: Stmt): void {
+export function stage1(mod: L.Mod, stmt: L.Stmt): void {
   if (stmt.kind === "Export") {
     for (const name of stmt.names) {
       mod.exported.add(name)
@@ -21,7 +17,7 @@ export function stage1(mod: Mod, stmt: Stmt): void {
 
     mod.definitions.set(
       stmt.name,
-      Definitions.FunctionDefinition(
+      L.FunctionDefinition(
         mod,
         stmt.name,
         stmt.parameters,
@@ -40,7 +36,7 @@ export function stage1(mod: Mod, stmt: Stmt): void {
 
     mod.definitions.set(
       stmt.name,
-      Definitions.VariableDefinition(mod, stmt.name, stmt.body, stmt.meta),
+      L.VariableDefinition(mod, stmt.name, stmt.body, stmt.meta),
     )
   }
 

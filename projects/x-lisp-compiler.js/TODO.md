@@ -1,5 +1,3 @@
-[lisp] use more `import * as L`
-
 # define-data
 
 [lisp] `expandDataPredicate`

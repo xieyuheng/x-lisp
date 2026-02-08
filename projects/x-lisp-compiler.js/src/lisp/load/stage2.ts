@@ -1,21 +1,15 @@
 import { formatIndent } from "@xieyuheng/helpers.js/format"
 import { createUrl, urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import * as S from "@xieyuheng/sexp.js"
-import { type Definition } from "../definition/index.ts"
-import { formatDefinition } from "../format/index.ts"
-import { modPublicDefinitionEntries, type Mod } from "../mod/index.ts"
-import * as Stmts from "../stmt/index.ts"
-import { type Stmt } from "../stmt/index.ts"
-import { load } from "./index.ts"
-import { resolveModPath } from "./resolveModPath.ts"
+import * as L from "../index.ts"
 
-export function stage2(mod: Mod, stmt: Stmt): void {
-  if (!Stmts.isAboutImport(stmt)) {
+export function stage2(mod: L.Mod, stmt: L.Stmt): void {
+  if (!L.isAboutImport(stmt)) {
     return
   }
 
   const importedMod = importBy(stmt.path, mod)
-  const definitionEntries = modPublicDefinitionEntries(importedMod)
+  const definitionEntries = L.modPublicDefinitionEntries(importedMod)
 
   if (stmt.kind === "Import") {
     checkUndefinedNames(mod, importedMod, stmt.names, stmt.meta)
@@ -92,16 +86,16 @@ export function stage2(mod: Mod, stmt: Stmt): void {
   }
 }
 
-function importBy(path: string, mod: Mod): Mod {
+function importBy(path: string, mod: L.Mod): L.Mod {
   let url = urlRelativeToMod(path, mod)
   if (url.protocol === "file:") {
-    url.pathname = resolveModPath(url.pathname)
+    url.pathname = L.resolveModPath(url.pathname)
   }
 
-  return load(url, mod.dependencies)
+  return L.load(url, mod.dependencies)
 }
 
-function urlRelativeToMod(path: string, mod: Mod): URL {
+function urlRelativeToMod(path: string, mod: L.Mod): URL {
   if (mod.url.protocol === "file:") {
     const url = new URL(path, mod.url)
     if (url.href === mod.url.href) {
@@ -116,13 +110,13 @@ function urlRelativeToMod(path: string, mod: Mod): URL {
 }
 
 function checkUndefinedNames(
-  mod: Mod,
-  importedMod: Mod,
+  mod: L.Mod,
+  importedMod: L.Mod,
   names: Array<string>,
   meta: S.TokenMeta,
 ): void {
   const definedNames = new Set(
-    modPublicDefinitionEntries(importedMod).map(([key]) => key),
+    L.modPublicDefinitionEntries(importedMod).map(([key]) => key),
   )
   const undefinedNames = names.filter((name) => !definedNames.has(name))
   if (undefinedNames.length === 0) return
@@ -135,10 +129,10 @@ function checkUndefinedNames(
 }
 
 function checkRedefine(
-  mod: Mod,
-  importedMod: Mod,
+  mod: L.Mod,
+  importedMod: L.Mod,
   name: string,
-  definition: Definition,
+  definition: L.Definition,
   meta: S.TokenMeta,
 ): void {
   const found = mod.definitions.get(name)
@@ -150,8 +144,8 @@ function checkRedefine(
   message += `\n  importing from mod: ${urlRelativeToCwd(importedMod.url)}`
   message += `\n  name: ${name}`
   message += `\n  old definition:`
-  message += formatIndent(4, formatDefinition(found))
+  message += formatIndent(4, L.formatDefinition(found))
   message += `\n  new definition:`
-  message += formatIndent(4, formatDefinition(definition))
+  message += formatIndent(4, L.formatDefinition(definition))
   throw new S.ErrorWithMeta(message, meta)
 }
