@@ -45,7 +45,6 @@
 
   ;; data constructor currying
 
-  ;; (assert-equal
-  ;;   (li 1 nil)
-  ;;   ((li 1) nil))
-  )
+  (assert-equal
+    (li 1 nil)
+    ((li 1) nil)))

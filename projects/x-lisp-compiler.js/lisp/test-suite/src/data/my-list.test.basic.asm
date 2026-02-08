@@ -212,5 +212,27 @@ body:
   local-store _₃₈
   local-load _₃₇
   local-load _₃₈
+  call assert-equal
+  drop
+  call nil
+  local-store _₃₉
+  literal 1
+  local-load _₃₉
+  call li
+  local-store _₄₀
+  literal 1
+  ref li
+  literal 1
+  apply
+  local-store _₄₁
+  call nil
+  local-store _₄₂
+  local-load _₄₂
+  local-load _₄₁
+  literal 1
+  apply
+  local-store _₄₃
+  local-load _₄₀
+  local-load _₄₃
   tail-call assert-equal
 

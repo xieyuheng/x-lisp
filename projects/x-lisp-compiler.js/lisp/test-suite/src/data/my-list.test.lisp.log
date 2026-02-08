@@ -19,7 +19,8 @@
   (assert-equal (li-head list) 111)
   (assert-equal (li-tail list) (li 2 (li 3 nil)))
   (li-put-tail! nil list)
-  (assert-equal (li-tail list) nil))
+  (assert-equal (li-tail list) nil)
+  (assert-equal (li 1 nil) ((li 1) nil)))
 
 (define nil #nil)
 
@@ -109,9 +110,13 @@
                               (li 2 (li 3 nil)))
                             (begin
                               (li-put-tail! nil list)
-                              (assert-equal
-                                (li-tail list)
-                                nil))))))))))))))))
+                              (begin
+                                (assert-equal
+                                  (li-tail list)
+                                  nil)
+                                (assert-equal
+                                  (li 1 nil)
+                                  ((li 1) nil))))))))))))))))))
 
 (define nil #nil)
 
@@ -201,9 +206,13 @@
                               (li 2 (li 3 nil)))
                             (begin
                               (li-put-tail! nil list₁)
-                              (assert-equal
-                                (li-tail list₁)
-                                nil))))))))))))))))
+                              (begin
+                                (assert-equal
+                                  (li-tail list₁)
+                                  nil)
+                                (assert-equal
+                                  (li 1 nil)
+                                  ((li 1) nil))))))))))))))))))
 
 (define nil #nil)
 
@@ -293,9 +302,13 @@
                               (li 2 (li 3 nil)))
                             (begin
                               (li-put-tail! nil list₁)
-                              (assert-equal
-                                (li-tail list₁)
-                                nil))))))))))))))))
+                              (begin
+                                (assert-equal
+                                  (li-tail list₁)
+                                  nil)
+                                (assert-equal
+                                  (li 1 nil)
+                                  ((li 1) nil))))))))))))))))))
 
 (define nil #nil)
 
@@ -385,9 +398,13 @@
                               (li 2 (li 3 nil)))
                             (begin
                               (li-put-tail! nil list₁)
-                              (assert-equal
-                                (li-tail list₁)
-                                nil))))))))))))))))
+                              (begin
+                                (assert-equal
+                                  (li-tail list₁)
+                                  nil)
+                                (assert-equal
+                                  (li 1 nil)
+                                  ((li 1) nil))))))))))))))))))
 
 ;;; UnnestOperandPass
 
@@ -477,7 +494,17 @@
                             (begin
                               (let ((_₃₆ nil))
                                 (li-put-tail! _₃₆ list₁))
-                              (let ((_₃₇ (li-tail list₁)))
-                                (let ((_₃₈ nil))
-                                  (assert-equal _₃₇ _₃₈))))))))))))))))))
+                              (begin
+                                (let ((_₃₇ (li-tail list₁)))
+                                  (let ((_₃₈ nil))
+                                    (assert-equal _₃₇ _₃₈)))
+                                (let ((_₃₉ nil))
+                                  (let ((_₄₀ (li 1 _₃₉)))
+                                    (let ((_₄₁ (li 1)))
+                                      (let ((_₄₂ nil))
+                                        (let
+                                            ((_₄₃ (_₄₁ _₄₂)))
+                                          (assert-equal
+                                            _₄₀
+                                            _₄₃))))))))))))))))))))))
 
