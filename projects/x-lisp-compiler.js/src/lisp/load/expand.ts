@@ -118,3 +118,10 @@ export function expandDataConstructorPredicate(
     )
   }
 }
+
+export function expandDataPredicate(
+  mod: L.Mod,
+  stmt: L.DefineData,
+): void {
+  //
+}

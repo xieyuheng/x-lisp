@@ -41,7 +41,7 @@ export function stage1(mod: L.Mod, stmt: L.Stmt): void {
   }
 
   if (stmt.kind === "DefineData") {
-    // L.expandDataPredicate(mod, stmt)
+    L.expandDataPredicate(mod, stmt)
     for (const ctor of stmt.constructors) {
       L.expandDataConstructor(mod, ctor)
       L.expandDataConstructorPredicate(mod, ctor)
