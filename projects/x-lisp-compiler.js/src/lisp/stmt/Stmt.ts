@@ -2,7 +2,7 @@ import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Exp } from "../exp/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
 
-export type Stmt = AboutModule | DefineFunction | DefineVariable
+export type Stmt = AboutModule | DefineFunction | DefineVariable | DefineData
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -43,6 +43,41 @@ export function DefineVariable(
     kind: "DefineVariable",
     name,
     body,
+    meta,
+  }
+}
+
+export type DefineData = {
+  kind: "DefineData"
+  predicate: DataPredicateSpec
+  constructors: Array<DataConstructorSpec>
+  meta: Meta
+}
+
+export type DataPredicateSpec = {
+  name: string
+  parameters: Array<string>
+}
+
+export type DataField = {
+  name: string
+  predicate: Exp
+}
+
+export type DataConstructorSpec = {
+  name: string
+  fields: Array<DataField>
+}
+
+export function DefineData(
+  predicate: DataPredicateSpec,
+  constructors: Array<DataConstructorSpec>,
+  meta: Meta,
+): DefineData {
+  return {
+    kind: "DefineData",
+    predicate,
+    constructors,
     meta,
   }
 }

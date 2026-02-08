@@ -1,5 +1,11 @@
 # define-data
 
+[lisp] parse `DefineData`
+
+[lisp] stage1 -- compile (define-data) to function
+
+[lisp] `DataDefinition` as `Definition`
+
 # design by contract
 
 [lisp] support `Claim`
