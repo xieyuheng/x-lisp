@@ -1,3 +1,49 @@
+define-function my-list?
+  local-store value
+  local-store E
+body:
+  local-load value
+  call nil?
+  jump-if-not else₆
+  jump then₅
+then₁:
+  local-load E
+  ref my-list?
+  literal 1
+  apply
+  local-store _₂
+  local-load value
+  call li-tail
+  local-store _₃
+  local-load _₃
+  local-load _₂
+  literal 1
+  tail-apply
+else₂:
+  literal #f
+  return
+then₃:
+  local-load value
+  call li-head
+  local-store _₁
+  local-load _₁
+  local-load E
+  literal 1
+  apply
+  jump-if-not else₂
+  jump then₁
+else₄:
+  literal #f
+  return
+then₅:
+  literal #t
+  return
+else₆:
+  local-load value
+  call li?
+  jump-if-not else₄
+  jump then₃
+
 define-variable nil
 body:
   literal #nil

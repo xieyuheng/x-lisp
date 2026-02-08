@@ -1,7 +1,3 @@
-# define-data
-
-[lisp] `expandDataPredicate`
-
 # later
 
 [lisp] `expandDataPredicate` -- report redefine name -- call API about define

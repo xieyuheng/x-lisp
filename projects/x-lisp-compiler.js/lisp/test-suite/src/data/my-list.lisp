@@ -1,5 +1,5 @@
 (export
-  ;; my-list?
+  my-list?
   nil
   nil?
   li

@@ -216,23 +216,97 @@ body:
   drop
   call nil
   local-store _₃₉
-  literal 1
+  ref int?
   local-load _₃₉
-  call li
+  call my-list?
   local-store _₄₀
+  local-load _₄₀
+  call assert
+  drop
+  call nil
+  local-store _₄₁
+  literal 3
+  local-load _₄₁
+  call li
+  local-store _₄₂
+  literal 2
+  local-load _₄₂
+  call li
+  local-store _₄₃
+  literal 1
+  local-load _₄₃
+  call li
+  local-store _₄₄
+  ref int?
+  local-load _₄₄
+  call my-list?
+  local-store _₄₅
+  local-load _₄₅
+  call assert
+  drop
+  call nil
+  local-store _₄₆
+  ref symbol?
+  local-load _₄₆
+  call my-list?
+  local-store _₄₇
+  local-load _₄₇
+  call assert
+  drop
+  call nil
+  local-store _₄₈
+  literal 3
+  local-load _₄₈
+  call li
+  local-store _₄₉
+  literal 2
+  local-load _₄₉
+  call li
+  local-store _₅₀
+  literal 1
+  local-load _₅₀
+  call li
+  local-store _₅₁
+  ref symbol?
+  local-load _₅₁
+  call my-list?
+  local-store _₅₂
+  local-load _₅₂
+  call assert-not
+  drop
+  ref int?
+  literal 1
+  call my-list?
+  local-store _₅₃
+  local-load _₅₃
+  call assert-not
+  drop
+  ref int?
+  literal 'a
+  call my-list?
+  local-store _₅₄
+  local-load _₅₄
+  call assert-not
+  drop
+  call nil
+  local-store _₅₅
+  literal 1
+  local-load _₅₅
+  call li
+  local-store _₅₆
   literal 1
   ref li
   literal 1
   apply
-  local-store _₄₁
+  local-store _₅₇
   call nil
-  local-store _₄₂
-  local-load _₄₂
-  local-load _₄₁
+  local-store _₅₈
+  local-load _₅₈
+  local-load _₅₇
   literal 1
   apply
-  local-store _₄₃
-  local-load _₄₀
-  local-load _₄₃
+  local-store _₅₉
+  local-load _₅₆
+  local-load _₅₉
   tail-call assert-equal
 

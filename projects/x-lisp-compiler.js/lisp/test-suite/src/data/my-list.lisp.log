@@ -1,6 +1,7 @@
 ;;; Input
 
 (export
+  my-list?
   nil
   nil?
   li
@@ -11,6 +12,12 @@
   li-put-tail
   li-put-head!
   li-put-tail!)
+
+(define (my-list? E value)
+  (or (nil? value)
+      (and (li? value)
+           (E (li-head value))
+           ((my-list? E) (li-tail value)))))
 
 (define nil #nil)
 
@@ -42,6 +49,7 @@
 ;;; ShrinkPass
 
 (export
+  my-list?
   nil
   nil?
   li
@@ -52,6 +60,15 @@
   li-put-tail
   li-put-head!
   li-put-tail!)
+
+(define (my-list? E value)
+  (if (nil? value)
+    #t
+    (if (li? value)
+      (if (E (li-head value))
+        ((my-list? E) (li-tail value))
+        #f)
+      #f)))
 
 (define nil #nil)
 
@@ -91,6 +108,7 @@
 ;;; UniquifyPass
 
 (export
+  my-list?
   nil
   nil?
   li
@@ -101,6 +119,15 @@
   li-put-tail
   li-put-head!
   li-put-tail!)
+
+(define (my-list? E value)
+  (if (nil? value)
+    #t
+    (if (li? value)
+      (if (E (li-head value))
+        ((my-list? E) (li-tail value))
+        #f)
+      #f)))
 
 (define nil #nil)
 
@@ -140,6 +167,7 @@
 ;;; RevealGlobalPass
 
 (export
+  my-list?
   nil
   nil?
   li
@@ -150,6 +178,15 @@
   li-put-tail
   li-put-head!
   li-put-tail!)
+
+(define (my-list? E value)
+  (if (nil? value)
+    #t
+    (if (li? value)
+      (if (E (li-head value))
+        ((my-list? E) (li-tail value))
+        #f)
+      #f)))
 
 (define nil #nil)
 
@@ -189,6 +226,7 @@
 ;;; LiftLambdaPass
 
 (export
+  my-list?
   nil
   nil?
   li
@@ -199,6 +237,15 @@
   li-put-tail
   li-put-head!
   li-put-tail!)
+
+(define (my-list? E value)
+  (if (nil? value)
+    #t
+    (if (li? value)
+      (if (E (li-head value))
+        ((my-list? E) (li-tail value))
+        #f)
+      #f)))
 
 (define nil #nil)
 
@@ -238,6 +285,7 @@
 ;;; UnnestOperandPass
 
 (export
+  my-list?
   nil
   nil?
   li
@@ -248,6 +296,16 @@
   li-put-tail
   li-put-head!
   li-put-tail!)
+
+(define (my-list? E value)
+  (if (nil? value)
+    #t
+    (if (li? value)
+      (if (let ((_₁ (li-head value))) (E _₁))
+        (let ((_₂ (my-list? E)))
+          (let ((_₃ (li-tail value))) (_₂ _₃)))
+        #f)
+      #f)))
 
 (define nil #nil)
 

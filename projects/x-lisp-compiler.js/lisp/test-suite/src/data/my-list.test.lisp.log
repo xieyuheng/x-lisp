@@ -20,7 +20,19 @@
   (assert-equal (li-tail list) (li 2 (li 3 nil)))
   (li-put-tail! nil list)
   (assert-equal (li-tail list) nil)
+  (assert (my-list? int? nil))
+  (assert (my-list? int? (li 1 (li 2 (li 3 nil)))))
+  (assert (my-list? symbol? nil))
+  (assert-not (my-list? symbol? (li 1 (li 2 (li 3 nil)))))
+  (assert-not (my-list? int? 1))
+  (assert-not (my-list? int? 'a))
   (assert-equal (li 1 nil) ((li 1) nil)))
+
+(define (my-list? E value)
+  (or (nil? value)
+      (and (li? value)
+           (E (li-head value))
+           ((my-list? E) (li-tail value)))))
 
 (define nil #nil)
 
@@ -114,9 +126,44 @@
                                 (assert-equal
                                   (li-tail list)
                                   nil)
-                                (assert-equal
-                                  (li 1 nil)
-                                  ((li 1) nil))))))))))))))))))
+                                (begin
+                                  (assert
+                                    (my-list? int? nil))
+                                  (begin
+                                    (assert
+                                      (my-list?
+                                       int?
+                                       (li 1
+                                           (li 2 (li 3 nil)))))
+                                    (begin
+                                      (assert
+                                        (my-list?
+                                         symbol?
+                                         nil))
+                                      (begin
+                                        (assert-not
+                                          (my-list?
+                                           symbol?
+                                           (li 1
+                                               (li 2
+                                                   (li 3 nil)))))
+                                        (begin
+                                          (assert-not
+                                            (my-list? int? 1))
+                                          (begin
+                                            (assert-not
+                                              (my-list?
+                                               int?
+                                               'a))
+                                            (assert-equal
+                                              (li 1 nil)
+                                              ((li 1) nil))))))))))))))))))))))))
+
+(define (my-list? E value)
+  (or (nil? value)
+      (and (li? value)
+           (E (li-head value))
+           ((my-list? E) (li-tail value)))))
 
 (define nil #nil)
 
@@ -210,9 +257,44 @@
                                 (assert-equal
                                   (li-tail list₁)
                                   nil)
-                                (assert-equal
-                                  (li 1 nil)
-                                  ((li 1) nil))))))))))))))))))
+                                (begin
+                                  (assert
+                                    (my-list? int? nil))
+                                  (begin
+                                    (assert
+                                      (my-list?
+                                       int?
+                                       (li 1
+                                           (li 2 (li 3 nil)))))
+                                    (begin
+                                      (assert
+                                        (my-list?
+                                         symbol?
+                                         nil))
+                                      (begin
+                                        (assert-not
+                                          (my-list?
+                                           symbol?
+                                           (li 1
+                                               (li 2
+                                                   (li 3 nil)))))
+                                        (begin
+                                          (assert-not
+                                            (my-list? int? 1))
+                                          (begin
+                                            (assert-not
+                                              (my-list?
+                                               int?
+                                               'a))
+                                            (assert-equal
+                                              (li 1 nil)
+                                              ((li 1) nil))))))))))))))))))))))))
+
+(define (my-list? E value)
+  (or (nil? value)
+      (and (li? value)
+           (E (li-head value))
+           ((my-list? E) (li-tail value)))))
 
 (define nil #nil)
 
@@ -306,9 +388,44 @@
                                 (assert-equal
                                   (li-tail list₁)
                                   nil)
-                                (assert-equal
-                                  (li 1 nil)
-                                  ((li 1) nil))))))))))))))))))
+                                (begin
+                                  (assert
+                                    (my-list? int? nil))
+                                  (begin
+                                    (assert
+                                      (my-list?
+                                       int?
+                                       (li 1
+                                           (li 2 (li 3 nil)))))
+                                    (begin
+                                      (assert
+                                        (my-list?
+                                         symbol?
+                                         nil))
+                                      (begin
+                                        (assert-not
+                                          (my-list?
+                                           symbol?
+                                           (li 1
+                                               (li 2
+                                                   (li 3 nil)))))
+                                        (begin
+                                          (assert-not
+                                            (my-list? int? 1))
+                                          (begin
+                                            (assert-not
+                                              (my-list?
+                                               int?
+                                               'a))
+                                            (assert-equal
+                                              (li 1 nil)
+                                              ((li 1) nil))))))))))))))))))))))))
+
+(define (my-list? E value)
+  (or (nil? value)
+      (and (li? value)
+           (E (li-head value))
+           ((my-list? E) (li-tail value)))))
 
 (define nil #nil)
 
@@ -402,9 +519,38 @@
                                 (assert-equal
                                   (li-tail list₁)
                                   nil)
-                                (assert-equal
-                                  (li 1 nil)
-                                  ((li 1) nil))))))))))))))))))
+                                (begin
+                                  (assert
+                                    (my-list? int? nil))
+                                  (begin
+                                    (assert
+                                      (my-list?
+                                       int?
+                                       (li 1
+                                           (li 2 (li 3 nil)))))
+                                    (begin
+                                      (assert
+                                        (my-list?
+                                         symbol?
+                                         nil))
+                                      (begin
+                                        (assert-not
+                                          (my-list?
+                                           symbol?
+                                           (li 1
+                                               (li 2
+                                                   (li 3 nil)))))
+                                        (begin
+                                          (assert-not
+                                            (my-list? int? 1))
+                                          (begin
+                                            (assert-not
+                                              (my-list?
+                                               int?
+                                               'a))
+                                            (assert-equal
+                                              (li 1 nil)
+                                              ((li 1) nil))))))))))))))))))))))))
 
 ;;; UnnestOperandPass
 
@@ -498,13 +644,75 @@
                                 (let ((_₃₇ (li-tail list₁)))
                                   (let ((_₃₈ nil))
                                     (assert-equal _₃₇ _₃₈)))
-                                (let ((_₃₉ nil))
-                                  (let ((_₄₀ (li 1 _₃₉)))
-                                    (let ((_₄₁ (li 1)))
-                                      (let ((_₄₂ nil))
+                                (begin
+                                  (let ((_₃₉ nil))
+                                    (let
+                                        ((_₄₀ (my-list?
+                                               int?
+                                               _₃₉)))
+                                      (assert _₄₀)))
+                                  (begin
+                                    (let ((_₄₁ nil))
+                                      (let
+                                          ((_₄₂ (li 3 _₄₁)))
                                         (let
-                                            ((_₄₃ (_₄₁ _₄₂)))
-                                          (assert-equal
-                                            _₄₀
-                                            _₄₃))))))))))))))))))))))
+                                            ((_₄₃ (li 2 _₄₂)))
+                                          (let
+                                              ((_₄₄ (li 1
+                                                        _₄₃)))
+                                            (let
+                                                ((_₄₅ (my-list?
+                                                       int?
+                                                       _₄₄)))
+                                              (assert _₄₅))))))
+                                    (begin
+                                      (let ((_₄₆ nil))
+                                        (let
+                                            ((_₄₇ (my-list?
+                                                   symbol?
+                                                   _₄₆)))
+                                          (assert _₄₇)))
+                                      (begin
+                                        (let ((_₄₈ nil))
+                                          (let
+                                              ((_₄₉ (li 3
+                                                        _₄₈)))
+                                            (let
+                                                ((_₅₀ (li 2
+                                                          _₄₉)))
+                                              (let
+                                                  ((_₅₁ (li 1
+                                                            _₅₀)))
+                                                (let
+                                                    ((_₅₂ (my-list?
+                                                           symbol?
+                                                           _₅₁)))
+                                                  (assert-not
+                                                    _₅₂))))))
+                                        (begin
+                                          (let
+                                              ((_₅₃ (my-list?
+                                                     int?
+                                                     1)))
+                                            (assert-not _₅₃))
+                                          (begin
+                                            (let
+                                                ((_₅₄ (my-list?
+                                                       int?
+                                                       'a)))
+                                              (assert-not
+                                                _₅₄))
+                                            (let ((_₅₅ nil))
+                                              (let
+                                                  ((_₅₆ (li 1
+                                                            _₅₅)))
+                                                (let
+                                                    ((_₅₇ (li 1)))
+                                                  (let
+                                                      ((_₅₈ nil))
+                                                    (let
+                                                        ((_₅₉ (_₅₇ _₅₈)))
+                                                      (assert-equal
+                                                        _₅₆
+                                                        _₅₉))))))))))))))))))))))))))))
 
