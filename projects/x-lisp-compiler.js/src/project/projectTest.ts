@@ -1,7 +1,6 @@
 import { systemShellRun } from "@xieyuheng/helpers.js/system"
-import Path from "node:path"
-import { fileURLToPath } from "node:url"
 import * as L from "../lisp/index.ts"
+import { BasicInterpreterFile } from "./BasicInterpreterFile.ts"
 import type { Project } from "./index.ts"
 import {
   logFile,
@@ -17,24 +16,11 @@ export function projectTest(project: Project): void {
   projectForEachSource(project, runBasicErrorSnapshot)
 }
 
-const currentDir = Path.dirname(fileURLToPath(import.meta.url))
-const BasicInterpreterFile = Path.join(
-  currentDir,
-  "../../../basic-lisp.c/src/basic-lisp",
-)
-
 function runBasicTest(project: Project, id: string): void {
   if (id.endsWith("test" + L.suffix)) {
     const inputFile = projectGetBasicFile(project, id)
     logFile("basic-test", inputFile)
-    const { status, stdout, stderr } = systemShellRun(BasicInterpreterFile, [
-      "run",
-      inputFile,
-    ])
-
-    if (stderr !== "") process.stderr.write(stderr)
-    if (stdout !== "") process.stdout.write(stdout)
-    if (status !== 0) process.exit(status)
+    systemShellRun(BasicInterpreterFile, ["run", inputFile])
   }
 }
 
@@ -43,18 +29,7 @@ function runBasicSnapshot(project: Project, id: string): void {
     const inputFile = projectGetBasicFile(project, id)
     const outputFile = inputFile + ".out"
     logFile("basic-snapshot", outputFile)
-    const { status, stdout, stderr } = systemShellRun(BasicInterpreterFile, [
-      "run",
-      inputFile,
-      ">",
-      outputFile,
-    ])
-
-    if (status !== 0) {
-      process.stderr.write(stderr)
-      process.stdout.write(stdout)
-      process.exit(status)
-    }
+    systemShellRun(BasicInterpreterFile, ["run", inputFile, ">", outputFile])
   }
 }
 
@@ -63,7 +38,7 @@ function runBasicErrorSnapshot(project: Project, id: string): void {
     const inputFile = projectGetBasicFile(project, id)
     const outputFile = inputFile + ".err"
     logFile("basic-error-snapshot", outputFile)
-    const { status, stdout, stderr } = systemShellRun(BasicInterpreterFile, [
+    systemShellRun(BasicInterpreterFile, [
       "run",
       inputFile,
       ">",
@@ -71,11 +46,5 @@ function runBasicErrorSnapshot(project: Project, id: string): void {
       "||",
       "true",
     ])
-
-    if (status !== 0) {
-      process.stderr.write(stderr)
-      process.stdout.write(stdout)
-      process.exit(status)
-    }
   }
 }

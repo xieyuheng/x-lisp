@@ -6,11 +6,21 @@ type Result = {
   stderr: string
 }
 
-export function systemShellRun(name: string, args: Array<string>): Result {
+export function systemShellCapture(name: string, args: Array<string>): Result {
   const result = spawnSync([name, ...args].join(" "), { shell: true })
   return {
     status: result.status,
     stdout: result.stdout.toString(),
     stderr: result.stderr.toString(),
   }
+}
+
+export function systemShellRun(name: string, args: Array<string>): void {
+  const { status, stdout, stderr } = systemShellCapture(name, args)
+  if (status !== 0) {
+    process.stderr.write(stderr)
+    process.stdout.write(stdout)
+    process.exit(status)
+  }
+
 }
