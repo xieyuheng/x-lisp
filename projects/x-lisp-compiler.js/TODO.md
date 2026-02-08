@@ -1,7 +1,5 @@
 # define-data
 
-[diary] compiling define-data
-
 # design by contract
 
 [lisp] support `Claim`
