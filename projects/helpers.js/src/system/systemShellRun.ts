@@ -22,5 +22,4 @@ export function systemShellRun(name: string, args: Array<string>): void {
     process.stdout.write(stdout)
     process.exit(status)
   }
-
 }

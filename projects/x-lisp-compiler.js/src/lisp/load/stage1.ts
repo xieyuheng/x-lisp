@@ -1,6 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as Definitions from "../definition/index.ts"
 import { type Mod } from "../mod/index.ts"
+import * as Stmts from "../stmt/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 
 export function stage1(mod: Mod, stmt: Stmt): void {
@@ -41,4 +42,19 @@ export function stage1(mod: Mod, stmt: Stmt): void {
       Definitions.VariableDefinition(mod, stmt.name, stmt.body, stmt.meta),
     )
   }
+
+  if (stmt.kind === "DefineData") {
+
+    for (const ctor of stmt.constructors) {
+      expandDataConstructor(mod, ctor)
+      console.log(ctor)
+    }
+  }
+}
+
+function expandDataConstructor(
+  mod: Mod,
+  ctor: Stmts.DataConstructorSpec,
+): void {
+  //
 }

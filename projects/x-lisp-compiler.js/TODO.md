@@ -1,8 +1,11 @@
 # define-data
 
-[lisp] stage1 -- compile (define-data) to function
+[lisp] `expandDataConstructor` -- generate data constructor
+[lisp] `expandDataConstructor` -- generate data getter
+[lisp] `expandDataConstructor` -- generate data putter
+[lisp] `expandDataConstructor` -- generate data constructor predicate
 
-[lisp] `DataDefinition` as `Definition`
+[lisp] `expandDataConstructor` -- generate data predicate
 
 # design by contract
 
