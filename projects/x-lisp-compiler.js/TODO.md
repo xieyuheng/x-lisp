@@ -1,4 +1,8 @@
+[project] `project:test` with .asm
+
 # define-data
+
+[diary] compiling define-data
 
 # design by contract
 
