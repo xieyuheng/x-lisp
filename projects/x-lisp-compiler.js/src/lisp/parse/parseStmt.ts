@@ -88,4 +88,56 @@ export const parseStmt = S.createRouter<Stmt>({
       meta,
     )
   },
+
+  "(cons* 'define-data predicate constructors)": (
+    { predicate, constructors },
+    { meta },
+  ) => {
+    return Stmts.DefineData(
+      parseDataPredicate(predicate),
+      S.listElements(constructors).map(parseDataConstructor),
+      meta,
+    )
+  },
+})
+
+const parseDataPredicate = S.createRouter<Stmts.DataPredicateSpec>({
+  "(cons* name parameters)": ({ name, parameters }, { meta }) => {
+    return {
+      name: S.symbolContent(name),
+      parameters: S.listElements(parameters).map(S.symbolContent),
+    }
+  },
+
+  name: ({ name }, { meta }) => {
+    return {
+      name: S.symbolContent(name),
+      parameters: [],
+    }
+  },
+})
+
+const parseDataConstructor = S.createRouter<Stmts.DataConstructorSpec>({
+  "(cons* name fields)": ({ name, fields }, { meta }) => {
+    return {
+      name: S.symbolContent(name),
+      fields: S.listElements(fields).map(parseDataField),
+    }
+  },
+
+  name: ({ name }, { meta }) => {
+    return {
+      name: S.symbolContent(name),
+      fields: [],
+    }
+  },
+})
+
+const parseDataField = S.createRouter<Stmts.DataField>({
+  "`(,name ,exp)": ({ name, exp }, { meta }) => {
+    return {
+      name: S.symbolContent(name),
+      predicate: parseExp(exp),
+    }
+  },
 })
