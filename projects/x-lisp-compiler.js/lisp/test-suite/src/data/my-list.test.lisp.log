@@ -3,10 +3,14 @@
 (import-all "my-list")
 
 (define (main)
-  (assert-equal nil nil)
+  (assert-equal nil #nil)
   (assert-equal
     (li 1 (li 2 (li 3 nil)))
-    (li 1 (li 2 (li 3 nil))))
+    [#li 1 [#li 2 [#li 3 #nil]]])
+  (assert (nil? nil))
+  (assert (li? (li 1 (li 2 (li 3 nil)))))
+  (assert-not (li? nil))
+  (assert-not (nil? (li 1 (li 2 (li 3 nil)))))
   (assert-equal (li-tail (li 1 nil)) nil)
   (assert-equal (li-head (li 1 nil)) 1)
   (= list (li 1 (li 2 (li 3 nil))))
@@ -19,6 +23,8 @@
 
 (define nil #nil)
 
+(define (nil? value) (equal? value #nil))
+
 (define (li head tail) [#li head tail])
 
 (define (li-head target) (list-get 1 target))
@@ -36,6 +42,11 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
+
+(define (li? value)
+  (and (any-list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) #li)))
 
 ;;; ShrinkPass
 
@@ -43,31 +54,68 @@
 
 (define (main)
   (begin
-    (assert-equal nil nil)
+    (assert-equal nil #nil)
     (begin
       (assert-equal
         (li 1 (li 2 (li 3 nil)))
-        (li 1 (li 2 (li 3 nil))))
-      (begin
-        (assert-equal (li-tail (li 1 nil)) nil)
-        (begin
-          (assert-equal (li-head (li 1 nil)) 1)
-          (let ((list (li 1 (li 2 (li 3 nil)))))
+        (let ((tael (make-list)))
+          (begin
+            (list-push! #li tael)
             (begin
-              (assert-equal (li-head list) 1)
+              (list-push! 1 tael)
               (begin
-                (li-put-head! 111 list)
+                (list-push!
+                 (let ((tael (make-list)))
+                   (begin
+                     (list-push! #li tael)
+                     (begin
+                       (list-push! 2 tael)
+                       (begin
+                         (list-push!
+                          (let ((tael (make-list)))
+                            (begin
+                              (list-push! #li tael)
+                              (begin
+                                (list-push! 3 tael)
+                                (begin
+                                  (list-push! #nil tael)
+                                  tael))))
+                          tael)
+                         tael))))
+                 tael)
+                tael)))))
+      (begin
+        (assert (nil? nil))
+        (begin
+          (assert (li? (li 1 (li 2 (li 3 nil)))))
+          (begin
+            (assert-not (li? nil))
+            (begin
+              (assert-not (nil? (li 1 (li 2 (li 3 nil)))))
+              (begin
+                (assert-equal (li-tail (li 1 nil)) nil)
                 (begin
-                  (assert-equal (li-head list) 111)
-                  (begin
-                    (assert-equal
-                      (li-tail list)
-                      (li 2 (li 3 nil)))
+                  (assert-equal (li-head (li 1 nil)) 1)
+                  (let ((list (li 1 (li 2 (li 3 nil)))))
                     (begin
-                      (li-put-tail! nil list)
-                      (assert-equal (li-tail list) nil))))))))))))
+                      (assert-equal (li-head list) 1)
+                      (begin
+                        (li-put-head! 111 list)
+                        (begin
+                          (assert-equal (li-head list) 111)
+                          (begin
+                            (assert-equal
+                              (li-tail list)
+                              (li 2 (li 3 nil)))
+                            (begin
+                              (li-put-tail! nil list)
+                              (assert-equal
+                                (li-tail list)
+                                nil))))))))))))))))
 
 (define nil #nil)
+
+(define (nil? value) (equal? value #nil))
 
 (define (li head tail) [#li head tail])
 
@@ -86,6 +134,11 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
+
+(define (li? value)
+  (and (any-list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) #li)))
 
 ;;; UniquifyPass
 
@@ -93,31 +146,68 @@
 
 (define (main)
   (begin
-    (assert-equal nil nil)
+    (assert-equal nil #nil)
     (begin
       (assert-equal
         (li 1 (li 2 (li 3 nil)))
-        (li 1 (li 2 (li 3 nil))))
-      (begin
-        (assert-equal (li-tail (li 1 nil)) nil)
-        (begin
-          (assert-equal (li-head (li 1 nil)) 1)
-          (let ((list₁ (li 1 (li 2 (li 3 nil)))))
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! #li tael₁)
             (begin
-              (assert-equal (li-head list₁) 1)
+              (list-push! 1 tael₁)
               (begin
-                (li-put-head! 111 list₁)
+                (list-push!
+                 (let ((tael₂ (make-list)))
+                   (begin
+                     (list-push! #li tael₂)
+                     (begin
+                       (list-push! 2 tael₂)
+                       (begin
+                         (list-push!
+                          (let ((tael₃ (make-list)))
+                            (begin
+                              (list-push! #li tael₃)
+                              (begin
+                                (list-push! 3 tael₃)
+                                (begin
+                                  (list-push! #nil tael₃)
+                                  tael₃))))
+                          tael₂)
+                         tael₂))))
+                 tael₁)
+                tael₁)))))
+      (begin
+        (assert (nil? nil))
+        (begin
+          (assert (li? (li 1 (li 2 (li 3 nil)))))
+          (begin
+            (assert-not (li? nil))
+            (begin
+              (assert-not (nil? (li 1 (li 2 (li 3 nil)))))
+              (begin
+                (assert-equal (li-tail (li 1 nil)) nil)
                 (begin
-                  (assert-equal (li-head list₁) 111)
-                  (begin
-                    (assert-equal
-                      (li-tail list₁)
-                      (li 2 (li 3 nil)))
+                  (assert-equal (li-head (li 1 nil)) 1)
+                  (let ((list₁ (li 1 (li 2 (li 3 nil)))))
                     (begin
-                      (li-put-tail! nil list₁)
-                      (assert-equal (li-tail list₁) nil))))))))))))
+                      (assert-equal (li-head list₁) 1)
+                      (begin
+                        (li-put-head! 111 list₁)
+                        (begin
+                          (assert-equal (li-head list₁) 111)
+                          (begin
+                            (assert-equal
+                              (li-tail list₁)
+                              (li 2 (li 3 nil)))
+                            (begin
+                              (li-put-tail! nil list₁)
+                              (assert-equal
+                                (li-tail list₁)
+                                nil))))))))))))))))
 
 (define nil #nil)
+
+(define (nil? value) (equal? value #nil))
 
 (define (li head tail) [#li head tail])
 
@@ -136,6 +226,11 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
+
+(define (li? value)
+  (and (any-list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) #li)))
 
 ;;; RevealGlobalPass
 
@@ -143,31 +238,68 @@
 
 (define (main)
   (begin
-    (assert-equal nil nil)
+    (assert-equal nil #nil)
     (begin
       (assert-equal
         (li 1 (li 2 (li 3 nil)))
-        (li 1 (li 2 (li 3 nil))))
-      (begin
-        (assert-equal (li-tail (li 1 nil)) nil)
-        (begin
-          (assert-equal (li-head (li 1 nil)) 1)
-          (let ((list₁ (li 1 (li 2 (li 3 nil)))))
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! #li tael₁)
             (begin
-              (assert-equal (li-head list₁) 1)
+              (list-push! 1 tael₁)
               (begin
-                (li-put-head! 111 list₁)
+                (list-push!
+                 (let ((tael₂ (make-list)))
+                   (begin
+                     (list-push! #li tael₂)
+                     (begin
+                       (list-push! 2 tael₂)
+                       (begin
+                         (list-push!
+                          (let ((tael₃ (make-list)))
+                            (begin
+                              (list-push! #li tael₃)
+                              (begin
+                                (list-push! 3 tael₃)
+                                (begin
+                                  (list-push! #nil tael₃)
+                                  tael₃))))
+                          tael₂)
+                         tael₂))))
+                 tael₁)
+                tael₁)))))
+      (begin
+        (assert (nil? nil))
+        (begin
+          (assert (li? (li 1 (li 2 (li 3 nil)))))
+          (begin
+            (assert-not (li? nil))
+            (begin
+              (assert-not (nil? (li 1 (li 2 (li 3 nil)))))
+              (begin
+                (assert-equal (li-tail (li 1 nil)) nil)
                 (begin
-                  (assert-equal (li-head list₁) 111)
-                  (begin
-                    (assert-equal
-                      (li-tail list₁)
-                      (li 2 (li 3 nil)))
+                  (assert-equal (li-head (li 1 nil)) 1)
+                  (let ((list₁ (li 1 (li 2 (li 3 nil)))))
                     (begin
-                      (li-put-tail! nil list₁)
-                      (assert-equal (li-tail list₁) nil))))))))))))
+                      (assert-equal (li-head list₁) 1)
+                      (begin
+                        (li-put-head! 111 list₁)
+                        (begin
+                          (assert-equal (li-head list₁) 111)
+                          (begin
+                            (assert-equal
+                              (li-tail list₁)
+                              (li 2 (li 3 nil)))
+                            (begin
+                              (li-put-tail! nil list₁)
+                              (assert-equal
+                                (li-tail list₁)
+                                nil))))))))))))))))
 
 (define nil #nil)
+
+(define (nil? value) (equal? value #nil))
 
 (define (li head tail) [#li head tail])
 
@@ -187,35 +319,75 @@
 (define (li-put-tail! value target)
   (list-put! 2 value target))
 
+(define (li? value)
+  (and (any-list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) #li)))
+
 ;;; LiftLambdaPass
 
 (import-all "my-list")
 
 (define (main)
   (begin
-    (assert-equal nil nil)
+    (assert-equal nil #nil)
     (begin
       (assert-equal
         (li 1 (li 2 (li 3 nil)))
-        (li 1 (li 2 (li 3 nil))))
-      (begin
-        (assert-equal (li-tail (li 1 nil)) nil)
-        (begin
-          (assert-equal (li-head (li 1 nil)) 1)
-          (let ((list₁ (li 1 (li 2 (li 3 nil)))))
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! #li tael₁)
             (begin
-              (assert-equal (li-head list₁) 1)
+              (list-push! 1 tael₁)
               (begin
-                (li-put-head! 111 list₁)
+                (list-push!
+                 (let ((tael₂ (make-list)))
+                   (begin
+                     (list-push! #li tael₂)
+                     (begin
+                       (list-push! 2 tael₂)
+                       (begin
+                         (list-push!
+                          (let ((tael₃ (make-list)))
+                            (begin
+                              (list-push! #li tael₃)
+                              (begin
+                                (list-push! 3 tael₃)
+                                (begin
+                                  (list-push! #nil tael₃)
+                                  tael₃))))
+                          tael₂)
+                         tael₂))))
+                 tael₁)
+                tael₁)))))
+      (begin
+        (assert (nil? nil))
+        (begin
+          (assert (li? (li 1 (li 2 (li 3 nil)))))
+          (begin
+            (assert-not (li? nil))
+            (begin
+              (assert-not (nil? (li 1 (li 2 (li 3 nil)))))
+              (begin
+                (assert-equal (li-tail (li 1 nil)) nil)
                 (begin
-                  (assert-equal (li-head list₁) 111)
-                  (begin
-                    (assert-equal
-                      (li-tail list₁)
-                      (li 2 (li 3 nil)))
+                  (assert-equal (li-head (li 1 nil)) 1)
+                  (let ((list₁ (li 1 (li 2 (li 3 nil)))))
                     (begin
-                      (li-put-tail! nil list₁)
-                      (assert-equal (li-tail list₁) nil))))))))))))
+                      (assert-equal (li-head list₁) 1)
+                      (begin
+                        (li-put-head! 111 list₁)
+                        (begin
+                          (assert-equal (li-head list₁) 111)
+                          (begin
+                            (assert-equal
+                              (li-tail list₁)
+                              (li 2 (li 3 nil)))
+                            (begin
+                              (li-put-tail! nil list₁)
+                              (assert-equal
+                                (li-tail list₁)
+                                nil))))))))))))))))
 
 ;;; UnnestOperandPass
 
@@ -223,50 +395,89 @@
 
 (define (main)
   (begin
-    (let ((_₁ nil)) (let ((_₂ nil)) (assert-equal _₁ _₂)))
+    (let ((_₁ nil)) (assert-equal _₁ #nil))
     (begin
-      (let ((_₃ nil))
-        (let ((_₄ (li 3 _₃)))
-          (let ((_₅ (li 2 _₄)))
-            (let ((_₆ (li 1 _₅)))
-              (let ((_₇ nil))
-                (let ((_₈ (li 3 _₇)))
-                  (let ((_₉ (li 2 _₈)))
-                    (let ((_₁₀ (li 1 _₉)))
-                      (assert-equal _₆ _₁₀)))))))))
-      (begin
-        (let ((_₁₁ nil))
-          (let ((_₁₂ (li 1 _₁₁)))
-            (let ((_₁₃ (li-tail _₁₂)))
-              (let ((_₁₄ nil)) (assert-equal _₁₃ _₁₄)))))
-        (begin
-          (let ((_₁₅ nil))
-            (let ((_₁₆ (li 1 _₁₅)))
-              (let ((_₁₇ (li-head _₁₆)))
-                (assert-equal _₁₇ 1))))
-          (let
-              ((list₁
-                (let ((_₁₈ nil))
-                  (let ((_₁₉ (li 3 _₁₈)))
-                    (let ((_₂₀ (li 2 _₁₉))) (li 1 _₂₀))))))
-            (begin
-              (let ((_₂₁ (li-head list₁)))
-                (assert-equal _₂₁ 1))
-              (begin
-                (li-put-head! 111 list₁)
+      (let ((_₂ nil))
+        (let ((_₃ (li 3 _₂)))
+          (let ((_₄ (li 2 _₃)))
+            (let ((_₅ (li 1 _₄)))
+              (let ((tael₁ (make-list)))
                 (begin
-                  (let ((_₂₂ (li-head list₁)))
-                    (assert-equal _₂₂ 111))
+                  (list-push! #li tael₁)
                   (begin
-                    (let ((_₂₃ (li-tail list₁)))
-                      (let ((_₂₄ nil))
-                        (let ((_₂₅ (li 3 _₂₄)))
-                          (let ((_₂₆ (li 2 _₂₅)))
-                            (assert-equal _₂₃ _₂₆)))))
+                    (list-push! 1 tael₁)
                     (begin
-                      (let ((_₂₇ nil))
-                        (li-put-tail! _₂₇ list₁))
-                      (let ((_₂₈ (li-tail list₁)))
-                        (let ((_₂₉ nil))
-                          (assert-equal _₂₈ _₂₉))))))))))))))
+                      (let ((tael₂ (make-list)))
+                        (begin
+                          (list-push! #li tael₂)
+                          (begin
+                            (list-push! 2 tael₂)
+                            (begin
+                              (let ((tael₃ (make-list)))
+                                (begin
+                                  (list-push! #li tael₃)
+                                  (begin
+                                    (list-push! 3 tael₃)
+                                    (begin
+                                      (list-push! #nil tael₃)
+                                      (list-push!
+                                       tael₃
+                                       tael₂)))))
+                              (list-push! tael₂ tael₁)))))
+                      (assert-equal _₅ tael₁)))))))))
+      (begin
+        (let ((_₆ nil)) (let ((_₇ (nil? _₆))) (assert _₇)))
+        (begin
+          (let ((_₈ nil))
+            (let ((_₉ (li 3 _₈)))
+              (let ((_₁₀ (li 2 _₉)))
+                (let ((_₁₁ (li 1 _₁₀)))
+                  (let ((_₁₂ (li? _₁₁))) (assert _₁₂))))))
+          (begin
+            (let ((_₁₃ nil))
+              (let ((_₁₄ (li? _₁₃))) (assert-not _₁₄)))
+            (begin
+              (let ((_₁₅ nil))
+                (let ((_₁₆ (li 3 _₁₅)))
+                  (let ((_₁₇ (li 2 _₁₆)))
+                    (let ((_₁₈ (li 1 _₁₇)))
+                      (let ((_₁₉ (nil? _₁₈)))
+                        (assert-not _₁₉))))))
+              (begin
+                (let ((_₂₀ nil))
+                  (let ((_₂₁ (li 1 _₂₀)))
+                    (let ((_₂₂ (li-tail _₂₁)))
+                      (let ((_₂₃ nil))
+                        (assert-equal _₂₂ _₂₃)))))
+                (begin
+                  (let ((_₂₄ nil))
+                    (let ((_₂₅ (li 1 _₂₄)))
+                      (let ((_₂₆ (li-head _₂₅)))
+                        (assert-equal _₂₆ 1))))
+                  (let
+                      ((list₁
+                        (let ((_₂₇ nil))
+                          (let ((_₂₈ (li 3 _₂₇)))
+                            (let ((_₂₉ (li 2 _₂₈)))
+                              (li 1 _₂₉))))))
+                    (begin
+                      (let ((_₃₀ (li-head list₁)))
+                        (assert-equal _₃₀ 1))
+                      (begin
+                        (li-put-head! 111 list₁)
+                        (begin
+                          (let ((_₃₁ (li-head list₁)))
+                            (assert-equal _₃₁ 111))
+                          (begin
+                            (let ((_₃₂ (li-tail list₁)))
+                              (let ((_₃₃ nil))
+                                (let ((_₃₄ (li 3 _₃₃)))
+                                  (let ((_₃₅ (li 2 _₃₄)))
+                                    (assert-equal _₃₂ _₃₅)))))
+                            (begin
+                              (let ((_₃₆ nil))
+                                (li-put-tail! _₃₆ list₁))
+                              (let ((_₃₇ (li-tail list₁)))
+                                (let ((_₃₈ nil))
+                                  (assert-equal _₃₇ _₃₈))))))))))))))))))
 

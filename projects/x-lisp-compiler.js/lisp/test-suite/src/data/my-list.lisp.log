@@ -2,7 +2,9 @@
 
 (export
   nil
+  nil?
   li
+  li?
   li-head
   li-tail
   li-put-head
@@ -11,6 +13,8 @@
   li-put-tail!)
 
 (define nil #nil)
+
+(define (nil? value) (equal? value #nil))
 
 (define (li head tail) [#li head tail])
 
@@ -30,11 +34,18 @@
 (define (li-put-tail! value target)
   (list-put! 2 value target))
 
+(define (li? value)
+  (and (any-list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) #li)))
+
 ;;; ShrinkPass
 
 (export
   nil
+  nil?
   li
+  li?
   li-head
   li-tail
   li-put-head
@@ -43,6 +54,8 @@
   li-put-tail!)
 
 (define nil #nil)
+
+(define (nil? value) (equal? value #nil))
 
 (define (li head tail)
   (let ((tael (make-list)))
@@ -68,11 +81,20 @@
 (define (li-put-tail! value target)
   (list-put! 2 value target))
 
+(define (li? value)
+  (if (any-list? value)
+    (if (equal? (list-length value) 3)
+      (equal? (list-head value) #li)
+      #f)
+    #f))
+
 ;;; UniquifyPass
 
 (export
   nil
+  nil?
   li
+  li?
   li-head
   li-tail
   li-put-head
@@ -81,6 +103,8 @@
   li-put-tail!)
 
 (define nil #nil)
+
+(define (nil? value) (equal? value #nil))
 
 (define (li head tail)
   (let ((tael₁ (make-list)))
@@ -105,12 +129,21 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
+
+(define (li? value)
+  (if (any-list? value)
+    (if (equal? (list-length value) 3)
+      (equal? (list-head value) #li)
+      #f)
+    #f))
 
 ;;; RevealGlobalPass
 
 (export
   nil
+  nil?
   li
+  li?
   li-head
   li-tail
   li-put-head
@@ -119,6 +152,8 @@
   li-put-tail!)
 
 (define nil #nil)
+
+(define (nil? value) (equal? value #nil))
 
 (define (li head tail)
   (let ((tael₁ (make-list)))
@@ -143,12 +178,21 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
+
+(define (li? value)
+  (if (any-list? value)
+    (if (equal? (list-length value) 3)
+      (equal? (list-head value) #li)
+      #f)
+    #f))
 
 ;;; LiftLambdaPass
 
 (export
   nil
+  nil?
   li
+  li?
   li-head
   li-tail
   li-put-head
@@ -157,6 +201,8 @@
   li-put-tail!)
 
 (define nil #nil)
+
+(define (nil? value) (equal? value #nil))
 
 (define (li head tail)
   (let ((tael₁ (make-list)))
@@ -181,12 +227,21 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
+
+(define (li? value)
+  (if (any-list? value)
+    (if (equal? (list-length value) 3)
+      (equal? (list-head value) #li)
+      #f)
+    #f))
 
 ;;; UnnestOperandPass
 
 (export
   nil
+  nil?
   li
+  li?
   li-head
   li-tail
   li-put-head
@@ -195,6 +250,8 @@
   li-put-tail!)
 
 (define nil #nil)
+
+(define (nil? value) (equal? value #nil))
 
 (define (li head tail)
   (let ((tael₁ (make-list)))
@@ -219,4 +276,11 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
+
+(define (li? value)
+  (if (any-list? value)
+    (if (let ((_₁ (list-length value))) (equal? _₁ 3))
+      (let ((_₂ (list-head value))) (equal? _₂ #li))
+      #f)
+    #f))
 

@@ -2,90 +2,172 @@ define-function main
 body:
   call nil
   local-store _₁
-  call nil
-  local-store _₂
   local-load _₁
-  local-load _₂
+  literal #nil
   call assert-equal
   drop
   call nil
-  local-store _₃
+  local-store _₂
   literal 3
+  local-load _₂
+  call li
+  local-store _₃
+  literal 2
   local-load _₃
   call li
   local-store _₄
-  literal 2
+  literal 1
   local-load _₄
   call li
   local-store _₅
+  call make-list
+  local-store tael₁
+  literal #li
+  local-load tael₁
+  call list-push!
+  drop
   literal 1
-  local-load _₅
-  call li
-  local-store _₆
-  call nil
-  local-store _₇
-  literal 3
-  local-load _₇
-  call li
-  local-store _₈
+  local-load tael₁
+  call list-push!
+  drop
+  call make-list
+  local-store tael₂
+  literal #li
+  local-load tael₂
+  call list-push!
+  drop
   literal 2
+  local-load tael₂
+  call list-push!
+  drop
+  call make-list
+  local-store tael₃
+  literal #li
+  local-load tael₃
+  call list-push!
+  drop
+  literal 3
+  local-load tael₃
+  call list-push!
+  drop
+  literal #nil
+  local-load tael₃
+  call list-push!
+  drop
+  local-load tael₃
+  local-load tael₂
+  call list-push!
+  drop
+  local-load tael₂
+  local-load tael₁
+  call list-push!
+  drop
+  local-load _₅
+  local-load tael₁
+  call assert-equal
+  drop
+  call nil
+  local-store _₆
+  local-load _₆
+  call nil?
+  local-store _₇
+  local-load _₇
+  call assert
+  drop
+  call nil
+  local-store _₈
+  literal 3
   local-load _₈
   call li
   local-store _₉
-  literal 1
+  literal 2
   local-load _₉
   call li
   local-store _₁₀
-  local-load _₆
-  local-load _₁₀
-  call assert-equal
-  drop
-  call nil
-  local-store _₁₁
   literal 1
-  local-load _₁₁
+  local-load _₁₀
   call li
+  local-store _₁₁
+  local-load _₁₁
+  call li?
   local-store _₁₂
   local-load _₁₂
-  call li-tail
-  local-store _₁₃
+  call assert
+  drop
   call nil
-  local-store _₁₄
+  local-store _₁₃
   local-load _₁₃
+  call li?
+  local-store _₁₄
   local-load _₁₄
-  call assert-equal
+  call assert-not
   drop
   call nil
   local-store _₁₅
-  literal 1
+  literal 3
   local-load _₁₅
   call li
   local-store _₁₆
+  literal 2
   local-load _₁₆
-  call li-head
+  call li
   local-store _₁₇
-  local-load _₁₇
   literal 1
-  call assert-equal
+  local-load _₁₇
+  call li
+  local-store _₁₈
+  local-load _₁₈
+  call nil?
+  local-store _₁₉
+  local-load _₁₉
+  call assert-not
   drop
   call nil
-  local-store _₁₈
-  literal 3
-  local-load _₁₈
-  call li
-  local-store _₁₉
-  literal 2
-  local-load _₁₉
-  call li
   local-store _₂₀
   literal 1
   local-load _₂₀
   call li
+  local-store _₂₁
+  local-load _₂₁
+  call li-tail
+  local-store _₂₂
+  call nil
+  local-store _₂₃
+  local-load _₂₂
+  local-load _₂₃
+  call assert-equal
+  drop
+  call nil
+  local-store _₂₄
+  literal 1
+  local-load _₂₄
+  call li
+  local-store _₂₅
+  local-load _₂₅
+  call li-head
+  local-store _₂₆
+  local-load _₂₆
+  literal 1
+  call assert-equal
+  drop
+  call nil
+  local-store _₂₇
+  literal 3
+  local-load _₂₇
+  call li
+  local-store _₂₈
+  literal 2
+  local-load _₂₈
+  call li
+  local-store _₂₉
+  literal 1
+  local-load _₂₉
+  call li
   local-store list₁
   local-load list₁
   call li-head
-  local-store _₂₁
-  local-load _₂₁
+  local-store _₃₀
+  local-load _₃₀
   literal 1
   call assert-equal
   drop
@@ -95,40 +177,40 @@ body:
   drop
   local-load list₁
   call li-head
-  local-store _₂₂
-  local-load _₂₂
+  local-store _₃₁
+  local-load _₃₁
   literal 111
   call assert-equal
   drop
   local-load list₁
   call li-tail
-  local-store _₂₃
+  local-store _₃₂
   call nil
-  local-store _₂₄
+  local-store _₃₃
   literal 3
-  local-load _₂₄
+  local-load _₃₃
   call li
-  local-store _₂₅
+  local-store _₃₄
   literal 2
-  local-load _₂₅
+  local-load _₃₄
   call li
-  local-store _₂₆
-  local-load _₂₃
-  local-load _₂₆
+  local-store _₃₅
+  local-load _₃₂
+  local-load _₃₅
   call assert-equal
   drop
   call nil
-  local-store _₂₇
-  local-load _₂₇
+  local-store _₃₆
+  local-load _₃₆
   local-load list₁
   call li-put-tail!
   drop
   local-load list₁
   call li-tail
-  local-store _₂₈
+  local-store _₃₇
   call nil
-  local-store _₂₉
-  local-load _₂₈
-  local-load _₂₉
+  local-store _₃₈
+  local-load _₃₇
+  local-load _₃₈
   tail-call assert-equal
 

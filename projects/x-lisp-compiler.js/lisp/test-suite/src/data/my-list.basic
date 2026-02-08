@@ -1,6 +1,8 @@
 (export
   nil
+  nil?
   li
+  li?
   li-head
   li-tail
   li-put-head
@@ -9,6 +11,9 @@
   li-put-tail!)
 
 (define-variable nil (block body (return #nil)))
+
+(define-function (nil? value)
+  (block body (return (equal? value #nil))))
 
 (define-function (li head tail)
   (block body
@@ -35,3 +40,15 @@
 
 (define-function (li-put-tail! value target)
   (block body (return (list-put! 2 value target))))
+
+(define-function (li? value)
+  (block body (test (any-list? value)) (branch then₃ else₄))
+  (block then₁
+    (= _₂ (list-head value))
+    (return (equal? _₂ #li)))
+  (block else₂ (return #f))
+  (block then₃
+    (= _₁ (list-length value))
+    (test (equal? _₁ 3))
+    (branch then₁ else₂))
+  (block else₄ (return #f)))

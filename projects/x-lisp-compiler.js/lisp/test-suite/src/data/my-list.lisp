@@ -1,9 +1,9 @@
 (export
   ;; my-list?
   nil
-  ;; nil?
+  nil?
   li
-  ;; li?
+  li?
   li-head
   li-tail
   li-put-head
