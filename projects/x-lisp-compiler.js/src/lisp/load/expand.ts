@@ -5,6 +5,7 @@ export function expandDataConstructor(
   ctor: L.DataConstructorSpec,
 ): void {
   generateDataConstructor(mod, ctor)
+  generateDataGetter(mod, ctor)
 }
 
 export function generateDataConstructor(
@@ -25,6 +26,24 @@ export function generateDataConstructor(
         name,
         parameters,
         L.Tael([L.Hashtag(name), ...args], {}),
+      ),
+    )
+  }
+}
+
+export function generateDataGetter(
+  mod: L.Mod,
+  ctor: L.DataConstructorSpec,
+): void {
+  for (const [index, field] of ctor.fields.entries()) {
+    const name = `${ctor.name}-${field.name}`
+    mod.definitions.set(
+      name,
+      L.FunctionDefinition(
+        mod,
+        name,
+        ["target"],
+        L.Apply(L.Var("list-get"), [L.Int(BigInt(index + 1)), L.Var("target")]),
       ),
     )
   }

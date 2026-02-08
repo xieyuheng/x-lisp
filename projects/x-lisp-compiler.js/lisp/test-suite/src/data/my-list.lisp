@@ -4,9 +4,8 @@
   ;; nil?
   li
   ;; li?
-  ;; li-head
-  ;; li-tail
-  )
+  li-head
+  li-tail)
 
 (define-data (my-list? E)
   nil

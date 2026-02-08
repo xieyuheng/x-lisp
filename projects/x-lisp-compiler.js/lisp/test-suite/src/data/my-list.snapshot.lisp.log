@@ -10,6 +10,10 @@
 
 (define (li head tail) [#li head tail])
 
+(define (li-head target) (list-get 1 target))
+
+(define (li-tail target) (list-get 2 target))
+
 ;;; ShrinkPass
 
 (import-all "my-list")
@@ -20,6 +24,10 @@
 (define nil #nil)
 
 (define (li head tail) [#li head tail])
+
+(define (li-head target) (list-get 1 target))
+
+(define (li-tail target) (list-get 2 target))
 
 ;;; UniquifyPass
 
@@ -32,6 +40,10 @@
 
 (define (li head tail) [#li head tail])
 
+(define (li-head target) (list-get 1 target))
+
+(define (li-tail target) (list-get 2 target))
+
 ;;; RevealGlobalPass
 
 (import-all "my-list")
@@ -42,6 +54,10 @@
 (define nil #nil)
 
 (define (li head tail) [#li head tail])
+
+(define (li-head target) (list-get 1 target))
+
+(define (li-tail target) (list-get 2 target))
 
 ;;; LiftLambdaPass
 

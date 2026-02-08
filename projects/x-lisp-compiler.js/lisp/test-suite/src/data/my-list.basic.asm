@@ -24,3 +24,17 @@ body:
   local-load tael₁
   return
 
+define-function li-head
+  local-store target
+body:
+  literal 1
+  local-load target
+  tail-call list-get
+
+define-function li-tail
+  local-store target
+body:
+  literal 2
+  local-load target
+  tail-call list-get
+

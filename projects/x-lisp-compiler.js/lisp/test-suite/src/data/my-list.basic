@@ -1,4 +1,4 @@
-(export nil li)
+(export nil li li-head li-tail)
 
 (define-variable nil (block body (return #nil)))
 
@@ -9,3 +9,9 @@
     (perform (list-push! head tael₁))
     (perform (list-push! tail tael₁))
     (return tael₁)))
+
+(define-function (li-head target)
+  (block body (return (list-get 1 target))))
+
+(define-function (li-tail target)
+  (block body (return (list-get 2 target))))

@@ -1,0 +1,72 @@
+define-function main
+body:
+  call nil
+  local-store _₁
+  call nil
+  local-store _₂
+  local-load _₁
+  local-load _₂
+  call assert-equal
+  drop
+  call nil
+  local-store _₃
+  literal 3
+  local-load _₃
+  call li
+  local-store _₄
+  literal 2
+  local-load _₄
+  call li
+  local-store _₅
+  literal 1
+  local-load _₅
+  call li
+  local-store _₆
+  call nil
+  local-store _₇
+  literal 3
+  local-load _₇
+  call li
+  local-store _₈
+  literal 2
+  local-load _₈
+  call li
+  local-store _₉
+  literal 1
+  local-load _₉
+  call li
+  local-store _₁₀
+  local-load _₆
+  local-load _₁₀
+  call assert-equal
+  drop
+  call nil
+  local-store _₁₁
+  literal 1
+  local-load _₁₁
+  call li
+  local-store _₁₂
+  local-load _₁₂
+  call li-tail
+  local-store _₁₃
+  call nil
+  local-store _₁₄
+  local-load _₁₃
+  local-load _₁₄
+  call assert-equal
+  drop
+  call nil
+  local-store _₁₅
+  literal 1
+  local-load _₁₅
+  call li
+  local-store _₁₆
+  local-load _₁₆
+  call li-head
+  local-store _₁₇
+  call nil
+  local-store _₁₈
+  local-load _₁₇
+  local-load _₁₈
+  tail-call assert-equal
+
