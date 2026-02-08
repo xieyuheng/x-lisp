@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry (test (equal? 1 1)) (branch then₁₃ else₁₄))
+  (block body (test (equal? 1 1)) (branch then₁₃ else₁₄))
   (block then₁ (= _₅ false) (return (assert _₅)))
   (block else₂ (= _₆ true) (return (assert _₆)))
   (block let-body₃ (test (equal? 1 2)) (branch then₁ else₂))

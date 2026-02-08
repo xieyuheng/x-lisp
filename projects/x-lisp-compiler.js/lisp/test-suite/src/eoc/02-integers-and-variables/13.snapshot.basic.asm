@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   literal 10
   call ineg
   local-store _₁

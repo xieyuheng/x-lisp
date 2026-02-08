@@ -1,10 +1,10 @@
 (define-function (Y f)
-  (block entry (= _₁ (Y©λ₂ f)) (return (Y©λ₁ _₁))))
+  (block body (= _₁ (Y©λ₂ f)) (return (Y©λ₁ _₁))))
 
-(define-function (Y©λ₁ u₁) (block entry (return (u₁ u₁))))
+(define-function (Y©λ₁ u₁) (block body (return (u₁ u₁))))
 
 (define-function (Y©λ₂ f x₁)
-  (block entry (= _₁ (Y©λ₂©λ₁ x₁)) (return (f _₁))))
+  (block body (= _₁ (Y©λ₂©λ₁ x₁)) (return (f _₁))))
 
 (define-function (Y©λ₂©λ₁ x₁ t₁)
-  (block entry (= _₁ (x₁ x₁)) (return (_₁ t₁))))
+  (block body (= _₁ (x₁ x₁)) (return (_₁ t₁))))

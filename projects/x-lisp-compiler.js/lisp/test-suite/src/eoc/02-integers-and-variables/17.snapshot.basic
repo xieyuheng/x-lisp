@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (= _₁ (random-dice))
     (= _₂ (iadd _₁ 1))
     (= _₃ (iadd 1 _₂))

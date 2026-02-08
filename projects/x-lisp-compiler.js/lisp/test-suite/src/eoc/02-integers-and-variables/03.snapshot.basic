@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (= x₁ 20)
     (= z₁ 22)
     (= y₁ (iadd x₁ z₁))

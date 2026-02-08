@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   call make-hash
   local-store hash₁
   local-load hash₁

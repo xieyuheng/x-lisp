@@ -1,10 +1,10 @@
-(define-variable one (block entry (return 1)))
+(define-variable one (block body (return 1)))
 
 (define-variable two
-  (block entry (= _₁ one) (return (iadd 1 _₁))))
+  (block body (= _₁ one) (return (iadd 1 _₁))))
 
 (define-variable three
-  (block entry (= _₁ two) (return (iadd 1 _₁))))
+  (block body (= _₁ two) (return (iadd 1 _₁))))
 
 (define-function (main)
-  (block entry (= _₁ three) (return (println _₁))))
+  (block body (= _₁ three) (return (println _₁))))

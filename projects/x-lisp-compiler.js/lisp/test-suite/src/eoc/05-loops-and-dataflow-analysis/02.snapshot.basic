@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (perform (print 1))
     (perform (newline))
     (perform (print 2))

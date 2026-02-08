@@ -1,7 +1,7 @@
 (import-all "index")
 
 (define-function (main)
-  (block entry
+  (block body
     (= x (one)) (perform (assert-equal x 1))
     (= x (two)) (perform (assert-equal x 2))
     (= x (three)) (perform (assert-equal x 3))

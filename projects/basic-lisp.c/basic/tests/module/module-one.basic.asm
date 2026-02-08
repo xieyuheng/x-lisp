@@ -1,5 +1,5 @@
 define-function one
-entry:
+body:
   literal 1
   return
 

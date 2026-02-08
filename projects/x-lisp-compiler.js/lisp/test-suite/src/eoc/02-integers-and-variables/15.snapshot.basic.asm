@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   literal 4
   local-store x₂
   local-load x₂

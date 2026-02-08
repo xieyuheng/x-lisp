@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (= _₁ true)
     (perform (println _₁))
     (= _₂ false)

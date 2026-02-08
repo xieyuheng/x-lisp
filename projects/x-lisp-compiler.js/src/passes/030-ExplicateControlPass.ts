@@ -27,7 +27,7 @@ function onDefinition(
 
     case "FunctionDefinition": {
       const state = createState()
-      const block = B.Block("entry", [])
+      const block = B.Block("body", [])
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
       return [
@@ -42,7 +42,7 @@ function onDefinition(
 
     case "VariableDefinition": {
       const state = createState()
-      const block = B.Block("entry", [])
+      const block = B.Block("body", [])
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
       return [B.DefineVariable(basicMod, definition.name, state.blocks)]

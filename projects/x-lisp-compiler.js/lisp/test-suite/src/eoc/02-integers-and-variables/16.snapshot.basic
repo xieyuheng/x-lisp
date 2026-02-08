@@ -1,2 +1,2 @@
 (define-function (main)
-  (block entry (= _₁ (isub 50 8)) (return (println _₁))))
+  (block body (= _₁ (isub 50 8)) (return (println _₁))))

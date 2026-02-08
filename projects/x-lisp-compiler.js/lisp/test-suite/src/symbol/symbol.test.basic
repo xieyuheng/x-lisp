@@ -1,4 +1,4 @@
 (define-function (main)
-  (block entry
+  (block body
     (= _₁ (symbol-append 'abc 'def))
     (return (assert-equal 'abcdef _₁))))

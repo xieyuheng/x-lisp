@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   literal 50
   literal 8
   call isub

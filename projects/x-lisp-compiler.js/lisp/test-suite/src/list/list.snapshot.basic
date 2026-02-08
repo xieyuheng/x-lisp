@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (= list₁ (make-list))
     (perform (list-push! 1 list₁))
     (perform (list-push! 2 list₁))

@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (perform (assert-equal iadd iadd))
     (= _₁ (iadd 1))
     (= _₂ (iadd 1))

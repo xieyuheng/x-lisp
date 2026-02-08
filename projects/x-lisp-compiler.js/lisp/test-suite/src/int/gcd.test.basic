@@ -1,10 +1,10 @@
 (define-function (gcd a b)
-  (block entry (test (equal? b 0)) (branch then₁ else₂))
+  (block body (test (equal? b 0)) (branch then₁ else₂))
   (block then₁ (return a))
   (block else₂ (= _₁ (imod a b)) (return (gcd b _₁))))
 
 (define-function (main)
-  (block entry
+  (block body
     (= _₁ (gcd 13 7))
     (perform (assert-equal 1 _₁))
     (= _₂ (gcd 12 8))

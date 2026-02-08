@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   ref iadd
   call println
   drop

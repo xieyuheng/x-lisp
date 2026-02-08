@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   literal 1
   literal 2
   call equal?

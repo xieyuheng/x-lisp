@@ -1,24 +1,22 @@
-(define-function (swap f x y)
-  (block entry (return (f y x))))
+(define-function (swap f x y) (block body (return (f y x))))
 
-(define-function (drop f)
-  (block entry (return (drop©λ₁ f))))
+(define-function (drop f) (block body (return (drop©λ₁ f))))
 
 (define-function (drop©λ₁ f dropped₁)
-  (block entry (return (drop©λ₁©λ₁ f))))
+  (block body (return (drop©λ₁©λ₁ f))))
 
 (define-function (drop©λ₁©λ₁ f x₁)
-  (block entry (return (f x₁))))
+  (block body (return (f x₁))))
 
-(define-function (dup f) (block entry (return (dup©λ₁ f))))
+(define-function (dup f) (block body (return (dup©λ₁ f))))
 
 (define-function (dup©λ₁ f x₁)
-  (block entry (return (f x₁ x₁))))
+  (block body (return (f x₁ x₁))))
 
-(define-function (identity x) (block entry (return x)))
+(define-function (identity x) (block body (return x)))
 
 (define-function (main)
-  (block entry
+  (block body
     (= f₁ identity)
     (= g₁ (dup identity))
     (= _₁ (g₁ f₁ f₁))

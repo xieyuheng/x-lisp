@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   literal 'abc
   tail-call println
 

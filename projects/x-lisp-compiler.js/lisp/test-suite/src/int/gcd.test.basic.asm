@@ -1,7 +1,7 @@
 define-function gcd
   local-store b
   local-store a
-entry:
+body:
   local-load b
   literal 0
   call equal?
@@ -20,7 +20,7 @@ else₂:
   tail-call gcd
 
 define-function main
-entry:
+body:
   literal 13
   literal 7
   call gcd

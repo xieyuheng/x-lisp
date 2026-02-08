@@ -1,2 +1,2 @@
 (define-function (main)
-  (block entry (= a₁ 42) (= b₁ a₁) (return (println b₁))))
+  (block body (= a₁ 42) (= b₁ a₁) (return (println b₁))))

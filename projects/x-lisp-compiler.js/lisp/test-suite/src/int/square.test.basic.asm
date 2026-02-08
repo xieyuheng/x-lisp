@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   literal 3
   call square
   local-store _₁

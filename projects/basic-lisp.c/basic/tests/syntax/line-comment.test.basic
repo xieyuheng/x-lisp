@@ -1,5 +1,5 @@
 ;; (define-function (main)
-;;   (block entry
+;;   (block body
 ;;     (goto base-case))
 ;;   (block base-case
 ;;     (perform (println 1))

@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   literal 1
   local-store _₁
   jump let-body₁

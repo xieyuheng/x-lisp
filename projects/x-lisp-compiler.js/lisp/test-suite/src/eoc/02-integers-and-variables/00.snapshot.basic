@@ -1,1 +1,1 @@
-(define-function (main) (block entry (return (println 42))))
+(define-function (main) (block body (return (println 42))))

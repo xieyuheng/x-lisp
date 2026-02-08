@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   call make-set
   local-store set₁
   literal 1

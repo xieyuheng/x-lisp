@@ -1,6 +1,6 @@
 define-function square
   local-store x
-entry:
+body:
   local-load x
   local-load x
   tail-call imul

@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   call make-list
   local-store tael₁
   literal 'x

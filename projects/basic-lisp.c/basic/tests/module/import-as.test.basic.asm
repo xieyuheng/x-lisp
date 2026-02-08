@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   call one
   local-store x
   local-load x

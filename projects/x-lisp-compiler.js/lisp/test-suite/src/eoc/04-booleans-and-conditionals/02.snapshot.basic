@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (= x₁ (random-dice))
     (= y₁ (random-dice))
     (test (int-less? x₁ 1))

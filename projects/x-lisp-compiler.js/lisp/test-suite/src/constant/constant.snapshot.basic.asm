@@ -1,10 +1,10 @@
 define-variable one
-entry:
+body:
   literal 1
   return
 
 define-variable two
-entry:
+body:
   call one
   local-store _₁
   literal 1
@@ -12,7 +12,7 @@ entry:
   tail-call iadd
 
 define-variable three
-entry:
+body:
   call two
   local-store _₁
   literal 1
@@ -20,7 +20,7 @@ entry:
   tail-call iadd
 
 define-function main
-entry:
+body:
   call three
   local-store _₁
   local-load _₁

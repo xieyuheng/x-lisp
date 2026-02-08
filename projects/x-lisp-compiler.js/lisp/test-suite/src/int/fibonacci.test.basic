@@ -1,5 +1,5 @@
 (define-function (fibonacci n)
-  (block entry
+  (block body
     (test (int-less-or-equal? n 1))
     (branch then₁ else₂))
   (block then₁ (return n))
@@ -11,7 +11,7 @@
     (return (iadd _₂ _₄))))
 
 (define-function (main)
-  (block entry
+  (block body
     (= _₁ (fibonacci 0))
     (perform (assert-equal 0 _₁))
     (= _₂ (fibonacci 1))

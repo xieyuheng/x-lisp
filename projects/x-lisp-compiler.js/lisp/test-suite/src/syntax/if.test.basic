@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry (= _₁ 1) (goto let-body₁₀))
+  (block body (= _₁ 1) (goto let-body₁₀))
   (block let-body₁ (= _₈ (not _₇)) (return (assert _₈)))
   (block let-body₂ (goto let-body₁))
   (block let-body₃

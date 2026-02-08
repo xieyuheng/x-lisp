@@ -1,9 +1,9 @@
 (define-variable x
-  (block entry
+  (block body
     (return 1)))
 
 (define-function (main)
-  (block entry
+  (block body
     (perform (assert-equal x 1))
     (perform (println x))
     ;; 2 @ref x @assign

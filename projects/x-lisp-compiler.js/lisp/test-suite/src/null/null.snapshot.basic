@@ -1,2 +1,2 @@
 (define-function (main)
-  (block entry (= _₁ null) (return (println _₁))))
+  (block body (= _₁ null) (return (println _₁))))

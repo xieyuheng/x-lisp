@@ -1,12 +1,12 @@
 define-function square
   local-store x
-entry:
+body:
   local-load x
   local-load x
   tail-call imul
 
 define-function main
-entry:
+body:
   literal 3
   call square
   local-store _₁

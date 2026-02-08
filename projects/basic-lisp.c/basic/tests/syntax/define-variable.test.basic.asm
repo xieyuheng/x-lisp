@@ -1,10 +1,10 @@
 define-variable x
-entry:
+body:
   literal 1
   return
 
 define-function main
-entry:
+body:
   call x
   literal 1
   call assert-equal

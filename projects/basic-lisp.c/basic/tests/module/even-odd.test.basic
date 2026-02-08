@@ -1,5 +1,5 @@
 (define-function (even? n)
-  (block entry
+  (block body
     (test (equal? n 0))
     (branch base-case recur-case))
   (block base-case
@@ -9,7 +9,7 @@
     (return (odd? n1))))
 
 (define-function (odd? n)
-  (block entry
+  (block body
     (test (equal? n 0))
     (branch base-case recur-case))
   (block base-case
@@ -19,7 +19,7 @@
     (return (even? n1))))
 
 (define-function (main)
-  (block entry
+  (block body
     (= x (even? 0)) (perform (assert x))
     (= x (even? 1)) (perform (assert-not x))
     (= x (even? 2)) (perform (assert x))

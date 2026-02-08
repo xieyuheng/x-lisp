@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (= hash₁ (make-hash))
     (perform (println hash₁))
     (= hash₁ (make-hash))

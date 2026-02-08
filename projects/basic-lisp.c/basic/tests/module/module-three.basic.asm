@@ -1,15 +1,15 @@
 define-function one
-entry:
+body:
   literal 1
   return
 
 define-function two
-entry:
+body:
   literal 2
   return
 
 define-function three
-entry:
+body:
   literal 3
   return
 

@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (= _₁ (random-dice))
     (= _₂ (ineg _₁))
     (return (println _₂))))

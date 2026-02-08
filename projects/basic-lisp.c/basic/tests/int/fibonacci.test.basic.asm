@@ -1,6 +1,6 @@
 define-function fibonacci
   local-store n
-entry:
+body:
   local-load n
   literal 1
   call int-less-or-equal?
@@ -29,7 +29,7 @@ recur-case:
   tail-call iadd
 
 define-function main
-entry:
+body:
   literal 0
   call fibonacci
   local-store v

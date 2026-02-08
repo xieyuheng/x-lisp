@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (= set₁ (make-set))
     (perform (set-add! 1 set₁))
     (perform (set-add! 2 set₁))

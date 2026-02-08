@@ -4,7 +4,7 @@
 ;;     (imul (factorial (isub n 1)) n)))
 
 (define-function (factorial n)
-  (block entry
+  (block body
     (test (int-less-or-equal? n 1))
     (branch base-case recur-case))
   (block base-case
@@ -15,7 +15,7 @@
     (return (imul n f1))))
 
 (define-function (main)
-  (block entry
+  (block body
     (= v (factorial 0))
     (perform (println v))
     (= v (factorial 1))

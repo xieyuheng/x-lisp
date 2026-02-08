@@ -1,5 +1,5 @@
 (export square)
 
 (define-function (square x)
-  (block entry
+  (block body
     (return (imul x x))))

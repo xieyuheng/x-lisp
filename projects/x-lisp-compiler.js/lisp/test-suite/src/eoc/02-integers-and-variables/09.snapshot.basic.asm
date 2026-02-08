@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   literal 11
   literal 11
   call iadd

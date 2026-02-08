@@ -1,10 +1,10 @@
 define-function three
-entry:
+body:
   literal 3
   return
 
 define-function main
-entry:
+body:
   call one
   local-store x
   local-load x

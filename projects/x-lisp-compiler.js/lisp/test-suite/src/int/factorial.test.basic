@@ -1,5 +1,5 @@
 (define-function (factorial n)
-  (block entry
+  (block body
     (test (int-less-or-equal? n 1))
     (branch then₁ else₂))
   (block then₁ (return 1))
@@ -9,7 +9,7 @@
     (return (imul _₂ n))))
 
 (define-function (main)
-  (block entry
+  (block body
     (= _₁ (factorial 0))
     (perform (assert-equal 1 _₁))
     (= _₂ (factorial 1))

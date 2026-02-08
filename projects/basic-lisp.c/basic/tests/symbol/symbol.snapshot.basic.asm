@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   literal 'a
   call println
   drop

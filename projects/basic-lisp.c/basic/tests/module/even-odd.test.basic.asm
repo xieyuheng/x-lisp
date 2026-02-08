@@ -1,6 +1,6 @@
 define-function even?
   local-store n
-entry:
+body:
   local-load n
   literal 0
   call equal?
@@ -19,7 +19,7 @@ recur-case:
 
 define-function odd?
   local-store n
-entry:
+body:
   local-load n
   literal 0
   call equal?
@@ -37,7 +37,7 @@ recur-case:
   tail-call even?
 
 define-function main
-entry:
+body:
   literal 0
   call even?
   local-store x

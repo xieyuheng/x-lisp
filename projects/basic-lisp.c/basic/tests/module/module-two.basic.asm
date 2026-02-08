@@ -1,10 +1,10 @@
 define-function one
-entry:
+body:
   literal 1
   return
 
 define-function two
-entry:
+body:
   literal 2
   return
 

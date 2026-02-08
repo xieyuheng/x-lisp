@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   call random-dice
   local-store _₁
   local-load _₁

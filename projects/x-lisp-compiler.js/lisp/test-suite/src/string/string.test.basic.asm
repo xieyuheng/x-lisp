@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   literal "abc"
   literal "def"
   call string-append

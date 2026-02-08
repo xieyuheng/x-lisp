@@ -1,6 +1,6 @@
 define-function factorial
   local-store n
-entry:
+body:
   local-load n
   literal 1
   call int-less-or-equal?
@@ -22,7 +22,7 @@ recur-case:
   tail-call imul
 
 define-function main
-entry:
+body:
   literal 0
   call factorial
   local-store v

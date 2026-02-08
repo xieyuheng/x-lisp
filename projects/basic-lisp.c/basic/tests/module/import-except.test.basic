@@ -1,9 +1,9 @@
 (import-except "module-three" three)
 
-(define-function (three) (block entry (return 3)))
+(define-function (three) (block body (return 3)))
 
 (define-function (main)
-  (block entry
+  (block body
     (= x (one)) (perform (assert-equal x 1))
     (= x (two)) (perform (assert-equal x 2))
     (= x (three)) (perform (assert-equal x 3))

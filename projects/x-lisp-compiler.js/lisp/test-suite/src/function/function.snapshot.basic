@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (perform (println iadd))
     (= _₁ (iadd 1))
     (return (println _₁))))

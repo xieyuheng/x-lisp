@@ -5,7 +5,7 @@
 ;;           (fibonacci (isub n 2)))))
 
 (define-function (fibonacci n)
-  (block entry
+  (block body
     (test (int-less-or-equal? n 1))
     (branch base-case recur-case))
   (block base-case
@@ -18,7 +18,7 @@
     (return (iadd f1 f2))))
 
 (define-function (main)
-  (block entry
+  (block body
     (= v (fibonacci 0))
     (perform (println v))
     (= v (fibonacci 1))

@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (= _₂ (random-dice))
     (test (equal? _₂ 1))
     (branch then₆ else₇))

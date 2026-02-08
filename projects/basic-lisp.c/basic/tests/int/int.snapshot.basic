@@ -1,5 +1,5 @@
 (define-function (main)
-  (block entry
+  (block body
     (perform (println 1))
     (perform (println 2))
     (perform (println 3))

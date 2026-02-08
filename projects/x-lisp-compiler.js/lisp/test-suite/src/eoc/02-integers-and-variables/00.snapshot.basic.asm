@@ -1,5 +1,5 @@
 define-function main
-entry:
+body:
   literal 42
   tail-call println
 

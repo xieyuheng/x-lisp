@@ -2,7 +2,7 @@ define-function swap
   local-store y
   local-store x
   local-store f
-entry:
+body:
   local-load y
   local-load x
   local-load f
@@ -11,7 +11,7 @@ entry:
 
 define-function drop
   local-store f
-entry:
+body:
   local-load f
   ref drop©λ₁
   literal 1
@@ -20,7 +20,7 @@ entry:
 define-function drop©λ₁
   local-store dropped₁
   local-store f
-entry:
+body:
   local-load f
   ref drop©λ₁©λ₁
   literal 1
@@ -29,7 +29,7 @@ entry:
 define-function drop©λ₁©λ₁
   local-store x₁
   local-store f
-entry:
+body:
   local-load x₁
   local-load f
   literal 1
@@ -37,7 +37,7 @@ entry:
 
 define-function dup
   local-store f
-entry:
+body:
   local-load f
   ref dup©λ₁
   literal 1
@@ -46,7 +46,7 @@ entry:
 define-function dup©λ₁
   local-store x₁
   local-store f
-entry:
+body:
   local-load x₁
   local-load x₁
   local-load f
@@ -55,12 +55,12 @@ entry:
 
 define-function identity
   local-store x
-entry:
+body:
   local-load x
   return
 
 define-function main
-entry:
+body:
   ref identity
   local-store f₁
   ref identity
