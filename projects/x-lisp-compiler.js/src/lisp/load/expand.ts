@@ -6,6 +6,7 @@ export function expandDataConstructor(
 ): void {
   generateDataConstructor(mod, ctor)
   generateDataGetter(mod, ctor)
+  generateDataPutter(mod, ctor)
 }
 
 export function generateDataConstructor(
@@ -44,6 +45,37 @@ export function generateDataGetter(
         name,
         ["target"],
         L.Apply(L.Var("list-get"), [L.Int(BigInt(index + 1)), L.Var("target")]),
+      ),
+    )
+  }
+}
+
+export function generateDataPutter(
+  mod: L.Mod,
+  ctor: L.DataConstructorSpec,
+): void {
+  for (const [index, field] of ctor.fields.entries()) {
+    const name = `${ctor.name}-put-${field.name}`
+    mod.definitions.set(
+      name,
+      L.FunctionDefinition(
+        mod,
+        name,
+        [ "value", "target",],
+        L.Apply(L.Var("list-put"), [L.Int(BigInt(index + 1)), L.Var("value"), L.Var("target")]),
+      ),
+    )
+  }
+
+  for (const [index, field] of ctor.fields.entries()) {
+    const name = `${ctor.name}-put-${field.name}!`
+    mod.definitions.set(
+      name,
+      L.FunctionDefinition(
+        mod,
+        name,
+        [ "value", "target",],
+        L.Apply(L.Var("list-put!"), [L.Int(BigInt(index + 1)), L.Var("value"), L.Var("target")]),
       ),
     )
   }

@@ -14,6 +14,18 @@
 
 (define (li-tail target) (list-get 2 target))
 
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
+
 ;;; ShrinkPass
 
 (import-all "my-list")
@@ -28,6 +40,18 @@
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
 
 ;;; UniquifyPass
 
@@ -44,6 +68,18 @@
 
 (define (li-tail target) (list-get 2 target))
 
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
+
 ;;; RevealGlobalPass
 
 (import-all "my-list")
@@ -58,6 +94,18 @@
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
 
 ;;; LiftLambdaPass
 

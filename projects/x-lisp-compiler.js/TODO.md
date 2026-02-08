@@ -1,6 +1,5 @@
 # define-data
 
-[lisp] `expandDataConstructor` -- generateDataPutter
 [lisp] `expandDataConstructor` -- generateDataConstructorPredicate
 [lisp] `expandDataConstructor` -- generateDataPredicate
 

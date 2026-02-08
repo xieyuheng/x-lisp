@@ -5,7 +5,11 @@
   li
   ;; li?
   li-head
-  li-tail)
+  li-tail
+  li-put-head
+  li-put-tail
+  li-put-head!
+  li-put-tail!)
 
 (define-data (my-list? E)
   nil

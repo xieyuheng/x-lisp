@@ -1,4 +1,12 @@
-(export nil li li-head li-tail)
+(export
+  nil
+  li
+  li-head
+  li-tail
+  li-put-head
+  li-put-tail
+  li-put-head!
+  li-put-tail!)
 
 (define-variable nil (block body (return #nil)))
 
@@ -15,3 +23,15 @@
 
 (define-function (li-tail target)
   (block body (return (list-get 2 target))))
+
+(define-function (li-put-head value target)
+  (block body (return (list-put 1 value target))))
+
+(define-function (li-put-tail value target)
+  (block body (return (list-put 2 value target))))
+
+(define-function (li-put-head! value target)
+  (block body (return (list-put! 1 value target))))
+
+(define-function (li-put-tail! value target)
+  (block body (return (list-put! 2 value target))))

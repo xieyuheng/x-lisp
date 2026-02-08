@@ -38,3 +38,39 @@ body:
   local-load target
   tail-call list-get
 
+define-function li-put-head
+  local-store target
+  local-store value
+body:
+  literal 1
+  local-load value
+  local-load target
+  tail-call list-put
+
+define-function li-put-tail
+  local-store target
+  local-store value
+body:
+  literal 2
+  local-load value
+  local-load target
+  tail-call list-put
+
+define-function li-put-head!
+  local-store target
+  local-store value
+body:
+  literal 1
+  local-load value
+  local-load target
+  tail-call list-put!
+
+define-function li-put-tail!
+  local-store target
+  local-store value
+body:
+  literal 2
+  local-load value
+  local-load target
+  tail-call list-put!
+

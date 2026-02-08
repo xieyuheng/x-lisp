@@ -38,11 +38,11 @@ export type AboutData =
 
 ;; DataPutter
 
-(define (li-put-head! target value) (list-put! 1 value target))
-(define (li-put-tail! target value) (list-put! 2 value target))
+(define (li-put-head! value target) (list-put! 1 value target))
+(define (li-put-tail! value target) (list-put! 2 value target))
 
-(define (li-put-head target value) (list-put 1 value target))
-(define (li-put-tail target value) (list-put 2 value target))
+(define (li-put-head value target) (list-put 1 value target))
+(define (li-put-tail value target) (list-put 2 value target))
 
 ;; DataConstructorPredicate
 

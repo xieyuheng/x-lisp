@@ -64,9 +64,71 @@ body:
   local-load _₁₆
   call li-head
   local-store _₁₇
+  local-load _₁₇
+  literal 1
+  call assert-equal
+  drop
   call nil
   local-store _₁₈
-  local-load _₁₇
+  literal 3
   local-load _₁₈
+  call li
+  local-store _₁₉
+  literal 2
+  local-load _₁₉
+  call li
+  local-store _₂₀
+  literal 1
+  local-load _₂₀
+  call li
+  local-store list₁
+  local-load list₁
+  call li-head
+  local-store _₂₁
+  local-load _₂₁
+  literal 1
+  call assert-equal
+  drop
+  literal 111
+  local-load list₁
+  call li-put-head!
+  drop
+  local-load list₁
+  call li-head
+  local-store _₂₂
+  local-load _₂₂
+  literal 111
+  call assert-equal
+  drop
+  local-load list₁
+  call li-tail
+  local-store _₂₃
+  call nil
+  local-store _₂₄
+  literal 3
+  local-load _₂₄
+  call li
+  local-store _₂₅
+  literal 2
+  local-load _₂₅
+  call li
+  local-store _₂₆
+  local-load _₂₃
+  local-load _₂₆
+  call assert-equal
+  drop
+  call nil
+  local-store _₂₇
+  local-load _₂₇
+  local-load list₁
+  call li-put-tail!
+  drop
+  local-load list₁
+  call li-tail
+  local-store _₂₈
+  call nil
+  local-store _₂₉
+  local-load _₂₈
+  local-load _₂₉
   tail-call assert-equal
 

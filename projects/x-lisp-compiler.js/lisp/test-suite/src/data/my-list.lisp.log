@@ -1,6 +1,14 @@
 ;;; Input
 
-(export nil li li-head li-tail)
+(export
+  nil
+  li
+  li-head
+  li-tail
+  li-put-head
+  li-put-tail
+  li-put-head!
+  li-put-tail!)
 
 (define nil #nil)
 
@@ -10,9 +18,29 @@
 
 (define (li-tail target) (list-get 2 target))
 
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
+
 ;;; ShrinkPass
 
-(export nil li li-head li-tail)
+(export
+  nil
+  li
+  li-head
+  li-tail
+  li-put-head
+  li-put-tail
+  li-put-head!
+  li-put-tail!)
 
 (define nil #nil)
 
@@ -28,9 +56,29 @@
 
 (define (li-tail target) (list-get 2 target))
 
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
+
 ;;; UniquifyPass
 
-(export nil li li-head li-tail)
+(export
+  nil
+  li
+  li-head
+  li-tail
+  li-put-head
+  li-put-tail
+  li-put-head!
+  li-put-tail!)
 
 (define nil #nil)
 
@@ -45,10 +93,30 @@
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
 
 ;;; RevealGlobalPass
 
-(export nil li li-head li-tail)
+(export
+  nil
+  li
+  li-head
+  li-tail
+  li-put-head
+  li-put-tail
+  li-put-head!
+  li-put-tail!)
 
 (define nil #nil)
 
@@ -63,10 +131,30 @@
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
 
 ;;; LiftLambdaPass
 
-(export nil li li-head li-tail)
+(export
+  nil
+  li
+  li-head
+  li-tail
+  li-put-head
+  li-put-tail
+  li-put-head!
+  li-put-tail!)
 
 (define nil #nil)
 
@@ -81,10 +169,30 @@
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
 
 ;;; UnnestOperandPass
 
-(export nil li li-head li-tail)
+(export
+  nil
+  li
+  li-head
+  li-tail
+  li-put-head
+  li-put-tail
+  li-put-head!
+  li-put-tail!)
 
 (define nil #nil)
 
@@ -99,4 +207,16 @@
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
 
