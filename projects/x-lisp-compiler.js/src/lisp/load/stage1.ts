@@ -1,5 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as Definitions from "../definition/index.ts"
+import * as L from "../index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { expandDataConstructor } from "./expand.ts"
@@ -44,8 +45,12 @@ export function stage1(mod: Mod, stmt: Stmt): void {
   }
 
   if (stmt.kind === "DefineData") {
+    // L.expandDataPredicate(mod, stmt)
     for (const ctor of stmt.constructors) {
-      expandDataConstructor(mod, ctor)
+      L.expandDataConstructor(mod, ctor)
+      L.expandDataConstructorPredicate(mod, ctor)
+      L.expandDataGetter(mod, ctor)
+      L.expandDataPutter(mod, ctor)
     }
   }
 }

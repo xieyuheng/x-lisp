@@ -4,16 +4,6 @@ export function expandDataConstructor(
   mod: L.Mod,
   ctor: L.DataConstructorSpec,
 ): void {
-  generateDataConstructor(mod, ctor)
-  generateDataGetter(mod, ctor)
-  generateDataPutter(mod, ctor)
-  generateDataConstructorPredicate(mod, ctor)
-}
-
-export function generateDataConstructor(
-  mod: L.Mod,
-  ctor: L.DataConstructorSpec,
-): void {
   const arity = ctor.fields.length
   const name = ctor.name
   if (arity === 0) {
@@ -33,7 +23,7 @@ export function generateDataConstructor(
   }
 }
 
-export function generateDataGetter(
+export function expandDataGetter(
   mod: L.Mod,
   ctor: L.DataConstructorSpec,
 ): void {
@@ -51,7 +41,7 @@ export function generateDataGetter(
   }
 }
 
-export function generateDataPutter(
+export function expandDataPutter(
   mod: L.Mod,
   ctor: L.DataConstructorSpec,
 ): void {
@@ -90,7 +80,7 @@ export function generateDataPutter(
   }
 }
 
-export function generateDataConstructorPredicate(
+export function expandDataConstructorPredicate(
   mod: L.Mod,
   ctor: L.DataConstructorSpec,
 ): void {

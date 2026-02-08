@@ -31,6 +31,14 @@ export type AboutData =
 (define nil #nil)
 (define (li head tail) [#li head tail])
 
+;; DataConstructorPredicate
+
+(define (nil? value) (equal? value #nil))
+(define (li? value)
+  (and (any-list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) #li)))
+
 ;; DataGetter
 
 (define (li-head target) (list-get 1 target))
@@ -44,15 +52,11 @@ export type AboutData =
 (define (li-put-head value target) (list-put 1 value target))
 (define (li-put-tail value target) (list-put 2 value target))
 
-;; DataConstructorPredicate
-
-(define (nil? value) (equal? value #nil))
-(define (li? value)
-  (and (any-list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) #li)))
-
 ;; DataPredicate
 
-;; TODO
+(define (my-list? E value)
+  (or (nil? value)
+      (and (li? value)
+           (the E (li-head value))
+           (the (my-list? E) (li-tail value)))))
 ```

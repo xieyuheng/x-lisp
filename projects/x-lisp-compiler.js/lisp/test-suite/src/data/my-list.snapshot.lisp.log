@@ -12,6 +12,11 @@
 
 (define (li head tail) [#li head tail])
 
+(define (li? value)
+  (and (any-list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) #li)))
+
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
@@ -27,11 +32,6 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
-
-(define (li? value)
-  (and (any-list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) #li)))
 
 ;;; ShrinkPass
 
@@ -46,6 +46,11 @@
 
 (define (li head tail) [#li head tail])
 
+(define (li? value)
+  (and (any-list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) #li)))
+
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
@@ -61,11 +66,6 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
-
-(define (li? value)
-  (and (any-list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) #li)))
 
 ;;; UniquifyPass
 
@@ -80,6 +80,11 @@
 
 (define (li head tail) [#li head tail])
 
+(define (li? value)
+  (and (any-list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) #li)))
+
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
@@ -95,11 +100,6 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
-
-(define (li? value)
-  (and (any-list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) #li)))
 
 ;;; RevealGlobalPass
 
@@ -114,6 +114,11 @@
 
 (define (li head tail) [#li head tail])
 
+(define (li? value)
+  (and (any-list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) #li)))
+
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
@@ -129,11 +134,6 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
-
-(define (li? value)
-  (and (any-list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) #li)))
 
 ;;; LiftLambdaPass
 

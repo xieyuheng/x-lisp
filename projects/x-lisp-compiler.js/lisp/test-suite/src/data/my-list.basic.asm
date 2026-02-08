@@ -31,6 +31,36 @@ body:
   local-load tael₁
   return
 
+define-function li?
+  local-store value
+body:
+  local-load value
+  call any-list?
+  jump-if-not else₄
+  jump then₃
+then₁:
+  local-load value
+  call list-head
+  local-store _₂
+  local-load _₂
+  literal #li
+  tail-call equal?
+else₂:
+  literal #f
+  return
+then₃:
+  local-load value
+  call list-length
+  local-store _₁
+  local-load _₁
+  literal 3
+  call equal?
+  jump-if-not else₂
+  jump then₁
+else₄:
+  literal #f
+  return
+
 define-function li-head
   local-store target
 body:
@@ -80,34 +110,4 @@ body:
   local-load value
   local-load target
   tail-call list-put!
-
-define-function li?
-  local-store value
-body:
-  local-load value
-  call any-list?
-  jump-if-not else₄
-  jump then₃
-then₁:
-  local-load value
-  call list-head
-  local-store _₂
-  local-load _₂
-  literal #li
-  tail-call equal?
-else₂:
-  literal #f
-  return
-then₃:
-  local-load value
-  call list-length
-  local-store _₁
-  local-load _₁
-  literal 3
-  call equal?
-  jump-if-not else₂
-  jump then₁
-else₄:
-  literal #f
-  return
 

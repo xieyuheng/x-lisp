@@ -23,6 +23,18 @@
     (perform (list-push! tail tael₁))
     (return tael₁)))
 
+(define-function (li? value)
+  (block body (test (any-list? value)) (branch then₃ else₄))
+  (block then₁
+    (= _₂ (list-head value))
+    (return (equal? _₂ #li)))
+  (block else₂ (return #f))
+  (block then₃
+    (= _₁ (list-length value))
+    (test (equal? _₁ 3))
+    (branch then₁ else₂))
+  (block else₄ (return #f)))
+
 (define-function (li-head target)
   (block body (return (list-get 1 target))))
 
@@ -40,15 +52,3 @@
 
 (define-function (li-put-tail! value target)
   (block body (return (list-put! 2 value target))))
-
-(define-function (li? value)
-  (block body (test (any-list? value)) (branch then₃ else₄))
-  (block then₁
-    (= _₂ (list-head value))
-    (return (equal? _₂ #li)))
-  (block else₂ (return #f))
-  (block then₃
-    (= _₁ (list-length value))
-    (test (equal? _₁ 3))
-    (branch then₁ else₂))
-  (block else₄ (return #f)))

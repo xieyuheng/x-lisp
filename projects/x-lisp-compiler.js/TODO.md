@@ -1,11 +1,23 @@
+[lisp] use more `import * as L`
+
 # define-data
 
-[lisp] `expandDataConstructor` -- generateDataPredicate
+[lisp] `expandDataPredicate`
+
+# later
+
+[lisp] `expandDataPredicate` -- report redefine name -- call API about define
+[lisp] `expandDataConstructor` -- report redefine name -- call API about define
 
 # module
 
-(export-all)
-(export-except)
+[lisp] (export-all) -- fix `my-list`
+[lisp] (export-except)
+
+# the
+
+[lisp] `(the)`
+[lisp] `generateDataPredicate` -- use `the`
 
 # design by contract
 

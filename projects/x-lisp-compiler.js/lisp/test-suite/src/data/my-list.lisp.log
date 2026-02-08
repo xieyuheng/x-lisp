@@ -18,6 +18,11 @@
 
 (define (li head tail) [#li head tail])
 
+(define (li? value)
+  (and (any-list? value)
+       (equal? (list-length value) 3)
+       (equal? (list-head value) #li)))
+
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
@@ -33,11 +38,6 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
-
-(define (li? value)
-  (and (any-list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) #li)))
 
 ;;; ShrinkPass
 
@@ -65,6 +65,13 @@
         (list-push! head tael)
         (begin (list-push! tail tael) tael)))))
 
+(define (li? value)
+  (if (any-list? value)
+    (if (equal? (list-length value) 3)
+      (equal? (list-head value) #li)
+      #f)
+    #f))
+
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
@@ -80,13 +87,6 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
-
-(define (li? value)
-  (if (any-list? value)
-    (if (equal? (list-length value) 3)
-      (equal? (list-head value) #li)
-      #f)
-    #f))
 
 ;;; UniquifyPass
 
@@ -114,6 +114,13 @@
         (list-push! head tael₁)
         (begin (list-push! tail tael₁) tael₁)))))
 
+(define (li? value)
+  (if (any-list? value)
+    (if (equal? (list-length value) 3)
+      (equal? (list-head value) #li)
+      #f)
+    #f))
+
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
@@ -129,13 +136,6 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
-
-(define (li? value)
-  (if (any-list? value)
-    (if (equal? (list-length value) 3)
-      (equal? (list-head value) #li)
-      #f)
-    #f))
 
 ;;; RevealGlobalPass
 
@@ -163,6 +163,13 @@
         (list-push! head tael₁)
         (begin (list-push! tail tael₁) tael₁)))))
 
+(define (li? value)
+  (if (any-list? value)
+    (if (equal? (list-length value) 3)
+      (equal? (list-head value) #li)
+      #f)
+    #f))
+
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
@@ -178,13 +185,6 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
-
-(define (li? value)
-  (if (any-list? value)
-    (if (equal? (list-length value) 3)
-      (equal? (list-head value) #li)
-      #f)
-    #f))
 
 ;;; LiftLambdaPass
 
@@ -212,6 +212,13 @@
         (list-push! head tael₁)
         (begin (list-push! tail tael₁) tael₁)))))
 
+(define (li? value)
+  (if (any-list? value)
+    (if (equal? (list-length value) 3)
+      (equal? (list-head value) #li)
+      #f)
+    #f))
+
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
@@ -227,13 +234,6 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
-
-(define (li? value)
-  (if (any-list? value)
-    (if (equal? (list-length value) 3)
-      (equal? (list-head value) #li)
-      #f)
-    #f))
 
 ;;; UnnestOperandPass
 
@@ -261,6 +261,13 @@
         (list-push! head tael₁)
         (begin (list-push! tail tael₁) tael₁)))))
 
+(define (li? value)
+  (if (any-list? value)
+    (if (let ((_₁ (list-length value))) (equal? _₁ 3))
+      (let ((_₂ (list-head value))) (equal? _₂ #li))
+      #f)
+    #f))
+
 (define (li-head target) (list-get 1 target))
 
 (define (li-tail target) (list-get 2 target))
@@ -276,11 +283,4 @@
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))
-
-(define (li? value)
-  (if (any-list? value)
-    (if (let ((_₁ (list-length value))) (equal? _₁ 3))
-      (let ((_₂ (list-head value))) (equal? _₂ #li))
-      #f)
-    #f))
 
