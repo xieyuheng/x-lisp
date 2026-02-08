@@ -6,28 +6,6 @@ settings:
 
 importers:
 
-  projects/bin.js:
-    dependencies:
-      '@xieyuheng/cmd.js':
-        specifier: workspace:*
-        version: link:../cmd.js
-      '@xieyuheng/helpers.js':
-        specifier: workspace:*
-        version: link:../helpers.js
-    devDependencies:
-      '@types/node':
-        specifier: ^25.2.1
-        version: 25.2.1
-      prettier:
-        specifier: ^3.8.1
-        version: 3.8.1
-      prettier-plugin-organize-imports:
-        specifier: ^4.3.0
-        version: 4.3.0(prettier@3.8.1)(typescript@5.9.3)
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
   projects/cmd.js:
     dependencies:
       '@xieyuheng/helpers.js':
@@ -35,8 +13,8 @@ importers:
         version: link:../helpers.js
     devDependencies:
       '@types/node':
-        specifier: ^25.2.1
-        version: 25.2.1
+        specifier: ^25.2.2
+        version: 25.2.2
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -50,8 +28,8 @@ importers:
   projects/helpers.js:
     devDependencies:
       '@types/node':
-        specifier: ^25.2.1
-        version: 25.2.1
+        specifier: ^25.2.2
+        version: 25.2.2
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -69,8 +47,8 @@ importers:
         version: link:../helpers.js
     devDependencies:
       '@types/node':
-        specifier: ^25.2.1
-        version: 25.2.1
+        specifier: ^25.2.2
+        version: 25.2.2
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -91,8 +69,8 @@ importers:
         version: link:../ppml.js
     devDependencies:
       '@types/node':
-        specifier: ^25.2.1
-        version: 25.2.1
+        specifier: ^25.2.2
+        version: 25.2.2
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -122,8 +100,8 @@ importers:
         version: 4.3.6
     devDependencies:
       '@types/node':
-        specifier: ^25.2.1
-        version: 25.2.1
+        specifier: ^25.2.2
+        version: 25.2.2
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -147,8 +125,8 @@ importers:
         version: link:../sexp.js
     devDependencies:
       '@types/node':
-        specifier: ^25.2.1
-        version: 25.2.1
+        specifier: ^25.2.2
+        version: 25.2.2
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -161,8 +139,8 @@ importers:
 
 packages:
 
-  '@types/node@25.2.1':
-    resolution: {integrity: sha512-CPrnr8voK8vC6eEtyRzvMpgp3VyVRhgclonE7qYi6P9sXwYb59ucfrnmFBTaP0yUi8Gk4yZg/LlTJULGxvTNsg==}
+  '@types/node@25.2.2':
+    resolution: {integrity: sha512-BkmoP5/FhRYek5izySdkOneRyXYN35I860MFAGupTdebyE66uZaR+bXLHq8k4DirE5DwQi3NuhvRU1jqTVwUrQ==}
 
   prettier-plugin-organize-imports@4.3.0:
     resolution: {integrity: sha512-FxFz0qFhyBsGdIsb697f/EkvHzi5SZOhWAjxcx2dLt+Q532bAlhswcXGYB1yzjZ69kW8UoadFBw7TyNwlq96Iw==}
@@ -192,7 +170,7 @@ packages:
 
 snapshots:
 
-  '@types/node@25.2.1':
+  '@types/node@25.2.2':
     dependencies:
       undici-types: 7.16.0
 
