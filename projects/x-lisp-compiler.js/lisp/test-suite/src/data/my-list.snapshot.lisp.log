@@ -1,0 +1,64 @@
+;;; Input
+
+(import-all "my-list")
+
+(define (main)
+  (println nil)
+  (println (li 1 (li 2 (li 3 nil)))))
+
+(define nil #nil)
+
+(define (li head tail) [#li head tail])
+
+;;; ShrinkPass
+
+(import-all "my-list")
+
+(define (main)
+  (begin (println nil) (println (li 1 (li 2 (li 3 nil))))))
+
+(define nil #nil)
+
+(define (li head tail) [#li head tail])
+
+;;; UniquifyPass
+
+(import-all "my-list")
+
+(define (main)
+  (begin (println nil) (println (li 1 (li 2 (li 3 nil))))))
+
+(define nil #nil)
+
+(define (li head tail) [#li head tail])
+
+;;; RevealGlobalPass
+
+(import-all "my-list")
+
+(define (main)
+  (begin (println nil) (println (li 1 (li 2 (li 3 nil))))))
+
+(define nil #nil)
+
+(define (li head tail) [#li head tail])
+
+;;; LiftLambdaPass
+
+(import-all "my-list")
+
+(define (main)
+  (begin (println nil) (println (li 1 (li 2 (li 3 nil))))))
+
+;;; UnnestOperandPass
+
+(import-all "my-list")
+
+(define (main)
+  (begin
+    (let ((_₁ nil)) (println _₁))
+    (let ((_₂ nil))
+      (let ((_₃ (li 3 _₂)))
+        (let ((_₄ (li 2 _₃)))
+          (let ((_₅ (li 1 _₄))) (println _₅)))))))
+

@@ -29,7 +29,7 @@ export type AboutData =
 ;; DataConstructor
 
 (define nil #nil)
-(define (li head tail) (#li head tail))
+(define (li head tail) [#li head tail])
 
 ;; DataGetter
 

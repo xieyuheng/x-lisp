@@ -51,7 +51,7 @@ export type FunctionDefinition = {
   name: string
   parameters: Array<string>
   body: Exp
-  meta: Meta
+  meta?: Meta
 }
 
 export function FunctionDefinition(
@@ -59,7 +59,7 @@ export function FunctionDefinition(
   name: string,
   parameters: Array<string>,
   body: Exp,
-  meta: Meta,
+  meta?: Meta,
 ): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
@@ -76,14 +76,14 @@ export type VariableDefinition = {
   mod: Mod
   name: string
   body: Exp
-  meta: Meta
+  meta?: Meta
 }
 
 export function VariableDefinition(
   mod: Mod,
   name: string,
   body: Exp,
-  meta: Meta,
+  meta?: Meta,
 ): VariableDefinition {
   return {
     kind: "VariableDefinition",

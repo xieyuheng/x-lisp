@@ -1,1 +1,11 @@
-(export)
+(export nil li)
+
+(define-variable nil (block body (return #nil)))
+
+(define-function (li head tail)
+  (block body
+    (= tael₁ (make-list))
+    (perform (list-push! #li tael₁))
+    (perform (list-push! head tael₁))
+    (perform (list-push! tail tael₁))
+    (return tael₁)))

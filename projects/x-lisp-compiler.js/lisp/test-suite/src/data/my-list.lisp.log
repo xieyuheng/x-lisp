@@ -1,24 +1,78 @@
 ;;; Input
 
-(export)
+(export nil li)
+
+(define nil #nil)
+
+(define (li head tail) [#li head tail])
 
 ;;; ShrinkPass
 
-(export)
+(export nil li)
+
+(define nil #nil)
+
+(define (li head tail)
+  (let ((tael (make-list)))
+    (begin
+      (list-push! #li tael)
+      (begin
+        (list-push! head tael)
+        (begin (list-push! tail tael) tael)))))
 
 ;;; UniquifyPass
 
-(export)
+(export nil li)
+
+(define nil #nil)
+
+(define (li head tail)
+  (let ((tael₁ (make-list)))
+    (begin
+      (list-push! #li tael₁)
+      (begin
+        (list-push! head tael₁)
+        (begin (list-push! tail tael₁) tael₁)))))
 
 ;;; RevealGlobalPass
 
-(export)
+(export nil li)
+
+(define nil #nil)
+
+(define (li head tail)
+  (let ((tael₁ (make-list)))
+    (begin
+      (list-push! #li tael₁)
+      (begin
+        (list-push! head tael₁)
+        (begin (list-push! tail tael₁) tael₁)))))
 
 ;;; LiftLambdaPass
 
-(export)
+(export nil li)
+
+(define nil #nil)
+
+(define (li head tail)
+  (let ((tael₁ (make-list)))
+    (begin
+      (list-push! #li tael₁)
+      (begin
+        (list-push! head tael₁)
+        (begin (list-push! tail tael₁) tael₁)))))
 
 ;;; UnnestOperandPass
 
-(export)
+(export nil li)
+
+(define nil #nil)
+
+(define (li head tail)
+  (let ((tael₁ (make-list)))
+    (begin
+      (list-push! #li tael₁)
+      (begin
+        (list-push! head tael₁)
+        (begin (list-push! tail tael₁) tael₁)))))
 
