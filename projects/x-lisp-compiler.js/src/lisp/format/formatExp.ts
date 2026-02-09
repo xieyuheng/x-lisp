@@ -90,7 +90,7 @@ export function formatExp(exp: Exp): string {
 
     case "Begin1": {
       const head = formatExp(exp.head)
-      const body = formatExp(exp.body)
+      const body = formatBegin1Body(exp.body)
       return `(begin ${head} ${body})`
     }
 
@@ -184,4 +184,12 @@ export function formatBody(body: Exp): string {
 
 function formatCondLine(condLine: Exps.CondLine): string {
   return `(${formatExp(condLine.question)} ${formatExp(condLine.answer)})`
+}
+
+function formatBegin1Body(body: Exp): string {
+  if (body.kind === "Begin1") {
+    return `${formatExp(body.head)} ${formatBegin1Body(body.body)}`
+  } else {
+    return formatExp(body)
+  }
 }

@@ -18,65 +18,55 @@
   (let ((list (make-list)))
     (begin
       (list-push! 1 list)
-      (begin
-        (list-push! 2 list)
-        (begin
-          (list-push! 3 list)
+      (list-push! 2 list)
+      (list-push! 3 list)
+      (assert-equal
+        (let ((tael (make-list)))
           (begin
-            (assert-equal
-              (let ((tael (make-list)))
-                (begin
-                  (list-push! 1 tael)
-                  (begin
-                    (list-push! 2 tael)
-                    (begin (list-push! 3 tael) tael))))
-              list)
-            (begin
-              (assert-equal
-                (let ((tael (make-list)))
-                  (begin
-                    (list-push! 1 tael)
-                    (begin
-                      (list-push! 2 tael)
-                      (begin (list-push! 3 tael) tael))))
-                (let ((tael (make-list)))
-                  (begin
-                    (list-push! 1 tael)
-                    (begin
-                      (list-push! 2 tael)
-                      (begin (list-push! 3 tael) tael)))))
-              (begin
-                (assert-equal
-                  (let ((tael (make-list)))
-                    (begin
-                      (list-push! 'a tael)
-                      (begin
-                        (list-push! 'b tael)
-                        (begin (list-push! 'c tael) tael))))
-                  (let ((tael (make-list)))
-                    (begin
-                      (list-push! 'a tael)
-                      (begin
-                        (list-push! 'b tael)
-                        (begin (list-push! 'c tael) tael)))))
-                (begin
-                  (assert-equal
-                    3
-                    (list-length
-                     (let ((tael (make-list)))
-                       (begin
-                         (list-push! 1 tael)
-                         (begin
-                           (list-push! 2 tael)
-                           (begin (list-push! 3 tael) tael))))))
-                  (begin
-                    (assert-equal
-                      0
-                      (list-length
-                       (let ((tael (make-list))) tael)))
-                    (assert
-                      (list-empty?
-                       (let ((tael (make-list))) tael)))))))))))))
+            (list-push! 1 tael)
+            (list-push! 2 tael)
+            (list-push! 3 tael)
+            tael))
+        list)
+      (assert-equal
+        (let ((tael (make-list)))
+          (begin
+            (list-push! 1 tael)
+            (list-push! 2 tael)
+            (list-push! 3 tael)
+            tael))
+        (let ((tael (make-list)))
+          (begin
+            (list-push! 1 tael)
+            (list-push! 2 tael)
+            (list-push! 3 tael)
+            tael)))
+      (assert-equal
+        (let ((tael (make-list)))
+          (begin
+            (list-push! 'a tael)
+            (list-push! 'b tael)
+            (list-push! 'c tael)
+            tael))
+        (let ((tael (make-list)))
+          (begin
+            (list-push! 'a tael)
+            (list-push! 'b tael)
+            (list-push! 'c tael)
+            tael)))
+      (assert-equal
+        3
+        (list-length
+         (let ((tael (make-list)))
+           (begin
+             (list-push! 1 tael)
+             (list-push! 2 tael)
+             (list-push! 3 tael)
+             tael))))
+      (assert-equal
+        0
+        (list-length (let ((tael (make-list))) tael)))
+      (assert (list-empty? (let ((tael (make-list))) tael))))))
 
 ;;; UniquifyPass
 
@@ -84,67 +74,56 @@
   (let ((list₁ (make-list)))
     (begin
       (list-push! 1 list₁)
-      (begin
-        (list-push! 2 list₁)
-        (begin
-          (list-push! 3 list₁)
+      (list-push! 2 list₁)
+      (list-push! 3 list₁)
+      (assert-equal
+        (let ((tael₁ (make-list)))
           (begin
-            (assert-equal
-              (let ((tael₁ (make-list)))
-                (begin
-                  (list-push! 1 tael₁)
-                  (begin
-                    (list-push! 2 tael₁)
-                    (begin (list-push! 3 tael₁) tael₁))))
-              list₁)
-            (begin
-              (assert-equal
-                (let ((tael₁ (make-list)))
-                  (begin
-                    (list-push! 1 tael₁)
-                    (begin
-                      (list-push! 2 tael₁)
-                      (begin (list-push! 3 tael₁) tael₁))))
-                (let ((tael₁ (make-list)))
-                  (begin
-                    (list-push! 1 tael₁)
-                    (begin
-                      (list-push! 2 tael₁)
-                      (begin (list-push! 3 tael₁) tael₁)))))
-              (begin
-                (assert-equal
-                  (let ((tael₁ (make-list)))
-                    (begin
-                      (list-push! 'a tael₁)
-                      (begin
-                        (list-push! 'b tael₁)
-                        (begin (list-push! 'c tael₁) tael₁))))
-                  (let ((tael₁ (make-list)))
-                    (begin
-                      (list-push! 'a tael₁)
-                      (begin
-                        (list-push! 'b tael₁)
-                        (begin (list-push! 'c tael₁) tael₁)))))
-                (begin
-                  (assert-equal
-                    3
-                    (list-length
-                     (let ((tael₁ (make-list)))
-                       (begin
-                         (list-push! 1 tael₁)
-                         (begin
-                           (list-push! 2 tael₁)
-                           (begin
-                             (list-push! 3 tael₁)
-                             tael₁))))))
-                  (begin
-                    (assert-equal
-                      0
-                      (list-length
-                       (let ((tael₁ (make-list))) tael₁)))
-                    (assert
-                      (list-empty?
-                       (let ((tael₁ (make-list))) tael₁)))))))))))))
+            (list-push! 1 tael₁)
+            (list-push! 2 tael₁)
+            (list-push! 3 tael₁)
+            tael₁))
+        list₁)
+      (assert-equal
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 1 tael₁)
+            (list-push! 2 tael₁)
+            (list-push! 3 tael₁)
+            tael₁))
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 1 tael₁)
+            (list-push! 2 tael₁)
+            (list-push! 3 tael₁)
+            tael₁)))
+      (assert-equal
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 'a tael₁)
+            (list-push! 'b tael₁)
+            (list-push! 'c tael₁)
+            tael₁))
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 'a tael₁)
+            (list-push! 'b tael₁)
+            (list-push! 'c tael₁)
+            tael₁)))
+      (assert-equal
+        3
+        (list-length
+         (let ((tael₁ (make-list)))
+           (begin
+             (list-push! 1 tael₁)
+             (list-push! 2 tael₁)
+             (list-push! 3 tael₁)
+             tael₁))))
+      (assert-equal
+        0
+        (list-length (let ((tael₁ (make-list))) tael₁)))
+      (assert
+        (list-empty? (let ((tael₁ (make-list))) tael₁))))))
 
 ;;; RevealGlobalPass
 
@@ -152,67 +131,56 @@
   (let ((list₁ (make-list)))
     (begin
       (list-push! 1 list₁)
-      (begin
-        (list-push! 2 list₁)
-        (begin
-          (list-push! 3 list₁)
+      (list-push! 2 list₁)
+      (list-push! 3 list₁)
+      (assert-equal
+        (let ((tael₁ (make-list)))
           (begin
-            (assert-equal
-              (let ((tael₁ (make-list)))
-                (begin
-                  (list-push! 1 tael₁)
-                  (begin
-                    (list-push! 2 tael₁)
-                    (begin (list-push! 3 tael₁) tael₁))))
-              list₁)
-            (begin
-              (assert-equal
-                (let ((tael₁ (make-list)))
-                  (begin
-                    (list-push! 1 tael₁)
-                    (begin
-                      (list-push! 2 tael₁)
-                      (begin (list-push! 3 tael₁) tael₁))))
-                (let ((tael₁ (make-list)))
-                  (begin
-                    (list-push! 1 tael₁)
-                    (begin
-                      (list-push! 2 tael₁)
-                      (begin (list-push! 3 tael₁) tael₁)))))
-              (begin
-                (assert-equal
-                  (let ((tael₁ (make-list)))
-                    (begin
-                      (list-push! 'a tael₁)
-                      (begin
-                        (list-push! 'b tael₁)
-                        (begin (list-push! 'c tael₁) tael₁))))
-                  (let ((tael₁ (make-list)))
-                    (begin
-                      (list-push! 'a tael₁)
-                      (begin
-                        (list-push! 'b tael₁)
-                        (begin (list-push! 'c tael₁) tael₁)))))
-                (begin
-                  (assert-equal
-                    3
-                    (list-length
-                     (let ((tael₁ (make-list)))
-                       (begin
-                         (list-push! 1 tael₁)
-                         (begin
-                           (list-push! 2 tael₁)
-                           (begin
-                             (list-push! 3 tael₁)
-                             tael₁))))))
-                  (begin
-                    (assert-equal
-                      0
-                      (list-length
-                       (let ((tael₁ (make-list))) tael₁)))
-                    (assert
-                      (list-empty?
-                       (let ((tael₁ (make-list))) tael₁)))))))))))))
+            (list-push! 1 tael₁)
+            (list-push! 2 tael₁)
+            (list-push! 3 tael₁)
+            tael₁))
+        list₁)
+      (assert-equal
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 1 tael₁)
+            (list-push! 2 tael₁)
+            (list-push! 3 tael₁)
+            tael₁))
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 1 tael₁)
+            (list-push! 2 tael₁)
+            (list-push! 3 tael₁)
+            tael₁)))
+      (assert-equal
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 'a tael₁)
+            (list-push! 'b tael₁)
+            (list-push! 'c tael₁)
+            tael₁))
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 'a tael₁)
+            (list-push! 'b tael₁)
+            (list-push! 'c tael₁)
+            tael₁)))
+      (assert-equal
+        3
+        (list-length
+         (let ((tael₁ (make-list)))
+           (begin
+             (list-push! 1 tael₁)
+             (list-push! 2 tael₁)
+             (list-push! 3 tael₁)
+             tael₁))))
+      (assert-equal
+        0
+        (list-length (let ((tael₁ (make-list))) tael₁)))
+      (assert
+        (list-empty? (let ((tael₁ (make-list))) tael₁))))))
 
 ;;; LiftLambdaPass
 
@@ -220,67 +188,56 @@
   (let ((list₁ (make-list)))
     (begin
       (list-push! 1 list₁)
-      (begin
-        (list-push! 2 list₁)
-        (begin
-          (list-push! 3 list₁)
+      (list-push! 2 list₁)
+      (list-push! 3 list₁)
+      (assert-equal
+        (let ((tael₁ (make-list)))
           (begin
-            (assert-equal
-              (let ((tael₁ (make-list)))
-                (begin
-                  (list-push! 1 tael₁)
-                  (begin
-                    (list-push! 2 tael₁)
-                    (begin (list-push! 3 tael₁) tael₁))))
-              list₁)
-            (begin
-              (assert-equal
-                (let ((tael₁ (make-list)))
-                  (begin
-                    (list-push! 1 tael₁)
-                    (begin
-                      (list-push! 2 tael₁)
-                      (begin (list-push! 3 tael₁) tael₁))))
-                (let ((tael₁ (make-list)))
-                  (begin
-                    (list-push! 1 tael₁)
-                    (begin
-                      (list-push! 2 tael₁)
-                      (begin (list-push! 3 tael₁) tael₁)))))
-              (begin
-                (assert-equal
-                  (let ((tael₁ (make-list)))
-                    (begin
-                      (list-push! 'a tael₁)
-                      (begin
-                        (list-push! 'b tael₁)
-                        (begin (list-push! 'c tael₁) tael₁))))
-                  (let ((tael₁ (make-list)))
-                    (begin
-                      (list-push! 'a tael₁)
-                      (begin
-                        (list-push! 'b tael₁)
-                        (begin (list-push! 'c tael₁) tael₁)))))
-                (begin
-                  (assert-equal
-                    3
-                    (list-length
-                     (let ((tael₁ (make-list)))
-                       (begin
-                         (list-push! 1 tael₁)
-                         (begin
-                           (list-push! 2 tael₁)
-                           (begin
-                             (list-push! 3 tael₁)
-                             tael₁))))))
-                  (begin
-                    (assert-equal
-                      0
-                      (list-length
-                       (let ((tael₁ (make-list))) tael₁)))
-                    (assert
-                      (list-empty?
-                       (let ((tael₁ (make-list))) tael₁)))))))))))))
+            (list-push! 1 tael₁)
+            (list-push! 2 tael₁)
+            (list-push! 3 tael₁)
+            tael₁))
+        list₁)
+      (assert-equal
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 1 tael₁)
+            (list-push! 2 tael₁)
+            (list-push! 3 tael₁)
+            tael₁))
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 1 tael₁)
+            (list-push! 2 tael₁)
+            (list-push! 3 tael₁)
+            tael₁)))
+      (assert-equal
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 'a tael₁)
+            (list-push! 'b tael₁)
+            (list-push! 'c tael₁)
+            tael₁))
+        (let ((tael₁ (make-list)))
+          (begin
+            (list-push! 'a tael₁)
+            (list-push! 'b tael₁)
+            (list-push! 'c tael₁)
+            tael₁)))
+      (assert-equal
+        3
+        (list-length
+         (let ((tael₁ (make-list)))
+           (begin
+             (list-push! 1 tael₁)
+             (list-push! 2 tael₁)
+             (list-push! 3 tael₁)
+             tael₁))))
+      (assert-equal
+        0
+        (list-length (let ((tael₁ (make-list))) tael₁)))
+      (assert
+        (list-empty? (let ((tael₁ (make-list))) tael₁))))))
 
 ;;; UnnestOperandPass
 
@@ -288,66 +245,45 @@
   (let ((list₁ (make-list)))
     (begin
       (list-push! 1 list₁)
-      (begin
-        (list-push! 2 list₁)
+      (list-push! 2 list₁)
+      (list-push! 3 list₁)
+      (let ((tael₁ (make-list)))
         (begin
-          (list-push! 3 list₁)
-          (begin
-            (let ((tael₁ (make-list)))
-              (begin
-                (list-push! 1 tael₁)
-                (begin
-                  (list-push! 2 tael₁)
-                  (begin
-                    (list-push! 3 tael₁)
-                    (assert-equal tael₁ list₁)))))
+          (list-push! 1 tael₁)
+          (list-push! 2 tael₁)
+          (list-push! 3 tael₁)
+          (assert-equal tael₁ list₁)))
+      (let ((tael₁ (make-list)))
+        (begin
+          (list-push! 1 tael₁)
+          (list-push! 2 tael₁)
+          (list-push! 3 tael₁)
+          (let ((tael₁ (make-list)))
             (begin
-              (let ((tael₁ (make-list)))
-                (begin
-                  (list-push! 1 tael₁)
-                  (begin
-                    (list-push! 2 tael₁)
-                    (begin
-                      (list-push! 3 tael₁)
-                      (let ((tael₁ (make-list)))
-                        (begin
-                          (list-push! 1 tael₁)
-                          (begin
-                            (list-push! 2 tael₁)
-                            (begin
-                              (list-push! 3 tael₁)
-                              (assert-equal tael₁ tael₁)))))))))
-              (begin
-                (let ((tael₁ (make-list)))
-                  (begin
-                    (list-push! 'a tael₁)
-                    (begin
-                      (list-push! 'b tael₁)
-                      (begin
-                        (list-push! 'c tael₁)
-                        (let ((tael₁ (make-list)))
-                          (begin
-                            (list-push! 'a tael₁)
-                            (begin
-                              (list-push! 'b tael₁)
-                              (begin
-                                (list-push! 'c tael₁)
-                                (assert-equal tael₁ tael₁)))))))))
-                (begin
-                  (let ((tael₁ (make-list)))
-                    (begin
-                      (list-push! 1 tael₁)
-                      (begin
-                        (list-push! 2 tael₁)
-                        (begin
-                          (list-push! 3 tael₁)
-                          (let ((_₁ (list-length tael₁)))
-                            (assert-equal 3 _₁))))))
-                  (begin
-                    (let ((tael₁ (make-list)))
-                      (let ((_₂ (list-length tael₁)))
-                        (assert-equal 0 _₂)))
-                    (let ((tael₁ (make-list)))
-                      (let ((_₃ (list-empty? tael₁)))
-                        (assert _₃)))))))))))))
+              (list-push! 1 tael₁)
+              (list-push! 2 tael₁)
+              (list-push! 3 tael₁)
+              (assert-equal tael₁ tael₁)))))
+      (let ((tael₁ (make-list)))
+        (begin
+          (list-push! 'a tael₁)
+          (list-push! 'b tael₁)
+          (list-push! 'c tael₁)
+          (let ((tael₁ (make-list)))
+            (begin
+              (list-push! 'a tael₁)
+              (list-push! 'b tael₁)
+              (list-push! 'c tael₁)
+              (assert-equal tael₁ tael₁)))))
+      (let ((tael₁ (make-list)))
+        (begin
+          (list-push! 1 tael₁)
+          (list-push! 2 tael₁)
+          (list-push! 3 tael₁)
+          (let ((_₁ (list-length tael₁)))
+            (assert-equal 3 _₁))))
+      (let ((tael₁ (make-list)))
+        (let ((_₂ (list-length tael₁))) (assert-equal 0 _₂)))
+      (let ((tael₁ (make-list)))
+        (let ((_₃ (list-empty? tael₁))) (assert _₃))))))
 

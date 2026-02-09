@@ -10,16 +10,16 @@
      (let ((set (make-set)))
        (begin
          (set-add! 1 set)
-         (begin
-           (set-add! 2 set)
-           (begin (set-add! 3 set) set)))))
+         (set-add! 2 set)
+         (set-add! 3 set)
+         set)))
     (println
      (let ((set (make-set)))
        (begin
          (set-add! 1 set)
-         (begin
-           (set-add! 2 set)
-           (begin (set-add! 3 set) set)))))))
+         (set-add! 2 set)
+         (set-add! 3 set)
+         set)))))
 
 ;;; UniquifyPass
 
@@ -29,16 +29,16 @@
      (let ((set₁ (make-set)))
        (begin
          (set-add! 1 set₁)
-         (begin
-           (set-add! 2 set₁)
-           (begin (set-add! 3 set₁) set₁)))))
+         (set-add! 2 set₁)
+         (set-add! 3 set₁)
+         set₁)))
     (println
      (let ((set₁ (make-set)))
        (begin
          (set-add! 1 set₁)
-         (begin
-           (set-add! 2 set₁)
-           (begin (set-add! 3 set₁) set₁)))))))
+         (set-add! 2 set₁)
+         (set-add! 3 set₁)
+         set₁)))))
 
 ;;; RevealGlobalPass
 
@@ -48,16 +48,16 @@
      (let ((set₁ (make-set)))
        (begin
          (set-add! 1 set₁)
-         (begin
-           (set-add! 2 set₁)
-           (begin (set-add! 3 set₁) set₁)))))
+         (set-add! 2 set₁)
+         (set-add! 3 set₁)
+         set₁)))
     (println
      (let ((set₁ (make-set)))
        (begin
          (set-add! 1 set₁)
-         (begin
-           (set-add! 2 set₁)
-           (begin (set-add! 3 set₁) set₁)))))))
+         (set-add! 2 set₁)
+         (set-add! 3 set₁)
+         set₁)))))
 
 ;;; LiftLambdaPass
 
@@ -67,16 +67,16 @@
      (let ((set₁ (make-set)))
        (begin
          (set-add! 1 set₁)
-         (begin
-           (set-add! 2 set₁)
-           (begin (set-add! 3 set₁) set₁)))))
+         (set-add! 2 set₁)
+         (set-add! 3 set₁)
+         set₁)))
     (println
      (let ((set₁ (make-set)))
        (begin
          (set-add! 1 set₁)
-         (begin
-           (set-add! 2 set₁)
-           (begin (set-add! 3 set₁) set₁)))))))
+         (set-add! 2 set₁)
+         (set-add! 3 set₁)
+         set₁)))))
 
 ;;; UnnestOperandPass
 
@@ -85,13 +85,13 @@
     (let ((set₁ (make-set)))
       (begin
         (set-add! 1 set₁)
-        (begin
-          (set-add! 2 set₁)
-          (begin (set-add! 3 set₁) (println set₁)))))
+        (set-add! 2 set₁)
+        (set-add! 3 set₁)
+        (println set₁)))
     (let ((set₁ (make-set)))
       (begin
         (set-add! 1 set₁)
-        (begin
-          (set-add! 2 set₁)
-          (begin (set-add! 3 set₁) (println set₁)))))))
+        (set-add! 2 set₁)
+        (set-add! 3 set₁)
+        (println set₁)))))
 

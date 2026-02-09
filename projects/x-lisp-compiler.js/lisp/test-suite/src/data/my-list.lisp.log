@@ -78,9 +78,9 @@
   (let ((tael (make-list)))
     (begin
       (list-push! #li tael)
-      (begin
-        (list-push! head tael)
-        (begin (list-push! tail tael) tael)))))
+      (list-push! head tael)
+      (list-push! tail tael)
+      tael)))
 
 (define (li? value)
   (if (any-list? value)
@@ -137,9 +137,9 @@
   (let ((tael₁ (make-list)))
     (begin
       (list-push! #li tael₁)
-      (begin
-        (list-push! head tael₁)
-        (begin (list-push! tail tael₁) tael₁)))))
+      (list-push! head tael₁)
+      (list-push! tail tael₁)
+      tael₁)))
 
 (define (li? value)
   (if (any-list? value)
@@ -196,9 +196,9 @@
   (let ((tael₁ (make-list)))
     (begin
       (list-push! #li tael₁)
-      (begin
-        (list-push! head tael₁)
-        (begin (list-push! tail tael₁) tael₁)))))
+      (list-push! head tael₁)
+      (list-push! tail tael₁)
+      tael₁)))
 
 (define (li? value)
   (if (any-list? value)
@@ -255,9 +255,9 @@
   (let ((tael₁ (make-list)))
     (begin
       (list-push! #li tael₁)
-      (begin
-        (list-push! head tael₁)
-        (begin (list-push! tail tael₁) tael₁)))))
+      (list-push! head tael₁)
+      (list-push! tail tael₁)
+      tael₁)))
 
 (define (li? value)
   (if (any-list? value)
@@ -315,9 +315,9 @@
   (let ((tael₁ (make-list)))
     (begin
       (list-push! #li tael₁)
-      (begin
-        (list-push! head tael₁)
-        (begin (list-push! tail tael₁) tael₁)))))
+      (list-push! head tael₁)
+      (list-push! tail tael₁)
+      tael₁)))
 
 (define (li? value)
   (if (any-list? value)

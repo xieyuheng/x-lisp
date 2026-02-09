@@ -13,78 +13,58 @@
 (define (main)
   (begin
     (assert-equal iadd iadd)
-    (begin
-      (assert-equal (iadd 1) (iadd 1))
-      (begin
-        (assert-not-equal (iadd 1) (iadd 2))
-        (begin
-          (assert-equal ((iadd 1) 2) (iadd 1 2))
-          (begin
-            (assert-equal 1 ((isub 2) 1))
-            (assert-equal 1 (isub 2 1))))))))
+    (assert-equal (iadd 1) (iadd 1))
+    (assert-not-equal (iadd 1) (iadd 2))
+    (assert-equal ((iadd 1) 2) (iadd 1 2))
+    (assert-equal 1 ((isub 2) 1))
+    (assert-equal 1 (isub 2 1))))
 
 ;;; UniquifyPass
 
 (define (main)
   (begin
     (assert-equal iadd iadd)
-    (begin
-      (assert-equal (iadd 1) (iadd 1))
-      (begin
-        (assert-not-equal (iadd 1) (iadd 2))
-        (begin
-          (assert-equal ((iadd 1) 2) (iadd 1 2))
-          (begin
-            (assert-equal 1 ((isub 2) 1))
-            (assert-equal 1 (isub 2 1))))))))
+    (assert-equal (iadd 1) (iadd 1))
+    (assert-not-equal (iadd 1) (iadd 2))
+    (assert-equal ((iadd 1) 2) (iadd 1 2))
+    (assert-equal 1 ((isub 2) 1))
+    (assert-equal 1 (isub 2 1))))
 
 ;;; RevealGlobalPass
 
 (define (main)
   (begin
     (assert-equal iadd iadd)
-    (begin
-      (assert-equal (iadd 1) (iadd 1))
-      (begin
-        (assert-not-equal (iadd 1) (iadd 2))
-        (begin
-          (assert-equal ((iadd 1) 2) (iadd 1 2))
-          (begin
-            (assert-equal 1 ((isub 2) 1))
-            (assert-equal 1 (isub 2 1))))))))
+    (assert-equal (iadd 1) (iadd 1))
+    (assert-not-equal (iadd 1) (iadd 2))
+    (assert-equal ((iadd 1) 2) (iadd 1 2))
+    (assert-equal 1 ((isub 2) 1))
+    (assert-equal 1 (isub 2 1))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (begin
     (assert-equal iadd iadd)
-    (begin
-      (assert-equal (iadd 1) (iadd 1))
-      (begin
-        (assert-not-equal (iadd 1) (iadd 2))
-        (begin
-          (assert-equal ((iadd 1) 2) (iadd 1 2))
-          (begin
-            (assert-equal 1 ((isub 2) 1))
-            (assert-equal 1 (isub 2 1))))))))
+    (assert-equal (iadd 1) (iadd 1))
+    (assert-not-equal (iadd 1) (iadd 2))
+    (assert-equal ((iadd 1) 2) (iadd 1 2))
+    (assert-equal 1 ((isub 2) 1))
+    (assert-equal 1 (isub 2 1))))
 
 ;;; UnnestOperandPass
 
 (define (main)
   (begin
     (assert-equal iadd iadd)
-    (begin
-      (let ((_₁ (iadd 1)))
-        (let ((_₂ (iadd 1))) (assert-equal _₁ _₂)))
-      (begin
-        (let ((_₃ (iadd 1)))
-          (let ((_₄ (iadd 2))) (assert-not-equal _₃ _₄)))
-        (begin
-          (let ((_₅ (iadd 1)))
-            (let ((_₆ (_₅ 2)))
-              (let ((_₇ (iadd 1 2))) (assert-equal _₆ _₇))))
-          (begin
-            (let ((_₈ (isub 2)))
-              (let ((_₉ (_₈ 1))) (assert-equal 1 _₉)))
-            (let ((_₁₀ (isub 2 1))) (assert-equal 1 _₁₀))))))))
+    (let ((_₁ (iadd 1)))
+      (let ((_₂ (iadd 1))) (assert-equal _₁ _₂)))
+    (let ((_₃ (iadd 1)))
+      (let ((_₄ (iadd 2))) (assert-not-equal _₃ _₄)))
+    (let ((_₅ (iadd 1)))
+      (let ((_₆ (_₅ 2)))
+        (let ((_₇ (iadd 1 2))) (assert-equal _₆ _₇))))
+    (let ((_₈ (isub 2)))
+      (let ((_₉ (_₈ 1))) (assert-equal 1 _₉)))
+    (let ((_₁₀ (isub 2 1))) (assert-equal 1 _₁₀))))
 

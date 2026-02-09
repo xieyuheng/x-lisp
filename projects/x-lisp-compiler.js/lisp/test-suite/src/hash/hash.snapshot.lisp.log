@@ -11,90 +11,85 @@
 (define (main)
   (begin
     (println (let ((hash (make-hash))) hash))
-    (begin
-      (println
-       (let ((hash (make-hash)))
-         (begin (hash-put! 1 2 hash) hash)))
-      (begin
-        (println
-         (let ((hash (make-hash)))
-           (begin (hash-put! 1 3 hash) hash)))
-        (println
-         (let ((hash (make-hash)))
-           (begin
-             (hash-put! 1 2 hash)
-             (begin (hash-put! 3 4 hash) hash))))))))
+    (println
+     (let ((hash (make-hash)))
+       (begin (hash-put! 1 2 hash) hash)))
+    (println
+     (let ((hash (make-hash)))
+       (begin (hash-put! 1 3 hash) hash)))
+    (println
+     (let ((hash (make-hash)))
+       (begin
+         (hash-put! 1 2 hash)
+         (hash-put! 3 4 hash)
+         hash)))))
 
 ;;; UniquifyPass
 
 (define (main)
   (begin
     (println (let ((hash₁ (make-hash))) hash₁))
-    (begin
-      (println
-       (let ((hash₁ (make-hash)))
-         (begin (hash-put! 1 2 hash₁) hash₁)))
-      (begin
-        (println
-         (let ((hash₁ (make-hash)))
-           (begin (hash-put! 1 3 hash₁) hash₁)))
-        (println
-         (let ((hash₁ (make-hash)))
-           (begin
-             (hash-put! 1 2 hash₁)
-             (begin (hash-put! 3 4 hash₁) hash₁))))))))
+    (println
+     (let ((hash₁ (make-hash)))
+       (begin (hash-put! 1 2 hash₁) hash₁)))
+    (println
+     (let ((hash₁ (make-hash)))
+       (begin (hash-put! 1 3 hash₁) hash₁)))
+    (println
+     (let ((hash₁ (make-hash)))
+       (begin
+         (hash-put! 1 2 hash₁)
+         (hash-put! 3 4 hash₁)
+         hash₁)))))
 
 ;;; RevealGlobalPass
 
 (define (main)
   (begin
     (println (let ((hash₁ (make-hash))) hash₁))
-    (begin
-      (println
-       (let ((hash₁ (make-hash)))
-         (begin (hash-put! 1 2 hash₁) hash₁)))
-      (begin
-        (println
-         (let ((hash₁ (make-hash)))
-           (begin (hash-put! 1 3 hash₁) hash₁)))
-        (println
-         (let ((hash₁ (make-hash)))
-           (begin
-             (hash-put! 1 2 hash₁)
-             (begin (hash-put! 3 4 hash₁) hash₁))))))))
+    (println
+     (let ((hash₁ (make-hash)))
+       (begin (hash-put! 1 2 hash₁) hash₁)))
+    (println
+     (let ((hash₁ (make-hash)))
+       (begin (hash-put! 1 3 hash₁) hash₁)))
+    (println
+     (let ((hash₁ (make-hash)))
+       (begin
+         (hash-put! 1 2 hash₁)
+         (hash-put! 3 4 hash₁)
+         hash₁)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (begin
     (println (let ((hash₁ (make-hash))) hash₁))
-    (begin
-      (println
-       (let ((hash₁ (make-hash)))
-         (begin (hash-put! 1 2 hash₁) hash₁)))
-      (begin
-        (println
-         (let ((hash₁ (make-hash)))
-           (begin (hash-put! 1 3 hash₁) hash₁)))
-        (println
-         (let ((hash₁ (make-hash)))
-           (begin
-             (hash-put! 1 2 hash₁)
-             (begin (hash-put! 3 4 hash₁) hash₁))))))))
+    (println
+     (let ((hash₁ (make-hash)))
+       (begin (hash-put! 1 2 hash₁) hash₁)))
+    (println
+     (let ((hash₁ (make-hash)))
+       (begin (hash-put! 1 3 hash₁) hash₁)))
+    (println
+     (let ((hash₁ (make-hash)))
+       (begin
+         (hash-put! 1 2 hash₁)
+         (hash-put! 3 4 hash₁)
+         hash₁)))))
 
 ;;; UnnestOperandPass
 
 (define (main)
   (begin
     (let ((hash₁ (make-hash))) (println hash₁))
-    (begin
-      (let ((hash₁ (make-hash)))
-        (begin (hash-put! 1 2 hash₁) (println hash₁)))
+    (let ((hash₁ (make-hash)))
+      (begin (hash-put! 1 2 hash₁) (println hash₁)))
+    (let ((hash₁ (make-hash)))
+      (begin (hash-put! 1 3 hash₁) (println hash₁)))
+    (let ((hash₁ (make-hash)))
       (begin
-        (let ((hash₁ (make-hash)))
-          (begin (hash-put! 1 3 hash₁) (println hash₁)))
-        (let ((hash₁ (make-hash)))
-          (begin
-            (hash-put! 1 2 hash₁)
-            (begin (hash-put! 3 4 hash₁) (println hash₁))))))))
+        (hash-put! 1 2 hash₁)
+        (hash-put! 3 4 hash₁)
+        (println hash₁)))))
 

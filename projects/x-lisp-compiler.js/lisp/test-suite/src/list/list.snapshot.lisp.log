@@ -19,63 +19,51 @@
   (let ((list (make-list)))
     (begin
       (list-push! 1 list)
-      (begin
-        (list-push! 2 list)
-        (begin
-          (list-push! 3 list)
-          (begin
-            (println list)
-            (begin
-              (println
-               (let ((tael (make-list)))
-                 (begin
-                   (list-push! 1 tael)
-                   (begin
-                     (list-push! 2 tael)
-                     (begin (list-push! 3 tael) tael)))))
-              (begin
-                (println
-                 (let ((tael (make-list)))
-                   (begin
-                     (list-push! 1 tael)
-                     (begin
-                       (list-push! 2 tael)
-                       (begin (list-push! 3 tael) tael)))))
-                (begin
-                  (println
-                   (let ((tael (make-list)))
-                     (begin
-                       (list-push! 1 tael)
-                       (begin
-                         (list-push! 2 tael)
-                         (begin (list-push! 3 tael) tael)))))
-                  (begin
-                    (println
-                     (let ((tael (make-list)))
-                       (begin
-                         (list-push! 1 tael)
-                         (begin
-                           (list-push! 2 tael)
-                           (begin (list-push! 3 tael) tael)))))
-                    (begin
-                      (println
-                       (let ((tael (make-list)))
-                         (begin
-                           (list-push! 'a tael)
-                           (begin
-                             (list-push! 'b tael)
-                             (begin
-                               (list-push! 'c tael)
-                               tael)))))
-                      (println
-                       (let ((tael (make-list)))
-                         (begin
-                           (list-push! 'a tael)
-                           (begin
-                             (list-push! 'b tael)
-                             (begin
-                               (list-push! 'c tael)
-                               tael))))))))))))))))
+      (list-push! 2 list)
+      (list-push! 3 list)
+      (println list)
+      (println
+       (let ((tael (make-list)))
+         (begin
+           (list-push! 1 tael)
+           (list-push! 2 tael)
+           (list-push! 3 tael)
+           tael)))
+      (println
+       (let ((tael (make-list)))
+         (begin
+           (list-push! 1 tael)
+           (list-push! 2 tael)
+           (list-push! 3 tael)
+           tael)))
+      (println
+       (let ((tael (make-list)))
+         (begin
+           (list-push! 1 tael)
+           (list-push! 2 tael)
+           (list-push! 3 tael)
+           tael)))
+      (println
+       (let ((tael (make-list)))
+         (begin
+           (list-push! 1 tael)
+           (list-push! 2 tael)
+           (list-push! 3 tael)
+           tael)))
+      (println
+       (let ((tael (make-list)))
+         (begin
+           (list-push! 'a tael)
+           (list-push! 'b tael)
+           (list-push! 'c tael)
+           tael)))
+      (println
+       (let ((tael (make-list)))
+         (begin
+           (list-push! 'a tael)
+           (list-push! 'b tael)
+           (list-push! 'c tael)
+           tael))))))
 
 ;;; UniquifyPass
 
@@ -83,65 +71,51 @@
   (let ((list₁ (make-list)))
     (begin
       (list-push! 1 list₁)
-      (begin
-        (list-push! 2 list₁)
-        (begin
-          (list-push! 3 list₁)
-          (begin
-            (println list₁)
-            (begin
-              (println
-               (let ((tael₁ (make-list)))
-                 (begin
-                   (list-push! 1 tael₁)
-                   (begin
-                     (list-push! 2 tael₁)
-                     (begin (list-push! 3 tael₁) tael₁)))))
-              (begin
-                (println
-                 (let ((tael₁ (make-list)))
-                   (begin
-                     (list-push! 1 tael₁)
-                     (begin
-                       (list-push! 2 tael₁)
-                       (begin (list-push! 3 tael₁) tael₁)))))
-                (begin
-                  (println
-                   (let ((tael₁ (make-list)))
-                     (begin
-                       (list-push! 1 tael₁)
-                       (begin
-                         (list-push! 2 tael₁)
-                         (begin (list-push! 3 tael₁) tael₁)))))
-                  (begin
-                    (println
-                     (let ((tael₁ (make-list)))
-                       (begin
-                         (list-push! 1 tael₁)
-                         (begin
-                           (list-push! 2 tael₁)
-                           (begin
-                             (list-push! 3 tael₁)
-                             tael₁)))))
-                    (begin
-                      (println
-                       (let ((tael₁ (make-list)))
-                         (begin
-                           (list-push! 'a tael₁)
-                           (begin
-                             (list-push! 'b tael₁)
-                             (begin
-                               (list-push! 'c tael₁)
-                               tael₁)))))
-                      (println
-                       (let ((tael₁ (make-list)))
-                         (begin
-                           (list-push! 'a tael₁)
-                           (begin
-                             (list-push! 'b tael₁)
-                             (begin
-                               (list-push! 'c tael₁)
-                               tael₁))))))))))))))))
+      (list-push! 2 list₁)
+      (list-push! 3 list₁)
+      (println list₁)
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 'a tael₁)
+           (list-push! 'b tael₁)
+           (list-push! 'c tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 'a tael₁)
+           (list-push! 'b tael₁)
+           (list-push! 'c tael₁)
+           tael₁))))))
 
 ;;; RevealGlobalPass
 
@@ -149,65 +123,51 @@
   (let ((list₁ (make-list)))
     (begin
       (list-push! 1 list₁)
-      (begin
-        (list-push! 2 list₁)
-        (begin
-          (list-push! 3 list₁)
-          (begin
-            (println list₁)
-            (begin
-              (println
-               (let ((tael₁ (make-list)))
-                 (begin
-                   (list-push! 1 tael₁)
-                   (begin
-                     (list-push! 2 tael₁)
-                     (begin (list-push! 3 tael₁) tael₁)))))
-              (begin
-                (println
-                 (let ((tael₁ (make-list)))
-                   (begin
-                     (list-push! 1 tael₁)
-                     (begin
-                       (list-push! 2 tael₁)
-                       (begin (list-push! 3 tael₁) tael₁)))))
-                (begin
-                  (println
-                   (let ((tael₁ (make-list)))
-                     (begin
-                       (list-push! 1 tael₁)
-                       (begin
-                         (list-push! 2 tael₁)
-                         (begin (list-push! 3 tael₁) tael₁)))))
-                  (begin
-                    (println
-                     (let ((tael₁ (make-list)))
-                       (begin
-                         (list-push! 1 tael₁)
-                         (begin
-                           (list-push! 2 tael₁)
-                           (begin
-                             (list-push! 3 tael₁)
-                             tael₁)))))
-                    (begin
-                      (println
-                       (let ((tael₁ (make-list)))
-                         (begin
-                           (list-push! 'a tael₁)
-                           (begin
-                             (list-push! 'b tael₁)
-                             (begin
-                               (list-push! 'c tael₁)
-                               tael₁)))))
-                      (println
-                       (let ((tael₁ (make-list)))
-                         (begin
-                           (list-push! 'a tael₁)
-                           (begin
-                             (list-push! 'b tael₁)
-                             (begin
-                               (list-push! 'c tael₁)
-                               tael₁))))))))))))))))
+      (list-push! 2 list₁)
+      (list-push! 3 list₁)
+      (println list₁)
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 'a tael₁)
+           (list-push! 'b tael₁)
+           (list-push! 'c tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 'a tael₁)
+           (list-push! 'b tael₁)
+           (list-push! 'c tael₁)
+           tael₁))))))
 
 ;;; LiftLambdaPass
 
@@ -215,65 +175,51 @@
   (let ((list₁ (make-list)))
     (begin
       (list-push! 1 list₁)
-      (begin
-        (list-push! 2 list₁)
-        (begin
-          (list-push! 3 list₁)
-          (begin
-            (println list₁)
-            (begin
-              (println
-               (let ((tael₁ (make-list)))
-                 (begin
-                   (list-push! 1 tael₁)
-                   (begin
-                     (list-push! 2 tael₁)
-                     (begin (list-push! 3 tael₁) tael₁)))))
-              (begin
-                (println
-                 (let ((tael₁ (make-list)))
-                   (begin
-                     (list-push! 1 tael₁)
-                     (begin
-                       (list-push! 2 tael₁)
-                       (begin (list-push! 3 tael₁) tael₁)))))
-                (begin
-                  (println
-                   (let ((tael₁ (make-list)))
-                     (begin
-                       (list-push! 1 tael₁)
-                       (begin
-                         (list-push! 2 tael₁)
-                         (begin (list-push! 3 tael₁) tael₁)))))
-                  (begin
-                    (println
-                     (let ((tael₁ (make-list)))
-                       (begin
-                         (list-push! 1 tael₁)
-                         (begin
-                           (list-push! 2 tael₁)
-                           (begin
-                             (list-push! 3 tael₁)
-                             tael₁)))))
-                    (begin
-                      (println
-                       (let ((tael₁ (make-list)))
-                         (begin
-                           (list-push! 'a tael₁)
-                           (begin
-                             (list-push! 'b tael₁)
-                             (begin
-                               (list-push! 'c tael₁)
-                               tael₁)))))
-                      (println
-                       (let ((tael₁ (make-list)))
-                         (begin
-                           (list-push! 'a tael₁)
-                           (begin
-                             (list-push! 'b tael₁)
-                             (begin
-                               (list-push! 'c tael₁)
-                               tael₁))))))))))))))))
+      (list-push! 2 list₁)
+      (list-push! 3 list₁)
+      (println list₁)
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 1 tael₁)
+           (list-push! 2 tael₁)
+           (list-push! 3 tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 'a tael₁)
+           (list-push! 'b tael₁)
+           (list-push! 'c tael₁)
+           tael₁)))
+      (println
+       (let ((tael₁ (make-list)))
+         (begin
+           (list-push! 'a tael₁)
+           (list-push! 'b tael₁)
+           (list-push! 'c tael₁)
+           tael₁))))))
 
 ;;; UnnestOperandPass
 
@@ -281,63 +227,43 @@
   (let ((list₁ (make-list)))
     (begin
       (list-push! 1 list₁)
-      (begin
-        (list-push! 2 list₁)
+      (list-push! 2 list₁)
+      (list-push! 3 list₁)
+      (println list₁)
+      (let ((tael₁ (make-list)))
         (begin
-          (list-push! 3 list₁)
-          (begin
-            (println list₁)
-            (begin
-              (let ((tael₁ (make-list)))
-                (begin
-                  (list-push! 1 tael₁)
-                  (begin
-                    (list-push! 2 tael₁)
-                    (begin
-                      (list-push! 3 tael₁)
-                      (println tael₁)))))
-              (begin
-                (let ((tael₁ (make-list)))
-                  (begin
-                    (list-push! 1 tael₁)
-                    (begin
-                      (list-push! 2 tael₁)
-                      (begin
-                        (list-push! 3 tael₁)
-                        (println tael₁)))))
-                (begin
-                  (let ((tael₁ (make-list)))
-                    (begin
-                      (list-push! 1 tael₁)
-                      (begin
-                        (list-push! 2 tael₁)
-                        (begin
-                          (list-push! 3 tael₁)
-                          (println tael₁)))))
-                  (begin
-                    (let ((tael₁ (make-list)))
-                      (begin
-                        (list-push! 1 tael₁)
-                        (begin
-                          (list-push! 2 tael₁)
-                          (begin
-                            (list-push! 3 tael₁)
-                            (println tael₁)))))
-                    (begin
-                      (let ((tael₁ (make-list)))
-                        (begin
-                          (list-push! 'a tael₁)
-                          (begin
-                            (list-push! 'b tael₁)
-                            (begin
-                              (list-push! 'c tael₁)
-                              (println tael₁)))))
-                      (let ((tael₁ (make-list)))
-                        (begin
-                          (list-push! 'a tael₁)
-                          (begin
-                            (list-push! 'b tael₁)
-                            (begin
-                              (list-push! 'c tael₁)
-                              (println tael₁))))))))))))))))
+          (list-push! 1 tael₁)
+          (list-push! 2 tael₁)
+          (list-push! 3 tael₁)
+          (println tael₁)))
+      (let ((tael₁ (make-list)))
+        (begin
+          (list-push! 1 tael₁)
+          (list-push! 2 tael₁)
+          (list-push! 3 tael₁)
+          (println tael₁)))
+      (let ((tael₁ (make-list)))
+        (begin
+          (list-push! 1 tael₁)
+          (list-push! 2 tael₁)
+          (list-push! 3 tael₁)
+          (println tael₁)))
+      (let ((tael₁ (make-list)))
+        (begin
+          (list-push! 1 tael₁)
+          (list-push! 2 tael₁)
+          (list-push! 3 tael₁)
+          (println tael₁)))
+      (let ((tael₁ (make-list)))
+        (begin
+          (list-push! 'a tael₁)
+          (list-push! 'b tael₁)
+          (list-push! 'c tael₁)
+          (println tael₁)))
+      (let ((tael₁ (make-list)))
+        (begin
+          (list-push! 'a tael₁)
+          (list-push! 'b tael₁)
+          (list-push! 'c tael₁)
+          (println tael₁))))))
 

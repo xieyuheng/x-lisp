@@ -27,23 +27,15 @@
 (define (main)
   (begin
     (assert-equal 0 (fibonacci 0))
-    (begin
-      (assert-equal 1 (fibonacci 1))
-      (begin
-        (assert-equal 1 (fibonacci 2))
-        (begin
-          (assert-equal 2 (fibonacci 3))
-          (begin
-            (assert-equal 3 (fibonacci 4))
-            (begin
-              (assert-equal 5 (fibonacci 5))
-              (begin
-                (assert-equal 8 (fibonacci 6))
-                (begin
-                  (assert-equal 13 (fibonacci 7))
-                  (begin
-                    (assert-equal 21 (fibonacci 8))
-                    (assert-equal 34 (fibonacci 9))))))))))))
+    (assert-equal 1 (fibonacci 1))
+    (assert-equal 1 (fibonacci 2))
+    (assert-equal 2 (fibonacci 3))
+    (assert-equal 3 (fibonacci 4))
+    (assert-equal 5 (fibonacci 5))
+    (assert-equal 8 (fibonacci 6))
+    (assert-equal 13 (fibonacci 7))
+    (assert-equal 21 (fibonacci 8))
+    (assert-equal 34 (fibonacci 9))))
 
 ;;; UniquifyPass
 
@@ -55,23 +47,15 @@
 (define (main)
   (begin
     (assert-equal 0 (fibonacci 0))
-    (begin
-      (assert-equal 1 (fibonacci 1))
-      (begin
-        (assert-equal 1 (fibonacci 2))
-        (begin
-          (assert-equal 2 (fibonacci 3))
-          (begin
-            (assert-equal 3 (fibonacci 4))
-            (begin
-              (assert-equal 5 (fibonacci 5))
-              (begin
-                (assert-equal 8 (fibonacci 6))
-                (begin
-                  (assert-equal 13 (fibonacci 7))
-                  (begin
-                    (assert-equal 21 (fibonacci 8))
-                    (assert-equal 34 (fibonacci 9))))))))))))
+    (assert-equal 1 (fibonacci 1))
+    (assert-equal 1 (fibonacci 2))
+    (assert-equal 2 (fibonacci 3))
+    (assert-equal 3 (fibonacci 4))
+    (assert-equal 5 (fibonacci 5))
+    (assert-equal 8 (fibonacci 6))
+    (assert-equal 13 (fibonacci 7))
+    (assert-equal 21 (fibonacci 8))
+    (assert-equal 34 (fibonacci 9))))
 
 ;;; RevealGlobalPass
 
@@ -83,23 +67,15 @@
 (define (main)
   (begin
     (assert-equal 0 (fibonacci 0))
-    (begin
-      (assert-equal 1 (fibonacci 1))
-      (begin
-        (assert-equal 1 (fibonacci 2))
-        (begin
-          (assert-equal 2 (fibonacci 3))
-          (begin
-            (assert-equal 3 (fibonacci 4))
-            (begin
-              (assert-equal 5 (fibonacci 5))
-              (begin
-                (assert-equal 8 (fibonacci 6))
-                (begin
-                  (assert-equal 13 (fibonacci 7))
-                  (begin
-                    (assert-equal 21 (fibonacci 8))
-                    (assert-equal 34 (fibonacci 9))))))))))))
+    (assert-equal 1 (fibonacci 1))
+    (assert-equal 1 (fibonacci 2))
+    (assert-equal 2 (fibonacci 3))
+    (assert-equal 3 (fibonacci 4))
+    (assert-equal 5 (fibonacci 5))
+    (assert-equal 8 (fibonacci 6))
+    (assert-equal 13 (fibonacci 7))
+    (assert-equal 21 (fibonacci 8))
+    (assert-equal 34 (fibonacci 9))))
 
 ;;; LiftLambdaPass
 
@@ -111,23 +87,15 @@
 (define (main)
   (begin
     (assert-equal 0 (fibonacci 0))
-    (begin
-      (assert-equal 1 (fibonacci 1))
-      (begin
-        (assert-equal 1 (fibonacci 2))
-        (begin
-          (assert-equal 2 (fibonacci 3))
-          (begin
-            (assert-equal 3 (fibonacci 4))
-            (begin
-              (assert-equal 5 (fibonacci 5))
-              (begin
-                (assert-equal 8 (fibonacci 6))
-                (begin
-                  (assert-equal 13 (fibonacci 7))
-                  (begin
-                    (assert-equal 21 (fibonacci 8))
-                    (assert-equal 34 (fibonacci 9))))))))))))
+    (assert-equal 1 (fibonacci 1))
+    (assert-equal 1 (fibonacci 2))
+    (assert-equal 2 (fibonacci 3))
+    (assert-equal 3 (fibonacci 4))
+    (assert-equal 5 (fibonacci 5))
+    (assert-equal 8 (fibonacci 6))
+    (assert-equal 13 (fibonacci 7))
+    (assert-equal 21 (fibonacci 8))
+    (assert-equal 34 (fibonacci 9))))
 
 ;;; UnnestOperandPass
 
@@ -142,25 +110,13 @@
 (define (main)
   (begin
     (let ((_₁ (fibonacci 0))) (assert-equal 0 _₁))
-    (begin
-      (let ((_₂ (fibonacci 1))) (assert-equal 1 _₂))
-      (begin
-        (let ((_₃ (fibonacci 2))) (assert-equal 1 _₃))
-        (begin
-          (let ((_₄ (fibonacci 3))) (assert-equal 2 _₄))
-          (begin
-            (let ((_₅ (fibonacci 4))) (assert-equal 3 _₅))
-            (begin
-              (let ((_₆ (fibonacci 5))) (assert-equal 5 _₆))
-              (begin
-                (let ((_₇ (fibonacci 6)))
-                  (assert-equal 8 _₇))
-                (begin
-                  (let ((_₈ (fibonacci 7)))
-                    (assert-equal 13 _₈))
-                  (begin
-                    (let ((_₉ (fibonacci 8)))
-                      (assert-equal 21 _₉))
-                    (let ((_₁₀ (fibonacci 9)))
-                      (assert-equal 34 _₁₀))))))))))))
+    (let ((_₂ (fibonacci 1))) (assert-equal 1 _₂))
+    (let ((_₃ (fibonacci 2))) (assert-equal 1 _₃))
+    (let ((_₄ (fibonacci 3))) (assert-equal 2 _₄))
+    (let ((_₅ (fibonacci 4))) (assert-equal 3 _₅))
+    (let ((_₆ (fibonacci 5))) (assert-equal 5 _₆))
+    (let ((_₇ (fibonacci 6))) (assert-equal 8 _₇))
+    (let ((_₈ (fibonacci 7))) (assert-equal 13 _₈))
+    (let ((_₉ (fibonacci 8))) (assert-equal 21 _₉))
+    (let ((_₁₀ (fibonacci 9))) (assert-equal 34 _₁₀))))
 

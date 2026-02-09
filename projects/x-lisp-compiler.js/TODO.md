@@ -1,4 +1,4 @@
-[basic] improve format about (let) and (begin)
+[lisp] `formatLet1Body`
 
 # later
 

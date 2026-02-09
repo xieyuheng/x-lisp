@@ -19,17 +19,14 @@
   (if
       (begin
         (print 1)
-        (begin
-          (newline)
-          (begin
-            (print 2)
-            (begin
-              (newline)
-              (begin
-                (print 3)
-                (begin (newline) (equal? 1 2)))))))
-    (begin (print 111) (begin (newline) (equal? 1 2)))
-    (begin (print 222) (begin (newline) (equal? 1 2)))))
+        (newline)
+        (print 2)
+        (newline)
+        (print 3)
+        (newline)
+        (equal? 1 2))
+    (begin (print 111) (newline) (equal? 1 2))
+    (begin (print 222) (newline) (equal? 1 2))))
 
 ;;; UniquifyPass
 
@@ -37,17 +34,14 @@
   (if
       (begin
         (print 1)
-        (begin
-          (newline)
-          (begin
-            (print 2)
-            (begin
-              (newline)
-              (begin
-                (print 3)
-                (begin (newline) (equal? 1 2)))))))
-    (begin (print 111) (begin (newline) (equal? 1 2)))
-    (begin (print 222) (begin (newline) (equal? 1 2)))))
+        (newline)
+        (print 2)
+        (newline)
+        (print 3)
+        (newline)
+        (equal? 1 2))
+    (begin (print 111) (newline) (equal? 1 2))
+    (begin (print 222) (newline) (equal? 1 2))))
 
 ;;; RevealGlobalPass
 
@@ -55,17 +49,14 @@
   (if
       (begin
         (print 1)
-        (begin
-          (newline)
-          (begin
-            (print 2)
-            (begin
-              (newline)
-              (begin
-                (print 3)
-                (begin (newline) (equal? 1 2)))))))
-    (begin (print 111) (begin (newline) (equal? 1 2)))
-    (begin (print 222) (begin (newline) (equal? 1 2)))))
+        (newline)
+        (print 2)
+        (newline)
+        (print 3)
+        (newline)
+        (equal? 1 2))
+    (begin (print 111) (newline) (equal? 1 2))
+    (begin (print 222) (newline) (equal? 1 2))))
 
 ;;; LiftLambdaPass
 
@@ -73,17 +64,14 @@
   (if
       (begin
         (print 1)
-        (begin
-          (newline)
-          (begin
-            (print 2)
-            (begin
-              (newline)
-              (begin
-                (print 3)
-                (begin (newline) (equal? 1 2)))))))
-    (begin (print 111) (begin (newline) (equal? 1 2)))
-    (begin (print 222) (begin (newline) (equal? 1 2)))))
+        (newline)
+        (print 2)
+        (newline)
+        (print 3)
+        (newline)
+        (equal? 1 2))
+    (begin (print 111) (newline) (equal? 1 2))
+    (begin (print 222) (newline) (equal? 1 2))))
 
 ;;; UnnestOperandPass
 
@@ -91,15 +79,12 @@
   (if
       (begin
         (print 1)
-        (begin
-          (newline)
-          (begin
-            (print 2)
-            (begin
-              (newline)
-              (begin
-                (print 3)
-                (begin (newline) (equal? 1 2)))))))
-    (begin (print 111) (begin (newline) (equal? 1 2)))
-    (begin (print 222) (begin (newline) (equal? 1 2)))))
+        (newline)
+        (print 2)
+        (newline)
+        (print 3)
+        (newline)
+        (equal? 1 2))
+    (begin (print 111) (newline) (equal? 1 2))
+    (begin (print 222) (newline) (equal? 1 2))))
 

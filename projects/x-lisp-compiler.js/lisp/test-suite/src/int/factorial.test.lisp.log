@@ -24,17 +24,12 @@
 (define (main)
   (begin
     (assert-equal 1 (factorial 0))
-    (begin
-      (assert-equal 1 (factorial 1))
-      (begin
-        (assert-equal 2 (factorial 2))
-        (begin
-          (assert-equal 6 (factorial 3))
-          (begin
-            (assert-equal 24 (factorial 4))
-            (begin
-              (assert-equal 120 (factorial 5))
-              (assert-equal 720 (factorial 6)))))))))
+    (assert-equal 1 (factorial 1))
+    (assert-equal 2 (factorial 2))
+    (assert-equal 6 (factorial 3))
+    (assert-equal 24 (factorial 4))
+    (assert-equal 120 (factorial 5))
+    (assert-equal 720 (factorial 6))))
 
 ;;; UniquifyPass
 
@@ -46,17 +41,12 @@
 (define (main)
   (begin
     (assert-equal 1 (factorial 0))
-    (begin
-      (assert-equal 1 (factorial 1))
-      (begin
-        (assert-equal 2 (factorial 2))
-        (begin
-          (assert-equal 6 (factorial 3))
-          (begin
-            (assert-equal 24 (factorial 4))
-            (begin
-              (assert-equal 120 (factorial 5))
-              (assert-equal 720 (factorial 6)))))))))
+    (assert-equal 1 (factorial 1))
+    (assert-equal 2 (factorial 2))
+    (assert-equal 6 (factorial 3))
+    (assert-equal 24 (factorial 4))
+    (assert-equal 120 (factorial 5))
+    (assert-equal 720 (factorial 6))))
 
 ;;; RevealGlobalPass
 
@@ -68,17 +58,12 @@
 (define (main)
   (begin
     (assert-equal 1 (factorial 0))
-    (begin
-      (assert-equal 1 (factorial 1))
-      (begin
-        (assert-equal 2 (factorial 2))
-        (begin
-          (assert-equal 6 (factorial 3))
-          (begin
-            (assert-equal 24 (factorial 4))
-            (begin
-              (assert-equal 120 (factorial 5))
-              (assert-equal 720 (factorial 6)))))))))
+    (assert-equal 1 (factorial 1))
+    (assert-equal 2 (factorial 2))
+    (assert-equal 6 (factorial 3))
+    (assert-equal 24 (factorial 4))
+    (assert-equal 120 (factorial 5))
+    (assert-equal 720 (factorial 6))))
 
 ;;; LiftLambdaPass
 
@@ -90,17 +75,12 @@
 (define (main)
   (begin
     (assert-equal 1 (factorial 0))
-    (begin
-      (assert-equal 1 (factorial 1))
-      (begin
-        (assert-equal 2 (factorial 2))
-        (begin
-          (assert-equal 6 (factorial 3))
-          (begin
-            (assert-equal 24 (factorial 4))
-            (begin
-              (assert-equal 120 (factorial 5))
-              (assert-equal 720 (factorial 6)))))))))
+    (assert-equal 1 (factorial 1))
+    (assert-equal 2 (factorial 2))
+    (assert-equal 6 (factorial 3))
+    (assert-equal 24 (factorial 4))
+    (assert-equal 120 (factorial 5))
+    (assert-equal 720 (factorial 6))))
 
 ;;; UnnestOperandPass
 
@@ -113,17 +93,10 @@
 (define (main)
   (begin
     (let ((_₁ (factorial 0))) (assert-equal 1 _₁))
-    (begin
-      (let ((_₂ (factorial 1))) (assert-equal 1 _₂))
-      (begin
-        (let ((_₃ (factorial 2))) (assert-equal 2 _₃))
-        (begin
-          (let ((_₄ (factorial 3))) (assert-equal 6 _₄))
-          (begin
-            (let ((_₅ (factorial 4))) (assert-equal 24 _₅))
-            (begin
-              (let ((_₆ (factorial 5)))
-                (assert-equal 120 _₆))
-              (let ((_₇ (factorial 6)))
-                (assert-equal 720 _₇)))))))))
+    (let ((_₂ (factorial 1))) (assert-equal 1 _₂))
+    (let ((_₃ (factorial 2))) (assert-equal 2 _₃))
+    (let ((_₄ (factorial 3))) (assert-equal 6 _₄))
+    (let ((_₅ (factorial 4))) (assert-equal 24 _₅))
+    (let ((_₆ (factorial 5))) (assert-equal 120 _₆))
+    (let ((_₇ (factorial 6))) (assert-equal 720 _₇))))
 
