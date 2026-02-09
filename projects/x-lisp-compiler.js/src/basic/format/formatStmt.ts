@@ -4,8 +4,29 @@ import { formatInstr } from "./formatInstr.ts"
 
 export function formatStmt(stmt: Stmt): string {
   switch (stmt.kind) {
+    case "DefineFunction": {
+      const name = stmt.name
+      const parameters = stmt.parameters.join(" ")
+      const blocks = Array.from(stmt.blocks.values().map(formatBlock)).join(" ")
+      return `(define-function (${name} ${parameters}) ${blocks})`
+    }
+
+    case "DefineVariable": {
+      const name = stmt.name
+      const blocks = Array.from(stmt.blocks.values().map(formatBlock)).join(" ")
+      return `(define-variable ${name} ${blocks})`
+    }
+
     case "Export": {
       return `(export ${stmt.names.join(" ")})`
+    }
+
+    case "ExportAll": {
+      return `(export-all)`
+    }
+
+    case "ExportExcept": {
+      return `(export-except ${stmt.names.join(" ")})`
     }
 
     case "Import": {
@@ -38,19 +59,6 @@ export function formatStmt(stmt: Stmt): string {
 
     case "IncludeAs": {
       return `(include-as "${stmt.path}" ${stmt.prefix})`
-    }
-
-    case "DefineFunction": {
-      const name = stmt.name
-      const parameters = stmt.parameters.join(" ")
-      const blocks = Array.from(stmt.blocks.values().map(formatBlock)).join(" ")
-      return `(define-function (${name} ${parameters}) ${blocks})`
-    }
-
-    case "DefineVariable": {
-      const name = stmt.name
-      const blocks = Array.from(stmt.blocks.values().map(formatBlock)).join(" ")
-      return `(define-variable ${name} ${blocks})`
     }
   }
 }

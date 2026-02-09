@@ -1,6 +1,8 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 
-export type AboutModule = AboutImport | Export
+export type AboutModule = AboutExport | AboutImport
+
+export type AboutExport = Export | ExportAll | ExportExcept
 
 export type AboutImport =
   | Import
@@ -46,6 +48,13 @@ export function ImportAll(path: string, meta?: Meta): ImportAll {
   }
 }
 
+export type ImportExcept = {
+  kind: "ImportExcept"
+  path: string
+  names: Array<string>
+  meta?: Meta
+}
+
 export function ImportExcept(
   path: string,
   names: Array<string>,
@@ -57,13 +66,6 @@ export function ImportExcept(
     names,
     meta,
   }
-}
-
-export type ImportExcept = {
-  kind: "ImportExcept"
-  path: string
-  names: Array<string>
-  meta?: Meta
 }
 
 export type ImportAs = {
@@ -116,6 +118,13 @@ export function IncludeAll(path: string, meta?: Meta): IncludeAll {
   }
 }
 
+export type IncludeExcept = {
+  kind: "IncludeExcept"
+  path: string
+  names: Array<string>
+  meta?: Meta
+}
+
 export function IncludeExcept(
   path: string,
   names: Array<string>,
@@ -127,13 +136,6 @@ export function IncludeExcept(
     names,
     meta,
   }
-}
-
-export type IncludeExcept = {
-  kind: "IncludeExcept"
-  path: string
-  names: Array<string>
-  meta?: Meta
 }
 
 export type IncludeAs = {
@@ -168,4 +170,30 @@ export function Export(names: Array<string>, meta?: Meta): Export {
     names,
     meta,
   }
+}
+
+export type ExportAll = {
+  kind: "ExportAll"
+  meta?: Meta
+}
+
+export function ExportAll(meta?: Meta): ExportAll {
+  return {
+    kind: "ExportAll",
+    meta,
+  }
+}
+
+export function ExportExcept(names: Array<string>, meta?: Meta): ExportExcept {
+  return {
+    kind: "ExportExcept",
+    names,
+    meta,
+  }
+}
+
+export type ExportExcept = {
+  kind: "ExportExcept"
+  names: Array<string>
+  meta?: Meta
 }
