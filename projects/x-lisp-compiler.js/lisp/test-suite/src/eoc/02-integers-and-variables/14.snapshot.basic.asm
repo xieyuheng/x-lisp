@@ -1,4 +1,4 @@
-define-function main
+@define-function main
 body:
   literal 32
   local-store x₁

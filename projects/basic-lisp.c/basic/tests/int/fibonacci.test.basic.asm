@@ -1,4 +1,4 @@
-define-function fibonacci
+@define-function fibonacci
   local-store n
 body:
   local-load n
@@ -28,7 +28,7 @@ recur-case:
   local-load f2
   tail-call iadd
 
-define-function main
+@define-function main
 body:
   literal 0
   call fibonacci

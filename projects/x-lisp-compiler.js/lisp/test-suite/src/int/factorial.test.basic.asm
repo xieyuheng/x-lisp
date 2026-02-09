@@ -1,4 +1,4 @@
-define-function factorial
+@define-function factorial
   local-store n
 body:
   local-load n
@@ -21,7 +21,7 @@ else₂:
   local-load n
   tail-call imul
 
-define-function main
+@define-function main
 body:
   literal 0
   call factorial

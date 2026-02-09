@@ -1,4 +1,4 @@
-define-function main
+@define-function main
 body:
   call one
   local-store x

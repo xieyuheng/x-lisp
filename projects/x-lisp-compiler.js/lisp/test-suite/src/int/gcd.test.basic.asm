@@ -1,4 +1,4 @@
-define-function gcd
+@define-function gcd
   local-store b
   local-store a
 body:
@@ -19,7 +19,7 @@ else₂:
   local-load _₁
   tail-call gcd
 
-define-function main
+@define-function main
 body:
   literal 13
   literal 7

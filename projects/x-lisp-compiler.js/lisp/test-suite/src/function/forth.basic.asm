@@ -1,4 +1,4 @@
-define-function swap
+@define-function swap
   local-store y
   local-store x
   local-store f
@@ -9,7 +9,7 @@ body:
   literal 2
   tail-apply
 
-define-function drop
+@define-function drop
   local-store f
 body:
   local-load f
@@ -17,7 +17,7 @@ body:
   literal 1
   tail-apply
 
-define-function drop©λ₁
+@define-function drop©λ₁
   local-store dropped₁
   local-store f
 body:
@@ -26,7 +26,7 @@ body:
   literal 1
   tail-apply
 
-define-function drop©λ₁©λ₁
+@define-function drop©λ₁©λ₁
   local-store x₁
   local-store f
 body:
@@ -35,7 +35,7 @@ body:
   literal 1
   tail-apply
 
-define-function dup
+@define-function dup
   local-store f
 body:
   local-load f
@@ -43,7 +43,7 @@ body:
   literal 1
   tail-apply
 
-define-function dup©λ₁
+@define-function dup©λ₁
   local-store x₁
   local-store f
 body:
@@ -53,13 +53,13 @@ body:
   literal 2
   tail-apply
 
-define-function identity
+@define-function identity
   local-store x
 body:
   local-load x
   return
 
-define-function main
+@define-function main
 body:
   ref identity
   local-store f₁

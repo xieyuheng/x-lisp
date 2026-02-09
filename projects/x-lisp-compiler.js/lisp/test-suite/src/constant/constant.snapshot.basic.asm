@@ -1,9 +1,9 @@
-define-variable one
+@define-variable one
 body:
   literal 1
   return
 
-define-variable two
+@define-variable two
 body:
   call one
   local-store _₁
@@ -11,7 +11,7 @@ body:
   local-load _₁
   tail-call iadd
 
-define-variable three
+@define-variable three
 body:
   call two
   local-store _₁
@@ -19,7 +19,7 @@ body:
   local-load _₁
   tail-call iadd
 
-define-function main
+@define-function main
 body:
   call three
   local-store _₁

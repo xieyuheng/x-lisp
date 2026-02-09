@@ -1,4 +1,4 @@
-define-function Y
+@define-function Y
   local-store f
 body:
   local-load f
@@ -9,7 +9,7 @@ body:
   local-load _₁
   tail-call Y©λ₁
 
-define-function Y©λ₁
+@define-function Y©λ₁
   local-store u₁
 body:
   local-load u₁
@@ -17,7 +17,7 @@ body:
   literal 1
   tail-apply
 
-define-function Y©λ₂
+@define-function Y©λ₂
   local-store x₁
   local-store f
 body:
@@ -31,7 +31,7 @@ body:
   literal 1
   tail-apply
 
-define-function Y©λ₂©λ₁
+@define-function Y©λ₂©λ₁
   local-store t₁
   local-store x₁
 body:

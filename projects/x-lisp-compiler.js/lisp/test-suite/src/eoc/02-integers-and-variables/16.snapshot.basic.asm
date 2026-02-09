@@ -1,4 +1,4 @@
-define-function main
+@define-function main
 body:
   literal 50
   literal 8

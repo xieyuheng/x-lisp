@@ -1,9 +1,9 @@
-define-function one
+@define-function one
 body:
   literal 1
   return
 
-define-function two
+@define-function two
 body:
   literal 2
   return

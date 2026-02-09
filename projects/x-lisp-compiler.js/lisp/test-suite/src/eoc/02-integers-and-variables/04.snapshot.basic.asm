@@ -1,4 +1,4 @@
-define-function main
+@define-function main
 body:
   literal 42
   call ineg

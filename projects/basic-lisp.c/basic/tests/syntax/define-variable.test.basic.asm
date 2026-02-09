@@ -1,9 +1,9 @@
-define-variable x
+@define-variable x
 body:
   literal 1
   return
 
-define-function main
+@define-function main
 body:
   call x
   literal 1

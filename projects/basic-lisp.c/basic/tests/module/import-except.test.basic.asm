@@ -1,9 +1,9 @@
-define-function three
+@define-function three
 body:
   literal 3
   return
 
-define-function main
+@define-function main
 body:
   call one
   local-store x

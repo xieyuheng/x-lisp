@@ -1,4 +1,4 @@
-define-function one
+@define-function one
 body:
   literal 1
   return

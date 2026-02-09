@@ -1,4 +1,4 @@
-define-function odd?
+@define-function odd?
   local-store n
 body:
   local-load n
@@ -17,7 +17,7 @@ recur-case:
   local-load n1
   tail-call even?
 
-define-function main
+@define-function main
 body:
   literal 0
   call even?

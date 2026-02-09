@@ -1,4 +1,4 @@
-define-function main
+@define-function main
 body:
   literal 'abc
   literal 'def
