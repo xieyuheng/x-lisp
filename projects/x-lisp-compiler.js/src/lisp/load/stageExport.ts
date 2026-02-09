@@ -15,10 +15,9 @@ export function stageExport(mod: L.Mod, stmt: L.Stmt): void {
 
   if (stmt.kind === "ExportExcept") {
     for (const definition of L.modOwnDefinitions(mod)) {
-      if (!stmt.names.includes(definition.name)){
-                mod.exported.add(definition.name)
+      if (!stmt.names.includes(definition.name)) {
+        mod.exported.add(definition.name)
       }
-
     }
   }
 }
