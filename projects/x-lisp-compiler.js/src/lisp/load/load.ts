@@ -2,8 +2,9 @@ import * as S from "@xieyuheng/sexp.js"
 import fs from "node:fs"
 import { importBuiltinMod } from "../../builtin/index.ts"
 import * as L from "../index.ts"
-import { stage1 } from "./stage1.ts"
-import { stage2 } from "./stage2.ts"
+import { stageDefine } from "./stageDefine.ts"
+import { stageExport } from "./stageExport.ts"
+import { stageImport } from "./stageImport.ts"
 
 export function loadEntry(url: URL): L.Mod {
   return load(url, new Map())
@@ -21,8 +22,9 @@ export function load(url: URL, dependencies: Map<string, L.Mod>): L.Mod {
   const sexps = S.parseSexps(text, { url: mod.url })
 
   mod.stmts = sexps.map(L.parseStmt)
-  for (const stmt of mod.stmts) stage1(mod, stmt)
-  for (const stmt of mod.stmts) stage2(mod, stmt)
+  for (const stmt of mod.stmts) stageDefine(mod, stmt)
+  for (const stmt of mod.stmts) stageExport(mod, stmt)
+  for (const stmt of mod.stmts) stageImport(mod, stmt)
 
   return mod
 }

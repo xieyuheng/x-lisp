@@ -1,5 +1,5 @@
 import type { Stmt } from "../stmt/index.ts"
-import * as  Stmts from "../stmt/index.ts"
+import * as Stmts from "../stmt/index.ts"
 import { formatBody, formatExp } from "./formatExp.ts"
 
 export function formatStmt(stmt: Stmt): string {
@@ -17,7 +17,9 @@ export function formatStmt(stmt: Stmt): string {
 
     case "DefineData": {
       const predicate = formatDataPredicate(stmt.predicate)
-      const constructors = stmt.constructors.map(formatDataConstructor).join(" ")
+      const constructors = stmt.constructors
+        .map(formatDataConstructor)
+        .join(" ")
       return `(define-data ${predicate} ${constructors})`
     }
 
@@ -71,7 +73,7 @@ function formatDataPredicate(predicate: Stmts.DataPredicateSpec): string {
   if (predicate.parameters.length === 0) {
     return predicate.name
   } else {
-    return `(${predicate.name} ${predicate.parameters.join(' ')})`
+    return `(${predicate.name} ${predicate.parameters.join(" ")})`
   }
 }
 

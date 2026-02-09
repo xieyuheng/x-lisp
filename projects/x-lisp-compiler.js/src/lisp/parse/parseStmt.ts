@@ -33,6 +33,14 @@ export const parseStmt = S.createRouter<Stmt>({
     return Stmts.Export(S.listElements(names).map(S.symbolContent), meta)
   },
 
+  "`(export-all)": ({}, { meta }) => {
+    return Stmts.ExportAll(meta)
+  },
+
+  "(cons* 'export-except names)": ({ names }, { meta }) => {
+    return Stmts.ExportExcept(S.listElements(names).map(S.symbolContent), meta)
+  },
+
   "`(import-all ,source)": ({ source }, { meta }) => {
     return Stmts.ImportAll(S.stringContent(source), meta)
   },

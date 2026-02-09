@@ -1,15 +1,4 @@
-(export
-  my-list?
-  nil
-  nil?
-  li
-  li?
-  li-head
-  li-tail
-  li-put-head
-  li-put-tail
-  li-put-head!
-  li-put-tail!)
+(export-all)
 
 (define-function (my-list? E value)
   (block body (test (nil? value)) (branch then₅ else₆))
