@@ -2,6 +2,10 @@
 
 (define (main) (println void))
 
+;;; Loaded
+
+(define (main) (println void))
+
 ;;; ShrinkPass
 
 (define (main) (println void))

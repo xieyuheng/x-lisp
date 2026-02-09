@@ -2,6 +2,10 @@
 
 (define (main) (assert (hash-empty? (@hash))))
 
+;;; Loaded
+
+(define (main) (assert (hash-empty? (@hash))))
+
 ;;; ShrinkPass
 
 (define (main)

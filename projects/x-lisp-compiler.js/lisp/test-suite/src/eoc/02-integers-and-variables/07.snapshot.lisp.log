@@ -2,6 +2,10 @@
 
 (define (main) (println (iadd (random-dice) (random-dice))))
 
+;;; Loaded
+
+(define (main) (println (iadd (random-dice) (random-dice))))
+
 ;;; ShrinkPass
 
 (define (main) (println (iadd (random-dice) (random-dice))))

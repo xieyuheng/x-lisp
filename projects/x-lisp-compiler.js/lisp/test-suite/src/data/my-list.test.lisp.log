@@ -28,6 +28,34 @@
   (assert-not (my-list? int? 'a))
   (assert-equal (li 1 nil) ((li 1) nil)))
 
+;;; Loaded
+
+(define (main)
+  (assert-equal nil #nil)
+  (assert-equal
+    (li 1 (li 2 (li 3 nil)))
+    [#li 1 [#li 2 [#li 3 #nil]]])
+  (assert (nil? nil))
+  (assert (li? (li 1 (li 2 (li 3 nil)))))
+  (assert-not (li? nil))
+  (assert-not (nil? (li 1 (li 2 (li 3 nil)))))
+  (assert-equal (li-tail (li 1 nil)) nil)
+  (assert-equal (li-head (li 1 nil)) 1)
+  (= list (li 1 (li 2 (li 3 nil))))
+  (assert-equal (li-head list) 1)
+  (li-put-head! 111 list)
+  (assert-equal (li-head list) 111)
+  (assert-equal (li-tail list) (li 2 (li 3 nil)))
+  (li-put-tail! nil list)
+  (assert-equal (li-tail list) nil)
+  (assert (my-list? int? nil))
+  (assert (my-list? int? (li 1 (li 2 (li 3 nil)))))
+  (assert (my-list? symbol? nil))
+  (assert-not (my-list? symbol? (li 1 (li 2 (li 3 nil)))))
+  (assert-not (my-list? int? 1))
+  (assert-not (my-list? int? 'a))
+  (assert-equal (li 1 nil) ((li 1) nil)))
+
 (define (my-list? E value)
   (or (nil? value)
       (and (li? value)
@@ -62,8 +90,6 @@
   (list-put! 2 value target))
 
 ;;; ShrinkPass
-
-(import-all "my-list")
 
 (define (main)
   (assert-equal nil #nil)
@@ -145,8 +171,6 @@
 
 ;;; UniquifyPass
 
-(import-all "my-list")
-
 (define (main)
   (assert-equal nil #nil)
   (assert-equal
@@ -226,8 +250,6 @@
   (list-put! 2 value target))
 
 ;;; RevealGlobalPass
-
-(import-all "my-list")
 
 (define (main)
   (assert-equal nil #nil)
@@ -309,8 +331,6 @@
 
 ;;; LiftLambdaPass
 
-(import-all "my-list")
-
 (define (main)
   (assert-equal nil #nil)
   (assert-equal
@@ -357,8 +377,6 @@
   (assert-equal (li 1 nil) ((li 1) nil)))
 
 ;;; UnnestOperandPass
-
-(import-all "my-list")
 
 (define (main)
   (begin (= _₁ nil) (assert-equal _₁ #nil))

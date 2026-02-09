@@ -2,6 +2,10 @@
 
 (define (main) (println {1 2 3}) (println {1 2 3}))
 
+;;; Loaded
+
+(define (main) (println {1 2 3}) (println {1 2 3}))
+
 ;;; ShrinkPass
 
 (define (main)

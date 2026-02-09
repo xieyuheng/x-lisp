@@ -4,6 +4,12 @@
   (= x (begin (= x 4) (iadd x 1)))
   (println (iadd x 2)))
 
+;;; Loaded
+
+(define (main)
+  (= x (begin (= x 4) (iadd x 1)))
+  (println (iadd x 2)))
+
 ;;; ShrinkPass
 
 (define (main)

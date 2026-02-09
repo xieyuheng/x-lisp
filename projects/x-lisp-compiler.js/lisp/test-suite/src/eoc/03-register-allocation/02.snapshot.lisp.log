@@ -5,6 +5,13 @@
   (= y (random-dice))
   (println (iadd (iadd x y) 42)))
 
+;;; Loaded
+
+(define (main)
+  (= x (random-dice))
+  (= y (random-dice))
+  (println (iadd (iadd x y) 42)))
+
 ;;; ShrinkPass
 
 (define (main)

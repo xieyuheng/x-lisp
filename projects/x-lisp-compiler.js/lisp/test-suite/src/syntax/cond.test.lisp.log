@@ -14,6 +14,22 @@
     ((equal? 1 2) (begin (assert false)))
     (#t (begin (assert true)))))
 
+;;; Loaded
+
+(define (main)
+  (assert-equal
+    1
+    (cond ((equal? 1 1) (begin 1)) (#t (begin 2))))
+  (assert-equal
+    2
+    (cond ((equal? 1 2) (begin 1)) (#t (begin 2))))
+  (cond
+    ((equal? 1 1) (begin (assert true)))
+    (#t (begin (assert false))))
+  (cond
+    ((equal? 1 2) (begin (assert false)))
+    (#t (begin (assert true)))))
+
 ;;; ShrinkPass
 
 (define (main)

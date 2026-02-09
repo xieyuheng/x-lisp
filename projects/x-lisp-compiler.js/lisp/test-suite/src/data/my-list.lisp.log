@@ -13,6 +13,12 @@
   li-put-head!
   li-put-tail!)
 
+(define-data (my-list? E)
+  nil
+  (li (head E) (tail (my-list? E))))
+
+;;; Loaded
+
 (define (my-list? E value)
   (or (nil? value)
       (and (li? value)
@@ -47,19 +53,6 @@
   (list-put! 2 value target))
 
 ;;; ShrinkPass
-
-(export
-  my-list?
-  nil
-  nil?
-  li
-  li?
-  li-head
-  li-tail
-  li-put-head
-  li-put-tail
-  li-put-head!
-  li-put-tail!)
 
 (define (my-list? E value)
   (if (nil? value)
@@ -106,19 +99,6 @@
 
 ;;; UniquifyPass
 
-(export
-  my-list?
-  nil
-  nil?
-  li
-  li?
-  li-head
-  li-tail
-  li-put-head
-  li-put-tail
-  li-put-head!
-  li-put-tail!)
-
 (define (my-list? E value)
   (if (nil? value)
     #t
@@ -163,19 +143,6 @@
   (list-put! 2 value target))
 
 ;;; RevealGlobalPass
-
-(export
-  my-list?
-  nil
-  nil?
-  li
-  li?
-  li-head
-  li-tail
-  li-put-head
-  li-put-tail
-  li-put-head!
-  li-put-tail!)
 
 (define (my-list? E value)
   (if (nil? value)
@@ -222,19 +189,6 @@
 
 ;;; LiftLambdaPass
 
-(export
-  my-list?
-  nil
-  nil?
-  li
-  li?
-  li-head
-  li-tail
-  li-put-head
-  li-put-tail
-  li-put-head!
-  li-put-tail!)
-
 (define (my-list? E value)
   (if (nil? value)
     #t
@@ -279,19 +233,6 @@
   (list-put! 2 value target))
 
 ;;; UnnestOperandPass
-
-(export
-  my-list?
-  nil
-  nil?
-  li
-  li?
-  li-head
-  li-tail
-  li-put-head
-  li-put-tail
-  li-put-head!
-  li-put-tail!)
 
 (define (my-list? E value)
   (if (nil? value)

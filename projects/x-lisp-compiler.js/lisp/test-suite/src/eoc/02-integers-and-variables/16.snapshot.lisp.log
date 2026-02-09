@@ -2,6 +2,10 @@
 
 (define (main) (println (isub 50 8)))
 
+;;; Loaded
+
+(define (main) (println (isub 50 8)))
+
 ;;; ShrinkPass
 
 (define (main) (println (isub 50 8)))

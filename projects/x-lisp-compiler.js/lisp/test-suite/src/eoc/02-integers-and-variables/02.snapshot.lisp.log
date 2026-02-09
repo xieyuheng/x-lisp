@@ -4,6 +4,12 @@
   (= y (begin (= x 20) (iadd x (begin (= x 22) x))))
   (println y))
 
+;;; Loaded
+
+(define (main)
+  (= y (begin (= x 20) (iadd x (begin (= x 22) x))))
+  (println y))
+
 ;;; ShrinkPass
 
 (define (main)

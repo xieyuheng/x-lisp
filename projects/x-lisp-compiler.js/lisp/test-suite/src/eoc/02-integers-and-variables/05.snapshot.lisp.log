@@ -2,6 +2,10 @@
 
 (define (main) (= a 42) (= b a) (println b))
 
+;;; Loaded
+
+(define (main) (= a 42) (= b a) (println b))
+
 ;;; ShrinkPass
 
 (define (main) (= a 42) (= b a) (println b))

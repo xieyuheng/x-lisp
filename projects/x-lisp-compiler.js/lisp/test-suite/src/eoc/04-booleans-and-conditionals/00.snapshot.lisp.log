@@ -2,6 +2,10 @@
 
 (define (main) (println (if #t 1 2)))
 
+;;; Loaded
+
+(define (main) (println (if #t 1 2)))
+
 ;;; ShrinkPass
 
 (define (main) (println (if #t 1 2)))

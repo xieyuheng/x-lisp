@@ -3,6 +3,11 @@
 (define (main)
   (assert-equal 'abcdef (symbol-append 'abc 'def)))
 
+;;; Loaded
+
+(define (main)
+  (assert-equal 'abcdef (symbol-append 'abc 'def)))
+
 ;;; ShrinkPass
 
 (define (main)

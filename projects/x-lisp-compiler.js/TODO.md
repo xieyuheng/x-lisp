@@ -1,4 +1,3 @@
-[lisp] `formatMod` -- format stmts for `(define-data)` -- instead of definitions
 [lisp] fix `my-list` -- by (export-all)
 
 # the

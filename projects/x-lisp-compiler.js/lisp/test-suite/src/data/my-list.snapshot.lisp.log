@@ -6,6 +6,12 @@
   (println nil)
   (println (li 1 (li 2 (li 3 nil)))))
 
+;;; Loaded
+
+(define (main)
+  (println nil)
+  (println (li 1 (li 2 (li 3 nil)))))
+
 (define (my-list? E value)
   (or (nil? value)
       (and (li? value)
@@ -40,8 +46,6 @@
   (list-put! 2 value target))
 
 ;;; ShrinkPass
-
-(import-all "my-list")
 
 (define (main)
   (println nil)
@@ -82,8 +86,6 @@
 
 ;;; UniquifyPass
 
-(import-all "my-list")
-
 (define (main)
   (println nil)
   (println (li 1 (li 2 (li 3 nil)))))
@@ -122,8 +124,6 @@
   (list-put! 2 value target))
 
 ;;; RevealGlobalPass
-
-(import-all "my-list")
 
 (define (main)
   (println nil)
@@ -164,15 +164,11 @@
 
 ;;; LiftLambdaPass
 
-(import-all "my-list")
-
 (define (main)
   (println nil)
   (println (li 1 (li 2 (li 3 nil)))))
 
 ;;; UnnestOperandPass
-
-(import-all "my-list")
 
 (define (main)
   (begin (= _₁ nil) (println _₁))

@@ -2,6 +2,10 @@
 
 (define (main) (println (ineg (random-dice))))
 
+;;; Loaded
+
+(define (main) (println (ineg (random-dice))))
+
 ;;; ShrinkPass
 
 (define (main) (println (ineg (random-dice))))

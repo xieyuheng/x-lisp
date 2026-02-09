@@ -4,33 +4,27 @@
 
 (define (square x) (imul x x))
 
-;;; ShrinkPass
+;;; Loaded
 
-(export square)
+(define (square x) (imul x x))
+
+;;; ShrinkPass
 
 (define (square x) (imul x x))
 
 ;;; UniquifyPass
 
-(export square)
-
 (define (square x) (imul x x))
 
 ;;; RevealGlobalPass
-
-(export square)
 
 (define (square x) (imul x x))
 
 ;;; LiftLambdaPass
 
-(export square)
-
 (define (square x) (imul x x))
 
 ;;; UnnestOperandPass
-
-(export square)
 
 (define (square x) (imul x x))
 

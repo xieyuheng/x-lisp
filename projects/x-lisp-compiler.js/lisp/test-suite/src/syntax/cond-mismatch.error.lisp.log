@@ -3,6 +3,11 @@
 (define (main)
   (cond ((equal? 1 2) (begin 1)) ((equal? 1 2) (begin 2))))
 
+;;; Loaded
+
+(define (main)
+  (cond ((equal? 1 2) (begin 1)) ((equal? 1 2) (begin 2))))
+
 ;;; ShrinkPass
 
 (define (main)

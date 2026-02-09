@@ -4,6 +4,12 @@
 
 (define (main) (println (square 3)))
 
+;;; Loaded
+
+(define (square x) (imul x x))
+
+(define (main) (println (square 3)))
+
 ;;; ShrinkPass
 
 (define (square x) (imul x x))

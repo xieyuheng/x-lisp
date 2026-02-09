@@ -2,6 +2,10 @@
 
 (define (main) (assert-equal {1 2 3} {1 2 3}))
 
+;;; Loaded
+
+(define (main) (assert-equal {1 2 3} {1 2 3}))
+
 ;;; ShrinkPass
 
 (define (main)

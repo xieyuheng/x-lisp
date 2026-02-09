@@ -8,6 +8,16 @@
   (= z (iadd x w))
   (println (iadd z (ineg y))))
 
+;;; Loaded
+
+(define (main)
+  (= v 1)
+  (= w 42)
+  (= x (iadd v 7))
+  (= y x)
+  (= z (iadd x w))
+  (println (iadd z (ineg y))))
+
 ;;; ShrinkPass
 
 (define (main)

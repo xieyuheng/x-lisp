@@ -2,6 +2,10 @@
 
 (define (main) (= x 4) (println (iadd 8 x)))
 
+;;; Loaded
+
+(define (main) (= x 4) (println (iadd 8 x)))
+
 ;;; ShrinkPass
 
 (define (main) (= x 4) (println (iadd 8 x)))

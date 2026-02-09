@@ -2,6 +2,10 @@
 
 (define (main) (println iadd) (println (iadd 1)))
 
+;;; Loaded
+
+(define (main) (println iadd) (println (iadd 1)))
+
 ;;; ShrinkPass
 
 (define (main) (println iadd) (println (iadd 1)))

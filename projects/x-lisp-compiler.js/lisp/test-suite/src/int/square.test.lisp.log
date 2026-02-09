@@ -4,11 +4,13 @@
 
 (define (main) (assert-equal 81 (square (square 3))))
 
+;;; Loaded
+
+(define (main) (assert-equal 81 (square (square 3))))
+
 (define (square x) (imul x x))
 
 ;;; ShrinkPass
-
-(import "square" square)
 
 (define (main) (assert-equal 81 (square (square 3))))
 
@@ -16,15 +18,11 @@
 
 ;;; UniquifyPass
 
-(import "square" square)
-
 (define (main) (assert-equal 81 (square (square 3))))
 
 (define (square x) (imul x x))
 
 ;;; RevealGlobalPass
-
-(import "square" square)
 
 (define (main) (assert-equal 81 (square (square 3))))
 
@@ -32,13 +30,9 @@
 
 ;;; LiftLambdaPass
 
-(import "square" square)
-
 (define (main) (assert-equal 81 (square (square 3))))
 
 ;;; UnnestOperandPass
-
-(import "square" square)
 
 (define (main)
   (= _₁ (square 3))

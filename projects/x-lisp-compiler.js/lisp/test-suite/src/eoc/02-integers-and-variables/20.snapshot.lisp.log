@@ -7,6 +7,15 @@
     x
     (begin (= x (begin (= y 5) (iadd y x))) (iadd x 100)))))
 
+;;; Loaded
+
+(define (main)
+  (= x 1)
+  (println
+   (iadd
+    x
+    (begin (= x (begin (= y 5) (iadd y x))) (iadd x 100)))))
+
 ;;; ShrinkPass
 
 (define (main)

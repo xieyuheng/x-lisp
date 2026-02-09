@@ -2,6 +2,10 @@
 
 (define (main) (assert-equal [:x 'a :y 'b] '(:x a :y b)))
 
+;;; Loaded
+
+(define (main) (assert-equal [:x 'a :y 'b] '(:x a :y b)))
+
 ;;; ShrinkPass
 
 (define (main)

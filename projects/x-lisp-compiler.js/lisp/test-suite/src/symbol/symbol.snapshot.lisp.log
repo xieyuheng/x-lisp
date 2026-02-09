@@ -2,6 +2,10 @@
 
 (define (main) (println 'abc))
 
+;;; Loaded
+
+(define (main) (println 'abc))
+
 ;;; ShrinkPass
 
 (define (main) (println 'abc))

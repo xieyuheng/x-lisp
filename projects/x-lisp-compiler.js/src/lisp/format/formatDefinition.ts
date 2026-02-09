@@ -4,13 +4,11 @@ import { formatBody } from "./formatExp.ts"
 export function formatDefinition(definition: Definition): string {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition": {
-      const name = definition.name
-      return `(declare-primitive-function ${name} ${definition.arity})`
+      return `(declare-primitive-function ${definition.name} ${definition.arity})`
     }
 
     case "PrimitiveVariableDefinition": {
-      const name = definition.name
-      return `(declare-primitive-variable ${name})`
+      return `(declare-primitive-variable ${definition.name})`
     }
 
     case "FunctionDefinition": {
