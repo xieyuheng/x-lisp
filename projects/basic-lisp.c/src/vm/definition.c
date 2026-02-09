@@ -97,7 +97,7 @@ definition_has_arity(const definition_t *self) {
     }
 
     case PRIMITIVE_DEFINITION: {
-        return self->primitive_definition.primitive->fn_kind != X_FN;
+        return true;
     }
 
     case VARIABLE_DEFINITION: {
@@ -118,18 +118,7 @@ definition_arity(const definition_t *self) {
     }
 
     case PRIMITIVE_DEFINITION: {
-        switch (self->primitive_definition.primitive->fn_kind) {
-        case X_FN: { unreachable(); }
-        case X_FN_0: { return 0; }
-        case X_FN_1: { return 1; }
-        case X_FN_2: { return 2; }
-        case X_FN_3: { return 3; }
-        case X_FN_4: { return 4; }
-        case X_FN_5: { return 5; }
-        case X_FN_6: { return 6; }
-        }
-
-        unreachable();
+        return self->primitive_definition.primitive->arity;
     }
 
     case VARIABLE_DEFINITION: {

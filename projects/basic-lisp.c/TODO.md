@@ -1,3 +1,6 @@
+[builtin] `x_the` -- fix `the.snapshot.basic`
+[builtin] `x_the` -- literal atom as schema
+
 # later
 
 [helpers.c] improve `string_builder_t` for `format_*`

@@ -32,9 +32,10 @@ struct primitive_t {
         x_fn_5_t *fn_5;
         x_fn_6_t *fn_6;
     };
+    size_t arity;
 };
 
-primitive_t *make_primitive(x_fn_t *fn);
+primitive_t *make_primitive(size_t arity, x_fn_t *fn);
 primitive_t *make_primitive_0(x_fn_0_t *fn_0);
 primitive_t *make_primitive_1(x_fn_1_t *fn_1);
 primitive_t *make_primitive_2(x_fn_2_t *fn_2);

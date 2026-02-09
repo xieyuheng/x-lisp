@@ -1,4 +1,4 @@
-[lisp] fix `my-list` -- by (export-all)
+[basic] `(the schema value)`
 
 # the
 
