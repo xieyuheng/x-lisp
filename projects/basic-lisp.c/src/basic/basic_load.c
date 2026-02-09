@@ -37,6 +37,7 @@ basic_load(path_t *path) {
     import_builtin_mod(mod);
     record_put(loaded_mods, path_string(path), mod);
     basic_prepare(mod, sexps);
+    basic_export(mod, sexps);
     basic_import(mod, sexps);
     return mod;
 }

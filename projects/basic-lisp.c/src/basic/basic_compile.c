@@ -10,11 +10,6 @@ is_define_variable(value_t sexp) {
     return sexp_has_tag(sexp, "define-variable");
 }
 
-static bool
-is_export(value_t sexp) {
-    return sexp_has_tag(sexp, "export");
-}
-
 static value_t
 x_function_name(value_t sexp) {
     return x_car(x_car(sexp));
@@ -75,15 +70,6 @@ handle_define_variable(mod_t *mod, value_t sexp) {
     compile_function(mod, function, x_variable_body(sexp));
 }
 
-static void
-handle_export(mod_t *mod, value_t body) {
-    for (int64_t i = 0; i < to_int64(x_list_length(body)); i++) {
-        value_t sexp = x_list_get(x_int(i), body);
-        char *name = to_symbol(sexp)->string;
-        set_add(mod->exported_names, string_copy(name));
-    }
-}
-
 void
 basic_prepare(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
@@ -94,10 +80,6 @@ basic_prepare(mod_t *mod, value_t sexps) {
 
         if (is_define_variable(sexp)) {
             prepare_define_variable(mod, x_cdr(sexp));
-        }
-
-        if (is_export(sexp)) {
-            handle_export(mod, x_cdr(sexp));
         }
     }
 }

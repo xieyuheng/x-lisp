@@ -1,3 +1,7 @@
+[basic] `basic_export` -- handle (export-all)
+[basic] `basic_export` -- handle (export-except)
+[basic] test about `basic_export`
+
 # later
 
 [helpers.c] improve `string_builder_t` for `format_*`
