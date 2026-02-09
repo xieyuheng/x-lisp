@@ -8,3 +8,8 @@ body:
   literal 2
   return
 
+@define-function three
+body:
+  literal 3
+  return
+

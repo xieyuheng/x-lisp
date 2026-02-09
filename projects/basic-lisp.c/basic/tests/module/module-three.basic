@@ -1,4 +1,4 @@
-(export one two three)
+(export-all)
 
 (define-function (one) (block body (return 1)))
 (define-function (two) (block body (return 2)))
