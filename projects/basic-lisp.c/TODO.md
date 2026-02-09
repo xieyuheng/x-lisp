@@ -1,5 +1,3 @@
-[basic] `basic_export` -- handle (export-all)
-[basic] `basic_export` -- handle (export-except)
 [basic] test about `basic_export`
 
 # later
