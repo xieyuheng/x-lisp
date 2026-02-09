@@ -1,15 +1,5 @@
 #include "index.h"
 
-static bool
-is_define_function(value_t sexp) {
-    return sexp_has_tag(sexp, "define-function");
-}
-
-static bool
-is_define_variable(value_t sexp) {
-    return sexp_has_tag(sexp, "define-variable");
-}
-
 static value_t
 x_function_name(value_t sexp) {
     return x_car(x_car(sexp));
@@ -74,11 +64,11 @@ void
 basic_prepare(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
         value_t sexp = x_list_get(x_int(i), sexps);
-        if (is_define_function(sexp)) {
+        if (sexp_has_tag(sexp, "define-function")) {
             prepare_define_function(mod, x_cdr(sexp));
         }
 
-        if (is_define_variable(sexp)) {
+        if (sexp_has_tag(sexp, "define-variable")) {
             prepare_define_variable(mod, x_cdr(sexp));
         }
     }
@@ -88,11 +78,11 @@ void
 basic_compile(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
         value_t sexp = x_list_get(x_int(i), sexps);
-        if (is_define_function(sexp)) {
+        if (sexp_has_tag(sexp, "define-function")) {
             handle_define_function(mod, x_cdr(sexp));
         }
 
-        if (is_define_variable(sexp)) {
+        if (sexp_has_tag(sexp, "define-variable")) {
             handle_define_variable(mod, x_cdr(sexp));
         }
     }

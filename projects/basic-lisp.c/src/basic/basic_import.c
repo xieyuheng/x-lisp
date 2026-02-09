@@ -1,45 +1,5 @@
 #include "index.h"
 
-static bool
-is_import(value_t sexp) {
-    return sexp_has_tag(sexp, "import");
-}
-
-static bool
-is_include(value_t sexp) {
-    return sexp_has_tag(sexp, "include");
-}
-
-static bool
-is_import_all(value_t sexp) {
-    return sexp_has_tag(sexp, "import-all");
-}
-
-static bool
-is_include_all(value_t sexp) {
-    return sexp_has_tag(sexp, "include-all");
-}
-
-static bool
-is_import_except(value_t sexp) {
-    return sexp_has_tag(sexp, "import-except");
-}
-
-static bool
-is_include_except(value_t sexp) {
-    return sexp_has_tag(sexp, "include-except");
-}
-
-static bool
-is_import_as(value_t sexp) {
-    return sexp_has_tag(sexp, "import-as");
-}
-
-static bool
-is_include_as(value_t sexp) {
-    return sexp_has_tag(sexp, "include-as");
-}
-
 static mod_t *
 import_by(mod_t *mod, const char *string) {
     path_t *path = path_copy(mod->path);
@@ -170,35 +130,35 @@ void
 basic_import(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
         value_t sexp = x_list_get(x_int(i), sexps);
-        if (is_import(sexp)) {
+        if (sexp_has_tag(sexp, "import")) {
             collect_import(mod, x_cdr(sexp), false);
         }
 
-        if (is_include(sexp)) {
+        if (sexp_has_tag(sexp, "include")) {
             collect_import(mod, x_cdr(sexp), true);
         }
 
-        if (is_import_all(sexp)) {
+        if (sexp_has_tag(sexp, "import-all")) {
             collect_import_all(mod, x_cdr(sexp), false);
         }
 
-        if (is_include_all(sexp)) {
+        if (sexp_has_tag(sexp, "include-all")) {
             collect_import_all(mod, x_cdr(sexp), true);
         }
 
-        if (is_import_except(sexp)) {
+        if (sexp_has_tag(sexp, "import-except")) {
             collect_import_except(mod, x_cdr(sexp), false);
         }
 
-        if (is_include_except(sexp)) {
+        if (sexp_has_tag(sexp, "include-except")) {
             collect_import_except(mod, x_cdr(sexp), true);
         }
 
-        if (is_import_as(sexp)) {
+        if (sexp_has_tag(sexp, "import-as")) {
             collect_import_as(mod, x_cdr(sexp), false);
         }
 
-        if (is_include_as(sexp)) {
+        if (sexp_has_tag(sexp, "include-as")) {
             collect_import_as(mod, x_cdr(sexp), true);
         }
     }
