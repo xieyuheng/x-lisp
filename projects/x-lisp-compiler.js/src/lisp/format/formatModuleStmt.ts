@@ -14,6 +14,14 @@ export function formatModuleStmt(stmt: Stmt): string {
       return `(export ${stmt.names.join(" ")})`
     }
 
+    case "ExportAll": {
+      return `(export-all)`
+    }
+
+    case "ExportExcept": {
+      return `(export-except ${stmt.names.join(" ")})`
+    }
+
     case "Import": {
       return `(import "${stmt.path}" ${stmt.names.join(" ")})`
     }

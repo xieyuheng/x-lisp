@@ -104,7 +104,7 @@ function checkUndefinedNames(
   mod: L.Mod,
   importedMod: L.Mod,
   names: Array<string>,
-  meta: S.TokenMeta,
+  meta?: S.TokenMeta,
 ): void {
   const definedNames = new Set(
     L.modPublicDefinitionEntries(importedMod).map(([key]) => key),
@@ -116,5 +116,6 @@ function checkUndefinedNames(
   message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
   message += `\n  importing from mod: ${urlRelativeToCwd(importedMod.url)}`
   message += `\n  undefined names: [${undefinedNames.join(" ")}]`
-  throw new S.ErrorWithMeta(message, meta)
+  if (meta) throw new S.ErrorWithMeta(message, meta)
+  else throw new Error(message)
 }
