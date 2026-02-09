@@ -1,3 +1,5 @@
+[basic] improve format about (let) and (begin)
+
 # later
 
 [lisp] `expandDataPredicate` -- report redefine name -- call API about define
