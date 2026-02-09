@@ -1,5 +1,3 @@
-[lisp] `formatLet1Body`
-
 # later
 
 [lisp] `expandDataPredicate` -- report redefine name -- call API about define

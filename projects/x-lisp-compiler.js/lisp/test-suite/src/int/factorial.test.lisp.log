@@ -22,14 +22,13 @@
     (imul (factorial (isub n 1)) n)))
 
 (define (main)
-  (begin
-    (assert-equal 1 (factorial 0))
-    (assert-equal 1 (factorial 1))
-    (assert-equal 2 (factorial 2))
-    (assert-equal 6 (factorial 3))
-    (assert-equal 24 (factorial 4))
-    (assert-equal 120 (factorial 5))
-    (assert-equal 720 (factorial 6))))
+  (assert-equal 1 (factorial 0))
+  (assert-equal 1 (factorial 1))
+  (assert-equal 2 (factorial 2))
+  (assert-equal 6 (factorial 3))
+  (assert-equal 24 (factorial 4))
+  (assert-equal 120 (factorial 5))
+  (assert-equal 720 (factorial 6)))
 
 ;;; UniquifyPass
 
@@ -39,14 +38,13 @@
     (imul (factorial (isub n 1)) n)))
 
 (define (main)
-  (begin
-    (assert-equal 1 (factorial 0))
-    (assert-equal 1 (factorial 1))
-    (assert-equal 2 (factorial 2))
-    (assert-equal 6 (factorial 3))
-    (assert-equal 24 (factorial 4))
-    (assert-equal 120 (factorial 5))
-    (assert-equal 720 (factorial 6))))
+  (assert-equal 1 (factorial 0))
+  (assert-equal 1 (factorial 1))
+  (assert-equal 2 (factorial 2))
+  (assert-equal 6 (factorial 3))
+  (assert-equal 24 (factorial 4))
+  (assert-equal 120 (factorial 5))
+  (assert-equal 720 (factorial 6)))
 
 ;;; RevealGlobalPass
 
@@ -56,14 +54,13 @@
     (imul (factorial (isub n 1)) n)))
 
 (define (main)
-  (begin
-    (assert-equal 1 (factorial 0))
-    (assert-equal 1 (factorial 1))
-    (assert-equal 2 (factorial 2))
-    (assert-equal 6 (factorial 3))
-    (assert-equal 24 (factorial 4))
-    (assert-equal 120 (factorial 5))
-    (assert-equal 720 (factorial 6))))
+  (assert-equal 1 (factorial 0))
+  (assert-equal 1 (factorial 1))
+  (assert-equal 2 (factorial 2))
+  (assert-equal 6 (factorial 3))
+  (assert-equal 24 (factorial 4))
+  (assert-equal 120 (factorial 5))
+  (assert-equal 720 (factorial 6)))
 
 ;;; LiftLambdaPass
 
@@ -73,30 +70,31 @@
     (imul (factorial (isub n 1)) n)))
 
 (define (main)
-  (begin
-    (assert-equal 1 (factorial 0))
-    (assert-equal 1 (factorial 1))
-    (assert-equal 2 (factorial 2))
-    (assert-equal 6 (factorial 3))
-    (assert-equal 24 (factorial 4))
-    (assert-equal 120 (factorial 5))
-    (assert-equal 720 (factorial 6))))
+  (assert-equal 1 (factorial 0))
+  (assert-equal 1 (factorial 1))
+  (assert-equal 2 (factorial 2))
+  (assert-equal 6 (factorial 3))
+  (assert-equal 24 (factorial 4))
+  (assert-equal 120 (factorial 5))
+  (assert-equal 720 (factorial 6)))
 
 ;;; UnnestOperandPass
 
 (define (factorial n)
   (if (int-less-or-equal? n 1)
     1
-    (let ((_₁ (isub n 1)))
-      (let ((_₂ (factorial _₁))) (imul _₂ n)))))
+    (begin
+      (= _₁ (isub n 1))
+      (= _₂ (factorial _₁))
+      (imul _₂ n))))
 
 (define (main)
-  (begin
-    (let ((_₁ (factorial 0))) (assert-equal 1 _₁))
-    (let ((_₂ (factorial 1))) (assert-equal 1 _₂))
-    (let ((_₃ (factorial 2))) (assert-equal 2 _₃))
-    (let ((_₄ (factorial 3))) (assert-equal 6 _₄))
-    (let ((_₅ (factorial 4))) (assert-equal 24 _₅))
-    (let ((_₆ (factorial 5))) (assert-equal 120 _₆))
-    (let ((_₇ (factorial 6))) (assert-equal 720 _₇))))
+  (begin (= _₁ (factorial 0)) (assert-equal 1 _₁))
+  (begin (= _₂ (factorial 1)) (assert-equal 1 _₂))
+  (begin (= _₃ (factorial 2)) (assert-equal 2 _₃))
+  (begin (= _₄ (factorial 3)) (assert-equal 6 _₄))
+  (begin (= _₅ (factorial 4)) (assert-equal 24 _₅))
+  (begin (= _₆ (factorial 5)) (assert-equal 120 _₆))
+  (= _₇ (factorial 6))
+  (assert-equal 720 _₇))
 

@@ -52,9 +52,9 @@
 
 (define one 1)
 
-(define two (let ((_₁ one)) (iadd 1 _₁)))
+(define two (= _₁ one) (iadd 1 _₁))
 
-(define three (let ((_₁ two)) (iadd 1 _₁)))
+(define three (= _₁ two) (iadd 1 _₁))
 
-(define (main) (let ((_₁ three)) (println _₁)))
+(define (main) (= _₁ three) (println _₁))
 

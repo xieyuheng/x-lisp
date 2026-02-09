@@ -9,141 +9,135 @@
 ;;; ShrinkPass
 
 (define (main)
-  (begin
-    (println
-     (let ((tael (make-list)))
-       (begin
-         (record-put! 'x 'a tael)
-         (record-put! 'y 'b tael)
-         tael)))
-    (println
-     (let ((tael (make-list)))
-       (begin
-         (record-put! 'x 'a tael)
-         (record-put! 'y 'b tael)
-         tael)))
-    (println
-     (let ((tael (make-list)))
-       (begin
-         (record-put! 'x 'a tael)
-         (record-put! 'y 'b tael)
-         tael)))
-    (println
-     (let ((tael (make-list)))
-       (begin
-         (record-put! 'x 'a tael)
-         (record-put! 'y 'b tael)
-         tael)))))
+  (println
+   (begin
+     (= tael (make-list))
+     (record-put! 'x 'a tael)
+     (record-put! 'y 'b tael)
+     tael))
+  (println
+   (begin
+     (= tael (make-list))
+     (record-put! 'x 'a tael)
+     (record-put! 'y 'b tael)
+     tael))
+  (println
+   (begin
+     (= tael (make-list))
+     (record-put! 'x 'a tael)
+     (record-put! 'y 'b tael)
+     tael))
+  (println
+   (begin
+     (= tael (make-list))
+     (record-put! 'x 'a tael)
+     (record-put! 'y 'b tael)
+     tael)))
 
 ;;; UniquifyPass
 
 (define (main)
-  (begin
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁)))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  (begin
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁)))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (begin
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))
-    (println
-     (let ((tael₁ (make-list)))
-       (begin
-         (record-put! 'x 'a tael₁)
-         (record-put! 'y 'b tael₁)
-         tael₁)))))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (record-put! 'x 'a tael₁)
+     (record-put! 'y 'b tael₁)
+     tael₁)))
 
 ;;; UnnestOperandPass
 
 (define (main)
   (begin
-    (let ((tael₁ (make-list)))
-      (begin
-        (record-put! 'x 'a tael₁)
-        (record-put! 'y 'b tael₁)
-        (println tael₁)))
-    (let ((tael₁ (make-list)))
-      (begin
-        (record-put! 'x 'a tael₁)
-        (record-put! 'y 'b tael₁)
-        (println tael₁)))
-    (let ((tael₁ (make-list)))
-      (begin
-        (record-put! 'x 'a tael₁)
-        (record-put! 'y 'b tael₁)
-        (println tael₁)))
-    (let ((tael₁ (make-list)))
-      (begin
-        (record-put! 'x 'a tael₁)
-        (record-put! 'y 'b tael₁)
-        (println tael₁)))))
+    (= tael₁ (make-list))
+    (record-put! 'x 'a tael₁)
+    (record-put! 'y 'b tael₁)
+    (println tael₁))
+  (begin
+    (= tael₁ (make-list))
+    (record-put! 'x 'a tael₁)
+    (record-put! 'y 'b tael₁)
+    (println tael₁))
+  (begin
+    (= tael₁ (make-list))
+    (record-put! 'x 'a tael₁)
+    (record-put! 'y 'b tael₁)
+    (println tael₁))
+  (= tael₁ (make-list))
+  (record-put! 'x 'a tael₁)
+  (record-put! 'y 'b tael₁)
+  (println tael₁))
 

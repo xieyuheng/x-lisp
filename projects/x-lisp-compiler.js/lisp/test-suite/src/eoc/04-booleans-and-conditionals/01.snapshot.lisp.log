@@ -13,53 +13,54 @@
 
 (define (main)
   (println
-   (let ((x (random-dice)))
-     (let ((y (random-dice)))
-       (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
-         (iadd y 2)
-         (iadd y 10))))))
+   (begin
+     (= x (random-dice))
+     (= y (random-dice))
+     (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+       (iadd y 2)
+       (iadd y 10)))))
 
 ;;; UniquifyPass
 
 (define (main)
   (println
-   (let ((x₁ (random-dice)))
-     (let ((y₁ (random-dice)))
-       (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
-         (iadd y₁ 2)
-         (iadd y₁ 10))))))
+   (begin
+     (= x₁ (random-dice))
+     (= y₁ (random-dice))
+     (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
+       (iadd y₁ 2)
+       (iadd y₁ 10)))))
 
 ;;; RevealGlobalPass
 
 (define (main)
   (println
-   (let ((x₁ (random-dice)))
-     (let ((y₁ (random-dice)))
-       (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
-         (iadd y₁ 2)
-         (iadd y₁ 10))))))
+   (begin
+     (= x₁ (random-dice))
+     (= y₁ (random-dice))
+     (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
+       (iadd y₁ 2)
+       (iadd y₁ 10)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (println
-   (let ((x₁ (random-dice)))
-     (let ((y₁ (random-dice)))
-       (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
-         (iadd y₁ 2)
-         (iadd y₁ 10))))))
+   (begin
+     (= x₁ (random-dice))
+     (= y₁ (random-dice))
+     (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
+       (iadd y₁ 2)
+       (iadd y₁ 10)))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((x₁ (random-dice)))
-    (let ((y₁ (random-dice)))
-      (let
-          ((_₁ (if
-                   (if (int-less? x₁ 1)
-                     (equal? x₁ 0)
-                     (equal? x₁ 2))
-                 (iadd y₁ 2)
-                 (iadd y₁ 10))))
-        (println _₁)))))
+  (= x₁ (random-dice))
+  (= y₁ (random-dice))
+  (= _₁
+     (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
+       (iadd y₁ 2)
+       (iadd y₁ 10)))
+  (println _₁))
 

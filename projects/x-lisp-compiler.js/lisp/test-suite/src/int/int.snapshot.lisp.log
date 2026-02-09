@@ -32,5 +32,5 @@
 
 (define (square x) (imul x x))
 
-(define (main) (let ((_₁ (square 3))) (println _₁)))
+(define (main) (= _₁ (square 3)) (println _₁))
 

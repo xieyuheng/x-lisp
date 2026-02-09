@@ -34,11 +34,11 @@
 
 ;;; UnnestOperandPass
 
-(define (Y f) (let ((_₁ (Y©λ₂ f))) (Y©λ₁ _₁)))
+(define (Y f) (= _₁ (Y©λ₂ f)) (Y©λ₁ _₁))
 
 (define (Y©λ₁ u₁) (u₁ u₁))
 
-(define (Y©λ₂ f x₁) (let ((_₁ (Y©λ₂©λ₁ x₁))) (f _₁)))
+(define (Y©λ₂ f x₁) (= _₁ (Y©λ₂©λ₁ x₁)) (f _₁))
 
-(define (Y©λ₂©λ₁ x₁ t₁) (let ((_₁ (x₁ x₁))) (_₁ t₁)))
+(define (Y©λ₂©λ₁ x₁ t₁) (= _₁ (x₁ x₁)) (_₁ t₁))
 

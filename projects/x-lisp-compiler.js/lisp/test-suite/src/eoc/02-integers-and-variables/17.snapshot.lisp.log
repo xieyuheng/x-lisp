@@ -21,7 +21,8 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((_₁ (random-dice)))
-    (let ((_₂ (iadd _₁ 1)))
-      (let ((_₃ (iadd 1 _₂))) (println _₃)))))
+  (= _₁ (random-dice))
+  (= _₂ (iadd _₁ 1))
+  (= _₃ (iadd 1 _₂))
+  (println _₃))
 

@@ -20,5 +20,5 @@
 
 ;;; UnnestOperandPass
 
-(define (main) (let ((_₁ null)) (println _₁)))
+(define (main) (= _₁ null) (println _₁))
 

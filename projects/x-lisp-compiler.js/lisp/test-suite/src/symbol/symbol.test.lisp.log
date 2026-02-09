@@ -26,6 +26,6 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((_₁ (symbol-append 'abc 'def)))
-    (assert-equal 'abcdef _₁)))
+  (= _₁ (symbol-append 'abc 'def))
+  (assert-equal 'abcdef _₁))
 

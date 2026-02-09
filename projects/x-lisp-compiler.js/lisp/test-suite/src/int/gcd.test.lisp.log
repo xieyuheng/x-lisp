@@ -11,44 +11,40 @@
 (define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
 
 (define (main)
-  (begin
-    (assert-equal 1 (gcd 13 7))
-    (assert-equal 4 (gcd 12 8))))
+  (assert-equal 1 (gcd 13 7))
+  (assert-equal 4 (gcd 12 8)))
 
 ;;; UniquifyPass
 
 (define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
 
 (define (main)
-  (begin
-    (assert-equal 1 (gcd 13 7))
-    (assert-equal 4 (gcd 12 8))))
+  (assert-equal 1 (gcd 13 7))
+  (assert-equal 4 (gcd 12 8)))
 
 ;;; RevealGlobalPass
 
 (define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
 
 (define (main)
-  (begin
-    (assert-equal 1 (gcd 13 7))
-    (assert-equal 4 (gcd 12 8))))
+  (assert-equal 1 (gcd 13 7))
+  (assert-equal 4 (gcd 12 8)))
 
 ;;; LiftLambdaPass
 
 (define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
 
 (define (main)
-  (begin
-    (assert-equal 1 (gcd 13 7))
-    (assert-equal 4 (gcd 12 8))))
+  (assert-equal 1 (gcd 13 7))
+  (assert-equal 4 (gcd 12 8)))
 
 ;;; UnnestOperandPass
 
 (define (gcd a b)
-  (if (equal? b 0) a (let ((_₁ (imod a b))) (gcd b _₁))))
+  (if (equal? b 0) a (begin (= _₁ (imod a b)) (gcd b _₁))))
 
 (define (main)
-  (begin
-    (let ((_₁ (gcd 13 7))) (assert-equal 1 _₁))
-    (let ((_₂ (gcd 12 8))) (assert-equal 4 _₂))))
+  (begin (= _₁ (gcd 13 7)) (assert-equal 1 _₁))
+  (= _₂ (gcd 12 8))
+  (assert-equal 4 _₂))
 

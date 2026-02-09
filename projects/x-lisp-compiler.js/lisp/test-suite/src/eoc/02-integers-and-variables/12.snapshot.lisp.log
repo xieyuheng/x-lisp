@@ -26,8 +26,9 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((_₁ (iadd 1 2)))
-    (let ((_₂ (iadd 4 5)))
-      (let ((_₃ (iadd 3 _₂)))
-        (let ((_₄ (iadd _₁ _₃))) (println _₄))))))
+  (= _₁ (iadd 1 2))
+  (= _₂ (iadd 4 5))
+  (= _₃ (iadd 3 _₂))
+  (= _₄ (iadd _₁ _₃))
+  (println _₄))
 

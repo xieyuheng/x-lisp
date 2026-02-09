@@ -26,6 +26,6 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((_₁ (hashtag-append #abc #def)))
-    (assert-equal #abcdef _₁)))
+  (= _₁ (hashtag-append #abc #def))
+  (assert-equal #abcdef _₁))
 

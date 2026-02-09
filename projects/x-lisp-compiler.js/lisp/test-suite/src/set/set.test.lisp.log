@@ -6,82 +6,80 @@
 
 (define (main)
   (assert-equal
-    (let ((set (make-set)))
-      (begin
-        (set-add! 1 set)
-        (set-add! 2 set)
-        (set-add! 3 set)
-        set))
-    (let ((set (make-set)))
-      (begin
-        (set-add! 1 set)
-        (set-add! 2 set)
-        (set-add! 3 set)
-        set))))
+    (begin
+      (= set (make-set))
+      (set-add! 1 set)
+      (set-add! 2 set)
+      (set-add! 3 set)
+      set)
+    (begin
+      (= set (make-set))
+      (set-add! 1 set)
+      (set-add! 2 set)
+      (set-add! 3 set)
+      set)))
 
 ;;; UniquifyPass
 
 (define (main)
   (assert-equal
-    (let ((set₁ (make-set)))
-      (begin
-        (set-add! 1 set₁)
-        (set-add! 2 set₁)
-        (set-add! 3 set₁)
-        set₁))
-    (let ((set₁ (make-set)))
-      (begin
-        (set-add! 1 set₁)
-        (set-add! 2 set₁)
-        (set-add! 3 set₁)
-        set₁))))
+    (begin
+      (= set₁ (make-set))
+      (set-add! 1 set₁)
+      (set-add! 2 set₁)
+      (set-add! 3 set₁)
+      set₁)
+    (begin
+      (= set₁ (make-set))
+      (set-add! 1 set₁)
+      (set-add! 2 set₁)
+      (set-add! 3 set₁)
+      set₁)))
 
 ;;; RevealGlobalPass
 
 (define (main)
   (assert-equal
-    (let ((set₁ (make-set)))
-      (begin
-        (set-add! 1 set₁)
-        (set-add! 2 set₁)
-        (set-add! 3 set₁)
-        set₁))
-    (let ((set₁ (make-set)))
-      (begin
-        (set-add! 1 set₁)
-        (set-add! 2 set₁)
-        (set-add! 3 set₁)
-        set₁))))
+    (begin
+      (= set₁ (make-set))
+      (set-add! 1 set₁)
+      (set-add! 2 set₁)
+      (set-add! 3 set₁)
+      set₁)
+    (begin
+      (= set₁ (make-set))
+      (set-add! 1 set₁)
+      (set-add! 2 set₁)
+      (set-add! 3 set₁)
+      set₁)))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (assert-equal
-    (let ((set₁ (make-set)))
-      (begin
-        (set-add! 1 set₁)
-        (set-add! 2 set₁)
-        (set-add! 3 set₁)
-        set₁))
-    (let ((set₁ (make-set)))
-      (begin
-        (set-add! 1 set₁)
-        (set-add! 2 set₁)
-        (set-add! 3 set₁)
-        set₁))))
+    (begin
+      (= set₁ (make-set))
+      (set-add! 1 set₁)
+      (set-add! 2 set₁)
+      (set-add! 3 set₁)
+      set₁)
+    (begin
+      (= set₁ (make-set))
+      (set-add! 1 set₁)
+      (set-add! 2 set₁)
+      (set-add! 3 set₁)
+      set₁)))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((set₁ (make-set)))
-    (begin
-      (set-add! 1 set₁)
-      (set-add! 2 set₁)
-      (set-add! 3 set₁)
-      (let ((set₁ (make-set)))
-        (begin
-          (set-add! 1 set₁)
-          (set-add! 2 set₁)
-          (set-add! 3 set₁)
-          (assert-equal set₁ set₁))))))
+  (= set₁ (make-set))
+  (set-add! 1 set₁)
+  (set-add! 2 set₁)
+  (set-add! 3 set₁)
+  (= set₁ (make-set))
+  (set-add! 1 set₁)
+  (set-add! 2 set₁)
+  (set-add! 3 set₁)
+  (assert-equal set₁ set₁))
 

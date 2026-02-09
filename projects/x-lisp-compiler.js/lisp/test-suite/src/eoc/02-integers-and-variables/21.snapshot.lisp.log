@@ -9,34 +9,36 @@
 ;;; ShrinkPass
 
 (define (main)
-  (let ((y 6))
-    (let ((x (let ((y (ineg 42))) y))) (println (iadd x y)))))
+  (= y 6)
+  (= x (begin (= y (ineg 42)) y))
+  (println (iadd x y)))
 
 ;;; UniquifyPass
 
 (define (main)
-  (let ((y₁ 6))
-    (let ((x₁ (let ((y₂ (ineg 42))) y₂)))
-      (println (iadd x₁ y₁)))))
+  (= y₁ 6)
+  (= x₁ (begin (= y₂ (ineg 42)) y₂))
+  (println (iadd x₁ y₁)))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  (let ((y₁ 6))
-    (let ((x₁ (let ((y₂ (ineg 42))) y₂)))
-      (println (iadd x₁ y₁)))))
+  (= y₁ 6)
+  (= x₁ (begin (= y₂ (ineg 42)) y₂))
+  (println (iadd x₁ y₁)))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (let ((y₁ 6))
-    (let ((x₁ (let ((y₂ (ineg 42))) y₂)))
-      (println (iadd x₁ y₁)))))
+  (= y₁ 6)
+  (= x₁ (begin (= y₂ (ineg 42)) y₂))
+  (println (iadd x₁ y₁)))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((y₁ 6))
-    (let ((x₁ (let ((y₂ (ineg 42))) y₂)))
-      (let ((_₁ (iadd x₁ y₁))) (println _₁)))))
+  (= y₁ 6)
+  (= x₁ (begin (= y₂ (ineg 42)) y₂))
+  (= _₁ (iadd x₁ y₁))
+  (println _₁))
 

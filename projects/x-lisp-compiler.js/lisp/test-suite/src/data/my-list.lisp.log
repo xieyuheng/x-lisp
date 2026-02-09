@@ -75,12 +75,11 @@
 (define (nil? value) (equal? value #nil))
 
 (define (li head tail)
-  (let ((tael (make-list)))
-    (begin
-      (list-push! #li tael)
-      (list-push! head tael)
-      (list-push! tail tael)
-      tael)))
+  (= tael (make-list))
+  (list-push! #li tael)
+  (list-push! head tael)
+  (list-push! tail tael)
+  tael)
 
 (define (li? value)
   (if (any-list? value)
@@ -134,12 +133,11 @@
 (define (nil? value) (equal? value #nil))
 
 (define (li head tail)
-  (let ((tael₁ (make-list)))
-    (begin
-      (list-push! #li tael₁)
-      (list-push! head tael₁)
-      (list-push! tail tael₁)
-      tael₁)))
+  (= tael₁ (make-list))
+  (list-push! #li tael₁)
+  (list-push! head tael₁)
+  (list-push! tail tael₁)
+  tael₁)
 
 (define (li? value)
   (if (any-list? value)
@@ -193,12 +191,11 @@
 (define (nil? value) (equal? value #nil))
 
 (define (li head tail)
-  (let ((tael₁ (make-list)))
-    (begin
-      (list-push! #li tael₁)
-      (list-push! head tael₁)
-      (list-push! tail tael₁)
-      tael₁)))
+  (= tael₁ (make-list))
+  (list-push! #li tael₁)
+  (list-push! head tael₁)
+  (list-push! tail tael₁)
+  tael₁)
 
 (define (li? value)
   (if (any-list? value)
@@ -252,12 +249,11 @@
 (define (nil? value) (equal? value #nil))
 
 (define (li head tail)
-  (let ((tael₁ (make-list)))
-    (begin
-      (list-push! #li tael₁)
-      (list-push! head tael₁)
-      (list-push! tail tael₁)
-      tael₁)))
+  (= tael₁ (make-list))
+  (list-push! #li tael₁)
+  (list-push! head tael₁)
+  (list-push! tail tael₁)
+  tael₁)
 
 (define (li? value)
   (if (any-list? value)
@@ -301,9 +297,11 @@
   (if (nil? value)
     #t
     (if (li? value)
-      (if (let ((_₁ (li-head value))) (E _₁))
-        (let ((_₂ (my-list? E)))
-          (let ((_₃ (li-tail value))) (_₂ _₃)))
+      (if (begin (= _₁ (li-head value)) (E _₁))
+        (begin
+          (= _₂ (my-list? E))
+          (= _₃ (li-tail value))
+          (_₂ _₃))
         #f)
       #f)))
 
@@ -312,17 +310,16 @@
 (define (nil? value) (equal? value #nil))
 
 (define (li head tail)
-  (let ((tael₁ (make-list)))
-    (begin
-      (list-push! #li tael₁)
-      (list-push! head tael₁)
-      (list-push! tail tael₁)
-      tael₁)))
+  (= tael₁ (make-list))
+  (list-push! #li tael₁)
+  (list-push! head tael₁)
+  (list-push! tail tael₁)
+  tael₁)
 
 (define (li? value)
   (if (any-list? value)
-    (if (let ((_₁ (list-length value))) (equal? _₁ 3))
-      (let ((_₂ (list-head value))) (equal? _₂ #li))
+    (if (begin (= _₁ (list-length value)) (equal? _₁ 3))
+      (begin (= _₂ (list-head value)) (equal? _₂ #li))
       #f)
     #f))
 

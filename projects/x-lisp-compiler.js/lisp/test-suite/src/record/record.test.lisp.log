@@ -6,72 +6,70 @@
 
 (define (main)
   (assert-equal
-    (let ((tael (make-list)))
-      (begin
-        (record-put! 'x 'a tael)
-        (record-put! 'y 'b tael)
-        tael))
-    (let ((tael (make-list)))
-      (begin
-        (record-put! 'x 'a tael)
-        (record-put! 'y 'b tael)
-        tael))))
+    (begin
+      (= tael (make-list))
+      (record-put! 'x 'a tael)
+      (record-put! 'y 'b tael)
+      tael)
+    (begin
+      (= tael (make-list))
+      (record-put! 'x 'a tael)
+      (record-put! 'y 'b tael)
+      tael)))
 
 ;;; UniquifyPass
 
 (define (main)
   (assert-equal
-    (let ((tael₁ (make-list)))
-      (begin
-        (record-put! 'x 'a tael₁)
-        (record-put! 'y 'b tael₁)
-        tael₁))
-    (let ((tael₁ (make-list)))
-      (begin
-        (record-put! 'x 'a tael₁)
-        (record-put! 'y 'b tael₁)
-        tael₁))))
+    (begin
+      (= tael₁ (make-list))
+      (record-put! 'x 'a tael₁)
+      (record-put! 'y 'b tael₁)
+      tael₁)
+    (begin
+      (= tael₁ (make-list))
+      (record-put! 'x 'a tael₁)
+      (record-put! 'y 'b tael₁)
+      tael₁)))
 
 ;;; RevealGlobalPass
 
 (define (main)
   (assert-equal
-    (let ((tael₁ (make-list)))
-      (begin
-        (record-put! 'x 'a tael₁)
-        (record-put! 'y 'b tael₁)
-        tael₁))
-    (let ((tael₁ (make-list)))
-      (begin
-        (record-put! 'x 'a tael₁)
-        (record-put! 'y 'b tael₁)
-        tael₁))))
+    (begin
+      (= tael₁ (make-list))
+      (record-put! 'x 'a tael₁)
+      (record-put! 'y 'b tael₁)
+      tael₁)
+    (begin
+      (= tael₁ (make-list))
+      (record-put! 'x 'a tael₁)
+      (record-put! 'y 'b tael₁)
+      tael₁)))
 
 ;;; LiftLambdaPass
 
 (define (main)
   (assert-equal
-    (let ((tael₁ (make-list)))
-      (begin
-        (record-put! 'x 'a tael₁)
-        (record-put! 'y 'b tael₁)
-        tael₁))
-    (let ((tael₁ (make-list)))
-      (begin
-        (record-put! 'x 'a tael₁)
-        (record-put! 'y 'b tael₁)
-        tael₁))))
+    (begin
+      (= tael₁ (make-list))
+      (record-put! 'x 'a tael₁)
+      (record-put! 'y 'b tael₁)
+      tael₁)
+    (begin
+      (= tael₁ (make-list))
+      (record-put! 'x 'a tael₁)
+      (record-put! 'y 'b tael₁)
+      tael₁)))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((tael₁ (make-list)))
-    (begin
-      (record-put! 'x 'a tael₁)
-      (record-put! 'y 'b tael₁)
-      (let ((tael₁ (make-list)))
-        (begin
-          (record-put! 'x 'a tael₁)
-          (record-put! 'y 'b tael₁)
-          (assert-equal tael₁ tael₁))))))
+  (= tael₁ (make-list))
+  (record-put! 'x 'a tael₁)
+  (record-put! 'y 'b tael₁)
+  (= tael₁ (make-list))
+  (record-put! 'x 'a tael₁)
+  (record-put! 'y 'b tael₁)
+  (assert-equal tael₁ tael₁))
 

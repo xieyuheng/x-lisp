@@ -4,24 +4,24 @@
 
 ;;; ShrinkPass
 
-(define (main) (begin (println true) (println false)))
+(define (main) (println true) (println false))
 
 ;;; UniquifyPass
 
-(define (main) (begin (println true) (println false)))
+(define (main) (println true) (println false))
 
 ;;; RevealGlobalPass
 
-(define (main) (begin (println true) (println false)))
+(define (main) (println true) (println false))
 
 ;;; LiftLambdaPass
 
-(define (main) (begin (println true) (println false)))
+(define (main) (println true) (println false))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (begin
-    (let ((_₁ true)) (println _₁))
-    (let ((_₂ false)) (println _₂))))
+  (begin (= _₁ true) (println _₁))
+  (= _₂ false)
+  (println _₂))
 

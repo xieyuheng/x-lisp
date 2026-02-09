@@ -55,12 +55,12 @@
 ;;; UnnestOperandPass
 
 (define (main)
-  (let
-      ((_₁ (if
-               (if (let ((_₂ (random-dice))) (equal? _₂ 1))
-                 (let ((_₃ (random-dice))) (equal? _₃ 2))
-                 #f)
-             0
-             42)))
-    (println _₁)))
+  (= _₁
+     (if
+         (if (begin (= _₂ (random-dice)) (equal? _₂ 1))
+           (begin (= _₃ (random-dice)) (equal? _₃ 2))
+           #f)
+       0
+       42))
+  (println _₁))
 

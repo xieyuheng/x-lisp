@@ -84,13 +84,13 @@ export function formatExp(exp: Exp): string {
 
     case "Let1": {
       const rhs = formatExp(exp.rhs)
-      const body = formatExp(exp.body)
-      return `(let ((${exp.name} ${rhs})) ${body})`
+      const body = formatBody(exp.body)
+      return `(begin (= ${exp.name} ${rhs}) ${body})`
     }
 
     case "Begin1": {
       const head = formatExp(exp.head)
-      const body = formatBegin1Body(exp.body)
+      const body = formatBody(exp.body)
       return `(begin ${head} ${body})`
     }
 
@@ -174,21 +174,19 @@ export function formatExp(exp: Exp): string {
   }
 }
 
-export function formatBody(body: Exp): string {
-  if (body.kind === "BeginSugar") {
-    return formatExps(body.sequence)
-  } else {
-    return formatExp(body)
-  }
-}
 
 function formatCondLine(condLine: Exps.CondLine): string {
   return `(${formatExp(condLine.question)} ${formatExp(condLine.answer)})`
 }
 
-function formatBegin1Body(body: Exp): string {
+export function formatBody(body: Exp): string {
   if (body.kind === "Begin1") {
-    return `${formatExp(body.head)} ${formatBegin1Body(body.body)}`
+    return `${formatExp(body.head)} ${formatBody(body.body)}`
+  } else if (body.kind === "Let1") {
+    return `(= ${body.name} ${formatExp(body.rhs)}) ${formatBody(body.body)}`
+  }
+  else if (body.kind === "BeginSugar") {
+    return formatExps(body.sequence)
   } else {
     return formatExp(body)
   }

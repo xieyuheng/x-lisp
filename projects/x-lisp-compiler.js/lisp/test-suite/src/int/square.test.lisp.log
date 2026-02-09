@@ -41,6 +41,7 @@
 (import "square" square)
 
 (define (main)
-  (let ((_₁ (square 3)))
-    (let ((_₂ (square _₁))) (assert-equal 81 _₂))))
+  (= _₁ (square 3))
+  (= _₂ (square _₁))
+  (assert-equal 81 _₂))
 

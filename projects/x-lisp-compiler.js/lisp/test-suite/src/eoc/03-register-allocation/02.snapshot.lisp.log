@@ -8,35 +8,37 @@
 ;;; ShrinkPass
 
 (define (main)
-  (let ((x (random-dice)))
-    (let ((y (random-dice))) (println (iadd (iadd x y) 42)))))
+  (= x (random-dice))
+  (= y (random-dice))
+  (println (iadd (iadd x y) 42)))
 
 ;;; UniquifyPass
 
 (define (main)
-  (let ((x₁ (random-dice)))
-    (let ((y₁ (random-dice)))
-      (println (iadd (iadd x₁ y₁) 42)))))
+  (= x₁ (random-dice))
+  (= y₁ (random-dice))
+  (println (iadd (iadd x₁ y₁) 42)))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  (let ((x₁ (random-dice)))
-    (let ((y₁ (random-dice)))
-      (println (iadd (iadd x₁ y₁) 42)))))
+  (= x₁ (random-dice))
+  (= y₁ (random-dice))
+  (println (iadd (iadd x₁ y₁) 42)))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (let ((x₁ (random-dice)))
-    (let ((y₁ (random-dice)))
-      (println (iadd (iadd x₁ y₁) 42)))))
+  (= x₁ (random-dice))
+  (= y₁ (random-dice))
+  (println (iadd (iadd x₁ y₁) 42)))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (let ((x₁ (random-dice)))
-    (let ((y₁ (random-dice)))
-      (let ((_₁ (iadd x₁ y₁)))
-        (let ((_₂ (iadd _₁ 42))) (println _₂))))))
+  (= x₁ (random-dice))
+  (= y₁ (random-dice))
+  (= _₁ (iadd x₁ y₁))
+  (= _₂ (iadd _₁ 42))
+  (println _₂))
 

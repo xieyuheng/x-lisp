@@ -12,60 +12,55 @@
 ;;; ShrinkPass
 
 (define (main)
-  (begin
-    (print 1)
-    (newline)
-    (print 2)
-    (newline)
-    (print 3)
-    (newline)
-    666))
+  (print 1)
+  (newline)
+  (print 2)
+  (newline)
+  (print 3)
+  (newline)
+  666)
 
 ;;; UniquifyPass
 
 (define (main)
-  (begin
-    (print 1)
-    (newline)
-    (print 2)
-    (newline)
-    (print 3)
-    (newline)
-    666))
+  (print 1)
+  (newline)
+  (print 2)
+  (newline)
+  (print 3)
+  (newline)
+  666)
 
 ;;; RevealGlobalPass
 
 (define (main)
-  (begin
-    (print 1)
-    (newline)
-    (print 2)
-    (newline)
-    (print 3)
-    (newline)
-    666))
+  (print 1)
+  (newline)
+  (print 2)
+  (newline)
+  (print 3)
+  (newline)
+  666)
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (begin
-    (print 1)
-    (newline)
-    (print 2)
-    (newline)
-    (print 3)
-    (newline)
-    666))
+  (print 1)
+  (newline)
+  (print 2)
+  (newline)
+  (print 3)
+  (newline)
+  666)
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (begin
-    (print 1)
-    (newline)
-    (print 2)
-    (newline)
-    (print 3)
-    (newline)
-    666))
+  (print 1)
+  (newline)
+  (print 2)
+  (newline)
+  (print 3)
+  (newline)
+  666)
 

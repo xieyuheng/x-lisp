@@ -44,7 +44,8 @@
 (import-all "my-list")
 
 (define (main)
-  (begin (println nil) (println (li 1 (li 2 (li 3 nil))))))
+  (println nil)
+  (println (li 1 (li 2 (li 3 nil)))))
 
 (define (my-list? E value)
   (or (nil? value)
@@ -84,7 +85,8 @@
 (import-all "my-list")
 
 (define (main)
-  (begin (println nil) (println (li 1 (li 2 (li 3 nil))))))
+  (println nil)
+  (println (li 1 (li 2 (li 3 nil)))))
 
 (define (my-list? E value)
   (or (nil? value)
@@ -124,7 +126,8 @@
 (import-all "my-list")
 
 (define (main)
-  (begin (println nil) (println (li 1 (li 2 (li 3 nil))))))
+  (println nil)
+  (println (li 1 (li 2 (li 3 nil)))))
 
 (define (my-list? E value)
   (or (nil? value)
@@ -164,17 +167,18 @@
 (import-all "my-list")
 
 (define (main)
-  (begin (println nil) (println (li 1 (li 2 (li 3 nil))))))
+  (println nil)
+  (println (li 1 (li 2 (li 3 nil)))))
 
 ;;; UnnestOperandPass
 
 (import-all "my-list")
 
 (define (main)
-  (begin
-    (let ((_₁ nil)) (println _₁))
-    (let ((_₂ nil))
-      (let ((_₃ (li 3 _₂)))
-        (let ((_₄ (li 2 _₃)))
-          (let ((_₅ (li 1 _₄))) (println _₅)))))))
+  (begin (= _₁ nil) (println _₁))
+  (= _₂ nil)
+  (= _₃ (li 3 _₂))
+  (= _₄ (li 2 _₃))
+  (= _₅ (li 1 _₄))
+  (println _₅))
 

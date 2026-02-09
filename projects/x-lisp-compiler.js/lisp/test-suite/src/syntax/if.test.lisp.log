@@ -11,57 +11,55 @@
 ;;; ShrinkPass
 
 (define (main)
-  (begin
-    (assert-equal (if #t 1 2) 1)
-    (assert-equal (if #f 1 2) 2)
-    (assert (if #t (if #t #t #f) #f))
-    (assert (not (if #t (if #t #f #f) #f)))
-    (assert (if #f #t (if #f #t #t)))
-    (assert (not (if #f #t (if #f #t #f))))))
+  (assert-equal (if #t 1 2) 1)
+  (assert-equal (if #f 1 2) 2)
+  (assert (if #t (if #t #t #f) #f))
+  (assert (not (if #t (if #t #f #f) #f)))
+  (assert (if #f #t (if #f #t #t)))
+  (assert (not (if #f #t (if #f #t #f)))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (begin
-    (assert-equal (if #t 1 2) 1)
-    (assert-equal (if #f 1 2) 2)
-    (assert (if #t (if #t #t #f) #f))
-    (assert (not (if #t (if #t #f #f) #f)))
-    (assert (if #f #t (if #f #t #t)))
-    (assert (not (if #f #t (if #f #t #f))))))
+  (assert-equal (if #t 1 2) 1)
+  (assert-equal (if #f 1 2) 2)
+  (assert (if #t (if #t #t #f) #f))
+  (assert (not (if #t (if #t #f #f) #f)))
+  (assert (if #f #t (if #f #t #t)))
+  (assert (not (if #f #t (if #f #t #f)))))
 
 ;;; RevealGlobalPass
 
 (define (main)
-  (begin
-    (assert-equal (if #t 1 2) 1)
-    (assert-equal (if #f 1 2) 2)
-    (assert (if #t (if #t #t #f) #f))
-    (assert (not (if #t (if #t #f #f) #f)))
-    (assert (if #f #t (if #f #t #t)))
-    (assert (not (if #f #t (if #f #t #f))))))
+  (assert-equal (if #t 1 2) 1)
+  (assert-equal (if #f 1 2) 2)
+  (assert (if #t (if #t #t #f) #f))
+  (assert (not (if #t (if #t #f #f) #f)))
+  (assert (if #f #t (if #f #t #t)))
+  (assert (not (if #f #t (if #f #t #f)))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (begin
-    (assert-equal (if #t 1 2) 1)
-    (assert-equal (if #f 1 2) 2)
-    (assert (if #t (if #t #t #f) #f))
-    (assert (not (if #t (if #t #f #f) #f)))
-    (assert (if #f #t (if #f #t #t)))
-    (assert (not (if #f #t (if #f #t #f))))))
+  (assert-equal (if #t 1 2) 1)
+  (assert-equal (if #f 1 2) 2)
+  (assert (if #t (if #t #t #f) #f))
+  (assert (not (if #t (if #t #f #f) #f)))
+  (assert (if #f #t (if #f #t #t)))
+  (assert (not (if #f #t (if #f #t #f)))))
 
 ;;; UnnestOperandPass
 
 (define (main)
+  (begin (= _₁ (if #t 1 2)) (assert-equal _₁ 1))
+  (begin (= _₂ (if #f 1 2)) (assert-equal _₂ 2))
+  (begin (= _₃ (if #t (if #t #t #f) #f)) (assert _₃))
   (begin
-    (let ((_₁ (if #t 1 2))) (assert-equal _₁ 1))
-    (let ((_₂ (if #f 1 2))) (assert-equal _₂ 2))
-    (let ((_₃ (if #t (if #t #t #f) #f))) (assert _₃))
-    (let ((_₄ (if #t (if #t #f #f) #f)))
-      (let ((_₅ (not _₄))) (assert _₅)))
-    (let ((_₆ (if #f #t (if #f #t #t)))) (assert _₆))
-    (let ((_₇ (if #f #t (if #f #t #f))))
-      (let ((_₈ (not _₇))) (assert _₈)))))
+    (= _₄ (if #t (if #t #f #f) #f))
+    (= _₅ (not _₄))
+    (assert _₅))
+  (begin (= _₆ (if #f #t (if #f #t #t))) (assert _₆))
+  (= _₇ (if #f #t (if #f #t #f)))
+  (= _₈ (not _₇))
+  (assert _₈))
 
