@@ -4,6 +4,6 @@ import { useBuiltinMod } from "./useBuiltinMod.ts"
 export function importBuiltinMod(mod: L.Mod): void {
   const builtinMod = useBuiltinMod()
   for (const definition of builtinMod.definitions.values()) {
-    mod.definitions.set(definition.name, definition)
+    L.modDefine(mod, definition.name, definition)
   }
 }

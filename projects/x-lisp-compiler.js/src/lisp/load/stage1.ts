@@ -1,4 +1,3 @@
-import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
 export function stage1(mod: L.Mod, stmt: L.Stmt): void {
@@ -9,13 +8,8 @@ export function stage1(mod: L.Mod, stmt: L.Stmt): void {
   }
 
   if (stmt.kind === "DefineFunction") {
-    if (mod.definitions.has(stmt.name)) {
-      let message = `[stage1/DefineFunction] can not redefine`
-      message += `\n  name: ${stmt.name}`
-      throw new S.ErrorWithMeta(message, stmt.meta)
-    }
-
-    mod.definitions.set(
+    L.modDefine(
+      mod,
       stmt.name,
       L.FunctionDefinition(
         mod,
@@ -28,13 +22,8 @@ export function stage1(mod: L.Mod, stmt: L.Stmt): void {
   }
 
   if (stmt.kind === "DefineVariable") {
-    if (mod.definitions.has(stmt.name)) {
-      let message = `[stage1/DefineVariable] can not redefine`
-      message += `\n  name: ${stmt.name}`
-      throw new S.ErrorWithMeta(message, stmt.meta)
-    }
-
-    mod.definitions.set(
+    L.modDefine(
+      mod,
       stmt.name,
       L.VariableDefinition(mod, stmt.name, stmt.body, stmt.meta),
     )

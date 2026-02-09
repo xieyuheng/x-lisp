@@ -6,11 +6,12 @@ export function expandDataConstructor(
 ): void {
   const name = ctor.name
   if (ctor.fields.length === 0) {
-    mod.definitions.set(name, L.VariableDefinition(mod, name, L.Hashtag(name)))
+    L.modDefine(mod, name, L.VariableDefinition(mod, name, L.Hashtag(name)))
   } else {
     const parameters = ctor.fields.map((field) => field.name)
     const args = parameters.map((name) => L.Var(name))
-    mod.definitions.set(
+    L.modDefine(
+      mod,
       name,
       L.FunctionDefinition(
         mod,
@@ -28,7 +29,8 @@ export function expandDataGetter(
 ): void {
   for (const [index, field] of ctor.fields.entries()) {
     const name = `${ctor.name}-${field.name}`
-    mod.definitions.set(
+    L.modDefine(
+      mod,
       name,
       L.FunctionDefinition(
         mod,
@@ -46,7 +48,8 @@ export function expandDataPutter(
 ): void {
   for (const [index, field] of ctor.fields.entries()) {
     const name = `${ctor.name}-put-${field.name}`
-    mod.definitions.set(
+    L.modDefine(
+      mod,
       name,
       L.FunctionDefinition(
         mod,
@@ -63,7 +66,8 @@ export function expandDataPutter(
 
   for (const [index, field] of ctor.fields.entries()) {
     const name = `${ctor.name}-put-${field.name}!`
-    mod.definitions.set(
+    L.modDefine(
+      mod,
       name,
       L.FunctionDefinition(
         mod,
@@ -85,7 +89,8 @@ export function expandDataConstructorPredicate(
 ): void {
   const name = `${ctor.name}?`
   if (ctor.fields.length === 0) {
-    mod.definitions.set(
+    L.modDefine(
+      mod,
       name,
       L.FunctionDefinition(
         mod,
@@ -95,7 +100,8 @@ export function expandDataConstructorPredicate(
       ),
     )
   } else {
-    mod.definitions.set(
+    L.modDefine(
+      mod,
       name,
       L.FunctionDefinition(
         mod,
@@ -119,7 +125,8 @@ export function expandDataConstructorPredicate(
 
 export function expandDataPredicate(mod: L.Mod, stmt: L.DefineData): void {
   const name = stmt.predicate.name
-  mod.definitions.set(
+  L.modDefine(
+    mod,
     name,
     L.FunctionDefinition(
       mod,

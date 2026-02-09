@@ -115,6 +115,6 @@ x-lisp 的首要目标是加快新语言开发的速度。
 任务：
 
 - [x] cond
-- [ ] define-data
+- [x] define-data
 - [ ] claim
 - [ ] match

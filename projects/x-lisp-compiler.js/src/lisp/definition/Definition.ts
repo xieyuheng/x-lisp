@@ -13,18 +13,21 @@ export type PrimitiveFunctionDefinition = {
   mod: Mod
   name: string
   arity: number
+  meta?: Meta
 }
 
 export function PrimitiveFunctionDefinition(
   mod: Mod,
   name: string,
   arity: number,
+  meta?: Meta,
 ): PrimitiveFunctionDefinition {
   return {
     kind: "PrimitiveFunctionDefinition",
     mod,
     name,
     arity,
+    meta,
   }
 }
 
@@ -32,16 +35,19 @@ export type PrimitiveVariableDefinition = {
   kind: "PrimitiveVariableDefinition"
   mod: Mod
   name: string
+  meta?: Meta
 }
 
 export function PrimitiveVariableDefinition(
   mod: Mod,
   name: string,
+  meta?: Meta,
 ): PrimitiveVariableDefinition {
   return {
     kind: "PrimitiveVariableDefinition",
     mod,
     name,
+    meta,
   }
 }
 

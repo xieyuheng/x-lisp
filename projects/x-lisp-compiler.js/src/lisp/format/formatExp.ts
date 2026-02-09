@@ -174,7 +174,6 @@ export function formatExp(exp: Exp): string {
   }
 }
 
-
 function formatCondLine(condLine: Exps.CondLine): string {
   return `(${formatExp(condLine.question)} ${formatExp(condLine.answer)})`
 }
@@ -184,8 +183,7 @@ export function formatBody(body: Exp): string {
     return `${formatExp(body.head)} ${formatBody(body.body)}`
   } else if (body.kind === "Let1") {
     return `(= ${body.name} ${formatExp(body.rhs)}) ${formatBody(body.body)}`
-  }
-  else if (body.kind === "BeginSugar") {
+  } else if (body.kind === "BeginSugar") {
     return formatExps(body.sequence)
   } else {
     return formatExp(body)

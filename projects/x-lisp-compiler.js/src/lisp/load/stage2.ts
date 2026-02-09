@@ -1,4 +1,3 @@
-import { formatIndent } from "@xieyuheng/helpers.js/format"
 import { createUrl, urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
@@ -16,24 +15,21 @@ export function stage2(mod: L.Mod, stmt: L.Stmt): void {
 
     for (const [name, definition] of definitionEntries) {
       if (stmt.names.includes(name)) {
-        checkRedefine(mod, importedMod, name, definition, stmt.meta)
-        mod.definitions.set(name, definition)
+        L.modDefine(mod, name, definition)
       }
     }
   }
 
   if (stmt.kind === "ImportAll") {
     for (const [name, definition] of definitionEntries) {
-      checkRedefine(mod, importedMod, name, definition, stmt.meta)
-      mod.definitions.set(name, definition)
+      L.modDefine(mod, name, definition)
     }
   }
 
   if (stmt.kind === "ImportExcept") {
     for (const [name, definition] of definitionEntries) {
       if (!stmt.names.includes(name)) {
-        checkRedefine(mod, importedMod, name, definition, stmt.meta)
-        mod.definitions.set(name, definition)
+        L.modDefine(mod, name, definition)
       }
     }
   }
@@ -41,8 +37,7 @@ export function stage2(mod: L.Mod, stmt: L.Stmt): void {
   if (stmt.kind === "ImportAs") {
     for (const [name, definition] of definitionEntries) {
       const fullName = `${stmt.prefix}${name}`
-      checkRedefine(mod, importedMod, fullName, definition, stmt.meta)
-      mod.definitions.set(fullName, definition)
+      L.modDefine(mod, fullName, definition)
     }
   }
 
@@ -51,8 +46,7 @@ export function stage2(mod: L.Mod, stmt: L.Stmt): void {
 
     for (const [name, definition] of definitionEntries) {
       if (stmt.names.includes(name)) {
-        checkRedefine(mod, importedMod, name, definition, stmt.meta)
-        mod.definitions.set(name, definition)
+        L.modDefine(mod, name, definition)
         mod.exported.add(name)
       }
     }
@@ -60,8 +54,7 @@ export function stage2(mod: L.Mod, stmt: L.Stmt): void {
 
   if (stmt.kind === "IncludeAll") {
     for (const [name, definition] of definitionEntries) {
-      checkRedefine(mod, importedMod, name, definition, stmt.meta)
-      mod.definitions.set(name, definition)
+      L.modDefine(mod, name, definition)
       mod.exported.add(name)
     }
   }
@@ -69,8 +62,7 @@ export function stage2(mod: L.Mod, stmt: L.Stmt): void {
   if (stmt.kind === "IncludeExcept") {
     for (const [name, definition] of definitionEntries) {
       if (!stmt.names.includes(name)) {
-        checkRedefine(mod, importedMod, name, definition, stmt.meta)
-        mod.definitions.set(name, definition)
+        L.modDefine(mod, name, definition)
         mod.exported.add(name)
       }
     }
@@ -79,8 +71,7 @@ export function stage2(mod: L.Mod, stmt: L.Stmt): void {
   if (stmt.kind === "IncludeAs") {
     for (const [name, definition] of definitionEntries) {
       const fullName = `${stmt.prefix}${name}`
-      checkRedefine(mod, importedMod, fullName, definition, stmt.meta)
-      mod.definitions.set(fullName, definition)
+      L.modDefine(mod, fullName, definition)
       mod.exported.add(fullName)
     }
   }
@@ -125,27 +116,5 @@ function checkUndefinedNames(
   message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
   message += `\n  importing from mod: ${urlRelativeToCwd(importedMod.url)}`
   message += `\n  undefined names: [${undefinedNames.join(" ")}]`
-  throw new S.ErrorWithMeta(message, meta)
-}
-
-function checkRedefine(
-  mod: L.Mod,
-  importedMod: L.Mod,
-  name: string,
-  definition: L.Definition,
-  meta: S.TokenMeta,
-): void {
-  const found = mod.definitions.get(name)
-  if (found === undefined) return
-  if (found === definition) return
-
-  let message = `[checkRedefine] can not redefine during importing`
-  message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
-  message += `\n  importing from mod: ${urlRelativeToCwd(importedMod.url)}`
-  message += `\n  name: ${name}`
-  message += `\n  old definition:`
-  message += formatIndent(4, L.formatDefinition(found))
-  message += `\n  new definition:`
-  message += formatIndent(4, L.formatDefinition(definition))
   throw new S.ErrorWithMeta(message, meta)
 }

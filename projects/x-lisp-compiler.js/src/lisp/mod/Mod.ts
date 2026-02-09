@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import { type Definition } from "../definition/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 
@@ -17,6 +18,21 @@ export function createMod(url: URL, dependencies: Map<string, Mod>): Mod {
     definitions: new Map(),
     dependencies,
   }
+}
+
+export function modDefine(
+  mod: Mod,
+  name: string,
+  definition: Definition,
+): void {
+  if (mod.definitions.has(name)) {
+    let message = `[modDefine] can not redefine`
+    message += `\n  name: ${name}`
+    if (definition.meta) throw new S.ErrorWithMeta(message, definition.meta)
+    else throw new Error(message)
+  }
+
+  mod.definitions.set(name, definition)
 }
 
 export function modLookupDefinition(
