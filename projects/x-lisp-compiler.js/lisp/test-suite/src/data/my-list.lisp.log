@@ -11,8 +11,8 @@
 (define (my-list? E value)
   (or (nil? value)
       (and (li? value)
-           (E (li-head value))
-           ((my-list? E) (li-tail value)))))
+           (valid? E (li-head value))
+           (valid? (my-list? E) (li-tail value)))))
 
 (define nil #nil)
 
@@ -47,8 +47,8 @@
   (if (nil? value)
     #t
     (if (li? value)
-      (if (E (li-head value))
-        ((my-list? E) (li-tail value))
+      (if (valid? E (li-head value))
+        (valid? (my-list? E) (li-tail value))
         #f)
       #f)))
 
@@ -92,8 +92,8 @@
   (if (nil? value)
     #t
     (if (li? value)
-      (if (E (li-head value))
-        ((my-list? E) (li-tail value))
+      (if (valid? E (li-head value))
+        (valid? (my-list? E) (li-tail value))
         #f)
       #f)))
 
@@ -137,8 +137,8 @@
   (if (nil? value)
     #t
     (if (li? value)
-      (if (E (li-head value))
-        ((my-list? E) (li-tail value))
+      (if (valid? E (li-head value))
+        (valid? (my-list? E) (li-tail value))
         #f)
       #f)))
 
@@ -182,8 +182,8 @@
   (if (nil? value)
     #t
     (if (li? value)
-      (if (E (li-head value))
-        ((my-list? E) (li-tail value))
+      (if (valid? E (li-head value))
+        (valid? (my-list? E) (li-tail value))
         #f)
       #f)))
 
@@ -227,11 +227,11 @@
   (if (nil? value)
     #t
     (if (li? value)
-      (if (begin (= _₁ (li-head value)) (E _₁))
+      (if (begin (= _₁ (li-head value)) (valid? E _₁))
         (begin
           (= _₂ (my-list? E))
           (= _₃ (li-tail value))
-          (_₂ _₃))
+          (valid? _₂ _₃))
         #f)
       #f)))
 

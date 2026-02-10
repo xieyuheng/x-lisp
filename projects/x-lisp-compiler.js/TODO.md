@@ -1,7 +1,3 @@
-# the
-
-[lisp] `generateDataPredicate` -- use `the`
-
 # design by contract
 
 [lisp] support `Claim`

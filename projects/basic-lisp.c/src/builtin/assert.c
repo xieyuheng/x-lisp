@@ -49,36 +49,3 @@ x_assert_not_equal(value_t lhs, value_t rhs) {
 
     return x_void;
 }
-
-void
-x_the(vm_t *vm) {
-    value_t value = vm_pop(vm);
-    value_t schema = vm_pop(vm);
-
-    if (true_p(x_atom_p(schema))) {
-        if (equal_p(schema, value)) {
-            vm_push(vm, value);
-            return;
-        } else {
-            printf("(the) fail");
-            printf("\n  schema: "); print(schema);
-            printf("\n  value: "); print(value);
-            printf("\n");
-            exit(1);
-        }
-    } else {
-        vm_push(vm, value);
-        apply(vm, 1, schema);
-        value_t result = vm_pop(vm);
-        if (true_p(result)) {
-            vm_push(vm, value);
-            return;
-        } else {
-            printf("(the) fail");
-            printf("\n  schema: "); print(schema);
-            printf("\n  value: "); print(value);
-            printf("\n");
-            exit(1);
-        }
-    }
-}

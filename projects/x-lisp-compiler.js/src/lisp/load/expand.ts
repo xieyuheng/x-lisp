@@ -147,7 +147,8 @@ function expandDataPredicateCase(
     return L.And([
       L.Apply(L.Var(`${ctor.name}?`), [L.Var("value")]),
       ...ctor.fields.map((field) =>
-        L.Apply(field.predicate, [
+        L.Apply(L.Var("valid?"), [
+          field.predicate,
           L.Apply(L.Var(`${ctor.name}-${field.name}`), [L.Var("value")]),
         ]),
       ),

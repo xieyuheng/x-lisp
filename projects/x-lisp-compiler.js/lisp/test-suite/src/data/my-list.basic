@@ -5,11 +5,11 @@
   (block then₁
     (= _₂ (my-list? E))
     (= _₃ (li-tail value))
-    (return (_₂ _₃)))
+    (return (valid? _₂ _₃)))
   (block else₂ (return #f))
   (block then₃
     (= _₁ (li-head value))
-    (test (E _₁))
+    (test (valid? E _₁))
     (branch then₁ else₂))
   (block else₄ (return #f))
   (block then₅ (return #t))

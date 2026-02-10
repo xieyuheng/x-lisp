@@ -15,10 +15,9 @@ then₁:
   local-load value
   call li-tail
   local-store _₃
-  local-load _₃
   local-load _₂
-  literal 1
-  tail-apply
+  local-load _₃
+  tail-call valid?
 else₂:
   literal #f
   return
@@ -26,10 +25,9 @@ then₃:
   local-load value
   call li-head
   local-store _₁
-  local-load _₁
   local-load E
-  literal 1
-  apply
+  local-load _₁
+  call valid?
   jump-if-not else₂
   jump then₁
 else₄:
