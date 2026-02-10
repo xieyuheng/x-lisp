@@ -1,6 +1,5 @@
 # the
 
-[builtin] `x_atom_p`
 [builtin] `x_the` -- literal atom as schema
 
 # later

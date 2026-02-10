@@ -1,7 +1,8 @@
 #pragma once
 
-value_t x_any_p(value_t x);
-value_t x_same_p(value_t lhs, value_t rhs);
-value_t x_equal_p(value_t lhs, value_t rhs);
-value_t x_hash_code(value_t value);
-value_t x_total_compare(value_t lhs, value_t rhs);
+x_fn_1_t x_any_p;
+x_fn_2_t x_same_p;
+x_fn_2_t x_equal_p;
+x_fn_1_t x_atom_p;
+x_fn_1_t x_hash_code;
+x_fn_2_t x_total_compare;
