@@ -56,4 +56,14 @@ x_the(vm_t *vm) {
     value_t schema = vm_pop(vm);
     vm_push(vm, value);
     apply(vm, 1, schema);
+    value_t result = vm_pop(vm);
+    if (true_p(result)) {
+        vm_push(vm, value);
+    } else {
+        printf("(the) fail");
+        printf("\n  schema: "); print(schema);
+        printf("\n  value: "); print(value);
+        printf("\n");
+        exit(1);
+    }
 }

@@ -1,4 +1,7 @@
-[builtin] `x_the` -- fix `the.snapshot.basic`
+# the
+
+[vm] `apply_now`
+[builtin] `x_the` -- use `apply_now`
 [builtin] `x_the` -- literal atom as schema
 
 # later

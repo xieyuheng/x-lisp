@@ -1,3 +1,1 @@
-(assert-equal) fail
-  lhs: #t
-  rhs: 1
+1
