@@ -1,7 +1,5 @@
 #include "index.h"
 
-static inline void call_primitive(vm_t *vm, const primitive_t *primitive);
-
 inline void
 call_definition(vm_t *vm, const definition_t *definition) {
     switch (definition->kind) {
@@ -11,15 +9,12 @@ call_definition(vm_t *vm, const definition_t *definition) {
     }
 
     case FUNCTION_DEFINITION: {
-        function_t *function = definition_function(definition);
-        vm_push_frame(vm, make_function_frame(function));
+        call_function(vm, definition_function(definition));
         return;
     }
 
     case VARIABLE_DEFINITION: {
-        value_t value = definition->variable_definition.value;
-        vm_push(vm, value);
-        return;
+        unreachable();
     }
     }
 }
@@ -33,19 +28,28 @@ call_definition_now(vm_t *vm, const definition_t *definition) {
     }
 
     case FUNCTION_DEFINITION: {
-        vm_push_frame(vm, make_break_frame());
-        function_t *function = definition_function(definition);
-        vm_push_frame(vm, make_function_frame(function));
-        vm_execute(vm);
+        call_function_now(vm, definition_function(definition));
         return;
     }
 
     case VARIABLE_DEFINITION: {
-        value_t value = definition->variable_definition.value;
-        vm_push(vm, value);
-        return;
+        unreachable();
     }
     }
+}
+
+inline void
+call_function(vm_t *vm, const function_t *function) {
+    vm_push_frame(vm, make_function_frame(function));
+    return;
+}
+
+inline void
+call_function_now(vm_t *vm, const function_t *function) {
+    vm_push_frame(vm, make_break_frame());
+    vm_push_frame(vm, make_function_frame(function));
+    vm_execute(vm);
+    return;
 }
 
 inline void
