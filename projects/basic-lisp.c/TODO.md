@@ -1,8 +1,6 @@
 # the
 
-[basic] `basic_load` -- use `call_definition_now`
-
-[builtin] `x_the` -- use `apply_now`
+[vm] `call_function` instead of `call_definition`
 [builtin] `x_the` -- literal atom as schema
 
 # later

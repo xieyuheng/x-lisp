@@ -61,17 +61,6 @@ setup_variables(vm_t *vm) {
 }
 
 static void
-prepare_tail_call(vm_t *vm, const char *name) {
-    definition_t *definition = mod_lookup(vm_mod(vm), name);
-    assert(definition);
-    uint8_t *code = make_code_from_instrs(1, (struct instr_t[]) {
-            { .op = OP_TAIL_CALL,
-              .ref.definition = definition },
-        });
-    vm_push_frame(vm, make_code_frame(code));
-}
-
-static void
 basic_setup(mod_t *mod) {
     vm_t *vm = make_vm(mod);
     setup_variables(vm);
@@ -107,11 +96,10 @@ basic_setup_loaded_mods(void) {
 
 void
 basic_run(mod_t *mod) {
-    vm_t *vm = make_vm(mod);
-    if (mod_lookup(vm_mod(vm), "main")) {
-        prepare_tail_call(vm, "main");
+    definition_t *definition = mod_lookup(mod, "main");
+    if (definition) {
+        vm_t *vm = make_vm(mod);
+        call_definition_now(vm, definition);
+        vm_free(vm);
     }
-
-    vm_execute(vm);
-    vm_free(vm);
 }
