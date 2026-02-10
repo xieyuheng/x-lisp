@@ -21,21 +21,33 @@ make_code_frame(uint8_t *code) {
     return self;
 }
 
+frame_t *make_break() {
+    frame_t *self = new(frame_t);
+    self->kind = BREAK_FRAME;
+    return self;
+}
+
 void
 frame_free(frame_t *self) {
     switch (self->kind) {
     case FUNCTION_FRAME: {
-        break;
+        array_free(self->locals);
+        free(self);
+        return;
     }
 
     case CODE_FRAME: {
         free(self->code);
-        break;
-    }
+        array_free(self->locals);
+        free(self);
+        return;
     }
 
-    array_free(self->locals);
-    free(self);
+    case BREAK_FRAME: {
+        free(self);
+        return;
+    }
+    }
 }
 
 inline value_t

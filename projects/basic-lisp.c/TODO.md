@@ -1,9 +1,10 @@
 # the
 
-[vm] add `BREAK_FRAME`
 [vm] `vm_execute` -- break on `BREAK_FRAME`
 
+[vm] `call_definition_now`
 [vm] `apply_now`
+
 [builtin] `x_the` -- use `apply_now`
 [builtin] `x_the` -- literal atom as schema
 
