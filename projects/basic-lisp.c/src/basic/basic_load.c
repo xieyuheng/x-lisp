@@ -50,7 +50,8 @@ setup_variables(vm_t *vm) {
     while (definition) {
         if (definition->kind == VARIABLE_DEFINITION
             && definition->variable_definition.function) {
-            vm_push_frame(vm, make_frame_from_definition(definition));
+            function_t *function = definition_function(definition);
+            vm_push_frame(vm, make_function_frame(function));
             vm_execute(vm);
             definition->variable_definition.value = vm_pop(vm);
         }
@@ -67,7 +68,7 @@ prepare_tail_call(vm_t *vm, const char *name) {
             { .op = OP_TAIL_CALL,
               .ref.definition = definition },
         });
-    vm_push_frame(vm, make_frame_from_code(code));
+    vm_push_frame(vm, make_code_frame(code));
 }
 
 static void

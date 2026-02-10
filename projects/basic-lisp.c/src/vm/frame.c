@@ -1,21 +1,20 @@
 #include "index.h"
 
 frame_t *
-make_frame_from_definition(const definition_t *definition) {
-    assert(definition_has_function(definition));
-    function_t *function = definition_function(definition);
-
+make_function_frame(const function_t *function) {
     frame_t *self = new(frame_t);
-    self->definition = definition;
+    self->kind = FUNCTION_FRAME;
     self->code = function->code_area;
     self->pc = self->code;
     self->locals = make_array();
+    self->function_frame.function = function;
     return self;
 }
 
 frame_t *
-make_frame_from_code(uint8_t *code) {
+make_code_frame(uint8_t *code) {
     frame_t *self = new(frame_t);
+    self->kind = CODE_FRAME;
     self->code = code;
     self->pc = self->code;
     self->locals = make_array();
@@ -24,8 +23,15 @@ make_frame_from_code(uint8_t *code) {
 
 void
 frame_free(frame_t *self) {
-    if (!self->definition) {
+    switch (self->kind) {
+    case FUNCTION_FRAME: {
+        break;
+    }
+
+    case CODE_FRAME: {
         free(self->code);
+        break;
+    }
     }
 
     array_free(self->locals);

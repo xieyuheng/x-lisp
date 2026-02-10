@@ -1,5 +1,7 @@
 # the
 
+[vm] add `BREAK_FRAME`
+
 [vm] `apply_now`
 [builtin] `x_the` -- use `apply_now`
 [builtin] `x_the` -- literal atom as schema
@@ -19,4 +21,4 @@
 
 # bug
 
-`compile_quote` is saving list in funcion, need a way to value static
+`compile_quote` is saving list in function, need a way to value static
