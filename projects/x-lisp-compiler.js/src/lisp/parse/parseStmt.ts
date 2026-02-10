@@ -145,7 +145,7 @@ const parseDataField = S.createRouter<Stmts.DataField>({
   "`(,name ,exp)": ({ name, exp }, { meta }) => {
     return {
       name: S.symbolContent(name),
-      predicate: parseExp(exp),
+      schema: parseExp(exp),
     }
   },
 })

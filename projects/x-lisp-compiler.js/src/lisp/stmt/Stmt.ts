@@ -61,7 +61,7 @@ export type DataPredicateSpec = {
 
 export type DataField = {
   name: string
-  predicate: Exp
+  schema: Exp
 }
 
 export type DataConstructorSpec = {

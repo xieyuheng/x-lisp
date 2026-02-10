@@ -87,5 +87,5 @@ function formatDataConstructor(ctor: Stmts.DataConstructorSpec): string {
 }
 
 function formatDataField(field: Stmts.DataField): string {
-  return `(${field.name} ${formatExp(field.predicate)})`
+  return `(${field.name} ${formatExp(field.schema)})`
 }
