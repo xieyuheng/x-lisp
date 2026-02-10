@@ -1,8 +1,5 @@
-[basic] `(the schema value)`
-
 # the
 
-[lisp] `(the)`
 [lisp] `generateDataPredicate` -- use `the`
 
 # design by contract

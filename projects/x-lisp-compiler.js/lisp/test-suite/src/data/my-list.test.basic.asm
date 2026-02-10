@@ -1,12 +1,12 @@
 @define-function main
 body:
-  call nil
+  global-load nil
   local-store _₁
   local-load _₁
   literal #nil
   call assert-equal
   drop
-  call nil
+  global-load nil
   local-store _₂
   literal 3
   local-load _₂
@@ -66,7 +66,7 @@ body:
   local-load tael₁
   call assert-equal
   drop
-  call nil
+  global-load nil
   local-store _₆
   local-load _₆
   call nil?
@@ -74,7 +74,7 @@ body:
   local-load _₇
   call assert
   drop
-  call nil
+  global-load nil
   local-store _₈
   literal 3
   local-load _₈
@@ -94,7 +94,7 @@ body:
   local-load _₁₂
   call assert
   drop
-  call nil
+  global-load nil
   local-store _₁₃
   local-load _₁₃
   call li?
@@ -102,7 +102,7 @@ body:
   local-load _₁₄
   call assert-not
   drop
-  call nil
+  global-load nil
   local-store _₁₅
   literal 3
   local-load _₁₅
@@ -122,7 +122,7 @@ body:
   local-load _₁₉
   call assert-not
   drop
-  call nil
+  global-load nil
   local-store _₂₀
   literal 1
   local-load _₂₀
@@ -131,13 +131,13 @@ body:
   local-load _₂₁
   call li-tail
   local-store _₂₂
-  call nil
+  global-load nil
   local-store _₂₃
   local-load _₂₂
   local-load _₂₃
   call assert-equal
   drop
-  call nil
+  global-load nil
   local-store _₂₄
   literal 1
   local-load _₂₄
@@ -150,7 +150,7 @@ body:
   literal 1
   call assert-equal
   drop
-  call nil
+  global-load nil
   local-store _₂₇
   literal 3
   local-load _₂₇
@@ -185,7 +185,7 @@ body:
   local-load list₁
   call li-tail
   local-store _₃₂
-  call nil
+  global-load nil
   local-store _₃₃
   literal 3
   local-load _₃₃
@@ -199,7 +199,7 @@ body:
   local-load _₃₅
   call assert-equal
   drop
-  call nil
+  global-load nil
   local-store _₃₆
   local-load _₃₆
   local-load list₁
@@ -208,13 +208,13 @@ body:
   local-load list₁
   call li-tail
   local-store _₃₇
-  call nil
+  global-load nil
   local-store _₃₈
   local-load _₃₇
   local-load _₃₈
   call assert-equal
   drop
-  call nil
+  global-load nil
   local-store _₃₉
   ref int?
   local-load _₃₉
@@ -223,7 +223,7 @@ body:
   local-load _₄₀
   call assert
   drop
-  call nil
+  global-load nil
   local-store _₄₁
   literal 3
   local-load _₄₁
@@ -244,7 +244,7 @@ body:
   local-load _₄₅
   call assert
   drop
-  call nil
+  global-load nil
   local-store _₄₆
   ref symbol?
   local-load _₄₆
@@ -253,7 +253,7 @@ body:
   local-load _₄₇
   call assert
   drop
-  call nil
+  global-load nil
   local-store _₄₈
   literal 3
   local-load _₄₈
@@ -288,7 +288,7 @@ body:
   local-load _₅₄
   call assert-not
   drop
-  call nil
+  global-load nil
   local-store _₅₅
   literal 1
   local-load _₅₅
@@ -299,7 +299,7 @@ body:
   literal 1
   apply
   local-store _₅₇
-  call nil
+  global-load nil
   local-store _₅₈
   local-load _₅₈
   local-load _₅₇

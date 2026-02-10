@@ -5,7 +5,7 @@ body:
 
 @define-variable two
 body:
-  call one
+  global-load one
   local-store _₁
   literal 1
   local-load _₁
@@ -13,7 +13,7 @@ body:
 
 @define-variable three
 body:
-  call two
+  global-load two
   local-store _₁
   literal 1
   local-load _₁
@@ -21,7 +21,7 @@ body:
 
 @define-function main
 body:
-  call three
+  global-load three
   local-store _₁
   local-load _₁
   tail-call println

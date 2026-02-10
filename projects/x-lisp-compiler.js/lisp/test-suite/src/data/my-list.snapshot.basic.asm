@@ -1,11 +1,11 @@
 @define-function main
 body:
-  call nil
+  global-load nil
   local-store _₁
   local-load _₁
   call println
   drop
-  call nil
+  global-load nil
   local-store _₂
   literal 3
   local-load _₂

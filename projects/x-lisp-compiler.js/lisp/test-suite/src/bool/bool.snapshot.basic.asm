@@ -1,11 +1,11 @@
 @define-function main
 body:
-  call true
+  global-load true
   local-store _₁
   local-load _₁
   call println
   drop
-  call false
+  global-load false
   local-store _₂
   local-load _₂
   tail-call println

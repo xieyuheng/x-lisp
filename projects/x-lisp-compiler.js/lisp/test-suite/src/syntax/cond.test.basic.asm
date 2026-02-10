@@ -6,12 +6,12 @@ body:
   jump-if-not else₁₄
   jump then₁₃
 then₁:
-  call false
+  global-load false
   local-store _₅
   local-load _₅
   tail-call assert
 else₂:
-  call true
+  global-load true
   local-store _₆
   local-load _₆
   tail-call assert
@@ -24,14 +24,14 @@ let-body₃:
 let-body₄:
   jump let-body₃
 then₅:
-  call true
+  global-load true
   local-store _₃
   local-load _₃
   call assert
   drop
   jump let-body₃
 else₆:
-  call false
+  global-load false
   local-store _₄
   local-load _₄
   call assert

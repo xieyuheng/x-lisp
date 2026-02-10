@@ -205,6 +205,7 @@ export function createBuiltinMod(): L.Mod {
   declarePrimitiveFunction(mod, "assert-not", { arity: 1 })
   declarePrimitiveFunction(mod, "assert-equal", { arity: 2 })
   declarePrimitiveFunction(mod, "assert-not-equal", { arity: 2 })
+  declarePrimitiveFunction(mod, "the", { arity: 2 })
 
   return mod
 }
