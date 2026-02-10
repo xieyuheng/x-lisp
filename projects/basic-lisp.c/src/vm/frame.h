@@ -21,7 +21,7 @@ struct frame_t {
 
 frame_t *make_function_frame(const function_t *function);
 frame_t *make_code_frame(uint8_t *code);
-frame_t *make_break();
+frame_t *make_break_frame();
 void frame_free(frame_t *self);
 
 value_t frame_get_local(frame_t *self, size_t index);

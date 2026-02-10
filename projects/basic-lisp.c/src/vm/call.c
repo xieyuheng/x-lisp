@@ -35,7 +35,7 @@ call_definition_now(vm_t *vm, const definition_t *definition) {
     case FUNCTION_DEFINITION: {
         function_t *function = definition_function(definition);
         vm_push_frame(vm, make_function_frame(function));
-        vm_push_frame(vm, make_break());
+        vm_push_frame(vm, make_break_frame());
         vm_execute(vm);
         return;
     }

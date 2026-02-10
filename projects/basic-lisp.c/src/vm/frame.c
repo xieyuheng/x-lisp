@@ -21,7 +21,7 @@ make_code_frame(uint8_t *code) {
     return self;
 }
 
-frame_t *make_break() {
+frame_t *make_break_frame() {
     frame_t *self = new(frame_t);
     self->kind = BREAK_FRAME;
     return self;
