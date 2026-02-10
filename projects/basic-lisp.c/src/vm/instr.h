@@ -26,8 +26,7 @@ struct instr_t {
     op_t op;
     union {
         struct { value_t value; } literal;
-        struct { definition_t *definition; } call;
-        struct { definition_t *definition; } variable;
+        struct { definition_t *definition; } ref;
         struct { uint32_t index; } local;
         struct { int32_t offset; } jump; // offset is based on next instr.
     };
