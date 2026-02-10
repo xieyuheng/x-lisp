@@ -73,21 +73,36 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_CALL: {
-        // assert(instr.ref.definition);
-        call_definition(vm, instr.ref.definition);
+        // assert(instr.call.definition);
+        call_definition(vm, instr.call.definition);
         return;
     }
 
     case OP_TAIL_CALL: {
         stack_pop(vm->frame_stack);
         frame_free(frame);
-        // assert(instr.ref.definition);
-        call_definition(vm, instr.ref.definition);
+        // assert(instr.call.definition);
+        call_definition(vm, instr.call.definition);
         return;
     }
 
     case OP_REF: {
-        vm_push(vm, x_object(instr.ref.definition));
+        vm_push(vm, x_object(instr.call.definition));
+        return;
+    }
+
+    case OP_GLOBAL_LOAD: {
+        definition_t *definition = instr.variable.definition;
+        assert(definition->kind == VARIABLE_DEFINITION);
+        vm_push(vm, definition->variable_definition.value);
+        return;
+    }
+
+    case OP_GLOBAL_STORE: {
+        value_t value = vm_pop(vm);
+        definition_t *definition = instr.variable.definition;
+        assert(definition->kind == VARIABLE_DEFINITION);
+        definition->variable_definition.value = value;
         return;
     }
 

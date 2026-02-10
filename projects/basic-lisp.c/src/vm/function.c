@@ -201,19 +201,31 @@ static void function_inspect_instr(
 
     case OP_CALL: {
         string_print("call ");
-        string_print(instr.ref.definition->name);
+        string_print(instr.call.definition->name);
         return;
     }
 
     case OP_TAIL_CALL: {
         string_print("tail-call ");
-        string_print(instr.ref.definition->name);
+        string_print(instr.call.definition->name);
         return;
     }
 
     case OP_REF: {
         string_print("ref ");
-        string_print(instr.ref.definition->name);
+        string_print(instr.call.definition->name);
+        return;
+    }
+
+    case OP_GLOBAL_LOAD: {
+        string_print("global-load ");
+        string_print(instr.call.definition->name);
+        return;
+    }
+
+    case OP_GLOBAL_STORE: {
+        string_print("global-store ");
+        string_print(instr.call.definition->name);
         return;
     }
 

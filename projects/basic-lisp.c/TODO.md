@@ -4,6 +4,10 @@
 
 [vm] `call_function` instead of `call_definition`
 
+[vm] remove `OP_ASSIGN_VARIABLE`
+
+# the
+
 [builtin] `x_the` -- literal atom as schema
 
 # later

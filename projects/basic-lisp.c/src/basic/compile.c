@@ -44,13 +44,13 @@ compile_var(mod_t *mod, function_t *function, value_t sexp) {
     if (definition->kind == VARIABLE_DEFINITION) {
         struct instr_t instr;
         instr.op = OP_CALL;
-        instr.ref.definition = definition;
+        instr.call.definition = definition;
         function_append_instr(function, instr);
         return;
     } else {
         struct instr_t instr;
         instr.op = OP_REF;
-        instr.ref.definition = definition;
+        instr.call.definition = definition;
         function_append_instr(function, instr);
         return;
     }
@@ -113,7 +113,7 @@ compile_apply(mod_t *mod, function_t *function, value_t sexp) {
     if (!definition_has_arity(definition)) {
         struct instr_t instr;
         instr.op = OP_CALL;
-        instr.ref.definition = definition;
+        instr.call.definition = definition;
         function_append_instr(function, instr);
         instr.op = OP_LITERAL;
         instr.literal.value = x_list_length(args);
@@ -128,7 +128,7 @@ compile_apply(mod_t *mod, function_t *function, value_t sexp) {
     if (args_length < arity) {
         struct instr_t instr;
         instr.op = OP_REF;
-        instr.ref.definition = definition;
+        instr.call.definition = definition;
         function_append_instr(function, instr);
         instr.op = OP_LITERAL;
         instr.literal.value = x_list_length(args);
@@ -139,7 +139,7 @@ compile_apply(mod_t *mod, function_t *function, value_t sexp) {
     } else if (args_length == arity) {
         struct instr_t instr;
         instr.op = OP_CALL;
-        instr.ref.definition = definition;
+        instr.call.definition = definition;
         function_append_instr(function, instr);
         return;
     } else {
@@ -181,7 +181,7 @@ compile_tail_apply(mod_t *mod, function_t *function, value_t sexp) {
     if (!definition_has_arity(definition)) {
         struct instr_t instr;
         instr.op = OP_CALL;
-        instr.ref.definition = definition;
+        instr.call.definition = definition;
         function_append_instr(function, instr);
         instr.op = OP_LITERAL;
         instr.literal.value = x_list_length(args);
@@ -196,7 +196,7 @@ compile_tail_apply(mod_t *mod, function_t *function, value_t sexp) {
     if (args_length < arity) {
         struct instr_t instr;
         instr.op = OP_REF;
-        instr.ref.definition = definition;
+        instr.call.definition = definition;
         function_append_instr(function, instr);
         instr.op = OP_LITERAL;
         instr.literal.value = x_list_length(args);
@@ -207,7 +207,7 @@ compile_tail_apply(mod_t *mod, function_t *function, value_t sexp) {
     } else if (args_length == arity) {
         struct instr_t instr;
         instr.op = OP_TAIL_CALL;
-        instr.ref.definition = definition;
+        instr.call.definition = definition;
         function_append_instr(function, instr);
         return;
     } else {

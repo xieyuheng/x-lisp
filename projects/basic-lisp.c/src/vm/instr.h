@@ -10,6 +10,8 @@ typedef enum {
     OP_CALL,
     OP_TAIL_CALL,
     OP_REF,
+    OP_GLOBAL_LOAD,
+    OP_GLOBAL_STORE,
     OP_APPLY,
     OP_TAIL_APPLY,
     OP_ASSIGN_VARIABLE,
@@ -24,7 +26,8 @@ struct instr_t {
     op_t op;
     union {
         struct { value_t value; } literal;
-        struct { definition_t *definition; } ref;
+        struct { definition_t *definition; } call;
+        struct { definition_t *definition; } variable;
         struct { uint32_t index; } local;
         struct { int32_t offset; } jump; // offset is based on next instr.
     };

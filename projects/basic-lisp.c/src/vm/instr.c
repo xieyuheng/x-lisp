@@ -17,6 +17,11 @@ instr_length(struct instr_t instr) {
         return 1 + sizeof(definition_t *);
     }
 
+    case OP_GLOBAL_LOAD:
+    case OP_GLOBAL_STORE: {
+        return 1 + sizeof(definition_t *);
+    }
+
     case OP_APPLY:
     case OP_TAIL_APPLY:
     case OP_ASSIGN_VARIABLE: {
@@ -57,19 +62,26 @@ instr_encode(uint8_t *code, struct instr_t instr) {
 
     case OP_CALL: {
         memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.ref.definition);
+        memory_store_little_endian(code + 1, instr.call.definition);
         return;
     }
 
     case OP_TAIL_CALL: {
         memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.ref.definition);
+        memory_store_little_endian(code + 1, instr.call.definition);
         return;
     }
 
     case OP_REF: {
         memory_store_little_endian(code + 0, instr.op);
-        memory_store_little_endian(code + 1, instr.ref.definition);
+        memory_store_little_endian(code + 1, instr.call.definition);
+        return;
+    }
+
+    case OP_GLOBAL_LOAD:
+    case OP_GLOBAL_STORE: {
+        memory_store_little_endian(code + 0, instr.op);
+        memory_store_little_endian(code + 1, instr.call.definition);
         return;
     }
 
@@ -129,19 +141,26 @@ instr_decode(uint8_t *code) {
 
     case OP_CALL: {
         struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.ref.definition);
+        memory_load_little_endian(code + 1, instr.call.definition);
         return instr;
     }
 
     case OP_TAIL_CALL: {
         struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.ref.definition);
+        memory_load_little_endian(code + 1, instr.call.definition);
         return instr;
     }
 
     case OP_REF: {
         struct instr_t instr = { .op = code[0] };
-        memory_load_little_endian(code + 1, instr.ref.definition);
+        memory_load_little_endian(code + 1, instr.call.definition);
+        return instr;
+    }
+
+    case OP_GLOBAL_LOAD:
+    case OP_GLOBAL_STORE: {
+        struct instr_t instr = { .op = code[0] };
+        memory_load_little_endian(code + 1, instr.call.definition);
         return instr;
     }
 
