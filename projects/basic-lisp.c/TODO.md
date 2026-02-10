@@ -1,6 +1,9 @@
 # the
 
+[basic] `compile` -- should not call variable
+
 [vm] `call_function` instead of `call_definition`
+
 [builtin] `x_the` -- literal atom as schema
 
 # later
