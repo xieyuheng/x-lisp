@@ -1,7 +1,3 @@
-# the
-
-[builtin] `x_the` -- literal atom as schema
-
 # later
 
 [helpers.c] improve `string_builder_t` for `format_*`
