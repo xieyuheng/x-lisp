@@ -90,6 +90,6 @@ body:
   local-load v
   call println
   drop
-  call void
+  global-load void
   return
 

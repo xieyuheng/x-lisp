@@ -43,8 +43,8 @@ compile_var(mod_t *mod, function_t *function, value_t sexp) {
 
     if (definition->kind == VARIABLE_DEFINITION) {
         struct instr_t instr;
-        instr.op = OP_CALL;
-        instr.call.definition = definition;
+        instr.op = OP_GLOBAL_LOAD;
+        instr.variable.definition = definition;
         function_append_instr(function, instr);
         return;
     } else {
@@ -110,10 +110,10 @@ compile_apply(mod_t *mod, function_t *function, value_t sexp) {
         exit(1);
     }
 
-    if (!definition_has_arity(definition)) {
+    if (definition->kind == VARIABLE_DEFINITION) {
         struct instr_t instr;
-        instr.op = OP_CALL;
-        instr.call.definition = definition;
+        instr.op = OP_GLOBAL_LOAD;
+        instr.variable.definition = definition;
         function_append_instr(function, instr);
         instr.op = OP_LITERAL;
         instr.literal.value = x_list_length(args);
@@ -178,10 +178,10 @@ compile_tail_apply(mod_t *mod, function_t *function, value_t sexp) {
         exit(1);
     }
 
-    if (!definition_has_arity(definition)) {
+    if (definition->kind == VARIABLE_DEFINITION) {
         struct instr_t instr;
-        instr.op = OP_CALL;
-        instr.call.definition = definition;
+        instr.op = OP_GLOBAL_LOAD;
+        instr.variable.definition = definition;
         function_append_instr(function, instr);
         instr.op = OP_LITERAL;
         instr.literal.value = x_list_length(args);

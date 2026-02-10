@@ -1,7 +1,5 @@
 # the
 
-[basic] `compile` -- should not call variable
-
 [vm] `call_function` instead of `call_definition`
 
 [vm] remove `OP_ASSIGN_VARIABLE`

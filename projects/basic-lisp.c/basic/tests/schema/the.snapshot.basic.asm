@@ -7,6 +7,6 @@ body:
   local-load x
   call println
   drop
-  call void
+  global-load void
   return
 

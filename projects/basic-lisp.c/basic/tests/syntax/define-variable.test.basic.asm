@@ -5,11 +5,11 @@ body:
 
 @define-function main
 body:
-  call x
+  global-load x
   literal 1
   call assert-equal
   drop
-  call x
+  global-load x
   call println
   drop
   literal #void

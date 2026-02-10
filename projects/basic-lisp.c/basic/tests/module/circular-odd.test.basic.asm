@@ -7,7 +7,7 @@ body:
   jump-if-not recur-case
   jump base-case
 base-case:
-  call false
+  global-load false
   return
 recur-case:
   local-load n
