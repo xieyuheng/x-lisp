@@ -27,16 +27,6 @@ supply(vm_t *vm, size_t n, value_t target, size_t arity) {
     vm_push(vm, x_object(curry));
 }
 
-static void
-prepare_to_apply_again(vm_t *vm, size_t n) {
-    uint8_t *code = make_code_from_instrs(2, (struct instr_t[]) {
-            { .op = OP_LITERAL,
-              .literal.value = x_int(n) },
-            { .op = OP_TAIL_APPLY },
-        });
-    vm_push_frame(vm, make_code_frame(code));
-}
-
 void
 apply_definition(vm_t *vm, size_t n, definition_t *definition) {
     if (!definition_has_arity(definition)) {
@@ -46,14 +36,14 @@ apply_definition(vm_t *vm, size_t n, definition_t *definition) {
 
     size_t arity = definition_arity(definition);
     if (n == arity) {
-        call_definition(vm, definition);
+        call_definition_now(vm, definition);
         return;
     } else if (n < arity) {
         supply(vm, n, x_object(definition), arity);
         return;
     } else {
-        prepare_to_apply_again(vm, n - arity);
-        call_definition(vm, definition);
+        call_definition_now(vm, definition);
+        apply(vm, n - arity, vm_pop(vm));
         return;
     }
 }
@@ -84,8 +74,8 @@ apply_curry(vm_t *vm, size_t n, curry_t *curry) {
         supply(vm, n, x_object(curry), curry->arity);
         return;
     } else {
-        prepare_to_apply_again(vm, n - curry->arity);
         apply_curry(vm, curry->arity, curry);
+        apply(vm, n - curry->arity, vm_pop(vm));
         return;
     }
 }

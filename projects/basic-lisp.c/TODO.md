@@ -1,6 +1,5 @@
 # the
 
-[vm] `apply` -- always use `call_definition_now`
 [basic] `basic_load` -- use `call_definition_now`
 
 [builtin] `x_the` -- use `apply_now`
