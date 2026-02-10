@@ -1,9 +1,7 @@
 # the
 
-[vm] `vm_execute` -- break on `BREAK_FRAME`
-
-[vm] `call_definition_now`
-[vm] `apply_now`
+[vm] `apply` -- always use `call_definition_now`
+[basic] `basic_load` -- use `call_definition_now`
 
 [builtin] `x_the` -- use `apply_now`
 [builtin] `x_the` -- literal atom as schema

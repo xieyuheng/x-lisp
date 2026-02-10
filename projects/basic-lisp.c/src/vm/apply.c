@@ -1,5 +1,8 @@
 #include "index.h"
 
+static void apply_definition(vm_t *vm, size_t n, definition_t *definition);
+static void apply_curry(vm_t *vm, size_t n, curry_t *curry);
+
 void
 apply(vm_t *vm, size_t n, value_t target) {
     if (definition_p(target)) {

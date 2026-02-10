@@ -156,6 +156,11 @@ void
 vm_execute(vm_t *vm) {
     while (vm_frame_count(vm) > 0) {
         frame_t *frame = stack_top(vm->frame_stack);
+        if (frame->kind == BREAK_FRAME) {
+            stack_pop(vm->frame_stack);
+            return;
+        }
+
         struct instr_t instr = instr_decode(frame->pc);
         frame->pc += instr_length(instr);
         vm_execute_instr(vm, frame, instr);

@@ -1,5 +1,7 @@
 #include "index.h"
 
+static inline void call_primitive(vm_t *vm, const primitive_t *primitive);
+
 inline void
 call_definition(vm_t *vm, const definition_t *definition) {
     switch (definition->kind) {
@@ -11,6 +13,30 @@ call_definition(vm_t *vm, const definition_t *definition) {
     case FUNCTION_DEFINITION: {
         function_t *function = definition_function(definition);
         vm_push_frame(vm, make_function_frame(function));
+        return;
+    }
+
+    case VARIABLE_DEFINITION: {
+        value_t value = definition->variable_definition.value;
+        vm_push(vm, value);
+        return;
+    }
+    }
+}
+
+inline void
+call_definition_now(vm_t *vm, const definition_t *definition) {
+    switch (definition->kind) {
+    case PRIMITIVE_DEFINITION: {
+        call_primitive(vm, definition->primitive_definition.primitive);
+        return;
+    }
+
+    case FUNCTION_DEFINITION: {
+        function_t *function = definition_function(definition);
+        vm_push_frame(vm, make_function_frame(function));
+        vm_push_frame(vm, make_break());
+        vm_execute(vm);
         return;
     }
 
