@@ -2,6 +2,7 @@
 
 #include "deps.h"
 #include "types.h"
+#include "value.h"
 #include "console.h"
 #include "system.h"
 #include "string.h"
