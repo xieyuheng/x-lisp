@@ -13,8 +13,6 @@ void vm_drop_frame(vm_t *vm);
 void vm_push_frame(vm_t *vm, frame_t *frame);
 size_t vm_frame_count(const vm_t *vm);
 
-void vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr);
-void vm_execute_step(vm_t *vm);
 void vm_execute(vm_t *vm);
 
 void vm_perform_gc(vm_t *vm);

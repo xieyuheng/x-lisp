@@ -1,6 +1,7 @@
 # the
 
 [vm] add `BREAK_FRAME`
+[vm] `vm_execute` -- break on `BREAK_FRAME`
 
 [vm] `apply_now`
 [builtin] `x_the` -- use `apply_now`

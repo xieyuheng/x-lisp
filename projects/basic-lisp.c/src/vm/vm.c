@@ -58,7 +58,7 @@ vm_frame_count(const vm_t *vm) {
     return stack_length(vm->frame_stack);
 }
 
-inline void
+static inline void
 vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     switch (instr.op) {
     case OP_LITERAL: {
@@ -152,18 +152,13 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 }
 
-inline void
-vm_execute_step(vm_t *vm) {
-    frame_t *frame = stack_top(vm->frame_stack);
-    struct instr_t instr = instr_decode(frame->pc);
-    frame->pc += instr_length(instr);
-    vm_execute_instr(vm, frame, instr);
-}
-
 void
 vm_execute(vm_t *vm) {
     while (vm_frame_count(vm) > 0) {
-        vm_execute_step(vm);
+        frame_t *frame = stack_top(vm->frame_stack);
+        struct instr_t instr = instr_decode(frame->pc);
+        frame->pc += instr_length(instr);
+        vm_execute_instr(vm, frame, instr);
     }
 }
 
