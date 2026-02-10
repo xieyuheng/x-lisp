@@ -122,19 +122,6 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
         return;
     }
 
-    case OP_ASSIGN_VARIABLE: {
-        value_t value = vm_pop(vm);
-        definition_t *definition = (definition_t *) to_object(value);
-        if (definition->kind != VARIABLE_DEFINITION) {
-            who_printf("expecting VARIABLE_DEFINITION\n");
-            who_printf("  definition: "); print(x_object(definition)); newline();
-            exit(1);
-        }
-
-        definition->variable_definition.value = vm_pop(vm);
-        return;
-    }
-
     case OP_LOCAL_LOAD: {
         value_t value = frame_get_local(frame, instr.local.index);
         vm_push(vm, value);

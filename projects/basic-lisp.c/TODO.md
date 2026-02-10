@@ -1,9 +1,5 @@
 # the
 
-[vm] remove `OP_ASSIGN_VARIABLE`
-
-# the
-
 [builtin] `x_the` -- literal atom as schema
 
 # later

@@ -239,11 +239,6 @@ static void function_inspect_instr(
         return;
     }
 
-    case OP_ASSIGN_VARIABLE: {
-        string_print("assign-variable");
-        return;
-    }
-
     case OP_LOCAL_LOAD: {
         string_print("local-load ");
         char *name = function_get_binding_name_from_index(function, instr.local.index);
