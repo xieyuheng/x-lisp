@@ -1,6 +1,5 @@
 # claim
 
-[lisp] `load` -- `stageClaim`
 [lisp] `expandClaim`
 
 # pattern match
