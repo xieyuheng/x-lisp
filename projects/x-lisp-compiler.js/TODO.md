@@ -1,6 +1,5 @@
 # claim
 
-[lisp] `Mod` has `claimed`,
 [lisp] `load` -- `stageClaim`
 [lisp] `expandClaim`
 

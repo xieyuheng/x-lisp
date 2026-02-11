@@ -1,11 +1,13 @@
 import * as S from "@xieyuheng/sexp.js"
 import { type Definition } from "../definition/index.ts"
 import { type Stmt } from "../stmt/index.ts"
+import { type Exp } from "../exp/index.ts"
 
 export type Mod = {
   url: URL
   stmts: Array<Stmt>
   exported: Set<string>
+  claimed: Map<string, Exp>
   definitions: Map<string, Definition>
   dependencies: Map<string, Mod>
 }
@@ -15,6 +17,7 @@ export function createMod(url: URL, dependencies: Map<string, Mod>): Mod {
     url,
     stmts: [],
     exported: new Set(),
+    claimed: new Map(),
     definitions: new Map(),
     dependencies,
   }
