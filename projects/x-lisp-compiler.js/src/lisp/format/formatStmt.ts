@@ -23,6 +23,10 @@ export function formatStmt(stmt: Stmt): string {
       return `(define-data ${predicate} ${constructors})`
     }
 
+    case "Claim": {
+      return `(claim ${stmt.name} ${formatExp(stmt.schema)})`
+    }
+
     case "Export": {
       return `(export ${stmt.names.join(" ")})`
     }

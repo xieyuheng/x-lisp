@@ -2,7 +2,12 @@ import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Exp } from "../exp/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
 
-export type Stmt = AboutModule | DefineFunction | DefineVariable | DefineData
+export type Stmt =
+  | AboutModule
+  | DefineFunction
+  | DefineVariable
+  | DefineData
+  | Claim
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -78,6 +83,22 @@ export function DefineData(
     kind: "DefineData",
     predicate,
     constructors,
+    meta,
+  }
+}
+
+export type Claim = {
+  kind: "Claim"
+  name: string
+  schema: Exp
+  meta: Meta
+}
+
+export function Claim(name: string, schema: Exp, meta: Meta): Claim {
+  return {
+    kind: "Claim",
+    name,
+    schema,
     meta,
   }
 }

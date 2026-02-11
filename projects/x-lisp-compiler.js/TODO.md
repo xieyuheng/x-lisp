@@ -1,6 +1,5 @@
 # claim
 
-[lisp] `Claim` as `Stmt`
 [lisp] parse `(claim)` stmt
 [lisp] `Mod` has `claimed`,
 [lisp] `load` -- `stageClaim`
