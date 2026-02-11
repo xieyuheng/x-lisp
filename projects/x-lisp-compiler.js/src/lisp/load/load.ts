@@ -22,6 +22,7 @@ export function load(url: URL, dependencies: Map<string, L.Mod>): L.Mod {
   const sexps = S.parseSexps(text, { url: mod.url })
 
   mod.stmts = sexps.map(L.parseStmt)
+
   for (const stmt of mod.stmts) stageDefine(mod, stmt)
   for (const stmt of mod.stmts) stageExport(mod, stmt)
   for (const stmt of mod.stmts) stageImport(mod, stmt)
