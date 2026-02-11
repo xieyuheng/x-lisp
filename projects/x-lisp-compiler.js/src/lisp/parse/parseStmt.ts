@@ -107,6 +107,10 @@ export const parseStmt = S.createRouter<Stmt>({
       meta,
     )
   },
+
+  "`(claim ,name ,schema)": ({ name, schema }, { meta }) => {
+    return Stmts.Claim(S.symbolContent(name), parseExp(schema), meta)
+  },
 })
 
 const parseDataPredicate = S.createRouter<Stmts.DataPredicateSpec>({
