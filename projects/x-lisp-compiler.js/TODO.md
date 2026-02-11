@@ -4,7 +4,6 @@
 [lisp] parse `(claim)` stmt
 [lisp] `Mod` has `claimed`,
 [lisp] `load` -- `stageClaim`
-[lisp] rename `expand.ts` to `expandData.ts`
 [lisp] `expandClaim`
 
 # pattern match
