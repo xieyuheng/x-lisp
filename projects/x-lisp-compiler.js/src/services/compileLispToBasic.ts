@@ -5,7 +5,7 @@ import * as Passes from "../passes/index.ts"
 export function compileLispToBasic(mod: L.Mod): B.Mod {
   Passes.ShrinkPass(mod)
   Passes.UniquifyPass(mod)
-  // Passes.RevealGlobalPass(mod)
+  Passes.RevealGlobalPass(mod)
   Passes.LiftLambdaPass(mod)
   Passes.UnnestOperandPass(mod)
   const basicMod = B.createMod(mod.url, new Map())
