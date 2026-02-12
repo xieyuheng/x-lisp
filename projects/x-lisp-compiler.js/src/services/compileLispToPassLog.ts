@@ -14,8 +14,8 @@ export function compileLispToPassLog(mod: L.Mod, logFile?: string): void {
   Passes.UniquifyPass(mod)
   logCode("UniquifyPass", L.prettyModDefinitions(textWidth, mod), logFile)
 
-  Passes.RevealGlobalPass(mod)
-  logCode("RevealGlobalPass", L.prettyModDefinitions(textWidth, mod), logFile)
+  // Passes.RevealGlobalPass(mod)
+  // logCode("RevealGlobalPass", L.prettyModDefinitions(textWidth, mod), logFile)
 
   Passes.LiftLambdaPass(mod)
   logCode("LiftLambdaPass", L.prettyModDefinitions(textWidth, mod), logFile)
