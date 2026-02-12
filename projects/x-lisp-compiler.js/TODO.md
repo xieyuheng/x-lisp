@@ -1,5 +1,6 @@
 # claim
 
+[lisp] `Arrow` as `Exp` -- `evaluate` to `[#-> <arg-schemas> <ret-schema>]`
 [lisp] `expandClaim` -- test by `my-string-repeat`
 [lisp] `FunctionDefinition` has optional `polymorphicParameters`
 [lisp] `expandClaim` -- handle `(polymorphic)`

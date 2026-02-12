@@ -17,9 +17,7 @@ export function systemShellCapture(name: string, args: Array<string>): Result {
 
 export function systemShellRun(name: string, args: Array<string>): void {
   const { status, stdout, stderr } = systemShellCapture(name, args)
-  if (status !== 0) {
-    process.stderr.write(stderr)
-    process.stdout.write(stdout)
-    process.exit(status)
-  }
+  if (stdout !== "") process.stdout.write(stdout)
+  if (stderr !== "") process.stderr.write(stderr)
+  if (status !== 0) process.exit(status)
 }

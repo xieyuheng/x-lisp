@@ -1,0 +1,28 @@
+;;; Input
+
+(define (main) (println #->))
+
+;;; Loaded
+
+(define (main) (println #->))
+
+;;; ShrinkPass
+
+(define (main) (println #->))
+
+;;; UniquifyPass
+
+(define (main) (println #->))
+
+;;; RevealGlobalPass
+
+(define (main) (println #->))
+
+;;; LiftLambdaPass
+
+(define (main) (println #->))
+
+;;; UnnestOperandPass
+
+(define (main) (println #->))
+
