@@ -18,7 +18,7 @@ date: 2026-02-11
 ;; =>
 
 (define (int-sum xs)
-  (= (the (list? int?) xs))
+  (= xs (the (list? int?) xs))
   (the int?
     (if (list-empty? xs)
       0
@@ -41,8 +41,8 @@ date: 2026-02-11
 ;; =>
 
 (define (list-append A list tail)
-  (= (the (list? A) list))
-  (= (the (list? A) tail))
+  (= list (the (list? A) list))
+  (= tail (the (list? A) tail))
   (the (list? A)
     (if (list-empty? list)
       (list-copy tail)
@@ -87,3 +87,40 @@ date: 2026-02-11
     (-> (list? A) (list? A)
         (list? A))))
 ```
+
+# arrow
+
+如果不是在运行时处理 arrow `(->)`，
+就很难处理由于 curry 而造成的 arrow 之间的等价。
+
+比如：
+
+```scheme
+(claim my-add (-> int? int? int?))
+```
+
+下面的定义可以顺利被展开：
+
+```scheme
+(define (my-add x y)
+  (iadd x y))
+
+;; =>
+
+(define (my-add x y)
+  (= x (the int? x))
+  (= y (the int? y))
+  (the int? (iadd x y)))
+```
+
+但是下面的等价定义就没法被展开：
+
+```scheme
+(define (my-add x)
+  (lambda (y)
+    (iadd x y)))
+```
+
+由于 curry 与否可能依赖于前面的参数，
+所以上面的编译时处理 arrow 的方式是错的，
+只能在运行时处理 arrow。
