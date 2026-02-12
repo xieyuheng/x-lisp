@@ -1,12 +1,6 @@
 # claim
 
-[diary] compiling-claim.md
-
-[lisp] `<name>©claim`
-[lisp] import export handle compiler generated names
-
-[lisp] `x_the` -- `->` as schema -- `apply` handle the result object
-
+[lisp] `FunctionDefinition` has optional `polymorphicParameters`
 [lisp] `expandClaim`
 
 # pattern match
