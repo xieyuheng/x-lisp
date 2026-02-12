@@ -1,0 +1,69 @@
+;;; Input
+
+(export my-string-repeat)
+
+(claim my-string-repeat
+  (-> int-non-negative? string? string?))
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append
+     string
+     (my-string-repeat (isub n 1) string))))
+
+;;; Loaded
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append
+     string
+     (my-string-repeat (isub n 1) string))))
+
+;;; ShrinkPass
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append
+     string
+     (my-string-repeat (isub n 1) string))))
+
+;;; UniquifyPass
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append
+     string
+     (my-string-repeat (isub n 1) string))))
+
+;;; RevealGlobalPass
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append
+     string
+     (my-string-repeat (isub n 1) string))))
+
+;;; LiftLambdaPass
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append
+     string
+     (my-string-repeat (isub n 1) string))))
+
+;;; UnnestOperandPass
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (begin
+      (= _₁ (isub n 1))
+      (= _₂ (my-string-repeat _₁ string))
+      (string-append string _₂))))
+

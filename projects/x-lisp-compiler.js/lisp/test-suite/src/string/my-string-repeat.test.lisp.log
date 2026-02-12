@@ -1,0 +1,93 @@
+;;; Input
+
+(import-all "my-string-repeat")
+
+(define (main)
+  (assert-equal "" (my-string-repeat 0 "a"))
+  (assert-equal "a" (my-string-repeat 1 "a"))
+  (assert-equal "aa" (my-string-repeat 2 "a"))
+  (assert-equal "aaa" (my-string-repeat 3 "a")))
+
+;;; Loaded
+
+(define (main)
+  (assert-equal "" (my-string-repeat 0 "a"))
+  (assert-equal "a" (my-string-repeat 1 "a"))
+  (assert-equal "aa" (my-string-repeat 2 "a"))
+  (assert-equal "aaa" (my-string-repeat 3 "a")))
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append
+     string
+     (my-string-repeat (isub n 1) string))))
+
+;;; ShrinkPass
+
+(define (main)
+  (assert-equal "" (my-string-repeat 0 "a"))
+  (assert-equal "a" (my-string-repeat 1 "a"))
+  (assert-equal "aa" (my-string-repeat 2 "a"))
+  (assert-equal "aaa" (my-string-repeat 3 "a")))
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append
+     string
+     (my-string-repeat (isub n 1) string))))
+
+;;; UniquifyPass
+
+(define (main)
+  (assert-equal "" (my-string-repeat 0 "a"))
+  (assert-equal "a" (my-string-repeat 1 "a"))
+  (assert-equal "aa" (my-string-repeat 2 "a"))
+  (assert-equal "aaa" (my-string-repeat 3 "a")))
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append
+     string
+     (my-string-repeat (isub n 1) string))))
+
+;;; RevealGlobalPass
+
+(define (main)
+  (assert-equal "" (my-string-repeat 0 "a"))
+  (assert-equal "a" (my-string-repeat 1 "a"))
+  (assert-equal "aa" (my-string-repeat 2 "a"))
+  (assert-equal "aaa" (my-string-repeat 3 "a")))
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append
+     string
+     (my-string-repeat (isub n 1) string))))
+
+;;; LiftLambdaPass
+
+(define (main)
+  (assert-equal "" (my-string-repeat 0 "a"))
+  (assert-equal "a" (my-string-repeat 1 "a"))
+  (assert-equal "aa" (my-string-repeat 2 "a"))
+  (assert-equal "aaa" (my-string-repeat 3 "a")))
+
+;;; UnnestOperandPass
+
+(define (main)
+  (begin
+    (= _₁ (my-string-repeat 0 "a"))
+    (assert-equal "" _₁))
+  (begin
+    (= _₂ (my-string-repeat 1 "a"))
+    (assert-equal "a" _₂))
+  (begin
+    (= _₃ (my-string-repeat 2 "a"))
+    (assert-equal "aa" _₃))
+  (= _₄ (my-string-repeat 3 "a"))
+  (assert-equal "aaa" _₄))
+
