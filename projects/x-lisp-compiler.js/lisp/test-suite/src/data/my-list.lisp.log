@@ -8,7 +8,9 @@
 
 ;;; Loaded
 
-(define-datatype TODO)
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
 
 (define nil #nil)
 
@@ -32,7 +34,9 @@
 
 ;;; ShrinkPass
 
-(define-datatype TODO)
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
 
 (define nil #nil)
 
@@ -61,7 +65,9 @@
 
 ;;; UniquifyPass
 
-(define-datatype TODO)
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
 
 (define nil #nil)
 
@@ -90,7 +96,9 @@
 
 ;;; LiftLambdaPass
 
-(define-datatype TODO)
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
 
 (define nil #nil)
 
@@ -119,7 +127,9 @@
 
 ;;; UnnestOperandPass
 
-(define-datatype TODO)
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
 
 (define nil #nil)
 

@@ -12,7 +12,9 @@
   (println nil)
   (println (li 1 (li 2 (li 3 nil)))))
 
-(define-datatype TODO)
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
 
 (define nil #nil)
 
@@ -40,7 +42,9 @@
   (println nil)
   (println (li 1 (li 2 (li 3 nil)))))
 
-(define-datatype TODO)
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
 
 (define nil #nil)
 
@@ -68,7 +72,9 @@
   (println nil)
   (println (li 1 (li 2 (li 3 nil)))))
 
-(define-datatype TODO)
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
 
 (define nil #nil)
 

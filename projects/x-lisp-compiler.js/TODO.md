@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `formatDefinition` handle `DatatypeDefinition`
 [lisp] `Value`
 [builtin] `builtin` -- support evaluate
 [lisp] `evaluate`

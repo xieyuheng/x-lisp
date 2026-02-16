@@ -1,5 +1,6 @@
 import { type Definition } from "../definition/index.ts"
-import { formatBody } from "./formatExp.ts"
+import * as L from "../index.ts"
+import { formatBody, formatExp } from "./formatExp.ts"
 
 export function formatDefinition(definition: Definition): string {
   switch (definition.kind) {
@@ -25,7 +26,26 @@ export function formatDefinition(definition: Definition): string {
     }
 
     case "DatatypeDefinition": {
-      return `(define-datatype TODO)`
+      const dataConstructors = definition.dataConstructors
+        .map(formatDataConstructor)
+        .join(" ")
+      if (definition.datatypeConstructor.parameters.length === 0) {
+        return `(define-datatype ${definition.name} ${dataConstructors})`
+      } else {
+        const parameters = definition.datatypeConstructor.parameters.join(" ")
+        return `(define-datatype (${definition.name} ${parameters}) ${dataConstructors})`
+      }
     }
+  }
+}
+
+function formatDataConstructor(dataConstructor: L.DataConstructorSpec): string {
+  const fields = dataConstructor.fields
+    .map((field) => `(${field.name} ${formatExp(field.type)})`)
+    .join(" ")
+  if (dataConstructor.fields.length === 0) {
+    return `${dataConstructor.name}`
+  } else {
+    return `(${dataConstructor.name} ${fields})`
   }
 }
