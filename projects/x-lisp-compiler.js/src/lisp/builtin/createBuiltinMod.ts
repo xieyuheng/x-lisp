@@ -1,8 +1,8 @@
-import * as L from "../lisp/index.ts"
+import * as L from "../index.ts"
 import {
   declarePrimitiveFunction,
   declarePrimitiveVariable,
-} from "../lisp/index.ts"
+} from "../index.ts"
 
 export function createBuiltinMod(): L.Mod {
   const url = new URL("builtin:")

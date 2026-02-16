@@ -1,4 +1,5 @@
 export * from "./config.ts"
+export * from "./builtin/index.ts"
 export * from "./declare/index.ts"
 export * from "./definition/index.ts"
 export * from "./exp/index.ts"

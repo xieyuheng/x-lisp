@@ -1,4 +1,4 @@
-import * as L from "../lisp/index.ts"
+import * as L from "../index.ts"
 import { createBuiltinMod } from "./createBuiltinMod.ts"
 
 let globalBuiltinMod: L.Mod | undefined = undefined
