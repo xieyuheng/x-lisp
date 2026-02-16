@@ -9,7 +9,7 @@ export const sexpConfig: S.Config = {
     ["import", 0],
     ["claim", 1],
     ["define", 1],
-    ["define-data", 1],
+    ["define-datatype", 1],
     ["let", 1],
     ["let1", 2],
     ["@let1", 2],

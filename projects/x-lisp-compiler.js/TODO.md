@@ -1,7 +1,5 @@
 # type system
 
-[lisp] rename `define-data` to `define-datatype`
-
 [lisp] remove `FunctionRef` and `VariableRef`
 [lisp] remove `RevealGlobalPass`
 

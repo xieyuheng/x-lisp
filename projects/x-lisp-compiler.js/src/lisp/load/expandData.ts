@@ -123,7 +123,7 @@ export function expandDataConstructorPredicate(
   }
 }
 
-export function expandDataPredicate(mod: L.Mod, stmt: L.DefineData): void {
+export function expandDataPredicate(mod: L.Mod, stmt: L.DefineDatatype): void {
   const name = stmt.predicate.name
   L.modDefine(
     mod,

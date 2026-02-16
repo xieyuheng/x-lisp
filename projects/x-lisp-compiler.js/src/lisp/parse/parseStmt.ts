@@ -97,11 +97,11 @@ export const parseStmt = S.createRouter<Stmt>({
     )
   },
 
-  "(cons* 'define-data predicate constructors)": (
+  "(cons* 'define-datatype predicate constructors)": (
     { predicate, constructors },
     { meta },
   ) => {
-    return Stmts.DefineData(
+    return Stmts.DefineDatatype(
       parseDataPredicate(predicate),
       S.listElements(constructors).map(parseDataConstructor),
       meta,

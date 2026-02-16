@@ -15,12 +15,12 @@ export function formatStmt(stmt: Stmt): string {
       return `(define ${stmt.name} ${body})`
     }
 
-    case "DefineData": {
+    case "DefineDatatype": {
       const predicate = formatDataPredicate(stmt.predicate)
       const constructors = stmt.constructors
         .map(formatDataConstructor)
         .join(" ")
-      return `(define-data ${predicate} ${constructors})`
+      return `(define-datatype ${predicate} ${constructors})`
     }
 
     case "Claim": {

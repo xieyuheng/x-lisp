@@ -6,7 +6,7 @@ export type Stmt =
   | AboutModule
   | DefineFunction
   | DefineVariable
-  | DefineData
+  | DefineDatatype
   | Claim
 
 export type DefineFunction = {
@@ -52,8 +52,8 @@ export function DefineVariable(
   }
 }
 
-export type DefineData = {
-  kind: "DefineData"
+export type DefineDatatype = {
+  kind: "DefineDatatype"
   predicate: DataPredicateSpec
   constructors: Array<DataConstructorSpec>
   meta: Meta
@@ -74,13 +74,13 @@ export type DataConstructorSpec = {
   fields: Array<DataField>
 }
 
-export function DefineData(
+export function DefineDatatype(
   predicate: DataPredicateSpec,
   constructors: Array<DataConstructorSpec>,
   meta: Meta,
-): DefineData {
+): DefineDatatype {
   return {
-    kind: "DefineData",
+    kind: "DefineDatatype",
     predicate,
     constructors,
     meta,

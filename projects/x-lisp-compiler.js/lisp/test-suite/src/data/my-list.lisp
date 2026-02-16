@@ -1,5 +1,5 @@
 (export-all)
 
-(define-data (my-list? E)
+(define-datatype (my-list-t E)
   nil
-  (li (head E) (tail (my-list? E))))
+  (li (head E) (tail (my-list-t E))))

@@ -23,7 +23,7 @@ export function stageDefine(mod: L.Mod, stmt: L.Stmt): void {
     )
   }
 
-  if (stmt.kind === "DefineData") {
+  if (stmt.kind === "DefineDatatype") {
     for (const ctor of stmt.constructors) {
       L.expandDataConstructor(mod, ctor)
       L.expandDataGetter(mod, ctor)
