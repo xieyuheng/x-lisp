@@ -22,12 +22,6 @@
   (= x₁ (iadd 42 (ineg 10)))
   (println (iadd x₁ 10)))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (= x₁ (iadd 42 (ineg 10)))
-  (println (iadd x₁ 10)))
-
 ;;; LiftLambdaPass
 
 (define (main)

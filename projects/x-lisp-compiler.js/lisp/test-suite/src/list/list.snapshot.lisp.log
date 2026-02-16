@@ -130,57 +130,6 @@
      (list-push! 'c tael₁)
      tael₁)))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (= list₁ (make-list))
-  (list-push! 1 list₁)
-  (list-push! 2 list₁)
-  (list-push! 3 list₁)
-  (println list₁)
-  (println
-   (begin
-     (= tael₁ (make-list))
-     (list-push! 1 tael₁)
-     (list-push! 2 tael₁)
-     (list-push! 3 tael₁)
-     tael₁))
-  (println
-   (begin
-     (= tael₁ (make-list))
-     (list-push! 1 tael₁)
-     (list-push! 2 tael₁)
-     (list-push! 3 tael₁)
-     tael₁))
-  (println
-   (begin
-     (= tael₁ (make-list))
-     (list-push! 1 tael₁)
-     (list-push! 2 tael₁)
-     (list-push! 3 tael₁)
-     tael₁))
-  (println
-   (begin
-     (= tael₁ (make-list))
-     (list-push! 1 tael₁)
-     (list-push! 2 tael₁)
-     (list-push! 3 tael₁)
-     tael₁))
-  (println
-   (begin
-     (= tael₁ (make-list))
-     (list-push! 'a tael₁)
-     (list-push! 'b tael₁)
-     (list-push! 'c tael₁)
-     tael₁))
-  (println
-   (begin
-     (= tael₁ (make-list))
-     (list-push! 'a tael₁)
-     (list-push! 'b tael₁)
-     (list-push! 'c tael₁)
-     tael₁)))
-
 ;;; LiftLambdaPass
 
 (define (main)

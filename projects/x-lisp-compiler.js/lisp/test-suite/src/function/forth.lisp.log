@@ -58,21 +58,6 @@
   (= g₁ (dup identity))
   (println (g₁ f₁ f₁)))
 
-;;; RevealGlobalPass
-
-(define (swap f x y) (f y x))
-
-(define (drop f) (lambda (dropped₁) (lambda (x₁) (f x₁))))
-
-(define (dup f) (lambda (x₁) (f x₁ x₁)))
-
-(define (identity x) x)
-
-(define (main)
-  (= f₁ identity)
-  (= g₁ (dup identity))
-  (println (g₁ f₁ f₁)))
-
 ;;; LiftLambdaPass
 
 (define (swap f x y) (f y x))

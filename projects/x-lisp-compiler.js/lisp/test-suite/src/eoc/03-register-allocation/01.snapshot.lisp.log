@@ -38,16 +38,6 @@
   (= z₁ (iadd x₁ w₁))
   (println (iadd z₁ (ineg y₁))))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (= v₁ 1)
-  (= w₁ 42)
-  (= x₁ (iadd v₁ 7))
-  (= y₁ x₁)
-  (= z₁ (iadd x₁ w₁))
-  (println (iadd z₁ (ineg y₁))))
-
 ;;; LiftLambdaPass
 
 (define (main)

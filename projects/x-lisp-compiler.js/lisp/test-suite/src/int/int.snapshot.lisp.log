@@ -22,12 +22,6 @@
 
 (define (main) (println (square 3)))
 
-;;; RevealGlobalPass
-
-(define (square x) (imul x x))
-
-(define (main) (println (square 3)))
-
 ;;; LiftLambdaPass
 
 (define (square x) (imul x x))

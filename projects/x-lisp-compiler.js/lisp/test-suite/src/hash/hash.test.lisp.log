@@ -16,11 +16,6 @@
 (define (main)
   (assert (hash-empty? (begin (= hash₁ (make-hash)) hash₁))))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (assert (hash-empty? (begin (= hash₁ (make-hash)) hash₁))))
-
 ;;; LiftLambdaPass
 
 (define (main)

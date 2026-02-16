@@ -14,10 +14,6 @@
 
 (define (main) (println 'abc))
 
-;;; RevealGlobalPass
-
-(define (main) (println 'abc))
-
 ;;; LiftLambdaPass
 
 (define (main) (println 'abc))

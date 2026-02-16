@@ -42,24 +42,6 @@
      (set-add! 3 set₁)
      set₁)))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (println
-   (begin
-     (= set₁ (make-set))
-     (set-add! 1 set₁)
-     (set-add! 2 set₁)
-     (set-add! 3 set₁)
-     set₁))
-  (println
-   (begin
-     (= set₁ (make-set))
-     (set-add! 1 set₁)
-     (set-add! 2 set₁)
-     (set-add! 3 set₁)
-     set₁)))
-
 ;;; LiftLambdaPass
 
 (define (main)

@@ -14,15 +14,11 @@
 
 (define (main) (println null))
 
-;;; RevealGlobalPass
-
-(define (main) (println null))
-
 ;;; LiftLambdaPass
 
 (define (main) (println null))
 
 ;;; UnnestOperandPass
 
-(define (main) (= _₁ null) (println _₁))
+(define (main) (println null))
 

@@ -14,10 +14,6 @@
 
 (define (main) (println (if #t 1 2)))
 
-;;; RevealGlobalPass
-
-(define (main) (println (if #t 1 2)))
-
 ;;; LiftLambdaPass
 
 (define (main) (println (if #t 1 2)))

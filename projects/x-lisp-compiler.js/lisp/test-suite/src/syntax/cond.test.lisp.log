@@ -54,18 +54,6 @@
     (assert false)
     (if #t (assert true) (assert #f))))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (assert-equal 1 (if (equal? 1 1) 1 (if #t 2 (assert #f))))
-  (assert-equal 2 (if (equal? 1 2) 1 (if #t 2 (assert #f))))
-  (if (equal? 1 1)
-    (assert true)
-    (if #t (assert false) (assert #f)))
-  (if (equal? 1 2)
-    (assert false)
-    (if #t (assert true) (assert #f))))
-
 ;;; LiftLambdaPass
 
 (define (main)
@@ -88,9 +76,9 @@
     (= _₂ (if (equal? 1 2) 1 (if #t 2 (assert #f))))
     (assert-equal 2 _₂))
   (if (equal? 1 1)
-    (begin (= _₃ true) (assert _₃))
-    (if #t (begin (= _₄ false) (assert _₄)) (assert #f)))
+    (assert true)
+    (if #t (assert false) (assert #f)))
   (if (equal? 1 2)
-    (begin (= _₅ false) (assert _₅))
-    (if #t (begin (= _₆ true) (assert _₆)) (assert #f))))
+    (assert false)
+    (if #t (assert true) (assert #f))))
 

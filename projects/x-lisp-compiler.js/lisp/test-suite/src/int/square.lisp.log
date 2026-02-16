@@ -16,10 +16,6 @@
 
 (define (square x) (imul x x))
 
-;;; RevealGlobalPass
-
-(define (square x) (imul x x))
-
 ;;; LiftLambdaPass
 
 (define (square x) (imul x x))

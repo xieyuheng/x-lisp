@@ -1,25 +1,21 @@
 @define-function main
 body:
   global-load nil
-  local-store _₁
-  local-load _₁
   literal #nil
   call assert-equal
   drop
-  global-load nil
-  local-store _₂
   literal 3
+  global-load nil
+  call li
+  local-store _₁
+  literal 2
+  local-load _₁
+  call li
+  local-store _₂
+  literal 1
   local-load _₂
   call li
   local-store _₃
-  literal 2
-  local-load _₃
-  call li
-  local-store _₄
-  literal 1
-  local-load _₄
-  call li
-  local-store _₅
   call make-list
   local-store tael₁
   literal #li
@@ -62,56 +58,48 @@ body:
   local-load tael₁
   call list-push!
   drop
-  local-load _₅
+  local-load _₃
   local-load tael₁
   call assert-equal
   drop
-  global-load nil
-  local-store _₆
   literal 1
-  local-load _₆
+  global-load nil
   call li
+  local-store _₄
+  local-load _₄
+  call li-tail
+  local-store _₅
+  local-load _₅
+  global-load nil
+  call assert-equal
+  drop
+  literal 1
+  global-load nil
+  call li
+  local-store _₆
+  local-load _₆
+  call li-head
   local-store _₇
   local-load _₇
-  call li-tail
-  local-store _₈
-  global-load nil
-  local-store _₉
-  local-load _₈
-  local-load _₉
-  call assert-equal
-  drop
-  global-load nil
-  local-store _₁₀
-  literal 1
-  local-load _₁₀
-  call li
-  local-store _₁₁
-  local-load _₁₁
-  call li-head
-  local-store _₁₂
-  local-load _₁₂
   literal 1
   call assert-equal
   drop
-  global-load nil
-  local-store _₁₃
   literal 3
-  local-load _₁₃
+  global-load nil
   call li
-  local-store _₁₄
+  local-store _₈
   literal 2
-  local-load _₁₄
+  local-load _₈
   call li
-  local-store _₁₅
+  local-store _₉
   literal 1
-  local-load _₁₅
+  local-load _₉
   call li
   local-store list₁
   local-load list₁
   call li-head
-  local-store _₁₆
-  local-load _₁₆
+  local-store _₁₀
+  local-load _₁₀
   literal 1
   call assert-equal
   drop
@@ -121,62 +109,52 @@ body:
   drop
   local-load list₁
   call li-head
-  local-store _₁₇
-  local-load _₁₇
+  local-store _₁₁
+  local-load _₁₁
   literal 111
   call assert-equal
   drop
   local-load list₁
   call li-tail
-  local-store _₁₈
-  global-load nil
-  local-store _₁₉
+  local-store _₁₂
   literal 3
-  local-load _₁₉
+  global-load nil
   call li
-  local-store _₂₀
+  local-store _₁₃
   literal 2
-  local-load _₂₀
+  local-load _₁₃
   call li
-  local-store _₂₁
-  local-load _₁₈
-  local-load _₂₁
+  local-store _₁₄
+  local-load _₁₂
+  local-load _₁₄
   call assert-equal
   drop
   global-load nil
-  local-store _₂₂
-  local-load _₂₂
   local-load list₁
   call li-put-tail!
   drop
   local-load list₁
   call li-tail
-  local-store _₂₃
+  local-store _₁₅
+  local-load _₁₅
   global-load nil
-  local-store _₂₄
-  local-load _₂₃
-  local-load _₂₄
   call assert-equal
   drop
-  global-load nil
-  local-store _₂₅
   literal 1
-  local-load _₂₅
+  global-load nil
   call li
-  local-store _₂₆
+  local-store _₁₆
   literal 1
   ref li
   literal 1
   apply
-  local-store _₂₇
+  local-store _₁₇
   global-load nil
-  local-store _₂₈
-  local-load _₂₈
-  local-load _₂₇
+  local-load _₁₇
   literal 1
   apply
-  local-store _₂₉
-  local-load _₂₆
-  local-load _₂₉
+  local-store _₁₈
+  local-load _₁₆
+  local-load _₁₈
   tail-call assert-equal
 

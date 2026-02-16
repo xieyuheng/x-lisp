@@ -38,16 +38,6 @@
   (assert (if #f #t (if #f #t #t)))
   (assert (not (if #f #t (if #f #t #f)))))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (assert-equal (if #t 1 2) 1)
-  (assert-equal (if #f 1 2) 2)
-  (assert (if #t (if #t #t #f) #f))
-  (assert (not (if #t (if #t #f #f) #f)))
-  (assert (if #f #t (if #f #t #t)))
-  (assert (not (if #f #t (if #f #t #f)))))
-
 ;;; LiftLambdaPass
 
 (define (main)

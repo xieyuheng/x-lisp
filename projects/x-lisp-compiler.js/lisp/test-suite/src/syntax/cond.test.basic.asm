@@ -7,13 +7,9 @@ body:
   jump then₁₃
 then₁:
   global-load false
-  local-store _₅
-  local-load _₅
   tail-call assert
 else₂:
   global-load true
-  local-store _₆
-  local-load _₆
   tail-call assert
 let-body₃:
   literal 1
@@ -25,15 +21,11 @@ let-body₄:
   jump let-body₃
 then₅:
   global-load true
-  local-store _₃
-  local-load _₃
   call assert
   drop
   jump let-body₃
 else₆:
   global-load false
-  local-store _₄
-  local-load _₄
   call assert
   drop
   jump let-body₄

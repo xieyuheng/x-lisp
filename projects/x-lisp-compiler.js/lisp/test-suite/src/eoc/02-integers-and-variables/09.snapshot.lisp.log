@@ -14,10 +14,6 @@
 
 (define (main) (println (iadd 20 (iadd 11 11))))
 
-;;; RevealGlobalPass
-
-(define (main) (println (iadd 20 (iadd 11 11))))
-
 ;;; LiftLambdaPass
 
 (define (main) (println (iadd 20 (iadd 11 11))))

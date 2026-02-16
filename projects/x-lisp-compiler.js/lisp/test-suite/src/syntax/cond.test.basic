@@ -1,17 +1,11 @@
 (define-function (main)
   (block body (test (equal? 1 1)) (branch then₁₃ else₁₄))
-  (block then₁ (= _₅ false) (return (assert _₅)))
-  (block else₂ (= _₆ true) (return (assert _₆)))
+  (block then₁ (return (assert false)))
+  (block else₂ (return (assert true)))
   (block let-body₃ (test (equal? 1 2)) (branch then₁ else₂))
   (block let-body₄ (goto let-body₃))
-  (block then₅
-    (= _₃ true)
-    (perform (assert _₃))
-    (goto let-body₃))
-  (block else₆
-    (= _₄ false)
-    (perform (assert _₄))
-    (goto let-body₄))
+  (block then₅ (perform (assert true)) (goto let-body₃))
+  (block else₆ (perform (assert false)) (goto let-body₄))
   (block let-body₇
     (perform (assert-equal 2 _₂))
     (test (equal? 1 1))

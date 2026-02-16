@@ -58,21 +58,6 @@
         (iadd y₁ 2)
         (iadd y₁ 10))))))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (println
-   (begin
-     (= x₁ (random-dice))
-     (= y₁ (random-dice))
-     (iadd
-      (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
-        (iadd y₁ 2)
-        (iadd y₁ 10))
-      (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
-        (iadd y₁ 2)
-        (iadd y₁ 10))))))
-
 ;;; LiftLambdaPass
 
 (define (main)

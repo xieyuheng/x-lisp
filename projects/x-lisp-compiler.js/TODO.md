@@ -1,7 +1,6 @@
 # type system
 
 [lisp] remove `FunctionRef` and `VariableRef`
-[lisp] remove `RevealGlobalPass`
 
 [lisp] `define-datatype` as `Stmt`
 [lisp] `DatatypeDefinition` as `Definition`

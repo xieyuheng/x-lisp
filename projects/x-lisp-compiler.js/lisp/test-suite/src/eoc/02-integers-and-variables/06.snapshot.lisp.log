@@ -14,10 +14,6 @@
 
 (define (main) (println (ineg (random-dice))))
 
-;;; RevealGlobalPass
-
-(define (main) (println (ineg (random-dice))))
-
 ;;; LiftLambdaPass
 
 (define (main) (println (ineg (random-dice))))

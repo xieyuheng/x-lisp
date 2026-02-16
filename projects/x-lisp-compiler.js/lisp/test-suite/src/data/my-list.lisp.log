@@ -82,33 +82,6 @@
 (define (li-put-tail! value target)
   (list-put! 2 value target))
 
-;;; RevealGlobalPass
-
-(define nil #nil)
-
-(define (li head tail)
-  (= tael₁ (make-list))
-  (list-push! #li tael₁)
-  (list-push! head tael₁)
-  (list-push! tail tael₁)
-  tael₁)
-
-(define (li-head target) (list-get 1 target))
-
-(define (li-tail target) (list-get 2 target))
-
-(define (li-put-head value target)
-  (list-put 1 value target))
-
-(define (li-put-tail value target)
-  (list-put 2 value target))
-
-(define (li-put-head! value target)
-  (list-put! 1 value target))
-
-(define (li-put-tail! value target)
-  (list-put! 2 value target))
-
 ;;; LiftLambdaPass
 
 (define nil #nil)

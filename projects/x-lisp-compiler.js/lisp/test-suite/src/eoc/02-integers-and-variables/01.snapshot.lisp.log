@@ -14,10 +14,6 @@
 
 (define (main) (= x₁ 4) (println (iadd 8 x₁)))
 
-;;; RevealGlobalPass
-
-(define (main) (= x₁ 4) (println (iadd 8 x₁)))
-
 ;;; LiftLambdaPass
 
 (define (main) (= x₁ 4) (println (iadd 8 x₁)))

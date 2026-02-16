@@ -1,6 +1,4 @@
 (define-function (main)
   (block body
-    (= _₁ true)
-    (perform (println _₁))
-    (= _₂ false)
-    (return (println _₂))))
+    (perform (println true))
+    (return (println false))))

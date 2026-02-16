@@ -14,15 +14,11 @@
 
 (define (main) (println void))
 
-;;; RevealGlobalPass
-
-(define (main) (println void))
-
 ;;; LiftLambdaPass
 
 (define (main) (println void))
 
 ;;; UnnestOperandPass
 
-(define (main) (= _₁ void) (println _₁))
+(define (main) (println void))
 

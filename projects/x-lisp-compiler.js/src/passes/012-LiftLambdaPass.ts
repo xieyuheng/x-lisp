@@ -73,10 +73,10 @@ function onExp(state: State, exp: L.Exp): L.Exp {
       )
 
       if (freeNames.length == 0) {
-        return L.FunctionRef(newFunctionName, arity)
+        return L.Var(newFunctionName)
       } else {
         return L.Apply(
-          L.FunctionRef(newFunctionName, arity),
+          L.Var(newFunctionName),
           freeNames.map((name) => L.Var(name)),
         )
       }

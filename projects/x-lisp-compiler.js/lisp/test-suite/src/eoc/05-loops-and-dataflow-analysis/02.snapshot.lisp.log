@@ -80,26 +80,6 @@
   (newline)
   (iadd x₁ x₁))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (= x₁
-     (begin
-       (print 1)
-       (newline)
-       (print 2)
-       (newline)
-       (print 3)
-       (newline)
-       6))
-  (print 4)
-  (newline)
-  (print 5)
-  (newline)
-  (print 6)
-  (newline)
-  (iadd x₁ x₁))
-
 ;;; LiftLambdaPass
 
 (define (main)

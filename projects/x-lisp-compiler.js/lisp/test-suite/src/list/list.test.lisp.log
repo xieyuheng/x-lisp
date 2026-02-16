@@ -136,61 +136,6 @@
     (list-length (begin (= tael₁ (make-list)) tael₁)))
   (assert (list-empty? (begin (= tael₁ (make-list)) tael₁))))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (= list₁ (make-list))
-  (list-push! 1 list₁)
-  (list-push! 2 list₁)
-  (list-push! 3 list₁)
-  (assert-equal
-    (begin
-      (= tael₁ (make-list))
-      (list-push! 1 tael₁)
-      (list-push! 2 tael₁)
-      (list-push! 3 tael₁)
-      tael₁)
-    list₁)
-  (assert-equal
-    (begin
-      (= tael₁ (make-list))
-      (list-push! 1 tael₁)
-      (list-push! 2 tael₁)
-      (list-push! 3 tael₁)
-      tael₁)
-    (begin
-      (= tael₁ (make-list))
-      (list-push! 1 tael₁)
-      (list-push! 2 tael₁)
-      (list-push! 3 tael₁)
-      tael₁))
-  (assert-equal
-    (begin
-      (= tael₁ (make-list))
-      (list-push! 'a tael₁)
-      (list-push! 'b tael₁)
-      (list-push! 'c tael₁)
-      tael₁)
-    (begin
-      (= tael₁ (make-list))
-      (list-push! 'a tael₁)
-      (list-push! 'b tael₁)
-      (list-push! 'c tael₁)
-      tael₁))
-  (assert-equal
-    3
-    (list-length
-     (begin
-       (= tael₁ (make-list))
-       (list-push! 1 tael₁)
-       (list-push! 2 tael₁)
-       (list-push! 3 tael₁)
-       tael₁)))
-  (assert-equal
-    0
-    (list-length (begin (= tael₁ (make-list)) tael₁)))
-  (assert (list-empty? (begin (= tael₁ (make-list)) tael₁))))
-
 ;;; LiftLambdaPass
 
 (define (main)

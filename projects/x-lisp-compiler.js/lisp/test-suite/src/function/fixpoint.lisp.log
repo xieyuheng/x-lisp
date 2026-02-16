@@ -22,12 +22,6 @@
   ((lambda (u₁) (u₁ u₁))
    (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
 
-;;; RevealGlobalPass
-
-(define (Y f)
-  ((lambda (u₁) (u₁ u₁))
-   (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
-
 ;;; LiftLambdaPass
 
 (define (Y f) (Y©λ₁ (Y©λ₂ f)))

@@ -22,12 +22,6 @@
   (= y₁ (begin (= x₁ 20) (iadd x₁ (begin (= x₂ 22) x₂))))
   (println y₁))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (= y₁ (begin (= x₁ 20) (iadd x₁ (begin (= x₂ 22) x₂))))
-  (println y₁))
-
 ;;; LiftLambdaPass
 
 (define (main)

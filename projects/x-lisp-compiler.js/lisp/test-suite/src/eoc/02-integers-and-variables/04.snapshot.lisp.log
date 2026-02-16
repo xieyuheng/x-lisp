@@ -22,12 +22,6 @@
   (= z₁ (begin (= y₁ (begin (= x₁ (ineg 42)) x₁)) y₁))
   (println (ineg z₁)))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (= z₁ (begin (= y₁ (begin (= x₁ (ineg 42)) x₁)) y₁))
-  (println (ineg z₁)))
-
 ;;; LiftLambdaPass
 
 (define (main)

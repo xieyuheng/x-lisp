@@ -18,11 +18,6 @@
 (define (main)
   (if (equal? 1 2) 1 (if (equal? 1 2) 2 (assert #f))))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (if (equal? 1 2) 1 (if (equal? 1 2) 2 (assert #f))))
-
 ;;; LiftLambdaPass
 
 (define (main)

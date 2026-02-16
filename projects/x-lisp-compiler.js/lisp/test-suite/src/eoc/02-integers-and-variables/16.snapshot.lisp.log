@@ -14,10 +14,6 @@
 
 (define (main) (println (isub 50 8)))
 
-;;; RevealGlobalPass
-
-(define (main) (println (isub 50 8)))
-
 ;;; LiftLambdaPass
 
 (define (main) (println (isub 50 8)))

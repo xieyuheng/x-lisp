@@ -28,13 +28,6 @@
   (= x₁ (begin (= y₂ (ineg 42)) y₂))
   (println (iadd x₁ y₁)))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (= y₁ 6)
-  (= x₁ (begin (= y₂ (ineg 42)) y₂))
-  (println (iadd x₁ y₁)))
-
 ;;; LiftLambdaPass
 
 (define (main)

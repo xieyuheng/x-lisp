@@ -40,17 +40,6 @@
      0
      42)))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (println
-   (if
-       (if (equal? (random-dice) 1)
-         (equal? (random-dice) 2)
-         #f)
-     0
-     42)))
-
 ;;; LiftLambdaPass
 
 (define (main)

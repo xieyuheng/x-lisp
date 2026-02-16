@@ -18,11 +18,6 @@
 (define (main)
   (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
 
-;;; RevealGlobalPass
-
-(define (main)
-  (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
-
 ;;; LiftLambdaPass
 
 (define (main)
