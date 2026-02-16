@@ -2,27 +2,28 @@
 body:
   ref int?
   literal 1
-  call the
+  call valid?
   local-store x
   local-load x
-  literal 1
-  call assert-equal
+  call assert
   drop
   literal 1
   literal 1
-  call the
+  call valid?
   local-store x
   local-load x
+  ref assert-equal
   literal 1
-  call assert-equal
+  apply
   drop
   literal 'a
   literal 'a
-  call the
+  call valid?
   local-store x
   local-load x
-  literal 'a
-  call assert-equal
+  ref assert-equal
+  literal 1
+  apply
   drop
   literal #void
   return

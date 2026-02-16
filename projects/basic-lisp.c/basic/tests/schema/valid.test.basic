@@ -1,0 +1,7 @@
+(define-function (main)
+  (block body
+    (= x (valid? int? 1)) (perform (assert x))
+    ;; literal atom as schema
+    (= x (valid? 1 1)) (perform (assert-equal x))
+    (= x (valid? 'a 'a)) (perform (assert-equal x))
+    (return)))

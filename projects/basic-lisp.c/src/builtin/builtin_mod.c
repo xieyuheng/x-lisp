@@ -207,7 +207,6 @@ make_builtin_mod(void) {
     // schema
 
     define_primitive(mod, "valid?", 2, x_valid_p);
-    define_primitive(mod, "the", 2, x_the);
 
     return mod;
 }

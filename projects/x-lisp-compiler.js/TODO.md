@@ -1,7 +1,5 @@
 # type system
 
-[basic-lisp] remove the -- test valid?
-
 [builtin] `builtin` -- support evaluate
 
 [lisp] `Value`
