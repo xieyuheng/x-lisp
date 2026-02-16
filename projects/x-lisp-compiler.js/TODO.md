@@ -1,10 +1,15 @@
 # type system
 
+[lisp] remove current support of `define-data`
+
+[lisp] `define-datatype` as `Stmt`
+[lisp] `DatatypeDefinition` as `Definition`
+[lisp] parse `(define-datatype)` as `Stmt`
+
 [lisp] `Value`
 
 [builtin] `builtin` -- support evaluate
 
-[lisp] `env`
 [lisp] `evaluate`
 
 [lisp] `The` as `Exp`
