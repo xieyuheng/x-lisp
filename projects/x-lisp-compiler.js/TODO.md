@@ -1,8 +1,12 @@
 # type system
 
+[lisp] inline `Attributes`
+
+[lisp] `Env`
+[lisp] `Value`
+
 [builtin] `builtin` -- support evaluate
 
-[lisp] `Value`
 [lisp] `env`
 [lisp] `evaluate`
 
