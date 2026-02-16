@@ -5,8 +5,6 @@
 // import { type Hash } from "./Hash.ts"
 // import { type Set } from "./Set.ts"
 
-// export type Attributes = Record<string, Value>
-
 export type Value = {}
 
 // export type Value =

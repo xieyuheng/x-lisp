@@ -1,7 +1,5 @@
 import { type TokenMeta as Meta, type Sexp } from "@xieyuheng/sexp.js"
 
-export type Attributes = Record<string, Exp>
-
 export type Exp =
   | Symbol
   | Hashtag
@@ -390,13 +388,13 @@ export function Cond(condLines: Array<CondLine>, meta: Meta): Cond {
 export type Tael = {
   kind: "Tael"
   elements: Array<Exp>
-  attributes: Attributes
+  attributes: Record<string, Exp>
   meta?: Meta
 }
 
 export function Tael(
   elements: Array<Exp>,
-  attributes: Attributes,
+  attributes: Record<string, Exp>,
   meta?: Meta,
 ): Tael {
   return {

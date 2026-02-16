@@ -1,7 +1,5 @@
 # type system
 
-[lisp] inline `Attributes`
-
 [lisp] `Env`
 [lisp] `Value`
 

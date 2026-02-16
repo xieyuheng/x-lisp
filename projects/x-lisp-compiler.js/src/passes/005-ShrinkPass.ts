@@ -138,7 +138,7 @@ function desugarCond(condLines: Array<L.CondLine>, meta?: L.Meta): L.Exp {
 
 function desugarTael(
   elements: Array<L.Exp>,
-  attributes: L.Attributes,
+  attributes: Record<string, L.Exp>,
   meta?: L.Meta,
 ): L.Exp {
   return L.BeginSugar(
