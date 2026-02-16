@@ -1,20 +1,18 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as Exps from "../exp/index.ts"
-import * as Stmts from "../stmt/index.ts"
-import { type Stmt } from "../stmt/index.ts"
+import * as L from "../index.ts"
 import { parseExp } from "./parseExp.ts"
 
-export const parseStmt = S.createRouter<Stmt>({
+export const parseStmt = S.createRouter<L.Stmt>({
   "(cons* 'define (cons* name parameters) body)": (
     { name, parameters, body },
     { sexp },
   ) => {
     const keyword = S.asTael(sexp).elements[1]
     const meta = S.tokenMetaFromSexpMeta(keyword.meta)
-    return Stmts.DefineFunction(
+    return L.DefineFunction(
       S.symbolContent(name),
       S.listElements(parameters).map(S.symbolContent),
-      Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
+      L.BeginSugar(S.listElements(body).map(parseExp), meta),
       meta,
     )
   },
@@ -22,35 +20,35 @@ export const parseStmt = S.createRouter<Stmt>({
   "(cons* 'define name body)": ({ name, body }, { sexp }) => {
     const keyword = S.asTael(sexp).elements[1]
     const meta = S.tokenMetaFromSexpMeta(keyword.meta)
-    return Stmts.DefineVariable(
+    return L.DefineVariable(
       S.symbolContent(name),
-      Exps.BeginSugar(S.listElements(body).map(parseExp), meta),
+      L.BeginSugar(S.listElements(body).map(parseExp), meta),
       meta,
     )
   },
 
   "(cons* 'export names)": ({ names }, { meta }) => {
-    return Stmts.Export(S.listElements(names).map(S.symbolContent), meta)
+    return L.Export(S.listElements(names).map(S.symbolContent), meta)
   },
 
   "`(export-all)": ({}, { meta }) => {
-    return Stmts.ExportAll(meta)
+    return L.ExportAll(meta)
   },
 
   "(cons* 'export-except names)": ({ names }, { meta }) => {
-    return Stmts.ExportExcept(S.listElements(names).map(S.symbolContent), meta)
+    return L.ExportExcept(S.listElements(names).map(S.symbolContent), meta)
   },
 
   "`(import-all ,source)": ({ source }, { meta }) => {
-    return Stmts.ImportAll(S.stringContent(source), meta)
+    return L.ImportAll(S.stringContent(source), meta)
   },
 
   "`(include-all ,source)": ({ source }, { meta }) => {
-    return Stmts.IncludeAll(S.stringContent(source), meta)
+    return L.IncludeAll(S.stringContent(source), meta)
   },
 
   "(cons* 'import source entries)": ({ source, entries }, { meta }) => {
-    return Stmts.Import(
+    return L.Import(
       S.stringContent(source),
       S.listElements(entries).map(S.symbolContent),
       meta,
@@ -58,7 +56,7 @@ export const parseStmt = S.createRouter<Stmt>({
   },
 
   "(cons* 'include source names)": ({ source, names }, { meta }) => {
-    return Stmts.Include(
+    return L.Include(
       S.stringContent(source),
       S.listElements(names).map(S.symbolContent),
       meta,
@@ -66,7 +64,7 @@ export const parseStmt = S.createRouter<Stmt>({
   },
 
   "(cons* 'import-except source names)": ({ source, names }, { meta }) => {
-    return Stmts.ImportExcept(
+    return L.ImportExcept(
       S.stringContent(source),
       S.listElements(names).map(S.symbolContent),
       meta,
@@ -74,7 +72,7 @@ export const parseStmt = S.createRouter<Stmt>({
   },
 
   "(cons* 'include-except source names)": ({ source, names }, { meta }) => {
-    return Stmts.IncludeExcept(
+    return L.IncludeExcept(
       S.stringContent(source),
       S.listElements(names).map(S.symbolContent),
       meta,
@@ -82,26 +80,18 @@ export const parseStmt = S.createRouter<Stmt>({
   },
 
   "`(import-as ,source ,prefix)": ({ source, prefix }, { meta }) => {
-    return Stmts.ImportAs(
-      S.stringContent(source),
-      S.symbolContent(prefix),
-      meta,
-    )
+    return L.ImportAs(S.stringContent(source), S.symbolContent(prefix), meta)
   },
 
   "`(include-as ,source ,prefix)": ({ source, prefix }, { meta }) => {
-    return Stmts.IncludeAs(
-      S.stringContent(source),
-      S.symbolContent(prefix),
-      meta,
-    )
+    return L.IncludeAs(S.stringContent(source), S.symbolContent(prefix), meta)
   },
 
   "(cons* 'define-datatype predicate constructors)": (
     { predicate, constructors },
     { meta },
   ) => {
-    return Stmts.DefineDatatype(
+    return L.DefineDatatype(
       parseDataPredicate(predicate),
       S.listElements(constructors).map(parseDataConstructor),
       meta,
@@ -109,11 +99,11 @@ export const parseStmt = S.createRouter<Stmt>({
   },
 
   "`(claim ,name ,schema)": ({ name, schema }, { meta }) => {
-    return Stmts.Claim(S.symbolContent(name), parseExp(schema), meta)
+    return L.Claim(S.symbolContent(name), parseExp(schema), meta)
   },
 })
 
-const parseDataPredicate = S.createRouter<Stmts.DataPredicateSpec>({
+const parseDataPredicate = S.createRouter<L.DatatypeSpec>({
   "(cons* name parameters)": ({ name, parameters }, { meta }) => {
     return {
       name: S.symbolContent(name),
@@ -129,7 +119,7 @@ const parseDataPredicate = S.createRouter<Stmts.DataPredicateSpec>({
   },
 })
 
-const parseDataConstructor = S.createRouter<Stmts.DataConstructorSpec>({
+const parseDataConstructor = S.createRouter<L.DataConstructorSpec>({
   "(cons* name fields)": ({ name, fields }, { meta }) => {
     return {
       name: S.symbolContent(name),
@@ -145,7 +135,7 @@ const parseDataConstructor = S.createRouter<Stmts.DataConstructorSpec>({
   },
 })
 
-const parseDataField = S.createRouter<Stmts.DataField>({
+const parseDataField = S.createRouter<L.DataField>({
   "`(,name ,exp)": ({ name, exp }, { meta }) => {
     return {
       name: S.symbolContent(name),

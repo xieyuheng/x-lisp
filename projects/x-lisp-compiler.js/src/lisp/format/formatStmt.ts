@@ -1,5 +1,5 @@
+import * as L from "../index.ts"
 import type { Stmt } from "../stmt/index.ts"
-import * as Stmts from "../stmt/index.ts"
 import { formatBody, formatExp } from "./formatExp.ts"
 
 export function formatStmt(stmt: Stmt): string {
@@ -16,11 +16,11 @@ export function formatStmt(stmt: Stmt): string {
     }
 
     case "DefineDatatype": {
-      const predicate = formatDataPredicate(stmt.predicate)
+      const type = formatDataPredicate(stmt.type)
       const constructors = stmt.constructors
         .map(formatDataConstructor)
         .join(" ")
-      return `(define-datatype ${predicate} ${constructors})`
+      return `(define-datatype ${type} ${constructors})`
     }
 
     case "Claim": {
@@ -73,7 +73,7 @@ export function formatStmt(stmt: Stmt): string {
   }
 }
 
-function formatDataPredicate(predicate: Stmts.DataPredicateSpec): string {
+function formatDataPredicate(predicate: L.DatatypeSpec): string {
   if (predicate.parameters.length === 0) {
     return predicate.name
   } else {
@@ -81,7 +81,7 @@ function formatDataPredicate(predicate: Stmts.DataPredicateSpec): string {
   }
 }
 
-function formatDataConstructor(ctor: Stmts.DataConstructorSpec): string {
+function formatDataConstructor(ctor: L.DataConstructorSpec): string {
   if (ctor.fields.length === 0) {
     return ctor.name
   } else {
@@ -90,6 +90,6 @@ function formatDataConstructor(ctor: Stmts.DataConstructorSpec): string {
   }
 }
 
-function formatDataField(field: Stmts.DataField): string {
+function formatDataField(field: L.DataField): string {
   return `(${field.name} ${formatExp(field.schema)})`
 }

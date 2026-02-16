@@ -7,6 +7,7 @@ export type Definition =
   | PrimitiveVariableDefinition
   | FunctionDefinition
   | VariableDefinition
+  | DatatypeDefinition
 
 export type PrimitiveFunctionDefinition = {
   kind: "PrimitiveFunctionDefinition"
@@ -96,6 +97,47 @@ export function VariableDefinition(
     mod,
     name,
     body,
+    meta,
+  }
+}
+
+export type DatatypeSpec = {
+  name: string
+  parameters: Array<string>
+}
+
+export type DataField = {
+  name: string
+  schema: Exp
+}
+
+export type DataConstructorSpec = {
+  name: string
+  fields: Array<DataField>
+}
+
+export type DatatypeDefinition = {
+  kind: "DatatypeDefinition"
+  mod: Mod
+  name: string
+  type: DatatypeSpec
+  constructors: Array<DataConstructorSpec>
+  meta?: Meta
+}
+
+export function DatatypeDefinition(
+  mod: Mod,
+  name: string,
+  type: DatatypeSpec,
+  constructors: Array<DataConstructorSpec>,
+  meta?: Meta,
+): DatatypeDefinition {
+  return {
+    kind: "DatatypeDefinition",
+    mod,
+    name,
+    type,
+    constructors,
     meta,
   }
 }

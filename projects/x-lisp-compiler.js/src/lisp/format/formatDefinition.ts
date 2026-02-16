@@ -23,5 +23,9 @@ export function formatDefinition(definition: Definition): string {
       const body = formatBody(definition.body)
       return `(define ${name} ${body})`
     }
+
+    case "DatatypeDefinition": {
+      return `(define-datatype TODO)`
+    }
   }
 }
