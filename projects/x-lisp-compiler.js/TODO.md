@@ -1,6 +1,9 @@
 # type system
 
-[lisp] remove current support of `define-data`
+[lisp] rename `define-data` to `define-datatype`
+
+[lisp] remove `FunctionRef` and `VariableRef`
+[lisp] remove `RevealGlobalPass`
 
 [lisp] `define-datatype` as `Stmt`
 [lisp] `DatatypeDefinition` as `Definition`

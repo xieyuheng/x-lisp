@@ -68,106 +68,50 @@ body:
   drop
   global-load nil
   local-store _₆
+  literal 1
   local-load _₆
-  call nil?
+  call li
   local-store _₇
   local-load _₇
-  call assert
+  call li-tail
+  local-store _₈
+  global-load nil
+  local-store _₉
+  local-load _₈
+  local-load _₉
+  call assert-equal
   drop
   global-load nil
-  local-store _₈
-  literal 3
-  local-load _₈
-  call li
-  local-store _₉
-  literal 2
-  local-load _₉
-  call li
   local-store _₁₀
   literal 1
   local-load _₁₀
   call li
   local-store _₁₁
   local-load _₁₁
-  call li?
+  call li-head
   local-store _₁₂
   local-load _₁₂
-  call assert
+  literal 1
+  call assert-equal
   drop
   global-load nil
   local-store _₁₃
+  literal 3
   local-load _₁₃
-  call li?
+  call li
   local-store _₁₄
+  literal 2
   local-load _₁₄
-  call assert-not
-  drop
-  global-load nil
+  call li
   local-store _₁₅
-  literal 3
+  literal 1
   local-load _₁₅
-  call li
-  local-store _₁₆
-  literal 2
-  local-load _₁₆
-  call li
-  local-store _₁₇
-  literal 1
-  local-load _₁₇
-  call li
-  local-store _₁₈
-  local-load _₁₈
-  call nil?
-  local-store _₁₉
-  local-load _₁₉
-  call assert-not
-  drop
-  global-load nil
-  local-store _₂₀
-  literal 1
-  local-load _₂₀
-  call li
-  local-store _₂₁
-  local-load _₂₁
-  call li-tail
-  local-store _₂₂
-  global-load nil
-  local-store _₂₃
-  local-load _₂₂
-  local-load _₂₃
-  call assert-equal
-  drop
-  global-load nil
-  local-store _₂₄
-  literal 1
-  local-load _₂₄
-  call li
-  local-store _₂₅
-  local-load _₂₅
-  call li-head
-  local-store _₂₆
-  local-load _₂₆
-  literal 1
-  call assert-equal
-  drop
-  global-load nil
-  local-store _₂₇
-  literal 3
-  local-load _₂₇
-  call li
-  local-store _₂₈
-  literal 2
-  local-load _₂₈
-  call li
-  local-store _₂₉
-  literal 1
-  local-load _₂₉
   call li
   local-store list₁
   local-load list₁
   call li-head
-  local-store _₃₀
-  local-load _₃₀
+  local-store _₁₆
+  local-load _₁₆
   literal 1
   call assert-equal
   drop
@@ -177,136 +121,62 @@ body:
   drop
   local-load list₁
   call li-head
-  local-store _₃₁
-  local-load _₃₁
+  local-store _₁₇
+  local-load _₁₇
   literal 111
   call assert-equal
   drop
   local-load list₁
   call li-tail
-  local-store _₃₂
+  local-store _₁₈
   global-load nil
-  local-store _₃₃
+  local-store _₁₉
   literal 3
-  local-load _₃₃
+  local-load _₁₉
   call li
-  local-store _₃₄
+  local-store _₂₀
   literal 2
-  local-load _₃₄
+  local-load _₂₀
   call li
-  local-store _₃₅
-  local-load _₃₂
-  local-load _₃₅
+  local-store _₂₁
+  local-load _₁₈
+  local-load _₂₁
   call assert-equal
   drop
   global-load nil
-  local-store _₃₆
-  local-load _₃₆
+  local-store _₂₂
+  local-load _₂₂
   local-load list₁
   call li-put-tail!
   drop
   local-load list₁
   call li-tail
-  local-store _₃₇
+  local-store _₂₃
   global-load nil
-  local-store _₃₈
-  local-load _₃₇
-  local-load _₃₈
+  local-store _₂₄
+  local-load _₂₃
+  local-load _₂₄
   call assert-equal
   drop
   global-load nil
-  local-store _₃₉
-  ref int?
-  local-load _₃₉
-  call my-list?
-  local-store _₄₀
-  local-load _₄₀
-  call assert
-  drop
-  global-load nil
-  local-store _₄₁
-  literal 3
-  local-load _₄₁
-  call li
-  local-store _₄₂
-  literal 2
-  local-load _₄₂
-  call li
-  local-store _₄₃
+  local-store _₂₅
   literal 1
-  local-load _₄₃
+  local-load _₂₅
   call li
-  local-store _₄₄
-  ref int?
-  local-load _₄₄
-  call my-list?
-  local-store _₄₅
-  local-load _₄₅
-  call assert
-  drop
-  global-load nil
-  local-store _₄₆
-  ref symbol?
-  local-load _₄₆
-  call my-list?
-  local-store _₄₇
-  local-load _₄₇
-  call assert
-  drop
-  global-load nil
-  local-store _₄₈
-  literal 3
-  local-load _₄₈
-  call li
-  local-store _₄₉
-  literal 2
-  local-load _₄₉
-  call li
-  local-store _₅₀
-  literal 1
-  local-load _₅₀
-  call li
-  local-store _₅₁
-  ref symbol?
-  local-load _₅₁
-  call my-list?
-  local-store _₅₂
-  local-load _₅₂
-  call assert-not
-  drop
-  ref int?
-  literal 1
-  call my-list?
-  local-store _₅₃
-  local-load _₅₃
-  call assert-not
-  drop
-  ref int?
-  literal 'a
-  call my-list?
-  local-store _₅₄
-  local-load _₅₄
-  call assert-not
-  drop
-  global-load nil
-  local-store _₅₅
-  literal 1
-  local-load _₅₅
-  call li
-  local-store _₅₆
+  local-store _₂₆
   literal 1
   ref li
   literal 1
   apply
-  local-store _₅₇
+  local-store _₂₇
   global-load nil
-  local-store _₅₈
-  local-load _₅₈
-  local-load _₅₇
+  local-store _₂₈
+  local-load _₂₈
+  local-load _₂₇
   literal 1
   apply
-  local-store _₅₉
-  local-load _₅₆
-  local-load _₅₉
+  local-store _₂₉
+  local-load _₂₆
+  local-load _₂₉
   tail-call assert-equal
 

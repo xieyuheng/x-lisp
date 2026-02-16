@@ -8,22 +8,9 @@
 
 ;;; Loaded
 
-(define (my-list? E value)
-  (or (nil? value)
-      (and (li? value)
-           (valid? E (li-head value))
-           (valid? (my-list? E) (li-tail value)))))
-
 (define nil #nil)
 
-(define (nil? value) (equal? value #nil))
-
 (define (li head tail) [#li head tail])
-
-(define (li? value)
-  (and (any-list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) #li)))
 
 (define (li-head target) (list-get 1 target))
 
@@ -43,18 +30,7 @@
 
 ;;; ShrinkPass
 
-(define (my-list? E value)
-  (if (nil? value)
-    #t
-    (if (li? value)
-      (if (valid? E (li-head value))
-        (valid? (my-list? E) (li-tail value))
-        #f)
-      #f)))
-
 (define nil #nil)
-
-(define (nil? value) (equal? value #nil))
 
 (define (li head tail)
   (= tael (make-list))
@@ -62,13 +38,6 @@
   (list-push! head tael)
   (list-push! tail tael)
   tael)
-
-(define (li? value)
-  (if (any-list? value)
-    (if (equal? (list-length value) 3)
-      (equal? (list-head value) #li)
-      #f)
-    #f))
 
 (define (li-head target) (list-get 1 target))
 
@@ -88,18 +57,7 @@
 
 ;;; UniquifyPass
 
-(define (my-list? E value)
-  (if (nil? value)
-    #t
-    (if (li? value)
-      (if (valid? E (li-head value))
-        (valid? (my-list? E) (li-tail value))
-        #f)
-      #f)))
-
 (define nil #nil)
-
-(define (nil? value) (equal? value #nil))
 
 (define (li head tail)
   (= tael₁ (make-list))
@@ -107,13 +65,6 @@
   (list-push! head tael₁)
   (list-push! tail tael₁)
   tael₁)
-
-(define (li? value)
-  (if (any-list? value)
-    (if (equal? (list-length value) 3)
-      (equal? (list-head value) #li)
-      #f)
-    #f))
 
 (define (li-head target) (list-get 1 target))
 
@@ -133,18 +84,7 @@
 
 ;;; RevealGlobalPass
 
-(define (my-list? E value)
-  (if (nil? value)
-    #t
-    (if (li? value)
-      (if (valid? E (li-head value))
-        (valid? (my-list? E) (li-tail value))
-        #f)
-      #f)))
-
 (define nil #nil)
-
-(define (nil? value) (equal? value #nil))
 
 (define (li head tail)
   (= tael₁ (make-list))
@@ -152,13 +92,6 @@
   (list-push! head tael₁)
   (list-push! tail tael₁)
   tael₁)
-
-(define (li? value)
-  (if (any-list? value)
-    (if (equal? (list-length value) 3)
-      (equal? (list-head value) #li)
-      #f)
-    #f))
 
 (define (li-head target) (list-get 1 target))
 
@@ -178,18 +111,7 @@
 
 ;;; LiftLambdaPass
 
-(define (my-list? E value)
-  (if (nil? value)
-    #t
-    (if (li? value)
-      (if (valid? E (li-head value))
-        (valid? (my-list? E) (li-tail value))
-        #f)
-      #f)))
-
 (define nil #nil)
-
-(define (nil? value) (equal? value #nil))
 
 (define (li head tail)
   (= tael₁ (make-list))
@@ -197,13 +119,6 @@
   (list-push! head tael₁)
   (list-push! tail tael₁)
   tael₁)
-
-(define (li? value)
-  (if (any-list? value)
-    (if (equal? (list-length value) 3)
-      (equal? (list-head value) #li)
-      #f)
-    #f))
 
 (define (li-head target) (list-get 1 target))
 
@@ -223,21 +138,7 @@
 
 ;;; UnnestOperandPass
 
-(define (my-list? E value)
-  (if (nil? value)
-    #t
-    (if (li? value)
-      (if (begin (= _₁ (li-head value)) (valid? E _₁))
-        (begin
-          (= _₂ (my-list? E))
-          (= _₃ (li-tail value))
-          (valid? _₂ _₃))
-        #f)
-      #f)))
-
 (define nil #nil)
-
-(define (nil? value) (equal? value #nil))
 
 (define (li head tail)
   (= tael₁ (make-list))
@@ -245,13 +146,6 @@
   (list-push! head tael₁)
   (list-push! tail tael₁)
   tael₁)
-
-(define (li? value)
-  (if (any-list? value)
-    (if (begin (= _₁ (list-length value)) (equal? _₁ 3))
-      (begin (= _₂ (list-head value)) (equal? _₂ #li))
-      #f)
-    #f))
 
 (define (li-head target) (list-get 1 target))
 

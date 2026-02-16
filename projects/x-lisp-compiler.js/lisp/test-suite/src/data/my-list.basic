@@ -1,24 +1,6 @@
 (export-all)
 
-(define-function (my-list? E value)
-  (block body (test (nil? value)) (branch then₅ else₆))
-  (block then₁
-    (= _₂ (my-list? E))
-    (= _₃ (li-tail value))
-    (return (valid? _₂ _₃)))
-  (block else₂ (return #f))
-  (block then₃
-    (= _₁ (li-head value))
-    (test (valid? E _₁))
-    (branch then₁ else₂))
-  (block else₄ (return #f))
-  (block then₅ (return #t))
-  (block else₆ (test (li? value)) (branch then₃ else₄)))
-
 (define-variable nil (block body (return #nil)))
-
-(define-function (nil? value)
-  (block body (return (equal? value #nil))))
 
 (define-function (li head tail)
   (block body
@@ -27,18 +9,6 @@
     (perform (list-push! head tael₁))
     (perform (list-push! tail tael₁))
     (return tael₁)))
-
-(define-function (li? value)
-  (block body (test (any-list? value)) (branch then₃ else₄))
-  (block then₁
-    (= _₂ (list-head value))
-    (return (equal? _₂ #li)))
-  (block else₂ (return #f))
-  (block then₃
-    (= _₁ (list-length value))
-    (test (equal? _₁ 3))
-    (branch then₁ else₂))
-  (block else₄ (return #f)))
 
 (define-function (li-head target)
   (block body (return (list-get 1 target))))

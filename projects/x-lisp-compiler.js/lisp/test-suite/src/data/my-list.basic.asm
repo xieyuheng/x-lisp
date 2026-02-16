@@ -1,58 +1,7 @@
-@define-function my-list?
-  local-store value
-  local-store E
-body:
-  local-load value
-  call nil?
-  jump-if-not else₆
-  jump then₅
-then₁:
-  local-load E
-  ref my-list?
-  literal 1
-  apply
-  local-store _₂
-  local-load value
-  call li-tail
-  local-store _₃
-  local-load _₂
-  local-load _₃
-  tail-call valid?
-else₂:
-  literal #f
-  return
-then₃:
-  local-load value
-  call li-head
-  local-store _₁
-  local-load E
-  local-load _₁
-  call valid?
-  jump-if-not else₂
-  jump then₁
-else₄:
-  literal #f
-  return
-then₅:
-  literal #t
-  return
-else₆:
-  local-load value
-  call li?
-  jump-if-not else₄
-  jump then₃
-
 @define-variable nil
 body:
   literal #nil
   return
-
-@define-function nil?
-  local-store value
-body:
-  local-load value
-  literal #nil
-  tail-call equal?
 
 @define-function li
   local-store tail
@@ -73,36 +22,6 @@ body:
   call list-push!
   drop
   local-load tael₁
-  return
-
-@define-function li?
-  local-store value
-body:
-  local-load value
-  call any-list?
-  jump-if-not else₄
-  jump then₃
-then₁:
-  local-load value
-  call list-head
-  local-store _₂
-  local-load _₂
-  literal #li
-  tail-call equal?
-else₂:
-  literal #f
-  return
-then₃:
-  local-load value
-  call list-length
-  local-store _₁
-  local-load _₁
-  literal 3
-  call equal?
-  jump-if-not else₂
-  jump then₁
-else₄:
-  literal #f
   return
 
 @define-function li-head
