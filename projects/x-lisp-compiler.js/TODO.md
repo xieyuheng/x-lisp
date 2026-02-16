@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `Env`
 [lisp] `Value`
 
 [builtin] `builtin` -- support evaluate
