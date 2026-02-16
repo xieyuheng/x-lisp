@@ -1,6 +1,6 @@
 # type system
 
-[lisp] `Value`
+[lisp] `Value` -- add `Value` as postfix
 [builtin] `builtin` -- support evaluate
 [lisp] `evaluate`
 [lisp] `The` as `Exp`
