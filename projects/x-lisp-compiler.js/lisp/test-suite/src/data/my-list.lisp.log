@@ -8,6 +8,8 @@
 
 ;;; Loaded
 
+(define-datatype TODO)
+
 (define nil #nil)
 
 (define (li head tail) [#li head tail])
@@ -29,6 +31,8 @@
   (list-put! 2 value target))
 
 ;;; ShrinkPass
+
+(define-datatype TODO)
 
 (define nil #nil)
 
@@ -57,6 +61,8 @@
 
 ;;; UniquifyPass
 
+(define-datatype TODO)
+
 (define nil #nil)
 
 (define (li head tail)
@@ -84,6 +90,8 @@
 
 ;;; LiftLambdaPass
 
+(define-datatype TODO)
+
 (define nil #nil)
 
 (define (li head tail)
@@ -110,6 +118,8 @@
   (list-put! 2 value target))
 
 ;;; UnnestOperandPass
+
+(define-datatype TODO)
 
 (define nil #nil)
 

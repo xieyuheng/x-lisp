@@ -16,8 +16,8 @@ export function formatStmt(stmt: Stmt): string {
     }
 
     case "DefineDatatype": {
-      const type = formatDataPredicate(stmt.type)
-      const constructors = stmt.constructors
+      const type = formatDataPredicate(stmt.datatypeConstructor)
+      const constructors = stmt.dataConstructors
         .map(formatDataConstructor)
         .join(" ")
       return `(define-datatype ${type} ${constructors})`
@@ -73,7 +73,7 @@ export function formatStmt(stmt: Stmt): string {
   }
 }
 
-function formatDataPredicate(predicate: L.DatatypeSpec): string {
+function formatDataPredicate(predicate: L.DatatypeConstructorSpec): string {
   if (predicate.parameters.length === 0) {
     return predicate.name
   } else {
@@ -91,5 +91,5 @@ function formatDataConstructor(ctor: L.DataConstructorSpec): string {
 }
 
 function formatDataField(field: L.DataField): string {
-  return `(${field.name} ${formatExp(field.schema)})`
+  return `(${field.name} ${formatExp(field.type)})`
 }

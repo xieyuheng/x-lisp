@@ -36,6 +36,8 @@
   (assert-equal (li-tail list) nil)
   (assert-equal (li 1 nil) ((li 1) nil)))
 
+(define-datatype TODO)
+
 (define nil #nil)
 
 (define (li head tail) [#li head tail])
@@ -93,6 +95,8 @@
   (assert-equal (li-tail list) nil)
   (assert-equal (li 1 nil) ((li 1) nil)))
 
+(define-datatype TODO)
+
 (define nil #nil)
 
 (define (li head tail) [#li head tail])
@@ -149,6 +153,8 @@
   (li-put-tail! nil list₁)
   (assert-equal (li-tail list₁) nil)
   (assert-equal (li 1 nil) ((li 1) nil)))
+
+(define-datatype TODO)
 
 (define nil #nil)
 

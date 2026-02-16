@@ -101,14 +101,18 @@ export function VariableDefinition(
   }
 }
 
-export type DatatypeSpec = {
+export type DatatypeDefinition = {
+  kind: "DatatypeDefinition"
+  mod: Mod
   name: string
-  parameters: Array<string>
+  datatypeConstructor: DatatypeConstructorSpec
+  dataConstructors: Array<DataConstructorSpec>
+  meta?: Meta
 }
 
-export type DataField = {
+export type DatatypeConstructorSpec = {
   name: string
-  schema: Exp
+  parameters: Array<string>
 }
 
 export type DataConstructorSpec = {
@@ -116,28 +120,24 @@ export type DataConstructorSpec = {
   fields: Array<DataField>
 }
 
-export type DatatypeDefinition = {
-  kind: "DatatypeDefinition"
-  mod: Mod
+export type DataField = {
   name: string
-  type: DatatypeSpec
-  constructors: Array<DataConstructorSpec>
-  meta?: Meta
+  type: Exp
 }
 
 export function DatatypeDefinition(
   mod: Mod,
   name: string,
-  type: DatatypeSpec,
-  constructors: Array<DataConstructorSpec>,
+  datatypeConstructor: DatatypeConstructorSpec,
+  dataConstructors: Array<DataConstructorSpec>,
   meta?: Meta,
 ): DatatypeDefinition {
   return {
     kind: "DatatypeDefinition",
     mod,
     name,
-    type,
-    constructors,
+    datatypeConstructor,
+    dataConstructors,
     meta,
   }
 }

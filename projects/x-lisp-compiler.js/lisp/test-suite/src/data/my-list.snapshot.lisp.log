@@ -12,6 +12,8 @@
   (println nil)
   (println (li 1 (li 2 (li 3 nil)))))
 
+(define-datatype TODO)
+
 (define nil #nil)
 
 (define (li head tail) [#li head tail])
@@ -38,6 +40,8 @@
   (println nil)
   (println (li 1 (li 2 (li 3 nil)))))
 
+(define-datatype TODO)
+
 (define nil #nil)
 
 (define (li head tail) [#li head tail])
@@ -63,6 +67,8 @@
 (define (main)
   (println nil)
   (println (li 1 (li 2 (li 3 nil)))))
+
+(define-datatype TODO)
 
 (define nil #nil)
 

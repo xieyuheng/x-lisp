@@ -24,7 +24,19 @@ export function stageDefine(mod: L.Mod, stmt: L.Stmt): void {
   }
 
   if (stmt.kind === "DefineDatatype") {
-    for (const ctor of stmt.constructors) {
+    L.modDefine(
+      mod,
+      stmt.datatypeConstructor.name,
+      L.DatatypeDefinition(
+        mod,
+        stmt.datatypeConstructor.name,
+        stmt.datatypeConstructor,
+        stmt.dataConstructors,
+        stmt.meta,
+      ),
+    )
+
+    for (const ctor of stmt.dataConstructors) {
       L.expandDataConstructor(mod, ctor)
       L.expandDataGetter(mod, ctor)
       L.expandDataPutter(mod, ctor)

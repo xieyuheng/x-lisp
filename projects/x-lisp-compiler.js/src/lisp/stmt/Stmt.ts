@@ -1,5 +1,8 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
-import type { DataConstructorSpec, DatatypeSpec } from "../definition/index.ts"
+import type {
+  DataConstructorSpec,
+  DatatypeConstructorSpec,
+} from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
 
@@ -55,20 +58,20 @@ export function DefineVariable(
 
 export type DefineDatatype = {
   kind: "DefineDatatype"
-  type: DatatypeSpec
-  constructors: Array<DataConstructorSpec>
+  datatypeConstructor: DatatypeConstructorSpec
+  dataConstructors: Array<DataConstructorSpec>
   meta: Meta
 }
 
 export function DefineDatatype(
-  type: DatatypeSpec,
-  constructors: Array<DataConstructorSpec>,
+  datatypeConstructor: DatatypeConstructorSpec,
+  dataConstructors: Array<DataConstructorSpec>,
   meta: Meta,
 ): DefineDatatype {
   return {
     kind: "DefineDatatype",
-    type,
-    constructors,
+    datatypeConstructor,
+    dataConstructors,
     meta,
   }
 }
