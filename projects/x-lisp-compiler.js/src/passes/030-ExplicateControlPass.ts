@@ -85,13 +85,6 @@ function toBasicExp(exp: L.Exp): B.Exp {
       return exp
     }
 
-    case "PrimitiveFunctionRef":
-    case "PrimitiveVariableRef":
-    case "FunctionRef":
-    case "VariableRef": {
-      return B.Var(exp.name)
-    }
-
     case "Apply": {
       return B.Apply(toBasicExp(exp.target), exp.args.map(toBasicExp))
     }
@@ -226,7 +219,7 @@ function inIf(
 
     case "Apply": {
       if (
-        condition.target.kind === "PrimitiveFunctionRef" &&
+        condition.target.kind === "Var" &&
         condition.target.name === "not" &&
         condition.args.length === 1
       ) {

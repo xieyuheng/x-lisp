@@ -9,11 +9,7 @@ export function expMap(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
     case "String":
     case "Int":
     case "Float":
-    case "Var":
-    case "PrimitiveFunctionRef":
-    case "PrimitiveVariableRef":
-    case "FunctionRef":
-    case "VariableRef": {
+    case "Var": {
       return onExp(exp)
     }
 
@@ -115,11 +111,7 @@ export function expChildren(exp: Exp): Array<Exp> {
     case "String":
     case "Int":
     case "Float":
-    case "Var":
-    case "PrimitiveFunctionRef":
-    case "PrimitiveVariableRef":
-    case "FunctionRef":
-    case "VariableRef": {
+    case "Var": {
       return []
     }
 

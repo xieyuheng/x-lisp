@@ -1,7 +1,5 @@
 # type system
 
-[lisp] remove `FunctionRef` and `VariableRef`
-
 [lisp] `define-datatype` as `Stmt`
 [lisp] `DatatypeDefinition` as `Definition`
 [lisp] parse `(define-datatype)` as `Stmt`

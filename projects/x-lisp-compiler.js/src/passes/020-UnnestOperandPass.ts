@@ -44,16 +44,8 @@ function onExp(state: State, exp: L.Exp): L.Exp {
     case "Hashtag":
     case "String":
     case "Int":
-    case "Float":
-    case "PrimitiveFunctionRef":
-    case "FunctionRef": {
+    case "Float": {
       return exp
-    }
-
-    case "PrimitiveVariableRef":
-    case "VariableRef": {
-      const [entries, newExp] = forAtom(state, exp)
-      return prependLets(entries, newExp)
     }
 
     case "Apply": {
@@ -96,17 +88,8 @@ function forAtom(state: State, exp: L.Exp): [Array<Entry>, L.Exp] {
     case "Hashtag":
     case "String":
     case "Int":
-    case "Float":
-    case "PrimitiveFunctionRef":
-    case "FunctionRef": {
+    case "Float": {
       return [[], exp]
-    }
-
-    case "PrimitiveVariableRef":
-    case "VariableRef": {
-      const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, exp]
-      return [[entry], L.Var(freshName, exp.meta)]
     }
 
     case "Apply": {

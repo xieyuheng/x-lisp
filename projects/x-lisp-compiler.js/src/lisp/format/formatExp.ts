@@ -46,26 +46,6 @@ export function formatExp(exp: Exp): string {
       return exp.name
     }
 
-    case "PrimitiveFunctionRef": {
-      return exp.name
-      // return `(@primitive ${exp.name} ${exp.arity})`
-    }
-
-    case "PrimitiveVariableRef": {
-      return exp.name
-      // return `(@variable ${exp.name})`
-    }
-
-    case "FunctionRef": {
-      return exp.name
-      // return `(@function ${exp.name} ${exp.arity})`
-    }
-
-    case "VariableRef": {
-      return exp.name
-      // return `(@variable ${exp.name})`
-    }
-
     case "Lambda": {
       const parameters = formatParameters(exp.parameters)
       const body = formatBody(exp.body)

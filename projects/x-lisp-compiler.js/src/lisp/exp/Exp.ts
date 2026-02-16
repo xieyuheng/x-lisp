@@ -7,10 +7,6 @@ export type Exp =
   | Int
   | Float
   | Var
-  | PrimitiveFunctionRef
-  | PrimitiveVariableRef
-  | FunctionRef
-  | VariableRef
   | Lambda
   | Apply
   | Let1
@@ -107,77 +103,6 @@ export type Var = {
 export function Var(name: string, meta?: Meta): Var {
   return {
     kind: "Var",
-    name,
-    meta,
-  }
-}
-
-export type PrimitiveFunctionRef = {
-  kind: "PrimitiveFunctionRef"
-  name: string
-  arity: number
-  meta?: Meta
-}
-
-export function PrimitiveFunctionRef(
-  name: string,
-  arity: number,
-  meta?: Meta,
-): PrimitiveFunctionRef {
-  return {
-    kind: "PrimitiveFunctionRef",
-    name,
-    arity,
-    meta,
-  }
-}
-
-export type PrimitiveVariableRef = {
-  kind: "PrimitiveVariableRef"
-  name: string
-  meta?: Meta
-}
-
-export function PrimitiveVariableRef(
-  name: string,
-  meta?: Meta,
-): PrimitiveVariableRef {
-  return {
-    kind: "PrimitiveVariableRef",
-    name,
-    meta,
-  }
-}
-
-export type FunctionRef = {
-  kind: "FunctionRef"
-  name: string
-  arity: number
-  meta?: Meta
-}
-
-export function FunctionRef(
-  name: string,
-  arity: number,
-  meta?: Meta,
-): FunctionRef {
-  return {
-    kind: "FunctionRef",
-    name,
-    arity,
-    meta,
-  }
-}
-
-export type VariableRef = {
-  kind: "VariableRef"
-  name: string
-  meta?: Meta
-}
-
-export function VariableRef(name: string, meta?: Meta): VariableRef {
-  return {
-    kind: "VariableRef",
     name,
     meta,
   }
