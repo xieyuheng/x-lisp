@@ -209,7 +209,6 @@ export function createBuiltinMod(): L.Mod {
   // schema
 
   declarePrimitiveFunction(mod, "valid?", { arity: 2 })
-  declarePrimitiveFunction(mod, "the", { arity: 2 })
 
   return mod
 }
