@@ -1,6 +1,6 @@
 # type system
 
-[lisp] `Value` -- add `Value` as postfix
+[lisp] `Value` -- remove unused types
 
 [lisp] `DatatypeValue`
 [lisp] `DelayedDatatypeValue`
