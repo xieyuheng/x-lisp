@@ -1,11 +1,11 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import { urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import type { Definition } from "../definition/index.ts"
 import { prettyExp, prettyValue } from "../pretty/index.ts"
 
 export function formatDefinition(definition: Definition): string {
-  const width = globals.width
+  const width = textWidth
   switch (definition.kind) {
     case "ValueDefinition": {
       let message = ""

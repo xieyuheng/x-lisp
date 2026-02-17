@@ -1,5 +1,5 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import { prettyValue } from "../pretty/index.ts"
 import { type Value } from "../value/index.ts"
 import { applyNullary } from "./applyNullary.ts"
@@ -7,7 +7,7 @@ import { applyPolymorphicWithAnythings } from "./applyPolymorphic.ts"
 import { validateOrFail } from "./validate.ts"
 
 export function applyNullaryWithSchema(schema: Value, target: Value): Value {
-  const width = globals.width
+  const width = textWidth
 
   if (schema.kind === "Polymorphic") {
     return applyNullaryWithSchema(applyPolymorphicWithAnythings(schema), target)

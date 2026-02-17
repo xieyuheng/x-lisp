@@ -1,5 +1,5 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import { envPut } from "../env/index.ts"
 import { prettyValue, prettyValues } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"
@@ -20,7 +20,7 @@ export function applyPolymorphic(
   polymorphic: Values.Polymorphic,
   args: Array<Value>,
 ): Value {
-  const width = globals.width
+  const width = textWidth
   const arity = polymorphic.parameters.length
   if (args.length !== arity) {
     let message = `[applyPolymorphic] arity mismatch`

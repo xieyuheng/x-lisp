@@ -1,6 +1,6 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
+import { textWidth } from "../../config.ts"
 import { flags } from "../../flags.ts"
-import { globals } from "../../globals.ts"
 import { prettyValue } from "../pretty/index.ts"
 import { type Value } from "../value/index.ts"
 import { applyNullaryWithSchema } from "./applyNullaryWithSchema.ts"
@@ -8,7 +8,7 @@ import { applyVariadicClosure } from "./applyVariadicClosure.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
 export function applyNullary(target: Value): Value {
-  const width = globals.width
+  const width = textWidth
 
   if (target.kind === "NullaryClosure") {
     return resultValue(evaluate(target.body)(target.mod, target.env))

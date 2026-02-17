@@ -1,6 +1,6 @@
 import { formatIndent, formatUnderTag } from "@xieyuheng/helpers.js/format"
 import { ErrorWithMeta } from "@xieyuheng/sexp.js"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import { LazyDefinition } from "../definition/Definition.ts"
 import { type Exp } from "../exp/Exp.ts"
 import { formatDefinition } from "../format/index.ts"
@@ -8,7 +8,7 @@ import { type Mod, modLookupDefinition } from "../mod/Mod.ts"
 import { prettyExp } from "../pretty/index.ts"
 
 export function defineLazy(mod: Mod, name: string, exp: Exp): void {
-  const width = globals.width
+  const width = textWidth
   const found = modLookupDefinition(mod, name)
   if (found) {
     let message = `[defineLazy] can not redefine name: ${name}`

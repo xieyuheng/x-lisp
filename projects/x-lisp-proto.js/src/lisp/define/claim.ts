@@ -1,13 +1,13 @@
 import { formatIndent, formatUnderTag } from "@xieyuheng/helpers.js/format"
 import { urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import { formatDefinition } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { prettyValue } from "../pretty/index.ts"
 import { type Value } from "../value/index.ts"
 
 export function claim(mod: Mod, name: string, schema: Value): void {
-  const width = globals.width
+  const width = textWidth
   const found = mod.claimed.get(name)
   if (found) {
     let message = `[claim] can not reclaim name`

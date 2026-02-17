@@ -1,7 +1,7 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import assert from "node:assert"
+import { textWidth } from "../../config.ts"
 import { flags } from "../../flags.ts"
-import { globals } from "../../globals.ts"
 import { prettyValue, prettyValues } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
@@ -11,7 +11,7 @@ export function applyDataPutter(
   putter: Values.DataPutter,
   args: Array<Value>,
 ): Value {
-  const width = globals.width
+  const width = textWidth
 
   if (args.length !== 2) {
     let message = `[applyDataPutter] data putter can only take two arguments`

@@ -1,5 +1,5 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import { equal } from "../equal/index.ts"
 import { prettyValue } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"
@@ -14,7 +14,7 @@ export function isValid(schema: Value, value: Value): boolean {
 }
 
 export function validateOrFail(schema: Value, value: Value): Value {
-  const width = globals.width
+  const width = textWidth
   const result = validate(schema, value)
   if (result.kind === "Ok") {
     return result.value
@@ -27,7 +27,7 @@ export function validateOrFail(schema: Value, value: Value): Value {
 }
 
 export function validate(schema: Value, value: Value): Result {
-  const width = globals.width
+  const width = textWidth
 
   if (schema.kind === "Arrow") {
     return { kind: "Ok", value: Values.The(schema, value) }

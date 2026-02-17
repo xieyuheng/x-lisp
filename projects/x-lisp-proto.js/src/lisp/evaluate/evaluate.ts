@@ -2,7 +2,7 @@ import { arrayPickLast } from "@xieyuheng/helpers.js/array"
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import { emptyEnv, envLookupValue, envUpdate, type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { modLookupValue, type Mod } from "../mod/index.ts"
@@ -28,7 +28,7 @@ export function resultValue(result: Result): Value {
 }
 
 export function evaluate(exp: Exp): Effect {
-  const width = globals.width
+  const width = textWidth
 
   if (Values.isAtom(exp)) {
     return (mod, env) => {

@@ -1,7 +1,7 @@
 import { arrayMapZip } from "@xieyuheng/helpers.js/array"
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import * as S from "@xieyuheng/sexp.js"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import { prettyValue, prettyValues } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
@@ -14,7 +14,7 @@ export function applyWithSchema(
   target: Value,
   args: Array<Value>,
 ): Value {
-  const width = globals.width
+  const width = textWidth
   const meta = Values.valueMaybeMeta(target)
   const context = { schema, target, args }
 
@@ -114,7 +114,7 @@ function validateArgs(
   argSchemas: Array<Value>,
   args: Array<Value>,
 ): Array<Value> {
-  const width = globals.width
+  const width = textWidth
   const validatedArgs: Array<Value> = []
   const erred: Array<{ index: number; schema: Value; arg: Value }> = []
   for (const [index, result] of arrayMapZip(

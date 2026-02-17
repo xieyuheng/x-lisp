@@ -1,6 +1,6 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import * as S from "@xieyuheng/sexp.js"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import { equal } from "../equal/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { prettyExp, prettyValue } from "../pretty/index.ts"
@@ -9,7 +9,7 @@ import { evaluate, resultValue, type Effect } from "./evaluate.ts"
 
 export function assertEqual(lhs: Exp, rhs: Exp): Effect {
   return (mod, env) => {
-    const width = globals.width
+    const width = textWidth
     const lhsValue = resultValue(evaluate(lhs)(mod, env))
     const rhsValue = resultValue(evaluate(rhs)(mod, env))
     if (equal(lhsValue, rhsValue)) {

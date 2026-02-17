@@ -1,5 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import process from "node:process"
+import { textWidth } from "../../config.ts"
 import { globals } from "../../globals.ts"
 import {
   definePrimitiveFunction,
@@ -27,7 +28,7 @@ export function builtinProcess(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "exit", 1, (info) => {
-    console.log(prettyValue(globals.width, info))
+    console.log(prettyValue(textWidth, info))
     process.exit(1)
   })
 }

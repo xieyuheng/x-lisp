@@ -1,4 +1,4 @@
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import { claim } from "../define/index.ts"
 import { emptyEnv } from "../env/index.ts"
 import { evaluate, resultValue } from "../evaluate/index.ts"
@@ -25,7 +25,7 @@ export function stage3(
         process.stdout.write(options.resultPrompt)
       }
 
-      console.log(prettyValue(globals.width, value))
+      console.log(prettyValue(textWidth, value))
     }
   }
 }

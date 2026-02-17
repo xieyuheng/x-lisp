@@ -1,7 +1,7 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import assert from "node:assert"
+import { textWidth } from "../../config.ts"
 import { flags } from "../../flags.ts"
-import { globals } from "../../globals.ts"
 import { emptyEnv, envLookupValue, envNames } from "../env/index.ts"
 import { match } from "../pattern/index.ts"
 import { prettyValue, prettyValues } from "../pretty/index.ts"
@@ -20,7 +20,7 @@ import { supply } from "./supply.ts"
 import { validate } from "./validate.ts"
 
 export function apply(target: Value, args: Array<Value>): Value {
-  const width = globals.width
+  const width = textWidth
 
   if (args.length === 0) {
     return applyNullary(target)

@@ -1,5 +1,5 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import { prettyValue, prettyValues } from "../pretty/index.ts"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
@@ -8,7 +8,7 @@ export function applyDataGetter(
   getter: Values.DataGetter,
   args: Array<Value>,
 ): Value {
-  const width = globals.width
+  const width = textWidth
 
   if (args.length !== 1) {
     let message = `[applyDataGetter] data getter can only take one argument`

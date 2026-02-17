@@ -1,5 +1,5 @@
 import process from "node:process"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import {
   definePrimitiveFunction,
   definePrimitiveNullaryFunction,
@@ -13,7 +13,7 @@ export function builtinConsole(mod: Mod) {
   provide(mod, ["print", "write", "newline"])
 
   definePrimitiveFunction(mod, "print", 1, (value) => {
-    process.stdout.write(prettyValue(globals.width, value))
+    process.stdout.write(prettyValue(textWidth, value))
     return Values.Void()
   })
 

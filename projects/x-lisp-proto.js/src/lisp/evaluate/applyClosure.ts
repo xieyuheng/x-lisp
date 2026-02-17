@@ -1,6 +1,6 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import * as S from "@xieyuheng/sexp.js"
-import { globals } from "../../globals.ts"
+import { textWidth } from "../../config.ts"
 import { emptyEnv, envUpdate } from "../env/index.ts"
 import { match, patternize } from "../pattern/index.ts"
 import { prettyExp, prettyValue } from "../pretty/index.ts"
@@ -13,7 +13,7 @@ export function applyClosure(
   closure: Values.Closure,
   args: Array<Value>,
 ): Value {
-  const width = globals.width
+  const width = textWidth
   const mod = closure.mod
   let env = closure.env
   for (const [index, parameter] of closure.parameters.entries()) {
