@@ -134,5 +134,13 @@ export function formatValue(value: Value, options: Options = {}): string {
       assert(value.args.length > 0)
       return `(${target} ${args})`
     }
+
+    case "Datatype": {
+      throw new Error("TODO")
+    }
+
+    case "DisjointUnion": {
+      throw new Error("TODO")
+    }
   }
 }
