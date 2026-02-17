@@ -1,9 +1,7 @@
 import type { DatatypeDefinition } from "../definition/index.ts"
 import type { Value } from "./index.ts"
 
-export type AboutDatatype =
-  DatatypeValue
-| DisjointUnionValue
+export type AboutDatatype = DatatypeValue | DisjointUnionValue
 
 export type DatatypeValue = {
   kind: "Datatype"
@@ -28,10 +26,10 @@ export type DisjointUnionValue = {
 }
 
 export function DisjointUnionValue(
-  types: Record<string, Value>
+  types: Record<string, Value>,
 ): DisjointUnionValue {
   return {
     kind: "DisjointUnion",
-types
+    types,
   }
 }
