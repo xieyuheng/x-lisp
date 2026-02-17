@@ -5,9 +5,9 @@ import * as Values from "../value/index.ts"
 export function builtinNull(mod: Mod) {
   provide(mod, ["null", "null?"])
 
-  define(mod, "null", Values.Null())
+  define(mod, "null", Values.NullValue())
 
   definePrimitiveFunction(mod, "null?", 1, (value) => {
-    return Values.Bool(Values.isNull(value))
+    return Values.BoolValue(Values.isNullValue(value))
   })
 }

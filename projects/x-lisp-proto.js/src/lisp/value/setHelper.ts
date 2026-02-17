@@ -1,22 +1,22 @@
 import { formatValue } from "../format/index.ts"
 import * as Values from "./index.ts"
-import { type Set, type Value } from "./index.ts"
+import { type SetValue, type Value } from "./index.ts"
 
-export function isSet(value: Value): value is Set {
+export function isSetValue(value: Value): value is SetValue {
   return value.kind === "Set"
 }
 
-export function asSet(value: Value): Set {
+export function asSetValue(value: Value): SetValue {
   if (value.kind === "Set") return value
   throw new Error(`[asSet] fail on: ${formatValue(value)}`)
 }
 
-export function setCopy(target: Value): Set {
-  return Values.Set(setElements(target))
+export function setCopy(target: Value): SetValue {
+  return Values.SetValue(setElements(target))
 }
 
 export function setElements(target: Value): Array<Value> {
-  const set = asSet(target)
+  const set = asSetValue(target)
   return Array.from(set.entries.values()).map((entry) => entry.element)
 }
 
@@ -28,7 +28,7 @@ export function setHas(target: Value, element: Value): boolean {
     throw new Error(message)
   }
 
-  const set = asSet(target)
+  const set = asSetValue(target)
   const hashKey = formatValue(element, { digest: true })
   return set.entries.has(hashKey)
 }
@@ -41,7 +41,7 @@ export function setAdd(target: Value, element: Value): void {
     throw new Error(message)
   }
 
-  const set = asSet(target)
+  const set = asSetValue(target)
   const hashKey = formatValue(element, { digest: true })
   const entry = set.entries.get(hashKey)
   if (entry === undefined) {
@@ -59,12 +59,12 @@ export function setDelete(target: Value, element: Value): void {
     throw new Error(message)
   }
 
-  const set = asSet(target)
+  const set = asSetValue(target)
   const hashKey = formatValue(element, { digest: true })
   set.entries.delete(hashKey)
 }
 
 export function setDeleteAll(target: Value): void {
-  const set = asSet(target)
+  const set = asSetValue(target)
   set.entries = new Map()
 }

@@ -1,6 +1,6 @@
-import { type Atom } from "../value/index.ts"
+import { type AtomValue } from "../value/index.ts"
 
-export function formatAtom(value: Atom): string {
+export function formatAtom(value: AtomValue): string {
   switch (value.kind) {
     case "Hashtag": {
       return `#${value.content}`

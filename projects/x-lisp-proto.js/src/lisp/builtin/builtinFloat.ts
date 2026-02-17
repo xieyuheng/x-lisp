@@ -25,90 +25,118 @@ export function builtinFloat(mod: Mod) {
   ])
 
   definePrimitiveFunction(mod, "float?", 1, (value) => {
-    return Values.Bool(Values.isFloat(value))
+    return Values.BoolValue(Values.isFloatValue(value))
   })
 
   definePrimitiveFunction(mod, "float-positive?", 1, (x) => {
-    return Values.Bool(Values.isFloat(x) && Values.asFloat(x).content > 0)
+    return Values.BoolValue(
+      Values.isFloatValue(x) && Values.asFloatValue(x).content > 0,
+    )
   })
 
   definePrimitiveFunction(mod, "float-non-negative?", 1, (x) => {
-    return Values.Bool(Values.isFloat(x) && Values.asFloat(x).content >= 0)
+    return Values.BoolValue(
+      Values.isFloatValue(x) && Values.asFloatValue(x).content >= 0,
+    )
   })
 
   definePrimitiveFunction(mod, "float-non-zero?", 1, (x) => {
-    return Values.Bool(Values.isFloat(x) && Values.asFloat(x).content !== 0)
+    return Values.BoolValue(
+      Values.isFloatValue(x) && Values.asFloatValue(x).content !== 0,
+    )
   })
 
   definePrimitiveFunction(mod, "fneg", 1, (x) => {
-    return Values.Float(-Values.asFloat(x).content)
+    return Values.FloatValue(-Values.asFloatValue(x).content)
   })
 
   definePrimitiveFunction(mod, "fadd", 2, (x, y) => {
-    return Values.Float(Values.asFloat(x).content + Values.asFloat(y).content)
+    return Values.FloatValue(
+      Values.asFloatValue(x).content + Values.asFloatValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "fsub", 2, (x, y) => {
-    return Values.Float(Values.asFloat(x).content - Values.asFloat(y).content)
+    return Values.FloatValue(
+      Values.asFloatValue(x).content - Values.asFloatValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "fmul", 2, (x, y) => {
-    return Values.Float(Values.asFloat(x).content * Values.asFloat(y).content)
+    return Values.FloatValue(
+      Values.asFloatValue(x).content * Values.asFloatValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "fdiv", 2, (x, y) => {
-    return Values.Float(Values.asFloat(x).content / Values.asFloat(y).content)
+    return Values.FloatValue(
+      Values.asFloatValue(x).content / Values.asFloatValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "fmod", 2, (x, y) => {
-    return Values.Float(Values.asFloat(x).content % Values.asFloat(y).content)
+    return Values.FloatValue(
+      Values.asFloatValue(x).content % Values.asFloatValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "float-max", 2, (x, y) => {
-    return Values.Float(
-      Math.max(Values.asFloat(x).content, Values.asFloat(y).content),
+    return Values.FloatValue(
+      Math.max(Values.asFloatValue(x).content, Values.asFloatValue(y).content),
     )
   })
 
   definePrimitiveFunction(mod, "float-min", 2, (x, y) => {
-    return Values.Float(
-      Math.min(Values.asFloat(x).content, Values.asFloat(y).content),
+    return Values.FloatValue(
+      Math.min(Values.asFloatValue(x).content, Values.asFloatValue(y).content),
     )
   })
 
   definePrimitiveFunction(mod, "float-greater?", 2, (x, y) => {
-    return Values.Bool(Values.asFloat(x).content > Values.asFloat(y).content)
+    return Values.BoolValue(
+      Values.asFloatValue(x).content > Values.asFloatValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "float-less?", 2, (x, y) => {
-    return Values.Bool(Values.asFloat(x).content < Values.asFloat(y).content)
+    return Values.BoolValue(
+      Values.asFloatValue(x).content < Values.asFloatValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "float-greater-or-equal?", 2, (x, y) => {
-    return Values.Bool(Values.asFloat(x).content >= Values.asFloat(y).content)
+    return Values.BoolValue(
+      Values.asFloatValue(x).content >= Values.asFloatValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "float-less-or-equal?", 2, (x, y) => {
-    return Values.Bool(Values.asFloat(x).content <= Values.asFloat(y).content)
+    return Values.BoolValue(
+      Values.asFloatValue(x).content <= Values.asFloatValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "float-compare-ascending", 2, (x, y) => {
-    if (Values.asFloat(x).content < Values.asFloat(y).content) {
-      return Values.Int(-1n)
-    } else if (Values.asFloat(x).content > Values.asFloat(y).content) {
-      return Values.Int(1n)
+    if (Values.asFloatValue(x).content < Values.asFloatValue(y).content) {
+      return Values.IntValue(-1n)
+    } else if (
+      Values.asFloatValue(x).content > Values.asFloatValue(y).content
+    ) {
+      return Values.IntValue(1n)
     } else {
-      return Values.Int(0n)
+      return Values.IntValue(0n)
     }
   })
 
   definePrimitiveFunction(mod, "float-compare-descending", 2, (x, y) => {
-    if (Values.asFloat(x).content < Values.asFloat(y).content) {
-      return Values.Int(1n)
-    } else if (Values.asFloat(x).content > Values.asFloat(y).content) {
-      return Values.Int(-1n)
+    if (Values.asFloatValue(x).content < Values.asFloatValue(y).content) {
+      return Values.IntValue(1n)
+    } else if (
+      Values.asFloatValue(x).content > Values.asFloatValue(y).content
+    ) {
+      return Values.IntValue(-1n)
     } else {
-      return Values.Int(0n)
+      return Values.IntValue(0n)
     }
   })
 }

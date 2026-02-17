@@ -13,7 +13,7 @@ export function assertEqual(lhs: Exp, rhs: Exp): Effect {
     const lhsValue = resultValue(evaluate(lhs)(mod, env))
     const rhsValue = resultValue(evaluate(rhs)(mod, env))
     if (equal(lhsValue, rhsValue)) {
-      return [env, Values.Void()]
+      return [env, Values.VoidValue()]
     }
 
     let message = `[assertEqual] fail`

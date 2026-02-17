@@ -42,8 +42,8 @@ export function applyDataPutter(
   if (flags.debug) {
     const predicate = putter.constructor.spec.predicate
     const ok = applyDataPredicateWithAnything(predicate, data)
-    assert(Values.isBool(ok))
-    if (Values.isFalse(ok)) {
+    assert(Values.isBoolValue(ok))
+    if (Values.isFalseValue(ok)) {
       let message = `[applyDataPutter] result data cannot possibly pass data predicate`
       message += formatUnderTag(2, `putter:`, prettyValue(width, putter))
       message += formatUnderTag(2, `putting value:`, prettyValue(width, value))

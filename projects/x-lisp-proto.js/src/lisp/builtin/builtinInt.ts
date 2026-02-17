@@ -25,94 +25,118 @@ export function builtinInt(mod: Mod) {
   ])
 
   definePrimitiveFunction(mod, "int?", 1, (value) => {
-    return Values.Bool(Values.isInt(value))
+    return Values.BoolValue(Values.isIntValue(value))
   })
 
   definePrimitiveFunction(mod, "int-positive?", 1, (x) => {
-    return Values.Bool(Values.isInt(x) && Values.asInt(x).content > 0)
+    return Values.BoolValue(
+      Values.isIntValue(x) && Values.asIntValue(x).content > 0,
+    )
   })
 
   definePrimitiveFunction(mod, "int-non-negative?", 1, (x) => {
-    return Values.Bool(Values.isInt(x) && Values.asInt(x).content >= 0)
+    return Values.BoolValue(
+      Values.isIntValue(x) && Values.asIntValue(x).content >= 0,
+    )
   })
 
   definePrimitiveFunction(mod, "int-non-zero?", 1, (x) => {
-    return Values.Bool(Values.isInt(x) && Values.asInt(x).content !== 0n)
+    return Values.BoolValue(
+      Values.isIntValue(x) && Values.asIntValue(x).content !== 0n,
+    )
   })
 
   definePrimitiveFunction(mod, "ineg", 1, (x) => {
-    return Values.Int(-Values.asInt(x).content)
+    return Values.IntValue(-Values.asIntValue(x).content)
   })
 
   definePrimitiveFunction(mod, "iadd", 2, (x, y) => {
-    return Values.Int(Values.asInt(x).content + Values.asInt(y).content)
+    return Values.IntValue(
+      Values.asIntValue(x).content + Values.asIntValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "isub", 2, (x, y) => {
-    return Values.Int(Values.asInt(x).content - Values.asInt(y).content)
+    return Values.IntValue(
+      Values.asIntValue(x).content - Values.asIntValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "imul", 2, (x, y) => {
-    return Values.Int(Values.asInt(x).content * Values.asInt(y).content)
+    return Values.IntValue(
+      Values.asIntValue(x).content * Values.asIntValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "idiv", 2, (x, y) => {
-    return Values.Int(Values.asInt(x).content / Values.asInt(y).content)
+    return Values.IntValue(
+      Values.asIntValue(x).content / Values.asIntValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "imod", 2, (x, y) => {
-    return Values.Int(Values.asInt(x).content % Values.asInt(y).content)
+    return Values.IntValue(
+      Values.asIntValue(x).content % Values.asIntValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "int-max", 2, (x, y) => {
-    if (Values.asInt(x).content > Values.asInt(y).content) {
-      return Values.Int(Values.asInt(x).content)
+    if (Values.asIntValue(x).content > Values.asIntValue(y).content) {
+      return Values.IntValue(Values.asIntValue(x).content)
     } else {
-      return Values.Int(Values.asInt(y).content)
+      return Values.IntValue(Values.asIntValue(y).content)
     }
   })
 
   definePrimitiveFunction(mod, "int-min", 2, (x, y) => {
-    if (Values.asInt(x).content < Values.asInt(y).content) {
-      return Values.Int(Values.asInt(x).content)
+    if (Values.asIntValue(x).content < Values.asIntValue(y).content) {
+      return Values.IntValue(Values.asIntValue(x).content)
     } else {
-      return Values.Int(Values.asInt(y).content)
+      return Values.IntValue(Values.asIntValue(y).content)
     }
   })
 
   definePrimitiveFunction(mod, "int-greater?", 2, (x, y) => {
-    return Values.Bool(Values.asInt(x).content > Values.asInt(y).content)
+    return Values.BoolValue(
+      Values.asIntValue(x).content > Values.asIntValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "int-less?", 2, (x, y) => {
-    return Values.Bool(Values.asInt(x).content < Values.asInt(y).content)
+    return Values.BoolValue(
+      Values.asIntValue(x).content < Values.asIntValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "int-greater-or-equal?", 2, (x, y) => {
-    return Values.Bool(Values.asInt(x).content >= Values.asInt(y).content)
+    return Values.BoolValue(
+      Values.asIntValue(x).content >= Values.asIntValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "int-less-or-equal?", 2, (x, y) => {
-    return Values.Bool(Values.asInt(x).content <= Values.asInt(y).content)
+    return Values.BoolValue(
+      Values.asIntValue(x).content <= Values.asIntValue(y).content,
+    )
   })
 
   definePrimitiveFunction(mod, "int-compare-ascending", 2, (x, y) => {
-    if (Values.asInt(x).content < Values.asInt(y).content) {
-      return Values.Int(-1n)
-    } else if (Values.asInt(x).content > Values.asInt(y).content) {
-      return Values.Int(1n)
+    if (Values.asIntValue(x).content < Values.asIntValue(y).content) {
+      return Values.IntValue(-1n)
+    } else if (Values.asIntValue(x).content > Values.asIntValue(y).content) {
+      return Values.IntValue(1n)
     } else {
-      return Values.Int(0n)
+      return Values.IntValue(0n)
     }
   })
 
   definePrimitiveFunction(mod, "int-compare-descending", 2, (x, y) => {
-    if (Values.asInt(x).content < Values.asInt(y).content) {
-      return Values.Int(1n)
-    } else if (Values.asInt(x).content > Values.asInt(y).content) {
-      return Values.Int(-1n)
+    if (Values.asIntValue(x).content < Values.asIntValue(y).content) {
+      return Values.IntValue(1n)
+    } else if (Values.asIntValue(x).content > Values.asIntValue(y).content) {
+      return Values.IntValue(-1n)
     } else {
-      return Values.Int(0n)
+      return Values.IntValue(0n)
     }
   })
 }

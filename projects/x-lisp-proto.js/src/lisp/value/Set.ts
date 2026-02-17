@@ -6,13 +6,13 @@ export type SetEntry = {
   element: Value
 }
 
-export type Set = {
+export type SetValue = {
   kind: "Set"
   entries: Map<string, SetEntry>
 }
 
-export function Set(elements: Array<Value>): Set {
-  const set: Set = {
+export function SetValue(elements: Array<Value>): SetValue {
+  const set: SetValue = {
     kind: "Set",
     entries: new Map(),
   }

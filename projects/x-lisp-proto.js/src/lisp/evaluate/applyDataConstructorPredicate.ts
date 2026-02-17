@@ -6,18 +6,18 @@ export function applyDataConstructorPredicate(
   value: Value,
 ): Value {
   if (target.constructor.fields.length === 0) {
-    if (Values.isHashtag(value)) {
-      return Values.Bool(target.constructor.name === value.content)
+    if (Values.isHashtagValue(value)) {
+      return Values.BoolValue(target.constructor.name === value.content)
     }
 
-    return Values.Bool(false)
+    return Values.BoolValue(false)
   } else {
     if (Values.isData(value)) {
-      return Values.Bool(
+      return Values.BoolValue(
         target.constructor.name === Values.dataHashtag(value).content,
       )
     }
 
-    return Values.Bool(false)
+    return Values.BoolValue(false)
   }
 }

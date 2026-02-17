@@ -19,7 +19,7 @@ export function patternize(exp: Exp): Effect {
       // Handle variable bind to hashtag specially:
       // - no need to escape constant (nullary) data constructor;
       // - also no need to escape: true false null void.
-      if (topValue && Values.isHashtag(topValue)) {
+      if (topValue && Values.isHashtagValue(topValue)) {
         return Patterns.LiteralPattern(topValue)
       } else {
         return Patterns.VarPattern(exp.name)
@@ -58,7 +58,7 @@ export function patternize(exp: Exp): Effect {
       if (topValue && topValue.kind === "DataConstructor") {
         return Patterns.TaelPattern(
           [
-            Patterns.LiteralPattern(Values.Hashtag(topValue.name)),
+            Patterns.LiteralPattern(Values.HashtagValue(topValue.name)),
             ...exp.args.map((arg) => patternize(arg)(mod, env)),
           ],
           {},
@@ -80,7 +80,7 @@ export function patternize(exp: Exp): Effect {
     }
   }
 
-  if (Values.isAtom(exp) || exp.kind === "Quote") {
+  if (Values.isAtomValue(exp) || exp.kind === "Quote") {
     return (mod, env) => {
       return Patterns.LiteralPattern(resultValue(evaluate(exp)(mod, env)))
     }

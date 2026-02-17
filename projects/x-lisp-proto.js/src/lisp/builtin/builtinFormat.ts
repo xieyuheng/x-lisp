@@ -11,16 +11,18 @@ export function builtinFormat(mod: Mod) {
   provide(mod, ["format", "format-subscript", "format-superscript"])
 
   definePrimitiveFunction(mod, "format", 1, (value) => {
-    return Values.String(formatValue(value))
+    return Values.StringValue(formatValue(value))
   })
 
   definePrimitiveFunction(mod, "format-subscript", 1, (n) => {
-    return Values.String(stringToSubscript(Values.asInt(n).content.toString()))
+    return Values.StringValue(
+      stringToSubscript(Values.asIntValue(n).content.toString()),
+    )
   })
 
   definePrimitiveFunction(mod, "format-superscript", 1, (n) => {
-    return Values.String(
-      stringToSuperscript(Values.asInt(n).content.toString()),
+    return Values.StringValue(
+      stringToSuperscript(Values.asIntValue(n).content.toString()),
     )
   })
 }

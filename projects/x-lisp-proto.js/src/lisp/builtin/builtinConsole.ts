@@ -14,16 +14,16 @@ export function builtinConsole(mod: Mod) {
 
   definePrimitiveFunction(mod, "print", 1, (value) => {
     process.stdout.write(prettyValue(textWidth, value))
-    return Values.Void()
+    return Values.VoidValue()
   })
 
   definePrimitiveFunction(mod, "write", 1, (string) => {
-    process.stdout.write(Values.asString(string).content)
-    return Values.Void()
+    process.stdout.write(Values.asStringValue(string).content)
+    return Values.VoidValue()
   })
 
   definePrimitiveNullaryFunction(mod, "newline", () => {
     process.stdout.write("\n")
-    return Values.Void()
+    return Values.VoidValue()
   })
 }

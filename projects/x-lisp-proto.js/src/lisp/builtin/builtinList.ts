@@ -32,101 +32,103 @@ export function builtinList(mod: Mod) {
   ])
 
   definePrimitiveFunction(mod, "list-empty?", 1, (value) => {
-    return Values.Bool(Values.asTael(value).elements.length === 0)
+    return Values.BoolValue(Values.asTaelValue(value).elements.length === 0)
   })
 
   definePrimitiveFunction(mod, "list?", 2, (p, target) => {
     if (target.kind !== "Tael") {
-      return Values.Bool(false)
+      return Values.BoolValue(false)
     }
 
-    for (const element of Values.asTael(target).elements) {
+    for (const element of Values.asTaelValue(target).elements) {
       if (!isValid(p, element)) {
-        return Values.Bool(false)
+        return Values.BoolValue(false)
       }
     }
 
-    return Values.Bool(true)
+    return Values.BoolValue(true)
   })
 
   definePrimitiveFunction(mod, "car", 1, (list) => {
-    if (Values.asTael(list).elements.length === 0) {
+    if (Values.asTaelValue(list).elements.length === 0) {
       throw new Error("(car) expect target to be non empty list")
     }
 
-    return Values.asTael(list).elements[0]
+    return Values.asTaelValue(list).elements[0]
   })
 
   definePrimitiveFunction(mod, "cdr", 1, (list) => {
-    if (Values.asTael(list).elements.length === 0) {
+    if (Values.asTaelValue(list).elements.length === 0) {
       throw new Error("(cdr) expect target to be non empty list")
     }
 
-    return Values.Tael(
-      Values.asTael(list).elements.slice(1),
-      Values.asTael(list).attributes,
+    return Values.TaelValue(
+      Values.asTaelValue(list).elements.slice(1),
+      Values.asTaelValue(list).attributes,
     )
   })
 
   definePrimitiveFunction(mod, "cons", 2, (head, tail) => {
-    return Values.Tael(
-      [head, ...Values.asTael(tail).elements],
-      Values.asTael(tail).attributes,
+    return Values.TaelValue(
+      [head, ...Values.asTaelValue(tail).elements],
+      Values.asTaelValue(tail).attributes,
     )
   })
 
   definePrimitiveFunction(mod, "list-head", 1, (list) => {
-    if (Values.asTael(list).elements.length === 0) {
+    if (Values.asTaelValue(list).elements.length === 0) {
       throw new Error("(list-head) expect target to be non empty list")
     }
 
-    return Values.asTael(list).elements[0]
+    return Values.asTaelValue(list).elements[0]
   })
 
   definePrimitiveFunction(mod, "list-tail", 1, (list) => {
-    if (Values.asTael(list).elements.length === 0) {
+    if (Values.asTaelValue(list).elements.length === 0) {
       throw new Error("(list-tail) expect target to be non empty list")
     }
 
-    return Values.Tael(
-      Values.asTael(list).elements.slice(1),
-      Values.asTael(list).attributes,
+    return Values.TaelValue(
+      Values.asTaelValue(list).elements.slice(1),
+      Values.asTaelValue(list).attributes,
     )
   })
 
   definePrimitiveFunction(mod, "list-init", 1, (list) => {
-    if (Values.asTael(list).elements.length === 0) {
+    if (Values.asTaelValue(list).elements.length === 0) {
       throw new Error("(list-init) expect target to be non empty list")
     }
 
-    return Values.Tael(
-      Values.asTael(list).elements.slice(
+    return Values.TaelValue(
+      Values.asTaelValue(list).elements.slice(
         0,
-        Values.asTael(list).elements.length - 1,
+        Values.asTaelValue(list).elements.length - 1,
       ),
-      Values.asTael(list).attributes,
+      Values.asTaelValue(list).attributes,
     )
   })
 
   definePrimitiveFunction(mod, "list-last", 1, (list) => {
-    if (Values.asTael(list).elements.length === 0) {
+    if (Values.asTaelValue(list).elements.length === 0) {
       throw new Error("(list-last) expect target to be non empty list")
     }
 
-    return Values.asTael(list).elements[Values.asTael(list).elements.length - 1]
+    return Values.asTaelValue(list).elements[
+      Values.asTaelValue(list).elements.length - 1
+    ]
   })
 
   definePrimitiveFunction(mod, "list-length", 1, (list) => {
-    return Values.Int(BigInt(Values.asTael(list).elements.length))
+    return Values.IntValue(BigInt(Values.asTaelValue(list).elements.length))
   })
 
   definePrimitiveFunction(mod, "list-copy", 1, (list) => {
-    return Values.List([...Values.asTael(list).elements])
+    return Values.ListValue([...Values.asTaelValue(list).elements])
   })
 
   definePrimitiveFunction(mod, "list-get", 2, (index, list) => {
-    const elements = Values.asTael(list).elements
-    const i = Values.asInt(index).content
+    const elements = Values.asTaelValue(list).elements
+    const i = Values.asIntValue(index).content
     if (i < elements.length) {
       return elements[Number(i)]
     } else {
@@ -138,8 +140,8 @@ export function builtinList(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "list-put", 3, (index, value, list) => {
-    const elements = Array.from(Values.asTael(list).elements)
-    const i = Values.asInt(index).content
+    const elements = Array.from(Values.asTaelValue(list).elements)
+    const i = Values.asIntValue(index).content
     if (i >= elements.length) {
       let message = `(list-put) index out of bound`
       message += `\n  list: ${formatValue(list)}`
@@ -148,12 +150,12 @@ export function builtinList(mod: Mod) {
     }
 
     elements[Number(i)] = value
-    return Values.Tael(elements, Values.asTael(list).attributes)
+    return Values.TaelValue(elements, Values.asTaelValue(list).attributes)
   })
 
   definePrimitiveFunction(mod, "list-put!", 3, (index, value, list) => {
-    const elements = Values.asTael(list).elements
-    const i = Values.asInt(index).content
+    const elements = Values.asTaelValue(list).elements
+    const i = Values.asIntValue(index).content
     if (i >= elements.length) {
       let message = `(list-put!) index out of bound`
       message += `\n  list: ${formatValue(list)}`
@@ -166,61 +168,61 @@ export function builtinList(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "list-push", 2, (value, list) => {
-    return Values.List([...Values.asTael(list).elements, value])
+    return Values.ListValue([...Values.asTaelValue(list).elements, value])
   })
 
   definePrimitiveFunction(mod, "list-push!", 2, (value, list) => {
-    Values.asTael(list).elements.push(value)
+    Values.asTaelValue(list).elements.push(value)
     return list
   })
 
   definePrimitiveFunction(mod, "list-pop!", 1, (list) => {
-    const value = Values.asTael(list).elements.pop()
+    const value = Values.asTaelValue(list).elements.pop()
     if (value === undefined) {
-      return Values.Null()
+      return Values.NullValue()
     } else {
       return value
     }
   })
 
   definePrimitiveFunction(mod, "list-unshift!", 2, (value, list) => {
-    Values.asTael(list).elements.unshift(value)
+    Values.asTaelValue(list).elements.unshift(value)
     return list
   })
 
   definePrimitiveFunction(mod, "list-shift!", 1, (list) => {
-    const value = Values.asTael(list).elements.shift()
+    const value = Values.asTaelValue(list).elements.shift()
     if (value === undefined) {
-      return Values.Null()
+      return Values.NullValue()
     } else {
       return value
     }
   })
 
   definePrimitiveFunction(mod, "list-reverse", 1, (list) => {
-    return Values.Tael(
-      Values.asTael(list).elements.toReversed(),
-      Values.asTael(list).attributes,
+    return Values.TaelValue(
+      Values.asTaelValue(list).elements.toReversed(),
+      Values.asTaelValue(list).attributes,
     )
   })
 
   definePrimitiveFunction(mod, "list-to-set", 1, (list) => {
-    return Values.Set(Values.asTael(list).elements)
+    return Values.SetValue(Values.asTaelValue(list).elements)
   })
 
   definePrimitiveFunction(mod, "list-sort!", 2, (compare, list) => {
-    Values.asTael(list).elements.sort((x, y) => {
+    Values.asTaelValue(list).elements.sort((x, y) => {
       const result = apply(compare, [x, y])
-      return Number(Values.asInt(result).content)
+      return Number(Values.asIntValue(result).content)
     })
     return list
   })
 
   definePrimitiveFunction(mod, "list-sort", 2, (compare, list) => {
-    return Values.List(
-      Values.asTael(list).elements.toSorted((x, y) => {
+    return Values.ListValue(
+      Values.asTaelValue(list).elements.toSorted((x, y) => {
         const result = apply(compare, [x, y])
-        return Number(Values.asInt(result).content)
+        return Number(Values.asIntValue(result).content)
       }),
     )
   })

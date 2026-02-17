@@ -7,10 +7,10 @@ export function builtinPath(mod: Mod) {
   provide(mod, ["path-join"])
 
   definePrimitiveFunction(mod, "path-join", 1, (list) => {
-    return Values.String(
+    return Values.StringValue(
       Path.join(
-        ...Values.asTael(list).elements.map(
-          (element) => Values.asString(element).content,
+        ...Values.asTaelValue(list).elements.map(
+          (element) => Values.asStringValue(element).content,
         ),
       ),
     )

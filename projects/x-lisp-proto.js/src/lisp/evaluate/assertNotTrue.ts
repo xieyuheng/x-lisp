@@ -11,19 +11,19 @@ export function assertNotTrue(exp: Exp): Effect {
     const width = textWidth
     const value = resultValue(evaluate(exp)(mod, env))
 
-    if (!Values.isBool(value)) {
+    if (!Values.isBoolValue(value)) {
       let message = `[assertNotTrue] fail on non boolean value`
       message += formatUnderTag(2, `exp:`, prettyExp(width, exp))
       message += formatUnderTag(2, `value:`, prettyValue(width, value))
       throw new S.ErrorWithMeta(message, exp.meta)
     }
 
-    if (Values.isTrue(value)) {
+    if (Values.isTrueValue(value)) {
       let message = `[assertNotTrue] fail`
       message += formatUnderTag(2, `exp:`, prettyExp(width, exp))
       throw new S.ErrorWithMeta(message, exp.meta)
     }
 
-    return [env, Values.Void()]
+    return [env, Values.VoidValue()]
   }
 }

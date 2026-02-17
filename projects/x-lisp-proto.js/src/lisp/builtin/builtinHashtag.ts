@@ -6,10 +6,10 @@ export function builtinHashtag(mod: Mod) {
   provide(mod, ["hashtag?", "hashtag-to-string"])
 
   definePrimitiveFunction(mod, "hashtag?", 1, (value) => {
-    return Values.Bool(Values.isHashtag(value))
+    return Values.BoolValue(Values.isHashtagValue(value))
   })
 
   definePrimitiveFunction(mod, "hashtag-to-string", 1, (value) => {
-    return Values.String(Values.asHashtag(value).content)
+    return Values.StringValue(Values.asHashtagValue(value).content)
   })
 }

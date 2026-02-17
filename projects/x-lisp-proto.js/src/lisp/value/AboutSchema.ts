@@ -3,15 +3,23 @@ import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type Attributes, type Value } from "./Value.ts"
 
-export type AboutSchema = Arrow | VariadicArrow | The | Tau | Polymorphic
+export type AboutSchema =
+  | ArrowValue
+  | VariadicArrowValue
+  | TheValue
+  | TauValue
+  | PolymorphicValue
 
-export type Arrow = {
+export type ArrowValue = {
   kind: "Arrow"
   argSchemas: Array<Value>
   retSchema: Value
 }
 
-export function Arrow(argSchemas: Array<Value>, retSchema: Value): Arrow {
+export function ArrowValue(
+  argSchemas: Array<Value>,
+  retSchema: Value,
+): ArrowValue {
   return {
     kind: "Arrow",
     argSchemas,
@@ -19,16 +27,16 @@ export function Arrow(argSchemas: Array<Value>, retSchema: Value): Arrow {
   }
 }
 
-export type VariadicArrow = {
+export type VariadicArrowValue = {
   kind: "VariadicArrow"
   argSchema: Value
   retSchema: Value
 }
 
-export function VariadicArrow(
+export function VariadicArrowValue(
   argSchema: Value,
   retSchema: Value,
-): VariadicArrow {
+): VariadicArrowValue {
   return {
     kind: "VariadicArrow",
     argSchema,
@@ -36,13 +44,13 @@ export function VariadicArrow(
   }
 }
 
-export type The = {
+export type TheValue = {
   kind: "The"
   schema: Value
   value: Value
 }
 
-export function The(schema: Value, value: Value): The {
+export function TheValue(schema: Value, value: Value): TheValue {
   return {
     kind: "The",
     schema,
@@ -50,16 +58,16 @@ export function The(schema: Value, value: Value): The {
   }
 }
 
-export type Tau = {
+export type TauValue = {
   kind: "Tau"
   elementSchemas: Array<Value>
   attributeSchemas: Attributes
 }
 
-export function Tau(
+export function TauValue(
   elementSchemas: Array<Value>,
   attributeSchemas: Attributes,
-): Tau {
+): TauValue {
   return {
     kind: "Tau",
     elementSchemas,
@@ -67,7 +75,7 @@ export function Tau(
   }
 }
 
-export type Polymorphic = {
+export type PolymorphicValue = {
   kind: "Polymorphic"
   mod: Mod
   env: Env
@@ -75,12 +83,12 @@ export type Polymorphic = {
   schema: Exp
 }
 
-export function Polymorphic(
+export function PolymorphicValue(
   mod: Mod,
   env: Env,
   parameters: Array<string>,
   schema: Exp,
-): Polymorphic {
+): PolymorphicValue {
   return {
     kind: "Polymorphic",
     mod,

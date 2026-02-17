@@ -6,12 +6,12 @@ export type HashEntry = {
   value: Value
 }
 
-export type Hash = {
+export type HashValue = {
   kind: "Hash"
   entries: Map<string, HashEntry>
 }
 
-export function Hash(): Hash {
+export function HashValue(): HashValue {
   return {
     kind: "Hash",
     entries: new Map(),

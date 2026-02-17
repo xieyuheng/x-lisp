@@ -8,7 +8,7 @@ export function definePrimitiveFunction(
   arity: number,
   fn: Values.ValueFunction,
 ): void {
-  define(mod, name, Values.PrimitiveFunction(name, arity, fn))
+  define(mod, name, Values.PrimitiveFunctionValue(name, arity, fn))
 }
 
 export function definePrimitiveNullaryFunction(
@@ -16,5 +16,5 @@ export function definePrimitiveNullaryFunction(
   name: string,
   fn: Values.ValueNullaryFunction,
 ): void {
-  define(mod, name, Values.PrimitiveNullaryFunction(name, fn))
+  define(mod, name, Values.PrimitiveNullaryFunctionValue(name, fn))
 }

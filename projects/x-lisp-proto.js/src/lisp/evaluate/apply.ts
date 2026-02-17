@@ -40,9 +40,9 @@ export function apply(target: Value, args: Array<Value>): Value {
 
     const result = validate(target, args[0])
     if (result.kind === "Ok") {
-      return Values.Bool(true)
+      return Values.BoolValue(true)
     } else {
-      return Values.Bool(false)
+      return Values.BoolValue(false)
     }
   }
 
@@ -129,7 +129,7 @@ export function apply(target: Value, args: Array<Value>): Value {
     const value = args[0]
     const resultEnv = match(target.pattern, value)(emptyEnv())
     if (resultEnv === undefined) {
-      return Values.Null()
+      return Values.NullValue()
     }
 
     const attributes: Record<string, Value> = {}
@@ -139,7 +139,7 @@ export function apply(target: Value, args: Array<Value>): Value {
       attributes[name] = value
     }
 
-    return Values.Record(attributes)
+    return Values.RecordValue(attributes)
   }
 
   let message = `[apply] can not handle this kind of target`

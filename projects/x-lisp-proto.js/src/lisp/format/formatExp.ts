@@ -1,5 +1,5 @@
 import { type CondLine, type Exp, type MatchLine } from "../exp/index.ts"
-import { isAtom } from "../value/index.ts"
+import { isAtomValue } from "../value/index.ts"
 import { formatAtom, formatSexp } from "./index.ts"
 
 export function formatExps(exps: Array<Exp>): string {
@@ -13,7 +13,7 @@ function formatExpAttributes(attributes: Record<string, Exp>): string {
 }
 
 export function formatExp(exp: Exp): string {
-  if (isAtom(exp)) {
+  if (isAtomValue(exp)) {
     return formatAtom(exp)
   }
 

@@ -25,7 +25,7 @@ export function evaluateQuasiquote(sexp: S.Sexp): Effect {
       return (mod, env) => {
         return [
           env,
-          Values.Tael(
+          Values.TaelValue(
             sexp.elements.map((e) =>
               resultValue(evaluateQuasiquote(e)(mod, env)),
             ),

@@ -1,26 +1,26 @@
 import { formatValue } from "../format/index.ts"
-import { type Hash, type HashEntry } from "./Hash.ts"
+import { type HashEntry, type HashValue } from "./Hash.ts"
 import * as Values from "./index.ts"
 import { type Value } from "./index.ts"
 
-export function isHash(value: Value): value is Hash {
+export function isHashValue(value: Value): value is HashValue {
   return value.kind === "Hash"
 }
 
-export function asHash(value: Value): Hash {
-  if (isHash(value)) return value
+export function asHashValue(value: Value): HashValue {
+  if (isHashValue(value)) return value
   throw new Error(`[asHash] fail on: ${formatValue(value)}`)
 }
 
-export function hashEntries(hash: Hash): Array<HashEntry> {
+export function hashEntries(hash: HashValue): Array<HashEntry> {
   return Array.from(hash.entries.values())
 }
 
-export function hashLength(hash: Hash): number {
+export function hashLength(hash: HashValue): number {
   return Array.from(hash.entries.values()).length
 }
 
-export function hashGet(hash: Hash, key: Value): Value | undefined {
+export function hashGet(hash: HashValue, key: Value): Value | undefined {
   const hashKey = formatValue(key, { digest: true })
   const entry = hash.entries.get(hashKey)
   if (entry === undefined) {
@@ -30,7 +30,7 @@ export function hashGet(hash: Hash, key: Value): Value | undefined {
   }
 }
 
-export function hashPut(hash: Hash, key: Value, value: Value): void {
+export function hashPut(hash: HashValue, key: Value, value: Value): void {
   const hashKey = formatValue(key, { digest: true })
   const entry = hash.entries.get(hashKey)
   if (entry === undefined) {
@@ -40,13 +40,13 @@ export function hashPut(hash: Hash, key: Value, value: Value): void {
   }
 }
 
-export function hashDelete(hash: Hash, key: Value): void {
+export function hashDelete(hash: HashValue, key: Value): void {
   const hashKey = formatValue(key, { digest: true })
   hash.entries.delete(hashKey)
 }
 
 export function isHashable(value: Value): boolean {
-  if (Values.isAtom(value)) return true
+  if (Values.isAtomValue(value)) return true
 
   if (value.kind === "Tael") {
     return (

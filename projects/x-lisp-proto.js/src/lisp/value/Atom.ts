@@ -1,59 +1,64 @@
-export type Atom = Symbol | Hashtag | String | Int | Float
+export type AtomValue =
+  | SymbolValue
+  | HashtagValue
+  | StringValue
+  | IntValue
+  | FloatValue
 
-export type Symbol = {
+export type SymbolValue = {
   kind: "Symbol"
   content: string
 }
 
-export function Symbol(content: string): Symbol {
+export function SymbolValue(content: string): SymbolValue {
   return {
     kind: "Symbol",
     content,
   }
 }
 
-export type String = {
+export type StringValue = {
   kind: "String"
   content: string
 }
 
-export function String(content: string): String {
+export function StringValue(content: string): StringValue {
   return {
     kind: "String",
     content,
   }
 }
 
-export type Hashtag = {
+export type HashtagValue = {
   kind: "Hashtag"
   content: string
 }
 
-export function Hashtag(content: string): Hashtag {
+export function HashtagValue(content: string): HashtagValue {
   return {
     kind: "Hashtag",
     content,
   }
 }
 
-export type Int = {
+export type IntValue = {
   kind: "Int"
   content: bigint
 }
 
-export function Int(content: bigint): Int {
+export function IntValue(content: bigint): IntValue {
   return {
     kind: "Int",
     content,
   }
 }
 
-export type Float = {
+export type FloatValue = {
   kind: "Float"
   content: number
 }
 
-export function Float(content: number): Float {
+export function FloatValue(content: number): FloatValue {
   return {
     kind: "Float",
     content,

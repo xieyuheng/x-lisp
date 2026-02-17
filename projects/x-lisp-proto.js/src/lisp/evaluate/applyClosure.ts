@@ -10,7 +10,7 @@ import { apply } from "./apply.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
 export function applyClosure(
-  closure: Values.Closure,
+  closure: Values.ClosureValue,
   args: Array<Value>,
 ): Value {
   const width = textWidth

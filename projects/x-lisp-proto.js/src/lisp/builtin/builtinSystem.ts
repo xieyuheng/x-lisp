@@ -9,18 +9,20 @@ export function builtinSystem(mod: Mod) {
   definePrimitiveFunction(mod, "system-shell-run", 2, (command, args) => {
     const result = spawnSync(
       [
-        Values.asString(command).content,
-        ...Values.asTael(args).elements.map(
-          (element) => Values.asString(element).content,
+        Values.asStringValue(command).content,
+        ...Values.asTaelValue(args).elements.map(
+          (element) => Values.asStringValue(element).content,
         ),
       ].join(" "),
       { shell: true },
     )
     const exitCode =
-      result.status === null ? Values.Null() : Values.Int(BigInt(result.status))
-    const stdout = Values.String(result.stdout.toString())
-    const stderr = Values.String(result.stderr.toString())
-    return Values.Record({
+      result.status === null
+        ? Values.NullValue()
+        : Values.IntValue(BigInt(result.status))
+    const stdout = Values.StringValue(result.stdout.toString())
+    const stderr = Values.StringValue(result.stderr.toString())
+    return Values.RecordValue({
       "exit-code": exitCode,
       stdout,
       stderr,

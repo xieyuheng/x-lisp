@@ -52,7 +52,10 @@ export function formatPattern(pattern: Pattern, options: Options = {}): string {
     }
 
     case "LiteralPattern": {
-      if (Values.isAtom(pattern.value) || Values.isNull(pattern.value)) {
+      if (
+        Values.isAtomValue(pattern.value) ||
+        Values.isNullValue(pattern.value)
+      ) {
         return formatValue(pattern.value, options)
       }
 

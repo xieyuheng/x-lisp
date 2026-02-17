@@ -1,8 +1,8 @@
 import { formatValue } from "../format/index.ts"
 import * as Values from "./index.ts"
-import { type Atom, type Value } from "./index.ts"
+import { type AtomValue, type Value } from "./index.ts"
 
-export function isAtom(value: any): value is Atom {
+export function isAtomValue(value: any): value is AtomValue {
   return (
     value.kind === "Hashtag" ||
     value.kind === "Symbol" ||
@@ -12,47 +12,47 @@ export function isAtom(value: any): value is Atom {
   )
 }
 
-export function isHashtag(value: Value): value is Values.Hashtag {
+export function isHashtagValue(value: Value): value is Values.HashtagValue {
   return value.kind === "Hashtag"
 }
 
-export function isSymbol(value: Value): value is Values.Symbol {
+export function isSymbolValue(value: Value): value is Values.SymbolValue {
   return value.kind === "Symbol"
 }
 
-export function isString(value: Value): value is Values.String {
+export function isStringValue(value: Value): value is Values.StringValue {
   return value.kind === "String"
 }
 
-export function isInt(value: Value): value is Values.Int {
+export function isIntValue(value: Value): value is Values.IntValue {
   return value.kind === "Int"
 }
 
-export function isFloat(value: Value): value is Values.Float {
+export function isFloatValue(value: Value): value is Values.FloatValue {
   return value.kind === "Float"
 }
 
-export function asHashtag(value: Value): Values.Hashtag {
-  if (isHashtag(value)) return value
+export function asHashtagValue(value: Value): Values.HashtagValue {
+  if (isHashtagValue(value)) return value
   throw new Error(`[asHashtag] fail on: ${formatValue(value)}`)
 }
 
-export function asSymbol(value: Value): Values.Symbol {
-  if (isSymbol(value)) return value
+export function asSymbolValue(value: Value): Values.SymbolValue {
+  if (isSymbolValue(value)) return value
   throw new Error(`[asSymbol] fail on: ${formatValue(value)}`)
 }
 
-export function asString(value: Value): Values.String {
-  if (isString(value)) return value
+export function asStringValue(value: Value): Values.StringValue {
+  if (isStringValue(value)) return value
   throw new Error(`[asString] fail on: ${formatValue(value)}`)
 }
 
-export function asInt(value: Value): Values.Int {
-  if (isInt(value)) return value
+export function asIntValue(value: Value): Values.IntValue {
+  if (isIntValue(value)) return value
   throw new Error(`[asInt] fail on: ${formatValue(value)}`)
 }
 
-export function asFloat(value: Value): Values.Float {
-  if (isFloat(value)) return value
+export function asFloatValue(value: Value): Values.FloatValue {
+  if (isFloatValue(value)) return value
   throw new Error(`[asFloat] fail on: ${formatValue(value)}`)
 }

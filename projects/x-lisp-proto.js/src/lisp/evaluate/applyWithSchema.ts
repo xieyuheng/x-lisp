@@ -90,7 +90,7 @@ export function applyWithSchema(
       const argSchemas = schema.argSchemas.slice(0, args.length)
       const restArgSchemas = schema.argSchemas.slice(args.length)
       const result = apply(target, validateArgs(context, argSchemas, args))
-      const newArrow = Values.Arrow(restArgSchemas, schema.retSchema)
+      const newArrow = Values.ArrowValue(restArgSchemas, schema.retSchema)
       return validateOrFail(newArrow, result)
     }
   }

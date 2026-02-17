@@ -5,34 +5,37 @@ import { type Mod } from "../mod/index.ts"
 import * as Patterns from "../pattern/index.ts"
 import { type AboutData } from "./AboutData.ts"
 import { type AboutSchema } from "./AboutSchema.ts"
-import { type Atom } from "./Atom.ts"
-import { type Hash } from "./Hash.ts"
-import { type Set } from "./Set.ts"
+import { type AtomValue } from "./Atom.ts"
+import { type HashValue } from "./Hash.ts"
+import { type SetValue } from "./Set.ts"
 
 export type Attributes = Record<string, Value>
 
 export type Value =
-  | Atom
-  | Tael
-  | Set
-  | Hash
-  | Closure
-  | VariadicClosure
-  | NullaryClosure
-  | PrimitiveFunction
-  | PrimitiveNullaryFunction
-  | Curry
-  | Pattern
+  | AtomValue
+  | TaelValue
+  | SetValue
+  | HashValue
+  | ClosureValue
+  | VariadicClosureValue
+  | NullaryClosureValue
+  | PrimitiveFunctionValue
+  | PrimitiveNullaryFunctionValue
+  | CurryValue
+  | PatternValue
   | AboutData
   | AboutSchema
 
-export type Tael = {
+export type TaelValue = {
   kind: "Tael"
   elements: Array<Value>
   attributes: Attributes
 }
 
-export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
+export function TaelValue(
+  elements: Array<Value>,
+  attributes: Attributes,
+): TaelValue {
   return {
     kind: "Tael",
     elements,
@@ -40,7 +43,7 @@ export function Tael(elements: Array<Value>, attributes: Attributes): Tael {
   }
 }
 
-export type Closure = {
+export type ClosureValue = {
   kind: "Closure"
   mod: Mod
   env: Env
@@ -49,13 +52,13 @@ export type Closure = {
   meta?: Meta
 }
 
-export function Closure(
+export function ClosureValue(
   mod: Mod,
   env: Env,
   parameters: Array<Exp>,
   body: Exp,
   meta?: Meta,
-): Closure {
+): ClosureValue {
   return {
     kind: "Closure",
     mod,
@@ -66,7 +69,7 @@ export function Closure(
   }
 }
 
-export type VariadicClosure = {
+export type VariadicClosureValue = {
   kind: "VariadicClosure"
   mod: Mod
   env: Env
@@ -75,13 +78,13 @@ export type VariadicClosure = {
   meta?: Meta
 }
 
-export function VariadicClosure(
+export function VariadicClosureValue(
   mod: Mod,
   env: Env,
   variadicParameter: string,
   body: Exp,
   meta?: Meta,
-): VariadicClosure {
+): VariadicClosureValue {
   return {
     kind: "VariadicClosure",
     mod,
@@ -92,7 +95,7 @@ export function VariadicClosure(
   }
 }
 
-export type NullaryClosure = {
+export type NullaryClosureValue = {
   kind: "NullaryClosure"
   mod: Mod
   env: Env
@@ -100,12 +103,12 @@ export type NullaryClosure = {
   meta?: Meta
 }
 
-export function NullaryClosure(
+export function NullaryClosureValue(
   mod: Mod,
   env: Env,
   body: Exp,
   meta?: Meta,
-): NullaryClosure {
+): NullaryClosureValue {
   return {
     kind: "NullaryClosure",
     mod,
@@ -117,18 +120,18 @@ export function NullaryClosure(
 
 export type ValueFunction = (...args: Array<Value>) => Value
 
-export type PrimitiveFunction = {
+export type PrimitiveFunctionValue = {
   kind: "PrimitiveFunction"
   name: string
   arity: number
   fn: ValueFunction
 }
 
-export function PrimitiveFunction(
+export function PrimitiveFunctionValue(
   name: string,
   arity: number,
   fn: ValueFunction,
-): PrimitiveFunction {
+): PrimitiveFunctionValue {
   return {
     kind: "PrimitiveFunction",
     name,
@@ -137,7 +140,7 @@ export function PrimitiveFunction(
   }
 }
 
-export type PrimitiveNullaryFunction = {
+export type PrimitiveNullaryFunctionValue = {
   kind: "PrimitiveNullaryFunction"
   name: string
   fn: ValueNullaryFunction
@@ -145,10 +148,10 @@ export type PrimitiveNullaryFunction = {
 
 export type ValueNullaryFunction = () => Value
 
-export function PrimitiveNullaryFunction(
+export function PrimitiveNullaryFunctionValue(
   name: string,
   fn: ValueNullaryFunction,
-): PrimitiveNullaryFunction {
+): PrimitiveNullaryFunctionValue {
   return {
     kind: "PrimitiveNullaryFunction",
     name,
@@ -156,14 +159,18 @@ export function PrimitiveNullaryFunction(
   }
 }
 
-export type Curry = {
+export type CurryValue = {
   kind: "Curry"
   target: Value
   arity: number
   args: Array<Value>
 }
 
-export function Curry(target: Value, arity: number, args: Array<Value>): Curry {
+export function CurryValue(
+  target: Value,
+  arity: number,
+  args: Array<Value>,
+): CurryValue {
   return {
     kind: "Curry",
     target,
@@ -172,12 +179,12 @@ export function Curry(target: Value, arity: number, args: Array<Value>): Curry {
   }
 }
 
-export type Pattern = {
+export type PatternValue = {
   kind: "Pattern"
   pattern: Patterns.Pattern
 }
 
-export function Pattern(pattern: Patterns.Pattern): Pattern {
+export function PatternValue(pattern: Patterns.Pattern): PatternValue {
   return {
     kind: "Pattern",
     pattern,

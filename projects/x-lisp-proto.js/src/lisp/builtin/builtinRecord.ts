@@ -24,107 +24,116 @@ export function builtinRecord(mod: Mod) {
 
   definePrimitiveFunction(mod, "record?", 2, (p, target) => {
     if (target.kind !== "Tael") {
-      return Values.Bool(false)
+      return Values.BoolValue(false)
     }
 
-    for (const value of Object.values(Values.asTael(target).attributes)) {
+    for (const value of Object.values(Values.asTaelValue(target).attributes)) {
       if (!isValid(p, value)) {
-        return Values.Bool(false)
+        return Values.BoolValue(false)
       }
     }
 
-    return Values.Bool(true)
+    return Values.BoolValue(true)
   })
 
   definePrimitiveFunction(mod, "record-length", 1, (record) => {
-    const values = Object.values(Values.asTael(record).attributes).filter(
-      (value) => !Values.isNull(value),
+    const values = Object.values(Values.asTaelValue(record).attributes).filter(
+      (value) => !Values.isNullValue(value),
     )
-    return Values.Int(BigInt(values.length))
+    return Values.IntValue(BigInt(values.length))
   })
 
   definePrimitiveFunction(mod, "record-keys", 1, (record) => {
-    return Values.List(
-      Object.keys(Values.asTael(record).attributes).map(Values.Symbol),
+    return Values.ListValue(
+      Object.keys(Values.asTaelValue(record).attributes).map(
+        Values.SymbolValue,
+      ),
     )
   })
 
   definePrimitiveFunction(mod, "record-values", 1, (record) => {
-    return Values.List(Object.values(Values.asTael(record).attributes))
+    return Values.ListValue(
+      Object.values(Values.asTaelValue(record).attributes),
+    )
   })
 
   definePrimitiveFunction(mod, "record-entries", 1, (record) => {
-    return Values.List(
+    return Values.ListValue(
       arrayZip(
-        Object.keys(Values.asTael(record).attributes).map(Values.Symbol),
-        Object.values(Values.asTael(record).attributes),
-      ).map(Values.List),
+        Object.keys(Values.asTaelValue(record).attributes).map(
+          Values.SymbolValue,
+        ),
+        Object.values(Values.asTaelValue(record).attributes),
+      ).map(Values.ListValue),
     )
   })
 
   definePrimitiveFunction(mod, "record-append", 2, (record, rest) => {
-    return Values.Record({
-      ...Values.asTael(record).attributes,
-      ...Values.asTael(rest).attributes,
+    return Values.RecordValue({
+      ...Values.asTaelValue(record).attributes,
+      ...Values.asTaelValue(rest).attributes,
     })
   })
 
   definePrimitiveFunction(mod, "record-copy", 1, (record) => {
-    return Values.Record({ ...Values.asTael(record).attributes })
+    return Values.RecordValue({ ...Values.asTaelValue(record).attributes })
   })
 
   definePrimitiveFunction(mod, "record-empty?", 1, (record) => {
-    const values = Object.values(Values.asTael(record).attributes).filter(
-      (value) => !Values.isNull(value),
+    const values = Object.values(Values.asTaelValue(record).attributes).filter(
+      (value) => !Values.isNullValue(value),
     )
-    return Values.Bool(values.length === 0)
+    return Values.BoolValue(values.length === 0)
   })
 
   definePrimitiveFunction(mod, "record-get", 2, (key, record) => {
-    const attributes = Values.asTael(record).attributes
-    const value = attributes[Values.asSymbol(key).content]
+    const attributes = Values.asTaelValue(record).attributes
+    const value = attributes[Values.asSymbolValue(key).content]
     if (value === undefined) {
-      return Values.Null()
+      return Values.NullValue()
     } else {
       return value
     }
   })
 
   definePrimitiveFunction(mod, "record-has?", 2, (key, record) => {
-    const attributes = Values.asTael(record).attributes
-    const value = attributes[Values.asSymbol(key).content]
+    const attributes = Values.asTaelValue(record).attributes
+    const value = attributes[Values.asSymbolValue(key).content]
     if (value === undefined) {
-      return Values.Bool(false)
-    } else if (Values.isNull(value)) {
-      return Values.Bool(false)
+      return Values.BoolValue(false)
+    } else if (Values.isNullValue(value)) {
+      return Values.BoolValue(false)
     } else {
-      return Values.Bool(true)
+      return Values.BoolValue(true)
     }
   })
 
   definePrimitiveFunction(mod, "record-put", 3, (key, value, record) => {
     const attributes = {
-      ...Values.asTael(record).attributes,
-      [Values.asSymbol(key).content]: value,
+      ...Values.asTaelValue(record).attributes,
+      [Values.asSymbolValue(key).content]: value,
     }
-    return Values.Tael(Values.asTael(record).elements, attributes)
+    return Values.TaelValue(Values.asTaelValue(record).elements, attributes)
   })
 
   definePrimitiveFunction(mod, "record-put!", 3, (key, value, record) => {
-    Values.asTael(record).attributes[Values.asSymbol(key).content] = value
+    Values.asTaelValue(record).attributes[Values.asSymbolValue(key).content] =
+      value
     return record
   })
 
   definePrimitiveFunction(mod, "record-delete", 2, (key, record) => {
     const attributes = {
-      ...Values.asTael(record).attributes,
+      ...Values.asTaelValue(record).attributes,
     }
-    delete attributes[Values.asSymbol(key).content]
-    return Values.Tael(Values.asTael(record).elements, attributes)
+    delete attributes[Values.asSymbolValue(key).content]
+    return Values.TaelValue(Values.asTaelValue(record).elements, attributes)
   })
 
   definePrimitiveFunction(mod, "record-delete!", 2, (key, record) => {
-    delete Values.asTael(record).attributes[Values.asSymbol(key).content]
+    delete Values.asTaelValue(record).attributes[
+      Values.asSymbolValue(key).content
+    ]
     return record
   })
 }

@@ -2,48 +2,48 @@ import { formatValue } from "../format/index.ts"
 import * as Values from "./index.ts"
 import { type Value } from "./index.ts"
 
-export function Bool(bool: boolean): Values.Hashtag {
+export function BoolValue(bool: boolean): Values.HashtagValue {
   return {
     kind: "Hashtag",
     content: bool ? "t" : "f",
   }
 }
 
-export function isBool(value: Value): boolean {
-  return isTrue(value) || isFalse(value)
+export function isBoolValue(value: Value): boolean {
+  return isTrueValue(value) || isFalseValue(value)
 }
 
-export function isTrue(value: Value): boolean {
+export function isTrueValue(value: Value): boolean {
   return value.kind === "Hashtag" && value.content === "t"
 }
 
-export function isFalse(value: Value): boolean {
+export function isFalseValue(value: Value): boolean {
   return value.kind === "Hashtag" && value.content === "f"
 }
 
-export function asBool(value: Value): Values.Hashtag {
-  if (isBool(value)) return value as Values.Hashtag
+export function asBoolValue(value: Value): Values.HashtagValue {
+  if (isBoolValue(value)) return value as Values.HashtagValue
   throw new Error(`[asBool] fail on: ${formatValue(value)}`)
 }
 
-export function Void(): Values.Hashtag {
+export function VoidValue(): Values.HashtagValue {
   return {
     kind: "Hashtag",
     content: "void",
   }
 }
 
-export function isVoid(value: Value): boolean {
+export function isVoidValue(value: Value): boolean {
   return value.kind === "Hashtag" && value.content === "void"
 }
 
-export function Null(): Values.Hashtag {
+export function NullValue(): Values.HashtagValue {
   return {
     kind: "Hashtag",
     content: "null",
   }
 }
 
-export function isNull(value: Value): boolean {
+export function isNullValue(value: Value): boolean {
   return value.kind === "Hashtag" && value.content === "null"
 }

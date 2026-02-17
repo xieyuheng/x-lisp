@@ -73,9 +73,11 @@ function equalValues(lhs: Array<Value>, rhs: Array<Value>): boolean {
 }
 
 function equalAttributes(lhs: Attributes, rhs: Attributes): boolean {
-  const leftValues = Object.values(lhs).filter((value) => !Values.isNull(value))
+  const leftValues = Object.values(lhs).filter(
+    (value) => !Values.isNullValue(value),
+  )
   const rightValues = Object.values(rhs).filter(
-    (value) => !Values.isNull(value),
+    (value) => !Values.isNullValue(value),
   )
   if (leftValues.length !== rightValues.length) {
     return false
@@ -85,7 +87,7 @@ function equalAttributes(lhs: Attributes, rhs: Attributes): boolean {
     const l = lhs[k]
     const r = rhs[k]
 
-    if (r === undefined && Values.isNull(l)) {
+    if (r === undefined && Values.isNullValue(l)) {
       continue
     } else if (equal(l, r)) {
       continue
@@ -97,7 +99,7 @@ function equalAttributes(lhs: Attributes, rhs: Attributes): boolean {
   return true
 }
 
-function equalHash(lhs: Values.Hash, rhs: Values.Hash): boolean {
+function equalHash(lhs: Values.HashValue, rhs: Values.HashValue): boolean {
   const lhsEntries = Values.hashEntries(lhs)
   const rhsEntries = Values.hashEntries(rhs)
   if (lhsEntries.length !== rhsEntries.length) {
@@ -108,7 +110,7 @@ function equalHash(lhs: Values.Hash, rhs: Values.Hash): boolean {
     const lhsValue = lhsEntry.value
     const rhsValue = Values.hashGet(rhs, lhsEntry.key)
     if (rhsValue === undefined) {
-      if (Values.isNull(lhsValue)) {
+      if (Values.isNullValue(lhsValue)) {
         continue
       } else {
         return false

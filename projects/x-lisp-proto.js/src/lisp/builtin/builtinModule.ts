@@ -7,10 +7,10 @@ import * as Values from "../value/index.ts"
 
 export function builtinModule(mod: Mod) {
   definePrimitiveNullaryFunction(mod, "current-module-file", () => {
-    return Values.String(mod.url.pathname)
+    return Values.StringValue(mod.url.pathname)
   })
 
   definePrimitiveNullaryFunction(mod, "current-module-directory", () => {
-    return Values.String(dirname(mod.url.pathname))
+    return Values.StringValue(dirname(mod.url.pathname))
   })
 }

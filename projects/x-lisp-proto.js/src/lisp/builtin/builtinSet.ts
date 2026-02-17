@@ -28,16 +28,16 @@ export function builtinSet(mod: Mod) {
 
   definePrimitiveFunction(mod, "set?", 2, (p, target) => {
     if (target.kind !== "Set") {
-      return Values.Bool(false)
+      return Values.BoolValue(false)
     }
 
     for (const element of Values.setElements(target)) {
       if (!isValid(p, element)) {
-        return Values.Bool(false)
+        return Values.BoolValue(false)
       }
     }
 
-    return Values.Bool(true)
+    return Values.BoolValue(true)
   })
 
   definePrimitiveFunction(mod, "set-copy", 1, (set) => {
@@ -45,25 +45,25 @@ export function builtinSet(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "set-size", 1, (value) => {
-    return Values.Int(BigInt(Values.setElements(value).length))
+    return Values.IntValue(BigInt(Values.setElements(value).length))
   })
 
   definePrimitiveFunction(mod, "set-empty?", 1, (value) => {
-    return Values.Bool(Values.setElements(value).length === 0)
+    return Values.BoolValue(Values.setElements(value).length === 0)
   })
 
   definePrimitiveFunction(mod, "set-member?", 2, (value, set) => {
-    return Values.Bool(Values.setHas(set, value))
+    return Values.BoolValue(Values.setHas(set, value))
   })
 
   definePrimitiveFunction(mod, "set-subset?", 2, (subset, set) => {
-    return Values.Bool(
+    return Values.BoolValue(
       Values.setElements(subset).every((value) => Values.setHas(set, value)),
     )
   })
 
   definePrimitiveFunction(mod, "set-to-list", 1, (set) => {
-    return Values.List(Values.setElements(set))
+    return Values.ListValue(Values.setElements(set))
   })
 
   definePrimitiveFunction(mod, "set-add", 2, (value, set) => {
@@ -94,14 +94,14 @@ export function builtinSet(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "set-union", 2, (left, right) => {
-    return Values.Set([
+    return Values.SetValue([
       ...Values.setElements(left),
       ...Values.setElements(right),
     ])
   })
 
   definePrimitiveFunction(mod, "set-inter", 2, (left, right) => {
-    return Values.Set(
+    return Values.SetValue(
       Values.setElements(left).filter((element) =>
         Values.setHas(right, element),
       ),
@@ -109,7 +109,7 @@ export function builtinSet(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "set-difference", 2, (left, right) => {
-    return Values.Set(
+    return Values.SetValue(
       Values.setElements(left).filter(
         (element) => !Values.setHas(right, element),
       ),
@@ -117,7 +117,7 @@ export function builtinSet(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "set-disjoint?", 2, (left, right) => {
-    return Values.Bool(
+    return Values.BoolValue(
       Values.setElements(left).filter((element) =>
         Values.setHas(right, element),
       ).length === 0,
@@ -125,7 +125,7 @@ export function builtinSet(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "set-map", 2, (f, set) => {
-    return Values.Set(
+    return Values.SetValue(
       Values.setElements(set).map((element) => apply(f, [element])),
     )
   })
@@ -135,14 +135,14 @@ export function builtinSet(mod: Mod) {
       apply(f, [element])
     }
 
-    return Values.Void()
+    return Values.VoidValue()
   })
 
   definePrimitiveFunction(mod, "set-select", 2, (p, set) => {
-    const newSet = Values.Set([])
+    const newSet = Values.SetValue([])
     for (const element of Values.setElements(set)) {
       const result = apply(p, [element])
-      if (!Values.isBool(result)) {
+      if (!Values.isBoolValue(result)) {
         let message = `(set-select) one result of applying the predicate is not bool`
         message += `\n  predicate: ${formatValue(p)}`
         message += `\n  set: ${formatValue(set)}`
@@ -151,7 +151,7 @@ export function builtinSet(mod: Mod) {
         throw new Error(message)
       }
 
-      if (Values.isTrue(result)) {
+      if (Values.isTrueValue(result)) {
         Values.setAdd(newSet, element)
       }
     }

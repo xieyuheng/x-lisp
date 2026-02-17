@@ -5,9 +5,9 @@ import * as Values from "../value/index.ts"
 export function builtinVoid(mod: Mod) {
   provide(mod, ["void", "void?"])
 
-  define(mod, "void", Values.Void())
+  define(mod, "void", Values.VoidValue())
 
   definePrimitiveFunction(mod, "void?", 1, (value) => {
-    return Values.Bool(Values.isVoid(value))
+    return Values.BoolValue(Values.isVoidValue(value))
   })
 }

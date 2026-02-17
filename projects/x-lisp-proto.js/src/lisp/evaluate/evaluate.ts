@@ -30,7 +30,7 @@ export function resultValue(result: Result): Value {
 export function evaluate(exp: Exp): Effect {
   const width = textWidth
 
-  if (Values.isAtom(exp)) {
+  if (Values.isAtomValue(exp)) {
     return (mod, env) => {
       return [env, exp]
     }
@@ -55,7 +55,7 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         return [
           env,
-          Values.Closure(mod, env, exp.parameters, exp.body, exp.meta),
+          Values.ClosureValue(mod, env, exp.parameters, exp.body, exp.meta),
         ]
       }
     }
@@ -64,7 +64,7 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         return [
           env,
-          Values.VariadicClosure(
+          Values.VariadicClosureValue(
             mod,
             env,
             exp.variadicParameter,
@@ -77,7 +77,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "NullaryLambda": {
       return (mod, env) => {
-        return [env, Values.NullaryClosure(mod, env, exp.body, exp.meta)]
+        return [env, Values.NullaryClosureValue(mod, env, exp.body, exp.meta)]
       }
     }
 
@@ -114,7 +114,7 @@ export function evaluate(exp: Exp): Effect {
           throw new S.ErrorWithMeta(message, exp.meta)
         }
 
-        return [envUpdate(env, resultEnv), Values.Void()]
+        return [envUpdate(env, resultEnv), Values.VoidValue()]
       }
     }
 
@@ -140,7 +140,7 @@ export function evaluate(exp: Exp): Effect {
         const value = resultValue(evaluate(exp.exp)(mod, env))
         const result = validate(schema, value)
         if (result.kind === "Ok") {
-          return [env, Values.Void()]
+          return [env, Values.VoidValue()]
         } else {
           let message = `(assert-the) validation fail`
           message += formatUnderTag(2, `schema:`, prettyValue(width, schema))
@@ -152,7 +152,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Tael": {
       return (mod, env) => {
-        const value = Values.Tael(
+        const value = Values.TaelValue(
           exp.elements.map((e) => resultValue(evaluate(e)(mod, env))),
           recordMapValue(exp.attributes, (e) =>
             resultValue(evaluate(e)(mod, env)),
@@ -164,7 +164,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Set": {
       return (mod, env) => {
-        const set = Values.Set([])
+        const set = Values.SetValue([])
         for (const element of exp.elements) {
           const elementValue = resultValue(evaluate(element)(mod, env))
           if (Values.isHashable(elementValue)) {
@@ -186,7 +186,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Hash": {
       return (mod, env) => {
-        const hash = Values.Hash()
+        const hash = Values.HashValue()
         for (const entry of exp.entries) {
           const k = resultValue(evaluate(entry.key)(mod, env))
           const v = resultValue(evaluate(entry.value)(mod, env))
@@ -212,7 +212,7 @@ export function evaluate(exp: Exp): Effect {
 
     case "Comment": {
       return (mod, env) => {
-        return [env, Values.Void()]
+        return [env, Values.VoidValue()]
       }
     }
 
@@ -223,7 +223,7 @@ export function evaluate(exp: Exp): Effect {
     case "If": {
       return (mod, env) => {
         const condition = resultValue(evaluate(exp.condition)(mod, env))
-        if (!Values.isBool(condition)) {
+        if (!Values.isBoolValue(condition)) {
           let message = `(if) the condition must be bool`
           message += formatUnderTag(
             2,
@@ -233,7 +233,7 @@ export function evaluate(exp: Exp): Effect {
           throw new S.ErrorWithMeta(message, exp.meta)
         }
 
-        if (Values.isTrue(condition)) {
+        if (Values.isTrueValue(condition)) {
           return evaluate(exp.consequent)(mod, env)
         } else {
           return evaluate(exp.alternative)(mod, env)
@@ -244,7 +244,7 @@ export function evaluate(exp: Exp): Effect {
     case "When": {
       return (mod, env) => {
         const condition = resultValue(evaluate(exp.condition)(mod, env))
-        if (!Values.isBool(condition)) {
+        if (!Values.isBoolValue(condition)) {
           let message = `(when) the condition must be bool`
           message += formatUnderTag(
             2,
@@ -254,10 +254,10 @@ export function evaluate(exp: Exp): Effect {
           throw new S.ErrorWithMeta(message, exp.meta)
         }
 
-        if (Values.isTrue(condition)) {
+        if (Values.isTrueValue(condition)) {
           return evaluate(exp.consequent)(mod, env)
         } else {
-          return [env, Values.Void()]
+          return [env, Values.VoidValue()]
         }
       }
     }
@@ -265,7 +265,7 @@ export function evaluate(exp: Exp): Effect {
     case "Unless": {
       return (mod, env) => {
         const condition = resultValue(evaluate(exp.condition)(mod, env))
-        if (!Values.isBool(condition)) {
+        if (!Values.isBoolValue(condition)) {
           let message = `(unless) the condition must be bool`
           message += formatUnderTag(
             2,
@@ -275,10 +275,10 @@ export function evaluate(exp: Exp): Effect {
           throw new S.ErrorWithMeta(message, exp.meta)
         }
 
-        if (Values.isFalse(condition)) {
+        if (Values.isFalseValue(condition)) {
           return evaluate(exp.consequent)(mod, env)
         } else {
-          return [env, Values.Void()]
+          return [env, Values.VoidValue()]
         }
       }
     }
@@ -287,18 +287,18 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         for (const e of exp.exps) {
           const value = resultValue(evaluate(e)(mod, env))
-          if (!Values.isBool(value)) {
+          if (!Values.isBoolValue(value)) {
             let message = `[evaluate] The subexpressions of (and) must evaluate to bool`
             message += formatUnderTag(2, `value:`, prettyValue(width, value))
             throw new S.ErrorWithMeta(message, exp.meta)
           }
 
-          if (Values.isFalse(value)) {
-            return [env, Values.Bool(false)]
+          if (Values.isFalseValue(value)) {
+            return [env, Values.BoolValue(false)]
           }
         }
 
-        return [env, Values.Bool(true)]
+        return [env, Values.BoolValue(true)]
       }
     }
 
@@ -306,18 +306,18 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         for (const e of exp.exps) {
           const value = resultValue(evaluate(e)(mod, env))
-          if (!Values.isBool(value)) {
+          if (!Values.isBoolValue(value)) {
             let message = `[evaluate] The subexpressions of (or) must evaluate to bool`
             message += formatUnderTag(2, `value:`, prettyValue(width, value))
             throw new S.ErrorWithMeta(message, exp.meta)
           }
 
-          if (Values.isTrue(value)) {
-            return [env, Values.Bool(true)]
+          if (Values.isTrueValue(value)) {
+            return [env, Values.BoolValue(true)]
           }
         }
 
-        return [env, Values.Bool(false)]
+        return [env, Values.BoolValue(false)]
       }
     }
 
@@ -325,13 +325,13 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         for (const condLine of exp.condLines) {
           const value = resultValue(evaluate(condLine.question)(mod, env))
-          if (!Values.isBool(value)) {
+          if (!Values.isBoolValue(value)) {
             let message = `[evaluate] The question part of a (cond) line must evaluate to bool`
             message += formatUnderTag(2, `value:`, prettyValue(width, value))
             throw new S.ErrorWithMeta(message, exp.meta)
           }
 
-          if (Values.isTrue(value)) {
+          if (Values.isTrueValue(value)) {
             return evaluate(condLine.answer)(mod, env)
           }
         }
@@ -364,7 +364,7 @@ export function evaluate(exp: Exp): Effect {
           resultValue(evaluate(e)(mod, env)),
         )
         const retSchema = resultValue(evaluate(exp.retSchema)(mod, env))
-        return [env, Values.Arrow(argSchemas, retSchema)]
+        return [env, Values.ArrowValue(argSchemas, retSchema)]
       }
     }
 
@@ -372,13 +372,13 @@ export function evaluate(exp: Exp): Effect {
       return (mod, env) => {
         const argSchema = resultValue(evaluate(exp.argSchema)(mod, env))
         const retSchema = resultValue(evaluate(exp.retSchema)(mod, env))
-        return [env, Values.VariadicArrow(argSchema, retSchema)]
+        return [env, Values.VariadicArrowValue(argSchema, retSchema)]
       }
     }
 
     case "Tau": {
       return (mod, env) => {
-        const value = Values.Tau(
+        const value = Values.TauValue(
           exp.elementSchemas.map((e) => resultValue(evaluate(e)(mod, env))),
           recordMapValue(exp.attributeSchemas, (e) =>
             resultValue(evaluate(e)(mod, env)),
@@ -407,13 +407,16 @@ export function evaluate(exp: Exp): Effect {
     case "Pattern": {
       return (mod, env) => {
         const pattern = patternize(exp.pattern)(mod, env)
-        return [env, Values.Pattern(pattern)]
+        return [env, Values.PatternValue(pattern)]
       }
     }
 
     case "Polymorphic": {
       return (mod, env) => {
-        return [env, Values.Polymorphic(mod, env, exp.parameters, exp.schema)]
+        return [
+          env,
+          Values.PolymorphicValue(mod, env, exp.parameters, exp.schema),
+        ]
       }
     }
 
@@ -443,7 +446,7 @@ export function evaluate(exp: Exp): Effect {
 
         return [
           env,
-          Values.The(applyPolymorphic(target.schema, args), target.value),
+          Values.TheValue(applyPolymorphic(target.schema, args), target.value),
         ]
       }
     }

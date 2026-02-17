@@ -6,9 +6,11 @@ import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { evaluate, resultValue } from "./evaluate.ts"
 
-const isAny = Values.PrimitiveFunction("any?", 1, () => Values.Bool(true))
+const isAny = Values.PrimitiveFunctionValue("any?", 1, () =>
+  Values.BoolValue(true),
+)
 export function applyPolymorphicWithAnythings(
-  polymorphic: Values.Polymorphic,
+  polymorphic: Values.PolymorphicValue,
 ): Value {
   return applyPolymorphic(
     polymorphic,
@@ -17,7 +19,7 @@ export function applyPolymorphicWithAnythings(
 }
 
 export function applyPolymorphic(
-  polymorphic: Values.Polymorphic,
+  polymorphic: Values.PolymorphicValue,
   args: Array<Value>,
 ): Value {
   const width = textWidth

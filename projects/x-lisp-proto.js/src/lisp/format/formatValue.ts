@@ -1,6 +1,6 @@
 import assert from "node:assert"
 import * as Values from "../value/index.ts"
-import { isAtom, type Value } from "../value/index.ts"
+import { isAtomValue, type Value } from "../value/index.ts"
 import {
   formatAtom,
   formatBody,
@@ -73,7 +73,7 @@ function formatHashEntries(
 }
 
 export function formatValue(value: Value, options: Options = {}): string {
-  if (isAtom(value)) {
+  if (isAtomValue(value)) {
     return formatAtom(value)
   }
 

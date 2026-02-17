@@ -17,8 +17,8 @@ export function applyDataConstructor(
   if (flags.debug) {
     const predicate = constructor.spec.predicate
     const ok = applyDataPredicateWithAnything(predicate, data)
-    assert(Values.isBool(ok))
-    if (Values.isFalse(ok)) {
+    assert(Values.isBoolValue(ok))
+    if (Values.isFalseValue(ok)) {
       let message = `[applyDataConstructor] result data cannot possibly pass data predicate`
       message += formatUnderTag(
         2,

@@ -30,18 +30,18 @@ export function validate(schema: Value, value: Value): Result {
   const width = textWidth
 
   if (schema.kind === "Arrow") {
-    return { kind: "Ok", value: Values.The(schema, value) }
+    return { kind: "Ok", value: Values.TheValue(schema, value) }
   }
 
   if (schema.kind === "VariadicArrow") {
-    return { kind: "Ok", value: Values.The(schema, value) }
+    return { kind: "Ok", value: Values.TheValue(schema, value) }
   }
 
   if (schema.kind === "Polymorphic") {
-    return { kind: "Ok", value: Values.The(schema, value) }
+    return { kind: "Ok", value: Values.TheValue(schema, value) }
   }
 
-  if (Values.isAtom(schema)) {
+  if (Values.isAtomValue(schema)) {
     if (equal(schema, value)) {
       return { kind: "Ok", value: value }
     } else {
@@ -75,9 +75,9 @@ export function validate(schema: Value, value: Value): Result {
 
     for (const key of Object.keys(schema.attributeSchemas)) {
       const attributeSchema = schema.attributeSchemas[key]
-      const attribute = value.attributes[key] || Values.Null()
+      const attribute = value.attributes[key] || Values.NullValue()
       const result = validate(attributeSchema, attribute)
-      if (result.kind === "Ok" && !Values.isNull(attribute)) {
+      if (result.kind === "Ok" && !Values.isNullValue(attribute)) {
         value.attributes[key] = result.value
       } else {
         return { kind: "Err" }
@@ -91,8 +91,8 @@ export function validate(schema: Value, value: Value): Result {
   }
 
   const result = apply(schema, [value])
-  if (Values.isBool(result)) {
-    if (Values.isTrue(result)) {
+  if (Values.isBoolValue(result)) {
+    if (Values.isTrueValue(result)) {
       return { kind: "Ok", value }
     } else {
       return { kind: "Err" }

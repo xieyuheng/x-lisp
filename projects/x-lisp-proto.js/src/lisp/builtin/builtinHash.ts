@@ -22,29 +22,33 @@ export function builtinHash(mod: Mod) {
   ])
 
   definePrimitiveFunction(mod, "hash?", 3, (keyP, valueP, target) => {
-    if (!Values.isHash(target)) {
-      return Values.Bool(false)
+    if (!Values.isHashValue(target)) {
+      return Values.BoolValue(false)
     }
 
     for (const entry of Values.hashEntries(target)) {
       if (!isValid(keyP, entry.key)) {
-        return Values.Bool(false)
+        return Values.BoolValue(false)
       }
 
       if (!isValid(valueP, entry.value)) {
-        return Values.Bool(false)
+        return Values.BoolValue(false)
       }
     }
 
-    return Values.Bool(true)
+    return Values.BoolValue(true)
   })
 
   definePrimitiveFunction(mod, "hash-empty?", 1, (hash) => {
-    return Values.Bool(Values.hashEntries(Values.asHash(hash)).length === 0)
+    return Values.BoolValue(
+      Values.hashEntries(Values.asHashValue(hash)).length === 0,
+    )
   })
 
   definePrimitiveFunction(mod, "hash-length", 1, (hash) => {
-    return Values.Int(BigInt(Values.hashEntries(Values.asHash(hash)).length))
+    return Values.IntValue(
+      BigInt(Values.hashEntries(Values.asHashValue(hash)).length),
+    )
   })
 
   definePrimitiveFunction(mod, "hash-get", 2, (key, hash) => {
@@ -54,9 +58,9 @@ export function builtinHash(mod: Mod) {
       throw new Error(message)
     }
 
-    const found = Values.hashGet(Values.asHash(hash), key)
+    const found = Values.hashGet(Values.asHashValue(hash), key)
     if (found) return found
-    else return Values.Null()
+    else return Values.NullValue()
   })
 
   definePrimitiveFunction(mod, "hash-has?", 2, (key, hash) => {
@@ -66,8 +70,8 @@ export function builtinHash(mod: Mod) {
       throw new Error(message)
     }
 
-    const found = Values.hashGet(Values.asHash(hash), key)
-    return Values.Bool(found !== undefined)
+    const found = Values.hashGet(Values.asHashValue(hash), key)
+    return Values.BoolValue(found !== undefined)
   })
 
   definePrimitiveFunction(mod, "hash-put", 3, (key, value, hash) => {
@@ -78,8 +82,8 @@ export function builtinHash(mod: Mod) {
       throw new Error(message)
     }
 
-    const newHash = Values.Hash()
-    for (const entry of Values.hashEntries(Values.asHash(hash))) {
+    const newHash = Values.HashValue()
+    for (const entry of Values.hashEntries(Values.asHashValue(hash))) {
       Values.hashPut(newHash, entry.key, entry.value)
     }
 
@@ -95,7 +99,7 @@ export function builtinHash(mod: Mod) {
       throw new Error(message)
     }
 
-    Values.hashPut(Values.asHash(hash), key, value)
+    Values.hashPut(Values.asHashValue(hash), key, value)
     return hash
   })
 
@@ -106,13 +110,13 @@ export function builtinHash(mod: Mod) {
       throw new Error(message)
     }
 
-    Values.hashDelete(Values.asHash(hash), key)
+    Values.hashDelete(Values.asHashValue(hash), key)
     return hash
   })
 
   definePrimitiveFunction(mod, "hash-copy", 1, (hash) => {
-    const newHash = Values.Hash()
-    for (const entry of Values.hashEntries(Values.asHash(hash))) {
+    const newHash = Values.HashValue()
+    for (const entry of Values.hashEntries(Values.asHashValue(hash))) {
       Values.hashPut(newHash, entry.key, entry.value)
     }
 
@@ -121,28 +125,28 @@ export function builtinHash(mod: Mod) {
 
   definePrimitiveFunction(mod, "hash-entries", 1, (hash) => {
     const elements: Array<Value> = []
-    for (const entry of Values.hashEntries(Values.asHash(hash))) {
-      elements.push(Values.List([entry.key, entry.value]))
+    for (const entry of Values.hashEntries(Values.asHashValue(hash))) {
+      elements.push(Values.ListValue([entry.key, entry.value]))
     }
 
-    return Values.List(elements)
+    return Values.ListValue(elements)
   })
 
   definePrimitiveFunction(mod, "hash-keys", 1, (hash) => {
     const elements: Array<Value> = []
-    for (const entry of Values.hashEntries(Values.asHash(hash))) {
+    for (const entry of Values.hashEntries(Values.asHashValue(hash))) {
       elements.push(entry.key)
     }
 
-    return Values.List(elements)
+    return Values.ListValue(elements)
   })
 
   definePrimitiveFunction(mod, "hash-values", 1, (hash) => {
     const elements: Array<Value> = []
-    for (const entry of Values.hashEntries(Values.asHash(hash))) {
+    for (const entry of Values.hashEntries(Values.asHashValue(hash))) {
       elements.push(entry.value)
     }
 
-    return Values.List(elements)
+    return Values.ListValue(elements)
   })
 }

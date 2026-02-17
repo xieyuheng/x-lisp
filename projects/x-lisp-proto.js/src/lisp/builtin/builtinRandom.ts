@@ -7,19 +7,22 @@ export function builtinRandom(mod: Mod) {
   provide(mod, ["random-int", "random-float"])
 
   definePrimitiveFunction(mod, "random-int", 2, (start, end) => {
-    return Values.Int(
+    return Values.IntValue(
       BigInt(
         randomInt(
-          Number(Values.asInt(start).content),
-          Number(Values.asInt(end).content),
+          Number(Values.asIntValue(start).content),
+          Number(Values.asIntValue(end).content),
         ),
       ),
     )
   })
 
   definePrimitiveFunction(mod, "random-float", 2, (start, end) => {
-    return Values.Float(
-      randomFloat(Values.asFloat(start).content, Values.asFloat(end).content),
+    return Values.FloatValue(
+      randomFloat(
+        Values.asFloatValue(start).content,
+        Values.asFloatValue(end).content,
+      ),
     )
   })
 }

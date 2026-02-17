@@ -18,24 +18,24 @@ export function applyDataPredicate(
   }
 
   const data = args[args.length - 1]
-  if (Values.isHashtag(data)) {
+  if (Values.isHashtagValue(data)) {
     const constructor = predicate.spec.constructors[data.content]
     if (constructor === undefined) {
-      return Values.Bool(false)
+      return Values.BoolValue(false)
     }
 
     if (constructor.fields.length !== 0) {
-      return Values.Bool(false)
+      return Values.BoolValue(false)
     }
 
-    return Values.Bool(true)
+    return Values.BoolValue(true)
   }
 
   if (Values.isData(data)) {
     const constructor =
       predicate.spec.constructors[Values.dataHashtag(data).content]
     if (constructor === undefined) {
-      return Values.Bool(false)
+      return Values.BoolValue(false)
     }
 
     for (const [index, field] of constructor.fields.entries()) {
@@ -45,22 +45,24 @@ export function applyDataPredicate(
       // index + 1 over the head hashtag.
       const element = data.elements[index + 1]
       if (element === undefined) {
-        return Values.Bool(false)
+        return Values.BoolValue(false)
       }
 
       const result = validate(target, element)
       if (result.kind === "Err") {
-        return Values.Bool(false)
+        return Values.BoolValue(false)
       }
     }
 
-    return Values.Bool(true)
+    return Values.BoolValue(true)
   }
 
-  return Values.Bool(false)
+  return Values.BoolValue(false)
 }
 
-const isAny = Values.PrimitiveFunction("any?", 1, () => Values.Bool(true))
+const isAny = Values.PrimitiveFunctionValue("any?", 1, () =>
+  Values.BoolValue(true),
+)
 
 export function applyDataPredicateWithAnything(
   predicate: Values.DataPredicate,

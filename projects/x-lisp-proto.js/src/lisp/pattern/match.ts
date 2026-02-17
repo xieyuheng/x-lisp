@@ -55,7 +55,9 @@ export function match(pattern: Pattern, value: Value): Effect {
         if (pattern.elements.length > value.elements.length) return undefined
 
         const prefix = value.elements.slice(0, pattern.elements.length)
-        const rest = Values.List(value.elements.slice(pattern.elements.length))
+        const rest = Values.ListValue(
+          value.elements.slice(pattern.elements.length),
+        )
         return sequenceEffect([
           matchMany(pattern.elements, prefix),
           match(pattern.rest, rest),
@@ -83,7 +85,7 @@ function matchAttributes(
 ): Effect {
   return (env) => {
     for (const [key, pattern] of Object.entries(patterns)) {
-      const value = values[key] || Values.Null()
+      const value = values[key] || Values.NullValue()
 
       const result = match(pattern, value)(env)
       if (result === undefined) return undefined

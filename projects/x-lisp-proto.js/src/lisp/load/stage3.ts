@@ -20,7 +20,7 @@ export function stage3(
   if (stmt.kind === "Compute") {
     const value = resultValue(evaluate(stmt.exp)(mod, emptyEnv()))
 
-    if (!Values.isVoid(value)) {
+    if (!Values.isVoidValue(value)) {
       if (options.resultPrompt) {
         process.stdout.write(options.resultPrompt)
       }

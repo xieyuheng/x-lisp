@@ -1,8 +1,8 @@
-import { isAtom } from "./atomHelper.ts"
+import { isAtomValue } from "./atomHelper.ts"
 import { type Value } from "./Value.ts"
 
 export function isSexp(value: Value): boolean {
-  if (isAtom(value)) return true
+  if (isAtomValue(value)) return true
 
   if (value.kind === "Tael") {
     return (

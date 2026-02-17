@@ -20,62 +20,62 @@ export function builtinString(mod: Mod) {
   ])
 
   definePrimitiveFunction(mod, "string?", 1, (value) => {
-    return Values.Bool(Values.isString(value))
+    return Values.BoolValue(Values.isStringValue(value))
   })
 
   definePrimitiveFunction(mod, "string-length", 1, (string) => {
-    return Values.Int(BigInt(Values.asString(string).content.length))
+    return Values.IntValue(BigInt(Values.asStringValue(string).content.length))
   })
 
   definePrimitiveFunction(mod, "string-to-symbol", 1, (string) => {
-    if (stringHasBlank(Values.asString(string).content)) {
+    if (stringHasBlank(Values.asStringValue(string).content)) {
       let message = `(string-to-symbol) symbol can not have black chars`
-      message += `\n  string: "${Values.asString(string).content}"`
+      message += `\n  string: "${Values.asStringValue(string).content}"`
       throw new Error(message)
     }
 
-    return Values.Symbol(Values.asString(string).content)
+    return Values.SymbolValue(Values.asStringValue(string).content)
   })
 
   definePrimitiveFunction(mod, "string-append", 2, (left, right) => {
-    return Values.String(
-      Values.asString(left).content + Values.asString(right).content,
+    return Values.StringValue(
+      Values.asStringValue(left).content + Values.asStringValue(right).content,
     )
   })
 
   definePrimitiveFunction(mod, "string-concat", 1, (list) => {
-    return Values.String(
-      Values.asTael(list)
-        .elements.map((string) => Values.asString(string).content)
+    return Values.StringValue(
+      Values.asTaelValue(list)
+        .elements.map((string) => Values.asStringValue(string).content)
         .join(""),
     )
   })
 
   definePrimitiveFunction(mod, "string-join", 2, (separator, list) => {
-    return Values.String(
-      Values.asTael(list)
-        .elements.map((string) => Values.asString(string).content)
-        .join(Values.asString(separator).content),
+    return Values.StringValue(
+      Values.asTaelValue(list)
+        .elements.map((string) => Values.asStringValue(string).content)
+        .join(Values.asStringValue(separator).content),
     )
   })
 
   definePrimitiveFunction(mod, "string-split", 2, (separator, string) => {
-    return Values.List(
-      Values.asString(string)
-        .content.split(Values.asString(separator).content)
-        .map(Values.String),
+    return Values.ListValue(
+      Values.asStringValue(string)
+        .content.split(Values.asStringValue(separator).content)
+        .map(Values.StringValue),
     )
   })
 
   definePrimitiveFunction(mod, "string-lines", 1, (string) => {
-    return Values.List(
-      Values.asString(string).content.split("\n").map(Values.String),
+    return Values.ListValue(
+      Values.asStringValue(string).content.split("\n").map(Values.StringValue),
     )
   })
 
   definePrimitiveFunction(mod, "string-chars", 1, (string) => {
-    return Values.List(
-      Values.asString(string).content.split("").map(Values.String),
+    return Values.ListValue(
+      Values.asStringValue(string).content.split("").map(Values.StringValue),
     )
   })
 
@@ -84,10 +84,10 @@ export function builtinString(mod: Mod) {
     "string-replace-first",
     3,
     (pattern, replacement, string) => {
-      return Values.String(
-        Values.asString(string).content.replace(
-          Values.asString(pattern).content,
-          Values.asString(replacement).content,
+      return Values.StringValue(
+        Values.asStringValue(string).content.replace(
+          Values.asStringValue(pattern).content,
+          Values.asStringValue(replacement).content,
         ),
       )
     },
@@ -98,22 +98,24 @@ export function builtinString(mod: Mod) {
     "string-replace",
     3,
     (pattern, replacement, string) => {
-      return Values.String(
-        Values.asString(string).content.replaceAll(
-          Values.asString(pattern).content,
-          Values.asString(replacement).content,
+      return Values.StringValue(
+        Values.asStringValue(string).content.replaceAll(
+          Values.asStringValue(pattern).content,
+          Values.asStringValue(replacement).content,
         ),
       )
     },
   )
 
   definePrimitiveFunction(mod, "string-compare-lexical", 2, (x, y) => {
-    if (Values.asString(x).content < Values.asString(y).content) {
-      return Values.Int(-1n)
-    } else if (Values.asString(x).content > Values.asString(y).content) {
-      return Values.Int(1n)
+    if (Values.asStringValue(x).content < Values.asStringValue(y).content) {
+      return Values.IntValue(-1n)
+    } else if (
+      Values.asStringValue(x).content > Values.asStringValue(y).content
+    ) {
+      return Values.IntValue(1n)
     } else {
-      return Values.Int(0n)
+      return Values.IntValue(0n)
     }
   })
 }

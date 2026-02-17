@@ -34,5 +34,5 @@ export function applyDataGetter(
   }
 
   // index + 1 to pass the hashtag at the head.
-  return Values.asTael(data).elements[getter.fieldIndex + 1]
+  return Values.asTaelValue(data).elements[getter.fieldIndex + 1]
 }

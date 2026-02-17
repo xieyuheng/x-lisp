@@ -12,27 +12,27 @@ export function builtinSymbol(mod: Mod) {
   ])
 
   definePrimitiveFunction(mod, "symbol?", 1, (value) => {
-    return Values.Bool(Values.isSymbol(value))
+    return Values.BoolValue(Values.isSymbolValue(value))
   })
 
   definePrimitiveFunction(mod, "symbol-length", 1, (symbol) => {
-    return Values.Int(BigInt(Values.asSymbol(symbol).content.length))
+    return Values.IntValue(BigInt(Values.asSymbolValue(symbol).content.length))
   })
 
   definePrimitiveFunction(mod, "symbol-to-string", 1, (symbol) => {
-    return Values.String(Values.asSymbol(symbol).content)
+    return Values.StringValue(Values.asSymbolValue(symbol).content)
   })
 
   definePrimitiveFunction(mod, "symbol-append", 2, (left, right) => {
-    return Values.Symbol(
-      Values.asSymbol(left).content + Values.asSymbol(right).content,
+    return Values.SymbolValue(
+      Values.asSymbolValue(left).content + Values.asSymbolValue(right).content,
     )
   })
 
   definePrimitiveFunction(mod, "symbol-concat", 1, (list) => {
-    return Values.Symbol(
-      Values.asTael(list)
-        .elements.map((string) => Values.asSymbol(string).content)
+    return Values.SymbolValue(
+      Values.asTaelValue(list)
+        .elements.map((string) => Values.asSymbolValue(string).content)
         .join(""),
     )
   })

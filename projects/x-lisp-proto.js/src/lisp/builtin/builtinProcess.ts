@@ -19,7 +19,7 @@ export function builtinProcess(mod: Mod) {
   ])
 
   definePrimitiveNullaryFunction(mod, "current-working-directory", () => {
-    return Values.String(process.cwd())
+    return Values.StringValue(process.cwd())
   })
 
   definePrimitiveNullaryFunction(mod, "current-command-line-args", () => {

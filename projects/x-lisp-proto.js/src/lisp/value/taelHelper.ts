@@ -2,7 +2,7 @@ import { formatValue } from "../format/index.ts"
 import * as Values from "./Value.ts"
 import { type Value } from "./Value.ts"
 
-export function List(elements: Array<Value>): Values.Tael {
+export function ListValue(elements: Array<Value>): Values.TaelValue {
   return {
     kind: "Tael",
     elements,
@@ -10,7 +10,7 @@ export function List(elements: Array<Value>): Values.Tael {
   }
 }
 
-export function Record(attributes: Values.Attributes): Values.Tael {
+export function RecordValue(attributes: Values.Attributes): Values.TaelValue {
   return {
     kind: "Tael",
     elements: [],
@@ -18,7 +18,7 @@ export function Record(attributes: Values.Attributes): Values.Tael {
   }
 }
 
-export function asTael(value: Value): Values.Tael {
+export function asTaelValue(value: Value): Values.TaelValue {
   if (value.kind === "Tael") return value
   throw new Error(`[asTael] fail on: ${formatValue(value)}`)
 }

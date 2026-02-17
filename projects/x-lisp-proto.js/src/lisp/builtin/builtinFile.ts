@@ -24,19 +24,19 @@ export function builtinFile(mod: Mod) {
   ])
 
   definePrimitiveFunction(mod, "file-exists?", 1, (path) => {
-    const stats = fs.statSync(Values.asString(path).content, {
+    const stats = fs.statSync(Values.asStringValue(path).content, {
       throwIfNoEntry: false,
     })
 
     if (!stats) {
-      return Values.Bool(false)
+      return Values.BoolValue(false)
     } else {
-      return Values.Bool(stats.isFile())
+      return Values.BoolValue(stats.isFile())
     }
   })
 
   definePrimitiveFunction(mod, "file-size", 1, (path) => {
-    const pathString = Values.asString(path).content
+    const pathString = Values.asStringValue(path).content
     const stats = fs.statSync(pathString, {
       throwIfNoEntry: false,
     })
@@ -45,29 +45,29 @@ export function builtinFile(mod: Mod) {
       throw new Error(`(file-size) file does not exist: ${pathString}`)
     }
 
-    return Values.Int(BigInt(stats.size))
+    return Values.IntValue(BigInt(stats.size))
   })
 
   definePrimitiveFunction(mod, "file-load", 1, (path) => {
-    const text = fs.readFileSync(Values.asString(path).content, "utf8")
-    return Values.String(text)
+    const text = fs.readFileSync(Values.asStringValue(path).content, "utf8")
+    return Values.StringValue(text)
   })
 
   definePrimitiveFunction(mod, "file-save", 2, (path, text) => {
     fs.writeFileSync(
-      Values.asString(path).content,
-      Values.asString(text).content,
+      Values.asStringValue(path).content,
+      Values.asStringValue(text).content,
       "utf8",
     )
-    return Values.Void()
+    return Values.VoidValue()
   })
 
   definePrimitiveFunction(mod, "file-directory", 1, (path) => {
-    return Values.String(Path.dirname(Values.asString(path).content))
+    return Values.StringValue(Path.dirname(Values.asStringValue(path).content))
   })
 
   definePrimitiveFunction(mod, "file-delete", 1, (path) => {
-    const pathString = Values.asString(path).content
+    const pathString = Values.asStringValue(path).content
     const stats = fs.statSync(pathString, {
       throwIfNoEntry: false,
     })
@@ -81,66 +81,69 @@ export function builtinFile(mod: Mod) {
     }
 
     fs.rmSync(pathString)
-    return Values.Void()
+    return Values.VoidValue()
   })
 
   definePrimitiveFunction(mod, "directory-exists?", 1, (path) => {
-    const stats = fs.statSync(Values.asString(path).content, {
+    const stats = fs.statSync(Values.asStringValue(path).content, {
       throwIfNoEntry: false,
     })
 
     if (!stats) {
-      return Values.Bool(false)
+      return Values.BoolValue(false)
     } else {
-      return Values.Bool(stats.isDirectory())
+      return Values.BoolValue(stats.isDirectory())
     }
   })
 
   definePrimitiveFunction(mod, "directory-create", 1, (path) => {
-    fs.mkdirSync(Values.asString(path).content)
-    return Values.Void()
+    fs.mkdirSync(Values.asStringValue(path).content)
+    return Values.VoidValue()
   })
 
   definePrimitiveFunction(mod, "directory-create-recursively", 1, (path) => {
-    fs.mkdirSync(Values.asString(path).content, { recursive: true })
-    return Values.Void()
+    fs.mkdirSync(Values.asStringValue(path).content, { recursive: true })
+    return Values.VoidValue()
   })
 
   definePrimitiveFunction(mod, "directory-delete", 1, (path) => {
-    fs.rmdirSync(Values.asString(path).content)
-    return Values.Void()
+    fs.rmdirSync(Values.asStringValue(path).content)
+    return Values.VoidValue()
   })
 
   definePrimitiveFunction(mod, "directory-delete-recursively", 1, (path) => {
-    fs.rmSync(Values.asString(path).content, { recursive: true, force: true })
-    return Values.Void()
+    fs.rmSync(Values.asStringValue(path).content, {
+      recursive: true,
+      force: true,
+    })
+    return Values.VoidValue()
   })
 
   definePrimitiveFunction(mod, "directory-files", 1, (path) => {
-    const pathString = Values.asString(path).content
+    const pathString = Values.asStringValue(path).content
     const files = fs
       .readdirSync(pathString, { withFileTypes: true })
       .filter((dirent) => dirent.isFile())
       .map((dirent) => Path.join(dirent.parentPath, dirent.name))
-    return Values.List(files.map(Values.String))
+    return Values.ListValue(files.map(Values.StringValue))
   })
 
   definePrimitiveFunction(mod, "directory-files-recursively", 1, (path) => {
-    const pathString = Values.asString(path).content
+    const pathString = Values.asStringValue(path).content
     const files = fs
       .readdirSync(pathString, { withFileTypes: true, recursive: true })
       .filter((dirent) => dirent.isFile())
       .map((dirent) => Path.join(dirent.parentPath, dirent.name))
-    return Values.List(files.map(Values.String))
+    return Values.ListValue(files.map(Values.StringValue))
   })
 
   definePrimitiveFunction(mod, "directory-directories", 1, (path) => {
-    const pathString = Values.asString(path).content
+    const pathString = Values.asStringValue(path).content
     const files = fs
       .readdirSync(pathString, { withFileTypes: true })
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => Path.join(dirent.parentPath, dirent.name))
-    return Values.List(files.map(Values.String))
+    return Values.ListValue(files.map(Values.StringValue))
   })
 
   definePrimitiveFunction(
@@ -148,12 +151,12 @@ export function builtinFile(mod: Mod) {
     "directory-directories-recursively",
     1,
     (path) => {
-      const pathString = Values.asString(path).content
+      const pathString = Values.asStringValue(path).content
       const files = fs
         .readdirSync(pathString, { withFileTypes: true, recursive: true })
         .filter((dirent) => dirent.isDirectory())
         .map((dirent) => Path.join(dirent.parentPath, dirent.name))
-      return Values.List(files.map(Values.String))
+      return Values.ListValue(files.map(Values.StringValue))
     },
   )
 }

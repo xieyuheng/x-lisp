@@ -7,18 +7,18 @@ export function builtinValue(mod: Mod) {
   provide(mod, ["same?", "equal?", "atom?", "any?"])
 
   definePrimitiveFunction(mod, "same?", 2, (lhs, rhs) => {
-    return Values.Bool(same(lhs, rhs))
+    return Values.BoolValue(same(lhs, rhs))
   })
 
   definePrimitiveFunction(mod, "equal?", 2, (lhs, rhs) => {
-    return Values.Bool(equal(lhs, rhs))
+    return Values.BoolValue(equal(lhs, rhs))
   })
 
   definePrimitiveFunction(mod, "atom?", 1, (value) => {
-    return Values.Bool(Values.isAtom(value))
+    return Values.BoolValue(Values.isAtomValue(value))
   })
 
   definePrimitiveFunction(mod, "any?", 1, (value) => {
-    return Values.Bool(true)
+    return Values.BoolValue(true)
   })
 }
