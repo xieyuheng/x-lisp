@@ -1,15 +1,26 @@
 # type system
 
+[lisp] `evaluate/` setup
+[lisp] `type/` setup
+
 [lisp] `evaluate`
 
-[lisp] `The` as `Exp`
 [lisp] `typeEquivalent` and `typeSubtype`
 [lisp] `typeCheck` and `typeInfer`
 
 # later
 
+[lisp] `The` as `Exp`
+
+# later
+
 [lisp] `formatValue` -- handle `DisjointUnionValue`
 [lisp] `formatValue` -- handle `DatatypeValue`
+
+# later
+
+[lisp] `builtinValue` -- `same?`
+[lisp] `builtinValue` -- `equal?`
 
 # pattern match
 
