@@ -1,11 +1,15 @@
 # type system
 
 [lisp] `Value` -- add `Value` as postfix
+
+[lisp] `DatatypeValue`
+[lisp] `DelayedDatatypeValue`
+
 [builtin] `builtin` -- support evaluate
 [lisp] `evaluate`
 [lisp] `The` as `Exp`
-[lisp] `equivalent` and `subtype`
-[lisp] `check` and `infer`
+[lisp] `typeEquivalent` and `typeSubtype`
+[lisp] `typeCheck` and `typeInfer`
 
 # pattern match
 
