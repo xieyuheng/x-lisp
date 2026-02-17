@@ -1,3 +1,4 @@
+import type { DatatypeDefinition } from "../definition/index.ts"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -15,6 +16,7 @@ export type Value =
   | ClosureValue
   | PrimitiveFunctionValue
   | CurryValue
+  | DatatypeValue
 
 export type TaelValue = {
   kind: "Tael"
@@ -94,6 +96,23 @@ export function CurryValue(
     kind: "Curry",
     target,
     arity,
+    args,
+  }
+}
+
+export type DatatypeValue = {
+  kind: "Datatype"
+  definition: DatatypeDefinition
+  args: Array<Value>
+}
+
+export function DatatypeValue(
+  definition: DatatypeDefinition,
+  args: Array<Value>,
+): DatatypeValue {
+  return {
+    kind: "Datatype",
+    definition,
     args,
   }
 }

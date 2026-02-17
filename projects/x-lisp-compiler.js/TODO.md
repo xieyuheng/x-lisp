@@ -1,7 +1,6 @@
 # type system
 
-[lisp] `DatatypeValue`
-[lisp] `DelayedDatatypeValue`
+[lisp] `DisjointUnionValue`
 
 [lisp] `evaluate`
 
