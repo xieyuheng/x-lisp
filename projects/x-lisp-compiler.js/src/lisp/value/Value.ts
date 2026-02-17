@@ -1,8 +1,6 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
-import { type AboutSchema } from "./AboutSchema.ts"
 import { type AtomValue } from "./Atom.ts"
 import { type HashValue } from "./Hash.ts"
 import { type SetValue } from "./Set.ts"
@@ -15,12 +13,8 @@ export type Value =
   | SetValue
   | HashValue
   | ClosureValue
-  | VariadicClosureValue
-  | NullaryClosureValue
   | PrimitiveFunctionValue
-  | PrimitiveNullaryFunctionValue
   | CurryValue
-  | AboutSchema
 
 export type TaelValue = {
   kind: "Tael"
@@ -45,7 +39,6 @@ export type ClosureValue = {
   env: Env
   parameters: Array<Exp>
   body: Exp
-  meta?: Meta
 }
 
 export function ClosureValue(
@@ -53,7 +46,6 @@ export function ClosureValue(
   env: Env,
   parameters: Array<Exp>,
   body: Exp,
-  meta?: Meta,
 ): ClosureValue {
   return {
     kind: "Closure",
@@ -61,56 +53,6 @@ export function ClosureValue(
     env,
     parameters,
     body,
-    meta,
-  }
-}
-
-export type VariadicClosureValue = {
-  kind: "VariadicClosure"
-  mod: Mod
-  env: Env
-  variadicParameter: string
-  body: Exp
-  meta?: Meta
-}
-
-export function VariadicClosureValue(
-  mod: Mod,
-  env: Env,
-  variadicParameter: string,
-  body: Exp,
-  meta?: Meta,
-): VariadicClosureValue {
-  return {
-    kind: "VariadicClosure",
-    mod,
-    env,
-    variadicParameter,
-    body,
-    meta,
-  }
-}
-
-export type NullaryClosureValue = {
-  kind: "NullaryClosure"
-  mod: Mod
-  env: Env
-  body: Exp
-  meta?: Meta
-}
-
-export function NullaryClosureValue(
-  mod: Mod,
-  env: Env,
-  body: Exp,
-  meta?: Meta,
-): NullaryClosureValue {
-  return {
-    kind: "NullaryClosure",
-    mod,
-    env,
-    body,
-    meta,
   }
 }
 
@@ -132,25 +74,6 @@ export function PrimitiveFunctionValue(
     kind: "PrimitiveFunction",
     name,
     arity,
-    fn,
-  }
-}
-
-export type PrimitiveNullaryFunctionValue = {
-  kind: "PrimitiveNullaryFunction"
-  name: string
-  fn: ValueNullaryFunction
-}
-
-export type ValueNullaryFunction = () => Value
-
-export function PrimitiveNullaryFunctionValue(
-  name: string,
-  fn: ValueNullaryFunction,
-): PrimitiveNullaryFunctionValue {
-  return {
-    kind: "PrimitiveNullaryFunction",
-    name,
     fn,
   }
 }

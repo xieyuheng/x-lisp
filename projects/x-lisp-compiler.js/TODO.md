@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `Value` -- remove unused types
-
 [lisp] `DatatypeValue`
 [lisp] `DelayedDatatypeValue`
 

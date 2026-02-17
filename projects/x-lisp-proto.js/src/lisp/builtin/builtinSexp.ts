@@ -8,7 +8,7 @@ export function builtinSexp(mod: Mod) {
   provide(mod, ["sexp?", "parse-sexp", "parse-sexps", "format-sexp"])
 
   definePrimitiveFunction(mod, "sexp?", 1, (value) => {
-    return Values.BoolValue(Values.isSexp(value))
+    return Values.BoolValue(Values.isSexpValue(value))
   })
 
   definePrimitiveFunction(mod, "parse-sexp", 1, (string) => {

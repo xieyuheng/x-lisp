@@ -1,7 +1,7 @@
 import assert from "node:assert"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
-import { formatBody, formatExp, formatExps } from "./index.ts"
+import { formatBody, formatExps } from "./index.ts"
 
 type Options = { digest?: boolean }
 
@@ -124,42 +124,8 @@ export function formatValue(value: Value, options: Options = {}): string {
       return `(lambda (${formatExps(value.parameters)}) ${formatBody(value.body)})`
     }
 
-    case "VariadicClosure": {
-      return `(lambda ${value.variadicParameter} ${formatBody(value.body)})`
-    }
-
-    case "NullaryClosure": {
-      return `(lambda () ${formatBody(value.body)})`
-    }
-
     case "PrimitiveFunction": {
       return `${value.name}`
-    }
-
-    case "PrimitiveNullaryFunction": {
-      return `${value.name}`
-    }
-
-    case "Arrow": {
-      const argSchemas = formatValues(value.argSchemas, options)
-      const retSchema = formatValue(value.retSchema, options)
-      if (argSchemas === "") {
-        return `(-> ${retSchema})`
-      } else {
-        return `(-> ${argSchemas} ${retSchema})`
-      }
-    }
-
-    case "VariadicArrow": {
-      const argSchema = formatValue(value.argSchema, options)
-      const retSchema = formatValue(value.retSchema, options)
-      return `(*-> ${argSchema} ${retSchema})`
-    }
-
-    case "The": {
-      const schemaString = formatValue(value.schema, options)
-      const valueString = formatValue(value.value, options)
-      return `(the ${schemaString} ${valueString})`
     }
 
     case "Curry": {
@@ -167,26 +133,6 @@ export function formatValue(value: Value, options: Options = {}): string {
       const args = formatValues(value.args, options)
       assert(value.args.length > 0)
       return `(${target} ${args})`
-    }
-
-    case "Tau": {
-      const elementSchemas = formatValues(value.elementSchemas, options)
-      const attributeSchemas = formatAttributes(value.attributeSchemas, options)
-      if (elementSchemas === "" && attributeSchemas === "") {
-        return `(tau)`
-      } else if (attributeSchemas === "") {
-        return `(tau ${elementSchemas})`
-      } else if (elementSchemas === "") {
-        return `(tau ${attributeSchemas})`
-      } else {
-        return `(tau ${elementSchemas} ${attributeSchemas})`
-      }
-    }
-
-    case "Polymorphic": {
-      const parameters = value.parameters.join(" ")
-      const schema = formatExp(value.schema)
-      return `(polymorphic (${parameters}) ${schema})`
     }
   }
 }
