@@ -1,6 +1,7 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Exp } from "../exp/index.ts"
 import type { Mod } from "../mod/index.ts"
+import type { Value, ValueFunction } from "../value/index.ts"
 
 export type Definition =
   | PrimitiveFunctionDefinition
@@ -14,6 +15,7 @@ export type PrimitiveFunctionDefinition = {
   mod: Mod
   name: string
   arity: number
+  fn: ValueFunction
   meta?: Meta
 }
 
@@ -21,6 +23,7 @@ export function PrimitiveFunctionDefinition(
   mod: Mod,
   name: string,
   arity: number,
+  fn: ValueFunction,
   meta?: Meta,
 ): PrimitiveFunctionDefinition {
   return {
@@ -28,6 +31,7 @@ export function PrimitiveFunctionDefinition(
     mod,
     name,
     arity,
+    fn,
     meta,
   }
 }
@@ -36,18 +40,21 @@ export type PrimitiveVariableDefinition = {
   kind: "PrimitiveVariableDefinition"
   mod: Mod
   name: string
+  value: Value
   meta?: Meta
 }
 
 export function PrimitiveVariableDefinition(
   mod: Mod,
   name: string,
+  value: Value,
   meta?: Meta,
 ): PrimitiveVariableDefinition {
   return {
     kind: "PrimitiveVariableDefinition",
     mod,
     name,
+    value,
     meta,
   }
 }
