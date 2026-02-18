@@ -1,20 +1,31 @@
 # type system
 
-[lisp] `evaluate/` -- "Apply"
+[lisp] remove `DefinitionValue` -- add `DatatypeConstructorValue`
+
+[lisp] `meaning` from definition to value
+
+- return `DatatypeConstructorValue` or `DatatypeValue` on `DatatypeDefinition`
+
+[lisp] `evaluate/` -- "Var" -- call `meaning`
+
 [lisp] `evaluate/` -- "Let1"
 [lisp] `evaluate/` -- "Begin1"
 [lisp] `evaluate/` -- "BeginSugar"
 [lisp] `evaluate/` -- "AssignSugar"
+
 [lisp] `evaluate/` -- "If"
 [lisp] `evaluate/` -- "When"
 [lisp] `evaluate/` -- "Unless"
 [lisp] `evaluate/` -- "And"
 [lisp] `evaluate/` -- "Or"
 [lisp] `evaluate/` -- "Cond"
+
 [lisp] `evaluate/` -- "Tael"
 [lisp] `evaluate/` -- "Set"
 [lisp] `evaluate/` -- "Hash"
 [lisp] `evaluate/` -- "Quote"
+
+[lisp] `evaluate/` -- "Apply"
 
 [lisp] `type/` setup
 
@@ -22,6 +33,11 @@
 
 [lisp] `typeEquivalent` and `typeSubtype`
 [lisp] `typeCheck` and `typeInfer`
+
+# later
+
+add `module:check` command 
+add `project:check` command
 
 # later
 
