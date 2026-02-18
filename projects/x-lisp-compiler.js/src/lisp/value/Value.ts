@@ -1,3 +1,4 @@
+import type { Definition } from "../definition/index.ts"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -17,6 +18,7 @@ export type Value =
   | PrimitiveFunctionValue
   | CurryValue
   | AboutDatatype
+  | DefinitionValue
 
 export type TaelValue = {
   kind: "Tael"
@@ -39,14 +41,14 @@ export type ClosureValue = {
   kind: "Closure"
   mod: Mod
   env: Env
-  parameters: Array<Exp>
+  parameters: Array<string>
   body: Exp
 }
 
 export function ClosureValue(
   mod: Mod,
   env: Env,
-  parameters: Array<Exp>,
+  parameters: Array<string>,
   body: Exp,
 ): ClosureValue {
   return {
@@ -97,5 +99,17 @@ export function CurryValue(
     target,
     arity,
     args,
+  }
+}
+
+export type DefinitionValue = {
+  kind: "Definition"
+  definition: Definition
+}
+
+export function DefinitionValue(definition: Definition): DefinitionValue {
+  return {
+    kind: "Definition",
+    definition,
   }
 }

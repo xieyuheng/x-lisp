@@ -1,7 +1,7 @@
 import assert from "node:assert"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
-import { formatBody, formatExps } from "./index.ts"
+import { formatBody } from "./index.ts"
 
 type Options = { digest?: boolean }
 
@@ -121,7 +121,7 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "Closure": {
-      return `(lambda (${formatExps(value.parameters)}) ${formatBody(value.body)})`
+      return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 
     case "PrimitiveFunction": {
@@ -141,6 +141,10 @@ export function formatValue(value: Value, options: Options = {}): string {
 
     case "DisjointUnion": {
       throw new Error("TODO")
+    }
+
+    case "Definition": {
+      return value.definition.name
     }
   }
 }
