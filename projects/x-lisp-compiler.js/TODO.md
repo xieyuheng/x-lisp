@@ -1,7 +1,5 @@
 # type system
 
-[lisp] add `FunctionValue`
-
 [lisp] `meaning` from definition to value
 
 - return `DatatypeConstructorValue` or `DatatypeValue` on `DatatypeDefinition`

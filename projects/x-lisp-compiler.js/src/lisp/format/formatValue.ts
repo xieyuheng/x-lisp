@@ -124,7 +124,15 @@ export function formatValue(value: Value, options: Options = {}): string {
       return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 
+    case "Function": {
+      return `${value.definition.name}`
+    }
+
     case "PrimitiveFunction": {
+      return `${value.definition.name}`
+    }
+
+    case "DatatypeConstructor": {
       return `${value.definition.name}`
     }
 
@@ -141,10 +149,6 @@ export function formatValue(value: Value, options: Options = {}): string {
 
     case "DisjointUnion": {
       throw new Error("TODO")
-    }
-
-    case "Definition": {
-      return value.definition.name
     }
   }
 }

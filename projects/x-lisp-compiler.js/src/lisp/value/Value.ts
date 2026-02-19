@@ -1,5 +1,6 @@
 import type {
   DatatypeDefinition,
+  FunctionDefinition,
   PrimitiveFunctionDefinition,
 } from "../definition/index.ts"
 import { type Env } from "../env/index.ts"
@@ -18,9 +19,10 @@ export type Value =
   | SetValue
   | HashValue
   | ClosureValue
-  | PrimitiveFunctionValue
   | CurryValue
   | AboutDatatype
+  | FunctionValue
+  | PrimitiveFunctionValue
   | DatatypeConstructorValue
 
 export type TaelValue = {
@@ -63,6 +65,20 @@ export function ClosureValue(
   }
 }
 
+export type FunctionValue = {
+  kind: "Function"
+  definition: FunctionDefinition
+}
+
+export function FunctionValue(
+  definition: FunctionDefinition,
+): FunctionValue {
+  return {
+    kind: "Function",
+    definition,
+  }
+}
+
 export type PrimitiveFunctionValue = {
   kind: "PrimitiveFunction"
   definition: PrimitiveFunctionDefinition
@@ -98,7 +114,7 @@ export function CurryValue(
 }
 
 export type DatatypeConstructorValue = {
-  kind: "Definition"
+  kind: "DatatypeConstructor"
   definition: DatatypeDefinition
 }
 
@@ -106,7 +122,7 @@ export function DatatypeConstructorValue(
   definition: DatatypeDefinition,
 ): DatatypeConstructorValue {
   return {
-    kind: "Definition",
+    kind: "DatatypeConstructor",
     definition,
   }
 }
