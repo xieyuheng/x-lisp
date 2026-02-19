@@ -46,7 +46,8 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
     }
 
     case "Let1": {
-      throw new Error("TODO")
+      env = L.envPut(env, exp.name, evaluate(mod, env, exp.rhs))
+      return evaluate(mod, env, exp.body)
     }
 
     case "Begin1": {

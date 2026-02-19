@@ -1,8 +1,5 @@
 # type system
 
-[lisp] `evaluate/` -- "Var" -- call `meaning`
-
-[lisp] `evaluate/` -- "Let1"
 [lisp] `evaluate/` -- "Begin1"
 [lisp] `evaluate/` -- "BeginSugar"
 [lisp] `evaluate/` -- "AssignSugar"
