@@ -1,11 +1,10 @@
 import assert from "node:assert"
-import type { Definition } from "../definition/index.ts"
-import type { Value } from "../value/index.ts"
+import * as L from "../index.ts"
 
-export function meaning(definition: Definition): Value {
+export function meaning(definition: L.Definition): L.Value {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition": {
-      throw new Error("TODO")
+      return L.PrimitiveFunctionValue(definition)
     }
 
     case "PrimitiveVariableDefinition": {
@@ -13,7 +12,7 @@ export function meaning(definition: Definition): Value {
     }
 
     case "FunctionDefinition": {
-      throw new Error("TODO")
+      return L.FunctionValue(definition)
     }
 
     case "VariableDefinition": {
@@ -22,7 +21,11 @@ export function meaning(definition: Definition): Value {
     }
 
     case "DatatypeDefinition": {
-      throw new Error("TODO")
+      if (definition.datatypeConstructor.parameters.length === 0) {
+        return L.DatatypeValue(definition, [])
+      } else {
+        return L.DatatypeConstructorValue(definition)
+      }
     }
   }
 }

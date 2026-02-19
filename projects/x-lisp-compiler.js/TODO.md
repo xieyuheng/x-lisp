@@ -1,9 +1,5 @@
 # type system
 
-[lisp] `meaning` from definition to value
-
-- return `DatatypeConstructorValue` or `DatatypeValue` on `DatatypeDefinition`
-
 [lisp] `evaluate/` -- "Var" -- call `meaning`
 
 [lisp] `evaluate/` -- "Let1"
