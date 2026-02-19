@@ -1,4 +1,7 @@
-import type { DatatypeDefinition } from "../definition/index.ts"
+import type {
+  DatatypeDefinition,
+  PrimitiveFunctionDefinition,
+} from "../definition/index.ts"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -60,25 +63,17 @@ export function ClosureValue(
   }
 }
 
-export type ValueFunction = (...args: Array<Value>) => Value
-
 export type PrimitiveFunctionValue = {
   kind: "PrimitiveFunction"
-  name: string
-  arity: number
-  fn: ValueFunction
+  definition: PrimitiveFunctionDefinition
 }
 
 export function PrimitiveFunctionValue(
-  name: string,
-  arity: number,
-  fn: ValueFunction,
+  definition: PrimitiveFunctionDefinition,
 ): PrimitiveFunctionValue {
   return {
     kind: "PrimitiveFunction",
-    name,
-    arity,
-    fn,
+    definition,
   }
 }
 

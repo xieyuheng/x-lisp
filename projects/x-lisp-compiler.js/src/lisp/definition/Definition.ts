@@ -1,7 +1,7 @@
 import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { type Exp } from "../exp/index.ts"
 import type { Mod } from "../mod/index.ts"
-import type { Value, ValueFunction } from "../value/index.ts"
+import type { Value } from "../value/index.ts"
 
 export type Definition =
   | PrimitiveFunctionDefinition
@@ -9,6 +9,8 @@ export type Definition =
   | FunctionDefinition
   | VariableDefinition
   | DatatypeDefinition
+
+export type ValueFunction = (...args: Array<Value>) => Value
 
 export type PrimitiveFunctionDefinition = {
   kind: "PrimitiveFunctionDefinition"
@@ -90,6 +92,7 @@ export type VariableDefinition = {
   mod: Mod
   name: string
   body: Exp
+  value?: Value
   meta?: Meta
 }
 

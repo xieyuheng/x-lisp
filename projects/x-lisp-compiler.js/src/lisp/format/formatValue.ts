@@ -125,7 +125,7 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "PrimitiveFunction": {
-      return `${value.name}`
+      return `${value.definition.name}`
     }
 
     case "Curry": {
