@@ -3,7 +3,6 @@
 [lisp] `apply` -- ClosureValue
 [lisp] `apply` -- CurryValue
 [lisp] `apply` -- FunctionValue
-[lisp] `apply` -- PrimitiveFunctionValue
 [lisp] `apply` -- DatatypeConstructorValue
 
 [lisp] `type/` setup

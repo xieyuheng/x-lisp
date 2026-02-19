@@ -4,12 +4,12 @@ import * as Values from "./index.ts"
 import { type Value } from "./index.ts"
 
 export function isHashValue(value: Value): value is HashValue {
-  return value.kind === "Hash"
+  return value.kind === "HashValue"
 }
 
 export function asHashValue(value: Value): HashValue {
   if (isHashValue(value)) return value
-  throw new Error(`[asHash] fail on: ${formatValue(value)}`)
+  throw new Error(`[asHashValue] fail on: ${formatValue(value)}`)
 }
 
 export function hashEntries(hash: HashValue): Array<HashEntry> {
@@ -48,18 +48,18 @@ export function hashDelete(hash: HashValue, key: Value): void {
 export function isHashable(value: Value): boolean {
   if (Values.isAtomValue(value)) return true
 
-  if (value.kind === "Tael") {
+  if (value.kind === "TaelValue") {
     return (
       value.elements.every(isHashable) &&
       Object.values(value.attributes).every(isHashable)
     )
   }
 
-  if (value.kind === "Set") {
+  if (value.kind === "SetValue") {
     return Values.setElements(value).every(isHashable)
   }
 
-  if (value.kind === "Hash") {
+  if (value.kind === "HashValue") {
     return Values.hashEntries(value).every((entry) => isHashable(entry.value))
   }
 

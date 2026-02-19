@@ -3,12 +3,12 @@ import * as Values from "./index.ts"
 import { type SetValue, type Value } from "./index.ts"
 
 export function isSetValue(value: Value): value is SetValue {
-  return value.kind === "Set"
+  return value.kind === "SetValue"
 }
 
 export function asSetValue(value: Value): SetValue {
-  if (value.kind === "Set") return value
-  throw new Error(`[asSet] fail on: ${formatValue(value)}`)
+  if (value.kind === "SetValue") return value
+  throw new Error(`[asSetValue] fail on: ${formatValue(value)}`)
 }
 
 export function setCopy(target: Value): SetValue {

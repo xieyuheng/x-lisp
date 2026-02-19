@@ -68,23 +68,23 @@ function formatHashEntries(
 
 export function formatValue(value: Value, options: Options = {}): string {
   switch (value.kind) {
-    case "Hashtag": {
+    case "HashtagValue": {
       return `#${value.content}`
     }
 
-    case "Symbol": {
+    case "SymbolValue": {
       return `'${value.content}`
     }
 
-    case "String": {
+    case "StringValue": {
       return JSON.stringify(value.content)
     }
 
-    case "Int": {
+    case "IntValue": {
       return value.content.toString()
     }
 
-    case "Float": {
+    case "FloatValue": {
       if (Number.isInteger(value.content)) {
         return `${value.content.toString()}.0`
       } else {
@@ -92,7 +92,7 @@ export function formatValue(value: Value, options: Options = {}): string {
       }
     }
 
-    case "Tael": {
+    case "TaelValue": {
       const elements = formatValues(value.elements, options)
       const attributes = formatAttributes(value.attributes, options)
       if (elements === "" && attributes === "") {
@@ -106,12 +106,12 @@ export function formatValue(value: Value, options: Options = {}): string {
       }
     }
 
-    case "Set": {
+    case "SetValue": {
       const elements = formatSetElements(Values.setElements(value), options)
       return `{${elements}}`
     }
 
-    case "Hash": {
+    case "HashValue": {
       const entries = formatHashEntries(Values.hashEntries(value), options)
       if (entries === "") {
         return `(@hash)`
@@ -120,34 +120,34 @@ export function formatValue(value: Value, options: Options = {}): string {
       }
     }
 
-    case "Closure": {
+    case "ClosureValue": {
       return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 
-    case "Function": {
+    case "FunctionValue": {
       return `${value.definition.name}`
     }
 
-    case "PrimitiveFunction": {
+    case "PrimitiveFunctionValue": {
       return `${value.definition.name}`
     }
 
-    case "DatatypeConstructor": {
+    case "DatatypeConstructorValue": {
       return `${value.definition.name}`
     }
 
-    case "Curry": {
+    case "CurryValue": {
       const target = formatValue(value.target, options)
       const args = formatValues(value.args, options)
       assert(value.args.length > 0)
       return `(${target} ${args})`
     }
 
-    case "Datatype": {
+    case "DatatypeValue": {
       throw new Error("TODO")
     }
 
-    case "DisjointUnion": {
+    case "DisjointUnionValue": {
       throw new Error("TODO")
     }
   }

@@ -7,13 +7,13 @@ export type SetEntry = {
 }
 
 export type SetValue = {
-  kind: "Set"
+  kind: "SetValue"
   entries: Map<string, SetEntry>
 }
 
 export function SetValue(elements: Array<Value>): SetValue {
   const set: SetValue = {
-    kind: "Set",
+    kind: "SetValue",
     entries: new Map(),
   }
 

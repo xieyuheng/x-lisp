@@ -6,61 +6,61 @@ export type AtomValue =
   | FloatValue
 
 export type SymbolValue = {
-  kind: "Symbol"
+  kind: "SymbolValue"
   content: string
 }
 
 export function SymbolValue(content: string): SymbolValue {
   return {
-    kind: "Symbol",
+    kind: "SymbolValue",
     content,
   }
 }
 
 export type StringValue = {
-  kind: "String"
+  kind: "StringValue"
   content: string
 }
 
 export function StringValue(content: string): StringValue {
   return {
-    kind: "String",
+    kind: "StringValue",
     content,
   }
 }
 
 export type HashtagValue = {
-  kind: "Hashtag"
+  kind: "HashtagValue"
   content: string
 }
 
 export function HashtagValue(content: string): HashtagValue {
   return {
-    kind: "Hashtag",
+    kind: "HashtagValue",
     content,
   }
 }
 
 export type IntValue = {
-  kind: "Int"
+  kind: "IntValue"
   content: bigint
 }
 
 export function IntValue(content: bigint): IntValue {
   return {
-    kind: "Int",
+    kind: "IntValue",
     content,
   }
 }
 
 export type FloatValue = {
-  kind: "Float"
+  kind: "FloatValue"
   content: number
 }
 
 export function FloatValue(content: number): FloatValue {
   return {
-    kind: "Float",
+    kind: "FloatValue",
     content,
   }
 }

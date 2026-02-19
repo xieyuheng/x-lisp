@@ -7,13 +7,13 @@ export type HashEntry = {
 }
 
 export type HashValue = {
-  kind: "Hash"
+  kind: "HashValue"
   entries: Map<string, HashEntry>
 }
 
 export function HashValue(): HashValue {
   return {
-    kind: "Hash",
+    kind: "HashValue",
     entries: new Map(),
   }
 }

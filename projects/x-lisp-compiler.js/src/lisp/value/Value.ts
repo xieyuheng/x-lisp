@@ -26,7 +26,7 @@ export type Value =
   | DatatypeConstructorValue
 
 export type TaelValue = {
-  kind: "Tael"
+  kind: "TaelValue"
   elements: Array<Value>
   attributes: Attributes
 }
@@ -36,14 +36,14 @@ export function TaelValue(
   attributes: Attributes,
 ): TaelValue {
   return {
-    kind: "Tael",
+    kind: "TaelValue",
     elements,
     attributes,
   }
 }
 
 export type ClosureValue = {
-  kind: "Closure"
+  kind: "ClosureValue"
   mod: Mod
   env: Env
   parameters: Array<string>
@@ -57,7 +57,7 @@ export function ClosureValue(
   body: Exp,
 ): ClosureValue {
   return {
-    kind: "Closure",
+    kind: "ClosureValue",
     mod,
     env,
     parameters,
@@ -66,19 +66,19 @@ export function ClosureValue(
 }
 
 export type FunctionValue = {
-  kind: "Function"
+  kind: "FunctionValue"
   definition: FunctionDefinition
 }
 
 export function FunctionValue(definition: FunctionDefinition): FunctionValue {
   return {
-    kind: "Function",
+    kind: "FunctionValue",
     definition,
   }
 }
 
 export type PrimitiveFunctionValue = {
-  kind: "PrimitiveFunction"
+  kind: "PrimitiveFunctionValue"
   definition: PrimitiveFunctionDefinition
 }
 
@@ -86,13 +86,13 @@ export function PrimitiveFunctionValue(
   definition: PrimitiveFunctionDefinition,
 ): PrimitiveFunctionValue {
   return {
-    kind: "PrimitiveFunction",
+    kind: "PrimitiveFunctionValue",
     definition,
   }
 }
 
 export type CurryValue = {
-  kind: "Curry"
+  kind: "CurryValue"
   target: Value
   arity: number
   args: Array<Value>
@@ -104,7 +104,7 @@ export function CurryValue(
   args: Array<Value>,
 ): CurryValue {
   return {
-    kind: "Curry",
+    kind: "CurryValue",
     target,
     arity,
     args,
@@ -112,7 +112,7 @@ export function CurryValue(
 }
 
 export type DatatypeConstructorValue = {
-  kind: "DatatypeConstructor"
+  kind: "DatatypeConstructorValue"
   definition: DatatypeDefinition
 }
 
@@ -120,7 +120,7 @@ export function DatatypeConstructorValue(
   definition: DatatypeDefinition,
 ): DatatypeConstructorValue {
   return {
-    kind: "DatatypeConstructor",
+    kind: "DatatypeConstructorValue",
     definition,
   }
 }
