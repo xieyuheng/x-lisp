@@ -1,10 +1,12 @@
 # type system
 
-[lisp] `apply/`
+[lisp] `apply` -- ClosureValue
+[lisp] `apply` -- CurryValue
+[lisp] `apply` -- FunctionValue
+[lisp] `apply` -- PrimitiveFunctionValue
+[lisp] `apply` -- DatatypeConstructorValue
 
 [lisp] `type/` setup
-
-[lisp] `evaluate`
 
 [lisp] `typeEquivalent` and `typeSubtype`
 [lisp] `typeCheck` and `typeInfer`

@@ -1,5 +1,13 @@
+import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import * as L from "../index.ts"
 
 export function apply(target: L.Value, args: Array<L.Value>): L.Value {
-  throw new Error()
+  switch (target.kind) {
+    default: {
+      let message = `[apply] can not handle this kind of target`
+      message += formatUnderTag(2, `target:`, L.formatValue( target))
+      message += formatUnderTag(2, `args:`, L.formatValues( args))
+      throw new Error(message)
+    }
+  }
 }
