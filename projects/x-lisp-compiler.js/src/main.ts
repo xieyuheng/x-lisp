@@ -10,6 +10,7 @@ import {
   loadProject,
   projectBuild,
   projectClean,
+  projectCheck,
   projectTest,
 } from "./project/index.ts"
 import * as Services from "./services/index.ts"
@@ -28,8 +29,11 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
+  "module:check": ({ args: [file] }) => projectCheck(loadModuleProject(file)),
   "module:test": ({ args: [file] }) => projectTest(loadModuleProject(file)),
   "module:build": ({ args: [file] }) => projectBuild(loadModuleProject(file)),
+  "project:check": ({ options }) =>
+    projectCheck(loadProject(options["--config"])),
   "project:test": ({ options }) =>
     projectTest(loadProject(options["--config"])),
   "project:build": ({ options }) =>

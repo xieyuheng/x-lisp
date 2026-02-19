@@ -1,14 +1,11 @@
 # type system
 
+`projectCheck`
+
 [lisp] `type/` setup
 
 [lisp] `typeEquivalent` and `typeSubtype`
 [lisp] `typeCheck` and `typeInfer`
-
-# later
-
-add `module:check` command
-add `project:check` command
 
 # later
 
