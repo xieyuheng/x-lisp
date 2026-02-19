@@ -1,8 +1,16 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
+import { apply } from "./apply.ts"
 import { meaning } from "./meaning.ts"
 
-export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): [L.Env, L.Value] {
+type Result = [L.Env, L.Value]
+
+export function resultValue(result: Result): L.Value {
+  const [_, value] = result
+  return value
+}
+
+export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): Result {
   switch (exp.kind) {
     case "Symbol": {
       return [env, L.SymbolValue(exp.content)]
@@ -42,7 +50,9 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): [L.Env, L.Value] {
     }
 
     case "Apply": {
-      throw new Error("TODO")
+      const target = resultValue(evaluate(mod, env, exp.target))
+      const args = exp.args.map((arg) => resultValue(evaluate(mod, env, arg)))
+      return [env, apply(target, args)]
     }
 
     case "Let1": {

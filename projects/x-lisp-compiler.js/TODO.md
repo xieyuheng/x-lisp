@@ -1,6 +1,6 @@
 # type system
 
-[lisp] `evaluate/` -- "Apply"
+[lisp] `apply/`
 
 [lisp] `type/` setup
 
