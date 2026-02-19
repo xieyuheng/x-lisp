@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `valueArity`
-
 [lisp] `apply` -- CurryValue
 
 [lisp] `type/` setup
