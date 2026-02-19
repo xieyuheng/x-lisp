@@ -1,11 +1,10 @@
 import { createUrl } from "@xieyuheng/helpers.js/url"
+import assert from "node:assert"
 import * as L from "../lisp/index.ts"
 import type { Project } from "./index.ts"
-import { logFile, projectBuild, projectForEachSource, projectGetSourceFile } from "./index.ts"
-import assert from "node:assert"
+import { logFile, projectForEachSource, projectGetSourceFile } from "./index.ts"
 
 export function projectInterpret(project: Project): void {
-  projectBuild(project)
   projectForEachSource(project, interpretTest)
 }
 

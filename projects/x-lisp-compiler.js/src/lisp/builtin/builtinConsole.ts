@@ -12,6 +12,12 @@ export function builtinConsole(mod: Mod) {
     return Values.VoidValue()
   })
 
+  definePrimitiveFunction(mod, "println", 1, (value) => {
+    process.stdout.write(formatValue(value))
+    process.stdout.write("\n")
+    return Values.VoidValue()
+  })
+
   definePrimitiveFunction(mod, "write", 1, (string) => {
     process.stdout.write(Values.asStringValue(string).content)
     return Values.VoidValue()

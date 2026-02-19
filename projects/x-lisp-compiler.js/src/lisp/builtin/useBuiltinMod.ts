@@ -1,4 +1,5 @@
 import { createMod, type Mod } from "../mod/index.ts"
+import { builtinAssert } from "./builtinAssert.ts"
 import { builtinBool } from "./builtinBool.ts"
 import { builtinConsole } from "./builtinConsole.ts"
 import { builtinFile } from "./builtinFile.ts"
@@ -45,6 +46,7 @@ export function useBuiltinMod(): Mod {
   builtinSystem(mod)
   builtinSet(mod)
   builtinHash(mod)
+  builtinAssert(mod)
 
   return mod
 }

@@ -2,4 +2,5 @@
 
 set -e
 
-bash scripts/run-test-suite.sh
+bash scripts/interpret-test-suite.sh
+bash scripts/test-test-suite.sh
