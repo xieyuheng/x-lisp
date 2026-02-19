@@ -2,34 +2,34 @@ import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 import { meaning } from "./meaning.ts"
 
-export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
+export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): [L.Env, L.Value] {
   switch (exp.kind) {
     case "Symbol": {
-      return L.SymbolValue(exp.content)
+      return [env, L.SymbolValue(exp.content)]
     }
 
     case "Hashtag": {
-      return L.HashtagValue(exp.content)
+      return [env, L.HashtagValue(exp.content)]
     }
 
     case "String": {
-      return L.StringValue(exp.content)
+      return [env, L.StringValue(exp.content)]
     }
 
     case "Int": {
-      return L.IntValue(exp.content)
+      return [env, L.IntValue(exp.content)]
     }
 
     case "Float": {
-      return L.FloatValue(exp.content)
+      return [env, L.FloatValue(exp.content)]
     }
 
     case "Var": {
       const value = L.envLookupValue(env, exp.name)
-      if (value) return value
+      if (value) return [env, value]
 
       const definition = L.modLookupDefinition(mod, exp.name)
-      if (definition) return meaning(definition)
+      if (definition) return [env, meaning(definition)]
 
       let message = `[evaluate] undefined`
       message += `\n  name: ${exp.name}`
@@ -38,7 +38,7 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
     }
 
     case "Lambda": {
-      return L.ClosureValue(mod, env, exp.parameters, exp.body)
+      return [env, L.ClosureValue(mod, env, exp.parameters, exp.body)]
     }
 
     case "Apply": {
@@ -46,12 +46,13 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
     }
 
     case "Let1": {
-      env = L.envPut(env, exp.name, evaluate(mod, env, exp.rhs))
-      return evaluate(mod, env, exp.body)
+      const [rhsEnv, rhsValue] = evaluate(mod, env, exp.rhs)
+      return evaluate(mod, L.envPut(rhsEnv, exp.name, rhsValue), exp.body)
     }
 
     case "Begin1": {
-      throw new Error("TODO")
+      const [headEnv, _] = evaluate(mod, env, exp.head)
+      return evaluate(mod, headEnv, exp.body)
     }
 
     case "BeginSugar": {

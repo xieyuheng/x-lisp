@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `evaluate/` -- "Begin1"
 [lisp] `evaluate/` -- "BeginSugar"
 [lisp] `evaluate/` -- "AssignSugar"
 
