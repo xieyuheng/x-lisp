@@ -19,6 +19,18 @@ export function envPut(env: Env, name: string, value: Value): Env {
   return new Map([...env, [name, value]])
 }
 
+export function envPutMany(
+  env: Env,
+  parameters: Array<string>,
+  values: Array<Value>,
+): Env {
+  assert(parameters.length === values.length)
+  for (const [index, name] of parameters.entries()) {
+    env = envPut(env, name, values[index])
+  }
+  return env
+}
+
 export function envUpdate(base: Env, env: Env): Env {
   for (const name of envNames(env)) {
     const value = envLookupValue(env, name)

@@ -1,9 +1,11 @@
 # type system
 
-[lisp] `apply` -- ClosureValue
-[lisp] `apply` -- CurryValue
 [lisp] `apply` -- FunctionValue
 [lisp] `apply` -- DatatypeConstructorValue
+
+[lisp] `valueArity`
+
+[lisp] `apply` -- CurryValue
 
 [lisp] `type/` setup
 
