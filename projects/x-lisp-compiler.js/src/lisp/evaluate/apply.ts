@@ -23,7 +23,11 @@ export function apply(target: L.Value, args: Array<L.Value>): L.Value {
         args,
       )
     }
-
+      
+    case "DatatypeConstructorValue": {
+      return L.DatatypeValue(target.definition, args)
+    }
+      
     default: {
       let message = `[apply] can not handle this kind of target`
       message += formatUnderTag(2, `target:`, L.formatValue(target))

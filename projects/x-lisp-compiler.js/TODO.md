@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `apply` -- DatatypeConstructorValue
-
 [lisp] `valueArity`
 
 [lisp] `apply` -- CurryValue
