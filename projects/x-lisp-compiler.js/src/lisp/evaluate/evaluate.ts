@@ -1,5 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
+import { meaning } from "./meaning.ts"
 
 export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
   switch (exp.kind) {
@@ -27,8 +28,8 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       const value = L.envLookupValue(env, exp.name)
       if (value) return value
 
-      // const definition = L.modLookupDefinition(mod, exp.name)
-      // if (definition) return L.DatatypeConstructorValue(definition)
+      const definition = L.modLookupDefinition(mod, exp.name)
+      if (definition) return meaning(definition)
 
       let message = `[evaluate] undefined`
       message += `\n  name: ${exp.name}`

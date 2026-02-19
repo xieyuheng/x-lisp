@@ -70,9 +70,7 @@ export type FunctionValue = {
   definition: FunctionDefinition
 }
 
-export function FunctionValue(
-  definition: FunctionDefinition,
-): FunctionValue {
+export function FunctionValue(definition: FunctionDefinition): FunctionValue {
   return {
     kind: "Function",
     definition,
