@@ -1,13 +1,14 @@
 import * as S from "@xieyuheng/sexp.js"
 import { type Definition } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
+import { type Value } from "../value/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 
 export type Mod = {
   url: URL
   stmts: Array<Stmt>
   exported: Set<string>
-  claimed: Map<string, Exp>
+  claimed: Map<string, Value>
   definitions: Map<string, Definition>
   dependencies: Map<string, Mod>
 }

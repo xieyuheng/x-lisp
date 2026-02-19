@@ -1,26 +1,33 @@
-[lisp] fix `equal`
-[lisp] `projectInterpret` -- handle dependencies
-
-# type system
-
-[lisp] `typeEquivalent` and `typeSubtype`
-[lisp] `typeCheck` and `typeInfer`
-
-[lisp] `projectCheck`
-
 # later
 
-[lisp] `The` as `Exp`
+[lisp] `builtinValue` -- `same?`
+[lisp] `builtinValue` -- `equal?`
 
 # later
 
 [lisp] `formatValue` -- handle `DisjointUnionValue`
 [lisp] `formatValue` -- handle `DatatypeValue`
 
+[lisp] `stageClaim`
+[lisp] `stageSetupVariable`
+[lisp] `stageTypeCheck`
+
+# type system
+
+[lisp] `typeEquivalent` and `typeSubtype`
+[lisp] `typeCheck` and `typeInfer`
+
+[lisp] `useBuiltinMod` load `(claim)` from `lisp/builtin/index.lisp`
+[lisp] `projectCheck`
+
 # later
 
-[lisp] `builtinValue` -- `same?`
-[lisp] `builtinValue` -- `equal?`
+[lisp] `projectInterpret` -- handle dependencies
+[lisp] `equal` support all value
+
+# later
+
+[lisp] `The` as `Exp`
 
 # pattern match
 
