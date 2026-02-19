@@ -12,6 +12,18 @@ export function apply(target: L.Value, args: Array<L.Value>): L.Value {
       return L.resultValue(L.evaluate(target.mod, newEnv, target.body))
     }
 
+    case "FunctionValue": {
+      return apply(
+        L.ClosureValue(
+          target.definition.mod,
+          L.emptyEnv(),
+          target.definition.parameters,
+          target.definition.body,
+        ),
+        args,
+      )
+    }
+
     default: {
       let message = `[apply] can not handle this kind of target`
       message += formatUnderTag(2, `target:`, L.formatValue(target))

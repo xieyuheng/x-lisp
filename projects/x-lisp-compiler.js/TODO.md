@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `apply` -- FunctionValue
 [lisp] `apply` -- DatatypeConstructorValue
 
 [lisp] `valueArity`
