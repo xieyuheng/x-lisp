@@ -1,4 +1,4 @@
-import type { Definition } from "../definition/index.ts"
+import type { DatatypeDefinition } from "../definition/index.ts"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -18,7 +18,7 @@ export type Value =
   | PrimitiveFunctionValue
   | CurryValue
   | AboutDatatype
-  | DefinitionValue
+  | DatatypeConstructorValue
 
 export type TaelValue = {
   kind: "Tael"
@@ -102,12 +102,14 @@ export function CurryValue(
   }
 }
 
-export type DefinitionValue = {
+export type DatatypeConstructorValue = {
   kind: "Definition"
-  definition: Definition
+  definition: DatatypeDefinition
 }
 
-export function DefinitionValue(definition: Definition): DefinitionValue {
+export function DatatypeConstructorValue(
+  definition: DatatypeDefinition,
+): DatatypeConstructorValue {
   return {
     kind: "Definition",
     definition,

@@ -27,8 +27,8 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       const value = L.envLookupValue(env, exp.name)
       if (value) return value
 
-      const definition = L.modLookupDefinition(mod, exp.name)
-      if (definition) return L.DefinitionValue(definition)
+      // const definition = L.modLookupDefinition(mod, exp.name)
+      // if (definition) return L.DatatypeConstructorValue(definition)
 
       let message = `[evaluate] undefined`
       message += `\n  name: ${exp.name}`

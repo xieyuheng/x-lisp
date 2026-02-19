@@ -1,7 +1,5 @@
 # type system
 
-[lisp] remove `DefinitionValue` -- add `DatatypeConstructorValue`
-
 [lisp] `meaning` from definition to value
 
 - return `DatatypeConstructorValue` or `DatatypeValue` on `DatatypeDefinition`
@@ -36,7 +34,7 @@
 
 # later
 
-add `module:check` command 
+add `module:check` command
 add `project:check` command
 
 # later
