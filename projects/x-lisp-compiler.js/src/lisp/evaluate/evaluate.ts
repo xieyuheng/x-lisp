@@ -56,7 +56,15 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): [L.Env, L.Value] {
     }
 
     case "BeginSugar": {
-      throw new Error("TODO")
+      let lastEnv = env
+      let lastValue: L.Value = L.VoidValue()
+      for (const subExp of exp.sequence) {
+        const [subEnv, subValue] = evaluate(mod, lastEnv, subExp)
+        lastEnv = subEnv
+        lastValue = subValue
+      }
+
+      return [lastEnv, lastValue]
     }
 
     case "AssignSugar": {
