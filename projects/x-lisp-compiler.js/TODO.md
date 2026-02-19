@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `evaluate/` -- "AssignSugar"
-
 [lisp] `evaluate/` -- "If"
 [lisp] `evaluate/` -- "When"
 [lisp] `evaluate/` -- "Unless"

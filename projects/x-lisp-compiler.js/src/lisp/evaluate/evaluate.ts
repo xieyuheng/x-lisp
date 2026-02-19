@@ -68,7 +68,8 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): [L.Env, L.Value] {
     }
 
     case "AssignSugar": {
-      throw new Error("TODO")
+      const [rhsEnv, rhsValue] = evaluate(mod, env, exp.rhs)
+      return [L.envPut(rhsEnv, exp.name, rhsValue), L.VoidValue()]
     }
 
     case "If": {
