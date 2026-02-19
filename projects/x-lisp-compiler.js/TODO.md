@@ -1,11 +1,13 @@
-# type system
+`projectInterpret` -- handle dependencies
 
-`projectCheck`
+# type system
 
 [lisp] `type/` setup
 
 [lisp] `typeEquivalent` and `typeSubtype`
 [lisp] `typeCheck` and `typeInfer`
+
+`projectCheck`
 
 # later
 

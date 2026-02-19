@@ -9,8 +9,9 @@ import {
   loadModuleProject,
   loadProject,
   projectBuild,
-  projectClean,
   projectCheck,
+  projectClean,
+  projectInterpret,
   projectTest,
 } from "./project/index.ts"
 import * as Services from "./services/index.ts"
@@ -20,8 +21,12 @@ const { version } = getPackageJson(fileURLToPath(import.meta.url))
 const router = cmd.createRouter("x-lisp-compile.js", version)
 
 router.defineRoutes([
+  "module:interpret file",
+  "module:check file",
   "module:test file",
   "module:build file",
+  "project:interpret --config",
+  "project:check --config",
   "project:test --config",
   "project:build --config",
   "project:clean --config",
@@ -30,10 +35,14 @@ router.defineRoutes([
 
 router.defineHandlers({
   "module:check": ({ args: [file] }) => projectCheck(loadModuleProject(file)),
+  "module:interpret": ({ args: [file] }) =>
+    projectInterpret(loadModuleProject(file)),
   "module:test": ({ args: [file] }) => projectTest(loadModuleProject(file)),
   "module:build": ({ args: [file] }) => projectBuild(loadModuleProject(file)),
   "project:check": ({ options }) =>
     projectCheck(loadProject(options["--config"])),
+  "project:interpret": ({ options }) =>
+    projectInterpret(loadProject(options["--config"])),
   "project:test": ({ options }) =>
     projectTest(loadProject(options["--config"])),
   "project:build": ({ options }) =>
