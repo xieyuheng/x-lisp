@@ -1,8 +1,5 @@
 # type system
 
-[lisp] `evaluate/` -- "If"
-[lisp] `evaluate/` -- "When"
-[lisp] `evaluate/` -- "Unless"
 [lisp] `evaluate/` -- "And"
 [lisp] `evaluate/` -- "Or"
 [lisp] `evaluate/` -- "Cond"

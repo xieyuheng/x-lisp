@@ -73,15 +73,20 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): [L.Env, L.Value] {
     }
 
     case "If": {
-      throw new Error("TODO")
+      const [conditionEnv, conditionValue] = evaluate(mod, env, exp.condition)
+      if (L.isTrueValue(conditionValue)) {
+        return evaluate(mod, conditionEnv, exp.consequent)
+      } else {
+        return evaluate(mod, conditionEnv, exp.alternative)
+      }
     }
 
     case "When": {
-      throw new Error("TODO")
+      return evaluate(mod, env, L.If(exp.condition, exp.consequent, L.Void()))
     }
 
     case "Unless": {
-      throw new Error("TODO")
+      return evaluate(mod, env, L.If(exp.condition, L.Void(), exp.consequent))
     }
 
     case "And": {
