@@ -250,15 +250,15 @@ export function When(condition: Exp, consequent: Exp, meta?: Meta): When {
 export type Unless = {
   kind: "Unless"
   condition: Exp
-  consequent: Exp
+  alternative: Exp
   meta?: Meta
 }
 
-export function Unless(condition: Exp, consequent: Exp, meta?: Meta): Unless {
+export function Unless(condition: Exp, alternative: Exp, meta?: Meta): Unless {
   return {
     kind: "Unless",
     condition,
-    consequent,
+    alternative,
     meta,
   }
 }

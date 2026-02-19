@@ -2,6 +2,14 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
+export function desugarWhen(exp: L.When, meta?: L.Meta): L.If {
+  return L.If(exp.condition, exp.consequent, L.Void(), exp.meta)
+}
+
+export function desugarUnless(exp: L.Unless, meta?: L.Meta): L.If {
+  return L.If(exp.condition, L.Void(), exp.alternative, exp.meta)
+}
+
 export function desugarAnd(exps: Array<L.Exp>, meta?: L.Meta): L.Exp {
   if (exps.length === 0) return L.Bool(true, meta)
   if (exps.length === 1) return exps[0]
@@ -16,7 +24,10 @@ export function desugarOr(exps: Array<L.Exp>, meta?: L.Meta): L.Exp {
   return L.If(head, L.Bool(true, meta), desugarOr(restExps, meta), meta)
 }
 
-export function desugarCond(condLines: Array<L.CondLine>, meta?: L.Meta): L.Exp {
+export function desugarCond(
+  condLines: Array<L.CondLine>,
+  meta?: L.Meta,
+): L.Exp {
   if (condLines.length === 0)
     return L.Apply(L.Var("assert"), [L.Bool(false)], meta)
   const [headLine, ...restLines] = condLines

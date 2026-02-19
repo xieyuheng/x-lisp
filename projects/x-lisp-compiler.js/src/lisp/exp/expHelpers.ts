@@ -46,7 +46,7 @@ export function expMap(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
     }
 
     case "Unless": {
-      return L.Unless(onExp(exp.condition), onExp(exp.consequent), exp.meta)
+      return L.Unless(onExp(exp.condition), onExp(exp.alternative), exp.meta)
     }
 
     case "And": {
@@ -144,7 +144,7 @@ export function expChildren(exp: Exp): Array<Exp> {
     }
 
     case "Unless": {
-      return [exp.condition, exp.consequent]
+      return [exp.condition, exp.alternative]
     }
 
     case "And": {

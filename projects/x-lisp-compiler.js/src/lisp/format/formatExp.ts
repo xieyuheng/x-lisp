@@ -92,7 +92,7 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Unless": {
-      return `(unless ${formatExp(exp.condition)} ${formatExp(exp.consequent)})`
+      return `(unless ${formatExp(exp.condition)} ${formatExp(exp.alternative)})`
     }
 
     case "And": {

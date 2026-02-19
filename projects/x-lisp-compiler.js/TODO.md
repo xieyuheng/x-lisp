@@ -1,14 +1,5 @@
 # type system
 
-[lisp] `evaluate/` -- "And"
-[lisp] `evaluate/` -- "Or"
-[lisp] `evaluate/` -- "Cond"
-
-[lisp] `evaluate/` -- "Tael"
-[lisp] `evaluate/` -- "Set"
-[lisp] `evaluate/` -- "Hash"
-[lisp] `evaluate/` -- "Quote"
-
 [lisp] `evaluate/` -- "Apply"
 
 [lisp] `type/` setup

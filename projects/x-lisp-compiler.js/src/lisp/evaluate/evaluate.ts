@@ -82,39 +82,39 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): [L.Env, L.Value] {
     }
 
     case "When": {
-      return evaluate(mod, env, L.If(exp.condition, exp.consequent, L.Void()))
+      return evaluate(mod, env, L.desugarWhen(exp))
     }
 
     case "Unless": {
-      return evaluate(mod, env, L.If(exp.condition, L.Void(), exp.consequent))
+      return evaluate(mod, env, L.desugarUnless(exp))
     }
 
     case "And": {
-      throw new Error("TODO")
+      return evaluate(mod, env, L.desugarAnd(exp.exps))
     }
 
     case "Or": {
-      throw new Error("TODO")
+      return evaluate(mod, env, L.desugarOr(exp.exps))
     }
 
     case "Cond": {
-      throw new Error("TODO")
+      return evaluate(mod, env, L.desugarCond(exp.condLines))
     }
 
     case "Tael": {
-      throw new Error("TODO")
+      return evaluate(mod, env, L.desugarTael(exp.elements, exp.attributes))
     }
 
     case "Set": {
-      throw new Error("TODO")
+      return evaluate(mod, env, L.desugarSet(exp.elements))
     }
 
     case "Hash": {
-      throw new Error("TODO")
+      return evaluate(mod, env, L.desugarHash(exp.entries))
     }
 
     case "Quote": {
-      throw new Error("TODO")
+      return evaluate(mod, env, L.desugarQuote(exp.sexp))
     }
   }
 }

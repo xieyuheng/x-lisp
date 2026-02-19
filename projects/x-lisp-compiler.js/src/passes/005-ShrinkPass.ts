@@ -1,4 +1,3 @@
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../lisp/index.ts"
 
@@ -64,6 +63,15 @@ function onExp(exp: L.Exp): L.Exp {
       else throw new Error(message)
     }
 
+    case "If": {
+      return L.If(
+        onExp(exp.condition),
+        onExp(exp.consequent),
+        onExp(exp.alternative),
+        exp.meta,
+      )
+    }
+
     case "When": {
       return L.If(
         onExp(exp.condition),
@@ -77,7 +85,7 @@ function onExp(exp: L.Exp): L.Exp {
       return L.If(
         onExp(exp.condition),
         L.Void(),
-        onExp(exp.consequent),
+        onExp(exp.alternative),
         exp.meta,
       )
     }
