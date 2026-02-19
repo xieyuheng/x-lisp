@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `apply` -- CurryValue
-
 [lisp] `type/` setup
 
 [lisp] `typeEquivalent` and `typeSubtype`
