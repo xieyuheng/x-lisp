@@ -13,7 +13,7 @@ export function formatValues(
 }
 
 function formatAttributes(
-  attributes: Values.Attributes,
+  attributes: Record<string, Value>,
   options: Options = {},
 ): string {
   if (options.digest) {

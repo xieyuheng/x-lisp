@@ -11,8 +11,6 @@ import { type AtomValue } from "./Atom.ts"
 import { type HashValue } from "./Hash.ts"
 import { type SetValue } from "./Set.ts"
 
-export type Attributes = Record<string, Value>
-
 export type Value =
   | AtomValue
   | TaelValue
@@ -28,12 +26,12 @@ export type Value =
 export type TaelValue = {
   kind: "TaelValue"
   elements: Array<Value>
-  attributes: Attributes
+  attributes: Record<string, Value>
 }
 
 export function TaelValue(
   elements: Array<Value>,
-  attributes: Attributes,
+  attributes: Record<string, Value>,
 ): TaelValue {
   return {
     kind: "TaelValue",

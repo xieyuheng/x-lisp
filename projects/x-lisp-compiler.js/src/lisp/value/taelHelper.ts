@@ -6,7 +6,9 @@ export function ListValue(elements: Array<Value>): Values.TaelValue {
   return Values.TaelValue(elements, {})
 }
 
-export function RecordValue(attributes: Values.Attributes): Values.TaelValue {
+export function RecordValue(
+  attributes: Record<string, Value>,
+): Values.TaelValue {
   return Values.TaelValue([], attributes)
 }
 

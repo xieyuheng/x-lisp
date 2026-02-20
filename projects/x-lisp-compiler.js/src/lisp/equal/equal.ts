@@ -1,6 +1,6 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as Values from "../value/index.ts"
-import { type Attributes, type Value } from "../value/index.ts"
+import { type Value } from "../value/index.ts"
 import { same } from "./same.ts"
 
 export function equal(lhs: Value, rhs: Value): boolean {
@@ -26,13 +26,31 @@ export function equal(lhs: Value, rhs: Value): boolean {
     return equal(lhs.target, rhs.target) && equalValues(lhs.args, rhs.args)
   }
 
-  // ClosureValue
-  // CurryValue
-  // DatatypeValue
-  // DisjointUnionValue
-  // FunctionValue
-  // PrimitiveFunctionValue
-  // DatatypeConstructorValue
+  if (lhs.kind === "FunctionValue" && rhs.kind === "FunctionValue") {
+    return lhs.definition === rhs.definition
+  }
+
+  if (
+    lhs.kind === "PrimitiveFunctionValue" &&
+    rhs.kind === "PrimitiveFunctionValue"
+  ) {
+    return lhs.definition === rhs.definition
+  }
+
+  if (
+    lhs.kind === "DatatypeConstructorValue" &&
+    rhs.kind === "DatatypeConstructorValue"
+  ) {
+    return lhs.definition === rhs.definition
+  }
+
+  if (lhs.kind === "DatatypeValue" && rhs.kind === "DatatypeValue") {
+    return lhs.definition === rhs.definition && equalValues(lhs.args, rhs.args)
+  }
+
+  if (lhs.kind === "DisjointUnionValue" && rhs.kind === "DisjointUnionValue") {
+    return equalTypeRecord(lhs.types, rhs.types)
+  }
 
   return same(lhs, rhs)
 }
@@ -44,7 +62,10 @@ function equalValues(lhs: Array<Value>, rhs: Array<Value>): boolean {
   )
 }
 
-function equalAttributes(lhs: Attributes, rhs: Attributes): boolean {
+function equalAttributes(
+  lhs: Record<string, Value>,
+  rhs: Record<string, Value>,
+): boolean {
   const leftValues = Object.values(lhs).filter(
     (value) => !Values.isNullValue(value),
   )
@@ -88,6 +109,30 @@ function equalHash(lhs: Values.HashValue, rhs: Values.HashValue): boolean {
         return false
       }
     } else if (equal(lhsValue, rhsValue)) {
+      continue
+    } else {
+      return false
+    }
+  }
+
+  return true
+}
+
+function equalTypeRecord(
+  lhs: Record<string, Value>,
+  rhs: Record<string, Value>,
+): boolean {
+  const leftValues = Object.values(lhs)
+  const rightValues = Object.values(rhs)
+  if (leftValues.length !== rightValues.length) {
+    return false
+  }
+
+  for (const k of Object.keys(lhs)) {
+    const l = lhs[k]
+    const r = rhs[k]
+
+    if (equal(l, r)) {
       continue
     } else {
       return false

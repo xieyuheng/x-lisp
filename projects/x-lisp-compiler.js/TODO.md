@@ -1,4 +1,3 @@
-[lisp] `equal` support all value
 [lisp] `stageClaim`
 
 # type system
