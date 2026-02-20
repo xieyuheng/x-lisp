@@ -1,4 +1,3 @@
-import assert from "node:assert"
 import * as L from "../index.ts"
 
 export function meaning(definition: L.Definition): L.Value {

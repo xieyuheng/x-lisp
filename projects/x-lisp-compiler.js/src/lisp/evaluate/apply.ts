@@ -4,7 +4,15 @@ import * as L from "../index.ts"
 export function apply(target: L.Value, args: Array<L.Value>): L.Value {
   const arity = getArity(target)
   if (arity > args.length) {
-    return L.CurryValue(target, arity - args.length, args)
+    if (target.kind === "CurryValue") {
+      // normalize `Curry`
+      return L.CurryValue(target.target, arity - args.length, [
+        ...target.args,
+        ...args,
+      ])
+    } else {
+      return L.CurryValue(target, arity - args.length, args)
+    }
   } else if (arity < args.length) {
     return apply(apply(target, args.slice(0, arity)), args.slice(arity))
   }

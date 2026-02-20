@@ -26,6 +26,14 @@ export function equal(lhs: Value, rhs: Value): boolean {
     return equal(lhs.target, rhs.target) && equalValues(lhs.args, rhs.args)
   }
 
+  // ClosureValue
+  // CurryValue
+  // DatatypeValue
+  // DisjointUnionValue
+  // FunctionValue
+  // PrimitiveFunctionValue
+  // DatatypeConstructorValue
+
   return same(lhs, rhs)
 }
 
