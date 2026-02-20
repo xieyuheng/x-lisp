@@ -5,6 +5,7 @@ import * as Values from "../value/index.ts"
 
 export function builtinList(mod: Mod) {
   provide(mod, [
+    "make-list",
     "list-empty?",
     "car",
     "cdr",
@@ -26,6 +27,10 @@ export function builtinList(mod: Mod) {
     "list-reverse",
     "list-to-set",
   ])
+
+  definePrimitiveFunction(mod, "make-list", 0, () => {
+    return Values.TaelValue([], {})
+  })
 
   definePrimitiveFunction(mod, "list-empty?", 1, (value) => {
     return Values.BoolValue(Values.asTaelValue(value).elements.length === 0)

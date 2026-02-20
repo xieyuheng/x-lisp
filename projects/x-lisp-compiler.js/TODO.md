@@ -1,13 +1,13 @@
-# later
-
-[lisp] `stageClaim`
 [lisp] `stageSetupVariable`
-[lisp] `stageTypeCheck`
+[lisp] fix `apply`
+[lisp] `stageClaim`
 
 # type system
 
 [lisp] `typeEquivalent` and `typeSubtype`
 [lisp] `typeCheck` and `typeInfer`
+
+[lisp] `typeCheck` during `load`
 
 [lisp] `useBuiltinMod` load `(claim)` from `lisp/builtin/index.lisp`
 [lisp] `projectCheck`

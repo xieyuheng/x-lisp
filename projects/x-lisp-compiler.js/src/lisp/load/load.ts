@@ -5,6 +5,7 @@ import { stageClaim } from "./stageClaim.ts"
 import { stageDefine } from "./stageDefine.ts"
 import { stageExport } from "./stageExport.ts"
 import { stageImport } from "./stageImport.ts"
+import { stageSetupVariable } from "./stageSetupVariable.ts"
 
 export function loadEntry(url: URL): L.Mod {
   return load(url, new Map())
@@ -27,6 +28,7 @@ export function load(url: URL, dependencies: Map<string, L.Mod>): L.Mod {
   for (const stmt of mod.stmts) stageClaim(mod, stmt)
   for (const stmt of mod.stmts) stageExport(mod, stmt)
   for (const stmt of mod.stmts) stageImport(mod, stmt)
+  for (const stmt of mod.stmts) stageSetupVariable(mod)
 
   return mod
 }

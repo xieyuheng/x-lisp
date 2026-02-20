@@ -16,7 +16,12 @@ export function meaning(definition: L.Definition): L.Value {
     }
 
     case "VariableDefinition": {
-      assert(definition.value)
+      if (!definition.value) {
+        let message = `[meaning] VariableDefinition has no value`
+        message += `\n  name: ${definition.name}`
+        throw new Error(message)
+      }
+
       return definition.value
     }
 
