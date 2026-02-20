@@ -1,7 +1,9 @@
 # type system
 
-[lisp] `typeEquivalent` and `typeSubtype`
-[lisp] `typeCheck` and `typeInfer`
+[lisp] `typeSubtype`
+
+[lisp] `typeCheck`
+[lisp] `typeInfer`
 
 [lisp] `typeCheck` during `load`
 
