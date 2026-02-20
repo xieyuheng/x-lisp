@@ -26,21 +26,7 @@ export function equal(lhs: Value, rhs: Value): boolean {
     return equal(lhs.target, rhs.target) && equalValues(lhs.args, rhs.args)
   }
 
-  if (lhs.kind === "FunctionValue" && rhs.kind === "FunctionValue") {
-    return lhs.definition === rhs.definition
-  }
-
-  if (
-    lhs.kind === "PrimitiveFunctionValue" &&
-    rhs.kind === "PrimitiveFunctionValue"
-  ) {
-    return lhs.definition === rhs.definition
-  }
-
-  if (
-    lhs.kind === "DatatypeConstructorValue" &&
-    rhs.kind === "DatatypeConstructorValue"
-  ) {
+  if (lhs.kind === "DefinitionValue" && rhs.kind === "DefinitionValue") {
     return lhs.definition === rhs.definition
   }
 

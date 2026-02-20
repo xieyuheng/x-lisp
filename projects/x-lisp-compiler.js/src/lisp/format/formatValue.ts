@@ -124,15 +124,7 @@ export function formatValue(value: Value, options: Options = {}): string {
       return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 
-    case "FunctionValue": {
-      return `${value.definition.name}`
-    }
-
-    case "PrimitiveFunctionValue": {
-      return `${value.definition.name}`
-    }
-
-    case "DatatypeConstructorValue": {
+    case "DefinitionValue": {
       return `${value.definition.name}`
     }
 

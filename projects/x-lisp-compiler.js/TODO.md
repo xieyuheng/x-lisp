@@ -10,11 +10,10 @@
 
 # later
 
-[lisp] `projectInterpret` -- handle dependencies
-
-# later
-
+[lisp] `Arrow` as `Exp`
 [lisp] `The` as `Exp`
+
+[lisp] `projectInterpret` -- handle dependencies
 
 # pattern match
 

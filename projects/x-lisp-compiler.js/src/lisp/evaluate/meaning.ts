@@ -3,7 +3,7 @@ import * as L from "../index.ts"
 export function meaning(definition: L.Definition): L.Value {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition": {
-      return L.PrimitiveFunctionValue(definition)
+      return L.DefinitionValue(definition)
     }
 
     case "PrimitiveVariableDefinition": {
@@ -11,7 +11,7 @@ export function meaning(definition: L.Definition): L.Value {
     }
 
     case "FunctionDefinition": {
-      return L.FunctionValue(definition)
+      return L.DefinitionValue(definition)
     }
 
     case "VariableDefinition": {
@@ -28,7 +28,7 @@ export function meaning(definition: L.Definition): L.Value {
       if (definition.datatypeConstructor.parameters.length === 0) {
         return L.DatatypeValue(definition, [])
       } else {
-        return L.DatatypeConstructorValue(definition)
+        return L.DefinitionValue(definition)
       }
     }
   }

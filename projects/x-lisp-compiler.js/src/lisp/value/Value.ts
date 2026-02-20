@@ -1,8 +1,4 @@
-import type {
-  DatatypeDefinition,
-  FunctionDefinition,
-  PrimitiveFunctionDefinition,
-} from "../definition/index.ts"
+import type { Definition } from "../definition/index.ts"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -18,10 +14,8 @@ export type Value =
   | HashValue
   | ClosureValue
   | CurryValue
+  | DefinitionValue
   | AboutDatatype
-  | FunctionValue
-  | PrimitiveFunctionValue
-  | DatatypeConstructorValue
 
 export type TaelValue = {
   kind: "TaelValue"
@@ -63,32 +57,6 @@ export function ClosureValue(
   }
 }
 
-export type FunctionValue = {
-  kind: "FunctionValue"
-  definition: FunctionDefinition
-}
-
-export function FunctionValue(definition: FunctionDefinition): FunctionValue {
-  return {
-    kind: "FunctionValue",
-    definition,
-  }
-}
-
-export type PrimitiveFunctionValue = {
-  kind: "PrimitiveFunctionValue"
-  definition: PrimitiveFunctionDefinition
-}
-
-export function PrimitiveFunctionValue(
-  definition: PrimitiveFunctionDefinition,
-): PrimitiveFunctionValue {
-  return {
-    kind: "PrimitiveFunctionValue",
-    definition,
-  }
-}
-
 export type CurryValue = {
   kind: "CurryValue"
   target: Value
@@ -109,16 +77,14 @@ export function CurryValue(
   }
 }
 
-export type DatatypeConstructorValue = {
-  kind: "DatatypeConstructorValue"
-  definition: DatatypeDefinition
+export type DefinitionValue = {
+  kind: "DefinitionValue"
+  definition: Definition
 }
 
-export function DatatypeConstructorValue(
-  definition: DatatypeDefinition,
-): DatatypeConstructorValue {
+export function DefinitionValue(definition: Definition): DefinitionValue {
   return {
-    kind: "DatatypeConstructorValue",
+    kind: "DefinitionValue",
     definition,
   }
 }
