@@ -1,6 +1,10 @@
 # type system
 
-[lisp] `typeSubtype`
+[lisp] `typeSubtype` -- call `typeEquivalent` -- with the help of `willThrow`
+[lisp] `typeSubtype` -- fix
+
+[lisp] `typeSubtype` -- handle Arrow
+[lisp] `typeEquivalent` -- handle Arrow
 
 [lisp] `typeCheck`
 [lisp] `typeInfer`

@@ -5,7 +5,7 @@ import { sexpHasHead } from "./sexpHasHead.ts"
 import { trailLoopOccurred, type Trail } from "./Trail.ts"
 import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
 
-export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
+export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
   if (trailLoopOccurred(trail, lhs, rhs)) {
     return
   }
@@ -16,52 +16,52 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     sexpHasHead(lhs, L.HashtagValue("tau")) &&
     sexpHasHead(rhs, L.HashtagValue("tau"))
   ) {
-    typeEquivalentMany(trail, lhs.elements, rhs.elements)
-    typeEquivalentManyAttributes(trail, lhs.attributes, rhs.attributes)
+    typeSubtypeMany(trail, lhs.elements, rhs.elements)
+    typeSubtypeManyAttributes(trail, lhs.attributes, rhs.attributes)
     return
   }
 
   if (lhs.kind === "DatatypeValue" && rhs.kind === "DatatypeValue") {
-    trail = [...trail, [lhs, rhs], [rhs, lhs]]
-    typeEquivalent(trail, unfoldDatatypeValue(lhs), unfoldDatatypeValue(rhs))
+    trail = [...trail, [lhs, rhs]]
+    typeSubtype(trail, unfoldDatatypeValue(lhs), unfoldDatatypeValue(rhs))
     return
   }
 
   if (lhs.kind === "DatatypeValue") {
-    trail = [...trail, [lhs, rhs], [rhs, lhs]]
-    typeEquivalent(trail, unfoldDatatypeValue(lhs), rhs)
+    trail = [...trail, [lhs, rhs]]
+    typeSubtype(trail, unfoldDatatypeValue(lhs), rhs)
     return
   }
 
   if (rhs.kind === "DatatypeValue") {
-    trail = [...trail, [lhs, rhs], [rhs, lhs]]
-    typeEquivalent(trail, lhs, unfoldDatatypeValue(rhs))
+    trail = [...trail, [lhs, rhs]]
+    typeSubtype(trail, lhs, unfoldDatatypeValue(rhs))
     return
   }
 
   if (lhs.kind === "DisjointUnionValue" && rhs.kind === "DisjointUnionValue") {
-    typeEquivalentManyAttributes(trail, lhs.types, rhs.types)
+    typeSubtypeManyAttributes(trail, lhs.types, rhs.types)
     return
   }
 
   if (!L.equal(lhs, rhs)) {
-    let message = `[typeEquivalent] fail`
+    let message = `[typeSubtype] fail`
     message += `\n  lhs: ${L.formatValue(lhs)}`
     message += `\n  rhs: ${L.formatValue(rhs)}`
     throw new Error(message)
   }
 }
 
-function typeEquivalentMany(
+function typeSubtypeMany(
   trail: Trail,
   lhs: Array<L.Value>,
   rhs: Array<L.Value>,
 ): void {
   assert(lhs.length === rhs.length)
-  arrayZip(lhs, rhs).forEach(([l, r]) => typeEquivalent(trail, l, r))
+  arrayZip(lhs, rhs).forEach(([l, r]) => typeSubtype(trail, l, r))
 }
 
-function typeEquivalentManyAttributes(
+function typeSubtypeManyAttributes(
   trail: Trail,
   lhs: Record<string, L.Value>,
   rhs: Record<string, L.Value>,
@@ -76,6 +76,6 @@ function typeEquivalentManyAttributes(
     const l = lhs[k]
     const r = rhs[k]
 
-    typeEquivalent(trail, l, r)
+    typeSubtype(trail, l, r)
   }
 }
