@@ -144,11 +144,15 @@ export function formatValue(value: Value, options: Options = {}): string {
     }
 
     case "DatatypeValue": {
-      throw new Error("TODO")
+      const args = formatValues(value.args, options)
+      return `(${value.definition.name} ${args})`
     }
 
     case "DisjointUnionValue": {
-      throw new Error("TODO")
+      const types = Object.entries(value.types)
+        .map(([key, value]) => `:${key} ${formatValue(value)}`)
+        .join(" ")
+      return `[#disjoint-union ${types}]`
     }
   }
 }

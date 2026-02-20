@@ -1,8 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import { type Definition } from "../definition/index.ts"
-import { type Exp } from "../exp/index.ts"
-import { type Value } from "../value/index.ts"
 import { type Stmt } from "../stmt/index.ts"
+import { type Value } from "../value/index.ts"
 
 export type Mod = {
   url: URL

@@ -1,13 +1,5 @@
 # later
 
-[lisp] `builtinValue` -- `same?`
-[lisp] `builtinValue` -- `equal?`
-
-# later
-
-[lisp] `formatValue` -- handle `DisjointUnionValue`
-[lisp] `formatValue` -- handle `DatatypeValue`
-
 [lisp] `stageClaim`
 [lisp] `stageSetupVariable`
 [lisp] `stageTypeCheck`
