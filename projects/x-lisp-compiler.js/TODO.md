@@ -1,5 +1,3 @@
-[lisp] `stageSetupVariable`
-[lisp] fix `apply`
 [lisp] `stageClaim`
 
 # type system
