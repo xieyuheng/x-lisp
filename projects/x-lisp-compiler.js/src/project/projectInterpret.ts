@@ -9,12 +9,14 @@ export function projectInterpret(project: Project): void {
 }
 
 function interpretTest(project: Project, id: string): void {
-  const inputFile = projectGetSourceFile(project, id)
-  logFile("interpret", inputFile)
-  const mod = L.loadEntry(createUrl(inputFile))
-  const main = L.modLookupDefinition(mod, "main")
-  if (main) {
-    assert(main.kind === "FunctionDefinition")
-    L.evaluate(mod, L.emptyEnv(), main.body)
+  if (id.endsWith("test" + L.suffix) || id.endsWith("snapshot" + L.suffix)) {
+    const inputFile = projectGetSourceFile(project, id)
+    logFile("interpret", inputFile)
+    const mod = L.loadEntry(createUrl(inputFile))
+    const main = L.modLookupDefinition(mod, "main")
+    if (main) {
+      assert(main.kind === "FunctionDefinition")
+      L.evaluate(mod, L.emptyEnv(), main.body)
+    }
   }
 }

@@ -6,6 +6,7 @@ import { type Value } from "../value/index.ts"
 
 export function builtinHash(mod: Mod) {
   provide(mod, [
+    "make-hash",
     "hash-empty?",
     "hash-length",
     "hash-get",
@@ -18,6 +19,10 @@ export function builtinHash(mod: Mod) {
     "hash-keys",
     "hash-values",
   ])
+
+  definePrimitiveFunction(mod, "make-hash", 0, () => {
+    return Values.HashValue()
+  })
 
   definePrimitiveFunction(mod, "hash-empty?", 1, (hash) => {
     return Values.BoolValue(

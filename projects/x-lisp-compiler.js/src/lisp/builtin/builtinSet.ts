@@ -4,6 +4,7 @@ import * as Values from "../value/index.ts"
 
 export function builtinSet(mod: Mod) {
   provide(mod, [
+    "make-set",
     "set-copy",
     "set-size",
     "set-empty?",
@@ -20,6 +21,10 @@ export function builtinSet(mod: Mod) {
     "set-difference",
     "set-disjoint?",
   ])
+
+  definePrimitiveFunction(mod, "make-set", 0, () => {
+    return Values.SetValue([])
+  })
 
   definePrimitiveFunction(mod, "set-copy", 1, (set) => {
     return Values.setCopy(set)

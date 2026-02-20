@@ -4,7 +4,7 @@ import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinRandom(mod: Mod) {
-  provide(mod, ["random-int", "random-float"])
+  provide(mod, ["random-int", "random-float", "random-dice"])
 
   definePrimitiveFunction(mod, "random-int", 2, (start, end) => {
     return Values.IntValue(
@@ -15,6 +15,10 @@ export function builtinRandom(mod: Mod) {
         ),
       ),
     )
+  })
+
+  definePrimitiveFunction(mod, "random-dice", 0, () => {
+    return Values.IntValue(BigInt(randomInt(1, 7)))
   })
 
   definePrimitiveFunction(mod, "random-float", 2, (start, end) => {
