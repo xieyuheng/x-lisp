@@ -1,5 +1,3 @@
-[lisp] `stageClaim`
-
 # type system
 
 [lisp] `typeEquivalent` and `typeSubtype`

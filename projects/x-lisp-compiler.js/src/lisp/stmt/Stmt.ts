@@ -79,15 +79,15 @@ export function DefineDatatype(
 export type Claim = {
   kind: "Claim"
   name: string
-  schema: Exp
+  type: Exp
   meta: Meta
 }
 
-export function Claim(name: string, schema: Exp, meta: Meta): Claim {
+export function Claim(name: string, type: Exp, meta: Meta): Claim {
   return {
     kind: "Claim",
     name,
-    schema,
+    type,
     meta,
   }
 }

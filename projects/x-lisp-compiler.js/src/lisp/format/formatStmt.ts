@@ -24,7 +24,7 @@ export function formatStmt(stmt: Stmt): string {
     }
 
     case "Claim": {
-      return `(claim ${stmt.name} ${formatExp(stmt.schema)})`
+      return `(claim ${stmt.name} ${formatExp(stmt.type)})`
     }
 
     case "Export": {

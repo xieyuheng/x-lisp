@@ -1,8 +1,8 @@
 (export my-string-repeat)
 
 (claim my-string-repeat
-  (-> int-non-negative? string?
-      string?))
+  [#-> [#int #string]
+       #string])
 
 (define (my-string-repeat n string)
   (if (equal? n 0)

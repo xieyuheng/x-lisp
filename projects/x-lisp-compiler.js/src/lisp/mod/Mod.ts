@@ -38,6 +38,20 @@ export function modDefine(
   mod.definitions.set(name, definition)
 }
 
+export function modClaim(
+  mod: Mod,
+  name: string,
+  type: Value,
+): void {
+  if (mod.claimed.has(name)) {
+    let message = `[modClaim] can not reclaim`
+    message += `\n  name: ${name}`
+    throw new Error(message)
+  }
+
+  mod.claimed.set(name, type)
+}
+
 export function modLookupDefinition(
   mod: Mod,
   name: string,
