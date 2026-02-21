@@ -82,14 +82,8 @@ function typeSubtypeManyAttributes(
 ): void {
   const leftValues = Object.values(lhs)
   const rightValues = Object.values(rhs)
-  if (leftValues.length !== rightValues.length) {
-    assert(false)
-  }
 
   for (const k of Object.keys(lhs)) {
-    const l = lhs[k]
-    const r = rhs[k]
-
-    typeSubtype(trail, l, r)
+    typeSubtype(trail, lhs[k], rhs[k])
   }
 }

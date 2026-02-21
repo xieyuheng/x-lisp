@@ -1,9 +1,12 @@
 # type system
 
-[lisp] `typeSubtype` -- fix
+[lisp] `isType`
 
-[lisp] `typeSubtype` -- handle Arrow
-[lisp] `typeEquivalent` -- handle Arrow
+[lisp] API about `ArrowType`
+[lisp] API about `AtomType`
+
+[lisp] `typeSubtype` -- handle `ArrowType`
+[lisp] `typeEquivalent` -- handle `ArrowType`
 
 [lisp] `typeCheck`
 [lisp] `typeInfer`
