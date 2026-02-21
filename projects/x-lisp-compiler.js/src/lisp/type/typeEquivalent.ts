@@ -12,6 +12,10 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     return
   }
 
+  if (L.isLiteralType(lhs) && L.isLiteralType(rhs)) {
+    assert(L.equal(lhs, rhs))
+  }
+
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
     typeEquivalentMany(
       trail,
@@ -49,12 +53,10 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     return
   }
 
-  if (!L.equal(lhs, rhs)) {
-    let message = `[typeEquivalent] fail`
-    message += `\n  lhs: ${L.formatValue(lhs)}`
-    message += `\n  rhs: ${L.formatValue(rhs)}`
-    throw new Error(message)
-  }
+  let message = `[typeEquivalent] unhandled lhs and rhs`
+  message += `\n  lhs: ${L.formatValue(lhs)}`
+  message += `\n  rhs: ${L.formatValue(rhs)}`
+  throw new Error(message)
 }
 
 function typeEquivalentMany(

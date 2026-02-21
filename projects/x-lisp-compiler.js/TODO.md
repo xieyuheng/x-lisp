@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `typeSubtype` & `typeEquivalent` -- handle `isLiteralType`
 [lisp] `typeSubtype` & `typeEquivalent` -- handle `isAtomType`
 [lisp] `typeSubtype` & `typeEquivalent` -- handle `isArrowType`
 
