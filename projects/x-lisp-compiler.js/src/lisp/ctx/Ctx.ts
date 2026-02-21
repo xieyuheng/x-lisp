@@ -11,7 +11,7 @@ export function ctxNames(ctx: Ctx): Set<string> {
   return new Set(ctx.keys())
 }
 
-export function ctxLookupValue(ctx: Ctx, name: string): undefined | Value {
+export function ctxLookupType(ctx: Ctx, name: string): undefined | Value {
   return ctx.get(name)
 }
 
@@ -21,7 +21,7 @@ export function ctxPut(ctx: Ctx, name: string, value: Value): Ctx {
 
 export function ctxUpdate(base: Ctx, ctx: Ctx): Ctx {
   for (const name of ctxNames(ctx)) {
-    const value = ctxLookupValue(ctx, name)
+    const value = ctxLookupType(ctx, name)
     assert(value)
     base = ctxPut(base, name, value)
   }
