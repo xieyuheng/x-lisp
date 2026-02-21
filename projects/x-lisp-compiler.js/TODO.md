@@ -3,6 +3,8 @@
 [lisp] `typeInfer` -- about elimination rules
 [lisp] `typeCheck` -- about introduction rules
 
+[lisp] `When` and `Unless` -- always return void
+
 [lisp] `typeCheck` during `load`
 
 [lisp] `useBuiltinMod` load `(claim)` from `lisp/builtin/index.lisp`
