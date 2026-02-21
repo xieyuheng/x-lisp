@@ -3,11 +3,21 @@ import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
 export function desugarWhen(exp: L.When, meta?: L.Meta): L.If {
-  return L.If(exp.condition, exp.consequent, L.Void(), exp.meta)
+  return L.If(
+    exp.condition,
+    L.Begin1(exp.consequent, L.Void()),
+    L.Void(),
+    exp.meta,
+  )
 }
 
 export function desugarUnless(exp: L.Unless, meta?: L.Meta): L.If {
-  return L.If(exp.condition, L.Void(), exp.alternative, exp.meta)
+  return L.If(
+    exp.condition,
+    L.Void(),
+    L.Begin1(exp.alternative, L.Void()),
+    exp.meta,
+  )
 }
 
 export function desugarAnd(exps: Array<L.Exp>, meta?: L.Meta): L.Exp {
