@@ -12,7 +12,11 @@ export function RecordValue(
   return Values.TaelValue([], attributes)
 }
 
+export function isTaelValue(value: Value): value is Values.TaelValue {
+  return value.kind === "TaelValue"
+}
+
 export function asTaelValue(value: Value): Values.TaelValue {
-  if (value.kind === "TaelValue") return value
-  throw new Error(`[asTael] fail on: ${formatValue(value)}`)
+  if (isTaelValue(value)) return value
+  throw new Error(`[asTaelValue] fail on: ${formatValue(value)}`)
 }

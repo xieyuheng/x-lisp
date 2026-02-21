@@ -3,8 +3,8 @@ import assert from "node:assert"
 import * as L from "../index.ts"
 import { sexpHasHead } from "./sexpHasHead.ts"
 import { trailLoopOccurred, type Trail } from "./Trail.ts"
-import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
 import { typeEquivalent } from "./typeEquivalent.ts"
+import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
 
 function willThrow(fn: () => void) {
   try {

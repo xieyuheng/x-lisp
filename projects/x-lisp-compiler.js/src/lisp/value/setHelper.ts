@@ -7,7 +7,7 @@ export function isSetValue(value: Value): value is SetValue {
 }
 
 export function asSetValue(value: Value): SetValue {
-  if (value.kind === "SetValue") return value
+  if (isSetValue(value)) return value
   throw new Error(`[asSetValue] fail on: ${formatValue(value)}`)
 }
 
