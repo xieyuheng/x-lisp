@@ -1,12 +1,16 @@
 # type system
 
 [lisp] `createAtomType`
-[lisp] `atomTypeName`
 
 [lisp] `isArrowType`
 [lisp] `createArrowType`
 [lisp] `arrowTypeArgTypes`
 [lisp] `arrowTypeRetType`
+
+[lisp] `isTauType`
+[lisp] `createTauType`
+[lisp] `tauTypeElementTypes`
+[lisp] `tauTypeAttributeTypes`
 
 [lisp] `isType`
 
