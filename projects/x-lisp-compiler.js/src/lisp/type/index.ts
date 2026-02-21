@@ -1,3 +1,5 @@
+export * from "./typeCheck.ts"
 export * from "./typeEquivalent.ts"
 export * from "./typeHelpers.ts"
+export * from "./typeInfer.ts"
 export * from "./typeSubtype.ts"
