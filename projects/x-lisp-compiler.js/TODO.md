@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `createAtomType`
-
 [lisp] `isArrowType`
 [lisp] `createArrowType`
 [lisp] `arrowTypeArgTypes`

@@ -10,6 +10,10 @@ export function isAtomType(value: L.Value): boolean {
   )
 }
 
+export function createAtomType(name: string): L.Value {
+  return L.TaelValue([L.HashtagValue("atom"), L.HashtagValue(name)], {})
+}
+
 export function atomTypeName(value: L.Value): string {
   assert(isAtomType(value))
   return L.asHashtagValue(L.asTaelValue(value).elements[1]).content
