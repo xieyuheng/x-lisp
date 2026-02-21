@@ -1,7 +1,7 @@
 # type system
 
-[lisp] `typeCheck`
-[lisp] `typeInfer`
+[lisp] `typeInfer` -- about elimination rules
+[lisp] `typeCheck` -- about introduction rules
 
 [lisp] `typeCheck` during `load`
 
