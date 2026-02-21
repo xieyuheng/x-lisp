@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `typeSubtype` & `typeEquivalent` -- handle `isArrowType`
-
 [lisp] `typeCheck`
 [lisp] `typeInfer`
 

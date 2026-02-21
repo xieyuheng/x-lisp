@@ -28,10 +28,12 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
 
   if (L.isLiteralType(lhs) && L.isLiteralType(rhs)) {
     assert(L.equal(lhs, rhs))
+    return
   }
 
   if (L.isAtomType(lhs) && L.isAtomType(rhs)) {
     assert(L.atomTypeName(lhs) === L.atomTypeName(rhs))
+    return
   }
 
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
@@ -45,6 +47,13 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
       L.tauTypeAttributeTypes(lhs),
       L.tauTypeAttributeTypes(rhs),
     )
+    return
+  }
+
+  if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
+    // contravariant
+    typeSubtypeMany(trail, L.arrowTypeArgTypes(rhs), L.arrowTypeArgTypes(lhs))
+    typeSubtype(trail, L.arrowTypeRetType(lhs), L.arrowTypeRetType(rhs))
     return
   }
 

@@ -5,6 +5,7 @@ export function isType(value: L.Value): boolean {
   return (
     isLiteralType(value) ||
     isAtomType(value) ||
+    isTauType(value) ||
     isArrowType(value) ||
     value.kind === "DatatypeValue" ||
     value.kind === "DisjointUnionValue"
