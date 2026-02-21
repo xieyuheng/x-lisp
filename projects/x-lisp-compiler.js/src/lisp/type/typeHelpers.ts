@@ -2,7 +2,13 @@ import assert from "node:assert"
 import * as L from "../index.ts"
 
 export function isType(value: L.Value): boolean {
-  return isAtomType(value) || isArrowType(value)
+  return isLiteralType(value) || isAtomType(value) || isArrowType(value)
+}
+
+// LiteralType
+
+export function isLiteralType(value: L.Value): boolean {
+  return L.isAtomValue(value)
 }
 
 // AtomType
@@ -32,6 +38,8 @@ export function isArrowType(value: L.Value): boolean {
     L.isTaelValue(value) &&
     value.elements.length === 3 &&
     L.equal(value.elements[0], L.HashtagValue("->")) &&
-    L.isTaelValue(value.elements[1])
+    value.elements.every(isType) &&
+    L.isTaelValue(value.elements[1]) &&
+    isType(value.elements[2])
   )
 }
