@@ -12,6 +12,11 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     return
   }
 
+  if (L.isAnyType(lhs) && L.isAnyType(rhs)) {
+    assert(L.equal(lhs, rhs))
+    return
+  }
+
   if (L.isLiteralType(lhs) && L.isLiteralType(rhs)) {
     assert(L.equal(lhs, rhs))
     return

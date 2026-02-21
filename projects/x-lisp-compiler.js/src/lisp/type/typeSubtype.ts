@@ -26,6 +26,10 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     return
   }
 
+  if (L.isAnyType(rhs)) {
+    return
+  }
+
   if (L.isLiteralType(lhs) && L.isLiteralType(rhs)) {
     assert(L.equal(lhs, rhs))
     return
