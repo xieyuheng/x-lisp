@@ -1,5 +1,8 @@
 # type system
 
+inline `typeEquivalentAttributes`
+[lisp] ListType RecordType SetType HashType
+
 [lisp] `typeCheck` -- about introduction rules
 
 [lisp] `typeCheck` during `load`
@@ -8,6 +11,8 @@
 [lisp] `projectCheck`
 
 # later
+
+[lisp] parse simple `(quote)` to `Symbol` `Exp`
 
 [lisp] `Arrow` as `Exp`
 [lisp] `The` as `Exp`

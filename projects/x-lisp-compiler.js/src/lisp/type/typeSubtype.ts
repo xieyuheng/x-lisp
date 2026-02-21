@@ -46,11 +46,14 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
       L.tauTypeElementTypes(lhs),
       L.tauTypeElementTypes(rhs),
     )
-    typeSubtypeManyAttributes(
-      trail,
-      L.tauTypeAttributeTypes(lhs),
-      L.tauTypeAttributeTypes(rhs),
-    )
+
+    const lhsRecord = L.tauTypeAttributeTypes(lhs)
+    const rhsRecord = L.tauTypeAttributeTypes(rhs)
+    // rhs has less keys
+    for (const k of Object.keys(rhsRecord)) {
+      typeSubtype(trail, lhsRecord[k], rhsRecord[k])
+    }
+
     return
   }
 
@@ -80,7 +83,13 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
   }
 
   if (lhs.kind === "DisjointUnionValue" && rhs.kind === "DisjointUnionValue") {
-    typeSubtypeManyAttributes(trail, lhs.types, rhs.types)
+    const lhsRecord = lhs.types
+    const rhsRecord = rhs.types
+    // lhs has less keys
+    for (const k of Object.keys(lhsRecord)) {
+      typeSubtype(trail, lhsRecord[k], rhsRecord[k])
+    }
+
     return
   }
 
@@ -97,14 +106,4 @@ function typeSubtypeMany(
 ): void {
   assert(lhs.length === rhs.length)
   arrayZip(lhs, rhs).forEach(([l, r]) => typeSubtype(trail, l, r))
-}
-
-function typeSubtypeManyAttributes(
-  trail: Trail,
-  lhs: Record<string, L.Value>,
-  rhs: Record<string, L.Value>,
-): void {
-  for (const k of Object.keys(lhs)) {
-    typeSubtype(trail, lhs[k], rhs[k])
-  }
 }
