@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `isTauType`
 [lisp] `createTauType`
 [lisp] `tauTypeElementTypes`
 [lisp] `tauTypeAttributeTypes`

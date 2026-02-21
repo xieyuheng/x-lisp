@@ -38,8 +38,8 @@ export function isArrowType(value: L.Value): boolean {
     L.isTaelValue(value) &&
     value.elements.length === 3 &&
     L.equal(value.elements[0], L.HashtagValue("->")) &&
-    value.elements.every(isType) &&
     L.isTaelValue(value.elements[1]) &&
+    L.asTaelValue(value.elements[1]).elements.every(isType) &&
     isType(value.elements[2])
   )
 }
@@ -59,4 +59,15 @@ export function arrowTypeArgTypes(value: L.Value): Array<L.Value> {
 export function arrowTypeRetType(value: L.Value): L.Value {
   assert(isArrowType(value))
   return L.asTaelValue(value).elements[2]
+}
+
+// TauType
+
+export function isTauType(value: L.Value): boolean {
+  return (
+    L.isTaelValue(value) &&
+    L.equal(value.elements[0], L.HashtagValue("tau")) &&
+    value.elements.slice(1).every(isType) &&
+    Object.values(value.attributes).every(isType)
+  )
 }
