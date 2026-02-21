@@ -87,7 +87,7 @@ export function createTauType(
 
 export function tauTypeElementTypes(value: L.Value): Array<L.Value> {
   assert(isTauType(value))
-  return L.asTaelValue(value).elements
+  return L.asTaelValue(value).elements.slice(1)
 }
 
 export function tauTypeAttributeTypes(value: L.Value): Record<string, L.Value> {

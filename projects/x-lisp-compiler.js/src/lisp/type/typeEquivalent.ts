@@ -1,7 +1,6 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import assert from "node:assert"
 import * as L from "../index.ts"
-import { sexpHasHead } from "./sexpHasHead.ts"
 import { trailLoopOccurred, type Trail } from "./Trail.ts"
 import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
 
@@ -13,14 +12,17 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     return
   }
 
-  if (
-    lhs.kind === "TaelValue" &&
-    rhs.kind === "TaelValue" &&
-    sexpHasHead(lhs, L.HashtagValue("tau")) &&
-    sexpHasHead(rhs, L.HashtagValue("tau"))
-  ) {
-    typeEquivalentMany(trail, lhs.elements, rhs.elements)
-    typeEquivalentManyAttributes(trail, lhs.attributes, rhs.attributes)
+  if (L.isTauType(lhs) && L.isTauType(rhs)) {
+    typeEquivalentMany(
+      trail,
+      L.tauTypeElementTypes(lhs),
+      L.tauTypeElementTypes(rhs),
+    )
+    typeEquivalentManyAttributes(
+      trail,
+      L.tauTypeAttributeTypes(lhs),
+      L.tauTypeAttributeTypes(rhs),
+    )
     return
   }
 
