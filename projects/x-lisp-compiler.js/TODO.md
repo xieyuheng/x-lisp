@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `isType`
-
 [lisp] `isArrowType` -- call `isType`
 [lisp] `createArrowType`
 [lisp] `arrowTypeArgTypes`
@@ -11,8 +9,6 @@
 [lisp] `createTauType`
 [lisp] `tauTypeElementTypes`
 [lisp] `tauTypeAttributeTypes`
-
-
 
 [lisp] `typeSubtype` -- handle `ArrowType`
 [lisp] `typeEquivalent` -- handle `ArrowType`
