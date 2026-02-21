@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `isArrowType` -- call `isType`
-[lisp] `createArrowType`
 [lisp] `arrowTypeArgTypes`
 [lisp] `arrowTypeRetType`
 

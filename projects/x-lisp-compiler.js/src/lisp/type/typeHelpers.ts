@@ -43,3 +43,9 @@ export function isArrowType(value: L.Value): boolean {
     isType(value.elements[2])
   )
 }
+
+export function createArrowType(argTypes: Array<L.Value>, retType: L.Value): L.Value {
+  return L.TaelValue([L.HashtagValue("->"),
+                      L.TaelValue(argTypes, {}),
+                      retType], {})
+}
