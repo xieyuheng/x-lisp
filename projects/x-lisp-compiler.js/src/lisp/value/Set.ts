@@ -1,14 +1,14 @@
 import { setAdd } from "./setHelper.ts"
 import { type Value } from "./Value.ts"
 
-export type SetEntry = {
-  hashKey: string
-  element: Value
-}
-
 export type SetValue = {
   kind: "SetValue"
   entries: Map<string, SetEntry>
+}
+
+export type SetEntry = {
+  hashKey: string
+  element: Value
 }
 
 export function SetValue(elements: Array<Value>): SetValue {

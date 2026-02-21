@@ -1,18 +1,12 @@
 # type system
 
-move `SetValue` and `HashValue` to value
-[lisp] API about `AtomType`
+[lisp] `createAtomType`
+[lisp] `atomTypeName`
 
-- `isAtomType`
-- `createAtomType`
-- `atomTypeName`
-
-[lisp] API about `ArrowType`
-
-- `isArrowType`
-- `createArrowType`
-- `arrowTypeArgTypes`
-- `arrowTypeRetType`
+[lisp] `isArrowType`
+[lisp] `createArrowType`
+[lisp] `arrowTypeArgTypes`
+[lisp] `arrowTypeRetType`
 
 [lisp] `isType`
 
