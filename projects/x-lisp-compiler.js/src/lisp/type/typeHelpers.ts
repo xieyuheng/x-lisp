@@ -23,7 +23,7 @@ export function isAtomType(value: L.Value): boolean {
 }
 
 export function createAtomType(name: string): L.Value {
-  return L.TaelValue([L.HashtagValue("atom"), L.HashtagValue(name)], {})
+  return L.ListValue([L.HashtagValue("atom"), L.HashtagValue(name)])
 }
 
 export function atomTypeName(value: L.Value): string {
@@ -44,8 +44,19 @@ export function isArrowType(value: L.Value): boolean {
   )
 }
 
-export function createArrowType(argTypes: Array<L.Value>, retType: L.Value): L.Value {
-  return L.TaelValue([L.HashtagValue("->"),
-                      L.TaelValue(argTypes, {}),
-                      retType], {})
+export function createArrowType(
+  argTypes: Array<L.Value>,
+  retType: L.Value,
+): L.Value {
+  return L.ListValue([L.HashtagValue("->"), L.ListValue(argTypes), retType])
+}
+
+export function arrowTypeArgTypes(value: L.Value): Array<L.Value> {
+  assert(isArrowType(value))
+  return L.asTaelValue(L.asTaelValue(value).elements[1]).elements
+}
+
+export function arrowTypeRetType(value: L.Value): L.Value {
+  assert(isArrowType(value))
+  return L.asTaelValue(value).elements[2]
 }

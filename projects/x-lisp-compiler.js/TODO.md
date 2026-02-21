@@ -1,8 +1,5 @@
 # type system
 
-[lisp] `arrowTypeArgTypes`
-[lisp] `arrowTypeRetType`
-
 [lisp] `isTauType`
 [lisp] `createTauType`
 [lisp] `tauTypeElementTypes`
