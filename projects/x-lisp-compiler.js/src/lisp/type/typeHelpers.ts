@@ -3,6 +3,7 @@ import * as L from "../index.ts"
 
 export function isType(value: L.Value): boolean {
   return (
+    isAtomType(value) ||
     isLiteralType(value) ||
     isAtomType(value) ||
     isTauType(value) ||
@@ -10,6 +11,20 @@ export function isType(value: L.Value): boolean {
     value.kind === "DatatypeValue" ||
     value.kind === "DisjointUnionValue"
   )
+}
+
+// AnyType
+
+export function isAnyType(value: L.Value): boolean {
+  return (
+    L.isTaelValue(value) &&
+    value.elements.length === 1 &&
+    L.equal(value.elements[0], L.HashtagValue("any"))
+  )
+}
+
+export function createAnyType(name: string): L.Value {
+  return L.ListValue([L.HashtagValue("any")])
 }
 
 // LiteralType

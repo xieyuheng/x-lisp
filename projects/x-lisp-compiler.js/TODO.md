@@ -1,5 +1,6 @@
 # type system
 
+[lisp] `typeSubtype` -- call `isAnyType`
 [lisp] `typeInfer` -- about elimination rules
 [lisp] `typeCheck` -- about introduction rules
 
