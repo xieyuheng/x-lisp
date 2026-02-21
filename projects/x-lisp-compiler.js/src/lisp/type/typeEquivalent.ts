@@ -16,6 +16,10 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     assert(L.equal(lhs, rhs))
   }
 
+  if (L.isAtomType(lhs) && L.isAtomType(rhs)) {
+    assert(L.atomTypeName(lhs) === L.atomTypeName(rhs))
+  }
+
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
     typeEquivalentMany(
       trail,
