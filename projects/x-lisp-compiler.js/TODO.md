@@ -1,6 +1,5 @@
 # type system
 
-inline `typeEquivalentAttributes`
 [lisp] ListType RecordType SetType HashType
 
 [lisp] `typeCheck` -- about introduction rules

@@ -33,7 +33,7 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
       L.tauTypeElementTypes(lhs),
       L.tauTypeElementTypes(rhs),
     )
-    typeEquivalentAttributes(
+    typeEquivalentRecord(
       trail,
       L.tauTypeAttributeTypes(lhs),
       L.tauTypeAttributeTypes(rhs),
@@ -70,7 +70,7 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
   }
 
   if (lhs.kind === "DisjointUnionValue" && rhs.kind === "DisjointUnionValue") {
-    typeEquivalentAttributes(trail, lhs.types, rhs.types)
+    typeEquivalentRecord(trail, lhs.types, rhs.types)
     return
   }
 
@@ -89,7 +89,7 @@ function typeEquivalentMany(
   arrayZip(lhs, rhs).forEach(([l, r]) => typeEquivalent(trail, l, r))
 }
 
-function typeEquivalentAttributes(
+function typeEquivalentRecord(
   trail: Trail,
   lhs: Record<string, L.Value>,
   rhs: Record<string, L.Value>,
