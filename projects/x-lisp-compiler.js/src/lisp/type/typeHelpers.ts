@@ -2,7 +2,13 @@ import assert from "node:assert"
 import * as L from "../index.ts"
 
 export function isType(value: L.Value): boolean {
-  return isLiteralType(value) || isAtomType(value) || isArrowType(value)
+  return (
+    isLiteralType(value) ||
+    isAtomType(value) ||
+    isArrowType(value) ||
+    value.kind === "DatatypeValue" ||
+    value.kind === "DisjointUnionValue"
+  )
 }
 
 // LiteralType

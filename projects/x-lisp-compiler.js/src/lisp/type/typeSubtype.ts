@@ -16,6 +16,9 @@ function willThrow(fn: () => void) {
 }
 
 export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
+  assert(L.isType(lhs))
+  assert(L.isType(rhs))
+
   if (trailLoopOccurred(trail, lhs, rhs)) {
     return
   }
@@ -80,9 +83,6 @@ function typeSubtypeManyAttributes(
   lhs: Record<string, L.Value>,
   rhs: Record<string, L.Value>,
 ): void {
-  const leftValues = Object.values(lhs)
-  const rightValues = Object.values(rhs)
-
   for (const k of Object.keys(lhs)) {
     typeSubtype(trail, lhs[k], rhs[k])
   }

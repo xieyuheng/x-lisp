@@ -6,6 +6,9 @@ import { trailLoopOccurred, type Trail } from "./Trail.ts"
 import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
 
 export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
+  assert(L.isType(lhs))
+  assert(L.isType(rhs))
+
   if (trailLoopOccurred(trail, lhs, rhs)) {
     return
   }
