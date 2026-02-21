@@ -29,9 +29,16 @@ export function typeInfer(ctx: L.Ctx, exp: L.Exp): L.Value {
       return type
     }
 
-    // case "Apply": {}
-    // case "And": {}
-    // case "Or": {}
+      // case "Apply": {}
+
+    case "And":
+    case "Or": {
+      for (const subExp of exp.exps) {
+        L.typeCheck(ctx, subExp, L.createAtomType("bool"))
+      }
+
+      return L.createAtomType("bool")
+    }
 
     default: {
       let message = `[typeInfer] unhandled exp`
