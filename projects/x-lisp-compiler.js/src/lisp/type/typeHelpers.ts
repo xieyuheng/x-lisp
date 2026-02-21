@@ -78,3 +78,13 @@ export function createTauType(
 ): L.Value {
   return L.TaelValue([L.HashtagValue("tau"), ...elementTypes], attributeTypes)
 }
+
+export function tauTypeElementTypes(value: L.Value): Array<L.Value> {
+  assert(isTauType(value))
+  return L.asTaelValue(value).elements
+}
+
+export function tauTypeAttributeTypes(value: L.Value): Record<string, L.Value> {
+  assert(isTauType(value))
+  return L.asTaelValue(value).attributes
+}

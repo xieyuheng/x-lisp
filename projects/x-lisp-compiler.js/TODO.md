@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `tauTypeElementTypes` & `tauTypeAttributeTypes`
-
 [lisp] `typeSubtype` -- handle `ArrowType`
 [lisp] `typeEquivalent` -- handle `ArrowType`
 
