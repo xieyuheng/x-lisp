@@ -71,3 +71,10 @@ export function isTauType(value: L.Value): boolean {
     Object.values(value.attributes).every(isType)
   )
 }
+
+export function createTauType(
+  elementTypes: Array<L.Value>,
+  attributeTypes: Record<string, L.Value>,
+): L.Value {
+  return L.TaelValue([L.HashtagValue("tau"), ...elementTypes], attributeTypes)
+}
