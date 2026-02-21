@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `typeInfer` -- `Apply`
 [lisp] `typeCheck` -- about introduction rules
 
 [lisp] `When` and `Unless` -- always return void
