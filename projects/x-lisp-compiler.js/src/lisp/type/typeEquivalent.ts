@@ -51,6 +51,43 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     return
   }
 
+  if (L.isListType(lhs) && L.isListType(rhs)) {
+    typeEquivalentMany(
+      trail,
+      L.listTypeElementType(lhs),
+      L.listTypeElementType(rhs),
+    )
+    return
+  }
+
+  if (L.isSetType(lhs) && L.isSetType(rhs)) {
+    typeEquivalentMany(
+      trail,
+      L.setTypeElementType(lhs),
+      L.setTypeElementType(rhs),
+    )
+    return
+  }
+
+  if (L.isRecordType(lhs) && L.isRecordType(rhs)) {
+    typeEquivalentMany(
+      trail,
+      L.recordTypeValueType(lhs),
+      L.recordTypeValueType(rhs),
+    )
+    return
+  }
+
+  if (L.isHashType(lhs) && L.isHashType(rhs)) {
+    typeEquivalentMany(trail, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs))
+    typeEquivalentMany(
+      trail,
+      L.hashTypeValueType(lhs),
+      L.hashTypeValueType(rhs),
+    )
+    return
+  }
+
   if (lhs.kind === "DatatypeValue" && rhs.kind === "DatatypeValue") {
     trail = [...trail, [lhs, rhs], [rhs, lhs]]
     typeEquivalent(trail, unfoldDatatypeValue(lhs), unfoldDatatypeValue(rhs))
