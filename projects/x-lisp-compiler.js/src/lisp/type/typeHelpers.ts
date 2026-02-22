@@ -110,3 +110,29 @@ export function tauTypeAttributeTypes(value: L.Value): Record<string, L.Value> {
   assert(isTauType(value))
   return L.asTaelValue(value).attributes
 }
+
+// ListType
+
+export function isListType(value: L.Value): boolean {
+  return (
+    L.isTaelValue(value) &&
+    value.elements.length === 2 &&
+    L.equal(value.elements[0], L.HashtagValue("list")) &&
+    isType(value.elements[1])
+  )
+}
+
+export function createListType(elementType: L.Value): L.Value {
+  return L.ListValue([L.HashtagValue("list"), elementType])
+}
+
+export function listTypeElementType(value: L.Value): L.Value {
+  assert(isListType(value))
+  return L.asTaelValue(value).elements[1]
+}
+
+// RecordType
+
+// SetType
+
+// HashType

@@ -1,6 +1,11 @@
 # type system
 
-[lisp] ListType RecordType SetType HashType
+[lisp] RecordType
+[lisp] SetType
+[lisp] HashType
+
+[lisp] typeEquivalent -- handle ListType RecordType SetType HashType
+[lisp] typeSubtype -- handle ListType RecordType SetType HashType
 
 [lisp] `typeCheck` -- about introduction rules
 
