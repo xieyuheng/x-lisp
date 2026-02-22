@@ -115,6 +115,14 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     return
   }
 
+  if (rhs.kind === "DisjointUnionValue") {
+    for (const variantType of Object.values(rhs.types)) {
+      if (!willThrow(() => typeSubtype(trail, lhs, variantType))) {
+        return
+      }
+    }
+  }
+
   let message = `[typeSubtype] fail`
   message += `\n  lhs: ${L.formatValue(lhs)}`
   message += `\n  rhs: ${L.formatValue(rhs)}`
