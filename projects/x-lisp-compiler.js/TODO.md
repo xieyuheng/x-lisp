@@ -1,5 +1,3 @@
-[diary] should the scope of (assign) be limited in (begin)?
-
 # type system
 
 [lisp] `typeCheck` -- If When Unless Cond
