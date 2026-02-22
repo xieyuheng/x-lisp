@@ -1,5 +1,6 @@
 import assert from "node:assert"
 import * as L from "../index.ts"
+import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
 
 export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
   switch (exp.kind) {
@@ -78,9 +79,18 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
 
         return
       } else if (type.kind === "DatatypeValue") {
+        typeCheck(ctx, exp, unfoldDatatypeValue(type))
+        return
+      } else if (type.kind === "DisjointUnionValue") {
+        assert(exp.elements.length > 0)
+        const headExp = exp.elements[0]
+        assert(headExp.kind === "Hashtag")
+        const name = headExp.content
+        assert(type.types[name])
+        typeCheck(ctx, exp, type.types[name])
         return
       } else {
-        return
+        assert(false)
       }
     }
 
@@ -115,7 +125,7 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
   }
 }
 
-export function typeCheckLambda(
+function typeCheckLambda(
   ctx: L.Ctx,
   parameters: Array<string>,
   body: L.Exp,
