@@ -1,6 +1,6 @@
 # type system
 
-[lisp] `typeCheck` -- If When Unless Cond
+[lisp] `typeCheck` -- If
 [lisp] `typeCheck` -- Lambda
 [lisp] `typeCheck` -- Tael
 [lisp] `typeCheck` -- Quote

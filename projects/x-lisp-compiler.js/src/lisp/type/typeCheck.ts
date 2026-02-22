@@ -23,9 +23,21 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
     }
 
     // | If
-    // | When
-    // | Unless
-    // | Cond
+
+    case "When": {
+      typeCheck(ctx, L.desugarWhen(exp), type)
+      return
+    }
+
+    case "Unless": {
+      typeCheck(ctx, L.desugarUnless(exp), type)
+      return
+    }
+
+    case "Cond": {
+      typeCheck(ctx, L.desugarCond(exp.condLines), type)
+      return
+    }
 
     // case "Tael":
 
@@ -48,9 +60,9 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
       return
     }
 
-    case "Quote": {
+    // case "Quote": {
 
-    }
+    // }
 
     default: {
       L.typeSubtype([], L.typeInfer(ctx, exp), type)
