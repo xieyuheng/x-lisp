@@ -22,7 +22,12 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
       return
     }
 
-    // | If
+    case "If": {
+      typeCheck(ctx, exp.condition, L.createAtomType("bool"))
+      typeCheck(ctx, exp.consequent, type)
+      typeCheck(ctx, exp.alternative, type)
+      return
+    }
 
     case "When": {
       typeCheck(ctx, L.desugarWhen(exp), type)

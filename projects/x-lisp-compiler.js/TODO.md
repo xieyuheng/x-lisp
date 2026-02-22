@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `typeCheck` -- If
 [lisp] `typeCheck` -- Lambda
 [lisp] `typeCheck` -- Tael
 [lisp] `typeCheck` -- Quote
