@@ -131,8 +131,44 @@ export function listTypeElementType(value: L.Value): L.Value {
   return L.asTaelValue(value).elements[1]
 }
 
+// SetType
+
+export function isSetType(value: L.Value): boolean {
+  return (
+    L.isTaelValue(value) &&
+    value.elements.length === 2 &&
+    L.equal(value.elements[0], L.HashtagValue("set")) &&
+    isType(value.elements[1])
+  )
+}
+
+export function createSetType(elementType: L.Value): L.Value {
+  return L.ListValue([L.HashtagValue("set"), elementType])
+}
+
+export function setTypeElementType(value: L.Value): L.Value {
+  assert(isSetType(value))
+  return L.asTaelValue(value).elements[1]
+}
+
 // RecordType
 
-// SetType
+export function isRecordType(value: L.Value): boolean {
+  return (
+    L.isTaelValue(value) &&
+    value.elements.length === 2 &&
+    L.equal(value.elements[0], L.HashtagValue("record")) &&
+    isType(value.elements[1])
+  )
+}
+
+export function createRecordType(valueType: L.Value): L.Value {
+  return L.ListValue([L.HashtagValue("record"), valueType])
+}
+
+export function recordTypeValueType(value: L.Value): L.Value {
+  assert(isRecordType(value))
+  return L.asTaelValue(value).elements[1]
+}
 
 // HashType

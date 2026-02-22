@@ -1,7 +1,5 @@
 # type system
 
-[lisp] RecordType
-[lisp] SetType
 [lisp] HashType
 
 [lisp] typeEquivalent -- handle ListType RecordType SetType HashType
