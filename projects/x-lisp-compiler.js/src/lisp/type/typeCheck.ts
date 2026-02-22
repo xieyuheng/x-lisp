@@ -10,10 +10,14 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
       return
     }
 
-    // | Begin1
+    case "Begin1": {
+      typeCheck(ctx, exp.head, L.createAnyType())
+      typeCheck(ctx, exp.body, type)
+      return
+    }
 
     case "BeginSugar": {
-      //
+      typeCheck(ctx, L.desugarBegin(exp.sequence), type)
       return
     }
 

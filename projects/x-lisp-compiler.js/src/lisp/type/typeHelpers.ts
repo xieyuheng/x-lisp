@@ -23,7 +23,7 @@ export function isAnyType(value: L.Value): boolean {
   )
 }
 
-export function createAnyType(name: string): L.Value {
+export function createAnyType(): L.Value {
   return L.ListValue([L.HashtagValue("any")])
 }
 

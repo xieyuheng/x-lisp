@@ -1,19 +1,20 @@
+[diary] should the scope of (assign) be limited in (begin)?
+
 # type system
 
-[lisp] `typeCheck` -- about introduction rules
+[lisp] `typeCheck` -- If When Unless Cond
+[lisp] `typeCheck` -- Tael Set Hash Quote
+[lisp] `typeCheck` -- Lambda
 
 [lisp] `typeCheck` during `load`
-
 [lisp] `useBuiltinMod` load `(claim)` from `lisp/builtin/index.lisp`
 [lisp] `projectCheck`
 
 # later
 
 [lisp] parse simple `(quote)` to `Symbol` `Exp`
-
 [lisp] `Arrow` as `Exp`
 [lisp] `The` as `Exp`
-
 [lisp] `projectInterpret` -- handle dependencies
 
 # pattern match
