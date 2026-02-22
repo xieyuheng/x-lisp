@@ -77,7 +77,35 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
       return
     }
 
-    // case "Tael":
+    case "Tael": {
+      if (L.isListType(type)) {
+        const elementType =  (L.listTypeElementType(type))
+        for (const element of exp.elements) {
+          typeCheck(ctx, element, elementType)
+        }
+
+        for (const value of Object.values(exp.attributes)) {
+          typeCheck(ctx, value, L.createAnyType())
+        }
+
+        return
+      } else if (L.isRecordType(type)) {
+        const valueType =  (L.recordTypeValueType(type))
+        for (const element of exp.elements) {
+          typeCheck(ctx, element, L.createAnyType())
+        }
+
+        for (const value of Object.values(exp.attributes)) {
+          typeCheck(ctx, value, valueType)
+        }
+
+        return
+      } else if (type.kind === "DatatypeValue") {
+        return
+      } else {
+        return
+      }
+    }
 
     case "Set": {
       assert(L.isSetType(type))

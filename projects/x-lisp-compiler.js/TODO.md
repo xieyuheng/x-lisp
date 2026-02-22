@@ -1,6 +1,7 @@
 # type system
 
-[lisp] `typeCheck` -- Tael
+[lisp] `typeCheck` -- Tael -- DatatypeValue & DisjointUnionValue
+[lisp] `typeCheck` -- `typeCheckLambda`
 [lisp] `typeCheck` -- Quote
 
 [lisp] `typeCheck` during `load`
