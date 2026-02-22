@@ -3,7 +3,40 @@ import * as L from "../index.ts"
 
 export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
   switch (exp.kind) {
-    // | Lambda
+    case "Lambda": {
+      assert(L.isArrowType(type))
+      const argTypes = L.arrowTypeArgTypes(type)
+      const retType = L.arrowTypeRetType(type)
+      if (argTypes.length === exp.parameters.length) {
+        ctx = L.ctxPutMany(ctx, exp.parameters, argTypes)
+        typeCheck(ctx, exp.body, retType)
+        return
+      } else if (argTypes.length > exp.parameters.length) {
+        ctx = L.ctxPutMany(
+          ctx,
+          exp.parameters,
+          argTypes.slice(0, exp.parameters.length),
+        )
+        typeCheck(
+          ctx,
+          exp.body,
+          L.createArrowType(argTypes.slice(exp.parameters.length), retType),
+        )
+        return
+      } else {
+        ctx = L.ctxPutMany(
+          ctx,
+          exp.parameters.slice(0, argTypes.length),
+          argTypes,
+        )
+        typeCheck(
+          ctx,
+          L.Lambda(exp.parameters.slice(argTypes.length), exp.body),
+          retType,
+        )
+        return
+      }
+    }
 
     case "Let1": {
       ctx = L.ctxPut(ctx, exp.name, L.typeInfer(ctx, exp.rhs))

@@ -19,6 +19,18 @@ export function ctxPut(ctx: Ctx, name: string, value: Value): Ctx {
   return new Map([...ctx, [name, value]])
 }
 
+export function ctxPutMany(
+  ctx: Ctx,
+  parameters: Array<string>,
+  values: Array<Value>,
+): Ctx {
+  assert(parameters.length === values.length)
+  for (const [index, name] of parameters.entries()) {
+    ctx = ctxPut(ctx, name, values[index])
+  }
+  return ctx
+}
+
 export function ctxUpdate(base: Ctx, ctx: Ctx): Ctx {
   for (const name of ctxNames(ctx)) {
     const value = ctxLookupType(ctx, name)
