@@ -5,37 +5,14 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
   switch (exp.kind) {
     case "Lambda": {
       assert(L.isArrowType(type))
-      const argTypes = L.arrowTypeArgTypes(type)
-      const retType = L.arrowTypeRetType(type)
-      if (argTypes.length === exp.parameters.length) {
-        ctx = L.ctxPutMany(ctx, exp.parameters, argTypes)
-        typeCheck(ctx, exp.body, retType)
-        return
-      } else if (argTypes.length > exp.parameters.length) {
-        ctx = L.ctxPutMany(
-          ctx,
-          exp.parameters,
-          argTypes.slice(0, exp.parameters.length),
-        )
-        typeCheck(
-          ctx,
-          exp.body,
-          L.createArrowType(argTypes.slice(exp.parameters.length), retType),
-        )
-        return
-      } else {
-        ctx = L.ctxPutMany(
-          ctx,
-          exp.parameters.slice(0, argTypes.length),
-          argTypes,
-        )
-        typeCheck(
-          ctx,
-          L.Lambda(exp.parameters.slice(argTypes.length), exp.body),
-          retType,
-        )
-        return
-      }
+      typeCheckLambda(
+        ctx,
+        exp.parameters,
+        exp.body,
+        L.arrowTypeArgTypes(type),
+        L.arrowTypeRetType(type),
+      )
+      return
     }
 
     case "Let1": {
@@ -79,7 +56,7 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
 
     case "Tael": {
       if (L.isListType(type)) {
-        const elementType =  (L.listTypeElementType(type))
+        const elementType = L.listTypeElementType(type)
         for (const element of exp.elements) {
           typeCheck(ctx, element, elementType)
         }
@@ -90,7 +67,7 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
 
         return
       } else if (L.isRecordType(type)) {
-        const valueType =  (L.recordTypeValueType(type))
+        const valueType = L.recordTypeValueType(type)
         for (const element of exp.elements) {
           typeCheck(ctx, element, L.createAnyType())
         }
@@ -126,13 +103,40 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
       return
     }
 
-    // case "Quote": {
-
-    // }
+    case "Quote": {
+      typeCheck(ctx, L.desugarQuote(exp.sexp), type)
+      return
+    }
 
     default: {
       L.typeSubtype([], L.typeInfer(ctx, exp), type)
       return
     }
+  }
+}
+
+export function typeCheckLambda(
+  ctx: L.Ctx,
+  parameters: Array<string>,
+  body: L.Exp,
+  argTypes: Array<L.Value>,
+  retType: L.Value,
+): void {
+  if (argTypes.length === parameters.length) {
+    ctx = L.ctxPutMany(ctx, parameters, argTypes)
+    typeCheck(ctx, body, retType)
+    return
+  } else if (argTypes.length > parameters.length) {
+    ctx = L.ctxPutMany(ctx, parameters, argTypes.slice(0, parameters.length))
+    typeCheck(
+      ctx,
+      body,
+      L.createArrowType(argTypes.slice(parameters.length), retType),
+    )
+    return
+  } else {
+    ctx = L.ctxPutMany(ctx, parameters.slice(0, argTypes.length), argTypes)
+    typeCheck(ctx, L.Lambda(parameters.slice(argTypes.length), body), retType)
+    return
   }
 }
