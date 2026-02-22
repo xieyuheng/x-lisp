@@ -52,7 +52,7 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
   }
 
   if (L.isListType(lhs) && L.isListType(rhs)) {
-    typeEquivalentMany(
+    typeEquivalent(
       trail,
       L.listTypeElementType(lhs),
       L.listTypeElementType(rhs),
@@ -61,16 +61,12 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
   }
 
   if (L.isSetType(lhs) && L.isSetType(rhs)) {
-    typeEquivalentMany(
-      trail,
-      L.setTypeElementType(lhs),
-      L.setTypeElementType(rhs),
-    )
+    typeEquivalent(trail, L.setTypeElementType(lhs), L.setTypeElementType(rhs))
     return
   }
 
   if (L.isRecordType(lhs) && L.isRecordType(rhs)) {
-    typeEquivalentMany(
+    typeEquivalent(
       trail,
       L.recordTypeValueType(lhs),
       L.recordTypeValueType(rhs),
@@ -79,12 +75,8 @@ export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
   }
 
   if (L.isHashType(lhs) && L.isHashType(rhs)) {
-    typeEquivalentMany(trail, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs))
-    typeEquivalentMany(
-      trail,
-      L.hashTypeValueType(lhs),
-      L.hashTypeValueType(rhs),
-    )
+    typeEquivalent(trail, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs))
+    typeEquivalent(trail, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
     return
   }
 

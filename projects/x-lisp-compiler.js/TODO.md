@@ -1,7 +1,5 @@
 # type system
 
-[lisp] typeSubtype -- handle ListType RecordType SetType HashType
-
 [lisp] `typeCheck` -- about introduction rules
 
 [lisp] `typeCheck` during `load`

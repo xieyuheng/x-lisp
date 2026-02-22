@@ -64,6 +64,28 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     return
   }
 
+  if (L.isListType(lhs) && L.isListType(rhs)) {
+    typeSubtype(trail, L.listTypeElementType(lhs), L.listTypeElementType(rhs))
+    return
+  }
+
+  if (L.isSetType(lhs) && L.isSetType(rhs)) {
+    typeSubtype(trail, L.setTypeElementType(lhs), L.setTypeElementType(rhs))
+    return
+  }
+
+  if (L.isRecordType(lhs) && L.isRecordType(rhs)) {
+    typeSubtype(trail, L.recordTypeValueType(lhs), L.recordTypeValueType(rhs))
+    return
+  }
+
+  if (L.isHashType(lhs) && L.isHashType(rhs)) {
+    // key type is invariant
+    typeEquivalent(trail, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs))
+    typeSubtype(trail, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
+    return
+  }
+
   if (lhs.kind === "DatatypeValue" && rhs.kind === "DatatypeValue") {
     trail = [...trail, [lhs, rhs]]
     typeSubtype(trail, unfoldDatatypeValue(lhs), unfoldDatatypeValue(rhs))
