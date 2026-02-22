@@ -24,7 +24,7 @@ export function apply(target: L.Value, args: Array<L.Value>): L.Value {
 
     case "ClosureValue": {
       const newEnv = L.envPutMany(target.env, target.parameters, args)
-      return L.resultValue(L.evaluate(target.mod, newEnv, target.body))
+      return L.evaluate(target.mod, newEnv, target.body)
     }
 
     case "DefinitionValue": {

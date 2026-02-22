@@ -11,7 +11,7 @@ export function unfoldDatatypeValue(
   const types: Record<string, L.Value> = {}
   for (const dataConstructor of datatype.definition.dataConstructors) {
     const elementTypes = dataConstructor.fields.map((field) =>
-      L.resultValue(L.evaluate(datatype.definition.mod, env, field.type)),
+      L.evaluate(datatype.definition.mod, env, field.type),
     )
 
     types[dataConstructor.name] = L.TaelValue(

@@ -3,41 +3,34 @@ import * as L from "../index.ts"
 import { apply } from "./apply.ts"
 import { meaning } from "./meaning.ts"
 
-type Result = [L.Env, L.Value]
-
-export function resultValue(result: Result): L.Value {
-  const [_, value] = result
-  return value
-}
-
-export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): Result {
+export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
   switch (exp.kind) {
     case "Symbol": {
-      return [env, L.SymbolValue(exp.content)]
+      return L.SymbolValue(exp.content)
     }
 
     case "Hashtag": {
-      return [env, L.HashtagValue(exp.content)]
+      return L.HashtagValue(exp.content)
     }
 
     case "String": {
-      return [env, L.StringValue(exp.content)]
+      return L.StringValue(exp.content)
     }
 
     case "Int": {
-      return [env, L.IntValue(exp.content)]
+      return L.IntValue(exp.content)
     }
 
     case "Float": {
-      return [env, L.FloatValue(exp.content)]
+      return L.FloatValue(exp.content)
     }
 
     case "Var": {
       const value = L.envLookupValue(env, exp.name)
-      if (value) return [env, value]
+      if (value) return value
 
       const definition = L.modLookupDefinition(mod, exp.name)
-      if (definition) return [env, meaning(definition)]
+      if (definition) return meaning(definition)
 
       let message = `[evaluate] undefined`
       message += `\n  name: ${exp.name}`
@@ -46,48 +39,42 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): Result {
     }
 
     case "Lambda": {
-      return [env, L.ClosureValue(mod, env, exp.parameters, exp.body)]
+      return L.ClosureValue(mod, env, exp.parameters, exp.body)
     }
 
     case "Apply": {
-      const target = resultValue(evaluate(mod, env, exp.target))
-      const args = exp.args.map((arg) => resultValue(evaluate(mod, env, arg)))
-      return [env, apply(target, args)]
+      const target = evaluate(mod, env, exp.target)
+      const args = exp.args.map((arg) => evaluate(mod, env, arg))
+      return apply(target, args)
     }
 
     case "Let1": {
-      const [rhsEnv, rhsValue] = evaluate(mod, env, exp.rhs)
-      return evaluate(mod, L.envPut(rhsEnv, exp.name, rhsValue), exp.body)
+      const rhsValue = evaluate(mod, env, exp.rhs)
+      return evaluate(mod, L.envPut(env, exp.name, rhsValue), exp.body)
     }
 
     case "Begin1": {
-      const [headEnv, _] = evaluate(mod, env, exp.head)
-      return evaluate(mod, headEnv, exp.body)
+      evaluate(mod, env, exp.head)
+      return evaluate(mod, env, exp.body)
     }
 
     case "BeginSugar": {
-      let lastEnv = env
-      let lastValue: L.Value = L.VoidValue()
-      for (const subExp of exp.sequence) {
-        const [subEnv, subValue] = evaluate(mod, lastEnv, subExp)
-        lastEnv = subEnv
-        lastValue = subValue
-      }
-
-      return [lastEnv, lastValue]
+      return evaluate(mod, env, L.desugarBegin(exp.sequence))
     }
 
     case "AssignSugar": {
-      const [rhsEnv, rhsValue] = evaluate(mod, env, exp.rhs)
-      return [L.envPut(rhsEnv, exp.name, rhsValue), L.VoidValue()]
+      let message = `[evaluate] unhandled exp`
+      message += `\n  exp: ${L.formatExp(exp)}`
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+      else throw new Error(message)
     }
 
     case "If": {
-      const [conditionEnv, conditionValue] = evaluate(mod, env, exp.condition)
+      const conditionValue = evaluate(mod, env, exp.condition)
       if (L.isTrueValue(conditionValue)) {
-        return evaluate(mod, conditionEnv, exp.consequent)
+        return evaluate(mod, env, exp.consequent)
       } else {
-        return evaluate(mod, conditionEnv, exp.alternative)
+        return evaluate(mod, env, exp.alternative)
       }
     }
 
