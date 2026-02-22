@@ -22,7 +22,7 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     return
   }
 
-  if (!willThrow(() => typeEquivalent(trail, lhs, rhs))) {
+  if (!willThrow(() => typeEquivalent([], lhs, rhs))) {
     return
   }
 
@@ -81,7 +81,7 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
 
   if (L.isHashType(lhs) && L.isHashType(rhs)) {
     // key type is invariant
-    typeEquivalent(trail, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs))
+    typeEquivalent([], L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs))
     typeSubtype(trail, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
     return
   }

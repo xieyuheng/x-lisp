@@ -1,9 +1,11 @@
 # type system
-
+[lisp] `typeSubtype` should not pass `trail` to `typeEquivalent`
 [lisp] `Arrow` as `Exp`
 [lisp] `The` as `Exp`
+[lisp] `Polymorphic` as `Exp`
+[lisp] `evaluate` -- `Polymorphic` introduce new type variables
 
-[lisp] `typeCheck` during `load`
+[lisp] `stageTypeCheck`
 
 # later
 
