@@ -1,3 +1,7 @@
+import fs from "node:fs"
+import path from "node:path"
+import { fileURLToPath } from "node:url"
+import { runCode } from "../load/index.ts"
 import { createMod, type Mod } from "../mod/index.ts"
 import { builtinAssert } from "./builtinAssert.ts"
 import { builtinBool } from "./builtinBool.ts"
@@ -47,6 +51,11 @@ export function useBuiltinMod(): Mod {
   builtinSet(mod)
   builtinHash(mod)
   builtinAssert(mod)
+
+  const currentDir = path.dirname(fileURLToPath(import.meta.url))
+  const schemaFile = path.join(currentDir, "../../../lisp/builtin/index.lisp")
+  const schemaCode = fs.readFileSync(schemaFile, "utf-8")
+  runCode(mod, schemaCode)
 
   return mod
 }

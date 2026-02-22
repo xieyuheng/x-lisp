@@ -16,13 +16,6 @@
   (assert-equal "aa" (my-string-repeat 2 "a"))
   (assert-equal "aaa" (my-string-repeat 3 "a")))
 
-(define (my-string-repeat n string)
-  (if (equal? n 0)
-    ""
-    (string-append
-     string
-     (my-string-repeat (isub n 1) string))))
-
 ;;; ShrinkPass
 
 (define (main)
@@ -31,13 +24,6 @@
   (assert-equal "aa" (my-string-repeat 2 "a"))
   (assert-equal "aaa" (my-string-repeat 3 "a")))
 
-(define (my-string-repeat n string)
-  (if (equal? n 0)
-    ""
-    (string-append
-     string
-     (my-string-repeat (isub n 1) string))))
-
 ;;; UniquifyPass
 
 (define (main)
@@ -45,13 +31,6 @@
   (assert-equal "a" (my-string-repeat 1 "a"))
   (assert-equal "aa" (my-string-repeat 2 "a"))
   (assert-equal "aaa" (my-string-repeat 3 "a")))
-
-(define (my-string-repeat n string)
-  (if (equal? n 0)
-    ""
-    (string-append
-     string
-     (my-string-repeat (isub n 1) string))))
 
 ;;; LiftLambdaPass
 

@@ -8,19 +8,13 @@
 
 (define (main) (assert-equal 81 (square (square 3))))
 
-(define (square x) (imul x x))
-
 ;;; ShrinkPass
 
 (define (main) (assert-equal 81 (square (square 3))))
 
-(define (square x) (imul x x))
-
 ;;; UniquifyPass
 
 (define (main) (assert-equal 81 (square (square 3))))
-
-(define (square x) (imul x x))
 
 ;;; LiftLambdaPass
 

@@ -1,13 +1,13 @@
 # type system
 
-[lisp] `useBuiltinMod` load `(claim)` from `lisp/builtin/index.lisp`
+[lisp] `Arrow` as `Exp`
+[lisp] `The` as `Exp`
+
 [lisp] `typeCheck` during `load`
 
 # later
 
 [lisp] parse simple `(quote)` to `Symbol` `Exp`
-[lisp] `Arrow` as `Exp`
-[lisp] `The` as `Exp`
 [lisp] `projectInterpret` -- handle dependencies
 
 # pattern match

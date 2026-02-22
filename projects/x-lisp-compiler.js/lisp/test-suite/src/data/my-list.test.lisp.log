@@ -36,30 +36,6 @@
   (assert-equal (li-tail list) nil)
   (assert-equal (li 1 nil) ((li 1) nil)))
 
-(define-datatype (my-list-t E)
-  nil
-  (li (head E) (tail (my-list-t E))))
-
-(define nil #nil)
-
-(define (li head tail) [#li head tail])
-
-(define (li-head target) (list-get 1 target))
-
-(define (li-tail target) (list-get 2 target))
-
-(define (li-put-head value target)
-  (list-put 1 value target))
-
-(define (li-put-tail value target)
-  (list-put 2 value target))
-
-(define (li-put-head! value target)
-  (list-put! 1 value target))
-
-(define (li-put-tail! value target)
-  (list-put! 2 value target))
-
 ;;; ShrinkPass
 
 (define (main)
@@ -97,30 +73,6 @@
   (assert-equal (li-tail list) nil)
   (assert-equal (li 1 nil) ((li 1) nil)))
 
-(define-datatype (my-list-t E)
-  nil
-  (li (head E) (tail (my-list-t E))))
-
-(define nil #nil)
-
-(define (li head tail) [#li head tail])
-
-(define (li-head target) (list-get 1 target))
-
-(define (li-tail target) (list-get 2 target))
-
-(define (li-put-head value target)
-  (list-put 1 value target))
-
-(define (li-put-tail value target)
-  (list-put 2 value target))
-
-(define (li-put-head! value target)
-  (list-put! 1 value target))
-
-(define (li-put-tail! value target)
-  (list-put! 2 value target))
-
 ;;; UniquifyPass
 
 (define (main)
@@ -157,30 +109,6 @@
   (li-put-tail! nil list₁)
   (assert-equal (li-tail list₁) nil)
   (assert-equal (li 1 nil) ((li 1) nil)))
-
-(define-datatype (my-list-t E)
-  nil
-  (li (head E) (tail (my-list-t E))))
-
-(define nil #nil)
-
-(define (li head tail) [#li head tail])
-
-(define (li-head target) (list-get 1 target))
-
-(define (li-tail target) (list-get 2 target))
-
-(define (li-put-head value target)
-  (list-put 1 value target))
-
-(define (li-put-tail value target)
-  (list-put 2 value target))
-
-(define (li-put-head! value target)
-  (list-put! 1 value target))
-
-(define (li-put-tail! value target)
-  (list-put! 2 value target))
 
 ;;; LiftLambdaPass
 
