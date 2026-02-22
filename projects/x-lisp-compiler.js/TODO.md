@@ -1,8 +1,7 @@
 # type system
 
-[lisp] `typeCheck` during `load`
 [lisp] `useBuiltinMod` load `(claim)` from `lisp/builtin/index.lisp`
-[lisp] `projectCheck`
+[lisp] `typeCheck` during `load`
 
 # later
 

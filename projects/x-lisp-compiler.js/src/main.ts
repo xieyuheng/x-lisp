@@ -9,7 +9,6 @@ import {
   loadModuleProject,
   loadProject,
   projectBuild,
-  projectCheck,
   projectClean,
   projectInterpret,
   projectTest,
@@ -34,13 +33,10 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  "module:check": ({ args: [file] }) => projectCheck(loadModuleProject(file)),
   "module:interpret": ({ args: [file] }) =>
     projectInterpret(loadModuleProject(file)),
   "module:test": ({ args: [file] }) => projectTest(loadModuleProject(file)),
   "module:build": ({ args: [file] }) => projectBuild(loadModuleProject(file)),
-  "project:check": ({ options }) =>
-    projectCheck(loadProject(options["--config"])),
   "project:interpret": ({ options }) =>
     projectInterpret(loadProject(options["--config"])),
   "project:test": ({ options }) =>
