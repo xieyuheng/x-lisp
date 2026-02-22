@@ -1,8 +1,10 @@
 # type system
 
 [lisp] `typeCheck` -- If When Unless Cond
-[lisp] `typeCheck` -- Tael Set Hash Quote
 [lisp] `typeCheck` -- Lambda
+[lisp] `typeCheck` -- Tael
+[lisp] `typeCheck` -- Quote
+
 [lisp] `typeCheck` during `load`
 [lisp] `useBuiltinMod` load `(claim)` from `lisp/builtin/index.lisp`
 [lisp] `projectCheck`

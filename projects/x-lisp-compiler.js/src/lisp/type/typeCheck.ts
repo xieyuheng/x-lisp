@@ -1,3 +1,4 @@
+import assert from "node:assert"
 import * as L from "../index.ts"
 
 export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
@@ -25,10 +26,31 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
     // | When
     // | Unless
     // | Cond
-    // | Tael
-    // | Set
-    // | Hash
-    // | Quote
+
+    // case "Tael":
+
+    case "Set": {
+      assert(L.isSetType(type))
+      for (const element of exp.elements) {
+        typeCheck(ctx, element, L.setTypeElementType(type))
+      }
+
+      return
+    }
+
+    case "Hash": {
+      assert(L.isHashType(type))
+      for (const entry of exp.entries) {
+        typeCheck(ctx, entry.key, L.hashTypeKeyType(type))
+        typeCheck(ctx, entry.value, L.hashTypeValueType(type))
+      }
+
+      return
+    }
+
+    case "Quote": {
+
+    }
 
     default: {
       L.typeSubtype([], L.typeInfer(ctx, exp), type)
