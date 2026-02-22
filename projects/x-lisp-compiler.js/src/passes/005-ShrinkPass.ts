@@ -35,25 +35,7 @@ function onExp(exp: L.Exp): L.Exp {
     }
 
     case "BeginSugar": {
-      if (exp.sequence.length === 0) {
-        let message = `[ShrinkPass] (begin) must not be empty`
-        message += `\n  exp: ${L.formatExp(exp)}`
-        if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
-        else throw new Error(message)
-      }
-
-      const [head, ...rest] = exp.sequence
-      if (rest.length === 0) {
-        return onExp(head)
-      }
-
-      const body = L.BeginSugar(rest, exp.meta)
-
-      if (head.kind === "AssignSugar") {
-        return L.Let1(head.name, onExp(head.rhs), onExp(body), exp.meta)
-      } else {
-        return L.Begin1(onExp(head), onExp(body), head.meta)
-      }
+      return onExp(L.desugarBegin(exp.sequence, exp.meta))
     }
 
     case "AssignSugar": {
@@ -91,11 +73,11 @@ function onExp(exp: L.Exp): L.Exp {
     }
 
     case "And": {
-      return onExp(L.desugarAnd(exp.exps.map(onExp), exp.meta))
+      return onExp(L.desugarAnd(exp.exps, exp.meta))
     }
 
     case "Or": {
-      return onExp(L.desugarOr(exp.exps.map(onExp), exp.meta))
+      return onExp(L.desugarOr(exp.exps, exp.meta))
     }
 
     case "Cond": {

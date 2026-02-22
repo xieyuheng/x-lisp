@@ -2,6 +2,25 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
+export function desugarBegin(sequence: Array<L.Exp>, meta?: L.Meta): L.Exp {
+  if (sequence.length === 0) {
+    let message = `[desugarBegin] (begin) must not be empty`
+    if (meta) throw new S.ErrorWithMeta(message, meta)
+    else throw new Error(message)
+  }
+
+  const [head, ...rest] = sequence
+  if (rest.length === 0) {
+    return head
+  }
+
+  if (head.kind === "AssignSugar") {
+    return L.Let1(head.name, head.rhs, desugarBegin(rest), meta)
+  } else {
+    return L.Begin1(head, desugarBegin(rest), meta)
+  }
+}
+
 export function desugarWhen(exp: L.When, meta?: L.Meta): L.If {
   return L.If(
     exp.condition,
