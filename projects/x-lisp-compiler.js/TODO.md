@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `stageDefine` handle `DefineType`
 [lisp] `stageTypeCheck` -- every `(define)` need a `(claim)`
 
 # type system

@@ -5,5 +5,9 @@ export function stageSetupVariable(mod: L.Mod): void {
     if (definition.kind === "VariableDefinition") {
       definition.value = L.evaluate(mod, L.emptyEnv(), definition.body)
     }
+
+    if (definition.kind === "TypeDefinition") {
+      definition.value = L.evaluate(mod, L.emptyEnv(), definition.body)
+    }
   }
 }
