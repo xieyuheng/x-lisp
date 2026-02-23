@@ -1,7 +1,5 @@
 # type system
 
-[lisp] parse `(->)`
-[lisp] parse `(the)`
 [lisp] parse simple `(quote)` to `Symbol` `Exp`
 
 [lisp] `(define-type)` -- like `(define)` but no need `(claim)`
