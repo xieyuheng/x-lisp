@@ -3,6 +3,7 @@ import * as L from "../index.ts"
 
 export function isType(value: L.Value): boolean {
   return (
+    isVarType(value) ||
     isAtomType(value) ||
     isLiteralType(value) ||
     isAtomType(value) ||
@@ -11,6 +12,26 @@ export function isType(value: L.Value): boolean {
     value.kind === "DatatypeValue" ||
     value.kind === "DisjointUnionValue"
   )
+}
+
+// VarType
+
+export function isVarType(value: L.Value): boolean {
+  return (
+    L.isTaelValue(value) &&
+    value.elements.length === 2 &&
+    L.equal(value.elements[0], L.HashtagValue("var")) &&
+    L.isIntValue(value.elements[1])
+  )
+}
+
+export function createVarType(serialNumber: bigint): L.Value {
+  return L.ListValue([L.HashtagValue("var"), L.IntValue(serialNumber)])
+}
+
+export function varTypeSerialNumber(value: L.Value): bigint {
+  assert(isVarType(value))
+  return L.asIntValue(L.asTaelValue(value).elements[1]).content
 }
 
 // AnyType

@@ -1,11 +1,27 @@
 # type system
-[lisp] `typeSubtype` should not pass `trail` to `typeEquivalent`
+
 [lisp] `Arrow` as `Exp`
 [lisp] `The` as `Exp`
-[lisp] `Polymorphic` as `Exp`
-[lisp] `evaluate` -- `Polymorphic` introduce new type variables
 
-[lisp] `stageTypeCheck`
+[lisp] `(define-type)` -- like `(define)` but no need `(claim)`
+[lisp] `stageTypeCheck` -- every `(define)` need a `(claim)`
+
+# type system
+
+[lisp] `typeEquivalent` support `VarType`
+[lisp] `typeSubtype` support `VarType`
+
+`Subst`
+`emptySubst`
+`extendSubst`
+
+`substApplyToType`
+
+`unfiyType`
+
+[lisp] `Polymorphic` as `Exp`
+
+[lisp] `evaluate` -- `Polymorphic` introduce new type variables
 
 # later
 
