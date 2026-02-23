@@ -1,6 +1,16 @@
 (define-type bool-t [#atom #bool])
 (define-type int-t [#atom #int])
 (define-type float-t [#atom #float])
+(define-type string-t [#atom #string])
+(define-type symbol-t [#atom #symbol])
+(define-type hashtag-t [#atom #hashtag])
+(define-type void-t [#atom #void])
+(define-type null-t [#atom #null])
+(define-type any-t [#any])
+
+;; assert
+
+(claim assert-equal (-> any-t any-t void-t))
 
 ;; bool
 

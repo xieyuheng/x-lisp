@@ -4,6 +4,7 @@ import * as L from "../index.ts"
 export function isType(value: L.Value): boolean {
   return (
     isVarType(value) ||
+    isAnyType(value) ||
     isAtomType(value) ||
     isLiteralType(value) ||
     isAtomType(value) ||

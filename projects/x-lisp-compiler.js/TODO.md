@@ -1,6 +1,4 @@
-# type system
-
-[lisp] `handleTypeCheck` -- every `(define)` need a `(claim)`
+[lisp] improve `performTypeCheck` for current dev -- not throw
 
 # type system
 
@@ -18,6 +16,8 @@
 [lisp] `Polymorphic` as `Exp`
 
 [lisp] `evaluate` -- `Polymorphic` introduce new type variables
+
+[lisp] complete `builtin/index.lisp`
 
 # later
 

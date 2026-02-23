@@ -1,5 +1,6 @@
 import assert from "node:assert"
 import * as L from "../index.ts"
+import * as S from "@xieyuheng/sexp.js"
 
 export function typeInfer(ctx: L.Ctx, exp: L.Exp): L.Value {
   switch (exp.kind) {
@@ -25,7 +26,13 @@ export function typeInfer(ctx: L.Ctx, exp: L.Exp): L.Value {
 
     case "Var": {
       const type = L.ctxLookupType(ctx, exp.name)
-      assert(type)
+      if (!type) {
+        let message = `[typeInfer] found untyped variable`
+        message += `\n  name: ${exp.name}`
+        if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+        else throw new Error(message)
+      }
+
       return type
     }
 
