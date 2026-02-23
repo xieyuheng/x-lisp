@@ -1,5 +1,7 @@
 [lisp] improve `performTypeCheck` for current dev -- not throw
 
+- be like typescript, where type checking is optional, so it is easier to self boot
+
 # type system
 
 [lisp] `typeEquivalent` support `VarType`
