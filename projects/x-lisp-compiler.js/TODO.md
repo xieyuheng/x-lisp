@@ -1,7 +1,6 @@
 # type system
 
 [lisp] `setupClaim`
-[lisp] `modLookupClaimedType`
 [lisp] `handleTypeCheck` -- every `(define)` need a `(claim)`
 
 # type system

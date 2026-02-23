@@ -1,6 +1,7 @@
 import * as S from "@xieyuheng/sexp.js"
 import { type Definition } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
+import * as L from "../index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { type Value } from "../value/index.ts"
 
@@ -47,6 +48,19 @@ export function modClaim(mod: Mod, name: string, exp: Exp): void {
   }
 
   mod.claimed.set(name, { exp })
+}
+
+export function modLookupClaimedType(
+  mod: Mod,
+  name: string,
+): Value | undefined {
+  const claimedEntry = mod.claimed.get(name)
+  if (!claimedEntry) return undefined
+  if (claimedEntry.type) return claimedEntry.type
+
+  const type = L.evaluate(mod, L.emptyEnv(), claimedEntry.exp)
+  claimedEntry.type = type
+  return type
 }
 
 export function modLookupDefinition(
