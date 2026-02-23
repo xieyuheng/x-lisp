@@ -23,6 +23,7 @@ export type Exp =
   | Set
   | Hash
   | Quote
+  | Arrow
 
 export type Symbol = {
   kind: "Symbol"
@@ -371,6 +372,22 @@ export function Quote(sexp: Sexp, meta?: Meta): Quote {
   return {
     kind: "Quote",
     sexp,
+    meta,
+  }
+}
+
+export type Arrow = {
+  kind: "Arrow"
+  argTypes: Array<Exp>
+  retType: Exp
+  meta?: Meta
+}
+
+export function Arrow(argTypes: Array<Exp>, retType: Exp, meta?: Meta): Arrow {
+  return {
+    kind: "Arrow",
+    argTypes,
+    retType,
     meta,
   }
 }

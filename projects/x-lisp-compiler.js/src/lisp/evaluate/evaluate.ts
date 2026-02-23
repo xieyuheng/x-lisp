@@ -113,5 +113,11 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
     case "Quote": {
       return evaluate(mod, env, L.desugarQuote(exp.sexp))
     }
+
+    case "Arrow": {
+      const argTypes = exp.argTypes.map(argType => evaluate(mod, env, argType))
+      const retType = evaluate(mod, env, exp.retType)
+      return L.createArrowType(argTypes, retType)
+    }
   }
 }

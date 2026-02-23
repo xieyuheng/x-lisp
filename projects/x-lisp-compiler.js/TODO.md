@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `Arrow` as `Exp`
 [lisp] `The` as `Exp`
 
 [lisp] `(define-type)` -- like `(define)` but no need `(claim)`

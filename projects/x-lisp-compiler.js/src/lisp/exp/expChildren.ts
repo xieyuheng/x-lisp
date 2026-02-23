@@ -77,5 +77,9 @@ export function expChildren(exp: Exp): Array<Exp> {
     case "Hash": {
       return exp.entries.flatMap((entry) => [entry.key, entry.value])
     }
+
+    case "Arrow": {
+      return [...exp.argTypes, exp.retType]
+    }
   }
 }

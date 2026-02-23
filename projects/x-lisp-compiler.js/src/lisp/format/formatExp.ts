@@ -151,6 +151,12 @@ export function formatExp(exp: Exp): string {
     case "Quote": {
       return `(@quote ${S.formatSexp(exp.sexp)})`
     }
+
+    case "Arrow": {
+      const argTypes = exp.argTypes.map(formatExp).join(" ")
+      const retType = formatExp(exp.retType)
+      return `(-> ${argTypes} ${retType})`
+    }
   }
 }
 
