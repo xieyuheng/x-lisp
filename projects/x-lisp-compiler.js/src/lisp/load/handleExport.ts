@@ -1,6 +1,6 @@
 import * as L from "../index.ts"
 
-export function stageExport(mod: L.Mod, stmt: L.Stmt): void {
+export function handleExport(mod: L.Mod, stmt: L.Stmt): void {
   if (stmt.kind === "Export") {
     for (const name of stmt.names) {
       mod.exported.add(name)
