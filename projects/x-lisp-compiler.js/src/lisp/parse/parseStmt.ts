@@ -27,6 +27,16 @@ export const parseStmt = S.createRouter<L.Stmt>({
     )
   },
 
+  "(cons* 'define-type name body)": ({ name, body }, { sexp }) => {
+    const keyword = S.asTael(sexp).elements[1]
+    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+    return L.DefineType(
+      S.symbolContent(name),
+      L.BeginSugar(S.listElements(body).map(parseExp), meta),
+      meta,
+    )
+  },
+
   "(cons* 'export names)": ({ names }, { meta }) => {
     return L.Export(S.listElements(names).map(S.symbolContent), meta)
   },

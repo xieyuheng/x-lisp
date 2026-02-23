@@ -1,7 +1,6 @@
 # type system
 
-[lisp] parse `(define-type)`
-[lisp] `(define-type)` -- like `(define)` but no need `(claim)`
+[lisp] `stageDefine` handle `DefineType`
 [lisp] `stageTypeCheck` -- every `(define)` need a `(claim)`
 
 # type system
