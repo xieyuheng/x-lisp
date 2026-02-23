@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `setupClaim`
 [lisp] `handleTypeCheck` -- every `(define)` need a `(claim)`
 
 # type system

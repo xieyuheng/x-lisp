@@ -5,6 +5,7 @@ import { handleExport } from "./handleExport.ts"
 import { handleImport } from "./handleImport.ts"
 import { setupType } from "./setupType.ts"
 import { setupVariable } from "./setupVariable.ts"
+import { setupClaim } from "./setupClaim.ts"
 
 export function runCode(mod: L.Mod, code: string): void {
   return runSexps(mod, S.parseSexps(code, { url: mod.url }))
@@ -20,4 +21,5 @@ export function runSexps(mod: L.Mod, sexps: Array<S.Sexp>): void {
 
   setupType(mod)
   setupVariable(mod)
+  setupClaim(mod)
 }
