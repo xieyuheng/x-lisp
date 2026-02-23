@@ -8,8 +8,8 @@ export type Definition =
   | PrimitiveVariableDefinition
   | FunctionDefinition
   | VariableDefinition
-  | DatatypeDefinition
   | TypeDefinition
+  | DatatypeDefinition
 
 export type ValueFunction = (...args: Array<Value>) => Value
 
@@ -112,6 +112,30 @@ export function VariableDefinition(
   }
 }
 
+export type TypeDefinition = {
+  kind: "TypeDefinition"
+  mod: Mod
+  name: string
+  body: Exp
+  value?: Value
+  meta?: Meta
+}
+
+export function TypeDefinition(
+  mod: Mod,
+  name: string,
+  body: Exp,
+  meta?: Meta,
+): TypeDefinition {
+  return {
+    kind: "TypeDefinition",
+    mod,
+    name,
+    body,
+    meta,
+  }
+}
+
 export type DatatypeDefinition = {
   kind: "DatatypeDefinition"
   mod: Mod
@@ -149,30 +173,6 @@ export function DatatypeDefinition(
     name,
     datatypeConstructor,
     dataConstructors,
-    meta,
-  }
-}
-
-export type TypeDefinition = {
-  kind: "TypeDefinition"
-  mod: Mod
-  name: string
-  body: Exp
-  value?: Value
-  meta?: Meta
-}
-
-export function TypeDefinition(
-  mod: Mod,
-  name: string,
-  body: Exp,
-  meta?: Meta,
-): TypeDefinition {
-  return {
-    kind: "TypeDefinition",
-    mod,
-    name,
-    body,
     meta,
   }
 }
