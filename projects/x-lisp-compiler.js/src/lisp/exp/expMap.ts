@@ -105,5 +105,9 @@ export function expMap(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
     case "Arrow": {
       return L.Arrow(exp.argTypes.map(onExp), onExp(exp.retType), exp.meta)
     }
+
+    case "The": {
+      return L.The(onExp(exp.type), onExp(exp.exp), exp.meta)
+    }
   }
 }

@@ -115,9 +115,15 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
     }
 
     case "Arrow": {
-      const argTypes = exp.argTypes.map(argType => evaluate(mod, env, argType))
+      const argTypes = exp.argTypes.map((argType) =>
+        evaluate(mod, env, argType),
+      )
       const retType = evaluate(mod, env, exp.retType)
       return L.createArrowType(argTypes, retType)
+    }
+
+    case "The": {
+      return evaluate(mod, env, exp.exp)
     }
   }
 }

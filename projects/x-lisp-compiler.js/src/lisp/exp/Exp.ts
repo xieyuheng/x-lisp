@@ -24,6 +24,7 @@ export type Exp =
   | Hash
   | Quote
   | Arrow
+  | The
 
 export type Symbol = {
   kind: "Symbol"
@@ -388,6 +389,22 @@ export function Arrow(argTypes: Array<Exp>, retType: Exp, meta?: Meta): Arrow {
     kind: "Arrow",
     argTypes,
     retType,
+    meta,
+  }
+}
+
+export type The = {
+  kind: "The"
+  type: Exp
+  exp: Exp
+  meta?: Meta
+}
+
+export function The(type: Exp, exp: Exp, meta?: Meta): The {
+  return {
+    kind: "The",
+    type,
+    exp,
     meta,
   }
 }

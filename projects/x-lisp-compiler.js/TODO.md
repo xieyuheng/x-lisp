@@ -1,6 +1,8 @@
 # type system
 
-[lisp] `The` as `Exp`
+[lisp] parse `(->)`
+[lisp] parse `(the)`
+[lisp] parse simple `(quote)` to `Symbol` `Exp`
 
 [lisp] `(define-type)` -- like `(define)` but no need `(claim)`
 [lisp] `stageTypeCheck` -- every `(define)` need a `(claim)`
@@ -24,7 +26,6 @@
 
 # later
 
-[lisp] parse simple `(quote)` to `Symbol` `Exp`
 [lisp] `projectInterpret` -- handle dependencies
 
 # pattern match

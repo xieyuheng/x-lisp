@@ -157,6 +157,10 @@ export function formatExp(exp: Exp): string {
       const retType = formatExp(exp.retType)
       return `(-> ${argTypes} ${retType})`
     }
+
+    case "The": {
+      return `(the ${formatExp(exp.type)} ${formatExp(exp.exp)})`
+    }
   }
 }
 

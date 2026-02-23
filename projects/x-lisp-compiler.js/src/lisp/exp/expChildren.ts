@@ -81,5 +81,9 @@ export function expChildren(exp: Exp): Array<Exp> {
     case "Arrow": {
       return [...exp.argTypes, exp.retType]
     }
+
+    case "The": {
+      return [exp.type, exp.exp]
+    }
   }
 }
