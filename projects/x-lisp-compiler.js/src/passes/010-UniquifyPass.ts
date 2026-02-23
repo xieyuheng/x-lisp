@@ -17,7 +17,8 @@ function onDefinition(definition: L.Definition): null {
     }
 
     case "FunctionDefinition":
-    case "VariableDefinition": {
+    case "VariableDefinition":
+    case "TypeDefinition": {
       definition.body = onExp({}, {}, definition.body)
       return null
     }

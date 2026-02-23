@@ -25,6 +25,12 @@ export function formatDefinition(definition: Definition): string {
       return `(define ${name} ${body})`
     }
 
+    case "TypeDefinition": {
+      const name = definition.name
+      const body = formatBody(definition.body)
+      return `(define-type ${name} ${body})`
+    }
+
     case "DatatypeDefinition": {
       const dataConstructors = definition.dataConstructors
         .map(formatDataConstructor)

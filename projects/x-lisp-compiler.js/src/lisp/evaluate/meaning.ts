@@ -16,7 +16,17 @@ export function meaning(definition: L.Definition): L.Value {
 
     case "VariableDefinition": {
       if (!definition.value) {
-        let message = `[meaning] VariableDefinition has no value`
+        let message = `[meaning] VariableDefinition not setup`
+        message += `\n  name: ${definition.name}`
+        throw new Error(message)
+      }
+
+      return definition.value
+    }
+
+    case "TypeDefinition": {
+      if (!definition.value) {
+        let message = `[meaning] TypeDefinition not setup`
         message += `\n  name: ${definition.name}`
         throw new Error(message)
       }

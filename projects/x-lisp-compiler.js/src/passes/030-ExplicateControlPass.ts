@@ -41,7 +41,8 @@ function onDefinition(
       ]
     }
 
-    case "VariableDefinition": {
+    case "VariableDefinition":
+    case "TypeDefinition": {
       const state = createState()
       const block = B.Block("body", [])
       addBlock(state, block)

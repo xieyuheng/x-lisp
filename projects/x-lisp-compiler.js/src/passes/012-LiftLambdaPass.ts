@@ -28,7 +28,8 @@ function onDefinition(
     }
 
     case "FunctionDefinition":
-    case "VariableDefinition": {
+    case "VariableDefinition":
+    case "TypeDefinition": {
       const lifted: Array<L.Definition> = []
       const state = { mod, lifted, definition }
       definition.body = onExp(state, definition.body)

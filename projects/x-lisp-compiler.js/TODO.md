@@ -1,7 +1,6 @@
 # type system
 
-[lisp] parse simple `(quote)` to `Symbol` `Exp`
-
+[lisp] `DefineType` as `Stmt`
 [lisp] `(define-type)` -- like `(define)` but no need `(claim)`
 [lisp] `stageTypeCheck` -- every `(define)` need a `(claim)`
 
