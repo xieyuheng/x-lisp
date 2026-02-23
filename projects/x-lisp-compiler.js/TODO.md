@@ -1,6 +1,8 @@
 # type system
 
-[lisp] `stageTypeCheck` -- every `(define)` need a `(claim)`
+[lisp] `setupClaim`
+[lisp] `modLookupClaimedType`
+[lisp] `handleTypeCheck` -- every `(define)` need a `(claim)`
 
 # type system
 

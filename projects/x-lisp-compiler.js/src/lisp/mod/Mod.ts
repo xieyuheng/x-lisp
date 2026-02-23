@@ -1,5 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import { type Definition } from "../definition/index.ts"
+import { type Exp } from "../exp/index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { type Value } from "../value/index.ts"
 
@@ -7,7 +8,7 @@ export type Mod = {
   url: URL
   stmts: Array<Stmt>
   exported: Set<string>
-  claimed: Map<string, Value>
+  claimed: Map<string, { exp: Exp; type?: Value }>
   definitions: Map<string, Definition>
   dependencies: Map<string, Mod>
 }
@@ -38,14 +39,14 @@ export function modDefine(
   mod.definitions.set(name, definition)
 }
 
-export function modClaim(mod: Mod, name: string, type: Value): void {
+export function modClaim(mod: Mod, name: string, exp: Exp): void {
   if (mod.claimed.has(name)) {
     let message = `[modClaim] can not reclaim`
     message += `\n  name: ${name}`
     throw new Error(message)
   }
 
-  mod.claimed.set(name, type)
+  mod.claimed.set(name, { exp })
 }
 
 export function modLookupDefinition(

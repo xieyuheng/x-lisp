@@ -1,6 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
-import { handleClaim } from "./handleClaim.ts"
 import { handleDefine } from "./handleDefine.ts"
 import { handleExport } from "./handleExport.ts"
 import { handleImport } from "./handleImport.ts"
@@ -16,12 +15,9 @@ export function runSexps(mod: L.Mod, sexps: Array<S.Sexp>): void {
   mod.stmts.push(...stmts)
 
   for (const stmt of stmts) handleDefine(mod, stmt)
-
-  setupType(mod)
-
-  for (const stmt of stmts) handleClaim(mod, stmt)
   for (const stmt of stmts) handleExport(mod, stmt)
   for (const stmt of stmts) handleImport(mod, stmt)
 
+  setupType(mod)
   setupVariable(mod)
 }

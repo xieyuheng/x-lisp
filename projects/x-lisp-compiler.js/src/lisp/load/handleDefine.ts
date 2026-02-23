@@ -1,6 +1,10 @@
 import * as L from "../index.ts"
 
 export function handleDefine(mod: L.Mod, stmt: L.Stmt): void {
+  if (stmt.kind === "Claim") {
+    L.modClaim(mod, stmt.name, stmt.type)
+  }
+
   if (stmt.kind === "DefineFunction") {
     L.modDefine(
       mod,
