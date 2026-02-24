@@ -106,10 +106,7 @@ export function typeEquivalent(
     return typeEquivalentRecord(trail, lhs.types, rhs.types)
   }
 
-  let message = `[typeEquivalent] unhandled lhs and rhs`
-  message += `\n  lhs: ${L.formatValue(lhs)}`
-  message += `\n  rhs: ${L.formatValue(rhs)}`
-  throw new Error(message)
+  return false
 }
 
 function typeEquivalentMany(

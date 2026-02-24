@@ -1,14 +1,11 @@
-[lisp] improve `performTypeCheck` for current dev -- not throw
+[lisp] improve `performTypeCheck` report in context
 
 # type system
 
 [lisp] `typeEquivalent` support `VarType`
 [lisp] `typeSubtype` support `VarType`
 
-[lisp] `Subst`
-[lisp] `emptySubst`
 [lisp] `extendSubst`
-
 [lisp] `substApplyToType`
 
 [lisp] `unfiyType`

@@ -134,10 +134,7 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
     }
   }
 
-  let message = `[typeSubtype] fail`
-  message += `\n  lhs: ${L.formatValue(lhs)}`
-  message += `\n  rhs: ${L.formatValue(rhs)}`
-  throw new Error(message)
+  return false
 }
 
 function typeSubtypeMany(

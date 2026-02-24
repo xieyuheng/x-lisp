@@ -1,3 +1,4 @@
+import { urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import * as L from "../index.ts"
 
 function createCtxFromMod(mod: L.Mod): L.Ctx {
@@ -9,9 +10,8 @@ function createCtxFromMod(mod: L.Mod): L.Ctx {
       if (type) {
         ctx = L.ctxPut(ctx, name, type)
       } else {
-        let message = `[createCtxFromMod] definition: ${name} has no claim\n`
-        console.log(message)
-        // throw new Error(message)
+        let message = `${urlRelativeToCwd(mod.url)} - unclaimed definition: ${name}`
+        // console.error(message)
       }
     }
   }
@@ -26,26 +26,34 @@ export function performTypeCheck(mod: L.Mod): void {
     if (definition.kind === "VariableDefinition") {
       const type = L.modLookupClaimedType(mod, definition.name)
       if (type) {
-        L.typeCheck(ctx, definition.body, type)
+        const result = L.typeCheck(ctx, definition.body, type)(L.emptySubst())
+        if (result.kind === "CheckError") {
+          let message = `${urlRelativeToCwd(mod.url)} - fail to check: ${definition.name}`
+          message += result.message
+          console.error(message)
+        }
       } else {
-        let message = `[performTypeCheck] unclaimed definition`
-        message += `\n  name: ${definition.name}`
-        throw new Error(message)
+        let message = `${urlRelativeToCwd(mod.url)} - unclaimed definition: ${definition.name}`
+        console.error(message)
       }
     }
 
     if (definition.kind === "FunctionDefinition") {
       const type = L.modLookupClaimedType(mod, definition.name)
       if (type) {
-        L.typeCheck(
+        const result = L.typeCheck(
           ctx,
           L.Lambda(definition.parameters, definition.body, definition.meta),
           type,
-        )
+        )(L.emptySubst())
+        if (result.kind === "CheckError") {
+          let message = `${urlRelativeToCwd(mod.url)} - fail to check: ${definition.name}`
+          message += result.message
+          console.error(message)
+        }
       } else {
-        let message = `[performTypeCheck] unclaimed definition`
-        message += `\n  name: ${definition.name}`
-        throw new Error(message)
+        let message = `${urlRelativeToCwd(mod.url)} - unclaimed definition: ${definition.name}`
+        console.error(message)
       }
     }
   }
