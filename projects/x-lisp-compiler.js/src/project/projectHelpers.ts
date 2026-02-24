@@ -57,11 +57,13 @@ export function projectGetBasicFile(
   )
 }
 
+export type ProjectIdHandler = (project: Project, id: string) => void
+
 export function projectForEachSource(
   project: Project,
-  f: (project: Project, id: string) => void,
+  handle: ProjectIdHandler,
 ) {
   for (const id of projectSourceIds(project)) {
-    f(project, id)
+    handle(project, id)
   }
 }

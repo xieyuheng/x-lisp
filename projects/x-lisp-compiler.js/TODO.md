@@ -1,4 +1,3 @@
-[lisp] `projectBuild` -- share dependencies
 [lisp] `projectTest` -- share dependencies
 
 # type system
