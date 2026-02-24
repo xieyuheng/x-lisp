@@ -2,15 +2,15 @@ import assert from "node:assert"
 import * as L from "../index.ts"
 
 export type CheckResult =
-  | { kind: "Ok"; subst: L.Subst }
-  | { kind: "Error"; exp: L.Exp; message: string }
+  | { kind: "CheckOk"; subst: L.Subst }
+  | { kind: "CheckError"; exp: L.Exp; message: string }
 
 export type CheckEffect = (subst: L.Subst) => CheckResult
 
 export function okCheckEffect(): CheckEffect {
   return (subst) => {
     return {
-      kind: "Ok",
+      kind: "CheckOk",
       subst,
     }
   }
@@ -19,7 +19,7 @@ export function okCheckEffect(): CheckEffect {
 export function errorCheckEffect(exp: L.Exp, message: string): CheckEffect {
   return () => {
     return {
-      kind: "Error",
+      kind: "CheckError",
       exp,
       message,
     }
@@ -38,11 +38,11 @@ export function sequenceCheckEffect(effects: Array<CheckEffect>): CheckEffect {
   return (subst) => {
     const result = effect(subst)
     switch (result.kind) {
-      case "Ok": {
+      case "CheckOk": {
         return sequenceCheckEffect(restEffects)(result.subst)
       }
 
-      case "Error": {
+      case "CheckError": {
         return result
       }
     }

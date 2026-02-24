@@ -1,60 +1,62 @@
-import * as S from "@xieyuheng/sexp.js"
+import { range } from "@xieyuheng/helpers.js/range"
 import assert from "node:assert"
 import * as L from "../index.ts"
 
-export function typeInfer(ctx: L.Ctx, exp: L.Exp): L.Value {
+export function typeInfer(ctx: L.Ctx, exp: L.Exp): L.InferEffect {
   switch (exp.kind) {
     case "Symbol": {
-      return L.createAtomType("symbol")
+      return L.okInferEffect(L.createAtomType("symbol"))
     }
 
     case "Hashtag": {
-      return L.createAtomType("hashtag")
+      return L.okInferEffect(L.createAtomType("hashtag"))
     }
 
     case "String": {
-      return L.createAtomType("string")
+      return L.okInferEffect(L.createAtomType("string"))
     }
 
     case "Int": {
-      return L.createAtomType("int")
+      return L.okInferEffect(L.createAtomType("int"))
     }
 
     case "Float": {
-      return L.createAtomType("float")
+      return L.okInferEffect(L.createAtomType("float"))
     }
 
     case "Var": {
       const type = L.ctxLookupType(ctx, exp.name)
       if (!type) {
-        let message = `[typeInfer] found untyped variable`
+        let message = `found untyped variable`
         message += `\n  name: ${exp.name}`
-        // console.log(S.reportWithMeta(message, exp.meta))
-        if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
-        else throw new Error(message)
+        return L.errorInferEffect(exp, message)
       }
 
-      return type
+      return L.okInferEffect(type)
     }
 
     case "Apply": {
-      const targetType = typeInfer(ctx, exp.target)
-      return applyArrowType(ctx, targetType, exp.args)
+      return L.inferThenInfer(typeInfer(ctx, exp.target), (targetType) =>
+        applyArrowType(ctx, targetType, exp.args),
+      )
     }
 
     case "And":
     case "Or": {
-      for (const subExp of exp.exps) {
-        L.typeCheck(ctx, subExp, L.createAtomType("bool"))
-      }
-
-      return L.createAtomType("bool")
+      return L.checkThenInfer(
+        L.sequenceCheckEffect(
+          exp.exps.map((subExp) =>
+            L.typeCheck(ctx, subExp, L.createAtomType("bool")),
+          ),
+        ),
+        L.okInferEffect(L.createAtomType("bool")),
+      )
     }
 
     default: {
       let message = `[typeInfer] unhandled exp`
       message += `\n  exp: ${L.formatExp(exp)}`
-      throw new Error(message)
+      return L.errorInferEffect(exp, message)
     }
   }
 }
@@ -63,34 +65,42 @@ function applyArrowType(
   ctx: L.Ctx,
   arrowType: L.Value,
   args: Array<L.Exp>,
-): L.Value {
+): L.InferEffect {
   assert(L.isArrowType(arrowType))
   const argTypes = L.arrowTypeArgTypes(arrowType)
 
   if (argTypes.length === args.length) {
-    for (const [i, _] of args.entries()) {
-      L.typeCheck(ctx, args[i], argTypes[i])
-    }
-
-    return L.arrowTypeRetType(arrowType)
+    const length = args.length
+    return L.checkThenInfer(
+      L.sequenceCheckEffect(
+        range(length).map((i) => L.typeCheck(ctx, args[i], argTypes[i])),
+      ),
+      L.okInferEffect(L.arrowTypeRetType(arrowType)),
+    )
   } else if (argTypes.length > args.length) {
-    for (const [i, _] of args.entries()) {
-      L.typeCheck(ctx, args[i], argTypes[i])
-    }
-
-    return L.createArrowType(
-      argTypes.slice(args.length),
-      L.arrowTypeRetType(arrowType),
+    const length = args.length
+    return L.checkThenInfer(
+      L.sequenceCheckEffect(
+        range(length).map((i) => L.typeCheck(ctx, args[i], argTypes[i])),
+      ),
+      L.okInferEffect(
+        L.createArrowType(
+          argTypes.slice(args.length),
+          L.arrowTypeRetType(arrowType),
+        ),
+      ),
     )
   } else {
-    for (const [i, _] of argTypes.entries()) {
-      L.typeCheck(ctx, args[i], argTypes[i])
-    }
-
-    return applyArrowType(
-      ctx,
-      L.arrowTypeRetType(arrowType),
-      args.slice(argTypes.length),
+    const length = argTypes.length
+    return L.checkThenInfer(
+      L.sequenceCheckEffect(
+        range(length).map((i) => L.typeCheck(ctx, args[i], argTypes[i])),
+      ),
+      applyArrowType(
+        ctx,
+        L.arrowTypeRetType(arrowType),
+        args.slice(argTypes.length),
+      ),
     )
   }
 }

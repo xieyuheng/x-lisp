@@ -24,8 +24,10 @@ export function typeCheck(
     }
 
     case "Let1": {
-      ctx = L.ctxPut(ctx, exp.name, L.typeInfer(ctx, exp.rhs))
-      return typeCheck(ctx, exp.body, type)
+      return L.inferThenCheck(L.typeInfer(ctx, exp.rhs), (inferredType) => {
+        ctx = L.ctxPut(ctx, exp.name, inferredType)
+        return typeCheck(ctx, exp.body, type)
+      })
     }
 
     case "Begin1": {
@@ -147,15 +149,16 @@ export function typeCheck(
     }
 
     default: {
-      const inferredType = L.typeInfer(ctx, exp)
-      if (L.typeSubtype([], inferredType, type)) {
-        return L.okCheckEffect()
-      } else {
-        let message = `inferred type is not a subtype of given type`
-        message += `\n  inferred type: ${L.formatValue(inferredType)}`
-        message += `\n  given type: ${L.formatValue(type)}`
-        return L.errorCheckEffect(exp, message)
-      }
+      return L.inferThenCheck(L.typeInfer(ctx, exp), (inferredType) => {
+        if (L.typeSubtype([], inferredType, type)) {
+          return L.okCheckEffect()
+        } else {
+          let message = `inferred type is not a subtype of given type`
+          message += `\n  inferred type: ${L.formatValue(inferredType)}`
+          message += `\n  given type: ${L.formatValue(type)}`
+          return L.errorCheckEffect(exp, message)
+        }
+      })
     }
   }
 }
