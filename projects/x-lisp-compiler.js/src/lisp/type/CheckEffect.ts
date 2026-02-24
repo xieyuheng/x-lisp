@@ -1,4 +1,3 @@
-import assert from "node:assert"
 import * as L from "../index.ts"
 
 export type CheckResult =
@@ -29,7 +28,8 @@ export function errorCheckEffect(exp: L.Exp, message: string): CheckEffect {
 export function identityCheckEffect(): CheckEffect {
   return (subst) => {
     return {
-      kind: "CheckOk", subst
+      kind: "CheckOk",
+      subst,
     }
   }
 }

@@ -105,7 +105,7 @@ function applyArrowType(
         ctx,
         L.arrowTypeRetType(arrowType),
         args.slice(argTypes.length),
-        originalExp
+        originalExp,
       ),
     )
   }

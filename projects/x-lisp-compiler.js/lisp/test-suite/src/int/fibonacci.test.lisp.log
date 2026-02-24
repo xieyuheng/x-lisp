@@ -1,9 +1,13 @@
 ;;; Input
 
+(claim fibonacci (-> int-t int-t))
+
 (define (fibonacci n)
   (if (int-less-or-equal? n 1)
     n
     (iadd (fibonacci (isub n 1)) (fibonacci (isub n 2)))))
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal 0 (fibonacci 0))

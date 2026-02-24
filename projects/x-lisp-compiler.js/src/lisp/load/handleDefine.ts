@@ -1,4 +1,7 @@
 import * as L from "../index.ts"
+import { expandDataConstructor } from "./expandDataConstructor.ts"
+import { expandDataGetter } from "./expandDataGetter.ts"
+import { expandDataPutter } from "./expandDataPutter.ts"
 
 export function handleDefine(mod: L.Mod, stmt: L.Stmt): void {
   if (stmt.kind === "Claim") {
@@ -49,9 +52,9 @@ export function handleDefine(mod: L.Mod, stmt: L.Stmt): void {
     )
 
     for (const ctor of stmt.dataConstructors) {
-      L.expandDataConstructor(mod, ctor)
-      L.expandDataGetter(mod, ctor)
-      L.expandDataPutter(mod, ctor)
+      expandDataConstructor(mod, ctor)
+      expandDataGetter(mod, ctor)
+      expandDataPutter(mod, ctor)
     }
   }
 }

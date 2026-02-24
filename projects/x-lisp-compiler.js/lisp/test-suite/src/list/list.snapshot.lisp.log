@@ -1,5 +1,7 @@
 ;;; Input
 
+(claim main (-> void-t))
+
 (define (main)
   (= list (make-list))
   (list-push! 1 list)

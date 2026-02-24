@@ -1,5 +1,7 @@
 ;;; Input
 
+(claim main (-> void-t))
+
 (define (main) (assert-equal {1 2 3} {1 2 3}))
 
 ;;; Loaded
