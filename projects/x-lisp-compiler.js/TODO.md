@@ -1,5 +1,5 @@
-[lisp] `DependencyGraph`
 [lisp] `createDependencyGraph`
+[lisp] `load` use `DependencyGraph`
 
 [lisp] `projectBuild` -- share dependencies
 [lisp] `projectTest` -- share dependencies
