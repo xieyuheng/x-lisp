@@ -1,7 +1,7 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as L from "../index.ts"
 import { trailLoopOccurred, type Trail } from "./Trail.ts"
-import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
+import { unfoldDatatypeType } from "./unfoldDatatypeType.ts"
 
 export function typeEquivalent(
   trail: Trail,
@@ -81,29 +81,33 @@ export function typeEquivalent(
     )
   }
 
-  if (lhs.kind === "DatatypeValue" && rhs.kind === "DatatypeValue") {
+  if (L.isDatatypeType(lhs) && L.isDatatypeType(rhs)) {
     trail = [...trail, [lhs, rhs], [rhs, lhs]]
     return typeEquivalent(
       trail,
-      unfoldDatatypeValue(lhs),
-      unfoldDatatypeValue(rhs),
+      unfoldDatatypeType(lhs),
+      unfoldDatatypeType(rhs),
     )
   }
 
-  if (lhs.kind === "DatatypeValue") {
+  if (L.isDatatypeType(lhs)) {
     trail = [...trail, [lhs, rhs], [rhs, lhs]]
 
-    return typeEquivalent(trail, unfoldDatatypeValue(lhs), rhs)
+    return typeEquivalent(trail, unfoldDatatypeType(lhs), rhs)
   }
 
-  if (rhs.kind === "DatatypeValue") {
+  if (L.isDatatypeType(rhs)) {
     trail = [...trail, [lhs, rhs], [rhs, lhs]]
 
-    return typeEquivalent(trail, lhs, unfoldDatatypeValue(rhs))
+    return typeEquivalent(trail, lhs, unfoldDatatypeType(rhs))
   }
 
-  if (lhs.kind === "DisjointUnionValue" && rhs.kind === "DisjointUnionValue") {
-    return typeEquivalentRecord(trail, lhs.types, rhs.types)
+  if (L.isDisjointUnionType(lhs) && L.isDisjointUnionType(rhs)) {
+    return typeEquivalentRecord(
+      trail,
+      L.disjointUnionTypeVariantTypes(lhs),
+      L.disjointUnionTypeVariantTypes(rhs),
+    )
   }
 
   return false

@@ -10,8 +10,8 @@ export function isType(value: L.Value): boolean {
     isAtomType(value) ||
     isTauType(value) ||
     isArrowType(value) ||
-    value.kind === "DatatypeValue" ||
-    value.kind === "DisjointUnionValue"
+    isDatatypeType(value) ||
+    isDisjointUnionType(value)
   )
 }
 

@@ -1,4 +1,3 @@
-export * from "./AboutDatatype.ts"
 export * from "./Atom.ts"
 export * from "./atomHelper.ts"
 export * from "./definitionHelpers.ts"

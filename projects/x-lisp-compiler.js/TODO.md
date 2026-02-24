@@ -1,7 +1,5 @@
 # type system
 
-[lisp] remove `DatatypeValue` & `DisjointUnionValue`
-
 [lisp] `substApplyToType`
 [lisp] `extendSubst`
 

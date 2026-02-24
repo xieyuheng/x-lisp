@@ -134,17 +134,5 @@ export function formatValue(value: Value, options: Options = {}): string {
       assert(value.args.length > 0)
       return `(${target} ${args})`
     }
-
-    case "DatatypeValue": {
-      const args = formatValues(value.args, options)
-      return `(${value.definition.name} ${args})`
-    }
-
-    case "DisjointUnionValue": {
-      const types = Object.entries(value.types)
-        .map(([key, value]) => `:${key} ${formatValue(value)}`)
-        .join(" ")
-      return `[#disjoint-union ${types}]`
-    }
   }
 }

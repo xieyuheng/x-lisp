@@ -1,5 +1,5 @@
 import * as L from "../index.ts"
-import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
+import { unfoldDatatypeType } from "./unfoldDatatypeType.ts"
 
 export function typeCheck(
   ctx: L.Ctx,
@@ -86,9 +86,9 @@ export function typeCheck(
             typeCheck(ctx, value, valueType),
           ),
         ])
-      } else if (type.kind === "DatatypeValue") {
-        return typeCheck(ctx, exp, unfoldDatatypeValue(type))
-      } else if (type.kind === "DisjointUnionValue") {
+      } else if (L.isDatatypeType(type)) {
+        return typeCheck(ctx, exp, unfoldDatatypeType(type))
+      } else if (L.isDisjointUnionType(type)) {
         if (exp.elements.length === 0) {
           let message = `elements should not be empty`
           message += `\n  type: ${L.formatValue(type)}`
@@ -104,14 +104,15 @@ export function typeCheck(
         }
 
         const name = headExp.content
-        if (type.types[name] === undefined) {
+        const variantTypes = L.disjointUnionTypeVariantTypes(type)
+        if (variantTypes[name] === undefined) {
           let message = `head hashtag mismatch`
           message += `\n  hashtag: ${L.formatExp(headExp)}`
           message += `\n  type: ${L.formatValue(type)}`
           return L.errorCheckEffect(exp, message)
         }
 
-        return typeCheck(ctx, exp, type.types[name])
+        return typeCheck(ctx, exp, variantTypes[name])
       } else {
         let message = `expecting tael-like type`
         message += `\n  type: ${L.formatValue(type)}`

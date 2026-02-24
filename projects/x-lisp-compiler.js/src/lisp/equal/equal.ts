@@ -30,14 +30,6 @@ export function equal(lhs: Value, rhs: Value): boolean {
     return lhs.definition === rhs.definition
   }
 
-  if (lhs.kind === "DatatypeValue" && rhs.kind === "DatatypeValue") {
-    return lhs.definition === rhs.definition && equalValues(lhs.args, rhs.args)
-  }
-
-  if (lhs.kind === "DisjointUnionValue" && rhs.kind === "DisjointUnionValue") {
-    return equalTypeRecord(lhs.types, rhs.types)
-  }
-
   return same(lhs, rhs)
 }
 
@@ -95,30 +87,6 @@ function equalHash(lhs: Values.HashValue, rhs: Values.HashValue): boolean {
         return false
       }
     } else if (equal(lhsValue, rhsValue)) {
-      continue
-    } else {
-      return false
-    }
-  }
-
-  return true
-}
-
-function equalTypeRecord(
-  lhs: Record<string, Value>,
-  rhs: Record<string, Value>,
-): boolean {
-  const leftValues = Object.values(lhs)
-  const rightValues = Object.values(rhs)
-  if (leftValues.length !== rightValues.length) {
-    return false
-  }
-
-  for (const k of Object.keys(lhs)) {
-    const l = lhs[k]
-    const r = rhs[k]
-
-    if (equal(l, r)) {
       continue
     } else {
       return false

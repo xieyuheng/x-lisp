@@ -2,7 +2,6 @@ import type { Definition } from "../definition/index.ts"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
-import type { AboutDatatype } from "./AboutDatatype.ts"
 import { type AtomValue } from "./Atom.ts"
 import { type HashValue } from "./Hash.ts"
 import { type SetValue } from "./Set.ts"
@@ -15,7 +14,6 @@ export type Value =
   | ClosureValue
   | CurryValue
   | DefinitionValue
-  | AboutDatatype
 
 export type TaelValue = {
   kind: "TaelValue"

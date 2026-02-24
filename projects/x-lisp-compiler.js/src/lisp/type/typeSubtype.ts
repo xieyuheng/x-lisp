@@ -2,7 +2,7 @@ import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as L from "../index.ts"
 import { trailLoopOccurred, type Trail } from "./Trail.ts"
 import { typeEquivalent } from "./typeEquivalent.ts"
-import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
+import { unfoldDatatypeType } from "./unfoldDatatypeType.ts"
 
 export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   if (trailLoopOccurred(trail, lhs, rhs)) {
@@ -91,31 +91,27 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
     )
   }
 
-  if (lhs.kind === "DatatypeValue" && rhs.kind === "DatatypeValue") {
+  if (L.isDatatypeType(lhs) && L.isDatatypeType(rhs)) {
     trail = [...trail, [lhs, rhs]]
 
-    return typeSubtype(
-      trail,
-      unfoldDatatypeValue(lhs),
-      unfoldDatatypeValue(rhs),
-    )
+    return typeSubtype(trail, unfoldDatatypeType(lhs), unfoldDatatypeType(rhs))
   }
 
-  if (lhs.kind === "DatatypeValue") {
+  if (L.isDatatypeType(lhs)) {
     trail = [...trail, [lhs, rhs]]
 
-    return typeSubtype(trail, unfoldDatatypeValue(lhs), rhs)
+    return typeSubtype(trail, unfoldDatatypeType(lhs), rhs)
   }
 
-  if (rhs.kind === "DatatypeValue") {
+  if (L.isDatatypeType(rhs)) {
     trail = [...trail, [lhs, rhs]]
 
-    return typeSubtype(trail, lhs, unfoldDatatypeValue(rhs))
+    return typeSubtype(trail, lhs, unfoldDatatypeType(rhs))
   }
 
-  if (lhs.kind === "DisjointUnionValue" && rhs.kind === "DisjointUnionValue") {
-    const lhsRecord = lhs.types
-    const rhsRecord = rhs.types
+  if (L.isDisjointUnionType(lhs) && L.isDisjointUnionType(rhs)) {
+    const lhsRecord = L.disjointUnionTypeVariantTypes(lhs)
+    const rhsRecord = L.disjointUnionTypeVariantTypes(rhs)
     // lhs has less keys
     for (const k of Object.keys(lhsRecord)) {
       if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) {
@@ -126,8 +122,9 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
     return true
   }
 
-  if (rhs.kind === "DisjointUnionValue") {
-    for (const variantType of Object.values(rhs.types)) {
+  if (L.isDisjointUnionType(rhs)) {
+    const variantTypes = L.disjointUnionTypeVariantTypes(rhs)
+    for (const variantType of Object.values(variantTypes)) {
       if (typeSubtype(trail, lhs, variantType)) {
         return true
       }
