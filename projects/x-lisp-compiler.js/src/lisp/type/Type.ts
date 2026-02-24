@@ -280,7 +280,9 @@ export function createDisjointUnionType(
   ])
 }
 
-export function disjointUnionTypeVariantTypes(value: L.Value): Record<string, L.Value> {
+export function disjointUnionTypeVariantTypes(
+  value: L.Value,
+): Record<string, L.Value> {
   assert(isDisjointUnionType(value))
   return L.asTaelValue(L.asTaelValue(value).elements[1]).attributes
 }
