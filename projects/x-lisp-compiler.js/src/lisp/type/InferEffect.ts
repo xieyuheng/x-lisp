@@ -1,3 +1,4 @@
+import assert from "node:assert"
 import * as L from "../index.ts"
 
 export type InferResult =
@@ -22,6 +23,29 @@ export function errorInferEffect(exp: L.Exp, message: string): InferEffect {
       kind: "Error",
       exp,
       message,
+    }
+  }
+}
+
+export function sequenceInferEffect(effects: Array<InferEffect>): InferEffect {
+  assert(effects.length > 0)
+
+  const [effect, ...restEffects] = effects
+
+  if (restEffects.length === 0) {
+    return effect
+  }
+
+  return (subst) => {
+    const result = effect(subst)
+    switch (result.kind) {
+      case "Ok": {
+        return sequenceInferEffect(restEffects)(result.subst)
+      }
+
+      case "Error": {
+        return result
+      }
     }
   }
 }

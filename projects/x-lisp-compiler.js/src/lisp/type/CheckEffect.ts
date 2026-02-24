@@ -30,7 +30,11 @@ export function sequenceCheckEffect(effects: Array<CheckEffect>): CheckEffect {
   assert(effects.length > 0)
 
   const [effect, ...restEffects] = effects
-  if (restEffects.length === 0) return effect
+
+  if (restEffects.length === 0) {
+    return effect
+  }
+
   return (subst) => {
     const result = effect(subst)
     switch (result.kind) {

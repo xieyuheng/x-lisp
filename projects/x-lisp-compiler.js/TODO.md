@@ -1,4 +1,3 @@
-[lisp] `sequenceInferEffect`
 [lisp] `typeInfer` should not depends on exception system
 [lisp] improve `performTypeCheck` for current dev -- not throw
 
