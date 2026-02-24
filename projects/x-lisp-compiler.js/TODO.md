@@ -1,5 +1,3 @@
-add back project:check and module:check command
-
 [lisp] remove `loadEntry`
 [lisp] `projectCheck` -- share dependencies
 
