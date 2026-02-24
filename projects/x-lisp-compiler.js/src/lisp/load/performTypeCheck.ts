@@ -1,22 +1,6 @@
 import { urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import * as L from "../index.ts"
-
-function createCtxFromMod(mod: L.Mod): L.Ctx {
-  let ctx = L.emptyCtx()
-
-  for (const [name, definition] of mod.definitions.entries()) {
-    if (definition.kind !== "TypeDefinition") {
-      const type = L.modLookupClaimedType(definition.mod, definition.name)
-      if (type) {
-        ctx = L.ctxPut(ctx, name, type)
-      } else {
-        console.error(reportUnclaimedDefinition(definition))
-      }
-    }
-  }
-
-  return ctx
-}
+import * as S from "@xieyuheng/sexp.js"
 
 export function performTypeCheck(mod: L.Mod): void {
   const ctx = createCtxFromMod(mod)
@@ -24,38 +8,71 @@ export function performTypeCheck(mod: L.Mod): void {
   for (const definition of L.modOwnDefinitions(mod)) {
     if (definition.kind === "VariableDefinition") {
       const type = L.modLookupClaimedType(mod, definition.name)
-      if (type) {
-        const result = L.typeCheck(ctx, definition.body, type)(L.emptySubst())
-        if (result.kind === "CheckError") {
-          let message = `${urlRelativeToCwd(mod.url)} - fail to check: ${definition.name}`
-          message += result.message
-          console.error(message)
-        }
-      } else {
+      if (!type) {
         console.error(reportUnclaimedDefinition(definition))
+        continue
+      }
+
+      const effect = L.typeCheck(ctx, definition.body, type)
+      const result = effect(L.emptySubst())
+      if (result.kind === "CheckError") {
+        console.error(reportTypeCheckError(result.exp, result.message))
       }
     }
 
     if (definition.kind === "FunctionDefinition") {
       const type = L.modLookupClaimedType(mod, definition.name)
-      if (type) {
-        const result = L.typeCheck(
-          ctx,
-          L.Lambda(definition.parameters, definition.body, definition.meta),
-          type,
-        )(L.emptySubst())
-        if (result.kind === "CheckError") {
-          let message = `${urlRelativeToCwd(mod.url)} - fail to check: ${definition.name}`
-          message += result.message
-          console.error(message)
-        }
-      } else {
+      if (!type) {
         console.error(reportUnclaimedDefinition(definition))
+        continue
+      }
+
+      const lambdaExp = L.Lambda(
+        definition.parameters,
+        definition.body,
+        definition.meta,
+      )
+      const effect = L.typeCheck(ctx, lambdaExp, type)
+      const result = effect(L.emptySubst())
+      if (result.kind === "CheckError") {
+        console.error(reportTypeCheckError(result.exp, result.message))
       }
     }
   }
 }
 
+function createCtxFromMod(mod: L.Mod): L.Ctx {
+  let ctx = L.emptyCtx()
+  for (const [name, definition] of mod.definitions.entries()) {
+    if (definition.kind !== "TypeDefinition") {
+      const type = L.modLookupClaimedType(definition.mod, definition.name)
+      if (!type) {
+        // console.error(reportUnclaimedDefinition(definition))
+        continue
+      }
+
+      ctx = L.ctxPut(ctx, name, type)
+    }
+  }
+
+  return ctx
+}
+
 function reportUnclaimedDefinition(definition: L.Definition): string {
-  return `${urlRelativeToCwd(definition.mod.url)} - unclaimed definition: ${definition.name}`
+  const errorMessage = `unclaimed definition: ${definition.name}`
+  if (definition.meta) {
+    return S.tokenMetaReport(definition.meta, errorMessage)
+  } else {
+    return `${urlRelativeToCwd(definition.mod.url)} -- ${errorMessage}`
+  }
+}
+
+function reportTypeCheckError(exp: L.Exp, errorMessage: string): string {
+  if (exp.meta) {
+    return S.tokenMetaReport(exp.meta, errorMessage)
+  } else {
+    let message = `-- ${errorMessage}`
+    message += `\n  exp: ${L.formatExp(exp)}`
+    return message
+  }
 }

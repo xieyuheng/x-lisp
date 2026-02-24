@@ -1,5 +1,3 @@
-[lisp] improve `performTypeCheck` -- `reportTypeCheckError`
-
 # type system
 
 [lisp] `typeEquivalent` support `VarType`
