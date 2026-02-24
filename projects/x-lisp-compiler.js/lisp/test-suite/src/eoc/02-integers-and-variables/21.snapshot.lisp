@@ -1,3 +1,5 @@
+(claim main (-> void-t))
+
 (define (main)
   (= y 6)
   (begin

@@ -1,5 +1,7 @@
 ;;; Input
 
+(claim main (-> void-t))
+
 (define (main)
   (= x (random-dice))
   (= y (random-dice))

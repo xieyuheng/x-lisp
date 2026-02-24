@@ -1,5 +1,7 @@
 ;; figure-3.1
 
+(claim main (-> void-t))
+
 (define (main)
   (= v 1)
   (= w 42)

@@ -1,3 +1,5 @@
+(claim main (-> void-t))
+
 (define (main)
   (= x 32)
   (println

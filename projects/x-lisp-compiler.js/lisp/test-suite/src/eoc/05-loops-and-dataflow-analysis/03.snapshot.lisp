@@ -1,3 +1,5 @@
+(claim main (-> void-t))
+
 (define (main)
   (if (begin
         (print 1)

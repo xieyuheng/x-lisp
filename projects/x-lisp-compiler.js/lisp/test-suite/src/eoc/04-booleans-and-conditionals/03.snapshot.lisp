@@ -1,3 +1,5 @@
+(claim main (-> void-t))
+
 (define (main)
   (println
    (if (and (equal? (random-dice) 1)

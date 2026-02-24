@@ -1,3 +1,5 @@
+add back project:check and module:check command
+
 # type system
 
 [lisp] `typeEquivalent` support `VarType`
