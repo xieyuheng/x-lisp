@@ -1,6 +1,7 @@
 export * from "./AboutDatatype.ts"
 export * from "./Atom.ts"
 export * from "./atomHelper.ts"
+export * from "./definitionHelpers.ts"
 export * from "./Hash.ts"
 export * from "./hashHelper.ts"
 export * from "./hashtagHelper.ts"

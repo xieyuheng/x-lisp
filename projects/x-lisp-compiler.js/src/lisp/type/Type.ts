@@ -218,3 +218,16 @@ export function hashTypeValueType(value: L.Value): L.Value {
   assert(isHashType(value))
   return L.asTaelValue(value).elements[2]
 }
+
+// DatatypeType
+
+// export function isDatatypeType(value: L.Value): boolean {
+//   return (
+//     L.isTaelValue(value) &&
+//     value.elements.length === 2 &&
+//     L.equal(value.elements[0], L.HashtagValue("datatype")) &&
+//     L.isDefinitionValue(value.elements[1])
+//   )
+// }
+
+// DisjointUnionType

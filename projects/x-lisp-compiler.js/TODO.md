@@ -1,15 +1,28 @@
 # type system
 
-[lisp] `typeEquivalent` support `VarType`
-[lisp] `typeSubtype` support `VarType`
+[lisp] `isDatatypeType`
+[lisp] `createDatatypeType`
+[lisp] `datatypeTypeDatatypeDefinition`
+[lisp] `datatypeTypeArgTypes`
 
-[lisp] `extendSubst`
+[lisp] `isDisjointUnionType`
+[lisp] `createDisjointUnionType`
+[lisp] `disjointUnionTypeVariantRecord`
+
+[lisp] `unfoldDatatypeType`
+
+[lisp] remove `DatatypeValue` & `DisjointUnionValue`
+
 [lisp] `substApplyToType`
+[lisp] `extendSubst`
 
 [lisp] `unfiyType`
 
 [lisp] `Polymorphic` as `Exp`
 [lisp] `evaluate` -- `Polymorphic` introduce new type variables
+
+[lisp] `typeEquivalent` support `VarType` -- maybe need take `subst` as state
+[lisp] `typeSubtype` support `VarType` -- maybe need take `subst` as state
 
 [lisp] complete `builtin/index.lisp` -- using `(polymorphic)`
 
