@@ -1,10 +1,6 @@
 import fs from "node:fs"
 import * as L from "../index.ts"
 
-export function loadEntry(url: URL): L.Mod {
-  return load(url, new Map())
-}
-
 export function load(url: URL, dependencies: Map<string, L.Mod>): L.Mod {
   const found = dependencies.get(url.href)
   if (found !== undefined) return found

@@ -25,7 +25,7 @@ function buildPassLog(project: Project, id: string): void {
   const inputFile = projectGetSourceFile(project, id)
   const outputFile = projectGetPassLogFile(project, id)
   logFile("pass-log", outputFile)
-  const mod = L.loadEntry(createUrl(inputFile))
+  const mod = L.load(createUrl(inputFile), new Map())
   writeFile(outputFile, "")
   Services.compileLispToPassLog(mod, outputFile)
 }
@@ -34,7 +34,7 @@ function buildBasic(project: Project, id: string): void {
   const inputFile = projectGetSourceFile(project, id)
   const outputFile = projectGetBasicFile(project, id)
   logFile("basic", outputFile)
-  const mod = L.loadEntry(createUrl(inputFile))
+  const mod = L.load(createUrl(inputFile), new Map())
   const basicMod = Services.compileLispToBasic(mod)
   const outputText = B.prettyMod(textWidth, basicMod)
   writeFile(outputFile, outputText + "\n")

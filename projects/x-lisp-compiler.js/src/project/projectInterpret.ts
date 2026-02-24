@@ -12,7 +12,7 @@ function interpretTest(project: Project, id: string): void {
   if (id.endsWith("test" + L.suffix) || id.endsWith("snapshot" + L.suffix)) {
     const inputFile = projectGetSourceFile(project, id)
     logFile("interpret", inputFile)
-    const mod = L.loadEntry(createUrl(inputFile))
+    const mod = L.load(createUrl(inputFile), new Map())
     const main = L.modLookupDefinition(mod, "main")
     if (main) {
       assert(main.kind === "FunctionDefinition")

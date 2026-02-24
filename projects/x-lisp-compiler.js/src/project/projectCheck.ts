@@ -7,8 +7,9 @@ import {
 } from "./index.ts"
 
 export function projectCheck(project: Project): void {
+  const dependencies = new Map()
   projectForEachSource(project, (project, id) => {
     const inputFile = projectGetSourceFile(project, id)
-    const mod = L.loadEntry(createUrl(inputFile))
+    L.load(createUrl(inputFile), dependencies)
   })
 }

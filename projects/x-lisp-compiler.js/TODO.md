@@ -1,6 +1,3 @@
-[lisp] remove `loadEntry`
-[lisp] `projectCheck` -- share dependencies
-
 # type system
 
 [lisp] `typeEquivalent` support `VarType`
