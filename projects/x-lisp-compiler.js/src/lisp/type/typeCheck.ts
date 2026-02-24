@@ -2,9 +2,6 @@ import assert from "node:assert"
 import * as L from "../index.ts"
 import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
 
-
-type CheckResult = { kind: "Ok" } | { kind: "Error", message: string }
-
 export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
   switch (exp.kind) {
     case "Lambda": {
