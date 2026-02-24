@@ -253,4 +253,9 @@ export function datatypeTypeDatatypeDefinition(
   return definition
 }
 
+export function datatypeTypeArgTypes(value: L.Value): Array<L.Value> {
+  assert(isDatatypeType(value))
+  return L.asTaelValue(value).elements.slice(2)
+}
+
 // DisjointUnionType

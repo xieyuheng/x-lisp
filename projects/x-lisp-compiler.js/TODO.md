@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `datatypeTypeArgTypes`
-
 [lisp] `isDisjointUnionType`
 [lisp] `createDisjointUnionType`
 [lisp] `disjointUnionTypeVariantRecord`
