@@ -11,17 +11,17 @@ export type Mod = {
   exported: Set<string>
   claimed: Map<string, { exp: Exp; type?: Value }>
   definitions: Map<string, Definition>
-  dependencies: Map<string, Mod>
+  dependencyGraph: L.DependencyGraph
 }
 
-export function createMod(url: URL, dependencies: Map<string, Mod>): Mod {
+export function createMod(url: URL, dependencyGraph: L.DependencyGraph): Mod {
   return {
     url,
     stmts: [],
     exported: new Set(),
     claimed: new Map(),
     definitions: new Map(),
-    dependencies,
+    dependencyGraph,
   }
 }
 

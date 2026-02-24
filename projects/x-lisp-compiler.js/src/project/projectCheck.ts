@@ -7,10 +7,10 @@ import {
 } from "./index.ts"
 
 export function projectCheck(project: Project): void {
-  const dependencies = new Map()
+  const dependencyGraph = L.createDependencyGraph()
 
   projectForEachSource(project, (project, id) => {
     const inputFile = projectGetSourceFile(project, id)
-    L.load(createUrl(inputFile), dependencies)
+    L.load(createUrl(inputFile), dependencyGraph)
   })
 }

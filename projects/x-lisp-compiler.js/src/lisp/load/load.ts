@@ -1,13 +1,13 @@
 import fs from "node:fs"
 import * as L from "../index.ts"
 
-export function load(url: URL, dependencies: Map<string, L.Mod>): L.Mod {
-  const found = dependencies.get(url.href)
+export function load(url: URL, dependencyGraph: L.DependencyGraph): L.Mod {
+  const found = L.dependencyGraphLookupMod(dependencyGraph, url)
   if (found !== undefined) return found
 
   const code = loadCode(url)
-  const mod = L.createMod(url, dependencies)
-  dependencies.set(url.href, mod)
+  const mod = L.createMod(url, dependencyGraph)
+  L.dependencyGraphAddMod(dependencyGraph, mod)
 
   L.importBuiltinMod(mod)
   L.runCode(mod, code)

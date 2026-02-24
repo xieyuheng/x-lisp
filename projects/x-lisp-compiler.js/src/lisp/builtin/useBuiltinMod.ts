@@ -1,8 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import { runCode } from "../load/index.ts"
-import { createMod, type Mod } from "../mod/index.ts"
+import * as L from "../index.ts"
 import { builtinAssert } from "./builtinAssert.ts"
 import { builtinBool } from "./builtinBool.ts"
 import { builtinConsole } from "./builtinConsole.ts"
@@ -24,12 +23,12 @@ import { builtinSystem } from "./builtinSystem.ts"
 import { builtinValue } from "./builtinValue.ts"
 import { builtinVoid } from "./builtinVoid.ts"
 
-let mod: Mod | undefined = undefined
+let mod: L.Mod | undefined = undefined
 
-export function useBuiltinMod(): Mod {
+export function useBuiltinMod(): L.Mod {
   if (mod) return mod
 
-  mod = createMod(new URL("builtin:prelude"), new Map())
+  mod = L.createMod(new URL("builtin:prelude"), L.createDependencyGraph())
 
   builtinInt(mod)
   builtinFloat(mod)
@@ -53,9 +52,9 @@ export function useBuiltinMod(): Mod {
   builtinAssert(mod)
 
   const currentDir = path.dirname(fileURLToPath(import.meta.url))
-  const schemaFile = path.join(currentDir, "../../../lisp/builtin/index.lisp")
-  const schemaCode = fs.readFileSync(schemaFile, "utf-8")
-  runCode(mod, schemaCode)
+  const file = path.join(currentDir, "../../../lisp/builtin/index.lisp")
+  const code = fs.readFileSync(file, "utf-8")
+  L.runCode(mod, code)
 
   return mod
 }

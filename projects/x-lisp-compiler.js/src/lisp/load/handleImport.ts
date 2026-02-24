@@ -83,7 +83,7 @@ function importBy(path: string, mod: L.Mod): L.Mod {
     url.pathname = L.resolveModPath(url.pathname)
   }
 
-  return L.load(url, mod.dependencies)
+  return L.load(url, mod.dependencyGraph)
 }
 
 function urlRelativeToMod(path: string, mod: L.Mod): URL {

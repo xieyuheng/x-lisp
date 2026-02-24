@@ -50,7 +50,7 @@ router.defineHandlers({
   "project:clean": ({ options }) =>
     projectClean(loadProject(options["--config"])),
   "file:compile-to-pass-log": ({ args: [file] }) => {
-    const mod = L.load(createUrl(file), new Map())
+    const mod = L.load(createUrl(file), L.createDependencyGraph())
     Services.compileLispToPassLog(mod)
   },
 })
