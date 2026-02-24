@@ -1,128 +1,160 @@
-import assert from "node:assert"
 import * as L from "../index.ts"
 import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
 
-export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
+export function typeCheck(
+  ctx: L.Ctx,
+  exp: L.Exp,
+  type: L.Value,
+): L.CheckEffect {
   switch (exp.kind) {
     case "Lambda": {
-      assert(L.isArrowType(type))
-      typeCheckLambda(
+      if (!L.isArrowType(type)) {
+        let message = `expecting arrow type`
+        message += `\n  type: ${L.formatValue(type)}`
+        return L.errorCheckEffect(exp, message)
+      }
+
+      return typeCheckLambda(
         ctx,
         exp.parameters,
         exp.body,
         L.arrowTypeArgTypes(type),
         L.arrowTypeRetType(type),
       )
-      return
     }
 
     case "Let1": {
       ctx = L.ctxPut(ctx, exp.name, L.typeInfer(ctx, exp.rhs))
-      typeCheck(ctx, exp.body, type)
-      return
+      return typeCheck(ctx, exp.body, type)
     }
 
     case "Begin1": {
-      typeCheck(ctx, exp.head, L.createAnyType())
-      typeCheck(ctx, exp.body, type)
-      return
+      return L.sequenceCheckEffect([
+        typeCheck(ctx, exp.head, L.createAnyType()),
+        typeCheck(ctx, exp.body, type),
+      ])
     }
 
     case "BeginSugar": {
-      typeCheck(ctx, L.desugarBegin(exp.sequence), type)
-      return
+      return typeCheck(ctx, L.desugarBegin(exp.sequence), type)
     }
 
     case "If": {
-      typeCheck(ctx, exp.condition, L.createAtomType("bool"))
-      typeCheck(ctx, exp.consequent, type)
-      typeCheck(ctx, exp.alternative, type)
-      return
+      return L.sequenceCheckEffect([
+        typeCheck(ctx, exp.condition, L.createAtomType("bool")),
+        typeCheck(ctx, exp.consequent, type),
+        typeCheck(ctx, exp.alternative, type),
+      ])
     }
 
     case "When": {
-      typeCheck(ctx, L.desugarWhen(exp), type)
-      return
+      return typeCheck(ctx, L.desugarWhen(exp), type)
     }
 
     case "Unless": {
-      typeCheck(ctx, L.desugarUnless(exp), type)
-      return
+      return typeCheck(ctx, L.desugarUnless(exp), type)
     }
 
     case "Cond": {
-      typeCheck(ctx, L.desugarCond(exp.condLines), type)
-      return
+      return typeCheck(ctx, L.desugarCond(exp.condLines), type)
     }
 
     case "Tael": {
       if (L.isListType(type)) {
         const elementType = L.listTypeElementType(type)
-        for (const element of exp.elements) {
-          typeCheck(ctx, element, elementType)
-        }
-
-        for (const value of Object.values(exp.attributes)) {
-          typeCheck(ctx, value, L.createAnyType())
-        }
-
-        return
+        return L.sequenceCheckEffect([
+          ...exp.elements.map((element) =>
+            typeCheck(ctx, element, elementType),
+          ),
+          ...Object.values(exp.attributes).map((value) =>
+            typeCheck(ctx, value, L.createAnyType()),
+          ),
+        ])
       } else if (L.isRecordType(type)) {
         const valueType = L.recordTypeValueType(type)
-        for (const element of exp.elements) {
-          typeCheck(ctx, element, L.createAnyType())
-        }
-
-        for (const value of Object.values(exp.attributes)) {
-          typeCheck(ctx, value, valueType)
-        }
-
-        return
+        return L.sequenceCheckEffect([
+          ...exp.elements.map((element) =>
+            typeCheck(ctx, element, L.createAnyType()),
+          ),
+          ...Object.values(exp.attributes).map((value) =>
+            typeCheck(ctx, value, valueType),
+          ),
+        ])
       } else if (type.kind === "DatatypeValue") {
-        typeCheck(ctx, exp, unfoldDatatypeValue(type))
-        return
+        return typeCheck(ctx, exp, unfoldDatatypeValue(type))
       } else if (type.kind === "DisjointUnionValue") {
-        assert(exp.elements.length > 0)
+        if (exp.elements.length === 0) {
+          let message = `elements should not be empty`
+          message += `\n  type: ${L.formatValue(type)}`
+          return L.errorCheckEffect(exp, message)
+        }
+
         const headExp = exp.elements[0]
-        assert(headExp.kind === "Hashtag")
+        if (headExp.kind !== "Hashtag") {
+          let message = `head of tael should be Hashtag`
+          message += `\n  head: ${L.formatExp(headExp)}`
+          message += `\n  type: ${L.formatValue(type)}`
+          return L.errorCheckEffect(exp, message)
+        }
+
         const name = headExp.content
-        assert(type.types[name])
-        typeCheck(ctx, exp, type.types[name])
-        return
+        if (type.types[name] === undefined) {
+          let message = `head hashtag mismatch`
+          message += `\n  hashtag: ${L.formatExp(headExp)}`
+          message += `\n  type: ${L.formatValue(type)}`
+          return L.errorCheckEffect(exp, message)
+        }
+
+        return typeCheck(ctx, exp, type.types[name])
       } else {
-        assert(false)
+        let message = `expecting tael-like type`
+        message += `\n  type: ${L.formatValue(type)}`
+        return L.errorCheckEffect(exp, message)
       }
     }
 
     case "Set": {
-      assert(L.isSetType(type))
-      for (const element of exp.elements) {
-        typeCheck(ctx, element, L.setTypeElementType(type))
+      if (!L.isSetType(type)) {
+        let message = `expecting set type`
+        message += `\n  type: ${L.formatValue(type)}`
+        return L.errorCheckEffect(exp, message)
       }
 
-      return
+      return L.sequenceCheckEffect(
+        exp.elements.map((element) =>
+          typeCheck(ctx, element, L.setTypeElementType(type)),
+        ),
+      )
     }
 
     case "Hash": {
-      assert(L.isHashType(type))
-      for (const entry of exp.entries) {
-        typeCheck(ctx, entry.key, L.hashTypeKeyType(type))
-        typeCheck(ctx, entry.value, L.hashTypeValueType(type))
+      if (!L.isHashType(type)) {
+        let message = `expecting hash type`
+        message += `\n  type: ${L.formatValue(type)}`
+        return L.errorCheckEffect(exp, message)
       }
 
-      return
+      return L.sequenceCheckEffect(
+        exp.entries.flatMap((entry) => [
+          typeCheck(ctx, entry.key, L.hashTypeKeyType(type)),
+          typeCheck(ctx, entry.value, L.hashTypeValueType(type)),
+        ]),
+      )
     }
 
     case "Quote": {
-      typeCheck(ctx, L.desugarQuote(exp.sexp), type)
-      return
+      return typeCheck(ctx, L.desugarQuote(exp.sexp), type)
     }
 
     default: {
-      if (L.typeSubtype([], L.typeInfer(ctx, exp), type)) {
-        return
+      const inferredType = L.typeInfer(ctx, exp)
+      if (L.typeSubtype([], inferredType, type)) {
+        return L.okCheckEffect()
       } else {
-        assert(false)
+        let message = `inferred type is not a subtype of given type`
+        message += `\n  inferred type: ${L.formatValue(inferredType)}`
+        message += `\n  given type: ${L.formatValue(type)}`
+        return L.errorCheckEffect(exp, message)
       }
     }
   }
@@ -134,22 +166,23 @@ function typeCheckLambda(
   body: L.Exp,
   argTypes: Array<L.Value>,
   retType: L.Value,
-): void {
+): L.CheckEffect {
   if (argTypes.length === parameters.length) {
     ctx = L.ctxPutMany(ctx, parameters, argTypes)
-    typeCheck(ctx, body, retType)
-    return
+    return typeCheck(ctx, body, retType)
   } else if (argTypes.length > parameters.length) {
     ctx = L.ctxPutMany(ctx, parameters, argTypes.slice(0, parameters.length))
-    typeCheck(
+    return typeCheck(
       ctx,
       body,
       L.createArrowType(argTypes.slice(parameters.length), retType),
     )
-    return
   } else {
     ctx = L.ctxPutMany(ctx, parameters.slice(0, argTypes.length), argTypes)
-    typeCheck(ctx, L.Lambda(parameters.slice(argTypes.length), body), retType)
-    return
+    return typeCheck(
+      ctx,
+      L.Lambda(parameters.slice(argTypes.length), body),
+      retType,
+    )
   }
 }
