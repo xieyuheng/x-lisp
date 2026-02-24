@@ -1,5 +1,8 @@
 add back project:check and module:check command
 
+[lisp] remove `loadEntry`
+[lisp] `projectCheck` -- share dependencies
+
 # type system
 
 [lisp] `typeEquivalent` support `VarType`
@@ -15,6 +18,12 @@ add back project:check and module:check command
 [lisp] `evaluate` -- `Polymorphic` introduce new type variables
 
 [lisp] complete `builtin/index.lisp`
+
+# later
+
+[lisp] `projectBuild` -- share dependencies
+[lisp] `projectTest` -- share dependencies
+[lisp] `projectInterpret` -- share dependencies
 
 # later
 
