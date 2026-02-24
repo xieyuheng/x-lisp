@@ -1,4 +1,4 @@
-[lisp] improve `performTypeCheck` report in context
+[lisp] improve `performTypeCheck` -- `reportTypeCheckError`
 
 # type system
 

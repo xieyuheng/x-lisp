@@ -10,8 +10,7 @@ function createCtxFromMod(mod: L.Mod): L.Ctx {
       if (type) {
         ctx = L.ctxPut(ctx, name, type)
       } else {
-        let message = `${urlRelativeToCwd(mod.url)} - unclaimed definition: ${name}`
-        // console.error(message)
+        console.error(reportUnclaimedDefinition(definition))
       }
     }
   }
@@ -33,8 +32,7 @@ export function performTypeCheck(mod: L.Mod): void {
           console.error(message)
         }
       } else {
-        let message = `${urlRelativeToCwd(mod.url)} - unclaimed definition: ${definition.name}`
-        console.error(message)
+        console.error(reportUnclaimedDefinition(definition))
       }
     }
 
@@ -52,9 +50,12 @@ export function performTypeCheck(mod: L.Mod): void {
           console.error(message)
         }
       } else {
-        let message = `${urlRelativeToCwd(mod.url)} - unclaimed definition: ${definition.name}`
-        console.error(message)
+        console.error(reportUnclaimedDefinition(definition))
       }
     }
   }
+}
+
+function reportUnclaimedDefinition(definition: L.Definition): string {
+  return `${urlRelativeToCwd(definition.mod.url)} - unclaimed definition: ${definition.name}`
 }
