@@ -1,4 +1,3 @@
-[lisp] InferEffect & InferResult
 [lisp] `typeCheck` should not depends on exception system
 [lisp] `typeInfer` should not depends on exception system
 
