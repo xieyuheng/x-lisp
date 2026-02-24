@@ -6,6 +6,10 @@ export function typeCheck(
   exp: L.Exp,
   type: L.Value,
 ): L.CheckEffect {
+  if (L.isAnyType(type)) {
+    return L.okCheckEffect()
+  }
+
   switch (exp.kind) {
     case "Lambda": {
       if (!L.isArrowType(type)) {
