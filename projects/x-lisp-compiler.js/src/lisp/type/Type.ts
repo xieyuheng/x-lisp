@@ -260,3 +260,13 @@ export function datatypeTypeArgTypes(value: L.Value): Array<L.Value> {
 }
 
 // DisjointUnionType
+
+export function isDisjointUnionType(value: L.Value): boolean {
+  return (
+    L.isTaelValue(value) &&
+    value.elements.length === 2 &&
+    L.equal(value.elements[0], L.HashtagValue("disjoint-union")) &&
+    L.isTaelValue(value.elements[1]) &&
+      Object.values(L.asTaelValue(value.elements[1]).attributes) .every(isType)
+  )
+}
