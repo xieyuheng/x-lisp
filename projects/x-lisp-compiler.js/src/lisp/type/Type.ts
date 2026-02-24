@@ -267,6 +267,15 @@ export function isDisjointUnionType(value: L.Value): boolean {
     value.elements.length === 2 &&
     L.equal(value.elements[0], L.HashtagValue("disjoint-union")) &&
     L.isTaelValue(value.elements[1]) &&
-      Object.values(L.asTaelValue(value.elements[1]).attributes) .every(isType)
+    Object.values(L.asTaelValue(value.elements[1]).attributes).every(isType)
   )
+}
+
+export function createDisjointUnionType(
+  variantTypes: Record<string, L.Value>,
+): L.Value {
+  return L.ListValue([
+    L.HashtagValue("disjoint-union"),
+    L.RecordValue(variantTypes),
+  ])
 }

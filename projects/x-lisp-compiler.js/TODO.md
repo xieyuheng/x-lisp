@@ -1,7 +1,6 @@
 # type system
 
-[lisp] `createDisjointUnionType`
-[lisp] `disjointUnionTypeVariantRecord`
+[lisp] `disjointUnionTypeVariantTypes`
 
 [lisp] `unfoldDatatypeType`
 
