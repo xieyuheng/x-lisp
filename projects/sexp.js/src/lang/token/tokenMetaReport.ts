@@ -2,7 +2,10 @@ import { urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import { spanReport, type Position } from "../span/index.ts"
 import { type TokenMeta } from "./Token.ts"
 
-export function tokenMetaReport(meta: TokenMeta, errorMessage?: string): string {
+export function tokenMetaReport(
+  meta: TokenMeta,
+  errorMessage?: string,
+): string {
   let message = ""
   const context = spanReport(meta.span, meta.text)
   if (meta.url) {
