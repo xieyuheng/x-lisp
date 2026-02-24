@@ -24,18 +24,10 @@ then₁:
   literal 111
   call print
   drop
-  call newline
-  drop
-  literal 1
-  literal 2
-  tail-call equal?
+  tail-call newline
 else₂:
   literal 222
   call print
   drop
-  call newline
-  drop
-  literal 1
-  literal 2
-  tail-call equal?
+  tail-call newline
 

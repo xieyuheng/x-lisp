@@ -11,9 +11,8 @@
         (equal? 1 2))
     (begin
       (print 111)
-      (newline)
-      (equal? 1 2))
+      (newline))
     (begin
       (print 222)
-      (newline)
-      (equal? 1 2))))
+      (newline))))
+

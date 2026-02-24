@@ -8,11 +8,5 @@
     (perform (newline))
     (test (equal? 1 2))
     (branch then₁ else₂))
-  (block then₁
-    (perform (print 111))
-    (perform (newline))
-    (return (equal? 1 2)))
-  (block else₂
-    (perform (print 222))
-    (perform (newline))
-    (return (equal? 1 2))))
+  (block then₁ (perform (print 111)) (return (newline)))
+  (block else₂ (perform (print 222)) (return (newline))))

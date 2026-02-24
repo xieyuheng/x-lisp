@@ -1,5 +1,3 @@
-[lisp] `projectTest` -- share dependencies
-
 # type system
 
 [lisp] `typeEquivalent` support `VarType`
