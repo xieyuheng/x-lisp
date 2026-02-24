@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `disjointUnionTypeVariantTypes`
-
 [lisp] `unfoldDatatypeType`
 
 [lisp] remove `DatatypeValue` & `DisjointUnionValue`
