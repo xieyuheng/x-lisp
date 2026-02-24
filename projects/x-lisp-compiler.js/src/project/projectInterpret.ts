@@ -5,14 +5,22 @@ import type { Project } from "./index.ts"
 import { logFile, projectForEachSource, projectGetSourceFile } from "./index.ts"
 
 export function projectInterpret(project: Project): void {
-  projectForEachSource(project, interpretTest)
+  const dependencies = new Map()
+
+  projectForEachSource(project, (project, id) =>
+    interpretTest(project, id, dependencies),
+  )
 }
 
-function interpretTest(project: Project, id: string): void {
+function interpretTest(
+  project: Project,
+  id: string,
+  dependencies: Map<string, L.Mod>,
+): void {
   if (id.endsWith("test" + L.suffix) || id.endsWith("snapshot" + L.suffix)) {
     const inputFile = projectGetSourceFile(project, id)
     logFile("interpret", inputFile)
-    const mod = L.load(createUrl(inputFile), new Map())
+    const mod = L.load(createUrl(inputFile), dependencies)
     const main = L.modLookupDefinition(mod, "main")
     if (main) {
       assert(main.kind === "FunctionDefinition")
