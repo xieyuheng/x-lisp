@@ -9,8 +9,12 @@ export class ErrorWithMeta extends Error {
   }
 }
 
-function reportWithMeta(message: string, meta: TokenMeta): string {
-  message += "\n"
-  message += tokenMetaReport(meta)
-  return message
+export function reportWithMeta(message: string, meta?: TokenMeta): string {
+  if (meta) {
+    message += "\n"
+    message += tokenMetaReport(meta)
+    return message
+  } else {
+    return message
+  }
 }

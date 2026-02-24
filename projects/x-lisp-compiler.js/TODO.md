@@ -1,3 +1,8 @@
+[lisp] `typeSubtype` should not depends on exception system -- simply return boolean
+
+[lisp] `typeCheck` should not depends on exception system
+[lisp] `typeInfer` should not depends on exception system
+
 [lisp] improve `performTypeCheck` for current dev -- not throw
 
 # type system

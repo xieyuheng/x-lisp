@@ -1,106 +1,109 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
-import assert from "node:assert"
 import * as L from "../index.ts"
 import { trailLoopOccurred, type Trail } from "./Trail.ts"
 import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
 
-export function typeEquivalent(trail: Trail, lhs: L.Value, rhs: L.Value): void {
-  assert(L.isType(lhs))
-  assert(L.isType(rhs))
-
+export function typeEquivalent(
+  trail: Trail,
+  lhs: L.Value,
+  rhs: L.Value,
+): boolean {
   if (trailLoopOccurred(trail, lhs, rhs)) {
-    return
+    return true
   }
 
   if (L.isAnyType(lhs) && L.isAnyType(rhs)) {
-    assert(L.equal(lhs, rhs))
-    return
+    return L.equal(lhs, rhs)
   }
 
   if (L.isLiteralType(lhs) && L.isLiteralType(rhs)) {
-    assert(L.equal(lhs, rhs))
-    return
+    return L.equal(lhs, rhs)
   }
 
   if (L.isAtomType(lhs) && L.isAtomType(rhs)) {
-    assert(L.atomTypeName(lhs) === L.atomTypeName(rhs))
-    return
+    return L.atomTypeName(lhs) === L.atomTypeName(rhs)
   }
 
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
-    typeEquivalentMany(
-      trail,
-      L.tauTypeElementTypes(lhs),
-      L.tauTypeElementTypes(rhs),
+    return (
+      typeEquivalentMany(
+        trail,
+        L.tauTypeElementTypes(lhs),
+        L.tauTypeElementTypes(rhs),
+      ) &&
+      typeEquivalentRecord(
+        trail,
+        L.tauTypeAttributeTypes(lhs),
+        L.tauTypeAttributeTypes(rhs),
+      )
     )
-    typeEquivalentRecord(
-      trail,
-      L.tauTypeAttributeTypes(lhs),
-      L.tauTypeAttributeTypes(rhs),
-    )
-    return
   }
 
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
-    typeEquivalentMany(
-      trail,
-      L.arrowTypeArgTypes(lhs),
-      L.arrowTypeArgTypes(rhs),
+    return (
+      typeEquivalentMany(
+        trail,
+        L.arrowTypeArgTypes(lhs),
+        L.arrowTypeArgTypes(rhs),
+      ) &&
+      typeEquivalent(trail, L.arrowTypeRetType(lhs), L.arrowTypeRetType(rhs))
     )
-    typeEquivalent(trail, L.arrowTypeRetType(lhs), L.arrowTypeRetType(rhs))
-    return
   }
 
   if (L.isListType(lhs) && L.isListType(rhs)) {
-    typeEquivalent(
+    return typeEquivalent(
       trail,
       L.listTypeElementType(lhs),
       L.listTypeElementType(rhs),
     )
-    return
   }
 
   if (L.isSetType(lhs) && L.isSetType(rhs)) {
-    typeEquivalent(trail, L.setTypeElementType(lhs), L.setTypeElementType(rhs))
-    return
+    return typeEquivalent(
+      trail,
+      L.setTypeElementType(lhs),
+      L.setTypeElementType(rhs),
+    )
   }
 
   if (L.isRecordType(lhs) && L.isRecordType(rhs)) {
-    typeEquivalent(
+    return typeEquivalent(
       trail,
       L.recordTypeValueType(lhs),
       L.recordTypeValueType(rhs),
     )
-    return
   }
 
   if (L.isHashType(lhs) && L.isHashType(rhs)) {
-    typeEquivalent(trail, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs))
-    typeEquivalent(trail, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
-    return
+    return (
+      typeEquivalent(trail, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs)) &&
+      typeEquivalent(trail, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
+    )
   }
 
   if (lhs.kind === "DatatypeValue" && rhs.kind === "DatatypeValue") {
     trail = [...trail, [lhs, rhs], [rhs, lhs]]
-    typeEquivalent(trail, unfoldDatatypeValue(lhs), unfoldDatatypeValue(rhs))
-    return
+    return typeEquivalent(
+      trail,
+      unfoldDatatypeValue(lhs),
+      unfoldDatatypeValue(rhs),
+    )
   }
 
   if (lhs.kind === "DatatypeValue") {
     trail = [...trail, [lhs, rhs], [rhs, lhs]]
-    typeEquivalent(trail, unfoldDatatypeValue(lhs), rhs)
-    return
+
+    return typeEquivalent(trail, unfoldDatatypeValue(lhs), rhs)
   }
 
   if (rhs.kind === "DatatypeValue") {
     trail = [...trail, [lhs, rhs], [rhs, lhs]]
-    typeEquivalent(trail, lhs, unfoldDatatypeValue(rhs))
-    return
+
+    return typeEquivalent(trail, lhs, unfoldDatatypeValue(rhs))
   }
 
   if (lhs.kind === "DisjointUnionValue" && rhs.kind === "DisjointUnionValue") {
-    typeEquivalentRecord(trail, lhs.types, rhs.types)
-    return
+    return typeEquivalentRecord(trail, lhs.types, rhs.types)
   }
 
   let message = `[typeEquivalent] unhandled lhs and rhs`
@@ -113,21 +116,27 @@ function typeEquivalentMany(
   trail: Trail,
   lhs: Array<L.Value>,
   rhs: Array<L.Value>,
-): void {
-  assert(lhs.length === rhs.length)
-  arrayZip(lhs, rhs).forEach(([l, r]) => typeEquivalent(trail, l, r))
+): boolean {
+  return (
+    lhs.length === rhs.length &&
+    arrayZip(lhs, rhs).every(([l, r]) => typeEquivalent(trail, l, r))
+  )
 }
 
 function typeEquivalentRecord(
   trail: Trail,
   lhs: Record<string, L.Value>,
   rhs: Record<string, L.Value>,
-): void {
+): boolean {
   if (Object.values(lhs).length !== Object.values(rhs).length) {
-    assert(false)
+    return false
   }
 
   for (const k of Object.keys(lhs)) {
-    typeEquivalent(trail, lhs[k], rhs[k])
+    if (!typeEquivalent(trail, lhs[k], rhs[k])) {
+      return false
+    }
   }
+
+  return true
 }

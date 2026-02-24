@@ -22,7 +22,7 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     return
   }
 
-  if (!willThrow(() => typeEquivalent([], lhs, rhs))) {
+  if (typeEquivalent([], lhs, rhs)) {
     return
   }
 
