@@ -26,8 +26,18 @@ export function errorCheckEffect(exp: L.Exp, message: string): CheckEffect {
   }
 }
 
+export function identityCheckEffect(): CheckEffect {
+  return (subst) => {
+    return {
+      kind: "CheckOk", subst
+    }
+  }
+}
+
 export function sequenceCheckEffect(effects: Array<CheckEffect>): CheckEffect {
-  assert(effects.length > 0)
+  if (effects.length === 0) {
+    return identityCheckEffect()
+  }
 
   const [effect, ...restEffects] = effects
 
