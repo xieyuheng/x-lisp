@@ -9,21 +9,21 @@ export function performTypeCheck(mod: L.Mod): void {
     if (definition.kind === "VariableDefinition") {
       const type = L.modLookupClaimedType(mod, definition.name)
       if (!type) {
-        console.error(reportUnclaimedDefinition(definition))
+        console.log(reportUnclaimedDefinition(definition))
         continue
       }
 
       const effect = L.typeCheck(ctx, definition.body, type)
       const result = effect(L.emptySubst())
       if (result.kind === "CheckError") {
-        console.error(reportTypeCheckError(result.exp, result.message))
+        console.log(reportTypeCheckError(result.exp, result.message))
       }
     }
 
     if (definition.kind === "FunctionDefinition") {
       const type = L.modLookupClaimedType(mod, definition.name)
       if (!type) {
-        console.error(reportUnclaimedDefinition(definition))
+        console.log(reportUnclaimedDefinition(definition))
         continue
       }
 
@@ -35,7 +35,7 @@ export function performTypeCheck(mod: L.Mod): void {
       const effect = L.typeCheck(ctx, lambdaExp, type)
       const result = effect(L.emptySubst())
       if (result.kind === "CheckError") {
-        console.error(reportTypeCheckError(result.exp, result.message))
+        console.log(reportTypeCheckError(result.exp, result.message))
       }
     }
   }
@@ -47,7 +47,7 @@ function createCtxFromMod(mod: L.Mod): L.Ctx {
     if (definition.kind !== "TypeDefinition") {
       const type = L.modLookupClaimedType(definition.mod, definition.name)
       if (!type) {
-        // console.error(reportUnclaimedDefinition(definition))
+        // console.log(reportUnclaimedDefinition(definition))
         continue
       }
 
