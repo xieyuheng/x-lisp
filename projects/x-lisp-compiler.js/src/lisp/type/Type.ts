@@ -224,10 +224,22 @@ export function hashTypeValueType(value: L.Value): L.Value {
 export function isDatatypeType(value: L.Value): boolean {
   return (
     L.isTaelValue(value) &&
-    value.elements.length === 2 &&
+    value.elements.length >= 2 &&
     L.equal(value.elements[0], L.HashtagValue("datatype")) &&
-    L.isDefinitionValue(value.elements[1])
+    L.isDefinitionValue(value.elements[1]) &&
+    value.elements.slice(2).every(isType)
   )
+}
+
+export function createDatatypeType(
+  definition: L.DatatypeDefinition,
+  argTypes: Array<L.Value>
+): L.Value {
+  return L.ListValue([
+    L.HashtagValue("datatype"),
+    L.DefinitionValue(definition),
+    ...argTypes
+  ])
 }
 
 // DisjointUnionType

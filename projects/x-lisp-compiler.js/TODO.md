@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `createDatatypeType`
 [lisp] `datatypeTypeDatatypeDefinition`
 [lisp] `datatypeTypeArgTypes`
 
