@@ -1,107 +1,116 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
-import assert from "node:assert"
 import * as L from "../index.ts"
 import { trailLoopOccurred, type Trail } from "./Trail.ts"
 import { typeEquivalent } from "./typeEquivalent.ts"
 import { unfoldDatatypeValue } from "./unfoldDatatypeValue.ts"
 
-function willThrow(fn: () => void) {
-  try {
-    fn()
-    return false
-  } catch (_) {
-    return true
-  }
-}
-
-export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
-  assert(L.isType(lhs))
-  assert(L.isType(rhs))
-
+export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   if (trailLoopOccurred(trail, lhs, rhs)) {
-    return
+    return true
   }
 
   if (typeEquivalent([], lhs, rhs)) {
-    return
+    return true
   }
 
   if (L.isAnyType(rhs)) {
-    return
+    return true
   }
 
   if (L.isLiteralType(lhs) && L.isLiteralType(rhs)) {
-    assert(L.equal(lhs, rhs))
-    return
+    return L.equal(lhs, rhs)
   }
 
   if (L.isAtomType(lhs) && L.isAtomType(rhs)) {
-    assert(L.atomTypeName(lhs) === L.atomTypeName(rhs))
-    return
+    return L.atomTypeName(lhs) === L.atomTypeName(rhs)
   }
 
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
-    typeSubtypeMany(
-      trail,
-      L.tauTypeElementTypes(lhs),
-      L.tauTypeElementTypes(rhs),
-    )
+    if (
+      !typeSubtypeMany(
+        trail,
+        L.tauTypeElementTypes(lhs),
+        L.tauTypeElementTypes(rhs),
+      )
+    ) {
+      return false
+    }
 
     const lhsRecord = L.tauTypeAttributeTypes(lhs)
     const rhsRecord = L.tauTypeAttributeTypes(rhs)
     // rhs has less keys
     for (const k of Object.keys(rhsRecord)) {
-      typeSubtype(trail, lhsRecord[k], rhsRecord[k])
+      if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) {
+        return false
+      }
     }
 
-    return
+    return true
   }
 
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
-    // contravariant
-    typeSubtypeMany(trail, L.arrowTypeArgTypes(rhs), L.arrowTypeArgTypes(lhs))
-    typeSubtype(trail, L.arrowTypeRetType(lhs), L.arrowTypeRetType(rhs))
-    return
+    // contravariant on ArgTypes
+    return (
+      typeSubtypeMany(
+        trail,
+        L.arrowTypeArgTypes(rhs),
+        L.arrowTypeArgTypes(lhs),
+      ) && typeSubtype(trail, L.arrowTypeRetType(lhs), L.arrowTypeRetType(rhs))
+    )
   }
 
   if (L.isListType(lhs) && L.isListType(rhs)) {
-    typeSubtype(trail, L.listTypeElementType(lhs), L.listTypeElementType(rhs))
-    return
+    return typeSubtype(
+      trail,
+      L.listTypeElementType(lhs),
+      L.listTypeElementType(rhs),
+    )
   }
 
   if (L.isSetType(lhs) && L.isSetType(rhs)) {
-    typeSubtype(trail, L.setTypeElementType(lhs), L.setTypeElementType(rhs))
-    return
+    return typeSubtype(
+      trail,
+      L.setTypeElementType(lhs),
+      L.setTypeElementType(rhs),
+    )
   }
 
   if (L.isRecordType(lhs) && L.isRecordType(rhs)) {
-    typeSubtype(trail, L.recordTypeValueType(lhs), L.recordTypeValueType(rhs))
-    return
+    return typeSubtype(
+      trail,
+      L.recordTypeValueType(lhs),
+      L.recordTypeValueType(rhs),
+    )
   }
 
   if (L.isHashType(lhs) && L.isHashType(rhs)) {
     // key type is invariant
-    typeEquivalent([], L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs))
-    typeSubtype(trail, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
-    return
+    return (
+      typeEquivalent([], L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs)) &&
+      typeSubtype(trail, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
+    )
   }
 
   if (lhs.kind === "DatatypeValue" && rhs.kind === "DatatypeValue") {
     trail = [...trail, [lhs, rhs]]
-    typeSubtype(trail, unfoldDatatypeValue(lhs), unfoldDatatypeValue(rhs))
-    return
+
+    return typeSubtype(
+      trail,
+      unfoldDatatypeValue(lhs),
+      unfoldDatatypeValue(rhs),
+    )
   }
 
   if (lhs.kind === "DatatypeValue") {
     trail = [...trail, [lhs, rhs]]
-    typeSubtype(trail, unfoldDatatypeValue(lhs), rhs)
-    return
+
+    return typeSubtype(trail, unfoldDatatypeValue(lhs), rhs)
   }
 
   if (rhs.kind === "DatatypeValue") {
     trail = [...trail, [lhs, rhs]]
-    typeSubtype(trail, lhs, unfoldDatatypeValue(rhs))
-    return
+
+    return typeSubtype(trail, lhs, unfoldDatatypeValue(rhs))
   }
 
   if (lhs.kind === "DisjointUnionValue" && rhs.kind === "DisjointUnionValue") {
@@ -109,16 +118,18 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): void {
     const rhsRecord = rhs.types
     // lhs has less keys
     for (const k of Object.keys(lhsRecord)) {
-      typeSubtype(trail, lhsRecord[k], rhsRecord[k])
+      if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) {
+        return false
+      }
     }
 
-    return
+    return true
   }
 
   if (rhs.kind === "DisjointUnionValue") {
     for (const variantType of Object.values(rhs.types)) {
-      if (!willThrow(() => typeSubtype(trail, lhs, variantType))) {
-        return
+      if (typeSubtype(trail, lhs, variantType)) {
+        return true
       }
     }
   }
@@ -133,7 +144,9 @@ function typeSubtypeMany(
   trail: Trail,
   lhs: Array<L.Value>,
   rhs: Array<L.Value>,
-): void {
-  assert(lhs.length === rhs.length)
-  arrayZip(lhs, rhs).forEach(([l, r]) => typeSubtype(trail, l, r))
+): boolean {
+  return (
+    lhs.length === rhs.length &&
+    arrayZip(lhs, rhs).every(([l, r]) => typeSubtype(trail, l, r))
+  )
 }

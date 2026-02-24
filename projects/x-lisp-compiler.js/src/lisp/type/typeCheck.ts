@@ -119,8 +119,11 @@ export function typeCheck(ctx: L.Ctx, exp: L.Exp, type: L.Value): void {
     }
 
     default: {
-      L.typeSubtype([], L.typeInfer(ctx, exp), type)
-      return
+      if (L.typeSubtype([], L.typeInfer(ctx, exp), type)) {
+        return
+      } else {
+        assert(false)
+      }
     }
   }
 }
