@@ -18,12 +18,8 @@ export function unfoldDatatypeType(datatypeType: L.Value): L.Value {
       L.evaluate(definition.mod, env, field.type),
     )
 
-    variantTypes[dataConstructor.name] = L.TaelValue(
-      [
-        L.HashtagValue("tau"),
-        L.HashtagValue(dataConstructor.name),
-        ...elementTypes,
-      ],
+    variantTypes[dataConstructor.name] = L.createTauType(
+      [L.HashtagValue(dataConstructor.name), ...elementTypes],
       {},
     )
   }

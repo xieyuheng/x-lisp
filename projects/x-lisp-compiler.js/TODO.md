@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `substApplyToType`
 [lisp] `extendSubst`
 
 [lisp] `unfiyType`
