@@ -1,3 +1,4 @@
+[lisp] CheckEffect & CheckResult
 [lisp] `typeCheck` should not depends on exception system
 [lisp] `typeInfer` should not depends on exception system
 
@@ -8,13 +9,13 @@
 [lisp] `typeEquivalent` support `VarType`
 [lisp] `typeSubtype` support `VarType`
 
-`Subst`
-`emptySubst`
-`extendSubst`
+[lisp] `Subst`
+[lisp] `emptySubst`
+[lisp] `extendSubst`
 
-`substApplyToType`
+[lisp] `substApplyToType`
 
-`unfiyType`
+[lisp] `unfiyType`
 
 [lisp] `Polymorphic` as `Exp`
 
