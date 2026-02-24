@@ -233,13 +233,24 @@ export function isDatatypeType(value: L.Value): boolean {
 
 export function createDatatypeType(
   definition: L.DatatypeDefinition,
-  argTypes: Array<L.Value>
+  argTypes: Array<L.Value>,
 ): L.Value {
   return L.ListValue([
     L.HashtagValue("datatype"),
     L.DefinitionValue(definition),
-    ...argTypes
+    ...argTypes,
   ])
+}
+
+export function datatypeTypeDatatypeDefinition(
+  value: L.Value,
+): L.DatatypeDefinition {
+  assert(isDatatypeType(value))
+  const definition = L.asDefinitionValue(
+    L.asTaelValue(value).elements[1],
+  ).definition
+  assert(definition.kind === "DatatypeDefinition")
+  return definition
 }
 
 // DisjointUnionType
