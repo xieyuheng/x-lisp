@@ -224,10 +224,11 @@ export function hashTypeValueType(value: L.Value): L.Value {
 export function isDatatypeType(value: L.Value): boolean {
   return (
     L.isTaelValue(value) &&
-    value.elements.length >= 2 &&
+    value.elements.length === 3 &&
     L.equal(value.elements[0], L.HashtagValue("datatype")) &&
     L.isDefinitionValue(value.elements[1]) &&
-    value.elements.slice(2).every(isType)
+    L.isTaelValue(value.elements[2]) &&
+    L.asTaelValue(value.elements[2]).elements.every(isType)
   )
 }
 
@@ -238,7 +239,7 @@ export function createDatatypeType(
   return L.ListValue([
     L.HashtagValue("datatype"),
     L.DefinitionValue(definition),
-    ...argTypes,
+    L.ListValue(argTypes),
   ])
 }
 
@@ -255,7 +256,7 @@ export function datatypeTypeDatatypeDefinition(
 
 export function datatypeTypeArgTypes(value: L.Value): Array<L.Value> {
   assert(isDatatypeType(value))
-  return L.asTaelValue(value).elements.slice(2)
+  return L.asTaelValue(L.asTaelValue(value).elements[2]).elements
 }
 
 // DisjointUnionType
