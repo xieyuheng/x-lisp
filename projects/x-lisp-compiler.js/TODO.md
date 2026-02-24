@@ -1,11 +1,14 @@
-[lisp] add more claim to `builtin/index.lisp`
-
 [lisp] extract `DependencyTable` type
 [lisp] `createDependencyTable`
+
 [lisp] `projectBuild` -- share dependencies
 [lisp] `projectTest` -- share dependencies
 
 # type system
+
+[lisp] `typeInfer` -- support `Let1`
+[lisp] `typeInfer` -- support `Begin1`
+[lisp] `typeInfer` -- support `BeginSugar`
 
 [lisp] `typeEquivalent` support `VarType`
 [lisp] `typeSubtype` support `VarType`

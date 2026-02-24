@@ -1,5 +1,4 @@
 import { range } from "@xieyuheng/helpers.js/range"
-import assert from "node:assert"
 import * as L from "../index.ts"
 
 export function typeInfer(ctx: L.Ctx, exp: L.Exp): L.InferEffect {
@@ -37,7 +36,7 @@ export function typeInfer(ctx: L.Ctx, exp: L.Exp): L.InferEffect {
 
     case "Apply": {
       return L.inferThenInfer(typeInfer(ctx, exp.target), (targetType) =>
-        applyArrowType(ctx, targetType, exp.args),
+        applyArrowType(ctx, targetType, exp.args, exp),
       )
     }
 
@@ -65,8 +64,14 @@ function applyArrowType(
   ctx: L.Ctx,
   arrowType: L.Value,
   args: Array<L.Exp>,
+  originalExp: L.Exp,
 ): L.InferEffect {
-  assert(L.isArrowType(arrowType))
+  if (!L.isArrowType(arrowType)) {
+    let message = `expecting arrow type`
+    message += `\n  given type: ${L.formatValue(arrowType)}`
+    return L.errorInferEffect(originalExp, message)
+  }
+
   const argTypes = L.arrowTypeArgTypes(arrowType)
 
   if (argTypes.length === args.length) {
@@ -100,6 +105,7 @@ function applyArrowType(
         ctx,
         L.arrowTypeRetType(arrowType),
         args.slice(argTypes.length),
+        originalExp
       ),
     )
   }
