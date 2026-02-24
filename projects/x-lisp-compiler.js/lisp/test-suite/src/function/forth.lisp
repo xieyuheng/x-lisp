@@ -11,6 +11,8 @@
 
 (define (identity x) x)
 
+(claim main (-> void-t))
+
 (define (main)
   (= f identity)
   (= g (dup identity))

@@ -1,3 +1,5 @@
+(claim main (-> void-t))
+
 (define (main)
   (assert-equal iadd iadd)
   (assert-equal (iadd 1) (iadd 1))

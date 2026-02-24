@@ -1,8 +1,6 @@
 (export my-string-repeat)
 
-(claim my-string-repeat
-  [#-> [[#atom #int] [#atom #string]]
-       [#atom #string]])
+(claim my-string-repeat (-> int-t int-t string-t))
 
 (define (my-string-repeat n string)
   (if (equal? n 0)

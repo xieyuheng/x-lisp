@@ -1,8 +1,9 @@
+[lisp] add more claim to `builtin/index.lisp`
+
 [lisp] extract `DependencyTable` type
 [lisp] `createDependencyTable`
 [lisp] `projectBuild` -- share dependencies
 [lisp] `projectTest` -- share dependencies
-[lisp] add more claim to `test-suite/`
 
 # type system
 

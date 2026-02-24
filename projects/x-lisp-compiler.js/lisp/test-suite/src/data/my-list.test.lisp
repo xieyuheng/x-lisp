@@ -1,5 +1,7 @@
 (import-all "my-list")
 
+(claim main (-> void-t))
+
 (define (main)
   ;; data constructor
 

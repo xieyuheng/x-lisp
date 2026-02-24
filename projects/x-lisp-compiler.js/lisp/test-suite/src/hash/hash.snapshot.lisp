@@ -1,3 +1,5 @@
+(claim main (-> void-t))
+
 (define (main)
   (println (@hash))
   (println (@hash 1 2))
