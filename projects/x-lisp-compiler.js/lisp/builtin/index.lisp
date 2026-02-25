@@ -71,10 +71,15 @@
 (claim int-less? (-> int-t int-t bool-t))
 (claim int-greater-or-equal? (-> int-t int-t bool-t))
 (claim int-less-or-equal? (-> int-t int-t bool-t))
+(claim int-compare-ascending (-> int-t int-t int-t))
+(claim int-compare-descending (-> int-t int-t int-t))
 
 ;; float
 
 (claim float? (-> any-t bool-t))
+(claim float-positive? (-> float-t bool-t))
+(claim float-non-negative? (-> float-t bool-t))
+(claim float-non-zero? (-> float-t bool-t))
 (claim fneg (-> float-t float-t))
 (claim fadd (-> float-t float-t float-t))
 (claim fsub (-> float-t float-t float-t))
@@ -86,7 +91,9 @@
 (claim float-greater? (-> float-t float-t bool-t))
 (claim float-less? (-> float-t float-t bool-t))
 (claim float-greater-or-equal? (-> float-t float-t bool-t))
-(claim float-small-or-equal? (-> float-t float-t bool-t))
+(claim float-less-or-equal? (-> float-t float-t bool-t))
+(claim float-compare-ascending (-> float-t float-t int-t))
+(claim float-compare-descending (-> float-t float-t int-t))
 
 ;; random
 

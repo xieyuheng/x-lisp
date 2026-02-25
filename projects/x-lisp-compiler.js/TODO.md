@@ -1,6 +1,5 @@
 # type system
 
-[lisp] complete again `builtin/index.lisp`
 [lisp] `Tau` as `Exp`
 [lisp] support `OptionalType` -- fix `builtin/index.lisp`
 
