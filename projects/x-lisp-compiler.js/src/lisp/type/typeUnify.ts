@@ -1,6 +1,20 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as L from "../index.ts"
 
+export function occurredInType(serialNumber: bigint, type: L.Value): boolean {
+  if (L.isVarType(type)) {
+    if (L.varTypeSerialNumber(type) === serialNumber) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  return L.typeChildren(type).some((child) =>
+    occurredInType(serialNumber, child),
+  )
+}
+
 export function typeUnify(
   subst: L.Subst | undefined,
   lhs: L.Value,
@@ -157,58 +171,4 @@ export function typeUnifyRecord(
   }
 
   return subst
-}
-
-export function occurredInType(serialNumber: bigint, type: L.Value): boolean {
-  if (L.isVarType(type)) {
-
-  }
-
-  if (L.isAnyType(type)) {
-
-  }
-
-  if (L.isLiteralType(type)) {
-
-  }
-
-  if (L.isAtomType(type)) {
-
-  }
-
-  if (L.isArrowType(type)) {
-
-  }
-
-  if (L.isTauType(type)) {
-
-  }
-
-  if (L.isListType(type)) {
-
-  }
-
-  if (L.isSetType(type)) {
-
-  }
-
-  if (L.isRecordType(type)) {
-
-  }
-
-  if (L.isHashType(type)) {
-
-  }
-
-  if (L.isDatatypeType(type)) {
-
-  }
-
-  if (L.isDisjointUnionType(type)) {
-
-  }
-
-  let message = `[occurredInType] unhandled type`
-  message += `\n  type: ${L.formatValue(type)}`
-  throw new Error(message)
 }

@@ -22,7 +22,10 @@ export function typeChildren(type: L.Value): Array<L.Value> {
   }
 
   if (L.isTauType(type)) {
-    return [...L.tauTypeElementTypes(type), ...Object.values(L.tauTypeAttributeTypes(type))]
+    return [
+      ...L.tauTypeElementTypes(type),
+      ...Object.values(L.tauTypeAttributeTypes(type)),
+    ]
   }
 
   if (L.isListType(type)) {
