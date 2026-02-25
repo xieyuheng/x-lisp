@@ -1,6 +1,7 @@
 # type system
 
-[lisp] complete `builtin/index.lisp` -- using `(polymorphic)`
+[lisp] `reportUndefinedClaim`
+[lisp] complete again `builtin/index.lisp`
 
 # type system
 

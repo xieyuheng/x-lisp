@@ -47,7 +47,7 @@ function createCtxFromMod(mod: L.Mod): L.Ctx {
     if (definition.kind !== "TypeDefinition") {
       const type = L.modLookupClaimedType(definition.mod, definition.name)
       if (!type) {
-        // console.log(reportUnclaimedDefinition(definition))
+        console.log(reportUnclaimedDefinition(definition))
         continue
       }
 
