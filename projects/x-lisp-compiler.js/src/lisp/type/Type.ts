@@ -7,8 +7,12 @@ export function isType(value: L.Value): boolean {
     isAnyType(value) ||
     isLiteralType(value) ||
     isAtomType(value) ||
-    isTauType(value) ||
     isArrowType(value) ||
+    isTauType(value) ||
+    isListType(value) ||
+    isSetType(value) ||
+    isRecordType(value) ||
+    isHashType(value) ||
     isDatatypeType(value) ||
     isDisjointUnionType(value)
   )
@@ -74,34 +78,6 @@ export function atomTypeName(value: L.Value): string {
   return L.asHashtagValue(L.asTaelValue(value).elements[1]).content
 }
 
-// TauType
-
-export function isTauType(value: L.Value): boolean {
-  return (
-    L.isTaelValue(value) &&
-    L.equal(value.elements[0], L.HashtagValue("tau")) &&
-    value.elements.slice(1).every(isType) &&
-    Object.values(value.attributes).every(isType)
-  )
-}
-
-export function createTauType(
-  elementTypes: Array<L.Value>,
-  attributeTypes: Record<string, L.Value>,
-): L.Value {
-  return L.TaelValue([L.HashtagValue("tau"), ...elementTypes], attributeTypes)
-}
-
-export function tauTypeElementTypes(value: L.Value): Array<L.Value> {
-  assert(isTauType(value))
-  return L.asTaelValue(value).elements.slice(1)
-}
-
-export function tauTypeAttributeTypes(value: L.Value): Record<string, L.Value> {
-  assert(isTauType(value))
-  return L.asTaelValue(value).attributes
-}
-
 // ArrowType
 
 export function isArrowType(value: L.Value): boolean {
@@ -130,6 +106,34 @@ export function arrowTypeArgTypes(value: L.Value): Array<L.Value> {
 export function arrowTypeRetType(value: L.Value): L.Value {
   assert(isArrowType(value))
   return L.asTaelValue(value).elements[2]
+}
+
+// TauType
+
+export function isTauType(value: L.Value): boolean {
+  return (
+    L.isTaelValue(value) &&
+    L.equal(value.elements[0], L.HashtagValue("tau")) &&
+    value.elements.slice(1).every(isType) &&
+    Object.values(value.attributes).every(isType)
+  )
+}
+
+export function createTauType(
+  elementTypes: Array<L.Value>,
+  attributeTypes: Record<string, L.Value>,
+): L.Value {
+  return L.TaelValue([L.HashtagValue("tau"), ...elementTypes], attributeTypes)
+}
+
+export function tauTypeElementTypes(value: L.Value): Array<L.Value> {
+  assert(isTauType(value))
+  return L.asTaelValue(value).elements.slice(1)
+}
+
+export function tauTypeAttributeTypes(value: L.Value): Record<string, L.Value> {
+  assert(isTauType(value))
+  return L.asTaelValue(value).attributes
 }
 
 // ListType

@@ -1,6 +1,13 @@
 # type system
 
-[lisp] `unfiyType`
+[lisp] `hasOccurrence` -- setup
+
+[lisp] `unfiyType` -- isArrowType
+[lisp] `unfiyType` -- isTauType
+[lisp] `unfiyType` -- isDatatypeType
+[lisp] `unfiyType` -- isDisjointUnionType
+
+[lisp] `hasOccurrence`
 
 [lisp] `Polymorphic` as `Exp`
 [lisp] `evaluate` -- `Polymorphic` introduce new type variables

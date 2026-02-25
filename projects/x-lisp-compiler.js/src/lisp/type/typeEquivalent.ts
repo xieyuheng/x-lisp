@@ -13,7 +13,9 @@ export function typeEquivalent(
   }
 
   if (L.isVarType(lhs) && L.isVarType(rhs)) {
-    // We assume unificaton is done before calling typeEquivalent and 
+    // We assume unificaton and `substApplyToType` are performed on
+    // `lhs` and `rhs`, before calling `typeEquivalent` and
+    // `typeSubtype`.
     if (L.varTypeSerialNumber(lhs) === L.varTypeSerialNumber(rhs)) {
       return true
     } else {
