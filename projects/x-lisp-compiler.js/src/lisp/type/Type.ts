@@ -1,3 +1,4 @@
+import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import assert from "node:assert"
 import * as L from "../index.ts"
 
@@ -23,19 +24,37 @@ export function isType(value: L.Value): boolean {
 export function isVarType(value: L.Value): boolean {
   return (
     L.isTaelValue(value) &&
-    value.elements.length === 2 &&
+    value.elements.length === 3 &&
     L.equal(value.elements[0], L.HashtagValue("var")) &&
-    L.isIntValue(value.elements[1])
+    L.isSymbolValue(value.elements[1]) &&
+    L.isIntValue(value.elements[2])
   )
 }
 
-export function createVarType(serialNumber: bigint): L.Value {
-  return L.ListValue([L.HashtagValue("var"), L.IntValue(serialNumber)])
+export function createVarType(name: string, serialNumber: bigint): L.Value {
+  return L.ListValue([
+    L.HashtagValue("var"),
+    L.SymbolValue(name),
+    L.IntValue(serialNumber),
+  ])
+}
+
+export function varTypeName(value: L.Value): string {
+  assert(isVarType(value))
+  return L.asSymbolValue(L.asTaelValue(value).elements[1]).content
 }
 
 export function varTypeSerialNumber(value: L.Value): bigint {
   assert(isVarType(value))
-  return L.asIntValue(L.asTaelValue(value).elements[1]).content
+  return L.asIntValue(L.asTaelValue(value).elements[2]).content
+}
+
+export function varTypeId(value: L.Value): string {
+  assert(isVarType(value))
+  return (
+    L.varTypeName(value) +
+    stringToSubscript(L.varTypeSerialNumber(value).toString())
+  )
 }
 
 // AnyType

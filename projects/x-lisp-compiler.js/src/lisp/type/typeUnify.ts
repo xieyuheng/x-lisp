@@ -1,18 +1,12 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as L from "../index.ts"
 
-export function occurredInType(serialNumber: bigint, type: L.Value): boolean {
+export function occurredInType(varType: L.Value, type: L.Value): boolean {
   if (L.isVarType(type)) {
-    if (L.varTypeSerialNumber(type) === serialNumber) {
-      return true
-    } else {
-      return false
-    }
+    return L.varTypeId(type) === L.varTypeId(varType)
   }
 
-  return L.typeChildren(type).some((child) =>
-    occurredInType(serialNumber, child),
-  )
+  return L.typeChildren(type).some((child) => occurredInType(varType, child))
 }
 
 export function typeUnify(
@@ -32,18 +26,18 @@ export function typeUnify(
   }
 
   if (L.isVarType(lhs)) {
-    if (occurredInType(L.varTypeSerialNumber(lhs), rhs)) {
+    if (occurredInType(lhs, rhs)) {
       return undefined
     } else {
-      return L.extendSubst(subst, L.varTypeSerialNumber(lhs), rhs)
+      return L.extendSubst(subst, lhs, rhs)
     }
   }
 
   if (L.isVarType(rhs)) {
-    if (occurredInType(L.varTypeSerialNumber(rhs), lhs)) {
+    if (occurredInType(rhs, lhs)) {
       return undefined
     } else {
-      return L.extendSubst(subst, L.varTypeSerialNumber(rhs), lhs)
+      return L.extendSubst(subst, rhs, lhs)
     }
   }
 

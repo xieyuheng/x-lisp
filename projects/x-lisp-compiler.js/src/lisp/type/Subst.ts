@@ -1,25 +1,21 @@
 import { mapMapValue } from "@xieyuheng/helpers.js/map"
 import * as L from "../index.ts"
 
-export type Subst = Map<bigint, L.Value>
+export type Subst = Map<string, L.Value>
 
 export function emptySubst(): Subst {
   return new Map()
 }
 
-export function unitSubst(serialNumber: bigint, type: L.Value): Subst {
-  return new Map([[serialNumber, type]])
+export function unitSubst(varType: L.Value, type: L.Value): Subst {
+  return new Map([[L.varTypeId(varType), type]])
 }
 
 export function substApplyToType(subst: Subst, type: L.Value): L.Value {
   if (L.isVarType(type)) {
-    const serialNumber = L.varTypeSerialNumber(type)
-    const found = subst.get(serialNumber)
-    if (found) {
-      return found
-    } else {
-      return type
-    }
+    const id = L.varTypeId(type)
+    const found = subst.get(id)
+    return found || type
   }
 
   return L.typeTraverse((type) => substApplyToType(subst, type), type)
@@ -27,7 +23,7 @@ export function substApplyToType(subst: Subst, type: L.Value): L.Value {
 
 export function extendSubst(
   subst: Subst,
-  serialNumber: bigint,
+  varType: L.Value,
   type: L.Value,
 ): Subst {
   // This implementation preserves the no-occurrence invariant, but it
@@ -35,6 +31,6 @@ export function extendSubst(
   // the job of the unificaton.
 
   return mapMapValue(subst, (rhs) =>
-    substApplyToType(unitSubst(serialNumber, type), rhs),
-  ).set(serialNumber, type)
+    substApplyToType(unitSubst(varType, type), rhs),
+  ).set(L.varTypeId(varType), type)
 }

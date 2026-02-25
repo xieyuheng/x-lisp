@@ -1,9 +1,5 @@
 # type system
 
-[lisp] `VarType` has both `name` and `serialNumber`
-[lisp] `varTypeName`
-[lisp] `varTypeId`
-
 [lisp] `Polymorphic` as `Exp`
 [lisp] `evaluate` -- `Polymorphic` -- with the help of `Lambda`
 [lisp] `modLookupClaimedType` -- call `polymorphicTypeUnfold`
