@@ -33,7 +33,16 @@ export function unifyType(
     }
   }
 
-  // isArrowType(value)
+  if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
+    subst = unifyTypes(
+      subst,
+      L.arrowTypeArgTypes(lhs),
+      L.arrowTypeArgTypes(rhs),
+    )
+    subst = unifyType(subst, L.arrowTypeRetType(lhs), L.arrowTypeRetType(rhs))
+    return subst
+  }
+
   // isTauType(value)
 
   if (L.isListType(lhs) && L.isListType(rhs)) {
