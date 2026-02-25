@@ -12,6 +12,15 @@ export function typeEquivalent(
     return true
   }
 
+  if (L.isVarType(lhs) && L.isVarType(rhs)) {
+    // We assume unificaton is done before calling typeEquivalent and 
+    if (L.varTypeSerialNumber(lhs) === L.varTypeSerialNumber(rhs)) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   if (L.isAnyType(lhs) && L.isAnyType(rhs)) {
     return L.equal(lhs, rhs)
   }

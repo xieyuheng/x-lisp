@@ -30,6 +30,10 @@ export function extendSubst(
   serialNumber: bigint,
   type: L.Value,
 ): Subst {
+  // This implementation preserves the no-occurrence invariant, but it
+  // does not depend on, nor does it attempt to enforce it. That is
+  // the job of the unificaton.
+
   return mapMapValue(subst, (rhs) =>
     substApplyToType(unitSubst(serialNumber, type), rhs),
   ).set(serialNumber, type)
