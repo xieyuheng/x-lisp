@@ -1,7 +1,7 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as L from "../index.ts"
 
-export function unifyType(
+export function typeUnify(
   subst: L.Subst | undefined,
   lhs: L.Value,
   rhs: L.Value,
@@ -39,14 +39,14 @@ export function unifyType(
       L.arrowTypeArgTypes(lhs),
       L.arrowTypeArgTypes(rhs),
     )
-    subst = unifyType(subst, L.arrowTypeRetType(lhs), L.arrowTypeRetType(rhs))
+    subst = typeUnify(subst, L.arrowTypeRetType(lhs), L.arrowTypeRetType(rhs))
     return subst
   }
 
   // isTauType(value)
 
   if (L.isListType(lhs) && L.isListType(rhs)) {
-    return unifyType(
+    return typeUnify(
       subst,
       L.listTypeElementType(lhs),
       L.listTypeElementType(rhs),
@@ -54,7 +54,7 @@ export function unifyType(
   }
 
   if (L.isSetType(lhs) && L.isSetType(rhs)) {
-    return unifyType(
+    return typeUnify(
       subst,
       L.setTypeElementType(lhs),
       L.setTypeElementType(rhs),
@@ -62,7 +62,7 @@ export function unifyType(
   }
 
   if (L.isRecordType(lhs) && L.isRecordType(rhs)) {
-    return unifyType(
+    return typeUnify(
       subst,
       L.recordTypeValueType(lhs),
       L.recordTypeValueType(rhs),
@@ -70,8 +70,8 @@ export function unifyType(
   }
 
   if (L.isHashType(lhs) && L.isHashType(rhs)) {
-    subst = unifyType(subst, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs))
-    subst = unifyType(subst, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
+    subst = typeUnify(subst, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs))
+    subst = typeUnify(subst, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
     return subst
   }
 
@@ -97,19 +97,19 @@ export function unifyType(
 
 export function unifyTypes(
   subst: L.Subst | undefined,
-  lhsTypes: Array<L.Value>,
-  rhsTypes: Array<L.Value>,
+  lhs: Array<L.Value>,
+  rhs: Array<L.Value>,
 ): L.Subst | undefined {
   if (subst === undefined) {
     return undefined
   }
 
-  if (lhsTypes.length !== rhsTypes.length) {
+  if (lhs.length !== rhs.length) {
     return undefined
   }
 
-  for (const i of range(lhsTypes.length)) {
-    subst = unifyType(subst, lhsTypes[i], rhsTypes[i])
+  for (const i of range(lhs.length)) {
+    subst = typeUnify(subst, lhs[i], rhs[i])
   }
 
   return subst

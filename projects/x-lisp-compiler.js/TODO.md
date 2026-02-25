@@ -1,10 +1,10 @@
 # type system
 
-[lisp] `unifyTypeRecord`
+[lisp] `typeUnifyRecord`
 
-[lisp] `unfiyType` -- isTauType
-[lisp] `unfiyType` -- isDisjointUnionType
-[lisp] `unfiyType` -- isDisjointUnionType vs isDatatypeType
+[lisp] `typeUnify` -- isTauType
+[lisp] `typeUnify` -- isDisjointUnionType
+[lisp] `typeUnify` -- isDisjointUnionType vs isDatatypeType
 
 [lisp] `hasOccurrence`
 

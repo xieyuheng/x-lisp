@@ -1,5 +1,5 @@
 import * as L from "../index.ts"
-import { unfoldDatatypeType } from "./unfoldDatatypeType.ts"
+import { datatypeTypeUnfold } from "./datatypeTypeUnfold.ts"
 
 export function typeCheck(
   ctx: L.Ctx,
@@ -87,7 +87,7 @@ export function typeCheck(
           ),
         ])
       } else if (L.isDatatypeType(type)) {
-        return typeCheck(ctx, exp, unfoldDatatypeType(type))
+        return typeCheck(ctx, exp, datatypeTypeUnfold(type))
       } else if (L.isDisjointUnionType(type)) {
         if (exp.elements.length === 0) {
           let message = `elements should not be empty`

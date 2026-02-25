@@ -1,7 +1,7 @@
 import assert from "node:assert"
 import * as L from "../index.ts"
 
-export function unfoldDatatypeType(datatypeType: L.Value): L.Value {
+export function datatypeTypeUnfold(datatypeType: L.Value): L.Value {
   assert(L.isDatatypeType(datatypeType))
   const definition = L.datatypeTypeDatatypeDefinition(datatypeType)
   const argTypes = L.datatypeTypeArgTypes(datatypeType)
