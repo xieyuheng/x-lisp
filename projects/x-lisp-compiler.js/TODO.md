@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `typeUnify` -- isDisjointUnionType
 [lisp] `typeUnify` -- isDisjointUnionType vs isDatatypeType
 
 [lisp] `hasOccurrence`

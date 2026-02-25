@@ -103,7 +103,15 @@ export function typeUnify(
     )
   }
 
-  // isDisjointUnionType(value)
+
+
+  if (L.isDisjointUnionType(lhs) && L.isDisjointUnionType(rhs)) {
+    return typeUnifyRecord(
+      subst,
+      L.disjointUnionTypeVariantTypes(lhs),
+      L.disjointUnionTypeVariantTypes(rhs))
+
+  }
 
   return undefined
 }
