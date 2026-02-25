@@ -1,3 +1,4 @@
+import { mapMapValue } from "@xieyuheng/helpers.js/map"
 import * as L from "../index.ts"
 
 export type Subst = Map<bigint, L.Value>
@@ -22,4 +23,14 @@ export function substApplyToType(subst: Subst, type: L.Value): L.Value {
   }
 
   return L.typeTraverse((type) => substApplyToType(subst, type), type)
+}
+
+export function extendSubst(
+  subst: Subst,
+  serialNumber: bigint,
+  type: L.Value,
+): Subst {
+  return mapMapValue(subst, (rhs) =>
+    substApplyToType(unitSubst(serialNumber, type), rhs),
+  ).set(serialNumber, type)
 }

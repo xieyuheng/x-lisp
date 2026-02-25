@@ -1,8 +1,5 @@
 # type system
 
-[lisp] `unitSubst`
-[lisp] `extendSubst`
-
 [lisp] `unfiyType`
 
 [lisp] `Polymorphic` as `Exp`
