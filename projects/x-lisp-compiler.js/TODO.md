@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `modLookupClaimedType` -- call `polymorphicTypeUnfold`
-
 [lisp] complete `builtin/index.lisp` -- using `(polymorphic)`
 
 # type system
