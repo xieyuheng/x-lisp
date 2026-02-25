@@ -1,6 +1,7 @@
 # type system
 
-[lisp] extract `typeMap`
+rename expMap to expTraverse
+
 [lisp] `unitSubst`
 [lisp] `extendSubst`
 
