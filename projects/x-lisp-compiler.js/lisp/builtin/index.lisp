@@ -19,8 +19,6 @@
 (claim any? (-> any-t bool-t))
 (claim same? (-> any-t any-t bool-t))
 (claim equal? (-> any-t any-t bool-t))
-(claim hash-code (-> any-t int-t))
-(claim total-compare (-> any-t any-t int-t))
 
 ;; assert
 

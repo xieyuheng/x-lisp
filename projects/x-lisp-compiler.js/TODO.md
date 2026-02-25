@@ -2,6 +2,8 @@
 
 [lisp] `Tau` as `Exp`
 [lisp] support `OptionalType` -- fix `builtin/index.lisp`
+[lisp] `typeCheck` call `typeUnify`
+[lisp] `typeInfer` support `The`
 
 # type system
 

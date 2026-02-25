@@ -7,7 +7,7 @@ export function performTypeCheck(mod: L.Mod): void {
 
   for (const definition of L.modOwnDefinitions(mod)) {
     if (definition.kind === "VariableDefinition") {
-      const type = L.modLookupClaimedType(mod, definition.name)
+      const type = L.ctxLookupType(ctx, definition.name)
       if (!type) {
         console.log(reportUnclaimedDefinition(definition))
         continue
@@ -21,7 +21,7 @@ export function performTypeCheck(mod: L.Mod): void {
     }
 
     if (definition.kind === "FunctionDefinition") {
-      const type = L.modLookupClaimedType(mod, definition.name)
+      const type = L.ctxLookupType(ctx, definition.name)
       if (!type) {
         console.log(reportUnclaimedDefinition(definition))
         continue
