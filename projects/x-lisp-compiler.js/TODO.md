@@ -1,6 +1,6 @@
 # type system
 
-[lisp] `hasOccurrence`
+[lisp] `occurredInType`
 
 [lisp] `Polymorphic` as `Exp`
 [lisp] `evaluate` -- `Polymorphic` introduce new type variables

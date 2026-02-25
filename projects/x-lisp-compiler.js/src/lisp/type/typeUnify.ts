@@ -18,7 +18,7 @@ export function typeUnify(
   }
 
   if (L.isVarType(lhs)) {
-    if (hasOccurrence(L.varTypeSerialNumber(lhs), rhs)) {
+    if (occurredInType(L.varTypeSerialNumber(lhs), rhs)) {
       return undefined
     } else {
       return L.extendSubst(subst, L.varTypeSerialNumber(lhs), rhs)
@@ -26,7 +26,7 @@ export function typeUnify(
   }
 
   if (L.isVarType(rhs)) {
-    if (hasOccurrence(L.varTypeSerialNumber(rhs), lhs)) {
+    if (occurredInType(L.varTypeSerialNumber(rhs), lhs)) {
       return undefined
     } else {
       return L.extendSubst(subst, L.varTypeSerialNumber(rhs), lhs)
@@ -159,6 +159,56 @@ export function typeUnifyRecord(
   return subst
 }
 
-export function hasOccurrence(serialNumber: bigint, type: L.Value): boolean {
-  return false
+export function occurredInType(serialNumber: bigint, type: L.Value): boolean {
+  if (L.isVarType(type)) {
+
+  }
+
+  if (L.isAnyType(type)) {
+
+  }
+
+  if (L.isLiteralType(type)) {
+
+  }
+
+  if (L.isAtomType(type)) {
+
+  }
+
+  if (L.isArrowType(type)) {
+
+  }
+
+  if (L.isTauType(type)) {
+
+  }
+
+  if (L.isListType(type)) {
+
+  }
+
+  if (L.isSetType(type)) {
+
+  }
+
+  if (L.isRecordType(type)) {
+
+  }
+
+  if (L.isHashType(type)) {
+
+  }
+
+  if (L.isDatatypeType(type)) {
+
+  }
+
+  if (L.isDisjointUnionType(type)) {
+
+  }
+
+  let message = `[occurredInType] unhandled type`
+  message += `\n  type: ${L.formatValue(type)}`
+  throw new Error(message)
 }
