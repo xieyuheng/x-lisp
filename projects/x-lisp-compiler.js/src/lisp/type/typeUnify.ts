@@ -34,7 +34,7 @@ export function typeUnify(
   }
 
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
-    subst = unifyTypes(
+    subst = unifyTypeMany(
       subst,
       L.arrowTypeArgTypes(lhs),
       L.arrowTypeArgTypes(rhs),
@@ -83,7 +83,7 @@ export function typeUnify(
       return undefined
     }
 
-    return unifyTypes(
+    return unifyTypeMany(
       subst,
       L.datatypeTypeArgTypes(lhs),
       L.datatypeTypeArgTypes(rhs),
@@ -95,7 +95,7 @@ export function typeUnify(
   return undefined
 }
 
-export function unifyTypes(
+export function unifyTypeMany(
   subst: L.Subst | undefined,
   lhs: Array<L.Value>,
   rhs: Array<L.Value>,
