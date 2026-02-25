@@ -384,3 +384,13 @@ function generateVarTypeSerialNumber(name: string): bigint {
     return 1n
   }
 }
+
+export function polymorphicTypeUnfold(value: L.Value): L.Value {
+  assert(isPolymorphicType(value))
+  const parameters = polymorphicTypeParameters(value)
+  const closure = polymorphicTypeClosure(value)
+  const args = parameters.map((name) =>
+    createVarType(name, generateVarTypeSerialNumber(name)),
+  )
+  return L.apply(closure, args)
+}
