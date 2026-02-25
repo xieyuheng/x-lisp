@@ -42,6 +42,10 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       return L.ClosureValue(mod, env, exp.parameters, exp.body)
     }
 
+    case "Polymorphic": {
+      return L.createPolymorphicType(exp.parameters, L.ClosureValue(mod, env, exp.parameters, exp.body))
+    }
+
     case "Apply": {
       const target = evaluate(mod, env, exp.target)
       const args = exp.args.map((arg) => evaluate(mod, env, arg))

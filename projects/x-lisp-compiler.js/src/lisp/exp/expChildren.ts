@@ -15,6 +15,10 @@ export function expChildren(exp: Exp): Array<Exp> {
       return [exp.body]
     }
 
+    case "Polymorphic": {
+      return [exp.body]
+    }
+
     case "Apply": {
       return [exp.target, ...exp.args]
     }

@@ -17,6 +17,10 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return L.Lambda(exp.parameters, onExp(exp.body), exp.meta)
     }
 
+    case "Polymorphic": {
+      return L.Polymorphic(exp.parameters, onExp(exp.body), exp.meta)
+    }
+
     case "Apply": {
       return L.Apply(
         onExp(exp.target),

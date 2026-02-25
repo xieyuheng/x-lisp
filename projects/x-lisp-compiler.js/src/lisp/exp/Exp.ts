@@ -25,6 +25,7 @@ export type Exp =
   | Quote
   | Arrow
   | The
+  | Polymorphic
 
 export type Symbol = {
   kind: "Symbol"
@@ -405,6 +406,26 @@ export function The(type: Exp, exp: Exp, meta?: Meta): The {
     kind: "The",
     type,
     exp,
+    meta,
+  }
+}
+
+export type Polymorphic = {
+  kind: "Polymorphic"
+  parameters: Array<string>
+  body: Exp
+  meta?: Meta
+}
+
+export function Polymorphic(
+  parameters: Array<string>,
+  body: Exp,
+  meta?: Meta,
+): Polymorphic {
+  return {
+    kind: "Polymorphic",
+    parameters,
+    body,
     meta,
   }
 }

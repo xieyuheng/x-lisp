@@ -17,6 +17,11 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
       return expFreeNames(newBoundNames, exp.body)
     }
 
+    case "Polymorphic": {
+      const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
+      return expFreeNames(newBoundNames, exp.body)
+    }
+
     case "Let1": {
       const newBoundNames = setAdd(boundNames, exp.name)
       return setUnionMany([

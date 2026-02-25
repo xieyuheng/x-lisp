@@ -52,6 +52,12 @@ export function formatExp(exp: Exp): string {
       return `(lambda (${parameters}) ${body})`
     }
 
+    case "Polymorphic": {
+      const parameters = formatParameters(exp.parameters)
+      const body = formatExp(exp.body)
+      return `(polymorphic (${parameters}) ${body})`
+    }
+
     case "Apply": {
       const target = formatExp(exp.target)
       const args = formatExps(exp.args)

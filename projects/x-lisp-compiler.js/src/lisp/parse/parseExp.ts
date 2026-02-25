@@ -134,6 +134,14 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     return L.The(parseExp(schema), parseExp(exp), meta)
   },
 
+  "`(polymorphic ,parameters ,type)": ({ parameters, type }, { meta }) => {
+    return L.Polymorphic(
+      S.listElements(parameters).map(S.symbolContent),
+      parseExp(type),
+      meta,
+    )
+  },
+
   "(cons* target args)": ({ target, args }, { meta }) => {
     return L.Apply(parseExp(target), S.listElements(args).map(parseExp), meta)
   },
