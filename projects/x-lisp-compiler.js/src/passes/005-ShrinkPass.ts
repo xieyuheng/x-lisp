@@ -102,7 +102,7 @@ function onExp(exp: L.Exp): L.Exp {
     }
 
     default: {
-      return L.expMap(onExp, exp)
+      return L.expTraverse(onExp, exp)
     }
   }
 }

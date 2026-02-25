@@ -1,7 +1,5 @@
 # type system
 
-rename expMap to expTraverse
-
 [lisp] `unitSubst`
 [lisp] `extendSubst`
 

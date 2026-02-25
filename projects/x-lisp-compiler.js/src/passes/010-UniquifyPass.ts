@@ -73,7 +73,7 @@ function onExp(
     }
 
     default: {
-      return L.expMap((e) => onExp(nameCounts, nameTable, e), exp)
+      return L.expTraverse((e) => onExp(nameCounts, nameTable, e), exp)
     }
   }
 }

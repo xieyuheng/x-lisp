@@ -2,7 +2,7 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as L from "../index.ts"
 import type { Exp } from "./Exp.ts"
 
-export function expMap(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
+export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
