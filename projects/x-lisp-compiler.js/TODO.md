@@ -2,8 +2,6 @@
 
 [lisp] `polymorphicTypeUnfold`
 
-- [lisp] `generateVarTypeSerialNumber`
-
 [lisp] `Polymorphic` as `Exp`
 [lisp] `evaluate` -- `Polymorphic` -- to `PolymorphicType`
 [lisp] `modLookupClaimedType` -- call `polymorphicTypeUnfold`

@@ -371,3 +371,16 @@ export function polymorphicTypeClosure(value: L.Value): L.ClosureValue {
   assert(isPolymorphicType(value))
   return L.asClosureValue(L.asTaelValue(value).elements[2])
 }
+
+const serialNumberMap: Map<string, bigint> = new Map()
+
+function generateVarTypeSerialNumber(name: string): bigint {
+  const count = serialNumberMap.get(name)
+  if (count) {
+    serialNumberMap.set(name, count + 1n)
+    return count + 1n
+  } else {
+    serialNumberMap.set(name, 1n)
+    return 1n
+  }
+}
