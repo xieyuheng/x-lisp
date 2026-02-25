@@ -1,4 +1,4 @@
-import { setAdd } from "./setHelper.ts"
+import { setAdd } from "./setHelpers.ts"
 import { type Value } from "./Value.ts"
 
 export type SetValue = {

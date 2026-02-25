@@ -1,10 +1,12 @@
 # type system
 
-[lisp] `isPolymorphicType`
 [lisp] `createPolymorphicType`
 [lisp] `polymorphicTypeParameters`
 [lisp] `polymorphicTypeClosure`
+
 [lisp] `polymorphicTypeUnfold`
+
+- [lisp] `generateVarTypeSerialNumber`
 
 [lisp] `Polymorphic` as `Exp`
 [lisp] `evaluate` -- `Polymorphic` -- to `PolymorphicType`

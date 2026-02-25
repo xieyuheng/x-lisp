@@ -15,7 +15,8 @@ export function isType(value: L.Value): boolean {
     isRecordType(value) ||
     isHashType(value) ||
     isDatatypeType(value) ||
-    isDisjointUnionType(value)
+    isDisjointUnionType(value) ||
+    isPolymorphicType(value)
   )
 }
 
@@ -333,4 +334,17 @@ export function disjointUnionTypeVariantTypes(
 ): Record<string, L.Value> {
   assert(isDisjointUnionType(value))
   return L.asTaelValue(L.asTaelValue(value).elements[1]).attributes
+}
+
+// PolymorphicType
+
+export function isPolymorphicType(value: L.Value): boolean {
+  return (
+    L.isTaelValue(value) &&
+    value.elements.length === 3 &&
+    L.equal(value.elements[0], L.HashtagValue("polymorphic")) &&
+    L.isTaelValue(value.elements[1]) &&
+    L.asTaelValue(value.elements[1]).elements.every(L.isSymbolValue) &&
+    L.isClosureValue(value.elements[2])
+  )
 }
