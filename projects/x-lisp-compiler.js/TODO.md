@@ -1,7 +1,13 @@
 # type system
 
+[lisp] `isPolymorphicType`
+[lisp] `createPolymorphicType`
+[lisp] `polymorphicTypeParameters`
+[lisp] `polymorphicTypeClosure`
+[lisp] `polymorphicTypeUnfold`
+
 [lisp] `Polymorphic` as `Exp`
-[lisp] `evaluate` -- `Polymorphic` -- with the help of `Lambda`
+[lisp] `evaluate` -- `Polymorphic` -- to `PolymorphicType`
 [lisp] `modLookupClaimedType` -- call `polymorphicTypeUnfold`
 
 [lisp] complete `builtin/index.lisp` -- using `(polymorphic)`

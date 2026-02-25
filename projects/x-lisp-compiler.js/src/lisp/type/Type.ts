@@ -281,6 +281,32 @@ export function datatypeTypeArgTypes(value: L.Value): Array<L.Value> {
   return L.asTaelValue(L.asTaelValue(value).elements[2]).elements
 }
 
+export function datatypeTypeUnfold(datatypeType: L.Value): L.Value {
+  assert(L.isDatatypeType(datatypeType))
+  const definition = L.datatypeTypeDatatypeDefinition(datatypeType)
+  const argTypes = L.datatypeTypeArgTypes(datatypeType)
+
+  const env = L.envPutMany(
+    L.emptyEnv(),
+    definition.datatypeConstructor.parameters,
+    argTypes,
+  )
+
+  const variantTypes: Record<string, L.Value> = {}
+  for (const dataConstructor of definition.dataConstructors) {
+    const elementTypes = dataConstructor.fields.map((field) =>
+      L.evaluate(definition.mod, env, field.type),
+    )
+
+    variantTypes[dataConstructor.name] = L.createTauType(
+      [L.HashtagValue(dataConstructor.name), ...elementTypes],
+      {},
+    )
+  }
+
+  return L.createDisjointUnionType(variantTypes)
+}
+
 // DisjointUnionType
 
 export function isDisjointUnionType(value: L.Value): boolean {
