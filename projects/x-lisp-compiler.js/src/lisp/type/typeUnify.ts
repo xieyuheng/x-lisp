@@ -34,7 +34,7 @@ export function typeUnify(
   }
 
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
-    subst = unifyTypeMany(
+    subst = typeUnifyMany(
       subst,
       L.arrowTypeArgTypes(lhs),
       L.arrowTypeArgTypes(rhs),
@@ -43,7 +43,20 @@ export function typeUnify(
     return subst
   }
 
-  // isTauType(value)
+
+  if (L.isTauType(lhs) && L.isTauType(rhs)) {
+    subst = typeUnifyMany(
+      subst,
+      L.tauTypeElementTypes(lhs),
+      L.tauTypeElementTypes(rhs),
+    )
+    subst = typeUnifyRecord(
+      subst,
+      L.tauTypeAttributeTypes(lhs),
+      L.tauTypeAttributeTypes(rhs),
+    )
+    return subst
+  }
 
   if (L.isListType(lhs) && L.isListType(rhs)) {
     return typeUnify(
@@ -83,7 +96,7 @@ export function typeUnify(
       return undefined
     }
 
-    return unifyTypeMany(
+    return typeUnifyMany(
       subst,
       L.datatypeTypeArgTypes(lhs),
       L.datatypeTypeArgTypes(rhs),
@@ -95,7 +108,7 @@ export function typeUnify(
   return undefined
 }
 
-export function unifyTypeMany(
+export function typeUnifyMany(
   subst: L.Subst | undefined,
   lhs: Array<L.Value>,
   rhs: Array<L.Value>,
