@@ -1,5 +1,7 @@
 # type system
 
+[lisp] extract `typeMap`
+[lisp] `unitSubst`
 [lisp] `extendSubst`
 
 [lisp] `unfiyType`
