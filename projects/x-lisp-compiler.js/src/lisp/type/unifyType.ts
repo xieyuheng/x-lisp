@@ -17,13 +17,19 @@ export function unifyType(
   }
 
   if (L.isVarType(lhs)) {
-    // TODO occur check
-    return L.extendSubst(subst, L.varTypeSerialNumber(lhs), rhs)
+    if (hasOccurrence(L.varTypeSerialNumber(lhs), rhs)) {
+      return undefined
+    } else {
+      return L.extendSubst(subst, L.varTypeSerialNumber(lhs), rhs)
+    }
   }
 
   if (L.isVarType(rhs)) {
-    // TODO occur check
-    return L.extendSubst(subst, L.varTypeSerialNumber(rhs), lhs)
+    if (hasOccurrence(L.varTypeSerialNumber(rhs), lhs)) {
+      return undefined
+    } else {
+      return L.extendSubst(subst, L.varTypeSerialNumber(rhs), lhs)
+    }
   }
 
   // isArrowType(value)
@@ -51,4 +57,8 @@ export function unifyType(
   // isDisjointUnionType(value)
 
   return undefined
+}
+
+export function hasOccurrence(serialNumber: bigint, type: L.Value): boolean {
+  return false
 }

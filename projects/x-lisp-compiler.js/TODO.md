@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `hasOccurrence` -- setup
-
 [lisp] `unfiyType` -- isArrowType
 [lisp] `unfiyType` -- isTauType
 [lisp] `unfiyType` -- isDatatypeType
