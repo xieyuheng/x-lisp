@@ -348,3 +348,14 @@ export function isPolymorphicType(value: L.Value): boolean {
     L.isClosureValue(value.elements[2])
   )
 }
+
+export function createPolymorphicType(
+  parameters: Array<string>,
+  closure: L.ClosureValue,
+): L.Value {
+  return L.ListValue([
+    L.HashtagValue("polymorphic"),
+    L.ListValue(parameters.map(L.SymbolValue)),
+    closure,
+  ])
+}

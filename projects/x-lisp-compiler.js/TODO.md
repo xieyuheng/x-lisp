@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `createPolymorphicType`
 [lisp] `polymorphicTypeParameters`
 [lisp] `polymorphicTypeClosure`
 
