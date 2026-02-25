@@ -1,8 +1,5 @@
 # type system
 
-[lisp] `polymorphicTypeParameters`
-[lisp] `polymorphicTypeClosure`
-
 [lisp] `polymorphicTypeUnfold`
 
 - [lisp] `generateVarTypeSerialNumber`

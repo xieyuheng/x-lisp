@@ -359,3 +359,15 @@ export function createPolymorphicType(
     closure,
   ])
 }
+
+export function polymorphicTypeParameters(value: L.Value): Array<string> {
+  assert(isPolymorphicType(value))
+  return L.asTaelValue(L.asTaelValue(value).elements[1]).elements.map(
+    (element) => L.asSymbolValue(element).content,
+  )
+}
+
+export function polymorphicTypeClosure(value: L.Value): L.ClosureValue {
+  assert(isPolymorphicType(value))
+  return L.asClosureValue(L.asTaelValue(value).elements[2])
+}
