@@ -75,7 +75,21 @@ export function unifyType(
     return subst
   }
 
-  // isDatatypeType(value)
+  if (L.isDatatypeType(lhs) && L.isDatatypeType(rhs)) {
+    if (
+      L.datatypeTypeDatatypeDefinition(lhs) !==
+      L.datatypeTypeDatatypeDefinition(rhs)
+    ) {
+      return undefined
+    }
+
+    return unifyTypes(
+      subst,
+      L.datatypeTypeArgTypes(lhs),
+      L.datatypeTypeArgTypes(rhs),
+    )
+  }
+
   // isDisjointUnionType(value)
 
   return undefined
