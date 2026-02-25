@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `typeUnifyRecord`
-
 [lisp] `typeUnify` -- isTauType
 [lisp] `typeUnify` -- isDisjointUnionType
 [lisp] `typeUnify` -- isDisjointUnionType vs isDatatypeType

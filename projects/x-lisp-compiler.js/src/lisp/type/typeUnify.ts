@@ -115,6 +115,24 @@ export function unifyTypeMany(
   return subst
 }
 
+export function typeUnifyRecord(
+  subst: L.Subst | undefined,
+  lhs: Record<string, L.Value>,
+  rhs: Record<string, L.Value>,
+): L.Subst | undefined {
+  if (subst === undefined) {
+    return undefined
+  }
+
+  for (const key of Object.keys(lhs)) {
+    if (rhs[key] !== undefined) {
+      subst = typeUnify(subst, lhs[key], rhs[key])
+    }
+  }
+
+  return subst
+}
+
 export function hasOccurrence(serialNumber: bigint, type: L.Value): boolean {
   return false
 }
