@@ -1,6 +1,9 @@
 # type system
 
 [lisp] `unfiyType` -- isArrowType
+
+[lisp] `unifyTypeRecord`
+
 [lisp] `unfiyType` -- isTauType
 [lisp] `unfiyType` -- isDatatypeType
 [lisp] `unfiyType` -- isDisjointUnionType
