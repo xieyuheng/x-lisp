@@ -55,16 +55,15 @@ function createCtxFromMod(mod: L.Mod): L.Ctx {
     }
   }
 
-  return ctx
-}
-
-function reportUnclaimedDefinition(definition: L.Definition): string {
-  const errorMessage = `unclaimed definition: ${definition.name}`
-  if (definition.meta) {
-    return S.tokenMetaReport(definition.meta, errorMessage)
-  } else {
-    return `${urlRelativeToCwd(definition.mod.url)} -- ${errorMessage}`
+  for (const [name, claimed] of mod.claimed) {
+    const type = L.ctxLookupType(ctx, name)
+    if (!type) {
+      console.log(reportUndefinedClaim(claimed.exp))
+      continue
+    }
   }
+
+  return ctx
 }
 
 function reportTypeCheckError(exp: L.Exp, errorMessage: string): string {
@@ -74,5 +73,18 @@ function reportTypeCheckError(exp: L.Exp, errorMessage: string): string {
     let message = `-- ${errorMessage}`
     message += `\n  exp: ${L.formatExp(exp)}`
     return message
+  }
+}
+
+function reportUndefinedClaim(exp: L.Exp): string {
+  return reportTypeCheckError(exp, "undefined claim")
+}
+
+function reportUnclaimedDefinition(definition: L.Definition): string {
+  const errorMessage = `unclaimed definition: ${definition.name}`
+  if (definition.meta) {
+    return S.tokenMetaReport(definition.meta, errorMessage)
+  } else {
+    return `${urlRelativeToCwd(definition.mod.url)} -- ${errorMessage}`
   }
 }

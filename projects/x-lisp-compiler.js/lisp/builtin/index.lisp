@@ -98,6 +98,7 @@
 
 (claim hashtag? (-> any-t bool-t))
 (claim hashtag-to-string (-> hashtag-t string-t))
+(claim hashtag-append (-> hashtag-t hashtag-t hashtag-t))
 
 ;; symbol
 
@@ -124,6 +125,7 @@
 
 ;; list
 
+(claim make-list (polymorphic (E) (-> (list-t E))))
 (claim car (polymorphic (E) (-> (list-t E) E)))
 (claim cdr (polymorphic (E) (-> (list-t E) (list-t E))))
 (claim cons (polymorphic (E) (-> E (list-t E) (list-t E))))
@@ -134,7 +136,8 @@
 (claim list-length (polymorphic (E) (-> (list-t E) int-t)))
 (claim list-empty? (polymorphic (E) (-> (list-t E) bool-t)))
 (claim list-copy (polymorphic (E) (-> (list-t E) (list-t E))))
-(claim list-get (polymorphic (E) (-> int-t (list-t E) (optional-t E))))
+;; (claim list-get (polymorphic (E) (-> int-t (list-t E) (optional-t E))))
+(claim list-get (polymorphic (E) (-> int-t (list-t E) E)))
 (claim list-put (polymorphic (E) (-> int-t E (list-t E) (list-t E))))
 (claim list-put! (polymorphic (E) (-> int-t E (list-t E) (list-t E))))
 (claim list-push (polymorphic (E) (-> E (list-t E) (list-t E))))
@@ -147,14 +150,16 @@
 
 ;; record
 
+(claim make-record (polymorphic (V) (-> (record-t V))))
 (claim record-length (polymorphic (V) (-> (record-t V) int-t)))
 (claim record-keys (polymorphic (V) (-> (record-t V) (list-t symbol-t))))
 (claim record-values (polymorphic (V) (-> (record-t V) (list-t V))))
-(claim record-entries (polymorphic (V) (-> (record-t V) (list-t (tau symbol-t V)))))
+;; (claim record-entries (polymorphic (V) (-> (record-t V) (list-t (tau symbol-t V)))))
 (claim record-append (polymorphic (V) (-> (record-t V) (record-t V) (record-t V))))
 (claim record-copy (polymorphic (V) (-> (record-t V) (record-t V))))
 (claim record-empty? (polymorphic (V) (-> (record-t V) bool-t)))
-(claim record-get (polymorphic (V) (-> symbol-t (record-t V) (optional-t V))))
+;; (claim record-get (polymorphic (V) (-> symbol-t (record-t V) (optional-t V))))
+(claim record-get (polymorphic (V) (-> symbol-t (record-t V) V)))
 (claim record-has? (polymorphic (V) (-> symbol-t (record-t V) bool-t)))
 (claim record-put (polymorphic (V) (-> symbol-t V (record-t V) (record-t V))))
 (claim record-put! (polymorphic (V) (-> symbol-t V (record-t V) (record-t V))))
@@ -163,6 +168,7 @@
 
 ;; set
 
+(claim make-set (polymorphic (E) (-> (set-t E))))
 (claim set-copy (polymorphic (E) (-> (set-t E) (set-t E))))
 (claim set-size (polymorphic (E) (-> (set-t E) int-t)))
 (claim set-empty? (polymorphic (E) (-> (set-t E) bool-t)))
@@ -183,6 +189,7 @@
 
 ;; hash
 
+(claim make-hash (polymorphic (K V) (-> (hash-t K V))))
 (claim hash-empty? (polymorphic (K V) (-> (hash-t K V) bool-t)))
 (claim hash-length (polymorphic (K V) (-> (hash-t K V) int-t)))
 (claim hash-get (polymorphic (K V) (-> K (hash-t K V) V)))
@@ -191,6 +198,6 @@
 (claim hash-put! (polymorphic (K V) (-> K V (hash-t K V) (hash-t K V))))
 (claim hash-delete! (polymorphic (K V) (-> K (hash-t K V) (hash-t K V))))
 (claim hash-copy (polymorphic (K V) (-> (hash-t K V) (hash-t K V))))
-(claim hash-entries (polymorphic (K V) (-> (hash-t K V) (list-t (tau K V)))))
+;; (claim hash-entries (polymorphic (K V) (-> (hash-t K V) (list-t (tau K V)))))
 (claim hash-keys (polymorphic (K V) (-> (hash-t K V) (list-t K))))
 (claim hash-values (polymorphic (K V) (-> (hash-t K V) (list-t V))))

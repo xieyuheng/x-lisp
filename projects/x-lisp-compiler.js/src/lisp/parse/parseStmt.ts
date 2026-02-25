@@ -36,9 +36,9 @@ export const parseStmt = S.createRouter<L.Stmt>({
     return L.DefineType(
       S.symbolContent(name),
       L.Lambda(
-      S.listElements(parameters).map(S.symbolContent),
-      L.BeginSugar(S.listElements(body).map(parseExp), meta),
-      meta,
+        S.listElements(parameters).map(S.symbolContent),
+        L.BeginSugar(S.listElements(body).map(parseExp), meta),
+        meta,
       ),
       meta,
     )

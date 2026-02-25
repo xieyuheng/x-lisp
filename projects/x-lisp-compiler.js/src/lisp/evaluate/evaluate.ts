@@ -43,7 +43,10 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
     }
 
     case "Polymorphic": {
-      return L.createPolymorphicType(exp.parameters, L.ClosureValue(mod, env, exp.parameters, exp.body))
+      return L.createPolymorphicType(
+        exp.parameters,
+        L.ClosureValue(mod, env, exp.parameters, exp.body),
+      )
     }
 
     case "Apply": {

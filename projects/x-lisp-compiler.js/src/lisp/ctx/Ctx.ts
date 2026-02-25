@@ -1,6 +1,6 @@
 import assert from "node:assert"
-import { type Value } from "../value/index.ts"
 import * as L from "../index.ts"
+import { type Value } from "../value/index.ts"
 
 export type Ctx = Map<string, Value>
 
