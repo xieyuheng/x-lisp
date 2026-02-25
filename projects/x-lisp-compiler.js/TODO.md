@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `typeUnify` -- isDisjointUnionType vs isDatatypeType
-
 [lisp] `hasOccurrence`
 
 [lisp] `Polymorphic` as `Exp`

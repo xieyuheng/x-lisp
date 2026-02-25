@@ -1,4 +1,5 @@
 export * from "./CheckEffect.ts"
+export * from "./datatypeTypeUnfold.ts"
 export * from "./InferEffect.ts"
 export * from "./Subst.ts"
 export * from "./Type.ts"

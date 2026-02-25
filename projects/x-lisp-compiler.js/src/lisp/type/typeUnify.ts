@@ -43,7 +43,6 @@ export function typeUnify(
     return subst
   }
 
-
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
     subst = typeUnifyMany(
       subst,
@@ -103,14 +102,20 @@ export function typeUnify(
     )
   }
 
-
-
   if (L.isDisjointUnionType(lhs) && L.isDisjointUnionType(rhs)) {
     return typeUnifyRecord(
       subst,
       L.disjointUnionTypeVariantTypes(lhs),
-      L.disjointUnionTypeVariantTypes(rhs))
+      L.disjointUnionTypeVariantTypes(rhs),
+    )
+  }
 
+  if (L.isDatatypeType(lhs) && L.isDisjointUnionType(rhs)) {
+    return typeUnify(subst, L.datatypeTypeUnfold(lhs), rhs)
+  }
+
+  if (L.isDisjointUnionType(lhs) && L.isDatatypeType(rhs)) {
+    return typeUnify(subst, lhs, L.datatypeTypeUnfold(rhs))
   }
 
   return undefined

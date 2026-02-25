@@ -1,6 +1,5 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as L from "../index.ts"
-import { datatypeTypeUnfold } from "./datatypeTypeUnfold.ts"
 import { trailLoopOccurred, type Trail } from "./Trail.ts"
 import { typeEquivalent } from "./typeEquivalent.ts"
 
@@ -94,19 +93,23 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   if (L.isDatatypeType(lhs) && L.isDatatypeType(rhs)) {
     trail = [...trail, [lhs, rhs]]
 
-    return typeSubtype(trail, datatypeTypeUnfold(lhs), datatypeTypeUnfold(rhs))
+    return typeSubtype(
+      trail,
+      L.datatypeTypeUnfold(lhs),
+      L.datatypeTypeUnfold(rhs),
+    )
   }
 
   if (L.isDatatypeType(lhs)) {
     trail = [...trail, [lhs, rhs]]
 
-    return typeSubtype(trail, datatypeTypeUnfold(lhs), rhs)
+    return typeSubtype(trail, L.datatypeTypeUnfold(lhs), rhs)
   }
 
   if (L.isDatatypeType(rhs)) {
     trail = [...trail, [lhs, rhs]]
 
-    return typeSubtype(trail, lhs, datatypeTypeUnfold(rhs))
+    return typeSubtype(trail, lhs, L.datatypeTypeUnfold(rhs))
   }
 
   if (L.isDisjointUnionType(lhs) && L.isDisjointUnionType(rhs)) {
