@@ -1,11 +1,5 @@
 # type system
 
-[lisp] `typeSubtype` -- subtype relation between hashtag and void
-[lisp] `typeSubtype` -- subtype relation between hashtag and bool
-[lisp] `typeSubtype` -- subtype relation between hashtag and null
-
-# type system
-
 [lisp] `typeInfer` -- support `Let1`
 [lisp] `typeInfer` -- support `Begin1`
 [lisp] `typeInfer` -- support `BeginSugar`
