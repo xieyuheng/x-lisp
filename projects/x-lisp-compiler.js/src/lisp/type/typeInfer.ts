@@ -29,6 +29,18 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
     }
 
     case "Hashtag": {
+      if (exp.content === "void") {
+        return L.okInferEffect(L.createAtomType("void"))
+      }
+
+      if (exp.content === "null") {
+        return L.okInferEffect(L.createAtomType("null"))
+      }
+
+      if (exp.content === "t" || exp.content === "f") {
+        return L.okInferEffect(L.createAtomType("bool"))
+      }
+
       return L.okInferEffect(L.createAtomType("hashtag"))
     }
 

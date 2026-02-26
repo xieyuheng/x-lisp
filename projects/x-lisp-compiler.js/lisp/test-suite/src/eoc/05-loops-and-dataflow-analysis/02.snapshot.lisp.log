@@ -19,7 +19,9 @@
     (newline)
     (print 6)
     (newline)
-    (iadd x x)))
+    (print (iadd x x))
+    (newline)
+    void))
 
 ;;; Loaded
 
@@ -40,7 +42,9 @@
     (newline)
     (print 6)
     (newline)
-    (iadd x x)))
+    (print (iadd x x))
+    (newline)
+    void))
 
 ;;; ShrinkPass
 
@@ -60,7 +64,9 @@
   (newline)
   (print 6)
   (newline)
-  (iadd x x))
+  (print (iadd x x))
+  (newline)
+  void)
 
 ;;; UniquifyPass
 
@@ -80,7 +86,9 @@
   (newline)
   (print 6)
   (newline)
-  (iadd x₁ x₁))
+  (print (iadd x₁ x₁))
+  (newline)
+  void)
 
 ;;; LiftLambdaPass
 
@@ -100,7 +108,9 @@
   (newline)
   (print 6)
   (newline)
-  (iadd x₁ x₁))
+  (print (iadd x₁ x₁))
+  (newline)
+  void)
 
 ;;; UnnestOperandPass
 
@@ -120,5 +130,7 @@
   (newline)
   (print 6)
   (newline)
-  (iadd x₁ x₁))
+  (begin (= _₁ (iadd x₁ x₁)) (print _₁))
+  (newline)
+  void)
 

@@ -9,7 +9,7 @@
   (newline)
   (print 3)
   (newline)
-  666)
+  void)
 
 ;;; Loaded
 
@@ -20,7 +20,7 @@
   (newline)
   (print 3)
   (newline)
-  666)
+  void)
 
 ;;; ShrinkPass
 
@@ -31,7 +31,7 @@
   (newline)
   (print 3)
   (newline)
-  666)
+  void)
 
 ;;; UniquifyPass
 
@@ -42,7 +42,7 @@
   (newline)
   (print 3)
   (newline)
-  666)
+  void)
 
 ;;; LiftLambdaPass
 
@@ -53,7 +53,7 @@
   (newline)
   (print 3)
   (newline)
-  666)
+  void)
 
 ;;; UnnestOperandPass
 
@@ -64,5 +64,5 @@
   (newline)
   (print 3)
   (newline)
-  666)
+  void)
 

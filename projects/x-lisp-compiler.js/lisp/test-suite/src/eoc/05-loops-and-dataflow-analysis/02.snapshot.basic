@@ -13,4 +13,7 @@
     (perform (newline))
     (perform (print 6))
     (perform (newline))
-    (return (iadd x₁ x₁))))
+    (= _₁ (iadd x₁ x₁))
+    (perform (print _₁))
+    (perform (newline))
+    (return void)))

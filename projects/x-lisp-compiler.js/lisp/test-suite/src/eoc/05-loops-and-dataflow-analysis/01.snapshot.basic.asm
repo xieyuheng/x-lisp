@@ -15,6 +15,6 @@ body:
   drop
   call newline
   drop
-  literal 666
+  global-load void
   return
 

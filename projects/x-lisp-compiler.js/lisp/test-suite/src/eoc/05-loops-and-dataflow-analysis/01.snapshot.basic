@@ -6,4 +6,4 @@
     (perform (newline))
     (perform (print 3))
     (perform (newline))
-    (return 666)))
+    (return void)))

@@ -7,4 +7,4 @@
   (newline)
   (print 3)
   (newline)
-  666)
+  void)

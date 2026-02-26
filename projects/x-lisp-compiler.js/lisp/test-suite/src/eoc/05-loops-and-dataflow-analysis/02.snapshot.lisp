@@ -16,4 +16,6 @@
     (newline)
     (print 6)
     (newline)
-    (iadd x x)))
+    (print (iadd x x))
+    (newline)
+    void))
