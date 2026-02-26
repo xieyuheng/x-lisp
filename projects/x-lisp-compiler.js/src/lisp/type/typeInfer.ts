@@ -128,6 +128,10 @@ function applyArrowType(
   args: Array<L.Exp>,
   originalExp: L.Exp,
 ): L.InferEffect {
+  if (L.isPolymorphicType(arrowType)) {
+    arrowType = L.polymorphicTypeUnfold(arrowType)
+  }
+
   if (!L.isArrowType(arrowType)) {
     let message = `expecting arrow type`
     message += `\n  given type: ${L.formatType(arrowType)}`

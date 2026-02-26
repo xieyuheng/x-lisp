@@ -1,5 +1,4 @@
 import assert from "node:assert"
-import * as L from "../index.ts"
 import { type Value } from "../value/index.ts"
 
 export type Ctx = Map<string, Value>
@@ -13,16 +12,7 @@ export function ctxNames(ctx: Ctx): Set<string> {
 }
 
 export function ctxLookupType(ctx: Ctx, name: string): undefined | Value {
-  const type = ctx.get(name)
-  if (type === undefined) {
-    return undefined
-  }
-
-  if (L.isPolymorphicType(type)) {
-    return L.polymorphicTypeUnfold(type)
-  }
-
-  return type
+  return ctx.get(name)
 }
 
 export function ctxPut(ctx: Ctx, name: string, value: Value): Ctx {
