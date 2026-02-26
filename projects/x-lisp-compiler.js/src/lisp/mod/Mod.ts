@@ -70,6 +70,13 @@ export function modLookupDefinition(
   return mod.definitions.get(name)
 }
 
+export function modLookupType(mod: Mod, name: string): Value | undefined {
+  const definition = modLookupDefinition(mod, name)
+  if (definition === undefined) return undefined
+
+  return modLookupClaimedType(definition.mod, definition.name)
+}
+
 export function modLookupPublicDefinition(
   mod: Mod,
   name: string,

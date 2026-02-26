@@ -58,13 +58,14 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
 
     case "Var": {
       const type = L.ctxLookupType(ctx, exp.name)
-      if (!type) {
-        let message = `found untyped variable`
-        message += `\n  name: ${exp.name}`
-        return L.errorInferEffect(exp, message)
-      }
+      if (type) return L.okInferEffect(type)
 
-      return L.okInferEffect(type)
+      const topLevelType = L.modLookupType(mod, exp.name)
+      if (topLevelType) return L.okInferEffect(topLevelType)
+
+      let message = `untyped variable`
+      message += `\n  name: ${exp.name}`
+      return L.errorInferEffect(exp, message)
     }
 
     case "Apply": {
@@ -133,8 +134,9 @@ function applyArrowType(
   }
 
   if (!L.isArrowType(arrowType)) {
-    let message = `expecting arrow type`
+    let message = `expecting arrow type to be applyed`
     message += `\n  given type: ${L.formatType(arrowType)}`
+    message += `\n  args: ${L.formatExps(args)}`
     return L.errorInferEffect(originalExp, message)
   }
 

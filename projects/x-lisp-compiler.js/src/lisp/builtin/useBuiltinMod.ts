@@ -1,3 +1,4 @@
+import { createUrl } from "@xieyuheng/helpers.js/url"
 import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
@@ -24,7 +25,11 @@ let mod: L.Mod | undefined = undefined
 export function useBuiltinMod(): L.Mod {
   if (mod) return mod
 
-  mod = L.createMod(new URL("builtin:prelude"), L.createDependencyGraph())
+  const currentDir = path.dirname(fileURLToPath(import.meta.url))
+  const file = path.join(currentDir, "../../../lisp/builtin/index.lisp")
+  const url = createUrl(file)
+
+  mod = L.createMod(url, L.createDependencyGraph())
 
   builtinInt(mod)
   builtinFloat(mod)
@@ -43,10 +48,10 @@ export function useBuiltinMod(): L.Mod {
   builtinHash(mod)
   builtinAssert(mod)
 
-  const currentDir = path.dirname(fileURLToPath(import.meta.url))
-  const file = path.join(currentDir, "../../../lisp/builtin/index.lisp")
   const code = fs.readFileSync(file, "utf-8")
   L.runCode(mod, code)
+
+  L.performTypeCheck(mod)
 
   return mod
 }

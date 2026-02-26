@@ -3,28 +3,58 @@ import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
 export function performTypeCheck(mod: L.Mod): void {
-  const ctx = createCtxFromMod(mod)
+  for (const [name, claimed] of mod.claimed) {
+    const type = L.modLookupType(mod, name)
+    if (!type) {
+      console.log(reportUndefinedClaim(claimed.exp))
+      continue
+    }
+  }
 
   for (const definition of L.modOwnDefinitions(mod)) {
-    if (definition.kind === "VariableDefinition") {
-      const type = L.ctxLookupType(ctx, definition.name)
+    checkDefinition(definition)
+  }
+}
+
+function checkDefinition(definition: L.Definition): null {
+  const mod = definition.mod
+
+  switch (definition.kind) {
+    case "TypeDefinition":
+    case "DatatypeDefinition": {
+      return null
+    }
+
+    case "PrimitiveFunctionDefinition":
+    case "PrimitiveVariableDefinition": {
+      const type = L.modLookupType(mod, definition.name)
       if (!type) {
         console.log(reportUnclaimedDefinition(definition))
-        continue
       }
 
-      const effect = L.typeCheck(mod, ctx, definition.body, type)
+      return null
+    }
+
+    case "VariableDefinition": {
+      const type = L.modLookupType(mod, definition.name)
+      if (!type) {
+        console.log(reportUnclaimedDefinition(definition))
+        return null
+      }
+
+      const effect = L.typeCheck(mod, L.emptyCtx(), definition.body, type)
       const result = effect(L.emptySubst())
       if (result.kind === "CheckError") {
         console.log(reportTypeCheckError(result.exp, result.message))
       }
+      return null
     }
 
-    if (definition.kind === "FunctionDefinition") {
-      const type = L.ctxLookupType(ctx, definition.name)
+    case "FunctionDefinition": {
+      const type = L.modLookupType(mod, definition.name)
       if (!type) {
         console.log(reportUnclaimedDefinition(definition))
-        continue
+        return null
       }
 
       const lambdaExp = L.Lambda(
@@ -32,43 +62,14 @@ export function performTypeCheck(mod: L.Mod): void {
         definition.body,
         definition.meta,
       )
-      const effect = L.typeCheck(mod, ctx, lambdaExp, type)
+      const effect = L.typeCheck(mod, L.emptyCtx(), lambdaExp, type)
       const result = effect(L.emptySubst())
       if (result.kind === "CheckError") {
         console.log(reportTypeCheckError(result.exp, result.message))
       }
+      return null
     }
   }
-}
-
-function createCtxFromMod(mod: L.Mod): L.Ctx {
-  let ctx = L.emptyCtx()
-  for (const [name, definition] of mod.definitions.entries()) {
-    if (
-      definition.kind === "TypeDefinition" ||
-      definition.kind === "DatatypeDefinition"
-    ) {
-      continue
-    }
-
-    const type = L.modLookupClaimedType(definition.mod, definition.name)
-    if (!type) {
-      console.log(reportUnclaimedDefinition(definition))
-      continue
-    }
-
-    ctx = L.ctxPut(ctx, name, type)
-  }
-
-  for (const [name, claimed] of mod.claimed) {
-    const type = L.ctxLookupType(ctx, name)
-    if (!type) {
-      console.log(reportUndefinedClaim(claimed.exp))
-      continue
-    }
-  }
-
-  return ctx
 }
 
 function reportTypeCheckError(exp: L.Exp, errorMessage: string): string {

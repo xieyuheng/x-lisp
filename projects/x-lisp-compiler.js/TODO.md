@@ -1,5 +1,3 @@
-[lisp] remove `createCtxFromMod` -- lookup from mod directly
-
 # define-datatype
 
 [lisp] add claim to data-constructors

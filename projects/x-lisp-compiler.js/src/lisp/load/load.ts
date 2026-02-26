@@ -1,6 +1,8 @@
 import fs from "node:fs"
 import * as L from "../index.ts"
 
+type Options = { noBuiltin?: boolean }
+
 export function load(url: URL, dependencyGraph: L.DependencyGraph): L.Mod {
   const found = L.dependencyGraphLookupMod(dependencyGraph, url)
   if (found !== undefined) return found
@@ -8,7 +10,6 @@ export function load(url: URL, dependencyGraph: L.DependencyGraph): L.Mod {
   const code = loadCode(url)
   const mod = L.createMod(url, dependencyGraph)
   L.dependencyGraphAddMod(dependencyGraph, mod)
-
   L.importBuiltinMod(mod)
   L.runCode(mod, code)
   return mod
