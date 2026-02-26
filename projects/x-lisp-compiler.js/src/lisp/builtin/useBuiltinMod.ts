@@ -51,7 +51,5 @@ export function useBuiltinMod(): L.Mod {
   const code = fs.readFileSync(file, "utf-8")
   L.runCode(mod, code)
 
-  L.performTypeCheck(mod)
-
   return mod
 }
