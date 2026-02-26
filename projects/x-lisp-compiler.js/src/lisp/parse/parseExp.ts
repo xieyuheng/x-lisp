@@ -130,6 +130,14 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     return L.Arrow(argTypes, retType, meta)
   },
 
+  "(cons* 'tau elements)": ({ elements }, { sexp, meta }) => {
+    return L.Tau(
+      S.listElements(elements).map(parseExp),
+      recordMapValue(S.asTael(sexp).attributes, parseExp),
+      meta,
+    )
+  },
+
   "`(the ,schema ,exp)": ({ schema, exp }, { meta }) => {
     return L.The(parseExp(schema), parseExp(exp), meta)
   },
