@@ -1,6 +1,11 @@
 # define-datatype
 
-[lisp] add claim to data-constructors
+[diary] compiling define-datatype
+
+[lisp] `expandDatatype` -- to `define-type`
+[lisp] `expandDataConstructor` -- add claim
+[lisp] `expandDataGetter` -- add claim
+[lisp] `expandDataPutter` -- add claim
 
 # optional type
 

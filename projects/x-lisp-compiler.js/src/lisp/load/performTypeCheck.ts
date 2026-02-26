@@ -30,6 +30,7 @@ function checkDefinition(definition: L.Definition): null {
       const type = L.modLookupType(mod, definition.name)
       if (!type) {
         console.log(reportUnclaimedDefinition(definition))
+        return null
       }
 
       return null
