@@ -32,25 +32,6 @@ date: 2026-02-26
 
 (define (li head tail) [#li head tail])
 
-;; DataConstructorPredicate
-
-(claim nil?
-  (polymorphic (E)
-    (-> (my-list-t E)
-        boot-t)))
-
-(define (nil? value) (equal? value #nil))
-
-(claim li?
-  (polymorphic (E)
-    (-> (my-list-t E)
-        boot-t)))
-
-(define (li? value)
-  (and (any-list? value)
-       (equal? (list-length value) 3)
-       (equal? (list-head value) #li)))
-
 ;; DataGetter
 
 (claim li-head

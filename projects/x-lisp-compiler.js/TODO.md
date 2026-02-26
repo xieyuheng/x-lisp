@@ -1,6 +1,5 @@
 # define-datatype
 
-[lisp] `expandDataGetter` -- add claim
 [lisp] `expandDataPutter` -- add claim
 
 # optional type
