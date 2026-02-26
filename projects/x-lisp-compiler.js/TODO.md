@@ -2,7 +2,7 @@
 
 [lisp] `formatType` -- for better error report
 
-[lisp] `arrowTypeNormalize`
+[lisp] `arrowTypeNormalize` -- nullary arrow is special
 [lisp] `typeUnify` & `typeEquivalent` & `typeSubtype` -- call `arrowTypeNormalize`
 
 [lisp] support `OptionalType` -- fix `builtin/index.lisp`

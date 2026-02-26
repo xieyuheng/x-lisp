@@ -73,8 +73,3 @@ infer(ctx: Ctx, exp: Exp): Value
 
   unificaton 和 `typeSubtype` 在一个函数中做，
   这件事可以作为后续的潜在优化方案。
-
-- 在 `typeCheck` 中，需要判断具体类型类型的时候，
-  如果遇到了 type variable（经过 `substApplyToType` 之后还是 type variable），
-  可以生成新的 type variable 来构造所需要判断的类型。
-  比如 `A = (list-t B)`。
