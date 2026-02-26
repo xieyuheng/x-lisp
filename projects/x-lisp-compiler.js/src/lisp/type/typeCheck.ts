@@ -195,8 +195,8 @@ export function typeCheckByInfer(
           return L.okCheckEffect()(newSubst)
         } else {
           let message = `inferred type is not a subtype of expecting type`
-          message += `\n  inferred type: ${L.formatValue(inferred.type)}`
-          message += `\n  expecting type: ${L.formatValue(type)}`
+          message += `\n  inferred type: ${L.formatValue(resolvedInferredType)}`
+          message += `\n  expecting type: ${L.formatValue(resolvedType)}`
           return L.errorCheckEffect(exp, message)(subst)
         }
       }

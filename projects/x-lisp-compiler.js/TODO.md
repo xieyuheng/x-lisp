@@ -2,7 +2,8 @@
 
 [lisp] `formatType` -- for better error report
 
-# type system
+[lisp] `arrowTypeNormalize`
+[lisp] `typeUnify` & `typeEquivalent` & `typeSubtype` -- call `arrowTypeNormalize`
 
 [lisp] support `OptionalType` -- fix `builtin/index.lisp`
 

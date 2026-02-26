@@ -221,7 +221,7 @@ export function recordTypeValueType(value: L.Value): L.Value {
 export function isHashType(value: L.Value): boolean {
   return (
     L.isTaelValue(value) &&
-    value.elements.length === 2 &&
+    value.elements.length === 3 &&
     L.equal(value.elements[0], L.HashtagValue("hash")) &&
     isType(value.elements[1]) &&
     isType(value.elements[2])

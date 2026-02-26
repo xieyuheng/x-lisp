@@ -1,6 +1,6 @@
 (define-function (main)
   (block body (test (equal? 1 2)) (branch then₃ else₄))
-  (block then₁ (return 2))
+  (block then₁ (return void))
   (block else₂ (return (assert #f)))
-  (block then₃ (return 1))
+  (block then₃ (return void))
   (block else₄ (test (equal? 1 2)) (branch then₁ else₂)))

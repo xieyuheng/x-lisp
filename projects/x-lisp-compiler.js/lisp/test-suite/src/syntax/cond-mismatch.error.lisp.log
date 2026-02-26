@@ -3,30 +3,34 @@
 (claim main (-> void-t))
 
 (define (main)
-  (cond ((equal? 1 2) (begin 1)) ((equal? 1 2) (begin 2))))
+  (cond
+    ((equal? 1 2) (begin void))
+    ((equal? 1 2) (begin void))))
 
 ;;; Loaded
 
 (define (main)
-  (cond ((equal? 1 2) (begin 1)) ((equal? 1 2) (begin 2))))
+  (cond
+    ((equal? 1 2) (begin void))
+    ((equal? 1 2) (begin void))))
 
 ;;; ShrinkPass
 
 (define (main)
-  (if (equal? 1 2) 1 (if (equal? 1 2) 2 (assert #f))))
+  (if (equal? 1 2) void (if (equal? 1 2) void (assert #f))))
 
 ;;; UniquifyPass
 
 (define (main)
-  (if (equal? 1 2) 1 (if (equal? 1 2) 2 (assert #f))))
+  (if (equal? 1 2) void (if (equal? 1 2) void (assert #f))))
 
 ;;; LiftLambdaPass
 
 (define (main)
-  (if (equal? 1 2) 1 (if (equal? 1 2) 2 (assert #f))))
+  (if (equal? 1 2) void (if (equal? 1 2) void (assert #f))))
 
 ;;; UnnestOperandPass
 
 (define (main)
-  (if (equal? 1 2) 1 (if (equal? 1 2) 2 (assert #f))))
+  (if (equal? 1 2) void (if (equal? 1 2) void (assert #f))))
 

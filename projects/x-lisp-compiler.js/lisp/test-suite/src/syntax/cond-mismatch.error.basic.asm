@@ -6,13 +6,13 @@ body:
   jump-if-not else₄
   jump then₃
 then₁:
-  literal 2
+  global-load void
   return
 else₂:
   literal #f
   tail-call assert
 then₃:
-  literal 1
+  global-load void
   return
 else₄:
   literal 1
