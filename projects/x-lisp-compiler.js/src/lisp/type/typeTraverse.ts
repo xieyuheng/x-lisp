@@ -48,7 +48,10 @@ export function typeTraverse(
   }
 
   if (L.isHashType(type)) {
-    return L.createHashType(onType(L.hashTypeKeyType(type)), onType(L.hashTypeValueType(type)))
+    return L.createHashType(
+      onType(L.hashTypeKeyType(type)),
+      onType(L.hashTypeValueType(type)),
+    )
   }
 
   if (L.isDatatypeType(type)) {

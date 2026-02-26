@@ -1,7 +1,4 @@
-import assert from "node:assert"
-import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
-import { formatBody } from "./index.ts"
 
 // export function formatTypes(
 //   values: Array<Value>,

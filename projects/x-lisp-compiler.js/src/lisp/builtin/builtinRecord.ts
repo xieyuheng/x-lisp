@@ -5,6 +5,7 @@ import * as Values from "../value/index.ts"
 
 export function builtinRecord(mod: Mod) {
   provide(mod, [
+    "make-record",
     "record-length",
     "record-keys",
     "record-values",
@@ -19,6 +20,10 @@ export function builtinRecord(mod: Mod) {
     "record-delete",
     "record-delete!",
   ])
+
+  definePrimitiveFunction(mod, "make-record", 0, () => {
+    return Values.TaelValue([], {})
+  })
 
   definePrimitiveFunction(mod, "record-length", 1, (record) => {
     const values = Object.values(Values.asTaelValue(record).attributes).filter(

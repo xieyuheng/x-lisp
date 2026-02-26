@@ -189,8 +189,6 @@
 (claim set-inter (polymorphic (E) (-> (set-t E) (set-t E) (set-t E))))
 (claim set-difference (polymorphic (E) (-> (set-t E) (set-t E) (set-t E))))
 (claim set-disjoint? (polymorphic (E) (-> (set-t E) (set-t E) bool-t)))
-(claim set-map (polymorphic (E1 E2) (-> (-> E1 E2) (set-t E1) (set-t E2))))
-(claim set-each (polymorphic (E) (-> (-> E any-t) (set-t E) void-t)))
 
 ;; hash
 

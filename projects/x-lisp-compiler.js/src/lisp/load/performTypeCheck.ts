@@ -44,15 +44,20 @@ export function performTypeCheck(mod: L.Mod): void {
 function createCtxFromMod(mod: L.Mod): L.Ctx {
   let ctx = L.emptyCtx()
   for (const [name, definition] of mod.definitions.entries()) {
-    if (definition.kind !== "TypeDefinition") {
-      const type = L.modLookupClaimedType(definition.mod, definition.name)
-      if (!type) {
-        console.log(reportUnclaimedDefinition(definition))
-        continue
-      }
-
-      ctx = L.ctxPut(ctx, name, type)
+    if (
+      definition.kind === "TypeDefinition" ||
+      definition.kind === "DatatypeDefinition"
+    ) {
+      continue
     }
+
+    const type = L.modLookupClaimedType(definition.mod, definition.name)
+    if (!type) {
+      console.log(reportUnclaimedDefinition(definition))
+      continue
+    }
+
+    ctx = L.ctxPut(ctx, name, type)
   }
 
   for (const [name, claimed] of mod.claimed) {
