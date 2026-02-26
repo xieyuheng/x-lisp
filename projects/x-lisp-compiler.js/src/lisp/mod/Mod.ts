@@ -5,11 +5,13 @@ import * as L from "../index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { type Value } from "../value/index.ts"
 
+export type Claimed = 
+
 export type Mod = {
   url: URL
   stmts: Array<Stmt>
   exported: Set<string>
-  claimed: Map<string, { exp: Exp; type?: Value }>
+    claimed: Map<string, Claimed{ exp: Exp; type?: Value }>
   definitions: Map<string, Definition>
   dependencyGraph: L.DependencyGraph
 }
