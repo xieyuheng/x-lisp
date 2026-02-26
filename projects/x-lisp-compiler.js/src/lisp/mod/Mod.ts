@@ -14,6 +14,7 @@ export type Mod = {
   url: URL
   stmts: Array<Stmt>
   exported: Set<string>
+  exempted: Set<string>
   claimed: Map<string, ClaimedEntry>
   definitions: Map<string, Definition>
   dependencyGraph: L.DependencyGraph
@@ -24,6 +25,7 @@ export function createMod(url: URL, dependencyGraph: L.DependencyGraph): Mod {
     url,
     stmts: [],
     exported: new Set(),
+    exempted: new Set(),
     claimed: new Map(),
     definitions: new Map(),
     dependencyGraph,

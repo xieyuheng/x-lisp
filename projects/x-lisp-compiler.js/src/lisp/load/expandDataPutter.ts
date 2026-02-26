@@ -7,6 +7,9 @@ export function expandDataPutter(
 ): void {
   for (const [index, field] of ctor.fields.entries()) {
     const name = `${ctor.name}-put-${field.name}`
+
+    mod.exempted.add(name)
+
     L.modDefine(
       mod,
       name,
@@ -58,6 +61,9 @@ export function expandDataPutter(
 
   for (const [index, field] of ctor.fields.entries()) {
     const name = `${ctor.name}-put-${field.name}!`
+
+    mod.exempted.add(name)
+
     L.modDefine(
       mod,
       name,

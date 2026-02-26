@@ -7,6 +7,9 @@ export function expandDataGetter(
 ): void {
   for (const [index, field] of ctor.fields.entries()) {
     const name = `${ctor.name}-${field.name}`
+
+    mod.exempted.add(name)
+
     L.modDefine(
       mod,
       name,

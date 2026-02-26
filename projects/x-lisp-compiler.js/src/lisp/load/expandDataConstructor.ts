@@ -5,6 +5,8 @@ export function expandDataConstructor(
   definition: L.DatatypeDefinition,
   ctor: L.DataConstructorSpec,
 ): void {
+  mod.exempted.add(ctor.name)
+
   if (ctor.fields.length === 0) {
     L.modDefine(
       mod,

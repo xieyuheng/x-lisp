@@ -181,15 +181,20 @@ export function typeCheckByInfer(
     const inferred = L.typeInfer(mod, ctx, exp)(subst)
     switch (inferred.kind) {
       case "InferOk": {
-        const newSubst = L.typeUnify(subst, inferred.type, type)
+        let inferredType = inferred.type
+        if (L.isPolymorphicType(inferredType)) {
+          inferredType = L.polymorphicTypeUnfold(inferredType)
+        }
+
+        const newSubst = L.typeUnify(subst, inferredType, type)
         if (newSubst === undefined) {
           let message = `unificaton fail`
-          message += `\n  inferred type: ${L.formatType(inferred.type)}`
+          message += `\n  inferred type: ${L.formatType(inferredType)}`
           message += `\n  given type: ${L.formatType(type)}`
           return L.errorCheckEffect(exp, message)(subst)
         }
 
-        const resolvedInferredType = L.substApplyToType(newSubst, inferred.type)
+        const resolvedInferredType = L.substApplyToType(newSubst, inferredType)
         const resolvedType = L.substApplyToType(newSubst, type)
         if (L.typeSubtype([], resolvedInferredType, resolvedType)) {
           return L.okCheckEffect()(newSubst)
