@@ -72,6 +72,6 @@ export function typeTraverse(
   }
 
   let message = `[typeTraverse] unhandled type`
-  message += `\n  type: ${L.formatValue(type)}`
+  message += `\n  type: ${L.formatType(type)}`
   throw new Error(message)
 }

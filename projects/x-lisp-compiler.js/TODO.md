@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `formatType` -- for better error report
-
 [lisp] `arrowTypeNormalize` -- nullary arrow is special
 [lisp] `typeUnify` & `typeEquivalent` & `typeSubtype` -- call `arrowTypeNormalize`
 

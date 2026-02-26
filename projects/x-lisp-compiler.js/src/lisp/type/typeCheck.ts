@@ -22,7 +22,7 @@ export function typeCheck(
     case "Lambda": {
       if (!L.isArrowType(type)) {
         let message = `expecting arrow type`
-        message += `\n  type: ${L.formatValue(type)}`
+        message += `\n  type: ${L.formatType(type)}`
         return L.errorCheckEffect(exp, message)
       }
 
@@ -103,7 +103,7 @@ export function typeCheck(
       } else if (L.isDisjointUnionType(type)) {
         if (exp.elements.length === 0) {
           let message = `elements should not be empty`
-          message += `\n  type: ${L.formatValue(type)}`
+          message += `\n  type: ${L.formatType(type)}`
           return L.errorCheckEffect(exp, message)
         }
 
@@ -111,7 +111,7 @@ export function typeCheck(
         if (headExp.kind !== "Hashtag") {
           let message = `head of tael should be Hashtag`
           message += `\n  head: ${L.formatExp(headExp)}`
-          message += `\n  type: ${L.formatValue(type)}`
+          message += `\n  type: ${L.formatType(type)}`
           return L.errorCheckEffect(exp, message)
         }
 
@@ -120,14 +120,14 @@ export function typeCheck(
         if (variantTypes[name] === undefined) {
           let message = `head hashtag mismatch`
           message += `\n  hashtag: ${L.formatExp(headExp)}`
-          message += `\n  type: ${L.formatValue(type)}`
+          message += `\n  type: ${L.formatType(type)}`
           return L.errorCheckEffect(exp, message)
         }
 
         return typeCheck(mod, ctx, exp, variantTypes[name])
       } else {
         let message = `expecting tael-like type`
-        message += `\n  type: ${L.formatValue(type)}`
+        message += `\n  type: ${L.formatType(type)}`
         return L.errorCheckEffect(exp, message)
       }
     }
@@ -135,7 +135,7 @@ export function typeCheck(
     case "Set": {
       if (!L.isSetType(type)) {
         let message = `expecting set type`
-        message += `\n  type: ${L.formatValue(type)}`
+        message += `\n  type: ${L.formatType(type)}`
         return L.errorCheckEffect(exp, message)
       }
 
@@ -149,7 +149,7 @@ export function typeCheck(
     case "Hash": {
       if (!L.isHashType(type)) {
         let message = `expecting hash type`
-        message += `\n  type: ${L.formatValue(type)}`
+        message += `\n  type: ${L.formatType(type)}`
         return L.errorCheckEffect(exp, message)
       }
 
@@ -184,8 +184,8 @@ export function typeCheckByInfer(
         const newSubst = L.typeUnify(subst, inferred.type, type)
         if (newSubst === undefined) {
           let message = `unificaton fail`
-          message += `\n  inferred type: ${L.formatValue(inferred.type)}`
-          message += `\n  expecting type: ${L.formatValue(type)}`
+          message += `\n  inferred type: ${L.formatType(inferred.type)}`
+          message += `\n  expecting type: ${L.formatType(type)}`
           return L.errorCheckEffect(exp, message)(subst)
         }
 
@@ -195,8 +195,8 @@ export function typeCheckByInfer(
           return L.okCheckEffect()(newSubst)
         } else {
           let message = `inferred type is not a subtype of expecting type`
-          message += `\n  inferred type: ${L.formatValue(resolvedInferredType)}`
-          message += `\n  expecting type: ${L.formatValue(resolvedType)}`
+          message += `\n  inferred type: ${L.formatType(resolvedInferredType)}`
+          message += `\n  expecting type: ${L.formatType(resolvedType)}`
           return L.errorCheckEffect(exp, message)(subst)
         }
       }

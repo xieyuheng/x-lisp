@@ -57,6 +57,6 @@ export function typeChildren(type: L.Value): Array<L.Value> {
   }
 
   let message = `[occurredInType] unhandled type`
-  message += `\n  type: ${L.formatValue(type)}`
+  message += `\n  type: ${L.formatType(type)}`
   throw new Error(message)
 }
