@@ -128,6 +128,30 @@ export function arrowTypeRetType(value: L.Value): L.Value {
   return L.asTaelValue(value).elements[2]
 }
 
+export function arrowTypeNormalize(value: L.Value): L.Value {
+  if (isArrowType(value)) {
+    const argTypes = arrowTypeArgTypes(value)
+    const retType = arrowTypeRetType(value)
+
+    if (argTypes.length === 0) {
+      // we do not normalize nullary arrow
+      return createArrowType(argTypes, arrowTypeNormalize(retType))
+    }
+
+    if (argTypes.length === 1) {
+      return createArrowType(argTypes, arrowTypeNormalize(retType))
+    }
+
+    const [firstArgType, ...restArgTypes] = argTypes
+    return createArrowType(
+      [firstArgType],
+      arrowTypeNormalize(createArrowType(restArgTypes, retType)),
+    )
+  }
+
+  return value
+}
+
 // TauType
 
 export function isTauType(value: L.Value): boolean {

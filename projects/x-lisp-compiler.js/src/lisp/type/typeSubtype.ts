@@ -58,6 +58,8 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
 
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
     // contravariant on ArgTypes
+    lhs = L.arrowTypeNormalize(lhs)
+    rhs = L.arrowTypeNormalize(rhs)
     return (
       typeSubtypeMany(
         trail,

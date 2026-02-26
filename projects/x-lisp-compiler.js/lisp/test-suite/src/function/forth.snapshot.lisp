@@ -31,5 +31,8 @@
 
 (define (main)
   (= f identity)
-  (= g (dup identity))
-  (println (g f f)))
+  (= square (dup imul))
+  (println (square (f 1)))
+  (println (square (f 2)))
+  (println (square (f 3)))
+  (println (square (f 4))))

@@ -42,6 +42,8 @@ export function typeUnify(
   }
 
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
+    lhs = L.arrowTypeNormalize(lhs)
+    rhs = L.arrowTypeNormalize(rhs)
     subst = typeUnifyMany(
       subst,
       L.arrowTypeArgTypes(lhs),

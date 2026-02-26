@@ -1,7 +1,8 @@
-# type system
+# define-datatype
 
-[lisp] `arrowTypeNormalize` -- nullary arrow is special
-[lisp] `typeUnify` & `typeEquivalent` & `typeSubtype` -- call `arrowTypeNormalize`
+[lisp] add claim to data-constructors
+
+# optional type
 
 [lisp] support `OptionalType` -- fix `builtin/index.lisp`
 

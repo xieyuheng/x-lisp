@@ -63,15 +63,58 @@ body:
 body:
   ref identity
   local-store f₁
-  ref identity
+  ref imul
   call dup
-  local-store g₁
+  local-store square₁
+  literal 1
   local-load f₁
-  local-load f₁
-  local-load g₁
-  literal 2
+  literal 1
   apply
   local-store _₁
   local-load _₁
+  local-load square₁
+  literal 1
+  apply
+  local-store _₂
+  local-load _₂
+  call println
+  drop
+  literal 2
+  local-load f₁
+  literal 1
+  apply
+  local-store _₃
+  local-load _₃
+  local-load square₁
+  literal 1
+  apply
+  local-store _₄
+  local-load _₄
+  call println
+  drop
+  literal 3
+  local-load f₁
+  literal 1
+  apply
+  local-store _₅
+  local-load _₅
+  local-load square₁
+  literal 1
+  apply
+  local-store _₆
+  local-load _₆
+  call println
+  drop
+  literal 4
+  local-load f₁
+  literal 1
+  apply
+  local-store _₇
+  local-load _₇
+  local-load square₁
+  literal 1
+  apply
+  local-store _₈
+  local-load _₈
   tail-call println
 

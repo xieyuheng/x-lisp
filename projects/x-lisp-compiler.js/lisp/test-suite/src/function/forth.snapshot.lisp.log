@@ -21,8 +21,11 @@
 
 (define (main)
   (= f identity)
-  (= g (dup identity))
-  (println (g f f)))
+  (= square (dup imul))
+  (println (square (f 1)))
+  (println (square (f 2)))
+  (println (square (f 3)))
+  (println (square (f 4))))
 
 ;;; Loaded
 
@@ -36,8 +39,11 @@
 
 (define (main)
   (= f identity)
-  (= g (dup identity))
-  (println (g f f)))
+  (= square (dup imul))
+  (println (square (f 1)))
+  (println (square (f 2)))
+  (println (square (f 3)))
+  (println (square (f 4))))
 
 ;;; ShrinkPass
 
@@ -51,8 +57,11 @@
 
 (define (main)
   (= f identity)
-  (= g (dup identity))
-  (println (g f f)))
+  (= square (dup imul))
+  (println (square (f 1)))
+  (println (square (f 2)))
+  (println (square (f 3)))
+  (println (square (f 4))))
 
 ;;; UniquifyPass
 
@@ -66,8 +75,11 @@
 
 (define (main)
   (= f₁ identity)
-  (= g₁ (dup identity))
-  (println (g₁ f₁ f₁)))
+  (= square₁ (dup imul))
+  (println (square₁ (f₁ 1)))
+  (println (square₁ (f₁ 2)))
+  (println (square₁ (f₁ 3)))
+  (println (square₁ (f₁ 4))))
 
 ;;; LiftLambdaPass
 
@@ -87,8 +99,11 @@
 
 (define (main)
   (= f₁ identity)
-  (= g₁ (dup identity))
-  (println (g₁ f₁ f₁)))
+  (= square₁ (dup imul))
+  (println (square₁ (f₁ 1)))
+  (println (square₁ (f₁ 2)))
+  (println (square₁ (f₁ 3)))
+  (println (square₁ (f₁ 4))))
 
 ;;; UnnestOperandPass
 
@@ -108,7 +123,11 @@
 
 (define (main)
   (= f₁ identity)
-  (= g₁ (dup identity))
-  (= _₁ (g₁ f₁ f₁))
-  (println _₁))
+  (= square₁ (dup imul))
+  (begin (= _₁ (f₁ 1)) (= _₂ (square₁ _₁)) (println _₂))
+  (begin (= _₃ (f₁ 2)) (= _₄ (square₁ _₃)) (println _₄))
+  (begin (= _₅ (f₁ 3)) (= _₆ (square₁ _₅)) (println _₆))
+  (= _₇ (f₁ 4))
+  (= _₈ (square₁ _₇))
+  (println _₈))
 
