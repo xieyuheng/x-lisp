@@ -1,7 +1,7 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as L from "../index.ts"
 
-export function isInferableExp(exp: L.Exp): boolean {
+export function expPreferInfer(exp: L.Exp): boolean {
   switch (exp.kind) {
     case "Symbol":
     case "Hashtag":
@@ -79,6 +79,26 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         L.typeCheck(mod, ctx, exp.exp, type),
         L.okInferEffect(type),
       )
+    }
+
+    case "Let1": {
+      return L.inferThenInfer(
+        L.typeInfer(mod, ctx, exp.rhs),
+        (inferredType) => {
+          ctx = L.ctxPut(ctx, exp.name, inferredType)
+          return typeInfer(mod, ctx, exp.body)
+        },
+      )
+    }
+
+    case "Begin1": {
+      return L.checkThenInfer(L.typeCheck(mod, ctx, exp.head, L.createAnyType()),
+                              typeInfer(mod, ctx, exp.body),
+                                       )
+    }
+
+    case "BeginSugar": {
+      return typeInfer(mod, ctx, L.desugarBegin(exp.sequence))
     }
 
     default: {

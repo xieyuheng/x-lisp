@@ -1,11 +1,5 @@
 # type system
 
-[lisp] `typeInfer` -- support `Let1`
-[lisp] `typeInfer` -- support `Begin1`
-[lisp] `typeInfer` -- support `BeginSugar`
-
-# type system
-
 [lisp] `formatType` -- for better error report
 
 # type system

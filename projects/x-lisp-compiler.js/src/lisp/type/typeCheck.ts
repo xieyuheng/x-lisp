@@ -11,7 +11,7 @@ export function typeCheck(
   }
 
   if (L.isAnyType(type)) {
-    if (L.isInferableExp(exp)) {
+    if (L.expPreferInfer(exp)) {
       return typeCheckByInfer(mod, ctx, exp, type)
     } else {
       return L.okCheckEffect()
