@@ -92,9 +92,10 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
     }
 
     case "Begin1": {
-      return L.checkThenInfer(L.typeCheck(mod, ctx, exp.head, L.createAnyType()),
-                              typeInfer(mod, ctx, exp.body),
-                                       )
+      return L.checkThenInfer(
+        L.typeCheck(mod, ctx, exp.head, L.createAnyType()),
+        typeInfer(mod, ctx, exp.body),
+      )
     }
 
     case "BeginSugar": {
