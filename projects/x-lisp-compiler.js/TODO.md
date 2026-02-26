@@ -1,6 +1,5 @@
 # type system
 
-[lisp] `typeInfer` support `The`
 [lisp] `typeCheck` call `typeUnify`
 
 [lisp] support `OptionalType` -- fix `builtin/index.lisp`

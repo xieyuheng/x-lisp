@@ -52,6 +52,14 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
       )
     }
 
+    case "The": {
+      const type = L.evaluate(mod, L.emptyEnv(), exp.type)
+      return L.checkThenInfer(
+        L.typeCheck(mod, ctx, exp.exp, type),
+        L.okInferEffect(type),
+      )
+    }
+
     default: {
       let message = `[typeInfer] unhandled exp`
       message += `\n  exp: ${L.formatExp(exp)}`
