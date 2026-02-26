@@ -1,10 +1,5 @@
 # type system
 
-[lisp] `define-type` -- use `(polymorphic)`
-[lisp] `isType` -- fix the case of `PolymorphicType`
-
-[lisp] `Tau` as `Exp`
-
 [lisp] support `OptionalType` -- fix `builtin/index.lisp`
 
 [lisp] `typeCheck` call `typeUnify`

@@ -1,3 +1,4 @@
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 import { apply } from "./apply.ts"
@@ -127,6 +128,17 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       )
       const retType = evaluate(mod, env, exp.retType)
       return L.createArrowType(argTypes, retType)
+    }
+
+    case "Tau": {
+      const elementTypes = exp.elementTypes.map((elementType) =>
+        evaluate(mod, env, elementType),
+      )
+      const attributeTypes = recordMapValue(
+        exp.attributeTypes,
+        (attributeType) => evaluate(mod, env, attributeType),
+      )
+      return L.createTauType(elementTypes, attributeTypes)
     }
 
     case "The": {

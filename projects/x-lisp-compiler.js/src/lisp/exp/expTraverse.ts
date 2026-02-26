@@ -110,6 +110,14 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return L.Arrow(exp.argTypes.map(onExp), onExp(exp.retType), exp.meta)
     }
 
+    case "Tau": {
+      return L.Tau(
+        exp.elementTypes.map(onExp),
+        recordMapValue(exp.attributeTypes, onExp),
+        exp.meta,
+      )
+    }
+
     case "The": {
       return L.The(onExp(exp.type), onExp(exp.exp), exp.meta)
     }

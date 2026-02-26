@@ -24,6 +24,7 @@ export type Exp =
   | Hash
   | Quote
   | Arrow
+  | Tau
   | The
   | Polymorphic
 
@@ -390,6 +391,26 @@ export function Arrow(argTypes: Array<Exp>, retType: Exp, meta?: Meta): Arrow {
     kind: "Arrow",
     argTypes,
     retType,
+    meta,
+  }
+}
+
+export type Tau = {
+  kind: "Tau"
+  elementTypes: Array<Exp>
+  attributeTypes: Record<string, Exp>
+  meta?: Meta
+}
+
+export function Tau(
+  elementTypes: Array<Exp>,
+  attributeTypes: Record<string, Exp>,
+  meta?: Meta,
+): Tau {
+  return {
+    kind: "Tau",
+    elementTypes,
+    attributeTypes,
     meta,
   }
 }

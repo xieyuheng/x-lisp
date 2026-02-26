@@ -164,6 +164,20 @@ export function formatExp(exp: Exp): string {
       return `(-> ${argTypes} ${retType})`
     }
 
+    case "Tau": {
+      const elementTypes = formatExps(exp.elementTypes)
+      const attributeTypes = formatExpAttributes(exp.attributeTypes)
+      if (elementTypes === "" && attributeTypes === "") {
+        return `(tau)`
+      } else if (attributeTypes === "") {
+        return `(tau ${elementTypes})`
+      } else if (elementTypes === "") {
+        return `(tau ${attributeTypes})`
+      } else {
+        return `(tau ${elementTypes} ${attributeTypes})`
+      }
+    }
+
     case "The": {
       return `(the ${formatExp(exp.type)} ${formatExp(exp.exp)})`
     }
