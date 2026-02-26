@@ -13,8 +13,8 @@ importers:
         version: link:../helpers.js
     devDependencies:
       '@types/node':
-        specifier: ^25.3.0
-        version: 25.3.0
+        specifier: ^25.3.1
+        version: 25.3.1
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -28,8 +28,8 @@ importers:
   projects/helpers.js:
     devDependencies:
       '@types/node':
-        specifier: ^25.3.0
-        version: 25.3.0
+        specifier: ^25.3.1
+        version: 25.3.1
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -47,8 +47,8 @@ importers:
         version: link:../helpers.js
     devDependencies:
       '@types/node':
-        specifier: ^25.3.0
-        version: 25.3.0
+        specifier: ^25.3.1
+        version: 25.3.1
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -69,8 +69,8 @@ importers:
         version: link:../ppml.js
     devDependencies:
       '@types/node':
-        specifier: ^25.3.0
-        version: 25.3.0
+        specifier: ^25.3.1
+        version: 25.3.1
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -100,8 +100,8 @@ importers:
         version: 4.3.6
     devDependencies:
       '@types/node':
-        specifier: ^25.3.0
-        version: 25.3.0
+        specifier: ^25.3.1
+        version: 25.3.1
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -125,8 +125,8 @@ importers:
         version: link:../sexp.js
     devDependencies:
       '@types/node':
-        specifier: ^25.3.0
-        version: 25.3.0
+        specifier: ^25.3.1
+        version: 25.3.1
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -139,8 +139,8 @@ importers:
 
 packages:
 
-  '@types/node@25.3.0':
-    resolution: {integrity: sha512-4K3bqJpXpqfg2XKGK9bpDTc6xO/xoUP/RBWS7AtRMug6zZFaRekiLzjVtAoZMquxoAbzBvy5nxQ7veS5eYzf8A==}
+  '@types/node@25.3.1':
+    resolution: {integrity: sha512-hj9YIJimBCipHVfHKRMnvmHg+wfhKc0o4mTtXh9pKBjC8TLJzz0nzGmLi5UJsYAUgSvXFHgb0V2oY10DUFtImw==}
 
   prettier-plugin-organize-imports@4.3.0:
     resolution: {integrity: sha512-FxFz0qFhyBsGdIsb697f/EkvHzi5SZOhWAjxcx2dLt+Q532bAlhswcXGYB1yzjZ69kW8UoadFBw7TyNwlq96Iw==}
@@ -170,7 +170,7 @@ packages:
 
 snapshots:
 
-  '@types/node@25.3.0':
+  '@types/node@25.3.1':
     dependencies:
       undici-types: 7.18.2
 
