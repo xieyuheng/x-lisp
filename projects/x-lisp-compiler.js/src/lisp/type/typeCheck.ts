@@ -6,6 +6,10 @@ export function typeCheck(
   exp: L.Exp,
   type: L.Value,
 ): L.CheckEffect {
+  if (L.isPolymorphicType(type)) {
+    type = L.polymorphicTypeUnfold(type)
+  }
+
   if (L.isAnyType(type)) {
     return L.okCheckEffect()
   }
@@ -158,16 +162,48 @@ export function typeCheck(
     }
 
     default: {
-      return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) => {
-        if (L.typeSubtype([], inferredType, type)) {
-          return L.okCheckEffect()
+      return typeCheckByInfer(mod, ctx, exp, type)
+    }
+  }
+}
+
+export function typeCheckByInfer(
+  mod: L.Mod,
+  ctx: L.Ctx,
+  exp: L.Exp,
+  type: L.Value,
+): L.CheckEffect {
+  return (subst) => {
+    const inferred = L.typeInfer(mod, ctx, exp)(subst)
+    switch (inferred.kind) {
+      case "InferOk": {
+        const newSubst = L.typeUnify(subst, inferred.type, type)
+        if (newSubst === undefined) {
+          let message = `unificaton fail`
+          message += `\n  inferred type: ${L.formatValue(inferred.type)}`
+          message += `\n  given type: ${L.formatValue(type)}`
+          return L.errorCheckEffect(exp, message)(subst)
+        }
+
+        const resolvedInferredType = L.substApplyToType(newSubst, inferred.type)
+        const resolvedType = L.substApplyToType(newSubst, type)
+        if (L.typeSubtype([], resolvedInferredType, resolvedType)) {
+          return L.okCheckEffect()(newSubst)
         } else {
           let message = `inferred type is not a subtype of given type`
-          message += `\n  inferred type: ${L.formatValue(inferredType)}`
+          message += `\n  inferred type: ${L.formatValue(inferred.type)}`
           message += `\n  given type: ${L.formatValue(type)}`
-          return L.errorCheckEffect(exp, message)
+          return L.errorCheckEffect(exp, message)(subst)
         }
-      })
+      }
+
+      case "InferError": {
+        return {
+          kind: "CheckError",
+          exp: inferred.exp,
+          message: inferred.message,
+        }
+      }
     }
   }
 }

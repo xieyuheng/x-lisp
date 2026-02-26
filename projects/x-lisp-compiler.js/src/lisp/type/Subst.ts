@@ -18,6 +18,18 @@ export function substApplyToType(subst: Subst, type: L.Value): L.Value {
     return found || type
   }
 
+  if (L.isAnyType(type)) {
+    return type
+  }
+
+  if (L.isLiteralType(type)) {
+    return type
+  }
+
+  if (L.isAtomType(type)) {
+    return type
+  }
+
   return L.typeTraverse((type) => substApplyToType(subst, type), type)
 }
 

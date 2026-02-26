@@ -1,7 +1,5 @@
 # type system
 
-[lisp] `typeCheck` call `typeUnify`
-
 [lisp] support `OptionalType` -- fix `builtin/index.lisp`
 
 # type system
