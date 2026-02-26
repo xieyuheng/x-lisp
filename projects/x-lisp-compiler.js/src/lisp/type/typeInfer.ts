@@ -1,7 +1,7 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as L from "../index.ts"
 
-export function typeInfer(ctx: L.Ctx, exp: L.Exp): L.InferEffect {
+export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
   switch (exp.kind) {
     case "Symbol": {
       return L.okInferEffect(L.createAtomType("symbol"))
@@ -35,8 +35,8 @@ export function typeInfer(ctx: L.Ctx, exp: L.Exp): L.InferEffect {
     }
 
     case "Apply": {
-      return L.inferThenInfer(typeInfer(ctx, exp.target), (targetType) =>
-        applyArrowType(ctx, targetType, exp.args, exp),
+      return L.inferThenInfer(typeInfer(mod, ctx, exp.target), (targetType) =>
+        applyArrowType(mod, ctx, targetType, exp.args, exp),
       )
     }
 
@@ -45,7 +45,7 @@ export function typeInfer(ctx: L.Ctx, exp: L.Exp): L.InferEffect {
       return L.checkThenInfer(
         L.sequenceCheckEffect(
           exp.exps.map((subExp) =>
-            L.typeCheck(ctx, subExp, L.createAtomType("bool")),
+            L.typeCheck(mod, ctx, subExp, L.createAtomType("bool")),
           ),
         ),
         L.okInferEffect(L.createAtomType("bool")),
@@ -61,6 +61,7 @@ export function typeInfer(ctx: L.Ctx, exp: L.Exp): L.InferEffect {
 }
 
 function applyArrowType(
+  mod: L.Mod,
   ctx: L.Ctx,
   arrowType: L.Value,
   args: Array<L.Exp>,
@@ -78,7 +79,7 @@ function applyArrowType(
     const length = args.length
     return L.checkThenInfer(
       L.sequenceCheckEffect(
-        range(length).map((i) => L.typeCheck(ctx, args[i], argTypes[i])),
+        range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
       ),
       L.okInferEffect(L.arrowTypeRetType(arrowType)),
     )
@@ -86,7 +87,7 @@ function applyArrowType(
     const length = args.length
     return L.checkThenInfer(
       L.sequenceCheckEffect(
-        range(length).map((i) => L.typeCheck(ctx, args[i], argTypes[i])),
+        range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
       ),
       L.okInferEffect(
         L.createArrowType(
@@ -99,9 +100,10 @@ function applyArrowType(
     const length = argTypes.length
     return L.checkThenInfer(
       L.sequenceCheckEffect(
-        range(length).map((i) => L.typeCheck(ctx, args[i], argTypes[i])),
+        range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
       ),
       applyArrowType(
+        mod,
         ctx,
         L.arrowTypeRetType(arrowType),
         args.slice(argTypes.length),

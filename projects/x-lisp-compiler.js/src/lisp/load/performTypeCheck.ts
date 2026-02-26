@@ -13,7 +13,7 @@ export function performTypeCheck(mod: L.Mod): void {
         continue
       }
 
-      const effect = L.typeCheck(ctx, definition.body, type)
+      const effect = L.typeCheck(mod, ctx, definition.body, type)
       const result = effect(L.emptySubst())
       if (result.kind === "CheckError") {
         console.log(reportTypeCheckError(result.exp, result.message))
@@ -32,7 +32,7 @@ export function performTypeCheck(mod: L.Mod): void {
         definition.body,
         definition.meta,
       )
-      const effect = L.typeCheck(ctx, lambdaExp, type)
+      const effect = L.typeCheck(mod, ctx, lambdaExp, type)
       const result = effect(L.emptySubst())
       if (result.kind === "CheckError") {
         console.log(reportTypeCheckError(result.exp, result.message))

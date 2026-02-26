@@ -1,6 +1,7 @@
 import * as L from "../index.ts"
 
 export function typeCheck(
+  mod: L.Mod,
   ctx: L.Ctx,
   exp: L.Exp,
   type: L.Value,
@@ -18,6 +19,7 @@ export function typeCheck(
       }
 
       return typeCheckLambda(
+        mod,
         ctx,
         exp.parameters,
         exp.body,
@@ -27,41 +29,44 @@ export function typeCheck(
     }
 
     case "Let1": {
-      return L.inferThenCheck(L.typeInfer(ctx, exp.rhs), (inferredType) => {
-        ctx = L.ctxPut(ctx, exp.name, inferredType)
-        return typeCheck(ctx, exp.body, type)
-      })
+      return L.inferThenCheck(
+        L.typeInfer(mod, ctx, exp.rhs),
+        (inferredType) => {
+          ctx = L.ctxPut(ctx, exp.name, inferredType)
+          return typeCheck(mod, ctx, exp.body, type)
+        },
+      )
     }
 
     case "Begin1": {
       return L.sequenceCheckEffect([
-        typeCheck(ctx, exp.head, L.createAnyType()),
-        typeCheck(ctx, exp.body, type),
+        typeCheck(mod, ctx, exp.head, L.createAnyType()),
+        typeCheck(mod, ctx, exp.body, type),
       ])
     }
 
     case "BeginSugar": {
-      return typeCheck(ctx, L.desugarBegin(exp.sequence), type)
+      return typeCheck(mod, ctx, L.desugarBegin(exp.sequence), type)
     }
 
     case "If": {
       return L.sequenceCheckEffect([
-        typeCheck(ctx, exp.condition, L.createAtomType("bool")),
-        typeCheck(ctx, exp.consequent, type),
-        typeCheck(ctx, exp.alternative, type),
+        typeCheck(mod, ctx, exp.condition, L.createAtomType("bool")),
+        typeCheck(mod, ctx, exp.consequent, type),
+        typeCheck(mod, ctx, exp.alternative, type),
       ])
     }
 
     case "When": {
-      return typeCheck(ctx, L.desugarWhen(exp), type)
+      return typeCheck(mod, ctx, L.desugarWhen(exp), type)
     }
 
     case "Unless": {
-      return typeCheck(ctx, L.desugarUnless(exp), type)
+      return typeCheck(mod, ctx, L.desugarUnless(exp), type)
     }
 
     case "Cond": {
-      return typeCheck(ctx, L.desugarCond(exp.condLines), type)
+      return typeCheck(mod, ctx, L.desugarCond(exp.condLines), type)
     }
 
     case "Tael": {
@@ -69,24 +74,24 @@ export function typeCheck(
         const elementType = L.listTypeElementType(type)
         return L.sequenceCheckEffect([
           ...exp.elements.map((element) =>
-            typeCheck(ctx, element, elementType),
+            typeCheck(mod, ctx, element, elementType),
           ),
           ...Object.values(exp.attributes).map((value) =>
-            typeCheck(ctx, value, L.createAnyType()),
+            typeCheck(mod, ctx, value, L.createAnyType()),
           ),
         ])
       } else if (L.isRecordType(type)) {
         const valueType = L.recordTypeValueType(type)
         return L.sequenceCheckEffect([
           ...exp.elements.map((element) =>
-            typeCheck(ctx, element, L.createAnyType()),
+            typeCheck(mod, ctx, element, L.createAnyType()),
           ),
           ...Object.values(exp.attributes).map((value) =>
-            typeCheck(ctx, value, valueType),
+            typeCheck(mod, ctx, value, valueType),
           ),
         ])
       } else if (L.isDatatypeType(type)) {
-        return typeCheck(ctx, exp, L.datatypeTypeUnfold(type))
+        return typeCheck(mod, ctx, exp, L.datatypeTypeUnfold(type))
       } else if (L.isDisjointUnionType(type)) {
         if (exp.elements.length === 0) {
           let message = `elements should not be empty`
@@ -111,7 +116,7 @@ export function typeCheck(
           return L.errorCheckEffect(exp, message)
         }
 
-        return typeCheck(ctx, exp, variantTypes[name])
+        return typeCheck(mod, ctx, exp, variantTypes[name])
       } else {
         let message = `expecting tael-like type`
         message += `\n  type: ${L.formatValue(type)}`
@@ -128,7 +133,7 @@ export function typeCheck(
 
       return L.sequenceCheckEffect(
         exp.elements.map((element) =>
-          typeCheck(ctx, element, L.setTypeElementType(type)),
+          typeCheck(mod, ctx, element, L.setTypeElementType(type)),
         ),
       )
     }
@@ -142,18 +147,18 @@ export function typeCheck(
 
       return L.sequenceCheckEffect(
         exp.entries.flatMap((entry) => [
-          typeCheck(ctx, entry.key, L.hashTypeKeyType(type)),
-          typeCheck(ctx, entry.value, L.hashTypeValueType(type)),
+          typeCheck(mod, ctx, entry.key, L.hashTypeKeyType(type)),
+          typeCheck(mod, ctx, entry.value, L.hashTypeValueType(type)),
         ]),
       )
     }
 
     case "Quote": {
-      return typeCheck(ctx, L.desugarQuote(exp.sexp), type)
+      return typeCheck(mod, ctx, L.desugarQuote(exp.sexp), type)
     }
 
     default: {
-      return L.inferThenCheck(L.typeInfer(ctx, exp), (inferredType) => {
+      return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) => {
         if (L.typeSubtype([], inferredType, type)) {
           return L.okCheckEffect()
         } else {
@@ -168,6 +173,7 @@ export function typeCheck(
 }
 
 function typeCheckLambda(
+  mod: L.Mod,
   ctx: L.Ctx,
   parameters: Array<string>,
   body: L.Exp,
@@ -176,10 +182,11 @@ function typeCheckLambda(
 ): L.CheckEffect {
   if (argTypes.length === parameters.length) {
     ctx = L.ctxPutMany(ctx, parameters, argTypes)
-    return typeCheck(ctx, body, retType)
+    return typeCheck(mod, ctx, body, retType)
   } else if (argTypes.length > parameters.length) {
     ctx = L.ctxPutMany(ctx, parameters, argTypes.slice(0, parameters.length))
     return typeCheck(
+      mod,
       ctx,
       body,
       L.createArrowType(argTypes.slice(parameters.length), retType),
@@ -187,6 +194,7 @@ function typeCheckLambda(
   } else {
     ctx = L.ctxPutMany(ctx, parameters.slice(0, argTypes.length), argTypes)
     return typeCheck(
+      mod,
       ctx,
       L.Lambda(parameters.slice(argTypes.length), body),
       retType,
