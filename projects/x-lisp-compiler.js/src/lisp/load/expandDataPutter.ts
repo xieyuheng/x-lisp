@@ -21,6 +21,39 @@ export function expandDataPutter(
         ]),
       ),
     )
+
+    if (definition.datatypeConstructor.parameters.length === 0) {
+      L.modClaim(
+        mod,
+        name,
+        L.Arrow([field.type, L.Var(definition.name)], L.Var(definition.name)),
+      )
+    } else {
+      L.modClaim(
+        mod,
+        name,
+        L.Polymorphic(
+          definition.datatypeConstructor.parameters,
+          L.Arrow(
+            [
+              field.type,
+              L.Apply(
+                L.Var(definition.name),
+                definition.datatypeConstructor.parameters.map((parameter) =>
+                  L.Var(parameter),
+                ),
+              ),
+            ],
+            L.Apply(
+              L.Var(definition.name),
+              definition.datatypeConstructor.parameters.map((parameter) =>
+                L.Var(parameter),
+              ),
+            ),
+          ),
+        ),
+      )
+    }
   }
 
   for (const [index, field] of ctor.fields.entries()) {
@@ -39,5 +72,38 @@ export function expandDataPutter(
         ]),
       ),
     )
+
+    if (definition.datatypeConstructor.parameters.length === 0) {
+      L.modClaim(
+        mod,
+        name,
+        L.Arrow([field.type, L.Var(definition.name)], L.Var(definition.name)),
+      )
+    } else {
+      L.modClaim(
+        mod,
+        name,
+        L.Polymorphic(
+          definition.datatypeConstructor.parameters,
+          L.Arrow(
+            [
+              field.type,
+              L.Apply(
+                L.Var(definition.name),
+                definition.datatypeConstructor.parameters.map((parameter) =>
+                  L.Var(parameter),
+                ),
+              ),
+            ],
+            L.Apply(
+              L.Var(definition.name),
+              definition.datatypeConstructor.parameters.map((parameter) =>
+                L.Var(parameter),
+              ),
+            ),
+          ),
+        ),
+      )
+    }
   }
 }

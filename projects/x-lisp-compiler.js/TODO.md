@@ -1,6 +1,5 @@
-# define-datatype
-
-[lisp] `expandDataPutter` -- add claim
+[lisp] `modLookupClaimed`
+[lisp] `formatDefinition` -- also format claim
 
 # optional type
 
