@@ -2,6 +2,7 @@ import * as L from "../index.ts"
 
 export function expandDataPutter(
   mod: L.Mod,
+  definition: L.DatatypeDefinition,
   ctor: L.DataConstructorSpec,
 ): void {
   for (const [index, field] of ctor.fields.entries()) {

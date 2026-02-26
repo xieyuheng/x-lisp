@@ -39,22 +39,20 @@ export function handleDefine(mod: L.Mod, stmt: L.Stmt): void {
   }
 
   if (stmt.kind === "DefineDatatype") {
-    L.modDefine(
+    const definition = L.DatatypeDefinition(
       mod,
       stmt.datatypeConstructor.name,
-      L.DatatypeDefinition(
-        mod,
-        stmt.datatypeConstructor.name,
-        stmt.datatypeConstructor,
-        stmt.dataConstructors,
-        stmt.meta,
-      ),
+      stmt.datatypeConstructor,
+      stmt.dataConstructors,
+      stmt.meta,
     )
 
+    L.modDefine(mod, stmt.datatypeConstructor.name, definition)
+
     for (const ctor of stmt.dataConstructors) {
-      expandDataConstructor(mod, ctor)
-      expandDataGetter(mod, ctor)
-      expandDataPutter(mod, ctor)
+      expandDataConstructor(mod, definition, ctor)
+      expandDataGetter(mod, definition, ctor)
+      expandDataPutter(mod, definition, ctor)
     }
   }
 }
