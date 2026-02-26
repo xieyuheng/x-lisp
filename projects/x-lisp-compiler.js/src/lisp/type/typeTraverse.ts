@@ -35,6 +35,25 @@ export function typeTraverse(
     )
   }
 
+  if (L.isListType(type)) {
+    return L.createListType(L.listTypeElementType(type))
+  }
+
+  if (L.isSetType(type)) {
+    return L.createSetType(L.setTypeElementType(type))
+  }
+
+  if (L.isRecordType(type)) {
+    return L.createRecordType(L.recordTypeValueType(type))
+  }
+
+  if (L.isHashType(type)) {
+    return L.createHashType(
+      L.hashTypeKeyType(type),
+      L.hashTypeValueType(type),
+    )
+  }
+
   if (L.isDatatypeType(type)) {
     return L.createDatatypeType(
       L.datatypeTypeDatatypeDefinition(type),
@@ -48,7 +67,11 @@ export function typeTraverse(
     )
   }
 
-  let message = `[typeMap] unhandled type`
+  if (L.isPolymorphicType(type)) {
+    return typeTraverse(onType, L.polymorphicTypeUnfold(type))
+  }
+
+  let message = `[typeTraverse] unhandled type`
   message += `\n  type: ${L.formatValue(type)}`
   throw new Error(message)
 }

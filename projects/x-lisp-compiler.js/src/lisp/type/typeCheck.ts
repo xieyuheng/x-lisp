@@ -11,7 +11,11 @@ export function typeCheck(
   }
 
   if (L.isAnyType(type)) {
-    return L.okCheckEffect()
+    if (L.isInferableExp(exp)) {
+      return typeCheckByInfer(mod, ctx, exp, type)
+    } else {
+      return L.okCheckEffect()
+    }
   }
 
   switch (exp.kind) {
@@ -181,7 +185,7 @@ export function typeCheckByInfer(
         if (newSubst === undefined) {
           let message = `unificaton fail`
           message += `\n  inferred type: ${L.formatValue(inferred.type)}`
-          message += `\n  given type: ${L.formatValue(type)}`
+          message += `\n  expecting type: ${L.formatValue(type)}`
           return L.errorCheckEffect(exp, message)(subst)
         }
 
@@ -190,9 +194,9 @@ export function typeCheckByInfer(
         if (L.typeSubtype([], resolvedInferredType, resolvedType)) {
           return L.okCheckEffect()(newSubst)
         } else {
-          let message = `inferred type is not a subtype of given type`
+          let message = `inferred type is not a subtype of expecting type`
           message += `\n  inferred type: ${L.formatValue(inferred.type)}`
-          message += `\n  given type: ${L.formatValue(type)}`
+          message += `\n  expecting type: ${L.formatValue(type)}`
           return L.errorCheckEffect(exp, message)(subst)
         }
       }

@@ -52,6 +52,10 @@ export function typeChildren(type: L.Value): Array<L.Value> {
     return Object.values(L.disjointUnionTypeVariantTypes(type))
   }
 
+  if (L.isPolymorphicType(type)) {
+    return typeChildren(L.polymorphicTypeUnfold(type))
+  }
+
   let message = `[occurredInType] unhandled type`
   message += `\n  type: ${L.formatValue(type)}`
   throw new Error(message)

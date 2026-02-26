@@ -1,6 +1,27 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as L from "../index.ts"
 
+export function isInferableExp(exp: L.Exp): boolean {
+  switch (exp.kind) {
+    case "Symbol":
+    case "Hashtag":
+    case "String":
+    case "Int":
+    case "Float":
+    case "Var":
+    case "Apply":
+    case "And":
+    case "Or":
+    case "The": {
+      return true
+    }
+
+    default: {
+      return false
+    }
+  }
+}
+
 export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
   switch (exp.kind) {
     case "Symbol": {
@@ -61,8 +82,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
     }
 
     default: {
-      let message = `[typeInfer] unhandled exp`
-      message += `\n  exp: ${L.formatExp(exp)}`
+      let message = `not inferable exp: ${exp.kind}`
       return L.errorInferEffect(exp, message)
     }
   }
@@ -77,7 +97,7 @@ function applyArrowType(
 ): L.InferEffect {
   if (!L.isArrowType(arrowType)) {
     let message = `expecting arrow type`
-    message += `\n  given type: ${L.formatValue(arrowType)}`
+    message += `\n  expecting type: ${L.formatValue(arrowType)}`
     return L.errorInferEffect(originalExp, message)
   }
 
