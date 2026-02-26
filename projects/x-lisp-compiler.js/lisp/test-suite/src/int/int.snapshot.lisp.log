@@ -10,31 +10,51 @@
 
 ;;; Loaded
 
+(claim square (-> int-t int-t))
+
 (define (square x) (imul x x))
+
+(claim main (-> void-t))
 
 (define (main) (println (square 3)))
 
 ;;; ShrinkPass
 
+(claim square (-> int-t int-t))
+
 (define (square x) (imul x x))
+
+(claim main (-> void-t))
 
 (define (main) (println (square 3)))
 
 ;;; UniquifyPass
 
+(claim square (-> int-t int-t))
+
 (define (square x) (imul x x))
+
+(claim main (-> void-t))
 
 (define (main) (println (square 3)))
 
 ;;; LiftLambdaPass
 
+(claim square (-> int-t int-t))
+
 (define (square x) (imul x x))
+
+(claim main (-> void-t))
 
 (define (main) (println (square 3)))
 
 ;;; UnnestOperandPass
 
+(claim square (-> int-t int-t))
+
 (define (square x) (imul x x))
+
+(claim main (-> void-t))
 
 (define (main) (= _₁ (square 3)) (println _₁))
 

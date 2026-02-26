@@ -1,6 +1,3 @@
-[lisp] `ClaimedEntry` has is `isEnforced` flag
-[lisp] `formatDefinition` -- also format claim
-
 # optional type
 
 [lisp] maybe use `maybe-t`

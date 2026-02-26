@@ -6,21 +6,31 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main) (= a 42) (= b a) (println b))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main) (= a 42) (= b a) (println b))
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main) (= a₁ 42) (= b₁ a₁) (println b₁))
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main) (= a₁ 42) (= b₁ a₁) (println b₁))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main) (= a₁ 42) (= b₁ a₁) (println b₁))
 

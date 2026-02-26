@@ -23,10 +23,14 @@
 
 ;;; Loaded
 
+(claim fibonacci (-> int-t int-t))
+
 (define (fibonacci n)
   (if (int-less-or-equal? n 1)
     n
     (iadd (fibonacci (isub n 1)) (fibonacci (isub n 2)))))
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal 0 (fibonacci 0))
@@ -42,10 +46,14 @@
 
 ;;; ShrinkPass
 
+(claim fibonacci (-> int-t int-t))
+
 (define (fibonacci n)
   (if (int-less-or-equal? n 1)
     n
     (iadd (fibonacci (isub n 1)) (fibonacci (isub n 2)))))
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal 0 (fibonacci 0))
@@ -61,10 +69,14 @@
 
 ;;; UniquifyPass
 
+(claim fibonacci (-> int-t int-t))
+
 (define (fibonacci n)
   (if (int-less-or-equal? n 1)
     n
     (iadd (fibonacci (isub n 1)) (fibonacci (isub n 2)))))
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal 0 (fibonacci 0))
@@ -80,10 +92,14 @@
 
 ;;; LiftLambdaPass
 
+(claim fibonacci (-> int-t int-t))
+
 (define (fibonacci n)
   (if (int-less-or-equal? n 1)
     n
     (iadd (fibonacci (isub n 1)) (fibonacci (isub n 2)))))
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal 0 (fibonacci 0))
@@ -99,6 +115,8 @@
 
 ;;; UnnestOperandPass
 
+(claim fibonacci (-> int-t int-t))
+
 (define (fibonacci n)
   (if (int-less-or-equal? n 1)
     n
@@ -108,6 +126,8 @@
       (= _₃ (isub n 2))
       (= _₄ (fibonacci _₃))
       (iadd _₂ _₄))))
+
+(claim main (-> void-t))
 
 (define (main)
   (begin (= _₁ (fibonacci 0)) (assert-equal 0 _₁))

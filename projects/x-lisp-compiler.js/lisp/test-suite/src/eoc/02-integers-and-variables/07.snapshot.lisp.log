@@ -6,21 +6,31 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main) (println (iadd (random-dice) (random-dice))))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main) (println (iadd (random-dice) (random-dice))))
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main) (println (iadd (random-dice) (random-dice))))
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main) (println (iadd (random-dice) (random-dice))))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= _₁ (random-dice))

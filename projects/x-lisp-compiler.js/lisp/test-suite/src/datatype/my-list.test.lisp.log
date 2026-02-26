@@ -22,6 +22,8 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main)
   (assert-equal nil #nil)
   (assert-equal
@@ -39,6 +41,8 @@
   (assert-equal (li 1 nil) ((li 1) nil)))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal nil #nil)
@@ -77,6 +81,8 @@
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main)
   (assert-equal nil #nil)
   (assert-equal
@@ -114,6 +120,8 @@
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main)
   (assert-equal nil #nil)
   (assert-equal
@@ -150,6 +158,8 @@
   (assert-equal (li 1 nil) ((li 1) nil)))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal nil #nil)

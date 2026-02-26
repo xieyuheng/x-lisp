@@ -12,6 +12,8 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main)
   (println
    (if
@@ -21,6 +23,8 @@
      42)))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main)
   (println
@@ -33,6 +37,8 @@
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main)
   (println
    (if
@@ -44,6 +50,8 @@
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main)
   (println
    (if
@@ -54,6 +62,8 @@
      42)))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= _₁

@@ -7,25 +7,35 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main)
   (assert-equal "abcdef" (string-append "abc" "def")))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal "abcdef" (string-append "abc" "def")))
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main)
   (assert-equal "abcdef" (string-append "abc" "def")))
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main)
   (assert-equal "abcdef" (string-append "abc" "def")))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= _₁ (string-append "abc" "def"))

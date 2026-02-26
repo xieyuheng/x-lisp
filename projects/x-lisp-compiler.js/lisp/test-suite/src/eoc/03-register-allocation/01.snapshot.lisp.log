@@ -12,6 +12,8 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main)
   (= v 1)
   (= w 42)
@@ -21,6 +23,8 @@
   (println (iadd z (ineg y))))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= v 1)
@@ -32,6 +36,8 @@
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main)
   (= v₁ 1)
   (= w₁ 42)
@@ -42,6 +48,8 @@
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main)
   (= v₁ 1)
   (= w₁ 42)
@@ -51,6 +59,8 @@
   (println (iadd z₁ (ineg y₁))))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= v₁ 1)

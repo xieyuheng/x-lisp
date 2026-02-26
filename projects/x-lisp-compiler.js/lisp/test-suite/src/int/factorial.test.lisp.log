@@ -20,10 +20,14 @@
 
 ;;; Loaded
 
+(claim factorial (-> int-t int-t))
+
 (define (factorial n)
   (if (int-less-or-equal? n 1)
     1
     (imul (factorial (isub n 1)) n)))
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal 1 (factorial 0))
@@ -36,10 +40,14 @@
 
 ;;; ShrinkPass
 
+(claim factorial (-> int-t int-t))
+
 (define (factorial n)
   (if (int-less-or-equal? n 1)
     1
     (imul (factorial (isub n 1)) n)))
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal 1 (factorial 0))
@@ -52,10 +60,14 @@
 
 ;;; UniquifyPass
 
+(claim factorial (-> int-t int-t))
+
 (define (factorial n)
   (if (int-less-or-equal? n 1)
     1
     (imul (factorial (isub n 1)) n)))
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal 1 (factorial 0))
@@ -68,10 +80,14 @@
 
 ;;; LiftLambdaPass
 
+(claim factorial (-> int-t int-t))
+
 (define (factorial n)
   (if (int-less-or-equal? n 1)
     1
     (imul (factorial (isub n 1)) n)))
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal 1 (factorial 0))
@@ -84,6 +100,8 @@
 
 ;;; UnnestOperandPass
 
+(claim factorial (-> int-t int-t))
+
 (define (factorial n)
   (if (int-less-or-equal? n 1)
     1
@@ -91,6 +109,8 @@
       (= _₁ (isub n 1))
       (= _₂ (factorial _₁))
       (imul _₂ n))))
+
+(claim main (-> void-t))
 
 (define (main)
   (begin (= _₁ (factorial 0)) (assert-equal 1 _₁))

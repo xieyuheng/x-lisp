@@ -6,24 +6,34 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main) (assert (hash-empty? (@hash))))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main)
   (assert (hash-empty? (begin (= hash (make-hash)) hash))))
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main)
   (assert (hash-empty? (begin (= hash₁ (make-hash)) hash₁))))
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main)
   (assert (hash-empty? (begin (= hash₁ (make-hash)) hash₁))))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= hash₁ (make-hash))

@@ -8,11 +8,15 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main)
   (= z (begin (= y (begin (= x (ineg 42)) x)) y))
   (println (ineg z)))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= z (begin (= y (begin (= x (ineg 42)) x)) y))
@@ -20,17 +24,23 @@
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main)
   (= z₁ (begin (= y₁ (begin (= x₁ (ineg 42)) x₁)) y₁))
   (println (ineg z₁)))
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main)
   (= z₁ (begin (= y₁ (begin (= x₁ (ineg 42)) x₁)) y₁))
   (println (ineg z₁)))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= z₁ (begin (= y₁ (begin (= x₁ (ineg 42)) x₁)) y₁))

@@ -8,21 +8,31 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main) (assert-equal 81 (square (square 3))))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main) (assert-equal 81 (square (square 3))))
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main) (assert-equal 81 (square (square 3))))
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main) (assert-equal 81 (square (square 3))))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= _₁ (square 3))

@@ -10,6 +10,8 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main)
   (println (@hash))
   (println (@hash 1 2))
@@ -17,6 +19,8 @@
   (println (@hash 1 2 3 4)))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main)
   (println (begin (= hash (make-hash)) hash))
@@ -33,6 +37,8 @@
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main)
   (println (begin (= hash₁ (make-hash)) hash₁))
   (println
@@ -48,6 +54,8 @@
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main)
   (println (begin (= hash₁ (make-hash)) hash₁))
   (println
@@ -62,6 +70,8 @@
      hash₁)))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (begin (= hash₁ (make-hash)) (println hash₁))

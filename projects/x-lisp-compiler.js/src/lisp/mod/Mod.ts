@@ -6,7 +6,8 @@ import { type Stmt } from "../stmt/index.ts"
 import { type Value } from "../value/index.ts"
 
 export type ClaimedEntry = {
-  exp: Exp; type?: Value, isEnforced?: boolean
+  exp: Exp
+  type?: Value
 }
 
 export type Mod = {

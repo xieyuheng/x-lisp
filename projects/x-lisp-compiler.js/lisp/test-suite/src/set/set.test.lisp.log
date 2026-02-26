@@ -6,9 +6,13 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main) (assert-equal {1 2 3} {1 2 3}))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main)
   (assert-equal
@@ -27,6 +31,8 @@
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main)
   (assert-equal
     (begin
@@ -44,6 +50,8 @@
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main)
   (assert-equal
     (begin
@@ -60,6 +68,8 @@
       set₁)))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= set₁ (make-set))

@@ -6,21 +6,31 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main) (println (iadd (iadd 1 2) (iadd 3 4))))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main) (println (iadd (iadd 1 2) (iadd 3 4))))
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main) (println (iadd (iadd 1 2) (iadd 3 4))))
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main) (println (iadd (iadd 1 2) (iadd 3 4))))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= _₁ (iadd 1 2))

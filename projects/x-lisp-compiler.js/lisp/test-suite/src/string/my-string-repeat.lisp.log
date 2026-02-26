@@ -13,6 +13,8 @@
 
 ;;; Loaded
 
+(claim my-string-repeat (-> int-t string-t string-t))
+
 (define (my-string-repeat n string)
   (if (equal? n 0)
     ""
@@ -21,6 +23,8 @@
      (my-string-repeat (isub n 1) string))))
 
 ;;; ShrinkPass
+
+(claim my-string-repeat (-> int-t string-t string-t))
 
 (define (my-string-repeat n string)
   (if (equal? n 0)
@@ -31,6 +35,8 @@
 
 ;;; UniquifyPass
 
+(claim my-string-repeat (-> int-t string-t string-t))
+
 (define (my-string-repeat n string)
   (if (equal? n 0)
     ""
@@ -40,6 +46,8 @@
 
 ;;; LiftLambdaPass
 
+(claim my-string-repeat (-> int-t string-t string-t))
+
 (define (my-string-repeat n string)
   (if (equal? n 0)
     ""
@@ -48,6 +56,8 @@
      (my-string-repeat (isub n 1) string))))
 
 ;;; UnnestOperandPass
+
+(claim my-string-repeat (-> int-t string-t string-t))
 
 (define (my-string-repeat n string)
   (if (equal? n 0)

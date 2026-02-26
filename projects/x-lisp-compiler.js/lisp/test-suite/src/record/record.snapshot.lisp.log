@@ -10,6 +10,8 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main)
   (println '(:x a :y b))
   (println [:x 'a :y 'b])
@@ -17,6 +19,8 @@
   (println [:x 'a :y 'b]))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main)
   (println
@@ -46,6 +50,8 @@
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main)
   (println
    (begin
@@ -74,6 +80,8 @@
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main)
   (println
    (begin
@@ -101,6 +109,8 @@
      tael₁)))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (begin

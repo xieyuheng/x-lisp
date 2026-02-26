@@ -8,21 +8,31 @@
 
 ;;; Loaded
 
+(claim square (-> int-t int-t))
+
 (define (square x) (imul x x))
 
 ;;; ShrinkPass
+
+(claim square (-> int-t int-t))
 
 (define (square x) (imul x x))
 
 ;;; UniquifyPass
 
+(claim square (-> int-t int-t))
+
 (define (square x) (imul x x))
 
 ;;; LiftLambdaPass
 
+(claim square (-> int-t int-t))
+
 (define (square x) (imul x x))
 
 ;;; UnnestOperandPass
+
+(claim square (-> int-t int-t))
 
 (define (square x) (imul x x))
 

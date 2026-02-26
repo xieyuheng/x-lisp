@@ -16,13 +16,35 @@ export function formatDefinition(definition: Definition): string {
       const name = definition.name
       const parameters = definition.parameters.join(" ")
       const body = formatBody(definition.body)
-      return `(define (${name} ${parameters}) ${body})`
+      const claimedEntry = L.modLookupClaimedEntry(
+        definition.mod,
+        definition.name,
+      )
+      if (claimedEntry) {
+        return [
+          `(claim ${name} ${formatExp(claimedEntry.exp)})`,
+          `(define (${name} ${parameters}) ${body})`,
+        ].join("\n")
+      } else {
+        return `(define (${name} ${parameters}) ${body})`
+      }
     }
 
     case "VariableDefinition": {
       const name = definition.name
       const body = formatBody(definition.body)
-      return `(define ${name} ${body})`
+      const claimedEntry = L.modLookupClaimedEntry(
+        definition.mod,
+        definition.name,
+      )
+      if (claimedEntry) {
+        return [
+          `(claim ${name} ${formatExp(claimedEntry.exp)})`,
+          `(define ${name} ${body})`,
+        ].join("\n")
+      } else {
+        return `(define ${name} ${body})`
+      }
     }
 
     case "TypeDefinition": {

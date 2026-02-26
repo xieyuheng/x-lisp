@@ -16,6 +16,8 @@
 
 ;;; Loaded
 
+(claim main (-> void-t))
+
 (define (main)
   (= list (make-list))
   (list-push! 1 list)
@@ -29,6 +31,8 @@
   (assert (list-empty? [])))
 
 ;;; ShrinkPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= list (make-list))
@@ -85,6 +89,8 @@
 
 ;;; UniquifyPass
 
+(claim main (-> void-t))
+
 (define (main)
   (= list₁ (make-list))
   (list-push! 1 list₁)
@@ -140,6 +146,8 @@
 
 ;;; LiftLambdaPass
 
+(claim main (-> void-t))
+
 (define (main)
   (= list₁ (make-list))
   (list-push! 1 list₁)
@@ -194,6 +202,8 @@
   (assert (list-empty? (begin (= tael₁ (make-list)) tael₁))))
 
 ;;; UnnestOperandPass
+
+(claim main (-> void-t))
 
 (define (main)
   (= list₁ (make-list))
