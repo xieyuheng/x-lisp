@@ -1,5 +1,4 @@
-[lisp] `Claimed` has is `isEnforced` flag
-[lisp] `modLookupClaimed`
+[lisp] `ClaimedEntry` has is `isEnforced` flag
 [lisp] `formatDefinition` -- also format claim
 
 # optional type
