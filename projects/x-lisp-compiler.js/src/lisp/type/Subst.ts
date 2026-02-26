@@ -30,7 +30,7 @@ export function substApplyToType(subst: Subst, type: L.Value): L.Value {
     return type
   }
 
-  return L.typeTraverse((type) => substApplyToType(subst, type), type)
+  return L.typeTraverse((t) => substApplyToType(subst, t), type)
 }
 
 export function extendSubst(

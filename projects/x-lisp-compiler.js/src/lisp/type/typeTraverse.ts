@@ -36,19 +36,19 @@ export function typeTraverse(
   }
 
   if (L.isListType(type)) {
-    return L.createListType(L.listTypeElementType(type))
+    return L.createListType(onType(L.listTypeElementType(type)))
   }
 
   if (L.isSetType(type)) {
-    return L.createSetType(L.setTypeElementType(type))
+    return L.createSetType(onType(L.setTypeElementType(type)))
   }
 
   if (L.isRecordType(type)) {
-    return L.createRecordType(L.recordTypeValueType(type))
+    return L.createRecordType(onType(L.recordTypeValueType(type)))
   }
 
   if (L.isHashType(type)) {
-    return L.createHashType(L.hashTypeKeyType(type), L.hashTypeValueType(type))
+    return L.createHashType(onType(L.hashTypeKeyType(type)), onType(L.hashTypeValueType(type)))
   }
 
   if (L.isDatatypeType(type)) {
