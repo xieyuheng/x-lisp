@@ -17,7 +17,10 @@ export function projectInterpret(project: Project): void {
 
 function interpretTest(dependencyGraph: L.DependencyGraph): ProjectIdHandler {
   return (project, id) => {
-    if (id.endsWith("test" + L.suffix) || id.endsWith("snapshot" + L.suffix)) {
+    if (
+      id.endsWith(".test" + L.suffix) ||
+      id.endsWith(".snapshot" + L.suffix)
+    ) {
       const inputFile = projectGetSourceFile(project, id)
       logFile("interpret", inputFile)
       const mod = L.load(createUrl(inputFile), dependencyGraph)

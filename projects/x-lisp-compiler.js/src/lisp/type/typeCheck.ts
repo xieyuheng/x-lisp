@@ -187,7 +187,6 @@ export function typeCheckByInfer(
           inferredType = L.polymorphicTypeUnfold(inferredType)
         }
 
-
         const newSubst = L.typeUnify(result.subst, inferredType, type)
         if (newSubst === undefined) {
           inferredType = L.substApplyToType(result.subst, inferredType)

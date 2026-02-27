@@ -11,7 +11,7 @@ export function projectClean(project: Project): void {
   if (projectOutputDirectory(project) !== projectSourceDirectory(project)) {
     fs.rmSync(projectOutputDirectory(project), { recursive: true, force: true })
   } else {
-    const outputSuffixes = [".lisp.log", ".fth", ".out"]
+    const outputSuffixes = [".lisp.log", ".basic", ".out", ".err"]
 
     fs.readdirSync(projectSourceDirectory(project), {
       encoding: "utf8",

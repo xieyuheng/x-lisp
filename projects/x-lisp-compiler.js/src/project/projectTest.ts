@@ -17,7 +17,7 @@ export function projectTest(project: Project): void {
 }
 
 function runBasicTest(project: Project, id: string): void {
-  if (id.endsWith("test" + L.suffix)) {
+  if (id.endsWith(".test" + L.suffix)) {
     const inputFile = projectGetBasicFile(project, id)
     logFile("basic-test", inputFile)
     systemShellRun(BasicInterpreterFile, ["run", inputFile])
@@ -25,7 +25,7 @@ function runBasicTest(project: Project, id: string): void {
 }
 
 function runBasicSnapshot(project: Project, id: string): void {
-  if (id.endsWith("snapshot" + L.suffix)) {
+  if (id.endsWith(".snapshot" + L.suffix)) {
     const inputFile = projectGetBasicFile(project, id)
     const outputFile = inputFile + ".out"
     logFile("basic-snapshot", outputFile)
@@ -34,7 +34,7 @@ function runBasicSnapshot(project: Project, id: string): void {
 }
 
 function runBasicErrorSnapshot(project: Project, id: string): void {
-  if (id.endsWith("error" + L.suffix)) {
+  if (id.endsWith(".error" + L.suffix)) {
     const inputFile = projectGetBasicFile(project, id)
     const outputFile = inputFile + ".err"
     logFile("basic-error-snapshot", outputFile)
