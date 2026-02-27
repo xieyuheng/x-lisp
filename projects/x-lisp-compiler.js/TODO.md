@@ -1,5 +1,3 @@
-snapshot type error by -- `.type-error.lisp`
-
 # pattern match
 
 [diary] about how to implement pattern match
