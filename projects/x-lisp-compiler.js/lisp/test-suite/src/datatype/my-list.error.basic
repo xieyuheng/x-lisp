@@ -1,0 +1,4 @@
+(import-all "my-list")
+
+(define-variable my-list
+  (block body (= _₁ (li "3" nil)) (return (li 1 _₁))))

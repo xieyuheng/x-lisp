@@ -83,3 +83,9 @@ function formatTypeRecord(record: Record<string, L.Value>): string {
     .map(([k, t]) => `:${k} ${formatType(t)}`)
     .join(" ")
 }
+
+export function formatSubst(subst: L.Subst): string {
+  return Array.from(subst.entries())
+    .map(([k, t]) => `  :${k} ${formatType(t)}`)
+    .join("\n")
+}

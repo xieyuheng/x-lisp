@@ -1,4 +1,3 @@
-import assert from "node:assert"
 import * as L from "../index.ts"
 import type { CheckEffect } from "./CheckEffect.ts"
 
@@ -28,37 +27,22 @@ export function errorInferEffect(exp: L.Exp, message: string): InferEffect {
   }
 }
 
-export function sequenceInferEffect(effects: Array<InferEffect>): InferEffect {
-  assert(effects.length > 0)
-
-  const [effect, ...restEffects] = effects
-
-  if (restEffects.length === 0) {
-    return effect
-  }
-
-  return (subst) => {
-    const result = effect(subst)
-    switch (result.kind) {
-      case "InferOk": {
-        return sequenceInferEffect(restEffects)(result.subst)
-      }
-
-      case "InferError": {
-        return result
-      }
-    }
-  }
-}
-
 export function inferThenInfer(
   effect: InferEffect,
   fn: (type: L.Value) => InferEffect,
 ): InferEffect {
   return (subst) => {
     const result = effect(subst)
+
     switch (result.kind) {
       case "InferOk": {
+        // console.log("[inferThenInfer]")
+        // console.log("subst:")
+        // console.log(L.formatSubst(subst))
+        // console.log("result.subst:")
+        // console.log(L.formatSubst(result.subst))
+        // console.log("result.type:", L.formatType(result.type))
+        // console.log()
         return fn(result.type)(result.subst)
       }
 
@@ -75,8 +59,16 @@ export function inferThenCheck(
 ): CheckEffect {
   return (subst) => {
     const result = effect(subst)
+
     switch (result.kind) {
       case "InferOk": {
+        // console.log("[inferThenCheck]")
+        // console.log("subst:")
+        // console.log(L.formatSubst(subst))
+        // console.log("result.subst:")
+        // console.log(L.formatSubst(result.subst))
+        // console.log("result.type:", L.formatType(result.type))
+        // console.log()
         return fn(result.type)(result.subst)
       }
 
@@ -97,8 +89,15 @@ export function checkThenInfer(
 ): InferEffect {
   return (subst) => {
     const result = checkEffect(subst)
+
     switch (result.kind) {
       case "CheckOk": {
+        // console.log("[checkThenInfer]")
+        // console.log("subst:")
+        // console.log(L.formatSubst(subst))
+        // console.log("result.subst:")
+        // console.log(L.formatSubst(result.subst))
+        // console.log()
         return inferEffect(result.subst)
       }
 

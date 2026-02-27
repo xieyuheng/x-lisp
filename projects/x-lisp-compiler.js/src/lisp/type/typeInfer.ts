@@ -141,6 +141,7 @@ function applyArrowType(
   }
 
   const argTypes = L.arrowTypeArgTypes(arrowType)
+  const retType = L.arrowTypeRetType(arrowType)
 
   if (argTypes.length === args.length) {
     const length = args.length
@@ -148,7 +149,7 @@ function applyArrowType(
       L.sequenceCheckEffect(
         range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
       ),
-      L.okInferEffect(L.arrowTypeRetType(arrowType)),
+      L.okInferEffect(retType),
     )
   } else if (argTypes.length > args.length) {
     const length = args.length
@@ -156,12 +157,7 @@ function applyArrowType(
       L.sequenceCheckEffect(
         range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
       ),
-      L.okInferEffect(
-        L.createArrowType(
-          argTypes.slice(args.length),
-          L.arrowTypeRetType(arrowType),
-        ),
-      ),
+      L.okInferEffect(L.createArrowType(argTypes.slice(args.length), retType)),
     )
   } else {
     const length = argTypes.length
@@ -172,7 +168,7 @@ function applyArrowType(
       applyArrowType(
         mod,
         ctx,
-        L.arrowTypeRetType(arrowType),
+        retType,
         args.slice(argTypes.length),
         originalExp,
       ),

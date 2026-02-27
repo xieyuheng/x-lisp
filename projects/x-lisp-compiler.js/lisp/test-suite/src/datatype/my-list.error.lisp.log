@@ -1,0 +1,38 @@
+;;; Input
+
+(import-all "my-list")
+
+(claim my-list (my-list-t int-t))
+
+(define my-list (li 1 (li "3" nil)))
+
+;;; Loaded
+
+(claim my-list (my-list-t int-t))
+
+(define my-list (li 1 (li "3" nil)))
+
+;;; ShrinkPass
+
+(claim my-list (my-list-t int-t))
+
+(define my-list (li 1 (li "3" nil)))
+
+;;; UniquifyPass
+
+(claim my-list (my-list-t int-t))
+
+(define my-list (li 1 (li "3" nil)))
+
+;;; LiftLambdaPass
+
+(claim my-list (my-list-t int-t))
+
+(define my-list (li 1 (li "3" nil)))
+
+;;; UnnestOperandPass
+
+(claim my-list (my-list-t int-t))
+
+(define my-list (= _₁ (li "3" nil)) (li 1 _₁))
+

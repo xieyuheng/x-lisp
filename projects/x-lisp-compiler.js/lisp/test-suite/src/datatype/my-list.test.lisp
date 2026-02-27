@@ -25,7 +25,7 @@
   (assert-equal (li-tail list) (li 2 (li 3 nil)))
   (li-put-tail! nil list)
   (assert-equal (li-tail list) nil)
-  
+
   ;; data constructor currying
 
   (assert-equal

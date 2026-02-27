@@ -25,18 +25,9 @@ export function errorCheckEffect(exp: L.Exp, message: string): CheckEffect {
   }
 }
 
-export function identityCheckEffect(): CheckEffect {
-  return (subst) => {
-    return {
-      kind: "CheckOk",
-      subst,
-    }
-  }
-}
-
 export function sequenceCheckEffect(effects: Array<CheckEffect>): CheckEffect {
   if (effects.length === 0) {
-    return identityCheckEffect()
+    return okCheckEffect()
   }
 
   const [effect, ...restEffects] = effects
@@ -49,6 +40,12 @@ export function sequenceCheckEffect(effects: Array<CheckEffect>): CheckEffect {
     const result = effect(subst)
     switch (result.kind) {
       case "CheckOk": {
+        // console.log("[sequenceCheckEffect]")
+        // console.log("subst:")
+        // console.log(L.formatSubst(subst))
+        // console.log("result.subst:")
+        // console.log(L.formatSubst(result.subst))
+        // console.log()
         return sequenceCheckEffect(restEffects)(result.subst)
       }
 
