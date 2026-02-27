@@ -36,7 +36,7 @@ router.defineRoutes([
 router.defineHandlers({
   "module:interpret": ({ args: [file] }) =>
     projectInterpret(loadModuleProject(file)),
-  "module:check": ({ args: [file] }) => projectClean(loadModuleProject(file)),
+  "module:check": ({ args: [file] }) => projectCheck(loadModuleProject(file)),
   "module:test": ({ args: [file] }) => projectTest(loadModuleProject(file)),
   "module:build": ({ args: [file] }) => projectBuild(loadModuleProject(file)),
   "project:interpret": ({ options }) =>

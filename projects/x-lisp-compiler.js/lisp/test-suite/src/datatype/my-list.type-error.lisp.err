@@ -1,0 +1,18 @@
+lisp/test-suite/src/datatype/my-list.type-error.lisp:4:23 -- unificaton fail
+  inferred type: (my-list-t string-t)
+  given type: (my-list-t int-t)
+ 2 | 
+ 3 | (claim my-list (my-list-t int-t))
+ 4 | (define my-list (li 1 (li "3" nil)))
+   |                       ~~~~~~~~~~~~   
+ 5 | 
+
+lisp/test-suite/src/datatype/my-list.type-error.lisp:4:23 -- unificaton fail
+  inferred type: (my-list-t string-t)
+  given type: (my-list-t int-t)
+ 2 | 
+ 3 | (claim my-list (my-list-t int-t))
+ 4 | (define my-list (li 1 (li "3" nil)))
+   |                       ~~~~~~~~~~~~   
+ 5 | 
+
