@@ -5,7 +5,6 @@
 # any type
 
 [lisp] fix the use of any type for functions like `equal?` and `assert-equal`
-[diary] to make type check easier, maybe we should distinguish `list`, `record` and `tau` by syntax
 
 # optional type
 
