@@ -26,3 +26,13 @@ date: 2026-02-26
 
 这无疑是说，不能用 subclass 的方式，来重用证明。
 这样的限制合理吗？
+
+感觉是不合理的，而是需要 subclass，
+并且这是核心 feature 之一。
+
+尽管如此：
+
+- 放弃 tael，改为区分 list 和 record。
+- 放弃用 hashtag-t 代表 void 和 null。
+
+可能还是合理的。
