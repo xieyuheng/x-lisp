@@ -1,5 +1,7 @@
 # pattern match
 
+move x-lisp-proto.js to dustbin
+
 [diary] about how to implement pattern match
 
 # any type
