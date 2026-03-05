@@ -21,16 +21,7 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   }
 
   if (L.isAtomType(lhs) && L.isAtomType(rhs)) {
-    const lhsName = L.atomTypeName(lhs)
-    const rhsName = L.atomTypeName(rhs)
-
-    if (rhsName === "keyword") {
-      if (lhsName === "void" || lhsName === "null" || lhsName === "bool") {
-        return true
-      }
-    }
-
-    return lhsName === rhsName
+    return L.atomTypeName(lhs) === L.atomTypeName(rhs)
   }
 
   if (L.isTauType(lhs) && L.isTauType(rhs)) {

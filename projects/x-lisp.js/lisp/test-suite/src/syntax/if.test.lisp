@@ -1,11 +1,11 @@
 (claim main (-> void-t))
 
 (define (main)
-  (assert-equal (if #t 1 2) 1)
-  (assert-equal (if #f 1 2) 2)
+  (assert-equal (if true 1 2) 1)
+  (assert-equal (if false 1 2) 2)
 
-  (assert (and #t #t #t))
-  (assert (not (and #t #t #f)))
+  (assert (and true true true))
+  (assert (not (and true true false)))
 
-  (assert (or #f #f #t))
-  (assert (not (or #f #f #f))))
+  (assert (or false false true))
+  (assert (not (or false false false))))

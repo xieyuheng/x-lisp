@@ -11,7 +11,7 @@ export function expandDataConstructor(
     L.modDefine(
       mod,
       ctor.name,
-      L.VariableDefinition(mod, ctor.name, L.Keyword(ctor.name)),
+      L.VariableDefinition(mod, ctor.name, L.Symbol(ctor.name)),
     )
 
     if (definition.datatypeConstructor.parameters.length === 0) {
@@ -41,7 +41,7 @@ export function expandDataConstructor(
         mod,
         ctor.name,
         parameters,
-        L.List([L.Keyword(ctor.name), ...args]),
+        L.List([L.Symbol(ctor.name), ...args]),
       ),
     )
 

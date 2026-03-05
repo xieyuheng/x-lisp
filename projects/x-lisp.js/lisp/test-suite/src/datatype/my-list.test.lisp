@@ -5,9 +5,9 @@
 (define (main)
   ;; data constructor
 
-  (assert-equal nil #nil)
+  (assert-equal nil 'nil)
   (assert-equal (li 1 (li 2 (li 3 nil)))
-                [#li 1 [#li 2 [#li 3 #nil]]])
+                ['li 1 ['li 2 ['li 3 'nil]]])
 
   ;; data getter
 
