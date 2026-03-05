@@ -31,7 +31,7 @@ export function builtinSymbol(mod: Mod) {
 
   definePrimitiveFunction(mod, "symbol-concat", 1, (list) => {
     return Values.SymbolValue(
-      Values.asTaelValue(list)
+      Values.asListValue(list)
         .elements.map((string) => Values.asSymbolValue(string).content)
         .join(""),
     )

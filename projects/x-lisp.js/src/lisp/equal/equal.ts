@@ -4,11 +4,12 @@ import { type Value } from "../value/index.ts"
 import { same } from "./same.ts"
 
 export function equal(lhs: Value, rhs: Value): boolean {
-  if (lhs.kind === "TaelValue" && rhs.kind === "TaelValue") {
-    return (
-      equalValues(lhs.elements, rhs.elements) &&
-      equalAttributes(lhs.attributes, rhs.attributes)
-    )
+  if (lhs.kind === "ListValue" && rhs.kind === "ListValue") {
+    return equalValues(lhs.elements, rhs.elements)
+  }
+
+  if (lhs.kind === "ObjectValue" && rhs.kind === "ObjectValue") {
+    return equalAttributes(lhs.attributes, rhs.attributes)
   }
 
   if (lhs.kind === "SetValue" && rhs.kind === "SetValue") {

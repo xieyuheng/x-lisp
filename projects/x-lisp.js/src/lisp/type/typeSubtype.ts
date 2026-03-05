@@ -24,7 +24,7 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
     const lhsName = L.atomTypeName(lhs)
     const rhsName = L.atomTypeName(rhs)
 
-    if (rhsName === "hashtag") {
+    if (rhsName === "keyword") {
       if (lhsName === "void" || lhsName === "null" || lhsName === "bool") {
         return true
       }
@@ -34,18 +34,18 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   }
 
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
-    if (
-      !typeSubtypeMany(
+    return (
+      typeSubtypeMany(
         trail,
         L.tauTypeElementTypes(lhs),
         L.tauTypeElementTypes(rhs),
       )
-    ) {
-      return false
-    }
+    )
+  }
 
-    const lhsRecord = L.tauTypeAttributeTypes(lhs)
-    const rhsRecord = L.tauTypeAttributeTypes(rhs)
+  if (L.isClassType(lhs) && L.isClassType(rhs)) {
+    const lhsRecord = L.classTypeAttributeTypes(lhs)
+    const rhsRecord = L.classTypeAttributeTypes(rhs)
     // rhs has less keys
     for (const k of Object.keys(rhsRecord)) {
       if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) {
@@ -55,6 +55,7 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
 
     return true
   }
+
 
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
     // contravariant on ArgTypes
@@ -82,14 +83,6 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
       trail,
       L.setTypeElementType(lhs),
       L.setTypeElementType(rhs),
-    )
-  }
-
-  if (L.isRecordType(lhs) && L.isRecordType(rhs)) {
-    return typeSubtype(
-      trail,
-      L.recordTypeValueType(lhs),
-      L.recordTypeValueType(rhs),
     )
   }
 

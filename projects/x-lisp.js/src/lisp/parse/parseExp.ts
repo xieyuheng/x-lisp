@@ -1,12 +1,12 @@
 import { arrayGroup2, arrayPickLast } from "@xieyuheng/helpers.js/array"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import * as S from "@xieyuheng/sexp-tael.js"
+import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
 export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
   "(cons* 'lambda parameters body)": ({ parameters, body }, { sexp }) => {
-    const keyword = S.asTael(sexp).elements[0]
-    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+    const keyword = S.asList(sexp).elements[0]
+    const meta = keyword.meta
     return L.Lambda(
       S.listElements(parameters).map(S.symbolContent),
       L.BeginSugar(S.listElements(body).map(parseExp), meta),
@@ -55,9 +55,8 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
   },
 
   "(cons* 'cond lines)": ({ lines }, { sexp }) => {
-    const keyword = S.asTael(sexp).elements[1]
-    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
-    return L.Cond(S.listElements(lines).map(parseCondLine), meta)
+    const keyword = S.asList(sexp).elements[1]
+    return L.Cond(S.listElements(lines).map(parseCondLine), keyword.meta)
   },
 
   "`(= ,name ,rhs)": ({ name, rhs }, { meta }) => {
@@ -68,47 +67,15 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     return L.BeginSugar(S.listElements(body).map(parseExp), meta)
   },
 
-  "(cons* '@tael elements)": ({ elements }, { sexp, meta }) => {
-    return L.Tael(
-      S.listElements(elements).map(parseExp),
-      recordMapValue(S.asTael(sexp).attributes, parseExp),
-      meta,
-    )
+  "(cons* '@list elements)": ({ elements }, { meta }) => {
+    return L.List(S.listElements(elements).map(parseExp), meta)
   },
 
-  "(cons* '@list elements)": ({ elements }, { sexp, meta }) => {
-    if (Object.keys(S.asTael(sexp).attributes).length > 0) {
-      let message = `(@list) literal list can not have attributes`
-      throw new S.ErrorWithMeta(message, meta)
-    }
-
-    return L.Tael(S.listElements(elements).map(parseExp), {}, meta)
-  },
-
-  "(cons* '@record elements)": ({ elements }, { sexp, meta }) => {
-    if (S.listElements(elements).length > 0) {
-      let message = `(@record) literal record can not have elements`
-      throw new S.ErrorWithMeta(message, meta)
-    }
-
-    return L.Tael([], recordMapValue(S.asTael(sexp).attributes, parseExp), meta)
-  },
-
-  "(cons* '@set elements)": ({ elements }, { sexp, meta }) => {
-    if (Object.keys(S.asTael(sexp).attributes).length > 0) {
-      let message = `(@set) can not have attributes`
-      throw new S.ErrorWithMeta(message, meta)
-    }
-
+  "(cons* '@set elements)": ({ elements }, { meta }) => {
     return L.Set(S.listElements(elements).map(parseExp), meta)
   },
 
-  "(cons* '@hash elements)": ({ elements }, { sexp, meta }) => {
-    if (Object.keys(S.asTael(sexp).attributes).length > 0) {
-      let message = `(@hash) can not have attributes`
-      throw new S.ErrorWithMeta(message, meta)
-    }
-
+  "(cons* '@hash elements)": ({ elements }, { meta }) => {
     if (S.listElements(elements).length % 2 === 1) {
       let message = `(@hash) body length must be even`
       throw new S.ErrorWithMeta(message, meta)
@@ -130,10 +97,9 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     return L.Arrow(argTypes, retType, meta)
   },
 
-  "(cons* 'tau elements)": ({ elements }, { sexp, meta }) => {
+  "(cons* 'tau elements)": ({ elements }, { meta }) => {
     return L.Tau(
       S.listElements(elements).map(parseExp),
-      recordMapValue(S.asTael(sexp).attributes, parseExp),
       meta,
     )
   },
@@ -156,8 +122,8 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
 
   data: ({ data }, { meta }) => {
     switch (data.kind) {
-      case "Hashtag":
-        return L.Hashtag(S.hashtagContent(data), meta)
+      case "Keyword":
+        return L.Keyword(S.keywordContent(data), meta)
       case "Int":
         return L.Int(S.intContent(data), meta)
       case "Float":
@@ -175,7 +141,7 @@ const parseCondLine = S.createRouter<L.CondLine>({
   "(cons* question body)": ({ question, body }, { meta }) => {
     if (question.kind === "Symbol" && question.content === "else") {
       return {
-        question: L.Hashtag("t", meta),
+        question: L.Keyword("t", meta),
         answer: L.BeginSugar(S.listElements(body).map(parseExp), meta),
       }
     } else {

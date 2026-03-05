@@ -10,9 +10,9 @@ export function isType(value: L.Value): boolean {
     isAtomType(value) ||
     isArrowType(value) ||
     isTauType(value) ||
+    isClassType(value) ||
     isListType(value) ||
     isSetType(value) ||
-    isRecordType(value) ||
     isHashType(value) ||
     isDatatypeType(value) ||
     isDisjointUnionType(value) ||
@@ -24,9 +24,9 @@ export function isType(value: L.Value): boolean {
 
 export function isVarType(value: L.Value): boolean {
   return (
-    L.isTaelValue(value) &&
+    L.isListValue(value) &&
     value.elements.length === 3 &&
-    L.equal(value.elements[0], L.HashtagValue("var")) &&
+    L.equal(value.elements[0], L.KeywordValue("var")) &&
     L.isSymbolValue(value.elements[1]) &&
     L.isIntValue(value.elements[2])
   )
@@ -34,7 +34,7 @@ export function isVarType(value: L.Value): boolean {
 
 export function createVarType(name: string, serialNumber: bigint): L.Value {
   return L.ListValue([
-    L.HashtagValue("var"),
+    L.KeywordValue("var"),
     L.SymbolValue(name),
     L.IntValue(serialNumber),
   ])
@@ -42,12 +42,12 @@ export function createVarType(name: string, serialNumber: bigint): L.Value {
 
 export function varTypeName(value: L.Value): string {
   assert(isVarType(value))
-  return L.asSymbolValue(L.asTaelValue(value).elements[1]).content
+  return L.asSymbolValue(L.asListValue(value).elements[1]).content
 }
 
 export function varTypeSerialNumber(value: L.Value): bigint {
   assert(isVarType(value))
-  return L.asIntValue(L.asTaelValue(value).elements[2]).content
+  return L.asIntValue(L.asListValue(value).elements[2]).content
 }
 
 export function varTypeId(value: L.Value): string {
@@ -62,14 +62,14 @@ export function varTypeId(value: L.Value): string {
 
 export function isAnyType(value: L.Value): boolean {
   return (
-    L.isTaelValue(value) &&
+    L.isListValue(value) &&
     value.elements.length === 1 &&
-    L.equal(value.elements[0], L.HashtagValue("any"))
+    L.equal(value.elements[0], L.KeywordValue("any"))
   )
 }
 
 export function createAnyType(): L.Value {
-  return L.ListValue([L.HashtagValue("any")])
+  return L.ListValue([L.KeywordValue("any")])
 }
 
 // LiteralType
@@ -82,31 +82,31 @@ export function isLiteralType(value: L.Value): boolean {
 
 export function isAtomType(value: L.Value): boolean {
   return (
-    L.isTaelValue(value) &&
+    L.isListValue(value) &&
     value.elements.length === 2 &&
-    L.equal(value.elements[0], L.HashtagValue("atom")) &&
-    L.isHashtagValue(value.elements[1])
+    L.equal(value.elements[0], L.KeywordValue("atom")) &&
+    L.isKeywordValue(value.elements[1])
   )
 }
 
 export function createAtomType(name: string): L.Value {
-  return L.ListValue([L.HashtagValue("atom"), L.HashtagValue(name)])
+  return L.ListValue([L.KeywordValue("atom"), L.KeywordValue(name)])
 }
 
 export function atomTypeName(value: L.Value): string {
   assert(isAtomType(value))
-  return L.asHashtagValue(L.asTaelValue(value).elements[1]).content
+  return L.asKeywordValue(L.asListValue(value).elements[1]).content
 }
 
 // ArrowType
 
 export function isArrowType(value: L.Value): boolean {
   return (
-    L.isTaelValue(value) &&
+    L.isListValue(value) &&
     value.elements.length === 3 &&
-    L.equal(value.elements[0], L.HashtagValue("->")) &&
-    L.isTaelValue(value.elements[1]) &&
-    L.asTaelValue(value.elements[1]).elements.every(isType) &&
+    L.equal(value.elements[0], L.KeywordValue("->")) &&
+    L.isListValue(value.elements[1]) &&
+    L.asListValue(value.elements[1]).elements.every(isType) &&
     isType(value.elements[2])
   )
 }
@@ -115,17 +115,17 @@ export function createArrowType(
   argTypes: Array<L.Value>,
   retType: L.Value,
 ): L.Value {
-  return L.ListValue([L.HashtagValue("->"), L.ListValue(argTypes), retType])
+  return L.ListValue([L.KeywordValue("->"), L.ListValue(argTypes), retType])
 }
 
 export function arrowTypeArgTypes(value: L.Value): Array<L.Value> {
   assert(isArrowType(value))
-  return L.asTaelValue(L.asTaelValue(value).elements[1]).elements
+  return L.asListValue(L.asListValue(value).elements[1]).elements
 }
 
 export function arrowTypeRetType(value: L.Value): L.Value {
   assert(isArrowType(value))
-  return L.asTaelValue(value).elements[2]
+  return L.asListValue(value).elements[2]
 }
 
 export function arrowTypeNormalize(value: L.Value): L.Value {
@@ -156,126 +156,121 @@ export function arrowTypeNormalize(value: L.Value): L.Value {
 
 export function isTauType(value: L.Value): boolean {
   return (
-    L.isTaelValue(value) &&
-    L.equal(value.elements[0], L.HashtagValue("tau")) &&
-    value.elements.slice(1).every(isType) &&
-    Object.values(value.attributes).every(isType)
+    L.isListValue(value) &&
+    L.equal(value.elements[0], L.KeywordValue("tau")) &&
+    value.elements.slice(1).every(isType)
   )
 }
 
-export function createTauType(
-  elementTypes: Array<L.Value>,
-  attributeTypes: Record<string, L.Value>,
-): L.Value {
-  return L.TaelValue([L.HashtagValue("tau"), ...elementTypes], attributeTypes)
+export function createTauType(elementTypes: Array<L.Value>): L.Value {
+  return L.ListValue([L.KeywordValue("tau"), ...elementTypes])
 }
 
 export function tauTypeElementTypes(value: L.Value): Array<L.Value> {
   assert(isTauType(value))
-  return L.asTaelValue(value).elements.slice(1)
+  return L.asListValue(value).elements.slice(1)
 }
 
-export function tauTypeAttributeTypes(value: L.Value): Record<string, L.Value> {
-  assert(isTauType(value))
-  return L.asTaelValue(value).attributes
+// ClassType
+
+export function isClassType(value: L.Value): boolean {
+  return (
+    L.isListValue(value) &&
+    L.equal(value.elements[0], L.KeywordValue("class")) &&
+    L.isObjectValue(value.elements[1]) &&
+    Object.values(L.asObjectValue(value.elements[1]).attributes).every(isType)
+  )
+}
+
+export function createClassType(
+  attributeTypes: Record<string, L.Value>,
+): L.Value {
+  return L.ListValue([L.KeywordValue("@class"), L.ObjectValue(attributeTypes)])
+}
+
+export function classTypeAttributeTypes(
+  value: L.Value,
+): Record<string, L.Value> {
+  assert(isClassType(value))
+  return L.asObjectValue(L.asListValue(value).elements[1]).attributes
 }
 
 // ListType
 
 export function isListType(value: L.Value): boolean {
   return (
-    L.isTaelValue(value) &&
+    L.isListValue(value) &&
     value.elements.length === 2 &&
-    L.equal(value.elements[0], L.HashtagValue("list")) &&
+    L.equal(value.elements[0], L.KeywordValue("list")) &&
     isType(value.elements[1])
   )
 }
 
 export function createListType(elementType: L.Value): L.Value {
-  return L.ListValue([L.HashtagValue("list"), elementType])
+  return L.ListValue([L.KeywordValue("list"), elementType])
 }
 
 export function listTypeElementType(value: L.Value): L.Value {
   assert(isListType(value))
-  return L.asTaelValue(value).elements[1]
+  return L.asListValue(value).elements[1]
 }
 
 // SetType
 
 export function isSetType(value: L.Value): boolean {
   return (
-    L.isTaelValue(value) &&
+    L.isListValue(value) &&
     value.elements.length === 2 &&
-    L.equal(value.elements[0], L.HashtagValue("set")) &&
+    L.equal(value.elements[0], L.KeywordValue("set")) &&
     isType(value.elements[1])
   )
 }
 
 export function createSetType(elementType: L.Value): L.Value {
-  return L.ListValue([L.HashtagValue("set"), elementType])
+  return L.ListValue([L.KeywordValue("set"), elementType])
 }
 
 export function setTypeElementType(value: L.Value): L.Value {
   assert(isSetType(value))
-  return L.asTaelValue(value).elements[1]
-}
-
-// RecordType
-
-export function isRecordType(value: L.Value): boolean {
-  return (
-    L.isTaelValue(value) &&
-    value.elements.length === 2 &&
-    L.equal(value.elements[0], L.HashtagValue("record")) &&
-    isType(value.elements[1])
-  )
-}
-
-export function createRecordType(valueType: L.Value): L.Value {
-  return L.ListValue([L.HashtagValue("record"), valueType])
-}
-
-export function recordTypeValueType(value: L.Value): L.Value {
-  assert(isRecordType(value))
-  return L.asTaelValue(value).elements[1]
+  return L.asListValue(value).elements[1]
 }
 
 // HashType
 
 export function isHashType(value: L.Value): boolean {
   return (
-    L.isTaelValue(value) &&
+    L.isListValue(value) &&
     value.elements.length === 3 &&
-    L.equal(value.elements[0], L.HashtagValue("hash")) &&
+    L.equal(value.elements[0], L.KeywordValue("hash")) &&
     isType(value.elements[1]) &&
     isType(value.elements[2])
   )
 }
 
 export function createHashType(keyType: L.Value, valueType: L.Value): L.Value {
-  return L.ListValue([L.HashtagValue("hash"), keyType, valueType])
+  return L.ListValue([L.KeywordValue("hash"), keyType, valueType])
 }
 
 export function hashTypeKeyType(value: L.Value): L.Value {
   assert(isHashType(value))
-  return L.asTaelValue(value).elements[1]
+  return L.asListValue(value).elements[1]
 }
 
 export function hashTypeValueType(value: L.Value): L.Value {
   assert(isHashType(value))
-  return L.asTaelValue(value).elements[2]
+  return L.asListValue(value).elements[2]
 }
 
 // DatatypeType
 
 export function isDatatypeType(value: L.Value): boolean {
   return (
-    L.isTaelValue(value) &&
+    L.isListValue(value) &&
     value.elements.length === 3 &&
-    L.equal(value.elements[0], L.HashtagValue("datatype")) &&
+    L.equal(value.elements[0], L.KeywordValue("datatype")) &&
     L.isDefinitionValue(value.elements[1]) &&
-    L.isTaelValue(value.elements[2]) &&
-    L.asTaelValue(value.elements[2]).elements.every(isType)
+    L.isListValue(value.elements[2]) &&
+    L.asListValue(value.elements[2]).elements.every(isType)
   )
 }
 
@@ -284,7 +279,7 @@ export function createDatatypeType(
   argTypes: Array<L.Value>,
 ): L.Value {
   return L.ListValue([
-    L.HashtagValue("datatype"),
+    L.KeywordValue("datatype"),
     L.DefinitionValue(definition),
     L.ListValue(argTypes),
   ])
@@ -295,7 +290,7 @@ export function datatypeTypeDatatypeDefinition(
 ): L.DatatypeDefinition {
   assert(isDatatypeType(value))
   const definition = L.asDefinitionValue(
-    L.asTaelValue(value).elements[1],
+    L.asListValue(value).elements[1],
   ).definition
   assert(definition.kind === "DatatypeDefinition")
   return definition
@@ -303,7 +298,7 @@ export function datatypeTypeDatatypeDefinition(
 
 export function datatypeTypeArgTypes(value: L.Value): Array<L.Value> {
   assert(isDatatypeType(value))
-  return L.asTaelValue(L.asTaelValue(value).elements[2]).elements
+  return L.asListValue(L.asListValue(value).elements[2]).elements
 }
 
 export function datatypeTypeUnfold(datatypeType: L.Value): L.Value {
@@ -324,8 +319,7 @@ export function datatypeTypeUnfold(datatypeType: L.Value): L.Value {
     )
 
     variantTypes[dataConstructor.name] = L.createTauType(
-      [L.HashtagValue(dataConstructor.name), ...elementTypes],
-      {},
+      [L.KeywordValue(dataConstructor.name), ...elementTypes],
     )
   }
 
@@ -336,11 +330,11 @@ export function datatypeTypeUnfold(datatypeType: L.Value): L.Value {
 
 export function isDisjointUnionType(value: L.Value): boolean {
   return (
-    L.isTaelValue(value) &&
+    L.isListValue(value) &&
     value.elements.length === 2 &&
-    L.equal(value.elements[0], L.HashtagValue("disjoint-union")) &&
-    L.isTaelValue(value.elements[1]) &&
-    Object.values(L.asTaelValue(value.elements[1]).attributes).every(isType)
+    L.equal(value.elements[0], L.KeywordValue("disjoint-union")) &&
+    L.isObjectValue(value.elements[1]) &&
+    Object.values(L.asObjectValue(value.elements[1]).attributes).every(isType)
   )
 }
 
@@ -348,8 +342,8 @@ export function createDisjointUnionType(
   variantTypes: Record<string, L.Value>,
 ): L.Value {
   return L.ListValue([
-    L.HashtagValue("disjoint-union"),
-    L.RecordValue(variantTypes),
+    L.KeywordValue("disjoint-union"),
+    L.ObjectValue(variantTypes),
   ])
 }
 
@@ -357,18 +351,18 @@ export function disjointUnionTypeVariantTypes(
   value: L.Value,
 ): Record<string, L.Value> {
   assert(isDisjointUnionType(value))
-  return L.asTaelValue(L.asTaelValue(value).elements[1]).attributes
+  return L.asObjectValue(L.asListValue(value).elements[1]).attributes
 }
 
 // PolymorphicType
 
 export function isPolymorphicType(value: L.Value): boolean {
   return (
-    L.isTaelValue(value) &&
+    L.isListValue(value) &&
     value.elements.length === 3 &&
-    L.equal(value.elements[0], L.HashtagValue("polymorphic")) &&
-    L.isTaelValue(value.elements[1]) &&
-    L.asTaelValue(value.elements[1]).elements.every(L.isSymbolValue) &&
+    L.equal(value.elements[0], L.KeywordValue("polymorphic")) &&
+    L.isListValue(value.elements[1]) &&
+    L.asListValue(value.elements[1]).elements.every(L.isSymbolValue) &&
     L.isClosureValue(value.elements[2])
   )
 }
@@ -378,7 +372,7 @@ export function createPolymorphicType(
   closure: L.ClosureValue,
 ): L.Value {
   return L.ListValue([
-    L.HashtagValue("polymorphic"),
+    L.KeywordValue("polymorphic"),
     L.ListValue(parameters.map(L.SymbolValue)),
     closure,
   ])
@@ -386,14 +380,14 @@ export function createPolymorphicType(
 
 export function polymorphicTypeParameters(value: L.Value): Array<string> {
   assert(isPolymorphicType(value))
-  return L.asTaelValue(L.asTaelValue(value).elements[1]).elements.map(
+  return L.asListValue(L.asListValue(value).elements[1]).elements.map(
     (element) => L.asSymbolValue(element).content,
   )
 }
 
 export function polymorphicTypeClosure(value: L.Value): L.ClosureValue {
   assert(isPolymorphicType(value))
-  return L.asClosureValue(L.asTaelValue(value).elements[2])
+  return L.asClosureValue(L.asListValue(value).elements[2])
 }
 
 const serialNumberMap: Map<string, bigint> = new Map()

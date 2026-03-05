@@ -1,17 +1,17 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp-tael.js"
+import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import { formatExp } from "../format/index.ts"
 import * as Exps from "./index.ts"
 import { type Exp } from "./index.ts"
 
-export function Void(meta?: Meta): Exps.Hashtag {
-  return Exps.Hashtag("void", meta)
+export function Void(meta?: Meta): Exps.Keyword {
+  return Exps.Keyword("void", meta)
 }
 
 export function isVoid(exp: Exp): boolean {
-  return exp.kind === "Hashtag" && exp.content === "void"
+  return exp.kind === "Keyword" && exp.content === "void"
 }
 
-export function asVoid(exp: Exp): Exps.Hashtag {
-  if (isVoid(exp)) return exp as Exps.Hashtag
+export function asVoid(exp: Exp): Exps.Keyword {
+  if (isVoid(exp)) return exp as Exps.Keyword
   throw new Error(`[asVoid] fail on: ${formatExp(exp)}`)
 }

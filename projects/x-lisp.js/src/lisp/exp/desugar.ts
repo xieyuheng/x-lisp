@@ -1,5 +1,4 @@
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import * as S from "@xieyuheng/sexp-tael.js"
+import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
 export function desugarBegin(sequence: Array<L.Exp>, meta?: L.Meta): L.Exp {
@@ -63,19 +62,12 @@ export function desugarCond(
   return L.If(headLine.question, headLine.answer, desugarCond(restLines, meta))
 }
 
-export function desugarTael(
-  elements: Array<L.Exp>,
-  attributes: Record<string, L.Exp>,
-  meta?: L.Meta,
-): L.Exp {
+export function desugarList(elements: Array<L.Exp>, meta?: L.Meta): L.Exp {
   return L.BeginSugar(
     [
-      L.AssignSugar("tael", L.Apply(L.Var("make-list"), [])),
-      ...elements.map((e) => L.Apply(L.Var("list-push!"), [e, L.Var("tael")])),
-      ...Object.entries(attributes).map(([k, v]) =>
-        L.Apply(L.Var("record-put!"), [L.Symbol(k), v, L.Var("tael")]),
-      ),
-      L.Var("tael"),
+      L.AssignSugar("list", L.Apply(L.Var("make-list"), [])),
+      ...elements.map((e) => L.Apply(L.Var("list-push!"), [e, L.Var("list")])),
+      L.Var("list"),
     ],
     meta,
   )
@@ -126,14 +118,13 @@ export function desugarQuote(sexp: S.Sexp, meta?: L.Meta): L.Exp {
       return L.Float(sexp.content, meta)
     }
 
-    case "Hashtag": {
-      return L.Hashtag(sexp.content, meta)
+    case "Keyword": {
+      return L.Keyword(sexp.content, meta)
     }
 
-    case "Tael": {
-      return L.Tael(
+    case "List": {
+      return L.List(
         sexp.elements.map((e) => desugarQuote(e, meta)),
-        recordMapValue(sexp.attributes, (e) => desugarQuote(e, meta)),
         meta,
       )
     }

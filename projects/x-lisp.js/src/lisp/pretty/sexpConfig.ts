@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/sexp-tael.js"
+import * as S from "@xieyuheng/sexp.js"
 
 export const sexpConfig: S.Config = {
   keywords: [
@@ -31,8 +31,8 @@ export const sexpConfig: S.Config = {
     ["unless", 1],
     ["cond", 0],
     ["@list", 0],
-    ["@tael", 0],
-    ["@record", 0],
+    ["@object", 0],
+    ["@class", 0],
     ["@set", 0],
     ["@hash", 0],
     ["specific", 1],

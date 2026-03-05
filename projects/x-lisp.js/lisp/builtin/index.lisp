@@ -5,13 +5,12 @@
 (define-type float-t [#atom #float])
 (define-type string-t [#atom #string])
 (define-type symbol-t [#atom #symbol])
-(define-type hashtag-t [#atom #hashtag])
+(define-type keyword-t [#atom #keyword])
 (define-type void-t [#atom #void])
 (define-type null-t [#atom #null])
 (define-type any-t [#any])
 (define-type (list-t E) [#list E])
 (define-type (set-t E) [#set E])
-(define-type (record-t V) [#record V])
 (define-type (hash-t K V) [#hash K V])
 
 ;; value
@@ -99,11 +98,11 @@
 (claim random-float (-> float-t float-t float-t))
 (claim random-dice (-> int-t))
 
-;; hashtag
+;; keyword
 
-(claim hashtag? (-> any-t bool-t))
-(claim hashtag-to-string (-> hashtag-t string-t))
-(claim hashtag-append (-> hashtag-t hashtag-t hashtag-t))
+(claim keyword? (-> any-t bool-t))
+(claim keyword-to-string (-> keyword-t string-t))
+(claim keyword-append (-> keyword-t keyword-t keyword-t))
 
 ;; symbol
 
@@ -152,24 +151,6 @@
 (claim list-unshift! (polymorphic (E) (-> E (list-t E) (list-t E))))
 (claim list-reverse (polymorphic (E) (-> (list-t E) (list-t E))))
 (claim list-to-set (polymorphic (E) (-> (list-t E) (set-t E))))
-
-;; record
-
-(claim make-record (polymorphic (V) (-> (record-t V))))
-(claim record-length (polymorphic (V) (-> (record-t V) int-t)))
-(claim record-keys (polymorphic (V) (-> (record-t V) (list-t symbol-t))))
-(claim record-values (polymorphic (V) (-> (record-t V) (list-t V))))
-(claim record-entries (polymorphic (V) (-> (record-t V) (list-t (tau symbol-t V)))))
-(claim record-append (polymorphic (V) (-> (record-t V) (record-t V) (record-t V))))
-(claim record-copy (polymorphic (V) (-> (record-t V) (record-t V))))
-(claim record-empty? (polymorphic (V) (-> (record-t V) bool-t)))
-;; (claim record-get (polymorphic (V) (-> symbol-t (record-t V) (optional-t V))))
-(claim record-get (polymorphic (V) (-> symbol-t (record-t V) V)))
-(claim record-has? (polymorphic (V) (-> symbol-t (record-t V) bool-t)))
-(claim record-put (polymorphic (V) (-> symbol-t V (record-t V) (record-t V))))
-(claim record-put! (polymorphic (V) (-> symbol-t V (record-t V) (record-t V))))
-(claim record-delete (polymorphic (V) (-> symbol-t (record-t V) (record-t V))))
-(claim record-delete! (polymorphic (V) (-> symbol-t (record-t V) (record-t V))))
 
 ;; set
 

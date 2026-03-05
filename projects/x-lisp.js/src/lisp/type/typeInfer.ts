@@ -4,7 +4,7 @@ import * as L from "../index.ts"
 export function expPreferInfer(exp: L.Exp): boolean {
   switch (exp.kind) {
     case "Symbol":
-    case "Hashtag":
+    case "Keyword":
     case "String":
     case "Int":
     case "Float":
@@ -28,7 +28,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
       return L.okInferEffect(L.createAtomType("symbol"))
     }
 
-    case "Hashtag": {
+    case "Keyword": {
       if (exp.content === "void") {
         return L.okInferEffect(L.createAtomType("void"))
       }
@@ -41,7 +41,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         return L.okInferEffect(L.createAtomType("bool"))
       }
 
-      return L.okInferEffect(L.createAtomType("hashtag"))
+      return L.okInferEffect(L.createAtomType("keyword"))
     }
 
     case "String": {

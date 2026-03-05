@@ -45,7 +45,7 @@ export function builtinString(mod: Mod) {
 
   definePrimitiveFunction(mod, "string-concat", 1, (list) => {
     return Values.StringValue(
-      Values.asTaelValue(list)
+      Values.asListValue(list)
         .elements.map((string) => Values.asStringValue(string).content)
         .join(""),
     )
@@ -53,7 +53,7 @@ export function builtinString(mod: Mod) {
 
   definePrimitiveFunction(mod, "string-join", 2, (separator, list) => {
     return Values.StringValue(
-      Values.asTaelValue(list)
+      Values.asListValue(list)
         .elements.map((string) => Values.asStringValue(string).content)
         .join(Values.asStringValue(separator).content),
     )

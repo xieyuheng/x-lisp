@@ -8,26 +8,34 @@ import { type SetValue } from "./Set.ts"
 
 export type Value =
   | AtomValue
-  | TaelValue
+  | ListValue
+  | ObjectValue
   | SetValue
   | HashValue
   | ClosureValue
   | CurryValue
   | DefinitionValue
 
-export type TaelValue = {
-  kind: "TaelValue"
+export type ListValue = {
+  kind: "ListValue"
   elements: Array<Value>
+}
+
+export function ListValue(elements: Array<Value>): ListValue {
+  return {
+    kind: "ListValue",
+    elements,
+  }
+}
+
+export type ObjectValue = {
+  kind: "ObjectValue"
   attributes: Record<string, Value>
 }
 
-export function TaelValue(
-  elements: Array<Value>,
-  attributes: Record<string, Value>,
-): TaelValue {
+export function ObjectValue(attributes: Record<string, Value>): ObjectValue {
   return {
-    kind: "TaelValue",
-    elements,
+    kind: "ObjectValue",
     attributes,
   }
 }

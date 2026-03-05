@@ -40,11 +40,16 @@ export function typeEquivalent(
         trail,
         L.tauTypeElementTypes(lhs),
         L.tauTypeElementTypes(rhs),
-      ) &&
+      )
+    )
+  }
+
+  if (L.isClassType(lhs) && L.isClassType(rhs)) {
+    return (
       typeEquivalentRecord(
         trail,
-        L.tauTypeAttributeTypes(lhs),
-        L.tauTypeAttributeTypes(rhs),
+        L.classTypeAttributeTypes(lhs),
+        L.classTypeAttributeTypes(rhs),
       )
     )
   }
@@ -75,14 +80,6 @@ export function typeEquivalent(
       trail,
       L.setTypeElementType(lhs),
       L.setTypeElementType(rhs),
-    )
-  }
-
-  if (L.isRecordType(lhs) && L.isRecordType(rhs)) {
-    return typeEquivalent(
-      trail,
-      L.recordTypeValueType(lhs),
-      L.recordTypeValueType(rhs),
     )
   }
 

@@ -11,7 +11,7 @@ export function expandDataConstructor(
     L.modDefine(
       mod,
       ctor.name,
-      L.VariableDefinition(mod, ctor.name, L.Hashtag(ctor.name)),
+      L.VariableDefinition(mod, ctor.name, L.Keyword(ctor.name)),
     )
 
     if (definition.datatypeConstructor.parameters.length === 0) {
@@ -41,7 +41,7 @@ export function expandDataConstructor(
         mod,
         ctor.name,
         parameters,
-        L.Tael([L.Hashtag(ctor.name), ...args], {}),
+        L.List([L.Keyword(ctor.name), ...args],),
       ),
     )
 

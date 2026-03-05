@@ -77,25 +77,12 @@ export function typeCheck(
       return typeCheck(mod, ctx, L.desugarCond(exp.condLines), type)
     }
 
-    case "Tael": {
+    case "List": {
       if (L.isListType(type)) {
         const elementType = L.listTypeElementType(type)
         return L.sequenceCheckEffect([
           ...exp.elements.map((element) =>
             typeCheck(mod, ctx, element, elementType),
-          ),
-          ...Object.values(exp.attributes).map((value) =>
-            typeCheck(mod, ctx, value, L.createAnyType()),
-          ),
-        ])
-      } else if (L.isRecordType(type)) {
-        const valueType = L.recordTypeValueType(type)
-        return L.sequenceCheckEffect([
-          ...exp.elements.map((element) =>
-            typeCheck(mod, ctx, element, L.createAnyType()),
-          ),
-          ...Object.values(exp.attributes).map((value) =>
-            typeCheck(mod, ctx, value, valueType),
           ),
         ])
       } else if (L.isDatatypeType(type)) {
@@ -108,8 +95,8 @@ export function typeCheck(
         }
 
         const headExp = exp.elements[0]
-        if (headExp.kind !== "Hashtag") {
-          let message = `head of tael should be Hashtag`
+        if (headExp.kind !== "Keyword") {
+          let message = `head of tuple should be Keyword`
           message += `\n  head: ${L.formatExp(headExp)}`
           message += `\n  type: ${L.formatType(type)}`
           return L.errorCheckEffect(exp, message)
@@ -118,15 +105,15 @@ export function typeCheck(
         const name = headExp.content
         const variantTypes = L.disjointUnionTypeVariantTypes(type)
         if (variantTypes[name] === undefined) {
-          let message = `head hashtag mismatch`
-          message += `\n  hashtag: ${L.formatExp(headExp)}`
+          let message = `head keyword mismatch`
+          message += `\n  keyword: ${L.formatExp(headExp)}`
           message += `\n  type: ${L.formatType(type)}`
           return L.errorCheckEffect(exp, message)
         }
 
         return typeCheck(mod, ctx, exp, variantTypes[name])
       } else {
-        let message = `expecting tael-like type`
+        let message = `expecting tuple-like type`
         message += `\n  type: ${L.formatType(type)}`
         return L.errorCheckEffect(exp, message)
       }

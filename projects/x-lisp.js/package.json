@@ -26,7 +26,7 @@
     "@xieyuheng/cmd.js": "workspace:*",
     "@xieyuheng/helpers.js": "workspace:*",
     "@xieyuheng/ppml.js": "workspace:*",
-    "@xieyuheng/sexp-tael.js": "workspace:*",
+    "@xieyuheng/sexp.js": "workspace:*",
     "zod": "^4.3.6"
   },
   "devDependencies": {

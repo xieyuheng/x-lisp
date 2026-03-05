@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/sexp-tael.js"
+import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 import { parseExp } from "./parseExp.ts"
 
@@ -7,8 +7,8 @@ export const parseStmt = S.createRouter<L.Stmt>({
     { name, parameters, body },
     { sexp },
   ) => {
-    const keyword = S.asTael(sexp).elements[1]
-    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+    const keyword = S.asList(sexp).elements[1]
+    const meta = keyword.meta
     return L.DefineFunction(
       S.symbolContent(name),
       S.listElements(parameters).map(S.symbolContent),
@@ -18,8 +18,8 @@ export const parseStmt = S.createRouter<L.Stmt>({
   },
 
   "(cons* 'define name body)": ({ name, body }, { sexp }) => {
-    const keyword = S.asTael(sexp).elements[1]
-    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+    const keyword = S.asList(sexp).elements[1]
+    const meta = keyword.meta
     return L.DefineVariable(
       S.symbolContent(name),
       L.BeginSugar(S.listElements(body).map(parseExp), meta),
@@ -31,8 +31,8 @@ export const parseStmt = S.createRouter<L.Stmt>({
     { name, parameters, body },
     { sexp },
   ) => {
-    const keyword = S.asTael(sexp).elements[1]
-    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+    const keyword = S.asList(sexp).elements[1]
+    const meta = keyword.meta
     return L.DefineType(
       S.symbolContent(name),
       L.Lambda(
@@ -45,8 +45,8 @@ export const parseStmt = S.createRouter<L.Stmt>({
   },
 
   "(cons* 'define-type name body)": ({ name, body }, { sexp }) => {
-    const keyword = S.asTael(sexp).elements[1]
-    const meta = S.tokenMetaFromSexpMeta(keyword.meta)
+    const keyword = S.asList(sexp).elements[1]
+    const meta = keyword.meta
     return L.DefineType(
       S.symbolContent(name),
       L.BeginSugar(S.listElements(body).map(parseExp), meta),

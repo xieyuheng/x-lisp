@@ -4,7 +4,7 @@ import { type AtomValue, type Value } from "./index.ts"
 
 export function isAtomValue(value: any): value is AtomValue {
   return (
-    value.kind === "HashtagValue" ||
+    value.kind === "KeywordValue" ||
     value.kind === "SymbolValue" ||
     value.kind === "StringValue" ||
     value.kind === "IntValue" ||
@@ -12,8 +12,8 @@ export function isAtomValue(value: any): value is AtomValue {
   )
 }
 
-export function isHashtagValue(value: Value): value is Values.HashtagValue {
-  return value.kind === "HashtagValue"
+export function isKeywordValue(value: Value): value is Values.KeywordValue {
+  return value.kind === "KeywordValue"
 }
 
 export function isSymbolValue(value: Value): value is Values.SymbolValue {
@@ -32,9 +32,9 @@ export function isFloatValue(value: Value): value is Values.FloatValue {
   return value.kind === "FloatValue"
 }
 
-export function asHashtagValue(value: Value): Values.HashtagValue {
-  if (isHashtagValue(value)) return value
-  throw new Error(`[asHashtagValue] fail on: ${formatValue(value)}`)
+export function asKeywordValue(value: Value): Values.KeywordValue {
+  if (isKeywordValue(value)) return value
+  throw new Error(`[asKeywordValue] fail on: ${formatValue(value)}`)
 }
 
 export function asSymbolValue(value: Value): Values.SymbolValue {

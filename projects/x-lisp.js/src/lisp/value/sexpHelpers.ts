@@ -4,11 +4,8 @@ import { type Value } from "./Value.ts"
 export function isSexpValue(value: Value): boolean {
   if (isAtomValue(value)) return true
 
-  if (value.kind === "TaelValue") {
-    return (
-      value.elements.every(isSexpValue) &&
-      Object.values(value.attributes).every(isSexpValue)
-    )
+  if (value.kind === "ListValue") {
+    return value.elements.every(isSexpValue)
   }
 
   return false

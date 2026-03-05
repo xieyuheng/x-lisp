@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp-tael.js"
+import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 
 export type AboutModule = AboutExport | AboutImport
 

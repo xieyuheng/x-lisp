@@ -1,8 +1,8 @@
-import { type TokenMeta as Meta, type Sexp } from "@xieyuheng/sexp-tael.js"
+import { type TokenMeta as Meta, type Sexp } from "@xieyuheng/sexp.js"
 
 export type Exp =
   | Symbol
-  | Hashtag
+  | Keyword
   | String
   | Int
   | Float
@@ -19,12 +19,14 @@ export type Exp =
   | And
   | Or
   | Cond
-  | Tael
+  | List
+  | Object
   | Set
   | Hash
   | Quote
   | Arrow
   | Tau
+  | Class
   | The
   | Polymorphic
 
@@ -56,15 +58,15 @@ export function String(content: string, meta?: Meta): String {
   }
 }
 
-export type Hashtag = {
-  kind: "Hashtag"
+export type Keyword = {
+  kind: "Keyword"
   content: string
   meta?: Meta
 }
 
-export function Hashtag(content: string, meta?: Meta): Hashtag {
+export function Keyword(content: string, meta?: Meta): Keyword {
   return {
-    kind: "Hashtag",
+    kind: "Keyword",
     content,
     meta,
   }
@@ -298,7 +300,7 @@ export function Or(exps: Array<Exp>, meta?: Meta): Or {
 export type Cond = {
   kind: "Cond"
   condLines: Array<CondLine>
-  meta: Meta
+  meta?: Meta
 }
 
 export type CondLine = {
@@ -306,7 +308,7 @@ export type CondLine = {
   answer: Exp
 }
 
-export function Cond(condLines: Array<CondLine>, meta: Meta): Cond {
+export function Cond(condLines: Array<CondLine>, meta?: Meta): Cond {
   return {
     kind: "Cond",
     condLines,
@@ -314,21 +316,29 @@ export function Cond(condLines: Array<CondLine>, meta: Meta): Cond {
   }
 }
 
-export type Tael = {
-  kind: "Tael"
+export type List = {
+  kind: "List"
   elements: Array<Exp>
+  meta?: Meta
+}
+
+export function List(elements: Array<Exp>, meta?: Meta): List {
+  return {
+    kind: "List",
+    elements,
+    meta,
+  }
+}
+
+export type Object = {
+  kind: "Object"
   attributes: Record<string, Exp>
   meta?: Meta
 }
 
-export function Tael(
-  elements: Array<Exp>,
-  attributes: Record<string, Exp>,
-  meta?: Meta,
-): Tael {
+export function Object(attributes: Record<string, Exp>, meta?: Meta): Object {
   return {
-    kind: "Tael",
-    elements,
+    kind: "Object",
     attributes,
     meta,
   }
@@ -398,18 +408,26 @@ export function Arrow(argTypes: Array<Exp>, retType: Exp, meta?: Meta): Arrow {
 export type Tau = {
   kind: "Tau"
   elementTypes: Array<Exp>
+  meta?: Meta
+}
+
+export function Tau(elementTypes: Array<Exp>, meta?: Meta): Tau {
+  return {
+    kind: "Tau",
+    elementTypes,
+    meta,
+  }
+}
+
+export type Class = {
+  kind: "Class"
   attributeTypes: Record<string, Exp>
   meta?: Meta
 }
 
-export function Tau(
-  elementTypes: Array<Exp>,
-  attributeTypes: Record<string, Exp>,
-  meta?: Meta,
-): Tau {
+export function Class(attributeTypes: Record<string, Exp>, meta?: Meta): Class {
   return {
-    kind: "Tau",
-    elementTypes,
+    kind: "Class",
     attributeTypes,
     meta,
   }

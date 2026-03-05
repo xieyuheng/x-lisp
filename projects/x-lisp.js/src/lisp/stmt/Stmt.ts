@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp-tael.js"
+import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
 import type {
   DataConstructorSpec,
   DatatypeConstructorSpec,
@@ -19,14 +19,14 @@ export type DefineFunction = {
   name: string
   parameters: Array<string>
   body: Exp
-  meta: Meta
+  meta?: Meta
 }
 
 export function DefineFunction(
   name: string,
   parameters: Array<string>,
   body: Exp,
-  meta: Meta,
+  meta?: Meta,
 ): DefineFunction {
   return {
     kind: "DefineFunction",
@@ -41,13 +41,13 @@ export type DefineVariable = {
   kind: "DefineVariable"
   name: string
   body: Exp
-  meta: Meta
+  meta?: Meta
 }
 
 export function DefineVariable(
   name: string,
   body: Exp,
-  meta: Meta,
+  meta?: Meta,
 ): DefineVariable {
   return {
     kind: "DefineVariable",
@@ -61,10 +61,10 @@ export type DefineType = {
   kind: "DefineType"
   name: string
   body: Exp
-  meta: Meta
+  meta?: Meta
 }
 
-export function DefineType(name: string, body: Exp, meta: Meta): DefineType {
+export function DefineType(name: string, body: Exp, meta?: Meta): DefineType {
   return {
     kind: "DefineType",
     name,
@@ -77,13 +77,13 @@ export type DefineDatatype = {
   kind: "DefineDatatype"
   datatypeConstructor: DatatypeConstructorSpec
   dataConstructors: Array<DataConstructorSpec>
-  meta: Meta
+  meta?: Meta
 }
 
 export function DefineDatatype(
   datatypeConstructor: DatatypeConstructorSpec,
   dataConstructors: Array<DataConstructorSpec>,
-  meta: Meta,
+  meta?: Meta,
 ): DefineDatatype {
   return {
     kind: "DefineDatatype",
@@ -97,10 +97,10 @@ export type Claim = {
   kind: "Claim"
   name: string
   type: Exp
-  meta: Meta
+  meta?: Meta
 }
 
-export function Claim(name: string, type: Exp, meta: Meta): Claim {
+export function Claim(name: string, type: Exp, meta?: Meta): Claim {
   return {
     kind: "Claim",
     name,

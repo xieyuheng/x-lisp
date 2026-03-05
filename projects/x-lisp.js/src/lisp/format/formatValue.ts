@@ -68,7 +68,7 @@ function formatHashEntries(
 
 export function formatValue(value: Value, options: Options = {}): string {
   switch (value.kind) {
-    case "HashtagValue": {
+    case "KeywordValue": {
       return `#${value.content}`
     }
 
@@ -92,17 +92,21 @@ export function formatValue(value: Value, options: Options = {}): string {
       }
     }
 
-    case "TaelValue": {
+    case "ListValue": {
       const elements = formatValues(value.elements, options)
-      const attributes = formatAttributes(value.attributes, options)
-      if (elements === "" && attributes === "") {
+      if (elements === "") {
         return `[]`
-      } else if (attributes === "") {
-        return `[${elements}]`
-      } else if (elements === "") {
-        return `[${attributes}]`
       } else {
-        return `[${elements} ${attributes}]`
+        return `[${elements}]`
+      }
+    }
+
+    case "ObjectValue": {
+      const attributes = formatAttributes(value.attributes, options)
+      if (attributes === "") {
+        return `{}`
+      } else {
+        return `{${attributes}}`
       }
     }
 

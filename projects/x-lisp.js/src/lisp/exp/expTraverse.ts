@@ -5,7 +5,7 @@ import type { Exp } from "./Exp.ts"
 export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
   switch (exp.kind) {
     case "Symbol":
-    case "Hashtag":
+    case "Keyword":
     case "String":
     case "Int":
     case "Float":
@@ -84,12 +84,12 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return onExp(exp)
     }
 
-    case "Tael": {
-      return L.Tael(
-        exp.elements.map(onExp),
-        recordMapValue(exp.attributes, onExp),
-        exp.meta,
-      )
+    case "List": {
+      return L.List(exp.elements.map(onExp), exp.meta)
+    }
+
+    case "Object": {
+      return L.Object(recordMapValue(exp.attributes, onExp), exp.meta)
     }
 
     case "Set": {
@@ -111,11 +111,11 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
     }
 
     case "Tau": {
-      return L.Tau(
-        exp.elementTypes.map(onExp),
-        recordMapValue(exp.attributeTypes, onExp),
-        exp.meta,
-      )
+      return L.Tau(exp.elementTypes.map(onExp), exp.meta)
+    }
+
+    case "Class": {
+      return L.Class(recordMapValue(exp.attributeTypes, onExp), exp.meta)
     }
 
     case "The": {

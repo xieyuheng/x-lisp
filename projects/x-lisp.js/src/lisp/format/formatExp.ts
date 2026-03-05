@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/sexp-tael.js"
+import * as S from "@xieyuheng/sexp.js"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
 
@@ -18,8 +18,8 @@ export function formatParameters(parameters: Array<string>): string {
 
 export function formatExp(exp: Exp): string {
   switch (exp.kind) {
-    case "Hashtag": {
-      return `#${exp.content}`
+    case "Keyword": {
+      return `:${exp.content}`
     }
 
     case "Symbol": {
@@ -124,17 +124,22 @@ export function formatExp(exp: Exp): string {
       return `(cond ${condLines.join(" ")})`
     }
 
-    case "Tael": {
+    case "List": {
       const elements = formatExps(exp.elements)
-      const attributes = formatExpAttributes(exp.attributes)
-      if (elements === "" && attributes === "") {
+
+      if (elements === "") {
         return `[]`
-      } else if (attributes === "") {
-        return `[${elements}]`
-      } else if (elements === "") {
-        return `[${attributes}]`
       } else {
-        return `[${elements} ${attributes}]`
+        return `[${elements}]`
+      }
+    }
+
+    case "Object": {
+      const attributes = formatExpAttributes(exp.attributes)
+      if (attributes === "") {
+        return `{}`
+      } else {
+        return `{${attributes}}`
       }
     }
 
@@ -166,15 +171,19 @@ export function formatExp(exp: Exp): string {
 
     case "Tau": {
       const elementTypes = formatExps(exp.elementTypes)
-      const attributeTypes = formatExpAttributes(exp.attributeTypes)
-      if (elementTypes === "" && attributeTypes === "") {
+      if (elementTypes === "") {
         return `(tau)`
-      } else if (attributeTypes === "") {
-        return `(tau ${elementTypes})`
-      } else if (elementTypes === "") {
-        return `(tau ${attributeTypes})`
       } else {
-        return `(tau ${elementTypes} ${attributeTypes})`
+        return `(tau ${elementTypes})`
+      }
+    }
+
+    case "Class": {
+      const attributeTypes = formatExpAttributes(exp.attributeTypes)
+      if (attributeTypes === "") {
+        return `(class)`
+      } else {
+        return `(class ${attributeTypes})`
       }
     }
 

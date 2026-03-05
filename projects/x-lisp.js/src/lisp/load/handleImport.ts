@@ -1,5 +1,5 @@
 import { createUrl, urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
-import * as S from "@xieyuheng/sexp-tael.js"
+import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
 export function handleImport(mod: L.Mod, stmt: L.Stmt): void {

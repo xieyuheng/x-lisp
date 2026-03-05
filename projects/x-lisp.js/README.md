@@ -147,13 +147,13 @@ void
 ;; (random-int start end)
 ;; (random-float start end)
 
-;;; hashtag
+;;; keyword
 
-(hashtag? value)
-(hashtag-length hashtag)
-(hashtag-to-string hashtag)
-(hashtag-append level right)
-(hashtag-concat list)
+(keyword? value)
+(keyword-length keyword)
+(keyword-to-string keyword)
+(keyword-append level right)
+(keyword-concat list)
 
 ;;; symbol
 

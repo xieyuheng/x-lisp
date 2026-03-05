@@ -1,6 +1,6 @@
 export type AtomValue =
   | SymbolValue
-  | HashtagValue
+  | KeywordValue
   | StringValue
   | IntValue
   | FloatValue
@@ -29,14 +29,14 @@ export function StringValue(content: string): StringValue {
   }
 }
 
-export type HashtagValue = {
-  kind: "HashtagValue"
+export type KeywordValue = {
+  kind: "KeywordValue"
   content: string
 }
 
-export function HashtagValue(content: string): HashtagValue {
+export function KeywordValue(content: string): KeywordValue {
   return {
-    kind: "HashtagValue",
+    kind: "KeywordValue",
     content,
   }
 }

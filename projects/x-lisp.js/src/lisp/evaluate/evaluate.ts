@@ -1,5 +1,5 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import * as S from "@xieyuheng/sexp-tael.js"
+import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 import { apply } from "./apply.ts"
 import { meaning } from "./meaning.ts"
@@ -10,8 +10,8 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       return L.SymbolValue(exp.content)
     }
 
-    case "Hashtag": {
-      return L.HashtagValue(exp.content)
+    case "Keyword": {
+      return L.KeywordValue(exp.content)
     }
 
     case "String": {
@@ -106,8 +106,12 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       return evaluate(mod, env, L.desugarCond(exp.condLines))
     }
 
-    case "Tael": {
-      return evaluate(mod, env, L.desugarTael(exp.elements, exp.attributes))
+    case "List": {
+      return evaluate(mod, env, L.desugarList(exp.elements))
+    }
+
+    case "Object": {
+      throw new Error("TODO")
     }
 
     case "Set": {
@@ -134,11 +138,16 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       const elementTypes = exp.elementTypes.map((elementType) =>
         evaluate(mod, env, elementType),
       )
+
+      return L.createTauType(elementTypes)
+    }
+
+    case "Class": {
       const attributeTypes = recordMapValue(
         exp.attributeTypes,
         (attributeType) => evaluate(mod, env, attributeType),
       )
-      return L.createTauType(elementTypes, attributeTypes)
+      return L.createClassType(attributeTypes)
     }
 
     case "The": {

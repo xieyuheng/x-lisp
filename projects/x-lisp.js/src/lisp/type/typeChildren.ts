@@ -22,10 +22,11 @@ export function typeChildren(type: L.Value): Array<L.Value> {
   }
 
   if (L.isTauType(type)) {
-    return [
-      ...L.tauTypeElementTypes(type),
-      ...Object.values(L.tauTypeAttributeTypes(type)),
-    ]
+    return L.tauTypeElementTypes(type)
+  }
+
+  if (L.isClassType(type)) {
+    return Object.values(L.classTypeAttributeTypes(type))
   }
 
   if (L.isListType(type)) {
@@ -34,10 +35,6 @@ export function typeChildren(type: L.Value): Array<L.Value> {
 
   if (L.isSetType(type)) {
     return [L.setTypeElementType(type)]
-  }
-
-  if (L.isRecordType(type)) {
-    return [L.recordTypeValueType(type)]
   }
 
   if (L.isHashType(type)) {

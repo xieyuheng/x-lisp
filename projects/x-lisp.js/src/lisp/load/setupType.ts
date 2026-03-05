@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/sexp-tael.js"
+import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
 export function setupType(mod: L.Mod): void {

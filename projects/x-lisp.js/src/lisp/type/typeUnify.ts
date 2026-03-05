@@ -54,17 +54,20 @@ export function typeUnify(
   }
 
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
-    subst = typeUnifyMany(
+    return typeUnifyMany(
       subst,
       L.tauTypeElementTypes(lhs),
       L.tauTypeElementTypes(rhs),
     )
-    subst = typeUnifyRecord(
+
+  }
+
+  if (L.isClassType(lhs) && L.isClassType(rhs)) {
+    return typeUnifyRecord(
       subst,
-      L.tauTypeAttributeTypes(lhs),
-      L.tauTypeAttributeTypes(rhs),
+      L.classTypeAttributeTypes(lhs),
+      L.classTypeAttributeTypes(rhs),
     )
-    return subst
   }
 
   if (L.isListType(lhs) && L.isListType(rhs)) {
@@ -80,14 +83,6 @@ export function typeUnify(
       subst,
       L.setTypeElementType(lhs),
       L.setTypeElementType(rhs),
-    )
-  }
-
-  if (L.isRecordType(lhs) && L.isRecordType(rhs)) {
-    return typeUnify(
-      subst,
-      L.recordTypeValueType(lhs),
-      L.recordTypeValueType(rhs),
     )
   }
 

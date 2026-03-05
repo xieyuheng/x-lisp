@@ -48,11 +48,12 @@ export function hashDelete(hash: HashValue, key: Value): void {
 export function isHashable(value: Value): boolean {
   if (Values.isAtomValue(value)) return true
 
-  if (value.kind === "TaelValue") {
-    return (
-      value.elements.every(isHashable) &&
-      Object.values(value.attributes).every(isHashable)
-    )
+  if (value.kind === "ListValue") {
+    return value.elements.every(isHashable)
+  }
+
+  if (value.kind === "ObjectValue") {
+    return Object.values(value.attributes).every(isHashable)
   }
 
   if (value.kind === "SetValue") {

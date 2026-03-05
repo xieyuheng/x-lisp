@@ -30,8 +30,12 @@ export function formatType(type: L.Value): string {
 
   if (L.isTauType(type)) {
     const elementTypes = formatTypes(L.tauTypeElementTypes(type))
-    const attributeTypes = formatTypeRecord(L.tauTypeAttributeTypes(type))
-    return `(tau ${elementTypes} ${attributeTypes})`
+    return `(tau ${elementTypes})`
+  }
+
+  if (L.isClassType(type)) {
+    const attributeTypes = formatTypeRecord(L.classTypeAttributeTypes(type))
+    return `(@class ${attributeTypes})`
   }
 
   if (L.isListType(type)) {
@@ -42,11 +46,6 @@ export function formatType(type: L.Value): string {
   if (L.isSetType(type)) {
     const elementType = formatType(L.setTypeElementType(type))
     return `(set-t ${elementType})`
-  }
-
-  if (L.isRecordType(type)) {
-    const valueType = formatType(L.recordTypeValueType(type))
-    return `(record-t ${valueType})`
   }
 
   if (L.isHashType(type)) {

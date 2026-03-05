@@ -3,7 +3,7 @@ import type { Exp } from "./Exp.ts"
 export function expChildren(exp: Exp): Array<Exp> {
   switch (exp.kind) {
     case "Symbol":
-    case "Hashtag":
+    case "Keyword":
     case "String":
     case "Int":
     case "Float":
@@ -70,8 +70,12 @@ export function expChildren(exp: Exp): Array<Exp> {
       return []
     }
 
-    case "Tael": {
-      return [...exp.elements, ...Object.values(exp.attributes)]
+    case "List": {
+      return exp.elements
+    }
+
+    case "Object": {
+      return Object.values(exp.attributes)
     }
 
     case "Set": {
@@ -87,7 +91,11 @@ export function expChildren(exp: Exp): Array<Exp> {
     }
 
     case "Tau": {
-      return [...exp.elementTypes, ...Object.values(exp.attributeTypes)]
+      return exp.elementTypes
+    }
+
+    case "Class": {
+      return Object.values(exp.attributeTypes)
     }
 
     case "The": {

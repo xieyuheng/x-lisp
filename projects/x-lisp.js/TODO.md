@@ -1,5 +1,6 @@
-[x-lisp.js] rename Tael to List
-[x-lisp.js] use sexp.js instead of sexp-tael.js
+[x-lisp.js] ambr 'TokenMeta as Meta'  'TokenMeta as TokenMeta'
+
+[lisp] `evaluate` -- handle `Object`
 
 # pattern match
 

@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/sexp-tael.js"
+import * as S from "@xieyuheng/sexp.js"
 import { type Definition } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 import * as L from "../index.ts"

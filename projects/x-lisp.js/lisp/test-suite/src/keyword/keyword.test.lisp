@@ -1,0 +1,4 @@
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal #abcdef (keyword-append #abc #def)))
