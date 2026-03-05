@@ -6,7 +6,7 @@ export function formatSexp(sexp: Sexp): string {
       return sexp.content
     }
 
-    case "Hashtag": {
+    case "Keyword": {
       return `#${sexp.content}`
     }
 

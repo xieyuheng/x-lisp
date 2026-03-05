@@ -2,7 +2,7 @@ import type { TokenMeta } from "../token/index.ts"
 
 export type Sexp = Atom | List
 
-export type Atom = Symbol | String | Int | Float | Hashtag
+export type Atom = Symbol | String | Int | Float | Keyword
 
 export type Symbol = {
   kind: "Symbol"
@@ -60,15 +60,15 @@ export function Float(content: number, meta?: TokenMeta): Float {
   }
 }
 
-export type Hashtag = {
-  kind: "Hashtag"
+export type Keyword = {
+  kind: "Keyword"
   content: string
   meta?: TokenMeta
 }
 
-export function Hashtag(content: string, meta?: TokenMeta): Hashtag {
+export function Keyword(content: string, meta?: TokenMeta): Keyword {
   return {
-    kind: "Hashtag",
+    kind: "Keyword",
     content,
     meta,
   }

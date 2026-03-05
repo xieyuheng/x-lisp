@@ -7,7 +7,7 @@ export function sexpEqual(x: Sexp, y: Sexp): boolean {
     (x.kind === "String" && y.kind === "String") ||
     (x.kind === "Int" && y.kind === "Int") ||
     (x.kind === "Float" && y.kind === "Float") ||
-    (x.kind === "Hashtag" && y.kind === "Hashtag")
+    (x.kind === "Keyword" && y.kind === "Keyword")
   ) {
     return x.content === y.content
   }

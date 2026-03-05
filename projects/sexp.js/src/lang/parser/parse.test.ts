@@ -23,11 +23,11 @@ test("parse -- string", () => {
   assertParse('"abc"', S.String("abc"))
 })
 
-test("parse -- hashtag", () => {
-  assertParse("#t", S.Hashtag("t"))
-  assertParse("#f", S.Hashtag("f"))
-  assertParse("#null", S.Hashtag("null"))
-  assertParse("#void", S.Hashtag("void"))
+test("parse -- keyword", () => {
+  assertParse(":t", S.Keyword("t"))
+  assertParse(":f", S.Keyword("f"))
+  assertParse(":null", S.Keyword("null"))
+  assertParse(":void", S.Keyword("void"))
 })
 
 test("parse -- number", () => {
@@ -66,7 +66,7 @@ test("parse -- flower brackets", () => {
 test("parse -- quotes", () => {
   assertParse("'a", S.List([S.Symbol("@quote"), S.Symbol("a")]))
   assertParse("'(a)", S.List([S.Symbol("@quote"), S.List([S.Symbol("a")])]))
-  assertParse("'(#a)", S.List([S.Symbol("@quote"), S.List([S.Hashtag("a")])]))
+  assertParse("'(:a)", S.List([S.Symbol("@quote"), S.List([S.Keyword("a")])]))
   assertParse(
     "'(a b c)",
     S.List([

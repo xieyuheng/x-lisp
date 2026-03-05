@@ -6,7 +6,7 @@ export function isAtom(sexp: S.Sexp): sexp is S.Atom {
     sexp.kind === "String" ||
     sexp.kind === "Int" ||
     sexp.kind === "Float" ||
-    sexp.kind === "Hashtag"
+    sexp.kind === "Keyword"
   )
 }
 
@@ -26,8 +26,8 @@ export function isFloat(sexp: S.Sexp): sexp is S.Float {
   return sexp.kind === "Float"
 }
 
-export function isHashtag(sexp: S.Sexp): sexp is S.Hashtag {
-  return sexp.kind === "Hashtag"
+export function isKeyword(sexp: S.Sexp): sexp is S.Keyword {
+  return sexp.kind === "Keyword"
 }
 
 export function asSymbol(sexp: S.Sexp): S.Symbol {
@@ -50,7 +50,7 @@ export function asFloat(sexp: S.Sexp): S.Float {
   throw new Error(`[asFloat] fail on: ${S.formatSexp(sexp)}`)
 }
 
-export function asHashtag(sexp: S.Sexp): S.Hashtag {
-  if (sexp.kind === "Hashtag") return sexp
-  throw new Error(`[asHashtag] fail on: ${S.formatSexp(sexp)}`)
+export function asKeyword(sexp: S.Sexp): S.Keyword {
+  if (sexp.kind === "Keyword") return sexp
+  throw new Error(`[asKeyword] fail on: ${S.formatSexp(sexp)}`)
 }

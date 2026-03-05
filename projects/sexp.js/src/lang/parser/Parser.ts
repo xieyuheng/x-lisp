@@ -113,16 +113,11 @@ export class Parser {
         }
       }
 
-      case "Hashtag": {
+      case "Keyword": {
         return {
-          sexp: S.Hashtag(token.value, token.meta),
+          sexp: S.Keyword(token.value, token.meta),
           remain: tokens.slice(1),
         }
-      }
-
-      case "Keyword": {
-        let message = `I found keyword at wrong place\n`
-        throw new ErrorWithMeta(message, token.meta)
       }
     }
   }

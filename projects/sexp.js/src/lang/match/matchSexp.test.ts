@@ -31,11 +31,11 @@ test("matchSexp -- var", () => {
 })
 
 test("matchSexp -- bool int float", () => {
-  assertMatch("#f", "#f", {})
+  assertMatch(":f", ":f", {})
   assertMatch("1", "1", {})
   assertMatch("3.14", "3.14", {})
 
-  assertMatchFail("#f", "#t")
+  assertMatchFail(":f", ":t")
   assertMatchFail("1", "2")
   assertMatchFail("3.14", "3.1415")
 })
