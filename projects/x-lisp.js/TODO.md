@@ -1,4 +1,3 @@
-[lisp] tuple.test.lisp
 [lisp] quit using `expPreferInfer` -- just try `typeInfer`
 [lisp] `typeCheck` -- handle `Tuple`
 [lisp] `typeCheck` -- handle `Object`
