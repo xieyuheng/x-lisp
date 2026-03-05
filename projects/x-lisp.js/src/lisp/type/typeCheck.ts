@@ -12,9 +12,8 @@ export function typeCheck(
 
   if (L.isAnyType(type)) {
     if (L.expPreferInfer(exp)) {
-      return L.inferThenCheck(
-        L.typeInfer(mod, ctx, exp),
-        inferredType => typeCheckByInfer(mod, ctx, exp, inferredType, type)
+      return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) =>
+        typeCheckByInfer(mod, ctx, exp, inferredType, type),
       )
     } else {
       return L.okCheckEffect()
@@ -156,9 +155,8 @@ export function typeCheck(
     }
 
     default: {
-      return L.inferThenCheck(
-        L.typeInfer(mod, ctx, exp),
-        inferredType => typeCheckByInfer(mod, ctx, exp, inferredType, type)
+      return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) =>
+        typeCheckByInfer(mod, ctx, exp, inferredType, type),
       )
 
       // let message = `type check fail`
