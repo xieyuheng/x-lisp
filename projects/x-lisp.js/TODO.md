@@ -1,5 +1,3 @@
-[lisp] object.test.lisp
-
 [lisp] `Tuple` as `Exp`
 [lisp] parse `@tuple`
 
@@ -13,6 +11,7 @@
 
 # type checking
 
+[lisp] quit using `expPreferInfer` -- just try `typeInfer`
 [lisp] avoid the use `any-t` in `builtin/index.lisp`
 [lisp] `typeCheck` -- fix `List` case
 

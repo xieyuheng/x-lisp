@@ -1,4 +1,4 @@
 (claim main (-> void-t))
 
 (define (main)
-  (assert-equal {1 2 3} (@set 1 2 3)))
+  (assert-equal (@set 1 2 3) (@set 3 2 1)))
