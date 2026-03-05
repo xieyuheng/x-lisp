@@ -4,10 +4,10 @@ import { type Instr } from "../instr/index.ts"
 export type Block = {
   label: string
   instrs: Array<Instr>
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Block(label: string, instrs: Array<Instr>, meta?: Meta): Block {
+export function Block(label: string, instrs: Array<Instr>, meta?: TokenMeta): Block {
   return {
     label,
     instrs,

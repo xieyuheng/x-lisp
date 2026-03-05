@@ -19,7 +19,7 @@ export type PrimitiveFunctionDefinition = {
   name: string
   arity: number
   fn: ValueFunction
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function PrimitiveFunctionDefinition(
@@ -27,7 +27,7 @@ export function PrimitiveFunctionDefinition(
   name: string,
   arity: number,
   fn: ValueFunction,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): PrimitiveFunctionDefinition {
   return {
     kind: "PrimitiveFunctionDefinition",
@@ -44,14 +44,14 @@ export type PrimitiveVariableDefinition = {
   mod: Mod
   name: string
   value: Value
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function PrimitiveVariableDefinition(
   mod: Mod,
   name: string,
   value: Value,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): PrimitiveVariableDefinition {
   return {
     kind: "PrimitiveVariableDefinition",
@@ -68,7 +68,7 @@ export type FunctionDefinition = {
   name: string
   parameters: Array<string>
   body: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function FunctionDefinition(
@@ -76,7 +76,7 @@ export function FunctionDefinition(
   name: string,
   parameters: Array<string>,
   body: Exp,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
@@ -94,14 +94,14 @@ export type VariableDefinition = {
   name: string
   body: Exp
   value?: Value
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function VariableDefinition(
   mod: Mod,
   name: string,
   body: Exp,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): VariableDefinition {
   return {
     kind: "VariableDefinition",
@@ -118,14 +118,14 @@ export type TypeDefinition = {
   name: string
   body: Exp
   value?: Value
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function TypeDefinition(
   mod: Mod,
   name: string,
   body: Exp,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): TypeDefinition {
   return {
     kind: "TypeDefinition",
@@ -142,7 +142,7 @@ export type DatatypeDefinition = {
   name: string
   datatypeConstructor: DatatypeConstructorSpec
   dataConstructors: Array<DataConstructorSpec>
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export type DatatypeConstructorSpec = {
@@ -165,7 +165,7 @@ export function DatatypeDefinition(
   name: string,
   datatypeConstructor: DatatypeConstructorSpec,
   dataConstructors: Array<DataConstructorSpec>,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): DatatypeDefinition {
   return {
     kind: "DatatypeDefinition",

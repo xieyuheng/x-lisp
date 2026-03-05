@@ -1,9 +1,9 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
+import { type TokenMeta } from "@xieyuheng/sexp.js"
 import { formatExp } from "../format/index.ts"
 import * as Exps from "./index.ts"
 import { type Exp } from "./index.ts"
 
-export function Null(meta?: Meta): Exps.Keyword {
+export function Null(meta?: TokenMeta): Exps.Keyword {
   return Exps.Keyword("void", meta)
 }
 

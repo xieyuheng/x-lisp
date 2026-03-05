@@ -7,10 +7,10 @@ export type Assign = {
   kind: "Assign"
   dest: string
   exp: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Assign(dest: string, exp: Exp, meta?: Meta): Assign {
+export function Assign(dest: string, exp: Exp, meta?: TokenMeta): Assign {
   return {
     kind: "Assign",
     dest,
@@ -22,10 +22,10 @@ export function Assign(dest: string, exp: Exp, meta?: Meta): Assign {
 export type Perform = {
   kind: "Perform"
   exp: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Perform(exp: Exp, meta?: Meta): Perform {
+export function Perform(exp: Exp, meta?: TokenMeta): Perform {
   return {
     kind: "Perform",
     exp,
@@ -36,10 +36,10 @@ export function Perform(exp: Exp, meta?: Meta): Perform {
 export type Test = {
   kind: "Test"
   exp: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Test(exp: Exp, meta?: Meta): Test {
+export function Test(exp: Exp, meta?: TokenMeta): Test {
   return {
     kind: "Test",
     exp,
@@ -51,13 +51,13 @@ export type Branch = {
   kind: "Branch"
   thenLabel: string
   elseLabel: string
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function Branch(
   thenLabel: string,
   elseLabel: string,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): Branch {
   return {
     kind: "Branch",
@@ -70,10 +70,10 @@ export function Branch(
 export type Goto = {
   kind: "Goto"
   label: string
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Goto(label: string, meta?: Meta): Goto {
+export function Goto(label: string, meta?: TokenMeta): Goto {
   return {
     kind: "Goto",
     label,
@@ -84,10 +84,10 @@ export function Goto(label: string, meta?: Meta): Goto {
 export type Return = {
   kind: "Return"
   exp: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Return(exp: Exp, meta?: Meta): Return {
+export function Return(exp: Exp, meta?: TokenMeta): Return {
   return {
     kind: "Return",
     exp,

@@ -3,7 +3,7 @@ import { formatExp } from "../format/index.ts"
 import * as Exps from "./index.ts"
 import { type Exp } from "./index.ts"
 
-export function Void(meta?: Meta): Exps.Hashtag {
+export function Void(meta?: TokenMeta): Exps.Hashtag {
   return Exps.Hashtag("void", meta)
 }
 

@@ -31,10 +31,10 @@ export type Exp =
 export type Symbol = {
   kind: "Symbol"
   content: string
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Symbol(content: string, meta?: Meta): Symbol {
+export function Symbol(content: string, meta?: TokenMeta): Symbol {
   return {
     kind: "Symbol",
     content,
@@ -45,10 +45,10 @@ export function Symbol(content: string, meta?: Meta): Symbol {
 export type String = {
   kind: "String"
   content: string
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function String(content: string, meta?: Meta): String {
+export function String(content: string, meta?: TokenMeta): String {
   return {
     kind: "String",
     content,
@@ -59,10 +59,10 @@ export function String(content: string, meta?: Meta): String {
 export type Hashtag = {
   kind: "Hashtag"
   content: string
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Hashtag(content: string, meta?: Meta): Hashtag {
+export function Hashtag(content: string, meta?: TokenMeta): Hashtag {
   return {
     kind: "Hashtag",
     content,
@@ -73,10 +73,10 @@ export function Hashtag(content: string, meta?: Meta): Hashtag {
 export type Int = {
   kind: "Int"
   content: bigint
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Int(content: bigint, meta?: Meta): Int {
+export function Int(content: bigint, meta?: TokenMeta): Int {
   return {
     kind: "Int",
     content,
@@ -87,10 +87,10 @@ export function Int(content: bigint, meta?: Meta): Int {
 export type Float = {
   kind: "Float"
   content: number
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Float(content: number, meta?: Meta): Float {
+export function Float(content: number, meta?: TokenMeta): Float {
   return {
     kind: "Float",
     content,
@@ -101,10 +101,10 @@ export function Float(content: number, meta?: Meta): Float {
 export type Var = {
   kind: "Var"
   name: string
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Var(name: string, meta?: Meta): Var {
+export function Var(name: string, meta?: TokenMeta): Var {
   return {
     kind: "Var",
     name,
@@ -116,13 +116,13 @@ export type Lambda = {
   kind: "Lambda"
   parameters: Array<string>
   body: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function Lambda(
   parameters: Array<string>,
   body: Exp,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): Lambda {
   return {
     kind: "Lambda",
@@ -136,10 +136,10 @@ export type Apply = {
   kind: "Apply"
   target: Exp
   args: Array<Exp>
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Apply(target: Exp, args: Array<Exp>, meta?: Meta): Apply {
+export function Apply(target: Exp, args: Array<Exp>, meta?: TokenMeta): Apply {
   return {
     kind: "Apply",
     target,
@@ -153,10 +153,10 @@ export type Let1 = {
   name: string
   rhs: Exp
   body: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Let1(name: string, rhs: Exp, body: Exp, meta?: Meta): Let1 {
+export function Let1(name: string, rhs: Exp, body: Exp, meta?: TokenMeta): Let1 {
   return {
     kind: "Let1",
     name,
@@ -170,10 +170,10 @@ export type Begin1 = {
   kind: "Begin1"
   head: Exp
   body: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Begin1(head: Exp, body: Exp, meta?: Meta): Begin1 {
+export function Begin1(head: Exp, body: Exp, meta?: TokenMeta): Begin1 {
   return {
     kind: "Begin1",
     head,
@@ -185,10 +185,10 @@ export function Begin1(head: Exp, body: Exp, meta?: Meta): Begin1 {
 export type BeginSugar = {
   kind: "BeginSugar"
   sequence: Array<Exp>
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function BeginSugar(sequence: Array<Exp>, meta?: Meta): BeginSugar {
+export function BeginSugar(sequence: Array<Exp>, meta?: TokenMeta): BeginSugar {
   return {
     kind: "BeginSugar",
     sequence,
@@ -200,10 +200,10 @@ export type AssignSugar = {
   kind: "AssignSugar"
   name: string
   rhs: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function AssignSugar(name: string, rhs: Exp, meta?: Meta): AssignSugar {
+export function AssignSugar(name: string, rhs: Exp, meta?: TokenMeta): AssignSugar {
   return {
     kind: "AssignSugar",
     name,
@@ -217,14 +217,14 @@ export type If = {
   condition: Exp
   consequent: Exp
   alternative: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function If(
   condition: Exp,
   consequent: Exp,
   alternative: Exp,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): If {
   return {
     kind: "If",
@@ -239,10 +239,10 @@ export type When = {
   kind: "When"
   condition: Exp
   consequent: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function When(condition: Exp, consequent: Exp, meta?: Meta): When {
+export function When(condition: Exp, consequent: Exp, meta?: TokenMeta): When {
   return {
     kind: "When",
     condition,
@@ -255,10 +255,10 @@ export type Unless = {
   kind: "Unless"
   condition: Exp
   alternative: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Unless(condition: Exp, alternative: Exp, meta?: Meta): Unless {
+export function Unless(condition: Exp, alternative: Exp, meta?: TokenMeta): Unless {
   return {
     kind: "Unless",
     condition,
@@ -270,10 +270,10 @@ export function Unless(condition: Exp, alternative: Exp, meta?: Meta): Unless {
 export type And = {
   kind: "And"
   exps: Array<Exp>
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function And(exps: Array<Exp>, meta?: Meta): And {
+export function And(exps: Array<Exp>, meta?: TokenMeta): And {
   return {
     kind: "And",
     exps,
@@ -284,10 +284,10 @@ export function And(exps: Array<Exp>, meta?: Meta): And {
 export type Or = {
   kind: "Or"
   exps: Array<Exp>
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Or(exps: Array<Exp>, meta?: Meta): Or {
+export function Or(exps: Array<Exp>, meta?: TokenMeta): Or {
   return {
     kind: "Or",
     exps,
@@ -318,13 +318,13 @@ export type Tael = {
   kind: "Tael"
   elements: Array<Exp>
   attributes: Record<string, Exp>
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function Tael(
   elements: Array<Exp>,
   attributes: Record<string, Exp>,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): Tael {
   return {
     kind: "Tael",
@@ -337,10 +337,10 @@ export function Tael(
 export type Set = {
   kind: "Set"
   elements: Array<Exp>
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Set(elements: Array<Exp>, meta?: Meta): Set {
+export function Set(elements: Array<Exp>, meta?: TokenMeta): Set {
   return {
     kind: "Set",
     elements,
@@ -351,12 +351,12 @@ export function Set(elements: Array<Exp>, meta?: Meta): Set {
 export type Hash = {
   kind: "Hash"
   entries: Array<{ key: Exp; value: Exp }>
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function Hash(
   entries: Array<{ key: Exp; value: Exp }>,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): Hash {
   return {
     kind: "Hash",
@@ -368,10 +368,10 @@ export function Hash(
 export type Quote = {
   kind: "Quote"
   sexp: Sexp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Quote(sexp: Sexp, meta?: Meta): Quote {
+export function Quote(sexp: Sexp, meta?: TokenMeta): Quote {
   return {
     kind: "Quote",
     sexp,
@@ -383,10 +383,10 @@ export type Arrow = {
   kind: "Arrow"
   argTypes: Array<Exp>
   retType: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function Arrow(argTypes: Array<Exp>, retType: Exp, meta?: Meta): Arrow {
+export function Arrow(argTypes: Array<Exp>, retType: Exp, meta?: TokenMeta): Arrow {
   return {
     kind: "Arrow",
     argTypes,
@@ -399,13 +399,13 @@ export type Tau = {
   kind: "Tau"
   elementTypes: Array<Exp>
   attributeTypes: Record<string, Exp>
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function Tau(
   elementTypes: Array<Exp>,
   attributeTypes: Record<string, Exp>,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): Tau {
   return {
     kind: "Tau",
@@ -419,10 +419,10 @@ export type The = {
   kind: "The"
   type: Exp
   exp: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
-export function The(type: Exp, exp: Exp, meta?: Meta): The {
+export function The(type: Exp, exp: Exp, meta?: TokenMeta): The {
   return {
     kind: "The",
     type,
@@ -435,13 +435,13 @@ export type Polymorphic = {
   kind: "Polymorphic"
   parameters: Array<string>
   body: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function Polymorphic(
   parameters: Array<string>,
   body: Exp,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): Polymorphic {
   return {
     kind: "Polymorphic",

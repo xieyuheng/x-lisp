@@ -49,7 +49,7 @@ export type ClosureValue = {
   env: Env
   parameters: Array<Exp>
   body: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function ClosureValue(
@@ -57,7 +57,7 @@ export function ClosureValue(
   env: Env,
   parameters: Array<Exp>,
   body: Exp,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): ClosureValue {
   return {
     kind: "Closure",
@@ -75,7 +75,7 @@ export type VariadicClosureValue = {
   env: Env
   variadicParameter: string
   body: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function VariadicClosureValue(
@@ -83,7 +83,7 @@ export function VariadicClosureValue(
   env: Env,
   variadicParameter: string,
   body: Exp,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): VariadicClosureValue {
   return {
     kind: "VariadicClosure",
@@ -100,14 +100,14 @@ export type NullaryClosureValue = {
   mod: Mod
   env: Env
   body: Exp
-  meta?: Meta
+  meta?: TokenMeta
 }
 
 export function NullaryClosureValue(
   mod: Mod,
   env: Env,
   body: Exp,
-  meta?: Meta,
+  meta?: TokenMeta,
 ): NullaryClosureValue {
   return {
     kind: "NullaryClosure",

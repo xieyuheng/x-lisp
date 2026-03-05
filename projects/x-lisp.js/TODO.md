@@ -1,5 +1,3 @@
-[x-lisp.js] ambr 'TokenMeta as Meta'  'TokenMeta as TokenMeta'
-
 [lisp] `evaluate` -- handle `Object`
 
 # pattern match
