@@ -1,3 +1,5 @@
+[x-lisp.js] use sexp.js instead of sexp-tael.js
+
 # pattern match
 
 [diary] about how to implement pattern match

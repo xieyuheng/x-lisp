@@ -1,7 +1,3 @@
-remove passes
-
-- to start from type checker and interpreter
-
 # later
 
 move x-lisp-proto.js to dustbin
