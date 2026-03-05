@@ -137,7 +137,7 @@ const parseCondLine = S.createRouter<L.CondLine>({
   "(cons* question body)": ({ question, body }, { meta }) => {
     if (question.kind === "Symbol" && question.content === "else") {
       return {
-        question: L.Keyword("t", meta),
+        question: L.Bool(true, meta),
         answer: L.BeginSugar(S.listElements(body).map(parseExp), meta),
       }
     } else {
