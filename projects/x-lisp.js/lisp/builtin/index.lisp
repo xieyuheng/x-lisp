@@ -15,21 +15,21 @@
 
 ;; value
 
-(claim any? (-> any-t bool-t))
-(claim same? (-> any-t any-t bool-t))
-(claim equal? (-> any-t any-t bool-t))
+(claim any? (polymorphic (X) (-> X bool-t)))
+(claim same? (polymorphic (X Y) (-> X Y bool-t)))
+(claim equal? (polymorphic (X Y) (-> X Y bool-t)))
 
 ;; assert
 
 (claim assert (-> bool-t void-t))
 (claim assert-not (-> bool-t void-t))
-(claim assert-equal (-> any-t any-t void-t))
-(claim assert-not-equal (-> any-t any-t void-t))
+(claim assert-equal (polymorphic (X Y) (-> X Y void-t)))
+(claim assert-not-equal (polymorphic (X Y) (-> X Y void-t)))
 
 ;; console
 
-(claim print (-> any-t void-t))
-(claim println (-> any-t void-t))
+(claim print (polymorphic (X) (-> X void-t)))
+(claim println (polymorphic (X) (-> X void-t)))
 (claim write (-> string-t void-t))
 (claim newline (-> void-t))
 
@@ -37,22 +37,22 @@
 
 (claim true bool-t)
 (claim false bool-t)
-(claim bool? (-> any-t bool-t))
+(claim bool? (polymorphic (X) (-> X bool-t)))
 (claim not (-> bool-t bool-t))
 
 ;; null
 
 (claim null null-t)
-(claim null? (-> any-t bool-t))
+(claim null? (polymorphic (X) (-> X bool-t)))
 
 ;; void
 
 (claim void void-t)
-(claim void? (-> any-t bool-t))
+(claim void? (polymorphic (X) (-> X bool-t)))
 
 ;; int
 
-(claim int? (-> any-t bool-t))
+(claim int? (polymorphic (X) (-> X bool-t)))
 (claim int-positive? (-> int-t bool-t))
 (claim int-non-negative? (-> int-t bool-t))
 (claim int-non-zero? (-> int-t bool-t))
@@ -73,7 +73,7 @@
 
 ;; float
 
-(claim float? (-> any-t bool-t))
+(claim float? (polymorphic (X) (-> X bool-t)))
 (claim float-positive? (-> float-t bool-t))
 (claim float-non-negative? (-> float-t bool-t))
 (claim float-non-zero? (-> float-t bool-t))
@@ -100,13 +100,13 @@
 
 ;; keyword
 
-(claim keyword? (-> any-t bool-t))
+(claim keyword? (polymorphic (X) (-> X bool-t)))
 (claim keyword-to-string (-> keyword-t string-t))
 (claim keyword-append (-> keyword-t keyword-t keyword-t))
 
 ;; symbol
 
-(claim symbol? (-> any-t bool-t))
+(claim symbol? (polymorphic (X) (-> X bool-t)))
 (claim symbol-length (-> symbol-t int-t))
 (claim symbol-to-string (-> symbol-t string-t))
 (claim symbol-append (-> symbol-t symbol-t symbol-t))
@@ -114,7 +114,7 @@
 
 ;; string
 
-(claim string? (-> any-t bool-t))
+(claim string? (polymorphic (X) (-> X bool-t)))
 (claim string-length (-> string-t int-t))
 (claim string-to-symbol (-> string-t symbol-t))
 (claim string-append (-> string-t string-t string-t))

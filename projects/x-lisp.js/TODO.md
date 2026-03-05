@@ -1,4 +1,3 @@
-[lisp] quit using `expPreferInfer` -- just try `typeInfer`
 [lisp] `typeCheck` -- handle `Tuple`
 [lisp] `typeCheck` -- handle `Object`
 [lisp] `typeCheck` -- fix `List` case

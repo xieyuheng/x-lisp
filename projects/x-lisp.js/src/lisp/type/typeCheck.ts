@@ -6,6 +6,19 @@ export function typeCheck(
   exp: L.Exp,
   type: L.Value,
 ): L.CheckEffect {
+  return L.tryInferThenCheck(L.typeInfer(mod, ctx, exp), {
+    onSuccess: (inferredType) =>
+      typeCheckByInfer(mod, ctx, exp, inferredType, type),
+    onFail: typeCheckWithoutInfer(mod, ctx, exp, type),
+  })
+}
+
+export function typeCheckWithoutInfer(
+  mod: L.Mod,
+  ctx: L.Ctx,
+  exp: L.Exp,
+  type: L.Value,
+): L.CheckEffect {
   if (L.isPolymorphicType(type)) {
     type = L.polymorphicTypeUnfold(type)
   }
@@ -155,13 +168,9 @@ export function typeCheck(
     }
 
     default: {
-      return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) =>
-        typeCheckByInfer(mod, ctx, exp, inferredType, type),
-      )
-
-      // let message = `type check fail`
-      // message += `\n  given type: ${L.formatType(type)}`
-      // return L.errorCheckEffect(exp, message)
+      let message = `type check fail`
+      message += `\n  given type: ${L.formatType(type)}`
+      return L.errorCheckEffect(exp, message)
     }
   }
 }
@@ -191,19 +200,6 @@ export function typeCheckByInfer(
 
     const resolvedInferredType = L.substApplyToType(newSubst, inferredType)
     const resolvedType = L.substApplyToType(newSubst, type)
-
-    // console.log(`[typeCheckByInfer]`)
-    // console.log(`exp: ${L.formatExp(exp)}`)
-    // console.log(`type: ${L.formatType(type)}`)
-    // console.log(`subst:`)
-    // console.log(L.formatSubst(subst))
-    // console.log("inferredType:", L.formatType(inferredType))
-    // console.log("type:", L.formatType(type))
-    // console.log(`newSubst:`)
-    // console.log(L.formatSubst(newSubst))
-    // console.log("resolvedInferredType:", L.formatType(resolvedInferredType))
-    // console.log("resolvedType:", L.formatType(resolvedType))
-    // console.log()
 
     if (L.typeSubtype([], resolvedInferredType, resolvedType)) {
       return L.okCheckEffect()(newSubst)

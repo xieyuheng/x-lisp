@@ -36,13 +36,6 @@ export function inferThenInfer(
 
     switch (result.kind) {
       case "InferOk": {
-        // console.log("[inferThenInfer]")
-        // console.log("subst:")
-        // console.log(L.formatSubst(subst))
-        // console.log("result.subst:")
-        // console.log(L.formatSubst(result.subst))
-        // console.log("result.type:", L.formatType(result.type))
-        // console.log()
         return fn(result.type)(result.subst)
       }
 
@@ -62,13 +55,6 @@ export function inferThenCheck(
 
     switch (result.kind) {
       case "InferOk": {
-        // console.log("[inferThenCheck]")
-        // console.log("subst:")
-        // console.log(L.formatSubst(subst))
-        // console.log("result.subst:")
-        // console.log(L.formatSubst(result.subst))
-        // console.log("result.type:", L.formatType(result.type))
-        // console.log()
         return fn(result.type)(result.subst)
       }
 
@@ -92,12 +78,6 @@ export function checkThenInfer(
 
     switch (result.kind) {
       case "CheckOk": {
-        // console.log("[checkThenInfer]")
-        // console.log("subst:")
-        // console.log(L.formatSubst(subst))
-        // console.log("result.subst:")
-        // console.log(L.formatSubst(result.subst))
-        // console.log()
         return inferEffect(result.subst)
       }
 
@@ -107,6 +87,30 @@ export function checkThenInfer(
           exp: result.exp,
           message: result.message,
         }
+      }
+    }
+  }
+}
+
+export function tryInferThenCheck(
+  effect: InferEffect,
+  options: {
+    onSuccess: (type: L.Value) => CheckEffect,
+    onFail: CheckEffect,
+  }
+): CheckEffect {
+  const { onSuccess, onFail } = options
+
+  return (subst) => {
+    const result = effect(subst)
+
+    switch (result.kind) {
+      case "InferOk": {
+        return onSuccess(result.type)(result.subst)
+      }
+
+      case "InferError": {
+        return onFail(subst)
       }
     }
   }
