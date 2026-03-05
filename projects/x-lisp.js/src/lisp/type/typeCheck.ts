@@ -12,7 +12,10 @@ export function typeCheck(
 
   if (L.isAnyType(type)) {
     if (L.expPreferInfer(exp)) {
-      return typeCheckByInfer(mod, ctx, exp, type)
+      return L.inferThenCheck(
+        L.typeInfer(mod, ctx, exp),
+        inferredType => typeCheckByInfer(mod, ctx, exp, inferredType, type)
+      )
     } else {
       return L.okCheckEffect()
     }
@@ -153,7 +156,14 @@ export function typeCheck(
     }
 
     default: {
-      return typeCheckByInfer(mod, ctx, exp, type)
+      return L.inferThenCheck(
+        L.typeInfer(mod, ctx, exp),
+        inferredType => typeCheckByInfer(mod, ctx, exp, inferredType, type)
+      )
+
+      // let message = `type check fail`
+      // message += `\n  given type: ${L.formatType(type)}`
+      // return L.errorCheckEffect(exp, message)
     }
   }
 }
@@ -162,62 +172,48 @@ export function typeCheckByInfer(
   mod: L.Mod,
   ctx: L.Ctx,
   exp: L.Exp,
+  inferredType: L.Value,
   type: L.Value,
 ): L.CheckEffect {
   return (subst) => {
-    const result = L.typeInfer(mod, ctx, exp)(subst)
-    switch (result.kind) {
-      case "InferOk": {
-        let inferredType = result.type
+    if (L.isPolymorphicType(inferredType)) {
+      inferredType = L.polymorphicTypeUnfold(inferredType)
+    }
 
-        if (L.isPolymorphicType(inferredType)) {
-          inferredType = L.polymorphicTypeUnfold(inferredType)
-        }
+    const newSubst = L.typeUnify(subst, inferredType, type)
+    if (newSubst === undefined) {
+      inferredType = L.substApplyToType(subst, inferredType)
+      type = L.substApplyToType(subst, type)
 
-        const newSubst = L.typeUnify(result.subst, inferredType, type)
-        if (newSubst === undefined) {
-          inferredType = L.substApplyToType(result.subst, inferredType)
-          type = L.substApplyToType(result.subst, type)
+      let message = `unificaton fail`
+      message += `\n  inferred type: ${L.formatType(inferredType)}`
+      message += `\n  given type: ${L.formatType(type)}`
+      return L.errorCheckEffect(exp, message)(subst)
+    }
 
-          let message = `unificaton fail`
-          message += `\n  inferred type: ${L.formatType(inferredType)}`
-          message += `\n  given type: ${L.formatType(type)}`
-          return L.errorCheckEffect(exp, message)(result.subst)
-        }
+    const resolvedInferredType = L.substApplyToType(newSubst, inferredType)
+    const resolvedType = L.substApplyToType(newSubst, type)
 
-        const resolvedInferredType = L.substApplyToType(newSubst, inferredType)
-        const resolvedType = L.substApplyToType(newSubst, type)
+    // console.log(`[typeCheckByInfer]`)
+    // console.log(`exp: ${L.formatExp(exp)}`)
+    // console.log(`type: ${L.formatType(type)}`)
+    // console.log(`subst:`)
+    // console.log(L.formatSubst(subst))
+    // console.log("inferredType:", L.formatType(inferredType))
+    // console.log("type:", L.formatType(type))
+    // console.log(`newSubst:`)
+    // console.log(L.formatSubst(newSubst))
+    // console.log("resolvedInferredType:", L.formatType(resolvedInferredType))
+    // console.log("resolvedType:", L.formatType(resolvedType))
+    // console.log()
 
-        // console.log(`[typeCheckByInfer]`)
-        // console.log(`exp: ${L.formatExp(exp)}`)
-        // console.log(`type: ${L.formatType(type)}`)
-        // console.log(`inferred.subst:`)
-        // console.log(L.formatSubst(result.subst))
-        // console.log("inferredType:", L.formatType(inferredType))
-        // console.log("type:", L.formatType(type))
-        // console.log(`newSubst:`)
-        // console.log(L.formatSubst(newSubst))
-        // console.log("resolvedInferredType:", L.formatType(resolvedInferredType))
-        // console.log("resolvedType:", L.formatType(resolvedType))
-        // console.log()
-
-        if (L.typeSubtype([], resolvedInferredType, resolvedType)) {
-          return L.okCheckEffect()(newSubst)
-        } else {
-          let message = `inferred type is not a subtype of given type`
-          message += `\n  inferred type: ${L.formatType(resolvedInferredType)}`
-          message += `\n  given type: ${L.formatType(resolvedType)}`
-          return L.errorCheckEffect(exp, message)(newSubst)
-        }
-      }
-
-      case "InferError": {
-        return {
-          kind: "CheckError",
-          exp: result.exp,
-          message: result.message,
-        }
-      }
+    if (L.typeSubtype([], resolvedInferredType, resolvedType)) {
+      return L.okCheckEffect()(newSubst)
+    } else {
+      let message = `inferred type is not a subtype of given type`
+      message += `\n  inferred type: ${L.formatType(resolvedInferredType)}`
+      message += `\n  given type: ${L.formatType(resolvedType)}`
+      return L.errorCheckEffect(exp, message)(newSubst)
     }
   }
 }
