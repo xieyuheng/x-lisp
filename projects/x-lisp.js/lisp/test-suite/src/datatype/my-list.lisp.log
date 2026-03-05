@@ -1,0 +1,278 @@
+;;; Input
+
+(export-all)
+
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
+
+;;; Loaded
+
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
+
+(claim nil (polymorphic (E) (my-list-t E)))
+
+(define nil #nil)
+
+(claim li
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li head tail) [#li head tail])
+
+(claim li-head (polymorphic (E) (-> (my-list-t E) E)))
+
+(define (li-head target) (list-get 1 target))
+
+(claim li-tail
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+
+(define (li-tail target) (list-get 2 target))
+
+(claim li-put-head
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(claim li-put-tail
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(claim li-put-head!
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(claim li-put-tail!
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
+
+;;; ShrinkPass
+
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
+
+(claim nil (polymorphic (E) (my-list-t E)))
+
+(define nil #nil)
+
+(claim li
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li head tail)
+  (= tael (make-list))
+  (list-push! #li tael)
+  (list-push! head tael)
+  (list-push! tail tael)
+  tael)
+
+(claim li-head (polymorphic (E) (-> (my-list-t E) E)))
+
+(define (li-head target) (list-get 1 target))
+
+(claim li-tail
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+
+(define (li-tail target) (list-get 2 target))
+
+(claim li-put-head
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(claim li-put-tail
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(claim li-put-head!
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(claim li-put-tail!
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
+
+;;; UniquifyPass
+
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
+
+(claim nil (polymorphic (E) (my-list-t E)))
+
+(define nil #nil)
+
+(claim li
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li head tail)
+  (= tael₁ (make-list))
+  (list-push! #li tael₁)
+  (list-push! head tael₁)
+  (list-push! tail tael₁)
+  tael₁)
+
+(claim li-head (polymorphic (E) (-> (my-list-t E) E)))
+
+(define (li-head target) (list-get 1 target))
+
+(claim li-tail
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+
+(define (li-tail target) (list-get 2 target))
+
+(claim li-put-head
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(claim li-put-tail
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(claim li-put-head!
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(claim li-put-tail!
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
+
+;;; LiftLambdaPass
+
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
+
+(claim nil (polymorphic (E) (my-list-t E)))
+
+(define nil #nil)
+
+(claim li
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li head tail)
+  (= tael₁ (make-list))
+  (list-push! #li tael₁)
+  (list-push! head tael₁)
+  (list-push! tail tael₁)
+  tael₁)
+
+(claim li-head (polymorphic (E) (-> (my-list-t E) E)))
+
+(define (li-head target) (list-get 1 target))
+
+(claim li-tail
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+
+(define (li-tail target) (list-get 2 target))
+
+(claim li-put-head
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(claim li-put-tail
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(claim li-put-head!
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(claim li-put-tail!
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
+
+;;; UnnestOperandPass
+
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
+
+(claim nil (polymorphic (E) (my-list-t E)))
+
+(define nil #nil)
+
+(claim li
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li head tail)
+  (= tael₁ (make-list))
+  (list-push! #li tael₁)
+  (list-push! head tael₁)
+  (list-push! tail tael₁)
+  tael₁)
+
+(claim li-head (polymorphic (E) (-> (my-list-t E) E)))
+
+(define (li-head target) (list-get 1 target))
+
+(claim li-tail
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+
+(define (li-tail target) (list-get 2 target))
+
+(claim li-put-head
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(claim li-put-tail
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(claim li-put-head!
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(claim li-put-tail!
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))
+

@@ -1,0 +1,46 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main)
+  (cond
+    ((equal? 1 2) (begin void))
+    ((equal? 1 2) (begin void))))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (cond
+    ((equal? 1 2) (begin void))
+    ((equal? 1 2) (begin void))))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (if (equal? 1 2) void (if (equal? 1 2) void (assert #f))))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (if (equal? 1 2) void (if (equal? 1 2) void (assert #f))))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (if (equal? 1 2) void (if (equal? 1 2) void (assert #f))))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (if (equal? 1 2) void (if (equal? 1 2) void (assert #f))))
+

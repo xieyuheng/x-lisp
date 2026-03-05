@@ -1,0 +1,56 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x (random-dice))
+  (= y (random-dice))
+  (println (iadd (iadd x y) 42)))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x (random-dice))
+  (= y (random-dice))
+  (println (iadd (iadd x y) 42)))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x (random-dice))
+  (= y (random-dice))
+  (println (iadd (iadd x y) 42)))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁ (random-dice))
+  (= y₁ (random-dice))
+  (println (iadd (iadd x₁ y₁) 42)))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁ (random-dice))
+  (= y₁ (random-dice))
+  (println (iadd (iadd x₁ y₁) 42)))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁ (random-dice))
+  (= y₁ (random-dice))
+  (= _₁ (iadd x₁ y₁))
+  (= _₂ (iadd _₁ 42))
+  (println _₂))
+

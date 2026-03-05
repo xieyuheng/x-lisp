@@ -1,0 +1,89 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main) (println {1 2 3}) (println {1 2 3}))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main) (println {1 2 3}) (println {1 2 3}))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (begin
+     (= set (make-set))
+     (set-add! 1 set)
+     (set-add! 2 set)
+     (set-add! 3 set)
+     set))
+  (println
+   (begin
+     (= set (make-set))
+     (set-add! 1 set)
+     (set-add! 2 set)
+     (set-add! 3 set)
+     set)))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (begin
+     (= set₁ (make-set))
+     (set-add! 1 set₁)
+     (set-add! 2 set₁)
+     (set-add! 3 set₁)
+     set₁))
+  (println
+   (begin
+     (= set₁ (make-set))
+     (set-add! 1 set₁)
+     (set-add! 2 set₁)
+     (set-add! 3 set₁)
+     set₁)))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (begin
+     (= set₁ (make-set))
+     (set-add! 1 set₁)
+     (set-add! 2 set₁)
+     (set-add! 3 set₁)
+     set₁))
+  (println
+   (begin
+     (= set₁ (make-set))
+     (set-add! 1 set₁)
+     (set-add! 2 set₁)
+     (set-add! 3 set₁)
+     set₁)))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (begin
+    (= set₁ (make-set))
+    (set-add! 1 set₁)
+    (set-add! 2 set₁)
+    (set-add! 3 set₁)
+    (println set₁))
+  (= set₁ (make-set))
+  (set-add! 1 set₁)
+  (set-add! 2 set₁)
+  (set-add! 3 set₁)
+  (println set₁))
+

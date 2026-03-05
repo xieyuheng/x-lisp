@@ -1,0 +1,144 @@
+;;; Input
+
+(claim fibonacci (-> int-t int-t))
+
+(define (fibonacci n)
+  (if (int-less-or-equal? n 1)
+    n
+    (iadd (fibonacci (isub n 1)) (fibonacci (isub n 2)))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 0 (fibonacci 0))
+  (assert-equal 1 (fibonacci 1))
+  (assert-equal 1 (fibonacci 2))
+  (assert-equal 2 (fibonacci 3))
+  (assert-equal 3 (fibonacci 4))
+  (assert-equal 5 (fibonacci 5))
+  (assert-equal 8 (fibonacci 6))
+  (assert-equal 13 (fibonacci 7))
+  (assert-equal 21 (fibonacci 8))
+  (assert-equal 34 (fibonacci 9)))
+
+;;; Loaded
+
+(claim fibonacci (-> int-t int-t))
+
+(define (fibonacci n)
+  (if (int-less-or-equal? n 1)
+    n
+    (iadd (fibonacci (isub n 1)) (fibonacci (isub n 2)))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 0 (fibonacci 0))
+  (assert-equal 1 (fibonacci 1))
+  (assert-equal 1 (fibonacci 2))
+  (assert-equal 2 (fibonacci 3))
+  (assert-equal 3 (fibonacci 4))
+  (assert-equal 5 (fibonacci 5))
+  (assert-equal 8 (fibonacci 6))
+  (assert-equal 13 (fibonacci 7))
+  (assert-equal 21 (fibonacci 8))
+  (assert-equal 34 (fibonacci 9)))
+
+;;; ShrinkPass
+
+(claim fibonacci (-> int-t int-t))
+
+(define (fibonacci n)
+  (if (int-less-or-equal? n 1)
+    n
+    (iadd (fibonacci (isub n 1)) (fibonacci (isub n 2)))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 0 (fibonacci 0))
+  (assert-equal 1 (fibonacci 1))
+  (assert-equal 1 (fibonacci 2))
+  (assert-equal 2 (fibonacci 3))
+  (assert-equal 3 (fibonacci 4))
+  (assert-equal 5 (fibonacci 5))
+  (assert-equal 8 (fibonacci 6))
+  (assert-equal 13 (fibonacci 7))
+  (assert-equal 21 (fibonacci 8))
+  (assert-equal 34 (fibonacci 9)))
+
+;;; UniquifyPass
+
+(claim fibonacci (-> int-t int-t))
+
+(define (fibonacci n)
+  (if (int-less-or-equal? n 1)
+    n
+    (iadd (fibonacci (isub n 1)) (fibonacci (isub n 2)))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 0 (fibonacci 0))
+  (assert-equal 1 (fibonacci 1))
+  (assert-equal 1 (fibonacci 2))
+  (assert-equal 2 (fibonacci 3))
+  (assert-equal 3 (fibonacci 4))
+  (assert-equal 5 (fibonacci 5))
+  (assert-equal 8 (fibonacci 6))
+  (assert-equal 13 (fibonacci 7))
+  (assert-equal 21 (fibonacci 8))
+  (assert-equal 34 (fibonacci 9)))
+
+;;; LiftLambdaPass
+
+(claim fibonacci (-> int-t int-t))
+
+(define (fibonacci n)
+  (if (int-less-or-equal? n 1)
+    n
+    (iadd (fibonacci (isub n 1)) (fibonacci (isub n 2)))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 0 (fibonacci 0))
+  (assert-equal 1 (fibonacci 1))
+  (assert-equal 1 (fibonacci 2))
+  (assert-equal 2 (fibonacci 3))
+  (assert-equal 3 (fibonacci 4))
+  (assert-equal 5 (fibonacci 5))
+  (assert-equal 8 (fibonacci 6))
+  (assert-equal 13 (fibonacci 7))
+  (assert-equal 21 (fibonacci 8))
+  (assert-equal 34 (fibonacci 9)))
+
+;;; UnnestOperandPass
+
+(claim fibonacci (-> int-t int-t))
+
+(define (fibonacci n)
+  (if (int-less-or-equal? n 1)
+    n
+    (begin
+      (= _₁ (isub n 1))
+      (= _₂ (fibonacci _₁))
+      (= _₃ (isub n 2))
+      (= _₄ (fibonacci _₃))
+      (iadd _₂ _₄))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (begin (= _₁ (fibonacci 0)) (assert-equal 0 _₁))
+  (begin (= _₂ (fibonacci 1)) (assert-equal 1 _₂))
+  (begin (= _₃ (fibonacci 2)) (assert-equal 1 _₃))
+  (begin (= _₄ (fibonacci 3)) (assert-equal 2 _₄))
+  (begin (= _₅ (fibonacci 4)) (assert-equal 3 _₅))
+  (begin (= _₆ (fibonacci 5)) (assert-equal 5 _₆))
+  (begin (= _₇ (fibonacci 6)) (assert-equal 8 _₇))
+  (begin (= _₈ (fibonacci 7)) (assert-equal 13 _₈))
+  (begin (= _₉ (fibonacci 8)) (assert-equal 21 _₉))
+  (= _₁₀ (fibonacci 9))
+  (assert-equal 34 _₁₀))
+

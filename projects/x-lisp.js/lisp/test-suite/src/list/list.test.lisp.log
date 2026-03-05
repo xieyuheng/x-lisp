@@ -1,0 +1,253 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list (make-list))
+  (list-push! 1 list)
+  (list-push! 2 list)
+  (list-push! 3 list)
+  (assert-equal [1 2 3] list)
+  (assert-equal [1 2 3] '(1 2 3))
+  (assert-equal ['a 'b 'c] '(a b c))
+  (assert-equal 3 (list-length [1 2 3]))
+  (assert-equal 0 (list-length []))
+  (assert (list-empty? [])))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list (make-list))
+  (list-push! 1 list)
+  (list-push! 2 list)
+  (list-push! 3 list)
+  (assert-equal [1 2 3] list)
+  (assert-equal [1 2 3] '(1 2 3))
+  (assert-equal ['a 'b 'c] '(a b c))
+  (assert-equal 3 (list-length [1 2 3]))
+  (assert-equal 0 (list-length []))
+  (assert (list-empty? [])))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list (make-list))
+  (list-push! 1 list)
+  (list-push! 2 list)
+  (list-push! 3 list)
+  (assert-equal
+    (begin
+      (= tael (make-list))
+      (list-push! 1 tael)
+      (list-push! 2 tael)
+      (list-push! 3 tael)
+      tael)
+    list)
+  (assert-equal
+    (begin
+      (= tael (make-list))
+      (list-push! 1 tael)
+      (list-push! 2 tael)
+      (list-push! 3 tael)
+      tael)
+    (begin
+      (= tael (make-list))
+      (list-push! 1 tael)
+      (list-push! 2 tael)
+      (list-push! 3 tael)
+      tael))
+  (assert-equal
+    (begin
+      (= tael (make-list))
+      (list-push! 'a tael)
+      (list-push! 'b tael)
+      (list-push! 'c tael)
+      tael)
+    (begin
+      (= tael (make-list))
+      (list-push! 'a tael)
+      (list-push! 'b tael)
+      (list-push! 'c tael)
+      tael))
+  (assert-equal
+    3
+    (list-length
+     (begin
+       (= tael (make-list))
+       (list-push! 1 tael)
+       (list-push! 2 tael)
+       (list-push! 3 tael)
+       tael)))
+  (assert-equal
+    0
+    (list-length (begin (= tael (make-list)) tael)))
+  (assert (list-empty? (begin (= tael (make-list)) tael))))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list₁ (make-list))
+  (list-push! 1 list₁)
+  (list-push! 2 list₁)
+  (list-push! 3 list₁)
+  (assert-equal
+    (begin
+      (= tael₁ (make-list))
+      (list-push! 1 tael₁)
+      (list-push! 2 tael₁)
+      (list-push! 3 tael₁)
+      tael₁)
+    list₁)
+  (assert-equal
+    (begin
+      (= tael₁ (make-list))
+      (list-push! 1 tael₁)
+      (list-push! 2 tael₁)
+      (list-push! 3 tael₁)
+      tael₁)
+    (begin
+      (= tael₁ (make-list))
+      (list-push! 1 tael₁)
+      (list-push! 2 tael₁)
+      (list-push! 3 tael₁)
+      tael₁))
+  (assert-equal
+    (begin
+      (= tael₁ (make-list))
+      (list-push! 'a tael₁)
+      (list-push! 'b tael₁)
+      (list-push! 'c tael₁)
+      tael₁)
+    (begin
+      (= tael₁ (make-list))
+      (list-push! 'a tael₁)
+      (list-push! 'b tael₁)
+      (list-push! 'c tael₁)
+      tael₁))
+  (assert-equal
+    3
+    (list-length
+     (begin
+       (= tael₁ (make-list))
+       (list-push! 1 tael₁)
+       (list-push! 2 tael₁)
+       (list-push! 3 tael₁)
+       tael₁)))
+  (assert-equal
+    0
+    (list-length (begin (= tael₁ (make-list)) tael₁)))
+  (assert (list-empty? (begin (= tael₁ (make-list)) tael₁))))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list₁ (make-list))
+  (list-push! 1 list₁)
+  (list-push! 2 list₁)
+  (list-push! 3 list₁)
+  (assert-equal
+    (begin
+      (= tael₁ (make-list))
+      (list-push! 1 tael₁)
+      (list-push! 2 tael₁)
+      (list-push! 3 tael₁)
+      tael₁)
+    list₁)
+  (assert-equal
+    (begin
+      (= tael₁ (make-list))
+      (list-push! 1 tael₁)
+      (list-push! 2 tael₁)
+      (list-push! 3 tael₁)
+      tael₁)
+    (begin
+      (= tael₁ (make-list))
+      (list-push! 1 tael₁)
+      (list-push! 2 tael₁)
+      (list-push! 3 tael₁)
+      tael₁))
+  (assert-equal
+    (begin
+      (= tael₁ (make-list))
+      (list-push! 'a tael₁)
+      (list-push! 'b tael₁)
+      (list-push! 'c tael₁)
+      tael₁)
+    (begin
+      (= tael₁ (make-list))
+      (list-push! 'a tael₁)
+      (list-push! 'b tael₁)
+      (list-push! 'c tael₁)
+      tael₁))
+  (assert-equal
+    3
+    (list-length
+     (begin
+       (= tael₁ (make-list))
+       (list-push! 1 tael₁)
+       (list-push! 2 tael₁)
+       (list-push! 3 tael₁)
+       tael₁)))
+  (assert-equal
+    0
+    (list-length (begin (= tael₁ (make-list)) tael₁)))
+  (assert (list-empty? (begin (= tael₁ (make-list)) tael₁))))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list₁ (make-list))
+  (list-push! 1 list₁)
+  (list-push! 2 list₁)
+  (list-push! 3 list₁)
+  (begin
+    (= tael₁ (make-list))
+    (list-push! 1 tael₁)
+    (list-push! 2 tael₁)
+    (list-push! 3 tael₁)
+    (assert-equal tael₁ list₁))
+  (begin
+    (= tael₁ (make-list))
+    (list-push! 1 tael₁)
+    (list-push! 2 tael₁)
+    (list-push! 3 tael₁)
+    (= tael₁ (make-list))
+    (list-push! 1 tael₁)
+    (list-push! 2 tael₁)
+    (list-push! 3 tael₁)
+    (assert-equal tael₁ tael₁))
+  (begin
+    (= tael₁ (make-list))
+    (list-push! 'a tael₁)
+    (list-push! 'b tael₁)
+    (list-push! 'c tael₁)
+    (= tael₁ (make-list))
+    (list-push! 'a tael₁)
+    (list-push! 'b tael₁)
+    (list-push! 'c tael₁)
+    (assert-equal tael₁ tael₁))
+  (begin
+    (= tael₁ (make-list))
+    (list-push! 1 tael₁)
+    (list-push! 2 tael₁)
+    (list-push! 3 tael₁)
+    (= _₁ (list-length tael₁))
+    (assert-equal 3 _₁))
+  (begin
+    (= tael₁ (make-list))
+    (= _₂ (list-length tael₁))
+    (assert-equal 0 _₂))
+  (= tael₁ (make-list))
+  (= _₃ (list-empty? tael₁))
+  (assert _₃))
+

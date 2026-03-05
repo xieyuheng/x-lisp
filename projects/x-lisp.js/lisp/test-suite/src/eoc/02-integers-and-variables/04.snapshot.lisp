@@ -1,0 +1,7 @@
+(claim main (-> void-t))
+
+(define (main)
+  (= z (begin (= y (begin (= x (ineg 42))
+                          x))
+              y))
+  (println (ineg z)))

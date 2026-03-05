@@ -1,0 +1,2 @@
+(assert) fail
+  value: #f

@@ -1,0 +1,29 @@
+(export-all)
+
+(define-variable nil (block body (return #nil)))
+
+(define-function (li head tail)
+  (block body
+    (= tael₁ (make-list))
+    (perform (list-push! #li tael₁))
+    (perform (list-push! head tael₁))
+    (perform (list-push! tail tael₁))
+    (return tael₁)))
+
+(define-function (li-head target)
+  (block body (return (list-get 1 target))))
+
+(define-function (li-tail target)
+  (block body (return (list-get 2 target))))
+
+(define-function (li-put-head value target)
+  (block body (return (list-put 1 value target))))
+
+(define-function (li-put-tail value target)
+  (block body (return (list-put 2 value target))))
+
+(define-function (li-put-head! value target)
+  (block body (return (list-put! 1 value target))))
+
+(define-function (li-put-tail! value target)
+  (block body (return (list-put! 2 value target))))

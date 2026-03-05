@@ -1,7 +1,6 @@
-setup x-lisp.js
-x-lisp.js copy code from x-lisp-compiler.js
+remove passes
 
-- start from type checker and interpreter
+- to start from type checker and interpreter
 
 # later
 

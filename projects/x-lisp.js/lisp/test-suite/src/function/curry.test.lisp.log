@@ -1,0 +1,83 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal iadd iadd)
+  (assert-equal (iadd 1) (iadd 1))
+  (assert-not-equal (iadd 1) (iadd 2))
+  (assert-equal ((iadd 1) 2) (iadd 1 2))
+  (assert-equal 1 ((isub 2) 1))
+  (assert-equal 1 (isub 2 1)))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal iadd iadd)
+  (assert-equal (iadd 1) (iadd 1))
+  (assert-not-equal (iadd 1) (iadd 2))
+  (assert-equal ((iadd 1) 2) (iadd 1 2))
+  (assert-equal 1 ((isub 2) 1))
+  (assert-equal 1 (isub 2 1)))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal iadd iadd)
+  (assert-equal (iadd 1) (iadd 1))
+  (assert-not-equal (iadd 1) (iadd 2))
+  (assert-equal ((iadd 1) 2) (iadd 1 2))
+  (assert-equal 1 ((isub 2) 1))
+  (assert-equal 1 (isub 2 1)))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal iadd iadd)
+  (assert-equal (iadd 1) (iadd 1))
+  (assert-not-equal (iadd 1) (iadd 2))
+  (assert-equal ((iadd 1) 2) (iadd 1 2))
+  (assert-equal 1 ((isub 2) 1))
+  (assert-equal 1 (isub 2 1)))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal iadd iadd)
+  (assert-equal (iadd 1) (iadd 1))
+  (assert-not-equal (iadd 1) (iadd 2))
+  (assert-equal ((iadd 1) 2) (iadd 1 2))
+  (assert-equal 1 ((isub 2) 1))
+  (assert-equal 1 (isub 2 1)))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal iadd iadd)
+  (begin
+    (= _₁ (iadd 1))
+    (= _₂ (iadd 1))
+    (assert-equal _₁ _₂))
+  (begin
+    (= _₃ (iadd 1))
+    (= _₄ (iadd 2))
+    (assert-not-equal _₃ _₄))
+  (begin
+    (= _₅ (iadd 1))
+    (= _₆ (_₅ 2))
+    (= _₇ (iadd 1 2))
+    (assert-equal _₆ _₇))
+  (begin (= _₈ (isub 2)) (= _₉ (_₈ 1)) (assert-equal 1 _₉))
+  (= _₁₀ (isub 2 1))
+  (assert-equal 1 _₁₀))
+

@@ -1,0 +1,56 @@
+;;; Input
+
+(claim Y (polymorphic (A) (-> (-> A A) A)))
+
+(define (Y f)
+  ((lambda (u) (u u))
+   (lambda (x) (f (lambda (t) ((x x) t))))))
+
+;;; Loaded
+
+(claim Y (polymorphic (A) (-> (-> A A) A)))
+
+(define (Y f)
+  ((lambda (u) (u u))
+   (lambda (x) (f (lambda (t) ((x x) t))))))
+
+;;; ShrinkPass
+
+(claim Y (polymorphic (A) (-> (-> A A) A)))
+
+(define (Y f)
+  ((lambda (u) (u u))
+   (lambda (x) (f (lambda (t) ((x x) t))))))
+
+;;; UniquifyPass
+
+(claim Y (polymorphic (A) (-> (-> A A) A)))
+
+(define (Y f)
+  ((lambda (u₁) (u₁ u₁))
+   (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))
+
+;;; LiftLambdaPass
+
+(claim Y (polymorphic (A) (-> (-> A A) A)))
+
+(define (Y f) (Y©λ₁ (Y©λ₂ f)))
+
+(define (Y©λ₁ u₁) (u₁ u₁))
+
+(define (Y©λ₂ f x₁) (f (Y©λ₂©λ₁ x₁)))
+
+(define (Y©λ₂©λ₁ x₁ t₁) ((x₁ x₁) t₁))
+
+;;; UnnestOperandPass
+
+(claim Y (polymorphic (A) (-> (-> A A) A)))
+
+(define (Y f) (= _₁ (Y©λ₂ f)) (Y©λ₁ _₁))
+
+(define (Y©λ₁ u₁) (u₁ u₁))
+
+(define (Y©λ₂ f x₁) (= _₁ (Y©λ₂©λ₁ x₁)) (f _₁))
+
+(define (Y©λ₂©λ₁ x₁ t₁) (= _₁ (x₁ x₁)) (_₁ t₁))
+

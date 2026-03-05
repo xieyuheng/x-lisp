@@ -1,0 +1,239 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list (make-list))
+  (list-push! 1 list)
+  (list-push! 2 list)
+  (list-push! 3 list)
+  (println list)
+  (println [1 2 3])
+  (println '(1 2 3))
+  (println [1 2 3])
+  (println [1 2 3])
+  (println ['a 'b 'c])
+  (println '(a b c)))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list (make-list))
+  (list-push! 1 list)
+  (list-push! 2 list)
+  (list-push! 3 list)
+  (println list)
+  (println [1 2 3])
+  (println '(1 2 3))
+  (println [1 2 3])
+  (println [1 2 3])
+  (println ['a 'b 'c])
+  (println '(a b c)))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list (make-list))
+  (list-push! 1 list)
+  (list-push! 2 list)
+  (list-push! 3 list)
+  (println list)
+  (println
+   (begin
+     (= tael (make-list))
+     (list-push! 1 tael)
+     (list-push! 2 tael)
+     (list-push! 3 tael)
+     tael))
+  (println
+   (begin
+     (= tael (make-list))
+     (list-push! 1 tael)
+     (list-push! 2 tael)
+     (list-push! 3 tael)
+     tael))
+  (println
+   (begin
+     (= tael (make-list))
+     (list-push! 1 tael)
+     (list-push! 2 tael)
+     (list-push! 3 tael)
+     tael))
+  (println
+   (begin
+     (= tael (make-list))
+     (list-push! 1 tael)
+     (list-push! 2 tael)
+     (list-push! 3 tael)
+     tael))
+  (println
+   (begin
+     (= tael (make-list))
+     (list-push! 'a tael)
+     (list-push! 'b tael)
+     (list-push! 'c tael)
+     tael))
+  (println
+   (begin
+     (= tael (make-list))
+     (list-push! 'a tael)
+     (list-push! 'b tael)
+     (list-push! 'c tael)
+     tael)))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list₁ (make-list))
+  (list-push! 1 list₁)
+  (list-push! 2 list₁)
+  (list-push! 3 list₁)
+  (println list₁)
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 1 tael₁)
+     (list-push! 2 tael₁)
+     (list-push! 3 tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 1 tael₁)
+     (list-push! 2 tael₁)
+     (list-push! 3 tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 1 tael₁)
+     (list-push! 2 tael₁)
+     (list-push! 3 tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 1 tael₁)
+     (list-push! 2 tael₁)
+     (list-push! 3 tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 'a tael₁)
+     (list-push! 'b tael₁)
+     (list-push! 'c tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 'a tael₁)
+     (list-push! 'b tael₁)
+     (list-push! 'c tael₁)
+     tael₁)))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list₁ (make-list))
+  (list-push! 1 list₁)
+  (list-push! 2 list₁)
+  (list-push! 3 list₁)
+  (println list₁)
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 1 tael₁)
+     (list-push! 2 tael₁)
+     (list-push! 3 tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 1 tael₁)
+     (list-push! 2 tael₁)
+     (list-push! 3 tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 1 tael₁)
+     (list-push! 2 tael₁)
+     (list-push! 3 tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 1 tael₁)
+     (list-push! 2 tael₁)
+     (list-push! 3 tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 'a tael₁)
+     (list-push! 'b tael₁)
+     (list-push! 'c tael₁)
+     tael₁))
+  (println
+   (begin
+     (= tael₁ (make-list))
+     (list-push! 'a tael₁)
+     (list-push! 'b tael₁)
+     (list-push! 'c tael₁)
+     tael₁)))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list₁ (make-list))
+  (list-push! 1 list₁)
+  (list-push! 2 list₁)
+  (list-push! 3 list₁)
+  (println list₁)
+  (begin
+    (= tael₁ (make-list))
+    (list-push! 1 tael₁)
+    (list-push! 2 tael₁)
+    (list-push! 3 tael₁)
+    (println tael₁))
+  (begin
+    (= tael₁ (make-list))
+    (list-push! 1 tael₁)
+    (list-push! 2 tael₁)
+    (list-push! 3 tael₁)
+    (println tael₁))
+  (begin
+    (= tael₁ (make-list))
+    (list-push! 1 tael₁)
+    (list-push! 2 tael₁)
+    (list-push! 3 tael₁)
+    (println tael₁))
+  (begin
+    (= tael₁ (make-list))
+    (list-push! 1 tael₁)
+    (list-push! 2 tael₁)
+    (list-push! 3 tael₁)
+    (println tael₁))
+  (begin
+    (= tael₁ (make-list))
+    (list-push! 'a tael₁)
+    (list-push! 'b tael₁)
+    (list-push! 'c tael₁)
+    (println tael₁))
+  (= tael₁ (make-list))
+  (list-push! 'a tael₁)
+  (list-push! 'b tael₁)
+  (list-push! 'c tael₁)
+  (println tael₁))
+

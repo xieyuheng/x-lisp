@@ -1,0 +1,10 @@
+(claim main (-> void-t))
+
+(define (main)
+  (print 1)
+  (newline)
+  (print 2)
+  (newline)
+  (print 3)
+  (newline)
+  void)

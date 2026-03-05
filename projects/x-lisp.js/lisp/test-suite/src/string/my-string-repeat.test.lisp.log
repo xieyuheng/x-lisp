@@ -1,0 +1,69 @@
+;;; Input
+
+(import-all "my-string-repeat")
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal "" (my-string-repeat 0 "a"))
+  (assert-equal "a" (my-string-repeat 1 "a"))
+  (assert-equal "aa" (my-string-repeat 2 "a"))
+  (assert-equal "aaa" (my-string-repeat 3 "a")))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal "" (my-string-repeat 0 "a"))
+  (assert-equal "a" (my-string-repeat 1 "a"))
+  (assert-equal "aa" (my-string-repeat 2 "a"))
+  (assert-equal "aaa" (my-string-repeat 3 "a")))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal "" (my-string-repeat 0 "a"))
+  (assert-equal "a" (my-string-repeat 1 "a"))
+  (assert-equal "aa" (my-string-repeat 2 "a"))
+  (assert-equal "aaa" (my-string-repeat 3 "a")))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal "" (my-string-repeat 0 "a"))
+  (assert-equal "a" (my-string-repeat 1 "a"))
+  (assert-equal "aa" (my-string-repeat 2 "a"))
+  (assert-equal "aaa" (my-string-repeat 3 "a")))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal "" (my-string-repeat 0 "a"))
+  (assert-equal "a" (my-string-repeat 1 "a"))
+  (assert-equal "aa" (my-string-repeat 2 "a"))
+  (assert-equal "aaa" (my-string-repeat 3 "a")))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (begin
+    (= _₁ (my-string-repeat 0 "a"))
+    (assert-equal "" _₁))
+  (begin
+    (= _₂ (my-string-repeat 1 "a"))
+    (assert-equal "a" _₂))
+  (begin
+    (= _₃ (my-string-repeat 2 "a"))
+    (assert-equal "aa" _₃))
+  (= _₄ (my-string-repeat 3 "a"))
+  (assert-equal "aaa" _₄))
+

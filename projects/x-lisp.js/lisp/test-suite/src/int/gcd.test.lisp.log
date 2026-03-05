@@ -1,0 +1,74 @@
+;;; Input
+
+(claim gcd (-> int-t int-t int-t))
+
+(define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (gcd 13 7))
+  (assert-equal 4 (gcd 12 8)))
+
+;;; Loaded
+
+(claim gcd (-> int-t int-t int-t))
+
+(define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (gcd 13 7))
+  (assert-equal 4 (gcd 12 8)))
+
+;;; ShrinkPass
+
+(claim gcd (-> int-t int-t int-t))
+
+(define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (gcd 13 7))
+  (assert-equal 4 (gcd 12 8)))
+
+;;; UniquifyPass
+
+(claim gcd (-> int-t int-t int-t))
+
+(define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (gcd 13 7))
+  (assert-equal 4 (gcd 12 8)))
+
+;;; LiftLambdaPass
+
+(claim gcd (-> int-t int-t int-t))
+
+(define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (gcd 13 7))
+  (assert-equal 4 (gcd 12 8)))
+
+;;; UnnestOperandPass
+
+(claim gcd (-> int-t int-t int-t))
+
+(define (gcd a b)
+  (if (equal? b 0) a (begin (= _₁ (imod a b)) (gcd b _₁))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (begin (= _₁ (gcd 13 7)) (assert-equal 1 _₁))
+  (= _₂ (gcd 12 8))
+  (assert-equal 4 _₂))
+

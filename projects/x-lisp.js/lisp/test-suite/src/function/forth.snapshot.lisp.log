@@ -1,0 +1,188 @@
+;;; Input
+
+(claim swap
+  (polymorphic (X Y Z) (-> (-> Y X Z) (-> X Y Z))))
+
+(define (swap f x y) (f y x))
+
+(claim drop (polymorphic (X Y Z) (-> (-> X Z) (-> Y X Z))))
+
+(define (drop f) (lambda (dropped) (lambda (x) (f x))))
+
+(claim dup (polymorphic (X Z) (-> (-> X X Z) (-> X Z))))
+
+(define (dup f) (lambda (x) (f x x)))
+
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(claim main (-> void-t))
+
+(define (main)
+  (= f identity)
+  (= square (dup imul))
+  (println (square (f 1)))
+  (println (square (f 2)))
+  (println (square (f 3)))
+  (println (square (f 4))))
+
+;;; Loaded
+
+(claim swap
+  (polymorphic (X Y Z) (-> (-> Y X Z) (-> X Y Z))))
+
+(define (swap f x y) (f y x))
+
+(claim drop (polymorphic (X Y Z) (-> (-> X Z) (-> Y X Z))))
+
+(define (drop f) (lambda (dropped) (lambda (x) (f x))))
+
+(claim dup (polymorphic (X Z) (-> (-> X X Z) (-> X Z))))
+
+(define (dup f) (lambda (x) (f x x)))
+
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(claim main (-> void-t))
+
+(define (main)
+  (= f identity)
+  (= square (dup imul))
+  (println (square (f 1)))
+  (println (square (f 2)))
+  (println (square (f 3)))
+  (println (square (f 4))))
+
+;;; ShrinkPass
+
+(claim swap
+  (polymorphic (X Y Z) (-> (-> Y X Z) (-> X Y Z))))
+
+(define (swap f x y) (f y x))
+
+(claim drop (polymorphic (X Y Z) (-> (-> X Z) (-> Y X Z))))
+
+(define (drop f) (lambda (dropped) (lambda (x) (f x))))
+
+(claim dup (polymorphic (X Z) (-> (-> X X Z) (-> X Z))))
+
+(define (dup f) (lambda (x) (f x x)))
+
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(claim main (-> void-t))
+
+(define (main)
+  (= f identity)
+  (= square (dup imul))
+  (println (square (f 1)))
+  (println (square (f 2)))
+  (println (square (f 3)))
+  (println (square (f 4))))
+
+;;; UniquifyPass
+
+(claim swap
+  (polymorphic (X Y Z) (-> (-> Y X Z) (-> X Y Z))))
+
+(define (swap f x y) (f y x))
+
+(claim drop (polymorphic (X Y Z) (-> (-> X Z) (-> Y X Z))))
+
+(define (drop f) (lambda (dropped₁) (lambda (x₁) (f x₁))))
+
+(claim dup (polymorphic (X Z) (-> (-> X X Z) (-> X Z))))
+
+(define (dup f) (lambda (x₁) (f x₁ x₁)))
+
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(claim main (-> void-t))
+
+(define (main)
+  (= f₁ identity)
+  (= square₁ (dup imul))
+  (println (square₁ (f₁ 1)))
+  (println (square₁ (f₁ 2)))
+  (println (square₁ (f₁ 3)))
+  (println (square₁ (f₁ 4))))
+
+;;; LiftLambdaPass
+
+(claim swap
+  (polymorphic (X Y Z) (-> (-> Y X Z) (-> X Y Z))))
+
+(define (swap f x y) (f y x))
+
+(claim drop (polymorphic (X Y Z) (-> (-> X Z) (-> Y X Z))))
+
+(define (drop f) (drop©λ₁ f))
+
+(define (drop©λ₁ f dropped₁) (drop©λ₁©λ₁ f))
+
+(define (drop©λ₁©λ₁ f x₁) (f x₁))
+
+(claim dup (polymorphic (X Z) (-> (-> X X Z) (-> X Z))))
+
+(define (dup f) (dup©λ₁ f))
+
+(define (dup©λ₁ f x₁) (f x₁ x₁))
+
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(claim main (-> void-t))
+
+(define (main)
+  (= f₁ identity)
+  (= square₁ (dup imul))
+  (println (square₁ (f₁ 1)))
+  (println (square₁ (f₁ 2)))
+  (println (square₁ (f₁ 3)))
+  (println (square₁ (f₁ 4))))
+
+;;; UnnestOperandPass
+
+(claim swap
+  (polymorphic (X Y Z) (-> (-> Y X Z) (-> X Y Z))))
+
+(define (swap f x y) (f y x))
+
+(claim drop (polymorphic (X Y Z) (-> (-> X Z) (-> Y X Z))))
+
+(define (drop f) (drop©λ₁ f))
+
+(define (drop©λ₁ f dropped₁) (drop©λ₁©λ₁ f))
+
+(define (drop©λ₁©λ₁ f x₁) (f x₁))
+
+(claim dup (polymorphic (X Z) (-> (-> X X Z) (-> X Z))))
+
+(define (dup f) (dup©λ₁ f))
+
+(define (dup©λ₁ f x₁) (f x₁ x₁))
+
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(claim main (-> void-t))
+
+(define (main)
+  (= f₁ identity)
+  (= square₁ (dup imul))
+  (begin (= _₁ (f₁ 1)) (= _₂ (square₁ _₁)) (println _₂))
+  (begin (= _₃ (f₁ 2)) (= _₄ (square₁ _₃)) (println _₄))
+  (begin (= _₅ (f₁ 3)) (= _₆ (square₁ _₅)) (println _₆))
+  (= _₇ (f₁ 4))
+  (= _₈ (square₁ _₇))
+  (println _₈))
+

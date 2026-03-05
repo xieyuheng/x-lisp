@@ -1,0 +1,201 @@
+import * as S from "@xieyuheng/sexp-tael.js"
+import * as Exps from "../exp/index.ts"
+import { type Exp } from "../exp/index.ts"
+
+export function formatExps(exps: Array<Exp>): string {
+  return exps.map(formatExp).join(" ")
+}
+
+function formatExpAttributes(attributes: Record<string, Exp>): string {
+  return Object.entries(attributes)
+    .map(([k, e]) => `:${k} ${formatExp(e)}`)
+    .join(" ")
+}
+
+export function formatParameters(parameters: Array<string>): string {
+  return parameters.join(" ")
+}
+
+export function formatExp(exp: Exp): string {
+  switch (exp.kind) {
+    case "Hashtag": {
+      return `#${exp.content}`
+    }
+
+    case "Symbol": {
+      return `'${exp.content}`
+    }
+
+    case "String": {
+      return JSON.stringify(exp.content)
+    }
+
+    case "Int": {
+      return exp.content.toString()
+    }
+
+    case "Float": {
+      if (Number.isInteger(exp.content)) {
+        return `${exp.content.toString()}.0`
+      } else {
+        return exp.content.toString()
+      }
+    }
+
+    case "Var": {
+      return exp.name
+    }
+
+    case "Lambda": {
+      const parameters = formatParameters(exp.parameters)
+      const body = formatBody(exp.body)
+      return `(lambda (${parameters}) ${body})`
+    }
+
+    case "Polymorphic": {
+      const parameters = formatParameters(exp.parameters)
+      const body = formatExp(exp.body)
+      return `(polymorphic (${parameters}) ${body})`
+    }
+
+    case "Apply": {
+      const target = formatExp(exp.target)
+      const args = formatExps(exp.args)
+      if (args === "") {
+        return `(${target})`
+      } else {
+        return `(${target} ${args})`
+      }
+    }
+
+    case "Let1": {
+      const rhs = formatExp(exp.rhs)
+      const body = formatBody(exp.body)
+      return `(begin (= ${exp.name} ${rhs}) ${body})`
+    }
+
+    case "Begin1": {
+      const head = formatExp(exp.head)
+      const body = formatBody(exp.body)
+      return `(begin ${head} ${body})`
+    }
+
+    case "BeginSugar": {
+      const sequence = formatExps(exp.sequence)
+      return `(begin ${sequence})`
+    }
+
+    case "AssignSugar": {
+      return `(= ${exp.name} ${formatExp(exp.rhs)})`
+    }
+
+    case "If": {
+      return `(if ${formatExp(exp.condition)} ${formatExp(exp.consequent)} ${formatExp(exp.alternative)})`
+    }
+
+    case "When": {
+      return `(when ${formatExp(exp.condition)} ${formatExp(exp.consequent)})`
+    }
+
+    case "Unless": {
+      return `(unless ${formatExp(exp.condition)} ${formatExp(exp.alternative)})`
+    }
+
+    case "And": {
+      const exps = formatExps(exp.exps)
+      if (exps === "") {
+        return `(and)`
+      } else {
+        return `(and ${exps})`
+      }
+    }
+
+    case "Or": {
+      const exps = formatExps(exp.exps)
+      if (exps === "") {
+        return `(or)`
+      } else {
+        return `(or ${exps})`
+      }
+    }
+
+    case "Cond": {
+      const condLines = exp.condLines.map(formatCondLine)
+      return `(cond ${condLines.join(" ")})`
+    }
+
+    case "Tael": {
+      const elements = formatExps(exp.elements)
+      const attributes = formatExpAttributes(exp.attributes)
+      if (elements === "" && attributes === "") {
+        return `[]`
+      } else if (attributes === "") {
+        return `[${elements}]`
+      } else if (elements === "") {
+        return `[${attributes}]`
+      } else {
+        return `[${elements} ${attributes}]`
+      }
+    }
+
+    case "Set": {
+      const elements = formatExps(exp.elements)
+      return `{${elements}}`
+    }
+
+    case "Hash": {
+      const entries = exp.entries
+        .map(({ key, value }) => `${formatExp(key)} ${formatExp(value)}`)
+        .join(" ")
+      if (entries === "") {
+        return `(@hash)`
+      } else {
+        return `(@hash ${entries})`
+      }
+    }
+
+    case "Quote": {
+      return `(@quote ${S.formatSexp(exp.sexp)})`
+    }
+
+    case "Arrow": {
+      const argTypes = exp.argTypes.map(formatExp).join(" ")
+      const retType = formatExp(exp.retType)
+      return `(-> ${argTypes} ${retType})`
+    }
+
+    case "Tau": {
+      const elementTypes = formatExps(exp.elementTypes)
+      const attributeTypes = formatExpAttributes(exp.attributeTypes)
+      if (elementTypes === "" && attributeTypes === "") {
+        return `(tau)`
+      } else if (attributeTypes === "") {
+        return `(tau ${elementTypes})`
+      } else if (elementTypes === "") {
+        return `(tau ${attributeTypes})`
+      } else {
+        return `(tau ${elementTypes} ${attributeTypes})`
+      }
+    }
+
+    case "The": {
+      return `(the ${formatExp(exp.type)} ${formatExp(exp.exp)})`
+    }
+  }
+}
+
+function formatCondLine(condLine: Exps.CondLine): string {
+  return `(${formatExp(condLine.question)} ${formatExp(condLine.answer)})`
+}
+
+export function formatBody(body: Exp): string {
+  if (body.kind === "Begin1") {
+    return `${formatExp(body.head)} ${formatBody(body.body)}`
+  } else if (body.kind === "Let1") {
+    return `(= ${body.name} ${formatExp(body.rhs)}) ${formatBody(body.body)}`
+  } else if (body.kind === "BeginSugar") {
+    return formatExps(body.sequence)
+  } else {
+    return formatExp(body)
+  }
+}

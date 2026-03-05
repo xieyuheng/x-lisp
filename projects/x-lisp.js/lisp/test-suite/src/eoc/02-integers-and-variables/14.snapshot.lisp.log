@@ -1,0 +1,50 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x 32)
+  (println (iadd (begin (= x 10) x) x)))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x 32)
+  (println (iadd (begin (= x 10) x) x)))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x 32)
+  (println (iadd (begin (= x 10) x) x)))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁ 32)
+  (println (iadd (begin (= x₂ 10) x₂) x₁)))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁ 32)
+  (println (iadd (begin (= x₂ 10) x₂) x₁)))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁ 32)
+  (= x₂ 10)
+  (= _₁ (iadd x₂ x₁))
+  (println _₁))
+

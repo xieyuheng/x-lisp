@@ -1,0 +1,16 @@
+lisp/test-suite/src/function/Y.type-error.lisp:6:5 -- not inferable exp: Lambda
+  4 | 
+  5 | (define (Y f)
+  6 |   ((lambda (u) (u u))
+    |     ~~~~~~            
+  7 |    (lambda (x) (f (lambda (t) ((x x) t))))))
+  8 | 
+
+lisp/test-suite/src/function/Y.type-error.lisp:6:5 -- not inferable exp: Lambda
+  4 | 
+  5 | (define (Y f)
+  6 |   ((lambda (u) (u u))
+    |     ~~~~~~            
+  7 |    (lambda (x) (f (lambda (t) ((x x) t))))))
+  8 | 
+

@@ -1,0 +1,90 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main)
+  (println (@hash))
+  (println (@hash 1 2))
+  (println (@hash 1 3))
+  (println (@hash 1 2 3 4)))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (println (@hash))
+  (println (@hash 1 2))
+  (println (@hash 1 3))
+  (println (@hash 1 2 3 4)))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println (begin (= hash (make-hash)) hash))
+  (println
+   (begin (= hash (make-hash)) (hash-put! 1 2 hash) hash))
+  (println
+   (begin (= hash (make-hash)) (hash-put! 1 3 hash) hash))
+  (println
+   (begin
+     (= hash (make-hash))
+     (hash-put! 1 2 hash)
+     (hash-put! 3 4 hash)
+     hash)))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println (begin (= hash₁ (make-hash)) hash₁))
+  (println
+   (begin (= hash₁ (make-hash)) (hash-put! 1 2 hash₁) hash₁))
+  (println
+   (begin (= hash₁ (make-hash)) (hash-put! 1 3 hash₁) hash₁))
+  (println
+   (begin
+     (= hash₁ (make-hash))
+     (hash-put! 1 2 hash₁)
+     (hash-put! 3 4 hash₁)
+     hash₁)))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println (begin (= hash₁ (make-hash)) hash₁))
+  (println
+   (begin (= hash₁ (make-hash)) (hash-put! 1 2 hash₁) hash₁))
+  (println
+   (begin (= hash₁ (make-hash)) (hash-put! 1 3 hash₁) hash₁))
+  (println
+   (begin
+     (= hash₁ (make-hash))
+     (hash-put! 1 2 hash₁)
+     (hash-put! 3 4 hash₁)
+     hash₁)))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (begin (= hash₁ (make-hash)) (println hash₁))
+  (begin
+    (= hash₁ (make-hash))
+    (hash-put! 1 2 hash₁)
+    (println hash₁))
+  (begin
+    (= hash₁ (make-hash))
+    (hash-put! 1 3 hash₁)
+    (println hash₁))
+  (= hash₁ (make-hash))
+  (hash-put! 1 2 hash₁)
+  (hash-put! 3 4 hash₁)
+  (println hash₁))
+

@@ -1,0 +1,124 @@
+;;; Input
+
+(claim factorial (-> int-t int-t))
+
+(define (factorial n)
+  (if (int-less-or-equal? n 1)
+    1
+    (imul (factorial (isub n 1)) n)))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (factorial 0))
+  (assert-equal 1 (factorial 1))
+  (assert-equal 2 (factorial 2))
+  (assert-equal 6 (factorial 3))
+  (assert-equal 24 (factorial 4))
+  (assert-equal 120 (factorial 5))
+  (assert-equal 720 (factorial 6)))
+
+;;; Loaded
+
+(claim factorial (-> int-t int-t))
+
+(define (factorial n)
+  (if (int-less-or-equal? n 1)
+    1
+    (imul (factorial (isub n 1)) n)))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (factorial 0))
+  (assert-equal 1 (factorial 1))
+  (assert-equal 2 (factorial 2))
+  (assert-equal 6 (factorial 3))
+  (assert-equal 24 (factorial 4))
+  (assert-equal 120 (factorial 5))
+  (assert-equal 720 (factorial 6)))
+
+;;; ShrinkPass
+
+(claim factorial (-> int-t int-t))
+
+(define (factorial n)
+  (if (int-less-or-equal? n 1)
+    1
+    (imul (factorial (isub n 1)) n)))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (factorial 0))
+  (assert-equal 1 (factorial 1))
+  (assert-equal 2 (factorial 2))
+  (assert-equal 6 (factorial 3))
+  (assert-equal 24 (factorial 4))
+  (assert-equal 120 (factorial 5))
+  (assert-equal 720 (factorial 6)))
+
+;;; UniquifyPass
+
+(claim factorial (-> int-t int-t))
+
+(define (factorial n)
+  (if (int-less-or-equal? n 1)
+    1
+    (imul (factorial (isub n 1)) n)))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (factorial 0))
+  (assert-equal 1 (factorial 1))
+  (assert-equal 2 (factorial 2))
+  (assert-equal 6 (factorial 3))
+  (assert-equal 24 (factorial 4))
+  (assert-equal 120 (factorial 5))
+  (assert-equal 720 (factorial 6)))
+
+;;; LiftLambdaPass
+
+(claim factorial (-> int-t int-t))
+
+(define (factorial n)
+  (if (int-less-or-equal? n 1)
+    1
+    (imul (factorial (isub n 1)) n)))
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (factorial 0))
+  (assert-equal 1 (factorial 1))
+  (assert-equal 2 (factorial 2))
+  (assert-equal 6 (factorial 3))
+  (assert-equal 24 (factorial 4))
+  (assert-equal 120 (factorial 5))
+  (assert-equal 720 (factorial 6)))
+
+;;; UnnestOperandPass
+
+(claim factorial (-> int-t int-t))
+
+(define (factorial n)
+  (if (int-less-or-equal? n 1)
+    1
+    (begin
+      (= _₁ (isub n 1))
+      (= _₂ (factorial _₁))
+      (imul _₂ n))))
+
+(claim main (-> void-t))
+
+(define (main)
+  (begin (= _₁ (factorial 0)) (assert-equal 1 _₁))
+  (begin (= _₂ (factorial 1)) (assert-equal 1 _₂))
+  (begin (= _₃ (factorial 2)) (assert-equal 2 _₃))
+  (begin (= _₄ (factorial 3)) (assert-equal 6 _₄))
+  (begin (= _₅ (factorial 4)) (assert-equal 24 _₅))
+  (begin (= _₆ (factorial 5)) (assert-equal 120 _₆))
+  (= _₇ (factorial 6))
+  (assert-equal 720 _₇))
+

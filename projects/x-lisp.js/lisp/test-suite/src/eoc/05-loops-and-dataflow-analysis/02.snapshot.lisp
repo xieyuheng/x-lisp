@@ -1,0 +1,21 @@
+(claim main (-> void-t))
+
+(define (main)
+  (= x (begin
+         (print 1)
+         (newline)
+         (print 2)
+         (newline)
+         (print 3)
+         (newline)
+         6))
+  (begin
+    (print 4)
+    (newline)
+    (print 5)
+    (newline)
+    (print 6)
+    (newline)
+    (print (iadd x x))
+    (newline)
+    void))

@@ -1,0 +1,77 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (if
+       (and (equal? (random-dice) 1)
+            (equal? (random-dice) 2))
+     0
+     42)))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (if
+       (and (equal? (random-dice) 1)
+            (equal? (random-dice) 2))
+     0
+     42)))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (if
+       (if (equal? (random-dice) 1)
+         (equal? (random-dice) 2)
+         #f)
+     0
+     42)))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (if
+       (if (equal? (random-dice) 1)
+         (equal? (random-dice) 2)
+         #f)
+     0
+     42)))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (if
+       (if (equal? (random-dice) 1)
+         (equal? (random-dice) 2)
+         #f)
+     0
+     42)))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= _₁
+     (if
+         (if (begin (= _₂ (random-dice)) (equal? _₂ 1))
+           (begin (= _₃ (random-dice)) (equal? _₃ 2))
+           #f)
+       0
+       42))
+  (println _₁))
+

@@ -1,0 +1,146 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x
+     (begin
+       (print 1)
+       (newline)
+       (print 2)
+       (newline)
+       (print 3)
+       (newline)
+       6))
+  (begin
+    (print 4)
+    (newline)
+    (print 5)
+    (newline)
+    (print 6)
+    (newline)
+    (print (iadd x x))
+    (newline)
+    void))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x
+     (begin
+       (print 1)
+       (newline)
+       (print 2)
+       (newline)
+       (print 3)
+       (newline)
+       6))
+  (begin
+    (print 4)
+    (newline)
+    (print 5)
+    (newline)
+    (print 6)
+    (newline)
+    (print (iadd x x))
+    (newline)
+    void))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x
+     (begin
+       (print 1)
+       (newline)
+       (print 2)
+       (newline)
+       (print 3)
+       (newline)
+       6))
+  (print 4)
+  (newline)
+  (print 5)
+  (newline)
+  (print 6)
+  (newline)
+  (print (iadd x x))
+  (newline)
+  void)
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁
+     (begin
+       (print 1)
+       (newline)
+       (print 2)
+       (newline)
+       (print 3)
+       (newline)
+       6))
+  (print 4)
+  (newline)
+  (print 5)
+  (newline)
+  (print 6)
+  (newline)
+  (print (iadd x₁ x₁))
+  (newline)
+  void)
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁
+     (begin
+       (print 1)
+       (newline)
+       (print 2)
+       (newline)
+       (print 3)
+       (newline)
+       6))
+  (print 4)
+  (newline)
+  (print 5)
+  (newline)
+  (print 6)
+  (newline)
+  (print (iadd x₁ x₁))
+  (newline)
+  void)
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁
+     (begin
+       (print 1)
+       (newline)
+       (print 2)
+       (newline)
+       (print 3)
+       (newline)
+       6))
+  (print 4)
+  (newline)
+  (print 5)
+  (newline)
+  (print 6)
+  (newline)
+  (begin (= _₁ (iadd x₁ x₁)) (print _₁))
+  (newline)
+  void)
+

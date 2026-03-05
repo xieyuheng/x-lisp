@@ -1,0 +1,36 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main) (println 42))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main) (println 42))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main) (println 42))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main) (println 42))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main) (println 42))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main) (println 42))
+

@@ -1,0 +1,33 @@
+(define-function (swap f x y) (block body (return (f y x))))
+
+(define-function (drop f) (block body (return (drop©λ₁ f))))
+
+(define-function (drop©λ₁ f dropped₁)
+  (block body (return (drop©λ₁©λ₁ f))))
+
+(define-function (drop©λ₁©λ₁ f x₁)
+  (block body (return (f x₁))))
+
+(define-function (dup f) (block body (return (dup©λ₁ f))))
+
+(define-function (dup©λ₁ f x₁)
+  (block body (return (f x₁ x₁))))
+
+(define-function (identity x) (block body (return x)))
+
+(define-function (main)
+  (block body
+    (= f₁ identity)
+    (= square₁ (dup imul))
+    (= _₁ (f₁ 1))
+    (= _₂ (square₁ _₁))
+    (perform (println _₂))
+    (= _₃ (f₁ 2))
+    (= _₄ (square₁ _₃))
+    (perform (println _₄))
+    (= _₅ (f₁ 3))
+    (= _₆ (square₁ _₅))
+    (perform (println _₆))
+    (= _₇ (f₁ 4))
+    (= _₈ (square₁ _₇))
+    (return (println _₈))))

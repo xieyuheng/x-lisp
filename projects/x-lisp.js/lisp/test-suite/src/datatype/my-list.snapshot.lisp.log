@@ -1,0 +1,53 @@
+;;; Input
+
+(import-all "my-list")
+
+(claim main (-> void-t))
+
+(define (main)
+  (println nil)
+  (println (li 1 (li 2 (li 3 nil)))))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (println nil)
+  (println (li 1 (li 2 (li 3 nil)))))
+
+;;; ShrinkPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println nil)
+  (println (li 1 (li 2 (li 3 nil)))))
+
+;;; UniquifyPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println nil)
+  (println (li 1 (li 2 (li 3 nil)))))
+
+;;; LiftLambdaPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println nil)
+  (println (li 1 (li 2 (li 3 nil)))))
+
+;;; UnnestOperandPass
+
+(claim main (-> void-t))
+
+(define (main)
+  (println nil)
+  (= _₁ (li 3 nil))
+  (= _₂ (li 2 _₁))
+  (= _₃ (li 1 _₂))
+  (println _₃))
+
