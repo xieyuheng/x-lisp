@@ -1,6 +1,5 @@
 import fs from "node:fs"
 import Path from "node:path"
-import * as B from "../basic/index.ts"
 import * as L from "../lisp/index.ts"
 import type { Project } from "./index.ts"
 
@@ -14,9 +13,9 @@ export function projectSourceDirectory(project: Project): string {
 export function projectOutputDirectory(project: Project): string {
   return project.config["build"]["output-directory"]
     ? Path.resolve(
-        project.rootDirectory,
-        project.config["build"]["output-directory"],
-      )
+      project.rootDirectory,
+      project.config["build"]["output-directory"],
+    )
     : projectSourceDirectory(project)
 }
 
@@ -45,16 +44,6 @@ export function projectGetPassLogFile(
   sourceId: string,
 ): string {
   return Path.join(projectOutputDirectory(project), sourceId) + ".log"
-}
-
-export function projectGetBasicFile(
-  project: Project,
-  sourceId: string,
-): string {
-  return Path.join(
-    projectOutputDirectory(project),
-    sourceId.slice(0, -L.suffix.length) + B.suffix,
-  )
 }
 
 export type ProjectIdHandler = (project: Project, id: string) => void

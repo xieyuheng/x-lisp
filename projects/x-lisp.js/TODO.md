@@ -1,3 +1,4 @@
+[x-lisp.js] rename Tael to List
 [x-lisp.js] use sexp.js instead of sexp-tael.js
 
 # pattern match
