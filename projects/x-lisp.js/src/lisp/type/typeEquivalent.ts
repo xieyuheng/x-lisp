@@ -35,22 +35,18 @@ export function typeEquivalent(
   }
 
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
-    return (
-      typeEquivalentMany(
-        trail,
-        L.tauTypeElementTypes(lhs),
-        L.tauTypeElementTypes(rhs),
-      )
+    return typeEquivalentMany(
+      trail,
+      L.tauTypeElementTypes(lhs),
+      L.tauTypeElementTypes(rhs),
     )
   }
 
   if (L.isClassType(lhs) && L.isClassType(rhs)) {
-    return (
-      typeEquivalentRecord(
-        trail,
-        L.classTypeAttributeTypes(lhs),
-        L.classTypeAttributeTypes(rhs),
-      )
+    return typeEquivalentRecord(
+      trail,
+      L.classTypeAttributeTypes(lhs),
+      L.classTypeAttributeTypes(rhs),
     )
   }
 

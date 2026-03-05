@@ -34,12 +34,10 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   }
 
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
-    return (
-      typeSubtypeMany(
-        trail,
-        L.tauTypeElementTypes(lhs),
-        L.tauTypeElementTypes(rhs),
-      )
+    return typeSubtypeMany(
+      trail,
+      L.tauTypeElementTypes(lhs),
+      L.tauTypeElementTypes(rhs),
     )
   }
 
@@ -55,7 +53,6 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
 
     return true
   }
-
 
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
     // contravariant on ArgTypes

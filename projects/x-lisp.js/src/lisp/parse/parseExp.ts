@@ -1,5 +1,4 @@
 import { arrayGroup2, arrayPickLast } from "@xieyuheng/helpers.js/array"
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
@@ -98,10 +97,7 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
   },
 
   "(cons* 'tau elements)": ({ elements }, { meta }) => {
-    return L.Tau(
-      S.listElements(elements).map(parseExp),
-      meta,
-    )
+    return L.Tau(S.listElements(elements).map(parseExp), meta)
   },
 
   "`(the ,schema ,exp)": ({ schema, exp }, { meta }) => {

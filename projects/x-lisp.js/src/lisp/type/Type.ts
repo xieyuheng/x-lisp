@@ -318,9 +318,10 @@ export function datatypeTypeUnfold(datatypeType: L.Value): L.Value {
       L.evaluate(definition.mod, env, field.type),
     )
 
-    variantTypes[dataConstructor.name] = L.createTauType(
-      [L.KeywordValue(dataConstructor.name), ...elementTypes],
-    )
+    variantTypes[dataConstructor.name] = L.createTauType([
+      L.KeywordValue(dataConstructor.name),
+      ...elementTypes,
+    ])
   }
 
   return L.createDisjointUnionType(variantTypes)

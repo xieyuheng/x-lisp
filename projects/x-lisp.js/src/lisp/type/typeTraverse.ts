@@ -22,9 +22,7 @@ export function typeTraverse(
   }
 
   if (L.isTauType(type)) {
-    return L.createTauType(
-      L.tauTypeElementTypes(type).map(onType)
-    )
+    return L.createTauType(L.tauTypeElementTypes(type).map(onType))
   }
 
   if (L.isClassType(type)) {
@@ -47,7 +45,6 @@ export function typeTraverse(
   if (L.isSetType(type)) {
     return L.createSetType(onType(L.setTypeElementType(type)))
   }
-
 
   if (L.isHashType(type)) {
     return L.createHashType(

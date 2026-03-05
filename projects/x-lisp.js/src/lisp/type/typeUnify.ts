@@ -59,7 +59,6 @@ export function typeUnify(
       L.tauTypeElementTypes(lhs),
       L.tauTypeElementTypes(rhs),
     )
-
   }
 
   if (L.isClassType(lhs) && L.isClassType(rhs)) {
