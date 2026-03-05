@@ -1,4 +1,3 @@
-[sexp.js] update readme
 [sexp.js] use list instead of tael
 [sexp.js] rename hashtag to keyword
 [sexp.js] how to handle bool and void?

@@ -56,8 +56,8 @@ which evaluates to:
 
 ## Examples
 
-- [src/examples/lambda.test.ts](src/examples/lambda.test.ts):
-- [src/examples/tau.test.ts](src/examples/tau.test.ts):
+- [src/examples/lambda.test.ts](src/examples/lambda.test.ts)
+- [src/examples/tau.test.ts](src/examples/tau.test.ts)
 
 ## References
 
