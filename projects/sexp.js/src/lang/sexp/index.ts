@@ -1,5 +1,5 @@
-export * from "./atomHelper.ts"
-export * from "./listHelper.ts"
+export * from "./atomHelpers.ts"
+export * from "./listHelpers.ts"
 export * from "./Sexp.ts"
 export * from "./sexpEqual.ts"
 export * from "./sexpHelpers.ts"

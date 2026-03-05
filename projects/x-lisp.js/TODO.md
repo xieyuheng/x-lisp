@@ -1,9 +1,14 @@
-[lisp] parse `@object` and `@class`
+[lisp] `Class` as `Exp`
+[lisp] parse `@class`
 
 [lisp] `Tuple` as `Exp`
 [lisp] parse `@tuple`
 
 [lisp] remove `NullValue`
+
+# debug
+
+[lisp] `(check-subtype)` as debug stmt
 
 # type checking
 
@@ -21,8 +26,7 @@
 
 # optional type
 
-[lisp] maybe use `maybe-t`
-[lisp] support `OptionalType` -- fix `builtin/index.lisp`
+[lisp] use `maybe-t` -- fix `builtin/index.lisp`
 
 # later
 

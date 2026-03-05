@@ -1,5 +1,3 @@
-import { type Json } from "@xieyuheng/helpers.js/json"
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "../index.ts"
 
 export function symbolContent(sexp: S.Sexp): string {
@@ -48,4 +46,29 @@ export function listElements(sexp: S.Sexp): Array<S.Sexp> {
   }
 
   return sexp.elements
+}
+
+export function listCollectAttributes(sexp: S.Sexp): Record<string, S.Sexp> {
+  if (sexp.kind !== "List") {
+    throw new Error(`[listCollectAttributes] wrong sexp: ${S.formatSexp(sexp)}`)
+  }
+
+  const attributes: Record<string, S.Sexp> = {}
+  let i = 0
+  while (i < sexp.elements.length) {
+    const keyword = sexp.elements[i]
+    if (S.isKeyword(keyword)) {
+      if (i + 1 < sexp.elements.length) {
+        const value = sexp.elements[i + 1]
+        attributes[keyword.content] = value
+        i += 2
+      } else {
+        i++
+      }
+    } else {
+      i++
+    }
+  }
+
+  return attributes
 }
