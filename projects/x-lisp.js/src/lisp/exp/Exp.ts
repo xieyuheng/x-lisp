@@ -20,6 +20,7 @@ export type Exp =
   | Or
   | Cond
   | List
+  | Tuple
   | Object
   | Set
   | Hash
@@ -338,6 +339,20 @@ export type List = {
 export function List(elements: Array<Exp>, meta?: TokenMeta): List {
   return {
     kind: "List",
+    elements,
+    meta,
+  }
+}
+
+export type Tuple = {
+  kind: "Tuple"
+  elements: Array<Exp>
+  meta?: TokenMeta
+}
+
+export function Tuple(elements: Array<Exp>, meta?: TokenMeta): Tuple {
+  return {
+    kind: "Tuple",
     elements,
     meta,
   }

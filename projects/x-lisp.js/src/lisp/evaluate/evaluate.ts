@@ -110,6 +110,10 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       return evaluate(mod, env, L.desugarList(exp.elements))
     }
 
+    case "Tuple": {
+      return evaluate(mod, env, L.desugarList(exp.elements))
+    }
+
     case "Object": {
       return L.ObjectValue(
         recordMapValue(exp.attributes, (attribute) =>

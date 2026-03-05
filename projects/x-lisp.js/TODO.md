@@ -1,4 +1,3 @@
-[lisp] `Tuple` as `Exp`
 [lisp] parse `@tuple`
 
 [lisp] tuple.test.lisp

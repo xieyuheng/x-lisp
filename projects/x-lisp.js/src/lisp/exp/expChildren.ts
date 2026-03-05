@@ -74,6 +74,10 @@ export function expChildren(exp: Exp): Array<Exp> {
       return exp.elements
     }
 
+    case "Tuple": {
+      return exp.elements
+    }
+
     case "Object": {
       return Object.values(exp.attributes)
     }

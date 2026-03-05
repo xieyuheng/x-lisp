@@ -128,24 +128,34 @@ export function formatExp(exp: Exp): string {
       const elements = formatExps(exp.elements)
 
       if (elements === "") {
-        return `[]`
+        return `(@list)`
       } else {
-        return `[${elements}]`
+        return `(@list ${elements})`
+      }
+    }
+
+    case "Tuple": {
+      const elements = formatExps(exp.elements)
+
+      if (elements === "") {
+        return `(@tuple)`
+      } else {
+        return `(@tuple ${elements})`
       }
     }
 
     case "Object": {
       const attributes = formatExpAttributes(exp.attributes)
       if (attributes === "") {
-        return `{}`
+        return `(@object)`
       } else {
-        return `{${attributes}}`
+        return `(@object ${attributes})`
       }
     }
 
     case "Set": {
       const elements = formatExps(exp.elements)
-      return `{${elements}}`
+      return `(@set ${elements})`
     }
 
     case "Hash": {
@@ -181,9 +191,9 @@ export function formatExp(exp: Exp): string {
     case "Class": {
       const attributeTypes = formatExpAttributes(exp.attributeTypes)
       if (attributeTypes === "") {
-        return `(class)`
+        return `(@class)`
       } else {
-        return `(class ${attributeTypes})`
+        return `(@class ${attributeTypes})`
       }
     }
 

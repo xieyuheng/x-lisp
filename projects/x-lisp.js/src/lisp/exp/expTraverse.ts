@@ -88,6 +88,10 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return L.List(exp.elements.map(onExp), exp.meta)
     }
 
+    case "Tuple": {
+      return L.Tuple(exp.elements.map(onExp), exp.meta)
+    }
+
     case "Object": {
       return L.Object(recordMapValue(exp.attributes, onExp), exp.meta)
     }
