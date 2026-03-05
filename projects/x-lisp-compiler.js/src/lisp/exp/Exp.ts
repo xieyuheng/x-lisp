@@ -1,4 +1,8 @@
-import { type TokenMeta as Meta, type Sexp } from "@xieyuheng/sexp-tael.js"
+import {
+  type TokenMeta as Meta,
+  type Sexp,
+  type TokenMeta,
+} from "@xieyuheng/sexp-tael.js"
 
 export type Exp =
   | Symbol
@@ -156,7 +160,12 @@ export type Let1 = {
   meta?: TokenMeta
 }
 
-export function Let1(name: string, rhs: Exp, body: Exp, meta?: TokenMeta): Let1 {
+export function Let1(
+  name: string,
+  rhs: Exp,
+  body: Exp,
+  meta?: TokenMeta,
+): Let1 {
   return {
     kind: "Let1",
     name,
@@ -203,7 +212,11 @@ export type AssignSugar = {
   meta?: TokenMeta
 }
 
-export function AssignSugar(name: string, rhs: Exp, meta?: TokenMeta): AssignSugar {
+export function AssignSugar(
+  name: string,
+  rhs: Exp,
+  meta?: TokenMeta,
+): AssignSugar {
   return {
     kind: "AssignSugar",
     name,
@@ -258,7 +271,11 @@ export type Unless = {
   meta?: TokenMeta
 }
 
-export function Unless(condition: Exp, alternative: Exp, meta?: TokenMeta): Unless {
+export function Unless(
+  condition: Exp,
+  alternative: Exp,
+  meta?: TokenMeta,
+): Unless {
   return {
     kind: "Unless",
     condition,
@@ -386,7 +403,11 @@ export type Arrow = {
   meta?: TokenMeta
 }
 
-export function Arrow(argTypes: Array<Exp>, retType: Exp, meta?: TokenMeta): Arrow {
+export function Arrow(
+  argTypes: Array<Exp>,
+  retType: Exp,
+  meta?: TokenMeta,
+): Arrow {
   return {
     kind: "Arrow",
     argTypes,

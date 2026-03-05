@@ -1,4 +1,4 @@
-[lisp] `unifyThenCheck`
+[lisp] `typeCheck` -- pass `subst`
 [lisp] `typeCheck` -- handle `Tuple`
 [lisp] `typeCheck` -- handle `Object`
 

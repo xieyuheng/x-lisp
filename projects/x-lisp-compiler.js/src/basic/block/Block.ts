@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp-tael.js"
+import { type TokenMeta } from "@xieyuheng/sexp-tael.js"
 import { type Instr } from "../instr/index.ts"
 
 export type Block = {
@@ -7,7 +7,11 @@ export type Block = {
   meta?: TokenMeta
 }
 
-export function Block(label: string, instrs: Array<Instr>, meta?: TokenMeta): Block {
+export function Block(
+  label: string,
+  instrs: Array<Instr>,
+  meta?: TokenMeta,
+): Block {
   return {
     label,
     instrs,

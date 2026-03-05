@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp-tael.js"
+import { type TokenMeta } from "@xieyuheng/sexp-tael.js"
 import { type Block } from "../block/index.ts"
 import type { Mod } from "../mod/index.ts"
 import type { AboutModule } from "./AboutModule.ts"

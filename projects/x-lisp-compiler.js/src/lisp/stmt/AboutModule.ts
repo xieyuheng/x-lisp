@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp-tael.js"
+import { type TokenMeta } from "@xieyuheng/sexp-tael.js"
 
 export type AboutModule = AboutExport | AboutImport
 
@@ -75,7 +75,11 @@ export type ImportAs = {
   meta?: TokenMeta
 }
 
-export function ImportAs(path: string, prefix: string, meta?: TokenMeta): ImportAs {
+export function ImportAs(
+  path: string,
+  prefix: string,
+  meta?: TokenMeta,
+): ImportAs {
   return {
     kind: "ImportAs",
     path,
@@ -184,7 +188,10 @@ export function ExportAll(meta?: TokenMeta): ExportAll {
   }
 }
 
-export function ExportExcept(names: Array<string>, meta?: TokenMeta): ExportExcept {
+export function ExportExcept(
+  names: Array<string>,
+  meta?: TokenMeta,
+): ExportExcept {
   return {
     kind: "ExportExcept",
     names,

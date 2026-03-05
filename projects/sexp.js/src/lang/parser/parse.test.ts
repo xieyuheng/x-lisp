@@ -59,10 +59,13 @@ test("parse -- flower brackets", () => {
   assertParse("{}", S.List([S.Symbol("@object")]))
   assertParse(
     "{:x 1 :y 2}",
-    S.List([S.Symbol("@object"),
-            S.Keyword("x"), S.Int(BigInt(1)),
-            S.Keyword("y"), S.Int(BigInt(2)),
-]),
+    S.List([
+      S.Symbol("@object"),
+      S.Keyword("x"),
+      S.Int(BigInt(1)),
+      S.Keyword("y"),
+      S.Int(BigInt(2)),
+    ]),
   )
 })
 

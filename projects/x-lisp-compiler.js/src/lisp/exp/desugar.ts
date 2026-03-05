@@ -2,7 +2,10 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp-tael.js"
 import * as L from "../index.ts"
 
-export function desugarBegin(sequence: Array<L.Exp>, meta?: L.TokenMeta): L.Exp {
+export function desugarBegin(
+  sequence: Array<L.Exp>,
+  meta?: S.TokenMeta,
+): L.Exp {
   if (sequence.length === 0) {
     let message = `[desugarBegin] (begin) must not be empty`
     if (meta) throw new S.ErrorWithMeta(message, meta)
@@ -21,7 +24,7 @@ export function desugarBegin(sequence: Array<L.Exp>, meta?: L.TokenMeta): L.Exp 
   }
 }
 
-export function desugarWhen(exp: L.When, meta?: L.TokenMeta): L.If {
+export function desugarWhen(exp: L.When, meta?: S.TokenMeta): L.If {
   return L.If(
     exp.condition,
     L.Begin1(exp.consequent, L.Void()),
@@ -30,7 +33,7 @@ export function desugarWhen(exp: L.When, meta?: L.TokenMeta): L.If {
   )
 }
 
-export function desugarUnless(exp: L.Unless, meta?: L.TokenMeta): L.If {
+export function desugarUnless(exp: L.Unless, meta?: S.TokenMeta): L.If {
   return L.If(
     exp.condition,
     L.Void(),
@@ -39,14 +42,14 @@ export function desugarUnless(exp: L.Unless, meta?: L.TokenMeta): L.If {
   )
 }
 
-export function desugarAnd(exps: Array<L.Exp>, meta?: L.TokenMeta): L.Exp {
+export function desugarAnd(exps: Array<L.Exp>, meta?: S.TokenMeta): L.Exp {
   if (exps.length === 0) return L.Bool(true, meta)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
   return L.If(head, desugarAnd(restExps, meta), L.Bool(false, meta), meta)
 }
 
-export function desugarOr(exps: Array<L.Exp>, meta?: L.TokenMeta): L.Exp {
+export function desugarOr(exps: Array<L.Exp>, meta?: S.TokenMeta): L.Exp {
   if (exps.length === 0) return L.Bool(false, meta)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
@@ -55,7 +58,7 @@ export function desugarOr(exps: Array<L.Exp>, meta?: L.TokenMeta): L.Exp {
 
 export function desugarCond(
   condLines: Array<L.CondLine>,
-  meta?: L.TokenMeta,
+  meta?: S.TokenMeta,
 ): L.Exp {
   if (condLines.length === 0)
     return L.Apply(L.Var("assert"), [L.Bool(false)], meta)
@@ -66,7 +69,7 @@ export function desugarCond(
 export function desugarTael(
   elements: Array<L.Exp>,
   attributes: Record<string, L.Exp>,
-  meta?: L.TokenMeta,
+  meta?: S.TokenMeta,
 ): L.Exp {
   return L.BeginSugar(
     [
@@ -81,7 +84,7 @@ export function desugarTael(
   )
 }
 
-export function desugarSet(elements: Array<L.Exp>, meta?: L.TokenMeta): L.Exp {
+export function desugarSet(elements: Array<L.Exp>, meta?: S.TokenMeta): L.Exp {
   return L.BeginSugar(
     [
       L.AssignSugar("set", L.Apply(L.Var("make-set"), [])),
@@ -94,7 +97,7 @@ export function desugarSet(elements: Array<L.Exp>, meta?: L.TokenMeta): L.Exp {
 
 export function desugarHash(
   entries: Array<{ key: L.Exp; value: L.Exp }>,
-  meta?: L.TokenMeta,
+  meta?: S.TokenMeta,
 ): L.Exp {
   return L.BeginSugar(
     [
@@ -108,7 +111,7 @@ export function desugarHash(
   )
 }
 
-export function desugarQuote(sexp: S.Sexp, meta?: L.TokenMeta): L.Exp {
+export function desugarQuote(sexp: S.Sexp, meta?: S.TokenMeta): L.Exp {
   switch (sexp.kind) {
     case "Symbol": {
       return L.Symbol(sexp.content, meta)
