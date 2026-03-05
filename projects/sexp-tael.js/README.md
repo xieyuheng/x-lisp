@@ -1,4 +1,4 @@
-# sexp.js
+# sexp-tael.js
 
 An extension to [S-expression](https://en.wikipedia.org/wiki/S-expression)
 to support list with attributes.

@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/sexp.js"
+import * as S from "@xieyuheng/sexp-tael.js"
 import * as L from "../lisp/index.ts"
 
 export function ShrinkPass(mod: L.Mod): void {

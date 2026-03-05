@@ -1,7 +1,3 @@
-rename sexp.js to sexp-tael.js
-sexp.js copy code from sexp-tael.js
-sexp.js use list instead of tael
-
 setup x-lisp.js
 x-lisp.js copy code from x-lisp-compiler.js
 

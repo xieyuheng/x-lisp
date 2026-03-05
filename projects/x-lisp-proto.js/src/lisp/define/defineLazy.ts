@@ -1,5 +1,5 @@
 import { formatIndent, formatUnderTag } from "@xieyuheng/helpers.js/format"
-import { ErrorWithMeta } from "@xieyuheng/sexp.js"
+import { ErrorWithMeta } from "@xieyuheng/sexp-tael.js"
 import { textWidth } from "../../config.ts"
 import { LazyDefinition } from "../definition/Definition.ts"
 import { type Exp } from "../exp/Exp.ts"

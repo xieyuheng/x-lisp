@@ -1,5 +1,5 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import * as S from "@xieyuheng/sexp.js"
+import * as S from "@xieyuheng/sexp-tael.js"
 import * as L from "../index.ts"
 
 export function desugarBegin(sequence: Array<L.Exp>, meta?: L.Meta): L.Exp {

@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/sexp.js"
+import * as S from "@xieyuheng/sexp-tael.js"
 import { formatExp, formatValue } from "../format/index.ts"
 import type { Value } from "../value/index.ts"
 import { sexpConfig } from "./sexpConfig.ts"

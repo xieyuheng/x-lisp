@@ -1,6 +1,6 @@
 import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
-import * as S from "@xieyuheng/sexp.js"
+import * as S from "@xieyuheng/sexp-tael.js"
 import { fileURLToPath } from "node:url"
 import { load, runSexps } from "../lisp/load/index.ts"
 

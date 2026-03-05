@@ -1,5 +1,5 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
-import * as S from "@xieyuheng/sexp.js"
+import * as S from "@xieyuheng/sexp-tael.js"
 import { textWidth } from "../../config.ts"
 import { equal } from "../equal/index.ts"
 import { type Exp } from "../exp/index.ts"

@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/sexp-tael.js"
 import type {
   DataConstructorSpec,
   DatatypeConstructorSpec,

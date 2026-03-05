@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/sexp-tael.js"
 
 export type Atom = Symbol | Hashtag | String | Int | Float | Var
 

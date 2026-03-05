@@ -1,5 +1,5 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import * as S from "@xieyuheng/sexp.js"
+import * as S from "@xieyuheng/sexp-tael.js"
 import * as L from "../index.ts"
 import { apply } from "./apply.ts"
 import { meaning } from "./meaning.ts"

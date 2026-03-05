@@ -1,5 +1,5 @@
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
-import * as S from "@xieyuheng/sexp.js"
+import * as S from "@xieyuheng/sexp-tael.js"
 import * as B from "../basic/index.ts"
 import * as L from "../lisp/index.ts"
 

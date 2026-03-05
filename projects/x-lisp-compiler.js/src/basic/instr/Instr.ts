@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
+import { type TokenMeta as Meta } from "@xieyuheng/sexp-tael.js"
 import type { Exp } from "../exp/index.ts"
 
 export type Instr = Assign | Perform | Test | Branch | Goto | Return

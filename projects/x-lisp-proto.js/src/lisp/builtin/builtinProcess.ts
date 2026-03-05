@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/sexp.js"
+import * as S from "@xieyuheng/sexp-tael.js"
 import process from "node:process"
 import { textWidth } from "../../config.ts"
 import { globals } from "../../globals.ts"

@@ -1,6 +1,6 @@
 import { arrayGroup2, arrayPickLast } from "@xieyuheng/helpers.js/array"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import * as S from "@xieyuheng/sexp.js"
+import * as S from "@xieyuheng/sexp-tael.js"
 import * as L from "../index.ts"
 
 export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({

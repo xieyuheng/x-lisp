@@ -59,7 +59,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  projects/sexp.js:
+  projects/sexp-tael.js:
     dependencies:
       '@xieyuheng/helpers.js':
         specifier: workspace:*
@@ -92,9 +92,9 @@ importers:
       '@xieyuheng/ppml.js':
         specifier: workspace:*
         version: link:../ppml.js
-      '@xieyuheng/sexp.js':
+      '@xieyuheng/sexp-tael.js':
         specifier: workspace:*
-        version: link:../sexp.js
+        version: link:../sexp-tael.js
       zod:
         specifier: ^4.3.6
         version: 4.3.6
@@ -120,9 +120,9 @@ importers:
       '@xieyuheng/helpers.js':
         specifier: workspace:*
         version: link:../helpers.js
-      '@xieyuheng/sexp.js':
+      '@xieyuheng/sexp-tael.js':
         specifier: workspace:*
-        version: link:../sexp.js
+        version: link:../sexp-tael.js
     devDependencies:
       '@types/node':
         specifier: ^25.3.3

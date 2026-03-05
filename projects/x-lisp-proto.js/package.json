@@ -23,7 +23,7 @@
   "dependencies": {
     "@xieyuheng/cmd.js": "workspace:*",
     "@xieyuheng/helpers.js": "workspace:*",
-    "@xieyuheng/sexp.js": "workspace:*"
+    "@xieyuheng/sexp-tael.js": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^25.3.3",

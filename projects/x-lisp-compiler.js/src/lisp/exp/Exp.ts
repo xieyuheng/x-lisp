@@ -1,4 +1,4 @@
-import { type TokenMeta as Meta, type Sexp } from "@xieyuheng/sexp.js"
+import { type TokenMeta as Meta, type Sexp } from "@xieyuheng/sexp-tael.js"
 
 export type Exp =
   | Symbol

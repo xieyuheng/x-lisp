@@ -1,4 +1,4 @@
-export { type TokenMeta as Meta } from "@xieyuheng/sexp.js"
+export { type TokenMeta as Meta } from "@xieyuheng/sexp-tael.js"
 export * from "./boolHelpers.ts"
 export * from "./desugar.ts"
 export * from "./Exp.ts"

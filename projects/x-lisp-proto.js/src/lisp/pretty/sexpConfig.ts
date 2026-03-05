@@ -1,4 +1,4 @@
-import * as S from "@xieyuheng/sexp.js"
+import * as S from "@xieyuheng/sexp-tael.js"
 
 export const sexpConfig: S.Config = {
   keywords: [

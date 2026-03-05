@@ -1,5 +1,5 @@
 import { urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
-import * as S from "@xieyuheng/sexp.js"
+import * as S from "@xieyuheng/sexp-tael.js"
 import * as L from "../index.ts"
 
 export function performTypeCheck(mod: L.Mod): void {
