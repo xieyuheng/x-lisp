@@ -85,7 +85,7 @@ export class Parser {
             token,
             tokens.slice(1),
           )
-          return { sexp: S.Cons(S.Symbol("@set"), sexp), remain }
+          return { sexp: S.Cons(S.Symbol("@object"), sexp), remain }
         }
 
         return this.handleTokensInBracket(token, tokens.slice(1))
