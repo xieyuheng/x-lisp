@@ -1,10 +1,14 @@
-[lisp] `evaluate` -- handle `Object`
 [lisp] parse `@object` and `@class`
 
 [lisp] `Tuple` as `Exp`
 [lisp] parse `@tuple`
 
 [lisp] remove `NullValue`
+
+# type checking
+
+[lisp] avoid the use `any-t` in `builtin/index.lisp`
+[lisp] `typeCheck` -- fix `List` case
 
 # pattern match
 

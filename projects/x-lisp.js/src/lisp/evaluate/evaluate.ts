@@ -111,7 +111,11 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
     }
 
     case "Object": {
-      throw new Error("TODO")
+      return L.ObjectValue(
+        recordMapValue(exp.attributes, (attribute) =>
+          evaluate(mod, env, attribute),
+        ),
+      )
     }
 
     case "Set": {
