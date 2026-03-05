@@ -1,5 +1,3 @@
-[sexp.js] how to handle bool and void?
-
 # format
 
 [ppml] support `hardbreak` -- for line comment
