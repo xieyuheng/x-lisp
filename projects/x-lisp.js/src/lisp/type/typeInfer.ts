@@ -1,27 +1,6 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as L from "../index.ts"
 
-export function expPreferInfer(exp: L.Exp): boolean {
-  switch (exp.kind) {
-    case "Symbol":
-    case "Keyword":
-    case "String":
-    case "Int":
-    case "Float":
-    case "Var":
-    case "Apply":
-    case "And":
-    case "Or":
-    case "The": {
-      return true
-    }
-
-    default: {
-      return false
-    }
-  }
-}
-
 export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
   switch (exp.kind) {
     case "Symbol": {

@@ -40,6 +40,23 @@ export function createVarType(name: string, serialNumber: bigint): L.Value {
   ])
 }
 
+const serialNumberMap: Map<string, bigint> = new Map()
+
+function generateVarTypeSerialNumber(name: string): bigint {
+  const count = serialNumberMap.get(name)
+  if (count) {
+    serialNumberMap.set(name, count + 1n)
+    return count + 1n
+  } else {
+    serialNumberMap.set(name, 1n)
+    return 1n
+  }
+}
+
+export function createFreshVarType(name: string): L.Value {
+  return createVarType(name, generateVarTypeSerialNumber(name))
+}
+
 export function varTypeName(value: L.Value): string {
   assert(isVarType(value))
   return L.asSymbolValue(L.asListValue(value).elements[1]).content
@@ -391,25 +408,10 @@ export function polymorphicTypeClosure(value: L.Value): L.ClosureValue {
   return L.asClosureValue(L.asListValue(value).elements[2])
 }
 
-const serialNumberMap: Map<string, bigint> = new Map()
-
-function generateVarTypeSerialNumber(name: string): bigint {
-  const count = serialNumberMap.get(name)
-  if (count) {
-    serialNumberMap.set(name, count + 1n)
-    return count + 1n
-  } else {
-    serialNumberMap.set(name, 1n)
-    return 1n
-  }
-}
-
 export function polymorphicTypeUnfold(value: L.Value): L.Value {
   assert(isPolymorphicType(value))
   const parameters = polymorphicTypeParameters(value)
   const closure = polymorphicTypeClosure(value)
-  const args = parameters.map((name) =>
-    createVarType(name, generateVarTypeSerialNumber(name)),
-  )
+  const args = parameters.map(createFreshVarType)
   return L.apply(closure, args)
 }

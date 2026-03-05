@@ -8,6 +8,7 @@
   (println list)
 
   (println (the (list-t int-t) [1 2 3]))
+  (println [1 2 3])
   (println '(1 2 3))
   (println (@list 1 2 3))
 
