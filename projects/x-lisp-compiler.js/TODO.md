@@ -1,12 +1,11 @@
 # pattern match
 
-move x-lisp-proto.js to dustbin
-
 [diary] about how to implement pattern match
 
 # any type
 
 [lisp] fix the use of any type for functions like `equal?` and `assert-equal`
+[lisp] maybe any type should generate a type variable
 
 # optional type
 

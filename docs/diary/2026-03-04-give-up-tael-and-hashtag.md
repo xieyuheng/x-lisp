@@ -19,6 +19,12 @@ date: 2026-03-04
 采用保守的语法设计 -- `@list` `@record` `@tuple`。
 避免过早将 `[]` 和 `{}` 设计为语法糖。
 
+# list
+
+list 作为 builtin type。
+放弃对 list 的 pattern matching。
+放弃 cons car cdr 这三个函的类型应该是 list 而不是 tuple。
+
 # fallback
 
 项目的 scope 可以 fallback 到类似 haskell 和 miranda 的类型系统，
