@@ -108,6 +108,13 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     return L.Tau(S.listElements(elements).map(parseExp), meta)
   },
 
+  "(cons* '@class body)": ({ body }, { meta }) => {
+    return L.Class(
+      recordMapValue(S.listCollectAttributes(body), parseExp),
+      meta,
+    )
+  },
+
   "`(the ,schema ,exp)": ({ schema, exp }, { meta }) => {
     return L.The(parseExp(schema), parseExp(exp), meta)
   },
