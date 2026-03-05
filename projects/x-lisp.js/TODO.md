@@ -1,8 +1,8 @@
-[lisp] parse `@tuple`
-
 [lisp] tuple.test.lisp
-
-[lisp] remove `NullValue`
+[lisp] quit using `expPreferInfer` -- just try `typeInfer`
+[lisp] `typeCheck` -- handle `Tuple`
+[lisp] `typeCheck` -- handle `Object`
+[lisp] `typeCheck` -- fix `List` case
 
 # debug
 
@@ -10,9 +10,8 @@
 
 # type checking
 
-[lisp] quit using `expPreferInfer` -- just try `typeInfer`
+[lisp] `typeInfer` -- handle `Tuple`
 [lisp] avoid the use `any-t` in `builtin/index.lisp`
-[lisp] `typeCheck` -- fix `List` case
 
 # pattern match
 
@@ -26,6 +25,7 @@
 # optional type
 
 [lisp] use `maybe-t` -- fix `builtin/index.lisp`
+[lisp] remove `NullValue`
 
 # later
 

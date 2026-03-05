@@ -71,6 +71,10 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     return L.List(S.listElements(elements).map(parseExp), meta)
   },
 
+  "(cons* '@tuple elements)": ({ elements }, { meta }) => {
+    return L.Tuple(S.listElements(elements).map(parseExp), meta)
+  },
+
   "(cons* '@object body)": ({ body }, { meta }) => {
     return L.Object(
       recordMapValue(S.listCollectAttributes(body), parseExp),
