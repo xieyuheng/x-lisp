@@ -1,11 +1,10 @@
-[lisp] `BoolValue`
-[lisp] `VoidValue`
-
 [lisp] `evaluate` -- handle `Object`
 [lisp] parse `@object` and `@class`
 
 [lisp] `Tuple` as `Exp`
 [lisp] parse `@tuple`
+
+[lisp] remove `NullValue`
 
 # pattern match
 

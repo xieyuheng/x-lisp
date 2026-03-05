@@ -1,9 +1,35 @@
 export type AtomValue =
+  | BoolValue
+  | VoidValue
   | SymbolValue
   | KeywordValue
   | StringValue
   | IntValue
   | FloatValue
+
+export type BoolValue = {
+  kind: "BoolValue"
+  content: boolean
+}
+
+export function BoolValue(content: boolean): BoolValue {
+  return {
+    kind: "BoolValue",
+    content,
+  }
+}
+
+export type VoidValue = {
+  kind: "VoidValue"
+  content: undefined
+}
+
+export function VoidValue(): VoidValue {
+  return {
+    kind: "VoidValue",
+    content: undefined,
+  }
+}
 
 export type SymbolValue = {
   kind: "SymbolValue"

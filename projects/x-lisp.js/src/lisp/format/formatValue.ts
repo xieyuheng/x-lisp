@@ -68,8 +68,20 @@ function formatHashEntries(
 
 export function formatValue(value: Value, options: Options = {}): string {
   switch (value.kind) {
+    case "BoolValue": {
+      if (value.content) {
+        return "true"
+      } else {
+        return "false"
+      }
+    }
+
+    case "VoidValue": {
+      return "void"
+    }
+
     case "KeywordValue": {
-      return `#${value.content}`
+      return `:${value.content}`
     }
 
     case "SymbolValue": {
