@@ -93,14 +93,22 @@ export function typeCheckWithoutInfer(
     }
 
     case "List": {
-      if (L.isListType(type)) {
-        const elementType = L.listTypeElementType(type)
-        return L.sequenceCheckEffect([
-          ...exp.elements.map((element) =>
-            typeCheck(mod, ctx, element, elementType),
-          ),
-        ])
-      } else if (L.isDatatypeType(type)) {
+      if (!L.isListType(type)) {
+        let message = `expecting list type`
+        message += `\n  type: ${L.formatType(type)}`
+        return L.errorCheckEffect(exp, message)
+      }
+
+      const elementType = L.listTypeElementType(type)
+      return L.sequenceCheckEffect([
+        ...exp.elements.map((element) =>
+          typeCheck(mod, ctx, element, elementType),
+        ),
+      ])
+    }
+
+    case "Tuple": {
+      if (L.isDatatypeType(type)) {
         return typeCheck(mod, ctx, exp, L.datatypeTypeUnfold(type))
       } else if (L.isDisjointUnionType(type)) {
         if (exp.elements.length === 0) {

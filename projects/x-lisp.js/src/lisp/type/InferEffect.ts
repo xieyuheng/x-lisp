@@ -95,9 +95,9 @@ export function checkThenInfer(
 export function tryInferThenCheck(
   effect: InferEffect,
   options: {
-    onSuccess: (type: L.Value) => CheckEffect,
-    onFail: CheckEffect,
-  }
+    onSuccess: (type: L.Value) => CheckEffect
+    onFail: CheckEffect
+  },
 ): CheckEffect {
   const { onSuccess, onFail } = options
 

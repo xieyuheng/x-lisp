@@ -7,7 +7,7 @@
   (list-push! 3 list)
   (println list)
 
-  (println [1 2 3])
+  (println (the (list-t int-t) [1 2 3]))
   (println '(1 2 3))
   (println (@list 1 2 3))
 

@@ -1,6 +1,6 @@
+[lisp] `unifyThenCheck`
 [lisp] `typeCheck` -- handle `Tuple`
 [lisp] `typeCheck` -- handle `Object`
-[lisp] `typeCheck` -- fix `List` case
 
 # debug
 
