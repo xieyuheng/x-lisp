@@ -1,16 +1,16 @@
-export type Sexp = Atom | Tael
+import type { TokenMeta } from "../token/index.ts"
+
+export type Sexp = Atom | List
 
 export type Atom = Symbol | String | Int | Float | Hashtag
-
-export type Attributes = Record<string, Sexp>
 
 export type Symbol = {
   kind: "Symbol"
   content: string
-  meta: Attributes
+  meta?: TokenMeta
 }
 
-export function Symbol(content: string, meta: Attributes = {}): Symbol {
+export function Symbol(content: string, meta?: TokenMeta): Symbol {
   return {
     kind: "Symbol",
     content,
@@ -21,10 +21,10 @@ export function Symbol(content: string, meta: Attributes = {}): Symbol {
 export type String = {
   kind: "String"
   content: string
-  meta: Attributes
+  meta?: TokenMeta
 }
 
-export function String(content: string, meta: Attributes = {}): String {
+export function String(content: string, meta?: TokenMeta): String {
   return {
     kind: "String",
     content,
@@ -35,10 +35,10 @@ export function String(content: string, meta: Attributes = {}): String {
 export type Int = {
   kind: "Int"
   content: bigint
-  meta: Attributes
+  meta?: TokenMeta
 }
 
-export function Int(content: bigint, meta: Attributes = {}): Int {
+export function Int(content: bigint, meta?: TokenMeta): Int {
   return {
     kind: "Int",
     content,
@@ -49,10 +49,10 @@ export function Int(content: bigint, meta: Attributes = {}): Int {
 export type Float = {
   kind: "Float"
   content: number
-  meta: Attributes
+  meta?: TokenMeta
 }
 
-export function Float(content: number, meta: Attributes = {}): Float {
+export function Float(content: number, meta?: TokenMeta): Float {
   return {
     kind: "Float",
     content,
@@ -63,10 +63,10 @@ export function Float(content: number, meta: Attributes = {}): Float {
 export type Hashtag = {
   kind: "Hashtag"
   content: string
-  meta: Attributes
+  meta?: TokenMeta
 }
 
-export function Hashtag(content: string, meta: Attributes = {}): Hashtag {
+export function Hashtag(content: string, meta?: TokenMeta): Hashtag {
   return {
     kind: "Hashtag",
     content,
@@ -74,22 +74,16 @@ export function Hashtag(content: string, meta: Attributes = {}): Hashtag {
   }
 }
 
-export type Tael = {
-  kind: "Tael"
+export type List = {
+  kind: "List"
   elements: Array<Sexp>
-  attributes: Attributes
-  meta: Attributes
+  meta?: TokenMeta
 }
 
-export function Tael(
-  elements: Array<Sexp>,
-  attributes: Attributes,
-  meta: Attributes = {},
-): Tael {
+export function List(elements: Array<Sexp>, meta?: TokenMeta): List {
   return {
-    kind: "Tael",
+    kind: "List",
     elements,
-    attributes,
     meta,
   }
 }

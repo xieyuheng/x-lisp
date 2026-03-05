@@ -26,19 +26,13 @@ export function formatSexp(sexp: Sexp): string {
       }
     }
 
-    case "Tael": {
+    case "List": {
       const elements = sexp.elements.map(formatSexp)
-      const attributes = Object.entries(sexp.attributes).map(
-        ([k, e]) => `:${k} ${formatSexp(e)}`,
-      )
-      if (elements.length === 0 && attributes.length === 0) {
+
+      if (elements.length === 0) {
         return `()`
-      } else if (attributes.length === 0) {
-        return `(${elements.join(" ")})`
-      } else if (elements.length === 0) {
-        return `(${attributes.join(" ")})`
       } else {
-        return `(${elements.join(" ")} ${attributes.join(" ")})`
+        return `(${elements.join(" ")})`
       }
     }
   }

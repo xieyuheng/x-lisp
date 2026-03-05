@@ -48,10 +48,10 @@ test("parse -- round brackets", () => {
 })
 
 test("parse -- square brackets", () => {
-  assertParse("[]", S.List([S.Symbol("@tael")]))
+  assertParse("[]", S.List([S.Symbol("@list")]))
   assertParse(
     "[a b c]",
-    S.List([S.Symbol("@tael"), S.Symbol("a"), S.Symbol("b"), S.Symbol("c")]),
+    S.List([S.Symbol("@list"), S.Symbol("a"), S.Symbol("b"), S.Symbol("c")]),
   )
 })
 
@@ -60,17 +60,6 @@ test("parse -- flower brackets", () => {
   assertParse(
     "{a b c}",
     S.List([S.Symbol("@set"), S.Symbol("a"), S.Symbol("b"), S.Symbol("c")]),
-  )
-})
-
-test("parse -- list with attributes", () => {
-  assertParse("(:x 1 :y 2)", S.Record({ x: S.Int(1n), y: S.Int(2n) }))
-  assertParse(
-    "(a b c :x 1 :y 2)",
-    S.Tael([S.Symbol("a"), S.Symbol("b"), S.Symbol("c")], {
-      x: S.Int(1n),
-      y: S.Int(2n),
-    }),
   )
 })
 

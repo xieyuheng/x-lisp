@@ -1,4 +1,3 @@
-import { recordIsEmpty } from "@xieyuheng/helpers.js/record"
 import * as Ppml from "@xieyuheng/ppml.js"
 import { formatSexp } from "../format/index.ts"
 import { isAtom, type Sexp } from "../sexp/index.ts"
@@ -27,7 +26,7 @@ export function renderSexp(sexp: Sexp): Render {
     }
 
     if (sexp.elements.length === 0) {
-      return renderElementLess(sexp.attributes)(config)
+      return Ppml.text("()")
     }
 
     const [first, ...rest] = sexp.elements
@@ -47,8 +46,8 @@ export function renderSexp(sexp: Sexp): Render {
       switch (first.content) {
         case "@set":
           return renderSet(rest)(config)
-        case "@tael":
-          return renderTael(rest, sexp.attributes)(config)
+        case "@list":
+          return renderList(rest)(config)
       }
     }
 
@@ -59,11 +58,10 @@ export function renderSexp(sexp: Sexp): Render {
         name,
         rest.slice(0, headerLength),
         rest.slice(headerLength),
-        sexp.attributes,
       )(config)
     }
 
-    return renderApplication(sexp.elements, sexp.attributes)(config)
+    return renderApplication(sexp.elements)(config)
   }
 }
 
@@ -80,17 +78,10 @@ function renderSet(elements: Array<Sexp>): Render {
   }
 }
 
-function renderTael(
-  elements: Array<Sexp>,
-  attributes: Record<string, Sexp>,
-): Render {
+function renderList(elements: Array<Sexp>): Render {
   return (config) => {
     if (elements.length === 0) {
-      const bodyNode = recordIsEmpty(attributes)
-        ? Ppml.nil()
-        : Ppml.group(Ppml.indent(1, renderAttributes(attributes)(config)))
-
-      return Ppml.group(Ppml.text("["), bodyNode, Ppml.text("]"))
+      return Ppml.group(Ppml.text("["), Ppml.text("]"))
     } else {
       const bodyNode = Ppml.group(
         Ppml.indent(
@@ -99,13 +90,7 @@ function renderTael(
         ),
       )
 
-      const footNode = recordIsEmpty(attributes)
-        ? Ppml.nil()
-        : Ppml.group(
-            Ppml.indent(1, Ppml.br(), renderAttributes(attributes)(config)),
-          )
-
-      return Ppml.group(Ppml.text("["), bodyNode, footNode, Ppml.text("]"))
+      return Ppml.group(Ppml.text("["), bodyNode, Ppml.text("]"))
     }
   }
 }
@@ -123,7 +108,6 @@ function renderSyntax(
   name: string,
   header: Array<Sexp>,
   body: Array<Sexp>,
-  attributes: Record<string, Sexp>,
 ): Render {
   return (config) => {
     const headNode = Ppml.indent(
@@ -134,12 +118,6 @@ function renderSyntax(
       ]),
     )
 
-    const neckNode = recordIsEmpty(attributes)
-      ? Ppml.nil()
-      : Ppml.group(
-          Ppml.indent(2, Ppml.br(), renderAttributes(attributes)(config)),
-        )
-
     const bodyNode =
       body.length === 0
         ? Ppml.nil()
@@ -149,20 +127,11 @@ function renderSyntax(
             Ppml.flex(body.map((sexp) => renderSexp(sexp)(config))),
           )
 
-    return Ppml.group(
-      Ppml.text("("),
-      headNode,
-      neckNode,
-      bodyNode,
-      Ppml.text(")"),
-    )
+    return Ppml.group(Ppml.text("("), headNode, bodyNode, Ppml.text(")"))
   }
 }
 
-function renderApplication(
-  elements: Array<Sexp>,
-  attributes: Record<string, Sexp>,
-): Render {
+function renderApplication(elements: Array<Sexp>): Render {
   return (config) => {
     // "short target" heuristic -- for `and` `or` `->` `*->`
     const shortLength = 3
@@ -182,18 +151,7 @@ function renderApplication(
                 Ppml.flex(rest.map((element) => renderSexp(element)(config))),
               ),
             )
-
-      const footNode = recordIsEmpty(attributes)
-        ? Ppml.nil()
-        : Ppml.group(
-            Ppml.indent(
-              indentation,
-              Ppml.br(),
-              renderAttributes(attributes)(config),
-            ),
-          )
-
-      return Ppml.group(Ppml.text("("), bodyNode, footNode, Ppml.text(")"))
+      return Ppml.group(Ppml.text("("), bodyNode, Ppml.text(")"))
     }
 
     const bodyNode = Ppml.group(
@@ -203,25 +161,7 @@ function renderApplication(
       ),
     )
 
-    const footNode = recordIsEmpty(attributes)
-      ? Ppml.nil()
-      : Ppml.group(
-          Ppml.indent(1, Ppml.br(), renderAttributes(attributes)(config)),
-        )
-
-    return Ppml.group(Ppml.text("("), bodyNode, footNode, Ppml.text(")"))
-  }
-}
-
-function renderElementLess(attributes: Record<string, Sexp>): Render {
-  return (config) => {
-    return recordIsEmpty(attributes)
-      ? Ppml.text("()")
-      : Ppml.group(
-          Ppml.text("("),
-          Ppml.indent(1, renderAttributes(attributes)(config)),
-          Ppml.text(")"),
-        )
+    return Ppml.group(Ppml.text("("), bodyNode, Ppml.text(")"))
   }
 }
 

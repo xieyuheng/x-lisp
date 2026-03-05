@@ -1,20 +1,19 @@
 import assert from "node:assert"
 import { test } from "node:test"
-import { matchSexp } from "../match/index.ts"
+import { matchSexp, type Subst } from "../match/index.ts"
 import { parseSexp } from "../parser/index.ts"
 import * as S from "../sexp/index.ts"
 
 function assertMatch(
   patternInput: string,
   sexpInput: string | S.Sexp,
-  expectedInput: string,
+  expectedSubst: Subst,
 ): void {
   const pattern = parseSexp(patternInput)
   const sexp = typeof sexpInput === "string" ? parseSexp(sexpInput) : sexpInput
   const subst = matchSexp("NormalMode", pattern, sexp)({})
-  const expectedSexp = parseSexp(expectedInput)
   assert(subst)
-  assert(S.attributesEqual(subst, S.asTael(expectedSexp).attributes))
+  assert(S.sexpEqualRecord(subst, expectedSubst))
 }
 
 function assertMatchFail(patternInput: string, sexpInput: string): void {
@@ -27,14 +26,14 @@ function assertMatchFail(patternInput: string, sexpInput: string): void {
 }
 
 test("matchSexp -- var", () => {
-  assertMatch("x", "1", "[:x 1]")
-  assertMatch("x", "hi", "[:x hi]")
+  assertMatch("x", "1", { x: S.Int(BigInt(1)) })
+  assertMatch("x", "hi", { x: S.Symbol("hi") })
 })
 
 test("matchSexp -- bool int float", () => {
-  assertMatch("#f", "#f", "[]")
-  assertMatch("1", "1", "[]")
-  assertMatch("3.14", "3.14", "[]")
+  assertMatch("#f", "#f", {})
+  assertMatch("1", "1", {})
+  assertMatch("3.14", "3.14", {})
 
   assertMatchFail("#f", "#t")
   assertMatchFail("1", "2")
@@ -42,52 +41,55 @@ test("matchSexp -- bool int float", () => {
 })
 
 test("matchSexp -- list", () => {
-  assertMatch("[x y z]", "(1 2 3)", "[:x 1 :y 2 :z 3]")
-  assertMatch(
-    "[x y z :a a :b b]",
-    "(1 2 3 :a 10 :b 20)",
-    "[:x 1 :y 2 :z 3 :a 10 :b 20]",
-  )
-  assertMatch("[x [y] z]", "(1 (2) 3)", "[:x 1 :y 2 :z 3]")
+  assertMatch("[x y z]", "(1 2 3)", {
+    x: S.Int(BigInt(1)),
+    y: S.Int(BigInt(2)),
+    z: S.Int(BigInt(3)),
+  })
+
+  assertMatch("[x [y] z]", "(1 (2) 3)", {
+    x: S.Int(BigInt(1)),
+    y: S.Int(BigInt(2)),
+    z: S.Int(BigInt(3)),
+  })
+
   assertMatchFail("[x y x]", "(1 2 3)")
   assertMatchFail("[x 0 z]", "(1 2 3)")
 })
 
 test("matchSexp -- quote", () => {
-  assertMatch("'x", "x", "[]")
-  assertMatch("(@quote x)", "x", "[]")
-  assertMatch("(@quote 3)", "3", "[]")
+  assertMatch("'x", "x", {})
+  assertMatch("(@quote x)", "x", {})
+  assertMatch("(@quote 3)", "3", {})
 
-  assertMatch("['lambda [x] x]", "(lambda (x) x)", "[:x x]")
-  assertMatch("'(lambda (x) x)", "(lambda (x) x)", "[]")
-})
-
-test("matchSexp -- quote record", () => {
-  assertMatch("'(:x 1 :y 2)", "(:x 1 :y 2 :z 3)", "[]")
-  assertMatchFail("'(:x 1 :y 2)", "(:x 1 :y 3)")
-  assertMatchFail("'(:x 1 :y 2 :z 3)", "(:x 1 :y 2)")
-  assertMatch(
-    "'(:x 1 :y 2 :p (:x 1 :y 2))",
-    "(:x 1 :y 2 :z 3 :p (:x 1 :y 2 :z 3))",
-    "[]",
-  )
+  assertMatch("['lambda [x] x]", "(lambda (x) x)", { x: S.Symbol("x") })
+  assertMatch("'(lambda (x) x)", "(lambda (x) x)", {})
 })
 
 test("matchSexp -- quasiquote", () => {
-  assertMatch("`x", "x", "[]")
-  assertMatch("`(lambda (,x) ,x)", "(lambda (x) x)", "[:x x]")
-  assertMatch("`(lambda (,name) ,ret)", "(lambda (x) x)", "[:name x :ret x]")
-  assertMatch("`(,target ,arg)", "(f x)", "[:target f :arg x]")
+  assertMatch("`x", "x", {})
+  assertMatch("`(lambda (,x) ,x)", "(lambda (x) x)", { x: S.Symbol("x") })
+  assertMatch("`(lambda (,name) ,ret)", "(lambda (x) x)", {
+    name: S.Symbol("x"),
+    ret: S.Symbol("x"),
+  })
+  assertMatch("`(,target ,arg)", "(f x)", {
+    target: S.Symbol("f"),
+    arg: S.Symbol("x"),
+  })
 })
 
 test("matchSexp -- cons", () => {
-  assertMatch("(cons head tail)", "(f x y)", "[:head f :tail (x y)]")
+  assertMatch("(cons head tail)", "(f x y)", {
+    head: S.Symbol("f"),
+    tail: S.List([S.Symbol("x"), S.Symbol("y")]),
+  })
 })
 
 test("matchSexp -- cons*", () => {
-  assertMatch(
-    "(cons* head next tail)",
-    "(f x y)",
-    "[:head f :next x :tail (y)]",
-  )
+  assertMatch("(cons* head next tail)", "(f x y)", {
+    head: S.Symbol("f"),
+    next: S.Symbol("x"),
+    tail: S.List([S.Symbol("y")]),
+  })
 })

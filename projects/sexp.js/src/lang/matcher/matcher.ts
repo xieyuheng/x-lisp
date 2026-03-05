@@ -1,7 +1,8 @@
+import assert from "node:assert"
 import { matchSexp, type Subst } from "../match/index.ts"
 import { parseSexp } from "../parser/index.ts"
 import * as S from "../sexp/index.ts"
-import { tokenMetaFromSexpMeta, type TokenMeta } from "../token/index.ts"
+import { type TokenMeta } from "../token/index.ts"
 
 export type Matcher<A> = (sexp: S.Sexp) => A | undefined
 
@@ -18,9 +19,10 @@ export function matcher<A>(
   return (sexp) => {
     const subst = matchSexp("NormalMode", pattern, sexp)({})
     if (!subst) return undefined
+    assert(sexp.meta)
     return f(subst, {
       sexp: sexp,
-      meta: tokenMetaFromSexpMeta(sexp.meta),
+      meta: sexp.meta as TokenMeta,
     })
   }
 }

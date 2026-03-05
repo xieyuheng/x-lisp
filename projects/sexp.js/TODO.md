@@ -1,5 +1,5 @@
-[sexp.js] use list instead of tael
 [sexp.js] rename hashtag to keyword
+[sexp.js] keyword use : as prefix -- instead of #
 [sexp.js] how to handle bool and void?
 
 # format
