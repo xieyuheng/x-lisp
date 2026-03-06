@@ -26,3 +26,8 @@ tuple-tail
 
 [lisp] use `maybe-t` -- fix `builtin/index.lisp`
 [lisp] remove `NullValue`
+
+# cond
+
+[lisp] `(cond)` should not be desugared to `(assert false)` -- use `(error)` instead
+[lisp] `desugar` -- keep `meta` of `Exp`

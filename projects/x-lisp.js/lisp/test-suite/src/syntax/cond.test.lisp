@@ -1,6 +1,8 @@
 (claim main (-> void-t))
 
 (define (main)
+  ;; TODO (cond) should not be desugared to (assert false)
+
   (assert-equal
     1
     (cond
