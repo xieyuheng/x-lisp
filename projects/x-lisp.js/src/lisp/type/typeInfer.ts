@@ -37,7 +37,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
 
     case "Apply": {
       return L.inferThenInfer(typeInfer(mod, ctx, exp.target), (targetType) =>
-        applyArrowType(mod, ctx, targetType, exp.args, exp),
+        typeInferApplyArrowType(mod, ctx, targetType, exp.args, exp),
       )
     }
 
@@ -89,56 +89,60 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
   }
 }
 
-function applyArrowType(
+function typeInferApplyArrowType(
   mod: L.Mod,
   ctx: L.Ctx,
   arrowType: L.Value,
   args: Array<L.Exp>,
   originalExp: L.Exp,
 ): L.InferEffect {
-  if (L.isPolymorphicType(arrowType)) {
-    arrowType = L.polymorphicTypeUnfold(arrowType)
-  }
+  return (subst) => {
+    arrowType = L.substApplyToType(subst, arrowType)
 
-  if (!L.isArrowType(arrowType)) {
-    let message = `expecting arrow type to be applyed`
-    message += `\n  given type: ${L.formatType(arrowType)}`
-    message += `\n  args: ${L.formatExps(args)}`
-    return L.errorInferEffect(originalExp, message)
-  }
+    if (L.isPolymorphicType(arrowType)) {
+      arrowType = L.polymorphicTypeUnfold(arrowType)
+    }
 
-  const argTypes = L.arrowTypeArgTypes(arrowType)
-  const retType = L.arrowTypeRetType(arrowType)
+    if (!L.isArrowType(arrowType)) {
+      let message = `expecting arrow type to be applyed`
+      message += `\n  given type: ${L.formatType(arrowType)}`
+      message += `\n  args: ${L.formatExps(args)}`
+      return L.errorInferEffect(originalExp, message)(subst)
+    }
 
-  if (argTypes.length === args.length) {
-    const length = args.length
-    return L.checkThenInfer(
-      L.sequenceCheckEffect(
-        range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
-      ),
-      L.okInferEffect(retType),
-    )
-  } else if (argTypes.length > args.length) {
-    const length = args.length
-    return L.checkThenInfer(
-      L.sequenceCheckEffect(
-        range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
-      ),
-      L.okInferEffect(L.createArrowType(argTypes.slice(args.length), retType)),
-    )
-  } else {
-    const length = argTypes.length
-    return L.checkThenInfer(
-      L.sequenceCheckEffect(
-        range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
-      ),
-      applyArrowType(
-        mod,
-        ctx,
-        retType,
-        args.slice(argTypes.length),
-        originalExp,
-      ),
-    )
+    const argTypes = L.arrowTypeArgTypes(arrowType)
+    const retType = L.arrowTypeRetType(arrowType)
+
+    if (argTypes.length === args.length) {
+      const length = args.length
+      return L.checkThenInfer(
+        L.sequenceCheckEffect(
+          range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
+        ),
+        L.okInferEffect(retType),
+      )(subst)
+    } else if (argTypes.length > args.length) {
+      const length = args.length
+      return L.checkThenInfer(
+        L.sequenceCheckEffect(
+          range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
+        ),
+        L.okInferEffect(L.createArrowType(argTypes.slice(args.length), retType)),
+      )(subst)
+    } else {
+      const length = argTypes.length
+      return L.checkThenInfer(
+        L.sequenceCheckEffect(
+          range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
+        ),
+        typeInferApplyArrowType(
+          mod,
+          ctx,
+          retType,
+          args.slice(argTypes.length),
+          originalExp,
+        ),
+      )(subst)
+    }
   }
 }
