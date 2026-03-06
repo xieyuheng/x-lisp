@@ -104,7 +104,7 @@ function typeInferApplyArrowType(
     }
 
     if (!L.isArrowType(arrowType)) {
-      let message = `expecting arrow type to be applyed`
+      let message = `expecting arrow type to be applied`
       message += `\n  given type: ${L.formatType(arrowType)}`
       message += `\n  args: ${L.formatExps(args)}`
       return L.errorInferEffect(originalExp, message)(subst)

@@ -4,8 +4,15 @@
 
 # type checking
 
-[lisp] `typeCheck` -- handle `Tuple`
-[lisp] `typeCheck` -- handle `Object`
+`typeCheck` -- `Lambda` -- generate `arrowType` -- be careful about nullary
+
+`typeInferApplyArrowType` -- generate `arrowType` -- be careful about nullary
+
+目前类型检查 `(if)` 的方式与下面的类型（只有 lazy 语言可以用）有什么不同？ -- `(which)` 也类似
+
+```scheme
+(polymorphic (A) (-> bool-t A A A))
+```
 
 [lisp] `typeInfer` -- handle `Tuple`
 [lisp] `typeInfer` -- handle `Object`
@@ -16,7 +23,7 @@ fix the type of `equal?` and `assert-equal` -- lhs and rhs should have the same 
 
 # pattern match
 
-[diary] about how to implement pattern match
+compile `(match)` to `(which)`
 
 # optional type vs maybe type
 
