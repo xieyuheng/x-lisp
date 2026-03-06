@@ -10,21 +10,13 @@
 [lisp] `typeInfer` -- handle `Tuple`
 [lisp] `typeInfer` -- handle `Object`
 
-# tuple
+# builtin types
 
-tuple-cons
-tuple-head
-tuple-tail
+fix the type of `equal?` and `assert-equal` -- lhs and rhs should have the same type
 
 # pattern match
 
 [diary] about how to implement pattern match
-
-# any type
-
-[lisp] type eliminator apply to any type should return any type
-
-- https://chat.deepseek.com/a/chat/s/a05d91f5-b301-445f-b736-f8e6c04729a1
 
 # optional type vs maybe type
 
@@ -43,3 +35,15 @@ list-unshift!
 
 [lisp] `(cond)` should not be desugared to `(assert false)` -- use `(error)` instead
 [lisp] `desugar` -- keep `meta` of `Exp`
+
+# any type
+
+[lisp] type eliminator apply to any type should return any type
+
+- https://chat.deepseek.com/a/chat/s/a05d91f5-b301-445f-b736-f8e6c04729a1
+
+# tuple
+
+tuple-cons
+tuple-head
+tuple-tail
