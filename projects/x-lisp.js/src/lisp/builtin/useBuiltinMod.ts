@@ -11,7 +11,6 @@ import { builtinHash } from "./builtinHash.ts"
 import { builtinInt } from "./builtinInt.ts"
 import { builtinKeyword } from "./builtinKeyword.ts"
 import { builtinList } from "./builtinList.ts"
-import { builtinNull } from "./builtinNull.ts"
 import { builtinRandom } from "./builtinRandom.ts"
 import { builtinSet } from "./builtinSet.ts"
 import { builtinString } from "./builtinString.ts"
@@ -40,7 +39,6 @@ export function useBuiltinMod(): L.Mod {
   builtinList(mod)
   builtinConsole(mod)
   builtinVoid(mod)
-  builtinNull(mod)
   builtinRandom(mod)
   builtinSet(mod)
   builtinHash(mod)

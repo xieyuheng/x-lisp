@@ -27,6 +27,14 @@ tuple-tail
 [lisp] use `maybe-t` -- fix `builtin/index.lisp`
 [lisp] remove `NullValue`
 
+functions currently return `NullValue`:
+
+```scheme
+hash-get
+list-pop!
+list-unshift!
+```
+
 # cond
 
 [lisp] `(cond)` should not be desugared to `(assert false)` -- use `(error)` instead

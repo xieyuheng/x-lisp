@@ -7,7 +7,6 @@
 (define-type symbol-t ['atom 'symbol])
 (define-type keyword-t ['atom 'keyword])
 (define-type void-t ['atom 'void])
-(define-type null-t ['atom 'null])
 (define-type any-t ['any])
 (define-type (list-t E) ['list E])
 (define-type (set-t E) ['set E])
@@ -39,11 +38,6 @@
 (claim false bool-t)
 (claim bool? (polymorphic (X) (-> X bool-t)))
 (claim not (-> bool-t bool-t))
-
-;; null
-
-(claim null null-t)
-(claim null? (polymorphic (X) (-> X bool-t)))
 
 ;; void
 
