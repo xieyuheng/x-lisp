@@ -127,7 +127,9 @@ function typeInferApplyArrowType(
         L.sequenceCheckEffect(
           range(length).map((i) => L.typeCheck(mod, ctx, args[i], argTypes[i])),
         ),
-        L.okInferEffect(L.createArrowType(argTypes.slice(args.length), retType)),
+        L.okInferEffect(
+          L.createArrowType(argTypes.slice(args.length), retType),
+        ),
       )(subst)
     } else {
       const length = argTypes.length
