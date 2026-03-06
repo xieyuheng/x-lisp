@@ -1,7 +1,10 @@
-# later
-
 move x-lisp-proto.js to dustbin
 move x-forth.c to dustbin
+move sexp-tael.js to dustbin
+move x-lisp-compiler.js to dustbin
+rename x-lisp.js to meta-lisp.js
+add diary about meta-lisp -- copy readme of design/meta-lisp
+remove design/meta-lisp
 
 [basic-lisp.js] rename hashtag to keyword
 [basic-lisp.js] remove null from value

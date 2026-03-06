@@ -1,3 +1,7 @@
+`loadDependencyGraph`
+
+- fix the use of `loadModuleProject` -- `loadModuleProject` + `projectCheck` will check twice
+
 # type checking
 
 [lisp] `typeCheck` -- handle `Tuple`
