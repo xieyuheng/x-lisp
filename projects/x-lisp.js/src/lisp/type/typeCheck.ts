@@ -24,16 +24,6 @@ function typeCheckWithoutInfer(
       type = L.polymorphicTypeUnfold(type)
     }
 
-    // if (L.isAnyType(type)) {
-    //   if (L.expPreferInfer(exp)) {
-    //     return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) =>
-    //       typeCheckByInfer(mod, ctx, exp, inferredType, type),
-    //     )(subst)
-    //   } else {
-    //     return L.okCheckEffect()(subst)
-    //   }
-    // }
-
     switch (exp.kind) {
       case "Lambda": {
         if (!L.isArrowType(type)) {
@@ -229,16 +219,17 @@ export function typeCheckByInfer(
       return L.errorCheckEffect(exp, message)(subst)
     }
 
-    const resolvedInferredType = L.substApplyToType(newSubst, inferredType)
-    const resolvedType = L.substApplyToType(newSubst, type)
+    subst = newSubst
+    inferredType = L.substApplyToType(subst, inferredType)
+    type = L.substApplyToType(subst, type)
 
-    if (L.typeSubtype([], resolvedInferredType, resolvedType)) {
-      return L.okCheckEffect()(newSubst)
+    if (L.typeSubtype([], inferredType, type)) {
+      return L.okCheckEffect()(subst)
     } else {
       let message = `inferred type is not a subtype of given type`
-      message += `\n  inferred type: ${L.formatType(resolvedInferredType)}`
-      message += `\n  given type: ${L.formatType(resolvedType)}`
-      return L.errorCheckEffect(exp, message)(newSubst)
+      message += `\n  inferred type: ${L.formatType(inferredType)}`
+      message += `\n  given type: ${L.formatType(type)}`
+      return L.errorCheckEffect(exp, message)(subst)
     }
   }
 }

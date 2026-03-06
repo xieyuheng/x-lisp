@@ -1,14 +1,16 @@
+# type checking
+
 [lisp] `typeCheck` -- handle `Tuple`
 [lisp] `typeCheck` -- handle `Object`
 
-# debug
-
-[lisp] `(check-subtype)` as debug stmt
-
-# type checking
-
 [lisp] `typeInfer` -- handle `Tuple`
-[lisp] avoid the use `any-t` in `builtin/index.lisp`
+[lisp] `typeInfer` -- handle `Object`
+
+# tuple
+
+tuple-cons
+tuple-head
+tuple-tail
 
 # pattern match
 
@@ -16,14 +18,11 @@
 
 # any type
 
-[lisp] fix the use of any type for functions like `equal?` and `assert-equal`
-[lisp] maybe any type should generate a type variable
+[lisp] type eliminator apply to any type should return any type
 
-# optional type
+- https://chat.deepseek.com/a/chat/s/a05d91f5-b301-445f-b736-f8e6c04729a1
+
+# optional type vs maybe type
 
 [lisp] use `maybe-t` -- fix `builtin/index.lisp`
 [lisp] remove `NullValue`
-
-# later
-
-[pass] `desugarCond` -- report `error` about mismatch -- instead of `assert`
