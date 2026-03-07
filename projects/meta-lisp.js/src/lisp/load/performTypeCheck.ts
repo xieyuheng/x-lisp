@@ -24,7 +24,6 @@ function checkDefinition(definition: L.Definition): null {
   }
 
   switch (definition.kind) {
-    case "TypeDefinition":
     case "DatatypeDefinition": {
       return null
     }

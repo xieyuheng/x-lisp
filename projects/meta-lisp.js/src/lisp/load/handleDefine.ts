@@ -30,14 +30,6 @@ export function handleDefine(mod: L.Mod, stmt: L.Stmt): void {
     )
   }
 
-  if (stmt.kind === "DefineType") {
-    L.modDefine(
-      mod,
-      stmt.name,
-      L.TypeDefinition(mod, stmt.name, stmt.body, stmt.meta),
-    )
-  }
-
   if (stmt.kind === "DefineDatatype") {
     const definition = L.DatatypeDefinition(
       mod,

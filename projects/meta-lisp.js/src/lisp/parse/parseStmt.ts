@@ -27,33 +27,6 @@ export const parseStmt = S.createRouter<L.Stmt>({
     )
   },
 
-  "(cons* 'define-type (cons* name parameters) body)": (
-    { name, parameters, body },
-    { sexp },
-  ) => {
-    const keyword = S.asList(sexp).elements[1]
-    const meta = keyword.meta
-    return L.DefineType(
-      S.symbolContent(name),
-      L.Lambda(
-        S.listElements(parameters).map(S.symbolContent),
-        L.BeginSugar(S.listElements(body).map(parseExp), meta),
-        meta,
-      ),
-      meta,
-    )
-  },
-
-  "(cons* 'define-type name body)": ({ name, body }, { sexp }) => {
-    const keyword = S.asList(sexp).elements[1]
-    const meta = keyword.meta
-    return L.DefineType(
-      S.symbolContent(name),
-      L.BeginSugar(S.listElements(body).map(parseExp), meta),
-      meta,
-    )
-  },
-
   "(cons* 'exempt names)": ({ names }, { meta }) => {
     return L.Exempt(S.listElements(names).map(S.symbolContent), meta)
   },

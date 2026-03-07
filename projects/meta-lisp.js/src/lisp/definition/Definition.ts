@@ -8,7 +8,6 @@ export type Definition =
   | PrimitiveVariableDefinition
   | FunctionDefinition
   | VariableDefinition
-  | TypeDefinition
   | DatatypeDefinition
 
 export type ValueFunction = (...args: Array<Value>) => Value
@@ -105,30 +104,6 @@ export function VariableDefinition(
 ): VariableDefinition {
   return {
     kind: "VariableDefinition",
-    mod,
-    name,
-    body,
-    meta,
-  }
-}
-
-export type TypeDefinition = {
-  kind: "TypeDefinition"
-  mod: Mod
-  name: string
-  body: Exp
-  value?: Value
-  meta?: TokenMeta
-}
-
-export function TypeDefinition(
-  mod: Mod,
-  name: string,
-  body: Exp,
-  meta?: TokenMeta,
-): TypeDefinition {
-  return {
-    kind: "TypeDefinition",
     mod,
     name,
     body,

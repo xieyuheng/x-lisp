@@ -1,7 +1,3 @@
-# type system
-
-remove `(define-type)`
-
 # optional type vs maybe type
 
 [lisp] remove `NullValue`

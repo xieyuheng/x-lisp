@@ -10,7 +10,6 @@ export type Stmt =
   | AboutModule
   | DefineFunction
   | DefineVariable
-  | DefineType
   | DefineDatatype
   | Claim
   | Exempt
@@ -52,26 +51,6 @@ export function DefineVariable(
 ): DefineVariable {
   return {
     kind: "DefineVariable",
-    name,
-    body,
-    meta,
-  }
-}
-
-export type DefineType = {
-  kind: "DefineType"
-  name: string
-  body: Exp
-  meta?: TokenMeta
-}
-
-export function DefineType(
-  name: string,
-  body: Exp,
-  meta?: TokenMeta,
-): DefineType {
-  return {
-    kind: "DefineType",
     name,
     body,
     meta,

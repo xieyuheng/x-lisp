@@ -6,7 +6,6 @@ import { handleExport } from "./handleExport.ts"
 import { handleImport } from "./handleImport.ts"
 import { performTypeCheck } from "./performTypeCheck.ts"
 import { setupClaim } from "./setupClaim.ts"
-import { setupType } from "./setupType.ts"
 import { setupVariable } from "./setupVariable.ts"
 
 export function runCode(mod: L.Mod, code: string): void {
@@ -23,7 +22,6 @@ export function runSexps(mod: L.Mod, sexps: Array<S.Sexp>): void {
   for (const stmt of stmts) handleImport(mod, stmt)
 
   setupVariable(mod)
-  setupType(mod)
   setupClaim(mod)
 
   performTypeCheck(mod)
