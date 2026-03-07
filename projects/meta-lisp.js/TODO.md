@@ -1,7 +1,5 @@
 # typle
 
-[lisp] `typeInfer` -- handle `Lambda`
-
 [lisp] `typeInfer` -- handle `Tuple`
 [lisp] `typeInfer` -- handle `Object`
 

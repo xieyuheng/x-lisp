@@ -42,6 +42,51 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
+      case "Lambda": {
+        if (exp.parameters.length === 0) {
+          const type = L.createArrowType([], L.createFreshVarType("R"))
+          const argTypes = L.arrowTypeArgTypes(type)
+          const retType = L.arrowTypeRetType(type)
+          return L.checkThenInfer(
+            L.typeCheck(mod, ctx, exp.body, retType),
+            L.okInferEffect(type),
+          )(subst)
+        } else if (exp.parameters.length === 1) {
+          const type = L.createArrowType(
+            [L.createFreshVarType("A")],
+            L.createFreshVarType("R"),
+          )
+
+          const [argType] = L.arrowTypeArgTypes(type)
+          const retType = L.arrowTypeRetType(type)
+
+          const [parameter] = exp.parameters
+          ctx = L.ctxPut(ctx, parameter, argType)
+          return L.checkThenInfer(
+            L.typeCheck(mod, ctx, exp.body, retType),
+            L.okInferEffect(type),
+          )(subst)
+        } else {
+          const type = L.createArrowType(
+            [L.createFreshVarType("A")],
+            L.createFreshVarType("R"),
+          )
+          const [argType] = L.arrowTypeArgTypes(type)
+          const retType = L.arrowTypeRetType(type)
+          const [parameter, ...restParameters] = exp.parameters
+          ctx = L.ctxPut(ctx, parameter, argType)
+          return L.checkThenInfer(
+            L.typeCheck(
+              mod,
+              ctx,
+              L.Lambda(restParameters, exp.body, exp.meta),
+              retType,
+            ),
+            L.okInferEffect(type),
+          )(subst)
+        }
+      }
+
       case "And":
       case "Or": {
         return L.checkThenInfer(
