@@ -8,7 +8,7 @@ export function typeVarOccurredInType(
     return L.varTypeId(type) === L.varTypeId(varType)
   }
 
-  return L.typeChildren(type).some((child) =>
+  return typeChildren(type).some((child) =>
     typeVarOccurredInType(varType, child),
   )
 }
