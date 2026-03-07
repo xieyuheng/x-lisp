@@ -1,7 +1,7 @@
 {
-  "name": "@xieyuheng/x-lisp-compiler.js",
+  "name": "@xieyuheng/meta-lisp-compiler.js",
   "version": "0.1.4",
-  "repository": "github:xieyuheng/x-lisp",
+  "repository": "github:xieyuheng/meta-lisp",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "main": "./lib/index.js",
@@ -12,7 +12,7 @@
     "bin"
   ],
   "bin": {
-    "x-lisp-compiler.js": "lib/main.js"
+    "meta-lisp-compiler.js": "lib/main.js"
   },
   "scripts": {
     "clean": "rm -rf lib",

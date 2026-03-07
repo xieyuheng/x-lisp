@@ -1,4 +1,3 @@
-rename x-lisp.js to meta-lisp.js
 add diary about meta-lisp -- copy readme of design/meta-lisp
 remove design/meta-lisp
 

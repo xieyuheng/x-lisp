@@ -1,4 +1,4 @@
-# x-lisp / bootstrap compiler
+# meta-lisp / bootstrap compiler
 
 ## syntax
 

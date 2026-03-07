@@ -13,7 +13,7 @@ import {
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
-const router = cmd.createRouter("x-lisp-compile.js", version)
+const router = cmd.createRouter("meta-lisp-compile.js", version)
 
 router.defineRoutes([
   "module:interpret file",
