@@ -2,88 +2,90 @@ import assert from "node:assert"
 import * as L from "../index.ts"
 
 export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
-  switch (exp.kind) {
-    case "Symbol": {
-      return L.okInferEffect(L.createAtomType("symbol"))
-    }
+  return (subst) => {
+    switch (exp.kind) {
+      case "Symbol": {
+        return L.okInferEffect(L.createAtomType("symbol"))(subst)
+      }
 
-    case "Keyword": {
-      return L.okInferEffect(L.createAtomType("keyword"))
-    }
+      case "Keyword": {
+        return L.okInferEffect(L.createAtomType("keyword"))(subst)
+      }
 
-    case "String": {
-      return L.okInferEffect(L.createAtomType("string"))
-    }
+      case "String": {
+        return L.okInferEffect(L.createAtomType("string"))(subst)
+      }
 
-    case "Int": {
-      return L.okInferEffect(L.createAtomType("int"))
-    }
+      case "Int": {
+        return L.okInferEffect(L.createAtomType("int"))(subst)
+      }
 
-    case "Float": {
-      return L.okInferEffect(L.createAtomType("float"))
-    }
+      case "Float": {
+        return L.okInferEffect(L.createAtomType("float"))(subst)
+      }
 
-    case "Var": {
-      const type = L.ctxLookupType(ctx, exp.name)
-      if (type) return L.okInferEffect(type)
+      case "Var": {
+        const type = L.ctxLookupType(ctx, exp.name)
+        if (type) return L.okInferEffect(type)(subst)
 
-      const topLevelType = L.modLookupType(mod, exp.name)
-      if (topLevelType) return L.okInferEffect(topLevelType)
+        const topLevelType = L.modLookupType(mod, exp.name)
+        if (topLevelType) return L.okInferEffect(topLevelType)(subst)
 
-      let message = `untyped variable`
-      message += `\n  name: ${exp.name}`
-      return L.errorInferEffect(exp, message)
-    }
+        let message = `untyped variable`
+        message += `\n  name: ${exp.name}`
+        return L.errorInferEffect(exp, message)(subst)
+      }
 
-    case "Apply": {
-      return L.inferThenInfer(typeInfer(mod, ctx, exp.target), (targetType) =>
-        typeInferApplyArrowType(mod, ctx, targetType, exp.args, exp),
-      )
-    }
+      case "Apply": {
+        return L.inferThenInfer(typeInfer(mod, ctx, exp.target), (targetType) =>
+          typeInferApplyArrowType(mod, ctx, targetType, exp.args, exp),
+        )(subst)
+      }
 
-    case "And":
-    case "Or": {
-      return L.checkThenInfer(
-        L.sequenceCheckEffect(
-          exp.exps.map((subExp) =>
-            L.typeCheck(mod, ctx, subExp, L.createAtomType("bool")),
+      case "And":
+      case "Or": {
+        return L.checkThenInfer(
+          L.sequenceCheckEffect(
+            exp.exps.map((subExp) =>
+              L.typeCheck(mod, ctx, subExp, L.createAtomType("bool")),
+            ),
           ),
-        ),
-        L.okInferEffect(L.createAtomType("bool")),
-      )
-    }
+          L.okInferEffect(L.createAtomType("bool")),
+        )(subst)
+      }
 
-    case "The": {
-      const type = L.evaluate(mod, L.emptyEnv(), exp.type)
-      return L.checkThenInfer(
-        L.typeCheck(mod, ctx, exp.exp, type),
-        L.okInferEffect(type),
-      )
-    }
+      case "The": {
+        const type = L.evaluate(mod, L.emptyEnv(), exp.type)
+        return L.checkThenInfer(
+          L.typeCheck(mod, ctx, exp.exp, type),
+          L.okInferEffect(type),
+        )(subst)
+      }
 
-    case "Let1": {
-      return L.inferThenInfer(
-        L.typeInfer(mod, ctx, exp.rhs),
-        (inferredType) => {
-          ctx = L.ctxPut(ctx, exp.name, inferredType)
-          return typeInfer(mod, ctx, exp.body)
-        },
-      )
-    }
+      case "Let1": {
+        return L.inferThenInfer(
+          L.typeInfer(mod, ctx, exp.rhs),
+          (inferredType) => {
+            ctx = L.ctxPut(ctx, exp.name, inferredType)
+            return typeInfer(mod, ctx, exp.body)
+          },
+        )(subst)
+      }
 
-    case "Begin1": {
-      return L.inferThenInfer(typeInfer(mod, ctx, exp.head), (_headType) =>
-        typeInfer(mod, ctx, exp.body),
-      )
-    }
+      case "Begin1": {
+        return L.inferThenInfer(typeInfer(mod, ctx, exp.head), (_headType) =>
+          typeInfer(mod, ctx, exp.body),
+        )(subst)
+      }
 
-    case "BeginSugar": {
-      return typeInfer(mod, ctx, L.desugarBegin(exp.sequence))
-    }
+      case "BeginSugar": {
+        return typeInfer(mod, ctx, L.desugarBegin(exp.sequence))(subst)
+      }
 
-    default: {
-      let message = `not inferable exp: ${exp.kind}`
-      return L.errorInferEffect(exp, message)
+      default: {
+        let message = `not inferable exp: ${exp.kind}`
+        return L.errorInferEffect(exp, message)(subst)
+      }
     }
   }
 }

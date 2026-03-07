@@ -1,3 +1,5 @@
+`typeInfer` -- handle `If`
+
 # type checking
 
 [lisp] `typeCheck` -- handle `Tuple`
