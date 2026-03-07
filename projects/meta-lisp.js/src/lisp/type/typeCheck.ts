@@ -10,13 +10,8 @@ export function typeCheckAssignable(
     inferredType = L.typeFreshen(inferredType)
     type = L.typeFreshen(type)
     return L.sequenceCheckEffect([
-      (subst) => {
-        const oldResolvedType = L.substApplyToType(subst, type)
-        return L.sequenceCheckEffect([
-          typeCheckUnify(exp, inferredType, type),
-          typeCheckSubstInstance(exp, inferredType, type, oldResolvedType)
-        ])(subst)
-      },
+      typeCheckSubstInstance(exp, inferredType, type),
+      typeCheckUnify(exp, inferredType, type),
       typeCheckSubtype(exp, inferredType, type),
     ])
   })
@@ -26,20 +21,16 @@ export function typeCheckSubstInstance(
   exp: L.Exp,
   inferredType: L.Value,
   type: L.Value,
-  oldResolvedType: L.Value,
 ): L.CheckEffect {
   return (subst) => {
     const resolvedInferredType = L.substApplyToType(subst, inferredType)
     const resolvedType = L.substApplyToType(subst, type)
     // - In the theory of polymorphic type,
     //   inferredType should be more general than given type.
-    // - After unification with inferredType,
-    //   no new constraint shall be introduced
-    //   between type variables in the given type.
-    if (!L.typeSubstInstance(oldResolvedType, resolvedType)) {
+    if (!L.typeSubstInstance(resolvedType, resolvedInferredType)) {
       let message = `given type is not a substitution instance of inferred type`
       message += `\n  inferred type: ${L.formatType(resolvedInferredType)}`
-      message += `\n  given type: ${L.formatType(oldResolvedType)}`
+      message += `\n  given type: ${L.formatType(resolvedType)}`
       return L.errorCheckEffect(exp, message)(subst)
     }
 

@@ -1,5 +1,5 @@
 lisp/test-suite/src/function/identity.type-error.lisp:5:9 -- given type is not a substitution instance of inferred type
-  inferred type: (-> B₁ B₁)
+  inferred type: (-> R₁ R₁)
   given type: (-> A₂ B₁)
  3 |     (-> A B)))
  4 | 
