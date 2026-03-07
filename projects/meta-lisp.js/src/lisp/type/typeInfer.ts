@@ -106,6 +106,19 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         return typeInfer(mod, ctx, L.desugarBegin(exp.sequence))(subst)
       }
 
+      case "List": {
+        const type = L.createListType(L.createFreshVarType("E"))
+        const elementType = L.listTypeElementType(type)
+        return L.checkThenInfer(
+          L.sequenceCheckEffect([
+            ...exp.elements.map((element) =>
+              L.typeCheck(mod, ctx, element, elementType),
+            ),
+          ]),
+          L.okInferEffect(type),
+        )(subst)
+      }
+
       default: {
         let message = `not inferable exp: ${exp.kind}`
         return L.errorInferEffect(exp, message)(subst)

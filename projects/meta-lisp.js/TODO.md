@@ -1,11 +1,12 @@
 # typle
 
-[lisp] `typeCheck` -- handle `Tuple`
+[lisp] `typeInfer` -- handle `Set`
+[lisp] `typeInfer` -- handle `Hash`
+[lisp] `typeInfer` -- handle `Quote`
+
+[lisp] `typeInfer` -- handle `Lambda`
+
 [lisp] `typeInfer` -- handle `Tuple`
-
-# object
-
-[lisp] `typeCheck` -- handle `Object`
 [lisp] `typeInfer` -- handle `Object`
 
 # pattern match

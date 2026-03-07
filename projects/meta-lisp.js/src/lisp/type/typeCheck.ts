@@ -115,26 +115,26 @@ function typeCheckWithoutInfer(
         return L.errorCheckEffect(exp, message)(subst)
       }
 
-      case "List": {
-        const listType = L.createListType(L.createFreshVarType("E"))
-        const newSubst = L.typeUnify(subst, type, listType)
-        if (newSubst === undefined) {
-          type = L.substApplyToType(subst, type)
-          let message = `expecting list type`
-          message += `\n  given type: ${L.formatType(type)}`
-          return L.errorCheckEffect(exp, message)(subst)
-        }
+      // case "List": {
+      //   const listType = L.createListType(L.createFreshVarType("E"))
+      //   const newSubst = L.typeUnify(subst, type, listType)
+      //   if (newSubst === undefined) {
+      //     type = L.substApplyToType(subst, type)
+      //     let message = `expecting list type`
+      //     message += `\n  given type: ${L.formatType(type)}`
+      //     return L.errorCheckEffect(exp, message)(subst)
+      //   }
 
-        subst = newSubst
-        type = L.substApplyToType(subst, listType)
+      //   subst = newSubst
+      //   type = L.substApplyToType(subst, listType)
 
-        const elementType = L.listTypeElementType(type)
-        return L.sequenceCheckEffect([
-          ...exp.elements.map((element) =>
-            typeCheck(mod, ctx, element, elementType),
-          ),
-        ])(subst)
-      }
+      //   const elementType = L.listTypeElementType(type)
+      //   return L.sequenceCheckEffect([
+      //     ...exp.elements.map((element) =>
+      //       typeCheck(mod, ctx, element, elementType),
+      //     ),
+      //   ])(subst)
+      // }
 
       case "Set": {
         const setType = L.createSetType(L.createFreshVarType("E"))
