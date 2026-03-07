@@ -45,27 +45,13 @@ function equalAttributes(
   lhs: Record<string, Value>,
   rhs: Record<string, Value>,
 ): boolean {
-  const leftValues = Object.values(lhs).filter(
-    (value) => !Values.isNullValue(value),
-  )
-  const rightValues = Object.values(rhs).filter(
-    (value) => !Values.isNullValue(value),
-  )
-  if (leftValues.length !== rightValues.length) {
-    return false
-  }
+  const leftValues = Object.values(lhs)
+  const rightValues = Object.values(rhs)
+  if (leftValues.length !== rightValues.length) return false
 
   for (const k of Object.keys(lhs)) {
-    const l = lhs[k]
-    const r = rhs[k]
-
-    if (r === undefined && Values.isNullValue(l)) {
-      continue
-    } else if (equal(l, r)) {
-      continue
-    } else {
-      return false
-    }
+    if (rhs[k] === undefined) return false
+    if (!equal(lhs[k], rhs[k])) return false
   }
 
   return true
@@ -74,24 +60,13 @@ function equalAttributes(
 function equalHash(lhs: Values.HashValue, rhs: Values.HashValue): boolean {
   const lhsEntries = Values.hashEntries(lhs)
   const rhsEntries = Values.hashEntries(rhs)
-  if (lhsEntries.length !== rhsEntries.length) {
-    return false
-  }
+  if (lhsEntries.length !== rhsEntries.length) return false
 
   for (const lhsEntry of lhsEntries) {
     const lhsValue = lhsEntry.value
     const rhsValue = Values.hashGet(rhs, lhsEntry.key)
-    if (rhsValue === undefined) {
-      if (Values.isNullValue(lhsValue)) {
-        continue
-      } else {
-        return false
-      }
-    } else if (equal(lhsValue, rhsValue)) {
-      continue
-    } else {
-      return false
-    }
+    if (rhsValue === undefined) return false
+    if (!equal(lhsValue, rhsValue)) return false
   }
 
   return true

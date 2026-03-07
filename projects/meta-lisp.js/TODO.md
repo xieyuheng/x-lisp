@@ -1,15 +1,3 @@
-# optional type vs maybe type
-
-[lisp] remove `NullValue`
-
-functions currently return `NullValue`:
-
-```scheme
-hash-get
-list-pop!
-list-unshift!
-```
-
 # any type
 
 [lisp] rename `AnyType` to `TypeType` -- used for type definitions

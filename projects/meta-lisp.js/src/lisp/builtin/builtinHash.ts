@@ -40,12 +40,19 @@ export function builtinHash(mod: Mod) {
     if (!Values.isHashable(key)) {
       let message = `(hash-get) the given key is not hashable`
       message += `\n  key: ${formatValue(key)}`
+      message += `\n  hash: ${formatValue(hash)}`
       throw new Error(message)
     }
 
     const found = Values.hashGet(Values.asHashValue(hash), key)
-    if (found) return found
-    else return Values.NullValue()
+    if (found === undefined) {
+      let message = `(hash-get) no such key`
+      message += `\n  key: ${formatValue(key)}`
+      message += `\n  hash: ${formatValue(hash)}`
+      throw new Error(message)
+    } else {
+      return found
+    }
   })
 
   definePrimitiveFunction(mod, "hash-has?", 2, (key, hash) => {

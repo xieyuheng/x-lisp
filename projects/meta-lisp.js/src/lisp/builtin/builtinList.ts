@@ -156,7 +156,8 @@ export function builtinList(mod: Mod) {
   definePrimitiveFunction(mod, "list-pop!", 1, (list) => {
     const value = Values.asListValue(list).elements.pop()
     if (value === undefined) {
-      return Values.NullValue()
+      let message = `(list-pop!) empty list`
+      throw new Error(message)
     } else {
       return value
     }
@@ -170,7 +171,8 @@ export function builtinList(mod: Mod) {
   definePrimitiveFunction(mod, "list-shift!", 1, (list) => {
     const value = Values.asListValue(list).elements.shift()
     if (value === undefined) {
-      return Values.NullValue()
+      let message = `(list-shift!) empty list`
+      throw new Error(message)
     } else {
       return value
     }
