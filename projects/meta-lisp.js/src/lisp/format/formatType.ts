@@ -6,7 +6,12 @@ export function formatTypes(types: Array<L.Value>): string {
 
 export function formatType(type: L.Value): string {
   if (L.isVarType(type)) {
-    return L.varTypeId(type)
+    const serialNumber = L.varTypeSerialNumber(type)
+    if (serialNumber === 0n) {
+      return L.varTypeName(type)
+    } else {
+      return L.varTypeId(type)
+    }
   }
 
   if (L.isAnyType(type)) {
@@ -66,10 +71,9 @@ export function formatType(type: L.Value): string {
   }
 
   if (L.isPolymorphicType(type)) {
-    const parameters = L.polymorphicTypeParameters(type).join(" ")
-    const closure = L.polymorphicTypeClosure(type)
-    const body = L.formatExp(closure.body)
-    return `(polymorphic (${parameters}) ${body})`
+    const varTypes = L.polymorphicTypeVarTypes(type).map(formatType).join(" ")
+    const bodyType = formatType(L.polymorphicTypeBodyType(type))
+    return `(polymorphic (${varTypes}) ${bodyType})`
   }
 
   let message = `[formatType] unhandled type`

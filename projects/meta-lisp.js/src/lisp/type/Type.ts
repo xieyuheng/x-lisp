@@ -380,38 +380,44 @@ export function isPolymorphicType(value: L.Value): boolean {
     value.elements.length === 3 &&
     L.equal(value.elements[0], L.SymbolValue("polymorphic")) &&
     L.isListValue(value.elements[1]) &&
-    L.asListValue(value.elements[1]).elements.every(L.isSymbolValue) &&
-    L.isClosureValue(value.elements[2])
+    L.asListValue(value.elements[1]).elements.every(L.isVarType) &&
+    L.isType(value.elements[2])
   )
 }
 
 export function createPolymorphicType(
-  parameters: Array<string>,
-  closure: L.ClosureValue,
+  varTypes: Array<L.Value>,
+  bodyType: L.Value,
 ): L.Value {
   return L.ListValue([
     L.SymbolValue("polymorphic"),
-    L.ListValue(parameters.map(L.SymbolValue)),
-    closure,
+    L.ListValue(varTypes),
+    bodyType,
   ])
 }
 
-export function polymorphicTypeParameters(value: L.Value): Array<string> {
+export function polymorphicTypeVarTypes(value: L.Value): Array<L.Value> {
   assert(isPolymorphicType(value))
-  return L.asListValue(L.asListValue(value).elements[1]).elements.map(
-    (element) => L.asSymbolValue(element).content,
-  )
+  return L.asListValue(L.asListValue(value).elements[1]).elements
 }
 
-export function polymorphicTypeClosure(value: L.Value): L.ClosureValue {
+export function polymorphicTypeBodyType(value: L.Value): L.Value {
   assert(isPolymorphicType(value))
-  return L.asClosureValue(L.asListValue(value).elements[2])
+  return L.asListValue(value).elements[2]
 }
 
 export function polymorphicTypeUnfold(value: L.Value): L.Value {
   assert(isPolymorphicType(value))
-  const parameters = polymorphicTypeParameters(value)
-  const closure = polymorphicTypeClosure(value)
-  const args = parameters.map(createFreshVarType)
-  return L.apply(closure, args)
+  const varTypes = polymorphicTypeVarTypes(value)
+  const bodyType = polymorphicTypeBodyType(value)
+  let subst = L.emptySubst()
+  for (const varType of varTypes) {
+    subst = L.extendSubst(
+      subst,
+      varType,
+      createFreshVarType(varTypeName(varType)),
+    )
+  }
+
+  return L.substApplyToType(subst, bodyType)
 }
