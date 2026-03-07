@@ -1,3 +1,4 @@
+import assert from "node:assert"
 import * as L from "../index.ts"
 
 export function typeCheck(
@@ -27,28 +28,38 @@ function typeCheckWithoutInfer(
     switch (exp.kind) {
       case "Lambda": {
         if (exp.parameters.length === 0) {
-          if (!L.isArrowType(type)) {
-            let message = `expecting arrow type`
-            message += `\n  type: ${L.formatType(type)}`
-            return L.errorCheckEffect(exp, message)(subst)
-          }
-
-          type = L.arrowTypeNormalize(type)
-          const argTypes = L.arrowTypeArgTypes(type)
-          const retType = L.arrowTypeRetType(type)
-          if (argTypes.length !== 0) {
+          const arrowType = L.createArrowType([], L.createFreshVarType("R"))
+          const newSubst = L.typeUnify(subst, type, arrowType)
+          if (newSubst === undefined) {
+            type = L.substApplyToType(subst, type)
             let message = `expecting nullary arrow type`
             message += `\n  type: ${L.formatType(type)}`
             return L.errorCheckEffect(exp, message)(subst)
           }
 
+          subst = newSubst
+          type = L.substApplyToType(subst, arrowType)
+
+          type = L.arrowTypeNormalize(type)
+          const argTypes = L.arrowTypeArgTypes(type)
+          assert(argTypes.length === 0)
+          const retType = L.arrowTypeRetType(type)
           return typeCheck(mod, ctx, exp.body, retType)(subst)
         } else if (exp.parameters.length === 1) {
-          if (!L.isArrowType(type)) {
+          const arrowType = L.createArrowType(
+            [L.createFreshVarType("A")],
+            L.createFreshVarType("R"),
+          )
+          const newSubst = L.typeUnify(subst, type, arrowType)
+          if (newSubst === undefined) {
+            type = L.substApplyToType(subst, type)
             let message = `expecting arrow type`
             message += `\n  type: ${L.formatType(type)}`
             return L.errorCheckEffect(exp, message)(subst)
           }
+
+          subst = newSubst
+          type = L.substApplyToType(subst, arrowType)
 
           type = L.arrowTypeNormalize(type)
           const [argType] = L.arrowTypeArgTypes(type)
@@ -58,11 +69,20 @@ function typeCheckWithoutInfer(
           ctx = L.ctxPut(ctx, parameter, argType)
           return typeCheck(mod, ctx, exp.body, retType)(subst)
         } else {
-          if (!L.isArrowType(type)) {
+          const arrowType = L.createArrowType(
+            [L.createFreshVarType("A")],
+            L.createFreshVarType("R"),
+          )
+          const newSubst = L.typeUnify(subst, type, arrowType)
+          if (newSubst === undefined) {
+            type = L.substApplyToType(subst, type)
             let message = `expecting arrow type`
             message += `\n  type: ${L.formatType(type)}`
             return L.errorCheckEffect(exp, message)(subst)
           }
+
+          subst = newSubst
+          type = L.substApplyToType(subst, arrowType)
 
           type = L.arrowTypeNormalize(type)
           const [argType] = L.arrowTypeArgTypes(type)
