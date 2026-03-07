@@ -1,7 +1,5 @@
 # typle
 
-[lisp] refactor `typeCheck`
-
 [lisp] `typeInfer` -- handle `Tuple`
 [lisp] `typeInfer` -- handle `Object`
 

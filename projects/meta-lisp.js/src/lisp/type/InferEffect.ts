@@ -91,27 +91,3 @@ export function checkThenInfer(
     }
   }
 }
-
-export function tryInferThenCheck(
-  effect: InferEffect,
-  options: {
-    onSuccess: (type: L.Value) => CheckEffect
-    onFail: CheckEffect
-  },
-): CheckEffect {
-  const { onSuccess, onFail } = options
-
-  return (subst) => {
-    const result = effect(subst)
-
-    switch (result.kind) {
-      case "InferOk": {
-        return onSuccess(result.type)(result.subst)
-      }
-
-      case "InferError": {
-        return onFail(subst)
-      }
-    }
-  }
-}
