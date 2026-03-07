@@ -1,4 +1,5 @@
-inline `typeTraverse` to `substApplyToType` -- should not unfold polymorphic type
+`PolymorphicType` should not have closure
+`substApplyToType` should not unfold polymorphic type
 
 # type checking
 
