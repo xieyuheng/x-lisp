@@ -147,6 +147,20 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
+      case "Tuple": {
+        let message = `TODO`
+        return L.errorInferEffect(exp, message)(subst)
+      }
+
+      case "Object": {
+        let message = `TODO`
+        return L.errorInferEffect(exp, message)(subst)
+      }
+
+      case "Quote": {
+        return typeInfer(mod, ctx, L.desugarQuote(exp.sexp))(subst)
+      }
+
       default: {
         let message = `not inferable exp: ${exp.kind}`
         return L.errorInferEffect(exp, message)(subst)

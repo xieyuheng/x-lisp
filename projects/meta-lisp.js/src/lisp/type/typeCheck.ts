@@ -99,26 +99,6 @@ function typeCheckWithoutInfer(
         }
       }
 
-      case "Tuple": {
-        // TODO
-
-        let message = `expecting tau type`
-        message += `\n  given type: ${L.formatType(type)}`
-        return L.errorCheckEffect(exp, message)(subst)
-      }
-
-      case "Object": {
-        // TODO
-
-        let message = `expecting class type`
-        message += `\n  given type: ${L.formatType(type)}`
-        return L.errorCheckEffect(exp, message)(subst)
-      }
-
-      case "Quote": {
-        return typeCheck(mod, ctx, L.desugarQuote(exp.sexp), type)(subst)
-      }
-
       default: {
         return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) =>
           typeCheckByInfer(mod, ctx, exp, inferredType, type),
