@@ -356,18 +356,11 @@ export function isSumType(value: L.Value): boolean {
   )
 }
 
-export function createSumType(
-  variantTypes: Record<string, L.Value>,
-): L.Value {
-  return L.ListValue([
-    L.SymbolValue("sum"),
-    L.ObjectValue(variantTypes),
-  ])
+export function createSumType(variantTypes: Record<string, L.Value>): L.Value {
+  return L.ListValue([L.SymbolValue("sum"), L.ObjectValue(variantTypes)])
 }
 
-export function sumTypeVariantTypes(
-  value: L.Value,
-): Record<string, L.Value> {
+export function sumTypeVariantTypes(value: L.Value): Record<string, L.Value> {
   assert(isSumType(value))
   return L.asObjectValue(L.asListValue(value).elements[1]).attributes
 }
