@@ -1,4 +1,3 @@
-import assert from "node:assert"
 import * as L from "../index.ts"
 
 export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
@@ -219,14 +218,9 @@ function typeInferApplyArrowType(
   originalExp: L.Exp,
 ): L.InferEffect {
   return (subst) => {
-    type = L.substApplyToType(subst, type)
-
-    if (L.isPolymorphicType(type)) {
-      type = L.polymorphicTypeUnfold(type)
-    }
-
     if (args.length === 0) {
-      const arrowType = L.createArrowType([], L.createFreshVarType("R"))
+      const retType = L.createFreshVarType("R")
+      const arrowType = L.createArrowType([], retType)
       const newSubst = L.typeUnify(subst, type, arrowType)
       if (newSubst === undefined) {
         type = L.substApplyToType(subst, type)
@@ -235,19 +229,11 @@ function typeInferApplyArrowType(
         return L.errorInferEffect(originalExp, message)(subst)
       }
 
-      subst = newSubst
-      type = L.substApplyToType(subst, arrowType)
-
-      type = L.arrowTypeNormalize(type)
-      const argTypes = L.arrowTypeArgTypes(type)
-      assert(argTypes.length === 0)
-      const retType = L.arrowTypeRetType(type)
-      return L.okInferEffect(retType)(subst)
+      return L.okInferEffect(retType)(newSubst)
     } else if (args.length === 1) {
-      const arrowType = L.createArrowType(
-        [L.createFreshVarType("A")],
-        L.createFreshVarType("R"),
-      )
+      const argType = L.createFreshVarType("A")
+      const retType = L.createFreshVarType("R")
+      const arrowType = L.createArrowType([argType], retType)
       const newSubst = L.typeUnify(subst, type, arrowType)
       if (newSubst === undefined) {
         type = L.substApplyToType(subst, type)
@@ -256,24 +242,16 @@ function typeInferApplyArrowType(
         message += `\n  args: ${L.formatExps(args)}`
         return L.errorInferEffect(originalExp, message)(subst)
       }
-
-      subst = newSubst
-      type = L.substApplyToType(subst, arrowType)
-
-      type = L.arrowTypeNormalize(type)
-      const [argType] = L.arrowTypeArgTypes(type)
-      const retType = L.arrowTypeRetType(type)
 
       const [arg] = args
       return L.checkThenInfer(
         L.typeCheck(mod, ctx, arg, argType),
         L.okInferEffect(retType),
-      )(subst)
+      )(newSubst)
     } else {
-      const arrowType = L.createArrowType(
-        [L.createFreshVarType("A")],
-        L.createFreshVarType("R"),
-      )
+      const argType = L.createFreshVarType("A")
+      const retType = L.createFreshVarType("R")
+      const arrowType = L.createArrowType([argType], retType)
       const newSubst = L.typeUnify(subst, type, arrowType)
       if (newSubst === undefined) {
         type = L.substApplyToType(subst, type)
@@ -283,18 +261,11 @@ function typeInferApplyArrowType(
         return L.errorInferEffect(originalExp, message)(subst)
       }
 
-      subst = newSubst
-      type = L.substApplyToType(subst, arrowType)
-
-      type = L.arrowTypeNormalize(type)
-      const [argType] = L.arrowTypeArgTypes(type)
-      const retType = L.arrowTypeRetType(type)
-
       const [arg, ...restArgs] = args
       return L.checkThenInfer(
         L.typeCheck(mod, ctx, arg, argType),
         typeInferApplyArrowType(mod, ctx, retType, restArgs, originalExp),
-      )(subst)
+      )(newSubst)
     }
   }
 }

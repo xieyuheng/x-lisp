@@ -21,6 +21,14 @@ export function typeUnify(
   lhs = L.substApplyToType(subst, lhs)
   rhs = L.substApplyToType(subst, rhs)
 
+  if (L.isPolymorphicType(lhs)) {
+    lhs = L.polymorphicTypeUnfold(lhs)
+  }
+
+  if (L.isPolymorphicType(rhs)) {
+    rhs = L.polymorphicTypeUnfold(rhs)
+  }
+
   if (L.typeSubtype([], lhs, rhs) || L.typeSubtype([], rhs, lhs)) {
     return subst
   }
