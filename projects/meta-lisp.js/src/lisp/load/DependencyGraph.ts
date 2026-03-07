@@ -24,8 +24,14 @@ export function dependencyGraphAddMod(
   dependencyGraph.dependencies.set(mod.url.href, mod)
 }
 
-export function dependencyGraphAllMods(
+export function dependencyGraphMods(
   dependencyGraph: DependencyGraph,
 ): Array<L.Mod> {
   return Array.from(dependencyGraph.dependencies.values())
 }
+
+export function dependencyGraphFiles(dependencyGraph: DependencyGraph,): Array<string> {
+  const mods = dependencyGraphMods(dependencyGraph)
+  return mods.map((mod) => mod.url.pathname)
+}
+
