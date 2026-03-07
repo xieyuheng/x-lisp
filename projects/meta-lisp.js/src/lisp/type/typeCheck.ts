@@ -33,7 +33,7 @@ function typeCheckWithoutInfer(
           if (newSubst === undefined) {
             type = L.substApplyToType(subst, type)
             let message = `expecting nullary arrow type`
-            message += `\n  type: ${L.formatType(type)}`
+            message += `\n  given type: ${L.formatType(type)}`
             return L.errorCheckEffect(exp, message)(subst)
           }
 
@@ -54,7 +54,7 @@ function typeCheckWithoutInfer(
           if (newSubst === undefined) {
             type = L.substApplyToType(subst, type)
             let message = `expecting arrow type`
-            message += `\n  type: ${L.formatType(type)}`
+            message += `\n  given type: ${L.formatType(type)}`
             return L.errorCheckEffect(exp, message)(subst)
           }
 
@@ -77,7 +77,7 @@ function typeCheckWithoutInfer(
           if (newSubst === undefined) {
             type = L.substApplyToType(subst, type)
             let message = `expecting arrow type`
-            message += `\n  type: ${L.formatType(type)}`
+            message += `\n  given type: ${L.formatType(type)}`
             return L.errorCheckEffect(exp, message)(subst)
           }
 
@@ -170,7 +170,7 @@ function typeCheckWithoutInfer(
           return typeCheck(mod, ctx, exp, variantTypes[name])(subst)
         } else {
           let message = `expecting tuple-like type`
-          message += `\n  type: ${L.formatType(type)}`
+          message += `\n  given type: ${L.formatType(type)}`
           return L.errorCheckEffect(exp, message)(subst)
         }
       }
@@ -181,7 +181,7 @@ function typeCheckWithoutInfer(
         if (newSubst === undefined) {
           type = L.substApplyToType(subst, type)
           let message = `expecting list type`
-          message += `\n  type: ${L.formatType(type)}`
+          message += `\n  given type: ${L.formatType(type)}`
           return L.errorCheckEffect(exp, message)(subst)
         }
 
@@ -202,7 +202,7 @@ function typeCheckWithoutInfer(
         if (newSubst === undefined) {
           type = L.substApplyToType(subst, type)
           let message = `expecting set type`
-          message += `\n  type: ${L.formatType(type)}`
+          message += `\n  given type: ${L.formatType(type)}`
           return L.errorCheckEffect(exp, message)(subst)
         }
 
@@ -225,7 +225,7 @@ function typeCheckWithoutInfer(
         if (newSubst === undefined) {
           type = L.substApplyToType(subst, type)
           let message = `expecting hash type`
-          message += `\n  type: ${L.formatType(type)}`
+          message += `\n  given type: ${L.formatType(type)}`
           return L.errorCheckEffect(exp, message)(subst)
         }
 

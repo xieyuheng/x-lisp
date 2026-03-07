@@ -1,15 +1,17 @@
+inline `typeTraverse` to `substApplyToType` -- should not unfold polymorphic type
+
 # type checking
 
-`typeInferApplyArrowType` -- generate `arrowType` -- be careful about nullary
+[lisp] `typeInfer` -- handle `Tuple`
+[lisp] `typeInfer` -- handle `Object`
+
+# type checking
 
 目前类型检查 `(if)` 的方式与下面的类型（只有 lazy 语言可以用）有什么不同？ -- `(which)` 也类似
 
 ```scheme
 (polymorphic (A) (-> bool-t A A A))
 ```
-
-[lisp] `typeInfer` -- handle `Tuple`
-[lisp] `typeInfer` -- handle `Object`
 
 # builtin types
 
