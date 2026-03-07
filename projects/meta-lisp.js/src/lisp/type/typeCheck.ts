@@ -119,26 +119,6 @@ function typeCheckWithoutInfer(
         return typeCheck(mod, ctx, L.desugarBegin(exp.sequence), type)(subst)
       }
 
-      case "If": {
-        return L.sequenceCheckEffect([
-          typeCheck(mod, ctx, exp.condition, L.createAtomType("bool")),
-          typeCheck(mod, ctx, exp.consequent, type),
-          typeCheck(mod, ctx, exp.alternative, type),
-        ])(subst)
-      }
-
-      case "When": {
-        return typeCheck(mod, ctx, L.desugarWhen(exp), type)(subst)
-      }
-
-      case "Unless": {
-        return typeCheck(mod, ctx, L.desugarUnless(exp), type)(subst)
-      }
-
-      case "Cond": {
-        return typeCheck(mod, ctx, L.desugarCond(exp.condLines), type)(subst)
-      }
-
       case "Tuple": {
         // TODO
 

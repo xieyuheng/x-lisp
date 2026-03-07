@@ -62,6 +62,30 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
+      case "If": {
+        const type = L.createFreshVarType("X")
+        return L.checkThenInfer(
+          L.sequenceCheckEffect([
+            L.typeCheck(mod, ctx, exp.condition, L.createAtomType("bool")),
+            L.typeCheck(mod, ctx, exp.consequent, type),
+            L.typeCheck(mod, ctx, exp.alternative, type),
+          ]),
+          L.okInferEffect(type),
+        )(subst)
+      }
+
+      case "When": {
+        return typeInfer(mod, ctx, L.desugarWhen(exp))(subst)
+      }
+
+      case "Unless": {
+        return typeInfer(mod, ctx, L.desugarUnless(exp))(subst)
+      }
+
+      case "Cond": {
+        return typeInfer(mod, ctx, L.desugarCond(exp.condLines))(subst)
+      }
+
       case "Let1": {
         return L.inferThenInfer(
           L.typeInfer(mod, ctx, exp.rhs),

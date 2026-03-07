@@ -1,4 +1,4 @@
-`typeInfer` -- handle `If`
+[lisp] `typeCheck` -- no need to handle `(begin)`
 
 # type checking
 
