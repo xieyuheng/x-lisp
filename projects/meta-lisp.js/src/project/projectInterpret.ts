@@ -9,9 +9,10 @@ import {
   type ProjectIdHandler,
 } from "./index.ts"
 
-export function projectInterpret(project: Project): void {
-  const dependencyGraph = L.createDependencyGraph()
-
+export function projectInterpret(
+  project: Project,
+  dependencyGraph: L.DependencyGraph,
+): void {
   projectForEachSource(project, interpretTest(dependencyGraph))
 }
 

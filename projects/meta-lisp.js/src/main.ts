@@ -3,11 +3,13 @@
 import * as cmd from "@xieyuheng/cmd.js"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { fileURLToPath } from "node:url"
+import * as L from "./lisp/index.ts"
 import {
-  loadModuleProject,
+  loadDependencyGraph,
   loadProject,
   projectCheck,
   projectClean,
+  projectFromSourceFiles,
   projectInterpret,
 } from "./project/index.ts"
 
@@ -24,15 +26,28 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  "module:interpret": ({ args: [file] }) =>
-    projectInterpret(loadModuleProject(file)),
-  "module:check": ({ args: [file] }) => projectCheck(loadModuleProject(file)),
-  "project:interpret": ({ options }) =>
-    projectInterpret(loadProject(options["--config"])),
-  "project:check": ({ options }) =>
-    projectCheck(loadProject(options["--config"])),
-  "project:clean": ({ options }) =>
-    projectClean(loadProject(options["--config"])),
+  "module:interpret": ({ args: [file] }) => {
+    const dependencyGraph = loadDependencyGraph(file)
+    const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
+    const project = projectFromSourceFiles(file, sourceFiles)
+    projectInterpret(project, dependencyGraph)
+  },
+  "module:check": ({ args: [file] }) => {
+    loadDependencyGraph(file)
+  },
+  "project:interpret": ({ options }) => {
+    const dependencyGraph = L.createDependencyGraph()
+    const project = loadProject(options["--config"])
+    projectInterpret(project, dependencyGraph)
+  },
+  "project:check": ({ options }) => {
+    const project = loadProject(options["--config"])
+    projectCheck(project)
+  },
+  "project:clean": ({ options }) => {
+    const project = loadProject(options["--config"])
+    projectClean(project)
+  },
 })
 
 await router.run(process.argv.slice(2))

@@ -1,5 +1,3 @@
-fix the use of `loadModuleProject` -- `loadModuleProject` + `projectCheck` will check twice
-
 # type checking
 
 `typeCheck` -- `Lambda` -- generate `arrowType` -- be careful about nullary
