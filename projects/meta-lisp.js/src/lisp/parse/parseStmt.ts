@@ -1,6 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
-import { parseExp } from "./parseExp.ts"
+import { parseBody, parseExp } from "./parseExp.ts"
 
 export const parseStmt = S.createRouter<L.Stmt>({
   "(cons* 'define (cons* name parameters) body)": (
@@ -12,7 +12,7 @@ export const parseStmt = S.createRouter<L.Stmt>({
     return L.DefineFunction(
       S.symbolContent(name),
       S.listElements(parameters).map(S.symbolContent),
-      L.BeginSugar(S.listElements(body).map(parseExp), meta),
+      parseBody(body),
       meta,
     )
   },
@@ -20,11 +20,7 @@ export const parseStmt = S.createRouter<L.Stmt>({
   "(cons* 'define name body)": ({ name, body }, { sexp }) => {
     const keyword = S.asList(sexp).elements[1]
     const meta = keyword.meta
-    return L.DefineVariable(
-      S.symbolContent(name),
-      L.BeginSugar(S.listElements(body).map(parseExp), meta),
-      meta,
-    )
+    return L.DefineVariable(S.symbolContent(name), parseBody(body), meta)
   },
 
   "(cons* 'exempt names)": ({ names }, { meta }) => {

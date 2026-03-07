@@ -3,13 +3,22 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
+export function parseBody(body: S.Sexp): L.Exp {
+  const elements = S.listElements(body).map(parseExp)
+  if (elements.length === 1) {
+    return elements[0]
+  } else {
+    return L.BeginSugar(elements, body.meta)
+  }
+}
+
 export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
   "(cons* 'lambda parameters body)": ({ parameters, body }, { sexp }) => {
     const keyword = S.asList(sexp).elements[0]
     const meta = keyword.meta
     return L.Lambda(
       S.listElements(parameters).map(S.symbolContent),
-      L.BeginSugar(S.listElements(body).map(parseExp), meta),
+      parseBody(body),
       meta,
     )
   },
@@ -31,19 +40,11 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
   },
 
   "(cons* 'when condition body)": ({ condition, body }, { meta }) => {
-    return L.When(
-      parseExp(condition),
-      L.BeginSugar(S.listElements(body).map(parseExp), meta),
-      meta,
-    )
+    return L.When(parseExp(condition), parseBody(body), meta)
   },
 
   "(cons* 'unless condition body)": ({ condition, body }, { meta }) => {
-    return L.Unless(
-      parseExp(condition),
-      L.BeginSugar(S.listElements(body).map(parseExp), meta),
-      meta,
-    )
+    return L.Unless(parseExp(condition), parseBody(body), meta)
   },
 
   "(cons* 'and exps)": ({ exps }, { meta }) => {
@@ -64,7 +65,7 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
   },
 
   "(cons* 'begin body)": ({ body }, { meta }) => {
-    return L.BeginSugar(S.listElements(body).map(parseExp), meta)
+    return parseBody(body)
   },
 
   "(cons* '@list elements)": ({ elements }, { meta }) => {
@@ -157,12 +158,12 @@ const parseCondLine = S.createRouter<L.CondLine>({
     if (question.kind === "Symbol" && question.content === "else") {
       return {
         question: L.Bool(true, meta),
-        answer: L.BeginSugar(S.listElements(body).map(parseExp), meta),
+        answer: parseBody(body),
       }
     } else {
       return {
         question: parseExp(question),
-        answer: L.BeginSugar(S.listElements(body).map(parseExp), meta),
+        answer: parseBody(body),
       }
     }
   },

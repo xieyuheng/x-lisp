@@ -1,9 +1,13 @@
+# type checking
+
 [lisp] `typeCheck` -- no need to handle `(begin)`
 
-# type checking
+# typle
 
 [lisp] `typeCheck` -- handle `Tuple`
 [lisp] `typeInfer` -- handle `Tuple`
+
+# object
 
 [lisp] `typeCheck` -- handle `Object`
 [lisp] `typeInfer` -- handle `Object`
