@@ -1,10 +1,10 @@
-# type checking
+# type system
 
-[lisp] `typeCheck` -- handle `Tuple`
-[lisp] `typeCheck` -- handle `Object`
+parse `(exempt)`
+`modExempt`
+`setupExempt`
 
-[lisp] `typeInfer` -- handle `Tuple`
-[lisp] `typeInfer` -- handle `Object`
+remove `(define-type)`
 
 # optional type vs maybe type
 
@@ -20,11 +20,15 @@ list-unshift!
 
 # any type
 
-[lisp] remove any type
+[lisp] rename `AnyType` to `TypeType` -- used for type definitions
 
-[lisp] type eliminator apply to any type should return any type
+# type checking
 
-- https://chat.deepseek.com/a/chat/s/a05d91f5-b301-445f-b736-f8e6c04729a1
+[lisp] `typeCheck` -- handle `Tuple`
+[lisp] `typeCheck` -- handle `Object`
+
+[lisp] `typeInfer` -- handle `Tuple`
+[lisp] `typeInfer` -- handle `Object`
 
 # cond
 

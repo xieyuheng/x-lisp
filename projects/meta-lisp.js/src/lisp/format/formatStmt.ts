@@ -32,6 +32,10 @@ export function formatStmt(stmt: Stmt): string {
       return `(claim ${stmt.name} ${formatExp(stmt.type)})`
     }
 
+    case "Exempt": {
+      return `(exempt ${stmt.names.join(" ")})`
+    }
+
     case "Export": {
       return `(export ${stmt.names.join(" ")})`
     }

@@ -13,6 +13,7 @@ export type Stmt =
   | DefineType
   | DefineDatatype
   | Claim
+  | Exempt
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -109,6 +110,20 @@ export function Claim(name: string, type: Exp, meta?: TokenMeta): Claim {
     kind: "Claim",
     name,
     type,
+    meta,
+  }
+}
+
+export type Exempt = {
+  kind: "Exempt"
+  names: Array<string>
+  meta?: TokenMeta
+}
+
+export function Exempt(names: Array<string>, meta?: TokenMeta): Exempt {
+  return {
+    kind: "Exempt",
+    names,
     meta,
   }
 }
