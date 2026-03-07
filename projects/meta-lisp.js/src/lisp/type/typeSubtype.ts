@@ -114,39 +114,6 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
     }
   }
 
-  // TODO maybe call `typeUnify` in `typeSubtype`.
-
-  // if (L.isPolymorphicType(lhs) && L.isPolymorphicType(rhs)) {
-  //   lhs = L.polymorphicTypeFreshen(lhs)
-  //   rhs = L.polymorphicTypeFreshen(rhs)
-  //   const subst = L.typeUnify(L.emptySubst(), lhs, rhs)
-  //   if (subst === undefined) return false
-
-  //   lhs = L.substApplyToType(subst, lhs)
-  //   rhs = L.substApplyToType(subst, rhs)
-  //   return typeSubtype(trail, lhs, rhs)
-  // }
-
-  // if (L.isPolymorphicType(lhs)) {
-  //   lhs = L.polymorphicTypeFreshen(lhs)
-  //   const subst = L.typeUnify(L.emptySubst(), lhs, rhs)
-  //   if (subst === undefined) return false
-
-  //   lhs = L.substApplyToType(subst, lhs)
-  //   rhs = L.substApplyToType(subst, rhs)
-  //   return typeSubtype(trail, lhs, rhs)
-  // }
-
-  // if (L.isPolymorphicType(rhs)) {
-  //   rhs = L.polymorphicTypeFreshen(rhs)
-  //   const subst = L.typeUnify(L.emptySubst(), lhs, rhs)
-  //   if (subst === undefined) return false
-
-  //   lhs = L.substApplyToType(subst, lhs)
-  //   rhs = L.substApplyToType(subst, rhs)
-  //   return typeSubtype(trail, lhs, rhs)
-  // }
-
   return false
 }
 

@@ -1,65 +1,103 @@
 import * as L from "../index.ts"
 
-export function typeCheck(
+export function typeCheckAssignable(
   mod: L.Mod,
   ctx: L.Ctx,
   exp: L.Exp,
   type: L.Value,
 ): L.CheckEffect {
-  return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) =>
-    typeCheckByInfer(mod, ctx, exp, inferredType, type),
-  )
+  return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) => {
+    inferredType = L.typeFreshen(inferredType)
+    type = L.typeFreshen(type)
+    return L.sequenceCheckEffect([
+      (subst) => {
+        const oldResolvedType = L.substApplyToType(subst, type)
+        return L.sequenceCheckEffect([
+          typeCheckUnify(exp, inferredType, type),
+          typeCheckSubstInstance(exp, inferredType, type, oldResolvedType)
+        ])(subst)
+      },
+      typeCheckSubtype(exp, inferredType, type),
+    ])
+  })
+}
+
+export function typeCheckSubstInstance(
+  exp: L.Exp,
+  inferredType: L.Value,
+  type: L.Value,
+  oldResolvedType: L.Value,
+): L.CheckEffect {
+  return (subst) => {
+    const resolvedInferredType = L.substApplyToType(subst, inferredType)
+    const resolvedType = L.substApplyToType(subst, type)
+    // - In the theory of polymorphic type,
+    //   inferredType should be more general than given type.
+    // - After unification with inferredType,
+    //   no new constraint shall be introduced
+    //   between type variables in the given type.
+    if (!L.typeSubstInstance(oldResolvedType, resolvedType)) {
+      let message = `given type is not a substitution instance of inferred type`
+      message += `\n  inferred type: ${L.formatType(resolvedInferredType)}`
+      message += `\n  given type: ${L.formatType(oldResolvedType)}`
+      return L.errorCheckEffect(exp, message)(subst)
+    }
+
+    return L.okCheckEffect()(subst)
+  }
 }
 
 export function typeCheckByInfer(
   mod: L.Mod,
   ctx: L.Ctx,
   exp: L.Exp,
+  type: L.Value,
+): L.CheckEffect {
+  return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) => {
+    inferredType = L.typeFreshen(inferredType)
+    type = L.typeFreshen(type)
+    return L.sequenceCheckEffect([
+      typeCheckUnify(exp, inferredType, type),
+      typeCheckSubtype(exp, inferredType, type),
+    ])
+  })
+}
+
+export function typeCheckUnify(
+  exp: L.Exp,
   inferredType: L.Value,
   type: L.Value,
 ): L.CheckEffect {
   return (subst) => {
-    if (L.isPolymorphicType(inferredType)) {
-      inferredType = L.polymorphicTypeFreshen(inferredType)
-    }
-
-    if (L.isPolymorphicType(type)) {
-      type = L.polymorphicTypeFreshen(type)
-    }
-
     const newSubst = L.typeUnify(subst, inferredType, type)
     if (newSubst === undefined) {
       inferredType = L.substApplyToType(subst, inferredType)
       type = L.substApplyToType(subst, type)
-      let message = `unificaton fail`
+      let message = `unification fail`
       message += `\n  inferred type: ${L.formatType(inferredType)}`
       message += `\n  given type: ${L.formatType(type)}`
       return L.errorCheckEffect(exp, message)(subst)
     }
 
-    const resolvedInferredType = L.substApplyToType(newSubst, inferredType)
-    const resolvedType = L.substApplyToType(newSubst, type)
+    return L.okCheckEffect()(newSubst)
+  }
+}
 
-    // TODO support nested PolymorphicType.
-
-    // - Currently `typeSubtype` can not handle PolymorphicType,
-    //   thus nested PolymorphicType is not supported.
-    // - Maybe `typeSubtype` should call `typeUnify` to handle PolymorphicType,
-    //   when a PolymorphicType is unfolded,
-    //   call `typeUnify` and `substApplyToType` again
-    //   to remove newly introduced un-unified type variables.
-    // - But I am not sure this is right,
-    //   because the subtype relation thus implemented
-    //   does not agree with my intuition about
-    //   subtype relation between PolymorphicType.
-
-    if (L.typeSubtype([], resolvedInferredType, resolvedType)) {
-      return L.okCheckEffect()(newSubst)
-    } else {
+export function typeCheckSubtype(
+  exp: L.Exp,
+  inferredType: L.Value,
+  type: L.Value,
+): L.CheckEffect {
+  return (subst) => {
+    const resolvedInferredType = L.substApplyToType(subst, inferredType)
+    const resolvedType = L.substApplyToType(subst, type)
+    if (!L.typeSubtype([], resolvedInferredType, resolvedType)) {
       let message = `inferred type is not a subtype of given type`
       message += `\n  inferred type: ${L.formatType(resolvedInferredType)}`
       message += `\n  given type: ${L.formatType(resolvedType)}`
-      return L.errorCheckEffect(exp, message)(newSubst)
+      return L.errorCheckEffect(exp, message)(subst)
     }
+
+    return L.okCheckEffect()(subst)
   }
 }

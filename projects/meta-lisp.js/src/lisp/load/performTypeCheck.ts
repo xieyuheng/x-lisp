@@ -46,7 +46,12 @@ function checkDefinition(definition: L.Definition): null {
         return null
       }
 
-      const effect = L.typeCheck(mod, L.emptyCtx(), definition.body, type)
+      const effect = L.typeCheckAssignable(
+        mod,
+        L.emptyCtx(),
+        definition.body,
+        type,
+      )
       const result = effect(L.emptySubst())
       if (result.kind === "CheckError") {
         console.log(reportTypeCheckError(result.exp, result.message))
@@ -66,7 +71,7 @@ function checkDefinition(definition: L.Definition): null {
         definition.body,
         definition.meta,
       )
-      const effect = L.typeCheck(mod, L.emptyCtx(), lambdaExp, type)
+      const effect = L.typeCheckAssignable(mod, L.emptyCtx(), lambdaExp, type)
       const result = effect(L.emptySubst())
       if (result.kind === "CheckError") {
         console.log(reportTypeCheckError(result.exp, result.message))

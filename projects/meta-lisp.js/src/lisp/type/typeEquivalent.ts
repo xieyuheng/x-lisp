@@ -12,7 +12,7 @@ export function typeEquivalent(
   }
 
   if (L.isVarType(lhs) && L.isVarType(rhs)) {
-    // We assume unificaton and `substApplyToType` are performed on
+    // We assume unification and `substApplyToType` are performed on
     // `lhs` and `rhs`, before calling `typeEquivalent` and
     // `typeSubtype`.
     if (L.varTypeId(lhs) === L.varTypeId(rhs)) {
@@ -118,39 +118,6 @@ export function typeEquivalent(
       L.sumTypeVariantTypes(rhs),
     )
   }
-
-  // TODO possible
-
-  // if (L.isPolymorphicType(lhs) && L.isPolymorphicType(rhs)) {
-  //   lhs = L.polymorphicTypeFreshen(lhs)
-  //   rhs = L.polymorphicTypeFreshen(rhs)
-  //   const subst = L.typeUnify(L.emptySubst(), lhs, rhs)
-  //   if (subst === undefined) return false
-
-  //   lhs = L.substApplyToType(subst, lhs)
-  //   rhs = L.substApplyToType(subst, rhs)
-  //   return typeEquivalent(trail, lhs, rhs)
-  // }
-
-  // if (L.isPolymorphicType(lhs)) {
-  //   lhs = L.polymorphicTypeFreshen(lhs)
-  //   const subst = L.typeUnify(L.emptySubst(), lhs, rhs)
-  //   if (subst === undefined) return false
-
-  //   lhs = L.substApplyToType(subst, lhs)
-  //   rhs = L.substApplyToType(subst, rhs)
-  //   return typeEquivalent(trail, lhs, rhs)
-  // }
-
-  // if (L.isPolymorphicType(rhs)) {
-  //   rhs = L.polymorphicTypeFreshen(rhs)
-  //   const subst = L.typeUnify(L.emptySubst(), lhs, rhs)
-  //   if (subst === undefined) return false
-
-  //   lhs = L.substApplyToType(subst, lhs)
-  //   rhs = L.substApplyToType(subst, rhs)
-  //   return typeEquivalent(trail, lhs, rhs)
-  // }
 
   return false
 }

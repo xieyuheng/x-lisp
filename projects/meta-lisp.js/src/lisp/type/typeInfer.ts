@@ -52,7 +52,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
           const retType = L.createFreshVarType("R")
           const type = L.createArrowType([], retType)
           return L.checkThenInfer(
-            L.typeCheck(mod, ctx, exp.body, retType),
+            L.typeCheckByInfer(mod, ctx, exp.body, retType),
             L.okInferEffect(type),
           )(subst)
         } else if (exp.parameters.length === 1) {
@@ -61,7 +61,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
           const type = L.createArrowType([argType], retType)
           const [parameter] = exp.parameters
           return L.checkThenInfer(
-            L.typeCheck(
+            L.typeCheckByInfer(
               mod,
               L.ctxPut(ctx, parameter, argType),
               exp.body,
@@ -75,7 +75,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
           const type = L.createArrowType([argType], retType)
           const [parameter, ...restParameters] = exp.parameters
           return L.checkThenInfer(
-            L.typeCheck(
+            L.typeCheckByInfer(
               mod,
               L.ctxPut(ctx, parameter, argType),
               L.Lambda(restParameters, exp.body, exp.meta),
@@ -91,7 +91,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         return L.checkThenInfer(
           L.sequenceCheckEffect(
             exp.exps.map((subExp) =>
-              L.typeCheck(mod, ctx, subExp, L.createAtomType("bool")),
+              L.typeCheckByInfer(mod, ctx, subExp, L.createAtomType("bool")),
             ),
           ),
           L.okInferEffect(L.createAtomType("bool")),
@@ -101,7 +101,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
       case "The": {
         const type = L.evaluate(mod, L.emptyEnv(), exp.type)
         return L.checkThenInfer(
-          L.typeCheck(mod, ctx, exp.exp, type),
+          L.typeCheckByInfer(mod, ctx, exp.exp, type),
           L.okInferEffect(type),
         )(subst)
       }
@@ -110,9 +110,14 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         const type = L.createFreshVarType("X")
         return L.checkThenInfer(
           L.sequenceCheckEffect([
-            L.typeCheck(mod, ctx, exp.condition, L.createAtomType("bool")),
-            L.typeCheck(mod, ctx, exp.consequent, type),
-            L.typeCheck(mod, ctx, exp.alternative, type),
+            L.typeCheckByInfer(
+              mod,
+              ctx,
+              exp.condition,
+              L.createAtomType("bool"),
+            ),
+            L.typeCheckByInfer(mod, ctx, exp.consequent, type),
+            L.typeCheckByInfer(mod, ctx, exp.alternative, type),
           ]),
           L.okInferEffect(type),
         )(subst)
@@ -154,7 +159,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         return L.checkThenInfer(
           L.sequenceCheckEffect([
             ...exp.elements.map((element) =>
-              L.typeCheck(mod, ctx, element, elementType),
+              L.typeCheckByInfer(mod, ctx, element, elementType),
             ),
           ]),
           L.okInferEffect(type),
@@ -167,7 +172,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         return L.checkThenInfer(
           L.sequenceCheckEffect(
             exp.elements.map((element) =>
-              L.typeCheck(mod, ctx, element, elementType),
+              L.typeCheckByInfer(mod, ctx, element, elementType),
             ),
           ),
           L.okInferEffect(type),
@@ -181,8 +186,8 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         return L.checkThenInfer(
           L.sequenceCheckEffect(
             exp.entries.flatMap((entry) => [
-              L.typeCheck(mod, ctx, entry.key, keyType),
-              L.typeCheck(mod, ctx, entry.value, valueType),
+              L.typeCheckByInfer(mod, ctx, entry.key, keyType),
+              L.typeCheckByInfer(mod, ctx, entry.value, valueType),
             ]),
           ),
           L.okInferEffect(type),
@@ -195,7 +200,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         return L.checkThenInfer(
           L.sequenceCheckEffect(
             exp.elements.map((element, index) =>
-              L.typeCheck(mod, ctx, element, elementTypes[index]),
+              L.typeCheckByInfer(mod, ctx, element, elementTypes[index]),
             ),
           ),
           L.okInferEffect(type),
@@ -210,7 +215,12 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         return L.checkThenInfer(
           L.sequenceCheckEffect(
             Object.keys(exp.attributes).map((key) =>
-              L.typeCheck(mod, ctx, exp.attributes[key], attributeTypes[key]),
+              L.typeCheckByInfer(
+                mod,
+                ctx,
+                exp.attributes[key],
+                attributeTypes[key],
+              ),
             ),
           ),
           L.okInferEffect(type),
@@ -264,7 +274,7 @@ function typeInferApplyArrowType(
 
       const [arg] = args
       return L.checkThenInfer(
-        L.typeCheck(mod, ctx, arg, argType),
+        L.typeCheckByInfer(mod, ctx, arg, argType),
         L.okInferEffect(retType),
       )(newSubst)
     } else {
@@ -282,7 +292,7 @@ function typeInferApplyArrowType(
 
       const [arg, ...restArgs] = args
       return L.checkThenInfer(
-        L.typeCheck(mod, ctx, arg, argType),
+        L.typeCheckByInfer(mod, ctx, arg, argType),
         typeInferApplyArrowType(mod, ctx, retType, restArgs, originalExp),
       )(newSubst)
     }

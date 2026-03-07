@@ -19,7 +19,7 @@ export function extendSubst(
 ): Subst {
   // This implementation preserves the no-occurrence invariant, but it
   // does not depend on, nor does it attempt to enforce it. That is
-  // the job of the unificaton.
+  // the job of the unification.
 
   type = substApplyToType(subst, type)
 

@@ -1,3 +1,4 @@
+import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as L from "../index.ts"
 
 export function formatTypes(types: Array<L.Value>): string {
@@ -12,6 +13,11 @@ export function formatType(type: L.Value): string {
     } else {
       return L.varTypeId(type)
     }
+  }
+
+  if (L.isCanonicalLabelType(type)) {
+    const serialNumber = L.canonicalLabelTypeSerialNumber(type)
+    return `_${stringToSubscript(serialNumber.toString())}`
   }
 
   if (L.isTypeType(type)) {
