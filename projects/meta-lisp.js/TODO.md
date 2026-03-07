@@ -1,8 +1,5 @@
 # type system
 
-`modExempt`
-`setupExempt`
-
 remove `(define-type)`
 
 # optional type vs maybe type
