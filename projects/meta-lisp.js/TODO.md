@@ -1,6 +1,5 @@
 # typle
 
-[lisp] `typeInfer` -- handle `Tuple`
 [lisp] `typeInfer` -- handle `Object`
 
 # pattern match

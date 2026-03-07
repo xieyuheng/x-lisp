@@ -189,8 +189,16 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
       }
 
       case "Tuple": {
-        let message = `TODO`
-        return L.errorInferEffect(exp, message)(subst)
+        const elementTypes = exp.elements.map(_ => L.createFreshVarType("E"))
+        const type = L.createTauType(elementTypes)
+        return L.checkThenInfer(
+          L.sequenceCheckEffect(
+            exp.elements.map((element, index) =>
+              L.typeCheck(mod, ctx, element, elementTypes[index]),
+            ),
+          ),
+          L.okInferEffect(type),
+        )(subst)
       }
 
       case "Object": {
