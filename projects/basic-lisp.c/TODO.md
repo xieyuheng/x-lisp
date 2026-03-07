@@ -1,3 +1,11 @@
+rename hashtag to keyword
+remove null from value
+encode bool and void in value directly
+keyword use : as prefix instead of #
+
+[sexp] rename hashtag to keyword
+[sexp] use list instead of tael
+
 # later
 
 [helpers.c] improve `string_builder_t` for `format_*`
