@@ -14,8 +14,8 @@ export function formatType(type: L.Value): string {
     }
   }
 
-  if (L.isAnyType(type)) {
-    return `any-t`
+  if (L.isTypeType(type)) {
+    return `type-t`
   }
 
   if (L.isLiteralType(type)) {

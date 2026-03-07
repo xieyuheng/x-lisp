@@ -7,7 +7,7 @@
 (define symbol-t ['atom 'symbol])
 (define keyword-t ['atom 'keyword])
 (define void-t ['atom 'void])
-(define any-t ['any])
+(define type-t ['type])
 (define (list-t E) ['list E])
 (define (set-t E) ['set E])
 (define (hash-t K V) ['hash K V])
@@ -20,7 +20,7 @@
   symbol-t
   keyword-t
   void-t
-  any-t
+  type-t
   list-t
   set-t
   hash-t)

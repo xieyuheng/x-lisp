@@ -1,7 +1,3 @@
-# any type
-
-[lisp] rename `AnyType` to `TypeType` -- used for type definitions
-
 # type checking
 
 [lisp] `typeCheck` -- handle `Tuple`

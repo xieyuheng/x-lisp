@@ -51,7 +51,7 @@ export function substApplyToTypeWithBoundIds(
     return type
   }
 
-  if (L.isAnyType(type)) {
+  if (L.isTypeType(type)) {
     return type
   }
 

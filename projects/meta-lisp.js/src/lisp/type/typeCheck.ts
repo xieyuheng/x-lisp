@@ -110,10 +110,10 @@ function typeCheckWithoutInfer(
       }
 
       case "Begin1": {
-        return L.sequenceCheckEffect([
-          typeCheck(mod, ctx, exp.head, L.createAnyType()),
-          typeCheck(mod, ctx, exp.body, type),
-        ])(subst)
+        return L.inferThenCheck(
+          L.typeInfer(mod, ctx, exp.head),
+          (_headType) => typeCheck(mod, ctx, exp.body, type),
+        )(subst)
       }
 
       case "BeginSugar": {

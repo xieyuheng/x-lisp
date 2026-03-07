@@ -5,7 +5,7 @@ import * as L from "../index.ts"
 export function isType(value: L.Value): boolean {
   return (
     isVarType(value) ||
-    isAnyType(value) ||
+    isTypeType(value) ||
     isLiteralType(value) ||
     isAtomType(value) ||
     isArrowType(value) ||
@@ -75,18 +75,18 @@ export function varTypeId(value: L.Value): string {
   )
 }
 
-// AnyType
+// TypeType
 
-export function isAnyType(value: L.Value): boolean {
+export function isTypeType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 1 &&
-    L.equal(value.elements[0], L.SymbolValue("any"))
+    L.equal(value.elements[0], L.SymbolValue("type"))
   )
 }
 
-export function createAnyType(): L.Value {
-  return L.ListValue([L.SymbolValue("any")])
+export function createTypeType(): L.Value {
+  return L.ListValue([L.SymbolValue("type")])
 }
 
 // LiteralType

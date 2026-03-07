@@ -22,7 +22,7 @@ export function typeEquivalent(
     }
   }
 
-  if (L.isAnyType(lhs) && L.isAnyType(rhs)) {
+  if (L.isTypeType(lhs) && L.isTypeType(rhs)) {
     return L.equal(lhs, rhs)
   }
 
