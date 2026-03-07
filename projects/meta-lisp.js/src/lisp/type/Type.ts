@@ -5,6 +5,7 @@ import * as L from "../index.ts"
 export function isType(value: L.Value): boolean {
   return (
     isVarType(value) ||
+      isCanonicalIdType(value) ||
     isTypeType(value) ||
     isLiteralType(value) ||
     isAtomType(value) ||
@@ -16,7 +17,7 @@ export function isType(value: L.Value): boolean {
     isHashType(value) ||
     isDatatypeType(value) ||
     isSumType(value) ||
-    isPolymorphicType(value)
+      isPolymorphicType(value)
   )
 }
 
@@ -73,6 +74,29 @@ export function varTypeId(value: L.Value): string {
     L.varTypeName(value) +
     stringToSubscript(L.varTypeSerialNumber(value).toString())
   )
+}
+
+// CanonicalIdType
+
+export function isCanonicalIdType(value: L.Value): boolean {
+  return (
+    L.isListValue(value) &&
+    value.elements.length === 2 &&
+    L.equal(value.elements[0], L.SymbolValue("canonical-id")) &&
+    L.isIntValue(value.elements[1])
+  )
+}
+
+export function createCanonicalIdType(serialNumber: bigint): L.Value {
+  return L.ListValue([
+    L.SymbolValue("canonical-id"),
+    L.IntValue(serialNumber),
+  ])
+}
+
+export function canonicalIdTypeSerialNumber(value: L.Value): bigint {
+  assert(isCanonicalIdType(value))
+  return L.asIntValue(L.asListValue(value).elements[1]).content
 }
 
 // TypeType

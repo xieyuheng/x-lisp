@@ -1,3 +1,9 @@
+`typeCanonicalSubst` -- for `typeReify`
+`typeReify` -- to implement `typeInstance`
+`typeInstance` -- to implement `typeAssignable`
+`typeAssignable` -- be careful about the order of arguments:
+- lhs : given type = rhs : inferred type
+
 # pattern match
 
 `Which` as `Exp` -- `typeInfer` like `If`

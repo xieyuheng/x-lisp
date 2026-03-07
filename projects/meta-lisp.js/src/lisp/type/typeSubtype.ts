@@ -12,14 +12,6 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
     return true
   }
 
-  if (L.isLiteralType(lhs) && L.isLiteralType(rhs)) {
-    return L.equal(lhs, rhs)
-  }
-
-  if (L.isAtomType(lhs) && L.isAtomType(rhs)) {
-    return L.atomTypeName(lhs) === L.atomTypeName(rhs)
-  }
-
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
     return typeSubtypeMany(
       trail,

@@ -22,6 +22,10 @@ export function typeEquivalent(
     }
   }
 
+  if (L.isCanonicalIdType(lhs) && L.isCanonicalIdType(rhs)) {
+    return L.equal(lhs, rhs)
+  }
+
   if (L.isTypeType(lhs) && L.isTypeType(rhs)) {
     return L.equal(lhs, rhs)
   }

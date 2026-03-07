@@ -1,0 +1,5 @@
+(claim identity
+  (polymorphic (A B)
+    (-> A B)))
+
+(define (identity x) x)

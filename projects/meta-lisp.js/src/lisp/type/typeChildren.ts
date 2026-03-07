@@ -5,6 +5,10 @@ export function typeChildren(type: L.Value): Array<L.Value> {
     return []
   }
 
+  if (L.isCanonicalIdType(type)) {
+    return []
+  }
+
   if (L.isTypeType(type)) {
     return []
   }
