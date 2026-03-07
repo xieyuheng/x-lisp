@@ -99,26 +99,6 @@ function typeCheckWithoutInfer(
         }
       }
 
-      case "Let1": {
-        return L.inferThenCheck(
-          L.typeInfer(mod, ctx, exp.rhs),
-          (inferredType) => {
-            ctx = L.ctxPut(ctx, exp.name, inferredType)
-            return typeCheck(mod, ctx, exp.body, type)
-          },
-        )(subst)
-      }
-
-      case "Begin1": {
-        return L.inferThenCheck(L.typeInfer(mod, ctx, exp.head), (_headType) =>
-          typeCheck(mod, ctx, exp.body, type),
-        )(subst)
-      }
-
-      case "BeginSugar": {
-        return typeCheck(mod, ctx, L.desugarBegin(exp.sequence), type)(subst)
-      }
-
       case "Tuple": {
         // TODO
 

@@ -1,7 +1,3 @@
-# type checking
-
-[lisp] `typeCheck` -- no need to handle `(begin)`
-
 # typle
 
 [lisp] `typeCheck` -- handle `Tuple`
