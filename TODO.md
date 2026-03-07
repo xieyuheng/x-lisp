@@ -1,4 +1,3 @@
-move sexp-tael.js to dustbin
 move x-forth.c to dustbin
 
 rename x-lisp.js to meta-lisp.js
