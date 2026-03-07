@@ -5,7 +5,7 @@ export function typeChildren(type: L.Value): Array<L.Value> {
     return []
   }
 
-  if (L.isCanonicalIdType(type)) {
+  if (L.isCanonicalLabelType(type)) {
     return []
   }
 

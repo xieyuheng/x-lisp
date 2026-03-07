@@ -1,8 +1,11 @@
-`typeCanonicalSubst` -- for `typeReify`
+ambr polymorphicTypeUnfold polymorphicTypeFreshen
+
+`typeCanonicalLabelSubst` -- for `typeReify`
 `typeReify` -- to implement `typeInstance`
 `typeInstance` -- to implement `typeAssignable`
 `typeAssignable` -- be careful about the order of arguments:
 - lhs : given type = rhs : inferred type
+`typeFreshen`
 
 # pattern match
 

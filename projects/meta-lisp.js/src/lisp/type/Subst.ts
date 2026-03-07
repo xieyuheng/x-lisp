@@ -51,7 +51,7 @@ export function substApplyToTypeWithBoundIds(
     return type
   }
 
-  if (L.isCanonicalIdType(type)) {
+  if (L.isCanonicalLabelType(type)) {
     return type
   }
 

@@ -5,7 +5,7 @@ import * as L from "../index.ts"
 export function isType(value: L.Value): boolean {
   return (
     isVarType(value) ||
-      isCanonicalIdType(value) ||
+    isCanonicalLabelType(value) ||
     isTypeType(value) ||
     isLiteralType(value) ||
     isAtomType(value) ||
@@ -17,7 +17,7 @@ export function isType(value: L.Value): boolean {
     isHashType(value) ||
     isDatatypeType(value) ||
     isSumType(value) ||
-      isPolymorphicType(value)
+    isPolymorphicType(value)
   )
 }
 
@@ -76,9 +76,9 @@ export function varTypeId(value: L.Value): string {
   )
 }
 
-// CanonicalIdType
+// CanonicalLabelType
 
-export function isCanonicalIdType(value: L.Value): boolean {
+export function isCanonicalLabelType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 2 &&
@@ -87,15 +87,12 @@ export function isCanonicalIdType(value: L.Value): boolean {
   )
 }
 
-export function createCanonicalIdType(serialNumber: bigint): L.Value {
-  return L.ListValue([
-    L.SymbolValue("canonical-id"),
-    L.IntValue(serialNumber),
-  ])
+export function createCanonicalLabelType(serialNumber: bigint): L.Value {
+  return L.ListValue([L.SymbolValue("canonical-id"), L.IntValue(serialNumber)])
 }
 
-export function canonicalIdTypeSerialNumber(value: L.Value): bigint {
-  assert(isCanonicalIdType(value))
+export function canonicalLabelTypeSerialNumber(value: L.Value): bigint {
+  assert(isCanonicalLabelType(value))
   return L.asIntValue(L.asListValue(value).elements[1]).content
 }
 

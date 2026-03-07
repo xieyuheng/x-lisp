@@ -22,7 +22,7 @@ export function typeEquivalent(
     }
   }
 
-  if (L.isCanonicalIdType(lhs) && L.isCanonicalIdType(rhs)) {
+  if (L.isCanonicalLabelType(lhs) && L.isCanonicalLabelType(rhs)) {
     return L.equal(lhs, rhs)
   }
 
