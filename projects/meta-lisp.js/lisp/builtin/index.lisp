@@ -1,16 +1,29 @@
 ;; type
 
-(define-type bool-t ['atom 'bool])
-(define-type int-t ['atom 'int])
-(define-type float-t ['atom 'float])
-(define-type string-t ['atom 'string])
-(define-type symbol-t ['atom 'symbol])
-(define-type keyword-t ['atom 'keyword])
-(define-type void-t ['atom 'void])
-(define-type any-t ['any])
-(define-type (list-t E) ['list E])
-(define-type (set-t E) ['set E])
-(define-type (hash-t K V) ['hash K V])
+(define bool-t ['atom 'bool])
+(define int-t ['atom 'int])
+(define float-t ['atom 'float])
+(define string-t ['atom 'string])
+(define symbol-t ['atom 'symbol])
+(define keyword-t ['atom 'keyword])
+(define void-t ['atom 'void])
+(define any-t ['any])
+(define (list-t E) ['list E])
+(define (set-t E) ['set E])
+(define (hash-t K V) ['hash K V])
+
+(exempt
+  bool-t
+  int-t
+  float-t
+  string-t
+  symbol-t
+  keyword-t
+  void-t
+  any-t
+  list-t
+  set-t
+  hash-t)
 
 ;; value
 
