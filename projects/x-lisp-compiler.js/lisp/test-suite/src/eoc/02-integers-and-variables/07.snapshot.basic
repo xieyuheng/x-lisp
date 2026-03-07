@@ -1,6 +1,0 @@
-(define-function (main)
-  (block body
-    (= _₁ (random-dice))
-    (= _₂ (random-dice))
-    (= _₃ (iadd _₁ _₂))
-    (return (println _₃))))

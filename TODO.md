@@ -1,4 +1,3 @@
-move x-lisp-compiler.js to dustbin
 move sexp-tael.js to dustbin
 move x-forth.c to dustbin
 
