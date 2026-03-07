@@ -70,7 +70,7 @@ function typeChildren(type: L.Value): Array<L.Value> {
     return typeChildren(L.polymorphicTypeFreshen(type))
   }
 
-  let message = `[occurredInType] unhandled type`
+  let message = `[typeVarOccurredInType] unhandled type`
   message += `\n  type: ${L.formatType(type)}`
   throw new Error(message)
 }

@@ -32,6 +32,14 @@ export function substApplyToType(subst: Subst, type: L.Value): L.Value {
   return substApplyToTypeWithBoundIds(new Set(), subst, type)
 }
 
+export function substLookup(subst: Subst, id: string): L.Value | undefined {
+  return subst.get(id)
+}
+
+export function substLength(subst: Subst): number {
+  return subst.size
+}
+
 export function substApplyToTypeWithBoundIds(
   boundIds: Set<string>,
   subst: Subst,
@@ -43,7 +51,7 @@ export function substApplyToTypeWithBoundIds(
       return type
     }
 
-    const found = subst.get(id)
+    const found = substLookup(subst, id)
     if (found !== undefined) {
       return found
     }

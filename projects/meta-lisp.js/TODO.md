@@ -1,6 +1,5 @@
-`typeCanonicalLabelSubst` -- for `typeReify`
-`typeFreshen`
 `typeReify` -- to implement `typeInstance`
+`typeFreshen`
 `typeInstance` -- to implement `typeAssignable`
 `typeAssignable` -- be careful about the order of arguments:
 - lhs : given type = rhs : inferred type
