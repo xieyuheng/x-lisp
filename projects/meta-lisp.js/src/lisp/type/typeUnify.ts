@@ -22,11 +22,11 @@ export function typeUnify(
   rhs = L.substApplyToType(subst, rhs)
 
   if (L.isPolymorphicType(lhs)) {
-    lhs = L.polymorphicTypeUnfold(lhs)
+    lhs = L.polymorphicTypeFreshen(lhs)
   }
 
   if (L.isPolymorphicType(rhs)) {
-    rhs = L.polymorphicTypeUnfold(rhs)
+    rhs = L.polymorphicTypeFreshen(rhs)
   }
 
   if (L.typeSubtype([], lhs, rhs) || L.typeSubtype([], rhs, lhs)) {

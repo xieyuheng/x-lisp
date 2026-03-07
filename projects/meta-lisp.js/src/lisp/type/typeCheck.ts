@@ -20,11 +20,11 @@ export function typeCheckByInfer(
 ): L.CheckEffect {
   return (subst) => {
     if (L.isPolymorphicType(inferredType)) {
-      inferredType = L.polymorphicTypeUnfold(inferredType)
+      inferredType = L.polymorphicTypeFreshen(inferredType)
     }
 
     if (L.isPolymorphicType(type)) {
-      type = L.polymorphicTypeUnfold(type)
+      type = L.polymorphicTypeFreshen(type)
     }
 
     const newSubst = L.typeUnify(subst, inferredType, type)

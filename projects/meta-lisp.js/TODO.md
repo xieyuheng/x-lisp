@@ -1,5 +1,3 @@
-ambr polymorphicTypeUnfold polymorphicTypeFreshen
-
 `typeCanonicalLabelSubst` -- for `typeReify`
 `typeReify` -- to implement `typeInstance`
 `typeInstance` -- to implement `typeAssignable`

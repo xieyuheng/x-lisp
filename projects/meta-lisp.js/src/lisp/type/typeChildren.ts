@@ -54,7 +54,7 @@ export function typeChildren(type: L.Value): Array<L.Value> {
   }
 
   if (L.isPolymorphicType(type)) {
-    return typeChildren(L.polymorphicTypeUnfold(type))
+    return typeChildren(L.polymorphicTypeFreshen(type))
   }
 
   let message = `[occurredInType] unhandled type`

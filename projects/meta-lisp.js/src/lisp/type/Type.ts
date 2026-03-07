@@ -420,7 +420,7 @@ export function polymorphicTypeBodyType(value: L.Value): L.Value {
   return L.asListValue(value).elements[2]
 }
 
-export function polymorphicTypeUnfold(value: L.Value): L.Value {
+export function polymorphicTypeFreshen(value: L.Value): L.Value {
   assert(isPolymorphicType(value))
   const varTypes = polymorphicTypeVarTypes(value)
   const bodyType = polymorphicTypeBodyType(value)
