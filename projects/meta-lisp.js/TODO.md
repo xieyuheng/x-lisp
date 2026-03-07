@@ -1,4 +1,4 @@
-`substApplyToType` should not unfold polymorphic type
+rename disjointUnionType to sumType
 
 # type checking
 
