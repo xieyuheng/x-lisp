@@ -106,19 +106,19 @@ export function typeUnify(
     )
   }
 
-  if (L.isDisjointUnionType(lhs) && L.isDisjointUnionType(rhs)) {
+  if (L.isSumType(lhs) && L.isSumType(rhs)) {
     return typeUnifyRecord(
       subst,
-      L.disjointUnionTypeVariantTypes(lhs),
-      L.disjointUnionTypeVariantTypes(rhs),
+      L.sumTypeVariantTypes(lhs),
+      L.sumTypeVariantTypes(rhs),
     )
   }
 
-  if (L.isDatatypeType(lhs) && L.isDisjointUnionType(rhs)) {
+  if (L.isDatatypeType(lhs) && L.isSumType(rhs)) {
     return typeUnify(subst, L.datatypeTypeUnfold(lhs), rhs)
   }
 
-  if (L.isDisjointUnionType(lhs) && L.isDatatypeType(rhs)) {
+  if (L.isSumType(lhs) && L.isDatatypeType(rhs)) {
     return typeUnify(subst, lhs, L.datatypeTypeUnfold(rhs))
   }
 

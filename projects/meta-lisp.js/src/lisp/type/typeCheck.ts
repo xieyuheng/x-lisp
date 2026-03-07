@@ -143,7 +143,7 @@ function typeCheckWithoutInfer(
       case "Tuple": {
         if (L.isDatatypeType(type)) {
           return typeCheck(mod, ctx, exp, L.datatypeTypeUnfold(type))(subst)
-        } else if (L.isDisjointUnionType(type)) {
+        } else if (L.isSumType(type)) {
           if (exp.elements.length === 0) {
             let message = `elements should not be empty`
             message += `\n  type: ${L.formatType(type)}`
@@ -159,7 +159,7 @@ function typeCheckWithoutInfer(
           }
 
           const name = headExp.content
-          const variantTypes = L.disjointUnionTypeVariantTypes(type)
+          const variantTypes = L.sumTypeVariantTypes(type)
           if (variantTypes[name] === undefined) {
             let message = `head keyword mismatch`
             message += `\n  keyword: ${L.formatExp(headExp)}`

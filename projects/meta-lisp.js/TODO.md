@@ -1,5 +1,3 @@
-rename disjointUnionType to sumType
-
 # type checking
 
 [lisp] `typeInfer` -- handle `Tuple`

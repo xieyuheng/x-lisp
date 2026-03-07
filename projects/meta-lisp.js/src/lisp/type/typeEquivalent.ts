@@ -107,11 +107,11 @@ export function typeEquivalent(
     return typeEquivalent(trail, lhs, L.datatypeTypeUnfold(rhs))
   }
 
-  if (L.isDisjointUnionType(lhs) && L.isDisjointUnionType(rhs)) {
+  if (L.isSumType(lhs) && L.isSumType(rhs)) {
     return typeEquivalentRecord(
       trail,
-      L.disjointUnionTypeVariantTypes(lhs),
-      L.disjointUnionTypeVariantTypes(rhs),
+      L.sumTypeVariantTypes(lhs),
+      L.sumTypeVariantTypes(rhs),
     )
   }
 

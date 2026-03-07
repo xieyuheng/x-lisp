@@ -15,7 +15,7 @@ export function isType(value: L.Value): boolean {
     isSetType(value) ||
     isHashType(value) ||
     isDatatypeType(value) ||
-    isDisjointUnionType(value) ||
+    isSumType(value) ||
     isPolymorphicType(value)
   )
 }
@@ -341,34 +341,34 @@ export function datatypeTypeUnfold(datatypeType: L.Value): L.Value {
     ])
   }
 
-  return L.createDisjointUnionType(variantTypes)
+  return L.createSumType(variantTypes)
 }
 
-// DisjointUnionType
+// SumType
 
-export function isDisjointUnionType(value: L.Value): boolean {
+export function isSumType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 2 &&
-    L.equal(value.elements[0], L.SymbolValue("disjoint-union")) &&
+    L.equal(value.elements[0], L.SymbolValue("sum")) &&
     L.isObjectValue(value.elements[1]) &&
     Object.values(L.asObjectValue(value.elements[1]).attributes).every(isType)
   )
 }
 
-export function createDisjointUnionType(
+export function createSumType(
   variantTypes: Record<string, L.Value>,
 ): L.Value {
   return L.ListValue([
-    L.SymbolValue("disjoint-union"),
+    L.SymbolValue("sum"),
     L.ObjectValue(variantTypes),
   ])
 }
 
-export function disjointUnionTypeVariantTypes(
+export function sumTypeVariantTypes(
   value: L.Value,
 ): Record<string, L.Value> {
-  assert(isDisjointUnionType(value))
+  assert(isSumType(value))
   return L.asObjectValue(L.asListValue(value).elements[1]).attributes
 }
 

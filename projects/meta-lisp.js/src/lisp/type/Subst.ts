@@ -120,9 +120,9 @@ export function substApplyToTypeWithBoundIds(
     )
   }
 
-  if (L.isDisjointUnionType(type)) {
-    return L.createDisjointUnionType(
-      recordMapValue(L.disjointUnionTypeVariantTypes(type), (t) =>
+  if (L.isSumType(type)) {
+    return L.createSumType(
+      recordMapValue(L.sumTypeVariantTypes(type), (t) =>
         substApplyToTypeWithBoundIds(boundIds, subst, t),
       ),
     )

@@ -45,8 +45,8 @@ export function typeChildren(type: L.Value): Array<L.Value> {
     return L.datatypeTypeArgTypes(type)
   }
 
-  if (L.isDisjointUnionType(type)) {
-    return Object.values(L.disjointUnionTypeVariantTypes(type))
+  if (L.isSumType(type)) {
+    return Object.values(L.sumTypeVariantTypes(type))
   }
 
   if (L.isPolymorphicType(type)) {

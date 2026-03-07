@@ -65,9 +65,9 @@ export function formatType(type: L.Value): string {
     return `(${definition.name} ${argTypes})`
   }
 
-  if (L.isDisjointUnionType(type)) {
-    const variantTypes = formatTypeRecord(L.disjointUnionTypeVariantTypes(type))
-    return `(disjoint-union ${variantTypes})`
+  if (L.isSumType(type)) {
+    const variantTypes = formatTypeRecord(L.sumTypeVariantTypes(type))
+    return `(sum ${variantTypes})`
   }
 
   if (L.isPolymorphicType(type)) {

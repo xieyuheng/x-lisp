@@ -104,9 +104,9 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
     return typeSubtype(trail, lhs, L.datatypeTypeUnfold(rhs))
   }
 
-  if (L.isDisjointUnionType(lhs) && L.isDisjointUnionType(rhs)) {
-    const lhsRecord = L.disjointUnionTypeVariantTypes(lhs)
-    const rhsRecord = L.disjointUnionTypeVariantTypes(rhs)
+  if (L.isSumType(lhs) && L.isSumType(rhs)) {
+    const lhsRecord = L.sumTypeVariantTypes(lhs)
+    const rhsRecord = L.sumTypeVariantTypes(rhs)
     // lhs has less keys
     for (const k of Object.keys(lhsRecord)) {
       if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) {
@@ -117,8 +117,8 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
     return true
   }
 
-  if (L.isDisjointUnionType(rhs)) {
-    const variantTypes = L.disjointUnionTypeVariantTypes(rhs)
+  if (L.isSumType(rhs)) {
+    const variantTypes = L.sumTypeVariantTypes(rhs)
     for (const variantType of Object.values(variantTypes)) {
       if (typeSubtype(trail, lhs, variantType)) {
         return true
