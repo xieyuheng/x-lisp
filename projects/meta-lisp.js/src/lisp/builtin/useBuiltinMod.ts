@@ -6,6 +6,7 @@ import * as L from "../index.ts"
 import { builtinAssert } from "./builtinAssert.ts"
 import { builtinBool } from "./builtinBool.ts"
 import { builtinConsole } from "./builtinConsole.ts"
+import { builtinError } from "./builtinError.ts"
 import { builtinFloat } from "./builtinFloat.ts"
 import { builtinHash } from "./builtinHash.ts"
 import { builtinInt } from "./builtinInt.ts"
@@ -17,8 +18,6 @@ import { builtinString } from "./builtinString.ts"
 import { builtinSymbol } from "./builtinSymbol.ts"
 import { builtinValue } from "./builtinValue.ts"
 import { builtinVoid } from "./builtinVoid.ts"
-import { builtinError } from "./builtinError.ts"
-
 
 let mod: L.Mod | undefined = undefined
 
@@ -46,7 +45,7 @@ export function useBuiltinMod(): L.Mod {
   builtinHash(mod)
   builtinAssert(mod)
   builtinError(mod)
-  
+
   const code = fs.readFileSync(file, "utf-8")
   L.runCode(mod, code)
 

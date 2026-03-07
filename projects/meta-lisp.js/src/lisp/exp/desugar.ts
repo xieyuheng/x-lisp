@@ -26,8 +26,8 @@ export function desugarBegin(
 export function desugarWhen(exp: L.When, meta?: L.TokenMeta): L.If {
   return L.If(
     exp.condition,
-    L.Begin1(exp.consequent, L.Void()),
-    L.Void(),
+    L.Begin1(exp.consequent, L.Void(meta), meta),
+    L.Void(meta),
     exp.meta,
   )
 }
@@ -35,8 +35,8 @@ export function desugarWhen(exp: L.When, meta?: L.TokenMeta): L.If {
 export function desugarUnless(exp: L.Unless, meta?: L.TokenMeta): L.If {
   return L.If(
     exp.condition,
-    L.Void(),
-    L.Begin1(exp.alternative, L.Void()),
+    L.Void(meta),
+    L.Begin1(exp.alternative, L.Void(meta), meta),
     exp.meta,
   )
 }
@@ -60,17 +60,28 @@ export function desugarCond(
   meta?: L.TokenMeta,
 ): L.Exp {
   if (condLines.length === 0)
-    return L.Apply(L.Var("error"), [L.String("cond mismatch")], meta)
+    return L.Apply(
+      L.Var("error", meta),
+      [L.String("cond mismatch", meta)],
+      meta,
+    )
   const [headLine, ...restLines] = condLines
-  return L.If(headLine.question, headLine.answer, desugarCond(restLines, meta))
+  return L.If(
+    headLine.question,
+    headLine.answer,
+    desugarCond(restLines, meta),
+    meta,
+  )
 }
 
 export function desugarList(elements: Array<L.Exp>, meta?: L.TokenMeta): L.Exp {
   return L.BeginSugar(
     [
-      L.AssignSugar("list", L.Apply(L.Var("make-list"), [])),
-      ...elements.map((e) => L.Apply(L.Var("list-push!"), [e, L.Var("list")])),
-      L.Var("list"),
+      L.AssignSugar("list", L.Apply(L.Var("make-list", meta), [], meta), meta),
+      ...elements.map((e) =>
+        L.Apply(L.Var("list-push!", meta), [e, L.Var("list", meta)], meta),
+      ),
+      L.Var("list", meta),
     ],
     meta,
   )
@@ -79,9 +90,11 @@ export function desugarList(elements: Array<L.Exp>, meta?: L.TokenMeta): L.Exp {
 export function desugarSet(elements: Array<L.Exp>, meta?: L.TokenMeta): L.Exp {
   return L.BeginSugar(
     [
-      L.AssignSugar("set", L.Apply(L.Var("make-set"), [])),
-      ...elements.map((e) => L.Apply(L.Var("set-add!"), [e, L.Var("set")])),
-      L.Var("set"),
+      L.AssignSugar("set", L.Apply(L.Var("make-set", meta), [], meta), meta),
+      ...elements.map((e) =>
+        L.Apply(L.Var("set-add!", meta), [e, L.Var("set", meta)], meta),
+      ),
+      L.Var("set", meta),
     ],
     meta,
   )
@@ -93,11 +106,15 @@ export function desugarHash(
 ): L.Exp {
   return L.BeginSugar(
     [
-      L.AssignSugar("hash", L.Apply(L.Var("make-hash"), [])),
+      L.AssignSugar("hash", L.Apply(L.Var("make-hash", meta), [], meta), meta),
       ...entries.map((entry) =>
-        L.Apply(L.Var("hash-put!"), [entry.key, entry.value, L.Var("hash")]),
+        L.Apply(
+          L.Var("hash-put!", meta),
+          [entry.key, entry.value, L.Var("hash", meta)],
+          meta,
+        ),
       ),
-      L.Var("hash"),
+      L.Var("hash", meta),
     ],
     meta,
   )

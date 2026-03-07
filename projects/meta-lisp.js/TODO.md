@@ -1,5 +1,3 @@
-[lisp] `desugar` -- keep `meta` of `Exp`
-
 # type checking
 
 [lisp] `typeCheck` -- handle `Tuple`

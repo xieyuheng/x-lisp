@@ -1,4 +1,3 @@
-import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import * as L from "../index.ts"
 import { type Mod } from "../mod/index.ts"
