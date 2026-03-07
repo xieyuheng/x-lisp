@@ -1,4 +1,3 @@
-`typeFreshen`
 `typeInstance` -- to implement `typeAssignable`
 `typeAssignable` -- be careful about the order of arguments:
 - lhs : given type = rhs : inferred type
