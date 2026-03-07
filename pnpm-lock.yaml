@@ -40,11 +40,23 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  projects/ppml.js:
+  projects/meta-lisp.js:
     dependencies:
+      '@xieyuheng/cmd.js':
+        specifier: workspace:*
+        version: link:../cmd.js
       '@xieyuheng/helpers.js':
         specifier: workspace:*
         version: link:../helpers.js
+      '@xieyuheng/ppml.js':
+        specifier: workspace:*
+        version: link:../ppml.js
+      '@xieyuheng/sexp.js':
+        specifier: workspace:*
+        version: link:../sexp.js
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
     devDependencies:
       '@types/node':
         specifier: ^25.3.5
@@ -59,14 +71,11 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  projects/sexp-tael.js:
+  projects/ppml.js:
     dependencies:
       '@xieyuheng/helpers.js':
         specifier: workspace:*
         version: link:../helpers.js
-      '@xieyuheng/ppml.js':
-        specifier: workspace:*
-        version: link:../ppml.js
     devDependencies:
       '@types/node':
         specifier: ^25.3.5
@@ -89,68 +98,6 @@ importers:
       '@xieyuheng/ppml.js':
         specifier: workspace:*
         version: link:../ppml.js
-    devDependencies:
-      '@types/node':
-        specifier: ^25.3.5
-        version: 25.3.5
-      prettier:
-        specifier: ^3.8.1
-        version: 3.8.1
-      prettier-plugin-organize-imports:
-        specifier: ^4.3.0
-        version: 4.3.0(prettier@3.8.1)(typescript@5.9.3)
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  projects/x-lisp-compiler.js:
-    dependencies:
-      '@xieyuheng/cmd.js':
-        specifier: workspace:*
-        version: link:../cmd.js
-      '@xieyuheng/helpers.js':
-        specifier: workspace:*
-        version: link:../helpers.js
-      '@xieyuheng/ppml.js':
-        specifier: workspace:*
-        version: link:../ppml.js
-      '@xieyuheng/sexp-tael.js':
-        specifier: workspace:*
-        version: link:../sexp-tael.js
-      zod:
-        specifier: ^4.3.6
-        version: 4.3.6
-    devDependencies:
-      '@types/node':
-        specifier: ^25.3.5
-        version: 25.3.5
-      prettier:
-        specifier: ^3.8.1
-        version: 3.8.1
-      prettier-plugin-organize-imports:
-        specifier: ^4.3.0
-        version: 4.3.0(prettier@3.8.1)(typescript@5.9.3)
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  projects/x-lisp.js:
-    dependencies:
-      '@xieyuheng/cmd.js':
-        specifier: workspace:*
-        version: link:../cmd.js
-      '@xieyuheng/helpers.js':
-        specifier: workspace:*
-        version: link:../helpers.js
-      '@xieyuheng/ppml.js':
-        specifier: workspace:*
-        version: link:../ppml.js
-      '@xieyuheng/sexp.js':
-        specifier: workspace:*
-        version: link:../sexp.js
-      zod:
-        specifier: ^4.3.6
-        version: 4.3.6
     devDependencies:
       '@types/node':
         specifier: ^25.3.5
