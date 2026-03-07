@@ -18,31 +18,31 @@ const { version } = getPackageJson(fileURLToPath(import.meta.url))
 const router = cmd.createRouter("meta-lisp-compile.js", version)
 
 router.defineRoutes([
-  "module:interpret file",
   "module:check file",
-  "project:interpret --config",
+  "module:interpret file",
   "project:check --config",
+  "project:interpret --config",
   "project:clean --config",
 ])
 
 router.defineHandlers({
+  "module:check": ({ args: [file] }) => {
+    loadDependencyGraph(file)
+  },
   "module:interpret": ({ args: [file] }) => {
     const dependencyGraph = loadDependencyGraph(file)
     const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
     const project = projectFromSourceFiles(file, sourceFiles)
     projectInterpret(project, dependencyGraph)
   },
-  "module:check": ({ args: [file] }) => {
-    loadDependencyGraph(file)
+  "project:check": ({ options }) => {
+    const project = loadProject(options["--config"])
+    projectCheck(project)
   },
   "project:interpret": ({ options }) => {
     const dependencyGraph = L.createDependencyGraph()
     const project = loadProject(options["--config"])
     projectInterpret(project, dependencyGraph)
-  },
-  "project:check": ({ options }) => {
-    const project = loadProject(options["--config"])
-    projectCheck(project)
   },
   "project:clean": ({ options }) => {
     const project = loadProject(options["--config"])

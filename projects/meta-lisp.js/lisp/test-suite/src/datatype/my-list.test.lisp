@@ -3,12 +3,6 @@
 (claim main (-> void-t))
 
 (define (main)
-  ;; data constructor
-
-  (assert-equal nil 'nil)
-  (assert-equal (li 1 (li 2 (li 3 nil)))
-                (@tuple 'li 1 (@tuple 'li 2 (@tuple 'li 3 'nil))))
-
   ;; data getter
 
   (assert-equal (li-tail (li 1 nil)) nil)

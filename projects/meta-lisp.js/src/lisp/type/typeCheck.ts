@@ -141,38 +141,17 @@ function typeCheckWithoutInfer(
       }
 
       case "Tuple": {
-        if (L.isDatatypeType(type)) {
-          return typeCheck(mod, ctx, exp, L.datatypeTypeUnfold(type))(subst)
-        }
+        // TODO
 
-        if (L.isSumType(type)) {
-          if (exp.elements.length === 0) {
-            let message = `elements should not be empty`
-            message += `\n  type: ${L.formatType(type)}`
-            return L.errorCheckEffect(exp, message)(subst)
-          }
+        let message = `expecting tau type`
+        message += `\n  given type: ${L.formatType(type)}`
+        return L.errorCheckEffect(exp, message)(subst)
+      }
 
-          const headExp = exp.elements[0]
-          if (headExp.kind !== "Keyword") {
-            let message = `head of tuple should be Keyword`
-            message += `\n  head: ${L.formatExp(headExp)}`
-            message += `\n  type: ${L.formatType(type)}`
-            return L.errorCheckEffect(exp, message)(subst)
-          }
+      case "Object": {
+        // TODO
 
-          const name = headExp.content
-          const variantTypes = L.sumTypeVariantTypes(type)
-          if (variantTypes[name] === undefined) {
-            let message = `head keyword mismatch`
-            message += `\n  keyword: ${L.formatExp(headExp)}`
-            message += `\n  type: ${L.formatType(type)}`
-            return L.errorCheckEffect(exp, message)(subst)
-          }
-
-          return typeCheck(mod, ctx, exp, variantTypes[name])(subst)
-        }
-
-        let message = `expecting tau type or datatype`
+        let message = `expecting class type`
         message += `\n  given type: ${L.formatType(type)}`
         return L.errorCheckEffect(exp, message)(subst)
       }

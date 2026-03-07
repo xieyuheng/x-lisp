@@ -10,7 +10,7 @@ export function projectFromSourceFiles(
     name: "*",
     version: "*",
     build: {
-      "source-directory": rootDirectory,
+      "source-directory": ".",
     },
   })
   project.sourceIds = sourceFiles.map((file) =>

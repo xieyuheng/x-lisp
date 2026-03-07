@@ -1,5 +1,8 @@
 # type checking
 
+[lisp] `typeCheck` -- handle `Tuple`
+[lisp] `typeCheck` -- handle `Object`
+
 [lisp] `typeInfer` -- handle `Tuple`
 [lisp] `typeInfer` -- handle `Object`
 
