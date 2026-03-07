@@ -1,4 +1,3 @@
-move `typeChildren` to `typeVarOccurredInType`
 `typeCanonicalLabelSubst` -- for `typeReify`
 `typeFreshen`
 `typeReify` -- to implement `typeInstance`
