@@ -15,15 +15,15 @@
 ;; value
 
 (claim any? (polymorphic (X) (-> X bool-t)))
-(claim same? (polymorphic (X Y) (-> X Y bool-t)))
-(claim equal? (polymorphic (X Y) (-> X Y bool-t)))
+(claim same? (polymorphic (X) (-> X X bool-t)))
+(claim equal? (polymorphic (X) (-> X X bool-t)))
 
 ;; assert
 
 (claim assert (-> bool-t void-t))
 (claim assert-not (-> bool-t void-t))
-(claim assert-equal (polymorphic (X Y) (-> X Y void-t)))
-(claim assert-not-equal (polymorphic (X Y) (-> X Y void-t)))
+(claim assert-equal (polymorphic (X) (-> X X void-t)))
+(claim assert-not-equal (polymorphic (X) (-> X X void-t)))
 
 ;; console
 

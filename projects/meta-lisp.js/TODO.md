@@ -11,10 +11,6 @@
 (polymorphic (A) (-> bool-t A A A))
 ```
 
-# builtin types
-
-fix the type of `equal?` and `assert-equal` -- lhs and rhs should have the same type
-
 # pattern match
 
 compile `(match)` to `(which)`

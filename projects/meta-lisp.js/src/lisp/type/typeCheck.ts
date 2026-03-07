@@ -143,7 +143,9 @@ function typeCheckWithoutInfer(
       case "Tuple": {
         if (L.isDatatypeType(type)) {
           return typeCheck(mod, ctx, exp, L.datatypeTypeUnfold(type))(subst)
-        } else if (L.isSumType(type)) {
+        }
+
+        if (L.isSumType(type)) {
           if (exp.elements.length === 0) {
             let message = `elements should not be empty`
             message += `\n  type: ${L.formatType(type)}`
@@ -168,11 +170,11 @@ function typeCheckWithoutInfer(
           }
 
           return typeCheck(mod, ctx, exp, variantTypes[name])(subst)
-        } else {
-          let message = `expecting tuple-like type`
-          message += `\n  given type: ${L.formatType(type)}`
-          return L.errorCheckEffect(exp, message)(subst)
         }
+
+        let message = `expecting tau type or datatype`
+        message += `\n  given type: ${L.formatType(type)}`
+        return L.errorCheckEffect(exp, message)(subst)
       }
 
       case "List": {
