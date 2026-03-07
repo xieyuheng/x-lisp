@@ -40,9 +40,18 @@ export function typeCheckByInfer(
     const resolvedInferredType = L.substApplyToType(newSubst, inferredType)
     const resolvedType = L.substApplyToType(newSubst, type)
 
-    // TODO Currently `typeSubtype` can not handle PolymorphicType,
-    // thus nested PolymorphicType is not supported.
-    // Maybe `typeSubtype` should call unificaton to handle PolymorphicType.
+    // TODO support nested PolymorphicType.
+
+    // - Currently `typeSubtype` can not handle PolymorphicType,
+    //   thus nested PolymorphicType is not supported.
+    // - Maybe `typeSubtype` should call `typeUnify` to handle PolymorphicType,
+    //   when a PolymorphicType is unfolded,
+    //   call `typeUnify` and `substApplyToType` again
+    //   to remove newly introduced un-unified type variables.
+    // - But I am not sure this is right,
+    //   because the subtype relation thus implemented
+    //   does not agree with my intuition about
+    //   subtype relation between PolymorphicType.
 
     if (L.typeSubtype([], resolvedInferredType, resolvedType)) {
       return L.okCheckEffect()(newSubst)

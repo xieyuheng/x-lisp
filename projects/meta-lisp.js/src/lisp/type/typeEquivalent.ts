@@ -115,6 +115,39 @@ export function typeEquivalent(
     )
   }
 
+  // TODO possible
+
+  // if (L.isPolymorphicType(lhs) && L.isPolymorphicType(rhs)) {
+  //   lhs = L.polymorphicTypeUnfold(lhs)
+  //   rhs = L.polymorphicTypeUnfold(rhs)
+  //   const subst = L.typeUnify(L.emptySubst(), lhs, rhs)
+  //   if (subst === undefined) return false
+
+  //   lhs = L.substApplyToType(subst, lhs)
+  //   rhs = L.substApplyToType(subst, rhs)
+  //   return typeEquivalent(trail, lhs, rhs)
+  // }
+
+  // if (L.isPolymorphicType(lhs)) {
+  //   lhs = L.polymorphicTypeUnfold(lhs)
+  //   const subst = L.typeUnify(L.emptySubst(), lhs, rhs)
+  //   if (subst === undefined) return false
+
+  //   lhs = L.substApplyToType(subst, lhs)
+  //   rhs = L.substApplyToType(subst, rhs)
+  //   return typeEquivalent(trail, lhs, rhs)
+  // }
+
+  // if (L.isPolymorphicType(rhs)) {
+  //   rhs = L.polymorphicTypeUnfold(rhs)
+  //   const subst = L.typeUnify(L.emptySubst(), lhs, rhs)
+  //   if (subst === undefined) return false
+
+  //   lhs = L.substApplyToType(subst, lhs)
+  //   rhs = L.substApplyToType(subst, rhs)
+  //   return typeEquivalent(trail, lhs, rhs)
+  // }
+
   return false
 }
 
