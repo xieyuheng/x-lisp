@@ -1,13 +1,6 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as L from "../index.ts"
-
-export function occurredInType(varType: L.Value, type: L.Value): boolean {
-  if (L.isVarType(type)) {
-    return L.varTypeId(type) === L.varTypeId(varType)
-  }
-
-  return L.typeChildren(type).some((child) => occurredInType(varType, child))
-}
+import { typeVarOccurredInType } from "./typeVarOccurredInType.ts"
 
 export function typeUnify(
   subst: L.Subst | undefined,
@@ -34,7 +27,7 @@ export function typeUnify(
   }
 
   if (L.isVarType(lhs)) {
-    if (occurredInType(lhs, rhs)) {
+    if (typeVarOccurredInType(lhs, rhs)) {
       return undefined
     } else {
       return L.extendSubst(subst, lhs, rhs)
@@ -42,7 +35,7 @@ export function typeUnify(
   }
 
   if (L.isVarType(rhs)) {
-    if (occurredInType(rhs, lhs)) {
+    if (typeVarOccurredInType(rhs, lhs)) {
       return undefined
     } else {
       return L.extendSubst(subst, rhs, lhs)

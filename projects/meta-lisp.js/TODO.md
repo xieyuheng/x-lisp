@@ -1,9 +1,10 @@
+move `typeChildren` to `typeVarOccurredInType`
 `typeCanonicalLabelSubst` -- for `typeReify`
+`typeFreshen`
 `typeReify` -- to implement `typeInstance`
 `typeInstance` -- to implement `typeAssignable`
 `typeAssignable` -- be careful about the order of arguments:
 - lhs : given type = rhs : inferred type
-`typeFreshen`
 
 # pattern match
 
