@@ -1,6 +1,4 @@
-`loadDependencyGraph`
-
-- fix the use of `loadModuleProject` -- `loadModuleProject` + `projectCheck` will check twice
+fix the use of `loadModuleProject` -- `loadModuleProject` + `projectCheck` will check twice
 
 # type checking
 

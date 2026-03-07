@@ -30,8 +30,9 @@ export function dependencyGraphMods(
   return Array.from(dependencyGraph.dependencies.values())
 }
 
-export function dependencyGraphFiles(dependencyGraph: DependencyGraph,): Array<string> {
+export function dependencyGraphFiles(
+  dependencyGraph: DependencyGraph,
+): Array<string> {
   const mods = dependencyGraphMods(dependencyGraph)
   return mods.map((mod) => mod.url.pathname)
 }
-

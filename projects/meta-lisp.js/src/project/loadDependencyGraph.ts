@@ -9,3 +9,9 @@ export function loadModuleProject(file: string): Project {
   const entryFile = mod.url.pathname
   return projectFromSourceFiles(entryFile, sourceFiles)
 }
+
+export function loadDependencyGraph(file: string): L.DependencyGraph {
+  const dependencyGraph = L.createDependencyGraph()
+  L.load(createUrl(file), dependencyGraph)
+  return dependencyGraph
+}
