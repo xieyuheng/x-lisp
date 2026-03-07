@@ -1,4 +1,3 @@
-add diary about meta-lisp -- copy readme of design/meta-lisp
 remove design/meta-lisp
 
 [basic-lisp.js] rename hashtag to keyword
