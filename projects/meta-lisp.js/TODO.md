@@ -1,6 +1,6 @@
-# type checking
-
 `typeCheck` -- `Lambda` -- generate `arrowType` -- be careful about nullary
+
+# type checking
 
 `typeInferApplyArrowType` -- generate `arrowType` -- be careful about nullary
 

@@ -26,20 +26,57 @@ function typeCheckWithoutInfer(
 
     switch (exp.kind) {
       case "Lambda": {
-        if (!L.isArrowType(type)) {
-          let message = `expecting arrow type`
-          message += `\n  type: ${L.formatType(type)}`
-          return L.errorCheckEffect(exp, message)(subst)
-        }
+        if (exp.parameters.length === 0) {
+          if (!L.isArrowType(type)) {
+            let message = `expecting arrow type`
+            message += `\n  type: ${L.formatType(type)}`
+            return L.errorCheckEffect(exp, message)(subst)
+          }
 
-        return typeCheckLambda(
-          mod,
-          ctx,
-          exp.parameters,
-          exp.body,
-          L.arrowTypeArgTypes(type),
-          L.arrowTypeRetType(type),
-        )(subst)
+          type = L.arrowTypeNormalize(type)
+          const argTypes = L.arrowTypeArgTypes(type)
+          const retType = L.arrowTypeRetType(type)
+          if (argTypes.length !== 0) {
+            let message = `expecting nullary arrow type`
+            message += `\n  type: ${L.formatType(type)}`
+            return L.errorCheckEffect(exp, message)(subst)
+          }
+
+          return typeCheck(mod, ctx, exp.body, retType)(subst)
+        } else if (exp.parameters.length === 1) {
+          if (!L.isArrowType(type)) {
+            let message = `expecting arrow type`
+            message += `\n  type: ${L.formatType(type)}`
+            return L.errorCheckEffect(exp, message)(subst)
+          }
+
+          type = L.arrowTypeNormalize(type)
+          const [argType] = L.arrowTypeArgTypes(type)
+          const retType = L.arrowTypeRetType(type)
+
+          const [parameter] = exp.parameters
+          ctx = L.ctxPut(ctx, parameter, argType)
+          return typeCheck(mod, ctx, exp.body, retType)(subst)
+        } else {
+          if (!L.isArrowType(type)) {
+            let message = `expecting arrow type`
+            message += `\n  type: ${L.formatType(type)}`
+            return L.errorCheckEffect(exp, message)(subst)
+          }
+
+          type = L.arrowTypeNormalize(type)
+          const [argType] = L.arrowTypeArgTypes(type)
+          const retType = L.arrowTypeRetType(type)
+
+          const [parameter, ...restParameters] = exp.parameters
+          ctx = L.ctxPut(ctx, parameter, argType)
+          return typeCheck(
+            mod,
+            ctx,
+            L.Lambda(restParameters, exp.body, exp.meta),
+            retType,
+          )(subst)
+        }
       }
 
       case "Let1": {
@@ -231,35 +268,5 @@ export function typeCheckByInfer(
       message += `\n  given type: ${L.formatType(type)}`
       return L.errorCheckEffect(exp, message)(subst)
     }
-  }
-}
-
-function typeCheckLambda(
-  mod: L.Mod,
-  ctx: L.Ctx,
-  parameters: Array<string>,
-  body: L.Exp,
-  argTypes: Array<L.Value>,
-  retType: L.Value,
-): L.CheckEffect {
-  if (argTypes.length === parameters.length) {
-    ctx = L.ctxPutMany(ctx, parameters, argTypes)
-    return typeCheck(mod, ctx, body, retType)
-  } else if (argTypes.length > parameters.length) {
-    ctx = L.ctxPutMany(ctx, parameters, argTypes.slice(0, parameters.length))
-    return typeCheck(
-      mod,
-      ctx,
-      body,
-      L.createArrowType(argTypes.slice(parameters.length), retType),
-    )
-  } else {
-    ctx = L.ctxPutMany(ctx, parameters.slice(0, argTypes.length), argTypes)
-    return typeCheck(
-      mod,
-      ctx,
-      L.Lambda(parameters.slice(argTypes.length), body),
-      retType,
-    )
   }
 }
