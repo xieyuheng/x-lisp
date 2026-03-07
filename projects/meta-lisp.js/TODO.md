@@ -1,7 +1,3 @@
-# typle
-
-[lisp] `typeInfer` -- handle `Object`
-
 # pattern match
 
 compile `(match)` to `(which)`

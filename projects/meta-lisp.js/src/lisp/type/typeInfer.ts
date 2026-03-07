@@ -1,3 +1,4 @@
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as L from "../index.ts"
 
 export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
@@ -189,7 +190,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
       }
 
       case "Tuple": {
-        const elementTypes = exp.elements.map(_ => L.createFreshVarType("E"))
+        const elementTypes = exp.elements.map((_) => L.createFreshVarType("E"))
         const type = L.createTauType(elementTypes)
         return L.checkThenInfer(
           L.sequenceCheckEffect(
@@ -202,8 +203,18 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
       }
 
       case "Object": {
-        let message = `TODO`
-        return L.errorInferEffect(exp, message)(subst)
+        const attributeTypes = recordMapValue(exp.attributes, (_) =>
+          L.createFreshVarType("A"),
+        )
+        const type = L.createClassType(attributeTypes)
+        return L.checkThenInfer(
+          L.sequenceCheckEffect(
+            Object.keys(exp.attributes).map((key) =>
+              L.typeCheck(mod, ctx, exp.attributes[key], attributeTypes[key]),
+            ),
+          ),
+          L.okInferEffect(type),
+        )(subst)
       }
 
       case "Quote": {
