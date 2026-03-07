@@ -60,7 +60,7 @@ export function desugarCond(
   meta?: L.TokenMeta,
 ): L.Exp {
   if (condLines.length === 0)
-    return L.Apply(L.Var("assert"), [L.Bool(false)], meta)
+    return L.Apply(L.Var("error"), [L.String("cond mismatch")], meta)
   const [headLine, ...restLines] = condLines
   return L.If(headLine.question, headLine.answer, desugarCond(restLines, meta))
 }

@@ -1,6 +1,3 @@
-# error
-
-[lisp] `(cond)` should not be desugared to `(assert false)` -- use `(error)` instead
 [lisp] `desugar` -- keep `meta` of `Exp`
 
 # type checking
