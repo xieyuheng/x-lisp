@@ -1,29 +1,48 @@
 ;; type
 
-(define bool-t ['atom 'bool])
-(define int-t ['atom 'int])
-(define float-t ['atom 'float])
-(define string-t ['atom 'string])
-(define symbol-t ['atom 'symbol])
-(define keyword-t ['atom 'keyword])
-(define void-t ['atom 'void])
+(claim type-t ['type])
+(exempt type-t)
 (define type-t ['type])
-(define (list-t E) ['list E])
-(define (set-t E) ['set E])
-(define (hash-t K V) ['hash K V])
 
-(exempt
-  bool-t
-  int-t
-  float-t
-  string-t
-  symbol-t
-  keyword-t
-  void-t
-  type-t
-  list-t
-  set-t
-  hash-t)
+(claim bool-t type-t)
+(exempt bool-t)
+(define bool-t ['atom 'bool])
+
+(claim int-t type-t)
+(exempt int-t)
+(define int-t ['atom 'int])
+
+(claim float-t type-t)
+(exempt float-t)
+(define float-t ['atom 'float])
+
+(claim string-t type-t)
+(exempt string-t)
+(define string-t ['atom 'string])
+
+(claim symbol-t type-t)
+(exempt symbol-t)
+(define symbol-t ['atom 'symbol])
+
+(claim keyword-t type-t)
+(exempt keyword-t)
+(define keyword-t ['atom 'keyword])
+
+(claim void-t type-t)
+(exempt void-t)
+(define void-t ['atom 'void])
+
+(claim list-t (-> type-t type-t))
+(exempt list-t)
+(define (list-t E) ['list E])
+
+(claim set-t (-> type-t type-t))
+(exempt set-t)
+(define (set-t E) ['set E])
+
+(claim hash-t (-> type-t type-t type-t))
+(exempt hash-t)
+(define (hash-t K V) ['hash K V])
 
 ;; value
 
