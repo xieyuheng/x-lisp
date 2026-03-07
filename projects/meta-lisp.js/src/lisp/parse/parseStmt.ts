@@ -54,6 +54,10 @@ export const parseStmt = S.createRouter<L.Stmt>({
     )
   },
 
+  "(cons* 'exempt names)": ({ names }, { meta }) => {
+    return L.Exempt(S.listElements(names).map(S.symbolContent), meta)
+  },
+
   "(cons* 'export names)": ({ names }, { meta }) => {
     return L.Export(S.listElements(names).map(S.symbolContent), meta)
   },

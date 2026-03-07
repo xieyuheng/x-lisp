@@ -1,6 +1,5 @@
 # type system
 
-parse `(exempt)`
 `modExempt`
 `setupExempt`
 
