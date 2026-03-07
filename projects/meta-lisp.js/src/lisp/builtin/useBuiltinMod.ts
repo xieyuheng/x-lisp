@@ -17,6 +17,8 @@ import { builtinString } from "./builtinString.ts"
 import { builtinSymbol } from "./builtinSymbol.ts"
 import { builtinValue } from "./builtinValue.ts"
 import { builtinVoid } from "./builtinVoid.ts"
+import { builtinError } from "./builtinError.ts"
+
 
 let mod: L.Mod | undefined = undefined
 
@@ -43,7 +45,8 @@ export function useBuiltinMod(): L.Mod {
   builtinSet(mod)
   builtinHash(mod)
   builtinAssert(mod)
-
+  builtinError(mod)
+  
   const code = fs.readFileSync(file, "utf-8")
   L.runCode(mod, code)
 
