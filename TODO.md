@@ -1,7 +1,7 @@
-move x-lisp-proto.js to dustbin
-move x-forth.c to dustbin
-move sexp-tael.js to dustbin
 move x-lisp-compiler.js to dustbin
+move sexp-tael.js to dustbin
+move x-forth.c to dustbin
+
 rename x-lisp.js to meta-lisp.js
 add diary about meta-lisp -- copy readme of design/meta-lisp
 remove design/meta-lisp

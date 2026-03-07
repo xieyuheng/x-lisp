@@ -1,5 +1,0 @@
-#t
-#f
-
-true
-false

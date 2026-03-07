@@ -1,3 +1,0 @@
-(list-get) index out of bound
-  index: 3
-  list: [1 2 3]
