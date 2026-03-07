@@ -72,9 +72,8 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
     }
 
     case "Begin1": {
-      return L.inferThenInfer(
-        typeInfer(mod, ctx, exp.head),
-        (_headType) => typeInfer(mod, ctx, exp.body),
+      return L.inferThenInfer(typeInfer(mod, ctx, exp.head), (_headType) =>
+        typeInfer(mod, ctx, exp.body),
       )
     }
 

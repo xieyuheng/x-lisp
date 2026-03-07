@@ -110,9 +110,8 @@ function typeCheckWithoutInfer(
       }
 
       case "Begin1": {
-        return L.inferThenCheck(
-          L.typeInfer(mod, ctx, exp.head),
-          (_headType) => typeCheck(mod, ctx, exp.body, type),
+        return L.inferThenCheck(L.typeInfer(mod, ctx, exp.head), (_headType) =>
+          typeCheck(mod, ctx, exp.body, type),
         )(subst)
       }
 
