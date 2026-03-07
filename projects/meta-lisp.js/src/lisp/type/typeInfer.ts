@@ -119,6 +119,34 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
+      case "Set": {
+        const type = L.createSetType(L.createFreshVarType("E"))
+        return L.checkThenInfer(
+          L.sequenceCheckEffect(
+            exp.elements.map((element) =>
+              L.typeCheck(mod, ctx, element, L.setTypeElementType(type)),
+            ),
+          ),
+          L.okInferEffect(type),
+        )(subst)
+      }
+
+      case "Hash": {
+        const type = L.createHashType(
+          L.createFreshVarType("K"),
+          L.createFreshVarType("V"),
+        )
+        return L.checkThenInfer(
+          L.sequenceCheckEffect(
+            exp.entries.flatMap((entry) => [
+              L.typeCheck(mod, ctx, entry.key, L.hashTypeKeyType(type)),
+              L.typeCheck(mod, ctx, entry.value, L.hashTypeValueType(type)),
+            ]),
+          ),
+          L.okInferEffect(type),
+        )(subst)
+      }
+
       default: {
         let message = `not inferable exp: ${exp.kind}`
         return L.errorInferEffect(exp, message)(subst)

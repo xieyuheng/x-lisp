@@ -1,7 +1,5 @@
 # typle
 
-[lisp] `typeInfer` -- handle `Set`
-[lisp] `typeInfer` -- handle `Hash`
 [lisp] `typeInfer` -- handle `Quote`
 
 [lisp] `typeInfer` -- handle `Lambda`
