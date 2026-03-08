@@ -40,12 +40,6 @@ export function sequenceCheckEffect(effects: Array<CheckEffect>): CheckEffect {
     const result = effect(subst)
     switch (result.kind) {
       case "CheckOk": {
-        // console.log("[sequenceCheckEffect]")
-        // console.log("subst:")
-        // console.log(L.formatSubst(subst))
-        // console.log("result.subst:")
-        // console.log(L.formatSubst(result.subst))
-        // console.log()
         return sequenceCheckEffect(restEffects)(result.subst)
       }
 
