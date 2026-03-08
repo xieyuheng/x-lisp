@@ -101,7 +101,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
       case "The": {
         const type = L.evaluate(mod, L.emptyEnv(), exp.type)
         return L.checkThenInfer(
-          L.typeCheckByInfer(mod, ctx, exp.exp, type),
+          L.typeCheckAssignable(mod, ctx, exp.exp, type),
           L.okInferEffect(type),
         )(subst)
       }

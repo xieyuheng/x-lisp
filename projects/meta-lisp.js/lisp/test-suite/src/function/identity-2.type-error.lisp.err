@@ -1,0 +1,9 @@
+lisp/test-suite/src/function/identity-2.type-error.lisp:11:37 -- given type is not a substitution instance of inferred type
+  inferred type: (-> A₅ A₅)
+  given type: (-> A₆ B₁)
+  9 | (define (main)
+ 10 |   (the (polymorphic (A) (-> A A)) identity)
+ 11 |   (the (polymorphic (A B) (-> A B)) identity))
+    |                                     ~~~~~~~~   
+ 12 | 
+

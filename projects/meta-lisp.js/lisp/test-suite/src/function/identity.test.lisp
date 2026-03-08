@@ -10,4 +10,7 @@
   (= add1 (iadd 1))
   (assert-equal 2 (add1 1))
   (= add1 (identity (iadd (identity 1))))
+  (the (-> int-t int-t) identity)
+  (the (-> float-t float-t) identity)
+  (the (polymorphic (A) (-> A A)) identity)
   (assert-equal 2 (add1 1)))

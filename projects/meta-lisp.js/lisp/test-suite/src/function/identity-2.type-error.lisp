@@ -1,0 +1,11 @@
+(claim identity
+  (polymorphic (A)
+    (-> A A)))
+
+(define (identity x) x)
+
+(claim main (-> void-t))
+
+(define (main)
+  (the (polymorphic (A) (-> A A)) identity)
+  (the (polymorphic (A B) (-> A B)) identity))
