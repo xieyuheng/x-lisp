@@ -4,7 +4,7 @@ export function arrayDedup<A>(
 ): Array<A> {
   const results: Array<A> = []
   for (const x of array) {
-    if (array.every((y) => !eq(x, y))) {
+    if (results.every((y) => !eq(x, y))) {
       results.push(x)
     }
   }

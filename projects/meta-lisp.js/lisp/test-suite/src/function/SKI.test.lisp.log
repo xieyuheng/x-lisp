@@ -4,19 +4,21 @@
 
 (define (K x y) x)
 
-(define (main) (S K K))
+(define (main) (S K K) void)
 
 ;;; Loaded
 
 (claim S
-  (polymorphic ()
-    (-> (-> A₉₄ (-> A₉₃ R₇₀)) (-> (-> A₉₄ A₉₃) (-> A₉₄ R₇₀)))))
+  (polymorphic (A₉₄ A₉₃ R₇₆)
+    (-> (-> A₉₄ (-> A₉₃ R₇₆)) (-> (-> A₉₄ A₉₃) (-> A₉₄ R₇₆)))))
 
 (define (S x y z) (x z (y z)))
 
-(claim K (polymorphic () (-> R₇₅ (-> A₉₆ R₇₅))))
+(claim K (polymorphic (R₈₁ A₉₆) (-> R₈₁ (-> A₉₆ R₈₁))))
 
 (define (K x y) x)
 
-(define (main) (S K K))
+(claim main (-> void-t))
+
+(define (main) (S K K) void)
 

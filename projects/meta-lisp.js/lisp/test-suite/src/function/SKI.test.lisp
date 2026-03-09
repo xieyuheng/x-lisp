@@ -3,4 +3,5 @@
 (define (K x y) x)
 
 (define (main)
-  (S K K))
+  (S K K)
+  void)
