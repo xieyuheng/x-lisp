@@ -52,14 +52,14 @@ function checkDefinition(definition: L.Definition): null {
     }
 
     case "FunctionDefinition": {
-      const exp = L.Lambda(definition.parameters, definition.body, definition.meta)
+      const exp = L.Lambda(
+        definition.parameters,
+        definition.body,
+        definition.meta,
+      )
       const type = L.modLookupClaimedType(mod, definition.name)
       if (type) {
-        checkClaimedType(
-          mod,
-          exp,
-          type,
-        )
+        checkClaimedType(mod, exp, type)
         return null
       }
 
