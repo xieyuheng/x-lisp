@@ -1,6 +1,5 @@
 # type system
 
-`projectBuild`
 module:build and project:build
 
 be able to infer type
