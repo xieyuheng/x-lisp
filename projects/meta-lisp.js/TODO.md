@@ -7,14 +7,6 @@
 `typeInfer` -- handle `Arrow`
 `typeInfer` -- handle `Polymorphic`
 
-# polymorphic type and subtype
-
-persons/luca-cardelli/1985-on-understanding-types-data-abstraction-and-polymorphism.md
-
-`typeCheckByInfer` -- support nested `PolymorphicType`
-
-- be clear about the semantics of `PolymorphicType` (in relationship with subtype)
-
 # pattern match
 
 `Which` as `Exp` -- `typeInfer` like `If`

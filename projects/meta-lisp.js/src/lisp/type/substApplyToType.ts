@@ -112,7 +112,7 @@ function substApplyToTypeWithBoundIds(
 
   if (L.isPolymorphicType(type)) {
     // - Be careful about the "name-capture" problem.
-    type = L.polymorphicTypeFreshenSelf(type)
+    type = L.polymorphicTypeFreshSelf(type)
 
     const varTypes = L.polymorphicTypeVarTypes(type)
     const bodyType = L.polymorphicTypeBodyType(type)

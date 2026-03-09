@@ -70,7 +70,7 @@ export function typeFreshen(type: L.Value): L.Value {
   }
 
   if (L.isPolymorphicType(type)) {
-    return typeFreshen(L.polymorphicTypeFreshen(type))
+    return typeFreshen(L.polymorphicTypeFreshBodyType(type))
   }
 
   let message = `[typeFreshen] unhandled type`
