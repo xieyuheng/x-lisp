@@ -138,7 +138,7 @@ function typeEquivalentRecord(
   lhs: Record<string, L.Value>,
   rhs: Record<string, L.Value>,
 ): boolean {
-  if (Object.values(lhs).length !== Object.values(rhs).length) return false
+  if (Object.keys(lhs).length !== Object.keys(rhs).length) return false
 
   for (const k of Object.keys(lhs)) {
     if (rhs[k] === undefined) return false

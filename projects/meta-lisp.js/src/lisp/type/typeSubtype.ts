@@ -23,11 +23,10 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   if (L.isClassType(lhs) && L.isClassType(rhs)) {
     const lhsRecord = L.classTypeAttributeTypes(lhs)
     const rhsRecord = L.classTypeAttributeTypes(rhs)
-    // rhs has less keys
+    // rhs should have less keys
     for (const k of Object.keys(rhsRecord)) {
-      if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) {
-        return false
-      }
+      if (lhsRecord[k] === undefined) return false
+      if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) return false
     }
 
     return true
@@ -95,11 +94,10 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   if (L.isSumType(lhs) && L.isSumType(rhs)) {
     const lhsRecord = L.sumTypeVariantTypes(lhs)
     const rhsRecord = L.sumTypeVariantTypes(rhs)
-    // lhs has less keys
+    // lhs should have less keys
     for (const k of Object.keys(lhsRecord)) {
-      if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) {
-        return false
-      }
+      if (rhsRecord[k] === undefined) return false
+      if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) return false
     }
 
     return true
