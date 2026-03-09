@@ -1,4 +1,4 @@
-lisp/test-suite/src/object/subtype.type-error.lisp:13:16 -- inferred type is not a subtype of given type
+lisp/test-suite/src/object/subtype-1.type-error.lisp:13:16 -- inferred type is not a subtype of given type
   inferred type: (@class :x float-t)
   given type: (@class :x float-t :y float-t)
  11 | (define (main)

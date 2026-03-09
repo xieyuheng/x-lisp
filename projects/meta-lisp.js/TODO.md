@@ -7,6 +7,8 @@
 `typeInfer` -- handle `Arrow`
 `typeInfer` -- handle `Polymorphic`
 
+fix `subtype.type-error.lisp`
+
 # pattern match
 
 `Which` as `Exp` -- `typeInfer` like `If`
