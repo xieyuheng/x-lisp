@@ -5,7 +5,7 @@ export function substApplyToType(subst: L.Subst, type: L.Value): L.Value {
   return substApplyToTypeWithBoundIds(new Set(), subst, type)
 }
 
-export function substApplyToTypeWithBoundIds(
+function substApplyToTypeWithBoundIds(
   boundIds: Set<string>,
   subst: L.Subst,
   type: L.Value,

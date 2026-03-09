@@ -1,7 +1,5 @@
 # type system
 
-`typeVarOccurredInTypeWithBoundIds` -- avoid calling `polymorphicTypeFreshen`
-
 `ctxUnknownTypeVars`
 
 `typeGeneralize` -- make polymorphic type from type with free type variables

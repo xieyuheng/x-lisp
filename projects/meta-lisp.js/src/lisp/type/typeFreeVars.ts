@@ -5,7 +5,12 @@ export function typeFreeVars(
   type: L.Value,
 ): Array<L.Value> {
   if (L.isVarType(type)) {
-    return [type]
+    const id = L.varTypeId(type)
+    if (boundIds.has(id)) {
+      return []
+    } else {
+      return [type]
+    }
   }
 
   if (L.isCanonicalLabelType(type)) {

@@ -4,8 +4,21 @@ export function typeVarOccurredInType(
   varType: L.Value,
   type: L.Value,
 ): boolean {
+  return typeVarOccurredInTypeWithBoundIds(new Set(), varType, type)
+}
+
+function typeVarOccurredInTypeWithBoundIds(
+  boundIds: Set<string>,
+  varType: L.Value,
+  type: L.Value,
+): boolean {
   if (L.isVarType(type)) {
-    return L.varTypeId(type) === L.varTypeId(varType)
+    const id = L.varTypeId(type)
+    if (boundIds.has(id)) {
+      return false
+    } else {
+      return L.varTypeId(type) === L.varTypeId(varType)
+    }
   }
 
   if (L.isCanonicalLabelType(type)) {
@@ -26,57 +39,62 @@ export function typeVarOccurredInType(
 
   if (L.isArrowType(type)) {
     return [...L.arrowTypeArgTypes(type), L.arrowTypeRetType(type)].some((t) =>
-      typeVarOccurredInType(varType, t),
+      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
     )
   }
 
   if (L.isTauType(type)) {
     return L.tauTypeElementTypes(type).some((t) =>
-      typeVarOccurredInType(varType, t),
+      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
     )
   }
 
   if (L.isClassType(type)) {
     return Object.values(L.classTypeAttributeTypes(type)).some((t) =>
-      typeVarOccurredInType(varType, t),
+      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
     )
   }
 
   if (L.isListType(type)) {
     return [L.listTypeElementType(type)].some((t) =>
-      typeVarOccurredInType(varType, t),
+      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
     )
   }
 
   if (L.isSetType(type)) {
     return [L.setTypeElementType(type)].some((t) =>
-      typeVarOccurredInType(varType, t),
+      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
     )
   }
 
   if (L.isHashType(type)) {
     return [L.hashTypeKeyType(type), L.hashTypeValueType(type)].some((t) =>
-      typeVarOccurredInType(varType, t),
+      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
     )
   }
 
   if (L.isDatatypeType(type)) {
     return L.datatypeTypeArgTypes(type).some((t) =>
-      typeVarOccurredInType(varType, t),
+      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
     )
   }
 
   if (L.isSumType(type)) {
     return Object.values(L.sumTypeVariantTypes(type)).some((t) =>
-      typeVarOccurredInType(varType, t),
+      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
     )
   }
 
   if (L.isPolymorphicType(type)) {
-    return typeVarOccurredInType(varType, L.polymorphicTypeFreshen(type))
+    const varTypes = L.polymorphicTypeVarTypes(type)
+    return typeVarOccurredInTypeWithBoundIds(
+      new Set([...boundIds, ...varTypes.map(L.varTypeId)]),
+      varType,
+      L.polymorphicTypeBodyType(type),
+    )
   }
 
-  let message = `[typeVarOccurredInType] unhandled type`
+  let message = `[typeVarOccurredInTypeWithBoundIds] unhandled type`
   message += `\n  type: ${L.formatType(type)}`
   throw new Error(message)
 }
