@@ -1,7 +1,8 @@
 # type system
 
-[pass] `compileLispToPassLog` -- log Input -- to debug inferred types
-[pass] `projectBuild`
+`formatDefinition` -- extract `formatTypeOfNameInMod`
+`projectBuild`
+module:build and project:build
 
 be able to infer type
 
