@@ -47,9 +47,9 @@ export function ctxUpdate(base: Ctx, ctx: Ctx): Ctx {
   return base
 }
 
-function ctxFreeTypeVars(ctx: Ctx): Array<Value> {
+export function ctxFreeVarTypes(ctx: Ctx): Array<Value> {
   return arrayDedup(
-    L.ctxTypes(ctx).flatMap((t) => L.typeFreeVars(new Set(), t)),
-    L.typeVarEqual,
+    L.ctxTypes(ctx).flatMap((t) => L.typeFreeVarTypes(new Set(), t)),
+    L.varTypeEqual,
   )
 }

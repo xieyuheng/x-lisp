@@ -1,9 +1,5 @@
 # type system
 
-`typeGeneralizeInCtx` -- make polymorphic type from type with free type variables
-
-# type system
-
 `substApplyToTypeWithBoundIds` -- handle "name-capture" problem
 
 - by renaming bound type variables,
