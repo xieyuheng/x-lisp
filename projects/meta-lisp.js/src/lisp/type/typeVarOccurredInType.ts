@@ -8,66 +8,72 @@ export function typeVarOccurredInType(
     return L.varTypeId(type) === L.varTypeId(varType)
   }
 
-  return typeChildren(type).some((child) =>
-    typeVarOccurredInType(varType, child),
-  )
-}
-
-function typeChildren(type: L.Value): Array<L.Value> {
-  if (L.isVarType(type)) {
-    return []
-  }
-
   if (L.isCanonicalLabelType(type)) {
-    return []
+    return false
   }
 
   if (L.isTypeType(type)) {
-    return []
+    return false
   }
 
   if (L.isLiteralType(type)) {
-    return []
+    return false
   }
 
   if (L.isAtomType(type)) {
-    return []
+    return false
   }
 
   if (L.isArrowType(type)) {
-    return [...L.arrowTypeArgTypes(type), L.arrowTypeRetType(type)]
+    return [...L.arrowTypeArgTypes(type), L.arrowTypeRetType(type)].some((t) =>
+      typeVarOccurredInType(varType, t),
+    )
   }
 
   if (L.isTauType(type)) {
-    return L.tauTypeElementTypes(type)
+    return L.tauTypeElementTypes(type).some((t) =>
+      typeVarOccurredInType(varType, t),
+    )
   }
 
   if (L.isClassType(type)) {
-    return Object.values(L.classTypeAttributeTypes(type))
+    return Object.values(L.classTypeAttributeTypes(type)).some((t) =>
+      typeVarOccurredInType(varType, t),
+    )
   }
 
   if (L.isListType(type)) {
-    return [L.listTypeElementType(type)]
+    return [L.listTypeElementType(type)].some((t) =>
+      typeVarOccurredInType(varType, t),
+    )
   }
 
   if (L.isSetType(type)) {
-    return [L.setTypeElementType(type)]
+    return [L.setTypeElementType(type)].some((t) =>
+      typeVarOccurredInType(varType, t),
+    )
   }
 
   if (L.isHashType(type)) {
-    return [L.hashTypeKeyType(type), L.hashTypeValueType(type)]
+    return [L.hashTypeKeyType(type), L.hashTypeValueType(type)].some((t) =>
+      typeVarOccurredInType(varType, t),
+    )
   }
 
   if (L.isDatatypeType(type)) {
-    return L.datatypeTypeArgTypes(type)
+    return L.datatypeTypeArgTypes(type).some((t) =>
+      typeVarOccurredInType(varType, t),
+    )
   }
 
   if (L.isSumType(type)) {
-    return Object.values(L.sumTypeVariantTypes(type))
+    return Object.values(L.sumTypeVariantTypes(type)).some((t) =>
+      typeVarOccurredInType(varType, t),
+    )
   }
 
   if (L.isPolymorphicType(type)) {
-    return typeChildren(L.polymorphicTypeFreshen(type))
+    return typeVarOccurredInType(varType, L.polymorphicTypeFreshen(type))
   }
 
   let message = `[typeVarOccurredInType] unhandled type`

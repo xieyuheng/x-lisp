@@ -1,7 +1,6 @@
 # type system
 
-inlien `typeChildren` to `typeVarOccurredInType`
-`typeVarOccurredInTypeWithBoundIds`
+`typeVarOccurredInTypeWithBoundIds` -- avoid calling `polymorphicTypeFreshen`
 
 `ctxUnknownTypeVars`
 
