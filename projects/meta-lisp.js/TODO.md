@@ -1,6 +1,5 @@
 # type system
 
-`formatDefinition` -- extract `formatTypeOfNameInMod`
 `projectBuild`
 module:build and project:build
 

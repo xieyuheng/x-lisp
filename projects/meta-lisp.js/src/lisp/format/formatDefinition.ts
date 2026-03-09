@@ -16,15 +16,9 @@ export function formatDefinition(definition: Definition): string {
       const name = definition.name
       const parameters = definition.parameters.join(" ")
       const body = formatBody(definition.body)
-      const claimedEntry = L.modLookupClaimedEntry(
-        definition.mod,
-        definition.name,
-      )
-      if (claimedEntry) {
-        return [
-          `(claim ${name} ${formatExp(claimedEntry.exp)})`,
-          `(define (${name} ${parameters}) ${body})`,
-        ].join("\n")
+      const type = formatDefinitionType(definition.mod, definition.name)
+      if (type) {
+        return `${type} (define (${name} ${parameters}) ${body})`
       } else {
         return `(define (${name} ${parameters}) ${body})`
       }
@@ -33,15 +27,9 @@ export function formatDefinition(definition: Definition): string {
     case "VariableDefinition": {
       const name = definition.name
       const body = formatBody(definition.body)
-      const claimedEntry = L.modLookupClaimedEntry(
-        definition.mod,
-        definition.name,
-      )
-      if (claimedEntry) {
-        return [
-          `(claim ${name} ${formatExp(claimedEntry.exp)})`,
-          `(define ${name} ${body})`,
-        ].join("\n")
+      const type = formatDefinitionType(definition.mod, definition.name)
+      if (type) {
+        return `${type} (define ${name} ${body})`
       } else {
         return `(define ${name} ${body})`
       }
@@ -70,4 +58,18 @@ function formatDataConstructor(dataConstructor: L.DataConstructorSpec): string {
   } else {
     return `(${dataConstructor.name} ${fields})`
   }
+}
+
+function formatDefinitionType(mod: L.Mod, name: string): string | undefined {
+  const claimedEntry = L.modLookupClaimedEntry(mod, name)
+  if (claimedEntry) {
+    return `(claim ${name} ${formatExp(claimedEntry.exp)})`
+  }
+
+  const inferredType = L.modLookupInferredType(mod, name)
+  if (inferredType) {
+    return `(infer ${name} ${L.formatType(inferredType)})`
+  }
+
+  return undefined
 }
