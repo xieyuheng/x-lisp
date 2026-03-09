@@ -16,6 +16,7 @@ export type Mod = {
   exported: Set<string>
   exempted: Set<string>
   claimed: Map<string, ClaimedEntry>
+  inferredTypes: Map<string, Value>
   definitions: Map<string, Definition>
   dependencyGraph: L.DependencyGraph
 }
@@ -27,6 +28,7 @@ export function createMod(url: URL, dependencyGraph: L.DependencyGraph): Mod {
     exported: new Set(),
     exempted: new Set(),
     claimed: new Map(),
+    inferredTypes: new Map(),
     definitions: new Map(),
     dependencyGraph,
   }
@@ -38,7 +40,7 @@ export function modDefine(
   definition: Definition,
 ): void {
   if (mod.definitions.has(name)) {
-    let message = `[modDefine] can not redefine`
+    let message = `[modDefine] name already defined`
     message += `\n  name: ${name}`
     if (definition.meta) throw new S.ErrorWithMeta(message, definition.meta)
     else throw new Error(message)
@@ -47,48 +49,11 @@ export function modDefine(
   mod.definitions.set(name, definition)
 }
 
-export function modClaim(mod: Mod, name: string, exp: Exp): void {
-  if (mod.claimed.has(name)) {
-    let message = `[modClaim] can not reclaim`
-    message += `\n  name: ${name}`
-    throw new Error(message)
-  }
-
-  mod.claimed.set(name, { exp })
-}
-
-export function modLookupClaimedType(
-  mod: Mod,
-  name: string,
-): Value | undefined {
-  const claimedEntry = mod.claimed.get(name)
-  if (!claimedEntry) return undefined
-  if (claimedEntry.type) return claimedEntry.type
-
-  const type = L.evaluate(mod, L.emptyEnv(), claimedEntry.exp)
-  claimedEntry.type = type
-  return type
-}
-
-export function modLookupClaimedEntry(
-  mod: Mod,
-  name: string,
-): ClaimedEntry | undefined {
-  return mod.claimed.get(name)
-}
-
 export function modLookupDefinition(
   mod: Mod,
   name: string,
 ): Definition | undefined {
   return mod.definitions.get(name)
-}
-
-export function modLookupType(mod: Mod, name: string): Value | undefined {
-  const definition = modLookupDefinition(mod, name)
-  if (definition === undefined) return undefined
-
-  return modLookupClaimedType(definition.mod, definition.name)
 }
 
 export function modLookupPublicDefinition(
@@ -116,4 +81,63 @@ export function modOwnDefinitions(mod: Mod): Array<Definition> {
   return Array.from(
     mod.definitions.values().filter((definition) => definition.mod === mod),
   )
+}
+
+// About Type
+
+export function modClaim(mod: Mod, name: string, exp: Exp): void {
+  if (mod.claimed.has(name)) {
+    let message = `[modClaim] name already claimed`
+    message += `\n  name: ${name}`
+    throw new Error(message)
+  }
+
+  mod.claimed.set(name, { exp })
+}
+
+export function modLookupClaimedType(
+  mod: Mod,
+  name: string,
+): Value | undefined {
+  const claimedEntry = mod.claimed.get(name)
+  if (!claimedEntry) return undefined
+  if (claimedEntry.type) return claimedEntry.type
+
+  const type = L.evaluate(mod, L.emptyEnv(), claimedEntry.exp)
+  claimedEntry.type = type
+  return type
+}
+
+export function modLookupClaimedEntry(
+  mod: Mod,
+  name: string,
+): ClaimedEntry | undefined {
+  return mod.claimed.get(name)
+}
+
+export function modLookupInferredType(
+  mod: Mod,
+  name: string,
+): Value | undefined {
+  return mod.inferredTypes.get(name)
+}
+
+export function modPutInferredType(mod: Mod, name: string, type: Value): void {
+  if (mod.inferredTypes.has(name)) {
+    let message = `[modPutInferredType] name already inferred`
+    message += `\n  name: ${name}`
+    throw new Error(message)
+  }
+
+  mod.inferredTypes.set(name, type)
+}
+
+export function modLookupType(mod: Mod, name: string): Value | undefined {
+  const definition = modLookupDefinition(mod, name)
+  if (definition === undefined) return undefined
+
+  const claimedType = modLookupClaimedType(definition.mod, definition.name)
+  if (claimedType) return claimedType
+
+  return modLookupInferredType(definition.mod, definition.name)
 }

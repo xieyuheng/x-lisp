@@ -1,7 +1,9 @@
 # type system
 
+[pass] `compileLispToPassLog` -- log Input -- to debug inferred types
+[pass] `projectBuild`
+
 be able to infer type
-[pass] log inferred types
 
 more tests from "8 Polymorphic Type-checking"
 
