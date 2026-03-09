@@ -1,8 +1,10 @@
 # type system
 
-`ctxUnknownTypeVars`
+`arrayDedup` -- in helpers.js
+`ctxFreeTypeVars` -- call
+`substApplyToTypeCtx`
+`typeGeneralizeInCtx` -- make polymorphic type from type with free type variables
 
-`typeGeneralize` -- make polymorphic type from type with free type variables
 `typeInfer` -- infer polymorphic type for `Let`
 
 # type system

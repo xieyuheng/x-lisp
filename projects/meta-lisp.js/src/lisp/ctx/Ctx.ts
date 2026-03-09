@@ -11,6 +11,10 @@ export function ctxNames(ctx: Ctx): Set<string> {
   return new Set(ctx.keys())
 }
 
+export function ctxTypes(ctx: Ctx): Array<Value> {
+  return Array.from(ctx.values())
+}
+
 export function ctxLookupType(ctx: Ctx, name: string): undefined | Value {
   return ctx.get(name)
 }
