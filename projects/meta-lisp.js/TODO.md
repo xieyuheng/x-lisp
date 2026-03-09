@@ -1,12 +1,14 @@
 # type system
 
+rename `extendSubst` to `substExtend` and extract it
+extract `substApplyToType`
+
+inlien `typeChildren` to `typeVarOccurredInType`
+`typeVarOccurredInTypeWithBoundIds`
+
+`ctxUnknownTypeVars`
+
 `typeGeneralize` -- make polymorphic type from type with free type variables
-
-[maybe] rename `(polymorphic)` to `(nu)`
-
-- because we can say "an exp is polymorphic",
-  but we should not say "a type is polymorphic".
-
 `typeInfer` -- infer polymorphic type for `Let`
 
 # type system
@@ -51,3 +53,10 @@ parse `(match)`
 tuple-cons
 tuple-head
 tuple-tail
+
+# name of polymorphic type
+
+[maybe] rename `(polymorphic)` to `(nu)`
+
+- because we can say "an exp is polymorphic",
+  but we should not say "a type is polymorphic".
