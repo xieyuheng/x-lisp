@@ -427,6 +427,18 @@ export function polymorphicTypeBodyType(value: L.Value): L.Value {
   return L.asListValue(value).elements[2]
 }
 
+export function polymorphicTypeFreshenSelf(value: L.Value): L.Value {
+  assert(isPolymorphicType(value))
+  const varTypes = polymorphicTypeVarTypes(value)
+  const bodyType = polymorphicTypeBodyType(value)
+  const newVarTypes = varTypes.map((varType) =>
+    createFreshVarType(varTypeName(varType)),
+  )
+  const subst = L.substExtendMany(L.emptySubst(), varTypes, newVarTypes)
+  const newBodyType = L.substApplyToType(subst, bodyType)
+  return createPolymorphicType(newVarTypes, newBodyType)
+}
+
 export function polymorphicTypeFreshen(value: L.Value): L.Value {
   assert(isPolymorphicType(value))
   const varTypes = polymorphicTypeVarTypes(value)
@@ -435,5 +447,6 @@ export function polymorphicTypeFreshen(value: L.Value): L.Value {
     createFreshVarType(varTypeName(varType)),
   )
   const subst = L.substExtendMany(L.emptySubst(), varTypes, newVarTypes)
-  return L.substApplyToType(subst, bodyType)
+  const newBodyType = L.substApplyToType(subst, bodyType)
+  return newBodyType
 }

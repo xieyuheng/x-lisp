@@ -112,21 +112,17 @@ function substApplyToTypeWithBoundIds(
 
   if (L.isPolymorphicType(type)) {
     // - Be careful about the "name-capture" problem.
+    type = L.polymorphicTypeFreshenSelf(type)
+
     const varTypes = L.polymorphicTypeVarTypes(type)
     const bodyType = L.polymorphicTypeBodyType(type)
 
-    // const newVarTypes = varTypes.map(varType => L.createFreshVarType(varTypeName(varType)))
-    // const newBodyType = L.polymorphicTypeBodyType(type)
-
-    const newVarTypes = varTypes
-    const newBodyType = bodyType
-
     return L.createPolymorphicType(
-      newVarTypes,
+      varTypes,
       substApplyToTypeWithBoundIds(
-        new Set([...boundIds, ...newVarTypes.map(L.varTypeId)]),
+        new Set([...boundIds, ...varTypes.map(L.varTypeId)]),
         subst,
-        newBodyType,
+        bodyType,
       ),
     )
   }

@@ -1,9 +1,5 @@
 # type system
 
-`substApplyToTypeWithBoundIds` -- handle "name-capture" problem
-
-# type system
-
 > infer type for type expressions.
 
 `typeInfer` -- handle `Class`
