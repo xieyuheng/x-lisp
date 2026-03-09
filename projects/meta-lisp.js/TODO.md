@@ -1,6 +1,5 @@
 # type system
 
-`arrayDedup` -- in helpers.js
 `ctxFreeTypeVars` -- call
 `substApplyToTypeCtx`
 `typeGeneralizeInCtx` -- make polymorphic type from type with free type variables

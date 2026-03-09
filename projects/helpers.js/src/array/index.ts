@@ -1,4 +1,5 @@
 export * from "./arrayConcat.ts"
+export * from "./arrayDedup.ts"
 export * from "./arrayGroup2.ts"
 export * from "./arrayMapZip.ts"
 export * from "./arrayPickLast.ts"
