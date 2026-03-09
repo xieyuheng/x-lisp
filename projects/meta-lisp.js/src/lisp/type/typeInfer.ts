@@ -138,8 +138,12 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
       case "Let1": {
         return L.inferThenInfer(
           L.typeInfer(mod, ctx, exp.rhs),
-          (inferredType) =>
-            typeInfer(mod, L.ctxPut(ctx, exp.name, inferredType), exp.body),
+          (inferredType) => (subst) => {
+            ctx = L.substApplyToCtx(subst, ctx)
+            inferredType = L.typeGeneralizeInCtx(ctx, inferredType)
+            ctx = L.ctxPut(ctx, exp.name, inferredType)
+            return typeInfer(mod, ctx, exp.body)(subst)
+          },
         )(subst)
       }
 

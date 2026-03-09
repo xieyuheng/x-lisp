@@ -1,8 +1,13 @@
+import { mapMapValue } from "@xieyuheng/helpers.js/map"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as L from "../index.ts"
 
 export function substApplyToType(subst: L.Subst, type: L.Value): L.Value {
   return substApplyToTypeWithBoundIds(new Set(), subst, type)
+}
+
+export function substApplyToCtx(subst: L.Subst, ctx: L.Ctx): L.Ctx {
+  return mapMapValue(ctx, (t) => L.substApplyToType(subst, t))
 }
 
 function substApplyToTypeWithBoundIds(

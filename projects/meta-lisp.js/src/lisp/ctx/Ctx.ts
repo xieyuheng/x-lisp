@@ -1,4 +1,6 @@
+import { arrayDedup } from "@xieyuheng/helpers.js/array"
 import assert from "node:assert"
+import * as L from "../index.ts"
 import { type Value } from "../value/index.ts"
 
 export type Ctx = Map<string, Value>
@@ -43,4 +45,11 @@ export function ctxUpdate(base: Ctx, ctx: Ctx): Ctx {
   }
 
   return base
+}
+
+function ctxFreeTypeVars(ctx: Ctx): Array<Value> {
+  return arrayDedup(
+    L.ctxTypes(ctx).flatMap((t) => L.typeFreeVars(new Set(), t)),
+    L.typeVarEqual,
+  )
 }

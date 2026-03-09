@@ -2,8 +2,6 @@
 
 `typeGeneralizeInCtx` -- make polymorphic type from type with free type variables
 
-`typeInfer` -- infer polymorphic type for `Let`
-
 # type system
 
 `substApplyToTypeWithBoundIds` -- handle "name-capture" problem
