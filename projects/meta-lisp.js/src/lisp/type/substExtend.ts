@@ -1,4 +1,6 @@
 import { mapMapValue } from "@xieyuheng/helpers.js/map"
+import { range } from "@xieyuheng/helpers.js/range"
+import assert from "node:assert"
 import * as L from "../index.ts"
 
 export function substExtend(
@@ -22,4 +24,17 @@ export function substExtend(
   return mapMapValue(subst, (rhs) =>
     L.substApplyToType(L.unitSubst(varType, type), rhs),
   ).set(L.varTypeId(varType), type)
+}
+
+export function substExtendMany(
+  subst: L.Subst,
+  varTypes: Array<L.Value>,
+  types: Array<L.Value>,
+): L.Subst {
+  assert(varTypes.length === types.length)
+  for (const i of range(varTypes.length)) {
+    subst = substExtend(subst, varTypes[i], types[i])
+  }
+
+  return subst
 }

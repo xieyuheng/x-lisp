@@ -2,10 +2,6 @@
 
 `substApplyToTypeWithBoundIds` -- handle "name-capture" problem
 
-- by renaming bound type variables,
-  or by limiting bound type variables
-  so that they are always different from normal type variables.
-
 # type system
 
 > infer type for type expressions.
