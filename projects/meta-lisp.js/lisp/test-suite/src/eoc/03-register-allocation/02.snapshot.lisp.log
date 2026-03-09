@@ -1,0 +1,18 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x (random-dice))
+  (= y (random-dice))
+  (println (iadd (iadd x y) 42)))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x (random-dice))
+  (= y (random-dice))
+  (println (iadd (iadd x y) 42)))
+

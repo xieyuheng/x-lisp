@@ -1,0 +1,12 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main) (println true) (println false))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main) (println true) (println false))
+

@@ -63,8 +63,11 @@ router.defineHandlers({
     projectInterpret(project, dependencyGraph)
   },
 
-  "project:build": ({ options }) =>
-    projectBuild(loadProject(options["--config"])),
+  "project:build": ({ options }) => {
+    const dependencyGraph = L.createDependencyGraph()
+    const project = loadProject(options["--config"])
+    projectBuild(project, dependencyGraph)
+  },
 
   "project:clean": ({ options }) => {
     const project = loadProject(options["--config"])

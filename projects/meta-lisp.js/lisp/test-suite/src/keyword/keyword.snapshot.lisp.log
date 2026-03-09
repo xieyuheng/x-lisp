@@ -1,0 +1,12 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main) (println #abc))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main) (println #abc))
+

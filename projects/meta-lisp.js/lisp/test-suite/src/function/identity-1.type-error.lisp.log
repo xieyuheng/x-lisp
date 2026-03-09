@@ -1,0 +1,12 @@
+;;; Input
+
+(claim identity (polymorphic (A B) (-> A B)))
+
+(define (identity x) x)
+
+;;; Loaded
+
+(claim identity (polymorphic (A B) (-> A B)))
+
+(define (identity x) x)
+

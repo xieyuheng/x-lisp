@@ -1,0 +1,14 @@
+;;; Input
+
+(export square)
+
+(claim square (-> int-t int-t))
+
+(define (square x) (imul x x))
+
+;;; Loaded
+
+(claim square (-> int-t int-t))
+
+(define (square x) (imul x x))
+

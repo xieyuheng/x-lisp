@@ -1,0 +1,12 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main) (println (ineg (random-dice))))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main) (println (ineg (random-dice))))
+

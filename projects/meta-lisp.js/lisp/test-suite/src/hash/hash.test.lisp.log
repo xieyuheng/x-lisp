@@ -1,0 +1,12 @@
+;;; Input
+
+(claim main (-> void-t))
+
+(define (main) (assert (hash-empty? (@hash))))
+
+;;; Loaded
+
+(claim main (-> void-t))
+
+(define (main) (assert (hash-empty? (@hash))))
+
