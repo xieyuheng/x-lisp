@@ -1,6 +1,5 @@
 # type system
 
-`ctxFreeTypeVars` -- call
 `substApplyToTypeCtx`
 `typeGeneralizeInCtx` -- make polymorphic type from type with free type variables
 

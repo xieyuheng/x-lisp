@@ -76,6 +76,10 @@ export function varTypeId(value: L.Value): string {
   )
 }
 
+export function typeVarEqual(x: L.Value, y: L.Value, ): boolean {
+  return varTypeName(x) === varTypeName(y) && varTypeSerialNumber(x) === varTypeSerialNumber(y)
+}
+
 // CanonicalLabelType
 
 export function isCanonicalLabelType(value: L.Value): boolean {
