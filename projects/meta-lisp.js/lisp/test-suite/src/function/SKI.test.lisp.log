@@ -8,7 +8,13 @@
 
 ;;; Loaded
 
+(claim S
+  (polymorphic ()
+    (-> (-> A₉₄ (-> A₉₃ R₇₀)) (-> (-> A₉₄ A₉₃) (-> A₉₄ R₇₀)))))
+
 (define (S x y z) (x z (y z)))
+
+(claim K (polymorphic () (-> R₇₅ (-> A₉₆ R₇₅))))
 
 (define (K x y) x)
 

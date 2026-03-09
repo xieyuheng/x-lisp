@@ -40,44 +40,52 @@ function checkDefinition(definition: L.Definition): null {
     }
 
     case "VariableDefinition": {
-      const type = L.modLookupType(mod, definition.name)
-      if (!type) {
-        console.log(reportUnclaimedDefinition(definition))
+      const exp = definition.body
+      const type = L.modLookupClaimedType(mod, definition.name)
+      if (type) {
+        checkClaimedType(mod, exp, type)
         return null
       }
 
-      const effect = L.typeCheckAssignable(
-        mod,
-        L.emptyCtx(),
-        definition.body,
-        type,
-      )
-      const result = effect(L.emptySubst())
-      if (result.kind === "CheckError") {
-        console.log(reportTypeCheckError(result.exp, result.message))
-      }
+      checkByInfer(mod, definition.name, exp)
       return null
     }
 
     case "FunctionDefinition": {
-      const type = L.modLookupType(mod, definition.name)
-      if (!type) {
-        console.log(reportUnclaimedDefinition(definition))
+      const exp = L.Lambda(definition.parameters, definition.body, definition.meta)
+      const type = L.modLookupClaimedType(mod, definition.name)
+      if (type) {
+        checkClaimedType(
+          mod,
+          exp,
+          type,
+        )
         return null
       }
 
-      const lambdaExp = L.Lambda(
-        definition.parameters,
-        definition.body,
-        definition.meta,
-      )
-      const effect = L.typeCheckAssignable(mod, L.emptyCtx(), lambdaExp, type)
-      const result = effect(L.emptySubst())
-      if (result.kind === "CheckError") {
-        console.log(reportTypeCheckError(result.exp, result.message))
-      }
+      checkByInfer(mod, definition.name, exp)
       return null
     }
+  }
+}
+
+function checkClaimedType(mod: L.Mod, exp: L.Exp, type: L.Value): void {
+  const effect = L.typeCheckAssignable(mod, L.emptyCtx(), exp, type)
+  const result = effect(L.emptySubst())
+  if (result.kind === "CheckError") {
+    console.log(reportTypeCheckError(result.exp, result.message))
+  }
+}
+
+function checkByInfer(mod: L.Mod, name: string, exp: L.Exp): void {
+  const effect = L.typeInfer(mod, L.emptyCtx(), exp)
+  const result = effect(L.emptySubst())
+  if (result.kind === "InferError") {
+    console.log(reportTypeCheckError(result.exp, result.message))
+  } else {
+    let inferredType = L.substApplyToType(result.subst, result.type)
+    inferredType = L.typeGeneralizeInCtx(L.emptyCtx(), inferredType)
+    L.modPutInferredType(mod, name, inferredType)
   }
 }
 

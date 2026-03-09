@@ -68,7 +68,7 @@ function formatDefinitionType(mod: L.Mod, name: string): string | undefined {
 
   const inferredType = L.modLookupInferredType(mod, name)
   if (inferredType) {
-    return `(infer ${name} ${L.formatType(inferredType)})`
+    return `(claim ${name} ${L.formatType(inferredType)})`
   }
 
   return undefined
