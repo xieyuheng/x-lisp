@@ -426,7 +426,7 @@ export function polymorphicTypeFreshen(value: L.Value): L.Value {
   const bodyType = polymorphicTypeBodyType(value)
   let subst = L.emptySubst()
   for (const varType of varTypes) {
-    subst = L.extendSubst(
+    subst = L.substExtend(
       subst,
       varType,
       createFreshVarType(varTypeName(varType)),

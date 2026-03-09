@@ -15,7 +15,7 @@ export function typeCanonicalLabelSubst(type: L.Value): Effect {
         return subst
       } else {
         const serialNumber = BigInt(L.substLength(subst)) + 1n
-        return L.extendSubst(
+        return L.substExtend(
           subst,
           type,
           L.createCanonicalLabelType(serialNumber),

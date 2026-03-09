@@ -30,7 +30,7 @@ export function typeUnify(
     if (typeVarOccurredInType(lhs, rhs)) {
       return undefined
     } else {
-      return L.extendSubst(subst, lhs, rhs)
+      return L.substExtend(subst, lhs, rhs)
     }
   }
 
@@ -38,7 +38,7 @@ export function typeUnify(
     if (typeVarOccurredInType(rhs, lhs)) {
       return undefined
     } else {
-      return L.extendSubst(subst, rhs, lhs)
+      return L.substExtend(subst, rhs, lhs)
     }
   }
 
