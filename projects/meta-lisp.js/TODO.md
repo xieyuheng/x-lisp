@@ -1,6 +1,5 @@
 # type system
 
-`substApplyToTypeCtx`
 `typeGeneralizeInCtx` -- make polymorphic type from type with free type variables
 
 `typeInfer` -- infer polymorphic type for `Let`
