@@ -1,5 +1,14 @@
 # type system
 
+be able to infer type
+[pass] log inferred types
+
+more tests from "8 Polymorphic Type-checking"
+
+- from 1987-the-implementation-of-functional-programming-languages.pdf
+
+# type system
+
 > infer type for type expressions.
 
 `typeInfer` -- handle `Class`
