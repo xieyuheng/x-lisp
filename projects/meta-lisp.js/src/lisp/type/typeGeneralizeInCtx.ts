@@ -9,9 +9,8 @@ export function typeGeneralizeInCtx(ctx: L.Ctx, type: L.Value): L.Value {
   if (freeVarTypes.length === 0) {
     return type
   } else {
-    return L.createPolymorphicType(
-      arrayDedup(freeVarTypes, L.varTypeEqual),
-      type,
+    return L.polymorphicTypePrettifyVarTypes(
+      L.createPolymorphicType(arrayDedup(freeVarTypes, L.varTypeEqual), type),
     )
   }
 }

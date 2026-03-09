@@ -1,7 +1,5 @@
 # type system
 
-`typeGeneralizeInCtx` -- generate pretty bound variable name
-
 more tests from "8 Polymorphic Type-checking"
 
 - from 1987-the-implementation-of-functional-programming-languages.pdf

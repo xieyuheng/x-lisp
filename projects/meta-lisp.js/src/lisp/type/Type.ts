@@ -1,3 +1,4 @@
+import { range } from "@xieyuheng/helpers.js/range"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import assert from "node:assert"
 import * as L from "../index.ts"
@@ -441,4 +442,48 @@ export function polymorphicTypeFreshSelf(value: L.Value): L.Value {
 
 export function polymorphicTypeFreshBodyType(value: L.Value): L.Value {
   return polymorphicTypeBodyType(polymorphicTypeFreshSelf(value))
+}
+
+export function polymorphicTypePrettifyVarTypes(value: L.Value): L.Value {
+  assert(isPolymorphicType(value))
+  const varTypes = polymorphicTypeVarTypes(value)
+  const bodyType = polymorphicTypeBodyType(value)
+  const newVarTypes = range(varTypes.length).map((i) =>
+    createVarType(generatePrettyTypeVariableName(i), BigInt(0)),
+  )
+  const subst = L.substExtendMany(L.emptySubst(), varTypes, newVarTypes)
+  const newBodyType = L.substApplyToType(subst, bodyType)
+  return createPolymorphicType(newVarTypes, newBodyType)
+}
+
+const prettyTypeVariableNames = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+]
+
+function generatePrettyTypeVariableName(n: number): string {
+  const found = prettyTypeVariableNames[n]
+  if (found) {
+    return found
+  } else {
+    return `T${n}`
+  }
 }
