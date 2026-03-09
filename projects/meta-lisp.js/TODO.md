@@ -1,7 +1,5 @@
 # type system
 
-module:build and project:build
-
 be able to infer type
 
 more tests from "8 Polymorphic Type-checking"

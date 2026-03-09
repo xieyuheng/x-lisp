@@ -2,16 +2,19 @@
 
 import * as cmd from "@xieyuheng/cmd.js"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
+import { createUrl } from "@xieyuheng/helpers.js/url"
 import { fileURLToPath } from "node:url"
 import * as L from "./lisp/index.ts"
 import {
   loadDependencyGraph,
   loadProject,
+  projectBuild,
   projectCheck,
   projectClean,
   projectFromSourceFiles,
   projectInterpret,
 } from "./project/index.ts"
+import * as Services from "./services/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
@@ -20,33 +23,57 @@ const router = cmd.createRouter("meta-lisp-compile.js", version)
 router.defineRoutes([
   "module:check file",
   "module:interpret file",
+  "module:build file",
+  // "module:test file",
   "project:check --config",
   "project:interpret --config",
+  "project:build --config",
+  // "project:test --config",
   "project:clean --config",
+  "file:compile-to-pass-log file",
 ])
 
 router.defineHandlers({
   "module:check": ({ args: [file] }) => {
     loadDependencyGraph(file)
   },
+
   "module:interpret": ({ args: [file] }) => {
     const dependencyGraph = loadDependencyGraph(file)
     const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
     const project = projectFromSourceFiles(file, sourceFiles)
     projectInterpret(project, dependencyGraph)
   },
+
+  "module:build": ({ args: [file] }) => {
+    const dependencyGraph = loadDependencyGraph(file)
+    const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
+    const project = projectFromSourceFiles(file, sourceFiles)
+    projectBuild(project, dependencyGraph)
+  },
+
   "project:check": ({ options }) => {
     const project = loadProject(options["--config"])
     projectCheck(project)
   },
+
   "project:interpret": ({ options }) => {
     const dependencyGraph = L.createDependencyGraph()
     const project = loadProject(options["--config"])
     projectInterpret(project, dependencyGraph)
   },
+
+  "project:build": ({ options }) =>
+    projectBuild(loadProject(options["--config"])),
+
   "project:clean": ({ options }) => {
     const project = loadProject(options["--config"])
     projectClean(project)
+  },
+
+  "file:compile-to-pass-log": ({ args: [file] }) => {
+    const mod = L.load(createUrl(file), L.createDependencyGraph())
+    Services.compileLispToPassLog(mod)
   },
 })
 

@@ -11,9 +11,10 @@ import {
   type ProjectIdHandler,
 } from "./index.ts"
 
-export function projectBuild(project: Project): void {
-  const dependencyGraph = L.createDependencyGraph()
-
+export function projectBuild(
+  project: Project,
+  dependencyGraph: L.DependencyGraph,
+): void {
   projectForEachSource(project, buildPassLog(dependencyGraph))
 }
 
@@ -22,7 +23,7 @@ function buildPassLog(dependencyGraph: L.DependencyGraph): ProjectIdHandler {
     const inputFile = projectGetSourceFile(project, id)
     const outputFile = projectGetPassLogFile(project, id)
     logFile("pass-log", outputFile)
-    const mod = L.load(createUrl(inputFile), L.createDependencyGraph())
+    const mod = L.load(createUrl(inputFile), dependencyGraph)
     writeFile(outputFile, "")
     Services.compileLispToPassLog(mod, outputFile)
   }
