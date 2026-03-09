@@ -1,7 +1,6 @@
 # type system
 
 rename `extendSubst` to `substExtend` and extract it
-extract `substApplyToType`
 
 inlien `typeChildren` to `typeVarOccurredInType`
 `typeVarOccurredInTypeWithBoundIds`

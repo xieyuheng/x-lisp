@@ -1,9 +1,9 @@
-lisp/test-suite/src/object/subtype-2.type-error.lisp:14:16 -- inferred type is not a subtype of given type
+lisp/test-suite/src/object/subtype-2.type-error.lisp:18:18 -- inferred type is not a subtype of given type
   inferred type: (@class :x float-t)
   given type: (@class :x float-t :y float-t)
- 12 | (define (main)
- 13 |   (point-print (@object :x 1.0 :y 2.0))
- 14 |   (point-print (@object :x 1.0)))
-    |                ~~~~~~~~~~~~~~~~   
- 15 | 
+ 16 | (define (main)
+ 17 |   (point-println (@object :x 1.0 :y 2.0))
+ 18 |   (point-println (@object :x 1.0)))
+    |                  ~~~~~~~~~~~~~~~~   
+ 19 | 
 

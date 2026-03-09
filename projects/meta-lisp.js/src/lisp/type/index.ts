@@ -1,6 +1,7 @@
 export * from "./CheckEffect.ts"
 export * from "./InferEffect.ts"
 export * from "./Subst.ts"
+export * from "./substApplyToType.ts"
 export * from "./Type.ts"
 export * from "./typeCheck.ts"
 export * from "./typeEquivalent.ts"
