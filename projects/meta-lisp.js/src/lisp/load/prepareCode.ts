@@ -1,10 +1,10 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
+import { performTypeCheck } from "./performTypeCheck.ts"
 import { handleDefine as prepareDefine } from "./prepareDefine.ts"
 import { handleExempt as prepareExempt } from "./prepareExempt.ts"
 import { handleExport as prepareExport } from "./prepareExport.ts"
 import { handleImport as prepareImport } from "./prepareImport.ts"
-import { performTypeCheck } from "./performTypeCheck.ts"
 import { setupClaim } from "./setupClaim.ts"
 import { setupVariable } from "./setupVariable.ts"
 
