@@ -1,4 +1,3 @@
-`typeCanonicalLabelSubst` -- should simply return `Subst` -- instead of `Effect`
 `typePrettify`
 
 # exp
