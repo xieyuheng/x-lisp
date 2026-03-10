@@ -3,6 +3,14 @@
 (claim main (-> void-t))
 
 (define (main)
+  ;; data constructor predicate
+
+  (assert (nil? nil))
+  (assert (li? (li 1 (li 2 (li 3 nil)))))
+
+  (assert-not (li? nil))
+  (assert-not (nil? (li 1 (li 2 (li 3 nil)))))
+
   ;; data getter
 
   (assert-equal (li-tail (li 1 nil)) nil)

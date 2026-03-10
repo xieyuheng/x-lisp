@@ -1,5 +1,6 @@
 import * as L from "../index.ts"
 import { expandDataConstructor } from "./expandDataConstructor.ts"
+import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate.ts"
 import { expandDataGetter } from "./expandDataGetter.ts"
 import { expandDataPutter } from "./expandDataPutter.ts"
 
@@ -43,6 +44,7 @@ export function handleDefine(mod: L.Mod, stmt: L.Stmt): void {
 
     for (const ctor of stmt.dataConstructors) {
       expandDataConstructor(mod, definition, ctor)
+      expandDataConstructorPredicate(mod, definition, ctor)
       expandDataGetter(mod, definition, ctor)
       expandDataPutter(mod, definition, ctor)
     }
