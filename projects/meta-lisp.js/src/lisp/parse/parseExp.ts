@@ -77,10 +77,8 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
   },
 
   "(cons* '@object body)": ({ body }, { meta }) => {
-    return L.Object(
-      recordMapValue(S.listCollectAttributes(body), parseExp),
-      meta,
-    )
+    const entries = S.listCollectKeywordEntries(body)
+    return L.Object(recordMapValue(Object.fromEntries(entries), parseExp), meta)
   },
 
   "(cons* '@set elements)": ({ elements }, { meta }) => {
@@ -114,10 +112,8 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
   },
 
   "(cons* '@class body)": ({ body }, { meta }) => {
-    return L.Class(
-      recordMapValue(S.listCollectAttributes(body), parseExp),
-      meta,
-    )
+    const entries = S.listCollectKeywordEntries(body)
+    return L.Class(recordMapValue(Object.fromEntries(entries), parseExp), meta)
   },
 
   "`(the ,schema ,exp)": ({ schema, exp }, { meta }) => {

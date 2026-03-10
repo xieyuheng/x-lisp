@@ -48,19 +48,19 @@ export function listElements(sexp: S.Sexp): Array<S.Sexp> {
   return sexp.elements
 }
 
-export function listCollectAttributes(sexp: S.Sexp): Record<string, S.Sexp> {
+export function listCollectKeywordEntries(sexp: S.Sexp): Array<[string, S.Sexp]> {
   if (sexp.kind !== "List") {
-    throw new Error(`[listCollectAttributes] wrong sexp: ${S.formatSexp(sexp)}`)
+    throw new Error(`[listCollectKeywordEntries] wrong sexp: ${S.formatSexp(sexp)}`)
   }
 
-  const attributes: Record<string, S.Sexp> = {}
+  const entries: Array<[string, S.Sexp]> = []
   let i = 0
   while (i < sexp.elements.length) {
     const keyword = sexp.elements[i]
     if (S.isKeyword(keyword)) {
       if (i + 1 < sexp.elements.length) {
         const value = sexp.elements[i + 1]
-        attributes[keyword.content] = value
+        entries.push([keyword.content, value])
         i += 2
       } else {
         i++
@@ -70,5 +70,5 @@ export function listCollectAttributes(sexp: S.Sexp): Record<string, S.Sexp> {
     }
   }
 
-  return attributes
+  return entries
 }

@@ -1,3 +1,24 @@
+# pattern match
+
+`Match` as `Exp`
+parse `(match)`
+
+`MatchMany` as `Exp`
+parse `(match-many)`
+
+`simplifyMatch`
+`simplifyMatchMany`
+
+`Which` as `Exp`
+parse `(which)`
+
+`translateMatchToWhich`
+`translateMatchManyToWhich`
+
+`translateWhichToCond`
+
+`evaluate` -- supported `Match` and `MatchMany` -- by translating all the way to `Cond`
+
 # type system
 
 more tests from "8 Polymorphic Type-checking"
@@ -15,27 +36,12 @@ more tests from "8 Polymorphic Type-checking"
 
 fix `subtype.type-error.lisp`
 
-# pattern match
-
-`Which` as `Exp` -- `typeInfer` like `If`
-parse `(which)`
-`evaluate` -- supported `Which`
-
-`Match` as `Exp`
-parse `(match)`
-
-`desugarMatch` -- compile `(match)` with nested patterns to simple `(match)`
-`desugarMatch` -- compile simple `(match)` to `(which)`
-
 # tuple
 
 tuple-cons
 tuple-head
 tuple-tail
 
-# name of polymorphic type
+# syntax
 
-[maybe] rename `(polymorphic)` to `(nu)`
-
-- because we can say "an exp is polymorphic",
-  but we should not say "a type is polymorphic".
+`(@object)` -- check repeated keyword
