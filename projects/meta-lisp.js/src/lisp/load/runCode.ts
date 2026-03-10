@@ -9,10 +9,7 @@ import { setupClaim } from "./setupClaim.ts"
 import { setupVariable } from "./setupVariable.ts"
 
 export function runCode(mod: L.Mod, code: string): void {
-  return runSexps(mod, S.parseSexps(code, { url: mod.url }))
-}
-
-export function runSexps(mod: L.Mod, sexps: Array<S.Sexp>): void {
+  const sexps = S.parseSexps(code, { url: mod.url })
   const stmts = sexps.map(L.parseStmt)
   mod.stmts.push(...stmts)
 

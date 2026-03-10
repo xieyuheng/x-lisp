@@ -19,16 +19,16 @@ import { builtinSymbol } from "./builtinSymbol.ts"
 import { builtinValue } from "./builtinValue.ts"
 import { builtinVoid } from "./builtinVoid.ts"
 
-let mod: L.Mod | undefined = undefined
-
 const currentDir = path.dirname(fileURLToPath(import.meta.url))
 const file = path.join(currentDir, "../../../lisp/builtin/index.lisp")
 const url = createUrl(file)
 
-export function loadBuiltinMod(): L.Mod {
-  if (mod) return mod
+export function loadBuiltinMod(dependencyGraph: L.DependencyGraph): L.Mod {
+  const found = L.dependencyGraphLookupMod(dependencyGraph, url)
+  if (found !== undefined) return found
 
-  mod = L.createMod(url, L.createDependencyGraph())
+  const mod = L.createMod(url, dependencyGraph)
+  L.dependencyGraphAddMod(dependencyGraph, mod)
 
   builtinInt(mod)
   builtinFloat(mod)

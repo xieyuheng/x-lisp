@@ -1,6 +1,11 @@
 # simple load
 
-`loadBuiltinMod` take `dependencyGraph`
+rename `runCode` to `prepareCode`
+
+`dependencyGraphSortedMods` -- topology sort
+`projectCheck` -- call `dependencyGraphSortedMods`
+
+should not call `setupVariable` `setupClaim` `performTypeCheck` in `prepareCode`
 
 # desugar
 
