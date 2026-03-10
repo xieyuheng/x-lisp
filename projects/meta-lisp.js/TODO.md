@@ -1,29 +1,28 @@
-ambr condClause condClause
-ambr matchClause matchClause
+[pass] `005-ShrinkPass` -- to handle `Match`
+
+`setupVariable` -- `ShrinkPass` before `evaluate`
+`projectInterpret` -- `ShrinkPass` before `evaluate`
+
+`evaluate` -- should not call `desugar*`
+
+`performTypeCheck` -- `ShrinkPass` before type check
+
+`typeInfer` -- should not call `desugar*`
 
 # pattern match
 
 `Match` as `Exp`
-parse `(match)` & `(match-many)`
-
+parse `(match)` & `(match-many)` -- to `Match`
 `definitionIsDataConstructor`
-
-`expSubstitute` -- Be careful about the "name-capture" problem.
-
 `simplifyMatch`
-
 `Which` as `Exp`
 parse `(which)`
-
 `translateMatchToWhich`
 `translateWhichToCond`
-
-`evaluate` -- support `Match` -- by translating all the way to `Cond`
 
 # type system
 
 more tests from "8 Polymorphic Type-checking"
-
 - from 1987-the-implementation-of-functional-programming-languages.pdf
 
 # type system
@@ -45,4 +44,4 @@ tuple-tail
 
 # syntax
 
-`(@object)` -- check repeated keyword
+`(@object)` & `(@class)` -- check repeated keyword
