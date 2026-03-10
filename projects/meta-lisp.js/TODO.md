@@ -1,4 +1,3 @@
-move `expChildren` to `expFreeNames`
 # pattern match
 
 `Match` as `Exp`

@@ -48,9 +48,13 @@ export function listElements(sexp: S.Sexp): Array<S.Sexp> {
   return sexp.elements
 }
 
-export function listCollectKeywordEntries(sexp: S.Sexp): Array<[string, S.Sexp]> {
+export function listCollectKeywordEntries(
+  sexp: S.Sexp,
+): Array<[string, S.Sexp]> {
   if (sexp.kind !== "List") {
-    throw new Error(`[listCollectKeywordEntries] wrong sexp: ${S.formatSexp(sexp)}`)
+    throw new Error(
+      `[listCollectKeywordEntries] wrong sexp: ${S.formatSexp(sexp)}`,
+    )
   }
 
   const entries: Array<[string, S.Sexp]> = []
