@@ -25,7 +25,7 @@ const currentDir = path.dirname(fileURLToPath(import.meta.url))
 const file = path.join(currentDir, "../../../lisp/builtin/index.lisp")
 const url = createUrl(file)
 
-export function useBuiltinMod(): L.Mod {
+export function loadBuiltinMod(): L.Mod {
   if (mod) return mod
 
   mod = L.createMod(url, L.createDependencyGraph())

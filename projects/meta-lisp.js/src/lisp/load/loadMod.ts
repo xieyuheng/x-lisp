@@ -14,7 +14,7 @@ export function loadMod(url: URL, dependencyGraph: L.DependencyGraph): L.Mod {
 }
 
 function importBuiltinMod(mod: L.Mod): void {
-  const builtinMod = L.useBuiltinMod()
+  const builtinMod = L.loadBuiltinMod()
   for (const definition of builtinMod.definitions.values()) {
     L.modDefine(mod, definition.name, definition)
   }

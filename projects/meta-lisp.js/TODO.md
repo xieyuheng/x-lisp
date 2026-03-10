@@ -1,6 +1,5 @@
 # simple load
 
-rename `useBuiltinMod` to `loadBuiltinMod`
 `loadBuiltinMod` take `dependencyGraph`
 
 # desugar
