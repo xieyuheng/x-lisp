@@ -9,7 +9,8 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
     case "String":
     case "Int":
     case "Float":
-    case "Var": {
+    case "Var":
+    case "Require": {
       return onExp(exp)
     }
 

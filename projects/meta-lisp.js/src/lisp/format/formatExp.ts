@@ -46,6 +46,10 @@ export function formatExp(exp: Exp): string {
       return exp.name
     }
 
+    case "Require": {
+      return `(@require "${exp.path}" ${exp.name})`
+    }
+
     case "Lambda": {
       const parameters = formatParameters(exp.parameters)
       const body = formatBody(exp.body)

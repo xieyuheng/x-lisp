@@ -1,10 +1,20 @@
+# require
+
+parse `(@require)`
+
+`evaluate` -- handle `Require`
+`typeInfer` -- handle `Require`
+
+# exp
+
+`expSubstitute` -- Be careful about the "name-capture" problem.
+
 # pattern match
 
-`Match` as `Exp`
-parse `(match)`
+`Match` & `MatchMany` as `Exp`
+parse `(match)` & `(match-many)`
 
-`MatchMany` as `Exp`
-parse `(match-many)`
+`definitionIsDataConstructor`
 
 `simplifyMatch`
 `simplifyMatchMany`

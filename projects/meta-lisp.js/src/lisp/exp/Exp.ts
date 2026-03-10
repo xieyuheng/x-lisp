@@ -7,6 +7,7 @@ export type Exp =
   | Int
   | Float
   | Var
+  | Require
   | Lambda
   | Apply
   | Let1
@@ -110,6 +111,22 @@ export type Var = {
 export function Var(name: string, meta?: TokenMeta): Var {
   return {
     kind: "Var",
+    name,
+    meta,
+  }
+}
+
+export type Require = {
+  kind: "Require"
+  path: string
+  name: string
+  meta?: TokenMeta
+}
+
+export function Require(path: string, name: string, meta?: TokenMeta): Require {
+  return {
+    kind: "Require",
+    path,
     name,
     meta,
   }

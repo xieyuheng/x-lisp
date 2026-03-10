@@ -39,6 +39,10 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       else throw new Error(message)
     }
 
+    case "Require": {
+      throw new Error()
+    }
+
     case "Lambda": {
       return L.ClosureValue(mod, env, exp.parameters, exp.body)
     }

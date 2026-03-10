@@ -7,7 +7,8 @@ export function expChildren(exp: Exp): Array<Exp> {
     case "String":
     case "Int":
     case "Float":
-    case "Var": {
+    case "Var":
+    case "Require": {
       return []
     }
 
