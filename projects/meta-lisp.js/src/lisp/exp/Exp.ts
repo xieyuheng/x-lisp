@@ -31,6 +31,7 @@ export type Exp =
   | Class
   | The
   | Polymorphic
+//  | Match
 
 export type Symbol = {
   kind: "Symbol"
@@ -523,3 +524,29 @@ export function Polymorphic(
     meta,
   }
 }
+
+// export type Match = {
+//   kind: "Match"
+//   targets: Array<Exp>
+//   matchLines: Array<MatchLine>
+//   meta?: TokenMeta
+// }
+
+// export type MatchLine = {
+//   patterns: Array<Exp>
+//   body: Exp
+//   meta?: TokenMeta
+// }
+
+// export function Match(
+//   targets: Array<Exp>,
+//   matchLines: Array<MatchLine>,
+//   meta?: TokenMeta
+// ): Match {
+//   return {
+//     kind: "Match",
+//     targets,
+//     matchLines,
+//     meta,
+//   }
+// }

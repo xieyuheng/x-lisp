@@ -1,26 +1,25 @@
-# exp
-
-`expSubstitute` -- Be careful about the "name-capture" problem.
-
+move `expChildren` to `expFreeNames`
 # pattern match
 
-`Match` & `MatchMany` as `Exp`
+`Match` as `Exp`
 parse `(match)` & `(match-many)`
+
+rename condLine to condClause
+rename matchLine to matchClause
 
 `definitionIsDataConstructor`
 
+`expSubstitute` -- Be careful about the "name-capture" problem.
+
 `simplifyMatch`
-`simplifyMatchMany`
 
 `Which` as `Exp`
 parse `(which)`
 
 `translateMatchToWhich`
-`translateMatchManyToWhich`
-
 `translateWhichToCond`
 
-`evaluate` -- supported `Match` and `MatchMany` -- by translating all the way to `Cond`
+`evaluate` -- support `Match` -- by translating all the way to `Cond`
 
 # type system
 
