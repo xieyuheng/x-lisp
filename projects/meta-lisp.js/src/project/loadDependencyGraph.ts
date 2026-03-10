@@ -3,6 +3,6 @@ import * as L from "../lisp/index.ts"
 
 export function loadDependencyGraph(file: string): L.DependencyGraph {
   const dependencyGraph = L.createDependencyGraph()
-  L.load(createUrl(file), dependencyGraph)
+  L.loadMod(createUrl(file), dependencyGraph)
   return dependencyGraph
 }

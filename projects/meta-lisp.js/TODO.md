@@ -1,3 +1,11 @@
+# simple load
+
+move `importBuiltinMod` to `loadMod`
+rename `useBuiltinMod` to `loadBuiltinMod`
+`loadBuiltinMod` take `dependencyGraph`
+
+# desugar
+
 `evaluate` -- should not call `desugar`
 `desugar` -- should take `mod`
 

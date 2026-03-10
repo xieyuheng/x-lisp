@@ -23,6 +23,5 @@ export function runSexps(mod: L.Mod, sexps: Array<S.Sexp>): void {
 
   setupVariable(mod)
   setupClaim(mod)
-
   performTypeCheck(mod)
 }

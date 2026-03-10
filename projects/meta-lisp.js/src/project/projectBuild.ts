@@ -23,7 +23,7 @@ function buildPassLog(dependencyGraph: L.DependencyGraph): ProjectIdHandler {
     const inputFile = projectGetSourceFile(project, id)
     const outputFile = projectGetPassLogFile(project, id)
     logFile("pass-log", outputFile)
-    const mod = L.load(createUrl(inputFile), dependencyGraph)
+    const mod = L.loadMod(createUrl(inputFile), dependencyGraph)
     writeFile(outputFile, "")
     Services.compileLispToPassLog(mod, outputFile)
   }

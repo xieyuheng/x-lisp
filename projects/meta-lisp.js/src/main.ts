@@ -75,7 +75,7 @@ router.defineHandlers({
   },
 
   "file:compile-to-pass-log": ({ args: [file] }) => {
-    const mod = L.load(createUrl(file), L.createDependencyGraph())
+    const mod = L.loadMod(createUrl(file), L.createDependencyGraph())
     Services.compileLispToPassLog(mod)
   },
 })

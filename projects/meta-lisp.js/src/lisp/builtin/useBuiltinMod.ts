@@ -21,12 +21,12 @@ import { builtinVoid } from "./builtinVoid.ts"
 
 let mod: L.Mod | undefined = undefined
 
+const currentDir = path.dirname(fileURLToPath(import.meta.url))
+const file = path.join(currentDir, "../../../lisp/builtin/index.lisp")
+const url = createUrl(file)
+
 export function useBuiltinMod(): L.Mod {
   if (mod) return mod
-
-  const currentDir = path.dirname(fileURLToPath(import.meta.url))
-  const file = path.join(currentDir, "../../../lisp/builtin/index.lisp")
-  const url = createUrl(file)
 
   mod = L.createMod(url, L.createDependencyGraph())
 

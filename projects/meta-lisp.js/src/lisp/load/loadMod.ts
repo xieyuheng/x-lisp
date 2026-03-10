@@ -1,7 +1,7 @@
 import fs from "node:fs"
 import * as L from "../index.ts"
 
-export function load(url: URL, dependencyGraph: L.DependencyGraph): L.Mod {
+export function loadMod(url: URL, dependencyGraph: L.DependencyGraph): L.Mod {
   const found = L.dependencyGraphLookupMod(dependencyGraph, url)
   if (found !== undefined) return found
 

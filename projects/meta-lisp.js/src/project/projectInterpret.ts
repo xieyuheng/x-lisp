@@ -24,7 +24,7 @@ function interpretTest(dependencyGraph: L.DependencyGraph): ProjectIdHandler {
     ) {
       const inputFile = projectGetSourceFile(project, id)
       logFile("interpret", inputFile)
-      const mod = L.load(createUrl(inputFile), dependencyGraph)
+      const mod = L.loadMod(createUrl(inputFile), dependencyGraph)
       const main = L.modLookupDefinition(mod, "main")
       if (main) {
         assert(main.kind === "FunctionDefinition")

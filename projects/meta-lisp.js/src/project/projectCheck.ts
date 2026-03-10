@@ -11,6 +11,6 @@ export function projectCheck(project: Project): void {
 
   projectForEachSource(project, (project, id) => {
     const inputFile = projectGetSourceFile(project, id)
-    L.load(createUrl(inputFile), dependencyGraph)
+    L.loadMod(createUrl(inputFile), dependencyGraph)
   })
 }
