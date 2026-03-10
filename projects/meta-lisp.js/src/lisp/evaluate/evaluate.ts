@@ -5,6 +5,8 @@ import { apply } from "./apply.ts"
 import { meaning } from "./meaning.ts"
 
 export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
+  exp = L.desugar(exp)
+
   switch (exp.kind) {
     case "Symbol": {
       return L.SymbolValue(exp.content)
@@ -90,6 +92,10 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       } else {
         return evaluate(mod, env, exp.alternative)
       }
+    }
+
+    case "Tuple": {
+      return L.ListValue(exp.elements.map((e) => evaluate(mod, env, e)))
     }
 
     case "Object": {
