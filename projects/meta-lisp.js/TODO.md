@@ -1,4 +1,3 @@
-`setupVariable` -- `desugar` before `evaluate`
 `projectInterpret` -- `desugar` before `evaluate`
 
 `evaluate` -- should not call `desugar*`
