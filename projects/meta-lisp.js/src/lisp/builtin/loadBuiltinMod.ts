@@ -47,7 +47,7 @@ export function loadBuiltinMod(dependencyGraph: L.DependencyGraph): L.Mod {
   builtinError(mod)
 
   const code = fs.readFileSync(file, "utf-8")
-  L.runCode(mod, code)
+  L.prepareCode(mod, code)
 
   return mod
 }

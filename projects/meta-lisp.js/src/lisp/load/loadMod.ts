@@ -16,6 +16,6 @@ export function loadMod(url: URL, dependencyGraph: L.DependencyGraph): L.Mod {
 
   assert(url.protocol === "file:")
   const code = fs.readFileSync(url.pathname, "utf8")
-  L.runCode(mod, code)
+  L.prepareCode(mod, code)
   return mod
 }

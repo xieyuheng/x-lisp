@@ -1,7 +1,5 @@
 # simple load
 
-rename `runCode` to `prepareCode`
-
 `dependencyGraphSortedMods` -- topology sort
 `projectCheck` -- call `dependencyGraphSortedMods`
 
