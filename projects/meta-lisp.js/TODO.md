@@ -1,13 +1,14 @@
-[pass] `005-ShrinkPass` -- to handle `Match`
-
-`setupVariable` -- `ShrinkPass` before `evaluate`
-`projectInterpret` -- `ShrinkPass` before `evaluate`
+`setupVariable` -- `desugar` before `evaluate`
+`projectInterpret` -- `desugar` before `evaluate`
 
 `evaluate` -- should not call `desugar*`
 
-`performTypeCheck` -- `ShrinkPass` before type check
+`performTypeCheck` -- `desugar` before type check
 
 `typeInfer` -- should not call `desugar*`
+
+`desugar*` -- should not be exported
+`desugar` -- should take `mod`
 
 # pattern match
 

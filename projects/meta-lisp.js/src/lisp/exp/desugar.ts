@@ -1,5 +1,134 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
+
+export function desugar(exp: L.Exp): L.Exp {
+  switch (exp.kind) {
+    case "Symbol":
+    case "Keyword":
+    case "String":
+    case "Int":
+    case "Float":
+    case "Var":
+    case "Require": {
+      return exp
+    }
+
+    case "BeginSugar": {
+      return desugar(L.desugarBegin(exp.sequence, exp.meta))
+    }
+
+    case "AssignSugar": {
+      let message = `[desugar] (=) must occur in the head of (begin)`
+      message += `\n  exp: ${L.formatExp(exp)}`
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+      else throw new Error(message)
+    }
+
+    case "If": {
+      return L.If(
+        desugar(exp.condition),
+        desugar(exp.consequent),
+        desugar(exp.alternative),
+        exp.meta,
+      )
+    }
+
+    case "When": {
+      return L.If(
+        desugar(exp.condition),
+        desugar(exp.consequent),
+        L.Void(),
+        exp.meta,
+      )
+    }
+
+    case "Unless": {
+      return L.If(
+        desugar(exp.condition),
+        L.Void(),
+        desugar(exp.alternative),
+        exp.meta,
+      )
+    }
+
+    case "And": {
+      return desugar(L.desugarAnd(exp.exps, exp.meta))
+    }
+
+    case "Or": {
+      return desugar(L.desugarOr(exp.exps, exp.meta))
+    }
+
+    case "Cond": {
+      return desugar(L.desugarCond(exp.condClauses, exp.meta))
+    }
+
+    case "Set": {
+      return desugar(L.desugarSet(exp.elements, exp.meta))
+    }
+
+    case "Hash": {
+      return desugar(L.desugarHash(exp.entries, exp.meta))
+    }
+
+    case "Quote": {
+      return desugar(L.desugarQuote(exp.sexp, exp.meta))
+    }
+
+    case "Apply": {
+      return L.Apply(desugar(exp.target), exp.args.map(desugar), exp.meta)
+    }
+
+    case "Arrow": {
+      return L.Arrow(exp.argTypes.map(desugar), desugar(exp.retType), exp.meta)
+    }
+
+    case "Begin1": {
+      return L.Begin1(desugar(exp.head), desugar(exp.body), exp.meta)
+    }
+
+    case "Let1": {
+      return L.Let1(exp.name, desugar(exp.rhs), desugar(exp.body), exp.meta)
+    }
+
+    case "List": {
+      return L.List(exp.elements.map(desugar), exp.meta)
+    }
+
+    case "Set": {
+      return L.Set(exp.elements.map(desugar), exp.meta)
+    }
+
+    case "Tuple": {
+      return L.Tuple(exp.elements.map(desugar), exp.meta)
+    }
+
+    case "Tau": {
+      return L.Tau(exp.elementTypes.map(desugar), exp.meta)
+    }
+
+    case "Object": {
+      return L.Object(recordMapValue(exp.attributes, desugar), exp.meta)
+    }
+
+    case "Class": {
+      return L.Class(recordMapValue(exp.attributeTypes, desugar), exp.meta)
+    }
+
+    case "The": {
+      return L.The(desugar(exp.type), desugar(exp.exp), exp.meta)
+    }
+
+    case "Lambda": {
+      return L.Lambda(exp.parameters, desugar(exp.body), exp.meta)
+    }
+
+    case "Polymorphic": {
+      return L.Polymorphic(exp.parameters, desugar(exp.body), exp.meta)
+    }
+  }
+}
 
 export function desugarBegin(
   sequence: Array<L.Exp>,
