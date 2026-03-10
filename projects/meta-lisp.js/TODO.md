@@ -1,9 +1,24 @@
 # simple load
 
+`builtinType` -- remove builtin type from builtin/index.lisp
+bring back `DefineType`
+
+`prepareCode` -- `setupVariable` after `performTypeCheck`
+
 `dependencyGraphSortedMods` -- topology sort
+
 `projectCheck` -- call `dependencyGraphSortedMods`
 
+- prepare
+- setup define-type
+- setup claim
+- perform type check
+- setup variable
+
+module:dependency-graph
+
 should not call `setupVariable` `setupClaim` `performTypeCheck` in `prepareCode`
+`modLookupClaimedType` -- be explicit about `evaluate` of claimed `Exp`
 
 # desugar
 
