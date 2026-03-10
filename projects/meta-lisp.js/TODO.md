@@ -1,7 +1,3 @@
-rename `typeCanonicalLabelSubst` to `generateCanonicalLabelSubst`
-
-`generateSubst`
-
 # exp
 
 `expSubstitute` -- Be careful about the "name-capture" problem.

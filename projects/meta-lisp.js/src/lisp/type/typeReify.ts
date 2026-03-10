@@ -1,7 +1,7 @@
 import * as L from "../index.ts"
-import { typeCanonicalLabelSubst } from "./typeCanonicalLabelSubst.ts"
+import { generateCanonicalLabelSubst } from "./generateSubst.ts"
 
 export function typeReify(type: L.Value): L.Value {
-  const subst = typeCanonicalLabelSubst(type)
+  const subst = generateCanonicalLabelSubst([type])
   return L.substApplyToType(subst, type)
 }

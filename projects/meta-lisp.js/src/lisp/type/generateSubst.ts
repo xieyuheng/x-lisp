@@ -3,12 +3,13 @@ import * as L from "../index.ts"
 
 // - To implement `typeReify`.
 
-export function typeCanonicalLabelSubst(type: L.Value): L.Subst {
-  let subst = L.emptySubst()
+export function generateCanonicalLabelSubst(types: Array<L.Value>): L.Subst {
   const freeVarTypes = arrayDedup(
-    L.typeFreeVarTypes(new Set(), type),
+    types.flatMap((type) => L.typeFreeVarTypes(new Set(), type)),
     L.varTypeEqual,
   )
+
+  let subst = L.emptySubst()
   for (const freeVarType of freeVarTypes) {
     const serialNumber = BigInt(L.substLength(subst)) + 1n
     const canonicalLabelType = L.createCanonicalLabelType(serialNumber)
@@ -21,12 +22,12 @@ export function typeCanonicalLabelSubst(type: L.Value): L.Subst {
 // - To improve error report.
 
 export function generatePrettyUnknownSubst(types: Array<L.Value>): L.Subst {
-  let subst = L.emptySubst()
   const freeVarTypes = arrayDedup(
-    types.flatMap(type => L.typeFreeVarTypes(new Set(), type)),
+    types.flatMap((type) => L.typeFreeVarTypes(new Set(), type)),
     L.varTypeEqual,
   )
 
+  let subst = L.emptySubst()
   for (const freeVarType of freeVarTypes) {
     const prettyName = L.generatePrettyTypeVariableName(L.substLength(subst))
     const prettyUnknown = L.createVarType(prettyName, BigInt(0))
