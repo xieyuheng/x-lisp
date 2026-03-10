@@ -1,4 +1,6 @@
-`typePrettify`
+rename `typeCanonicalLabelSubst` to `generateCanonicalLabelSubst`
+
+`generateSubst`
 
 # exp
 

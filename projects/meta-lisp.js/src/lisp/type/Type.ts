@@ -479,7 +479,7 @@ const prettyTypeVariableNames = [
   "T",
 ]
 
-function generatePrettyTypeVariableName(n: number): string {
+export function generatePrettyTypeVariableName(n: number): string {
   const found = prettyTypeVariableNames[n]
   if (found) {
     return found
