@@ -1,5 +1,3 @@
-`projectInterpret` -- `desugar` before `evaluate`
-
 `evaluate` -- should not call `desugar*`
 
 `performTypeCheck` -- `desugar` before type check

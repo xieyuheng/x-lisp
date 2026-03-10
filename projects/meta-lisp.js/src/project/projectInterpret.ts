@@ -28,7 +28,7 @@ function interpretTest(dependencyGraph: L.DependencyGraph): ProjectIdHandler {
       const main = L.modLookupDefinition(mod, "main")
       if (main) {
         assert(main.kind === "FunctionDefinition")
-        L.evaluate(mod, L.emptyEnv(), main.body)
+        L.evaluate(mod, L.emptyEnv(), L.desugar(main.body))
       }
     }
   }
