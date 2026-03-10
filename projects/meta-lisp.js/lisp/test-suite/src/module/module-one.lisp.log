@@ -1,0 +1,12 @@
+;;; Input
+
+(export one)
+
+(define one 1)
+
+;;; Loaded
+
+(claim one int-t)
+
+(define one 1)
+

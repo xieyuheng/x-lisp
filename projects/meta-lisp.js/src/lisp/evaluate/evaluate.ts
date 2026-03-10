@@ -45,6 +45,7 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       if (definition) return meaning(definition)
 
       let message = `[evaluate] undefined require name`
+      message += `\n  path: ${exp.path}`
       message += `\n  name: ${exp.name}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)

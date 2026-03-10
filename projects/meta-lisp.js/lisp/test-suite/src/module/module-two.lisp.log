@@ -1,0 +1,18 @@
+;;; Input
+
+(export one two)
+
+(define one 1)
+
+(define two 2)
+
+;;; Loaded
+
+(claim one int-t)
+
+(define one 1)
+
+(claim two int-t)
+
+(define two 2)
+

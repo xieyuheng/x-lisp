@@ -1,5 +1,3 @@
-`typeInfer` -- handle `Require`
-
 # exp
 
 `expSubstitute` -- Be careful about the "name-capture" problem.

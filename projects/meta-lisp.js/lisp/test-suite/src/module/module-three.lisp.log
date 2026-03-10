@@ -1,0 +1,24 @@
+;;; Input
+
+(export one two three)
+
+(define one 1)
+
+(define two 2)
+
+(define three 3)
+
+;;; Loaded
+
+(claim one int-t)
+
+(define one 1)
+
+(claim two int-t)
+
+(define two 2)
+
+(claim three int-t)
+
+(define three 3)
+
