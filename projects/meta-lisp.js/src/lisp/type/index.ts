@@ -1,4 +1,5 @@
 export * from "./CheckEffect.ts"
+export * from "./generateSubst.ts"
 export * from "./InferEffect.ts"
 export * from "./Subst.ts"
 export * from "./substApplyToType.ts"

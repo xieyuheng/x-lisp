@@ -1,6 +1,6 @@
 lisp/test-suite/src/function/Y.type-error.lisp:6:19 -- unification fail
-  inferred type: (-> A₃ R₃)
-  given type: A₃
+  inferred type: (-> A B)
+  given type: A
  4 | 
  5 | (define (Y f)
  6 |   ((lambda (u) (u u))

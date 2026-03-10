@@ -9,6 +9,7 @@ export function typeCheckAssignable(
   return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) => {
     inferredType = L.typeFreshen(inferredType)
     type = L.typeFreshen(type)
+
     return L.sequenceCheckEffect([
       typeCheckSubstInstance(exp, inferredType, type),
       typeCheckUnify(exp, inferredType, type),
@@ -23,14 +24,22 @@ export function typeCheckSubstInstance(
   type: L.Value,
 ): L.CheckEffect {
   return (subst) => {
-    const resolvedInferredType = L.substApplyToType(subst, inferredType)
-    const resolvedType = L.substApplyToType(subst, type)
+    inferredType = L.substApplyToType(subst, inferredType)
+    type = L.substApplyToType(subst, type)
     // - In the theory of polymorphic type,
     //   inferredType should be more general than given type.
-    if (!L.typeSubstInstance(resolvedType, resolvedInferredType)) {
+    if (!L.typeSubstInstance(type, inferredType)) {
+      const prettyUnknownSubst = L.generatePrettyUnknownSubst([
+        inferredType,
+        type,
+      ])
+
+      inferredType = L.substApplyToType(prettyUnknownSubst, inferredType)
+      type = L.substApplyToType(prettyUnknownSubst, type)
+
       let message = `given type is not a substitution instance of inferred type`
-      message += `\n  inferred type: ${L.formatType(resolvedInferredType)}`
-      message += `\n  given type: ${L.formatType(resolvedType)}`
+      message += `\n  inferred type: ${L.formatType(inferredType)}`
+      message += `\n  given type: ${L.formatType(type)}`
       return L.errorCheckEffect(exp, message)(subst)
     }
 
@@ -47,6 +56,7 @@ export function typeCheckByInfer(
   return L.inferThenCheck(L.typeInfer(mod, ctx, exp), (inferredType) => {
     inferredType = L.typeFreshen(inferredType)
     type = L.typeFreshen(type)
+
     return L.sequenceCheckEffect([
       typeCheckUnify(exp, inferredType, type),
       typeCheckSubtype(exp, inferredType, type),
@@ -64,6 +74,15 @@ export function typeCheckUnify(
     if (newSubst === undefined) {
       inferredType = L.substApplyToType(subst, inferredType)
       type = L.substApplyToType(subst, type)
+
+      const prettyUnknownSubst = L.generatePrettyUnknownSubst([
+        inferredType,
+        type,
+      ])
+
+      inferredType = L.substApplyToType(prettyUnknownSubst, inferredType)
+      type = L.substApplyToType(prettyUnknownSubst, type)
+
       let message = `unification fail`
       message += `\n  inferred type: ${L.formatType(inferredType)}`
       message += `\n  given type: ${L.formatType(type)}`
@@ -80,12 +99,21 @@ export function typeCheckSubtype(
   type: L.Value,
 ): L.CheckEffect {
   return (subst) => {
-    const resolvedInferredType = L.substApplyToType(subst, inferredType)
-    const resolvedType = L.substApplyToType(subst, type)
-    if (!L.typeSubtype([], resolvedInferredType, resolvedType)) {
+    inferredType = L.substApplyToType(subst, inferredType)
+    type = L.substApplyToType(subst, type)
+
+    if (!L.typeSubtype([], inferredType, type)) {
+      const prettyUnknownSubst = L.generatePrettyUnknownSubst([
+        inferredType,
+        type,
+      ])
+
+      inferredType = L.substApplyToType(prettyUnknownSubst, inferredType)
+      type = L.substApplyToType(prettyUnknownSubst, type)
+
       let message = `inferred type is not a subtype of given type`
-      message += `\n  inferred type: ${L.formatType(resolvedInferredType)}`
-      message += `\n  given type: ${L.formatType(resolvedType)}`
+      message += `\n  inferred type: ${L.formatType(inferredType)}`
+      message += `\n  given type: ${L.formatType(type)}`
       return L.errorCheckEffect(exp, message)(subst)
     }
 
