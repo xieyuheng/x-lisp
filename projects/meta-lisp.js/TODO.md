@@ -1,10 +1,10 @@
+ambr condClause condClause
+ambr matchClause matchClause
+
 # pattern match
 
 `Match` as `Exp`
 parse `(match)` & `(match-many)`
-
-rename condLine to condClause
-rename matchLine to matchClause
 
 `definitionIsDataConstructor`
 

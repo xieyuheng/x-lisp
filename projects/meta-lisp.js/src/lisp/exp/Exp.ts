@@ -331,19 +331,19 @@ export function Or(exps: Array<Exp>, meta?: TokenMeta): Or {
 
 export type Cond = {
   kind: "Cond"
-  condLines: Array<CondLine>
+  condClauses: Array<CondClause>
   meta?: TokenMeta
 }
 
-export type CondLine = {
+export type CondClause = {
   question: Exp
   answer: Exp
 }
 
-export function Cond(condLines: Array<CondLine>, meta?: TokenMeta): Cond {
+export function Cond(condClauses: Array<CondClause>, meta?: TokenMeta): Cond {
   return {
     kind: "Cond",
-    condLines,
+    condClauses,
     meta,
   }
 }
@@ -528,11 +528,11 @@ export function Polymorphic(
 // export type Match = {
 //   kind: "Match"
 //   targets: Array<Exp>
-//   matchLines: Array<MatchLine>
+//   matchClauses: Array<MatchClause>
 //   meta?: TokenMeta
 // }
 
-// export type MatchLine = {
+// export type MatchClause = {
 //   patterns: Array<Exp>
 //   body: Exp
 //   meta?: TokenMeta
@@ -540,13 +540,13 @@ export function Polymorphic(
 
 // export function Match(
 //   targets: Array<Exp>,
-//   matchLines: Array<MatchLine>,
+//   matchClauses: Array<MatchClause>,
 //   meta?: TokenMeta
 // ): Match {
 //   return {
 //     kind: "Match",
 //     targets,
-//     matchLines,
+//     matchClauses,
 //     meta,
 //   }
 // }

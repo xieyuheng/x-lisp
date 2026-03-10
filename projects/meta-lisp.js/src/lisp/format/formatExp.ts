@@ -124,8 +124,8 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Cond": {
-      const condLines = exp.condLines.map(formatCondLine)
-      return `(cond ${condLines.join(" ")})`
+      const condClauses = exp.condClauses.map(formatCondClause)
+      return `(cond ${condClauses.join(" ")})`
     }
 
     case "List": {
@@ -207,8 +207,8 @@ export function formatExp(exp: Exp): string {
   }
 }
 
-function formatCondLine(condLine: Exps.CondLine): string {
-  return `(${formatExp(condLine.question)} ${formatExp(condLine.answer)})`
+function formatCondClause(condClause: Exps.CondClause): string {
+  return `(${formatExp(condClause.question)} ${formatExp(condClause.answer)})`
 }
 
 export function formatBody(body: Exp): string {

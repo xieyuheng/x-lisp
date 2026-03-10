@@ -102,9 +102,9 @@ export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
     }
 
     case "Cond": {
-      const children = exp.condLines.flatMap((condLine) => [
-        condLine.question,
-        condLine.answer,
+      const children = exp.condClauses.flatMap((condClause) => [
+        condClause.question,
+        condClause.answer,
       ])
       return setUnionMany(
         children.map((child) => expFreeNames(boundNames, child)),

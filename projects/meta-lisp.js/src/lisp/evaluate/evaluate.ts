@@ -120,7 +120,7 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
     }
 
     case "Cond": {
-      return evaluate(mod, env, L.desugarCond(exp.condLines))
+      return evaluate(mod, env, L.desugarCond(exp.condClauses))
     }
 
     case "List": {

@@ -57,7 +57,7 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
 
   "(cons* 'cond lines)": ({ lines }, { sexp }) => {
     const keyword = S.asList(sexp).elements[1]
-    return L.Cond(S.listElements(lines).map(parseCondLine), keyword.meta)
+    return L.Cond(S.listElements(lines).map(parseCondClause), keyword.meta)
   },
 
   "`(= ,name ,rhs)": ({ name, rhs }, { meta }) => {
@@ -155,7 +155,7 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
   },
 })
 
-const parseCondLine = S.createRouter<L.CondLine>({
+const parseCondClause = S.createRouter<L.CondClause>({
   "(cons* question body)": ({ question, body }, { meta }) => {
     if (question.kind === "Symbol" && question.content === "else") {
       return {

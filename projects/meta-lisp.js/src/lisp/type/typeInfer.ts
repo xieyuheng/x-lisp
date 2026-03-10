@@ -143,7 +143,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
       }
 
       case "Cond": {
-        return typeInfer(mod, ctx, L.desugarCond(exp.condLines))(subst)
+        return typeInfer(mod, ctx, L.desugarCond(exp.condClauses))(subst)
       }
 
       case "Let1": {

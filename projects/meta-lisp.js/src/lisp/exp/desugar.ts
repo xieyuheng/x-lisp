@@ -56,20 +56,20 @@ export function desugarOr(exps: Array<L.Exp>, meta?: L.TokenMeta): L.Exp {
 }
 
 export function desugarCond(
-  condLines: Array<L.CondLine>,
+  condClauses: Array<L.CondClause>,
   meta?: L.TokenMeta,
 ): L.Exp {
-  if (condLines.length === 0)
+  if (condClauses.length === 0)
     return L.Apply(
       L.Var("error", meta),
       [L.String("cond mismatch", meta)],
       meta,
     )
-  const [headLine, ...restLines] = condLines
+  const [headClause, ...resClauses] = condClauses
   return L.If(
-    headLine.question,
-    headLine.answer,
-    desugarCond(restLines, meta),
+    headClause.question,
+    headClause.answer,
+    desugarCond(resClauses, meta),
     meta,
   )
 }
