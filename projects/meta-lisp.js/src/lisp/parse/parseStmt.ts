@@ -39,52 +39,52 @@ export const parseStmt = S.createRouter<L.Stmt>({
     return L.ExportExcept(S.listElements(names).map(S.symbolContent), meta)
   },
 
-  "`(import-all ,source)": ({ source }, { meta }) => {
-    return L.ImportAll(S.stringContent(source), meta)
+  "`(import-all ,path)": ({ path }, { meta }) => {
+    return L.ImportAll(S.stringContent(path), meta)
   },
 
-  "`(include-all ,source)": ({ source }, { meta }) => {
-    return L.IncludeAll(S.stringContent(source), meta)
+  "`(include-all ,path)": ({ path }, { meta }) => {
+    return L.IncludeAll(S.stringContent(path), meta)
   },
 
-  "(cons* 'import source entries)": ({ source, entries }, { meta }) => {
+  "(cons* 'import path entries)": ({ path, entries }, { meta }) => {
     return L.Import(
-      S.stringContent(source),
+      S.stringContent(path),
       S.listElements(entries).map(S.symbolContent),
       meta,
     )
   },
 
-  "(cons* 'include source names)": ({ source, names }, { meta }) => {
+  "(cons* 'include path names)": ({ path, names }, { meta }) => {
     return L.Include(
-      S.stringContent(source),
+      S.stringContent(path),
       S.listElements(names).map(S.symbolContent),
       meta,
     )
   },
 
-  "(cons* 'import-except source names)": ({ source, names }, { meta }) => {
+  "(cons* 'import-except path names)": ({ path, names }, { meta }) => {
     return L.ImportExcept(
-      S.stringContent(source),
+      S.stringContent(path),
       S.listElements(names).map(S.symbolContent),
       meta,
     )
   },
 
-  "(cons* 'include-except source names)": ({ source, names }, { meta }) => {
+  "(cons* 'include-except path names)": ({ path, names }, { meta }) => {
     return L.IncludeExcept(
-      S.stringContent(source),
+      S.stringContent(path),
       S.listElements(names).map(S.symbolContent),
       meta,
     )
   },
 
-  "`(import-as ,source ,prefix)": ({ source, prefix }, { meta }) => {
-    return L.ImportAs(S.stringContent(source), S.symbolContent(prefix), meta)
+  "`(import-as ,path ,prefix)": ({ path, prefix }, { meta }) => {
+    return L.ImportAs(S.stringContent(path), S.symbolContent(prefix), meta)
   },
 
-  "`(include-as ,source ,prefix)": ({ source, prefix }, { meta }) => {
-    return L.IncludeAs(S.stringContent(source), S.symbolContent(prefix), meta)
+  "`(include-as ,path ,prefix)": ({ path, prefix }, { meta }) => {
+    return L.IncludeAs(S.stringContent(path), S.symbolContent(prefix), meta)
   },
 
   "(cons* 'define-datatype predicate constructors)": (

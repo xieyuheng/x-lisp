@@ -132,6 +132,10 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     return L.Apply(parseExp(target), S.listElements(args).map(parseExp), meta)
   },
 
+  "`(@require ,path ,name)": ({ path, name }, { meta }) => {
+    return L.Require(S.stringContent(path), S.symbolContent(name), meta)
+  },
+
   data: ({ data }, { meta }) => {
     switch (data.kind) {
       case "Keyword":

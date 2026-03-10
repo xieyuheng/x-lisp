@@ -1,7 +1,5 @@
 # require
 
-parse `(@require)`
-
 `evaluate` -- handle `Require`
 `typeInfer` -- handle `Require`
 
