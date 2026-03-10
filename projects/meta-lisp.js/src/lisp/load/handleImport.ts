@@ -1,4 +1,4 @@
-import { createUrl, urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
+import { urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
@@ -7,7 +7,7 @@ export function handleImport(mod: L.Mod, stmt: L.Stmt): void {
     return
   }
 
-  const importedMod = importBy(stmt.path, mod)
+  const importedMod = L.importBy(stmt.path, mod)
   const definitionEntries = L.modPublicDefinitionEntries(importedMod)
 
   if (stmt.kind === "Import") {
@@ -75,29 +75,6 @@ export function handleImport(mod: L.Mod, stmt: L.Stmt): void {
       mod.exported.add(fullName)
     }
   }
-}
-
-function importBy(path: string, mod: L.Mod): L.Mod {
-  let url = urlRelativeToMod(path, mod)
-  if (url.protocol === "file:") {
-    url.pathname = L.resolveModPath(url.pathname)
-  }
-
-  return L.load(url, mod.dependencyGraph)
-}
-
-function urlRelativeToMod(path: string, mod: L.Mod): URL {
-  if (mod.url.protocol === "file:") {
-    const url = new URL(path, mod.url)
-    if (url.href === mod.url.href) {
-      let message = `[urlRelativeToMod] A module can not import itself: ${path}`
-      throw new Error(message)
-    }
-
-    return url
-  }
-
-  return createUrl(path)
 }
 
 function checkUndefinedNames(

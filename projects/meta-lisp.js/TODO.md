@@ -1,6 +1,3 @@
-# require
-
-`evaluate` -- handle `Require`
 `typeInfer` -- handle `Require`
 
 # exp

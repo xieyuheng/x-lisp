@@ -28,6 +28,10 @@ export function builtinList(mod: Mod) {
     "list-to-set",
   ])
 
+  definePrimitiveFunction(mod, "list?", 1, (value) => {
+    return Values.BoolValue(Values.isListValue(value))
+  })
+
   definePrimitiveFunction(mod, "make-list", 0, () => {
     return Values.ListValue([])
   })

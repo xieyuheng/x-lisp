@@ -13,7 +13,7 @@
 
 ;;; top level statement
 
-;; (claim <name> <schema>)
+(claim <name> <type>)
 (define <name> <body>)
 (define (<name> <parameters>) <body>)
 ;; (define-data <predicate> <constructors>)
@@ -35,9 +35,7 @@
 (lambda (<parameters>) <body>)
 (= <lhs> <rhs>)
 ;; (the <schema> <exp>)
-(@tael <elements> <attributes>)
 (@list <elements>)
-(@record <attributes>)
 (@set <elements>)
 (@hash <key-value-pairs>)
 ;; (tau <elements>)
@@ -180,7 +178,7 @@ void
 
 ;; (list? element-p target)
 (make-list)
-(any-list? value)
+(list? value)
 (list-copy list)
 (list-length list)
 (list-empty? list)
@@ -233,45 +231,6 @@ void
 ;; (list-group f list)
 ;; (list-foremost compare list)
 ;; (list-rearmost compare list)
-
-;;; record
-
-;; (record? value-p target)
-(make-record)
-(any-record? value)
-(record-copy record)
-(record-length record)
-(record-empty? record)
-(record-get key record)
-(record-has? key record)
-(record-put! key value record)
-(record-put key value record)
-(record-delete! key record)
-(record-delete key record)
-(record-append record rest)
-(record-keys record)
-(record-values record)
-(record-entries record)
-;; prelude
-;; (record-from-entries entries)
-;; (record-put-entries entries record)
-;; (record-put-entries! entries record)
-;; (record-select p record)
-;; (record-select-key p record)
-;; (record-select-value p record)
-;; (record-reject p record)
-;; (record-reject-key p record)
-;; (record-reject-value p record)
-;; (record-update key f record)
-;; (record-update! key f record)
-;; (record-unit key value)
-;; (record-map f record)
-;; (record-map-value f record)
-;; (record-map-key f record)
-;; (record-each-value f record)
-;; (record-each-key f record)
-;; (record-each f record)
-;; (record-find-key p record)
 
 ;;; hash
 

@@ -159,6 +159,7 @@
 
 ;; list
 
+(claim list? (polymorphic (A) (-> A bool-t)))
 (claim make-list (polymorphic (E) (-> (list-t E))))
 (claim car (polymorphic (E) (-> (list-t E) E)))
 (claim cdr (polymorphic (E) (-> (list-t E) (list-t E))))

@@ -128,12 +128,14 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     )
   },
 
-  "(cons* target args)": ({ target, args }, { meta }) => {
-    return L.Apply(parseExp(target), S.listElements(args).map(parseExp), meta)
-  },
-
   "`(@require ,path ,name)": ({ path, name }, { meta }) => {
     return L.Require(S.stringContent(path), S.symbolContent(name), meta)
+  },
+
+  // - The following two cases must be at the end.
+
+  "(cons* target args)": ({ target, args }, { meta }) => {
+    return L.Apply(parseExp(target), S.listElements(args).map(parseExp), meta)
   },
 
   data: ({ data }, { meta }) => {

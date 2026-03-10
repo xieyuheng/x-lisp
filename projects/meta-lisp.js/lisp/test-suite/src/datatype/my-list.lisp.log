@@ -28,7 +28,7 @@
 (claim li? (polymorphic (E) (-> (my-list-t E) bool-t)))
 
 (define (li? value)
-  (and (any-list? value)
+  (and (list? value)
        (equal? (list-length value) 3)
        (equal? (list-head value) 'li)))
 

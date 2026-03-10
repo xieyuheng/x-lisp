@@ -29,7 +29,7 @@ export function expandDataConstructorPredicate(
         name,
         ["value"],
         L.And([
-          L.Apply(L.Var("any-list?"), [L.Var("value")]),
+          L.Apply(L.Var("list?"), [L.Var("value")]),
           L.Apply(L.Var("equal?"), [
             L.Apply(L.Var("list-length"), [L.Var("value")]),
             L.Int(BigInt(ctor.fields.length + 1)),

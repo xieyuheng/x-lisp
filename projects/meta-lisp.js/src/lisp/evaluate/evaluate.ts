@@ -33,14 +33,21 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       const definition = L.modLookupDefinition(mod, exp.name)
       if (definition) return meaning(definition)
 
-      let message = `[evaluate] undefined`
+      let message = `[evaluate] undefined variable`
       message += `\n  name: ${exp.name}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }
 
     case "Require": {
-      throw new Error()
+      const importedMod = L.importBy(exp.path, mod)
+      const definition = L.modLookupPublicDefinition(importedMod, exp.name)
+      if (definition) return meaning(definition)
+
+      let message = `[evaluate] undefined require name`
+      message += `\n  name: ${exp.name}`
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+      else throw new Error(message)
     }
 
     case "Lambda": {
