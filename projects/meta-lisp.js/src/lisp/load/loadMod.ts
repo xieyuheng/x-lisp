@@ -8,9 +8,16 @@ export function loadMod(url: URL, dependencyGraph: L.DependencyGraph): L.Mod {
   const code = loadCode(url)
   const mod = L.createMod(url, dependencyGraph)
   L.dependencyGraphAddMod(dependencyGraph, mod)
-  L.importBuiltinMod(mod)
+  importBuiltinMod(mod)
   L.runCode(mod, code)
   return mod
+}
+
+function importBuiltinMod(mod: L.Mod): void {
+  const builtinMod = L.useBuiltinMod()
+  for (const definition of builtinMod.definitions.values()) {
+    L.modDefine(mod, definition.name, definition)
+  }
 }
 
 function loadCode(url: URL): string {

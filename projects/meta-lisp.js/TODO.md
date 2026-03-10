@@ -1,6 +1,5 @@
 # simple load
 
-move `importBuiltinMod` to `loadMod`
 rename `useBuiltinMod` to `loadBuiltinMod`
 `loadBuiltinMod` take `dependencyGraph`
 
