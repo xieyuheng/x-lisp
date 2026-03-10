@@ -134,18 +134,6 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
-      case "When": {
-        return typeInfer(mod, ctx, L.desugarWhen(exp))(subst)
-      }
-
-      case "Unless": {
-        return typeInfer(mod, ctx, L.desugarUnless(exp))(subst)
-      }
-
-      case "Cond": {
-        return typeInfer(mod, ctx, L.desugarCond(exp.condClauses))(subst)
-      }
-
       case "Let1": {
         return L.inferThenInfer(
           L.typeInfer(mod, ctx, exp.rhs),
@@ -162,10 +150,6 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         return L.inferThenInfer(typeInfer(mod, ctx, exp.head), (_headType) =>
           typeInfer(mod, ctx, exp.body),
         )(subst)
-      }
-
-      case "BeginSugar": {
-        return typeInfer(mod, ctx, L.desugarBegin(exp.sequence))(subst)
       }
 
       case "List": {
@@ -240,10 +224,6 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
           ),
           L.okInferEffect(type),
         )(subst)
-      }
-
-      case "Quote": {
-        return typeInfer(mod, ctx, L.desugarQuote(exp.sexp))(subst)
       }
 
       default: {

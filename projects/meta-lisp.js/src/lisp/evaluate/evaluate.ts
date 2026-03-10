@@ -83,17 +83,6 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       return evaluate(mod, env, exp.body)
     }
 
-    case "BeginSugar": {
-      return evaluate(mod, env, L.desugarBegin(exp.sequence))
-    }
-
-    case "AssignSugar": {
-      let message = `[evaluate] unhandled exp`
-      message += `\n  exp: ${L.formatExp(exp)}`
-      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
-      else throw new Error(message)
-    }
-
     case "If": {
       const conditionValue = evaluate(mod, env, exp.condition)
       if (L.isTrueValue(conditionValue)) {
@@ -103,52 +92,12 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       }
     }
 
-    case "When": {
-      return evaluate(mod, env, L.desugarWhen(exp))
-    }
-
-    case "Unless": {
-      return evaluate(mod, env, L.desugarUnless(exp))
-    }
-
-    case "And": {
-      return evaluate(mod, env, L.desugarAnd(exp.exps))
-    }
-
-    case "Or": {
-      return evaluate(mod, env, L.desugarOr(exp.exps))
-    }
-
-    case "Cond": {
-      return evaluate(mod, env, L.desugarCond(exp.condClauses))
-    }
-
-    case "List": {
-      return evaluate(mod, env, L.desugarList(exp.elements))
-    }
-
-    case "Tuple": {
-      return evaluate(mod, env, L.desugarList(exp.elements))
-    }
-
     case "Object": {
       return L.ObjectValue(
         recordMapValue(exp.attributes, (attribute) =>
           evaluate(mod, env, attribute),
         ),
       )
-    }
-
-    case "Set": {
-      return evaluate(mod, env, L.desugarSet(exp.elements))
-    }
-
-    case "Hash": {
-      return evaluate(mod, env, L.desugarHash(exp.entries))
-    }
-
-    case "Quote": {
-      return evaluate(mod, env, L.desugarQuote(exp.sexp))
     }
 
     case "Arrow": {
@@ -177,6 +126,13 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
 
     case "The": {
       return evaluate(mod, env, exp.exp)
+    }
+
+    default: {
+      let message = `[evaluate] unhandled exp`
+      message += `\n  exp kind: ${exp.kind}`
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+      else throw new Error(message)
     }
   }
 }

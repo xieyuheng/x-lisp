@@ -103,7 +103,7 @@ export function modLookupClaimedType(
   if (!claimedEntry) return undefined
   if (claimedEntry.type) return claimedEntry.type
 
-  const type = L.evaluate(mod, L.emptyEnv(), claimedEntry.exp)
+  const type = L.evaluate(mod, L.emptyEnv(), L.desugar(claimedEntry.exp))
   claimedEntry.type = type
   return type
 }

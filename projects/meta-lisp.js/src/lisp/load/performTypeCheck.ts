@@ -40,7 +40,8 @@ function checkDefinition(definition: L.Definition): null {
     }
 
     case "VariableDefinition": {
-      const exp = definition.body
+      const exp = L.desugar(definition.body)
+
       const type = L.modLookupClaimedType(mod, definition.name)
       if (type) {
         checkClaimedType(mod, exp, type)
@@ -52,11 +53,10 @@ function checkDefinition(definition: L.Definition): null {
     }
 
     case "FunctionDefinition": {
-      const exp = L.Lambda(
-        definition.parameters,
-        definition.body,
-        definition.meta,
+      const exp = L.desugar(
+        L.Lambda(definition.parameters, definition.body, definition.meta),
       )
+
       const type = L.modLookupClaimedType(mod, definition.name)
       if (type) {
         checkClaimedType(mod, exp, type)

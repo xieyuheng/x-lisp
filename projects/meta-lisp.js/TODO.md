@@ -1,10 +1,3 @@
-`evaluate` -- should not call `desugar*`
-
-`performTypeCheck` -- `desugar` before type check
-
-`typeInfer` -- should not call `desugar*`
-
-`desugar*` -- should not be exported
 `desugar` -- should take `mod`
 
 # pattern match
