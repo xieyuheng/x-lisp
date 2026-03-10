@@ -1,3 +1,6 @@
+`typeCanonicalLabelSubst` -- should simply return `Subst` -- instead of `Effect`
+`typePrettify`
+
 # exp
 
 `expSubstitute` -- Be careful about the "name-capture" problem.

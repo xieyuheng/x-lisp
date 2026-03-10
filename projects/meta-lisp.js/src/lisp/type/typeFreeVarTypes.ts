@@ -84,7 +84,7 @@ export function typeFreeVarTypes(
     )
   }
 
-  let message = `[typeFreeVars] unhandled type`
+  let message = `[typeFreeVarTypes] unhandled type`
   message += `\n  type: ${L.formatType(type)}`
   throw new Error(message)
 }
