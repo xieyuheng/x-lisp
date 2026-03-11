@@ -33,7 +33,17 @@ router.defineHandlers({
   "module:check": ({ args: [file] }) => {
     const dependencyGraph = L.createDependencyGraph()
     L.loadMod(createUrl(file), dependencyGraph)
-    L.dependencyGraphCheck(dependencyGraph)
+    const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
+    const project = projectFromSourceFiles(file, sourceFiles)
+    projectClean(project, dependencyGraph)
+  },
+
+  "module:build": ({ args: [file] }) => {
+    const dependencyGraph = L.createDependencyGraph()
+    L.loadMod(createUrl(file), dependencyGraph)
+    const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
+    const project = projectFromSourceFiles(file, sourceFiles)
+    projectBuild(project, dependencyGraph)
   },
 
   "module:interpret": ({ args: [file] }) => {
@@ -46,17 +56,10 @@ router.defineHandlers({
     }
   },
 
-  "module:build": ({ args: [file] }) => {
-    const dependencyGraph = L.createDependencyGraph()
-    L.loadMod(createUrl(file), dependencyGraph)
-    const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
-    const project = projectFromSourceFiles(file, sourceFiles)
-    projectBuild(project, dependencyGraph)
-  },
-
   "project:check": ({ options }) => {
+    const dependencyGraph = L.createDependencyGraph()
     const project = loadProject(options["--config"])
-    projectCheck(project)
+    projectCheck(project, dependencyGraph)
   },
 
   "project:build": ({ options }) => {

@@ -1,10 +1,7 @@
-# simple load
-
-fix `projectInterpret`
-
-[maybe] `modLookupClaimedType` -- be explicit about `evaluate` of claimed `Exp`
-
 # desugar
+
+inline `dependencyGraphCheck`
+inline `compileLispToPassLog`
 
 `evaluate` -- should not call `desugar`
 `desugar` -- should take `mod`

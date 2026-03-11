@@ -6,9 +6,10 @@ import {
   type Project,
 } from "./index.ts"
 
-export function projectCheck(project: Project): void {
-  const dependencyGraph = L.createDependencyGraph()
-
+export function projectCheck(
+  project: Project,
+  dependencyGraph: L.DependencyGraph,
+): void {
   for (const id of projectSourceIds(project)) {
     const inputFile = projectGetSourceFile(project, id)
     L.loadMod(createUrl(inputFile), dependencyGraph)
