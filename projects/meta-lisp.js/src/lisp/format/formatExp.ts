@@ -204,11 +204,35 @@ export function formatExp(exp: Exp): string {
     case "The": {
       return `(the ${formatExp(exp.type)} ${formatExp(exp.exp)})`
     }
+
+    case "Match": {
+      if (exp.targets.length === 1) {
+        const target = formatExp(exp.targets[0])
+        const matchClauses = exp.matchClauses.map(formatMatchClause).join(" ")
+        return `(match ${target} ${matchClauses})`
+      } else {
+        const targets = exp.targets.map(formatExp).join(" ")
+        const matchClauses = exp.matchClauses.map(formatMatchClause).join(" ")
+        return `(match-many (${targets}) ${matchClauses})`
+      }
+    }
   }
 }
 
 function formatCondClause(condClause: Exps.CondClause): string {
   return `(${formatExp(condClause.question)} ${formatExp(condClause.answer)})`
+}
+
+function formatMatchClause(matchClause: Exps.MatchClause): string {
+  if (matchClause.patterns.length === 1) {
+    const pattern = formatExp(matchClause.patterns[0])
+    const body = formatBody(matchClause.body)
+    return `(${pattern} ${body})`
+  } else {
+    const patterns = matchClause.patterns.map(formatExp).join(" ")
+    const body = formatBody(matchClause.body)
+    return `((${patterns}) ${body})`
+  }
 }
 
 export function formatBody(body: Exp): string {

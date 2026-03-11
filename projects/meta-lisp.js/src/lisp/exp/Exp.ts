@@ -31,7 +31,7 @@ export type Exp =
   | Class
   | The
   | Polymorphic
-//  | Match
+  | Match
 
 export type Symbol = {
   kind: "Symbol"
@@ -525,28 +525,28 @@ export function Polymorphic(
   }
 }
 
-// export type Match = {
-//   kind: "Match"
-//   targets: Array<Exp>
-//   matchClauses: Array<MatchClause>
-//   meta?: TokenMeta
-// }
+export type Match = {
+  kind: "Match"
+  targets: Array<Exp>
+  matchClauses: Array<MatchClause>
+  meta?: TokenMeta
+}
 
-// export type MatchClause = {
-//   patterns: Array<Exp>
-//   body: Exp
-//   meta?: TokenMeta
-// }
+export type MatchClause = {
+  patterns: Array<Exp>
+  body: Exp
+  meta?: TokenMeta
+}
 
-// export function Match(
-//   targets: Array<Exp>,
-//   matchClauses: Array<MatchClause>,
-//   meta?: TokenMeta
-// ): Match {
-//   return {
-//     kind: "Match",
-//     targets,
-//     matchClauses,
-//     meta,
-//   }
-// }
+export function Match(
+  targets: Array<Exp>,
+  matchClauses: Array<MatchClause>,
+  meta?: TokenMeta,
+): Match {
+  return {
+    kind: "Match",
+    targets,
+    matchClauses,
+    meta,
+  }
+}

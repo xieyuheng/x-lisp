@@ -1,6 +1,5 @@
 # pattern match
 
-`Match` as `Exp`
 parse `(match)` & `(match-many)` -- to `Match`
 
 `definitionIsDataConstructor`
@@ -11,6 +10,8 @@ parse `(which)`
 
 `translateMatchToWhich`
 `translateWhichToCond`
+
+`desugar` -- handle `Match`
 
 # type system
 

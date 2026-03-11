@@ -148,6 +148,10 @@ export function desugar(mod: L.Mod, exp: L.Exp): L.Exp {
     case "Polymorphic": {
       return L.Polymorphic(exp.parameters, desugar(mod, exp.body), exp.meta)
     }
+
+    case "Match": {
+      throw new Error()
+    }
   }
 }
 
