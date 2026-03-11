@@ -8,12 +8,12 @@ export function definitionDesugar(definition: L.Definition): null {
     }
 
     case "FunctionDefinition": {
-      definition.body = L.desugar(definition.body)
+      definition.body = L.desugar(definition.mod, definition.body)
       return null
     }
 
     case "VariableDefinition": {
-      definition.body = L.desugar(definition.body)
+      definition.body = L.desugar(definition.mod, definition.body)
       return null
     }
 

@@ -1,6 +1,5 @@
 # desugar
 
-`desugar` -- should take `mod`
 `definitionDesugar` -- handle `DatatypeDefinition`
 
 # pattern match

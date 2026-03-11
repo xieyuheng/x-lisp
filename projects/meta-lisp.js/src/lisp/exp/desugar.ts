@@ -2,7 +2,7 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
-export function desugar(exp: L.Exp): L.Exp {
+export function desugar(mod: L.Mod, exp: L.Exp): L.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Keyword":
@@ -15,7 +15,7 @@ export function desugar(exp: L.Exp): L.Exp {
     }
 
     case "BeginSugar": {
-      return desugar(desugarBegin(exp.sequence, exp.meta))
+      return desugar(mod, desugarBegin(exp.sequence, exp.meta))
     }
 
     case "AssignSugar": {
@@ -27,17 +27,17 @@ export function desugar(exp: L.Exp): L.Exp {
 
     case "If": {
       return L.If(
-        desugar(exp.condition),
-        desugar(exp.consequent),
-        desugar(exp.alternative),
+        desugar(mod, exp.condition),
+        desugar(mod, exp.consequent),
+        desugar(mod, exp.alternative),
         exp.meta,
       )
     }
 
     case "When": {
       return L.If(
-        desugar(exp.condition),
-        desugar(exp.consequent),
+        desugar(mod, exp.condition),
+        desugar(mod, exp.consequent),
         L.Void(),
         exp.meta,
       )
@@ -45,83 +45,108 @@ export function desugar(exp: L.Exp): L.Exp {
 
     case "Unless": {
       return L.If(
-        desugar(exp.condition),
+        desugar(mod, exp.condition),
         L.Void(),
-        desugar(exp.alternative),
+        desugar(mod, exp.alternative),
         exp.meta,
       )
     }
 
     case "And": {
-      return desugar(desugarAnd(exp.exps, exp.meta))
+      return desugar(mod, desugarAnd(exp.exps, exp.meta))
     }
 
     case "Or": {
-      return desugar(desugarOr(exp.exps, exp.meta))
+      return desugar(mod, desugarOr(exp.exps, exp.meta))
     }
 
     case "Cond": {
-      return desugar(desugarCond(exp.condClauses, exp.meta))
+      return desugar(mod, desugarCond(exp.condClauses, exp.meta))
     }
 
     case "List": {
-      return desugar(desugarList(exp.elements, exp.meta))
+      return desugar(mod, desugarList(exp.elements, exp.meta))
     }
 
     case "Set": {
-      return desugar(desugarSet(exp.elements, exp.meta))
+      return desugar(mod, desugarSet(exp.elements, exp.meta))
     }
 
     case "Hash": {
-      return desugar(desugarHash(exp.entries, exp.meta))
+      return desugar(mod, desugarHash(exp.entries, exp.meta))
     }
 
     case "Quote": {
-      return desugar(desugarQuote(exp.sexp, exp.meta))
+      return desugar(mod, desugarQuote(exp.sexp, exp.meta))
     }
 
     case "Apply": {
-      return L.Apply(desugar(exp.target), exp.args.map(desugar), exp.meta)
+      return L.Apply(
+        desugar(mod, exp.target),
+        exp.args.map((e) => desugar(mod, e)),
+        exp.meta,
+      )
     }
 
     case "Arrow": {
-      return L.Arrow(exp.argTypes.map(desugar), desugar(exp.retType), exp.meta)
+      return L.Arrow(
+        exp.argTypes.map((e) => desugar(mod, e)),
+        desugar(mod, exp.retType),
+        exp.meta,
+      )
     }
 
     case "Begin1": {
-      return L.Begin1(desugar(exp.head), desugar(exp.body), exp.meta)
+      return L.Begin1(desugar(mod, exp.head), desugar(mod, exp.body), exp.meta)
     }
 
     case "Let1": {
-      return L.Let1(exp.name, desugar(exp.rhs), desugar(exp.body), exp.meta)
+      return L.Let1(
+        exp.name,
+        desugar(mod, exp.rhs),
+        desugar(mod, exp.body),
+        exp.meta,
+      )
     }
 
     case "Tuple": {
-      return L.Tuple(exp.elements.map(desugar), exp.meta)
+      return L.Tuple(
+        exp.elements.map((e) => desugar(mod, e)),
+        exp.meta,
+      )
     }
 
     case "Tau": {
-      return L.Tau(exp.elementTypes.map(desugar), exp.meta)
+      return L.Tau(
+        exp.elementTypes.map((e) => desugar(mod, e)),
+        exp.meta,
+      )
     }
 
     case "Object": {
-      return L.Object(recordMapValue(exp.attributes, desugar), exp.meta)
+      return L.Object(
+        recordMapValue(exp.attributes, (e) => desugar(mod, e)),
+        exp.meta,
+      )
     }
 
     case "Class": {
-      return L.Class(recordMapValue(exp.attributeTypes, desugar), exp.meta)
+      return L.Class(
+        recordMapValue(exp.attributeTypes, (e) => desugar(mod, e)),
+        exp.meta,
+      )
     }
 
     case "The": {
-      return L.The(desugar(exp.type), desugar(exp.exp), exp.meta)
+      return L.The(desugar(mod, exp.type), desugar(mod, exp.exp), exp.meta)
     }
 
     case "Lambda": {
-      return L.Lambda(exp.parameters, desugar(exp.body), exp.meta)
+      return L.Lambda(exp.parameters, desugar(mod, exp.body), exp.meta)
     }
 
     case "Polymorphic": {
-      return L.Polymorphic(exp.parameters, desugar(exp.body), exp.meta)
+      return L.Polymorphic(exp.parameters, desugar(mod, exp.body), exp.meta)
     }
   }
 }
