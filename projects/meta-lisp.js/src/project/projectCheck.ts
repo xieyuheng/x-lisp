@@ -1,6 +1,6 @@
 import { createUrl } from "@xieyuheng/helpers.js/url"
 import * as L from "../lisp/index.ts"
-import { checkDependencyGraph } from "./checkDependencyGraph.ts"
+import { dependencyGraphCheck } from "./dependencyGraphCheck.ts"
 import {
   projectGetSourceFile,
   projectSourceIds,
@@ -15,5 +15,5 @@ export function projectCheck(project: Project): void {
     L.loadMod(createUrl(inputFile), dependencyGraph)
   }
 
-  checkDependencyGraph(dependencyGraph)
+  dependencyGraphCheck(dependencyGraph)
 }

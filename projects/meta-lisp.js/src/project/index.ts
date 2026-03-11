@@ -1,4 +1,4 @@
-export * from "./checkDependencyGraph.ts"
+export * from "./dependencyGraphCheck.ts"
 export * from "./helpers.ts"
 export * from "./loadDependencyGraph.ts"
 export * from "./loadProject.ts"
