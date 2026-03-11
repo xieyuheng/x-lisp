@@ -170,24 +170,6 @@ function desugarBegin(sequence: Array<L.Exp>, meta?: S.TokenMeta): L.Exp {
   }
 }
 
-function desugarWhen(exp: L.When, meta?: S.TokenMeta): L.If {
-  return L.If(
-    exp.condition,
-    L.Begin1(exp.consequent, L.Void(meta), meta),
-    L.Void(meta),
-    exp.meta,
-  )
-}
-
-function desugarUnless(exp: L.Unless, meta?: S.TokenMeta): L.If {
-  return L.If(
-    exp.condition,
-    L.Void(meta),
-    L.Begin1(exp.alternative, L.Void(meta), meta),
-    exp.meta,
-  )
-}
-
 function desugarAnd(exps: Array<L.Exp>, meta?: S.TokenMeta): L.Exp {
   if (exps.length === 0) return L.Bool(true, meta)
   if (exps.length === 1) return exps[0]

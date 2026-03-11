@@ -2,10 +2,13 @@
 
 `Match` as `Exp`
 parse `(match)` & `(match-many)` -- to `Match`
+
 `definitionIsDataConstructor`
 `simplifyMatch`
+
 `Which` as `Exp`
 parse `(which)`
+
 `translateMatchToWhich`
 `translateWhichToCond`
 
