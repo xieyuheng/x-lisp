@@ -1,5 +1,3 @@
-`definitionDesugar` -- handle `DatatypeDefinition`
-
 # pattern match
 
 `Match` as `Exp`
