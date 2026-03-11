@@ -16,9 +16,11 @@ export function evaluateDefinition(definition: L.Definition): L.Value {
 
     case "VariableDefinition": {
       if (!definition.value) {
-        let message = `[evaluateDefinition] VariableDefinition not setup`
-        message += `\n  name: ${definition.name}`
-        throw new Error(message)
+        definition.value = L.evaluate(
+          definition.mod,
+          L.emptyEnv(),
+          L.desugar(definition.body),
+        )
       }
 
       return definition.value

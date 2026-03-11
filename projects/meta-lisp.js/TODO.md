@@ -1,9 +1,6 @@
 # simple load
 
 `DefinitionState`
-
-inline `setupVariable` to `definitionMeaning`
-
 `definitionClaim`
 `definitionCheck`
 
