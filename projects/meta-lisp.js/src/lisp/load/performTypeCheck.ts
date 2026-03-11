@@ -3,14 +3,6 @@ import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
 export function performTypeCheck(mod: L.Mod): void {
-  for (const [name, claimed] of mod.claimed) {
-    const type = L.modLookupType(mod, name)
-    if (!type) {
-      console.log(reportUndefinedClaim(claimed.exp))
-      continue
-    }
-  }
-
   for (const definition of L.modOwnDefinitions(mod)) {
     checkDefinition(definition)
   }
@@ -97,10 +89,6 @@ function reportTypeCheckError(exp: L.Exp, errorMessage: string): string {
     message += `\n  exp: ${L.formatExp(exp)}`
     return message
   }
-}
-
-function reportUndefinedClaim(exp: L.Exp): string {
-  return reportTypeCheckError(exp, "undefined claim")
 }
 
 function reportUnclaimedDefinition(definition: L.Definition): string {

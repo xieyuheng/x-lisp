@@ -3,6 +3,9 @@
 inline `projectForEachSource`
 `DefinitionState`
 
+`definitionClaim`
+`definitionCheck`
+
 # simple load
 
 `builtinType` -- remove builtin type from builtin/index.lisp
