@@ -2,6 +2,8 @@
 
 set -e
 
-bin="node"
+parallel="parallel -v --halt now,fail=1"
+bin="node ./src/main.ts module:interpret"
 
-$bin src/main.ts project:interpret --config lisp/test-suite/project.json
+find lisp -name "*.test.lisp" | $parallel $bin {}
+find lisp -name "*.snapshot.lisp" | $parallel $bin {} ">" {}.interpret.out "||" true

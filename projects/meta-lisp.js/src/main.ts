@@ -16,6 +16,7 @@ import {
   projectInterpret,
 } from "./project/index.ts"
 import * as Services from "./services/index.ts"
+import assert from "node:assert"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
@@ -27,7 +28,6 @@ router.defineRoutes([
   "module:build file",
   // "module:test file",
   "project:check --config",
-  "project:interpret --config",
   "project:build --config",
   // "project:test --config",
   "project:clean --config",
@@ -42,9 +42,12 @@ router.defineHandlers({
 
   "module:interpret": ({ args: [file] }) => {
     const dependencyGraph = loadDependencyGraph(file)
-    const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
-    const project = projectFromSourceFiles(file, sourceFiles)
-    projectInterpret(project, dependencyGraph)
+    const mod = L.loadMod(createUrl(file), dependencyGraph)
+    const main = L.modLookupDefinition(mod, "main")
+    if (main) {
+      assert(main.kind === "FunctionDefinition")
+      L.evaluate(mod, L.emptyEnv(), L.desugar(main.body))
+    }
   },
 
   "module:build": ({ args: [file] }) => {
@@ -57,12 +60,6 @@ router.defineHandlers({
   "project:check": ({ options }) => {
     const project = loadProject(options["--config"])
     projectCheck(project)
-  },
-
-  "project:interpret": ({ options }) => {
-    const dependencyGraph = L.createDependencyGraph()
-    const project = loadProject(options["--config"])
-    projectInterpret(project, dependencyGraph)
   },
 
   "project:build": ({ options }) => {
