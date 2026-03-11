@@ -45,14 +45,3 @@ export function projectGetPassLogFile(
 ): string {
   return Path.join(projectOutputDirectory(project), sourceId) + ".log"
 }
-
-export type ProjectIdHandler = (project: Project, id: string) => void
-
-export function projectForEachSource(
-  project: Project,
-  handle: ProjectIdHandler,
-) {
-  for (const id of projectSourceIds(project)) {
-    handle(project, id)
-  }
-}

@@ -1,7 +1,9 @@
 # simple load
 
-inline `projectForEachSource`
 `DefinitionState`
+
+move `evaluateDefinition` to `definitionMeaning`
+inline `setupVariable` to `definitionMeaning`
 
 `definitionClaim`
 `definitionCheck`

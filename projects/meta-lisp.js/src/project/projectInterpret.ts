@@ -2,22 +2,13 @@ import { createUrl } from "@xieyuheng/helpers.js/url"
 import assert from "node:assert"
 import * as L from "../lisp/index.ts"
 import type { Project } from "./index.ts"
-import {
-  logFile,
-  projectForEachSource,
-  projectGetSourceFile,
-  type ProjectIdHandler,
-} from "./index.ts"
+import { logFile, projectGetSourceFile, projectSourceIds } from "./index.ts"
 
 export function projectInterpret(
   project: Project,
   dependencyGraph: L.DependencyGraph,
 ): void {
-  projectForEachSource(project, interpretTest(dependencyGraph))
-}
-
-function interpretTest(dependencyGraph: L.DependencyGraph): ProjectIdHandler {
-  return (project, id) => {
+  for (const id of projectSourceIds(project)) {
     if (
       id.endsWith(".test" + L.suffix) ||
       id.endsWith(".snapshot" + L.suffix)

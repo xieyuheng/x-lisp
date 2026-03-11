@@ -8,7 +8,7 @@ export function performTypeCheck(mod: L.Mod): void {
   }
 }
 
-function checkDefinition(definition: L.Definition): null {
+export function checkDefinition(definition: L.Definition): null {
   const mod = definition.mod
 
   if (mod.exempted.has(definition.name)) {

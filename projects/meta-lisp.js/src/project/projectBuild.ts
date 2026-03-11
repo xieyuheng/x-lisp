@@ -3,23 +3,18 @@ import * as L from "../lisp/index.ts"
 import * as Services from "../services/index.ts"
 import {
   logFile,
-  projectForEachSource,
   projectGetPassLogFile,
   projectGetSourceFile,
+  projectSourceIds,
   writeFile,
   type Project,
-  type ProjectIdHandler,
 } from "./index.ts"
 
 export function projectBuild(
   project: Project,
   dependencyGraph: L.DependencyGraph,
 ): void {
-  projectForEachSource(project, buildPassLog(dependencyGraph))
-}
-
-function buildPassLog(dependencyGraph: L.DependencyGraph): ProjectIdHandler {
-  return (project, id) => {
+  for (const id of projectSourceIds(project)) {
     const inputFile = projectGetSourceFile(project, id)
     const outputFile = projectGetPassLogFile(project, id)
     logFile("pass-log", outputFile)
