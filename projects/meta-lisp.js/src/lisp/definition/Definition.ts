@@ -10,6 +10,11 @@ export type Definition =
   | VariableDefinition
   | DatatypeDefinition
 
+export type DefinitionState = {
+  isClaimed?: boolean
+  isChecked?: boolean
+}
+
 export type ValueFunction = (...args: Array<Value>) => Value
 
 export type PrimitiveFunctionDefinition = {
@@ -19,7 +24,7 @@ export type PrimitiveFunctionDefinition = {
   arity: number
   fn: ValueFunction
   meta?: TokenMeta
-}
+} & DefinitionState
 
 export function PrimitiveFunctionDefinition(
   mod: Mod,
@@ -44,7 +49,7 @@ export type PrimitiveVariableDefinition = {
   name: string
   value: Value
   meta?: TokenMeta
-}
+} & DefinitionState
 
 export function PrimitiveVariableDefinition(
   mod: Mod,
@@ -68,7 +73,7 @@ export type FunctionDefinition = {
   parameters: Array<string>
   body: Exp
   meta?: TokenMeta
-}
+} & DefinitionState
 
 export function FunctionDefinition(
   mod: Mod,
@@ -94,7 +99,7 @@ export type VariableDefinition = {
   body: Exp
   value?: Value
   meta?: TokenMeta
-}
+} & DefinitionState
 
 export function VariableDefinition(
   mod: Mod,
@@ -118,7 +123,7 @@ export type DatatypeDefinition = {
   datatypeConstructor: DatatypeConstructorSpec
   dataConstructors: Array<DataConstructorSpec>
   meta?: TokenMeta
-}
+} & DefinitionState
 
 export type DatatypeConstructorSpec = {
   name: string

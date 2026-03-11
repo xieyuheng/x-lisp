@@ -1,8 +1,10 @@
 # simple load
 
-`DefinitionState`
 `definitionClaim`
-`definitionCheck`
+`definitionCheck` -- call `definitionClaim`
+`definitionMeaning` -- call `definitionCheck`
+
+refactor `definitionClaim`
 
 # simple load
 
