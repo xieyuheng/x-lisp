@@ -1,6 +1,11 @@
 # pattern match
 
-`simplifyMatch`
+setup `pattern/Pattern` -- like `Type` -- but always take `mod`
+
+`isVarPattern`
+`isDataPattern`
+
+move `simplifyMatch` to `pattern`
 
 `Which` as `Exp`
 parse `(which)`
