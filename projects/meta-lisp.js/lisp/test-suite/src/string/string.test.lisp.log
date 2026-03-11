@@ -12,3 +12,10 @@
 (define (main)
   (assert-equal "abcdef" (string-append "abc" "def")))
 
+;;; Checked
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal "abcdef" (string-append "abc" "def")))
+

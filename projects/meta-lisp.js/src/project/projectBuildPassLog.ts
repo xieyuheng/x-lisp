@@ -21,14 +21,24 @@ export function projectBuildPassLog(
     logFile("pass-log", outputFile)
     const mod = L.loadMod(createUrl(inputFile), dependencyGraph)
     writeFile(outputFile, "")
-    compileLispToPassLog(mod, outputFile)
   }
-}
 
-function compileLispToPassLog(mod: L.Mod, logFile?: string): void {
-  logCode("Input", L.prettyModStmts(textWidth, mod), logFile)
+  for (const id of projectSourceIds(project)) {
+    const inputFile = projectGetSourceFile(project, id)
+    const outputFile = projectGetPassLogFile(project, id)
+    const mod = L.loadMod(createUrl(inputFile), dependencyGraph)
+    logCode("Input", L.prettyModStmts(textWidth, mod), outputFile)
+    logCode("Loaded", L.prettyModDefinitions(textWidth, mod), outputFile)
+  }
 
-  logCode("Loaded", L.prettyModDefinitions(textWidth, mod), logFile)
+  L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionCheck)
+
+  for (const id of projectSourceIds(project)) {
+    const inputFile = projectGetSourceFile(project, id)
+    const outputFile = projectGetPassLogFile(project, id)
+    const mod = L.loadMod(createUrl(inputFile), dependencyGraph)
+    logCode("Checked", L.prettyModDefinitions(textWidth, mod), outputFile)
+  }
 }
 
 function logCode(tag: string, code: string, logFile?: string): void {

@@ -15,9 +15,5 @@ export function projectCheck(
     L.loadMod(createUrl(inputFile), dependencyGraph)
   }
 
-  for (const mod of L.dependencyGraphMods(dependencyGraph)) {
-    for (const definition of L.modOwnDefinitions(mod)) {
-      L.definitionCheck(definition)
-    }
-  }
+  L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionCheck)
 }

@@ -10,3 +10,9 @@
 
 (define (main) (println #abc))
 
+;;; Checked
+
+(claim main (-> void-t))
+
+(define (main) (println #abc))
+

@@ -10,3 +10,9 @@
 
 (define (main) (println (if true 1 2)))
 
+;;; Checked
+
+(claim main (-> void-t))
+
+(define (main) (println (if true 1 2)))
+

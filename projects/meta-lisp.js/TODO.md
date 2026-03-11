@@ -1,5 +1,7 @@
 # desugar
 
+`definitionDesugar`
+
 `evaluate` -- should not call `desugar`
 `desugar` -- should take `mod`
 

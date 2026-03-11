@@ -12,3 +12,9 @@
 
 (define (square x) (imul x x))
 
+;;; Checked
+
+(claim square (-> int-t int-t))
+
+(define (square x) (imul x x))
+
