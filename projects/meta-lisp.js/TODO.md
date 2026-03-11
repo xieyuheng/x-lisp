@@ -1,5 +1,3 @@
-# desugar
-
 `definitionDesugar` -- handle `DatatypeDefinition`
 
 # pattern match
