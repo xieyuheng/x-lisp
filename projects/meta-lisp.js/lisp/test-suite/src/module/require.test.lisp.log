@@ -6,6 +6,10 @@
 
 (define (main) (assert-equal 1 (@require "module-one" one)))
 
+;;; Desugared
+
+(define (main) (assert-equal 1 (@require "module-one" one)))
+
 ;;; Checked
 
 (claim main (-> void-t))

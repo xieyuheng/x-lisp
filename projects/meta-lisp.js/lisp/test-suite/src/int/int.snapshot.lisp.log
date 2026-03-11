@@ -18,6 +18,16 @@
 
 (define (main) (println (square 3)))
 
+;;; Desugared
+
+(claim square (-> int-t int-t))
+
+(define (square x) (imul x x))
+
+(claim main (-> void-t))
+
+(define (main) (println (square 3)))
+
 ;;; Checked
 
 (claim square (-> int-t int-t))

@@ -34,7 +34,7 @@ export function definitionCheck(definition: L.Definition): null {
     }
 
     case "VariableDefinition": {
-      checkExp(mod, name, L.desugar(definition.body))
+      checkExp(mod, name, definition.body)
       definition.isChecked = true
       return null
     }
@@ -43,9 +43,7 @@ export function definitionCheck(definition: L.Definition): null {
       checkExp(
         mod,
         name,
-        L.desugar(
-          L.Lambda(definition.parameters, definition.body, definition.meta),
-        ),
+        L.Lambda(definition.parameters, definition.body, definition.meta),
       )
       definition.isChecked = true
       return null

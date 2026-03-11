@@ -10,6 +10,12 @@
 
 (define (main) (println iadd) (println (iadd 1)))
 
+;;; Desugared
+
+(claim main (-> void-t))
+
+(define (main) (println iadd) (println (iadd 1)))
+
 ;;; Checked
 
 (claim main (-> void-t))

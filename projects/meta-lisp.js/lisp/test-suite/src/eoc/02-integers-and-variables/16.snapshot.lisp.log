@@ -10,6 +10,12 @@
 
 (define (main) (println (isub 50 8)))
 
+;;; Desugared
+
+(claim main (-> void-t))
+
+(define (main) (println (isub 50 8)))
+
 ;;; Checked
 
 (claim main (-> void-t))

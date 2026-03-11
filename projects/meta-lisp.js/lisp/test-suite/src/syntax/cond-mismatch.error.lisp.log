@@ -12,10 +12,21 @@
 (define (main)
   (cond ((equal? 1 2) void) ((equal? 1 2) void)))
 
+;;; Desugared
+
+(claim main (-> void-t))
+
+(define (main)
+  (if (equal? 1 2)
+    void
+    (if (equal? 1 2) void (error "cond mismatch"))))
+
 ;;; Checked
 
 (claim main (-> void-t))
 
 (define (main)
-  (cond ((equal? 1 2) void) ((equal? 1 2) void)))
+  (if (equal? 1 2)
+    void
+    (if (equal? 1 2) void (error "cond mismatch"))))
 

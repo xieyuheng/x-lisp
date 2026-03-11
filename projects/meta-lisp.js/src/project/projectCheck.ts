@@ -15,5 +15,6 @@ export function projectCheck(
     L.loadMod(createUrl(inputFile), dependencyGraph)
   }
 
+  L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
   L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionCheck)
 }

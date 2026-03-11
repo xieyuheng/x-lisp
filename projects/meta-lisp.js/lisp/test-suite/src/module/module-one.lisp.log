@@ -8,6 +8,10 @@
 
 (define one 1)
 
+;;; Desugared
+
+(define one 1)
+
 ;;; Checked
 
 (claim one int-t)

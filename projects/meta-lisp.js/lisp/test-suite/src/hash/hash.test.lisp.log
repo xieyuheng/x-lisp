@@ -10,9 +10,17 @@
 
 (define (main) (assert (hash-empty? (@hash))))
 
+;;; Desugared
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert (hash-empty? (begin (= hash (make-hash)) hash))))
+
 ;;; Checked
 
 (claim main (-> void-t))
 
-(define (main) (assert (hash-empty? (@hash))))
+(define (main)
+  (assert (hash-empty? (begin (= hash (make-hash)) hash))))
 

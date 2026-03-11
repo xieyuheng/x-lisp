@@ -31,6 +31,15 @@ export function projectBuildPassLog(
     logCode("Loaded", L.prettyModDefinitions(textWidth, mod), outputFile)
   }
 
+  L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
+
+  for (const id of projectSourceIds(project)) {
+    const inputFile = projectGetSourceFile(project, id)
+    const outputFile = projectGetPassLogFile(project, id)
+    const mod = L.loadMod(createUrl(inputFile), dependencyGraph)
+    logCode("Desugared", L.prettyModDefinitions(textWidth, mod), outputFile)
+  }
+
   L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionCheck)
 
   for (const id of projectSourceIds(project)) {

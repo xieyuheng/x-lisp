@@ -21,7 +21,7 @@ export function definitionMeaning(definition: L.Definition): L.Value {
         definition.value = L.evaluate(
           definition.mod,
           L.emptyEnv(),
-          L.desugar(definition.body),
+          definition.body,
         )
       }
 

@@ -49,10 +49,11 @@ router.defineHandlers({
   "module:interpret": ({ args: [file] }) => {
     const dependencyGraph = L.createDependencyGraph()
     const mod = L.loadMod(createUrl(file), dependencyGraph)
+    L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
     const main = L.modLookupDefinition(mod, "main")
     if (main) {
       assert(main.kind === "FunctionDefinition")
-      L.evaluate(mod, L.emptyEnv(), L.desugar(main.body))
+      L.evaluate(mod, L.emptyEnv(), main.body)
     }
   },
 

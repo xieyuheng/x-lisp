@@ -12,6 +12,12 @@
 
 (define two 2)
 
+;;; Desugared
+
+(define one 1)
+
+(define two 2)
+
 ;;; Checked
 
 (claim one int-t)

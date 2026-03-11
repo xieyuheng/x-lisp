@@ -13,6 +13,7 @@ export function projectFromSourceFiles(
       "source-directory": ".",
     },
   })
+
   project.sourceIds = sourceFiles.map((file) =>
     Path.relative(rootDirectory, file),
   )

@@ -10,6 +10,12 @@
 
 (define (main) (println void))
 
+;;; Desugared
+
+(claim main (-> void-t))
+
+(define (main) (println void))
+
 ;;; Checked
 
 (claim main (-> void-t))

@@ -10,9 +10,31 @@
 
 (define (main) (println (the (set-t int-t) {1 2 3})))
 
+;;; Desugared
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (the (set-t int-t)
+     (begin
+       (= set (make-set))
+       (set-add! 1 set)
+       (set-add! 2 set)
+       (set-add! 3 set)
+       set))))
+
 ;;; Checked
 
 (claim main (-> void-t))
 
-(define (main) (println (the (set-t int-t) {1 2 3})))
+(define (main)
+  (println
+   (the (set-t int-t)
+     (begin
+       (= set (make-set))
+       (set-add! 1 set)
+       (set-add! 2 set)
+       (set-add! 3 set)
+       set))))
 

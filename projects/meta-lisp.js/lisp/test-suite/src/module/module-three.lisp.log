@@ -16,6 +16,14 @@
 
 (define three 3)
 
+;;; Desugared
+
+(define one 1)
+
+(define two 2)
+
+(define three 3)
+
 ;;; Checked
 
 (claim one int-t)

@@ -4,8 +4,6 @@ import * as L from "../index.ts"
 import { apply } from "./apply.ts"
 
 export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
-  exp = L.desugar(exp)
-
   switch (exp.kind) {
     case "Symbol": {
       return L.SymbolValue(exp.content)
@@ -136,6 +134,7 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
     default: {
       let message = `[evaluate] unhandled exp`
       message += `\n  exp kind: ${exp.kind}`
+      message += `\n  exp: ${L.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)
     }

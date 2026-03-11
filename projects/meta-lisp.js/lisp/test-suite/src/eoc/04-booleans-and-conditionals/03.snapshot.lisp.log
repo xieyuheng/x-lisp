@@ -22,6 +22,19 @@
      0
      42)))
 
+;;; Desugared
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (if
+       (if (equal? (random-dice) 1)
+         (equal? (random-dice) 2)
+         false)
+     0
+     42)))
+
 ;;; Checked
 
 (claim main (-> void-t))
@@ -29,8 +42,9 @@
 (define (main)
   (println
    (if
-       (and (equal? (random-dice) 1)
-            (equal? (random-dice) 2))
+       (if (equal? (random-dice) 1)
+         (equal? (random-dice) 2)
+         false)
      0
      42)))
 

@@ -32,6 +32,60 @@
   (println ['a 'b 'c])
   (println '(a b c)))
 
+;;; Desugared
+
+(claim main (-> void-t))
+
+(define (main)
+  (= list (make-list))
+  (list-push! 1 list)
+  (list-push! 2 list)
+  (list-push! 3 list)
+  (println list)
+  (println
+   (the (list-t int-t)
+     (begin
+       (= list (make-list))
+       (list-push! 1 list)
+       (list-push! 2 list)
+       (list-push! 3 list)
+       list)))
+  (println
+   (begin
+     (= list (make-list))
+     (list-push! 1 list)
+     (list-push! 2 list)
+     (list-push! 3 list)
+     list))
+  (println
+   (begin
+     (= list (make-list))
+     (list-push! 1 list)
+     (list-push! 2 list)
+     (list-push! 3 list)
+     list))
+  (println
+   (begin
+     (= list (make-list))
+     (list-push! 1 list)
+     (list-push! 2 list)
+     (list-push! 3 list)
+     list))
+  (println
+   (begin
+     (= list (make-list))
+     (list-push! 'a list)
+     (list-push! 'b list)
+     (list-push! 'c list)
+     list))
+  (println
+   (begin
+     (= list (make-list))
+     (list-push! 'a list)
+     (list-push! 'b list)
+     (list-push! 'c list)
+     list)))
+
 ;;; Checked
 
 (claim main (-> void-t))
@@ -42,10 +96,47 @@
   (list-push! 2 list)
   (list-push! 3 list)
   (println list)
-  (println (the (list-t int-t) [1 2 3]))
-  (println [1 2 3])
-  (println '(1 2 3))
-  (println [1 2 3])
-  (println ['a 'b 'c])
-  (println '(a b c)))
+  (println
+   (the (list-t int-t)
+     (begin
+       (= list (make-list))
+       (list-push! 1 list)
+       (list-push! 2 list)
+       (list-push! 3 list)
+       list)))
+  (println
+   (begin
+     (= list (make-list))
+     (list-push! 1 list)
+     (list-push! 2 list)
+     (list-push! 3 list)
+     list))
+  (println
+   (begin
+     (= list (make-list))
+     (list-push! 1 list)
+     (list-push! 2 list)
+     (list-push! 3 list)
+     list))
+  (println
+   (begin
+     (= list (make-list))
+     (list-push! 1 list)
+     (list-push! 2 list)
+     (list-push! 3 list)
+     list))
+  (println
+   (begin
+     (= list (make-list))
+     (list-push! 'a list)
+     (list-push! 'b list)
+     (list-push! 'c list)
+     list))
+  (println
+   (begin
+     (= list (make-list))
+     (list-push! 'a list)
+     (list-push! 'b list)
+     (list-push! 'c list)
+     list)))
 
