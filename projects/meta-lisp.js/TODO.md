@@ -1,7 +1,5 @@
 # desugar
 
-inline `compileLispToPassLog`
-
 `evaluate` -- should not call `desugar`
 `desugar` -- should take `mod`
 
