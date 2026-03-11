@@ -61,7 +61,7 @@ export function desugar(mod: L.Mod, exp: L.Exp): L.Exp {
     }
 
     case "Cond": {
-      return desugar(mod, desugarCond(exp.condClauses, exp.meta))
+      return desugar(mod, desugarCond(exp.clauses, exp.meta))
     }
 
     case "List": {
@@ -188,17 +188,14 @@ function desugarOr(exps: Array<L.Exp>, meta?: S.TokenMeta): L.Exp {
   return L.If(head, L.Bool(true, meta), desugarOr(restExps, meta), meta)
 }
 
-function desugarCond(
-  condClauses: Array<L.CondClause>,
-  meta?: S.TokenMeta,
-): L.Exp {
-  if (condClauses.length === 0)
+function desugarCond(clauses: Array<L.CondClause>, meta?: S.TokenMeta): L.Exp {
+  if (clauses.length === 0)
     return L.Apply(
       L.Var("error", meta),
       [L.String("cond mismatch", meta)],
       meta,
     )
-  const [headClause, ...resClauses] = condClauses
+  const [headClause, ...resClauses] = clauses
   return L.If(
     headClause.question,
     headClause.answer,

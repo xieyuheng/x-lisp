@@ -124,8 +124,8 @@ export function formatExp(exp: Exp): string {
     }
 
     case "Cond": {
-      const condClauses = exp.condClauses.map(formatCondClause)
-      return `(cond ${condClauses.join(" ")})`
+      const clauses = exp.clauses.map(formatCondClause)
+      return `(cond ${clauses.join(" ")})`
     }
 
     case "List": {
@@ -208,29 +208,29 @@ export function formatExp(exp: Exp): string {
     case "Match": {
       if (exp.targets.length === 1) {
         const target = formatExp(exp.targets[0])
-        const matchClauses = exp.matchClauses.map(formatMatchClause).join(" ")
-        return `(match ${target} ${matchClauses})`
+        const clauses = exp.clauses.map(formatMatchClause).join(" ")
+        return `(match ${target} ${clauses})`
       } else {
         const targets = exp.targets.map(formatExp).join(" ")
-        const matchClauses = exp.matchClauses.map(formatMatchClause).join(" ")
-        return `(match-many (${targets}) ${matchClauses})`
+        const clauses = exp.clauses.map(formatMatchClause).join(" ")
+        return `(match-many (${targets}) ${clauses})`
       }
     }
   }
 }
 
-function formatCondClause(condClause: Exps.CondClause): string {
-  return `(${formatExp(condClause.question)} ${formatExp(condClause.answer)})`
+function formatCondClause(clause: Exps.CondClause): string {
+  return `(${formatExp(clause.question)} ${formatExp(clause.answer)})`
 }
 
-function formatMatchClause(matchClause: Exps.MatchClause): string {
-  if (matchClause.patterns.length === 1) {
-    const pattern = formatExp(matchClause.patterns[0])
-    const body = formatBody(matchClause.body)
+function formatMatchClause(clause: Exps.MatchClause): string {
+  if (clause.patterns.length === 1) {
+    const pattern = formatExp(clause.patterns[0])
+    const body = formatBody(clause.body)
     return `(${pattern} ${body})`
   } else {
-    const patterns = matchClause.patterns.map(formatExp).join(" ")
-    const body = formatBody(matchClause.body)
+    const patterns = clause.patterns.map(formatExp).join(" ")
+    const body = formatBody(clause.body)
     return `((${patterns}) ${body})`
   }
 }
