@@ -35,7 +35,7 @@ router.defineHandlers({
     L.loadMod(createUrl(file), dependencyGraph)
     const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
     const project = projectFromSourceFiles(file, sourceFiles)
-    projectClean(project, dependencyGraph)
+    projectCheck(project, dependencyGraph)
   },
 
   "module:build": ({ args: [file] }) => {
