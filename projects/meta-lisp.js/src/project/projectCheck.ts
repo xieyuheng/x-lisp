@@ -11,8 +11,8 @@ export function projectCheck(
   dependencyGraph: L.DependencyGraph,
 ): void {
   for (const id of projectSourceIds(project)) {
-    const inputFile = projectGetSourceFile(project, id)
-    L.loadMod(createUrl(inputFile), dependencyGraph)
+    const file = projectGetSourceFile(project, id)
+    L.loadMod(createUrl(file), dependencyGraph)
   }
 
   L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
