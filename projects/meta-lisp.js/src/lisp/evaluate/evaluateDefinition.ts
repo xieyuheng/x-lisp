@@ -1,6 +1,6 @@
 import * as L from "../index.ts"
 
-export function meaning(definition: L.Definition): L.Value {
+export function evaluateDefinition(definition: L.Definition): L.Value {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition": {
       return L.DefinitionValue(definition)
@@ -16,7 +16,7 @@ export function meaning(definition: L.Definition): L.Value {
 
     case "VariableDefinition": {
       if (!definition.value) {
-        let message = `[meaning] VariableDefinition not setup`
+        let message = `[evaluateDefinition] VariableDefinition not setup`
         message += `\n  name: ${definition.name}`
         throw new Error(message)
       }
