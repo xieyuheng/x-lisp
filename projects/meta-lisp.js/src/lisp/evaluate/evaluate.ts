@@ -2,7 +2,6 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 import { apply } from "./apply.ts"
-import { evaluateDefinition } from "./evaluateDefinition.ts"
 
 export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
   exp = L.desugar(exp)
@@ -33,7 +32,7 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       if (value) return value
 
       const definition = L.modLookupDefinition(mod, exp.name)
-      if (definition) return evaluateDefinition(definition)
+      if (definition) return L.evaluateDefinition(definition)
 
       let message = `[evaluate] undefined variable`
       message += `\n  name: ${exp.name}`
@@ -44,7 +43,7 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
     case "Require": {
       const importedMod = L.importBy(exp.path, mod)
       const definition = L.modLookupPublicDefinition(importedMod, exp.name)
-      if (definition) return evaluateDefinition(definition)
+      if (definition) return L.evaluateDefinition(definition)
 
       let message = `[evaluate] undefined require name`
       message += `\n  path: ${exp.path}`

@@ -2,7 +2,6 @@
 
 `DefinitionState`
 
-move `evaluateDefinition` to `definitionMeaning`
 inline `setupVariable` to `definitionMeaning`
 
 `definitionClaim`
