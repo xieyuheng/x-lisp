@@ -1,6 +1,5 @@
 # pattern match
 
-`definitionIsDataConstructor`
 `simplifyMatch`
 
 `Which` as `Exp`
