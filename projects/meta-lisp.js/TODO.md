@@ -1,6 +1,5 @@
 # desugar
 
-inline `dependencyGraphCheck`
 inline `compileLispToPassLog`
 
 `evaluate` -- should not call `desugar`
