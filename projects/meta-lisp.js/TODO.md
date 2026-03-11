@@ -1,7 +1,5 @@
 # pattern match
 
-parse `(match-many)`
-
 `definitionIsDataConstructor`
 `simplifyMatch`
 

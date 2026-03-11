@@ -55,17 +55,27 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     return L.Or(S.listElements(exps).map(parseExp), meta)
   },
 
-  "(cons* 'cond lines)": ({ lines }, { sexp }) => {
+  "(cons* 'cond clauses)": ({ clauses }, { sexp }) => {
     const keyword = S.asList(sexp).elements[1]
-    return L.Cond(S.listElements(lines).map(parseCondClause), keyword.meta)
+    return L.Cond(S.listElements(clauses).map(parseCondClause), keyword.meta)
   },
 
-  "(cons* 'match target lines)": ({ target, lines }, { sexp }) => {
+  "(cons* 'match target clauses)": ({ target, clauses }, { sexp }) => {
     const keyword = S.asList(sexp).elements[1]
     const meta = keyword.meta
     return L.Match(
       [parseExp(target)],
-      S.listElements(lines).map(parseMatchClause),
+      S.listElements(clauses).map(parseMatchClause),
+      meta,
+    )
+  },
+
+  "(cons* 'match-many targets clauses)": ({ targets, clauses }, { sexp }) => {
+    const keyword = S.asList(sexp).elements[1]
+    const meta = keyword.meta
+    return L.Match(
+      S.listElements(targets).map(parseExp),
+      S.listElements(clauses).map(parseMatchManyClause),
       meta,
     )
   },
@@ -186,6 +196,17 @@ const parseMatchClause = S.createRouter<L.MatchClause>({
     return {
       patterns: [parseExp(pattern)],
       body: L.BeginSugar(S.listElements(body).map(parseExp), meta),
+      meta,
+    }
+  },
+})
+
+const parseMatchManyClause = S.createRouter<L.MatchClause>({
+  "(cons* patterns body)": ({ patterns, body }, { meta }) => {
+    return {
+      patterns: S.listElements(patterns).map(parseExp),
+      body: L.BeginSugar(S.listElements(body).map(parseExp), meta),
+      meta,
     }
   },
 })
