@@ -8,11 +8,7 @@
 
 ;;; Loaded
 
-(claim one int-t)
-
 (define one 1)
-
-(claim two int-t)
 
 (define two 2)
 

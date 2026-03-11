@@ -11,7 +11,6 @@ export type Definition =
   | DatatypeDefinition
 
 export type DefinitionState = {
-  isClaimed?: boolean
   isChecked?: boolean
 }
 

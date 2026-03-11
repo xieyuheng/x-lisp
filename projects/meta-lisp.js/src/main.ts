@@ -6,6 +6,7 @@ import { createUrl } from "@xieyuheng/helpers.js/url"
 import { fileURLToPath } from "node:url"
 import * as L from "./lisp/index.ts"
 import {
+  checkDependencyGraph,
   loadDependencyGraph,
   loadProject,
   projectBuild,
@@ -35,7 +36,8 @@ router.defineRoutes([
 
 router.defineHandlers({
   "module:check": ({ args: [file] }) => {
-    loadDependencyGraph(file)
+    const dependencyGraph = loadDependencyGraph(file)
+    checkDependencyGraph(dependencyGraph)
   },
 
   "module:interpret": ({ args: [file] }) => {

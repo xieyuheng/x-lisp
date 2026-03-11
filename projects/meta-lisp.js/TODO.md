@@ -1,23 +1,8 @@
 # simple load
 
-`definitionMeaning` -- call `definitionCheck`
+fix `projectInterpret`
 
-refactor `definitionClaim`
-
-# simple load
-
-`builtinType` -- remove builtin type from builtin/index.lisp
-`prepareCode` -- `setupVariable` after `performTypeCheck`
-
-should not call `setupVariable` `setupClaim` `performTypeCheck` in `prepareCode`
-
-- prepare
-- setup define-type
-- setup claim
-- perform type check
-- setup variable
-
-`modLookupClaimedType` -- be explicit about `evaluate` of claimed `Exp`
+[maybe] `modLookupClaimedType` -- be explicit about `evaluate` of claimed `Exp`
 
 # desugar
 

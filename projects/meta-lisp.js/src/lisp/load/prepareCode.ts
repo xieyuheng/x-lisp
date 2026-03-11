@@ -1,6 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
-import { performTypeCheck } from "./performTypeCheck.ts"
 import { handleDefine as prepareDefine } from "./prepareDefine.ts"
 import { handleExempt as prepareExempt } from "./prepareExempt.ts"
 import { handleExport as prepareExport } from "./prepareExport.ts"
@@ -15,6 +14,4 @@ export function prepareCode(mod: L.Mod, code: string): void {
   for (const stmt of stmts) prepareExport(mod, stmt)
   for (const stmt of stmts) prepareExempt(mod, stmt)
   for (const stmt of stmts) prepareImport(mod, stmt)
-
-  performTypeCheck(mod)
 }

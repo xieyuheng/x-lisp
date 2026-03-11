@@ -1,6 +1,4 @@
 export * from "./DependencyGraph.ts"
 export * from "./importBy.ts"
 export * from "./loadMod.ts"
-export * from "./performTypeCheck.ts"
 export * from "./prepareCode.ts"
-export * from "./resolveModPath.ts"

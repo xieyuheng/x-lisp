@@ -100,6 +100,7 @@ function getArity(target: L.Value): number {
     }
 
     default: {
+      console.log({ target })
       let message = `[getApply] can not handle this kind of target`
       message += formatUnderTag(2, `target:`, L.formatValue(target))
       throw new Error(message)

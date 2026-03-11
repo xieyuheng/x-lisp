@@ -13,4 +13,14 @@ export function projectCheck(project: Project): void {
     const inputFile = projectGetSourceFile(project, id)
     L.loadMod(createUrl(inputFile), dependencyGraph)
   }
+
+  checkDependencyGraph(dependencyGraph)
+}
+
+export function checkDependencyGraph(dependencyGraph: L.DependencyGraph): void {
+  for (const mod of L.dependencyGraphMods(dependencyGraph)) {
+    for (const definition of L.modOwnDefinitions(mod)) {
+      L.definitionCheck(definition)
+    }
+  }
 }

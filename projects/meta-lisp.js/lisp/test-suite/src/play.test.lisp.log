@@ -2,11 +2,11 @@
 
 (claim main (-> void-t))
 
-(define (main) (println '->))
+(define (main) void)
 
 ;;; Loaded
 
 (claim main (-> void-t))
 
-(define (main) (println '->))
+(define (main) void)
 

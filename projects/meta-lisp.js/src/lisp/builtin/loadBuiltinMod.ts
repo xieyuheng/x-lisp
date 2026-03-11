@@ -16,6 +16,7 @@ import { builtinRandom } from "./builtinRandom.ts"
 import { builtinSet } from "./builtinSet.ts"
 import { builtinString } from "./builtinString.ts"
 import { builtinSymbol } from "./builtinSymbol.ts"
+import { builtinType } from "./builtinType.ts"
 import { builtinValue } from "./builtinValue.ts"
 import { builtinVoid } from "./builtinVoid.ts"
 
@@ -45,6 +46,7 @@ export function loadBuiltinMod(dependencyGraph: L.DependencyGraph): L.Mod {
   builtinHash(mod)
   builtinAssert(mod)
   builtinError(mod)
+  builtinType(mod)
 
   const code = fs.readFileSync(file, "utf-8")
   L.prepareCode(mod, code)
