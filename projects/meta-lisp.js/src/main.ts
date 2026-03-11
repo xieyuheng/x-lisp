@@ -13,7 +13,6 @@ import {
   projectClean,
   projectFromSourceFiles,
 } from "./project/index.ts"
-import * as Services from "./services/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
@@ -28,7 +27,6 @@ router.defineRoutes([
   "project:build --config",
   // "project:test --config",
   "project:clean --config",
-  "file:compile-to-pass-log file",
 ])
 
 router.defineHandlers({
@@ -70,11 +68,6 @@ router.defineHandlers({
   "project:clean": ({ options }) => {
     const project = loadProject(options["--config"])
     projectClean(project)
-  },
-
-  "file:compile-to-pass-log": ({ args: [file] }) => {
-    const mod = L.loadMod(createUrl(file), L.createDependencyGraph())
-    Services.compileLispToPassLog(mod)
   },
 })
 

@@ -1,5 +1,3 @@
-rename "file:compile-to-pass-log" to "module:pass-log"
-
 # simple load
 
 fix `projectInterpret`
