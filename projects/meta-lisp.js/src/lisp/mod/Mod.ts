@@ -137,13 +137,3 @@ export function modPutInferredType(mod: Mod, name: string, type: Value): void {
 
   mod.inferredTypes.set(name, type)
 }
-
-export function modLookupType(mod: Mod, name: string): Value | undefined {
-  const definition = modLookupDefinition(mod, name)
-  if (definition === undefined) return undefined
-
-  const claimedType = modLookupClaimedType(definition.mod, definition.name)
-  if (claimedType) return claimedType
-
-  return modLookupInferredType(definition.mod, definition.name)
-}

@@ -1,6 +1,8 @@
 import * as L from "../index.ts"
 
 export function definitionMeaning(definition: L.Definition): L.Value {
+  // L.definitionCheck(definition)
+
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition": {
       return L.DefinitionValue(definition)

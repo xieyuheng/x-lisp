@@ -3,55 +3,62 @@ import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
 export function definitionCheck(definition: L.Definition): null {
-  const mod = definition.mod
+  if (definition.isChecked) {
+    return null
+  }
 
-  if (mod.exempted.has(definition.name)) {
+  const mod = definition.mod
+  const name = definition.name
+
+  if (mod.exempted.has(name)) {
+    definition.isChecked = true
     return null
   }
 
   switch (definition.kind) {
     case "DatatypeDefinition": {
+      definition.isChecked = true
       return null
     }
 
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition": {
-      const type = L.modLookupType(mod, definition.name)
+      const type = L.modLookupClaimedType(mod, name)
       if (!type) {
         console.log(reportUnclaimedDefinition(definition))
         return null
       }
 
+      definition.isChecked = true
       return null
     }
 
     case "VariableDefinition": {
-      const exp = L.desugar(definition.body)
-
-      const type = L.modLookupClaimedType(mod, definition.name)
-      if (type) {
-        checkClaimedType(mod, exp, type)
-        return null
-      }
-
-      checkByInfer(mod, definition.name, exp)
+      checkExp(mod, name, L.desugar(definition.body))
+      definition.isChecked = true
       return null
     }
 
     case "FunctionDefinition": {
-      const exp = L.desugar(
-        L.Lambda(definition.parameters, definition.body, definition.meta),
+      checkExp(
+        mod,
+        name,
+        L.desugar(
+          L.Lambda(definition.parameters, definition.body, definition.meta),
+        ),
       )
-
-      const type = L.modLookupClaimedType(mod, definition.name)
-      if (type) {
-        checkClaimedType(mod, exp, type)
-        return null
-      }
-
-      checkByInfer(mod, definition.name, exp)
+      definition.isChecked = true
       return null
     }
+  }
+}
+
+function checkExp(mod: L.Mod, name: string, exp: L.Exp): void {
+  const type = L.modLookupClaimedType(mod, name)
+  if (type) {
+    checkClaimedType(mod, exp, type)
+  } else {
+    checkByInfer(mod, name, exp)
   }
 }
 

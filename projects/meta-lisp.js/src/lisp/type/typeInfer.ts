@@ -1,6 +1,16 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as L from "../index.ts"
 
+function modLookupType(mod: L.Mod, name: string): L.Value | undefined {
+  const definition = L.modLookupDefinition(mod, name)
+  if (definition === undefined) return undefined
+
+  const claimedType = L.modLookupClaimedType(definition.mod, definition.name)
+  if (claimedType) return claimedType
+
+  return L.modLookupInferredType(definition.mod, definition.name)
+}
+
 export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
   return (subst) => {
     switch (exp.kind) {
@@ -33,7 +43,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         const type = L.ctxLookupType(ctx, exp.name)
         if (type) return L.okInferEffect(type)(subst)
 
-        const topLevelType = L.modLookupType(mod, exp.name)
+        const topLevelType = modLookupType(mod, exp.name)
         if (topLevelType) return L.okInferEffect(topLevelType)(subst)
 
         let message = `undefined variable`
@@ -43,7 +53,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
 
       case "Require": {
         const importedMod = L.importBy(exp.path, mod)
-        const topLevelType = L.modLookupType(importedMod, exp.name)
+        const topLevelType = modLookupType(importedMod, exp.name)
         if (topLevelType) return L.okInferEffect(topLevelType)(subst)
 
         let message = `undefined require name`
