@@ -1,6 +1,6 @@
 # pattern match
-clauses
-parse `(match)` & `(match-many)` -- to `Match`
+
+parse `(match-many)`
 
 `definitionIsDataConstructor`
 `simplifyMatch`

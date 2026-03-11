@@ -60,6 +60,16 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     return L.Cond(S.listElements(lines).map(parseCondClause), keyword.meta)
   },
 
+  "(cons* 'match target lines)": ({ target, lines }, { sexp }) => {
+    const keyword = S.asList(sexp).elements[1]
+    const meta = keyword.meta
+    return L.Match(
+      [parseExp(target)],
+      S.listElements(lines).map(parseMatchClause),
+      meta,
+    )
+  },
+
   "`(= ,name ,rhs)": ({ name, rhs }, { meta }) => {
     return L.AssignSugar(S.symbolContent(name), parseExp(rhs), meta)
   },
@@ -167,6 +177,15 @@ const parseCondClause = S.createRouter<L.CondClause>({
         question: parseExp(question),
         answer: parseBody(body),
       }
+    }
+  },
+})
+
+const parseMatchClause = S.createRouter<L.MatchClause>({
+  "(cons* pattern body)": ({ pattern, body }, { meta }) => {
+    return {
+      patterns: [parseExp(pattern)],
+      body: L.BeginSugar(S.listElements(body).map(parseExp), meta),
     }
   },
 })
