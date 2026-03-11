@@ -11,7 +11,7 @@ import {
   type Project,
 } from "./index.ts"
 
-export function projectBuild(
+export function projectBuildPassLog(
   project: Project,
   dependencyGraph: L.DependencyGraph,
 ): void {

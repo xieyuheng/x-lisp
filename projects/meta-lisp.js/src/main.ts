@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url"
 import * as L from "./lisp/index.ts"
 import {
   loadProject,
-  projectBuild,
+  projectBuildPassLog,
   projectCheck,
   projectClean,
   projectFromSourceFiles,
@@ -43,7 +43,7 @@ router.defineHandlers({
     L.loadMod(createUrl(file), dependencyGraph)
     const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
     const project = projectFromSourceFiles(file, sourceFiles)
-    projectBuild(project, dependencyGraph)
+    projectBuildPassLog(project, dependencyGraph)
   },
 
   "module:interpret": ({ args: [file] }) => {
@@ -65,7 +65,7 @@ router.defineHandlers({
   "project:build": ({ options }) => {
     const dependencyGraph = L.createDependencyGraph()
     const project = loadProject(options["--config"])
-    projectBuild(project, dependencyGraph)
+    projectBuildPassLog(project, dependencyGraph)
   },
 
   "project:clean": ({ options }) => {
