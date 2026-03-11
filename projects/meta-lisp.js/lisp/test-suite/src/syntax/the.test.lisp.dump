@@ -1,0 +1,32 @@
+;;; input
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (the int-t 1))
+  (assert-equal 'a (the symbol-t 'a)))
+
+;;; loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (the int-t 1))
+  (assert-equal 'a (the symbol-t 'a)))
+
+;;; desugared
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (the int-t 1))
+  (assert-equal 'a (the symbol-t 'a)))
+
+;;; checked
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal 1 (the int-t 1))
+  (assert-equal 'a (the symbol-t 'a)))
+

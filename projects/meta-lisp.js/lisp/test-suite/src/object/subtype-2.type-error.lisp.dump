@@ -1,0 +1,66 @@
+;;; input
+
+(claim point-t type-t)
+
+(exempt point-t)
+
+(define point-t (@class #x float-t #y float-t))
+
+(claim point-println (-> point-t void-t))
+
+(define (point-println point) (println point))
+
+(claim main (-> void-t))
+
+(define (main)
+  (point-println (@object #x 1.0 #y 2.0))
+  (point-println (@object #x 1.0)))
+
+;;; loaded
+
+(claim point-t type-t)
+
+(define point-t (@class #x float-t #y float-t))
+
+(claim point-println (-> point-t void-t))
+
+(define (point-println point) (println point))
+
+(claim main (-> void-t))
+
+(define (main)
+  (point-println (@object #x 1.0 #y 2.0))
+  (point-println (@object #x 1.0)))
+
+;;; desugared
+
+(claim point-t type-t)
+
+(define point-t (@class #x float-t #y float-t))
+
+(claim point-println (-> point-t void-t))
+
+(define (point-println point) (println point))
+
+(claim main (-> void-t))
+
+(define (main)
+  (point-println (@object #x 1.0 #y 2.0))
+  (point-println (@object #x 1.0)))
+
+;;; checked
+
+(claim point-t type-t)
+
+(define point-t (@class #x float-t #y float-t))
+
+(claim point-println (-> point-t void-t))
+
+(define (point-println point) (println point))
+
+(claim main (-> void-t))
+
+(define (main)
+  (point-println (@object #x 1.0 #y 2.0))
+  (point-println (@object #x 1.0)))
+

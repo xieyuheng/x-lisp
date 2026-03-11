@@ -1,0 +1,52 @@
+;;; input
+
+(claim compose
+  (polymorphic (A B C) (-> (-> B C) (-> A B) (-> A C))))
+
+(define (compose f g x) (f (g x)))
+
+(claim main (-> void-t))
+
+(define (main)
+  (= add1 (iadd 1))
+  (assert-equal 3 ((compose add1 add1) 1)))
+
+;;; loaded
+
+(claim compose
+  (polymorphic (A B C) (-> (-> B C) (-> A B) (-> A C))))
+
+(define (compose f g x) (f (g x)))
+
+(claim main (-> void-t))
+
+(define (main)
+  (= add1 (iadd 1))
+  (assert-equal 3 ((compose add1 add1) 1)))
+
+;;; desugared
+
+(claim compose
+  (polymorphic (A B C) (-> (-> B C) (-> A B) (-> A C))))
+
+(define (compose f g x) (f (g x)))
+
+(claim main (-> void-t))
+
+(define (main)
+  (= add1 (iadd 1))
+  (assert-equal 3 ((compose add1 add1) 1)))
+
+;;; checked
+
+(claim compose
+  (polymorphic (A B C) (-> (-> B C) (-> A B) (-> A C))))
+
+(define (compose f g x) (f (g x)))
+
+(claim main (-> void-t))
+
+(define (main)
+  (= add1 (iadd 1))
+  (assert-equal 3 ((compose add1 add1) 1)))
+

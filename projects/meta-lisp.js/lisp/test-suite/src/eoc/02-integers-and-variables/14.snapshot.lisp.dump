@@ -1,0 +1,32 @@
+;;; input
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x 32)
+  (println (iadd (begin (= x 10) x) x)))
+
+;;; loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x 32)
+  (println (iadd (begin (= x 10) x) x)))
+
+;;; desugared
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x 32)
+  (println (iadd (begin (= x 10) x) x)))
+
+;;; checked
+
+(claim main (-> void-t))
+
+(define (main)
+  (= x 32)
+  (println (iadd (begin (= x 10) x) x)))
+

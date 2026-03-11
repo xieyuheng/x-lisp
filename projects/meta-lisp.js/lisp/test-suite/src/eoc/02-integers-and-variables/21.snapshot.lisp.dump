@@ -1,0 +1,38 @@
+;;; input
+
+(claim main (-> void-t))
+
+(define (main)
+  (= y 6)
+  (begin
+    (= x (begin (= y (ineg 42)) y))
+    (println (iadd x y))))
+
+;;; loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (= y 6)
+  (begin
+    (= x (begin (= y (ineg 42)) y))
+    (println (iadd x y))))
+
+;;; desugared
+
+(claim main (-> void-t))
+
+(define (main)
+  (= y 6)
+  (= x (begin (= y (ineg 42)) y))
+  (println (iadd x y)))
+
+;;; checked
+
+(claim main (-> void-t))
+
+(define (main)
+  (= y 6)
+  (= x (begin (= y (ineg 42)) y))
+  (println (iadd x y)))
+

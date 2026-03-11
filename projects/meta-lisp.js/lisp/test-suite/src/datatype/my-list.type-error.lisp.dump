@@ -1,0 +1,26 @@
+;;; input
+
+(import-all "my-list")
+
+(claim my-list (my-list-t int-t))
+
+(define my-list (li 1 (li "3" nil)))
+
+;;; loaded
+
+(claim my-list (my-list-t int-t))
+
+(define my-list (li 1 (li "3" nil)))
+
+;;; desugared
+
+(claim my-list (my-list-t int-t))
+
+(define my-list (li 1 (li "3" nil)))
+
+;;; checked
+
+(claim my-list (my-list-t int-t))
+
+(define my-list (li 1 (li "3" nil)))
+

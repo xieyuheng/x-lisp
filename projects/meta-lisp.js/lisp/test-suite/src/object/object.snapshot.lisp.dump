@@ -1,0 +1,40 @@
+;;; input
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (the (@class #x int-t #y int-t) (@object #x 1 #y 2)))
+  (println
+   (the (@class #x int-t #y int-t) (@object #x 1 #y 2))))
+
+;;; loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (the (@class #x int-t #y int-t) (@object #x 1 #y 2)))
+  (println
+   (the (@class #x int-t #y int-t) (@object #x 1 #y 2))))
+
+;;; desugared
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (the (@class #x int-t #y int-t) (@object #x 1 #y 2)))
+  (println
+   (the (@class #x int-t #y int-t) (@object #x 1 #y 2))))
+
+;;; checked
+
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (the (@class #x int-t #y int-t) (@object #x 1 #y 2)))
+  (println
+   (the (@class #x int-t #y int-t) (@object #x 1 #y 2))))
+

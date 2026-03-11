@@ -1,0 +1,24 @@
+;;; input
+
+(claim identity (polymorphic (A B) (-> A B)))
+
+(define (identity x) x)
+
+;;; loaded
+
+(claim identity (polymorphic (A B) (-> A B)))
+
+(define (identity x) x)
+
+;;; desugared
+
+(claim identity (polymorphic (A B) (-> A B)))
+
+(define (identity x) x)
+
+;;; checked
+
+(claim identity (polymorphic (A B) (-> A B)))
+
+(define (identity x) x)
+

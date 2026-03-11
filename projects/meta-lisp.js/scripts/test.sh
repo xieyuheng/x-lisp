@@ -5,4 +5,4 @@ set -e
 bash scripts/check-test-suite.sh
 bash scripts/snapshot-type-error.sh
 bash scripts/interpret-test-suite.sh
-bash scripts/build-test-suite.sh
+bash scripts/dump-test-suite.sh

@@ -1,0 +1,26 @@
+;;; input
+
+(claim main (-> void-t))
+
+(define (main) (assert (hash-empty? (@hash))))
+
+;;; loaded
+
+(claim main (-> void-t))
+
+(define (main) (assert (hash-empty? (@hash))))
+
+;;; desugared
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert (hash-empty? (begin (= hash (make-hash)) hash))))
+
+;;; checked
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert (hash-empty? (begin (= hash (make-hash)) hash))))
+

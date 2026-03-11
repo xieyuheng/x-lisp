@@ -1,0 +1,24 @@
+;;; input
+
+(claim main (-> void-t))
+
+(define (main) (println "abc"))
+
+;;; loaded
+
+(claim main (-> void-t))
+
+(define (main) (println "abc"))
+
+;;; desugared
+
+(claim main (-> void-t))
+
+(define (main) (println "abc"))
+
+;;; checked
+
+(claim main (-> void-t))
+
+(define (main) (println "abc"))
+

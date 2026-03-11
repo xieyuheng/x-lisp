@@ -1,0 +1,32 @@
+;;; input
+
+(claim main (-> void-t))
+
+(define (main)
+  (println (the (tau int-t int-t) (@tuple 1 2)))
+  (println (the (tau int-t symbol-t) (@tuple 1 'a))))
+
+;;; loaded
+
+(claim main (-> void-t))
+
+(define (main)
+  (println (the (tau int-t int-t) (@tuple 1 2)))
+  (println (the (tau int-t symbol-t) (@tuple 1 'a))))
+
+;;; desugared
+
+(claim main (-> void-t))
+
+(define (main)
+  (println (the (tau int-t int-t) (@tuple 1 2)))
+  (println (the (tau int-t symbol-t) (@tuple 1 'a))))
+
+;;; checked
+
+(claim main (-> void-t))
+
+(define (main)
+  (println (the (tau int-t int-t) (@tuple 1 2)))
+  (println (the (tau int-t symbol-t) (@tuple 1 'a))))
+

@@ -1,0 +1,50 @@
+;;; input
+
+(export one two three four)
+
+(define one 1)
+
+(define two 2)
+
+(define three 3)
+
+(define four 4)
+
+;;; loaded
+
+(define one 1)
+
+(define two 2)
+
+(define three 3)
+
+(define four 4)
+
+;;; desugared
+
+(define one 1)
+
+(define two 2)
+
+(define three 3)
+
+(define four 4)
+
+;;; checked
+
+(claim one int-t)
+
+(define one 1)
+
+(claim two int-t)
+
+(define two 2)
+
+(claim three int-t)
+
+(define three 3)
+
+(claim four int-t)
+
+(define four 4)
+

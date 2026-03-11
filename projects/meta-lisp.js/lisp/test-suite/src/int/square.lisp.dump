@@ -1,0 +1,26 @@
+;;; input
+
+(export square)
+
+(claim square (-> int-t int-t))
+
+(define (square x) (imul x x))
+
+;;; loaded
+
+(claim square (-> int-t int-t))
+
+(define (square x) (imul x x))
+
+;;; desugared
+
+(claim square (-> int-t int-t))
+
+(define (square x) (imul x x))
+
+;;; checked
+
+(claim square (-> int-t int-t))
+
+(define (square x) (imul x x))
+
