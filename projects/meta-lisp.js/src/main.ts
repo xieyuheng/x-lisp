@@ -33,12 +33,13 @@ router.defineRoutes([
 
 router.defineHandlers({
   "module:check": ({ args: [file] }) => {
-    const dependencyGraph = L.loadDependencyGraph(file)
+    const dependencyGraph = L.createDependencyGraph()
+    L.loadMod(createUrl(file), dependencyGraph)
     L.dependencyGraphCheck(dependencyGraph)
   },
 
   "module:interpret": ({ args: [file] }) => {
-    const dependencyGraph = L.loadDependencyGraph(file)
+    const dependencyGraph = L.createDependencyGraph()
     const mod = L.loadMod(createUrl(file), dependencyGraph)
     const main = L.modLookupDefinition(mod, "main")
     if (main) {
@@ -48,7 +49,8 @@ router.defineHandlers({
   },
 
   "module:build": ({ args: [file] }) => {
-    const dependencyGraph = L.loadDependencyGraph(file)
+    const dependencyGraph = L.createDependencyGraph()
+    L.loadMod(createUrl(file), dependencyGraph)
     const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
     const project = projectFromSourceFiles(file, sourceFiles)
     projectBuild(project, dependencyGraph)
