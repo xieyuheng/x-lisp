@@ -1,3 +1,5 @@
+rename checkDependencyGraph to dependencyGraphCheck
+move loadDependencyGraph and checkDependencyGraph to dependency-graph/
 rename "file:compile-to-pass-log" to "module:pass-log"
 
 # simple load

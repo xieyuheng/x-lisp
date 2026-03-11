@@ -3,6 +3,7 @@
 import * as cmd from "@xieyuheng/cmd.js"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
+import assert from "node:assert"
 import { fileURLToPath } from "node:url"
 import * as L from "./lisp/index.ts"
 import {
@@ -13,10 +14,8 @@ import {
   projectCheck,
   projectClean,
   projectFromSourceFiles,
-  projectInterpret,
 } from "./project/index.ts"
 import * as Services from "./services/index.ts"
-import assert from "node:assert"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
