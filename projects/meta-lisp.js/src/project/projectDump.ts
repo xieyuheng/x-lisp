@@ -4,10 +4,8 @@ import { textWidth } from "../config.ts"
 import * as L from "../lisp/index.ts"
 import {
   logFile,
-  projectGetDumpFile,
   projectGetSourceFile,
   projectSourceIds,
-  writeFile,
   type Project,
 } from "./index.ts"
 
@@ -16,54 +14,34 @@ export function projectDump(
   dependencyGraph: L.DependencyGraph,
 ): void {
   for (const id of projectSourceIds(project)) {
-    const inputFile = projectGetSourceFile(project, id)
-    const outputFile = projectGetDumpFile(project, id)
-    L.loadMod(createUrl(inputFile), dependencyGraph)
-    writeFile(outputFile, "")
+    const file = projectGetSourceFile(project, id)
+    L.loadMod(createUrl(file), dependencyGraph)
   }
 
   for (const id of projectSourceIds(project)) {
-    const inputFile = projectGetSourceFile(project, id)
-    const outputFile = projectGetDumpFile(project, id)
-    const mod = L.loadMod(createUrl(inputFile), dependencyGraph)
-    logCode("input", L.prettyModStmts(textWidth, mod), outputFile)
-    logFile("dump-loaded", outputFile)
-    logCode("loaded", L.prettyModDefinitions(textWidth, mod), outputFile)
+    const file = projectGetSourceFile(project, id)
+    const mod = L.loadMod(createUrl(file), dependencyGraph)
+    dumpCode("001-loaded", L.prettyModDefinitions(textWidth, mod), file)
   }
 
   L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
 
   for (const id of projectSourceIds(project)) {
-    const inputFile = projectGetSourceFile(project, id)
-    const outputFile = projectGetDumpFile(project, id)
-    const mod = L.loadMod(createUrl(inputFile), dependencyGraph)
-    logFile("dump-desugared", outputFile)
-    logCode("desugared", L.prettyModDefinitions(textWidth, mod), outputFile)
+    const file = projectGetSourceFile(project, id)
+    const mod = L.loadMod(createUrl(file), dependencyGraph)
+    dumpCode("002-desugared", L.prettyModDefinitions(textWidth, mod), file)
   }
 
   L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionCheck)
 
   for (const id of projectSourceIds(project)) {
-    const inputFile = projectGetSourceFile(project, id)
-    const outputFile = projectGetDumpFile(project, id)
-    const mod = L.loadMod(createUrl(inputFile), dependencyGraph)
-    logFile("dump-checked", outputFile)
-    logCode("checked", L.prettyModDefinitions(textWidth, mod), outputFile)
+    const file = projectGetSourceFile(project, id)
+    const mod = L.loadMod(createUrl(file), dependencyGraph)
+    dumpCode("003-checked", L.prettyModDefinitions(textWidth, mod), file)
   }
 }
 
-function logCode(tag: string, code: string, logFile?: string): void {
-  log(`;;; ${tag}\n`, logFile)
-  log("\n", logFile)
-  log(code, logFile)
-  log("\n", logFile)
-  log("\n", logFile)
-}
-
-function log(text: string, logFile?: string): void {
-  if (logFile === undefined) {
-    process.stdout.write(text)
-  } else {
-    fs.appendFileSync(logFile, text)
-  }
+function dumpCode(tag: string, code: string, file: string): void {
+  logFile(tag, file)
+  fs.writeFileSync(`${file}.${tag}.dump`, code)
 }

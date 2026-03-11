@@ -1,0 +1,9 @@
+(claim point-t type-t)
+
+(define point-t (@class #x float-t #y float-t))
+
+(claim main (-> void-t))
+
+(define (main)
+  (the point-t (@object #x 1.0 #y 2.0))
+  (the point-t (@object #x 1.0)))

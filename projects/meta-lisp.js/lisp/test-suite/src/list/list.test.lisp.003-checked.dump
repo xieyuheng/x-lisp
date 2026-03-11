@@ -1,0 +1,54 @@
+(claim main (-> void-t))
+
+(define (main)
+  (= list (make-list))
+  (list-push! 1 list)
+  (list-push! 2 list)
+  (list-push! 3 list)
+  (assert-equal
+    (begin
+      (= list (make-list))
+      (list-push! 1 list)
+      (list-push! 2 list)
+      (list-push! 3 list)
+      list)
+    list)
+  (assert-equal
+    (begin
+      (= list (make-list))
+      (list-push! 1 list)
+      (list-push! 2 list)
+      (list-push! 3 list)
+      list)
+    (begin
+      (= list (make-list))
+      (list-push! 1 list)
+      (list-push! 2 list)
+      (list-push! 3 list)
+      list))
+  (assert-equal
+    (begin
+      (= list (make-list))
+      (list-push! 'a list)
+      (list-push! 'b list)
+      (list-push! 'c list)
+      list)
+    (begin
+      (= list (make-list))
+      (list-push! 'a list)
+      (list-push! 'b list)
+      (list-push! 'c list)
+      list))
+  (assert-equal
+    3
+    (list-length
+     (begin
+       (= list (make-list))
+       (list-push! 1 list)
+       (list-push! 2 list)
+       (list-push! 3 list)
+       list)))
+  (assert-equal
+    0
+    (list-length (begin (= list (make-list)) list)))
+  (assert (list-empty? (begin (= list (make-list)) list))))

@@ -1,0 +1,65 @@
+(define-datatype (my-list-t E)
+  nil
+  (li (head E) (tail (my-list-t E))))
+
+(claim nil (polymorphic (E) (my-list-t E)))
+
+(define nil 'nil)
+
+(claim nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
+
+(define (nil? value) (equal? value 'nil))
+
+(claim li
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li head tail)
+  (= list (make-list))
+  (list-push! 'li list)
+  (list-push! head list)
+  (list-push! tail list)
+  list)
+
+(claim li? (polymorphic (E) (-> (my-list-t E) bool-t)))
+
+(define (li? value)
+  (if (list? value)
+    (if (equal? (list-length value) 3)
+      (equal? (list-head value) 'li)
+      false)
+    false))
+
+(claim li-head (polymorphic (E) (-> (my-list-t E) E)))
+
+(define (li-head target) (list-get 1 target))
+
+(claim li-tail
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+
+(define (li-tail target) (list-get 2 target))
+
+(claim li-put-head
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head value target)
+  (list-put 1 value target))
+
+(claim li-put-tail
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail value target)
+  (list-put 2 value target))
+
+(claim li-put-head!
+  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+
+(define (li-put-head! value target)
+  (list-put! 1 value target))
+
+(claim li-put-tail!
+  (polymorphic (E)
+    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+
+(define (li-put-tail! value target)
+  (list-put! 2 value target))

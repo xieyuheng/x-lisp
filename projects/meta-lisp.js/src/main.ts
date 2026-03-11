@@ -8,9 +8,9 @@ import { fileURLToPath } from "node:url"
 import * as L from "./lisp/index.ts"
 import {
   loadProject,
-  projectDump,
   projectCheck,
   projectClean,
+  projectDump,
   projectFromSourceFiles,
 } from "./project/index.ts"
 
