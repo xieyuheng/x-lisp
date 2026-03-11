@@ -7,8 +7,6 @@ import assert from "node:assert"
 import { fileURLToPath } from "node:url"
 import * as L from "./lisp/index.ts"
 import {
-  dependencyGraphCheck,
-  loadDependencyGraph,
   loadProject,
   projectBuild,
   projectCheck,
@@ -35,12 +33,12 @@ router.defineRoutes([
 
 router.defineHandlers({
   "module:check": ({ args: [file] }) => {
-    const dependencyGraph = loadDependencyGraph(file)
-    dependencyGraphCheck(dependencyGraph)
+    const dependencyGraph = L.loadDependencyGraph(file)
+    L.dependencyGraphCheck(dependencyGraph)
   },
 
   "module:interpret": ({ args: [file] }) => {
-    const dependencyGraph = loadDependencyGraph(file)
+    const dependencyGraph = L.loadDependencyGraph(file)
     const mod = L.loadMod(createUrl(file), dependencyGraph)
     const main = L.modLookupDefinition(mod, "main")
     if (main) {
@@ -50,7 +48,7 @@ router.defineHandlers({
   },
 
   "module:build": ({ args: [file] }) => {
-    const dependencyGraph = loadDependencyGraph(file)
+    const dependencyGraph = L.loadDependencyGraph(file)
     const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
     const project = projectFromSourceFiles(file, sourceFiles)
     projectBuild(project, dependencyGraph)

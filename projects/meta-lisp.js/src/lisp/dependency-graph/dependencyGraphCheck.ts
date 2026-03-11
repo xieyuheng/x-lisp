@@ -1,4 +1,4 @@
-import * as L from "../lisp/index.ts"
+import * as L from "../index.ts"
 
 export function dependencyGraphCheck(dependencyGraph: L.DependencyGraph): void {
   for (const mod of L.dependencyGraphMods(dependencyGraph)) {
