@@ -1,8 +1,8 @@
-import fs from "node:fs"
-import util from "node:util"
-import process from "node:process"
-import type { File } from "./File.ts"
 import assert from "node:assert"
+import fs from "node:fs"
+import process from "node:process"
+import util from "node:util"
+import type { File } from "./File.ts"
 
 export function fileWrite(file: File, text: string): void {
   const buffer = Buffer.from(text, "utf-8")
@@ -29,7 +29,6 @@ export function currentOutputFile() {
   return file
 }
 
-
 export function write(text: string): void {
   fileWrite(currentOutputFile(), text)
 }
@@ -40,4 +39,11 @@ export function print(x: any): void {
 
 export function println(x: any): void {
   filePrintln(currentOutputFile(), x)
+}
+
+export function withOutputToFile<A>(file: File, f: () => A): A {
+  outputFiles.push(file)
+  const result = f()
+  outputFiles.pop()
+  return result
 }
