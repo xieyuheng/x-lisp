@@ -37,11 +37,20 @@ export function dependencyGraphFiles(
   return mods.map((mod) => mod.path)
 }
 
+export function dependencyGraphForEachMod(
+  dependencyGraph: DependencyGraph,
+  callback: (mod: L.Mod) => void,
+): void {
+  for (const mod of dependencyGraph.dependencies.values()) {
+    callback(mod)
+  }
+}
+
 export function dependencyGraphForEachDefinition(
   dependencyGraph: DependencyGraph,
   callback: (definition: L.Definition) => void,
 ): void {
-  for (const mod of dependencyGraphMods(dependencyGraph)) {
+  L.dependencyGraphForEachMod(dependencyGraph, (mod) => {
     L.modForEachOwnDefinition(mod, callback)
-  }
+  })
 }
