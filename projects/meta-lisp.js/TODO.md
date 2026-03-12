@@ -1,3 +1,5 @@
+`project:test-by-interpreter` command -- capture `console.log` to file
+
 # type system
 
 more tests from "8 Polymorphic Type-checking"

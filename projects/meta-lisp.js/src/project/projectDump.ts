@@ -15,11 +15,6 @@ export function projectDump(
 ): void {
   for (const id of projectSourceIds(project)) {
     const file = projectGetSourceFile(project, id)
-    L.loadMod(createUrl(file), dependencyGraph)
-  }
-
-  for (const id of projectSourceIds(project)) {
-    const file = projectGetSourceFile(project, id)
     const mod = L.loadMod(createUrl(file), dependencyGraph)
     dumpCode("001-loaded", L.prettyModDefinitions(textWidth, mod), file)
   }

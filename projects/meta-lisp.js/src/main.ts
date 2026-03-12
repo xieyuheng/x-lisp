@@ -3,7 +3,6 @@
 import * as cmd from "@xieyuheng/cmd.js"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { createUrl } from "@xieyuheng/helpers.js/url"
-import assert from "node:assert"
 import { fileURLToPath } from "node:url"
 import * as L from "./lisp/index.ts"
 import {
@@ -12,6 +11,7 @@ import {
   projectClean,
   projectDump,
   projectFromSourceFiles,
+  projectTestByInterpreter,
 } from "./project/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
@@ -26,6 +26,7 @@ router.defineRoutes([
   "project:check --config",
   "project:dump --config",
   // "project:test --config",
+  "project:test-by-interpreter --config",
   "project:clean --config",
 ])
 
@@ -50,11 +51,7 @@ router.defineHandlers({
     const dependencyGraph = L.createDependencyGraph()
     const mod = L.loadMod(createUrl(file), dependencyGraph)
     L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
-    const main = L.modLookupDefinition(mod, "main")
-    if (main) {
-      assert(main.kind === "FunctionDefinition")
-      L.evaluate(mod, L.emptyEnv(), main.body)
-    }
+    L.modEvaluateMainIfExists(mod)
   },
 
   "project:check": ({ options }) => {
@@ -67,6 +64,12 @@ router.defineHandlers({
     const dependencyGraph = L.createDependencyGraph()
     const project = loadProject(options["--config"])
     projectDump(project, dependencyGraph)
+  },
+
+  "project:test-by-interpreter": ({ options }) => {
+    const dependencyGraph = L.createDependencyGraph()
+    const project = loadProject(options["--config"])
+    projectTestByInterpreter(project, dependencyGraph)
   },
 
   "project:clean": ({ options }) => {
