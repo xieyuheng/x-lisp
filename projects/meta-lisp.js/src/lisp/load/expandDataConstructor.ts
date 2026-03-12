@@ -3,7 +3,7 @@ import * as L from "../index.ts"
 export function expandDataConstructor(
   mod: L.Mod,
   definition: L.DatatypeDefinition,
-  ctor: L.DataConstructorSpec,
+  ctor: L.DataConstructor,
 ): void {
   mod.exempted.add(ctor.name)
 

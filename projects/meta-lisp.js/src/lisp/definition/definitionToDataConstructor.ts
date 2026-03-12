@@ -2,7 +2,7 @@ import * as L from "../index.ts"
 
 export function definitionToDataConstructor(
   definition: L.Definition,
-): L.DataConstructorSpec | undefined {
+): L.DataConstructor | undefined {
   for (const ownDefinition of L.modOwnDefinitions(definition.mod)) {
     if (ownDefinition.kind === "DatatypeDefinition") {
       for (const dataConstructor of ownDefinition.dataConstructors) {

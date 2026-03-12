@@ -119,17 +119,17 @@ export type DatatypeDefinition = {
   kind: "DatatypeDefinition"
   mod: Mod
   name: string
-  datatypeConstructor: DatatypeConstructorSpec
-  dataConstructors: Array<DataConstructorSpec>
+  datatypeConstructor: DatatypeConstructor
+  dataConstructors: Array<DataConstructor>
   meta?: TokenMeta
 } & DefinitionState
 
-export type DatatypeConstructorSpec = {
+export type DatatypeConstructor = {
   name: string
   parameters: Array<string>
 }
 
-export type DataConstructorSpec = {
+export type DataConstructor = {
   name: string
   fields: Array<DataField>
 }
@@ -142,8 +142,8 @@ export type DataField = {
 export function DatatypeDefinition(
   mod: Mod,
   name: string,
-  datatypeConstructor: DatatypeConstructorSpec,
-  dataConstructors: Array<DataConstructorSpec>,
+  datatypeConstructor: DatatypeConstructor,
+  dataConstructors: Array<DataConstructor>,
   meta?: TokenMeta,
 ): DatatypeDefinition {
   return {

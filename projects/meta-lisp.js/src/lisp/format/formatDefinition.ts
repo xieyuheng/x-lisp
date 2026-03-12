@@ -49,7 +49,7 @@ export function formatDefinition(definition: Definition): string {
   }
 }
 
-function formatDataConstructor(dataConstructor: L.DataConstructorSpec): string {
+function formatDataConstructor(dataConstructor: L.DataConstructor): string {
   const fields = dataConstructor.fields
     .map((field) => `(${field.name} ${formatExp(field.type)})`)
     .join(" ")

@@ -1,14 +1,15 @@
 # pattern match
 
-`simplifyMatch`
+`DataConstructor` has `DatatypeDefinition`
+`DatatypeConstructor` has `DatatypeDefinition`
 
-`Which` as `Exp`
-parse `(which)`
+`simplifyMatch` -- `groupClauseByHeadDataConstructor`
+`simplifyMatch` -- `groupClauseByHeadPatternKind`
 
-`translateMatchToWhich`
-`translateWhichToCond`
+`simplifyMatch` -- avoid evaluating `targets` many times by `Let1`
+`simplifyMatch` -- compile to `Cond` instead of `Match`
 
-`desugar` -- handle `Match`
+`desugar` -- call `simplifyMatch` to handle `Match`
 
 # type system
 

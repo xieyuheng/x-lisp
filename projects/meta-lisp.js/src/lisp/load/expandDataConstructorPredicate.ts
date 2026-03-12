@@ -3,7 +3,7 @@ import * as L from "../index.ts"
 export function expandDataConstructorPredicate(
   mod: L.Mod,
   definition: L.DatatypeDefinition,
-  ctor: L.DataConstructorSpec,
+  ctor: L.DataConstructor,
 ): void {
   const name = `${ctor.name}?`
 

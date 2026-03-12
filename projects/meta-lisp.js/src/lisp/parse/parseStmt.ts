@@ -103,7 +103,7 @@ export const parseStmt = S.createRouter<L.Stmt>({
   },
 })
 
-const parseDataPredicate = S.createRouter<L.DatatypeConstructorSpec>({
+const parseDataPredicate = S.createRouter<L.DatatypeConstructor>({
   "(cons* name parameters)": ({ name, parameters }, { meta }) => {
     return {
       name: S.symbolContent(name),
@@ -119,7 +119,7 @@ const parseDataPredicate = S.createRouter<L.DatatypeConstructorSpec>({
   },
 })
 
-const parseDataConstructor = S.createRouter<L.DataConstructorSpec>({
+const parseDataConstructor = S.createRouter<L.DataConstructor>({
   "(cons* name fields)": ({ name, fields }, { meta }) => {
     return {
       name: S.symbolContent(name),

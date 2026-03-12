@@ -23,7 +23,7 @@ function isDataConstructorName(mod: L.Mod, name: string): boolean {
 function findDataConstructor(
   mod: L.Mod,
   name: string,
-): L.DataConstructorSpec | undefined {
+): L.DataConstructor | undefined {
   const definition = L.modLookupDefinition(mod, name)
   return definition && L.definitionToDataConstructor(definition)
 }
@@ -58,7 +58,7 @@ export function isDataPattern(mod: L.Mod, exp: L.Exp): boolean {
 
 export function createDataPattern(
   mod: L.Mod,
-  dataConstructor: L.DataConstructorSpec,
+  dataConstructor: L.DataConstructor,
   args: Array<L.Exp>,
 ): L.Exp {
   assert(isDataConstructorName(mod, dataConstructor.name))
@@ -68,7 +68,7 @@ export function createDataPattern(
 export function dataPatternDataConstructor(
   mod: L.Mod,
   exp: L.Exp,
-): L.DataConstructorSpec {
+): L.DataConstructor {
   assert(isDataPattern(mod, exp))
 
   if (exp.kind === "Var") {
