@@ -2,7 +2,6 @@
 
 import * as cmd from "@xieyuheng/cmd.js"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
-import { createUrl } from "@xieyuheng/helpers.js/url"
 import { fileURLToPath } from "node:url"
 import * as L from "./lisp/index.ts"
 import {
@@ -33,7 +32,7 @@ router.defineRoutes([
 router.defineHandlers({
   "module:check": ({ args: [file] }) => {
     const dependencyGraph = L.createDependencyGraph()
-    L.loadMod(createUrl(file), dependencyGraph)
+    L.loadMod(file, dependencyGraph)
     const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
     const project = projectFromSourceFiles(file, sourceFiles)
     projectCheck(project, dependencyGraph)
@@ -41,7 +40,7 @@ router.defineHandlers({
 
   "module:dump": ({ args: [file] }) => {
     const dependencyGraph = L.createDependencyGraph()
-    L.loadMod(createUrl(file), dependencyGraph)
+    L.loadMod(file, dependencyGraph)
     const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
     const project = projectFromSourceFiles(file, sourceFiles)
     projectDump(project, dependencyGraph)
@@ -49,7 +48,7 @@ router.defineHandlers({
 
   "module:interpret": ({ args: [file] }) => {
     const dependencyGraph = L.createDependencyGraph()
-    const mod = L.loadMod(createUrl(file), dependencyGraph)
+    const mod = L.loadMod(file, dependencyGraph)
     L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
     L.modEvaluateMainIfExists(mod)
   },

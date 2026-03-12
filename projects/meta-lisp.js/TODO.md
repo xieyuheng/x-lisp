@@ -1,5 +1,3 @@
-`Mod` has `path` instead of `url`
-
 `project:test-by-interpreter` command -- capture output of builtin function
 `project:check` command -- capture output of type check report -- improve `snapshot-type-error.sh`
 

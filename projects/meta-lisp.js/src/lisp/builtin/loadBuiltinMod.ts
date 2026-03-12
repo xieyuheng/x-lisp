@@ -1,10 +1,9 @@
 import {
   callWithFile,
-  fileOpenForRead,
   fileRead,
+  openInputFile,
 } from "@xieyuheng/helpers.js/file"
-import { createUrl } from "@xieyuheng/helpers.js/url"
-import path from "node:path"
+import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as L from "../index.ts"
 import { builtinAssert } from "./builtinAssert.ts"
@@ -24,15 +23,14 @@ import { builtinType } from "./builtinType.ts"
 import { builtinValue } from "./builtinValue.ts"
 import { builtinVoid } from "./builtinVoid.ts"
 
-const currentDir = path.dirname(fileURLToPath(import.meta.url))
-const filePath = path.join(currentDir, "../../../lisp/builtin/index.lisp")
-const url = createUrl(filePath)
+const currentDir = Path.dirname(fileURLToPath(import.meta.url))
+const path = Path.join(currentDir, "../../../lisp/builtin/index.lisp")
 
 export function loadBuiltinMod(dependencyGraph: L.DependencyGraph): L.Mod {
-  const found = L.dependencyGraphLookupMod(dependencyGraph, url)
+  const found = L.dependencyGraphLookupMod(dependencyGraph, path)
   if (found !== undefined) return found
 
-  const mod = L.createMod(url, dependencyGraph)
+  const mod = L.createMod(path, dependencyGraph)
   L.dependencyGraphAddMod(dependencyGraph, mod)
 
   builtinInt(mod)
@@ -52,7 +50,7 @@ export function loadBuiltinMod(dependencyGraph: L.DependencyGraph): L.Mod {
   builtinError(mod)
   builtinType(mod)
 
-  callWithFile(fileOpenForRead(filePath), (file) => {
+  callWithFile(openInputFile(path), (file) => {
     const code = fileRead(file)
     L.prepareCode(mod, code)
   })

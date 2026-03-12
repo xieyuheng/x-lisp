@@ -45,8 +45,8 @@ const parseExp: S.Router<Exp> = S.createRouter<Exp>({
 const keywords = ["lambda", "let"]
 
 function assertParse(text: string, exp: Exp): void {
-  const url = new URL("test:lambda")
-  assert.deepStrictEqual(parseExp(S.parseSexp(text, { url })), exp)
+  const path = "test:lambda"
+  assert.deepStrictEqual(parseExp(S.parseSexp(text, { path })), exp)
 }
 
 test("examples/lambda", () => {
@@ -69,8 +69,8 @@ test("examples/lambda", () => {
 
 function assertErrorWithMeta(text: string): void {
   try {
-    const url = new URL("test:lambda")
-    parseExp(S.parseSexp(text, { url }))
+    const path = "test:lambda"
+    parseExp(S.parseSexp(text, { path }))
   } catch (error) {
     console.log(errorReport(error))
   }

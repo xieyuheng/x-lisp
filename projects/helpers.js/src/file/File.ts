@@ -4,13 +4,13 @@ export type File = {
   fd: number
 }
 
-export function fileOpenForRead(path: string): File {
+export function openInputFile(path: string): File {
   return {
     fd: fs.openSync(path, "r"),
   }
 }
 
-export function fileOpenForWrite(path: string): File {
+export function openOutputFile(path: string): File {
   return {
     fd: fs.openSync(path, "w"),
   }

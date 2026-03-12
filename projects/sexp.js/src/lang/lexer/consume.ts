@@ -18,7 +18,7 @@ export function consume(lexer: Lexer): Token | undefined {
         meta: {
           span: { start, end },
           text: lexer.text,
-          url: lexer.url,
+          path: lexer.path,
         },
       }
     }

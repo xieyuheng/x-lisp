@@ -1,4 +1,4 @@
-import { urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
+import { pathRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
@@ -95,6 +95,6 @@ function reportUnclaimedDefinition(definition: L.Definition): string {
   if (definition.meta) {
     return S.tokenMetaReport(definition.meta, errorMessage)
   } else {
-    return `${urlRelativeToCwd(definition.mod.url)} -- ${errorMessage}`
+    return `${pathRelativeToCwd(definition.mod.path)} -- ${errorMessage}`
   }
 }

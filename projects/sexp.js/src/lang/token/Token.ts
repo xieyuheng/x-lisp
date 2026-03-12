@@ -12,7 +12,7 @@ export type TokenKind =
 export type TokenMeta = {
   span: Span
   text: string
-  url?: URL
+  path?: string
 }
 
 export type Token = {

@@ -1,9 +1,8 @@
 import {
   callWithFile,
-  fileOpenForWrite,
   fileWrite,
+  openOutputFile,
 } from "@xieyuheng/helpers.js/file"
-import { createUrl } from "@xieyuheng/helpers.js/url"
 import { textWidth } from "../config.ts"
 import * as L from "../lisp/index.ts"
 import {
@@ -19,7 +18,7 @@ export function projectDump(
 ): void {
   for (const id of projectSourceIds(project)) {
     const file = projectGetSourceFile(project, id)
-    const mod = L.loadMod(createUrl(file), dependencyGraph)
+    const mod = L.loadMod(file, dependencyGraph)
     dumpCode("001-loaded", L.prettyModDefinitions(textWidth, mod), file)
   }
 
@@ -27,7 +26,7 @@ export function projectDump(
 
   for (const id of projectSourceIds(project)) {
     const file = projectGetSourceFile(project, id)
-    const mod = L.loadMod(createUrl(file), dependencyGraph)
+    const mod = L.loadMod(file, dependencyGraph)
     dumpCode("002-desugared", L.prettyModDefinitions(textWidth, mod), file)
   }
 
@@ -35,14 +34,14 @@ export function projectDump(
 
   for (const id of projectSourceIds(project)) {
     const file = projectGetSourceFile(project, id)
-    const mod = L.loadMod(createUrl(file), dependencyGraph)
+    const mod = L.loadMod(file, dependencyGraph)
     dumpCode("003-checked", L.prettyModDefinitions(textWidth, mod), file)
   }
 }
 
 function dumpCode(tag: string, code: string, file: string): void {
   logFile(tag, file)
-  callWithFile(fileOpenForWrite(`${file}.${tag}.dump`), (file) => {
+  callWithFile(openOutputFile(`${file}.${tag}.dump`), (file) => {
     fileWrite(file, code)
   })
 }

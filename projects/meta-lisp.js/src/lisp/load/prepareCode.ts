@@ -6,7 +6,7 @@ import { handleExport as prepareExport } from "./prepareExport.ts"
 import { handleImport as prepareImport } from "./prepareImport.ts"
 
 export function prepareCode(mod: L.Mod, code: string): void {
-  const sexps = S.parseSexps(code, { url: mod.url })
+  const sexps = S.parseSexps(code, { path: mod.path })
   const stmts = sexps.map(L.parseStmt)
   mod.stmts.push(...stmts)
 

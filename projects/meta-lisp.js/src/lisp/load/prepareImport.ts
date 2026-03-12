@@ -1,4 +1,4 @@
-import { urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
+import { pathRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 
@@ -90,8 +90,8 @@ function checkUndefinedNames(
   if (undefinedNames.length === 0) return
 
   let message = `[checkUndefinedNames] found undefined names during importing`
-  message += `\n  mod: ${urlRelativeToCwd(mod.url)}`
-  message += `\n  importing from mod: ${urlRelativeToCwd(importedMod.url)}`
+  message += `\n  mod: ${pathRelativeToCwd(mod.path)}`
+  message += `\n  importing from mod: ${pathRelativeToCwd(importedMod.path)}`
   message += `\n  undefined names: [${undefinedNames.join(" ")}]`
   if (meta) throw new S.ErrorWithMeta(message, meta)
   else throw new Error(message)

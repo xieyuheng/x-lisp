@@ -31,7 +31,7 @@ export class StringConsumer implements Consumer {
     throw new ErrorWithMeta(message, {
       span: { start, end },
       text: lexer.text,
-      url: lexer.url,
+      path: lexer.path,
     })
   }
 }

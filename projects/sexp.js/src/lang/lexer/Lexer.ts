@@ -7,11 +7,11 @@ import { consume } from "./consume.ts"
 export class Lexer {
   position = initPosition()
   text: string = ""
-  url?: URL
+  path?: string
 
   lex(text: string, meta: ParserMeta = {}): Array<Token> {
     this.text = text
-    this.url = meta.url
+    this.path = meta.path
     this.position = initPosition()
 
     const tokens: Array<Token> = []

@@ -9,7 +9,7 @@ import { type Token } from "../token/index.ts"
 type Result = { sexp: Sexp; remain: Array<Token> }
 
 export type ParserMeta = {
-  url?: URL
+  path?: string
 }
 
 export class Parser {

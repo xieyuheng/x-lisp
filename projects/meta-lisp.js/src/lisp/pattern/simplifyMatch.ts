@@ -66,8 +66,8 @@ export function simplifyMatch(
         assert(datatypeDefinition)
 
         const path = Path.relative(
-          Path.dirname(mod.url.pathname),
-          datatypeDefinition.mod.url.pathname,
+          Path.dirname(mod.path),
+          datatypeDefinition.mod.path,
         )
 
         const dataConstructorPredicate =

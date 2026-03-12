@@ -81,8 +81,8 @@ function replHandleLine(repl: Repl, line: string) {
 
     case "Perfect": {
       try {
-        const url = new URL(`repl:${++repl.count}`)
-        const sexps = repl.parser.parse(repl.text, { url })
+        const path = `repl:${++repl.count}`
+        const sexps = repl.parser.parse(repl.text, { path })
         repl.onSexps(sexps)
         replPrompt(repl)
       } catch (error) {

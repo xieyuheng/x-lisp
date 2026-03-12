@@ -12,16 +12,16 @@ export function createDependencyGraph(): DependencyGraph {
 
 export function dependencyGraphLookupMod(
   dependencyGraph: DependencyGraph,
-  url: URL,
+  path: string,
 ): L.Mod | undefined {
-  return dependencyGraph.dependencies.get(url.href)
+  return dependencyGraph.dependencies.get(path)
 }
 
 export function dependencyGraphAddMod(
   dependencyGraph: DependencyGraph,
   mod: L.Mod,
 ): void {
-  dependencyGraph.dependencies.set(mod.url.href, mod)
+  dependencyGraph.dependencies.set(mod.path, mod)
 }
 
 export function dependencyGraphMods(
@@ -34,7 +34,7 @@ export function dependencyGraphFiles(
   dependencyGraph: DependencyGraph,
 ): Array<string> {
   const mods = dependencyGraphMods(dependencyGraph)
-  return mods.map((mod) => mod.url.pathname)
+  return mods.map((mod) => mod.path)
 }
 
 export function dependencyGraphForEachDefinition(

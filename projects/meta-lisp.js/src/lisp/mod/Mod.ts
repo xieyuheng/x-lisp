@@ -1,4 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
+import Path from "node:path"
 import { type Definition } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 import * as L from "../index.ts"
@@ -11,7 +12,7 @@ export type ClaimedEntry = {
 }
 
 export type Mod = {
-  url: URL
+  path: string
   stmts: Array<Stmt>
   exported: Set<string>
   exempted: Set<string>
@@ -21,9 +22,12 @@ export type Mod = {
   dependencyGraph: L.DependencyGraph
 }
 
-export function createMod(url: URL, dependencyGraph: L.DependencyGraph): Mod {
+export function createMod(
+  path: string,
+  dependencyGraph: L.DependencyGraph,
+): Mod {
   return {
-    url,
+    path: Path.resolve(path),
     stmts: [],
     exported: new Set(),
     exempted: new Set(),

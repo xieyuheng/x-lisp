@@ -1,4 +1,4 @@
-import { urlRelativeToCwd } from "@xieyuheng/helpers.js/url"
+import { pathRelativeToCwd } from "@xieyuheng/helpers.js/url"
 import { spanReport, type Position } from "../span/index.ts"
 import { type TokenMeta } from "./Token.ts"
 
@@ -8,8 +8,8 @@ export function tokenMetaReport(
 ): string {
   let message = ""
   const context = spanReport(meta.span, meta.text)
-  if (meta.url) {
-    message += urlRelativeToCwd(meta.url)
+  if (meta.path) {
+    message += pathRelativeToCwd(meta.path)
     message += ":"
     message += formatPosition(meta.span.start)
     if (errorMessage) {
