@@ -1,5 +1,9 @@
+import {
+  callWithFile,
+  fileOpenForRead,
+  fileRead,
+} from "@xieyuheng/helpers.js/file"
 import { createUrl } from "@xieyuheng/helpers.js/url"
-import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as L from "../index.ts"
@@ -21,8 +25,8 @@ import { builtinValue } from "./builtinValue.ts"
 import { builtinVoid } from "./builtinVoid.ts"
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url))
-const file = path.join(currentDir, "../../../lisp/builtin/index.lisp")
-const url = createUrl(file)
+const filePath = path.join(currentDir, "../../../lisp/builtin/index.lisp")
+const url = createUrl(filePath)
 
 export function loadBuiltinMod(dependencyGraph: L.DependencyGraph): L.Mod {
   const found = L.dependencyGraphLookupMod(dependencyGraph, url)
@@ -48,8 +52,10 @@ export function loadBuiltinMod(dependencyGraph: L.DependencyGraph): L.Mod {
   builtinError(mod)
   builtinType(mod)
 
-  const code = fs.readFileSync(file, "utf-8")
-  L.prepareCode(mod, code)
+  callWithFile(fileOpenForRead(filePath), (file) => {
+    const code = fileRead(file)
+    L.prepareCode(mod, code)
+  })
 
   return mod
 }

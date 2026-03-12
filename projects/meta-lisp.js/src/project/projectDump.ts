@@ -1,5 +1,9 @@
+import {
+  callWithFile,
+  fileOpenForWrite,
+  fileWrite,
+} from "@xieyuheng/helpers.js/file"
 import { createUrl } from "@xieyuheng/helpers.js/url"
-import fs from "node:fs"
 import { textWidth } from "../config.ts"
 import * as L from "../lisp/index.ts"
 import {
@@ -38,5 +42,7 @@ export function projectDump(
 
 function dumpCode(tag: string, code: string, file: string): void {
   logFile(tag, file)
-  fs.writeFileSync(`${file}.${tag}.dump`, code)
+  callWithFile(fileOpenForWrite(`${file}.${tag}.dump`), (file) => {
+    fileWrite(file, code)
+  })
 }

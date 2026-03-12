@@ -1,5 +1,9 @@
+import {
+  callWithFile,
+  fileOpenForRead,
+  fileRead,
+} from "@xieyuheng/helpers.js/file"
 import assert from "node:assert"
-import fs from "node:fs"
 import * as L from "../index.ts"
 
 export function loadMod(url: URL, dependencyGraph: L.DependencyGraph): L.Mod {
@@ -15,7 +19,11 @@ export function loadMod(url: URL, dependencyGraph: L.DependencyGraph): L.Mod {
   }
 
   assert(url.protocol === "file:")
-  const code = fs.readFileSync(url.pathname, "utf8")
-  L.prepareCode(mod, code)
+
+  callWithFile(fileOpenForRead(url.pathname), (file) => {
+    const code = fileRead(file)
+    L.prepareCode(mod, code)
+  })
+
   return mod
 }

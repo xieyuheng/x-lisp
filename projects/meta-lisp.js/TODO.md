@@ -1,4 +1,4 @@
-quit using `node:fs`
+[builtin] rename console to file
 
 `Mod` has `path` instead of `url`
 

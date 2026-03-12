@@ -1,8 +1,14 @@
-import fs from "node:fs"
+import {
+  callWithFile,
+  fileOpenForRead,
+  fileRead,
+} from "@xieyuheng/helpers.js/file"
 import { type ProjectConfig, ProjectConfigSchema } from "./ProjectConfig.ts"
 
 export function loadProjectConfig(file: string): ProjectConfig {
-  const text = fs.readFileSync(file, "utf8")
-  const data = JSON.parse(text)
-  return ProjectConfigSchema.parse(data)
+  return callWithFile(fileOpenForRead(file), (file) => {
+    const text = fileRead(file)
+    const data = JSON.parse(text)
+    return ProjectConfigSchema.parse(data)
+  })
 }

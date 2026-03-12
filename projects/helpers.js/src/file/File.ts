@@ -19,3 +19,9 @@ export function fileOpenForWrite(path: string): File {
 export function fileClose(file: File): void {
   fs.closeSync(file.fd)
 }
+
+export function callWithFile<A>(file: File, f: (file: File) => A): A {
+  const result = f(file)
+  fileClose(file)
+  return result
+}
