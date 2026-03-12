@@ -1,3 +1,4 @@
+import { writeln } from "@xieyuheng/helpers.js/file"
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
@@ -25,7 +26,7 @@ export function definitionCheck(definition: L.Definition): null {
     case "PrimitiveVariableDefinition": {
       const type = L.modLookupClaimedType(mod, name)
       if (!type) {
-        console.log(reportUnclaimedDefinition(definition))
+        writeln(reportUnclaimedDefinition(definition))
         return null
       }
 
@@ -64,7 +65,7 @@ function checkClaimedType(mod: L.Mod, exp: L.Exp, type: L.Value): void {
   const effect = L.typeCheckAssignable(mod, L.emptyCtx(), exp, type)
   const result = effect(L.emptySubst())
   if (result.kind === "CheckError") {
-    console.log(reportTypeCheckError(result.exp, result.message))
+    writeln(reportTypeCheckError(result.exp, result.message))
   }
 }
 
@@ -72,7 +73,7 @@ function checkByInfer(mod: L.Mod, name: string, exp: L.Exp): void {
   const effect = L.typeInfer(mod, L.emptyCtx(), exp)
   const result = effect(L.emptySubst())
   if (result.kind === "InferError") {
-    console.log(reportTypeCheckError(result.exp, result.message))
+    writeln(reportTypeCheckError(result.exp, result.message))
   } else {
     let inferredType = L.substApplyToType(result.subst, result.type)
     inferredType = L.typeGeneralizeInCtx(L.emptyCtx(), inferredType)

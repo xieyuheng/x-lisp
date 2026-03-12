@@ -12,13 +12,17 @@ export function fileWrite(file: File, text: string): void {
   }
 }
 
+export function fileWriteln(file: File, text: string): void {
+  fileWrite(file, text)
+  fileWrite(file, "\n")
+}
+
 export function filePrint(file: File, x: any): void {
   fileWrite(file, util.inspect(x))
 }
 
 export function filePrintln(file: File, x: any): void {
-  fileWrite(file, util.inspect(x))
-  fileWrite(file, "\n")
+  fileWriteln(file, util.inspect(x))
 }
 
 const outputFiles: Array<File> = [{ fd: process.stdout.fd }]
@@ -31,6 +35,10 @@ export function currentOutputFile() {
 
 export function write(text: string): void {
   fileWrite(currentOutputFile(), text)
+}
+
+export function writeln(text: string): void {
+  fileWriteln(currentOutputFile(), text)
 }
 
 export function print(x: any): void {
