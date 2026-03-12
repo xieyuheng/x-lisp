@@ -6,9 +6,9 @@
     0
     (if ((@require "my-list.lisp" li?) list)
       (begin
-        (= tail₁ ((@require "my-list.lisp" li-tail) list))
-        (= head₁ ((@require "my-list.lisp" li-head) list))
-        (= tail tail₁)
-        (= head head₁)
+        (= tail₂ ((@require "my-list.lisp" li-tail) list))
+        (= head₂ ((@require "my-list.lisp" li-head) list))
+        (= tail tail₂)
+        (= head head₂)
         (iadd 1 (my-list-length tail)))
       (error "cond mismatch"))))

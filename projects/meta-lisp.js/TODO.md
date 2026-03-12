@@ -1,4 +1,7 @@
-`project:test-by-interpreter` command -- capture `console.log` to file
+setup `lisp/devices`
+
+`project:test-by-interpreter` command -- capture output of builtin function
+`project:check` command -- capture output of type check report -- improve `snapshot-type-error.sh`
 
 # type system
 
