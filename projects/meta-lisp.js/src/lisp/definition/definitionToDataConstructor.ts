@@ -16,6 +16,22 @@ export function definitionToDataConstructor(
   return undefined
 }
 
+export function definitionToDatatypeDefinition(
+  definition: L.Definition,
+): L.DatatypeDefinition | undefined {
+  for (const ownDefinition of L.modOwnDefinitions(definition.mod)) {
+    if (ownDefinition.kind === "DatatypeDefinition") {
+      for (const dataConstructor of ownDefinition.dataConstructors) {
+        if (dataConstructor.name === definition.name) {
+          return ownDefinition
+        }
+      }
+    }
+  }
+
+  return undefined
+}
+
 export function definitionIsDataConstructor(definition: L.Definition): boolean {
   return Boolean(definitionToDataConstructor(definition))
 }

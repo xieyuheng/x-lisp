@@ -1,12 +1,5 @@
 # pattern match
 
-`Which` as `Exp`
-parse `(which)`
-
-`simplifyMatch` -- compile to `Which` instead of `Match`
-
-`simplifyMatch` -- avoid evaluating `targets` many times by `Let1`
-
 `desugar` -- call `simplifyMatch` to handle `Match`
 
 # pattern match

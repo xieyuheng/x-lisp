@@ -1,5 +1,7 @@
+import { range } from "@xieyuheng/helpers.js/range"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
+import Path from "node:path"
 import * as L from "../index.ts"
 
 export function simplifyMatch(
@@ -50,33 +52,86 @@ export function simplifyMatch(
   if (clauses.every((clause) => clauseHeadIsDataPattern(mod, clause))) {
     const [target, ...restTargets] = targets
     const groups = groupClausesByHeadDataConstructor(mod, clauses)
-    return L.Match(
-      [target],
+    return L.Cond(
       groups.map((group) => {
         const freshVars = group.dataConstructor.fields.map((field) =>
           L.createFreshVar(field.name, meta),
         )
-        return L.MatchClause(
-          [L.createDataPattern(mod, group.dataConstructor, freshVars)],
-          simplifyMatch(
+
+        const datatypeDefinition =
+          L.modFindDatatypeDefinitionFromDataConstructor(
             mod,
-            [...freshVars, ...restTargets],
-            group.clauses,
-            defaultExp,
-            meta,
-          ),
+            group.dataConstructor.name,
+          )
+        assert(datatypeDefinition)
+
+        const path = Path.relative(
+          mod.url.pathname,
+          datatypeDefinition.mod.url.pathname,
+        )
+
+        const question = L.Apply(
+          L.Require(path, `${group.dataConstructor.name}?`, meta),
+          [target],
+        )
+
+        let answer = simplifyMatch(
+          mod,
+          [...freshVars, ...restTargets],
+          group.clauses,
+          defaultExp,
           meta,
         )
+
+        for (const i of range(group.dataConstructor.fields.length)) {
+          const field = group.dataConstructor.fields[i]
+          answer = L.Let1(
+            freshVars[i].name,
+            L.Apply(
+              L.Require(
+                path,
+                `${group.dataConstructor.name}-${field.name}`,
+                answer.meta,
+              ),
+              [target],
+              answer.meta,
+            ),
+            answer,
+            answer.meta,
+          )
+        }
+
+        return L.CondClause(question, answer, meta)
       }),
       meta,
     )
+
+    // return L.Match(
+    //   [target],
+    //   groups.map((group) => {
+    //     const freshVars = group.dataConstructor.fields.map((field) =>
+    //       L.createFreshVar(field.name, meta),
+    //     )
+    //     return L.MatchClause(
+    //       [L.createDataPattern(mod, group.dataConstructor, freshVars)],
+    //       simplifyMatch(
+    //         mod,
+    //         [...freshVars, ...restTargets],
+    //         group.clauses,
+    //         defaultExp,
+    //         meta,
+    //       ),
+    //       meta,
+    //     )
+    //   }),
+    //   meta,
+    // )
   }
 
   const groups = groupClausesByHeadPatternKind(mod, clauses)
   return groups.reduce(
     (accumulatedExp, group) =>
       simplifyMatch(mod, targets, group, accumulatedExp, meta),
-
     defaultExp,
   )
 }
