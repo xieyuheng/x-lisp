@@ -1,5 +1,5 @@
-import Path from "node:path"
+import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 
-export function logFile(tag: string, file: string): void {
-  console.log(`[${tag}] ${Path.relative(process.cwd(), file)}`)
+export function logPath(tag: string, path: string): void {
+  console.log(`[${tag}] ${pathRelativeToCwd(path)}`)
 }

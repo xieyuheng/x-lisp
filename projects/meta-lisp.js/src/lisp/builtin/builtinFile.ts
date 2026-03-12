@@ -1,4 +1,4 @@
-import process from "node:process"
+import { write } from "@xieyuheng/helpers.js/file"
 import { definePrimitiveFunction, provide } from "../define/index.ts"
 import { formatValue } from "../format/formatValue.ts"
 import { type Mod } from "../mod/index.ts"
@@ -8,23 +8,23 @@ export function builtinFile(mod: Mod) {
   provide(mod, ["print", "write", "newline"])
 
   definePrimitiveFunction(mod, "print", 1, (value) => {
-    process.stdout.write(formatValue(value))
+    write(formatValue(value))
     return Values.VoidValue()
   })
 
   definePrimitiveFunction(mod, "println", 1, (value) => {
-    process.stdout.write(formatValue(value))
-    process.stdout.write("\n")
+    write(formatValue(value))
+    write("\n")
     return Values.VoidValue()
   })
 
   definePrimitiveFunction(mod, "write", 1, (string) => {
-    process.stdout.write(Values.asStringValue(string).content)
+    write(Values.asStringValue(string).content)
     return Values.VoidValue()
   })
 
   definePrimitiveFunction(mod, "newline", 0, () => {
-    process.stdout.write("\n")
+    write("\n")
     return Values.VoidValue()
   })
 }

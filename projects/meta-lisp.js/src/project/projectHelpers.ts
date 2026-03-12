@@ -32,7 +32,7 @@ export function projectSourceIds(project: Project): Array<string> {
     .filter((file) => file.endsWith(L.suffix))
 }
 
-export function projectGetSourceFile(
+export function projectGetSourcePath(
   project: Project,
   sourceId: string,
 ): string {

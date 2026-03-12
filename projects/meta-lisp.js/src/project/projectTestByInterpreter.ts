@@ -1,8 +1,14 @@
 import { errorReport } from "@xieyuheng/helpers.js/error"
+import {
+  callWithFile,
+  fileWrite,
+  openOutputFile,
+  withOutputToFile,
+} from "@xieyuheng/helpers.js/file"
 import * as L from "../lisp/index.ts"
 import {
-  logFile,
-  projectGetSourceFile,
+  logPath,
+  projectGetSourcePath,
   projectSourceIds,
   type Project,
 } from "./index.ts"
@@ -12,7 +18,7 @@ export function projectTestByInterpreter(
   dependencyGraph: L.DependencyGraph,
 ): void {
   for (const id of projectSourceIds(project)) {
-    const file = projectGetSourceFile(project, id)
+    const file = projectGetSourcePath(project, id)
     L.loadMod(file, dependencyGraph)
   }
 
@@ -20,31 +26,35 @@ export function projectTestByInterpreter(
 
   for (const id of projectSourceIds(project)) {
     if (id.endsWith(".test" + L.suffix)) {
-      const file = projectGetSourceFile(project, id)
-      const mod = L.loadMod(file, dependencyGraph)
-      logFile("interpreter-test", file)
+      const path = projectGetSourcePath(project, id)
+      const mod = L.loadMod(path, dependencyGraph)
+      logPath("interpreter-test", path)
       L.modEvaluateMainIfExists(mod)
     }
 
     if (id.endsWith(".snapshot" + L.suffix)) {
-      const file = projectGetSourceFile(project, id)
-      const mod = L.loadMod(file, dependencyGraph)
-      const outputFile = file + ".out"
-      logFile("interpreter-snapshot", outputFile)
-      L.modEvaluateMainIfExists(mod)
+      const path = projectGetSourcePath(project, id)
+      const mod = L.loadMod(path, dependencyGraph)
+      const outputPath = path + ".out"
+      logPath("interpreter-snapshot", outputPath)
+      callWithFile(openOutputFile(outputPath), (file) => {
+        withOutputToFile(file, () => L.modEvaluateMainIfExists(mod))
+      })
     }
 
     if (id.endsWith(".error" + L.suffix)) {
-      const file = projectGetSourceFile(project, id)
-      const mod = L.loadMod(file, dependencyGraph)
-      const outputFile = file + ".err"
-      logFile("interpreter-error-snapshot", outputFile)
-      try {
-        L.modEvaluateMainIfExists(mod)
-        throw new Error("[interpreter-error-snapshot] expecting error")
-      } catch (error) {
-        console.log(errorReport(error))
-      }
+      const path = projectGetSourcePath(project, id)
+      const mod = L.loadMod(path, dependencyGraph)
+      const outputPath = path + ".err"
+      logPath("interpreter-error-snapshot", outputPath)
+      callWithFile(openOutputFile(outputPath), (file) => {
+        try {
+          withOutputToFile(file, () => L.modEvaluateMainIfExists(mod))
+          throw new Error("[interpreter-error-snapshot] expecting error")
+        } catch (error) {
+          fileWrite(file, errorReport(error))
+        }
+      })
     }
   }
 }

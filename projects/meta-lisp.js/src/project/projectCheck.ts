@@ -1,6 +1,6 @@
 import * as L from "../lisp/index.ts"
 import {
-  projectGetSourceFile,
+  projectGetSourcePath,
   projectSourceIds,
   type Project,
 } from "./index.ts"
@@ -10,8 +10,8 @@ export function projectCheck(
   dependencyGraph: L.DependencyGraph,
 ): void {
   for (const id of projectSourceIds(project)) {
-    const file = projectGetSourceFile(project, id)
-    L.loadMod(file, dependencyGraph)
+    const path = projectGetSourcePath(project, id)
+    L.loadMod(path, dependencyGraph)
   }
 
   L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
