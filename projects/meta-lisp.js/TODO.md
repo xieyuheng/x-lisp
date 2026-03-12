@@ -1,11 +1,11 @@
 # pattern match
 
-`isVarPattern`
 `createVarPattern`
 `varPatternName`
 
-`isDataPattern`
 `createDataPattern`
+`dataPatternDataConstructor`
+`dataPatternArgPatterns`
 
 move `simplifyMatch` to `pattern`
 

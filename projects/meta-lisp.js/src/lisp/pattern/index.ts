@@ -1,2 +1,2 @@
-export * from "./simplifyMatch.ts"
 export * from "./Pattern.ts"
+export * from "./simplifyMatch.ts"
