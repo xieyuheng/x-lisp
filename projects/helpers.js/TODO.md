@@ -1,6 +1,3 @@
-[file] `filePrint(file, any)` -- call `util.inspect`
-[file] `filePrintln(file, any)`
-
 [file] `withOutputToFile`
 
 [file] `currentOutputFile`
