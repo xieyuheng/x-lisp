@@ -1,8 +1,6 @@
 # pattern match
 
-`dataPatternArgPatterns`
-
-move `simplifyMatch` to `pattern`
+`simplifyMatch`
 
 `Which` as `Exp`
 parse `(which)`

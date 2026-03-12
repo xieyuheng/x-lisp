@@ -81,8 +81,21 @@ export function dataPatternDataConstructor(
     const dataConstructor = findDataConstructor(mod, exp.target.name)
     assert(dataConstructor)
     return dataConstructor
-
   }
 
   throw new Error("[dataPatternDataConstructor] unhandled exp")
+}
+
+export function dataPatternArgPatterns(mod: L.Mod, exp: L.Exp): Array<L.Exp> {
+  assert(isDataPattern(mod, exp))
+
+  if (exp.kind === "Var") {
+    return []
+  }
+
+  if (exp.kind === "Apply" && exp.target.kind === "Var") {
+    return exp.args
+  }
+
+  throw new Error("[dataPatternArgPatterns] unhandled exp")
 }
