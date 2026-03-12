@@ -47,10 +47,24 @@ export function simplifyMatch(
     )
   }
 
-  // if (clauses.every((clause) => clauseHeadIsDataPattern(mod, clause))) {
-  //   const [target, ...restTargets] = targets
-  //   return L.Match([target], meta)
-  // }
+  if (clauses.every((clause) => clauseHeadIsDataPattern(mod, clause))) {
+    const [target, ...restTargets] = targets
+    const groups = groupClausesByHeadDataConstructor(mod, clauses)
+    return L.Match(
+      [target],
+      groups.map((group) => {
+        const freshVarPatterns = group.dataConstructor.fields.map(field => L.Var(field.name, meta))
+        const newPattern = L.createDataPattern(mod, group.dataConstructor, freshVarPatterns)
+        const newTargets = [...freshVarPatterns, ...restTargets]
+        return L.MatchClause(
+          [newPattern],
+          simplifyMatch(mod, newTargets, group.clauses, defaultExp, meta),
+          meta,
+        )
+      }),
+      meta,
+    )
+  }
 
   throw new Error(`[simplifyMatch] unhandled case`)
 }
@@ -61,4 +75,34 @@ function clauseHeadIsVarPattern(mod: L.Mod, clause: L.MatchClause): boolean {
 
 function clauseHeadIsDataPattern(mod: L.Mod, clause: L.MatchClause): boolean {
   return clause.patterns.length > 0 && L.isDataPattern(mod, clause.patterns[0])
+}
+
+type GroupByHeadDataConstructor = {
+  dataConstructor: L.DataConstructor
+  clauses: Array<L.MatchClause>
+}
+
+function groupClausesByHeadDataConstructor(
+  mod: L.Mod,
+  clauses: Array<L.MatchClause>,
+): Array<GroupByHeadDataConstructor> {
+  const groups: Array<GroupByHeadDataConstructor> = []
+  for (const clause of clauses) {
+    assert(clause.patterns.length > 0)
+    const [pattern, ...restPatterns] = clause.patterns
+    const dataConstructor = L.dataPatternDataConstructor(mod, pattern)
+    const argPatterns = L.dataPatternArgPatterns(mod, pattern)
+    const found = groups.find(
+      (group) => group.dataConstructor.name === dataConstructor.name,
+    )
+    const newPatterns = [...argPatterns, ...restPatterns]
+    const newClause = L.MatchClause(newPatterns, clause.body, clause.meta)
+    if (found) {
+      found.clauses.push(newClause)
+    } else {
+      groups.push({ dataConstructor, clauses: [newClause] })
+    }
+  }
+
+  return groups
 }
