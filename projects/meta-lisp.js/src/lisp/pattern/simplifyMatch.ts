@@ -47,10 +47,10 @@ export function simplifyMatch(
     )
   }
 
-  if (clauses.every((clause) => clauseHeadIsDataPattern(mod, clause))) {
-    const [target, ...restTargets] = targets
-    return L.Match([target], meta)
-  }
+  // if (clauses.every((clause) => clauseHeadIsDataPattern(mod, clause))) {
+  //   const [target, ...restTargets] = targets
+  //   return L.Match([target], meta)
+  // }
 
   throw new Error(`[simplifyMatch] unhandled case`)
 }
