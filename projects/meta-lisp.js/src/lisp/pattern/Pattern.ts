@@ -47,3 +47,12 @@ export function isDataPattern(mod: L.Mod, exp: L.Exp): boolean {
 
   return false
 }
+
+export function createDataPattern(
+  mod: L.Mod,
+  dataConstructor: L.DataConstructorSpec,
+  args: Array<L.Exp>,
+): L.Exp {
+  assert(isDataConstructorName(mod, dataConstructor.name))
+  return L.Apply(L.Var(dataConstructor.name), args)
+}
