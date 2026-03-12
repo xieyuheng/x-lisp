@@ -1,7 +1,3 @@
-# pattern match
-
-`simplifyMatch` -- fix the use of `Require` expression
-
 # type system
 
 more tests from "8 Polymorphic Type-checking"

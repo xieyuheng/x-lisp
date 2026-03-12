@@ -1,6 +1,7 @@
 import { range } from "@xieyuheng/helpers.js/range"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
+import Path from "node:path"
 import * as L from "../index.ts"
 
 export function simplifyMatch(
@@ -64,20 +65,20 @@ export function simplifyMatch(
           )
         assert(datatypeDefinition)
 
-        // const path = Path.relative(
-        //   mod.url.pathname,
-        //   datatypeDefinition.mod.url.pathname,
-        // )
-
-        // const dataConstructorPredicate =
-        //   mod === datatypeDefinition.mod
-        //     ? L.Var(`${group.dataConstructor.name}?`, meta)
-        //     : L.Require(path, `${group.dataConstructor.name}?`, meta)
-
-        const dataConstructorPredicate = L.Var(
-          `${group.dataConstructor.name}?`,
-          meta,
+        const path = Path.relative(
+          Path.dirname(mod.url.pathname),
+          datatypeDefinition.mod.url.pathname,
         )
+
+        const dataConstructorPredicate =
+          mod === datatypeDefinition.mod
+            ? L.Var(`${group.dataConstructor.name}?`, meta)
+            : L.Require(path, `${group.dataConstructor.name}?`, meta)
+
+        // const dataConstructorPredicate = L.Var(
+        //   `${group.dataConstructor.name}?`,
+        //   meta,
+        // )
 
         const question = L.Apply(dataConstructorPredicate, [target])
 
@@ -91,22 +92,23 @@ export function simplifyMatch(
 
         for (const i of range(group.dataConstructor.fields.length)) {
           const field = group.dataConstructor.fields[i]
-          // const dataFieldGetter =
-          //   mod === datatypeDefinition.mod
-          //     ? L.Var(
-          //         `${group.dataConstructor.name}-${field.name}`,
-          //         answer.meta,
-          //       )
-          //     : L.Require(
-          //         path,
-          //         `${group.dataConstructor.name}-${field.name}`,
-          //         answer.meta,
-          //     )
 
-          const dataFieldGetter = L.Var(
-            `${group.dataConstructor.name}-${field.name}`,
-            answer.meta,
-          )
+          const dataFieldGetter =
+            mod === datatypeDefinition.mod
+              ? L.Var(
+                  `${group.dataConstructor.name}-${field.name}`,
+                  answer.meta,
+                )
+              : L.Require(
+                  path,
+                  `${group.dataConstructor.name}-${field.name}`,
+                  answer.meta,
+                )
+
+          // const dataFieldGetter = L.Var(
+          //   `${group.dataConstructor.name}-${field.name}`,
+          //   answer.meta,
+          // )
 
           answer = L.Let1(
             freshVars[i].name,
