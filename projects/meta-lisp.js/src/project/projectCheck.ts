@@ -1,4 +1,8 @@
-import { openOutputFile, withOutputToFile } from "@xieyuheng/helpers.js/file"
+import {
+  callWithFile,
+  openOutputFile,
+  withOutputToFile,
+} from "@xieyuheng/helpers.js/file"
 import * as L from "../lisp/index.ts"
 import {
   projectGetSourcePath,
@@ -19,8 +23,10 @@ export function projectCheck(
 
   L.dependencyGraphForEachMod(dependencyGraph, (mod) => {
     if (mod.path.endsWith(".type-error.lisp")) {
-      withOutputToFile(openOutputFile(`${mod.path}.out`), () => {
-        L.modForEachOwnDefinition(mod, L.definitionCheck)
+      callWithFile(openOutputFile(`${mod.path}.out`), (file) => {
+        withOutputToFile(file, () => {
+          L.modForEachOwnDefinition(mod, L.definitionCheck)
+        })
       })
     } else {
       L.modForEachOwnDefinition(mod, L.definitionCheck)
