@@ -20,6 +20,14 @@ function isDataConstructorName(mod: L.Mod, name: string): boolean {
   return definition !== undefined && L.definitionIsDataConstructor(definition)
 }
 
+function findDataConstructor(
+  mod: L.Mod,
+  name: string,
+): L.DataConstructorSpec | undefined {
+  const definition = L.modLookupDefinition(mod, name)
+  return definition && L.definitionToDataConstructor(definition)
+}
+
 export function createVarPattern(mod: L.Mod, name: string) {
   assert(!isDataConstructorName(mod, name))
   return L.Var(name)
@@ -55,4 +63,26 @@ export function createDataPattern(
 ): L.Exp {
   assert(isDataConstructorName(mod, dataConstructor.name))
   return L.Apply(L.Var(dataConstructor.name), args)
+}
+
+export function dataPatternDataConstructor(
+  mod: L.Mod,
+  exp: L.Exp,
+): L.DataConstructorSpec {
+  assert(isDataPattern(mod, exp))
+
+  if (exp.kind === "Var") {
+    const dataConstructor = findDataConstructor(mod, exp.name)
+    assert(dataConstructor)
+    return dataConstructor
+  }
+
+  if (exp.kind === "Apply" && exp.target.kind === "Var") {
+    const dataConstructor = findDataConstructor(mod, exp.target.name)
+    assert(dataConstructor)
+    return dataConstructor
+
+  }
+
+  throw new Error("[dataPatternDataConstructor] unhandled exp")
 }

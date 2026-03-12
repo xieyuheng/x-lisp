@@ -1,6 +1,5 @@
 # pattern match
 
-`dataPatternDataConstructor`
 `dataPatternArgPatterns`
 
 move `simplifyMatch` to `pattern`
