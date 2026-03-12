@@ -35,7 +35,7 @@ export function projectTestByInterpreter(
     if (id.endsWith(".snapshot" + L.suffix)) {
       const path = projectGetSourcePath(project, id)
       const mod = L.loadMod(path, dependencyGraph)
-      const outputPath = path + ".out"
+      const outputPath = path + ".interpreter.out"
       logPath("interpreter-snapshot", outputPath)
       callWithFile(openOutputFile(outputPath), (file) => {
         withOutputToFile(file, () => L.modEvaluateMainIfExists(mod))
@@ -45,7 +45,7 @@ export function projectTestByInterpreter(
     if (id.endsWith(".error" + L.suffix)) {
       const path = projectGetSourcePath(project, id)
       const mod = L.loadMod(path, dependencyGraph)
-      const outputPath = path + ".err"
+      const outputPath = path + ".interpreter.err"
       logPath("interpreter-error-snapshot", outputPath)
       callWithFile(openOutputFile(outputPath), (file) => {
         try {
