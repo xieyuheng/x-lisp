@@ -1,6 +1,5 @@
 # pattern match
 
-`createFreshVar`
 `simplifyMatch` -- `groupClausesByHeadPatternKind`
 
 `Which` as `Exp`

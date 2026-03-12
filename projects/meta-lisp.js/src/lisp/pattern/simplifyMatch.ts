@@ -53,12 +53,18 @@ export function simplifyMatch(
     return L.Match(
       [target],
       groups.map((group) => {
-        const freshVarPatterns = group.dataConstructor.fields.map(field => L.Var(field.name, meta))
-        const newPattern = L.createDataPattern(mod, group.dataConstructor, freshVarPatterns)
-        const newTargets = [...freshVarPatterns, ...restTargets]
+        const freshVars = group.dataConstructor.fields.map((field) =>
+          L.createFreshVar(field.name, meta),
+        )
         return L.MatchClause(
-          [newPattern],
-          simplifyMatch(mod, newTargets, group.clauses, defaultExp, meta),
+          [L.createDataPattern(mod, group.dataConstructor, freshVars)],
+          simplifyMatch(
+            mod,
+            [...freshVars, ...restTargets],
+            group.clauses,
+            defaultExp,
+            meta,
+          ),
           meta,
         )
       }),
