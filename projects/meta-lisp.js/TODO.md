@@ -1,7 +1,5 @@
 # pattern match
 
-`simplifyMatch` -- `groupClausesByHeadPatternKind`
-
 `Which` as `Exp`
 parse `(which)`
 

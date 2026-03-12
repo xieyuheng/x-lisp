@@ -72,15 +72,23 @@ export function simplifyMatch(
     )
   }
 
-  throw new Error(`[simplifyMatch] unhandled case`)
+  const groups = groupClausesByHeadPatternKind(mod, clauses)
+  return groups.reduce(
+    (accumulatedExp, group) =>
+      simplifyMatch(mod, targets, group, accumulatedExp, meta),
+
+    defaultExp,
+  )
 }
 
 function clauseHeadIsVarPattern(mod: L.Mod, clause: L.MatchClause): boolean {
-  return clause.patterns.length > 0 && L.isVarPattern(mod, clause.patterns[0])
+  assert(clause.patterns.length > 0)
+  return L.isVarPattern(mod, clause.patterns[0])
 }
 
 function clauseHeadIsDataPattern(mod: L.Mod, clause: L.MatchClause): boolean {
-  return clause.patterns.length > 0 && L.isDataPattern(mod, clause.patterns[0])
+  assert(clause.patterns.length > 0)
+  return L.isDataPattern(mod, clause.patterns[0])
 }
 
 type GroupByHeadDataConstructor = {
@@ -107,6 +115,33 @@ function groupClausesByHeadDataConstructor(
       found.clauses.push(newClause)
     } else {
       groups.push({ dataConstructor, clauses: [newClause] })
+    }
+  }
+
+  return groups
+}
+
+function groupClausesByHeadPatternKind(
+  mod: L.Mod,
+  clauses: Array<L.MatchClause>,
+): Array<Array<L.MatchClause>> {
+  const groups: Array<Array<L.MatchClause>> = []
+  for (const clause of clauses) {
+    if (groups.length === 0) {
+      groups.push([clause])
+      continue
+    }
+
+    const group = groups[groups.length - 1]
+    if (
+      [clause, ...group].every((c) => clauseHeadIsVarPattern(mod, c)) ||
+      [clause, ...group].every((c) => clauseHeadIsDataPattern(mod, c))
+    ) {
+      group.push(clause)
+      continue
+    } else {
+      groups.push([clause])
+      continue
     }
   }
 
