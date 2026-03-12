@@ -178,35 +178,27 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
 const parseCondClause = S.createRouter<L.CondClause>({
   "(cons* question body)": ({ question, body }, { meta }) => {
     if (question.kind === "Symbol" && question.content === "else") {
-      return {
-        question: L.Bool(true, meta),
-        answer: parseBody(body),
-      }
+      return L.CondClause(L.Bool(true, meta), parseBody(body), meta)
     } else {
-      return {
-        question: parseExp(question),
-        answer: parseBody(body),
-      }
+      return L.CondClause(parseExp(question), parseBody(body), meta)
     }
   },
 })
 
 const parseMatchClause = S.createRouter<L.MatchClause>({
-  "(cons* pattern body)": ({ pattern, body }, { meta }) => {
-    return {
-      patterns: [parseExp(pattern)],
-      body: L.BeginSugar(S.listElements(body).map(parseExp), meta),
+  "(cons* pattern body)": ({ pattern, body }, { meta }) =>
+    L.MatchClause(
+      [parseExp(pattern)],
+      L.BeginSugar(S.listElements(body).map(parseExp), meta),
       meta,
-    }
-  },
+    ),
 })
 
 const parseMatchManyClause = S.createRouter<L.MatchClause>({
-  "(cons* patterns body)": ({ patterns, body }, { meta }) => {
-    return {
-      patterns: S.listElements(patterns).map(parseExp),
-      body: L.BeginSugar(S.listElements(body).map(parseExp), meta),
+  "(cons* patterns body)": ({ patterns, body }, { meta }) =>
+    L.MatchClause(
+      S.listElements(patterns).map(parseExp),
+      L.BeginSugar(S.listElements(body).map(parseExp), meta),
       meta,
-    }
-  },
+    ),
 })

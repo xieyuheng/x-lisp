@@ -338,6 +338,19 @@ export type Cond = {
 export type CondClause = {
   question: Exp
   answer: Exp
+  meta?: TokenMeta
+}
+
+export function CondClause(
+  question: Exp,
+  answer: Exp,
+  meta?: TokenMeta,
+): CondClause {
+  return {
+    question,
+    answer,
+    meta,
+  }
 }
 
 export function Cond(clauses: Array<CondClause>, meta?: TokenMeta): Cond {
@@ -536,6 +549,18 @@ export type MatchClause = {
   patterns: Array<Exp>
   body: Exp
   meta?: TokenMeta
+}
+
+export function MatchClause(
+  patterns: Array<Exp>,
+  body: Exp,
+  meta?: TokenMeta,
+): MatchClause {
+  return {
+    patterns,
+    body,
+    meta,
+  }
 }
 
 export function Match(
