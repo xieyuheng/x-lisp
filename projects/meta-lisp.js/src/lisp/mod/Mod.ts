@@ -87,6 +87,17 @@ export function modOwnDefinitions(mod: Mod): Array<Definition> {
   )
 }
 
+export function modForEachOwnDefinition(
+  mod: Mod,
+  callback: (Definition: L.Definition) => void,
+): void {
+  for (const definition of mod.definitions.values()) {
+    if (definition.mod === mod) {
+      callback(definition)
+    }
+  }
+}
+
 // About Type
 
 export function modClaim(mod: Mod, name: string, exp: Exp): void {

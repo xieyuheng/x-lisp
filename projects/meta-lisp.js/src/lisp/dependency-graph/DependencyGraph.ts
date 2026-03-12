@@ -42,8 +42,6 @@ export function dependencyGraphForEachDefinition(
   callback: (definition: L.Definition) => void,
 ): void {
   for (const mod of dependencyGraphMods(dependencyGraph)) {
-    for (const definition of L.modOwnDefinitions(mod)) {
-      callback(definition)
-    }
+    L.modForEachOwnDefinition(mod, callback)
   }
 }
