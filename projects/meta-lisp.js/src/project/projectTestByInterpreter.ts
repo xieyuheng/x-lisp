@@ -25,7 +25,7 @@ export function projectTestByInterpreter(
   L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
 
   for (const id of projectSourceIds(project)) {
-    if (id.endsWith(".test" + L.suffix)) {
+    if (id.endsWith(".test.lisp")) {
       const path = projectGetSourcePath(project, id)
       const mod = L.loadMod(path, dependencyGraph)
       logPath("interpreter-test", path)
@@ -34,7 +34,7 @@ export function projectTestByInterpreter(
   }
 
   for (const id of projectSourceIds(project)) {
-    if (id.endsWith(".snapshot" + L.suffix)) {
+    if (id.endsWith(".snapshot.lisp")) {
       const path = projectGetSourcePath(project, id)
       const mod = L.loadMod(path, dependencyGraph)
       const outputPath = path + ".interpreter.out"
@@ -46,7 +46,7 @@ export function projectTestByInterpreter(
   }
 
   for (const id of projectSourceIds(project)) {
-    if (id.endsWith(".error" + L.suffix)) {
+    if (id.endsWith(".error.lisp")) {
       const path = projectGetSourcePath(project, id)
       const mod = L.loadMod(path, dependencyGraph)
       const outputPath = path + ".interpreter.out"

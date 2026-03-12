@@ -9,7 +9,7 @@ import {
   projectCheck,
   projectClean,
   projectDump,
-  projectFromSourceFiles,
+  projectFromSourcePaths,
   projectTestByInterpreter,
 } from "./project/index.ts"
 
@@ -18,10 +18,10 @@ const { version } = getPackageJson(fileURLToPath(import.meta.url))
 const router = cmd.createRouter("meta-lisp-compile.js", version)
 
 router.defineRoutes([
-  "module:check file",
-  "module:interpret file",
-  "module:dump file",
-  // "module:test file",
+  "module:check path",
+  "module:interpret path",
+  "module:dump path",
+  // "module:test path",
   "project:check --config",
   "project:dump --config",
   // "project:test --config",
@@ -30,25 +30,25 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  "module:check": ({ args: [file] }) => {
+  "module:check": ({ args: [path] }) => {
     const dependencyGraph = L.createDependencyGraph()
-    L.loadMod(file, dependencyGraph)
-    const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
-    const project = projectFromSourceFiles(file, sourceFiles)
+    L.loadMod(path, dependencyGraph)
+    const sourcePaths = L.dependencyGraphModPaths(dependencyGraph)
+    const project = projectFromSourcePaths(path, sourcePaths)
     projectCheck(project, dependencyGraph)
   },
 
-  "module:dump": ({ args: [file] }) => {
+  "module:dump": ({ args: [path] }) => {
     const dependencyGraph = L.createDependencyGraph()
-    L.loadMod(file, dependencyGraph)
-    const sourceFiles = L.dependencyGraphFiles(dependencyGraph)
-    const project = projectFromSourceFiles(file, sourceFiles)
+    L.loadMod(path, dependencyGraph)
+    const sourcePaths = L.dependencyGraphModPaths(dependencyGraph)
+    const project = projectFromSourcePaths(path, sourcePaths)
     projectDump(project, dependencyGraph)
   },
 
-  "module:interpret": ({ args: [file] }) => {
+  "module:interpret": ({ args: [path] }) => {
     const dependencyGraph = L.createDependencyGraph()
-    const mod = L.loadMod(file, dependencyGraph)
+    const mod = L.loadMod(path, dependencyGraph)
     L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
     L.modEvaluateMainIfExists(mod)
   },

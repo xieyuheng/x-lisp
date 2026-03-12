@@ -1,7 +1,6 @@
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import fs from "node:fs"
 import Path from "node:path"
-import { suffix } from "../config.ts"
 import * as L from "../index.ts"
 
 export function importBy(path: string, mod: L.Mod): L.Mod {
@@ -23,11 +22,11 @@ function pathRelativeToMod(path: string, mod: L.Mod): string {
 function resolveModPath(inputPath: string): string {
   let path = inputPath
   if (fs.existsSync(path) && fs.lstatSync(path).isDirectory()) {
-    path = `${path}/index${suffix}`
+    path = `${path}/index.lisp`
   }
 
   if (Path.extname(path) === "") {
-    path = `${path}${suffix}`
+    path = `${path}.lisp`
   }
 
   if (!fs.existsSync(path)) {

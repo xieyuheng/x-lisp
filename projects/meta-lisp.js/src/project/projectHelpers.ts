@@ -1,6 +1,5 @@
 import fs from "node:fs"
 import Path from "node:path"
-import * as L from "../lisp/index.ts"
 import type { Project } from "./index.ts"
 
 export function projectSourceDirectory(project: Project): string {
@@ -26,10 +25,10 @@ export function projectSourceIds(project: Project): Array<string> {
 
   return fs
     .readdirSync(projectSourceDirectory(project), {
-      encoding: "utf8",
+      encoding: "utf-8",
       recursive: true,
     })
-    .filter((file) => file.endsWith(L.suffix))
+    .filter((file) => file.endsWith(".lisp"))
 }
 
 export function projectGetSourcePath(

@@ -1,11 +1,11 @@
 import Path from "node:path"
 import { createProject, type Project } from "./index.ts"
 
-export function projectFromSourceFiles(
-  entryFile: string,
-  sourceFiles: Array<string>,
+export function projectFromSourcePaths(
+  entryPath: string,
+  sourcePaths: Array<string>,
 ): Project {
-  const rootDirectory = Path.dirname(entryFile)
+  const rootDirectory = Path.dirname(entryPath)
   const project = createProject(rootDirectory, {
     name: "*",
     version: "*",
@@ -14,8 +14,8 @@ export function projectFromSourceFiles(
     },
   })
 
-  project.sourceIds = sourceFiles.map((file) =>
-    Path.relative(rootDirectory, file),
+  project.sourceIds = sourcePaths.map((path) =>
+    Path.relative(rootDirectory, path),
   )
 
   return project
