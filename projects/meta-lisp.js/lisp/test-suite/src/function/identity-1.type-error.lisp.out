@@ -1,9 +1,9 @@
-lisp/test-suite/src/function/identity-1.type-error.lisp:5:9 -- given type is not a substitution instance of inferred type
+lisp/test-suite/src/function/identity-1.type-error.lisp:5:2 -- given type is not a substitution instance of inferred type
   inferred type: (-> A A)
   given type: (-> B C)
  3 |     (-> A B)))
  4 | 
  5 | (define (identity x) x)
-   |         ~~~~~~~~~~~~    
+   |  ~~~~~~                 
  6 | 
 

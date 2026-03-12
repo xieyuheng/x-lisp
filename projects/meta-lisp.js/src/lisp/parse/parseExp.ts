@@ -56,7 +56,7 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
   },
 
   "(cons* 'cond clauses)": ({ clauses }, { sexp }) => {
-    const keyword = S.asList(sexp).elements[1]
+    const keyword = S.asList(sexp).elements[0]
     return L.Cond(S.listElements(clauses).map(parseCondClause), keyword.meta)
   },
 

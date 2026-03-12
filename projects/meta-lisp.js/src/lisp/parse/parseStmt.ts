@@ -7,7 +7,7 @@ export const parseStmt = S.createRouter<L.Stmt>({
     { name, parameters, body },
     { sexp },
   ) => {
-    const keyword = S.asList(sexp).elements[1]
+    const keyword = S.asList(sexp).elements[0]
     const meta = keyword.meta
     return L.DefineFunction(
       S.symbolContent(name),
@@ -18,7 +18,7 @@ export const parseStmt = S.createRouter<L.Stmt>({
   },
 
   "(cons* 'define name body)": ({ name, body }, { sexp }) => {
-    const keyword = S.asList(sexp).elements[1]
+    const keyword = S.asList(sexp).elements[0]
     const meta = keyword.meta
     return L.DefineVariable(S.symbolContent(name), parseBody(body), meta)
   },
