@@ -1,4 +1,4 @@
-import { pathRelativeToCwd } from "@xieyuheng/helpers.js/url"
+import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import fs from "node:fs"
 import Path from "node:path"
 import { suffix } from "../config.ts"

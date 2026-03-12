@@ -1,4 +1,4 @@
-import { pathRelativeToCwd } from "@xieyuheng/helpers.js/url"
+import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import * as S from "@xieyuheng/sexp.js"
 import * as L from "../index.ts"
 

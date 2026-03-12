@@ -1,4 +1,4 @@
-import { pathRelativeToCwd } from "@xieyuheng/helpers.js/url"
+import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import { spanReport, type Position } from "../span/index.ts"
 import { type TokenMeta } from "./Token.ts"
 
