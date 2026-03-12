@@ -1,9 +1,11 @@
 # pattern match
 
-setup `pattern/Pattern` -- like `Type` -- but always take `mod`
-
 `isVarPattern`
+`createVarPattern`
+`varPatternName`
+
 `isDataPattern`
+`createDataPattern`
 
 move `simplifyMatch` to `pattern`
 
