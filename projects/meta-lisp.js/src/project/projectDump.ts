@@ -2,6 +2,7 @@ import {
   callWithFile,
   fileWrite,
   openOutputFile,
+  withOutputToFile,
 } from "@xieyuheng/helpers.js/file"
 import { textWidth } from "../config.ts"
 import * as L from "../lisp/index.ts"
@@ -30,7 +31,15 @@ export function projectDump(
     dumpCode("002-desugared", L.prettyModDefinitions(textWidth, mod), path)
   }
 
-  L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionCheck)
+  L.dependencyGraphForEachMod(dependencyGraph, (mod) => {
+    if (mod.path.endsWith(".type-error.lisp")) {
+      withOutputToFile(openOutputFile(`${mod.path}.out`), () => {
+        L.modForEachOwnDefinition(mod, L.definitionCheck)
+      })
+    } else {
+      L.modForEachOwnDefinition(mod, L.definitionCheck)
+    }
+  })
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)

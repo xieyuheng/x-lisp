@@ -1,5 +1,3 @@
-`project:check` command -- capture output of type check report -- improve `snapshot-type-error.sh`
-
 # type system
 
 more tests from "8 Polymorphic Type-checking"
