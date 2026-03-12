@@ -31,7 +31,9 @@ export function projectTestByInterpreter(
       logPath("interpreter-test", path)
       L.modEvaluateMainIfExists(mod)
     }
+  }
 
+  for (const id of projectSourceIds(project)) {
     if (id.endsWith(".snapshot" + L.suffix)) {
       const path = projectGetSourcePath(project, id)
       const mod = L.loadMod(path, dependencyGraph)
@@ -41,7 +43,9 @@ export function projectTestByInterpreter(
         withOutputToFile(file, () => L.modEvaluateMainIfExists(mod))
       })
     }
+  }
 
+  for (const id of projectSourceIds(project)) {
     if (id.endsWith(".error" + L.suffix)) {
       const path = projectGetSourcePath(project, id)
       const mod = L.loadMod(path, dependencyGraph)
