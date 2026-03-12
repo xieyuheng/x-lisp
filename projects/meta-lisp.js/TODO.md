@@ -1,7 +1,5 @@
 # pattern match
 
-`varPatternName`
-
 `createDataPattern`
 `dataPatternDataConstructor`
 `dataPatternArgPatterns`

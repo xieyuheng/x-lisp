@@ -25,6 +25,12 @@ export function createVarPattern(mod: L.Mod, name: string) {
   return L.Var(name)
 }
 
+export function varPatternName(mod: L.Mod, exp: L.Exp) {
+  assert(isVarPattern(mod, exp))
+  assert(exp.kind === "Var")
+  return exp.name
+}
+
 // DataPattern
 
 export function isDataPattern(mod: L.Mod, exp: L.Exp): boolean {
