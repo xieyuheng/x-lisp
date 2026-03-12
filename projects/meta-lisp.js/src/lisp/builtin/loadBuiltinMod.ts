@@ -9,8 +9,8 @@ import { fileURLToPath } from "node:url"
 import * as L from "../index.ts"
 import { builtinAssert } from "./builtinAssert.ts"
 import { builtinBool } from "./builtinBool.ts"
-import { builtinConsole } from "./builtinConsole.ts"
 import { builtinError } from "./builtinError.ts"
+import { builtinFile } from "./builtinFile.ts"
 import { builtinFloat } from "./builtinFloat.ts"
 import { builtinHash } from "./builtinHash.ts"
 import { builtinInt } from "./builtinInt.ts"
@@ -43,7 +43,7 @@ export function loadBuiltinMod(dependencyGraph: L.DependencyGraph): L.Mod {
   builtinString(mod)
   builtinValue(mod)
   builtinList(mod)
-  builtinConsole(mod)
+  builtinFile(mod)
   builtinVoid(mod)
   builtinRandom(mod)
   builtinSet(mod)

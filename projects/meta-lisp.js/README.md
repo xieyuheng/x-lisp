@@ -127,7 +127,7 @@ void
 (hash-code value)
 (total-compare x y)
 
-;;; console
+;;; file
 
 (newline)
 (write string)
@@ -317,23 +317,6 @@ void
 ;; (parse-sexp string)
 ;; (parse-sexps string)
 ;; (format-sexp sexp)
-
-;;; file
-
-;; (file-exists? path)
-;; (file-size path)
-;; (file-load path)
-;; (file-save path string)
-;; (file-delete path)
-;; (directory-exists? path)
-;; (directory-create path)
-;; (directory-create-recursively path)
-;; (directory-delete path)
-;; (directory-delete-recursively path)
-;; (directory-files path)
-;; (directory-files-recursively path)
-;; (directory-directories path)
-;; (directory-directories-recursively path)
 
 ;;; path
 

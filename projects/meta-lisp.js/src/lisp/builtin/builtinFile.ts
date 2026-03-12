@@ -4,7 +4,7 @@ import { formatValue } from "../format/formatValue.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
-export function builtinConsole(mod: Mod) {
+export function builtinFile(mod: Mod) {
   provide(mod, ["print", "write", "newline"])
 
   definePrimitiveFunction(mod, "print", 1, (value) => {

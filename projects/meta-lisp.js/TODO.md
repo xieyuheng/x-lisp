@@ -1,5 +1,3 @@
-[builtin] rename console to file
-
 `Mod` has `path` instead of `url`
 
 `project:test-by-interpreter` command -- capture output of builtin function

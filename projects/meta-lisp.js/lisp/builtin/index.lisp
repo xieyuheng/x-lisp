@@ -28,7 +28,7 @@
 (claim assert-equal (polymorphic (A) (-> A A void-t)))
 (claim assert-not-equal (polymorphic (A) (-> A A void-t)))
 
-;; console
+;; file
 
 (claim print (polymorphic (A) (-> A void-t)))
 (claim println (polymorphic (A) (-> A void-t)))
