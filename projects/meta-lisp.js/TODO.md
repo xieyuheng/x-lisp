@@ -1,6 +1,5 @@
 # pattern match
 
-`createVarPattern`
 `varPatternName`
 
 `createDataPattern`

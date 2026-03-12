@@ -1,3 +1,4 @@
+import assert from "node:assert"
 import * as L from "../index.ts"
 
 export function isPattern(mod: L.Mod, exp: L.Exp): boolean {
@@ -17,6 +18,11 @@ export function isVarPattern(mod: L.Mod, exp: L.Exp): boolean {
 function isDataConstructorName(mod: L.Mod, name: string): boolean {
   const definition = L.modLookupDefinition(mod, name)
   return definition !== undefined && L.definitionIsDataConstructor(definition)
+}
+
+export function createVarPattern(mod: L.Mod, name: string) {
+  assert(!isDataConstructorName(mod, name))
+  return L.Var(name)
 }
 
 // DataPattern
