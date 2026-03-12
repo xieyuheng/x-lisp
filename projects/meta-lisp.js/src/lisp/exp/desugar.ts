@@ -64,6 +64,19 @@ export function desugar(mod: L.Mod, exp: L.Exp): L.Exp {
       return desugar(mod, desugarCond(exp.clauses, exp.meta))
     }
 
+    case "Match": {
+      const defaultExp = L.Apply(
+        L.Var("error", exp.meta),
+        [L.String("match mismatch", exp.meta)],
+        exp.meta,
+      )
+
+      return desugar(
+        mod,
+        L.simplifyMatch(mod, exp.targets, exp.clauses, defaultExp, exp.meta),
+      )
+    }
+
     case "List": {
       return desugar(mod, desugarList(exp.elements, exp.meta))
     }

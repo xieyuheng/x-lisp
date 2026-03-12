@@ -1,9 +1,5 @@
 # pattern match
 
-`desugar` -- call `simplifyMatch` to handle `Match`
-
-# pattern match
-
 [maybe] `DataConstructor` has `DatatypeDefinition`
 [maybe] `DatatypeConstructor` has `DatatypeDefinition`
 
