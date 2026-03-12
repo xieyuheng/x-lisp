@@ -1,7 +1,6 @@
 # pattern match
 
-[maybe] `DataConstructor` has `DatatypeDefinition`
-[maybe] `DatatypeConstructor` has `DatatypeDefinition`
+`simplifyMatch` -- fix the use of `Require` expression
 
 # type system
 
