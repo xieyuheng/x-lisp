@@ -40,8 +40,9 @@ export function projectDump(
 }
 
 function dumpCode(tag: string, code: string, path: string): void {
-  logPath(tag, path)
-  callWithFile(openOutputFile(`${path}.${tag}.dump`), (file) => {
+  const dumpPath = `${path}.${tag}.dump`
+  logPath(tag, dumpPath)
+  callWithFile(openOutputFile(dumpPath), (file) => {
     fileWrite(file, code)
   })
 }

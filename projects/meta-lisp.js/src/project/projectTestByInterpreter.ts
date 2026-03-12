@@ -49,7 +49,7 @@ export function projectTestByInterpreter(
     if (id.endsWith(".error" + L.suffix)) {
       const path = projectGetSourcePath(project, id)
       const mod = L.loadMod(path, dependencyGraph)
-      const outputPath = path + ".interpreter.err"
+      const outputPath = path + ".interpreter.out"
       logPath("interpreter-error-snapshot", outputPath)
       callWithFile(openOutputFile(outputPath), (file) => {
         try {

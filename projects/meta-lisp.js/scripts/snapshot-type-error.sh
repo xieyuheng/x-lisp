@@ -5,4 +5,4 @@ set -e
 parallel="parallel -v --halt now,fail=1"
 bin="node ./src/main.ts module:check"
 
-find lisp -name "*.type-error.lisp" | $parallel $bin {} ">" {}.err "||" true
+find lisp -name "*.type-error.lisp" | $parallel $bin {} ">" {}.out "||" true
