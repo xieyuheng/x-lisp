@@ -38,6 +38,8 @@ export function createMod(
   }
 }
 
+// Definition 
+
 export function modDefine(
   mod: Mod,
   name: string,
@@ -98,7 +100,7 @@ export function modForEachOwnDefinition(
   }
 }
 
-// About Type
+// Claimed
 
 export function modClaim(mod: Mod, name: string, exp: Exp): void {
   if (mod.claimed.has(name)) {
@@ -130,6 +132,8 @@ export function modLookupClaimedEntry(
   return mod.claimed.get(name)
 }
 
+// Inferred
+
 export function modLookupInferredType(
   mod: Mod,
   name: string,
@@ -145,4 +149,14 @@ export function modPutInferredType(mod: Mod, name: string, type: Value): void {
   }
 
   mod.inferredTypes.set(name, type)
+}
+
+// DataConstructor
+
+export function modLookupDataConstructor(
+  mod: L.Mod,
+  name: string,
+): L.DataConstructor | undefined {
+  const definition = L.modLookupDefinition(mod, name)
+  return definition && L.definitionToDataConstructor(definition)
 }

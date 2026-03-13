@@ -1,6 +1,4 @@
-# mod
-
-add `dataConstructors` to `Mod`
+add `dataConstructors` to `Mod` -- to simplify `modLookupDataConstructor`
 
 # type system
 

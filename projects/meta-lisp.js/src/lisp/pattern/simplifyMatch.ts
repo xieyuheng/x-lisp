@@ -58,20 +58,12 @@ export function simplifyMatch(
           L.createFreshVar(field.name, meta),
         )
 
-        const datatypeDefinition =
-          L.modFindDatatypeDefinitionFromDataConstructor(
-            mod,
-            group.dataConstructor.name,
-          )
-        assert(datatypeDefinition)
+        const definition = group.dataConstructor.definition
 
-        const path = Path.relative(
-          Path.dirname(mod.path),
-          datatypeDefinition.mod.path,
-        )
+        const path = Path.relative(Path.dirname(mod.path), definition.mod.path)
 
         const dataConstructorPredicate =
-          mod === datatypeDefinition.mod
+          mod === definition.mod
             ? L.Var(`${group.dataConstructor.name}?`, meta)
             : L.Require(path, `${group.dataConstructor.name}?`, meta)
 
@@ -94,7 +86,7 @@ export function simplifyMatch(
           const field = group.dataConstructor.fields[i]
 
           const dataFieldGetter =
-            mod === datatypeDefinition.mod
+            mod === definition.mod
               ? L.Var(
                   `${group.dataConstructor.name}-${field.name}`,
                   answer.meta,
