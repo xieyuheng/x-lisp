@@ -1,6 +1,7 @@
 # type system
 
 more tests from "8 Polymorphic Type-checking"
+
 - from 1987-the-implementation-of-functional-programming-languages.pdf
 
 # type system
@@ -23,3 +24,5 @@ tuple-tail
 # syntax
 
 `(@object)` & `(@class)` -- check repeated keyword
+
+# row polymorphism
