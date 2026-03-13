@@ -1,6 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
 import Path from "node:path"
-import { type Definition } from "../definition/index.ts"
+import { type DataConstructor, type Definition } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 import * as L from "../index.ts"
 import { type Stmt } from "../stmt/index.ts"
@@ -16,9 +16,10 @@ export type Mod = {
   stmts: Array<Stmt>
   exported: Set<string>
   exempted: Set<string>
+  definitions: Map<string, Definition>
   claimed: Map<string, ClaimedEntry>
   inferredTypes: Map<string, Value>
-  definitions: Map<string, Definition>
+  dataConstructors: Map<string, DataConstructor>
   dependencyGraph: L.DependencyGraph
 }
 
@@ -31,14 +32,15 @@ export function createMod(
     stmts: [],
     exported: new Set(),
     exempted: new Set(),
+    definitions: new Map(),
     claimed: new Map(),
     inferredTypes: new Map(),
-    definitions: new Map(),
+    dataConstructors: new Map(),
     dependencyGraph,
   }
 }
 
-// Definition 
+// Definition
 
 export function modDefine(
   mod: Mod,

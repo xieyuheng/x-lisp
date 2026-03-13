@@ -20,8 +20,6 @@ function isDataConstructorName(mod: L.Mod, name: string): boolean {
   return definition !== undefined && L.definitionIsDataConstructor(definition)
 }
 
-
-
 export function createVarPattern(mod: L.Mod, name: string) {
   assert(!isDataConstructorName(mod, name))
   return L.Var(name)

@@ -3,23 +3,27 @@ import * as L from "../index.ts"
 export function expandDataConstructor(
   mod: L.Mod,
   definition: L.DatatypeDefinition,
-  ctor: L.DataConstructor,
+  dataConstructor: L.DataConstructor,
 ): void {
-  mod.exempted.add(ctor.name)
+  mod.exempted.add(dataConstructor.name)
 
-  if (ctor.fields.length === 0) {
+  if (dataConstructor.fields.length === 0) {
     L.modDefine(
       mod,
-      ctor.name,
-      L.VariableDefinition(mod, ctor.name, L.Symbol(ctor.name)),
+      dataConstructor.name,
+      L.VariableDefinition(
+        mod,
+        dataConstructor.name,
+        L.Symbol(dataConstructor.name),
+      ),
     )
 
     if (definition.datatypeConstructor.parameters.length === 0) {
-      L.modClaim(mod, ctor.name, L.Var(definition.name))
+      L.modClaim(mod, dataConstructor.name, L.Var(definition.name))
     } else {
       L.modClaim(
         mod,
-        ctor.name,
+        dataConstructor.name,
         L.Polymorphic(
           definition.datatypeConstructor.parameters,
           L.Apply(
@@ -32,36 +36,36 @@ export function expandDataConstructor(
       )
     }
   } else {
-    const parameters = ctor.fields.map((field) => field.name)
+    const parameters = dataConstructor.fields.map((field) => field.name)
     const args = parameters.map((name) => L.Var(name))
     L.modDefine(
       mod,
-      ctor.name,
+      dataConstructor.name,
       L.FunctionDefinition(
         mod,
-        ctor.name,
+        dataConstructor.name,
         parameters,
-        L.List([L.Symbol(ctor.name), ...args]),
+        L.List([L.Symbol(dataConstructor.name), ...args]),
       ),
     )
 
     if (definition.datatypeConstructor.parameters.length === 0) {
       L.modClaim(
         mod,
-        ctor.name,
+        dataConstructor.name,
         L.Arrow(
-          ctor.fields.map((field) => field.type),
+          dataConstructor.fields.map((field) => field.type),
           L.Var(definition.name),
         ),
       )
     } else {
       L.modClaim(
         mod,
-        ctor.name,
+        dataConstructor.name,
         L.Polymorphic(
           definition.datatypeConstructor.parameters,
           L.Arrow(
-            ctor.fields.map((field) => field.type),
+            dataConstructor.fields.map((field) => field.type),
             L.Apply(
               L.Var(definition.name),
               definition.datatypeConstructor.parameters.map((parameter) =>

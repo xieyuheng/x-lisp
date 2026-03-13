@@ -1,5 +1,3 @@
-add `dataConstructors` to `Mod` -- to simplify `modLookupDataConstructor`
-
 # type system
 
 more tests from "8 Polymorphic Type-checking"

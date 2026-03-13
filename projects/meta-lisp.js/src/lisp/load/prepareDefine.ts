@@ -44,7 +44,6 @@ export function handleDefine(mod: L.Mod, stmt: L.Stmt): void {
       dataConstructors,
       stmt.meta,
     )
-
     datatypeConstructor.definition = definition
     for (const dataConstructor of dataConstructors) {
       dataConstructor.definition = definition
@@ -52,11 +51,15 @@ export function handleDefine(mod: L.Mod, stmt: L.Stmt): void {
 
     L.modDefine(mod, name, definition)
 
-    for (const ctor of dataConstructors) {
-      expandDataConstructor(mod, definition, ctor)
-      expandDataConstructorPredicate(mod, definition, ctor)
-      expandDataGetter(mod, definition, ctor)
-      expandDataPutter(mod, definition, ctor)
+    for (const dataConstructor of dataConstructors) {
+      mod.dataConstructors.set(dataConstructor.name, dataConstructor)
+    }
+
+    for (const dataConstructor of dataConstructors) {
+      expandDataConstructor(mod, definition, dataConstructor)
+      expandDataConstructorPredicate(mod, definition, dataConstructor)
+      expandDataGetter(mod, definition, dataConstructor)
+      expandDataPutter(mod, definition, dataConstructor)
     }
   }
 }

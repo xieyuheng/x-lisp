@@ -3,13 +3,13 @@ import * as L from "../index.ts"
 export function expandDataConstructorPredicate(
   mod: L.Mod,
   definition: L.DatatypeDefinition,
-  ctor: L.DataConstructor,
+  dataConstructor: L.DataConstructor,
 ): void {
-  const name = `${ctor.name}?`
+  const name = `${dataConstructor.name}?`
 
   mod.exempted.add(name)
 
-  if (ctor.fields.length === 0) {
+  if (dataConstructor.fields.length === 0) {
     L.modDefine(
       mod,
       name,
@@ -17,7 +17,10 @@ export function expandDataConstructorPredicate(
         mod,
         name,
         ["value"],
-        L.Apply(L.Var("equal?"), [L.Var("value"), L.Symbol(ctor.name)]),
+        L.Apply(L.Var("equal?"), [
+          L.Var("value"),
+          L.Symbol(dataConstructor.name),
+        ]),
       ),
     )
   } else {
@@ -32,11 +35,11 @@ export function expandDataConstructorPredicate(
           L.Apply(L.Var("list?"), [L.Var("value")]),
           L.Apply(L.Var("equal?"), [
             L.Apply(L.Var("list-length"), [L.Var("value")]),
-            L.Int(BigInt(ctor.fields.length + 1)),
+            L.Int(BigInt(dataConstructor.fields.length + 1)),
           ]),
           L.Apply(L.Var("equal?"), [
             L.Apply(L.Var("list-head"), [L.Var("value")]),
-            L.Symbol(ctor.name),
+            L.Symbol(dataConstructor.name),
           ]),
         ]),
       ),

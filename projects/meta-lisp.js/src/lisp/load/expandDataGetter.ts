@@ -3,10 +3,10 @@ import * as L from "../index.ts"
 export function expandDataGetter(
   mod: L.Mod,
   definition: L.DatatypeDefinition,
-  ctor: L.DataConstructor,
+  dataConstructor: L.DataConstructor,
 ): void {
-  for (const [index, field] of ctor.fields.entries()) {
-    const name = `${ctor.name}-${field.name}`
+  for (const [index, field] of dataConstructor.fields.entries()) {
+    const name = `${dataConstructor.name}-${field.name}`
 
     mod.exempted.add(name)
 
