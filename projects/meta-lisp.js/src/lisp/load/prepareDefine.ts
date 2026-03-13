@@ -32,17 +32,27 @@ export function handleDefine(mod: L.Mod, stmt: L.Stmt): void {
   }
 
   if (stmt.kind === "DefineDatatype") {
+    const name = stmt.datatypeConstructor.name
+    const datatypeConstructor =
+      stmt.datatypeConstructor as unknown as L.DatatypeConstructor
+    const dataConstructors =
+      stmt.dataConstructors as unknown as Array<L.DataConstructor>
     const definition = L.DatatypeDefinition(
       mod,
-      stmt.datatypeConstructor.name,
-      stmt.datatypeConstructor,
-      stmt.dataConstructors,
+      name,
+      datatypeConstructor,
+      dataConstructors,
       stmt.meta,
     )
 
-    L.modDefine(mod, stmt.datatypeConstructor.name, definition)
+    datatypeConstructor.definition = definition
+    for (const dataConstructor of dataConstructors) {
+      dataConstructor.definition = definition
+    }
 
-    for (const ctor of stmt.dataConstructors) {
+    L.modDefine(mod, name, definition)
+
+    for (const ctor of dataConstructors) {
       expandDataConstructor(mod, definition, ctor)
       expandDataConstructorPredicate(mod, definition, ctor)
       expandDataGetter(mod, definition, ctor)

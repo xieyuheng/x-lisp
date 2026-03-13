@@ -59,14 +59,14 @@ export function DefineVariable(
 
 export type DefineDatatype = {
   kind: "DefineDatatype"
-  datatypeConstructor: DatatypeConstructor
-  dataConstructors: Array<DataConstructor>
+  datatypeConstructor: Omit<DatatypeConstructor, "definition">
+  dataConstructors: Array<Omit<DataConstructor, "definition">>
   meta?: TokenMeta
 }
 
 export function DefineDatatype(
-  datatypeConstructor: DatatypeConstructor,
-  dataConstructors: Array<DataConstructor>,
+  datatypeConstructor: Omit<DatatypeConstructor, "definition">,
+  dataConstructors: Array<Omit<DataConstructor, "definition">>,
   meta?: TokenMeta,
 ): DefineDatatype {
   return {

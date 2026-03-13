@@ -125,11 +125,13 @@ export type DatatypeDefinition = {
 } & DefinitionState
 
 export type DatatypeConstructor = {
+  definition: DatatypeDefinition
   name: string
   parameters: Array<string>
 }
 
 export type DataConstructor = {
+  definition: DatatypeDefinition
   name: string
   fields: Array<DataField>
 }

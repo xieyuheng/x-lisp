@@ -77,7 +77,9 @@ export function formatStmt(stmt: Stmt): string {
   }
 }
 
-function formatDataPredicate(predicate: L.DatatypeConstructor): string {
+function formatDataPredicate(
+  predicate: Omit<L.DatatypeConstructor, "definition">,
+): string {
   if (predicate.parameters.length === 0) {
     return predicate.name
   } else {
@@ -85,7 +87,9 @@ function formatDataPredicate(predicate: L.DatatypeConstructor): string {
   }
 }
 
-function formatDataConstructor(ctor: L.DataConstructor): string {
+function formatDataConstructor(
+  ctor: Omit<L.DataConstructor, "definition">,
+): string {
   if (ctor.fields.length === 0) {
     return ctor.name
   } else {

@@ -103,9 +103,12 @@ export const parseStmt = S.createRouter<L.Stmt>({
   },
 })
 
-const parseDataPredicate = S.createRouter<L.DatatypeConstructor>({
+const parseDataPredicate = S.createRouter<
+  Omit<L.DatatypeConstructor, "definition">
+>({
   "(cons* name parameters)": ({ name, parameters }, { meta }) => {
     return {
+      definition: undefined,
       name: S.symbolContent(name),
       parameters: S.listElements(parameters).map(S.symbolContent),
     }
@@ -113,13 +116,16 @@ const parseDataPredicate = S.createRouter<L.DatatypeConstructor>({
 
   name: ({ name }, { meta }) => {
     return {
+      definition: undefined,
       name: S.symbolContent(name),
       parameters: [],
     }
   },
 })
 
-const parseDataConstructor = S.createRouter<L.DataConstructor>({
+const parseDataConstructor = S.createRouter<
+  Omit<L.DataConstructor, "definition">
+>({
   "(cons* name fields)": ({ name, fields }, { meta }) => {
     return {
       name: S.symbolContent(name),
