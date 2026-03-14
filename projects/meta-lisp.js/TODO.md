@@ -19,4 +19,6 @@ fix `subtype.type-error.lisp`
 
 `(@object)` & `(@class)` -- check repeated keyword
 
+`(:field object)`
+
 # row polymorphism
