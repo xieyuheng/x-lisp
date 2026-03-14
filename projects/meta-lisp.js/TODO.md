@@ -15,12 +15,6 @@ more tests from "8 Polymorphic Type-checking"
 
 fix `subtype.type-error.lisp`
 
-# tuple
-
-tuple-cons
-tuple-head
-tuple-tail
-
 # syntax
 
 `(@object)` & `(@class)` -- check repeated keyword
