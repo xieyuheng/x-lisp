@@ -15,10 +15,14 @@ more tests from "8 Polymorphic Type-checking"
 
 fix `subtype.type-error.lisp`
 
-# syntax
+# row polymorphism
+
+[maybe] we should use `(@interface)` instead of `(@class)`, because there is not `self` or `this`
 
 `(@object)` & `(@class)` -- check repeated keyword
+`ClassType` support row polymorphism
 
-`(:field object)`
+`Dot` as `Exp`
+parse `(:field object)` -- `Dot`
 
-# row polymorphism
+[maybe] `(object-merge lhs rhs)`
