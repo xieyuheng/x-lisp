@@ -1,12 +1,8 @@
 # bug
 
 study coinduction
-
 `typeUnify` -- take `trace` to avoid infinite loop
-
-- test by two definition of `exp-t`
-
-support recursive interface type -- be symmetric with datatype
+test subtype between datatype by two definitions of `exp-t`
 
 # row polymorphism
 
@@ -17,3 +13,7 @@ support recursive interface type -- be symmetric with datatype
 parse `(:field object)` -- `Dot`
 
 [maybe] `(object-merge lhs rhs)`
+
+# recursive interface
+
+[maybe] support recursive interface type -- be symmetric with datatype
