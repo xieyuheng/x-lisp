@@ -1,0 +1,15 @@
+(claim my-list-map
+  (polymorphic (A B)
+    (-> (-> A B) (my-list-t A) (my-list-t B))))
+
+(define (my-list-map f list)
+  (if ((@require "my-list.lisp" nil?) list)
+    nil
+    (if ((@require "my-list.lisp" li?) list)
+      (begin
+        (= tail₃ ((@require "my-list.lisp" li-tail) list))
+        (= head₃ ((@require "my-list.lisp" li-head) list))
+        (= tail tail₃)
+        (= head head₃)
+        (li (f head) (my-list-map f tail)))
+      (error "cond mismatch"))))

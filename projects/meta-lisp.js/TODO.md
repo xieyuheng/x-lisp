@@ -1,3 +1,5 @@
+[maybe] we should use `(@interface)` instead of `(@class)`, because there is not `self` or `this`
+
 # type system
 
 more tests from "8 Polymorphic Type-checking"
@@ -17,8 +19,6 @@ fix `subtype.type-error.lisp`
 
 # row polymorphism
 
-[maybe] we should use `(@interface)` instead of `(@class)`, because there is not `self` or `this`
-
 `(@object)` & `(@class)` -- check repeated keyword
 `ClassType` support row polymorphism
 
@@ -26,3 +26,11 @@ fix `subtype.type-error.lisp`
 parse `(:field object)` -- `Dot`
 
 [maybe] `(object-merge lhs rhs)`
+
+# bug
+
+`typeUnify` -- take `trace` to avoid infinite loop
+
+- test by two definition of `exp-t`
+
+support recursive interface type -- be symmetric with datatype

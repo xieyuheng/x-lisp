@@ -1,0 +1,10 @@
+(import-all "my-list")
+(import-all "my-list-map")
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal nil (my-list-map (iadd 1) nil))
+  (assert-equal
+    (li 2 (li 3 (li 4 nil)))
+    (my-list-map (iadd 1) (li 1 (li 2 (li 3 nil))))))
