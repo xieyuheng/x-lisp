@@ -1,7 +1,3 @@
-# type system
-
-`typeInfer` -- handle `Polymorphic`
-
 # bug
 
 study coinduction

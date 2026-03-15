@@ -274,6 +274,19 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
+      case "Polymorphic": {
+        const type = L.createTypeType()
+        ctx = L.ctxPutMany(
+          ctx,
+          exp.parameters,
+          exp.parameters.map(() => type),
+        )
+        return L.checkThenInfer(
+          L.typeCheckByInfer(mod, ctx, exp.body, type),
+          L.okInferEffect(type),
+        )(subst)
+      }
+
       default: {
         let message = `not inferable exp: ${exp.kind}`
         return L.errorInferEffect(exp, message)(subst)
