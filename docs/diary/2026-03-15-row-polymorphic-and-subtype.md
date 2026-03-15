@@ -1,9 +1,9 @@
 ---
-title: polymorphic and subtype
+title: row polymorphic and subtype
 date: 2026-03-15
 ---
 
-子类型关系，如何与 polymorphic 相容？
+子类型关系，如何与 row polymorphic 相容？
 
 - 方案 A：
   interface 不因该把 null unify 到 interface-with-row 的变量上，
