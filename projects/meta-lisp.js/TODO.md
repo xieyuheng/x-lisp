@@ -1,8 +1,12 @@
 # type system
 
-more tests from "8 Polymorphic Type-checking"
 
-- from 1987-the-implementation-of-functional-programming-languages.pdf
+> more tests about pattern match
+
+my-list-map-zip-2.lisp
+
+more tests about polymorphic type-checking
+
 
 # type system
 
