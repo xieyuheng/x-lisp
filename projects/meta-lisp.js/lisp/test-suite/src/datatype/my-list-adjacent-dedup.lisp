@@ -1,0 +1,17 @@
+(import-all "my-list")
+
+(export-all)
+
+(claim my-list-adjacent-dedup
+  (polymorphic (E)
+    (-> (my-list-t E)
+        (my-list-t E))))
+
+(define (my-list-adjacent-dedup list)
+  (match list
+    (nil nil)
+    ((li head nil) (li head nil))
+    ((li first (li second rest))
+     (if (equal? first second)
+       (my-list-adjacent-dedup (li second rest))
+       (li first (my-list-adjacent-dedup (li second rest)))))))

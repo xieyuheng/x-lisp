@@ -6,9 +6,9 @@
     0
     (if (li? list)
       (begin
-        (= tail₂ (li-tail list))
-        (= head₂ (li-head list))
-        (= tail tail₂)
-        (= head head₂)
+        (= tail₄ (li-tail list))
+        (= head₄ (li-head list))
+        (= tail tail₄)
+        (= head head₄)
         (iadd 1 (my-list-length tail)))
       (error "cond mismatch"))))

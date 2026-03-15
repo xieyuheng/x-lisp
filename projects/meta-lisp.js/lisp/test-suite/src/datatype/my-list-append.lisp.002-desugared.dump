@@ -7,9 +7,9 @@
     right
     (if (li? left)
       (begin
-        (= tail₁ (li-tail left))
-        (= head₁ (li-head left))
-        (= tail tail₁)
-        (= head head₁)
+        (= tail₃ (li-tail left))
+        (= head₃ (li-head left))
+        (= tail tail₃)
+        (= head head₃)
         (li head (my-list-append tail right)))
       (error "cond mismatch"))))

@@ -1,0 +1,13 @@
+(import-all "my-list")
+(import-all "my-list-adjacent-dedup")
+
+(claim main (-> void-t))
+
+(define (main)
+  (assert-equal nil (my-list-adjacent-dedup nil))
+  (assert-equal
+    (li 1 (li 2 (li 3 (li 1 (li 2 (li 3 nil))))))
+    (my-list-adjacent-dedup (li 1 (li 2 (li 3 (li 1 (li 2 (li 3 nil))))))))
+  (assert-equal
+    (li 1 (li 2 (li 3 nil)))
+    (my-list-adjacent-dedup (li 1 (li 1 (li 2 (li 2 (li 3 (li 3 nil)))))))))

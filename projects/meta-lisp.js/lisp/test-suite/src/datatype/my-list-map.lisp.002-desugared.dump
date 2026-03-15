@@ -7,9 +7,9 @@
     nil
     (if (li? list)
       (begin
-        (= tail₉ (li-tail list))
-        (= head₉ (li-head list))
-        (= tail tail₉)
-        (= head head₉)
+        (= tail₁₁ (li-tail list))
+        (= head₁₁ (li-head list))
+        (= tail tail₁₁)
+        (= head head₁₁)
         (li (f head) (my-list-map f tail)))
       (error "cond mismatch"))))

@@ -1,6 +1,3 @@
-# type system
-
-> more tests about pattern match
 more tests about polymorphic type-checking
 
 # type system
