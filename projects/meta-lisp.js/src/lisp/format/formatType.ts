@@ -34,6 +34,7 @@ export function formatType(type: L.Value): string {
   }
 
   if (L.isArrowType(type)) {
+    type = L.arrowTypeUncurrying(type)
     const argTypes = formatTypes(L.arrowTypeArgTypes(type))
     const retType = formatType(L.arrowTypeRetType(type))
     return `(-> ${argTypes} ${retType})`

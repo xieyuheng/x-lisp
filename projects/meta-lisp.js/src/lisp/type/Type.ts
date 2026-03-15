@@ -174,25 +174,56 @@ export function arrowTypeRetType(value: L.Value): L.Value {
   return L.asListValue(value).elements[2]
 }
 
-export function arrowTypeNormalize(value: L.Value): L.Value {
+export function arrowTypeCurrying(value: L.Value): L.Value {
   if (isArrowType(value)) {
     const argTypes = arrowTypeArgTypes(value)
     const retType = arrowTypeRetType(value)
 
     if (argTypes.length === 0) {
-      // we do not normalize nullary arrow
-      return createArrowType(argTypes, arrowTypeNormalize(retType))
+      // we do not curry nullary arrow
+      return createArrowType(argTypes, arrowTypeCurrying(retType))
     }
 
     if (argTypes.length === 1) {
-      return createArrowType(argTypes, arrowTypeNormalize(retType))
+      return createArrowType(argTypes, arrowTypeCurrying(retType))
     }
 
     const [firstArgType, ...restArgTypes] = argTypes
     return createArrowType(
       [firstArgType],
-      arrowTypeNormalize(createArrowType(restArgTypes, retType)),
+      arrowTypeCurrying(createArrowType(restArgTypes, retType)),
     )
+  }
+
+  return value
+}
+
+export function arrowTypeUncurrying(value: L.Value): L.Value {
+  if (isArrowType(value)) {
+    const argTypes = arrowTypeArgTypes(value)
+    const retType = arrowTypeRetType(value)
+
+    if (argTypes.length === 0) {
+      // we do not uncurry nullary arrow
+      return createArrowType(argTypes, arrowTypeUncurrying(retType))
+    }
+
+    if (isArrowType(retType)) {
+      const retTypeArgTypes = arrowTypeArgTypes(retType)
+      const retTypeRetType = arrowTypeRetType(retType)
+
+      if (retTypeArgTypes.length === 0) {
+        // we do not uncurry nullary arrow
+        return createArrowType(argTypes, arrowTypeUncurrying(retType))
+      }
+
+      return createArrowType(
+        [...argTypes, ...retTypeArgTypes],
+        arrowTypeUncurrying(retTypeRetType),
+      )
+    } else {
+      return value
+    }
   }
 
   return value

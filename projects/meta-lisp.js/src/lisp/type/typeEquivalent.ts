@@ -55,8 +55,8 @@ export function typeEquivalent(
   }
 
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
-    lhs = L.arrowTypeNormalize(lhs)
-    rhs = L.arrowTypeNormalize(rhs)
+    lhs = L.arrowTypeCurrying(lhs)
+    rhs = L.arrowTypeCurrying(rhs)
     return (
       typeEquivalentMany(
         trail,

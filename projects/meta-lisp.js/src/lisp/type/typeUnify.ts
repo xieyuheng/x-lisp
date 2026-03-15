@@ -38,8 +38,8 @@ export function typeUnify(
   }
 
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
-    lhs = L.arrowTypeNormalize(lhs)
-    rhs = L.arrowTypeNormalize(rhs)
+    lhs = L.arrowTypeCurrying(lhs)
+    rhs = L.arrowTypeCurrying(rhs)
     subst = typeUnifyMany(
       subst,
       L.arrowTypeArgTypes(lhs),

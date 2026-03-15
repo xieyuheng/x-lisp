@@ -1,10 +1,9 @@
 (claim S
-  (polymorphic (A B C)
-    (-> (-> A (-> B C)) (-> (-> A B) (-> A C)))))
+  (polymorphic (A B C) (-> (-> A B C) (-> A B) (-> A C))))
 
 (define (S x y z) (x z (y z)))
 
-(claim K (polymorphic (A B) (-> A (-> B A))))
+(claim K (polymorphic (A B) (-> A B A)))
 
 (define (K x y) x)
 
@@ -18,8 +17,8 @@
 
 (claim local-SKI
   (polymorphic (A B C D E F)
-    (tau (-> (-> A (-> B C)) (-> (-> A B) (-> A C)))
-         (-> D (-> E D))
+    (tau (-> (-> A B C) (-> A B) (-> A C))
+         (-> D E D)
          (-> F F))))
 
 (define local-SKI
