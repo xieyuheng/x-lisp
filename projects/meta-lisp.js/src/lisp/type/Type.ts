@@ -231,7 +231,10 @@ export function isInterfaceType(value: L.Value): boolean {
 export function createInterfaceType(
   attributeTypes: Record<string, L.Value>,
 ): L.Value {
-  return L.ListValue([L.SymbolValue("interface"), L.ObjectValue(attributeTypes)])
+  return L.ListValue([
+    L.SymbolValue("interface"),
+    L.ObjectValue(attributeTypes),
+  ])
 }
 
 export function interfaceTypeAttributeTypes(

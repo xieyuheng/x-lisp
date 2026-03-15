@@ -20,14 +20,14 @@ export function simplifyMatch(
     }
   }
 
+  if (clauses.length === 0) {
+    return defaultExp
+  }
+
   if (targets.length === 0) {
-    if (clauses.length === 0) {
-      return defaultExp
-    } else {
-      const [clause] = clauses
-      assert(clause.patterns.length === 0)
-      return clause.body
-    }
+    const [clause] = clauses
+    assert(clause.patterns.length === 0)
+    return clause.body
   }
 
   if (clauses.every((clause) => clauseHeadIsVarPattern(mod, clause))) {
@@ -51,6 +51,7 @@ export function simplifyMatch(
 
   if (clauses.every((clause) => clauseHeadIsDataPattern(mod, clause))) {
     const [target, ...restTargets] = targets
+
     const groups = groupClausesByHeadDataConstructor(mod, clauses)
     return L.Cond(
       groups.map((group) => {
@@ -66,11 +67,6 @@ export function simplifyMatch(
           mod === definition.mod
             ? L.Var(`${group.dataConstructor.name}?`, meta)
             : L.Require(path, `${group.dataConstructor.name}?`, meta)
-
-        // const dataConstructorPredicate = L.Var(
-        //   `${group.dataConstructor.name}?`,
-        //   meta,
-        // )
 
         const question = L.Apply(dataConstructorPredicate, [target])
 
@@ -97,11 +93,6 @@ export function simplifyMatch(
                   answer.meta,
                 )
 
-          // const dataFieldGetter = L.Var(
-          //   `${group.dataConstructor.name}-${field.name}`,
-          //   answer.meta,
-          // )
-
           answer = L.Let1(
             freshVars[i].name,
             L.Apply(dataFieldGetter, [target], answer.meta),
@@ -117,7 +108,7 @@ export function simplifyMatch(
   }
 
   const groups = groupClausesByHeadPatternKind(mod, clauses)
-  return groups.reduce(
+  return groups.reduceRight(
     (accumulatedExp, group) =>
       simplifyMatch(mod, targets, group, accumulatedExp, meta),
     defaultExp,
@@ -139,29 +130,68 @@ type GroupByHeadDataConstructor = {
   clauses: Array<L.MatchClause>
 }
 
+function formatGroupByHeadDataConstructor(
+  group: GroupByHeadDataConstructor,
+): string {
+  const { dataConstructor, clauses } = group
+  let s = `${dataConstructor.name}`
+  for (const clause of clauses) {
+    const patterns = L.formatExps(clause.patterns)
+    const body = L.formatExp(clause.body)
+    s += `\n  ${patterns} => ${body}`
+  }
+
+  return s
+}
+
 function groupClausesByHeadDataConstructor(
   mod: L.Mod,
   clauses: Array<L.MatchClause>,
 ): Array<GroupByHeadDataConstructor> {
-  const groups: Array<GroupByHeadDataConstructor> = []
+  const definition = findDatatypeDefinitionFromClauses(mod, clauses)
+  return definition.dataConstructors.map((dataConstructor) => {
+    const groupedClauses: Array<L.MatchClause> = []
+    for (const clause of clauses) {
+      assert(clause.patterns.length > 0)
+      const [pattern, ...restPatterns] = clause.patterns
+      if (
+        L.dataConstructorEqual(
+          L.dataPatternDataConstructor(mod, pattern),
+          dataConstructor,
+        )
+      ) {
+        const argPatterns = L.dataPatternArgPatterns(mod, pattern)
+        const newPatterns = [...argPatterns, ...restPatterns]
+        const newClause = L.MatchClause(newPatterns, clause.body, clause.meta)
+        groupedClauses.push(newClause)
+      }
+    }
+
+    return { dataConstructor, clauses: groupedClauses }
+  })
+}
+
+function findDatatypeDefinitionFromClauses(
+  mod: L.Mod,
+  clauses: Array<L.MatchClause>,
+): L.DatatypeDefinition {
+  let definition: L.DatatypeDefinition | undefined = undefined
   for (const clause of clauses) {
     assert(clause.patterns.length > 0)
     const [pattern, ...restPatterns] = clause.patterns
     const dataConstructor = L.dataPatternDataConstructor(mod, pattern)
-    const argPatterns = L.dataPatternArgPatterns(mod, pattern)
-    const found = groups.find(
-      (group) => group.dataConstructor.name === dataConstructor.name,
-    )
-    const newPatterns = [...argPatterns, ...restPatterns]
-    const newClause = L.MatchClause(newPatterns, clause.body, clause.meta)
-    if (found) {
-      found.clauses.push(newClause)
-    } else {
-      groups.push({ dataConstructor, clauses: [newClause] })
+    if (definition === undefined) {
+      definition = dataConstructor.definition
+    } else if (dataConstructor.definition !== definition) {
+      let message = `[findDatatypeDefinitionFromClauses] datatype definition mismatch`
+      message += `\n  definition name: ${definition.name}`
+      if (clause.meta) throw new S.ErrorWithMeta(message, clause.meta)
+      else throw new Error(message)
     }
   }
 
-  return groups
+  assert(definition)
+  return definition
 }
 
 function groupClausesByHeadPatternKind(

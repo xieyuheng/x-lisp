@@ -30,7 +30,9 @@ export function typeFreshen(type: L.Value): L.Value {
 
   if (L.isInterfaceType(type)) {
     return L.createInterfaceType(
-      recordMapValue(L.interfaceTypeAttributeTypes(type), (t) => typeFreshen(t)),
+      recordMapValue(L.interfaceTypeAttributeTypes(type), (t) =>
+        typeFreshen(t),
+      ),
     )
   }
 

@@ -136,6 +136,13 @@ export type DataConstructor = {
   fields: Array<DataField>
 }
 
+export function dataConstructorEqual(
+  x: DataConstructor,
+  y: DataConstructor,
+): boolean {
+  return x.definition === y.definition && x.name === y.name
+}
+
 export type DataField = {
   name: string
   type: Exp

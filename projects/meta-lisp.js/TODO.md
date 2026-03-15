@@ -1,12 +1,10 @@
 # type system
 
-
 > more tests about pattern match
 
-my-list-map-zip-2.lisp
+`simplifyMatch` -- use less `Require`
 
 more tests about polymorphic type-checking
-
 
 # type system
 

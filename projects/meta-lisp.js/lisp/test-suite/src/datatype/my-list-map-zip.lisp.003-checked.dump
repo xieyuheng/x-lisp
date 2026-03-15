@@ -25,3 +25,64 @@
                   (my-list-map-zip f tail1 tail2)))
             (error "cond mismatch"))))
       (error "cond mismatch"))))
+
+(claim my-list-map-zip-2
+  (polymorphic (A B C)
+    (-> (-> A B C) (my-list-t A) (my-list-t B) (my-list-t C))))
+
+(define (my-list-map-zip-2 f list1 list2)
+  (if ((@require "my-list.lisp" nil?) list1)
+    (begin (= _ list2) nil)
+    (if ((@require "my-list.lisp" li?) list1)
+      (begin
+        (= tail₈ ((@require "my-list.lisp" li-tail) list1))
+        (= head₈ ((@require "my-list.lisp" li-head) list1))
+        (if ((@require "my-list.lisp" nil?) list2)
+          (begin (= _ list1) nil)
+          (if ((@require "my-list.lisp" li?) list2)
+            (begin
+              (= tail₇
+                 ((@require "my-list.lisp" li-tail) list2))
+              (= head₇
+                 ((@require "my-list.lisp" li-head) list2))
+              (if ((@require "my-list.lisp" nil?) list1)
+                (error "match mismatch")
+                (if ((@require "my-list.lisp" li?) list1)
+                  (begin
+                    (= tail₅
+                       ((@require "my-list.lisp" li-tail)
+                        list1))
+                    (= head₅
+                       ((@require "my-list.lisp" li-head)
+                        list1))
+                    (if
+                        ((@require "my-list.lisp" nil?)
+                         list2)
+                      (error "match mismatch")
+                      (if
+                          ((@require "my-list.lisp" li?)
+                           list2)
+                        (begin
+                          (= tail₆
+                             ((@require
+                               "my-list.lisp"
+                               li-tail)
+                              list2))
+                          (= head₆
+                             ((@require
+                               "my-list.lisp"
+                               li-head)
+                              list2))
+                          (= tail2 tail₆)
+                          (= head2 head₆)
+                          (= tail1 tail₅)
+                          (= head1 head₅)
+                          (li (f head1 head2)
+                              (my-list-map-zip-2
+                               f
+                               tail1
+                               tail2)))
+                        (error "cond mismatch"))))
+                  (error "cond mismatch"))))
+            (error "cond mismatch"))))
+      (error "cond mismatch"))))
