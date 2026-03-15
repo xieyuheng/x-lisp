@@ -131,7 +131,7 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     return L.Tau(S.listElements(elements).map(parseExp), meta)
   },
 
-  "(cons* '@class body)": ({ body }, { meta }) => {
+  "(cons* '@interface body)": ({ body }, { meta }) => {
     const entries = S.listCollectKeywordEntries(body)
     return L.Class(recordMapValue(Object.fromEntries(entries), parseExp), meta)
   },

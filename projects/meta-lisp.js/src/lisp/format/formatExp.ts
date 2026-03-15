@@ -192,12 +192,12 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "Class": {
+    case "Interface": {
       const attributeTypes = formatExpAttributes(exp.attributeTypes)
       if (attributeTypes === "") {
-        return `(@class)`
+        return `(@interface)`
       } else {
-        return `(@class ${attributeTypes})`
+        return `(@interface ${attributeTypes})`
       }
     }
 

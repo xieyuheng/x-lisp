@@ -143,7 +143,7 @@ export function desugar(mod: L.Mod, exp: L.Exp): L.Exp {
       )
     }
 
-    case "Class": {
+    case "Interface": {
       return L.Class(
         recordMapValue(exp.attributeTypes, (e) => desugar(mod, e)),
         exp.meta,

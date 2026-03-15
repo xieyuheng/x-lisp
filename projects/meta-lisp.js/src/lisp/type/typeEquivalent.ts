@@ -46,11 +46,11 @@ export function typeEquivalent(
     )
   }
 
-  if (L.isClassType(lhs) && L.isClassType(rhs)) {
+  if (L.isInterfaceType(lhs) && L.isInterfaceType(rhs)) {
     return typeEquivalentRecord(
       trail,
-      L.classTypeAttributeTypes(lhs),
-      L.classTypeAttributeTypes(rhs),
+      L.interfaceTypeAttributeTypes(lhs),
+      L.interfaceTypeAttributeTypes(rhs),
     )
   }
 

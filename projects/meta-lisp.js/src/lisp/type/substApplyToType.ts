@@ -53,9 +53,9 @@ function substApplyToTypeWithBoundIds(
     )
   }
 
-  if (L.isClassType(type)) {
-    return L.createClassType(
-      recordMapValue(L.classTypeAttributeTypes(type), (t) =>
+  if (L.isInterfaceType(type)) {
+    return L.createInterfaceType(
+      recordMapValue(L.interfaceTypeAttributeTypes(type), (t) =>
         substApplyToTypeWithBoundIds(boundIds, subst, t),
       ),
     )

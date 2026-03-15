@@ -44,8 +44,8 @@ export function typeFreeVarTypes(
     )
   }
 
-  if (L.isClassType(type)) {
-    return Object.values(L.classTypeAttributeTypes(type)).flatMap((t) =>
+  if (L.isInterfaceType(type)) {
+    return Object.values(L.interfaceTypeAttributeTypes(type)).flatMap((t) =>
       typeFreeVarTypes(boundIds, t),
     )
   }

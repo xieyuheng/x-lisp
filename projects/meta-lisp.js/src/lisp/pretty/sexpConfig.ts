@@ -32,7 +32,7 @@ export const sexpConfig: S.Config = {
     ["cond", 0],
     ["@list", 0],
     ["@object", 0],
-    ["@class", 0],
+    ["@interface", 0],
     ["@set", 0],
     ["@hash", 0],
     ["specific", 1],

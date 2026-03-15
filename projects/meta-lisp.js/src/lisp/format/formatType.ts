@@ -44,9 +44,9 @@ export function formatType(type: L.Value): string {
     return `(tau ${elementTypes})`
   }
 
-  if (L.isClassType(type)) {
-    const attributeTypes = formatTypeRecord(L.classTypeAttributeTypes(type))
-    return `(@class ${attributeTypes})`
+  if (L.isInterfaceType(type)) {
+    const attributeTypes = formatTypeRecord(L.interfaceTypeAttributeTypes(type))
+    return `(@interface ${attributeTypes})`
   }
 
   if (L.isListType(type)) {

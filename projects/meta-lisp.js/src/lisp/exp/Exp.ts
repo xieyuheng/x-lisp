@@ -28,7 +28,7 @@ export type Exp =
   | Quote
   | Arrow
   | Tau
-  | Class
+  | Interface
   | The
   | Polymorphic
   | Match
@@ -485,8 +485,8 @@ export function Tau(elementTypes: Array<Exp>, meta?: TokenMeta): Tau {
   }
 }
 
-export type Class = {
-  kind: "Class"
+export type Interface = {
+  kind: "Interface"
   attributeTypes: Record<string, Exp>
   meta?: TokenMeta
 }
@@ -494,9 +494,9 @@ export type Class = {
 export function Class(
   attributeTypes: Record<string, Exp>,
   meta?: TokenMeta,
-): Class {
+): Interface {
   return {
-    kind: "Class",
+    kind: "Interface",
     attributeTypes,
     meta,
   }

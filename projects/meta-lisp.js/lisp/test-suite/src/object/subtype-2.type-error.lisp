@@ -2,7 +2,7 @@
 
 (exempt point-t)
 (define point-t
-  (@class
+  (@interface
     :x float-t
     :y float-t))
 

@@ -49,8 +49,8 @@ function typeVarOccurredInTypeWithBoundIds(
     )
   }
 
-  if (L.isClassType(type)) {
-    return Object.values(L.classTypeAttributeTypes(type)).some((t) =>
+  if (L.isInterfaceType(type)) {
+    return Object.values(L.interfaceTypeAttributeTypes(type)).some((t) =>
       typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
     )
   }

@@ -119,12 +119,12 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       return L.createTauType(elementTypes)
     }
 
-    case "Class": {
+    case "Interface": {
       const attributeTypes = recordMapValue(
         exp.attributeTypes,
         (attributeType) => evaluate(mod, env, attributeType),
       )
-      return L.createClassType(attributeTypes)
+      return L.createInterfaceType(attributeTypes)
     }
 
     case "The": {

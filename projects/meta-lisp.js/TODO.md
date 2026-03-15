@@ -1,5 +1,3 @@
-[maybe] we should use `(@interface)` instead of `(@class)`, because there is not `self` or `this`
-
 # type system
 
 more tests from "8 Polymorphic Type-checking"
@@ -10,7 +8,7 @@ more tests from "8 Polymorphic Type-checking"
 
 > infer type for type expressions.
 
-`typeInfer` -- handle `Class`
+`typeInfer` -- handle `Interface`
 `typeInfer` -- handle `Tau`
 `typeInfer` -- handle `Arrow`
 `typeInfer` -- handle `Polymorphic`
@@ -19,8 +17,8 @@ fix `subtype.type-error.lisp`
 
 # row polymorphism
 
-`(@object)` & `(@class)` -- check repeated keyword
-`ClassType` support row polymorphism
+`(@object)` & `(@interface)` -- check repeated keyword
+`InterfaceType` support row polymorphism
 
 `Dot` as `Exp`
 parse `(:field object)` -- `Dot`

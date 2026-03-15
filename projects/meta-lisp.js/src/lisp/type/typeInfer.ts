@@ -220,7 +220,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         const attributeTypes = recordMapValue(exp.attributes, (_) =>
           L.createFreshVarType("A"),
         )
-        const type = L.createClassType(attributeTypes)
+        const type = L.createInterfaceType(attributeTypes)
         return L.checkThenInfer(
           L.sequenceCheckEffect(
             Object.keys(exp.attributes).map((key) =>

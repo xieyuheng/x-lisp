@@ -20,9 +20,9 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
     )
   }
 
-  if (L.isClassType(lhs) && L.isClassType(rhs)) {
-    const lhsRecord = L.classTypeAttributeTypes(lhs)
-    const rhsRecord = L.classTypeAttributeTypes(rhs)
+  if (L.isInterfaceType(lhs) && L.isInterfaceType(rhs)) {
+    const lhsRecord = L.interfaceTypeAttributeTypes(lhs)
+    const rhsRecord = L.interfaceTypeAttributeTypes(rhs)
     // rhs should have less keys
     for (const k of Object.keys(rhsRecord)) {
       if (lhsRecord[k] === undefined) return false

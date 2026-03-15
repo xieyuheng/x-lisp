@@ -28,9 +28,9 @@ export function typeFreshen(type: L.Value): L.Value {
     )
   }
 
-  if (L.isClassType(type)) {
-    return L.createClassType(
-      recordMapValue(L.classTypeAttributeTypes(type), (t) => typeFreshen(t)),
+  if (L.isInterfaceType(type)) {
+    return L.createInterfaceType(
+      recordMapValue(L.interfaceTypeAttributeTypes(type), (t) => typeFreshen(t)),
     )
   }
 

@@ -12,7 +12,7 @@ export function isType(value: L.Value): boolean {
     isAtomType(value) ||
     isArrowType(value) ||
     isTauType(value) ||
-    isClassType(value) ||
+    isInterfaceType(value) ||
     isListType(value) ||
     isSetType(value) ||
     isHashType(value) ||
@@ -217,27 +217,27 @@ export function tauTypeElementTypes(value: L.Value): Array<L.Value> {
   return L.asListValue(value).elements.slice(1)
 }
 
-// ClassType
+// InterfaceType
 
-export function isClassType(value: L.Value): boolean {
+export function isInterfaceType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
-    L.equal(value.elements[0], L.SymbolValue("class")) &&
+    L.equal(value.elements[0], L.SymbolValue("interface")) &&
     L.isObjectValue(value.elements[1]) &&
     Object.values(L.asObjectValue(value.elements[1]).attributes).every(isType)
   )
 }
 
-export function createClassType(
+export function createInterfaceType(
   attributeTypes: Record<string, L.Value>,
 ): L.Value {
-  return L.ListValue([L.SymbolValue("class"), L.ObjectValue(attributeTypes)])
+  return L.ListValue([L.SymbolValue("interface"), L.ObjectValue(attributeTypes)])
 }
 
-export function classTypeAttributeTypes(
+export function interfaceTypeAttributeTypes(
   value: L.Value,
 ): Record<string, L.Value> {
-  assert(isClassType(value))
+  assert(isInterfaceType(value))
   return L.asObjectValue(L.asListValue(value).elements[1]).attributes
 }
 

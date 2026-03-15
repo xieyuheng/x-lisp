@@ -1,6 +1,6 @@
 (claim point-t type-t)
 
-(define point-t (@class #x float-t #y float-t))
+(define point-t (@interface #x float-t #y float-t))
 
 (claim point-println (-> point-t void-t))
 

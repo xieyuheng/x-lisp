@@ -2,6 +2,6 @@
 
 (define (main)
   (println
-   (the (@class #x int-t #y int-t) (@object #x 1 #y 2)))
+   (the (@interface #x int-t #y int-t) (@object #x 1 #y 2)))
   (println
-   (the (@class #x int-t #y int-t) (@object #x 1 #y 2))))
+   (the (@interface #x int-t #y int-t) (@object #x 1 #y 2))))
