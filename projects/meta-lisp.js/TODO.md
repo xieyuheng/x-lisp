@@ -11,6 +11,16 @@ more tests about polymorphic type-checking
 
 fix `subtype.type-error.lisp`
 
+# bug
+
+study coinduction
+
+`typeUnify` -- take `trace` to avoid infinite loop
+
+- test by two definition of `exp-t`
+
+support recursive interface type -- be symmetric with datatype
+
 # row polymorphism
 
 `(@object)` & `(@interface)` -- check repeated keyword
@@ -20,11 +30,3 @@ fix `subtype.type-error.lisp`
 parse `(:field object)` -- `Dot`
 
 [maybe] `(object-merge lhs rhs)`
-
-# bug
-
-`typeUnify` -- take `trace` to avoid infinite loop
-
-- test by two definition of `exp-t`
-
-support recursive interface type -- be symmetric with datatype

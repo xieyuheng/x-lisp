@@ -8,6 +8,22 @@
 
 (define (K x y) x)
 
-(claim main (-> void-t))
+(claim I (polymorphic (A) (-> A A)))
 
-(define (main) (S K K) void)
+(define (I x) x)
+
+(claim main (polymorphic (A) (-> (-> A A))))
+
+(define (main) (S K I))
+
+(claim local-SKI
+  (polymorphic (A B C D E F)
+    (tau (-> (-> A (-> B C)) (-> (-> A B) (-> A C)))
+         (-> D (-> E D))
+         (-> F F))))
+
+(define local-SKI
+  (= S (lambda (x y z) (x z (y z))))
+  (= K (lambda (x y) x))
+  (= I (lambda (x) x))
+  (@tuple S K I))

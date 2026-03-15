@@ -149,6 +149,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
           L.typeInfer(mod, ctx, exp.rhs),
           (inferredType) => (subst) => {
             ctx = L.substApplyToCtx(subst, ctx)
+            inferredType = L.substApplyToType(subst, inferredType)
             inferredType = L.typeGeneralizeInCtx(ctx, inferredType)
             ctx = L.ctxPut(ctx, exp.name, inferredType)
             return typeInfer(mod, ctx, exp.body)(subst)
