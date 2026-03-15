@@ -1,6 +1,5 @@
 # type system
 
-`typeInfer` -- handle `Arrow`
 `typeInfer` -- handle `Polymorphic`
 
 # bug

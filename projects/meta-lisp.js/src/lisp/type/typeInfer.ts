@@ -261,6 +261,19 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
+      case "Arrow": {
+        const type = L.createTypeType()
+        return L.checkThenInfer(
+          L.sequenceCheckEffect([
+            ...exp.argTypes.map((argType) =>
+              L.typeCheckByInfer(mod, ctx, argType, type),
+            ),
+            L.typeCheckByInfer(mod, ctx, exp.retType, type),
+          ]),
+          L.okInferEffect(type),
+        )(subst)
+      }
+
       default: {
         let message = `not inferable exp: ${exp.kind}`
         return L.errorInferEffect(exp, message)(subst)
