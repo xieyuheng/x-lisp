@@ -1,15 +1,12 @@
-more tests about polymorphic type-checking
-
 # type system
 
 > infer type for type expressions.
 
-`typeInfer` -- handle `Interface`
 `typeInfer` -- handle `Tau`
 `typeInfer` -- handle `Arrow`
 `typeInfer` -- handle `Polymorphic`
 
-fix `subtype.type-error.lisp`
+fix `subtype-[1|2].type-error.lisp` -- should not use `(exempt point-t)`
 
 # bug
 

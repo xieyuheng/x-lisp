@@ -1,6 +1,3 @@
-(claim point-t type-t)
-
-(exempt point-t)
 (define point-t
   (@interface
     :x float-t
