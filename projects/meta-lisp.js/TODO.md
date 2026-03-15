@@ -1,9 +1,8 @@
+`simplifyMatch` -- use less `Require`
+
 # type system
 
 > more tests about pattern match
-
-`simplifyMatch` -- use less `Require`
-
 more tests about polymorphic type-checking
 
 # type system
