@@ -3,12 +3,12 @@
     (-> (-> A B) (my-list-t A) (my-list-t B))))
 
 (define (my-list-map f list)
-  (if ((@require "my-list.lisp" nil?) list)
+  (if (nil? list)
     nil
-    (if ((@require "my-list.lisp" li?) list)
+    (if (li? list)
       (begin
-        (= tail₉ ((@require "my-list.lisp" li-tail) list))
-        (= head₉ ((@require "my-list.lisp" li-head) list))
+        (= tail₉ (li-tail list))
+        (= head₉ (li-head list))
         (= tail tail₉)
         (= head head₉)
         (li (f head) (my-list-map f tail)))

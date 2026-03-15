@@ -2,12 +2,12 @@
   (polymorphic (E) (-> (my-list-t E) int-t)))
 
 (define (my-list-length list)
-  (if ((@require "my-list.lisp" nil?) list)
+  (if (nil? list)
     0
-    (if ((@require "my-list.lisp" li?) list)
+    (if (li? list)
       (begin
-        (= tail₂ ((@require "my-list.lisp" li-tail) list))
-        (= head₂ ((@require "my-list.lisp" li-head) list))
+        (= tail₂ (li-tail list))
+        (= head₂ (li-head list))
         (= tail tail₂)
         (= head head₂)
         (iadd 1 (my-list-length tail)))

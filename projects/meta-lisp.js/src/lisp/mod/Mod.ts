@@ -91,6 +91,11 @@ export function modOwnDefinitions(mod: Mod): Array<Definition> {
   )
 }
 
+export function modNameIsAsDefined(mod: Mod, name: string): boolean {
+  const definition = mod.definitions.get(name)
+  return (definition !== undefined) && definition.name === name
+}
+
 export function modForEachOwnDefinition(
   mod: Mod,
   callback: (Definition: L.Definition) => void,

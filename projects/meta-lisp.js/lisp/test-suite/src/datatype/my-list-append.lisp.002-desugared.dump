@@ -3,12 +3,12 @@
     (-> (my-list-t E) (my-list-t E) (my-list-t E))))
 
 (define (my-list-append left right)
-  (if ((@require "my-list.lisp" nil?) left)
+  (if (nil? left)
     right
-    (if ((@require "my-list.lisp" li?) left)
+    (if (li? left)
       (begin
-        (= tail₁ ((@require "my-list.lisp" li-tail) left))
-        (= head₁ ((@require "my-list.lisp" li-head) left))
+        (= tail₁ (li-tail left))
+        (= head₁ (li-head left))
         (= tail tail₁)
         (= head head₁)
         (li head (my-list-append tail right)))

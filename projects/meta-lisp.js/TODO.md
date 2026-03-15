@@ -1,5 +1,3 @@
-`simplifyMatch` -- use less `Require`
-
 # type system
 
 > more tests about pattern match

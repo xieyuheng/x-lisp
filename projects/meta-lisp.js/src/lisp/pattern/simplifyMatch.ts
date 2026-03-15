@@ -63,10 +63,13 @@ export function simplifyMatch(
 
         const path = Path.relative(Path.dirname(mod.path), definition.mod.path)
 
-        const dataConstructorPredicate =
-          mod === definition.mod
-            ? L.Var(`${group.dataConstructor.name}?`, meta)
-            : L.Require(path, `${group.dataConstructor.name}?`, meta)
+        const dataConstructorPredicateName = `${group.dataConstructor.name}?`
+        const dataConstructorPredicate = L.modNameIsAsDefined(
+          mod,
+          dataConstructorPredicateName,
+        )
+          ? L.Var(dataConstructorPredicateName, meta)
+          : L.Require(path, dataConstructorPredicateName, meta)
 
         const question = L.Apply(dataConstructorPredicate, [target])
 
@@ -81,17 +84,10 @@ export function simplifyMatch(
         for (const i of range(group.dataConstructor.fields.length)) {
           const field = group.dataConstructor.fields[i]
 
-          const dataFieldGetter =
-            mod === definition.mod
-              ? L.Var(
-                  `${group.dataConstructor.name}-${field.name}`,
-                  answer.meta,
-                )
-              : L.Require(
-                  path,
-                  `${group.dataConstructor.name}-${field.name}`,
-                  answer.meta,
-                )
+          const dataFieldGetterName = `${group.dataConstructor.name}-${field.name}`
+          const dataFieldGetter = L.modNameIsAsDefined(mod, dataFieldGetterName)
+            ? L.Var(dataFieldGetterName, answer.meta)
+            : L.Require(path, dataFieldGetterName, answer.meta)
 
           answer = L.Let1(
             freshVars[i].name,
