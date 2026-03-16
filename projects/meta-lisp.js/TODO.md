@@ -1,6 +1,11 @@
+# study
+
+study/topics/mathematics/coinduction
+study/topics/type-theory/subtypin
+study/persons/giuseppe-castagna
+
 # bug
 
-study coinduction
 `typeUnify` -- take `trace` to avoid infinite loop
 test subtype between datatype by two definitions of `exp-t`
 
