@@ -1,9 +1,3 @@
-# study
-
-study/topics/mathematics/coinduction
-study/topics/type-theory/subtypin
-study/persons/giuseppe-castagna
-
 # bug
 
 `typeUnify` -- take `trace` to avoid infinite loop
