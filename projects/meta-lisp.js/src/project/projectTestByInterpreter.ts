@@ -19,7 +19,20 @@ export function projectTestByInterpreter(
 ): void {
   for (const id of projectSourceIds(project)) {
     const file = projectGetSourcePath(project, id)
-    L.loadMod(file, dependencyGraph)
+    try {
+      L.loadMod(file, dependencyGraph)
+    } catch (error) {
+      if (id.endsWith(".error.lisp")) {
+        const path = projectGetSourcePath(project, id)
+        const outputPath = path + ".interpreter.out"
+        logPath("interpreter-error-snapshot", outputPath)
+        callWithFile(openOutputFile(outputPath), (file) => {
+          fileWrite(file, errorReport(error))
+        })
+      } else {
+        throw error
+      }
+    }
   }
 
   L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)

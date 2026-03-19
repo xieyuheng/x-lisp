@@ -1,0 +1,8 @@
+[parseExp] duplicated key in literal record
+  key: y
+lisp/syntax-errors/record-duplicated-key.syntax-error.lisp:2:26
+ 1 | (define (main)
+ 2 |   (println {:x 1 :y 2 :y 3}))
+   |                          ~    
+ 3 | 
+

@@ -1,6 +1,7 @@
 import { arrayGroup2, arrayPickLast } from "@xieyuheng/helpers.js/array"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
+import assert from "node:assert"
 import * as L from "../index.ts"
 
 export function parseBody(body: S.Sexp): L.Exp {
@@ -98,6 +99,18 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
 
   "(cons* '@record body)": ({ body }, { meta }) => {
     const entries = S.listCollectKeywordEntries(body)
+    for (const [key, group] of Object.entries(
+      Object.groupBy(entries, ([key, sexp]) => key),
+    )) {
+      if (group && group.length > 1) {
+        const [_, firstSexp] = group[1]
+        assert(firstSexp.meta)
+        let message = `[parseExp] duplicated key in literal record`
+        message += `\n  key: ${key}`
+        throw new S.ErrorWithMeta(message, firstSexp.meta)
+      }
+    }
+
     return L.LiteralRecord(
       recordMapValue(Object.fromEntries(entries), parseExp),
       meta,
@@ -136,6 +149,18 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
 
   "(cons* '@interface body)": ({ body }, { meta }) => {
     const entries = S.listCollectKeywordEntries(body)
+    for (const [key, group] of Object.entries(
+      Object.groupBy(entries, ([key, sexp]) => key),
+    )) {
+      if (group && group.length > 1) {
+        const [_, firstSexp] = group[1]
+        assert(firstSexp.meta)
+        let message = `[parseExp] duplicated key in interface`
+        message += `\n  key: ${key}`
+        throw new S.ErrorWithMeta(message, firstSexp.meta)
+      }
+    }
+
     return L.Class(recordMapValue(Object.fromEntries(entries), parseExp), meta)
   },
 

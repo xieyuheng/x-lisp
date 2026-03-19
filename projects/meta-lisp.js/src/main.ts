@@ -1,6 +1,7 @@
 #!/usr/bin/env -S node
 
 import * as cmd from "@xieyuheng/cmd.js"
+import * as S from "@xieyuheng/sexp.js"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import { fileURLToPath } from "node:url"
 import * as L from "./lisp/index.ts"
@@ -12,6 +13,7 @@ import {
   projectFromSourcePaths,
   projectTestByInterpreter,
 } from "./project/index.ts"
+import { errorReport } from "@xieyuheng/helpers.js/error"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
@@ -77,4 +79,12 @@ router.defineHandlers({
   },
 })
 
-await router.run(process.argv.slice(2))
+try {
+  await router.run(process.argv.slice(2))
+} catch (error) {
+  if (error instanceof S.ErrorWithMeta) {
+    console.log(errorReport(error))
+  } else {
+    throw error
+  }
+}

@@ -1,13 +1,13 @@
 # row polymorphism
 
-`(@record)` & `(@interface)` -- check repeated keyword
-`InterfaceType` support row polymorphism
+`InterfaceDefinition` -- to support recursive interface type -- be symmetric with datatype
+`DefineInterface` as `Stmt`
+parse `(define-interface)`
+
+`InterfaceExtend` as `Exp` -- to support row polymorphism
+`InterfaceType` add field to support row polymorphism
 
 `Dot` as `Exp`
 parse `(:field record)` -- `Dot`
 
-[maybe] `(record-merge lhs rhs)`
-
-# recursive interface
-
-[maybe] support recursive interface type -- be symmetric with datatype
+`(record-merge lhs rhs)`
