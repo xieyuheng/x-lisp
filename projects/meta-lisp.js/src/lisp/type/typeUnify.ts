@@ -18,6 +18,17 @@ export function typeUnify(
   lhs = L.typeFreshen(lhs)
   rhs = L.typeFreshen(rhs)
 
+  if (
+    L.trailSome(
+      trail,
+      (entry) =>
+        (L.valueEqual(entry.lhs, lhs) && L.valueEqual(entry.rhs, rhs)) ||
+        (L.valueEqual(entry.lhs, rhs) && L.valueEqual(entry.rhs, lhs)),
+    )
+  ) {
+    return subst
+  }
+
   if (L.typeSubtype([], lhs, rhs) || L.typeSubtype([], rhs, lhs)) {
     return subst
   }
@@ -109,19 +120,23 @@ export function typeUnify(
   }
 
   if (L.isDatatypeType(lhs) && L.isDatatypeType(rhs)) {
-    if (
-      L.datatypeTypeDatatypeDefinition(lhs) !==
-      L.datatypeTypeDatatypeDefinition(rhs)
-    ) {
-      return undefined
-    }
-
-    return typeUnifyMany(
+    trail = L.trailAdd(trail, lhs, rhs)
+    return typeUnify(
       trail,
       subst,
-      L.datatypeTypeArgTypes(lhs),
-      L.datatypeTypeArgTypes(rhs),
+      L.datatypeTypeUnfold(lhs),
+      L.datatypeTypeUnfold(rhs),
     )
+  }
+
+  if (L.isDatatypeType(lhs)) {
+    trail = L.trailAdd(trail, lhs, rhs)
+    return typeUnify(trail, subst, L.datatypeTypeUnfold(lhs), rhs)
+  }
+
+  if (L.isDatatypeType(rhs)) {
+    trail = L.trailAdd(trail, lhs, rhs)
+    return typeUnify(trail, subst, lhs, L.datatypeTypeUnfold(rhs))
   }
 
   if (L.isSumType(lhs) && L.isSumType(rhs)) {
@@ -131,14 +146,6 @@ export function typeUnify(
       L.sumTypeVariantTypes(lhs),
       L.sumTypeVariantTypes(rhs),
     )
-  }
-
-  if (L.isDatatypeType(lhs) && L.isSumType(rhs)) {
-    return typeUnify(trail, subst, L.datatypeTypeUnfold(lhs), rhs)
-  }
-
-  if (L.isSumType(lhs) && L.isDatatypeType(rhs)) {
-    return typeUnify(trail, subst, lhs, L.datatypeTypeUnfold(rhs))
   }
 
   return undefined
