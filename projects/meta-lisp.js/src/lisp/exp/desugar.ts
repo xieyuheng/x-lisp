@@ -77,15 +77,15 @@ export function desugar(mod: L.Mod, exp: L.Exp): L.Exp {
       )
     }
 
-    case "List": {
+    case "LiteralList": {
       return desugar(mod, desugarList(exp.elements, exp.meta))
     }
 
-    case "Set": {
+    case "LiteralSet": {
       return desugar(mod, desugarSet(exp.elements, exp.meta))
     }
 
-    case "Hash": {
+    case "LiteralHash": {
       return desugar(mod, desugarHash(exp.entries, exp.meta))
     }
 
@@ -122,8 +122,8 @@ export function desugar(mod: L.Mod, exp: L.Exp): L.Exp {
       )
     }
 
-    case "Tuple": {
-      return L.Tuple(
+    case "LiteralTuple": {
+      return L.LiteralTuple(
         exp.elements.map((e) => desugar(mod, e)),
         exp.meta,
       )
@@ -136,8 +136,8 @@ export function desugar(mod: L.Mod, exp: L.Exp): L.Exp {
       )
     }
 
-    case "Object": {
-      return L.Object(
+    case "LiteralObject": {
+      return L.LiteralObject(
         recordMapValue(exp.attributes, (e) => desugar(mod, e)),
         exp.meta,
       )
@@ -286,7 +286,7 @@ function desugarQuote(sexp: S.Sexp, meta?: S.TokenMeta): L.Exp {
     }
 
     case "List": {
-      return L.List(
+      return L.LiteralList(
         sexp.elements.map((e) => desugarQuote(e, meta)),
         meta,
       )

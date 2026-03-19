@@ -128,7 +128,7 @@ export function formatExp(exp: Exp): string {
       return `(cond ${clauses.join(" ")})`
     }
 
-    case "List": {
+    case "LiteralList": {
       const elements = formatExps(exp.elements)
 
       if (elements === "") {
@@ -138,7 +138,7 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "Tuple": {
+    case "LiteralTuple": {
       const elements = formatExps(exp.elements)
 
       if (elements === "") {
@@ -148,7 +148,7 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "Object": {
+    case "LiteralObject": {
       const attributes = formatExpAttributes(exp.attributes)
       if (attributes === "") {
         return `(@object)`
@@ -157,12 +157,12 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "Set": {
+    case "LiteralSet": {
       const elements = formatExps(exp.elements)
       return `(@set ${elements})`
     }
 
-    case "Hash": {
+    case "LiteralHash": {
       const entries = exp.entries
         .map(({ key, value }) => `${formatExp(key)} ${formatExp(value)}`)
         .join(" ")

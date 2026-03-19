@@ -45,7 +45,7 @@ export function expandDataConstructor(
         mod,
         dataConstructor.name,
         parameters,
-        L.List([L.Symbol(dataConstructor.name), ...args]),
+        L.LiteralList([L.Symbol(dataConstructor.name), ...args]),
       ),
     )
 

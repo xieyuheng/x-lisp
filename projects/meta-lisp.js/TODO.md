@@ -1,3 +1,6 @@
+ambr LiteralObject LiteralRecord
+ambr ObjectValue RecordValue
+
 # bug
 
 `typeUnify` -- take `trace` to avoid infinite loop

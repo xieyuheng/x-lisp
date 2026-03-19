@@ -91,11 +91,11 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       }
     }
 
-    case "Tuple": {
+    case "LiteralTuple": {
       return L.ListValue(exp.elements.map((e) => evaluate(mod, env, e)))
     }
 
-    case "Object": {
+    case "LiteralObject": {
       return L.ObjectValue(
         recordMapValue(exp.attributes, (attribute) =>
           evaluate(mod, env, attribute),

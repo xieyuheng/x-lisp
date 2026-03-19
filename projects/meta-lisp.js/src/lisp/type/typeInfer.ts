@@ -163,7 +163,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
-      case "List": {
+      case "LiteralList": {
         const elementType = L.createFreshVarType("E")
         const type = L.createListType(elementType)
         return L.checkThenInfer(
@@ -176,7 +176,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
-      case "Set": {
+      case "LiteralSet": {
         const elementType = L.createFreshVarType("E")
         const type = L.createSetType(elementType)
         return L.checkThenInfer(
@@ -189,7 +189,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
-      case "Hash": {
+      case "LiteralHash": {
         const keyType = L.createFreshVarType("K")
         const valueType = L.createFreshVarType("V")
         const type = L.createHashType(keyType, valueType)
@@ -204,7 +204,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
-      case "Tuple": {
+      case "LiteralTuple": {
         const elementTypes = exp.elements.map((_) => L.createFreshVarType("E"))
         const type = L.createTauType(elementTypes)
         return L.checkThenInfer(
@@ -217,7 +217,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
-      case "Object": {
+      case "LiteralObject": {
         const attributeTypes = recordMapValue(exp.attributes, (_) =>
           L.createFreshVarType("A"),
         )

@@ -89,20 +89,23 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
   },
 
   "(cons* '@list elements)": ({ elements }, { meta }) => {
-    return L.List(S.listElements(elements).map(parseExp), meta)
+    return L.LiteralList(S.listElements(elements).map(parseExp), meta)
   },
 
   "(cons* '@tuple elements)": ({ elements }, { meta }) => {
-    return L.Tuple(S.listElements(elements).map(parseExp), meta)
+    return L.LiteralTuple(S.listElements(elements).map(parseExp), meta)
   },
 
   "(cons* '@object body)": ({ body }, { meta }) => {
     const entries = S.listCollectKeywordEntries(body)
-    return L.Object(recordMapValue(Object.fromEntries(entries), parseExp), meta)
+    return L.LiteralObject(
+      recordMapValue(Object.fromEntries(entries), parseExp),
+      meta,
+    )
   },
 
   "(cons* '@set elements)": ({ elements }, { meta }) => {
-    return L.Set(S.listElements(elements).map(parseExp), meta)
+    return L.LiteralSet(S.listElements(elements).map(parseExp), meta)
   },
 
   "(cons* '@hash elements)": ({ elements }, { meta }) => {
@@ -117,7 +120,7 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
         value: parseExp(value),
       }),
     )
-    return L.Hash(entries, meta)
+    return L.LiteralHash(entries, meta)
   },
 
   "(cons* '-> exps)": ({ exps }, { meta }) => {

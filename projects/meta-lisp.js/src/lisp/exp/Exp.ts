@@ -20,11 +20,11 @@ export type Exp =
   | And
   | Or
   | Cond
-  | List
-  | Tuple
-  | Object
-  | Set
-  | Hash
+  | LiteralList
+  | LiteralTuple
+  | LiteralObject
+  | LiteralSet
+  | LiteralHash
   | Quote
   | Arrow
   | Tau
@@ -361,77 +361,83 @@ export function Cond(clauses: Array<CondClause>, meta?: TokenMeta): Cond {
   }
 }
 
-export type List = {
-  kind: "List"
+export type LiteralList = {
+  kind: "LiteralList"
   elements: Array<Exp>
   meta?: TokenMeta
 }
 
-export function List(elements: Array<Exp>, meta?: TokenMeta): List {
+export function LiteralList(
+  elements: Array<Exp>,
+  meta?: TokenMeta,
+): LiteralList {
   return {
-    kind: "List",
+    kind: "LiteralList",
     elements,
     meta,
   }
 }
 
-export type Tuple = {
-  kind: "Tuple"
+export type LiteralTuple = {
+  kind: "LiteralTuple"
   elements: Array<Exp>
   meta?: TokenMeta
 }
 
-export function Tuple(elements: Array<Exp>, meta?: TokenMeta): Tuple {
+export function LiteralTuple(
+  elements: Array<Exp>,
+  meta?: TokenMeta,
+): LiteralTuple {
   return {
-    kind: "Tuple",
+    kind: "LiteralTuple",
     elements,
     meta,
   }
 }
 
-export type Object = {
-  kind: "Object"
+export type LiteralObject = {
+  kind: "LiteralObject"
   attributes: Record<string, Exp>
   meta?: TokenMeta
 }
 
-export function Object(
+export function LiteralObject(
   attributes: Record<string, Exp>,
   meta?: TokenMeta,
-): Object {
+): LiteralObject {
   return {
-    kind: "Object",
+    kind: "LiteralObject",
     attributes,
     meta,
   }
 }
 
-export type Set = {
-  kind: "Set"
+export type LiteralSet = {
+  kind: "LiteralSet"
   elements: Array<Exp>
   meta?: TokenMeta
 }
 
-export function Set(elements: Array<Exp>, meta?: TokenMeta): Set {
+export function LiteralSet(elements: Array<Exp>, meta?: TokenMeta): LiteralSet {
   return {
-    kind: "Set",
+    kind: "LiteralSet",
     elements,
     meta,
   }
 }
 
-export type Hash = {
-  kind: "Hash"
+export type LiteralHash = {
+  kind: "LiteralHash"
   entries: Array<{ key: Exp; value: Exp }>
   meta?: TokenMeta
 }
 
-export function Hash(
+export function LiteralHash(
   entries: Array<{ key: Exp; value: Exp }>,
   meta?: TokenMeta,
-): Hash {
+): LiteralHash {
   return {
-    kind: "Hash",
+    kind: "LiteralHash",
     entries,
     meta,
   }
