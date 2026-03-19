@@ -1,6 +1,6 @@
 lisp/test-suite/src/lambda-interpreter/lambda-subtype.type-error.lisp:28:4 -- inferred type is not a subtype of given type
-  inferred type: (exp-t )
-  given type: (exp-t )
+  inferred type: exp-t
+  given type: exp-t
  26 | 
  27 |   (evaluate-and-print
  28 |    (l2/lambda-exp 'x (l2/var-exp 'x)))

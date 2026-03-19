@@ -1,4 +1,4 @@
-(claim evaluate-and-print (-> (exp-t) void-t))
+(claim evaluate-and-print (-> exp-t void-t))
 
 (define (evaluate-and-print exp)
   (println (l1/evaluate exp l1/empty-env)))
