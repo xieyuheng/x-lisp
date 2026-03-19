@@ -64,6 +64,19 @@ export function modLookupDefinition(
   return mod.definitions.get(name)
 }
 
+export function modLookupNameByDefinition(
+  mod: Mod,
+  definition: Definition,
+): string | undefined {
+  for (const [name, foundDefinition] of mod.definitions.entries()) {
+    if (foundDefinition === definition) {
+      return name
+    }
+  }
+
+  return undefined
+}
+
 export function modLookupPublicDefinition(
   mod: Mod,
   name: string,
@@ -72,17 +85,16 @@ export function modLookupPublicDefinition(
   return modLookupDefinition(mod, name)
 }
 
+export function modDefinitionEntries(mod: Mod): Array<[string, Definition]> {
+  return Array.from(mod.definitions.entries())
+}
+
 export function modPublicDefinitionEntries(
   mod: Mod,
 ): Array<[string, Definition]> {
-  const entries: Array<[string, Definition]> = []
-  for (const [name, definition] of mod.definitions.entries()) {
-    if (mod.exported.has(name)) {
-      entries.push([name, definition])
-    }
-  }
-
-  return entries
+  return modDefinitionEntries(mod).filter(([name, definition]) =>
+    mod.exported.has(name),
+  )
 }
 
 export function modOwnDefinitions(mod: Mod): Array<Definition> {

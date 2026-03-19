@@ -1,11 +1,11 @@
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as L from "../index.ts"
 
-export function formatTypes(types: Array<L.Value>): string {
-  return types.map((t) => formatType(t)).join(" ")
+export function formatTypesInMod(mod: L.Mod, types: Array<L.Value>): string {
+  return types.map((t) => formatTypeInMod(mod, t)).join(" ")
 }
 
-export function formatType(type: L.Value): string {
+export function formatTypeInMod(mod: L.Mod, type: L.Value): string {
   if (L.isVarType(type)) {
     const serialNumber = L.varTypeSerialNumber(type)
     if (serialNumber === 0n) {
@@ -35,40 +35,43 @@ export function formatType(type: L.Value): string {
 
   if (L.isArrowType(type)) {
     type = L.arrowTypeUncurrying(type)
-    const argTypes = formatTypes(L.arrowTypeArgTypes(type))
-    const retType = formatType(L.arrowTypeRetType(type))
+    const argTypes = formatTypesInMod(mod, L.arrowTypeArgTypes(type))
+    const retType = formatTypeInMod(mod, L.arrowTypeRetType(type))
     return `(-> ${argTypes} ${retType})`
   }
 
   if (L.isTauType(type)) {
-    const elementTypes = formatTypes(L.tauTypeElementTypes(type))
+    const elementTypes = formatTypesInMod(mod, L.tauTypeElementTypes(type))
     return `(tau ${elementTypes})`
   }
 
   if (L.isInterfaceType(type)) {
-    const attributeTypes = formatTypeRecord(L.interfaceTypeAttributeTypes(type))
+    const attributeTypes = formatTypeRecordInMod(
+      mod,
+      L.interfaceTypeAttributeTypes(type),
+    )
     return `(@interface ${attributeTypes})`
   }
 
   if (L.isListType(type)) {
-    const elementType = formatType(L.listTypeElementType(type))
+    const elementType = formatTypeInMod(mod, L.listTypeElementType(type))
     return `(list-t ${elementType})`
   }
 
   if (L.isSetType(type)) {
-    const elementType = formatType(L.setTypeElementType(type))
+    const elementType = formatTypeInMod(mod, L.setTypeElementType(type))
     return `(set-t ${elementType})`
   }
 
   if (L.isHashType(type)) {
-    const keyType = formatType(L.hashTypeKeyType(type))
-    const valueType = formatType(L.hashTypeValueType(type))
+    const keyType = formatTypeInMod(mod, L.hashTypeKeyType(type))
+    const valueType = formatTypeInMod(mod, L.hashTypeValueType(type))
     return `(hash-t ${keyType} ${valueType})`
   }
 
   if (L.isDatatypeType(type)) {
     const definition = L.datatypeTypeDatatypeDefinition(type)
-    const argTypes = formatTypes(L.datatypeTypeArgTypes(type))
+    const argTypes = formatTypesInMod(mod, L.datatypeTypeArgTypes(type))
     if (argTypes.length === 0) {
       return `${definition.name}`
     } else {
@@ -77,13 +80,13 @@ export function formatType(type: L.Value): string {
   }
 
   if (L.isSumType(type)) {
-    const variantTypes = formatTypeRecord(L.sumTypeVariantTypes(type))
+    const variantTypes = formatTypeRecordInMod(mod, L.sumTypeVariantTypes(type))
     return `(sum ${variantTypes})`
   }
 
   if (L.isPolymorphicType(type)) {
-    const varTypes = formatTypes(L.polymorphicTypeVarTypes(type))
-    const bodyType = formatType(L.polymorphicTypeBodyType(type))
+    const varTypes = formatTypesInMod(mod, L.polymorphicTypeVarTypes(type))
+    const bodyType = formatTypeInMod(mod, L.polymorphicTypeBodyType(type))
     return `(polymorphic (${varTypes}) ${bodyType})`
   }
 
@@ -92,8 +95,11 @@ export function formatType(type: L.Value): string {
   throw new Error(message)
 }
 
-function formatTypeRecord(record: Record<string, L.Value>): string {
+function formatTypeRecordInMod(
+  mod: L.Mod,
+  record: Record<string, L.Value>,
+): string {
   return Object.entries(record)
-    .map(([k, t]) => `:${k} ${formatType(t)}`)
+    .map(([k, t]) => `:${k} ${formatTypeInMod(mod, t)}`)
     .join(" ")
 }
