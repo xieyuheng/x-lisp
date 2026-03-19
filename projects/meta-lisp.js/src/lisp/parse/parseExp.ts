@@ -96,7 +96,7 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     return L.LiteralTuple(S.listElements(elements).map(parseExp), meta)
   },
 
-  "(cons* '@object body)": ({ body }, { meta }) => {
+  "(cons* '@record body)": ({ body }, { meta }) => {
     const entries = S.listCollectKeywordEntries(body)
     return L.LiteralRecord(
       recordMapValue(Object.fromEntries(entries), parseExp),

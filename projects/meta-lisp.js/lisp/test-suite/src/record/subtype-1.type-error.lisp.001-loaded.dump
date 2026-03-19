@@ -3,5 +3,5 @@
 (claim main (-> void-t))
 
 (define (main)
-  (the point-t (@object #x 1.0 #y 2.0))
-  (the point-t (@object #x 1.0)))
+  (the point-t (@record #x 1.0 #y 2.0))
+  (the point-t (@record #x 1.0)))

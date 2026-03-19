@@ -7,5 +7,5 @@
 (claim main (-> void-t))
 
 (define (main)
-  (point-println (@object #x 1.0 #y 2.0))
-  (point-println (@object #x 1.0)))
+  (point-println (@record #x 1.0 #y 2.0))
+  (point-println (@record #x 1.0)))

@@ -151,9 +151,9 @@ export function formatExp(exp: Exp): string {
     case "LiteralRecord": {
       const attributes = formatExpAttributes(exp.attributes)
       if (attributes === "") {
-        return `(@object)`
+        return `(@record)`
       } else {
-        return `(@object ${attributes})`
+        return `(@record ${attributes})`
       }
     }
 

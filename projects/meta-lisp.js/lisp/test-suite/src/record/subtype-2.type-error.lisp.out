@@ -1,0 +1,9 @@
+lisp/test-suite/src/record/subtype-2.type-error.lisp:15:18 -- inferred type is not a subtype of given type
+  inferred type: (@interface :x float-t)
+  given type: (@interface :x float-t :y float-t)
+ 13 | (define (main)
+ 14 |   (point-println (@record :x 1.0 :y 2.0))
+ 15 |   (point-println (@record :x 1.0)))
+    |                  ~~~~~~~~~~~~~~~~   
+ 16 | 
+

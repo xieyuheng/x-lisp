@@ -5,13 +5,13 @@ test subtype between datatype by two definitions of `exp-t`
 
 # row polymorphism
 
-`(@object)` & `(@interface)` -- check repeated keyword
+`(@record)` & `(@interface)` -- check repeated keyword
 `InterfaceType` support row polymorphism
 
 `Dot` as `Exp`
-parse `(:field object)` -- `Dot`
+parse `(:field record)` -- `Dot`
 
-[maybe] `(object-merge lhs rhs)`
+[maybe] `(record-merge lhs rhs)`
 
 # recursive interface
 
