@@ -8,7 +8,8 @@ export function typeBisimilar(
   rhs: L.Value,
 ): boolean {
   if (
-    trail.some(
+    L.trailSome(
+      trail,
       (entry) =>
         (L.valueEqual(entry[0], lhs) && L.valueEqual(entry[1], rhs)) ||
         (L.valueEqual(entry[0], rhs) && L.valueEqual(entry[1], lhs)),

@@ -5,7 +5,8 @@ import { typeBisimilar } from "./typeBisimilar.ts"
 
 export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   if (
-    trail.some(
+    L.trailSome(
+      trail,
       (entry) => L.valueEqual(entry[0], lhs) && L.valueEqual(entry[1], rhs),
     )
   ) {
