@@ -310,7 +310,7 @@ function typeInferApplyArrowType(
       if (newSubst === undefined) {
         type = L.substApplyToType(subst, type)
         let message = `expecting nullary arrow type`
-        message += `\n  given type: ${L.formatType(type)}`
+        message += `\n  given type: ${L.formatTypeInMod(mod, type)}`
         return L.errorInferEffect(originalExp, message)(subst)
       }
 
@@ -323,7 +323,7 @@ function typeInferApplyArrowType(
       if (newSubst === undefined) {
         type = L.substApplyToType(subst, type)
         let message = `expecting arrow type`
-        message += `\n  given type: ${L.formatType(type)}`
+        message += `\n  given type: ${L.formatTypeInMod(mod, type)}`
         message += `\n  args: ${L.formatExps(args)}`
         return L.errorInferEffect(originalExp, message)(subst)
       }
@@ -341,7 +341,7 @@ function typeInferApplyArrowType(
       if (newSubst === undefined) {
         type = L.substApplyToType(subst, type)
         let message = `expecting arrow type`
-        message += `\n  given type: ${L.formatType(type)}`
+        message += `\n  given type: ${L.formatTypeInMod(mod, type)}`
         message += `\n  args: ${L.formatExps(args)}`
         return L.errorInferEffect(originalExp, message)(subst)
       }

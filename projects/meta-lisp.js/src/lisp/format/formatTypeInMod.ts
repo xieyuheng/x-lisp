@@ -71,11 +71,13 @@ export function formatTypeInMod(mod: L.Mod, type: L.Value): string {
 
   if (L.isDatatypeType(type)) {
     const definition = L.datatypeTypeDatatypeDefinition(type)
+    const foundName = L.modLookupNameByDefinition(mod, definition)
     const argTypes = formatTypesInMod(mod, L.datatypeTypeArgTypes(type))
+    const name = foundName || definition.name
     if (argTypes.length === 0) {
-      return `${definition.name}`
+      return `${name}`
     } else {
-      return `(${definition.name} ${argTypes})`
+      return `(${name} ${argTypes})`
     }
   }
 

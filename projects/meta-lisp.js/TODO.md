@@ -1,6 +1,5 @@
 # error report
 
-`formatTypeInMod` -- improve format of datatype with ref to mod -- `lambda-subtype.type-error.lisp.out`
 `formatTypeInMod` -- handle definition not in current module
 
 # row polymorphism

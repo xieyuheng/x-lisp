@@ -11,14 +11,15 @@ export function typeCheckAssignable(
     type = L.typeFreshen(type)
 
     return L.sequenceCheckEffect([
-      typeCheckSubstInstance(exp, inferredType, type),
-      typeCheckUnify(exp, inferredType, type),
-      typeCheckSubtype(exp, inferredType, type),
+      typeCheckSubstInstance(mod, exp, inferredType, type),
+      typeCheckUnify(mod, exp, inferredType, type),
+      typeCheckSubtype(mod, exp, inferredType, type),
     ])
   })
 }
 
 export function typeCheckSubstInstance(
+  mod: L.Mod,
   exp: L.Exp,
   inferredType: L.Value,
   type: L.Value,
@@ -38,8 +39,8 @@ export function typeCheckSubstInstance(
       type = L.substApplyToType(prettyUnknownSubst, type)
 
       let message = `given type is not a substitution instance of inferred type`
-      message += `\n  inferred type: ${L.formatType(inferredType)}`
-      message += `\n  given type: ${L.formatType(type)}`
+      message += `\n  inferred type: ${L.formatTypeInMod(mod, inferredType)}`
+      message += `\n  given type: ${L.formatTypeInMod(mod, type)}`
       return L.errorCheckEffect(exp, message)(subst)
     }
 
@@ -58,13 +59,14 @@ export function typeCheckByInfer(
     type = L.typeFreshen(type)
 
     return L.sequenceCheckEffect([
-      typeCheckUnify(exp, inferredType, type),
-      typeCheckSubtype(exp, inferredType, type),
+      typeCheckUnify(mod, exp, inferredType, type),
+      typeCheckSubtype(mod, exp, inferredType, type),
     ])
   })
 }
 
 export function typeCheckUnify(
+  mod: L.Mod,
   exp: L.Exp,
   inferredType: L.Value,
   type: L.Value,
@@ -84,8 +86,8 @@ export function typeCheckUnify(
       type = L.substApplyToType(prettyUnknownSubst, type)
 
       let message = `unification fail`
-      message += `\n  inferred type: ${L.formatType(inferredType)}`
-      message += `\n  given type: ${L.formatType(type)}`
+      message += `\n  inferred type: ${L.formatTypeInMod(mod, inferredType)}`
+      message += `\n  given type: ${L.formatTypeInMod(mod, type)}`
       return L.errorCheckEffect(exp, message)(subst)
     }
 
@@ -94,6 +96,7 @@ export function typeCheckUnify(
 }
 
 export function typeCheckSubtype(
+  mod: L.Mod,
   exp: L.Exp,
   inferredType: L.Value,
   type: L.Value,
@@ -112,8 +115,8 @@ export function typeCheckSubtype(
       type = L.substApplyToType(prettyUnknownSubst, type)
 
       let message = `inferred type is not a subtype of given type`
-      message += `\n  inferred type: ${L.formatType(inferredType)}`
-      message += `\n  given type: ${L.formatType(type)}`
+      message += `\n  inferred type: ${L.formatTypeInMod(mod, inferredType)}`
+      message += `\n  given type: ${L.formatTypeInMod(mod, type)}`
       return L.errorCheckEffect(exp, message)(subst)
     }
 
