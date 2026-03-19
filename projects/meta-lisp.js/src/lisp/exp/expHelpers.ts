@@ -3,21 +3,21 @@ import { formatExp } from "../format/index.ts"
 import * as Exps from "./index.ts"
 import { type Exp } from "./index.ts"
 
-export function isList(value: Exp): value is Exps.LiteralList {
+export function isLiteralList(value: Exp): value is Exps.LiteralList {
   return value.kind === "LiteralList"
 }
 
-export function asList(value: Exp): Exps.LiteralList {
-  if (isList(value)) return value
+export function asLiteralList(value: Exp): Exps.LiteralList {
+  if (isLiteralList(value)) return value
   throw new Error(`[asList] fail on: ${formatExp(value)}`)
 }
 
-export function isObject(value: Exp): value is Exps.LiteralRecord {
+export function isLiteralRecord(value: Exp): value is Exps.LiteralRecord {
   return value.kind === "LiteralRecord"
 }
 
-export function asObject(value: Exp): Exps.LiteralRecord {
-  if (isObject(value)) return value
+export function asLiteralRecord(value: Exp): Exps.LiteralRecord {
+  if (isLiteralRecord(value)) return value
   throw new Error(`[asObject] fail on: ${formatExp(value)}`)
 }
 
