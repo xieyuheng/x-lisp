@@ -1,4 +1,5 @@
-move equal to same to value/
+rename equal to valueEqual
+rename same to valueSame
 
 # bug
 
