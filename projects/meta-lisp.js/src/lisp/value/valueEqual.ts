@@ -1,7 +1,7 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as Values from "./index.ts"
 import { type Value } from "./index.ts"
-import { same } from "./same.ts"
+import { valueSame } from "./valueSame.ts"
 
 export function valueEqual(lhs: Value, rhs: Value): boolean {
   if (lhs.kind === "ListValue" && rhs.kind === "ListValue") {
@@ -24,14 +24,16 @@ export function valueEqual(lhs: Value, rhs: Value): boolean {
   }
 
   if (lhs.kind === "CurryValue" && rhs.kind === "CurryValue") {
-    return valueEqual(lhs.target, rhs.target) && valueEqualMany(lhs.args, rhs.args)
+    return (
+      valueEqual(lhs.target, rhs.target) && valueEqualMany(lhs.args, rhs.args)
+    )
   }
 
   if (lhs.kind === "DefinitionValue" && rhs.kind === "DefinitionValue") {
     return lhs.definition === rhs.definition
   }
 
-  return same(lhs, rhs)
+  return valueSame(lhs, rhs)
 }
 
 function valueEqualMany(lhs: Array<Value>, rhs: Array<Value>): boolean {

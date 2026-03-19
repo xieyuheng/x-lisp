@@ -1,5 +1,3 @@
-rename same to valueSame
-
 # bug
 
 `typeUnify` -- take `trail` to avoid infinite loop
