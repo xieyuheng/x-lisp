@@ -23,15 +23,15 @@ export function typeBisimilar(
   }
 
   if (L.isCanonicalLabelType(lhs) && L.isCanonicalLabelType(rhs)) {
-    return L.equal(lhs, rhs)
+    return L.valueEqual(lhs, rhs)
   }
 
   if (L.isTypeType(lhs) && L.isTypeType(rhs)) {
-    return L.equal(lhs, rhs)
+    return L.valueEqual(lhs, rhs)
   }
 
   if (L.isLiteralType(lhs) && L.isLiteralType(rhs)) {
-    return L.equal(lhs, rhs)
+    return L.valueEqual(lhs, rhs)
   }
 
   if (L.isAtomType(lhs) && L.isAtomType(rhs)) {

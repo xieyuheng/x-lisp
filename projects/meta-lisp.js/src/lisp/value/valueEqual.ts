@@ -1,15 +1,15 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
-import * as Values from "../value/index.ts"
-import { type Value } from "../value/index.ts"
+import * as Values from "./index.ts"
+import { type Value } from "./index.ts"
 import { same } from "./same.ts"
 
-export function equal(lhs: Value, rhs: Value): boolean {
+export function valueEqual(lhs: Value, rhs: Value): boolean {
   if (lhs.kind === "ListValue" && rhs.kind === "ListValue") {
-    return equalValues(lhs.elements, rhs.elements)
+    return valueEqualMany(lhs.elements, rhs.elements)
   }
 
   if (lhs.kind === "RecordValue" && rhs.kind === "RecordValue") {
-    return equalAttributes(lhs.attributes, rhs.attributes)
+    return valueEqualAttributes(lhs.attributes, rhs.attributes)
   }
 
   if (lhs.kind === "SetValue" && rhs.kind === "SetValue") {
@@ -20,11 +20,11 @@ export function equal(lhs: Value, rhs: Value): boolean {
   }
 
   if (lhs.kind === "HashValue" && rhs.kind === "HashValue") {
-    return equalHash(lhs, rhs)
+    return valueEqualHash(lhs, rhs)
   }
 
   if (lhs.kind === "CurryValue" && rhs.kind === "CurryValue") {
-    return equal(lhs.target, rhs.target) && equalValues(lhs.args, rhs.args)
+    return valueEqual(lhs.target, rhs.target) && valueEqualMany(lhs.args, rhs.args)
   }
 
   if (lhs.kind === "DefinitionValue" && rhs.kind === "DefinitionValue") {
@@ -34,14 +34,14 @@ export function equal(lhs: Value, rhs: Value): boolean {
   return same(lhs, rhs)
 }
 
-function equalValues(lhs: Array<Value>, rhs: Array<Value>): boolean {
+function valueEqualMany(lhs: Array<Value>, rhs: Array<Value>): boolean {
   return (
     lhs.length === rhs.length &&
-    arrayZip(lhs, rhs).every(([l, r]) => equal(l, r))
+    arrayZip(lhs, rhs).every(([l, r]) => valueEqual(l, r))
   )
 }
 
-function equalAttributes(
+function valueEqualAttributes(
   lhs: Record<string, Value>,
   rhs: Record<string, Value>,
 ): boolean {
@@ -51,13 +51,13 @@ function equalAttributes(
 
   for (const k of Object.keys(lhs)) {
     if (rhs[k] === undefined) return false
-    if (!equal(lhs[k], rhs[k])) return false
+    if (!valueEqual(lhs[k], rhs[k])) return false
   }
 
   return true
 }
 
-function equalHash(lhs: Values.HashValue, rhs: Values.HashValue): boolean {
+function valueEqualHash(lhs: Values.HashValue, rhs: Values.HashValue): boolean {
   const lhsEntries = Values.hashEntries(lhs)
   const rhsEntries = Values.hashEntries(rhs)
   if (lhsEntries.length !== rhsEntries.length) return false
@@ -66,7 +66,7 @@ function equalHash(lhs: Values.HashValue, rhs: Values.HashValue): boolean {
     const lhsValue = lhsEntry.value
     const rhsValue = Values.hashGet(rhs, lhsEntry.key)
     if (rhsValue === undefined) return false
-    if (!equal(lhsValue, rhsValue)) return false
+    if (!valueEqual(lhsValue, rhsValue)) return false
   }
 
   return true

@@ -37,7 +37,7 @@ export function builtinAssert(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "assert-equal", 2, (lhs, rhs) => {
-    if (!L.equal(lhs, rhs)) {
+    if (!L.valueEqual(lhs, rhs)) {
       let message = `(assert-equal) fail`
       message += formatUnderTag(2, `lhs:`, L.formatValue(lhs))
       message += formatUnderTag(2, `rhs:`, L.formatValue(rhs))
@@ -48,7 +48,7 @@ export function builtinAssert(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "assert-not-equal", 2, (lhs, rhs) => {
-    if (L.equal(lhs, rhs)) {
+    if (L.valueEqual(lhs, rhs)) {
       let message = `(assert-not-equal) fail`
       message += formatUnderTag(2, `lhs:`, L.formatValue(lhs))
       message += formatUnderTag(2, `rhs:`, L.formatValue(rhs))

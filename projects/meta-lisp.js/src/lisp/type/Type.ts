@@ -28,7 +28,7 @@ export function isVarType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 3 &&
-    L.equal(value.elements[0], L.SymbolValue("var")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("var")) &&
     L.isSymbolValue(value.elements[1]) &&
     L.isIntValue(value.elements[2])
   )
@@ -90,7 +90,7 @@ export function isCanonicalLabelType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 2 &&
-    L.equal(value.elements[0], L.SymbolValue("canonical-id")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("canonical-id")) &&
     L.isIntValue(value.elements[1])
   )
 }
@@ -110,7 +110,7 @@ export function isTypeType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 1 &&
-    L.equal(value.elements[0], L.SymbolValue("type"))
+    L.valueEqual(value.elements[0], L.SymbolValue("type"))
   )
 }
 
@@ -130,7 +130,7 @@ export function isAtomType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 2 &&
-    L.equal(value.elements[0], L.SymbolValue("atom")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("atom")) &&
     L.isSymbolValue(value.elements[1])
   )
 }
@@ -150,7 +150,7 @@ export function isArrowType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 3 &&
-    L.equal(value.elements[0], L.SymbolValue("->")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("->")) &&
     L.isListValue(value.elements[1]) &&
     L.asListValue(value.elements[1]).elements.every(isType) &&
     isType(value.elements[2])
@@ -234,7 +234,7 @@ export function arrowTypeUncurrying(value: L.Value): L.Value {
 export function isTauType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
-    L.equal(value.elements[0], L.SymbolValue("tau")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("tau")) &&
     value.elements.slice(1).every(isType)
   )
 }
@@ -253,7 +253,7 @@ export function tauTypeElementTypes(value: L.Value): Array<L.Value> {
 export function isInterfaceType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
-    L.equal(value.elements[0], L.SymbolValue("interface")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("interface")) &&
     L.isRecordValue(value.elements[1]) &&
     Object.values(L.asRecordValue(value.elements[1]).attributes).every(isType)
   )
@@ -281,7 +281,7 @@ export function isListType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 2 &&
-    L.equal(value.elements[0], L.SymbolValue("list")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("list")) &&
     isType(value.elements[1])
   )
 }
@@ -301,7 +301,7 @@ export function isSetType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 2 &&
-    L.equal(value.elements[0], L.SymbolValue("set")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("set")) &&
     isType(value.elements[1])
   )
 }
@@ -321,7 +321,7 @@ export function isHashType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 3 &&
-    L.equal(value.elements[0], L.SymbolValue("hash")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("hash")) &&
     isType(value.elements[1]) &&
     isType(value.elements[2])
   )
@@ -347,7 +347,7 @@ export function isDatatypeType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 3 &&
-    L.equal(value.elements[0], L.SymbolValue("datatype")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("datatype")) &&
     L.isDefinitionValue(value.elements[1]) &&
     L.isListValue(value.elements[2]) &&
     L.asListValue(value.elements[2]).elements.every(isType)
@@ -413,7 +413,7 @@ export function isSumType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 2 &&
-    L.equal(value.elements[0], L.SymbolValue("sum")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("sum")) &&
     L.isRecordValue(value.elements[1]) &&
     Object.values(L.asRecordValue(value.elements[1]).attributes).every(isType)
   )
@@ -434,7 +434,7 @@ export function isPolymorphicType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 3 &&
-    L.equal(value.elements[0], L.SymbolValue("polymorphic")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("polymorphic")) &&
     L.isListValue(value.elements[1]) &&
     L.asListValue(value.elements[1]).elements.every(L.isVarType) &&
     L.isType(value.elements[2])

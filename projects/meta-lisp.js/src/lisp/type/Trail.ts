@@ -8,7 +8,7 @@ export function trailLoopOccurred(
   rhs: L.Value,
 ): boolean {
   for (const entry of trail) {
-    if (L.equal(entry[0], lhs) && L.equal(entry[1], rhs)) return true
+    if (L.valueEqual(entry[0], lhs) && L.valueEqual(entry[1], rhs)) return true
   }
 
   return false

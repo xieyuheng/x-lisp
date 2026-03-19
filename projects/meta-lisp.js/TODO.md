@@ -1,4 +1,3 @@
-rename equal to valueEqual
 rename same to valueSame
 
 # bug

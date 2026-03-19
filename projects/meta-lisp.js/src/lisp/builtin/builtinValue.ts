@@ -11,7 +11,7 @@ export function builtinValue(mod: Mod) {
   })
 
   definePrimitiveFunction(mod, "equal?", 2, (lhs, rhs) => {
-    return Values.BoolValue(L.equal(lhs, rhs))
+    return Values.BoolValue(L.valueEqual(lhs, rhs))
   })
 
   definePrimitiveFunction(mod, "any?", 1, (value) => {
