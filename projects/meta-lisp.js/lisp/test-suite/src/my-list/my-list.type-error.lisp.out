@@ -1,4 +1,4 @@
-lisp/test-suite/src/datatype/my-list.type-error.lisp:4:23 -- unification fail
+lisp/test-suite/src/my-list/my-list.type-error.lisp:4:23 -- unification fail
   inferred type: (my-list-t string-t)
   given type: (my-list-t int-t)
  2 | 
