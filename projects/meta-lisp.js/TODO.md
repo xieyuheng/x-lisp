@@ -1,6 +1,6 @@
-# bug
+# subtype
 
-test subtype between datatype by two definitions of `exp-t`
+improve error report -- `lambda-subtype.type-error.lisp.out`
 
 # row polymorphism
 

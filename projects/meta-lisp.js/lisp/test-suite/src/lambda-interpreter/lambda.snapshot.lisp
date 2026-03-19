@@ -1,0 +1,22 @@
+(import-all "lambda")
+
+(define (evaluate-and-print exp)
+  (println (evaluate exp empty-env)))
+
+(define (main)
+  (evaluate-and-print
+   (lambda-exp 'x (var-exp 'x)))
+
+  (evaluate-and-print
+   (apply-exp
+    (lambda-exp 'x (var-exp 'x))
+    (lambda-exp 'x (var-exp 'x))))
+
+  (evaluate-and-print
+   (apply-exp
+    (apply-exp
+     (lambda-exp 'x (var-exp 'x))
+     (lambda-exp 'x (var-exp 'x)))
+    (apply-exp
+     (lambda-exp 'x (var-exp 'x))
+     (lambda-exp 'x (var-exp 'x))))))

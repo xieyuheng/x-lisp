@@ -1,0 +1,62 @@
+(export-all)
+
+(define-datatype exp-t
+  (var-exp (name symbol-t))
+  (apply-exp (target exp-t) (arg exp-t))
+  (lambda-exp (parameter symbol-t) (body exp-t))
+  (let-exp (name symbol-t) (rhs exp-t) (body exp-t)))
+
+(define-datatype env-t
+  empty-env
+  (extend-env (key symbol-t) (value value-t) (rest env-t)))
+
+(claim env-has?
+  (-> symbol-t env-t
+      bool-t))
+
+(define (env-has? name env)
+  (match env
+    (empty-env false)
+    ((extend-env key value rest)
+     (or (equal? key name)
+         (env-has? name rest)))))
+
+(claim env-lookup-of-fail
+  (-> symbol-t env-t
+      value-t))
+
+(define (env-lookup-of-fail name env)
+  (match env
+    (empty-env (error "undefined name"))
+    ((extend-env key value rest)
+     (if (equal? key name)
+       value
+       (env-lookup-of-fail name rest)))))
+
+(define-datatype value-t
+  (closure-value (env env-t) (parameter symbol-t) (body exp-t)))
+
+(claim evaluate
+  (-> exp-t env-t
+      value-t))
+
+(define (evaluate exp env)
+  (match exp
+    ((var-exp name)
+     (env-lookup-of-fail name env))
+    ((apply-exp target arg)
+     (apply (evaluate target env) (evaluate arg env)))
+    ((lambda-exp parameter body)
+     (closure-value env parameter body))
+    ((let-exp name rhs body)
+     (= env (extend-env name (evaluate rhs env) env))
+     (evaluate body env))))
+
+(claim apply
+  (-> value-t value-t
+      value-t))
+
+(define (apply target arg)
+  (match target
+    ((closure-value env parameter body)
+     (evaluate body (extend-env parameter arg env)))))
