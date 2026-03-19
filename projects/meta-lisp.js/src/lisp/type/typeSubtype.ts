@@ -74,7 +74,7 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   }
 
   if (L.isDatatypeType(lhs) && L.isDatatypeType(rhs)) {
-    trail = [...trail, [lhs, rhs]]
+    trail = L.trailAdd(trail, lhs, rhs)
 
     return typeSubtype(
       trail,
@@ -84,13 +84,13 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   }
 
   if (L.isDatatypeType(lhs)) {
-    trail = [...trail, [lhs, rhs]]
+    trail = L.trailAdd(trail, lhs, rhs)
 
     return typeSubtype(trail, L.datatypeTypeUnfold(lhs), rhs)
   }
 
   if (L.isDatatypeType(rhs)) {
-    trail = [...trail, [lhs, rhs]]
+    trail = L.trailAdd(trail, lhs, rhs)
 
     return typeSubtype(trail, lhs, L.datatypeTypeUnfold(rhs))
   }
