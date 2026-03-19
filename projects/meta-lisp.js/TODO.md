@@ -1,7 +1,3 @@
-# error report
-
-`formatTypeInMod` -- handle definition not in current module
-
 # row polymorphism
 
 `(@record)` & `(@interface)` -- check repeated keyword

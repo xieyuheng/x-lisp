@@ -1,3 +1,4 @@
+import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as L from "../index.ts"
 
@@ -73,7 +74,8 @@ export function formatTypeInMod(mod: L.Mod, type: L.Value): string {
     const definition = L.datatypeTypeDatatypeDefinition(type)
     const foundName = L.modLookupNameByDefinition(mod, definition)
     const argTypes = formatTypesInMod(mod, L.datatypeTypeArgTypes(type))
-    const name = foundName || definition.name
+    const path = pathRelativeToCwd(definition.mod.path)
+    const name = foundName || `<${definition.name} from ${path}>`
     if (argTypes.length === 0) {
       return `${name}`
     } else {
