@@ -11,8 +11,8 @@ export function typeBisimilar(
     L.trailSome(
       trail,
       (entry) =>
-        (L.valueEqual(entry[0], lhs) && L.valueEqual(entry[1], rhs)) ||
-        (L.valueEqual(entry[0], rhs) && L.valueEqual(entry[1], lhs)),
+        (L.valueEqual(entry.lhs, lhs) && L.valueEqual(entry.rhs, rhs)) ||
+        (L.valueEqual(entry.lhs, rhs) && L.valueEqual(entry.rhs, lhs)),
     )
   ) {
     return true

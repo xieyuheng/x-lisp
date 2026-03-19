@@ -7,7 +7,7 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   if (
     L.trailSome(
       trail,
-      (entry) => L.valueEqual(entry[0], lhs) && L.valueEqual(entry[1], rhs),
+      (entry) => L.valueEqual(entry.lhs, lhs) && L.valueEqual(entry.rhs, rhs),
     )
   ) {
     return true
