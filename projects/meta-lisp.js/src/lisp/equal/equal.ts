@@ -8,7 +8,7 @@ export function equal(lhs: Value, rhs: Value): boolean {
     return equalValues(lhs.elements, rhs.elements)
   }
 
-  if (lhs.kind === "ObjectValue" && rhs.kind === "ObjectValue") {
+  if (lhs.kind === "RecordValue" && rhs.kind === "RecordValue") {
     return equalAttributes(lhs.attributes, rhs.attributes)
   }
 

@@ -22,7 +22,7 @@ export type Exp =
   | Cond
   | LiteralList
   | LiteralTuple
-  | LiteralObject
+  | LiteralRecord
   | LiteralSet
   | LiteralHash
   | Quote
@@ -395,18 +395,18 @@ export function LiteralTuple(
   }
 }
 
-export type LiteralObject = {
-  kind: "LiteralObject"
+export type LiteralRecord = {
+  kind: "LiteralRecord"
   attributes: Record<string, Exp>
   meta?: TokenMeta
 }
 
-export function LiteralObject(
+export function LiteralRecord(
   attributes: Record<string, Exp>,
   meta?: TokenMeta,
-): LiteralObject {
+): LiteralRecord {
   return {
-    kind: "LiteralObject",
+    kind: "LiteralRecord",
     attributes,
     meta,
   }

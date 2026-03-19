@@ -32,13 +32,13 @@ export function asListValue(value: Value): Values.ListValue {
   throw new Error(`[asListValue] fail on: ${formatValue(value)}`)
 }
 
-export function isObjectValue(value: Value): value is Values.ObjectValue {
-  return value.kind === "ObjectValue"
+export function isRecordValue(value: Value): value is Values.RecordValue {
+  return value.kind === "RecordValue"
 }
 
-export function asObjectValue(value: Value): Values.ObjectValue {
-  if (isObjectValue(value)) return value
-  throw new Error(`[asObjectValue] fail on: ${formatValue(value)}`)
+export function asRecordValue(value: Value): Values.RecordValue {
+  if (isRecordValue(value)) return value
+  throw new Error(`[asRecordValue] fail on: ${formatValue(value)}`)
 }
 
 export function isClosureValue(value: Value): value is Values.ClosureValue {

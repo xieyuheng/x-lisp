@@ -254,8 +254,8 @@ export function isInterfaceType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     L.equal(value.elements[0], L.SymbolValue("interface")) &&
-    L.isObjectValue(value.elements[1]) &&
-    Object.values(L.asObjectValue(value.elements[1]).attributes).every(isType)
+    L.isRecordValue(value.elements[1]) &&
+    Object.values(L.asRecordValue(value.elements[1]).attributes).every(isType)
   )
 }
 
@@ -264,7 +264,7 @@ export function createInterfaceType(
 ): L.Value {
   return L.ListValue([
     L.SymbolValue("interface"),
-    L.ObjectValue(attributeTypes),
+    L.RecordValue(attributeTypes),
   ])
 }
 
@@ -272,7 +272,7 @@ export function interfaceTypeAttributeTypes(
   value: L.Value,
 ): Record<string, L.Value> {
   assert(isInterfaceType(value))
-  return L.asObjectValue(L.asListValue(value).elements[1]).attributes
+  return L.asRecordValue(L.asListValue(value).elements[1]).attributes
 }
 
 // ListType
@@ -414,18 +414,18 @@ export function isSumType(value: L.Value): boolean {
     L.isListValue(value) &&
     value.elements.length === 2 &&
     L.equal(value.elements[0], L.SymbolValue("sum")) &&
-    L.isObjectValue(value.elements[1]) &&
-    Object.values(L.asObjectValue(value.elements[1]).attributes).every(isType)
+    L.isRecordValue(value.elements[1]) &&
+    Object.values(L.asRecordValue(value.elements[1]).attributes).every(isType)
   )
 }
 
 export function createSumType(variantTypes: Record<string, L.Value>): L.Value {
-  return L.ListValue([L.SymbolValue("sum"), L.ObjectValue(variantTypes)])
+  return L.ListValue([L.SymbolValue("sum"), L.RecordValue(variantTypes)])
 }
 
 export function sumTypeVariantTypes(value: L.Value): Record<string, L.Value> {
   assert(isSumType(value))
-  return L.asObjectValue(L.asListValue(value).elements[1]).attributes
+  return L.asRecordValue(L.asListValue(value).elements[1]).attributes
 }
 
 // PolymorphicType

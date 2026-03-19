@@ -113,7 +113,7 @@ export function formatValue(value: Value, options: Options = {}): string {
       }
     }
 
-    case "ObjectValue": {
+    case "RecordValue": {
       const attributes = formatAttributes(value.attributes, options)
       if (attributes === "") {
         return `{}`

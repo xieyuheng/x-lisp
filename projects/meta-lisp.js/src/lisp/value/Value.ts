@@ -9,7 +9,7 @@ import { type SetValue } from "./Set.ts"
 export type Value =
   | AtomValue
   | ListValue
-  | ObjectValue
+  | RecordValue
   | SetValue
   | HashValue
   | ClosureValue
@@ -28,14 +28,14 @@ export function ListValue(elements: Array<Value>): ListValue {
   }
 }
 
-export type ObjectValue = {
-  kind: "ObjectValue"
+export type RecordValue = {
+  kind: "RecordValue"
   attributes: Record<string, Value>
 }
 
-export function ObjectValue(attributes: Record<string, Value>): ObjectValue {
+export function RecordValue(attributes: Record<string, Value>): RecordValue {
   return {
-    kind: "ObjectValue",
+    kind: "RecordValue",
     attributes,
   }
 }

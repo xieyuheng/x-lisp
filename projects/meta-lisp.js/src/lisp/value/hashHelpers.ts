@@ -52,7 +52,7 @@ export function isHashable(value: Value): boolean {
     return value.elements.every(isHashable)
   }
 
-  if (value.kind === "ObjectValue") {
+  if (value.kind === "RecordValue") {
     return Object.values(value.attributes).every(isHashable)
   }
 

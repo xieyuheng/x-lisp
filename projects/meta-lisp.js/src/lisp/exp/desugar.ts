@@ -136,8 +136,8 @@ export function desugar(mod: L.Mod, exp: L.Exp): L.Exp {
       )
     }
 
-    case "LiteralObject": {
-      return L.LiteralObject(
+    case "LiteralRecord": {
+      return L.LiteralRecord(
         recordMapValue(exp.attributes, (e) => desugar(mod, e)),
         exp.meta,
       )

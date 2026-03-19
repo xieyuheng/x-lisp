@@ -148,7 +148,7 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "LiteralObject": {
+    case "LiteralRecord": {
       const attributes = formatExpAttributes(exp.attributes)
       if (attributes === "") {
         return `(@object)`

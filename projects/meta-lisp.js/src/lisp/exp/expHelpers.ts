@@ -12,11 +12,11 @@ export function asList(value: Exp): Exps.LiteralList {
   throw new Error(`[asList] fail on: ${formatExp(value)}`)
 }
 
-export function isObject(value: Exp): value is Exps.LiteralObject {
-  return value.kind === "LiteralObject"
+export function isObject(value: Exp): value is Exps.LiteralRecord {
+  return value.kind === "LiteralRecord"
 }
 
-export function asObject(value: Exp): Exps.LiteralObject {
+export function asObject(value: Exp): Exps.LiteralRecord {
   if (isObject(value)) return value
   throw new Error(`[asObject] fail on: ${formatExp(value)}`)
 }

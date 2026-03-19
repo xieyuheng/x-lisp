@@ -95,8 +95,8 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       return L.ListValue(exp.elements.map((e) => evaluate(mod, env, e)))
     }
 
-    case "LiteralObject": {
-      return L.ObjectValue(
+    case "LiteralRecord": {
+      return L.RecordValue(
         recordMapValue(exp.attributes, (attribute) =>
           evaluate(mod, env, attribute),
         ),

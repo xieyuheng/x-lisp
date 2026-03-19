@@ -217,7 +217,7 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
-      case "LiteralObject": {
+      case "LiteralRecord": {
         const attributeTypes = recordMapValue(exp.attributes, (_) =>
           L.createFreshVarType("A"),
         )
