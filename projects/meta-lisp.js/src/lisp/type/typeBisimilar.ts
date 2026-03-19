@@ -1,13 +1,19 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as L from "../index.ts"
-import { trailLoopOccurred, type Trail } from "./Trail.ts"
+import { type Trail } from "./Trail.ts"
 
 export function typeBisimilar(
   trail: Trail,
   lhs: L.Value,
   rhs: L.Value,
 ): boolean {
-  if (trailLoopOccurred(trail, lhs, rhs)) {
+  if (
+    trail.some(
+      (entry) =>
+        (L.valueEqual(entry[0], lhs) && L.valueEqual(entry[1], rhs)) ||
+        (L.valueEqual(entry[0], rhs) && L.valueEqual(entry[1], lhs)),
+    )
+  ) {
     return true
   }
 

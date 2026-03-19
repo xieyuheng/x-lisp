@@ -1,5 +1,7 @@
 # bug
 
+trail entry lhs and rhs
+
 `typeUnify` -- use `trail` to avoid infinite loop
 test subtype between datatype by two definitions of `exp-t`
 

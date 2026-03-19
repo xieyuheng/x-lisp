@@ -41,17 +41,24 @@ export function typeUnify(
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
     lhs = L.arrowTypeCurrying(lhs)
     rhs = L.arrowTypeCurrying(rhs)
-    subst = typeUnifyMany(trail,
+    subst = typeUnifyMany(
+      trail,
       subst,
       L.arrowTypeArgTypes(lhs),
       L.arrowTypeArgTypes(rhs),
     )
-    subst = typeUnify(trail, subst, L.arrowTypeRetType(lhs), L.arrowTypeRetType(rhs))
+    subst = typeUnify(
+      trail,
+      subst,
+      L.arrowTypeRetType(lhs),
+      L.arrowTypeRetType(rhs),
+    )
     return subst
   }
 
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
-    return typeUnifyMany(trail,
+    return typeUnifyMany(
+      trail,
       subst,
       L.tauTypeElementTypes(lhs),
       L.tauTypeElementTypes(rhs),
@@ -59,7 +66,8 @@ export function typeUnify(
   }
 
   if (L.isInterfaceType(lhs) && L.isInterfaceType(rhs)) {
-    return typeUnifyRecord(trail,
+    return typeUnifyRecord(
+      trail,
       subst,
       L.interfaceTypeAttributeTypes(lhs),
       L.interfaceTypeAttributeTypes(rhs),
@@ -67,7 +75,8 @@ export function typeUnify(
   }
 
   if (L.isListType(lhs) && L.isListType(rhs)) {
-    return typeUnify(trail,
+    return typeUnify(
+      trail,
       subst,
       L.listTypeElementType(lhs),
       L.listTypeElementType(rhs),
@@ -75,7 +84,8 @@ export function typeUnify(
   }
 
   if (L.isSetType(lhs) && L.isSetType(rhs)) {
-    return typeUnify(trail,
+    return typeUnify(
+      trail,
       subst,
       L.setTypeElementType(lhs),
       L.setTypeElementType(rhs),
@@ -83,8 +93,18 @@ export function typeUnify(
   }
 
   if (L.isHashType(lhs) && L.isHashType(rhs)) {
-    subst = typeUnify(trail, subst, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs))
-    subst = typeUnify(trail, subst, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
+    subst = typeUnify(
+      trail,
+      subst,
+      L.hashTypeKeyType(lhs),
+      L.hashTypeKeyType(rhs),
+    )
+    subst = typeUnify(
+      trail,
+      subst,
+      L.hashTypeValueType(lhs),
+      L.hashTypeValueType(rhs),
+    )
     return subst
   }
 
@@ -96,7 +116,8 @@ export function typeUnify(
       return undefined
     }
 
-    return typeUnifyMany(trail,
+    return typeUnifyMany(
+      trail,
       subst,
       L.datatypeTypeArgTypes(lhs),
       L.datatypeTypeArgTypes(rhs),
@@ -104,7 +125,8 @@ export function typeUnify(
   }
 
   if (L.isSumType(lhs) && L.isSumType(rhs)) {
-    return typeUnifyRecord(trail,
+    return typeUnifyRecord(
+      trail,
       subst,
       L.sumTypeVariantTypes(lhs),
       L.sumTypeVariantTypes(rhs),
