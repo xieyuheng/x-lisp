@@ -1,14 +1,14 @@
 import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as L from "../index.ts"
 import { trailLoopOccurred, type Trail } from "./Trail.ts"
-import { typeEquivalent } from "./typeEquivalent.ts"
+import { typeBisimilar } from "./typeBisimilar.ts"
 
 export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   if (trailLoopOccurred(trail, lhs, rhs)) {
     return true
   }
 
-  if (typeEquivalent([], lhs, rhs)) {
+  if (typeBisimilar([], lhs, rhs)) {
     return true
   }
 
@@ -64,7 +64,7 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   if (L.isHashType(lhs) && L.isHashType(rhs)) {
     // key type is invariant
     return (
-      typeEquivalent([], L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs)) &&
+      typeBisimilar([], L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs)) &&
       typeSubtype(trail, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
     )
   }

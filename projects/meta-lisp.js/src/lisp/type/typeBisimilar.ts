@@ -2,7 +2,7 @@ import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as L from "../index.ts"
 import { trailLoopOccurred, type Trail } from "./Trail.ts"
 
-export function typeEquivalent(
+export function typeBisimilar(
   trail: Trail,
   lhs: L.Value,
   rhs: L.Value,
@@ -13,7 +13,7 @@ export function typeEquivalent(
 
   if (L.isVarType(lhs) && L.isVarType(rhs)) {
     // We assume unification and `substApplyToType` are performed on
-    // `lhs` and `rhs`, before calling `typeEquivalent` and
+    // `lhs` and `rhs`, before calling `typeBisimilar` and
     // `typeSubtype`.
     if (L.varTypeId(lhs) === L.varTypeId(rhs)) {
       return true
@@ -39,7 +39,7 @@ export function typeEquivalent(
   }
 
   if (L.isTauType(lhs) && L.isTauType(rhs)) {
-    return typeEquivalentMany(
+    return typeBisimilarMany(
       trail,
       L.tauTypeElementTypes(lhs),
       L.tauTypeElementTypes(rhs),
@@ -47,7 +47,7 @@ export function typeEquivalent(
   }
 
   if (L.isInterfaceType(lhs) && L.isInterfaceType(rhs)) {
-    return typeEquivalentRecord(
+    return typeBisimilarRecord(
       trail,
       L.interfaceTypeAttributeTypes(lhs),
       L.interfaceTypeAttributeTypes(rhs),
@@ -58,17 +58,17 @@ export function typeEquivalent(
     lhs = L.arrowTypeCurrying(lhs)
     rhs = L.arrowTypeCurrying(rhs)
     return (
-      typeEquivalentMany(
+      typeBisimilarMany(
         trail,
         L.arrowTypeArgTypes(lhs),
         L.arrowTypeArgTypes(rhs),
       ) &&
-      typeEquivalent(trail, L.arrowTypeRetType(lhs), L.arrowTypeRetType(rhs))
+      typeBisimilar(trail, L.arrowTypeRetType(lhs), L.arrowTypeRetType(rhs))
     )
   }
 
   if (L.isListType(lhs) && L.isListType(rhs)) {
-    return typeEquivalent(
+    return typeBisimilar(
       trail,
       L.listTypeElementType(lhs),
       L.listTypeElementType(rhs),
@@ -76,7 +76,7 @@ export function typeEquivalent(
   }
 
   if (L.isSetType(lhs) && L.isSetType(rhs)) {
-    return typeEquivalent(
+    return typeBisimilar(
       trail,
       L.setTypeElementType(lhs),
       L.setTypeElementType(rhs),
@@ -85,14 +85,14 @@ export function typeEquivalent(
 
   if (L.isHashType(lhs) && L.isHashType(rhs)) {
     return (
-      typeEquivalent(trail, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs)) &&
-      typeEquivalent(trail, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
+      typeBisimilar(trail, L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs)) &&
+      typeBisimilar(trail, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
     )
   }
 
   if (L.isDatatypeType(lhs) && L.isDatatypeType(rhs)) {
     trail = [...trail, [lhs, rhs], [rhs, lhs]]
-    return typeEquivalent(
+    return typeBisimilar(
       trail,
       L.datatypeTypeUnfold(lhs),
       L.datatypeTypeUnfold(rhs),
@@ -102,17 +102,17 @@ export function typeEquivalent(
   if (L.isDatatypeType(lhs)) {
     trail = [...trail, [lhs, rhs], [rhs, lhs]]
 
-    return typeEquivalent(trail, L.datatypeTypeUnfold(lhs), rhs)
+    return typeBisimilar(trail, L.datatypeTypeUnfold(lhs), rhs)
   }
 
   if (L.isDatatypeType(rhs)) {
     trail = [...trail, [lhs, rhs], [rhs, lhs]]
 
-    return typeEquivalent(trail, lhs, L.datatypeTypeUnfold(rhs))
+    return typeBisimilar(trail, lhs, L.datatypeTypeUnfold(rhs))
   }
 
   if (L.isSumType(lhs) && L.isSumType(rhs)) {
-    return typeEquivalentRecord(
+    return typeBisimilarRecord(
       trail,
       L.sumTypeVariantTypes(lhs),
       L.sumTypeVariantTypes(rhs),
@@ -122,18 +122,18 @@ export function typeEquivalent(
   return false
 }
 
-function typeEquivalentMany(
+function typeBisimilarMany(
   trail: Trail,
   lhs: Array<L.Value>,
   rhs: Array<L.Value>,
 ): boolean {
   return (
     lhs.length === rhs.length &&
-    arrayZip(lhs, rhs).every(([l, r]) => typeEquivalent(trail, l, r))
+    arrayZip(lhs, rhs).every(([l, r]) => typeBisimilar(trail, l, r))
   )
 }
 
-function typeEquivalentRecord(
+function typeBisimilarRecord(
   trail: Trail,
   lhs: Record<string, L.Value>,
   rhs: Record<string, L.Value>,
@@ -142,7 +142,7 @@ function typeEquivalentRecord(
 
   for (const k of Object.keys(lhs)) {
     if (rhs[k] === undefined) return false
-    if (!typeEquivalent(trail, lhs[k], rhs[k])) return false
+    if (!typeBisimilar(trail, lhs[k], rhs[k])) return false
   }
 
   return true

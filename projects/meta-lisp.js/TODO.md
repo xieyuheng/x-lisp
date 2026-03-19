@@ -1,6 +1,8 @@
+move equal to same to value/
+
 # bug
 
-`typeUnify` -- take `trace` to avoid infinite loop
+`typeUnify` -- take `trail` to avoid infinite loop
 test subtype between datatype by two definitions of `exp-t`
 
 # row polymorphism
