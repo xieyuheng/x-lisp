@@ -1,6 +1,6 @@
-# subtype
+# error report
 
-improve error report -- `lambda-subtype.type-error.lisp.out`
+improve format of datatype with ref to mod -- `lambda-subtype.type-error.lisp.out`
 
 # row polymorphism
 

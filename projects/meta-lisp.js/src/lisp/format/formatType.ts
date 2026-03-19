@@ -69,7 +69,11 @@ export function formatType(type: L.Value): string {
   if (L.isDatatypeType(type)) {
     const definition = L.datatypeTypeDatatypeDefinition(type)
     const argTypes = formatTypes(L.datatypeTypeArgTypes(type))
-    return `(${definition.name} ${argTypes})`
+    if (argTypes.length === 0) {
+      return `${definition.name}`
+    } else {
+      return `(${definition.name} ${argTypes})`
+    }
   }
 
   if (L.isSumType(type)) {
