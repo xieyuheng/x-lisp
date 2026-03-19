@@ -306,7 +306,7 @@ function typeInferApplyArrowType(
     if (args.length === 0) {
       const retType = L.createFreshVarType("R")
       const arrowType = L.createArrowType([], retType)
-      const newSubst = L.typeUnify(subst, type, arrowType)
+      const newSubst = L.typeUnify([], subst, type, arrowType)
       if (newSubst === undefined) {
         type = L.substApplyToType(subst, type)
         let message = `expecting nullary arrow type`
@@ -319,7 +319,7 @@ function typeInferApplyArrowType(
       const argType = L.createFreshVarType("A")
       const retType = L.createFreshVarType("R")
       const arrowType = L.createArrowType([argType], retType)
-      const newSubst = L.typeUnify(subst, type, arrowType)
+      const newSubst = L.typeUnify([], subst, type, arrowType)
       if (newSubst === undefined) {
         type = L.substApplyToType(subst, type)
         let message = `expecting arrow type`
@@ -337,7 +337,7 @@ function typeInferApplyArrowType(
       const argType = L.createFreshVarType("A")
       const retType = L.createFreshVarType("R")
       const arrowType = L.createArrowType([argType], retType)
-      const newSubst = L.typeUnify(subst, type, arrowType)
+      const newSubst = L.typeUnify([], subst, type, arrowType)
       if (newSubst === undefined) {
         type = L.substApplyToType(subst, type)
         let message = `expecting arrow type`

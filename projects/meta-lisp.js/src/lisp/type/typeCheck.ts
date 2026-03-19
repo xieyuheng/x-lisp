@@ -70,7 +70,7 @@ export function typeCheckUnify(
   type: L.Value,
 ): L.CheckEffect {
   return (subst) => {
-    const newSubst = L.typeUnify(subst, inferredType, type)
+    const newSubst = L.typeUnify([], subst, inferredType, type)
     if (newSubst === undefined) {
       inferredType = L.substApplyToType(subst, inferredType)
       type = L.substApplyToType(subst, type)
