@@ -21,3 +21,10 @@ date: 2026-03-20
 - 完全放弃 subtype。
   此时为了避免 constructor 依赖参数顺序，
   需要支持 named arguments。
+
+方案 C：
+
+- 用 qualified type 来表达 `(:field record)` 的类型，
+  而不用 row-polymorphic type。
+  因为 qualified type 可能更具有一般性，
+  比如在表达 `record-merge` 的类型的时候也需要 qualified type。
