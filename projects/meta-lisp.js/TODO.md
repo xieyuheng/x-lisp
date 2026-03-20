@@ -1,10 +1,3 @@
-[diary] simple row polymorphic can not handle record-merge
-
-2026-03-20-simple-row-polymorphic-can-not-handle-record-merge.md
-
-we can type `Dot` with row polymorphic type, but how to type `record-merge`?
-
-
 # row polymorphism
 
 [maybe] rename InterfaceType to AnonymousInterfaceType
