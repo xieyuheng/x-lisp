@@ -1,3 +1,4 @@
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as L from "../index.ts"
 
 export function definitionDesugar(definition: L.Definition): null {
@@ -28,6 +29,16 @@ export function definitionDesugar(definition: L.Definition): null {
           })),
         }),
       )
+
+      return null
+    }
+
+    case "InterfaceDefinition": {
+      definition.attributeTypes = recordMapValue(
+        definition.attributeTypes,
+        (attributeType) => L.desugar(definition.mod, attributeType),
+      )
+
       return null
     }
   }

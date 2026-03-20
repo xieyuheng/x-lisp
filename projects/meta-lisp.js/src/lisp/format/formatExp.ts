@@ -6,7 +6,7 @@ export function formatExps(exps: Array<Exp>): string {
   return exps.map(formatExp).join(" ")
 }
 
-function formatExpAttributes(attributes: Record<string, Exp>): string {
+export function formatExpAttributes(attributes: Record<string, Exp>): string {
   return Object.entries(attributes)
     .map(([k, e]) => `:${k} ${formatExp(e)}`)
     .join(" ")

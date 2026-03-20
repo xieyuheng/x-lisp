@@ -22,6 +22,11 @@ export function definitionCheck(definition: L.Definition): null {
       return null
     }
 
+    case "InterfaceDefinition": {
+      definition.isChecked = true
+      return null
+    }
+
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition": {
       const type = L.modLookupClaimedType(mod, name)

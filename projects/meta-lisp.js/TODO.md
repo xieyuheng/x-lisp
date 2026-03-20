@@ -1,8 +1,12 @@
 # row polymorphism
 
-`InterfaceDefinition` -- to support recursive interface type -- be symmetric with datatype
 `DefineInterface` as `Stmt`
 parse `(define-interface)`
+
+`prepareDefine` -- handle `DefineInterface`
+
+`InterfaceType` has optional `definition`
+fix `definitionMeaning` -- return `InterfaceType` with `definition`
 
 `InterfaceExtend` as `Exp` -- to support row polymorphism
 `InterfaceType` add field to support row polymorphism

@@ -46,6 +46,16 @@ export function formatDefinition(definition: Definition): string {
         return `(define-datatype (${definition.name} ${parameters}) ${dataConstructors})`
       }
     }
+
+    case "InterfaceDefinition": {
+      const attributeTypes = L.formatExpAttributes(definition.attributeTypes)
+      if (definition.interfaceConstructor.parameters.length === 0) {
+        return `(define-interface ${definition.name} ${attributeTypes})`
+      } else {
+        const parameters = definition.interfaceConstructor.parameters.join(" ")
+        return `(define-interface (${definition.name} ${parameters}) ${attributeTypes})`
+      }
+    }
   }
 }
 

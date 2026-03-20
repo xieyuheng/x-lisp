@@ -9,6 +9,7 @@ export type Definition =
   | FunctionDefinition
   | VariableDefinition
   | DatatypeDefinition
+  | InterfaceDefinition
 
 export type DefinitionState = {
   isChecked?: boolean
@@ -161,6 +162,38 @@ export function DatatypeDefinition(
     name,
     datatypeConstructor,
     dataConstructors,
+    meta,
+  }
+}
+
+export type InterfaceDefinition = {
+  kind: "InterfaceDefinition"
+  mod: Mod
+  name: string
+  interfaceConstructor: InterfaceConstructor
+  attributeTypes: Record<string, Exp>
+  meta?: TokenMeta
+} & DefinitionState
+
+export type InterfaceConstructor = {
+  definition: InterfaceDefinition
+  name: string
+  parameters: Array<string>
+}
+
+export function InterfaceDefinition(
+  mod: Mod,
+  name: string,
+  interfaceConstructor: InterfaceConstructor,
+  attributeTypes: Record<string, Exp>,
+  meta?: TokenMeta,
+): InterfaceDefinition {
+  return {
+    kind: "InterfaceDefinition",
+    mod,
+    name,
+    interfaceConstructor,
+    attributeTypes,
     meta,
   }
 }
