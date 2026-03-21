@@ -36,8 +36,6 @@ export function typeFreshen(type: L.Value): L.Value {
     )
   }
 
-
-
   if (L.isExtendInterfaceType(type)) {
     return L.createExtendInterfaceType(
       typeFreshen(L.extendInterfaceTypeBaseType(type)),

@@ -1,6 +1,5 @@
 # row polymorphism
 
-`typeVarOccurredInType` -- handle `ExtendInterfaceType`
 `typeFreeVarTypes` -- handle `ExtendInterfaceType`
 
 `typeBisimilar` -- handle `ExtendInterfaceType`

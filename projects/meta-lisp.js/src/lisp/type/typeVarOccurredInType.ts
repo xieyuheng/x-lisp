@@ -55,6 +55,19 @@ function typeVarOccurredInTypeWithBoundIds(
     )
   }
 
+  if (L.isExtendInterfaceType(type)) {
+    return (
+      typeVarOccurredInTypeWithBoundIds(
+        boundIds,
+        varType,
+        L.extendInterfaceTypeBaseType(type),
+      ) ||
+      Object.values(L.extendInterfaceTypeAttributeTypes(type)).some((t) =>
+        typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
+      )
+    )
+  }
+
   if (L.isListType(type)) {
     return [L.listTypeElementType(type)].some((t) =>
       typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
