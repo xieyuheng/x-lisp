@@ -1,4 +1,6 @@
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
+import assert from "node:assert"
 import * as L from "../index.ts"
 import { parseBody, parseExp } from "./parseExp.ts"
 
@@ -87,13 +89,34 @@ export const parseStmt = S.createRouter<L.Stmt>({
     return L.IncludeAs(S.stringContent(path), S.symbolContent(prefix), meta)
   },
 
-  "(cons* 'define-data predicate constructors)": (
-    { predicate, constructors },
+  "(cons* 'define-data head constructors)": (
+    { head, constructors },
     { meta },
   ) => {
     return L.DefineData(
-      parseDataPredicate(predicate),
+      parseDataTypeConstructor(head),
       S.listElements(constructors).map(parseDataConstructor),
+      meta,
+    )
+  },
+
+  "(cons* 'define-interface head body)": ({ head, body }, { meta }) => {
+    const entries = S.listCollectKeywordEntries(body)
+    for (const [key, group] of Object.entries(
+      Object.groupBy(entries, ([key, sexp]) => key),
+    )) {
+      if (group && group.length > 1) {
+        const [_, firstSexp] = group[1]
+        assert(firstSexp.meta)
+        let message = `[parseStmt] duplicated key in interface`
+        message += `\n  key: ${key}`
+        throw new S.ErrorWithMeta(message, firstSexp.meta)
+      }
+    }
+
+    return L.DefineInterface(
+      parseInterfaceConstructor(head),
+      recordMapValue(Object.fromEntries(entries), parseExp),
       meta,
     )
   },
@@ -103,8 +126,28 @@ export const parseStmt = S.createRouter<L.Stmt>({
   },
 })
 
-const parseDataPredicate = S.createRouter<
+const parseDataTypeConstructor = S.createRouter<
   Omit<L.DataTypeConstructor, "definition">
+>({
+  "(cons* name parameters)": ({ name, parameters }, { meta }) => {
+    return {
+      definition: undefined,
+      name: S.symbolContent(name),
+      parameters: S.listElements(parameters).map(S.symbolContent),
+    }
+  },
+
+  name: ({ name }, { meta }) => {
+    return {
+      definition: undefined,
+      name: S.symbolContent(name),
+      parameters: [],
+    }
+  },
+})
+
+const parseInterfaceConstructor = S.createRouter<
+  Omit<L.InterfaceConstructor, "definition">
 >({
   "(cons* name parameters)": ({ name, parameters }, { meta }) => {
     return {

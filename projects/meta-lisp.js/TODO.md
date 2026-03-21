@@ -1,7 +1,5 @@
 # row polymorphism
 
-parse `(define-interface)`
-
 `ExtendInterface` as `Exp` -- to support row polymorphism
 
 `formatType` & `formatTypeInMod` -- handle `ExtendInterfaceType`

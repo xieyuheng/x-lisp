@@ -1,7 +1,6 @@
-(define point-t
-  (@interface
-    :x float-t
-    :y float-t))
+(define-interface point-t
+  :x float-t
+  :y float-t)
 
 (claim point-println (-> point-t void-t))
 
