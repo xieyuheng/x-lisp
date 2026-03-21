@@ -3,7 +3,15 @@ title: simple row polymorphic can not handle record-merge
 date: 2026-03-20
 ---
 
-简单的 row polymorphic 只能支持 `(:field record)` 语法的类型，
+简单的 row polymorphic 只能支持 `(:field record)` 语法的类型：
+
+```scheme
+(polymorphic (R A)
+  (-> (extend-interface R
+        :field A)
+      A))
+```
+
 但是不能支持 `(record-merge lhs rhs)` 的类型。
 
 想要支持 `record-merge` 的类型，
