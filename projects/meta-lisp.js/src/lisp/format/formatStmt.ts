@@ -16,11 +16,17 @@ export function formatStmt(stmt: Stmt): string {
     }
 
     case "DefineData": {
-      const type = formatDataPredicate(stmt.dataTypeConstructor)
+      const type = formatDataTypeConstructor(stmt.dataTypeConstructor)
       const constructors = stmt.dataConstructors
         .map(formatDataConstructor)
         .join(" ")
       return `(define-data ${type} ${constructors})`
+    }
+
+    case "DefineInterface": {
+      const type = formatInterfaceTypeConstructor(stmt.interfaceConstructor)
+      const attributeTypes = L.formatExpAttributes(stmt.attributeTypes)
+      return `(define-interface ${type} ${attributeTypes})`
     }
 
     case "Claim": {
@@ -77,13 +83,23 @@ export function formatStmt(stmt: Stmt): string {
   }
 }
 
-function formatDataPredicate(
-  predicate: Omit<L.DataTypeConstructor, "definition">,
+function formatDataTypeConstructor(
+  dataTypeConstructor: Omit<L.DataTypeConstructor, "definition">,
 ): string {
-  if (predicate.parameters.length === 0) {
-    return predicate.name
+  if (dataTypeConstructor.parameters.length === 0) {
+    return dataTypeConstructor.name
   } else {
-    return `(${predicate.name} ${predicate.parameters.join(" ")})`
+    return `(${dataTypeConstructor.name} ${dataTypeConstructor.parameters.join(" ")})`
+  }
+}
+
+function formatInterfaceTypeConstructor(
+  interfaceConstructor: Omit<L.InterfaceConstructor, "definition">,
+): string {
+  if (interfaceConstructor.parameters.length === 0) {
+    return interfaceConstructor.name
+  } else {
+    return `(${interfaceConstructor.name} ${interfaceConstructor.parameters.join(" ")})`
   }
 }
 

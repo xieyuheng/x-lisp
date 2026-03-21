@@ -2,6 +2,7 @@ import { type TokenMeta } from "@xieyuheng/sexp.js"
 import type {
   DataConstructor,
   DataTypeConstructor,
+  InterfaceConstructor,
 } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
@@ -11,6 +12,7 @@ export type Stmt =
   | DefineFunction
   | DefineVariable
   | DefineData
+  | DefineInterface
   | Claim
   | Exempt
 
@@ -73,6 +75,26 @@ export function DefineData(
     kind: "DefineData",
     dataTypeConstructor,
     dataConstructors,
+    meta,
+  }
+}
+
+export type DefineInterface = {
+  kind: "DefineInterface"
+  interfaceConstructor: Omit<InterfaceConstructor, "definition">
+  attributeTypes: Record<string, Exp>
+  meta?: TokenMeta
+}
+
+export function DefineInterface(
+  interfaceConstructor: Omit<InterfaceConstructor, "definition">,
+  attributeTypes: Record<string, Exp>,
+  meta?: TokenMeta,
+): DefineInterface {
+  return {
+    kind: "DefineInterface",
+    interfaceConstructor,
+    attributeTypes,
     meta,
   }
 }

@@ -1,6 +1,5 @@
 # row polymorphism
 
-`DefineInterface` as `Stmt`
 parse `(define-interface)`
 `prepareDefine` -- handle `DefineInterface`
 
