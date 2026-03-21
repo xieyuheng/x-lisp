@@ -1,6 +1,5 @@
 # row polymorphism
 
-`typeFreshen` -- handle `DefinedInterfaceType`
 `typeVarOccurredInType` -- handle `DefinedInterfaceType`
 `typeBisimilar` -- handle `DefinedInterfaceType`
 `typeFreeVarTypes` -- handle `DefinedInterfaceType`

@@ -65,6 +65,13 @@ export function typeFreshen(type: L.Value): L.Value {
     )
   }
 
+  if (L.isDefinedInterfaceType(type)) {
+    return L.createDefinedInterfaceType(
+      L.definedInterfaceTypeDefinition(type),
+      L.definedInterfaceTypeArgTypes(type).map((t) => typeFreshen(t)),
+    )
+  }
+
   if (L.isSumType(type)) {
     return L.createSumType(
       recordMapValue(L.sumTypeVariantTypes(type), (t) => typeFreshen(t)),
