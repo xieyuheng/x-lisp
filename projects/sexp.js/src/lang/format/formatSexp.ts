@@ -7,7 +7,7 @@ export function formatSexp(sexp: Sexp): string {
     }
 
     case "Keyword": {
-      return `#${sexp.content}`
+      return `:${sexp.content}`
     }
 
     case "String": {
