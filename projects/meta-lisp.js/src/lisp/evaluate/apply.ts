@@ -2,7 +2,7 @@ import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import * as L from "../index.ts"
 
 export function apply(target: L.Value, args: Array<L.Value>): L.Value {
-  const arity = getArity(target)
+  const arity = getArity(target, args)
   if (arity > args.length) {
     if (target.kind === "CurryValue") {
       // normalize `Curry`
@@ -35,7 +35,11 @@ export function apply(target: L.Value, args: Array<L.Value>): L.Value {
         throw new Error(message)
       }
 
-      return apply(attribute, restArgs)
+      if (restArgs.length === 0) {
+        return attribute
+      } else {
+        return apply(attribute, restArgs)
+      }
     }
 
     case "CurryValue": {
@@ -91,7 +95,7 @@ export function apply(target: L.Value, args: Array<L.Value>): L.Value {
   }
 }
 
-function getArity(target: L.Value): number {
+function getArity(target: L.Value, args: Array<L.Value>): number {
   switch (target.kind) {
     case "KeywordValue": {
       return 1
@@ -115,9 +119,14 @@ function getArity(target: L.Value): number {
           return target.definition.dataTypeConstructor.parameters.length
         }
 
+        case "InterfaceDefinition": {
+          return target.definition.interfaceConstructor.parameters.length
+        }
+
         default: {
           let message = `[getArity] can not handle this kind of definition`
           message += formatUnderTag(2, `target:`, L.formatValue(target))
+          message += formatUnderTag(2, `args:`, L.formatValues(args))
           throw new Error(message)
         }
       }
@@ -131,6 +140,7 @@ function getArity(target: L.Value): number {
       let message = `[getApply] can not handle this kind of target`
       message += `\n  target kind: ${target.kind}`
       message += formatUnderTag(2, `target:`, L.formatValue(target))
+      message += formatUnderTag(2, `args:`, L.formatValues(args))
       throw new Error(message)
     }
   }

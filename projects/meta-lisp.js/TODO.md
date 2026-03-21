@@ -1,3 +1,4 @@
-# row polymorphism
+# record builtin
 
-test row polymorphism
+`record-put`
+`record-put!`

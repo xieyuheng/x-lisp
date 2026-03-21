@@ -274,7 +274,12 @@ export function createInterfaceType(
 export function interfaceTypeAttributeTypes(
   value: L.Value,
 ): Record<string, L.Value> {
-  assert(isInterfaceType(value))
+  if (!isInterfaceType(value)) {
+    let message = `[interfaceTypeAttributeTypes] expecting InterfaceType`
+    message += `\n  value: ${L.formatValue(value)}`
+    throw new Error(message)
+  }
+
   return L.asRecordValue(L.asListValue(value).elements[1]).attributes
 }
 

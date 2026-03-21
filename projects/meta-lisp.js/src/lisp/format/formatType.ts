@@ -51,6 +51,8 @@ export function formatType(type: L.Value): string {
   }
 
   if (L.isExtendInterfaceType(type)) {
+    type = L.extendInterfaceTypeMerge(type)
+
     const baseType = formatType(L.extendInterfaceTypeBaseType(type))
     const attributeTypes = formatTypeRecord(
       L.extendInterfaceTypeAttributeTypes(type),
