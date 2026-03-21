@@ -2,7 +2,7 @@
 
 [maybe] `extend` & `extend!` -- as `Exp`
 
-test by
+test edge case:
 
 ```caml
 \r → if True then {x = 2 | r} else {y = 2 | r}
