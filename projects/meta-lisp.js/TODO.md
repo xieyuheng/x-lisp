@@ -1,10 +1,10 @@
 # row polymorphism
 
-`substApplyToType` -- handle `ExtendInterfaceType`
 `typeFreshen` -- handle `ExtendInterfaceType`
 `typeVarOccurredInType` -- handle `ExtendInterfaceType`
-`typeBisimilar` -- handle `ExtendInterfaceType`
 `typeFreeVarTypes` -- handle `ExtendInterfaceType`
+
+`typeBisimilar` -- handle `ExtendInterfaceType`
 `typeSubtype` -- handle `ExtendInterfaceType`
 `typeUnify` -- handle `ExtendInterfaceType`
 

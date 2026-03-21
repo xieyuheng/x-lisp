@@ -61,6 +61,19 @@ function substApplyToTypeWithBoundIds(
     )
   }
 
+  if (L.isExtendInterfaceType(type)) {
+    return L.createExtendInterfaceType(
+      substApplyToTypeWithBoundIds(
+        boundIds,
+        subst,
+        L.extendInterfaceTypeBaseType(type),
+      ),
+      recordMapValue(L.extendInterfaceTypeAttributeTypes(type), (t) =>
+        substApplyToTypeWithBoundIds(boundIds, subst, t),
+      ),
+    )
+  }
+
   if (L.isArrowType(type)) {
     return L.createArrowType(
       L.arrowTypeArgTypes(type).map((t) =>
