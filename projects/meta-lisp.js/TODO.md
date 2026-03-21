@@ -1,6 +1,4 @@
-# named arguments vs record type + subtype
-
-也许用 named arguments 来代替没有 record type + subtype 的缺陷。
+rename define-datatype to define-data
 
 # row polymorphism
 

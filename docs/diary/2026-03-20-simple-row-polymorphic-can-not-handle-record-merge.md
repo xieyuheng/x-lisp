@@ -16,6 +16,9 @@ date: 2026-03-20
 - 暂时只实现简单的 row polymorphic。
   只能支持 `(:field record)` 而不支持 `record-merge`。
 
+  类似 javascript 的 object merge，
+  其实可以作为 elaboration 来实现。
+
 方案 B：
 
 - 完全放弃 subtype。
@@ -26,5 +29,6 @@ date: 2026-03-20
 
 - 用 qualified type 来表达 `(:field record)` 的类型，
   而不用 row-polymorphic type。
+
   因为 qualified type 可能更具有一般性，
   比如在表达 `record-merge` 的类型的时候也需要 qualified type。
