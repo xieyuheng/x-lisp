@@ -1,4 +1,4 @@
-# record builtin
+# record syntax
 
-`record-put`
-`record-put!`
+[maybe] `extend` & `extend!` -- as `Exp`
+[maybe] rename `@interface` to `interface`
