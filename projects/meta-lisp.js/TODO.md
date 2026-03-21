@@ -1,8 +1,5 @@
 # row polymorphism
 
-`typeSubtype` -- handle `DefinedInterfaceType`
-`typeUnify` -- handle `DefinedInterfaceType`
-
 `DefineInterface` as `Stmt`
 parse `(define-interface)`
 `prepareDefine` -- handle `DefineInterface`
