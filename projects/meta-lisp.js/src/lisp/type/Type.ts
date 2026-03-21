@@ -14,6 +14,7 @@ export function isType(value: L.Value): boolean {
     isArrowType(value) ||
     isTauType(value) ||
     isInterfaceType(value) ||
+    isExtendInterfaceType(value) ||
     isDefinedInterfaceType(value) ||
     isListType(value) ||
     isSetType(value) ||
@@ -275,6 +276,41 @@ export function interfaceTypeAttributeTypes(
 ): Record<string, L.Value> {
   assert(isInterfaceType(value))
   return L.asRecordValue(L.asListValue(value).elements[1]).attributes
+}
+
+// ExtendInterfaceType
+
+export function isExtendInterfaceType(value: L.Value): boolean {
+  return (
+    L.isListValue(value) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("extend-interface")) &&
+    L.isType(value.elements[1]) &&
+    L.isRecordValue(value.elements[2]) &&
+    Object.values(L.asRecordValue(value.elements[2]).attributes).every(isType)
+  )
+}
+
+export function createExtendInterfaceType(
+  baseType: L.Value,
+  attributeTypes: Record<string, L.Value>,
+): L.Value {
+  return L.ListValue([
+    L.SymbolValue("extend-interface"),
+    baseType,
+    L.RecordValue(attributeTypes),
+  ])
+}
+
+export function extendInterfaceTypeBaseType(value: L.Value): L.Value {
+  assert(isExtendInterfaceType(value))
+  return L.asListValue(value).elements[1]
+}
+
+export function extendInterfaceTypeAttributeTypes(
+  value: L.Value,
+): Record<string, L.Value> {
+  assert(isExtendInterfaceType(value))
+  return L.asRecordValue(L.asListValue(value).elements[2]).attributes
 }
 
 // DefinedInterfaceType

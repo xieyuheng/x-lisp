@@ -1,7 +1,5 @@
 # row polymorphism
 
-`ExtendInterface` as `Exp` -- to support row polymorphism
-
 `formatType` & `formatTypeInMod` -- handle `ExtendInterfaceType`
 `substApplyToType` -- handle `ExtendInterfaceType`
 `typeFreshen` -- handle `ExtendInterfaceType`
@@ -11,5 +9,12 @@
 `typeSubtype` -- handle `ExtendInterfaceType`
 `typeUnify` -- handle `ExtendInterfaceType`
 
+`ExtendInterface` as `Exp`
+`evaluate` -- `ExtendInterface`
+`typeInfer` -- `ExtendInterface`
+parse `(extend-interface)`
+
 `Dot` as `Exp`
+`evaluate` -- `Dot`
+`typeInfer` -- `Dot`
 parse `(:field record)` -- `Dot`

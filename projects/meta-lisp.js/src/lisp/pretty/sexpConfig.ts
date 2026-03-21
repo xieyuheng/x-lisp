@@ -11,6 +11,8 @@ export const sexpConfig: S.Config = {
     ["define", 1],
     ["@class", 0],
     ["@interface", 0],
+    ["extend-interface", 1],
+    ["define-interface", 1],
     ["define-data", 1],
     ["let", 1],
     ["let1", 2],
