@@ -85,6 +85,47 @@ export function typeUnify(
     )
   }
 
+  if (L.isInterfaceType(lhs) && L.isExtendInterfaceType(rhs)) {
+    rhs = L.extendInterfaceTypeMerge(rhs)
+
+    return typeUnifyRecord(
+      trail,
+      subst,
+      L.interfaceTypeAttributeTypes(lhs),
+      L.extendInterfaceTypeAttributeTypes(rhs),
+    )
+  }
+
+  if (L.isExtendInterfaceType(lhs) && L.isInterfaceType(rhs)) {
+    lhs = L.extendInterfaceTypeMerge(lhs)
+
+    return typeUnifyRecord(
+      trail,
+      subst,
+      L.extendInterfaceTypeAttributeTypes(lhs),
+      L.interfaceTypeAttributeTypes(rhs),
+    )
+  }
+
+  if (L.isExtendInterfaceType(lhs) && L.isExtendInterfaceType(rhs)) {
+    lhs = L.extendInterfaceTypeMerge(lhs)
+    rhs = L.extendInterfaceTypeMerge(rhs)
+
+    subst = typeUnify(
+      trail,
+      subst,
+      L.extendInterfaceTypeBaseType(lhs),
+      L.extendInterfaceTypeBaseType(rhs),
+    )
+    subst = typeUnifyRecord(
+      trail,
+      subst,
+      L.extendInterfaceTypeAttributeTypes(lhs),
+      L.extendInterfaceTypeAttributeTypes(rhs),
+    )
+    return subst
+  }
+
   if (L.isListType(lhs) && L.isListType(rhs)) {
     return typeUnify(
       trail,

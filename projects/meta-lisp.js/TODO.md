@@ -1,7 +1,5 @@
 # row polymorphism
 
-`typeUnify` -- handle `ExtendInterfaceType`
-
 `ExtendInterface` as `Exp`
 `evaluate` -- `ExtendInterface`
 `typeInfer` -- `ExtendInterface`
