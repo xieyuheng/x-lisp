@@ -79,6 +79,12 @@ function typeVarOccurredInTypeWithBoundIds(
     )
   }
 
+  if (L.isDefinedInterfaceType(type)) {
+    return L.definedInterfaceTypeArgTypes(type).some((t) =>
+      typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
+    )
+  }
+
   if (L.isSumType(type)) {
     return Object.values(L.sumTypeVariantTypes(type)).some((t) =>
       typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
