@@ -1,5 +1,3 @@
-rename define-datatype to define-data
-
 # row polymorphism
 
 [maybe] rename InterfaceType to AnonymousInterfaceType

@@ -20,7 +20,7 @@ export function formatStmt(stmt: Stmt): string {
       const constructors = stmt.dataConstructors
         .map(formatDataConstructor)
         .join(" ")
-      return `(define-datatype ${type} ${constructors})`
+      return `(define-data ${type} ${constructors})`
     }
 
     case "Claim": {

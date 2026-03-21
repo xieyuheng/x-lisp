@@ -1,11 +1,11 @@
 (export-all)
 
-(define-datatype exp-t
+(define-data exp-t
   (var-exp (name symbol-t))
   (apply-exp (target exp-t) (arg exp-t))
   (lambda-exp (parameter symbol-t) (body exp-t)))
 
-(define-datatype env-t
+(define-data env-t
   empty-env
   (extend-env (key symbol-t) (value value-t) (rest env-t)))
 
@@ -32,7 +32,7 @@
        value
        (env-lookup-of-fail name rest)))))
 
-(define-datatype value-t
+(define-data value-t
   (closure-value (env env-t) (parameter symbol-t) (body exp-t)))
 
 (claim evaluate

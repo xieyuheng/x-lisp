@@ -87,7 +87,7 @@ export const parseStmt = S.createRouter<L.Stmt>({
     return L.IncludeAs(S.stringContent(path), S.symbolContent(prefix), meta)
   },
 
-  "(cons* 'define-datatype predicate constructors)": (
+  "(cons* 'define-data predicate constructors)": (
     { predicate, constructors },
     { meta },
   ) => {

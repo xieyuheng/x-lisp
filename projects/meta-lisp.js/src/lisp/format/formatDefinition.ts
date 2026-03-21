@@ -40,10 +40,10 @@ export function formatDefinition(definition: Definition): string {
         .map(formatDataConstructor)
         .join(" ")
       if (definition.datatypeConstructor.parameters.length === 0) {
-        return `(define-datatype ${definition.name} ${dataConstructors})`
+        return `(define-data ${definition.name} ${dataConstructors})`
       } else {
         const parameters = definition.datatypeConstructor.parameters.join(" ")
-        return `(define-datatype (${definition.name} ${parameters}) ${dataConstructors})`
+        return `(define-data (${definition.name} ${parameters}) ${dataConstructors})`
       }
     }
 
