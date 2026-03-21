@@ -1,4 +1,5 @@
 import { range } from "@xieyuheng/helpers.js/range"
+import { setDifference, setEqual } from "@xieyuheng/helpers.js/set"
 import * as L from "../index.ts"
 import { typeVarOccurredInType } from "./typeVarOccurredInType.ts"
 
@@ -88,6 +89,26 @@ export function typeUnify(
   if (L.isInterfaceType(lhs) && L.isExtendInterfaceType(rhs)) {
     rhs = L.extendInterfaceTypeMerge(rhs)
 
+    const rhsBaseType = L.extendInterfaceTypeBaseType(rhs)
+
+    const lhsAttributeTypes = L.interfaceTypeAttributeTypes(lhs)
+    const rhsAttributeTypes = L.extendInterfaceTypeAttributeTypes(rhs)
+
+    const lhsKeys = new Set(Object.keys(lhsAttributeTypes))
+    const rhsKeys = new Set(Object.keys(rhsAttributeTypes))
+
+    const rhsPopulatedBaseType = L.populateExtendInterfaceType(
+      Array.from(setDifference(lhsKeys, rhsKeys)),
+    )
+
+    subst = typeUnify(trail, subst, rhsBaseType, rhsPopulatedBaseType)
+
+    if (subst === undefined) return undefined
+
+    rhs = L.substApplyToType(subst, rhs)
+
+    rhs = L.extendInterfaceTypeMerge(rhs)
+
     return typeUnifyRecord(
       trail,
       subst,
@@ -97,6 +118,26 @@ export function typeUnify(
   }
 
   if (L.isExtendInterfaceType(lhs) && L.isInterfaceType(rhs)) {
+    lhs = L.extendInterfaceTypeMerge(lhs)
+
+    const lhsBaseType = L.extendInterfaceTypeBaseType(lhs)
+
+    const lhsAttributeTypes = L.extendInterfaceTypeAttributeTypes(lhs)
+    const rhsAttributeTypes = L.interfaceTypeAttributeTypes(rhs)
+
+    const lhsKeys = new Set(Object.keys(lhsAttributeTypes))
+    const rhsKeys = new Set(Object.keys(rhsAttributeTypes))
+
+    const lhsPopulatedBaseType = L.populateExtendInterfaceType(
+      Array.from(setDifference(rhsKeys, lhsKeys)),
+    )
+
+    subst = typeUnify(trail, subst, lhsBaseType, lhsPopulatedBaseType)
+
+    if (subst === undefined) return undefined
+
+    lhs = L.substApplyToType(subst, lhs)
+
     lhs = L.extendInterfaceTypeMerge(lhs)
 
     return typeUnifyRecord(
@@ -111,17 +152,61 @@ export function typeUnify(
     lhs = L.extendInterfaceTypeMerge(lhs)
     rhs = L.extendInterfaceTypeMerge(rhs)
 
-    subst = typeUnify(
-      trail,
-      subst,
-      L.extendInterfaceTypeBaseType(lhs),
-      L.extendInterfaceTypeBaseType(rhs),
+    const lhsBaseType = L.extendInterfaceTypeBaseType(lhs)
+    const rhsBaseType = L.extendInterfaceTypeBaseType(rhs)
+
+    const lhsAttributeTypes = L.extendInterfaceTypeAttributeTypes(lhs)
+    const rhsAttributeTypes = L.extendInterfaceTypeAttributeTypes(rhs)
+
+    const lhsKeys = new Set(Object.keys(lhsAttributeTypes))
+    const rhsKeys = new Set(Object.keys(rhsAttributeTypes))
+
+    if (
+      L.isVarType(lhsBaseType) &&
+      L.isVarType(rhsBaseType) &&
+      L.varTypeEqual(lhsBaseType, rhsBaseType)
+    ) {
+      if (setEqual(lhsKeys, rhsKeys)) {
+        return typeUnifyRecord(
+          trail,
+          subst,
+          L.extendInterfaceTypeAttributeTypes(lhs),
+          L.extendInterfaceTypeAttributeTypes(rhs),
+        )
+      } else {
+        return undefined
+      }
+    }
+
+    const lhsPopulatedBaseType = L.populateExtendInterfaceType(
+      Array.from(setDifference(rhsKeys, lhsKeys)),
     )
+    const rhsPopulatedBaseType = L.populateExtendInterfaceType(
+      Array.from(setDifference(lhsKeys, rhsKeys)),
+    )
+
+    subst = typeUnify(trail, subst, lhsBaseType, lhsPopulatedBaseType)
+    subst = typeUnify(trail, subst, rhsBaseType, rhsPopulatedBaseType)
+
+    if (subst === undefined) return undefined
+
+    lhs = L.substApplyToType(subst, lhs)
+    rhs = L.substApplyToType(subst, rhs)
+
+    lhs = L.extendInterfaceTypeMerge(lhs)
+    rhs = L.extendInterfaceTypeMerge(rhs)
+
     subst = typeUnifyRecord(
       trail,
       subst,
       L.extendInterfaceTypeAttributeTypes(lhs),
       L.extendInterfaceTypeAttributeTypes(rhs),
+    )
+    subst = typeUnify(
+      trail,
+      subst,
+      L.extendInterfaceTypeBaseType(lhs),
+      L.extendInterfaceTypeBaseType(rhs),
     )
     return subst
   }

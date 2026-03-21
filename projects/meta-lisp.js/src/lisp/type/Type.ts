@@ -301,6 +301,20 @@ export function createExtendInterfaceType(
   ])
 }
 
+export function populateExtendInterfaceType(keys: Array<string>): L.Value {
+  if (keys.length === 0) {
+    return createFreshVarType("R")
+  }
+
+  return L.ListValue([
+    L.SymbolValue("extend-interface"),
+    createFreshVarType("R"),
+    L.RecordValue(
+      Object.fromEntries(keys.map((key) => [key, createFreshVarType("A")])),
+    ),
+  ])
+}
+
 export function extendInterfaceTypeBaseType(value: L.Value): L.Value {
   assert(isExtendInterfaceType(value))
   return L.asListValue(value).elements[1]
