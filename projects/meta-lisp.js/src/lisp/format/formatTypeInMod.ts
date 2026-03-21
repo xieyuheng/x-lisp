@@ -71,7 +71,7 @@ export function formatTypeInMod(mod: L.Mod, type: L.Value): string {
   }
 
   if (L.isDefinedDataType(type)) {
-    const definition = L.definedDataTypeDataDefinition(type)
+    const definition = L.definedDataTypeDefinition(type)
     const foundName = L.modLookupNameByDefinition(mod, definition)
     const argTypes = formatTypesInMod(mod, L.definedDataTypeArgTypes(type))
     const path = pathRelativeToCwd(definition.mod.path)

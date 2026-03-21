@@ -60,7 +60,7 @@ export function typeFreshen(type: L.Value): L.Value {
 
   if (L.isDefinedDataType(type)) {
     return L.createDefinedDataType(
-      L.definedDataTypeDataDefinition(type),
+      L.definedDataTypeDefinition(type),
       L.definedDataTypeArgTypes(type).map((t) => typeFreshen(t)),
     )
   }

@@ -95,7 +95,7 @@ function substApplyToTypeWithBoundIds(
 
   if (L.isDefinedDataType(type)) {
     return L.createDefinedDataType(
-      L.definedDataTypeDataDefinition(type),
+      L.definedDataTypeDefinition(type),
       L.definedDataTypeArgTypes(type).map((t) =>
         substApplyToTypeWithBoundIds(boundIds, subst, t),
       ),

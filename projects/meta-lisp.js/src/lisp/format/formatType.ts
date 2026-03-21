@@ -67,7 +67,7 @@ export function formatType(type: L.Value): string {
   }
 
   if (L.isDefinedDataType(type)) {
-    const definition = L.definedDataTypeDataDefinition(type)
+    const definition = L.definedDataTypeDefinition(type)
     const argTypes = formatTypes(L.definedDataTypeArgTypes(type))
     if (argTypes.length === 0) {
       return `${definition.name}`

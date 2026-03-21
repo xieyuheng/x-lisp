@@ -1,7 +1,5 @@
 # row polymorphism
 
-`definedInterfaceTypeUnfold`
-
 `formatType` & `formatTypeInMod` -- handle `DefinedInterfaceType`
 `substApplyToType` -- handle `DefinedInterfaceType`
 `typeFreshen` -- handle `DefinedInterfaceType`

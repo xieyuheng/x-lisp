@@ -1,4 +1,5 @@
 import { range } from "@xieyuheng/helpers.js/range"
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import assert from "node:assert"
 import * as L from "../index.ts"
@@ -300,7 +301,7 @@ export function createDefinedInterfaceType(
   ])
 }
 
-export function definedInterfaceTypeDataDefinition(
+export function definedInterfaceTypeDefinition(
   value: L.Value,
 ): L.InterfaceDefinition {
   assert(isDefinedInterfaceType(value))
@@ -314,6 +315,25 @@ export function definedInterfaceTypeDataDefinition(
 export function definedInterfaceTypeArgTypes(value: L.Value): Array<L.Value> {
   assert(isDefinedInterfaceType(value))
   return L.asListValue(L.asListValue(value).elements[2]).elements
+}
+
+export function definedInterfaceTypeUnfold(value: L.Value): L.Value {
+  assert(L.isDefinedInterfaceType(value))
+  const definition = definedInterfaceTypeDefinition(value)
+  const argTypes = definedInterfaceTypeArgTypes(value)
+
+  const env = L.envPutMany(
+    L.emptyEnv(),
+    definition.interfaceConstructor.parameters,
+    argTypes,
+  )
+
+  const attributeTypes = recordMapValue(
+    definition.attributeTypes,
+    (attributeType) => L.evaluate(definition.mod, env, attributeType),
+  )
+
+  return L.createInterfaceType(attributeTypes)
 }
 
 // ListType
@@ -406,9 +426,7 @@ export function createDefinedDataType(
   ])
 }
 
-export function definedDataTypeDataDefinition(
-  value: L.Value,
-): L.DataDefinition {
+export function definedDataTypeDefinition(value: L.Value): L.DataDefinition {
   assert(isDefinedDataType(value))
   const definition = L.asDefinitionValue(
     L.asListValue(value).elements[1],
@@ -424,7 +442,7 @@ export function definedDataTypeArgTypes(value: L.Value): Array<L.Value> {
 
 export function definedDataTypeUnfold(value: L.Value): L.Value {
   assert(L.isDefinedDataType(value))
-  const definition = L.definedDataTypeDataDefinition(value)
+  const definition = L.definedDataTypeDefinition(value)
   const argTypes = L.definedDataTypeArgTypes(value)
 
   const env = L.envPutMany(
