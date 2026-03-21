@@ -33,6 +33,44 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
     )
   }
 
+  if (L.isInterfaceType(lhs) && L.isExtendInterfaceType(rhs)) {
+    rhs = L.extendInterfaceTypeMerge(rhs)
+
+    return typeSubtypeAttributes(
+      trail,
+      L.interfaceTypeAttributeTypes(lhs),
+      L.extendInterfaceTypeAttributeTypes(rhs),
+    )
+  }
+
+  if (L.isExtendInterfaceType(lhs) && L.isInterfaceType(rhs)) {
+    lhs = L.extendInterfaceTypeMerge(lhs)
+
+    return typeSubtypeAttributes(
+      trail,
+      L.extendInterfaceTypeAttributeTypes(lhs),
+      L.interfaceTypeAttributeTypes(rhs),
+    )
+  }
+
+  if (L.isExtendInterfaceType(lhs) && L.isExtendInterfaceType(rhs)) {
+    lhs = L.extendInterfaceTypeMerge(lhs)
+    rhs = L.extendInterfaceTypeMerge(rhs)
+
+    return (
+      typeSubtype(
+        trail,
+        L.extendInterfaceTypeBaseType(lhs),
+        L.extendInterfaceTypeBaseType(rhs),
+      ) &&
+      typeSubtypeAttributes(
+        trail,
+        L.extendInterfaceTypeAttributeTypes(lhs),
+        L.extendInterfaceTypeAttributeTypes(rhs),
+      )
+    )
+  }
+
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
     // contravariant on ArgTypes
     lhs = L.arrowTypeCurrying(lhs)
