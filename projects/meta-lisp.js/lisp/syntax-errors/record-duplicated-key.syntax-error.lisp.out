@@ -1,4 +1,4 @@
-[parseExp] duplicated key in literal record
+[parseExp] duplicated key in literal (@record)
   key: y
 lisp/syntax-errors/record-duplicated-key.syntax-error.lisp:2:26
  1 | (define (main)

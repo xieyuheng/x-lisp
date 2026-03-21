@@ -105,7 +105,7 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
       if (group && group.length > 1) {
         const [_, firstSexp] = group[1]
         assert(firstSexp.meta)
-        let message = `[parseExp] duplicated key in literal record`
+        let message = `[parseExp] duplicated key in literal (@record)`
         message += `\n  key: ${key}`
         throw new S.ErrorWithMeta(message, firstSexp.meta)
       }
@@ -155,13 +155,34 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
       if (group && group.length > 1) {
         const [_, firstSexp] = group[1]
         assert(firstSexp.meta)
-        let message = `[parseExp] duplicated key in interface`
+        let message = `[parseExp] duplicated key in (@interface)`
         message += `\n  key: ${key}`
         throw new S.ErrorWithMeta(message, firstSexp.meta)
       }
     }
 
     return L.Interface(
+      recordMapValue(Object.fromEntries(entries), parseExp),
+      meta,
+    )
+  },
+
+  "(cons* 'extend-interface head body)": ({ head, body }, { meta }) => {
+    const entries = S.listCollectKeywordEntries(body)
+    for (const [key, group] of Object.entries(
+      Object.groupBy(entries, ([key, sexp]) => key),
+    )) {
+      if (group && group.length > 1) {
+        const [_, firstSexp] = group[1]
+        assert(firstSexp.meta)
+        let message = `[parseExp] duplicated key in (extend-interface)`
+        message += `\n  key: ${key}`
+        throw new S.ErrorWithMeta(message, firstSexp.meta)
+      }
+    }
+
+    return L.ExtendInterface(
+      parseExp(head),
       recordMapValue(Object.fromEntries(entries), parseExp),
       meta,
     )

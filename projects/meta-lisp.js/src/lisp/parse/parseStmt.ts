@@ -108,7 +108,7 @@ export const parseStmt = S.createRouter<L.Stmt>({
       if (group && group.length > 1) {
         const [_, firstSexp] = group[1]
         assert(firstSexp.meta)
-        let message = `[parseStmt] duplicated key in interface`
+        let message = `[parseStmt] duplicated key in (define-interface)`
         message += `\n  key: ${key}`
         throw new S.ErrorWithMeta(message, firstSexp.meta)
       }

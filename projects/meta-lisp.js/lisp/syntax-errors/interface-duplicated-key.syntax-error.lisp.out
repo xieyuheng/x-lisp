@@ -1,4 +1,4 @@
-[parseExp] duplicated key in interface
+[parseExp] duplicated key in (@interface)
   key: y
 lisp/syntax-errors/interface-duplicated-key.syntax-error.lisp:2:50
  1 | (define (main)
