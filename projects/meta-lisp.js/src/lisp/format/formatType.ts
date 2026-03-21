@@ -50,16 +50,6 @@ export function formatType(type: L.Value): string {
     return `(@interface ${attributeTypes})`
   }
 
-  if (L.isDefinedDataType(type)) {
-    const definition = L.definedInterfaceTypeDefinition(type)
-    const argTypes = formatTypes(L.definedInterfaceTypeArgTypes(type))
-    if (argTypes.length === 0) {
-      return `${definition.name}`
-    } else {
-      return `(${definition.name} ${argTypes})`
-    }
-  }
-
   if (L.isListType(type)) {
     const elementType = formatType(L.listTypeElementType(type))
     return `(list-t ${elementType})`
@@ -79,6 +69,16 @@ export function formatType(type: L.Value): string {
   if (L.isDefinedDataType(type)) {
     const definition = L.definedDataTypeDefinition(type)
     const argTypes = formatTypes(L.definedDataTypeArgTypes(type))
+    if (argTypes.length === 0) {
+      return `${definition.name}`
+    } else {
+      return `(${definition.name} ${argTypes})`
+    }
+  }
+
+  if (L.isDefinedInterfaceType(type)) {
+    const definition = L.definedInterfaceTypeDefinition(type)
+    const argTypes = formatTypes(L.definedInterfaceTypeArgTypes(type))
     if (argTypes.length === 0) {
       return `${definition.name}`
     } else {

@@ -1,7 +1,6 @@
 # row polymorphism
 
 `typeBisimilar` -- handle `DefinedInterfaceType`
-`typeFreeVarTypes` -- handle `DefinedInterfaceType`
 `typeSubtype` -- handle `DefinedInterfaceType`
 `typeUnify` -- handle `DefinedInterfaceType`
 

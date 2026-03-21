@@ -70,6 +70,12 @@ export function typeFreeVarTypes(
     )
   }
 
+  if (L.isDefinedInterfaceType(type)) {
+    return L.definedInterfaceTypeArgTypes(type).flatMap((t) =>
+      typeFreeVarTypes(boundIds, t),
+    )
+  }
+
   if (L.isSumType(type)) {
     return Object.values(L.sumTypeVariantTypes(type)).flatMap((t) =>
       typeFreeVarTypes(boundIds, t),
