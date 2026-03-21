@@ -58,10 +58,10 @@ export function typeFreshen(type: L.Value): L.Value {
     )
   }
 
-  if (L.isDataType(type)) {
-    return L.createDataType(
-      L.dataTypeDataDefinition(type),
-      L.dataTypeArgTypes(type).map((t) => typeFreshen(t)),
+  if (L.isDefinedDataType(type)) {
+    return L.createDefinedDataType(
+      L.definedDataTypeDataDefinition(type),
+      L.definedDataTypeArgTypes(type).map((t) => typeFreshen(t)),
     )
   }
 

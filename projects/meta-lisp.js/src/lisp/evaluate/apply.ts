@@ -46,7 +46,7 @@ export function apply(target: L.Value, args: Array<L.Value>): L.Value {
         }
 
         case "DataDefinition": {
-          return L.createDataType(target.definition, args)
+          return L.createDefinedDataType(target.definition, args)
         }
 
         default: {

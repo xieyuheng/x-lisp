@@ -73,8 +73,8 @@ function typeVarOccurredInTypeWithBoundIds(
     )
   }
 
-  if (L.isDataType(type)) {
-    return L.dataTypeArgTypes(type).some((t) =>
+  if (L.isDefinedDataType(type)) {
+    return L.definedDataTypeArgTypes(type).some((t) =>
       typeVarOccurredInTypeWithBoundIds(boundIds, varType, t),
     )
   }

@@ -74,19 +74,23 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
     )
   }
 
-  if (L.isDataType(lhs) && L.isDataType(rhs)) {
+  if (L.isDefinedDataType(lhs) && L.isDefinedDataType(rhs)) {
     trail = L.trailAdd(trail, lhs, rhs)
-    return typeSubtype(trail, L.dataTypeUnfold(lhs), L.dataTypeUnfold(rhs))
+    return typeSubtype(
+      trail,
+      L.definedDataTypeUnfold(lhs),
+      L.definedDataTypeUnfold(rhs),
+    )
   }
 
-  if (L.isDataType(lhs)) {
+  if (L.isDefinedDataType(lhs)) {
     trail = L.trailAdd(trail, lhs, rhs)
-    return typeSubtype(trail, L.dataTypeUnfold(lhs), rhs)
+    return typeSubtype(trail, L.definedDataTypeUnfold(lhs), rhs)
   }
 
-  if (L.isDataType(rhs)) {
+  if (L.isDefinedDataType(rhs)) {
     trail = L.trailAdd(trail, lhs, rhs)
-    return typeSubtype(trail, lhs, L.dataTypeUnfold(rhs))
+    return typeSubtype(trail, lhs, L.definedDataTypeUnfold(rhs))
   }
 
   if (L.isSumType(lhs) && L.isSumType(rhs)) {

@@ -119,19 +119,24 @@ export function typeUnify(
     return subst
   }
 
-  if (L.isDataType(lhs) && L.isDataType(rhs)) {
+  if (L.isDefinedDataType(lhs) && L.isDefinedDataType(rhs)) {
     trail = L.trailAdd(trail, lhs, rhs)
-    return typeUnify(trail, subst, L.dataTypeUnfold(lhs), L.dataTypeUnfold(rhs))
+    return typeUnify(
+      trail,
+      subst,
+      L.definedDataTypeUnfold(lhs),
+      L.definedDataTypeUnfold(rhs),
+    )
   }
 
-  if (L.isDataType(lhs)) {
+  if (L.isDefinedDataType(lhs)) {
     trail = L.trailAdd(trail, lhs, rhs)
-    return typeUnify(trail, subst, L.dataTypeUnfold(lhs), rhs)
+    return typeUnify(trail, subst, L.definedDataTypeUnfold(lhs), rhs)
   }
 
-  if (L.isDataType(rhs)) {
+  if (L.isDefinedDataType(rhs)) {
     trail = L.trailAdd(trail, lhs, rhs)
-    return typeUnify(trail, subst, lhs, L.dataTypeUnfold(rhs))
+    return typeUnify(trail, subst, lhs, L.definedDataTypeUnfold(rhs))
   }
 
   if (L.isSumType(lhs) && L.isSumType(rhs)) {
