@@ -124,6 +124,25 @@ export function typeBisimilar(
     )
   }
 
+  if (L.isDefinedInterfaceType(lhs) && L.isDefinedInterfaceType(rhs)) {
+    trail = L.trailAdd(trail, lhs, rhs)
+    return typeBisimilar(
+      trail,
+      L.definedInterfaceTypeUnfold(lhs),
+      L.definedInterfaceTypeUnfold(rhs),
+    )
+  }
+
+  if (L.isDefinedInterfaceType(lhs)) {
+    trail = L.trailAdd(trail, lhs, rhs)
+    return typeBisimilar(trail, L.definedInterfaceTypeUnfold(lhs), rhs)
+  }
+
+  if (L.isDefinedInterfaceType(rhs)) {
+    trail = L.trailAdd(trail, lhs, rhs)
+    return typeBisimilar(trail, lhs, L.definedInterfaceTypeUnfold(rhs))
+  }
+
   return false
 }
 

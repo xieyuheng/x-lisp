@@ -1,6 +1,5 @@
 # row polymorphism
 
-`typeBisimilar` -- handle `DefinedInterfaceType`
 `typeSubtype` -- handle `DefinedInterfaceType`
 `typeUnify` -- handle `DefinedInterfaceType`
 
