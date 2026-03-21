@@ -26,15 +26,11 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   }
 
   if (L.isInterfaceType(lhs) && L.isInterfaceType(rhs)) {
-    const lhsRecord = L.interfaceTypeAttributeTypes(lhs)
-    const rhsRecord = L.interfaceTypeAttributeTypes(rhs)
-    // rhs should have less keys
-    for (const k of Object.keys(rhsRecord)) {
-      if (lhsRecord[k] === undefined) return false
-      if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) return false
-    }
-
-    return true
+    return typeSubtypeAttributes(
+      trail,
+      L.interfaceTypeAttributeTypes(lhs),
+      L.interfaceTypeAttributeTypes(rhs),
+    )
   }
 
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
@@ -94,15 +90,11 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   }
 
   if (L.isSumType(lhs) && L.isSumType(rhs)) {
-    const lhsRecord = L.sumTypeVariantTypes(lhs)
-    const rhsRecord = L.sumTypeVariantTypes(rhs)
-    // lhs should have less keys
-    for (const k of Object.keys(lhsRecord)) {
-      if (rhsRecord[k] === undefined) return false
-      if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) return false
-    }
-
-    return true
+    return typeSubtypeVariants(
+      trail,
+      L.sumTypeVariantTypes(lhs),
+      L.sumTypeVariantTypes(rhs),
+    )
   }
 
   if (L.isSumType(rhs)) {
@@ -145,4 +137,32 @@ function typeSubtypeMany(
     lhs.length === rhs.length &&
     arrayZip(lhs, rhs).every(([l, r]) => typeSubtype(trail, l, r))
   )
+}
+
+function typeSubtypeAttributes(
+  trail: Trail,
+  lhsRecord: Record<string, L.Value>,
+  rhsRecord: Record<string, L.Value>,
+): boolean {
+  // rhs should have less keys
+  for (const k of Object.keys(rhsRecord)) {
+    if (lhsRecord[k] === undefined) return false
+    if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) return false
+  }
+
+  return true
+}
+
+function typeSubtypeVariants(
+  trail: Trail,
+  lhsRecord: Record<string, L.Value>,
+  rhsRecord: Record<string, L.Value>,
+): boolean {
+  // lhs should have less keys
+  for (const k of Object.keys(lhsRecord)) {
+    if (rhsRecord[k] === undefined) return false
+    if (!typeSubtype(trail, lhsRecord[k], rhsRecord[k])) return false
+  }
+
+  return true
 }
