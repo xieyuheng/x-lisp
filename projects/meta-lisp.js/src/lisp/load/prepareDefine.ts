@@ -62,4 +62,20 @@ export function handleDefine(mod: L.Mod, stmt: L.Stmt): void {
       expandDataPutter(mod, definition, dataConstructor)
     }
   }
+
+  if (stmt.kind === "DefineInterface") {
+    const name = stmt.interfaceConstructor.name
+    const interfaceConstructor =
+      stmt.interfaceConstructor as unknown as L.InterfaceConstructor
+    const attributeTypes = stmt.attributeTypes
+    const definition = L.InterfaceDefinition(
+      mod,
+      name,
+      interfaceConstructor,
+      attributeTypes,
+      stmt.meta,
+    )
+    interfaceConstructor.definition = definition
+    L.modDefine(mod, name, definition)
+  }
 }

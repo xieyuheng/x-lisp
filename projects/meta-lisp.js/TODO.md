@@ -1,7 +1,6 @@
 # row polymorphism
 
 parse `(define-interface)`
-`prepareDefine` -- handle `DefineInterface`
 
 `ExtendInterface` as `Exp` -- to support row polymorphism
 

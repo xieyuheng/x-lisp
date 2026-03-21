@@ -148,7 +148,6 @@ export function typeUnify(
     )
   }
 
-
   if (L.isDefinedInterfaceType(lhs) && L.isDefinedInterfaceType(rhs)) {
     trail = L.trailAdd(trail, lhs, rhs)
     return typeUnify(
