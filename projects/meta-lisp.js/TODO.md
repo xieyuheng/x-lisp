@@ -1,6 +1,5 @@
 # row polymorphism
 
-`typeFreshen` -- handle `ExtendInterfaceType`
 `typeVarOccurredInType` -- handle `ExtendInterfaceType`
 `typeFreeVarTypes` -- handle `ExtendInterfaceType`
 

@@ -36,6 +36,17 @@ export function typeFreshen(type: L.Value): L.Value {
     )
   }
 
+
+
+  if (L.isExtendInterfaceType(type)) {
+    return L.createExtendInterfaceType(
+      typeFreshen(L.extendInterfaceTypeBaseType(type)),
+      recordMapValue(L.extendInterfaceTypeAttributeTypes(type), (t) =>
+        typeFreshen(t),
+      ),
+    )
+  }
+
   if (L.isArrowType(type)) {
     return L.createArrowType(
       L.arrowTypeArgTypes(type).map((t) => typeFreshen(t)),
