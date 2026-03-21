@@ -422,10 +422,10 @@ export function definedDataTypeArgTypes(value: L.Value): Array<L.Value> {
   return L.asListValue(L.asListValue(value).elements[2]).elements
 }
 
-export function definedDataTypeUnfold(dataType: L.Value): L.Value {
-  assert(L.isDefinedDataType(dataType))
-  const definition = L.definedDataTypeDataDefinition(dataType)
-  const argTypes = L.definedDataTypeArgTypes(dataType)
+export function definedDataTypeUnfold(value: L.Value): L.Value {
+  assert(L.isDefinedDataType(value))
+  const definition = L.definedDataTypeDataDefinition(value)
+  const argTypes = L.definedDataTypeArgTypes(value)
 
   const env = L.envPutMany(
     L.emptyEnv(),
