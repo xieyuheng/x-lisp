@@ -50,6 +50,15 @@ export function typeFreeVarTypes(
     )
   }
 
+  if (L.isExtendInterfaceType(type)) {
+    return [
+      ...typeFreeVarTypes(boundIds, L.extendInterfaceTypeBaseType(type)),
+      ...Object.values(L.interfaceTypeAttributeTypes(type)).flatMap((t) =>
+        typeFreeVarTypes(boundIds, t),
+      ),
+    ]
+  }
+
   if (L.isListType(type)) {
     return typeFreeVarTypes(boundIds, L.listTypeElementType(type))
   }

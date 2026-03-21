@@ -1,7 +1,5 @@
 # row polymorphism
 
-`typeFreeVarTypes` -- handle `ExtendInterfaceType`
-
 `typeBisimilar` -- handle `ExtendInterfaceType`
 `typeSubtype` -- handle `ExtendInterfaceType`
 `typeUnify` -- handle `ExtendInterfaceType`
