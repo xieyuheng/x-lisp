@@ -54,6 +54,15 @@ export function formatTypeInMod(mod: L.Mod, type: L.Value): string {
     return `(@interface ${attributeTypes})`
   }
 
+  if (L.isExtendInterfaceType(type)) {
+    const baseType = formatTypeInMod(mod, L.extendInterfaceTypeBaseType(type))
+    const attributeTypes = formatTypeRecordInMod(
+      mod,
+      L.extendInterfaceTypeAttributeTypes(type),
+    )
+    return `(extend-interface ${baseType} ${attributeTypes})`
+  }
+
   if (L.isListType(type)) {
     const elementType = formatTypeInMod(mod, L.listTypeElementType(type))
     return `(list-t ${elementType})`

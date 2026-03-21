@@ -1,6 +1,5 @@
 # row polymorphism
 
-`formatType` & `formatTypeInMod` -- handle `ExtendInterfaceType`
 `substApplyToType` -- handle `ExtendInterfaceType`
 `typeFreshen` -- handle `ExtendInterfaceType`
 `typeVarOccurredInType` -- handle `ExtendInterfaceType`

@@ -50,6 +50,14 @@ export function formatType(type: L.Value): string {
     return `(@interface ${attributeTypes})`
   }
 
+  if (L.isExtendInterfaceType(type)) {
+    const baseType = formatType(L.extendInterfaceTypeBaseType(type))
+    const attributeTypes = formatTypeRecord(
+      L.extendInterfaceTypeAttributeTypes(type),
+    )
+    return `(extend-interface ${baseType} ${attributeTypes})`
+  }
+
   if (L.isListType(type)) {
     const elementType = formatType(L.listTypeElementType(type))
     return `(list-t ${elementType})`
