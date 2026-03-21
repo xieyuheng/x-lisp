@@ -150,6 +150,14 @@ export function desugar(mod: L.Mod, exp: L.Exp): L.Exp {
       )
     }
 
+    case "ExtendInterface": {
+      return L.ExtendInterface(
+        desugar(mod, exp.baseType),
+        recordMapValue(exp.attributeTypes, (e) => desugar(mod, e)),
+        exp.meta,
+      )
+    }
+
     case "The": {
       return L.The(desugar(mod, exp.type), desugar(mod, exp.exp), exp.meta)
     }

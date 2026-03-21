@@ -201,6 +201,16 @@ export function formatExp(exp: Exp): string {
       }
     }
 
+    case "ExtendInterface": {
+      const baseType = formatExp(exp.baseType)
+      const attributeTypes = formatExpAttributes(exp.attributeTypes)
+      if (attributeTypes === "") {
+        return `(extend-interface ${baseType})`
+      } else {
+        return `(extend-interface ${baseType} ${attributeTypes})`
+      }
+    }
+
     case "The": {
       return `(the ${formatExp(exp.type)} ${formatExp(exp.exp)})`
     }
