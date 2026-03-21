@@ -2,7 +2,7 @@ import * as L from "../index.ts"
 
 export function expandDataConstructor(
   mod: L.Mod,
-  definition: L.DatatypeDefinition,
+  definition: L.DataDefinition,
   dataConstructor: L.DataConstructor,
 ): void {
   mod.exempted.add(dataConstructor.name)
@@ -18,17 +18,17 @@ export function expandDataConstructor(
       ),
     )
 
-    if (definition.datatypeConstructor.parameters.length === 0) {
+    if (definition.dataTypeConstructor.parameters.length === 0) {
       L.modClaim(mod, dataConstructor.name, L.Var(definition.name))
     } else {
       L.modClaim(
         mod,
         dataConstructor.name,
         L.Polymorphic(
-          definition.datatypeConstructor.parameters,
+          definition.dataTypeConstructor.parameters,
           L.Apply(
             L.Var(definition.name),
-            definition.datatypeConstructor.parameters.map((parameter) =>
+            definition.dataTypeConstructor.parameters.map((parameter) =>
               L.Var(parameter),
             ),
           ),
@@ -49,7 +49,7 @@ export function expandDataConstructor(
       ),
     )
 
-    if (definition.datatypeConstructor.parameters.length === 0) {
+    if (definition.dataTypeConstructor.parameters.length === 0) {
       L.modClaim(
         mod,
         dataConstructor.name,
@@ -63,12 +63,12 @@ export function expandDataConstructor(
         mod,
         dataConstructor.name,
         L.Polymorphic(
-          definition.datatypeConstructor.parameters,
+          definition.dataTypeConstructor.parameters,
           L.Arrow(
             dataConstructor.fields.map((field) => field.type),
             L.Apply(
               L.Var(definition.name),
-              definition.datatypeConstructor.parameters.map((parameter) =>
+              definition.dataTypeConstructor.parameters.map((parameter) =>
                 L.Var(parameter),
               ),
             ),

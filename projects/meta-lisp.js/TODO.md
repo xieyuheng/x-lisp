@@ -1,12 +1,7 @@
 # row polymorphism
 
-[maybe] rename InterfaceType to AnonymousInterfaceType
-
-ambr InterfaceType AnonymousInterfaceType
-ambr InterfaceType anonymousInterfaceType
-
-`InterfaceType` has `definition`
-fix `definitionMeaning` -- return `InterfaceType` instead of `AnonymousInterfaceType`
+`DefinedInterfaceType` -- has `definition`
+fix `definitionMeaning` -- return `DefinedInterfaceType` instead of `InterfaceType`
 
 `DefineInterface` as `Stmt`
 parse `(define-interface)`

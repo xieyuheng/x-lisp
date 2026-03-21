@@ -91,7 +91,7 @@ export const parseStmt = S.createRouter<L.Stmt>({
     { predicate, constructors },
     { meta },
   ) => {
-    return L.DefineDatatype(
+    return L.DefineData(
       parseDataPredicate(predicate),
       S.listElements(constructors).map(parseDataConstructor),
       meta,
@@ -104,7 +104,7 @@ export const parseStmt = S.createRouter<L.Stmt>({
 })
 
 const parseDataPredicate = S.createRouter<
-  Omit<L.DatatypeConstructor, "definition">
+  Omit<L.DataTypeConstructor, "definition">
 >({
   "(cons* name parameters)": ({ name, parameters }, { meta }) => {
     return {

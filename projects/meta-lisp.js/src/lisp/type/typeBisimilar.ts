@@ -97,23 +97,19 @@ export function typeBisimilar(
     )
   }
 
-  if (L.isDatatypeType(lhs) && L.isDatatypeType(rhs)) {
+  if (L.isDataType(lhs) && L.isDataType(rhs)) {
     trail = L.trailAdd(trail, lhs, rhs)
-    return typeBisimilar(
-      trail,
-      L.datatypeTypeUnfold(lhs),
-      L.datatypeTypeUnfold(rhs),
-    )
+    return typeBisimilar(trail, L.dataTypeUnfold(lhs), L.dataTypeUnfold(rhs))
   }
 
-  if (L.isDatatypeType(lhs)) {
+  if (L.isDataType(lhs)) {
     trail = L.trailAdd(trail, lhs, rhs)
-    return typeBisimilar(trail, L.datatypeTypeUnfold(lhs), rhs)
+    return typeBisimilar(trail, L.dataTypeUnfold(lhs), rhs)
   }
 
-  if (L.isDatatypeType(rhs)) {
+  if (L.isDataType(rhs)) {
     trail = L.trailAdd(trail, lhs, rhs)
-    return typeBisimilar(trail, lhs, L.datatypeTypeUnfold(rhs))
+    return typeBisimilar(trail, lhs, L.dataTypeUnfold(rhs))
   }
 
   if (L.isSumType(lhs) && L.isSumType(rhs)) {

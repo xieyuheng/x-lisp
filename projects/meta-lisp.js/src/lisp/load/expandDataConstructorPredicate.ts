@@ -2,7 +2,7 @@ import * as L from "../index.ts"
 
 export function expandDataConstructorPredicate(
   mod: L.Mod,
-  definition: L.DatatypeDefinition,
+  definition: L.DataDefinition,
   dataConstructor: L.DataConstructor,
 ): void {
   const name = `${dataConstructor.name}?`
@@ -46,19 +46,19 @@ export function expandDataConstructorPredicate(
     )
   }
 
-  if (definition.datatypeConstructor.parameters.length === 0) {
+  if (definition.dataTypeConstructor.parameters.length === 0) {
     L.modClaim(mod, name, L.Arrow([L.Var(definition.name)], L.Var("bool-t")))
   } else {
     L.modClaim(
       mod,
       name,
       L.Polymorphic(
-        definition.datatypeConstructor.parameters,
+        definition.dataTypeConstructor.parameters,
         L.Arrow(
           [
             L.Apply(
               L.Var(definition.name),
-              definition.datatypeConstructor.parameters.map((parameter) =>
+              definition.dataTypeConstructor.parameters.map((parameter) =>
                 L.Var(parameter),
               ),
             ),

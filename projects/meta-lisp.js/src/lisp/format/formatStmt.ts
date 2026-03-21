@@ -15,8 +15,8 @@ export function formatStmt(stmt: Stmt): string {
       return `(define ${stmt.name} ${body})`
     }
 
-    case "DefineDatatype": {
-      const type = formatDataPredicate(stmt.datatypeConstructor)
+    case "DefineData": {
+      const type = formatDataPredicate(stmt.dataTypeConstructor)
       const constructors = stmt.dataConstructors
         .map(formatDataConstructor)
         .join(" ")
@@ -78,7 +78,7 @@ export function formatStmt(stmt: Stmt): string {
 }
 
 function formatDataPredicate(
-  predicate: Omit<L.DatatypeConstructor, "definition">,
+  predicate: Omit<L.DataTypeConstructor, "definition">,
 ): string {
   if (predicate.parameters.length === 0) {
     return predicate.name

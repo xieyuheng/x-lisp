@@ -70,10 +70,10 @@ export function formatTypeInMod(mod: L.Mod, type: L.Value): string {
     return `(hash-t ${keyType} ${valueType})`
   }
 
-  if (L.isDatatypeType(type)) {
-    const definition = L.datatypeTypeDatatypeDefinition(type)
+  if (L.isDataType(type)) {
+    const definition = L.dataTypeDataDefinition(type)
     const foundName = L.modLookupNameByDefinition(mod, definition)
-    const argTypes = formatTypesInMod(mod, L.datatypeTypeArgTypes(type))
+    const argTypes = formatTypesInMod(mod, L.dataTypeArgTypes(type))
     const path = pathRelativeToCwd(definition.mod.path)
     const name = foundName || `<${definition.name} from ${path}>`
     if (argTypes.length === 0) {

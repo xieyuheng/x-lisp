@@ -93,10 +93,10 @@ function substApplyToTypeWithBoundIds(
     )
   }
 
-  if (L.isDatatypeType(type)) {
-    return L.createDatatypeType(
-      L.datatypeTypeDatatypeDefinition(type),
-      L.datatypeTypeArgTypes(type).map((t) =>
+  if (L.isDataType(type)) {
+    return L.createDataType(
+      L.dataTypeDataDefinition(type),
+      L.dataTypeArgTypes(type).map((t) =>
         substApplyToTypeWithBoundIds(boundIds, subst, t),
       ),
     )

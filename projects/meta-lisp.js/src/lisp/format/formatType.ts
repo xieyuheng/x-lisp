@@ -66,9 +66,9 @@ export function formatType(type: L.Value): string {
     return `(hash-t ${keyType} ${valueType})`
   }
 
-  if (L.isDatatypeType(type)) {
-    const definition = L.datatypeTypeDatatypeDefinition(type)
-    const argTypes = formatTypes(L.datatypeTypeArgTypes(type))
+  if (L.isDataType(type)) {
+    const definition = L.dataTypeDataDefinition(type)
+    const argTypes = formatTypes(L.dataTypeArgTypes(type))
     if (argTypes.length === 0) {
       return `${definition.name}`
     } else {

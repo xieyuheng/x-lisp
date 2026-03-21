@@ -28,9 +28,9 @@ export function definitionMeaning(definition: L.Definition): L.Value {
       return definition.value
     }
 
-    case "DatatypeDefinition": {
-      if (definition.datatypeConstructor.parameters.length === 0) {
-        return L.createDatatypeType(definition, [])
+    case "DataDefinition": {
+      if (definition.dataTypeConstructor.parameters.length === 0) {
+        return L.createDataType(definition, [])
       } else {
         return L.DefinitionValue(definition)
       }

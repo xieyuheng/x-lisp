@@ -16,7 +16,7 @@ export function isType(value: L.Value): boolean {
     isListType(value) ||
     isSetType(value) ||
     isHashType(value) ||
-    isDatatypeType(value) ||
+    isDataType(value) ||
     isSumType(value) ||
     isPolymorphicType(value)
   )
@@ -341,54 +341,52 @@ export function hashTypeValueType(value: L.Value): L.Value {
   return L.asListValue(value).elements[2]
 }
 
-// DatatypeType
+// DataType
 
-export function isDatatypeType(value: L.Value): boolean {
+export function isDataType(value: L.Value): boolean {
   return (
     L.isListValue(value) &&
     value.elements.length === 3 &&
-    L.valueEqual(value.elements[0], L.SymbolValue("datatype")) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("data")) &&
     L.isDefinitionValue(value.elements[1]) &&
     L.isListValue(value.elements[2]) &&
     L.asListValue(value.elements[2]).elements.every(isType)
   )
 }
 
-export function createDatatypeType(
-  definition: L.DatatypeDefinition,
+export function createDataType(
+  definition: L.DataDefinition,
   argTypes: Array<L.Value>,
 ): L.Value {
   return L.ListValue([
-    L.SymbolValue("datatype"),
+    L.SymbolValue("data"),
     L.DefinitionValue(definition),
     L.ListValue(argTypes),
   ])
 }
 
-export function datatypeTypeDatatypeDefinition(
-  value: L.Value,
-): L.DatatypeDefinition {
-  assert(isDatatypeType(value))
+export function dataTypeDataDefinition(value: L.Value): L.DataDefinition {
+  assert(isDataType(value))
   const definition = L.asDefinitionValue(
     L.asListValue(value).elements[1],
   ).definition
-  assert(definition.kind === "DatatypeDefinition")
+  assert(definition.kind === "DataDefinition")
   return definition
 }
 
-export function datatypeTypeArgTypes(value: L.Value): Array<L.Value> {
-  assert(isDatatypeType(value))
+export function dataTypeArgTypes(value: L.Value): Array<L.Value> {
+  assert(isDataType(value))
   return L.asListValue(L.asListValue(value).elements[2]).elements
 }
 
-export function datatypeTypeUnfold(datatypeType: L.Value): L.Value {
-  assert(L.isDatatypeType(datatypeType))
-  const definition = L.datatypeTypeDatatypeDefinition(datatypeType)
-  const argTypes = L.datatypeTypeArgTypes(datatypeType)
+export function dataTypeUnfold(dataType: L.Value): L.Value {
+  assert(L.isDataType(dataType))
+  const definition = L.dataTypeDataDefinition(dataType)
+  const argTypes = L.dataTypeArgTypes(dataType)
 
   const env = L.envPutMany(
     L.emptyEnv(),
-    definition.datatypeConstructor.parameters,
+    definition.dataTypeConstructor.parameters,
     argTypes,
   )
 

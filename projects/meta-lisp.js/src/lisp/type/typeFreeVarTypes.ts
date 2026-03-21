@@ -64,8 +64,8 @@ export function typeFreeVarTypes(
     )
   }
 
-  if (L.isDatatypeType(type)) {
-    return L.datatypeTypeArgTypes(type).flatMap((t) =>
+  if (L.isDataType(type)) {
+    return L.dataTypeArgTypes(type).flatMap((t) =>
       typeFreeVarTypes(boundIds, t),
     )
   }

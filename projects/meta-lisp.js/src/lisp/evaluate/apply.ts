@@ -45,8 +45,8 @@ export function apply(target: L.Value, args: Array<L.Value>): L.Value {
           )
         }
 
-        case "DatatypeDefinition": {
-          return L.createDatatypeType(target.definition, args)
+        case "DataDefinition": {
+          return L.createDataType(target.definition, args)
         }
 
         default: {
@@ -83,8 +83,8 @@ function getArity(target: L.Value): number {
           return target.definition.parameters.length
         }
 
-        case "DatatypeDefinition": {
-          return target.definition.datatypeConstructor.parameters.length
+        case "DataDefinition": {
+          return target.definition.dataTypeConstructor.parameters.length
         }
 
         default: {

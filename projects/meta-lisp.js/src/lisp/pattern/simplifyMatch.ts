@@ -144,7 +144,7 @@ function groupClausesByHeadDataConstructor(
   mod: L.Mod,
   clauses: Array<L.MatchClause>,
 ): Array<GroupByHeadDataConstructor> {
-  const definition = findDatatypeDefinitionFromClauses(mod, clauses)
+  const definition = findDataDefinitionFromClauses(mod, clauses)
   return definition.dataConstructors.map((dataConstructor) => {
     const groupedClauses: Array<L.MatchClause> = []
     for (const clause of clauses) {
@@ -167,11 +167,11 @@ function groupClausesByHeadDataConstructor(
   })
 }
 
-function findDatatypeDefinitionFromClauses(
+function findDataDefinitionFromClauses(
   mod: L.Mod,
   clauses: Array<L.MatchClause>,
-): L.DatatypeDefinition {
-  let definition: L.DatatypeDefinition | undefined = undefined
+): L.DataDefinition {
+  let definition: L.DataDefinition | undefined = undefined
   for (const clause of clauses) {
     assert(clause.patterns.length > 0)
     const [pattern, ...restPatterns] = clause.patterns
@@ -179,7 +179,7 @@ function findDatatypeDefinitionFromClauses(
     if (definition === undefined) {
       definition = dataConstructor.definition
     } else if (dataConstructor.definition !== definition) {
-      let message = `[findDatatypeDefinitionFromClauses] datatype definition mismatch`
+      let message = `[findDataDefinitionFromClauses] datatype definition mismatch`
       message += `\n  definition name: ${definition.name}`
       if (clause.meta) throw new S.ErrorWithMeta(message, clause.meta)
       else throw new Error(message)

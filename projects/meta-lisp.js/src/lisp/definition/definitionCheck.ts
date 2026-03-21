@@ -17,7 +17,7 @@ export function definitionCheck(definition: L.Definition): null {
   }
 
   switch (definition.kind) {
-    case "DatatypeDefinition": {
+    case "DataDefinition": {
       definition.isChecked = true
       return null
     }

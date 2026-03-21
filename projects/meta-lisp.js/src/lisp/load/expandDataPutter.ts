@@ -2,7 +2,7 @@ import * as L from "../index.ts"
 
 export function expandDataPutter(
   mod: L.Mod,
-  definition: L.DatatypeDefinition,
+  definition: L.DataDefinition,
   dataConstructor: L.DataConstructor,
 ): void {
   for (const [index, field] of dataConstructor.fields.entries()) {
@@ -25,7 +25,7 @@ export function expandDataPutter(
       ),
     )
 
-    if (definition.datatypeConstructor.parameters.length === 0) {
+    if (definition.dataTypeConstructor.parameters.length === 0) {
       L.modClaim(
         mod,
         name,
@@ -36,20 +36,20 @@ export function expandDataPutter(
         mod,
         name,
         L.Polymorphic(
-          definition.datatypeConstructor.parameters,
+          definition.dataTypeConstructor.parameters,
           L.Arrow(
             [
               field.type,
               L.Apply(
                 L.Var(definition.name),
-                definition.datatypeConstructor.parameters.map((parameter) =>
+                definition.dataTypeConstructor.parameters.map((parameter) =>
                   L.Var(parameter),
                 ),
               ),
             ],
             L.Apply(
               L.Var(definition.name),
-              definition.datatypeConstructor.parameters.map((parameter) =>
+              definition.dataTypeConstructor.parameters.map((parameter) =>
                 L.Var(parameter),
               ),
             ),
@@ -79,7 +79,7 @@ export function expandDataPutter(
       ),
     )
 
-    if (definition.datatypeConstructor.parameters.length === 0) {
+    if (definition.dataTypeConstructor.parameters.length === 0) {
       L.modClaim(
         mod,
         name,
@@ -90,20 +90,20 @@ export function expandDataPutter(
         mod,
         name,
         L.Polymorphic(
-          definition.datatypeConstructor.parameters,
+          definition.dataTypeConstructor.parameters,
           L.Arrow(
             [
               field.type,
               L.Apply(
                 L.Var(definition.name),
-                definition.datatypeConstructor.parameters.map((parameter) =>
+                definition.dataTypeConstructor.parameters.map((parameter) =>
                   L.Var(parameter),
                 ),
               ),
             ],
             L.Apply(
               L.Var(definition.name),
-              definition.datatypeConstructor.parameters.map((parameter) =>
+              definition.dataTypeConstructor.parameters.map((parameter) =>
                 L.Var(parameter),
               ),
             ),

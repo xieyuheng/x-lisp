@@ -35,14 +35,14 @@ export function formatDefinition(definition: Definition): string {
       }
     }
 
-    case "DatatypeDefinition": {
+    case "DataDefinition": {
       const dataConstructors = definition.dataConstructors
         .map(formatDataConstructor)
         .join(" ")
-      if (definition.datatypeConstructor.parameters.length === 0) {
+      if (definition.dataTypeConstructor.parameters.length === 0) {
         return `(define-data ${definition.name} ${dataConstructors})`
       } else {
-        const parameters = definition.datatypeConstructor.parameters.join(" ")
+        const parameters = definition.dataTypeConstructor.parameters.join(" ")
         return `(define-data (${definition.name} ${parameters}) ${dataConstructors})`
       }
     }

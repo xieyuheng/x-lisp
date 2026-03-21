@@ -8,7 +8,7 @@ export type Definition =
   | PrimitiveVariableDefinition
   | FunctionDefinition
   | VariableDefinition
-  | DatatypeDefinition
+  | DataDefinition
   | InterfaceDefinition
 
 export type DefinitionState = {
@@ -116,23 +116,23 @@ export function VariableDefinition(
   }
 }
 
-export type DatatypeDefinition = {
-  kind: "DatatypeDefinition"
+export type DataDefinition = {
+  kind: "DataDefinition"
   mod: Mod
   name: string
-  datatypeConstructor: DatatypeConstructor
+  dataTypeConstructor: DataTypeConstructor
   dataConstructors: Array<DataConstructor>
   meta?: TokenMeta
 } & DefinitionState
 
-export type DatatypeConstructor = {
-  definition: DatatypeDefinition
+export type DataTypeConstructor = {
+  definition: DataDefinition
   name: string
   parameters: Array<string>
 }
 
 export type DataConstructor = {
-  definition: DatatypeDefinition
+  definition: DataDefinition
   name: string
   fields: Array<DataField>
 }
@@ -149,18 +149,18 @@ export type DataField = {
   type: Exp
 }
 
-export function DatatypeDefinition(
+export function DataDefinition(
   mod: Mod,
   name: string,
-  datatypeConstructor: DatatypeConstructor,
+  dataTypeConstructor: DataTypeConstructor,
   dataConstructors: Array<DataConstructor>,
   meta?: TokenMeta,
-): DatatypeDefinition {
+): DataDefinition {
   return {
-    kind: "DatatypeDefinition",
+    kind: "DataDefinition",
     mod,
     name,
-    datatypeConstructor,
+    dataTypeConstructor,
     dataConstructors,
     meta,
   }

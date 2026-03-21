@@ -18,7 +18,7 @@ export function definitionDesugar(definition: L.Definition): null {
       return null
     }
 
-    case "DatatypeDefinition": {
+    case "DataDefinition": {
       definition.dataConstructors = definition.dataConstructors.map(
         ({ name, fields }) => ({
           definition,

@@ -1,7 +1,7 @@
 import { type TokenMeta } from "@xieyuheng/sexp.js"
 import type {
   DataConstructor,
-  DatatypeConstructor,
+  DataTypeConstructor,
 } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
@@ -10,7 +10,7 @@ export type Stmt =
   | AboutModule
   | DefineFunction
   | DefineVariable
-  | DefineDatatype
+  | DefineData
   | Claim
   | Exempt
 
@@ -57,21 +57,21 @@ export function DefineVariable(
   }
 }
 
-export type DefineDatatype = {
-  kind: "DefineDatatype"
-  datatypeConstructor: Omit<DatatypeConstructor, "definition">
+export type DefineData = {
+  kind: "DefineData"
+  dataTypeConstructor: Omit<DataTypeConstructor, "definition">
   dataConstructors: Array<Omit<DataConstructor, "definition">>
   meta?: TokenMeta
 }
 
-export function DefineDatatype(
-  datatypeConstructor: Omit<DatatypeConstructor, "definition">,
+export function DefineData(
+  dataTypeConstructor: Omit<DataTypeConstructor, "definition">,
   dataConstructors: Array<Omit<DataConstructor, "definition">>,
   meta?: TokenMeta,
-): DefineDatatype {
+): DefineData {
   return {
-    kind: "DefineDatatype",
-    datatypeConstructor,
+    kind: "DefineData",
+    dataTypeConstructor,
     dataConstructors,
     meta,
   }
