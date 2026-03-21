@@ -1,6 +1,5 @@
 # row polymorphism
 
-`evaluate` -- `ExtendInterface`
 `typeInfer` -- `ExtendInterface`
 parse `(extend-interface)`
 

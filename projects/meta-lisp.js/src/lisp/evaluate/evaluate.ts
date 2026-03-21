@@ -127,6 +127,15 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       return L.createInterfaceType(attributeTypes)
     }
 
+    case "ExtendInterface": {
+      const baseType = evaluate(mod, env, exp.baseType)
+      const attributeTypes = recordMapValue(
+        exp.attributeTypes,
+        (attributeType) => evaluate(mod, env, attributeType),
+      )
+      return L.createExtendInterfaceType(baseType, attributeTypes)
+    }
+
     case "The": {
       return evaluate(mod, env, exp.exp)
     }
