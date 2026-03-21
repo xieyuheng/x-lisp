@@ -13,6 +13,7 @@ export function isType(value: L.Value): boolean {
     isArrowType(value) ||
     isTauType(value) ||
     isInterfaceType(value) ||
+    isDefinedInterfaceType(value) ||
     isListType(value) ||
     isSetType(value) ||
     isHashType(value) ||
@@ -273,6 +274,49 @@ export function interfaceTypeAttributeTypes(
 ): Record<string, L.Value> {
   assert(isInterfaceType(value))
   return L.asRecordValue(L.asListValue(value).elements[1]).attributes
+}
+
+// DefinedInterfaceType
+
+export function isDefinedInterfaceType(
+  value: L.Value,
+): boolean {
+  return (
+    L.isListValue(value) &&
+    L.valueEqual(value.elements[0], L.SymbolValue("defined-interface")) &&
+    L.isDefinitionValue(value.elements[1]) &&
+    L.isRecordValue(value.elements[2]) &&
+    Object.values(L.asRecordValue(value.elements[2]).attributes).every(isType)
+  )
+}
+
+export function createDefinedInterfaceType(
+  definition: L.InterfaceDefinition,
+  attributeTypes: Record<string, L.Value>,
+): L.Value {
+  return L.ListValue([
+    L.SymbolValue("defined-interface"),
+    L.DefinitionValue(definition),
+    L.RecordValue(attributeTypes),
+  ])
+}
+
+export function definedInterfaceTypeDefinition(
+  value: L.Value,
+): L.InterfaceDefinition {
+  assert(isDefinedInterfaceType(value))
+  const definition = L.asDefinitionValue(
+    L.asListValue(value).elements[1],
+  ).definition
+  assert(definition.kind === "InterfaceDefinition")
+  return definition
+}
+
+export function definedInterfaceTypeAttributeTypes(
+  value: L.Value,
+): Record<string, L.Value> {
+  assert(isDefinedInterfaceType(value))
+  return L.asRecordValue(L.asListValue(value).elements[2]).attributes
 }
 
 // ListType

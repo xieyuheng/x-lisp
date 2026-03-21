@@ -1,6 +1,5 @@
 # row polymorphism
 
-`DefinedInterfaceType` -- has `definition`
 fix `definitionMeaning` -- return `DefinedInterfaceType` instead of `InterfaceType`
 
 `DefineInterface` as `Stmt`
