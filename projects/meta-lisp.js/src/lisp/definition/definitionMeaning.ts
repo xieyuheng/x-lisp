@@ -38,7 +38,7 @@ export function definitionMeaning(definition: L.Definition): L.Value {
 
     case "InterfaceDefinition": {
       if (definition.interfaceConstructor.parameters.length === 0) {
-        return L.createDefinedInterfaceType(definition, {})
+        return L.createDefinedInterfaceType(definition, [])
       } else {
         return L.DefinitionValue(definition)
       }
