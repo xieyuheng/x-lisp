@@ -1,6 +1,5 @@
 # row polymorphism
 
-`typeBisimilar` -- handle `ExtendInterfaceType`
 `typeSubtype` -- handle `ExtendInterfaceType`
 `typeUnify` -- handle `ExtendInterfaceType`
 

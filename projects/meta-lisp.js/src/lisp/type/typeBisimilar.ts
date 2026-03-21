@@ -61,6 +61,21 @@ export function typeBisimilar(
     )
   }
 
+  if (L.isExtendInterfaceType(lhs) && L.isExtendInterfaceType(rhs)) {
+    return (
+      typeBisimilar(
+        trail,
+        L.extendInterfaceTypeBaseType(lhs),
+        L.extendInterfaceTypeBaseType(rhs),
+      ) &&
+      typeBisimilarRecord(
+        trail,
+        L.extendInterfaceTypeAttributeTypes(lhs),
+        L.extendInterfaceTypeAttributeTypes(rhs),
+      )
+    )
+  }
+
   if (L.isArrowType(lhs) && L.isArrowType(rhs)) {
     lhs = L.arrowTypeCurrying(lhs)
     rhs = L.arrowTypeCurrying(rhs)
