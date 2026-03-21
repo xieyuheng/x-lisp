@@ -18,6 +18,26 @@ export function apply(target: L.Value, args: Array<L.Value>): L.Value {
   }
 
   switch (target.kind) {
+    case "KeywordValue": {
+      const [firstArg, ...restArgs] = args
+      if (!L.isRecordValue(firstArg)) {
+        let message = `[apply] can only keyword to record`
+        message += formatUnderTag(2, `target:`, L.formatValue(target))
+        message += formatUnderTag(2, `args:`, L.formatValues(args))
+        throw new Error(message)
+      }
+
+      const attribute = firstArg.attributes[target.content]
+      if (attribute === undefined) {
+        let message = `[apply] missing attribute in record`
+        message += formatUnderTag(2, `target:`, L.formatValue(target))
+        message += formatUnderTag(2, `args:`, L.formatValues(args))
+        throw new Error(message)
+      }
+
+      return apply(attribute, restArgs)
+    }
+
     case "CurryValue": {
       return apply(target.target, [...target.args, ...args])
     }
@@ -49,6 +69,10 @@ export function apply(target: L.Value, args: Array<L.Value>): L.Value {
           return L.createDefinedDataType(target.definition, args)
         }
 
+        case "InterfaceDefinition": {
+          return L.createDefinedInterfaceType(target.definition, args)
+        }
+
         default: {
           let message = `[apply] can not handle this kind of definition`
           message += formatUnderTag(2, `target:`, L.formatValue(target))
@@ -69,6 +93,10 @@ export function apply(target: L.Value, args: Array<L.Value>): L.Value {
 
 function getArity(target: L.Value): number {
   switch (target.kind) {
+    case "KeywordValue": {
+      return 1
+    }
+
     case "ClosureValue": {
       return target.parameters.length
     }

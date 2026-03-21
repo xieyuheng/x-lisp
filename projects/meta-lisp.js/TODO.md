@@ -1,6 +1,5 @@
 # row polymorphism
 
-`Dot` as `Exp`
-`evaluate` -- `Dot`
-`typeInfer` -- `Dot`
-parse `(:field record)` -- `Dot`
+`typeInfer` -- handle `Keyword` as target
+
+fix `typeUnify` for `ExtendInterface`
