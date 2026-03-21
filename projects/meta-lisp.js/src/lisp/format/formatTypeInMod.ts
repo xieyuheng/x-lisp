@@ -83,6 +83,19 @@ export function formatTypeInMod(mod: L.Mod, type: L.Value): string {
     }
   }
 
+  if (L.isDefinedInterfaceType(type)) {
+    const definition = L.definedInterfaceTypeDefinition(type)
+    const foundName = L.modLookupNameByDefinition(mod, definition)
+    const argTypes = formatTypesInMod(mod, L.definedInterfaceTypeArgTypes(type))
+    const path = pathRelativeToCwd(definition.mod.path)
+    const name = foundName || `<${definition.name} from ${path}>`
+    if (argTypes.length === 0) {
+      return `${name}`
+    } else {
+      return `(${name} ${argTypes})`
+    }
+  }
+
   if (L.isSumType(type)) {
     const variantTypes = formatTypeRecordInMod(mod, L.sumTypeVariantTypes(type))
     return `(sum ${variantTypes})`
