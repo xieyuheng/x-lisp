@@ -249,6 +249,19 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
+      case "ExtendInterface": {
+        const type = L.createTypeType()
+        return L.checkThenInfer(
+          L.sequenceCheckEffect([
+            L.typeCheckByInfer(mod, ctx, exp.baseType, type),
+            ...Object.keys(exp.attributeTypes).map((key) =>
+              L.typeCheckByInfer(mod, ctx, exp.attributeTypes[key], type),
+            ),
+          ]),
+          L.okInferEffect(type),
+        )(subst)
+      }
+
       case "Tau": {
         const type = L.createTypeType()
         return L.checkThenInfer(
