@@ -1,6 +1,5 @@
 # row polymorphism
 
-`substApplyToType` -- handle `DefinedInterfaceType`
 `typeFreshen` -- handle `DefinedInterfaceType`
 `typeVarOccurredInType` -- handle `DefinedInterfaceType`
 `typeBisimilar` -- handle `DefinedInterfaceType`

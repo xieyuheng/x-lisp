@@ -102,6 +102,15 @@ function substApplyToTypeWithBoundIds(
     )
   }
 
+  if (L.isDefinedInterfaceType(type)) {
+    return L.createDefinedInterfaceType(
+      L.definedInterfaceTypeDefinition(type),
+      L.definedInterfaceTypeArgTypes(type).map((t) =>
+        substApplyToTypeWithBoundIds(boundIds, subst, t),
+      ),
+    )
+  }
+
   if (L.isSumType(type)) {
     return L.createSumType(
       recordMapValue(L.sumTypeVariantTypes(type), (t) =>
