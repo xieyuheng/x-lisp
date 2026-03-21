@@ -497,7 +497,7 @@ export type Interface = {
   meta?: TokenMeta
 }
 
-export function Class(
+export function Interface(
   attributeTypes: Record<string, Exp>,
   meta?: TokenMeta,
 ): Interface {

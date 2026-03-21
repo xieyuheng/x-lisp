@@ -161,7 +161,10 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
       }
     }
 
-    return L.Class(recordMapValue(Object.fromEntries(entries), parseExp), meta)
+    return L.Interface(
+      recordMapValue(Object.fromEntries(entries), parseExp),
+      meta,
+    )
   },
 
   "`(the ,schema ,exp)": ({ schema, exp }, { meta }) => {
