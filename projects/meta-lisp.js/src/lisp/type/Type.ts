@@ -313,6 +313,24 @@ export function extendInterfaceTypeAttributeTypes(
   return L.asRecordValue(L.asListValue(value).elements[2]).attributes
 }
 
+export function extendInterfaceTypeMerge(value: L.Value): L.Value {
+  assert(isExtendInterfaceType(value))
+  const baseType = extendInterfaceTypeBaseType(value)
+  const attributeTypes = extendInterfaceTypeAttributeTypes(value)
+  if (isExtendInterfaceType(baseType)) {
+    const newBaseType = extendInterfaceTypeMerge(baseType)
+    const baseTypeBaseType = extendInterfaceTypeBaseType(newBaseType)
+    const baseTypeAttributeTypes =
+      extendInterfaceTypeAttributeTypes(newBaseType)
+    return createExtendInterfaceType(baseTypeBaseType, {
+      ...baseTypeAttributeTypes,
+      ...attributeTypes,
+    })
+  } else {
+    return value
+  }
+}
+
 // DefinedInterfaceType
 
 export function isDefinedInterfaceType(value: L.Value): boolean {
