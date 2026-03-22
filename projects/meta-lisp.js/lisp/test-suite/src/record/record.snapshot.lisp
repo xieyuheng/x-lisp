@@ -1,3 +1,3 @@
 (define (main)
-  (println (the (@interface :x int-t :y int-t) (@record :x 1 :y 2)))
-  (println (the (@interface :x int-t :y int-t) {:x 1 :y 2})))
+  (println (the (interface :x int-t :y int-t) (@record :x 1 :y 2)))
+  (println (the (interface :x int-t :y int-t) {:x 1 :y 2})))

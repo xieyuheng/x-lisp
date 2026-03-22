@@ -47,7 +47,7 @@ export function formatType(type: L.Value): string {
 
   if (L.isInterfaceType(type)) {
     const attributeTypes = formatTypeRecord(L.interfaceTypeAttributeTypes(type))
-    return `(@interface ${attributeTypes})`
+    return `(interface ${attributeTypes})`
   }
 
   if (L.isExtendInterfaceType(type)) {

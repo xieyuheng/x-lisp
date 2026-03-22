@@ -1,8 +1,8 @@
-[parseExp] duplicated key in (@interface)
+[parseExp] duplicated key in (interface)
   key: y
-lisp/syntax-errors/interface-duplicated-key.syntax-error.lisp:2:50
+lisp/syntax-errors/interface-duplicated-key.syntax-error.lisp:2:49
  1 | (define (main)
- 2 |   (println (the (@interface :x int-t :y int-t :y int-t) {:x 1 :y 2})))
-   |                                                  ~~~~~                 
+ 2 |   (println (the (interface :x int-t :y int-t :y int-t) {:x 1 :y 2})))
+   |                                                 ~~~~~                 
  3 | 
 

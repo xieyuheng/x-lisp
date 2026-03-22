@@ -51,7 +51,7 @@ export function formatTypeInMod(mod: L.Mod, type: L.Value): string {
       mod,
       L.interfaceTypeAttributeTypes(type),
     )
-    return `(@interface ${attributeTypes})`
+    return `(interface ${attributeTypes})`
   }
 
   if (L.isExtendInterfaceType(type)) {
