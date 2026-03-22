@@ -14,7 +14,7 @@
 (define (point-y point)
   (:y point))
 
-(define (point-squared-distance point)
+(define (point-distance-squared point)
   (fadd (fmul (:x point) (:x point))
         (fmul (:y point) (:y point))))
 
@@ -24,4 +24,4 @@
   (assert-equal 2.0 (:y point))
   (assert-equal 1.0 (point-x point))
   (assert-equal 2.0 (point-y point))
-  (assert-equal 5.0 (point-squared-distance point)))
+  (assert-equal 5.0 (point-distance-squared point)))
