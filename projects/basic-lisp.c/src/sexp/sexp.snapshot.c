@@ -17,12 +17,17 @@ main(void) {
     // TODO can not handle symbol starts with number
     // echo("3-sphere");
 
-    // hashtag
+    // // hashtag
 
-    echo("#t");
-    echo("#f");
-    echo("#null");
-    echo("#void");
+    // echo("#t");
+    // echo("#f");
+    // echo("#null");
+    // echo("#void");
+
+
+    // keyword
+
+    echo(":abc");
 
     // number
 

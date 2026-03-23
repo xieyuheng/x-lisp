@@ -117,11 +117,6 @@ for_sexp(list_t *tokens) {
     }
 
     case KEYWORD_TOKEN: {
-        who_printf("unexpected keyword: %s", token->content);
-        exit(1);
-    }
-
-    case HASHTAG_TOKEN: {
         value_t sexp = x_object(intern_keyword(token->content));
         token_free(token);
         return sexp;
@@ -158,12 +153,6 @@ for_tael(const char *end, list_t *tokens) {
                     end, token->content);
                 exit(1);
             }
-        } else if (token->kind == KEYWORD_TOKEN) {
-            value_t key = x_object(intern_symbol(token->content));
-            token_free(token);
-            list_shift(tokens);
-            value_t value = for_sexp(tokens);
-            x_record_put_mut(key, value, sexp);
         } else {
             x_list_push_mut(for_sexp(tokens), sexp);
         }

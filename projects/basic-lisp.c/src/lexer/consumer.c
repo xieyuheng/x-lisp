@@ -57,12 +57,6 @@ struct consumer_t consumers[] = {
     },
 
     {
-        .kind = HASHTAG_TOKEN,
-        .can_consume = can_consume_hashtag,
-        .consume = consume_hashtag,
-    },
-
-    {
         .kind = SYMBOL_TOKEN,
         .can_consume = can_consume_symbol,
         .consume = consume_symbol,

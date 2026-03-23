@@ -7,7 +7,7 @@ body:
   jump-if-not recur-case
   jump base-case
 base-case:
-  literal #t
+  global-load true
   return
 recur-case:
   local-load n
@@ -26,7 +26,7 @@ body:
   jump-if-not recur-case
   jump base-case
 base-case:
-  literal #f
+  global-load false
   return
 recur-case:
   local-load n

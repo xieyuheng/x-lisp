@@ -7,7 +7,7 @@
     (test (equal? n 0))
     (branch base-case recur-case))
   (block base-case
-    (return #t))
+    (return true))
   (block recur-case
     (= n1 (isub n 1))
     (return (odd? n1))))

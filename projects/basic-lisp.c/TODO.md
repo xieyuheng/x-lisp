@@ -1,11 +1,8 @@
-[sexp] rename hashtag to keyword
+[sexp] use list instead of tael
+keyword use : as prefix instead of #
 
 remove null from value
 encode bool and void in value directly
-keyword use : as prefix instead of #
-
-[sexp] rename hashtag to keyword
-[sexp] use list instead of tael
 
 # later
 

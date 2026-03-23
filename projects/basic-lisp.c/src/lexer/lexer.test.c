@@ -109,8 +109,8 @@ main(void) {
     }
 
     {
-        list_t *tokens = test_lex("a :b #c");
-        assert(list_length(tokens) == 3);
+        list_t *tokens = test_lex("a :b");
+        assert(list_length(tokens) == 2);
 
         {
             token_t *token = list_shift(tokens);
@@ -123,13 +123,6 @@ main(void) {
             token_t *token = list_shift(tokens);
             assert(token->kind == KEYWORD_TOKEN);
             assert(string_equal(token->content, "b"));
-            token_free(token);
-        }
-
-        {
-            token_t *token = list_shift(tokens);
-            assert(token->kind == HASHTAG_TOKEN);
-            assert(string_equal(token->content, "c"));
             token_free(token);
         }
 

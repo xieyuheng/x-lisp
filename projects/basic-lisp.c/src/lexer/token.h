@@ -15,7 +15,6 @@ typedef enum {
     BRACKET_END_TOKEN,
     QUOTATION_MARK_TOKEN,
     KEYWORD_TOKEN,
-    HASHTAG_TOKEN,
     LINE_COMMENT_TOKEN,
 } token_kind_t;
 
