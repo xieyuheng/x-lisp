@@ -166,6 +166,22 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
       )
     }
 
+    case "Update": {
+      return M.Update(
+        desugar(mod, exp.base),
+        recordMapValue(exp.attributes, (e) => desugar(mod, e)),
+        exp.meta,
+      )
+    }
+
+    case "UpdateMut": {
+      return M.UpdateMut(
+        desugar(mod, exp.base),
+        recordMapValue(exp.attributes, (e) => desugar(mod, e)),
+        exp.meta,
+      )
+    }
+
     case "The": {
       return M.The(desugar(mod, exp.type), desugar(mod, exp.exp), exp.meta)
     }

@@ -1,11 +1,9 @@
 # record syntax
 
-`Update` & `UpdateMut` -- as `Exp`
 parse `(update)` `(update!)`
-test `(update)` `(update!)`
-
 `evaluate` -- `Update` & `UpdateMut`
 `typeInfer` -- `Update` & `UpdateMut`
+test `(update)` `(update!)`
 
 # basic-lisp
 

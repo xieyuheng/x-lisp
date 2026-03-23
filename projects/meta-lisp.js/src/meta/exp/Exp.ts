@@ -31,6 +31,8 @@ export type Exp =
   | Interface
   | ExtendInterface
   | Extend
+  | Update
+  | UpdateMut
   | The
   | Polymorphic
   | Match
@@ -544,6 +546,46 @@ export function Extend(
 ): Extend {
   return {
     kind: "Extend",
+    base,
+    attributes,
+    meta,
+  }
+}
+
+export type Update = {
+  kind: "Update"
+  base: Exp
+  attributes: Record<string, Exp>
+  meta?: TokenMeta
+}
+
+export function Update(
+  base: Exp,
+  attributes: Record<string, Exp>,
+  meta?: TokenMeta,
+): Update {
+  return {
+    kind: "Update",
+    base,
+    attributes,
+    meta,
+  }
+}
+
+export type UpdateMut = {
+  kind: "UpdateMut"
+  base: Exp
+  attributes: Record<string, Exp>
+  meta?: TokenMeta
+}
+
+export function UpdateMut(
+  base: Exp,
+  attributes: Record<string, Exp>,
+  meta?: TokenMeta,
+): UpdateMut {
+  return {
+    kind: "UpdateMut",
     base,
     attributes,
     meta,

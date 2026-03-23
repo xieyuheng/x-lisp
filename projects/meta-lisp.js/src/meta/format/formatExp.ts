@@ -221,6 +221,26 @@ export function formatExp(exp: Exp): string {
       }
     }
 
+    case "Update": {
+      const base = formatExp(exp.base)
+      const attributes = formatExpAttributes(exp.attributes)
+      if (attributes === "") {
+        return `(update ${base})`
+      } else {
+        return `(update ${base} ${attributes})`
+      }
+    }
+
+    case "UpdateMut": {
+      const base = formatExp(exp.base)
+      const attributes = formatExpAttributes(exp.attributes)
+      if (attributes === "") {
+        return `(update! ${base})`
+      } else {
+        return `(update! ${base} ${attributes})`
+      }
+    }
+
     case "The": {
       return `(the ${formatExp(exp.type)} ${formatExp(exp.exp)})`
     }
