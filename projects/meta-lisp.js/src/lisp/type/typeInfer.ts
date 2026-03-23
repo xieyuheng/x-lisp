@@ -286,15 +286,16 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
       }
 
       case "Extend": {
-        const attributeTypes = recordMapValue(exp.attributes, (_) =>
-          L.createFreshVarType("A"),
+        const baseType = L.createExtendInterfaceType(
+          L.createFreshVarType("R"),
+          {},
         )
         const type = L.createExtendInterfaceType(
-          L.createFreshVarType("R"),
-          attributeTypes,
+          baseType,
+          recordMapValue(exp.attributes, (_) => L.createFreshVarType("A")),
         )
         return L.checkThenInfer(
-          L.typeCheckByInfer(mod, ctx, exp.base, type),
+          L.typeCheckByInfer(mod, ctx, exp.base, baseType),
           L.okInferEffect(type),
         )(subst)
       }
