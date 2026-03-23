@@ -136,6 +136,23 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
       return L.createExtendInterfaceType(baseType, attributeTypes)
     }
 
+    case "Extend": {
+      const base = evaluate(mod, env, exp.base)
+      if (!L.isRecordValue(base)) {
+        let message = `[evaluate] can only extend record base value`
+        message += `\n  base value kind: ${base.kind}`
+        message += `\n  base value: ${L.formatValue(base)}`
+        if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+        else throw new Error(message)
+      }
+
+      const attributes = recordMapValue(
+        exp.attributes,
+        (attribute) => evaluate(mod, env, attribute),
+      )
+      return L.RecordValue({ ...base.attributes, ...attributes })
+    }
+
     case "The": {
       return evaluate(mod, env, exp.exp)
     }

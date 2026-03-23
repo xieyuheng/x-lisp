@@ -1,9 +1,8 @@
 # record syntax
 
-`evaluate` -- `Extend`
 `typeInfer` -- `Extend`
 
-test `(extend)` edge case:
+row-polymorphism-unification-edge-case.type-error.lisp
 
 ```caml
 \r → if True then {x = 2 | r} else {y = 2 | r}
