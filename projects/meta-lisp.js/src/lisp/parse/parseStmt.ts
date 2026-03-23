@@ -1,6 +1,5 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
-import assert from "node:assert"
 import * as L from "../index.ts"
 import { parseBody, parseExp } from "./parseExp.ts"
 
@@ -102,18 +101,7 @@ export const parseStmt = S.createRouter<L.Stmt>({
 
   "(cons* 'define-interface head body)": ({ head, body }, { meta }) => {
     const entries = S.listCollectKeywordEntries(body)
-    for (const [key, group] of Object.entries(
-      Object.groupBy(entries, ([key, sexp]) => key),
-    )) {
-      if (group && group.length > 1) {
-        const [_, firstSexp] = group[1]
-        assert(firstSexp.meta)
-        let message = `[parseStmt] duplicated key in (define-interface)`
-        message += `\n  key: ${key}`
-        throw new S.ErrorWithMeta(message, firstSexp.meta)
-      }
-    }
-
+    L.assertNoDuplicatedKey(entries)
     return L.DefineInterface(
       parseInterfaceConstructor(head),
       recordMapValue(Object.fromEntries(entries), parseExp),
