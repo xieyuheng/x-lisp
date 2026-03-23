@@ -144,6 +144,5 @@ void
 init_constant_values(void) {
     x_true = x_object(intern_keyword("t"));
     x_false = x_object(intern_keyword("f"));
-    x_null = x_object(intern_keyword("null"));
     x_void = x_object(intern_keyword("void"));
 }

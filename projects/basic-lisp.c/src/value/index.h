@@ -9,7 +9,6 @@
 #include "keyword.h"
 #include "bool.h"
 #include "void.h"
-#include "null.h"
 #include "object.h"
 #include "curry.h"
 #include "xstring.h"

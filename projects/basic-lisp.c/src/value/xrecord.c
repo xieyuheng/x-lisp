@@ -44,23 +44,20 @@ to_xrecord(value_t value) {
     return (xrecord_t *) to_object(value);
 }
 
+inline bool
+xrecord_has(const xrecord_t *self, const char *key) {
+    return record_has(self->attributes, key);
+}
+
 inline value_t
 xrecord_get(const xrecord_t *self, const char *key) {
     hash_entry_t *entry = record_get_entry(self->attributes, key);
-    if (entry) {
-        return (value_t) entry->value;
-    } else {
-        return x_null;
-    }
+    assert(entry);
+    return (value_t) entry->value;
 }
 
 inline void
 xrecord_put(xrecord_t *self, const char *key, value_t value) {
-    if (null_p(value)) {
-        xrecord_delete(self, key);
-        return;
-    }
-
     record_put(self->attributes, key, (void *) value);
 }
 
@@ -154,10 +151,8 @@ xrecord_hash_code(const xrecord_t *self) {
         const hash_entry_t *entry = array_get(entries, i);
         const char *key = entry->key;
         value_t value = (value_t) entry->value;
-        if (!null_p(value)) {
-            code = (code << 5) + code + string_hash_code(key);
-            code = (code << 5) - code + value_hash_code(value);
-        }
+        code = (code << 5) + code + string_hash_code(key);
+        code = (code << 5) - code + value_hash_code(value);
     }
 
     array_free(entries);

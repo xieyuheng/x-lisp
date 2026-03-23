@@ -61,23 +61,20 @@ xhash_empty_p(const xhash_t *self) {
     return hash_is_empty(self->hash);
 }
 
+inline bool
+xhash_has(const xhash_t *self, value_t key) {
+    return hash_has(self->hash, (void *) key);
+}
+
 inline value_t
 xhash_get(const xhash_t *self, value_t key) {
     hash_entry_t *entry = hash_get_entry(self->hash, (void *) key);
-    if (entry) {
-        return (value_t) entry->value;
-    } else {
-        return x_null;
-    }
+    assert(entry);
+    return (value_t) entry->value;
 }
 
 inline void
 xhash_put(xhash_t *self, value_t key, value_t value) {
-    if (null_p(value)) {
-        xhash_delete(self, key);
-        return;
-    }
-
     hash_put(self->hash, (void *) key, (void *) value);
 }
 
@@ -164,10 +161,8 @@ xhash_hash_code(const xhash_t *self) {
         const hash_entry_t *entry = array_get(entries, i);
         value_t key = (value_t) entry->value;
         value_t value = (value_t) entry->value;
-        if (!null_p(value)) {
-            code = (code << 5) + code + value_hash_code(key);
-            code = (code << 5) - code + value_hash_code(value);
-        }
+        code = (code << 5) + code + value_hash_code(key);
+        code = (code << 5) - code + value_hash_code(value);
     }
 
     array_free(entries);

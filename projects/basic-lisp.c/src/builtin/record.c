@@ -32,7 +32,7 @@ x_record_get(value_t key, value_t record) {
 
 value_t
 x_record_has_p(value_t key, value_t record) {
-    return x_bool(!equal_p(x_record_get(key, record), x_null));
+    return x_bool(xrecord_has(to_xrecord(record), symbol_string(to_symbol(key))));
 }
 
 value_t

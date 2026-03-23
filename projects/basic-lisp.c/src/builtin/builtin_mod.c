@@ -56,11 +56,6 @@ make_builtin_mod(void) {
     define_primitive_1(mod, "bool?", x_bool_p);
     define_primitive_1(mod, "not", x_not);
 
-    // null
-
-    define_variable(mod, "null", x_null);
-    define_primitive_1(mod, "null?", x_null_p);
-
     // void
 
     define_variable(mod, "void", x_void);

@@ -16,6 +16,7 @@ xhash_t *to_xhash(value_t value);
 size_t xhash_length(const xhash_t *self);
 bool xhash_empty_p(const xhash_t *self);
 
+bool xhash_has(const xhash_t *self, value_t key);
 value_t xhash_get(const xhash_t *self, value_t key);
 void xhash_put(xhash_t *self, value_t key, value_t value);
 void xhash_delete(xhash_t *self, value_t key);

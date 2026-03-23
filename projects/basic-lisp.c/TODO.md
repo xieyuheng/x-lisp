@@ -1,4 +1,3 @@
-remove null from value
 encode bool and void in value directly
 
 # later

@@ -13,6 +13,7 @@ void xrecord_free(xrecord_t *self);
 bool xrecord_p(value_t value);
 xrecord_t *to_xrecord(value_t value);
 
+bool xrecord_has(const xrecord_t *self, const char *key);
 value_t xrecord_get(const xrecord_t *self, const char *key);
 void xrecord_put(xrecord_t *self, const char *key, value_t value);
 void xrecord_delete(xrecord_t *self, const char *key);

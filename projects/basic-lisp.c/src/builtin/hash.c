@@ -32,7 +32,7 @@ x_hash_get(value_t key, value_t hash) {
 
 value_t
 x_hash_has_p(value_t key, value_t hash) {
-    return x_bool(!equal_p(x_hash_get(key, hash), x_null));
+    return x_bool(xhash_has(to_xhash(hash), key));
 }
 
 value_t
