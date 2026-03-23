@@ -1,4 +1,3 @@
-[builtin] rename hashtag to keyword
 [sexp] rename hashtag to keyword
 
 remove null from value
