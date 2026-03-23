@@ -30,6 +30,7 @@ export type Exp =
   | Tau
   | Interface
   | ExtendInterface
+  | Extend
   | The
   | Polymorphic
   | Match
@@ -525,6 +526,26 @@ export function ExtendInterface(
     kind: "ExtendInterface",
     baseType,
     attributeTypes,
+    meta,
+  }
+}
+
+export type Extend = {
+  kind: "Extend"
+  base: Exp
+  attributes: Record<string, Exp>
+  meta?: TokenMeta
+}
+
+export function Extend(
+  base: Exp,
+  attributes: Record<string, Exp>,
+  meta?: TokenMeta,
+): Extend {
+  return {
+    kind: "Extend",
+    base,
+    attributes,
     meta,
   }
 }

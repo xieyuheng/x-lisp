@@ -211,6 +211,16 @@ export function formatExp(exp: Exp): string {
       }
     }
 
+    case "Extend": {
+      const base = formatExp(exp.base)
+      const attributes = formatExpAttributes(exp.attributes)
+      if (attributes === "") {
+        return `(extend ${base})`
+      } else {
+        return `(extend ${base} ${attributes})`
+      }
+    }
+
     case "The": {
       return `(the ${formatExp(exp.type)} ${formatExp(exp.exp)})`
     }
