@@ -1,7 +1,7 @@
 #include "index.h"
 
 const object_class_t xlist_class = {
-    .name = "xlist",
+    .name = "list",
     .equal_fn = (object_equal_fn_t *) xlist_equal,
     .print_fn = (object_print_fn_t *) xlist_print,
     .hash_code_fn = (object_hash_code_fn_t *) xlist_hash_code,

@@ -17,3 +17,4 @@
 #include "xset.h"
 #include "tael.h"
 #include "xlist.h"
+#include "xrecord.h"

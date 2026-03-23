@@ -1,5 +1,3 @@
-[value] xrecord
-
 [builtin] use xlist
 [builtin] use xrecord
 
