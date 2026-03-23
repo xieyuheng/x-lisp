@@ -24,7 +24,6 @@ main(void) {
     // echo("#null");
     // echo("#void");
 
-
     // keyword
 
     echo(":abc");

@@ -14,6 +14,6 @@ body:
   local-load x
   call assert-equal
   drop
-  literal #void
+  literal :void
   return
 

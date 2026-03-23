@@ -12,6 +12,6 @@ body:
   global-load x
   call println
   drop
-  literal #void
+  literal :void
   return
 

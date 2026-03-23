@@ -25,6 +25,6 @@ body:
   literal 1
   apply
   drop
-  literal #void
+  literal :void
   return
 
