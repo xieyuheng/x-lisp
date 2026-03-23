@@ -1,6 +1,5 @@
 # record syntax
 
-parse `(update)` `(update!)`
 `evaluate` -- `Update` & `UpdateMut`
 `typeInfer` -- `Update` & `UpdateMut`
 test `(update)` `(update!)`

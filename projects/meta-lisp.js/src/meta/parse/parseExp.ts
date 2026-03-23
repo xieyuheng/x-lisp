@@ -164,6 +164,26 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
+  "(cons* 'update head body)": ({ head, body }, { meta }) => {
+    const entries = S.listCollectKeywordEntries(body)
+    M.assertNoDuplicatedKey(entries)
+    return M.Update(
+      parseExp(head),
+      recordMapValue(Object.fromEntries(entries), parseExp),
+      meta,
+    )
+  },
+
+  "(cons* 'update! head body)": ({ head, body }, { meta }) => {
+    const entries = S.listCollectKeywordEntries(body)
+    M.assertNoDuplicatedKey(entries)
+    return M.UpdateMut(
+      parseExp(head),
+      recordMapValue(Object.fromEntries(entries), parseExp),
+      meta,
+    )
+  },
+
   "`(the ,schema ,exp)": ({ schema, exp }, { meta }) => {
     return M.The(parseExp(schema), parseExp(exp), meta)
   },
