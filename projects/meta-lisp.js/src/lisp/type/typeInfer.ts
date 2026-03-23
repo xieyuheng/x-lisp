@@ -285,6 +285,20 @@ export function typeInfer(mod: L.Mod, ctx: L.Ctx, exp: L.Exp): L.InferEffect {
         )(subst)
       }
 
+      case "Extend": {
+        const attributeTypes = recordMapValue(exp.attributes, (_) =>
+          L.createFreshVarType("A"),
+        )
+        const type = L.createExtendInterfaceType(
+          L.createFreshVarType("R"),
+          attributeTypes,
+        )
+        return L.checkThenInfer(
+          L.typeCheckByInfer(mod, ctx, exp.base, type),
+          L.okInferEffect(type),
+        )(subst)
+      }
+
       case "Tau": {
         const type = L.createTypeType()
         return L.checkThenInfer(

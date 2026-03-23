@@ -1,7 +1,6 @@
 # record syntax
 
-`typeInfer` -- `Extend`
-
+extend.test.lisp
 row-polymorphism-unification-edge-case.type-error.lisp
 
 ```caml

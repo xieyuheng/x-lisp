@@ -146,9 +146,8 @@ export function evaluate(mod: L.Mod, env: L.Env, exp: L.Exp): L.Value {
         else throw new Error(message)
       }
 
-      const attributes = recordMapValue(
-        exp.attributes,
-        (attribute) => evaluate(mod, env, attribute),
+      const attributes = recordMapValue(exp.attributes, (attribute) =>
+        evaluate(mod, env, attribute),
       )
       return L.RecordValue({ ...base.attributes, ...attributes })
     }
