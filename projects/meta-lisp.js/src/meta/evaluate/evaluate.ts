@@ -139,7 +139,7 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
     case "Extend": {
       const base = evaluate(mod, env, exp.base)
       if (!M.isRecordValue(base)) {
-        let message = `[evaluate] can only extend record base value`
+        let message = `[evaluate] can only (extend) record base value`
         message += `\n  base value kind: ${base.kind}`
         message += `\n  base value: ${M.formatValue(base)}`
         if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
@@ -150,6 +150,60 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
         evaluate(mod, env, attribute),
       )
       return M.RecordValue({ ...base.attributes, ...attributes })
+    }
+
+    case "Update": {
+      const base = evaluate(mod, env, exp.base)
+      if (!M.isRecordValue(base)) {
+        let message = `[evaluate] can only (update) record base value`
+        message += `\n  base value kind: ${base.kind}`
+        message += `\n  base value: ${M.formatValue(base)}`
+        if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+        else throw new Error(message)
+      }
+
+      const attributes = recordMapValue(exp.attributes, (attribute) =>
+        evaluate(mod, env, attribute),
+      )
+
+      for (const key of Object.keys(attributes)) {
+        if (base.attributes[key] === undefined) {
+          let message = `[evaluate] missing key in base record`
+          message += `\n  key: ${key}`
+          if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+          else throw new Error(message)
+        }
+      }
+
+      return M.RecordValue({ ...base.attributes, ...attributes })
+    }
+
+    case "UpdateMut": {
+      const base = evaluate(mod, env, exp.base)
+      if (!M.isRecordValue(base)) {
+        let message = `[evaluate] can only (update!) record base value`
+        message += `\n  base value kind: ${base.kind}`
+        message += `\n  base value: ${M.formatValue(base)}`
+        if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+        else throw new Error(message)
+      }
+
+      const attributes = recordMapValue(exp.attributes, (attribute) =>
+        evaluate(mod, env, attribute),
+      )
+
+      for (const key of Object.keys(attributes)) {
+        if (base.attributes[key] === undefined) {
+          let message = `[evaluate] missing key in base record`
+          message += `\n  key: ${key}`
+          if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+          else throw new Error(message)
+        } else {
+          base.attributes[key] = attributes[key]
+        }
+      }
+
+      return base
     }
 
     case "The": {

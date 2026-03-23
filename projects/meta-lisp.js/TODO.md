@@ -1,6 +1,5 @@
 # record syntax
 
-`evaluate` -- `Update` & `UpdateMut`
 `typeInfer` -- `Update` & `UpdateMut`
 test `(update)` `(update!)`
 
