@@ -91,9 +91,9 @@ make_builtin_mod(void) {
 
     // hashtag
 
-    define_primitive_1(mod, "hashtag?", x_hashtag_p);
-    define_primitive_1(mod, "hashtag-length", x_hashtag_length);
-    define_primitive_1(mod, "hashtag-to-string", x_hashtag_to_string);
+    define_primitive_1(mod, "hashtag?", x_keyword_p);
+    define_primitive_1(mod, "hashtag-length", x_keyword_length);
+    define_primitive_1(mod, "hashtag-to-string", x_keyword_to_string);
     define_primitive_2(mod, "hashtag-append", x_hashtag_append);
     define_primitive_1(mod, "hashtag-concat", x_hashtag_concat);
 

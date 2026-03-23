@@ -122,7 +122,7 @@ for_sexp(list_t *tokens) {
     }
 
     case HASHTAG_TOKEN: {
-        value_t sexp = x_object(intern_hashtag(token->content));
+        value_t sexp = x_object(intern_keyword(token->content));
         token_free(token);
         return sexp;
     }

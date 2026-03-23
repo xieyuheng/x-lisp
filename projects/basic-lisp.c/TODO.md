@@ -1,4 +1,6 @@
-rename hashtag to keyword
+[builtin] rename hashtag to keyword
+[sexp] rename hashtag to keyword
+
 remove null from value
 encode bool and void in value directly
 keyword use : as prefix instead of #

@@ -7,7 +7,7 @@ is_var(value_t sexp) {
 
 static bool
 is_literal(value_t sexp) {
-    return hashtag_p(sexp)
+    return keyword_p(sexp)
         || xstring_p(sexp)
         || int_p(sexp)
         || float_p(sexp);

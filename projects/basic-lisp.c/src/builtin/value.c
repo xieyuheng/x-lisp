@@ -28,7 +28,7 @@ x_atom_p(value_t value) {
     if (int_p(value)
         || float_p(value)
         || symbol_p(value)
-        || hashtag_p(value)
+        || keyword_p(value)
         || xstring_p(value)) {
         return x_true;
     }
