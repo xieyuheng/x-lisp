@@ -1,0 +1,16 @@
+(define-interface point-t :x float-t :y float-t)
+
+(define (point-put-x x point) (update point :x x))
+
+(define (point-put-y! y point) (update! point :y y))
+
+(define (main)
+  (= point (@record :x 1.0 :y 2.0))
+  (assert-equal
+    (@record :x 2.0 :y 2.0)
+    (point-put-x 2.0 point))
+  (assert-equal (@record :x 1.0 :y 2.0) point)
+  (assert-equal
+    (@record :x 1.0 :y 1.0)
+    (point-put-y! 1.0 point))
+  (assert-equal (@record :x 1.0 :y 1.0) point))

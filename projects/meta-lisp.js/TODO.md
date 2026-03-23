@@ -1,7 +1,3 @@
-# record syntax
-
-test `(update)` `(update!)`
-
 # basic-lisp
 
 bring basic-lisp back
