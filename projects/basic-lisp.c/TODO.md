@@ -1,6 +1,10 @@
-xlist
-xrecord
+[value] xrecord
+
+[builtin] use xlist
+[builtin] use xrecord
+
 [sexp] use xlist instead of tael
+
 remove tael
 
 remove null from value
