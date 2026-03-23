@@ -1,7 +1,5 @@
 # record syntax
 
-parse `(extend)`
-
 `evaluate` -- `Extend`
 `typeInfer` -- `Extend`
 

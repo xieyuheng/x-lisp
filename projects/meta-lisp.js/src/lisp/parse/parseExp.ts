@@ -154,6 +154,16 @@ export const parseExp: S.Router<L.Exp> = S.createRouter<L.Exp>({
     )
   },
 
+  "(cons* 'extend head body)": ({ head, body }, { meta }) => {
+    const entries = S.listCollectKeywordEntries(body)
+    L.assertNoDuplicatedKey(entries)
+    return L.Extend(
+      parseExp(head),
+      recordMapValue(Object.fromEntries(entries), parseExp),
+      meta,
+    )
+  },
+
   "`(the ,schema ,exp)": ({ schema, exp }, { meta }) => {
     return L.The(parseExp(schema), parseExp(exp), meta)
   },
