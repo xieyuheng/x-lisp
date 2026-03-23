@@ -1,5 +1,5 @@
 import Path from "node:path"
-import * as L from "../lisp/index.ts"
+import * as M from "../meta/index.ts"
 import { createProject, type Project } from "./index.ts"
 
 export function projectFromSourcePaths(
@@ -16,7 +16,7 @@ export function projectFromSourcePaths(
   })
 
   project.sourceIds = sourcePaths
-    .filter((path) => path !== L.builtinModPath)
+    .filter((path) => path !== M.builtinModPath)
     .map((path) => Path.relative(rootDirectory, path))
 
   return project

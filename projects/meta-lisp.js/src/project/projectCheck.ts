@@ -3,7 +3,7 @@ import {
   openOutputFile,
   withOutputToFile,
 } from "@xieyuheng/helpers.js/file"
-import * as L from "../lisp/index.ts"
+import * as M from "../meta/index.ts"
 import {
   projectGetSourcePath,
   projectSourceIds,
@@ -12,24 +12,24 @@ import {
 
 export function projectCheck(
   project: Project,
-  dependencyGraph: L.DependencyGraph,
+  dependencyGraph: M.DependencyGraph,
 ): void {
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    L.loadMod(path, dependencyGraph)
+    M.loadMod(path, dependencyGraph)
   }
 
-  L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
+  M.dependencyGraphForEachDefinition(dependencyGraph, M.definitionDesugar)
 
-  L.dependencyGraphForEachMod(dependencyGraph, (mod) => {
+  M.dependencyGraphForEachMod(dependencyGraph, (mod) => {
     if (mod.path.endsWith(".type-error.meta")) {
       callWithFile(openOutputFile(`${mod.path}.out`), (file) => {
         withOutputToFile(file, () => {
-          L.modForEachOwnDefinition(mod, L.definitionCheck)
+          M.modForEachOwnDefinition(mod, M.definitionCheck)
         })
       })
     } else {
-      L.modForEachOwnDefinition(mod, L.definitionCheck)
+      M.modForEachOwnDefinition(mod, M.definitionCheck)
     }
   })
 }

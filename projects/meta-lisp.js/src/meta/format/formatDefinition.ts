@@ -1,0 +1,85 @@
+import { type Definition } from "../definition/index.ts"
+import * as M from "../index.ts"
+import { formatBody, formatExp } from "./formatExp.ts"
+
+export function formatDefinition(definition: Definition): string {
+  switch (definition.kind) {
+    case "PrimitiveFunctionDefinition": {
+      return `(declare-primitive-function ${definition.name} ${definition.arity})`
+    }
+
+    case "PrimitiveVariableDefinition": {
+      return `(declare-primitive-variable ${definition.name})`
+    }
+
+    case "FunctionDefinition": {
+      const name = definition.name
+      const parameters = definition.parameters.join(" ")
+      const body = formatBody(definition.body)
+      const type = formatDefinitionType(definition.mod, definition.name)
+      if (type) {
+        return `${type} (define (${name} ${parameters}) ${body})`
+      } else {
+        return `(define (${name} ${parameters}) ${body})`
+      }
+    }
+
+    case "VariableDefinition": {
+      const name = definition.name
+      const body = formatBody(definition.body)
+      const type = formatDefinitionType(definition.mod, definition.name)
+      if (type) {
+        return `${type} (define ${name} ${body})`
+      } else {
+        return `(define ${name} ${body})`
+      }
+    }
+
+    case "DataDefinition": {
+      const dataConstructors = definition.dataConstructors
+        .map(formatDataConstructor)
+        .join(" ")
+      if (definition.dataTypeConstructor.parameters.length === 0) {
+        return `(define-data ${definition.name} ${dataConstructors})`
+      } else {
+        const parameters = definition.dataTypeConstructor.parameters.join(" ")
+        return `(define-data (${definition.name} ${parameters}) ${dataConstructors})`
+      }
+    }
+
+    case "InterfaceDefinition": {
+      const attributeTypes = M.formatExpAttributes(definition.attributeTypes)
+      if (definition.interfaceConstructor.parameters.length === 0) {
+        return `(define-interface ${definition.name} ${attributeTypes})`
+      } else {
+        const parameters = definition.interfaceConstructor.parameters.join(" ")
+        return `(define-interface (${definition.name} ${parameters}) ${attributeTypes})`
+      }
+    }
+  }
+}
+
+function formatDataConstructor(dataConstructor: M.DataConstructor): string {
+  const fields = dataConstructor.fields
+    .map((field) => `(${field.name} ${formatExp(field.type)})`)
+    .join(" ")
+  if (dataConstructor.fields.length === 0) {
+    return `${dataConstructor.name}`
+  } else {
+    return `(${dataConstructor.name} ${fields})`
+  }
+}
+
+function formatDefinitionType(mod: M.Mod, name: string): string | undefined {
+  const claimedEntry = M.modLookupClaimedEntry(mod, name)
+  if (claimedEntry) {
+    return `(claim ${name} ${formatExp(claimedEntry.exp)})`
+  }
+
+  const inferredType = M.modLookupInferredType(mod, name)
+  if (inferredType) {
+    return `(claim ${name} ${M.formatType(inferredType)})`
+  }
+
+  return undefined
+}

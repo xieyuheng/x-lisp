@@ -5,7 +5,7 @@ import {
   withOutputToFile,
 } from "@xieyuheng/helpers.js/file"
 import { textWidth } from "../config.ts"
-import * as L from "../lisp/index.ts"
+import * as M from "../meta/index.ts"
 import {
   logPath,
   projectGetSourcePath,
@@ -15,38 +15,38 @@ import {
 
 export function projectDump(
   project: Project,
-  dependencyGraph: L.DependencyGraph,
+  dependencyGraph: M.DependencyGraph,
 ): void {
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = L.loadMod(path, dependencyGraph)
-    dumpCode("001-loaded", L.prettyModDefinitions(textWidth, mod), path)
+    const mod = M.loadMod(path, dependencyGraph)
+    dumpCode("001-loaded", M.prettyModDefinitions(textWidth, mod), path)
   }
 
-  L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
+  M.dependencyGraphForEachDefinition(dependencyGraph, M.definitionDesugar)
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = L.loadMod(path, dependencyGraph)
-    dumpCode("002-desugared", L.prettyModDefinitions(textWidth, mod), path)
+    const mod = M.loadMod(path, dependencyGraph)
+    dumpCode("002-desugared", M.prettyModDefinitions(textWidth, mod), path)
   }
 
-  L.dependencyGraphForEachMod(dependencyGraph, (mod) => {
+  M.dependencyGraphForEachMod(dependencyGraph, (mod) => {
     if (mod.path.endsWith(".type-error.meta")) {
       callWithFile(openOutputFile(`${mod.path}.out`), (file) => {
         withOutputToFile(file, () => {
-          L.modForEachOwnDefinition(mod, L.definitionCheck)
+          M.modForEachOwnDefinition(mod, M.definitionCheck)
         })
       })
     } else {
-      L.modForEachOwnDefinition(mod, L.definitionCheck)
+      M.modForEachOwnDefinition(mod, M.definitionCheck)
     }
   })
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = L.loadMod(path, dependencyGraph)
-    dumpCode("003-checked", L.prettyModDefinitions(textWidth, mod), path)
+    const mod = M.loadMod(path, dependencyGraph)
+    dumpCode("003-checked", M.prettyModDefinitions(textWidth, mod), path)
   }
 }
 

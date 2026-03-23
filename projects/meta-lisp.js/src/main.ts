@@ -5,7 +5,7 @@ import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import * as S from "@xieyuheng/sexp.js"
 import { fileURLToPath } from "node:url"
-import * as L from "./lisp/index.ts"
+import * as M from "./meta/index.ts"
 import {
   loadProject,
   projectCheck,
@@ -33,42 +33,42 @@ router.defineRoutes([
 
 router.defineHandlers({
   "module:check": ({ args: [path] }) => {
-    const dependencyGraph = L.createDependencyGraph()
-    L.loadMod(path, dependencyGraph)
-    const sourcePaths = L.dependencyGraphModPaths(dependencyGraph)
+    const dependencyGraph = M.createDependencyGraph()
+    M.loadMod(path, dependencyGraph)
+    const sourcePaths = M.dependencyGraphModPaths(dependencyGraph)
     const project = projectFromSourcePaths(path, sourcePaths)
     projectCheck(project, dependencyGraph)
   },
 
   "module:dump": ({ args: [path] }) => {
-    const dependencyGraph = L.createDependencyGraph()
-    L.loadMod(path, dependencyGraph)
-    const sourcePaths = L.dependencyGraphModPaths(dependencyGraph)
+    const dependencyGraph = M.createDependencyGraph()
+    M.loadMod(path, dependencyGraph)
+    const sourcePaths = M.dependencyGraphModPaths(dependencyGraph)
     const project = projectFromSourcePaths(path, sourcePaths)
     projectDump(project, dependencyGraph)
   },
 
   "module:interpret": ({ args: [path] }) => {
-    const dependencyGraph = L.createDependencyGraph()
-    const mod = L.loadMod(path, dependencyGraph)
-    L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
-    L.modEvaluateMainIfExists(mod)
+    const dependencyGraph = M.createDependencyGraph()
+    const mod = M.loadMod(path, dependencyGraph)
+    M.dependencyGraphForEachDefinition(dependencyGraph, M.definitionDesugar)
+    M.modEvaluateMainIfExists(mod)
   },
 
   "project:check": ({ options }) => {
-    const dependencyGraph = L.createDependencyGraph()
+    const dependencyGraph = M.createDependencyGraph()
     const project = loadProject(options["--config"])
     projectCheck(project, dependencyGraph)
   },
 
   "project:dump": ({ options }) => {
-    const dependencyGraph = L.createDependencyGraph()
+    const dependencyGraph = M.createDependencyGraph()
     const project = loadProject(options["--config"])
     projectDump(project, dependencyGraph)
   },
 
   "project:test-by-interpreter": ({ options }) => {
-    const dependencyGraph = L.createDependencyGraph()
+    const dependencyGraph = M.createDependencyGraph()
     const project = loadProject(options["--config"])
     projectTestByInterpreter(project, dependencyGraph)
   },

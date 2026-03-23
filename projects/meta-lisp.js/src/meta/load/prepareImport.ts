@@ -1,0 +1,98 @@
+import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
+import * as S from "@xieyuheng/sexp.js"
+import * as M from "../index.ts"
+
+export function handleImport(mod: M.Mod, stmt: M.Stmt): void {
+  if (!M.isAboutImport(stmt)) {
+    return
+  }
+
+  const importedMod = M.importBy(stmt.path, mod)
+  const definitionEntries = M.modPublicDefinitionEntries(importedMod)
+
+  if (stmt.kind === "Import") {
+    checkUndefinedNames(mod, importedMod, stmt.names, stmt.meta)
+
+    for (const [name, definition] of definitionEntries) {
+      if (stmt.names.includes(name)) {
+        M.modDefine(mod, name, definition)
+      }
+    }
+  }
+
+  if (stmt.kind === "ImportAll") {
+    for (const [name, definition] of definitionEntries) {
+      M.modDefine(mod, name, definition)
+    }
+  }
+
+  if (stmt.kind === "ImportExcept") {
+    for (const [name, definition] of definitionEntries) {
+      if (!stmt.names.includes(name)) {
+        M.modDefine(mod, name, definition)
+      }
+    }
+  }
+
+  if (stmt.kind === "ImportAs") {
+    for (const [name, definition] of definitionEntries) {
+      const fullName = `${stmt.prefix}${name}`
+      M.modDefine(mod, fullName, definition)
+    }
+  }
+
+  if (stmt.kind === "Include") {
+    checkUndefinedNames(mod, importedMod, stmt.names, stmt.meta)
+
+    for (const [name, definition] of definitionEntries) {
+      if (stmt.names.includes(name)) {
+        M.modDefine(mod, name, definition)
+        mod.exported.add(name)
+      }
+    }
+  }
+
+  if (stmt.kind === "IncludeAll") {
+    for (const [name, definition] of definitionEntries) {
+      M.modDefine(mod, name, definition)
+      mod.exported.add(name)
+    }
+  }
+
+  if (stmt.kind === "IncludeExcept") {
+    for (const [name, definition] of definitionEntries) {
+      if (!stmt.names.includes(name)) {
+        M.modDefine(mod, name, definition)
+        mod.exported.add(name)
+      }
+    }
+  }
+
+  if (stmt.kind === "IncludeAs") {
+    for (const [name, definition] of definitionEntries) {
+      const fullName = `${stmt.prefix}${name}`
+      M.modDefine(mod, fullName, definition)
+      mod.exported.add(fullName)
+    }
+  }
+}
+
+function checkUndefinedNames(
+  mod: M.Mod,
+  importedMod: M.Mod,
+  names: Array<string>,
+  meta?: S.TokenMeta,
+): void {
+  const definedNames = new Set(
+    M.modPublicDefinitionEntries(importedMod).map(([key]) => key),
+  )
+  const undefinedNames = names.filter((name) => !definedNames.has(name))
+  if (undefinedNames.length === 0) return
+
+  let message = `[checkUndefinedNames] found undefined names during importing`
+  message += `\n  mod: ${pathRelativeToCwd(mod.path)}`
+  message += `\n  importing from mod: ${pathRelativeToCwd(importedMod.path)}`
+  message += `\n  undefined names: [${undefinedNames.join(" ")}]`
+  if (meta) throw new S.ErrorWithMeta(message, meta)
+  else throw new Error(message)
+}
