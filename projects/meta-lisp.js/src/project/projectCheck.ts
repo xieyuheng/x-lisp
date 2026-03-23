@@ -22,7 +22,7 @@ export function projectCheck(
   L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
 
   L.dependencyGraphForEachMod(dependencyGraph, (mod) => {
-    if (mod.path.endsWith(".type-error.lisp")) {
+    if (mod.path.endsWith(".type-error.meta")) {
       callWithFile(openOutputFile(`${mod.path}.out`), (file) => {
         withOutputToFile(file, () => {
           L.modForEachOwnDefinition(mod, L.definitionCheck)

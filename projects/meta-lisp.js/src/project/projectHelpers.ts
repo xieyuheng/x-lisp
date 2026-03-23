@@ -28,7 +28,7 @@ export function projectSourceIds(project: Project): Array<string> {
       encoding: "utf-8",
       recursive: true,
     })
-    .filter((file) => file.endsWith(".lisp"))
+    .filter((file) => file.endsWith(".meta"))
 }
 
 export function projectGetSourcePath(

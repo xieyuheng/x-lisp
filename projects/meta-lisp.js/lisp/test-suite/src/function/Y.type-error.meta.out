@@ -1,4 +1,4 @@
-lisp/test-suite/src/function/Y.type-error.lisp:6:19 -- unification fail
+lisp/test-suite/src/function/Y.type-error.meta:6:19 -- unification fail
   inferred type: (-> A B)
   given type: A
  4 | 

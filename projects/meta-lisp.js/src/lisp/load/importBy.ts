@@ -22,11 +22,11 @@ function pathRelativeToMod(path: string, mod: L.Mod): string {
 function resolveModPath(inputPath: string): string {
   let path = inputPath
   if (fs.existsSync(path) && fs.lstatSync(path).isDirectory()) {
-    path = `${path}/index.lisp`
+    path = `${path}/index.meta`
   }
 
   if (Path.extname(path) === "") {
-    path = `${path}.lisp`
+    path = `${path}.meta`
   }
 
   if (!fs.existsSync(path)) {

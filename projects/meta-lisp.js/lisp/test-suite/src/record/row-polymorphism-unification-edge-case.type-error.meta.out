@@ -1,0 +1,11 @@
+lisp/test-suite/src/record/row-polymorphism-unification-edge-case.type-error.meta:13:5 -- unification fail
+  inferred type: (extend-interface A :y B)
+  given type: (extend-interface A :x C)
+ 11 |     (extend r
+ 12 |       :x 2)
+ 13 |     (extend r
+    |     ~~~~~~~~~~
+ 14 |       :y 2)))
+    | ~~~~~~~~~~~   
+ 15 | 
+

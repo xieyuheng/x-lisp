@@ -1,4 +1,4 @@
-lisp/test-suite/src/record/subtype-2.type-error.lisp:14:18 -- inferred type is not a subtype of given type
+lisp/test-suite/src/record/subtype-2.type-error.meta:14:18 -- inferred type is not a subtype of given type
   inferred type: (interface :x float-t)
   given type: point-t
  12 | (define (main)

@@ -1,10 +1,16 @@
 (define-interface point-t :x float-t :y float-t)
 
+(claim with-color
+  (polymorphic (A B C)
+    (-> A (extend-interface B) (extend-interface B :color C))))
+
 (define (with-color color point)
   (extend point :color color))
+
+(claim main (-> void-t))
 
 (define (main)
   (= point (@record :x 1.0 :y 2.0))
   (assert-equal
     (@record :x 1.0 :y 2.0 :color "red")
-    (extend point :color "red")))
+    (with-color "red" point)))

@@ -22,7 +22,7 @@ export function projectTestByInterpreter(
     try {
       L.loadMod(file, dependencyGraph)
     } catch (error) {
-      if (id.endsWith(".error.lisp")) {
+      if (id.endsWith(".error.meta")) {
         const path = projectGetSourcePath(project, id)
         const outputPath = path + ".interpreter.out"
         logPath("interpreter-error-snapshot", outputPath)
@@ -38,7 +38,7 @@ export function projectTestByInterpreter(
   L.dependencyGraphForEachDefinition(dependencyGraph, L.definitionDesugar)
 
   for (const id of projectSourceIds(project)) {
-    if (id.endsWith(".test.lisp")) {
+    if (id.endsWith(".test.meta")) {
       const path = projectGetSourcePath(project, id)
       const mod = L.loadMod(path, dependencyGraph)
       logPath("interpreter-test", path)
@@ -47,7 +47,7 @@ export function projectTestByInterpreter(
   }
 
   for (const id of projectSourceIds(project)) {
-    if (id.endsWith(".snapshot.lisp")) {
+    if (id.endsWith(".snapshot.meta")) {
       const path = projectGetSourcePath(project, id)
       const mod = L.loadMod(path, dependencyGraph)
       const outputPath = path + ".interpreter.out"
@@ -59,7 +59,7 @@ export function projectTestByInterpreter(
   }
 
   for (const id of projectSourceIds(project)) {
-    if (id.endsWith(".error.lisp")) {
+    if (id.endsWith(".error.meta")) {
       const path = projectGetSourcePath(project, id)
       const mod = L.loadMod(path, dependencyGraph)
       const outputPath = path + ".interpreter.out"
