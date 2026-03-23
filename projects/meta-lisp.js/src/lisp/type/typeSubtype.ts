@@ -103,7 +103,8 @@ export function typeSubtype(trail: Trail, lhs: L.Value, rhs: L.Value): boolean {
   if (L.isHashType(lhs) && L.isHashType(rhs)) {
     // key type is invariant
     return (
-      typeBisimilar([], L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs)) &&
+      typeSubtype([], L.hashTypeKeyType(lhs), L.hashTypeKeyType(rhs)) &&
+      typeSubtype([], L.hashTypeKeyType(rhs), L.hashTypeKeyType(lhs)) &&
       typeSubtype(trail, L.hashTypeValueType(lhs), L.hashTypeValueType(rhs))
     )
   }
