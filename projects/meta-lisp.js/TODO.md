@@ -4,6 +4,9 @@
 parse `(update)` `(update!)`
 test `(update)` `(update!)`
 
+`evaluate` -- `Update` & `UpdateMut`
+`typeInfer` -- `Update` & `UpdateMut`
+
 # basic-lisp
 
 bring basic-lisp back
