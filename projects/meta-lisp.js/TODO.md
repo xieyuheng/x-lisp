@@ -1,6 +1,5 @@
 # record syntax
 
-`typeInfer` -- `Update` & `UpdateMut`
 test `(update)` `(update!)`
 
 # basic-lisp
