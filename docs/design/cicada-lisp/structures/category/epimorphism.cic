@@ -1,4 +1,4 @@
-(import category-t "category.lisp")
+(import category-t "category")
 
 (define-class epimorphism-t ()
   (claim cat category-t)

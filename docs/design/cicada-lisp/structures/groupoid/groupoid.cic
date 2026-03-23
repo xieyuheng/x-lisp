@@ -1,4 +1,4 @@
-(import category-t isomorphism-t "../category/index.lisp")
+(import category-t isomorphism-t "../category")
 
 (define-class groupoid-t
   :inherit category-t

@@ -1,10 +1,10 @@
-(import group-t "group.lisp")
-(import category-t "../category/index.lisp")
-(import equal-swap equal-map equal-compose "../equality/index.lisp")
+(import group-t "group")
+(import category-t "../category")
+(import equal-swap equal-map equal-compose "../equality")
 (import group-homomorphism-t
         id-group-homomorphism
         compose-group-homomorphism
-        "group-homomorphism.lisp")
+        "group-homomorphism")
 
 (define group-category
   (new category-t

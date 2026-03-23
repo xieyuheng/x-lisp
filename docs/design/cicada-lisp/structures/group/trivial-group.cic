@@ -1,4 +1,4 @@
-(import group-t "group.lisp")
+(import group-t "group")
 
 (define trivial-group
   (new group-t

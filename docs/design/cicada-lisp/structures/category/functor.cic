@@ -1,4 +1,4 @@
-(import category-t "category.lisp")
+(import category-t "category")
 
 ;; To any natural construction on structures of one species,
 ;; yielding structures of another species,

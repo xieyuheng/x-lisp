@@ -1,5 +1,3 @@
-rename .lisp in design/
-
 # record syntax
 
 `Update` & `UpdateMut` -- as `Exp`

@@ -1,4 +1,4 @@
-(import monoid-t "monoid.lisp")
+(import monoid-t "monoid")
 
 (define-class group-t (monoid-t)
   (claim inverse (-> element-t element-t))

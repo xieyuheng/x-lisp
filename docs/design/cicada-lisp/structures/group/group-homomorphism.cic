@@ -1,6 +1,6 @@
-(import group-t "group.lisp")
-(import category-t "../category/index.lisp")
-(import equal-swap equal-map equal-compose "../equality/index.lisp")
+(import group-t "group")
+(import category-t "../category")
+(import equal-swap equal-map equal-compose "../equality")
 
 (define-class group-homomorphism-t ()
   (claim dom group-t)

@@ -1,4 +1,4 @@
-(import category-t "category.lisp")
+(import category-t "category")
 
 ;; Two objects have the same structure iff they are isomorphic,
 ;; and an "abstract object" is an isomorphism class of objects.
