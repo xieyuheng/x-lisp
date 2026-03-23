@@ -59,13 +59,13 @@ x_hash_delete(value_t key, value_t hash) {
 
 value_t
 x_hash_keys(value_t hash) {
-    tael_t *keys = make_tael();
+    xlist_t *keys = make_xlist();
 
     hash_iter_t iter;
     hash_iter_init(&iter, to_xhash(hash)->hash);
     const hash_entry_t *entry = hash_iter_next_entry(&iter);
     while (entry) {
-        tael_push_element(keys, (value_t) entry->key);
+        xlist_push(keys, (value_t) entry->key);
         entry = hash_iter_next_entry(&iter);
     }
 
@@ -74,13 +74,13 @@ x_hash_keys(value_t hash) {
 
 value_t
 x_hash_values(value_t hash) {
-    tael_t *keys = make_tael();
+    xlist_t *keys = make_xlist();
 
     hash_iter_t iter;
     hash_iter_init(&iter, to_xhash(hash)->hash);
     const hash_entry_t *entry = hash_iter_next_entry(&iter);
     while (entry) {
-        tael_push_element(keys, (value_t) entry->value);
+        xlist_push(keys, (value_t) entry->value);
         entry = hash_iter_next_entry(&iter);
     }
 
@@ -89,7 +89,7 @@ x_hash_values(value_t hash) {
 
 value_t
 x_hash_entries(value_t hash) {
-    tael_t *entries = make_tael();
+    xlist_t *entries = make_xlist();
 
     hash_iter_t iter;
     hash_iter_init(&iter, to_xhash(hash)->hash);
@@ -97,10 +97,10 @@ x_hash_entries(value_t hash) {
     while (entry) {
         value_t key = (value_t) entry->key;
         value_t value = (value_t) entry->value;
-        tael_t *pair = make_tael();
-        tael_push_element(pair, key);
-        tael_push_element(pair, value);
-        tael_push_element(entries, x_object(pair));
+        xlist_t *pair = make_xlist();
+        xlist_push(pair, key);
+        xlist_push(pair, value);
+        xlist_push(entries, x_object(pair));
         entry = hash_iter_next_entry(&iter);
     }
 

@@ -2,37 +2,37 @@
 
 value_t
 x_make_list(void) {
-    return x_object(make_tael());
+    return x_object(make_xlist());
 }
 
 value_t
 x_any_list_p(value_t value) {
-    return x_bool(tael_p(value));
+    return x_bool(xlist_p(value));
 }
 
 value_t
 x_list_copy(value_t list) {
-    return x_object(tael_copy_only_elements(to_tael(list)));
+    return x_object(xlist_copy(to_xlist(list)));
 }
 
 value_t
 x_list_length(value_t list) {
-    return x_int(array_length(to_tael(list)->elements));
+    return x_int(array_length(to_xlist(list)->elements));
 }
 
 value_t
 x_list_empty_p(value_t list) {
-    return x_bool(array_is_empty(to_tael(list)->elements));
+    return x_bool(array_is_empty(to_xlist(list)->elements));
 }
 
 value_t
 x_list_pop_mut(value_t list) {
-    return tael_pop_element(to_tael(list));
+    return xlist_pop(to_xlist(list));
 }
 
 value_t
 x_list_push_mut(value_t value, value_t list) {
-    tael_push_element(to_tael(list), value);
+    xlist_push(to_xlist(list), value);
     return list;
 }
 
@@ -43,23 +43,23 @@ x_list_push(value_t value, value_t list) {
 
 value_t
 x_list_shift_mut(value_t list) {
-    return tael_shift_element(to_tael(list));
+    return xlist_shift(to_xlist(list));
 }
 
 value_t
 x_list_unshift_mut(value_t value, value_t list) {
-    tael_unshift_element(to_tael(list), value);
+    xlist_unshift(to_xlist(list), value);
     return list;
 }
 
 value_t
 x_list_get(value_t index, value_t list) {
-    return tael_get_element(to_tael(list), to_int64(index));
+    return xlist_get(to_xlist(list), to_int64(index));
 }
 
 value_t
 x_list_put_mut(value_t index, value_t value, value_t list) {
-    tael_put_element(to_tael(list), to_int64(index), value);
+    xlist_put(to_xlist(list), to_int64(index), value);
     return list;
 }
 
@@ -70,8 +70,8 @@ x_list_put(value_t index, value_t value, value_t list) {
 
 value_t
 x_car(value_t list) {
-    return tael_get_element(to_tael(list), 0);
-    // return (value_t) array_get(to_tael(list)->elements, 0);
+    return xlist_get(to_xlist(list), 0);
+    // return (value_t) array_get(to_xlist(list)->elements, 0);
 }
 
 value_t
@@ -105,13 +105,13 @@ x_list_init(value_t list) {
 
 value_t
 x_list_last(value_t list) {
-    size_t length = array_length(to_tael(list)->elements);
-    return (value_t) array_get(to_tael(list)->elements, length - 1);
+    size_t length = array_length(to_xlist(list)->elements);
+    return (value_t) array_get(to_xlist(list)->elements, length - 1);
 }
 
 value_t
 x_list_reverse_mut(value_t list) {
-    array_reverse(to_tael(list)->elements);
+    array_reverse(to_xlist(list)->elements);
     return list;
 }
 
@@ -123,9 +123,9 @@ x_list_reverse(value_t list) {
 value_t
 x_list_to_set(value_t list) {
     xset_t *set = make_xset();
-    size_t length = array_length(to_tael(list)->elements);
+    size_t length = array_length(to_xlist(list)->elements);
     for (size_t i = 0; i < length; i++) {
-        value_t element = tael_get_element(to_tael(list), i);
+        value_t element = xlist_get(to_xlist(list), i);
         xset_add(set, element);
     }
 

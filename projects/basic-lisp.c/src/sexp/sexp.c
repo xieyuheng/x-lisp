@@ -3,7 +3,7 @@
 static void ignore_line_comments(list_t *tokens);
 
 static value_t for_sexp(list_t *tokens);
-static value_t for_tael(const char *end, list_t *tokens);
+static value_t for_list(const char *end, list_t *tokens);
 
 value_t
 parse_sexps(const path_t *path, const char *string) {
@@ -77,13 +77,13 @@ for_sexp(list_t *tokens) {
     case BRACKET_START_TOKEN: {
         if (string_equal(token->content, "(")) {
             token_free(token);
-            return for_tael(")", tokens);
+            return for_list(")", tokens);
         } else if (string_equal(token->content, "[")) {
             token_free(token);
-            return x_cons(x_object(intern_symbol("@tael")), for_tael("]", tokens));
+            return x_cons(x_object(intern_symbol("@list")), for_list("]", tokens));
         } else if (string_equal(token->content, "{")) {
             token_free(token);
-            return x_cons(x_object(intern_symbol("@set")), for_tael("}", tokens));
+            return x_cons(x_object(intern_symbol("@record")), for_list("}", tokens));
         } else {
             who_printf("unexpected bracket start: %s", token->content);
             exit(1);
@@ -132,7 +132,7 @@ for_sexp(list_t *tokens) {
 }
 
 static value_t
-for_tael(const char *end, list_t *tokens) {
+for_list(const char *end, list_t *tokens) {
     value_t sexp = x_make_list();
     while (true) {
         ignore_line_comments(tokens);

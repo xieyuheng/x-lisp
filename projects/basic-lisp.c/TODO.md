@@ -1,10 +1,3 @@
-[builtin] use xlist
-[builtin] use xrecord
-
-[sexp] use xlist instead of tael
-
-remove tael
-
 remove null from value
 encode bool and void in value directly
 

@@ -41,21 +41,18 @@ main(void) {
     echo("()");
     echo("(a b c)");
     echo("(a (b) c)");
+    echo("(:x 1 :y 2)");
+    echo("(a b c :x 1 :y 2)");
 
-    // tael
+    // literal list
 
     echo("[]");
     echo("[a b c]");
 
-    // set
+    // record
 
     echo("{}");
-    echo("{a b c}");
-
-    // list with attributes
-
-    echo("(:x 1 :y 2)");
-    echo("(a b c :x 1 :y 2)");
+    echo("{:x 1 :y 2}");
 
     // quotes
 

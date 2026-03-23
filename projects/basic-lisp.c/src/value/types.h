@@ -23,8 +23,6 @@ typedef struct keyword_t keyword_t;
 typedef struct curry_t curry_t;
 typedef struct curry_child_iter_t curry_child_iter_t;
 typedef struct xstring_t xstring_t;
-typedef struct tael_t tael_t;
-typedef struct tael_child_iter_t tael_child_iter_t;
 typedef struct xlist_t xlist_t;
 typedef struct xlist_child_iter_t xlist_child_iter_t;
 typedef struct xrecord_t xrecord_t;

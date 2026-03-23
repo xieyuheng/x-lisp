@@ -20,7 +20,7 @@ is_quote(value_t sexp) {
 
 static bool
 is_apply(value_t sexp) {
-    return tael_p(sexp);
+    return xlist_p(sexp);
 }
 
 static void
