@@ -1,3 +1,0 @@
-(export one)
-
-(define-function (one) (block body (return 1)))
