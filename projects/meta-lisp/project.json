@@ -2,7 +2,7 @@
   "name": "meta-lisp",
   "version": "0.1.0",
   "build": {
-    "source-directory": "src"
+    "source-directory": "src",
     "output-directory": "build"
   }
 }
