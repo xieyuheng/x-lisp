@@ -8,10 +8,12 @@ import { fileURLToPath } from "node:url"
 import * as M from "./meta/index.ts"
 import {
   loadProject,
+  projectBuild,
   projectCheck,
   projectClean,
   projectDump,
   projectFromSourcePaths,
+  projectTest,
   projectTestByInterpreter,
 } from "./project/index.ts"
 
@@ -23,10 +25,12 @@ router.defineRoutes([
   "module:check path",
   "module:interpret path",
   "module:dump path",
-  // "module:test path",
+  "module:build path",
+  "module:test path",
   "project:check --config",
   "project:dump --config",
-  // "project:test --config",
+  "project:build --config",
+  "project:test --config",
   "project:test-by-interpreter --config",
   "project:clean --config",
 ])
@@ -55,6 +59,22 @@ router.defineHandlers({
     M.modEvaluateMainIfExists(mod)
   },
 
+  "module:build": ({ args: [path] }) => {
+    const dependencyGraph = M.createDependencyGraph()
+    M.loadMod(path, dependencyGraph)
+    const sourcePaths = M.dependencyGraphModPaths(dependencyGraph)
+    const project = projectFromSourcePaths(path, sourcePaths)
+    projectBuild(project, dependencyGraph)
+  },
+
+  "module:test": ({ args: [path] }) => {
+    const dependencyGraph = M.createDependencyGraph()
+    M.loadMod(path, dependencyGraph)
+    const sourcePaths = M.dependencyGraphModPaths(dependencyGraph)
+    const project = projectFromSourcePaths(path, sourcePaths)
+    projectTest(project, dependencyGraph)
+  },
+
   "project:check": ({ options }) => {
     const dependencyGraph = M.createDependencyGraph()
     const project = loadProject(options["--config"])
@@ -65,6 +85,18 @@ router.defineHandlers({
     const dependencyGraph = M.createDependencyGraph()
     const project = loadProject(options["--config"])
     projectDump(project, dependencyGraph)
+  },
+
+  "project:build": ({ options }) => {
+    const dependencyGraph = M.createDependencyGraph()
+    const project = loadProject(options["--config"])
+    projectBuild(project, dependencyGraph)
+  },
+
+  "project:test": ({ options }) => {
+    const dependencyGraph = M.createDependencyGraph()
+    const project = loadProject(options["--config"])
+    projectTest(project, dependencyGraph)
   },
 
   "project:test-by-interpreter": ({ options }) => {
