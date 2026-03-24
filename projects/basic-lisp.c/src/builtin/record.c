@@ -27,17 +27,17 @@ x_record_empty_p(value_t record) {
 
 value_t
 x_record_get(value_t key, value_t record) {
-    return xrecord_get(to_xrecord(record), symbol_string(to_symbol(key)));
+    return xrecord_get(to_xrecord(record), keyword_string(to_keyword(key)));
 }
 
 value_t
 x_record_has_p(value_t key, value_t record) {
-    return x_bool(xrecord_has(to_xrecord(record), symbol_string(to_symbol(key))));
+    return x_bool(xrecord_has(to_xrecord(record), keyword_string(to_keyword(key))));
 }
 
 value_t
 x_record_put_mut(value_t key, value_t value, value_t record) {
-    xrecord_put(to_xrecord(record), symbol_string(to_symbol(key)), value);
+    xrecord_put(to_xrecord(record), keyword_string(to_keyword(key)), value);
     return record;
 }
 
@@ -48,7 +48,7 @@ x_record_put(value_t key, value_t value, value_t record) {
 
 value_t
 x_record_delete_mut(value_t key, value_t record) {
-    xrecord_delete(to_xrecord(record), symbol_string(to_symbol(key)));
+    xrecord_delete(to_xrecord(record), keyword_string(to_keyword(key)));
     return record;
 }
 
@@ -81,7 +81,7 @@ x_record_keys(value_t record) {
     record_iter_init(&iter, to_xrecord(record)->attributes);
     const hash_entry_t *entry = record_iter_next_entry(&iter);
     while (entry) {
-        value_t key = x_object(intern_symbol(entry->key));
+        value_t key = x_object(intern_keyword(entry->key));
         xlist_push(keys, key);
         entry = record_iter_next_entry(&iter);
     }
@@ -113,7 +113,7 @@ x_record_entries(value_t record) {
     record_iter_init(&iter, to_xrecord(record)->attributes);
     const hash_entry_t *entry = record_iter_next_entry(&iter);
     while (entry) {
-        value_t key = x_object(intern_symbol(entry->key));
+        value_t key = x_object(intern_keyword(entry->key));
         value_t value = (value_t) entry->value;
         xlist_t *pair = make_xlist();
         xlist_push(pair, key);

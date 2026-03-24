@@ -4,9 +4,9 @@
 (define-function (main)
   (block body
     (= record₁ (make-record))
-    (perform (record-put! #x 1.0 record₁))
-    (perform (record-put! #y 2.0 record₁))
+    (perform (record-put! :x 1.0 record₁))
+    (perform (record-put! :y 2.0 record₁))
     (perform (point-println record₁))
     (= record₁ (make-record))
-    (perform (record-put! #x 1.0 record₁))
+    (perform (record-put! :x 1.0 record₁))
     (return (point-println record₁))))

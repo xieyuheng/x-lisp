@@ -36,6 +36,20 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
       return exp
     }
 
+    case "Apply": {
+      if (exp.target.kind === "Keyword") {
+        return onExp(mod,
+          M.Apply(
+            M.Apply(M.Var("record-get"), [exp.target]),
+            exp.args,
+            exp.meta,
+          ),
+        )
+      }
+
+      return M.expTraverse((e) => onExp(mod, e), exp)
+    }
+
     case "The": {
       return onExp(mod, M.desugar(mod, exp.exp))
     }
@@ -123,9 +137,13 @@ function shrinkUpdate(
       [
         M.AssignSugar("record", base, meta),
         ...Object.entries(attributes).map(([key, value]) =>
-          M.Apply(
-            M.Var("record-put", meta),
-            [M.Keyword(key), value, M.Var("record", meta)],
+          M.AssignSugar(
+            "record",
+            M.Apply(
+              M.Var("record-put", meta),
+              [M.Keyword(key), value, M.Var("record", meta)],
+              meta,
+            ),
             meta,
           ),
         ),

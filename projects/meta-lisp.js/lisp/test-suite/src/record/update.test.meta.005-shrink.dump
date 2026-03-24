@@ -8,7 +8,7 @@
 
 (define (point-put-x x point)
   (= record point)
-  (record-put :x x record)
+  (= record (record-put :x x record))
   record)
 
 (claim point-put-y!

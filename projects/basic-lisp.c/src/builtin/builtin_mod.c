@@ -114,7 +114,7 @@ make_builtin_mod(void) {
     // list
 
     define_primitive_0(mod, "make-list", x_make_list);
-    define_primitive_1(mod, "any-list?", x_any_list_p);
+    define_primitive_1(mod, "list?", x_any_list_p);
     define_primitive_1(mod, "list-copy", x_list_copy);
     define_primitive_1(mod, "list-length", x_list_length);
     define_primitive_1(mod, "list-empty?", x_list_empty_p);
@@ -140,7 +140,7 @@ make_builtin_mod(void) {
     // record
 
     define_primitive_0(mod, "make-record", x_make_record);
-    define_primitive_1(mod, "any-record?", x_any_record_p);
+    define_primitive_1(mod, "record?", x_any_record_p);
     define_primitive_1(mod, "record-copy", x_record_copy);
     define_primitive_1(mod, "record-length", x_record_length);
     define_primitive_1(mod, "record-empty?", x_record_empty_p);
@@ -158,7 +158,7 @@ make_builtin_mod(void) {
     // hash
 
     define_primitive_0(mod, "make-hash", x_make_hash);
-    define_primitive_1(mod, "any-hash?", x_any_hash_p);
+    define_primitive_1(mod, "hash?", x_any_hash_p);
     define_primitive_1(mod, "hash-copy", x_hash_copy);
     define_primitive_1(mod, "hash-length", x_hash_length);
     define_primitive_1(mod, "hash-empty?", x_hash_empty_p);
@@ -175,7 +175,7 @@ make_builtin_mod(void) {
     // set
 
     define_primitive_0(mod, "make-set", x_make_set);
-    define_primitive_1(mod, "any-set?", x_any_set_p);
+    define_primitive_1(mod, "set?", x_any_set_p);
     define_primitive_1(mod, "set-copy", x_set_copy);
     define_primitive_1(mod, "set-size", x_set_size);
     define_primitive_1(mod, "set-empty?", x_set_empty_p);
@@ -199,9 +199,9 @@ make_builtin_mod(void) {
     define_primitive_2(mod, "assert-equal", x_assert_equal);
     define_primitive_2(mod, "assert-not-equal", x_assert_not_equal);
 
-    // schema
+    // error
 
-    define_primitive(mod, "valid?", 2, x_valid_p);
+    define_primitive_1(mod, "error", x_error);
 
     return mod;
 }

@@ -1,5 +1,5 @@
 (define-function (f r)
   (block body
     (= record₁ r)
-    (perform (record-put #x 2 record₁))
-    (return record₁)))
+    (= record₂ (record-put :x 2 record₁))
+    (return record₂)))

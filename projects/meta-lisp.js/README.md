@@ -235,7 +235,7 @@ void
 ;;; hash
 
 ;; (hash? key-p value-p target)
-(any-hash? target)
+(hash? target)
 (hash-empty? hash)
 (hash-copy hash)
 (hash-length hash)
@@ -276,7 +276,7 @@ void
 
 ;; (set? element-p value)
 (make-set)
-(any-set? value)
+(set? value)
 (set-copy set)
 (set-size set)
 (set-empty? set)

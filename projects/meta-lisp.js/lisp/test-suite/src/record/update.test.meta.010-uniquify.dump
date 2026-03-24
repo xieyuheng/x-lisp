@@ -8,8 +8,8 @@
 
 (define (point-put-x x point)
   (= record₁ point)
-  (record-put :x x record₁)
-  record₁)
+  (= record₂ (record-put :x x record₁))
+  record₂)
 
 (claim point-put-y!
   (polymorphic (A B C)

@@ -1,9 +1,50 @@
+import { systemShellRun } from "@xieyuheng/helpers.js/system"
 import * as M from "../meta/index.ts"
-import { type Project } from "./index.ts"
+import { BasicInterpreterFile } from "./BasicInterpreterFile.ts"
+import {
+  logPath,
+  projectBuild,
+  projectGetBasicPath,
+  projectSourceIds,
+  type Project,
+} from "./index.ts"
 
 export function projectTest(
   project: Project,
   dependencyGraph: M.DependencyGraph,
 ): void {
-  //
+  projectBuild(project, dependencyGraph)
+
+  for (const id of projectSourceIds(project)) {
+    if (id.endsWith(".test.meta")) {
+      const inputFile = projectGetBasicPath(project, id)
+      logPath("basic-test", inputFile)
+      systemShellRun(BasicInterpreterFile, ["run", inputFile])
+    }
+  }
+
+  for (const id of projectSourceIds(project)) {
+    if (id.endsWith(".snapshot.meta")) {
+      const inputFile = projectGetBasicPath(project, id)
+      const outputFile = inputFile + ".out"
+      logPath("basic-snapshot", outputFile)
+      systemShellRun(BasicInterpreterFile, ["run", inputFile, ">", outputFile])
+    }
+  }
+
+  for (const id of projectSourceIds(project)) {
+    if (id.endsWith(".error.meta")) {
+      const inputFile = projectGetBasicPath(project, id)
+      const outputFile = inputFile + ".err"
+      logPath("basic-error-snapshot", outputFile)
+      systemShellRun(BasicInterpreterFile, [
+        "run",
+        inputFile,
+        ">",
+        outputFile,
+        "||",
+        "true",
+      ])
+    }
+  }
 }

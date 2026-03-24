@@ -6,8 +6,8 @@
 
 (define (with-color color point)
   (= record₁ point)
-  (record-put :color color record₁)
-  record₁)
+  (= record₂ (record-put :color color record₁))
+  record₂)
 
 (claim main (-> void-t))
 

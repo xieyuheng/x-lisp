@@ -35,7 +35,7 @@ export type AboutData =
 
 (define (nil? value) (equal? value #nil))
 (define (li? value)
-  (and (any-list? value)
+  (and (list? value)
        (equal? (list-length value) 3)
        (equal? (list-head value) #li)))
 

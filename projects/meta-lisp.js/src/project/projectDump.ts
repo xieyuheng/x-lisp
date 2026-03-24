@@ -4,7 +4,6 @@ import {
   openOutputFile,
   withOutputToFile,
 } from "@xieyuheng/helpers.js/file"
-import * as B from "../basic/index.ts"
 import { textWidth } from "../config.ts"
 import * as M from "../meta/index.ts"
 import * as Passes from "../passes/index.ts"

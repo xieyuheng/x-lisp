@@ -1,4 +1,4 @@
 (define-function (main)
   (block body
-    (= _₁ (keyword-append #abc #def))
-    (return (assert-equal #abcdef _₁))))
+    (= _₁ (keyword-append :abc :def))
+    (return (assert-equal :abcdef _₁))))
