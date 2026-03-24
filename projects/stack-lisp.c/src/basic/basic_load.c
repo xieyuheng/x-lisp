@@ -2,18 +2,11 @@
 
 extern void import_builtin_mod(mod_t *mod);
 
-static value_t
-read_mod_body(path_t *path) {
-    file_t *file = open_file_or_fail(path_string(path), "r");
-    value_t sexps = parse_sexps(path, file_read_string(file));
-    return sexps;
-}
-
 mod_t *
 basic_load(path_t *path) {
-    value_t sexps = read_mod_body(path);
+    file_t *file = open_file_or_fail(path_string(path), "r");
+    value_t sexps = parse_sexps(path, file_read_string(file));
     mod_t *mod = make_mod(path);
-
     import_builtin_mod(mod);
     basic_prepare(mod, sexps);
     basic_compile(mod, sexps);

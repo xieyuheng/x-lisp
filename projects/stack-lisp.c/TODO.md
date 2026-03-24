@@ -1,4 +1,8 @@
+inline `read_mod_body`
+remove `function->parameters`
 remove basic-lisp compiler -- should not write compiler in c
+
+`compile_instr`
 
 # later
 
