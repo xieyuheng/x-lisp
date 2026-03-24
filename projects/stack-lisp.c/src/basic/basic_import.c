@@ -7,12 +7,12 @@ import_by(mod_t *mod, const char *string) {
     path_join_mut(path, string);
 
     if (pathname_is_directory(path_string(path))) {
-        path_join_mut(path, "index.basic");
+        path_join_mut(path, "index.stack");
     }
 
-    if (!string_ends_with(path_top_segment(path), ".basic")) {
+    if (!string_ends_with(path_top_segment(path), ".stack")) {
         char *segment = path_pop_segment(path);
-        path_push_segment(path, string_append(segment, ".basic"));
+        path_push_segment(path, string_append(segment, ".stack"));
         string_free(segment);
     }
 

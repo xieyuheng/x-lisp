@@ -1,5 +1,3 @@
-rename .basic to .stack
-
 remove module system
 remove compiler
 

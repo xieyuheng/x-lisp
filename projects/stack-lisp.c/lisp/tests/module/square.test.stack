@@ -1,4 +1,4 @@
-(import "square.basic" square)
+(import "square.stack" square)
 
 (define-function (main)
   (block body

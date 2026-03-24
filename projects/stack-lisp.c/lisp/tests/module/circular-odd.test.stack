@@ -1,16 +1,16 @@
-(import-all "circular-odd.test.basic")
+(import-all "circular-even.test.stack")
 
-(export even?)
+(export odd?)
 
-(define-function (even? n)
+(define-function (odd? n)
   (block body
     (test (equal? n 0))
     (branch base-case recur-case))
   (block base-case
-    (return true))
+    (return false))
   (block recur-case
     (= n1 (isub n 1))
-    (return (odd? n1))))
+    (return (even? n1))))
 
 (define-function (main)
   (block body
