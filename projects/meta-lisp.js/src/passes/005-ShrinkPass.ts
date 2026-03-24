@@ -38,7 +38,8 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
 
     case "Apply": {
       if (exp.target.kind === "Keyword") {
-        return onExp(mod,
+        return onExp(
+          mod,
           M.Apply(
             M.Apply(M.Var("record-get"), [exp.target]),
             exp.args,

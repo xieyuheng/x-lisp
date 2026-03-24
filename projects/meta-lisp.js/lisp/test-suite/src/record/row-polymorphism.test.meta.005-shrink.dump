@@ -3,12 +3,12 @@
 (claim point-x
   (polymorphic (A B) (-> (extend-interface A :x B) B)))
 
-(define (point-x point) (:x point))
+(define (point-x point) ((record-get :x) point))
 
 (claim point-y
   (polymorphic (R A) (-> (extend-interface R :y A) A)))
 
-(define (point-y point) (:y point))
+(define (point-y point) ((record-get :y) point))
 
 (claim point-distance-squared
   (polymorphic (A)
@@ -16,8 +16,8 @@
 
 (define (point-distance-squared point)
   (fadd
-   (fmul (:x point) (:x point))
-   (fmul (:y point) (:y point))))
+   (fmul ((record-get :x) point) ((record-get :x) point))
+   (fmul ((record-get :y) point) ((record-get :y) point))))
 
 (claim main (-> void-t))
 
@@ -28,8 +28,8 @@
        (record-put! :x 1.0 record)
        (record-put! :y 2.0 record)
        record))
-  (assert-equal 1.0 (:x point))
-  (assert-equal 2.0 (:y point))
+  (assert-equal 1.0 ((record-get :x) point))
+  (assert-equal 2.0 ((record-get :y) point))
   (assert-equal 1.0 (point-x point))
   (assert-equal 2.0 (point-y point))
   (assert-equal 5.0 (point-distance-squared point)))
