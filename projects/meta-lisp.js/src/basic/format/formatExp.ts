@@ -6,7 +6,7 @@ export function formatExps(exps: Array<Exp>): string {
 
 export function formatExp(exp: Exp): string {
   switch (exp.kind) {
-    case "Hashtag": {
+    case "Keyword": {
       return `#${exp.content}`
     }
 

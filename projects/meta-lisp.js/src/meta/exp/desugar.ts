@@ -193,10 +193,6 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
     case "Polymorphic": {
       return M.Polymorphic(exp.parameters, desugar(mod, exp.body), exp.meta)
     }
-
-    case "Match": {
-      throw new Error()
-    }
   }
 }
 

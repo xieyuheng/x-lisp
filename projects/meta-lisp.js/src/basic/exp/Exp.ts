@@ -1,11 +1,11 @@
 import { type TokenMeta } from "@xieyuheng/sexp.js"
 
-export type Atom = Symbol | Hashtag | String | Int | Float | Var
+export type Atom = Symbol | Keyword | String | Int | Float | Var
 
 export function isAtom(exp: Exp): exp is Atom {
   return (
     exp.kind === "Symbol" ||
-    exp.kind === "Hashtag" ||
+    exp.kind === "Keyword" ||
     exp.kind === "String" ||
     exp.kind === "Int" ||
     exp.kind === "Float" ||
@@ -43,15 +43,15 @@ export function String(content: string, meta?: TokenMeta): String {
   }
 }
 
-export type Hashtag = {
-  kind: "Hashtag"
+export type Keyword = {
+  kind: "Keyword"
   content: string
   meta?: TokenMeta
 }
 
-export function Hashtag(content: string, meta?: TokenMeta): Hashtag {
+export function Keyword(content: string, meta?: TokenMeta): Keyword {
   return {
-    kind: "Hashtag",
+    kind: "Keyword",
     content,
     meta,
   }
