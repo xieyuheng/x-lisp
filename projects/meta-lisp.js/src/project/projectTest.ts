@@ -19,7 +19,7 @@ export function projectTest(
   for (const id of projectSourceIds(project)) {
     if (id.endsWith(".test.meta")) {
       const inputFile = projectGetBasicPath(project, id)
-      logPath("basic-test", inputFile)
+      logPath("test", id)
       systemShellRun(BasicInterpreterFile, ["run", inputFile])
     }
   }
@@ -28,7 +28,7 @@ export function projectTest(
     if (id.endsWith(".snapshot.meta")) {
       const inputFile = projectGetBasicPath(project, id)
       const outputFile = projectGetSourcePath(project, id) + ".out"
-      logPath("basic-snapshot", outputFile)
+      logPath("snapshot", id)
       systemShellRun(BasicInterpreterFile, ["run", inputFile, ">", outputFile])
     }
   }
@@ -37,7 +37,7 @@ export function projectTest(
     if (id.endsWith(".error.meta")) {
       const inputFile = projectGetBasicPath(project, id)
       const outputFile = projectGetSourcePath(project, id) + ".err"
-      logPath("basic-error-snapshot", outputFile)
+      logPath("error-snapshot", id)
       systemShellRun(BasicInterpreterFile, [
         "run",
         inputFile,

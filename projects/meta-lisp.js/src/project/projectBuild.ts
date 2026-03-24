@@ -70,7 +70,7 @@ export function projectBuild(
     Passes.ExplicateControlPass(mod, basicMod)
     const code = B.prettyMod(textWidth, basicMod)
     const outputPath = projectGetBasicPath(project, id)
-    logPath("build", outputPath)
+    logPath("build", id)
     callWithFile(openOutputFile(outputPath), (file) => {
       fileWrite(file, code)
     })
