@@ -4,12 +4,14 @@ import {
   openOutputFile,
   withOutputToFile,
 } from "@xieyuheng/helpers.js/file"
+import Path from "node:path"
 import { textWidth } from "../config.ts"
 import * as M from "../meta/index.ts"
 import * as Passes from "../passes/index.ts"
 import {
   logPath,
   projectGetSourcePath,
+  projectOutputDirectory,
   projectSourceIds,
   type Project,
 } from "./index.ts"
@@ -21,7 +23,12 @@ export function projectDump(
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
     const mod = M.loadMod(path, dependencyGraph)
-    dumpCode("001-loaded", M.prettyModDefinitions(textWidth, mod), path)
+    projectDumpCode(
+      project,
+      id,
+      "001-loaded",
+      M.prettyModDefinitions(textWidth, mod),
+    )
   }
 
   M.dependencyGraphForEachDefinition(dependencyGraph, M.definitionDesugar)
@@ -29,7 +36,12 @@ export function projectDump(
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
     const mod = M.loadMod(path, dependencyGraph)
-    dumpCode("002-desugared", M.prettyModDefinitions(textWidth, mod), path)
+    projectDumpCode(
+      project,
+      id,
+      "002-desugared",
+      M.prettyModDefinitions(textWidth, mod),
+    )
   }
 
   M.dependencyGraphForEachMod(dependencyGraph, (mod) => {
@@ -47,39 +59,70 @@ export function projectDump(
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
     const mod = M.loadMod(path, dependencyGraph)
-    dumpCode("003-checked", M.prettyModDefinitions(textWidth, mod), path)
+    projectDumpCode(
+      project,
+      id,
+      "003-checked",
+      M.prettyModDefinitions(textWidth, mod),
+    )
   }
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
     const mod = M.loadMod(path, dependencyGraph)
     Passes.ShrinkPass(mod)
-    dumpCode("005-shrink", M.prettyModDefinitions(textWidth, mod), path)
+    projectDumpCode(
+      project,
+      id,
+      "005-shrink",
+      M.prettyModDefinitions(textWidth, mod),
+    )
   }
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
     const mod = M.loadMod(path, dependencyGraph)
     Passes.UniquifyPass(mod)
-    dumpCode("010-uniquify", M.prettyModDefinitions(textWidth, mod), path)
+    projectDumpCode(
+      project,
+      id,
+      "010-uniquify",
+      M.prettyModDefinitions(textWidth, mod),
+    )
   }
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
     const mod = M.loadMod(path, dependencyGraph)
     Passes.LiftLambdaPass(mod)
-    dumpCode("012-lift-lambda", M.prettyModDefinitions(textWidth, mod), path)
+    projectDumpCode(
+      project,
+      id,
+      "012-lift-lambda",
+      M.prettyModDefinitions(textWidth, mod),
+    )
   }
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
     const mod = M.loadMod(path, dependencyGraph)
     Passes.UnnestOperandPass(mod)
-    dumpCode("020-unnest-operand", M.prettyModDefinitions(textWidth, mod), path)
+    projectDumpCode(
+      project,
+      id,
+      "020-unnest-operand",
+      M.prettyModDefinitions(textWidth, mod),
+    )
   }
 }
 
-function dumpCode(tag: string, code: string, path: string): void {
+function projectDumpCode(
+  project: Project,
+  id: string,
+  tag: string,
+  code: string,
+): void {
+  const path = Path.join(projectOutputDirectory(project), id)
   const dumpPath = `${path}.${tag}.dump`
   logPath(tag, dumpPath)
   callWithFile(openOutputFile(dumpPath), (file) => {
