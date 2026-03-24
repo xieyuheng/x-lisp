@@ -8,7 +8,6 @@ basic_load(path_t *path) {
     value_t sexps = parse_sexps(path, file_read_string(file));
     mod_t *mod = make_mod(path);
     import_builtin_mod(mod);
-    basic_prepare(mod, sexps);
     basic_compile(mod, sexps);
     return mod;
 }

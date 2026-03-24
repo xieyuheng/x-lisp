@@ -61,7 +61,7 @@ handle_define_variable(mod_t *mod, value_t sexp) {
 }
 
 void
-basic_prepare(mod_t *mod, value_t sexps) {
+basic_compile(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
         value_t sexp = x_list_get(x_int(i), sexps);
         if (sexp_has_tag(sexp, "define-function")) {
@@ -72,10 +72,7 @@ basic_prepare(mod_t *mod, value_t sexps) {
             prepare_define_variable(mod, x_cdr(sexp));
         }
     }
-}
 
-void
-basic_compile(mod_t *mod, value_t sexps) {
     for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
         value_t sexp = x_list_get(x_int(i), sexps);
         if (sexp_has_tag(sexp, "define-function")) {

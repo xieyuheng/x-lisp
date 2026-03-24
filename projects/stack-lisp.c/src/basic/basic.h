@@ -1,6 +1,5 @@
 #pragma once
 
-void basic_prepare(mod_t *mod, value_t sexps);
 void basic_compile(mod_t *mod, value_t sexps);
 
 mod_t *basic_load(path_t *path);
