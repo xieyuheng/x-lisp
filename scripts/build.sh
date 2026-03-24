@@ -5,5 +5,6 @@ set -e
 make --directory projects/helpers.c build -j
 make --directory projects/cmd.c build -j
 make --directory projects/basic-lisp.c build -j
+make --directory projects/stack-lisp.c build -j
 
 pnpm run -r build

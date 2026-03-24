@@ -1,0 +1,5 @@
+(export-all)
+
+(define-function (one) (block body (return 1)))
+(define-function (two) (block body (return 2)))
+(define-function (three) (block body (return 3)))
