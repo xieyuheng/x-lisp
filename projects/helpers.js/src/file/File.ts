@@ -1,4 +1,5 @@
 import fs from "node:fs"
+import Path from "node:path"
 
 export type File = {
   fd: number
@@ -11,6 +12,8 @@ export function openInputFile(path: string): File {
 }
 
 export function openOutputFile(path: string): File {
+  fs.mkdirSync(Path.dirname(path), { recursive: true })
+
   return {
     fd: fs.openSync(path, "w"),
   }
