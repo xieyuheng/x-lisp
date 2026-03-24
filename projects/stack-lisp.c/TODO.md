@@ -1,5 +1,7 @@
-stack-lisp -- remove module system
-stack-lisp -- remove compiler
+rename .basic to .stack
+
+remove module system
+remove compiler
 
 # later
 
@@ -8,8 +10,3 @@ stack-lisp -- remove compiler
 [sexp] `sexp_format`
 [sexp] `sexp_print`
 [sexp] `sexp.snapshot` -- call `sexp_print`
-
-# later
-
-[builtin] `(assert-with-meta)` -- `(assert)` should be compiled to `(assert-with-meta)`
-[basic] handle `(assert)` in `ShrinkPass`

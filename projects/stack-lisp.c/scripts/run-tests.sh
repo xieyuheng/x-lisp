@@ -3,7 +3,7 @@
 set -e
 
 parallel="parallel -v --halt now,fail=1"
-bin="./src/basic-lisp run"
+bin="./src/stack-lisp run"
 flags=""
 
 find lisp/tests -name "*.test.basic" | $parallel $bin {} $flags
