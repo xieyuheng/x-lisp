@@ -1,4 +1,5 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
+import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import type { Exp } from "./Exp.ts"
 
@@ -9,7 +10,8 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
     case "String":
     case "Int":
     case "Float":
-    case "Var": {
+    case "Var":
+    case "Require": {
       return onExp(exp)
     }
 
@@ -92,6 +94,10 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return M.LiteralList(exp.elements.map(onExp), exp.meta)
     }
 
+    case "LiteralTuple": {
+      return M.LiteralTuple(exp.elements.map(onExp), exp.meta)
+    }
+
     case "LiteralSet": {
       return M.LiteralSet(exp.elements.map(onExp), exp.meta)
     }
@@ -116,6 +122,48 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
 
     case "The": {
       return M.The(onExp(exp.type), onExp(exp.exp), exp.meta)
+    }
+
+    case "Interface": {
+      return M.Interface(recordMapValue(exp.attributeTypes, onExp), exp.meta)
+    }
+
+    case "ExtendInterface": {
+      return M.ExtendInterface(
+        onExp(exp.baseType),
+        recordMapValue(exp.attributeTypes, onExp),
+        exp.meta,
+      )
+    }
+
+    case "Extend": {
+      return M.Extend(
+        onExp(exp.base),
+        recordMapValue(exp.attributes, onExp),
+        exp.meta,
+      )
+    }
+
+    case "Update": {
+      return M.Update(
+        onExp(exp.base),
+        recordMapValue(exp.attributes, onExp),
+        exp.meta,
+      )
+    }
+
+    case "UpdateMut": {
+      return M.UpdateMut(
+        onExp(exp.base),
+        recordMapValue(exp.attributes, onExp),
+        exp.meta,
+      )
+    }
+
+    case "Match": {
+      let message = `[expTraverse] can not handle Match`
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+      else throw new Error(message)
     }
   }
 }
