@@ -5,6 +5,7 @@ import {
   logPath,
   projectBuild,
   projectGetBasicPath,
+  projectGetSourcePath,
   projectSourceIds,
   type Project,
 } from "./index.ts"
@@ -26,7 +27,7 @@ export function projectTest(
   for (const id of projectSourceIds(project)) {
     if (id.endsWith(".snapshot.meta")) {
       const inputFile = projectGetBasicPath(project, id)
-      const outputFile = inputFile + ".out"
+      const outputFile = projectGetSourcePath(project, id) + ".out"
       logPath("basic-snapshot", outputFile)
       systemShellRun(BasicInterpreterFile, ["run", inputFile, ">", outputFile])
     }
@@ -35,7 +36,7 @@ export function projectTest(
   for (const id of projectSourceIds(project)) {
     if (id.endsWith(".error.meta")) {
       const inputFile = projectGetBasicPath(project, id)
-      const outputFile = inputFile + ".err"
+      const outputFile = projectGetSourcePath(project, id) + ".err"
       logPath("basic-error-snapshot", outputFile)
       systemShellRun(BasicInterpreterFile, [
         "run",
