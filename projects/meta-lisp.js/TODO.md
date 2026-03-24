@@ -1,3 +1,3 @@
-# basic-lisp
-
-bring basic-lisp back
+[pass] compile meta-lisp to basic-lisp
+`project:build` command -- compile meta-lisp to basic-lisp
+`project:test` command -- run test and snapshot
