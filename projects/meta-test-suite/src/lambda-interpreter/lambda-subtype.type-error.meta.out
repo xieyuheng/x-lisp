@@ -1,4 +1,4 @@
-lisp/test-suite/src/lambda-interpreter/lambda-subtype.type-error.meta:28:4 -- inferred type is not a subtype of given type
+src/lambda-interpreter/lambda-subtype.type-error.meta:28:4 -- inferred type is not a subtype of given type
   inferred type: l2/exp-t
   given type: l1/exp-t
  26 | 
