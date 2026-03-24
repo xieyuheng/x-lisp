@@ -1,5 +1,8 @@
-remove module system
-remove compiler
+remove basic-lisp compiler
+
+# later
+
+[builtin] rename console to file
 
 # later
 
