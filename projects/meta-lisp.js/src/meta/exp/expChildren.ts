@@ -1,3 +1,4 @@
+import * as S from "@xieyuheng/sexp.js"
 import type { Exp } from "./Exp.ts"
 
 export function expChildren(exp: Exp): Array<Exp> {
@@ -8,6 +9,10 @@ export function expChildren(exp: Exp): Array<Exp> {
     case "Int":
     case "Float":
     case "Var": {
+      return []
+    }
+
+    case "Require": {
       return []
     }
 
@@ -71,6 +76,10 @@ export function expChildren(exp: Exp): Array<Exp> {
       return exp.elements
     }
 
+    case "LiteralTuple": {
+      return exp.elements
+    }
+
     case "LiteralRecord": {
       return Object.values(exp.attributes)
     }
@@ -93,6 +102,26 @@ export function expChildren(exp: Exp): Array<Exp> {
 
     case "The": {
       return [exp.type, exp.exp]
+    }
+
+    case "Match": {
+      let message = `[expChildren] can not handle Match`
+      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+      else throw new Error(message)
+    }
+
+    case "Interface": {
+      return Object.values(exp.attributeTypes)
+    }
+
+    case "ExtendInterface": {
+      return [exp.baseType, ...Object.values(exp.attributeTypes)]
+    }
+
+    case "Extend":
+    case "Update":
+    case "UpdateMut": {
+      return [exp.base, ...Object.values(exp.attributes)]
     }
   }
 }
