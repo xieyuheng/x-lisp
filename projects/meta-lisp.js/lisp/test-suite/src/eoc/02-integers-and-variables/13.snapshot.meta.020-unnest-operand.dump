@@ -1,0 +1,6 @@
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁ (begin (= _₁ (ineg 10)) (iadd 42 _₁)))
+  (= _₂ (iadd x₁ 10))
+  (println _₂))

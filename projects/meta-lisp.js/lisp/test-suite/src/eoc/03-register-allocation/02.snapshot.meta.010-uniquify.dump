@@ -1,0 +1,6 @@
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁ (random-dice))
+  (= y₁ (random-dice))
+  (println (iadd (iadd x₁ y₁) 42)))

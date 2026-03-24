@@ -1,0 +1,6 @@
+(claim main (-> void-t))
+
+(define (main)
+  (= y₁ 6)
+  (= x₁ (begin (= y₂ (ineg 42)) y₂))
+  (println (iadd x₁ y₁)))

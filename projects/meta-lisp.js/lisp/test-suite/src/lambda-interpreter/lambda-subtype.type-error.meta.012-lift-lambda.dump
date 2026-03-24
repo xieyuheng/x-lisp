@@ -1,0 +1,49 @@
+(claim evaluate-and-print (-> exp-t void-t))
+
+(define (evaluate-and-print exp)
+  (println (l1/evaluate exp l1/empty-env)))
+
+(define (main)
+  (evaluate-and-print (l1/lambda-exp 'x (l1/var-exp 'x)))
+  (evaluate-and-print
+   (l1/apply-exp
+    (l1/lambda-exp 'x (l1/var-exp 'x))
+    (l1/lambda-exp 'x (l1/var-exp 'x))))
+  (evaluate-and-print
+   (l1/apply-exp
+    (l1/apply-exp
+     (l1/lambda-exp 'x (l1/var-exp 'x))
+     (l1/lambda-exp 'x (l1/var-exp 'x)))
+    (l1/apply-exp
+     (l1/lambda-exp 'x (l1/var-exp 'x))
+     (l1/lambda-exp 'x (l1/var-exp 'x)))))
+  (evaluate-and-print (l2/lambda-exp 'x (l2/var-exp 'x)))
+  (evaluate-and-print
+   (l2/apply-exp
+    (l2/lambda-exp 'x (l2/var-exp 'x))
+    (l2/lambda-exp 'x (l2/var-exp 'x))))
+  (evaluate-and-print
+   (l2/apply-exp
+    (l2/apply-exp
+     (l2/lambda-exp 'x (l2/var-exp 'x))
+     (l2/lambda-exp 'x (l2/var-exp 'x)))
+    (l2/apply-exp
+     (l2/lambda-exp 'x (l2/var-exp 'x))
+     (l2/lambda-exp 'x (l2/var-exp 'x)))))
+  (evaluate-and-print
+   (l2/let-exp
+    'id
+    (l2/lambda-exp 'x (l2/var-exp 'x))
+    (l2/var-exp 'id)))
+  (evaluate-and-print
+   (l2/let-exp
+    'id
+    (l2/lambda-exp 'x (l2/var-exp 'x))
+    (l2/apply-exp (l2/var-exp 'id) (l2/var-exp 'id))))
+  (evaluate-and-print
+   (l2/let-exp
+    'id
+    (l2/lambda-exp 'x (l2/var-exp 'x))
+    (l2/apply-exp
+     (l2/apply-exp (l2/var-exp 'id) (l2/var-exp 'id))
+     (l2/apply-exp (l2/var-exp 'id) (l2/var-exp 'id))))))

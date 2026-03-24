@@ -1,0 +1,18 @@
+(import-all "my-list")
+
+(import-all "my-list-map")
+
+(define-function (main)
+  (block body
+    (= _₁ (iadd 1))
+    (= _₂ (my-list-map _₁ nil))
+    (perform (assert-equal nil _₂))
+    (= _₃ (li 4 nil))
+    (= _₄ (li 3 _₃))
+    (= _₅ (li 2 _₄))
+    (= _₆ (iadd 1))
+    (= _₇ (li 3 nil))
+    (= _₈ (li 2 _₇))
+    (= _₉ (li 1 _₈))
+    (= _₁₀ (my-list-map _₆ _₉))
+    (return (assert-equal _₅ _₁₀))))

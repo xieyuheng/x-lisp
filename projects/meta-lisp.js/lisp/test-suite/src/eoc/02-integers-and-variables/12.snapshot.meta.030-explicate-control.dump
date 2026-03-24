@@ -1,0 +1,7 @@
+(define-function (main)
+  (block body
+    (= _₁ (iadd 1 2))
+    (= _₂ (iadd 4 5))
+    (= _₃ (iadd 3 _₂))
+    (= _₄ (iadd _₁ _₃))
+    (return (println _₄))))

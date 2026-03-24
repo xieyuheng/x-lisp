@@ -1,0 +1,19 @@
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(claim main (-> void-t))
+
+(define (main)
+  (= add1₁ (iadd 1))
+  (begin (= _₁ (add1₁ 1)) (assert-equal 2 _₁))
+  (= add1₂
+     (begin
+       (= _₂ (identity 1))
+       (= _₃ (iadd _₂))
+       (identity _₃)))
+  identity
+  identity
+  identity
+  (= _₄ (add1₂ 1))
+  (assert-equal 2 _₄))

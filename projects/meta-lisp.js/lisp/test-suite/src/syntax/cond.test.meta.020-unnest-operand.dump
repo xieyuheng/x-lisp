@@ -1,0 +1,21 @@
+(claim main (-> void-t))
+
+(define (main)
+  (begin
+    (= _₁
+       (if (equal? 1 1)
+         1
+         (if true 2 (error "cond mismatch"))))
+    (assert-equal 1 _₁))
+  (begin
+    (= _₂
+       (if (equal? 1 2)
+         1
+         (if true 2 (error "cond mismatch"))))
+    (assert-equal 2 _₂))
+  (if (equal? 1 1)
+    (assert true)
+    (if true (assert false) (error "cond mismatch")))
+  (if (equal? 1 2)
+    (assert false)
+    (if true (assert true) (error "cond mismatch"))))

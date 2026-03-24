@@ -1,0 +1,9 @@
+(claim Y (polymorphic (A) (-> (-> A A) A)))
+
+(define (Y f) (Y©λ₁ (Y©λ₂ f)))
+
+(define (Y©λ₁ u₁) (u₁ u₁))
+
+(define (Y©λ₂ f x₁) (f (Y©λ₂©λ₁ x₁)))
+
+(define (Y©λ₂©λ₁ x₁ t₁) ((x₁ x₁) t₁))

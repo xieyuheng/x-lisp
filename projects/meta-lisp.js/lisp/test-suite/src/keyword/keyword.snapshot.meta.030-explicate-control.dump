@@ -1,0 +1,2 @@
+(define-function (main)
+  (block body (return (println #abc))))

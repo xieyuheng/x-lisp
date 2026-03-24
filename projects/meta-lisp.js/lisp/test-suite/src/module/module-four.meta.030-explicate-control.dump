@@ -1,0 +1,9 @@
+(export one two three four)
+
+(define-variable one (block body (return 1)))
+
+(define-variable two (block body (return 2)))
+
+(define-variable three (block body (return 3)))
+
+(define-variable four (block body (return 4)))

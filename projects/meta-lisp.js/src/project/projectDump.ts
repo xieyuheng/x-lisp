@@ -4,8 +4,10 @@ import {
   openOutputFile,
   withOutputToFile,
 } from "@xieyuheng/helpers.js/file"
+import * as B from "../basic/index.ts"
 import { textWidth } from "../config.ts"
 import * as M from "../meta/index.ts"
+import * as Passes from "../passes/index.ts"
 import {
   logPath,
   projectGetSourcePath,
@@ -47,6 +49,42 @@ export function projectDump(
     const path = projectGetSourcePath(project, id)
     const mod = M.loadMod(path, dependencyGraph)
     dumpCode("003-checked", M.prettyModDefinitions(textWidth, mod), path)
+  }
+
+  for (const id of projectSourceIds(project)) {
+    const path = projectGetSourcePath(project, id)
+    const mod = M.loadMod(path, dependencyGraph)
+    Passes.ShrinkPass(mod)
+    dumpCode("005-shrink", M.prettyModDefinitions(textWidth, mod), path)
+  }
+
+  for (const id of projectSourceIds(project)) {
+    const path = projectGetSourcePath(project, id)
+    const mod = M.loadMod(path, dependencyGraph)
+    Passes.UniquifyPass(mod)
+    dumpCode("010-uniquify", M.prettyModDefinitions(textWidth, mod), path)
+  }
+
+  for (const id of projectSourceIds(project)) {
+    const path = projectGetSourcePath(project, id)
+    const mod = M.loadMod(path, dependencyGraph)
+    Passes.LiftLambdaPass(mod)
+    dumpCode("012-lift-lambda", M.prettyModDefinitions(textWidth, mod), path)
+  }
+
+  for (const id of projectSourceIds(project)) {
+    const path = projectGetSourcePath(project, id)
+    const mod = M.loadMod(path, dependencyGraph)
+    Passes.UnnestOperandPass(mod)
+    dumpCode("020-unnest-operand", M.prettyModDefinitions(textWidth, mod), path)
+  }
+
+  for (const id of projectSourceIds(project)) {
+    const path = projectGetSourcePath(project, id)
+    const mod = M.loadMod(path, dependencyGraph)
+    const basicMod = B.createMod(mod.path, new Map())
+    Passes.ExplicateControlPass(mod, basicMod)
+    dumpCode("030-explicate-control", B.prettyMod(textWidth, basicMod), path)
   }
 }
 

@@ -1,0 +1,3 @@
+(claim main (-> void-t))
+
+(define (main) (= a₁ 42) (= b₁ a₁) (println b₁))

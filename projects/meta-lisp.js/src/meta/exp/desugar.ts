@@ -245,7 +245,7 @@ function desugarCond(clauses: Array<M.CondClause>, meta?: S.TokenMeta): M.Exp {
   )
 }
 
-function desugarList(elements: Array<M.Exp>, meta?: S.TokenMeta): M.Exp {
+export function desugarList(elements: Array<M.Exp>, meta?: S.TokenMeta): M.Exp {
   return M.BeginSugar(
     [
       M.AssignSugar("list", M.Apply(M.Var("make-list", meta), [], meta), meta),

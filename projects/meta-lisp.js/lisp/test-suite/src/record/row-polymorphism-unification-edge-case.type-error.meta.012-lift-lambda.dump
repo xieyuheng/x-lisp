@@ -1,0 +1,4 @@
+(define (f r)
+  (if true
+    (begin (= record₁ r) (record-put :x 2 record₁) record₁)
+    (begin (= record₁ r) (record-put :y 2 record₁) record₁)))

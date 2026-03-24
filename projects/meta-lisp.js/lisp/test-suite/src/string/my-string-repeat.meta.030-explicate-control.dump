@@ -1,0 +1,9 @@
+(export my-string-repeat)
+
+(define-function (my-string-repeat n string)
+  (block body (test (equal? n 0)) (branch then₁ else₂))
+  (block then₁ (return ""))
+  (block else₂
+    (= _₁ (isub n 1))
+    (= _₂ (my-string-repeat _₁ string))
+    (return (string-append string _₂))))

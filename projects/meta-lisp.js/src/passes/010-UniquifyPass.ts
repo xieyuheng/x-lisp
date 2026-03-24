@@ -35,7 +35,8 @@ function onExp(
     case "Keyword":
     case "String":
     case "Int":
-    case "Float": {
+    case "Float":
+    case "Require": {
       return exp
     }
 

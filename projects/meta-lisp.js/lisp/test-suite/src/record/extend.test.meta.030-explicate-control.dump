@@ -1,0 +1,18 @@
+(define-function (with-color color point)
+  (block body
+    (= record₁ point)
+    (perform (record-put #color color record₁))
+    (return record₁)))
+
+(define-function (main)
+  (block body
+    (= record₁ (make-record))
+    (perform (record-put! #x 1.0 record₁))
+    (perform (record-put! #y 2.0 record₁))
+    (= point₁ record₁)
+    (= record₁ (make-record))
+    (perform (record-put! #x 1.0 record₁))
+    (perform (record-put! #y 2.0 record₁))
+    (perform (record-put! #color "red" record₁))
+    (= _₁ (with-color "red" point₁))
+    (return (assert-equal record₁ _₁))))

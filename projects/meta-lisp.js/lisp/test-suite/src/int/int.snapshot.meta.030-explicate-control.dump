@@ -1,0 +1,5 @@
+(define-function (square x)
+  (block body (return (imul x x))))
+
+(define-function (main)
+  (block body (= _₁ (square 3)) (return (println _₁))))

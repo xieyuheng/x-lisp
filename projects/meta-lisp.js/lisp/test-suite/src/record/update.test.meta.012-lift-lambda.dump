@@ -1,0 +1,61 @@
+(define-interface point-t :x float-t :y float-t)
+
+(claim point-put-x
+  (polymorphic (A B C)
+    (-> A
+        (extend-interface B :x C)
+        (extend-interface B :x C))))
+
+(define (point-put-x x point)
+  (= record₁ point)
+  (record-put :x x record₁)
+  record₁)
+
+(claim point-put-y!
+  (polymorphic (A B C)
+    (-> A
+        (extend-interface B :y C)
+        (extend-interface B :y C))))
+
+(define (point-put-y! y point)
+  (= record₁ point)
+  (record-put! :y y record₁)
+  record₁)
+
+(claim main (-> void-t))
+
+(define (main)
+  (= point₁
+     (begin
+       (= record₁ (make-record))
+       (record-put! :x 1.0 record₁)
+       (record-put! :y 2.0 record₁)
+       record₁))
+  (assert-equal
+    (begin
+      (= record₁ (make-record))
+      (record-put! :x 2.0 record₁)
+      (record-put! :y 2.0 record₁)
+      record₁)
+    (point-put-x 2.0 point₁))
+  (assert-equal
+    (begin
+      (= record₁ (make-record))
+      (record-put! :x 1.0 record₁)
+      (record-put! :y 2.0 record₁)
+      record₁)
+    point₁)
+  (assert-equal
+    (begin
+      (= record₁ (make-record))
+      (record-put! :x 1.0 record₁)
+      (record-put! :y 1.0 record₁)
+      record₁)
+    (point-put-y! 1.0 point₁))
+  (assert-equal
+    (begin
+      (= record₁ (make-record))
+      (record-put! :x 1.0 record₁)
+      (record-put! :y 1.0 record₁)
+      record₁)
+    point₁))

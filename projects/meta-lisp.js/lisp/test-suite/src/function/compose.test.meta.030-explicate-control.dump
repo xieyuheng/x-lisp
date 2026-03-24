@@ -1,0 +1,9 @@
+(define-function (compose f g x)
+  (block body (= _₁ (g x)) (return (f _₁))))
+
+(define-function (main)
+  (block body
+    (= add1₁ (iadd 1))
+    (= _₁ (compose add1₁ add1₁))
+    (= _₂ (_₁ 1))
+    (return (assert-equal 3 _₂))))

@@ -1,0 +1,5 @@
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁ 32)
+  (println (iadd (begin (= x₂ 10) x₂) x₁)))

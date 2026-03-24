@@ -1,0 +1,9 @@
+(import-all "my-list")
+
+(define-function (main)
+  (block body
+    (perform (println nil))
+    (= _₁ (li 3 nil))
+    (= _₂ (li 2 _₁))
+    (= _₃ (li 1 _₂))
+    (return (println _₃))))

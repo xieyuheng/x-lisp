@@ -1,0 +1,32 @@
+(claim evaluate-and-print (-> exp-t void-t))
+
+(define (evaluate-and-print exp)
+  (= _₁ (evaluate exp empty-env))
+  (println _₁))
+
+(claim main (-> void-t))
+
+(define (main)
+  (begin
+    (= _₁ (var-exp 'x))
+    (= _₂ (lambda-exp 'x _₁))
+    (evaluate-and-print _₂))
+  (begin
+    (= _₃ (var-exp 'x))
+    (= _₄ (lambda-exp 'x _₃))
+    (= _₅ (var-exp 'x))
+    (= _₆ (lambda-exp 'x _₅))
+    (= _₇ (apply-exp _₄ _₆))
+    (evaluate-and-print _₇))
+  (= _₈ (var-exp 'x))
+  (= _₉ (lambda-exp 'x _₈))
+  (= _₁₀ (var-exp 'x))
+  (= _₁₁ (lambda-exp 'x _₁₀))
+  (= _₁₂ (apply-exp _₉ _₁₁))
+  (= _₁₃ (var-exp 'x))
+  (= _₁₄ (lambda-exp 'x _₁₃))
+  (= _₁₅ (var-exp 'x))
+  (= _₁₆ (lambda-exp 'x _₁₅))
+  (= _₁₇ (apply-exp _₁₄ _₁₆))
+  (= _₁₈ (apply-exp _₁₂ _₁₇))
+  (evaluate-and-print _₁₈))

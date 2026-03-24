@@ -1,0 +1,10 @@
+(claim main (-> void-t))
+
+(define (main)
+  (= x₁ (random-dice))
+  (= y₁ (random-dice))
+  (= _₁
+     (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
+       (iadd y₁ 2)
+       (iadd y₁ 10)))
+  (println _₁))

@@ -1,0 +1,15 @@
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (begin
+     (= record₁ (make-record))
+     (record-put! :x 1 record₁)
+     (record-put! :y 2 record₁)
+     record₁))
+  (println
+   (begin
+     (= record₁ (make-record))
+     (record-put! :x 1 record₁)
+     (record-put! :y 2 record₁)
+     record₁)))

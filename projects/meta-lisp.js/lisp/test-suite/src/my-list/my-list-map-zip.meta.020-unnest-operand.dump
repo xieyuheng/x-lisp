@@ -1,0 +1,71 @@
+(claim my-list-map-zip
+  (polymorphic (A B C)
+    (-> (-> A B C) (my-list-t A) (my-list-t B) (my-list-t C))))
+
+(define (my-list-map-zip f list1 list2)
+  (if (nil? list1)
+    (begin (= _₁ list2) nil)
+    (if (li? list1)
+      (begin
+        (= tail₅₁ (li-tail list1))
+        (= head₅₁ (li-head list1))
+        (if (nil? list2)
+          (begin (= tail1₁ tail₅₁) (= head1₁ head₅₁) nil)
+          (if (li? list2)
+            (begin
+              (= tail₆₁ (li-tail list2))
+              (= head₆₁ (li-head list2))
+              (= tail2₁ tail₆₁)
+              (= head2₁ head₆₁)
+              (= tail1₁ tail₅₁)
+              (= head1₁ head₅₁)
+              (= _₁ (f head1₁ head2₁))
+              (= _₂ (my-list-map-zip f tail1₁ tail2₁))
+              (li _₁ _₂))
+            (error "cond mismatch"))))
+      (error "cond mismatch"))))
+
+(claim my-list-map-zip-2
+  (polymorphic (A B C)
+    (-> (-> A B C) (my-list-t A) (my-list-t B) (my-list-t C))))
+
+(define (my-list-map-zip-2 f list1 list2)
+  (if (nil? list1)
+    (begin (= _₁ list2) nil)
+    (if (li? list1)
+      (begin
+        (= tail₁₀₁ (li-tail list1))
+        (= head₁₀₁ (li-head list1))
+        (if (nil? list2)
+          (begin (= _₁ list1) nil)
+          (if (li? list2)
+            (begin
+              (= tail₉₁ (li-tail list2))
+              (= head₉₁ (li-head list2))
+              (if (nil? list1)
+                (error "match mismatch")
+                (if (li? list1)
+                  (begin
+                    (= tail₇₁ (li-tail list1))
+                    (= head₇₁ (li-head list1))
+                    (if (nil? list2)
+                      (error "match mismatch")
+                      (if (li? list2)
+                        (begin
+                          (= tail₈₁ (li-tail list2))
+                          (= head₈₁ (li-head list2))
+                          (= tail2₁ tail₈₁)
+                          (= head2₁ head₈₁)
+                          (= tail1₁ tail₇₁)
+                          (= head1₁ head₇₁)
+                          (= _₁ (f head1₁ head2₁))
+                          (= _₂
+                             (my-list-map-zip-2
+                              f
+                              tail1₁
+                              tail2₁))
+                          (li _₁ _₂))
+                        (error "cond mismatch"))))
+                  (error "cond mismatch"))))
+            (error "cond mismatch"))))
+      (error "cond mismatch"))))

@@ -1,0 +1,5 @@
+(define-function (main)
+  (block body
+    (= hash₁ (make-hash))
+    (= _₁ (hash-empty? hash₁))
+    (return (assert _₁))))

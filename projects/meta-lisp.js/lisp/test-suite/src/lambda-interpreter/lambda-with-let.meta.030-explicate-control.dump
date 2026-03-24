@@ -1,0 +1,344 @@
+(export-all)
+
+(define-function (var-exp name)
+  (block body
+    (= list₁ (make-list))
+    (perform (list-push! 'var-exp list₁))
+    (perform (list-push! name list₁))
+    (return list₁)))
+
+(define-function (var-exp? value)
+  (block body (test (list? value)) (branch then₃ else₄))
+  (block then₁
+    (= _₂ (list-head value))
+    (return (equal? _₂ 'var-exp)))
+  (block else₂ (return false))
+  (block then₃
+    (= _₁ (list-length value))
+    (test (equal? _₁ 2))
+    (branch then₁ else₂))
+  (block else₄ (return false)))
+
+(define-function (var-exp-name target)
+  (block body (return (list-get 1 target))))
+
+(define-function (var-exp-put-name value target)
+  (block body (return (list-put 1 value target))))
+
+(define-function (var-exp-put-name! value target)
+  (block body (return (list-put! 1 value target))))
+
+(define-function (apply-exp target arg)
+  (block body
+    (= list₁ (make-list))
+    (perform (list-push! 'apply-exp list₁))
+    (perform (list-push! target list₁))
+    (perform (list-push! arg list₁))
+    (return list₁)))
+
+(define-function (apply-exp? value)
+  (block body (test (list? value)) (branch then₃ else₄))
+  (block then₁
+    (= _₂ (list-head value))
+    (return (equal? _₂ 'apply-exp)))
+  (block else₂ (return false))
+  (block then₃
+    (= _₁ (list-length value))
+    (test (equal? _₁ 3))
+    (branch then₁ else₂))
+  (block else₄ (return false)))
+
+(define-function (apply-exp-target target)
+  (block body (return (list-get 1 target))))
+
+(define-function (apply-exp-arg target)
+  (block body (return (list-get 2 target))))
+
+(define-function (apply-exp-put-target value target)
+  (block body (return (list-put 1 value target))))
+
+(define-function (apply-exp-put-arg value target)
+  (block body (return (list-put 2 value target))))
+
+(define-function (apply-exp-put-target! value target)
+  (block body (return (list-put! 1 value target))))
+
+(define-function (apply-exp-put-arg! value target)
+  (block body (return (list-put! 2 value target))))
+
+(define-function (lambda-exp parameter body)
+  (block body
+    (= list₁ (make-list))
+    (perform (list-push! 'lambda-exp list₁))
+    (perform (list-push! parameter list₁))
+    (perform (list-push! body list₁))
+    (return list₁)))
+
+(define-function (lambda-exp? value)
+  (block body (test (list? value)) (branch then₃ else₄))
+  (block then₁
+    (= _₂ (list-head value))
+    (return (equal? _₂ 'lambda-exp)))
+  (block else₂ (return false))
+  (block then₃
+    (= _₁ (list-length value))
+    (test (equal? _₁ 3))
+    (branch then₁ else₂))
+  (block else₄ (return false)))
+
+(define-function (lambda-exp-parameter target)
+  (block body (return (list-get 1 target))))
+
+(define-function (lambda-exp-body target)
+  (block body (return (list-get 2 target))))
+
+(define-function (lambda-exp-put-parameter value target)
+  (block body (return (list-put 1 value target))))
+
+(define-function (lambda-exp-put-body value target)
+  (block body (return (list-put 2 value target))))
+
+(define-function (lambda-exp-put-parameter! value target)
+  (block body (return (list-put! 1 value target))))
+
+(define-function (lambda-exp-put-body! value target)
+  (block body (return (list-put! 2 value target))))
+
+(define-function (let-exp name rhs body)
+  (block body
+    (= list₁ (make-list))
+    (perform (list-push! 'let-exp list₁))
+    (perform (list-push! name list₁))
+    (perform (list-push! rhs list₁))
+    (perform (list-push! body list₁))
+    (return list₁)))
+
+(define-function (let-exp? value)
+  (block body (test (list? value)) (branch then₃ else₄))
+  (block then₁
+    (= _₂ (list-head value))
+    (return (equal? _₂ 'let-exp)))
+  (block else₂ (return false))
+  (block then₃
+    (= _₁ (list-length value))
+    (test (equal? _₁ 4))
+    (branch then₁ else₂))
+  (block else₄ (return false)))
+
+(define-function (let-exp-name target)
+  (block body (return (list-get 1 target))))
+
+(define-function (let-exp-rhs target)
+  (block body (return (list-get 2 target))))
+
+(define-function (let-exp-body target)
+  (block body (return (list-get 3 target))))
+
+(define-function (let-exp-put-name value target)
+  (block body (return (list-put 1 value target))))
+
+(define-function (let-exp-put-rhs value target)
+  (block body (return (list-put 2 value target))))
+
+(define-function (let-exp-put-body value target)
+  (block body (return (list-put 3 value target))))
+
+(define-function (let-exp-put-name! value target)
+  (block body (return (list-put! 1 value target))))
+
+(define-function (let-exp-put-rhs! value target)
+  (block body (return (list-put! 2 value target))))
+
+(define-function (let-exp-put-body! value target)
+  (block body (return (list-put! 3 value target))))
+
+(define-variable empty-env (block body (return 'empty-env)))
+
+(define-function (empty-env? value)
+  (block body (return (equal? value 'empty-env))))
+
+(define-function (extend-env key value rest)
+  (block body
+    (= list₁ (make-list))
+    (perform (list-push! 'extend-env list₁))
+    (perform (list-push! key list₁))
+    (perform (list-push! value list₁))
+    (perform (list-push! rest list₁))
+    (return list₁)))
+
+(define-function (extend-env? value)
+  (block body (test (list? value)) (branch then₃ else₄))
+  (block then₁
+    (= _₂ (list-head value))
+    (return (equal? _₂ 'extend-env)))
+  (block else₂ (return false))
+  (block then₃
+    (= _₁ (list-length value))
+    (test (equal? _₁ 4))
+    (branch then₁ else₂))
+  (block else₄ (return false)))
+
+(define-function (extend-env-key target)
+  (block body (return (list-get 1 target))))
+
+(define-function (extend-env-value target)
+  (block body (return (list-get 2 target))))
+
+(define-function (extend-env-rest target)
+  (block body (return (list-get 3 target))))
+
+(define-function (extend-env-put-key value target)
+  (block body (return (list-put 1 value target))))
+
+(define-function (extend-env-put-value value target)
+  (block body (return (list-put 2 value target))))
+
+(define-function (extend-env-put-rest value target)
+  (block body (return (list-put 3 value target))))
+
+(define-function (extend-env-put-key! value target)
+  (block body (return (list-put! 1 value target))))
+
+(define-function (extend-env-put-value! value target)
+  (block body (return (list-put! 2 value target))))
+
+(define-function (extend-env-put-rest! value target)
+  (block body (return (list-put! 3 value target))))
+
+(define-function (env-has? name env)
+  (block body (test (empty-env? env)) (branch then₅ else₆))
+  (block then₁ (return true))
+  (block else₂ (return (env-has? name rest₁)))
+  (block then₃
+    (= rest₃₁ (extend-env-rest env))
+    (= value₃₁ (extend-env-value env))
+    (= key₃₁ (extend-env-key env))
+    (= rest₁ rest₃₁)
+    (= value₁ value₃₁)
+    (= key₁ key₃₁)
+    (test (equal? key₁ name))
+    (branch then₁ else₂))
+  (block else₄ (return (error "cond mismatch")))
+  (block then₅ (return false))
+  (block else₆
+    (test (extend-env? env))
+    (branch then₃ else₄)))
+
+(define-function (env-lookup-of-fail name env)
+  (block body (test (empty-env? env)) (branch then₅ else₆))
+  (block then₁ (return value₁))
+  (block else₂ (return (env-lookup-of-fail name rest₁)))
+  (block then₃
+    (= rest₄₁ (extend-env-rest env))
+    (= value₄₁ (extend-env-value env))
+    (= key₄₁ (extend-env-key env))
+    (= rest₁ rest₄₁)
+    (= value₁ value₄₁)
+    (= key₁ key₄₁)
+    (test (equal? key₁ name))
+    (branch then₁ else₂))
+  (block else₄ (return (error "cond mismatch")))
+  (block then₅ (return (error "undefined name")))
+  (block else₆
+    (test (extend-env? env))
+    (branch then₃ else₄)))
+
+(define-function (closure-value env parameter body)
+  (block body
+    (= list₁ (make-list))
+    (perform (list-push! 'closure-value list₁))
+    (perform (list-push! env list₁))
+    (perform (list-push! parameter list₁))
+    (perform (list-push! body list₁))
+    (return list₁)))
+
+(define-function (closure-value? value)
+  (block body (test (list? value)) (branch then₃ else₄))
+  (block then₁
+    (= _₂ (list-head value))
+    (return (equal? _₂ 'closure-value)))
+  (block else₂ (return false))
+  (block then₃
+    (= _₁ (list-length value))
+    (test (equal? _₁ 4))
+    (branch then₁ else₂))
+  (block else₄ (return false)))
+
+(define-function (closure-value-env target)
+  (block body (return (list-get 1 target))))
+
+(define-function (closure-value-parameter target)
+  (block body (return (list-get 2 target))))
+
+(define-function (closure-value-body target)
+  (block body (return (list-get 3 target))))
+
+(define-function (closure-value-put-env value target)
+  (block body (return (list-put 1 value target))))
+
+(define-function (closure-value-put-parameter value target)
+  (block body (return (list-put 2 value target))))
+
+(define-function (closure-value-put-body value target)
+  (block body (return (list-put 3 value target))))
+
+(define-function (closure-value-put-env! value target)
+  (block body (return (list-put! 1 value target))))
+
+(define-function (closure-value-put-parameter! value target)
+  (block body (return (list-put! 2 value target))))
+
+(define-function (closure-value-put-body! value target)
+  (block body (return (list-put! 3 value target))))
+
+(define-function (evaluate exp env)
+  (block body (test (var-exp? exp)) (branch then₇ else₈))
+  (block then₁
+    (= body₄₁ (let-exp-body exp))
+    (= rhs₁₁ (let-exp-rhs exp))
+    (= name₃₁ (let-exp-name exp))
+    (= body₁ body₄₁)
+    (= rhs₁ rhs₁₁)
+    (= name₁ name₃₁)
+    (= _₃ (evaluate rhs₁ env))
+    (= env₁ (extend-env name₁ _₃ env))
+    (return (evaluate body₁ env₁)))
+  (block else₂ (return (error "cond mismatch")))
+  (block then₃
+    (= body₃₁ (lambda-exp-body exp))
+    (= parameter₃₁ (lambda-exp-parameter exp))
+    (= body₁ body₃₁)
+    (= parameter₁ parameter₃₁)
+    (return (closure-value env parameter₁ body₁)))
+  (block else₄ (test (let-exp? exp)) (branch then₁ else₂))
+  (block then₅
+    (= arg₂₁ (apply-exp-arg exp))
+    (= target₂₁ (apply-exp-target exp))
+    (= arg₁ arg₂₁)
+    (= target₁ target₂₁)
+    (= _₁ (evaluate target₁ env))
+    (= _₂ (evaluate arg₁ env))
+    (return (apply _₁ _₂)))
+  (block else₆
+    (test (lambda-exp? exp))
+    (branch then₃ else₄))
+  (block then₇
+    (= name₂₁ (var-exp-name exp))
+    (= name₁ name₂₁)
+    (return (env-lookup-of-fail name₁ env)))
+  (block else₈ (test (apply-exp? exp)) (branch then₅ else₆)))
+
+(define-function (apply target arg)
+  (block body
+    (test (closure-value? target))
+    (branch then₁ else₂))
+  (block then₁
+    (= body₅₁ (closure-value-body target))
+    (= parameter₄₁ (closure-value-parameter target))
+    (= env₂₁ (closure-value-env target))
+    (= body₁ body₅₁)
+    (= parameter₁ parameter₄₁)
+    (= env₁ env₂₁)
+    (= _₁ (extend-env parameter₁ arg env₁))
+    (return (evaluate body₁ _₁)))
+  (block else₂ (return (error "cond mismatch"))))

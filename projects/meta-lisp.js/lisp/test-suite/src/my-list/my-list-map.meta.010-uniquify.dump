@@ -1,0 +1,15 @@
+(claim my-list-map
+  (polymorphic (A B)
+    (-> (-> A B) (my-list-t A) (my-list-t B))))
+
+(define (my-list-map f list)
+  (if (nil? list)
+    nil
+    (if (li? list)
+      (begin
+        (= tail₁₁₁ (li-tail list))
+        (= head₁₁₁ (li-head list))
+        (= tail₁ tail₁₁₁)
+        (= head₁ head₁₁₁)
+        (li (f head₁) (my-list-map f tail₁)))
+      (error "cond mismatch"))))

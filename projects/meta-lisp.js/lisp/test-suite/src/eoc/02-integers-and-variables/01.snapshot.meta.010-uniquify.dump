@@ -1,0 +1,3 @@
+(claim main (-> void-t))
+
+(define (main) (= x₁ 4) (println (iadd 8 x₁)))

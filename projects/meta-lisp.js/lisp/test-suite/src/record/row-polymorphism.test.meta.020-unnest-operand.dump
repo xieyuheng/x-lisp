@@ -1,0 +1,40 @@
+(define-interface point-t :x float-t :y float-t)
+
+(claim point-x
+  (polymorphic (A B) (-> (extend-interface A :x B) B)))
+
+(define (point-x point) (:x point))
+
+(claim point-y
+  (polymorphic (R A) (-> (extend-interface R :y A) A)))
+
+(define (point-y point) (:y point))
+
+(claim point-distance-squared
+  (polymorphic (A)
+    (-> (extend-interface A :y float-t :x float-t) float-t)))
+
+(define (point-distance-squared point)
+  (= _₁ (:x point))
+  (= _₂ (:x point))
+  (= _₃ (fmul _₁ _₂))
+  (= _₄ (:y point))
+  (= _₅ (:y point))
+  (= _₆ (fmul _₄ _₅))
+  (fadd _₃ _₆))
+
+(claim main (-> void-t))
+
+(define (main)
+  (= point₁
+     (begin
+       (= record₁ (make-record))
+       (record-put! :x 1.0 record₁)
+       (record-put! :y 2.0 record₁)
+       record₁))
+  (begin (= _₁ (:x point₁)) (assert-equal 1.0 _₁))
+  (begin (= _₂ (:y point₁)) (assert-equal 2.0 _₂))
+  (begin (= _₃ (point-x point₁)) (assert-equal 1.0 _₃))
+  (begin (= _₄ (point-y point₁)) (assert-equal 2.0 _₄))
+  (= _₅ (point-distance-squared point₁))
+  (assert-equal 5.0 _₅))

@@ -1,0 +1,9 @@
+(claim main (-> void-t))
+
+(define (main)
+  (begin (= _₁ (my-list-length nil)) (assert-equal 0 _₁))
+  (= _₂ (li 3 nil))
+  (= _₃ (li 2 _₂))
+  (= _₄ (li 1 _₃))
+  (= _₅ (my-list-length _₄))
+  (assert-equal 3 _₅))

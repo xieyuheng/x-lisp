@@ -1,0 +1,20 @@
+(define-interface point-t :x float-t :y float-t)
+
+(claim point-println (-> point-t void-t))
+
+(define (point-println point) (println point))
+
+(claim main (-> void-t))
+
+(define (main)
+  (point-println
+   (begin
+     (= record (make-record))
+     (record-put! :x 1.0 record)
+     (record-put! :y 2.0 record)
+     record))
+  (point-println
+   (begin
+     (= record (make-record))
+     (record-put! :x 1.0 record)
+     record)))

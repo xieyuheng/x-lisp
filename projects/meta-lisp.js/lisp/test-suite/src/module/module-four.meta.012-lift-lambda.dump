@@ -1,0 +1,15 @@
+(claim one int-t)
+
+(define one 1)
+
+(claim two int-t)
+
+(define two 2)
+
+(claim three int-t)
+
+(define three 3)
+
+(claim four int-t)
+
+(define four 4)

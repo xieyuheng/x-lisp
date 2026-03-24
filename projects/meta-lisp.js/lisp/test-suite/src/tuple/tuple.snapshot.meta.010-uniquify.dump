@@ -1,0 +1,15 @@
+(claim main (-> void-t))
+
+(define (main)
+  (println
+   (begin
+     (= list₁ (make-list))
+     (list-push! 1 list₁)
+     (list-push! 2 list₁)
+     list₁))
+  (println
+   (begin
+     (= list₁ (make-list))
+     (list-push! 1 list₁)
+     (list-push! 'a list₁)
+     list₁)))

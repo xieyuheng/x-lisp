@@ -1,0 +1,44 @@
+(claim main (-> void-t))
+
+(define (main)
+  (begin (= _₁ (nil? nil)) (assert _₁))
+  (begin
+    (= _₂ (li 3 nil))
+    (= _₃ (li 2 _₂))
+    (= _₄ (li 1 _₃))
+    (= _₅ (li? _₄))
+    (assert _₅))
+  (begin (= _₆ (li? nil)) (assert-not _₆))
+  (begin
+    (= _₇ (li 3 nil))
+    (= _₈ (li 2 _₇))
+    (= _₉ (li 1 _₈))
+    (= _₁₀ (nil? _₉))
+    (assert-not _₁₀))
+  (begin
+    (= _₁₁ (li 1 nil))
+    (= _₁₂ (li-tail _₁₁))
+    (assert-equal _₁₂ nil))
+  (begin
+    (= _₁₃ (li 1 nil))
+    (= _₁₄ (li-head _₁₃))
+    (assert-equal _₁₄ 1))
+  (= list₁
+     (begin
+       (= _₁₅ (li 3 nil))
+       (= _₁₆ (li 2 _₁₅))
+       (li 1 _₁₆)))
+  (begin (= _₁₇ (li-head list₁)) (assert-equal _₁₇ 1))
+  (li-put-head! 111 list₁)
+  (begin (= _₁₈ (li-head list₁)) (assert-equal _₁₈ 111))
+  (begin
+    (= _₁₉ (li-tail list₁))
+    (= _₂₀ (li 3 nil))
+    (= _₂₁ (li 2 _₂₀))
+    (assert-equal _₁₉ _₂₁))
+  (li-put-tail! nil list₁)
+  (begin (= _₂₂ (li-tail list₁)) (assert-equal _₂₂ nil))
+  (= _₂₃ (li 1 nil))
+  (= _₂₄ (li 1))
+  (= _₂₅ (_₂₄ nil))
+  (assert-equal _₂₃ _₂₅))

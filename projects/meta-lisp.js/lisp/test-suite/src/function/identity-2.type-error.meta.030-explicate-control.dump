@@ -1,0 +1,4 @@
+(define-function (identity x) (block body (return x)))
+
+(define-function (main)
+  (block body (perform identity) (return identity)))

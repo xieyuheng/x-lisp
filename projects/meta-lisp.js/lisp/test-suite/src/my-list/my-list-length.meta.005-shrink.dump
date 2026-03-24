@@ -1,0 +1,14 @@
+(claim my-list-length
+  (polymorphic (E) (-> (my-list-t E) int-t)))
+
+(define (my-list-length list)
+  (if (nil? list)
+    0
+    (if (li? list)
+      (begin
+        (= tail₄ (li-tail list))
+        (= head₄ (li-head list))
+        (= tail tail₄)
+        (= head head₄)
+        (iadd 1 (my-list-length tail)))
+      (error "cond mismatch"))))

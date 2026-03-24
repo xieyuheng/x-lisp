@@ -1,14 +1,14 @@
 import { type Stmt } from "../stmt/index.ts"
 
 export type Mod = {
-  url: URL
+  path: string
   stmts: Array<Stmt>
   dependencies: Map<string, Mod>
 }
 
-export function createMod(url: URL, dependencies: Map<string, Mod>): Mod {
+export function createMod(path: string, dependencies: Map<string, Mod>): Mod {
   return {
-    url,
+    path,
     stmts: [],
     dependencies,
   }

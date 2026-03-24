@@ -1,0 +1,12 @@
+(define-function (main)
+  (block body
+    (perform (print 1))
+    (perform (newline))
+    (perform (print 2))
+    (perform (newline))
+    (perform (print 3))
+    (perform (newline))
+    (test (equal? 1 2))
+    (branch then₁ else₂))
+  (block then₁ (perform (print 111)) (return (newline)))
+  (block else₂ (perform (print 222)) (return (newline))))

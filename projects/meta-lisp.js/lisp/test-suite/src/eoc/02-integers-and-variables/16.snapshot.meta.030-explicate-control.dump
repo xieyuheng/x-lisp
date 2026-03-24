@@ -1,0 +1,2 @@
+(define-function (main)
+  (block body (= _₁ (isub 50 8)) (return (println _₁))))

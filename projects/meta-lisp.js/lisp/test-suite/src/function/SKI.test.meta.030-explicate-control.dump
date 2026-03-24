@@ -1,0 +1,27 @@
+(define-function (S x y z)
+  (block body (= _₁ (y z)) (return (x z _₁))))
+
+(define-function (K x y) (block body (return x)))
+
+(define-function (I x) (block body (return x)))
+
+(define-function (main) (block body (return (S K I))))
+
+(define-variable local-SKI
+  (block body
+    (= S₁ local-SKI©λ₁)
+    (= K₁ local-SKI©λ₂)
+    (= I₁ local-SKI©λ₃)
+    (= list₁ (make-list))
+    (perform (list-push! S₁ list₁))
+    (perform (list-push! K₁ list₁))
+    (perform (list-push! I₁ list₁))
+    (return list₁)))
+
+(define-function (local-SKI©λ₁ x₁ y₁ z₁)
+  (block body (= _₁ (y₁ z₁)) (return (x₁ z₁ _₁))))
+
+(define-function (local-SKI©λ₂ x₁ y₁)
+  (block body (return x₁)))
+
+(define-function (local-SKI©λ₃ x₁) (block body (return x₁)))

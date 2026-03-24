@@ -1,0 +1,32 @@
+(define-function (point-x point)
+  (block body (return (#x point))))
+
+(define-function (point-y point)
+  (block body (return (#y point))))
+
+(define-function (point-distance-squared point)
+  (block body
+    (= _₁ (#x point))
+    (= _₂ (#x point))
+    (= _₃ (fmul _₁ _₂))
+    (= _₄ (#y point))
+    (= _₅ (#y point))
+    (= _₆ (fmul _₄ _₅))
+    (return (fadd _₃ _₆))))
+
+(define-function (main)
+  (block body
+    (= record₁ (make-record))
+    (perform (record-put! #x 1.0 record₁))
+    (perform (record-put! #y 2.0 record₁))
+    (= point₁ record₁)
+    (= _₁ (#x point₁))
+    (perform (assert-equal 1.0 _₁))
+    (= _₂ (#y point₁))
+    (perform (assert-equal 2.0 _₂))
+    (= _₃ (point-x point₁))
+    (perform (assert-equal 1.0 _₃))
+    (= _₄ (point-y point₁))
+    (perform (assert-equal 2.0 _₄))
+    (= _₅ (point-distance-squared point₁))
+    (return (assert-equal 5.0 _₅))))

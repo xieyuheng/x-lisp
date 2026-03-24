@@ -1,0 +1,25 @@
+(claim my-list-adjacent-dedup
+  (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+
+(define (my-list-adjacent-dedup list)
+  (if (nil? list)
+    nil
+    (if (li? list)
+      (begin
+        (= tail₁ (li-tail list))
+        (= head₁ (li-head list))
+        (if (nil? tail₁)
+          (begin (= head head₁) (li head nil))
+          (if (li? tail₁)
+            (begin
+              (= tail₂ (li-tail tail₁))
+              (= head₂ (li-head tail₁))
+              (= rest tail₂)
+              (= second head₂)
+              (= first head₁)
+              (if (equal? first second)
+                (my-list-adjacent-dedup (li second rest))
+                (li first
+                    (my-list-adjacent-dedup (li second rest)))))
+            (error "cond mismatch"))))
+      (error "cond mismatch"))))

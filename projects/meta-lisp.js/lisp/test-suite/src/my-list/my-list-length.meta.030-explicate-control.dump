@@ -1,0 +1,16 @@
+(import-all "my-list")
+
+(export-all)
+
+(define-function (my-list-length list)
+  (block body (test (nil? list)) (branch then₃ else₄))
+  (block then₁
+    (= tail₄₁ (li-tail list))
+    (= head₄₁ (li-head list))
+    (= tail₁ tail₄₁)
+    (= head₁ head₄₁)
+    (= _₁ (my-list-length tail₁))
+    (return (iadd 1 _₁)))
+  (block else₂ (return (error "cond mismatch")))
+  (block then₃ (return 0))
+  (block else₄ (test (li? list)) (branch then₁ else₂)))

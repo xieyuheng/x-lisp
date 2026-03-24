@@ -1,0 +1,5 @@
+(claim Y (polymorphic (A) (-> (-> A A) A)))
+
+(define (Y f)
+  ((lambda (u₁) (u₁ u₁))
+   (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))

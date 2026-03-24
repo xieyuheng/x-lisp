@@ -1,0 +1,4 @@
+(define-function (main)
+  (block body
+    (perform (println true))
+    (return (println false))))

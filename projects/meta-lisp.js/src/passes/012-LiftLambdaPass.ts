@@ -48,6 +48,7 @@ function onExp(state: State, exp: M.Exp): M.Exp {
     case "String":
     case "Int":
     case "Float":
+    case "Require":
     case "Var": {
       return exp
     }

@@ -87,12 +87,17 @@ function toBasicExp(exp: M.Exp): B.Exp {
       return exp
     }
 
+    // case "Require": {
+    //   return exp
+    // }
+
     case "Apply": {
       return B.Apply(toBasicExp(exp.target), exp.args.map(toBasicExp))
     }
 
     default: {
       let message = `[ExplicateControlPass] [toBasicExp] unhandled exp`
+      message += `\n  exp kind: ${exp.kind}`
       message += `\n  exp: ${M.formatExp(exp)}`
       if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
       else throw new Error(message)

@@ -1,0 +1,13 @@
+(define-interface point-t :x float-t :y float-t)
+
+(claim main (-> void-t))
+
+(define (main)
+  (begin
+    (= record (make-record))
+    (record-put! :x 1.0 record)
+    (record-put! :y 2.0 record)
+    record)
+  (= record (make-record))
+  (record-put! :x 1.0 record)
+  record)

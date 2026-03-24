@@ -1,0 +1,3 @@
+(claim main (-> void-t))
+
+(define (main) (println iadd) (= _₁ (iadd 1)) (println _₁))

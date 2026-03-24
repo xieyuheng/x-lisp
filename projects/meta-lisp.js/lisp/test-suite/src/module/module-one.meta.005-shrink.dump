@@ -1,0 +1,3 @@
+(claim one int-t)
+
+(define one 1)

@@ -1,0 +1,4 @@
+(claim main (-> void-t))
+
+(define (main)
+  (assert (hash-empty? (begin (= hash₁ (make-hash)) hash₁))))

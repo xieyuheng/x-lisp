@@ -1,0 +1,12 @@
+(import-all "my-string-repeat")
+
+(define-function (main)
+  (block body
+    (= _₁ (my-string-repeat 0 "a"))
+    (perform (assert-equal "" _₁))
+    (= _₂ (my-string-repeat 1 "a"))
+    (perform (assert-equal "a" _₂))
+    (= _₃ (my-string-repeat 2 "a"))
+    (perform (assert-equal "aa" _₃))
+    (= _₄ (my-string-repeat 3 "a"))
+    (return (assert-equal "aaa" _₄))))

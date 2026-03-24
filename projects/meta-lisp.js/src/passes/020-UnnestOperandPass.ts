@@ -38,6 +38,10 @@ function generateFreshName(state: State): string {
 
 function onExp(state: State, exp: M.Exp): M.Exp {
   switch (exp.kind) {
+    case "Require": {
+      return exp
+    }
+
     case "Var": {
       return exp
     }

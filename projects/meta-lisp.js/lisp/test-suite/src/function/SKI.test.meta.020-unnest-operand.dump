@@ -1,0 +1,38 @@
+(claim S
+  (polymorphic (A B C) (-> (-> A B C) (-> A B) (-> A C))))
+
+(define (S x y z) (= _₁ (y z)) (x z _₁))
+
+(claim K (polymorphic (A B) (-> A B A)))
+
+(define (K x y) x)
+
+(claim I (polymorphic (A) (-> A A)))
+
+(define (I x) x)
+
+(claim main (polymorphic (A) (-> (-> A A))))
+
+(define (main) (S K I))
+
+(claim local-SKI
+  (polymorphic (A B C D E F)
+    (tau (-> (-> A B C) (-> A B) (-> A C))
+         (-> D E D)
+         (-> F F))))
+
+(define local-SKI
+  (= S₁ local-SKI©λ₁)
+  (= K₁ local-SKI©λ₂)
+  (= I₁ local-SKI©λ₃)
+  (= list₁ (make-list))
+  (list-push! S₁ list₁)
+  (list-push! K₁ list₁)
+  (list-push! I₁ list₁)
+  list₁)
+
+(define (local-SKI©λ₁ x₁ y₁ z₁) (= _₁ (y₁ z₁)) (x₁ z₁ _₁))
+
+(define (local-SKI©λ₂ x₁ y₁) x₁)
+
+(define (local-SKI©λ₃ x₁) x₁)

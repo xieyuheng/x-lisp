@@ -1,0 +1,8 @@
+(define-variable one (block body (return 1)))
+
+(define-variable two (block body (return (iadd 1 one))))
+
+(define-variable three (block body (return (iadd 1 two))))
+
+(define-function (main)
+  (block body (return (println three))))

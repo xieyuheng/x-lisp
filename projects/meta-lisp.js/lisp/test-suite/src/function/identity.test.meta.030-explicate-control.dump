@@ -1,0 +1,15 @@
+(define-function (identity x) (block body (return x)))
+
+(define-function (main)
+  (block body
+    (= add1₁ (iadd 1))
+    (= _₁ (add1₁ 1))
+    (perform (assert-equal 2 _₁))
+    (= _₂ (identity 1))
+    (= _₃ (iadd _₂))
+    (= add1₂ (identity _₃))
+    (perform identity)
+    (perform identity)
+    (perform identity)
+    (= _₄ (add1₂ 1))
+    (return (assert-equal 2 _₄))))
