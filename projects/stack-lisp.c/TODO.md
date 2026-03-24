@@ -1,4 +1,4 @@
-remove basic-lisp compiler
+remove basic-lisp compiler -- should not write compiler in c
 
 # later
 
