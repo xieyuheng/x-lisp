@@ -3,7 +3,7 @@
 #include "deps.h"
 #include "types.h"
 #include "value.h"
-#include "console.h"
+#include "file.h"
 #include "system.h"
 #include "string.h"
 #include "symbol.h"

@@ -69,7 +69,7 @@ make_builtin_mod(void) {
     define_primitive_1(mod, "hash-code", x_hash_code);
     define_primitive_2(mod, "total-compare", x_total_compare);
 
-    // console
+    // file
 
     define_primitive_0(mod, "newline", x_newline);
     define_primitive_1(mod, "write", x_write);
