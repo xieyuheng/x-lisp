@@ -78,14 +78,6 @@ export function projectDump(
     Passes.UnnestOperandPass(mod)
     dumpCode("020-unnest-operand", M.prettyModDefinitions(textWidth, mod), path)
   }
-
-  for (const id of projectSourceIds(project)) {
-    const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
-    const basicMod = B.createMod(mod.path, new Map())
-    Passes.ExplicateControlPass(mod, basicMod)
-    dumpCode("030-explicate-control", B.prettyMod(textWidth, basicMod), path)
-  }
 }
 
 function dumpCode(tag: string, code: string, path: string): void {

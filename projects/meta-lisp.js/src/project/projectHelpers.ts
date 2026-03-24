@@ -37,3 +37,13 @@ export function projectGetSourcePath(
 ): string {
   return Path.join(projectSourceDirectory(project), sourceId)
 }
+
+export function projectGetBasicPath(
+  project: Project,
+  sourceId: string,
+): string {
+  return Path.join(
+    projectOutputDirectory(project),
+    sourceId.slice(0, -".meta".length) + ".basic",
+  )
+}
