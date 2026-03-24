@@ -10,7 +10,3 @@
 
 [builtin] `(assert-with-meta)` -- `(assert)` should be compiled to `(assert-with-meta)`
 [basic] handle `(assert)` in `ShrinkPass`
-
-# bug
-
-`compile_quote` is saving list in function, need a way to value static

@@ -69,6 +69,8 @@ static void
 compile_quote(mod_t *mod, function_t *function, value_t sexp) {
     (void) mod;
     value_t value = x_car(x_cdr(sexp));
+    // should not save list into function
+    assert(!xlist_p(value));
     struct instr_t instr;
     instr.op = OP_LITERAL;
     instr.literal.value = value;
