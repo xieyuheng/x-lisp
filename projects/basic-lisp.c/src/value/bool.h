@@ -1,7 +1,7 @@
 #pragma once
 
-extern value_t x_true;
-extern value_t x_false;
+#define x_true  ((value_t) 0b01110)
+#define x_false ((value_t) 0b00110)
 
 value_t x_bool(bool target);
 bool bool_p(value_t value);

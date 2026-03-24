@@ -1,6 +1,6 @@
 #pragma once
 
-extern value_t x_void;
+#define x_void ((value_t) 0b10110)
 
 bool void_p(value_t value);
 

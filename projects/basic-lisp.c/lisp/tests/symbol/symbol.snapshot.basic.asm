@@ -9,6 +9,6 @@ body:
   literal 'c
   call println
   drop
-  literal :void
+  literal #void
   return
 

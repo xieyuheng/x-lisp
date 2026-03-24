@@ -86,6 +86,6 @@ body:
   local-load x
   call assert
   drop
-  literal :void
+  literal #void
   return
 

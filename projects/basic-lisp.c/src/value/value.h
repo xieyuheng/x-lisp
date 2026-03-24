@@ -10,5 +10,3 @@ bool equal_p(value_t lhs, value_t rhs);
 
 hash_code_t value_hash_code(value_t value);
 ordering_t value_total_compare(value_t lhs, value_t rhs);
-
-void init_constant_values(void);

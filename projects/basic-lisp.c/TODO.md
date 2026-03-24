@@ -1,5 +1,3 @@
-encode bool and void in value directly
-
 # later
 
 [helpers.c] improve `string_builder_t` for `format_*`

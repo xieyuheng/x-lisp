@@ -32,7 +32,6 @@ handle_bytecode(cmd_ctx_t *ctx) {
 static void
 init(void) {
     init_global_gc();
-    init_constant_values();
 }
 
 int

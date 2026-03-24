@@ -16,6 +16,6 @@ body:
   local-load x
   call println
   drop
-  literal :void
+  literal #void
   return
 

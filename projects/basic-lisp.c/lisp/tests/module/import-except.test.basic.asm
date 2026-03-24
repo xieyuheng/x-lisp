@@ -23,6 +23,6 @@ body:
   literal 3
   call assert-equal
   drop
-  literal :void
+  literal #void
   return
 

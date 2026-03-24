@@ -1,8 +1,5 @@
 #include "index.h"
 
-value_t x_true;
-value_t x_false;
-
 value_t
 x_bool(bool target) {
     return target ? x_true : x_false;

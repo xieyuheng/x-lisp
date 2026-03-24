@@ -25,6 +25,21 @@ value_print(printer_t *printer, value_t value) {
         return;
     }
 
+    if (void_p(value)) {
+        printf("#void");
+        return;
+    }
+
+    if (true_p(value)) {
+        printf("#t");
+        return;
+    }
+
+    if (false_p(value)) {
+        printf("#f");
+        return;
+    }
+
     if (object_p(value)) {
         object_t *object = to_object(value);
         if (printer_circle_start_p(printer, object)) {
@@ -138,11 +153,4 @@ value_total_compare(value_t lhs, value_t rhs) {
     printf("  lhs: "); print(lhs); newline();
     printf("  rhs: "); print(rhs); newline();
     exit(1);
-}
-
-void
-init_constant_values(void) {
-    x_true = x_object(intern_keyword("t"));
-    x_false = x_object(intern_keyword("f"));
-    x_void = x_object(intern_keyword("void"));
 }

@@ -14,7 +14,7 @@ typedef enum {
     //            = 0b011,
     //            = 0b100,
     //            = 0b101,
-    //            = 0b110,
+    X_IMMEDIATE   = 0b110,
     X_OBJECT      = 0b111,
 } tag_t;
 

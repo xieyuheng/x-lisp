@@ -8,7 +8,6 @@ echo(const char *string) {
 int
 main(void) {
     init_global_gc();
-    init_constant_values();
 
     // symbol
 
