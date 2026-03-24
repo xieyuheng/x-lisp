@@ -14,5 +14,4 @@
 #include "set.h"
 #include "random.h"
 #include "assert.h"
-#include "schema.h"
 #include "builtin_mod.h"

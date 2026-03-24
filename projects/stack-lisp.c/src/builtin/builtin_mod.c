@@ -199,10 +199,6 @@ make_builtin_mod(void) {
     define_primitive_2(mod, "assert-equal", x_assert_equal);
     define_primitive_2(mod, "assert-not-equal", x_assert_not_equal);
 
-    // schema
-
-    define_primitive(mod, "valid?", 2, x_valid_p);
-
     return mod;
 }
 
