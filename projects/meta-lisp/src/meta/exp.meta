@@ -1,5 +1,4 @@
 (export-all)
 
 (define-data exp-t
-  (var-exp (name symbol-t))
-  (apply-exp (name symbol-t)))
+  (var-exp (name symbol-t)))
