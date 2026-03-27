@@ -15,7 +15,7 @@ export function matcher<A>(
   patternText: string,
   f: MatcherCallback<A>,
 ): Matcher<A> {
-  const pattern = parseSexp(patternText)
+  const pattern = parseSexp(patternText, { path: "[matcher]" })
   return (sexp) => {
     const subst = matchSexp("NormalMode", pattern, sexp)({})
     if (!subst) return undefined

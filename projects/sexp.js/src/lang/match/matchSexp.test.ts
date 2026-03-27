@@ -4,13 +4,18 @@ import { matchSexp, type Subst } from "../match/index.ts"
 import { parseSexp } from "../parser/index.ts"
 import * as S from "../sexp/index.ts"
 
+const testOptions = { path: "[matchSexp.test]" }
+
 function assertMatch(
   patternInput: string,
   sexpInput: string | S.Sexp,
   expectedSubst: Subst,
 ): void {
-  const pattern = parseSexp(patternInput)
-  const sexp = typeof sexpInput === "string" ? parseSexp(sexpInput) : sexpInput
+  const pattern = parseSexp(patternInput, testOptions)
+  const sexp =
+    typeof sexpInput === "string"
+      ? parseSexp(sexpInput, testOptions)
+      : sexpInput
   const subst = matchSexp("NormalMode", pattern, sexp)({})
   assert(subst)
   assert(S.sexpEqualRecord(subst, expectedSubst))
@@ -19,8 +24,8 @@ function assertMatch(
 function assertMatchFail(patternInput: string, sexpInput: string): void {
   const subst = matchSexp(
     "NormalMode",
-    parseSexp(patternInput),
-    parseSexp(sexpInput),
+    parseSexp(patternInput, testOptions),
+    parseSexp(sexpInput, testOptions),
   )({})
   assert.deepStrictEqual(subst, undefined)
 }

@@ -7,11 +7,15 @@ import { consume } from "./consume.ts"
 export class Lexer {
   position = initPosition()
   text: string = ""
-  path?: string
+  path: string
 
-  lex(text: string, options: ParserOptions = {}): Array<Token> {
-    this.text = text
+  constructor(options: ParserOptions) {
     this.path = options.path
+  }
+
+  lex(text: string): Array<Token> {
+    this.text = text
+
     this.position = initPosition()
 
     const tokens: Array<Token> = []

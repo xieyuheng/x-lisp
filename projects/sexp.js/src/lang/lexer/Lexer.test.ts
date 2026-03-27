@@ -7,7 +7,7 @@ function assertTokens(
   text: string,
   tokens: Array<Omit<Token, "location">>,
 ): void {
-  const lexer = new Lexer()
+  const lexer = new Lexer({ path: "test:path" })
   const results = lexer.lex(text).map(({ kind, value }) => ({ kind, value }))
   assert.deepStrictEqual(results, tokens)
 }

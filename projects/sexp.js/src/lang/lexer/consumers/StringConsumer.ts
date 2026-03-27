@@ -30,7 +30,6 @@ export class StringConsumer implements Consumer {
     let message = `Fail to parse double qouted string: ${line}\n`
     throw new ErrorWithSourceLocation(message, {
       span: { start, end },
-      text: lexer.text,
       path: lexer.path,
     })
   }

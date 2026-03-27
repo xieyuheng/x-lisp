@@ -1,4 +1,5 @@
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
+import fs from "node:fs"
 import { spanReport, type Position } from "../span/index.ts"
 import type { SourceLocation } from "./SourceLocation.ts"
 
@@ -6,8 +7,11 @@ export function sourceLocationReport(
   location: SourceLocation,
   errorMessage?: string,
 ): string {
+  const text = fs.existsSync(location.path)
+    ? fs.readFileSync(location.path, "utf-8")
+    : ""
+  const context = spanReport(location.span, text)
   let message = ""
-  const context = spanReport(location.span, location.text)
   if (location.path) {
     message += pathRelativeToCwd(location.path)
     message += ":"

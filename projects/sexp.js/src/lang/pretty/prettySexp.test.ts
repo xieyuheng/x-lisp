@@ -3,7 +3,7 @@ import * as S from "../index.ts"
 import { prettySexp } from "./index.ts"
 
 function testWidths(widths: Array<number>, code: string) {
-  const sexps = S.parseSexps(code)
+  const sexps = S.parseSexps(code, { path: "[testWidths]" })
   for (const sexp of sexps) {
     for (const width of widths) {
       console.log(`${"-".repeat(width)}|${width}`)

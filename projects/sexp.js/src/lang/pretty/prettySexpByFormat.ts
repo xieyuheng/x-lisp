@@ -9,7 +9,7 @@ export function prettySexpByFormat<A>(
   config: Config,
 ): Pretty<A> {
   return (width, x) => {
-    const sexps = parseSexps(format(x))
+    const sexps = parseSexps(format(x), { path: "[prettySexpByFormat]" })
     return sexps.map((sexp) => prettySexp(width, sexp, config)).join("\n\n")
   }
 }

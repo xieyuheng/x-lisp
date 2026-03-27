@@ -4,7 +4,7 @@ import * as S from "../sexp/index.ts"
 import { parseSexp } from "./index.ts"
 
 function assertParse(text: string, expected: S.Sexp): void {
-  const sexp = parseSexp(text)
+  const sexp = parseSexp(text, { path: "[assertParse]" })
   const ok = S.sexpEqual(expected, sexp)
   if (!ok) {
     let message = `[assertParse] fail\n`

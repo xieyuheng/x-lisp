@@ -9,14 +9,18 @@ import { type Token } from "../token/index.ts"
 type Result = { sexp: Sexp; remain: Array<Token> }
 
 export type ParserOptions = {
-  path?: string
+  path: string
 }
 
 export class Parser {
-  lexer = new Lexer()
+  lexer: Lexer
 
-  parse(text: string, options: ParserOptions = {}): Array<Sexp> {
-    let tokens = this.lexer.lex(text, options)
+  constructor(options: ParserOptions) {
+    this.lexer = new Lexer(options)
+  }
+
+  parse(text: string): Array<Sexp> {
+    let tokens = this.lexer.lex(text)
     const array: Array<Sexp> = []
     while (tokens.length > 0) {
       const { sexp, remain } = this.handleTokens(tokens)
