@@ -198,3 +198,13 @@
   :index int-t
   :row int-t
   :column int-t)
+
+;; located-sexp
+
+(define-data located-sexp-t
+  (symbol-sexp (content symbol-t) (location source-location-t))
+  (keyword-sexp (content keyword-t) (location source-location-t))
+  (string-sexp (content string-t) (location source-location-t))
+  (int-sexp (content int-t) (location source-location-t))
+  (float-sexp (content float-t) (location source-location-t))
+  (list-sexp (elements (list-t sexp-t)) (location source-location-t)))

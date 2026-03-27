@@ -1,5 +1,3 @@
-[builtin] `located-sexp-t`
-
 `define-interface` -- check body is `type-t`
 `define-data` -- check body is `type-t`
 
