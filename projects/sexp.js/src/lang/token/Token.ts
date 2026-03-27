@@ -1,4 +1,5 @@
 import { type Span } from "../span/index.ts"
+import { type SourceLocation } from "./SourceLocation.ts"
 
 export type TokenKind =
   | "Symbol"
@@ -8,12 +9,6 @@ export type TokenKind =
   | "BracketEnd"
   | "QuotationMark"
   | "Keyword"
-
-export type SourceLocation = {
-  span: Span
-  text: string
-  path?: string
-}
 
 export type Token = {
   kind: TokenKind

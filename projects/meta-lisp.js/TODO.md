@@ -1,5 +1,4 @@
-[sexp] extract `SourceLocation`
-[maybe] rename .meta to .location
+rename .meta to .location
 
 located-sexp-t
 source-location-t
