@@ -1,4 +1,4 @@
-import { type TokenMeta } from "@xieyuheng/sexp.js"
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 
 export type Atom = Symbol | Keyword | String | Int | Float | Var
 
@@ -18,10 +18,10 @@ export type Exp = Atom | Apply
 export type Symbol = {
   kind: "Symbol"
   content: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Symbol(content: string, meta?: TokenMeta): Symbol {
+export function Symbol(content: string, meta?: SourceLocation): Symbol {
   return {
     kind: "Symbol",
     content,
@@ -32,10 +32,10 @@ export function Symbol(content: string, meta?: TokenMeta): Symbol {
 export type String = {
   kind: "String"
   content: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function String(content: string, meta?: TokenMeta): String {
+export function String(content: string, meta?: SourceLocation): String {
   return {
     kind: "String",
     content,
@@ -46,10 +46,10 @@ export function String(content: string, meta?: TokenMeta): String {
 export type Keyword = {
   kind: "Keyword"
   content: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Keyword(content: string, meta?: TokenMeta): Keyword {
+export function Keyword(content: string, meta?: SourceLocation): Keyword {
   return {
     kind: "Keyword",
     content,
@@ -60,10 +60,10 @@ export function Keyword(content: string, meta?: TokenMeta): Keyword {
 export type Int = {
   kind: "Int"
   content: bigint
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Int(content: bigint, meta?: TokenMeta): Int {
+export function Int(content: bigint, meta?: SourceLocation): Int {
   return {
     kind: "Int",
     content,
@@ -74,10 +74,10 @@ export function Int(content: bigint, meta?: TokenMeta): Int {
 export type Float = {
   kind: "Float"
   content: number
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Float(content: number, meta?: TokenMeta): Float {
+export function Float(content: number, meta?: SourceLocation): Float {
   return {
     kind: "Float",
     content,
@@ -88,10 +88,10 @@ export function Float(content: number, meta?: TokenMeta): Float {
 export type Var = {
   kind: "Var"
   name: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Var(name: string, meta?: TokenMeta): Var {
+export function Var(name: string, meta?: SourceLocation): Var {
   return {
     kind: "Var",
     name,
@@ -103,10 +103,14 @@ export type Apply = {
   kind: "Apply"
   target: Exp
   args: Array<Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Apply(target: Exp, args: Array<Exp>, meta?: TokenMeta): Apply {
+export function Apply(
+  target: Exp,
+  args: Array<Exp>,
+  meta?: SourceLocation,
+): Apply {
   return {
     kind: "Apply",
     target,

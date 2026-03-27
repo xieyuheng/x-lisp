@@ -21,7 +21,7 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
     case "AssignSugar": {
       let message = `[desugar] (=) must occur in the head of (begin)`
       message += `\n  exp: ${M.formatExp(exp)}`
-      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
       else throw new Error(message)
     }
 
@@ -196,10 +196,10 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
   }
 }
 
-function desugarBegin(sequence: Array<M.Exp>, meta?: S.TokenMeta): M.Exp {
+function desugarBegin(sequence: Array<M.Exp>, meta?: S.SourceLocation): M.Exp {
   if (sequence.length === 0) {
     let message = `[desugarBegin] (begin) must not be empty`
-    if (meta) throw new S.ErrorWithMeta(message, meta)
+    if (meta) throw new S.ErrorWithSourceLocation(message, meta)
     else throw new Error(message)
   }
 
@@ -215,21 +215,24 @@ function desugarBegin(sequence: Array<M.Exp>, meta?: S.TokenMeta): M.Exp {
   }
 }
 
-function desugarAnd(exps: Array<M.Exp>, meta?: S.TokenMeta): M.Exp {
+function desugarAnd(exps: Array<M.Exp>, meta?: S.SourceLocation): M.Exp {
   if (exps.length === 0) return M.Bool(true, meta)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
   return M.If(head, desugarAnd(restExps, meta), M.Bool(false, meta), meta)
 }
 
-function desugarOr(exps: Array<M.Exp>, meta?: S.TokenMeta): M.Exp {
+function desugarOr(exps: Array<M.Exp>, meta?: S.SourceLocation): M.Exp {
   if (exps.length === 0) return M.Bool(false, meta)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
   return M.If(head, M.Bool(true, meta), desugarOr(restExps, meta), meta)
 }
 
-function desugarCond(clauses: Array<M.CondClause>, meta?: S.TokenMeta): M.Exp {
+function desugarCond(
+  clauses: Array<M.CondClause>,
+  meta?: S.SourceLocation,
+): M.Exp {
   if (clauses.length === 0)
     return M.Apply(
       M.Var("error", meta),
@@ -245,7 +248,10 @@ function desugarCond(clauses: Array<M.CondClause>, meta?: S.TokenMeta): M.Exp {
   )
 }
 
-export function desugarList(elements: Array<M.Exp>, meta?: S.TokenMeta): M.Exp {
+export function desugarList(
+  elements: Array<M.Exp>,
+  meta?: S.SourceLocation,
+): M.Exp {
   return M.BeginSugar(
     [
       M.AssignSugar("list", M.Apply(M.Var("make-list", meta), [], meta), meta),
@@ -258,7 +264,7 @@ export function desugarList(elements: Array<M.Exp>, meta?: S.TokenMeta): M.Exp {
   )
 }
 
-function desugarSet(elements: Array<M.Exp>, meta?: S.TokenMeta): M.Exp {
+function desugarSet(elements: Array<M.Exp>, meta?: S.SourceLocation): M.Exp {
   return M.BeginSugar(
     [
       M.AssignSugar("set", M.Apply(M.Var("make-set", meta), [], meta), meta),
@@ -273,7 +279,7 @@ function desugarSet(elements: Array<M.Exp>, meta?: S.TokenMeta): M.Exp {
 
 function desugarHash(
   entries: Array<{ key: M.Exp; value: M.Exp }>,
-  meta?: S.TokenMeta,
+  meta?: S.SourceLocation,
 ): M.Exp {
   return M.BeginSugar(
     [
@@ -291,7 +297,7 @@ function desugarHash(
   )
 }
 
-function desugarQuote(sexp: S.Sexp, meta?: S.TokenMeta): M.Exp {
+function desugarQuote(sexp: S.Sexp, meta?: S.SourceLocation): M.Exp {
   switch (sexp.kind) {
     case "Symbol": {
       return M.Symbol(sexp.content, meta)

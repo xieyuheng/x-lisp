@@ -1,4 +1,4 @@
-import type { TokenMeta } from "../token/index.ts"
+import type { SourceLocation } from "../token/index.ts"
 
 export type Sexp = Atom | List
 
@@ -7,10 +7,10 @@ export type Atom = Symbol | String | Int | Float | Keyword
 export type Symbol = {
   kind: "Symbol"
   content: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Symbol(content: string, meta?: TokenMeta): Symbol {
+export function Symbol(content: string, meta?: SourceLocation): Symbol {
   return {
     kind: "Symbol",
     content,
@@ -21,10 +21,10 @@ export function Symbol(content: string, meta?: TokenMeta): Symbol {
 export type String = {
   kind: "String"
   content: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function String(content: string, meta?: TokenMeta): String {
+export function String(content: string, meta?: SourceLocation): String {
   return {
     kind: "String",
     content,
@@ -35,10 +35,10 @@ export function String(content: string, meta?: TokenMeta): String {
 export type Int = {
   kind: "Int"
   content: bigint
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Int(content: bigint, meta?: TokenMeta): Int {
+export function Int(content: bigint, meta?: SourceLocation): Int {
   return {
     kind: "Int",
     content,
@@ -49,10 +49,10 @@ export function Int(content: bigint, meta?: TokenMeta): Int {
 export type Float = {
   kind: "Float"
   content: number
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Float(content: number, meta?: TokenMeta): Float {
+export function Float(content: number, meta?: SourceLocation): Float {
   return {
     kind: "Float",
     content,
@@ -63,10 +63,10 @@ export function Float(content: number, meta?: TokenMeta): Float {
 export type Keyword = {
   kind: "Keyword"
   content: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Keyword(content: string, meta?: TokenMeta): Keyword {
+export function Keyword(content: string, meta?: SourceLocation): Keyword {
   return {
     kind: "Keyword",
     content,
@@ -77,10 +77,10 @@ export function Keyword(content: string, meta?: TokenMeta): Keyword {
 export type List = {
   kind: "List"
   elements: Array<Sexp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function List(elements: Array<Sexp>, meta?: TokenMeta): List {
+export function List(elements: Array<Sexp>, meta?: SourceLocation): List {
   return {
     kind: "List",
     elements,

@@ -1,5 +1,5 @@
 import { stringIsBigInt, stringIsNumber } from "@xieyuheng/helpers.js/string"
-import { ErrorWithMeta } from "../errors/index.ts"
+import { ErrorWithSourceLocation } from "../errors/index.ts"
 import { Lexer, lexerMatchBrackets } from "../lexer/index.ts"
 import * as S from "../sexp/index.ts"
 import { type Sexp } from "../sexp/index.ts"
@@ -93,7 +93,7 @@ export class Parser {
 
       case "BracketEnd": {
         let message = `I found extra BracketEnd\n`
-        throw new ErrorWithMeta(message, token.meta)
+        throw new ErrorWithSourceLocation(message, token.meta)
       }
 
       case "QuotationMark": {
@@ -128,7 +128,7 @@ export class Parser {
     while (true) {
       if (tokens[0] === undefined) {
         let message = `I found missing BracketEnd\n`
-        throw new ErrorWithMeta(message, start.meta)
+        throw new ErrorWithSourceLocation(message, start.meta)
       }
 
       const token = tokens[0]
@@ -136,7 +136,7 @@ export class Parser {
       if (token.kind === "BracketEnd") {
         if (!lexerMatchBrackets(start.value, token.value)) {
           let message = `I expect a matching BracketEnd\n`
-          throw new ErrorWithMeta(message, token.meta)
+          throw new ErrorWithSourceLocation(message, token.meta)
         }
 
         return {

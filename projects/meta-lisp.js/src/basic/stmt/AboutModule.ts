@@ -1,4 +1,4 @@
-import { type TokenMeta } from "@xieyuheng/sexp.js"
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 
 export type AboutModule = AboutExport | AboutImport
 
@@ -18,13 +18,13 @@ export type Import = {
   kind: "Import"
   path: string
   names: Array<string>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function Import(
   path: string,
   names: Array<string>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Import {
   return {
     kind: "Import",
@@ -37,10 +37,10 @@ export function Import(
 export type ImportAll = {
   kind: "ImportAll"
   path: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function ImportAll(path: string, meta?: TokenMeta): ImportAll {
+export function ImportAll(path: string, meta?: SourceLocation): ImportAll {
   return {
     kind: "ImportAll",
     path,
@@ -52,13 +52,13 @@ export type ImportExcept = {
   kind: "ImportExcept"
   path: string
   names: Array<string>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function ImportExcept(
   path: string,
   names: Array<string>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): ImportExcept {
   return {
     kind: "ImportExcept",
@@ -72,13 +72,13 @@ export type ImportAs = {
   kind: "ImportAs"
   path: string
   prefix: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function ImportAs(
   path: string,
   prefix: string,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): ImportAs {
   return {
     kind: "ImportAs",
@@ -92,13 +92,13 @@ export type Include = {
   kind: "Include"
   path: string
   names: Array<string>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function Include(
   path: string,
   names: Array<string>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Include {
   return {
     kind: "Include",
@@ -111,10 +111,10 @@ export function Include(
 export type IncludeAll = {
   kind: "IncludeAll"
   path: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function IncludeAll(path: string, meta?: TokenMeta): IncludeAll {
+export function IncludeAll(path: string, meta?: SourceLocation): IncludeAll {
   return {
     kind: "IncludeAll",
     path,
@@ -126,13 +126,13 @@ export type IncludeExcept = {
   kind: "IncludeExcept"
   path: string
   names: Array<string>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function IncludeExcept(
   path: string,
   names: Array<string>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): IncludeExcept {
   return {
     kind: "IncludeExcept",
@@ -146,13 +146,13 @@ export type IncludeAs = {
   kind: "IncludeAs"
   path: string
   prefix: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function IncludeAs(
   path: string,
   prefix: string,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): IncludeAs {
   return {
     kind: "IncludeAs",
@@ -165,10 +165,10 @@ export function IncludeAs(
 export type Export = {
   kind: "Export"
   names: Array<string>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Export(names: Array<string>, meta?: TokenMeta): Export {
+export function Export(names: Array<string>, meta?: SourceLocation): Export {
   return {
     kind: "Export",
     names,
@@ -178,10 +178,10 @@ export function Export(names: Array<string>, meta?: TokenMeta): Export {
 
 export type ExportAll = {
   kind: "ExportAll"
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function ExportAll(meta?: TokenMeta): ExportAll {
+export function ExportAll(meta?: SourceLocation): ExportAll {
   return {
     kind: "ExportAll",
     meta,
@@ -190,7 +190,7 @@ export function ExportAll(meta?: TokenMeta): ExportAll {
 
 export function ExportExcept(
   names: Array<string>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): ExportExcept {
   return {
     kind: "ExportExcept",
@@ -202,5 +202,5 @@ export function ExportExcept(
 export type ExportExcept = {
   kind: "ExportExcept"
   names: Array<string>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }

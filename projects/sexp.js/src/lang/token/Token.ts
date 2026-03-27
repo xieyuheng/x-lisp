@@ -9,7 +9,7 @@ export type TokenKind =
   | "QuotationMark"
   | "Keyword"
 
-export type TokenMeta = {
+export type SourceLocation = {
   span: Span
   text: string
   path?: string
@@ -18,5 +18,5 @@ export type TokenMeta = {
 export type Token = {
   kind: TokenKind
   value: string
-  meta: TokenMeta
+  meta: SourceLocation
 }

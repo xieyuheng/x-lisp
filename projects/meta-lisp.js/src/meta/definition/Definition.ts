@@ -1,4 +1,4 @@
-import { type TokenMeta } from "@xieyuheng/sexp.js"
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { type Exp } from "../exp/index.ts"
 import type { Mod } from "../mod/index.ts"
 import type { Value } from "../value/index.ts"
@@ -23,7 +23,7 @@ export type PrimitiveFunctionDefinition = {
   name: string
   arity: number
   fn: ValueFunction
-  meta?: TokenMeta
+  meta?: SourceLocation
 } & DefinitionState
 
 export function PrimitiveFunctionDefinition(
@@ -31,7 +31,7 @@ export function PrimitiveFunctionDefinition(
   name: string,
   arity: number,
   fn: ValueFunction,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): PrimitiveFunctionDefinition {
   return {
     kind: "PrimitiveFunctionDefinition",
@@ -48,14 +48,14 @@ export type PrimitiveVariableDefinition = {
   mod: Mod
   name: string
   value: Value
-  meta?: TokenMeta
+  meta?: SourceLocation
 } & DefinitionState
 
 export function PrimitiveVariableDefinition(
   mod: Mod,
   name: string,
   value: Value,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): PrimitiveVariableDefinition {
   return {
     kind: "PrimitiveVariableDefinition",
@@ -72,7 +72,7 @@ export type FunctionDefinition = {
   name: string
   parameters: Array<string>
   body: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 } & DefinitionState
 
 export function FunctionDefinition(
@@ -80,7 +80,7 @@ export function FunctionDefinition(
   name: string,
   parameters: Array<string>,
   body: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
@@ -98,14 +98,14 @@ export type VariableDefinition = {
   name: string
   body: Exp
   value?: Value
-  meta?: TokenMeta
+  meta?: SourceLocation
 } & DefinitionState
 
 export function VariableDefinition(
   mod: Mod,
   name: string,
   body: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): VariableDefinition {
   return {
     kind: "VariableDefinition",
@@ -122,7 +122,7 @@ export type DataDefinition = {
   name: string
   dataTypeConstructor: DataTypeConstructor
   dataConstructors: Array<DataConstructor>
-  meta?: TokenMeta
+  meta?: SourceLocation
 } & DefinitionState
 
 export type DataTypeConstructor = {
@@ -154,7 +154,7 @@ export function DataDefinition(
   name: string,
   dataTypeConstructor: DataTypeConstructor,
   dataConstructors: Array<DataConstructor>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): DataDefinition {
   return {
     kind: "DataDefinition",
@@ -172,7 +172,7 @@ export type InterfaceDefinition = {
   name: string
   interfaceConstructor: InterfaceConstructor
   attributeTypes: Record<string, Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 } & DefinitionState
 
 export type InterfaceConstructor = {
@@ -186,7 +186,7 @@ export function InterfaceDefinition(
   name: string,
   interfaceConstructor: InterfaceConstructor,
   attributeTypes: Record<string, Exp>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): InterfaceDefinition {
   return {
     kind: "InterfaceDefinition",

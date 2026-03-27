@@ -162,7 +162,7 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
 
     case "Match": {
       let message = `[expTraverse] can not handle Match`
-      if (exp.meta) throw new S.ErrorWithMeta(message, exp.meta)
+      if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
       else throw new Error(message)
     }
   }

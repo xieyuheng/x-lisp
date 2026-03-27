@@ -2,13 +2,13 @@ import assert from "node:assert"
 import { matchSexp, type Subst } from "../match/index.ts"
 import { parseSexp } from "../parser/index.ts"
 import * as S from "../sexp/index.ts"
-import { type TokenMeta } from "../token/index.ts"
+import { type SourceLocation } from "../token/index.ts"
 
 export type Matcher<A> = (sexp: S.Sexp) => A | undefined
 
 export type MatcherCallback<A> = (
   subst: Subst,
-  options: { sexp: S.Sexp; meta: TokenMeta },
+  options: { sexp: S.Sexp; meta: SourceLocation },
 ) => A | undefined
 
 export function matcher<A>(
@@ -22,7 +22,7 @@ export function matcher<A>(
     assert(sexp.meta)
     return f(subst, {
       sexp: sexp,
-      meta: sexp.meta as TokenMeta,
+      meta: sexp.meta as SourceLocation,
     })
   }
 }

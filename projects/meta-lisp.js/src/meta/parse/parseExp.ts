@@ -112,7 +112,7 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   "(cons* '@hash elements)": ({ elements }, { meta }) => {
     if (S.listElements(elements).length % 2 === 1) {
       let message = `(@hash) body length must be even`
-      throw new S.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithSourceLocation(message, meta)
     }
 
     const entries = arrayGroup2(S.listElements(elements)).map(

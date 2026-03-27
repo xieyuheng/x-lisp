@@ -1,9 +1,9 @@
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import { spanReport, type Position } from "../span/index.ts"
-import { type TokenMeta } from "./Token.ts"
+import { type SourceLocation } from "./Token.ts"
 
 export function tokenMetaReport(
-  meta: TokenMeta,
+  meta: SourceLocation,
   errorMessage?: string,
 ): string {
   let message = ""

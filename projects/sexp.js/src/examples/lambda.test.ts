@@ -36,7 +36,7 @@ const parseExp: S.Router<Exp> = S.createRouter<Exp>({
     const nameSymbol = S.asSymbol(name).content
     if (keywords.includes(nameSymbol)) {
       let message = "keywork should not be used as variable\n"
-      throw new S.ErrorWithMeta(message, meta)
+      throw new S.ErrorWithSourceLocation(message, meta)
     }
     return Var(nameSymbol)
   },
@@ -67,7 +67,7 @@ test("examples/lambda", () => {
   )
 })
 
-function assertErrorWithMeta(text: string): void {
+function assertErrorWithSourceLocation(text: string): void {
   try {
     const path = "test:lambda"
     parseExp(S.parseSexp(text, { path }))
@@ -77,9 +77,9 @@ function assertErrorWithMeta(text: string): void {
 }
 
 test("examples/lambda -- parsing errors", () => {
-  assertErrorWithMeta("(f x")
-  assertErrorWithMeta("(f x\n(g y)")
-  assertErrorWithMeta("f x)")
+  assertErrorWithSourceLocation("(f x")
+  assertErrorWithSourceLocation("(f x\n(g y)")
+  assertErrorWithSourceLocation("f x)")
 
-  assertErrorWithMeta("(lambda x)")
+  assertErrorWithSourceLocation("(lambda x)")
 })

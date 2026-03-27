@@ -1,4 +1,4 @@
-import { type Sexp, type TokenMeta } from "@xieyuheng/sexp.js"
+import { type Sexp, type SourceLocation } from "@xieyuheng/sexp.js"
 
 export type Exp =
   | Symbol
@@ -40,10 +40,10 @@ export type Exp =
 export type Symbol = {
   kind: "Symbol"
   content: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Symbol(content: string, meta?: TokenMeta): Symbol {
+export function Symbol(content: string, meta?: SourceLocation): Symbol {
   return {
     kind: "Symbol",
     content,
@@ -54,10 +54,10 @@ export function Symbol(content: string, meta?: TokenMeta): Symbol {
 export type String = {
   kind: "String"
   content: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function String(content: string, meta?: TokenMeta): String {
+export function String(content: string, meta?: SourceLocation): String {
   return {
     kind: "String",
     content,
@@ -68,10 +68,10 @@ export function String(content: string, meta?: TokenMeta): String {
 export type Keyword = {
   kind: "Keyword"
   content: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Keyword(content: string, meta?: TokenMeta): Keyword {
+export function Keyword(content: string, meta?: SourceLocation): Keyword {
   return {
     kind: "Keyword",
     content,
@@ -82,10 +82,10 @@ export function Keyword(content: string, meta?: TokenMeta): Keyword {
 export type Int = {
   kind: "Int"
   content: bigint
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Int(content: bigint, meta?: TokenMeta): Int {
+export function Int(content: bigint, meta?: SourceLocation): Int {
   return {
     kind: "Int",
     content,
@@ -96,10 +96,10 @@ export function Int(content: bigint, meta?: TokenMeta): Int {
 export type Float = {
   kind: "Float"
   content: number
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Float(content: number, meta?: TokenMeta): Float {
+export function Float(content: number, meta?: SourceLocation): Float {
   return {
     kind: "Float",
     content,
@@ -110,10 +110,10 @@ export function Float(content: number, meta?: TokenMeta): Float {
 export type Var = {
   kind: "Var"
   name: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Var(name: string, meta?: TokenMeta): Var {
+export function Var(name: string, meta?: SourceLocation): Var {
   return {
     kind: "Var",
     name,
@@ -125,10 +125,14 @@ export type Require = {
   kind: "Require"
   path: string
   name: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Require(path: string, name: string, meta?: TokenMeta): Require {
+export function Require(
+  path: string,
+  name: string,
+  meta?: SourceLocation,
+): Require {
   return {
     kind: "Require",
     path,
@@ -141,13 +145,13 @@ export type Lambda = {
   kind: "Lambda"
   parameters: Array<string>
   body: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function Lambda(
   parameters: Array<string>,
   body: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Lambda {
   return {
     kind: "Lambda",
@@ -161,10 +165,14 @@ export type Apply = {
   kind: "Apply"
   target: Exp
   args: Array<Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Apply(target: Exp, args: Array<Exp>, meta?: TokenMeta): Apply {
+export function Apply(
+  target: Exp,
+  args: Array<Exp>,
+  meta?: SourceLocation,
+): Apply {
   return {
     kind: "Apply",
     target,
@@ -178,14 +186,14 @@ export type Let1 = {
   name: string
   rhs: Exp
   body: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function Let1(
   name: string,
   rhs: Exp,
   body: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Let1 {
   return {
     kind: "Let1",
@@ -200,10 +208,10 @@ export type Begin1 = {
   kind: "Begin1"
   head: Exp
   body: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Begin1(head: Exp, body: Exp, meta?: TokenMeta): Begin1 {
+export function Begin1(head: Exp, body: Exp, meta?: SourceLocation): Begin1 {
   return {
     kind: "Begin1",
     head,
@@ -215,10 +223,13 @@ export function Begin1(head: Exp, body: Exp, meta?: TokenMeta): Begin1 {
 export type BeginSugar = {
   kind: "BeginSugar"
   sequence: Array<Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function BeginSugar(sequence: Array<Exp>, meta?: TokenMeta): BeginSugar {
+export function BeginSugar(
+  sequence: Array<Exp>,
+  meta?: SourceLocation,
+): BeginSugar {
   return {
     kind: "BeginSugar",
     sequence,
@@ -230,13 +241,13 @@ export type AssignSugar = {
   kind: "AssignSugar"
   name: string
   rhs: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function AssignSugar(
   name: string,
   rhs: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): AssignSugar {
   return {
     kind: "AssignSugar",
@@ -251,14 +262,14 @@ export type If = {
   condition: Exp
   consequent: Exp
   alternative: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function If(
   condition: Exp,
   consequent: Exp,
   alternative: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): If {
   return {
     kind: "If",
@@ -273,10 +284,14 @@ export type When = {
   kind: "When"
   condition: Exp
   consequent: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function When(condition: Exp, consequent: Exp, meta?: TokenMeta): When {
+export function When(
+  condition: Exp,
+  consequent: Exp,
+  meta?: SourceLocation,
+): When {
   return {
     kind: "When",
     condition,
@@ -289,13 +304,13 @@ export type Unless = {
   kind: "Unless"
   condition: Exp
   alternative: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function Unless(
   condition: Exp,
   alternative: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Unless {
   return {
     kind: "Unless",
@@ -308,10 +323,10 @@ export function Unless(
 export type And = {
   kind: "And"
   exps: Array<Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function And(exps: Array<Exp>, meta?: TokenMeta): And {
+export function And(exps: Array<Exp>, meta?: SourceLocation): And {
   return {
     kind: "And",
     exps,
@@ -322,10 +337,10 @@ export function And(exps: Array<Exp>, meta?: TokenMeta): And {
 export type Or = {
   kind: "Or"
   exps: Array<Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Or(exps: Array<Exp>, meta?: TokenMeta): Or {
+export function Or(exps: Array<Exp>, meta?: SourceLocation): Or {
   return {
     kind: "Or",
     exps,
@@ -336,19 +351,19 @@ export function Or(exps: Array<Exp>, meta?: TokenMeta): Or {
 export type Cond = {
   kind: "Cond"
   clauses: Array<CondClause>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export type CondClause = {
   question: Exp
   answer: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function CondClause(
   question: Exp,
   answer: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): CondClause {
   return {
     question,
@@ -357,7 +372,7 @@ export function CondClause(
   }
 }
 
-export function Cond(clauses: Array<CondClause>, meta?: TokenMeta): Cond {
+export function Cond(clauses: Array<CondClause>, meta?: SourceLocation): Cond {
   return {
     kind: "Cond",
     clauses,
@@ -368,12 +383,12 @@ export function Cond(clauses: Array<CondClause>, meta?: TokenMeta): Cond {
 export type LiteralList = {
   kind: "LiteralList"
   elements: Array<Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function LiteralList(
   elements: Array<Exp>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): LiteralList {
   return {
     kind: "LiteralList",
@@ -385,12 +400,12 @@ export function LiteralList(
 export type LiteralTuple = {
   kind: "LiteralTuple"
   elements: Array<Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function LiteralTuple(
   elements: Array<Exp>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): LiteralTuple {
   return {
     kind: "LiteralTuple",
@@ -402,12 +417,12 @@ export function LiteralTuple(
 export type LiteralRecord = {
   kind: "LiteralRecord"
   attributes: Record<string, Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function LiteralRecord(
   attributes: Record<string, Exp>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): LiteralRecord {
   return {
     kind: "LiteralRecord",
@@ -419,10 +434,13 @@ export function LiteralRecord(
 export type LiteralSet = {
   kind: "LiteralSet"
   elements: Array<Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function LiteralSet(elements: Array<Exp>, meta?: TokenMeta): LiteralSet {
+export function LiteralSet(
+  elements: Array<Exp>,
+  meta?: SourceLocation,
+): LiteralSet {
   return {
     kind: "LiteralSet",
     elements,
@@ -433,12 +451,12 @@ export function LiteralSet(elements: Array<Exp>, meta?: TokenMeta): LiteralSet {
 export type LiteralHash = {
   kind: "LiteralHash"
   entries: Array<{ key: Exp; value: Exp }>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function LiteralHash(
   entries: Array<{ key: Exp; value: Exp }>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): LiteralHash {
   return {
     kind: "LiteralHash",
@@ -450,10 +468,10 @@ export function LiteralHash(
 export type Quote = {
   kind: "Quote"
   sexp: Sexp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Quote(sexp: Sexp, meta?: TokenMeta): Quote {
+export function Quote(sexp: Sexp, meta?: SourceLocation): Quote {
   return {
     kind: "Quote",
     sexp,
@@ -465,13 +483,13 @@ export type Arrow = {
   kind: "Arrow"
   argTypes: Array<Exp>
   retType: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function Arrow(
   argTypes: Array<Exp>,
   retType: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Arrow {
   return {
     kind: "Arrow",
@@ -484,10 +502,10 @@ export function Arrow(
 export type Tau = {
   kind: "Tau"
   elementTypes: Array<Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Tau(elementTypes: Array<Exp>, meta?: TokenMeta): Tau {
+export function Tau(elementTypes: Array<Exp>, meta?: SourceLocation): Tau {
   return {
     kind: "Tau",
     elementTypes,
@@ -498,12 +516,12 @@ export function Tau(elementTypes: Array<Exp>, meta?: TokenMeta): Tau {
 export type Interface = {
   kind: "Interface"
   attributeTypes: Record<string, Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function Interface(
   attributeTypes: Record<string, Exp>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Interface {
   return {
     kind: "Interface",
@@ -516,13 +534,13 @@ export type ExtendInterface = {
   kind: "ExtendInterface"
   baseType: Exp
   attributeTypes: Record<string, Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function ExtendInterface(
   baseType: Exp,
   attributeTypes: Record<string, Exp>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): ExtendInterface {
   return {
     kind: "ExtendInterface",
@@ -536,13 +554,13 @@ export type Extend = {
   kind: "Extend"
   base: Exp
   attributes: Record<string, Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function Extend(
   base: Exp,
   attributes: Record<string, Exp>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Extend {
   return {
     kind: "Extend",
@@ -556,13 +574,13 @@ export type Update = {
   kind: "Update"
   base: Exp
   attributes: Record<string, Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function Update(
   base: Exp,
   attributes: Record<string, Exp>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Update {
   return {
     kind: "Update",
@@ -576,13 +594,13 @@ export type UpdateMut = {
   kind: "UpdateMut"
   base: Exp
   attributes: Record<string, Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function UpdateMut(
   base: Exp,
   attributes: Record<string, Exp>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): UpdateMut {
   return {
     kind: "UpdateMut",
@@ -596,10 +614,10 @@ export type The = {
   kind: "The"
   type: Exp
   exp: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function The(type: Exp, exp: Exp, meta?: TokenMeta): The {
+export function The(type: Exp, exp: Exp, meta?: SourceLocation): The {
   return {
     kind: "The",
     type,
@@ -612,13 +630,13 @@ export type Polymorphic = {
   kind: "Polymorphic"
   parameters: Array<string>
   body: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function Polymorphic(
   parameters: Array<string>,
   body: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Polymorphic {
   return {
     kind: "Polymorphic",
@@ -632,19 +650,19 @@ export type Match = {
   kind: "Match"
   targets: Array<Exp>
   clauses: Array<MatchClause>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export type MatchClause = {
   patterns: Array<Exp>
   body: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function MatchClause(
   patterns: Array<Exp>,
   body: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): MatchClause {
   return {
     patterns,
@@ -656,7 +674,7 @@ export function MatchClause(
 export function Match(
   targets: Array<Exp>,
   clauses: Array<MatchClause>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Match {
   return {
     kind: "Match",

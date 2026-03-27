@@ -114,7 +114,7 @@ router.defineHandlers({
 try {
   await router.run(process.argv.slice(2))
 } catch (error) {
-  if (error instanceof S.ErrorWithMeta) {
+  if (error instanceof S.ErrorWithSourceLocation) {
     console.log(errorReport(error))
   } else {
     throw error

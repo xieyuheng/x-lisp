@@ -81,7 +81,7 @@ function checkUndefinedNames(
   mod: M.Mod,
   importedMod: M.Mod,
   names: Array<string>,
-  meta?: S.TokenMeta,
+  meta?: S.SourceLocation,
 ): void {
   const definedNames = new Set(
     M.modPublicDefinitionEntries(importedMod).map(([key]) => key),
@@ -93,6 +93,6 @@ function checkUndefinedNames(
   message += `\n  mod: ${pathRelativeToCwd(mod.path)}`
   message += `\n  importing from mod: ${pathRelativeToCwd(importedMod.path)}`
   message += `\n  undefined names: [${undefinedNames.join(" ")}]`
-  if (meta) throw new S.ErrorWithMeta(message, meta)
+  if (meta) throw new S.ErrorWithSourceLocation(message, meta)
   else throw new Error(message)
 }

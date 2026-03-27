@@ -1,4 +1,4 @@
-import { type TokenMeta } from "@xieyuheng/sexp.js"
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type {
   DataConstructor,
   DataTypeConstructor,
@@ -21,14 +21,14 @@ export type DefineFunction = {
   name: string
   parameters: Array<string>
   body: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function DefineFunction(
   name: string,
   parameters: Array<string>,
   body: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): DefineFunction {
   return {
     kind: "DefineFunction",
@@ -43,13 +43,13 @@ export type DefineVariable = {
   kind: "DefineVariable"
   name: string
   body: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function DefineVariable(
   name: string,
   body: Exp,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): DefineVariable {
   return {
     kind: "DefineVariable",
@@ -63,13 +63,13 @@ export type DefineData = {
   kind: "DefineData"
   dataTypeConstructor: Omit<DataTypeConstructor, "definition">
   dataConstructors: Array<Omit<DataConstructor, "definition">>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function DefineData(
   dataTypeConstructor: Omit<DataTypeConstructor, "definition">,
   dataConstructors: Array<Omit<DataConstructor, "definition">>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): DefineData {
   return {
     kind: "DefineData",
@@ -83,13 +83,13 @@ export type DefineInterface = {
   kind: "DefineInterface"
   interfaceConstructor: Omit<InterfaceConstructor, "definition">
   attributeTypes: Record<string, Exp>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function DefineInterface(
   interfaceConstructor: Omit<InterfaceConstructor, "definition">,
   attributeTypes: Record<string, Exp>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): DefineInterface {
   return {
     kind: "DefineInterface",
@@ -103,10 +103,10 @@ export type Claim = {
   kind: "Claim"
   name: string
   type: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Claim(name: string, type: Exp, meta?: TokenMeta): Claim {
+export function Claim(name: string, type: Exp, meta?: SourceLocation): Claim {
   return {
     kind: "Claim",
     name,
@@ -118,10 +118,10 @@ export function Claim(name: string, type: Exp, meta?: TokenMeta): Claim {
 export type Exempt = {
   kind: "Exempt"
   names: Array<string>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Exempt(names: Array<string>, meta?: TokenMeta): Exempt {
+export function Exempt(names: Array<string>, meta?: SourceLocation): Exempt {
   return {
     kind: "Exempt",
     names,

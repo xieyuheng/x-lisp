@@ -1,5 +1,5 @@
 import { jsonParseString } from "@xieyuheng/helpers.js/json"
-import { ErrorWithMeta } from "../../errors/ErrorWithMeta.ts"
+import { ErrorWithSourceLocation } from "../../errors/ErrorWithSourceLocation.ts"
 import { positionForwardChar } from "../../span/Position.ts"
 import type { Consumer } from "../Consumer.ts"
 import type { Lexer } from "../Lexer.ts"
@@ -28,7 +28,7 @@ export class StringConsumer implements Consumer {
     const start = lexer.position
     const end = positionForwardChar(start, '"')
     let message = `Fail to parse double qouted string: ${line}\n`
-    throw new ErrorWithMeta(message, {
+    throw new ErrorWithSourceLocation(message, {
       span: { start, end },
       text: lexer.text,
       path: lexer.path,

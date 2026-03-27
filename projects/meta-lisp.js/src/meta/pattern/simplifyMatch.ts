@@ -9,7 +9,7 @@ export function simplifyMatch(
   targets: Array<M.Exp>,
   clauses: Array<M.MatchClause>,
   defaultExp: M.Exp,
-  meta?: S.TokenMeta,
+  meta?: S.SourceLocation,
 ): M.Exp {
   for (const clause of clauses) {
     if (clause.patterns.length !== targets.length) {
@@ -181,7 +181,7 @@ function findDataDefinitionFromClauses(
     } else if (dataConstructor.definition !== definition) {
       let message = `[findDataDefinitionFromClauses] datatype definition mismatch`
       message += `\n  definition name: ${definition.name}`
-      if (clause.meta) throw new S.ErrorWithMeta(message, clause.meta)
+      if (clause.meta) throw new S.ErrorWithSourceLocation(message, clause.meta)
       else throw new Error(message)
     }
   }

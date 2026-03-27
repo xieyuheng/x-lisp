@@ -10,7 +10,7 @@ export function assertNoDuplicatedKey(entries: Array<[string, S.Sexp]>): void {
       assert(firstSexp.meta)
       let message = `[assertNoDuplicatedKey] fail`
       message += `\n  key: ${key}`
-      throw new S.ErrorWithMeta(message, firstSexp.meta)
+      throw new S.ErrorWithSourceLocation(message, firstSexp.meta)
     }
   }
 }

@@ -1,4 +1,4 @@
-import { type TokenMeta } from "@xieyuheng/sexp.js"
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { formatExp } from "../format/index.ts"
 import * as Exps from "./index.ts"
 import { type Exp } from "./index.ts"
@@ -21,11 +21,11 @@ export function asLiteralRecord(value: Exp): Exps.LiteralRecord {
   throw new Error(`[asObject] fail on: ${formatExp(value)}`)
 }
 
-export function Void(meta?: TokenMeta): Exps.Var {
+export function Void(meta?: SourceLocation): Exps.Var {
   return Exps.Var("void", meta)
 }
 
-export function Bool(bool: boolean, meta?: TokenMeta): Exps.Var {
+export function Bool(bool: boolean, meta?: SourceLocation): Exps.Var {
   return Exps.Var(bool ? "true" : "false", meta)
 }
 

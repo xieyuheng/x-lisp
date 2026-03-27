@@ -1,4 +1,4 @@
-import { type TokenMeta } from "@xieyuheng/sexp.js"
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
 import type { Mod } from "../mod/index.ts"
 import type { AboutModule } from "./AboutModule.ts"
@@ -11,7 +11,7 @@ export type DefineFunction = {
   name: string
   parameters: Array<string>
   blocks: Map<string, Block>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function DefineFunction(
@@ -19,7 +19,7 @@ export function DefineFunction(
   name: string,
   parameters: Array<string>,
   blocks: Map<string, Block>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): DefineFunction {
   return {
     kind: "DefineFunction",
@@ -36,14 +36,14 @@ export type DefineVariable = {
   mod: Mod
   name: string
   blocks: Map<string, Block>
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function DefineVariable(
   mod: Mod,
   name: string,
   blocks: Map<string, Block>,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): DefineVariable {
   return {
     kind: "DefineVariable",

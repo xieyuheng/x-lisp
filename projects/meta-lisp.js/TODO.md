@@ -1,4 +1,4 @@
-[maybe] [sexp] rename TokenMeta to SourceLocation
+[sexp] extract `SourceLocation`
 [maybe] rename .meta to .location
 
 located-sexp-t

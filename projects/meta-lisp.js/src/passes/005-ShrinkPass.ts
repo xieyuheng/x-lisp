@@ -87,7 +87,7 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
 function shrinkTuple(
   mod: M.Mod,
   elements: Array<M.Exp>,
-  meta?: S.TokenMeta,
+  meta?: S.SourceLocation,
 ): M.Exp {
   return M.desugar(mod, M.desugarList(elements, meta))
 }
@@ -95,7 +95,7 @@ function shrinkTuple(
 function shrinkRecord(
   mod: M.Mod,
   attributes: Record<string, M.Exp>,
-  meta?: S.TokenMeta,
+  meta?: S.SourceLocation,
 ): M.Exp {
   const base = M.Apply(M.Var("make-record", meta), [], meta)
   return shrinkUpdateMut(mod, base, attributes, meta)
@@ -105,7 +105,7 @@ function shrinkUpdateMut(
   mod: M.Mod,
   base: M.Exp,
   attributes: Record<string, M.Exp>,
-  meta?: S.TokenMeta,
+  meta?: S.SourceLocation,
 ): M.Exp {
   return M.desugar(
     mod,
@@ -130,7 +130,7 @@ function shrinkUpdate(
   mod: M.Mod,
   base: M.Exp,
   attributes: Record<string, M.Exp>,
-  meta?: S.TokenMeta,
+  meta?: S.SourceLocation,
 ): M.Exp {
   return M.desugar(
     mod,

@@ -1,4 +1,4 @@
-import { type TokenMeta } from "@xieyuheng/sexp.js"
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type { Exp } from "../exp/index.ts"
 
 export type Instr = Assign | Perform | Test | Branch | Goto | Return
@@ -7,10 +7,10 @@ export type Assign = {
   kind: "Assign"
   dest: string
   exp: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Assign(dest: string, exp: Exp, meta?: TokenMeta): Assign {
+export function Assign(dest: string, exp: Exp, meta?: SourceLocation): Assign {
   return {
     kind: "Assign",
     dest,
@@ -22,10 +22,10 @@ export function Assign(dest: string, exp: Exp, meta?: TokenMeta): Assign {
 export type Perform = {
   kind: "Perform"
   exp: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Perform(exp: Exp, meta?: TokenMeta): Perform {
+export function Perform(exp: Exp, meta?: SourceLocation): Perform {
   return {
     kind: "Perform",
     exp,
@@ -36,10 +36,10 @@ export function Perform(exp: Exp, meta?: TokenMeta): Perform {
 export type Test = {
   kind: "Test"
   exp: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Test(exp: Exp, meta?: TokenMeta): Test {
+export function Test(exp: Exp, meta?: SourceLocation): Test {
   return {
     kind: "Test",
     exp,
@@ -51,13 +51,13 @@ export type Branch = {
   kind: "Branch"
   thenLabel: string
   elseLabel: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
 export function Branch(
   thenLabel: string,
   elseLabel: string,
-  meta?: TokenMeta,
+  meta?: SourceLocation,
 ): Branch {
   return {
     kind: "Branch",
@@ -70,10 +70,10 @@ export function Branch(
 export type Goto = {
   kind: "Goto"
   label: string
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Goto(label: string, meta?: TokenMeta): Goto {
+export function Goto(label: string, meta?: SourceLocation): Goto {
   return {
     kind: "Goto",
     label,
@@ -84,10 +84,10 @@ export function Goto(label: string, meta?: TokenMeta): Goto {
 export type Return = {
   kind: "Return"
   exp: Exp
-  meta?: TokenMeta
+  meta?: SourceLocation
 }
 
-export function Return(exp: Exp, meta?: TokenMeta): Return {
+export function Return(exp: Exp, meta?: SourceLocation): Return {
   return {
     kind: "Return",
     exp,

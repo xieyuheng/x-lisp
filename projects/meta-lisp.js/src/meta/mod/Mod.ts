@@ -50,7 +50,8 @@ export function modDefine(
   if (mod.definitions.has(name)) {
     let message = `[modDefine] name already defined`
     message += `\n  name: ${name}`
-    if (definition.meta) throw new S.ErrorWithMeta(message, definition.meta)
+    if (definition.meta)
+      throw new S.ErrorWithSourceLocation(message, definition.meta)
     else throw new Error(message)
   }
 
