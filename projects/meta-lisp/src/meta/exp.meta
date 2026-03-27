@@ -1,4 +1,6 @@
 (export-all)
 
 (define-data exp-t
-  (var-exp (name symbol-t)))
+  (var-exp (name symbol-t))
+  (apply-exp (target exp-t) (args (list-t exp-t)))
+  (lambda-exp (parameters (list-t symbol-t)) (body exp-t)))
