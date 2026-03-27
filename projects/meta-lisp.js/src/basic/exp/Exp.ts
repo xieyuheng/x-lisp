@@ -18,84 +18,84 @@ export type Exp = Atom | Apply
 export type Symbol = {
   kind: "Symbol"
   content: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Symbol(content: string, meta?: SourceLocation): Symbol {
+export function Symbol(content: string, location?: SourceLocation): Symbol {
   return {
     kind: "Symbol",
     content,
-    meta,
+    location,
   }
 }
 
 export type String = {
   kind: "String"
   content: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function String(content: string, meta?: SourceLocation): String {
+export function String(content: string, location?: SourceLocation): String {
   return {
     kind: "String",
     content,
-    meta,
+    location,
   }
 }
 
 export type Keyword = {
   kind: "Keyword"
   content: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Keyword(content: string, meta?: SourceLocation): Keyword {
+export function Keyword(content: string, location?: SourceLocation): Keyword {
   return {
     kind: "Keyword",
     content,
-    meta,
+    location,
   }
 }
 
 export type Int = {
   kind: "Int"
   content: bigint
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Int(content: bigint, meta?: SourceLocation): Int {
+export function Int(content: bigint, location?: SourceLocation): Int {
   return {
     kind: "Int",
     content,
-    meta,
+    location,
   }
 }
 
 export type Float = {
   kind: "Float"
   content: number
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Float(content: number, meta?: SourceLocation): Float {
+export function Float(content: number, location?: SourceLocation): Float {
   return {
     kind: "Float",
     content,
-    meta,
+    location,
   }
 }
 
 export type Var = {
   kind: "Var"
   name: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Var(name: string, meta?: SourceLocation): Var {
+export function Var(name: string, location?: SourceLocation): Var {
   return {
     kind: "Var",
     name,
-    meta,
+    location,
   }
 }
 
@@ -103,18 +103,18 @@ export type Apply = {
   kind: "Apply"
   target: Exp
   args: Array<Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Apply(
   target: Exp,
   args: Array<Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Apply {
   return {
     kind: "Apply",
     target,
     args,
-    meta,
+    location,
   }
 }

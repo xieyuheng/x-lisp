@@ -1,12 +1,15 @@
 import { type Sexp } from "../sexp/index.ts"
-import { Parser, type ParserMeta } from "./Parser.ts"
+import { Parser, type ParserOptions } from "./Parser.ts"
 
-export function parseSexps(text: string, meta: ParserMeta = {}): Array<Sexp> {
-  return new Parser().parse(text, meta)
+export function parseSexps(
+  text: string,
+  options: ParserOptions = {},
+): Array<Sexp> {
+  return new Parser().parse(text, options)
 }
 
-export function parseSexp(text: string, meta: ParserMeta = {}): Sexp {
-  const array = parseSexps(text, meta)
+export function parseSexp(text: string, options: ParserOptions = {}): Sexp {
+  const array = parseSexps(text, options)
   if (array.length === 1) {
     return array[0]
   }

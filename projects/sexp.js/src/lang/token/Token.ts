@@ -12,5 +12,5 @@ export type TokenKind =
 export type Token = {
   kind: TokenKind
   value: string
-  meta: SourceLocation
+  location: SourceLocation
 }

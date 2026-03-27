@@ -18,7 +18,7 @@ export function handleDefine(mod: M.Mod, stmt: M.Stmt): void {
         stmt.name,
         stmt.parameters,
         stmt.body,
-        stmt.meta,
+        stmt.location,
       ),
     )
   }
@@ -27,7 +27,7 @@ export function handleDefine(mod: M.Mod, stmt: M.Stmt): void {
     M.modDefine(
       mod,
       stmt.name,
-      M.VariableDefinition(mod, stmt.name, stmt.body, stmt.meta),
+      M.VariableDefinition(mod, stmt.name, stmt.body, stmt.location),
     )
   }
 
@@ -42,7 +42,7 @@ export function handleDefine(mod: M.Mod, stmt: M.Stmt): void {
       name,
       dataTypeConstructor,
       dataConstructors,
-      stmt.meta,
+      stmt.location,
     )
     dataTypeConstructor.definition = definition
     for (const dataConstructor of dataConstructors) {
@@ -73,7 +73,7 @@ export function handleDefine(mod: M.Mod, stmt: M.Stmt): void {
       name,
       interfaceConstructor,
       attributeTypes,
-      stmt.meta,
+      stmt.location,
     )
     interfaceConstructor.definition = definition
     M.modDefine(mod, name, definition)

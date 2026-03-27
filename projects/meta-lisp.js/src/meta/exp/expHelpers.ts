@@ -21,12 +21,12 @@ export function asLiteralRecord(value: Exp): Exps.LiteralRecord {
   throw new Error(`[asObject] fail on: ${formatExp(value)}`)
 }
 
-export function Void(meta?: SourceLocation): Exps.Var {
-  return Exps.Var("void", meta)
+export function Void(location?: SourceLocation): Exps.Var {
+  return Exps.Var("void", location)
 }
 
-export function Bool(bool: boolean, meta?: SourceLocation): Exps.Var {
-  return Exps.Var(bool ? "true" : "false", meta)
+export function Bool(bool: boolean, location?: SourceLocation): Exps.Var {
+  return Exps.Var(bool ? "true" : "false", location)
 }
 
 export function isBool(exp: Exp): boolean {

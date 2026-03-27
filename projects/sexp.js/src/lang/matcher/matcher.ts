@@ -8,7 +8,7 @@ export type Matcher<A> = (sexp: S.Sexp) => A | undefined
 
 export type MatcherCallback<A> = (
   subst: Subst,
-  options: { sexp: S.Sexp; meta: SourceLocation },
+  options: { sexp: S.Sexp; location: SourceLocation },
 ) => A | undefined
 
 export function matcher<A>(
@@ -19,10 +19,10 @@ export function matcher<A>(
   return (sexp) => {
     const subst = matchSexp("NormalMode", pattern, sexp)({})
     if (!subst) return undefined
-    assert(sexp.meta)
+    assert(sexp.location)
     return f(subst, {
       sexp: sexp,
-      meta: sexp.meta as SourceLocation,
+      location: sexp.location as SourceLocation,
     })
   }
 }

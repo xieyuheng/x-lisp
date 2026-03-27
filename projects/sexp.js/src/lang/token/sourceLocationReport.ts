@@ -2,16 +2,16 @@ import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import { spanReport, type Position } from "../span/index.ts"
 import type { SourceLocation } from "./SourceLocation.ts"
 
-export function tokenMetaReport(
-  meta: SourceLocation,
+export function sourceLocationReport(
+  location: SourceLocation,
   errorMessage?: string,
 ): string {
   let message = ""
-  const context = spanReport(meta.span, meta.text)
-  if (meta.path) {
-    message += pathRelativeToCwd(meta.path)
+  const context = spanReport(location.span, location.text)
+  if (location.path) {
+    message += pathRelativeToCwd(location.path)
     message += ":"
-    message += formatPosition(meta.span.start)
+    message += formatPosition(location.span.start)
     if (errorMessage) {
       message += ` -- `
       message += errorMessage

@@ -122,7 +122,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
             M.typeCheckByInfer(
               mod,
               M.ctxPut(ctx, parameter, argType),
-              M.Lambda(restParameters, exp.body, exp.meta),
+              M.Lambda(restParameters, exp.body, exp.location),
               retType,
             ),
             M.okInferEffect(type),

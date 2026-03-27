@@ -15,7 +15,7 @@ export function consume(lexer: Lexer): Token | undefined {
       return {
         kind: consumer.kind,
         value,
-        meta: {
+        location: {
           span: { start, end },
           text: lexer.text,
           path: lexer.path,

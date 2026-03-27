@@ -49,7 +49,7 @@ export function definitionCheck(definition: M.Definition): null {
       checkExp(
         mod,
         name,
-        M.Lambda(definition.parameters, definition.body, definition.meta),
+        M.Lambda(definition.parameters, definition.body, definition.location),
       )
       definition.isChecked = true
       return null
@@ -87,8 +87,8 @@ function checkByInfer(mod: M.Mod, name: string, exp: M.Exp): void {
 }
 
 function reportTypeCheckError(exp: M.Exp, errorMessage: string): string {
-  if (exp.meta) {
-    return S.tokenMetaReport(exp.meta, errorMessage)
+  if (exp.location) {
+    return S.sourceLocationReport(exp.location, errorMessage)
   } else {
     let message = `-- ${errorMessage}`
     message += `\n  exp: ${M.formatExp(exp)}`
@@ -98,8 +98,8 @@ function reportTypeCheckError(exp: M.Exp, errorMessage: string): string {
 
 function reportUnclaimedDefinition(definition: M.Definition): string {
   const errorMessage = `unclaimed definition: ${definition.name}`
-  if (definition.meta) {
-    return S.tokenMetaReport(definition.meta, errorMessage)
+  if (definition.location) {
+    return S.sourceLocationReport(definition.location, errorMessage)
   } else {
     return `${pathRelativeToCwd(definition.mod.path)} -- ${errorMessage}`
   }

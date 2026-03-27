@@ -40,84 +40,84 @@ export type Exp =
 export type Symbol = {
   kind: "Symbol"
   content: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Symbol(content: string, meta?: SourceLocation): Symbol {
+export function Symbol(content: string, location?: SourceLocation): Symbol {
   return {
     kind: "Symbol",
     content,
-    meta,
+    location,
   }
 }
 
 export type String = {
   kind: "String"
   content: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function String(content: string, meta?: SourceLocation): String {
+export function String(content: string, location?: SourceLocation): String {
   return {
     kind: "String",
     content,
-    meta,
+    location,
   }
 }
 
 export type Keyword = {
   kind: "Keyword"
   content: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Keyword(content: string, meta?: SourceLocation): Keyword {
+export function Keyword(content: string, location?: SourceLocation): Keyword {
   return {
     kind: "Keyword",
     content,
-    meta,
+    location,
   }
 }
 
 export type Int = {
   kind: "Int"
   content: bigint
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Int(content: bigint, meta?: SourceLocation): Int {
+export function Int(content: bigint, location?: SourceLocation): Int {
   return {
     kind: "Int",
     content,
-    meta,
+    location,
   }
 }
 
 export type Float = {
   kind: "Float"
   content: number
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Float(content: number, meta?: SourceLocation): Float {
+export function Float(content: number, location?: SourceLocation): Float {
   return {
     kind: "Float",
     content,
-    meta,
+    location,
   }
 }
 
 export type Var = {
   kind: "Var"
   name: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Var(name: string, meta?: SourceLocation): Var {
+export function Var(name: string, location?: SourceLocation): Var {
   return {
     kind: "Var",
     name,
-    meta,
+    location,
   }
 }
 
@@ -125,19 +125,19 @@ export type Require = {
   kind: "Require"
   path: string
   name: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Require(
   path: string,
   name: string,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Require {
   return {
     kind: "Require",
     path,
     name,
-    meta,
+    location,
   }
 }
 
@@ -145,19 +145,19 @@ export type Lambda = {
   kind: "Lambda"
   parameters: Array<string>
   body: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Lambda(
   parameters: Array<string>,
   body: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Lambda {
   return {
     kind: "Lambda",
     parameters,
     body,
-    meta,
+    location,
   }
 }
 
@@ -165,19 +165,19 @@ export type Apply = {
   kind: "Apply"
   target: Exp
   args: Array<Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Apply(
   target: Exp,
   args: Array<Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Apply {
   return {
     kind: "Apply",
     target,
     args,
-    meta,
+    location,
   }
 }
 
@@ -186,21 +186,21 @@ export type Let1 = {
   name: string
   rhs: Exp
   body: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Let1(
   name: string,
   rhs: Exp,
   body: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Let1 {
   return {
     kind: "Let1",
     name,
     rhs,
     body,
-    meta,
+    location,
   }
 }
 
@@ -208,32 +208,36 @@ export type Begin1 = {
   kind: "Begin1"
   head: Exp
   body: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Begin1(head: Exp, body: Exp, meta?: SourceLocation): Begin1 {
+export function Begin1(
+  head: Exp,
+  body: Exp,
+  location?: SourceLocation,
+): Begin1 {
   return {
     kind: "Begin1",
     head,
     body,
-    meta,
+    location,
   }
 }
 
 export type BeginSugar = {
   kind: "BeginSugar"
   sequence: Array<Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function BeginSugar(
   sequence: Array<Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): BeginSugar {
   return {
     kind: "BeginSugar",
     sequence,
-    meta,
+    location,
   }
 }
 
@@ -241,19 +245,19 @@ export type AssignSugar = {
   kind: "AssignSugar"
   name: string
   rhs: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function AssignSugar(
   name: string,
   rhs: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): AssignSugar {
   return {
     kind: "AssignSugar",
     name,
     rhs,
-    meta,
+    location,
   }
 }
 
@@ -262,21 +266,21 @@ export type If = {
   condition: Exp
   consequent: Exp
   alternative: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function If(
   condition: Exp,
   consequent: Exp,
   alternative: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): If {
   return {
     kind: "If",
     condition,
     consequent,
     alternative,
-    meta,
+    location,
   }
 }
 
@@ -284,19 +288,19 @@ export type When = {
   kind: "When"
   condition: Exp
   consequent: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function When(
   condition: Exp,
   consequent: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): When {
   return {
     kind: "When",
     condition,
     consequent,
-    meta,
+    location,
   }
 }
 
@@ -304,178 +308,181 @@ export type Unless = {
   kind: "Unless"
   condition: Exp
   alternative: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Unless(
   condition: Exp,
   alternative: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Unless {
   return {
     kind: "Unless",
     condition,
     alternative,
-    meta,
+    location,
   }
 }
 
 export type And = {
   kind: "And"
   exps: Array<Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function And(exps: Array<Exp>, meta?: SourceLocation): And {
+export function And(exps: Array<Exp>, location?: SourceLocation): And {
   return {
     kind: "And",
     exps,
-    meta,
+    location,
   }
 }
 
 export type Or = {
   kind: "Or"
   exps: Array<Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Or(exps: Array<Exp>, meta?: SourceLocation): Or {
+export function Or(exps: Array<Exp>, location?: SourceLocation): Or {
   return {
     kind: "Or",
     exps,
-    meta,
+    location,
   }
 }
 
 export type Cond = {
   kind: "Cond"
   clauses: Array<CondClause>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export type CondClause = {
   question: Exp
   answer: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function CondClause(
   question: Exp,
   answer: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): CondClause {
   return {
     question,
     answer,
-    meta,
+    location,
   }
 }
 
-export function Cond(clauses: Array<CondClause>, meta?: SourceLocation): Cond {
+export function Cond(
+  clauses: Array<CondClause>,
+  location?: SourceLocation,
+): Cond {
   return {
     kind: "Cond",
     clauses,
-    meta,
+    location,
   }
 }
 
 export type LiteralList = {
   kind: "LiteralList"
   elements: Array<Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function LiteralList(
   elements: Array<Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): LiteralList {
   return {
     kind: "LiteralList",
     elements,
-    meta,
+    location,
   }
 }
 
 export type LiteralTuple = {
   kind: "LiteralTuple"
   elements: Array<Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function LiteralTuple(
   elements: Array<Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): LiteralTuple {
   return {
     kind: "LiteralTuple",
     elements,
-    meta,
+    location,
   }
 }
 
 export type LiteralRecord = {
   kind: "LiteralRecord"
   attributes: Record<string, Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function LiteralRecord(
   attributes: Record<string, Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): LiteralRecord {
   return {
     kind: "LiteralRecord",
     attributes,
-    meta,
+    location,
   }
 }
 
 export type LiteralSet = {
   kind: "LiteralSet"
   elements: Array<Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function LiteralSet(
   elements: Array<Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): LiteralSet {
   return {
     kind: "LiteralSet",
     elements,
-    meta,
+    location,
   }
 }
 
 export type LiteralHash = {
   kind: "LiteralHash"
   entries: Array<{ key: Exp; value: Exp }>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function LiteralHash(
   entries: Array<{ key: Exp; value: Exp }>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): LiteralHash {
   return {
     kind: "LiteralHash",
     entries,
-    meta,
+    location,
   }
 }
 
 export type Quote = {
   kind: "Quote"
   sexp: Sexp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Quote(sexp: Sexp, meta?: SourceLocation): Quote {
+export function Quote(sexp: Sexp, location?: SourceLocation): Quote {
   return {
     kind: "Quote",
     sexp,
-    meta,
+    location,
   }
 }
 
@@ -483,50 +490,50 @@ export type Arrow = {
   kind: "Arrow"
   argTypes: Array<Exp>
   retType: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Arrow(
   argTypes: Array<Exp>,
   retType: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Arrow {
   return {
     kind: "Arrow",
     argTypes,
     retType,
-    meta,
+    location,
   }
 }
 
 export type Tau = {
   kind: "Tau"
   elementTypes: Array<Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Tau(elementTypes: Array<Exp>, meta?: SourceLocation): Tau {
+export function Tau(elementTypes: Array<Exp>, location?: SourceLocation): Tau {
   return {
     kind: "Tau",
     elementTypes,
-    meta,
+    location,
   }
 }
 
 export type Interface = {
   kind: "Interface"
   attributeTypes: Record<string, Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Interface(
   attributeTypes: Record<string, Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Interface {
   return {
     kind: "Interface",
     attributeTypes,
-    meta,
+    location,
   }
 }
 
@@ -534,19 +541,19 @@ export type ExtendInterface = {
   kind: "ExtendInterface"
   baseType: Exp
   attributeTypes: Record<string, Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function ExtendInterface(
   baseType: Exp,
   attributeTypes: Record<string, Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): ExtendInterface {
   return {
     kind: "ExtendInterface",
     baseType,
     attributeTypes,
-    meta,
+    location,
   }
 }
 
@@ -554,19 +561,19 @@ export type Extend = {
   kind: "Extend"
   base: Exp
   attributes: Record<string, Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Extend(
   base: Exp,
   attributes: Record<string, Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Extend {
   return {
     kind: "Extend",
     base,
     attributes,
-    meta,
+    location,
   }
 }
 
@@ -574,19 +581,19 @@ export type Update = {
   kind: "Update"
   base: Exp
   attributes: Record<string, Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Update(
   base: Exp,
   attributes: Record<string, Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Update {
   return {
     kind: "Update",
     base,
     attributes,
-    meta,
+    location,
   }
 }
 
@@ -594,19 +601,19 @@ export type UpdateMut = {
   kind: "UpdateMut"
   base: Exp
   attributes: Record<string, Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function UpdateMut(
   base: Exp,
   attributes: Record<string, Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): UpdateMut {
   return {
     kind: "UpdateMut",
     base,
     attributes,
-    meta,
+    location,
   }
 }
 
@@ -614,15 +621,15 @@ export type The = {
   kind: "The"
   type: Exp
   exp: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function The(type: Exp, exp: Exp, meta?: SourceLocation): The {
+export function The(type: Exp, exp: Exp, location?: SourceLocation): The {
   return {
     kind: "The",
     type,
     exp,
-    meta,
+    location,
   }
 }
 
@@ -630,19 +637,19 @@ export type Polymorphic = {
   kind: "Polymorphic"
   parameters: Array<string>
   body: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Polymorphic(
   parameters: Array<string>,
   body: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Polymorphic {
   return {
     kind: "Polymorphic",
     parameters,
     body,
-    meta,
+    location,
   }
 }
 
@@ -650,36 +657,36 @@ export type Match = {
   kind: "Match"
   targets: Array<Exp>
   clauses: Array<MatchClause>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export type MatchClause = {
   patterns: Array<Exp>
   body: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function MatchClause(
   patterns: Array<Exp>,
   body: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): MatchClause {
   return {
     patterns,
     body,
-    meta,
+    location,
   }
 }
 
 export function Match(
   targets: Array<Exp>,
   clauses: Array<MatchClause>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Match {
   return {
     kind: "Match",
     targets,
     clauses,
-    meta,
+    location,
   }
 }

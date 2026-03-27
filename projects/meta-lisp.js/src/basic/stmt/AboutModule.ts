@@ -18,33 +18,33 @@ export type Import = {
   kind: "Import"
   path: string
   names: Array<string>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Import(
   path: string,
   names: Array<string>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Import {
   return {
     kind: "Import",
     path,
     names,
-    meta,
+    location,
   }
 }
 
 export type ImportAll = {
   kind: "ImportAll"
   path: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function ImportAll(path: string, meta?: SourceLocation): ImportAll {
+export function ImportAll(path: string, location?: SourceLocation): ImportAll {
   return {
     kind: "ImportAll",
     path,
-    meta,
+    location,
   }
 }
 
@@ -52,19 +52,19 @@ export type ImportExcept = {
   kind: "ImportExcept"
   path: string
   names: Array<string>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function ImportExcept(
   path: string,
   names: Array<string>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): ImportExcept {
   return {
     kind: "ImportExcept",
     path,
     names,
-    meta,
+    location,
   }
 }
 
@@ -72,19 +72,19 @@ export type ImportAs = {
   kind: "ImportAs"
   path: string
   prefix: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function ImportAs(
   path: string,
   prefix: string,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): ImportAs {
   return {
     kind: "ImportAs",
     path,
     prefix,
-    meta,
+    location,
   }
 }
 
@@ -92,33 +92,36 @@ export type Include = {
   kind: "Include"
   path: string
   names: Array<string>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Include(
   path: string,
   names: Array<string>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Include {
   return {
     kind: "Include",
     path,
     names,
-    meta,
+    location,
   }
 }
 
 export type IncludeAll = {
   kind: "IncludeAll"
   path: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function IncludeAll(path: string, meta?: SourceLocation): IncludeAll {
+export function IncludeAll(
+  path: string,
+  location?: SourceLocation,
+): IncludeAll {
   return {
     kind: "IncludeAll",
     path,
-    meta,
+    location,
   }
 }
 
@@ -126,19 +129,19 @@ export type IncludeExcept = {
   kind: "IncludeExcept"
   path: string
   names: Array<string>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function IncludeExcept(
   path: string,
   names: Array<string>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): IncludeExcept {
   return {
     kind: "IncludeExcept",
     path,
     names,
-    meta,
+    location,
   }
 }
 
@@ -146,61 +149,64 @@ export type IncludeAs = {
   kind: "IncludeAs"
   path: string
   prefix: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function IncludeAs(
   path: string,
   prefix: string,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): IncludeAs {
   return {
     kind: "IncludeAs",
     path,
     prefix,
-    meta,
+    location,
   }
 }
 
 export type Export = {
   kind: "Export"
   names: Array<string>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Export(names: Array<string>, meta?: SourceLocation): Export {
+export function Export(
+  names: Array<string>,
+  location?: SourceLocation,
+): Export {
   return {
     kind: "Export",
     names,
-    meta,
+    location,
   }
 }
 
 export type ExportAll = {
   kind: "ExportAll"
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function ExportAll(meta?: SourceLocation): ExportAll {
+export function ExportAll(location?: SourceLocation): ExportAll {
   return {
     kind: "ExportAll",
-    meta,
+    location,
   }
 }
 
 export function ExportExcept(
   names: Array<string>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): ExportExcept {
   return {
     kind: "ExportExcept",
     names,
-    meta,
+    location,
   }
 }
 
 export type ExportExcept = {
   kind: "ExportExcept"
   names: Array<string>
-  meta?: SourceLocation
+  location?: SourceLocation
 }

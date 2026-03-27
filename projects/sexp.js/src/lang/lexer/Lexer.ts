@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import type { ParserMeta } from "../parser/index.ts"
+import type { ParserOptions } from "../parser/index.ts"
 import { initPosition, positionForwardChar } from "../span/index.ts"
 import { type Token } from "../token/index.ts"
 import { consume } from "./consume.ts"
@@ -9,9 +9,9 @@ export class Lexer {
   text: string = ""
   path?: string
 
-  lex(text: string, meta: ParserMeta = {}): Array<Token> {
+  lex(text: string, options: ParserOptions = {}): Array<Token> {
     this.text = text
-    this.path = meta.path
+    this.path = options.path
     this.position = initPosition()
 
     const tokens: Array<Token> = []

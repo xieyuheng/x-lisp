@@ -8,15 +8,15 @@ import { type Token } from "../token/index.ts"
 
 type Result = { sexp: Sexp; remain: Array<Token> }
 
-export type ParserMeta = {
+export type ParserOptions = {
   path?: string
 }
 
 export class Parser {
   lexer = new Lexer()
 
-  parse(text: string, meta: ParserMeta = {}): Array<Sexp> {
-    let tokens = this.lexer.lex(text, meta)
+  parse(text: string, options: ParserOptions = {}): Array<Sexp> {
+    let tokens = this.lexer.lex(text, options)
     const array: Array<Sexp> = []
     while (tokens.length > 0) {
       const { sexp, remain } = this.handleTokens(tokens)
@@ -40,7 +40,7 @@ export class Parser {
     switch (token.kind) {
       case "Symbol": {
         return {
-          sexp: S.Symbol(token.value, token.meta),
+          sexp: S.Symbol(token.value, token.location),
           remain: tokens.slice(1),
         }
       }
@@ -48,14 +48,14 @@ export class Parser {
       case "Number": {
         if (stringIsBigInt(token.value)) {
           return {
-            sexp: S.Int(BigInt(token.value), token.meta),
+            sexp: S.Int(BigInt(token.value), token.location),
             remain: tokens.slice(1),
           }
         }
 
         if (stringIsNumber(token.value)) {
           return {
-            sexp: S.Float(Number(token.value), token.meta),
+            sexp: S.Float(Number(token.value), token.location),
             remain: tokens.slice(1),
           }
         }
@@ -66,7 +66,7 @@ export class Parser {
 
       case "String": {
         return {
-          sexp: S.String(token.value, token.meta),
+          sexp: S.String(token.value, token.location),
           remain: tokens.slice(1),
         }
       }
@@ -93,7 +93,7 @@ export class Parser {
 
       case "BracketEnd": {
         let message = `I found extra BracketEnd\n`
-        throw new ErrorWithSourceLocation(message, token.meta)
+        throw new ErrorWithSourceLocation(message, token.location)
       }
 
       case "QuotationMark": {
@@ -105,17 +105,17 @@ export class Parser {
           "`": "@quasiquote",
         }
 
-        const quoteSymbol = S.Symbol(quoteTable[token.value], token.meta)
+        const quoteSymbol = S.Symbol(quoteTable[token.value], token.location)
 
         return {
-          sexp: S.List([quoteSymbol, sexp], token.meta),
+          sexp: S.List([quoteSymbol, sexp], token.location),
           remain,
         }
       }
 
       case "Keyword": {
         return {
-          sexp: S.Keyword(token.value, token.meta),
+          sexp: S.Keyword(token.value, token.location),
           remain: tokens.slice(1),
         }
       }
@@ -128,7 +128,7 @@ export class Parser {
     while (true) {
       if (tokens[0] === undefined) {
         let message = `I found missing BracketEnd\n`
-        throw new ErrorWithSourceLocation(message, start.meta)
+        throw new ErrorWithSourceLocation(message, start.location)
       }
 
       const token = tokens[0]
@@ -136,13 +136,13 @@ export class Parser {
       if (token.kind === "BracketEnd") {
         if (!lexerMatchBrackets(start.value, token.value)) {
           let message = `I expect a matching BracketEnd\n`
-          throw new ErrorWithSourceLocation(message, token.meta)
+          throw new ErrorWithSourceLocation(message, token.location)
         }
 
         return {
           sexp: S.List(array, {
-            ...token.meta,
-            span: spanUnion(start.meta.span, token.meta.span),
+            ...token.location,
+            span: spanUnion(start.location.span, token.location.span),
           }),
           remain: tokens.slice(1),
         }

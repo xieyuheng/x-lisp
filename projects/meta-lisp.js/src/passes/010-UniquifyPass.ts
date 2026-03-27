@@ -42,7 +42,7 @@ function onExp(
 
     case "Var": {
       const foundName = nameTable[exp.name]
-      return foundName ? M.Var(foundName, exp.meta) : exp
+      return foundName ? M.Var(foundName, exp.location) : exp
     }
 
     case "Lambda": {
@@ -57,7 +57,7 @@ function onExp(
       return M.Lambda(
         parameters,
         onExp(newNameCounts, newNameTable, exp.body),
-        exp.meta,
+        exp.location,
       )
     }
 
@@ -69,7 +69,7 @@ function onExp(
         newName,
         onExp(newNameCounts, nameTable, exp.rhs),
         onExp(newNameCounts, newNameTable, exp.body),
-        exp.meta,
+        exp.location,
       )
     }
 

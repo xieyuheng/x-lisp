@@ -1,7 +1,4 @@
-rename .meta to .location
-
-located-sexp-t
-source-location-t
+[builtin] `located-sexp-t` and `source-location-t`
 
 `030-ExplicateControlPass` -- `toBasicExp` -- handle `Require`
 

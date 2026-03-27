@@ -106,7 +106,8 @@ export function expChildren(exp: Exp): Array<Exp> {
 
     case "Match": {
       let message = `[expChildren] can not handle Match`
-      if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
       else throw new Error(message)
     }
 

@@ -43,7 +43,7 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
           M.Apply(
             M.Apply(M.Var("record-get"), [exp.target]),
             exp.args,
-            exp.meta,
+            exp.location,
           ),
         )
       }
@@ -56,25 +56,31 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
     }
 
     case "LiteralTuple": {
-      return onExp(mod, shrinkTuple(mod, exp.elements, exp.meta))
+      return onExp(mod, shrinkTuple(mod, exp.elements, exp.location))
     }
 
     case "LiteralRecord": {
-      return onExp(mod, shrinkRecord(mod, exp.attributes, exp.meta))
+      return onExp(mod, shrinkRecord(mod, exp.attributes, exp.location))
     }
 
     case "Extend": {
-      return onExp(mod, shrinkUpdate(mod, exp.base, exp.attributes, exp.meta))
+      return onExp(
+        mod,
+        shrinkUpdate(mod, exp.base, exp.attributes, exp.location),
+      )
     }
 
     case "Update": {
-      return onExp(mod, shrinkUpdate(mod, exp.base, exp.attributes, exp.meta))
+      return onExp(
+        mod,
+        shrinkUpdate(mod, exp.base, exp.attributes, exp.location),
+      )
     }
 
     case "UpdateMut": {
       return onExp(
         mod,
-        shrinkUpdateMut(mod, exp.base, exp.attributes, exp.meta),
+        shrinkUpdateMut(mod, exp.base, exp.attributes, exp.location),
       )
     }
 
@@ -87,41 +93,41 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
 function shrinkTuple(
   mod: M.Mod,
   elements: Array<M.Exp>,
-  meta?: S.SourceLocation,
+  location?: S.SourceLocation,
 ): M.Exp {
-  return M.desugar(mod, M.desugarList(elements, meta))
+  return M.desugar(mod, M.desugarList(elements, location))
 }
 
 function shrinkRecord(
   mod: M.Mod,
   attributes: Record<string, M.Exp>,
-  meta?: S.SourceLocation,
+  location?: S.SourceLocation,
 ): M.Exp {
-  const base = M.Apply(M.Var("make-record", meta), [], meta)
-  return shrinkUpdateMut(mod, base, attributes, meta)
+  const base = M.Apply(M.Var("make-record", location), [], location)
+  return shrinkUpdateMut(mod, base, attributes, location)
 }
 
 function shrinkUpdateMut(
   mod: M.Mod,
   base: M.Exp,
   attributes: Record<string, M.Exp>,
-  meta?: S.SourceLocation,
+  location?: S.SourceLocation,
 ): M.Exp {
   return M.desugar(
     mod,
     M.BeginSugar(
       [
-        M.AssignSugar("record", base, meta),
+        M.AssignSugar("record", base, location),
         ...Object.entries(attributes).map(([key, value]) =>
           M.Apply(
-            M.Var("record-put!", meta),
-            [M.Keyword(key), value, M.Var("record", meta)],
-            meta,
+            M.Var("record-put!", location),
+            [M.Keyword(key), value, M.Var("record", location)],
+            location,
           ),
         ),
-        M.Var("record", meta),
+        M.Var("record", location),
       ],
-      meta,
+      location,
     ),
   )
 }
@@ -130,27 +136,27 @@ function shrinkUpdate(
   mod: M.Mod,
   base: M.Exp,
   attributes: Record<string, M.Exp>,
-  meta?: S.SourceLocation,
+  location?: S.SourceLocation,
 ): M.Exp {
   return M.desugar(
     mod,
     M.BeginSugar(
       [
-        M.AssignSugar("record", base, meta),
+        M.AssignSugar("record", base, location),
         ...Object.entries(attributes).map(([key, value]) =>
           M.AssignSugar(
             "record",
             M.Apply(
-              M.Var("record-put", meta),
-              [M.Keyword(key), value, M.Var("record", meta)],
-              meta,
+              M.Var("record-put", location),
+              [M.Keyword(key), value, M.Var("record", location)],
+              location,
             ),
-            meta,
+            location,
           ),
         ),
-        M.Var("record", meta),
+        M.Var("record", location),
       ],
-      meta,
+      location,
     ),
   )
 }

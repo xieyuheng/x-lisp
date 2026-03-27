@@ -11,7 +11,7 @@ export type DefineFunction = {
   name: string
   parameters: Array<string>
   blocks: Map<string, Block>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function DefineFunction(
@@ -19,7 +19,7 @@ export function DefineFunction(
   name: string,
   parameters: Array<string>,
   blocks: Map<string, Block>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): DefineFunction {
   return {
     kind: "DefineFunction",
@@ -27,7 +27,7 @@ export function DefineFunction(
     name,
     parameters,
     blocks,
-    meta,
+    location,
   }
 }
 
@@ -36,20 +36,20 @@ export type DefineVariable = {
   mod: Mod
   name: string
   blocks: Map<string, Block>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function DefineVariable(
   mod: Mod,
   name: string,
   blocks: Map<string, Block>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): DefineVariable {
   return {
     kind: "DefineVariable",
     mod,
     name,
     blocks,
-    meta,
+    location,
   }
 }

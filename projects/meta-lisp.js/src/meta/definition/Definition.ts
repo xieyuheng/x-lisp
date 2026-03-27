@@ -23,7 +23,7 @@ export type PrimitiveFunctionDefinition = {
   name: string
   arity: number
   fn: ValueFunction
-  meta?: SourceLocation
+  location?: SourceLocation
 } & DefinitionState
 
 export function PrimitiveFunctionDefinition(
@@ -31,7 +31,7 @@ export function PrimitiveFunctionDefinition(
   name: string,
   arity: number,
   fn: ValueFunction,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): PrimitiveFunctionDefinition {
   return {
     kind: "PrimitiveFunctionDefinition",
@@ -39,7 +39,7 @@ export function PrimitiveFunctionDefinition(
     name,
     arity,
     fn,
-    meta,
+    location,
   }
 }
 
@@ -48,21 +48,21 @@ export type PrimitiveVariableDefinition = {
   mod: Mod
   name: string
   value: Value
-  meta?: SourceLocation
+  location?: SourceLocation
 } & DefinitionState
 
 export function PrimitiveVariableDefinition(
   mod: Mod,
   name: string,
   value: Value,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): PrimitiveVariableDefinition {
   return {
     kind: "PrimitiveVariableDefinition",
     mod,
     name,
     value,
-    meta,
+    location,
   }
 }
 
@@ -72,7 +72,7 @@ export type FunctionDefinition = {
   name: string
   parameters: Array<string>
   body: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 } & DefinitionState
 
 export function FunctionDefinition(
@@ -80,7 +80,7 @@ export function FunctionDefinition(
   name: string,
   parameters: Array<string>,
   body: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
@@ -88,7 +88,7 @@ export function FunctionDefinition(
     name,
     parameters,
     body,
-    meta,
+    location,
   }
 }
 
@@ -98,21 +98,21 @@ export type VariableDefinition = {
   name: string
   body: Exp
   value?: Value
-  meta?: SourceLocation
+  location?: SourceLocation
 } & DefinitionState
 
 export function VariableDefinition(
   mod: Mod,
   name: string,
   body: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): VariableDefinition {
   return {
     kind: "VariableDefinition",
     mod,
     name,
     body,
-    meta,
+    location,
   }
 }
 
@@ -122,7 +122,7 @@ export type DataDefinition = {
   name: string
   dataTypeConstructor: DataTypeConstructor
   dataConstructors: Array<DataConstructor>
-  meta?: SourceLocation
+  location?: SourceLocation
 } & DefinitionState
 
 export type DataTypeConstructor = {
@@ -154,7 +154,7 @@ export function DataDefinition(
   name: string,
   dataTypeConstructor: DataTypeConstructor,
   dataConstructors: Array<DataConstructor>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): DataDefinition {
   return {
     kind: "DataDefinition",
@@ -162,7 +162,7 @@ export function DataDefinition(
     name,
     dataTypeConstructor,
     dataConstructors,
-    meta,
+    location,
   }
 }
 
@@ -172,7 +172,7 @@ export type InterfaceDefinition = {
   name: string
   interfaceConstructor: InterfaceConstructor
   attributeTypes: Record<string, Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 } & DefinitionState
 
 export type InterfaceConstructor = {
@@ -186,7 +186,7 @@ export function InterfaceDefinition(
   name: string,
   interfaceConstructor: InterfaceConstructor,
   attributeTypes: Record<string, Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): InterfaceDefinition {
   return {
     kind: "InterfaceDefinition",
@@ -194,6 +194,6 @@ export function InterfaceDefinition(
     name,
     interfaceConstructor,
     attributeTypes,
-    meta,
+    location,
   }
 }

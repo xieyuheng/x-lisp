@@ -21,21 +21,21 @@ export type DefineFunction = {
   name: string
   parameters: Array<string>
   body: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function DefineFunction(
   name: string,
   parameters: Array<string>,
   body: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): DefineFunction {
   return {
     kind: "DefineFunction",
     name,
     parameters,
     body,
-    meta,
+    location,
   }
 }
 
@@ -43,19 +43,19 @@ export type DefineVariable = {
   kind: "DefineVariable"
   name: string
   body: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function DefineVariable(
   name: string,
   body: Exp,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): DefineVariable {
   return {
     kind: "DefineVariable",
     name,
     body,
-    meta,
+    location,
   }
 }
 
@@ -63,19 +63,19 @@ export type DefineData = {
   kind: "DefineData"
   dataTypeConstructor: Omit<DataTypeConstructor, "definition">
   dataConstructors: Array<Omit<DataConstructor, "definition">>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function DefineData(
   dataTypeConstructor: Omit<DataTypeConstructor, "definition">,
   dataConstructors: Array<Omit<DataConstructor, "definition">>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): DefineData {
   return {
     kind: "DefineData",
     dataTypeConstructor,
     dataConstructors,
-    meta,
+    location,
   }
 }
 
@@ -83,19 +83,19 @@ export type DefineInterface = {
   kind: "DefineInterface"
   interfaceConstructor: Omit<InterfaceConstructor, "definition">
   attributeTypes: Record<string, Exp>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function DefineInterface(
   interfaceConstructor: Omit<InterfaceConstructor, "definition">,
   attributeTypes: Record<string, Exp>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): DefineInterface {
   return {
     kind: "DefineInterface",
     interfaceConstructor,
     attributeTypes,
-    meta,
+    location,
   }
 }
 
@@ -103,28 +103,35 @@ export type Claim = {
   kind: "Claim"
   name: string
   type: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Claim(name: string, type: Exp, meta?: SourceLocation): Claim {
+export function Claim(
+  name: string,
+  type: Exp,
+  location?: SourceLocation,
+): Claim {
   return {
     kind: "Claim",
     name,
     type,
-    meta,
+    location,
   }
 }
 
 export type Exempt = {
   kind: "Exempt"
   names: Array<string>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Exempt(names: Array<string>, meta?: SourceLocation): Exempt {
+export function Exempt(
+  names: Array<string>,
+  location?: SourceLocation,
+): Exempt {
   return {
     kind: "Exempt",
     names,
-    meta,
+    location,
   }
 }

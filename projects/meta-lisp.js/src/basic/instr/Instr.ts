@@ -7,43 +7,47 @@ export type Assign = {
   kind: "Assign"
   dest: string
   exp: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Assign(dest: string, exp: Exp, meta?: SourceLocation): Assign {
+export function Assign(
+  dest: string,
+  exp: Exp,
+  location?: SourceLocation,
+): Assign {
   return {
     kind: "Assign",
     dest,
     exp,
-    meta,
+    location,
   }
 }
 
 export type Perform = {
   kind: "Perform"
   exp: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Perform(exp: Exp, meta?: SourceLocation): Perform {
+export function Perform(exp: Exp, location?: SourceLocation): Perform {
   return {
     kind: "Perform",
     exp,
-    meta,
+    location,
   }
 }
 
 export type Test = {
   kind: "Test"
   exp: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Test(exp: Exp, meta?: SourceLocation): Test {
+export function Test(exp: Exp, location?: SourceLocation): Test {
   return {
     kind: "Test",
     exp,
-    meta,
+    location,
   }
 }
 
@@ -51,46 +55,46 @@ export type Branch = {
   kind: "Branch"
   thenLabel: string
   elseLabel: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Branch(
   thenLabel: string,
   elseLabel: string,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Branch {
   return {
     kind: "Branch",
     thenLabel,
     elseLabel,
-    meta,
+    location,
   }
 }
 
 export type Goto = {
   kind: "Goto"
   label: string
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Goto(label: string, meta?: SourceLocation): Goto {
+export function Goto(label: string, location?: SourceLocation): Goto {
   return {
     kind: "Goto",
     label,
-    meta,
+    location,
   }
 }
 
 export type Return = {
   kind: "Return"
   exp: Exp
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
-export function Return(exp: Exp, meta?: SourceLocation): Return {
+export function Return(exp: Exp, location?: SourceLocation): Return {
   return {
     kind: "Return",
     exp,
-    meta,
+    location,
   }
 }

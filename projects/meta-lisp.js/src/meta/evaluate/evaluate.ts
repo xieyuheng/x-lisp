@@ -34,7 +34,8 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
 
       let message = `[evaluate] undefined variable`
       message += `\n  name: ${exp.name}`
-      if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
       else throw new Error(message)
     }
 
@@ -46,7 +47,8 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       let message = `[evaluate] undefined require name`
       message += `\n  path: ${exp.path}`
       message += `\n  name: ${exp.name}`
-      if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
       else throw new Error(message)
     }
 
@@ -142,7 +144,8 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
         let message = `[evaluate] can only (extend) record base value`
         message += `\n  base value kind: ${base.kind}`
         message += `\n  base value: ${M.formatValue(base)}`
-        if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
+        if (exp.location)
+          throw new S.ErrorWithSourceLocation(message, exp.location)
         else throw new Error(message)
       }
 
@@ -158,7 +161,8 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
         let message = `[evaluate] can only (update) record base value`
         message += `\n  base value kind: ${base.kind}`
         message += `\n  base value: ${M.formatValue(base)}`
-        if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
+        if (exp.location)
+          throw new S.ErrorWithSourceLocation(message, exp.location)
         else throw new Error(message)
       }
 
@@ -170,7 +174,8 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
         if (base.attributes[key] === undefined) {
           let message = `[evaluate] missing key in base record`
           message += `\n  key: ${key}`
-          if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
+          if (exp.location)
+            throw new S.ErrorWithSourceLocation(message, exp.location)
           else throw new Error(message)
         }
       }
@@ -184,7 +189,8 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
         let message = `[evaluate] can only (update!) record base value`
         message += `\n  base value kind: ${base.kind}`
         message += `\n  base value: ${M.formatValue(base)}`
-        if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
+        if (exp.location)
+          throw new S.ErrorWithSourceLocation(message, exp.location)
         else throw new Error(message)
       }
 
@@ -196,7 +202,8 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
         if (base.attributes[key] === undefined) {
           let message = `[evaluate] missing key in base record`
           message += `\n  key: ${key}`
-          if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
+          if (exp.location)
+            throw new S.ErrorWithSourceLocation(message, exp.location)
           else throw new Error(message)
         } else {
           base.attributes[key] = attributes[key]
@@ -214,7 +221,8 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       let message = `[evaluate] unhandled exp`
       message += `\n  exp kind: ${exp.kind}`
       message += `\n  exp: ${M.formatExp(exp)}`
-      if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
       else throw new Error(message)
     }
   }

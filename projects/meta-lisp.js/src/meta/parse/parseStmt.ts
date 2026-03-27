@@ -9,115 +9,117 @@ export const parseStmt = S.createRouter<M.Stmt>({
     { sexp },
   ) => {
     const keyword = S.asList(sexp).elements[0]
-    const meta = keyword.meta
     return M.DefineFunction(
       S.symbolContent(name),
       S.listElements(parameters).map(S.symbolContent),
       parseBody(body),
-      meta,
+      keyword.location,
     )
   },
 
   "(cons* 'define name body)": ({ name, body }, { sexp }) => {
     const keyword = S.asList(sexp).elements[0]
-    const meta = keyword.meta
-    return M.DefineVariable(S.symbolContent(name), parseBody(body), meta)
+    return M.DefineVariable(
+      S.symbolContent(name),
+      parseBody(body),
+      keyword.location,
+    )
   },
 
-  "(cons* 'exempt names)": ({ names }, { meta }) => {
-    return M.Exempt(S.listElements(names).map(S.symbolContent), meta)
+  "(cons* 'exempt names)": ({ names }, { location }) => {
+    return M.Exempt(S.listElements(names).map(S.symbolContent), location)
   },
 
-  "(cons* 'export names)": ({ names }, { meta }) => {
-    return M.Export(S.listElements(names).map(S.symbolContent), meta)
+  "(cons* 'export names)": ({ names }, { location }) => {
+    return M.Export(S.listElements(names).map(S.symbolContent), location)
   },
 
-  "`(export-all)": ({}, { meta }) => {
-    return M.ExportAll(meta)
+  "`(export-all)": ({}, { location }) => {
+    return M.ExportAll(location)
   },
 
-  "(cons* 'export-except names)": ({ names }, { meta }) => {
-    return M.ExportExcept(S.listElements(names).map(S.symbolContent), meta)
+  "(cons* 'export-except names)": ({ names }, { location }) => {
+    return M.ExportExcept(S.listElements(names).map(S.symbolContent), location)
   },
 
-  "`(import-all ,path)": ({ path }, { meta }) => {
-    return M.ImportAll(S.stringContent(path), meta)
+  "`(import-all ,path)": ({ path }, { location }) => {
+    return M.ImportAll(S.stringContent(path), location)
   },
 
-  "`(include-all ,path)": ({ path }, { meta }) => {
-    return M.IncludeAll(S.stringContent(path), meta)
+  "`(include-all ,path)": ({ path }, { location }) => {
+    return M.IncludeAll(S.stringContent(path), location)
   },
 
-  "(cons* 'import path entries)": ({ path, entries }, { meta }) => {
+  "(cons* 'import path entries)": ({ path, entries }, { location }) => {
     return M.Import(
       S.stringContent(path),
       S.listElements(entries).map(S.symbolContent),
-      meta,
+      location,
     )
   },
 
-  "(cons* 'include path names)": ({ path, names }, { meta }) => {
+  "(cons* 'include path names)": ({ path, names }, { location }) => {
     return M.Include(
       S.stringContent(path),
       S.listElements(names).map(S.symbolContent),
-      meta,
+      location,
     )
   },
 
-  "(cons* 'import-except path names)": ({ path, names }, { meta }) => {
+  "(cons* 'import-except path names)": ({ path, names }, { location }) => {
     return M.ImportExcept(
       S.stringContent(path),
       S.listElements(names).map(S.symbolContent),
-      meta,
+      location,
     )
   },
 
-  "(cons* 'include-except path names)": ({ path, names }, { meta }) => {
+  "(cons* 'include-except path names)": ({ path, names }, { location }) => {
     return M.IncludeExcept(
       S.stringContent(path),
       S.listElements(names).map(S.symbolContent),
-      meta,
+      location,
     )
   },
 
-  "`(import-as ,path ,prefix)": ({ path, prefix }, { meta }) => {
-    return M.ImportAs(S.stringContent(path), S.symbolContent(prefix), meta)
+  "`(import-as ,path ,prefix)": ({ path, prefix }, { location }) => {
+    return M.ImportAs(S.stringContent(path), S.symbolContent(prefix), location)
   },
 
-  "`(include-as ,path ,prefix)": ({ path, prefix }, { meta }) => {
-    return M.IncludeAs(S.stringContent(path), S.symbolContent(prefix), meta)
+  "`(include-as ,path ,prefix)": ({ path, prefix }, { location }) => {
+    return M.IncludeAs(S.stringContent(path), S.symbolContent(prefix), location)
   },
 
   "(cons* 'define-data head constructors)": (
     { head, constructors },
-    { meta },
+    { location },
   ) => {
     return M.DefineData(
       parseDataTypeConstructor(head),
       S.listElements(constructors).map(parseDataConstructor),
-      meta,
+      location,
     )
   },
 
-  "(cons* 'define-interface head body)": ({ head, body }, { meta }) => {
+  "(cons* 'define-interface head body)": ({ head, body }, { location }) => {
     const entries = S.listCollectKeywordEntries(body)
     M.assertNoDuplicatedKey(entries)
     return M.DefineInterface(
       parseInterfaceConstructor(head),
       recordMapValue(Object.fromEntries(entries), parseExp),
-      meta,
+      location,
     )
   },
 
-  "`(claim ,name ,schema)": ({ name, schema }, { meta }) => {
-    return M.Claim(S.symbolContent(name), parseExp(schema), meta)
+  "`(claim ,name ,schema)": ({ name, schema }, { location }) => {
+    return M.Claim(S.symbolContent(name), parseExp(schema), location)
   },
 })
 
 const parseDataTypeConstructor = S.createRouter<
   Omit<M.DataTypeConstructor, "definition">
 >({
-  "(cons* name parameters)": ({ name, parameters }, { meta }) => {
+  "(cons* name parameters)": ({ name, parameters }, { location }) => {
     return {
       definition: undefined,
       name: S.symbolContent(name),
@@ -125,7 +127,7 @@ const parseDataTypeConstructor = S.createRouter<
     }
   },
 
-  name: ({ name }, { meta }) => {
+  name: ({ name }, { location }) => {
     return {
       definition: undefined,
       name: S.symbolContent(name),
@@ -137,7 +139,7 @@ const parseDataTypeConstructor = S.createRouter<
 const parseInterfaceConstructor = S.createRouter<
   Omit<M.InterfaceConstructor, "definition">
 >({
-  "(cons* name parameters)": ({ name, parameters }, { meta }) => {
+  "(cons* name parameters)": ({ name, parameters }, { location }) => {
     return {
       definition: undefined,
       name: S.symbolContent(name),
@@ -145,7 +147,7 @@ const parseInterfaceConstructor = S.createRouter<
     }
   },
 
-  name: ({ name }, { meta }) => {
+  name: ({ name }, { location }) => {
     return {
       definition: undefined,
       name: S.symbolContent(name),
@@ -157,14 +159,14 @@ const parseInterfaceConstructor = S.createRouter<
 const parseDataConstructor = S.createRouter<
   Omit<M.DataConstructor, "definition">
 >({
-  "(cons* name fields)": ({ name, fields }, { meta }) => {
+  "(cons* name fields)": ({ name, fields }, { location }) => {
     return {
       name: S.symbolContent(name),
       fields: S.listElements(fields).map(parseDataField),
     }
   },
 
-  name: ({ name }, { meta }) => {
+  name: ({ name }, { location }) => {
     return {
       name: S.symbolContent(name),
       fields: [],
@@ -173,7 +175,7 @@ const parseDataConstructor = S.createRouter<
 })
 
 const parseDataField = S.createRouter<M.DataField>({
-  "`(,name ,exp)": ({ name, exp }, { meta }) => {
+  "`(,name ,exp)": ({ name, exp }, { location }) => {
     return {
       name: S.symbolContent(name),
       type: parseExp(exp),

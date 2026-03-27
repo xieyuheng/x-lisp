@@ -7,10 +7,10 @@ export function assertNoDuplicatedKey(entries: Array<[string, S.Sexp]>): void {
   )) {
     if (group && group.length > 1) {
       const [_, firstSexp] = group[1]
-      assert(firstSexp.meta)
+      assert(firstSexp.location)
       let message = `[assertNoDuplicatedKey] fail`
       message += `\n  key: ${key}`
-      throw new S.ErrorWithSourceLocation(message, firstSexp.meta)
+      throw new S.ErrorWithSourceLocation(message, firstSexp.location)
     }
   }
 }

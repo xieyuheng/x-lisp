@@ -15,13 +15,14 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
     }
 
     case "BeginSugar": {
-      return desugar(mod, desugarBegin(exp.sequence, exp.meta))
+      return desugar(mod, desugarBegin(exp.sequence, exp.location))
     }
 
     case "AssignSugar": {
       let message = `[desugar] (=) must occur in the head of (begin)`
       message += `\n  exp: ${M.formatExp(exp)}`
-      if (exp.meta) throw new S.ErrorWithSourceLocation(message, exp.meta)
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
       else throw new Error(message)
     }
 
@@ -30,7 +31,7 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
         desugar(mod, exp.condition),
         desugar(mod, exp.consequent),
         desugar(mod, exp.alternative),
-        exp.meta,
+        exp.location,
       )
     }
 
@@ -39,7 +40,7 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
         desugar(mod, exp.condition),
         desugar(mod, exp.consequent),
         M.Void(),
-        exp.meta,
+        exp.location,
       )
     }
 
@@ -48,56 +49,62 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
         desugar(mod, exp.condition),
         M.Void(),
         desugar(mod, exp.alternative),
-        exp.meta,
+        exp.location,
       )
     }
 
     case "And": {
-      return desugar(mod, desugarAnd(exp.exps, exp.meta))
+      return desugar(mod, desugarAnd(exp.exps, exp.location))
     }
 
     case "Or": {
-      return desugar(mod, desugarOr(exp.exps, exp.meta))
+      return desugar(mod, desugarOr(exp.exps, exp.location))
     }
 
     case "Cond": {
-      return desugar(mod, desugarCond(exp.clauses, exp.meta))
+      return desugar(mod, desugarCond(exp.clauses, exp.location))
     }
 
     case "Match": {
       const defaultExp = M.Apply(
-        M.Var("error", exp.meta),
-        [M.String("match mismatch", exp.meta)],
-        exp.meta,
+        M.Var("error", exp.location),
+        [M.String("match mismatch", exp.location)],
+        exp.location,
       )
 
       return desugar(
         mod,
-        M.simplifyMatch(mod, exp.targets, exp.clauses, defaultExp, exp.meta),
+        M.simplifyMatch(
+          mod,
+          exp.targets,
+          exp.clauses,
+          defaultExp,
+          exp.location,
+        ),
       )
     }
 
     case "LiteralList": {
-      return desugar(mod, desugarList(exp.elements, exp.meta))
+      return desugar(mod, desugarList(exp.elements, exp.location))
     }
 
     case "LiteralSet": {
-      return desugar(mod, desugarSet(exp.elements, exp.meta))
+      return desugar(mod, desugarSet(exp.elements, exp.location))
     }
 
     case "LiteralHash": {
-      return desugar(mod, desugarHash(exp.entries, exp.meta))
+      return desugar(mod, desugarHash(exp.entries, exp.location))
     }
 
     case "Quote": {
-      return desugar(mod, desugarQuote(exp.sexp, exp.meta))
+      return desugar(mod, desugarQuote(exp.sexp, exp.location))
     }
 
     case "Apply": {
       return M.Apply(
         desugar(mod, exp.target),
         exp.args.map((e) => desugar(mod, e)),
-        exp.meta,
+        exp.location,
       )
     }
 
@@ -105,12 +112,16 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
       return M.Arrow(
         exp.argTypes.map((e) => desugar(mod, e)),
         desugar(mod, exp.retType),
-        exp.meta,
+        exp.location,
       )
     }
 
     case "Begin1": {
-      return M.Begin1(desugar(mod, exp.head), desugar(mod, exp.body), exp.meta)
+      return M.Begin1(
+        desugar(mod, exp.head),
+        desugar(mod, exp.body),
+        exp.location,
+      )
     }
 
     case "Let1": {
@@ -118,35 +129,35 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
         exp.name,
         desugar(mod, exp.rhs),
         desugar(mod, exp.body),
-        exp.meta,
+        exp.location,
       )
     }
 
     case "LiteralTuple": {
       return M.LiteralTuple(
         exp.elements.map((e) => desugar(mod, e)),
-        exp.meta,
+        exp.location,
       )
     }
 
     case "Tau": {
       return M.Tau(
         exp.elementTypes.map((e) => desugar(mod, e)),
-        exp.meta,
+        exp.location,
       )
     }
 
     case "LiteralRecord": {
       return M.LiteralRecord(
         recordMapValue(exp.attributes, (e) => desugar(mod, e)),
-        exp.meta,
+        exp.location,
       )
     }
 
     case "Interface": {
       return M.Interface(
         recordMapValue(exp.attributeTypes, (e) => desugar(mod, e)),
-        exp.meta,
+        exp.location,
       )
     }
 
@@ -154,7 +165,7 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
       return M.ExtendInterface(
         desugar(mod, exp.baseType),
         recordMapValue(exp.attributeTypes, (e) => desugar(mod, e)),
-        exp.meta,
+        exp.location,
       )
     }
 
@@ -162,7 +173,7 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
       return M.Extend(
         desugar(mod, exp.base),
         recordMapValue(exp.attributes, (e) => desugar(mod, e)),
-        exp.meta,
+        exp.location,
       )
     }
 
@@ -170,7 +181,7 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
       return M.Update(
         desugar(mod, exp.base),
         recordMapValue(exp.attributes, (e) => desugar(mod, e)),
-        exp.meta,
+        exp.location,
       )
     }
 
@@ -178,28 +189,31 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
       return M.UpdateMut(
         desugar(mod, exp.base),
         recordMapValue(exp.attributes, (e) => desugar(mod, e)),
-        exp.meta,
+        exp.location,
       )
     }
 
     case "The": {
-      return M.The(desugar(mod, exp.type), desugar(mod, exp.exp), exp.meta)
+      return M.The(desugar(mod, exp.type), desugar(mod, exp.exp), exp.location)
     }
 
     case "Lambda": {
-      return M.Lambda(exp.parameters, desugar(mod, exp.body), exp.meta)
+      return M.Lambda(exp.parameters, desugar(mod, exp.body), exp.location)
     }
 
     case "Polymorphic": {
-      return M.Polymorphic(exp.parameters, desugar(mod, exp.body), exp.meta)
+      return M.Polymorphic(exp.parameters, desugar(mod, exp.body), exp.location)
     }
   }
 }
 
-function desugarBegin(sequence: Array<M.Exp>, meta?: S.SourceLocation): M.Exp {
+function desugarBegin(
+  sequence: Array<M.Exp>,
+  location?: S.SourceLocation,
+): M.Exp {
   if (sequence.length === 0) {
     let message = `[desugarBegin] (begin) must not be empty`
-    if (meta) throw new S.ErrorWithSourceLocation(message, meta)
+    if (location) throw new S.ErrorWithSourceLocation(message, location)
     else throw new Error(message)
   }
 
@@ -209,120 +223,153 @@ function desugarBegin(sequence: Array<M.Exp>, meta?: S.SourceLocation): M.Exp {
   }
 
   if (head.kind === "AssignSugar") {
-    return M.Let1(head.name, head.rhs, desugarBegin(rest), meta)
+    return M.Let1(head.name, head.rhs, desugarBegin(rest), location)
   } else {
-    return M.Begin1(head, desugarBegin(rest), meta)
+    return M.Begin1(head, desugarBegin(rest), location)
   }
 }
 
-function desugarAnd(exps: Array<M.Exp>, meta?: S.SourceLocation): M.Exp {
-  if (exps.length === 0) return M.Bool(true, meta)
+function desugarAnd(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
+  if (exps.length === 0) return M.Bool(true, location)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
-  return M.If(head, desugarAnd(restExps, meta), M.Bool(false, meta), meta)
+  return M.If(
+    head,
+    desugarAnd(restExps, location),
+    M.Bool(false, location),
+    location,
+  )
 }
 
-function desugarOr(exps: Array<M.Exp>, meta?: S.SourceLocation): M.Exp {
-  if (exps.length === 0) return M.Bool(false, meta)
+function desugarOr(exps: Array<M.Exp>, location?: S.SourceLocation): M.Exp {
+  if (exps.length === 0) return M.Bool(false, location)
   if (exps.length === 1) return exps[0]
   const [head, ...restExps] = exps
-  return M.If(head, M.Bool(true, meta), desugarOr(restExps, meta), meta)
+  return M.If(
+    head,
+    M.Bool(true, location),
+    desugarOr(restExps, location),
+    location,
+  )
 }
 
 function desugarCond(
   clauses: Array<M.CondClause>,
-  meta?: S.SourceLocation,
+  location?: S.SourceLocation,
 ): M.Exp {
   if (clauses.length === 0)
     return M.Apply(
-      M.Var("error", meta),
-      [M.String("cond mismatch", meta)],
-      meta,
+      M.Var("error", location),
+      [M.String("cond mismatch", location)],
+      location,
     )
   const [headClause, ...resClauses] = clauses
   return M.If(
     headClause.question,
     headClause.answer,
-    desugarCond(resClauses, meta),
-    meta,
+    desugarCond(resClauses, location),
+    location,
   )
 }
 
 export function desugarList(
   elements: Array<M.Exp>,
-  meta?: S.SourceLocation,
+  location?: S.SourceLocation,
 ): M.Exp {
   return M.BeginSugar(
     [
-      M.AssignSugar("list", M.Apply(M.Var("make-list", meta), [], meta), meta),
-      ...elements.map((e) =>
-        M.Apply(M.Var("list-push!", meta), [e, M.Var("list", meta)], meta),
+      M.AssignSugar(
+        "list",
+        M.Apply(M.Var("make-list", location), [], location),
+        location,
       ),
-      M.Var("list", meta),
+      ...elements.map((e) =>
+        M.Apply(
+          M.Var("list-push!", location),
+          [e, M.Var("list", location)],
+          location,
+        ),
+      ),
+      M.Var("list", location),
     ],
-    meta,
+    location,
   )
 }
 
-function desugarSet(elements: Array<M.Exp>, meta?: S.SourceLocation): M.Exp {
+function desugarSet(
+  elements: Array<M.Exp>,
+  location?: S.SourceLocation,
+): M.Exp {
   return M.BeginSugar(
     [
-      M.AssignSugar("set", M.Apply(M.Var("make-set", meta), [], meta), meta),
-      ...elements.map((e) =>
-        M.Apply(M.Var("set-add!", meta), [e, M.Var("set", meta)], meta),
+      M.AssignSugar(
+        "set",
+        M.Apply(M.Var("make-set", location), [], location),
+        location,
       ),
-      M.Var("set", meta),
+      ...elements.map((e) =>
+        M.Apply(
+          M.Var("set-add!", location),
+          [e, M.Var("set", location)],
+          location,
+        ),
+      ),
+      M.Var("set", location),
     ],
-    meta,
+    location,
   )
 }
 
 function desugarHash(
   entries: Array<{ key: M.Exp; value: M.Exp }>,
-  meta?: S.SourceLocation,
+  location?: S.SourceLocation,
 ): M.Exp {
   return M.BeginSugar(
     [
-      M.AssignSugar("hash", M.Apply(M.Var("make-hash", meta), [], meta), meta),
+      M.AssignSugar(
+        "hash",
+        M.Apply(M.Var("make-hash", location), [], location),
+        location,
+      ),
       ...entries.map((entry) =>
         M.Apply(
-          M.Var("hash-put!", meta),
-          [entry.key, entry.value, M.Var("hash", meta)],
-          meta,
+          M.Var("hash-put!", location),
+          [entry.key, entry.value, M.Var("hash", location)],
+          location,
         ),
       ),
-      M.Var("hash", meta),
+      M.Var("hash", location),
     ],
-    meta,
+    location,
   )
 }
 
-function desugarQuote(sexp: S.Sexp, meta?: S.SourceLocation): M.Exp {
+function desugarQuote(sexp: S.Sexp, location?: S.SourceLocation): M.Exp {
   switch (sexp.kind) {
     case "Symbol": {
-      return M.Symbol(sexp.content, meta)
+      return M.Symbol(sexp.content, location)
     }
 
     case "String": {
-      return M.String(sexp.content, meta)
+      return M.String(sexp.content, location)
     }
 
     case "Int": {
-      return M.Int(sexp.content, meta)
+      return M.Int(sexp.content, location)
     }
 
     case "Float": {
-      return M.Float(sexp.content, meta)
+      return M.Float(sexp.content, location)
     }
 
     case "Keyword": {
-      return M.Keyword(sexp.content, meta)
+      return M.Keyword(sexp.content, location)
     }
 
     case "List": {
       return M.LiteralList(
-        sexp.elements.map((e) => desugarQuote(e, meta)),
-        meta,
+        sexp.elements.map((e) => desugarQuote(e, location)),
+        location,
       )
     }
   }

@@ -3,7 +3,10 @@ import { test } from "node:test"
 import { Lexer } from "../lexer/index.ts"
 import { type Token } from "../token/index.ts"
 
-function assertTokens(text: string, tokens: Array<Omit<Token, "meta">>): void {
+function assertTokens(
+  text: string,
+  tokens: Array<Omit<Token, "location">>,
+): void {
   const lexer = new Lexer()
   const results = lexer.lex(text).map(({ kind, value }) => ({ kind, value }))
   assert.deepStrictEqual(results, tokens)

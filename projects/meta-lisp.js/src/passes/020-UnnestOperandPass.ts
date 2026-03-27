@@ -62,7 +62,7 @@ function onExp(state: State, exp: M.Exp): M.Exp {
       const argsEntries = argsEntriesArray.flatMap((entries) => entries)
       return prependLets(
         [...targetEntries, ...argsEntries],
-        M.Apply(newTarget, newArgs, exp.meta),
+        M.Apply(newTarget, newArgs, exp.location),
       )
     }
 
@@ -105,10 +105,13 @@ function forAtom(state: State, exp: M.Exp): [Array<Entry>, M.Exp] {
       )
       const argsEntries = argsEntriesArray.flatMap((entries) => entries)
       const freshName = generateFreshName(state)
-      const entry: Entry = [freshName, M.Apply(newTarget, newArgs, exp.meta)]
+      const entry: Entry = [
+        freshName,
+        M.Apply(newTarget, newArgs, exp.location),
+      ]
       return [
         [...targetEntries, ...argsEntries, entry],
-        M.Var(freshName, exp.meta),
+        M.Var(freshName, exp.location),
       ]
     }
 
@@ -127,7 +130,7 @@ function forAtom(state: State, exp: M.Exp): [Array<Entry>, M.Exp] {
     default: {
       const freshName = generateFreshName(state)
       const entry: Entry = [freshName, onExp(state, exp)]
-      return [[entry], M.Var(freshName, exp.meta)]
+      return [[entry], M.Var(freshName, exp.location)]
     }
   }
 }

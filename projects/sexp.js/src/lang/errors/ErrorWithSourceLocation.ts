@@ -1,18 +1,21 @@
-import { tokenMetaReport, type SourceLocation } from "../token/index.ts"
+import { sourceLocationReport, type SourceLocation } from "../token/index.ts"
 
 export class ErrorWithSourceLocation extends Error {
-  meta: SourceLocation
+  location: SourceLocation
 
-  constructor(message: string, meta: SourceLocation) {
-    super(reportWithMeta(message, meta))
-    this.meta = meta
+  constructor(message: string, location: SourceLocation) {
+    super(reportWithSourceLocation(message, location))
+    this.location = location
   }
 }
 
-export function reportWithMeta(message: string, meta?: SourceLocation): string {
-  if (meta) {
+export function reportWithSourceLocation(
+  message: string,
+  location?: SourceLocation,
+): string {
+  if (location) {
     message += "\n"
-    message += tokenMetaReport(meta)
+    message += sourceLocationReport(location)
     return message
   } else {
     return message

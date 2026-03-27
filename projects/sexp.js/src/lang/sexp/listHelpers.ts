@@ -14,5 +14,5 @@ export function Cons(head: S.Sexp, tail: S.Sexp): S.List {
     throw new Error(`[Cons] tail to be a list, tail kind: ${tail.kind}.`)
   }
 
-  return S.List([head, ...tail.elements], tail.meta)
+  return S.List([head, ...tail.elements], tail.location)
 }

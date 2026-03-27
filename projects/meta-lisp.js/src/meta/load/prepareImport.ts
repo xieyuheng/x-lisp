@@ -11,7 +11,7 @@ export function handleImport(mod: M.Mod, stmt: M.Stmt): void {
   const definitionEntries = M.modPublicDefinitionEntries(importedMod)
 
   if (stmt.kind === "Import") {
-    checkUndefinedNames(mod, importedMod, stmt.names, stmt.meta)
+    checkUndefinedNames(mod, importedMod, stmt.names, stmt.location)
 
     for (const [name, definition] of definitionEntries) {
       if (stmt.names.includes(name)) {
@@ -42,7 +42,7 @@ export function handleImport(mod: M.Mod, stmt: M.Stmt): void {
   }
 
   if (stmt.kind === "Include") {
-    checkUndefinedNames(mod, importedMod, stmt.names, stmt.meta)
+    checkUndefinedNames(mod, importedMod, stmt.names, stmt.location)
 
     for (const [name, definition] of definitionEntries) {
       if (stmt.names.includes(name)) {
@@ -81,7 +81,7 @@ function checkUndefinedNames(
   mod: M.Mod,
   importedMod: M.Mod,
   names: Array<string>,
-  meta?: S.SourceLocation,
+  location?: S.SourceLocation,
 ): void {
   const definedNames = new Set(
     M.modPublicDefinitionEntries(importedMod).map(([key]) => key),
@@ -93,6 +93,6 @@ function checkUndefinedNames(
   message += `\n  mod: ${pathRelativeToCwd(mod.path)}`
   message += `\n  importing from mod: ${pathRelativeToCwd(importedMod.path)}`
   message += `\n  undefined names: [${undefinedNames.join(" ")}]`
-  if (meta) throw new S.ErrorWithSourceLocation(message, meta)
+  if (location) throw new S.ErrorWithSourceLocation(message, location)
   else throw new Error(message)
 }

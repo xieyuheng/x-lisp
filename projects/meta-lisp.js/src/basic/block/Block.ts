@@ -4,17 +4,17 @@ import { type Instr } from "../instr/index.ts"
 export type Block = {
   label: string
   instrs: Array<Instr>
-  meta?: SourceLocation
+  location?: SourceLocation
 }
 
 export function Block(
   label: string,
   instrs: Array<Instr>,
-  meta?: SourceLocation,
+  location?: SourceLocation,
 ): Block {
   return {
     label,
     instrs,
-    meta,
+    location,
   }
 }

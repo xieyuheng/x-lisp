@@ -9,7 +9,7 @@ export function simplifyMatch(
   targets: Array<M.Exp>,
   clauses: Array<M.MatchClause>,
   defaultExp: M.Exp,
-  meta?: S.SourceLocation,
+  location?: S.SourceLocation,
 ): M.Exp {
   for (const clause of clauses) {
     if (clause.patterns.length !== targets.length) {
@@ -40,12 +40,12 @@ export function simplifyMatch(
         assert(pattern.kind === "Var")
         return M.MatchClause(
           restPatterns,
-          M.Let1(pattern.name, target, clause.body, clause.meta),
-          clause.meta,
+          M.Let1(pattern.name, target, clause.body, clause.location),
+          clause.location,
         )
       }),
       defaultExp,
-      meta,
+      location,
     )
   }
 
@@ -56,7 +56,7 @@ export function simplifyMatch(
     return M.Cond(
       groups.map((group) => {
         const freshVars = group.dataConstructor.fields.map((field) =>
-          M.createFreshVar(field.name, meta),
+          M.createFreshVar(field.name, location),
         )
 
         const definition = group.dataConstructor.definition
@@ -68,8 +68,8 @@ export function simplifyMatch(
           mod,
           dataConstructorPredicateName,
         )
-          ? M.Var(dataConstructorPredicateName, meta)
-          : M.Require(path, dataConstructorPredicateName, meta)
+          ? M.Var(dataConstructorPredicateName, location)
+          : M.Require(path, dataConstructorPredicateName, location)
 
         const question = M.Apply(dataConstructorPredicate, [target])
 
@@ -78,7 +78,7 @@ export function simplifyMatch(
           [...freshVars, ...restTargets],
           group.clauses,
           defaultExp,
-          meta,
+          location,
         )
 
         for (const i of range(group.dataConstructor.fields.length)) {
@@ -86,27 +86,27 @@ export function simplifyMatch(
 
           const dataFieldGetterName = `${group.dataConstructor.name}-${field.name}`
           const dataFieldGetter = M.modNameIsAsDefined(mod, dataFieldGetterName)
-            ? M.Var(dataFieldGetterName, answer.meta)
-            : M.Require(path, dataFieldGetterName, answer.meta)
+            ? M.Var(dataFieldGetterName, answer.location)
+            : M.Require(path, dataFieldGetterName, answer.location)
 
           answer = M.Let1(
             freshVars[i].name,
-            M.Apply(dataFieldGetter, [target], answer.meta),
+            M.Apply(dataFieldGetter, [target], answer.location),
             answer,
-            answer.meta,
+            answer.location,
           )
         }
 
-        return M.CondClause(question, answer, meta)
+        return M.CondClause(question, answer, location)
       }),
-      meta,
+      location,
     )
   }
 
   const groups = groupClausesByHeadPatternKind(mod, clauses)
   return groups.reduceRight(
     (accumulatedExp, group) =>
-      simplifyMatch(mod, targets, group, accumulatedExp, meta),
+      simplifyMatch(mod, targets, group, accumulatedExp, location),
     defaultExp,
   )
 }
@@ -158,7 +158,11 @@ function groupClausesByHeadDataConstructor(
       ) {
         const argPatterns = M.dataPatternArgPatterns(mod, pattern)
         const newPatterns = [...argPatterns, ...restPatterns]
-        const newClause = M.MatchClause(newPatterns, clause.body, clause.meta)
+        const newClause = M.MatchClause(
+          newPatterns,
+          clause.body,
+          clause.location,
+        )
         groupedClauses.push(newClause)
       }
     }
@@ -181,7 +185,8 @@ function findDataDefinitionFromClauses(
     } else if (dataConstructor.definition !== definition) {
       let message = `[findDataDefinitionFromClauses] datatype definition mismatch`
       message += `\n  definition name: ${definition.name}`
-      if (clause.meta) throw new S.ErrorWithSourceLocation(message, clause.meta)
+      if (clause.location)
+        throw new S.ErrorWithSourceLocation(message, clause.location)
       else throw new Error(message)
     }
   }

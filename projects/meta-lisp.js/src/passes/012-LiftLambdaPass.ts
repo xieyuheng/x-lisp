@@ -60,14 +60,14 @@ function onExp(state: State, exp: M.Exp): M.Exp {
       const newFunctionName = `${state.definition.name}©λ${subscript}`
       const newParameters = [...freeNames, ...exp.parameters]
       const arity = newParameters.length
-      assert(exp.meta)
+      assert(exp.location)
       state.lifted.push(
         M.FunctionDefinition(
           state.mod,
           newFunctionName,
           newParameters,
           exp.body,
-          exp.meta,
+          exp.location,
         ),
       )
 

@@ -8,111 +8,111 @@ export function parseBody(body: S.Sexp): M.Exp {
   if (elements.length === 1) {
     return elements[0]
   } else {
-    return M.BeginSugar(elements, body.meta)
+    return M.BeginSugar(elements, body.location)
   }
 }
 
 export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
   "(cons* 'lambda parameters body)": ({ parameters, body }, { sexp }) => {
     const keyword = S.asList(sexp).elements[0]
-    const meta = keyword.meta
     return M.Lambda(
       S.listElements(parameters).map(S.symbolContent),
       parseBody(body),
-      meta,
+      keyword.location,
     )
   },
 
-  "`(@quote ,sexp)": ({ sexp }, { meta }) => {
-    return M.Quote(sexp, meta)
+  "`(@quote ,sexp)": ({ sexp }, { location }) => {
+    return M.Quote(sexp, location)
   },
 
   "`(if ,condition ,consequent ,alternative)": (
     { condition, consequent, alternative },
-    { meta },
+    { location },
   ) => {
     return M.If(
       parseExp(condition),
       parseExp(consequent),
       parseExp(alternative),
-      meta,
+      location,
     )
   },
 
-  "(cons* 'when condition body)": ({ condition, body }, { meta }) => {
-    return M.When(parseExp(condition), parseBody(body), meta)
+  "(cons* 'when condition body)": ({ condition, body }, { location }) => {
+    return M.When(parseExp(condition), parseBody(body), location)
   },
 
-  "(cons* 'unless condition body)": ({ condition, body }, { meta }) => {
-    return M.Unless(parseExp(condition), parseBody(body), meta)
+  "(cons* 'unless condition body)": ({ condition, body }, { location }) => {
+    return M.Unless(parseExp(condition), parseBody(body), location)
   },
 
-  "(cons* 'and exps)": ({ exps }, { meta }) => {
-    return M.And(S.listElements(exps).map(parseExp), meta)
+  "(cons* 'and exps)": ({ exps }, { location }) => {
+    return M.And(S.listElements(exps).map(parseExp), location)
   },
 
-  "(cons* 'or exps)": ({ exps }, { meta }) => {
-    return M.Or(S.listElements(exps).map(parseExp), meta)
+  "(cons* 'or exps)": ({ exps }, { location }) => {
+    return M.Or(S.listElements(exps).map(parseExp), location)
   },
 
   "(cons* 'cond clauses)": ({ clauses }, { sexp }) => {
     const keyword = S.asList(sexp).elements[0]
-    return M.Cond(S.listElements(clauses).map(parseCondClause), keyword.meta)
+    return M.Cond(
+      S.listElements(clauses).map(parseCondClause),
+      keyword.location,
+    )
   },
 
   "(cons* 'match target clauses)": ({ target, clauses }, { sexp }) => {
     const keyword = S.asList(sexp).elements[0]
-    const meta = keyword.meta
     return M.Match(
       [parseExp(target)],
       S.listElements(clauses).map(parseMatchClause),
-      meta,
+      keyword.location,
     )
   },
 
   "(cons* 'match-many targets clauses)": ({ targets, clauses }, { sexp }) => {
     const keyword = S.asList(sexp).elements[0]
-    const meta = keyword.meta
     return M.Match(
       S.listElements(targets).map(parseExp),
       S.listElements(clauses).map(parseMatchManyClause),
-      meta,
+      keyword.location,
     )
   },
 
-  "`(= ,name ,rhs)": ({ name, rhs }, { meta }) => {
-    return M.AssignSugar(S.symbolContent(name), parseExp(rhs), meta)
+  "`(= ,name ,rhs)": ({ name, rhs }, { location }) => {
+    return M.AssignSugar(S.symbolContent(name), parseExp(rhs), location)
   },
 
-  "(cons* 'begin body)": ({ body }, { meta }) => {
+  "(cons* 'begin body)": ({ body }, { location }) => {
     return parseBody(body)
   },
 
-  "(cons* '@list elements)": ({ elements }, { meta }) => {
-    return M.LiteralList(S.listElements(elements).map(parseExp), meta)
+  "(cons* '@list elements)": ({ elements }, { location }) => {
+    return M.LiteralList(S.listElements(elements).map(parseExp), location)
   },
 
-  "(cons* '@tuple elements)": ({ elements }, { meta }) => {
-    return M.LiteralTuple(S.listElements(elements).map(parseExp), meta)
+  "(cons* '@tuple elements)": ({ elements }, { location }) => {
+    return M.LiteralTuple(S.listElements(elements).map(parseExp), location)
   },
 
-  "(cons* '@record body)": ({ body }, { meta }) => {
+  "(cons* '@record body)": ({ body }, { location }) => {
     const entries = S.listCollectKeywordEntries(body)
     M.assertNoDuplicatedKey(entries)
     return M.LiteralRecord(
       recordMapValue(Object.fromEntries(entries), parseExp),
-      meta,
+      location,
     )
   },
 
-  "(cons* '@set elements)": ({ elements }, { meta }) => {
-    return M.LiteralSet(S.listElements(elements).map(parseExp), meta)
+  "(cons* '@set elements)": ({ elements }, { location }) => {
+    return M.LiteralSet(S.listElements(elements).map(parseExp), location)
   },
 
-  "(cons* '@hash elements)": ({ elements }, { meta }) => {
+  "(cons* '@hash elements)": ({ elements }, { location }) => {
     if (S.listElements(elements).length % 2 === 1) {
       let message = `(@hash) body length must be even`
-      throw new S.ErrorWithSourceLocation(message, meta)
+      throw new S.ErrorWithSourceLocation(message, location)
     }
 
     const entries = arrayGroup2(S.listElements(elements)).map(
@@ -121,132 +121,136 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
         value: parseExp(value),
       }),
     )
-    return M.LiteralHash(entries, meta)
+    return M.LiteralHash(entries, location)
   },
 
-  "(cons* '-> exps)": ({ exps }, { meta }) => {
+  "(cons* '-> exps)": ({ exps }, { location }) => {
     const [argTypes, retType] = arrayPickLast(
       S.listElements(exps).map(parseExp),
     )
-    return M.Arrow(argTypes, retType, meta)
+    return M.Arrow(argTypes, retType, location)
   },
 
-  "(cons* 'tau elements)": ({ elements }, { meta }) => {
-    return M.Tau(S.listElements(elements).map(parseExp), meta)
+  "(cons* 'tau elements)": ({ elements }, { location }) => {
+    return M.Tau(S.listElements(elements).map(parseExp), location)
   },
 
-  "(cons* 'interface body)": ({ body }, { meta }) => {
+  "(cons* 'interface body)": ({ body }, { location }) => {
     const entries = S.listCollectKeywordEntries(body)
     M.assertNoDuplicatedKey(entries)
     return M.Interface(
       recordMapValue(Object.fromEntries(entries), parseExp),
-      meta,
+      location,
     )
   },
 
-  "(cons* 'extend-interface head body)": ({ head, body }, { meta }) => {
+  "(cons* 'extend-interface head body)": ({ head, body }, { location }) => {
     const entries = S.listCollectKeywordEntries(body)
     M.assertNoDuplicatedKey(entries)
     return M.ExtendInterface(
       parseExp(head),
       recordMapValue(Object.fromEntries(entries), parseExp),
-      meta,
+      location,
     )
   },
 
-  "(cons* 'extend head body)": ({ head, body }, { meta }) => {
+  "(cons* 'extend head body)": ({ head, body }, { location }) => {
     const entries = S.listCollectKeywordEntries(body)
     M.assertNoDuplicatedKey(entries)
     return M.Extend(
       parseExp(head),
       recordMapValue(Object.fromEntries(entries), parseExp),
-      meta,
+      location,
     )
   },
 
-  "(cons* 'update head body)": ({ head, body }, { meta }) => {
+  "(cons* 'update head body)": ({ head, body }, { location }) => {
     const entries = S.listCollectKeywordEntries(body)
     M.assertNoDuplicatedKey(entries)
     return M.Update(
       parseExp(head),
       recordMapValue(Object.fromEntries(entries), parseExp),
-      meta,
+      location,
     )
   },
 
-  "(cons* 'update! head body)": ({ head, body }, { meta }) => {
+  "(cons* 'update! head body)": ({ head, body }, { location }) => {
     const entries = S.listCollectKeywordEntries(body)
     M.assertNoDuplicatedKey(entries)
     return M.UpdateMut(
       parseExp(head),
       recordMapValue(Object.fromEntries(entries), parseExp),
-      meta,
+      location,
     )
   },
 
-  "`(the ,schema ,exp)": ({ schema, exp }, { meta }) => {
-    return M.The(parseExp(schema), parseExp(exp), meta)
+  "`(the ,schema ,exp)": ({ schema, exp }, { location }) => {
+    return M.The(parseExp(schema), parseExp(exp), location)
   },
 
-  "`(polymorphic ,parameters ,type)": ({ parameters, type }, { meta }) => {
+  "`(polymorphic ,parameters ,type)": ({ parameters, type }, { location }) => {
     return M.Polymorphic(
       S.listElements(parameters).map(S.symbolContent),
       parseExp(type),
-      meta,
+      location,
     )
   },
 
-  "`(@require ,path ,name)": ({ path, name }, { meta }) => {
-    return M.Require(S.stringContent(path), S.symbolContent(name), meta)
+  "`(@require ,path ,name)": ({ path, name }, { location }) => {
+    return M.Require(S.stringContent(path), S.symbolContent(name), location)
   },
 
   // - The following two cases must be at the end.
 
-  "(cons* target args)": ({ target, args }, { meta }) => {
-    return M.Apply(parseExp(target), S.listElements(args).map(parseExp), meta)
+  "(cons* target args)": ({ target, args }, { location }) => {
+    return M.Apply(
+      parseExp(target),
+      S.listElements(args).map(parseExp),
+      location,
+    )
   },
 
-  data: ({ data }, { meta }) => {
+  data: ({ data }, { location }) => {
     switch (data.kind) {
       case "Keyword":
-        return M.Keyword(S.keywordContent(data), meta)
+        return M.Keyword(S.keywordContent(data), location)
       case "Int":
-        return M.Int(S.intContent(data), meta)
+        return M.Int(S.intContent(data), location)
       case "Float":
-        return M.Float(S.floatContent(data), meta)
+        return M.Float(S.floatContent(data), location)
       case "String":
-        return M.String(S.stringContent(data), meta)
+        return M.String(S.stringContent(data), location)
       case "Symbol": {
-        return M.Var(S.symbolContent(data), meta)
+        return M.Var(S.symbolContent(data), location)
       }
     }
   },
 })
 
 const parseCondClause = S.createRouter<M.CondClause>({
-  "(cons* question body)": ({ question, body }, { meta }) => {
+  "(cons* question body)": ({ question, body }, { location }) => {
     if (question.kind === "Symbol" && question.content === "else") {
-      return M.CondClause(M.Bool(true, meta), parseBody(body), meta)
+      return M.CondClause(M.Bool(true, location), parseBody(body), location)
     } else {
-      return M.CondClause(parseExp(question), parseBody(body), meta)
+      return M.CondClause(parseExp(question), parseBody(body), location)
     }
   },
 })
 
 const parseMatchClause = S.createRouter<M.MatchClause>({
-  "(cons* pattern body)": ({ pattern, body }, { meta }) =>
+  "(cons* pattern body)": ({ pattern, body }, { location }) =>
     M.MatchClause(
       [parseExp(pattern)],
-      M.BeginSugar(S.listElements(body).map(parseExp), meta),
-      meta,
+      M.BeginSugar(S.listElements(body).map(parseExp), location),
+      location,
     ),
 })
 
 const parseMatchManyClause = S.createRouter<M.MatchClause>({
-  "(cons* patterns body)": ({ patterns, body }, { meta }) =>
+  "(cons* patterns body)": ({ patterns, body }, { location }) =>
     M.MatchClause(
       S.listElements(patterns).map(parseExp),
-      M.BeginSugar(S.listElements(body).map(parseExp), meta),
-      meta,
+      M.BeginSugar(S.listElements(body).map(parseExp), location),
+      location,
     ),
 })

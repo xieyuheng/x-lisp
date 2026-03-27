@@ -32,11 +32,11 @@ const parseExp: S.Router<Exp> = S.createRouter<Exp>({
     Let(S.asSymbol(name).content, parseExp(rhs), parseExp(body)),
   "`(,target ,arg)": ({ target, arg }) =>
     Apply(parseExp(target), parseExp(arg)),
-  name: ({ name }, { meta }) => {
+  name: ({ name }, { location }) => {
     const nameSymbol = S.asSymbol(name).content
     if (keywords.includes(nameSymbol)) {
       let message = "keywork should not be used as variable\n"
-      throw new S.ErrorWithSourceLocation(message, meta)
+      throw new S.ErrorWithSourceLocation(message, location)
     }
     return Var(nameSymbol)
   },
