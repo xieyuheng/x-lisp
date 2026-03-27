@@ -1,4 +1,3 @@
-import { type Span } from "../span/index.ts"
 import { type SourceLocation } from "./SourceLocation.ts"
 
 export type TokenKind =
