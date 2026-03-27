@@ -207,4 +207,5 @@
   (string-sexp (content string-t) (location source-location-t))
   (int-sexp (content int-t) (location source-location-t))
   (float-sexp (content float-t) (location source-location-t))
-  (list-sexp (elements (list-t sexp-t)) (location source-location-t)))
+  (list-sexp (elements (list-t located-sexp-t))
+             (location source-location-t)))

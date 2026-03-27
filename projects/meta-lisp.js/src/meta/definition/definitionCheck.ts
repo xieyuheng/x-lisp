@@ -18,6 +18,18 @@ export function definitionCheck(definition: M.Definition): null {
 
   switch (definition.kind) {
     case "DataDefinition": {
+      const tauTypes = definition.dataConstructors.map((dataConstructor) =>
+        M.Tau(dataConstructor.fields.map((field) => field.type)),
+      )
+      const exp =
+        definition.dataTypeConstructor.parameters.length === 0
+          ? M.Tau(tauTypes, definition.location)
+          : M.Lambda(
+              definition.dataTypeConstructor.parameters,
+              M.Tau(tauTypes, definition.location),
+              definition.location,
+            )
+      checkExp(mod, name, exp)
       definition.isChecked = true
       return null
     }
