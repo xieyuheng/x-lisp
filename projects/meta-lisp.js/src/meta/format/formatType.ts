@@ -37,7 +37,11 @@ export function formatType(type: M.Value): string {
     type = M.arrowTypeUncurrying(type)
     const argTypes = formatTypes(M.arrowTypeArgTypes(type))
     const retType = formatType(M.arrowTypeRetType(type))
-    return `(-> ${argTypes} ${retType})`
+    if (argTypes.length === 0) {
+      return `(-> ${retType})`
+    } else {
+      return `(-> ${argTypes} ${retType})`
+    }
   }
 
   if (M.isTauType(type)) {

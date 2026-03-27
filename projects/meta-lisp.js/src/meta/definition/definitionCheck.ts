@@ -23,6 +23,15 @@ export function definitionCheck(definition: M.Definition): null {
     }
 
     case "InterfaceDefinition": {
+      const exp =
+        definition.interfaceConstructor.parameters.length === 0
+          ? M.Interface(definition.attributeTypes, definition.location)
+          : M.Lambda(
+              definition.interfaceConstructor.parameters,
+              M.Interface(definition.attributeTypes, definition.location),
+              definition.location,
+            )
+      checkExp(mod, name, exp)
       definition.isChecked = true
       return null
     }

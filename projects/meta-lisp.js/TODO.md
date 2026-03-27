@@ -1,4 +1,3 @@
-`define-interface` -- check body is `type-t`
 `define-data` -- check body is `type-t`
 
 [builtin] `error-with-source-location`
