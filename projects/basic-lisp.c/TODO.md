@@ -1,3 +1,12 @@
+ambr token_meta source_location
+
+[sexp] `parse_located_sexps`
+
+[builtin] `parse-located-sexps`
+
+[builtin] `error-with-source-location`
+[builtin] `assert-with-source-location`
+
 # later
 
 [helpers.c] improve `string_builder_t` for `format_*`
