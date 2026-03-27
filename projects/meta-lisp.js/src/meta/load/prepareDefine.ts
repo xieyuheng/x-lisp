@@ -1,3 +1,4 @@
+import { range } from "@xieyuheng/helpers.js/range"
 import * as M from "../index.ts"
 import { expandDataConstructor } from "./expandDataConstructor.ts"
 import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate.ts"
@@ -51,6 +52,21 @@ export function handleDefine(mod: M.Mod, stmt: M.Stmt): void {
 
     M.modDefine(mod, name, definition)
 
+    if (dataTypeConstructor.parameters.length === 0) {
+      M.modClaim(mod, name, M.Var("type-t"))
+    } else {
+      M.modClaim(
+        mod,
+        name,
+        M.Arrow(
+          range(dataTypeConstructor.parameters.length).map((_) =>
+            M.Var("type-t"),
+          ),
+          M.Var("type-t"),
+        ),
+      )
+    }
+
     for (const dataConstructor of dataConstructors) {
       mod.dataConstructors.set(dataConstructor.name, dataConstructor)
     }
@@ -77,5 +93,20 @@ export function handleDefine(mod: M.Mod, stmt: M.Stmt): void {
     )
     interfaceConstructor.definition = definition
     M.modDefine(mod, name, definition)
+
+    if (interfaceConstructor.parameters.length === 0) {
+      M.modClaim(mod, name, M.Var("type-t"))
+    } else {
+      M.modClaim(
+        mod,
+        name,
+        M.Arrow(
+          range(interfaceConstructor.parameters.length).map((_) =>
+            M.Var("type-t"),
+          ),
+          M.Var("type-t"),
+        ),
+      )
+    }
   }
 }
