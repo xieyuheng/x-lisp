@@ -41,6 +41,7 @@ ignore_line_comments(list_t *tokens) {
 }
 
 // - assume a sexp exists (maybe after line comments)
+
 static value_t
 for_sexp(list_t *tokens) {
     if (list_is_empty(tokens)) {
@@ -52,6 +53,12 @@ for_sexp(list_t *tokens) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
         value_t sexp = x_object(intern_symbol(token->content));
+        token_free(token);
+        return sexp;
+    }
+
+    case KEYWORD_TOKEN: {
+        value_t sexp = x_object(intern_keyword(token->content));
         token_free(token);
         return sexp;
     }
@@ -70,6 +77,26 @@ for_sexp(list_t *tokens) {
 
     case FLOAT_TOKEN: {
         value_t sexp = x_float(string_parse_double(token->content));
+        token_free(token);
+        return sexp;
+    }
+
+    case QUOTATION_MARK_TOKEN: {
+        value_t sexp = x_make_list();
+        value_t head = x_void;
+        if (string_equal(token->content, "'")) {
+            head = x_object(intern_symbol("@quote"));
+        } else if (string_equal(token->content, "`")) {
+            head = x_object(intern_symbol("@quasiquote"));
+        } else if (string_equal(token->content, ",")) {
+            head = x_object(intern_symbol("@unquote"));
+        } else {
+            who_printf("unexpected quasiquote mark: %s", token->content);
+            exit(1);
+        }
+
+        x_list_push_mut(head, sexp);
+        x_list_push_mut(for_sexp(tokens), sexp);
         token_free(token);
         return sexp;
     }
@@ -93,33 +120,6 @@ for_sexp(list_t *tokens) {
     case BRACKET_END_TOKEN: {
         who_printf("unexpected bracket end: %s", token->content);
         exit(1);
-    }
-
-    case QUOTATION_MARK_TOKEN: {
-        value_t inner_sexp = for_sexp(tokens);
-        value_t sexp = x_make_list();
-        value_t head_sexp = x_void;
-        if (string_equal(token->content, "'")) {
-            head_sexp = x_object(intern_symbol("@quote"));
-        } else if (string_equal(token->content, "`")) {
-            head_sexp = x_object(intern_symbol("@quasiquote"));
-        } else if (string_equal(token->content, ",")) {
-            head_sexp = x_object(intern_symbol("@unquote"));
-        } else {
-            who_printf("unexpected quasiquote mark: %s", token->content);
-            exit(1);
-        }
-
-        x_list_push_mut(head_sexp, sexp);
-        x_list_push_mut(inner_sexp, sexp);
-        token_free(token);
-        return sexp;
-    }
-
-    case KEYWORD_TOKEN: {
-        value_t sexp = x_object(intern_keyword(token->content));
-        token_free(token);
-        return sexp;
     }
 
     case LINE_COMMENT_TOKEN: {

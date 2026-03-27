@@ -1,5 +1,3 @@
-[sexp] `parse_located_sexps`
-
 [builtin] `parse-located-sexps`
 
 [builtin] `error-with-source-location`
