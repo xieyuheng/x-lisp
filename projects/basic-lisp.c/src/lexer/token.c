@@ -1,11 +1,11 @@
 #include "index.h"
 
 token_t *
-make_token(token_kind_t kind, char *content, struct token_meta_t meta) {
+make_token(token_kind_t kind, char *content, struct source_location_t location) {
     token_t *self = new(token_t);
     self->kind = kind;
     self->content = content;
-    self->meta = meta;
+    self->location = location;
     return self;
 }
 
@@ -16,15 +16,15 @@ token_free(token_t *self) {
 }
 
 void
-token_meta_report(struct token_meta_t meta) {
-    if (meta.path) {
+source_location_report(struct source_location_t location) {
+    if (location.path) {
         printf("%s:%ld:%ld\n",
-               path_string(meta.path),
-               meta.span.start.row + 1,
-               meta.span.end.row + 1);
+               path_string(location.path),
+               location.span.start.row + 1,
+               location.span.end.row + 1);
     }
 
-    if (meta.string) {
-        span_report_in_context(meta.span, meta.string);
+    if (location.string) {
+        span_report_in_context(location.span, location.string);
     }
 }

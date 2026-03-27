@@ -74,13 +74,13 @@ lexer_consume(lexer_t *self) {
             if (consumer.is_ignored) {
                 return NULL;
             } else {
-                struct token_meta_t meta = {
+                struct source_location_t location = {
                     .path = self->path,
                     .string = self->string,
                     .span.start = start,
                     .span.end = end,
                 };
-                return make_token(consumer.kind, content, meta);
+                return make_token(consumer.kind, content, location);
             }
         }
     }

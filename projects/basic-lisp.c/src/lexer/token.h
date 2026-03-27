@@ -1,6 +1,6 @@
 #pragma once
 
-struct token_meta_t {
+struct source_location_t {
     const path_t *path;
     const char *string;
     struct span_t span;
@@ -21,10 +21,10 @@ typedef enum {
 struct token_t {
     token_kind_t kind;
     char *content;
-    struct token_meta_t meta;
+    struct source_location_t location;
 };
 
-token_t *make_token(token_kind_t kind, char *content, struct token_meta_t meta);
+token_t *make_token(token_kind_t kind, char *content, struct source_location_t location);
 void token_free(token_t *self);
 
-void token_meta_report(struct token_meta_t meta);
+void source_location_report(struct source_location_t location);
