@@ -38,6 +38,11 @@ open_file_or_fail(const char *pathname, const char *mode) {
     return file;
 }
 
+void
+file_close(file_t *file) {
+    assert(fclose(file) === 0);
+}
+
 off_t
 file_size(file_t *file) {
     struct stat st;

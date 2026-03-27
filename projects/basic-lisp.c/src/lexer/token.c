@@ -24,7 +24,9 @@ source_location_report(struct source_location_t location) {
                location.span.end.row + 1);
     }
 
-    if (location.string) {
-        span_report_in_context(location.span, location.string);
-    }
+    file_t *file = open_file_or_fail(path_string(location.path), "r");
+    char *string = file_read_string(file);
+    span_report_in_context(location.span, string);
+    string_free(string);
+    file_close(file);
 }

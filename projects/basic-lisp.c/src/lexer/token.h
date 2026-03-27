@@ -2,7 +2,6 @@
 
 struct source_location_t {
     const path_t *path;
-    const char *string;
     struct span_t span;
 };
 

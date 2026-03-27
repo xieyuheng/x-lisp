@@ -76,7 +76,6 @@ lexer_consume(lexer_t *self) {
             } else {
                 struct source_location_t location = {
                     .path = self->path,
-                    .string = self->string,
                     .span.start = start,
                     .span.end = end,
                 };
