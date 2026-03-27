@@ -40,7 +40,7 @@ open_file_or_fail(const char *pathname, const char *mode) {
 
 void
 file_close(file_t *file) {
-    assert(fclose(file) === 0);
+    assert(fclose(file) == 0);
 }
 
 off_t
