@@ -30,7 +30,6 @@ call-with-output-file
 file-close
 
 file-size
-file-status
 
 file-read
 file-write
@@ -41,7 +40,7 @@ file-println
 ;; high level
 
 path-exist?
-path-regular-file?
+path-file?
 path-directory?
 
 path-read
@@ -50,22 +49,35 @@ path-write
 path-directory-contents
 path-directory-contents-recursive
 
+path-directory-entries -- with type info
+path-directory-entries-recursive
+
 path-make-directory
+
+path-delete-file
+path-delete-directory
+path-delete-recursive
+
+path-rename
 
 ;; about path
 
-path-file-name (path-name)
-path-directory-name (path-parent)
+path-base-name
+path-directory-name
+
+path-extension -- with dot
+path-stem
+path-full-extension
+path-stem-full
 
 path-absolute?
 path-relative?
 
 path-join
-path-canonicalize (path-normalize)
+path-canonicalize
 
 ;; about process and module
 
-(current-working-directory)
-
-(current-module-file)
-(current-module-directory)
+current-working-directory
+current-module-file
+current-module-directory
