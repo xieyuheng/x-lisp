@@ -4,13 +4,13 @@
   "license": "GPL-3.0-or-later",
   "type": "module",
   "repository": "github:xieyuheng/x-lisp",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "files": [
     "src",
-    "lib"
+    "dist"
   ],
   "scripts": {
-    "clean": "rm -rf lib",
+    "clean": "rm -rf dist",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "test": "node --test 'src/**/*.test.ts'",
