@@ -6,9 +6,8 @@ static value_t for_sexp(list_t *tokens);
 static value_t for_list(const char *end, list_t *tokens);
 
 value_t
-parse_sexps(const path_t *path, const char *string) {
+parse_sexps(const char *string) {
     lexer_t *lexer = make_lexer(string);
-    lexer->path = path;
     lexer->line_comment_introducer = ";;";
     list_t *tokens = lexer_lex(lexer);
     lexer_free(lexer);

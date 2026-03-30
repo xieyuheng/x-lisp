@@ -2,7 +2,7 @@
 
 static void
 echo(const char *string) {
-    x_println(parse_sexps(NULL, string));
+    x_println(parse_sexps(string));
 }
 
 int

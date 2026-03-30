@@ -16,7 +16,7 @@ read_mod_body(path_t *path) {
     }
 
     file_t *file = open_file_or_fail(path_string(path), "r");
-    value_t sexps = parse_sexps(path, file_read_string(file));
+    value_t sexps = parse_sexps(file_read_string(file));
     record_put(mod_bodies, path_string(path), (void *) sexps);
     return sexps;
 }
