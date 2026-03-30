@@ -27,7 +27,7 @@ const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 
 export const builtinModPath = Path.join(
   currentDir,
-  "../../../lisp/builtin/index.meta",
+  "../../../lib/builtin/index.meta",
 )
 
 export function loadBuiltinMod(dependencyGraph: M.DependencyGraph): M.Mod {
