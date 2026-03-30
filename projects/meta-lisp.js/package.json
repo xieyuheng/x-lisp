@@ -4,18 +4,18 @@
   "repository": "github:xieyuheng/meta-lisp",
   "license": "GPL-3.0-or-later",
   "type": "module",
-  "main": "./lib/index.js",
+  "main": "./dist/index.js",
   "files": [
     "src",
-    "lib",
+    "dist",
     "lisp",
     "bin"
   ],
   "bin": {
-    "meta-lisp.js": "lib/main.js"
+    "meta-lisp.js": "dist/main.js"
   },
   "scripts": {
-    "clean": "rm -rf lib",
+    "clean": "rm -rf dist",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "test": "node --test 'src/**/*.test.ts'",

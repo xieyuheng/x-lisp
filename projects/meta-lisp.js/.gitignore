@@ -3,7 +3,7 @@ tmp
 # *.dump
 
 # typescript
-lib
+dist
 
 # meta-lisp
 *.o
