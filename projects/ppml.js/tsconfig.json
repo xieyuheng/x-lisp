@@ -13,6 +13,6 @@
     "sourceMap": true,
     "declarationMap": true,
     "resolveJsonModule": true,
-    "outDir": "lib"
+    "outDir": "dist"
   }
 }
