@@ -1,5 +1,9 @@
 # builtin about sexp
 
+remove `path` from `lexer_t`
+`parse_sexps` -- should not take `path`
+`parse_located_sexps` -- take `path_string` instead of `path`
+
 [builtin] `parse-located-sexps`
 
 [builtin] `error-with-source-location`

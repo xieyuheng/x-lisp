@@ -203,6 +203,10 @@ make_builtin_mod(void) {
 
     define_primitive_1(mod, "error", x_error);
 
+    // sexp
+
+    // TODO
+
     return mod;
 }
 
