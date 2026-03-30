@@ -1,6 +1,20 @@
 #include "index.h"
 
 value_t
+x_open_input_file(value_t path) {
+    // TODO
+    (void) path
+    return x_void;
+}
+
+value_t
+x_open_output_file(value_t path) {
+    // TODO
+    (void) path
+    return x_void;
+}
+
+value_t
 x_newline(void) {
     newline();
     return x_void;

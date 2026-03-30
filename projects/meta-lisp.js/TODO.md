@@ -1,3 +1,5 @@
+`FileValue` -- to abstract away from `fd` or `FILE *` implementation in c
+
 # prelude
 
 be able to use prelude module
