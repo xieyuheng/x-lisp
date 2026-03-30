@@ -205,7 +205,7 @@ make_builtin_mod(void) {
 
     // sexp
 
-    // TODO
+    define_primitive_2(mod, "parse-located-sexps", x_parse_located_sexps);
 
     return mod;
 }

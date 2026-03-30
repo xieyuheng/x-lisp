@@ -1,7 +1,5 @@
 # builtin about sexp
 
-[builtin] `parse-located-sexps`
-
 [builtin] `error-with-source-location`
 [builtin] `assert-with-source-location`
 

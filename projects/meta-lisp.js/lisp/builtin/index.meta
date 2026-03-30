@@ -209,3 +209,5 @@
   (float-sexp (content float-t) (location source-location-t))
   (list-sexp (elements (list-t located-sexp-t))
              (location source-location-t)))
+
+(claim parse-located-sexps (-> string-t string-t located-sexp-t))
