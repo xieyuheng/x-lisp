@@ -43,12 +43,12 @@ path_is_absolute(const path_t *self) {
 
 path_t *
 path_copy(const path_t *self) {
-    return make_path(path_string(self));
+    return make_path(path_to_string(self));
 }
 
 bool
 path_equal(path_t *x, path_t *y) {
-    return string_equal(path_string(x), path_string(y));
+    return string_equal(path_to_string(x), path_to_string(y));
 }
 
 typedef struct {
@@ -173,7 +173,7 @@ path_resolve(const path_t *self, const char *string) {
 }
 
 const char *
-path_string(const path_t *self) {
+path_to_string(const path_t *self) {
     assert(self->string);
     return self->string;
 }
@@ -248,7 +248,7 @@ path_relative(path_t *from, path_t *to) {
 void
 path_relative_print(path_t *from, path_t *to) {
     path_t *relative_path = path_relative(from, to);
-    printf("%s", path_string(relative_path));
+    printf("%s", path_to_string(relative_path));
     path_free(relative_path);
 }
 

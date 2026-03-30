@@ -31,14 +31,13 @@ static value_t for_sexp(value_t path, list_t *tokens);
 static value_t for_elements(value_t path, const char *end, list_t *tokens);
 
 value_t
-parse_located_sexps(const path_t *path, const char *string) {
+parse_located_sexps(const char *path_string, const char *string) {
     lexer_t *lexer = make_lexer(string);
-    lexer->path = path;
     lexer->line_comment_introducer = ";;";
     list_t *tokens = lexer_lex(lexer);
     lexer_free(lexer);
 
-    value_t path_value = x_object(make_xstring(string_copy(path_string(path))));
+    value_t path = x_object(make_xstring(string_copy(path_string)));
     value_t sexps = x_make_list();
     while (true) {
         ignore_line_comments(tokens);
@@ -46,7 +45,7 @@ parse_located_sexps(const path_t *path, const char *string) {
             break;
         }
 
-        x_list_push_mut(for_sexp(path_value, tokens), sexps);
+        x_list_push_mut(for_sexp(path, tokens), sexps);
     }
 
     list_free(tokens);

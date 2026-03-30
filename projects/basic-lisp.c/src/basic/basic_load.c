@@ -11,13 +11,13 @@ read_mod_body(path_t *path) {
         mod_bodies = make_record();
     }
 
-    if (record_has(mod_bodies, path_string(path))) {
-        return (value_t) record_get(mod_bodies, path_string(path));
+    if (record_has(mod_bodies, path_to_string(path))) {
+        return (value_t) record_get(mod_bodies, path_to_string(path));
     }
 
-    file_t *file = open_file_or_fail(path_string(path), "r");
+    file_t *file = open_file_or_fail(path_to_string(path), "r");
     value_t sexps = parse_sexps(file_read_string(file));
-    record_put(mod_bodies, path_string(path), (void *) sexps);
+    record_put(mod_bodies, path_to_string(path), (void *) sexps);
     return sexps;
 }
 
@@ -27,15 +27,15 @@ basic_load(path_t *path) {
         loaded_mods = make_record();
     }
 
-    if (record_has(loaded_mods, path_string(path))) {
-        return record_get(loaded_mods, path_string(path));
+    if (record_has(loaded_mods, path_to_string(path))) {
+        return record_get(loaded_mods, path_to_string(path));
     }
 
     value_t sexps = read_mod_body(path);
     mod_t *mod = make_mod(path);
 
     import_builtin_mod(mod);
-    record_put(loaded_mods, path_string(path), mod);
+    record_put(loaded_mods, path_to_string(path), mod);
     basic_prepare(mod, sexps);
     basic_export(mod, sexps);
     basic_import(mod, sexps);

@@ -17,7 +17,7 @@ path_t *path_join(const path_t *self, const char *string);
 void path_resolve_mut(path_t *self, const char *string);
 path_t *path_resolve(const path_t *self, const char *string);
 
-const char *path_string(const path_t *self);
+const char *path_to_string(const path_t *self);
 
 size_t path_segment_length(const path_t *self);
 const char *path_top_segment(const path_t *self);

@@ -2,8 +2,7 @@
 
 static void
 echo(const char *string) {
-    path_t *path = make_path("*");
-    x_println(parse_located_sexps(path, string));
+    x_println(parse_located_sexps("*", string));
 }
 
 int
