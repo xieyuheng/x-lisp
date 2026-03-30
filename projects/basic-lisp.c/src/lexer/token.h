@@ -21,5 +21,3 @@ struct token_t {
 
 token_t *make_token(token_kind_t kind, char *content, struct span_t span);
 void token_free(token_t *self);
-
-void source_location_report(const path_t *path, struct span_t span);

@@ -1,7 +1,5 @@
 # builtin about sexp
 
-refactor `source_location_report`
-
 [builtin] `parse-located-sexps`
 
 [builtin] `error-with-source-location`
