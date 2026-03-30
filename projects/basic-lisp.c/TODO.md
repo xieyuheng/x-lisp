@@ -1,64 +1,13 @@
-# builtin about sexp
+# about file
 
-[builtin] `error-with-source-location`
-[builtin] `assert-with-source-location`
+[builtin] open-input-file & open-output-file
+[builtin] file-close
+[builtin] file-size
+[builtin] file-read
+[builtin] file-write & file-writeln
+[builtin] file-print & file-println
 
-[helpers.c] improve `string_builder_t` for `format_*`
-
-[sexp] `sexp_format`
-[sexp] `sexp_print`
-[sexp] `sexp.snapshot` -- call `sexp_print`
-
-[builtin] format
-
-# builtin about file
-
-;; low level
-
-file-t
-
-open-file
-open-input-file
-open-output-file
-
-call-with-file
-call-with-input-file
-call-with-output-file
-
-file-close
-
-file-size
-
-file-read
-file-write
-file-writeln
-file-print
-file-println
-
-;; high level
-
-path-exist?
-path-file?
-path-directory?
-
-path-read
-path-write
-
-path-directory-contents
-path-directory-contents-recursive
-
-path-directory-entries -- with type info
-path-directory-entries-recursive
-
-path-make-directory
-
-path-delete-file
-path-delete-directory
-path-delete-recursive
-
-path-rename
-
-;; about path
+# about path
 
 path-base-name
 path-directory-name
@@ -74,8 +23,46 @@ path-relative?
 path-join
 path-canonicalize
 
-;; about process and module
+# about fs
+
+fs-exists?
+fs-file?
+fs-directory?
+
+fs-read
+fs-write
+
+fs-directory-contents
+fs-directory-contents-recursive
+
+fs-directory-entries -- with type info
+fs-directory-entries-recursive
+
+fs-make-directory
+
+fs-delete-file
+fs-delete-directory
+fs-delete-recursive
+
+fs-rename
+
+# about process and module
 
 current-working-directory
 current-module-file
 current-module-directory
+
+# about source-location
+
+[builtin] `error-with-source-location`
+[builtin] `assert-with-source-location`
+
+# about format
+
+[helpers.c] improve `string_builder_t` for `format_*`
+
+[sexp] `sexp_format`
+[sexp] `sexp_print`
+[sexp] `sexp.snapshot` -- call `sexp_print`
+
+[builtin] [maybe] `format-sexp`

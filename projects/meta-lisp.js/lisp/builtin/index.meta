@@ -28,13 +28,6 @@
 (claim assert-equal (polymorphic (A) (-> A A void-t)))
 (claim assert-not-equal (polymorphic (A) (-> A A void-t)))
 
-;; file
-
-(claim print (polymorphic (A) (-> A void-t)))
-(claim println (polymorphic (A) (-> A void-t)))
-(claim write (-> string-t void-t))
-(claim newline (-> void-t))
-
 ;; bool
 
 (claim true bool-t)
@@ -211,3 +204,65 @@
              (location source-location-t)))
 
 (claim parse-located-sexps (-> string-t string-t located-sexp-t))
+
+;; file
+
+(claim file-t type-t)
+
+(claim open-input-file (-> string-t file-t))
+(claim open-output-file (-> string-t file-t))
+
+(claim file-close (-> file-t void-t))
+(claim file-size (-> file-t int-t))
+(claim file-read (-> file-t string-t))
+(claim file-write (-> file-t string-t void))
+(claim file-writeln (-> file-t string-t void))
+(claim file-print (polymorphic (A) (-> file-t A void)))
+(claim file-println (polymorphic (A) (-> file-t A void)))
+
+(claim print (polymorphic (A) (-> A void-t)))
+(claim println (polymorphic (A) (-> A void-t)))
+(claim write (-> string-t void-t))
+(claim newline (-> void-t))
+
+;; call-with-input-file
+;; call-with-output-file
+
+;; path
+
+;; path-base-name
+;; path-directory-name
+
+;; path-extension
+;; path-stem
+;; path-full-extension
+;; path-stem-full
+
+;; path-absolute?
+;; path-relative?
+
+;; path-join
+;; path-canonicalize
+
+;; fs
+
+;; fs-exists?
+;; fs-file?
+;; fs-directory?
+
+;; fs-read
+;; fs-write
+
+;; fs-directory-contents
+;; fs-directory-contents-recursive
+
+;; fs-directory-entries -- with type info
+;; fs-directory-entries-recursive
+
+;; fs-make-directory
+
+;; fs-delete-file
+;; fs-delete-directory
+;; fs-delete-recursive
+
+;; fs-rename
