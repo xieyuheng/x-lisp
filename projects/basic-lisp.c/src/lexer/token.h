@@ -1,9 +1,5 @@
 #pragma once
 
-struct source_location_t {
-    const path_t *path;
-    struct span_t span;
-};
 
 typedef enum {
     SYMBOL_TOKEN,
@@ -20,10 +16,10 @@ typedef enum {
 struct token_t {
     token_kind_t kind;
     char *content;
-    struct source_location_t location;
+    struct span_t span;
 };
 
-token_t *make_token(token_kind_t kind, char *content, struct source_location_t location);
+token_t *make_token(token_kind_t kind, char *content, struct span_t span);
 void token_free(token_t *self);
 
-void source_location_report(struct source_location_t location);
+void source_location_report(const path_t *path, struct span_t span);

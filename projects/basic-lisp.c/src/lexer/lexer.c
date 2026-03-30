@@ -74,12 +74,8 @@ lexer_consume(lexer_t *self) {
             if (consumer.is_ignored) {
                 return NULL;
             } else {
-                struct source_location_t location = {
-                    .path = self->path,
-                    .span.start = start,
-                    .span.end = end,
-                };
-                return make_token(consumer.kind, content, location);
+                struct span_t span = { .start = start, .end = end };
+                return make_token(consumer.kind, content, span);
             }
         }
     }

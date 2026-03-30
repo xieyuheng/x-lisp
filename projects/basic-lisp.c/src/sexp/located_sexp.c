@@ -139,42 +139,42 @@ for_sexp(value_t path, list_t *tokens) {
     switch (token->kind) {
     case SYMBOL_TOKEN: {
         value_t content = x_object(intern_symbol(token->content));
-        value_t location = make_source_location_value(path, token->location.span);
+        value_t location = make_source_location_value(path, token->span);
         token_free(token);
         return make_symbol_sexp(content, location);
     }
 
     case KEYWORD_TOKEN: {
         value_t content = x_object(intern_keyword(token->content));
-        value_t location = make_source_location_value(path, token->location.span);
+        value_t location = make_source_location_value(path, token->span);
         token_free(token);
         return make_keyword_sexp(content, location);
     }
 
     case STRING_TOKEN: {
         value_t content = x_object(make_xstring(string_copy(token->content)));
-        value_t location = make_source_location_value(path, token->location.span);
+        value_t location = make_source_location_value(path, token->span);
         token_free(token);
         return make_string_sexp(content, location);
     }
 
     case INT_TOKEN: {
         value_t content = x_int(string_parse_int(token->content));
-        value_t location = make_source_location_value(path, token->location.span);
+        value_t location = make_source_location_value(path, token->span);
         token_free(token);
         return make_int_sexp(content, location);
     }
 
     case FLOAT_TOKEN: {
         value_t content = x_float(string_parse_double(token->content));
-        value_t location = make_source_location_value(path, token->location.span);
+        value_t location = make_source_location_value(path, token->span);
         token_free(token);
         return make_float_sexp(content, location);
     }
 
     case QUOTATION_MARK_TOKEN: {
         value_t head = x_void;
-        value_t location = make_source_location_value(path, token->location.span);
+        value_t location = make_source_location_value(path, token->span);
         if (string_equal(token->content, "'")) {
             head = make_symbol_sexp(x_object(intern_symbol("@quote")), location);
         } else if (string_equal(token->content, "`")) {
@@ -195,12 +195,12 @@ for_sexp(value_t path, list_t *tokens) {
 
     case BRACKET_START_TOKEN: {
         if (string_equal(token->content, "(")) {
-            value_t location = make_source_location_value(path, token->location.span);
+            value_t location = make_source_location_value(path, token->span);
             value_t elements = for_elements(path, ")", tokens);
             token_free(token);
             return make_list_sexp(elements, location);
         } else if (string_equal(token->content, "[")) {
-            value_t location = make_source_location_value(path, token->location.span);
+            value_t location = make_source_location_value(path, token->span);
             value_t elements = for_elements(path, "]", tokens);
             value_t content = x_object(intern_symbol("@list"));
             value_t head = make_symbol_sexp(content, location);
@@ -208,7 +208,7 @@ for_sexp(value_t path, list_t *tokens) {
             token_free(token);
             return make_list_sexp(elements, location);
         } else if (string_equal(token->content, "{")) {
-            value_t location = make_source_location_value(path, token->location.span);
+            value_t location = make_source_location_value(path, token->span);
             value_t elements = for_elements(path, "}", tokens);
             value_t content = x_object(intern_symbol("@record"));
             value_t head = make_symbol_sexp(content, location);
