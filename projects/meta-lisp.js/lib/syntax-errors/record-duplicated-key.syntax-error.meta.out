@@ -1,0 +1,8 @@
+[assertNoDuplicatedKey] fail
+  key: y
+lib/syntax-errors/record-duplicated-key.syntax-error.meta:2:26
+ 1 | (define (main)
+ 2 |   (println {:x 1 :y 2 :y 3}))
+   |                          ~    
+ 3 | 
+
