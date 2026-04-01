@@ -1,3 +1,6 @@
+`file_t` use `fd` instead of `FILE`
+`xfile_t` wrap `file_t`
+
 # about file
 
 [builtin] open-input-file & open-output-file
