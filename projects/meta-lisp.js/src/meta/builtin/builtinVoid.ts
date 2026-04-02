@@ -3,8 +3,8 @@ import {
   definePrimitiveVariable,
   provide,
 } from "../define/index.ts"
-import { type Mod } from "../mod/index.ts"
 import * as M from "../index.ts"
+import { type Mod } from "../mod/index.ts"
 
 export function builtinVoid(mod: Mod) {
   provide(mod, ["void", "void?"])

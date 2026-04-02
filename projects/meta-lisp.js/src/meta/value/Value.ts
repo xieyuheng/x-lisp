@@ -52,7 +52,6 @@ export function RecordValue(attributes: Record<string, Value>): RecordValue {
   }
 }
 
-
 export function isRecordValue(value: Value): value is RecordValue {
   return value.kind === "RecordValue"
 }
@@ -126,9 +125,7 @@ export function DefinitionValue(definition: Definition): DefinitionValue {
   }
 }
 
-export function isDefinitionValue(
-  value: Value,
-): value is DefinitionValue {
+export function isDefinitionValue(value: Value): value is DefinitionValue {
   return value.kind === "DefinitionValue"
 }
 

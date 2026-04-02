@@ -25,7 +25,6 @@ export function SetValue(elements: Array<Value>): SetValue {
   return set
 }
 
-
 export function isSetValue(value: Value): value is SetValue {
   return value.kind === "SetValue"
 }
