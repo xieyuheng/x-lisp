@@ -6,6 +6,7 @@ import { type Mod } from "../mod/index.ts"
 import { type AtomValue } from "./Atom.ts"
 import { type HashValue } from "./Hash.ts"
 import { type SetValue } from "./Set.ts"
+import { formatValue } from "../format/index.ts"
 
 export type Value =
   | AtomValue
@@ -107,4 +108,13 @@ export function FileValue(file: File): FileValue {
     kind: "FileValue",
     file,
   }
+}
+
+export function isFileValue(value: Value): value is FileValue {
+  return value.kind === "FileValue"
+}
+
+export function asFileValue(value: Value): FileValue {
+  if (isFileValue(value)) return value
+  throw new Error(`[asFloatValue] fail on: ${formatValue(value)}`)
 }

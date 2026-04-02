@@ -9,7 +9,7 @@ import * as M from "../index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function builtinFile(mod: Mod) {
-  provide(mod, ["file-t", "open-input-file", "open-output-file", "print", "write", "newline"])
+  provide(mod, ["file-t", "open-input-file", "open-output-file", "file-close", "print", "write", "newline"])
 
   definePrimitiveVariable(mod, "file-t", M.createAtomType("file"))
 
@@ -19,6 +19,11 @@ export function builtinFile(mod: Mod) {
 
   definePrimitiveFunction(mod, "open-output-file", 1, (path) => {
     return M.FileValue(openOutputFile(M.asStringValue(path).content))
+  })
+
+  definePrimitiveFunction(mod, "file-close", 1, (file) => {
+    fileClose(M.asFileValue(file).file)
+    return M.VoidValue()
   })
 
   definePrimitiveFunction(mod, "print", 1, (value) => {

@@ -213,7 +213,6 @@
 (claim open-output-file (-> string-t file-t))
 
 (claim file-close (-> file-t void-t))
-(claim file-size (-> file-t int-t))
 (claim file-read (-> file-t string-t))
 (claim file-write (-> file-t string-t void))
 (claim file-writeln (-> file-t string-t void))

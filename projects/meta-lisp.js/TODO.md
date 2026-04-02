@@ -1,8 +1,7 @@
-builtin/index.meta -- use include-all
-
 # file
 
-[builtin] file-close
+inline helper functions to Value.ts
+
 [builtin] file-read
 [builtin] file-write & file-writeln
 [builtin] file-print & file-println
