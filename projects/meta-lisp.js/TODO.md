@@ -1,10 +1,12 @@
+[meta-lisp.js] use #() instead of #<>
+[basic-lisp.c] use #() instead of #<>
+
 # file
 
 `FileValue`
 
 [builtin] open-input-file & open-output-file
 [builtin] file-close
-[builtin] file-size
 [builtin] file-read
 [builtin] file-write & file-writeln
 [builtin] file-print & file-println
