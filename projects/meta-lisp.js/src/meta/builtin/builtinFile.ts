@@ -51,23 +51,22 @@ export function builtinFile(mod: Mod) {
     return M.StringValue(fileRead(M.asFileValue(file).file))
   })
 
-  definePrimitiveFunction(mod, "file-write", 1, (file, string) => {
+  definePrimitiveFunction(mod, "file-write", 2, (file, string) => {
     fileWrite(M.asFileValue(file).file, M.asStringValue(string).content)
     return M.VoidValue()
   })
 
-  definePrimitiveFunction(mod, "file-writeln", 1, (file, string) => {
+  definePrimitiveFunction(mod, "file-writeln", 2, (file, string) => {
     fileWriteln(M.asFileValue(file).file, M.asStringValue(string).content)
     return M.VoidValue()
   })
 
-  definePrimitiveFunction(mod, "file-print", 1, (file, value) => {
+  definePrimitiveFunction(mod, "file-print", 2, (file, value) => {
     fileWrite(M.asFileValue(file).file, formatValue(value))
     return M.VoidValue()
   })
 
-
-  definePrimitiveFunction(mod, "file-println", 1, (file, value) => {
+  definePrimitiveFunction(mod, "file-println", 2, (file, value) => {
     fileWriteln(M.asFileValue(file).file, formatValue(value))
     return M.VoidValue()
   })

@@ -1,7 +1,3 @@
-# file
-
-test-suite -- file
-
 # about path
 
 path-base-name

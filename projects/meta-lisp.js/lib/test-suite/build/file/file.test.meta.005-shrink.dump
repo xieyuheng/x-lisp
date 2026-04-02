@@ -1,0 +1,9 @@
+(claim main (-> void-t))
+
+(define (main)
+  (= file (open-input-file "src/file/file-1.txt"))
+  (= text (file-read file))
+  (assert-equal "abc\n" text)
+  (file-close file)
+  (= file (open-output-file "src/file/file-2.txt"))
+  void)
