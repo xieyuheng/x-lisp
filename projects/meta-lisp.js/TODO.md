@@ -1,8 +1,6 @@
 # file
 
-[builtin] file-read
-[builtin] file-write & file-writeln
-[builtin] file-print & file-println
+test-suite -- file
 
 # about path
 
