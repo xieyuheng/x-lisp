@@ -3,11 +3,13 @@ import Path from "node:path"
 
 export type File = {
   fd: number
+  path?: string
 }
 
 export function openInputFile(path: string): File {
   return {
     fd: fs.openSync(path, "r"),
+    path,
   }
 }
 
@@ -16,6 +18,7 @@ export function openOutputFile(path: string): File {
 
   return {
     fd: fs.openSync(path, "w"),
+    path,
   }
 }
 

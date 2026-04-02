@@ -140,15 +140,25 @@ export function formatValue(value: Value, options: Options = {}): string {
       return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 
-    case "DefinitionValue": {
-      return `${value.definition.name}`
-    }
+
 
     case "CurryValue": {
       const target = formatValue(value.target, options)
       const args = formatValues(value.args, options)
       assert(value.args.length > 0)
       return `(${target} ${args})`
+    }
+
+    case "DefinitionValue": {
+      return `${value.definition.name}`
+    }
+
+    case "FileValue": {
+      if (value.file.path) {
+        return `#(file ${value.file.fd} "${value.file.path}")`
+      } else {
+        return `#(file ${value.file.fd})`
+      }
     }
   }
 }

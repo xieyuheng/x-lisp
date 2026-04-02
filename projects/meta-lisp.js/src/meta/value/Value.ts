@@ -1,4 +1,5 @@
 import type { Definition } from "../definition/index.ts"
+import { type File } from "@xieyuheng/helpers.js/file"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
 import { type Mod } from "../mod/index.ts"
@@ -15,6 +16,7 @@ export type Value =
   | ClosureValue
   | CurryValue
   | DefinitionValue
+  | FileValue
 
 export type ListValue = {
   kind: "ListValue"
@@ -92,5 +94,17 @@ export function DefinitionValue(definition: Definition): DefinitionValue {
   return {
     kind: "DefinitionValue",
     definition,
+  }
+}
+
+export type FileValue = {
+  kind: "FileValue"
+  file: File
+}
+
+export function FileValue(file: File): FileValue {
+  return {
+    kind: "FileValue",
+    file,
   }
 }

@@ -1,7 +1,5 @@
 # file
 
-`FileValue`
-
 [builtin] open-input-file & open-output-file
 [builtin] file-close
 [builtin] file-read
