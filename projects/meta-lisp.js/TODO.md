@@ -1,6 +1,5 @@
 # file
 
-inline setHelpers.ts
 inline hashHelpers.ts
 
 [builtin] file-read
