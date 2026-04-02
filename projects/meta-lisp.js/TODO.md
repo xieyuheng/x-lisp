@@ -1,15 +1,4 @@
-# about path
-
-path-base-name
-path-directory-name
-path-extension -- with dot
-path-stem
-path-full-extension
-path-stem-full
-path-absolute?
-path-relative?
-path-join
-path-canonicalize
+test-suite -- path
 
 # about fs
 
@@ -25,6 +14,8 @@ fs-delete-file
 fs-delete-directory
 fs-delete-recursive
 fs-rename
+
+test-suite -- fs
 
 # prelude
 

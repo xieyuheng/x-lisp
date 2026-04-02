@@ -220,22 +220,18 @@
 (claim println (polymorphic (A) (-> A void-t)))
 (claim write (-> string-t void-t))
 (claim newline (-> void-t))
-
 ;; call-with-input-file
 ;; call-with-output-file
 
 ;; path
 
-;; path-base-name
-;; path-directory-name
-;; path-extension
-;; path-stem
-;; path-full-extension
-;; path-stem-full
-;; path-absolute?
-;; path-relative?
-;; path-join
-;; path-canonicalize
+(claim path-base-name (-> string-t string-t))
+(claim path-directory-name (-> string-t string-t))
+(claim path-extension (-> string-t string-t))
+(claim path-absolute? (-> string-t bool-t))
+(claim path-relative? (-> string-t bool-t))
+(claim path-join (-> string-t string-t string-t))
+(claim path-normalize (-> string-t string-t))
 
 ;; fs
 
