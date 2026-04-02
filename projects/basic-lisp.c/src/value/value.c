@@ -56,7 +56,7 @@ value_print(printer_t *printer, value_t value) {
         }
     }
 
-    printf("#<unknown-value 0x%lx>", value);
+    printf("#(unknown-value 0x%lx)", value);
     return;
 }
 

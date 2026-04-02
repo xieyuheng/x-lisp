@@ -1,6 +1,3 @@
-[meta-lisp.js] use #() instead of #<>
-[basic-lisp.c] use #() instead of #<>
-
 # file
 
 `FileValue`

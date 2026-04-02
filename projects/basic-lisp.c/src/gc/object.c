@@ -15,6 +15,6 @@ object_print(printer_t *printer, object_t *self) {
         return;
     }
 
-    printf("#<%s 0x%p>", self->header.class->name, (void *) self);
+    printf("#(%s 0x%p)", self->header.class->name, (void *) self);
     return;
 }

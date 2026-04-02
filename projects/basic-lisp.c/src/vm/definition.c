@@ -86,7 +86,7 @@ definition_equal(definition_t *lhs, definition_t *rhs) {
 void
 definition_print(printer_t *printer, definition_t *self) {
     (void) printer;
-    printf("#<definition %s>", self->name);
+    printf("#(definition %s)", self->name);
 }
 
 bool
