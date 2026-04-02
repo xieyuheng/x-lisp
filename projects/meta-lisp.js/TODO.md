@@ -1,6 +1,7 @@
+builtin/index.meta -- use include-all
+
 # file
 
-[builtin] open-input-file & open-output-file
 [builtin] file-close
 [builtin] file-read
 [builtin] file-write & file-writeln
