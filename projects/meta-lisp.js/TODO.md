@@ -1,7 +1,5 @@
 # file
 
-inline hashHelpers.ts
-
 [builtin] file-read
 [builtin] file-write & file-writeln
 [builtin] file-print & file-println
