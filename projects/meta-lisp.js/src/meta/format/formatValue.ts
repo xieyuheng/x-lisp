@@ -140,8 +140,6 @@ export function formatValue(value: Value, options: Options = {}): string {
       return `(lambda (${value.parameters.join(" ")}) ${formatBody(value.body)})`
     }
 
-
-
     case "CurryValue": {
       const target = formatValue(value.target, options)
       const args = formatValues(value.args, options)

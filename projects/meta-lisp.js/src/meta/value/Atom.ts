@@ -1,3 +1,6 @@
+import { formatValue } from "../format/index.ts"
+import type { Value } from "./Value.ts"
+
 export type AtomValue =
   | BoolValue
   | VoidValue
@@ -6,6 +9,16 @@ export type AtomValue =
   | StringValue
   | IntValue
   | FloatValue
+
+export function isAtomValue(value: any): value is AtomValue {
+  return (
+    value.kind === "KeywordValue" ||
+    value.kind === "SymbolValue" ||
+    value.kind === "StringValue" ||
+    value.kind === "IntValue" ||
+    value.kind === "FloatValue"
+  )
+}
 
 export type BoolValue = {
   kind: "BoolValue"
@@ -43,6 +56,15 @@ export function SymbolValue(content: string): SymbolValue {
   }
 }
 
+export function isSymbolValue(value: Value): value is SymbolValue {
+  return value.kind === "SymbolValue"
+}
+
+export function asSymbolValue(value: Value): SymbolValue {
+  if (isSymbolValue(value)) return value
+  throw new Error(`[asSymbolValue] fail on: ${formatValue(value)}`)
+}
+
 export type StringValue = {
   kind: "StringValue"
   content: string
@@ -53,6 +75,15 @@ export function StringValue(content: string): StringValue {
     kind: "StringValue",
     content,
   }
+}
+
+export function isStringValue(value: Value): value is StringValue {
+  return value.kind === "StringValue"
+}
+
+export function asStringValue(value: Value): StringValue {
+  if (isStringValue(value)) return value
+  throw new Error(`[asStringValue] fail on: ${formatValue(value)}`)
 }
 
 export type KeywordValue = {
@@ -67,6 +98,15 @@ export function KeywordValue(content: string): KeywordValue {
   }
 }
 
+export function isKeywordValue(value: Value): value is KeywordValue {
+  return value.kind === "KeywordValue"
+}
+
+export function asKeywordValue(value: Value): KeywordValue {
+  if (isKeywordValue(value)) return value
+  throw new Error(`[asKeywordValue] fail on: ${formatValue(value)}`)
+}
+
 export type IntValue = {
   kind: "IntValue"
   content: bigint
@@ -79,6 +119,15 @@ export function IntValue(content: bigint): IntValue {
   }
 }
 
+export function isIntValue(value: Value): value is IntValue {
+  return value.kind === "IntValue"
+}
+
+export function asIntValue(value: Value): IntValue {
+  if (isIntValue(value)) return value
+  throw new Error(`[asIntValue] fail on: ${formatValue(value)}`)
+}
+
 export type FloatValue = {
   kind: "FloatValue"
   content: number
@@ -89,4 +138,13 @@ export function FloatValue(content: number): FloatValue {
     kind: "FloatValue",
     content,
   }
+}
+
+export function isFloatValue(value: Value): value is FloatValue {
+  return value.kind === "FloatValue"
+}
+
+export function asFloatValue(value: Value): FloatValue {
+  if (isFloatValue(value)) return value
+  throw new Error(`[asFloatValue] fail on: ${formatValue(value)}`)
 }

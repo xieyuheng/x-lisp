@@ -1,12 +1,12 @@
-import type { Definition } from "../definition/index.ts"
 import { type File } from "@xieyuheng/helpers.js/file"
+import type { Definition } from "../definition/index.ts"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
+import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import { type AtomValue } from "./Atom.ts"
 import { type HashValue } from "./Hash.ts"
 import { type SetValue } from "./Set.ts"
-import { formatValue } from "../format/index.ts"
 
 export type Value =
   | AtomValue
@@ -116,5 +116,5 @@ export function isFileValue(value: Value): value is FileValue {
 
 export function asFileValue(value: Value): FileValue {
   if (isFileValue(value)) return value
-  throw new Error(`[asFloatValue] fail on: ${formatValue(value)}`)
+  throw new Error(`[asFileValue] fail on: ${formatValue(value)}`)
 }

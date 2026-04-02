@@ -1,4 +1,9 @@
-import { write, openInputFile, openOutputFile, fileClose } from "@xieyuheng/helpers.js/file"
+import {
+  fileClose,
+  openInputFile,
+  openOutputFile,
+  write,
+} from "@xieyuheng/helpers.js/file"
 import {
   definePrimitiveFunction,
   definePrimitiveVariable,
@@ -9,7 +14,15 @@ import * as M from "../index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function builtinFile(mod: Mod) {
-  provide(mod, ["file-t", "open-input-file", "open-output-file", "file-close", "print", "write", "newline"])
+  provide(mod, [
+    "file-t",
+    "open-input-file",
+    "open-output-file",
+    "file-close",
+    "print",
+    "write",
+    "newline",
+  ])
 
   definePrimitiveVariable(mod, "file-t", M.createAtomType("file"))
 
