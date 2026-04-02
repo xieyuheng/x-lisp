@@ -17,7 +17,7 @@ export function openOutputFile(path: string): File {
   fs.mkdirSync(Path.dirname(path), { recursive: true })
 
   return {
-    fd: fs.openSync(path, "w+"),
+    fd: fs.openSync(path, "w"),
     path,
   }
 }

@@ -246,8 +246,6 @@
 ;; fs-write
 ;; fs-directory-contents
 ;; fs-directory-contents-recursive
-;; fs-directory-entries -- with type info
-;; fs-directory-entries-recursive
 ;; fs-make-directory
 ;; fs-delete-file
 ;; fs-delete-directory
