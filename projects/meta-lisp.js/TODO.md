@@ -1,5 +1,3 @@
-test-suite -- path
-
 # about fs
 
 fs-exists?
