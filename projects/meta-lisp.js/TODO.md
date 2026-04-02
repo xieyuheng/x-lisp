@@ -15,6 +15,8 @@ fs-rename
 
 test-suite -- fs
 
+add more functions from: https://github.com/jprichardson/node-fs-extra
+
 # prelude
 
 be able to use prelude module
