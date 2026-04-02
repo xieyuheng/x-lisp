@@ -3,15 +3,6 @@ import { type HashEntry, type HashValue } from "./Hash.ts"
 import * as Values from "./index.ts"
 import { type Value } from "./index.ts"
 
-export function isHashValue(value: Value): value is HashValue {
-  return value.kind === "HashValue"
-}
-
-export function asHashValue(value: Value): HashValue {
-  if (isHashValue(value)) return value
-  throw new Error(`[asHashValue] fail on: ${formatValue(value)}`)
-}
-
 export function hashEntries(hash: HashValue): Array<HashEntry> {
   return Array.from(hash.entries.values())
 }

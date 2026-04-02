@@ -4,14 +4,14 @@ import {
   provide,
 } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
-import * as Values from "../value/index.ts"
+import * as M from "../index.ts"
 
 export function builtinVoid(mod: Mod) {
   provide(mod, ["void", "void?"])
 
-  definePrimitiveVariable(mod, "void", Values.VoidValue())
+  definePrimitiveVariable(mod, "void", M.VoidValue())
 
   definePrimitiveFunction(mod, "void?", 1, (value) => {
-    return Values.BoolValue(Values.isVoidValue(value))
+    return M.BoolValue(M.isVoidValue(value))
   })
 }

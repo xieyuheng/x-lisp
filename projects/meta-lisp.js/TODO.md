@@ -1,6 +1,7 @@
 # file
 
-inline helper functions to Value.ts
+inline setHelpers.ts
+inline hashHelpers.ts
 
 [builtin] file-read
 [builtin] file-write & file-writeln

@@ -32,6 +32,23 @@ export function BoolValue(content: boolean): BoolValue {
   }
 }
 
+export function isBoolValue(value: Value): value is BoolValue {
+  return value.kind === "BoolValue"
+}
+
+export function isTrueValue(value: Value): boolean {
+  return isBoolValue(value) && value.content === true
+}
+
+export function isFalseValue(value: Value): boolean {
+  return isBoolValue(value) && value.content === false
+}
+
+export function asBoolValue(value: Value): BoolValue {
+  if (isBoolValue(value)) return value
+  throw new Error(`[asBoolValue] fail on: ${formatValue(value)}`)
+}
+
 export type VoidValue = {
   kind: "VoidValue"
   content: undefined
@@ -42,6 +59,10 @@ export function VoidValue(): VoidValue {
     kind: "VoidValue",
     content: undefined,
   }
+}
+
+export function isVoidValue(value: Value): value is VoidValue {
+  return value.kind === "VoidValue"
 }
 
 export type SymbolValue = {

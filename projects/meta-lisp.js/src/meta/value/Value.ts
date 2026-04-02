@@ -31,6 +31,15 @@ export function ListValue(elements: Array<Value>): ListValue {
   }
 }
 
+export function isListValue(value: Value): value is ListValue {
+  return value.kind === "ListValue"
+}
+
+export function asListValue(value: Value): ListValue {
+  if (isListValue(value)) return value
+  throw new Error(`[asListValue] fail on: ${formatValue(value)}`)
+}
+
 export type RecordValue = {
   kind: "RecordValue"
   attributes: Record<string, Value>
@@ -41,6 +50,16 @@ export function RecordValue(attributes: Record<string, Value>): RecordValue {
     kind: "RecordValue",
     attributes,
   }
+}
+
+
+export function isRecordValue(value: Value): value is RecordValue {
+  return value.kind === "RecordValue"
+}
+
+export function asRecordValue(value: Value): RecordValue {
+  if (isRecordValue(value)) return value
+  throw new Error(`[asRecordValue] fail on: ${formatValue(value)}`)
 }
 
 export type ClosureValue = {
@@ -64,6 +83,15 @@ export function ClosureValue(
     parameters,
     body,
   }
+}
+
+export function isClosureValue(value: Value): value is ClosureValue {
+  return value.kind === "ClosureValue"
+}
+
+export function asClosureValue(value: Value): ClosureValue {
+  if (isClosureValue(value)) return value
+  throw new Error(`[asClosureValue] fail on: ${formatValue(value)}`)
 }
 
 export type CurryValue = {
@@ -96,6 +124,17 @@ export function DefinitionValue(definition: Definition): DefinitionValue {
     kind: "DefinitionValue",
     definition,
   }
+}
+
+export function isDefinitionValue(
+  value: Value,
+): value is DefinitionValue {
+  return value.kind === "DefinitionValue"
+}
+
+export function asDefinitionValue(value: Value): DefinitionValue {
+  if (isDefinitionValue(value)) return value
+  throw new Error(`[asDefinitionValue] fail on: ${formatValue(value)}`)
 }
 
 export type FileValue = {
