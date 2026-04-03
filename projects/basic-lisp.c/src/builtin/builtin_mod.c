@@ -227,11 +227,11 @@ make_builtin_mod(void) {
 
     // fs
 
-    // define_primitive_1(mod, "fs-exists?", x_fs_exists_p);
-    // define_primitive_1(mod, "fs-file?", x_fs_file_p);
-    // define_primitive_1(mod, "fs-directory?", x_fs_directory_p);
-    // define_primitive_1(mod, "fs-read", x_fs_read);
-    // define_primitive_1(mod, "fs-write", x_fs_write);
+    define_primitive_1(mod, "fs-exists?", x_fs_exists_p);
+    define_primitive_1(mod, "fs-file?", x_fs_file_p);
+    define_primitive_1(mod, "fs-directory?", x_fs_directory_p);
+    define_primitive_1(mod, "fs-read", x_fs_read);
+    define_primitive_2(mod, "fs-write", x_fs_write);
     // define_primitive_1(mod, "fs-list", x_fs_list);
     // define_primitive_1(mod, "fs-make-directory", x_fs_make_directory);
     // define_primitive_1(mod, "fs-delete-file", x_fs_delete_file);

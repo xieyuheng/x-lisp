@@ -1,10 +1,5 @@
-[basic-lisp.c] builtin about fs
+[basic-lisp.c] more builtin about fs
 
-fs-exists?
-fs-file?
-fs-directory?
-fs-read
-fs-write
 fs-list
 fs-make-directory
 fs-delete-file
