@@ -1,4 +1,3 @@
-[value] `make_xfile`
 [value] `xfile_free`
 
 [value] `open_input_xfile`

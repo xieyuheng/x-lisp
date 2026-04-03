@@ -5,6 +5,7 @@ extern const object_class_t xfile_class;
 struct xfile_t {
     struct object_header_t header;
     file_t *file;
+    bool open_p;
 };
 
 xfile_t *make_xfile(file_t *file);
