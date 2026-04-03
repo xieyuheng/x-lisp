@@ -1,18 +1,3 @@
-# about fs
-
-fs-exists?
-fs-file?
-fs-directory?
-fs-read
-fs-write
-fs-directory-contents
-fs-directory-contents-recursive
-fs-make-directory
-fs-delete-file
-fs-delete-directory
-fs-delete-recursive
-fs-rename
-
 test-suite -- fs
 
 add more functions from: https://github.com/jprichardson/node-fs-extra
