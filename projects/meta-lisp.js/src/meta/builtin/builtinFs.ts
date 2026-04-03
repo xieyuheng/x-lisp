@@ -37,7 +37,7 @@ export function builtinFs(mod: Mod) {
     )
   })
 
-  definePrimitiveFunction(mod, "fs-write", 1, (path, string) => {
+  definePrimitiveFunction(mod, "fs-write", 2, (path, string) => {
     fs.writeFileSync(
       M.asStringValue(path).content,
       M.asStringValue(string).content,
@@ -81,7 +81,7 @@ export function builtinFs(mod: Mod) {
     return M.VoidValue()
   })
 
-  definePrimitiveFunction(mod, "fs-rename", 1, (oldPath, newPath) => {
+  definePrimitiveFunction(mod, "fs-rename", 2, (oldPath, newPath) => {
     fs.renameSync(
       M.asStringValue(oldPath).content,
       M.asStringValue(newPath).content,
