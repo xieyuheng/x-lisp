@@ -84,6 +84,17 @@ make_builtin_mod(void) {
     define_primitive_1(mod, "print", x_print);
     define_primitive_1(mod, "println", x_println);
 
+    // path
+
+    // path-base-name
+    // path-directory-name
+    // path-extension
+    // path-stem
+    // path-absolute?
+    // path-relative?
+    // path-join
+    // path-normalize
+
     // system
 
     define_primitive_0(mod, "exit", x_exit);

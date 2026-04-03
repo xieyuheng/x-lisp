@@ -1,4 +1,6 @@
-# builtin about path
+[basic-lisp.c] test builtin about file
+
+[basic-lisp.c] builtin about path
 
 path-base-name
 path-directory-name
@@ -9,7 +11,9 @@ path-relative?
 path-join
 path-normalize
 
-# builtin about fs
+[basic-lisp.c] test builtin about path
+
+[basic-lisp.c] test builtin about fs
 
 fs-exists?
 fs-file?
@@ -24,13 +28,13 @@ fs-delete-directory
 fs-delete-recursive
 fs-rename
 
-# builtin about process and module
+[basic-lisp.c] builtin about process and module
 
 current-working-directory
 current-module-file
 current-module-directory
 
-# about source-location
+[basic-lisp.c] builtin about source-location
 
 [builtin] `error-with-source-location`
 [builtin] `assert-with-source-location`
