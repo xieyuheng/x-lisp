@@ -1,5 +1,3 @@
-[value] `open_input_xfile`
-[value] `open_output_xfile`
 [value] `xfile_close`
 
 [value] `xfile_read`

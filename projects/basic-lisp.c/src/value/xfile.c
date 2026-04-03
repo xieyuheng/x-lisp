@@ -25,5 +25,25 @@ xfile_free(xfile_t *self) {
         file_close(self->file);
     }
 
+    if (self->pathname) {
+        string_free(self->pathname);
+    }
+
     free(self);
+}
+
+xfile_t *
+open_input_xfile(char *pathname) {
+    file_t *file = open_file_or_fail(pathname, "r");
+    xfile_t *xfile = make_xfile(file);
+    xfile->pathname = pathname;
+    return xfile;
+}
+
+xfile_t *
+open_output_xfile(char *pathname) {
+    file_t *file = open_file_or_fail(pathname, "w");
+    xfile_t *xfile = make_xfile(file);
+    xfile->pathname = pathname;
+    return xfile;
 }
