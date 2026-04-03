@@ -1,5 +1,3 @@
-[value] `xfile_compare`
-
 [value] `xfile_read`
 [value] `xfile_write`
 

@@ -5,7 +5,7 @@ const object_class_t xfile_class = {
     .equal_fn = (object_equal_fn_t *) xfile_equal,
     .print_fn = (object_print_fn_t *) xfile_print,
     .hash_code_fn = (object_hash_code_fn_t *) xfile_hash_code,
-    // .compare_fn = (object_compare_fn_t *) xfile_compare,
+    .compare_fn = (object_compare_fn_t *) xfile_compare,
     .free_fn = (free_fn_t *) xfile_free,
 };
 
@@ -90,4 +90,9 @@ xfile_hash_code(const xfile_t *self) {
     } else {
         return file_raw_fd(self->file);
     }
+}
+
+ordering_t
+xfile_compare(const xfile_t *lhs, const xfile_t *rhs){
+    return file_raw_fd(lhs->file) - file_raw_fd(rhs->file);
 }
