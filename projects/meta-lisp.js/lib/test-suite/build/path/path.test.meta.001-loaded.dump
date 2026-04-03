@@ -1,19 +1,26 @@
 (define (main)
-  (assert-equal "a/b/c" (path-directory-name "a/b/c/file.test.txt"))
-  (assert-equal "file.test.txt" (path-base-name "a/b/c/file.test.txt"))
-  (assert-equal ".txt" (path-extension "a/b/c/file.test.txt"))
-  (assert-equal "file.test" (path-stem "a/b/c/file.test.txt"))
-
+  (assert-equal
+    "a/b/c"
+    (path-directory-name "a/b/c/file.test.txt"))
+  (assert-equal
+    "file.test.txt"
+    (path-base-name "a/b/c/file.test.txt"))
+  (assert-equal
+    ".txt"
+    (path-extension "a/b/c/file.test.txt"))
+  (assert-equal
+    "file.test"
+    (path-stem "a/b/c/file.test.txt"))
   (assert (path-absolute? "/a/b/c/file.test.txt"))
   (assert-not (path-relative? "/a/b/c/file.test.txt"))
   (assert (path-relative? "a/b/c/file.test.txt"))
   (assert (path-relative? "./a/b/c/file.test.txt"))
   (assert-not (path-absolute? "a/b/c/file.test.txt"))
   (assert-not (path-absolute? "./a/b/c/file.test.txt"))
-
   (assert-equal "a/b/c/d/e/f" (path-join "a/b/c" "d/e/f"))
   (assert-equal "a/b/c/d/e/f" (path-join "a/b/c/" "/d/e/f"))
-  (assert-equal "/a/b/c/d/e/f" (path-join "/a/b/c/" "/d/e/f"))
-
+  (assert-equal
+    "/a/b/c/d/e/f"
+    (path-join "/a/b/c/" "/d/e/f"))
   (assert-equal "a/b/d" (path-normalize "a/b/c/../d"))
   (assert-equal "/a/b/c" (path-normalize "///a/b/c/")))
