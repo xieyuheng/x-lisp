@@ -1,3 +1,10 @@
+[value] `to_xfile`
+
+[value] `xfile_equal`
+[value] `xfile_print`
+[value] `xfile_hash_code`
+[value] `xfile_compare`
+
 [value] `xfile_read`
 [value] `xfile_write`
 

@@ -52,3 +52,9 @@ xfile_close(xfile_t *self) {
         self->open_p = false;
     }
 }
+
+bool
+xfile_p(value_t value) {
+    return object_p(value) &&
+        to_object(value)->header.class == &xfile_class;
+}
