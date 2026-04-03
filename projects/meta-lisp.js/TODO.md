@@ -1,5 +1,3 @@
-interpreter should only implement the core builtin -- without IO and sexp parser
-
 # prelude
 
 be able to use prelude module

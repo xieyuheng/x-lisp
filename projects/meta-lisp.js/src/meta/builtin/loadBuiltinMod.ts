@@ -11,12 +11,10 @@ import { builtinBool } from "./builtinBool.ts"
 import { builtinError } from "./builtinError.ts"
 import { builtinFile } from "./builtinFile.ts"
 import { builtinFloat } from "./builtinFloat.ts"
-import { builtinFs } from "./builtinFs.ts"
 import { builtinHash } from "./builtinHash.ts"
 import { builtinInt } from "./builtinInt.ts"
 import { builtinKeyword } from "./builtinKeyword.ts"
 import { builtinList } from "./builtinList.ts"
-import { builtinPath } from "./builtinPath.ts"
 import { builtinRandom } from "./builtinRandom.ts"
 import { builtinSet } from "./builtinSet.ts"
 import { builtinString } from "./builtinString.ts"
@@ -48,8 +46,6 @@ export function loadBuiltinMod(dependencyGraph: M.DependencyGraph): M.Mod {
   builtinValue(mod)
   builtinList(mod)
   builtinFile(mod)
-  builtinPath(mod)
-  builtinFs(mod)
   builtinVoid(mod)
   builtinRandom(mod)
   builtinSet(mod)

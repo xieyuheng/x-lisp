@@ -2,6 +2,10 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as M from "../index.ts"
 
 function modLookupType(mod: M.Mod, name: string): M.Value | undefined {
+  const builtinMod = M.loadBuiltinMod(mod.dependencyGraph)
+  const builtinClaimedType = M.modLookupClaimedType(builtinMod, name)
+  if (builtinClaimedType) return builtinClaimedType
+
   const definition = M.modLookupDefinition(mod, name)
   if (definition === undefined) return undefined
 
