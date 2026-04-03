@@ -58,3 +58,9 @@ xfile_p(value_t value) {
     return object_p(value) &&
         to_object(value)->header.class == &xfile_class;
 }
+
+xfile_t *
+to_xfile(value_t value) {
+    assert(xfile_p(value));
+    return (xfile_t *) to_object(value);
+}
