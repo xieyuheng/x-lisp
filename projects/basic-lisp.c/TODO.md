@@ -1,4 +1,3 @@
-[value] `xfile_read`
 [value] `xfile_write`
 
 # builtin about file

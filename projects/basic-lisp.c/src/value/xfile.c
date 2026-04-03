@@ -96,3 +96,8 @@ ordering_t
 xfile_compare(const xfile_t *lhs, const xfile_t *rhs){
     return file_raw_fd(lhs->file) - file_raw_fd(rhs->file);
 }
+
+char *
+file_read(xfile_t *self) {
+    return file_read_string(self->file);
+}
