@@ -21,10 +21,7 @@ make_xfile(file_t *file) {
 
 void
 xfile_free(xfile_t *self) {
-    if (self->open_p) {
-        file_close(self->file);
-    }
-
+    xfile_close(self);
     if (self->pathname) {
         string_free(self->pathname);
     }
@@ -46,4 +43,12 @@ open_output_xfile(char *pathname) {
     xfile_t *xfile = make_xfile(file);
     xfile->pathname = pathname;
     return xfile;
+}
+
+void
+xfile_close(xfile_t *self) {
+    if (self->open_p) {
+        file_close(self->file);
+        self->open_p = false;
+    }
 }

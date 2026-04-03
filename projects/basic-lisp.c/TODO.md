@@ -1,5 +1,3 @@
-[value] `xfile_close`
-
 [value] `xfile_read`
 [value] `xfile_write`
 
