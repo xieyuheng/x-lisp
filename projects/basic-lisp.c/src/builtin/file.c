@@ -39,19 +39,6 @@ x_file_writeln(value_t file, value_t string) {
     return x_void;
 }
 
-// value_t
-// x_file_print(value_t file, value_t value) {
-//     xfile_write(to_xfile(file), x_format(value));
-//     return x_void;
-// }
-
-// value_t
-// x_file_println(value_t file, value_t value) {
-//     xfile_write(to_xfile(file), x_format(value));
-//     xfile_write(to_xfile(file), "\n");
-//     return x_void;
-// }
-
 value_t
 x_newline(void) {
     newline();

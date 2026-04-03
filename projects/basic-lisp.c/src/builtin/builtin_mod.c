@@ -70,14 +70,13 @@ make_builtin_mod(void) {
     define_primitive_2(mod, "total-compare", x_total_compare);
 
     // file
+
     define_primitive_1(mod, "open-input-file", x_open_input_file);
     define_primitive_1(mod, "open-output-file", x_open_output_file);
     define_primitive_1(mod, "file-close", x_file_close);
     define_primitive_1(mod, "file-read", x_file_read);
     define_primitive_2(mod, "file-write", x_file_write);
     define_primitive_2(mod, "file-writeln", x_file_writeln);
-    // define_primitive_2(mod, "file-print", x_file_print);
-    // define_primitive_2(mod, "file-println", x_file_println);
     define_primitive_0(mod, "newline", x_newline);
     define_primitive_1(mod, "write", x_write);
     define_primitive_1(mod, "writeln", x_writeln);

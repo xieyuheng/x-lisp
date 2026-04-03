@@ -214,14 +214,10 @@
 (claim file-read (-> file-t string-t))
 (claim file-write (-> file-t string-t void-t))
 (claim file-writeln (-> file-t string-t void-t))
-(claim file-print (polymorphic (A) (-> file-t A void-t)))
-(claim file-println (polymorphic (A) (-> file-t A void-t)))
 (claim print (polymorphic (A) (-> A void-t)))
 (claim println (polymorphic (A) (-> A void-t)))
 (claim write (-> string-t void-t))
 (claim newline (-> void-t))
-;; call-with-input-file
-;; call-with-output-file
 
 ;; path
 
