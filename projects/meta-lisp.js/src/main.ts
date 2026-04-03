@@ -14,7 +14,6 @@ import {
   projectDump,
   projectFromSourcePaths,
   projectTest,
-  projectTestByInterpreter,
 } from "./project/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
@@ -31,7 +30,6 @@ router.defineRoutes([
   "project:dump --config",
   "project:build --config",
   "project:test --config",
-  "project:test-by-interpreter --config",
   "project:clean --config",
 ])
 
@@ -97,12 +95,6 @@ router.defineHandlers({
     const dependencyGraph = M.createDependencyGraph()
     const project = loadProject(options["--config"])
     projectTest(project, dependencyGraph)
-  },
-
-  "project:test-by-interpreter": ({ options }) => {
-    const dependencyGraph = M.createDependencyGraph()
-    const project = loadProject(options["--config"])
-    projectTestByInterpreter(project, dependencyGraph)
   },
 
   "project:clean": ({ options }) => {

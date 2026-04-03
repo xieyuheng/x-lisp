@@ -10,4 +10,4 @@ export * from "./projectDump.ts"
 export * from "./projectFromSourcePaths.ts"
 export * from "./projectHelpers.ts"
 export * from "./projectTest.ts"
-export * from "./projectTestByInterpreter.ts"
+

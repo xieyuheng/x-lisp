@@ -1,4 +1,3 @@
-separate interpreter test
 interpreter should only implement the core builtin -- without IO and sexp parser
 
 # prelude
