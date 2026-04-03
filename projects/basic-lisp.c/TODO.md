@@ -1,4 +1,3 @@
-[value] `xfile_hash_code`
 [value] `xfile_compare`
 
 [value] `xfile_read`
