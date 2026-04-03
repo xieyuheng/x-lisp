@@ -2,7 +2,7 @@
 
 const object_class_t xfile_class = {
     .name = "file",
-    // .equal_fn = (object_equal_fn_t *) xfile_equal,
+    .equal_fn = (object_equal_fn_t *) xfile_equal,
     // .print_fn = (object_print_fn_t *) xfile_print,
     // .hash_code_fn = (object_hash_code_fn_t *) xfile_hash_code,
     // .compare_fn = (object_compare_fn_t *) xfile_compare,
@@ -63,4 +63,9 @@ xfile_t *
 to_xfile(value_t value) {
     assert(xfile_p(value));
     return (xfile_t *) to_object(value);
+}
+
+bool
+xfile_equal(const xfile_t *lhs, const xfile_t *rhs) {
+    return lhs->file == rhs->file;
 }
