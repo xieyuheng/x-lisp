@@ -121,12 +121,17 @@ main(void) {
 
     assert(string_equal(string_slice("01234", 2, 4), "23"));
 
-    assert(string_find_index("01234", '0') == 0);
-    assert(string_find_index("01234", '1') == 1);
-    assert(string_find_index("01234", '2') == 2);
-    assert(string_find_index("01234", '5') == -1);
-    assert(string_find_index("", '5') == -1);
-    assert(string_find_index("", '\0') == 0);
+    assert(string_find_char_index("01234", '0') == 0);
+    assert(string_find_char_index("01234", '1') == 1);
+    assert(string_find_char_index("01234", '2') == 2);
+    assert(string_find_char_index("01234", '5') == -1);
+    assert(string_find_char_index("", '5') == -1);
+    assert(string_find_char_index("", '\0') == 0);
+
+    assert(string_find_last_char_index("012340123401234", '0') == 10);
+    assert(string_find_last_char_index("012340123401234", '1') == 11);
+    assert(string_find_last_char_index("012340123401234", '2') == 12);
+    assert(string_find_last_char_index("012340123401234", '5') == -1);
 
     assert(string_count_char("0aaa0", 'b') == 0);
     assert(string_count_char("0aaa0", 'a') == 3);

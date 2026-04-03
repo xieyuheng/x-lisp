@@ -61,7 +61,7 @@ next_segment(const char *string) {
     if (string_is_empty(string))
         return NULL;
 
-    int index = string_find_index(string, '/');
+    int index = string_find_char_index(string, '/');
     if (index == -1) {
         entry_t *entry = new(entry_t);
         entry->string = string + string_length(string);

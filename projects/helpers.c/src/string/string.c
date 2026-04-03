@@ -162,10 +162,22 @@ string_slice(const char *self, size_t start, size_t end) {
 }
 
 int
-string_find_index(const char *self, char ch) {
+string_find_char_index(const char *self, char ch) {
     char *p = strchr(self, ch);
     if (!p) return -1;
     else return (int)(p - self);
+}
+
+int
+string_find_last_char_index(const char *self, char ch) {
+    for (size_t i = 0; i < string_length(self); i++) {
+        size_t last_index = string_length(self) - 1 - i;
+        if (self[last_index] == ch) {
+            return last_index;
+        }
+    }
+
+    return -1;
 }
 
 size_t

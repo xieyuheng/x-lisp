@@ -1,19 +1,7 @@
+[basic-lisp.c] test builtin about path
 [basic-lisp.c] test builtin about file
 
-[basic-lisp.c] builtin about path
-
-path-base-name
-path-directory-name
-path-extension
-path-stem
-path-absolute?
-path-relative?
-path-join
-path-normalize
-
-[basic-lisp.c] test builtin about path
-
-[basic-lisp.c] test builtin about fs
+[basic-lisp.c] builtin about fs
 
 fs-exists?
 fs-file?
@@ -27,6 +15,8 @@ fs-delete-file
 fs-delete-directory
 fs-delete-recursive
 fs-rename
+
+[basic-lisp.c] test builtin about fs
 
 [basic-lisp.c] builtin about process and module
 
