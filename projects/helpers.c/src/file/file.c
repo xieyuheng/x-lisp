@@ -43,6 +43,11 @@ file_close(file_t *file) {
     assert(fclose(file) == 0);
 }
 
+int
+file_raw_fd(file_t *file) {
+    return fileno(file);
+}
+
 off_t
 file_size(file_t *file) {
     struct stat st;

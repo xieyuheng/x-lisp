@@ -3,7 +3,7 @@
 const object_class_t xfile_class = {
     .name = "file",
     .equal_fn = (object_equal_fn_t *) xfile_equal,
-    // .print_fn = (object_print_fn_t *) xfile_print,
+    .print_fn = (object_print_fn_t *) xfile_print,
     // .hash_code_fn = (object_hash_code_fn_t *) xfile_hash_code,
     // .compare_fn = (object_compare_fn_t *) xfile_compare,
     .free_fn = (free_fn_t *) xfile_free,
@@ -68,4 +68,17 @@ to_xfile(value_t value) {
 bool
 xfile_equal(const xfile_t *lhs, const xfile_t *rhs) {
     return lhs->file == rhs->file;
+}
+
+void
+xfile_print(printer_t *printer, const xfile_t *self) {
+    (void) printer;
+    string_print("#(file ");
+    int_print(file_raw_fd(self->file));
+    if (self->pathname) {
+        string_print(" ");
+        string_print(self->pathname);
+    }
+
+    string_print(")");
 }
