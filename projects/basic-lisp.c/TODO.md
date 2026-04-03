@@ -1,11 +1,18 @@
-[value] `xfile_t` wrap `file_t`
+[value] `make_xfile`
+[value] `xfile_free`
+
+[value] `open_input_xfile`
+[value] `open_output_xfile`
+[value] `xfile_close`
+
+[value] `xfile_read`
+[value] `xfile_write`
 
 # builtin about file
 
 open-input-file
 open-output-file
 file-close
-file-size
 file-read
 file-write & file-writeln
 file-print & file-println

@@ -31,3 +31,4 @@ typedef struct xhash_t xhash_t;
 typedef struct xhash_child_iter_t xhash_child_iter_t;
 typedef struct xset_t xset_t;
 typedef struct xset_child_iter_t xset_child_iter_t;
+typedef struct xfile_t xfile_t;
