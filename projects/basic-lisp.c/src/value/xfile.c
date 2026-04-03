@@ -101,3 +101,8 @@ char *
 file_read(xfile_t *self) {
     return file_read_string(self->file);
 }
+
+void
+file_write(xfile_t *self, char *string) {
+    file_write_bytes(self->file, (uint8_t *) string, string_length(string));
+}

@@ -1,5 +1,3 @@
-[value] `xfile_write`
-
 # builtin about file
 
 open-input-file
