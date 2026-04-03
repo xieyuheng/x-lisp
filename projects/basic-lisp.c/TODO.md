@@ -1,6 +1,3 @@
-[basic-lisp.c] test builtin about path
-[basic-lisp.c] test builtin about file
-
 [basic-lisp.c] builtin about fs
 
 fs-exists?
@@ -8,15 +5,12 @@ fs-file?
 fs-directory?
 fs-read
 fs-write
-fs-list-directory
-fs-list-directory-recursive
+fs-list
 fs-make-directory
 fs-delete-file
 fs-delete-directory
 fs-delete-recursive
 fs-rename
-
-[basic-lisp.c] test builtin about fs
 
 [basic-lisp.c] builtin about process and module
 

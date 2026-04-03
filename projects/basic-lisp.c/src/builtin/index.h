@@ -17,4 +17,5 @@
 #include "assert.h"
 #include "error.h"
 #include "sexp.h"
+#include "fs.h"
 #include "builtin_mod.h"
