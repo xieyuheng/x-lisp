@@ -6,64 +6,64 @@ main(void) {
 
     {
         path_t *path = make_path("abc");
-        assert(string_equal(path_to_string(path), "abc"));
+        assert(string_equal(path_raw_string(path), "abc"));
         path_free(path);
     }
 
     {
         path_t *path = make_path("");
-        assert(string_equal(path_to_string(path), ""));
+        assert(string_equal(path_raw_string(path), ""));
         path_free(path);
     }
 
     {
         path_t *path = make_path("a/b/c");
-        assert(string_equal(path_to_string(path), "a/b/c"));
+        assert(string_equal(path_raw_string(path), "a/b/c"));
         path_free(path);
     }
 
     {
         path_t *path = make_path("aa/bb/cc");
-        assert(string_equal(path_to_string(path), "aa/bb/cc"));
+        assert(string_equal(path_raw_string(path), "aa/bb/cc"));
         path_free(path);
     }
 
     {
         path_t *path = make_path("/aa/bb/cc");
         assert(path_is_absolute(path));
-        assert(string_equal(path_to_string(path), "/aa/bb/cc"));
+        assert(string_equal(path_raw_string(path), "/aa/bb/cc"));
         path_free(path);
     }
 
     {
         path_t *path = make_path("a/b/c");
-        assert(string_equal(path_to_string(path), "a/b/c"));
+        assert(string_equal(path_raw_string(path), "a/b/c"));
         path_join_mut(path, "d/e/f");
-        assert(string_equal(path_to_string(path), "a/b/c/d/e/f"));
+        assert(string_equal(path_raw_string(path), "a/b/c/d/e/f"));
         path_free(path);
     }
 
     {
         path_t *path = make_path("a/b/c");
-        assert(string_equal(path_to_string(path), "a/b/c"));
+        assert(string_equal(path_raw_string(path), "a/b/c"));
         path_join_mut(path, "/d/e/f");
-        assert(string_equal(path_to_string(path), "a/b/c/d/e/f"));
+        assert(string_equal(path_raw_string(path), "a/b/c/d/e/f"));
         path_free(path);
     }
 
     {
         path_t *path = make_path("/a/b/c");
-        assert(string_equal(path_to_string(path), "/a/b/c"));
+        assert(string_equal(path_raw_string(path), "/a/b/c"));
         path_join_mut(path, "/d/e/f");
-        assert(string_equal(path_to_string(path), "/a/b/c/d/e/f"));
+        assert(string_equal(path_raw_string(path), "/a/b/c/d/e/f"));
         path_free(path);
     }
 
     {
         path_t *path = make_path("/a/b/c");
-        assert(string_equal(path_to_string(path), "/a/b/c"));
+        assert(string_equal(path_raw_string(path), "/a/b/c"));
         path_join_mut(path, "../../d/e/f");
-        assert(string_equal(path_to_string(path), "/a/d/e/f"));
+        assert(string_equal(path_raw_string(path), "/a/d/e/f"));
         path_free(path);
     }
 

@@ -86,14 +86,14 @@ make_builtin_mod(void) {
 
     // path
 
-    // path-base-name
-    // path-directory-name
-    // path-extension
-    // path-stem
-    // path-absolute?
-    // path-relative?
-    // path-join
-    // path-normalize
+    define_primitive_1(mod, "path-base-name", x_path_base_name);
+    // define_primitive_1(mod, "path-directory-name", x_path_directory_name);
+    // define_primitive_1(mod, "path-extension", x_path_extension);
+    // define_primitive_1(mod, "path-stem", x_path_stem);
+    // define_primitive_1(mod, "path-absolute?", x_path_absolute_p);
+    // define_primitive_1(mod, "path-relative?", x_path_relative_p);
+    // define_primitive_2(mod, "path-join", x_path_join);
+    // define_primitive_1(mod, "path-normalize", x_path_normalize);
 
     // system
 

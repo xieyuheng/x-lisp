@@ -6,7 +6,7 @@ import_by(mod_t *mod, const char *string) {
     path_join_mut(path, "..");
     path_join_mut(path, string);
 
-    if (pathname_is_directory(path_to_string(path))) {
+    if (pathname_is_directory(path_raw_string(path))) {
         path_join_mut(path, "index.basic");
     }
 
