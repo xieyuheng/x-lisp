@@ -1,54 +1,42 @@
-`xfile_t` wrap `file_t`
+[value] `xfile_t` wrap `file_t`
 
-# about file
+# builtin about file
 
-[builtin] open-input-file & open-output-file
-[builtin] file-close
-[builtin] file-size
-[builtin] file-read
-[builtin] file-write & file-writeln
-[builtin] file-print & file-println
+open-input-file
+open-output-file
+file-close
+file-size
+file-read
+file-write & file-writeln
+file-print & file-println
 
-# about path
+# builtin about path
 
 path-base-name
 path-directory-name
-
-path-extension -- with dot
+path-extension
 path-stem
-path-full-extension
-path-stem-full
-
 path-absolute?
 path-relative?
-
 path-join
-path-canonicalize
+path-normalize
 
-# about fs
+# builtin about fs
 
 fs-exists?
 fs-file?
 fs-directory?
-
 fs-read
 fs-write
-
-fs-directory-contents
-fs-directory-contents-recursive
-
-fs-directory-entries -- with type info
-fs-directory-entries-recursive
-
+fs-list-directory
+fs-list-directory-recursive
 fs-make-directory
-
 fs-delete-file
 fs-delete-directory
 fs-delete-recursive
-
 fs-rename
 
-# about process and module
+# builtin about process and module
 
 current-working-directory
 current-module-file

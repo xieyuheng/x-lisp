@@ -10,8 +10,8 @@ export function builtinFs(mod: Mod) {
     "fs-directory?",
     "fs-read",
     "fs-write",
-    "fs-directory-contents",
-    "fs-directory-contents-recursive",
+    "fs-list-directory",
+    "fs-list-directory-recursive",
     "fs-make-directory",
     "fs-delete-file",
     "fs-delete-directory",
@@ -45,7 +45,7 @@ export function builtinFs(mod: Mod) {
     return M.VoidValue()
   })
 
-  definePrimitiveFunction(mod, "fs-directory-contents", 1, (path) => {
+  definePrimitiveFunction(mod, "fs-list-directory", 1, (path) => {
     return M.ListValue(
       fs
         .readdirSync(M.asStringValue(path).content, {
@@ -55,7 +55,7 @@ export function builtinFs(mod: Mod) {
     )
   })
 
-  definePrimitiveFunction(mod, "fs-directory-contents-recursive", 1, (path) => {
+  definePrimitiveFunction(mod, "fs-list-directory-recursive", 1, (path) => {
     return M.ListValue(
       fs
         .readdirSync(M.asStringValue(path).content, {
