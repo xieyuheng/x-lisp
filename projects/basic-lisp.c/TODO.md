@@ -1,12 +1,3 @@
-# builtin about file
-
-open-input-file
-open-output-file
-file-close
-file-read
-file-write & file-writeln
-file-print & file-println
-
 # builtin about path
 
 path-base-name

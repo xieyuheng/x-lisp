@@ -24,5 +24,5 @@ void xfile_print(printer_t *printer, const xfile_t *self);
 hash_code_t xfile_hash_code(const xfile_t *self);
 ordering_t xfile_compare(const xfile_t *lhs, const xfile_t *rhs);
 
-char *file_read(xfile_t *self);
-void file_write(xfile_t *self, char *string);
+char *xfile_read(xfile_t *self);
+void xfile_write(xfile_t *self, const char *string);

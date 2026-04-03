@@ -98,11 +98,11 @@ xfile_compare(const xfile_t *lhs, const xfile_t *rhs){
 }
 
 char *
-file_read(xfile_t *self) {
+xfile_read(xfile_t *self) {
     return file_read_string(self->file);
 }
 
 void
-file_write(xfile_t *self, char *string) {
+xfile_write(xfile_t *self, const char *string) {
     file_write_bytes(self->file, (uint8_t *) string, string_length(string));
 }
