@@ -1,0 +1,6 @@
+(import-all "../exp")
+
+(define (main)
+  (= path "src/meta/parse/meta.txt")
+  (= text (fs-read path))
+  (println (parse-located-sexps path text)))
