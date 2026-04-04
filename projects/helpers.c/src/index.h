@@ -13,6 +13,7 @@
 #include "blob/index.h"
 #include "file/index.h"
 #include "path/index.h"
+#include "fs/index.h"
 #include "array/index.h"
 #include "stack/index.h"
 #include "int/index.h"

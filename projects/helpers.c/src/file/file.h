@@ -1,9 +1,5 @@
 #pragma once
 
-bool pathname_exists(const char *pathname);
-bool pathname_is_file(const char *pathname);
-bool pathname_is_directory(const char *pathname);
-
 file_t *open_file_or_fail(const char *pathname, const char *mode);
 void file_close(file_t *file);
 int file_raw_fd(file_t *file);

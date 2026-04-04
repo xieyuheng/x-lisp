@@ -3,19 +3,19 @@
 value_t
 x_fs_exists_p(value_t path) {
     const char *pathname = to_xstring(path)->string;
-    return x_bool(pathname_exists(pathname));
+    return x_bool(fs_exists(pathname));
 }
 
 value_t
 x_fs_file_p(value_t path) {
     const char *pathname = to_xstring(path)->string;
-    return x_bool(pathname_is_file(pathname));
+    return x_bool(fs_is_file(pathname));
 }
 
 value_t
 x_fs_directory_p(value_t path) {
     const char *pathname = to_xstring(path)->string;
-    return x_bool(pathname_is_directory(pathname));
+    return x_bool(fs_is_directory(pathname));
 }
 
 value_t
@@ -46,7 +46,8 @@ x_fs_write(value_t path, value_t string) {
 
 // value_t
 // x_fs_ensure_directory(value_t path) {
-
+//     fs_ensure_directory(to_xstring(path)->string);
+//     return x_void;
 // }
 
 // value_t
