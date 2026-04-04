@@ -90,13 +90,17 @@ fs_ensure_file(const char *pathname) {
 
 void
 fs_delete_file(const char *pathname) {
-    assert(fs_is_file(pathname));
-    // TODO
+    if (fs_exists(pathname)) {
+        assert(fs_is_file(pathname));
+        // TODO
+    }
 }
 
 void
 fs_delete_directory(const char *pathname) {
-    assert(fs_is_directory(pathname));
-    int ok = rmdir(pathname);
-    assert(ok == 0);
+    if (fs_exists(pathname)) {
+        assert(fs_is_directory(pathname));
+        int ok = rmdir(pathname);
+        assert(ok == 0);
+    }
 }
