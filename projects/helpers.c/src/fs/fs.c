@@ -24,3 +24,40 @@ fs_is_directory(const char *pathname) {
 
     return S_ISDIR(st.st_mode);
 }
+
+static void
+fs_make_directory(const char *pathname) {
+    if (fs_exists(pathname)) {
+        assert(fs_is_directory(pathname));
+        return;
+    } else {
+        int ok = mkdir(pathname, 0777);
+        assert(ok == 0);
+        return;
+    }
+}
+
+static void
+fs_ensure_directory_recur(path_t *path) {
+    if (path_segment_length(path) == 0) {
+        return;
+    }
+
+    if (path_segment_length(path) == 1) {
+        fs_make_directory(path_raw_string(path));
+        return;
+    }
+
+    char *segment = path_pop_segment(path);
+    fs_ensure_directory_recur(path);
+    path_push_segment(path, segment);
+    fs_make_directory(path_raw_string(path));
+    return;
+}
+
+void
+fs_ensure_directory(const char *pathname) {
+    path_t *path = make_path(pathname);
+    fs_ensure_directory_recur(path);
+    path_free(path);
+}
