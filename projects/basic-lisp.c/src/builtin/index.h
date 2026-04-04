@@ -18,4 +18,5 @@
 #include "error.h"
 #include "sexp.h"
 #include "fs.h"
+#include "process.h"
 #include "builtin_mod.h"

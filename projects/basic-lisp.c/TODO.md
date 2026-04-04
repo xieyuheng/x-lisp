@@ -2,14 +2,14 @@
 
 fs-list
 fs-make-directory
+fs-ensure-directory
 fs-delete-file
 fs-delete-directory
 fs-delete-recursive
 fs-rename
 
-[basic-lisp.c] builtin about process and module
+[basic-lisp.c] builtin about module
 
-current-working-directory
 current-module-file
 current-module-directory
 

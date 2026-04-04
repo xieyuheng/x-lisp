@@ -243,3 +243,7 @@
 (claim fs-delete-directory (-> string-t void-t))
 (claim fs-delete-recursive (-> string-t void-t))
 (claim fs-rename (-> string-t string-t void-t))
+
+;; process
+
+(claim current-directory (-> string-t))

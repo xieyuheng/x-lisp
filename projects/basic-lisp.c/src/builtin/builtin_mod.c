@@ -239,6 +239,10 @@ make_builtin_mod(void) {
     // define_primitive_1(mod, "fs-delete-recursive", x_fs_delete_recursive);
     // define_primitive_2(mod, "fs-rename", x_fs_rename);
 
+    // process
+
+    define_primitive_0(mod, "current-directory?", x_current_directory);
+
     return mod;
 }
 
