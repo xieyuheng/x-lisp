@@ -9,3 +9,7 @@ void fs_write(const char *pathname, const char *string);
 
 void fs_ensure_directory(const char *pathname);
 void fs_ensure_file(const char *pathname);
+
+void fs_delete_file(const char *pathname);
+void fs_delete_directory(const char *pathname);
+void fs_delete_recursive(const char *pathname);
