@@ -1,11 +1,14 @@
 [basic-lisp.c] more builtin about fs
 
 fs-list
-fs-make-directory
+
+fs-ensure-file
 fs-ensure-directory
+
 fs-delete-file
 fs-delete-directory
 fs-delete-recursive
+
 fs-rename
 
 [basic-lisp.c] builtin about module

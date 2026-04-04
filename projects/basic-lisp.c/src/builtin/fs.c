@@ -40,7 +40,12 @@ x_fs_write(value_t path, value_t string) {
 // }
 
 // value_t
-// x_fs_make_directory(value_t path) {
+// x_fs_ensure_file(value_t path) {
+
+// }
+
+// value_t
+// x_fs_ensure_directory(value_t path) {
 
 // }
 
