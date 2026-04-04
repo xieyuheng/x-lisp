@@ -25,6 +25,13 @@ fs_is_directory(const char *pathname) {
     return S_ISDIR(st.st_mode);
 }
 
+void
+fs_write(const char *pathname, const char *string) {
+    file_t *file = open_file_or_fail(pathname, "w");
+    file_write_string(file, string);
+    file_close(file);
+}
+
 static void
 fs_make_directory(const char *pathname) {
     if (fs_exists(pathname)) {
@@ -59,5 +66,16 @@ void
 fs_ensure_directory(const char *pathname) {
     path_t *path = make_path(pathname);
     fs_ensure_directory_recur(path);
+    path_free(path);
+}
+
+void
+fs_ensure_file(const char *pathname) {
+    path_t *path = make_path(pathname);
+    assert(path_segment_length(path) > 0);
+    char *segment = path_pop_segment(path);
+    fs_ensure_directory_recur(path);
+    path_push_segment(path, segment);
+    fs_write(path_raw_string(path), "");
     path_free(path);
 }

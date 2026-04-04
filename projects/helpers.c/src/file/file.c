@@ -53,6 +53,11 @@ file_write_bytes(file_t *file, uint8_t *bytes, size_t size) {
     fwrite(bytes, 1, size, file);
 }
 
+void
+file_write_string(file_t *file, const char *string) {
+    file_write_bytes(file, (uint8_t *) string, string_length(string));
+}
+
 blob_t *
 file_read_blob(file_t *file) {
     off_t size = file_size(file);
