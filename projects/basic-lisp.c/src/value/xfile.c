@@ -104,5 +104,5 @@ xfile_read(xfile_t *self) {
 
 void
 xfile_write(xfile_t *self, const char *string) {
-    file_write_bytes(self->file, (uint8_t *) string, string_length(string));
+    file_write_string(self->file, string);
 }

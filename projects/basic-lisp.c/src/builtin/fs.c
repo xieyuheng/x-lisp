@@ -39,16 +39,17 @@ x_fs_write(value_t path, value_t string) {
 
 // }
 
-// value_t
-// x_fs_ensure_file(value_t path) {
+value_t
+x_fs_ensure_file(value_t path) {
+    fs_ensure_file(to_xstring(path)->string);
+    return x_void;
+}
 
-// }
-
-// value_t
-// x_fs_ensure_directory(value_t path) {
-//     fs_ensure_directory(to_xstring(path)->string);
-//     return x_void;
-// }
+value_t
+x_fs_ensure_directory(value_t path) {
+    fs_ensure_directory(to_xstring(path)->string);
+    return x_void;
+}
 
 // value_t
 // x_fs_delete_file(value_t path) {
