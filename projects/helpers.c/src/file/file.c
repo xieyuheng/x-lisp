@@ -56,6 +56,8 @@ file_write_bytes(file_t *file, uint8_t *bytes, size_t size) {
 void
 file_write_string(file_t *file, const char *string) {
     file_write_bytes(file, (uint8_t *) string, string_length(string));
+    fflush(file);
+    fsync(fileno(file));
 }
 
 blob_t *
@@ -70,7 +72,9 @@ file_read_blob(file_t *file) {
 
 void
 file_write_blob(file_t *file, blob_t *blob) {
-    fwrite(blob_bytes(blob), 1, blob_size(blob), file);
+    file_write_bytes(file, blob_bytes(blob), blob_size(blob));
+    fflush(file);
+    fsync(fileno(file));
 }
 
 void
