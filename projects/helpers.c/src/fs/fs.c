@@ -25,6 +25,14 @@ fs_is_directory(const char *pathname) {
     return S_ISDIR(st.st_mode);
 }
 
+char *
+fs_read(const char *pathname) {
+    file_t *file = open_file_or_fail(pathname, "w");
+    char *string = (char *) file_read_bytes(file);
+    file_close(file);
+    return string;
+}
+
 void
 fs_write(const char *pathname, const char *string) {
     file_t *file = open_file_or_fail(pathname, "w");
