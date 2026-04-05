@@ -62,11 +62,6 @@ x_fs_ensure_directory(value_t path) {
 // }
 
 // value_t
-// x_fs_delete_recursive(value_t path) {
-
-// }
-
-// value_t
 // x_fs_rename(value_t old_path, value_t new_path) {
 
 // }

@@ -237,7 +237,6 @@ make_builtin_mod(void) {
     define_primitive_1(mod, "fs-ensure-directory", x_fs_ensure_directory);
     // define_primitive_1(mod, "fs-delete-file", x_fs_delete_file);
     // define_primitive_1(mod, "fs-delete-directory", x_fs_delete_directory);
-    // define_primitive_1(mod, "fs-delete-recursive", x_fs_delete_recursive);
     // define_primitive_2(mod, "fs-rename", x_fs_rename);
 
     // process

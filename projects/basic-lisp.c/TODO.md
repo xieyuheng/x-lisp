@@ -1,5 +1,5 @@
 [basic-lisp.c] builtin about fs -- fs-list
-[basic-lisp.c] builtin about fs -- fs-delete-file & fs-delete-directory & fs-delete-recursive
+[basic-lisp.c] builtin about fs -- fs-delete-file & fs-delete-directory
 [basic-lisp.c] builtin about fs -- fs-rename
 
 [basic-lisp.c] builtin about module
