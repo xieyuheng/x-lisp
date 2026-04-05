@@ -113,3 +113,9 @@ fs_delete(const char *pathname) {
         assert(ok == 0);
     }
 }
+
+void
+fs_rename(const char *old_pathname, const char *new_pathname) {
+    int ok = rename(old_pathname, new_pathname);
+    assert(ok == 0);
+}

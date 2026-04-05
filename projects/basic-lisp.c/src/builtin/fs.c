@@ -69,7 +69,8 @@ x_fs_delete(value_t path) {
     return x_void;
 }
 
-// value_t
-// x_fs_rename(value_t old_path, value_t new_path) {
-
-// }
+value_t
+x_fs_rename(value_t old_path, value_t new_path) {
+    fs_rename(to_xstring(old_path)->string, to_xstring(new_path)->string);
+    return x_void;
+}

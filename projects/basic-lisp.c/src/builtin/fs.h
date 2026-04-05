@@ -11,4 +11,4 @@ x_fn_1_t x_fs_ensure_directory;
 x_fn_1_t x_fs_delete_file;
 x_fn_1_t x_fs_delete_directory;
 x_fn_1_t x_fs_delete;
-// x_fn_2_t x_fs_rename;
+x_fn_2_t x_fs_rename;
