@@ -34,10 +34,20 @@ x_fs_write(value_t path, value_t string) {
     return x_void;
 }
 
-// value_t
-// x_fs_list(value_t path) {
+value_t
+x_fs_list(value_t path) {
+    value_t list = x_make_list();
+    DIR *dir = opendir(to_xstring(path)->string);
+    struct dirent *dirent = readdir(dir);
+    while (dirent) {
+        value_t name = x_object(make_xstring(string_copy(dirent->d_name)));
+        x_list_push_mut(name, list);
+        dirent = readdir(dir);
+    }
 
-// }
+    closedir(dir);
+    return list;
+}
 
 value_t
 x_fs_ensure_file(value_t path) {

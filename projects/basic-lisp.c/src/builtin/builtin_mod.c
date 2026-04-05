@@ -232,7 +232,7 @@ make_builtin_mod(void) {
     define_primitive_1(mod, "fs-directory?", x_fs_directory_p);
     define_primitive_1(mod, "fs-read", x_fs_read);
     define_primitive_2(mod, "fs-write", x_fs_write);
-    // define_primitive_1(mod, "fs-list", x_fs_list);
+    define_primitive_1(mod, "fs-list", x_fs_list);
     define_primitive_1(mod, "fs-ensure-file", x_fs_ensure_file);
     define_primitive_1(mod, "fs-ensure-directory", x_fs_ensure_directory);
     define_primitive_1(mod, "fs-delete-file", x_fs_delete_file);
