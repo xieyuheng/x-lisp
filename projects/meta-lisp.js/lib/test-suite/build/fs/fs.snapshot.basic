@@ -1,0 +1,4 @@
+(define-function (main)
+  (block body
+    (= _₁ (fs-list "src/fs"))
+    (return (println _₁))))

@@ -40,8 +40,12 @@ x_fs_list(value_t path) {
     DIR *dir = opendir(to_xstring(path)->string);
     struct dirent *dirent = readdir(dir);
     while (dirent) {
-        value_t name = x_object(make_xstring(string_copy(dirent->d_name)));
-        x_list_push_mut(name, list);
+        if (!string_equal(dirent->d_name, ".")
+            && !string_equal(dirent->d_name, "..")) {
+            value_t name = x_object(make_xstring(string_copy(dirent->d_name)));
+            x_list_push_mut(name, list);
+        }
+
         dirent = readdir(dir);
     }
 

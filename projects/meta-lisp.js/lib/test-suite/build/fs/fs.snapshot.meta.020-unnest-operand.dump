@@ -1,0 +1,3 @@
+(claim main (-> void-t))
+
+(define (main) (= _₁ (fs-list "src/fs")) (println _₁))
