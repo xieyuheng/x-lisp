@@ -92,7 +92,8 @@ void
 fs_delete_file(const char *pathname) {
     if (fs_exists(pathname)) {
         assert(fs_is_file(pathname));
-        // TODO
+        int ok = unlink(pathname);
+        assert(ok == 0);
     }
 }
 
