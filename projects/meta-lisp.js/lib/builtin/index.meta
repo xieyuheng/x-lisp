@@ -242,6 +242,7 @@
 (claim fs-ensure-directory (-> string-t void-t))
 (claim fs-delete-file (-> string-t void-t))
 (claim fs-delete-directory (-> string-t void-t))
+(claim fs-delete (-> string-t void-t))
 (claim fs-rename (-> string-t string-t void-t))
 
 ;; process

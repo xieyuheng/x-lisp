@@ -105,3 +105,11 @@ fs_delete_directory(const char *pathname) {
         assert(ok == 0);
     }
 }
+
+void
+fs_delete(const char *pathname) {
+    if (fs_exists(pathname)) {
+        int ok = remove(pathname);
+        assert(ok == 0);
+    }
+}

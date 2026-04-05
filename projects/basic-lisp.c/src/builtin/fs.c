@@ -51,15 +51,23 @@ x_fs_ensure_directory(value_t path) {
     return x_void;
 }
 
-// value_t
-// x_fs_delete_file(value_t path) {
+value_t
+x_fs_delete_file(value_t path) {
+    fs_delete_file(to_xstring(path)->string);
+    return x_void;
+}
 
-// }
+value_t
+x_fs_delete_directory(value_t path) {
+    fs_delete_directory(to_xstring(path)->string);
+    return x_void;
+}
 
-// value_t
-// x_fs_delete_directory(value_t path) {
-
-// }
+value_t
+x_fs_delete(value_t path) {
+    fs_delete(to_xstring(path)->string);
+    return x_void;
+}
 
 // value_t
 // x_fs_rename(value_t old_path, value_t new_path) {
