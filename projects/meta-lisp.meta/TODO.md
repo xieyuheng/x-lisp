@@ -1,7 +1,6 @@
-[meta-lisp] `env-t`
-[meta-lisp] `value-t`
-
-[meta-lisp] `definition-t`
-[meta-lisp] `mod-t`
-[meta-lisp] `eval`
-[meta-lisp] `parse`
+[meta-lisp.meta] `value-t`
+[meta-lisp.meta] `env-t`
+[meta-lisp.meta] `definition-t`
+[meta-lisp.meta] `mod-t`
+[meta-lisp.meta] `eval`
+[meta-lisp.meta] `parse`
