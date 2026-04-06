@@ -1,5 +1,5 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as M from "../meta/index.ts"
+import * as M from "../index.ts"
 
 export function ShrinkPass(mod: M.Mod): void {
   for (const definition of M.modOwnDefinitions(mod)) {

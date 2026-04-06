@@ -3,7 +3,7 @@ import {
   openOutputFile,
   withOutputToFile,
 } from "@xieyuheng/helpers.js/file"
-import * as M from "../meta/index.ts"
+import * as M from "../index.ts"
 import {
   projectGetSourcePath,
   projectSourceIds,

@@ -6,15 +6,6 @@ import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import * as S from "@xieyuheng/sexp.js"
 import { fileURLToPath } from "node:url"
 import * as M from "./meta/index.ts"
-import {
-  loadProject,
-  projectBuild,
-  projectCheck,
-  projectClean,
-  projectDump,
-  projectFromSourcePaths,
-  projectTest,
-} from "./project/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 
@@ -29,33 +20,33 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  "check": ({ options }) => {
+  check: ({ options }) => {
     const dependencyGraph = M.createDependencyGraph()
-    const project = loadProject(options["--config"])
-    projectCheck(project, dependencyGraph)
+    const project = M.loadProject(options["--config"])
+    M.projectCheck(project, dependencyGraph)
   },
 
-  "dump": ({ options }) => {
+  dump: ({ options }) => {
     const dependencyGraph = M.createDependencyGraph()
-    const project = loadProject(options["--config"])
-    projectDump(project, dependencyGraph)
+    const project = M.loadProject(options["--config"])
+    M.projectDump(project, dependencyGraph)
   },
 
-  "build": ({ options }) => {
+  build: ({ options }) => {
     const dependencyGraph = M.createDependencyGraph()
-    const project = loadProject(options["--config"])
-    projectBuild(project, dependencyGraph)
+    const project = M.loadProject(options["--config"])
+    M.projectBuild(project, dependencyGraph)
   },
 
-  "test": ({ options }) => {
+  test: ({ options }) => {
     const dependencyGraph = M.createDependencyGraph()
-    const project = loadProject(options["--config"])
-    projectTest(project, dependencyGraph)
+    const project = M.loadProject(options["--config"])
+    M.projectTest(project, dependencyGraph)
   },
 
-  "clean": ({ options }) => {
-    const project = loadProject(options["--config"])
-    projectClean(project)
+  clean: ({ options }) => {
+    const project = M.loadProject(options["--config"])
+    M.projectClean(project)
   },
 })
 

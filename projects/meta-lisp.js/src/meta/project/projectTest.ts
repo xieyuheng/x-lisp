@@ -1,5 +1,5 @@
 import { systemShellRun } from "@xieyuheng/helpers.js/system"
-import * as M from "../meta/index.ts"
+import * as M from "../index.ts"
 import { BasicInterpreterFile } from "./BasicInterpreterFile.ts"
 import {
   logPath,

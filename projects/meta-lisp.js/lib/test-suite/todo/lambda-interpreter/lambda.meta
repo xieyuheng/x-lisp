@@ -1,4 +1,4 @@
-(export-all)
+(module lambda)
 
 (define-data exp-t
   (var-exp (name symbol-t))
