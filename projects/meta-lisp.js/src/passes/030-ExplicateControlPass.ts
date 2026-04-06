@@ -5,7 +5,7 @@ import * as M from "../meta/index.ts"
 
 export function ExplicateControlPass(mod: M.Mod, basicMod: B.Mod): void {
   for (const stmt of mod.stmts) {
-    if (M.isAboutModule(stmt)) {
+    if (M.isAboutImport(stmt)) {
       basicMod.stmts.push(stmt)
     }
   }

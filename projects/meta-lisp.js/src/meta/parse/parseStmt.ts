@@ -30,38 +30,14 @@ export const parseStmt = S.createRouter<M.Stmt>({
     return M.Exempt(S.listElements(names).map(S.symbolContent), location)
   },
 
-  "(cons* 'export names)": ({ names }, { location }) => {
-    return M.Export(S.listElements(names).map(S.symbolContent), location)
-  },
-
-  "`(export-all)": ({}, { location }) => {
-    return M.ExportAll(location)
-  },
-
-  "(cons* 'export-except names)": ({ names }, { location }) => {
-    return M.ExportExcept(S.listElements(names).map(S.symbolContent), location)
-  },
-
   "`(import-all ,path)": ({ path }, { location }) => {
     return M.ImportAll(S.stringContent(path), location)
-  },
-
-  "`(include-all ,path)": ({ path }, { location }) => {
-    return M.IncludeAll(S.stringContent(path), location)
   },
 
   "(cons* 'import path entries)": ({ path, entries }, { location }) => {
     return M.Import(
       S.stringContent(path),
       S.listElements(entries).map(S.symbolContent),
-      location,
-    )
-  },
-
-  "(cons* 'include path names)": ({ path, names }, { location }) => {
-    return M.Include(
-      S.stringContent(path),
-      S.listElements(names).map(S.symbolContent),
       location,
     )
   },
@@ -74,20 +50,8 @@ export const parseStmt = S.createRouter<M.Stmt>({
     )
   },
 
-  "(cons* 'include-except path names)": ({ path, names }, { location }) => {
-    return M.IncludeExcept(
-      S.stringContent(path),
-      S.listElements(names).map(S.symbolContent),
-      location,
-    )
-  },
-
   "`(import-as ,path ,prefix)": ({ path, prefix }, { location }) => {
     return M.ImportAs(S.stringContent(path), S.symbolContent(prefix), location)
-  },
-
-  "`(include-as ,path ,prefix)": ({ path, prefix }, { location }) => {
-    return M.IncludeAs(S.stringContent(path), S.symbolContent(prefix), location)
   },
 
   "(cons* 'define-data head constructors)": (

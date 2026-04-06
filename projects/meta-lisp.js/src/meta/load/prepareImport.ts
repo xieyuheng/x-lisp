@@ -40,41 +40,6 @@ export function prepareImport(mod: M.Mod, stmt: M.Stmt): void {
       M.modDefine(mod, fullName, definition)
     }
   }
-
-  if (stmt.kind === "Include") {
-    checkUndefinedNames(mod, importedMod, stmt.names, stmt.location)
-
-    for (const [name, definition] of definitionEntries) {
-      if (stmt.names.includes(name)) {
-        M.modDefine(mod, name, definition)
-        mod.exported.add(name)
-      }
-    }
-  }
-
-  if (stmt.kind === "IncludeAll") {
-    for (const [name, definition] of definitionEntries) {
-      M.modDefine(mod, name, definition)
-      mod.exported.add(name)
-    }
-  }
-
-  if (stmt.kind === "IncludeExcept") {
-    for (const [name, definition] of definitionEntries) {
-      if (!stmt.names.includes(name)) {
-        M.modDefine(mod, name, definition)
-        mod.exported.add(name)
-      }
-    }
-  }
-
-  if (stmt.kind === "IncludeAs") {
-    for (const [name, definition] of definitionEntries) {
-      const fullName = `${stmt.prefix}${name}`
-      M.modDefine(mod, fullName, definition)
-      mod.exported.add(fullName)
-    }
-  }
 }
 
 function checkUndefinedNames(

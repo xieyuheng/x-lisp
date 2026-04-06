@@ -17,18 +17,6 @@ export function formatStmt(stmt: Stmt): string {
       return `(define-variable ${name} ${blocks})`
     }
 
-    case "Export": {
-      return `(export ${stmt.names.join(" ")})`
-    }
-
-    case "ExportAll": {
-      return `(export-all)`
-    }
-
-    case "ExportExcept": {
-      return `(export-except ${stmt.names.join(" ")})`
-    }
-
     case "Import": {
       return `(import "${stmt.path}" ${stmt.names.join(" ")})`
     }
@@ -43,22 +31,6 @@ export function formatStmt(stmt: Stmt): string {
 
     case "ImportAs": {
       return `(import-as "${stmt.path}" ${stmt.prefix})`
-    }
-
-    case "Include": {
-      return `(include "${stmt.path}" ${stmt.names.join(" ")})`
-    }
-
-    case "IncludeAll": {
-      return `(include-all "${stmt.path}")`
-    }
-
-    case "IncludeExcept": {
-      return `(include-except "${stmt.path}" ${stmt.names.join(" ")})`
-    }
-
-    case "IncludeAs": {
-      return `(include-as "${stmt.path}" ${stmt.prefix})`
     }
   }
 }

@@ -5,10 +5,10 @@ import type {
   InterfaceConstructor,
 } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
-import type { AboutModule } from "./AboutModule.ts"
+import type { AboutImport } from "./AboutImport.ts"
 
 export type Stmt =
-  | AboutModule
+  | AboutImport
   | DefineFunction
   | DefineVariable
   | DefineData
