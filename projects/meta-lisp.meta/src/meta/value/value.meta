@@ -1,0 +1,14 @@
+(export-all)
+
+(define-data value-t
+  (symbol-value (content symbol-t))
+  (keyword-value (content keyword-t))
+  (string-value (content string-t))
+  (int-value (content int-t))
+  (float-value (content float-t))
+  (bool-value (content bool-t))
+  (void-value (content void-t))
+  (list-value (elements (list-t value-t)))
+  (record-value (attributes (hash-t keyword-t value-t)))
+  ;; TODO
+  )

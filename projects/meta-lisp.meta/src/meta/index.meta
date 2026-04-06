@@ -1,1 +1,6 @@
 (include-all "exp")
+(include-all "value")
+(include-all "env")
+(include-all "definition")
+(include-all "eval")
+(include-all "parse")
