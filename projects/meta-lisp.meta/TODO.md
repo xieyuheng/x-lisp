@@ -1,4 +1,3 @@
-[meta-lisp.meta] `value-t`
 [meta-lisp.meta] `env-t`
 [meta-lisp.meta] `definition-t`
 [meta-lisp.meta] `mod-t`
