@@ -21,11 +21,6 @@ const { version } = getPackageJson(fileURLToPath(import.meta.url))
 const router = cmd.createRouter("meta-lisp-compile.js", version)
 
 router.defineRoutes([
-  "module:check path",
-  "module:interpret path",
-  "module:dump path",
-  "module:build path",
-  "module:test path",
   "project:check --config",
   "project:dump --config",
   "project:build --config",
@@ -34,45 +29,6 @@ router.defineRoutes([
 ])
 
 router.defineHandlers({
-  "module:check": ({ args: [path] }) => {
-    const dependencyGraph = M.createDependencyGraph()
-    M.loadMod(path, dependencyGraph)
-    const sourcePaths = M.dependencyGraphModNames(dependencyGraph)
-    const project = projectFromSourcePaths(path, sourcePaths)
-    projectCheck(project, dependencyGraph)
-  },
-
-  "module:dump": ({ args: [path] }) => {
-    const dependencyGraph = M.createDependencyGraph()
-    M.loadMod(path, dependencyGraph)
-    const sourcePaths = M.dependencyGraphModNames(dependencyGraph)
-    const project = projectFromSourcePaths(path, sourcePaths)
-    projectDump(project, dependencyGraph)
-  },
-
-  "module:interpret": ({ args: [path] }) => {
-    const dependencyGraph = M.createDependencyGraph()
-    const mod = M.loadMod(path, dependencyGraph)
-    M.dependencyGraphForEachDefinition(dependencyGraph, M.definitionDesugar)
-    M.modEvaluateMainIfExists(mod)
-  },
-
-  "module:build": ({ args: [path] }) => {
-    const dependencyGraph = M.createDependencyGraph()
-    M.loadMod(path, dependencyGraph)
-    const sourcePaths = M.dependencyGraphModNames(dependencyGraph)
-    const project = projectFromSourcePaths(path, sourcePaths)
-    projectBuild(project, dependencyGraph)
-  },
-
-  "module:test": ({ args: [path] }) => {
-    const dependencyGraph = M.createDependencyGraph()
-    M.loadMod(path, dependencyGraph)
-    const sourcePaths = M.dependencyGraphModNames(dependencyGraph)
-    const project = projectFromSourcePaths(path, sourcePaths)
-    projectTest(project, dependencyGraph)
-  },
-
   "project:check": ({ options }) => {
     const dependencyGraph = M.createDependencyGraph()
     const project = loadProject(options["--config"])
