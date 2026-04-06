@@ -22,8 +22,8 @@ export function projectCheck(
   M.dependencyGraphForEachDefinition(dependencyGraph, M.definitionDesugar)
 
   M.dependencyGraphForEachMod(dependencyGraph, (mod) => {
-    if (mod.path.endsWith(".type-error.meta")) {
-      callWithFile(openOutputFile(`${mod.path}.out`), (file) => {
+    if (mod.name.endsWith(".type-error.meta")) {
+      callWithFile(openOutputFile(`${mod.name}.out`), (file) => {
         withOutputToFile(file, () => {
           M.modForEachOwnDefinition(mod, M.definitionCheck)
         })

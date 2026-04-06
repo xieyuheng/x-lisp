@@ -12,16 +12,16 @@ export function createDependencyGraph(): DependencyGraph {
 
 export function dependencyGraphLookupMod(
   dependencyGraph: DependencyGraph,
-  path: string,
+  name: string,
 ): M.Mod | undefined {
-  return dependencyGraph.dependencies.get(path)
+  return dependencyGraph.dependencies.get(name)
 }
 
 export function dependencyGraphAddMod(
   dependencyGraph: DependencyGraph,
   mod: M.Mod,
 ): void {
-  dependencyGraph.dependencies.set(mod.path, mod)
+  dependencyGraph.dependencies.set(mod.name, mod)
 }
 
 export function dependencyGraphMods(
@@ -30,11 +30,11 @@ export function dependencyGraphMods(
   return Array.from(dependencyGraph.dependencies.values())
 }
 
-export function dependencyGraphModPaths(
+export function dependencyGraphModNames(
   dependencyGraph: DependencyGraph,
 ): Array<string> {
   const mods = dependencyGraphMods(dependencyGraph)
-  return mods.map((mod) => mod.path)
+  return mods.map((mod) => mod.name)
 }
 
 export function dependencyGraphForEachMod(

@@ -28,8 +28,8 @@ export function projectBuild(
   M.dependencyGraphForEachDefinition(dependencyGraph, M.definitionDesugar)
 
   M.dependencyGraphForEachMod(dependencyGraph, (mod) => {
-    if (mod.path.endsWith(".type-error.meta")) {
-      callWithFile(openOutputFile(`${mod.path}.out`), (file) => {
+    if (mod.name.endsWith(".type-error.meta")) {
+      callWithFile(openOutputFile(`${mod.name}.out`), (file) => {
         withOutputToFile(file, () => {
           M.modForEachOwnDefinition(mod, M.definitionCheck)
         })
@@ -66,7 +66,7 @@ export function projectBuild(
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
     const mod = M.loadMod(path, dependencyGraph)
-    const basicMod = B.createMod(mod.path, new Map())
+    const basicMod = B.createMod(mod.name, new Map())
     Passes.ExplicateControlPass(mod, basicMod)
     const code = B.prettyMod(textWidth, basicMod)
     const outputPath = projectGetBasicPath(project, id)

@@ -5,7 +5,7 @@ import { prepareExempt } from "./prepareExempt.ts"
 import { prepareImport } from "./prepareImport.ts"
 
 export function prepareCode(mod: M.Mod, code: string): void {
-  const sexps = S.parseSexps(code, { path: mod.path })
+  const sexps = S.parseSexps(code, { path: mod.name })
   const stmts = sexps.map(M.parseStmt)
   mod.stmts.push(...stmts)
 

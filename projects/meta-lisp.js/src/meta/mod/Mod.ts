@@ -12,7 +12,7 @@ export type ClaimedEntry = {
 }
 
 export type Mod = {
-  path: string
+  name: string
   stmts: Array<Stmt>
   exported: Set<string>
   exempted: Set<string>
@@ -28,7 +28,7 @@ export function createMod(
   dependencyGraph: M.DependencyGraph,
 ): Mod {
   return {
-    path: Path.resolve(path),
+    name: Path.resolve(path),
     stmts: [],
     exported: new Set(),
     exempted: new Set(),

@@ -61,7 +61,7 @@ export function simplifyMatch(
 
         const definition = group.dataConstructor.definition
 
-        const path = Path.relative(Path.dirname(mod.path), definition.mod.path)
+        const path = Path.relative(Path.dirname(mod.name), definition.mod.name)
 
         const dataConstructorPredicateName = `${group.dataConstructor.name}?`
         const dataConstructorPredicate = M.modNameIsAsDefined(

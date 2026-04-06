@@ -41,8 +41,8 @@ function checkUndefinedNames(
   if (undefinedNames.length === 0) return
 
   let message = `[checkUndefinedNames] found undefined names during importing`
-  message += `\n  mod: ${pathRelativeToCwd(mod.path)}`
-  message += `\n  importing from mod: ${pathRelativeToCwd(importedMod.path)}`
+  message += `\n  mod: ${pathRelativeToCwd(mod.name)}`
+  message += `\n  importing from mod: ${pathRelativeToCwd(importedMod.name)}`
   message += `\n  undefined names: [${undefinedNames.join(" ")}]`
   if (location) throw new S.ErrorWithSourceLocation(message, location)
   else throw new Error(message)

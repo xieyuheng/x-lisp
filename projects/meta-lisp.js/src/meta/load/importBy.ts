@@ -10,8 +10,8 @@ export function importBy(path: string, mod: M.Mod): M.Mod {
 }
 
 function pathRelativeToMod(path: string, mod: M.Mod): string {
-  path = Path.resolve(Path.dirname(mod.path), path)
-  if (path === mod.path) {
+  path = Path.resolve(Path.dirname(mod.name), path)
+  if (path === mod.name) {
     let message = `[urlRelativeToMod] A module can not import itself: ${path}`
     throw new Error(message)
   }

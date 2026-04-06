@@ -89,7 +89,7 @@ export function formatTypeInMod(mod: M.Mod, type: M.Value): string {
     const definition = M.definedDataTypeDefinition(type)
     const foundName = M.modLookupNameByDefinition(mod, definition)
     const argTypes = formatTypesInMod(mod, M.definedDataTypeArgTypes(type))
-    const path = pathRelativeToCwd(definition.mod.path)
+    const path = pathRelativeToCwd(definition.mod.name)
     const name = foundName || `<${definition.name} from ${path}>`
     if (argTypes.length === 0) {
       return `${name}`
@@ -102,7 +102,7 @@ export function formatTypeInMod(mod: M.Mod, type: M.Value): string {
     const definition = M.definedInterfaceTypeDefinition(type)
     const foundName = M.modLookupNameByDefinition(mod, definition)
     const argTypes = formatTypesInMod(mod, M.definedInterfaceTypeArgTypes(type))
-    const path = pathRelativeToCwd(definition.mod.path)
+    const path = pathRelativeToCwd(definition.mod.name)
     const name = foundName || `<${definition.name} from ${path}>`
     if (argTypes.length === 0) {
       return `${name}`

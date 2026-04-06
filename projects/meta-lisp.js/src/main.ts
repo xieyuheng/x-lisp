@@ -37,7 +37,7 @@ router.defineHandlers({
   "module:check": ({ args: [path] }) => {
     const dependencyGraph = M.createDependencyGraph()
     M.loadMod(path, dependencyGraph)
-    const sourcePaths = M.dependencyGraphModPaths(dependencyGraph)
+    const sourcePaths = M.dependencyGraphModNames(dependencyGraph)
     const project = projectFromSourcePaths(path, sourcePaths)
     projectCheck(project, dependencyGraph)
   },
@@ -45,7 +45,7 @@ router.defineHandlers({
   "module:dump": ({ args: [path] }) => {
     const dependencyGraph = M.createDependencyGraph()
     M.loadMod(path, dependencyGraph)
-    const sourcePaths = M.dependencyGraphModPaths(dependencyGraph)
+    const sourcePaths = M.dependencyGraphModNames(dependencyGraph)
     const project = projectFromSourcePaths(path, sourcePaths)
     projectDump(project, dependencyGraph)
   },
@@ -60,7 +60,7 @@ router.defineHandlers({
   "module:build": ({ args: [path] }) => {
     const dependencyGraph = M.createDependencyGraph()
     M.loadMod(path, dependencyGraph)
-    const sourcePaths = M.dependencyGraphModPaths(dependencyGraph)
+    const sourcePaths = M.dependencyGraphModNames(dependencyGraph)
     const project = projectFromSourcePaths(path, sourcePaths)
     projectBuild(project, dependencyGraph)
   },
@@ -68,7 +68,7 @@ router.defineHandlers({
   "module:test": ({ args: [path] }) => {
     const dependencyGraph = M.createDependencyGraph()
     M.loadMod(path, dependencyGraph)
-    const sourcePaths = M.dependencyGraphModPaths(dependencyGraph)
+    const sourcePaths = M.dependencyGraphModNames(dependencyGraph)
     const project = projectFromSourcePaths(path, sourcePaths)
     projectTest(project, dependencyGraph)
   },
