@@ -8,11 +8,6 @@
 
 [builtin] [maybe] `format-sexp`
 
-# builtin about module
-
-[basic-lisp.c] builtin `current-module-file`
-[basic-lisp.c] builtin `current-module-directory`
-
 # builtin source location
 
 [basic-lisp.c] builtin `error-with-source-location`
