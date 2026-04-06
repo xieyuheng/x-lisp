@@ -21,14 +21,6 @@ export function formatStmt(stmt: Stmt): string {
       return `(import "${stmt.path}" ${stmt.names.join(" ")})`
     }
 
-    case "ImportAll": {
-      return `(import-all "${stmt.path}")`
-    }
-
-    case "ImportExcept": {
-      return `(import-except "${stmt.path}" ${stmt.names.join(" ")})`
-    }
-
     case "ImportAs": {
       return `(import-as "${stmt.path}" ${stmt.prefix})`
     }

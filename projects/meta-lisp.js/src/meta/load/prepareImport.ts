@@ -20,20 +20,6 @@ export function prepareImport(mod: M.Mod, stmt: M.Stmt): void {
     }
   }
 
-  if (stmt.kind === "ImportAll") {
-    for (const [name, definition] of definitionEntries) {
-      M.modDefine(mod, name, definition)
-    }
-  }
-
-  if (stmt.kind === "ImportExcept") {
-    for (const [name, definition] of definitionEntries) {
-      if (!stmt.names.includes(name)) {
-        M.modDefine(mod, name, definition)
-      }
-    }
-  }
-
   if (stmt.kind === "ImportAs") {
     for (const [name, definition] of definitionEntries) {
       const fullName = `${stmt.prefix}${name}`

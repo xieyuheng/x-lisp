@@ -30,22 +30,10 @@ export const parseStmt = S.createRouter<M.Stmt>({
     return M.Exempt(S.listElements(names).map(S.symbolContent), location)
   },
 
-  "`(import-all ,path)": ({ path }, { location }) => {
-    return M.ImportAll(S.stringContent(path), location)
-  },
-
   "(cons* 'import path entries)": ({ path, entries }, { location }) => {
     return M.Import(
       S.stringContent(path),
       S.listElements(entries).map(S.symbolContent),
-      location,
-    )
-  },
-
-  "(cons* 'import-except path names)": ({ path, names }, { location }) => {
-    return M.ImportExcept(
-      S.stringContent(path),
-      S.listElements(names).map(S.symbolContent),
       location,
     )
   },
