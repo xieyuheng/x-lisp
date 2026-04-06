@@ -30,12 +30,12 @@ export const builtinModPath = Path.join(
   "../../../lib/builtin/index.meta",
 )
 
-export function loadBuiltinMod(dependencyGraph: M.DependencyGraph): M.Mod {
-  const found = M.dependencyGraphLookupMod(dependencyGraph, builtinModPath)
+export function loadBuiltinMod(project: M.Project): M.Mod {
+  const found = M.projectLookupMod(project, builtinModPath)
   if (found !== undefined) return found
 
-  const mod = M.createMod(builtinModPath, dependencyGraph)
-  M.dependencyGraphAddMod(dependencyGraph, mod)
+  const mod = M.createMod(builtinModPath, project)
+  M.projectAddMod(project, mod)
 
   builtinInt(mod)
   builtinFloat(mod)

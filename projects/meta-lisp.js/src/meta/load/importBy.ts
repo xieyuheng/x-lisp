@@ -6,7 +6,7 @@ import * as M from "../index.ts"
 export function importBy(path: string, mod: M.Mod): M.Mod {
   path = pathRelativeToMod(path, mod)
   path = resolveModPath(path)
-  return M.loadMod(path, mod.dependencyGraph)
+  return M.loadMod(path, mod.project)
 }
 
 function pathRelativeToMod(path: string, mod: M.Mod): string {

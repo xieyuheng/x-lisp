@@ -20,13 +20,10 @@ export type Mod = {
   claimed: Map<string, ClaimedEntry>
   inferredTypes: Map<string, Value>
   dataConstructors: Map<string, DataConstructor>
-  dependencyGraph: M.DependencyGraph
+  project: M.Project
 }
 
-export function createMod(
-  path: string,
-  dependencyGraph: M.DependencyGraph,
-): Mod {
+export function createMod(path: string, project: M.Project): Mod {
   return {
     name: Path.resolve(path),
     stmts: [],
@@ -36,7 +33,7 @@ export function createMod(
     claimed: new Map(),
     inferredTypes: new Map(),
     dataConstructors: new Map(),
-    dependencyGraph,
+    project,
   }
 }
 

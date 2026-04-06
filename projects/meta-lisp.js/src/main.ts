@@ -21,27 +21,23 @@ router.defineRoutes([
 
 router.defineHandlers({
   check: ({ options }) => {
-    const dependencyGraph = M.createDependencyGraph()
     const project = M.loadProject(options["--config"])
-    M.projectCheck(project, dependencyGraph)
+    M.projectCheck(project)
   },
 
   dump: ({ options }) => {
-    const dependencyGraph = M.createDependencyGraph()
     const project = M.loadProject(options["--config"])
-    M.projectDump(project, dependencyGraph)
+    M.projectDump(project)
   },
 
   build: ({ options }) => {
-    const dependencyGraph = M.createDependencyGraph()
     const project = M.loadProject(options["--config"])
-    M.projectBuild(project, dependencyGraph)
+    M.projectBuild(project)
   },
 
   test: ({ options }) => {
-    const dependencyGraph = M.createDependencyGraph()
     const project = M.loadProject(options["--config"])
-    M.projectTest(project, dependencyGraph)
+    M.projectTest(project)
   },
 
   clean: ({ options }) => {

@@ -16,18 +16,15 @@ import {
   type Project,
 } from "./index.ts"
 
-export function projectBuild(
-  project: Project,
-  dependencyGraph: M.DependencyGraph,
-): void {
+export function projectBuild(project: Project): void {
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
   }
 
-  M.dependencyGraphForEachDefinition(dependencyGraph, M.definitionDesugar)
+  M.projectForEachDefinition(project, M.definitionDesugar)
 
-  M.dependencyGraphForEachMod(dependencyGraph, (mod) => {
+  M.projectForEachMod(project, (mod) => {
     if (mod.name.endsWith(".type-error.meta")) {
       callWithFile(openOutputFile(`${mod.name}.out`), (file) => {
         withOutputToFile(file, () => {
@@ -41,31 +38,31 @@ export function projectBuild(
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     Passes.ShrinkPass(mod)
   }
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     Passes.UniquifyPass(mod)
   }
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     Passes.LiftLambdaPass(mod)
   }
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     Passes.UnnestOperandPass(mod)
   }
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     const basicMod = B.createMod(mod.name, new Map())
     Passes.ExplicateControlPass(mod, basicMod)
     const code = B.prettyMod(textWidth, basicMod)

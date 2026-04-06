@@ -10,18 +10,15 @@ import {
   type Project,
 } from "./index.ts"
 
-export function projectCheck(
-  project: Project,
-  dependencyGraph: M.DependencyGraph,
-): void {
+export function projectCheck(project: Project): void {
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    M.loadMod(path, dependencyGraph)
+    M.loadMod(path, project)
   }
 
-  M.dependencyGraphForEachDefinition(dependencyGraph, M.definitionDesugar)
+  M.projectForEachDefinition(project, M.definitionDesugar)
 
-  M.dependencyGraphForEachMod(dependencyGraph, (mod) => {
+  M.projectForEachMod(project, (mod) => {
     if (mod.name.endsWith(".type-error.meta")) {
       callWithFile(openOutputFile(`${mod.name}.out`), (file) => {
         withOutputToFile(file, () => {

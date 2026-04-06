@@ -1,5 +1,4 @@
 import { systemShellRun } from "@xieyuheng/helpers.js/system"
-import * as M from "../index.ts"
 import { BasicInterpreterFile } from "./BasicInterpreterFile.ts"
 import {
   logPath,
@@ -10,11 +9,8 @@ import {
   type Project,
 } from "./index.ts"
 
-export function projectTest(
-  project: Project,
-  dependencyGraph: M.DependencyGraph,
-): void {
-  projectBuild(project, dependencyGraph)
+export function projectTest(project: Project): void {
+  projectBuild(project)
 
   for (const id of projectSourceIds(project)) {
     if (id.endsWith(".test.meta")) {

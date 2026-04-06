@@ -1,5 +1,3 @@
-[meta-lisp.js] merge `dependency-graph/` to `project/` -- `Project` has `mods`
-
 [meta-lisp.js] `expSubstitute`
 [meta-lisp.js] `mod` -- has `importedNames` and `importedPrefixes`
 [meta-lisp.js] rename `Require` to `Ref` -- has modName `instead` of `path`

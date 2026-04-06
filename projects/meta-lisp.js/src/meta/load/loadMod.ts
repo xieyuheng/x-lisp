@@ -5,17 +5,14 @@ import {
 } from "@xieyuheng/helpers.js/file"
 import * as M from "../index.ts"
 
-export function loadMod(
-  path: string,
-  dependencyGraph: M.DependencyGraph,
-): M.Mod {
-  const found = M.dependencyGraphLookupMod(dependencyGraph, path)
+export function loadMod(path: string, project: M.Project): M.Mod {
+  const found = M.projectLookupMod(project, path)
   if (found !== undefined) return found
 
-  const mod = M.createMod(path, dependencyGraph)
-  M.dependencyGraphAddMod(dependencyGraph, mod)
+  const mod = M.createMod(path, project)
+  M.projectAddMod(project, mod)
 
-  const builtinMod = M.loadBuiltinMod(dependencyGraph)
+  const builtinMod = M.loadBuiltinMod(project)
   for (const definition of builtinMod.definitions.values()) {
     M.modDefine(mod, definition.name, definition)
   }

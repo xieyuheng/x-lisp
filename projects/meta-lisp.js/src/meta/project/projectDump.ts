@@ -16,13 +16,10 @@ import {
   type Project,
 } from "./index.ts"
 
-export function projectDump(
-  project: Project,
-  dependencyGraph: M.DependencyGraph,
-): void {
+export function projectDump(project: Project): void {
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     projectDumpCode(
       project,
       id,
@@ -31,11 +28,11 @@ export function projectDump(
     )
   }
 
-  M.dependencyGraphForEachDefinition(dependencyGraph, M.definitionDesugar)
+  M.projectForEachDefinition(project, M.definitionDesugar)
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     projectDumpCode(
       project,
       id,
@@ -44,7 +41,7 @@ export function projectDump(
     )
   }
 
-  M.dependencyGraphForEachMod(dependencyGraph, (mod) => {
+  M.projectForEachMod(project, (mod) => {
     if (mod.name.endsWith(".type-error.meta")) {
       callWithFile(openOutputFile(`${mod.name}.out`), (file) => {
         withOutputToFile(file, () => {
@@ -58,7 +55,7 @@ export function projectDump(
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     projectDumpCode(
       project,
       id,
@@ -69,7 +66,7 @@ export function projectDump(
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     Passes.ShrinkPass(mod)
     projectDumpCode(
       project,
@@ -81,7 +78,7 @@ export function projectDump(
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     Passes.UniquifyPass(mod)
     projectDumpCode(
       project,
@@ -93,7 +90,7 @@ export function projectDump(
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     Passes.LiftLambdaPass(mod)
     projectDumpCode(
       project,
@@ -105,7 +102,7 @@ export function projectDump(
 
   for (const id of projectSourceIds(project)) {
     const path = projectGetSourcePath(project, id)
-    const mod = M.loadMod(path, dependencyGraph)
+    const mod = M.loadMod(path, project)
     Passes.UnnestOperandPass(mod)
     projectDumpCode(
       project,
