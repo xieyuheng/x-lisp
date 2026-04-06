@@ -5,7 +5,7 @@ import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate
 import { expandDataGetter } from "./expandDataGetter.ts"
 import { expandDataPutter } from "./expandDataPutter.ts"
 
-export function handleDefine(mod: M.Mod, stmt: M.Stmt): void {
+export function prepareDefine(mod: M.Mod, stmt: M.Stmt): void {
   if (stmt.kind === "Claim") {
     M.modClaim(mod, stmt.name, stmt.type)
   }

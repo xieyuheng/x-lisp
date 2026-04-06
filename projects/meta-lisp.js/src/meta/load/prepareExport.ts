@@ -1,6 +1,6 @@
 import * as M from "../index.ts"
 
-export function handleExport(mod: M.Mod, stmt: M.Stmt): void {
+export function prepareExport(mod: M.Mod, stmt: M.Stmt): void {
   if (stmt.kind === "Export") {
     for (const name of stmt.names) {
       mod.exported.add(name)

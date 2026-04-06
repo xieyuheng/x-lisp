@@ -2,7 +2,7 @@ import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function handleImport(mod: M.Mod, stmt: M.Stmt): void {
+export function prepareImport(mod: M.Mod, stmt: M.Stmt): void {
   if (!M.isAboutImport(stmt)) {
     return
   }

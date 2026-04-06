@@ -19,6 +19,7 @@ export function loadMod(
   for (const definition of builtinMod.definitions.values()) {
     M.modDefine(mod, definition.name, definition)
   }
+
   callWithFile(openInputFile(path), (file) => {
     const code = fileRead(file)
     M.prepareCode(mod, code)
