@@ -3,6 +3,8 @@ title: give up one file one module
 date: 2026-04-07
 ---
 
+# 新设计
+
 放弃 one file one module 的想法，
 这个想法虽然看起来简单，
 但是实现循环引用时很不方便。
@@ -24,3 +26,8 @@ date: 2026-04-07
 
 - 不允许 import all，必须 import name。
   为了避免大量 import name，可以使用 import as。
+
+# 关于 basic-lisp
+
+现在 basic-lisp 和 meta-lisp 的模块系统需要一起改，这是不合理的。
+应该只在 meta-lisp 中实现模块系统，避免重复实现。
