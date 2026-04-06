@@ -1,7 +1,11 @@
-[meta-lisp.js] `expSubstitute`
-[meta-lisp.js] `mod` -- has `importedNames` and `importedPrefixes`
-[meta-lisp.js] rename `Require` to `Ref` -- has modName `instead` of `path`
+[meta-lisp.js] `expSubstitute` handle `Lambda` and `Polymorphic`
+[meta-lisp.js] `expSubstitute` handle `Let1`
+[meta-lisp.js] `expSubstitute` handle `Match`
 
+[meta-lisp.js] [maybe] `expTraverse` handle `Match`
+
+[meta-lisp.js] `mod` -- has `importedNames` and `importedPrefixes`
+[meta-lisp.js] rename `Require` to `Ref` -- has `modName` instead of `path`
 [meta-lisp.js] `globalize` -- replace free variable with global `Ref`
 
 - with the help of `mod.importedNames` and `mod.importedPrefixes`
