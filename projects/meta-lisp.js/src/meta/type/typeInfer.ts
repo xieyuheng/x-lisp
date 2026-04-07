@@ -55,13 +55,13 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         return M.errorInferEffect(exp, message)(subst)
       }
 
-      case "Require": {
-        const importedMod = M.importBy(exp.path, mod)
+      case "Ref": {
+        const importedMod = M.importBy(exp.modName, mod)
         const topLevelType = modLookupType(importedMod, exp.name)
         if (topLevelType) return M.okInferEffect(topLevelType)(subst)
 
-        let message = `undefined require name`
-        message += `\n  path: ${exp.path}`
+        let message = `undefined ref name`
+        message += `\n  path: ${exp.modName}`
         message += `\n  name: ${exp.name}`
         return M.errorInferEffect(exp, message)(subst)
       }

@@ -46,8 +46,8 @@ export function formatExp(exp: Exp): string {
       return exp.name
     }
 
-    case "Require": {
-      return `(@require "${exp.path}" ${exp.name})`
+    case "Ref": {
+      return `(@ref ${exp.modName} ${exp.name})`
     }
 
     case "Lambda": {

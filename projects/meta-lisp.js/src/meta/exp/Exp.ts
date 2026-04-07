@@ -7,7 +7,7 @@ export type Exp =
   | Int
   | Float
   | Var
-  | Require
+  | Ref
   | Lambda
   | Apply
   | Let1
@@ -121,21 +121,21 @@ export function Var(name: string, location?: SourceLocation): Var {
   }
 }
 
-export type Require = {
-  kind: "Require"
-  path: string
+export type Ref = {
+  kind: "Ref"
+  modName: string
   name: string
   location?: SourceLocation
 }
 
-export function Require(
-  path: string,
+export function Ref(
+  modName: string,
   name: string,
   location?: SourceLocation,
-): Require {
+): Ref {
   return {
-    kind: "Require",
-    path,
+    kind: "Ref",
+    modName,
     name,
     location,
   }

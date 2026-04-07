@@ -39,13 +39,13 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       else throw new Error(message)
     }
 
-    case "Require": {
-      const importedMod = M.importBy(exp.path, mod)
+    case "Ref": {
+      const importedMod = M.importBy(exp.modName, mod)
       const definition = M.modLookupPublicDefinition(importedMod, exp.name)
       if (definition) return M.definitionMeaning(definition)
 
-      let message = `[evaluate] undefined require name`
-      message += `\n  path: ${exp.path}`
+      let message = `[evaluate] undefined ref name`
+      message += `\n  path: ${exp.modName}`
       message += `\n  name: ${exp.name}`
       if (exp.location)
         throw new S.ErrorWithSourceLocation(message, exp.location)

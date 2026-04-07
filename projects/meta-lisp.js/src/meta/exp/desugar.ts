@@ -10,7 +10,7 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
     case "Int":
     case "Float":
     case "Var":
-    case "Require": {
+    case "Ref": {
       return exp
     }
 

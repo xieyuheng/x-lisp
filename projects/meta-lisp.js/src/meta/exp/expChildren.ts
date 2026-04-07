@@ -12,7 +12,7 @@ export function expChildren(exp: Exp): Array<Exp> {
       return []
     }
 
-    case "Require": {
+    case "Ref": {
       return []
     }
 

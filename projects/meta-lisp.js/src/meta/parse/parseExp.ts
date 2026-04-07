@@ -196,8 +196,8 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "`(@require ,path ,name)": ({ path, name }, { location }) => {
-    return M.Require(S.stringContent(path), S.symbolContent(name), location)
+  "`(@ref ,path ,name)": ({ path, name }, { location }) => {
+    return M.Ref(S.stringContent(path), S.symbolContent(name), location)
   },
 
   // - The following two cases must be at the end.

@@ -1,17 +1,10 @@
-[meta-lisp.js] `expSubstitute` handle `Lambda` and `Polymorphic`
-[meta-lisp.js] `expSubstitute` handle `Let1`
-[meta-lisp.js] `expSubstitute` handle `Match`
-
-[meta-lisp.js] `expTraverse` handle `Match`
-[meta-lisp.js] `expFreeNames` handle `Match`
-[meta-lisp.js] `expChildren` handle `Match`
-
-[meta-lisp.js] `mod` -- has `importedNames` and `importedPrefixes`
-[meta-lisp.js] rename `Require` to `Ref` -- has `modName` instead of `path`
+[meta-lisp.js] `LoadingState` -- has `importedNames` and `importedPrefixes`
 [meta-lisp.js] `globalize` -- replace free variable with global `Ref`
 
-- with the help of `mod.importedNames` and `mod.importedPrefixes`
+- remove `expSubstitute`
+- no need to avoid free variable in lhs.
 
 [meta-lisp.js] `(in-module)` and `(module)`
 [meta-lisp.js] fix `loadMod`
+
 [meta-lisp.js] support bundle again
