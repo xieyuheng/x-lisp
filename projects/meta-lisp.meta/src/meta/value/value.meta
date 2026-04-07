@@ -1,9 +1,4 @@
-(import-all "../exp")
-(import-all "../mod")
-(import-all "../env")
-(import-all "../definition")
-
-(export-all)
+(module meta)
 
 (define-data value-t
   (symbol-value (content symbol-t))

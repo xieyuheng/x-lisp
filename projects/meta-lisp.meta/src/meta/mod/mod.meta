@@ -1,3 +1,3 @@
-(export-all)
+(module meta)
 
 (define-interface mod-t)

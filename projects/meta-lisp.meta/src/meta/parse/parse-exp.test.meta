@@ -1,4 +1,6 @@
-(import-all "../exp")
+(module meta)
+
+;; TODO need test framework
 
 (define (main)
   (= path "src/meta/parse/meta.txt")
