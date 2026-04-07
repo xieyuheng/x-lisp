@@ -1,4 +1,3 @@
-[meta-lisp.js] `LoadingState` -- has `importedNames` and `importedPrefixes`
 [meta-lisp.js] `globalize` -- replace free variable with global `Ref`
 
 - remove `expSubstitute`

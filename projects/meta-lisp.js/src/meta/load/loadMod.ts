@@ -5,6 +5,11 @@ import {
 } from "@xieyuheng/helpers.js/file"
 import * as M from "../index.ts"
 
+export type LoadingState = {
+  importedNames: Map<string, { modName: string; name: string }>
+  importedPrefixes: Map<string, { modName: string }>
+}
+
 export function loadMod(path: string, project: M.Project): M.Mod {
   const found = M.projectLookupMod(project, path)
   if (found !== undefined) return found
