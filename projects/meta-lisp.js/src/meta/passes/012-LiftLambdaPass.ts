@@ -48,7 +48,7 @@ function onExp(state: State, exp: M.Exp): M.Exp {
     case "String":
     case "Int":
     case "Float":
-    case "Ref":
+    case "QualifiedVar":
     case "Var": {
       return exp
     }

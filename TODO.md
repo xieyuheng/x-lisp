@@ -1,4 +1,4 @@
-[meta-lisp.js] `globalize` -- replace free variable with global `Ref`
+[meta-lisp.js] `qualifyFreeVars` -- replace free variable with global `Ref`
 
 - remove `expSubstitute`
 - no need to avoid free variable in lhs.

@@ -36,7 +36,7 @@ function onExp(
     case "String":
     case "Int":
     case "Float":
-    case "Ref": {
+    case "QualifiedVar": {
       return exp
     }
 

@@ -9,4 +9,4 @@ be able to use prelude module
 
 # pass
 
-[pass] `030-ExplicateControlPass` -- `toBasicExp` -- handle `Ref` -- fix `ref.test.meta`
+[pass] `030-ExplicateControlPass` -- `toBasicExp` -- handle `QualifiedVar` -- fix `ref.test.meta`

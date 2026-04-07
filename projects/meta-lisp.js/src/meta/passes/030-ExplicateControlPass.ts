@@ -87,7 +87,7 @@ function toBasicExp(exp: M.Exp): B.Exp {
       return exp
     }
 
-    // case "Ref": {
+    // case "QualifiedVar": {
     //   return exp
     // }
 

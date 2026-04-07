@@ -39,12 +39,12 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       else throw new Error(message)
     }
 
-    case "Ref": {
+    case "QualifiedVar": {
       const importedMod = M.importBy(exp.modName, mod)
       const definition = M.modLookupPublicDefinition(importedMod, exp.name)
       if (definition) return M.definitionMeaning(definition)
 
-      let message = `[evaluate] undefined ref name`
+      let message = `[evaluate] undefined qualified variable`
       message += `\n  path: ${exp.modName}`
       message += `\n  name: ${exp.name}`
       if (exp.location)

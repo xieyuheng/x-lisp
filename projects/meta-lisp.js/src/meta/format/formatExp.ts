@@ -46,8 +46,8 @@ export function formatExp(exp: Exp): string {
       return exp.name
     }
 
-    case "Ref": {
-      return `(@ref ${exp.modName} ${exp.name})`
+    case "QualifiedVar": {
+      return `(@qualified-var ${exp.modName} ${exp.name})`
     }
 
     case "Lambda": {

@@ -32,7 +32,7 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
     case "Int":
     case "Float":
     case "Var":
-    case "Ref": {
+    case "QualifiedVar": {
       return exp
     }
 

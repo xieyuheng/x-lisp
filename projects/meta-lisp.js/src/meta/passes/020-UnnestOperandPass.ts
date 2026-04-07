@@ -38,7 +38,7 @@ function generateFreshName(state: State): string {
 
 function onExp(state: State, exp: M.Exp): M.Exp {
   switch (exp.kind) {
-    case "Ref": {
+    case "QualifiedVar": {
       return exp
     }
 

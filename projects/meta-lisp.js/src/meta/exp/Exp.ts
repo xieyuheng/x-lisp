@@ -7,7 +7,7 @@ export type Exp =
   | Int
   | Float
   | Var
-  | Ref
+  | QualifiedVar
   | Lambda
   | Apply
   | Let1
@@ -121,20 +121,20 @@ export function Var(name: string, location?: SourceLocation): Var {
   }
 }
 
-export type Ref = {
-  kind: "Ref"
+export type QualifiedVar = {
+  kind: "QualifiedVar"
   modName: string
   name: string
   location?: SourceLocation
 }
 
-export function Ref(
+export function QualifiedVar(
   modName: string,
   name: string,
   location?: SourceLocation,
-): Ref {
+): QualifiedVar {
   return {
-    kind: "Ref",
+    kind: "QualifiedVar",
     modName,
     name,
     location,

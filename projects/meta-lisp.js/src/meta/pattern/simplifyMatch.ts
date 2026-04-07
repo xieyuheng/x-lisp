@@ -69,7 +69,7 @@ export function simplifyMatch(
           dataConstructorPredicateName,
         )
           ? M.Var(dataConstructorPredicateName, location)
-          : M.Ref(path, dataConstructorPredicateName, location)
+          : M.QualifiedVar(path, dataConstructorPredicateName, location)
 
         const question = M.Apply(dataConstructorPredicate, [target])
 
@@ -87,7 +87,7 @@ export function simplifyMatch(
           const dataFieldGetterName = `${group.dataConstructor.name}-${field.name}`
           const dataFieldGetter = M.modNameIsAsDefined(mod, dataFieldGetterName)
             ? M.Var(dataFieldGetterName, answer.location)
-            : M.Ref(path, dataFieldGetterName, answer.location)
+            : M.QualifiedVar(path, dataFieldGetterName, answer.location)
 
           answer = M.Let1(
             freshVars[i].name,
