@@ -39,18 +39,27 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       else throw new Error(message)
     }
 
-    // case "QualifiedVar": {
-    //   const importedMod = M.importBy(exp.modName, mod)
-    //   const definition = M.modLookupPublicDefinition(importedMod, exp.name)
-    //   if (definition) return M.definitionMeaning(definition)
+    case "QualifiedVar": {
+      const importedMod = M.projectLookupMod(mod.project, exp.modName)
+      if (importedMod === undefined) {
+        let message = `[evaluate] undefined module prefix`
+        message += `\n  prefix: ${exp.modName}`
+        message += `\n  name: ${exp.name}`
+        if (exp.location)
+          throw new S.ErrorWithSourceLocation(message, exp.location)
+        else throw new Error(message)
+      }
 
-    //   let message = `[evaluate] undefined qualified variable`
-    //   message += `\n  path: ${exp.modName}`
-    //   message += `\n  name: ${exp.name}`
-    //   if (exp.location)
-    //     throw new S.ErrorWithSourceLocation(message, exp.location)
-    //   else throw new Error(message)
-    // }
+      const definition = M.modLookupPublicDefinition(importedMod, exp.name)
+      if (definition) return M.definitionMeaning(definition)
+
+      let message = `[evaluate] undefined qualified variable`
+      message += `\n  prefix: ${exp.modName}`
+      message += `\n  name: ${exp.name}`
+      if (exp.location)
+        throw new S.ErrorWithSourceLocation(message, exp.location)
+      else throw new Error(message)
+    }
 
     case "Lambda": {
       return M.ClosureValue(mod, env, exp.parameters, exp.body)
