@@ -1,20 +1,11 @@
-import { type Project } from "./index.ts"
+import * as M from "../index.ts"
 
-export function projectCheck(project: Project): void {
-  // for (const id of projectSourceIds(project)) {
-  //   const path = projectGetSourcePath(project, id)
-  //   M.loadMod(path, project)
-  // }
-  // M.projectForEachDefinition(project, M.definitionDesugar)
-  // M.projectForEachMod(project, (mod) => {
-  //   if (mod.name.endsWith(".type-error.meta")) {
-  //     callWithFile(openOutputFile(`${mod.name}.out`), (file) => {
-  //       withOutputToFile(file, () => {
-  //         M.modForEachOwnDefinition(mod, M.definitionCheck)
-  //       })
-  //     })
-  //   } else {
-  //     M.modForEachOwnDefinition(mod, M.definitionCheck)
-  //   }
-  // })
+export function projectCheck(project: M.Project): void {
+  for (const id of M.projectSourceIds(project)) {
+    const path = M.projectGetSourcePath(project, id)
+    M.loadCode(project, path)
+  }
+
+  M.projectForEachDefinition(project, M.definitionDesugar)
+  M.projectForEachDefinition(project, M.definitionCheck)
 }

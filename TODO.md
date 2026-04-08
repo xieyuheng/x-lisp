@@ -1,5 +1,3 @@
-[meta-lisp.js] use `loadCode` -- `projectBuild` & `projectCheck` & `projectDump`
-
 [meta-lisp.js] refactor `loadCode`
 
 [meta-lisp.js] fix `loadBuiltinMod`
