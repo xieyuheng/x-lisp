@@ -4,7 +4,7 @@ import * as M from "../index.ts"
 
 export function prepareImport(
   mod: M.Mod,
-  state: M.LoadingState,
+  state: M.ModScope,
   stmt: M.Stmt,
 ): void {
   if (!M.isAboutImport(stmt)) {

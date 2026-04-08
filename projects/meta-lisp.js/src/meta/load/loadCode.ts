@@ -9,7 +9,7 @@ import { prepareDefine } from "./prepareDefine.ts"
 import { prepareExempt } from "./prepareExempt.ts"
 import { prepareImport } from "./prepareImport.ts"
 
-export type LoadingState = {
+export type ModScope = {
   importedNames: Map<string, { modName: string; name: string }>
   importedPrefixes: Map<string, { modName: string }>
 }
@@ -27,14 +27,14 @@ export function loadCode(project: M.Project, path: string): M.Mod {
     }
   }
 
-  const state: LoadingState = {
+  const scope: ModScope = {
     importedNames: new Map(),
     importedPrefixes: new Map(),
   }
 
-  for (const stmt of stmts) prepareExempt(mod, state, stmt)
-  for (const stmt of stmts) prepareImport(mod, state, stmt)
-  for (const stmt of stmts) prepareDefine(mod, state, stmt)
+  for (const stmt of stmts) prepareExempt(mod, scope, stmt)
+  for (const stmt of stmts) prepareImport(mod, scope, stmt)
+  for (const stmt of stmts) prepareDefine(mod, scope, stmt)
 
   return mod
 }

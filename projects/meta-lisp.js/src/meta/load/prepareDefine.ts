@@ -7,7 +7,7 @@ import { expandDataPutter } from "./expandDataPutter.ts"
 
 export function prepareDefine(
   mod: M.Mod,
-  state: M.LoadingState,
+  state: M.ModScope,
   stmt: M.Stmt,
 ): void {
   if (stmt.kind === "Claim") {

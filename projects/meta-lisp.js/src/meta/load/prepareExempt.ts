@@ -2,7 +2,7 @@ import * as M from "../index.ts"
 
 export function prepareExempt(
   mod: M.Mod,
-  state: M.LoadingState,
+  state: M.ModScope,
   stmt: M.Stmt,
 ): void {
   if (stmt.kind === "Exempt") {

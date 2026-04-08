@@ -9,7 +9,6 @@
 - remove `expSubstitute`
 - no need to avoid free variable in lhs.
 
-[meta-lisp.js] `(in-module)` and `(module)`
-[meta-lisp.js] fix `loadMod`
+[meta-lisp.js] `(module)`
 
 [meta-lisp.js] support bundle again
