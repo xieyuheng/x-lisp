@@ -196,14 +196,6 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "`(@qualified-var ,modName ,name)": ({ modName, name }, { location }) => {
-    return M.QualifiedVar(
-      S.symbolContent(modName),
-      S.symbolContent(name),
-      location,
-    )
-  },
-
   // - The following two cases must be at the end.
 
   "(cons* target args)": ({ target, args }, { location }) => {
