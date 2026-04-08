@@ -9,11 +9,6 @@ import { prepareDefine } from "./prepareDefine.ts"
 import { prepareExempt } from "./prepareExempt.ts"
 import { prepareImport } from "./prepareImport.ts"
 
-export type ModScope = {
-  importedNames: Map<string, { modName: string; name: string }>
-  importedPrefixes: Map<string, { modName: string }>
-}
-
 export function loadCode(project: M.Project, path: string): M.Mod {
   const stmts = loadStmts(path)
   const modName = findModName(stmts)
@@ -27,10 +22,7 @@ export function loadCode(project: M.Project, path: string): M.Mod {
     }
   }
 
-  const scope: ModScope = {
-    importedNames: new Map(),
-    importedPrefixes: new Map(),
-  }
+  const scope = M.createModScope()
 
   for (const stmt of stmts) prepareExempt(mod, scope, stmt)
   for (const stmt of stmts) prepareImport(mod, scope, stmt)

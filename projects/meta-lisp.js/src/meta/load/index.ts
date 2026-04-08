@@ -1,4 +1,5 @@
 export * from "./importBy.ts"
 export * from "./loadCode.ts"
 export * from "./loadMod.ts"
+export * from "./ModScope.ts"
 export * from "./prepareCode.ts"
