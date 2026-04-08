@@ -56,7 +56,7 @@ export function loadBuiltinMod(project: M.Project): M.Mod {
 
   callWithFile(openInputFile(builtinModPath), (file) => {
     const code = fileRead(file)
-    M.prepareCode(mod, code)
+    // M.prepareCode(mod, code)
   })
 
   return mod

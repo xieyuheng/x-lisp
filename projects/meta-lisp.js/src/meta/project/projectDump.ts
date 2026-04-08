@@ -2,19 +2,9 @@ import {
   callWithFile,
   fileWrite,
   openOutputFile,
-  withOutputToFile,
 } from "@xieyuheng/helpers.js/file"
 import Path from "node:path"
-import { textWidth } from "../../config.ts"
-import * as M from "../index.ts"
-import * as Passes from "../passes/index.ts"
-import {
-  logPath,
-  projectGetSourcePath,
-  projectOutputDirectory,
-  projectSourceIds,
-  type Project,
-} from "./index.ts"
+import { logPath, projectOutputDirectory, type Project } from "./index.ts"
 
 export function projectDump(project: Project): void {
   // for (const id of projectSourceIds(project)) {
@@ -27,9 +17,7 @@ export function projectDump(project: Project): void {
   //     M.prettyModDefinitions(textWidth, mod),
   //   )
   // }
-
   // M.projectForEachDefinition(project, M.definitionDesugar)
-
   // for (const id of projectSourceIds(project)) {
   //   const path = projectGetSourcePath(project, id)
   //   const mod = M.loadMod(path, project)
@@ -40,7 +28,6 @@ export function projectDump(project: Project): void {
   //     M.prettyModDefinitions(textWidth, mod),
   //   )
   // }
-
   // M.projectForEachMod(project, (mod) => {
   //   if (mod.name.endsWith(".type-error.meta")) {
   //     callWithFile(openOutputFile(`${mod.name}.out`), (file) => {
@@ -52,7 +39,6 @@ export function projectDump(project: Project): void {
   //     M.modForEachOwnDefinition(mod, M.definitionCheck)
   //   }
   // })
-
   // for (const id of projectSourceIds(project)) {
   //   const path = projectGetSourcePath(project, id)
   //   const mod = M.loadMod(path, project)
@@ -63,7 +49,6 @@ export function projectDump(project: Project): void {
   //     M.prettyModDefinitions(textWidth, mod),
   //   )
   // }
-
   // for (const id of projectSourceIds(project)) {
   //   const path = projectGetSourcePath(project, id)
   //   const mod = M.loadMod(path, project)
@@ -75,7 +60,6 @@ export function projectDump(project: Project): void {
   //     M.prettyModDefinitions(textWidth, mod),
   //   )
   // }
-
   // for (const id of projectSourceIds(project)) {
   //   const path = projectGetSourcePath(project, id)
   //   const mod = M.loadMod(path, project)
@@ -87,7 +71,6 @@ export function projectDump(project: Project): void {
   //     M.prettyModDefinitions(textWidth, mod),
   //   )
   // }
-
   // for (const id of projectSourceIds(project)) {
   //   const path = projectGetSourcePath(project, id)
   //   const mod = M.loadMod(path, project)
@@ -99,7 +82,6 @@ export function projectDump(project: Project): void {
   //     M.prettyModDefinitions(textWidth, mod),
   //   )
   // }
-
   // for (const id of projectSourceIds(project)) {
   //   const path = projectGetSourcePath(project, id)
   //   const mod = M.loadMod(path, project)

@@ -5,9 +5,9 @@ import {
 } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
-import { prepareDefine } from "./prepareDefine.ts"
-import { prepareExempt } from "./prepareExempt.ts"
-import { prepareImport } from "./prepareImport.ts"
+import { loadDefine } from "./loadDefine.ts"
+import { loadExempt } from "./loadExempt.ts"
+import { loadImport } from "./loadImport.ts"
 
 export function loadCode(project: M.Project, path: string): M.Mod {
   const stmts = loadStmts(path)
@@ -24,9 +24,9 @@ export function loadCode(project: M.Project, path: string): M.Mod {
 
   const scope = M.createModScope()
 
-  for (const stmt of stmts) prepareExempt(mod, scope, stmt)
-  for (const stmt of stmts) prepareImport(mod, scope, stmt)
-  for (const stmt of stmts) prepareDefine(mod, scope, stmt)
+  for (const stmt of stmts) loadExempt(mod, scope, stmt)
+  for (const stmt of stmts) loadImport(mod, scope, stmt)
+  for (const stmt of stmts) loadDefine(mod, scope, stmt)
 
   return mod
 }

@@ -2,11 +2,7 @@ import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function prepareImport(
-  mod: M.Mod,
-  state: M.ModScope,
-  stmt: M.Stmt,
-): void {
+export function loadImport(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   if (!M.isAboutImport(stmt)) {
     return
   }
