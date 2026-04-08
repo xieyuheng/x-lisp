@@ -225,7 +225,18 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
       case "String":
         return M.String(S.stringContent(data), location)
       case "Symbol": {
-        return M.Var(S.symbolContent(data), location)
+        const name = S.symbolContent(data)
+        if (name.includes("/")) {
+          const parts = name.split("/")
+          if (parts.length !== 2) {
+            let message = `qualified variable must have only one /`
+            throw new S.ErrorWithSourceLocation(message, location)
+          }
+
+          return M.QualifiedVar(parts[0], parts[1], location)
+        } else {
+          return M.Var(name, location)
+        }
       }
     }
   },
