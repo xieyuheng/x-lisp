@@ -33,8 +33,9 @@ export function loadStmts(mod: M.Mod, stmts: Array<M.Stmt>): void {
 
 function findModName(stmts: Array<M.Stmt>): string {
   for (const stmt of stmts) {
-    // if (stmt.kind === "DeclareModule") {
-    // }
+    if (stmt.kind === "DeclareModule") {
+      return stmt.name
+    }
   }
 
   throw new Error(`[findModName] no module name`)
