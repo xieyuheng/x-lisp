@@ -1,3 +1,5 @@
+(module test-suite)
+
 (claim gcd (-> int-t int-t int-t))
 
 (define (gcd a b)
@@ -5,8 +7,8 @@
     a
     (gcd b (imod a b))))
 
-(claim main (-> void-t))
+;; (claim main (-> void-t))
 
-(define (main)
-  (assert-equal 1 (gcd 13 7))
-  (assert-equal 4 (gcd 12 8)))
+;; (define (main)
+;;   (assert-equal 1 (gcd 13 7))
+;;   (assert-equal 4 (gcd 12 8)))

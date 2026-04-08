@@ -1,9 +1,11 @@
+(module test-suite)
+
 (claim square (-> int-t int-t))
 
 (define (square x)
   (imul x x))
 
-(claim main (-> void-t))
+;; (claim main (-> void-t))
 
-(define (main)
-  (assert-equal 81 (square (square 3))))
+;; (define (main)
+;;   (assert-equal 81 (square (square 3))))

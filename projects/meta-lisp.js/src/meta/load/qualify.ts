@@ -2,6 +2,14 @@ import * as M from "../index.ts"
 
 export function qualifyExp(scope: M.ModScope, exp: M.Exp): M.Exp {
   switch (exp.kind) {
+    case "Symbol":
+    case "Keyword":
+    case "String":
+    case "Int":
+    case "Float": {
+      return exp
+    }
+
     case "Var": {
       const entry = scope.importedNames.get(exp.name)
       if (entry) {
