@@ -1,4 +1,3 @@
-[meta-lisp.js] `loadDefine` -- call `qualifyExp` on `DefineInterface`
 [meta-lisp.js] `loadDefine` -- call `qualifyExp` on `DefineData`
 
 [meta-lisp.js] `typeInfer` -- fix `QualifiedVar`

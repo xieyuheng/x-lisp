@@ -4,6 +4,7 @@ import { expandDataConstructor } from "./expandDataConstructor.ts"
 import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate.ts"
 import { expandDataGetter } from "./expandDataGetter.ts"
 import { expandDataPutter } from "./expandDataPutter.ts"
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 
 export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   if (stmt.kind === "Claim") {
@@ -99,7 +100,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
     const name = stmt.interfaceConstructor.name
     const interfaceConstructor =
       stmt.interfaceConstructor as unknown as M.InterfaceConstructor
-    const attributeTypes = stmt.attributeTypes
+    const attributeTypes = recordMapValue(stmt.attributeTypes, type => M.qualifyExp(newScope, type))
     const definition = M.InterfaceDefinition(
       mod,
       name,
