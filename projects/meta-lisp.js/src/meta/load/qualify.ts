@@ -1,38 +1,79 @@
 import * as M from "../index.ts"
 
-function qualifyVar(scope: M.ModScope, varExp: M.Var): M.Exp {
-  // TODO
-  return varExp
-}
-
 export function qualifyExp(scope: M.ModScope, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Var": {
-      return qualifyVar(scope, exp)
+      const entry = scope.importedNames.get(exp.name)
+      if (entry) {
+        return M.QualifiedVar(entry.modName, entry.name, exp.location)
+      } else {
+        return exp
+      }
+    }
+
+    case "QualifiedVar": {
+      const entry = scope.importedPrefixes.get(exp.modName)
+      if (entry) {
+        return M.QualifiedVar(entry.modName, exp.name, exp.location)
+      } else {
+        return exp
+      }
     }
 
     // no need to avoid free variable in lhs
 
-    // case "Lambda": {
-    //   const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
-    //   return expFreeNames(newBoundNames, exp.body)
-    // }
+    case "Lambda": {
+      const newScope = M.modScopeFilterBoundNames(
+        new Set(exp.parameters),
+        scope,
+      )
+      return M.Lambda(
+        exp.parameters,
+        qualifyExp(newScope, exp.body),
+        exp.location,
+      )
+    }
 
-    // case "Polymorphic": {
-    //   const newBoundNames = setUnion(boundNames, new Set(exp.parameters))
-    //   return expFreeNames(newBoundNames, exp.body)
-    // }
+    case "Polymorphic": {
+      const newScope = M.modScopeFilterBoundNames(
+        new Set(exp.parameters),
+        scope,
+      )
+      return M.Polymorphic(
+        exp.parameters,
+        qualifyExp(newScope, exp.body),
+        exp.location,
+      )
+    }
 
-    // case "Let1": {
-    //   const newBoundNames = setAdd(boundNames, exp.name)
-    //   return setUnionMany([
-    //     expFreeNames(boundNames, exp.rhs),
-    //     expFreeNames(newBoundNames, exp.body),
-    //   ])
-    // }
+    case "Let1": {
+      const newScope = M.modScopeFilterBoundNames(new Set([exp.name]), scope)
+      return M.Let1(
+        exp.name,
+        qualifyExp(scope, exp.rhs),
+        qualifyExp(newScope, exp.body),
+        exp.location,
+      )
+    }
 
-    // case "Match": {
-    // }
+    case "Match": {
+      const targets = exp.targets.map((target) => qualifyExp(scope, target))
+      const clauses = exp.clauses.map((clause) =>
+        M.MatchClause(
+          clause.patterns,
+          qualifyExp(M.modScopeDropImportedNames(scope), clause.body),
+          clause.location,
+        ),
+      )
+
+      let result: M.Exp = M.Match(targets, clauses, exp.location)
+      for (const [name, entry] of scope.importedNames) {
+        const rhs = M.QualifiedVar(entry.modName, entry.name, exp.location)
+        result = M.Let1(name, rhs, result, exp.location)
+      }
+
+      return result
+    }
 
     default: {
       return M.expTraverse((child) => qualifyExp(scope, child), exp)
