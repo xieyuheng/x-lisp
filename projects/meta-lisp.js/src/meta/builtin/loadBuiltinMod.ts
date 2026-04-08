@@ -3,6 +3,7 @@ import {
   fileRead,
   openInputFile,
 } from "@xieyuheng/helpers.js/file"
+import * as S from "@xieyuheng/sexp.js"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as M from "../index.ts"
@@ -25,16 +26,14 @@ import { builtinVoid } from "./builtinVoid.ts"
 
 const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 
-export const builtinModPath = Path.join(
-  currentDir,
-  "../../../lib/builtin/index.meta",
-)
-
 export function loadBuiltinMod(project: M.Project): M.Mod {
-  const found = M.projectLookupMod(project, builtinModPath)
+  const path = Path.join(currentDir, "../../../lib/builtin/index.meta")
+  const modName = "builtin"
+
+  const found = M.projectLookupMod(project, modName)
   if (found !== undefined) return found
 
-  const mod = M.createMod(builtinModPath, project)
+  const mod = M.createMod(modName, project)
   M.projectAddMod(project, mod)
 
   builtinInt(mod)
@@ -54,9 +53,11 @@ export function loadBuiltinMod(project: M.Project): M.Mod {
   builtinError(mod)
   builtinType(mod)
 
-  callWithFile(openInputFile(builtinModPath), (file) => {
+  callWithFile(openInputFile(path), (file) => {
     const code = fileRead(file)
-    // M.prepareCode(mod, code)
+    const sexps = S.parseSexps(code, { path })
+    const stmts = sexps.map(M.parseStmt)
+    M.loadStmts(mod, stmts)
   })
 
   return mod

@@ -1,16 +1,14 @@
-import {
-  callWithFile,
-  fileRead,
-  openInputFile,
-} from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
+import fs from "node:fs"
 import * as M from "../index.ts"
 import { loadDefine } from "./loadDefine.ts"
 import { loadExempt } from "./loadExempt.ts"
 import { loadImport } from "./loadImport.ts"
 
-export function loadCode(project: M.Project, path: string): M.Mod {
-  const stmts = loadStmts(path)
+export function loadCode(project: M.Project, path: string): void {
+  const code = fs.readFileSync(path, "utf-8")
+  const sexps = S.parseSexps(code, { path })
+  const stmts = sexps.map(M.parseStmt)
   const modName = findModName(stmts)
   let mod = M.projectLookupMod(project, modName)
   if (mod === undefined) {
@@ -22,27 +20,17 @@ export function loadCode(project: M.Project, path: string): M.Mod {
     }
   }
 
+  loadStmts(mod, stmts)
+}
+
+export function loadStmts(mod: M.Mod, stmts: Array<M.Stmt>): void {
   const scope = M.createModScope()
 
   for (const stmt of stmts) loadExempt(mod, scope, stmt)
   for (const stmt of stmts) loadImport(mod, scope, stmt)
   for (const stmt of stmts) loadDefine(mod, scope, stmt)
-
-  return mod
 }
 
 function findModName(stmts: Array<M.Stmt>): string {
   return `TODO`
-}
-
-export function loadStmts(path: string): Array<M.Stmt> {
-  const stmts: Array<M.Stmt> = []
-
-  callWithFile(openInputFile(path), (file) => {
-    const code = fileRead(file)
-    const sexps = S.parseSexps(code, { path })
-    stmts.push(...sexps.map(M.parseStmt))
-  })
-
-  return stmts
 }

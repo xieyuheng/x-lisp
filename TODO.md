@@ -1,7 +1,3 @@
-[meta-lisp.js] refactor `loadCode`
-
-[meta-lisp.js] fix `loadBuiltinMod`
-
 [meta-lisp.js] `qualifyFreeVars` -- replace free variable with `QualifiedVar`
 
 - remove `expSubstitute`

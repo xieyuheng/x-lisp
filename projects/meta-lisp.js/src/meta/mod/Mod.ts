@@ -1,5 +1,4 @@
 import * as S from "@xieyuheng/sexp.js"
-import Path from "node:path"
 import { type DataConstructor, type Definition } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 import * as M from "../index.ts"
@@ -23,9 +22,9 @@ export type Mod = {
   project: M.Project
 }
 
-export function createMod(path: string, project: M.Project): Mod {
+export function createMod(name: string, project: M.Project): Mod {
   return {
-    name: Path.resolve(path),
+    name,
     stmts: [],
     exported: new Set(),
     exempted: new Set(),

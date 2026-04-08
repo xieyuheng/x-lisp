@@ -1,5 +1,4 @@
 import Path from "node:path"
-import * as M from "../index.ts"
 import { createProject, type Project } from "./index.ts"
 
 export function projectFromSourcePaths(
@@ -15,9 +14,9 @@ export function projectFromSourcePaths(
     },
   })
 
-  project.sourceIds = sourcePaths
-    .filter((path) => path !== M.builtinModPath)
-    .map((path) => Path.relative(rootDirectory, path))
+  project.sourceIds = sourcePaths.map((path) =>
+    Path.relative(rootDirectory, path),
+  )
 
   return project
 }
