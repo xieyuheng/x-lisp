@@ -1,27 +1,13 @@
 import * as M from "../index.ts"
 
 export function loadImport(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
-  if (!M.isAboutImport(stmt)) {
-    return
+  if (stmt.kind === "Import") {
+    for (const name of stmt.names) {
+      scope.importedNames.set(name, { modName: stmt.modName, name })
+    }
   }
 
-  // const importedMod = M.importBy(stmt.path, mod)
-  // const definitionEntries = M.modPublicDefinitionEntries(importedMod)
-
-  // if (stmt.kind === "Import") {
-  //   checkUndefinedNames(mod, importedMod, stmt.names, stmt.location)
-
-  //   for (const [name, definition] of definitionEntries) {
-  //     if (stmt.names.includes(name)) {
-  //       M.modDefine(mod, name, definition)
-  //     }
-  //   }
-  // }
-
-  // if (stmt.kind === "ImportAs") {
-  //   for (const [name, definition] of definitionEntries) {
-  //     const fullName = `${stmt.prefix}${name}`
-  //     M.modDefine(mod, fullName, definition)
-  //   }
-  // }
+  if (stmt.kind === "ImportAs") {
+    scope.importedPrefixes.set(stmt.prefix, { modName: stmt.modName })
+  }
 }
