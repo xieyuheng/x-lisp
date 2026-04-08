@@ -1,5 +1,3 @@
-import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
-import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 export function loadImport(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
@@ -26,24 +24,4 @@ export function loadImport(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   //     M.modDefine(mod, fullName, definition)
   //   }
   // }
-}
-
-function checkUndefinedNames(
-  mod: M.Mod,
-  importedMod: M.Mod,
-  names: Array<string>,
-  location?: S.SourceLocation,
-): void {
-  const definedNames = new Set(
-    M.modPublicDefinitionEntries(importedMod).map(([key]) => key),
-  )
-  const undefinedNames = names.filter((name) => !definedNames.has(name))
-  if (undefinedNames.length === 0) return
-
-  let message = `[checkUndefinedNames] found undefined names during importing`
-  message += `\n  mod: ${pathRelativeToCwd(mod.name)}`
-  message += `\n  importing from mod: ${pathRelativeToCwd(importedMod.name)}`
-  message += `\n  undefined names: [${undefinedNames.join(" ")}]`
-  if (location) throw new S.ErrorWithSourceLocation(message, location)
-  else throw new Error(message)
 }
