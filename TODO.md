@@ -1,6 +1,3 @@
-[meta-lisp.js] disable callers of `loadMod` -- `projectBuild` & `projectCheck` & `projectDump`
-
-[meta-lisp.js] remove `loadMod` and `importBy`
 [meta-lisp.js] use `loadCode` -- `projectBuild` & `projectCheck` & `projectDump`
 [meta-lisp.js] refactor `loadCode`
 
@@ -10,5 +7,8 @@
 - no need to avoid free variable in lhs.
 
 [meta-lisp.js] `(module)`
+
+[meta-lisp.js] `typeInfer` -- fix `QualifiedVar`
+[meta-lisp.js] `evaluate` -- fix `QualifiedVar`
 
 [meta-lisp.js] support bundle again

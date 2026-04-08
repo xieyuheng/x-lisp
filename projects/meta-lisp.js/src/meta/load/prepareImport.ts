@@ -11,25 +11,25 @@ export function prepareImport(
     return
   }
 
-  const importedMod = M.importBy(stmt.path, mod)
-  const definitionEntries = M.modPublicDefinitionEntries(importedMod)
+  // const importedMod = M.importBy(stmt.path, mod)
+  // const definitionEntries = M.modPublicDefinitionEntries(importedMod)
 
-  if (stmt.kind === "Import") {
-    checkUndefinedNames(mod, importedMod, stmt.names, stmt.location)
+  // if (stmt.kind === "Import") {
+  //   checkUndefinedNames(mod, importedMod, stmt.names, stmt.location)
 
-    for (const [name, definition] of definitionEntries) {
-      if (stmt.names.includes(name)) {
-        M.modDefine(mod, name, definition)
-      }
-    }
-  }
+  //   for (const [name, definition] of definitionEntries) {
+  //     if (stmt.names.includes(name)) {
+  //       M.modDefine(mod, name, definition)
+  //     }
+  //   }
+  // }
 
-  if (stmt.kind === "ImportAs") {
-    for (const [name, definition] of definitionEntries) {
-      const fullName = `${stmt.prefix}${name}`
-      M.modDefine(mod, fullName, definition)
-    }
-  }
+  // if (stmt.kind === "ImportAs") {
+  //   for (const [name, definition] of definitionEntries) {
+  //     const fullName = `${stmt.prefix}${name}`
+  //     M.modDefine(mod, fullName, definition)
+  //   }
+  // }
 }
 
 function checkUndefinedNames(
