@@ -32,5 +32,10 @@ export function loadStmts(mod: M.Mod, stmts: Array<M.Stmt>): void {
 }
 
 function findModName(stmts: Array<M.Stmt>): string {
-  return `TODO`
+  for (const stmt of stmts) {
+    // if (stmt.kind === "DeclareModule") {
+    // }
+  }
+
+  throw new Error(`[findModName] no module name`)
 }

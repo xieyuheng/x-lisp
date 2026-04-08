@@ -15,6 +15,7 @@ export type Stmt =
   | DefineInterface
   | Claim
   | Exempt
+  | DeclareModule
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -132,6 +133,23 @@ export function Exempt(
   return {
     kind: "Exempt",
     names,
+    location,
+  }
+}
+
+export type DeclareModule = {
+  kind: "DeclareModule"
+  name: string
+  location?: SourceLocation
+}
+
+export function DeclareModule(
+  name: string,
+  location?: SourceLocation,
+): DeclareModule {
+  return {
+    kind: "DeclareModule",
+    name,
     location,
   }
 }

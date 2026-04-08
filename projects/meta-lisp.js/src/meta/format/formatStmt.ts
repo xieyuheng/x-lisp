@@ -38,11 +38,15 @@ export function formatStmt(stmt: Stmt): string {
     }
 
     case "Import": {
-      return `(import "${stmt.path}" ${stmt.names.join(" ")})`
+      return `(import ${stmt.modName} ${stmt.names.join(" ")})`
     }
 
     case "ImportAs": {
-      return `(import-as "${stmt.path}" ${stmt.prefix})`
+      return `(import-as ${stmt.modName} ${stmt.prefix})`
+    }
+
+    case "DeclareModule": {
+      return `(module ${stmt.name})`
     }
   }
 }

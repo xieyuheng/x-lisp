@@ -4,19 +4,19 @@ export type AboutImport = Import | ImportAs
 
 export type Import = {
   kind: "Import"
-  path: string
+  modName: string
   names: Array<string>
   location?: SourceLocation
 }
 
 export function Import(
-  path: string,
+  modName: string,
   names: Array<string>,
   location?: SourceLocation,
 ): Import {
   return {
     kind: "Import",
-    path,
+    modName,
     names,
     location,
   }
@@ -24,19 +24,19 @@ export function Import(
 
 export type ImportAs = {
   kind: "ImportAs"
-  path: string
+  modName: string
   prefix: string
   location?: SourceLocation
 }
 
 export function ImportAs(
-  path: string,
+  modName: string,
   prefix: string,
   location?: SourceLocation,
 ): ImportAs {
   return {
     kind: "ImportAs",
-    path,
+    modName,
     prefix,
     location,
   }
