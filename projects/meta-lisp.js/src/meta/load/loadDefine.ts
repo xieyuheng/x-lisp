@@ -1,10 +1,10 @@
 import { range } from "@xieyuheng/helpers.js/range"
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as M from "../index.ts"
 import { expandDataConstructor } from "./expandDataConstructor.ts"
 import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate.ts"
 import { expandDataGetter } from "./expandDataGetter.ts"
 import { expandDataPutter } from "./expandDataPutter.ts"
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 
 export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   if (stmt.kind === "Claim") {
@@ -50,6 +50,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
       stmt.dataTypeConstructor as unknown as M.DataTypeConstructor
     const dataConstructors =
       stmt.dataConstructors as unknown as Array<M.DataConstructor>
+
     const definition = M.DataDefinition(
       mod,
       name,
@@ -57,9 +58,15 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
       dataConstructors,
       stmt.location,
     )
+
     dataTypeConstructor.definition = definition
+
     for (const dataConstructor of dataConstructors) {
       dataConstructor.definition = definition
+      dataConstructor.fields = dataConstructor.fields.map((field) => ({
+        name: field.name,
+        type: M.qualifyExp(newScope, field.type),
+      }))
     }
 
     M.modDefine(mod, name, definition)
@@ -100,7 +107,9 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
     const name = stmt.interfaceConstructor.name
     const interfaceConstructor =
       stmt.interfaceConstructor as unknown as M.InterfaceConstructor
-    const attributeTypes = recordMapValue(stmt.attributeTypes, type => M.qualifyExp(newScope, type))
+    const attributeTypes = recordMapValue(stmt.attributeTypes, (type) =>
+      M.qualifyExp(newScope, type),
+    )
     const definition = M.InterfaceDefinition(
       mod,
       name,
