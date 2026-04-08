@@ -7,10 +7,11 @@ import { expandDataPutter } from "./expandDataPutter.ts"
 
 export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   if (stmt.kind === "Claim") {
-    M.modClaim(mod, stmt.name, stmt.type)
+    M.modClaim(mod, stmt.name, M.qualifyExp(scope, stmt.type))
   }
 
   if (stmt.kind === "DefineFunction") {
+    const newScope = M.modScopeFilterBoundNames(scope, new Set(stmt.parameters))
     M.modDefine(
       mod,
       stmt.name,
@@ -18,7 +19,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
         mod,
         stmt.name,
         stmt.parameters,
-        stmt.body,
+        M.qualifyExp(newScope, stmt.body),
         stmt.location,
       ),
     )
@@ -28,11 +29,21 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
     M.modDefine(
       mod,
       stmt.name,
-      M.VariableDefinition(mod, stmt.name, stmt.body, stmt.location),
+      M.VariableDefinition(
+        mod,
+        stmt.name,
+        M.qualifyExp(scope, stmt.body),
+        stmt.location,
+      ),
     )
   }
 
   if (stmt.kind === "DefineData") {
+    const newScope = M.modScopeFilterBoundNames(
+      scope,
+      new Set(stmt.dataTypeConstructor.parameters),
+    )
+
     const name = stmt.dataTypeConstructor.name
     const dataTypeConstructor =
       stmt.dataTypeConstructor as unknown as M.DataTypeConstructor
@@ -80,6 +91,11 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   }
 
   if (stmt.kind === "DefineInterface") {
+    const newScope = M.modScopeFilterBoundNames(
+      scope,
+      new Set(stmt.interfaceConstructor.parameters),
+    )
+
     const name = stmt.interfaceConstructor.name
     const interfaceConstructor =
       stmt.interfaceConstructor as unknown as M.InterfaceConstructor

@@ -11,8 +11,8 @@ export function createModScope(): ModScope {
 }
 
 export function modScopeFilterBoundNames(
-  boundNames: Set<string>,
   scope: ModScope,
+  boundNames: Set<string>,
 ): ModScope {
   const importedNames: Map<string, { modName: string; name: string }> =
     new Map()

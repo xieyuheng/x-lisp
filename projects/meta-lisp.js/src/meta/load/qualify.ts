@@ -24,8 +24,8 @@ export function qualifyExp(scope: M.ModScope, exp: M.Exp): M.Exp {
 
     case "Lambda": {
       const newScope = M.modScopeFilterBoundNames(
-        new Set(exp.parameters),
         scope,
+        new Set(exp.parameters),
       )
       return M.Lambda(
         exp.parameters,
@@ -36,8 +36,8 @@ export function qualifyExp(scope: M.ModScope, exp: M.Exp): M.Exp {
 
     case "Polymorphic": {
       const newScope = M.modScopeFilterBoundNames(
-        new Set(exp.parameters),
         scope,
+        new Set(exp.parameters),
       )
       return M.Polymorphic(
         exp.parameters,
@@ -47,7 +47,7 @@ export function qualifyExp(scope: M.ModScope, exp: M.Exp): M.Exp {
     }
 
     case "Let1": {
-      const newScope = M.modScopeFilterBoundNames(new Set([exp.name]), scope)
+      const newScope = M.modScopeFilterBoundNames(scope, new Set([exp.name]))
       return M.Let1(
         exp.name,
         qualifyExp(scope, exp.rhs),
