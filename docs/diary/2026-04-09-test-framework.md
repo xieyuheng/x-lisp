@@ -13,7 +13,5 @@ date: 2026-04-09
 - 运行测试的过程中，标准输出可以被 snapshot 到一个文件中。
   文件所在的路径就是 module 名，文件名就是 test 名。
 
-- 想要实现对 type error 的 snapshot testing，
-  只需要保证 type error report 是打印到标准输出就可以了。
-
-  - syntax error 应该也可以用类似的方式处理。
+但是对 type error 和 syntax error 的 snapshot testing，
+并不在一般项目的测试流程之内，不能用这种方式来写。
