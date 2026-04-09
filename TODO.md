@@ -1,4 +1,3 @@
-[meta-lisp.js] parse `(type-error-module)`
 [meta-lisp.js] `projectCheck` handle type error module
 
 [meta-lisp.js] test-suite -- recover function tests

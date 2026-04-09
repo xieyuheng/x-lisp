@@ -43,6 +43,10 @@ export const parseStmt = S.createRouter<M.Stmt>({
     return M.DeclareModule(S.symbolContent(name), location)
   },
 
+  "`(type-error-module ,name)": ({ name }, { location }) => {
+    return M.DeclareTypeErrorModule(S.symbolContent(name), location)
+  },
+
   "(cons* 'import path entries)": ({ path, entries }, { location }) => {
     return M.Import(
       S.stringContent(path),
