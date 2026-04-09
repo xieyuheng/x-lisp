@@ -25,10 +25,10 @@ export function definitionCheck(definition: M.Definition): null {
         definition.dataTypeConstructor.parameters.length === 0
           ? M.Tau(tauTypes, definition.location)
           : M.Lambda(
-              definition.dataTypeConstructor.parameters,
-              M.Tau(tauTypes, definition.location),
-              definition.location,
-            )
+            definition.dataTypeConstructor.parameters,
+            M.Tau(tauTypes, definition.location),
+            definition.location,
+          )
       checkExp(mod, name, exp)
       definition.isChecked = true
       return null
@@ -39,10 +39,10 @@ export function definitionCheck(definition: M.Definition): null {
         definition.interfaceConstructor.parameters.length === 0
           ? M.Interface(definition.attributeTypes, definition.location)
           : M.Lambda(
-              definition.interfaceConstructor.parameters,
-              M.Interface(definition.attributeTypes, definition.location),
-              definition.location,
-            )
+            definition.interfaceConstructor.parameters,
+            M.Interface(definition.attributeTypes, definition.location),
+            definition.location,
+          )
       checkExp(mod, name, exp)
       definition.isChecked = true
       return null
@@ -61,6 +61,12 @@ export function definitionCheck(definition: M.Definition): null {
     }
 
     case "VariableDefinition": {
+      checkExp(mod, name, definition.body)
+      definition.isChecked = true
+      return null
+    }
+
+    case "TestDefinition": {
       checkExp(mod, name, definition.body)
       definition.isChecked = true
       return null

@@ -39,6 +39,20 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
     )
   }
 
+  if (stmt.kind === "DefineTest") {
+    M.modDefine(
+      mod,
+      stmt.name,
+      M.TestDefinition(
+        mod,
+        stmt.name,
+        M.qualifyExp(scope, stmt.body),
+        stmt.location,
+      ),
+    )
+  }
+
+
   if (stmt.kind === "DefineData") {
     const newScope = M.modScopeFilterBoundNames(
       scope,

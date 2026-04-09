@@ -42,6 +42,22 @@ function onDefinition(
       ]
     }
 
+
+    case "TestDefinition": {
+      const state = createState()
+      const block = B.Block("body", [])
+      addBlock(state, block)
+      block.instrs = inTail(state, definition.body)
+      return [
+        B.DefineFunction(
+          basicMod,
+          definition.name,
+          [],
+          state.blocks,
+        ),
+      ]
+    }
+
     case "VariableDefinition": {
       const state = createState()
       const block = B.Block("body", [])

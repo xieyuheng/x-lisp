@@ -16,6 +16,10 @@ export function definitionMeaning(definition: M.Definition): M.Value {
       return M.DefinitionValue(definition)
     }
 
+    case "TestDefinition": {
+      return M.DefinitionValue(definition)
+    }
+
     case "VariableDefinition": {
       if (!definition.value) {
         definition.value = M.evaluate(

@@ -8,6 +8,7 @@ export type Definition =
   | PrimitiveVariableDefinition
   | FunctionDefinition
   | VariableDefinition
+  | TestDefinition
   | DataDefinition
   | InterfaceDefinition
 
@@ -109,6 +110,30 @@ export function VariableDefinition(
 ): VariableDefinition {
   return {
     kind: "VariableDefinition",
+    mod,
+    name,
+    body,
+    location,
+  }
+}
+
+export type TestDefinition = {
+  kind: "TestDefinition"
+  mod: Mod
+  name: string
+  body: Exp
+  value?: Value
+  location?: SourceLocation
+} & DefinitionState
+
+export function TestDefinition(
+  mod: Mod,
+  name: string,
+  body: Exp,
+  location?: SourceLocation,
+): TestDefinition {
+  return {
+    kind: "TestDefinition",
     mod,
     name,
     body,
