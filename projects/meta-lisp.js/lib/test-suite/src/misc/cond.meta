@@ -1,6 +1,6 @@
-(claim main (-> void-t))
+(module test-suite)
 
-(define (main)
+(define-test cond-test
   ;; TODO (cond) should not be desugared to (assert false)
 
   (assert-equal

@@ -1,5 +1,3 @@
-[meta-lisp.js] test-suite -- recover syntax tests
-
 [meta-lisp.js] `projectCheck` handle type error module
 
 [meta-lisp.js] project load by topological order -- fix `my-list-type-error.meta`

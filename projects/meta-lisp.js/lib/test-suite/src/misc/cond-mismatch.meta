@@ -1,5 +1,5 @@
-(claim main (-> void-t))
+(module test-suite)
 
-(define (main)
+(define-test cond-mismatch-test
   (cond ((equal? 1 2) void)
         ((equal? 1 2) void)))
