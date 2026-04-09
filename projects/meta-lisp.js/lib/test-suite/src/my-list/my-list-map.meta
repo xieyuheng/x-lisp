@@ -1,6 +1,4 @@
-(import-all "my-list")
-
-(export-all)
+(module my-list)
 
 (claim my-list-map
   (polymorphic (A B)
@@ -11,3 +9,9 @@
   (match list
     (nil nil)
     ((li head tail) (li (f head) (my-list-map f tail)))))
+
+(define-test my-list-map-test
+  (assert-equal nil (my-list-map (iadd 1) nil))
+  (assert-equal
+    (li 2 (li 3 (li 4 nil)))
+    (my-list-map (iadd 1) (li 1 (li 2 (li 3 nil))))))

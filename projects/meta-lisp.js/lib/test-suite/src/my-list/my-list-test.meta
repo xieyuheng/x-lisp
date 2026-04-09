@@ -1,8 +1,6 @@
-(import-all "my-list")
+(module my-list)
 
-(claim main (-> void-t))
-
-(define (main)
+(define-test my-list-test
   ;; data constructor predicate
 
   (assert (nil? nil))

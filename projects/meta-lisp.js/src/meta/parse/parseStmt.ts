@@ -49,14 +49,14 @@ export const parseStmt = S.createRouter<M.Stmt>({
 
   "(cons* 'import path entries)": ({ path, entries }, { location }) => {
     return M.Import(
-      S.stringContent(path),
+      S.symbolContent(path),
       S.listElements(entries).map(S.symbolContent),
       location,
     )
   },
 
   "`(import-as ,path ,prefix)": ({ path, prefix }, { location }) => {
-    return M.ImportAs(S.stringContent(path), S.symbolContent(prefix), location)
+    return M.ImportAs(S.symbolContent(path), S.symbolContent(prefix), location)
   },
 
   "(cons* 'define-data head constructors)": (

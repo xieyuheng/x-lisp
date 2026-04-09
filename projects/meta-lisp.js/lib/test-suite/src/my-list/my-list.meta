@@ -1,4 +1,4 @@
-(export-all)
+(module my-list)
 
 (define-data (my-list-t E)
   nil

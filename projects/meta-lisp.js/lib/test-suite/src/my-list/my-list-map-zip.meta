@@ -1,6 +1,4 @@
-(import-all "my-list")
-
-(export-all)
+(module my-list)
 
 (claim my-list-map-zip
   (polymorphic (A B C)
@@ -25,3 +23,20 @@
     ((_ nil) nil)
     (((li head1 tail1) (li head2 tail2))
      (li (f head1 head2) (my-list-map-zip-2 f tail1 tail2)))))
+
+(define-test my-list-map-zip-test
+  (assert-equal nil (my-list-map-zip iadd nil nil))
+  (assert-equal
+    (li 2 (li 4 (li 6 nil)))
+    (my-list-map-zip
+     iadd
+     (li 1 (li 2 (li 3 nil)))
+     (li 1 (li 2 (li 3 nil)))))
+
+  (assert-equal nil (my-list-map-zip-2 iadd nil nil))
+  (assert-equal
+    (li 2 (li 4 (li 6 nil)))
+    (my-list-map-zip-2
+     iadd
+     (li 1 (li 2 (li 3 nil)))
+     (li 1 (li 2 (li 3 nil))))))
