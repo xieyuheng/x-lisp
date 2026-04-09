@@ -1,0 +1,16 @@
+(module test-suite)
+
+(define-test eoc-03-01
+  ;; figure-3.1
+  (= v 1)
+  (= w 42)
+  (= x (iadd v 7))
+  (= y x)
+  (= z (iadd x w))
+  (println (iadd z (ineg y))))
+
+(define-test eoc-03-02
+  ;; figure-3.2
+  (= x (random-dice))
+  (= y (random-dice))
+  (println (iadd (iadd x y) 42)))

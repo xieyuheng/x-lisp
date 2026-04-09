@@ -1,0 +1,33 @@
+(module test-suite)
+
+(define-test eoc-04-01
+  (println (if true 1 2)))
+
+(define-test eoc-04-02
+  (println
+   (begin
+     (= x (random-dice))
+     (= y (random-dice))
+     (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+       (iadd y 2)
+       (iadd y 10)))))
+
+(define-test eoc-04-03
+  (println
+   (begin
+     (= x (random-dice))
+     (= y (random-dice))
+     (iadd
+      (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+        (iadd y 2)
+        (iadd y 10))
+      (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+        (iadd y 2)
+        (iadd y 10))))))
+
+(define-test eoc-04-04
+  (println
+   (if (and (equal? (random-dice) 1)
+            (equal? (random-dice) 2))
+     0
+     42)))

@@ -1,0 +1,119 @@
+(module test-suite)
+
+(define-test eoc-02-00
+  (println 42))
+
+(define-test eoc-02-01
+  (= x 4)
+  (println (iadd 8 x)))
+
+(define-test eoc-02-02
+  (= y (begin
+         (= x 20)
+         (iadd x (begin
+                   (= x 22)
+                   x))))
+  (println y))
+
+(define-test eoc-02-03
+  (= y (begin
+         (= x 20)
+         (begin
+           (= z 22)
+           (iadd x z))))
+  (println y))
+
+(define-test eoc-02-04
+  (= z (begin (= y (begin (= x (ineg 42))
+                          x))
+              y))
+  (println (ineg z)))
+
+(define-test eoc-02-05
+  (= a 42)
+  (= b a)
+  (println b))
+
+(define-test eoc-02-06
+  (println (ineg (random-dice))))
+
+(define-test eoc-02-07
+  (println (iadd (random-dice) (random-dice))))
+
+(define-test eoc-02-08
+  (println (iadd 20 22)))
+
+(define-test eoc-02-09
+  (println (iadd 20 (iadd 11 11))))
+
+(define-test eoc-02-10
+  (= x (iadd (iadd 1 2) (iadd 3 4)))
+  (println (iadd x 5)))
+
+(define-test eoc-02-11
+  (println (iadd (iadd 1 2) (iadd 3 4))))
+
+(define-test eoc-02-12
+  (println
+   (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
+
+(define-test eoc-02-13
+  (= x (iadd 42 (ineg 10)))
+  (println (iadd x 10)))
+
+(define-test eoc-02-14
+  (= x 32)
+  (println
+   (iadd (begin (= x 10)
+                x)
+         x)))
+
+(define-test eoc-02-15
+  (= x (begin (= x 4)
+                    (iadd x 1)))
+  (println (iadd x 2)))
+
+(define-test eoc-02-16
+  (println (isub 50 8)))
+
+(define-test eoc-02-17
+  (println
+   (iadd 1 (iadd (random-dice) 1))))
+
+(define-test eoc-02-18
+  (println
+   (iadd
+    (iadd
+     (iadd
+      (iadd
+       (random-dice)
+       1)
+      1)
+     1)
+    1)))
+
+(define-test eoc-02-19
+  (= x 1)
+  (println
+   (iadd x (begin
+             (= x (begin
+                    (= x 5)
+                    (iadd x x)))
+             (iadd x 100)))))
+
+(define-test eoc-02-20
+  (= x 1)
+  (println
+   (iadd x (begin
+             (= x (begin
+                    (= y 5)
+                    (iadd y x)))
+             (iadd x 100)))))
+
+(define-test eoc-02-21
+  (= y 6)
+  (begin
+    (= x (begin
+           (= y (ineg 42))
+           y))
+    (println (iadd x y))))
