@@ -9,7 +9,7 @@ export function loadCode(project: M.Project, path: string): void {
   const code = fs.readFileSync(path, "utf-8")
   const sexps = S.parseSexps(code, { path })
   const stmts = sexps.map(M.parseStmt)
-  const modName = findModName(stmts)
+  const { modName, isTypeErrorModule } = findModName(stmts)
   let mod = M.projectLookupMod(project, modName)
   if (mod === undefined) {
     mod = M.createMod(modName, project)
@@ -18,6 +18,10 @@ export function loadCode(project: M.Project, path: string): void {
     for (const definition of builtinMod.definitions.values()) {
       M.modDefine(mod, definition.name, definition)
     }
+  }
+
+  if (isTypeErrorModule) {
+    mod.isTypeErrorModule = isTypeErrorModule
   }
 
   loadStmts(mod, stmts)
@@ -31,10 +35,14 @@ export function loadStmts(mod: M.Mod, stmts: Array<M.Stmt>): void {
   for (const stmt of stmts) loadDefine(mod, scope, stmt)
 }
 
-function findModName(stmts: Array<M.Stmt>): string {
+function findModName(stmts: Array<M.Stmt>): {modName: string, isTypeErrorModule?: boolean } {
   for (const stmt of stmts) {
     if (stmt.kind === "DeclareModule") {
-      return stmt.name
+      return {modName: stmt.name}
+    }
+
+    if (stmt.kind === "DeclareTypeErrorModule") {
+      return {modName: stmt.name, isTypeErrorModule: true }
     }
   }
 

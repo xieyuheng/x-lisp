@@ -17,7 +17,7 @@ export type Stmt =
   | Claim
   | Exempt
   | DeclareModule
-
+| DeclareTypeErrorModule
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -172,6 +172,23 @@ export function DeclareModule(
 ): DeclareModule {
   return {
     kind: "DeclareModule",
+    name,
+    location,
+  }
+}
+
+export type DeclareTypeErrorModule = {
+  kind: "DeclareTypeErrorModule"
+  name: string
+  location?: SourceLocation
+}
+
+export function DeclareTypeErrorModule(
+  name: string,
+  location?: SourceLocation,
+): DeclareTypeErrorModule {
+  return {
+    kind: "DeclareTypeErrorModule",
     name,
     location,
   }

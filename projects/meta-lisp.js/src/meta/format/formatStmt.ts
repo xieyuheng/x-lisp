@@ -53,6 +53,10 @@ export function formatStmt(stmt: Stmt): string {
     case "DeclareModule": {
       return `(module ${stmt.name})`
     }
+
+    case "DeclareTypeErrorModule": {
+      return `(type-error-module ${stmt.name})`
+    }
   }
 }
 
