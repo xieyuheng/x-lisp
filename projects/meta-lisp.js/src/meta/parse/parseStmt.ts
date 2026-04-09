@@ -26,6 +26,15 @@ export const parseStmt = S.createRouter<M.Stmt>({
     )
   },
 
+  "(cons* 'define-test name body)": ({ name, body }, { sexp }) => {
+    const keyword = S.asList(sexp).elements[0]
+    return M.DefineTest(
+      S.symbolContent(name),
+      parseBody(body),
+      keyword.location,
+    )
+  },
+
   "(cons* 'exempt names)": ({ names }, { location }) => {
     return M.Exempt(S.listElements(names).map(S.symbolContent), location)
   },
