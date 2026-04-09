@@ -1,3 +1,5 @@
+(module test-suite)
+
 (claim swap
   (polymorphic (X Y Z)
     (-> (-> Y X Z) (-> X Y Z))))
@@ -21,16 +23,8 @@
   (lambda (x)
     (f x x)))
 
-(claim identity
-  (polymorphic (A)
-    (-> A A)))
-
-(define (identity x) x)
-
-(claim main (-> void-t))
-
-(define (main)
-  (= f identity)
+(define-test forth-test
+  (= f (lambda (x) x))
   (= square (dup imul))
   (println (square (f 1)))
   (println (square (f 2)))

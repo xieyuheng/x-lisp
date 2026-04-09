@@ -1,12 +1,12 @@
+(module test-suite)
+
 (claim identity
-  (polymorphic (A)
-    (-> A A)))
+    (polymorphic (A)
+      (-> A A)))
 
 (define (identity x) x)
 
-(claim main (-> void-t))
-
-(define (main)
+(define-test identity-test
   (= add1 (iadd 1))
   (assert-equal 2 (add1 1))
   (= add1 (identity (iadd (identity 1))))
