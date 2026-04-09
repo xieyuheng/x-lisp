@@ -1,4 +1,4 @@
-(module lambda)
+(module l1)
 
 (define-data exp-t
   (var-exp (name symbol-t))

@@ -1,4 +1,3 @@
-[meta-lisp.js] test-suite -- recover lambda tests
 [meta-lisp.js] test-suite -- recover my-list tests
 [meta-lisp.js] test-suite -- recover record tests
 [meta-lisp.js] test-suite -- recover syntax tests

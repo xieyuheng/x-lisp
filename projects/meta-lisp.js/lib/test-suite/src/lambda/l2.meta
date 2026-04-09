@@ -1,4 +1,4 @@
-(export-all)
+(module l2)
 
 (define-data exp-t
   (var-exp (name symbol-t))
