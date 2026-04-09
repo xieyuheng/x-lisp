@@ -1,0 +1,12 @@
+(module test-suite)
+
+(define-test fs-test
+  (assert-equal "abc\n" (fs-read "src/fs/file-1.txt"))
+
+  (fs-write "src/fs/file-2.txt" "123\n")
+  (assert-equal "123\n" (fs-read "src/fs/file-2.txt"))
+
+  (fs-write "src/fs/file-2.txt" "abc\n")
+  (assert-equal "abc\n" (fs-read "src/fs/file-2.txt"))
+
+  (println (fs-list "src/fs")))

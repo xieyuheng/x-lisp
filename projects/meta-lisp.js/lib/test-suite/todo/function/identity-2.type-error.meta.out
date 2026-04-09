@@ -1,9 +1,0 @@
-src/function/identity-2.type-error.meta:11:37 -- given type is not a substitution instance of inferred type
-  inferred type: (-> A A)
-  given type: (-> B C)
-  9 | (define (main)
- 10 |   (the (polymorphic (A) (-> A A)) identity)
- 11 |   (the (polymorphic (A B) (-> A B)) identity))
-    |                                     ~~~~~~~~   
- 12 | 
-

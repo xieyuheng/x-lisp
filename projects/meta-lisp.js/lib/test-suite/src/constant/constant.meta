@@ -1,0 +1,13 @@
+(module test-suite)
+
+(claim one int-t)
+(define one 1)
+
+(claim two int-t)
+(define two (iadd 1 one))
+
+(claim three int-t)
+(define three (iadd 1 two))
+
+(define-test constant-test
+  (println three))

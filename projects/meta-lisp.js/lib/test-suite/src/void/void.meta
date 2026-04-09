@@ -1,0 +1,4 @@
+(module test-suite)
+
+(define-test void-test
+  (println void))

@@ -1,2 +1,0 @@
-(define (main)
-  (println (fs-list "src/fs")))

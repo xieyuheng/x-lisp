@@ -1,0 +1,22 @@
+(module test-suite)
+
+(define-test file-test
+  (= file (open-input-file "src/file/file-1.txt"))
+  (assert-equal "abc\n" (file-read file))
+  (file-close file)
+
+  (= file (open-output-file "src/file/file-2.txt"))
+  (file-write file "123\n")
+  (file-close file)
+
+  (= file (open-input-file "src/file/file-2.txt"))
+  (assert-equal "123\n" (file-read file))
+  (file-close file)
+
+  (= file (open-output-file "src/file/file-2.txt"))
+  (file-write file "abc\n")
+  (file-close file)
+
+  (= file (open-input-file "src/file/file-2.txt"))
+  (assert-equal "abc\n" (file-read file))
+  (file-close file))

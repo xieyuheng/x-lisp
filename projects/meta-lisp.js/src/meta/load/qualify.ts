@@ -10,6 +10,10 @@ export function qualifyExp(scope: M.ModScope, exp: M.Exp): M.Exp {
       return exp
     }
 
+    case "Quote": {
+      return exp
+    }
+
     case "Var": {
       const entry = scope.importedNames.get(exp.name)
       if (entry) {

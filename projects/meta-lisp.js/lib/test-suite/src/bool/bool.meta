@@ -1,0 +1,5 @@
+(module test-suite)
+
+(define-test bool-test
+  (println true)
+  (println false))
