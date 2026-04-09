@@ -11,11 +11,13 @@ export type Stmt =
   | AboutImport
   | DefineFunction
   | DefineVariable
+  | DefineTest
   | DefineData
   | DefineInterface
   | Claim
   | Exempt
   | DeclareModule
+
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -54,6 +56,27 @@ export function DefineVariable(
 ): DefineVariable {
   return {
     kind: "DefineVariable",
+    name,
+    body,
+    location,
+  }
+}
+
+
+export type DefineTest = {
+  kind: "DefineTest"
+  name: string
+  body: Exp
+  location?: SourceLocation
+}
+
+export function DefineTest(
+  name: string,
+  body: Exp,
+  location?: SourceLocation,
+): DefineTest {
+  return {
+    kind: "DefineTest",
     name,
     body,
     location,
