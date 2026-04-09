@@ -52,7 +52,6 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
     )
   }
 
-
   if (stmt.kind === "DefineData") {
     const newScope = M.modScopeFilterBoundNames(
       scope,

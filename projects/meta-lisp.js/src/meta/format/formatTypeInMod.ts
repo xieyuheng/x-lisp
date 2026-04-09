@@ -89,8 +89,7 @@ export function formatTypeInMod(mod: M.Mod, type: M.Value): string {
     const definition = M.definedDataTypeDefinition(type)
     const foundName = M.modLookupNameByDefinition(mod, definition)
     const argTypes = formatTypesInMod(mod, M.definedDataTypeArgTypes(type))
-    const path = pathRelativeToCwd(definition.mod.name)
-    const name = foundName || `<${definition.name} from ${path}>`
+    const name = foundName || `${definition.mod.name}/${definition.name}`
     if (argTypes.length === 0) {
       return `${name}`
     } else {

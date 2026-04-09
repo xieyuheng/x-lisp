@@ -17,7 +17,7 @@ export type Stmt =
   | Claim
   | Exempt
   | DeclareModule
-| DeclareTypeErrorModule
+  | DeclareTypeErrorModule
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -61,7 +61,6 @@ export function DefineVariable(
     location,
   }
 }
-
 
 export type DefineTest = {
   kind: "DefineTest"

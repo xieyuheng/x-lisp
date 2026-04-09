@@ -35,14 +35,17 @@ export function loadStmts(mod: M.Mod, stmts: Array<M.Stmt>): void {
   for (const stmt of stmts) loadDefine(mod, scope, stmt)
 }
 
-function findModName(stmts: Array<M.Stmt>): {modName: string, isTypeErrorModule?: boolean } {
+function findModName(stmts: Array<M.Stmt>): {
+  modName: string
+  isTypeErrorModule?: boolean
+} {
   for (const stmt of stmts) {
     if (stmt.kind === "DeclareModule") {
-      return {modName: stmt.name}
+      return { modName: stmt.name }
     }
 
     if (stmt.kind === "DeclareTypeErrorModule") {
-      return {modName: stmt.name, isTypeErrorModule: true }
+      return { modName: stmt.name, isTypeErrorModule: true }
     }
   }
 
