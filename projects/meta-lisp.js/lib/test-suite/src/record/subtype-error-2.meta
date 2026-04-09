@@ -1,8 +1,8 @@
+(type-error-module subtype-error-1)
+
 (define-interface point-t
   :x float-t
   :y float-t)
-
-(claim main (-> void-t))
 
 (define (main)
   (the point-t (@record :x 1.0 :y 2.0))

@@ -1,4 +1,3 @@
-[meta-lisp.js] test-suite -- recover record tests
 [meta-lisp.js] test-suite -- recover syntax tests
 
 [meta-lisp.js] `projectCheck` handle type error module

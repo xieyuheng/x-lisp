@@ -1,3 +1,5 @@
+(type-error-module row-polymorphism-edge-case)
+
 ;; - rows with a common tail but a distinct prefix.
 ;;   ```caml
 ;;   \r → if True then {x = 2 | r} else {y = 2 | r}

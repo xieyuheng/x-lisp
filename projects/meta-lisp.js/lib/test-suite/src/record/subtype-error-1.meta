@@ -1,3 +1,5 @@
+(type-error-module subtype-error-2)
+
 (define-interface point-t
   :x float-t
   :y float-t)
@@ -6,8 +8,6 @@
 
 (define (point-println point)
   (println point))
-
-(claim main (-> void-t))
 
 (define (main)
   (point-println (@record :x 1.0 :y 2.0))
