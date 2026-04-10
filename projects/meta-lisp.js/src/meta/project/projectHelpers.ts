@@ -18,6 +18,15 @@ export function projectOutputDirectory(project: Project): string {
     : projectSourceDirectory(project)
 }
 
+export function projectSnapshotDirectory(project: Project): string {
+  return project.config["build"]["snapshot-directory"]
+    ? Path.resolve(
+        project.rootDirectory,
+        project.config["build"]["snapshot-directory"],
+      )
+    : projectSourceDirectory(project)
+}
+
 export function projectSourceIds(project: Project): Array<string> {
   if (project.sourceIds) {
     return project.sourceIds

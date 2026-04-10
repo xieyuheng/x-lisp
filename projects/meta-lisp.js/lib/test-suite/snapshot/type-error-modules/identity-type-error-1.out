@@ -1,0 +1,9 @@
+src/function/identity-type-error-1.meta:7:2 -- given type is not a substitution instance of inferred type
+  inferred type: (-> A A)
+  given type: (-> B C)
+ 5 |     (-> A B)))
+ 6 | 
+ 7 | (define (identity x) x)
+   |  ~~~~~~                 
+ 8 | 
+

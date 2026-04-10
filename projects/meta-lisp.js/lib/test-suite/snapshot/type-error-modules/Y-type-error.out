@@ -1,0 +1,10 @@
+src/function/Y-type-error.meta:8:19 -- unification fail
+  inferred type: (-> A B)
+  given type: A
+  6 | 
+  7 | (define (Y f)
+  8 |   ((lambda (u) (u u))
+    |                   ~   
+  9 |    (lambda (x) (f (lambda (t) ((x x) t))))))
+ 10 | 
+

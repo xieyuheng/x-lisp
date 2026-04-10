@@ -1,0 +1,11 @@
+src/record/row-polymorphism-edge-case.meta:15:5 -- unification fail
+  inferred type: (extend-interface A :y B)
+  given type: (extend-interface A :x C)
+ 13 |     (extend r
+ 14 |       :x 2)
+ 15 |     (extend r
+    |     ~~~~~~~~~~
+ 16 |       :y 2)))
+    | ~~~~~~~~~~~   
+ 17 | 
+
