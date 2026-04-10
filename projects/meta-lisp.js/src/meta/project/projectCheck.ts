@@ -25,7 +25,7 @@ export function projectCheck(project: M.Project): void {
 
   M.projectForEachMod(project, (mod) => {
     if (mod !== builtinMod) {
-      M.modForEachOwnDefinition(mod, M.definitionQualify)
+      M.modForEachOwnDefinition(mod, M.definitionQualifyFreeVar)
     }
   })
 

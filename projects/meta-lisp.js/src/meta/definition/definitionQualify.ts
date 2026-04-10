@@ -1,7 +1,7 @@
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as M from "../index.ts"
 
-export function definitionQualify(definition: M.Definition): null {
+export function definitionQualifyFreeVar(definition: M.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition": {
@@ -59,6 +59,40 @@ export function definitionQualify(definition: M.Definition): null {
           M.qualifyFreeVar(definition.mod, boundNames, attributeType),
       )
 
+      return null
+    }
+  }
+}
+
+export function definitionQualifyName(definition: M.Definition): null {
+  switch (definition.kind) {
+    case "PrimitiveFunctionDefinition":
+    case "PrimitiveVariableDefinition": {
+      return null
+    }
+
+    case "FunctionDefinition": {
+      definition.name = `${definition.mod.name}/${definition.name}`
+      return null
+    }
+
+    case "VariableDefinition": {
+      definition.name = `${definition.mod.name}/${definition.name}`
+      return null
+    }
+
+    case "TestDefinition": {
+      definition.name = `${definition.mod.name}/${definition.name}`
+      return null
+    }
+
+    case "DataDefinition": {
+      definition.name = `${definition.mod.name}/${definition.name}`
+      return null
+    }
+
+    case "InterfaceDefinition": {
+      definition.name = `${definition.mod.name}/${definition.name}`
       return null
     }
   }

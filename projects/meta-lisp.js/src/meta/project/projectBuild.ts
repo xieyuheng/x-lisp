@@ -15,13 +15,24 @@ export function projectBuild(project: M.Project): void {
   M.projectForEachMod(project, M.LiftLambdaPass)
   M.projectForEachMod(project, M.UnnestOperandPass)
 
-  let code = ""
+  const builtinMod = M.loadBuiltinMod(project)
+
   M.projectForEachMod(project, (mod) => {
-    M.logPath("bundle", mod.name)
-    const basicMod = B.createMod(mod.name, new Map())
-    M.ExplicateControlPass(mod, basicMod)
-    code += B.prettyMod(textWidth, basicMod)
-    code += "\n\n"
+    if (mod !== builtinMod) {
+      M.modForEachOwnDefinition(mod, M.definitionQualifyName)
+    }
+  })
+
+  let code = ""
+
+  M.projectForEachMod(project, (mod) => {
+    if (!mod.isTypeErrorModule) {
+      M.logPath("bundle", mod.name)
+      const basicMod = B.createMod(mod.name, new Map())
+      M.ExplicateControlPass(mod, basicMod)
+      code += B.prettyMod(textWidth, basicMod)
+      code += "\n\n"
+    }
   })
 
   code = code.trim()
