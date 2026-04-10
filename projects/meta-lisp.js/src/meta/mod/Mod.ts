@@ -90,7 +90,7 @@ export function modNameIsAsDefined(mod: Mod, name: string): boolean {
 
 export function modForEachOwnDefinition(
   mod: Mod,
-  callback: (Definition: M.Definition) => void,
+  callback: (definition: M.Definition) => void,
 ): void {
   for (const definition of mod.definitions.values()) {
     if (definition.mod === mod) {
@@ -129,6 +129,15 @@ export function modLookupClaimedEntry(
   name: string,
 ): ClaimedEntry | undefined {
   return mod.claimed.get(name)
+}
+
+export function modForEachClaimEntry(
+  mod: Mod,
+  callback: (entry: ClaimedEntry) => void,
+): void {
+  for (const entry of mod.claimed.values()) {
+    callback(entry)
+  }
 }
 
 // Inferred

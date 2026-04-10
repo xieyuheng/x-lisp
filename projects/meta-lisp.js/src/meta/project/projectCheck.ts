@@ -12,8 +12,22 @@ export function projectCheck(project: M.Project): void {
     M.loadCode(project, path)
   }
 
+  M.projectForEachMod(project, (mod) => {
+    M.modForEachClaimEntry(mod, entry => {
+      entry.exp = M.desugar(mod, entry.exp)
+      entry.exp = M.qualifyFreeVar(mod, new Set(), entry.exp)
+    })
+  })
+
   M.projectForEachDefinition(project, M.definitionDesugar)
-  M.projectForEachDefinition(project, M.definitionQualify)
+
+  const builtinMod = M.loadBuiltinMod(project)
+
+  M.projectForEachMod(project, (mod) => {
+    if (mod !== builtinMod) {
+      M.modForEachOwnDefinition(mod, M.definitionQualify)
+    }
+  })
 
   M.projectForEachMod(project, (mod) => {
     M.logPath("check", mod.name)
@@ -28,9 +42,7 @@ export function projectCheck(project: M.Project): void {
         },
       )
     } else {
-      M.modForEachOwnDefinition(mod, (definition) => {
-        M.definitionCheck(definition)
-      })
+      M.modForEachOwnDefinition(mod, M.definitionCheck)
     }
   })
 }

@@ -1,6 +1,6 @@
 # new module system
 
-[meta-lisp.js] desugar and qualify exp in claim
+[meta-lisp.js] refactor `projectHelpers`
 
 [basic-lisp.c] remove module system
 [basic-lisp.c] support a key-value database -- for metadata
