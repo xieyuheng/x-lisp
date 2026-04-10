@@ -8,7 +8,7 @@ import { expandDataPutter } from "./expandDataPutter.ts"
 
 export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   if (stmt.kind === "Claim") {
-    M.modClaim(mod, stmt.name, M.qualifyExp(scope, stmt.type))
+    M.modClaim(mod, stmt.name, M.qualifyImported(scope, stmt.type))
   }
 
   if (stmt.kind === "DefineFunction") {
@@ -20,7 +20,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
         mod,
         stmt.name,
         stmt.parameters,
-        M.qualifyExp(newScope, stmt.body),
+        M.qualifyImported(newScope, stmt.body),
         stmt.location,
       ),
     )
@@ -33,7 +33,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
       M.VariableDefinition(
         mod,
         stmt.name,
-        M.qualifyExp(scope, stmt.body),
+        M.qualifyImported(scope, stmt.body),
         stmt.location,
       ),
     )
@@ -46,7 +46,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
       M.TestDefinition(
         mod,
         stmt.name,
-        M.qualifyExp(scope, stmt.body),
+        M.qualifyImported(scope, stmt.body),
         stmt.location,
       ),
     )
@@ -78,7 +78,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
       dataConstructor.definition = definition
       dataConstructor.fields = dataConstructor.fields.map((field) => ({
         name: field.name,
-        type: M.qualifyExp(newScope, field.type),
+        type: M.qualifyImported(newScope, field.type),
       }))
     }
 
@@ -121,7 +121,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
     const interfaceConstructor =
       stmt.interfaceConstructor as unknown as M.InterfaceConstructor
     const attributeTypes = recordMapValue(stmt.attributeTypes, (type) =>
-      M.qualifyExp(newScope, type),
+      M.qualifyImported(newScope, type),
     )
     const definition = M.InterfaceDefinition(
       mod,

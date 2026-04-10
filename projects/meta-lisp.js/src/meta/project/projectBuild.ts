@@ -21,11 +21,11 @@ export function projectBuild(project: M.Project): void {
     const basicMod = B.createMod(mod.name, new Map())
     M.ExplicateControlPass(mod, basicMod)
     code += B.prettyMod(textWidth, basicMod)
-    code += '\n\n'
+    code += "\n\n"
   })
 
   code = code.trim()
-  
+
   const directory = M.projectOutputDirectory(project)
   callWithFile(openOutputFile(`${directory}/bundle.basic`), (file) =>
     fileWriteln(file, code),

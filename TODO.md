@@ -1,13 +1,7 @@
 # new module system
 
-[meta-lisp.js] `qualifyExp` -- take `boundNames`
-
-- remove `modScopeFilterBoundNames`
-- handle current module -- so that bundled file have qualified name
-
-[meta-lisp.js] use qualified builtin -- `loadCode` & `modLookupType` fix the use of `loadBuiltinMod`
-
-# new module system
+[meta-lisp.js] `qualifyFreeVar` -- can not handle `(match)`, must be called after `desugar`.
+[meta-lisp.js] `definitionQualify`
 
 [basic-lisp.c] remove module system
 [basic-lisp.c] support a key-value database -- for metadata

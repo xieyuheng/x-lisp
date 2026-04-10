@@ -1,6 +1,6 @@
 import * as M from "../index.ts"
 
-export function qualifyExp(scope: M.ModScope, exp: M.Exp): M.Exp {
+export function qualifyImported(scope: M.ModScope, exp: M.Exp): M.Exp {
   switch (exp.kind) {
     case "Symbol":
     case "Keyword":
@@ -41,7 +41,7 @@ export function qualifyExp(scope: M.ModScope, exp: M.Exp): M.Exp {
       )
       return M.Lambda(
         exp.parameters,
-        qualifyExp(newScope, exp.body),
+        qualifyImported(newScope, exp.body),
         exp.location,
       )
     }
@@ -53,7 +53,7 @@ export function qualifyExp(scope: M.ModScope, exp: M.Exp): M.Exp {
       )
       return M.Polymorphic(
         exp.parameters,
-        qualifyExp(newScope, exp.body),
+        qualifyImported(newScope, exp.body),
         exp.location,
       )
     }
@@ -62,18 +62,20 @@ export function qualifyExp(scope: M.ModScope, exp: M.Exp): M.Exp {
       const newScope = M.modScopeFilterBoundNames(scope, new Set([exp.name]))
       return M.Let1(
         exp.name,
-        qualifyExp(scope, exp.rhs),
-        qualifyExp(newScope, exp.body),
+        qualifyImported(scope, exp.rhs),
+        qualifyImported(newScope, exp.body),
         exp.location,
       )
     }
 
     case "Match": {
-      const targets = exp.targets.map((target) => qualifyExp(scope, target))
+      const targets = exp.targets.map((target) =>
+        qualifyImported(scope, target),
+      )
       const clauses = exp.clauses.map((clause) =>
         M.MatchClause(
           clause.patterns,
-          qualifyExp(M.modScopeDropImportedNames(scope), clause.body),
+          qualifyImported(M.modScopeDropImportedNames(scope), clause.body),
           clause.location,
         ),
       )
@@ -88,7 +90,7 @@ export function qualifyExp(scope: M.ModScope, exp: M.Exp): M.Exp {
     }
 
     default: {
-      return M.expTraverse((child) => qualifyExp(scope, child), exp)
+      return M.expTraverse((child) => qualifyImported(scope, child), exp)
     }
   }
 }
