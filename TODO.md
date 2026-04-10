@@ -1,11 +1,15 @@
 # new module system
 
-[meta-lisp.js] `projectBuild` -- bundle project to single basic file -- no need `QualifiedVar` in basic-lisp
-[meta-lisp.js] basic-lisp support `(define-test)` -- fix `030-ExplicateControlPass`
+[meta-lisp.js] `qualifyExp` -- handle current module -- so that bundled file have qualified name
+
+[basic-lisp.c] remove module system
+[basic-lisp.c] support a key-value database -- for metadata
+
+[meta-lisp.js] compile `(define-test)` to metadata -- fix `030-ExplicateControlPass` on `TestDefinition`
 
 # stack-lisp
 
-[stack-lisp.c] with a key-value database
+[stack-lisp.c] support a key-value database -- for metadata
 
 # later
 
@@ -19,10 +23,6 @@
 
 [meta-lisp.js] [prelude] call-with-input-file
 [meta-lisp.js] [prelude] call-with-output-file
-
-# new (no) module system
-
-[basic-lisp.c] remove module system
 
 # about format
 
