@@ -28,7 +28,7 @@ export function loadCode(project: M.Project, path: string): void {
 }
 
 export function loadStmts(mod: M.Mod, stmts: Array<M.Stmt>): void {
-  const scope = M.createModScope()
+  const scope = M.createModScope(mod,)
 
   for (const stmt of stmts) loadExempt(mod, scope, stmt)
   for (const stmt of stmts) loadImport(mod, scope, stmt)

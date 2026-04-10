@@ -1,10 +1,14 @@
+import * as M from "../index.ts"
+
 export type ModScope = {
+  mod: M.Mod
   importedNames: Map<string, { modName: string; name: string }>
   importedPrefixes: Map<string, { modName: string }>
 }
 
-export function createModScope(): ModScope {
+export function createModScope(mod: M.Mod): ModScope {
   return {
+    mod,
     importedNames: new Map(),
     importedPrefixes: new Map(),
   }
@@ -23,6 +27,7 @@ export function modScopeFilterBoundNames(
   }
 
   return {
+    mod: scope.mod,
     importedNames,
     importedPrefixes: scope.importedPrefixes,
   }
@@ -30,6 +35,7 @@ export function modScopeFilterBoundNames(
 
 export function modScopeDropImportedNames(scope: ModScope): ModScope {
   return {
+    mod: scope.mod,
     importedNames: new Map(),
     importedPrefixes: scope.importedPrefixes,
   }
