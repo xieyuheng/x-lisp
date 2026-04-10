@@ -9,17 +9,29 @@ export function definitionQualify(definition: M.Definition): null {
     }
 
     case "FunctionDefinition": {
-      definition.body = M.qualifyFreeVar(definition.mod, new Set(definition.parameters), definition.body)
+      definition.body = M.qualifyFreeVar(
+        definition.mod,
+        new Set(definition.parameters),
+        definition.body,
+      )
       return null
     }
 
     case "VariableDefinition": {
-      definition.body = M.qualifyFreeVar(definition.mod, new Set(), definition.body)
+      definition.body = M.qualifyFreeVar(
+        definition.mod,
+        new Set(),
+        definition.body,
+      )
       return null
     }
 
     case "TestDefinition": {
-      definition.body = M.qualifyFreeVar(definition.mod, new Set(), definition.body)
+      definition.body = M.qualifyFreeVar(
+        definition.mod,
+        new Set(),
+        definition.body,
+      )
       return null
     }
 
@@ -43,7 +55,8 @@ export function definitionQualify(definition: M.Definition): null {
       const boundNames = new Set(definition.interfaceConstructor.parameters)
       definition.attributeTypes = recordMapValue(
         definition.attributeTypes,
-        (attributeType) => M.qualifyFreeVar(definition.mod, boundNames, attributeType),
+        (attributeType) =>
+          M.qualifyFreeVar(definition.mod, boundNames, attributeType),
       )
 
       return null

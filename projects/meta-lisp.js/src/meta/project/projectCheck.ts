@@ -13,7 +13,7 @@ export function projectCheck(project: M.Project): void {
   }
 
   M.projectForEachMod(project, (mod) => {
-    M.modForEachClaimEntry(mod, entry => {
+    M.modForEachClaimEntry(mod, (entry) => {
       entry.exp = M.desugar(mod, entry.exp)
       entry.exp = M.qualifyFreeVar(mod, new Set(), entry.exp)
     })
