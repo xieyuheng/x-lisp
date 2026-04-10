@@ -1,6 +1,5 @@
 # new module system
 
-[meta-lisp.js] move `modLookupType` to `mod/`
 [meta-lisp.js] desugar and qualify exp in claim
 
 [basic-lisp.c] remove module system

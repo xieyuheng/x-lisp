@@ -2,16 +2,6 @@ import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-function modLookupType(mod: M.Mod, name: string): M.Value | undefined {
-  const definition = M.modLookupDefinition(mod, name)
-  if (definition === undefined) return undefined
-
-  const claimedType = M.modLookupClaimedType(definition.mod, definition.name)
-  if (claimedType) return claimedType
-
-  return M.modLookupInferredType(definition.mod, definition.name)
-}
-
 export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
   return (subst) => {
     switch (exp.kind) {
@@ -64,7 +54,7 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
           else throw new Error(message)
         }
 
-        const topLevelType = modLookupType(qualifiedMod, exp.name)
+        const topLevelType = M.modLookupType(qualifiedMod, exp.name)
         if (topLevelType) return M.okInferEffect(topLevelType)(subst)
 
         let message = `undefined qualified variable`
