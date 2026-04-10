@@ -3,13 +3,7 @@ import { textWidth } from "../../config.ts"
 import * as M from "../index.ts"
 
 export function projectBuild(project: M.Project): void {
-  for (const id of M.projectSourceIds(project)) {
-    const path = M.projectGetSourcePath(project, id)
-    M.loadCode(project, path)
-  }
-
-  M.projectForEachDefinition(project, M.definitionDesugar)
-  M.projectForEachDefinition(project, M.definitionCheck)
+  M.projectCheck(project)
 
   M.projectForEachMod(project, M.ShrinkPass)
   M.projectForEachMod(project, M.UniquifyPass)

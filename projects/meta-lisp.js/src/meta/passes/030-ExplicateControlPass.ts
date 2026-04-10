@@ -95,9 +95,9 @@ function toBasicExp(exp: M.Exp): B.Exp {
       return exp
     }
 
-    // case "QualifiedVar": {
-    //   return exp
-    // }
+    case "QualifiedVar": {
+      return B.Var(`${exp.modName}/${exp.name}`, exp.location)
+    }
 
     case "Apply": {
       return B.Apply(toBasicExp(exp.target), exp.args.map(toBasicExp))
