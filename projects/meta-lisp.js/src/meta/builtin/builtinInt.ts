@@ -1,29 +1,8 @@
-import { definePrimitiveFunction, provide } from "../define/index.ts"
+import { definePrimitiveFunction } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinInt(mod: Mod) {
-  provide(mod, [
-    "int?",
-    "int-positive?",
-    "int-non-negative?",
-    "int-non-zero?",
-    "ineg",
-    "iadd",
-    "isub",
-    "imul",
-    "idiv",
-    "imod",
-    "int-max",
-    "int-min",
-    "int-greater?",
-    "int-less?",
-    "int-greater-or-equal?",
-    "int-less-or-equal?",
-    "int-compare-ascending",
-    "int-compare-descending",
-  ])
-
   definePrimitiveFunction(mod, "int?", 1, (value) => {
     return Values.BoolValue(Values.isIntValue(value))
   })

@@ -1,16 +1,8 @@
-import { definePrimitiveFunction, provide } from "../define/index.ts"
+import { definePrimitiveFunction } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinSymbol(mod: Mod) {
-  provide(mod, [
-    "symbol?",
-    "symbol-length",
-    "symbol-to-string",
-    "symbol-append",
-    "symbol-concat",
-  ])
-
   definePrimitiveFunction(mod, "symbol?", 1, (value) => {
     return Values.BoolValue(Values.isSymbolValue(value))
   })

@@ -1,11 +1,9 @@
 import { formatUnderTag } from "@xieyuheng/helpers.js/format"
-import { definePrimitiveFunction, provide } from "../define/index.ts"
+import { definePrimitiveFunction } from "../define/index.ts"
 import * as M from "../index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function builtinAssert(mod: Mod) {
-  provide(mod, ["assert", "assert-not", "assert-equal", "assert-not-equal"])
-
   definePrimitiveFunction(mod, "assert", 1, (value) => {
     if (!M.isBoolValue(value)) {
       let message = `(assert) fail on non boolean value`

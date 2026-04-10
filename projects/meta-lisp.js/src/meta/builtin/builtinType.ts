@@ -1,26 +1,11 @@
 import {
   definePrimitiveFunction,
   definePrimitiveVariable,
-  provide,
 } from "../define/index.ts"
 import * as M from "../index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function builtinType(mod: Mod) {
-  provide(mod, [
-    "type-t",
-    "bool-t",
-    "int-t",
-    "float-t",
-    "string-t",
-    "symbol-t",
-    "keyword-t",
-    "void-t",
-    "list-t",
-    "set-t",
-    "hash-t",
-  ])
-
   definePrimitiveVariable(mod, "type-t", M.createTypeType())
   mod.claimed.set("type-t", {
     exp: M.Var("type-t"),

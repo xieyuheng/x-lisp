@@ -1,29 +1,8 @@
-import { definePrimitiveFunction, provide } from "../define/index.ts"
+import { definePrimitiveFunction } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinFloat(mod: Mod) {
-  provide(mod, [
-    "float?",
-    "float-positive?",
-    "float-non-negative?",
-    "float-non-zero?",
-    "fneg",
-    "fadd",
-    "fsub",
-    "fmul",
-    "fdiv",
-    "fmod",
-    "float-max",
-    "float-min",
-    "float-greater?",
-    "float-less?",
-    "float-greater-or-equal?",
-    "float-less-or-equal?",
-    "float-compare-ascending",
-    "float-compare-descending",
-  ])
-
   definePrimitiveFunction(mod, "float?", 1, (value) => {
     return Values.BoolValue(Values.isFloatValue(value))
   })

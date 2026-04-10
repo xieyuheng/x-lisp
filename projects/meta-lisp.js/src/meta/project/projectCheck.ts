@@ -13,6 +13,7 @@ export function projectCheck(project: M.Project): void {
 
   M.projectForEachDefinition(project, M.definitionDesugar)
   M.projectForEachMod(project, (mod) => {
+    console.log(mod.name)
     if (mod.isTypeErrorModule) {
       const directory = M.projectSnapshotDirectory(project)
       const outputPath = `${directory}/type-error-modules/${mod.name}.out`
@@ -22,7 +23,11 @@ export function projectCheck(project: M.Project): void {
         })
       })
     } else {
-      M.modForEachOwnDefinition(mod, M.definitionCheck)
+      // M.modForEachOwnDefinition(mod, M.definitionCheck)
+      M.modForEachOwnDefinition(mod, (definition) => {
+        console.log(`  ${definition.name}`)
+        M.definitionCheck(definition)
+      })
     }
   })
 }

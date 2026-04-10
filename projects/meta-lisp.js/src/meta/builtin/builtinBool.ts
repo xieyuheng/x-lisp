@@ -1,14 +1,11 @@
 import {
   definePrimitiveFunction,
   definePrimitiveVariable,
-  provide,
 } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinBool(mod: Mod) {
-  provide(mod, ["true", "false", "bool?", "not"])
-
   definePrimitiveVariable(mod, "true", Values.BoolValue(true))
 
   definePrimitiveVariable(mod, "false", Values.BoolValue(false))

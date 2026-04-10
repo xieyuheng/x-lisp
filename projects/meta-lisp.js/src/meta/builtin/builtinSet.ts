@@ -1,27 +1,8 @@
-import { definePrimitiveFunction, provide } from "../define/index.ts"
+import { definePrimitiveFunction } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinSet(mod: Mod) {
-  provide(mod, [
-    "make-set",
-    "set-copy",
-    "set-size",
-    "set-empty?",
-    "set-member?",
-    "set-subset?",
-    "set-to-list",
-    "set-add",
-    "set-add!",
-    "set-delete",
-    "set-delete!",
-    "set-clear!",
-    "set-union",
-    "set-inter",
-    "set-difference",
-    "set-disjoint?",
-  ])
-
   definePrimitiveFunction(mod, "make-set", 0, () => {
     return Values.SetValue([])
   })

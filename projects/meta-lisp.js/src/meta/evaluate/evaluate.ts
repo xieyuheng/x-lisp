@@ -43,18 +43,18 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       const importedMod = M.projectLookupMod(mod.project, exp.modName)
       if (importedMod === undefined) {
         let message = `[evaluate] undefined module prefix`
-        message += `\n  prefix: ${exp.modName}`
+        message += `\n  module: ${exp.modName}`
         message += `\n  name: ${exp.name}`
         if (exp.location)
           throw new S.ErrorWithSourceLocation(message, exp.location)
         else throw new Error(message)
       }
 
-      const definition = M.modLookupPublicDefinition(importedMod, exp.name)
+      const definition = M.modLookupDefinition(importedMod, exp.name)
       if (definition) return M.definitionMeaning(definition)
 
       let message = `[evaluate] undefined qualified variable`
-      message += `\n  prefix: ${exp.modName}`
+      message += `\n  module: ${exp.modName}`
       message += `\n  name: ${exp.name}`
       if (exp.location)
         throw new S.ErrorWithSourceLocation(message, exp.location)

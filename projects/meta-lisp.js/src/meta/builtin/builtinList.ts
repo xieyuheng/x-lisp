@@ -1,33 +1,9 @@
-import { definePrimitiveFunction, provide } from "../define/index.ts"
+import { definePrimitiveFunction } from "../define/index.ts"
 import { formatValue } from "../format/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
 
 export function builtinList(mod: Mod) {
-  provide(mod, [
-    "make-list",
-    "list-empty?",
-    "car",
-    "cdr",
-    "cons",
-    "list-head",
-    "list-tail",
-    "list-init",
-    "list-last",
-    "list-length",
-    "list-copy",
-    "list-get",
-    "list-put",
-    "list-put!",
-    "list-push",
-    "list-push!",
-    "list-pop!",
-    "list-shift!",
-    "list-unshift!",
-    "list-reverse",
-    "list-to-set",
-  ])
-
   definePrimitiveFunction(mod, "list?", 1, (value) => {
     return Values.BoolValue(Values.isListValue(value))
   })

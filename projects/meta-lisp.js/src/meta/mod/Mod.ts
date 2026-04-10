@@ -13,7 +13,6 @@ export type ClaimedEntry = {
 export type Mod = {
   name: string
   stmts: Array<Stmt>
-  exported: Set<string>
   exempted: Set<string>
   definitions: Map<string, Definition>
   claimed: Map<string, ClaimedEntry>
@@ -27,7 +26,6 @@ export function createMod(name: string, project: M.Project): Mod {
   return {
     name,
     stmts: [],
-    exported: new Set(),
     exempted: new Set(),
     definitions: new Map(),
     claimed: new Map(),
@@ -75,24 +73,8 @@ export function modLookupNameByDefinition(
   return undefined
 }
 
-export function modLookupPublicDefinition(
-  mod: Mod,
-  name: string,
-): Definition | undefined {
-  if (!mod.exported.has(name)) return undefined
-  return modLookupDefinition(mod, name)
-}
-
 export function modDefinitionEntries(mod: Mod): Array<[string, Definition]> {
   return Array.from(mod.definitions.entries())
-}
-
-export function modPublicDefinitionEntries(
-  mod: Mod,
-): Array<[string, Definition]> {
-  return modDefinitionEntries(mod).filter(([name, definition]) =>
-    mod.exported.has(name),
-  )
 }
 
 export function modOwnDefinitions(mod: Mod): Array<Definition> {

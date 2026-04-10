@@ -2,15 +2,12 @@ import { write } from "@xieyuheng/helpers.js/file"
 import {
   definePrimitiveFunction,
   definePrimitiveVariable,
-  provide,
 } from "../define/index.ts"
 import { formatValue } from "../format/formatValue.ts"
 import * as M from "../index.ts"
 import { type Mod } from "../mod/index.ts"
 
 export function builtinFile(mod: Mod) {
-  provide(mod, ["file-t", "print", "write", "newline"])
-
   definePrimitiveVariable(mod, "file-t", M.createAtomType("file"))
 
   definePrimitiveFunction(mod, "print", 1, (value) => {
