@@ -3,10 +3,6 @@ import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
 function modLookupType(mod: M.Mod, name: string): M.Value | undefined {
-  const builtinMod = M.loadBuiltinMod(mod.project)
-  const builtinClaimedType = M.modLookupClaimedType(builtinMod, name)
-  if (builtinClaimedType) return builtinClaimedType
-
   const definition = M.modLookupDefinition(mod, name)
   if (definition === undefined) return undefined
 
@@ -48,8 +44,10 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         const type = M.ctxLookupType(ctx, exp.name)
         if (type) return M.okInferEffect(type)(subst)
 
-        const topLevelType = modLookupType(mod, exp.name)
-        if (topLevelType) return M.okInferEffect(topLevelType)(subst)
+        const builtinMod = M.loadBuiltinMod(mod.project)
+        const builtinClaimedType = M.modLookupClaimedType(builtinMod, exp.name)
+        if (builtinClaimedType)
+          return M.okInferEffect(builtinClaimedType)(subst)
 
         let message = `undefined variable`
         message += `\n  name: ${exp.name}`
@@ -57,22 +55,20 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
       }
 
       case "QualifiedVar": {
-        const importedMod = M.projectLookupMod(mod.project, exp.modName)
-        if (importedMod === undefined) {
-          let message = `[typeInfer] undefined module prefix`
-          message += `\n  module: ${exp.modName}`
-          message += `\n  name: ${exp.name}`
+        const qualifiedMod = M.projectLookupMod(mod.project, exp.modName)
+        if (qualifiedMod === undefined) {
+          let message = `undefined module prefix`
+          message += `\n  name: ${exp.modName}/${exp.name}`
           if (exp.location)
             throw new S.ErrorWithSourceLocation(message, exp.location)
           else throw new Error(message)
         }
 
-        const topLevelType = modLookupType(importedMod, exp.name)
+        const topLevelType = modLookupType(qualifiedMod, exp.name)
         if (topLevelType) return M.okInferEffect(topLevelType)(subst)
 
         let message = `undefined qualified variable`
-        message += `\n  module: ${exp.modName}`
-        message += `\n  name: ${exp.name}`
+        message += `\n  name: ${exp.modName}/${exp.name}`
         return M.errorInferEffect(exp, message)(subst)
       }
 

@@ -10,15 +10,9 @@ export function loadCode(project: M.Project, path: string): void {
   const sexps = S.parseSexps(code, { path })
   const stmts = sexps.map(M.parseStmt)
   const { modName, isTypeErrorModule } = findModName(stmts)
-  let mod = M.projectLookupMod(project, modName)
-  if (mod === undefined) {
-    mod = M.createMod(modName, project)
-    M.projectAddMod(project, mod)
-    const builtinMod = M.loadBuiltinMod(project)
-    for (const definition of builtinMod.definitions.values()) {
-      M.modDefine(mod, definition.name, definition)
-    }
-  }
+  let mod =
+    M.projectLookupMod(project, modName) || M.createMod(modName, project)
+  M.projectAddMod(project, mod)
 
   if (isTypeErrorModule) {
     mod.isTypeErrorModule = isTypeErrorModule

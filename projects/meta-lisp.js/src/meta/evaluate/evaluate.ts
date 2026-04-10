@@ -29,8 +29,9 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       const value = M.envLookupValue(env, exp.name)
       if (value) return value
 
-      const definition = M.modLookupDefinition(mod, exp.name)
-      if (definition) return M.definitionMeaning(definition)
+      const builtinMod = M.loadBuiltinMod(mod.project)
+      const builtinDefinition = M.modLookupDefinition(builtinMod, exp.name)
+      if (builtinDefinition) return M.definitionMeaning(builtinDefinition)
 
       let message = `[evaluate] undefined variable`
       message += `\n  name: ${exp.name}`
@@ -40,22 +41,20 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
     }
 
     case "QualifiedVar": {
-      const importedMod = M.projectLookupMod(mod.project, exp.modName)
-      if (importedMod === undefined) {
+      const qualifiedMod = M.projectLookupMod(mod.project, exp.modName)
+      if (qualifiedMod === undefined) {
         let message = `[evaluate] undefined module prefix`
-        message += `\n  module: ${exp.modName}`
-        message += `\n  name: ${exp.name}`
+        message += `\n  name: ${exp.modName}/${exp.name}`
         if (exp.location)
           throw new S.ErrorWithSourceLocation(message, exp.location)
         else throw new Error(message)
       }
 
-      const definition = M.modLookupDefinition(importedMod, exp.name)
+      const definition = M.modLookupDefinition(qualifiedMod, exp.name)
       if (definition) return M.definitionMeaning(definition)
 
       let message = `[evaluate] undefined qualified variable`
-      message += `\n  module: ${exp.modName}`
-      message += `\n  name: ${exp.name}`
+      message += `\n  name: ${exp.modName}/${exp.name}`
       if (exp.location)
         throw new S.ErrorWithSourceLocation(message, exp.location)
       else throw new Error(message)

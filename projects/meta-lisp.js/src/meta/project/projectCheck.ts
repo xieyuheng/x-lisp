@@ -13,6 +13,8 @@ export function projectCheck(project: M.Project): void {
   }
 
   M.projectForEachDefinition(project, M.definitionDesugar)
+  M.projectForEachDefinition(project, M.definitionQualify)
+
   M.projectForEachMod(project, (mod) => {
     M.logPath("check", mod.name)
     if (mod.isTypeErrorModule) {

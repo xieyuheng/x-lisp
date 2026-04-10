@@ -1,7 +1,7 @@
 # new module system
 
-[meta-lisp.js] `qualifyFreeVar` -- can not handle `(match)`, must be called after `desugar`.
-[meta-lisp.js] `definitionQualify`
+[meta-lisp.js] move `modLookupType` to `mod/`
+[meta-lisp.js] desugar and qualify exp in claim
 
 [basic-lisp.c] remove module system
 [basic-lisp.c] support a key-value database -- for metadata
