@@ -1,6 +1,5 @@
 # new module system
 
-[meta-lisp.js] refactor `projectHelpers`
 [meta-lisp.js] recover `projectDump`
 
 [basic-lisp.c] support a key-value database -- for metadata

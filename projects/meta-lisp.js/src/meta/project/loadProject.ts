@@ -1,10 +1,22 @@
+import fs from "node:fs"
 import Path from "node:path"
-import { loadProjectConfig } from "./loadProjectConfig.ts"
-import { createProject, type Project } from "./Project.ts"
+import * as M from "../index.ts"
 
-export function loadProject(configPath?: string): Project {
+export function loadProject(configPath?: string): M.Project {
   configPath = configPath || Path.join(process.cwd(), "project.json")
-  const config = loadProjectConfig(configPath)
+  const config = M.loadProjectConfig(configPath)
   const rootDirectory = Path.resolve(Path.dirname(configPath))
-  return createProject(rootDirectory, config)
+  const project = M.createProject(rootDirectory, config)
+
+  const sourceDirectory = M.projectSourceDirectory(project)
+  for (const path of fs.readdirSync(sourceDirectory, {
+    encoding: "utf-8",
+    recursive: true,
+  })) {
+    if (path.endsWith(".meta")) {
+      M.loadCode(project, Path.join(sourceDirectory, path))
+    }
+  }
+
+  return project
 }

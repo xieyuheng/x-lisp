@@ -1,26 +1,24 @@
 import fs from "node:fs"
 import Path from "node:path"
-import { type Project } from "./Project.ts"
-import {
-  logPath,
-  projectOutputDirectory,
-  projectSourceDirectory,
-} from "./index.ts"
+import * as M from "../index.ts"
 
-export function projectClean(project: Project): void {
-  if (projectOutputDirectory(project) !== projectSourceDirectory(project)) {
-    fs.rmSync(projectOutputDirectory(project), { recursive: true, force: true })
+export function projectClean(project: M.Project): void {
+  if (M.projectOutputDirectory(project) !== M.projectSourceDirectory(project)) {
+    fs.rmSync(M.projectOutputDirectory(project), {
+      recursive: true,
+      force: true,
+    })
   } else {
     const outputSuffixes = [".dump", ".basic", ".out", ".asm"]
 
-    fs.readdirSync(projectSourceDirectory(project), {
+    fs.readdirSync(M.projectSourceDirectory(project), {
       encoding: "utf8",
       recursive: true,
     })
       .filter((file) => outputSuffixes.some((suffix) => file.endsWith(suffix)))
       .forEach((file) => {
-        const outputFile = Path.join(projectOutputDirectory(project), file)
-        logPath("clean", outputFile)
+        const outputFile = Path.join(M.projectOutputDirectory(project), file)
+        M.log("clean", outputFile)
         fs.rmSync(outputFile, { force: true })
       })
   }

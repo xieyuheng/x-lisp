@@ -27,7 +27,7 @@ export function projectBuild(project: M.Project): void {
 
   M.projectForEachMod(project, (mod) => {
     if (!mod.isTypeErrorModule) {
-      M.logPath("bundle", mod.name)
+      M.log("bundle", mod.name)
       const basicMod = B.createMod(mod.name, new Map())
       M.ExplicateControlPass(mod, basicMod)
       code += B.prettyMod(textWidth, basicMod)

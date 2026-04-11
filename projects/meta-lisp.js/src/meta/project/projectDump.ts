@@ -4,9 +4,9 @@ import {
   openOutputFile,
 } from "@xieyuheng/helpers.js/file"
 import Path from "node:path"
-import { logPath, projectOutputDirectory, type Project } from "./index.ts"
+import * as M from "../index.ts"
 
-export function projectDump(project: Project): void {
+export function projectDump(project: M.Project): void {
   // for (const id of projectSourceIds(project)) {
   //   const path = projectGetSourcePath(project, id)
   //   const mod = M.loadMod(path, project)
@@ -96,14 +96,14 @@ export function projectDump(project: Project): void {
 }
 
 function projectDumpCode(
-  project: Project,
+  project: M.Project,
   id: string,
   tag: string,
   code: string,
 ): void {
-  const path = Path.join(projectOutputDirectory(project), id)
+  const path = Path.join(M.projectOutputDirectory(project), id)
   const dumpPath = `${path}.${tag}.dump`
-  logPath(tag, dumpPath)
+  M.log(tag, dumpPath)
   callWithFile(openOutputFile(dumpPath), (file) => {
     fileWrite(file, code)
   })

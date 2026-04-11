@@ -3,12 +3,12 @@ import {
   fileRead,
   openInputFile,
 } from "@xieyuheng/helpers.js/file"
-import { type ProjectConfig, ProjectConfigSchema } from "./ProjectConfig.ts"
+import * as M from "../index.ts"
 
-export function loadProjectConfig(file: string): ProjectConfig {
+export function loadProjectConfig(file: string): M.ProjectConfig {
   return callWithFile(openInputFile(file), (file) => {
     const text = fileRead(file)
     const data = JSON.parse(text)
-    return ProjectConfigSchema.parse(data)
+    return M.ProjectConfigSchema.parse(data)
   })
 }

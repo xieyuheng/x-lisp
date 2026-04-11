@@ -1,16 +1,15 @@
+import Path from "node:path"
 import * as M from "../index.ts"
-import { type ProjectConfig } from "./ProjectConfig.ts"
 
 export type Project = {
   mods: Map<string, M.Mod>
   rootDirectory: string
-  config: ProjectConfig
-  sourceIds?: Array<string>
+  config: M.ProjectConfig
 }
 
 export function createProject(
   rootDirectory: string,
-  config: ProjectConfig,
+  config: M.ProjectConfig,
 ): Project {
   return {
     mods: new Map(),
@@ -55,4 +54,29 @@ export function projectForEachDefinition(
   M.projectForEachMod(project, (mod) => {
     M.modForEachOwnDefinition(mod, callback)
   })
+}
+
+export function projectSourceDirectory(project: M.Project): string {
+  return Path.resolve(
+    project.rootDirectory,
+    project.config["build"]["source-directory"],
+  )
+}
+
+export function projectOutputDirectory(project: M.Project): string {
+  return project.config["build"]["output-directory"]
+    ? Path.resolve(
+        project.rootDirectory,
+        project.config["build"]["output-directory"],
+      )
+    : projectSourceDirectory(project)
+}
+
+export function projectSnapshotDirectory(project: M.Project): string {
+  return project.config["build"]["snapshot-directory"]
+    ? Path.resolve(
+        project.rootDirectory,
+        project.config["build"]["snapshot-directory"],
+      )
+    : projectSourceDirectory(project)
 }

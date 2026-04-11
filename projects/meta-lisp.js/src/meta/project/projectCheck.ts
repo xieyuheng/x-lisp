@@ -6,12 +6,6 @@ import {
 import * as M from "../index.ts"
 
 export function projectCheck(project: M.Project): void {
-  for (const id of M.projectSourceIds(project)) {
-    M.logPath("load", id)
-    const path = M.projectGetSourcePath(project, id)
-    M.loadCode(project, path)
-  }
-
   M.projectForEachMod(project, (mod) => {
     M.modForEachClaimEntry(mod, (entry) => {
       entry.exp = M.desugar(mod, entry.exp)
@@ -30,7 +24,7 @@ export function projectCheck(project: M.Project): void {
   })
 
   M.projectForEachMod(project, (mod) => {
-    M.logPath("check", mod.name)
+    M.log("check", mod.name)
     if (mod.isTypeErrorModule) {
       const directory = M.projectSnapshotDirectory(project)
       callWithFile(
