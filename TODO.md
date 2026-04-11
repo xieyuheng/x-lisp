@@ -1,3 +1,5 @@
+dump as an option of build command
+
 # new module system
 
 [basic-lisp.c] support a key-value database -- for metadata

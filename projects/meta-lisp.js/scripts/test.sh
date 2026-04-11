@@ -2,6 +2,4 @@
 
 set -e
 
-# bash scripts/snapshot-syntax-errors.sh
-
-# cd lib/test-suite; bash scripts/test.sh; cd ../..
+cd lib/test-suite; bash scripts/test.sh; cd ../..
