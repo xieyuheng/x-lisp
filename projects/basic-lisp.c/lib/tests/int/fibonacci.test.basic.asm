@@ -1,3 +1,9 @@
+@define-variable true
+
+@define-variable false
+
+@define-variable void
+
 @define-function fibonacci
   local-store n
 body:

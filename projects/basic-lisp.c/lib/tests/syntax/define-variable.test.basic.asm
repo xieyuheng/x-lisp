@@ -1,3 +1,9 @@
+@define-variable true
+
+@define-variable false
+
+@define-variable void
+
 @define-variable x
 body:
   literal 1

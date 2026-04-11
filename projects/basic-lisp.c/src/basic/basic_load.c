@@ -1,6 +1,6 @@
 #include "index.h"
 
-extern void import_builtin_mod(mod_t *mod);
+extern void import_builtin(mod_t *mod);
 
 static value_t
 read_mod_body(path_t *path) {
@@ -13,7 +13,7 @@ mod_t *
 basic_load(path_t *path) {
     value_t sexps = read_mod_body(path);
     mod_t *mod = make_mod(path);
-    import_builtin_mod(mod);
+    import_builtin(mod);
     basic_prepare(mod, sexps);
     basic_compile(mod, sexps);
     return mod;

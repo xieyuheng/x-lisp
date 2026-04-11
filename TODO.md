@@ -5,10 +5,6 @@
 [meta-lisp.js] compile `(define-test)` to metadata -- fix `030-ExplicateControlPass` on `TestDefinition`
 [meta-lisp.js] recover `projectTest`
 
-# stack-lisp
-
-[stack-lisp.c] support a key-value database -- for metadata
-
 # later
 
 [meta-lisp.js] [maybe] project load by topological order (dynamicly)
@@ -36,3 +32,7 @@
 
 [basic-lisp.c] builtin `error-with-source-location`
 [basic-lisp.c] builtin `assert-with-source-location`
+
+# stack-lisp
+
+[stack-lisp.c] support a key-value database -- for metadata

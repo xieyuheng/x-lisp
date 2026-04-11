@@ -1,3 +1,9 @@
+@define-variable true
+
+@define-variable false
+
+@define-variable void
+
 @define-function factorial
   local-store n
 body:

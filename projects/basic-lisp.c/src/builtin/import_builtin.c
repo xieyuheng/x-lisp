@@ -1,10 +1,7 @@
 #include "index.h"
 
-mod_t *
-make_builtin_mod(void) {
-    path_t *path = make_path("builtin:");
-    mod_t *mod = make_mod(path);
-
+void
+import_builtin(mod_t *mod) {
     // int
 
     define_primitive_1(mod, "int?", x_int_p);
@@ -243,23 +240,4 @@ make_builtin_mod(void) {
     // process
 
     define_primitive_0(mod, "current-directory?", x_current_directory);
-
-    return mod;
-}
-
-static mod_t *global_builtin_mod = NULL;
-
-void
-import_builtin_mod(mod_t *mod) {
-    if (!global_builtin_mod) {
-        global_builtin_mod = make_builtin_mod();
-    }
-
-    record_iter_t iter;
-    record_iter_init(&iter, global_builtin_mod->definitions);
-    definition_t *definition = record_iter_next_value(&iter);
-    while (definition) {
-        mod_define(mod, definition->name, definition);
-        definition = record_iter_next_value(&iter);
-    }
 }
