@@ -3,8 +3,6 @@
 struct mod_t {
     path_t *path;
     record_t *definitions;
-    array_t *import_entries;
-    set_t *exported_names;
 };
 
 mod_t *make_mod(path_t *path);
@@ -19,6 +17,3 @@ struct import_entry_t {
     char *rename;
     bool is_exported;
 };
-
-import_entry_t *make_import_entry(mod_t *mod, char *name);
-void import_entry_free(import_entry_t *self);
