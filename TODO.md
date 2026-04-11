@@ -1,5 +1,3 @@
-[basic-lisp.c] remove `loaded_mods`
-
 # new module system
 
 [meta-lisp.js] refactor `projectHelpers`

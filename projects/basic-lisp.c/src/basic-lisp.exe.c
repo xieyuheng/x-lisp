@@ -16,8 +16,7 @@ static void
 handle_run(cmd_ctx_t *ctx) {
     char *pathname = cmd_arg(ctx, 0);
     mod_t *mod = basic_load(make_path(pathname));
-    basic_compile_loaded_mods();
-    basic_setup_loaded_mods();
+    basic_setup(mod);
     basic_run(mod);
 }
 
@@ -25,7 +24,6 @@ static void
 handle_bytecode(cmd_ctx_t *ctx) {
     char *pathname = cmd_arg(ctx, 0);
     mod_t *mod = basic_load(make_path(pathname));
-    basic_compile_loaded_mods();
     basic_bytecode(mod);
 }
 
