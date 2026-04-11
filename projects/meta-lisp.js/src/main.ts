@@ -13,8 +13,7 @@ const router = cmd.createRouter("meta-lisp-compile.js", version)
 
 router.defineRoutes([
   "check --config",
-  "dump --config",
-  "build --config",
+  "build --config --dump",
   "test --config",
   "clean --config",
 ])
@@ -25,14 +24,9 @@ router.defineHandlers({
     M.projectCheck(project)
   },
 
-  dump: ({ options }) => {
-    const project = M.loadProject(options["--config"])
-    M.projectDump(project)
-  },
-
   build: ({ options }) => {
     const project = M.loadProject(options["--config"])
-    M.projectBuild(project)
+    M.projectBuild(project, { dump: options["--dump"] !== undefined })
   },
 
   test: ({ options }) => {
