@@ -4,12 +4,6 @@ import * as B from "../../basic/index.ts"
 import * as M from "../index.ts"
 
 export function ExplicateControlPass(mod: M.Mod, basicMod: B.Mod): void {
-  for (const stmt of mod.stmts) {
-    if (M.isAboutImport(stmt)) {
-      basicMod.stmts.push(stmt)
-    }
-  }
-
   for (const definition of M.modOwnDefinitions(mod)) {
     basicMod.stmts.push(...onDefinition(basicMod, definition))
   }

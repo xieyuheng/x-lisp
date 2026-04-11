@@ -16,14 +16,6 @@ export function formatStmt(stmt: Stmt): string {
       const blocks = Array.from(stmt.blocks.values().map(formatBlock)).join(" ")
       return `(define-variable ${name} ${blocks})`
     }
-
-    case "Import": {
-      return `(import "${stmt.modName}" ${stmt.names.join(" ")})`
-    }
-
-    case "ImportAs": {
-      return `(import-as "${stmt.modName}" ${stmt.prefix})`
-    }
   }
 }
 
