@@ -1,6 +1,0 @@
-(claim main (-> void-t))
-
-(define (main)
-  (= _₁ (square 3))
-  (= _₂ (square _₁))
-  (assert-equal 81 _₂))

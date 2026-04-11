@@ -6,15 +6,26 @@ import {
 import * as M from "../index.ts"
 
 export function projectCheck(project: M.Project): void {
+  projectPerformClaim(project)
+  projectPerformDesugar(project)
+  projectPerformQualify(project)
+  projectPerformCheck(project)
+}
+
+export function projectPerformClaim(project: M.Project): void {
   M.projectForEachMod(project, (mod) => {
     M.modForEachClaimEntry(mod, (entry) => {
       entry.exp = M.desugar(mod, entry.exp)
       entry.exp = M.qualifyFreeVar(mod, new Set(), entry.exp)
     })
   })
+}
 
+export function projectPerformDesugar(project: M.Project): void {
   M.projectForEachDefinition(project, M.definitionDesugar)
+}
 
+export function projectPerformQualify(project: M.Project): void {
   const builtinMod = M.loadBuiltinMod(project)
 
   M.projectForEachMod(project, (mod) => {
@@ -22,9 +33,10 @@ export function projectCheck(project: M.Project): void {
       M.modForEachOwnDefinition(mod, M.definitionQualifyFreeVar)
     }
   })
+}
 
+export function projectPerformCheck(project: M.Project): void {
   M.projectForEachMod(project, (mod) => {
-    M.log("check", mod.name)
     if (mod.isTypeErrorModule) {
       const directory = M.projectSnapshotDirectory(project)
       callWithFile(

@@ -1,5 +1,0 @@
-(export one two)
-
-(define-variable one (block body (return 1)))
-
-(define-variable two (block body (return 2)))

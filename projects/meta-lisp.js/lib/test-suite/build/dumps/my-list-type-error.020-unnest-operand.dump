@@ -1,0 +1,8 @@
+(claim my-list (my-list/my-list-t int-t))
+
+(define my-list
+  (= _₁ my-list/li)
+  (= _₂ my-list/li)
+  (= _₃ my-list/nil)
+  (= _₄ (_₂ "3" _₃))
+  (_₁ 1 _₄))

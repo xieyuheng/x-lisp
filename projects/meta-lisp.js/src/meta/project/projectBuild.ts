@@ -15,6 +15,10 @@ export function projectBuild(project: M.Project): void {
   M.projectForEachMod(project, M.LiftLambdaPass)
   M.projectForEachMod(project, M.UnnestOperandPass)
 
+  projectBundle(project)
+}
+
+export function projectBundle(project: M.Project): void {
   const builtinMod = M.loadBuiltinMod(project)
 
   M.projectForEachMod(project, (mod) => {

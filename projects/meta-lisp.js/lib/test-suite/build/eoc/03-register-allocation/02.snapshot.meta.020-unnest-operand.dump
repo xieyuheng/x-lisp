@@ -1,8 +1,0 @@
-(claim main (-> void-t))
-
-(define (main)
-  (= x₁ (random-dice))
-  (= y₁ (random-dice))
-  (= _₁ (iadd x₁ y₁))
-  (= _₂ (iadd _₁ 42))
-  (println _₂))

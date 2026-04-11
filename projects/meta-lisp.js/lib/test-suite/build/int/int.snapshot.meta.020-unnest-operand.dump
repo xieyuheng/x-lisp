@@ -1,7 +1,0 @@
-(claim square (-> int-t int-t))
-
-(define (square x) (imul x x))
-
-(claim main (-> void-t))
-
-(define (main) (= _₁ (square 3)) (println _₁))

@@ -4,106 +4,52 @@ import {
   openOutputFile,
 } from "@xieyuheng/helpers.js/file"
 import Path from "node:path"
+import { textWidth } from "../../config.ts"
 import * as M from "../index.ts"
+import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 
 export function projectDump(project: M.Project): void {
-  // for (const id of projectSourceIds(project)) {
-  //   const path = projectGetSourcePath(project, id)
-  //   const mod = M.loadMod(path, project)
-  //   projectDumpCode(
-  //     project,
-  //     id,
-  //     "001-loaded",
-  //     M.prettyModDefinitions(textWidth, mod),
-  //   )
-  // }
-  // M.projectForEachDefinition(project, M.definitionDesugar)
-  // for (const id of projectSourceIds(project)) {
-  //   const path = projectGetSourcePath(project, id)
-  //   const mod = M.loadMod(path, project)
-  //   projectDumpCode(
-  //     project,
-  //     id,
-  //     "002-desugared",
-  //     M.prettyModDefinitions(textWidth, mod),
-  //   )
-  // }
-  // M.projectForEachMod(project, (mod) => {
-  //   if (mod.name.endsWith(".type-error.meta")) {
-  //     callWithFile(openOutputFile(`${mod.name}.out`), (file) => {
-  //       withOutputToFile(file, () => {
-  //         M.modForEachOwnDefinition(mod, M.definitionCheck)
-  //       })
-  //     })
-  //   } else {
-  //     M.modForEachOwnDefinition(mod, M.definitionCheck)
-  //   }
-  // })
-  // for (const id of projectSourceIds(project)) {
-  //   const path = projectGetSourcePath(project, id)
-  //   const mod = M.loadMod(path, project)
-  //   projectDumpCode(
-  //     project,
-  //     id,
-  //     "003-checked",
-  //     M.prettyModDefinitions(textWidth, mod),
-  //   )
-  // }
-  // for (const id of projectSourceIds(project)) {
-  //   const path = projectGetSourcePath(project, id)
-  //   const mod = M.loadMod(path, project)
-  //   Passes.ShrinkPass(mod)
-  //   projectDumpCode(
-  //     project,
-  //     id,
-  //     "005-shrink",
-  //     M.prettyModDefinitions(textWidth, mod),
-  //   )
-  // }
-  // for (const id of projectSourceIds(project)) {
-  //   const path = projectGetSourcePath(project, id)
-  //   const mod = M.loadMod(path, project)
-  //   Passes.UniquifyPass(mod)
-  //   projectDumpCode(
-  //     project,
-  //     id,
-  //     "010-uniquify",
-  //     M.prettyModDefinitions(textWidth, mod),
-  //   )
-  // }
-  // for (const id of projectSourceIds(project)) {
-  //   const path = projectGetSourcePath(project, id)
-  //   const mod = M.loadMod(path, project)
-  //   Passes.LiftLambdaPass(mod)
-  //   projectDumpCode(
-  //     project,
-  //     id,
-  //     "012-lift-lambda",
-  //     M.prettyModDefinitions(textWidth, mod),
-  //   )
-  // }
-  // for (const id of projectSourceIds(project)) {
-  //   const path = projectGetSourcePath(project, id)
-  //   const mod = M.loadMod(path, project)
-  //   Passes.UnnestOperandPass(mod)
-  //   projectDumpCode(
-  //     project,
-  //     id,
-  //     "020-unnest-operand",
-  //     M.prettyModDefinitions(textWidth, mod),
-  //   )
-  // }
+  M.projectPerformClaim(project)
+  projectDumpMods(project, "001-load")
+
+  M.projectPerformDesugar(project)
+  projectDumpMods(project, "002-desugar")
+
+  M.projectPerformQualify(project)
+  projectDumpMods(project, "003-qualify")
+
+  M.projectPerformCheck(project)
+  projectDumpMods(project, "004-check")
+
+  M.projectForEachMod(project, M.ShrinkPass)
+  projectDumpMods(project, "005-shrink")
+
+  M.projectForEachMod(project, M.UniquifyPass)
+  projectDumpMods(project, "010-uniquify")
+
+  M.projectForEachMod(project, M.LiftLambdaPass)
+  projectDumpMods(project, "012-lift-lambda")
+
+  M.projectForEachMod(project, M.UnnestOperandPass)
+  projectDumpMods(project, "020-unnest-operand")
+}
+
+function projectDumpMods(project: M.Project, tag: string): void {
+  M.projectForEachMod(project, (mod) => {
+    const code = M.prettyModDefinitions(textWidth, mod)
+    projectDumpCode(project, mod, tag, code)
+  })
 }
 
 function projectDumpCode(
   project: M.Project,
-  id: string,
+  mod: M.Mod,
   tag: string,
   code: string,
 ): void {
-  const path = Path.join(M.projectOutputDirectory(project), id)
-  const dumpPath = `${path}.${tag}.dump`
-  M.log(tag, dumpPath)
+  const directory = Path.join(M.projectOutputDirectory(project), "dumps")
+  const dumpPath = `${directory}/${mod.name}.${tag}.dump`
+  M.log(tag, pathRelativeToCwd(dumpPath))
   callWithFile(openOutputFile(dumpPath), (file) => {
     fileWrite(file, code)
   })

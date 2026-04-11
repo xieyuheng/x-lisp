@@ -1,5 +1,0 @@
-(claim main (-> void-t))
-
-(define (main)
-  (println (the (tau int-t int-t) (@tuple 1 2)))
-  (println (the (tau int-t symbol-t) (@tuple 1 'a))))

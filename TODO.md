@@ -1,7 +1,5 @@
 # new module system
 
-[meta-lisp.js] recover `projectDump`
-
 [basic-lisp.c] support a key-value database -- for metadata
 
 [meta-lisp.js] compile `(define-test)` to metadata -- fix `030-ExplicateControlPass` on `TestDefinition`

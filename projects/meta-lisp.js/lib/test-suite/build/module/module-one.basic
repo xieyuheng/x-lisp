@@ -1,3 +1,0 @@
-(export one)
-
-(define-variable one (block body (return 1)))

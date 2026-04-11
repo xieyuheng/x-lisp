@@ -1,5 +1,0 @@
-(claim main (-> void-t))
-
-(define (main)
-  (= _₁ (symbol-append 'abc 'def))
-  (assert-equal 'abcdef _₁))

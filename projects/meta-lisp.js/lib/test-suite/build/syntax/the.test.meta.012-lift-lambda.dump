@@ -1,3 +1,0 @@
-(claim main (-> void-t))
-
-(define (main) (assert-equal 1 1) (assert-equal 'a 'a))

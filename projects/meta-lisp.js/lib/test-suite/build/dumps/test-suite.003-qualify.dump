@@ -1,0 +1,635 @@
+(define-test bool-test (println true) (println false))
+
+(claim one int-t)
+
+(define one 1)
+
+(claim two int-t)
+
+(define two (iadd 1 test-suite/one))
+
+(claim three int-t)
+
+(define three (iadd 1 test-suite/two))
+
+(define-test constant-test (println test-suite/three))
+
+(define-test eoc-02-00 (println 42))
+
+(define-test eoc-02-01 (= x 4) (println (iadd 8 x)))
+
+(define-test
+ eoc-02-02
+ (= y (begin (= x 20) (iadd x (begin (= x 22) x))))
+ (println y))
+
+(define-test
+ eoc-02-03
+ (= y (begin (= x 20) (= z 22) (iadd x z)))
+ (println y))
+
+(define-test
+ eoc-02-04
+ (= z (begin (= y (begin (= x (ineg 42)) x)) y))
+ (println (ineg z)))
+
+(define-test eoc-02-05 (= a 42) (= b a) (println b))
+
+(define-test eoc-02-06 (println (ineg (random-dice))))
+
+(define-test
+ eoc-02-07
+ (println (iadd (random-dice) (random-dice))))
+
+(define-test eoc-02-08 (println (iadd 20 22)))
+
+(define-test eoc-02-09 (println (iadd 20 (iadd 11 11))))
+
+(define-test
+ eoc-02-10
+ (= x (iadd (iadd 1 2) (iadd 3 4)))
+ (println (iadd x 5)))
+
+(define-test
+ eoc-02-11
+ (println (iadd (iadd 1 2) (iadd 3 4))))
+
+(define-test
+ eoc-02-12
+ (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
+
+(define-test
+ eoc-02-13
+ (= x (iadd 42 (ineg 10)))
+ (println (iadd x 10)))
+
+(define-test
+ eoc-02-14
+ (= x 32)
+ (println (iadd (begin (= x 10) x) x)))
+
+(define-test
+ eoc-02-15
+ (= x (begin (= x 4) (iadd x 1)))
+ (println (iadd x 2)))
+
+(define-test eoc-02-16 (println (isub 50 8)))
+
+(define-test
+ eoc-02-17
+ (println (iadd 1 (iadd (random-dice) 1))))
+
+(define-test
+ eoc-02-18
+ (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
+
+(define-test
+ eoc-02-19
+ (= x 1)
+ (println
+  (iadd
+   x
+   (begin (= x (begin (= x 5) (iadd x x))) (iadd x 100)))))
+
+(define-test
+ eoc-02-20
+ (= x 1)
+ (println
+  (iadd
+   x
+   (begin (= x (begin (= y 5) (iadd y x))) (iadd x 100)))))
+
+(define-test
+ eoc-02-21
+ (= y 6)
+ (= x (begin (= y (ineg 42)) y))
+ (println (iadd x y)))
+
+(define-test
+ eoc-03-01
+ (= v 1)
+ (= w 42)
+ (= x (iadd v 7))
+ (= y x)
+ (= z (iadd x w))
+ (println (iadd z (ineg y))))
+
+(define-test
+ eoc-03-02
+ (= x (random-dice))
+ (= y (random-dice))
+ (println (iadd (iadd x y) 42)))
+
+(define-test eoc-04-01 (println (if true 1 2)))
+
+(define-test
+ eoc-04-02
+ (println
+  (begin
+    (= x (random-dice))
+    (= y (random-dice))
+    (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+      (iadd y 2)
+      (iadd y 10)))))
+
+(define-test
+ eoc-04-03
+ (println
+  (begin
+    (= x (random-dice))
+    (= y (random-dice))
+    (iadd
+     (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+       (iadd y 2)
+       (iadd y 10))
+     (if (if (int-less? x 1) (equal? x 0) (equal? x 2))
+       (iadd y 2)
+       (iadd y 10))))))
+
+(define-test
+ eoc-04-04
+ (println
+  (if
+      (if (equal? (random-dice) 1)
+        (equal? (random-dice) 2)
+        false)
+    0
+    42)))
+
+(define-test
+ eoc-05-01
+ (print 1)
+ (newline)
+ (print 2)
+ (newline)
+ (print 3)
+ (newline)
+ void)
+
+(define-test
+ eoc-05-02
+ (= x
+    (begin
+      (print 1)
+      (newline)
+      (print 2)
+      (newline)
+      (print 3)
+      (newline)
+      6))
+ (print 4)
+ (newline)
+ (print 5)
+ (newline)
+ (print 6)
+ (newline)
+ (print (iadd x x))
+ (newline)
+ void)
+
+(define-test
+ eoc-05-03
+ (if
+     (begin
+       (print 1)
+       (newline)
+       (print 2)
+       (newline)
+       (print 3)
+       (newline)
+       (equal? 1 2))
+   (begin (print 111) (newline))
+   (begin (print 222) (newline))))
+
+(define-test
+ file-test
+ (= file (open-input-file "src/file/file-1.txt"))
+ (assert-equal "abc\n" (file-read file))
+ (file-close file)
+ (= file (open-output-file "src/file/file-2.txt"))
+ (file-write file "123\n")
+ (file-close file)
+ (= file (open-input-file "src/file/file-2.txt"))
+ (assert-equal "123\n" (file-read file))
+ (file-close file)
+ (= file (open-output-file "src/file/file-2.txt"))
+ (file-write file "abc\n")
+ (file-close file)
+ (= file (open-input-file "src/file/file-2.txt"))
+ (assert-equal "abc\n" (file-read file))
+ (file-close file))
+
+(define-test
+ fs-test
+ (assert-equal "abc\n" (fs-read "src/fs/file-1.txt"))
+ (fs-write "src/fs/file-2.txt" "123\n")
+ (assert-equal "123\n" (fs-read "src/fs/file-2.txt"))
+ (fs-write "src/fs/file-2.txt" "abc\n")
+ (assert-equal "abc\n" (fs-read "src/fs/file-2.txt"))
+ (println (fs-list "src/fs")))
+
+(define (S x y z) (x z (y z)))
+
+(define (K x y) x)
+
+(define (I x) x)
+
+(define SKI (test-suite/S test-suite/K test-suite/I))
+
+(define SKI-tuple
+  (= S (lambda (x y z) (x z (y z))))
+  (= K (lambda (x y) x))
+  (= I (lambda (x) x))
+  (@tuple S K I))
+
+(claim compose
+  (polymorphic (A B C) (-> (-> B C) (-> A B) (-> A C))))
+
+(define (compose f g x) (f (g x)))
+
+(define-test
+ compose-test
+ (= add1 (iadd 1))
+ (assert-equal 3 ((test-suite/compose add1 add1) 1)))
+
+(define-test
+ curry-test
+ (assert-equal iadd iadd)
+ (assert-equal (iadd 1) (iadd 1))
+ (assert-not-equal (iadd 1) (iadd 2))
+ (assert-equal ((iadd 1) 2) (iadd 1 2))
+ (assert-equal 1 ((isub 2) 1))
+ (assert-equal 1 (isub 2 1)))
+
+(claim swap
+  (polymorphic (X Y Z) (-> (-> Y X Z) (-> X Y Z))))
+
+(define (swap f x y) (f y x))
+
+(claim drop (polymorphic (X Y Z) (-> (-> X Z) (-> Y X Z))))
+
+(define (drop f) (lambda (dropped) (lambda (x) (f x))))
+
+(claim dup (polymorphic (X Z) (-> (-> X X Z) (-> X Z))))
+
+(define (dup f) (lambda (x) (f x x)))
+
+(define-test
+ forth-test
+ (= f (lambda (x) x))
+ (= square (test-suite/dup imul))
+ (println (square (f 1)))
+ (println (square (f 2)))
+ (println (square (f 3)))
+ (println (square (f 4))))
+
+(define-test function-test (println iadd) (println (iadd 1)))
+
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(define-test
+ identity-test
+ (= add1 (iadd 1))
+ (assert-equal 2 (add1 1))
+ (= add1
+    (test-suite/identity (iadd (test-suite/identity 1))))
+ (the (-> int-t int-t) test-suite/identity)
+ (the (-> float-t float-t) test-suite/identity)
+ (the (polymorphic (A) (-> A A)) test-suite/identity)
+ (assert-equal 2 (add1 1)))
+
+(define-test
+ hash-test
+ (assert (hash-empty? (begin (= hash (make-hash)) hash)))
+ (println (begin (= hash (make-hash)) hash))
+ (println
+  (begin (= hash (make-hash)) (hash-put! 1 2 hash) hash))
+ (println
+  (begin (= hash (make-hash)) (hash-put! 1 3 hash) hash))
+ (println
+  (begin
+    (= hash (make-hash))
+    (hash-put! 1 2 hash)
+    (hash-put! 3 4 hash)
+    hash)))
+
+(claim factorial (-> int-t int-t))
+
+(define (factorial n)
+  (if (int-less-or-equal? n 1)
+    1
+    (imul (test-suite/factorial (isub n 1)) n)))
+
+(define-test
+ factorial-test
+ (assert-equal 1 (test-suite/factorial 0))
+ (assert-equal 1 (test-suite/factorial 1))
+ (assert-equal 2 (test-suite/factorial 2))
+ (assert-equal 6 (test-suite/factorial 3))
+ (assert-equal 24 (test-suite/factorial 4))
+ (assert-equal 120 (test-suite/factorial 5))
+ (assert-equal 720 (test-suite/factorial 6)))
+
+(claim fibonacci (-> int-t int-t))
+
+(define (fibonacci n)
+  (if (int-less-or-equal? n 1)
+    n
+    (iadd
+     (test-suite/fibonacci (isub n 1))
+     (test-suite/fibonacci (isub n 2)))))
+
+(define-test
+ fibonacci-test
+ (assert-equal 0 (test-suite/fibonacci 0))
+ (assert-equal 1 (test-suite/fibonacci 1))
+ (assert-equal 1 (test-suite/fibonacci 2))
+ (assert-equal 2 (test-suite/fibonacci 3))
+ (assert-equal 3 (test-suite/fibonacci 4))
+ (assert-equal 5 (test-suite/fibonacci 5))
+ (assert-equal 8 (test-suite/fibonacci 6))
+ (assert-equal 13 (test-suite/fibonacci 7))
+ (assert-equal 21 (test-suite/fibonacci 8))
+ (assert-equal 34 (test-suite/fibonacci 9)))
+
+(claim gcd (-> int-t int-t int-t))
+
+(define (gcd a b)
+  (if (equal? b 0) a (test-suite/gcd b (imod a b))))
+
+(define-test
+ gcd-test
+ (assert-equal 1 (test-suite/gcd 13 7))
+ (assert-equal 4 (test-suite/gcd 12 8)))
+
+(claim square (-> int-t int-t))
+
+(define (square x) (imul x x))
+
+(define-test
+ square-test
+ (assert-equal 81 (test-suite/square (test-suite/square 3))))
+
+(define-test
+ keyword-test
+ (assert-equal :abcdef (keyword-append :abc :def))
+ (println :abc))
+
+(define-test
+ list-test
+ (= list (make-list))
+ (list-push! 1 list)
+ (list-push! 2 list)
+ (list-push! 3 list)
+ (assert-equal
+   (begin
+     (= list (make-list))
+     (list-push! 1 list)
+     (list-push! 2 list)
+     (list-push! 3 list)
+     list)
+   list)
+ (assert-equal
+   (begin
+     (= list (make-list))
+     (list-push! 1 list)
+     (list-push! 2 list)
+     (list-push! 3 list)
+     list)
+   (begin
+     (= list (make-list))
+     (list-push! 1 list)
+     (list-push! 2 list)
+     (list-push! 3 list)
+     list))
+ (assert-equal
+   (begin
+     (= list (make-list))
+     (list-push! 'a list)
+     (list-push! 'b list)
+     (list-push! 'c list)
+     list)
+   (begin
+     (= list (make-list))
+     (list-push! 'a list)
+     (list-push! 'b list)
+     (list-push! 'c list)
+     list))
+ (assert-equal
+   3
+   (list-length
+    (begin
+      (= list (make-list))
+      (list-push! 1 list)
+      (list-push! 2 list)
+      (list-push! 3 list)
+      list)))
+ (assert-equal
+   0
+   (list-length (begin (= list (make-list)) list)))
+ (assert (list-empty? (begin (= list (make-list)) list)))
+ (= list (make-list))
+ (list-push! 1 list)
+ (list-push! 2 list)
+ (list-push! 3 list)
+ (println list)
+ (println
+  (the (list-t int-t)
+    (begin
+      (= list (make-list))
+      (list-push! 1 list)
+      (list-push! 2 list)
+      (list-push! 3 list)
+      list)))
+ (println
+  (begin
+    (= list (make-list))
+    (list-push! 1 list)
+    (list-push! 2 list)
+    (list-push! 3 list)
+    list))
+ (println
+  (begin
+    (= list (make-list))
+    (list-push! 1 list)
+    (list-push! 2 list)
+    (list-push! 3 list)
+    list))
+ (println
+  (begin
+    (= list (make-list))
+    (list-push! 1 list)
+    (list-push! 2 list)
+    (list-push! 3 list)
+    list))
+ (println
+  (begin
+    (= list (make-list))
+    (list-push! 'a list)
+    (list-push! 'b list)
+    (list-push! 'c list)
+    list))
+ (println
+  (begin
+    (= list (make-list))
+    (list-push! 'a list)
+    (list-push! 'b list)
+    (list-push! 'c list)
+    list)))
+
+(define-test
+ cond-mismatch-test
+ (if (equal? 1 2)
+   void
+   (if (equal? 1 2) void (error "cond mismatch"))))
+
+(define-test
+ cond-test
+ (assert-equal
+   1
+   (if (equal? 1 1) 1 (if true 2 (error "cond mismatch"))))
+ (assert-equal
+   2
+   (if (equal? 1 2) 1 (if true 2 (error "cond mismatch"))))
+ (if (equal? 1 1)
+   (assert true)
+   (if true (assert false) (error "cond mismatch")))
+ (if (equal? 1 2)
+   (assert false)
+   (if true (assert true) (error "cond mismatch"))))
+
+(define-test
+ if-test
+ (assert-equal (if true 1 2) 1)
+ (assert-equal (if false 1 2) 2)
+ (assert (if true (if true true false) false))
+ (assert (not (if true (if true false false) false)))
+ (assert (if false true (if false true true)))
+ (assert (not (if false true (if false true false)))))
+
+(define-test
+ the-test
+ (assert-equal 1 (the int-t 1))
+ (assert-equal 'a (the symbol-t 'a)))
+
+(define-test
+ path-test
+ (assert-equal
+   "a/b/c"
+   (path-directory-name "a/b/c/file.test.txt"))
+ (assert-equal
+   "file.test.txt"
+   (path-base-name "a/b/c/file.test.txt"))
+ (assert-equal
+   ".txt"
+   (path-extension "a/b/c/file.test.txt"))
+ (assert-equal
+   "file.test"
+   (path-stem "a/b/c/file.test.txt"))
+ (assert (path-absolute? "/a/b/c/file.test.txt"))
+ (assert-not (path-relative? "/a/b/c/file.test.txt"))
+ (assert (path-relative? "a/b/c/file.test.txt"))
+ (assert (path-relative? "./a/b/c/file.test.txt"))
+ (assert-not (path-absolute? "a/b/c/file.test.txt"))
+ (assert-not (path-absolute? "./a/b/c/file.test.txt"))
+ (assert-equal "a/b/c/d/e/f" (path-join "a/b/c" "d/e/f"))
+ (assert-equal "a/b/c/d/e/f" (path-join "a/b/c/" "/d/e/f"))
+ (assert-equal
+   "/a/b/c/d/e/f"
+   (path-join "/a/b/c/" "/d/e/f"))
+ (assert-equal "a/b/d" (path-normalize "a/b/c/../d"))
+ (assert-equal "/a/b/c" (path-normalize "///a/b/c/")))
+
+(define-test
+ reocrd-test
+ (println
+  (the (interface :x int-t :y int-t) (@record :x 1 :y 2)))
+ (println
+  (the (interface :x int-t :y int-t) (@record :x 1 :y 2))))
+
+(define-interface point-t :x float-t :y float-t)
+
+(define (with-color color point)
+  (extend point :color color))
+
+(define-test
+ record-extend-test
+ (= point (@record :x 1.0 :y 2.0))
+ (assert-equal
+   (@record :x 1.0 :y 2.0 :color "red")
+   (test-suite/with-color "red" point)))
+
+(define (point-put-x x point) (update point :x x))
+
+(define (point-put-y! y point) (update! point :y y))
+
+(define-test
+ record-update-test
+ (= point (@record :x 1.0 :y 2.0))
+ (assert-equal
+   (@record :x 2.0 :y 2.0)
+   (test-suite/point-put-x 2.0 point))
+ (assert-equal (@record :x 1.0 :y 2.0) point)
+ (assert-equal
+   (@record :x 1.0 :y 1.0)
+   (test-suite/point-put-y! 1.0 point))
+ (assert-equal (@record :x 1.0 :y 1.0) point))
+
+(define-test
+ set-test
+ (assert-equal
+   (begin
+     (= set (make-set))
+     (set-add! 1 set)
+     (set-add! 2 set)
+     (set-add! 3 set)
+     set)
+   (begin
+     (= set (make-set))
+     (set-add! 3 set)
+     (set-add! 2 set)
+     (set-add! 1 set)
+     set))
+ (println
+  (the (set-t int-t)
+    (begin
+      (= set (make-set))
+      (set-add! 1 set)
+      (set-add! 2 set)
+      (set-add! 3 set)
+      set))))
+
+(claim my-string-repeat (-> int-t string-t string-t))
+
+(define (my-string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append
+     string
+     (test-suite/my-string-repeat (isub n 1) string))))
+
+(define-test
+ my-string-repeat-test
+ (assert-equal "" (test-suite/my-string-repeat 0 "a"))
+ (assert-equal "a" (test-suite/my-string-repeat 1 "a"))
+ (assert-equal "aa" (test-suite/my-string-repeat 2 "a"))
+ (assert-equal "aaa" (test-suite/my-string-repeat 3 "a")))
+
+(define-test
+ string-test
+ (assert-equal "abcdef" (string-append "abc" "def"))
+ (println "abc"))
+
+(define-test
+ symbol-test
+ (assert-equal 'abcdef (symbol-append 'abc 'def))
+ (println 'abc))
+
+(define-test
+ tuple-test
+ (println (the (tau int-t int-t) (@tuple 1 2)))
+ (println (the (tau int-t symbol-t) (@tuple 1 'a))))
+
+(define-test void-test (println void))

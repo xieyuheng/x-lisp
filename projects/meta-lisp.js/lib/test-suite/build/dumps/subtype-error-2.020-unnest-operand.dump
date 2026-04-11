@@ -1,0 +1,17 @@
+(define-interface point-t :x float-t :y float-t)
+
+(claim point-println (-> subtype-error-2/point-t void-t))
+
+(define (point-println point) (println point))
+
+(define (main)
+  (begin
+    (= _₁ subtype-error-2/point-println)
+    (= record₁ (make-record))
+    (record-put! :x 1.0 record₁)
+    (record-put! :y 2.0 record₁)
+    (_₁ record₁))
+  (= _₂ subtype-error-2/point-println)
+  (= record₁ (make-record))
+  (record-put! :x 1.0 record₁)
+  (_₂ record₁))

@@ -1,9 +1,0 @@
-(claim my-string-repeat (-> int-t string-t string-t))
-
-(define (my-string-repeat n string)
-  (if (equal? n 0)
-    ""
-    (begin
-      (= _₁ (isub n 1))
-      (= _₂ (my-string-repeat _₁ string))
-      (string-append string _₂))))

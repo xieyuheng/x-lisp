@@ -1,3 +1,0 @@
-(define-function (main)
-  (block body (= _₁ 1) (goto let-body₁))
-  (block let-body₁ (return (println _₁))))

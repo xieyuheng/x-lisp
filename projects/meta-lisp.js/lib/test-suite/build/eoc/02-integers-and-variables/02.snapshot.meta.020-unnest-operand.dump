@@ -1,5 +1,0 @@
-(claim main (-> void-t))
-
-(define (main)
-  (= y₁ (begin (= x₁ 20) (= x₂ 22) (iadd x₁ x₂)))
-  (println y₁))

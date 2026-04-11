@@ -1,3 +1,0 @@
-(claim main (-> void-t))
-
-(define (main) (= _₁ (if true 1 2)) (println _₁))

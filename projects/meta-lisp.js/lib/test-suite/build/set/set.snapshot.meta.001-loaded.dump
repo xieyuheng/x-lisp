@@ -1,3 +1,0 @@
-(claim main (-> void-t))
-
-(define (main) (println (the (set-t int-t) {1 2 3})))

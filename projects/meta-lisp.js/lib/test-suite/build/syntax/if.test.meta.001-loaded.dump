@@ -1,9 +1,0 @@
-(claim main (-> void-t))
-
-(define (main)
-  (assert-equal (if true 1 2) 1)
-  (assert-equal (if false 1 2) 2)
-  (assert (and true true true))
-  (assert (not (and true true false)))
-  (assert (or false false true))
-  (assert (not (or false false false))))
