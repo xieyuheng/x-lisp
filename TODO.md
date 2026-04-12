@@ -1,6 +1,6 @@
 # new module system
 
-[basic-lisp.c] support a key-value database -- for metadata
+[basic-lisp.c] design a database to store metadata
 
 [meta-lisp.js] compile `(define-test)` to metadata -- fix `030-ExplicateControlPass` on `TestDefinition`
 [meta-lisp.js] recover `projectTest`
@@ -32,7 +32,3 @@
 
 [basic-lisp.c] builtin `error-with-source-location`
 [basic-lisp.c] builtin `assert-with-source-location`
-
-# stack-lisp
-
-[stack-lisp.c] support a key-value database -- for metadata
