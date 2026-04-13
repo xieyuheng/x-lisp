@@ -16,3 +16,27 @@ db_free(db_t *self) {
     array_free(self->datoms);
     free(self);
 }
+
+bool db_add(
+    db_t *db,
+    uint64_t e,
+    const keyword_t *k,
+    value_t v,
+    uint64_t tx
+) {
+    datom_t *datom = make_datom(e, k, v, tx, true);
+    array_push(db->datoms, datom);
+    return true;
+}
+
+bool db_delete(
+    db_t *db,
+    uint64_t e,
+    const keyword_t *k,
+    value_t v,
+    uint64_t tx
+) {
+    datom_t *datom = make_datom(e, k, v, tx, false);
+    array_push(db->datoms, datom);
+    return true;
+}
