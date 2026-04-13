@@ -32,6 +32,7 @@ function onDefinition(
           definition.name,
           definition.parameters,
           state.blocks,
+          definition.location,
         ),
       ]
     }
@@ -41,7 +42,27 @@ function onDefinition(
       const block = B.Block("body", [])
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
-      return [B.DefineFunction(basicMod, definition.name, [], state.blocks)]
+      return [
+        B.DbTransect(
+          basicMod,
+          ["test"],
+          [
+            B.DbPutUnique(
+              B.Var("test"),
+              B.Keyword("test/name"),
+              B.Symbol(definition.name),
+            ),
+          ],
+          definition.location,
+        ),
+        B.DefineFunction(
+          basicMod,
+          definition.name,
+          [],
+          state.blocks,
+          definition.location,
+        ),
+      ]
     }
 
     case "VariableDefinition": {

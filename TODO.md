@@ -1,7 +1,5 @@
 # new module system
 
-[meta-lisp.js] compile `(define-test)` to metadata -- fix `030-ExplicateControlPass` on `TestDefinition`
-
 [basic-lisp.c] design a database to store metadata
 
 [meta-lisp.js] recover `projectTest` -- call basic-lisp interpreter
