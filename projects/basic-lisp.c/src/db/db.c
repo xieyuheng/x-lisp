@@ -2,12 +2,14 @@
 
 struct db_t {
     array_t *datoms;
+    uint64_t id_count;
 };
 
 db_t *
 make_db(void) {
     db_t *self = new(db_t);
     self->datoms = make_array_with((free_fn_t *) datom_free);
+    self->id_count = 0;
     return self;
 }
 
