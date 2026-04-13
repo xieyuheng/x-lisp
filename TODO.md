@@ -1,9 +1,5 @@
 # new module system
 
-[meta-lisp.js] [basic] `formatDbOperation`
-[meta-lisp.js] [basic] `DbExp`
-[meta-lisp.js] [basic] `formatDbExp`
-
 [meta-lisp.js] compile `(define-test)` to metadata -- fix `030-ExplicateControlPass` on `TestDefinition`
 
 [basic-lisp.c] design a database to store metadata

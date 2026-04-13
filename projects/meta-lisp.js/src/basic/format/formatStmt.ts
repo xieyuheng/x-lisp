@@ -77,5 +77,5 @@ function formatDbOperation(operation: B.DbOperation): string {
 }
 
 function formatDbExp(exp: B.DbExp): string {
-  return "TODO"
+  return B.formatExp(exp)
 }
