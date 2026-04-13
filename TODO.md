@@ -1,9 +1,15 @@
 # new module system
 
-[basic-lisp.c] design a database to store metadata
+[meta-lisp.js] [basic] design `Stmt` for a database to store metadata
+
+- `DbTransect` as `Stmt`
+- `DbOperation`
 
 [meta-lisp.js] compile `(define-test)` to metadata -- fix `030-ExplicateControlPass` on `TestDefinition`
-[meta-lisp.js] recover `projectTest`
+
+[basic-lisp.c] design a database to store metadata
+
+[meta-lisp.js] recover `projectTest` -- call basic-lisp interpreter
 
 # later
 

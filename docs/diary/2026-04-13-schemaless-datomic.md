@@ -19,6 +19,8 @@ date: 2026-04-13
 另外，用 id 不是 int，而是特殊的类型。
 literal id 用 `#1 #2 ...` 表示。
 
+# db-transect
+
 设计 `(db-transect)` 语法。
 
 可以引入新 id：
@@ -48,7 +50,7 @@ literal id 用 `#1 #2 ...` 表示。
   (add order :order/log "created"))
 ```
 
-# examples
+more examples:
 
 ```scheme
 ;; 创建一个新用户，绑定到 user
@@ -98,6 +100,8 @@ literal id 用 `#1 #2 ...` 表示。
   (put user :user/age 32))
 ```
 
+# db-find
+
 设计 `(db-find (name ...) ...)` 语法，
 其 body 中所有的 symbol 都被认为是 pattern variable，
 只有 name 所生命的 name 是我们所关心的需要返回的 pattern variable：
@@ -124,4 +128,47 @@ literal id 用 `#1 #2 ...` 表示。
   [o :order/user u]
   [o :order/total order-total]
   (> order-total 100))
+```
+
+# db-clause
+
+```scheme
+(db-clause (ancestor a d)
+  [a :parent/child d])
+(db-clause (ancestor a d)
+  [a :parent/child x] (ancestor x d))
+```
+
+# db-pull
+
+```scheme
+(db-pull id
+  :user/name
+  (:user/address :address/street
+                 (:address/country :country/name)))
+
+{:user/name "Alice"
+ :user/address {:address/street "123 Main St"
+                :address/country {:country/name "USA"}}}
+```
+
+默认是一个值，多个值的时候出错。
+可以用 `(first)` 来取多个值中的第一个，
+或用 `(many)` 来让返回值变成 list。
+
+```scheme
+(db-pull id
+  :user/name
+  (many :user/tag))
+
+{:user/name "Alice"
+ :user/tag ["clojure" "datomic" "fun"]}
+
+(db-pull id
+  (many :order/items
+    :item/name
+    (many :item/tags)))
+
+{:order/items [{:item/name "Laptop" :item/tags ["electronics" "expensive"]}
+               {:item/name "Mouse"  :item/tags ["electronics"]}]}
 ```
