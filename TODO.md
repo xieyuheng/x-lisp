@@ -2,21 +2,6 @@
 
 [basic-lisp.c] design a database to store metadata
 
-```scheme
-(db-add :project :project/test 'test-suite/bool-test)
-
-(define-attribute :project/module
-  :type symbol-t
-  :many true
-  :unique true)
-
-(db-attribute :project/module-test (set-t symbol-t))
-
-(db-insert :project
-  :project/module 'test-suite
-  :project/test 'test-suite/bool-test)
-```
-
 [meta-lisp.js] compile `(define-test)` to metadata -- fix `030-ExplicateControlPass` on `TestDefinition`
 [meta-lisp.js] recover `projectTest`
 
