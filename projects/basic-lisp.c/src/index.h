@@ -8,3 +8,4 @@
 #include "vm/index.h"
 #include "builtin/index.h"
 #include "basic/index.h"
+#include "db/index.h"

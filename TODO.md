@@ -1,8 +1,5 @@
 # new module system
 
-[basic-lisp.c] [learn] from datahike https://datahike.io/notes/why-we-built-datahike/
-[basic-lisp.c] [learn] from datascript https://github.com/tonsky/datascript/tree/master
-[basic-lisp.c] `db/` -- setup
 [basic-lisp.c] `datom_t` -- setup
 [basic-lisp.c] `db_t` -- `datoms` array of `datom_t`
 [basic-lisp.c] `datom_t` -- has `e a v tx op`
