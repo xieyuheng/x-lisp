@@ -5,7 +5,7 @@ export const sexpConfig: S.Config = {
     ["define-function", 1],
     ["define-variable", 1],
     ["block", 1],
-    ["@label", 0],
+    ["db-transect", 1],
 
     ["export", 0],
     ["import-all", 0],

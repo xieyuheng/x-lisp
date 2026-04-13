@@ -1,8 +1,9 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
 import type { Mod } from "../mod/index.ts"
+import * as B from "../index.ts"
 
-export type Stmt = DefineFunction | DefineVariable
+export type Stmt = DefineFunction | DefineVariable | DbTransect
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -49,6 +50,29 @@ export function DefineVariable(
     mod,
     name,
     blocks,
+    location,
+  }
+}
+
+export type DbTransect = {
+  kind: "DbTransect"
+  mod: Mod
+  bindings: Array<string>
+  operations: Array<B.DbOperation>
+  location?: SourceLocation
+}
+
+export function DbTransect(
+  mod: Mod,
+  bindings: Array<string>,
+  operations: Array<B.DbOperation>,
+  location?: SourceLocation,
+): DbTransect {
+  return {
+    kind: "DbTransect",
+    mod,
+    bindings,
+    operations,
     location,
   }
 }
