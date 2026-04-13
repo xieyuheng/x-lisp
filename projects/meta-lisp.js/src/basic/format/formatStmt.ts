@@ -34,5 +34,48 @@ function formatBlock(block: Block): string {
 }
 
 function formatDbOperation(operation: B.DbOperation): string {
+  switch (operation.kind) {
+    case "DbAdd": {
+      const e = formatDbExp(operation.e)
+      const a = formatDbExp(operation.a)
+      const v = formatDbExp(operation.v)
+      return `(add ${e} ${a} ${v})`
+    }
+
+    case "DbDelete": {
+      const e = formatDbExp(operation.e)
+      const a = formatDbExp(operation.a)
+      const v = formatDbExp(operation.v)
+      return `(delete ${e} ${a} ${v})`
+    }
+
+    case "DbDeleteAttribute": {
+      const e = formatDbExp(operation.e)
+      const a = formatDbExp(operation.a)
+      return `(delete-attribute ${e} ${a})`
+    }
+
+    case "DbDeleteEntity": {
+      const e = formatDbExp(operation.e)
+      return `(delete-entity ${e})`
+    }
+
+    case "DbPut": {
+      const e = formatDbExp(operation.e)
+      const a = formatDbExp(operation.a)
+      const v = formatDbExp(operation.v)
+      return `(put ${e} ${a} ${v})`
+    }
+
+    case "DbPutUnique": {
+      const e = formatDbExp(operation.e)
+      const a = formatDbExp(operation.a)
+      const v = formatDbExp(operation.v)
+      return `(put-unique ${e} ${a} ${v})`
+    }
+  }
+}
+
+function formatDbExp(exp: B.DbExp): string {
   return "TODO"
 }
