@@ -1,8 +1,6 @@
 # new module system
 
-[basic-lisp.c] `datom_t` -- setup
-[basic-lisp.c] `db_t` -- `datoms` array of `datom_t`
-[basic-lisp.c] `datom_t` -- has `e a v tx op`
+[basic-lisp.c] `entity_id_t` -- as `value_t`
 [basic-lisp.c] `mod_t` -- has `db`
 [basic-lisp.c] `basic_db_transect`
 [basic-lisp.c] `db-dump file` command -- with `.db` extension
