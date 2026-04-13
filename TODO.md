@@ -1,21 +1,17 @@
 # new module system
 
-[basic-lisp.c] design a database to store metadata
+[basic-lisp.c] [learn] from datahike https://datahike.io/notes/why-we-built-datahike/
+[basic-lisp.c] [learn] from datascript https://github.com/tonsky/datascript/tree/master
+[basic-lisp.c] `db/` -- setup
+[basic-lisp.c] `datom_t` -- setup
+[basic-lisp.c] `db_t` -- `datoms` array of `datom_t`
+[basic-lisp.c] `datom_t` -- has `e a v tx op`
+[basic-lisp.c] `mod_t` -- has `db`
+[basic-lisp.c] `basic_db_transect`
+[basic-lisp.c] `db-dump file` command -- with `.db` extension
+[basic-lisp.c] lib/tests/db
 
 [meta-lisp.js] recover `projectTest` -- call basic-lisp interpreter
-
-# later
-
-[meta-lisp.js] [maybe] project load by topological order (dynamicly)
-
-# prelude
-
-[meta-lisp.js] be able to use prelude module
-
-# about file
-
-[meta-lisp.js] [prelude] call-with-input-file
-[meta-lisp.js] [prelude] call-with-output-file
 
 # about format
 
@@ -31,3 +27,16 @@
 
 [basic-lisp.c] builtin `error-with-source-location`
 [basic-lisp.c] builtin `assert-with-source-location`
+
+# later
+
+[meta-lisp.js] [maybe] project load by topological order (dynamicly)
+
+# prelude
+
+[meta-lisp.js] be able to use prelude module
+
+# about file
+
+[meta-lisp.js] [prelude] call-with-input-file
+[meta-lisp.js] [prelude] call-with-output-file
