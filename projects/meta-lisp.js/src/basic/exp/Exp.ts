@@ -2,17 +2,6 @@ import { type SourceLocation } from "@xieyuheng/sexp.js"
 
 export type Atom = Symbol | Keyword | String | Int | Float | Var
 
-export function isAtom(exp: Exp): exp is Atom {
-  return (
-    exp.kind === "Symbol" ||
-    exp.kind === "Keyword" ||
-    exp.kind === "String" ||
-    exp.kind === "Int" ||
-    exp.kind === "Float" ||
-    exp.kind === "Var"
-  )
-}
-
 export type Exp = Atom | Apply
 
 export type Symbol = {

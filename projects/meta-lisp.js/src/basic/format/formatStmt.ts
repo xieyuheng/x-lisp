@@ -1,7 +1,7 @@
 import type { Block } from "../block/index.ts"
+import * as B from "../index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { formatInstr } from "./formatInstr.ts"
-import * as B from "../index.ts"
 
 export function formatStmt(stmt: Stmt): string {
   switch (stmt.kind) {
@@ -20,7 +20,9 @@ export function formatStmt(stmt: Stmt): string {
 
     case "DbTransect": {
       const bindings = stmt.bindings.join(" ")
-      const operations = Array.from(stmt.operations.map(formatDbOperation)).join(" ")
+      const operations = Array.from(
+        stmt.operations.map(formatDbOperation),
+      ).join(" ")
       return `(db-transect (${bindings}) ${operations})`
     }
   }

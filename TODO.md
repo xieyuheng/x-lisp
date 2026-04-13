@@ -1,15 +1,8 @@
 # new module system
 
-[meta-lisp.js] [basic] `DbOperation`
-
-- (add e a v)
-- (delete e a v)
-- (delete-attribute e a)
-- (delete-entity e)
-- (put e a v) -- (delete-attribute e a) + (add e a v)
-- (put-unique e a v)
-
 [meta-lisp.js] [basic] `formatDbOperation`
+[meta-lisp.js] [basic] `DbExp`
+[meta-lisp.js] [basic] `formatDbExp`
 
 [meta-lisp.js] compile `(define-test)` to metadata -- fix `030-ExplicateControlPass` on `TestDefinition`
 

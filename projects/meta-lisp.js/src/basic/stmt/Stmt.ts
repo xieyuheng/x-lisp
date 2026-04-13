@@ -1,7 +1,7 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
-import type { Mod } from "../mod/index.ts"
 import * as B from "../index.ts"
+import type { Mod } from "../mod/index.ts"
 
 export type Stmt = DefineFunction | DefineVariable | DbTransect
 
