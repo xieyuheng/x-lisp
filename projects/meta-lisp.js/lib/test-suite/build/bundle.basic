@@ -1,4 +1,4 @@
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/bool-test))
 
 (define-function (test-suite/bool-test)
@@ -14,19 +14,19 @@
 (define-variable test-suite/three
   (block body (= _₁ test-suite/two) (return (iadd 1 _₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/constant-test))
 
 (define-function (test-suite/constant-test)
   (block body (= _₁ test-suite/three) (return (println _₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-00))
 
 (define-function (test-suite/eoc-02-00)
   (block body (return (println 42))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-01))
 
 (define-function (test-suite/eoc-02-01)
@@ -35,7 +35,7 @@
     (= _₁ (iadd 8 x₁))
     (return (println _₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-02))
 
 (define-function (test-suite/eoc-02-02)
@@ -45,7 +45,7 @@
     (= y₁ (iadd x₁ x₂))
     (return (println y₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-03))
 
 (define-function (test-suite/eoc-02-03)
@@ -55,7 +55,7 @@
     (= y₁ (iadd x₁ z₁))
     (return (println y₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-04))
 
 (define-function (test-suite/eoc-02-04)
@@ -66,13 +66,13 @@
     (= _₁ (ineg z₁))
     (return (println _₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-05))
 
 (define-function (test-suite/eoc-02-05)
   (block body (= a₁ 42) (= b₁ a₁) (return (println b₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-06))
 
 (define-function (test-suite/eoc-02-06)
@@ -81,7 +81,7 @@
     (= _₂ (ineg _₁))
     (return (println _₂))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-07))
 
 (define-function (test-suite/eoc-02-07)
@@ -91,13 +91,13 @@
     (= _₃ (iadd _₁ _₂))
     (return (println _₃))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-08))
 
 (define-function (test-suite/eoc-02-08)
   (block body (= _₁ (iadd 20 22)) (return (println _₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-09))
 
 (define-function (test-suite/eoc-02-09)
@@ -106,7 +106,7 @@
     (= _₂ (iadd 20 _₁))
     (return (println _₂))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-10))
 
 (define-function (test-suite/eoc-02-10)
@@ -117,7 +117,7 @@
     (= _₃ (iadd x₁ 5))
     (return (println _₃))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-11))
 
 (define-function (test-suite/eoc-02-11)
@@ -127,7 +127,7 @@
     (= _₃ (iadd _₁ _₂))
     (return (println _₃))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-12))
 
 (define-function (test-suite/eoc-02-12)
@@ -138,7 +138,7 @@
     (= _₄ (iadd _₁ _₃))
     (return (println _₄))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-13))
 
 (define-function (test-suite/eoc-02-13)
@@ -148,7 +148,7 @@
     (= _₂ (iadd x₁ 10))
     (return (println _₂))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-14))
 
 (define-function (test-suite/eoc-02-14)
@@ -158,7 +158,7 @@
     (= _₁ (iadd x₂ x₁))
     (return (println _₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-15))
 
 (define-function (test-suite/eoc-02-15)
@@ -168,13 +168,13 @@
     (= _₁ (iadd x₁ 2))
     (return (println _₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-16))
 
 (define-function (test-suite/eoc-02-16)
   (block body (= _₁ (isub 50 8)) (return (println _₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-17))
 
 (define-function (test-suite/eoc-02-17)
@@ -184,7 +184,7 @@
     (= _₃ (iadd 1 _₂))
     (return (println _₃))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-18))
 
 (define-function (test-suite/eoc-02-18)
@@ -196,7 +196,7 @@
     (= _₅ (iadd _₄ 1))
     (return (println _₅))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-19))
 
 (define-function (test-suite/eoc-02-19)
@@ -208,7 +208,7 @@
     (= _₂ (iadd x₁ _₁))
     (return (println _₂))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-20))
 
 (define-function (test-suite/eoc-02-20)
@@ -220,7 +220,7 @@
     (= _₂ (iadd x₁ _₁))
     (return (println _₂))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-02-21))
 
 (define-function (test-suite/eoc-02-21)
@@ -231,7 +231,7 @@
     (= _₁ (iadd x₁ y₁))
     (return (println _₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-03-01))
 
 (define-function (test-suite/eoc-03-01)
@@ -245,7 +245,7 @@
     (= _₂ (iadd z₁ _₁))
     (return (println _₂))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-03-02))
 
 (define-function (test-suite/eoc-03-02)
@@ -256,14 +256,14 @@
     (= _₂ (iadd _₁ 42))
     (return (println _₂))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-04-01))
 
 (define-function (test-suite/eoc-04-01)
   (block body (= _₁ 1) (goto let-body₁))
   (block let-body₁ (return (println _₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-04-02))
 
 (define-function (test-suite/eoc-04-02)
@@ -282,7 +282,7 @@
   (block then₈ (test (equal? x₁ 0)) (branch then₄ else₅))
   (block else₉ (test (equal? x₁ 2)) (branch then₆ else₇)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-04-03))
 
 (define-function (test-suite/eoc-04-03)
@@ -314,7 +314,7 @@
   (block then₁₇ (test (equal? x₁ 0)) (branch then₁₃ else₁₄))
   (block else₁₈ (test (equal? x₁ 2)) (branch then₁₅ else₁₆)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-04-04))
 
 (define-function (test-suite/eoc-04-04)
@@ -333,7 +333,7 @@
     (branch then₄ else₅))
   (block else₇ (goto else₃)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-05-01))
 
 (define-function (test-suite/eoc-05-01)
@@ -346,7 +346,7 @@
     (perform (newline))
     (return void)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-05-02))
 
 (define-function (test-suite/eoc-05-02)
@@ -369,7 +369,7 @@
     (perform (newline))
     (return void)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/eoc-05-03))
 
 (define-function (test-suite/eoc-05-03)
@@ -385,7 +385,7 @@
   (block then₁ (perform (print 111)) (return (newline)))
   (block else₂ (perform (print 222)) (return (newline))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/file-test))
 
 (define-function (test-suite/file-test)
@@ -409,7 +409,7 @@
     (perform (assert-equal "abc\n" _₃))
     (return (file-close file₅))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/fs-test))
 
 (define-function (test-suite/fs-test)
@@ -462,7 +462,7 @@
 (define-function (test-suite/compose f g x)
   (block body (= _₁ (g x)) (return (f _₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/compose-test))
 
 (define-function (test-suite/compose-test)
@@ -473,7 +473,7 @@
     (= _₃ (_₂ 1))
     (return (assert-equal 3 _₃))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/curry-test))
 
 (define-function (test-suite/curry-test)
@@ -513,7 +513,7 @@
 (define-function (test-suite/dup©λ₁ f x₁)
   (block body (return (f x₁ x₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/forth-test))
 
 (define-function (test-suite/forth-test)
@@ -537,7 +537,7 @@
 (define-function (test-suite/forth-test©λ₁ x₁)
   (block body (return x₁)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/function-test))
 
 (define-function (test-suite/function-test)
@@ -549,7 +549,7 @@
 (define-function (test-suite/identity x)
   (block body (return x)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/identity-test))
 
 (define-function (test-suite/identity-test)
@@ -568,7 +568,7 @@
     (= _₆ (add1₂ 1))
     (return (assert-equal 2 _₆))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/hash-test))
 
 (define-function (test-suite/hash-test)
@@ -600,7 +600,7 @@
     (= _₃ (_₁ _₂))
     (return (imul _₃ n))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/factorial-test))
 
 (define-function (test-suite/factorial-test)
@@ -641,7 +641,7 @@
     (= _₆ (_₄ _₅))
     (return (iadd _₃ _₆))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/fibonacci-test))
 
 (define-function (test-suite/fibonacci-test)
@@ -685,7 +685,7 @@
     (= _₂ (imod a b))
     (return (_₁ b _₂))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/gcd-test))
 
 (define-function (test-suite/gcd-test)
@@ -700,7 +700,7 @@
 (define-function (test-suite/square x)
   (block body (return (imul x x))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/square-test))
 
 (define-function (test-suite/square-test)
@@ -711,7 +711,7 @@
     (= _₄ (_₁ _₃))
     (return (assert-equal 81 _₄))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/keyword-test))
 
 (define-function (test-suite/keyword-test)
@@ -720,7 +720,7 @@
     (perform (assert-equal :abcdef _₁))
     (return (println :abc))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/list-test))
 
 (define-function (test-suite/list-test)
@@ -800,7 +800,7 @@
     (perform (list-push! 'c list₃))
     (return (println list₃))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/cond-mismatch-test))
 
 (define-function (test-suite/cond-mismatch-test)
@@ -810,7 +810,7 @@
   (block then₃ (return void))
   (block else₄ (test (equal? 1 2)) (branch then₁ else₂)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/cond-test))
 
 (define-function (test-suite/cond-test)
@@ -836,7 +836,7 @@
   (block then₁₃ (= _₁ 1) (goto let-body₁₁))
   (block else₁₄ (= _₁ 2) (goto let-body₁₂)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/if-test))
 
 (define-function (test-suite/if-test)
@@ -868,7 +868,7 @@
     (= _₂ 2)
     (goto let-body₉)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/the-test))
 
 (define-function (test-suite/the-test)
@@ -876,7 +876,7 @@
     (perform (assert-equal 1 1))
     (return (assert-equal 'a 'a))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/path-test))
 
 (define-function (test-suite/path-test)
@@ -912,7 +912,7 @@
     (= _₁₅ (path-normalize "///a/b/c/"))
     (return (assert-equal "/a/b/c" _₁₅))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/reocrd-test))
 
 (define-function (test-suite/reocrd-test)
@@ -932,7 +932,7 @@
     (= record₂ (record-put :color color record₁))
     (return record₂)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/record-extend-test))
 
 (define-function (test-suite/record-extend-test)
@@ -961,7 +961,7 @@
     (perform (record-put! :y y record₁))
     (return record₁)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/record-update-test))
 
 (define-function (test-suite/record-update-test)
@@ -991,7 +991,7 @@
     (perform (record-put! :y 1.0 record₁))
     (return (assert-equal record₁ point₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/set-test))
 
 (define-function (test-suite/set-test)
@@ -1020,7 +1020,7 @@
     (= _₃ (_₁ _₂ string))
     (return (string-append string _₃))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique
    test
    :test/name
@@ -1041,7 +1041,7 @@
     (= _₈ (_₇ 3 "a"))
     (return (assert-equal "aaa" _₈))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/string-test))
 
 (define-function (test-suite/string-test)
@@ -1050,7 +1050,7 @@
     (perform (assert-equal "abcdef" _₁))
     (return (println "abc"))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/symbol-test))
 
 (define-function (test-suite/symbol-test)
@@ -1059,7 +1059,7 @@
     (perform (assert-equal 'abcdef _₁))
     (return (println 'abc))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/tuple-test))
 
 (define-function (test-suite/tuple-test)
@@ -1073,7 +1073,7 @@
     (perform (list-push! 'a list₁))
     (return (println list₁))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'test-suite/void-test))
 
 (define-function (test-suite/void-test)
@@ -1086,7 +1086,7 @@
     (= _₃ (_₁ exp _₂))
     (return (println _₃))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'l1/l1-test))
 
 (define-function (l1/l1-test)
@@ -1467,7 +1467,7 @@
     (= _₃ (_₁ exp _₂))
     (return (println _₃))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'l2-l1/l2-l1-test))
 
 (define-function (l2-l1/l2-l1-test)
@@ -1610,7 +1610,7 @@
     (= _₃ (_₁ exp _₂))
     (return (println _₃))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'l2/l2-test))
 
 (define-function (l2/l2-test)
@@ -2150,7 +2150,7 @@
     (test (_₂ list))
     (branch then₇ else₈)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique
    test
    :test/name
@@ -2239,7 +2239,7 @@
     (test (_₂ left))
     (branch then₁ else₂)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'my-list/my-list-append-test))
 
 (define-function (my-list/my-list-append-test)
@@ -2303,7 +2303,7 @@
     (test (_₂ list))
     (branch then₁ else₂)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'my-list/my-list-length-test))
 
 (define-function (my-list/my-list-length-test)
@@ -2434,7 +2434,7 @@
     (test (_₂ list1))
     (branch then₁₃ else₁₄)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'my-list/my-list-map-zip-test))
 
 (define-function (my-list/my-list-map-zip-test)
@@ -2524,7 +2524,7 @@
     (test (_₂ list))
     (branch then₁ else₂)))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'my-list/my-list-map-test))
 
 (define-function (my-list/my-list-map-test)
@@ -2554,7 +2554,7 @@
     (= _₂₂ (_₁₃ _₁₄ _₂₁))
     (return (assert-equal _₁₂ _₂₂))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'my-list/my-list-snapshot))
 
 (define-function (my-list/my-list-snapshot)
@@ -2570,7 +2570,7 @@
     (= _₈ (_₂ 1 _₇))
     (return (println _₈))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique test :test/name 'my-list/my-list-test))
 
 (define-function (my-list/my-list-test)
@@ -2719,7 +2719,7 @@
     (= _₁₀ (fmul _₇ _₉))
     (return (fadd _₅ _₁₀))))
 
-(db-transect (test)
+(db-transact (test)
   (put-unique
    test
    :test/name

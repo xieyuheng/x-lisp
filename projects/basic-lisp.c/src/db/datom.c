@@ -1,9 +1,9 @@
 #include "index.h"
 
 struct datom_t {
-    entity_id_t *e;
-    keyword_t *a;
-    value_t v;
-    uint64_t tx;
-    bool op;
+    uint64_t entity_id;
+    const keyword_t *attribute;
+    value_t value;
+    uint64_t transaction_id;
+    bool affirmative_p;
 };

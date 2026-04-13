@@ -1,8 +1,7 @@
 # new module system
 
-[basic-lisp.c] `entity_id_t` -- as `value_t`
 [basic-lisp.c] `mod_t` -- has `db`
-[basic-lisp.c] `basic_db_transect`
+[basic-lisp.c] `basic_db_transact`
 [basic-lisp.c] `db-dump file` command -- with `.db` extension
 [basic-lisp.c] lib/tests/db
 

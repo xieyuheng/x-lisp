@@ -23,7 +23,7 @@ export function formatStmt(stmt: Stmt): string {
       const operations = Array.from(
         stmt.operations.map(formatDbOperation),
       ).join(" ")
-      return `(db-transect (${bindings}) ${operations})`
+      return `(db-transact (${bindings}) ${operations})`
     }
   }
 }
