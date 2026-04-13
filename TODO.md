@@ -1,7 +1,5 @@
 # new module system
 
-[basic-lisp.c] `make_db`
-[basic-lisp.c] `db_free`
 [basic-lisp.c] `make_mod` -- call `make_db`
 
 [basic-lisp.c] `basic_db_transact`
