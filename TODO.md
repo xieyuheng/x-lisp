@@ -1,6 +1,9 @@
 # new module system
 
-[basic-lisp.c] `mod_t` -- has `db`
+[basic-lisp.c] `make_db`
+[basic-lisp.c] `db_free`
+[basic-lisp.c] `make_mod` -- call `make_db`
+
 [basic-lisp.c] `basic_db_transact`
 [basic-lisp.c] `db-dump file` command -- with `.db` extension
 [basic-lisp.c] lib/tests/db
