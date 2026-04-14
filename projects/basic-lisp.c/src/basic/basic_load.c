@@ -45,11 +45,14 @@ basic_setup(mod_t *mod) {
 }
 
 void
-basic_run(mod_t *mod) {
-    definition_t *definition = mod_lookup(mod, "main");
-    if (definition) {
-        vm_t *vm = make_vm(mod);
-        call_definition_now(vm, definition);
-        vm_free(vm);
+basic_run(mod_t *mod, const char *function_name) {
+    definition_t *definition = mod_lookup(mod, function_name);
+    if (!definition) {
+        who_printf("undefined function: %s\n", function_name);
+        exit(1);
     }
+
+    vm_t *vm = make_vm(mod);
+    call_definition_now(vm, definition);
+    vm_free(vm);
 }

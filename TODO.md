@@ -1,6 +1,5 @@
 # new module system
 
-[basic-lisp.c] can run different function from command line
 [meta-lisp.js] recover `projectTest` -- call basic-lisp interpreter many times
 
 # about format
