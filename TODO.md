@@ -1,15 +1,8 @@
 # new module system
 
-[basic-lisp.c] `db_delete_attribute`
-[basic-lisp.c] `db_delete_entity`
-[basic-lisp.c] `db_put`
-[basic-lisp.c] `db_put_unique`
+[meta-lisp.js] remove db
 
-[basic-lisp.c] `basic_db_transact`
-[basic-lisp.c] `db-dump file` command -- with `.db` extension
-[basic-lisp.c] lib/tests/db
-
-[meta-lisp.js] recover `projectTest` -- call basic-lisp interpreter
+[meta-lisp.js] recover `projectTest` -- call basic-lisp interpreter many times
 
 # about format
 
