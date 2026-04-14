@@ -1,7 +1,5 @@
 # new module system
 
-[meta-lisp.js] remove db
-
 [meta-lisp.js] recover `projectTest` -- call basic-lisp interpreter many times
 
 # about format

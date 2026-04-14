@@ -43,18 +43,6 @@ function onDefinition(
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
       return [
-        B.DbTransect(
-          basicMod,
-          ["test"],
-          [
-            B.DbPutUnique(
-              B.Var("test"),
-              B.Keyword("test/name"),
-              B.Symbol(definition.name),
-            ),
-          ],
-          definition.location,
-        ),
         B.DefineFunction(
           basicMod,
           definition.name,
