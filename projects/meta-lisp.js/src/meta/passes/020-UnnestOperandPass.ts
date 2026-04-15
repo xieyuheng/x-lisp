@@ -23,7 +23,8 @@ function onDefinition(definition: M.Definition): null {
 
     case "FunctionDefinition":
     case "VariableDefinition":
-    case "TestDefinition": {
+    case "TestDefinition":
+    case "TypeDefinition": {
       const state = { freshNameCount: 0 }
       definition.body = onExp(state, definition.body)
       return null

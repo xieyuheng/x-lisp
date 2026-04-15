@@ -18,7 +18,8 @@ function onDefinition(mod: M.Mod, definition: M.Definition): null {
 
     case "FunctionDefinition":
     case "VariableDefinition":
-    case "TestDefinition": {
+    case "TestDefinition":
+    case "TypeDefinition": {
       definition.body = onExp(mod, definition.body)
       return null
     }

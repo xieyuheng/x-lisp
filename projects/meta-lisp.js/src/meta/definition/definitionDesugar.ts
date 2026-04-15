@@ -23,6 +23,11 @@ export function definitionDesugar(definition: M.Definition): null {
       return null
     }
 
+    case "TypeDefinition": {
+      definition.body = M.desugar(definition.mod, definition.body)
+      return null
+    }
+
     case "DataDefinition": {
       definition.dataConstructors = definition.dataConstructors.map(
         ({ name, fields }) => ({

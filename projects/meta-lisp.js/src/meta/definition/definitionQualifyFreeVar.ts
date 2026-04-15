@@ -35,6 +35,15 @@ export function definitionQualifyFreeVar(definition: M.Definition): null {
       return null
     }
 
+    case "TypeDefinition": {
+      definition.body = M.qualifyFreeVar(
+        definition.mod,
+        new Set(),
+        definition.body,
+      )
+      return null
+    }
+
     case "DataDefinition": {
       const boundNames = new Set(definition.dataTypeConstructor.parameters)
       definition.dataConstructors = definition.dataConstructors.map(

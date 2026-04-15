@@ -17,7 +17,8 @@ function onDefinition(
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition":
     case "DataDefinition":
-    case "InterfaceDefinition": {
+    case "InterfaceDefinition":
+    case "TypeDefinition": {
       return []
     }
 
@@ -52,6 +53,8 @@ function onDefinition(
         ),
       ]
     }
+
+
 
     case "VariableDefinition": {
       const state = createState()

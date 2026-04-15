@@ -9,6 +9,7 @@ export type Definition =
   | FunctionDefinition
   | VariableDefinition
   | TestDefinition
+| TypeDefinition
   | DataDefinition
   | InterfaceDefinition
 
@@ -134,6 +135,30 @@ export function TestDefinition(
 ): TestDefinition {
   return {
     kind: "TestDefinition",
+    mod,
+    name,
+    body,
+    location,
+  }
+}
+
+export type TypeDefinition = {
+  kind: "TypeDefinition"
+  mod: Mod
+  name: string
+  body: Exp
+  value?: Value
+  location?: SourceLocation
+} & DefinitionState
+
+export function TypeDefinition(
+  mod: Mod,
+  name: string,
+  body: Exp,
+  location?: SourceLocation,
+): TypeDefinition {
+  return {
+    kind: "TypeDefinition",
     mod,
     name,
     body,

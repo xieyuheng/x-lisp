@@ -1,4 +1,3 @@
-[meta-lisp.js] `TypeDefinition`
 [meta-lisp.js] `DefineType`
 [meta-lisp.js] parse `(define-type)`
 
