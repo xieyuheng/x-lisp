@@ -30,13 +30,3 @@ export function envPutMany(
   }
   return env
 }
-
-export function envUpdate(base: Env, env: Env): Env {
-  for (const name of envNames(env)) {
-    const value = envLookupValue(env, name)
-    assert(value)
-    base = envPut(base, name, value)
-  }
-
-  return base
-}

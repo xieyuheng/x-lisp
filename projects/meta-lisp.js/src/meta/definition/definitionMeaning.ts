@@ -21,7 +21,15 @@ export function definitionMeaning(definition: M.Definition): M.Value {
     }
 
     case "TypeDefinition": {
-      return M.DefinitionValue(definition)
+      if (!definition.value) {
+        definition.value = M.evaluate(
+          definition.mod,
+          M.emptyEnv(),
+          definition.body,
+        )
+      }
+
+      return definition.value
     }
 
     case "VariableDefinition": {

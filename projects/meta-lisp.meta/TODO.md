@@ -1,4 +1,4 @@
-[meta-lisp.meta] `env-t`
+[meta-lisp.meta] `env-t` -- `env-put-many`
 [meta-lisp.meta] `definition-t`
 [meta-lisp.meta] `mod-t`
 [meta-lisp.meta] `eval`
