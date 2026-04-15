@@ -1,5 +1,5 @@
-import Path from "node:path"
 import * as M from "../index.ts"
+import Path from "node:path"
 
 export type Project = {
   mods: Map<string, M.Mod>

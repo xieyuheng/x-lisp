@@ -1,7 +1,7 @@
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import { apply } from "./apply.ts"
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
+import * as S from "@xieyuheng/sexp.js"
 
 export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
   switch (exp.kind) {

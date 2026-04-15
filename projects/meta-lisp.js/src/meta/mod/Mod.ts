@@ -1,9 +1,9 @@
-import * as S from "@xieyuheng/sexp.js"
 import { type DataConstructor, type Definition } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 import * as M from "../index.ts"
 import { type Stmt } from "../stmt/index.ts"
 import { type Value } from "../value/index.ts"
+import * as S from "@xieyuheng/sexp.js"
 
 export type ClaimedEntry = {
   exp: Exp

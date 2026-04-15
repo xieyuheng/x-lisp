@@ -1,6 +1,6 @@
 import { formatValue } from "../format/index.ts"
-import * as Values from "./index.ts"
 import { type Value } from "./Value.ts"
+import * as Values from "./index.ts"
 
 export type SetValue = {
   kind: "SetValue"

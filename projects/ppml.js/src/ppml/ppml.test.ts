@@ -1,5 +1,5 @@
-import { test } from "node:test"
 import * as Ppml from "./index.ts"
+import { test } from "node:test"
 
 const exampleNode = Ppml.concat(
   Ppml.text("begin"),

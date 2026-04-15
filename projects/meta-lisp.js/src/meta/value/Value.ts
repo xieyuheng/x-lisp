@@ -1,4 +1,3 @@
-import { type File } from "@xieyuheng/helpers.js/file"
 import type { Definition } from "../definition/index.ts"
 import { type Env } from "../env/index.ts"
 import { type Exp } from "../exp/index.ts"
@@ -7,6 +6,7 @@ import { type Mod } from "../mod/index.ts"
 import { type AtomValue } from "./Atom.ts"
 import { type HashValue } from "./Hash.ts"
 import { type SetValue } from "./Set.ts"
+import { type File } from "@xieyuheng/helpers.js/file"
 
 export type Value =
   | AtomValue

@@ -1,6 +1,6 @@
+import * as M from "../index.ts"
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
-import * as M from "../index.ts"
 
 export function formatTypesInMod(mod: M.Mod, types: Array<M.Value>): string {
   return types.map((t) => formatTypeInMod(mod, t)).join(" ")

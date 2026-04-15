@@ -1,8 +1,8 @@
+import type { File } from "./File.ts"
 import assert from "node:assert"
 import fs from "node:fs"
 import process from "node:process"
 import util from "node:util"
-import type { File } from "./File.ts"
 
 export function fileWrite(file: File, text: string): void {
   const buffer = Buffer.from(text, "utf-8")

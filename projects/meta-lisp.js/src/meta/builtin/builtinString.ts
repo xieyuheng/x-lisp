@@ -1,7 +1,7 @@
-import { stringHasBlank } from "@xieyuheng/helpers.js/string"
 import { definePrimitiveFunction } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
+import { stringHasBlank } from "@xieyuheng/helpers.js/string"
 
 export function builtinString(mod: Mod) {
   definePrimitiveFunction(mod, "string?", 1, (value) => {

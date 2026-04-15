@@ -1,6 +1,6 @@
+import * as M from "../index.ts"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
-import * as M from "../index.ts"
 
 export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
   switch (exp.kind) {

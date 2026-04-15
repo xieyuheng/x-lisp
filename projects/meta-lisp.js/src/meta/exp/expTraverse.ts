@@ -1,7 +1,7 @@
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
-import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 import type { Exp } from "./Exp.ts"
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
+import * as S from "@xieyuheng/sexp.js"
 
 export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
   switch (exp.kind) {

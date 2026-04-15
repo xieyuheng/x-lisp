@@ -2,5 +2,4 @@
 
 set -e
 
-./meta-lisp.js build
 ./meta-lisp.js test

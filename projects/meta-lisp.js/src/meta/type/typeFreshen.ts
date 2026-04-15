@@ -1,5 +1,5 @@
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as M from "../index.ts"
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 
 export function typeFreshen(type: M.Value): M.Value {
   if (M.isVarType(type)) {

@@ -1,6 +1,6 @@
-import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
 import { type Trail } from "./Trail.ts"
+import { arrayZip } from "@xieyuheng/helpers.js/array"
 
 export function typeBisimilar(
   trail: Trail,

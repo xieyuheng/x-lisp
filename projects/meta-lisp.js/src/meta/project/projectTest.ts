@@ -1,8 +1,8 @@
+import * as M from "../index.ts"
 import { systemShellRun } from "@xieyuheng/helpers.js/system"
 import fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
-import * as M from "../index.ts"
 
 const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 

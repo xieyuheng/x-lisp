@@ -1,8 +1,8 @@
+import * as M from "../index.ts"
 import { range } from "@xieyuheng/helpers.js/range"
 import * as S from "@xieyuheng/sexp.js"
 import assert from "node:assert"
 import Path from "node:path"
-import * as M from "../index.ts"
 
 export function simplifyMatch(
   mod: M.Mod,

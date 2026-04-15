@@ -1,4 +1,3 @@
-import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type {
   DataConstructor,
   DataTypeConstructor,
@@ -6,13 +5,14 @@ import type {
 } from "../definition/index.ts"
 import { type Exp } from "../exp/index.ts"
 import type { AboutImport } from "./AboutImport.ts"
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 
 export type Stmt =
   | AboutImport
   | DefineFunction
   | DefineVariable
   | DefineTest
-| DefineType
+  | DefineType
   | DefineData
   | DefineInterface
   | Claim

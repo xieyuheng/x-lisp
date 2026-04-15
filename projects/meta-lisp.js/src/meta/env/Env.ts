@@ -1,5 +1,5 @@
-import assert from "node:assert"
 import { type Value } from "../value/index.ts"
+import assert from "node:assert"
 
 export type Env = Map<string, Value>
 

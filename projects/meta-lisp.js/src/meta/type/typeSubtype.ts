@@ -1,7 +1,7 @@
-import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
 import { type Trail } from "./Trail.ts"
 import { typeBisimilar } from "./typeBisimilar.ts"
+import { arrayZip } from "@xieyuheng/helpers.js/array"
 
 export function typeSubtype(trail: Trail, lhs: M.Value, rhs: M.Value): boolean {
   if (

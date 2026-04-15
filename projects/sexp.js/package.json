@@ -16,6 +16,11 @@
     "test": "node --test 'src/**/*.test.ts'",
     "format": "prettier src --write"
   },
+  "prettier": {
+    "semi": false,
+    "trailingComma": "all",
+    "plugins": ["@trivago/prettier-plugin-sort-imports"]
+  },
   "dependencies": {
     "@xieyuheng/helpers.js": "workspace:*",
     "@xieyuheng/ppml.js": "workspace:*"
@@ -23,7 +28,7 @@
   "devDependencies": {
     "@types/node": "^25.6.0",
     "prettier": "^3.8.3",
-    "prettier-plugin-organize-imports": "^4.3.0",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "typescript": "^5.9.3"
   }
 }

@@ -1,5 +1,5 @@
-import { arrayZip } from "@xieyuheng/helpers.js/array"
 import type { Sexp } from "./Sexp.ts"
+import { arrayZip } from "@xieyuheng/helpers.js/array"
 
 export function sexpEqual(x: Sexp, y: Sexp): boolean {
   if (

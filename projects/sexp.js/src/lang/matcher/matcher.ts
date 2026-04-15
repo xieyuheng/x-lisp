@@ -1,8 +1,8 @@
-import assert from "node:assert"
 import { matchSexp, type Subst } from "../match/index.ts"
 import { parseSexp } from "../parser/index.ts"
 import * as S from "../sexp/index.ts"
 import { type SourceLocation } from "../token/index.ts"
+import assert from "node:assert"
 
 export type Matcher<A> = (sexp: S.Sexp) => A | undefined
 

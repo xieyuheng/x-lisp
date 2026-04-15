@@ -1,11 +1,3 @@
-import {
-  callWithFile,
-  fileRead,
-  openInputFile,
-} from "@xieyuheng/helpers.js/file"
-import * as S from "@xieyuheng/sexp.js"
-import Path from "node:path"
-import { fileURLToPath } from "node:url"
 import * as M from "../index.ts"
 import { builtinAssert } from "./builtinAssert.ts"
 import { builtinBool } from "./builtinBool.ts"
@@ -23,6 +15,14 @@ import { builtinSymbol } from "./builtinSymbol.ts"
 import { builtinType } from "./builtinType.ts"
 import { builtinValue } from "./builtinValue.ts"
 import { builtinVoid } from "./builtinVoid.ts"
+import {
+  callWithFile,
+  fileRead,
+  openInputFile,
+} from "@xieyuheng/helpers.js/file"
+import * as S from "@xieyuheng/sexp.js"
+import Path from "node:path"
+import { fileURLToPath } from "node:url"
 
 const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 

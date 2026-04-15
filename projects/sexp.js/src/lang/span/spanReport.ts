@@ -1,6 +1,6 @@
+import { type Span } from "./Span.ts"
 import { leftPad } from "@xieyuheng/helpers.js/format"
 import { stringIsBlank } from "@xieyuheng/helpers.js/string"
-import { type Span } from "./Span.ts"
 
 type Line = {
   index: number

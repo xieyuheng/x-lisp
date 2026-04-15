@@ -1,9 +1,9 @@
+import * as M from "../index.ts"
 import {
   callWithFile,
   openOutputFile,
   withOutputToFile,
 } from "@xieyuheng/helpers.js/file"
-import * as M from "../index.ts"
 
 export function projectCheck(project: M.Project): void {
   projectPerformClaim(project)

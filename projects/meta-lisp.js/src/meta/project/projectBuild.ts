@@ -1,3 +1,6 @@
+import * as B from "../../basic/index.ts"
+import { textWidth } from "../../config.ts"
+import * as M from "../index.ts"
 import {
   callWithFile,
   fileWrite,
@@ -6,9 +9,6 @@ import {
 } from "@xieyuheng/helpers.js/file"
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import Path from "node:path"
-import * as B from "../../basic/index.ts"
-import { textWidth } from "../../config.ts"
-import * as M from "../index.ts"
 
 export function projectBuild(
   project: M.Project,

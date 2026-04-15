@@ -1,7 +1,7 @@
-import * as Ppml from "@xieyuheng/ppml.js"
 import { formatSexp } from "../format/index.ts"
 import { isAtom, type Sexp } from "../sexp/index.ts"
 import { defaultConfig } from "./defaultConfig.ts"
+import * as Ppml from "@xieyuheng/ppml.js"
 
 export type Config = {
   keywords: Array<KeywordConfig>

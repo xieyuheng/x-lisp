@@ -1,6 +1,6 @@
+import * as M from "../index.ts"
 import fs from "node:fs"
 import Path from "node:path"
-import * as M from "../index.ts"
 
 export function projectClean(project: M.Project): void {
   if (M.projectOutputDirectory(project) !== M.projectSourceDirectory(project)) {

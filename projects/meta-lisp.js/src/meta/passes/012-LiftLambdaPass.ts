@@ -1,6 +1,6 @@
+import * as M from "../index.ts"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import assert from "node:assert"
-import * as M from "../index.ts"
 
 export function LiftLambdaPass(mod: M.Mod): void {
   mod.definitions = new Map(

@@ -1,5 +1,5 @@
-import assert from "node:assert"
 import * as M from "../index.ts"
+import assert from "node:assert"
 
 export function modEvaluateMainIfExists(mod: M.Mod): void {
   const main = M.modLookupDefinition(mod, "main")

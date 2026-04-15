@@ -1,5 +1,5 @@
-import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import * as M from "../index.ts"
+import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 
 export function apply(target: M.Value, args: Array<M.Value>): M.Value {
   const arity = getArity(target, args)

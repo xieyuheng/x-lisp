@@ -1,6 +1,6 @@
 import { type Token } from "../token/index.ts"
-import { useConsumers } from "./consumers/useConsumers.ts"
 import { Lexer } from "./Lexer.ts"
+import { useConsumers } from "./consumers/useConsumers.ts"
 
 export function consume(lexer: Lexer): Token | undefined {
   for (const consumer of useConsumers()) {

@@ -1,10 +1,10 @@
-import { stringIsBigInt, stringIsNumber } from "@xieyuheng/helpers.js/string"
 import { ErrorWithSourceLocation } from "../errors/index.ts"
 import { Lexer, lexerMatchBrackets } from "../lexer/index.ts"
 import * as S from "../sexp/index.ts"
 import { type Sexp } from "../sexp/index.ts"
 import { spanUnion } from "../span/index.ts"
 import { type Token } from "../token/index.ts"
+import { stringIsBigInt, stringIsNumber } from "@xieyuheng/helpers.js/string"
 
 type Result = { sexp: Sexp; remain: Array<Token> }
 

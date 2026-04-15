@@ -1,5 +1,5 @@
-import * as S from "@xieyuheng/sexp.js"
 import type { Exp } from "./Exp.ts"
+import * as S from "@xieyuheng/sexp.js"
 
 export function expChildren(exp: Exp): Array<Exp> {
   switch (exp.kind) {

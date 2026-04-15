@@ -1,5 +1,5 @@
-import { arrayDedup } from "@xieyuheng/helpers.js/array"
 import * as M from "../index.ts"
+import { arrayDedup } from "@xieyuheng/helpers.js/array"
 
 // - To implement `typeReify`.
 

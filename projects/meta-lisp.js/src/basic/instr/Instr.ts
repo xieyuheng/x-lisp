@@ -1,5 +1,5 @@
-import { type SourceLocation } from "@xieyuheng/sexp.js"
 import type { Exp } from "../exp/index.ts"
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 
 export type Instr = Assign | Perform | Test | Branch | Goto | Return
 

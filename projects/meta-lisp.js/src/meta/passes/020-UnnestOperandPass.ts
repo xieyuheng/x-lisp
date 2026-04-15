@@ -1,6 +1,6 @@
+import * as M from "../index.ts"
 import { arrayUnzip } from "@xieyuheng/helpers.js/array"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
-import * as M from "../index.ts"
 
 export function UnnestOperandPass(mod: M.Mod): void {
   for (const definition of M.modOwnDefinitions(mod)) {
