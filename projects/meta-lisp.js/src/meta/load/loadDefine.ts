@@ -52,6 +52,20 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
     )
   }
 
+  if (stmt.kind === "DefineType") {
+    M.modClaim(mod, stmt.name, M.Var("type-t"))
+    M.modDefine(
+      mod,
+      stmt.name,
+      M.TypeDefinition(
+        mod,
+        stmt.name,
+        M.qualifyImported(scope, stmt.body),
+        stmt.location,
+      ),
+    )
+  }
+
   if (stmt.kind === "DefineData") {
     const newScope = M.modScopeFilterBoundNames(
       scope,
