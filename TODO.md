@@ -1,3 +1,7 @@
+# builtin
+
+[meta-lisp.js] more builtin -- copy from x-lisp-proto.js
+
 # about format
 
 [helpers.c] improve `string_builder_t` for `format_*`

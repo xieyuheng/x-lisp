@@ -1,3 +1,36 @@
+(claim int-product (-> (list-t int-t) int-t))
+
+(define (int-product xs)
+  (if (list-empty? xs)
+    1
+    (imul (car xs) (int-product (cdr xs)))))
+
+(claim int-product-test void-t)
+
+(define-test int-product-test
+  (assert-equal
+    1
+    (int-product (begin (= list₁ (make-list)) list₁)))
+  (assert-equal
+    6
+    (int-product
+     (begin
+       (= list₁ (make-list))
+       (list-push! 1 list₁)
+       (list-push! 2 list₁)
+       (list-push! 3 list₁)
+       list₁)))
+  (assert-equal
+    24
+    (int-product
+     (begin
+       (= list₁ (make-list))
+       (list-push! 1 list₁)
+       (list-push! 2 list₁)
+       (list-push! 3 list₁)
+       (list-push! 4 list₁)
+       list₁))))
+
 (define-interface source-location-t
   :span
   source-span-t

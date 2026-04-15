@@ -1,3 +1,31 @@
+(define-function (int-product xs)
+  (block body (test (list-empty? xs)) (branch then₁ else₂))
+  (block then₁ (return 1))
+  (block else₂
+    (= _₁ (car xs))
+    (= _₂ (cdr xs))
+    (= _₃ (int-product _₂))
+    (return (imul _₁ _₃))))
+
+(define-function (int-product-test)
+  (block body
+    (= list₁ (make-list))
+    (= _₁ (int-product list₁))
+    (perform (assert-equal 1 _₁))
+    (= list₁ (make-list))
+    (perform (list-push! 1 list₁))
+    (perform (list-push! 2 list₁))
+    (perform (list-push! 3 list₁))
+    (= _₂ (int-product list₁))
+    (perform (assert-equal 6 _₂))
+    (= list₁ (make-list))
+    (perform (list-push! 1 list₁))
+    (perform (list-push! 2 list₁))
+    (perform (list-push! 3 list₁))
+    (perform (list-push! 4 list₁))
+    (= _₃ (int-product list₁))
+    (return (assert-equal 24 _₃))))
+
 (define-function (symbol-sexp content location)
   (block body
     (= list₁ (make-list))
