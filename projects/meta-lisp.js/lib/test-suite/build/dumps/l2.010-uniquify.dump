@@ -1,178 +1,182 @@
-(claim evaluate-and-print (-> exp-t void-t))
+(claim l2/evaluate-and-print (-> l2/exp-t void-t))
 
-(define (evaluate-and-print exp)
+(define (l2/evaluate-and-print exp)
   (println (l2/evaluate exp l2/empty-env)))
 
-(claim l2-test void-t)
+(claim l2/l2-test void-t)
 
-(define-test
- l2-test
- (l2/evaluate-and-print (l2/lambda-exp 'x (l2/var-exp 'x)))
- (l2/evaluate-and-print
-  (l2/apply-exp
-   (l2/lambda-exp 'x (l2/var-exp 'x))
-   (l2/lambda-exp 'x (l2/var-exp 'x))))
- (l2/evaluate-and-print
-  (l2/apply-exp
+(define-test l2/l2-test
+  (l2/evaluate-and-print (l2/lambda-exp 'x (l2/var-exp 'x)))
+  (l2/evaluate-and-print
    (l2/apply-exp
     (l2/lambda-exp 'x (l2/var-exp 'x))
-    (l2/lambda-exp 'x (l2/var-exp 'x)))
+    (l2/lambda-exp 'x (l2/var-exp 'x))))
+  (l2/evaluate-and-print
    (l2/apply-exp
+    (l2/apply-exp
+     (l2/lambda-exp 'x (l2/var-exp 'x))
+     (l2/lambda-exp 'x (l2/var-exp 'x)))
+    (l2/apply-exp
+     (l2/lambda-exp 'x (l2/var-exp 'x))
+     (l2/lambda-exp 'x (l2/var-exp 'x)))))
+  (l2/evaluate-and-print
+   (l2/let-exp
+    'id
     (l2/lambda-exp 'x (l2/var-exp 'x))
-    (l2/lambda-exp 'x (l2/var-exp 'x)))))
- (l2/evaluate-and-print
-  (l2/let-exp
-   'id
-   (l2/lambda-exp 'x (l2/var-exp 'x))
-   (l2/var-exp 'id)))
- (l2/evaluate-and-print
-  (l2/let-exp
-   'id
-   (l2/lambda-exp 'x (l2/var-exp 'x))
-   (l2/apply-exp (l2/var-exp 'id) (l2/var-exp 'id))))
- (l2/evaluate-and-print
-  (l2/let-exp
-   'id
-   (l2/lambda-exp 'x (l2/var-exp 'x))
-   (l2/apply-exp
-    (l2/apply-exp (l2/var-exp 'id) (l2/var-exp 'id))
-    (l2/apply-exp (l2/var-exp 'id) (l2/var-exp 'id))))))
+    (l2/var-exp 'id)))
+  (l2/evaluate-and-print
+   (l2/let-exp
+    'id
+    (l2/lambda-exp 'x (l2/var-exp 'x))
+    (l2/apply-exp (l2/var-exp 'id) (l2/var-exp 'id))))
+  (l2/evaluate-and-print
+   (l2/let-exp
+    'id
+    (l2/lambda-exp 'x (l2/var-exp 'x))
+    (l2/apply-exp
+     (l2/apply-exp (l2/var-exp 'id) (l2/var-exp 'id))
+     (l2/apply-exp (l2/var-exp 'id) (l2/var-exp 'id))))))
 
-(define-data exp-t
+(define-data l2/exp-t
   (var-exp (name symbol-t))
   (apply-exp (target l2/exp-t) (arg l2/exp-t))
   (lambda-exp (parameter symbol-t) (body l2/exp-t))
   (let-exp (name symbol-t) (rhs l2/exp-t) (body l2/exp-t)))
 
-(claim var-exp (-> symbol-t l2/exp-t))
+(claim l2/var-exp (-> symbol-t l2/exp-t))
 
-(define (var-exp name)
+(define (l2/var-exp name)
   (= list₁ (make-list))
   (list-push! 'var-exp list₁)
   (list-push! name list₁)
   list₁)
 
-(claim var-exp? (-> l2/exp-t bool-t))
+(claim l2/var-exp? (-> l2/exp-t bool-t))
 
-(define (var-exp? value)
+(define (l2/var-exp? value)
   (if (list? value)
     (if (equal? (list-length value) 2)
       (equal? (list-head value) 'var-exp)
       false)
     false))
 
-(claim var-exp-name (-> l2/exp-t symbol-t))
+(claim l2/var-exp-name (-> l2/exp-t symbol-t))
 
-(define (var-exp-name target) (list-get 1 target))
+(define (l2/var-exp-name target) (list-get 1 target))
 
-(claim var-exp-put-name (-> symbol-t l2/exp-t l2/exp-t))
+(claim l2/var-exp-put-name (-> symbol-t l2/exp-t l2/exp-t))
 
-(define (var-exp-put-name value target)
+(define (l2/var-exp-put-name value target)
   (list-put 1 value target))
 
-(claim var-exp-put-name! (-> symbol-t l2/exp-t l2/exp-t))
+(claim l2/var-exp-put-name! (-> symbol-t l2/exp-t l2/exp-t))
 
-(define (var-exp-put-name! value target)
+(define (l2/var-exp-put-name! value target)
   (list-put! 1 value target))
 
-(claim apply-exp (-> l2/exp-t l2/exp-t l2/exp-t))
+(claim l2/apply-exp (-> l2/exp-t l2/exp-t l2/exp-t))
 
-(define (apply-exp target arg)
+(define (l2/apply-exp target arg)
   (= list₁ (make-list))
   (list-push! 'apply-exp list₁)
   (list-push! target list₁)
   (list-push! arg list₁)
   list₁)
 
-(claim apply-exp? (-> l2/exp-t bool-t))
+(claim l2/apply-exp? (-> l2/exp-t bool-t))
 
-(define (apply-exp? value)
+(define (l2/apply-exp? value)
   (if (list? value)
     (if (equal? (list-length value) 3)
       (equal? (list-head value) 'apply-exp)
       false)
     false))
 
-(claim apply-exp-target (-> l2/exp-t l2/exp-t))
+(claim l2/apply-exp-target (-> l2/exp-t l2/exp-t))
 
-(define (apply-exp-target target) (list-get 1 target))
+(define (l2/apply-exp-target target) (list-get 1 target))
 
-(claim apply-exp-arg (-> l2/exp-t l2/exp-t))
+(claim l2/apply-exp-arg (-> l2/exp-t l2/exp-t))
 
-(define (apply-exp-arg target) (list-get 2 target))
+(define (l2/apply-exp-arg target) (list-get 2 target))
 
-(claim apply-exp-put-target (-> l2/exp-t l2/exp-t l2/exp-t))
-
-(define (apply-exp-put-target value target)
-  (list-put 1 value target))
-
-(claim apply-exp-put-arg (-> l2/exp-t l2/exp-t l2/exp-t))
-
-(define (apply-exp-put-arg value target)
-  (list-put 2 value target))
-
-(claim apply-exp-put-target!
+(claim l2/apply-exp-put-target
   (-> l2/exp-t l2/exp-t l2/exp-t))
 
-(define (apply-exp-put-target! value target)
+(define (l2/apply-exp-put-target value target)
+  (list-put 1 value target))
+
+(claim l2/apply-exp-put-arg (-> l2/exp-t l2/exp-t l2/exp-t))
+
+(define (l2/apply-exp-put-arg value target)
+  (list-put 2 value target))
+
+(claim l2/apply-exp-put-target!
+  (-> l2/exp-t l2/exp-t l2/exp-t))
+
+(define (l2/apply-exp-put-target! value target)
   (list-put! 1 value target))
 
-(claim apply-exp-put-arg! (-> l2/exp-t l2/exp-t l2/exp-t))
+(claim l2/apply-exp-put-arg!
+  (-> l2/exp-t l2/exp-t l2/exp-t))
 
-(define (apply-exp-put-arg! value target)
+(define (l2/apply-exp-put-arg! value target)
   (list-put! 2 value target))
 
-(claim lambda-exp (-> symbol-t l2/exp-t l2/exp-t))
+(claim l2/lambda-exp (-> symbol-t l2/exp-t l2/exp-t))
 
-(define (lambda-exp parameter body)
+(define (l2/lambda-exp parameter body)
   (= list₁ (make-list))
   (list-push! 'lambda-exp list₁)
   (list-push! parameter list₁)
   (list-push! body list₁)
   list₁)
 
-(claim lambda-exp? (-> l2/exp-t bool-t))
+(claim l2/lambda-exp? (-> l2/exp-t bool-t))
 
-(define (lambda-exp? value)
+(define (l2/lambda-exp? value)
   (if (list? value)
     (if (equal? (list-length value) 3)
       (equal? (list-head value) 'lambda-exp)
       false)
     false))
 
-(claim lambda-exp-parameter (-> l2/exp-t symbol-t))
+(claim l2/lambda-exp-parameter (-> l2/exp-t symbol-t))
 
-(define (lambda-exp-parameter target) (list-get 1 target))
+(define (l2/lambda-exp-parameter target)
+  (list-get 1 target))
 
-(claim lambda-exp-body (-> l2/exp-t l2/exp-t))
+(claim l2/lambda-exp-body (-> l2/exp-t l2/exp-t))
 
-(define (lambda-exp-body target) (list-get 2 target))
+(define (l2/lambda-exp-body target) (list-get 2 target))
 
-(claim lambda-exp-put-parameter
+(claim l2/lambda-exp-put-parameter
   (-> symbol-t l2/exp-t l2/exp-t))
 
-(define (lambda-exp-put-parameter value target)
+(define (l2/lambda-exp-put-parameter value target)
   (list-put 1 value target))
 
-(claim lambda-exp-put-body (-> l2/exp-t l2/exp-t l2/exp-t))
+(claim l2/lambda-exp-put-body
+  (-> l2/exp-t l2/exp-t l2/exp-t))
 
-(define (lambda-exp-put-body value target)
+(define (l2/lambda-exp-put-body value target)
   (list-put 2 value target))
 
-(claim lambda-exp-put-parameter!
+(claim l2/lambda-exp-put-parameter!
   (-> symbol-t l2/exp-t l2/exp-t))
 
-(define (lambda-exp-put-parameter! value target)
+(define (l2/lambda-exp-put-parameter! value target)
   (list-put! 1 value target))
 
-(claim lambda-exp-put-body! (-> l2/exp-t l2/exp-t l2/exp-t))
+(claim l2/lambda-exp-put-body!
+  (-> l2/exp-t l2/exp-t l2/exp-t))
 
-(define (lambda-exp-put-body! value target)
+(define (l2/lambda-exp-put-body! value target)
   (list-put! 2 value target))
 
-(claim let-exp (-> symbol-t l2/exp-t l2/exp-t l2/exp-t))
+(claim l2/let-exp (-> symbol-t l2/exp-t l2/exp-t l2/exp-t))
 
-(define (let-exp name rhs body)
+(define (l2/let-exp name rhs body)
   (= list₁ (make-list))
   (list-push! 'let-exp list₁)
   (list-push! name list₁)
@@ -180,76 +184,76 @@
   (list-push! body list₁)
   list₁)
 
-(claim let-exp? (-> l2/exp-t bool-t))
+(claim l2/let-exp? (-> l2/exp-t bool-t))
 
-(define (let-exp? value)
+(define (l2/let-exp? value)
   (if (list? value)
     (if (equal? (list-length value) 4)
       (equal? (list-head value) 'let-exp)
       false)
     false))
 
-(claim let-exp-name (-> l2/exp-t symbol-t))
+(claim l2/let-exp-name (-> l2/exp-t symbol-t))
 
-(define (let-exp-name target) (list-get 1 target))
+(define (l2/let-exp-name target) (list-get 1 target))
 
-(claim let-exp-rhs (-> l2/exp-t l2/exp-t))
+(claim l2/let-exp-rhs (-> l2/exp-t l2/exp-t))
 
-(define (let-exp-rhs target) (list-get 2 target))
+(define (l2/let-exp-rhs target) (list-get 2 target))
 
-(claim let-exp-body (-> l2/exp-t l2/exp-t))
+(claim l2/let-exp-body (-> l2/exp-t l2/exp-t))
 
-(define (let-exp-body target) (list-get 3 target))
+(define (l2/let-exp-body target) (list-get 3 target))
 
-(claim let-exp-put-name (-> symbol-t l2/exp-t l2/exp-t))
+(claim l2/let-exp-put-name (-> symbol-t l2/exp-t l2/exp-t))
 
-(define (let-exp-put-name value target)
+(define (l2/let-exp-put-name value target)
   (list-put 1 value target))
 
-(claim let-exp-put-rhs (-> l2/exp-t l2/exp-t l2/exp-t))
+(claim l2/let-exp-put-rhs (-> l2/exp-t l2/exp-t l2/exp-t))
 
-(define (let-exp-put-rhs value target)
+(define (l2/let-exp-put-rhs value target)
   (list-put 2 value target))
 
-(claim let-exp-put-body (-> l2/exp-t l2/exp-t l2/exp-t))
+(claim l2/let-exp-put-body (-> l2/exp-t l2/exp-t l2/exp-t))
 
-(define (let-exp-put-body value target)
+(define (l2/let-exp-put-body value target)
   (list-put 3 value target))
 
-(claim let-exp-put-name! (-> symbol-t l2/exp-t l2/exp-t))
+(claim l2/let-exp-put-name! (-> symbol-t l2/exp-t l2/exp-t))
 
-(define (let-exp-put-name! value target)
+(define (l2/let-exp-put-name! value target)
   (list-put! 1 value target))
 
-(claim let-exp-put-rhs! (-> l2/exp-t l2/exp-t l2/exp-t))
+(claim l2/let-exp-put-rhs! (-> l2/exp-t l2/exp-t l2/exp-t))
 
-(define (let-exp-put-rhs! value target)
+(define (l2/let-exp-put-rhs! value target)
   (list-put! 2 value target))
 
-(claim let-exp-put-body! (-> l2/exp-t l2/exp-t l2/exp-t))
+(claim l2/let-exp-put-body! (-> l2/exp-t l2/exp-t l2/exp-t))
 
-(define (let-exp-put-body! value target)
+(define (l2/let-exp-put-body! value target)
   (list-put! 3 value target))
 
-(define-data env-t
+(define-data l2/env-t
   empty-env
   (extend-env
    (key symbol-t)
    (value l2/value-t)
    (rest l2/env-t)))
 
-(claim empty-env l2/env-t)
+(claim l2/empty-env l2/env-t)
 
-(define empty-env 'empty-env)
+(define l2/empty-env 'empty-env)
 
-(claim empty-env? (-> l2/env-t bool-t))
+(claim l2/empty-env? (-> l2/env-t bool-t))
 
-(define (empty-env? value) (equal? value 'empty-env))
+(define (l2/empty-env? value) (equal? value 'empty-env))
 
-(claim extend-env
+(claim l2/extend-env
   (-> symbol-t l2/value-t l2/env-t l2/env-t))
 
-(define (extend-env key value rest)
+(define (l2/extend-env key value rest)
   (= list₁ (make-list))
   (list-push! 'extend-env list₁)
   (list-push! key list₁)
@@ -257,62 +261,66 @@
   (list-push! rest list₁)
   list₁)
 
-(claim extend-env? (-> l2/env-t bool-t))
+(claim l2/extend-env? (-> l2/env-t bool-t))
 
-(define (extend-env? value)
+(define (l2/extend-env? value)
   (if (list? value)
     (if (equal? (list-length value) 4)
       (equal? (list-head value) 'extend-env)
       false)
     false))
 
-(claim extend-env-key (-> l2/env-t symbol-t))
+(claim l2/extend-env-key (-> l2/env-t symbol-t))
 
-(define (extend-env-key target) (list-get 1 target))
+(define (l2/extend-env-key target) (list-get 1 target))
 
-(claim extend-env-value (-> l2/env-t l2/value-t))
+(claim l2/extend-env-value (-> l2/env-t l2/value-t))
 
-(define (extend-env-value target) (list-get 2 target))
+(define (l2/extend-env-value target) (list-get 2 target))
 
-(claim extend-env-rest (-> l2/env-t l2/env-t))
+(claim l2/extend-env-rest (-> l2/env-t l2/env-t))
 
-(define (extend-env-rest target) (list-get 3 target))
+(define (l2/extend-env-rest target) (list-get 3 target))
 
-(claim extend-env-put-key (-> symbol-t l2/env-t l2/env-t))
+(claim l2/extend-env-put-key
+  (-> symbol-t l2/env-t l2/env-t))
 
-(define (extend-env-put-key value target)
+(define (l2/extend-env-put-key value target)
   (list-put 1 value target))
 
-(claim extend-env-put-value
+(claim l2/extend-env-put-value
   (-> l2/value-t l2/env-t l2/env-t))
 
-(define (extend-env-put-value value target)
+(define (l2/extend-env-put-value value target)
   (list-put 2 value target))
 
-(claim extend-env-put-rest (-> l2/env-t l2/env-t l2/env-t))
+(claim l2/extend-env-put-rest
+  (-> l2/env-t l2/env-t l2/env-t))
 
-(define (extend-env-put-rest value target)
+(define (l2/extend-env-put-rest value target)
   (list-put 3 value target))
 
-(claim extend-env-put-key! (-> symbol-t l2/env-t l2/env-t))
+(claim l2/extend-env-put-key!
+  (-> symbol-t l2/env-t l2/env-t))
 
-(define (extend-env-put-key! value target)
+(define (l2/extend-env-put-key! value target)
   (list-put! 1 value target))
 
-(claim extend-env-put-value!
+(claim l2/extend-env-put-value!
   (-> l2/value-t l2/env-t l2/env-t))
 
-(define (extend-env-put-value! value target)
+(define (l2/extend-env-put-value! value target)
   (list-put! 2 value target))
 
-(claim extend-env-put-rest! (-> l2/env-t l2/env-t l2/env-t))
+(claim l2/extend-env-put-rest!
+  (-> l2/env-t l2/env-t l2/env-t))
 
-(define (extend-env-put-rest! value target)
+(define (l2/extend-env-put-rest! value target)
   (list-put! 3 value target))
 
-(claim env-has? (-> symbol-t l2/env-t bool-t))
+(claim l2/env-has? (-> symbol-t l2/env-t bool-t))
 
-(define (env-has? name env)
+(define (l2/env-has? name env)
   (if (l2/empty-env? env)
     false
     (if (l2/extend-env? env)
@@ -328,9 +336,10 @@
           (l2/env-has? name rest₁)))
       (error "cond mismatch"))))
 
-(claim env-lookup-of-fail (-> symbol-t l2/env-t l2/value-t))
+(claim l2/env-lookup-of-fail
+  (-> symbol-t l2/env-t l2/value-t))
 
-(define (env-lookup-of-fail name env)
+(define (l2/env-lookup-of-fail name env)
   (if (l2/empty-env? env)
     (error "undefined name")
     (if (l2/extend-env? env)
@@ -346,16 +355,16 @@
           (l2/env-lookup-of-fail name rest₁)))
       (error "cond mismatch"))))
 
-(define-data value-t
+(define-data l2/value-t
   (closure-value
    (env l2/env-t)
    (parameter symbol-t)
    (body l2/exp-t)))
 
-(claim closure-value
+(claim l2/closure-value
   (-> l2/env-t symbol-t l2/exp-t l2/value-t))
 
-(define (closure-value env parameter body)
+(define (l2/closure-value env parameter body)
   (= list₁ (make-list))
   (list-push! 'closure-value list₁)
   (list-push! env list₁)
@@ -363,67 +372,67 @@
   (list-push! body list₁)
   list₁)
 
-(claim closure-value? (-> l2/value-t bool-t))
+(claim l2/closure-value? (-> l2/value-t bool-t))
 
-(define (closure-value? value)
+(define (l2/closure-value? value)
   (if (list? value)
     (if (equal? (list-length value) 4)
       (equal? (list-head value) 'closure-value)
       false)
     false))
 
-(claim closure-value-env (-> l2/value-t l2/env-t))
+(claim l2/closure-value-env (-> l2/value-t l2/env-t))
 
-(define (closure-value-env target) (list-get 1 target))
+(define (l2/closure-value-env target) (list-get 1 target))
 
-(claim closure-value-parameter (-> l2/value-t symbol-t))
+(claim l2/closure-value-parameter (-> l2/value-t symbol-t))
 
-(define (closure-value-parameter target)
+(define (l2/closure-value-parameter target)
   (list-get 2 target))
 
-(claim closure-value-body (-> l2/value-t l2/exp-t))
+(claim l2/closure-value-body (-> l2/value-t l2/exp-t))
 
-(define (closure-value-body target) (list-get 3 target))
+(define (l2/closure-value-body target) (list-get 3 target))
 
-(claim closure-value-put-env
+(claim l2/closure-value-put-env
   (-> l2/env-t l2/value-t l2/value-t))
 
-(define (closure-value-put-env value target)
+(define (l2/closure-value-put-env value target)
   (list-put 1 value target))
 
-(claim closure-value-put-parameter
+(claim l2/closure-value-put-parameter
   (-> symbol-t l2/value-t l2/value-t))
 
-(define (closure-value-put-parameter value target)
+(define (l2/closure-value-put-parameter value target)
   (list-put 2 value target))
 
-(claim closure-value-put-body
+(claim l2/closure-value-put-body
   (-> l2/exp-t l2/value-t l2/value-t))
 
-(define (closure-value-put-body value target)
+(define (l2/closure-value-put-body value target)
   (list-put 3 value target))
 
-(claim closure-value-put-env!
+(claim l2/closure-value-put-env!
   (-> l2/env-t l2/value-t l2/value-t))
 
-(define (closure-value-put-env! value target)
+(define (l2/closure-value-put-env! value target)
   (list-put! 1 value target))
 
-(claim closure-value-put-parameter!
+(claim l2/closure-value-put-parameter!
   (-> symbol-t l2/value-t l2/value-t))
 
-(define (closure-value-put-parameter! value target)
+(define (l2/closure-value-put-parameter! value target)
   (list-put! 2 value target))
 
-(claim closure-value-put-body!
+(claim l2/closure-value-put-body!
   (-> l2/exp-t l2/value-t l2/value-t))
 
-(define (closure-value-put-body! value target)
+(define (l2/closure-value-put-body! value target)
   (list-put! 3 value target))
 
-(claim evaluate (-> l2/exp-t l2/env-t l2/value-t))
+(claim l2/evaluate (-> l2/exp-t l2/env-t l2/value-t))
 
-(define (evaluate exp env)
+(define (l2/evaluate exp env)
   (if (l2/var-exp? exp)
     (begin
       (= name₂₁ (l2/var-exp-name exp))
@@ -461,9 +470,9 @@
             (l2/evaluate body₁ env₁))
           (error "cond mismatch"))))))
 
-(claim apply (-> l2/value-t l2/value-t l2/value-t))
+(claim l2/apply (-> l2/value-t l2/value-t l2/value-t))
 
-(define (apply target arg)
+(define (l2/apply target arg)
   (if (l2/closure-value? target)
     (begin
       (= body₅₁ (l2/closure-value-body target))

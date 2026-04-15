@@ -1,6 +1,6 @@
 src/my-list/my-list-type-error.meta:7:23 -- unification fail
-  inferred type: (my-list/my-list-t string-t)
-  given type: (my-list/my-list-t int-t)
+  inferred type: (my-list/my-list/my-list-t string-t)
+  given type: (my-list/my-list/my-list-t int-t)
  5 | 
  6 | (claim my-list (my-list-t int-t))
  7 | (define my-list (li 1 (li "3" nil)))

@@ -1,3 +1,4 @@
-(claim identity (polymorphic (A B) (-> A B)))
+(claim identity-type-error-1/identity
+  (polymorphic (A B) (-> A B)))
 
-(define (identity x) x)
+(define (identity-type-error-1/identity x) x)

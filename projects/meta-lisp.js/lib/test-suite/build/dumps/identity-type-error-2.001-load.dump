@@ -2,7 +2,6 @@
 
 (define (identity x) x)
 
-(define-test
- identity-test
- (the (polymorphic (A) (-> A A)) identity)
- (the (polymorphic (A B) (-> A B)) identity))
+(define-test identity-test
+  (the (polymorphic (A) (-> A A)) identity)
+  (the (polymorphic (A B) (-> A B)) identity))

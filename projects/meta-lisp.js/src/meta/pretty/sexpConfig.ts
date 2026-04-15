@@ -2,17 +2,15 @@ import * as S from "@xieyuheng/sexp.js"
 
 export const sexpConfig: S.Config = {
   keywords: [
-    ["export", 0],
-    ["import-all", 0],
-    ["include-all", 0],
-    ["include", 0],
     ["import", 0],
+    ["import-as", 0],
     ["claim", 1],
     ["define", 1],
     ["interface", 0],
     ["extend-interface", 1],
     ["define-interface", 1],
     ["define-data", 1],
+    ["define-test", 1],
     ["let", 1],
     ["let1", 2],
     ["@let1", 2],

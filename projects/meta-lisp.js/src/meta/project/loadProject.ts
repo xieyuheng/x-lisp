@@ -8,6 +8,8 @@ export function loadProject(configPath?: string): M.Project {
   const rootDirectory = Path.resolve(Path.dirname(configPath))
   const project = M.createProject(rootDirectory, config)
 
+  M.loadBuiltinMod(project)
+
   const sourceDirectory = M.projectSourceDirectory(project)
   for (const path of fs.readdirSync(sourceDirectory, {
     encoding: "utf-8",

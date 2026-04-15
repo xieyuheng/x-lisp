@@ -1,9 +1,13 @@
-(claim Y (polymorphic (A) (-> (-> A A) A)))
+(claim Y-type-error/Y (polymorphic (A) (-> (-> A A) A)))
 
-(define (Y f) (= _₁ (Y©λ₂ f)) (Y©λ₁ _₁))
+(define (Y-type-error/Y f)
+  (= _₁ (Y-type-error/Y©λ₂ f))
+  (Y-type-error/Y©λ₁ _₁))
 
-(define (Y©λ₁ u₁) (u₁ u₁))
+(define (Y-type-error/Y©λ₁ u₁) (u₁ u₁))
 
-(define (Y©λ₂ f x₁) (= _₁ (Y©λ₂©λ₁ x₁)) (f _₁))
+(define (Y-type-error/Y©λ₂ f x₁)
+  (= _₁ (Y-type-error/Y©λ₂©λ₁ x₁))
+  (f _₁))
 
-(define (Y©λ₂©λ₁ x₁ t₁) (= _₁ (x₁ x₁)) (_₁ t₁))
+(define (Y-type-error/Y©λ₂©λ₁ x₁ t₁) (= _₁ (x₁ x₁)) (_₁ t₁))

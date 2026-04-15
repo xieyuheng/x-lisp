@@ -1,6 +1,6 @@
 src/lambda/l1-l2-type-error.meta:27:4 -- inferred type is not a subtype of given type
-  inferred type: l2/exp-t
-  given type: l1/exp-t
+  inferred type: l2/l2/exp-t
+  given type: l1/l1/exp-t
  25 | 
  26 |   (evaluate-and-print
  27 |    (l2/lambda-exp 'x (l2/var-exp 'x)))

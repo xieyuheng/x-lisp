@@ -1,6 +1,6 @@
 src/record/subtype-error-2.meta:9:16 -- inferred type is not a subtype of given type
   inferred type: (interface :x float-t)
-  given type: point-t
+  given type: subtype-error-1/point-t
   7 | (define (main)
   8 |   (the point-t (@record :x 1.0 :y 2.0))
   9 |   (the point-t (@record :x 1.0)))

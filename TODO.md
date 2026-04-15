@@ -1,7 +1,3 @@
-# new module system
-
-[meta-lisp.js] recover `projectTest` -- call basic-lisp interpreter many times
-
 # about format
 
 [helpers.c] improve `string_builder_t` for `format_*`

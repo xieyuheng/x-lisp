@@ -1,8 +1,8 @@
-(claim my-list-adjacent-dedup
+(claim my-list/my-list-adjacent-dedup
   (polymorphic (E)
     (-> (my-list/my-list-t E) (my-list/my-list-t E))))
 
-(define (my-list-adjacent-dedup list)
+(define (my-list/my-list-adjacent-dedup list)
   (if (my-list/nil? list)
     my-list/nil
     (if (my-list/li? list)
@@ -30,22 +30,11 @@
             (error "cond mismatch"))))
       (error "cond mismatch"))))
 
-(define-test
- my-list-adjacent-dedup-test
- (assert-equal
-   my-list/nil
-   (my-list/my-list-adjacent-dedup my-list/nil))
- (assert-equal
-   (my-list/li
-    1
-    (my-list/li
-     2
-     (my-list/li
-      3
-      (my-list/li
-       1
-       (my-list/li 2 (my-list/li 3 my-list/nil))))))
-   (my-list/my-list-adjacent-dedup
+(define-test my-list/my-list-adjacent-dedup-test
+  (assert-equal
+    my-list/nil
+    (my-list/my-list-adjacent-dedup my-list/nil))
+  (assert-equal
     (my-list/li
      1
      (my-list/li
@@ -54,27 +43,37 @@
        3
        (my-list/li
         1
-        (my-list/li 2 (my-list/li 3 my-list/nil))))))))
- (assert-equal
-   (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))
-   (my-list/my-list-adjacent-dedup
-    (my-list/li
-     1
+        (my-list/li 2 (my-list/li 3 my-list/nil))))))
+    (my-list/my-list-adjacent-dedup
      (my-list/li
       1
       (my-list/li
        2
        (my-list/li
+        3
+        (my-list/li
+         1
+         (my-list/li 2 (my-list/li 3 my-list/nil))))))))
+  (assert-equal
+    (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))
+    (my-list/my-list-adjacent-dedup
+     (my-list/li
+      1
+      (my-list/li
+       1
+       (my-list/li
         2
-        (my-list/li 3 (my-list/li 3 my-list/nil)))))))))
+        (my-list/li
+         2
+         (my-list/li 3 (my-list/li 3 my-list/nil)))))))))
 
-(claim my-list-append
+(claim my-list/my-list-append
   (polymorphic (E)
     (-> (my-list/my-list-t E)
         (my-list/my-list-t E)
         (my-list/my-list-t E))))
 
-(define (my-list-append left right)
+(define (my-list/my-list-append left right)
   (if (my-list/nil? left)
     right
     (if (my-list/li? left)
@@ -86,29 +85,28 @@
         (my-list/li head (my-list/my-list-append tail right)))
       (error "cond mismatch"))))
 
-(define-test
- my-list-append-test
- (assert-equal
-   my-list/nil
-   (my-list/my-list-append my-list/nil my-list/nil))
- (assert-equal
-   (my-list/li
-    1
+(define-test my-list/my-list-append-test
+  (assert-equal
+    my-list/nil
+    (my-list/my-list-append my-list/nil my-list/nil))
+  (assert-equal
     (my-list/li
-     2
+     1
      (my-list/li
-      3
+      2
       (my-list/li
-       4
-       (my-list/li 5 (my-list/li 6 my-list/nil))))))
-   (my-list/my-list-append
-    (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))
-    (my-list/li 4 (my-list/li 5 (my-list/li 6 my-list/nil))))))
+       3
+       (my-list/li
+        4
+        (my-list/li 5 (my-list/li 6 my-list/nil))))))
+    (my-list/my-list-append
+     (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))
+     (my-list/li 4 (my-list/li 5 (my-list/li 6 my-list/nil))))))
 
-(claim my-list-length
+(claim my-list/my-list-length
   (polymorphic (E) (-> (my-list/my-list-t E) int-t)))
 
-(define (my-list-length list)
+(define (my-list/my-list-length list)
   (if (my-list/nil? list)
     0
     (if (my-list/li? list)
@@ -120,22 +118,21 @@
         (iadd 1 (my-list/my-list-length tail)))
       (error "cond mismatch"))))
 
-(define-test
- my-list-length-test
- (assert-equal 0 (my-list/my-list-length my-list/nil))
- (assert-equal
-   3
-   (my-list/my-list-length
-    (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil))))))
+(define-test my-list/my-list-length-test
+  (assert-equal 0 (my-list/my-list-length my-list/nil))
+  (assert-equal
+    3
+    (my-list/my-list-length
+     (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil))))))
 
-(claim my-list-map-zip
+(claim my-list/my-list-map-zip
   (polymorphic (A B C)
     (-> (-> A B C)
         (my-list/my-list-t A)
         (my-list/my-list-t B)
         (my-list/my-list-t C))))
 
-(define (my-list-map-zip f list1 list2)
+(define (my-list/my-list-map-zip f list1 list2)
   (if (my-list/nil? list1)
     (begin (= _ list2) my-list/nil)
     (if (my-list/li? list1)
@@ -161,14 +158,14 @@
             (error "cond mismatch"))))
       (error "cond mismatch"))))
 
-(claim my-list-map-zip-2
+(claim my-list/my-list-map-zip-2
   (polymorphic (A B C)
     (-> (-> A B C)
         (my-list/my-list-t A)
         (my-list/my-list-t B)
         (my-list/my-list-t C))))
 
-(define (my-list-map-zip-2 f list1 list2)
+(define (my-list/my-list-map-zip-2 f list1 list2)
   (if (my-list/nil? list1)
     (begin (= _ list2) my-list/nil)
     (if (my-list/li? list1)
@@ -208,32 +205,31 @@
             (error "cond mismatch"))))
       (error "cond mismatch"))))
 
-(define-test
- my-list-map-zip-test
- (assert-equal
-   my-list/nil
-   (my-list/my-list-map-zip iadd my-list/nil my-list/nil))
- (assert-equal
-   (my-list/li 2 (my-list/li 4 (my-list/li 6 my-list/nil)))
-   (my-list/my-list-map-zip
-    iadd
-    (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))
-    (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))))
- (assert-equal
-   my-list/nil
-   (my-list/my-list-map-zip-2 iadd my-list/nil my-list/nil))
- (assert-equal
-   (my-list/li 2 (my-list/li 4 (my-list/li 6 my-list/nil)))
-   (my-list/my-list-map-zip-2
-    iadd
-    (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))
-    (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil))))))
+(define-test my-list/my-list-map-zip-test
+  (assert-equal
+    my-list/nil
+    (my-list/my-list-map-zip iadd my-list/nil my-list/nil))
+  (assert-equal
+    (my-list/li 2 (my-list/li 4 (my-list/li 6 my-list/nil)))
+    (my-list/my-list-map-zip
+     iadd
+     (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))
+     (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))))
+  (assert-equal
+    my-list/nil
+    (my-list/my-list-map-zip-2 iadd my-list/nil my-list/nil))
+  (assert-equal
+    (my-list/li 2 (my-list/li 4 (my-list/li 6 my-list/nil)))
+    (my-list/my-list-map-zip-2
+     iadd
+     (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))
+     (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil))))))
 
-(claim my-list-map
+(claim my-list/my-list-map
   (polymorphic (A B)
     (-> (-> A B) (my-list/my-list-t A) (my-list/my-list-t B))))
 
-(define (my-list-map f list)
+(define (my-list/my-list-map f list)
   (if (my-list/nil? list)
     my-list/nil
     (if (my-list/li? list)
@@ -245,126 +241,123 @@
         (my-list/li (f head) (my-list/my-list-map f tail)))
       (error "cond mismatch"))))
 
-(define-test
- my-list-map-test
- (assert-equal
-   my-list/nil
-   (my-list/my-list-map (iadd 1) my-list/nil))
- (assert-equal
-   (my-list/li 2 (my-list/li 3 (my-list/li 4 my-list/nil)))
-   (my-list/my-list-map
-    (iadd 1)
-    (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil))))))
+(define-test my-list/my-list-map-test
+  (assert-equal
+    my-list/nil
+    (my-list/my-list-map (iadd 1) my-list/nil))
+  (assert-equal
+    (my-list/li 2 (my-list/li 3 (my-list/li 4 my-list/nil)))
+    (my-list/my-list-map
+     (iadd 1)
+     (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil))))))
 
-(define-test
- my-list-snapshot
- (println my-list/nil)
- (println
-  (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))))
+(define-test my-list/my-list-snapshot
+  (println my-list/nil)
+  (println
+   (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))))
 
-(define-test
- my-list-test
- (assert (my-list/nil? my-list/nil))
- (assert
-   (my-list/li?
-    (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))))
- (assert-not (my-list/li? my-list/nil))
- (assert-not
-   (my-list/nil?
-    (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))))
- (assert-equal
-   (my-list/li-tail (my-list/li 1 my-list/nil))
-   my-list/nil)
- (assert-equal
-   (my-list/li-head (my-list/li 1 my-list/nil))
-   1)
- (= list
-    (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil))))
- (assert-equal (my-list/li-head list) 1)
- (my-list/li-put-head! 111 list)
- (assert-equal (my-list/li-head list) 111)
- (assert-equal
-   (my-list/li-tail list)
-   (my-list/li 2 (my-list/li 3 my-list/nil)))
- (my-list/li-put-tail! my-list/nil list)
- (assert-equal (my-list/li-tail list) my-list/nil)
- (assert-equal
-   (my-list/li 1 my-list/nil)
-   ((my-list/li 1) my-list/nil)))
+(define-test my-list/my-list-test
+  (assert (my-list/nil? my-list/nil))
+  (assert
+    (my-list/li?
+     (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))))
+  (assert-not (my-list/li? my-list/nil))
+  (assert-not
+    (my-list/nil?
+     (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil)))))
+  (assert-equal
+    (my-list/li-tail (my-list/li 1 my-list/nil))
+    my-list/nil)
+  (assert-equal
+    (my-list/li-head (my-list/li 1 my-list/nil))
+    1)
+  (= list
+     (my-list/li 1 (my-list/li 2 (my-list/li 3 my-list/nil))))
+  (assert-equal (my-list/li-head list) 1)
+  (my-list/li-put-head! 111 list)
+  (assert-equal (my-list/li-head list) 111)
+  (assert-equal
+    (my-list/li-tail list)
+    (my-list/li 2 (my-list/li 3 my-list/nil)))
+  (my-list/li-put-tail! my-list/nil list)
+  (assert-equal (my-list/li-tail list) my-list/nil)
+  (assert-equal
+    (my-list/li 1 my-list/nil)
+    ((my-list/li 1) my-list/nil)))
 
-(define-data (my-list-t E)
+(define-data (my-list/my-list-t E)
   nil
   (li (head E) (tail (my-list/my-list-t E))))
 
-(claim nil (polymorphic (E) (my-list/my-list-t E)))
+(claim my-list/nil (polymorphic (E) (my-list/my-list-t E)))
 
-(define nil 'nil)
+(define my-list/nil 'nil)
 
-(claim nil?
+(claim my-list/nil?
   (polymorphic (E) (-> (my-list/my-list-t E) bool-t)))
 
-(define (nil? value) (equal? value 'nil))
+(define (my-list/nil? value) (equal? value 'nil))
 
-(claim li
+(claim my-list/li
   (polymorphic (E)
     (-> E (my-list/my-list-t E) (my-list/my-list-t E))))
 
-(define (li head tail)
+(define (my-list/li head tail)
   (= list (make-list))
   (list-push! 'li list)
   (list-push! head list)
   (list-push! tail list)
   list)
 
-(claim li?
+(claim my-list/li?
   (polymorphic (E) (-> (my-list/my-list-t E) bool-t)))
 
-(define (li? value)
+(define (my-list/li? value)
   (if (list? value)
     (if (equal? (list-length value) 3)
       (equal? (list-head value) 'li)
       false)
     false))
 
-(claim li-head
+(claim my-list/li-head
   (polymorphic (E) (-> (my-list/my-list-t E) E)))
 
-(define (li-head target) (list-get 1 target))
+(define (my-list/li-head target) (list-get 1 target))
 
-(claim li-tail
+(claim my-list/li-tail
   (polymorphic (E)
     (-> (my-list/my-list-t E) (my-list/my-list-t E))))
 
-(define (li-tail target) (list-get 2 target))
+(define (my-list/li-tail target) (list-get 2 target))
 
-(claim li-put-head
+(claim my-list/li-put-head
   (polymorphic (E)
     (-> E (my-list/my-list-t E) (my-list/my-list-t E))))
 
-(define (li-put-head value target)
+(define (my-list/li-put-head value target)
   (list-put 1 value target))
 
-(claim li-put-tail
+(claim my-list/li-put-tail
   (polymorphic (E)
     (-> (my-list/my-list-t E)
         (my-list/my-list-t E)
         (my-list/my-list-t E))))
 
-(define (li-put-tail value target)
+(define (my-list/li-put-tail value target)
   (list-put 2 value target))
 
-(claim li-put-head!
+(claim my-list/li-put-head!
   (polymorphic (E)
     (-> E (my-list/my-list-t E) (my-list/my-list-t E))))
 
-(define (li-put-head! value target)
+(define (my-list/li-put-head! value target)
   (list-put! 1 value target))
 
-(claim li-put-tail!
+(claim my-list/li-put-tail!
   (polymorphic (E)
     (-> (my-list/my-list-t E)
         (my-list/my-list-t E)
         (my-list/my-list-t E))))
 
-(define (li-put-tail! value target)
+(define (my-list/li-put-tail! value target)
   (list-put! 2 value target))

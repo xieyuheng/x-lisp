@@ -119,9 +119,14 @@ export function modLookupClaimedType(
   if (!claimedEntry) return undefined
   if (claimedEntry.type) return claimedEntry.type
 
-  const type = M.evaluate(mod, M.emptyEnv(), claimedEntry.exp)
-  claimedEntry.type = type
-  return type
+  try {
+    const type = M.evaluate(mod, M.emptyEnv(), claimedEntry.exp)
+    claimedEntry.type = type
+    return type
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
 }
 
 export function modLookupClaimedEntry(
@@ -163,7 +168,11 @@ export function modPutInferredType(mod: Mod, name: string, type: Value): void {
 
 export function modLookupType(mod: M.Mod, name: string): M.Value | undefined {
   const definition = M.modLookupDefinition(mod, name)
-  if (definition === undefined) return undefined
+  if (definition === undefined) {
+    console.log(`[modLookupType] undefined name: ${name}`)
+    console.log(Array.from(mod.definitions.keys()))
+    return undefined
+  }
 
   const claimedType = M.modLookupClaimedType(definition.mod, definition.name)
   if (claimedType) return claimedType

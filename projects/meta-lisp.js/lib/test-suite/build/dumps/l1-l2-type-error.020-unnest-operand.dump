@@ -1,12 +1,13 @@
-(claim evaluate-and-print (-> exp-t void-t))
+(claim l1-l2-type-error/evaluate-and-print
+  (-> l1/exp-t void-t))
 
-(define (evaluate-and-print exp)
+(define (l1-l2-type-error/evaluate-and-print exp)
   (= _₁ l1/evaluate)
   (= _₂ l1/empty-env)
   (= _₃ (_₁ exp _₂))
   (println _₃))
 
-(define (main)
+(define (l1-l2-type-error/main)
   (begin
     (= _₁ l1-l2-type-error/evaluate-and-print)
     (= _₂ l1/lambda-exp)

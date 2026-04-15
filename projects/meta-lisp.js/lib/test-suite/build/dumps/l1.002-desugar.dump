@@ -1,28 +1,27 @@
 (define (evaluate-and-print exp)
   (println (evaluate exp empty-env)))
 
-(define-test
- l1-test
- (evaluate-and-print (lambda-exp 'x (var-exp 'x)))
- (evaluate-and-print
-  (apply-exp
-   (lambda-exp 'x (var-exp 'x))
-   (lambda-exp 'x (var-exp 'x))))
- (evaluate-and-print
-  (apply-exp
+(define-test l1-test
+  (evaluate-and-print (lambda-exp 'x (var-exp 'x)))
+  (evaluate-and-print
    (apply-exp
     (lambda-exp 'x (var-exp 'x))
-    (lambda-exp 'x (var-exp 'x)))
+    (lambda-exp 'x (var-exp 'x))))
+  (evaluate-and-print
    (apply-exp
-    (lambda-exp 'x (var-exp 'x))
-    (lambda-exp 'x (var-exp 'x))))))
+    (apply-exp
+     (lambda-exp 'x (var-exp 'x))
+     (lambda-exp 'x (var-exp 'x)))
+    (apply-exp
+     (lambda-exp 'x (var-exp 'x))
+     (lambda-exp 'x (var-exp 'x))))))
 
 (define-data exp-t
   (var-exp (name symbol-t))
   (apply-exp (target exp-t) (arg exp-t))
   (lambda-exp (parameter symbol-t) (body exp-t)))
 
-(claim var-exp (-> symbol-t l1/exp-t))
+(claim var-exp (-> symbol-t exp-t))
 
 (define (var-exp name)
   (= list (make-list))
@@ -30,7 +29,7 @@
   (list-push! name list)
   list)
 
-(claim var-exp? (-> l1/exp-t bool-t))
+(claim var-exp? (-> exp-t bool-t))
 
 (define (var-exp? value)
   (if (list? value)
@@ -39,21 +38,21 @@
       false)
     false))
 
-(claim var-exp-name (-> l1/exp-t symbol-t))
+(claim var-exp-name (-> exp-t symbol-t))
 
 (define (var-exp-name target) (list-get 1 target))
 
-(claim var-exp-put-name (-> symbol-t l1/exp-t l1/exp-t))
+(claim var-exp-put-name (-> symbol-t exp-t exp-t))
 
 (define (var-exp-put-name value target)
   (list-put 1 value target))
 
-(claim var-exp-put-name! (-> symbol-t l1/exp-t l1/exp-t))
+(claim var-exp-put-name! (-> symbol-t exp-t exp-t))
 
 (define (var-exp-put-name! value target)
   (list-put! 1 value target))
 
-(claim apply-exp (-> l1/exp-t l1/exp-t l1/exp-t))
+(claim apply-exp (-> exp-t exp-t exp-t))
 
 (define (apply-exp target arg)
   (= list (make-list))
@@ -62,7 +61,7 @@
   (list-push! arg list)
   list)
 
-(claim apply-exp? (-> l1/exp-t bool-t))
+(claim apply-exp? (-> exp-t bool-t))
 
 (define (apply-exp? value)
   (if (list? value)
@@ -71,36 +70,35 @@
       false)
     false))
 
-(claim apply-exp-target (-> l1/exp-t l1/exp-t))
+(claim apply-exp-target (-> exp-t exp-t))
 
 (define (apply-exp-target target) (list-get 1 target))
 
-(claim apply-exp-arg (-> l1/exp-t l1/exp-t))
+(claim apply-exp-arg (-> exp-t exp-t))
 
 (define (apply-exp-arg target) (list-get 2 target))
 
-(claim apply-exp-put-target (-> l1/exp-t l1/exp-t l1/exp-t))
+(claim apply-exp-put-target (-> exp-t exp-t exp-t))
 
 (define (apply-exp-put-target value target)
   (list-put 1 value target))
 
-(claim apply-exp-put-arg (-> l1/exp-t l1/exp-t l1/exp-t))
+(claim apply-exp-put-arg (-> exp-t exp-t exp-t))
 
 (define (apply-exp-put-arg value target)
   (list-put 2 value target))
 
-(claim apply-exp-put-target!
-  (-> l1/exp-t l1/exp-t l1/exp-t))
+(claim apply-exp-put-target! (-> exp-t exp-t exp-t))
 
 (define (apply-exp-put-target! value target)
   (list-put! 1 value target))
 
-(claim apply-exp-put-arg! (-> l1/exp-t l1/exp-t l1/exp-t))
+(claim apply-exp-put-arg! (-> exp-t exp-t exp-t))
 
 (define (apply-exp-put-arg! value target)
   (list-put! 2 value target))
 
-(claim lambda-exp (-> symbol-t l1/exp-t l1/exp-t))
+(claim lambda-exp (-> symbol-t exp-t exp-t))
 
 (define (lambda-exp parameter body)
   (= list (make-list))
@@ -109,7 +107,7 @@
   (list-push! body list)
   list)
 
-(claim lambda-exp? (-> l1/exp-t bool-t))
+(claim lambda-exp? (-> exp-t bool-t))
 
 (define (lambda-exp? value)
   (if (list? value)
@@ -118,32 +116,30 @@
       false)
     false))
 
-(claim lambda-exp-parameter (-> l1/exp-t symbol-t))
+(claim lambda-exp-parameter (-> exp-t symbol-t))
 
 (define (lambda-exp-parameter target) (list-get 1 target))
 
-(claim lambda-exp-body (-> l1/exp-t l1/exp-t))
+(claim lambda-exp-body (-> exp-t exp-t))
 
 (define (lambda-exp-body target) (list-get 2 target))
 
-(claim lambda-exp-put-parameter
-  (-> symbol-t l1/exp-t l1/exp-t))
+(claim lambda-exp-put-parameter (-> symbol-t exp-t exp-t))
 
 (define (lambda-exp-put-parameter value target)
   (list-put 1 value target))
 
-(claim lambda-exp-put-body (-> l1/exp-t l1/exp-t l1/exp-t))
+(claim lambda-exp-put-body (-> exp-t exp-t exp-t))
 
 (define (lambda-exp-put-body value target)
   (list-put 2 value target))
 
-(claim lambda-exp-put-parameter!
-  (-> symbol-t l1/exp-t l1/exp-t))
+(claim lambda-exp-put-parameter! (-> symbol-t exp-t exp-t))
 
 (define (lambda-exp-put-parameter! value target)
   (list-put! 1 value target))
 
-(claim lambda-exp-put-body! (-> l1/exp-t l1/exp-t l1/exp-t))
+(claim lambda-exp-put-body! (-> exp-t exp-t exp-t))
 
 (define (lambda-exp-put-body! value target)
   (list-put! 2 value target))
@@ -152,16 +148,15 @@
   empty-env
   (extend-env (key symbol-t) (value value-t) (rest env-t)))
 
-(claim empty-env l1/env-t)
+(claim empty-env env-t)
 
 (define empty-env 'empty-env)
 
-(claim empty-env? (-> l1/env-t bool-t))
+(claim empty-env? (-> env-t bool-t))
 
 (define (empty-env? value) (equal? value 'empty-env))
 
-(claim extend-env
-  (-> symbol-t l1/value-t l1/env-t l1/env-t))
+(claim extend-env (-> symbol-t value-t env-t env-t))
 
 (define (extend-env key value rest)
   (= list (make-list))
@@ -171,7 +166,7 @@
   (list-push! rest list)
   list)
 
-(claim extend-env? (-> l1/env-t bool-t))
+(claim extend-env? (-> env-t bool-t))
 
 (define (extend-env? value)
   (if (list? value)
@@ -180,51 +175,49 @@
       false)
     false))
 
-(claim extend-env-key (-> l1/env-t symbol-t))
+(claim extend-env-key (-> env-t symbol-t))
 
 (define (extend-env-key target) (list-get 1 target))
 
-(claim extend-env-value (-> l1/env-t l1/value-t))
+(claim extend-env-value (-> env-t value-t))
 
 (define (extend-env-value target) (list-get 2 target))
 
-(claim extend-env-rest (-> l1/env-t l1/env-t))
+(claim extend-env-rest (-> env-t env-t))
 
 (define (extend-env-rest target) (list-get 3 target))
 
-(claim extend-env-put-key (-> symbol-t l1/env-t l1/env-t))
+(claim extend-env-put-key (-> symbol-t env-t env-t))
 
 (define (extend-env-put-key value target)
   (list-put 1 value target))
 
-(claim extend-env-put-value
-  (-> l1/value-t l1/env-t l1/env-t))
+(claim extend-env-put-value (-> value-t env-t env-t))
 
 (define (extend-env-put-value value target)
   (list-put 2 value target))
 
-(claim extend-env-put-rest (-> l1/env-t l1/env-t l1/env-t))
+(claim extend-env-put-rest (-> env-t env-t env-t))
 
 (define (extend-env-put-rest value target)
   (list-put 3 value target))
 
-(claim extend-env-put-key! (-> symbol-t l1/env-t l1/env-t))
+(claim extend-env-put-key! (-> symbol-t env-t env-t))
 
 (define (extend-env-put-key! value target)
   (list-put! 1 value target))
 
-(claim extend-env-put-value!
-  (-> l1/value-t l1/env-t l1/env-t))
+(claim extend-env-put-value! (-> value-t env-t env-t))
 
 (define (extend-env-put-value! value target)
   (list-put! 2 value target))
 
-(claim extend-env-put-rest! (-> l1/env-t l1/env-t l1/env-t))
+(claim extend-env-put-rest! (-> env-t env-t env-t))
 
 (define (extend-env-put-rest! value target)
   (list-put! 3 value target))
 
-(claim env-has? (-> symbol-t l1/env-t bool-t))
+(claim env-has? (-> symbol-t env-t bool-t))
 
 (define (env-has? name env)
   (if (empty-env? env)
@@ -240,7 +233,7 @@
         (if (equal? key name) true (env-has? name rest)))
       (error "cond mismatch"))))
 
-(claim env-lookup-of-fail (-> symbol-t l1/env-t l1/value-t))
+(claim env-lookup-of-fail (-> symbol-t env-t value-t))
 
 (define (env-lookup-of-fail name env)
   (if (empty-env? env)
@@ -264,8 +257,7 @@
    (parameter symbol-t)
    (body exp-t)))
 
-(claim closure-value
-  (-> l1/env-t symbol-t l1/exp-t l1/value-t))
+(claim closure-value (-> env-t symbol-t exp-t value-t))
 
 (define (closure-value env parameter body)
   (= list (make-list))
@@ -275,7 +267,7 @@
   (list-push! body list)
   list)
 
-(claim closure-value? (-> l1/value-t bool-t))
+(claim closure-value? (-> value-t bool-t))
 
 (define (closure-value? value)
   (if (list? value)
@@ -284,56 +276,52 @@
       false)
     false))
 
-(claim closure-value-env (-> l1/value-t l1/env-t))
+(claim closure-value-env (-> value-t env-t))
 
 (define (closure-value-env target) (list-get 1 target))
 
-(claim closure-value-parameter (-> l1/value-t symbol-t))
+(claim closure-value-parameter (-> value-t symbol-t))
 
 (define (closure-value-parameter target)
   (list-get 2 target))
 
-(claim closure-value-body (-> l1/value-t l1/exp-t))
+(claim closure-value-body (-> value-t exp-t))
 
 (define (closure-value-body target) (list-get 3 target))
 
-(claim closure-value-put-env
-  (-> l1/env-t l1/value-t l1/value-t))
+(claim closure-value-put-env (-> env-t value-t value-t))
 
 (define (closure-value-put-env value target)
   (list-put 1 value target))
 
 (claim closure-value-put-parameter
-  (-> symbol-t l1/value-t l1/value-t))
+  (-> symbol-t value-t value-t))
 
 (define (closure-value-put-parameter value target)
   (list-put 2 value target))
 
-(claim closure-value-put-body
-  (-> l1/exp-t l1/value-t l1/value-t))
+(claim closure-value-put-body (-> exp-t value-t value-t))
 
 (define (closure-value-put-body value target)
   (list-put 3 value target))
 
-(claim closure-value-put-env!
-  (-> l1/env-t l1/value-t l1/value-t))
+(claim closure-value-put-env! (-> env-t value-t value-t))
 
 (define (closure-value-put-env! value target)
   (list-put! 1 value target))
 
 (claim closure-value-put-parameter!
-  (-> symbol-t l1/value-t l1/value-t))
+  (-> symbol-t value-t value-t))
 
 (define (closure-value-put-parameter! value target)
   (list-put! 2 value target))
 
-(claim closure-value-put-body!
-  (-> l1/exp-t l1/value-t l1/value-t))
+(claim closure-value-put-body! (-> exp-t value-t value-t))
 
 (define (closure-value-put-body! value target)
   (list-put! 3 value target))
 
-(claim evaluate (-> l1/exp-t l1/env-t l1/value-t))
+(claim evaluate (-> exp-t env-t value-t))
 
 (define (evaluate exp env)
   (if (var-exp? exp)
@@ -357,7 +345,7 @@
           (closure-value env parameter body))
         (error "cond mismatch")))))
 
-(claim apply (-> l1/value-t l1/value-t l1/value-t))
+(claim apply (-> value-t value-t value-t))
 
 (define (apply target arg)
   (if (closure-value? target)

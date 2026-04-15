@@ -131,7 +131,6 @@
 (claim list-length (polymorphic (E) (-> (list-t E) int-t)))
 (claim list-empty? (polymorphic (E) (-> (list-t E) bool-t)))
 (claim list-copy (polymorphic (E) (-> (list-t E) (list-t E))))
-;; (claim list-get (polymorphic (E) (-> int-t (list-t E) (optional-t E))))
 (claim list-get (polymorphic (E) (-> int-t (list-t E) E)))
 (claim list-put (polymorphic (E) (-> int-t E (list-t E) (list-t E))))
 (claim list-put! (polymorphic (E) (-> int-t E (list-t E) (list-t E))))

@@ -34,14 +34,6 @@ export function projectBuild(
 }
 
 function projectBundle(project: M.Project): void {
-  const builtinMod = M.loadBuiltinMod(project)
-
-  M.projectForEachMod(project, (mod) => {
-    if (mod !== builtinMod) {
-      M.modForEachOwnDefinition(mod, M.definitionQualifyName)
-    }
-  })
-
   let code = ""
 
   M.projectForEachMod(project, (mod) => {
