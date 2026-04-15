@@ -1,0 +1,12 @@
+(module builtin)
+
+(claim bool-t type-t)
+(claim int-t type-t)
+(claim float-t type-t)
+(claim string-t type-t)
+(claim symbol-t type-t)
+(claim keyword-t type-t)
+(claim void-t type-t)
+(claim list-t (-> type-t type-t))
+(claim set-t (-> type-t type-t))
+(claim hash-t (-> type-t type-t type-t))

@@ -1,0 +1,5 @@
+(module builtin)
+
+(claim keyword? (polymorphic (A) (-> A bool-t)))
+(claim keyword-to-string (-> keyword-t string-t))
+(claim keyword-append (-> keyword-t keyword-t keyword-t))

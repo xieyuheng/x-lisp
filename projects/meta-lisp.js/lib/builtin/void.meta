@@ -1,0 +1,4 @@
+(module builtin)
+
+(claim void void-t)
+(claim void? (polymorphic (A) (-> A bool-t)))

@@ -1,0 +1,10 @@
+(module builtin)
+
+(claim path-base-name (-> string-t string-t))
+(claim path-directory-name (-> string-t string-t))
+(claim path-extension (-> string-t string-t))
+(claim path-stem (-> string-t string-t))
+(claim path-absolute? (-> string-t bool-t))
+(claim path-relative? (-> string-t bool-t))
+(claim path-join (-> string-t string-t string-t))
+(claim path-normalize (-> string-t string-t))

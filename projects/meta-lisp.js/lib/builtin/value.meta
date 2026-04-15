@@ -1,0 +1,5 @@
+(module builtin)
+
+(claim any? (polymorphic (A) (-> A bool-t)))
+(claim same? (polymorphic (A) (-> A A bool-t)))
+(claim equal? (polymorphic (A) (-> A A bool-t)))

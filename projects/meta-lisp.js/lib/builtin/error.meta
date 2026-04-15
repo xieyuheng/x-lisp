@@ -1,0 +1,3 @@
+(module builtin)
+
+(claim error (polymorphic (A) (-> string-t A)))

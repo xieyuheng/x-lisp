@@ -21,13 +21,14 @@ import {
   openInputFile,
 } from "@xieyuheng/helpers.js/file"
 import * as S from "@xieyuheng/sexp.js"
+import fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
 
 const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 
 export function loadBuiltinMod(project: M.Project): M.Mod {
-  const path = Path.join(currentDir, "../../../lib/builtin/index.meta")
+  const builtinPath = Path.join(currentDir, "../../../lib/builtin")
   const modName = "builtin"
 
   const found = M.projectLookupMod(project, modName)
@@ -53,12 +54,14 @@ export function loadBuiltinMod(project: M.Project): M.Mod {
   builtinError(mod)
   builtinType(mod)
 
-  callWithFile(openInputFile(path), (file) => {
-    const code = fileRead(file)
-    const sexps = S.parseSexps(code, { path })
-    const stmts = sexps.map(M.parseStmt)
-    M.loadStmts(mod, stmts)
-  })
+  for (const path of fs.readdirSync(builtinPath, {
+    encoding: "utf-8",
+    recursive: true,
+  })) {
+    if (path.endsWith(".meta")) {
+      M.loadCode(project, Path.join(builtinPath, path))
+    }
+  }
 
   return mod
 }

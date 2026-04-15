@@ -1,0 +1,7 @@
+(module builtin)
+
+(claim symbol? (polymorphic (A) (-> A bool-t)))
+(claim symbol-length (-> symbol-t int-t))
+(claim symbol-to-string (-> symbol-t string-t))
+(claim symbol-append (-> symbol-t symbol-t symbol-t))
+(claim symbol-concat (-> (list-t symbol-t) symbol-t))

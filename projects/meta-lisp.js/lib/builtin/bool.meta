@@ -1,0 +1,6 @@
+(module builtin)
+
+(claim true bool-t)
+(claim false bool-t)
+(claim bool? (polymorphic (A) (-> A bool-t)))
+(claim not (-> bool-t bool-t))

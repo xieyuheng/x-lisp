@@ -1,0 +1,6 @@
+(module builtin)
+
+(claim assert (-> bool-t void-t))
+(claim assert-not (-> bool-t void-t))
+(claim assert-equal (polymorphic (A) (-> A A void-t)))
+(claim assert-not-equal (polymorphic (A) (-> A A void-t)))
