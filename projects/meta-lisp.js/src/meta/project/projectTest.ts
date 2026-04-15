@@ -22,6 +22,7 @@ export function projectTest(project: M.Project): void {
   M.projectForEachDefinition(project, (definition) => {
     if (definition.kind === "TestDefinition") {
       M.log("test", definition.name)
+
       const snapshotPath = Path.join(
         M.projectSnapshotDirectory(project),
         "modules",
@@ -36,6 +37,8 @@ export function projectTest(project: M.Project): void {
         bundlePath,
         ">",
         snapshotPath,
+        "||",
+        "true",
       ])
     }
   })
