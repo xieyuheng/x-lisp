@@ -1,3 +1,13 @@
+[meta-lisp.js] `TypeDefinition`
+[meta-lisp.js] `DefineType`
+[meta-lisp.js] parse `(define-type)`
+
+[meta-lisp.js] should not generate basic function for `TypeDefinition`
+
+```scheme
+(define-type env-t (hash-t symbol-t value-t))
+```
+
 # about format
 
 [helpers.c] improve `string_builder_t` for `format_*`

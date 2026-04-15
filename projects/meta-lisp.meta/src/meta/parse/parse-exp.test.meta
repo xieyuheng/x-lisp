@@ -2,7 +2,7 @@
 
 ;; TODO need test framework
 
-(define (main)
+(define-test parse-exp-test
   (= path "src/meta/parse/meta.txt")
   (= text (fs-read path))
   (println (parse-located-sexps path text)))
