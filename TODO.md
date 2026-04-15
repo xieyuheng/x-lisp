@@ -1,5 +1,3 @@
-[meta-lisp.js] parse `(define-type)`
-
 [meta-lisp.js] should not generate basic function for `TypeDefinition`
 
 ```scheme
