@@ -54,12 +54,12 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
           else throw new Error(message)
         }
 
-        const name = `${exp.modName}/${exp.name}`
-        const topLevelType = M.modLookupType(qualifiedMod, name)
+        const qualifiedName = `${exp.modName}/${exp.name}`
+        const topLevelType = M.modLookupType(qualifiedMod, qualifiedName)
         if (topLevelType) return M.okInferEffect(topLevelType)(subst)
 
         let message = `undefined qualified variable`
-        message += `\n  name: ${name}`
+        message += `\n  name: ${qualifiedName}`
         return M.errorInferEffect(exp, message)(subst)
       }
 
