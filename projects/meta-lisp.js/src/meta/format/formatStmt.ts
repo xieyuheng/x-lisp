@@ -20,6 +20,11 @@ export function formatStmt(stmt: Stmt): string {
       return `(define-test ${stmt.name} ${body})`
     }
 
+    case "DefineType": {
+      const body = formatBody(stmt.body)
+      return `(define-type ${stmt.name} ${body})`
+    }
+
     case "DefineData": {
       const type = formatDataTypeConstructor(stmt.dataTypeConstructor)
       const constructors = stmt.dataConstructors

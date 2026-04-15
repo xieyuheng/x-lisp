@@ -12,6 +12,7 @@ export type Stmt =
   | DefineFunction
   | DefineVariable
   | DefineTest
+| DefineType
   | DefineData
   | DefineInterface
   | Claim
@@ -76,6 +77,26 @@ export function DefineTest(
 ): DefineTest {
   return {
     kind: "DefineTest",
+    name,
+    body,
+    location,
+  }
+}
+
+export type DefineType = {
+  kind: "DefineType"
+  name: string
+  body: Exp
+  location?: SourceLocation
+}
+
+export function DefineType(
+  name: string,
+  body: Exp,
+  location?: SourceLocation,
+): DefineType {
+  return {
+    kind: "DefineType",
     name,
     body,
     location,
