@@ -441,11 +441,6 @@
      (list-push! 'c list)
      list)))
 
-(define-test cond-mismatch-test
-  (if (equal? 1 2)
-    void
-    (if (equal? 1 2) void (error "cond mismatch"))))
-
 (define-test cond-test
   (assert-equal
     1

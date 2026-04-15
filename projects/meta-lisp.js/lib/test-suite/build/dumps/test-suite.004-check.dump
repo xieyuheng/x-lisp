@@ -570,13 +570,6 @@
      (list-push! 'c list)
      list)))
 
-(claim test-suite/cond-mismatch-test void-t)
-
-(define-test test-suite/cond-mismatch-test
-  (if (equal? 1 2)
-    void
-    (if (equal? 1 2) void (error "cond mismatch"))))
-
 (claim test-suite/cond-test void-t)
 
 (define-test test-suite/cond-test

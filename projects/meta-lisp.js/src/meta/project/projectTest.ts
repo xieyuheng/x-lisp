@@ -19,27 +19,29 @@ export function projectTest(project: M.Project): void {
     "bundle.basic",
   )
 
-  M.projectForEachDefinition(project, (definition) => {
-    if (definition.kind === "TestDefinition") {
-      M.log("test", definition.name)
+  M.projectForEachMod(project, (mod) => {
+    if (mod.isTypeErrorModule) return
 
-      const snapshotPath = Path.join(
-        M.projectSnapshotDirectory(project),
-        "modules",
-        `${definition.name}.out`,
-      )
+    M.modForEachOwnDefinition(mod, (definition) => {
+      if (definition.kind === "TestDefinition") {
+        M.log("test", definition.name)
 
-      fs.mkdirSync(Path.dirname(snapshotPath), { recursive: true })
+        const snapshotPath = Path.join(
+          M.projectSnapshotDirectory(project),
+          "modules",
+          `${definition.name}.out`,
+        )
 
-      systemShellRun(BasicInterpreterPath, [
-        "run",
-        definition.name,
-        bundlePath,
-        ">",
-        snapshotPath,
-        "||",
-        "true",
-      ])
-    }
+        fs.mkdirSync(Path.dirname(snapshotPath), { recursive: true })
+
+        systemShellRun(BasicInterpreterPath, [
+          "run",
+          definition.name,
+          bundlePath,
+          ">",
+          snapshotPath,
+        ])
+      }
+    })
   })
 }

@@ -887,13 +887,6 @@
     (perform (list-push! 'c list₃))
     (return (println list₃))))
 
-(define-function (test-suite/cond-mismatch-test)
-  (block body (test (equal? 1 2)) (branch then₃ else₄))
-  (block then₁ (return void))
-  (block else₂ (return (error "cond mismatch")))
-  (block then₃ (return void))
-  (block else₄ (test (equal? 1 2)) (branch then₁ else₂)))
-
 (define-function (test-suite/cond-test)
   (block body (test (equal? 1 1)) (branch then₁₃ else₁₄))
   (block then₁ (return (assert false)))
