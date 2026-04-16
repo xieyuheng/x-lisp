@@ -1,3 +1,69 @@
+(claim float-product (-> (list-t float-t) float-t))
+
+(define (float-product xs)
+  (if (list-empty? xs)
+    1.0
+    (begin
+      (= _₁ (car xs))
+      (= _₂ (cdr xs))
+      (= _₃ (float-product _₂))
+      (fmul _₁ _₃))))
+
+(claim float-product-test void-t)
+
+(define-test float-product-test
+  (begin
+    (= list₁ (make-list))
+    (= _₁ (float-product list₁))
+    (assert-equal 1.0 _₁))
+  (begin
+    (= list₁ (make-list))
+    (list-push! 1.0 list₁)
+    (list-push! 2.0 list₁)
+    (list-push! 3.0 list₁)
+    (= _₂ (float-product list₁))
+    (assert-equal 6.0 _₂))
+  (= list₁ (make-list))
+  (list-push! 1.0 list₁)
+  (list-push! 2.0 list₁)
+  (list-push! 3.0 list₁)
+  (list-push! 4.0 list₁)
+  (= _₃ (float-product list₁))
+  (assert-equal 24.0 _₃))
+
+(claim float-sum (-> (list-t float-t) float-t))
+
+(define (float-sum xs)
+  (if (list-empty? xs)
+    0.0
+    (begin
+      (= _₁ (car xs))
+      (= _₂ (cdr xs))
+      (= _₃ (float-sum _₂))
+      (fadd _₁ _₃))))
+
+(claim float-sum-test void-t)
+
+(define-test float-sum-test
+  (begin
+    (= list₁ (make-list))
+    (= _₁ (float-sum list₁))
+    (assert-equal 0.0 _₁))
+  (begin
+    (= list₁ (make-list))
+    (list-push! 1.0 list₁)
+    (list-push! 2.0 list₁)
+    (list-push! 3.0 list₁)
+    (= _₂ (float-sum list₁))
+    (assert-equal 6.0 _₂))
+  (= list₁ (make-list))
+  (list-push! 1.0 list₁)
+  (list-push! 2.0 list₁)
+  (list-push! 3.0 list₁)
+  (list-push! 4.0 list₁)
+  (= _₃ (float-sum list₁))
+  (assert-equal 10.0 _₃))
+
 (claim int-align (-> int-t int-t int-t))
 
 (define (int-align alignment n)

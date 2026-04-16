@@ -1,8 +1,6 @@
-[meta-lisp.js] rename `Update` to `Put`
-
 # builtin
 
-[meta-lisp.js] [builtin] float -- copy from x-lisp-proto.js
+[meta-lisp.js] [builtin] string -- copy from x-lisp-proto.js
 [meta-lisp.js] [builtin] list -- copy from x-lisp-proto.js
 [meta-lisp.js] [builtin] hash -- copy from x-lisp-proto.js
 [meta-lisp.js] [builtin] set -- copy from x-lisp-proto.js
