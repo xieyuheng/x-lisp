@@ -1,0 +1,16 @@
+(module builtin)
+
+(claim list-append
+  (polymorphic (A)
+    (-> (list-t A) (list-t A)
+        (list-t A))))
+
+(define (list-append list tail)
+  (if (list-empty? list)
+    tail
+    (cons (car list) (list-append (cdr list) tail))))
+
+(define-test list-append-test
+  (assert-equal
+    (list-append [1 2 3] [4 5 6])
+    [1 2 3 4 5 6]))

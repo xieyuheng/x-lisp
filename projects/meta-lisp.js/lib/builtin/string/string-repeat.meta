@@ -1,4 +1,4 @@
-(module meta)
+(module builtin)
 
 (claim string-repeat
   (-> int-t string-t

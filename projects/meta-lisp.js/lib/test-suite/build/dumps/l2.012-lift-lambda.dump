@@ -449,15 +449,15 @@
             (= body₄₁ (l2/let-exp-body exp))
             (= rhs₁₁ (l2/let-exp-rhs exp))
             (= name₃₁ (l2/let-exp-name exp))
-            (= body₁ body₄₁)
+            (= body₂ body₄₁)
             (= rhs₁ rhs₁₁)
-            (= name₁ name₃₁)
+            (= name₂ name₃₁)
             (= env₁
                (l2/extend-env
-                name₁
+                name₂
                 (l2/evaluate rhs₁ env)
                 env))
-            (l2/evaluate body₁ env₁))
+            (l2/evaluate body₂ env₁))
           (error "cond mismatch"))))))
 
 (claim apply (-> l2/value-t l2/value-t l2/value-t))

@@ -13,6 +13,6 @@
      record₁))
   (subtype-error-2/point-println
    (begin
-     (= record₁ (make-record))
-     (record-put! :x 1.0 record₁)
-     record₁)))
+     (= record₂ (make-record))
+     (record-put! :x 1.0 record₂)
+     record₂)))

@@ -58,6 +58,30 @@
   (assert-equal 6 (int-sum [1 2 3]))
   (assert-equal 10 (int-sum [1 2 3 4])))
 
+(claim list-append
+  (polymorphic (A) (-> (list-t A) (list-t A) (list-t A))))
+
+(define (list-append list tail)
+  (if (list-empty? list)
+    tail
+    (cons (car list) (list-append (cdr list) tail))))
+
+(define-test list-append-test
+  (assert-equal (list-append [1 2 3] [4 5 6]) [1 2 3 4 5 6]))
+
+(claim list-concat
+  (polymorphic (A) (-> (list-t (list-t A)) (list-t A))))
+
+(define (list-concat lists)
+  (if (list-empty? lists)
+    []
+    (list-append (car lists) (list-concat (cdr lists)))))
+
+(define-test list-concat-test
+  (assert-equal
+    (list-concat [[1 2 3] [4 5 6]])
+    [1 2 3 4 5 6]))
+
 (define-interface source-location-t
   :span
   source-span-t
@@ -371,3 +395,16 @@
 
 (define (list-sexp-put-location! value target)
   (list-put! 2 value target))
+
+(claim string-repeat (-> int-t string-t string-t))
+
+(define (string-repeat n string)
+  (if (equal? n 0)
+    ""
+    (string-append string (string-repeat (isub n 1) string))))
+
+(define-test string-repeat-test
+  (assert-equal "" (string-repeat 0 "a"))
+  (assert-equal "a" (string-repeat 1 "a"))
+  (assert-equal "aa" (string-repeat 2 "a"))
+  (assert-equal "aaa" (string-repeat 3 "a")))

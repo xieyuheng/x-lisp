@@ -540,17 +540,17 @@
                (begin (= _₁₈ l2/let-exp-rhs) (_₁₈ exp)))
             (= name₃₁
                (begin (= _₁₉ l2/let-exp-name) (_₁₉ exp)))
-            (= body₁ body₄₁)
+            (= body₂ body₄₁)
             (= rhs₁ rhs₁₁)
-            (= name₁ name₃₁)
+            (= name₂ name₃₁)
             (= env₁
                (begin
                  (= _₂₀ l2/extend-env)
                  (= _₂₁ l2/evaluate)
                  (= _₂₂ (_₂₁ rhs₁ env))
-                 (_₂₀ name₁ _₂₂ env)))
+                 (_₂₀ name₂ _₂₂ env)))
             (= _₂₃ l2/evaluate)
-            (_₂₃ body₁ env₁))
+            (_₂₃ body₂ env₁))
           (error "cond mismatch"))))))
 
 (claim apply (-> l2/value-t l2/value-t l2/value-t))

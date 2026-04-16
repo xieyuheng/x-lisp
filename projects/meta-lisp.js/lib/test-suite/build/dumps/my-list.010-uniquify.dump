@@ -158,11 +158,11 @@
               (= head₆₁ (my-list/li-head list2))
               (= tail2₁ tail₆₁)
               (= head2₁ head₆₁)
-              (= tail1₁ tail₅₁)
-              (= head1₁ head₅₁)
+              (= tail1₂ tail₅₁)
+              (= head1₂ head₅₁)
               (my-list/li
-               (f head1₁ head2₁)
-               (my-list/my-list-map-zip f tail1₁ tail2₁)))
+               (f head1₂ head2₁)
+               (my-list/my-list-map-zip f tail1₂ tail2₁)))
             (error "cond mismatch"))))
       (error "cond mismatch"))))
 
@@ -181,7 +181,7 @@
         (= tail₁₀₁ (my-list/li-tail list1))
         (= head₁₀₁ (my-list/li-head list1))
         (if (my-list/nil? list2)
-          (begin (= _₁ list1) my-list/nil)
+          (begin (= _₂ list1) my-list/nil)
           (if (my-list/li? list2)
             (begin
               (= tail₉₁ (my-list/li-tail list2))

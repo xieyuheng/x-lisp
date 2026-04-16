@@ -5,6 +5,6 @@
       (= record₂ (record-put :x 2 record₁))
       record₂)
     (begin
-      (= record₁ r)
-      (= record₂ (record-put :y 2 record₁))
-      record₂)))
+      (= record₃ r)
+      (= record₄ (record-put :y 2 record₃))
+      record₄)))

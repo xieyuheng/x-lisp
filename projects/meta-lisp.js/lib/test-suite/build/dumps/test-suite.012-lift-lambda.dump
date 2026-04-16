@@ -312,9 +312,9 @@
 
 (define (SKI-tuple©λ₁ x₁ y₁ z₁) (x₁ z₁ (y₁ z₁)))
 
-(define (SKI-tuple©λ₂ x₁ y₁) x₁)
+(define (SKI-tuple©λ₂ x₂ y₂) x₂)
 
-(define (SKI-tuple©λ₃ x₁) x₁)
+(define (SKI-tuple©λ₃ x₃) x₃)
 
 (claim compose
   (polymorphic (A B C) (-> (-> B C) (-> A B) (-> A C))))
@@ -394,17 +394,17 @@
 
 (define-test hash-test
   (assert (hash-empty? (begin (= hash₁ (make-hash)) hash₁)))
-  (println (begin (= hash₁ (make-hash)) hash₁))
+  (println (begin (= hash₂ (make-hash)) hash₂))
   (println
-   (begin (= hash₁ (make-hash)) (hash-put! 1 2 hash₁) hash₁))
+   (begin (= hash₃ (make-hash)) (hash-put! 1 2 hash₃) hash₃))
   (println
-   (begin (= hash₁ (make-hash)) (hash-put! 1 3 hash₁) hash₁))
+   (begin (= hash₄ (make-hash)) (hash-put! 1 3 hash₄) hash₄))
   (println
    (begin
-     (= hash₁ (make-hash))
-     (hash-put! 1 2 hash₁)
-     (hash-put! 3 4 hash₁)
-     hash₁)))
+     (= hash₅ (make-hash))
+     (hash-put! 1 2 hash₅)
+     (hash-put! 3 4 hash₅)
+     hash₅)))
 
 (claim factorial (-> int-t int-t))
 
@@ -492,90 +492,90 @@
     list₁)
   (assert-equal
     (begin
-      (= list₂ (make-list))
-      (list-push! 1 list₂)
-      (list-push! 2 list₂)
-      (list-push! 3 list₂)
-      list₂)
+      (= list₃ (make-list))
+      (list-push! 1 list₃)
+      (list-push! 2 list₃)
+      (list-push! 3 list₃)
+      list₃)
     (begin
-      (= list₂ (make-list))
-      (list-push! 1 list₂)
-      (list-push! 2 list₂)
-      (list-push! 3 list₂)
-      list₂))
+      (= list₄ (make-list))
+      (list-push! 1 list₄)
+      (list-push! 2 list₄)
+      (list-push! 3 list₄)
+      list₄))
   (assert-equal
     (begin
-      (= list₂ (make-list))
-      (list-push! 'a list₂)
-      (list-push! 'b list₂)
-      (list-push! 'c list₂)
-      list₂)
+      (= list₅ (make-list))
+      (list-push! 'a list₅)
+      (list-push! 'b list₅)
+      (list-push! 'c list₅)
+      list₅)
     (begin
-      (= list₂ (make-list))
-      (list-push! 'a list₂)
-      (list-push! 'b list₂)
-      (list-push! 'c list₂)
-      list₂))
+      (= list₆ (make-list))
+      (list-push! 'a list₆)
+      (list-push! 'b list₆)
+      (list-push! 'c list₆)
+      list₆))
   (assert-equal
     3
     (list-length
      (begin
-       (= list₂ (make-list))
-       (list-push! 1 list₂)
-       (list-push! 2 list₂)
-       (list-push! 3 list₂)
-       list₂)))
+       (= list₇ (make-list))
+       (list-push! 1 list₇)
+       (list-push! 2 list₇)
+       (list-push! 3 list₇)
+       list₇)))
   (assert-equal
     0
-    (list-length (begin (= list₂ (make-list)) list₂)))
-  (assert (list-empty? (begin (= list₂ (make-list)) list₂)))
-  (= list₂ (make-list))
-  (list-push! 1 list₂)
-  (list-push! 2 list₂)
-  (list-push! 3 list₂)
-  (println list₂)
+    (list-length (begin (= list₈ (make-list)) list₈)))
+  (assert (list-empty? (begin (= list₉ (make-list)) list₉)))
+  (= list₁₀ (make-list))
+  (list-push! 1 list₁₀)
+  (list-push! 2 list₁₀)
+  (list-push! 3 list₁₀)
+  (println list₁₀)
   (println
    (begin
-     (= list₃ (make-list))
-     (list-push! 1 list₃)
-     (list-push! 2 list₃)
-     (list-push! 3 list₃)
-     list₃))
+     (= list₁₁ (make-list))
+     (list-push! 1 list₁₁)
+     (list-push! 2 list₁₁)
+     (list-push! 3 list₁₁)
+     list₁₁))
   (println
    (begin
-     (= list₃ (make-list))
-     (list-push! 1 list₃)
-     (list-push! 2 list₃)
-     (list-push! 3 list₃)
-     list₃))
+     (= list₁₂ (make-list))
+     (list-push! 1 list₁₂)
+     (list-push! 2 list₁₂)
+     (list-push! 3 list₁₂)
+     list₁₂))
   (println
    (begin
-     (= list₃ (make-list))
-     (list-push! 1 list₃)
-     (list-push! 2 list₃)
-     (list-push! 3 list₃)
-     list₃))
+     (= list₁₃ (make-list))
+     (list-push! 1 list₁₃)
+     (list-push! 2 list₁₃)
+     (list-push! 3 list₁₃)
+     list₁₃))
   (println
    (begin
-     (= list₃ (make-list))
-     (list-push! 1 list₃)
-     (list-push! 2 list₃)
-     (list-push! 3 list₃)
-     list₃))
+     (= list₁₄ (make-list))
+     (list-push! 1 list₁₄)
+     (list-push! 2 list₁₄)
+     (list-push! 3 list₁₄)
+     list₁₄))
   (println
    (begin
-     (= list₃ (make-list))
-     (list-push! 'a list₃)
-     (list-push! 'b list₃)
-     (list-push! 'c list₃)
-     list₃))
+     (= list₁₅ (make-list))
+     (list-push! 'a list₁₅)
+     (list-push! 'b list₁₅)
+     (list-push! 'c list₁₅)
+     list₁₅))
   (println
    (begin
-     (= list₃ (make-list))
-     (list-push! 'a list₃)
-     (list-push! 'b list₃)
-     (list-push! 'c list₃)
-     list₃)))
+     (= list₁₆ (make-list))
+     (list-push! 'a list₁₆)
+     (list-push! 'b list₁₆)
+     (list-push! 'c list₁₆)
+     list₁₆)))
 
 (claim cond-test void-t)
 
@@ -649,10 +649,10 @@
      record₁))
   (println
    (begin
-     (= record₁ (make-record))
-     (record-put! :x 1 record₁)
-     (record-put! :y 2 record₁)
-     record₁)))
+     (= record₂ (make-record))
+     (record-put! :x 1 record₂)
+     (record-put! :y 2 record₂)
+     record₂)))
 
 (define-interface point-t :x float-t :y float-t)
 
@@ -676,11 +676,11 @@
        record₁))
   (assert-equal
     (begin
-      (= record₁ (make-record))
-      (record-put! :x 1.0 record₁)
-      (record-put! :y 2.0 record₁)
-      (record-put! :color "red" record₁)
-      record₁)
+      (= record₂ (make-record))
+      (record-put! :x 1.0 record₂)
+      (record-put! :y 2.0 record₂)
+      (record-put! :color "red" record₂)
+      record₂)
     (test-suite/with-color "red" point₁)))
 
 (claim point-put-x
@@ -716,31 +716,31 @@
        record₁))
   (assert-equal
     (begin
-      (= record₁ (make-record))
-      (record-put! :x 2.0 record₁)
-      (record-put! :y 2.0 record₁)
-      record₁)
+      (= record₂ (make-record))
+      (record-put! :x 2.0 record₂)
+      (record-put! :y 2.0 record₂)
+      record₂)
     (test-suite/point-put-x 2.0 point₁))
   (assert-equal
     (begin
-      (= record₁ (make-record))
-      (record-put! :x 1.0 record₁)
-      (record-put! :y 2.0 record₁)
-      record₁)
+      (= record₃ (make-record))
+      (record-put! :x 1.0 record₃)
+      (record-put! :y 2.0 record₃)
+      record₃)
     point₁)
   (assert-equal
     (begin
-      (= record₁ (make-record))
-      (record-put! :x 1.0 record₁)
-      (record-put! :y 1.0 record₁)
-      record₁)
+      (= record₄ (make-record))
+      (record-put! :x 1.0 record₄)
+      (record-put! :y 1.0 record₄)
+      record₄)
     (test-suite/point-put-y! 1.0 point₁))
   (assert-equal
     (begin
-      (= record₁ (make-record))
-      (record-put! :x 1.0 record₁)
-      (record-put! :y 1.0 record₁)
-      record₁)
+      (= record₅ (make-record))
+      (record-put! :x 1.0 record₅)
+      (record-put! :y 1.0 record₅)
+      record₅)
     point₁))
 
 (claim set-test void-t)
@@ -754,18 +754,18 @@
       (set-add! 3 set₁)
       set₁)
     (begin
-      (= set₁ (make-set))
-      (set-add! 3 set₁)
-      (set-add! 2 set₁)
-      (set-add! 1 set₁)
-      set₁))
+      (= set₂ (make-set))
+      (set-add! 3 set₂)
+      (set-add! 2 set₂)
+      (set-add! 1 set₂)
+      set₂))
   (println
    (begin
-     (= set₁ (make-set))
-     (set-add! 1 set₁)
-     (set-add! 2 set₁)
-     (set-add! 3 set₁)
-     set₁)))
+     (= set₃ (make-set))
+     (set-add! 1 set₃)
+     (set-add! 2 set₃)
+     (set-add! 3 set₃)
+     set₃)))
 
 (claim my-string-repeat (-> int-t string-t string-t))
 
@@ -807,10 +807,10 @@
      list₁))
   (println
    (begin
-     (= list₁ (make-list))
-     (list-push! 1 list₁)
-     (list-push! 'a list₁)
-     list₁)))
+     (= list₂ (make-list))
+     (list-push! 1 list₂)
+     (list-push! 'a list₂)
+     list₂)))
 
 (claim void-test void-t)
 

@@ -48,9 +48,9 @@ function onExp(
     }
 
     case "Lambda": {
-      const newNameCounts = countNames(nameCounts, exp.parameters)
+      countNames(nameCounts, exp.parameters)
       const parameters = exp.parameters.map((name) =>
-        generateNameInCounts(newNameCounts, name),
+        generateNameInCounts(nameCounts, name),
       )
       const newNameTable = {
         ...nameTable,
@@ -58,19 +58,19 @@ function onExp(
       }
       return M.Lambda(
         parameters,
-        onExp(newNameCounts, newNameTable, exp.body),
+        onExp(nameCounts, newNameTable, exp.body),
         exp.location,
       )
     }
 
     case "Let1": {
-      const newNameCounts = countName(nameCounts, exp.name)
-      const newName = generateNameInCounts(newNameCounts, exp.name)
+      countName(nameCounts, exp.name)
+      const newName = generateNameInCounts(nameCounts, exp.name)
       const newNameTable = { ...nameTable, [exp.name]: newName }
       return M.Let1(
         newName,
-        onExp(newNameCounts, nameTable, exp.rhs),
-        onExp(newNameCounts, newNameTable, exp.body),
+        onExp(nameCounts, nameTable, exp.rhs),
+        onExp(nameCounts, newNameTable, exp.body),
         exp.location,
       )
     }
@@ -81,28 +81,22 @@ function onExp(
   }
 }
 
-function countName(
-  nameCounts: Record<string, number>,
-  name: string,
-): Record<string, number> {
+function countName(nameCounts: Record<string, number>, name: string): void {
   const count = nameCounts[name]
   if (count === undefined) {
-    return { ...nameCounts, [name]: 1 }
+    nameCounts[name] = 1
   } else {
-    return { ...nameCounts, [name]: count + 1 }
+    nameCounts[name] = count + 1
   }
 }
 
 function countNames(
   nameCounts: Record<string, number>,
   names: Array<string>,
-): Record<string, number> {
-  if (names.length === 0) {
-    return nameCounts
+): void {
+  for (const name of names) {
+    countName(nameCounts, name)
   }
-
-  const [name, ...restNames] = names
-  return countNames(countName(nameCounts, name), restNames)
 }
 
 function generateNameInCounts(

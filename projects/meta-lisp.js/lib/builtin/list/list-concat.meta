@@ -1,0 +1,18 @@
+(module builtin)
+
+(claim list-concat
+  (polymorphic (A)
+    (-> (list-t (list-t A))
+        (list-t A))))
+
+(define (list-concat lists)
+  (if (list-empty? lists)
+    []
+    (list-append
+     (car lists)
+     (list-concat (cdr lists)))))
+
+(define-test list-concat-test
+  (assert-equal
+    (list-concat [[1 2 3] [4 5 6]])
+    [1 2 3 4 5 6]))

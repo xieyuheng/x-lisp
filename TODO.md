@@ -1,8 +1,8 @@
 # builtin
 
-[meta-lisp.js] [builtin] list -- copy from x-lisp-proto.js
-[meta-lisp.js] [builtin] hash -- copy from x-lisp-proto.js
-[meta-lisp.js] [builtin] set -- copy from x-lisp-proto.js
+[meta-lisp.js] [builtin] list
+[meta-lisp.js] [builtin] hash
+[meta-lisp.js] [builtin] set
 
 # about format
 
