@@ -120,8 +120,8 @@ export function expChildren(exp: Exp): Array<Exp> {
     }
 
     case "Extend":
-    case "Put":
-    case "PutMut": {
+    case "Update":
+    case "UpdateMut": {
       return [exp.base, ...Object.values(exp.attributes)]
     }
   }

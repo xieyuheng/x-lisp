@@ -300,8 +300,8 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "Put":
-      case "PutMut": {
+      case "Update":
+      case "UpdateMut": {
         const baseType = M.createExtendInterfaceType(
           M.createFreshVarType("R"),
           recordMapValue(exp.attributes, (_) => M.createFreshVarType("A")),

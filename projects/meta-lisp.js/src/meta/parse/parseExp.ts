@@ -164,20 +164,20 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     )
   },
 
-  "(cons* 'put head body)": ({ head, body }, { location }) => {
+  "(cons* 'update head body)": ({ head, body }, { location }) => {
     const entries = S.listCollectKeywordEntries(body)
     M.assertNoDuplicatedKey(entries)
-    return M.Put(
+    return M.Update(
       parseExp(head),
       recordMapValue(Object.fromEntries(entries), parseExp),
       location,
     )
   },
 
-  "(cons* 'put! head body)": ({ head, body }, { location }) => {
+  "(cons* 'update! head body)": ({ head, body }, { location }) => {
     const entries = S.listCollectKeywordEntries(body)
     M.assertNoDuplicatedKey(entries)
-    return M.PutMut(
+    return M.UpdateMut(
       parseExp(head),
       recordMapValue(Object.fromEntries(entries), parseExp),
       location,

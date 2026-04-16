@@ -1097,7 +1097,7 @@
     (perform (record-put! :y y record₁))
     (return record₁)))
 
-(define-function (test-suite/record-put-test)
+(define-function (test-suite/record-update-test)
   (block body
     (= record₁ (make-record))
     (perform (record-put! :x 1.0 record₁))

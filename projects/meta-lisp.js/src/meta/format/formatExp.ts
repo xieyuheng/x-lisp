@@ -221,7 +221,7 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "Put": {
+    case "Update": {
       const base = formatExp(exp.base)
       const attributes = formatExpAttributes(exp.attributes)
       if (attributes === "") {
@@ -231,7 +231,7 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "PutMut": {
+    case "UpdateMut": {
       const base = formatExp(exp.base)
       const attributes = formatExpAttributes(exp.attributes)
       if (attributes === "") {

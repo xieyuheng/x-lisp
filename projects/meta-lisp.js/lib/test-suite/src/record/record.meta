@@ -18,12 +18,12 @@
     (with-color "red" point)))
 
 (define (point-put-x x point)
-  (put point :x x))
+  (update point :x x))
 
 (define (point-put-y! y point)
-  (put! point :y y))
+  (update! point :y y))
 
-(define-test record-put-test
+(define-test record-update-test
   (= point (@record :x 1.0 :y 2.0))
   (assert-equal (@record :x 2.0 :y 2.0) (point-put-x 2.0 point))
   (assert-equal (@record :x 1.0 :y 2.0) point)

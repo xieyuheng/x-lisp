@@ -68,21 +68,21 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
     case "Extend": {
       return onExp(
         mod,
-        shrinkPut(mod, exp.base, exp.attributes, exp.location),
+        shrinkUpdate(mod, exp.base, exp.attributes, exp.location),
       )
     }
 
-    case "Put": {
+    case "Update": {
       return onExp(
         mod,
-        shrinkPut(mod, exp.base, exp.attributes, exp.location),
+        shrinkUpdate(mod, exp.base, exp.attributes, exp.location),
       )
     }
 
-    case "PutMut": {
+    case "UpdateMut": {
       return onExp(
         mod,
-        shrinkPutMut(mod, exp.base, exp.attributes, exp.location),
+        shrinkUpdateMut(mod, exp.base, exp.attributes, exp.location),
       )
     }
 
@@ -106,10 +106,10 @@ function shrinkRecord(
   location?: S.SourceLocation,
 ): M.Exp {
   const base = M.Apply(M.Var("make-record", location), [], location)
-  return shrinkPutMut(mod, base, attributes, location)
+  return shrinkUpdateMut(mod, base, attributes, location)
 }
 
-function shrinkPutMut(
+function shrinkUpdateMut(
   mod: M.Mod,
   base: M.Exp,
   attributes: Record<string, M.Exp>,
@@ -134,7 +134,7 @@ function shrinkPutMut(
   )
 }
 
-function shrinkPut(
+function shrinkUpdate(
   mod: M.Mod,
   base: M.Exp,
   attributes: Record<string, M.Exp>,

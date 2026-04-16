@@ -154,16 +154,16 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       )
     }
 
-    case "Put": {
-      return M.Put(
+    case "Update": {
+      return M.Update(
         onExp(exp.base),
         recordMapValue(exp.attributes, onExp),
         exp.location,
       )
     }
 
-    case "PutMut": {
-      return M.PutMut(
+    case "UpdateMut": {
+      return M.UpdateMut(
         onExp(exp.base),
         recordMapValue(exp.attributes, onExp),
         exp.location,

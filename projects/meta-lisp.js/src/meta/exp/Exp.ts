@@ -31,8 +31,8 @@ export type Exp =
   | Interface
   | ExtendInterface
   | Extend
-  | Put
-  | PutMut
+  | Update
+  | UpdateMut
   | The
   | Polymorphic
   | Match
@@ -577,40 +577,40 @@ export function Extend(
   }
 }
 
-export type Put = {
-  kind: "Put"
+export type Update = {
+  kind: "Update"
   base: Exp
   attributes: Record<string, Exp>
   location?: SourceLocation
 }
 
-export function Put(
+export function Update(
   base: Exp,
   attributes: Record<string, Exp>,
   location?: SourceLocation,
-): Put {
+): Update {
   return {
-    kind: "Put",
+    kind: "Update",
     base,
     attributes,
     location,
   }
 }
 
-export type PutMut = {
-  kind: "PutMut"
+export type UpdateMut = {
+  kind: "UpdateMut"
   base: Exp
   attributes: Record<string, Exp>
   location?: SourceLocation
 }
 
-export function PutMut(
+export function UpdateMut(
   base: Exp,
   attributes: Record<string, Exp>,
   location?: SourceLocation,
-): PutMut {
+): UpdateMut {
   return {
-    kind: "PutMut",
+    kind: "UpdateMut",
     base,
     attributes,
     location,

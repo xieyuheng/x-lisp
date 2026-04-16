@@ -37,6 +37,16 @@ export function ctxPutMany(
   return ctx
 }
 
+export function ctxUpdate(base: Ctx, ctx: Ctx): Ctx {
+  for (const name of ctxNames(ctx)) {
+    const value = ctxLookupType(ctx, name)
+    assert(value)
+    base = ctxPut(base, name, value)
+  }
+
+  return base
+}
+
 export function ctxFreeVarTypes(ctx: Ctx): Array<Value> {
   return arrayDedup(
     M.ctxTypes(ctx).flatMap((t) => M.typeFreeVarTypes(new Set(), t)),
