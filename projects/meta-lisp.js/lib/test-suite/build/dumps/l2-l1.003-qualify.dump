@@ -1,7 +1,7 @@
-(define (l2-l1/evaluate-and-print exp)
+(define (evaluate-and-print exp)
   (println (l2/evaluate exp l2/empty-env)))
 
-(define-test l2-l1/l2-l1-test
+(define-test l2-l1-test
   (l2-l1/evaluate-and-print
    (l2/lambda-exp 'x (l2/var-exp 'x)))
   (l2-l1/evaluate-and-print

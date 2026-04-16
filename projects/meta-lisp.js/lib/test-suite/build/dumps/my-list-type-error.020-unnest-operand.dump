@@ -1,6 +1,6 @@
-(claim my-list-type-error/my-list (my-list/my-list-t int-t))
+(claim my-list (my-list/my-list-t int-t))
 
-(define my-list-type-error/my-list
+(define my-list
   (= _₁ my-list/li)
   (= _₂ my-list/li)
   (= _₃ my-list/nil)

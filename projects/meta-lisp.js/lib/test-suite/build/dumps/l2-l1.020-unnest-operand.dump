@@ -1,14 +1,14 @@
-(claim l2-l1/evaluate-and-print (-> l2/exp-t void-t))
+(claim evaluate-and-print (-> exp-t void-t))
 
-(define (l2-l1/evaluate-and-print exp)
+(define (evaluate-and-print exp)
   (= _₁ l2/evaluate)
   (= _₂ l2/empty-env)
   (= _₃ (_₁ exp _₂))
   (println _₃))
 
-(claim l2-l1/l2-l1-test void-t)
+(claim l2-l1-test void-t)
 
-(define-test l2-l1/l2-l1-test
+(define-test l2-l1-test
   (begin
     (= _₁ l2-l1/evaluate-and-print)
     (= _₂ l2/lambda-exp)

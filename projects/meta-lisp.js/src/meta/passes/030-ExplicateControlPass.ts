@@ -9,6 +9,15 @@ export function ExplicateControlPass(mod: M.Mod, basicMod: B.Mod): void {
   }
 }
 
+function definitionQualifiedName(definition: M.Definition): string {
+  const builtinMod = M.loadBuiltinMod(definition.mod.project)
+  if (definition.mod === builtinMod) {
+    return definition.name
+  }
+
+  return `${definition.mod.name}/${definition.name}`
+}
+
 function onDefinition(
   basicMod: B.Mod,
   definition: M.Definition,
@@ -30,7 +39,7 @@ function onDefinition(
       return [
         B.DefineFunction(
           basicMod,
-          definition.name,
+          definitionQualifiedName(definition),
           definition.parameters,
           state.blocks,
           definition.location,
@@ -46,7 +55,7 @@ function onDefinition(
       return [
         B.DefineFunction(
           basicMod,
-          definition.name,
+          definitionQualifiedName(definition),
           [],
           state.blocks,
           definition.location,
@@ -59,7 +68,13 @@ function onDefinition(
       const block = B.Block("body", [])
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
-      return [B.DefineVariable(basicMod, definition.name, state.blocks)]
+      return [
+        B.DefineVariable(
+          basicMod,
+          definitionQualifiedName(definition),
+          state.blocks,
+        ),
+      ]
     }
   }
 }

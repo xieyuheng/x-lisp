@@ -50,12 +50,11 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
         else throw new Error(message)
       }
 
-      const qualifiedName = `${exp.modName}/${exp.name}`
-      const definition = M.modLookupDefinition(qualifiedMod, qualifiedName)
+      const definition = M.modLookupDefinition(qualifiedMod, exp.name)
       if (definition) return M.definitionMeaning(definition)
 
       let message = `[evaluate] undefined qualified variable`
-      message += `\n  name: ${qualifiedName}`
+      message += `\n  name: ${exp.modName}/${exp.name}`
       if (exp.location)
         throw new S.ErrorWithSourceLocation(message, exp.location)
       else throw new Error(message)

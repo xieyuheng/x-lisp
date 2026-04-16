@@ -24,23 +24,35 @@ export function projectTest(project: M.Project): void {
 
     M.modForEachOwnDefinition(mod, (definition) => {
       if (definition.kind === "TestDefinition") {
-        M.log("test", definition.name)
+        M.log("test", `${mod.name}/${definition.name}`)
 
         const snapshotPath = Path.join(
           M.projectSnapshotDirectory(project),
           "modules",
+          mod.name,
           `${definition.name}.out`,
         )
 
         fs.mkdirSync(Path.dirname(snapshotPath), { recursive: true })
 
-        systemShellRun(BasicInterpreterPath, [
-          "run",
-          definition.name,
-          bundlePath,
-          ">",
-          snapshotPath,
-        ])
+        const builtinMod = M.loadBuiltinMod(mod.project)
+        if (mod === builtinMod) {
+          systemShellRun(BasicInterpreterPath, [
+            "run",
+            definition.name,
+            bundlePath,
+            ">",
+            snapshotPath,
+          ])
+        } else {
+          systemShellRun(BasicInterpreterPath, [
+            "run",
+            `${mod.name}/${definition.name}`,
+            bundlePath,
+            ">",
+            snapshotPath,
+          ])
+        }
       }
     })
   })

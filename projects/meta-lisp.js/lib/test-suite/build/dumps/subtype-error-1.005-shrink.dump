@@ -1,10 +1,6 @@
-(define-interface subtype-error-1/point-t
-  :x
-  float-t
-  :y
-  float-t)
+(define-interface point-t :x float-t :y float-t)
 
-(define (subtype-error-1/main)
+(define (main)
   (begin
     (= record (make-record))
     (record-put! :x 1.0 record)

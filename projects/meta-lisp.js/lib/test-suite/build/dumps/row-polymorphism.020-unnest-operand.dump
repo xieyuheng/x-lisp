@@ -1,28 +1,20 @@
-(define-interface row-polymorphism/point-t
-  :x
-  float-t
-  :y
-  float-t)
+(define-interface point-t :x float-t :y float-t)
 
-(claim row-polymorphism/point-x
+(claim point-x
   (polymorphic (A B) (-> (extend-interface A :x B) B)))
 
-(define (row-polymorphism/point-x point)
-  (= _₁ (record-get :x))
-  (_₁ point))
+(define (point-x point) (= _₁ (record-get :x)) (_₁ point))
 
-(claim row-polymorphism/point-y
+(claim point-y
   (polymorphic (R A) (-> (extend-interface R :y A) A)))
 
-(define (row-polymorphism/point-y point)
-  (= _₁ (record-get :y))
-  (_₁ point))
+(define (point-y point) (= _₁ (record-get :y)) (_₁ point))
 
-(claim row-polymorphism/point-distance-squared
+(claim point-distance-squared
   (polymorphic (A)
     (-> (extend-interface A :y float-t :x float-t) float-t)))
 
-(define (row-polymorphism/point-distance-squared point)
+(define (point-distance-squared point)
   (= _₁ (record-get :x))
   (= _₂ (_₁ point))
   (= _₃ (record-get :x))
@@ -35,9 +27,9 @@
   (= _₁₀ (fmul _₇ _₉))
   (fadd _₅ _₁₀))
 
-(claim row-polymorphism/row-polymorphism-test void-t)
+(claim row-polymorphism-test void-t)
 
-(define-test row-polymorphism/row-polymorphism-test
+(define-test row-polymorphism-test
   (= point₁
      (begin
        (= record₁ (make-record))

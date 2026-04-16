@@ -16,6 +16,7 @@ export function projectPerformClaim(project: M.Project): void {
   M.projectForEachMod(project, (mod) => {
     M.modForEachClaimEntry(mod, (entry) => {
       entry.exp = M.desugar(mod, entry.exp)
+      entry.exp = M.qualifyFreeVar(mod, new Set(), entry.exp)
     })
   })
 }
@@ -29,26 +30,6 @@ export function projectPerformQualify(project: M.Project): void {
 
   M.projectForEachMod(project, (mod) => {
     if (mod !== builtinMod) {
-      mod.definitions = new Map(
-        mod.definitions.entries().map(([name, definition]) => {
-          const qualifiedName = `${mod.name}/${name}`
-          definition.name = qualifiedName
-          return [qualifiedName, definition]
-        }),
-      )
-
-      mod.claimed = new Map(
-        mod.claimed.entries().map(([name, entry]) => {
-          const qualifiedName = `${mod.name}/${name}`
-          entry.exp = M.qualifyFreeVar(mod, new Set(), entry.exp)
-          return [qualifiedName, entry]
-        }),
-      )
-
-      mod.exempted = new Set(
-        Array.from(mod.exempted).map((name) => `${mod.name}/${name}`),
-      )
-
       M.modForEachOwnDefinition(mod, M.definitionQualifyFreeVar)
     }
   })

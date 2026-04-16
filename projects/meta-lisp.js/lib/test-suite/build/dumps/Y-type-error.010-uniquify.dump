@@ -1,5 +1,5 @@
-(claim Y-type-error/Y (polymorphic (A) (-> (-> A A) A)))
+(claim Y (polymorphic (A) (-> (-> A A) A)))
 
-(define (Y-type-error/Y f)
+(define (Y f)
   ((lambda (u₁) (u₁ u₁))
    (lambda (x₁) (f (lambda (t₁) ((x₁ x₁) t₁))))))

@@ -1,4 +1,3 @@
-(claim my-list-type-error/my-list (my-list/my-list-t int-t))
+(claim my-list (my-list/my-list-t int-t))
 
-(define my-list-type-error/my-list
-  (my-list/li 1 (my-list/li "3" my-list/nil)))
+(define my-list (my-list/li 1 (my-list/li "3" my-list/nil)))

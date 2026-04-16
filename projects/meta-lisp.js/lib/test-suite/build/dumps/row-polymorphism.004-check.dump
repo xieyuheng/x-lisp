@@ -1,31 +1,27 @@
-(define-interface row-polymorphism/point-t
-  :x
-  float-t
-  :y
-  float-t)
+(define-interface point-t :x float-t :y float-t)
 
-(claim row-polymorphism/point-x
+(claim point-x
   (polymorphic (A B) (-> (extend-interface A :x B) B)))
 
-(define (row-polymorphism/point-x point) (:x point))
+(define (point-x point) (:x point))
 
-(claim row-polymorphism/point-y
+(claim point-y
   (polymorphic (R A) (-> (extend-interface R :y A) A)))
 
-(define (row-polymorphism/point-y point) (:y point))
+(define (point-y point) (:y point))
 
-(claim row-polymorphism/point-distance-squared
+(claim point-distance-squared
   (polymorphic (A)
     (-> (extend-interface A :y float-t :x float-t) float-t)))
 
-(define (row-polymorphism/point-distance-squared point)
+(define (point-distance-squared point)
   (fadd
    (fmul (:x point) (:x point))
    (fmul (:y point) (:y point))))
 
-(claim row-polymorphism/row-polymorphism-test void-t)
+(claim row-polymorphism-test void-t)
 
-(define-test row-polymorphism/row-polymorphism-test
+(define-test row-polymorphism-test
   (= point (@record :x 1.0 :y 2.0))
   (assert-equal 1.0 (:x point))
   (assert-equal 2.0 (:y point))

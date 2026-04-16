@@ -1,5 +1,6 @@
 (claim my-list-adjacent-dedup
-  (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+  (polymorphic (E)
+    (-> (my-list/my-list-t E) (my-list/my-list-t E))))
 
 (define (my-list-adjacent-dedup list)
   (if (nil? list)
@@ -37,7 +38,9 @@
 
 (claim my-list-append
   (polymorphic (E)
-    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+    (-> (my-list/my-list-t E)
+        (my-list/my-list-t E)
+        (my-list/my-list-t E))))
 
 (define (my-list-append left right)
   (if (nil? left)
@@ -60,7 +63,7 @@
      (li 4 (li 5 (li 6 nil))))))
 
 (claim my-list-length
-  (polymorphic (E) (-> (my-list-t E) int-t)))
+  (polymorphic (E) (-> (my-list/my-list-t E) int-t)))
 
 (define (my-list-length list)
   (if (nil? list)
@@ -80,7 +83,10 @@
 
 (claim my-list-map-zip
   (polymorphic (A B C)
-    (-> (-> A B C) (my-list-t A) (my-list-t B) (my-list-t C))))
+    (-> (-> A B C)
+        (my-list/my-list-t A)
+        (my-list/my-list-t B)
+        (my-list/my-list-t C))))
 
 (define (my-list-map-zip f list1 list2)
   (if (nil? list1)
@@ -106,7 +112,10 @@
 
 (claim my-list-map-zip-2
   (polymorphic (A B C)
-    (-> (-> A B C) (my-list-t A) (my-list-t B) (my-list-t C))))
+    (-> (-> A B C)
+        (my-list/my-list-t A)
+        (my-list/my-list-t B)
+        (my-list/my-list-t C))))
 
 (define (my-list-map-zip-2 f list1 list2)
   (if (nil? list1)
@@ -165,7 +174,7 @@
 
 (claim my-list-map
   (polymorphic (A B)
-    (-> (-> A B) (my-list-t A) (my-list-t B))))
+    (-> (-> A B) (my-list/my-list-t A) (my-list/my-list-t B))))
 
 (define (my-list-map f list)
   (if (nil? list)
@@ -209,16 +218,18 @@
   nil
   (li (head E) (tail (my-list-t E))))
 
-(claim nil (polymorphic (E) (my-list-t E)))
+(claim nil (polymorphic (E) (my-list/my-list-t E)))
 
 (define nil 'nil)
 
-(claim nil? (polymorphic (E) (-> (my-list-t E) bool-t)))
+(claim nil?
+  (polymorphic (E) (-> (my-list/my-list-t E) bool-t)))
 
 (define (nil? value) (equal? value 'nil))
 
 (claim li
-  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+  (polymorphic (E)
+    (-> E (my-list/my-list-t E) (my-list/my-list-t E))))
 
 (define (li head tail)
   (= list (make-list))
@@ -227,7 +238,8 @@
   (list-push! tail list)
   list)
 
-(claim li? (polymorphic (E) (-> (my-list-t E) bool-t)))
+(claim li?
+  (polymorphic (E) (-> (my-list/my-list-t E) bool-t)))
 
 (define (li? value)
   (if (list? value)
@@ -236,37 +248,45 @@
       false)
     false))
 
-(claim li-head (polymorphic (E) (-> (my-list-t E) E)))
+(claim li-head
+  (polymorphic (E) (-> (my-list/my-list-t E) E)))
 
 (define (li-head target) (list-get 1 target))
 
 (claim li-tail
-  (polymorphic (E) (-> (my-list-t E) (my-list-t E))))
+  (polymorphic (E)
+    (-> (my-list/my-list-t E) (my-list/my-list-t E))))
 
 (define (li-tail target) (list-get 2 target))
 
 (claim li-put-head
-  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+  (polymorphic (E)
+    (-> E (my-list/my-list-t E) (my-list/my-list-t E))))
 
 (define (li-put-head value target)
   (list-put 1 value target))
 
 (claim li-put-tail
   (polymorphic (E)
-    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+    (-> (my-list/my-list-t E)
+        (my-list/my-list-t E)
+        (my-list/my-list-t E))))
 
 (define (li-put-tail value target)
   (list-put 2 value target))
 
 (claim li-put-head!
-  (polymorphic (E) (-> E (my-list-t E) (my-list-t E))))
+  (polymorphic (E)
+    (-> E (my-list/my-list-t E) (my-list/my-list-t E))))
 
 (define (li-put-head! value target)
   (list-put! 1 value target))
 
 (claim li-put-tail!
   (polymorphic (E)
-    (-> (my-list-t E) (my-list-t E) (my-list-t E))))
+    (-> (my-list/my-list-t E)
+        (my-list/my-list-t E)
+        (my-list/my-list-t E))))
 
 (define (li-put-tail! value target)
   (list-put! 2 value target))

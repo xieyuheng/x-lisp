@@ -1,156 +1,146 @@
-(claim test-suite/bool-test void-t)
+(claim bool-test void-t)
 
-(define-test test-suite/bool-test
-  (println true)
-  (println false))
+(define-test bool-test (println true) (println false))
 
-(claim test-suite/one int-t)
+(claim one int-t)
 
-(define test-suite/one 1)
+(define one 1)
 
-(claim test-suite/two int-t)
+(claim two int-t)
 
-(define test-suite/two (iadd 1 test-suite/one))
+(define two (iadd 1 test-suite/one))
 
-(claim test-suite/three int-t)
+(claim three int-t)
 
-(define test-suite/three (iadd 1 test-suite/two))
+(define three (iadd 1 test-suite/two))
 
-(claim test-suite/constant-test void-t)
+(claim constant-test void-t)
 
-(define-test test-suite/constant-test
-  (println test-suite/three))
+(define-test constant-test (println test-suite/three))
 
-(claim test-suite/eoc-02-00 void-t)
+(claim eoc-02-00 void-t)
 
-(define-test test-suite/eoc-02-00 (println 42))
+(define-test eoc-02-00 (println 42))
 
-(claim test-suite/eoc-02-01 void-t)
+(claim eoc-02-01 void-t)
 
-(define-test test-suite/eoc-02-01
-  (= x 4)
-  (println (iadd 8 x)))
+(define-test eoc-02-01 (= x 4) (println (iadd 8 x)))
 
-(claim test-suite/eoc-02-02 void-t)
+(claim eoc-02-02 void-t)
 
-(define-test test-suite/eoc-02-02
+(define-test eoc-02-02
   (= y (begin (= x 20) (iadd x (begin (= x 22) x))))
   (println y))
 
-(claim test-suite/eoc-02-03 void-t)
+(claim eoc-02-03 void-t)
 
-(define-test test-suite/eoc-02-03
+(define-test eoc-02-03
   (= y (begin (= x 20) (= z 22) (iadd x z)))
   (println y))
 
-(claim test-suite/eoc-02-04 void-t)
+(claim eoc-02-04 void-t)
 
-(define-test test-suite/eoc-02-04
+(define-test eoc-02-04
   (= z (begin (= y (begin (= x (ineg 42)) x)) y))
   (println (ineg z)))
 
-(claim test-suite/eoc-02-05 void-t)
+(claim eoc-02-05 void-t)
 
-(define-test test-suite/eoc-02-05
-  (= a 42)
-  (= b a)
-  (println b))
+(define-test eoc-02-05 (= a 42) (= b a) (println b))
 
-(claim test-suite/eoc-02-06 void-t)
+(claim eoc-02-06 void-t)
 
-(define-test test-suite/eoc-02-06
-  (println (ineg (random-dice))))
+(define-test eoc-02-06 (println (ineg (random-dice))))
 
-(claim test-suite/eoc-02-07 void-t)
+(claim eoc-02-07 void-t)
 
-(define-test test-suite/eoc-02-07
+(define-test eoc-02-07
   (println (iadd (random-dice) (random-dice))))
 
-(claim test-suite/eoc-02-08 void-t)
+(claim eoc-02-08 void-t)
 
-(define-test test-suite/eoc-02-08 (println (iadd 20 22)))
+(define-test eoc-02-08 (println (iadd 20 22)))
 
-(claim test-suite/eoc-02-09 void-t)
+(claim eoc-02-09 void-t)
 
-(define-test test-suite/eoc-02-09
-  (println (iadd 20 (iadd 11 11))))
+(define-test eoc-02-09 (println (iadd 20 (iadd 11 11))))
 
-(claim test-suite/eoc-02-10 void-t)
+(claim eoc-02-10 void-t)
 
-(define-test test-suite/eoc-02-10
+(define-test eoc-02-10
   (= x (iadd (iadd 1 2) (iadd 3 4)))
   (println (iadd x 5)))
 
-(claim test-suite/eoc-02-11 void-t)
+(claim eoc-02-11 void-t)
 
-(define-test test-suite/eoc-02-11
+(define-test eoc-02-11
   (println (iadd (iadd 1 2) (iadd 3 4))))
 
-(claim test-suite/eoc-02-12 void-t)
+(claim eoc-02-12 void-t)
 
-(define-test test-suite/eoc-02-12
+(define-test eoc-02-12
   (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
 
-(claim test-suite/eoc-02-13 void-t)
+(claim eoc-02-13 void-t)
 
-(define-test test-suite/eoc-02-13
+(define-test eoc-02-13
   (= x (iadd 42 (ineg 10)))
   (println (iadd x 10)))
 
-(claim test-suite/eoc-02-14 void-t)
+(claim eoc-02-14 void-t)
 
-(define-test test-suite/eoc-02-14
+(define-test eoc-02-14
   (= x 32)
   (println (iadd (begin (= x 10) x) x)))
 
-(claim test-suite/eoc-02-15 void-t)
+(claim eoc-02-15 void-t)
 
-(define-test test-suite/eoc-02-15
+(define-test eoc-02-15
   (= x (begin (= x 4) (iadd x 1)))
   (println (iadd x 2)))
 
-(claim test-suite/eoc-02-16 void-t)
+(claim eoc-02-16 void-t)
 
-(define-test test-suite/eoc-02-16 (println (isub 50 8)))
+(define-test eoc-02-16 (println (isub 50 8)))
 
-(claim test-suite/eoc-02-17 void-t)
+(claim eoc-02-17 void-t)
 
-(define-test test-suite/eoc-02-17
+(define-test eoc-02-17
   (println (iadd 1 (iadd (random-dice) 1))))
 
-(claim test-suite/eoc-02-18 void-t)
+(claim eoc-02-18 void-t)
 
-(define-test test-suite/eoc-02-18
+(define-test eoc-02-18
   (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
 
-(claim test-suite/eoc-02-19 void-t)
+(claim eoc-02-19 void-t)
 
-(define-test test-suite/eoc-02-19
+(define-test eoc-02-19
   (= x 1)
   (println
    (iadd
     x
     (begin (= x (begin (= x 5) (iadd x x))) (iadd x 100)))))
 
-(claim test-suite/eoc-02-20 void-t)
+(claim eoc-02-20 void-t)
 
-(define-test test-suite/eoc-02-20
+(define-test eoc-02-20
   (= x 1)
   (println
    (iadd
     x
     (begin (= x (begin (= y 5) (iadd y x))) (iadd x 100)))))
 
-(claim test-suite/eoc-02-21 void-t)
+(claim eoc-02-21 void-t)
 
-(define-test test-suite/eoc-02-21
+(define-test eoc-02-21
   (= y 6)
   (= x (begin (= y (ineg 42)) y))
   (println (iadd x y)))
 
-(claim test-suite/eoc-03-01 void-t)
+(claim eoc-03-01 void-t)
 
-(define-test test-suite/eoc-03-01
+(define-test eoc-03-01
   (= v 1)
   (= w 42)
   (= x (iadd v 7))
@@ -158,20 +148,20 @@
   (= z (iadd x w))
   (println (iadd z (ineg y))))
 
-(claim test-suite/eoc-03-02 void-t)
+(claim eoc-03-02 void-t)
 
-(define-test test-suite/eoc-03-02
+(define-test eoc-03-02
   (= x (random-dice))
   (= y (random-dice))
   (println (iadd (iadd x y) 42)))
 
-(claim test-suite/eoc-04-01 void-t)
+(claim eoc-04-01 void-t)
 
-(define-test test-suite/eoc-04-01 (println (if true 1 2)))
+(define-test eoc-04-01 (println (if true 1 2)))
 
-(claim test-suite/eoc-04-02 void-t)
+(claim eoc-04-02 void-t)
 
-(define-test test-suite/eoc-04-02
+(define-test eoc-04-02
   (println
    (begin
      (= x (random-dice))
@@ -180,9 +170,9 @@
        (iadd y 2)
        (iadd y 10)))))
 
-(claim test-suite/eoc-04-03 void-t)
+(claim eoc-04-03 void-t)
 
-(define-test test-suite/eoc-04-03
+(define-test eoc-04-03
   (println
    (begin
      (= x (random-dice))
@@ -195,9 +185,9 @@
         (iadd y 2)
         (iadd y 10))))))
 
-(claim test-suite/eoc-04-04 void-t)
+(claim eoc-04-04 void-t)
 
-(define-test test-suite/eoc-04-04
+(define-test eoc-04-04
   (println
    (if
        (if (equal? (random-dice) 1)
@@ -206,9 +196,9 @@
      0
      42)))
 
-(claim test-suite/eoc-05-01 void-t)
+(claim eoc-05-01 void-t)
 
-(define-test test-suite/eoc-05-01
+(define-test eoc-05-01
   (print 1)
   (newline)
   (print 2)
@@ -217,9 +207,9 @@
   (newline)
   void)
 
-(claim test-suite/eoc-05-02 void-t)
+(claim eoc-05-02 void-t)
 
-(define-test test-suite/eoc-05-02
+(define-test eoc-05-02
   (= x
      (begin
        (print 1)
@@ -239,9 +229,9 @@
   (newline)
   void)
 
-(claim test-suite/eoc-05-03 void-t)
+(claim eoc-05-03 void-t)
 
-(define-test test-suite/eoc-05-03
+(define-test eoc-05-03
   (if
       (begin
         (print 1)
@@ -254,9 +244,9 @@
     (begin (print 111) (newline))
     (begin (print 222) (newline))))
 
-(claim test-suite/file-test void-t)
+(claim file-test void-t)
 
-(define-test test-suite/file-test
+(define-test file-test
   (= file (open-input-file "src/file/file-1.txt"))
   (assert-equal "abc\n" (file-read file))
   (file-close file)
@@ -273,9 +263,9 @@
   (assert-equal "abc\n" (file-read file))
   (file-close file))
 
-(claim test-suite/fs-test void-t)
+(claim fs-test void-t)
 
-(define-test test-suite/fs-test
+(define-test fs-test
   (assert-equal "abc\n" (fs-read "src/fs/file-1.txt"))
   (fs-write "src/fs/file-2.txt" "123\n")
   (assert-equal "123\n" (fs-read "src/fs/file-2.txt"))
@@ -283,31 +273,30 @@
   (assert-equal "abc\n" (fs-read "src/fs/file-2.txt"))
   (println (fs-list "src/fs")))
 
-(claim test-suite/S
+(claim S
   (polymorphic (A B C) (-> (-> A B C) (-> A B) (-> A C))))
 
-(define (test-suite/S x y z) (x z (y z)))
+(define (S x y z) (x z (y z)))
 
-(claim test-suite/K (polymorphic (A B) (-> A B A)))
+(claim K (polymorphic (A B) (-> A B A)))
 
-(define (test-suite/K x y) x)
+(define (K x y) x)
 
-(claim test-suite/I (polymorphic (A) (-> A A)))
+(claim I (polymorphic (A) (-> A A)))
 
-(define (test-suite/I x) x)
+(define (I x) x)
 
-(claim test-suite/SKI (polymorphic (A) (-> A A)))
+(claim SKI (polymorphic (A) (-> A A)))
 
-(define test-suite/SKI
-  (test-suite/S test-suite/K test-suite/I))
+(define SKI (test-suite/S test-suite/K test-suite/I))
 
-(claim test-suite/SKI-tuple
+(claim SKI-tuple
   (polymorphic (A B C D E F)
     (tau (-> (-> A B C) (-> A B) (-> A C))
          (-> D E D)
          (-> F F))))
 
-(define test-suite/SKI-tuple
+(define SKI-tuple
   (= S (lambda (x y z) (x z (y z))))
   (= K (lambda (x y) x))
   (= I (lambda (x) x))
@@ -317,20 +306,20 @@
   (list-push! I list)
   list)
 
-(claim test-suite/compose
+(claim compose
   (polymorphic (A B C) (-> (-> B C) (-> A B) (-> A C))))
 
-(define (test-suite/compose f g x) (f (g x)))
+(define (compose f g x) (f (g x)))
 
-(claim test-suite/compose-test void-t)
+(claim compose-test void-t)
 
-(define-test test-suite/compose-test
+(define-test compose-test
   (= add1 (iadd 1))
   (assert-equal 3 ((test-suite/compose add1 add1) 1)))
 
-(claim test-suite/curry-test void-t)
+(claim curry-test void-t)
 
-(define-test test-suite/curry-test
+(define-test curry-test
   (assert-equal iadd iadd)
   (assert-equal (iadd 1) (iadd 1))
   (assert-not-equal (iadd 1) (iadd 2))
@@ -338,25 +327,22 @@
   (assert-equal 1 ((isub 2) 1))
   (assert-equal 1 (isub 2 1)))
 
-(claim test-suite/swap
+(claim swap
   (polymorphic (X Y Z) (-> (-> Y X Z) (-> X Y Z))))
 
-(define (test-suite/swap f x y) (f y x))
+(define (swap f x y) (f y x))
 
-(claim test-suite/drop
-  (polymorphic (X Y Z) (-> (-> X Z) (-> Y X Z))))
+(claim drop (polymorphic (X Y Z) (-> (-> X Z) (-> Y X Z))))
 
-(define (test-suite/drop f)
-  (lambda (dropped) (lambda (x) (f x))))
+(define (drop f) (lambda (dropped) (lambda (x) (f x))))
 
-(claim test-suite/dup
-  (polymorphic (X Z) (-> (-> X X Z) (-> X Z))))
+(claim dup (polymorphic (X Z) (-> (-> X X Z) (-> X Z))))
 
-(define (test-suite/dup f) (lambda (x) (f x x)))
+(define (dup f) (lambda (x) (f x x)))
 
-(claim test-suite/forth-test void-t)
+(claim forth-test void-t)
 
-(define-test test-suite/forth-test
+(define-test forth-test
   (= f (lambda (x) x))
   (= square (test-suite/dup imul))
   (println (square (f 1)))
@@ -364,19 +350,19 @@
   (println (square (f 3)))
   (println (square (f 4))))
 
-(claim test-suite/function-test void-t)
+(claim function-test void-t)
 
-(define-test test-suite/function-test
+(define-test function-test
   (println iadd)
   (println (iadd 1)))
 
-(claim test-suite/identity (polymorphic (A) (-> A A)))
+(claim identity (polymorphic (A) (-> A A)))
 
-(define (test-suite/identity x) x)
+(define (identity x) x)
 
-(claim test-suite/identity-test void-t)
+(claim identity-test void-t)
 
-(define-test test-suite/identity-test
+(define-test identity-test
   (= add1 (iadd 1))
   (assert-equal 2 (add1 1))
   (= add1
@@ -386,9 +372,9 @@
   test-suite/identity
   (assert-equal 2 (add1 1)))
 
-(claim test-suite/hash-test void-t)
+(claim hash-test void-t)
 
-(define-test test-suite/hash-test
+(define-test hash-test
   (assert (hash-empty? (begin (= hash (make-hash)) hash)))
   (println (begin (= hash (make-hash)) hash))
   (println
@@ -402,16 +388,16 @@
      (hash-put! 3 4 hash)
      hash)))
 
-(claim test-suite/factorial (-> int-t int-t))
+(claim factorial (-> int-t int-t))
 
-(define (test-suite/factorial n)
+(define (factorial n)
   (if (int-less-or-equal? n 1)
     1
     (imul (test-suite/factorial (isub n 1)) n)))
 
-(claim test-suite/factorial-test void-t)
+(claim factorial-test void-t)
 
-(define-test test-suite/factorial-test
+(define-test factorial-test
   (assert-equal 1 (test-suite/factorial 0))
   (assert-equal 1 (test-suite/factorial 1))
   (assert-equal 2 (test-suite/factorial 2))
@@ -420,18 +406,18 @@
   (assert-equal 120 (test-suite/factorial 5))
   (assert-equal 720 (test-suite/factorial 6)))
 
-(claim test-suite/fibonacci (-> int-t int-t))
+(claim fibonacci (-> int-t int-t))
 
-(define (test-suite/fibonacci n)
+(define (fibonacci n)
   (if (int-less-or-equal? n 1)
     n
     (iadd
      (test-suite/fibonacci (isub n 1))
      (test-suite/fibonacci (isub n 2)))))
 
-(claim test-suite/fibonacci-test void-t)
+(claim fibonacci-test void-t)
 
-(define-test test-suite/fibonacci-test
+(define-test fibonacci-test
   (assert-equal 0 (test-suite/fibonacci 0))
   (assert-equal 1 (test-suite/fibonacci 1))
   (assert-equal 1 (test-suite/fibonacci 2))
@@ -443,37 +429,37 @@
   (assert-equal 21 (test-suite/fibonacci 8))
   (assert-equal 34 (test-suite/fibonacci 9)))
 
-(claim test-suite/gcd (-> int-t int-t int-t))
+(claim gcd (-> int-t int-t int-t))
 
-(define (test-suite/gcd a b)
+(define (gcd a b)
   (if (equal? b 0) a (test-suite/gcd b (imod a b))))
 
-(claim test-suite/gcd-test void-t)
+(claim gcd-test void-t)
 
-(define-test test-suite/gcd-test
+(define-test gcd-test
   (assert-equal 1 (test-suite/gcd 13 7))
   (assert-equal 4 (test-suite/gcd 12 8)))
 
-(claim test-suite/square (-> int-t int-t))
+(claim square (-> int-t int-t))
 
-(define (test-suite/square x) (imul x x))
+(define (square x) (imul x x))
 
-(claim test-suite/square-test void-t)
+(claim square-test void-t)
 
-(define-test test-suite/square-test
+(define-test square-test
   (assert-equal
     81
     (test-suite/square (test-suite/square 3))))
 
-(claim test-suite/keyword-test void-t)
+(claim keyword-test void-t)
 
-(define-test test-suite/keyword-test
+(define-test keyword-test
   (assert-equal :abcdef (keyword-append :abc :def))
   (println :abc))
 
-(claim test-suite/list-test void-t)
+(claim list-test void-t)
 
-(define-test test-suite/list-test
+(define-test list-test
   (= list (make-list))
   (list-push! 1 list)
   (list-push! 2 list)
@@ -573,9 +559,9 @@
      (list-push! 'c list)
      list)))
 
-(claim test-suite/cond-test void-t)
+(claim cond-test void-t)
 
-(define-test test-suite/cond-test
+(define-test cond-test
   (assert-equal
     1
     (if (equal? 1 1) 1 (if true 2 (error "cond mismatch"))))
@@ -589,9 +575,9 @@
     (assert false)
     (if true (assert true) (error "cond mismatch"))))
 
-(claim test-suite/if-test void-t)
+(claim if-test void-t)
 
-(define-test test-suite/if-test
+(define-test if-test
   (assert-equal (if true 1 2) 1)
   (assert-equal (if false 1 2) 2)
   (assert (if true (if true true false) false))
@@ -599,15 +585,15 @@
   (assert (if false true (if false true true)))
   (assert (not (if false true (if false true false)))))
 
-(claim test-suite/the-test void-t)
+(claim the-test void-t)
 
-(define-test test-suite/the-test
+(define-test the-test
   (assert-equal 1 1)
   (assert-equal 'a 'a))
 
-(claim test-suite/path-test void-t)
+(claim path-test void-t)
 
-(define-test test-suite/path-test
+(define-test path-test
   (assert-equal
     "a/b/c"
     (path-directory-name "a/b/c/file.test.txt"))
@@ -634,9 +620,9 @@
   (assert-equal "a/b/d" (path-normalize "a/b/c/../d"))
   (assert-equal "/a/b/c" (path-normalize "///a/b/c/")))
 
-(claim test-suite/reocrd-test void-t)
+(claim reocrd-test void-t)
 
-(define-test test-suite/reocrd-test
+(define-test reocrd-test
   (println
    (begin
      (= record (make-record))
@@ -650,20 +636,20 @@
      (record-put! :y 2 record)
      record)))
 
-(define-interface test-suite/point-t :x float-t :y float-t)
+(define-interface point-t :x float-t :y float-t)
 
-(claim test-suite/with-color
+(claim with-color
   (polymorphic (A B C)
     (-> A (extend-interface B) (extend-interface B :color C))))
 
-(define (test-suite/with-color color point)
+(define (with-color color point)
   (= record point)
   (= record (record-put :color color record))
   record)
 
-(claim test-suite/record-extend-test void-t)
+(claim record-extend-test void-t)
 
-(define-test test-suite/record-extend-test
+(define-test record-extend-test
   (= point
      (begin
        (= record (make-record))
@@ -679,31 +665,31 @@
       record)
     (test-suite/with-color "red" point)))
 
-(claim test-suite/point-put-x
+(claim point-put-x
   (polymorphic (A B C)
     (-> A
         (extend-interface B :x C)
         (extend-interface B :x C))))
 
-(define (test-suite/point-put-x x point)
+(define (point-put-x x point)
   (= record point)
   (= record (record-put :x x record))
   record)
 
-(claim test-suite/point-put-y!
+(claim point-put-y!
   (polymorphic (A B C)
     (-> A
         (extend-interface B :y C)
         (extend-interface B :y C))))
 
-(define (test-suite/point-put-y! y point)
+(define (point-put-y! y point)
   (= record point)
   (record-put! :y y record)
   record)
 
-(claim test-suite/record-update-test void-t)
+(claim record-update-test void-t)
 
-(define-test test-suite/record-update-test
+(define-test record-update-test
   (= point
      (begin
        (= record (make-record))
@@ -739,9 +725,9 @@
       record)
     point))
 
-(claim test-suite/set-test void-t)
+(claim set-test void-t)
 
-(define-test test-suite/set-test
+(define-test set-test
   (assert-equal
     (begin
       (= set (make-set))
@@ -763,39 +749,38 @@
      (set-add! 3 set)
      set)))
 
-(claim test-suite/my-string-repeat
-  (-> int-t string-t string-t))
+(claim my-string-repeat (-> int-t string-t string-t))
 
-(define (test-suite/my-string-repeat n string)
+(define (my-string-repeat n string)
   (if (equal? n 0)
     ""
     (string-append
      string
      (test-suite/my-string-repeat (isub n 1) string))))
 
-(claim test-suite/my-string-repeat-test void-t)
+(claim my-string-repeat-test void-t)
 
-(define-test test-suite/my-string-repeat-test
+(define-test my-string-repeat-test
   (assert-equal "" (test-suite/my-string-repeat 0 "a"))
   (assert-equal "a" (test-suite/my-string-repeat 1 "a"))
   (assert-equal "aa" (test-suite/my-string-repeat 2 "a"))
   (assert-equal "aaa" (test-suite/my-string-repeat 3 "a")))
 
-(claim test-suite/string-test void-t)
+(claim string-test void-t)
 
-(define-test test-suite/string-test
+(define-test string-test
   (assert-equal "abcdef" (string-append "abc" "def"))
   (println "abc"))
 
-(claim test-suite/symbol-test void-t)
+(claim symbol-test void-t)
 
-(define-test test-suite/symbol-test
+(define-test symbol-test
   (assert-equal 'abcdef (symbol-append 'abc 'def))
   (println 'abc))
 
-(claim test-suite/tuple-test void-t)
+(claim tuple-test void-t)
 
-(define-test test-suite/tuple-test
+(define-test tuple-test
   (println
    (begin
      (= list (make-list))
@@ -809,6 +794,6 @@
      (list-push! 'a list)
      list)))
 
-(claim test-suite/void-test void-t)
+(claim void-test void-t)
 
-(define-test test-suite/void-test (println void))
+(define-test void-test (println void))

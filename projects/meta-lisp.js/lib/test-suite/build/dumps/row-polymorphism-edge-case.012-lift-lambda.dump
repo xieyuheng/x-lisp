@@ -1,4 +1,4 @@
-(define (row-polymorphism-edge-case/f r)
+(define (f r)
   (if true
     (begin
       (= record₁ r)
