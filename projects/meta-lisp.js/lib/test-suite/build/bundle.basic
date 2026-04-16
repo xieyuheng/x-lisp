@@ -1,3 +1,24 @@
+(define-function (int-align alignment n)
+  (block body
+    (= remainder₁ (imod n alignment))
+    (test (equal? 0 remainder₁))
+    (branch then₁ else₂))
+  (block then₁ (return n))
+  (block else₂
+    (= _₁ (isub n remainder₁))
+    (return (iadd _₁ alignment))))
+
+(define-function (int-align-test)
+  (block body
+    (= _₁ (int-align 16 0))
+    (perform (assert-equal 0 _₁))
+    (= _₂ (int-align 16 8))
+    (perform (assert-equal 16 _₂))
+    (= _₃ (int-align 16 16))
+    (perform (assert-equal 16 _₃))
+    (= _₄ (int-align 16 24))
+    (return (assert-equal 32 _₄))))
+
 (define-function (int-product xs)
   (block body (test (list-empty? xs)) (branch then₁ else₂))
   (block then₁ (return 1))
@@ -25,6 +46,34 @@
     (perform (list-push! 4 list₁))
     (= _₃ (int-product list₁))
     (return (assert-equal 24 _₃))))
+
+(define-function (int-sum xs)
+  (block body (test (list-empty? xs)) (branch then₁ else₂))
+  (block then₁ (return 0))
+  (block else₂
+    (= _₁ (car xs))
+    (= _₂ (cdr xs))
+    (= _₃ (int-sum _₂))
+    (return (iadd _₁ _₃))))
+
+(define-function (int-sum-test)
+  (block body
+    (= list₁ (make-list))
+    (= _₁ (int-sum list₁))
+    (perform (assert-equal 0 _₁))
+    (= list₁ (make-list))
+    (perform (list-push! 1 list₁))
+    (perform (list-push! 2 list₁))
+    (perform (list-push! 3 list₁))
+    (= _₂ (int-sum list₁))
+    (perform (assert-equal 6 _₂))
+    (= list₁ (make-list))
+    (perform (list-push! 1 list₁))
+    (perform (list-push! 2 list₁))
+    (perform (list-push! 3 list₁))
+    (perform (list-push! 4 list₁))
+    (= _₃ (int-sum list₁))
+    (return (assert-equal 10 _₃))))
 
 (define-function (symbol-sexp content location)
   (block body

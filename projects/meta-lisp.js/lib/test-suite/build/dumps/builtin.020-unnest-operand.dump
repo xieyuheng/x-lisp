@@ -1,3 +1,20 @@
+(claim int-align (-> int-t int-t int-t))
+
+(define (int-align alignment n)
+  (= remainder₁ (imod n alignment))
+  (if (equal? 0 remainder₁)
+    n
+    (begin (= _₁ (isub n remainder₁)) (iadd _₁ alignment))))
+
+(claim int-align-test void-t)
+
+(define-test int-align-test
+  (begin (= _₁ (int-align 16 0)) (assert-equal 0 _₁))
+  (begin (= _₂ (int-align 16 8)) (assert-equal 16 _₂))
+  (begin (= _₃ (int-align 16 16)) (assert-equal 16 _₃))
+  (= _₄ (int-align 16 24))
+  (assert-equal 32 _₄))
+
 (claim int-product (-> (list-t int-t) int-t))
 
 (define (int-product xs)
@@ -30,6 +47,39 @@
   (list-push! 4 list₁)
   (= _₃ (int-product list₁))
   (assert-equal 24 _₃))
+
+(claim int-sum (-> (list-t int-t) int-t))
+
+(define (int-sum xs)
+  (if (list-empty? xs)
+    0
+    (begin
+      (= _₁ (car xs))
+      (= _₂ (cdr xs))
+      (= _₃ (int-sum _₂))
+      (iadd _₁ _₃))))
+
+(claim int-sum-test void-t)
+
+(define-test int-sum-test
+  (begin
+    (= list₁ (make-list))
+    (= _₁ (int-sum list₁))
+    (assert-equal 0 _₁))
+  (begin
+    (= list₁ (make-list))
+    (list-push! 1 list₁)
+    (list-push! 2 list₁)
+    (list-push! 3 list₁)
+    (= _₂ (int-sum list₁))
+    (assert-equal 6 _₂))
+  (= list₁ (make-list))
+  (list-push! 1 list₁)
+  (list-push! 2 list₁)
+  (list-push! 3 list₁)
+  (list-push! 4 list₁)
+  (= _₃ (int-sum list₁))
+  (assert-equal 10 _₃))
 
 (define-interface source-location-t
   :span

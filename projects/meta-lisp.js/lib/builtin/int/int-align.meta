@@ -1,0 +1,15 @@
+(module builtin)
+
+(claim int-align (-> int-t int-t int-t))
+
+(define (int-align alignment n)
+  (= remainder (imod n alignment))
+  (if (equal? 0 remainder)
+    n
+    (iadd (isub n remainder) alignment)))
+
+(define-test int-align-test
+  (assert-equal 0 (int-align 16 0))
+  (assert-equal 16 (int-align 16 8))
+  (assert-equal 16 (int-align 16 16))
+  (assert-equal 32 (int-align 16 24)))

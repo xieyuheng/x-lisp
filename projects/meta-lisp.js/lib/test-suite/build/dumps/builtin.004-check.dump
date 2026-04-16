@@ -1,3 +1,19 @@
+(claim int-align (-> int-t int-t int-t))
+
+(define (int-align alignment n)
+  (= remainder (imod n alignment))
+  (if (equal? 0 remainder)
+    n
+    (iadd (isub n remainder) alignment)))
+
+(claim int-align-test void-t)
+
+(define-test int-align-test
+  (assert-equal 0 (int-align 16 0))
+  (assert-equal 16 (int-align 16 8))
+  (assert-equal 16 (int-align 16 16))
+  (assert-equal 32 (int-align 16 24)))
+
 (claim int-product (-> (list-t int-t) int-t))
 
 (define (int-product xs)
@@ -23,6 +39,37 @@
   (assert-equal
     24
     (int-product
+     (begin
+       (= list (make-list))
+       (list-push! 1 list)
+       (list-push! 2 list)
+       (list-push! 3 list)
+       (list-push! 4 list)
+       list))))
+
+(claim int-sum (-> (list-t int-t) int-t))
+
+(define (int-sum xs)
+  (if (list-empty? xs) 0 (iadd (car xs) (int-sum (cdr xs)))))
+
+(claim int-sum-test void-t)
+
+(define-test int-sum-test
+  (assert-equal
+    0
+    (int-sum (begin (= list (make-list)) list)))
+  (assert-equal
+    6
+    (int-sum
+     (begin
+       (= list (make-list))
+       (list-push! 1 list)
+       (list-push! 2 list)
+       (list-push! 3 list)
+       list)))
+  (assert-equal
+    10
+    (int-sum
      (begin
        (= list (make-list))
        (list-push! 1 list)

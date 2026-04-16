@@ -1,6 +1,11 @@
+# side-effect
+
+[meta-lisp.js] `Put` & `PutMut` as `Exp`
+[meta-lisp.js] parse `(put)` & `(put!)`
+
 # builtin
 
-[meta-lisp.js] more builtin -- copy from x-lisp-proto.js
+[meta-lisp.js] [builtin] float -- copy from x-lisp-proto.js
 
 # about format
 
