@@ -163,7 +163,7 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       return M.RecordValue({ ...base.attributes, ...attributes })
     }
 
-    case "Update": {
+    case "Put": {
       const base = evaluate(mod, env, exp.base)
       if (!M.isRecordValue(base)) {
         let message = `[evaluate] can only (update) record base value`
@@ -191,7 +191,7 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       return M.RecordValue({ ...base.attributes, ...attributes })
     }
 
-    case "UpdateMut": {
+    case "PutMut": {
       const base = evaluate(mod, env, exp.base)
       if (!M.isRecordValue(base)) {
         let message = `[evaluate] can only (update!) record base value`

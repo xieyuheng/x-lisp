@@ -691,9 +691,9 @@
   (record-put! :y y record₁)
   record₁)
 
-(claim record-update-test void-t)
+(claim record-put-test void-t)
 
-(define-test record-update-test
+(define-test record-put-test
   (= point₁
      (begin
        (= record₁ (make-record))

@@ -177,16 +177,16 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
       )
     }
 
-    case "Update": {
-      return M.Update(
+    case "Put": {
+      return M.Put(
         desugar(mod, exp.base),
         recordMapValue(exp.attributes, (e) => desugar(mod, e)),
         exp.location,
       )
     }
 
-    case "UpdateMut": {
-      return M.UpdateMut(
+    case "PutMut": {
+      return M.PutMut(
         desugar(mod, exp.base),
         recordMapValue(exp.attributes, (e) => desugar(mod, e)),
         exp.location,
