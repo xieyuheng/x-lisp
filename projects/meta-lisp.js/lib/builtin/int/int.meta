@@ -18,15 +18,3 @@
 (claim int-less-or-equal? (-> int-t int-t bool-t))
 (claim int-compare-ascending (-> int-t int-t int-t))
 (claim int-compare-descending (-> int-t int-t int-t))
-
-(claim int-product (-> (list-t int-t) int-t))
-
-(define (int-product xs)
-  (if (list-empty? xs)
-    1
-    (imul (car xs) (int-product (cdr xs)))))
-
-(define-test int-product-test
-  (assert-equal 1 (int-product []))
-  (assert-equal 6 (int-product [1 2 3]))
-  (assert-equal 24 (int-product [1 2 3 4])))

@@ -1,6 +1,5 @@
 (module builtin)
 
-
 (claim make-set (polymorphic (E) (-> (set-t E))))
 (claim set-copy (polymorphic (E) (-> (set-t E) (set-t E))))
 (claim set-size (polymorphic (E) (-> (set-t E) int-t)))
