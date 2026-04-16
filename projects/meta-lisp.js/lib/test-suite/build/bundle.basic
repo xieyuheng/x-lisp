@@ -359,6 +359,30 @@
 (define-function (list-sexp-put-location! value target)
   (block body (return (list-put! 2 value target))))
 
+(define-function (meta/string-repeat n string)
+  (block body (test (equal? n 0)) (branch then₁ else₂))
+  (block then₁ (return ""))
+  (block else₂
+    (= _₁ meta/string-repeat)
+    (= _₂ (isub n 1))
+    (= _₃ (_₁ _₂ string))
+    (return (string-append string _₃))))
+
+(define-function (meta/string-repeat-test)
+  (block body
+    (= _₁ meta/string-repeat)
+    (= _₂ (_₁ 0 "a"))
+    (perform (assert-equal "" _₂))
+    (= _₃ meta/string-repeat)
+    (= _₄ (_₃ 1 "a"))
+    (perform (assert-equal "a" _₄))
+    (= _₅ meta/string-repeat)
+    (= _₆ (_₅ 2 "a"))
+    (perform (assert-equal "aa" _₆))
+    (= _₇ meta/string-repeat)
+    (= _₈ (_₇ 3 "a"))
+    (return (assert-equal "aaa" _₈))))
+
 (define-function (test-suite/bool-test)
   (block body
     (perform (println true))
