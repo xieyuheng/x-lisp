@@ -1,5 +1,8 @@
 import * as M from "../index.ts"
-import { systemShellRun } from "@xieyuheng/helpers.js/system"
+import {
+  systemShellRun,
+  systemShellCapture,
+} from "@xieyuheng/helpers.js/system"
 import fs from "node:fs"
 import Path from "node:path"
 import { fileURLToPath } from "node:url"
@@ -36,22 +39,19 @@ export function projectTest(project: M.Project): void {
         fs.mkdirSync(Path.dirname(snapshotPath), { recursive: true })
 
         const builtinMod = M.loadBuiltinMod(mod.project)
-        if (mod === builtinMod) {
-          systemShellRun(BasicInterpreterPath, [
-            "run",
-            definition.name,
-            bundlePath,
-            ">",
-            snapshotPath,
-          ])
+        const name =
+          mod === builtinMod
+            ? definition.name
+            : `${mod.name}/${definition.name}`
+
+        const args = ["run", name, bundlePath]
+        const result = systemShellCapture(BasicInterpreterPath, args)
+        if (result.status === 0) {
+          if (result.stdout) fs.writeFileSync(snapshotPath, result.stdout)
+          if (result.stderr) console.log(snapshotPath, result.stderr)
         } else {
-          systemShellRun(BasicInterpreterPath, [
-            "run",
-            `${mod.name}/${definition.name}`,
-            bundlePath,
-            ">",
-            snapshotPath,
-          ])
+          if (result.stdout) console.log(snapshotPath, result.stdout)
+          if (result.stderr) console.log(snapshotPath, result.stderr)
         }
       }
     })

@@ -1,11 +1,11 @@
-# side-effect
-
-[meta-lisp.js] `Put` & `PutMut` as `Exp`
-[meta-lisp.js] parse `(put)` & `(put!)`
+[meta-lisp.js] rename `Update` to `Put`
 
 # builtin
 
 [meta-lisp.js] [builtin] float -- copy from x-lisp-proto.js
+[meta-lisp.js] [builtin] list -- copy from x-lisp-proto.js
+[meta-lisp.js] [builtin] hash -- copy from x-lisp-proto.js
+[meta-lisp.js] [builtin] set -- copy from x-lisp-proto.js
 
 # about format
 
