@@ -1,3 +1,17 @@
+(define-function (call-with-input-file path f)
+  (block body
+    (= file₁ (open-input-file path))
+    (= result₁ (f file₁))
+    (perform (file-close file₁))
+    (return result₁)))
+
+(define-function (call-with-output-file path f)
+  (block body
+    (= file₁ (open-output-file path))
+    (= result₁ (f file₁))
+    (perform (file-close file₁))
+    (return result₁)))
+
 (define-function (float-product xs)
   (block body (test (list-empty? xs)) (branch then₁ else₂))
   (block then₁ (return 1.0))

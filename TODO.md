@@ -18,16 +18,3 @@
 
 [basic-lisp.c] builtin `error-with-source-location`
 [basic-lisp.c] builtin `assert-with-source-location`
-
-# later
-
-[meta-lisp.js] [maybe] project load by topological order (dynamicly)
-
-# prelude
-
-[meta-lisp.js] be able to use prelude module
-
-# about file
-
-[meta-lisp.js] [prelude] call-with-input-file
-[meta-lisp.js] [prelude] call-with-output-file

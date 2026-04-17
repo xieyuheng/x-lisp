@@ -1,0 +1,23 @@
+(module builtin)
+
+(claim call-with-input-file
+  (polymorphic (A)
+    (-> string-t (-> file-t A)
+        A)))
+
+(define (call-with-input-file path f)
+  (= file (open-input-file path))
+  (= result (f file))
+  (file-close file)
+  result)
+
+(claim call-with-output-file
+  (polymorphic (A)
+    (-> string-t (-> file-t A)
+        A)))
+
+(define (call-with-output-file path f)
+  (= file (open-output-file path))
+  (= result (f file))
+  (file-close file)
+  result)

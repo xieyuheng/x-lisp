@@ -1,3 +1,21 @@
+(claim call-with-input-file
+  (polymorphic (A) (-> string-t (-> file-t A) A)))
+
+(define (call-with-input-file path f)
+  (= file₁ (open-input-file path))
+  (= result₁ (f file₁))
+  (file-close file₁)
+  result₁)
+
+(claim call-with-output-file
+  (polymorphic (A) (-> string-t (-> file-t A) A)))
+
+(define (call-with-output-file path f)
+  (= file₁ (open-output-file path))
+  (= result₁ (f file₁))
+  (file-close file₁)
+  result₁)
+
 (claim float-product (-> (list-t float-t) float-t))
 
 (define (float-product xs)
