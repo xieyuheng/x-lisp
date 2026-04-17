@@ -36,15 +36,15 @@
   (lambda-exp (parameter symbol-t) (body exp-t))
   (let-exp (name symbol-t) (rhs exp-t) (body exp-t)))
 
-(claim var-exp (-> symbol-t l2/exp-t))
+(claim var-exp (-> builtin/symbol-t l2/exp-t))
 
 (define (var-exp name)
-  (= list (make-list))
-  (list-push! 'var-exp list)
-  (list-push! name list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'var-exp list)
+  (builtin/list-push! name list)
   list)
 
-(claim var-exp? (-> l2/exp-t bool-t))
+(claim var-exp? (-> l2/exp-t builtin/bool-t))
 
 (define (var-exp? value)
   (if (list? value)
@@ -53,16 +53,18 @@
       false)
     false))
 
-(claim var-exp-name (-> l2/exp-t symbol-t))
+(claim var-exp-name (-> l2/exp-t builtin/symbol-t))
 
 (define (var-exp-name target) (list-get 1 target))
 
-(claim var-exp-put-name (-> symbol-t l2/exp-t l2/exp-t))
+(claim var-exp-put-name
+  (-> builtin/symbol-t l2/exp-t l2/exp-t))
 
 (define (var-exp-put-name value target)
   (list-put 1 value target))
 
-(claim var-exp-put-name! (-> symbol-t l2/exp-t l2/exp-t))
+(claim var-exp-put-name!
+  (-> builtin/symbol-t l2/exp-t l2/exp-t))
 
 (define (var-exp-put-name! value target)
   (list-put! 1 value target))
@@ -70,13 +72,13 @@
 (claim apply-exp (-> l2/exp-t l2/exp-t l2/exp-t))
 
 (define (apply-exp target arg)
-  (= list (make-list))
-  (list-push! 'apply-exp list)
-  (list-push! target list)
-  (list-push! arg list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'apply-exp list)
+  (builtin/list-push! target list)
+  (builtin/list-push! arg list)
   list)
 
-(claim apply-exp? (-> l2/exp-t bool-t))
+(claim apply-exp? (-> l2/exp-t builtin/bool-t))
 
 (define (apply-exp? value)
   (if (list? value)
@@ -114,16 +116,16 @@
 (define (apply-exp-put-arg! value target)
   (list-put! 2 value target))
 
-(claim lambda-exp (-> symbol-t l2/exp-t l2/exp-t))
+(claim lambda-exp (-> builtin/symbol-t l2/exp-t l2/exp-t))
 
 (define (lambda-exp parameter body)
-  (= list (make-list))
-  (list-push! 'lambda-exp list)
-  (list-push! parameter list)
-  (list-push! body list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'lambda-exp list)
+  (builtin/list-push! parameter list)
+  (builtin/list-push! body list)
   list)
 
-(claim lambda-exp? (-> l2/exp-t bool-t))
+(claim lambda-exp? (-> l2/exp-t builtin/bool-t))
 
 (define (lambda-exp? value)
   (if (list? value)
@@ -132,7 +134,7 @@
       false)
     false))
 
-(claim lambda-exp-parameter (-> l2/exp-t symbol-t))
+(claim lambda-exp-parameter (-> l2/exp-t builtin/symbol-t))
 
 (define (lambda-exp-parameter target) (list-get 1 target))
 
@@ -141,7 +143,7 @@
 (define (lambda-exp-body target) (list-get 2 target))
 
 (claim lambda-exp-put-parameter
-  (-> symbol-t l2/exp-t l2/exp-t))
+  (-> builtin/symbol-t l2/exp-t l2/exp-t))
 
 (define (lambda-exp-put-parameter value target)
   (list-put 1 value target))
@@ -152,7 +154,7 @@
   (list-put 2 value target))
 
 (claim lambda-exp-put-parameter!
-  (-> symbol-t l2/exp-t l2/exp-t))
+  (-> builtin/symbol-t l2/exp-t l2/exp-t))
 
 (define (lambda-exp-put-parameter! value target)
   (list-put! 1 value target))
@@ -162,17 +164,18 @@
 (define (lambda-exp-put-body! value target)
   (list-put! 2 value target))
 
-(claim let-exp (-> symbol-t l2/exp-t l2/exp-t l2/exp-t))
+(claim let-exp
+  (-> builtin/symbol-t l2/exp-t l2/exp-t l2/exp-t))
 
 (define (let-exp name rhs body)
-  (= list (make-list))
-  (list-push! 'let-exp list)
-  (list-push! name list)
-  (list-push! rhs list)
-  (list-push! body list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'let-exp list)
+  (builtin/list-push! name list)
+  (builtin/list-push! rhs list)
+  (builtin/list-push! body list)
   list)
 
-(claim let-exp? (-> l2/exp-t bool-t))
+(claim let-exp? (-> l2/exp-t builtin/bool-t))
 
 (define (let-exp? value)
   (if (list? value)
@@ -181,7 +184,7 @@
       false)
     false))
 
-(claim let-exp-name (-> l2/exp-t symbol-t))
+(claim let-exp-name (-> l2/exp-t builtin/symbol-t))
 
 (define (let-exp-name target) (list-get 1 target))
 
@@ -193,7 +196,8 @@
 
 (define (let-exp-body target) (list-get 3 target))
 
-(claim let-exp-put-name (-> symbol-t l2/exp-t l2/exp-t))
+(claim let-exp-put-name
+  (-> builtin/symbol-t l2/exp-t l2/exp-t))
 
 (define (let-exp-put-name value target)
   (list-put 1 value target))
@@ -208,7 +212,8 @@
 (define (let-exp-put-body value target)
   (list-put 3 value target))
 
-(claim let-exp-put-name! (-> symbol-t l2/exp-t l2/exp-t))
+(claim let-exp-put-name!
+  (-> builtin/symbol-t l2/exp-t l2/exp-t))
 
 (define (let-exp-put-name! value target)
   (list-put! 1 value target))
@@ -231,22 +236,22 @@
 
 (define empty-env 'empty-env)
 
-(claim empty-env? (-> l2/env-t bool-t))
+(claim empty-env? (-> l2/env-t builtin/bool-t))
 
 (define (empty-env? value) (equal? value 'empty-env))
 
 (claim extend-env
-  (-> symbol-t l2/value-t l2/env-t l2/env-t))
+  (-> builtin/symbol-t l2/value-t l2/env-t l2/env-t))
 
 (define (extend-env key value rest)
-  (= list (make-list))
-  (list-push! 'extend-env list)
-  (list-push! key list)
-  (list-push! value list)
-  (list-push! rest list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'extend-env list)
+  (builtin/list-push! key list)
+  (builtin/list-push! value list)
+  (builtin/list-push! rest list)
   list)
 
-(claim extend-env? (-> l2/env-t bool-t))
+(claim extend-env? (-> l2/env-t builtin/bool-t))
 
 (define (extend-env? value)
   (if (list? value)
@@ -255,7 +260,7 @@
       false)
     false))
 
-(claim extend-env-key (-> l2/env-t symbol-t))
+(claim extend-env-key (-> l2/env-t builtin/symbol-t))
 
 (define (extend-env-key target) (list-get 1 target))
 
@@ -267,7 +272,8 @@
 
 (define (extend-env-rest target) (list-get 3 target))
 
-(claim extend-env-put-key (-> symbol-t l2/env-t l2/env-t))
+(claim extend-env-put-key
+  (-> builtin/symbol-t l2/env-t l2/env-t))
 
 (define (extend-env-put-key value target)
   (list-put 1 value target))
@@ -283,7 +289,8 @@
 (define (extend-env-put-rest value target)
   (list-put 3 value target))
 
-(claim extend-env-put-key! (-> symbol-t l2/env-t l2/env-t))
+(claim extend-env-put-key!
+  (-> builtin/symbol-t l2/env-t l2/env-t))
 
 (define (extend-env-put-key! value target)
   (list-put! 1 value target))
@@ -299,7 +306,8 @@
 (define (extend-env-put-rest! value target)
   (list-put! 3 value target))
 
-(claim env-has? (-> symbol-t l2/env-t bool-t))
+(claim env-has?
+  (-> builtin/symbol-t l2/env-t builtin/bool-t))
 
 (define (env-has? name env)
   (if (empty-env? env)
@@ -313,9 +321,10 @@
         (= value value₃)
         (= key key₃)
         (if (equal? key name) true (env-has? name rest)))
-      (error "cond mismatch"))))
+      (builtin/error "cond mismatch"))))
 
-(claim env-lookup-of-fail (-> symbol-t l2/env-t l2/value-t))
+(claim env-lookup-of-fail
+  (-> builtin/symbol-t l2/env-t l2/value-t))
 
 (define (env-lookup-of-fail name env)
   (if (empty-env? env)
@@ -331,7 +340,7 @@
         (if (equal? key name)
           value
           (env-lookup-of-fail name rest)))
-      (error "cond mismatch"))))
+      (builtin/error "cond mismatch"))))
 
 (define-data value-t
   (closure-value
@@ -340,17 +349,17 @@
    (body exp-t)))
 
 (claim closure-value
-  (-> l2/env-t symbol-t l2/exp-t l2/value-t))
+  (-> l2/env-t builtin/symbol-t l2/exp-t l2/value-t))
 
 (define (closure-value env parameter body)
-  (= list (make-list))
-  (list-push! 'closure-value list)
-  (list-push! env list)
-  (list-push! parameter list)
-  (list-push! body list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'closure-value list)
+  (builtin/list-push! env list)
+  (builtin/list-push! parameter list)
+  (builtin/list-push! body list)
   list)
 
-(claim closure-value? (-> l2/value-t bool-t))
+(claim closure-value? (-> l2/value-t builtin/bool-t))
 
 (define (closure-value? value)
   (if (list? value)
@@ -363,7 +372,8 @@
 
 (define (closure-value-env target) (list-get 1 target))
 
-(claim closure-value-parameter (-> l2/value-t symbol-t))
+(claim closure-value-parameter
+  (-> l2/value-t builtin/symbol-t))
 
 (define (closure-value-parameter target)
   (list-get 2 target))
@@ -379,7 +389,7 @@
   (list-put 1 value target))
 
 (claim closure-value-put-parameter
-  (-> symbol-t l2/value-t l2/value-t))
+  (-> builtin/symbol-t l2/value-t l2/value-t))
 
 (define (closure-value-put-parameter value target)
   (list-put 2 value target))
@@ -397,7 +407,7 @@
   (list-put! 1 value target))
 
 (claim closure-value-put-parameter!
-  (-> symbol-t l2/value-t l2/value-t))
+  (-> builtin/symbol-t l2/value-t l2/value-t))
 
 (define (closure-value-put-parameter! value target)
   (list-put! 2 value target))
@@ -440,7 +450,7 @@
             (= name name₃)
             (= env (extend-env name (evaluate rhs env) env))
             (evaluate body env))
-          (error "cond mismatch"))))))
+          (builtin/error "cond mismatch"))))))
 
 (claim apply (-> l2/value-t l2/value-t l2/value-t))
 
@@ -454,4 +464,4 @@
       (= parameter parameter₄)
       (= env env₂)
       (evaluate body (extend-env parameter arg env)))
-    (error "cond mismatch")))
+    (builtin/error "cond mismatch")))

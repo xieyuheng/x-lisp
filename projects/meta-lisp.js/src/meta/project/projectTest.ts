@@ -38,13 +38,7 @@ export function projectTest(project: M.Project): void {
 
         fs.mkdirSync(Path.dirname(snapshotPath), { recursive: true })
 
-        const builtinMod = M.loadBuiltinMod(mod.project)
-        const name =
-          mod === builtinMod
-            ? definition.name
-            : `${mod.name}/${definition.name}`
-
-        const args = ["run", name, bundlePath]
+        const args = ["run", `${mod.name}/${definition.name}`, bundlePath]
         const result = systemShellCapture(BasicInterpreterPath, args)
         if (result.status === 0) {
           if (result.stdout) fs.writeFileSync(snapshotPath, result.stdout)

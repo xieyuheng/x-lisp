@@ -1,57 +1,85 @@
-(define-interface point-t :x float-t :y float-t)
+(define-interface point-t
+  :x
+  builtin/float-t
+  :y
+  builtin/float-t)
 
 (claim point-x
   (polymorphic (A B) (-> (extend-interface A :x B) B)))
 
-(define (point-x point) (= _₁ (record-get :x)) (_₁ point))
+(define (point-x point)
+  (= _₁ builtin/record-get)
+  (= _₂ (_₁ :x))
+  (_₂ point))
 
 (claim point-y
   (polymorphic (R A) (-> (extend-interface R :y A) A)))
 
-(define (point-y point) (= _₁ (record-get :y)) (_₁ point))
+(define (point-y point)
+  (= _₁ builtin/record-get)
+  (= _₂ (_₁ :y))
+  (_₂ point))
 
 (claim point-distance-squared
   (polymorphic (A)
     (-> (extend-interface A :y float-t :x float-t) float-t)))
 
 (define (point-distance-squared point)
-  (= _₁ (record-get :x))
-  (= _₂ (_₁ point))
-  (= _₃ (record-get :x))
-  (= _₄ (_₃ point))
-  (= _₅ (fmul _₂ _₄))
-  (= _₆ (record-get :y))
-  (= _₇ (_₆ point))
-  (= _₈ (record-get :y))
-  (= _₉ (_₈ point))
-  (= _₁₀ (fmul _₇ _₉))
-  (fadd _₅ _₁₀))
+  (= _₁ builtin/fadd)
+  (= _₂ builtin/fmul)
+  (= _₃ builtin/record-get)
+  (= _₄ (_₃ :x))
+  (= _₅ (_₄ point))
+  (= _₆ builtin/record-get)
+  (= _₇ (_₆ :x))
+  (= _₈ (_₇ point))
+  (= _₉ (_₂ _₅ _₈))
+  (= _₁₀ builtin/fmul)
+  (= _₁₁ builtin/record-get)
+  (= _₁₂ (_₁₁ :y))
+  (= _₁₃ (_₁₂ point))
+  (= _₁₄ builtin/record-get)
+  (= _₁₅ (_₁₄ :y))
+  (= _₁₆ (_₁₅ point))
+  (= _₁₇ (_₁₀ _₁₃ _₁₆))
+  (_₁ _₉ _₁₇))
 
 (claim row-polymorphism-test void-t)
 
 (define-test row-polymorphism-test
   (= point₁
      (begin
-       (= record₁ (make-record))
-       (record-put! :x 1.0 record₁)
-       (record-put! :y 2.0 record₁)
+       (= record₁ (begin (= _₁ builtin/make-record) (_₁)))
+       (begin
+         (= _₂ builtin/record-put!)
+         (_₂ :x 1.0 record₁))
+       (begin
+         (= _₃ builtin/record-put!)
+         (_₃ :y 2.0 record₁))
        record₁))
   (begin
-    (= _₁ (record-get :x))
-    (= _₂ (_₁ point₁))
-    (assert-equal 1.0 _₂))
+    (= _₄ builtin/assert-equal)
+    (= _₅ builtin/record-get)
+    (= _₆ (_₅ :x))
+    (= _₇ (_₆ point₁))
+    (_₄ 1.0 _₇))
   (begin
-    (= _₃ (record-get :y))
-    (= _₄ (_₃ point₁))
-    (assert-equal 2.0 _₄))
+    (= _₈ builtin/assert-equal)
+    (= _₉ builtin/record-get)
+    (= _₁₀ (_₉ :y))
+    (= _₁₁ (_₁₀ point₁))
+    (_₈ 2.0 _₁₁))
   (begin
-    (= _₅ row-polymorphism/point-x)
-    (= _₆ (_₅ point₁))
-    (assert-equal 1.0 _₆))
+    (= _₁₂ builtin/assert-equal)
+    (= _₁₃ row-polymorphism/point-x)
+    (= _₁₄ (_₁₃ point₁))
+    (_₁₂ 1.0 _₁₄))
   (begin
-    (= _₇ row-polymorphism/point-y)
-    (= _₈ (_₇ point₁))
-    (assert-equal 2.0 _₈))
-  (= _₉ row-polymorphism/point-distance-squared)
-  (= _₁₀ (_₉ point₁))
-  (assert-equal 5.0 _₁₀))
+    (= _₁₅ builtin/assert-equal)
+    (= _₁₆ row-polymorphism/point-y)
+    (= _₁₇ (_₁₆ point₁))
+    (_₁₅ 2.0 _₁₇))
+  (= _₁₈ builtin/assert-equal)
+  (= _₁₉ row-polymorphism/point-distance-squared)
+  (= _₂₀ (_₁₉ point₁))
+  (_₁₈ 5.0 _₂₀))

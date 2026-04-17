@@ -1,0 +1,20 @@
+(module builtin)
+
+(claim list-each
+  (polymorphic (A)
+    (-> (-> A void-t) (list-t A)
+        void-t)))
+
+(define (list-each f list)
+  (if (list-empty? list)
+    void
+    (begin
+      (f (car list))
+      (list-each f (cdr list)))))
+
+(define-test list-each-test
+  (list-each
+   (lambda (x)
+     (print x)
+     (write "\n"))
+   [1 2 3]))

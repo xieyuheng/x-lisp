@@ -1,6 +1,7 @@
 (define-interface point-t :x float-t :y float-t)
 
-(claim point-println (-> subtype-error-2/point-t void-t))
+(claim point-println
+  (-> subtype-error-2/point-t builtin/void-t))
 
 (define (point-println point) (println point))
 

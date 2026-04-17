@@ -1,5 +1,5 @@
 (define (evaluate-and-print exp)
-  (println (l2/evaluate exp l2/empty-env)))
+  (builtin/println (l2/evaluate exp l2/empty-env)))
 
 (define-test l2-l1-test
   (l2-l1/evaluate-and-print

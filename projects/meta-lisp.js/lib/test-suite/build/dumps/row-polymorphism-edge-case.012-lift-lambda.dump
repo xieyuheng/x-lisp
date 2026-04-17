@@ -1,10 +1,10 @@
 (define (f r)
-  (if true
+  (if builtin/true
     (begin
       (= record₁ r)
-      (= record₂ (record-put :x 2 record₁))
+      (= record₂ (builtin/record-put :x 2 record₁))
       record₂)
     (begin
       (= record₃ r)
-      (= record₄ (record-put :y 2 record₃))
+      (= record₄ (builtin/record-put :y 2 record₃))
       record₄)))

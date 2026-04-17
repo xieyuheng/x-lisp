@@ -1,0 +1,16 @@
+(module builtin)
+
+(claim list-map
+  (polymorphic (A B)
+    (-> (-> A B) (list-t A)
+        (list-t B))))
+
+(define (list-map f list)
+  (if (list-empty? list)
+    []
+    (cons (f (car list)) (list-map f (cdr list)))))
+
+(define-test list-map-test
+  (assert-equal
+    (list-map (iadd 10) [1 2 3])
+    [11 12 13]))

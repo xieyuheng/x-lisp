@@ -1,14 +1,14 @@
 (define-test bool-test (println true) (println false))
 
-(claim one int-t)
+(claim one builtin/int-t)
 
 (define one 1)
 
-(claim two int-t)
+(claim two builtin/int-t)
 
 (define two (iadd 1 one))
 
-(claim three int-t)
+(claim three builtin/int-t)
 
 (define three (iadd 1 two))
 
@@ -280,7 +280,7 @@
   (println (@hash 1 3))
   (println (@hash 1 2 3 4)))
 
-(claim factorial (-> int-t int-t))
+(claim factorial (-> builtin/int-t builtin/int-t))
 
 (define (factorial n)
   (if (int-less-or-equal? n 1)
@@ -296,7 +296,7 @@
   (assert-equal 120 (factorial 5))
   (assert-equal 720 (factorial 6)))
 
-(claim fibonacci (-> int-t int-t))
+(claim fibonacci (-> builtin/int-t builtin/int-t))
 
 (define (fibonacci n)
   (if (int-less-or-equal? n 1)
@@ -315,7 +315,7 @@
   (assert-equal 21 (fibonacci 8))
   (assert-equal 34 (fibonacci 9)))
 
-(claim gcd (-> int-t int-t int-t))
+(claim gcd (-> builtin/int-t builtin/int-t builtin/int-t))
 
 (define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
 
@@ -323,7 +323,7 @@
   (assert-equal 1 (gcd 13 7))
   (assert-equal 4 (gcd 12 8)))
 
-(claim square (-> int-t int-t))
+(claim square (-> builtin/int-t builtin/int-t))
 
 (define (square x) (imul x x))
 
@@ -438,7 +438,8 @@
   (assert-equal {1 2 3} {3 2 1})
   (println (the (set-t int-t) {1 2 3})))
 
-(claim my-string-repeat (-> int-t string-t string-t))
+(claim my-string-repeat
+  (-> builtin/int-t builtin/string-t builtin/string-t))
 
 (define (my-string-repeat n string)
   (if (equal? n 0)

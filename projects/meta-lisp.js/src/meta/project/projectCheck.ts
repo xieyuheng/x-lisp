@@ -26,13 +26,7 @@ export function projectPerformDesugar(project: M.Project): void {
 }
 
 export function projectPerformQualify(project: M.Project): void {
-  const builtinMod = M.loadBuiltinMod(project)
-
-  M.projectForEachMod(project, (mod) => {
-    if (mod !== builtinMod) {
-      M.modForEachOwnDefinition(mod, M.definitionQualifyFreeVar)
-    }
-  })
+  M.projectForEachDefinition(project, M.definitionQualifyFreeVar)
 }
 
 export function projectPerformCheck(project: M.Project): void {

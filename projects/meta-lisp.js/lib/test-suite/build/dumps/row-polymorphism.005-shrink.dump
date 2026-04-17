@@ -1,37 +1,45 @@
-(define-interface point-t :x float-t :y float-t)
+(define-interface point-t
+  :x
+  builtin/float-t
+  :y
+  builtin/float-t)
 
 (claim point-x
   (polymorphic (A B) (-> (extend-interface A :x B) B)))
 
-(define (point-x point) ((record-get :x) point))
+(define (point-x point) ((builtin/record-get :x) point))
 
 (claim point-y
   (polymorphic (R A) (-> (extend-interface R :y A) A)))
 
-(define (point-y point) ((record-get :y) point))
+(define (point-y point) ((builtin/record-get :y) point))
 
 (claim point-distance-squared
   (polymorphic (A)
     (-> (extend-interface A :y float-t :x float-t) float-t)))
 
 (define (point-distance-squared point)
-  (fadd
-   (fmul ((record-get :x) point) ((record-get :x) point))
-   (fmul ((record-get :y) point) ((record-get :y) point))))
+  (builtin/fadd
+   (builtin/fmul
+    ((builtin/record-get :x) point)
+    ((builtin/record-get :x) point))
+   (builtin/fmul
+    ((builtin/record-get :y) point)
+    ((builtin/record-get :y) point))))
 
 (claim row-polymorphism-test void-t)
 
 (define-test row-polymorphism-test
   (= point
      (begin
-       (= record (make-record))
-       (record-put! :x 1.0 record)
-       (record-put! :y 2.0 record)
+       (= record (builtin/make-record))
+       (builtin/record-put! :x 1.0 record)
+       (builtin/record-put! :y 2.0 record)
        record))
-  (assert-equal 1.0 ((record-get :x) point))
-  (assert-equal 2.0 ((record-get :y) point))
-  (assert-equal 1.0 (row-polymorphism/point-x point))
-  (assert-equal 2.0 (row-polymorphism/point-y point))
-  (assert-equal
-    5.0
-    (row-polymorphism/point-distance-squared point)))
+  (builtin/assert-equal 1.0 ((builtin/record-get :x) point))
+  (builtin/assert-equal 2.0 ((builtin/record-get :y) point))
+  (builtin/assert-equal 1.0 (row-polymorphism/point-x point))
+  (builtin/assert-equal 2.0 (row-polymorphism/point-y point))
+  (builtin/assert-equal
+   5.0
+   (row-polymorphism/point-distance-squared point)))

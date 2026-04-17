@@ -1,11 +1,15 @@
-(define-interface point-t :x float-t :y float-t)
+(define-interface point-t
+  :x
+  builtin/float-t
+  :y
+  builtin/float-t)
 
 (define (main)
   (begin
-    (= record₁ (make-record))
-    (record-put! :x 1.0 record₁)
-    (record-put! :y 2.0 record₁)
+    (= record₁ (begin (= _₁ builtin/make-record) (_₁)))
+    (begin (= _₂ builtin/record-put!) (_₂ :x 1.0 record₁))
+    (begin (= _₃ builtin/record-put!) (_₃ :y 2.0 record₁))
     record₁)
-  (= record₂ (make-record))
-  (record-put! :x 1.0 record₂)
+  (= record₂ (begin (= _₄ builtin/make-record) (_₄)))
+  (begin (= _₅ builtin/record-put!) (_₅ :x 1.0 record₂))
   record₂)

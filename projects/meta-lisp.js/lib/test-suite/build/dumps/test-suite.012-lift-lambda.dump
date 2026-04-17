@@ -1,281 +1,324 @@
 (claim bool-test void-t)
 
-(define-test bool-test (println true) (println false))
+(define-test bool-test
+  (builtin/println builtin/true)
+  (builtin/println builtin/false))
 
-(claim one int-t)
+(claim one builtin/int-t)
 
 (define one 1)
 
-(claim two int-t)
+(claim two builtin/int-t)
 
-(define two (iadd 1 test-suite/one))
+(define two (builtin/iadd 1 test-suite/one))
 
-(claim three int-t)
+(claim three builtin/int-t)
 
-(define three (iadd 1 test-suite/two))
+(define three (builtin/iadd 1 test-suite/two))
 
 (claim constant-test void-t)
 
-(define-test constant-test (println test-suite/three))
+(define-test constant-test
+  (builtin/println test-suite/three))
 
 (claim eoc-02-00 void-t)
 
-(define-test eoc-02-00 (println 42))
+(define-test eoc-02-00 (builtin/println 42))
 
 (claim eoc-02-01 void-t)
 
-(define-test eoc-02-01 (= x₁ 4) (println (iadd 8 x₁)))
+(define-test eoc-02-01
+  (= x₁ 4)
+  (builtin/println (builtin/iadd 8 x₁)))
 
 (claim eoc-02-02 void-t)
 
 (define-test eoc-02-02
-  (= y₁ (begin (= x₁ 20) (iadd x₁ (begin (= x₂ 22) x₂))))
-  (println y₁))
+  (= y₁
+     (begin
+       (= x₁ 20)
+       (builtin/iadd x₁ (begin (= x₂ 22) x₂))))
+  (builtin/println y₁))
 
 (claim eoc-02-03 void-t)
 
 (define-test eoc-02-03
-  (= y₁ (begin (= x₁ 20) (= z₁ 22) (iadd x₁ z₁)))
-  (println y₁))
+  (= y₁ (begin (= x₁ 20) (= z₁ 22) (builtin/iadd x₁ z₁)))
+  (builtin/println y₁))
 
 (claim eoc-02-04 void-t)
 
 (define-test eoc-02-04
-  (= z₁ (begin (= y₁ (begin (= x₁ (ineg 42)) x₁)) y₁))
-  (println (ineg z₁)))
+  (= z₁
+     (begin (= y₁ (begin (= x₁ (builtin/ineg 42)) x₁)) y₁))
+  (builtin/println (builtin/ineg z₁)))
 
 (claim eoc-02-05 void-t)
 
-(define-test eoc-02-05 (= a₁ 42) (= b₁ a₁) (println b₁))
+(define-test eoc-02-05
+  (= a₁ 42)
+  (= b₁ a₁)
+  (builtin/println b₁))
 
 (claim eoc-02-06 void-t)
 
-(define-test eoc-02-06 (println (ineg (random-dice))))
+(define-test eoc-02-06
+  (builtin/println (builtin/ineg (builtin/random-dice))))
 
 (claim eoc-02-07 void-t)
 
 (define-test eoc-02-07
-  (println (iadd (random-dice) (random-dice))))
+  (builtin/println
+   (builtin/iadd (builtin/random-dice) (builtin/random-dice))))
 
 (claim eoc-02-08 void-t)
 
-(define-test eoc-02-08 (println (iadd 20 22)))
+(define-test eoc-02-08
+  (builtin/println (builtin/iadd 20 22)))
 
 (claim eoc-02-09 void-t)
 
-(define-test eoc-02-09 (println (iadd 20 (iadd 11 11))))
+(define-test eoc-02-09
+  (builtin/println (builtin/iadd 20 (builtin/iadd 11 11))))
 
 (claim eoc-02-10 void-t)
 
 (define-test eoc-02-10
-  (= x₁ (iadd (iadd 1 2) (iadd 3 4)))
-  (println (iadd x₁ 5)))
+  (= x₁ (builtin/iadd (builtin/iadd 1 2) (builtin/iadd 3 4)))
+  (builtin/println (builtin/iadd x₁ 5)))
 
 (claim eoc-02-11 void-t)
 
 (define-test eoc-02-11
-  (println (iadd (iadd 1 2) (iadd 3 4))))
+  (builtin/println
+   (builtin/iadd (builtin/iadd 1 2) (builtin/iadd 3 4))))
 
 (claim eoc-02-12 void-t)
 
 (define-test eoc-02-12
-  (println (iadd (iadd 1 2) (iadd 3 (iadd 4 5)))))
+  (builtin/println
+   (builtin/iadd
+    (builtin/iadd 1 2)
+    (builtin/iadd 3 (builtin/iadd 4 5)))))
 
 (claim eoc-02-13 void-t)
 
 (define-test eoc-02-13
-  (= x₁ (iadd 42 (ineg 10)))
-  (println (iadd x₁ 10)))
+  (= x₁ (builtin/iadd 42 (builtin/ineg 10)))
+  (builtin/println (builtin/iadd x₁ 10)))
 
 (claim eoc-02-14 void-t)
 
 (define-test eoc-02-14
   (= x₁ 32)
-  (println (iadd (begin (= x₂ 10) x₂) x₁)))
+  (builtin/println (builtin/iadd (begin (= x₂ 10) x₂) x₁)))
 
 (claim eoc-02-15 void-t)
 
 (define-test eoc-02-15
-  (= x₁ (begin (= x₂ 4) (iadd x₂ 1)))
-  (println (iadd x₁ 2)))
+  (= x₁ (begin (= x₂ 4) (builtin/iadd x₂ 1)))
+  (builtin/println (builtin/iadd x₁ 2)))
 
 (claim eoc-02-16 void-t)
 
-(define-test eoc-02-16 (println (isub 50 8)))
+(define-test eoc-02-16
+  (builtin/println (builtin/isub 50 8)))
 
 (claim eoc-02-17 void-t)
 
 (define-test eoc-02-17
-  (println (iadd 1 (iadd (random-dice) 1))))
+  (builtin/println
+   (builtin/iadd 1 (builtin/iadd (builtin/random-dice) 1))))
 
 (claim eoc-02-18 void-t)
 
 (define-test eoc-02-18
-  (println (iadd (iadd (iadd (iadd (random-dice) 1) 1) 1) 1)))
+  (builtin/println
+   (builtin/iadd
+    (builtin/iadd
+     (builtin/iadd (builtin/iadd (builtin/random-dice) 1) 1)
+     1)
+    1)))
 
 (claim eoc-02-19 void-t)
 
 (define-test eoc-02-19
   (= x₁ 1)
-  (println
-   (iadd
+  (builtin/println
+   (builtin/iadd
     x₁
     (begin
-      (= x₂ (begin (= x₃ 5) (iadd x₃ x₃)))
-      (iadd x₂ 100)))))
+      (= x₂ (begin (= x₃ 5) (builtin/iadd x₃ x₃)))
+      (builtin/iadd x₂ 100)))))
 
 (claim eoc-02-20 void-t)
 
 (define-test eoc-02-20
   (= x₁ 1)
-  (println
-   (iadd
+  (builtin/println
+   (builtin/iadd
     x₁
     (begin
-      (= x₂ (begin (= y₁ 5) (iadd y₁ x₁)))
-      (iadd x₂ 100)))))
+      (= x₂ (begin (= y₁ 5) (builtin/iadd y₁ x₁)))
+      (builtin/iadd x₂ 100)))))
 
 (claim eoc-02-21 void-t)
 
 (define-test eoc-02-21
   (= y₁ 6)
-  (= x₁ (begin (= y₂ (ineg 42)) y₂))
-  (println (iadd x₁ y₁)))
+  (= x₁ (begin (= y₂ (builtin/ineg 42)) y₂))
+  (builtin/println (builtin/iadd x₁ y₁)))
 
 (claim eoc-03-01 void-t)
 
 (define-test eoc-03-01
   (= v₁ 1)
   (= w₁ 42)
-  (= x₁ (iadd v₁ 7))
+  (= x₁ (builtin/iadd v₁ 7))
   (= y₁ x₁)
-  (= z₁ (iadd x₁ w₁))
-  (println (iadd z₁ (ineg y₁))))
+  (= z₁ (builtin/iadd x₁ w₁))
+  (builtin/println (builtin/iadd z₁ (builtin/ineg y₁))))
 
 (claim eoc-03-02 void-t)
 
 (define-test eoc-03-02
-  (= x₁ (random-dice))
-  (= y₁ (random-dice))
-  (println (iadd (iadd x₁ y₁) 42)))
+  (= x₁ (builtin/random-dice))
+  (= y₁ (builtin/random-dice))
+  (builtin/println (builtin/iadd (builtin/iadd x₁ y₁) 42)))
 
 (claim eoc-04-01 void-t)
 
-(define-test eoc-04-01 (println (if true 1 2)))
+(define-test eoc-04-01
+  (builtin/println (if builtin/true 1 2)))
 
 (claim eoc-04-02 void-t)
 
 (define-test eoc-04-02
-  (println
+  (builtin/println
    (begin
-     (= x₁ (random-dice))
-     (= y₁ (random-dice))
-     (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
-       (iadd y₁ 2)
-       (iadd y₁ 10)))))
+     (= x₁ (builtin/random-dice))
+     (= y₁ (builtin/random-dice))
+     (if
+         (if (builtin/int-less? x₁ 1)
+           (builtin/equal? x₁ 0)
+           (builtin/equal? x₁ 2))
+       (builtin/iadd y₁ 2)
+       (builtin/iadd y₁ 10)))))
 
 (claim eoc-04-03 void-t)
 
 (define-test eoc-04-03
-  (println
+  (builtin/println
    (begin
-     (= x₁ (random-dice))
-     (= y₁ (random-dice))
-     (iadd
-      (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
-        (iadd y₁ 2)
-        (iadd y₁ 10))
-      (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
-        (iadd y₁ 2)
-        (iadd y₁ 10))))))
+     (= x₁ (builtin/random-dice))
+     (= y₁ (builtin/random-dice))
+     (builtin/iadd
+      (if
+          (if (builtin/int-less? x₁ 1)
+            (builtin/equal? x₁ 0)
+            (builtin/equal? x₁ 2))
+        (builtin/iadd y₁ 2)
+        (builtin/iadd y₁ 10))
+      (if
+          (if (builtin/int-less? x₁ 1)
+            (builtin/equal? x₁ 0)
+            (builtin/equal? x₁ 2))
+        (builtin/iadd y₁ 2)
+        (builtin/iadd y₁ 10))))))
 
 (claim eoc-04-04 void-t)
 
 (define-test eoc-04-04
-  (println
+  (builtin/println
    (if
-       (if (equal? (random-dice) 1)
-         (equal? (random-dice) 2)
-         false)
+       (if (builtin/equal? (builtin/random-dice) 1)
+         (builtin/equal? (builtin/random-dice) 2)
+         builtin/false)
      0
      42)))
 
 (claim eoc-05-01 void-t)
 
 (define-test eoc-05-01
-  (print 1)
-  (newline)
-  (print 2)
-  (newline)
-  (print 3)
-  (newline)
-  void)
+  (builtin/print 1)
+  (builtin/newline)
+  (builtin/print 2)
+  (builtin/newline)
+  (builtin/print 3)
+  (builtin/newline)
+  builtin/void)
 
 (claim eoc-05-02 void-t)
 
 (define-test eoc-05-02
   (= x₁
      (begin
-       (print 1)
-       (newline)
-       (print 2)
-       (newline)
-       (print 3)
-       (newline)
+       (builtin/print 1)
+       (builtin/newline)
+       (builtin/print 2)
+       (builtin/newline)
+       (builtin/print 3)
+       (builtin/newline)
        6))
-  (print 4)
-  (newline)
-  (print 5)
-  (newline)
-  (print 6)
-  (newline)
-  (print (iadd x₁ x₁))
-  (newline)
-  void)
+  (builtin/print 4)
+  (builtin/newline)
+  (builtin/print 5)
+  (builtin/newline)
+  (builtin/print 6)
+  (builtin/newline)
+  (builtin/print (builtin/iadd x₁ x₁))
+  (builtin/newline)
+  builtin/void)
 
 (claim eoc-05-03 void-t)
 
 (define-test eoc-05-03
   (if
       (begin
-        (print 1)
-        (newline)
-        (print 2)
-        (newline)
-        (print 3)
-        (newline)
-        (equal? 1 2))
-    (begin (print 111) (newline))
-    (begin (print 222) (newline))))
+        (builtin/print 1)
+        (builtin/newline)
+        (builtin/print 2)
+        (builtin/newline)
+        (builtin/print 3)
+        (builtin/newline)
+        (builtin/equal? 1 2))
+    (begin (builtin/print 111) (builtin/newline))
+    (begin (builtin/print 222) (builtin/newline))))
 
 (claim file-test void-t)
 
 (define-test file-test
-  (= file₁ (open-input-file "src/file/file-1.txt"))
-  (assert-equal "abc\n" (file-read file₁))
-  (file-close file₁)
-  (= file₂ (open-output-file "src/file/file-2.txt"))
-  (file-write file₂ "123\n")
-  (file-close file₂)
-  (= file₃ (open-input-file "src/file/file-2.txt"))
-  (assert-equal "123\n" (file-read file₃))
-  (file-close file₃)
-  (= file₄ (open-output-file "src/file/file-2.txt"))
-  (file-write file₄ "abc\n")
-  (file-close file₄)
-  (= file₅ (open-input-file "src/file/file-2.txt"))
-  (assert-equal "abc\n" (file-read file₅))
-  (file-close file₅))
+  (= file₁ (builtin/open-input-file "src/file/file-1.txt"))
+  (builtin/assert-equal "abc\n" (builtin/file-read file₁))
+  (builtin/file-close file₁)
+  (= file₂ (builtin/open-output-file "src/file/file-2.txt"))
+  (builtin/file-write file₂ "123\n")
+  (builtin/file-close file₂)
+  (= file₃ (builtin/open-input-file "src/file/file-2.txt"))
+  (builtin/assert-equal "123\n" (builtin/file-read file₃))
+  (builtin/file-close file₃)
+  (= file₄ (builtin/open-output-file "src/file/file-2.txt"))
+  (builtin/file-write file₄ "abc\n")
+  (builtin/file-close file₄)
+  (= file₅ (builtin/open-input-file "src/file/file-2.txt"))
+  (builtin/assert-equal "abc\n" (builtin/file-read file₅))
+  (builtin/file-close file₅))
 
 (claim fs-test void-t)
 
 (define-test fs-test
-  (assert-equal "abc\n" (fs-read "src/fs/file-1.txt"))
-  (fs-write "src/fs/file-2.txt" "123\n")
-  (assert-equal "123\n" (fs-read "src/fs/file-2.txt"))
-  (fs-write "src/fs/file-2.txt" "abc\n")
-  (assert-equal "abc\n" (fs-read "src/fs/file-2.txt"))
-  (println (fs-list "src/fs")))
+  (builtin/assert-equal
+   "abc\n"
+   (builtin/fs-read "src/fs/file-1.txt"))
+  (builtin/fs-write "src/fs/file-2.txt" "123\n")
+  (builtin/assert-equal
+   "123\n"
+   (builtin/fs-read "src/fs/file-2.txt"))
+  (builtin/fs-write "src/fs/file-2.txt" "abc\n")
+  (builtin/assert-equal
+   "abc\n"
+   (builtin/fs-read "src/fs/file-2.txt"))
+  (builtin/println (builtin/fs-list "src/fs")))
 
 (claim S
   (polymorphic (A B C) (-> (-> A B C) (-> A B) (-> A C))))
@@ -304,10 +347,10 @@
   (= S₁ test-suite/SKI-tuple©λ₁)
   (= K₁ test-suite/SKI-tuple©λ₂)
   (= I₁ test-suite/SKI-tuple©λ₃)
-  (= list₁ (make-list))
-  (list-push! S₁ list₁)
-  (list-push! K₁ list₁)
-  (list-push! I₁ list₁)
+  (= list₁ (builtin/make-list))
+  (builtin/list-push! S₁ list₁)
+  (builtin/list-push! K₁ list₁)
+  (builtin/list-push! I₁ list₁)
   list₁)
 
 (define (SKI-tuple©λ₁ x₁ y₁ z₁) (x₁ z₁ (y₁ z₁)))
@@ -324,18 +367,24 @@
 (claim compose-test void-t)
 
 (define-test compose-test
-  (= add1₁ (iadd 1))
-  (assert-equal 3 ((test-suite/compose add1₁ add1₁) 1)))
+  (= add1₁ (builtin/iadd 1))
+  (builtin/assert-equal
+   3
+   ((test-suite/compose add1₁ add1₁) 1)))
 
 (claim curry-test void-t)
 
 (define-test curry-test
-  (assert-equal iadd iadd)
-  (assert-equal (iadd 1) (iadd 1))
-  (assert-not-equal (iadd 1) (iadd 2))
-  (assert-equal ((iadd 1) 2) (iadd 1 2))
-  (assert-equal 1 ((isub 2) 1))
-  (assert-equal 1 (isub 2 1)))
+  (builtin/assert-equal builtin/iadd builtin/iadd)
+  (builtin/assert-equal (builtin/iadd 1) (builtin/iadd 1))
+  (builtin/assert-not-equal
+   (builtin/iadd 1)
+   (builtin/iadd 2))
+  (builtin/assert-equal
+   ((builtin/iadd 1) 2)
+   (builtin/iadd 1 2))
+  (builtin/assert-equal 1 ((builtin/isub 2) 1))
+  (builtin/assert-equal 1 (builtin/isub 2 1)))
 
 (claim swap
   (polymorphic (X Y Z) (-> (-> Y X Z) (-> X Y Z))))
@@ -360,19 +409,19 @@
 
 (define-test forth-test
   (= f₁ test-suite/forth-test©λ₁)
-  (= square₁ (test-suite/dup imul))
-  (println (square₁ (f₁ 1)))
-  (println (square₁ (f₁ 2)))
-  (println (square₁ (f₁ 3)))
-  (println (square₁ (f₁ 4))))
+  (= square₁ (test-suite/dup builtin/imul))
+  (builtin/println (square₁ (f₁ 1)))
+  (builtin/println (square₁ (f₁ 2)))
+  (builtin/println (square₁ (f₁ 3)))
+  (builtin/println (square₁ (f₁ 4))))
 
 (define (forth-test©λ₁ x₁) x₁)
 
 (claim function-test void-t)
 
 (define-test function-test
-  (println iadd)
-  (println (iadd 1)))
+  (builtin/println builtin/iadd)
+  (builtin/println (builtin/iadd 1)))
 
 (claim identity (polymorphic (A) (-> A A)))
 
@@ -381,280 +430,339 @@
 (claim identity-test void-t)
 
 (define-test identity-test
-  (= add1₁ (iadd 1))
-  (assert-equal 2 (add1₁ 1))
+  (= add1₁ (builtin/iadd 1))
+  (builtin/assert-equal 2 (add1₁ 1))
   (= add1₂
-     (test-suite/identity (iadd (test-suite/identity 1))))
+     (test-suite/identity
+      (builtin/iadd (test-suite/identity 1))))
   test-suite/identity
   test-suite/identity
   test-suite/identity
-  (assert-equal 2 (add1₂ 1)))
+  (builtin/assert-equal 2 (add1₂ 1)))
 
 (claim hash-test void-t)
 
 (define-test hash-test
-  (assert (hash-empty? (begin (= hash₁ (make-hash)) hash₁)))
-  (println (begin (= hash₂ (make-hash)) hash₂))
-  (println
-   (begin (= hash₃ (make-hash)) (hash-put! 1 2 hash₃) hash₃))
-  (println
-   (begin (= hash₄ (make-hash)) (hash-put! 1 3 hash₄) hash₄))
-  (println
+  (builtin/assert
+   (builtin/hash-empty?
+    (begin (= hash₁ (builtin/make-hash)) hash₁)))
+  (builtin/println
+   (begin (= hash₂ (builtin/make-hash)) hash₂))
+  (builtin/println
    (begin
-     (= hash₅ (make-hash))
-     (hash-put! 1 2 hash₅)
-     (hash-put! 3 4 hash₅)
+     (= hash₃ (builtin/make-hash))
+     (builtin/hash-put! 1 2 hash₃)
+     hash₃))
+  (builtin/println
+   (begin
+     (= hash₄ (builtin/make-hash))
+     (builtin/hash-put! 1 3 hash₄)
+     hash₄))
+  (builtin/println
+   (begin
+     (= hash₅ (builtin/make-hash))
+     (builtin/hash-put! 1 2 hash₅)
+     (builtin/hash-put! 3 4 hash₅)
      hash₅)))
 
-(claim factorial (-> int-t int-t))
+(claim factorial (-> builtin/int-t builtin/int-t))
 
 (define (factorial n)
-  (if (int-less-or-equal? n 1)
+  (if (builtin/int-less-or-equal? n 1)
     1
-    (imul (test-suite/factorial (isub n 1)) n)))
+    (builtin/imul
+     (test-suite/factorial (builtin/isub n 1))
+     n)))
 
 (claim factorial-test void-t)
 
 (define-test factorial-test
-  (assert-equal 1 (test-suite/factorial 0))
-  (assert-equal 1 (test-suite/factorial 1))
-  (assert-equal 2 (test-suite/factorial 2))
-  (assert-equal 6 (test-suite/factorial 3))
-  (assert-equal 24 (test-suite/factorial 4))
-  (assert-equal 120 (test-suite/factorial 5))
-  (assert-equal 720 (test-suite/factorial 6)))
+  (builtin/assert-equal 1 (test-suite/factorial 0))
+  (builtin/assert-equal 1 (test-suite/factorial 1))
+  (builtin/assert-equal 2 (test-suite/factorial 2))
+  (builtin/assert-equal 6 (test-suite/factorial 3))
+  (builtin/assert-equal 24 (test-suite/factorial 4))
+  (builtin/assert-equal 120 (test-suite/factorial 5))
+  (builtin/assert-equal 720 (test-suite/factorial 6)))
 
-(claim fibonacci (-> int-t int-t))
+(claim fibonacci (-> builtin/int-t builtin/int-t))
 
 (define (fibonacci n)
-  (if (int-less-or-equal? n 1)
+  (if (builtin/int-less-or-equal? n 1)
     n
-    (iadd
-     (test-suite/fibonacci (isub n 1))
-     (test-suite/fibonacci (isub n 2)))))
+    (builtin/iadd
+     (test-suite/fibonacci (builtin/isub n 1))
+     (test-suite/fibonacci (builtin/isub n 2)))))
 
 (claim fibonacci-test void-t)
 
 (define-test fibonacci-test
-  (assert-equal 0 (test-suite/fibonacci 0))
-  (assert-equal 1 (test-suite/fibonacci 1))
-  (assert-equal 1 (test-suite/fibonacci 2))
-  (assert-equal 2 (test-suite/fibonacci 3))
-  (assert-equal 3 (test-suite/fibonacci 4))
-  (assert-equal 5 (test-suite/fibonacci 5))
-  (assert-equal 8 (test-suite/fibonacci 6))
-  (assert-equal 13 (test-suite/fibonacci 7))
-  (assert-equal 21 (test-suite/fibonacci 8))
-  (assert-equal 34 (test-suite/fibonacci 9)))
+  (builtin/assert-equal 0 (test-suite/fibonacci 0))
+  (builtin/assert-equal 1 (test-suite/fibonacci 1))
+  (builtin/assert-equal 1 (test-suite/fibonacci 2))
+  (builtin/assert-equal 2 (test-suite/fibonacci 3))
+  (builtin/assert-equal 3 (test-suite/fibonacci 4))
+  (builtin/assert-equal 5 (test-suite/fibonacci 5))
+  (builtin/assert-equal 8 (test-suite/fibonacci 6))
+  (builtin/assert-equal 13 (test-suite/fibonacci 7))
+  (builtin/assert-equal 21 (test-suite/fibonacci 8))
+  (builtin/assert-equal 34 (test-suite/fibonacci 9)))
 
-(claim gcd (-> int-t int-t int-t))
+(claim gcd (-> builtin/int-t builtin/int-t builtin/int-t))
 
 (define (gcd a b)
-  (if (equal? b 0) a (test-suite/gcd b (imod a b))))
+  (if (builtin/equal? b 0)
+    a
+    (test-suite/gcd b (builtin/imod a b))))
 
 (claim gcd-test void-t)
 
 (define-test gcd-test
-  (assert-equal 1 (test-suite/gcd 13 7))
-  (assert-equal 4 (test-suite/gcd 12 8)))
+  (builtin/assert-equal 1 (test-suite/gcd 13 7))
+  (builtin/assert-equal 4 (test-suite/gcd 12 8)))
 
-(claim square (-> int-t int-t))
+(claim square (-> builtin/int-t builtin/int-t))
 
-(define (square x) (imul x x))
+(define (square x) (builtin/imul x x))
 
 (claim square-test void-t)
 
 (define-test square-test
-  (assert-equal
-    81
-    (test-suite/square (test-suite/square 3))))
+  (builtin/assert-equal
+   81
+   (test-suite/square (test-suite/square 3))))
 
 (claim keyword-test void-t)
 
 (define-test keyword-test
-  (assert-equal :abcdef (keyword-append :abc :def))
-  (println :abc))
+  (builtin/assert-equal
+   :abcdef
+   (builtin/keyword-append :abc :def))
+  (builtin/println :abc))
 
 (claim list-test void-t)
 
 (define-test list-test
-  (= list₁ (make-list))
-  (list-push! 1 list₁)
-  (list-push! 2 list₁)
-  (list-push! 3 list₁)
-  (assert-equal
-    (begin
-      (= list₂ (make-list))
-      (list-push! 1 list₂)
-      (list-push! 2 list₂)
-      (list-push! 3 list₂)
-      list₂)
-    list₁)
-  (assert-equal
-    (begin
-      (= list₃ (make-list))
-      (list-push! 1 list₃)
-      (list-push! 2 list₃)
-      (list-push! 3 list₃)
-      list₃)
-    (begin
-      (= list₄ (make-list))
-      (list-push! 1 list₄)
-      (list-push! 2 list₄)
-      (list-push! 3 list₄)
-      list₄))
-  (assert-equal
-    (begin
-      (= list₅ (make-list))
-      (list-push! 'a list₅)
-      (list-push! 'b list₅)
-      (list-push! 'c list₅)
-      list₅)
-    (begin
-      (= list₆ (make-list))
-      (list-push! 'a list₆)
-      (list-push! 'b list₆)
-      (list-push! 'c list₆)
-      list₆))
-  (assert-equal
-    3
-    (list-length
-     (begin
-       (= list₇ (make-list))
-       (list-push! 1 list₇)
-       (list-push! 2 list₇)
-       (list-push! 3 list₇)
-       list₇)))
-  (assert-equal
-    0
-    (list-length (begin (= list₈ (make-list)) list₈)))
-  (assert (list-empty? (begin (= list₉ (make-list)) list₉)))
-  (= list₁₀ (make-list))
-  (list-push! 1 list₁₀)
-  (list-push! 2 list₁₀)
-  (list-push! 3 list₁₀)
-  (println list₁₀)
-  (println
+  (= list₁ (builtin/make-list))
+  (builtin/list-push! 1 list₁)
+  (builtin/list-push! 2 list₁)
+  (builtin/list-push! 3 list₁)
+  (builtin/assert-equal
    (begin
-     (= list₁₁ (make-list))
-     (list-push! 1 list₁₁)
-     (list-push! 2 list₁₁)
-     (list-push! 3 list₁₁)
+     (= list₂ (builtin/make-list))
+     (builtin/list-push! 1 list₂)
+     (builtin/list-push! 2 list₂)
+     (builtin/list-push! 3 list₂)
+     list₂)
+   list₁)
+  (builtin/assert-equal
+   (begin
+     (= list₃ (builtin/make-list))
+     (builtin/list-push! 1 list₃)
+     (builtin/list-push! 2 list₃)
+     (builtin/list-push! 3 list₃)
+     list₃)
+   (begin
+     (= list₄ (builtin/make-list))
+     (builtin/list-push! 1 list₄)
+     (builtin/list-push! 2 list₄)
+     (builtin/list-push! 3 list₄)
+     list₄))
+  (builtin/assert-equal
+   (begin
+     (= list₅ (builtin/make-list))
+     (builtin/list-push! 'a list₅)
+     (builtin/list-push! 'b list₅)
+     (builtin/list-push! 'c list₅)
+     list₅)
+   (begin
+     (= list₆ (builtin/make-list))
+     (builtin/list-push! 'a list₆)
+     (builtin/list-push! 'b list₆)
+     (builtin/list-push! 'c list₆)
+     list₆))
+  (builtin/assert-equal
+   3
+   (builtin/list-length
+    (begin
+      (= list₇ (builtin/make-list))
+      (builtin/list-push! 1 list₇)
+      (builtin/list-push! 2 list₇)
+      (builtin/list-push! 3 list₇)
+      list₇)))
+  (builtin/assert-equal
+   0
+   (builtin/list-length
+    (begin (= list₈ (builtin/make-list)) list₈)))
+  (builtin/assert
+   (builtin/list-empty?
+    (begin (= list₉ (builtin/make-list)) list₉)))
+  (= list₁₀ (builtin/make-list))
+  (builtin/list-push! 1 list₁₀)
+  (builtin/list-push! 2 list₁₀)
+  (builtin/list-push! 3 list₁₀)
+  (builtin/println list₁₀)
+  (builtin/println
+   (begin
+     (= list₁₁ (builtin/make-list))
+     (builtin/list-push! 1 list₁₁)
+     (builtin/list-push! 2 list₁₁)
+     (builtin/list-push! 3 list₁₁)
      list₁₁))
-  (println
+  (builtin/println
    (begin
-     (= list₁₂ (make-list))
-     (list-push! 1 list₁₂)
-     (list-push! 2 list₁₂)
-     (list-push! 3 list₁₂)
+     (= list₁₂ (builtin/make-list))
+     (builtin/list-push! 1 list₁₂)
+     (builtin/list-push! 2 list₁₂)
+     (builtin/list-push! 3 list₁₂)
      list₁₂))
-  (println
+  (builtin/println
    (begin
-     (= list₁₃ (make-list))
-     (list-push! 1 list₁₃)
-     (list-push! 2 list₁₃)
-     (list-push! 3 list₁₃)
+     (= list₁₃ (builtin/make-list))
+     (builtin/list-push! 1 list₁₃)
+     (builtin/list-push! 2 list₁₃)
+     (builtin/list-push! 3 list₁₃)
      list₁₃))
-  (println
+  (builtin/println
    (begin
-     (= list₁₄ (make-list))
-     (list-push! 1 list₁₄)
-     (list-push! 2 list₁₄)
-     (list-push! 3 list₁₄)
+     (= list₁₄ (builtin/make-list))
+     (builtin/list-push! 1 list₁₄)
+     (builtin/list-push! 2 list₁₄)
+     (builtin/list-push! 3 list₁₄)
      list₁₄))
-  (println
+  (builtin/println
    (begin
-     (= list₁₅ (make-list))
-     (list-push! 'a list₁₅)
-     (list-push! 'b list₁₅)
-     (list-push! 'c list₁₅)
+     (= list₁₅ (builtin/make-list))
+     (builtin/list-push! 'a list₁₅)
+     (builtin/list-push! 'b list₁₅)
+     (builtin/list-push! 'c list₁₅)
      list₁₅))
-  (println
+  (builtin/println
    (begin
-     (= list₁₆ (make-list))
-     (list-push! 'a list₁₆)
-     (list-push! 'b list₁₆)
-     (list-push! 'c list₁₆)
+     (= list₁₆ (builtin/make-list))
+     (builtin/list-push! 'a list₁₆)
+     (builtin/list-push! 'b list₁₆)
+     (builtin/list-push! 'c list₁₆)
      list₁₆)))
 
 (claim cond-test void-t)
 
 (define-test cond-test
-  (assert-equal
-    1
-    (if (equal? 1 1) 1 (if true 2 (error "cond mismatch"))))
-  (assert-equal
-    2
-    (if (equal? 1 2) 1 (if true 2 (error "cond mismatch"))))
-  (if (equal? 1 1)
-    (assert true)
-    (if true (assert false) (error "cond mismatch")))
-  (if (equal? 1 2)
-    (assert false)
-    (if true (assert true) (error "cond mismatch"))))
+  (builtin/assert-equal
+   1
+   (if (builtin/equal? 1 1)
+     1
+     (if builtin/true 2 (builtin/error "cond mismatch"))))
+  (builtin/assert-equal
+   2
+   (if (builtin/equal? 1 2)
+     1
+     (if builtin/true 2 (builtin/error "cond mismatch"))))
+  (if (builtin/equal? 1 1)
+    (builtin/assert builtin/true)
+    (if builtin/true
+      (builtin/assert builtin/false)
+      (builtin/error "cond mismatch")))
+  (if (builtin/equal? 1 2)
+    (builtin/assert builtin/false)
+    (if builtin/true
+      (builtin/assert builtin/true)
+      (builtin/error "cond mismatch"))))
 
 (claim if-test void-t)
 
 (define-test if-test
-  (assert-equal (if true 1 2) 1)
-  (assert-equal (if false 1 2) 2)
-  (assert (if true (if true true false) false))
-  (assert (not (if true (if true false false) false)))
-  (assert (if false true (if false true true)))
-  (assert (not (if false true (if false true false)))))
+  (builtin/assert-equal (if builtin/true 1 2) 1)
+  (builtin/assert-equal (if builtin/false 1 2) 2)
+  (builtin/assert
+   (if builtin/true
+     (if builtin/true builtin/true builtin/false)
+     builtin/false))
+  (builtin/assert
+   (builtin/not
+    (if builtin/true
+      (if builtin/true builtin/false builtin/false)
+      builtin/false)))
+  (builtin/assert
+   (if builtin/false
+     builtin/true
+     (if builtin/false builtin/true builtin/true)))
+  (builtin/assert
+   (builtin/not
+    (if builtin/false
+      builtin/true
+      (if builtin/false builtin/true builtin/false)))))
 
 (claim the-test void-t)
 
 (define-test the-test
-  (assert-equal 1 1)
-  (assert-equal 'a 'a))
+  (builtin/assert-equal 1 1)
+  (builtin/assert-equal 'a 'a))
 
 (claim path-test void-t)
 
 (define-test path-test
-  (assert-equal
-    "a/b/c"
-    (path-directory-name "a/b/c/file.test.txt"))
-  (assert-equal
-    "file.test.txt"
-    (path-base-name "a/b/c/file.test.txt"))
-  (assert-equal
-    ".txt"
-    (path-extension "a/b/c/file.test.txt"))
-  (assert-equal
-    "file.test"
-    (path-stem "a/b/c/file.test.txt"))
-  (assert (path-absolute? "/a/b/c/file.test.txt"))
-  (assert-not (path-relative? "/a/b/c/file.test.txt"))
-  (assert (path-relative? "a/b/c/file.test.txt"))
-  (assert (path-relative? "./a/b/c/file.test.txt"))
-  (assert-not (path-absolute? "a/b/c/file.test.txt"))
-  (assert-not (path-absolute? "./a/b/c/file.test.txt"))
-  (assert-equal "a/b/c/d/e/f" (path-join "a/b/c" "d/e/f"))
-  (assert-equal "a/b/c/d/e/f" (path-join "a/b/c/" "/d/e/f"))
-  (assert-equal
-    "/a/b/c/d/e/f"
-    (path-join "/a/b/c/" "/d/e/f"))
-  (assert-equal "a/b/d" (path-normalize "a/b/c/../d"))
-  (assert-equal "/a/b/c" (path-normalize "///a/b/c/")))
+  (builtin/assert-equal
+   "a/b/c"
+   (builtin/path-directory-name "a/b/c/file.test.txt"))
+  (builtin/assert-equal
+   "file.test.txt"
+   (builtin/path-base-name "a/b/c/file.test.txt"))
+  (builtin/assert-equal
+   ".txt"
+   (builtin/path-extension "a/b/c/file.test.txt"))
+  (builtin/assert-equal
+   "file.test"
+   (builtin/path-stem "a/b/c/file.test.txt"))
+  (builtin/assert
+   (builtin/path-absolute? "/a/b/c/file.test.txt"))
+  (builtin/assert-not
+   (builtin/path-relative? "/a/b/c/file.test.txt"))
+  (builtin/assert
+   (builtin/path-relative? "a/b/c/file.test.txt"))
+  (builtin/assert
+   (builtin/path-relative? "./a/b/c/file.test.txt"))
+  (builtin/assert-not
+   (builtin/path-absolute? "a/b/c/file.test.txt"))
+  (builtin/assert-not
+   (builtin/path-absolute? "./a/b/c/file.test.txt"))
+  (builtin/assert-equal
+   "a/b/c/d/e/f"
+   (builtin/path-join "a/b/c" "d/e/f"))
+  (builtin/assert-equal
+   "a/b/c/d/e/f"
+   (builtin/path-join "a/b/c/" "/d/e/f"))
+  (builtin/assert-equal
+   "/a/b/c/d/e/f"
+   (builtin/path-join "/a/b/c/" "/d/e/f"))
+  (builtin/assert-equal
+   "a/b/d"
+   (builtin/path-normalize "a/b/c/../d"))
+  (builtin/assert-equal
+   "/a/b/c"
+   (builtin/path-normalize "///a/b/c/")))
 
 (claim reocrd-test void-t)
 
 (define-test reocrd-test
-  (println
+  (builtin/println
    (begin
-     (= record₁ (make-record))
-     (record-put! :x 1 record₁)
-     (record-put! :y 2 record₁)
+     (= record₁ (builtin/make-record))
+     (builtin/record-put! :x 1 record₁)
+     (builtin/record-put! :y 2 record₁)
      record₁))
-  (println
+  (builtin/println
    (begin
-     (= record₂ (make-record))
-     (record-put! :x 1 record₂)
-     (record-put! :y 2 record₂)
+     (= record₂ (builtin/make-record))
+     (builtin/record-put! :x 1 record₂)
+     (builtin/record-put! :y 2 record₂)
      record₂)))
 
-(define-interface point-t :x float-t :y float-t)
+(define-interface point-t
+  :x
+  builtin/float-t
+  :y
+  builtin/float-t)
 
 (claim with-color
   (polymorphic (A B C)
@@ -662,7 +770,7 @@
 
 (define (with-color color point)
   (= record₁ point)
-  (= record₂ (record-put :color color record₁))
+  (= record₂ (builtin/record-put :color color record₁))
   record₂)
 
 (claim record-extend-test void-t)
@@ -670,18 +778,18 @@
 (define-test record-extend-test
   (= point₁
      (begin
-       (= record₁ (make-record))
-       (record-put! :x 1.0 record₁)
-       (record-put! :y 2.0 record₁)
+       (= record₁ (builtin/make-record))
+       (builtin/record-put! :x 1.0 record₁)
+       (builtin/record-put! :y 2.0 record₁)
        record₁))
-  (assert-equal
-    (begin
-      (= record₂ (make-record))
-      (record-put! :x 1.0 record₂)
-      (record-put! :y 2.0 record₂)
-      (record-put! :color "red" record₂)
-      record₂)
-    (test-suite/with-color "red" point₁)))
+  (builtin/assert-equal
+   (begin
+     (= record₂ (builtin/make-record))
+     (builtin/record-put! :x 1.0 record₂)
+     (builtin/record-put! :y 2.0 record₂)
+     (builtin/record-put! :color "red" record₂)
+     record₂)
+   (test-suite/with-color "red" point₁)))
 
 (claim point-put-x
   (polymorphic (A B C)
@@ -691,7 +799,7 @@
 
 (define (point-put-x x point)
   (= record₁ point)
-  (= record₂ (record-put :x x record₁))
+  (= record₂ (builtin/record-put :x x record₁))
   record₂)
 
 (claim point-put-y!
@@ -702,7 +810,7 @@
 
 (define (point-put-y! y point)
   (= record₁ point)
-  (record-put! :y y record₁)
+  (builtin/record-put! :y y record₁)
   record₁)
 
 (claim record-update-test void-t)
@@ -710,108 +818,121 @@
 (define-test record-update-test
   (= point₁
      (begin
-       (= record₁ (make-record))
-       (record-put! :x 1.0 record₁)
-       (record-put! :y 2.0 record₁)
+       (= record₁ (builtin/make-record))
+       (builtin/record-put! :x 1.0 record₁)
+       (builtin/record-put! :y 2.0 record₁)
        record₁))
-  (assert-equal
-    (begin
-      (= record₂ (make-record))
-      (record-put! :x 2.0 record₂)
-      (record-put! :y 2.0 record₂)
-      record₂)
-    (test-suite/point-put-x 2.0 point₁))
-  (assert-equal
-    (begin
-      (= record₃ (make-record))
-      (record-put! :x 1.0 record₃)
-      (record-put! :y 2.0 record₃)
-      record₃)
-    point₁)
-  (assert-equal
-    (begin
-      (= record₄ (make-record))
-      (record-put! :x 1.0 record₄)
-      (record-put! :y 1.0 record₄)
-      record₄)
-    (test-suite/point-put-y! 1.0 point₁))
-  (assert-equal
-    (begin
-      (= record₅ (make-record))
-      (record-put! :x 1.0 record₅)
-      (record-put! :y 1.0 record₅)
-      record₅)
-    point₁))
+  (builtin/assert-equal
+   (begin
+     (= record₂ (builtin/make-record))
+     (builtin/record-put! :x 2.0 record₂)
+     (builtin/record-put! :y 2.0 record₂)
+     record₂)
+   (test-suite/point-put-x 2.0 point₁))
+  (builtin/assert-equal
+   (begin
+     (= record₃ (builtin/make-record))
+     (builtin/record-put! :x 1.0 record₃)
+     (builtin/record-put! :y 2.0 record₃)
+     record₃)
+   point₁)
+  (builtin/assert-equal
+   (begin
+     (= record₄ (builtin/make-record))
+     (builtin/record-put! :x 1.0 record₄)
+     (builtin/record-put! :y 1.0 record₄)
+     record₄)
+   (test-suite/point-put-y! 1.0 point₁))
+  (builtin/assert-equal
+   (begin
+     (= record₅ (builtin/make-record))
+     (builtin/record-put! :x 1.0 record₅)
+     (builtin/record-put! :y 1.0 record₅)
+     record₅)
+   point₁))
 
 (claim set-test void-t)
 
 (define-test set-test
-  (assert-equal
-    (begin
-      (= set₁ (make-set))
-      (set-add! 1 set₁)
-      (set-add! 2 set₁)
-      (set-add! 3 set₁)
-      set₁)
-    (begin
-      (= set₂ (make-set))
-      (set-add! 3 set₂)
-      (set-add! 2 set₂)
-      (set-add! 1 set₂)
-      set₂))
-  (println
+  (builtin/assert-equal
    (begin
-     (= set₃ (make-set))
-     (set-add! 1 set₃)
-     (set-add! 2 set₃)
-     (set-add! 3 set₃)
+     (= set₁ (builtin/make-set))
+     (builtin/set-add! 1 set₁)
+     (builtin/set-add! 2 set₁)
+     (builtin/set-add! 3 set₁)
+     set₁)
+   (begin
+     (= set₂ (builtin/make-set))
+     (builtin/set-add! 3 set₂)
+     (builtin/set-add! 2 set₂)
+     (builtin/set-add! 1 set₂)
+     set₂))
+  (builtin/println
+   (begin
+     (= set₃ (builtin/make-set))
+     (builtin/set-add! 1 set₃)
+     (builtin/set-add! 2 set₃)
+     (builtin/set-add! 3 set₃)
      set₃)))
 
-(claim my-string-repeat (-> int-t string-t string-t))
+(claim my-string-repeat
+  (-> builtin/int-t builtin/string-t builtin/string-t))
 
 (define (my-string-repeat n string)
-  (if (equal? n 0)
+  (if (builtin/equal? n 0)
     ""
-    (string-append
+    (builtin/string-append
      string
-     (test-suite/my-string-repeat (isub n 1) string))))
+     (test-suite/my-string-repeat (builtin/isub n 1) string))))
 
 (claim my-string-repeat-test void-t)
 
 (define-test my-string-repeat-test
-  (assert-equal "" (test-suite/my-string-repeat 0 "a"))
-  (assert-equal "a" (test-suite/my-string-repeat 1 "a"))
-  (assert-equal "aa" (test-suite/my-string-repeat 2 "a"))
-  (assert-equal "aaa" (test-suite/my-string-repeat 3 "a")))
+  (builtin/assert-equal
+   ""
+   (test-suite/my-string-repeat 0 "a"))
+  (builtin/assert-equal
+   "a"
+   (test-suite/my-string-repeat 1 "a"))
+  (builtin/assert-equal
+   "aa"
+   (test-suite/my-string-repeat 2 "a"))
+  (builtin/assert-equal
+   "aaa"
+   (test-suite/my-string-repeat 3 "a")))
 
 (claim string-test void-t)
 
 (define-test string-test
-  (assert-equal "abcdef" (string-append "abc" "def"))
-  (println "abc"))
+  (builtin/assert-equal
+   "abcdef"
+   (builtin/string-append "abc" "def"))
+  (builtin/println "abc"))
 
 (claim symbol-test void-t)
 
 (define-test symbol-test
-  (assert-equal 'abcdef (symbol-append 'abc 'def))
-  (println 'abc))
+  (builtin/assert-equal
+   'abcdef
+   (builtin/symbol-append 'abc 'def))
+  (builtin/println 'abc))
 
 (claim tuple-test void-t)
 
 (define-test tuple-test
-  (println
+  (builtin/println
    (begin
-     (= list₁ (make-list))
-     (list-push! 1 list₁)
-     (list-push! 2 list₁)
+     (= list₁ (builtin/make-list))
+     (builtin/list-push! 1 list₁)
+     (builtin/list-push! 2 list₁)
      list₁))
-  (println
+  (builtin/println
    (begin
-     (= list₂ (make-list))
-     (list-push! 1 list₂)
-     (list-push! 'a list₂)
+     (= list₂ (builtin/make-list))
+     (builtin/list-push! 1 list₂)
+     (builtin/list-push! 'a list₂)
      list₂)))
 
 (claim void-test void-t)
 
-(define-test void-test (println void))
+(define-test void-test (builtin/println builtin/void))

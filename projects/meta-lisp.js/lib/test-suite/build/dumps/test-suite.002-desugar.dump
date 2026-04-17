@@ -1,14 +1,14 @@
 (define-test bool-test (println true) (println false))
 
-(claim one int-t)
+(claim one builtin/int-t)
 
 (define one 1)
 
-(claim two int-t)
+(claim two builtin/int-t)
 
 (define two (iadd 1 one))
 
-(claim three int-t)
+(claim three builtin/int-t)
 
 (define three (iadd 1 two))
 
@@ -273,20 +273,27 @@
   (assert-equal 2 (add1 1)))
 
 (define-test hash-test
-  (assert (hash-empty? (begin (= hash (make-hash)) hash)))
-  (println (begin (= hash (make-hash)) hash))
-  (println
-   (begin (= hash (make-hash)) (hash-put! 1 2 hash) hash))
-  (println
-   (begin (= hash (make-hash)) (hash-put! 1 3 hash) hash))
+  (assert
+    (hash-empty? (begin (= hash (builtin/make-hash)) hash)))
+  (println (begin (= hash (builtin/make-hash)) hash))
   (println
    (begin
-     (= hash (make-hash))
-     (hash-put! 1 2 hash)
-     (hash-put! 3 4 hash)
+     (= hash (builtin/make-hash))
+     (builtin/hash-put! 1 2 hash)
+     hash))
+  (println
+   (begin
+     (= hash (builtin/make-hash))
+     (builtin/hash-put! 1 3 hash)
+     hash))
+  (println
+   (begin
+     (= hash (builtin/make-hash))
+     (builtin/hash-put! 1 2 hash)
+     (builtin/hash-put! 3 4 hash)
      hash)))
 
-(claim factorial (-> int-t int-t))
+(claim factorial (-> builtin/int-t builtin/int-t))
 
 (define (factorial n)
   (if (int-less-or-equal? n 1)
@@ -302,7 +309,7 @@
   (assert-equal 120 (factorial 5))
   (assert-equal 720 (factorial 6)))
 
-(claim fibonacci (-> int-t int-t))
+(claim fibonacci (-> builtin/int-t builtin/int-t))
 
 (define (fibonacci n)
   (if (int-less-or-equal? n 1)
@@ -321,7 +328,7 @@
   (assert-equal 21 (fibonacci 8))
   (assert-equal 34 (fibonacci 9)))
 
-(claim gcd (-> int-t int-t int-t))
+(claim gcd (-> builtin/int-t builtin/int-t builtin/int-t))
 
 (define (gcd a b) (if (equal? b 0) a (gcd b (imod a b))))
 
@@ -329,7 +336,7 @@
   (assert-equal 1 (gcd 13 7))
   (assert-equal 4 (gcd 12 8)))
 
-(claim square (-> int-t int-t))
+(claim square (-> builtin/int-t builtin/int-t))
 
 (define (square x) (imul x x))
 
@@ -347,51 +354,52 @@
   (list-push! 3 list)
   (assert-equal
     (begin
-      (= list (make-list))
-      (list-push! 1 list)
-      (list-push! 2 list)
-      (list-push! 3 list)
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
       list)
     list)
   (assert-equal
     (begin
-      (= list (make-list))
-      (list-push! 1 list)
-      (list-push! 2 list)
-      (list-push! 3 list)
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
       list)
     (begin
-      (= list (make-list))
-      (list-push! 1 list)
-      (list-push! 2 list)
-      (list-push! 3 list)
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
       list))
   (assert-equal
     (begin
-      (= list (make-list))
-      (list-push! 'a list)
-      (list-push! 'b list)
-      (list-push! 'c list)
+      (= list (builtin/make-list))
+      (builtin/list-push! 'a list)
+      (builtin/list-push! 'b list)
+      (builtin/list-push! 'c list)
       list)
     (begin
-      (= list (make-list))
-      (list-push! 'a list)
-      (list-push! 'b list)
-      (list-push! 'c list)
+      (= list (builtin/make-list))
+      (builtin/list-push! 'a list)
+      (builtin/list-push! 'b list)
+      (builtin/list-push! 'c list)
       list))
   (assert-equal
     3
     (list-length
      (begin
-       (= list (make-list))
-       (list-push! 1 list)
-       (list-push! 2 list)
-       (list-push! 3 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
        list)))
   (assert-equal
     0
-    (list-length (begin (= list (make-list)) list)))
-  (assert (list-empty? (begin (= list (make-list)) list)))
+    (list-length (begin (= list (builtin/make-list)) list)))
+  (assert
+    (list-empty? (begin (= list (builtin/make-list)) list)))
   (= list (make-list))
   (list-push! 1 list)
   (list-push! 2 list)
@@ -400,60 +408,64 @@
   (println
    (the (list-t int-t)
      (begin
-       (= list (make-list))
-       (list-push! 1 list)
-       (list-push! 2 list)
-       (list-push! 3 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
        list)))
   (println
    (begin
-     (= list (make-list))
-     (list-push! 1 list)
-     (list-push! 2 list)
-     (list-push! 3 list)
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
      list))
   (println
    (begin
-     (= list (make-list))
-     (list-push! 1 list)
-     (list-push! 2 list)
-     (list-push! 3 list)
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
      list))
   (println
    (begin
-     (= list (make-list))
-     (list-push! 1 list)
-     (list-push! 2 list)
-     (list-push! 3 list)
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
      list))
   (println
    (begin
-     (= list (make-list))
-     (list-push! 'a list)
-     (list-push! 'b list)
-     (list-push! 'c list)
+     (= list (builtin/make-list))
+     (builtin/list-push! 'a list)
+     (builtin/list-push! 'b list)
+     (builtin/list-push! 'c list)
      list))
   (println
    (begin
-     (= list (make-list))
-     (list-push! 'a list)
-     (list-push! 'b list)
-     (list-push! 'c list)
+     (= list (builtin/make-list))
+     (builtin/list-push! 'a list)
+     (builtin/list-push! 'b list)
+     (builtin/list-push! 'c list)
      list)))
 
 (define-test cond-test
   (assert-equal
     1
-    (if (equal? 1 1) 1 (if true 2 (error "cond mismatch"))))
+    (if (equal? 1 1)
+      1
+      (if true 2 (builtin/error "cond mismatch"))))
   (assert-equal
     2
-    (if (equal? 1 2) 1 (if true 2 (error "cond mismatch"))))
+    (if (equal? 1 2)
+      1
+      (if true 2 (builtin/error "cond mismatch"))))
   (if (equal? 1 1)
     (assert true)
-    (if true (assert false) (error "cond mismatch")))
+    (if true (assert false) (builtin/error "cond mismatch")))
   (if (equal? 1 2)
     (assert false)
-    (if true (assert true) (error "cond mismatch"))))
+    (if true (assert true) (builtin/error "cond mismatch"))))
 
 (define-test if-test
   (assert-equal (if true 1 2) 1)
@@ -529,27 +541,28 @@
 (define-test set-test
   (assert-equal
     (begin
-      (= set (make-set))
-      (set-add! 1 set)
-      (set-add! 2 set)
-      (set-add! 3 set)
+      (= set (builtin/make-set))
+      (builtin/set-add! 1 set)
+      (builtin/set-add! 2 set)
+      (builtin/set-add! 3 set)
       set)
     (begin
-      (= set (make-set))
-      (set-add! 3 set)
-      (set-add! 2 set)
-      (set-add! 1 set)
+      (= set (builtin/make-set))
+      (builtin/set-add! 3 set)
+      (builtin/set-add! 2 set)
+      (builtin/set-add! 1 set)
       set))
   (println
    (the (set-t int-t)
      (begin
-       (= set (make-set))
-       (set-add! 1 set)
-       (set-add! 2 set)
-       (set-add! 3 set)
+       (= set (builtin/make-set))
+       (builtin/set-add! 1 set)
+       (builtin/set-add! 2 set)
+       (builtin/set-add! 3 set)
        set))))
 
-(claim my-string-repeat (-> int-t string-t string-t))
+(claim my-string-repeat
+  (-> builtin/int-t builtin/string-t builtin/string-t))
 
 (define (my-string-repeat n string)
   (if (equal? n 0)

@@ -67,7 +67,7 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
 
     case "Match": {
       const defaultExp = M.Apply(
-        M.Var("error", exp.location),
+        M.QualifiedVar("builtin", "error", exp.location),
         [M.String("match mismatch", exp.location)],
         exp.location,
       )
@@ -259,7 +259,7 @@ function desugarCond(
 ): M.Exp {
   if (clauses.length === 0)
     return M.Apply(
-      M.Var("error", location),
+      M.QualifiedVar("builtin", "error", location),
       [M.String("cond mismatch", location)],
       location,
     )
@@ -280,12 +280,12 @@ export function desugarList(
     [
       M.AssignSugar(
         "list",
-        M.Apply(M.Var("make-list", location), [], location),
+        M.Apply(M.QualifiedVar("builtin", "make-list", location), [], location),
         location,
       ),
       ...elements.map((e) =>
         M.Apply(
-          M.Var("list-push!", location),
+          M.QualifiedVar("builtin", "list-push!", location),
           [e, M.Var("list", location)],
           location,
         ),
@@ -304,12 +304,12 @@ function desugarSet(
     [
       M.AssignSugar(
         "set",
-        M.Apply(M.Var("make-set", location), [], location),
+        M.Apply(M.QualifiedVar("builtin", "make-set", location), [], location),
         location,
       ),
       ...elements.map((e) =>
         M.Apply(
-          M.Var("set-add!", location),
+          M.QualifiedVar("builtin", "set-add!", location),
           [e, M.Var("set", location)],
           location,
         ),
@@ -328,12 +328,12 @@ function desugarHash(
     [
       M.AssignSugar(
         "hash",
-        M.Apply(M.Var("make-hash", location), [], location),
+        M.Apply(M.QualifiedVar("builtin", "make-hash", location), [], location),
         location,
       ),
       ...entries.map((entry) =>
         M.Apply(
-          M.Var("hash-put!", location),
+          M.QualifiedVar("builtin", "hash-put!", location),
           [entry.key, entry.value, M.Var("hash", location)],
           location,
         ),

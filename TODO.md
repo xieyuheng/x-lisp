@@ -1,5 +1,7 @@
 # builtin
 
+[basic-lisp.c] recover tests -- add `builtin/` prefix
+
 [meta-lisp.js] [builtin] list
 [meta-lisp.js] [builtin] hash
 [meta-lisp.js] [builtin] set

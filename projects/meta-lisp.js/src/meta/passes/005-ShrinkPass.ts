@@ -43,7 +43,9 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
         return onExp(
           mod,
           M.Apply(
-            M.Apply(M.Var("record-get"), [exp.target]),
+            M.Apply(M.QualifiedVar("builtin", "record-get", exp.location), [
+              exp.target,
+            ]),
             exp.args,
             exp.location,
           ),
@@ -105,7 +107,11 @@ function shrinkRecord(
   attributes: Record<string, M.Exp>,
   location?: S.SourceLocation,
 ): M.Exp {
-  const base = M.Apply(M.Var("make-record", location), [], location)
+  const base = M.Apply(
+    M.QualifiedVar("builtin", "make-record", location),
+    [],
+    location,
+  )
   return shrinkUpdateMut(mod, base, attributes, location)
 }
 
@@ -122,7 +128,7 @@ function shrinkUpdateMut(
         M.AssignSugar("record", base, location),
         ...Object.entries(attributes).map(([key, value]) =>
           M.Apply(
-            M.Var("record-put!", location),
+            M.QualifiedVar("builtin", "record-put!", location),
             [M.Keyword(key), value, M.Var("record", location)],
             location,
           ),
@@ -149,7 +155,7 @@ function shrinkUpdate(
           M.AssignSugar(
             "record",
             M.Apply(
-              M.Var("record-put", location),
+              M.QualifiedVar("builtin", "record-put", location),
               [M.Keyword(key), value, M.Var("record", location)],
               location,
             ),

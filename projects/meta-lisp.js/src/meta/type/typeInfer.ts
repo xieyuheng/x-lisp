@@ -34,11 +34,6 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         const type = M.ctxLookupType(ctx, exp.name)
         if (type) return M.okInferEffect(type)(subst)
 
-        const builtinMod = M.loadBuiltinMod(mod.project)
-        const builtinClaimedType = M.modLookupClaimedType(builtinMod, exp.name)
-        if (builtinClaimedType)
-          return M.okInferEffect(builtinClaimedType)(subst)
-
         let message = `undefined variable`
         message += `\n  name: ${exp.name}`
         return M.errorInferEffect(exp, message)(subst)
@@ -54,8 +49,11 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
           else throw new Error(message)
         }
 
-        const topLevelType = M.modLookupType(qualifiedMod, exp.name)
-        if (topLevelType) return M.okInferEffect(topLevelType)(subst)
+        const claimedType = M.modLookupClaimedType(qualifiedMod, exp.name)
+        if (claimedType) return M.okInferEffect(claimedType)(subst)
+
+        const inferredType = M.modLookupInferredType(qualifiedMod, exp.name)
+        if (inferredType) return M.okInferEffect(inferredType)(subst)
 
         let message = `undefined qualified variable`
         message += `\n  name: ${exp.modName}/${exp.name}`

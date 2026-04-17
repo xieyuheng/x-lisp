@@ -2,6 +2,7 @@ import * as B from "../../basic/index.ts"
 import * as M from "../index.ts"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
+import { getCompileCacheDir } from "node:module"
 
 export function ExplicateControlPass(mod: M.Mod, basicMod: B.Mod): void {
   for (const definition of M.modOwnDefinitions(mod)) {
@@ -10,11 +11,6 @@ export function ExplicateControlPass(mod: M.Mod, basicMod: B.Mod): void {
 }
 
 function definitionQualifiedName(definition: M.Definition): string {
-  const builtinMod = M.loadBuiltinMod(definition.mod.project)
-  if (definition.mod === builtinMod) {
-    return definition.name
-  }
-
   return `${definition.mod.name}/${definition.name}`
 }
 
@@ -235,8 +231,20 @@ function inIf(
   thenCont: Array<B.Instr>,
   elseCont: Array<B.Instr>,
 ): Array<B.Instr> {
-  if (M.isBool(condition)) {
-    return M.isTrue(condition) ? thenCont : elseCont
+  if (
+    condition.kind === "QualifiedVar" &&
+    condition.modName === "builtin" &&
+    condition.name === "true"
+  ) {
+    return thenCont
+  }
+
+  if (
+    condition.kind === "QualifiedVar" &&
+    condition.modName === "builtin" &&
+    condition.name === "false"
+  ) {
+    return elseCont
   }
 
   switch (condition.kind) {

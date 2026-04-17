@@ -22,8 +22,8 @@
                 (my-list-adjacent-dedup (li second rest))
                 (li first
                     (my-list-adjacent-dedup (li second rest)))))
-            (error "cond mismatch"))))
-      (error "cond mismatch"))))
+            (builtin/error "cond mismatch"))))
+      (builtin/error "cond mismatch"))))
 
 (define-test my-list-adjacent-dedup-test
   (assert-equal nil (my-list-adjacent-dedup nil))
@@ -52,7 +52,7 @@
         (= tail tail₃)
         (= head head₃)
         (li head (my-list-append tail right)))
-      (error "cond mismatch"))))
+      (builtin/error "cond mismatch"))))
 
 (define-test my-list-append-test
   (assert-equal nil (my-list-append nil nil))
@@ -63,7 +63,7 @@
      (li 4 (li 5 (li 6 nil))))))
 
 (claim my-list-length
-  (polymorphic (E) (-> (my-list/my-list-t E) int-t)))
+  (polymorphic (E) (-> (my-list/my-list-t E) builtin/int-t)))
 
 (define (my-list-length list)
   (if (nil? list)
@@ -75,7 +75,7 @@
         (= tail tail₄)
         (= head head₄)
         (iadd 1 (my-list-length tail)))
-      (error "cond mismatch"))))
+      (builtin/error "cond mismatch"))))
 
 (define-test my-list-length-test
   (assert-equal 0 (my-list-length nil))
@@ -107,8 +107,8 @@
               (= head1 head₅)
               (li (f head1 head2)
                   (my-list-map-zip f tail1 tail2)))
-            (error "cond mismatch"))))
-      (error "cond mismatch"))))
+            (builtin/error "cond mismatch"))))
+      (builtin/error "cond mismatch"))))
 
 (claim my-list-map-zip-2
   (polymorphic (A B C)
@@ -131,13 +131,13 @@
               (= tail₉ (li-tail list2))
               (= head₉ (li-head list2))
               (if (nil? list1)
-                (error "match mismatch")
+                (builtin/error "match mismatch")
                 (if (li? list1)
                   (begin
                     (= tail₇ (li-tail list1))
                     (= head₇ (li-head list1))
                     (if (nil? list2)
-                      (error "match mismatch")
+                      (builtin/error "match mismatch")
                       (if (li? list2)
                         (begin
                           (= tail₈ (li-tail list2))
@@ -151,10 +151,10 @@
                                f
                                tail1
                                tail2)))
-                        (error "cond mismatch"))))
-                  (error "cond mismatch"))))
-            (error "cond mismatch"))))
-      (error "cond mismatch"))))
+                        (builtin/error "cond mismatch"))))
+                  (builtin/error "cond mismatch"))))
+            (builtin/error "cond mismatch"))))
+      (builtin/error "cond mismatch"))))
 
 (define-test my-list-map-zip-test
   (assert-equal nil (my-list-map-zip iadd nil nil))
@@ -186,7 +186,7 @@
         (= tail tail₁₁)
         (= head head₁₁)
         (li (f head) (my-list-map f tail)))
-      (error "cond mismatch"))))
+      (builtin/error "cond mismatch"))))
 
 (define-test my-list-map-test
   (assert-equal nil (my-list-map (iadd 1) nil))
@@ -223,7 +223,8 @@
 (define nil 'nil)
 
 (claim nil?
-  (polymorphic (E) (-> (my-list/my-list-t E) bool-t)))
+  (polymorphic (E)
+    (-> (my-list/my-list-t E) builtin/bool-t)))
 
 (define (nil? value) (equal? value 'nil))
 
@@ -232,14 +233,15 @@
     (-> E (my-list/my-list-t E) (my-list/my-list-t E))))
 
 (define (li head tail)
-  (= list (make-list))
-  (list-push! 'li list)
-  (list-push! head list)
-  (list-push! tail list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'li list)
+  (builtin/list-push! head list)
+  (builtin/list-push! tail list)
   list)
 
 (claim li?
-  (polymorphic (E) (-> (my-list/my-list-t E) bool-t)))
+  (polymorphic (E)
+    (-> (my-list/my-list-t E) builtin/bool-t)))
 
 (define (li? value)
   (if (list? value)

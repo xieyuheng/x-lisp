@@ -1,10 +1,11 @@
 (claim evaluate-and-print (-> exp-t void-t))
 
 (define (evaluate-and-print exp)
-  (= _₁ l1/evaluate)
-  (= _₂ l1/empty-env)
-  (= _₃ (_₁ exp _₂))
-  (println _₃))
+  (= _₁ builtin/println)
+  (= _₂ l1/evaluate)
+  (= _₃ l1/empty-env)
+  (= _₄ (_₂ exp _₃))
+  (_₁ _₄))
 
 (define (main)
   (begin

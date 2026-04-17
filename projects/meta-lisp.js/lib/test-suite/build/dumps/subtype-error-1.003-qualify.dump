@@ -1,4 +1,8 @@
-(define-interface point-t :x float-t :y float-t)
+(define-interface point-t
+  :x
+  builtin/float-t
+  :y
+  builtin/float-t)
 
 (define (main)
   (the subtype-error-1/point-t (@record :x 1.0 :y 2.0))

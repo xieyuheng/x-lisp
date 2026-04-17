@@ -28,15 +28,3 @@ export function Void(location?: SourceLocation): Exps.Var {
 export function Bool(bool: boolean, location?: SourceLocation): Exps.Var {
   return Exps.Var(bool ? "true" : "false", location)
 }
-
-export function isBool(exp: Exp): boolean {
-  return isTrue(exp) || isFalse(exp)
-}
-
-export function isTrue(exp: Exp): boolean {
-  return exp.kind === "Var" && exp.name === "true"
-}
-
-export function isFalse(exp: Exp): boolean {
-  return exp.kind === "Var" && exp.name === "false"
-}

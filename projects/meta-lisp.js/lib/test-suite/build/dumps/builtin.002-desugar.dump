@@ -1,5 +1,6 @@
 (claim call-with-input-file
-  (polymorphic (A) (-> string-t (-> file-t A) A)))
+  (polymorphic (A)
+    (-> builtin/string-t (-> builtin/file-t A) A)))
 
 (define (call-with-input-file path f)
   (= file (open-input-file path))
@@ -8,7 +9,8 @@
   result)
 
 (claim call-with-output-file
-  (polymorphic (A) (-> string-t (-> file-t A) A)))
+  (polymorphic (A)
+    (-> builtin/string-t (-> builtin/file-t A) A)))
 
 (define (call-with-output-file path f)
   (= file (open-output-file path))
@@ -16,7 +18,8 @@
   (file-close file)
   result)
 
-(claim float-product (-> (list-t float-t) float-t))
+(claim float-product
+  (-> (builtin/list-t builtin/float-t) builtin/float-t))
 
 (define (float-product xs)
   (if (list-empty? xs)
@@ -26,28 +29,29 @@
 (define-test float-product-test
   (assert-equal
     1.0
-    (float-product (begin (= list (make-list)) list)))
+    (float-product (begin (= list (builtin/make-list)) list)))
   (assert-equal
     6.0
     (float-product
      (begin
-       (= list (make-list))
-       (list-push! 1.0 list)
-       (list-push! 2.0 list)
-       (list-push! 3.0 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 1.0 list)
+       (builtin/list-push! 2.0 list)
+       (builtin/list-push! 3.0 list)
        list)))
   (assert-equal
     24.0
     (float-product
      (begin
-       (= list (make-list))
-       (list-push! 1.0 list)
-       (list-push! 2.0 list)
-       (list-push! 3.0 list)
-       (list-push! 4.0 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 1.0 list)
+       (builtin/list-push! 2.0 list)
+       (builtin/list-push! 3.0 list)
+       (builtin/list-push! 4.0 list)
        list))))
 
-(claim float-sum (-> (list-t float-t) float-t))
+(claim float-sum
+  (-> (builtin/list-t builtin/float-t) builtin/float-t))
 
 (define (float-sum xs)
   (if (list-empty? xs)
@@ -57,28 +61,29 @@
 (define-test float-sum-test
   (assert-equal
     0.0
-    (float-sum (begin (= list (make-list)) list)))
+    (float-sum (begin (= list (builtin/make-list)) list)))
   (assert-equal
     6.0
     (float-sum
      (begin
-       (= list (make-list))
-       (list-push! 1.0 list)
-       (list-push! 2.0 list)
-       (list-push! 3.0 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 1.0 list)
+       (builtin/list-push! 2.0 list)
+       (builtin/list-push! 3.0 list)
        list)))
   (assert-equal
     10.0
     (float-sum
      (begin
-       (= list (make-list))
-       (list-push! 1.0 list)
-       (list-push! 2.0 list)
-       (list-push! 3.0 list)
-       (list-push! 4.0 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 1.0 list)
+       (builtin/list-push! 2.0 list)
+       (builtin/list-push! 3.0 list)
+       (builtin/list-push! 4.0 list)
        list))))
 
-(claim int-align (-> int-t int-t int-t))
+(claim int-align
+  (-> builtin/int-t builtin/int-t builtin/int-t))
 
 (define (int-align alignment n)
   (= remainder (imod n alignment))
@@ -92,7 +97,8 @@
   (assert-equal 16 (int-align 16 16))
   (assert-equal 32 (int-align 16 24)))
 
-(claim int-product (-> (list-t int-t) int-t))
+(claim int-product
+  (-> (builtin/list-t builtin/int-t) builtin/int-t))
 
 (define (int-product xs)
   (if (list-empty? xs)
@@ -102,28 +108,29 @@
 (define-test int-product-test
   (assert-equal
     1
-    (int-product (begin (= list (make-list)) list)))
+    (int-product (begin (= list (builtin/make-list)) list)))
   (assert-equal
     6
     (int-product
      (begin
-       (= list (make-list))
-       (list-push! 1 list)
-       (list-push! 2 list)
-       (list-push! 3 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
        list)))
   (assert-equal
     24
     (int-product
      (begin
-       (= list (make-list))
-       (list-push! 1 list)
-       (list-push! 2 list)
-       (list-push! 3 list)
-       (list-push! 4 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
+       (builtin/list-push! 4 list)
        list))))
 
-(claim int-sum (-> (list-t int-t) int-t))
+(claim int-sum
+  (-> (builtin/list-t builtin/int-t) builtin/int-t))
 
 (define (int-sum xs)
   (if (list-empty? xs) 0 (iadd (car xs) (int-sum (cdr xs)))))
@@ -131,29 +138,32 @@
 (define-test int-sum-test
   (assert-equal
     0
-    (int-sum (begin (= list (make-list)) list)))
+    (int-sum (begin (= list (builtin/make-list)) list)))
   (assert-equal
     6
     (int-sum
      (begin
-       (= list (make-list))
-       (list-push! 1 list)
-       (list-push! 2 list)
-       (list-push! 3 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
        list)))
   (assert-equal
     10
     (int-sum
      (begin
-       (= list (make-list))
-       (list-push! 1 list)
-       (list-push! 2 list)
-       (list-push! 3 list)
-       (list-push! 4 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
+       (builtin/list-push! 4 list)
        list))))
 
 (claim list-append
-  (polymorphic (A) (-> (list-t A) (list-t A) (list-t A))))
+  (polymorphic (A)
+    (-> (builtin/list-t A)
+        (builtin/list-t A)
+        (builtin/list-t A))))
 
 (define (list-append list tail)
   (if (list-empty? list)
@@ -164,65 +174,120 @@
   (assert-equal
     (list-append
      (begin
-       (= list (make-list))
-       (list-push! 1 list)
-       (list-push! 2 list)
-       (list-push! 3 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
        list)
      (begin
-       (= list (make-list))
-       (list-push! 4 list)
-       (list-push! 5 list)
-       (list-push! 6 list)
+       (= list (builtin/make-list))
+       (builtin/list-push! 4 list)
+       (builtin/list-push! 5 list)
+       (builtin/list-push! 6 list)
        list))
     (begin
-      (= list (make-list))
-      (list-push! 1 list)
-      (list-push! 2 list)
-      (list-push! 3 list)
-      (list-push! 4 list)
-      (list-push! 5 list)
-      (list-push! 6 list)
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      (builtin/list-push! 4 list)
+      (builtin/list-push! 5 list)
+      (builtin/list-push! 6 list)
       list)))
 
 (claim list-concat
-  (polymorphic (A) (-> (list-t (list-t A)) (list-t A))))
+  (polymorphic (A)
+    (-> (builtin/list-t (builtin/list-t A))
+        (builtin/list-t A))))
 
 (define (list-concat lists)
   (if (list-empty? lists)
-    (begin (= list (make-list)) list)
+    (begin (= list (builtin/make-list)) list)
     (list-append (car lists) (list-concat (cdr lists)))))
 
 (define-test list-concat-test
   (assert-equal
     (list-concat
      (begin
-       (= list (make-list))
-       (list-push!
+       (= list (builtin/make-list))
+       (builtin/list-push!
         (begin
-          (= list (make-list))
-          (list-push! 1 list)
-          (list-push! 2 list)
-          (list-push! 3 list)
+          (= list (builtin/make-list))
+          (builtin/list-push! 1 list)
+          (builtin/list-push! 2 list)
+          (builtin/list-push! 3 list)
           list)
         list)
-       (list-push!
+       (builtin/list-push!
         (begin
-          (= list (make-list))
-          (list-push! 4 list)
-          (list-push! 5 list)
-          (list-push! 6 list)
+          (= list (builtin/make-list))
+          (builtin/list-push! 4 list)
+          (builtin/list-push! 5 list)
+          (builtin/list-push! 6 list)
           list)
         list)
        list))
     (begin
-      (= list (make-list))
-      (list-push! 1 list)
-      (list-push! 2 list)
-      (list-push! 3 list)
-      (list-push! 4 list)
-      (list-push! 5 list)
-      (list-push! 6 list)
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      (builtin/list-push! 4 list)
+      (builtin/list-push! 5 list)
+      (builtin/list-push! 6 list)
+      list)))
+
+(claim list-each
+  (polymorphic (A)
+    (-> (-> A builtin/void-t)
+        (builtin/list-t A)
+        builtin/void-t)))
+
+(define (list-each f list)
+  (if (list-empty? list)
+    void
+    (begin (f (car list)) (list-each f (cdr list)))))
+
+(define-test list-each-test
+  (list-each
+   (lambda (x) (print x) (write "\n"))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list)))
+
+(define (list-first list) (car list))
+
+(define (list-second list) (car (cdr list)))
+
+(define (list-third list) (car (cdr (cdr list))))
+
+(claim list-map
+  (polymorphic (A B)
+    (-> (-> A B) (builtin/list-t A) (builtin/list-t B))))
+
+(define (list-map f list)
+  (if (list-empty? list)
+    (begin (= list (builtin/make-list)) list)
+    (cons (f (car list)) (list-map f (cdr list)))))
+
+(define-test list-map-test
+  (assert-equal
+    (list-map
+     (iadd 10)
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
+       list))
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 11 list)
+      (builtin/list-push! 12 list)
+      (builtin/list-push! 13 list)
       list)))
 
 (define-interface source-location-t
@@ -262,16 +327,19 @@
    (location source-location-t)))
 
 (claim symbol-sexp
-  (-> symbol-t source-location-t located-sexp-t))
+  (-> builtin/symbol-t
+      builtin/source-location-t
+      builtin/located-sexp-t))
 
 (define (symbol-sexp content location)
-  (= list (make-list))
-  (list-push! 'symbol-sexp list)
-  (list-push! content list)
-  (list-push! location list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'symbol-sexp list)
+  (builtin/list-push! content list)
+  (builtin/list-push! location list)
   list)
 
-(claim symbol-sexp? (-> located-sexp-t bool-t))
+(claim symbol-sexp?
+  (-> builtin/located-sexp-t builtin/bool-t))
 
 (define (symbol-sexp? value)
   (if (list? value)
@@ -280,50 +348,62 @@
       false)
     false))
 
-(claim symbol-sexp-content (-> located-sexp-t symbol-t))
+(claim symbol-sexp-content
+  (-> builtin/located-sexp-t builtin/symbol-t))
 
 (define (symbol-sexp-content target) (list-get 1 target))
 
 (claim symbol-sexp-location
-  (-> located-sexp-t source-location-t))
+  (-> builtin/located-sexp-t builtin/source-location-t))
 
 (define (symbol-sexp-location target) (list-get 2 target))
 
 (claim symbol-sexp-put-content
-  (-> symbol-t located-sexp-t located-sexp-t))
+  (-> builtin/symbol-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (symbol-sexp-put-content value target)
   (list-put 1 value target))
 
 (claim symbol-sexp-put-location
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (symbol-sexp-put-location value target)
   (list-put 2 value target))
 
 (claim symbol-sexp-put-content!
-  (-> symbol-t located-sexp-t located-sexp-t))
+  (-> builtin/symbol-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (symbol-sexp-put-content! value target)
   (list-put! 1 value target))
 
 (claim symbol-sexp-put-location!
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (symbol-sexp-put-location! value target)
   (list-put! 2 value target))
 
 (claim keyword-sexp
-  (-> keyword-t source-location-t located-sexp-t))
+  (-> builtin/keyword-t
+      builtin/source-location-t
+      builtin/located-sexp-t))
 
 (define (keyword-sexp content location)
-  (= list (make-list))
-  (list-push! 'keyword-sexp list)
-  (list-push! content list)
-  (list-push! location list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'keyword-sexp list)
+  (builtin/list-push! content list)
+  (builtin/list-push! location list)
   list)
 
-(claim keyword-sexp? (-> located-sexp-t bool-t))
+(claim keyword-sexp?
+  (-> builtin/located-sexp-t builtin/bool-t))
 
 (define (keyword-sexp? value)
   (if (list? value)
@@ -332,50 +412,62 @@
       false)
     false))
 
-(claim keyword-sexp-content (-> located-sexp-t keyword-t))
+(claim keyword-sexp-content
+  (-> builtin/located-sexp-t builtin/keyword-t))
 
 (define (keyword-sexp-content target) (list-get 1 target))
 
 (claim keyword-sexp-location
-  (-> located-sexp-t source-location-t))
+  (-> builtin/located-sexp-t builtin/source-location-t))
 
 (define (keyword-sexp-location target) (list-get 2 target))
 
 (claim keyword-sexp-put-content
-  (-> keyword-t located-sexp-t located-sexp-t))
+  (-> builtin/keyword-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (keyword-sexp-put-content value target)
   (list-put 1 value target))
 
 (claim keyword-sexp-put-location
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (keyword-sexp-put-location value target)
   (list-put 2 value target))
 
 (claim keyword-sexp-put-content!
-  (-> keyword-t located-sexp-t located-sexp-t))
+  (-> builtin/keyword-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (keyword-sexp-put-content! value target)
   (list-put! 1 value target))
 
 (claim keyword-sexp-put-location!
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (keyword-sexp-put-location! value target)
   (list-put! 2 value target))
 
 (claim string-sexp
-  (-> string-t source-location-t located-sexp-t))
+  (-> builtin/string-t
+      builtin/source-location-t
+      builtin/located-sexp-t))
 
 (define (string-sexp content location)
-  (= list (make-list))
-  (list-push! 'string-sexp list)
-  (list-push! content list)
-  (list-push! location list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'string-sexp list)
+  (builtin/list-push! content list)
+  (builtin/list-push! location list)
   list)
 
-(claim string-sexp? (-> located-sexp-t bool-t))
+(claim string-sexp?
+  (-> builtin/located-sexp-t builtin/bool-t))
 
 (define (string-sexp? value)
   (if (list? value)
@@ -384,49 +476,61 @@
       false)
     false))
 
-(claim string-sexp-content (-> located-sexp-t string-t))
+(claim string-sexp-content
+  (-> builtin/located-sexp-t builtin/string-t))
 
 (define (string-sexp-content target) (list-get 1 target))
 
 (claim string-sexp-location
-  (-> located-sexp-t source-location-t))
+  (-> builtin/located-sexp-t builtin/source-location-t))
 
 (define (string-sexp-location target) (list-get 2 target))
 
 (claim string-sexp-put-content
-  (-> string-t located-sexp-t located-sexp-t))
+  (-> builtin/string-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (string-sexp-put-content value target)
   (list-put 1 value target))
 
 (claim string-sexp-put-location
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (string-sexp-put-location value target)
   (list-put 2 value target))
 
 (claim string-sexp-put-content!
-  (-> string-t located-sexp-t located-sexp-t))
+  (-> builtin/string-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (string-sexp-put-content! value target)
   (list-put! 1 value target))
 
 (claim string-sexp-put-location!
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (string-sexp-put-location! value target)
   (list-put! 2 value target))
 
-(claim int-sexp (-> int-t source-location-t located-sexp-t))
+(claim int-sexp
+  (-> builtin/int-t
+      builtin/source-location-t
+      builtin/located-sexp-t))
 
 (define (int-sexp content location)
-  (= list (make-list))
-  (list-push! 'int-sexp list)
-  (list-push! content list)
-  (list-push! location list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'int-sexp list)
+  (builtin/list-push! content list)
+  (builtin/list-push! location list)
   list)
 
-(claim int-sexp? (-> located-sexp-t bool-t))
+(claim int-sexp? (-> builtin/located-sexp-t builtin/bool-t))
 
 (define (int-sexp? value)
   (if (list? value)
@@ -435,50 +539,62 @@
       false)
     false))
 
-(claim int-sexp-content (-> located-sexp-t int-t))
+(claim int-sexp-content
+  (-> builtin/located-sexp-t builtin/int-t))
 
 (define (int-sexp-content target) (list-get 1 target))
 
 (claim int-sexp-location
-  (-> located-sexp-t source-location-t))
+  (-> builtin/located-sexp-t builtin/source-location-t))
 
 (define (int-sexp-location target) (list-get 2 target))
 
 (claim int-sexp-put-content
-  (-> int-t located-sexp-t located-sexp-t))
+  (-> builtin/int-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (int-sexp-put-content value target)
   (list-put 1 value target))
 
 (claim int-sexp-put-location
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (int-sexp-put-location value target)
   (list-put 2 value target))
 
 (claim int-sexp-put-content!
-  (-> int-t located-sexp-t located-sexp-t))
+  (-> builtin/int-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (int-sexp-put-content! value target)
   (list-put! 1 value target))
 
 (claim int-sexp-put-location!
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (int-sexp-put-location! value target)
   (list-put! 2 value target))
 
 (claim float-sexp
-  (-> float-t source-location-t located-sexp-t))
+  (-> builtin/float-t
+      builtin/source-location-t
+      builtin/located-sexp-t))
 
 (define (float-sexp content location)
-  (= list (make-list))
-  (list-push! 'float-sexp list)
-  (list-push! content list)
-  (list-push! location list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'float-sexp list)
+  (builtin/list-push! content list)
+  (builtin/list-push! location list)
   list)
 
-(claim float-sexp? (-> located-sexp-t bool-t))
+(claim float-sexp?
+  (-> builtin/located-sexp-t builtin/bool-t))
 
 (define (float-sexp? value)
   (if (list? value)
@@ -487,52 +603,62 @@
       false)
     false))
 
-(claim float-sexp-content (-> located-sexp-t float-t))
+(claim float-sexp-content
+  (-> builtin/located-sexp-t builtin/float-t))
 
 (define (float-sexp-content target) (list-get 1 target))
 
 (claim float-sexp-location
-  (-> located-sexp-t source-location-t))
+  (-> builtin/located-sexp-t builtin/source-location-t))
 
 (define (float-sexp-location target) (list-get 2 target))
 
 (claim float-sexp-put-content
-  (-> float-t located-sexp-t located-sexp-t))
+  (-> builtin/float-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (float-sexp-put-content value target)
   (list-put 1 value target))
 
 (claim float-sexp-put-location
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (float-sexp-put-location value target)
   (list-put 2 value target))
 
 (claim float-sexp-put-content!
-  (-> float-t located-sexp-t located-sexp-t))
+  (-> builtin/float-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (float-sexp-put-content! value target)
   (list-put! 1 value target))
 
 (claim float-sexp-put-location!
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (float-sexp-put-location! value target)
   (list-put! 2 value target))
 
 (claim list-sexp
-  (-> (list-t located-sexp-t)
-      source-location-t
-      located-sexp-t))
+  (-> (builtin/list-t builtin/located-sexp-t)
+      builtin/source-location-t
+      builtin/located-sexp-t))
 
 (define (list-sexp elements location)
-  (= list (make-list))
-  (list-push! 'list-sexp list)
-  (list-push! elements list)
-  (list-push! location list)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'list-sexp list)
+  (builtin/list-push! elements list)
+  (builtin/list-push! location list)
   list)
 
-(claim list-sexp? (-> located-sexp-t bool-t))
+(claim list-sexp?
+  (-> builtin/located-sexp-t builtin/bool-t))
 
 (define (list-sexp? value)
   (if (list? value)
@@ -542,40 +668,50 @@
     false))
 
 (claim list-sexp-elements
-  (-> located-sexp-t (list-t located-sexp-t)))
+  (-> builtin/located-sexp-t
+      (builtin/list-t builtin/located-sexp-t)))
 
 (define (list-sexp-elements target) (list-get 1 target))
 
 (claim list-sexp-location
-  (-> located-sexp-t source-location-t))
+  (-> builtin/located-sexp-t builtin/source-location-t))
 
 (define (list-sexp-location target) (list-get 2 target))
 
 (claim list-sexp-put-elements
-  (-> (list-t located-sexp-t) located-sexp-t located-sexp-t))
+  (-> (builtin/list-t builtin/located-sexp-t)
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (list-sexp-put-elements value target)
   (list-put 1 value target))
 
 (claim list-sexp-put-location
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (list-sexp-put-location value target)
   (list-put 2 value target))
 
 (claim list-sexp-put-elements!
-  (-> (list-t located-sexp-t) located-sexp-t located-sexp-t))
+  (-> (builtin/list-t builtin/located-sexp-t)
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (list-sexp-put-elements! value target)
   (list-put! 1 value target))
 
 (claim list-sexp-put-location!
-  (-> source-location-t located-sexp-t located-sexp-t))
+  (-> builtin/source-location-t
+      builtin/located-sexp-t
+      builtin/located-sexp-t))
 
 (define (list-sexp-put-location! value target)
   (list-put! 2 value target))
 
-(claim string-repeat (-> int-t string-t string-t))
+(claim string-repeat
+  (-> builtin/int-t builtin/string-t builtin/string-t))
 
 (define (string-repeat n string)
   (if (equal? n 0)

@@ -1,330 +1,511 @@
 (claim bool-test void-t)
 
-(define-test bool-test (println true) (println false))
+(define-test bool-test
+  (begin (= _₁ builtin/println) (= _₂ builtin/true) (_₁ _₂))
+  (= _₃ builtin/println)
+  (= _₄ builtin/false)
+  (_₃ _₄))
 
-(claim one int-t)
+(claim one builtin/int-t)
 
 (define one 1)
 
-(claim two int-t)
+(claim two builtin/int-t)
 
-(define two (= _₁ test-suite/one) (iadd 1 _₁))
+(define two
+  (= _₁ builtin/iadd)
+  (= _₂ test-suite/one)
+  (_₁ 1 _₂))
 
-(claim three int-t)
+(claim three builtin/int-t)
 
-(define three (= _₁ test-suite/two) (iadd 1 _₁))
+(define three
+  (= _₁ builtin/iadd)
+  (= _₂ test-suite/two)
+  (_₁ 1 _₂))
 
 (claim constant-test void-t)
 
 (define-test constant-test
-  (= _₁ test-suite/three)
-  (println _₁))
+  (= _₁ builtin/println)
+  (= _₂ test-suite/three)
+  (_₁ _₂))
 
 (claim eoc-02-00 void-t)
 
-(define-test eoc-02-00 (println 42))
+(define-test eoc-02-00 (= _₁ builtin/println) (_₁ 42))
 
 (claim eoc-02-01 void-t)
 
 (define-test eoc-02-01
   (= x₁ 4)
-  (= _₁ (iadd 8 x₁))
-  (println _₁))
+  (= _₁ builtin/println)
+  (= _₂ builtin/iadd)
+  (= _₃ (_₂ 8 x₁))
+  (_₁ _₃))
 
 (claim eoc-02-02 void-t)
 
 (define-test eoc-02-02
-  (= y₁ (begin (= x₁ 20) (= x₂ 22) (iadd x₁ x₂)))
-  (println y₁))
+  (= y₁
+     (begin
+       (= x₁ 20)
+       (= _₁ builtin/iadd)
+       (= x₂ 22)
+       (_₁ x₁ x₂)))
+  (= _₂ builtin/println)
+  (_₂ y₁))
 
 (claim eoc-02-03 void-t)
 
 (define-test eoc-02-03
-  (= y₁ (begin (= x₁ 20) (= z₁ 22) (iadd x₁ z₁)))
-  (println y₁))
+  (= y₁
+     (begin
+       (= x₁ 20)
+       (= z₁ 22)
+       (= _₁ builtin/iadd)
+       (_₁ x₁ z₁)))
+  (= _₂ builtin/println)
+  (_₂ y₁))
 
 (claim eoc-02-04 void-t)
 
 (define-test eoc-02-04
-  (= z₁ (begin (= y₁ (begin (= x₁ (ineg 42)) x₁)) y₁))
-  (= _₁ (ineg z₁))
-  (println _₁))
+  (= z₁
+     (begin
+       (= y₁
+          (begin
+            (= x₁ (begin (= _₁ builtin/ineg) (_₁ 42)))
+            x₁))
+       y₁))
+  (= _₂ builtin/println)
+  (= _₃ builtin/ineg)
+  (= _₄ (_₃ z₁))
+  (_₂ _₄))
 
 (claim eoc-02-05 void-t)
 
-(define-test eoc-02-05 (= a₁ 42) (= b₁ a₁) (println b₁))
+(define-test eoc-02-05
+  (= a₁ 42)
+  (= b₁ a₁)
+  (= _₁ builtin/println)
+  (_₁ b₁))
 
 (claim eoc-02-06 void-t)
 
 (define-test eoc-02-06
-  (= _₁ (random-dice))
-  (= _₂ (ineg _₁))
-  (println _₂))
+  (= _₁ builtin/println)
+  (= _₂ builtin/ineg)
+  (= _₃ builtin/random-dice)
+  (= _₄ (_₃))
+  (= _₅ (_₂ _₄))
+  (_₁ _₅))
 
 (claim eoc-02-07 void-t)
 
 (define-test eoc-02-07
-  (= _₁ (random-dice))
-  (= _₂ (random-dice))
-  (= _₃ (iadd _₁ _₂))
-  (println _₃))
+  (= _₁ builtin/println)
+  (= _₂ builtin/iadd)
+  (= _₃ builtin/random-dice)
+  (= _₄ (_₃))
+  (= _₅ builtin/random-dice)
+  (= _₆ (_₅))
+  (= _₇ (_₂ _₄ _₆))
+  (_₁ _₇))
 
 (claim eoc-02-08 void-t)
 
-(define-test eoc-02-08 (= _₁ (iadd 20 22)) (println _₁))
+(define-test eoc-02-08
+  (= _₁ builtin/println)
+  (= _₂ builtin/iadd)
+  (= _₃ (_₂ 20 22))
+  (_₁ _₃))
 
 (claim eoc-02-09 void-t)
 
 (define-test eoc-02-09
-  (= _₁ (iadd 11 11))
-  (= _₂ (iadd 20 _₁))
-  (println _₂))
+  (= _₁ builtin/println)
+  (= _₂ builtin/iadd)
+  (= _₃ builtin/iadd)
+  (= _₄ (_₃ 11 11))
+  (= _₅ (_₂ 20 _₄))
+  (_₁ _₅))
 
 (claim eoc-02-10 void-t)
 
 (define-test eoc-02-10
   (= x₁
      (begin
-       (= _₁ (iadd 1 2))
-       (= _₂ (iadd 3 4))
-       (iadd _₁ _₂)))
-  (= _₃ (iadd x₁ 5))
-  (println _₃))
+       (= _₁ builtin/iadd)
+       (= _₂ builtin/iadd)
+       (= _₃ (_₂ 1 2))
+       (= _₄ builtin/iadd)
+       (= _₅ (_₄ 3 4))
+       (_₁ _₃ _₅)))
+  (= _₆ builtin/println)
+  (= _₇ builtin/iadd)
+  (= _₈ (_₇ x₁ 5))
+  (_₆ _₈))
 
 (claim eoc-02-11 void-t)
 
 (define-test eoc-02-11
-  (= _₁ (iadd 1 2))
-  (= _₂ (iadd 3 4))
-  (= _₃ (iadd _₁ _₂))
-  (println _₃))
+  (= _₁ builtin/println)
+  (= _₂ builtin/iadd)
+  (= _₃ builtin/iadd)
+  (= _₄ (_₃ 1 2))
+  (= _₅ builtin/iadd)
+  (= _₆ (_₅ 3 4))
+  (= _₇ (_₂ _₄ _₆))
+  (_₁ _₇))
 
 (claim eoc-02-12 void-t)
 
 (define-test eoc-02-12
-  (= _₁ (iadd 1 2))
-  (= _₂ (iadd 4 5))
-  (= _₃ (iadd 3 _₂))
-  (= _₄ (iadd _₁ _₃))
-  (println _₄))
+  (= _₁ builtin/println)
+  (= _₂ builtin/iadd)
+  (= _₃ builtin/iadd)
+  (= _₄ (_₃ 1 2))
+  (= _₅ builtin/iadd)
+  (= _₆ builtin/iadd)
+  (= _₇ (_₆ 4 5))
+  (= _₈ (_₅ 3 _₇))
+  (= _₉ (_₂ _₄ _₈))
+  (_₁ _₉))
 
 (claim eoc-02-13 void-t)
 
 (define-test eoc-02-13
-  (= x₁ (begin (= _₁ (ineg 10)) (iadd 42 _₁)))
-  (= _₂ (iadd x₁ 10))
-  (println _₂))
+  (= x₁
+     (begin
+       (= _₁ builtin/iadd)
+       (= _₂ builtin/ineg)
+       (= _₃ (_₂ 10))
+       (_₁ 42 _₃)))
+  (= _₄ builtin/println)
+  (= _₅ builtin/iadd)
+  (= _₆ (_₅ x₁ 10))
+  (_₄ _₆))
 
 (claim eoc-02-14 void-t)
 
 (define-test eoc-02-14
   (= x₁ 32)
+  (= _₁ builtin/println)
+  (= _₂ builtin/iadd)
   (= x₂ 10)
-  (= _₁ (iadd x₂ x₁))
-  (println _₁))
+  (= _₃ (_₂ x₂ x₁))
+  (_₁ _₃))
 
 (claim eoc-02-15 void-t)
 
 (define-test eoc-02-15
-  (= x₁ (begin (= x₂ 4) (iadd x₂ 1)))
-  (= _₁ (iadd x₁ 2))
-  (println _₁))
+  (= x₁ (begin (= x₂ 4) (= _₁ builtin/iadd) (_₁ x₂ 1)))
+  (= _₂ builtin/println)
+  (= _₃ builtin/iadd)
+  (= _₄ (_₃ x₁ 2))
+  (_₂ _₄))
 
 (claim eoc-02-16 void-t)
 
-(define-test eoc-02-16 (= _₁ (isub 50 8)) (println _₁))
+(define-test eoc-02-16
+  (= _₁ builtin/println)
+  (= _₂ builtin/isub)
+  (= _₃ (_₂ 50 8))
+  (_₁ _₃))
 
 (claim eoc-02-17 void-t)
 
 (define-test eoc-02-17
-  (= _₁ (random-dice))
-  (= _₂ (iadd _₁ 1))
-  (= _₃ (iadd 1 _₂))
-  (println _₃))
+  (= _₁ builtin/println)
+  (= _₂ builtin/iadd)
+  (= _₃ builtin/iadd)
+  (= _₄ builtin/random-dice)
+  (= _₅ (_₄))
+  (= _₆ (_₃ _₅ 1))
+  (= _₇ (_₂ 1 _₆))
+  (_₁ _₇))
 
 (claim eoc-02-18 void-t)
 
 (define-test eoc-02-18
-  (= _₁ (random-dice))
-  (= _₂ (iadd _₁ 1))
-  (= _₃ (iadd _₂ 1))
-  (= _₄ (iadd _₃ 1))
-  (= _₅ (iadd _₄ 1))
-  (println _₅))
+  (= _₁ builtin/println)
+  (= _₂ builtin/iadd)
+  (= _₃ builtin/iadd)
+  (= _₄ builtin/iadd)
+  (= _₅ builtin/iadd)
+  (= _₆ builtin/random-dice)
+  (= _₇ (_₆))
+  (= _₈ (_₅ _₇ 1))
+  (= _₉ (_₄ _₈ 1))
+  (= _₁₀ (_₃ _₉ 1))
+  (= _₁₁ (_₂ _₁₀ 1))
+  (_₁ _₁₁))
 
 (claim eoc-02-19 void-t)
 
 (define-test eoc-02-19
   (= x₁ 1)
-  (= x₂ (begin (= x₃ 5) (iadd x₃ x₃)))
-  (= _₁ (iadd x₂ 100))
-  (= _₂ (iadd x₁ _₁))
-  (println _₂))
+  (= _₁ builtin/println)
+  (= _₂ builtin/iadd)
+  (= x₂ (begin (= x₃ 5) (= _₃ builtin/iadd) (_₃ x₃ x₃)))
+  (= _₄ builtin/iadd)
+  (= _₅ (_₄ x₂ 100))
+  (= _₆ (_₂ x₁ _₅))
+  (_₁ _₆))
 
 (claim eoc-02-20 void-t)
 
 (define-test eoc-02-20
   (= x₁ 1)
-  (= x₂ (begin (= y₁ 5) (iadd y₁ x₁)))
-  (= _₁ (iadd x₂ 100))
-  (= _₂ (iadd x₁ _₁))
-  (println _₂))
+  (= _₁ builtin/println)
+  (= _₂ builtin/iadd)
+  (= x₂ (begin (= y₁ 5) (= _₃ builtin/iadd) (_₃ y₁ x₁)))
+  (= _₄ builtin/iadd)
+  (= _₅ (_₄ x₂ 100))
+  (= _₆ (_₂ x₁ _₅))
+  (_₁ _₆))
 
 (claim eoc-02-21 void-t)
 
 (define-test eoc-02-21
   (= y₁ 6)
-  (= x₁ (begin (= y₂ (ineg 42)) y₂))
-  (= _₁ (iadd x₁ y₁))
-  (println _₁))
+  (= x₁
+     (begin (= y₂ (begin (= _₁ builtin/ineg) (_₁ 42))) y₂))
+  (= _₂ builtin/println)
+  (= _₃ builtin/iadd)
+  (= _₄ (_₃ x₁ y₁))
+  (_₂ _₄))
 
 (claim eoc-03-01 void-t)
 
 (define-test eoc-03-01
   (= v₁ 1)
   (= w₁ 42)
-  (= x₁ (iadd v₁ 7))
+  (= x₁ (begin (= _₁ builtin/iadd) (_₁ v₁ 7)))
   (= y₁ x₁)
-  (= z₁ (iadd x₁ w₁))
-  (= _₁ (ineg y₁))
-  (= _₂ (iadd z₁ _₁))
-  (println _₂))
+  (= z₁ (begin (= _₂ builtin/iadd) (_₂ x₁ w₁)))
+  (= _₃ builtin/println)
+  (= _₄ builtin/iadd)
+  (= _₅ builtin/ineg)
+  (= _₆ (_₅ y₁))
+  (= _₇ (_₄ z₁ _₆))
+  (_₃ _₇))
 
 (claim eoc-03-02 void-t)
 
 (define-test eoc-03-02
-  (= x₁ (random-dice))
-  (= y₁ (random-dice))
-  (= _₁ (iadd x₁ y₁))
-  (= _₂ (iadd _₁ 42))
-  (println _₂))
+  (= x₁ (begin (= _₁ builtin/random-dice) (_₁)))
+  (= y₁ (begin (= _₂ builtin/random-dice) (_₂)))
+  (= _₃ builtin/println)
+  (= _₄ builtin/iadd)
+  (= _₅ builtin/iadd)
+  (= _₆ (_₅ x₁ y₁))
+  (= _₇ (_₄ _₆ 42))
+  (_₃ _₇))
 
 (claim eoc-04-01 void-t)
 
-(define-test eoc-04-01 (= _₁ (if true 1 2)) (println _₁))
+(define-test eoc-04-01
+  (= _₁ builtin/println)
+  (= _₂ (if builtin/true 1 2))
+  (_₁ _₂))
 
 (claim eoc-04-02 void-t)
 
 (define-test eoc-04-02
-  (= x₁ (random-dice))
-  (= y₁ (random-dice))
-  (= _₁
-     (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
-       (iadd y₁ 2)
-       (iadd y₁ 10)))
-  (println _₁))
+  (= _₁ builtin/println)
+  (= x₁ (begin (= _₂ builtin/random-dice) (_₂)))
+  (= y₁ (begin (= _₃ builtin/random-dice) (_₃)))
+  (= _₄
+     (if
+         (if (begin (= _₅ builtin/int-less?) (_₅ x₁ 1))
+           (begin (= _₆ builtin/equal?) (_₆ x₁ 0))
+           (begin (= _₇ builtin/equal?) (_₇ x₁ 2)))
+       (begin (= _₈ builtin/iadd) (_₈ y₁ 2))
+       (begin (= _₉ builtin/iadd) (_₉ y₁ 10))))
+  (_₁ _₄))
 
 (claim eoc-04-03 void-t)
 
 (define-test eoc-04-03
-  (= x₁ (random-dice))
-  (= y₁ (random-dice))
-  (= _₁
-     (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
-       (iadd y₁ 2)
-       (iadd y₁ 10)))
-  (= _₂
-     (if (if (int-less? x₁ 1) (equal? x₁ 0) (equal? x₁ 2))
-       (iadd y₁ 2)
-       (iadd y₁ 10)))
-  (= _₃ (iadd _₁ _₂))
-  (println _₃))
+  (= _₁ builtin/println)
+  (= x₁ (begin (= _₂ builtin/random-dice) (_₂)))
+  (= y₁ (begin (= _₃ builtin/random-dice) (_₃)))
+  (= _₄ builtin/iadd)
+  (= _₅
+     (if
+         (if (begin (= _₆ builtin/int-less?) (_₆ x₁ 1))
+           (begin (= _₇ builtin/equal?) (_₇ x₁ 0))
+           (begin (= _₈ builtin/equal?) (_₈ x₁ 2)))
+       (begin (= _₉ builtin/iadd) (_₉ y₁ 2))
+       (begin (= _₁₀ builtin/iadd) (_₁₀ y₁ 10))))
+  (= _₁₁
+     (if
+         (if (begin (= _₁₂ builtin/int-less?) (_₁₂ x₁ 1))
+           (begin (= _₁₃ builtin/equal?) (_₁₃ x₁ 0))
+           (begin (= _₁₄ builtin/equal?) (_₁₄ x₁ 2)))
+       (begin (= _₁₅ builtin/iadd) (_₁₅ y₁ 2))
+       (begin (= _₁₆ builtin/iadd) (_₁₆ y₁ 10))))
+  (= _₁₇ (_₄ _₅ _₁₁))
+  (_₁ _₁₇))
 
 (claim eoc-04-04 void-t)
 
 (define-test eoc-04-04
-  (= _₁
+  (= _₁ builtin/println)
+  (= _₂
      (if
-         (if (begin (= _₂ (random-dice)) (equal? _₂ 1))
-           (begin (= _₃ (random-dice)) (equal? _₃ 2))
-           false)
+         (if
+             (begin
+               (= _₃ builtin/equal?)
+               (= _₄ builtin/random-dice)
+               (= _₅ (_₄))
+               (_₃ _₅ 1))
+           (begin
+             (= _₆ builtin/equal?)
+             (= _₇ builtin/random-dice)
+             (= _₈ (_₇))
+             (_₆ _₈ 2))
+           builtin/false)
        0
        42))
-  (println _₁))
+  (_₁ _₂))
 
 (claim eoc-05-01 void-t)
 
 (define-test eoc-05-01
-  (print 1)
-  (newline)
-  (print 2)
-  (newline)
-  (print 3)
-  (newline)
-  void)
+  (begin (= _₁ builtin/print) (_₁ 1))
+  (begin (= _₂ builtin/newline) (_₂))
+  (begin (= _₃ builtin/print) (_₃ 2))
+  (begin (= _₄ builtin/newline) (_₄))
+  (begin (= _₅ builtin/print) (_₅ 3))
+  (begin (= _₆ builtin/newline) (_₆))
+  builtin/void)
 
 (claim eoc-05-02 void-t)
 
 (define-test eoc-05-02
   (= x₁
      (begin
-       (print 1)
-       (newline)
-       (print 2)
-       (newline)
-       (print 3)
-       (newline)
+       (begin (= _₁ builtin/print) (_₁ 1))
+       (begin (= _₂ builtin/newline) (_₂))
+       (begin (= _₃ builtin/print) (_₃ 2))
+       (begin (= _₄ builtin/newline) (_₄))
+       (begin (= _₅ builtin/print) (_₅ 3))
+       (begin (= _₆ builtin/newline) (_₆))
        6))
-  (print 4)
-  (newline)
-  (print 5)
-  (newline)
-  (print 6)
-  (newline)
-  (begin (= _₁ (iadd x₁ x₁)) (print _₁))
-  (newline)
-  void)
+  (begin (= _₇ builtin/print) (_₇ 4))
+  (begin (= _₈ builtin/newline) (_₈))
+  (begin (= _₉ builtin/print) (_₉ 5))
+  (begin (= _₁₀ builtin/newline) (_₁₀))
+  (begin (= _₁₁ builtin/print) (_₁₁ 6))
+  (begin (= _₁₂ builtin/newline) (_₁₂))
+  (begin
+    (= _₁₃ builtin/print)
+    (= _₁₄ builtin/iadd)
+    (= _₁₅ (_₁₄ x₁ x₁))
+    (_₁₃ _₁₅))
+  (begin (= _₁₆ builtin/newline) (_₁₆))
+  builtin/void)
 
 (claim eoc-05-03 void-t)
 
 (define-test eoc-05-03
   (if
       (begin
-        (print 1)
-        (newline)
-        (print 2)
-        (newline)
-        (print 3)
-        (newline)
-        (equal? 1 2))
-    (begin (print 111) (newline))
-    (begin (print 222) (newline))))
+        (begin (= _₁ builtin/print) (_₁ 1))
+        (begin (= _₂ builtin/newline) (_₂))
+        (begin (= _₃ builtin/print) (_₃ 2))
+        (begin (= _₄ builtin/newline) (_₄))
+        (begin (= _₅ builtin/print) (_₅ 3))
+        (begin (= _₆ builtin/newline) (_₆))
+        (= _₇ builtin/equal?)
+        (_₇ 1 2))
+    (begin
+      (begin (= _₈ builtin/print) (_₈ 111))
+      (= _₉ builtin/newline)
+      (_₉))
+    (begin
+      (begin (= _₁₀ builtin/print) (_₁₀ 222))
+      (= _₁₁ builtin/newline)
+      (_₁₁))))
 
 (claim file-test void-t)
 
 (define-test file-test
-  (= file₁ (open-input-file "src/file/file-1.txt"))
-  (begin (= _₁ (file-read file₁)) (assert-equal "abc\n" _₁))
-  (file-close file₁)
-  (= file₂ (open-output-file "src/file/file-2.txt"))
-  (file-write file₂ "123\n")
-  (file-close file₂)
-  (= file₃ (open-input-file "src/file/file-2.txt"))
-  (begin (= _₂ (file-read file₃)) (assert-equal "123\n" _₂))
-  (file-close file₃)
-  (= file₄ (open-output-file "src/file/file-2.txt"))
-  (file-write file₄ "abc\n")
-  (file-close file₄)
-  (= file₅ (open-input-file "src/file/file-2.txt"))
-  (begin (= _₃ (file-read file₅)) (assert-equal "abc\n" _₃))
-  (file-close file₅))
+  (= file₁
+     (begin
+       (= _₁ builtin/open-input-file)
+       (_₁ "src/file/file-1.txt")))
+  (begin
+    (= _₂ builtin/assert-equal)
+    (= _₃ builtin/file-read)
+    (= _₄ (_₃ file₁))
+    (_₂ "abc\n" _₄))
+  (begin (= _₅ builtin/file-close) (_₅ file₁))
+  (= file₂
+     (begin
+       (= _₆ builtin/open-output-file)
+       (_₆ "src/file/file-2.txt")))
+  (begin (= _₇ builtin/file-write) (_₇ file₂ "123\n"))
+  (begin (= _₈ builtin/file-close) (_₈ file₂))
+  (= file₃
+     (begin
+       (= _₉ builtin/open-input-file)
+       (_₉ "src/file/file-2.txt")))
+  (begin
+    (= _₁₀ builtin/assert-equal)
+    (= _₁₁ builtin/file-read)
+    (= _₁₂ (_₁₁ file₃))
+    (_₁₀ "123\n" _₁₂))
+  (begin (= _₁₃ builtin/file-close) (_₁₃ file₃))
+  (= file₄
+     (begin
+       (= _₁₄ builtin/open-output-file)
+       (_₁₄ "src/file/file-2.txt")))
+  (begin (= _₁₅ builtin/file-write) (_₁₅ file₄ "abc\n"))
+  (begin (= _₁₆ builtin/file-close) (_₁₆ file₄))
+  (= file₅
+     (begin
+       (= _₁₇ builtin/open-input-file)
+       (_₁₇ "src/file/file-2.txt")))
+  (begin
+    (= _₁₈ builtin/assert-equal)
+    (= _₁₉ builtin/file-read)
+    (= _₂₀ (_₁₉ file₅))
+    (_₁₈ "abc\n" _₂₀))
+  (= _₂₁ builtin/file-close)
+  (_₂₁ file₅))
 
 (claim fs-test void-t)
 
 (define-test fs-test
   (begin
-    (= _₁ (fs-read "src/fs/file-1.txt"))
-    (assert-equal "abc\n" _₁))
-  (fs-write "src/fs/file-2.txt" "123\n")
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/fs-read)
+    (= _₃ (_₂ "src/fs/file-1.txt"))
+    (_₁ "abc\n" _₃))
   (begin
-    (= _₂ (fs-read "src/fs/file-2.txt"))
-    (assert-equal "123\n" _₂))
-  (fs-write "src/fs/file-2.txt" "abc\n")
+    (= _₄ builtin/fs-write)
+    (_₄ "src/fs/file-2.txt" "123\n"))
   (begin
-    (= _₃ (fs-read "src/fs/file-2.txt"))
-    (assert-equal "abc\n" _₃))
-  (= _₄ (fs-list "src/fs"))
-  (println _₄))
+    (= _₅ builtin/assert-equal)
+    (= _₆ builtin/fs-read)
+    (= _₇ (_₆ "src/fs/file-2.txt"))
+    (_₅ "123\n" _₇))
+  (begin
+    (= _₈ builtin/fs-write)
+    (_₈ "src/fs/file-2.txt" "abc\n"))
+  (begin
+    (= _₉ builtin/assert-equal)
+    (= _₁₀ builtin/fs-read)
+    (= _₁₁ (_₁₀ "src/fs/file-2.txt"))
+    (_₉ "abc\n" _₁₁))
+  (= _₁₂ builtin/println)
+  (= _₁₃ builtin/fs-list)
+  (= _₁₄ (_₁₃ "src/fs"))
+  (_₁₂ _₁₄))
 
 (claim S
   (polymorphic (A B C) (-> (-> A B C) (-> A B) (-> A C))))
@@ -357,10 +538,10 @@
   (= S₁ test-suite/SKI-tuple©λ₁)
   (= K₁ test-suite/SKI-tuple©λ₂)
   (= I₁ test-suite/SKI-tuple©λ₃)
-  (= list₁ (make-list))
-  (list-push! S₁ list₁)
-  (list-push! K₁ list₁)
-  (list-push! I₁ list₁)
+  (= list₁ (begin (= _₁ builtin/make-list) (_₁)))
+  (begin (= _₂ builtin/list-push!) (_₂ S₁ list₁))
+  (begin (= _₃ builtin/list-push!) (_₃ K₁ list₁))
+  (begin (= _₄ builtin/list-push!) (_₄ I₁ list₁))
   list₁)
 
 (define (SKI-tuple©λ₁ x₁ y₁ z₁) (= _₁ (y₁ z₁)) (x₁ z₁ _₁))
@@ -377,32 +558,53 @@
 (claim compose-test void-t)
 
 (define-test compose-test
-  (= add1₁ (iadd 1))
-  (= _₁ test-suite/compose)
-  (= _₂ (_₁ add1₁ add1₁))
-  (= _₃ (_₂ 1))
-  (assert-equal 3 _₃))
+  (= add1₁ (begin (= _₁ builtin/iadd) (_₁ 1)))
+  (= _₂ builtin/assert-equal)
+  (= _₃ test-suite/compose)
+  (= _₄ (_₃ add1₁ add1₁))
+  (= _₅ (_₄ 1))
+  (_₂ 3 _₅))
 
 (claim curry-test void-t)
 
 (define-test curry-test
-  (assert-equal iadd iadd)
   (begin
-    (= _₁ (iadd 1))
-    (= _₂ (iadd 1))
-    (assert-equal _₁ _₂))
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/iadd)
+    (= _₃ builtin/iadd)
+    (_₁ _₂ _₃))
   (begin
-    (= _₃ (iadd 1))
-    (= _₄ (iadd 2))
-    (assert-not-equal _₃ _₄))
+    (= _₄ builtin/assert-equal)
+    (= _₅ builtin/iadd)
+    (= _₆ (_₅ 1))
+    (= _₇ builtin/iadd)
+    (= _₈ (_₇ 1))
+    (_₄ _₆ _₈))
   (begin
-    (= _₅ (iadd 1))
-    (= _₆ (_₅ 2))
-    (= _₇ (iadd 1 2))
-    (assert-equal _₆ _₇))
-  (begin (= _₈ (isub 2)) (= _₉ (_₈ 1)) (assert-equal 1 _₉))
-  (= _₁₀ (isub 2 1))
-  (assert-equal 1 _₁₀))
+    (= _₉ builtin/assert-not-equal)
+    (= _₁₀ builtin/iadd)
+    (= _₁₁ (_₁₀ 1))
+    (= _₁₂ builtin/iadd)
+    (= _₁₃ (_₁₂ 2))
+    (_₉ _₁₁ _₁₃))
+  (begin
+    (= _₁₄ builtin/assert-equal)
+    (= _₁₅ builtin/iadd)
+    (= _₁₆ (_₁₅ 1))
+    (= _₁₇ (_₁₆ 2))
+    (= _₁₈ builtin/iadd)
+    (= _₁₉ (_₁₈ 1 2))
+    (_₁₄ _₁₇ _₁₉))
+  (begin
+    (= _₂₀ builtin/assert-equal)
+    (= _₂₁ builtin/isub)
+    (= _₂₂ (_₂₁ 2))
+    (= _₂₃ (_₂₂ 1))
+    (_₂₀ 1 _₂₃))
+  (= _₂₄ builtin/assert-equal)
+  (= _₂₅ builtin/isub)
+  (= _₂₆ (_₂₅ 2 1))
+  (_₂₄ 1 _₂₆))
 
 (claim swap
   (polymorphic (X Y Z) (-> (-> Y X Z) (-> X Y Z))))
@@ -427,22 +629,41 @@
 
 (define-test forth-test
   (= f₁ test-suite/forth-test©λ₁)
-  (= square₁ (begin (= _₁ test-suite/dup) (_₁ imul)))
-  (begin (= _₂ (f₁ 1)) (= _₃ (square₁ _₂)) (println _₃))
-  (begin (= _₄ (f₁ 2)) (= _₅ (square₁ _₄)) (println _₅))
-  (begin (= _₆ (f₁ 3)) (= _₇ (square₁ _₆)) (println _₇))
-  (= _₈ (f₁ 4))
-  (= _₉ (square₁ _₈))
-  (println _₉))
+  (= square₁
+     (begin
+       (= _₁ test-suite/dup)
+       (= _₂ builtin/imul)
+       (_₁ _₂)))
+  (begin
+    (= _₃ builtin/println)
+    (= _₄ (f₁ 1))
+    (= _₅ (square₁ _₄))
+    (_₃ _₅))
+  (begin
+    (= _₆ builtin/println)
+    (= _₇ (f₁ 2))
+    (= _₈ (square₁ _₇))
+    (_₆ _₈))
+  (begin
+    (= _₉ builtin/println)
+    (= _₁₀ (f₁ 3))
+    (= _₁₁ (square₁ _₁₀))
+    (_₉ _₁₁))
+  (= _₁₂ builtin/println)
+  (= _₁₃ (f₁ 4))
+  (= _₁₄ (square₁ _₁₃))
+  (_₁₂ _₁₄))
 
 (define (forth-test©λ₁ x₁) x₁)
 
 (claim function-test void-t)
 
 (define-test function-test
-  (println iadd)
-  (= _₁ (iadd 1))
-  (println _₁))
+  (begin (= _₁ builtin/println) (= _₂ builtin/iadd) (_₁ _₂))
+  (= _₃ builtin/println)
+  (= _₄ builtin/iadd)
+  (= _₅ (_₄ 1))
+  (_₃ _₅))
 
 (claim identity (polymorphic (A) (-> A A)))
 
@@ -451,381 +672,521 @@
 (claim identity-test void-t)
 
 (define-test identity-test
-  (= add1₁ (iadd 1))
-  (begin (= _₁ (add1₁ 1)) (assert-equal 2 _₁))
+  (= add1₁ (begin (= _₁ builtin/iadd) (_₁ 1)))
+  (begin
+    (= _₂ builtin/assert-equal)
+    (= _₃ (add1₁ 1))
+    (_₂ 2 _₃))
   (= add1₂
      (begin
-       (= _₂ test-suite/identity)
-       (= _₃ test-suite/identity)
-       (= _₄ (_₃ 1))
-       (= _₅ (iadd _₄))
-       (_₂ _₅)))
+       (= _₄ test-suite/identity)
+       (= _₅ builtin/iadd)
+       (= _₆ test-suite/identity)
+       (= _₇ (_₆ 1))
+       (= _₈ (_₅ _₇))
+       (_₄ _₈)))
   test-suite/identity
   test-suite/identity
   test-suite/identity
-  (= _₆ (add1₂ 1))
-  (assert-equal 2 _₆))
+  (= _₉ builtin/assert-equal)
+  (= _₁₀ (add1₂ 1))
+  (_₉ 2 _₁₀))
 
 (claim hash-test void-t)
 
 (define-test hash-test
   (begin
-    (= hash₁ (make-hash))
-    (= _₁ (hash-empty? hash₁))
-    (assert _₁))
-  (begin (= hash₂ (make-hash)) (println hash₂))
+    (= _₁ builtin/assert)
+    (= _₂ builtin/hash-empty?)
+    (= hash₁ (begin (= _₃ builtin/make-hash) (_₃)))
+    (= _₄ (_₂ hash₁))
+    (_₁ _₄))
   (begin
-    (= hash₃ (make-hash))
-    (hash-put! 1 2 hash₃)
-    (println hash₃))
+    (= _₅ builtin/println)
+    (= hash₂ (begin (= _₆ builtin/make-hash) (_₆)))
+    (_₅ hash₂))
   (begin
-    (= hash₄ (make-hash))
-    (hash-put! 1 3 hash₄)
-    (println hash₄))
-  (= hash₅ (make-hash))
-  (hash-put! 1 2 hash₅)
-  (hash-put! 3 4 hash₅)
-  (println hash₅))
+    (= _₇ builtin/println)
+    (= hash₃ (begin (= _₈ builtin/make-hash) (_₈)))
+    (begin (= _₉ builtin/hash-put!) (_₉ 1 2 hash₃))
+    (_₇ hash₃))
+  (begin
+    (= _₁₀ builtin/println)
+    (= hash₄ (begin (= _₁₁ builtin/make-hash) (_₁₁)))
+    (begin (= _₁₂ builtin/hash-put!) (_₁₂ 1 3 hash₄))
+    (_₁₀ hash₄))
+  (= _₁₃ builtin/println)
+  (= hash₅ (begin (= _₁₄ builtin/make-hash) (_₁₄)))
+  (begin (= _₁₅ builtin/hash-put!) (_₁₅ 1 2 hash₅))
+  (begin (= _₁₆ builtin/hash-put!) (_₁₆ 3 4 hash₅))
+  (_₁₃ hash₅))
 
-(claim factorial (-> int-t int-t))
+(claim factorial (-> builtin/int-t builtin/int-t))
 
 (define (factorial n)
-  (if (int-less-or-equal? n 1)
+  (if (begin (= _₁ builtin/int-less-or-equal?) (_₁ n 1))
     1
     (begin
-      (= _₁ test-suite/factorial)
-      (= _₂ (isub n 1))
-      (= _₃ (_₁ _₂))
-      (imul _₃ n))))
+      (= _₂ builtin/imul)
+      (= _₃ test-suite/factorial)
+      (= _₄ builtin/isub)
+      (= _₅ (_₄ n 1))
+      (= _₆ (_₃ _₅))
+      (_₂ _₆ n))))
 
 (claim factorial-test void-t)
 
 (define-test factorial-test
   (begin
-    (= _₁ test-suite/factorial)
-    (= _₂ (_₁ 0))
-    (assert-equal 1 _₂))
+    (= _₁ builtin/assert-equal)
+    (= _₂ test-suite/factorial)
+    (= _₃ (_₂ 0))
+    (_₁ 1 _₃))
   (begin
-    (= _₃ test-suite/factorial)
-    (= _₄ (_₃ 1))
-    (assert-equal 1 _₄))
-  (begin
+    (= _₄ builtin/assert-equal)
     (= _₅ test-suite/factorial)
-    (= _₆ (_₅ 2))
-    (assert-equal 2 _₆))
+    (= _₆ (_₅ 1))
+    (_₄ 1 _₆))
   (begin
-    (= _₇ test-suite/factorial)
-    (= _₈ (_₇ 3))
-    (assert-equal 6 _₈))
+    (= _₇ builtin/assert-equal)
+    (= _₈ test-suite/factorial)
+    (= _₉ (_₈ 2))
+    (_₇ 2 _₉))
   (begin
-    (= _₉ test-suite/factorial)
-    (= _₁₀ (_₉ 4))
-    (assert-equal 24 _₁₀))
-  (begin
+    (= _₁₀ builtin/assert-equal)
     (= _₁₁ test-suite/factorial)
-    (= _₁₂ (_₁₁ 5))
-    (assert-equal 120 _₁₂))
-  (= _₁₃ test-suite/factorial)
-  (= _₁₄ (_₁₃ 6))
-  (assert-equal 720 _₁₄))
+    (= _₁₂ (_₁₁ 3))
+    (_₁₀ 6 _₁₂))
+  (begin
+    (= _₁₃ builtin/assert-equal)
+    (= _₁₄ test-suite/factorial)
+    (= _₁₅ (_₁₄ 4))
+    (_₁₃ 24 _₁₅))
+  (begin
+    (= _₁₆ builtin/assert-equal)
+    (= _₁₇ test-suite/factorial)
+    (= _₁₈ (_₁₇ 5))
+    (_₁₆ 120 _₁₈))
+  (= _₁₉ builtin/assert-equal)
+  (= _₂₀ test-suite/factorial)
+  (= _₂₁ (_₂₀ 6))
+  (_₁₉ 720 _₂₁))
 
-(claim fibonacci (-> int-t int-t))
+(claim fibonacci (-> builtin/int-t builtin/int-t))
 
 (define (fibonacci n)
-  (if (int-less-or-equal? n 1)
+  (if (begin (= _₁ builtin/int-less-or-equal?) (_₁ n 1))
     n
     (begin
-      (= _₁ test-suite/fibonacci)
-      (= _₂ (isub n 1))
-      (= _₃ (_₁ _₂))
-      (= _₄ test-suite/fibonacci)
-      (= _₅ (isub n 2))
-      (= _₆ (_₄ _₅))
-      (iadd _₃ _₆))))
+      (= _₂ builtin/iadd)
+      (= _₃ test-suite/fibonacci)
+      (= _₄ builtin/isub)
+      (= _₅ (_₄ n 1))
+      (= _₆ (_₃ _₅))
+      (= _₇ test-suite/fibonacci)
+      (= _₈ builtin/isub)
+      (= _₉ (_₈ n 2))
+      (= _₁₀ (_₇ _₉))
+      (_₂ _₆ _₁₀))))
 
 (claim fibonacci-test void-t)
 
 (define-test fibonacci-test
   (begin
-    (= _₁ test-suite/fibonacci)
-    (= _₂ (_₁ 0))
-    (assert-equal 0 _₂))
+    (= _₁ builtin/assert-equal)
+    (= _₂ test-suite/fibonacci)
+    (= _₃ (_₂ 0))
+    (_₁ 0 _₃))
   (begin
-    (= _₃ test-suite/fibonacci)
-    (= _₄ (_₃ 1))
-    (assert-equal 1 _₄))
-  (begin
+    (= _₄ builtin/assert-equal)
     (= _₅ test-suite/fibonacci)
-    (= _₆ (_₅ 2))
-    (assert-equal 1 _₆))
+    (= _₆ (_₅ 1))
+    (_₄ 1 _₆))
   (begin
-    (= _₇ test-suite/fibonacci)
-    (= _₈ (_₇ 3))
-    (assert-equal 2 _₈))
+    (= _₇ builtin/assert-equal)
+    (= _₈ test-suite/fibonacci)
+    (= _₉ (_₈ 2))
+    (_₇ 1 _₉))
   (begin
-    (= _₉ test-suite/fibonacci)
-    (= _₁₀ (_₉ 4))
-    (assert-equal 3 _₁₀))
-  (begin
+    (= _₁₀ builtin/assert-equal)
     (= _₁₁ test-suite/fibonacci)
-    (= _₁₂ (_₁₁ 5))
-    (assert-equal 5 _₁₂))
+    (= _₁₂ (_₁₁ 3))
+    (_₁₀ 2 _₁₂))
   (begin
-    (= _₁₃ test-suite/fibonacci)
-    (= _₁₄ (_₁₃ 6))
-    (assert-equal 8 _₁₄))
+    (= _₁₃ builtin/assert-equal)
+    (= _₁₄ test-suite/fibonacci)
+    (= _₁₅ (_₁₄ 4))
+    (_₁₃ 3 _₁₅))
   (begin
-    (= _₁₅ test-suite/fibonacci)
-    (= _₁₆ (_₁₅ 7))
-    (assert-equal 13 _₁₆))
-  (begin
+    (= _₁₆ builtin/assert-equal)
     (= _₁₇ test-suite/fibonacci)
-    (= _₁₈ (_₁₇ 8))
-    (assert-equal 21 _₁₈))
-  (= _₁₉ test-suite/fibonacci)
-  (= _₂₀ (_₁₉ 9))
-  (assert-equal 34 _₂₀))
+    (= _₁₈ (_₁₇ 5))
+    (_₁₆ 5 _₁₈))
+  (begin
+    (= _₁₉ builtin/assert-equal)
+    (= _₂₀ test-suite/fibonacci)
+    (= _₂₁ (_₂₀ 6))
+    (_₁₉ 8 _₂₁))
+  (begin
+    (= _₂₂ builtin/assert-equal)
+    (= _₂₃ test-suite/fibonacci)
+    (= _₂₄ (_₂₃ 7))
+    (_₂₂ 13 _₂₄))
+  (begin
+    (= _₂₅ builtin/assert-equal)
+    (= _₂₆ test-suite/fibonacci)
+    (= _₂₇ (_₂₆ 8))
+    (_₂₅ 21 _₂₇))
+  (= _₂₈ builtin/assert-equal)
+  (= _₂₉ test-suite/fibonacci)
+  (= _₃₀ (_₂₉ 9))
+  (_₂₈ 34 _₃₀))
 
-(claim gcd (-> int-t int-t int-t))
+(claim gcd (-> builtin/int-t builtin/int-t builtin/int-t))
 
 (define (gcd a b)
-  (if (equal? b 0)
+  (if (begin (= _₁ builtin/equal?) (_₁ b 0))
     a
     (begin
-      (= _₁ test-suite/gcd)
-      (= _₂ (imod a b))
-      (_₁ b _₂))))
+      (= _₂ test-suite/gcd)
+      (= _₃ builtin/imod)
+      (= _₄ (_₃ a b))
+      (_₂ b _₄))))
 
 (claim gcd-test void-t)
 
 (define-test gcd-test
   (begin
-    (= _₁ test-suite/gcd)
-    (= _₂ (_₁ 13 7))
-    (assert-equal 1 _₂))
-  (= _₃ test-suite/gcd)
-  (= _₄ (_₃ 12 8))
-  (assert-equal 4 _₄))
+    (= _₁ builtin/assert-equal)
+    (= _₂ test-suite/gcd)
+    (= _₃ (_₂ 13 7))
+    (_₁ 1 _₃))
+  (= _₄ builtin/assert-equal)
+  (= _₅ test-suite/gcd)
+  (= _₆ (_₅ 12 8))
+  (_₄ 4 _₆))
 
-(claim square (-> int-t int-t))
+(claim square (-> builtin/int-t builtin/int-t))
 
-(define (square x) (imul x x))
+(define (square x) (= _₁ builtin/imul) (_₁ x x))
 
 (claim square-test void-t)
 
 (define-test square-test
-  (= _₁ test-suite/square)
+  (= _₁ builtin/assert-equal)
   (= _₂ test-suite/square)
-  (= _₃ (_₂ 3))
-  (= _₄ (_₁ _₃))
-  (assert-equal 81 _₄))
+  (= _₃ test-suite/square)
+  (= _₄ (_₃ 3))
+  (= _₅ (_₂ _₄))
+  (_₁ 81 _₅))
 
 (claim keyword-test void-t)
 
 (define-test keyword-test
   (begin
-    (= _₁ (keyword-append :abc :def))
-    (assert-equal :abcdef _₁))
-  (println :abc))
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/keyword-append)
+    (= _₃ (_₂ :abc :def))
+    (_₁ :abcdef _₃))
+  (= _₄ builtin/println)
+  (_₄ :abc))
 
 (claim list-test void-t)
 
 (define-test list-test
-  (= list₁ (make-list))
-  (list-push! 1 list₁)
-  (list-push! 2 list₁)
-  (list-push! 3 list₁)
+  (= list₁ (begin (= _₁ builtin/make-list) (_₁)))
+  (begin (= _₂ builtin/list-push!) (_₂ 1 list₁))
+  (begin (= _₃ builtin/list-push!) (_₃ 2 list₁))
+  (begin (= _₄ builtin/list-push!) (_₄ 3 list₁))
   (begin
-    (= list₂ (make-list))
-    (list-push! 1 list₂)
-    (list-push! 2 list₂)
-    (list-push! 3 list₂)
-    (assert-equal list₂ list₁))
+    (= _₅ builtin/assert-equal)
+    (= list₂ (begin (= _₆ builtin/make-list) (_₆)))
+    (begin (= _₇ builtin/list-push!) (_₇ 1 list₂))
+    (begin (= _₈ builtin/list-push!) (_₈ 2 list₂))
+    (begin (= _₉ builtin/list-push!) (_₉ 3 list₂))
+    (_₅ list₂ list₁))
   (begin
-    (= list₃ (make-list))
-    (list-push! 1 list₃)
-    (list-push! 2 list₃)
-    (list-push! 3 list₃)
-    (= list₄ (make-list))
-    (list-push! 1 list₄)
-    (list-push! 2 list₄)
-    (list-push! 3 list₄)
-    (assert-equal list₃ list₄))
+    (= _₁₀ builtin/assert-equal)
+    (= list₃ (begin (= _₁₁ builtin/make-list) (_₁₁)))
+    (begin (= _₁₂ builtin/list-push!) (_₁₂ 1 list₃))
+    (begin (= _₁₃ builtin/list-push!) (_₁₃ 2 list₃))
+    (begin (= _₁₄ builtin/list-push!) (_₁₄ 3 list₃))
+    (= list₄ (begin (= _₁₅ builtin/make-list) (_₁₅)))
+    (begin (= _₁₆ builtin/list-push!) (_₁₆ 1 list₄))
+    (begin (= _₁₇ builtin/list-push!) (_₁₇ 2 list₄))
+    (begin (= _₁₈ builtin/list-push!) (_₁₈ 3 list₄))
+    (_₁₀ list₃ list₄))
   (begin
-    (= list₅ (make-list))
-    (list-push! 'a list₅)
-    (list-push! 'b list₅)
-    (list-push! 'c list₅)
-    (= list₆ (make-list))
-    (list-push! 'a list₆)
-    (list-push! 'b list₆)
-    (list-push! 'c list₆)
-    (assert-equal list₅ list₆))
+    (= _₁₉ builtin/assert-equal)
+    (= list₅ (begin (= _₂₀ builtin/make-list) (_₂₀)))
+    (begin (= _₂₁ builtin/list-push!) (_₂₁ 'a list₅))
+    (begin (= _₂₂ builtin/list-push!) (_₂₂ 'b list₅))
+    (begin (= _₂₃ builtin/list-push!) (_₂₃ 'c list₅))
+    (= list₆ (begin (= _₂₄ builtin/make-list) (_₂₄)))
+    (begin (= _₂₅ builtin/list-push!) (_₂₅ 'a list₆))
+    (begin (= _₂₆ builtin/list-push!) (_₂₆ 'b list₆))
+    (begin (= _₂₇ builtin/list-push!) (_₂₇ 'c list₆))
+    (_₁₉ list₅ list₆))
   (begin
-    (= list₇ (make-list))
-    (list-push! 1 list₇)
-    (list-push! 2 list₇)
-    (list-push! 3 list₇)
-    (= _₁ (list-length list₇))
-    (assert-equal 3 _₁))
+    (= _₂₈ builtin/assert-equal)
+    (= _₂₉ builtin/list-length)
+    (= list₇ (begin (= _₃₀ builtin/make-list) (_₃₀)))
+    (begin (= _₃₁ builtin/list-push!) (_₃₁ 1 list₇))
+    (begin (= _₃₂ builtin/list-push!) (_₃₂ 2 list₇))
+    (begin (= _₃₃ builtin/list-push!) (_₃₃ 3 list₇))
+    (= _₃₄ (_₂₉ list₇))
+    (_₂₈ 3 _₃₄))
   (begin
-    (= list₈ (make-list))
-    (= _₂ (list-length list₈))
-    (assert-equal 0 _₂))
+    (= _₃₅ builtin/assert-equal)
+    (= _₃₆ builtin/list-length)
+    (= list₈ (begin (= _₃₇ builtin/make-list) (_₃₇)))
+    (= _₃₈ (_₃₆ list₈))
+    (_₃₅ 0 _₃₈))
   (begin
-    (= list₉ (make-list))
-    (= _₃ (list-empty? list₉))
-    (assert _₃))
-  (= list₁₀ (make-list))
-  (list-push! 1 list₁₀)
-  (list-push! 2 list₁₀)
-  (list-push! 3 list₁₀)
-  (println list₁₀)
+    (= _₃₉ builtin/assert)
+    (= _₄₀ builtin/list-empty?)
+    (= list₉ (begin (= _₄₁ builtin/make-list) (_₄₁)))
+    (= _₄₂ (_₄₀ list₉))
+    (_₃₉ _₄₂))
+  (= list₁₀ (begin (= _₄₃ builtin/make-list) (_₄₃)))
+  (begin (= _₄₄ builtin/list-push!) (_₄₄ 1 list₁₀))
+  (begin (= _₄₅ builtin/list-push!) (_₄₅ 2 list₁₀))
+  (begin (= _₄₆ builtin/list-push!) (_₄₆ 3 list₁₀))
+  (begin (= _₄₇ builtin/println) (_₄₇ list₁₀))
   (begin
-    (= list₁₁ (make-list))
-    (list-push! 1 list₁₁)
-    (list-push! 2 list₁₁)
-    (list-push! 3 list₁₁)
-    (println list₁₁))
+    (= _₄₈ builtin/println)
+    (= list₁₁ (begin (= _₄₉ builtin/make-list) (_₄₉)))
+    (begin (= _₅₀ builtin/list-push!) (_₅₀ 1 list₁₁))
+    (begin (= _₅₁ builtin/list-push!) (_₅₁ 2 list₁₁))
+    (begin (= _₅₂ builtin/list-push!) (_₅₂ 3 list₁₁))
+    (_₄₈ list₁₁))
   (begin
-    (= list₁₂ (make-list))
-    (list-push! 1 list₁₂)
-    (list-push! 2 list₁₂)
-    (list-push! 3 list₁₂)
-    (println list₁₂))
+    (= _₅₃ builtin/println)
+    (= list₁₂ (begin (= _₅₄ builtin/make-list) (_₅₄)))
+    (begin (= _₅₅ builtin/list-push!) (_₅₅ 1 list₁₂))
+    (begin (= _₅₆ builtin/list-push!) (_₅₆ 2 list₁₂))
+    (begin (= _₅₇ builtin/list-push!) (_₅₇ 3 list₁₂))
+    (_₅₃ list₁₂))
   (begin
-    (= list₁₃ (make-list))
-    (list-push! 1 list₁₃)
-    (list-push! 2 list₁₃)
-    (list-push! 3 list₁₃)
-    (println list₁₃))
+    (= _₅₈ builtin/println)
+    (= list₁₃ (begin (= _₅₉ builtin/make-list) (_₅₉)))
+    (begin (= _₆₀ builtin/list-push!) (_₆₀ 1 list₁₃))
+    (begin (= _₆₁ builtin/list-push!) (_₆₁ 2 list₁₃))
+    (begin (= _₆₂ builtin/list-push!) (_₆₂ 3 list₁₃))
+    (_₅₈ list₁₃))
   (begin
-    (= list₁₄ (make-list))
-    (list-push! 1 list₁₄)
-    (list-push! 2 list₁₄)
-    (list-push! 3 list₁₄)
-    (println list₁₄))
+    (= _₆₃ builtin/println)
+    (= list₁₄ (begin (= _₆₄ builtin/make-list) (_₆₄)))
+    (begin (= _₆₅ builtin/list-push!) (_₆₅ 1 list₁₄))
+    (begin (= _₆₆ builtin/list-push!) (_₆₆ 2 list₁₄))
+    (begin (= _₆₇ builtin/list-push!) (_₆₇ 3 list₁₄))
+    (_₆₃ list₁₄))
   (begin
-    (= list₁₅ (make-list))
-    (list-push! 'a list₁₅)
-    (list-push! 'b list₁₅)
-    (list-push! 'c list₁₅)
-    (println list₁₅))
-  (= list₁₆ (make-list))
-  (list-push! 'a list₁₆)
-  (list-push! 'b list₁₆)
-  (list-push! 'c list₁₆)
-  (println list₁₆))
+    (= _₆₈ builtin/println)
+    (= list₁₅ (begin (= _₆₉ builtin/make-list) (_₆₉)))
+    (begin (= _₇₀ builtin/list-push!) (_₇₀ 'a list₁₅))
+    (begin (= _₇₁ builtin/list-push!) (_₇₁ 'b list₁₅))
+    (begin (= _₇₂ builtin/list-push!) (_₇₂ 'c list₁₅))
+    (_₆₈ list₁₅))
+  (= _₇₃ builtin/println)
+  (= list₁₆ (begin (= _₇₄ builtin/make-list) (_₇₄)))
+  (begin (= _₇₅ builtin/list-push!) (_₇₅ 'a list₁₆))
+  (begin (= _₇₆ builtin/list-push!) (_₇₆ 'b list₁₆))
+  (begin (= _₇₇ builtin/list-push!) (_₇₇ 'c list₁₆))
+  (_₇₃ list₁₆))
 
 (claim cond-test void-t)
 
 (define-test cond-test
   (begin
-    (= _₁
-       (if (equal? 1 1)
-         1
-         (if true 2 (error "cond mismatch"))))
-    (assert-equal 1 _₁))
-  (begin
+    (= _₁ builtin/assert-equal)
     (= _₂
-       (if (equal? 1 2)
+       (if (begin (= _₃ builtin/equal?) (_₃ 1 1))
          1
-         (if true 2 (error "cond mismatch"))))
-    (assert-equal 2 _₂))
-  (if (equal? 1 1)
-    (assert true)
-    (if true (assert false) (error "cond mismatch")))
-  (if (equal? 1 2)
-    (assert false)
-    (if true (assert true) (error "cond mismatch"))))
+         (if builtin/true
+           2
+           (begin (= _₄ builtin/error) (_₄ "cond mismatch")))))
+    (_₁ 1 _₂))
+  (begin
+    (= _₅ builtin/assert-equal)
+    (= _₆
+       (if (begin (= _₇ builtin/equal?) (_₇ 1 2))
+         1
+         (if builtin/true
+           2
+           (begin (= _₈ builtin/error) (_₈ "cond mismatch")))))
+    (_₅ 2 _₆))
+  (if (begin (= _₉ builtin/equal?) (_₉ 1 1))
+    (begin
+      (= _₁₀ builtin/assert)
+      (= _₁₁ builtin/true)
+      (_₁₀ _₁₁))
+    (if builtin/true
+      (begin
+        (= _₁₂ builtin/assert)
+        (= _₁₃ builtin/false)
+        (_₁₂ _₁₃))
+      (begin (= _₁₄ builtin/error) (_₁₄ "cond mismatch"))))
+  (if (begin (= _₁₅ builtin/equal?) (_₁₅ 1 2))
+    (begin
+      (= _₁₆ builtin/assert)
+      (= _₁₇ builtin/false)
+      (_₁₆ _₁₇))
+    (if builtin/true
+      (begin
+        (= _₁₈ builtin/assert)
+        (= _₁₉ builtin/true)
+        (_₁₈ _₁₉))
+      (begin (= _₂₀ builtin/error) (_₂₀ "cond mismatch")))))
 
 (claim if-test void-t)
 
 (define-test if-test
-  (begin (= _₁ (if true 1 2)) (assert-equal _₁ 1))
-  (begin (= _₂ (if false 1 2)) (assert-equal _₂ 2))
   (begin
-    (= _₃ (if true (if true true false) false))
-    (assert _₃))
+    (= _₁ builtin/assert-equal)
+    (= _₂ (if builtin/true 1 2))
+    (_₁ _₂ 1))
   (begin
-    (= _₄ (if true (if true false false) false))
-    (= _₅ (not _₄))
-    (assert _₅))
+    (= _₃ builtin/assert-equal)
+    (= _₄ (if builtin/false 1 2))
+    (_₃ _₄ 2))
   (begin
-    (= _₆ (if false true (if false true true)))
-    (assert _₆))
-  (= _₇ (if false true (if false true false)))
-  (= _₈ (not _₇))
-  (assert _₈))
+    (= _₅ builtin/assert)
+    (= _₆
+       (if builtin/true
+         (if builtin/true builtin/true builtin/false)
+         builtin/false))
+    (_₅ _₆))
+  (begin
+    (= _₇ builtin/assert)
+    (= _₈ builtin/not)
+    (= _₉
+       (if builtin/true
+         (if builtin/true builtin/false builtin/false)
+         builtin/false))
+    (= _₁₀ (_₈ _₉))
+    (_₇ _₁₀))
+  (begin
+    (= _₁₁ builtin/assert)
+    (= _₁₂
+       (if builtin/false
+         builtin/true
+         (if builtin/false builtin/true builtin/true)))
+    (_₁₁ _₁₂))
+  (= _₁₃ builtin/assert)
+  (= _₁₄ builtin/not)
+  (= _₁₅
+     (if builtin/false
+       builtin/true
+       (if builtin/false builtin/true builtin/false)))
+  (= _₁₆ (_₁₄ _₁₅))
+  (_₁₃ _₁₆))
 
 (claim the-test void-t)
 
 (define-test the-test
-  (assert-equal 1 1)
-  (assert-equal 'a 'a))
+  (begin (= _₁ builtin/assert-equal) (_₁ 1 1))
+  (= _₂ builtin/assert-equal)
+  (_₂ 'a 'a))
 
 (claim path-test void-t)
 
 (define-test path-test
   (begin
-    (= _₁ (path-directory-name "a/b/c/file.test.txt"))
-    (assert-equal "a/b/c" _₁))
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/path-directory-name)
+    (= _₃ (_₂ "a/b/c/file.test.txt"))
+    (_₁ "a/b/c" _₃))
   (begin
-    (= _₂ (path-base-name "a/b/c/file.test.txt"))
-    (assert-equal "file.test.txt" _₂))
+    (= _₄ builtin/assert-equal)
+    (= _₅ builtin/path-base-name)
+    (= _₆ (_₅ "a/b/c/file.test.txt"))
+    (_₄ "file.test.txt" _₆))
   (begin
-    (= _₃ (path-extension "a/b/c/file.test.txt"))
-    (assert-equal ".txt" _₃))
+    (= _₇ builtin/assert-equal)
+    (= _₈ builtin/path-extension)
+    (= _₉ (_₈ "a/b/c/file.test.txt"))
+    (_₇ ".txt" _₉))
   (begin
-    (= _₄ (path-stem "a/b/c/file.test.txt"))
-    (assert-equal "file.test" _₄))
+    (= _₁₀ builtin/assert-equal)
+    (= _₁₁ builtin/path-stem)
+    (= _₁₂ (_₁₁ "a/b/c/file.test.txt"))
+    (_₁₀ "file.test" _₁₂))
   (begin
-    (= _₅ (path-absolute? "/a/b/c/file.test.txt"))
-    (assert _₅))
+    (= _₁₃ builtin/assert)
+    (= _₁₄ builtin/path-absolute?)
+    (= _₁₅ (_₁₄ "/a/b/c/file.test.txt"))
+    (_₁₃ _₁₅))
   (begin
-    (= _₆ (path-relative? "/a/b/c/file.test.txt"))
-    (assert-not _₆))
+    (= _₁₆ builtin/assert-not)
+    (= _₁₇ builtin/path-relative?)
+    (= _₁₈ (_₁₇ "/a/b/c/file.test.txt"))
+    (_₁₆ _₁₈))
   (begin
-    (= _₇ (path-relative? "a/b/c/file.test.txt"))
-    (assert _₇))
+    (= _₁₉ builtin/assert)
+    (= _₂₀ builtin/path-relative?)
+    (= _₂₁ (_₂₀ "a/b/c/file.test.txt"))
+    (_₁₉ _₂₁))
   (begin
-    (= _₈ (path-relative? "./a/b/c/file.test.txt"))
-    (assert _₈))
+    (= _₂₂ builtin/assert)
+    (= _₂₃ builtin/path-relative?)
+    (= _₂₄ (_₂₃ "./a/b/c/file.test.txt"))
+    (_₂₂ _₂₄))
   (begin
-    (= _₉ (path-absolute? "a/b/c/file.test.txt"))
-    (assert-not _₉))
+    (= _₂₅ builtin/assert-not)
+    (= _₂₆ builtin/path-absolute?)
+    (= _₂₇ (_₂₆ "a/b/c/file.test.txt"))
+    (_₂₅ _₂₇))
   (begin
-    (= _₁₀ (path-absolute? "./a/b/c/file.test.txt"))
-    (assert-not _₁₀))
+    (= _₂₈ builtin/assert-not)
+    (= _₂₉ builtin/path-absolute?)
+    (= _₃₀ (_₂₉ "./a/b/c/file.test.txt"))
+    (_₂₈ _₃₀))
   (begin
-    (= _₁₁ (path-join "a/b/c" "d/e/f"))
-    (assert-equal "a/b/c/d/e/f" _₁₁))
+    (= _₃₁ builtin/assert-equal)
+    (= _₃₂ builtin/path-join)
+    (= _₃₃ (_₃₂ "a/b/c" "d/e/f"))
+    (_₃₁ "a/b/c/d/e/f" _₃₃))
   (begin
-    (= _₁₂ (path-join "a/b/c/" "/d/e/f"))
-    (assert-equal "a/b/c/d/e/f" _₁₂))
+    (= _₃₄ builtin/assert-equal)
+    (= _₃₅ builtin/path-join)
+    (= _₃₆ (_₃₅ "a/b/c/" "/d/e/f"))
+    (_₃₄ "a/b/c/d/e/f" _₃₆))
   (begin
-    (= _₁₃ (path-join "/a/b/c/" "/d/e/f"))
-    (assert-equal "/a/b/c/d/e/f" _₁₃))
+    (= _₃₇ builtin/assert-equal)
+    (= _₃₈ builtin/path-join)
+    (= _₃₉ (_₃₈ "/a/b/c/" "/d/e/f"))
+    (_₃₇ "/a/b/c/d/e/f" _₃₉))
   (begin
-    (= _₁₄ (path-normalize "a/b/c/../d"))
-    (assert-equal "a/b/d" _₁₄))
-  (= _₁₅ (path-normalize "///a/b/c/"))
-  (assert-equal "/a/b/c" _₁₅))
+    (= _₄₀ builtin/assert-equal)
+    (= _₄₁ builtin/path-normalize)
+    (= _₄₂ (_₄₁ "a/b/c/../d"))
+    (_₄₀ "a/b/d" _₄₂))
+  (= _₄₃ builtin/assert-equal)
+  (= _₄₄ builtin/path-normalize)
+  (= _₄₅ (_₄₄ "///a/b/c/"))
+  (_₄₃ "/a/b/c" _₄₅))
 
 (claim reocrd-test void-t)
 
 (define-test reocrd-test
   (begin
-    (= record₁ (make-record))
-    (record-put! :x 1 record₁)
-    (record-put! :y 2 record₁)
-    (println record₁))
-  (= record₂ (make-record))
-  (record-put! :x 1 record₂)
-  (record-put! :y 2 record₂)
-  (println record₂))
+    (= _₁ builtin/println)
+    (= record₁ (begin (= _₂ builtin/make-record) (_₂)))
+    (begin (= _₃ builtin/record-put!) (_₃ :x 1 record₁))
+    (begin (= _₄ builtin/record-put!) (_₄ :y 2 record₁))
+    (_₁ record₁))
+  (= _₅ builtin/println)
+  (= record₂ (begin (= _₆ builtin/make-record) (_₆)))
+  (begin (= _₇ builtin/record-put!) (_₇ :x 1 record₂))
+  (begin (= _₈ builtin/record-put!) (_₈ :y 2 record₂))
+  (_₅ record₂))
 
-(define-interface point-t :x float-t :y float-t)
+(define-interface point-t
+  :x
+  builtin/float-t
+  :y
+  builtin/float-t)
 
 (claim with-color
   (polymorphic (A B C)
@@ -833,7 +1194,10 @@
 
 (define (with-color color point)
   (= record₁ point)
-  (= record₂ (record-put :color color record₁))
+  (= record₂
+     (begin
+       (= _₁ builtin/record-put)
+       (_₁ :color color record₁)))
   record₂)
 
 (claim record-extend-test void-t)
@@ -841,17 +1205,24 @@
 (define-test record-extend-test
   (= point₁
      (begin
-       (= record₁ (make-record))
-       (record-put! :x 1.0 record₁)
-       (record-put! :y 2.0 record₁)
+       (= record₁ (begin (= _₁ builtin/make-record) (_₁)))
+       (begin
+         (= _₂ builtin/record-put!)
+         (_₂ :x 1.0 record₁))
+       (begin
+         (= _₃ builtin/record-put!)
+         (_₃ :y 2.0 record₁))
        record₁))
-  (= record₂ (make-record))
-  (record-put! :x 1.0 record₂)
-  (record-put! :y 2.0 record₂)
-  (record-put! :color "red" record₂)
-  (= _₁ test-suite/with-color)
-  (= _₂ (_₁ "red" point₁))
-  (assert-equal record₂ _₂))
+  (= _₄ builtin/assert-equal)
+  (= record₂ (begin (= _₅ builtin/make-record) (_₅)))
+  (begin (= _₆ builtin/record-put!) (_₆ :x 1.0 record₂))
+  (begin (= _₇ builtin/record-put!) (_₇ :y 2.0 record₂))
+  (begin
+    (= _₈ builtin/record-put!)
+    (_₈ :color "red" record₂))
+  (= _₉ test-suite/with-color)
+  (= _₁₀ (_₉ "red" point₁))
+  (_₄ record₂ _₁₀))
 
 (claim point-put-x
   (polymorphic (A B C)
@@ -861,7 +1232,8 @@
 
 (define (point-put-x x point)
   (= record₁ point)
-  (= record₂ (record-put :x x record₁))
+  (= record₂
+     (begin (= _₁ builtin/record-put) (_₁ :x x record₁)))
   record₂)
 
 (claim point-put-y!
@@ -872,7 +1244,7 @@
 
 (define (point-put-y! y point)
   (= record₁ point)
-  (record-put! :y y record₁)
+  (begin (= _₁ builtin/record-put!) (_₁ :y y record₁))
   record₁)
 
 (claim record-update-test void-t)
@@ -880,112 +1252,140 @@
 (define-test record-update-test
   (= point₁
      (begin
-       (= record₁ (make-record))
-       (record-put! :x 1.0 record₁)
-       (record-put! :y 2.0 record₁)
+       (= record₁ (begin (= _₁ builtin/make-record) (_₁)))
+       (begin
+         (= _₂ builtin/record-put!)
+         (_₂ :x 1.0 record₁))
+       (begin
+         (= _₃ builtin/record-put!)
+         (_₃ :y 2.0 record₁))
        record₁))
   (begin
-    (= record₂ (make-record))
-    (record-put! :x 2.0 record₂)
-    (record-put! :y 2.0 record₂)
-    (= _₁ test-suite/point-put-x)
-    (= _₂ (_₁ 2.0 point₁))
-    (assert-equal record₂ _₂))
+    (= _₄ builtin/assert-equal)
+    (= record₂ (begin (= _₅ builtin/make-record) (_₅)))
+    (begin (= _₆ builtin/record-put!) (_₆ :x 2.0 record₂))
+    (begin (= _₇ builtin/record-put!) (_₇ :y 2.0 record₂))
+    (= _₈ test-suite/point-put-x)
+    (= _₉ (_₈ 2.0 point₁))
+    (_₄ record₂ _₉))
   (begin
-    (= record₃ (make-record))
-    (record-put! :x 1.0 record₃)
-    (record-put! :y 2.0 record₃)
-    (assert-equal record₃ point₁))
+    (= _₁₀ builtin/assert-equal)
+    (= record₃ (begin (= _₁₁ builtin/make-record) (_₁₁)))
+    (begin (= _₁₂ builtin/record-put!) (_₁₂ :x 1.0 record₃))
+    (begin (= _₁₃ builtin/record-put!) (_₁₃ :y 2.0 record₃))
+    (_₁₀ record₃ point₁))
   (begin
-    (= record₄ (make-record))
-    (record-put! :x 1.0 record₄)
-    (record-put! :y 1.0 record₄)
-    (= _₃ test-suite/point-put-y!)
-    (= _₄ (_₃ 1.0 point₁))
-    (assert-equal record₄ _₄))
-  (= record₅ (make-record))
-  (record-put! :x 1.0 record₅)
-  (record-put! :y 1.0 record₅)
-  (assert-equal record₅ point₁))
+    (= _₁₄ builtin/assert-equal)
+    (= record₄ (begin (= _₁₅ builtin/make-record) (_₁₅)))
+    (begin (= _₁₆ builtin/record-put!) (_₁₆ :x 1.0 record₄))
+    (begin (= _₁₇ builtin/record-put!) (_₁₇ :y 1.0 record₄))
+    (= _₁₈ test-suite/point-put-y!)
+    (= _₁₉ (_₁₈ 1.0 point₁))
+    (_₁₄ record₄ _₁₉))
+  (= _₂₀ builtin/assert-equal)
+  (= record₅ (begin (= _₂₁ builtin/make-record) (_₂₁)))
+  (begin (= _₂₂ builtin/record-put!) (_₂₂ :x 1.0 record₅))
+  (begin (= _₂₃ builtin/record-put!) (_₂₃ :y 1.0 record₅))
+  (_₂₀ record₅ point₁))
 
 (claim set-test void-t)
 
 (define-test set-test
   (begin
-    (= set₁ (make-set))
-    (set-add! 1 set₁)
-    (set-add! 2 set₁)
-    (set-add! 3 set₁)
-    (= set₂ (make-set))
-    (set-add! 3 set₂)
-    (set-add! 2 set₂)
-    (set-add! 1 set₂)
-    (assert-equal set₁ set₂))
-  (= set₃ (make-set))
-  (set-add! 1 set₃)
-  (set-add! 2 set₃)
-  (set-add! 3 set₃)
-  (println set₃))
+    (= _₁ builtin/assert-equal)
+    (= set₁ (begin (= _₂ builtin/make-set) (_₂)))
+    (begin (= _₃ builtin/set-add!) (_₃ 1 set₁))
+    (begin (= _₄ builtin/set-add!) (_₄ 2 set₁))
+    (begin (= _₅ builtin/set-add!) (_₅ 3 set₁))
+    (= set₂ (begin (= _₆ builtin/make-set) (_₆)))
+    (begin (= _₇ builtin/set-add!) (_₇ 3 set₂))
+    (begin (= _₈ builtin/set-add!) (_₈ 2 set₂))
+    (begin (= _₉ builtin/set-add!) (_₉ 1 set₂))
+    (_₁ set₁ set₂))
+  (= _₁₀ builtin/println)
+  (= set₃ (begin (= _₁₁ builtin/make-set) (_₁₁)))
+  (begin (= _₁₂ builtin/set-add!) (_₁₂ 1 set₃))
+  (begin (= _₁₃ builtin/set-add!) (_₁₃ 2 set₃))
+  (begin (= _₁₄ builtin/set-add!) (_₁₄ 3 set₃))
+  (_₁₀ set₃))
 
-(claim my-string-repeat (-> int-t string-t string-t))
+(claim my-string-repeat
+  (-> builtin/int-t builtin/string-t builtin/string-t))
 
 (define (my-string-repeat n string)
-  (if (equal? n 0)
+  (if (begin (= _₁ builtin/equal?) (_₁ n 0))
     ""
     (begin
-      (= _₁ test-suite/my-string-repeat)
-      (= _₂ (isub n 1))
-      (= _₃ (_₁ _₂ string))
-      (string-append string _₃))))
+      (= _₂ builtin/string-append)
+      (= _₃ test-suite/my-string-repeat)
+      (= _₄ builtin/isub)
+      (= _₅ (_₄ n 1))
+      (= _₆ (_₃ _₅ string))
+      (_₂ string _₆))))
 
 (claim my-string-repeat-test void-t)
 
 (define-test my-string-repeat-test
   (begin
-    (= _₁ test-suite/my-string-repeat)
-    (= _₂ (_₁ 0 "a"))
-    (assert-equal "" _₂))
+    (= _₁ builtin/assert-equal)
+    (= _₂ test-suite/my-string-repeat)
+    (= _₃ (_₂ 0 "a"))
+    (_₁ "" _₃))
   (begin
-    (= _₃ test-suite/my-string-repeat)
-    (= _₄ (_₃ 1 "a"))
-    (assert-equal "a" _₄))
-  (begin
+    (= _₄ builtin/assert-equal)
     (= _₅ test-suite/my-string-repeat)
-    (= _₆ (_₅ 2 "a"))
-    (assert-equal "aa" _₆))
-  (= _₇ test-suite/my-string-repeat)
-  (= _₈ (_₇ 3 "a"))
-  (assert-equal "aaa" _₈))
+    (= _₆ (_₅ 1 "a"))
+    (_₄ "a" _₆))
+  (begin
+    (= _₇ builtin/assert-equal)
+    (= _₈ test-suite/my-string-repeat)
+    (= _₉ (_₈ 2 "a"))
+    (_₇ "aa" _₉))
+  (= _₁₀ builtin/assert-equal)
+  (= _₁₁ test-suite/my-string-repeat)
+  (= _₁₂ (_₁₁ 3 "a"))
+  (_₁₀ "aaa" _₁₂))
 
 (claim string-test void-t)
 
 (define-test string-test
   (begin
-    (= _₁ (string-append "abc" "def"))
-    (assert-equal "abcdef" _₁))
-  (println "abc"))
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/string-append)
+    (= _₃ (_₂ "abc" "def"))
+    (_₁ "abcdef" _₃))
+  (= _₄ builtin/println)
+  (_₄ "abc"))
 
 (claim symbol-test void-t)
 
 (define-test symbol-test
   (begin
-    (= _₁ (symbol-append 'abc 'def))
-    (assert-equal 'abcdef _₁))
-  (println 'abc))
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/symbol-append)
+    (= _₃ (_₂ 'abc 'def))
+    (_₁ 'abcdef _₃))
+  (= _₄ builtin/println)
+  (_₄ 'abc))
 
 (claim tuple-test void-t)
 
 (define-test tuple-test
   (begin
-    (= list₁ (make-list))
-    (list-push! 1 list₁)
-    (list-push! 2 list₁)
-    (println list₁))
-  (= list₂ (make-list))
-  (list-push! 1 list₂)
-  (list-push! 'a list₂)
-  (println list₂))
+    (= _₁ builtin/println)
+    (= list₁ (begin (= _₂ builtin/make-list) (_₂)))
+    (begin (= _₃ builtin/list-push!) (_₃ 1 list₁))
+    (begin (= _₄ builtin/list-push!) (_₄ 2 list₁))
+    (_₁ list₁))
+  (= _₅ builtin/println)
+  (= list₂ (begin (= _₆ builtin/make-list) (_₆)))
+  (begin (= _₇ builtin/list-push!) (_₇ 1 list₂))
+  (begin (= _₈ builtin/list-push!) (_₈ 'a list₂))
+  (_₅ list₂))
 
 (claim void-test void-t)
 
-(define-test void-test (println void))
+(define-test void-test
+  (= _₁ builtin/println)
+  (= _₂ builtin/void)
+  (_₁ _₂))

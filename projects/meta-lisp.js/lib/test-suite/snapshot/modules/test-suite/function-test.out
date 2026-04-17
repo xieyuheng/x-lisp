@@ -1,2 +1,2 @@
-#(definition iadd)
-(@curry #(definition iadd) 1 [1])
+#(definition builtin/iadd)
+(@curry #(definition builtin/iadd) 1 [1])
