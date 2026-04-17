@@ -1,10 +1,18 @@
-# builtin
+# linn
 
-[basic-lisp.c] recover tests -- add `builtin/` prefix
+[linn.c] setup linn.c project -- copy code from basic-lisp.c
+[linn.c] simple stack vm compiler
+[linn.c] remove basic compiler
+
+# builtin
 
 [meta-lisp.js] [builtin] list
 [meta-lisp.js] [builtin] hash
 [meta-lisp.js] [builtin] set
+
+# basic-lisp
+
+[basic-lisp.c] recover tests -- add `builtin/` prefix
 
 # about format
 
