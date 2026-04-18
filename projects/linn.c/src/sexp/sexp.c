@@ -44,7 +44,7 @@ ignore_line_comments(list_t *tokens) {
 static value_t
 for_sexp(list_t *tokens) {
     if (list_is_empty(tokens)) {
-        who_printf("unexpected end of tokens");
+        who_printf("unexpected end of tokens\n");
         exit(1);
     }
 
@@ -90,7 +90,7 @@ for_sexp(list_t *tokens) {
         } else if (string_equal(token->content, ",")) {
             head = x_object(intern_symbol("@unquote"));
         } else {
-            who_printf("unexpected quasiquote mark: %s", token->content);
+            who_printf("unexpected quotation mark: %s\n", token->content);
             exit(1);
         }
 
@@ -111,13 +111,13 @@ for_sexp(list_t *tokens) {
             token_free(token);
             return x_cons(x_object(intern_symbol("@record")), for_list("}", tokens));
         } else {
-            who_printf("unexpected bracket start: %s", token->content);
+            who_printf("unexpected bracket start: %s\n", token->content);
             exit(1);
         }
     }
 
     case BRACKET_END_TOKEN: {
-        who_printf("unexpected bracket end: %s", token->content);
+        who_printf("unexpected bracket end: %s\n", token->content);
         exit(1);
     }
 
@@ -136,7 +136,7 @@ for_list(const char *end, list_t *tokens) {
     while (true) {
         ignore_line_comments(tokens);
         if (list_is_empty(tokens)) {
-            who_printf("unexpected end of tokens");
+            who_printf("unexpected end of tokens\n");
             exit(1);
         }
 
@@ -148,7 +148,7 @@ for_list(const char *end, list_t *tokens) {
                 return sexp;
             } else {
                 who_printf(
-                    "bracket end mismatch, expecting: %s, meet: %s",
+                    "bracket end mismatch, expecting: %s, meet: %s\n",
                     end, token->content);
                 exit(1);
             }

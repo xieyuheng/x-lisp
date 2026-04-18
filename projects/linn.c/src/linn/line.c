@@ -23,34 +23,59 @@ line_free(line_t *self) {
     free(self);
 }
 
-// static value_t
-// parse_line_arg(line_t *self, list_t *tokens, size_t i) {
-//     token_t *token = list_get(tokens, 1);
-//     switch (token->kind) {
-//     case SYMBOL_TOKEN: {
-//     }
+static value_t
+parse_line_arg(list_t *tokens) {
+    token_t *token = list_shift(tokens);
+    switch (token->kind) {
+    case SYMBOL_TOKEN: {
+        value_t sexp = x_object(intern_symbol(token->content));
+        token_free(token);
+        return sexp;
+    }
 
-//     case STRING_TOKEN: {
-//     }
+    case KEYWORD_TOKEN: {
+        value_t sexp = x_object(intern_keyword(token->content));
+        token_free(token);
+        return sexp;
+    }
 
-//     case INT_TOKEN: {
-//     }
+    case STRING_TOKEN: {
+        value_t sexp = x_object(make_xstring_no_gc(string_copy(token->content)));
+        token_free(token);
+        return sexp;
+    }
 
-//     case FLOAT_TOKEN: {
-//     }
+    case INT_TOKEN: {
+        value_t sexp = x_int(string_parse_int(token->content));
+        token_free(token);
+        return sexp;
+    }
 
-//     case QUOTATION_MARK_TOKEN: {
-//     }
+    case FLOAT_TOKEN: {
+        value_t sexp = x_float(string_parse_double(token->content));
+        token_free(token);
+        return sexp;
+    }
 
-//     case KEYWORD_TOKEN: {
-//     }
+    case QUOTATION_MARK_TOKEN: {
+        if (string_equal(token->content, "'")) {
+            token_free(token);
+            token = list_shift(tokens);
+            value_t sexp = x_object(intern_symbol(token->content));
+            token_free(token);
+            return sexp;
+        }
 
-//     default: {
-//         who_printf("unhandled token: %s\n", token->content);
-//         exit(1);
-//     }
-//     }
-// }
+        who_printf("unexpected quotation mark: %s\n", token->content);
+        exit(1);
+    }
+
+    default: {
+        who_printf("unhandled token: %s\n", token->content);
+        exit(1);
+    }
+    }
+}
 
 line_t *
 parse_line(const char *string) {
@@ -69,6 +94,10 @@ parse_line(const char *string) {
     token_free(token);
 
     array_t *args = make_array();
+    while (list_length(tokens) > 0) {
+        value_t value = parse_line_arg(tokens);
+        array_push(args, (void *) value);
+    }
 
     line_t *line = make_line(op_name, path, args);
     lexer_free(lexer);
