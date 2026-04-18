@@ -14,7 +14,7 @@ config_stdio(void) {
 
 static void
 handle_run(cmd_ctx_t *ctx) {
-    char *pathname = cmd_arg(ctx, 0);
+    char *pathname = cmd_get_arg(ctx, 0);
     mod_t *mod = linn_load(make_path(pathname));
     (void) mod;
 }

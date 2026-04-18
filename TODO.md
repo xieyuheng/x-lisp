@@ -1,16 +1,21 @@
 # linn
 
-[linn.c] `line_op`
-[linn.c] `line_path`
-[linn.c] `line_arg`
-
 [linn.c] `parse_line` -- parse line to tokens
+
+[linn.c] `line_op_name`
+[linn.c] `line_path`
+[linn.c] `line_get_arg`
+
 [linn.c] `linn_load` -- read line by line
 
 [linn.c] `linn_compile_line`
 
 - `is_ins_line`
 - `compile_ins_line` -- append instruction to definition
+
+# later
+
+[linn.c] string (specially small string) can be static like symbol
 
 # remove basic-lisp
 

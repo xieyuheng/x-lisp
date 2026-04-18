@@ -14,11 +14,11 @@ cmd_define_handler(cmd_router_t *router, const char *name, cmd_fn_t *fn) {
 }
 
 char *
-cmd_arg(cmd_ctx_t *ctx, size_t i) {
+cmd_get_arg(cmd_ctx_t *ctx, size_t i) {
     return array_get(ctx->args, i);
 }
 
 char *
-cmd_option(cmd_ctx_t *ctx, const char *name) {
+cmd_get_option(cmd_ctx_t *ctx, const char *name) {
     return record_get(ctx->options, name);
 }

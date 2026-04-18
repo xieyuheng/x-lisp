@@ -14,8 +14,8 @@ config_stdio(void) {
 
 static void
 handle_run(cmd_ctx_t *ctx) {
-    char *function_name = cmd_arg(ctx, 0);
-    char *pathname = cmd_arg(ctx, 1);
+    char *function_name = cmd_get_arg(ctx, 0);
+    char *pathname = cmd_get_arg(ctx, 1);
     mod_t *mod = basic_load(make_path(pathname));
     basic_setup(mod);
     basic_run(mod, function_name);
@@ -23,7 +23,7 @@ handle_run(cmd_ctx_t *ctx) {
 
 static void
 handle_bytecode(cmd_ctx_t *ctx) {
-    char *pathname = cmd_arg(ctx, 0);
+    char *pathname = cmd_get_arg(ctx, 0);
     mod_t *mod = basic_load(make_path(pathname));
     basic_bytecode(mod);
 }
