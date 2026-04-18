@@ -3,13 +3,13 @@
 [meta-lisp.js] [builtin] maybe
 [meta-lisp.js] [builtin] list -- (list-find p list) (list-find-index p list) -- use maybe
 
+[meta-lisp.js] [builtin] hash
+[meta-lisp.js] [builtin] set
+
 [meta-lisp.js] `pipe` and `compose` as `Exp`
 
 [meta-lisp.js] [builtin] list -- (list-group f list)
 [meta-lisp.js] [builtin] list -- (list-product lhs rhs)
-
-[meta-lisp.js] [builtin] hash
-[meta-lisp.js] [builtin] set
 
 # linn
 
