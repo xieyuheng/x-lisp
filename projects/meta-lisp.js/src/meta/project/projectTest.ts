@@ -11,7 +11,7 @@ const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 
 export const BasicInterpreterPath = Path.join(
   currentDir,
-  "../../../../basic-lisp.c/src/basic-lisp",
+  "../../../../basic-lisp.c/src/basic-lisp.exe",
 )
 
 export function projectTest(project: M.Project): void {

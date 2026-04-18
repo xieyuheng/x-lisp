@@ -1,6 +1,5 @@
 # linn
 
-[linn.c] `make_line`
 [linn.c] `line_free`
 [linn.c] `line_op`
 [linn.c] `line_path`
