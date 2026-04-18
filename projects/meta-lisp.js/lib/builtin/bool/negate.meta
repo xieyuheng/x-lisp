@@ -2,3 +2,8 @@
 
 (define (negate p)
   (lambda (x) (not (p x))))
+
+(define-test negate-test
+  (assert (not (int? 'a)))
+  (assert ((negate int?) 'a))
+  (assert (negate int? 'a)))

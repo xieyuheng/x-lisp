@@ -7,6 +7,26 @@
     (= _₂ (p x₁))
     (return (_₁ _₂))))
 
+(define-function (builtin/negate-test)
+  (block body
+    (= _₁ builtin/assert)
+    (= _₂ builtin/not)
+    (= _₃ builtin/int?)
+    (= _₄ (_₃ 'a))
+    (= _₅ (_₂ _₄))
+    (perform (_₁ _₅))
+    (= _₆ builtin/assert)
+    (= _₇ builtin/negate)
+    (= _₈ builtin/int?)
+    (= _₉ (_₇ _₈))
+    (= _₁₀ (_₉ 'a))
+    (perform (_₆ _₁₀))
+    (= _₁₁ builtin/assert)
+    (= _₁₂ builtin/negate)
+    (= _₁₃ builtin/int?)
+    (= _₁₄ (_₁₂ _₁₃ 'a))
+    (return (_₁₁ _₁₄))))
+
 (define-function (builtin/call-with-input-file path f)
   (block body
     (= _₁ builtin/open-input-file)

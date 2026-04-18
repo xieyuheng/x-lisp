@@ -7,6 +7,29 @@
   (= _₂ (p x₁))
   (_₁ _₂))
 
+(claim negate-test void-t)
+
+(define-test negate-test
+  (begin
+    (= _₁ builtin/assert)
+    (= _₂ builtin/not)
+    (= _₃ builtin/int?)
+    (= _₄ (_₃ 'a))
+    (= _₅ (_₂ _₄))
+    (_₁ _₅))
+  (begin
+    (= _₆ builtin/assert)
+    (= _₇ builtin/negate)
+    (= _₈ builtin/int?)
+    (= _₉ (_₇ _₈))
+    (= _₁₀ (_₉ 'a))
+    (_₆ _₁₀))
+  (= _₁₁ builtin/assert)
+  (= _₁₂ builtin/negate)
+  (= _₁₃ builtin/int?)
+  (= _₁₄ (_₁₂ _₁₃ 'a))
+  (_₁₁ _₁₄))
+
 (claim call-with-input-file
   (polymorphic (A)
     (-> builtin/string-t (-> builtin/file-t A) A)))
