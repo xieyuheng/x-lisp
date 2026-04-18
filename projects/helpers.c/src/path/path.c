@@ -178,6 +178,11 @@ path_raw_string(const path_t *self) {
     return self->string;
 }
 
+void
+path_print(const path_t *self) {
+    string_print(path_raw_string(self));
+}
+
 size_t
 path_segment_length(const path_t *self) {
     return stack_length(self->segment_stack);

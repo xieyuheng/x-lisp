@@ -32,7 +32,17 @@ line_op_name(line_t *self) {
     return token->content;
 }
 
+path_t *
+line_path(line_t *self) {
+    token_t *token = list_get(self->tokens, 1);
+    assert(token->kind == SYMBOL_TOKEN);
+    return make_path(token->content);
+}
+
 void
 line_print(line_t *self) {
-    printf("%s\n", line_op_name(self));
+    string_print(line_op_name(self));
+    string_print(" ");
+    path_print(line_path(self));
+    newline();
 }
