@@ -1,10 +1,13 @@
 # builtin
 
-[meta-lisp.js] [builtin] hash -- (hash-find-key p hash)
-[meta-lisp.js] [builtin] hash -- (hash-invert hash)
-[meta-lisp.js] [builtin] hash -- (hash-invert-group hash)
+[meta-lisp.js] [builtin] hash -- hash-invert
 
-[meta-lisp.js] `pipe` and `compose` as `Exp`
+```scheme
+(hash-invert hash)
+(hash-invert-group hash)
+```
+
+[meta-lisp.js] [builtin] hash -- (hash-find-key p hash)
 
 [meta-lisp.js] [builtin] list -- (list-group f list)
 [meta-lisp.js] [builtin] list -- (list-product lhs rhs)
@@ -14,6 +17,10 @@
 [linn.c] setup linn.c project -- copy code from basic-lisp.c
 [linn.c] simple stack vm compiler
 [linn.c] remove basic compiler
+
+# basic-lisp
+
+[basic-lisp.c] recover tests -- add `builtin/` prefix
 
 # basic-lisp missing builtin
 
@@ -33,10 +40,6 @@
 (claim random-float (-> float-t float-t float-t))
 ```
 
-# basic-lisp
-
-[basic-lisp.c] recover tests -- add `builtin/` prefix
-
 # about format
 
 [helpers.c] improve `string_builder_t` for `format_*`
@@ -51,3 +54,7 @@
 
 [basic-lisp.c] builtin `error-with-source-location`
 [basic-lisp.c] builtin `assert-with-source-location`
+
+# compose and pipe
+
+[meta-lisp.js] `pipe` and `compose` as `Exp`

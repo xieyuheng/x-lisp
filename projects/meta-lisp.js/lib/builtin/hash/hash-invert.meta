@@ -1,0 +1,24 @@
+(module builtin)
+
+(claim hash-invert
+  (polymorphic (K V)
+    (-> (hash-t K V)
+        (hash-t V K))))
+
+(define (hash-invert hash)
+  (hash-map (lambda (k v) (make-hash-entry v k))
+            hash))
+
+;; (claim hash-invert-group
+;;   (polymorphic (K V)
+;;     (-> (hash-t K V)
+;;         (hash-t V (set-t K)))))
+
+;; (define (hash-invert-group hash)
+;;   (= new-hash (@hash))
+;;   (hash-each-value
+;;    (lambda (value)
+;;      (= keys (hash-keys (hash-select (drop (equal? value)) hash)))
+;;      (hash-put! value (list-to-set keys) new-hash))
+;;    hash)
+;;   new-hash)
