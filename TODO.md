@@ -1,7 +1,3 @@
-# builtin
-
-[meta-lisp.js] [builtin] list -- (list-product lhs rhs)
-
 # linn
 
 [linn.c] setup linn.c project -- copy code from basic-lisp.c
