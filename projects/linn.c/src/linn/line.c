@@ -28,7 +28,7 @@ parse_line_arg(list_t *tokens) {
     token_t *token = list_shift(tokens);
     switch (token->kind) {
     case SYMBOL_TOKEN: {
-        value_t sexp = x_object(intern_symbol(token->content));
+        value_t sexp = x_object(intern_line_var(token->content));
         token_free(token);
         return sexp;
     }

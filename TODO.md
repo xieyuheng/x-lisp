@@ -1,8 +1,5 @@
 # linn
 
-[linn.c] `line_var_t` -- as `value_t`
-[linn.c] `line_parse_arg` -- view not quoted symbol as `line_var_t`
-
 [linn.c] `linn_execute_line` -- setup
 [linn.c] `linn_load` -- call `linn_execute_line`
 [linn.c] `linn_execute_line`
@@ -10,15 +7,15 @@
 - `is_ins_line`
 - `execute_ins_line` -- append instruction to definition
 
-# later
-
-[linn.c] string (specially small string) can be static like symbol
-
 # remove basic-lisp
 
 [meta-lisp.js] compile basic-lisp to linn
 [meta-lisp.js] remove basic-lisp.js
 [linn.c] update todo list
+
+# later
+
+[linn.c] string (specially small string) can be static like symbol
 
 # basic-lisp
 
