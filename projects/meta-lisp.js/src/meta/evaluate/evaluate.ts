@@ -101,10 +101,6 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       }
     }
 
-    case "LiteralTuple": {
-      return M.ListValue(exp.elements.map((e) => evaluate(mod, env, e)))
-    }
-
     case "LiteralRecord": {
       return M.RecordValue(
         recordMapValue(exp.attributes, (attribute) =>
@@ -119,14 +115,6 @@ export function evaluate(mod: M.Mod, env: M.Env, exp: M.Exp): M.Value {
       )
       const retType = evaluate(mod, env, exp.retType)
       return M.createArrowType(argTypes, retType)
-    }
-
-    case "Tau": {
-      const elementTypes = exp.elementTypes.map((elementType) =>
-        evaluate(mod, env, elementType),
-      )
-
-      return M.createTauType(elementTypes)
     }
 
     case "Interface": {

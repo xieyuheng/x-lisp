@@ -133,20 +133,6 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
       )
     }
 
-    case "LiteralTuple": {
-      return M.LiteralTuple(
-        exp.elements.map((e) => desugar(mod, e)),
-        exp.location,
-      )
-    }
-
-    case "Tau": {
-      return M.Tau(
-        exp.elementTypes.map((e) => desugar(mod, e)),
-        exp.location,
-      )
-    }
-
     case "LiteralRecord": {
       return M.LiteralRecord(
         recordMapValue(exp.attributes, (e) => desugar(mod, e)),

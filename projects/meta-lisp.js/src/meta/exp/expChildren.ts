@@ -76,10 +76,6 @@ export function expChildren(exp: Exp): Array<Exp> {
       return exp.elements
     }
 
-    case "LiteralTuple": {
-      return exp.elements
-    }
-
     case "LiteralRecord": {
       return Object.values(exp.attributes)
     }
@@ -94,10 +90,6 @@ export function expChildren(exp: Exp): Array<Exp> {
 
     case "Arrow": {
       return [...exp.argTypes, exp.retType]
-    }
-
-    case "Tau": {
-      return exp.elementTypes
     }
 
     case "The": {

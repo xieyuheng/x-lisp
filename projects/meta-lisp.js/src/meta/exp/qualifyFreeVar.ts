@@ -31,7 +31,6 @@ export function qualifyFreeVar(
       }
 
       const builtinMod = M.loadBuiltinMod(mod.project)
-
       const claimedType = M.modLookupClaimedType(builtinMod, exp.name)
       if (claimedType) {
         return M.QualifiedVar(builtinMod.name, exp.name, exp.location)

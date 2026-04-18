@@ -225,19 +225,6 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         )(subst)
       }
 
-      case "LiteralTuple": {
-        const elementTypes = exp.elements.map((_) => M.createFreshVarType("E"))
-        const type = M.createTauType(elementTypes)
-        return M.checkThenInfer(
-          M.sequenceCheckEffect(
-            exp.elements.map((element, index) =>
-              M.typeCheckByInfer(mod, ctx, element, elementTypes[index]),
-            ),
-          ),
-          M.okInferEffect(type),
-        )(subst)
-      }
-
       case "LiteralRecord": {
         const attributeTypes = recordMapValue(exp.attributes, (_) =>
           M.createFreshVarType("A"),
@@ -307,18 +294,6 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         return M.checkThenInfer(
           M.typeCheckByInfer(mod, ctx, exp.base, baseType),
           M.typeInfer(mod, ctx, exp.base),
-        )(subst)
-      }
-
-      case "Tau": {
-        const type = M.createTypeType()
-        return M.checkThenInfer(
-          M.sequenceCheckEffect(
-            exp.elementTypes.map((elementType) =>
-              M.typeCheckByInfer(mod, ctx, elementType, type),
-            ),
-          ),
-          M.okInferEffect(type),
         )(subst)
       }
 

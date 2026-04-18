@@ -103,7 +103,7 @@ export function builtinHash(mod: Mod) {
   definePrimitiveFunction(mod, "hash-entries", 1, (hash) => {
     const elements: Array<Value> = []
     for (const entry of Values.hashEntries(Values.asHashValue(hash))) {
-      elements.push(Values.ListValue([entry.key, entry.value]))
+      elements.push(Values.RecordValue({ key: entry.key, value: entry.value }))
     }
 
     return Values.ListValue(elements)

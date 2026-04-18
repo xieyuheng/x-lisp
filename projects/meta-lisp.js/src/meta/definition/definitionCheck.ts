@@ -18,15 +18,27 @@ export function definitionCheck(definition: M.Definition): null {
 
   switch (definition.kind) {
     case "DataDefinition": {
-      const tauTypes = definition.dataConstructors.map((dataConstructor) =>
-        M.Tau(dataConstructor.fields.map((field) => field.type)),
+      const bodyType = M.Interface(
+        Object.fromEntries(
+          definition.dataConstructors.map((dataConstructor) => [
+            dataConstructor.name,
+            M.Interface(
+              Object.fromEntries(
+                dataConstructor.fields.map((field) => [field.name, field.type]),
+              ),
+              definition.location,
+            ),
+          ]),
+        ),
+        definition.location,
       )
+
       const exp =
         definition.dataTypeConstructor.parameters.length === 0
-          ? M.Tau(tauTypes, definition.location)
+          ? bodyType
           : M.Lambda(
               definition.dataTypeConstructor.parameters,
-              M.Tau(tauTypes, definition.location),
+              bodyType,
               definition.location,
             )
       checkExp(mod, name, exp)

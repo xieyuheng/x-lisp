@@ -97,10 +97,10 @@ x_hash_entries(value_t hash) {
     while (entry) {
         value_t key = (value_t) entry->key;
         value_t value = (value_t) entry->value;
-        xlist_t *pair = make_xlist();
-        xlist_push(pair, key);
-        xlist_push(pair, value);
-        xlist_push(entries, x_object(pair));
+        xrecord_t *record = make_xrecord();
+        xrecord_put(record, "key", key);
+        xrecord_put(record, "value", value);
+        xlist_push(entries, x_object(record));
         entry = hash_iter_next_entry(&iter);
     }
 

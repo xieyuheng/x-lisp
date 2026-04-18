@@ -21,13 +21,11 @@ export type Exp =
   | Or
   | Cond
   | LiteralList
-  | LiteralTuple
   | LiteralRecord
   | LiteralSet
   | LiteralHash
   | Quote
   | Arrow
-  | Tau
   | Interface
   | ExtendInterface
   | Extend
@@ -404,23 +402,6 @@ export function LiteralList(
   }
 }
 
-export type LiteralTuple = {
-  kind: "LiteralTuple"
-  elements: Array<Exp>
-  location?: SourceLocation
-}
-
-export function LiteralTuple(
-  elements: Array<Exp>,
-  location?: SourceLocation,
-): LiteralTuple {
-  return {
-    kind: "LiteralTuple",
-    elements,
-    location,
-  }
-}
-
 export type LiteralRecord = {
   kind: "LiteralRecord"
   attributes: Record<string, Exp>
@@ -502,20 +483,6 @@ export function Arrow(
     kind: "Arrow",
     argTypes,
     retType,
-    location,
-  }
-}
-
-export type Tau = {
-  kind: "Tau"
-  elementTypes: Array<Exp>
-  location?: SourceLocation
-}
-
-export function Tau(elementTypes: Array<Exp>, location?: SourceLocation): Tau {
-  return {
-    kind: "Tau",
-    elementTypes,
     location,
   }
 }

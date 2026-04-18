@@ -330,17 +330,21 @@
 
 (define SKI (test-suite/S test-suite/K test-suite/I))
 
-(claim SKI-tuple
+(claim SKI-record
   (polymorphic (A B C D E F)
-    (tau (-> (-> A B C) (-> A B) (-> A C))
-         (-> D E D)
-         (-> F F))))
+    (interface
+      :S
+      (-> (-> A B C) (-> A B) (-> A C))
+      :K
+      (-> D E D)
+      :I
+      (-> F F))))
 
-(define SKI-tuple
+(define SKI-record
   (= S (lambda (x y z) (x z (y z))))
   (= K (lambda (x y) x))
   (= I (lambda (x) x))
-  (@tuple S K I))
+  (@record :S S :K K :I I))
 
 (claim compose
   (polymorphic (A B C) (-> (-> B C) (-> A B) (-> A C))))
@@ -519,60 +523,6 @@
   (builtin/list-push! 1 list)
   (builtin/list-push! 2 list)
   (builtin/list-push! 3 list)
-  (builtin/assert-equal
-   (begin
-     (= list (builtin/make-list))
-     (builtin/list-push! 1 list)
-     (builtin/list-push! 2 list)
-     (builtin/list-push! 3 list)
-     list)
-   list)
-  (builtin/assert-equal
-   (begin
-     (= list (builtin/make-list))
-     (builtin/list-push! 1 list)
-     (builtin/list-push! 2 list)
-     (builtin/list-push! 3 list)
-     list)
-   (begin
-     (= list (builtin/make-list))
-     (builtin/list-push! 1 list)
-     (builtin/list-push! 2 list)
-     (builtin/list-push! 3 list)
-     list))
-  (builtin/assert-equal
-   (begin
-     (= list (builtin/make-list))
-     (builtin/list-push! 'a list)
-     (builtin/list-push! 'b list)
-     (builtin/list-push! 'c list)
-     list)
-   (begin
-     (= list (builtin/make-list))
-     (builtin/list-push! 'a list)
-     (builtin/list-push! 'b list)
-     (builtin/list-push! 'c list)
-     list))
-  (builtin/assert-equal
-   3
-   (builtin/list-length
-    (begin
-      (= list (builtin/make-list))
-      (builtin/list-push! 1 list)
-      (builtin/list-push! 2 list)
-      (builtin/list-push! 3 list)
-      list)))
-  (builtin/assert-equal
-   0
-   (builtin/list-length
-    (begin (= list (builtin/make-list)) list)))
-  (builtin/assert
-   (builtin/list-empty?
-    (begin (= list (builtin/make-list)) list)))
-  (= list (builtin/make-list))
-  (builtin/list-push! 1 list)
-  (builtin/list-push! 2 list)
-  (builtin/list-push! 3 list)
   (builtin/println list)
   (builtin/println
    (the (builtin/list-t builtin/int-t)
@@ -616,6 +566,505 @@
      (builtin/list-push! 'a list)
      (builtin/list-push! 'b list)
      (builtin/list-push! 'c list)
+     list))
+  (builtin/assert-equal
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list)
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 'a list)
+     (builtin/list-push! 'b list)
+     (builtin/list-push! 'c list)
+     list)
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 'a list)
+     (builtin/list-push! 'b list)
+     (builtin/list-push! 'c list)
+     list))
+  (builtin/assert-equal
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 1 list)
+        (builtin/list-push! 2 list)
+        (builtin/list-push! 3 list)
+        list)
+      list)
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 4 list)
+        (builtin/list-push! 5 list)
+        (builtin/list-push! 6 list)
+        list)
+      list)
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 7 list)
+        (builtin/list-push! 8 list)
+        (builtin/list-push! 9 list)
+        list)
+      list)
+     list)
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 1 list)
+        (builtin/list-push! 2 list)
+        (builtin/list-push! 3 list)
+        list)
+      list)
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 4 list)
+        (builtin/list-push! 5 list)
+        (builtin/list-push! 6 list)
+        list)
+      list)
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 7 list)
+        (builtin/list-push! 8 list)
+        (builtin/list-push! 9 list)
+        list)
+      list)
+     list))
+  (builtin/assert-not-equal
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 1 list)
+        (builtin/list-push! 2 list)
+        (builtin/list-push! 3 list)
+        list)
+      list)
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 4 list)
+        (builtin/list-push! 5 list)
+        (builtin/list-push! 6 list)
+        list)
+      list)
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 7 list)
+        (builtin/list-push! 8 list)
+        (builtin/list-push! 9 list)
+        list)
+      list)
+     list)
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 1 list)
+        (builtin/list-push! 2 list)
+        (builtin/list-push! 3 list)
+        list)
+      list)
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 4 list)
+        (builtin/list-push! 5 list)
+        (builtin/list-push! 6 list)
+        list)
+      list)
+     (builtin/list-push!
+      (begin
+        (= list (builtin/make-list))
+        (builtin/list-push! 7 list)
+        (builtin/list-push! 8 list)
+        (builtin/list-push! 10 list)
+        list)
+      list)
+     list))
+  (builtin/assert
+   (builtin/list-empty?
+    (begin (= list (builtin/make-list)) list)))
+  (builtin/assert-not
+   (builtin/list-empty?
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      list)))
+  (builtin/assert-equal
+   (builtin/cons
+    1
+    (builtin/cons
+     2
+     (builtin/cons
+      3
+      (begin (= list (builtin/make-list)) list))))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (builtin/car
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   1)
+  (builtin/assert-equal
+   (builtin/cdr
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-head
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   1)
+  (builtin/assert-equal
+   (builtin/list-tail
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-init
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-last
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   3)
+  (builtin/assert-equal
+   (begin
+     (= set (builtin/make-set))
+     (builtin/set-add! 1 set)
+     (builtin/set-add! 2 set)
+     (builtin/set-add! 3 set)
+     set)
+   (builtin/list-to-set
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list)))
+  (builtin/assert-equal
+   (builtin/list-copy
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-get
+    0
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   1)
+  (builtin/assert-equal
+   (builtin/list-get
+    1
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   2)
+  (builtin/assert-equal
+   (builtin/list-get
+    2
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   3)
+  (builtin/assert-equal
+   (builtin/list-length
+    (begin (= list (builtin/make-list)) list))
+   0)
+  (builtin/assert-equal
+   (builtin/list-length
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   3)
+  (builtin/assert-equal
+   (builtin/list-length
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push!
+       (begin
+         (= list (builtin/make-list))
+         (builtin/list-push! 1 list)
+         (builtin/list-push! 2 list)
+         (builtin/list-push! 3 list)
+         list)
+       list)
+      (builtin/list-push!
+       (begin
+         (= list (builtin/make-list))
+         (builtin/list-push! 4 list)
+         (builtin/list-push! 5 list)
+         (builtin/list-push! 6 list)
+         list)
+       list)
+      (builtin/list-push!
+       (begin
+         (= list (builtin/make-list))
+         (builtin/list-push! 7 list)
+         (builtin/list-push! 8 list)
+         (builtin/list-push! 9 list)
+         list)
+       list)
+      list))
+   3)
+  (= fs
+     (the (builtin/list-t (-> builtin/int-t builtin/int-t))
+       (begin
+         (= list (builtin/make-list))
+         (builtin/list-push! (builtin/iadd 1) list)
+         (builtin/list-push! (builtin/iadd 2) list)
+         (builtin/list-push! (builtin/iadd 3) list)
+         list)))
+  (builtin/assert-equal 1 ((builtin/list-get 0 fs) 0))
+  (builtin/assert-equal 2 ((builtin/list-get 1 fs) 0))
+  (builtin/assert-equal 3 ((builtin/list-get 2 fs) 0)))
+
+(claim list-pop-test void-t)
+
+(define-test list-pop-test
+  (= list
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
+       list))
+  (builtin/assert-equal 3 (builtin/list-pop! list))
+  (builtin/assert-equal 2 (builtin/list-pop! list))
+  (builtin/assert-equal 1 (builtin/list-pop! list))
+  (builtin/assert-equal
+   list
+   (begin (= list (builtin/make-list)) list)))
+
+(claim list-push-test void-t)
+
+(define-test list-push-test
+  (begin
+    (= list (begin (= list (builtin/make-list)) list))
+    (= list (builtin/list-push 1 list))
+    (= list (builtin/list-push 2 list))
+    (= list (builtin/list-push 3 list))
+    (builtin/assert-equal
+     list
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
+       list)))
+  (begin
+    (= list (begin (= list (builtin/make-list)) list))
+    (builtin/list-push 1 list)
+    (builtin/list-push 2 list)
+    (builtin/list-push 3 list)
+    (builtin/assert-equal
+     list
+     (begin (= list (builtin/make-list)) list)))
+  (= list (begin (= list (builtin/make-list)) list))
+  (builtin/list-push! 1 list)
+  (builtin/list-push! 2 list)
+  (builtin/list-push! 3 list)
+  (builtin/assert-equal
+   list
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list)))
+
+(claim list-put-test void-t)
+
+(define-test list-put-test
+  (begin
+    (= list
+       (begin
+         (= list (builtin/make-list))
+         (builtin/list-push! 0 list)
+         (builtin/list-push! 0 list)
+         (builtin/list-push! 0 list)
+         list))
+    (= list (builtin/list-put 0 1 list))
+    (= list (builtin/list-put 1 2 list))
+    (= list (builtin/list-put 2 3 list))
+    (builtin/assert-equal
+     list
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
+       list)))
+  (begin
+    (= list
+       (begin
+         (= list (builtin/make-list))
+         (builtin/list-push! 0 list)
+         (builtin/list-push! 0 list)
+         (builtin/list-push! 0 list)
+         list))
+    (builtin/list-put 0 1 list)
+    (builtin/list-put 1 2 list)
+    (builtin/list-put 2 3 list)
+    (builtin/assert-equal
+     list
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! 0 list)
+       (builtin/list-push! 0 list)
+       (builtin/list-push! 0 list)
+       list)))
+  (= list
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! 0 list)
+       (builtin/list-push! 0 list)
+       (builtin/list-push! 0 list)
+       list))
+  (builtin/list-put! 0 1 list)
+  (builtin/list-put! 1 2 list)
+  (builtin/list-put! 2 3 list)
+  (builtin/assert-equal
+   list
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list)))
+
+(claim list-reverse-test void-t)
+
+(define-test list-reverse-test
+  (builtin/assert-equal
+   (builtin/list-reverse
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 3 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 1 list)
+     list)))
+
+(claim list-shift-test void-t)
+
+(define-test list-shift-test
+  (begin
+    (= list
+       (begin
+         (= list (builtin/make-list))
+         (builtin/list-push! 1 list)
+         (builtin/list-push! 2 list)
+         (builtin/list-push! 3 list)
+         list))
+    (builtin/assert-equal 1 (builtin/list-shift! list))
+    (builtin/assert-equal 2 (builtin/list-shift! list))
+    (builtin/assert-equal 3 (builtin/list-shift! list))
+    (builtin/assert-equal
+     list
+     (begin (= list (builtin/make-list)) list)))
+  (= list (begin (= list (builtin/make-list)) list))
+  (builtin/list-unshift! 3 list)
+  (builtin/list-unshift! 2 list)
+  (builtin/list-unshift! 1 list)
+  (builtin/assert-equal
+   list
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
      list)))
 
 (claim cond-test void-t)
@@ -841,14 +1290,6 @@
    'abcdef
    (builtin/symbol-append 'abc 'def))
   (builtin/println 'abc))
-
-(claim tuple-test void-t)
-
-(define-test tuple-test
-  (builtin/println
-   (the (tau builtin/int-t builtin/int-t) (@tuple 1 2)))
-  (builtin/println
-   (the (tau builtin/int-t builtin/symbol-t) (@tuple 1 'a))))
 
 (claim void-test void-t)
 

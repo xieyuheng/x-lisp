@@ -101,10 +101,6 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
       return M.LiteralList(exp.elements.map(onExp), exp.location)
     }
 
-    case "LiteralTuple": {
-      return M.LiteralTuple(exp.elements.map(onExp), exp.location)
-    }
-
     case "LiteralSet": {
       return M.LiteralSet(exp.elements.map(onExp), exp.location)
     }
@@ -121,10 +117,6 @@ export function expTraverse(onExp: (exp: Exp) => Exp, exp: Exp): Exp {
 
     case "Arrow": {
       return M.Arrow(exp.argTypes.map(onExp), onExp(exp.retType), exp.location)
-    }
-
-    case "Tau": {
-      return M.Tau(exp.elementTypes.map(onExp), exp.location)
     }
 
     case "The": {

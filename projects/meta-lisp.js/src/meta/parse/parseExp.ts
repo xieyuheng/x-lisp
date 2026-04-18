@@ -92,10 +92,6 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
     return M.LiteralList(S.listElements(elements).map(parseExp), location)
   },
 
-  "(cons* '@tuple elements)": ({ elements }, { location }) => {
-    return M.LiteralTuple(S.listElements(elements).map(parseExp), location)
-  },
-
   "(cons* '@record body)": ({ body }, { location }) => {
     const entries = S.listCollectKeywordEntries(body)
     M.assertNoDuplicatedKey(entries)
@@ -129,10 +125,6 @@ export const parseExp: S.Router<M.Exp> = S.createRouter<M.Exp>({
       S.listElements(exps).map(parseExp),
     )
     return M.Arrow(argTypes, retType, location)
-  },
-
-  "(cons* 'tau elements)": ({ elements }, { location }) => {
-    return M.Tau(S.listElements(elements).map(parseExp), location)
   },
 
   "(cons* 'interface body)": ({ body }, { location }) => {

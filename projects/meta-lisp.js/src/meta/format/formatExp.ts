@@ -138,16 +138,6 @@ export function formatExp(exp: Exp): string {
       }
     }
 
-    case "LiteralTuple": {
-      const elements = formatExps(exp.elements)
-
-      if (elements === "") {
-        return `(@tuple)`
-      } else {
-        return `(@tuple ${elements})`
-      }
-    }
-
     case "LiteralRecord": {
       const attributes = formatExpAttributes(exp.attributes)
       if (attributes === "") {
@@ -181,15 +171,6 @@ export function formatExp(exp: Exp): string {
       const argTypes = exp.argTypes.map(formatExp).join(" ")
       const retType = formatExp(exp.retType)
       return `(-> ${argTypes} ${retType})`
-    }
-
-    case "Tau": {
-      const elementTypes = formatExps(exp.elementTypes)
-      if (elementTypes === "") {
-        return `(tau)`
-      } else {
-        return `(tau ${elementTypes})`
-      }
     }
 
     case "Interface": {

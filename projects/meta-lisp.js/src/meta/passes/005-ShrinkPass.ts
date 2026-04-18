@@ -59,10 +59,6 @@ function onExp(mod: M.Mod, exp: M.Exp): M.Exp {
       return onExp(mod, M.desugar(mod, exp.exp))
     }
 
-    case "LiteralTuple": {
-      return onExp(mod, shrinkTuple(mod, exp.elements, exp.location))
-    }
-
     case "LiteralRecord": {
       return onExp(mod, shrinkRecord(mod, exp.attributes, exp.location))
     }
