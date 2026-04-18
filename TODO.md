@@ -1,7 +1,5 @@
 # builtin
 
-[meta-lisp.js] [builtin] `(hash-entry-t K V)` -- by `DefineTypeFunction`
-
 [meta-lisp.js] [builtin] list -- (list-map-zip f left right)
 [meta-lisp.js] [builtin] list -- (list-find p list) (list-find-index p list)
 [meta-lisp.js] [builtin] list -- (list-group f list)

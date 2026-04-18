@@ -53,7 +53,21 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   }
 
   if (stmt.kind === "DefineType") {
-    M.modClaim(mod, stmt.name, M.Var("type-t"))
+    if (stmt.parameters.length === 0) {
+      M.modClaim(mod, stmt.name, M.Var("type-t"))
+    } else {
+      M.modClaim(
+        mod,
+        stmt.name,
+        M.Arrow(
+          range(stmt.parameters.length).map((_) =>
+            M.Var("type-t"),
+          ),
+          M.Var("type-t"),
+        ),
+      )
+    }
+
     M.modDefine(
       mod,
       stmt.name,

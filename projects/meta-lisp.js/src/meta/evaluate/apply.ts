@@ -69,6 +69,18 @@ export function apply(target: M.Value, args: Array<M.Value>): M.Value {
           )
         }
 
+        case "TypeDefinition": {
+          return apply(
+            M.ClosureValue(
+              target.definition.mod,
+              M.emptyEnv(),
+              target.definition.parameters,
+              target.definition.body,
+            ),
+            args,
+          )
+        }
+
         case "DataDefinition": {
           return M.createDefinedDataType(target.definition, args)
         }
@@ -112,6 +124,10 @@ function getArity(target: M.Value, args: Array<M.Value>): number {
         }
 
         case "FunctionDefinition": {
+          return target.definition.parameters.length
+        }
+
+        case "TypeDefinition": {
           return target.definition.parameters.length
         }
 

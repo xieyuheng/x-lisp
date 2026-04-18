@@ -21,7 +21,8 @@ export function definitionMeaning(definition: M.Definition): M.Value {
     }
 
     case "TypeDefinition": {
-      if (!definition.value) {
+      if (definition.parameters.length === 0) {
+              if (!definition.value) {
         definition.value = M.evaluate(
           definition.mod,
           M.emptyEnv(),
@@ -30,6 +31,9 @@ export function definitionMeaning(definition: M.Definition): M.Value {
       }
 
       return definition.value
+      } else {
+      return M.DefinitionValue(definition)
+      }
     }
 
     case "VariableDefinition": {

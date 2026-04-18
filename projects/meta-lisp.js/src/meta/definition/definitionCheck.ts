@@ -85,7 +85,11 @@ export function definitionCheck(definition: M.Definition): null {
     }
 
     case "TypeDefinition": {
-      checkExp(mod, name, definition.body)
+      checkExp(
+        mod,
+        name,
+        M.Lambda(definition.parameters, definition.body, definition.location),
+      )
       definition.isChecked = true
       return null
     }

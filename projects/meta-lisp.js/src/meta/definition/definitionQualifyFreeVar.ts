@@ -38,7 +38,7 @@ export function definitionQualifyFreeVar(definition: M.Definition): null {
     case "TypeDefinition": {
       definition.body = M.qualifyFreeVar(
         definition.mod,
-        new Set(),
+        new Set(definition.parameters),
         definition.body,
       )
       return null
