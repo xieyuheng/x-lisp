@@ -91,10 +91,6 @@ import_builtin(mod_t *mod) {
     define_primitive_2(mod, "builtin/path-join", x_path_join);
     define_primitive_1(mod, "builtin/path-normalize", x_path_normalize);
 
-    // system
-
-    define_primitive_0(mod, "builtin/exit", x_exit);
-
     // random
 
     define_primitive_0(mod, "builtin/random-dice", x_random_dice);
@@ -240,4 +236,5 @@ import_builtin(mod_t *mod) {
     // process
 
     define_primitive_0(mod, "builtin/current-directory?", x_current_directory);
+    // define_primitive_0(mod, "builtin/exit", x_exit);
 }

@@ -134,6 +134,11 @@
 (define-test identity-test
   (builtin/assert-equal 1 (builtin/identity 1)))
 
+(claim hash-entry-t
+  (-> builtin/type-t builtin/type-t builtin/type-t))
+
+(define-type hash-entry-t (interface :key K :value V))
+
 (claim int-align
   (-> builtin/int-t builtin/int-t builtin/int-t))
 

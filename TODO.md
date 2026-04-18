@@ -14,6 +14,25 @@
 [linn.c] simple stack vm compiler
 [linn.c] remove basic compiler
 
+# basic-lisp missing builtin
+
+[basic-lisp.c] missing builtin -- string
+
+```scheme
+(claim string-split (-> string-t string-t (list-t string-t)))
+(claim string-lines (-> string-t (list-t string-t)))
+(claim string-chars (-> string-t (list-t string-t)))
+(claim string-replace-first (-> string-t string-t string-t string-t))
+(claim string-replace (-> string-t string-t string-t string-t))
+```
+
+[basic-lisp.c] missing builtin -- random
+
+```scheme
+(claim random-int (-> int-t int-t int-t))
+(claim random-float (-> float-t float-t float-t))
+```
+
 # basic-lisp
 
 [basic-lisp.c] recover tests -- add `builtin/` prefix

@@ -64,7 +64,7 @@ export function definitionCheck(definition: M.Definition): null {
     case "PrimitiveVariableDefinition": {
       const type = M.modLookupClaimedType(mod, name)
       if (!type) {
-        writeln(reportUnclaimedDefinition(definition))
+        writeln(reportUnclaimedPrimitiveDefinition(definition))
         return null
       }
 
@@ -85,11 +85,15 @@ export function definitionCheck(definition: M.Definition): null {
     }
 
     case "TypeDefinition": {
-      checkExp(
-        mod,
-        name,
-        M.Lambda(definition.parameters, definition.body, definition.location),
-      )
+      if (definition.parameters.length === 0) {
+        checkExp(mod, name, definition.body)
+      } else {
+        checkExp(
+          mod,
+          name,
+          M.Lambda(definition.parameters, definition.body, definition.location),
+        )
+      }
       definition.isChecked = true
       return null
     }
@@ -145,8 +149,8 @@ function reportTypeCheckError(exp: M.Exp, errorMessage: string): string {
   }
 }
 
-function reportUnclaimedDefinition(definition: M.Definition): string {
-  const errorMessage = `unclaimed definition: ${definition.name}`
+function reportUnclaimedPrimitiveDefinition(definition: M.Definition): string {
+  const errorMessage = `unclaimed primitive definition: ${definition.name}`
   if (definition.location) {
     return S.sourceLocationReport(definition.location, errorMessage)
   } else {

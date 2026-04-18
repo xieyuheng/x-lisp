@@ -60,9 +60,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
         mod,
         stmt.name,
         M.Arrow(
-          range(stmt.parameters.length).map((_) =>
-            M.Var("type-t"),
-          ),
+          range(stmt.parameters.length).map((_) => M.Var("type-t")),
           M.Var("type-t"),
         ),
       )

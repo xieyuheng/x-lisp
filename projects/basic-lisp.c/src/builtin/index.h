@@ -5,7 +5,6 @@
 #include "value.h"
 #include "file.h"
 #include "path.h"
-#include "system.h"
 #include "string.h"
 #include "symbol.h"
 #include "keyword.h"

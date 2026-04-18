@@ -1,6 +1,5 @@
 (module builtin)
 
-(claim random-int (-> int-t int-t int-t))
-(claim random-float (-> float-t float-t float-t))
+;; (claim random-int (-> int-t int-t int-t))
+;; (claim random-float (-> float-t float-t float-t))
 (claim random-dice (-> int-t))
-

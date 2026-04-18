@@ -1,5 +1,7 @@
 (module builtin)
 
 (claim keyword? (polymorphic (A) (-> A bool-t)))
+(claim keyword-length (-> keyword-t int-t))
 (claim keyword-to-string (-> keyword-t string-t))
 (claim keyword-append (-> keyword-t keyword-t keyword-t))
+(claim keyword-concat (-> (list-t keyword-t) keyword-t))
