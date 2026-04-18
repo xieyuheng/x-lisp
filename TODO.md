@@ -1,7 +1,7 @@
 # linn
 
-[linn.c] simple stack vm compiler
-[linn.c] remove basic compiler
+[linn.c] read input line by line
+[linn.c] ins operation -- append instruction to definition
 
 # basic-lisp
 
