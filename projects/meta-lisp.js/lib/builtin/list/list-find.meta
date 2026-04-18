@@ -1,0 +1,37 @@
+(module builtin)
+
+(claim list-find
+  (polymorphic (A)
+    (-> (-> A bool-t) (list-t A)
+        (maybe-t A))))
+
+(define (list-find p list)
+  (cond ((list-empty? list) nothing)
+        ((p (car list)) (just (car list)))
+        (else (list-find p (cdr list)))))
+
+(define-test list-find-test
+  (assert-equal (just 3) (list-find int? ['a 'b 3 'd]))
+  (assert-equal nothing (list-find int? ['a 'b 'c 'd])))
+
+(claim list-find-index
+  (polymorphic (A)
+    (-> (-> A bool-t) (list-t A)
+        (maybe-t int-t))))
+
+(define (list-find-index p list)
+  (list-find-index-aux p list 0))
+
+(claim list-find-index-aux
+  (polymorphic (A)
+    (-> (-> A bool-t) (list-t A) int-t
+        (maybe-t int-t))))
+
+(define (list-find-index-aux p list index)
+  (cond ((list-empty? list) nothing)
+        ((p (car list)) (just index))
+        (else (list-find-index-aux p (cdr list) (iadd 1 index)))))
+
+(define-test list-find-index-test
+  (assert-equal (just 2) (list-find-index int? ['a 'b 3 'd]))
+  (assert-equal nothing (list-find-index int? ['a 'b 'c 'd])))

@@ -418,6 +418,101 @@
       (builtin/list-push! -3 list)
       list))))
 
+(claim list-find
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        (builtin/maybe-t A))))
+
+(define (list-find p list)
+  (if (builtin/list-empty? list)
+    builtin/nothing
+    (if (p (builtin/car list))
+      (builtin/just (builtin/car list))
+      (if builtin/true
+        (builtin/list-find p (builtin/cdr list))
+        (builtin/error "cond mismatch")))))
+
+(claim list-find-test void-t)
+
+(define-test list-find-test
+  (builtin/assert-equal
+   (builtin/just 3)
+   (builtin/list-find
+    builtin/int?
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 'a list)
+      (builtin/list-push! 'b list)
+      (builtin/list-push! 3 list)
+      (builtin/list-push! 'd list)
+      list)))
+  (builtin/assert-equal
+   builtin/nothing
+   (builtin/list-find
+    builtin/int?
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 'a list)
+      (builtin/list-push! 'b list)
+      (builtin/list-push! 'c list)
+      (builtin/list-push! 'd list)
+      list))))
+
+(claim list-find-index
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        (builtin/maybe-t builtin/int-t))))
+
+(define (list-find-index p list)
+  (builtin/list-find-index-aux p list 0))
+
+(claim list-find-index-aux
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        builtin/int-t
+        (builtin/maybe-t builtin/int-t))))
+
+(define (list-find-index-aux p list index)
+  (if (builtin/list-empty? list)
+    builtin/nothing
+    (if (p (builtin/car list))
+      (builtin/just index)
+      (if builtin/true
+        (builtin/list-find-index-aux
+         p
+         (builtin/cdr list)
+         (builtin/iadd 1 index))
+        (builtin/error "cond mismatch")))))
+
+(claim list-find-index-test void-t)
+
+(define-test list-find-index-test
+  (builtin/assert-equal
+   (builtin/just 2)
+   (builtin/list-find-index
+    builtin/int?
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 'a list)
+      (builtin/list-push! 'b list)
+      (builtin/list-push! 3 list)
+      (builtin/list-push! 'd list)
+      list)))
+  (builtin/assert-equal
+   builtin/nothing
+   (builtin/list-find-index
+    builtin/int?
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 'a list)
+      (builtin/list-push! 'b list)
+      (builtin/list-push! 'c list)
+      (builtin/list-push! 'd list)
+      list))))
+
 (claim list-fold-left
   (polymorphic (E R) (-> (-> R E R) R (builtin/list-t E) R)))
 

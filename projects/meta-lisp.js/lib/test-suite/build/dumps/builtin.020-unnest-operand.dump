@@ -522,6 +522,117 @@
   (= _₁₆ (_₁₀ _₁₁ list₂))
   (_₉ _₁₆))
 
+(claim list-find
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        (builtin/maybe-t A))))
+
+(define (list-find p list)
+  (if (begin (= _₁ builtin/list-empty?) (_₁ list))
+    builtin/nothing
+    (if (begin (= _₂ builtin/car) (= _₃ (_₂ list)) (p _₃))
+      (begin
+        (= _₄ builtin/just)
+        (= _₅ builtin/car)
+        (= _₆ (_₅ list))
+        (_₄ _₆))
+      (if builtin/true
+        (begin
+          (= _₇ builtin/list-find)
+          (= _₈ builtin/cdr)
+          (= _₉ (_₈ list))
+          (_₇ p _₉))
+        (begin (= _₁₀ builtin/error) (_₁₀ "cond mismatch"))))))
+
+(claim list-find-test void-t)
+
+(define-test list-find-test
+  (begin
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/just)
+    (= _₃ (_₂ 3))
+    (= _₄ builtin/list-find)
+    (= _₅ builtin/int?)
+    (= list₁ (begin (= _₆ builtin/make-list) (_₆)))
+    (begin (= _₇ builtin/list-push!) (_₇ 'a list₁))
+    (begin (= _₈ builtin/list-push!) (_₈ 'b list₁))
+    (begin (= _₉ builtin/list-push!) (_₉ 3 list₁))
+    (begin (= _₁₀ builtin/list-push!) (_₁₀ 'd list₁))
+    (= _₁₁ (_₄ _₅ list₁))
+    (_₁ _₃ _₁₁))
+  (= _₁₂ builtin/assert-equal)
+  (= _₁₃ builtin/nothing)
+  (= _₁₄ builtin/list-find)
+  (= _₁₅ builtin/int?)
+  (= list₂ (begin (= _₁₆ builtin/make-list) (_₁₆)))
+  (begin (= _₁₇ builtin/list-push!) (_₁₇ 'a list₂))
+  (begin (= _₁₈ builtin/list-push!) (_₁₈ 'b list₂))
+  (begin (= _₁₉ builtin/list-push!) (_₁₉ 'c list₂))
+  (begin (= _₂₀ builtin/list-push!) (_₂₀ 'd list₂))
+  (= _₂₁ (_₁₄ _₁₅ list₂))
+  (_₁₂ _₁₃ _₂₁))
+
+(claim list-find-index
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        (builtin/maybe-t builtin/int-t))))
+
+(define (list-find-index p list)
+  (= _₁ builtin/list-find-index-aux)
+  (_₁ p list 0))
+
+(claim list-find-index-aux
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        builtin/int-t
+        (builtin/maybe-t builtin/int-t))))
+
+(define (list-find-index-aux p list index)
+  (if (begin (= _₁ builtin/list-empty?) (_₁ list))
+    builtin/nothing
+    (if (begin (= _₂ builtin/car) (= _₃ (_₂ list)) (p _₃))
+      (begin (= _₄ builtin/just) (_₄ index))
+      (if builtin/true
+        (begin
+          (= _₅ builtin/list-find-index-aux)
+          (= _₆ builtin/cdr)
+          (= _₇ (_₆ list))
+          (= _₈ builtin/iadd)
+          (= _₉ (_₈ 1 index))
+          (_₅ p _₇ _₉))
+        (begin (= _₁₀ builtin/error) (_₁₀ "cond mismatch"))))))
+
+(claim list-find-index-test void-t)
+
+(define-test list-find-index-test
+  (begin
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/just)
+    (= _₃ (_₂ 2))
+    (= _₄ builtin/list-find-index)
+    (= _₅ builtin/int?)
+    (= list₁ (begin (= _₆ builtin/make-list) (_₆)))
+    (begin (= _₇ builtin/list-push!) (_₇ 'a list₁))
+    (begin (= _₈ builtin/list-push!) (_₈ 'b list₁))
+    (begin (= _₉ builtin/list-push!) (_₉ 3 list₁))
+    (begin (= _₁₀ builtin/list-push!) (_₁₀ 'd list₁))
+    (= _₁₁ (_₄ _₅ list₁))
+    (_₁ _₃ _₁₁))
+  (= _₁₂ builtin/assert-equal)
+  (= _₁₃ builtin/nothing)
+  (= _₁₄ builtin/list-find-index)
+  (= _₁₅ builtin/int?)
+  (= list₂ (begin (= _₁₆ builtin/make-list) (_₁₆)))
+  (begin (= _₁₇ builtin/list-push!) (_₁₇ 'a list₂))
+  (begin (= _₁₈ builtin/list-push!) (_₁₈ 'b list₂))
+  (begin (= _₁₉ builtin/list-push!) (_₁₉ 'c list₂))
+  (begin (= _₂₀ builtin/list-push!) (_₂₀ 'd list₂))
+  (= _₂₁ (_₁₄ _₁₅ list₂))
+  (_₁₂ _₁₃ _₂₁))
+
 (claim list-fold-left
   (polymorphic (E R) (-> (-> R E R) R (builtin/list-t E) R)))
 
