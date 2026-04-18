@@ -1,6 +1,5 @@
 # builtin
 
-[meta-lisp.js] [builtin] maybe
 [meta-lisp.js] [builtin] list -- (list-find p list) (list-find-index p list) -- use maybe
 
 [meta-lisp.js] [builtin] hash

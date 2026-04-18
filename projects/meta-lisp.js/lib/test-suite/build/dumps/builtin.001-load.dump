@@ -382,6 +382,48 @@
      [(make-pair 'a 1) (make-pair 'b 2) (make-pair 'c 3)])
     (make-pair ['a 'b 'c] [1 2 3])))
 
+(define-data (maybe-t A) (just (value A)) nothing)
+
+(claim just (polymorphic (A) (-> A (builtin/maybe-t A))))
+
+(define (just value) ['just value])
+
+(claim just?
+  (polymorphic (A) (-> (builtin/maybe-t A) builtin/bool-t)))
+
+(define (just? value)
+  (and (list? value)
+       (equal? (list-length value) 2)
+       (equal? (list-head value) 'just)))
+
+(claim just-value
+  (polymorphic (A) (-> (builtin/maybe-t A) A)))
+
+(define (just-value target) (list-get 1 target))
+
+(claim just-put-value
+  (polymorphic (A)
+    (-> A (builtin/maybe-t A) (builtin/maybe-t A))))
+
+(define (just-put-value value target)
+  (list-put 1 value target))
+
+(claim just-put-value!
+  (polymorphic (A)
+    (-> A (builtin/maybe-t A) (builtin/maybe-t A))))
+
+(define (just-put-value! value target)
+  (list-put! 1 value target))
+
+(claim nothing (polymorphic (A) (builtin/maybe-t A)))
+
+(define nothing 'nothing)
+
+(claim nothing?
+  (polymorphic (A) (-> (builtin/maybe-t A) builtin/bool-t)))
+
+(define (nothing? value) (equal? value 'nothing))
+
 (define-interface (pair-t A B) :first A :second B)
 
 (define (make-pair first second)

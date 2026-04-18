@@ -858,6 +858,54 @@
        (builtin/list-push! 3 list)
        list))))
 
+(define-data (maybe-t A) (just (value A)) nothing)
+
+(claim just (polymorphic (A) (-> A (builtin/maybe-t A))))
+
+(define (just value)
+  (= list (builtin/make-list))
+  (builtin/list-push! 'just list)
+  (builtin/list-push! value list)
+  list)
+
+(claim just?
+  (polymorphic (A) (-> (builtin/maybe-t A) builtin/bool-t)))
+
+(define (just? value)
+  (if (list? value)
+    (if (equal? (list-length value) 2)
+      (equal? (list-head value) 'just)
+      false)
+    false))
+
+(claim just-value
+  (polymorphic (A) (-> (builtin/maybe-t A) A)))
+
+(define (just-value target) (list-get 1 target))
+
+(claim just-put-value
+  (polymorphic (A)
+    (-> A (builtin/maybe-t A) (builtin/maybe-t A))))
+
+(define (just-put-value value target)
+  (list-put 1 value target))
+
+(claim just-put-value!
+  (polymorphic (A)
+    (-> A (builtin/maybe-t A) (builtin/maybe-t A))))
+
+(define (just-put-value! value target)
+  (list-put! 1 value target))
+
+(claim nothing (polymorphic (A) (builtin/maybe-t A)))
+
+(define nothing 'nothing)
+
+(claim nothing?
+  (polymorphic (A) (-> (builtin/maybe-t A) builtin/bool-t)))
+
+(define (nothing? value) (equal? value 'nothing))
+
 (define-interface (pair-t A B) :first A :second B)
 
 (define (make-pair first second)

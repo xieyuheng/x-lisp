@@ -1152,6 +1152,69 @@
   (= _₂₃ (_₁₄ list₂ list₃))
   (_₁ _₁₃ _₂₃))
 
+(define-data (maybe-t A) (just (value A)) nothing)
+
+(claim just (polymorphic (A) (-> A (builtin/maybe-t A))))
+
+(define (just value)
+  (= list₁ (begin (= _₁ builtin/make-list) (_₁)))
+  (begin (= _₂ builtin/list-push!) (_₂ 'just list₁))
+  (begin (= _₃ builtin/list-push!) (_₃ value list₁))
+  list₁)
+
+(claim just?
+  (polymorphic (A) (-> (builtin/maybe-t A) builtin/bool-t)))
+
+(define (just? value)
+  (if (begin (= _₁ builtin/list?) (_₁ value))
+    (if
+        (begin
+          (= _₂ builtin/equal?)
+          (= _₃ builtin/list-length)
+          (= _₄ (_₃ value))
+          (_₂ _₄ 2))
+      (begin
+        (= _₅ builtin/equal?)
+        (= _₆ builtin/list-head)
+        (= _₇ (_₆ value))
+        (_₅ _₇ 'just))
+      builtin/false)
+    builtin/false))
+
+(claim just-value
+  (polymorphic (A) (-> (builtin/maybe-t A) A)))
+
+(define (just-value target)
+  (= _₁ builtin/list-get)
+  (_₁ 1 target))
+
+(claim just-put-value
+  (polymorphic (A)
+    (-> A (builtin/maybe-t A) (builtin/maybe-t A))))
+
+(define (just-put-value value target)
+  (= _₁ builtin/list-put)
+  (_₁ 1 value target))
+
+(claim just-put-value!
+  (polymorphic (A)
+    (-> A (builtin/maybe-t A) (builtin/maybe-t A))))
+
+(define (just-put-value! value target)
+  (= _₁ builtin/list-put!)
+  (_₁ 1 value target))
+
+(claim nothing (polymorphic (A) (builtin/maybe-t A)))
+
+(define nothing 'nothing)
+
+(claim nothing?
+  (polymorphic (A) (-> (builtin/maybe-t A) builtin/bool-t)))
+
+(define (nothing? value)
+  (= _₁ builtin/equal?)
+  (_₁ value 'nothing))
+
 (define-interface (pair-t A B) :first A :second B)
 
 (claim make-pair

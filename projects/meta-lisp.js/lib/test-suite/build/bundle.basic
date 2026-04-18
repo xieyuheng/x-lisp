@@ -1323,6 +1323,58 @@
     (= _₂₃ (_₁₄ list₂ list₃))
     (return (_₁ _₁₃ _₂₃))))
 
+(define-function (builtin/just value)
+  (block body
+    (= _₁ builtin/make-list)
+    (= list₁ (_₁))
+    (= _₂ builtin/list-push!)
+    (perform (_₂ 'just list₁))
+    (= _₃ builtin/list-push!)
+    (perform (_₃ value list₁))
+    (return list₁)))
+
+(define-function (builtin/just? value)
+  (block body
+    (= _₁ builtin/list?)
+    (test (_₁ value))
+    (branch then₃ else₄))
+  (block then₁
+    (= _₅ builtin/equal?)
+    (= _₆ builtin/list-head)
+    (= _₇ (_₆ value))
+    (return (_₅ _₇ 'just)))
+  (block else₂ (return builtin/false))
+  (block then₃
+    (= _₂ builtin/equal?)
+    (= _₃ builtin/list-length)
+    (= _₄ (_₃ value))
+    (test (_₂ _₄ 2))
+    (branch then₁ else₂))
+  (block else₄ (return builtin/false)))
+
+(define-function (builtin/just-value target)
+  (block body
+    (= _₁ builtin/list-get)
+    (return (_₁ 1 target))))
+
+(define-function (builtin/just-put-value value target)
+  (block body
+    (= _₁ builtin/list-put)
+    (return (_₁ 1 value target))))
+
+(define-function (builtin/just-put-value! value target)
+  (block body
+    (= _₁ builtin/list-put!)
+    (return (_₁ 1 value target))))
+
+(define-variable builtin/nothing
+  (block body (return 'nothing)))
+
+(define-function (builtin/nothing? value)
+  (block body
+    (= _₁ builtin/equal?)
+    (return (_₁ value 'nothing))))
+
 (define-function (builtin/make-pair first second)
   (block body
     (= _₁ builtin/make-record)

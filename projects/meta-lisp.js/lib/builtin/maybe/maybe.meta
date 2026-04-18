@@ -1,0 +1,5 @@
+(module builtin)
+
+(define-data (maybe-t A)
+  (just (value A))
+  nothing)
