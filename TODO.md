@@ -1,9 +1,8 @@
 # linn
 
-[linn.c] `linn_load_code` -- setup -- call by linn.exe.c
 [linn.c] `line_t` -- has path and tokens
 [linn.c] `parse_line` -- parse line to tokens
-[linn.c] `linn_load_code` -- read line by line
+[linn.c] `linn_load` -- read line by line
 
 [linn.c] `linn_compile_line`
 
