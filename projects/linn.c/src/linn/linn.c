@@ -9,12 +9,18 @@ linn_load(path_t *path) {
     char *line_string = string_next_line(string, &cursor);
     while (line_string) {
         line_t *line = parse_line(line_string);
-        line_print(line);
+        linn_execute(mod, line);
         line_free(line);
-
         string_free(line_string);
+
         line_string = string_next_line(string, &cursor);
     }
 
     return mod;
+}
+
+void
+linn_execute(mod_t *mod, line_t *line) {
+    (void) mod;
+    line_print(line);
 }

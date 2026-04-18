@@ -1,11 +1,10 @@
 # linn
 
-[linn.c] `linn_execute_line` -- setup
-[linn.c] `linn_load` -- call `linn_execute_line`
-[linn.c] `linn_execute_line`
+[linn.c] `linn_load` -- call `linn_execute`
+[linn.c] `linn_execute`
 
-- `is_ins_line`
-- `execute_ins_line` -- append instruction to definition
+- `is_ins`
+- `execute_ins` -- append instruction to definition
 
 # remove basic-lisp
 
