@@ -5,3 +5,4 @@ struct line_t {
 };
 
 line_t *make_line(list_t *tokens);
+void line_free(line_t *self);

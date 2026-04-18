@@ -6,3 +6,9 @@ make_line(list_t *tokens) {
     self->tokens = tokens;
     return self;
 }
+
+void
+line_free(line_t *self) {
+    list_free(self->tokens);
+    free(self);
+}
