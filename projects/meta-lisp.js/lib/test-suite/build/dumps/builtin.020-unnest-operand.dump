@@ -1612,6 +1612,76 @@
   (= _₅ (_₂ _₄))
   (_₁ _₅))
 
+(claim list-group
+  (polymorphic (K V)
+    (-> (-> V K)
+        (builtin/list-t V)
+        (builtin/hash-t K (builtin/list-t V)))))
+
+(define (list-group f list)
+  (= new-hash₁
+     (begin
+       (= hash₁ (begin (= _₁ builtin/make-hash) (_₁)))
+       hash₁))
+  (begin
+    (= _₂ builtin/list-each)
+    (= _₃ (builtin/list-group©λ₁ new-hash₁ f))
+    (_₂ _₃ list))
+  new-hash₁)
+
+(define (list-group©λ₁ new-hash₁ f value₁)
+  (= key₁ (f value₁))
+  (if (begin (= _₁ builtin/hash-has?) (_₁ key₁ new-hash₁))
+    builtin/void
+    (begin
+      (begin
+        (= _₂ builtin/hash-put!)
+        (= list₁ (begin (= _₃ builtin/make-list) (_₃)))
+        (begin (= _₄ builtin/list-push!) (_₄ value₁ list₁))
+        (_₂ key₁ list₁ new-hash₁))
+      builtin/void))
+  (= group₁
+     (begin (= _₅ builtin/hash-get) (_₅ key₁ new-hash₁)))
+  (= _₆ builtin/list-push!)
+  (_₆ value₁ group₁))
+
+(claim list-group-test void-t)
+
+(define-test list-group-test
+  (= _₁ builtin/assert-equal)
+  (= hash₁ (begin (= _₂ builtin/make-hash) (_₂)))
+  (begin
+    (= _₃ builtin/hash-put!)
+    (= list₁ (begin (= _₄ builtin/make-list) (_₄)))
+    (begin (= _₅ builtin/list-push!) (_₅ 0 list₁))
+    (begin (= _₆ builtin/list-push!) (_₆ 3 list₁))
+    (_₃ 0 list₁ hash₁))
+  (begin
+    (= _₇ builtin/hash-put!)
+    (= list₂ (begin (= _₈ builtin/make-list) (_₈)))
+    (begin (= _₉ builtin/list-push!) (_₉ 1 list₂))
+    (begin (= _₁₀ builtin/list-push!) (_₁₀ 4 list₂))
+    (_₇ 1 list₂ hash₁))
+  (begin
+    (= _₁₁ builtin/hash-put!)
+    (= list₃ (begin (= _₁₂ builtin/make-list) (_₁₂)))
+    (begin (= _₁₃ builtin/list-push!) (_₁₃ 2 list₃))
+    (begin (= _₁₄ builtin/list-push!) (_₁₄ 5 list₃))
+    (_₁₁ 2 list₃ hash₁))
+  (= _₁₅ builtin/list-group)
+  (= _₁₆ builtin/swap)
+  (= _₁₇ builtin/imod)
+  (= _₁₈ (_₁₆ _₁₇ 3))
+  (= list₄ (begin (= _₁₉ builtin/make-list) (_₁₉)))
+  (begin (= _₂₀ builtin/list-push!) (_₂₀ 0 list₄))
+  (begin (= _₂₁ builtin/list-push!) (_₂₁ 1 list₄))
+  (begin (= _₂₂ builtin/list-push!) (_₂₂ 2 list₄))
+  (begin (= _₂₃ builtin/list-push!) (_₂₃ 3 list₄))
+  (begin (= _₂₄ builtin/list-push!) (_₂₄ 4 list₄))
+  (begin (= _₂₅ builtin/list-push!) (_₂₅ 5 list₄))
+  (= _₂₆ (_₁₅ _₁₈ list₄))
+  (_₁ hash₁ _₂₆))
+
 (claim list-map-zip
   (polymorphic (A B C)
     (-> (-> A B C)
@@ -1733,6 +1803,90 @@
   (begin (= _₁₃ builtin/list-push!) (_₁₃ 3 list₂))
   (= _₁₄ (_₉ 0 list₂))
   (_₈ _₁₄))
+
+(claim list-product
+  (polymorphic (A B)
+    (-> (list-t A)
+        (list-t B)
+        (list-t (interface :first A :second B)))))
+
+(define (list-product lhs rhs)
+  (= _₁ builtin/list-concat)
+  (= _₂ builtin/list-map)
+  (= _₃ (builtin/list-product©λ₁ rhs))
+  (= _₄ (_₂ _₃ lhs))
+  (_₁ _₄))
+
+(define (list-product©λ₁ rhs left₁)
+  (= _₁ builtin/list-map)
+  (= _₂ (builtin/list-product©λ₁©λ₁ left₁))
+  (_₁ _₂ rhs))
+
+(define (list-product©λ₁©λ₁ left₁ right₁)
+  (= _₁ builtin/make-pair)
+  (_₁ left₁ right₁))
+
+(claim list-product-test void-t)
+
+(define-test list-product-test
+  (= _₁ builtin/assert-equal)
+  (= list₁ (begin (= _₂ builtin/make-list) (_₂)))
+  (begin
+    (= _₃ builtin/list-push!)
+    (= _₄ builtin/make-pair)
+    (= _₅ (_₄ 1 1))
+    (_₃ _₅ list₁))
+  (begin
+    (= _₆ builtin/list-push!)
+    (= _₇ builtin/make-pair)
+    (= _₈ (_₇ 1 2))
+    (_₆ _₈ list₁))
+  (begin
+    (= _₉ builtin/list-push!)
+    (= _₁₀ builtin/make-pair)
+    (= _₁₁ (_₁₀ 1 3))
+    (_₉ _₁₁ list₁))
+  (begin
+    (= _₁₂ builtin/list-push!)
+    (= _₁₃ builtin/make-pair)
+    (= _₁₄ (_₁₃ 2 1))
+    (_₁₂ _₁₄ list₁))
+  (begin
+    (= _₁₅ builtin/list-push!)
+    (= _₁₆ builtin/make-pair)
+    (= _₁₇ (_₁₆ 2 2))
+    (_₁₅ _₁₇ list₁))
+  (begin
+    (= _₁₈ builtin/list-push!)
+    (= _₁₉ builtin/make-pair)
+    (= _₂₀ (_₁₉ 2 3))
+    (_₁₈ _₂₀ list₁))
+  (begin
+    (= _₂₁ builtin/list-push!)
+    (= _₂₂ builtin/make-pair)
+    (= _₂₃ (_₂₂ 3 1))
+    (_₂₁ _₂₃ list₁))
+  (begin
+    (= _₂₄ builtin/list-push!)
+    (= _₂₅ builtin/make-pair)
+    (= _₂₆ (_₂₅ 3 2))
+    (_₂₄ _₂₆ list₁))
+  (begin
+    (= _₂₇ builtin/list-push!)
+    (= _₂₈ builtin/make-pair)
+    (= _₂₉ (_₂₈ 3 3))
+    (_₂₇ _₂₉ list₁))
+  (= _₃₀ builtin/list-product)
+  (= list₂ (begin (= _₃₁ builtin/make-list) (_₃₁)))
+  (begin (= _₃₂ builtin/list-push!) (_₃₂ 1 list₂))
+  (begin (= _₃₃ builtin/list-push!) (_₃₃ 2 list₂))
+  (begin (= _₃₄ builtin/list-push!) (_₃₄ 3 list₂))
+  (= list₃ (begin (= _₃₅ builtin/make-list) (_₃₅)))
+  (begin (= _₃₆ builtin/list-push!) (_₃₆ 1 list₃))
+  (begin (= _₃₇ builtin/list-push!) (_₃₇ 2 list₃))
+  (begin (= _₃₈ builtin/list-push!) (_₃₈ 3 list₃))
+  (= _₃₉ (_₃₀ list₂ list₃))
+  (_₁ list₁ _₃₉))
 
 (claim list-select
   (polymorphic (A)

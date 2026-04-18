@@ -1323,6 +1323,76 @@
 (define (list-third list)
   (builtin/car (builtin/cdr (builtin/cdr list))))
 
+(claim list-group
+  (polymorphic (K V)
+    (-> (-> V K)
+        (builtin/list-t V)
+        (builtin/hash-t K (builtin/list-t V)))))
+
+(define (list-group f list)
+  (= new-hash₁ (begin (= hash₁ (builtin/make-hash)) hash₁))
+  (builtin/list-each
+   (lambda (value₁)
+     (= key₁ (f value₁))
+     (if (builtin/hash-has? key₁ new-hash₁)
+       builtin/void
+       (begin
+         (builtin/hash-put!
+          key₁
+          (begin
+            (= list₁ (builtin/make-list))
+            (builtin/list-push! value₁ list₁)
+            list₁)
+          new-hash₁)
+         builtin/void))
+     (= group₁ (builtin/hash-get key₁ new-hash₁))
+     (builtin/list-push! value₁ group₁))
+   list)
+  new-hash₁)
+
+(claim list-group-test void-t)
+
+(define-test list-group-test
+  (builtin/assert-equal
+   (begin
+     (= hash₁ (builtin/make-hash))
+     (builtin/hash-put!
+      0
+      (begin
+        (= list₁ (builtin/make-list))
+        (builtin/list-push! 0 list₁)
+        (builtin/list-push! 3 list₁)
+        list₁)
+      hash₁)
+     (builtin/hash-put!
+      1
+      (begin
+        (= list₂ (builtin/make-list))
+        (builtin/list-push! 1 list₂)
+        (builtin/list-push! 4 list₂)
+        list₂)
+      hash₁)
+     (builtin/hash-put!
+      2
+      (begin
+        (= list₃ (builtin/make-list))
+        (builtin/list-push! 2 list₃)
+        (builtin/list-push! 5 list₃)
+        list₃)
+      hash₁)
+     hash₁)
+   (builtin/list-group
+    (builtin/swap builtin/imod 3)
+    (begin
+      (= list₄ (builtin/make-list))
+      (builtin/list-push! 0 list₄)
+      (builtin/list-push! 1 list₄)
+      (builtin/list-push! 2 list₄)
+      (builtin/list-push! 3 list₄)
+      (builtin/list-push! 4 list₄)
+      (builtin/list-push! 5 list₄)
+      list₄))))
+
 (claim list-map-zip
   (polymorphic (A B C)
     (-> (-> A B C)
@@ -1425,6 +1495,51 @@
       (builtin/list-push! 2 list₂)
       (builtin/list-push! 3 list₂)
       list₂))))
+
+(claim list-product
+  (polymorphic (A B)
+    (-> (list-t A)
+        (list-t B)
+        (list-t (interface :first A :second B)))))
+
+(define (list-product lhs rhs)
+  (builtin/list-concat
+   (builtin/list-map
+    (lambda (left₁)
+      (builtin/list-map
+       (lambda (right₁) (builtin/make-pair left₁ right₁))
+       rhs))
+    lhs)))
+
+(claim list-product-test void-t)
+
+(define-test list-product-test
+  (builtin/assert-equal
+   (begin
+     (= list₁ (builtin/make-list))
+     (builtin/list-push! (builtin/make-pair 1 1) list₁)
+     (builtin/list-push! (builtin/make-pair 1 2) list₁)
+     (builtin/list-push! (builtin/make-pair 1 3) list₁)
+     (builtin/list-push! (builtin/make-pair 2 1) list₁)
+     (builtin/list-push! (builtin/make-pair 2 2) list₁)
+     (builtin/list-push! (builtin/make-pair 2 3) list₁)
+     (builtin/list-push! (builtin/make-pair 3 1) list₁)
+     (builtin/list-push! (builtin/make-pair 3 2) list₁)
+     (builtin/list-push! (builtin/make-pair 3 3) list₁)
+     list₁)
+   (builtin/list-product
+    (begin
+      (= list₂ (builtin/make-list))
+      (builtin/list-push! 1 list₂)
+      (builtin/list-push! 2 list₂)
+      (builtin/list-push! 3 list₂)
+      list₂)
+    (begin
+      (= list₃ (builtin/make-list))
+      (builtin/list-push! 1 list₃)
+      (builtin/list-push! 2 list₃)
+      (builtin/list-push! 3 list₃)
+      list₃))))
 
 (claim list-select
   (polymorphic (A)

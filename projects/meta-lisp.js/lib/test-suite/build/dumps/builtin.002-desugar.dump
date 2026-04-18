@@ -1158,6 +1158,74 @@
 
 (define (list-third list) (car (cdr (cdr list))))
 
+(claim list-group
+  (polymorphic (K V)
+    (-> (-> V K)
+        (builtin/list-t V)
+        (builtin/hash-t K (builtin/list-t V)))))
+
+(define (list-group f list)
+  (= new-hash (begin (= hash (builtin/make-hash)) hash))
+  (list-each
+   (lambda (value)
+     (= key (f value))
+     (if (hash-has? key new-hash)
+       void
+       (begin
+         (hash-put!
+          key
+          (begin
+            (= list (builtin/make-list))
+            (builtin/list-push! value list)
+            list)
+          new-hash)
+         void))
+     (= group (hash-get key new-hash))
+     (list-push! value group))
+   list)
+  new-hash)
+
+(define-test list-group-test
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put!
+       0
+       (begin
+         (= list (builtin/make-list))
+         (builtin/list-push! 0 list)
+         (builtin/list-push! 3 list)
+         list)
+       hash)
+      (builtin/hash-put!
+       1
+       (begin
+         (= list (builtin/make-list))
+         (builtin/list-push! 1 list)
+         (builtin/list-push! 4 list)
+         list)
+       hash)
+      (builtin/hash-put!
+       2
+       (begin
+         (= list (builtin/make-list))
+         (builtin/list-push! 2 list)
+         (builtin/list-push! 5 list)
+         list)
+       hash)
+      hash)
+    (list-group
+     (swap imod 3)
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! 0 list)
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
+       (builtin/list-push! 4 list)
+       (builtin/list-push! 5 list)
+       list))))
+
 (claim list-map-zip
   (polymorphic (A B C)
     (-> (-> A B C)
@@ -1244,6 +1312,41 @@
   (assert-not
     (list-member?
      0
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
+       list))))
+
+(define (list-product lhs rhs)
+  (list-concat
+   (list-map
+    (lambda (left)
+      (list-map (lambda (right) (make-pair left right)) rhs))
+    lhs)))
+
+(define-test list-product-test
+  (assert-equal
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! (make-pair 1 1) list)
+      (builtin/list-push! (make-pair 1 2) list)
+      (builtin/list-push! (make-pair 1 3) list)
+      (builtin/list-push! (make-pair 2 1) list)
+      (builtin/list-push! (make-pair 2 2) list)
+      (builtin/list-push! (make-pair 2 3) list)
+      (builtin/list-push! (make-pair 3 1) list)
+      (builtin/list-push! (make-pair 3 2) list)
+      (builtin/list-push! (make-pair 3 3) list)
+      list)
+    (list-product
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
+       list)
      (begin
        (= list (builtin/make-list))
        (builtin/list-push! 1 list)
