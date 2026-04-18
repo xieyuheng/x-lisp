@@ -839,6 +839,61 @@
       (builtin/cdr left)
       (builtin/cdr right)))))
 
+(define-interface (pair-t A B) :first A :second B)
+
+(claim make-pair
+  (polymorphic (A B)
+    (-> A B (interface :first A :second B))))
+
+(define (make-pair first second)
+  (@record :first first :second second))
+
+(claim pair-first
+  (polymorphic (A B) (-> (extend-interface A :first B) B)))
+
+(define (pair-first pair) (:first pair))
+
+(claim pair-second
+  (polymorphic (A B) (-> (extend-interface A :second B) B)))
+
+(define (pair-second pair) (:second pair))
+
+(claim pair-put-first
+  (polymorphic (A B C)
+    (-> A
+        (extend-interface B :first C)
+        (extend-interface B :first C))))
+
+(define (pair-put-first first pair)
+  (update pair :first first))
+
+(claim pair-put-second
+  (polymorphic (A B C)
+    (-> A
+        (extend-interface B :second C)
+        (extend-interface B :second C))))
+
+(define (pair-put-second second pair)
+  (update pair :second second))
+
+(claim pair-put-first!
+  (polymorphic (A B C)
+    (-> A
+        (extend-interface B :first C)
+        (extend-interface B :first C))))
+
+(define (pair-put-first! first pair)
+  (update! pair :first first))
+
+(claim pair-put-second!
+  (polymorphic (A B C)
+    (-> A
+        (extend-interface B :second C)
+        (extend-interface B :second C))))
+
+(define (pair-put-second! second pair)
+  (update! pair :second second))
+
 (define-interface source-location-t
   :span
   builtin/source-span-t

@@ -1164,6 +1164,56 @@
     (test (_₂ right))
     (branch then₃ else₄)))
 
+(define-function (builtin/make-pair first second)
+  (block body
+    (= _₁ builtin/make-record)
+    (= record₁ (_₁))
+    (= _₂ builtin/record-put!)
+    (perform (_₂ :first first record₁))
+    (= _₃ builtin/record-put!)
+    (perform (_₃ :second second record₁))
+    (return record₁)))
+
+(define-function (builtin/pair-first pair)
+  (block body
+    (= _₁ builtin/record-get)
+    (= _₂ (_₁ :first))
+    (return (_₂ pair))))
+
+(define-function (builtin/pair-second pair)
+  (block body
+    (= _₁ builtin/record-get)
+    (= _₂ (_₁ :second))
+    (return (_₂ pair))))
+
+(define-function (builtin/pair-put-first first pair)
+  (block body
+    (= record₁ pair)
+    (= _₁ builtin/record-put)
+    (= record₂ (_₁ :first first record₁))
+    (return record₂)))
+
+(define-function (builtin/pair-put-second second pair)
+  (block body
+    (= record₁ pair)
+    (= _₁ builtin/record-put)
+    (= record₂ (_₁ :second second record₁))
+    (return record₂)))
+
+(define-function (builtin/pair-put-first! first pair)
+  (block body
+    (= record₁ pair)
+    (= _₁ builtin/record-put!)
+    (perform (_₁ :first first record₁))
+    (return record₁)))
+
+(define-function (builtin/pair-put-second! second pair)
+  (block body
+    (= record₁ pair)
+    (= _₁ builtin/record-put!)
+    (perform (_₁ :second second record₁))
+    (return record₁)))
+
 (define-function (builtin/symbol-sexp content location)
   (block body
     (= _₁ builtin/make-list)

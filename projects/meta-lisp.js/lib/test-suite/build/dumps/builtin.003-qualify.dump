@@ -789,6 +789,27 @@
       (builtin/cdr left)
       (builtin/cdr right)))))
 
+(define-interface (pair-t A B) :first A :second B)
+
+(define (make-pair first second)
+  (@record :first first :second second))
+
+(define (pair-first pair) (:first pair))
+
+(define (pair-second pair) (:second pair))
+
+(define (pair-put-first first pair)
+  (update pair :first first))
+
+(define (pair-put-second second pair)
+  (update pair :second second))
+
+(define (pair-put-first! first pair)
+  (update! pair :first first))
+
+(define (pair-put-second! second pair)
+  (update! pair :second second))
+
 (define-interface source-location-t
   :span
   builtin/source-span-t

@@ -1004,6 +1004,92 @@
       (= _₁₇ (_₁₂ _₁₄ _₁₆))
       (_₄ record₁ _₁₇))))
 
+(define-interface (pair-t A B) :first A :second B)
+
+(claim make-pair
+  (polymorphic (A B)
+    (-> A B (interface :first A :second B))))
+
+(define (make-pair first second)
+  (= record₁ (begin (= _₁ builtin/make-record) (_₁)))
+  (begin
+    (= _₂ builtin/record-put!)
+    (_₂ :first first record₁))
+  (begin
+    (= _₃ builtin/record-put!)
+    (_₃ :second second record₁))
+  record₁)
+
+(claim pair-first
+  (polymorphic (A B) (-> (extend-interface A :first B) B)))
+
+(define (pair-first pair)
+  (= _₁ builtin/record-get)
+  (= _₂ (_₁ :first))
+  (_₂ pair))
+
+(claim pair-second
+  (polymorphic (A B) (-> (extend-interface A :second B) B)))
+
+(define (pair-second pair)
+  (= _₁ builtin/record-get)
+  (= _₂ (_₁ :second))
+  (_₂ pair))
+
+(claim pair-put-first
+  (polymorphic (A B C)
+    (-> A
+        (extend-interface B :first C)
+        (extend-interface B :first C))))
+
+(define (pair-put-first first pair)
+  (= record₁ pair)
+  (= record₂
+     (begin
+       (= _₁ builtin/record-put)
+       (_₁ :first first record₁)))
+  record₂)
+
+(claim pair-put-second
+  (polymorphic (A B C)
+    (-> A
+        (extend-interface B :second C)
+        (extend-interface B :second C))))
+
+(define (pair-put-second second pair)
+  (= record₁ pair)
+  (= record₂
+     (begin
+       (= _₁ builtin/record-put)
+       (_₁ :second second record₁)))
+  record₂)
+
+(claim pair-put-first!
+  (polymorphic (A B C)
+    (-> A
+        (extend-interface B :first C)
+        (extend-interface B :first C))))
+
+(define (pair-put-first! first pair)
+  (= record₁ pair)
+  (begin
+    (= _₁ builtin/record-put!)
+    (_₁ :first first record₁))
+  record₁)
+
+(claim pair-put-second!
+  (polymorphic (A B C)
+    (-> A
+        (extend-interface B :second C)
+        (extend-interface B :second C))))
+
+(define (pair-put-second! second pair)
+  (= record₁ pair)
+  (begin
+    (= _₁ builtin/record-put!)
+    (_₁ :second second record₁))
+  record₁)
+
 (define-interface source-location-t
   :span
   builtin/source-span-t

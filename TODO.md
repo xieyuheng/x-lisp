@@ -1,6 +1,16 @@
 # builtin
 
+[meta-lisp.js] [builtin] list -- fix `list-zip` -- using `pair-t`
 [meta-lisp.js] [builtin] list -- (list-unzip pairs) -- use interface instead of tuple
+
+[meta-lisp.js] rename `DefineType` to `DefineTypeVariable`
+[meta-lisp.js] rename `TypeDefinition` to `TypeVariableDefinition`
+
+[meta-lisp.js] add `DefineTypeFunction` to `Stmt`
+[meta-lisp.js] parse `(define-type (name arg ...) ...)`
+
+[meta-lisp.js] [builtin] `(hash-entry-t K V)` -- by `DefineTypeFunction`
+
 [meta-lisp.js] [builtin] list -- (list-map-zip f left right)
 [meta-lisp.js] [builtin] list -- (list-find p list) (list-find-index p list)
 [meta-lisp.js] [builtin] list -- (list-group f list)
