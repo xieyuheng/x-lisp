@@ -491,6 +491,14 @@
 (define (pair-put-second! second pair)
   (update! pair :second second))
 
+(claim set-each
+  (polymorphic (A)
+    (-> (-> A builtin/void-t)
+        (builtin/set-t A)
+        builtin/void-t)))
+
+(define (set-each f set) (list-each f (set-to-list set)))
+
 (claim set-every?
   (polymorphic (A)
     (-> (-> A builtin/bool-t)
@@ -515,6 +523,38 @@
 (define-test set-some-test
   (assert (set-some? int-non-negative? {-1 -2 0}))
   (assert-not (set-some? int-non-negative? {-1 -2 -3})))
+
+(claim set-select
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        (builtin/set-t A))))
+
+(define (set-select p set)
+  (= new-set {})
+  (set-each
+   (lambda (e)
+     (when (p e) (begin (set-add! e new-set) void)))
+   set)
+  new-set)
+
+(define-test set-select-test
+  (assert-equal
+    {0 1 2}
+    (set-select int-non-negative? {-2 -1 0 1 2})))
+
+(claim set-reject
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        (builtin/set-t A))))
+
+(define (set-reject p set) (set-select (negate p) set))
+
+(define-test set-reject-test
+  (assert-equal
+    {-1 -2}
+    (set-reject int-non-negative? {-2 -1 0 1 2})))
 
 (define-interface source-location-t
   :span

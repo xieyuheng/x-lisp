@@ -1180,6 +1180,15 @@
   (builtin/record-put! :second second record₁)
   record₁)
 
+(claim set-each
+  (polymorphic (A)
+    (-> (-> A builtin/void-t)
+        (builtin/set-t A)
+        builtin/void-t)))
+
+(define (set-each f set)
+  (builtin/list-each f (builtin/set-to-list set)))
+
 (claim set-every?
   (polymorphic (A)
     (-> (-> A builtin/bool-t)
@@ -1243,6 +1252,72 @@
       (builtin/set-add! -1 set₂)
       (builtin/set-add! -2 set₂)
       (builtin/set-add! -3 set₂)
+      set₂))))
+
+(claim set-select
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        (builtin/set-t A))))
+
+(define (set-select p set)
+  (= new-set₁ (begin (= set₁ (builtin/make-set)) set₁))
+  (builtin/set-each (builtin/set-select©λ₁ new-set₁ p) set)
+  new-set₁)
+
+(define (set-select©λ₁ new-set₁ p e₁)
+  (if (p e₁)
+    (begin (builtin/set-add! e₁ new-set₁) builtin/void)
+    builtin/void))
+
+(claim set-select-test void-t)
+
+(define-test set-select-test
+  (builtin/assert-equal
+   (begin
+     (= set₁ (builtin/make-set))
+     (builtin/set-add! 0 set₁)
+     (builtin/set-add! 1 set₁)
+     (builtin/set-add! 2 set₁)
+     set₁)
+   (builtin/set-select
+    builtin/int-non-negative?
+    (begin
+      (= set₂ (builtin/make-set))
+      (builtin/set-add! -2 set₂)
+      (builtin/set-add! -1 set₂)
+      (builtin/set-add! 0 set₂)
+      (builtin/set-add! 1 set₂)
+      (builtin/set-add! 2 set₂)
+      set₂))))
+
+(claim set-reject
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        (builtin/set-t A))))
+
+(define (set-reject p set)
+  (builtin/set-select (builtin/negate p) set))
+
+(claim set-reject-test void-t)
+
+(define-test set-reject-test
+  (builtin/assert-equal
+   (begin
+     (= set₁ (builtin/make-set))
+     (builtin/set-add! -1 set₁)
+     (builtin/set-add! -2 set₁)
+     set₁)
+   (builtin/set-reject
+    builtin/int-non-negative?
+    (begin
+      (= set₂ (builtin/make-set))
+      (builtin/set-add! -2 set₂)
+      (builtin/set-add! -1 set₂)
+      (builtin/set-add! 0 set₂)
+      (builtin/set-add! 1 set₂)
+      (builtin/set-add! 2 set₂)
       set₂))))
 
 (define-interface source-location-t

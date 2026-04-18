@@ -1,0 +1,30 @@
+(module builtin)
+
+(claim set-select
+  (polymorphic (A)
+    (-> (-> A bool-t) (set-t A)
+        (set-t A))))
+
+(define (set-select p set)
+  (= new-set (@set))
+  (set-each
+   (lambda (e)
+     (when (p e)
+       (set-add! e new-set)
+       void))
+   set)
+  new-set)
+
+(define-test set-select-test
+  (assert-equal (@set 0 1 2) (set-select int-non-negative? (@set -2 -1 0 1 2))))
+
+(claim set-reject
+  (polymorphic (A)
+    (-> (-> A bool-t) (set-t A)
+        (set-t A))))
+
+(define (set-reject p set)
+  (set-select (negate p) set))
+
+(define-test set-reject-test
+  (assert-equal (@set -1 -2) (set-reject int-non-negative? (@set -2 -1 0 1 2))))

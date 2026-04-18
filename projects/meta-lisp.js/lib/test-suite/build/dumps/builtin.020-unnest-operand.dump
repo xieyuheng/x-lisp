@@ -1412,6 +1412,18 @@
     (_₁ :second second record₁))
   record₁)
 
+(claim set-each
+  (polymorphic (A)
+    (-> (-> A builtin/void-t)
+        (builtin/set-t A)
+        builtin/void-t)))
+
+(define (set-each f set)
+  (= _₁ builtin/list-each)
+  (= _₂ builtin/set-to-list)
+  (= _₃ (_₂ set))
+  (_₁ f _₃))
+
 (claim set-every?
   (polymorphic (A)
     (-> (-> A builtin/bool-t)
@@ -1484,6 +1496,79 @@
   (begin (= _₁₅ builtin/set-add!) (_₁₅ -3 set₂))
   (= _₁₆ (_₁₀ _₁₁ set₂))
   (_₉ _₁₆))
+
+(claim set-select
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        (builtin/set-t A))))
+
+(define (set-select p set)
+  (= new-set₁
+     (begin
+       (= set₁ (begin (= _₁ builtin/make-set) (_₁)))
+       set₁))
+  (begin
+    (= _₂ builtin/set-each)
+    (= _₃ (builtin/set-select©λ₁ new-set₁ p))
+    (_₂ _₃ set))
+  new-set₁)
+
+(define (set-select©λ₁ new-set₁ p e₁)
+  (if (p e₁)
+    (begin
+      (begin (= _₁ builtin/set-add!) (_₁ e₁ new-set₁))
+      builtin/void)
+    builtin/void))
+
+(claim set-select-test void-t)
+
+(define-test set-select-test
+  (= _₁ builtin/assert-equal)
+  (= set₁ (begin (= _₂ builtin/make-set) (_₂)))
+  (begin (= _₃ builtin/set-add!) (_₃ 0 set₁))
+  (begin (= _₄ builtin/set-add!) (_₄ 1 set₁))
+  (begin (= _₅ builtin/set-add!) (_₅ 2 set₁))
+  (= _₆ builtin/set-select)
+  (= _₇ builtin/int-non-negative?)
+  (= set₂ (begin (= _₈ builtin/make-set) (_₈)))
+  (begin (= _₉ builtin/set-add!) (_₉ -2 set₂))
+  (begin (= _₁₀ builtin/set-add!) (_₁₀ -1 set₂))
+  (begin (= _₁₁ builtin/set-add!) (_₁₁ 0 set₂))
+  (begin (= _₁₂ builtin/set-add!) (_₁₂ 1 set₂))
+  (begin (= _₁₃ builtin/set-add!) (_₁₃ 2 set₂))
+  (= _₁₄ (_₆ _₇ set₂))
+  (_₁ set₁ _₁₄))
+
+(claim set-reject
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        (builtin/set-t A))))
+
+(define (set-reject p set)
+  (= _₁ builtin/set-select)
+  (= _₂ builtin/negate)
+  (= _₃ (_₂ p))
+  (_₁ _₃ set))
+
+(claim set-reject-test void-t)
+
+(define-test set-reject-test
+  (= _₁ builtin/assert-equal)
+  (= set₁ (begin (= _₂ builtin/make-set) (_₂)))
+  (begin (= _₃ builtin/set-add!) (_₃ -1 set₁))
+  (begin (= _₄ builtin/set-add!) (_₄ -2 set₁))
+  (= _₅ builtin/set-reject)
+  (= _₆ builtin/int-non-negative?)
+  (= set₂ (begin (= _₇ builtin/make-set) (_₇)))
+  (begin (= _₈ builtin/set-add!) (_₈ -2 set₂))
+  (begin (= _₉ builtin/set-add!) (_₉ -1 set₂))
+  (begin (= _₁₀ builtin/set-add!) (_₁₀ 0 set₂))
+  (begin (= _₁₁ builtin/set-add!) (_₁₁ 1 set₂))
+  (begin (= _₁₂ builtin/set-add!) (_₁₂ 2 set₂))
+  (= _₁₃ (_₅ _₆ set₂))
+  (_₁ set₁ _₁₃))
 
 (define-interface source-location-t
   :span

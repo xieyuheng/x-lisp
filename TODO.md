@@ -1,6 +1,5 @@
 # builtin
 
-[meta-lisp.js] [builtin] set-select
 [meta-lisp.js] [builtin] hash
 
 [meta-lisp.js] `pipe` and `compose` as `Exp`

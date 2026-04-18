@@ -1170,6 +1170,15 @@
   (builtin/record-put! :second second record)
   record)
 
+(claim set-each
+  (polymorphic (A)
+    (-> (-> A builtin/void-t)
+        (builtin/set-t A)
+        builtin/void-t)))
+
+(define (set-each f set)
+  (builtin/list-each f (builtin/set-to-list set)))
+
 (claim set-every?
   (polymorphic (A)
     (-> (-> A builtin/bool-t)
@@ -1233,6 +1242,72 @@
       (builtin/set-add! -1 set)
       (builtin/set-add! -2 set)
       (builtin/set-add! -3 set)
+      set))))
+
+(claim set-select
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        (builtin/set-t A))))
+
+(define (set-select p set)
+  (= new-set (begin (= set (builtin/make-set)) set))
+  (builtin/set-each
+   (lambda (e)
+     (if (p e)
+       (begin (builtin/set-add! e new-set) builtin/void)
+       builtin/void))
+   set)
+  new-set)
+
+(claim set-select-test void-t)
+
+(define-test set-select-test
+  (builtin/assert-equal
+   (begin
+     (= set (builtin/make-set))
+     (builtin/set-add! 0 set)
+     (builtin/set-add! 1 set)
+     (builtin/set-add! 2 set)
+     set)
+   (builtin/set-select
+    builtin/int-non-negative?
+    (begin
+      (= set (builtin/make-set))
+      (builtin/set-add! -2 set)
+      (builtin/set-add! -1 set)
+      (builtin/set-add! 0 set)
+      (builtin/set-add! 1 set)
+      (builtin/set-add! 2 set)
+      set))))
+
+(claim set-reject
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        (builtin/set-t A))))
+
+(define (set-reject p set)
+  (builtin/set-select (builtin/negate p) set))
+
+(claim set-reject-test void-t)
+
+(define-test set-reject-test
+  (builtin/assert-equal
+   (begin
+     (= set (builtin/make-set))
+     (builtin/set-add! -1 set)
+     (builtin/set-add! -2 set)
+     set)
+   (builtin/set-reject
+    builtin/int-non-negative?
+    (begin
+      (= set (builtin/make-set))
+      (builtin/set-add! -2 set)
+      (builtin/set-add! -1 set)
+      (builtin/set-add! 0 set)
+      (builtin/set-add! 1 set)
+      (builtin/set-add! 2 set)
       set))))
 
 (define-interface source-location-t
