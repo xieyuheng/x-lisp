@@ -3,34 +3,33 @@
 (claim list-zip
   (polymorphic (A B)
     (-> (list-t A) (list-t B)
-        (list-t (interface :first A :second B)))))
+        (list-t (pair-t A B)))))
 
 (define (list-zip left right)
   (if (or (list-empty? left)
           (list-empty? right))
     []
-    (cons {:first (car left) :second (car right)}
+    (cons (make-pair (car left) (car right))
           (list-zip (cdr left) (cdr right)))))
 
-;; (define-test list-zip-test
-;;   (assert-equal
-;;     (list-zip ['a 'b 'c] [1 2 3])
-;;     [['a 1] ['b 2] ['c 3]])
-;;   (assert-equal
-;;     (list-zip ['a 'b 'c] [1 2])
-;;     [['a 1] ['b 2]]))
+(define-test list-zip-test
+  (assert-equal
+    (list-zip ['a 'b 'c] [1 2 3])
+    [(make-pair 'a 1) (make-pair 'b 2) (make-pair 'c 3)])
+  (assert-equal
+    (list-zip ['a 'b 'c] [1 2])
+    [(make-pair 'a 1) (make-pair 'b 2)]))
 
-;; (claim list-unzip
-;;   (polymorphic (A B)
-;;     (-> (list-t (tau A B))
-;;         (tau (list-t A) (list-t B)))))
+(claim list-unzip
+  (polymorphic (A B)
+    (-> (list-t (pair-t A B))
+        (pair-t (list-t A) (list-t B)))))
 
-;; (define (list-unzip pairs)
-;;   (@tuple (list-map tuple-head pairs)
-;;           (list-map (lambda (pair) (tuple-head (tuple-tail pair)))
-;;                     pairs)))
+(define (list-unzip pairs)
+  (make-pair (list-map pair-first pairs)
+             (list-map pair-second pairs)))
 
-;; (define-test list-unzip-test
-;;   (assert-equal
-;;     (list-unzip [['a 1] ['b 2] ['c 3]])
-;;     (@tuple ['a 'b 'c] [1 2 3])))
+(define-test list-unzip-test
+  (assert-equal
+    (list-unzip [(make-pair 'a 1) (make-pair 'b 2) (make-pair 'c 3)])
+    (make-pair ['a 'b 'c] [1 2 3])))

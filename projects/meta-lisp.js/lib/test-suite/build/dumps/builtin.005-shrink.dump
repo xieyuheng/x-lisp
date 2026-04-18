@@ -821,7 +821,7 @@
   (polymorphic (A B)
     (-> (builtin/list-t A)
         (builtin/list-t B)
-        (builtin/list-t (interface :first A :second B)))))
+        (builtin/list-t (builtin/pair-t A B)))))
 
 (define (list-zip left right)
   (if
@@ -830,17 +830,91 @@
         (builtin/list-empty? right))
     (begin (= list (builtin/make-list)) list)
     (builtin/cons
-     (begin
-       (= record (builtin/make-record))
-       (builtin/record-put! :first (builtin/car left) record)
-       (builtin/record-put!
-        :second
-        (builtin/car right)
-        record)
-       record)
+     (builtin/make-pair
+      (builtin/car left)
+      (builtin/car right))
      (builtin/list-zip
       (builtin/cdr left)
       (builtin/cdr right)))))
+
+(claim list-zip-test void-t)
+
+(define-test list-zip-test
+  (builtin/assert-equal
+   (builtin/list-zip
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 'a list)
+      (builtin/list-push! 'b list)
+      (builtin/list-push! 'c list)
+      list)
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! (builtin/make-pair 'a 1) list)
+     (builtin/list-push! (builtin/make-pair 'b 2) list)
+     (builtin/list-push! (builtin/make-pair 'c 3) list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-zip
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 'a list)
+      (builtin/list-push! 'b list)
+      (builtin/list-push! 'c list)
+      list)
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! (builtin/make-pair 'a 1) list)
+     (builtin/list-push! (builtin/make-pair 'b 2) list)
+     list)))
+
+(claim list-unzip
+  (polymorphic (A B)
+    (-> (builtin/list-t (builtin/pair-t A B))
+        (builtin/pair-t
+         (builtin/list-t A)
+         (builtin/list-t B)))))
+
+(define (list-unzip pairs)
+  (builtin/make-pair
+   (builtin/list-map builtin/pair-first pairs)
+   (builtin/list-map builtin/pair-second pairs)))
+
+(claim list-unzip-test void-t)
+
+(define-test list-unzip-test
+  (builtin/assert-equal
+   (builtin/list-unzip
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! (builtin/make-pair 'a 1) list)
+      (builtin/list-push! (builtin/make-pair 'b 2) list)
+      (builtin/list-push! (builtin/make-pair 'c 3) list)
+      list))
+   (builtin/make-pair
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 'a list)
+      (builtin/list-push! 'b list)
+      (builtin/list-push! 'c list)
+      list)
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))))
 
 (define-interface (pair-t A B) :first A :second B)
 

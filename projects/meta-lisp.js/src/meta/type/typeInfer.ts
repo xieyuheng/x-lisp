@@ -52,12 +52,20 @@ export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
         const claimedType = M.modLookupClaimedType(qualifiedMod, exp.name)
         if (claimedType) return M.okInferEffect(claimedType)(subst)
 
+        const definition = M.modLookupDefinition(qualifiedMod, exp.name)
+        if (definition === undefined) {
+          let message = `undefined qualified variable`
+          message += `\n  name: ${exp.modName}/${exp.name}`
+          return M.errorInferEffect(exp, message)(subst)
+        }
+
+        M.definitionCheck(definition)
         const inferredType = M.modLookupInferredType(qualifiedMod, exp.name)
         if (inferredType) return M.okInferEffect(inferredType)(subst)
 
-        let message = `undefined qualified variable`
+        let message = `[typeInfer/QualifiedVar] internal error: infer fail after check`
         message += `\n  name: ${exp.modName}/${exp.name}`
-        return M.errorInferEffect(exp, message)(subst)
+        throw new Error(message)
       }
 
       case "Apply": {
