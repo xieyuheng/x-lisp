@@ -1,6 +1,11 @@
 # linn
 
-[linn.c] `line_t` -- has path and tokens
+[linn.c] `make_line`
+[linn.c] `line_free`
+[linn.c] `line_op`
+[linn.c] `line_path`
+[linn.c] `line_arg`
+
 [linn.c] `parse_line` -- parse line to tokens
 [linn.c] `linn_load` -- read line by line
 
