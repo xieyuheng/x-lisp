@@ -1497,6 +1497,41 @@
   (= _₁₆ (_₁₀ _₁₁ set₂))
   (_₉ _₁₆))
 
+(claim set-map
+  (polymorphic (A B)
+    (-> (-> A B) (builtin/set-t A) (builtin/set-t B))))
+
+(define (set-map f set)
+  (= new-set₁ (begin (= _₁ builtin/make-set) (_₁)))
+  (begin
+    (= _₂ builtin/set-each)
+    (= _₃ (builtin/set-map©λ₁ new-set₁ f))
+    (_₂ _₃ set))
+  new-set₁)
+
+(define (set-map©λ₁ new-set₁ f e₁)
+  (= _₁ builtin/set-add!)
+  (= _₂ (f e₁))
+  (_₁ _₂ new-set₁))
+
+(claim set-map-test void-t)
+
+(define-test set-map-test
+  (= _₁ builtin/assert-equal)
+  (= set₁ (begin (= _₂ builtin/make-set) (_₂)))
+  (begin (= _₃ builtin/set-add!) (_₃ 2 set₁))
+  (begin (= _₄ builtin/set-add!) (_₄ 4 set₁))
+  (begin (= _₅ builtin/set-add!) (_₅ 6 set₁))
+  (= _₆ builtin/set-map)
+  (= set₂ (begin (= _₇ builtin/make-set) (_₇)))
+  (begin (= _₈ builtin/set-add!) (_₈ 1 set₂))
+  (begin (= _₉ builtin/set-add!) (_₉ 2 set₂))
+  (begin (= _₁₀ builtin/set-add!) (_₁₀ 3 set₂))
+  (= _₁₁ (_₆ builtin/set-map-test©λ₁ set₂))
+  (_₁ set₁ _₁₁))
+
+(define (set-map-test©λ₁ n₁) (= _₁ builtin/iadd) (_₁ n₁ n₁))
+
 (claim set-select
   (polymorphic (A)
     (-> (-> A builtin/bool-t)

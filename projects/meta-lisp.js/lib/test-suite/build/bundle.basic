@@ -1629,6 +1629,47 @@
     (= _₁₆ (_₁₀ _₁₁ set₂))
     (return (_₉ _₁₆))))
 
+(define-function (builtin/set-map f set)
+  (block body
+    (= _₁ builtin/make-set)
+    (= new-set₁ (_₁))
+    (= _₂ builtin/set-each)
+    (= _₃ (builtin/set-map©λ₁ new-set₁ f))
+    (perform (_₂ _₃ set))
+    (return new-set₁)))
+
+(define-function (builtin/set-map©λ₁ new-set₁ f e₁)
+  (block body
+    (= _₁ builtin/set-add!)
+    (= _₂ (f e₁))
+    (return (_₁ _₂ new-set₁))))
+
+(define-function (builtin/set-map-test)
+  (block body
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/make-set)
+    (= set₁ (_₂))
+    (= _₃ builtin/set-add!)
+    (perform (_₃ 2 set₁))
+    (= _₄ builtin/set-add!)
+    (perform (_₄ 4 set₁))
+    (= _₅ builtin/set-add!)
+    (perform (_₅ 6 set₁))
+    (= _₆ builtin/set-map)
+    (= _₇ builtin/make-set)
+    (= set₂ (_₇))
+    (= _₈ builtin/set-add!)
+    (perform (_₈ 1 set₂))
+    (= _₉ builtin/set-add!)
+    (perform (_₉ 2 set₂))
+    (= _₁₀ builtin/set-add!)
+    (perform (_₁₀ 3 set₂))
+    (= _₁₁ (_₆ builtin/set-map-test©λ₁ set₂))
+    (return (_₁ set₁ _₁₁))))
+
+(define-function (builtin/set-map-test©λ₁ n₁)
+  (block body (= _₁ builtin/iadd) (return (_₁ n₁ n₁))))
+
 (define-function (builtin/set-select p set)
   (block body
     (= _₁ builtin/make-set)

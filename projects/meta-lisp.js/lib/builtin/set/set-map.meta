@@ -1,0 +1,18 @@
+(module builtin)
+
+(claim set-map
+  (polymorphic (A B)
+    (-> (-> A B) (set-t A)
+        (set-t B))))
+
+(define (set-map f set)
+  (= new-set (make-set))
+  (set-each (lambda (e)
+              (set-add! (f e) new-set))
+            set)
+  new-set)
+
+(define-test set-map-test
+  (assert-equal (@set 2 4 6)
+                (set-map (lambda (n) (iadd n n))
+                         (@set 1 2 3))))

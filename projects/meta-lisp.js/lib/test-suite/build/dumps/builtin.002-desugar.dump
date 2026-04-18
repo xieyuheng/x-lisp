@@ -1083,6 +1083,32 @@
        (builtin/set-add! -3 set)
        set))))
 
+(claim set-map
+  (polymorphic (A B)
+    (-> (-> A B) (builtin/set-t A) (builtin/set-t B))))
+
+(define (set-map f set)
+  (= new-set (make-set))
+  (set-each (lambda (e) (set-add! (f e) new-set)) set)
+  new-set)
+
+(define-test set-map-test
+  (assert-equal
+    (begin
+      (= set (builtin/make-set))
+      (builtin/set-add! 2 set)
+      (builtin/set-add! 4 set)
+      (builtin/set-add! 6 set)
+      set)
+    (set-map
+     (lambda (n) (iadd n n))
+     (begin
+       (= set (builtin/make-set))
+       (builtin/set-add! 1 set)
+       (builtin/set-add! 2 set)
+       (builtin/set-add! 3 set)
+       set))))
+
 (claim set-select
   (polymorphic (A)
     (-> (-> A builtin/bool-t)

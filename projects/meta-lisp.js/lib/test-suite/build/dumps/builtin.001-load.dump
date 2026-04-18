@@ -524,6 +524,20 @@
   (assert (set-some? int-non-negative? {-1 -2 0}))
   (assert-not (set-some? int-non-negative? {-1 -2 -3})))
 
+(claim set-map
+  (polymorphic (A B)
+    (-> (-> A B) (builtin/set-t A) (builtin/set-t B))))
+
+(define (set-map f set)
+  (= new-set (make-set))
+  (set-each (lambda (e) (set-add! (f e) new-set)) set)
+  new-set)
+
+(define-test set-map-test
+  (assert-equal
+    {2 4 6}
+    (set-map (lambda (n) (iadd n n)) {1 2 3})))
+
 (claim set-select
   (polymorphic (A)
     (-> (-> A builtin/bool-t)
