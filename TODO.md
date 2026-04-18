@@ -1,13 +1,15 @@
 # linn
 
-[linn.c] `linn_execute`
+[meta-lisp.js] linn -- `linn/` -- setup
+[meta-lisp.js] linn -- `Line`
+[meta-lisp.js] linn -- `Mod` -- has `lines` -- no need to run the code
 
-- `is_ins`
-- `execute_ins` -- append instruction to definition
+[meta-lisp.js] `CodegenPass` -- compile basic-lisp to linn -- learn from [basic-lisp.c] `compile_exp`
+
+[linn.c] `execute_ins_line` -- append instruction to function -- learn from [basic-lisp.c] `compile_exp`
 
 # remove basic-lisp
 
-[meta-lisp.js] compile basic-lisp to linn
 [meta-lisp.js] remove basic-lisp.js
 [linn.c] update todo list
 
