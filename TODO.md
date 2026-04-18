@@ -1,6 +1,5 @@
 # linn
 
-[linn.c] rename project to linn
 [linn.c] simple stack vm compiler
 [linn.c] remove basic compiler
 

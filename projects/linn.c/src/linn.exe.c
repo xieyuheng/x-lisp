@@ -40,7 +40,7 @@ main(int argc, char *argv[]) {
 
     init();
 
-    cmd_router_t *router = cmd_make_router("basic-lisp", "0.1.0");
+    cmd_router_t *router = cmd_make_router("linn", "0.1.0");
 
     cmd_define_route(router, "run function file -- run a function of a file");
     cmd_define_route(router, "bytecode file -- show disassembled bytecode");
