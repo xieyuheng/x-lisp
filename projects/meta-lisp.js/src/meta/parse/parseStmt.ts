@@ -35,6 +35,19 @@ export const parseStmt = S.createRouter<M.Stmt>({
     )
   },
 
+  "(cons* 'define-type (cons* name parameters) body)": (
+    { name, parameters, body },
+    { sexp },
+  ) => {
+    const keyword = S.asList(sexp).elements[0]
+    return M.DefineType(
+      S.symbolContent(name),
+      S.listElements(parameters).map(S.symbolContent),
+      parseBody(body),
+      keyword.location,
+    )
+  },
+
   "(cons* 'define-type name body)": ({ name, body }, { sexp }) => {
     const keyword = S.asList(sexp).elements[0]
     return M.DefineType(

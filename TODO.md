@@ -1,6 +1,5 @@
 # builtin
 
-[meta-lisp.js] parse `(define-type (name arg ...) ...)`
 [meta-lisp.js] [builtin] `(hash-entry-t K V)` -- by `DefineTypeFunction`
 
 [meta-lisp.js] [builtin] list -- (list-map-zip f left right)
