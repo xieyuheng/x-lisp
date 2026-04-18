@@ -1,7 +1,22 @@
 # linn
 
-[linn.c] read input line by line
-[linn.c] ins operation -- append instruction to definition
+[linn.c] setup `linn/`
+
+[linn.c] `linn_load_code` -- setup -- call by linn.exe.c
+[linn.c] `line_t` -- has path and tokens
+[linn.c] `parse_line` -- parse line to tokens
+[linn.c] `linn_load_code` -- read line by line
+
+[linn.c] `linn_compile_line`
+
+- `is_ins_line`
+- `compile_ins_line` -- append instruction to definition
+
+# remove basic-lisp
+
+[meta-lisp.js] compile basic-lisp to linn
+[meta-lisp.js] remove basic-lisp.js
+[linn.c] update todo list
 
 # basic-lisp
 

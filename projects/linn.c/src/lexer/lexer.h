@@ -1,7 +1,6 @@
 #pragma once
 
 struct lexer_t {
-    const path_t *path;
     const char *string;
     size_t length;
     struct position_t position;
