@@ -1,8 +1,7 @@
 # linn
 
-[linn.c] `line_parse_args`
-[linn.c] `line_get_arg`
-[linn.c] `line_print`
+[linn.c] `line_var_t` -- as `value_t`
+[linn.c] `line_parse_arg` -- view not quoted symbol as `line_var_t`
 
 [linn.c] `linn_execute_line` -- setup
 [linn.c] `linn_load` -- call `linn_execute_line`

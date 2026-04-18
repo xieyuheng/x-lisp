@@ -115,10 +115,23 @@ line_path(line_t *self) {
     return self->path;
 }
 
+value_t
+line_get_arg(line_t *self, size_t i) {
+    assert(i < array_length(self->args));
+    return (value_t) array_get(self->args, i);
+}
+
 void
 line_print(line_t *self) {
     string_print(line_op_name(self));
     string_print(" ");
     path_print(line_path(self));
+    size_t length = array_length(self->args);
+    for (size_t i = 0; i < length; i++) {
+        value_t value = line_get_arg(self, i);
+        string_print(" ");
+        print(value);
+    }
+
     newline();
 }
