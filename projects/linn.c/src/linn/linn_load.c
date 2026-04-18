@@ -18,9 +18,3 @@ linn_load(path_t *path) {
 
     return mod;
 }
-
-void
-linn_execute(mod_t *mod, line_t *line) {
-    (void) mod;
-    line_print(line);
-}

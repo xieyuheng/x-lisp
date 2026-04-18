@@ -1,6 +1,5 @@
 # linn
 
-[linn.c] `linn_load` -- call `linn_execute`
 [linn.c] `linn_execute`
 
 - `is_ins`
