@@ -280,85 +280,6 @@
      (builtin/list-push! 6 list)
      list)))
 
-(claim list-drop
-  (polymorphic (A)
-    (-> builtin/int-t (builtin/list-t A) (builtin/list-t A))))
-
-(define (list-drop n list)
-  (builtin/assert (builtin/int-non-negative? n))
-  (if
-      (if (builtin/equal? n 0)
-        builtin/true
-        (builtin/list-empty? list))
-    list
-    (builtin/list-drop (builtin/isub n 1) (builtin/cdr list))))
-
-(claim list-drop-test void-t)
-
-(define-test list-drop-test
-  (builtin/assert-equal
-   (builtin/list-drop
-    0
-    (begin
-      (= list (builtin/make-list))
-      (builtin/list-push! 1 list)
-      (builtin/list-push! 2 list)
-      (builtin/list-push! 3 list)
-      list))
-   (begin
-     (= list (builtin/make-list))
-     (builtin/list-push! 1 list)
-     (builtin/list-push! 2 list)
-     (builtin/list-push! 3 list)
-     list))
-  (builtin/assert-equal
-   (builtin/list-drop
-    1
-    (begin
-      (= list (builtin/make-list))
-      (builtin/list-push! 1 list)
-      (builtin/list-push! 2 list)
-      (builtin/list-push! 3 list)
-      list))
-   (begin
-     (= list (builtin/make-list))
-     (builtin/list-push! 2 list)
-     (builtin/list-push! 3 list)
-     list))
-  (builtin/assert-equal
-   (builtin/list-drop
-    2
-    (begin
-      (= list (builtin/make-list))
-      (builtin/list-push! 1 list)
-      (builtin/list-push! 2 list)
-      (builtin/list-push! 3 list)
-      list))
-   (begin
-     (= list (builtin/make-list))
-     (builtin/list-push! 3 list)
-     list))
-  (builtin/assert-equal
-   (builtin/list-drop
-    3
-    (begin
-      (= list (builtin/make-list))
-      (builtin/list-push! 1 list)
-      (builtin/list-push! 2 list)
-      (builtin/list-push! 3 list)
-      list))
-   (begin (= list (builtin/make-list)) list))
-  (builtin/assert-equal
-   (builtin/list-drop
-    4
-    (begin
-      (= list (builtin/make-list))
-      (builtin/list-push! 1 list)
-      (builtin/list-push! 2 list)
-      (builtin/list-push! 3 list)
-      list))
-   (begin (= list (builtin/make-list)) list)))
-
 (claim list-each
   (polymorphic (A)
     (-> (-> A builtin/void-t)
@@ -444,15 +365,6 @@
         (builtin/list-select p (builtin/cdr list))
         (builtin/error "cond mismatch")))))
 
-(claim list-reject
-  (polymorphic (A)
-    (-> (-> A builtin/bool-t)
-        (builtin/list-t A)
-        (builtin/list-t A))))
-
-(define (list-reject p list)
-  (builtin/list-select (builtin/negate p) list))
-
 (claim list-select-test void-t)
 
 (define-test list-select-test
@@ -475,6 +387,15 @@
      (builtin/list-push! 3 list)
      list)))
 
+(claim list-reject
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        (builtin/list-t A))))
+
+(define (list-reject p list)
+  (builtin/list-select (builtin/negate p) list))
+
 (claim list-reject-test void-t)
 
 (define-test list-reject-test
@@ -496,6 +417,173 @@
      (builtin/list-push! 2 list)
      (builtin/list-push! 3 list)
      list)))
+
+(claim list-take
+  (polymorphic (A)
+    (-> builtin/int-t (builtin/list-t A) (builtin/list-t A))))
+
+(define (list-take n list)
+  (builtin/assert (builtin/int-non-negative? n))
+  (if
+      (if (builtin/equal? n 0)
+        builtin/true
+        (builtin/list-empty? list))
+    (begin (= list (builtin/make-list)) list)
+    (builtin/cons
+     (builtin/car list)
+     (builtin/list-take
+      (builtin/isub n 1)
+      (builtin/cdr list)))))
+
+(claim list-take-test void-t)
+
+(define-test list-take-test
+  (builtin/assert-equal
+   (builtin/list-take
+    0
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin (= list (builtin/make-list)) list))
+  (builtin/assert-equal
+   (builtin/list-take
+    1
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-take
+    2
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-take
+    3
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-take
+    4
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list)))
+
+(claim list-drop
+  (polymorphic (A)
+    (-> builtin/int-t (builtin/list-t A) (builtin/list-t A))))
+
+(define (list-drop n list)
+  (builtin/assert (builtin/int-non-negative? n))
+  (if
+      (if (builtin/equal? n 0)
+        builtin/true
+        (builtin/list-empty? list))
+    list
+    (builtin/list-drop (builtin/isub n 1) (builtin/cdr list))))
+
+(claim list-drop-test void-t)
+
+(define-test list-drop-test
+  (builtin/assert-equal
+   (builtin/list-drop
+    0
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-drop
+    1
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-drop
+    2
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-drop
+    3
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin (= list (builtin/make-list)) list))
+  (builtin/assert-equal
+   (builtin/list-drop
+    4
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin (= list (builtin/make-list)) list)))
 
 (claim list-test void-t)
 

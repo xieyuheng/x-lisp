@@ -119,23 +119,6 @@
     (list-concat [[1 2 3] [4 5 6]])
     [1 2 3 4 5 6]))
 
-(claim list-drop
-  (polymorphic (A)
-    (-> builtin/int-t (builtin/list-t A) (builtin/list-t A))))
-
-(define (list-drop n list)
-  (assert (int-non-negative? n))
-  (if (or (equal? n 0) (list-empty? list))
-    list
-    (list-drop (isub n 1) (cdr list))))
-
-(define-test list-drop-test
-  (assert-equal (list-drop 0 [1 2 3]) [1 2 3])
-  (assert-equal (list-drop 1 [1 2 3]) [2 3])
-  (assert-equal (list-drop 2 [1 2 3]) [3])
-  (assert-equal (list-drop 3 [1 2 3]) [])
-  (assert-equal (list-drop 4 [1 2 3]) []))
-
 (claim list-each
   (polymorphic (A)
     (-> (-> A builtin/void-t)
@@ -181,6 +164,11 @@
      (cons (car list) (list-select p (cdr list))))
     (true (list-select p (cdr list)))))
 
+(define-test list-select-test
+  (assert-equal
+    (list-select (negate (equal? 0)) [0 1 0 2 0 3])
+    [1 2 3]))
+
 (claim list-reject
   (polymorphic (A)
     (-> (-> A builtin/bool-t)
@@ -189,15 +177,44 @@
 
 (define (list-reject p list) (list-select (negate p) list))
 
-(define-test list-select-test
-  (assert-equal
-    (list-select (negate (equal? 0)) [0 1 0 2 0 3])
-    [1 2 3]))
-
 (define-test list-reject-test
   (assert-equal
     (list-reject (equal? 0) [0 1 0 2 0 3])
     [1 2 3]))
+
+(claim list-take
+  (polymorphic (A)
+    (-> builtin/int-t (builtin/list-t A) (builtin/list-t A))))
+
+(define (list-take n list)
+  (assert (int-non-negative? n))
+  (if (or (equal? n 0) (list-empty? list))
+    []
+    (cons (car list) (list-take (isub n 1) (cdr list)))))
+
+(define-test list-take-test
+  (assert-equal (list-take 0 [1 2 3]) [])
+  (assert-equal (list-take 1 [1 2 3]) [1])
+  (assert-equal (list-take 2 [1 2 3]) [1 2])
+  (assert-equal (list-take 3 [1 2 3]) [1 2 3])
+  (assert-equal (list-take 4 [1 2 3]) [1 2 3]))
+
+(claim list-drop
+  (polymorphic (A)
+    (-> builtin/int-t (builtin/list-t A) (builtin/list-t A))))
+
+(define (list-drop n list)
+  (assert (int-non-negative? n))
+  (if (or (equal? n 0) (list-empty? list))
+    list
+    (list-drop (isub n 1) (cdr list))))
+
+(define-test list-drop-test
+  (assert-equal (list-drop 0 [1 2 3]) [1 2 3])
+  (assert-equal (list-drop 1 [1 2 3]) [2 3])
+  (assert-equal (list-drop 2 [1 2 3]) [3])
+  (assert-equal (list-drop 3 [1 2 3]) [])
+  (assert-equal (list-drop 4 [1 2 3]) []))
 
 (define-test list-test
   (assert-equal
