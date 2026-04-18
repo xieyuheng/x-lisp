@@ -60,6 +60,7 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
       M.TypeDefinition(
         mod,
         stmt.name,
+        stmt.parameters,
         M.qualifyImported(scope, stmt.body),
         stmt.location,
       ),

@@ -146,6 +146,7 @@ export type TypeDefinition = {
   kind: "TypeDefinition"
   mod: Mod
   name: string
+  parameters: Array<string>
   body: Exp
   value?: Value
   location?: SourceLocation
@@ -154,6 +155,7 @@ export type TypeDefinition = {
 export function TypeDefinition(
   mod: Mod,
   name: string,
+  parameters: Array<string>,
   body: Exp,
   location?: SourceLocation,
 ): TypeDefinition {
@@ -161,6 +163,7 @@ export function TypeDefinition(
     kind: "TypeDefinition",
     mod,
     name,
+    parameters,
     body,
     location,
   }

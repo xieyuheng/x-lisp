@@ -86,18 +86,21 @@ export function DefineTest(
 export type DefineType = {
   kind: "DefineType"
   name: string
+  parameters: Array<string>
   body: Exp
   location?: SourceLocation
 }
 
 export function DefineType(
   name: string,
+  parameters: Array<string>,
   body: Exp,
   location?: SourceLocation,
 ): DefineType {
   return {
     kind: "DefineType",
     name,
+    parameters,
     body,
     location,
   }

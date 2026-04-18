@@ -1,6 +1,5 @@
 # builtin
 
-[meta-lisp.js] `DefineType` and `TypeDefinition` -- has `parameters` -- like `define-interface` and `define-data`
 [meta-lisp.js] parse `(define-type (name arg ...) ...)`
 [meta-lisp.js] [builtin] `(hash-entry-t K V)` -- by `DefineTypeFunction`
 
