@@ -1,7 +1,9 @@
 # linn
 
+[linn.c] `line_parse_args`
 [linn.c] `line_get_arg`
 [linn.c] `line_print`
+
 [linn.c] `linn_execute_line` -- setup
 [linn.c] `linn_load` -- call `linn_execute_line`
 [linn.c] `linn_execute_line`

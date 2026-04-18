@@ -80,7 +80,7 @@ lexer_consume(lexer_t *self) {
         }
     }
 
-    where_printf("can not consume char: %c", lexer_next_char(self));
+    where_printf("can not consume char: %c\n", lexer_next_char(self));
     exit(1);
 }
 
