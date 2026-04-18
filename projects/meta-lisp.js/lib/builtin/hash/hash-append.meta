@@ -1,15 +1,19 @@
 (module builtin)
 
-;; (claim hash-append
-;;   (polymorphic (K V)
-;;     (-> (hash-t K V) (hash-t K V)
-;;         (hash-t K V))))
+(claim hash-append
+  (polymorphic (K V)
+    (-> (hash-t K V) (hash-t K V)
+        (hash-t K V))))
 
-;; (define (hash-append hash rest)
-;;   (= new-hash (hash-copy hash))
-;;   (hase-each-entry
-;;    (lambda (entry)
-;;      (hase-put! (:key entry) (:value entry) new-hash)
-;;      void)
-;;    rest)
-;;   new-hash)
+(define (hash-append hash rest)
+  (= new-hash (hash-copy hash))
+  (hash-each
+   (lambda (key value)
+     (hash-put! key value new-hash)
+     void)
+   rest)
+  new-hash)
+
+(define-test hash-append-test
+  (assert-equal (@hash 1 2 3 4) (hash-append (@hash 1 2) (@hash 3 4)))
+  (assert-equal (@hash 1 2 3 4) (hash-append (@hash 1 2 3 5) (@hash 3 4))))

@@ -115,6 +115,52 @@
 
 (define-test identity-test (assert-equal 1 (identity 1)))
 
+(claim hash-append
+  (polymorphic (K V)
+    (-> (builtin/hash-t K V)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-append hash rest)
+  (= new-hash (hash-copy hash))
+  (hase-each
+   (lambda (key value) (hase-put! key value new-hash) void)
+   rest)
+  new-hash)
+
+(define-test hash-append-test
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 1 2 hash)
+      (builtin/hash-put! 3 4 hash)
+      hash)
+    (hash-append
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash)
+       hash)
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 3 4 hash)
+       hash)))
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 1 2 hash)
+      (builtin/hash-put! 3 4 hash)
+      hash)
+    (hash-append
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash)
+       (builtin/hash-put! 3 5 hash)
+       hash)
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 3 4 hash)
+       hash))))
+
 (claim hash-each-value
   (polymorphic (K V Any)
     (-> (-> V Any) (builtin/hash-t K V) builtin/void-t)))

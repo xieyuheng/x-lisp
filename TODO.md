@@ -1,7 +1,5 @@
 # builtin
 
-[meta-lisp.js] [builtin] hash -- (hash-append hash rest)
-
 [meta-lisp.js] [builtin] hash -- (hash-find-key p hash)
 [meta-lisp.js] [builtin] hash -- (hash-invert hash)
 [meta-lisp.js] [builtin] hash -- (hash-invert-group hash)

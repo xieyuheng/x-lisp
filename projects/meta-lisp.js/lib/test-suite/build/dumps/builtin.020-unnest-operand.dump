@@ -177,6 +177,54 @@
   (= _₃ (_₂ 1))
   (_₁ 1 _₃))
 
+(claim hash-append
+  (polymorphic (K V)
+    (-> (builtin/hash-t K V)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-append hash rest)
+  (= new-hash₁ (begin (= _₁ builtin/hash-copy) (_₁ hash)))
+  (begin
+    (= _₂ builtin/hase-each)
+    (= _₃ (builtin/hash-append©λ₁ new-hash₁))
+    (_₂ _₃ rest))
+  new-hash₁)
+
+(define (hash-append©λ₁ new-hash₁ key₁ value₁)
+  (begin
+    (= _₁ builtin/hase-put!)
+    (_₁ key₁ value₁ new-hash₁))
+  builtin/void)
+
+(claim hash-append-test void-t)
+
+(define-test hash-append-test
+  (begin
+    (= _₁ builtin/assert-equal)
+    (= hash₁ (begin (= _₂ builtin/make-hash) (_₂)))
+    (begin (= _₃ builtin/hash-put!) (_₃ 1 2 hash₁))
+    (begin (= _₄ builtin/hash-put!) (_₄ 3 4 hash₁))
+    (= _₅ builtin/hash-append)
+    (= hash₂ (begin (= _₆ builtin/make-hash) (_₆)))
+    (begin (= _₇ builtin/hash-put!) (_₇ 1 2 hash₂))
+    (= hash₃ (begin (= _₈ builtin/make-hash) (_₈)))
+    (begin (= _₉ builtin/hash-put!) (_₉ 3 4 hash₃))
+    (= _₁₀ (_₅ hash₂ hash₃))
+    (_₁ hash₁ _₁₀))
+  (= _₁₁ builtin/assert-equal)
+  (= hash₄ (begin (= _₁₂ builtin/make-hash) (_₁₂)))
+  (begin (= _₁₃ builtin/hash-put!) (_₁₃ 1 2 hash₄))
+  (begin (= _₁₄ builtin/hash-put!) (_₁₄ 3 4 hash₄))
+  (= _₁₅ builtin/hash-append)
+  (= hash₅ (begin (= _₁₆ builtin/make-hash) (_₁₆)))
+  (begin (= _₁₇ builtin/hash-put!) (_₁₇ 1 2 hash₅))
+  (begin (= _₁₈ builtin/hash-put!) (_₁₈ 3 5 hash₅))
+  (= hash₆ (begin (= _₁₉ builtin/make-hash) (_₁₉)))
+  (begin (= _₂₀ builtin/hash-put!) (_₂₀ 3 4 hash₆))
+  (= _₂₁ (_₁₅ hash₅ hash₆))
+  (_₁₁ hash₄ _₂₁))
+
 (claim hash-each-value
   (polymorphic (K V Any)
     (-> (-> V Any) (builtin/hash-t K V) builtin/void-t)))

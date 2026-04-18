@@ -138,6 +138,56 @@
 (define-test identity-test
   (builtin/assert-equal 1 (builtin/identity 1)))
 
+(claim hash-append
+  (polymorphic (K V)
+    (-> (builtin/hash-t K V)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-append hash rest)
+  (= new-hash₁ (builtin/hash-copy hash))
+  (builtin/hase-each (builtin/hash-append©λ₁ new-hash₁) rest)
+  new-hash₁)
+
+(define (hash-append©λ₁ new-hash₁ key₁ value₁)
+  (builtin/hase-put! key₁ value₁ new-hash₁)
+  builtin/void)
+
+(claim hash-append-test void-t)
+
+(define-test hash-append-test
+  (builtin/assert-equal
+   (begin
+     (= hash₁ (builtin/make-hash))
+     (builtin/hash-put! 1 2 hash₁)
+     (builtin/hash-put! 3 4 hash₁)
+     hash₁)
+   (builtin/hash-append
+    (begin
+      (= hash₂ (builtin/make-hash))
+      (builtin/hash-put! 1 2 hash₂)
+      hash₂)
+    (begin
+      (= hash₃ (builtin/make-hash))
+      (builtin/hash-put! 3 4 hash₃)
+      hash₃)))
+  (builtin/assert-equal
+   (begin
+     (= hash₄ (builtin/make-hash))
+     (builtin/hash-put! 1 2 hash₄)
+     (builtin/hash-put! 3 4 hash₄)
+     hash₄)
+   (builtin/hash-append
+    (begin
+      (= hash₅ (builtin/make-hash))
+      (builtin/hash-put! 1 2 hash₅)
+      (builtin/hash-put! 3 5 hash₅)
+      hash₅)
+    (begin
+      (= hash₆ (builtin/make-hash))
+      (builtin/hash-put! 3 4 hash₆)
+      hash₆))))
+
 (claim hash-each-value
   (polymorphic (K V Any)
     (-> (-> V Any) (builtin/hash-t K V) builtin/void-t)))
