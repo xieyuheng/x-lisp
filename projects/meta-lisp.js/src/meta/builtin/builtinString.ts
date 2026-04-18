@@ -66,20 +66,6 @@ export function builtinString(mod: Mod) {
 
   definePrimitiveFunction(
     mod,
-    "string-replace-first",
-    3,
-    (pattern, replacement, string) => {
-      return Values.StringValue(
-        Values.asStringValue(string).content.replace(
-          Values.asStringValue(pattern).content,
-          Values.asStringValue(replacement).content,
-        ),
-      )
-    },
-  )
-
-  definePrimitiveFunction(
-    mod,
     "string-replace",
     3,
     (pattern, replacement, string) => {
