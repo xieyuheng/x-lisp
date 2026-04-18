@@ -409,7 +409,7 @@
 
 (define-test forth-test
   (= f₁ test-suite/forth-test©λ₁)
-  (= square₁ (test-suite/dup builtin/imul))
+  (= square₁ (builtin/dup builtin/imul))
   (builtin/println (square₁ (f₁ 1)))
   (builtin/println (square₁ (f₁ 2)))
   (builtin/println (square₁ (f₁ 3)))
@@ -433,11 +433,10 @@
   (= add1₁ (builtin/iadd 1))
   (builtin/assert-equal 2 (add1₁ 1))
   (= add1₂
-     (test-suite/identity
-      (builtin/iadd (test-suite/identity 1))))
-  test-suite/identity
-  test-suite/identity
-  test-suite/identity
+     (builtin/identity (builtin/iadd (builtin/identity 1))))
+  builtin/identity
+  builtin/identity
+  builtin/identity
   (builtin/assert-equal 2 (add1₂ 1)))
 
 (claim hash-test void-t)

@@ -3,7 +3,5 @@
 (define (identity x) x)
 
 (define-test identity-test
-  (the (polymorphic (A) (-> A A))
-    identity-type-error-2/identity)
-  (the (polymorphic (A B) (-> A B))
-    identity-type-error-2/identity))
+  (the (polymorphic (A) (-> A A)) builtin/identity)
+  (the (polymorphic (A B) (-> A B)) builtin/identity))

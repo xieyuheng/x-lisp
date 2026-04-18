@@ -136,6 +136,47 @@
   (= _₁₉ (_₁₃ list₃))
   (_₁₂ 10.0 _₁₉))
 
+(claim constant (polymorphic (A B) (-> A B A)))
+
+(define (constant x y) x)
+
+(claim constant-test void-t)
+
+(define-test constant-test
+  (= _₁ builtin/assert-equal)
+  (= _₂ builtin/constant)
+  (= _₃ (_₂ 1 "a"))
+  (_₁ 1 _₃))
+
+(claim swap
+  (polymorphic (A B C) (-> (-> A B C) (-> B A C))))
+
+(define (swap f x y) (f y x))
+
+(claim drop (polymorphic (A B C) (-> (-> A B) (-> C A B))))
+
+(define (drop f) (builtin/drop©λ₁ f))
+
+(define (drop©λ₁ f dropped₁ x₁) (f x₁))
+
+(claim dup (polymorphic (A B) (-> (-> A A B) (-> A B))))
+
+(define (dup f) (builtin/dup©λ₁ f))
+
+(define (dup©λ₁ f x₁) (f x₁ x₁))
+
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(claim identity-test void-t)
+
+(define-test identity-test
+  (= _₁ builtin/assert-equal)
+  (= _₂ builtin/identity)
+  (= _₃ (_₂ 1))
+  (_₁ 1 _₃))
+
 (claim int-align
   (-> builtin/int-t builtin/int-t builtin/int-t))
 
@@ -475,6 +516,100 @@
   (begin (= _₁₅ builtin/list-push!) (_₁₅ -3 list₂))
   (= _₁₆ (_₁₀ _₁₁ list₂))
   (_₉ _₁₆))
+
+(claim list-fold-left
+  (polymorphic (E R) (-> (-> R E R) R (builtin/list-t E) R)))
+
+(define (list-fold-left op e list)
+  (if (begin (= _₁ builtin/list-empty?) (_₁ list))
+    e
+    (begin
+      (= _₂ builtin/list-fold-left)
+      (= _₃ builtin/list-head)
+      (= _₄ (_₃ list))
+      (= _₅ (op e _₄))
+      (= _₆ builtin/list-tail)
+      (= _₇ (_₆ list))
+      (_₂ op _₅ _₇))))
+
+(claim list-fold-left-test void-t)
+
+(define-test list-fold-left-test
+  (begin
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/list-fold-left)
+    (= _₃ builtin/iadd)
+    (= list₁ (begin (= _₄ builtin/make-list) (_₄)))
+    (begin (= _₅ builtin/list-push!) (_₅ 1 list₁))
+    (begin (= _₆ builtin/list-push!) (_₆ 2 list₁))
+    (begin (= _₇ builtin/list-push!) (_₇ 3 list₁))
+    (begin (= _₈ builtin/list-push!) (_₈ 4 list₁))
+    (= _₉ (_₂ _₃ 0 list₁))
+    (_₁ 10 _₉))
+  (= _₁₀ builtin/assert-equal)
+  (= list₂ (begin (= _₁₁ builtin/make-list) (_₁₁)))
+  (begin (= _₁₂ builtin/list-push!) (_₁₂ 4 list₂))
+  (begin (= _₁₃ builtin/list-push!) (_₁₃ 3 list₂))
+  (begin (= _₁₄ builtin/list-push!) (_₁₄ 2 list₂))
+  (begin (= _₁₅ builtin/list-push!) (_₁₅ 1 list₂))
+  (= _₁₆ builtin/list-fold-left)
+  (= _₁₇ builtin/swap)
+  (= _₁₈ builtin/cons)
+  (= _₁₉ (_₁₇ _₁₈))
+  (= list₃ (begin (= _₂₀ builtin/make-list) (_₂₀)))
+  (= list₄ (begin (= _₂₁ builtin/make-list) (_₂₁)))
+  (begin (= _₂₂ builtin/list-push!) (_₂₂ 1 list₄))
+  (begin (= _₂₃ builtin/list-push!) (_₂₃ 2 list₄))
+  (begin (= _₂₄ builtin/list-push!) (_₂₄ 3 list₄))
+  (begin (= _₂₅ builtin/list-push!) (_₂₅ 4 list₄))
+  (= _₂₆ (_₁₆ _₁₉ list₃ list₄))
+  (_₁₀ list₂ _₂₆))
+
+(claim list-fold-right
+  (polymorphic (E R) (-> (-> E R R) R (builtin/list-t E) R)))
+
+(define (list-fold-right op e list)
+  (if (begin (= _₁ builtin/list-empty?) (_₁ list))
+    e
+    (begin
+      (= _₂ builtin/list-fold-right)
+      (= _₃ builtin/list-last)
+      (= _₄ (_₃ list))
+      (= _₅ (op _₄ e))
+      (= _₆ builtin/list-init)
+      (= _₇ (_₆ list))
+      (_₂ op _₅ _₇))))
+
+(claim list-fold-right-test void-t)
+
+(define-test list-fold-right-test
+  (begin
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/list-fold-right)
+    (= _₃ builtin/iadd)
+    (= list₁ (begin (= _₄ builtin/make-list) (_₄)))
+    (begin (= _₅ builtin/list-push!) (_₅ 1 list₁))
+    (begin (= _₆ builtin/list-push!) (_₆ 2 list₁))
+    (begin (= _₇ builtin/list-push!) (_₇ 3 list₁))
+    (begin (= _₈ builtin/list-push!) (_₈ 4 list₁))
+    (= _₉ (_₂ _₃ 0 list₁))
+    (_₁ 10 _₉))
+  (= _₁₀ builtin/assert-equal)
+  (= list₂ (begin (= _₁₁ builtin/make-list) (_₁₁)))
+  (begin (= _₁₂ builtin/list-push!) (_₁₂ 1 list₂))
+  (begin (= _₁₃ builtin/list-push!) (_₁₃ 2 list₂))
+  (begin (= _₁₄ builtin/list-push!) (_₁₄ 3 list₂))
+  (begin (= _₁₅ builtin/list-push!) (_₁₅ 4 list₂))
+  (= _₁₆ builtin/list-fold-right)
+  (= _₁₇ builtin/cons)
+  (= list₃ (begin (= _₁₈ builtin/make-list) (_₁₈)))
+  (= list₄ (begin (= _₁₉ builtin/make-list) (_₁₉)))
+  (begin (= _₂₀ builtin/list-push!) (_₂₀ 1 list₄))
+  (begin (= _₂₁ builtin/list-push!) (_₂₁ 2 list₄))
+  (begin (= _₂₂ builtin/list-push!) (_₂₂ 3 list₄))
+  (begin (= _₂₃ builtin/list-push!) (_₂₃ 4 list₄))
+  (= _₂₄ (_₁₆ _₁₇ list₃ list₄))
+  (_₁₀ list₂ _₂₄))
 
 (claim list-first (polymorphic (A) (-> (list-t A) A)))
 

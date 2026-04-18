@@ -103,6 +103,41 @@
       (builtin/list-push! 4.0 list₃)
       list₃))))
 
+(claim constant (polymorphic (A B) (-> A B A)))
+
+(define (constant x y) x)
+
+(claim constant-test void-t)
+
+(define-test constant-test
+  (builtin/assert-equal 1 (builtin/constant 1 "a")))
+
+(claim swap
+  (polymorphic (A B C) (-> (-> A B C) (-> B A C))))
+
+(define (swap f x y) (f y x))
+
+(claim drop (polymorphic (A B C) (-> (-> A B) (-> C A B))))
+
+(define (drop f) (builtin/drop©λ₁ f))
+
+(define (drop©λ₁ f dropped₁ x₁) (f x₁))
+
+(claim dup (polymorphic (A B) (-> (-> A A B) (-> A B))))
+
+(define (dup f) (builtin/dup©λ₁ f))
+
+(define (dup©λ₁ f x₁) (f x₁ x₁))
+
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(claim identity-test void-t)
+
+(define-test identity-test
+  (builtin/assert-equal 1 (builtin/identity 1)))
+
 (claim int-align
   (-> builtin/int-t builtin/int-t builtin/int-t))
 
@@ -385,6 +420,96 @@
       (builtin/list-push! -2 list₂)
       (builtin/list-push! -3 list₂)
       list₂))))
+
+(claim list-fold-left
+  (polymorphic (E R) (-> (-> R E R) R (builtin/list-t E) R)))
+
+(define (list-fold-left op e list)
+  (if (builtin/list-empty? list)
+    e
+    (builtin/list-fold-left
+     op
+     (op e (builtin/list-head list))
+     (builtin/list-tail list))))
+
+(claim list-fold-left-test void-t)
+
+(define-test list-fold-left-test
+  (builtin/assert-equal
+   10
+   (builtin/list-fold-left
+    builtin/iadd
+    0
+    (begin
+      (= list₁ (builtin/make-list))
+      (builtin/list-push! 1 list₁)
+      (builtin/list-push! 2 list₁)
+      (builtin/list-push! 3 list₁)
+      (builtin/list-push! 4 list₁)
+      list₁)))
+  (builtin/assert-equal
+   (begin
+     (= list₂ (builtin/make-list))
+     (builtin/list-push! 4 list₂)
+     (builtin/list-push! 3 list₂)
+     (builtin/list-push! 2 list₂)
+     (builtin/list-push! 1 list₂)
+     list₂)
+   (builtin/list-fold-left
+    (builtin/swap builtin/cons)
+    (begin (= list₃ (builtin/make-list)) list₃)
+    (begin
+      (= list₄ (builtin/make-list))
+      (builtin/list-push! 1 list₄)
+      (builtin/list-push! 2 list₄)
+      (builtin/list-push! 3 list₄)
+      (builtin/list-push! 4 list₄)
+      list₄))))
+
+(claim list-fold-right
+  (polymorphic (E R) (-> (-> E R R) R (builtin/list-t E) R)))
+
+(define (list-fold-right op e list)
+  (if (builtin/list-empty? list)
+    e
+    (builtin/list-fold-right
+     op
+     (op (builtin/list-last list) e)
+     (builtin/list-init list))))
+
+(claim list-fold-right-test void-t)
+
+(define-test list-fold-right-test
+  (builtin/assert-equal
+   10
+   (builtin/list-fold-right
+    builtin/iadd
+    0
+    (begin
+      (= list₁ (builtin/make-list))
+      (builtin/list-push! 1 list₁)
+      (builtin/list-push! 2 list₁)
+      (builtin/list-push! 3 list₁)
+      (builtin/list-push! 4 list₁)
+      list₁)))
+  (builtin/assert-equal
+   (begin
+     (= list₂ (builtin/make-list))
+     (builtin/list-push! 1 list₂)
+     (builtin/list-push! 2 list₂)
+     (builtin/list-push! 3 list₂)
+     (builtin/list-push! 4 list₂)
+     list₂)
+   (builtin/list-fold-right
+    builtin/cons
+    (begin (= list₃ (builtin/make-list)) list₃)
+    (begin
+      (= list₄ (builtin/make-list))
+      (builtin/list-push! 1 list₄)
+      (builtin/list-push! 2 list₄)
+      (builtin/list-push! 3 list₄)
+      (builtin/list-push! 4 list₄)
+      list₄))))
 
 (claim list-first (polymorphic (A) (-> (list-t A) A)))
 

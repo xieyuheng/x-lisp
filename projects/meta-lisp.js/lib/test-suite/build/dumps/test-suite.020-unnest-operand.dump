@@ -630,10 +630,7 @@
 (define-test forth-test
   (= f₁ test-suite/forth-test©λ₁)
   (= square₁
-     (begin
-       (= _₁ test-suite/dup)
-       (= _₂ builtin/imul)
-       (_₁ _₂)))
+     (begin (= _₁ builtin/dup) (= _₂ builtin/imul) (_₁ _₂)))
   (begin
     (= _₃ builtin/println)
     (= _₄ (f₁ 1))
@@ -679,15 +676,15 @@
     (_₂ 2 _₃))
   (= add1₂
      (begin
-       (= _₄ test-suite/identity)
+       (= _₄ builtin/identity)
        (= _₅ builtin/iadd)
-       (= _₆ test-suite/identity)
+       (= _₆ builtin/identity)
        (= _₇ (_₆ 1))
        (= _₈ (_₅ _₇))
        (_₄ _₈)))
-  test-suite/identity
-  test-suite/identity
-  test-suite/identity
+  builtin/identity
+  builtin/identity
+  builtin/identity
   (= _₉ builtin/assert-equal)
   (= _₁₀ (add1₂ 1))
   (_₉ 2 _₁₀))

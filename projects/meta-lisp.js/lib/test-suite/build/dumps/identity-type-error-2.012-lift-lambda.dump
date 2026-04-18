@@ -3,5 +3,5 @@
 (define (identity x) x)
 
 (define-test identity-test
-  identity-type-error-2/identity
-  identity-type-error-2/identity)
+  builtin/identity
+  builtin/identity)

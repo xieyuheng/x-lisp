@@ -1,0 +1,11 @@
+(module builtin)
+
+(claim constant
+  (polymorphic (A B)
+    (-> A B
+        A)))
+
+(define (constant x y) x)
+
+(define-test constant-test
+  (assert-equal 1 (constant 1 "a")))

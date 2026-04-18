@@ -293,7 +293,7 @@
 
 (define-test forth-test
   (= f (lambda (x) x))
-  (= square (test-suite/dup builtin/imul))
+  (= square (builtin/dup builtin/imul))
   (builtin/println (square (f 1)))
   (builtin/println (square (f 2)))
   (builtin/println (square (f 3)))
@@ -311,12 +311,11 @@
   (= add1 (builtin/iadd 1))
   (builtin/assert-equal 2 (add1 1))
   (= add1
-     (test-suite/identity
-      (builtin/iadd (test-suite/identity 1))))
-  (the (-> builtin/int-t builtin/int-t) test-suite/identity)
+     (builtin/identity (builtin/iadd (builtin/identity 1))))
+  (the (-> builtin/int-t builtin/int-t) builtin/identity)
   (the (-> builtin/float-t builtin/float-t)
-    test-suite/identity)
-  (the (polymorphic (A) (-> A A)) test-suite/identity)
+    builtin/identity)
+  (the (polymorphic (A) (-> A A)) builtin/identity)
   (builtin/assert-equal 2 (add1 1)))
 
 (define-test hash-test

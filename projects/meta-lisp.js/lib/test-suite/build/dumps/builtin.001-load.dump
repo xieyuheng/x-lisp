@@ -51,6 +51,32 @@
   (assert-equal 6.0 (float-sum [1.0 2.0 3.0]))
   (assert-equal 10.0 (float-sum [1.0 2.0 3.0 4.0])))
 
+(claim constant (polymorphic (A B) (-> A B A)))
+
+(define (constant x y) x)
+
+(define-test constant-test
+  (assert-equal 1 (constant 1 "a")))
+
+(claim swap
+  (polymorphic (A B C) (-> (-> A B C) (-> B A C))))
+
+(define (swap f x y) (f y x))
+
+(claim drop (polymorphic (A B C) (-> (-> A B) (-> C A B))))
+
+(define (drop f) (lambda (dropped x) (f x)))
+
+(claim dup (polymorphic (A B) (-> (-> A A B) (-> A B))))
+
+(define (dup f) (lambda (x) (f x x)))
+
+(claim identity (polymorphic (A) (-> A A)))
+
+(define (identity x) x)
+
+(define-test identity-test (assert-equal 1 (identity 1)))
+
 (claim int-align
   (-> builtin/int-t builtin/int-t builtin/int-t))
 
@@ -164,6 +190,40 @@
 (define-test list-some-test
   (assert (list-some? int-non-negative? [-1 -2 0]))
   (assert-not (list-some? int-non-negative? [-1 -2 -3])))
+
+(claim list-fold-left
+  (polymorphic (E R) (-> (-> R E R) R (builtin/list-t E) R)))
+
+(define (list-fold-left op e list)
+  (if (list-empty? list)
+    e
+    (list-fold-left
+     op
+     (op e (list-head list))
+     (list-tail list))))
+
+(define-test list-fold-left-test
+  (assert-equal 10 (list-fold-left iadd 0 [1 2 3 4]))
+  (assert-equal
+    [4 3 2 1]
+    (list-fold-left (swap cons) [] [1 2 3 4])))
+
+(claim list-fold-right
+  (polymorphic (E R) (-> (-> E R R) R (builtin/list-t E) R)))
+
+(define (list-fold-right op e list)
+  (if (list-empty? list)
+    e
+    (list-fold-right
+     op
+     (op (list-last list) e)
+     (list-init list))))
+
+(define-test list-fold-right-test
+  (assert-equal 10 (list-fold-right iadd 0 [1 2 3 4]))
+  (assert-equal
+    [1 2 3 4]
+    (list-fold-right cons [] [1 2 3 4])))
 
 (define (list-first list) (car list))
 
