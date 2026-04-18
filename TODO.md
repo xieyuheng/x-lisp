@@ -1,6 +1,6 @@
 # linn
 
-[linn.c] setup linn.c project -- copy code from basic-lisp.c
+[linn.c] rename project to linn
 [linn.c] simple stack vm compiler
 [linn.c] remove basic compiler
 
