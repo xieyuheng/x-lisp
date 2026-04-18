@@ -1,1 +1,44 @@
 (module builtin)
+
+(claim hash-put-entries
+  (polymorphic (K V)
+    (-> (list-t (hash-entry-t K V)) (hash-t K V)
+        (hash-t K V))))
+
+(define (hash-put-entries entries hash)
+  (hash-put-entries! entries (hash-copy hash)))
+
+(define (hash-put-entry entry hash)
+  (hash-put (:key entry) (:value entry) hash))
+
+(define (hash-put-entry! entry hash)
+  (hash-put! (:key entry) (:value entry) hash))
+
+(claim hash-put-entries!
+  (polymorphic (K V)
+    (-> (list-t (hash-entry-t K V)) (hash-t K V)
+        (hash-t K V))))
+
+(define (hash-put-entries! entries hash)
+  (cond ((list-empty? entries) hash)
+        (else
+         (= entry (car entries))
+         (hash-put-entry! entry hash)
+         (hash-put-entries! (cdr entries) hash))))
+
+(define-test hash-put-entries-test
+  (assert-equal
+    (@hash 'a 1 'b 2)
+    (hash-put-entries [(make-hash-entry 'a 1)
+                       (make-hash-entry 'b 2)]
+                      (@hash)))
+
+  (begin
+    (= hash (@hash))
+    (assert-equal
+      (@hash 'a 1 'b 2)
+      (hash-put-entries! [(make-hash-entry 'a 1)
+                          (make-hash-entry 'b 2)]
+                         hash))
+    (assert-equal
+      (@hash 'a 1 'b 2) hash)))

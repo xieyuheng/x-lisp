@@ -385,6 +385,123 @@
   (= _₁₇ (_₁₂ 4 hash₂))
   (_₁₀ _₁₁ _₁₇))
 
+(claim hash-put-entries
+  (polymorphic (K V)
+    (-> (builtin/list-t (builtin/hash-entry-t K V))
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-put-entries entries hash)
+  (= _₁ builtin/hash-put-entries!)
+  (= _₂ builtin/hash-copy)
+  (= _₃ (_₂ hash))
+  (_₁ entries _₃))
+
+(claim hash-put-entry
+  (polymorphic (A B C)
+    (-> (extend-interface A :value B :key C)
+        (hash-t C B)
+        (hash-t C B))))
+
+(define (hash-put-entry entry hash)
+  (= _₁ builtin/hash-put)
+  (= _₂ builtin/record-get)
+  (= _₃ (_₂ :key))
+  (= _₄ (_₃ entry))
+  (= _₅ builtin/record-get)
+  (= _₆ (_₅ :value))
+  (= _₇ (_₆ entry))
+  (_₁ _₄ _₇ hash))
+
+(claim hash-put-entry!
+  (polymorphic (A B C)
+    (-> (extend-interface A :value B :key C)
+        (hash-t C B)
+        (hash-t C B))))
+
+(define (hash-put-entry! entry hash)
+  (= _₁ builtin/hash-put!)
+  (= _₂ builtin/record-get)
+  (= _₃ (_₂ :key))
+  (= _₄ (_₃ entry))
+  (= _₅ builtin/record-get)
+  (= _₆ (_₅ :value))
+  (= _₇ (_₆ entry))
+  (_₁ _₄ _₇ hash))
+
+(claim hash-put-entries!
+  (polymorphic (K V)
+    (-> (builtin/list-t (builtin/hash-entry-t K V))
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-put-entries! entries hash)
+  (if (begin (= _₁ builtin/list-empty?) (_₁ entries))
+    hash
+    (if builtin/true
+      (begin
+        (= entry₁ (begin (= _₂ builtin/car) (_₂ entries)))
+        (begin
+          (= _₃ builtin/hash-put-entry!)
+          (_₃ entry₁ hash))
+        (= _₄ builtin/hash-put-entries!)
+        (= _₅ builtin/cdr)
+        (= _₆ (_₅ entries))
+        (_₄ _₆ hash))
+      (begin (= _₇ builtin/error) (_₇ "cond mismatch")))))
+
+(claim hash-put-entries-test void-t)
+
+(define-test hash-put-entries-test
+  (begin
+    (= _₁ builtin/assert-equal)
+    (= hash₁ (begin (= _₂ builtin/make-hash) (_₂)))
+    (begin (= _₃ builtin/hash-put!) (_₃ 'a 1 hash₁))
+    (begin (= _₄ builtin/hash-put!) (_₄ 'b 2 hash₁))
+    (= _₅ builtin/hash-put-entries)
+    (= list₁ (begin (= _₆ builtin/make-list) (_₆)))
+    (begin
+      (= _₇ builtin/list-push!)
+      (= _₈ builtin/make-hash-entry)
+      (= _₉ (_₈ 'a 1))
+      (_₇ _₉ list₁))
+    (begin
+      (= _₁₀ builtin/list-push!)
+      (= _₁₁ builtin/make-hash-entry)
+      (= _₁₂ (_₁₁ 'b 2))
+      (_₁₀ _₁₂ list₁))
+    (= hash₂ (begin (= _₁₃ builtin/make-hash) (_₁₃)))
+    (= _₁₄ (_₅ list₁ hash₂))
+    (_₁ hash₁ _₁₄))
+  (= hash₃
+     (begin
+       (= hash₄ (begin (= _₁₅ builtin/make-hash) (_₁₅)))
+       hash₄))
+  (begin
+    (= _₁₆ builtin/assert-equal)
+    (= hash₅ (begin (= _₁₇ builtin/make-hash) (_₁₇)))
+    (begin (= _₁₈ builtin/hash-put!) (_₁₈ 'a 1 hash₅))
+    (begin (= _₁₉ builtin/hash-put!) (_₁₉ 'b 2 hash₅))
+    (= _₂₀ builtin/hash-put-entries!)
+    (= list₂ (begin (= _₂₁ builtin/make-list) (_₂₁)))
+    (begin
+      (= _₂₂ builtin/list-push!)
+      (= _₂₃ builtin/make-hash-entry)
+      (= _₂₄ (_₂₃ 'a 1))
+      (_₂₂ _₂₄ list₂))
+    (begin
+      (= _₂₅ builtin/list-push!)
+      (= _₂₆ builtin/make-hash-entry)
+      (= _₂₇ (_₂₆ 'b 2))
+      (_₂₅ _₂₇ list₂))
+    (= _₂₈ (_₂₀ list₂ hash₃))
+    (_₁₆ hash₅ _₂₈))
+  (= _₂₉ builtin/assert-equal)
+  (= hash₆ (begin (= _₃₀ builtin/make-hash) (_₃₀)))
+  (begin (= _₃₁ builtin/hash-put!) (_₃₁ 'a 1 hash₆))
+  (begin (= _₃₂ builtin/hash-put!) (_₃₂ 'b 2 hash₆))
+  (_₂₉ hash₆ hash₃))
+
 (define-interface (hash-entry-t K V) :key K :value V)
 
 (claim make-hash-entry
