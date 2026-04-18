@@ -1,10 +1,8 @@
 (claim negate (polymorphic (A) (-> (-> A bool-t) A bool-t)))
 
-(define (negate p) (builtin/negate©λ₁ p))
-
-(define (negate©λ₁ p x₁)
+(define (negate p x)
   (= _₁ builtin/not)
-  (= _₂ (p x₁))
+  (= _₂ (p x))
   (_₁ _₂))
 
 (claim negate-test void-t)
@@ -17,12 +15,18 @@
     (= _₄ (_₃ 'a))
     (= _₅ (_₂ _₄))
     (_₁ _₅))
-  (= _₆ builtin/assert)
-  (= _₇ builtin/negate)
-  (= _₈ builtin/int?)
-  (= _₉ (_₇ _₈))
-  (= _₁₀ (_₉ 'a))
-  (_₆ _₁₀))
+  (begin
+    (= _₆ builtin/assert)
+    (= _₇ builtin/negate)
+    (= _₈ builtin/int?)
+    (= _₉ (_₇ _₈ 'a))
+    (_₆ _₉))
+  (= _₁₀ builtin/assert)
+  (= _₁₁ builtin/negate)
+  (= _₁₂ builtin/int?)
+  (= _₁₃ (_₁₁ _₁₂))
+  (= _₁₄ (_₁₃ 'a))
+  (_₁₀ _₁₄))
 
 (claim call-with-input-file
   (polymorphic (A)

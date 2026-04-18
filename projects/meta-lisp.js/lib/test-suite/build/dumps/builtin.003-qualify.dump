@@ -1,7 +1,8 @@
-(define (negate p) (lambda (x) (builtin/not (p x))))
+(define (negate p x) (builtin/not (p x)))
 
 (define-test negate-test
   (builtin/assert (builtin/not (builtin/int? 'a)))
+  (builtin/assert (builtin/negate builtin/int? 'a))
   (builtin/assert ((builtin/negate builtin/int?) 'a)))
 
 (claim call-with-input-file

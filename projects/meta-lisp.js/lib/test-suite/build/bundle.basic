@@ -1,10 +1,7 @@
-(define-function (builtin/negate p)
-  (block body (return (builtin/negate©λ₁ p))))
-
-(define-function (builtin/negate©λ₁ p x₁)
+(define-function (builtin/negate p x)
   (block body
     (= _₁ builtin/not)
-    (= _₂ (p x₁))
+    (= _₂ (p x))
     (return (_₁ _₂))))
 
 (define-function (builtin/negate-test)
@@ -18,9 +15,14 @@
     (= _₆ builtin/assert)
     (= _₇ builtin/negate)
     (= _₈ builtin/int?)
-    (= _₉ (_₇ _₈))
-    (= _₁₀ (_₉ 'a))
-    (return (_₆ _₁₀))))
+    (= _₉ (_₇ _₈ 'a))
+    (perform (_₆ _₉))
+    (= _₁₀ builtin/assert)
+    (= _₁₁ builtin/negate)
+    (= _₁₂ builtin/int?)
+    (= _₁₃ (_₁₁ _₁₂))
+    (= _₁₄ (_₁₃ 'a))
+    (return (_₁₀ _₁₄))))
 
 (define-function (builtin/call-with-input-file path f)
   (block body
