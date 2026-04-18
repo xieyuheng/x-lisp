@@ -1,0 +1,29 @@
+(module builtin)
+
+(claim list-every?
+  (polymorphic (A)
+    (-> (-> A bool-t) (list-t A)
+        bool-t)))
+
+(define (list-every? p list)
+  (cond ((list-empty? list) true)
+        ((not (p (car list))) false)
+        (else (list-every? p (cdr list)))))
+
+(define-test list-every-test
+  (assert (list-every? int-non-negative? [0 1 2 3]))
+  (assert-not (list-every? int-non-negative? [0 1 -1 2 3])))
+
+(claim list-some?
+  (polymorphic (A)
+    (-> (-> A bool-t) (list-t A)
+        bool-t)))
+
+(define (list-some? p list)
+  (cond ((list-empty? list) false)
+        ((p (car list)) true)
+        (else (list-some? p (cdr list)))))
+
+(define-test list-some-test
+  (assert (list-some? int-non-negative? [-1 -2 0]))
+  (assert-not (list-some? int-non-negative? [-1 -2 -3])))

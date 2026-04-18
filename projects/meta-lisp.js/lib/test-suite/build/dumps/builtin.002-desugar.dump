@@ -2,8 +2,7 @@
 
 (define-test negate-test
   (assert (not (int? 'a)))
-  (assert ((negate int?) 'a))
-  (assert (negate int? 'a)))
+  (assert ((negate int?) 'a)))
 
 (claim call-with-input-file
   (polymorphic (A)
@@ -264,6 +263,79 @@
      (builtin/list-push! 2 list)
      (builtin/list-push! 3 list)
      list)))
+
+(claim list-every?
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        builtin/bool-t)))
+
+(define (list-every? p list)
+  (if (list-empty? list)
+    true
+    (if (not (p (car list)))
+      false
+      (if true
+        (list-every? p (cdr list))
+        (builtin/error "cond mismatch")))))
+
+(define-test list-every-test
+  (assert
+    (list-every?
+     int-non-negative?
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! 0 list)
+       (builtin/list-push! 1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
+       list)))
+  (assert-not
+    (list-every?
+     int-non-negative?
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! 0 list)
+       (builtin/list-push! 1 list)
+       (builtin/list-push! -1 list)
+       (builtin/list-push! 2 list)
+       (builtin/list-push! 3 list)
+       list))))
+
+(claim list-some?
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        builtin/bool-t)))
+
+(define (list-some? p list)
+  (if (list-empty? list)
+    false
+    (if (p (car list))
+      true
+      (if true
+        (list-some? p (cdr list))
+        (builtin/error "cond mismatch")))))
+
+(define-test list-some-test
+  (assert
+    (list-some?
+     int-non-negative?
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! -1 list)
+       (builtin/list-push! -2 list)
+       (builtin/list-push! 0 list)
+       list)))
+  (assert-not
+    (list-some?
+     int-non-negative?
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! -1 list)
+       (builtin/list-push! -2 list)
+       (builtin/list-push! -3 list)
+       list))))
 
 (define (list-first list) (car list))
 

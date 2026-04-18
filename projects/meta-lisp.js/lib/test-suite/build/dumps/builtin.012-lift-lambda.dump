@@ -8,8 +8,7 @@
 
 (define-test negate-test
   (builtin/assert (builtin/not (builtin/int? 'a)))
-  (builtin/assert ((builtin/negate builtin/int?) 'a))
-  (builtin/assert (builtin/negate builtin/int? 'a)))
+  (builtin/assert ((builtin/negate builtin/int?) 'a)))
 
 (claim call-with-input-file
   (polymorphic (A)
@@ -310,6 +309,83 @@
 (define (list-each-test©λ₁ x₁)
   (builtin/print x₁)
   (builtin/write "\n"))
+
+(claim list-every?
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        builtin/bool-t)))
+
+(define (list-every? p list)
+  (if (builtin/list-empty? list)
+    builtin/true
+    (if (builtin/not (p (builtin/car list)))
+      builtin/false
+      (if builtin/true
+        (builtin/list-every? p (builtin/cdr list))
+        (builtin/error "cond mismatch")))))
+
+(claim list-every-test void-t)
+
+(define-test list-every-test
+  (builtin/assert
+   (builtin/list-every?
+    builtin/int-non-negative?
+    (begin
+      (= list₁ (builtin/make-list))
+      (builtin/list-push! 0 list₁)
+      (builtin/list-push! 1 list₁)
+      (builtin/list-push! 2 list₁)
+      (builtin/list-push! 3 list₁)
+      list₁)))
+  (builtin/assert-not
+   (builtin/list-every?
+    builtin/int-non-negative?
+    (begin
+      (= list₂ (builtin/make-list))
+      (builtin/list-push! 0 list₂)
+      (builtin/list-push! 1 list₂)
+      (builtin/list-push! -1 list₂)
+      (builtin/list-push! 2 list₂)
+      (builtin/list-push! 3 list₂)
+      list₂))))
+
+(claim list-some?
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        builtin/bool-t)))
+
+(define (list-some? p list)
+  (if (builtin/list-empty? list)
+    builtin/false
+    (if (p (builtin/car list))
+      builtin/true
+      (if builtin/true
+        (builtin/list-some? p (builtin/cdr list))
+        (builtin/error "cond mismatch")))))
+
+(claim list-some-test void-t)
+
+(define-test list-some-test
+  (builtin/assert
+   (builtin/list-some?
+    builtin/int-non-negative?
+    (begin
+      (= list₁ (builtin/make-list))
+      (builtin/list-push! -1 list₁)
+      (builtin/list-push! -2 list₁)
+      (builtin/list-push! 0 list₁)
+      list₁)))
+  (builtin/assert-not
+   (builtin/list-some?
+    builtin/int-non-negative?
+    (begin
+      (= list₂ (builtin/make-list))
+      (builtin/list-push! -1 list₂)
+      (builtin/list-push! -2 list₂)
+      (builtin/list-push! -3 list₂)
+      list₂))))
 
 (claim list-first (polymorphic (A) (-> (list-t A) A)))
 

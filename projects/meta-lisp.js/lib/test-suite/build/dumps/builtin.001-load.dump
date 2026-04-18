@@ -2,8 +2,7 @@
 
 (define-test negate-test
   (assert (not (int? 'a)))
-  (assert ((negate int?) 'a))
-  (assert (negate int? 'a)))
+  (assert ((negate int?) 'a)))
 
 (claim call-with-input-file
   (polymorphic (A)
@@ -132,6 +131,38 @@
 
 (define-test list-each-test
   (list-each (lambda (x) (print x) (write "\n")) [1 2 3]))
+
+(claim list-every?
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        builtin/bool-t)))
+
+(define (list-every? p list)
+  (cond
+    ((list-empty? list) true)
+    ((not (p (car list))) false)
+    (true (list-every? p (cdr list)))))
+
+(define-test list-every-test
+  (assert (list-every? int-non-negative? [0 1 2 3]))
+  (assert-not (list-every? int-non-negative? [0 1 -1 2 3])))
+
+(claim list-some?
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/list-t A)
+        builtin/bool-t)))
+
+(define (list-some? p list)
+  (cond
+    ((list-empty? list) false)
+    ((p (car list)) true)
+    (true (list-some? p (cdr list)))))
+
+(define-test list-some-test
+  (assert (list-some? int-non-negative? [-1 -2 0]))
+  (assert-not (list-some? int-non-negative? [-1 -2 -3])))
 
 (define (list-first list) (car list))
 

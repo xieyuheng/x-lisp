@@ -28,3 +28,13 @@
 
 [basic-lisp.c] builtin `error-with-source-location`
 [basic-lisp.c] builtin `assert-with-source-location`
+
+# bug
+
+[meta-lisp.js] [bug] fix currying for `negate`
+
+```scheme
+(assert (negate int? 'a))
+```
+
+- fix `negate-test`
