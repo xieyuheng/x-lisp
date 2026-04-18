@@ -1,13 +1,5 @@
 # builtin
 
-[meta-lisp.js] [builtin] hash -- hash-map
-
-```scheme
-(hash-map-entry f hash)
-(hash-map-key f hash)
-(hash-map-value f hash)
-```
-
 [meta-lisp.js] [builtin] hash -- (hash-append hash rest)
 
 [meta-lisp.js] [builtin] hash -- (hash-find-key p hash)

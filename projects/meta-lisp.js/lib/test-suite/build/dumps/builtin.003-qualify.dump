@@ -293,6 +293,125 @@
       (builtin/hash-put! 3 "c" hash)
       hash))))
 
+(claim hash-map-key
+  (polymorphic (K1 K2 V)
+    (-> (-> K1 K2)
+        (builtin/hash-t K1 V)
+        (builtin/hash-t K2 V))))
+
+(define (hash-map-key f hash)
+  (builtin/hash-from-entries
+   (builtin/list-map
+    (lambda (entry)
+      (builtin/make-hash-entry
+       (f (:key entry))
+       (:value entry)))
+    (builtin/hash-entries hash))))
+
+(define-test hash-map-key-test
+  (builtin/assert-equal
+   (begin
+     (= hash (builtin/make-hash))
+     (builtin/hash-put! 2 2 hash)
+     (builtin/hash-put! 4 4 hash)
+     hash)
+   (builtin/hash-map-key
+    (builtin/iadd 1)
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 1 2 hash)
+      (builtin/hash-put! 3 4 hash)
+      hash))))
+
+(claim hash-map-value
+  (polymorphic (K V1 V2)
+    (-> (-> V1 V2)
+        (builtin/hash-t K V1)
+        (builtin/hash-t K V2))))
+
+(define (hash-map-value f hash)
+  (builtin/hash-from-entries
+   (builtin/list-map
+    (lambda (entry)
+      (builtin/make-hash-entry
+       (:key entry)
+       (f (:value entry))))
+    (builtin/hash-entries hash))))
+
+(define-test hash-map-value-test
+  (builtin/assert-equal
+   (begin
+     (= hash (builtin/make-hash))
+     (builtin/hash-put! 1 3 hash)
+     (builtin/hash-put! 3 5 hash)
+     hash)
+   (builtin/hash-map-value
+    (builtin/iadd 1)
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 1 2 hash)
+      (builtin/hash-put! 3 4 hash)
+      hash))))
+
+(claim hash-map-entry
+  (polymorphic (K1 V1 K2 V2)
+    (-> (-> (builtin/hash-entry-t K1 V1)
+            (builtin/hash-entry-t K2 V2))
+        (builtin/hash-t K1 V1)
+        (builtin/hash-t K2 V2))))
+
+(define (hash-map-entry f hash)
+  (builtin/hash-from-entries
+   (builtin/list-map f (builtin/hash-entries hash))))
+
+(define-test hash-map-entry-test
+  (builtin/assert-equal
+   (begin
+     (= hash (builtin/make-hash))
+     (builtin/hash-put! 2 3 hash)
+     (builtin/hash-put! 4 5 hash)
+     hash)
+   (builtin/hash-map-entry
+    (lambda (entry)
+      (builtin/make-hash-entry
+       (builtin/iadd 1 (:key entry))
+       (builtin/iadd 1 (:value entry))))
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 1 2 hash)
+      (builtin/hash-put! 3 4 hash)
+      hash))))
+
+(claim hash-map
+  (polymorphic (K1 V1 K2 V2)
+    (-> (-> K1 V1 (builtin/hash-entry-t K2 V2))
+        (builtin/hash-t K1 V1)
+        (builtin/hash-t K2 V2))))
+
+(define (hash-map f hash)
+  (builtin/hash-from-entries
+   (builtin/list-map
+    (lambda (entry) (f (:key entry) (:value entry)))
+    (builtin/hash-entries hash))))
+
+(define-test hash-map-test
+  (builtin/assert-equal
+   (begin
+     (= hash (builtin/make-hash))
+     (builtin/hash-put! 2 3 hash)
+     (builtin/hash-put! 4 5 hash)
+     hash)
+   (builtin/hash-map
+    (lambda (key value)
+      (builtin/make-hash-entry
+       (builtin/iadd 1 key)
+       (builtin/iadd 1 value)))
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 1 2 hash)
+      (builtin/hash-put! 3 4 hash)
+      hash))))
+
 (claim hash-put-entries
   (polymorphic (K V)
     (-> (builtin/list-t (builtin/hash-entry-t K V))

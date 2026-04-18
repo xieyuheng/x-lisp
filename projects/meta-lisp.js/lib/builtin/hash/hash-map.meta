@@ -1,52 +1,75 @@
 (module builtin)
 
-;; (claim hash-map
-;;   (polymorphic (K1 V1 K2 V2)
-;;     (-> (-> K1 V1 (tau K2 V2)) (hash? K1 V1)
-;;         (hash? K2 V2))))
+(claim hash-map-key
+  (polymorphic (K1 K2 V)
+    (-> (-> K1 K2) (hash-t K1 V)
+        (hash-t K2 V))))
 
-;; (define (hash-map f hash)
-;;   (pipe hash
-;;     hash-entries
-;;     (list-map (apply f))
-;;     hash-from-entries))
+(define (hash-map-key f hash)
+  (hash-from-entries
+   (list-map (lambda (entry)
+               (make-hash-entry (f (:key entry)) (:value entry)))
+             (hash-entries hash))))
 
-;; (claim hash-map-key
-;;   (polymorphic (K1 K2 V)
-;;     (-> (-> K1 K2) (hash? K1 V)
-;;         (hash? K1 V))))
+(define-test hash-map-key-test
+  (assert-equal
+    (@hash 2 2 4 4)
+    (hash-map-key (iadd 1) (@hash 1 2 3 4))))
 
-;; (define (hash-map-key f hash)
-;;   (pipe hash
-;;     hash-entries
-;;     (list-map (lambda ([k v]) [(f k) v]))
-;;     hash-from-entries))
+(claim hash-map-value
+  (polymorphic (K V1 V2)
+    (-> (-> V1 V2) (hash-t K V1)
+        (hash-t K V2))))
 
-;; (claim hash-map-value
-;;   (polymorphic (K V1 V2)
-;;     (-> (-> V1 V2) (hash? K V1)
-;;         (hash? K V2))))
+(define (hash-map-value f hash)
+  (hash-from-entries
+   (list-map (lambda (entry)
+               (make-hash-entry (:key entry) (f (:value entry))))
+             (hash-entries hash))))
 
-;; (define (hash-map-value f hash)
-;;   (pipe hash
-;;     hash-entries
-;;     (list-map (lambda ([k v]) [k (f v)]))
-;;     hash-from-entries))
+(define-test hash-map-value-test
+  (assert-equal
+    (@hash 1 3 3 5)
+    (hash-map-value (iadd 1) (@hash 1 2 3 4))))
 
-;; (import-all "../function")
-;; (import-all "hash-map")
+(claim hash-map-entry
+  (polymorphic (K1 V1 K2 V2)
+    (-> (-> (hash-entry-t K1 V1)
+            (hash-entry-t K2 V2))
+        (hash-t K1 V1)
+        (hash-t K2 V2))))
 
-;; (assert-equal
-;;   (@hash 2 3 4 5)
-;;   (pipe (@hash 1 2 3 4)
-;;     (hash-map (lambda (k v) [(iadd 1 k) (iadd 1 v)]))))
+(define (hash-map-entry f hash)
+  (hash-from-entries
+   (list-map f (hash-entries hash))))
 
-;; (assert-equal
-;;   (@hash 2 2 4 4)
-;;   (pipe (@hash 1 2 3 4)
-;;     (hash-map-key (iadd 1))))
+(define-test hash-map-entry-test
+  (assert-equal
+    (@hash 2 3 4 5)
+    (hash-map-entry
+     (lambda (entry)
+       (make-hash-entry
+        (iadd 1 (:key entry))
+        (iadd 1 (:value entry))))
+     (@hash 1 2 3 4))))
 
-;; (assert-equal
-;;   (@hash 1 3 3 5)
-;;   (pipe (@hash 1 2 3 4)
-;;     (hash-map-value (iadd 1))))
+(claim hash-map
+  (polymorphic (K1 V1 K2 V2)
+    (-> (-> K1 V1 (hash-entry-t K2 V2))
+        (hash-t K1 V1)
+        (hash-t K2 V2))))
+
+(define (hash-map f hash)
+  (hash-from-entries
+   (list-map
+    (lambda (entry)
+      (f (:key entry) (:value entry)))
+    (hash-entries hash))))
+
+(define-test hash-map-test
+  (assert-equal
+    (@hash 2 3 4 5)
+    (hash-map
+     (lambda (key value)
+       (make-hash-entry (iadd 1 key) (iadd 1 value)))
+     (@hash 1 2 3 4))))
