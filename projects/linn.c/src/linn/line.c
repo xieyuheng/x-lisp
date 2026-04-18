@@ -19,12 +19,20 @@ line_t *
 parse_line(const char *string) {
     lexer_t *lexer = make_lexer(string);
     list_t *tokens = lexer_lex(lexer);
+    assert(list_length(tokens) >= 2);
     line_t *line = make_line(tokens);
     lexer_free(lexer);
     return line;
 }
 
+const char *
+line_op_name(line_t *self) {
+    token_t *token = list_get(self->tokens, 0);
+    assert(token->kind == SYMBOL_TOKEN);
+    return token->content;
+}
+
 void
 line_print(line_t *self) {
-    who_printf("hi %p\n", (void *) self);
+    printf("%s\n", line_op_name(self));
 }
