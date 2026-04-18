@@ -186,14 +186,14 @@
 (define (hash-append hash rest)
   (= new-hash₁ (begin (= _₁ builtin/hash-copy) (_₁ hash)))
   (begin
-    (= _₂ builtin/hase-each)
+    (= _₂ builtin/hash-each)
     (= _₃ (builtin/hash-append©λ₁ new-hash₁))
     (_₂ _₃ rest))
   new-hash₁)
 
 (define (hash-append©λ₁ new-hash₁ key₁ value₁)
   (begin
-    (= _₁ builtin/hase-put!)
+    (= _₁ builtin/hash-put!)
     (_₁ key₁ value₁ new-hash₁))
   builtin/void)
 

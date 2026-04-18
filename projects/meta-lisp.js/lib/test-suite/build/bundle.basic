@@ -183,7 +183,7 @@
   (block body
     (= _₁ builtin/hash-copy)
     (= new-hash₁ (_₁ hash))
-    (= _₂ builtin/hase-each)
+    (= _₂ builtin/hash-each)
     (= _₃ (builtin/hash-append©λ₁ new-hash₁))
     (perform (_₂ _₃ rest))
     (return new-hash₁)))
@@ -191,7 +191,7 @@
 (define-function
     (builtin/hash-append©λ₁ new-hash₁ key₁ value₁)
   (block body
-    (= _₁ builtin/hase-put!)
+    (= _₁ builtin/hash-put!)
     (perform (_₁ key₁ value₁ new-hash₁))
     (return builtin/void)))
 

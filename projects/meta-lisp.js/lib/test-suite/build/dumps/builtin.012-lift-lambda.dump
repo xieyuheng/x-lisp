@@ -146,11 +146,11 @@
 
 (define (hash-append hash rest)
   (= new-hash₁ (builtin/hash-copy hash))
-  (builtin/hase-each (builtin/hash-append©λ₁ new-hash₁) rest)
+  (builtin/hash-each (builtin/hash-append©λ₁ new-hash₁) rest)
   new-hash₁)
 
 (define (hash-append©λ₁ new-hash₁ key₁ value₁)
-  (builtin/hase-put! key₁ value₁ new-hash₁)
+  (builtin/hash-put! key₁ value₁ new-hash₁)
   builtin/void)
 
 (claim hash-append-test void-t)

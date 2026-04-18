@@ -130,9 +130,9 @@
 
 (define (hash-append hash rest)
   (= new-hash (builtin/hash-copy hash))
-  (builtin/hase-each
+  (builtin/hash-each
    (lambda (key value)
-     (builtin/hase-put! key value new-hash)
+     (builtin/hash-put! key value new-hash)
      builtin/void)
    rest)
   new-hash)

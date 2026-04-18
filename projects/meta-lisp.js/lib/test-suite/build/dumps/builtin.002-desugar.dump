@@ -123,8 +123,8 @@
 
 (define (hash-append hash rest)
   (= new-hash (hash-copy hash))
-  (hase-each
-   (lambda (key value) (hase-put! key value new-hash) void)
+  (hash-each
+   (lambda (key value) (hash-put! key value new-hash) void)
    rest)
   new-hash)
 
