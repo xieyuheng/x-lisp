@@ -348,6 +348,38 @@
   (= _₂ builtin/list-push!)
   (_₂ value₁ list₁))
 
+(claim hash-from-entries
+  (polymorphic (K V)
+    (-> (builtin/list-t (builtin/hash-entry-t K V))
+        (builtin/hash-t K V))))
+
+(define (hash-from-entries entries)
+  (= _₁ builtin/hash-put-entries)
+  (= hash₁ (begin (= _₂ builtin/make-hash) (_₂)))
+  (_₁ entries hash₁))
+
+(claim hash-from-entries-test void-t)
+
+(define-test hash-from-entries-test
+  (= _₁ builtin/assert-equal)
+  (= hash₁ (begin (= _₂ builtin/make-hash) (_₂)))
+  (begin (= _₃ builtin/hash-put!) (_₃ 'a 1 hash₁))
+  (begin (= _₄ builtin/hash-put!) (_₄ 'b 2 hash₁))
+  (= _₅ builtin/hash-from-entries)
+  (= list₁ (begin (= _₆ builtin/make-list) (_₆)))
+  (begin
+    (= _₇ builtin/list-push!)
+    (= _₈ builtin/make-hash-entry)
+    (= _₉ (_₈ 'a 1))
+    (_₇ _₉ list₁))
+  (begin
+    (= _₁₀ builtin/list-push!)
+    (= _₁₁ builtin/make-hash-entry)
+    (= _₁₂ (_₁₁ 'b 2))
+    (_₁₀ _₁₂ list₁))
+  (= _₁₃ (_₅ list₁))
+  (_₁ hash₁ _₁₃))
+
 (claim hash-get-maybe
   (polymorphic (K V)
     (-> K (builtin/hash-t K V) (builtin/maybe-t V))))
@@ -396,38 +428,6 @@
   (= _₂ builtin/hash-copy)
   (= _₃ (_₂ hash))
   (_₁ entries _₃))
-
-(claim hash-put-entry
-  (polymorphic (A B C)
-    (-> (extend-interface A :value B :key C)
-        (hash-t C B)
-        (hash-t C B))))
-
-(define (hash-put-entry entry hash)
-  (= _₁ builtin/hash-put)
-  (= _₂ builtin/record-get)
-  (= _₃ (_₂ :key))
-  (= _₄ (_₃ entry))
-  (= _₅ builtin/record-get)
-  (= _₆ (_₅ :value))
-  (= _₇ (_₆ entry))
-  (_₁ _₄ _₇ hash))
-
-(claim hash-put-entry!
-  (polymorphic (A B C)
-    (-> (extend-interface A :value B :key C)
-        (hash-t C B)
-        (hash-t C B))))
-
-(define (hash-put-entry! entry hash)
-  (= _₁ builtin/hash-put!)
-  (= _₂ builtin/record-get)
-  (= _₃ (_₂ :key))
-  (= _₄ (_₃ entry))
-  (= _₅ builtin/record-get)
-  (= _₆ (_₅ :value))
-  (= _₇ (_₆ entry))
-  (_₁ _₄ _₇ hash))
 
 (claim hash-put-entries!
   (polymorphic (K V)
@@ -501,6 +501,38 @@
   (begin (= _₃₁ builtin/hash-put!) (_₃₁ 'a 1 hash₆))
   (begin (= _₃₂ builtin/hash-put!) (_₃₂ 'b 2 hash₆))
   (_₂₉ hash₆ hash₃))
+
+(claim hash-put-entry
+  (polymorphic (A B C)
+    (-> (extend-interface A :value B :key C)
+        (hash-t C B)
+        (hash-t C B))))
+
+(define (hash-put-entry entry hash)
+  (= _₁ builtin/hash-put)
+  (= _₂ builtin/record-get)
+  (= _₃ (_₂ :key))
+  (= _₄ (_₃ entry))
+  (= _₅ builtin/record-get)
+  (= _₆ (_₅ :value))
+  (= _₇ (_₆ entry))
+  (_₁ _₄ _₇ hash))
+
+(claim hash-put-entry!
+  (polymorphic (A B C)
+    (-> (extend-interface A :value B :key C)
+        (hash-t C B)
+        (hash-t C B))))
+
+(define (hash-put-entry! entry hash)
+  (= _₁ builtin/hash-put!)
+  (= _₂ builtin/record-get)
+  (= _₃ (_₂ :key))
+  (= _₄ (_₃ entry))
+  (= _₅ builtin/record-get)
+  (= _₆ (_₅ :value))
+  (= _₇ (_₆ entry))
+  (_₁ _₄ _₇ hash))
 
 (define-interface (hash-entry-t K V) :key K :value V)
 

@@ -225,6 +225,30 @@
       list)
     list))
 
+(claim hash-from-entries
+  (polymorphic (K V)
+    (-> (builtin/list-t (builtin/hash-entry-t K V))
+        (builtin/hash-t K V))))
+
+(define (hash-from-entries entries)
+  (hash-put-entries
+   entries
+   (begin (= hash (builtin/make-hash)) hash)))
+
+(define-test hash-from-entries-test
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 'a 1 hash)
+      (builtin/hash-put! 'b 2 hash)
+      hash)
+    (hash-from-entries
+     (begin
+       (= list (builtin/make-list))
+       (builtin/list-push! (make-hash-entry 'a 1) list)
+       (builtin/list-push! (make-hash-entry 'b 2) list)
+       list))))
+
 (claim hash-get-maybe
   (polymorphic (K V)
     (-> K (builtin/hash-t K V) (builtin/maybe-t V))))
@@ -264,12 +288,6 @@
 
 (define (hash-put-entries entries hash)
   (hash-put-entries! entries (hash-copy hash)))
-
-(define (hash-put-entry entry hash)
-  (hash-put (:key entry) (:value entry) hash))
-
-(define (hash-put-entry! entry hash)
-  (hash-put! (:key entry) (:value entry) hash))
 
 (claim hash-put-entries!
   (polymorphic (K V)
@@ -322,6 +340,12 @@
       (builtin/hash-put! 'b 2 hash)
       hash)
     hash))
+
+(define (hash-put-entry entry hash)
+  (hash-put (:key entry) (:value entry) hash))
+
+(define (hash-put-entry! entry hash)
+  (hash-put! (:key entry) (:value entry) hash))
 
 (define-interface (hash-entry-t K V) :key K :value V)
 

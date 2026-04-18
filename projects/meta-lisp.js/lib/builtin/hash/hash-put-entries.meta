@@ -8,12 +8,6 @@
 (define (hash-put-entries entries hash)
   (hash-put-entries! entries (hash-copy hash)))
 
-(define (hash-put-entry entry hash)
-  (hash-put (:key entry) (:value entry) hash))
-
-(define (hash-put-entry! entry hash)
-  (hash-put! (:key entry) (:value entry) hash))
-
 (claim hash-put-entries!
   (polymorphic (K V)
     (-> (list-t (hash-entry-t K V)) (hash-t K V)

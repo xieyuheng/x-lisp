@@ -1,7 +1,5 @@
 # builtin
 
-[meta-lisp.js] [builtin] hash -- (hash-from-entries entries)
-
 [meta-lisp.js] [builtin] hash -- hash-map
 
 ```scheme

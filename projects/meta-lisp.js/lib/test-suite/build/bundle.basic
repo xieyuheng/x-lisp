@@ -347,6 +347,36 @@
     (= _₂ builtin/list-push!)
     (return (_₂ value₁ list₁))))
 
+(define-function (builtin/hash-from-entries entries)
+  (block body
+    (= _₁ builtin/hash-put-entries)
+    (= _₂ builtin/make-hash)
+    (= hash₁ (_₂))
+    (return (_₁ entries hash₁))))
+
+(define-function (builtin/hash-from-entries-test)
+  (block body
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/make-hash)
+    (= hash₁ (_₂))
+    (= _₃ builtin/hash-put!)
+    (perform (_₃ 'a 1 hash₁))
+    (= _₄ builtin/hash-put!)
+    (perform (_₄ 'b 2 hash₁))
+    (= _₅ builtin/hash-from-entries)
+    (= _₆ builtin/make-list)
+    (= list₁ (_₆))
+    (= _₇ builtin/list-push!)
+    (= _₈ builtin/make-hash-entry)
+    (= _₉ (_₈ 'a 1))
+    (perform (_₇ _₉ list₁))
+    (= _₁₀ builtin/list-push!)
+    (= _₁₁ builtin/make-hash-entry)
+    (= _₁₂ (_₁₁ 'b 2))
+    (perform (_₁₀ _₁₂ list₁))
+    (= _₁₃ (_₅ list₁))
+    (return (_₁ hash₁ _₁₃))))
+
 (define-function (builtin/hash-get-maybe key hash)
   (block body
     (= _₁ builtin/hash-has?)
@@ -395,28 +425,6 @@
     (= _₂ builtin/hash-copy)
     (= _₃ (_₂ hash))
     (return (_₁ entries _₃))))
-
-(define-function (builtin/hash-put-entry entry hash)
-  (block body
-    (= _₁ builtin/hash-put)
-    (= _₂ builtin/record-get)
-    (= _₃ (_₂ :key))
-    (= _₄ (_₃ entry))
-    (= _₅ builtin/record-get)
-    (= _₆ (_₅ :value))
-    (= _₇ (_₆ entry))
-    (return (_₁ _₄ _₇ hash))))
-
-(define-function (builtin/hash-put-entry! entry hash)
-  (block body
-    (= _₁ builtin/hash-put!)
-    (= _₂ builtin/record-get)
-    (= _₃ (_₂ :key))
-    (= _₄ (_₃ entry))
-    (= _₅ builtin/record-get)
-    (= _₆ (_₅ :value))
-    (= _₇ (_₆ entry))
-    (return (_₁ _₄ _₇ hash))))
 
 (define-function (builtin/hash-put-entries! entries hash)
   (block body
@@ -489,6 +497,28 @@
     (= _₃₂ builtin/hash-put!)
     (perform (_₃₂ 'b 2 hash₆))
     (return (_₂₉ hash₆ hash₃))))
+
+(define-function (builtin/hash-put-entry entry hash)
+  (block body
+    (= _₁ builtin/hash-put)
+    (= _₂ builtin/record-get)
+    (= _₃ (_₂ :key))
+    (= _₄ (_₃ entry))
+    (= _₅ builtin/record-get)
+    (= _₆ (_₅ :value))
+    (= _₇ (_₆ entry))
+    (return (_₁ _₄ _₇ hash))))
+
+(define-function (builtin/hash-put-entry! entry hash)
+  (block body
+    (= _₁ builtin/hash-put!)
+    (= _₂ builtin/record-get)
+    (= _₃ (_₂ :key))
+    (= _₄ (_₃ entry))
+    (= _₅ builtin/record-get)
+    (= _₆ (_₅ :value))
+    (= _₇ (_₆ entry))
+    (return (_₁ _₄ _₇ hash))))
 
 (define-function (builtin/make-hash-entry key value)
   (block body

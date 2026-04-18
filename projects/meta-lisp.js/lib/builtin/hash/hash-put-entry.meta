@@ -1,0 +1,7 @@
+(module builtin)
+
+(define (hash-put-entry entry hash)
+  (hash-put (:key entry) (:value entry) hash))
+
+(define (hash-put-entry! entry hash)
+  (hash-put! (:key entry) (:value entry) hash))

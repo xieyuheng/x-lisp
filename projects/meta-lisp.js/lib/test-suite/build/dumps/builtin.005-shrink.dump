@@ -256,6 +256,36 @@
      list)
    list))
 
+(claim hash-from-entries
+  (polymorphic (K V)
+    (-> (builtin/list-t (builtin/hash-entry-t K V))
+        (builtin/hash-t K V))))
+
+(define (hash-from-entries entries)
+  (builtin/hash-put-entries
+   entries
+   (begin (= hash (builtin/make-hash)) hash)))
+
+(claim hash-from-entries-test void-t)
+
+(define-test hash-from-entries-test
+  (builtin/assert-equal
+   (begin
+     (= hash (builtin/make-hash))
+     (builtin/hash-put! 'a 1 hash)
+     (builtin/hash-put! 'b 2 hash)
+     hash)
+   (builtin/hash-from-entries
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push!
+       (builtin/make-hash-entry 'a 1)
+       list)
+      (builtin/list-push!
+       (builtin/make-hash-entry 'b 2)
+       list)
+      list))))
+
 (claim hash-get-maybe
   (polymorphic (K V)
     (-> K (builtin/hash-t K V) (builtin/maybe-t V))))
@@ -299,30 +329,6 @@
   (builtin/hash-put-entries!
    entries
    (builtin/hash-copy hash)))
-
-(claim hash-put-entry
-  (polymorphic (A B C)
-    (-> (extend-interface A :value B :key C)
-        (hash-t C B)
-        (hash-t C B))))
-
-(define (hash-put-entry entry hash)
-  (builtin/hash-put
-   ((builtin/record-get :key) entry)
-   ((builtin/record-get :value) entry)
-   hash))
-
-(claim hash-put-entry!
-  (polymorphic (A B C)
-    (-> (extend-interface A :value B :key C)
-        (hash-t C B)
-        (hash-t C B))))
-
-(define (hash-put-entry! entry hash)
-  (builtin/hash-put!
-   ((builtin/record-get :key) entry)
-   ((builtin/record-get :value) entry)
-   hash))
 
 (claim hash-put-entries!
   (polymorphic (K V)
@@ -386,6 +392,30 @@
      (builtin/hash-put! 'a 1 hash)
      (builtin/hash-put! 'b 2 hash)
      hash)
+   hash))
+
+(claim hash-put-entry
+  (polymorphic (A B C)
+    (-> (extend-interface A :value B :key C)
+        (hash-t C B)
+        (hash-t C B))))
+
+(define (hash-put-entry entry hash)
+  (builtin/hash-put
+   ((builtin/record-get :key) entry)
+   ((builtin/record-get :value) entry)
+   hash))
+
+(claim hash-put-entry!
+  (polymorphic (A B C)
+    (-> (extend-interface A :value B :key C)
+        (hash-t C B)
+        (hash-t C B))))
+
+(define (hash-put-entry! entry hash)
+  (builtin/hash-put!
+   ((builtin/record-get :key) entry)
+   ((builtin/record-get :value) entry)
    hash))
 
 (define-interface (hash-entry-t K V) :key K :value V)
