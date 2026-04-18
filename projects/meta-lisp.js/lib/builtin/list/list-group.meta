@@ -1,0 +1,25 @@
+(module builtin)
+
+(claim list-group
+  (polymorphic (K V)
+    (-> (-> V K) (list-t V)
+        (hash-t K (list-t V)))))
+
+(define (list-group f list)
+  (= new-hash (@hash))
+  (list-each
+   (lambda (value)
+     (= key (f value))
+     (unless (hash-has? key new-hash)
+       (hash-put! key [value] new-hash))
+     (= group (hash-get key new-hash))
+     (list-push! value group))
+   list)
+  new-hash)
+
+(define-test list-group-test
+  (assert-equal
+    (@hash 0 [0 3]
+           1 [1 4]
+           2 [2 5])
+    (list-group (swap imod 3) [0 1 2 3 4 5])))

@@ -1,8 +1,5 @@
 # builtin
 
-[meta-lisp.js] [builtin] hash -- (hash-find-key p hash)
-
-[meta-lisp.js] [builtin] list -- (list-group f list)
 [meta-lisp.js] [builtin] list -- (list-product lhs rhs)
 
 # linn
