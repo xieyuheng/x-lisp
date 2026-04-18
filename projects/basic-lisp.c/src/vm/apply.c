@@ -42,6 +42,8 @@ apply_definition(vm_t *vm, size_t n, definition_t *definition) {
         supply(vm, n, x_object(definition), arity);
         return;
     } else {
+        // args rest-args -- rest-args args
+        vm_swap_many(vm, arity, n - arity);
         call_definition_now(vm, definition);
         apply(vm, n - arity, vm_pop(vm));
         return;
@@ -51,23 +53,12 @@ apply_definition(vm_t *vm, size_t n, definition_t *definition) {
 void
 apply_curry(vm_t *vm, size_t n, curry_t *curry) {
     if (n == curry->arity) {
-        // curried args are at the front,
-        // so we need to save the rest args to `tmp_stack`.
-
-        stack_t *tmp_stack = make_stack();
-        for (size_t i = 0; i < n; i++) {
-            stack_push(tmp_stack, (void *) vm_pop(vm));
-        }
-
         for (size_t i = 0; i < curry->size; i++) {
             vm_push(vm, curry->args[i]);
         }
 
-        while (!stack_is_empty(tmp_stack)) {
-            vm_push(vm, (value_t) stack_pop(tmp_stack));
-        }
-
-        stack_free(tmp_stack);
+        // args curried-args -- curried-args args
+        vm_swap_many(vm, n, curry->size);
         apply(vm, n + curry->size, curry->target);
         return;
     } else if (n < curry->arity) {

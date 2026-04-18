@@ -7,6 +7,7 @@ mod_t *vm_mod(const vm_t *self);
 
 value_t vm_pop(vm_t *vm);
 void vm_push(vm_t *vm, value_t value);
+void vm_swap_many(vm_t *vm, size_t m, size_t n);
 
 frame_t *vm_top_frame(const vm_t *vm);
 void vm_drop_frame(vm_t *vm);

@@ -37,6 +37,33 @@ vm_push(vm_t *vm, value_t value) {
     stack_push(vm->value_stack, (void *) value);
 }
 
+inline void
+vm_swap_many(vm_t *vm, size_t m, size_t n) {
+    // m n -- n m
+
+    stack_t *n_stack = make_stack();
+    for (size_t i = 0; i < n; i++) {
+        stack_push(n_stack, (void *) vm_pop(vm));
+    }
+
+    stack_t *m_stack = make_stack();
+    for (size_t i = 0; i < m; i++) {
+        stack_push(m_stack, (void *) vm_pop(vm));
+    }
+
+    for (size_t i = 0; i < n; i++) {
+        vm_push(vm, (value_t) stack_pop(n_stack));
+    }
+
+    for (size_t i = 0; i < m; i++) {
+        vm_push(vm, (value_t) stack_pop(m_stack));
+    }
+
+    stack_free(n_stack);
+    stack_free(m_stack);
+    return;
+}
+
 inline frame_t *
 vm_top_frame(const vm_t *vm) {
     return stack_top(vm->frame_stack);
