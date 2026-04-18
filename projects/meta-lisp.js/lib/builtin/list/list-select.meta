@@ -1,0 +1,32 @@
+(module builtin)
+
+(claim list-select
+  (polymorphic (A)
+    (-> (-> A bool-t) (list-t A)
+        (list-t A))))
+
+(define (list-select p list)
+  (cond ((list-empty? list) list)
+        ((p (car list))
+         (cons (car list) (list-select p (cdr list))))
+        (else
+         (list-select p (cdr list)))))
+
+(claim list-reject
+  (polymorphic (A)
+    (-> (-> A bool-t) (list-t A)
+        (list-t A))))
+
+(define (list-reject p list)
+  (list-select (negate p) list))
+
+
+(define-test list-select-test
+  (assert-equal
+    (list-select (negate (equal? 0)) [0 1 0 2 0 3])
+    [1 2 3]))
+
+(define-test list-reject-test
+  (assert-equal
+    (list-reject (equal? 0) [0 1 0 2 0 3])
+    [1 2 3]))

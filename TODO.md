@@ -1,5 +1,6 @@
 # builtin
 
+[meta-lisp.js] [builtin] list-test.meta
 [meta-lisp.js] [builtin] list
 [meta-lisp.js] [builtin] hash
 [meta-lisp.js] [builtin] set

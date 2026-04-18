@@ -1,0 +1,4 @@
+(module builtin)
+
+(define (negate p)
+  (lambda (x) (not (p x))))
