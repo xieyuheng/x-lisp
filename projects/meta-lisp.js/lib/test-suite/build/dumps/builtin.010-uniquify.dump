@@ -369,6 +369,84 @@
       (builtin/hash-put! 3 "c" hash₂)
       hash₂))))
 
+(claim hash-invert
+  (polymorphic (K V)
+    (-> (builtin/hash-t K V) (builtin/hash-t V K))))
+
+(define (hash-invert hash)
+  (builtin/hash-map
+   (lambda (k₁ v₁) (builtin/make-hash-entry v₁ k₁))
+   hash))
+
+(claim hash-invert-test void-t)
+
+(define-test hash-invert-test
+  (builtin/assert-equal
+   (begin
+     (= hash₁ (builtin/make-hash))
+     (builtin/hash-put! 2 1 hash₁)
+     (builtin/hash-put! 4 3 hash₁)
+     hash₁)
+   (builtin/hash-invert
+    (begin
+      (= hash₂ (builtin/make-hash))
+      (builtin/hash-put! 1 2 hash₂)
+      (builtin/hash-put! 3 4 hash₂)
+      hash₂))))
+
+(claim hash-invert-group
+  (polymorphic (K V)
+    (-> (builtin/hash-t K V)
+        (builtin/hash-t V (builtin/set-t K)))))
+
+(define (hash-invert-group hash)
+  (= new-hash₁ (begin (= hash₁ (builtin/make-hash)) hash₁))
+  (builtin/hash-each-value
+   (lambda (value₁)
+     (= keys₁
+        (builtin/hash-keys
+         (builtin/hash-select-value
+          (builtin/equal? value₁)
+          hash)))
+     (builtin/hash-put!
+      value₁
+      (builtin/list-to-set keys₁)
+      new-hash₁))
+   hash)
+  new-hash₁)
+
+(claim hash-invert-group-test void-t)
+
+(define-test hash-invert-group-test
+  (builtin/assert-equal
+   (begin
+     (= hash₁ (builtin/make-hash))
+     (builtin/hash-put!
+      2
+      (begin
+        (= set₁ (builtin/make-set))
+        (builtin/set-add! 1 set₁)
+        (builtin/set-add! 2 set₁)
+        set₁)
+      hash₁)
+     (builtin/hash-put!
+      4
+      (begin
+        (= set₂ (builtin/make-set))
+        (builtin/set-add! 3 set₂)
+        (builtin/set-add! 4 set₂)
+        set₂)
+      hash₁)
+     hash₁)
+   (builtin/hash-invert-group
+    (begin
+      (= hash₂ (builtin/make-hash))
+      (builtin/hash-put! 1 2 hash₂)
+      (builtin/hash-put! 3 4 hash₂)
+      (builtin/hash-put! 2 2 hash₂)
+      (builtin/hash-put! 4 4 hash₂)
+      hash₂))))
+
 (claim hash-map-key
   (polymorphic (K1 K2 V)
     (-> (-> K1 K2)
@@ -596,6 +674,168 @@
    ((builtin/record-get :key) entry)
    ((builtin/record-get :value) entry)
    hash))
+
+(claim hash-select
+  (polymorphic (K V)
+    (-> (-> K V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-select p hash)
+  (builtin/hash-from-entries
+   (builtin/list-select
+    (lambda (entry₁)
+      (p ((builtin/record-get :key) entry₁)
+         ((builtin/record-get :value) entry₁)))
+    (builtin/hash-entries hash))))
+
+(claim hash-select-key
+  (polymorphic (K V)
+    (-> (-> K builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-select-key p hash)
+  (builtin/hash-from-entries
+   (builtin/list-select
+    (lambda (entry₁) (p ((builtin/record-get :key) entry₁)))
+    (builtin/hash-entries hash))))
+
+(claim hash-select-value
+  (polymorphic (K V)
+    (-> (-> V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-select-value p hash)
+  (builtin/hash-from-entries
+   (builtin/list-select
+    (lambda (entry₁)
+      (p ((builtin/record-get :value) entry₁)))
+    (builtin/hash-entries hash))))
+
+(claim hash-reject
+  (polymorphic (K V)
+    (-> (-> K V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-reject p hash)
+  (builtin/hash-select
+   (lambda (key₁ value₁) (builtin/not (p key₁ value₁)))
+   hash))
+
+(claim hash-reject-key
+  (polymorphic (K V)
+    (-> (-> K builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-reject-key p hash)
+  (builtin/hash-select-key (builtin/negate p) hash))
+
+(claim hash-reject-value
+  (polymorphic (K V)
+    (-> (-> V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-reject-value p hash)
+  (builtin/hash-select-value (builtin/negate p) hash))
+
+(claim test-hash-select void-t)
+
+(define-test test-hash-select
+  (builtin/assert-equal
+   (begin
+     (= hash₁ (builtin/make-hash))
+     (builtin/hash-put! 'a 1 hash₁)
+     (builtin/hash-put! 'b 2 hash₁)
+     hash₁)
+   (builtin/hash-select
+    (builtin/drop builtin/int-non-negative?)
+    (begin
+      (= hash₂ (builtin/make-hash))
+      (builtin/hash-put! 'a 1 hash₂)
+      (builtin/hash-put! 'b 2 hash₂)
+      (builtin/hash-put! 'x -1 hash₂)
+      (builtin/hash-put! 'y -2 hash₂)
+      hash₂)))
+  (builtin/assert-equal
+   (begin
+     (= hash₃ (builtin/make-hash))
+     (builtin/hash-put! 'a 1 hash₃)
+     (builtin/hash-put! 'b 2 hash₃)
+     hash₃)
+   (builtin/hash-select-value
+    builtin/int-non-negative?
+    (begin
+      (= hash₄ (builtin/make-hash))
+      (builtin/hash-put! 'a 1 hash₄)
+      (builtin/hash-put! 'b 2 hash₄)
+      (builtin/hash-put! 'x -1 hash₄)
+      (builtin/hash-put! 'y -2 hash₄)
+      hash₄)))
+  (builtin/assert-equal
+   (begin
+     (= hash₅ (builtin/make-hash))
+     (builtin/hash-put! 1 'a hash₅)
+     (builtin/hash-put! 2 'b hash₅)
+     hash₅)
+   (builtin/hash-select-key
+    builtin/int-non-negative?
+    (begin
+      (= hash₆ (builtin/make-hash))
+      (builtin/hash-put! 1 'a hash₆)
+      (builtin/hash-put! 2 'b hash₆)
+      (builtin/hash-put! -1 'x hash₆)
+      (builtin/hash-put! -2 'y hash₆)
+      hash₆)))
+  (builtin/assert-equal
+   (begin
+     (= hash₇ (builtin/make-hash))
+     (builtin/hash-put! 'x -1 hash₇)
+     (builtin/hash-put! 'y -2 hash₇)
+     hash₇)
+   (builtin/hash-reject
+    (builtin/drop builtin/int-non-negative?)
+    (begin
+      (= hash₈ (builtin/make-hash))
+      (builtin/hash-put! 'a 1 hash₈)
+      (builtin/hash-put! 'b 2 hash₈)
+      (builtin/hash-put! 'x -1 hash₈)
+      (builtin/hash-put! 'y -2 hash₈)
+      hash₈)))
+  (builtin/assert-equal
+   (begin
+     (= hash₉ (builtin/make-hash))
+     (builtin/hash-put! 'x -1 hash₉)
+     (builtin/hash-put! 'y -2 hash₉)
+     hash₉)
+   (builtin/hash-reject-value
+    builtin/int-non-negative?
+    (begin
+      (= hash₁₀ (builtin/make-hash))
+      (builtin/hash-put! 'a 1 hash₁₀)
+      (builtin/hash-put! 'b 2 hash₁₀)
+      (builtin/hash-put! 'x -1 hash₁₀)
+      (builtin/hash-put! 'y -2 hash₁₀)
+      hash₁₀)))
+  (builtin/assert-equal
+   (begin
+     (= hash₁₁ (builtin/make-hash))
+     (builtin/hash-put! -1 'x hash₁₁)
+     (builtin/hash-put! -2 'y hash₁₁)
+     hash₁₁)
+   (builtin/hash-reject-key
+    builtin/int-non-negative?
+    (begin
+      (= hash₁₂ (builtin/make-hash))
+      (builtin/hash-put! 1 'a hash₁₂)
+      (builtin/hash-put! 2 'b hash₁₂)
+      (builtin/hash-put! -1 'x hash₁₂)
+      (builtin/hash-put! -2 'y hash₁₂)
+      hash₁₂))))
 
 (define-interface (hash-entry-t K V) :key K :value V)
 

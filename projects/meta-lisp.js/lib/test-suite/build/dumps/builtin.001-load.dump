@@ -195,6 +195,38 @@
     nothing
     (hash-get-maybe 4 (@hash 1 "a" 2 "b" 3 "c"))))
 
+(claim hash-invert
+  (polymorphic (K V)
+    (-> (builtin/hash-t K V) (builtin/hash-t V K))))
+
+(define (hash-invert hash)
+  (hash-map (lambda (k v) (make-hash-entry v k)) hash))
+
+(define-test hash-invert-test
+  (assert-equal
+    (@hash 2 1 4 3)
+    (hash-invert (@hash 1 2 3 4))))
+
+(claim hash-invert-group
+  (polymorphic (K V)
+    (-> (builtin/hash-t K V)
+        (builtin/hash-t V (builtin/set-t K)))))
+
+(define (hash-invert-group hash)
+  (= new-hash (@hash))
+  (hash-each-value
+   (lambda (value)
+     (= keys
+        (hash-keys (hash-select-value (equal? value) hash)))
+     (hash-put! value (list-to-set keys) new-hash))
+   hash)
+  new-hash)
+
+(define-test hash-invert-group-test
+  (assert-equal
+    (@hash 2 {1 2} 4 {3 4})
+    (hash-invert-group (@hash 1 2 3 4 2 2 4 4))))
+
 (claim hash-map-key
   (polymorphic (K1 K2 V)
     (-> (-> K1 K2)
@@ -315,6 +347,101 @@
 
 (define (hash-put-entry! entry hash)
   (hash-put! (:key entry) (:value entry) hash))
+
+(claim hash-select
+  (polymorphic (K V)
+    (-> (-> K V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-select p hash)
+  (hash-from-entries
+   (list-select
+    (lambda (entry) (p (:key entry) (:value entry)))
+    (hash-entries hash))))
+
+(claim hash-select-key
+  (polymorphic (K V)
+    (-> (-> K builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-select-key p hash)
+  (hash-from-entries
+   (list-select
+    (lambda (entry) (p (:key entry)))
+    (hash-entries hash))))
+
+(claim hash-select-value
+  (polymorphic (K V)
+    (-> (-> V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-select-value p hash)
+  (hash-from-entries
+   (list-select
+    (lambda (entry) (p (:value entry)))
+    (hash-entries hash))))
+
+(claim hash-reject
+  (polymorphic (K V)
+    (-> (-> K V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-reject p hash)
+  (hash-select (lambda (key value) (not (p key value))) hash))
+
+(claim hash-reject-key
+  (polymorphic (K V)
+    (-> (-> K builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-reject-key p hash)
+  (hash-select-key (negate p) hash))
+
+(claim hash-reject-value
+  (polymorphic (K V)
+    (-> (-> V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-reject-value p hash)
+  (hash-select-value (negate p) hash))
+
+(define-test test-hash-select
+  (assert-equal
+    (@hash 'a 1 'b 2)
+    (hash-select
+     (drop int-non-negative?)
+     (@hash 'a 1 'b 2 'x -1 'y -2)))
+  (assert-equal
+    (@hash 'a 1 'b 2)
+    (hash-select-value
+     int-non-negative?
+     (@hash 'a 1 'b 2 'x -1 'y -2)))
+  (assert-equal
+    (@hash 1 'a 2 'b)
+    (hash-select-key
+     int-non-negative?
+     (@hash 1 'a 2 'b -1 'x -2 'y)))
+  (assert-equal
+    (@hash 'x -1 'y -2)
+    (hash-reject
+     (drop int-non-negative?)
+     (@hash 'a 1 'b 2 'x -1 'y -2)))
+  (assert-equal
+    (@hash 'x -1 'y -2)
+    (hash-reject-value
+     int-non-negative?
+     (@hash 'a 1 'b 2 'x -1 'y -2)))
+  (assert-equal
+    (@hash -1 'x -2 'y)
+    (hash-reject-key
+     int-non-negative?
+     (@hash 1 'a 2 'b -1 'x -2 'y))))
 
 (define-interface (hash-entry-t K V) :key K :value V)
 

@@ -326,6 +326,72 @@
        (builtin/hash-put! 3 "c" hash)
        hash))))
 
+(claim hash-invert
+  (polymorphic (K V)
+    (-> (builtin/hash-t K V) (builtin/hash-t V K))))
+
+(define (hash-invert hash)
+  (hash-map (lambda (k v) (make-hash-entry v k)) hash))
+
+(define-test hash-invert-test
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 2 1 hash)
+      (builtin/hash-put! 4 3 hash)
+      hash)
+    (hash-invert
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash)
+       (builtin/hash-put! 3 4 hash)
+       hash))))
+
+(claim hash-invert-group
+  (polymorphic (K V)
+    (-> (builtin/hash-t K V)
+        (builtin/hash-t V (builtin/set-t K)))))
+
+(define (hash-invert-group hash)
+  (= new-hash (begin (= hash (builtin/make-hash)) hash))
+  (hash-each-value
+   (lambda (value)
+     (= keys
+        (hash-keys (hash-select-value (equal? value) hash)))
+     (hash-put! value (list-to-set keys) new-hash))
+   hash)
+  new-hash)
+
+(define-test hash-invert-group-test
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put!
+       2
+       (begin
+         (= set (builtin/make-set))
+         (builtin/set-add! 1 set)
+         (builtin/set-add! 2 set)
+         set)
+       hash)
+      (builtin/hash-put!
+       4
+       (begin
+         (= set (builtin/make-set))
+         (builtin/set-add! 3 set)
+         (builtin/set-add! 4 set)
+         set)
+       hash)
+      hash)
+    (hash-invert-group
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash)
+       (builtin/hash-put! 3 4 hash)
+       (builtin/hash-put! 2 2 hash)
+       (builtin/hash-put! 4 4 hash)
+       hash))))
+
 (claim hash-map-key
   (polymorphic (K1 K2 V)
     (-> (-> K1 K2)
@@ -504,6 +570,161 @@
 
 (define (hash-put-entry! entry hash)
   (hash-put! (:key entry) (:value entry) hash))
+
+(claim hash-select
+  (polymorphic (K V)
+    (-> (-> K V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-select p hash)
+  (hash-from-entries
+   (list-select
+    (lambda (entry) (p (:key entry) (:value entry)))
+    (hash-entries hash))))
+
+(claim hash-select-key
+  (polymorphic (K V)
+    (-> (-> K builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-select-key p hash)
+  (hash-from-entries
+   (list-select
+    (lambda (entry) (p (:key entry)))
+    (hash-entries hash))))
+
+(claim hash-select-value
+  (polymorphic (K V)
+    (-> (-> V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-select-value p hash)
+  (hash-from-entries
+   (list-select
+    (lambda (entry) (p (:value entry)))
+    (hash-entries hash))))
+
+(claim hash-reject
+  (polymorphic (K V)
+    (-> (-> K V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-reject p hash)
+  (hash-select (lambda (key value) (not (p key value))) hash))
+
+(claim hash-reject-key
+  (polymorphic (K V)
+    (-> (-> K builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-reject-key p hash)
+  (hash-select-key (negate p) hash))
+
+(claim hash-reject-value
+  (polymorphic (K V)
+    (-> (-> V builtin/bool-t)
+        (builtin/hash-t K V)
+        (builtin/hash-t K V))))
+
+(define (hash-reject-value p hash)
+  (hash-select-value (negate p) hash))
+
+(define-test test-hash-select
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 'a 1 hash)
+      (builtin/hash-put! 'b 2 hash)
+      hash)
+    (hash-select
+     (drop int-non-negative?)
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 'a 1 hash)
+       (builtin/hash-put! 'b 2 hash)
+       (builtin/hash-put! 'x -1 hash)
+       (builtin/hash-put! 'y -2 hash)
+       hash)))
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 'a 1 hash)
+      (builtin/hash-put! 'b 2 hash)
+      hash)
+    (hash-select-value
+     int-non-negative?
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 'a 1 hash)
+       (builtin/hash-put! 'b 2 hash)
+       (builtin/hash-put! 'x -1 hash)
+       (builtin/hash-put! 'y -2 hash)
+       hash)))
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 1 'a hash)
+      (builtin/hash-put! 2 'b hash)
+      hash)
+    (hash-select-key
+     int-non-negative?
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 1 'a hash)
+       (builtin/hash-put! 2 'b hash)
+       (builtin/hash-put! -1 'x hash)
+       (builtin/hash-put! -2 'y hash)
+       hash)))
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 'x -1 hash)
+      (builtin/hash-put! 'y -2 hash)
+      hash)
+    (hash-reject
+     (drop int-non-negative?)
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 'a 1 hash)
+       (builtin/hash-put! 'b 2 hash)
+       (builtin/hash-put! 'x -1 hash)
+       (builtin/hash-put! 'y -2 hash)
+       hash)))
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! 'x -1 hash)
+      (builtin/hash-put! 'y -2 hash)
+      hash)
+    (hash-reject-value
+     int-non-negative?
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 'a 1 hash)
+       (builtin/hash-put! 'b 2 hash)
+       (builtin/hash-put! 'x -1 hash)
+       (builtin/hash-put! 'y -2 hash)
+       hash)))
+  (assert-equal
+    (begin
+      (= hash (builtin/make-hash))
+      (builtin/hash-put! -1 'x hash)
+      (builtin/hash-put! -2 'y hash)
+      hash)
+    (hash-reject-key
+     int-non-negative?
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 1 'a hash)
+       (builtin/hash-put! 2 'b hash)
+       (builtin/hash-put! -1 'x hash)
+       (builtin/hash-put! -2 'y hash)
+       hash))))
 
 (define-interface (hash-entry-t K V) :key K :value V)
 
