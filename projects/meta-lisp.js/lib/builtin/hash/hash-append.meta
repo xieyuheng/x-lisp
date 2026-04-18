@@ -1,0 +1,15 @@
+(module builtin)
+
+;; (claim hash-append
+;;   (polymorphic (K V)
+;;     (-> (hash-t K V) (hash-t K V)
+;;         (hash-t K V))))
+
+;; (define (hash-append hash rest)
+;;   (= new-hash (hash-copy hash))
+;;   (hase-each-entry
+;;    (lambda (entry)
+;;      (hase-put! (:key entry) (:value entry) new-hash)
+;;      void)
+;;    rest)
+;;   new-hash)

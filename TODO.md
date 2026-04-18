@@ -1,6 +1,35 @@
 # builtin
 
-[meta-lisp.js] [builtin] hash
+[meta-lisp.js] [builtin] hash -- hash-each
+
+```scheme
+(hash-each-value f hash)
+(hash-each-key f hash)
+(hash-each-entry f hash)
+```
+
+[meta-lisp.js] [builtin] hash -- hash-map
+
+```scheme
+(hash-map-entry f hash)
+(hash-map-key f hash)
+(hash-map-value f hash)
+```
+
+[meta-lisp.js] [builtin] hash -- hash-put-entries
+
+```scheme
+(hash-put-entries entries hash)
+(hash-put-entries! entries hash)
+```
+
+[meta-lisp.js] [builtin] hash -- (hash-from-entries entries)
+
+[meta-lisp.js] [builtin] hash -- (hash-append hash rest)
+
+[meta-lisp.js] [builtin] hash -- (hash-find-key p hash)
+[meta-lisp.js] [builtin] hash -- (hash-invert hash)
+[meta-lisp.js] [builtin] hash -- (hash-invert-group hash)
 
 [meta-lisp.js] `pipe` and `compose` as `Exp`
 
