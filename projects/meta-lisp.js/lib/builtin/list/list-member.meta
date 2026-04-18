@@ -1,0 +1,15 @@
+(module builtin)
+
+(claim list-member?
+  (polymorphic (A)
+    (-> A (list-t A)
+        bool-t)))
+
+(define (list-member? x list)
+  (cond ((list-empty? list) false)
+        ((equal? x (car list)) true)
+        (else (list-member? x (cdr list)))))
+
+(define-test list-member-test
+  (assert (list-member? 2 [1 2 3]))
+  (assert-not (list-member? 0 [1 2 3])))

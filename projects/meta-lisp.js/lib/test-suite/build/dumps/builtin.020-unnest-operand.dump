@@ -671,6 +671,48 @@
   (begin (= _₁₃ builtin/list-push!) (_₁₃ 13 list₂))
   (_₁ _₉ list₂))
 
+(claim list-member?
+  (polymorphic (A) (-> A (builtin/list-t A) builtin/bool-t)))
+
+(define (list-member? x list)
+  (if (begin (= _₁ builtin/list-empty?) (_₁ list))
+    builtin/false
+    (if
+        (begin
+          (= _₂ builtin/equal?)
+          (= _₃ builtin/car)
+          (= _₄ (_₃ list))
+          (_₂ x _₄))
+      builtin/true
+      (if builtin/true
+        (begin
+          (= _₅ builtin/list-member?)
+          (= _₆ builtin/cdr)
+          (= _₇ (_₆ list))
+          (_₅ x _₇))
+        (begin (= _₈ builtin/error) (_₈ "cond mismatch"))))))
+
+(claim list-member-test void-t)
+
+(define-test list-member-test
+  (begin
+    (= _₁ builtin/assert)
+    (= _₂ builtin/list-member?)
+    (= list₁ (begin (= _₃ builtin/make-list) (_₃)))
+    (begin (= _₄ builtin/list-push!) (_₄ 1 list₁))
+    (begin (= _₅ builtin/list-push!) (_₅ 2 list₁))
+    (begin (= _₆ builtin/list-push!) (_₆ 3 list₁))
+    (= _₇ (_₂ 2 list₁))
+    (_₁ _₇))
+  (= _₈ builtin/assert-not)
+  (= _₉ builtin/list-member?)
+  (= list₂ (begin (= _₁₀ builtin/make-list) (_₁₀)))
+  (begin (= _₁₁ builtin/list-push!) (_₁₁ 1 list₂))
+  (begin (= _₁₂ builtin/list-push!) (_₁₂ 2 list₂))
+  (begin (= _₁₃ builtin/list-push!) (_₁₃ 3 list₂))
+  (= _₁₄ (_₉ 0 list₂))
+  (_₈ _₁₄))
+
 (claim list-select
   (polymorphic (A)
     (-> (-> A builtin/bool-t)

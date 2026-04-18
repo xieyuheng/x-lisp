@@ -243,6 +243,19 @@
 (define-test list-map-test
   (assert-equal (list-map (iadd 10) [1 2 3]) [11 12 13]))
 
+(claim list-member?
+  (polymorphic (A) (-> A (builtin/list-t A) builtin/bool-t)))
+
+(define (list-member? x list)
+  (cond
+    ((list-empty? list) false)
+    ((equal? x (car list)) true)
+    (true (list-member? x (cdr list)))))
+
+(define-test list-member-test
+  (assert (list-member? 2 [1 2 3]))
+  (assert-not (list-member? 0 [1 2 3])))
+
 (claim list-select
   (polymorphic (A)
     (-> (-> A builtin/bool-t)
