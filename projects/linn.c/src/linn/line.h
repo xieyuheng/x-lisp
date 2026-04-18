@@ -13,3 +13,5 @@ path_t *line_path(line_t *self);
 value_t *line_get_arg(line_t *self, size_t i);
 
 line_t *parse_line(const char *string);
+
+void line_print(line_t *self);

@@ -14,3 +14,17 @@ line_free(line_t *self) {
     array_free(self->args);
     free(self);
 }
+
+line_t *
+parse_line(const char *string) {
+    lexer_t *lexer = make_lexer(string);
+    list_t *tokens = lexer_lex(lexer);
+    line_t *line = make_line(tokens);
+    lexer_free(lexer);
+    return line;
+}
+
+void
+line_print(line_t *self) {
+    who_printf("hi %p\n", (void *) self);
+}
