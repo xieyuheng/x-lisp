@@ -1472,6 +1472,101 @@
   (begin (= _₂₄ builtin/list-push!) (_₂₄ 3 list₆))
   (_₂₀ list₄ list₆))
 
+(claim list-zip
+  (polymorphic (A B)
+    (-> (builtin/list-t A)
+        (builtin/list-t B)
+        (builtin/list-t (tau A B)))))
+
+(define (list-zip left right)
+  (if
+      (if (begin (= _₁ builtin/list-empty?) (_₁ left))
+        builtin/true
+        (begin (= _₂ builtin/list-empty?) (_₂ right)))
+    (begin
+      (= list₁ (begin (= _₃ builtin/make-list) (_₃)))
+      list₁)
+    (begin
+      (= _₄ builtin/cons)
+      (= list₂ (begin (= _₅ builtin/make-list) (_₅)))
+      (begin
+        (= _₆ builtin/list-push!)
+        (= _₇ builtin/car)
+        (= _₈ (_₇ left))
+        (_₆ _₈ list₂))
+      (begin
+        (= _₉ builtin/list-push!)
+        (= _₁₀ builtin/car)
+        (= _₁₁ (_₁₀ right))
+        (_₉ _₁₁ list₂))
+      (= _₁₂ builtin/list-zip)
+      (= _₁₃ builtin/cdr)
+      (= _₁₄ (_₁₃ left))
+      (= _₁₅ builtin/cdr)
+      (= _₁₆ (_₁₅ right))
+      (= _₁₇ (_₁₂ _₁₄ _₁₆))
+      (_₄ list₂ _₁₇))))
+
+(claim list-zip-test void-t)
+
+(define-test list-zip-test
+  (begin
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/list-zip)
+    (= list₁ (begin (= _₃ builtin/make-list) (_₃)))
+    (begin (= _₄ builtin/list-push!) (_₄ 'a list₁))
+    (begin (= _₅ builtin/list-push!) (_₅ 'b list₁))
+    (begin (= _₆ builtin/list-push!) (_₆ 'c list₁))
+    (= list₂ (begin (= _₇ builtin/make-list) (_₇)))
+    (begin (= _₈ builtin/list-push!) (_₈ 1 list₂))
+    (begin (= _₉ builtin/list-push!) (_₉ 2 list₂))
+    (begin (= _₁₀ builtin/list-push!) (_₁₀ 3 list₂))
+    (= _₁₁ (_₂ list₁ list₂))
+    (= list₃ (begin (= _₁₂ builtin/make-list) (_₁₂)))
+    (begin
+      (= _₁₃ builtin/list-push!)
+      (= list₄ (begin (= _₁₄ builtin/make-list) (_₁₄)))
+      (begin (= _₁₅ builtin/list-push!) (_₁₅ 'a list₄))
+      (begin (= _₁₆ builtin/list-push!) (_₁₆ 1 list₄))
+      (_₁₃ list₄ list₃))
+    (begin
+      (= _₁₇ builtin/list-push!)
+      (= list₅ (begin (= _₁₈ builtin/make-list) (_₁₈)))
+      (begin (= _₁₉ builtin/list-push!) (_₁₉ 'b list₅))
+      (begin (= _₂₀ builtin/list-push!) (_₂₀ 2 list₅))
+      (_₁₇ list₅ list₃))
+    (begin
+      (= _₂₁ builtin/list-push!)
+      (= list₆ (begin (= _₂₂ builtin/make-list) (_₂₂)))
+      (begin (= _₂₃ builtin/list-push!) (_₂₃ 'c list₆))
+      (begin (= _₂₄ builtin/list-push!) (_₂₄ 3 list₆))
+      (_₂₁ list₆ list₃))
+    (_₁ _₁₁ list₃))
+  (= _₂₅ builtin/assert-equal)
+  (= _₂₆ builtin/list-zip)
+  (= list₇ (begin (= _₂₇ builtin/make-list) (_₂₇)))
+  (begin (= _₂₈ builtin/list-push!) (_₂₈ 'a list₇))
+  (begin (= _₂₉ builtin/list-push!) (_₂₉ 'b list₇))
+  (begin (= _₃₀ builtin/list-push!) (_₃₀ 'c list₇))
+  (= list₈ (begin (= _₃₁ builtin/make-list) (_₃₁)))
+  (begin (= _₃₂ builtin/list-push!) (_₃₂ 1 list₈))
+  (begin (= _₃₃ builtin/list-push!) (_₃₃ 2 list₈))
+  (= _₃₄ (_₂₆ list₇ list₈))
+  (= list₉ (begin (= _₃₅ builtin/make-list) (_₃₅)))
+  (begin
+    (= _₃₆ builtin/list-push!)
+    (= list₁₀ (begin (= _₃₇ builtin/make-list) (_₃₇)))
+    (begin (= _₃₈ builtin/list-push!) (_₃₈ 'a list₁₀))
+    (begin (= _₃₉ builtin/list-push!) (_₃₉ 1 list₁₀))
+    (_₃₆ list₁₀ list₉))
+  (begin
+    (= _₄₀ builtin/list-push!)
+    (= list₁₁ (begin (= _₄₁ builtin/make-list) (_₄₁)))
+    (begin (= _₄₂ builtin/list-push!) (_₄₂ 'b list₁₁))
+    (begin (= _₄₃ builtin/list-push!) (_₄₃ 2 list₁₁))
+    (_₄₀ list₁₁ list₉))
+  (_₂₅ _₃₄ list₉))
+
 (define-interface source-location-t
   :span
   builtin/source-span-t

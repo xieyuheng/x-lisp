@@ -1,0 +1,36 @@
+(module builtin)
+
+(claim list-zip
+  (polymorphic (A B)
+    (-> (list-t A) (list-t B)
+        (list-t (tau A B)))))
+
+(define (list-zip left right)
+  (if (or (list-empty? left)
+          (list-empty? right))
+    []
+    (cons (@tuple (car left) (car right))
+          (list-zip (cdr left) (cdr right)))))
+
+(define-test list-zip-test
+  (assert-equal
+    (list-zip ['a 'b 'c] [1 2 3])
+    [['a 1] ['b 2] ['c 3]])
+  (assert-equal
+    (list-zip ['a 'b 'c] [1 2])
+    [['a 1] ['b 2]]))
+
+;; (claim list-unzip
+;;   (polymorphic (A B)
+;;     (-> (list-t (tau A B))
+;;         (tau (list-t A) (list-t B)))))
+
+;; (define (list-unzip pairs)
+;;   (@tuple (list-map tuple-head pairs)
+;;           (list-map (lambda (pair) (tuple-head (tuple-tail pair)))
+;;                     pairs)))
+
+;; (define-test list-unzip-test
+;;   (assert-equal
+;;     (list-unzip [['a 1] ['b 2] ['c 3]])
+;;     (@tuple ['a 'b 'c] [1 2 3])))

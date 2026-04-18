@@ -1301,6 +1301,100 @@
      (builtin/list-push! 3 list₆)
      list₆)))
 
+(claim list-zip
+  (polymorphic (A B)
+    (-> (builtin/list-t A)
+        (builtin/list-t B)
+        (builtin/list-t (tau A B)))))
+
+(define (list-zip left right)
+  (if
+      (if (builtin/list-empty? left)
+        builtin/true
+        (builtin/list-empty? right))
+    (begin (= list₁ (builtin/make-list)) list₁)
+    (builtin/cons
+     (begin
+       (= list₂ (builtin/make-list))
+       (builtin/list-push! (builtin/car left) list₂)
+       (builtin/list-push! (builtin/car right) list₂)
+       list₂)
+     (builtin/list-zip
+      (builtin/cdr left)
+      (builtin/cdr right)))))
+
+(claim list-zip-test void-t)
+
+(define-test list-zip-test
+  (builtin/assert-equal
+   (builtin/list-zip
+    (begin
+      (= list₁ (builtin/make-list))
+      (builtin/list-push! 'a list₁)
+      (builtin/list-push! 'b list₁)
+      (builtin/list-push! 'c list₁)
+      list₁)
+    (begin
+      (= list₂ (builtin/make-list))
+      (builtin/list-push! 1 list₂)
+      (builtin/list-push! 2 list₂)
+      (builtin/list-push! 3 list₂)
+      list₂))
+   (begin
+     (= list₃ (builtin/make-list))
+     (builtin/list-push!
+      (begin
+        (= list₄ (builtin/make-list))
+        (builtin/list-push! 'a list₄)
+        (builtin/list-push! 1 list₄)
+        list₄)
+      list₃)
+     (builtin/list-push!
+      (begin
+        (= list₅ (builtin/make-list))
+        (builtin/list-push! 'b list₅)
+        (builtin/list-push! 2 list₅)
+        list₅)
+      list₃)
+     (builtin/list-push!
+      (begin
+        (= list₆ (builtin/make-list))
+        (builtin/list-push! 'c list₆)
+        (builtin/list-push! 3 list₆)
+        list₆)
+      list₃)
+     list₃))
+  (builtin/assert-equal
+   (builtin/list-zip
+    (begin
+      (= list₇ (builtin/make-list))
+      (builtin/list-push! 'a list₇)
+      (builtin/list-push! 'b list₇)
+      (builtin/list-push! 'c list₇)
+      list₇)
+    (begin
+      (= list₈ (builtin/make-list))
+      (builtin/list-push! 1 list₈)
+      (builtin/list-push! 2 list₈)
+      list₈))
+   (begin
+     (= list₉ (builtin/make-list))
+     (builtin/list-push!
+      (begin
+        (= list₁₀ (builtin/make-list))
+        (builtin/list-push! 'a list₁₀)
+        (builtin/list-push! 1 list₁₀)
+        list₁₀)
+      list₉)
+     (builtin/list-push!
+      (begin
+        (= list₁₁ (builtin/make-list))
+        (builtin/list-push! 'b list₁₁)
+        (builtin/list-push! 2 list₁₁)
+        list₁₁)
+      list₉)
+     list₉)))
+
 (define-interface source-location-t
   :span
   builtin/source-span-t

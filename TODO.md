@@ -1,9 +1,11 @@
 # builtin
 
-[meta-lisp.js] [builtin] (list-zip left right) (list-unzip pairs) (list-map-zip f left right)
-[meta-lisp.js] [builtin] (list-find p list) (list-find-index p list)
-[meta-lisp.js] [builtin] (list-group f list)
-[meta-lisp.js] [builtin] (list-product lhs rhs)
+[meta-lisp.js] [builtin] tuple -- tuple-head tuple-tail
+[meta-lisp.js] [builtin] list -- (list-unzip pairs)
+[meta-lisp.js] [builtin] list -- (list-map-zip f left right)
+[meta-lisp.js] [builtin] list -- (list-find p list) (list-find-index p list)
+[meta-lisp.js] [builtin] list -- (list-group f list)
+[meta-lisp.js] [builtin] list -- (list-product lhs rhs)
 
 [meta-lisp.js] [builtin] hash
 [meta-lisp.js] [builtin] set

@@ -417,6 +417,25 @@
     (list-unshift! 1 list)
     (assert-equal list [1 2 3])))
 
+(claim list-zip
+  (polymorphic (A B)
+    (-> (builtin/list-t A)
+        (builtin/list-t B)
+        (builtin/list-t (tau A B)))))
+
+(define (list-zip left right)
+  (if (or (list-empty? left) (list-empty? right))
+    []
+    (cons
+     (@tuple (car left) (car right))
+     (list-zip (cdr left) (cdr right)))))
+
+(define-test list-zip-test
+  (assert-equal
+    (list-zip ['a 'b 'c] [1 2 3])
+    [['a 1] ['b 2] ['c 3]])
+  (assert-equal (list-zip ['a 'b 'c] [1 2]) [['a 1] ['b 2]]))
+
 (define-interface source-location-t
   :span
   source-span-t
