@@ -9,7 +9,13 @@
 (claim hash-put! (polymorphic (K V) (-> K V (hash-t K V) (hash-t K V))))
 (claim hash-delete! (polymorphic (K V) (-> K (hash-t K V) (hash-t K V))))
 (claim hash-copy (polymorphic (K V) (-> (hash-t K V) (hash-t K V))))
-(define-type (hash-entry-t K V) (interface :key K :value V))
+
+(define-interface (hash-entry-t K V)
+  :key K :value V)
+
+(define (make-hash-entry key value)
+  {:key key :value value})
+
 (claim hash-entries (polymorphic (K V) (-> (hash-t K V) (list-t (hash-entry-t K V)))))
 (claim hash-keys (polymorphic (K V) (-> (hash-t K V) (list-t K))))
 (claim hash-values (polymorphic (K V) (-> (hash-t K V) (list-t V))))

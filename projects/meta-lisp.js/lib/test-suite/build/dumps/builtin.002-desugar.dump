@@ -115,6 +115,116 @@
 
 (define-test identity-test (assert-equal 1 (identity 1)))
 
+(claim hash-each-value
+  (polymorphic (K V Any)
+    (-> (-> V Any) (builtin/hash-t K V) builtin/void-t)))
+
+(define (hash-each-value f hash)
+  (list-each f (hash-values hash)))
+
+(claim hash-each-key
+  (polymorphic (K V Any)
+    (-> (-> K Any) (builtin/hash-t K V) builtin/void-t)))
+
+(define (hash-each-key f hash)
+  (list-each f (hash-keys hash)))
+
+(claim hash-each-entry
+  (polymorphic (K V Any)
+    (-> (-> (builtin/hash-entry-t K V) Any)
+        (builtin/hash-t K V)
+        builtin/void-t)))
+
+(define (hash-each-entry f hash)
+  (list-each f (hash-entries hash)))
+
+(claim hash-each
+  (polymorphic (K V Any)
+    (-> (-> K V Any) (builtin/hash-t K V) builtin/void-t)))
+
+(define (hash-each f hash)
+  (list-each
+   (lambda (entry) (f (:key entry) (:value entry)))
+   (hash-entries hash)))
+
+(define-test hash-each-value-test
+  (= hash
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash)
+       (builtin/hash-put! 3 4 hash)
+       hash))
+  (= list (begin (= list (builtin/make-list)) list))
+  (hash-each-value
+   (lambda (value) (list-push! value list))
+   hash)
+  (assert-equal
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 4 list)
+      list)
+    list))
+
+(define-test hash-each-key-test
+  (= hash
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash)
+       (builtin/hash-put! 3 4 hash)
+       hash))
+  (= list (begin (= list (builtin/make-list)) list))
+  (hash-each-key (lambda (key) (list-push! key list)) hash)
+  (assert-equal
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 3 list)
+      list)
+    list))
+
+(define-test hash-each-entry-test
+  (= hash
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash)
+       (builtin/hash-put! 3 4 hash)
+       hash))
+  (= list (begin (= list (builtin/make-list)) list))
+  (hash-each-entry
+   (lambda (entry) (list-push! entry list))
+   hash)
+  (assert-equal
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! (make-hash-entry 1 2) list)
+      (builtin/list-push! (make-hash-entry 3 4) list)
+      list)
+    list))
+
+(define-test hash-each-test
+  (= hash
+     (begin
+       (= hash (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash)
+       (builtin/hash-put! 3 4 hash)
+       hash))
+  (= list (begin (= list (builtin/make-list)) list))
+  (hash-each
+   (lambda (key value)
+     (list-push! key list)
+     (list-push! value list))
+   hash)
+  (assert-equal
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      (builtin/list-push! 4 list)
+      list)
+    list))
+
 (claim hash-get-maybe
   (polymorphic (K V)
     (-> K (builtin/hash-t K V) (builtin/maybe-t V))))
@@ -146,10 +256,10 @@
        (builtin/hash-put! 3 "c" hash)
        hash))))
 
-(claim hash-entry-t
-  (-> builtin/type-t builtin/type-t builtin/type-t))
+(define-interface (hash-entry-t K V) :key K :value V)
 
-(define-type hash-entry-t (interface :key K :value V))
+(define (make-hash-entry key value)
+  (@record :key key :value value))
 
 (claim int-align
   (-> builtin/int-t builtin/int-t builtin/int-t))
@@ -307,10 +417,8 @@
       list)))
 
 (claim list-each
-  (polymorphic (A)
-    (-> (-> A builtin/void-t)
-        (builtin/list-t A)
-        builtin/void-t)))
+  (polymorphic (A Any)
+    (-> (-> A Any) (builtin/list-t A) builtin/void-t)))
 
 (define (list-each f list)
   (if (list-empty? list)
@@ -1047,12 +1155,12 @@
   (update! pair :second second))
 
 (claim set-each
-  (polymorphic (A)
-    (-> (-> A builtin/void-t)
-        (builtin/set-t A)
-        builtin/void-t)))
+  (polymorphic (A Any)
+    (-> (-> A Any) (builtin/set-t A) builtin/void-t)))
 
-(define (set-each f set) (list-each f (set-to-list set)))
+(define (set-each f set)
+  (list-each f (set-to-list set))
+  void)
 
 (claim set-every?
   (polymorphic (A)
@@ -1120,7 +1228,7 @@
 
 (define (set-map f set)
   (= new-set (make-set))
-  (set-each (lambda (e) (set-add! (f e) new-set) void) set)
+  (set-each (lambda (e) (set-add! (f e) new-set)) set)
   new-set)
 
 (define-test set-map-test

@@ -138,6 +138,139 @@
 (define-test identity-test
   (builtin/assert-equal 1 (builtin/identity 1)))
 
+(claim hash-each-value
+  (polymorphic (K V Any)
+    (-> (-> V Any) (builtin/hash-t K V) builtin/void-t)))
+
+(define (hash-each-value f hash)
+  (builtin/list-each f (builtin/hash-values hash)))
+
+(claim hash-each-key
+  (polymorphic (K V Any)
+    (-> (-> K Any) (builtin/hash-t K V) builtin/void-t)))
+
+(define (hash-each-key f hash)
+  (builtin/list-each f (builtin/hash-keys hash)))
+
+(claim hash-each-entry
+  (polymorphic (K V Any)
+    (-> (-> (builtin/hash-entry-t K V) Any)
+        (builtin/hash-t K V)
+        builtin/void-t)))
+
+(define (hash-each-entry f hash)
+  (builtin/list-each f (builtin/hash-entries hash)))
+
+(claim hash-each
+  (polymorphic (K V Any)
+    (-> (-> K V Any) (builtin/hash-t K V) builtin/void-t)))
+
+(define (hash-each f hash)
+  (builtin/list-each
+   (builtin/hash-each©λ₁ f)
+   (builtin/hash-entries hash)))
+
+(define (hash-each©λ₁ f entry₁)
+  (f ((builtin/record-get :key) entry₁)
+     ((builtin/record-get :value) entry₁)))
+
+(claim hash-each-value-test void-t)
+
+(define-test hash-each-value-test
+  (= hash₁
+     (begin
+       (= hash₂ (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash₂)
+       (builtin/hash-put! 3 4 hash₂)
+       hash₂))
+  (= list₁ (begin (= list₂ (builtin/make-list)) list₂))
+  (builtin/hash-each-value
+   (builtin/hash-each-value-test©λ₁ list₁)
+   hash₁)
+  (builtin/assert-equal
+   (begin
+     (= list₃ (builtin/make-list))
+     (builtin/list-push! 2 list₃)
+     (builtin/list-push! 4 list₃)
+     list₃)
+   list₁))
+
+(define (hash-each-value-test©λ₁ list₁ value₁)
+  (builtin/list-push! value₁ list₁))
+
+(claim hash-each-key-test void-t)
+
+(define-test hash-each-key-test
+  (= hash₁
+     (begin
+       (= hash₂ (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash₂)
+       (builtin/hash-put! 3 4 hash₂)
+       hash₂))
+  (= list₁ (begin (= list₂ (builtin/make-list)) list₂))
+  (builtin/hash-each-key
+   (builtin/hash-each-key-test©λ₁ list₁)
+   hash₁)
+  (builtin/assert-equal
+   (begin
+     (= list₃ (builtin/make-list))
+     (builtin/list-push! 1 list₃)
+     (builtin/list-push! 3 list₃)
+     list₃)
+   list₁))
+
+(define (hash-each-key-test©λ₁ list₁ key₁)
+  (builtin/list-push! key₁ list₁))
+
+(claim hash-each-entry-test void-t)
+
+(define-test hash-each-entry-test
+  (= hash₁
+     (begin
+       (= hash₂ (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash₂)
+       (builtin/hash-put! 3 4 hash₂)
+       hash₂))
+  (= list₁ (begin (= list₂ (builtin/make-list)) list₂))
+  (builtin/hash-each-entry
+   (builtin/hash-each-entry-test©λ₁ list₁)
+   hash₁)
+  (builtin/assert-equal
+   (begin
+     (= list₃ (builtin/make-list))
+     (builtin/list-push! (builtin/make-hash-entry 1 2) list₃)
+     (builtin/list-push! (builtin/make-hash-entry 3 4) list₃)
+     list₃)
+   list₁))
+
+(define (hash-each-entry-test©λ₁ list₁ entry₁)
+  (builtin/list-push! entry₁ list₁))
+
+(claim hash-each-test void-t)
+
+(define-test hash-each-test
+  (= hash₁
+     (begin
+       (= hash₂ (builtin/make-hash))
+       (builtin/hash-put! 1 2 hash₂)
+       (builtin/hash-put! 3 4 hash₂)
+       hash₂))
+  (= list₁ (begin (= list₂ (builtin/make-list)) list₂))
+  (builtin/hash-each (builtin/hash-each-test©λ₁ list₁) hash₁)
+  (builtin/assert-equal
+   (begin
+     (= list₃ (builtin/make-list))
+     (builtin/list-push! 1 list₃)
+     (builtin/list-push! 2 list₃)
+     (builtin/list-push! 3 list₃)
+     (builtin/list-push! 4 list₃)
+     list₃)
+   list₁))
+
+(define (hash-each-test©λ₁ list₁ key₁ value₁)
+  (builtin/list-push! key₁ list₁)
+  (builtin/list-push! value₁ list₁))
+
 (claim hash-get-maybe
   (polymorphic (K V)
     (-> K (builtin/hash-t K V) (builtin/maybe-t V))))
@@ -171,10 +304,16 @@
       (builtin/hash-put! 3 "c" hash₂)
       hash₂))))
 
-(claim hash-entry-t
-  (-> builtin/type-t builtin/type-t builtin/type-t))
+(define-interface (hash-entry-t K V) :key K :value V)
 
-(define-type hash-entry-t (interface :key K :value V))
+(claim make-hash-entry
+  (polymorphic (A B) (-> A B (interface :key A :value B))))
+
+(define (make-hash-entry key value)
+  (= record₁ (builtin/make-record))
+  (builtin/record-put! :key key record₁)
+  (builtin/record-put! :value value record₁)
+  record₁)
 
 (claim int-align
   (-> builtin/int-t builtin/int-t builtin/int-t))
@@ -354,10 +493,8 @@
      list₄)))
 
 (claim list-each
-  (polymorphic (A)
-    (-> (-> A builtin/void-t)
-        (builtin/list-t A)
-        builtin/void-t)))
+  (polymorphic (A Any)
+    (-> (-> A Any) (builtin/list-t A) builtin/void-t)))
 
 (define (list-each f list)
   (if (builtin/list-empty? list)
@@ -1214,13 +1351,12 @@
   record₁)
 
 (claim set-each
-  (polymorphic (A)
-    (-> (-> A builtin/void-t)
-        (builtin/set-t A)
-        builtin/void-t)))
+  (polymorphic (A Any)
+    (-> (-> A Any) (builtin/set-t A) builtin/void-t)))
 
 (define (set-each f set)
-  (builtin/list-each f (builtin/set-to-list set)))
+  (builtin/list-each f (builtin/set-to-list set))
+  builtin/void)
 
 (claim set-every?
   (polymorphic (A)
@@ -1297,8 +1433,7 @@
   new-set₁)
 
 (define (set-map©λ₁ new-set₁ f e₁)
-  (builtin/set-add! (f e₁) new-set₁)
-  builtin/void)
+  (builtin/set-add! (f e₁) new-set₁))
 
 (claim set-map-test void-t)
 

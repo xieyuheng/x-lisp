@@ -38,8 +38,12 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
     case "When": {
       return M.If(
         desugar(mod, exp.condition),
-        desugar(mod, exp.consequent),
-        M.Void(),
+        M.Begin1(
+          desugar(mod, exp.consequent),
+          M.Void(exp.location),
+          exp.location,
+        ),
+        M.Void(exp.location),
         exp.location,
       )
     }
@@ -47,8 +51,12 @@ export function desugar(mod: M.Mod, exp: M.Exp): M.Exp {
     case "Unless": {
       return M.If(
         desugar(mod, exp.condition),
-        M.Void(),
-        desugar(mod, exp.alternative),
+        M.Void(exp.location),
+        M.Begin1(
+          desugar(mod, exp.alternative),
+          M.Void(exp.location),
+          exp.location,
+        ),
         exp.location,
       )
     }

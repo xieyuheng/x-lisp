@@ -1,8 +1,8 @@
 (module builtin)
 
 (claim list-each
-  (polymorphic (A)
-    (-> (-> A void-t) (list-t A)
+  (polymorphic (A Any)
+    (-> (-> A Any) (list-t A)
         void-t)))
 
 (define (list-each f list)

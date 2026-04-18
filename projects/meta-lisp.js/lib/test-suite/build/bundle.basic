@@ -179,6 +179,174 @@
     (= _₃ (_₂ 1))
     (return (_₁ 1 _₃))))
 
+(define-function (builtin/hash-each-value f hash)
+  (block body
+    (= _₁ builtin/list-each)
+    (= _₂ builtin/hash-values)
+    (= _₃ (_₂ hash))
+    (return (_₁ f _₃))))
+
+(define-function (builtin/hash-each-key f hash)
+  (block body
+    (= _₁ builtin/list-each)
+    (= _₂ builtin/hash-keys)
+    (= _₃ (_₂ hash))
+    (return (_₁ f _₃))))
+
+(define-function (builtin/hash-each-entry f hash)
+  (block body
+    (= _₁ builtin/list-each)
+    (= _₂ builtin/hash-entries)
+    (= _₃ (_₂ hash))
+    (return (_₁ f _₃))))
+
+(define-function (builtin/hash-each f hash)
+  (block body
+    (= _₁ builtin/list-each)
+    (= _₂ (builtin/hash-each©λ₁ f))
+    (= _₃ builtin/hash-entries)
+    (= _₄ (_₃ hash))
+    (return (_₁ _₂ _₄))))
+
+(define-function (builtin/hash-each©λ₁ f entry₁)
+  (block body
+    (= _₁ builtin/record-get)
+    (= _₂ (_₁ :key))
+    (= _₃ (_₂ entry₁))
+    (= _₄ builtin/record-get)
+    (= _₅ (_₄ :value))
+    (= _₆ (_₅ entry₁))
+    (return (f _₃ _₆))))
+
+(define-function (builtin/hash-each-value-test)
+  (block body
+    (= _₁ builtin/make-hash)
+    (= hash₂ (_₁))
+    (= _₂ builtin/hash-put!)
+    (perform (_₂ 1 2 hash₂))
+    (= _₃ builtin/hash-put!)
+    (perform (_₃ 3 4 hash₂))
+    (= hash₁ hash₂)
+    (= _₄ builtin/make-list)
+    (= list₂ (_₄))
+    (= list₁ list₂)
+    (= _₅ builtin/hash-each-value)
+    (= _₆ (builtin/hash-each-value-test©λ₁ list₁))
+    (perform (_₅ _₆ hash₁))
+    (= _₇ builtin/assert-equal)
+    (= _₈ builtin/make-list)
+    (= list₃ (_₈))
+    (= _₉ builtin/list-push!)
+    (perform (_₉ 2 list₃))
+    (= _₁₀ builtin/list-push!)
+    (perform (_₁₀ 4 list₃))
+    (return (_₇ list₃ list₁))))
+
+(define-function
+    (builtin/hash-each-value-test©λ₁ list₁ value₁)
+  (block body
+    (= _₁ builtin/list-push!)
+    (return (_₁ value₁ list₁))))
+
+(define-function (builtin/hash-each-key-test)
+  (block body
+    (= _₁ builtin/make-hash)
+    (= hash₂ (_₁))
+    (= _₂ builtin/hash-put!)
+    (perform (_₂ 1 2 hash₂))
+    (= _₃ builtin/hash-put!)
+    (perform (_₃ 3 4 hash₂))
+    (= hash₁ hash₂)
+    (= _₄ builtin/make-list)
+    (= list₂ (_₄))
+    (= list₁ list₂)
+    (= _₅ builtin/hash-each-key)
+    (= _₆ (builtin/hash-each-key-test©λ₁ list₁))
+    (perform (_₅ _₆ hash₁))
+    (= _₇ builtin/assert-equal)
+    (= _₈ builtin/make-list)
+    (= list₃ (_₈))
+    (= _₉ builtin/list-push!)
+    (perform (_₉ 1 list₃))
+    (= _₁₀ builtin/list-push!)
+    (perform (_₁₀ 3 list₃))
+    (return (_₇ list₃ list₁))))
+
+(define-function (builtin/hash-each-key-test©λ₁ list₁ key₁)
+  (block body
+    (= _₁ builtin/list-push!)
+    (return (_₁ key₁ list₁))))
+
+(define-function (builtin/hash-each-entry-test)
+  (block body
+    (= _₁ builtin/make-hash)
+    (= hash₂ (_₁))
+    (= _₂ builtin/hash-put!)
+    (perform (_₂ 1 2 hash₂))
+    (= _₃ builtin/hash-put!)
+    (perform (_₃ 3 4 hash₂))
+    (= hash₁ hash₂)
+    (= _₄ builtin/make-list)
+    (= list₂ (_₄))
+    (= list₁ list₂)
+    (= _₅ builtin/hash-each-entry)
+    (= _₆ (builtin/hash-each-entry-test©λ₁ list₁))
+    (perform (_₅ _₆ hash₁))
+    (= _₇ builtin/assert-equal)
+    (= _₈ builtin/make-list)
+    (= list₃ (_₈))
+    (= _₉ builtin/list-push!)
+    (= _₁₀ builtin/make-hash-entry)
+    (= _₁₁ (_₁₀ 1 2))
+    (perform (_₉ _₁₁ list₃))
+    (= _₁₂ builtin/list-push!)
+    (= _₁₃ builtin/make-hash-entry)
+    (= _₁₄ (_₁₃ 3 4))
+    (perform (_₁₂ _₁₄ list₃))
+    (return (_₇ list₃ list₁))))
+
+(define-function
+    (builtin/hash-each-entry-test©λ₁ list₁ entry₁)
+  (block body
+    (= _₁ builtin/list-push!)
+    (return (_₁ entry₁ list₁))))
+
+(define-function (builtin/hash-each-test)
+  (block body
+    (= _₁ builtin/make-hash)
+    (= hash₂ (_₁))
+    (= _₂ builtin/hash-put!)
+    (perform (_₂ 1 2 hash₂))
+    (= _₃ builtin/hash-put!)
+    (perform (_₃ 3 4 hash₂))
+    (= hash₁ hash₂)
+    (= _₄ builtin/make-list)
+    (= list₂ (_₄))
+    (= list₁ list₂)
+    (= _₅ builtin/hash-each)
+    (= _₆ (builtin/hash-each-test©λ₁ list₁))
+    (perform (_₅ _₆ hash₁))
+    (= _₇ builtin/assert-equal)
+    (= _₈ builtin/make-list)
+    (= list₃ (_₈))
+    (= _₉ builtin/list-push!)
+    (perform (_₉ 1 list₃))
+    (= _₁₀ builtin/list-push!)
+    (perform (_₁₀ 2 list₃))
+    (= _₁₁ builtin/list-push!)
+    (perform (_₁₁ 3 list₃))
+    (= _₁₂ builtin/list-push!)
+    (perform (_₁₂ 4 list₃))
+    (return (_₇ list₃ list₁))))
+
+(define-function
+    (builtin/hash-each-test©λ₁ list₁ key₁ value₁)
+  (block body
+    (= _₁ builtin/list-push!)
+    (perform (_₁ key₁ list₁))
+    (= _₂ builtin/list-push!)
+    (return (_₂ value₁ list₁))))
+
 (define-function (builtin/hash-get-maybe key hash)
   (block body
     (= _₁ builtin/hash-has?)
@@ -220,6 +388,16 @@
     (perform (_₁₆ 3 "c" hash₂))
     (= _₁₇ (_₁₂ 4 hash₂))
     (return (_₁₀ _₁₁ _₁₇))))
+
+(define-function (builtin/make-hash-entry key value)
+  (block body
+    (= _₁ builtin/make-record)
+    (= record₁ (_₁))
+    (= _₂ builtin/record-put!)
+    (perform (_₂ :key key record₁))
+    (= _₃ builtin/record-put!)
+    (perform (_₃ :value value record₁))
+    (return record₁)))
 
 (define-function (builtin/int-align alignment n)
   (block body
@@ -1591,7 +1769,8 @@
     (= _₁ builtin/list-each)
     (= _₂ builtin/set-to-list)
     (= _₃ (_₂ set))
-    (return (_₁ f _₃))))
+    (perform (_₁ f _₃))
+    (return builtin/void)))
 
 (define-function (builtin/set-every? p set)
   (block body
@@ -1684,8 +1863,7 @@
   (block body
     (= _₁ builtin/set-add!)
     (= _₂ (f e₁))
-    (perform (_₁ _₂ new-set₁))
-    (return builtin/void)))
+    (return (_₁ _₂ new-set₁))))
 
 (define-function (builtin/set-map-test)
   (block body

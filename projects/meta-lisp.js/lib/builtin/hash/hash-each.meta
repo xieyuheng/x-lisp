@@ -1,1 +1,74 @@
 (module builtin)
+
+(claim hash-each-value
+  (polymorphic (K V Any)
+    (-> (-> V Any) (hash-t K V)
+        void-t)))
+
+(define (hash-each-value f hash)
+  (list-each f (hash-values hash)))
+
+(claim hash-each-key
+  (polymorphic (K V Any)
+    (-> (-> K Any) (hash-t K V)
+        void-t)))
+
+(define (hash-each-key f hash)
+  (list-each f (hash-keys hash)))
+
+(claim hash-each-entry
+  (polymorphic (K V Any)
+    (-> (-> (hash-entry-t K V) Any) (hash-t K V)
+        void-t)))
+
+(define (hash-each-entry f hash)
+  (list-each f (hash-entries hash)))
+
+(claim hash-each
+  (polymorphic (K V Any)
+    (-> (-> K V Any) (hash-t K V)
+        void-t)))
+
+(define (hash-each f hash)
+  (list-each (lambda (entry)
+               (f (:key entry) (:value entry)))
+             (hash-entries hash)))
+
+(define-test hash-each-value-test
+  (= hash (@hash 1 2 3 4))
+  (= list [])
+  (hash-each-value
+   (lambda (value)
+     (list-push! value list))
+   hash)
+  (assert-equal [2 4] list))
+
+(define-test hash-each-key-test
+  (= hash (@hash 1 2 3 4))
+  (= list [])
+  (hash-each-key
+   (lambda (key)
+     (list-push! key list))
+   hash)
+  (assert-equal [1 3] list))
+
+(define-test hash-each-entry-test
+  (= hash (@hash 1 2 3 4))
+  (= list [])
+  (hash-each-entry
+   (lambda (entry)
+     (list-push! entry list))
+   hash)
+  (assert-equal [(make-hash-entry 1 2)
+                 (make-hash-entry 3 4)]
+                list))
+
+(define-test hash-each-test
+  (= hash (@hash 1 2 3 4))
+  (= list [])
+  (hash-each
+   (lambda (key value)
+     (list-push! key list)
+     (list-push! value list))
+   hash)
+  (assert-equal [1 2 3 4] list))

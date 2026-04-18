@@ -1,9 +1,10 @@
 (module builtin)
 
 (claim set-each
-  (polymorphic (A)
-    (-> (-> A void-t) (set-t A)
+  (polymorphic (A Any)
+    (-> (-> A Any) (set-t A)
         void-t)))
 
 (define (set-each f set)
-  (list-each f (set-to-list set)))
+  (list-each f (set-to-list set))
+  void)
