@@ -1,0 +1,25 @@
+(module builtin)
+
+(claim set-every?
+  (polymorphic (A)
+    (-> (-> A bool-t) (set-t A)
+        bool-t)))
+
+(define (set-every? p set)
+  (list-every? p (set-to-list set)))
+
+(define-test set-every-test
+  (assert (set-every? int-non-negative? (@set 0 1 2 3)))
+  (assert-not (set-every? int-non-negative? (@set 0 1 -1 2 3))))
+
+(claim set-some?
+  (polymorphic (A)
+    (-> (-> A bool-t) (set-t A)
+        bool-t)))
+
+(define (set-some? p set)
+  (list-some? p (set-to-list set)))
+
+(define-test set-some-test
+  (assert (set-some? int-non-negative? (@set -1 -2 0)))
+  (assert-not (set-some? int-non-negative? (@set -1 -2 -3))))

@@ -1063,6 +1063,67 @@
 (define (pair-put-second! second pair)
   (update! pair :second second))
 
+(claim set-every?
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        builtin/bool-t)))
+
+(define (set-every? p set)
+  (builtin/list-every? p (builtin/set-to-list set)))
+
+(define-test set-every-test
+  (builtin/assert
+   (builtin/set-every?
+    builtin/int-non-negative?
+    (begin
+      (= set (builtin/make-set))
+      (builtin/set-add! 0 set)
+      (builtin/set-add! 1 set)
+      (builtin/set-add! 2 set)
+      (builtin/set-add! 3 set)
+      set)))
+  (builtin/assert-not
+   (builtin/set-every?
+    builtin/int-non-negative?
+    (begin
+      (= set (builtin/make-set))
+      (builtin/set-add! 0 set)
+      (builtin/set-add! 1 set)
+      (builtin/set-add! -1 set)
+      (builtin/set-add! 2 set)
+      (builtin/set-add! 3 set)
+      set))))
+
+(claim set-some?
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        builtin/bool-t)))
+
+(define (set-some? p set)
+  (builtin/list-some? p (builtin/set-to-list set)))
+
+(define-test set-some-test
+  (builtin/assert
+   (builtin/set-some?
+    builtin/int-non-negative?
+    (begin
+      (= set (builtin/make-set))
+      (builtin/set-add! -1 set)
+      (builtin/set-add! -2 set)
+      (builtin/set-add! 0 set)
+      set)))
+  (builtin/assert-not
+   (builtin/set-some?
+    builtin/int-non-negative?
+    (begin
+      (= set (builtin/make-set))
+      (builtin/set-add! -1 set)
+      (builtin/set-add! -2 set)
+      (builtin/set-add! -3 set)
+      set))))
+
 (define-interface source-location-t
   :span
   builtin/source-span-t

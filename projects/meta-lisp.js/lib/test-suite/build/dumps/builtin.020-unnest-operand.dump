@@ -1412,6 +1412,79 @@
     (_₁ :second second record₁))
   record₁)
 
+(claim set-every?
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        builtin/bool-t)))
+
+(define (set-every? p set)
+  (= _₁ builtin/list-every?)
+  (= _₂ builtin/set-to-list)
+  (= _₃ (_₂ set))
+  (_₁ p _₃))
+
+(claim set-every-test void-t)
+
+(define-test set-every-test
+  (begin
+    (= _₁ builtin/assert)
+    (= _₂ builtin/set-every?)
+    (= _₃ builtin/int-non-negative?)
+    (= set₁ (begin (= _₄ builtin/make-set) (_₄)))
+    (begin (= _₅ builtin/set-add!) (_₅ 0 set₁))
+    (begin (= _₆ builtin/set-add!) (_₆ 1 set₁))
+    (begin (= _₇ builtin/set-add!) (_₇ 2 set₁))
+    (begin (= _₈ builtin/set-add!) (_₈ 3 set₁))
+    (= _₉ (_₂ _₃ set₁))
+    (_₁ _₉))
+  (= _₁₀ builtin/assert-not)
+  (= _₁₁ builtin/set-every?)
+  (= _₁₂ builtin/int-non-negative?)
+  (= set₂ (begin (= _₁₃ builtin/make-set) (_₁₃)))
+  (begin (= _₁₄ builtin/set-add!) (_₁₄ 0 set₂))
+  (begin (= _₁₅ builtin/set-add!) (_₁₅ 1 set₂))
+  (begin (= _₁₆ builtin/set-add!) (_₁₆ -1 set₂))
+  (begin (= _₁₇ builtin/set-add!) (_₁₇ 2 set₂))
+  (begin (= _₁₈ builtin/set-add!) (_₁₈ 3 set₂))
+  (= _₁₉ (_₁₁ _₁₂ set₂))
+  (_₁₀ _₁₉))
+
+(claim set-some?
+  (polymorphic (A)
+    (-> (-> A builtin/bool-t)
+        (builtin/set-t A)
+        builtin/bool-t)))
+
+(define (set-some? p set)
+  (= _₁ builtin/list-some?)
+  (= _₂ builtin/set-to-list)
+  (= _₃ (_₂ set))
+  (_₁ p _₃))
+
+(claim set-some-test void-t)
+
+(define-test set-some-test
+  (begin
+    (= _₁ builtin/assert)
+    (= _₂ builtin/set-some?)
+    (= _₃ builtin/int-non-negative?)
+    (= set₁ (begin (= _₄ builtin/make-set) (_₄)))
+    (begin (= _₅ builtin/set-add!) (_₅ -1 set₁))
+    (begin (= _₆ builtin/set-add!) (_₆ -2 set₁))
+    (begin (= _₇ builtin/set-add!) (_₇ 0 set₁))
+    (= _₈ (_₂ _₃ set₁))
+    (_₁ _₈))
+  (= _₉ builtin/assert-not)
+  (= _₁₀ builtin/set-some?)
+  (= _₁₁ builtin/int-non-negative?)
+  (= set₂ (begin (= _₁₂ builtin/make-set) (_₁₂)))
+  (begin (= _₁₃ builtin/set-add!) (_₁₃ -1 set₂))
+  (begin (= _₁₄ builtin/set-add!) (_₁₄ -2 set₂))
+  (begin (= _₁₅ builtin/set-add!) (_₁₅ -3 set₂))
+  (= _₁₆ (_₁₀ _₁₁ set₂))
+  (_₉ _₁₆))
+
 (define-interface source-location-t
   :span
   builtin/source-span-t
