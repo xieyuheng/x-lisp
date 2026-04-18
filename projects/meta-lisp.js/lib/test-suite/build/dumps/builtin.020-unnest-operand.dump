@@ -638,6 +638,48 @@
   (= _₅ (_₂ _₄))
   (_₁ _₅))
 
+(claim list-map-zip
+  (polymorphic (A B C)
+    (-> (-> A B C)
+        (builtin/list-t A)
+        (builtin/list-t B)
+        (builtin/list-t C))))
+
+(define (list-map-zip f left right)
+  (= _₁ builtin/list-map)
+  (= _₂ (builtin/list-map-zip©λ₁ f))
+  (= _₃ builtin/list-zip)
+  (= _₄ (_₃ left right))
+  (_₁ _₂ _₄))
+
+(define (list-map-zip©λ₁ f pair₁)
+  (= _₁ builtin/pair-first)
+  (= _₂ (_₁ pair₁))
+  (= _₃ builtin/pair-second)
+  (= _₄ (_₃ pair₁))
+  (f _₂ _₄))
+
+(claim list-map-zip-test void-t)
+
+(define-test list-map-zip-test
+  (= _₁ builtin/assert-equal)
+  (= _₂ builtin/list-map-zip)
+  (= _₃ builtin/iadd)
+  (= list₁ (begin (= _₄ builtin/make-list) (_₄)))
+  (begin (= _₅ builtin/list-push!) (_₅ 1 list₁))
+  (begin (= _₆ builtin/list-push!) (_₆ 2 list₁))
+  (begin (= _₇ builtin/list-push!) (_₇ 3 list₁))
+  (= list₂ (begin (= _₈ builtin/make-list) (_₈)))
+  (begin (= _₉ builtin/list-push!) (_₉ 10 list₂))
+  (begin (= _₁₀ builtin/list-push!) (_₁₀ 20 list₂))
+  (begin (= _₁₁ builtin/list-push!) (_₁₁ 30 list₂))
+  (= _₁₂ (_₂ _₃ list₁ list₂))
+  (= list₃ (begin (= _₁₃ builtin/make-list) (_₁₃)))
+  (begin (= _₁₄ builtin/list-push!) (_₁₄ 11 list₃))
+  (begin (= _₁₅ builtin/list-push!) (_₁₅ 22 list₃))
+  (begin (= _₁₆ builtin/list-push!) (_₁₆ 33 list₃))
+  (_₁ _₁₂ list₃))
+
 (claim list-map
   (polymorphic (A B)
     (-> (-> A B) (builtin/list-t A) (builtin/list-t B))))

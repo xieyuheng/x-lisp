@@ -521,6 +521,44 @@
 (define (list-third list)
   (builtin/car (builtin/cdr (builtin/cdr list))))
 
+(claim list-map-zip
+  (polymorphic (A B C)
+    (-> (-> A B C)
+        (builtin/list-t A)
+        (builtin/list-t B)
+        (builtin/list-t C))))
+
+(define (list-map-zip f left right)
+  (builtin/list-map
+   (lambda (pair)
+     (f (builtin/pair-first pair) (builtin/pair-second pair)))
+   (builtin/list-zip left right)))
+
+(claim list-map-zip-test void-t)
+
+(define-test list-map-zip-test
+  (builtin/assert-equal
+   (builtin/list-map-zip
+    builtin/iadd
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list)
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 10 list)
+      (builtin/list-push! 20 list)
+      (builtin/list-push! 30 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 11 list)
+     (builtin/list-push! 22 list)
+     (builtin/list-push! 33 list)
+     list)))
+
 (claim list-map
   (polymorphic (A B)
     (-> (-> A B) (builtin/list-t A) (builtin/list-t B))))

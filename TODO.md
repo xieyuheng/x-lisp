@@ -1,6 +1,5 @@
 # builtin
 
-[meta-lisp.js] [builtin] list -- (list-map-zip f left right)
 [meta-lisp.js] [builtin] list -- (list-find p list) (list-find-index p list)
 [meta-lisp.js] [builtin] list -- (list-group f list)
 [meta-lisp.js] [builtin] list -- (list-product lhs rhs)
@@ -22,7 +21,6 @@
 (claim string-split (-> string-t string-t (list-t string-t)))
 (claim string-lines (-> string-t (list-t string-t)))
 (claim string-chars (-> string-t (list-t string-t)))
-(claim string-replace-first (-> string-t string-t string-t string-t))
 (claim string-replace (-> string-t string-t string-t string-t))
 ```
 

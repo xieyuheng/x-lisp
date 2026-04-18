@@ -236,6 +236,23 @@
 
 (define (list-third list) (car (cdr (cdr list))))
 
+(claim list-map-zip
+  (polymorphic (A B C)
+    (-> (-> A B C)
+        (builtin/list-t A)
+        (builtin/list-t B)
+        (builtin/list-t C))))
+
+(define (list-map-zip f left right)
+  (list-map
+   (lambda (pair) (f (pair-first pair) (pair-second pair)))
+   (list-zip left right)))
+
+(define-test list-map-zip-test
+  (assert-equal
+    (list-map-zip iadd [1 2 3] [10 20 30])
+    [11 22 33]))
+
 (claim list-map
   (polymorphic (A B)
     (-> (-> A B) (builtin/list-t A) (builtin/list-t B))))
