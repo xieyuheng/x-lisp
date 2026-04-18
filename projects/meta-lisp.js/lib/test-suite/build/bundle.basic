@@ -179,6 +179,48 @@
     (= _₃ (_₂ 1))
     (return (_₁ 1 _₃))))
 
+(define-function (builtin/hash-get-maybe key hash)
+  (block body
+    (= _₁ builtin/hash-has?)
+    (test (_₁ key hash))
+    (branch then₁ else₂))
+  (block then₁
+    (= _₂ builtin/just)
+    (= _₃ builtin/hash-get)
+    (= _₄ (_₃ key hash))
+    (return (_₂ _₄)))
+  (block else₂ (return builtin/nothing)))
+
+(define-function (builtin/hash-get-maybe-test)
+  (block body
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/just)
+    (= _₃ (_₂ "b"))
+    (= _₄ builtin/hash-get-maybe)
+    (= _₅ builtin/make-hash)
+    (= hash₁ (_₅))
+    (= _₆ builtin/hash-put!)
+    (perform (_₆ 1 "a" hash₁))
+    (= _₇ builtin/hash-put!)
+    (perform (_₇ 2 "b" hash₁))
+    (= _₈ builtin/hash-put!)
+    (perform (_₈ 3 "c" hash₁))
+    (= _₉ (_₄ 2 hash₁))
+    (perform (_₁ _₃ _₉))
+    (= _₁₀ builtin/assert-equal)
+    (= _₁₁ builtin/nothing)
+    (= _₁₂ builtin/hash-get-maybe)
+    (= _₁₃ builtin/make-hash)
+    (= hash₂ (_₁₃))
+    (= _₁₄ builtin/hash-put!)
+    (perform (_₁₄ 1 "a" hash₂))
+    (= _₁₅ builtin/hash-put!)
+    (perform (_₁₅ 2 "b" hash₂))
+    (= _₁₆ builtin/hash-put!)
+    (perform (_₁₆ 3 "c" hash₂))
+    (= _₁₇ (_₁₂ 4 hash₂))
+    (return (_₁₀ _₁₁ _₁₇))))
+
 (define-function (builtin/int-align alignment n)
   (block body
     (= _₁ builtin/imod)
@@ -1642,7 +1684,8 @@
   (block body
     (= _₁ builtin/set-add!)
     (= _₂ (f e₁))
-    (return (_₁ _₂ new-set₁))))
+    (perform (_₁ _₂ new-set₁))
+    (return builtin/void)))
 
 (define-function (builtin/set-map-test)
   (block body

@@ -138,6 +138,39 @@
 (define-test identity-test
   (builtin/assert-equal 1 (builtin/identity 1)))
 
+(claim hash-get-maybe
+  (polymorphic (K V)
+    (-> K (builtin/hash-t K V) (builtin/maybe-t V))))
+
+(define (hash-get-maybe key hash)
+  (if (builtin/hash-has? key hash)
+    (builtin/just (builtin/hash-get key hash))
+    builtin/nothing))
+
+(claim hash-get-maybe-test void-t)
+
+(define-test hash-get-maybe-test
+  (builtin/assert-equal
+   (builtin/just "b")
+   (builtin/hash-get-maybe
+    2
+    (begin
+      (= hash₁ (builtin/make-hash))
+      (builtin/hash-put! 1 "a" hash₁)
+      (builtin/hash-put! 2 "b" hash₁)
+      (builtin/hash-put! 3 "c" hash₁)
+      hash₁)))
+  (builtin/assert-equal
+   builtin/nothing
+   (builtin/hash-get-maybe
+    4
+    (begin
+      (= hash₂ (builtin/make-hash))
+      (builtin/hash-put! 1 "a" hash₂)
+      (builtin/hash-put! 2 "b" hash₂)
+      (builtin/hash-put! 3 "c" hash₂)
+      hash₂))))
+
 (claim hash-entry-t
   (-> builtin/type-t builtin/type-t builtin/type-t))
 
@@ -1264,7 +1297,8 @@
   new-set₁)
 
 (define (set-map©λ₁ new-set₁ f e₁)
-  (builtin/set-add! (f e₁) new-set₁))
+  (builtin/set-add! (f e₁) new-set₁)
+  builtin/void)
 
 (claim set-map-test void-t)
 
