@@ -322,6 +322,88 @@
   (begin (= _₂₁ builtin/list-push!) (_₂₁ 6 list₄))
   (_₁ _₁₄ list₄))
 
+(claim list-drop
+  (polymorphic (A)
+    (-> builtin/int-t (builtin/list-t A) (builtin/list-t A))))
+
+(define (list-drop n list)
+  (begin
+    (= _₁ builtin/assert)
+    (= _₂ builtin/int-non-negative?)
+    (= _₃ (_₂ n))
+    (_₁ _₃))
+  (if
+      (if (begin (= _₄ builtin/equal?) (_₄ n 0))
+        builtin/true
+        (begin (= _₅ builtin/list-empty?) (_₅ list)))
+    list
+    (begin
+      (= _₆ builtin/list-drop)
+      (= _₇ builtin/isub)
+      (= _₈ (_₇ n 1))
+      (= _₉ builtin/cdr)
+      (= _₁₀ (_₉ list))
+      (_₆ _₈ _₁₀))))
+
+(claim list-drop-test void-t)
+
+(define-test list-drop-test
+  (begin
+    (= _₁ builtin/assert-equal)
+    (= _₂ builtin/list-drop)
+    (= list₁ (begin (= _₃ builtin/make-list) (_₃)))
+    (begin (= _₄ builtin/list-push!) (_₄ 1 list₁))
+    (begin (= _₅ builtin/list-push!) (_₅ 2 list₁))
+    (begin (= _₆ builtin/list-push!) (_₆ 3 list₁))
+    (= _₇ (_₂ 0 list₁))
+    (= list₂ (begin (= _₈ builtin/make-list) (_₈)))
+    (begin (= _₉ builtin/list-push!) (_₉ 1 list₂))
+    (begin (= _₁₀ builtin/list-push!) (_₁₀ 2 list₂))
+    (begin (= _₁₁ builtin/list-push!) (_₁₁ 3 list₂))
+    (_₁ _₇ list₂))
+  (begin
+    (= _₁₂ builtin/assert-equal)
+    (= _₁₃ builtin/list-drop)
+    (= list₃ (begin (= _₁₄ builtin/make-list) (_₁₄)))
+    (begin (= _₁₅ builtin/list-push!) (_₁₅ 1 list₃))
+    (begin (= _₁₆ builtin/list-push!) (_₁₆ 2 list₃))
+    (begin (= _₁₇ builtin/list-push!) (_₁₇ 3 list₃))
+    (= _₁₈ (_₁₃ 1 list₃))
+    (= list₄ (begin (= _₁₉ builtin/make-list) (_₁₉)))
+    (begin (= _₂₀ builtin/list-push!) (_₂₀ 2 list₄))
+    (begin (= _₂₁ builtin/list-push!) (_₂₁ 3 list₄))
+    (_₁₂ _₁₈ list₄))
+  (begin
+    (= _₂₂ builtin/assert-equal)
+    (= _₂₃ builtin/list-drop)
+    (= list₅ (begin (= _₂₄ builtin/make-list) (_₂₄)))
+    (begin (= _₂₅ builtin/list-push!) (_₂₅ 1 list₅))
+    (begin (= _₂₆ builtin/list-push!) (_₂₆ 2 list₅))
+    (begin (= _₂₇ builtin/list-push!) (_₂₇ 3 list₅))
+    (= _₂₈ (_₂₃ 2 list₅))
+    (= list₆ (begin (= _₂₉ builtin/make-list) (_₂₉)))
+    (begin (= _₃₀ builtin/list-push!) (_₃₀ 3 list₆))
+    (_₂₂ _₂₈ list₆))
+  (begin
+    (= _₃₁ builtin/assert-equal)
+    (= _₃₂ builtin/list-drop)
+    (= list₇ (begin (= _₃₃ builtin/make-list) (_₃₃)))
+    (begin (= _₃₄ builtin/list-push!) (_₃₄ 1 list₇))
+    (begin (= _₃₅ builtin/list-push!) (_₃₅ 2 list₇))
+    (begin (= _₃₆ builtin/list-push!) (_₃₆ 3 list₇))
+    (= _₃₇ (_₃₂ 3 list₇))
+    (= list₈ (begin (= _₃₈ builtin/make-list) (_₃₈)))
+    (_₃₁ _₃₇ list₈))
+  (= _₃₉ builtin/assert-equal)
+  (= _₄₀ builtin/list-drop)
+  (= list₉ (begin (= _₄₁ builtin/make-list) (_₄₁)))
+  (begin (= _₄₂ builtin/list-push!) (_₄₂ 1 list₉))
+  (begin (= _₄₃ builtin/list-push!) (_₄₃ 2 list₉))
+  (begin (= _₄₄ builtin/list-push!) (_₄₄ 3 list₉))
+  (= _₄₅ (_₄₀ 4 list₉))
+  (= list₁₀ (begin (= _₄₆ builtin/make-list) (_₄₆)))
+  (_₃₉ _₄₅ list₁₀))
+
 (claim list-each
   (polymorphic (A)
     (-> (-> A builtin/void-t)

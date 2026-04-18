@@ -255,6 +255,83 @@
      (builtin/list-push! 6 list)
      list)))
 
+(claim list-drop
+  (polymorphic (A)
+    (-> builtin/int-t (builtin/list-t A) (builtin/list-t A))))
+
+(define (list-drop n list)
+  (builtin/assert (builtin/int-non-negative? n))
+  (if
+      (if (builtin/equal? n 0)
+        builtin/true
+        (builtin/list-empty? list))
+    list
+    (builtin/list-drop (builtin/isub n 1) (builtin/cdr list))))
+
+(define-test list-drop-test
+  (builtin/assert-equal
+   (builtin/list-drop
+    0
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 1 list)
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-drop
+    1
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 2 list)
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-drop
+    2
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin
+     (= list (builtin/make-list))
+     (builtin/list-push! 3 list)
+     list))
+  (builtin/assert-equal
+   (builtin/list-drop
+    3
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin (= list (builtin/make-list)) list))
+  (builtin/assert-equal
+   (builtin/list-drop
+    4
+    (begin
+      (= list (builtin/make-list))
+      (builtin/list-push! 1 list)
+      (builtin/list-push! 2 list)
+      (builtin/list-push! 3 list)
+      list))
+   (begin (= list (builtin/make-list)) list)))
+
 (claim list-each
   (polymorphic (A)
     (-> (-> A builtin/void-t)

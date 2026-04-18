@@ -269,6 +269,85 @@
      (builtin/list-push! 6 list₄)
      list₄)))
 
+(claim list-drop
+  (polymorphic (A)
+    (-> builtin/int-t (builtin/list-t A) (builtin/list-t A))))
+
+(define (list-drop n list)
+  (builtin/assert (builtin/int-non-negative? n))
+  (if
+      (if (builtin/equal? n 0)
+        builtin/true
+        (builtin/list-empty? list))
+    list
+    (builtin/list-drop (builtin/isub n 1) (builtin/cdr list))))
+
+(claim list-drop-test void-t)
+
+(define-test list-drop-test
+  (builtin/assert-equal
+   (builtin/list-drop
+    0
+    (begin
+      (= list₁ (builtin/make-list))
+      (builtin/list-push! 1 list₁)
+      (builtin/list-push! 2 list₁)
+      (builtin/list-push! 3 list₁)
+      list₁))
+   (begin
+     (= list₂ (builtin/make-list))
+     (builtin/list-push! 1 list₂)
+     (builtin/list-push! 2 list₂)
+     (builtin/list-push! 3 list₂)
+     list₂))
+  (builtin/assert-equal
+   (builtin/list-drop
+    1
+    (begin
+      (= list₃ (builtin/make-list))
+      (builtin/list-push! 1 list₃)
+      (builtin/list-push! 2 list₃)
+      (builtin/list-push! 3 list₃)
+      list₃))
+   (begin
+     (= list₄ (builtin/make-list))
+     (builtin/list-push! 2 list₄)
+     (builtin/list-push! 3 list₄)
+     list₄))
+  (builtin/assert-equal
+   (builtin/list-drop
+    2
+    (begin
+      (= list₅ (builtin/make-list))
+      (builtin/list-push! 1 list₅)
+      (builtin/list-push! 2 list₅)
+      (builtin/list-push! 3 list₅)
+      list₅))
+   (begin
+     (= list₆ (builtin/make-list))
+     (builtin/list-push! 3 list₆)
+     list₆))
+  (builtin/assert-equal
+   (builtin/list-drop
+    3
+    (begin
+      (= list₇ (builtin/make-list))
+      (builtin/list-push! 1 list₇)
+      (builtin/list-push! 2 list₇)
+      (builtin/list-push! 3 list₇)
+      list₇))
+   (begin (= list₈ (builtin/make-list)) list₈))
+  (builtin/assert-equal
+   (builtin/list-drop
+    4
+    (begin
+      (= list₉ (builtin/make-list))
+      (builtin/list-push! 1 list₉)
+      (builtin/list-push! 2 list₉)
+      (builtin/list-push! 3 list₉)
+      list₉))
+   (begin (= list₁₀ (builtin/make-list)) list₁₀)))
+
 (claim list-each
   (polymorphic (A)
     (-> (-> A builtin/void-t)

@@ -1,14 +1,14 @@
-# linn
-
-[linn.c] setup linn.c project -- copy code from basic-lisp.c
-[linn.c] simple stack vm compiler
-[linn.c] remove basic compiler
-
 # builtin
 
 [meta-lisp.js] [builtin] list
 [meta-lisp.js] [builtin] hash
 [meta-lisp.js] [builtin] set
+
+# linn
+
+[linn.c] setup linn.c project -- copy code from basic-lisp.c
+[linn.c] simple stack vm compiler
+[linn.c] remove basic compiler
 
 # basic-lisp
 
