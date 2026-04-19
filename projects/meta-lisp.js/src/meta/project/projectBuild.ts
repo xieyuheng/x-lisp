@@ -39,7 +39,7 @@ function projectBundle(project: M.Project): void {
   M.projectForEachMod(project, (mod) => {
     if (!mod.isTypeErrorModule) {
       M.log("bundle", mod.name)
-      const basicMod = B.createMod(mod.name, new Map())
+      const basicMod = B.createMod(mod.name)
       M.ExplicateControlPass(mod, basicMod)
       code += B.prettyMod(textWidth, basicMod)
       code += "\n\n"
