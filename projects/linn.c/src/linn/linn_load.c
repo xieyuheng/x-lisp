@@ -16,5 +16,16 @@ linn_load(path_t *path) {
         line_string = string_next_line(string, &cursor);
     }
 
+    record_iter_t iter;
+    record_iter_init(&iter, mod->definitions);
+    definition_t *definition = record_iter_next_value(&iter);
+    while (definition) {
+        if (definition_has_function(definition)) {
+            function_patch_label_references(definition_function(definition));
+        }
+
+        definition = record_iter_next_value(&iter);
+    }
+
     return mod;
 }

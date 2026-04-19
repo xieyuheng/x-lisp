@@ -1,7 +1,6 @@
 # linn
 
 [linn.c] `prepare_definition` -- handle variable definition
-[linn.c] `linn_load` call `function_patch_label_references(function);` for all functions
 
 [meta-lisp.js] recover `projectTest`
 [meta-lisp.js] remove basic-lisp.js
