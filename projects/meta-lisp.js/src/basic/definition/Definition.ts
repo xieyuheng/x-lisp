@@ -2,7 +2,54 @@ import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
 import type { Mod } from "../mod/index.ts"
 
-export type Definition = FunctionDefinition | VariableDefinition
+export type Definition =
+  | PrimitiveFunctionDeclaration
+  | PrimitiveVariableDeclaration
+  | FunctionDefinition
+  | VariableDefinition
+
+export type PrimitiveFunctionDeclaration = {
+  kind: "PrimitiveFunctionDeclaration"
+  mod: Mod
+  name: string
+  arity: number
+  location?: SourceLocation
+}
+
+export function PrimitiveFunctionDeclaration(
+  mod: Mod,
+  name: string,
+  arity: number,
+  location?: SourceLocation,
+): PrimitiveFunctionDeclaration {
+  return {
+    kind: "PrimitiveFunctionDeclaration",
+    mod,
+    name,
+    arity,
+    location,
+  }
+}
+
+export type PrimitiveVariableDeclaration = {
+  kind: "PrimitiveVariableDeclaration"
+  mod: Mod
+  name: string
+  location?: SourceLocation
+}
+
+export function PrimitiveVariableDeclaration(
+  mod: Mod,
+  name: string,
+  location?: SourceLocation,
+): PrimitiveVariableDeclaration {
+  return {
+    kind: "PrimitiveVariableDeclaration",
+    mod,
+    name,
+    location,
+  }
+}
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"

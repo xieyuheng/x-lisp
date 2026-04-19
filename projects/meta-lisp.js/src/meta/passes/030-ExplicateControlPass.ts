@@ -20,8 +20,27 @@ function onDefinition(
   definition: M.Definition,
 ): Array<B.Definition> {
   switch (definition.kind) {
-    case "PrimitiveFunctionDefinition":
-    case "PrimitiveVariableDefinition":
+    case "PrimitiveFunctionDefinition": {
+      return [
+        B.PrimitiveFunctionDeclaration(
+          basicMod,
+          definition.name,
+          definition.arity,
+          definition.location,
+        ),
+      ]
+    }
+
+    case "PrimitiveVariableDefinition": {
+      return [
+        B.PrimitiveVariableDeclaration(
+          basicMod,
+          definition.name,
+          definition.location,
+        ),
+      ]
+    }
+
     case "DataDefinition":
     case "InterfaceDefinition":
     case "TypeDefinition": {

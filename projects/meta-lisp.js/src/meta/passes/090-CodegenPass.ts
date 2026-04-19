@@ -9,6 +9,11 @@ export function CodegenPass(basicMod: B.Mod, linnMod: L.Mod): void {
 
 function onDefinition(mod: B.Mod, definition: B.Definition): Array<L.Line> {
   switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration":
+    case "PrimitiveVariableDeclaration": {
+      return []
+    }
+
     case "FunctionDefinition": {
       const blocks = definition.blocks.values()
       return [
@@ -126,19 +131,21 @@ function onTailExp(mod: B.Mod, name: string, exp: B.Exp): Array<L.Line> {
 
 function onVar(mod: B.Mod, name: string, exp: B.Var): Array<L.Line> {
   const definition = B.modLookupDefinition(mod, exp.name)
-  if (definition) {
-    switch (definition.kind) {
-      case "FunctionDefinition": {
-        return [L.Line("ins", name, [L.Var("ref"), L.Var(exp.name)])]
-      }
-
-      case "VariableDefinition": {
-        return [L.Line("ins", name, [L.Var("global-load"), L.Var(exp.name)])]
-      }
-    }
+  if (definition === undefined) {
+    return [L.Line("ins", name, [L.Var("local-load"), L.Var(exp.name)])]
   }
 
-  return [L.Line("ins", name, [L.Var("local-load"), L.Var(exp.name)])]
+  switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration":
+    case "FunctionDefinition": {
+      return [L.Line("ins", name, [L.Var("ref"), L.Var(exp.name)])]
+    }
+
+    case "PrimitiveVariableDeclaration":
+    case "VariableDefinition": {
+      return [L.Line("ins", name, [L.Var("global-load"), L.Var(exp.name)])]
+    }
+  }
 }
 
 function onApply(mod: B.Mod, name: string, exp: B.Apply): Array<L.Line> {
@@ -156,69 +163,62 @@ function onGeneralApply(
   applyMode: string,
 ): Array<L.Line> {
   const definition = B.modLookupDefinition(mod, B.asVar(exp.target).name)
-  if (definition) {
-    switch (definition.kind) {
-      case "FunctionDefinition": {
-        const arity = definition.parameters.length
-        if (exp.args.length < arity) {
-          return [
-            ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
-            L.Line("ins", name, [
-              L.Var("ref"),
-              L.Var(B.asVar(exp.target).name),
-            ]),
-            L.Line("ins", name, [
-              L.Var("literal"),
-              L.Int(BigInt(exp.args.length)),
-            ]),
-            L.Line("ins", name, [L.Var(applyMode)]),
-          ]
-        } else if (exp.args.length === arity) {
-          return [
-            ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
-            L.Line("ins", name, [
-              L.Var("call"),
-              L.Var(B.asVar(exp.target).name),
-            ]),
-          ]
-        } else {
-          return [
-            ...exp.args.slice(0, arity).flatMap((arg) => onExp(mod, name, arg)),
-            L.Line("ins", name, [
-              L.Var("call"),
-              L.Var(B.asVar(exp.target).name),
-            ]),
-            ...exp.args.slice(arity).flatMap((arg) => onExp(mod, name, arg)),
-            L.Line("ins", name, [
-              L.Var("literal"),
-              L.Int(BigInt(exp.args.length - arity)),
-            ]),
-            L.Line("ins", name, [L.Var(applyMode)]),
-          ]
-        }
-      }
+  if (definition === undefined) {
+    return [
+      ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
+      L.Line("ins", name, [
+        L.Var("local-load"),
+        L.Var(B.asVar(exp.target).name),
+      ]),
+      L.Line("ins", name, [L.Var("literal"), L.Int(BigInt(exp.args.length))]),
+      L.Line("ins", name, [L.Var(applyMode)]),
+    ]
+  }
 
-      case "VariableDefinition": {
+  switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration":
+    case "FunctionDefinition": {
+      const arity = B.definitionArity(definition)
+      if (exp.args.length < arity) {
         return [
           ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
-          L.Line("ins", name, [
-            L.Var("global-load"),
-            L.Var(B.asVar(exp.target).name),
-          ]),
+          L.Line("ins", name, [L.Var("ref"), L.Var(B.asVar(exp.target).name)]),
           L.Line("ins", name, [
             L.Var("literal"),
             L.Int(BigInt(exp.args.length)),
           ]),
           L.Line("ins", name, [L.Var(applyMode)]),
         ]
+      } else if (exp.args.length === arity) {
+        return [
+          ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
+          L.Line("ins", name, [L.Var("call"), L.Var(B.asVar(exp.target).name)]),
+        ]
+      } else {
+        return [
+          ...exp.args.slice(0, arity).flatMap((arg) => onExp(mod, name, arg)),
+          L.Line("ins", name, [L.Var("call"), L.Var(B.asVar(exp.target).name)]),
+          ...exp.args.slice(arity).flatMap((arg) => onExp(mod, name, arg)),
+          L.Line("ins", name, [
+            L.Var("literal"),
+            L.Int(BigInt(exp.args.length - arity)),
+          ]),
+          L.Line("ins", name, [L.Var(applyMode)]),
+        ]
       }
     }
-  }
 
-  return [
-    ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
-    L.Line("ins", name, [L.Var("local-load"), L.Var(B.asVar(exp.target).name)]),
-    L.Line("ins", name, [L.Var("literal"), L.Int(BigInt(exp.args.length))]),
-    L.Line("ins", name, [L.Var(applyMode)]),
-  ]
+    case "PrimitiveVariableDeclaration":
+    case "VariableDefinition": {
+      return [
+        ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
+        L.Line("ins", name, [
+          L.Var("global-load"),
+          L.Var(B.asVar(exp.target).name),
+        ]),
+        L.Line("ins", name, [L.Var("literal"), L.Int(BigInt(exp.args.length))]),
+        L.Line("ins", name, [L.Var(applyMode)]),
+      ]
+    }
+  }
 }
