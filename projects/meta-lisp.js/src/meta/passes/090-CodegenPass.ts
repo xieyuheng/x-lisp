@@ -112,8 +112,21 @@ function onTailExp(mod: B.Mod, name: string, exp: B.Exp): Array<L.Line> {
   }
 }
 
-function onVar(mod: B.Mod, name: string, exp: B.Exp): Array<L.Line> {
-  return []
+function onVar(mod: B.Mod, name: string, exp: B.Var): Array<L.Line> {
+  const stmt = B.modLookupStmt(mod, exp.name)
+  if (stmt) {
+    switch (stmt.kind) {
+      case "DefineFunction": {
+        return [L.Line("ins", name, [L.Var("ref"), L.Var(exp.name)])]
+      }
+
+      case "DefineVariable": {
+        return [L.Line("ins", name, [L.Var("global-load"), L.Var(exp.name)])]
+      }
+    }
+  }
+
+  return [L.Line("ins", name, [L.Var("local-load"), L.Var(exp.name)])]
 }
 
 function onApply(mod: B.Mod, name: string, exp: B.Exp): Array<L.Line> {
