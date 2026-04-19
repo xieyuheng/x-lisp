@@ -1,7 +1,5 @@
 # linn
 
-[linn.c] `mod_t` has `db`
-
 [linn.c] remove `path` from `mod_t`
 [linn.c] remove `parameters` from `function_t`
 

@@ -5,6 +5,7 @@ make_mod(path_t *path) {
     mod_t *self = new(mod_t);
     self->path = path;
     self->definitions = make_record_with((free_fn_t *) definition_free);
+    self->db = make_db();
     return self;
 }
 
@@ -12,6 +13,7 @@ void
 mod_free(mod_t *self) {
     path_free(self->path);
     record_free(self->definitions);
+    db_free(self->db);
     free(self);
 }
 
