@@ -22,6 +22,7 @@ void path_print(const path_t *self);
 
 size_t path_segment_length(const path_t *self);
 const char *path_top_segment(const path_t *self);
+const char *path_get_segment(const path_t *self, size_t index);
 char *path_pop_segment(path_t *self);
 void path_push_segment(path_t *self, char *segment);
 

@@ -6,3 +6,5 @@ struct db_t {
 
 db_t *make_db(void);
 void db_free(db_t *self);
+
+void db_put(db_t *db, const char *key, value_t value);

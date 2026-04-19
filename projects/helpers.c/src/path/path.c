@@ -193,6 +193,11 @@ path_top_segment(const path_t *self) {
     return stack_top(self->segment_stack);
 }
 
+const char *
+path_get_segment(const path_t *self, size_t index) {
+    return stack_get(self->segment_stack, index);    
+}
+
 char *
 path_pop_segment(path_t *self) {
     char *segment = stack_pop(self->segment_stack);
