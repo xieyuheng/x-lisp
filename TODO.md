@@ -1,7 +1,5 @@
 # linn
 
-[meta-lisp.js] `CodegenPass` -- `onApply` & `onTailApply`
-
 [meta-lisp.js] `CodegenPass` -- `onBlock` -- handle label
 
 [meta-lisp.js] `CodegenPass` -- `onStmt` -- `DefineFunction` -- handle arity

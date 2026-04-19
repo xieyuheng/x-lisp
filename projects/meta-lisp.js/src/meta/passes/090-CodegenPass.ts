@@ -129,10 +129,83 @@ function onVar(mod: B.Mod, name: string, exp: B.Var): Array<L.Line> {
   return [L.Line("ins", name, [L.Var("local-load"), L.Var(exp.name)])]
 }
 
-function onApply(mod: B.Mod, name: string, exp: B.Exp): Array<L.Line> {
-  return []
+function onApply(mod: B.Mod, name: string, exp: B.Apply): Array<L.Line> {
+  return onGeneralApply(mod, name, exp, "apply")
 }
 
-function onTailApply(mod: B.Mod, name: string, exp: B.Exp): Array<L.Line> {
-  return []
+function onTailApply(mod: B.Mod, name: string, exp: B.Apply): Array<L.Line> {
+  return onGeneralApply(mod, name, exp, "tail-apply")
+}
+
+function onGeneralApply(
+  mod: B.Mod,
+  name: string,
+  exp: B.Apply,
+  applyMode: string,
+): Array<L.Line> {
+  const stmt = B.modLookupStmt(mod, B.asVar(exp.target).name)
+  if (stmt) {
+    switch (stmt.kind) {
+      case "DefineFunction": {
+        const arity = stmt.parameters.length
+        if (exp.args.length < arity) {
+          return [
+            ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
+            L.Line("ins", name, [
+              L.Var("ref"),
+              L.Var(B.asVar(exp.target).name),
+            ]),
+            L.Line("ins", name, [
+              L.Var("literal"),
+              L.Int(BigInt(exp.args.length)),
+            ]),
+            L.Line("ins", name, [L.Var(applyMode)]),
+          ]
+        } else if (exp.args.length === arity) {
+          return [
+            ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
+            L.Line("ins", name, [
+              L.Var("call"),
+              L.Var(B.asVar(exp.target).name),
+            ]),
+          ]
+        } else
+          [
+            ...exp.args.slice(0, arity).flatMap((arg) => onExp(mod, name, arg)),
+            L.Line("ins", name, [
+              L.Var("call"),
+              L.Var(B.asVar(exp.target).name),
+            ]),
+            ...exp.args.slice(arity).flatMap((arg) => onExp(mod, name, arg)),
+            L.Line("ins", name, [
+              L.Var("literal"),
+              L.Int(BigInt(exp.args.length - arity)),
+            ]),
+            L.Line("ins", name, [L.Var(applyMode)]),
+          ]
+      }
+
+      case "DefineVariable": {
+        return [
+          ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
+          L.Line("ins", name, [
+            L.Var("global-load"),
+            L.Var(B.asVar(exp.target).name),
+          ]),
+          L.Line("ins", name, [
+            L.Var("literal"),
+            L.Int(BigInt(exp.args.length)),
+          ]),
+          L.Line("ins", name, [L.Var(applyMode)]),
+        ]
+      }
+    }
+  }
+
+  return [
+    ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
+    L.Line("ins", name, [L.Var("local-load"), L.Var(B.asVar(exp.target).name)]),
+    L.Line("ins", name, [L.Var("literal"), L.Int(BigInt(exp.args.length))]),
+    L.Line("ins", name, [L.Var(applyMode)]),
+  ]
 }

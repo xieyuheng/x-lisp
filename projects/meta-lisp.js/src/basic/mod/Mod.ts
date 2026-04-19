@@ -13,5 +13,5 @@ export function createMod(path: string): Mod {
 }
 
 export function modLookupStmt(mod: Mod, name: string): Stmt | undefined {
-  return stmts.find(stmt => stmt.name === name)
+  return mod.stmts.find((stmt) => stmt.name === name)
 }

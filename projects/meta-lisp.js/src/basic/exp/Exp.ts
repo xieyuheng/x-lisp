@@ -88,6 +88,18 @@ export function Var(name: string, location?: SourceLocation): Var {
   }
 }
 
+export function isVar(exp: Exp): exp is Var {
+  return exp.kind === "Var"
+}
+
+export function asVar(exp: Exp): Var {
+  if (!isVar(exp)) {
+    throw new Error(`[asVar] fail`)
+  }
+
+  return exp
+}
+
 export type Apply = {
   kind: "Apply"
   target: Exp
