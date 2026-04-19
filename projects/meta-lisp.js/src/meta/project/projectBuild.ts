@@ -1,7 +1,6 @@
 import {
   callWithFile,
   fileWrite,
-  fileWriteln,
   openOutputFile,
 } from "@xieyuheng/helpers.js/file"
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
@@ -45,17 +44,14 @@ function projectBuildLinn(project: M.Project): void {
   const linnMod = L.createMod()
   M.CodegenPass(basicMod, linnMod)
 
-  const code = L.formatMod(linnMod)
-
   const directory = M.projectOutputDirectory(project)
   callWithFile(openOutputFile(`${directory}/bundle.linn`), (file) =>
-    fileWriteln(file, code),
+    fileWrite(file, L.formatMod(linnMod)),
   )
 }
 
 function projectBundleBasic(project: M.Project): void {
   let code = ""
-
   M.projectForEachMod(project, (mod) => {
     if (!mod.isTypeErrorModule) {
       M.log("bundle", mod.name)
@@ -66,11 +62,11 @@ function projectBundleBasic(project: M.Project): void {
     }
   })
 
-  code = code.trim()
-
   const directory = M.projectOutputDirectory(project)
-  callWithFile(openOutputFile(`${directory}/bundle.basic`), (file) =>
-    fileWriteln(file, code),
+  callWithFile(
+    openOutputFile(`${directory}/bundle.basic`),
+    (file) => fileWrite(file, code.trim()),
+    fileWrite(file, "\n"),
   )
 }
 
