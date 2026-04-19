@@ -1,8 +1,9 @@
+put factorial/arity 1
 ins factorial   local-store n
 ins factorial label body
 ins factorial   local-load n
 ins factorial   literal 1
-ins factorial   call int-less-or-equal?
+ins factorial   call builtin/int-less-or-equal?
 ins factorial   jump-if-not recur-case
 ins factorial   jump base-case
 ins factorial label base-case
@@ -11,7 +12,7 @@ ins factorial   return
 ins factorial label recur-case
 ins factorial   local-load n
 ins factorial   literal 1
-ins factorial   call isub
+ins factorial   call builtin/isub
 ins factorial   local-store n1
 ins factorial   local-load n1
 ins factorial   call factorial
@@ -19,3 +20,8 @@ ins factorial   local-store f1
 ins factorial   local-load n
 ins factorial   local-load f1
 ins factorial   tail-call imul
+put main/arity 0
+ins main literal 1
+ins main call builtin/println
+ins main drop
+ins main return

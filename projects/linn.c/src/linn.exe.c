@@ -28,6 +28,13 @@ handle_run_function(cmd_ctx_t *ctx){
 }
 
 static void
+handle_bytecode(cmd_ctx_t *ctx) {
+    char *pathname = cmd_get_arg(ctx, 0);
+    mod_t *mod = linn_load(make_path(pathname));
+    linn_print_bytecode(mod);
+}
+
+static void
 init(void) {
     init_global_gc();
 }
@@ -43,9 +50,11 @@ main(int argc, char *argv[]) {
 
     cmd_define_route(router, "run file");
     cmd_define_route(router, "run-function function file");
+    cmd_define_route(router, "bytecode file");
 
     cmd_define_handler(router, "run", handle_run);
     cmd_define_handler(router, "run-function", handle_run_function);
+    cmd_define_handler(router, "bytecode", handle_bytecode);
 
     cmd_router_run(router, argc, argv);
     cmd_router_free(router);

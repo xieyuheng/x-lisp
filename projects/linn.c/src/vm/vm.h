@@ -17,3 +17,5 @@ size_t vm_frame_count(const vm_t *vm);
 void vm_execute(vm_t *vm);
 
 void vm_perform_gc(vm_t *vm);
+
+void vm_insepct(vm_t *vm);

@@ -193,6 +193,12 @@ vm_execute(vm_t *vm) {
         struct instr_t instr = instr_decode(frame->pc);
         frame->pc += instr_length(instr);
         vm_execute_instr(vm, frame, instr);
+
+        // debug
+
+        {
+            // vm_insepct(vm);
+        }
     }
 }
 
@@ -265,4 +271,19 @@ vm_perform_gc(vm_t *vm) {
     who_printf("after\n");
     gc_report(global_gc);
 #endif
+}
+
+void
+vm_insepct(vm_t *vm) {
+    // print value stack
+
+    string_print("-- ");
+
+    for (size_t i = 0; i < stack_length(vm->value_stack); i++) {
+        value_t value = (value_t) stack_get(vm->value_stack, i);
+        print(value);
+        string_print(" ");
+    }
+
+    string_print("\n");
 }

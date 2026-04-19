@@ -7,3 +7,5 @@ void linn_execute_ins(mod_t *mod, line_t *line);
 void linn_execute_put(mod_t *mod, line_t *line);
 
 void linn_run_function(mod_t *mod, const char *name);
+
+void linn_print_bytecode(const mod_t *mod);

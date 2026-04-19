@@ -23,6 +23,7 @@ export function projectBuild(
   if (options.dump) projectDumpMods(project, "003-qualify")
   M.projectPerformCheck(project)
   if (options.dump) projectDumpMods(project, "004-check")
+
   M.projectForEachMod(project, M.ShrinkPass)
   if (options.dump) projectDumpMods(project, "005-shrink")
   M.projectForEachMod(project, M.UniquifyPass)
@@ -31,10 +32,12 @@ export function projectBuild(
   if (options.dump) projectDumpMods(project, "012-lift-lambda")
   M.projectForEachMod(project, M.UnnestOperandPass)
   if (options.dump) projectDumpMods(project, "020-unnest-operand")
-  projectBuildLinn(project)
+
+  projectBundleBasic(project)
+  projectBundleLinn(project)
 }
 
-function projectBuildLinn(project: M.Project): void {
+function projectBundleLinn(project: M.Project): void {
   const basicMod = B.createMod()
   M.projectForEachMod(project, (mod) => {
     if (!mod.isTypeErrorModule) {
