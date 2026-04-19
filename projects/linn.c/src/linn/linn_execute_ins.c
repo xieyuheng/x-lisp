@@ -6,9 +6,9 @@ ensure_definition(mod_t *mod, const char *name) {
     if (definition) return definition;
 
     if (db_has_attribute(mod->db, name, "is-variable")) {
-        define_function(mod, name, make_function());
-    } else {
         define_variable_setup(mod, name, make_function());
+    } else {
+        define_function(mod, name, make_function());
     }
 
     return mod_lookup(mod, name);
