@@ -1,6 +1,6 @@
 # linn
 
-[linn.c] `db_t` -- has root node
+[linn.c] `make_db` & `db_free`
 [linn.c] `mod_t` has `db`
 
 [linn.c] remove `path` from `mod_t`
