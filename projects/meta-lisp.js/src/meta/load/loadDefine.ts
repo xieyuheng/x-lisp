@@ -7,6 +7,22 @@ import { expandDataGetter } from "./expandDataGetter.ts"
 import { expandDataPutter } from "./expandDataPutter.ts"
 
 export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
+  if (stmt.kind === "DeclarePrimitiveFunction") {
+    M.modDefine(
+      mod,
+      stmt.name,
+      M.PrimitiveFunctionDeclaration(mod, stmt.name, stmt.arity, stmt.location),
+    )
+  }
+
+  if (stmt.kind === "DeclarePrimitiveVariable") {
+    M.modDefine(
+      mod,
+      stmt.name,
+      M.PrimitiveVariableDeclaration(mod, stmt.name, stmt.location),
+    )
+  }
+
   if (stmt.kind === "Claim") {
     M.modClaim(mod, stmt.name, M.qualifyImported(scope, stmt.type))
   }

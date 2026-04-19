@@ -107,8 +107,15 @@ export const parseStmt = S.createRouter<M.Stmt>({
     return M.Claim(S.symbolContent(name), parseExp(type), location)
   },
 
-  "`(declare-primitive-function ,name ,arity)": ({ name, arity }, { location }) => {
-    return M.DeclarePrimitiveFunction(S.symbolContent(name), Number(S.intContent(arity)), location)
+  "`(declare-primitive-function ,name ,arity)": (
+    { name, arity },
+    { location },
+  ) => {
+    return M.DeclarePrimitiveFunction(
+      S.symbolContent(name),
+      Number(S.intContent(arity)),
+      location,
+    )
   },
 
   "`(declare-primitive-variable ,name)": ({ name }, { location }) => {
