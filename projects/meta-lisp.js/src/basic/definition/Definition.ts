@@ -2,10 +2,10 @@ import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
 import type { Mod } from "../mod/index.ts"
 
-export type Stmt = DefineFunction | DefineVariable
+export type Definition = FunctionDefinition | VariableDefinition
 
-export type DefineFunction = {
-  kind: "DefineFunction"
+export type FunctionDefinition = {
+  kind: "FunctionDefinition"
   mod: Mod
   name: string
   parameters: Array<string>
@@ -13,15 +13,15 @@ export type DefineFunction = {
   location?: SourceLocation
 }
 
-export function DefineFunction(
+export function FunctionDefinition(
   mod: Mod,
   name: string,
   parameters: Array<string>,
   blocks: Map<string, Block>,
   location?: SourceLocation,
-): DefineFunction {
+): FunctionDefinition {
   return {
-    kind: "DefineFunction",
+    kind: "FunctionDefinition",
     mod,
     name,
     parameters,
@@ -30,22 +30,22 @@ export function DefineFunction(
   }
 }
 
-export type DefineVariable = {
-  kind: "DefineVariable"
+export type VariableDefinition = {
+  kind: "VariableDefinition"
   mod: Mod
   name: string
   blocks: Map<string, Block>
   location?: SourceLocation
 }
 
-export function DefineVariable(
+export function VariableDefinition(
   mod: Mod,
   name: string,
   blocks: Map<string, Block>,
   location?: SourceLocation,
-): DefineVariable {
+): VariableDefinition {
   return {
-    kind: "DefineVariable",
+    kind: "VariableDefinition",
     mod,
     name,
     blocks,

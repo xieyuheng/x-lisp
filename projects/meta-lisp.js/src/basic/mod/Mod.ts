@@ -1,15 +1,18 @@
-import { type Stmt } from "../stmt/index.ts"
+import { type Definition } from "../definition/index.ts"
 
 export type Mod = {
-  stmts: Array<Stmt>
+  definitions: Map<string, Definition>
 }
 
 export function createMod(): Mod {
   return {
-    stmts: [],
+    definitions: new Map(),
   }
 }
 
-export function modLookupStmt(mod: Mod, name: string): Stmt | undefined {
-  return mod.stmts.find((stmt) => stmt.name === name)
+export function modLookupDefinition(
+  mod: Mod,
+  name: string,
+): Definition | undefined {
+  return mod.definitions.get(name)
 }

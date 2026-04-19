@@ -2,33 +2,36 @@ import * as B from "../../basic/index.ts"
 import * as L from "../../linn/index.ts"
 
 export function CodegenPass(basicMod: B.Mod, linnMod: L.Mod): void {
-  for (const stmt of basicMod.stmts) {
-    linnMod.lines.push(...onStmt(basicMod, stmt))
+  for (const definition of basicMod.definitions.values()) {
+    linnMod.lines.push(...onDefinition(basicMod, definition))
   }
 }
 
-function onStmt(mod: B.Mod, stmt: B.Stmt): Array<L.Line> {
-  switch (stmt.kind) {
-    case "DefineFunction": {
-      const blocks = stmt.blocks.values()
+function onDefinition(mod: B.Mod, definition: B.Definition): Array<L.Line> {
+  switch (definition.kind) {
+    case "FunctionDefinition": {
+      const blocks = definition.blocks.values()
       return [
-        L.Line("put", `${stmt.name}/arity`, [
-          L.Int(BigInt(stmt.parameters.length)),
+        L.Line("put", `${definition.name}/arity`, [
+          L.Int(BigInt(definition.parameters.length)),
         ]),
-        ...stmt.parameters
+        ...definition.parameters
           .toReversed()
           .map((parameter) =>
-            L.Line("ins", stmt.name, [L.Var("local-store"), L.Var(parameter)]),
+            L.Line("ins", definition.name, [
+              L.Var("local-store"),
+              L.Var(parameter),
+            ]),
           ),
-        ...blocks.flatMap((block) => onBlock(mod, stmt.name, block)),
+        ...blocks.flatMap((block) => onBlock(mod, definition.name, block)),
       ]
     }
 
-    case "DefineVariable": {
-      const blocks = stmt.blocks.values()
+    case "VariableDefinition": {
+      const blocks = definition.blocks.values()
       return [
-        L.Line("put", `${stmt.name}/is-variable`, [L.Var("true")]),
-        ...blocks.flatMap((block) => onBlock(mod, stmt.name, block)),
+        L.Line("put", `${definition.name}/is-variable`, [L.Var("true")]),
+        ...blocks.flatMap((block) => onBlock(mod, definition.name, block)),
       ]
     }
   }
@@ -122,14 +125,14 @@ function onTailExp(mod: B.Mod, name: string, exp: B.Exp): Array<L.Line> {
 }
 
 function onVar(mod: B.Mod, name: string, exp: B.Var): Array<L.Line> {
-  const stmt = B.modLookupStmt(mod, exp.name)
-  if (stmt) {
-    switch (stmt.kind) {
-      case "DefineFunction": {
+  const definition = B.modLookupDefinition(mod, exp.name)
+  if (definition) {
+    switch (definition.kind) {
+      case "FunctionDefinition": {
         return [L.Line("ins", name, [L.Var("ref"), L.Var(exp.name)])]
       }
 
-      case "DefineVariable": {
+      case "VariableDefinition": {
         return [L.Line("ins", name, [L.Var("global-load"), L.Var(exp.name)])]
       }
     }
@@ -152,11 +155,11 @@ function onGeneralApply(
   exp: B.Apply,
   applyMode: string,
 ): Array<L.Line> {
-  const stmt = B.modLookupStmt(mod, B.asVar(exp.target).name)
-  if (stmt) {
-    switch (stmt.kind) {
-      case "DefineFunction": {
-        const arity = stmt.parameters.length
+  const definition = B.modLookupDefinition(mod, B.asVar(exp.target).name)
+  if (definition) {
+    switch (definition.kind) {
+      case "FunctionDefinition": {
+        const arity = definition.parameters.length
         if (exp.args.length < arity) {
           return [
             ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
@@ -178,8 +181,8 @@ function onGeneralApply(
               L.Var(B.asVar(exp.target).name),
             ]),
           ]
-        } else
-          [
+        } else {
+          return [
             ...exp.args.slice(0, arity).flatMap((arg) => onExp(mod, name, arg)),
             L.Line("ins", name, [
               L.Var("call"),
@@ -192,9 +195,10 @@ function onGeneralApply(
             ]),
             L.Line("ins", name, [L.Var(applyMode)]),
           ]
+        }
       }
 
-      case "DefineVariable": {
+      case "VariableDefinition": {
         return [
           ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
           L.Line("ins", name, [

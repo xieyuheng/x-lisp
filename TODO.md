@@ -1,7 +1,6 @@
 # linn
 
-[meta-lisp.js] basic-lisp -- `Mod` has `definitions` instead of `stmts`
-
+[meta-lisp.js] basic-lisp -- `PrimitiveDefinition`
 [meta-lisp.js] recover `projectTest`
 [meta-lisp.js] remove basic-lisp.js
 [linn.c] update todo list

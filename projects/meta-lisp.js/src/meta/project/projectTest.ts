@@ -14,10 +14,7 @@ export const LinnInterpreterPath = Path.join(
 export function projectTest(project: M.Project): void {
   M.projectBuild(project, { dump: false })
 
-  const bundlePath = Path.join(
-    M.projectOutputDirectory(project),
-    "bundle.linn",
-  )
+  const bundlePath = Path.join(M.projectOutputDirectory(project), "bundle.linn")
 
   M.projectForEachMod(project, (mod) => {
     if (mod.isTypeErrorModule) return
@@ -35,7 +32,11 @@ export function projectTest(project: M.Project): void {
 
         fs.mkdirSync(Path.dirname(snapshotPath), { recursive: true })
 
-        const args = ["run-function", `${mod.name}/${definition.name}`, bundlePath]
+        const args = [
+          "run-function",
+          `${mod.name}/${definition.name}`,
+          bundlePath,
+        ]
         const result = systemShellCapture(LinnInterpreterPath, args)
         if (result.status === 0) {
           if (result.stdout) fs.writeFileSync(snapshotPath, result.stdout)

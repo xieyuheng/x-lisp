@@ -5,7 +5,9 @@ import * as M from "../index.ts"
 
 export function ExplicateControlPass(mod: M.Mod, basicMod: B.Mod): void {
   for (const definition of M.modOwnDefinitions(mod)) {
-    basicMod.stmts.push(...onDefinition(basicMod, definition))
+    for (const basicDefinition of onDefinition(basicMod, definition)) {
+      basicMod.definitions.set(basicDefinition.name, basicDefinition)
+    }
   }
 }
 
@@ -16,7 +18,7 @@ function definitionQualifiedName(definition: M.Definition): string {
 function onDefinition(
   basicMod: B.Mod,
   definition: M.Definition,
-): Array<B.Stmt> {
+): Array<B.Definition> {
   switch (definition.kind) {
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition":
@@ -32,7 +34,7 @@ function onDefinition(
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
       return [
-        B.DefineFunction(
+        B.FunctionDefinition(
           basicMod,
           definitionQualifiedName(definition),
           definition.parameters,
@@ -48,7 +50,7 @@ function onDefinition(
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
       return [
-        B.DefineFunction(
+        B.FunctionDefinition(
           basicMod,
           definitionQualifiedName(definition),
           [],
@@ -64,7 +66,7 @@ function onDefinition(
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
       return [
-        B.DefineVariable(
+        B.VariableDefinition(
           basicMod,
           definitionQualifiedName(definition),
           state.blocks,
