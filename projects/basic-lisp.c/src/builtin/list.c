@@ -42,13 +42,13 @@ x_list_push(value_t value, value_t list) {
 }
 
 value_t
-x_list_shift_mut(value_t list) {
-    return xlist_shift(to_xlist(list));
+x_list_pop_front_mut(value_t list) {
+    return xlist_pop_front(to_xlist(list));
 }
 
 value_t
-x_list_unshift_mut(value_t value, value_t list) {
-    xlist_unshift(to_xlist(list), value);
+x_list_push_front_mut(value_t value, value_t list) {
+    xlist_push_front(to_xlist(list), value);
     return list;
 }
 
@@ -77,13 +77,13 @@ x_car(value_t list) {
 value_t
 x_cdr(value_t list) {
     list = x_list_copy(list);
-    x_list_shift_mut(list);
+    x_list_pop_front_mut(list);
     return list;
 }
 
 value_t
 x_cons(value_t head, value_t tail) {
-    return x_list_unshift_mut(head, x_list_copy(tail));
+    return x_list_push_front_mut(head, x_list_copy(tail));
 }
 
 value_t

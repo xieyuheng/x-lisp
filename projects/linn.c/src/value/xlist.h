@@ -19,8 +19,8 @@ void xlist_put(xlist_t *self, size_t index, value_t value);
 value_t xlist_pop(xlist_t *self);
 void xlist_push(xlist_t *self, value_t value);
 
-value_t xlist_shift(xlist_t *self);
-void xlist_unshift(xlist_t *self, value_t value);
+value_t xlist_pop_front(xlist_t *self);
+void xlist_push_front(xlist_t *self, value_t value);
 
 xlist_t *xlist_copy(const xlist_t *self);
 

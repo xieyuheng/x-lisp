@@ -31,7 +31,7 @@ ignore_line_comments(list_t *tokens) {
     while (!list_is_empty(tokens)) {
         token_t *token = list_first(tokens);
         if (token->kind == LINE_COMMENT_TOKEN) {
-            list_shift(tokens);
+            list_pop_front(tokens);
             token_free(token);
         } else {
             return;
@@ -48,7 +48,7 @@ for_sexp(list_t *tokens) {
         exit(1);
     }
 
-    token_t *token = list_shift(tokens);
+    token_t *token = list_pop_front(tokens);
     switch (token->kind) {
     case SYMBOL_TOKEN: {
         value_t sexp = x_object(intern_symbol(token->content));
@@ -143,7 +143,7 @@ for_list(const char *end, list_t *tokens) {
         token_t *token = list_first(tokens);
         if (token->kind == BRACKET_END_TOKEN) {
             if (string_equal(token->content, end)) {
-                token = list_shift(tokens);
+                token = list_pop_front(tokens);
                 token_free(token);
                 return sexp;
             } else {

@@ -74,7 +74,7 @@ stack_tuck_n(stack_t *self, void *target, size_t n) {
     for (size_t i = 0; i < n; i++) {
         void * value = stack_pop(self);
         assert(value);
-        list_unshift(value_list, value);
+        list_push_front(value_list, value);
     }
 
     stack_push(self, target);

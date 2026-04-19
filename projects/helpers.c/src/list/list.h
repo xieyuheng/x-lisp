@@ -37,8 +37,8 @@ void *list_last(const list_t *self);
 void list_push(list_t *self, void *value);
 void *list_pop(list_t *self);
 
-void list_unshift(list_t *self, void *value);
-void *list_shift(list_t *self);
+void list_push_front(list_t *self, void *value);
+void *list_pop_front(list_t *self);
 
 void *list_get(const list_t *self, size_t index);
 

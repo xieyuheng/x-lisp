@@ -135,17 +135,17 @@
 (define-test list-reverse-test
   (assert-equal (list-reverse [1 2 3]) [3 2 1]))
 
-(define-test list-shift-test
+(define-test list-pop-front-test
   (begin
     (= list [1 2 3])
-    (assert-equal 1 (list-shift! list))
-    (assert-equal 2 (list-shift! list))
-    (assert-equal 3 (list-shift! list))
+    (assert-equal 1 (list-pop-front! list))
+    (assert-equal 2 (list-pop-front! list))
+    (assert-equal 3 (list-pop-front! list))
     (assert-equal list []))
 
   (begin
     (= list [])
-    (list-unshift! 3 list)
-    (list-unshift! 2 list)
-    (list-unshift! 1 list)
+    (list-push-front! 3 list)
+    (list-push-front! 2 list)
+    (list-push-front! 1 list)
     (assert-equal list [1 2 3])))

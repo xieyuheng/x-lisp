@@ -25,7 +25,7 @@ line_free(line_t *self) {
 
 static value_t
 parse_line_arg(list_t *tokens) {
-    token_t *token = list_shift(tokens);
+    token_t *token = list_pop_front(tokens);
     switch (token->kind) {
     case SYMBOL_TOKEN: {
         value_t value = x_object(intern_line_var(token->content));
@@ -60,7 +60,7 @@ parse_line_arg(list_t *tokens) {
     case QUOTATION_MARK_TOKEN: {
         if (string_equal(token->content, "'")) {
             token_free(token);
-            token = list_shift(tokens);
+            token = list_pop_front(tokens);
             value_t value = x_object(intern_symbol(token->content));
             token_free(token);
             return value;
@@ -83,12 +83,12 @@ parse_line(const char *string) {
     list_t *tokens = lexer_lex(lexer);
     assert(list_length(tokens) >= 2);
 
-    token_t *token = list_shift(tokens);
+    token_t *token = list_pop_front(tokens);
     assert(token->kind == SYMBOL_TOKEN);
     char *op_name = string_copy(token->content);
     token_free(token);
 
-    token = list_shift(tokens);
+    token = list_pop_front(tokens);
     assert(token->kind == SYMBOL_TOKEN);
     path_t *path = make_path(token->content);
     token_free(token);

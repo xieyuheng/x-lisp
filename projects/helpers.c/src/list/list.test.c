@@ -12,7 +12,7 @@ main(void) {
     assert(list_last(list) == NULL);
 
     assert(list_pop(list) == NULL);
-    assert(list_shift(list) == NULL);
+    assert(list_pop_front(list) == NULL);
 
     //  Three values we'll use as test data
     //  List values are void *, not particularly strings
@@ -60,10 +60,10 @@ main(void) {
     }
 
     {
-        list_unshift(list, cheese);
+        list_push_front(list, cheese);
         assert(list_length(list) == 1);
 
-        list_unshift(list, bread);
+        list_push_front(list, bread);
         assert(list_length(list) == 2);
         assert(list_first(list) == bread);
 
@@ -76,13 +76,13 @@ main(void) {
     }
 
     {
-        list_unshift(list, cheese);
-        list_unshift(list, bread);
-        list_unshift(list, wine);
+        list_push_front(list, cheese);
+        list_push_front(list, bread);
+        list_push_front(list, wine);
 
-        assert(list_shift(list) == wine);
-        assert(list_shift(list) == bread);
-        assert(list_shift(list) == cheese);
+        assert(list_pop_front(list) == wine);
+        assert(list_pop_front(list) == bread);
+        assert(list_pop_front(list) == cheese);
     }
 
     {
@@ -91,9 +91,9 @@ main(void) {
         list_push(list, wine);
 
         assert(list_first(list) == cheese);
-        assert(list_shift(list) == cheese);
-        assert(list_shift(list) == bread);
-        assert(list_shift(list) == wine);
+        assert(list_pop_front(list) == cheese);
+        assert(list_pop_front(list) == bread);
+        assert(list_pop_front(list) == wine);
     }
 
     {

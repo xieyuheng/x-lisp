@@ -18,8 +18,8 @@ void *array_top(const array_t *self);
 void *array_pop(array_t *self);
 void array_push(array_t *self, void *value);
 
-void *array_shift(array_t *self);
-void array_unshift(array_t *self, void *value);
+void *array_pop_front(array_t *self);
+void array_push_front(array_t *self, void *value);
 
 void *array_get(const array_t *self, size_t index);
 void *array_pick(const array_t *self, size_t back_index);

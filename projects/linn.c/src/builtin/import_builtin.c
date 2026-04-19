@@ -132,8 +132,8 @@ import_builtin(mod_t *mod) {
     define_primitive_1(mod, "builtin/list-pop!", x_list_pop_mut);
     define_primitive_2(mod, "builtin/list-push!", x_list_push_mut);
     define_primitive_2(mod, "builtin/list-push", x_list_push);
-    define_primitive_1(mod, "builtin/list-shift!", x_list_shift_mut);
-    define_primitive_2(mod, "builtin/list-unshift!", x_list_unshift_mut);
+    define_primitive_1(mod, "builtin/list-pop-front!", x_list_pop_front_mut);
+    define_primitive_2(mod, "builtin/list-push-front!", x_list_push_front_mut);
     define_primitive_2(mod, "builtin/list-get", x_list_get);
     define_primitive_3(mod, "builtin/list-put!", x_list_put_mut);
     define_primitive_3(mod, "builtin/list-put", x_list_put);

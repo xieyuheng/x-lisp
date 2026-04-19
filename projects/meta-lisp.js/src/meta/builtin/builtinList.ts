@@ -143,15 +143,15 @@ export function builtinList(mod: Mod) {
     }
   })
 
-  definePrimitiveFunction(mod, "list-unshift!", 2, (value, list) => {
+  definePrimitiveFunction(mod, "list-push-front!", 2, (value, list) => {
     Values.asListValue(list).elements.unshift(value)
     return list
   })
 
-  definePrimitiveFunction(mod, "list-shift!", 1, (list) => {
+  definePrimitiveFunction(mod, "list-pop-front!", 1, (list) => {
     const value = Values.asListValue(list).elements.shift()
     if (value === undefined) {
-      let message = `(list-shift!) empty list`
+      let message = `(list-pop-front!) empty list`
       throw new Error(message)
     } else {
       return value

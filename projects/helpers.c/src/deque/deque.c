@@ -41,14 +41,14 @@ deque_is_empty(deque_t *self) {
 void
 deque_push_front(deque_t *self, void *value) {
     fast_spinlock_lock(self->fast_spinlock);
-    list_unshift(self->list, value);
+    list_push_front(self->list, value);
     fast_spinlock_unlock(self->fast_spinlock);
 }
 
 void *
 deque_pop_front(deque_t *self) {
     fast_spinlock_lock(self->fast_spinlock);
-    void *value = list_shift(self->list);
+    void *value = list_pop_front(self->list);
     fast_spinlock_unlock(self->fast_spinlock);
     return value;
 }

@@ -92,9 +92,9 @@ list_copy_reversed(list_t *self) {
     list_node_t *node = self->first_node;
     while (node) {
         if (self->copy_fn) {
-            list_unshift(list, self->copy_fn(node->value));
+            list_push_front(list, self->copy_fn(node->value));
         } else {
-            list_unshift(list, node->value);
+            list_push_front(list, node->value);
         }
 
         node = node->next;
@@ -248,7 +248,7 @@ list_pop(list_t *self) {
 }
 
 void
-list_unshift(list_t *self, void *value) {
+list_push_front(list_t *self, void *value) {
     list_node_t *node = make_list_node(value);
     if (self->first_node) {
         self->first_node->prev = node;
@@ -265,7 +265,7 @@ list_unshift(list_t *self, void *value) {
 }
 
 void *
-list_shift(list_t *self) {
+list_pop_front(list_t *self) {
     list_node_t *node = self->first_node;
     if (!node) return NULL;
 

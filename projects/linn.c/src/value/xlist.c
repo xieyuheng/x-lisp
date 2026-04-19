@@ -65,13 +65,13 @@ xlist_push(xlist_t *self, value_t value) {
 }
 
 inline value_t
-xlist_shift(xlist_t *self) {
-    return (value_t) array_shift(self->elements);
+xlist_pop_front(xlist_t *self) {
+    return (value_t) array_pop_front(self->elements);
 }
 
 inline void
-xlist_unshift(xlist_t *self, value_t value) {
-    array_unshift(self->elements, (void *) value);
+xlist_push_front(xlist_t *self, value_t value) {
+    array_push_front(self->elements, (void *) value);
 }
 
 xlist_t *

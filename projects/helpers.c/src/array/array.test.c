@@ -62,33 +62,33 @@ main(void) {
         char *B = string_copy("B");
         char *C = string_copy("C");
 
-        array_unshift(array, A);
+        array_push_front(array, A);
         assert(array_length(array) == 1);
-        array_unshift(array, B);
+        array_push_front(array, B);
         assert(array_length(array) == 2);
-        array_unshift(array, C);
+        array_push_front(array, C);
         assert(array_length(array) == 3);
 
         assert(array_get(array, 0) == C);
         assert(array_get(array, 1) == B);
         assert(array_get(array, 2) == A);
 
-        assert(array_shift(array) == C);
-        assert(array_shift(array) == B);
-        assert(array_shift(array) == A);
+        assert(array_pop_front(array) == C);
+        assert(array_pop_front(array) == B);
+        assert(array_pop_front(array) == A);
 
         assert(array_length(array) == 0);
 
         array_push(array, A);
         array_push(array, B);
         array_push(array, C);
-        assert(array_shift(array) == A);
-        assert(array_shift(array) == B);
-        assert(array_shift(array) == C);
+        assert(array_pop_front(array) == A);
+        assert(array_pop_front(array) == B);
+        assert(array_pop_front(array) == C);
 
-        array_unshift(array, A);
-        array_unshift(array, B);
-        array_unshift(array, C);
+        array_push_front(array, A);
+        array_push_front(array, B);
+        array_push_front(array, C);
         assert(array_pop(array) == A);
         assert(array_pop(array) == B);
         assert(array_pop(array) == C);

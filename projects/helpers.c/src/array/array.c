@@ -117,7 +117,7 @@ array_push(array_t *self, void *value) {
 }
 
 inline void *
-array_shift(array_t *self) {
+array_pop_front(array_t *self) {
     assert(!array_is_empty(self));
     void *value = self->values[self->front & self->mask];
     self->values[self->front & self->mask] = NULL;
@@ -126,7 +126,7 @@ array_shift(array_t *self) {
 }
 
 inline void
-array_unshift(array_t *self, void *value) {
+array_push_front(array_t *self, void *value) {
     if (array_is_full_capacity(self)) {
         array_double_capacity(self);
     }
