@@ -1,5 +1,14 @@
 # linn
 
+[linn.c] `db_t` -- nested `hash_t`
+[linn.c] `mod_t` has `db`
+
+[linn.c] remove `path` from `mod_t`
+[linn.c] remove `parameters` from `function_t`
+
+[linn.c] handle `put <path>/arity <n>`
+[linn.c] handle `put <path>/is-variable true`
+
 [linn.c] `prepare_definition` -- handle variable definition
 
 [meta-lisp.js] recover `projectTest`

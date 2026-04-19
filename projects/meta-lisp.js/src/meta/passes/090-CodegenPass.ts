@@ -27,7 +27,7 @@ function onStmt(mod: B.Mod, stmt: B.Stmt): Array<L.Line> {
     case "DefineVariable": {
       const blocks = stmt.blocks.values()
       return [
-        L.Line("put", `${stmt.name}/need-setup`, [L.Var("true")]),
+        L.Line("put", `${stmt.name}/is-variable`, [L.Var("true")]),
         ...blocks.flatMap((block) => onBlock(mod, stmt.name, block)),
       ]
     }
