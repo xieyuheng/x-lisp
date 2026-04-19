@@ -1,11 +1,11 @@
 #!/usr/bin/env -S node
 
-import * as M from "./meta/index.ts"
 import * as cmd from "@xieyuheng/cmd.js"
 import { errorReport } from "@xieyuheng/helpers.js/error"
 import { getPackageJson } from "@xieyuheng/helpers.js/node"
 import * as S from "@xieyuheng/sexp.js"
 import { fileURLToPath } from "node:url"
+import * as M from "./meta/index.ts"
 
 const { version } = getPackageJson(fileURLToPath(import.meta.url))
 

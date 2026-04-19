@@ -1,7 +1,7 @@
-import * as S from "../index.ts"
 import { errorReport } from "@xieyuheng/helpers.js/error"
 import assert from "node:assert"
 import { test } from "node:test"
+import * as S from "../index.ts"
 
 type Exp = Var | Lambda | Apply | Let
 type Var = { kind: "Var"; name: string }

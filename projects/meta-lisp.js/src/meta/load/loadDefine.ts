@@ -1,10 +1,10 @@
+import { range } from "@xieyuheng/helpers.js/range"
+import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as M from "../index.ts"
 import { expandDataConstructor } from "./expandDataConstructor.ts"
 import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate.ts"
 import { expandDataGetter } from "./expandDataGetter.ts"
 import { expandDataPutter } from "./expandDataPutter.ts"
-import { range } from "@xieyuheng/helpers.js/range"
-import { recordMapValue } from "@xieyuheng/helpers.js/record"
 
 export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   if (stmt.kind === "Claim") {

@@ -1,9 +1,9 @@
+import * as S from "@xieyuheng/sexp.js"
+import fs from "node:fs"
 import * as M from "../index.ts"
 import { loadDefine } from "./loadDefine.ts"
 import { loadExempt } from "./loadExempt.ts"
 import { loadImport } from "./loadImport.ts"
-import * as S from "@xieyuheng/sexp.js"
-import fs from "node:fs"
 
 export function loadCode(project: M.Project, path: string): void {
   const code = fs.readFileSync(path, "utf-8")

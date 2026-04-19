@@ -1,5 +1,5 @@
-import { type Instr } from "../instr/index.ts"
 import { type SourceLocation } from "@xieyuheng/sexp.js"
+import { type Instr } from "../instr/index.ts"
 
 export type Block = {
   label: string

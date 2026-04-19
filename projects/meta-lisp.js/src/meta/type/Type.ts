@@ -1,8 +1,8 @@
-import * as M from "../index.ts"
 import { range } from "@xieyuheng/helpers.js/range"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import assert from "node:assert"
+import * as M from "../index.ts"
 
 export function isType(value: M.Value): boolean {
   return (

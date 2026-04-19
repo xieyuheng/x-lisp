@@ -1,5 +1,5 @@
-import * as M from "../index.ts"
 import { setUnion } from "@xieyuheng/helpers.js/set"
+import * as M from "../index.ts"
 
 // - can not handle `Match`, must be called after `desugar`.
 

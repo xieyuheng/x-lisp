@@ -1,5 +1,5 @@
-import { stringBernsteinHash } from "./stringBernsteinHash.ts"
 import { test } from "node:test"
+import { stringBernsteinHash } from "./stringBernsteinHash.ts"
 
 function logHash(string: string) {
   console.log({ string, hash: stringBernsteinHash(string) })

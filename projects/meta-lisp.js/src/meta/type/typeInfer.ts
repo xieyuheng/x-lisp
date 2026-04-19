@@ -1,6 +1,6 @@
-import * as M from "../index.ts"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
 import * as S from "@xieyuheng/sexp.js"
+import * as M from "../index.ts"
 
 export function typeInfer(mod: M.Mod, ctx: M.Ctx, exp: M.Exp): M.InferEffect {
   return (subst) => {

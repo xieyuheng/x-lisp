@@ -1,6 +1,6 @@
-import { arrayZip } from "./arrayZip.ts"
 import assert from "node:assert"
 import { test } from "node:test"
+import { arrayZip } from "./arrayZip.ts"
 
 test("arrayZip", () => {
   assert.deepStrictEqual(arrayZip([1, 2, 3], ["a", "b", "c"]), [

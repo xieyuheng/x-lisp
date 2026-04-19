@@ -1,9 +1,5 @@
 import * as B from "../../basic/index.ts"
 import * as L from "../../linn/index.ts"
-import * as M from "../index.ts"
-import { stringToSubscript } from "@xieyuheng/helpers.js/string"
-import * as S from "@xieyuheng/sexp.js"
-import { getCompileCacheDir } from "node:module"
 
 export function CodegenPass(basicMod: B.Mod, linnMod: L.Mod): void {
   for (const stmt of basicMod.stmts) {

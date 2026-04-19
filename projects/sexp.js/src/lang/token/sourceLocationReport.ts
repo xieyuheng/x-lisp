@@ -1,7 +1,7 @@
-import { spanReport, type Position } from "../span/index.ts"
-import type { SourceLocation } from "./SourceLocation.ts"
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import fs from "node:fs"
+import { spanReport, type Position } from "../span/index.ts"
+import type { SourceLocation } from "./SourceLocation.ts"
 
 export function sourceLocationReport(
   location: SourceLocation,

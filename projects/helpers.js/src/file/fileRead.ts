@@ -1,5 +1,5 @@
-import type { File } from "./File.ts"
 import fs from "node:fs"
+import type { File } from "./File.ts"
 
 export function fileRead(file: File): string {
   const { size } = fs.fstatSync(file.fd)

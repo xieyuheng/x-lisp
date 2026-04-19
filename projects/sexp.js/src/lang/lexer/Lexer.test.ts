@@ -1,7 +1,7 @@
-import { Lexer } from "../lexer/index.ts"
-import { type Token } from "../token/index.ts"
 import assert from "node:assert"
 import { test } from "node:test"
+import { Lexer } from "../lexer/index.ts"
+import { type Token } from "../token/index.ts"
 
 function assertTokens(
   text: string,

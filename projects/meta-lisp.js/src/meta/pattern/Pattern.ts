@@ -1,5 +1,5 @@
-import * as M from "../index.ts"
 import assert from "node:assert"
+import * as M from "../index.ts"
 
 export function isPattern(mod: M.Mod, exp: M.Exp): boolean {
   return isVarPattern(mod, exp) || isDataPattern(mod, exp)

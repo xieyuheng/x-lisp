@@ -1,6 +1,6 @@
+import { test } from "node:test"
 import * as S from "../index.ts"
 import { prettySexp } from "./index.ts"
-import { test } from "node:test"
 
 function testWidths(widths: Array<number>, code: string) {
   const sexps = S.parseSexps(code, { path: "[testWidths]" })

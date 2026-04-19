@@ -1,5 +1,5 @@
-import * as M from "../index.ts"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
+import * as M from "../index.ts"
 
 export function formatTypes(types: Array<M.Value>): string {
   return types.map((t) => formatType(t)).join(" ")

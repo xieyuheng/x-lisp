@@ -1,6 +1,6 @@
-import * as M from "../index.ts"
 import { mapMapValue } from "@xieyuheng/helpers.js/map"
 import { recordMapValue } from "@xieyuheng/helpers.js/record"
+import * as M from "../index.ts"
 
 export function substApplyToType(subst: M.Subst, type: M.Value): M.Value {
   return substApplyToTypeWithBoundIds(new Set(), subst, type)

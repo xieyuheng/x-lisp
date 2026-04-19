@@ -1,7 +1,7 @@
-import * as M from "../index.ts"
 import { mapMapValue } from "@xieyuheng/helpers.js/map"
 import { range } from "@xieyuheng/helpers.js/range"
 import assert from "node:assert"
+import * as M from "../index.ts"
 
 export function substExtend(
   subst: M.Subst,

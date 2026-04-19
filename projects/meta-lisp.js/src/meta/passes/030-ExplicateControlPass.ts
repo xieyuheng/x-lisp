@@ -1,8 +1,7 @@
-import * as B from "../../basic/index.ts"
-import * as M from "../index.ts"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
-import { getCompileCacheDir } from "node:module"
+import * as B from "../../basic/index.ts"
+import * as M from "../index.ts"
 
 export function ExplicateControlPass(mod: M.Mod, basicMod: B.Mod): void {
   for (const definition of M.modOwnDefinitions(mod)) {

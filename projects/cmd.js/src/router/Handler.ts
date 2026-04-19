@@ -1,7 +1,7 @@
+import type { MaybePromise } from "@xieyuheng/helpers.js/promise"
 import { applyMiddleware, type Middleware } from "./Middleware.ts"
 import type { Route } from "./Route.ts"
 import type { Router } from "./Router.ts"
-import type { MaybePromise } from "@xieyuheng/helpers.js/promise"
 
 export type HandlerArgs = Array<any>
 export type HandlerOptions = Record<string, any>

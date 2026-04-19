@@ -1,6 +1,6 @@
+import * as S from "@xieyuheng/sexp.js"
 import * as Exps from "../exp/index.ts"
 import { type Exp } from "../exp/index.ts"
-import * as S from "@xieyuheng/sexp.js"
 
 export function formatExps(exps: Array<Exp>): string {
   return exps.map(formatExp).join(" ")

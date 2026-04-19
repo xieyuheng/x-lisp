@@ -1,6 +1,6 @@
+import { setAdd, setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
 import { type Exp } from "./Exp.ts"
 import { expChildren } from "./index.ts"
-import { setAdd, setUnion, setUnionMany } from "@xieyuheng/helpers.js/set"
 
 export function expFreeNames(boundNames: Set<string>, exp: Exp): Set<string> {
   switch (exp.kind) {

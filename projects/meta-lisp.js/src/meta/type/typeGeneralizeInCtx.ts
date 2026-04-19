@@ -1,5 +1,5 @@
-import * as M from "../index.ts"
 import { arrayDedup } from "@xieyuheng/helpers.js/array"
+import * as M from "../index.ts"
 
 export function typeGeneralizeInCtx(ctx: M.Ctx, type: M.Value): M.Value {
   const freeVarTypesInCtx = M.ctxFreeVarTypes(ctx)

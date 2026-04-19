@@ -1,8 +1,8 @@
+import { jsonParseString } from "@xieyuheng/helpers.js/json"
 import { ErrorWithSourceLocation } from "../../errors/ErrorWithSourceLocation.ts"
 import { positionForwardChar } from "../../span/Position.ts"
 import type { Consumer } from "../Consumer.ts"
 import type { Lexer } from "../Lexer.ts"
-import { jsonParseString } from "@xieyuheng/helpers.js/json"
 
 export class StringConsumer implements Consumer {
   kind = "String" as const

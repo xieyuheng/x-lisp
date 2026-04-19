@@ -1,6 +1,6 @@
-import * as M from "../index.ts"
 import { stringToSubscript } from "@xieyuheng/helpers.js/string"
 import * as S from "@xieyuheng/sexp.js"
+import * as M from "../index.ts"
 
 export function createFreshVar(
   name: string,

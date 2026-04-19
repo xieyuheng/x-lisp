@@ -25,7 +25,9 @@
   "prettier": {
     "semi": false,
     "trailingComma": "all",
-    "plugins": ["@trivago/prettier-plugin-sort-imports"]
+    "plugins": [
+      "prettier-plugin-organize-imports"
+    ]
   },
   "dependencies": {
     "@xieyuheng/cmd.js": "workspace:*",
@@ -35,9 +37,9 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "prettier-plugin-organize-imports": "^4.3.0",
     "@types/node": "^25.6.0",
     "prettier": "^3.8.3",
-    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "typescript": "^5.9.3"
   }
 }

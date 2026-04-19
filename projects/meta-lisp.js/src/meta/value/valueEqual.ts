@@ -1,7 +1,7 @@
+import { arrayZip } from "@xieyuheng/helpers.js/array"
 import * as Values from "./index.ts"
 import { type Value } from "./index.ts"
 import { valueSame } from "./valueSame.ts"
-import { arrayZip } from "@xieyuheng/helpers.js/array"
 
 export function valueEqual(lhs: Value, rhs: Value): boolean {
   if (lhs.kind === "ListValue" && rhs.kind === "ListValue") {

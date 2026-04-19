@@ -1,8 +1,8 @@
+import assert from "node:assert"
+import { test } from "node:test"
 import { matchSexp, type Subst } from "../match/index.ts"
 import { parseSexp } from "../parser/index.ts"
 import * as S from "../sexp/index.ts"
-import assert from "node:assert"
-import { test } from "node:test"
 
 const testOptions = { path: "[matchSexp.test]" }
 

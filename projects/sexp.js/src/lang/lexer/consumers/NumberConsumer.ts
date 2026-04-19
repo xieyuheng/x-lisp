@@ -1,7 +1,7 @@
-import type { Consumer } from "../Consumer.ts"
-import { lexerMarks, type Lexer } from "../index.ts"
 import { jsonParseNumber } from "@xieyuheng/helpers.js/json"
 import { stringIsBlank } from "@xieyuheng/helpers.js/string"
+import type { Consumer } from "../Consumer.ts"
+import { lexerMarks, type Lexer } from "../index.ts"
 
 export class NumberConsumer implements Consumer {
   kind = "Number" as const

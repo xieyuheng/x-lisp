@@ -1,7 +1,7 @@
+import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 import { definePrimitiveFunction } from "../define/index.ts"
 import * as M from "../index.ts"
 import { type Mod } from "../mod/index.ts"
-import { formatUnderTag } from "@xieyuheng/helpers.js/format"
 
 export function builtinAssert(mod: Mod) {
   definePrimitiveFunction(mod, "assert", 1, (value) => {

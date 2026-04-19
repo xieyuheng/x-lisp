@@ -1,7 +1,7 @@
-import * as M from "../index.ts"
-import { type Value } from "../value/index.ts"
 import { arrayDedup } from "@xieyuheng/helpers.js/array"
 import assert from "node:assert"
+import * as M from "../index.ts"
+import { type Value } from "../value/index.ts"
 
 export type Ctx = Map<string, Value>
 

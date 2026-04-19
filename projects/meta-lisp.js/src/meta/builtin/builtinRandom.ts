@@ -1,7 +1,7 @@
+import { randomFloat, randomInt } from "@xieyuheng/helpers.js/random"
 import { definePrimitiveFunction } from "../define/index.ts"
 import { type Mod } from "../mod/index.ts"
 import * as Values from "../value/index.ts"
-import { randomFloat, randomInt } from "@xieyuheng/helpers.js/random"
 
 export function builtinRandom(mod: Mod) {
   definePrimitiveFunction(mod, "random-int", 2, (start, end) => {

@@ -1,6 +1,6 @@
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { type Block } from "../block/index.ts"
 import type { Mod } from "../mod/index.ts"
-import { type SourceLocation } from "@xieyuheng/sexp.js"
 
 export type Stmt = DefineFunction | DefineVariable
 

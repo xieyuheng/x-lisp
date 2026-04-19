@@ -1,6 +1,6 @@
-import { arraySlide2 } from "./arraySlide2.ts"
 import assert from "node:assert"
 import { test } from "node:test"
+import { arraySlide2 } from "./arraySlide2.ts"
 
 test("arraySlide2", () => {
   const results: Array<[number, number]> = []

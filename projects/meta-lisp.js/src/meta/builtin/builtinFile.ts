@@ -1,3 +1,4 @@
+import { write } from "@xieyuheng/helpers.js/file"
 import {
   definePrimitiveFunction,
   definePrimitiveVariable,
@@ -5,7 +6,6 @@ import {
 import { formatValue } from "../format/formatValue.ts"
 import * as M from "../index.ts"
 import { type Mod } from "../mod/index.ts"
-import { write } from "@xieyuheng/helpers.js/file"
 
 export function builtinFile(mod: Mod) {
   definePrimitiveVariable(mod, "file-t", M.createAtomType("file"))

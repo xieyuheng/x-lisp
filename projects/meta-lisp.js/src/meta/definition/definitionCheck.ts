@@ -1,7 +1,7 @@
-import * as M from "../index.ts"
 import { writeln } from "@xieyuheng/helpers.js/file"
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import * as S from "@xieyuheng/sexp.js"
+import * as M from "../index.ts"
 
 export function definitionCheck(definition: M.Definition): null {
   if (definition.isChecked) {

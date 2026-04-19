@@ -1,8 +1,8 @@
+import assert from "node:assert"
 import type { ParserOptions } from "../parser/index.ts"
 import { initPosition, positionForwardChar } from "../span/index.ts"
 import { type Token } from "../token/index.ts"
 import { consume } from "./consume.ts"
-import assert from "node:assert"
 
 export class Lexer {
   position = initPosition()

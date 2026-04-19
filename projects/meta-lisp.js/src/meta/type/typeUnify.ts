@@ -1,7 +1,7 @@
-import * as M from "../index.ts"
-import { typeVarOccurredInType } from "./typeVarOccurredInType.ts"
 import { range } from "@xieyuheng/helpers.js/range"
 import { setDifference, setEqual } from "@xieyuheng/helpers.js/set"
+import * as M from "../index.ts"
+import { typeVarOccurredInType } from "./typeVarOccurredInType.ts"
 
 export function typeUnify(
   trail: M.Trail,

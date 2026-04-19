@@ -1,7 +1,7 @@
+import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { formatExp } from "../format/index.ts"
 import * as Exps from "./index.ts"
 import { type Exp } from "./index.ts"
-import { type SourceLocation } from "@xieyuheng/sexp.js"
 
 export function isLiteralList(value: Exp): value is Exps.LiteralList {
   return value.kind === "LiteralList"

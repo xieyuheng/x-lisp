@@ -1,7 +1,7 @@
+import assert from "node:assert"
 import * as Values from "../value/index.ts"
 import { type Value } from "../value/index.ts"
 import { formatBody } from "./index.ts"
-import assert from "node:assert"
 
 type Options = { digest?: boolean }
 
