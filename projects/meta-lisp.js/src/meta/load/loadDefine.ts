@@ -11,7 +11,13 @@ export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   if (stmt.kind === "DeclarePrimitiveFunction") {
     const definition = M.modLookupDefinition(mod, stmt.name)
     if (definition && definition.kind === "PrimitiveFunctionDefinition") {
-      assert(definition.arity === stmt.arity)
+      if (definition.arity !== stmt.arity) {
+        let message = `[loadDefine] arity mismatch`
+        message += `\n  definition name: ${definition.name}`
+        message += `\n  definition arity: ${definition.arity}`
+        message += `\n  declared arity: ${stmt.arity}`
+        throw new Error(message)
+      }
     } else {
       M.modDefine(
         mod,

@@ -1,10 +1,12 @@
 (module builtin)
 
+(declare-primitive-variable bool-t)
 (declare-primitive-variable true)
 (declare-primitive-variable false)
 (declare-primitive-function bool? 1)
 (declare-primitive-function not 1)
 
+(claim bool-t type-t)
 (claim true bool-t)
 (claim false bool-t)
 (claim bool? (polymorphic (A) (-> A bool-t)))

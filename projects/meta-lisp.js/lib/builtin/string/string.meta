@@ -1,5 +1,16 @@
 (module builtin)
 
+(declare-primitive-variable string-t)
+(declare-primitive-function string? 1)
+(declare-primitive-function string-length 1)
+(declare-primitive-function string-empty? 1)
+(declare-primitive-function string-append 2)
+(declare-primitive-function string-concat 1)
+(declare-primitive-function string-join 2)
+(declare-primitive-function string-compare-lexical 2)
+(declare-primitive-function string-to-symbol 1)
+
+(claim string-t type-t)
 (claim string? (polymorphic (A) (-> A bool-t)))
 (claim string-length (-> string-t int-t))
 (claim string-empty? (-> string-t bool-t))

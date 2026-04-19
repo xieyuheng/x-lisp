@@ -1,5 +1,13 @@
 (module builtin)
 
+(declare-primitive-variable keyword-t)
+(declare-primitive-function keyword? 1)
+(declare-primitive-function keyword-length 1)
+(declare-primitive-function keyword-to-string 1)
+(declare-primitive-function keyword-append 2)
+(declare-primitive-function keyword-concat 1)
+
+(claim keyword-t type-t)
 (claim keyword? (polymorphic (A) (-> A bool-t)))
 (claim keyword-length (-> keyword-t int-t))
 (claim keyword-to-string (-> keyword-t string-t))
