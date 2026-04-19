@@ -1,6 +1,11 @@
 # linn
 
-[meta-lisp.js] `CodegenPass` -- compile basic-lisp to linn -- learn from [basic-lisp.c] `compile_exp`
+[meta-lisp.js] `CodegenPass` -- `onInstr`
+[meta-lisp.js] `CodegenPass` -- `onBlock` -- handle label
+
+[meta-lisp.js] `CodegenPass` -- `onStmt` -- `DefineFunction` -- handle arity
+[meta-lisp.js] `CodegenPass` -- `onStmt` -- `DefineFunction` -- handle parameters
+[meta-lisp.js] `CodegenPass` -- `onStmt` -- `DefineVariable` -- handle is variable flag
 
 [linn.c] `execute_ins_line` -- append instruction to function -- learn from [basic-lisp.c] `compile_exp`
 
