@@ -33,7 +33,8 @@ db_ensure_node(db_t *db, const char *key) {
     return node;
 }
 
-// void
-// db_put(db_t *db, const char *key, value_t value) {
-
-// }
+void
+db_put(db_t *db, const char *key, value_t value) {
+    db_node_t *node = db_ensure_node(db, key);
+    node->value = value; 
+}

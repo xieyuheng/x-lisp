@@ -1,6 +1,5 @@
 # linn
 
-[linn.c] `db_put`
 [linn.c] `db_get`
 [linn.c] `db_has`
 [linn.c] `db_get_node`
