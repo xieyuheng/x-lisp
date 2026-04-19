@@ -24,7 +24,7 @@ function onDefinition(
       return [
         B.PrimitiveFunctionDeclaration(
           basicMod,
-          definition.name,
+          definitionQualifiedName(definition),
           definition.arity,
           definition.location,
         ),
@@ -35,7 +35,7 @@ function onDefinition(
       return [
         B.PrimitiveVariableDeclaration(
           basicMod,
-          definition.name,
+          definitionQualifiedName(definition),
           definition.location,
         ),
       ]

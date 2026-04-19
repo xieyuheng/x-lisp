@@ -3,6 +3,8 @@
 [meta-lisp.js] meta-lisp -- `PrimitiveFunctionDeclaration` & `PrimitiveVariableDeclaration`
 [meta-lisp.js] meta-lisp -- `DeclarePrimitiveFunction` & `DeclarePrimitiveVariable`
 [meta-lisp.js] meta-lisp -- parse `(declare-primitive-function)` & `(declare-primitive-variable)`
+[meta-lisp.js] meta-lisp -- `loadDefine` -- handle `PrimitiveFunctionDeclaration` & `PrimitiveVariableDeclaration`
+[meta-lisp.js] meta-lisp -- check claimed undefined name
 
 [meta-lisp.js] recover `projectTest`
 [meta-lisp.js] remove basic-lisp.js
