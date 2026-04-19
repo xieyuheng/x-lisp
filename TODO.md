@@ -1,10 +1,6 @@
 # linn
 
-[linn.c] `db_get`
-[linn.c] `db_has`
-[linn.c] `db_get_node`
-[linn.c] `db_get_children`
-[linn.c] `db_delete`
+[linn.c] `db_delete_recursive`
 
 [linn.c] handle `put <path>/arity <n>`
 [linn.c] handle `put <path>/is-variable true`
