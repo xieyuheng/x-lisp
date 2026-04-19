@@ -29,7 +29,10 @@ function onStmt(mod: B.Mod, stmt: B.Stmt): Array<L.Line> {
 }
 
 function onBlock(mod: B.Mod, name: string, block: B.Block): Array<L.Line> {
-  return block.instrs.flatMap((instr) => onInstr(mod, name, instr))
+  return [
+    L.Line("ins", name, [L.Var("label"), L.Var(block.label)]),
+    ...block.instrs.flatMap((instr) => onInstr(mod, name, instr))
+  ]
 }
 
 function onInstr(mod: B.Mod, name: string, instr: B.Instr): Array<L.Line> {

@@ -1,7 +1,5 @@
 # linn
 
-[meta-lisp.js] `CodegenPass` -- `onBlock` -- handle label
-
 [meta-lisp.js] `CodegenPass` -- `onStmt` -- `DefineFunction` -- handle arity
 [meta-lisp.js] `CodegenPass` -- `onStmt` -- `DefineFunction` -- handle parameters
 [meta-lisp.js] `CodegenPass` -- `onStmt` -- `DefineVariable` -- handle is variable flag
