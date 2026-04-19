@@ -1,6 +1,8 @@
 # linn
 
-[linn.c] `execute_ins_line` -- append instruction to function -- learn from [basic-lisp.c] `compile_exp`
+[linn.c] `prepare_definition` -- handle variable definition
+[linn.c] `linn_load` call `function_patch_label_references(function);` for all functions
+
 [meta-lisp.js] recover `projectTest`
 [meta-lisp.js] remove basic-lisp.js
 [linn.c] update todo list
