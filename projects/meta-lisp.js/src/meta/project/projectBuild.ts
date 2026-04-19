@@ -1,6 +1,7 @@
 import {
   callWithFile,
   fileWrite,
+  fileWriteln,
   openOutputFile,
 } from "@xieyuheng/helpers.js/file"
 import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
@@ -63,10 +64,8 @@ function projectBundleBasic(project: M.Project): void {
   })
 
   const directory = M.projectOutputDirectory(project)
-  callWithFile(
-    openOutputFile(`${directory}/bundle.basic`),
-    (file) => fileWrite(file, code.trim()),
-    fileWrite(file, "\n"),
+  callWithFile(openOutputFile(`${directory}/bundle.basic`), (file) =>
+    fileWriteln(file, code.trim()),
   )
 }
 
