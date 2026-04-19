@@ -1,6 +1,5 @@
 # linn
 
-[meta-lisp.js] linn -- `Exp` -- has `Var` -- for `args` of `Line`
 [meta-lisp.js] linn -- `Line` -- has `op` `path` `args`
 [meta-lisp.js] linn -- `Mod` -- has `lines` -- no need to run the code
 [meta-lisp.js] linn -- `formatLine`
