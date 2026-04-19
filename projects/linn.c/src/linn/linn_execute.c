@@ -1,18 +1,5 @@
 #include "index.h"
 
-static function_t *
-prepare_function(mod_t *mod, const char *name) {
-    definition_t *definition = mod_lookup(mod, name);
-    if (definition) {
-        assert(definition->kind == FUNCTION_DEFINITION);
-        return definition->function_definition.function;
-    } else {
-        function_t *function = make_function();
-        define_function(mod, name, function);
-        return function;
-    }
-}
-
 static definition_t *
 prepare_definition(mod_t *mod, const char *name) {
     definition_t *definition = mod_lookup(mod, name);
@@ -38,7 +25,8 @@ prepare_binding_index(function_t *function, const char *name) {
 static void
 execute_ins_line(mod_t *mod, line_t *line) {
     const path_t *path = line_path(line);
-    function_t *function = prepare_function(mod, path_raw_string(path));
+    definition_t *definition = prepare_definition(mod, path_raw_string(path));
+    function_t *function = definition_function(definition);
     line_var_t *op = to_line_var(line_get_arg(line, 0));
 
     if (string_equal(op->string, "literal")) {
