@@ -93,7 +93,7 @@ bool
 definition_has_arity(const definition_t *self) {
     switch (self->kind) {
     case FUNCTION_DEFINITION: {
-        return self->function_definition.function->parameters;
+        return true;
     }
 
     case PRIMITIVE_DEFINITION: {
@@ -114,7 +114,7 @@ definition_arity(const definition_t *self) {
 
     switch (self->kind) {
     case FUNCTION_DEFINITION: {
-        return array_length(self->function_definition.function->parameters);
+        return self->function_definition.function->arity;
     }
 
     case PRIMITIVE_DEFINITION: {

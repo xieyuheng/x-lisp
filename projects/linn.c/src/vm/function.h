@@ -4,7 +4,7 @@ struct function_t {
     record_t *binding_indexes; // record of size_t
     record_t *label_offsets; // record of int32_t
     record_t *label_references; // record of list of int32_t
-    array_t *parameters; // optional array of char *
+    size_t arity;
     uint8_t *code_area;
     size_t code_area_size;
     size_t code_length;

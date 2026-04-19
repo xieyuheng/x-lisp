@@ -1,8 +1,5 @@
 # linn
 
-[linn.c] remove `path` from `mod_t`
-[linn.c] remove `parameters` from `function_t`
-
 [linn.c] handle `put <path>/arity <n>`
 [linn.c] handle `put <path>/is-variable true`
 
