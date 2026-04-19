@@ -1,5 +1,10 @@
 (module builtin)
 
+(declare-primitive-function assert 1)
+(declare-primitive-function assert-not 1)
+(declare-primitive-function assert-equal 2)
+(declare-primitive-function assert-not-equal 2)
+
 (claim assert (-> bool-t void-t))
 (claim assert-not (-> bool-t void-t))
 (claim assert-equal (polymorphic (A) (-> A A void-t)))

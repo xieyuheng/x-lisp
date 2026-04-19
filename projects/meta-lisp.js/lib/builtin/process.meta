@@ -1,3 +1,5 @@
 (module builtin)
 
+(declare-primitive-function current-directory 0)
+
 (claim current-directory (-> string-t))

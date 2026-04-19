@@ -1,3 +1,5 @@
 (module builtin)
 
+(declare-primitive-function error 1)
+
 (claim error (polymorphic (A) (-> string-t A)))

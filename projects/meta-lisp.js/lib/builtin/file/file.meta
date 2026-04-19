@@ -1,5 +1,17 @@
 (module builtin)
 
+(declare-primitive-variable file-t)
+(declare-primitive-function open-input-file 1)
+(declare-primitive-function open-output-file 1)
+(declare-primitive-function file-close 1)
+(declare-primitive-function file-read 1)
+(declare-primitive-function file-write 2)
+(declare-primitive-function file-writeln 2)
+(declare-primitive-function print 1)
+(declare-primitive-function println 1)
+(declare-primitive-function write 1)
+(declare-primitive-function newline 0)
+
 (claim file-t type-t)
 (claim open-input-file (-> string-t file-t))
 (claim open-output-file (-> string-t file-t))

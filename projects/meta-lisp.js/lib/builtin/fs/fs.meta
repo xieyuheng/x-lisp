@@ -1,5 +1,18 @@
 (module builtin)
 
+(declare-primitive-function fs-exists? 1)
+(declare-primitive-function fs-file? 1)
+(declare-primitive-function fs-directory? 1)
+(declare-primitive-function fs-read 1)
+(declare-primitive-function fs-write 2)
+(declare-primitive-function fs-list 1)
+(declare-primitive-function fs-ensure-file 1)
+(declare-primitive-function fs-ensure-directory 1)
+(declare-primitive-function fs-delete-file 1)
+(declare-primitive-function fs-delete-directory 1)
+(declare-primitive-function fs-delete 1)
+(declare-primitive-function fs-rename 2)
+
 (claim fs-exists? (-> string-t bool-t))
 (claim fs-file? (-> string-t bool-t))
 (claim fs-directory? (-> string-t bool-t))

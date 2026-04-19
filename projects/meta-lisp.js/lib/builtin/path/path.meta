@@ -1,5 +1,14 @@
 (module builtin)
 
+(declare-primitive-function path-base-name 1)
+(declare-primitive-function path-directory-name 1)
+(declare-primitive-function path-extension 1)
+(declare-primitive-function path-stem 1)
+(declare-primitive-function path-absolute? 1)
+(declare-primitive-function path-relative? 1)
+(declare-primitive-function path-join 2)
+(declare-primitive-function path-normalize 1)
+
 (claim path-base-name (-> string-t string-t))
 (claim path-directory-name (-> string-t string-t))
 (claim path-extension (-> string-t string-t))
