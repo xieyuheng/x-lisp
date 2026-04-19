@@ -1,7 +1,5 @@
 # linn
 
-[linn.c] `prepare_definition` -- handle variable definition
-
 [meta-lisp.js] recover `projectTest`
 [meta-lisp.js] remove basic-lisp.js
 [linn.c] update todo list

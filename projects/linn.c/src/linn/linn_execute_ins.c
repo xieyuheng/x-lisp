@@ -3,13 +3,15 @@
 static definition_t *
 ensure_definition(mod_t *mod, const char *name) {
     definition_t *definition = mod_lookup(mod, name);
-    if (definition) {
-        return definition;
+    if (definition) return definition;
+
+    if (db_has_attribute(mod->db, name, "is-variable")) {
+        define_function(mod, name, make_function());
     } else {
-        function_t *function = make_function();
-        define_function(mod, name, function);
-        return mod_lookup(mod, name);
+        define_variable_setup(mod, name, make_function());
     }
+
+    return mod_lookup(mod, name);
 }
 
 static size_t
