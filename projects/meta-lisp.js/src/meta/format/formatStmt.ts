@@ -62,6 +62,14 @@ export function formatStmt(stmt: Stmt): string {
     case "DeclareTypeErrorModule": {
       return `(type-error-module ${stmt.name})`
     }
+
+    case "DeclarePrimitiveFunction": {
+      return `(declare-primitive-function ${stmt.name} ${stmt.arity})`
+    }
+
+    case "DeclarePrimitiveVariable": {
+      return `(declare-primitive-variable ${stmt.name})`
+    }
   }
 }
 

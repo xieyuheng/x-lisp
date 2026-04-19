@@ -19,6 +19,8 @@ export type Stmt =
   | Exempt
   | DeclareModule
   | DeclareTypeErrorModule
+  | DeclarePrimitiveFunction
+  | DeclarePrimitiveVariable
 
 export type DefineFunction = {
   kind: "DefineFunction"
@@ -212,6 +214,43 @@ export function DeclareTypeErrorModule(
 ): DeclareTypeErrorModule {
   return {
     kind: "DeclareTypeErrorModule",
+    name,
+    location,
+  }
+}
+
+export type DeclarePrimitiveFunction = {
+  kind: "DeclarePrimitiveFunction"
+  name: string
+  arity: number
+  location?: SourceLocation
+}
+
+export function DeclarePrimitiveFunction(
+  name: string,
+  arity: number,
+  location?: SourceLocation,
+): DeclarePrimitiveFunction {
+  return {
+    kind: "DeclarePrimitiveFunction",
+    name,
+    arity,
+    location,
+  }
+}
+
+export type DeclarePrimitiveVariable = {
+  kind: "DeclarePrimitiveVariable"
+  name: string
+  location?: SourceLocation
+}
+
+export function DeclarePrimitiveVariable(
+  name: string,
+  location?: SourceLocation,
+): DeclarePrimitiveVariable {
+  return {
+    kind: "DeclarePrimitiveVariable",
     name,
     location,
   }
