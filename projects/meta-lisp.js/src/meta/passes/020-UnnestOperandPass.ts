@@ -14,6 +14,8 @@ type State = {
 
 function onDefinition(definition: M.Definition): null {
   switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration":
+    case "PrimitiveVariableDeclaration":
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition":
     case "DataDefinition":

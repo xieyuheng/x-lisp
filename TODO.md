@@ -1,6 +1,5 @@
 # linn
 
-[meta-lisp.js] meta-lisp -- `PrimitiveFunctionDeclaration` & `PrimitiveVariableDeclaration`
 [meta-lisp.js] meta-lisp -- `DeclarePrimitiveFunction` & `DeclarePrimitiveVariable`
 [meta-lisp.js] meta-lisp -- parse `(declare-primitive-function)` & `(declare-primitive-variable)`
 [meta-lisp.js] meta-lisp -- `loadDefine` -- handle `PrimitiveFunctionDeclaration` & `PrimitiveVariableDeclaration`

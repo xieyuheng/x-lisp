@@ -9,6 +9,5 @@ export function formatModStmts(mod: Mod): string {
 
 export function formatModDefinitions(mod: Mod): string {
   const definitions = M.modOwnDefinitions(mod).map(formatDefinition)
-
   return Array.from(definitions).join(" ")
 }

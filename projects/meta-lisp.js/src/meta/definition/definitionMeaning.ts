@@ -4,6 +4,16 @@ export function definitionMeaning(definition: M.Definition): M.Value {
   M.definitionCheck(definition)
 
   switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration": {
+      let message = `[definitionMeaning] can not handle declared primitive function`
+      throw new Error(message)
+    }
+
+    case "PrimitiveVariableDeclaration": {
+      let message = `[definitionMeaning] can not handle declared primitive variable`
+      throw new Error(message)
+    }
+
     case "PrimitiveFunctionDefinition": {
       return M.DefinitionValue(definition)
     }

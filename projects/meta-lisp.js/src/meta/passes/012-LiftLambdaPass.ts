@@ -21,6 +21,8 @@ function onDefinition(
   definition: M.Definition,
 ): Array<M.Definition> {
   switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration":
+    case "PrimitiveVariableDeclaration":
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition":
     case "DataDefinition":

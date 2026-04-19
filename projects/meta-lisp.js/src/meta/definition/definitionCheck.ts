@@ -60,6 +60,8 @@ export function definitionCheck(definition: M.Definition): null {
       return null
     }
 
+    case "PrimitiveFunctionDeclaration":
+    case "PrimitiveVariableDeclaration":
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition": {
       const type = M.modLookupClaimedType(mod, name)

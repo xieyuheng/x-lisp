@@ -3,6 +3,8 @@ import * as M from "../index.ts"
 
 export function definitionQualifyFreeVar(definition: M.Definition): null {
   switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration":
+    case "PrimitiveVariableDeclaration":
     case "PrimitiveFunctionDefinition":
     case "PrimitiveVariableDefinition": {
       return null

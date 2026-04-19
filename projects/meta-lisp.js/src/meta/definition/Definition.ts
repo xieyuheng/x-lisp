@@ -6,6 +6,8 @@ import type { Value } from "../value/index.ts"
 export type Definition =
   | PrimitiveFunctionDefinition
   | PrimitiveVariableDefinition
+  | PrimitiveFunctionDeclaration
+  | PrimitiveVariableDeclaration
   | FunctionDefinition
   | VariableDefinition
   | TestDefinition
@@ -64,6 +66,49 @@ export function PrimitiveVariableDefinition(
     mod,
     name,
     value,
+    location,
+  }
+}
+
+export type PrimitiveFunctionDeclaration = {
+  kind: "PrimitiveFunctionDeclaration"
+  mod: Mod
+  name: string
+  arity: number
+  location?: SourceLocation
+} & DefinitionState
+
+export function PrimitiveFunctionDeclaration(
+  mod: Mod,
+  name: string,
+  arity: number,
+  location?: SourceLocation,
+): PrimitiveFunctionDeclaration {
+  return {
+    kind: "PrimitiveFunctionDeclaration",
+    mod,
+    name,
+    arity,
+    location,
+  }
+}
+
+export type PrimitiveVariableDeclaration = {
+  kind: "PrimitiveVariableDeclaration"
+  mod: Mod
+  name: string
+  location?: SourceLocation
+} & DefinitionState
+
+export function PrimitiveVariableDeclaration(
+  mod: Mod,
+  name: string,
+  location?: SourceLocation,
+): PrimitiveVariableDeclaration {
+  return {
+    kind: "PrimitiveVariableDeclaration",
+    mod,
+    name,
     location,
   }
 }

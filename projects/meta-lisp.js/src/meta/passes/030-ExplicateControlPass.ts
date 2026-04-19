@@ -20,6 +20,7 @@ function onDefinition(
   definition: M.Definition,
 ): Array<B.Definition> {
   switch (definition.kind) {
+    case "PrimitiveFunctionDeclaration":
     case "PrimitiveFunctionDefinition": {
       return [
         B.PrimitiveFunctionDeclaration(
@@ -31,6 +32,7 @@ function onDefinition(
       ]
     }
 
+    case "PrimitiveVariableDeclaration":
     case "PrimitiveVariableDefinition": {
       return [
         B.PrimitiveVariableDeclaration(
