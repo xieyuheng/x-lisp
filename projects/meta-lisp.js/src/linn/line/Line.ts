@@ -6,7 +6,7 @@ export type Line = {
   args: Array<Exp>
 }
 
-export function createLine(op: string, path: string, args: Array<Exp>): Line {
+export function Line(op: string, path: string, args: Array<Exp>): Line {
   return {
     op,
     path,

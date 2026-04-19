@@ -1,6 +1,6 @@
 # linn
 
-[meta-lisp.js] `CodegenPass` -- `onInstr`
+[meta-lisp.js] `CodegenPass` -- `onExp`
 [meta-lisp.js] `CodegenPass` -- `onBlock` -- handle label
 
 [meta-lisp.js] `CodegenPass` -- `onStmt` -- `DefineFunction` -- handle arity
