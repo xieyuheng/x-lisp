@@ -11,19 +11,16 @@ function onStmt(mod: B.Mod, stmt: B.Stmt): Array<L.Line> {
   switch (stmt.kind) {
     case "DefineFunction": {
       // TODO parameters
-      // TODO arity
       const blocks = stmt.blocks.values()
-      return Array.from(
-        blocks.flatMap((block) => onBlock(mod, stmt.name, block)),
-      )
+      return [
+        L.Line("ins", `${stmt.name}/arity`, [L.Int(BigInt(stmt.parameters.length))]),
+        ...blocks.flatMap((block) => onBlock(mod, stmt.name, block))]
     }
 
     case "DefineVariable": {
       // TODO is variable
       const blocks = stmt.blocks.values()
-      return Array.from(
-        blocks.flatMap((block) => onBlock(mod, stmt.name, block)),
-      )
+      return [...blocks.flatMap((block) => onBlock(mod, stmt.name, block))]
     }
   }
 }
@@ -31,7 +28,7 @@ function onStmt(mod: B.Mod, stmt: B.Stmt): Array<L.Line> {
 function onBlock(mod: B.Mod, name: string, block: B.Block): Array<L.Line> {
   return [
     L.Line("ins", name, [L.Var("label"), L.Var(block.label)]),
-    ...block.instrs.flatMap((instr) => onInstr(mod, name, instr))
+    ...block.instrs.flatMap((instr) => onInstr(mod, name, instr)),
   ]
 }
 
