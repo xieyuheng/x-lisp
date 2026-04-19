@@ -42,10 +42,7 @@ function onInstr(name: string, instr: B.Instr): Array<L.Line> {
     }
 
     case "Perform": {
-      return [
-        ...onExp(name, instr.exp),
-        L.Line("ins", name, [L.Var("drop")]),
-      ]
+      return [...onExp(name, instr.exp), L.Line("ins", name, [L.Var("drop")])]
     }
 
     case "Test": {
@@ -60,9 +57,7 @@ function onInstr(name: string, instr: B.Instr): Array<L.Line> {
     }
 
     case "Goto": {
-      return [
-        L.Line("ins", name, [L.Var("jump"), L.Var(instr.label)]),
-      ]
+      return [L.Line("ins", name, [L.Var("jump"), L.Var(instr.label)])]
     }
 
     case "Return": {
@@ -72,11 +67,44 @@ function onInstr(name: string, instr: B.Instr): Array<L.Line> {
 }
 
 function onExp(name: string, exp: B.Exp): Array<L.Line> {
-  return []
+  switch (exp.kind) {
+    case "Symbol":
+    case "Keyword":
+    case "String":
+    case "Int":
+    case "Float": {
+      return [L.Line("ins", name, [L.Var("literal"), exp])]
+    }
+
+    case "Var": {
+      return onVar(name, exp)
+    }
+
+    case "Apply": {
+      return onApply(name, exp)
+    }
+  }
 }
 
 function onTailExp(name: string, exp: B.Exp): Array<L.Line> {
-  return []
+  switch (exp.kind) {
+    case "Symbol":
+    case "Keyword":
+    case "String":
+    case "Int":
+    case "Float": {
+      return [L.Line("ins", name, [L.Var("literal"), exp]),
+              L.Line("ins", name, [L.Var("return")]), ]
+    }
+
+    case "Var": {
+      return [...onVar(name, exp), L.Line("ins", name, [L.Var("return")])]
+    }
+
+    case "Apply": {
+      return onTailApply(name, exp)
+    }
+  }
 }
 
 function onVar(name: string, exp: B.Exp): Array<L.Line> {
