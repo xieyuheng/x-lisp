@@ -1,9 +1,10 @@
 #include "index.h"
 
 db_node_t *
-db_make_node(value_t value) {
+db_make_node(db_node_t *parent) {
     db_node_t *self = new(db_node_t);
-    self->value = value;
+    self->parent = parent;
+    self->value = x_void;
     self->children = make_record_with((free_fn_t *) db_node_free);
     return self;
 }
