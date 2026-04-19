@@ -92,3 +92,26 @@ db_delete_recursive(db_t *db, const char *key) {
         delete_node_recursive(node);
     }
 }
+
+void
+db_put_attribute(db_t *db, const char *prefix, const char *name, value_t value) {
+    char *key = string_append(prefix, name);
+    db_put(db, key, value);
+    string_free(key);
+}
+
+value_t
+db_get_attribute(db_t *db, const char *prefix, const char *name) {
+    char *key = string_append(prefix, name);
+    value_t value = db_get(db, key);
+    string_free(key);
+    return value;
+}
+
+bool
+db_has_attribute(db_t *db, const char *prefix, const char *name) {
+    char *key = string_append(prefix, name);
+    bool result = db_has(db, key);
+    string_free(key);
+    return result;
+}
