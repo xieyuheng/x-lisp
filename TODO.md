@@ -1,7 +1,5 @@
 # linn
 
-[linn.c] `db_delete_recursive`
-
 [linn.c] handle `put <path>/arity <n>`
 [linn.c] handle `put <path>/is-variable true`
 

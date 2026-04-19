@@ -70,14 +70,25 @@ db_has(db_t *db, const char *key) {
     return db_get_node(db, key);
 }
 
-// void
-// db_delete_recursive(db_t *db, const char *key) {
-//     db_node_t *node = db_get_node(db, key);
-//     if (node) {
-//         assert(node->parent);
-//         record_delete(node->parent->children, )
-//         {
+static void
+delete_node_recursive(db_node_t *node) {
+    record_iter_t iter;
+    record_iter_init(&iter, node->children);
+    db_node_t *child = record_iter_next_value(&iter);
+    while (child) {
+        delete_node_recursive(child);
+        child = record_iter_next_value(&iter);
+    }
 
-//         }
-//     }
-// }
+    assert(node->parent);
+    record_delete(node->parent->children, node->name);
+    db_node_free(node);
+}
+
+void
+db_delete_recursive(db_t *db, const char *key) {
+    db_node_t *node = db_get_node(db, key);
+    if (node) {
+        delete_node_recursive(node);
+    }
+}
