@@ -1,5 +1,6 @@
 # linn
 
+[meta-lisp.js] builtin -- split `type.meta`
 [meta-lisp.js] builtin -- explicit `(declare-primitive-function)` & `(declare-primitive-variable)`
 
 [meta-lisp.js] meta-lisp -- check claimed undefined name

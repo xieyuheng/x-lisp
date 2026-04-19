@@ -5,22 +5,38 @@ import { expandDataConstructor } from "./expandDataConstructor.ts"
 import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate.ts"
 import { expandDataGetter } from "./expandDataGetter.ts"
 import { expandDataPutter } from "./expandDataPutter.ts"
+import assert from "node:assert"
 
 export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   if (stmt.kind === "DeclarePrimitiveFunction") {
-    M.modDefine(
-      mod,
-      stmt.name,
-      M.PrimitiveFunctionDeclaration(mod, stmt.name, stmt.arity, stmt.location),
-    )
+    const definition = M.modLookupDefinition(mod, stmt.name)
+    if (definition && definition.kind === "PrimitiveFunctionDefinition") {
+      assert(definition.arity === stmt.arity)
+    } else {
+      M.modDefine(
+        mod,
+        stmt.name,
+        M.PrimitiveFunctionDeclaration(
+          mod,
+          stmt.name,
+          stmt.arity,
+          stmt.location,
+        ),
+      )
+    }
   }
 
   if (stmt.kind === "DeclarePrimitiveVariable") {
-    M.modDefine(
-      mod,
-      stmt.name,
-      M.PrimitiveVariableDeclaration(mod, stmt.name, stmt.location),
-    )
+    const definition = M.modLookupDefinition(mod, stmt.name)
+    if (definition && definition.kind === "PrimitiveVariableDefinition") {
+      return
+    } else {
+      M.modDefine(
+        mod,
+        stmt.name,
+        M.PrimitiveVariableDeclaration(mod, stmt.name, stmt.location),
+      )
+    }
   }
 
   if (stmt.kind === "Claim") {
