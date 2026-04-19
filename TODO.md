@@ -1,6 +1,5 @@
 # linn
 
-[meta-lisp.js] linn -- `Mod` -- has `lines` -- no need to run the code
 [meta-lisp.js] linn -- `formatLine`
 [meta-lisp.js] linn -- `formatMod`
 
