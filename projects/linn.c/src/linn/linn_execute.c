@@ -1,7 +1,7 @@
 #include "index.h"
 
 static definition_t *
-prepare_definition(mod_t *mod, const char *name) {
+ensure_definition(mod_t *mod, const char *name) {
     definition_t *definition = mod_lookup(mod, name);
     if (definition) {
         return definition;
@@ -13,7 +13,7 @@ prepare_definition(mod_t *mod, const char *name) {
 }
 
 static size_t
-prepare_binding_index(function_t *function, const char *name) {
+ensure_binding_index(function_t *function, const char *name) {
     if (!function_has_binding(function, name)) {
         function_add_binding(function, name);
     }
@@ -25,7 +25,7 @@ prepare_binding_index(function_t *function, const char *name) {
 static void
 execute_ins_line(mod_t *mod, line_t *line) {
     const path_t *path = line_path(line);
-    definition_t *definition = prepare_definition(mod, path_raw_string(path));
+    definition_t *definition = ensure_definition(mod, path_raw_string(path));
     function_t *function = definition_function(definition);
     line_var_t *op = to_line_var(line_get_arg(line, 0));
 
@@ -46,7 +46,7 @@ execute_ins_line(mod_t *mod, line_t *line) {
 
     if (string_equal(op->string, "call")) {
         line_var_t *operand = to_line_var(line_get_arg(line, 1));
-        definition_t *definition = prepare_definition(mod, operand->string);
+        definition_t *definition = ensure_definition(mod, operand->string);
         struct instr_t instr;
         instr.op = OP_CALL;
         instr.ref.definition = definition;
@@ -56,7 +56,7 @@ execute_ins_line(mod_t *mod, line_t *line) {
 
     if (string_equal(op->string, "tail-call")) {
         line_var_t *operand = to_line_var(line_get_arg(line, 1));
-        definition_t *definition = prepare_definition(mod, operand->string);
+        definition_t *definition = ensure_definition(mod, operand->string);
         struct instr_t instr;
         instr.op = OP_TAIL_CALL;
         instr.ref.definition = definition;
@@ -66,7 +66,7 @@ execute_ins_line(mod_t *mod, line_t *line) {
 
     if (string_equal(op->string, "ref")) {
         line_var_t *operand = to_line_var(line_get_arg(line, 1));
-        definition_t *definition = prepare_definition(mod, operand->string);
+        definition_t *definition = ensure_definition(mod, operand->string);
         struct instr_t instr;
         instr.op = OP_REF;
         instr.ref.definition = definition;
@@ -76,7 +76,7 @@ execute_ins_line(mod_t *mod, line_t *line) {
 
     if (string_equal(op->string, "global-load")) {
         line_var_t *operand = to_line_var(line_get_arg(line, 1));
-        definition_t *definition = prepare_definition(mod, operand->string);
+        definition_t *definition = ensure_definition(mod, operand->string);
         struct instr_t instr;
         instr.op = OP_GLOBAL_LOAD;
         instr.ref.definition = definition;
@@ -86,7 +86,7 @@ execute_ins_line(mod_t *mod, line_t *line) {
 
     if (string_equal(op->string, "global-store")) {
         line_var_t *operand = to_line_var(line_get_arg(line, 1));
-        definition_t *definition = prepare_definition(mod, operand->string);
+        definition_t *definition = ensure_definition(mod, operand->string);
         struct instr_t instr;
         instr.op = OP_GLOBAL_STORE;
         instr.ref.definition = definition;
@@ -110,7 +110,7 @@ execute_ins_line(mod_t *mod, line_t *line) {
 
     if (string_equal(op->string, "local-load")) {
         line_var_t *operand = to_line_var(line_get_arg(line, 1));
-        size_t index = prepare_binding_index(function, operand->string);
+        size_t index = ensure_binding_index(function, operand->string);
         struct instr_t instr;
         instr.op = OP_LOCAL_LOAD;
         instr.local.index = index;
@@ -120,7 +120,7 @@ execute_ins_line(mod_t *mod, line_t *line) {
 
     if (string_equal(op->string, "local-store")) {
         line_var_t *operand = to_line_var(line_get_arg(line, 1));
-        size_t index = prepare_binding_index(function, operand->string);
+        size_t index = ensure_binding_index(function, operand->string);
         struct instr_t instr;
         instr.op = OP_LOCAL_STORE;
         instr.local.index = index;

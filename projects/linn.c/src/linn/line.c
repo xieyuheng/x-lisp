@@ -28,42 +28,42 @@ parse_line_arg(list_t *tokens) {
     token_t *token = list_shift(tokens);
     switch (token->kind) {
     case SYMBOL_TOKEN: {
-        value_t sexp = x_object(intern_line_var(token->content));
+        value_t value = x_object(intern_line_var(token->content));
         token_free(token);
-        return sexp;
+        return value;
     }
 
     case KEYWORD_TOKEN: {
-        value_t sexp = x_object(intern_keyword(token->content));
+        value_t value = x_object(intern_keyword(token->content));
         token_free(token);
-        return sexp;
+        return value;
     }
 
     case STRING_TOKEN: {
-        value_t sexp = x_object(make_xstring_no_gc(string_copy(token->content)));
+        value_t value = x_object(make_xstring_no_gc(string_copy(token->content)));
         token_free(token);
-        return sexp;
+        return value;
     }
 
     case INT_TOKEN: {
-        value_t sexp = x_int(string_parse_int(token->content));
+        value_t value = x_int(string_parse_int(token->content));
         token_free(token);
-        return sexp;
+        return value;
     }
 
     case FLOAT_TOKEN: {
-        value_t sexp = x_float(string_parse_double(token->content));
+        value_t value = x_float(string_parse_double(token->content));
         token_free(token);
-        return sexp;
+        return value;
     }
 
     case QUOTATION_MARK_TOKEN: {
         if (string_equal(token->content, "'")) {
             token_free(token);
             token = list_shift(tokens);
-            value_t sexp = x_object(intern_symbol(token->content));
+            value_t value = x_object(intern_symbol(token->content));
             token_free(token);
-            return sexp;
+            return value;
         }
 
         who_printf("unexpected quotation mark: %s\n", token->content);
