@@ -22,20 +22,35 @@ linn_load(path_t *path) {
 
     // patch label references
 
-    record_iter_t iter;
-    record_iter_init(&iter, mod->definitions);
-    definition_t *definition = record_iter_next_value(&iter);
-    while (definition) {
-        if (definition_has_function(definition)) {
-            function_patch_label_references(definition_function(definition));
-        }
+    {
+        record_iter_t iter;
+        record_iter_init(&iter, mod->definitions);
+        definition_t *definition = record_iter_next_value(&iter);
+        while (definition) {
+            if (definition_has_function(definition)) {
+                function_patch_label_references(definition_function(definition));
+            }
 
-        definition = record_iter_next_value(&iter);
+            definition = record_iter_next_value(&iter);
+        }
     }
 
-    // setup attributes
+    // setup function arity
 
-    // TODO
+    {
+        record_iter_t iter;
+        record_iter_init(&iter, mod->definitions);
+        definition_t *definition = record_iter_next_value(&iter);
+        while (definition) {
+            if (db_has_attribute(mod->db, definition->name, "arity")) {
+                value_t value = db_get_attribute(mod->db, definition->name, "arity");
+                function_t *function = definition_function(definition);
+                function->arity = to_int64(value);
+            }
+
+            definition = record_iter_next_value(&iter);
+        }
+    }
 
     return mod;
 }
