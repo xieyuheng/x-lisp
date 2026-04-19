@@ -1,4 +1,3 @@
-import { parseArgs } from "node:util"
 import * as B from "../../basic/index.ts"
 import * as L from "../../linn/index.ts"
 
@@ -15,9 +14,15 @@ function onStmt(mod: B.Mod, stmt: B.Stmt): Array<L.Line> {
       const blocks = stmt.blocks.values()
 
       return [
-        L.Line("ins", `${stmt.name}/arity`, [L.Int(BigInt(stmt.parameters.length))]),
-        ...stmt.parameters.toReversed().map(parameter => L.Line("ins", stmt.name, [L.Var("local-store"), L.Var(parameter)])),
-        ...blocks.flatMap((block) => onBlock(mod, stmt.name, block))
+        L.Line("ins", `${stmt.name}/arity`, [
+          L.Int(BigInt(stmt.parameters.length)),
+        ]),
+        ...stmt.parameters
+          .toReversed()
+          .map((parameter) =>
+            L.Line("ins", stmt.name, [L.Var("local-store"), L.Var(parameter)]),
+          ),
+        ...blocks.flatMap((block) => onBlock(mod, stmt.name, block)),
       ]
     }
 
@@ -25,7 +30,7 @@ function onStmt(mod: B.Mod, stmt: B.Stmt): Array<L.Line> {
       const blocks = stmt.blocks.values()
       return [
         L.Line("ins", `${stmt.name}/need-setup`, [L.Var("true")]),
-        ...blocks.flatMap((block) => onBlock(mod, stmt.name, block))
+        ...blocks.flatMap((block) => onBlock(mod, stmt.name, block)),
       ]
     }
   }
