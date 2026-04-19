@@ -1,6 +1,7 @@
 # linn
 
-[linn.c] `db_node_t` -- has `value` and `children`
+[linn.c] `db_make_node` & `db_node_free`
+
 [linn.c] `db_t` -- has root node
 [linn.c] `mod_t` has `db`
 
