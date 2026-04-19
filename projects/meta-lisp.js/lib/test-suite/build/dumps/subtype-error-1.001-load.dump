@@ -1,5 +1,0 @@
-(define-interface point-t :x float-t :y float-t)
-
-(define (main)
-  (the point-t (@record :x 1.0 :y 2.0))
-  (the point-t (@record :x 1.0)))

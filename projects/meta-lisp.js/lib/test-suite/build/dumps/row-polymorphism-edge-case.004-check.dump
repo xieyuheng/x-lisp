@@ -1,2 +1,0 @@
-(define (f r)
-  (if builtin/true (extend r :x 2) (extend r :y 2)))

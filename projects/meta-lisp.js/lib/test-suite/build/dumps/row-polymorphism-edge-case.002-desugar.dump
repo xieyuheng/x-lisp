@@ -1,1 +1,0 @@
-(define (f r) (if true (extend r :x 2) (extend r :y 2)))

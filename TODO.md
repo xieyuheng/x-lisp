@@ -1,10 +1,7 @@
 # linn
 
-[meta-lisp.js] compile to .linn
 [linn.c] `execute_ins_line` -- append instruction to function -- learn from [basic-lisp.c] `compile_exp`
-
-# remove basic-lisp
-
+[meta-lisp.js] recover `projectTest`
 [meta-lisp.js] remove basic-lisp.js
 [linn.c] update todo list
 

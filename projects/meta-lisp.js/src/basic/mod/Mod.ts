@@ -1,13 +1,11 @@
 import { type Stmt } from "../stmt/index.ts"
 
 export type Mod = {
-  path: string
   stmts: Array<Stmt>
 }
 
-export function createMod(path: string): Mod {
+export function createMod(): Mod {
   return {
-    path,
     stmts: [],
   }
 }

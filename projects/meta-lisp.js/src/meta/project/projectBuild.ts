@@ -8,6 +8,7 @@ import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import Path from "node:path"
 import * as B from "../../basic/index.ts"
 import { textWidth } from "../../config.ts"
+import * as L from "../../linn/index.ts"
 import * as M from "../index.ts"
 
 export function projectBuild(
@@ -30,16 +31,35 @@ export function projectBuild(
   if (options.dump) projectDumpMods(project, "012-lift-lambda")
   M.projectForEachMod(project, M.UnnestOperandPass)
   if (options.dump) projectDumpMods(project, "020-unnest-operand")
-  projectBundle(project)
+  projectBuildLinn(project)
 }
 
-function projectBundle(project: M.Project): void {
+function projectBuildLinn(project: M.Project): void {
+  const basicMod = B.createMod()
+  M.projectForEachMod(project, (mod) => {
+    if (!mod.isTypeErrorModule) {
+      M.ExplicateControlPass(mod, basicMod)
+    }
+  })
+
+  const linnMod = L.createMod()
+  M.CodegenPass(basicMod, linnMod)
+
+  const code = L.formatMod(linnMod)
+
+  const directory = M.projectOutputDirectory(project)
+  callWithFile(openOutputFile(`${directory}/bundle.linn`), (file) =>
+    fileWriteln(file, code),
+  )
+}
+
+function projectBundleBasic(project: M.Project): void {
   let code = ""
 
   M.projectForEachMod(project, (mod) => {
     if (!mod.isTypeErrorModule) {
       M.log("bundle", mod.name)
-      const basicMod = B.createMod(mod.name)
+      const basicMod = B.createMod()
       M.ExplicateControlPass(mod, basicMod)
       code += B.prettyMod(textWidth, basicMod)
       code += "\n\n"

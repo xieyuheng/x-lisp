@@ -10,11 +10,9 @@ export function CodegenPass(basicMod: B.Mod, linnMod: L.Mod): void {
 function onStmt(mod: B.Mod, stmt: B.Stmt): Array<L.Line> {
   switch (stmt.kind) {
     case "DefineFunction": {
-      // TODO parameters
       const blocks = stmt.blocks.values()
-
       return [
-        L.Line("ins", `${stmt.name}/arity`, [
+        L.Line("put", `${stmt.name}/arity`, [
           L.Int(BigInt(stmt.parameters.length)),
         ]),
         ...stmt.parameters
@@ -29,7 +27,7 @@ function onStmt(mod: B.Mod, stmt: B.Stmt): Array<L.Line> {
     case "DefineVariable": {
       const blocks = stmt.blocks.values()
       return [
-        L.Line("ins", `${stmt.name}/need-setup`, [L.Var("true")]),
+        L.Line("put", `${stmt.name}/need-setup`, [L.Var("true")]),
         ...blocks.flatMap((block) => onBlock(mod, stmt.name, block)),
       ]
     }
