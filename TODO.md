@@ -1,8 +1,11 @@
 # linn
 
-[meta-lisp.js] linn -- `linn/` -- setup
-[meta-lisp.js] linn -- `Line`
+[meta-lisp.js] linn -- `Exp` -- has `Var` -- for `args` of `Line`
+[meta-lisp.js] linn -- `Line` -- has `op` `path` `args`
 [meta-lisp.js] linn -- `Mod` -- has `lines` -- no need to run the code
+[meta-lisp.js] linn -- `formatLine`
+[meta-lisp.js] linn -- `formatMod`
+
 
 [meta-lisp.js] `CodegenPass` -- compile basic-lisp to linn -- learn from [basic-lisp.c] `compile_exp`
 
