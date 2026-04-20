@@ -14,16 +14,6 @@ ensure_definition(mod_t *mod, const char *name) {
     return mod_lookup(mod, name);
 }
 
-static size_t
-ensure_binding_index(function_t *function, const char *name) {
-    if (!function_has_binding(function, name)) {
-        function_add_binding(function, name);
-    }
-
-    size_t index = function_get_binding_index(function, name);
-    return index;
-}
-
 void
 li_execute_ins(mod_t *mod, line_t *line) {
     const path_t *path = line_path(line);
@@ -113,21 +103,17 @@ li_execute_ins(mod_t *mod, line_t *line) {
     }
 
     if (string_equal(op->string, "local-load")) {
-        keyword_t *operand = to_keyword(line_get_arg(line, 1));
-        size_t index = ensure_binding_index(function, operand->string);
         struct instr_t instr;
         instr.op = OP_LOCAL_LOAD;
-        instr.local.index = index;
+        instr.local.index = to_int64(line_get_arg(line, 1));
         function_append_instr(function, instr);
         return;
     }
 
     if (string_equal(op->string, "local-store")) {
-        keyword_t *operand = to_keyword(line_get_arg(line, 1));
-        size_t index = ensure_binding_index(function, operand->string);
         struct instr_t instr;
         instr.op = OP_LOCAL_STORE;
-        instr.local.index = index;
+        instr.local.index = to_int64(line_get_arg(line, 1));
         function_append_instr(function, instr);
         return;
     }

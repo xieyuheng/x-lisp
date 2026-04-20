@@ -1,7 +1,7 @@
 put factorial/arity 1
-ins factorial :local-store :n
+ins factorial :local-store 0 :n
 ins factorial :label :body
-ins factorial :local-load :n
+ins factorial :local-load 0 :n
 ins factorial :literal 1
 ins factorial :call :builtin/int-less-or-equal?
 ins factorial :jump-if-not :recur-case
@@ -10,15 +10,15 @@ ins factorial :label :base-case
 ins factorial :literal 1
 ins factorial :return
 ins factorial :label :recur-case
-ins factorial :local-load :n
+ins factorial :local-load 0 :n
 ins factorial :literal 1
 ins factorial :call :builtin/isub
-ins factorial :local-store :n1
-ins factorial :local-load :n1
+ins factorial :local-store 1 :n1
+ins factorial :local-load 1 :n1
 ins factorial :call :factorial
-ins factorial :local-store :f1
-ins factorial :local-load :n
-ins factorial :local-load :f1
+ins factorial :local-store 2 :f1
+ins factorial :local-load 0 :n
+ins factorial :local-load 2 :f1
 ins factorial :tail-call :builtin/imul
 put main/arity 0
 ins main :literal 3

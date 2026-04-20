@@ -1,7 +1,6 @@
 #pragma once
 
 struct function_t {
-    record_t *binding_indexes; // record of size_t
     record_t *label_offsets; // record of int32_t
     record_t *label_references; // record of list of int32_t
     size_t arity;
@@ -16,11 +15,6 @@ void function_free(function_t *self);
 void function_append_instr(function_t *self, struct instr_t instr);
 void function_put_instr(function_t *self, size_t code_index, struct instr_t instr);
 void function_put_definition(function_t *self, size_t code_index, definition_t *definition);
-
-void function_add_binding(function_t *self, const char *name);
-bool function_has_binding(const function_t *self, const char *name);
-size_t function_get_binding_index(const function_t *self, const char *name);
-char *function_get_binding_name_from_index(const function_t *self, size_t index);
 
 void function_add_label(function_t *self, const char *name);
 bool function_has_label(const function_t *self, const char *name);

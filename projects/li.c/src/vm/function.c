@@ -3,7 +3,6 @@
 function_t *
 make_function(void) {
     function_t *self = new(function_t);
-    self->binding_indexes = make_record();
     self->label_offsets = make_record();
     self->label_references = make_record_with((free_fn_t *) list_free);
     self->arity = 0;
@@ -15,7 +14,6 @@ make_function(void) {
 
 void
 function_free(function_t *self) {
-    record_free(self->binding_indexes);
     record_free(self->label_offsets);
     record_free(self->label_references);
     free(self->code_area);
@@ -70,43 +68,6 @@ function_put_definition(
 
     uint8_t *code = self->code_area + code_index;
     memory_store_little_endian(code, definition);
-}
-
-void
-function_add_binding(function_t *self, const char *name) {
-    if (!function_has_binding(self, name)) {
-        size_t next_index =
-            record_length(self->binding_indexes);
-        record_insert(self->binding_indexes, name, (void *) next_index);
-    }
-}
-
-bool
-function_has_binding(const function_t *self, const char *name) {
-    return record_has(self->binding_indexes, name);
-}
-
-size_t
-function_get_binding_index(const function_t *self, const char *name) {
-    assert(function_has_binding(self, name));
-    return (size_t) record_get(self->binding_indexes, name);
-}
-
-char *
-function_get_binding_name_from_index(const function_t *self, size_t index) {
-    record_iter_t iter;
-    record_iter_init(&iter, self->binding_indexes);
-    const hash_entry_t *entry = record_iter_next_entry(&iter);
-    while (entry) {
-        char *name = entry->key;
-        if ((size_t) entry->value == index) {
-            return name;
-        }
-
-        entry = record_iter_next_entry(&iter);
-    }
-
-    return NULL;
 }
 
 void
@@ -239,15 +200,13 @@ static void function_inspect_instr(
 
     case OP_LOCAL_LOAD: {
         string_print("local-load ");
-        char *name = function_get_binding_name_from_index(function, instr.local.index);
-        string_print(name);
+        uint_print(instr.local.index);
         return;
     }
 
     case OP_LOCAL_STORE: {
         string_print("local-store ");
-        char *name = function_get_binding_name_from_index(function, instr.local.index);
-        string_print(name);
+        uint_print(instr.local.index);
         return;
     }
 

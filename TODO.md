@@ -2,21 +2,21 @@
 
 [meta-lisp.js] `CodegenPass` -- `local-load` & `local-store` take index
 
-# later
-
-[meta-lisp.js] meta-lisp -- check claimed undefined name
-
 # helpers
 
 [helpers.c] refactor fast `string_next_line`
 
-# later
-
-[li.c] string (specially small string) can be static like symbol
-
 # li
 
-[li.c] recover tests -- add `builtin/` prefix
+[meta-lisp.js] `CodegenPass` -- `global-load` & `global-load` take index
+
+# li as db
+
+[li.c] improve bytecode command -- can be used to save db to file
+
+# later
+
+[meta-lisp.js] meta-lisp -- check claimed undefined name
 
 # li missing builtin
 
@@ -44,7 +44,7 @@
 [li.c] [sexp] `sexp_print`
 [li.c] [sexp] `sexp.snapshot` -- call `sexp_print`
 
-[li.c] [builtin] [maybe] `format-sexp`
+[li.c] [builtin] `format-sexp`
 
 # builtin source location
 
@@ -53,4 +53,8 @@
 
 # compose and pipe
 
-[meta-lisp.js] `pipe` and `compose` as `Exp`
+[meta-lisp.js] [maybe] `pipe` and `compose` as `Exp`
+
+# later
+
+[li.c] string (specially small string) can be static like symbol
