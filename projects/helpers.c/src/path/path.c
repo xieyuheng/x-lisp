@@ -148,13 +148,6 @@ path_join_mut(path_t *self, const char *string) {
     path_update_string(self);
 }
 
-path_t *
-path_join(const path_t *self, const char *string) {
-    path_t *new_path = path_copy(self);
-    path_join_mut(new_path, string);
-    return new_path;
-}
-
 void
 path_resolve_mut(path_t *self, const char *string) {
     if (string_starts_with(string, "/")) {
@@ -195,7 +188,7 @@ path_top_segment(const path_t *self) {
 
 const char *
 path_get_segment(const path_t *self, size_t index) {
-    return stack_get(self->segment_stack, index);    
+    return stack_get(self->segment_stack, index);
 }
 
 char *

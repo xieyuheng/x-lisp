@@ -1,6 +1,7 @@
 # li
 
-[li.c] support snapshot testing
+[helpers.c] `path_join_extension`
+[li.c] `li_test` -- add .out extension
 [meta-lisp.js] `CodegenPass` -- `global-load` & `global-load` take index
 [li.c] improve bytecode command -- can be used to save db to file
 

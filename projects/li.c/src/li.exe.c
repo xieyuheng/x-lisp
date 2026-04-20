@@ -24,8 +24,9 @@ handle_run_fn(cmd_ctx_t *ctx){
 static void
 handle_test(cmd_ctx_t *ctx) {
     char *pathname = cmd_get_arg(ctx, 0);
+    char *snapshot = cmd_get_option(ctx, "--snapshot");
     mod_t *mod = li_load(make_path(pathname));
-    li_test(mod);
+    li_test(mod, snapshot);
 }
 
 static void

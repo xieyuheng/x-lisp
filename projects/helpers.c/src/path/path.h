@@ -12,7 +12,6 @@ path_t *path_copy(const path_t *self);
 bool path_equal(path_t *x, path_t *y);
 
 void path_join_mut(path_t *self, const char *string);
-path_t *path_join(const path_t *self, const char *string);
 
 void path_resolve_mut(path_t *self, const char *string);
 path_t *path_resolve(const path_t *self, const char *string);
