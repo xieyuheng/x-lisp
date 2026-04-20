@@ -6,11 +6,7 @@
 
 # li
 
-[li.c] maybe change `xstring` to `xtext`
-
-# later
-
-[meta-lisp.js] meta-lisp -- check claimed undefined name
+[li.c] [maybe] change `xstring` to `xtext`
 
 # about format
 
@@ -55,4 +51,5 @@
 
 # later
 
+[li.c] xstring with no gc should not be add to gc, even when it is an child of a runtime list
 [li.c] string (specially small string) can be static like symbol
