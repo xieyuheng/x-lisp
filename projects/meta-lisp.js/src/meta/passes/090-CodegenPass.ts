@@ -1,11 +1,13 @@
 import * as B from "../../basic/index.ts"
 import * as L from "../../li/index.ts"
 
-export function CodegenPass(basicMod: B.Mod, liMod: L.Mod, testNames: Set<string>): void {
+export function CodegenPass(
+  basicMod: B.Mod,
+  liMod: L.Mod,
+  testNames: Set<string>,
+): void {
   for (const name of testNames) {
-    liMod.lines.push(
-      L.Line("put", `${name}/is-test`, [L.Keyword("true")]),
-    )
+    liMod.lines.push(L.Line("put", `${name}/is-test`, [L.Keyword("true")]))
   }
 
   for (const definition of basicMod.definitions.values()) {
@@ -15,8 +17,6 @@ export function CodegenPass(basicMod: B.Mod, liMod: L.Mod, testNames: Set<string
       )
     }
   }
-
-
 
   for (const definition of basicMod.definitions.values()) {
     liMod.lines.push(...onDefinition(basicMod, definition))

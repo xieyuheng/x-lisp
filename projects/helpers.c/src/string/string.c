@@ -242,7 +242,7 @@ string_equal_mod_case(const char *left, const char *right) {
 char *
 string_next_word(const char *self, size_t *cursor_pointer) {
     size_t cursor = *cursor_pointer;
-    while (cursor < string_length(self)) {
+    while (self[cursor] != 0) {
         char c = self[cursor];
         if (char_is_space(c)) {
             cursor++;
@@ -252,7 +252,7 @@ string_next_word(const char *self, size_t *cursor_pointer) {
     }
 
     string_builder_t *builder = make_string_builder();
-    while (cursor < string_length(self)) {
+    while (self[cursor] != 0) {
         char c = self[cursor];
         if (char_is_space(c)) {
             break;

@@ -45,8 +45,8 @@ function projectBundleLi(project: M.Project): void {
     }
   })
 
-  const testNames = new Set()
-  M.projectForEachDefinition(project, definition => {
+  const testNames = new Set<string>()
+  M.projectForEachDefinition(project, (definition) => {
     if (definition.kind === "TestDefinition") {
       testNames.add(`${definition.mod.name}/${definition.name}`)
     }

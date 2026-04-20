@@ -1,11 +1,6 @@
-# optimize
-
-[li.c] `test command` -- use `<function>/is-test` to run all test
-
-[helpers.c] faster `string_next_line`
-
 # li
 
+[li.c] `test command` -- use `<function>/is-test` to run all test
 [meta-lisp.js] `CodegenPass` -- `global-load` & `global-load` take index
 
 # li as db
