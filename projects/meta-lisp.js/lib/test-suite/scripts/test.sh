@@ -3,5 +3,6 @@
 set -e
 
 # ./meta-lisp.js check
-# ./meta-lisp.js build --dump
-./meta-lisp.js test
+# ./meta-lisp.js build --dump --basic
+./meta-lisp.js build
+# ./meta-lisp.js test

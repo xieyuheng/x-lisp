@@ -29,9 +29,5 @@ export function formatExp(exp: Exp): string {
         return exp.content.toString()
       }
     }
-
-    case "Var": {
-      return exp.name
-    }
   }
 }

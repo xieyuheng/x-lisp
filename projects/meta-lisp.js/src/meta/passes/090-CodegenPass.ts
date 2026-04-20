@@ -5,7 +5,7 @@ export function CodegenPass(basicMod: B.Mod, liMod: L.Mod): void {
   for (const definition of basicMod.definitions.values()) {
     if (definition.kind === "VariableDefinition") {
       liMod.lines.push(
-        L.Line("put", `${definition.name}/is-variable`, [L.Var("true")]),
+        L.Line("put", `${definition.name}/is-variable`, [L.Keyword("true")]),
       )
     }
   }
@@ -32,8 +32,8 @@ function onDefinition(mod: B.Mod, definition: B.Definition): Array<L.Line> {
           .toReversed()
           .map((parameter) =>
             L.Line("ins", definition.name, [
-              L.Var("local-store"),
-              L.Var(parameter),
+              L.Keyword("local-store"),
+              L.Keyword(parameter),
             ]),
           ),
         ...blocks.flatMap((block) => onBlock(mod, definition.name, block)),
@@ -51,7 +51,7 @@ function onDefinition(mod: B.Mod, definition: B.Definition): Array<L.Line> {
 
 function onBlock(mod: B.Mod, name: string, block: B.Block): Array<L.Line> {
   return [
-    L.Line("ins", name, [L.Var("label"), L.Var(block.label)]),
+    L.Line("ins", name, [L.Keyword("label"), L.Keyword(block.label)]),
     ...block.instrs.flatMap((instr) => onInstr(mod, name, instr)),
   ]
 }
@@ -61,14 +61,14 @@ function onInstr(mod: B.Mod, name: string, instr: B.Instr): Array<L.Line> {
     case "Assign": {
       return [
         ...onExp(mod, name, instr.exp),
-        L.Line("ins", name, [L.Var("local-store"), L.Var(instr.dest)]),
+        L.Line("ins", name, [L.Keyword("local-store"), L.Keyword(instr.dest)]),
       ]
     }
 
     case "Perform": {
       return [
         ...onExp(mod, name, instr.exp),
-        L.Line("ins", name, [L.Var("drop")]),
+        L.Line("ins", name, [L.Keyword("drop")]),
       ]
     }
 
@@ -78,13 +78,13 @@ function onInstr(mod: B.Mod, name: string, instr: B.Instr): Array<L.Line> {
 
     case "Branch": {
       return [
-        L.Line("ins", name, [L.Var("jump-if-not"), L.Var(instr.elseLabel)]),
-        L.Line("ins", name, [L.Var("jump"), L.Var(instr.thenLabel)]),
+        L.Line("ins", name, [L.Keyword("jump-if-not"), L.Keyword(instr.elseLabel)]),
+        L.Line("ins", name, [L.Keyword("jump"), L.Keyword(instr.thenLabel)]),
       ]
     }
 
     case "Goto": {
-      return [L.Line("ins", name, [L.Var("jump"), L.Var(instr.label)])]
+      return [L.Line("ins", name, [L.Keyword("jump"), L.Keyword(instr.label)])]
     }
 
     case "Return": {
@@ -100,7 +100,7 @@ function onExp(mod: B.Mod, name: string, exp: B.Exp): Array<L.Line> {
     case "String":
     case "Int":
     case "Float": {
-      return [L.Line("ins", name, [L.Var("literal"), exp])]
+      return [L.Line("ins", name, [L.Keyword("literal"), exp])]
     }
 
     case "Var": {
@@ -121,13 +121,13 @@ function onTailExp(mod: B.Mod, name: string, exp: B.Exp): Array<L.Line> {
     case "Int":
     case "Float": {
       return [
-        L.Line("ins", name, [L.Var("literal"), exp]),
-        L.Line("ins", name, [L.Var("return")]),
+        L.Line("ins", name, [L.Keyword("literal"), exp]),
+        L.Line("ins", name, [L.Keyword("return")]),
       ]
     }
 
     case "Var": {
-      return [...onVar(mod, name, exp), L.Line("ins", name, [L.Var("return")])]
+      return [...onVar(mod, name, exp), L.Line("ins", name, [L.Keyword("return")])]
     }
 
     case "Apply": {
@@ -139,18 +139,18 @@ function onTailExp(mod: B.Mod, name: string, exp: B.Exp): Array<L.Line> {
 function onVar(mod: B.Mod, name: string, exp: B.Var): Array<L.Line> {
   const definition = B.modLookupDefinition(mod, exp.name)
   if (definition === undefined) {
-    return [L.Line("ins", name, [L.Var("local-load"), L.Var(exp.name)])]
+    return [L.Line("ins", name, [L.Keyword("local-load"), L.Keyword(exp.name)])]
   }
 
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
     case "FunctionDefinition": {
-      return [L.Line("ins", name, [L.Var("ref"), L.Var(exp.name)])]
+      return [L.Line("ins", name, [L.Keyword("ref"), L.Keyword(exp.name)])]
     }
 
     case "PrimitiveVariableDeclaration":
     case "VariableDefinition": {
-      return [L.Line("ins", name, [L.Var("global-load"), L.Var(exp.name)])]
+      return [L.Line("ins", name, [L.Keyword("global-load"), L.Keyword(exp.name)])]
     }
   }
 }
@@ -176,11 +176,11 @@ function onGeneralApply(
     return [
       ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
       L.Line("ins", name, [
-        L.Var("local-load"),
-        L.Var(B.asVar(exp.target).name),
+        L.Keyword("local-load"),
+        L.Keyword(B.asVar(exp.target).name),
       ]),
-      L.Line("ins", name, [L.Var("literal"), L.Int(BigInt(exp.args.length))]),
-      L.Line("ins", name, [L.Var(applyMode)]),
+      L.Line("ins", name, [L.Keyword("literal"), L.Int(BigInt(exp.args.length))]),
+      L.Line("ins", name, [L.Keyword(applyMode)]),
     ]
   }
 
@@ -191,31 +191,31 @@ function onGeneralApply(
       if (exp.args.length < arity) {
         return [
           ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
-          L.Line("ins", name, [L.Var("ref"), L.Var(B.asVar(exp.target).name)]),
+          L.Line("ins", name, [L.Keyword("ref"), L.Keyword(B.asVar(exp.target).name)]),
           L.Line("ins", name, [
-            L.Var("literal"),
+            L.Keyword("literal"),
             L.Int(BigInt(exp.args.length)),
           ]),
-          L.Line("ins", name, [L.Var(applyMode)]),
+          L.Line("ins", name, [L.Keyword(applyMode)]),
         ]
       } else if (exp.args.length === arity) {
         return [
           ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
           L.Line("ins", name, [
-            L.Var(callMode),
-            L.Var(B.asVar(exp.target).name),
+            L.Keyword(callMode),
+            L.Keyword(B.asVar(exp.target).name),
           ]),
         ]
       } else {
         return [
           ...exp.args.slice(0, arity).flatMap((arg) => onExp(mod, name, arg)),
-          L.Line("ins", name, [L.Var("call"), L.Var(B.asVar(exp.target).name)]),
+          L.Line("ins", name, [L.Keyword("call"), L.Keyword(B.asVar(exp.target).name)]),
           ...exp.args.slice(arity).flatMap((arg) => onExp(mod, name, arg)),
           L.Line("ins", name, [
-            L.Var("literal"),
+            L.Keyword("literal"),
             L.Int(BigInt(exp.args.length - arity)),
           ]),
-          L.Line("ins", name, [L.Var(applyMode)]),
+          L.Line("ins", name, [L.Keyword(applyMode)]),
         ]
       }
     }
@@ -225,11 +225,11 @@ function onGeneralApply(
       return [
         ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
         L.Line("ins", name, [
-          L.Var("global-load"),
-          L.Var(B.asVar(exp.target).name),
+          L.Keyword("global-load"),
+          L.Keyword(B.asVar(exp.target).name),
         ]),
-        L.Line("ins", name, [L.Var("literal"), L.Int(BigInt(exp.args.length))]),
-        L.Line("ins", name, [L.Var(applyMode)]),
+        L.Line("ins", name, [L.Keyword("literal"), L.Int(BigInt(exp.args.length))]),
+        L.Line("ins", name, [L.Keyword(applyMode)]),
       ]
     }
   }

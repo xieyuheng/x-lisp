@@ -13,7 +13,7 @@ import * as M from "../index.ts"
 
 export function projectBuild(
   project: M.Project,
-  options: { dump: boolean, basic: boolean },
+  options: { dump: boolean; basic: boolean },
 ): void {
   M.projectPerformClaim(project)
   if (options.dump) projectDumpMods(project, "001-load")
