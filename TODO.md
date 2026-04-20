@@ -1,6 +1,6 @@
-# helpers
+# optimize
 
-[helpers.c] refactor fast `string_next_line`
+[helpers.c] faster `string_next_line`
 
 # li
 
