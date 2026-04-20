@@ -1,5 +1,3 @@
-[helpers.c] file -- `stdout_push` & `stdout_drop`
-
 # li
 
 [li.c] support snapshot testing

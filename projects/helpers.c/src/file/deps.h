@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <libgen.h>
 #include <stdbool.h>
 #include <sys/stat.h>
@@ -11,3 +12,4 @@
 #include "../memory/index.h"
 #include "../string/index.h"
 #include "../blob/index.h"
+#include "../stack/index.h"
