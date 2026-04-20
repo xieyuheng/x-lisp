@@ -1,7 +1,7 @@
 #include "index.h"
 
 void
-li_run(mod_t *mod, const char *name) {
+li_call(mod_t *mod, const char *name) {
     definition_t *definition = mod_lookup(mod, name);
     if (!definition) {
         who_printf("undefined function: %s\n", name);

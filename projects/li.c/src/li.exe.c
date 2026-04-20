@@ -18,7 +18,7 @@ handle_run_fn(cmd_ctx_t *ctx){
     char *name = cmd_get_arg(ctx, 0);
     char *pathname = cmd_get_arg(ctx, 1);
     mod_t *mod = li_load(make_path(pathname));
-    li_run(mod, name);
+    li_call(mod, name);
 }
 
 static void
