@@ -23,7 +23,7 @@ bool string_starts_with(const char *self, const char *prefix);
 bool string_ends_with(const char *self, const char *postfix);
 
 char *string_append(const char *left, const char *right);
-char *string_slice(const char *self, size_t start, size_t end);
+char *string_substring(const char *self, size_t start, size_t end);
 int string_find_char_index(const char *self, char ch);
 int string_find_last_char_index(const char *self, char ch);
 size_t string_count_char(const char *self, char ch);

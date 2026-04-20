@@ -25,7 +25,7 @@ lexer_next_char(lexer_t *self) {
 
 char *
 lexer_next_char_string(lexer_t *self) {
-    return string_slice(
+    return string_substring(
         self->string,
         self->position.index,
         self->position.index + 1);

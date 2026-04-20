@@ -57,5 +57,5 @@ string_builder_clear(string_builder_t *self) {
 
 char *
 string_builder_produce(string_builder_t *self) {
-    return string_slice(self->buffer, 0, self->length);
+    return string_substring(self->buffer, 0, self->length);
 }

@@ -119,7 +119,7 @@ main(void) {
     assert(string_starts_with(abc123, "abc"));
     assert(string_ends_with(abc123, "123"));
 
-    assert(string_equal(string_slice("01234", 2, 4), "23"));
+    assert(string_equal(string_substring("01234", 2, 4), "23"));
 
     assert(string_find_char_index("01234", '0') == 0);
     assert(string_find_char_index("01234", '1') == 1);

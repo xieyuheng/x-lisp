@@ -74,7 +74,7 @@ next_segment(const char *string) {
     if (string_length(entry->string) > 0)
         entry->string++;
 
-    entry->segment = string_slice(string, 0, index);
+    entry->segment = string_substring(string, 0, index);
     return entry;
 }
 

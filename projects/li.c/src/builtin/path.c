@@ -46,7 +46,7 @@ x_path_extension(value_t string) {
     }
 
     size_t length = string_length(to_xstring(string)->string);
-    char *extension = string_slice(to_xstring(string)->string, index, length);
+    char *extension = string_substring(to_xstring(string)->string, index, length);
     return x_object(make_xstring(extension));
 }
 
@@ -63,7 +63,7 @@ x_path_stem(value_t string) {
         return string;
     }
 
-    char *stem = string_slice(to_xstring(string)->string, 0, index);
+    char *stem = string_substring(to_xstring(string)->string, 0, index);
     return x_object(make_xstring(stem));
 }
 

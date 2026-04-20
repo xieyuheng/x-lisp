@@ -90,7 +90,7 @@ text_append(text_t *left, text_t *right) {
 }
 
 text_t *
-text_slice(text_t *self, size_t start, size_t end) {
+text_subtext(text_t *self, size_t start, size_t end) {
     assert(end >= start);
     assert(end <= text_length(self));
     size_t length = end - start;
