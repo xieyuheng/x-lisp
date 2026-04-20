@@ -10,12 +10,16 @@ export const LiInterpreterPath = Path.join(
   "../../../../li.c/src/li.exe",
 )
 
-export function projectTest(project: M.Project): void {
+export function projectTest(
+  project: M.Project,
+  options: { builtin: boolean },
+): void {
   M.projectBuild(project, { dump: false, basic: false })
   systemShellRun(LiInterpreterPath, [
     "test",
     Path.join(M.projectOutputDirectory(project), "bundle.li"),
     "--snapshot",
     M.projectSnapshotDirectory(project),
+    options.builtin !== undefined ? "--builtin" : "",
   ])
 }

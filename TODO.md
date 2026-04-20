@@ -1,6 +1,5 @@
 # li as db
 
-[li.c] `builtin-test` command
 [li.c] `db_add` -- `db_t` has info to support set-like api
 [li.c] quit using `<fn>/is-test` -- should not use iter on definitions
 [li.c] quit using `<fn>/is-variable` -- should not use iter on definitions
