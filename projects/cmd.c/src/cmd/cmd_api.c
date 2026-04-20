@@ -9,7 +9,11 @@ cmd_define_route(cmd_router_t *router, const char *command) {
 void
 cmd_define_handler(cmd_router_t *router, const char *name, cmd_fn_t *fn) {
     cmd_route_t *route = cmd_router_lookup(router, name);
-    assert(route);
+    if (!route) {
+        who_printf("undefined route %s\n", name);
+        exit(1);
+    }
+
     route->fn = fn;
 }
 

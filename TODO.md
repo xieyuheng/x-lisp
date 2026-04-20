@@ -1,6 +1,5 @@
 # li
 
-[cmd.c] improve error report -- quit using `assert`
 [li.c] support snapshot testing
 [meta-lisp.js] `CodegenPass` -- `global-load` & `global-load` take index
 

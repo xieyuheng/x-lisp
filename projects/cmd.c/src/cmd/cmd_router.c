@@ -58,7 +58,11 @@ cmd_router_run(cmd_router_t *self, size_t argc, char **argv) {
         exit(1);
     }
 
-    assert(route->fn);
+    if (!route->fn) {
+        who_printf("missing handler for command: %s\n", name);
+        exit(1);
+    }
+
     cmd_ctx_t *ctx = cmd_make_ctx(self, route, argc, argv);
     cmd_route_match(route, ctx);
     route->fn(ctx);
