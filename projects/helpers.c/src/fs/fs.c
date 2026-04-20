@@ -27,7 +27,7 @@ fs_is_directory(const char *pathname) {
 
 char *
 fs_read(const char *pathname) {
-    file_t *file = open_file_or_fail(pathname, "w");
+    file_t *file = open_file_or_fail(pathname, "r");
     char *string = (char *) file_read_bytes(file);
     file_close(file);
     return string;

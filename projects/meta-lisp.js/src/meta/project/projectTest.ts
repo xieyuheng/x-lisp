@@ -12,6 +12,10 @@ export const LiInterpreterPath = Path.join(
 
 export function projectTest(project: M.Project): void {
   M.projectBuild(project, { dump: false, basic: false })
-  const bundlePath = Path.join(M.projectOutputDirectory(project), "bundle.li")
-  systemShellRun(LiInterpreterPath, ["test", bundlePath])
+  systemShellRun(LiInterpreterPath, [
+    "test",
+    Path.join(M.projectOutputDirectory(project), "bundle.li"),
+    "--snapshot",
+    M.projectSnapshotDirectory(project),
+  ])
 }
