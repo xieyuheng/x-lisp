@@ -6,15 +6,15 @@ import * as M from "../index.ts"
 
 const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 
-export const LinnInterpreterPath = Path.join(
+export const LiInterpreterPath = Path.join(
   currentDir,
-  "../../../../linn.c/src/linn.exe",
+  "../../../../li.c/src/li.exe",
 )
 
 export function projectTest(project: M.Project): void {
   M.projectBuild(project, { dump: false })
 
-  const bundlePath = Path.join(M.projectOutputDirectory(project), "bundle.linn")
+  const bundlePath = Path.join(M.projectOutputDirectory(project), "bundle.li")
 
   M.projectForEachMod(project, (mod) => {
     if (mod.isTypeErrorModule) return
@@ -37,7 +37,7 @@ export function projectTest(project: M.Project): void {
           `${mod.name}/${definition.name}`,
           bundlePath,
         ]
-        const result = systemShellCapture(LinnInterpreterPath, args)
+        const result = systemShellCapture(LiInterpreterPath, args)
         if (result.status === 0) {
           if (result.stdout) fs.writeFileSync(snapshotPath, result.stdout)
           if (result.stderr) console.log(snapshotPath, result.stderr)

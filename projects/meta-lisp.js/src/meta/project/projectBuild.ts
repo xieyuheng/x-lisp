@@ -8,7 +8,7 @@ import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import Path from "node:path"
 import * as B from "../../basic/index.ts"
 import { textWidth } from "../../config.ts"
-import * as L from "../../linn/index.ts"
+import * as L from "../../li/index.ts"
 import * as M from "../index.ts"
 
 export function projectBuild(
@@ -34,10 +34,10 @@ export function projectBuild(
   if (options.dump) projectDumpMods(project, "020-unnest-operand")
 
   projectBundleBasic(project)
-  projectBundleLinn(project)
+  projectBundleLi(project)
 }
 
-function projectBundleLinn(project: M.Project): void {
+function projectBundleLi(project: M.Project): void {
   const basicMod = B.createMod()
   M.projectForEachMod(project, (mod) => {
     if (!mod.isTypeErrorModule) {
@@ -45,12 +45,12 @@ function projectBundleLinn(project: M.Project): void {
     }
   })
 
-  const linnMod = L.createMod()
-  M.CodegenPass(basicMod, linnMod)
+  const liMod = L.createMod()
+  M.CodegenPass(basicMod, liMod)
 
   const directory = M.projectOutputDirectory(project)
-  callWithFile(openOutputFile(`${directory}/bundle.linn`), (file) =>
-    fileWrite(file, L.formatMod(linnMod)),
+  callWithFile(openOutputFile(`${directory}/bundle.li`), (file) =>
+    fileWrite(file, L.formatMod(liMod)),
   )
 }
 

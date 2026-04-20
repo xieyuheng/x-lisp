@@ -25,7 +25,7 @@ ensure_binding_index(function_t *function, const char *name) {
 }
 
 void
-linn_execute_ins(mod_t *mod, line_t *line) {
+li_execute_ins(mod_t *mod, line_t *line) {
     const path_t *path = line_path(line);
     definition_t *definition = ensure_definition(mod, path_raw_string(path));
     function_t *function = definition_function(definition);

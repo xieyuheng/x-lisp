@@ -4,6 +4,6 @@ set -e
 
 make --directory projects/helpers.c build -j
 make --directory projects/cmd.c build -j
-make --directory projects/linn.c build -j
+make --directory projects/li.c build -j
 
 pnpm run -r build

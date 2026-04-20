@@ -1,17 +1,17 @@
 import * as B from "../../basic/index.ts"
-import * as L from "../../linn/index.ts"
+import * as L from "../../li/index.ts"
 
-export function CodegenPass(basicMod: B.Mod, linnMod: L.Mod): void {
+export function CodegenPass(basicMod: B.Mod, liMod: L.Mod): void {
   for (const definition of basicMod.definitions.values()) {
     if (definition.kind === "VariableDefinition") {
-      linnMod.lines.push(
+      liMod.lines.push(
         L.Line("put", `${definition.name}/is-variable`, [L.Var("true")]),
       )
     }
   }
 
   for (const definition of basicMod.definitions.values()) {
-    linnMod.lines.push(...onDefinition(basicMod, definition))
+    liMod.lines.push(...onDefinition(basicMod, definition))
   }
 }
 

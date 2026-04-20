@@ -1,7 +1,7 @@
-# linn
+# li
 
-[linn.c] update todo list
-[linn.c] note about pure date
+[li.c] update todo list
+[li.c] note about pure date
 
 # later
 
@@ -13,15 +13,15 @@
 
 # later
 
-[linn.c] string (specially small string) can be static like symbol
+[li.c] string (specially small string) can be static like symbol
 
-# basic-lisp
+# li
 
-[basic-lisp.c] recover tests -- add `builtin/` prefix
+[li.c] recover tests -- add `builtin/` prefix
 
-# basic-lisp missing builtin
+# li missing builtin
 
-[basic-lisp.c] missing builtin -- string
+[li.c] missing builtin -- string
 
 ```scheme
 (claim string-split (-> string-t string-t (list-t string-t)))
@@ -30,7 +30,7 @@
 (claim string-replace (-> string-t string-t string-t string-t))
 ```
 
-[basic-lisp.c] missing builtin -- random
+[li.c] missing builtin -- random
 
 ```scheme
 (claim random-int (-> int-t int-t int-t))
@@ -41,16 +41,16 @@
 
 [helpers.c] improve `string_builder_t` for `format_*`
 
-[basic-lisp.c] [sexp] `sexp_format`
-[basic-lisp.c] [sexp] `sexp_print`
-[basic-lisp.c] [sexp] `sexp.snapshot` -- call `sexp_print`
+[li.c] [sexp] `sexp_format`
+[li.c] [sexp] `sexp_print`
+[li.c] [sexp] `sexp.snapshot` -- call `sexp_print`
 
-[basic-lisp.c] [builtin] [maybe] `format-sexp`
+[li.c] [builtin] [maybe] `format-sexp`
 
 # builtin source location
 
-[basic-lisp.c] builtin `error-with-source-location`
-[basic-lisp.c] builtin `assert-with-source-location`
+[li.c] builtin `error-with-source-location`
+[li.c] builtin `assert-with-source-location`
 
 # compose and pipe
 

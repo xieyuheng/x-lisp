@@ -15,7 +15,7 @@ config_stdio(void) {
 static void
 handle_run(cmd_ctx_t *ctx) {
     char *pathname = cmd_get_arg(ctx, 0);
-    mod_t *mod = linn_load(make_path(pathname));
+    mod_t *mod = li_load(make_path(pathname));
     (void) mod;
 }
 
@@ -23,15 +23,15 @@ static void
 handle_run_function(cmd_ctx_t *ctx){
     char *name = cmd_get_arg(ctx, 0);
     char *pathname = cmd_get_arg(ctx, 1);
-    mod_t *mod = linn_load(make_path(pathname));
-    linn_run_function(mod, name);
+    mod_t *mod = li_load(make_path(pathname));
+    li_run_function(mod, name);
 }
 
 static void
 handle_bytecode(cmd_ctx_t *ctx) {
     char *pathname = cmd_get_arg(ctx, 0);
-    mod_t *mod = linn_load(make_path(pathname));
-    linn_print_bytecode(mod);
+    mod_t *mod = li_load(make_path(pathname));
+    li_print_bytecode(mod);
 }
 
 static void
@@ -46,7 +46,7 @@ main(int argc, char *argv[]) {
 
     init();
 
-    cmd_router_t *router = cmd_make_router("linn", "0.1.0");
+    cmd_router_t *router = cmd_make_router("li", "0.1.0");
 
     cmd_define_route(router, "run file");
     cmd_define_route(router, "run-function function file");

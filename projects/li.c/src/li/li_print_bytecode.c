@@ -40,7 +40,7 @@ print_definition_bytecode(
 }
 
 void
-linn_print_bytecode(const mod_t *mod) {
+li_print_bytecode(const mod_t *mod) {
     record_iter_t iter;
     record_iter_init(&iter, mod->definitions);
     const hash_entry_t *entry = record_iter_next_entry(&iter);
