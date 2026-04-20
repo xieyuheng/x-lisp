@@ -12,6 +12,7 @@ path_t *path_copy(const path_t *self);
 bool path_equal(path_t *x, path_t *y);
 
 void path_join(path_t *self, const char *string);
+void path_join_extension(path_t *self, const char *extension);
 
 const char *path_raw_string(const path_t *self);
 void path_print(const path_t *self);

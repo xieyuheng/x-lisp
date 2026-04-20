@@ -148,6 +148,15 @@ path_join(path_t *self, const char *string) {
     path_update_string(self);
 }
 
+void
+path_join_extension(path_t *self, const char *extension) {
+    char *segment = path_pop_segment(self);
+    char *new_segment = string_append(segment, extension);
+    string_free(segment);
+    path_push_segment(self, new_segment);
+    path_update_string(self);
+}
+
 const char *
 path_raw_string(const path_t *self) {
     assert(self->string);
