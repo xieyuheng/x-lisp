@@ -9,8 +9,8 @@ li_test(mod_t *mod, const char *snapshot) {
         if (db_has_attribute(mod->db, definition->name, "is-test")) {
             assert(definition->kind == FUNCTION_DEFINITION);
             path_t *path = make_path(snapshot);
-            path_join_mut(path, "modules");
-            path_join_mut(path, definition->name);
+            path_join(path, "modules");
+            path_join(path, definition->name);
             fs_ensure_directory(path_raw_string(path));
 
             printf("[test] %s\n", definition->name);

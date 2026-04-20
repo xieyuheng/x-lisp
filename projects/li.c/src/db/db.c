@@ -96,7 +96,7 @@ db_delete_recursive(db_t *db, const char *key) {
 void
 db_put_attribute(db_t *db, const char *prefix, const char *name, value_t value) {
     path_t *path = make_path(prefix);
-    path_join_mut(path, name);
+    path_join(path, name);
     db_put(db, path_raw_string(path), value);
     path_free(path);
 }
@@ -104,7 +104,7 @@ db_put_attribute(db_t *db, const char *prefix, const char *name, value_t value) 
 value_t
 db_get_attribute(db_t *db, const char *prefix, const char *name) {
     path_t *path = make_path(prefix);
-    path_join_mut(path, name);
+    path_join(path, name);
     value_t value = db_get(db, path_raw_string(path));
     path_free(path);
     return value;
@@ -113,7 +113,7 @@ db_get_attribute(db_t *db, const char *prefix, const char *name) {
 bool
 db_has_attribute(db_t *db, const char *prefix, const char *name) {
     path_t *path = make_path(prefix);
-    path_join_mut(path, name);
+    path_join(path, name);
     bool result = db_has(db, path_raw_string(path));
     path_free(path);
     return result;

@@ -12,7 +12,7 @@ make_path(const char *string) {
     self->segment_stack = make_string_stack();
     if (string_starts_with(string, "/"))
         self->is_absolute = true;
-    path_join_mut(self, string);
+    path_join(self, string);
     return self;
 }
 
@@ -136,7 +136,7 @@ path_execute(path_t *self, char *segment) {
 }
 
 void
-path_join_mut(path_t *self, const char *string) {
+path_join(path_t *self, const char *string) {
     entry_t *entry = next_segment(string);
     while (entry) {
         path_execute(self, entry->segment);
@@ -155,7 +155,7 @@ path_resolve_mut(path_t *self, const char *string) {
         stack_purge(self->segment_stack);
     }
 
-    path_join_mut(self, string);
+    path_join(self, string);
 }
 
 path_t *

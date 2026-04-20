@@ -80,7 +80,7 @@ x_path_relative_p(value_t string) {
 value_t
 x_path_join(value_t left, value_t right) {
     path_t *path = make_path(to_xstring(left)->string);
-    path_join_mut(path, to_xstring(right)->string);
+    path_join(path, to_xstring(right)->string);
     char *path_name = string_copy(path_raw_string(path));
     path_free(path);
     return x_object(make_xstring(path_name));
