@@ -29,7 +29,7 @@ li_execute_ins(mod_t *mod, line_t *line) {
     const path_t *path = line_path(line);
     definition_t *definition = ensure_definition(mod, path_raw_string(path));
     function_t *function = definition_function(definition);
-    line_var_t *op = to_line_var(line_get_arg(line, 0));
+    keyword_t *op = to_keyword(line_get_arg(line, 0));
 
     if (string_equal(op->string, "literal")) {
         struct instr_t instr;
@@ -47,7 +47,7 @@ li_execute_ins(mod_t *mod, line_t *line) {
     }
 
     if (string_equal(op->string, "call")) {
-        line_var_t *operand = to_line_var(line_get_arg(line, 1));
+        keyword_t *operand = to_keyword(line_get_arg(line, 1));
         definition_t *definition = ensure_definition(mod, operand->string);
         struct instr_t instr;
         instr.op = OP_CALL;
@@ -57,7 +57,7 @@ li_execute_ins(mod_t *mod, line_t *line) {
     }
 
     if (string_equal(op->string, "tail-call")) {
-        line_var_t *operand = to_line_var(line_get_arg(line, 1));
+        keyword_t *operand = to_keyword(line_get_arg(line, 1));
         definition_t *definition = ensure_definition(mod, operand->string);
         struct instr_t instr;
         instr.op = OP_TAIL_CALL;
@@ -67,7 +67,7 @@ li_execute_ins(mod_t *mod, line_t *line) {
     }
 
     if (string_equal(op->string, "ref")) {
-        line_var_t *operand = to_line_var(line_get_arg(line, 1));
+        keyword_t *operand = to_keyword(line_get_arg(line, 1));
         definition_t *definition = ensure_definition(mod, operand->string);
         struct instr_t instr;
         instr.op = OP_REF;
@@ -77,7 +77,7 @@ li_execute_ins(mod_t *mod, line_t *line) {
     }
 
     if (string_equal(op->string, "global-load")) {
-        line_var_t *operand = to_line_var(line_get_arg(line, 1));
+        keyword_t *operand = to_keyword(line_get_arg(line, 1));
         definition_t *definition = ensure_definition(mod, operand->string);
         struct instr_t instr;
         instr.op = OP_GLOBAL_LOAD;
@@ -87,7 +87,7 @@ li_execute_ins(mod_t *mod, line_t *line) {
     }
 
     if (string_equal(op->string, "global-store")) {
-        line_var_t *operand = to_line_var(line_get_arg(line, 1));
+        keyword_t *operand = to_keyword(line_get_arg(line, 1));
         definition_t *definition = ensure_definition(mod, operand->string);
         struct instr_t instr;
         instr.op = OP_GLOBAL_STORE;
@@ -111,7 +111,7 @@ li_execute_ins(mod_t *mod, line_t *line) {
     }
 
     if (string_equal(op->string, "local-load")) {
-        line_var_t *operand = to_line_var(line_get_arg(line, 1));
+        keyword_t *operand = to_keyword(line_get_arg(line, 1));
         size_t index = ensure_binding_index(function, operand->string);
         struct instr_t instr;
         instr.op = OP_LOCAL_LOAD;
@@ -121,7 +121,7 @@ li_execute_ins(mod_t *mod, line_t *line) {
     }
 
     if (string_equal(op->string, "local-store")) {
-        line_var_t *operand = to_line_var(line_get_arg(line, 1));
+        keyword_t *operand = to_keyword(line_get_arg(line, 1));
         size_t index = ensure_binding_index(function, operand->string);
         struct instr_t instr;
         instr.op = OP_LOCAL_STORE;
@@ -131,13 +131,13 @@ li_execute_ins(mod_t *mod, line_t *line) {
     }
 
     if (string_equal(op->string, "label")) {
-        line_var_t *operand = to_line_var(line_get_arg(line, 1));
+        keyword_t *operand = to_keyword(line_get_arg(line, 1));
         function_add_label(function, operand->string);
         return;
     }
 
     if (string_equal(op->string, "jump")) {
-        line_var_t *operand = to_line_var(line_get_arg(line, 1));
+        keyword_t *operand = to_keyword(line_get_arg(line, 1));
         struct instr_t instr;
         instr.op = OP_JUMP;
         instr.jump.offset = 0;
@@ -148,7 +148,7 @@ li_execute_ins(mod_t *mod, line_t *line) {
     }
 
     if (string_equal(op->string, "jump-if-not")) {
-        line_var_t *operand = to_line_var(line_get_arg(line, 1));
+        keyword_t *operand = to_keyword(line_get_arg(line, 1));
         struct instr_t instr;
         instr.op = OP_JUMP_IF_NOT;
         instr.jump.offset = 0;

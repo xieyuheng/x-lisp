@@ -3,6 +3,6 @@
 set -e
 
 parallel="parallel -v --halt now,fail=1"
-bin="./src/li.exe run"
+bin="./src/li.exe run-function main"
 
 find lib/tests -name "*.li" | $parallel $bin {}

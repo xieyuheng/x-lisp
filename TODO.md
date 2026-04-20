@@ -1,6 +1,6 @@
 # li
 
-[li.c] use pure data -- remove `line_var_t`
+[meta-lisp.js] `CodegenPass` -- `local-load` & `local-store` take index
 [li.c] `OP_APPLY` has `argc`
 
 # later
