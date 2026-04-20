@@ -7,12 +7,6 @@ sanity_check(void) {
 }
 
 static void
-config_stdio(void) {
-    file_disable_buffer(stdout);
-    file_disable_buffer(stderr);
-}
-
-static void
 handle_run(cmd_ctx_t *ctx) {
     char *pathname = cmd_get_arg(ctx, 0);
     mod_t *mod = li_load(make_path(pathname));
@@ -49,7 +43,6 @@ init(void) {
 int
 main(int argc, char *argv[]) {
     sanity_check();
-    config_stdio();
 
     init();
 
@@ -57,7 +50,7 @@ main(int argc, char *argv[]) {
 
     cmd_define_route(router, "run file");
     cmd_define_route(router, "run-fn function file");
-    cmd_define_route(router, "test file");
+    cmd_define_route(router, "test file --snapshot");
     cmd_define_route(router, "bytecode file");
 
     cmd_define_handler(router, "run", handle_run);

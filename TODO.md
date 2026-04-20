@@ -1,10 +1,9 @@
+[helpers.c] file -- `stdout_push` & `stdout_drop`
+
 # li
 
 [li.c] support snapshot testing
 [meta-lisp.js] `CodegenPass` -- `global-load` & `global-load` take index
-
-# li as db
-
 [li.c] improve bytecode command -- can be used to save db to file
 
 # later

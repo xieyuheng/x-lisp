@@ -86,8 +86,3 @@ void
 file_unlock(file_t *file) {
     funlockfile(file);
 }
-
-void
-file_disable_buffer(file_t *file) {
-    setbuf(file, NULL);
-}

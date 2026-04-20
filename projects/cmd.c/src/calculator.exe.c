@@ -1,18 +1,6 @@
 #include "index.h"
 
 static void
-sanity_check(void) {
-    assert(sizeof(uint64_t) == sizeof(void *));
-    assert(sizeof(uint64_t) == sizeof(size_t));
-}
-
-static void
-config_stdio(void) {
-    file_disable_buffer(stdout);
-    file_disable_buffer(stderr);
-}
-
-static void
 handle_hello(cmd_ctx_t *ctx) {
     (void) ctx;
     printf("hello world\n");
@@ -54,9 +42,6 @@ handle_bye(cmd_ctx_t *ctx) {
 
 int
 main(int argc, char *argv[]) {
-    sanity_check();
-    config_stdio();
-
     cmd_router_t *router = cmd_make_router("calculator", "0.0.0");
 
     cmd_define_route(router, "hello -- say hello");
