@@ -1,6 +1,5 @@
 # optimize
 
-[meta-lisp.js] `CodegenPass` -- generate `<function>/is-test` for test function
 [li.c] `test command` -- use `<function>/is-test` to run all test
 
 [helpers.c] faster `string_next_line`
