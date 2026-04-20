@@ -1,6 +1,7 @@
 # li
 
-[li.c] `test command` -- use `<function>/is-test` to run all test
+[cmd.c] improve error report -- quit using `assert`
+[li.c] support snapshot testing
 [meta-lisp.js] `CodegenPass` -- `global-load` & `global-load` take index
 
 # li as db
