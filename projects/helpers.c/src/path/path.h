@@ -13,9 +13,6 @@ bool path_equal(path_t *x, path_t *y);
 
 void path_join(path_t *self, const char *string);
 
-void path_resolve_mut(path_t *self, const char *string);
-path_t *path_resolve(const path_t *self, const char *string);
-
 const char *path_raw_string(const path_t *self);
 void path_print(const path_t *self);
 

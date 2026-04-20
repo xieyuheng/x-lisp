@@ -148,23 +148,6 @@ path_join(path_t *self, const char *string) {
     path_update_string(self);
 }
 
-void
-path_resolve_mut(path_t *self, const char *string) {
-    if (string_starts_with(string, "/")) {
-        self->is_absolute = true;
-        stack_purge(self->segment_stack);
-    }
-
-    path_join(self, string);
-}
-
-path_t *
-path_resolve(const path_t *self, const char *string) {
-    path_t *new_path = path_copy(self);
-    path_resolve_mut(new_path, string);
-    return new_path;
-}
-
 const char *
 path_raw_string(const path_t *self) {
     assert(self->string);
