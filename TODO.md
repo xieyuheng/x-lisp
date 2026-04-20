@@ -1,7 +1,7 @@
 # li
 
-[li.c] update todo list
-[li.c] note about pure date
+[li.c] `OP_APPLY` has `argc`
+[li.c] use pure data -- remove `line_var_t`
 
 # later
 

@@ -12,7 +12,7 @@ export const LiInterpreterPath = Path.join(
 )
 
 export function projectTest(project: M.Project): void {
-  M.projectBuild(project, { dump: false })
+  M.projectBuild(project, { dump: false, basic: false })
 
   const bundlePath = Path.join(M.projectOutputDirectory(project), "bundle.li")
 

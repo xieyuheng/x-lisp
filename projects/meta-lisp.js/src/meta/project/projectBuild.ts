@@ -13,7 +13,7 @@ import * as M from "../index.ts"
 
 export function projectBuild(
   project: M.Project,
-  options: { dump: boolean },
+  options: { dump: boolean, basic: boolean },
 ): void {
   M.projectPerformClaim(project)
   if (options.dump) projectDumpMods(project, "001-load")
@@ -33,7 +33,7 @@ export function projectBuild(
   M.projectForEachMod(project, M.UnnestOperandPass)
   if (options.dump) projectDumpMods(project, "020-unnest-operand")
 
-  projectBundleBasic(project)
+  if (options.basic) projectBundleBasic(project)
   projectBundleLi(project)
 }
 
