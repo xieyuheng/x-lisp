@@ -1,7 +1,7 @@
 # linn
 
-[meta-lisp.js] remove basic-lisp.js
 [linn.c] update todo list
+[linn.c] note about pure date
 
 # later
 
