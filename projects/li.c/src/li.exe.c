@@ -20,11 +20,11 @@ handle_run(cmd_ctx_t *ctx) {
 }
 
 static void
-handle_run_function(cmd_ctx_t *ctx){
+handle_run_fn(cmd_ctx_t *ctx){
     char *name = cmd_get_arg(ctx, 0);
     char *pathname = cmd_get_arg(ctx, 1);
     mod_t *mod = li_load(make_path(pathname));
-    li_run_function(mod, name);
+    li_run_fn(mod, name);
 }
 
 static void
@@ -49,11 +49,11 @@ main(int argc, char *argv[]) {
     cmd_router_t *router = cmd_make_router("li", "0.1.0");
 
     cmd_define_route(router, "run file");
-    cmd_define_route(router, "run-function function file");
+    cmd_define_route(router, "run-fn function file");
     cmd_define_route(router, "bytecode file");
 
     cmd_define_handler(router, "run", handle_run);
-    cmd_define_handler(router, "run-function", handle_run_function);
+    cmd_define_handler(router, "run-fn", handle_run_fn);
     cmd_define_handler(router, "bytecode", handle_bytecode);
 
     cmd_router_run(router, argc, argv);
