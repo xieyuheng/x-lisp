@@ -6,7 +6,23 @@ li_test(mod_t *mod, const char *snapshot) {
     record_iter_init(&iter, mod->definitions);
     definition_t *definition = record_iter_next_value(&iter);
     while (definition) {
-        if (db_has_attribute(mod->db, definition->name, "is-test")) {
+        if (db_has_attribute(mod->db, definition->name, "is-test")
+            && !string_starts_with(definition->name, "builtin/")) {
+            li_test_definition(mod, snapshot, definition);
+        }
+
+        definition = record_iter_next_value(&iter);
+    }
+}
+
+void
+li_builtin_test(mod_t *mod, const char *snapshot) {
+    record_iter_t iter;
+    record_iter_init(&iter, mod->definitions);
+    definition_t *definition = record_iter_next_value(&iter);
+    while (definition) {
+        if (db_has_attribute(mod->db, definition->name, "is-test")
+            && string_starts_with(definition->name, "builtin/")) {
             li_test_definition(mod, snapshot, definition);
         }
 
