@@ -120,7 +120,13 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
 
     case OP_GLOBAL_LOAD: {
         definition_t *definition = instr.ref.definition;
-        assert(definition->kind == VARIABLE_DEFINITION);
+        if (definition->kind != VARIABLE_DEFINITION) {
+            who_printf("OP_GLOBAL_LOAD expect VARIABLE_DEFINITION\n");
+            who_printf("  definition->name: %s\n", definition->name);
+            vm_inspect(vm);
+            exit(1);
+        }
+
         vm_push(vm, definition->variable_definition.value);
         return;
     }
@@ -128,7 +134,13 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     case OP_GLOBAL_STORE: {
         value_t value = vm_pop(vm);
         definition_t *definition = instr.ref.definition;
-        assert(definition->kind == VARIABLE_DEFINITION);
+        if (definition->kind != VARIABLE_DEFINITION) {
+            who_printf("OP_GLOBAL_LOAD expect VARIABLE_DEFINITION\n");
+            who_printf("  definition->name: %s\n", definition->name);
+            vm_inspect(vm);
+            exit(1);
+        }
+
         definition->variable_definition.value = value;
         return;
     }
@@ -197,7 +209,7 @@ vm_execute(vm_t *vm) {
         // debug
 
         {
-            // vm_insepct(vm);
+            // vm_inspect(vm);
         }
     }
 }
@@ -274,7 +286,7 @@ vm_perform_gc(vm_t *vm) {
 }
 
 void
-vm_insepct(vm_t *vm) {
+vm_inspect(vm_t *vm) {
     // print value stack
 
     string_print("-- ");

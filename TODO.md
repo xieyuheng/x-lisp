@@ -1,10 +1,15 @@
 # linn
 
-[meta-lisp.js] meta-lisp -- check claimed undefined name
-
-[meta-lisp.js] recover `projectTest`
 [meta-lisp.js] remove basic-lisp.js
 [linn.c] update todo list
+
+# later
+
+[meta-lisp.js] meta-lisp -- check claimed undefined name
+
+# helpers
+
+[helpers.c] refactor fast `string_next_line`
 
 # later
 

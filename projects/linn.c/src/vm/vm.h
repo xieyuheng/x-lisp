@@ -18,4 +18,4 @@ void vm_execute(vm_t *vm);
 
 void vm_perform_gc(vm_t *vm);
 
-void vm_insepct(vm_t *vm);
+void vm_inspect(vm_t *vm);

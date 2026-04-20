@@ -94,6 +94,7 @@ type Entry = [string | null, M.Exp]
 function forAtom(state: State, exp: M.Exp): [Array<Entry>, M.Exp] {
   switch (exp.kind) {
     case "Var":
+    case "QualifiedVar":
     case "Symbol":
     case "Keyword":
     case "String":

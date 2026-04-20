@@ -65,7 +65,8 @@ linn_load(path_t *path) {
         definition_t *definition = record_iter_next_value(&iter);
         while (definition) {
             if (definition->kind == VARIABLE_DEFINITION
-                && definition->variable_definition.function) {
+                && definition->variable_definition.function)
+            {
                 function_t *function = definition_function(definition);
                 vm_push_frame(vm, make_function_frame(function));
                 vm_execute(vm);

@@ -3,6 +3,14 @@ import * as L from "../../linn/index.ts"
 
 export function CodegenPass(basicMod: B.Mod, linnMod: L.Mod): void {
   for (const definition of basicMod.definitions.values()) {
+    if (definition.kind === "VariableDefinition") {
+      linnMod.lines.push(
+        L.Line("put", `${definition.name}/is-variable`, [L.Var("true")]),
+      )
+    }
+  }
+
+  for (const definition of basicMod.definitions.values()) {
     linnMod.lines.push(...onDefinition(basicMod, definition))
   }
 }
@@ -35,7 +43,6 @@ function onDefinition(mod: B.Mod, definition: B.Definition): Array<L.Line> {
     case "VariableDefinition": {
       const blocks = definition.blocks.values()
       return [
-        L.Line("put", `${definition.name}/is-variable`, [L.Var("true")]),
         ...blocks.flatMap((block) => onBlock(mod, definition.name, block)),
       ]
     }
@@ -149,19 +156,21 @@ function onVar(mod: B.Mod, name: string, exp: B.Var): Array<L.Line> {
 }
 
 function onApply(mod: B.Mod, name: string, exp: B.Apply): Array<L.Line> {
-  return onGeneralApply(mod, name, exp, "apply")
+  return onGeneralApply(mod, name, exp, false)
 }
 
 function onTailApply(mod: B.Mod, name: string, exp: B.Apply): Array<L.Line> {
-  return onGeneralApply(mod, name, exp, "tail-apply")
+  return onGeneralApply(mod, name, exp, true)
 }
 
 function onGeneralApply(
   mod: B.Mod,
   name: string,
   exp: B.Apply,
-  applyMode: string,
+  isTail: boolean,
 ): Array<L.Line> {
+  const applyMode = isTail ? "tail-apply" : "apply"
+  const callMode = isTail ? "tail-call" : "call"
   const definition = B.modLookupDefinition(mod, B.asVar(exp.target).name)
   if (definition === undefined) {
     return [
@@ -192,7 +201,10 @@ function onGeneralApply(
       } else if (exp.args.length === arity) {
         return [
           ...exp.args.flatMap((arg) => onExp(mod, name, arg)),
-          L.Line("ins", name, [L.Var("call"), L.Var(B.asVar(exp.target).name)]),
+          L.Line("ins", name, [
+            L.Var(callMode),
+            L.Var(B.asVar(exp.target).name),
+          ]),
         ]
       } else {
         return [

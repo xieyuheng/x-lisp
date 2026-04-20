@@ -5,7 +5,6 @@ import { expandDataConstructor } from "./expandDataConstructor.ts"
 import { expandDataConstructorPredicate } from "./expandDataConstructorPredicate.ts"
 import { expandDataGetter } from "./expandDataGetter.ts"
 import { expandDataPutter } from "./expandDataPutter.ts"
-import assert from "node:assert"
 
 export function loadDefine(mod: M.Mod, scope: M.ModScope, stmt: M.Stmt): void {
   if (stmt.kind === "DeclarePrimitiveFunction") {

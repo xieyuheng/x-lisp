@@ -276,28 +276,70 @@ string_next_word(const char *self, size_t *cursor_pointer) {
 
 char *
 string_next_line(const char *self, size_t *cursor_pointer) {
-    size_t cursor = *cursor_pointer;
-    if (cursor >= string_length(self)) {
-        return NULL;
+    if (!self || !cursor_pointer) return NULL;
+
+    size_t len = strlen(self);
+    if (*cursor_pointer >= len) return NULL;  // 无更多行
+
+    size_t start = *cursor_pointer;
+    size_t end = start;
+
+    // 寻找行尾（换行符或字符串结尾）
+    while (end < len && self[end] != '\n') {
+        ++end;
     }
 
-    string_builder_t *builder = make_string_builder();
-    while (cursor < string_length(self)) {
-        char c = self[cursor];
-        if (c == '\n') {
-            cursor++;
-            break;
-        } else {
-            string_builder_append_char(builder, c);
-            cursor++;
+    // 计算行长度（不包含换行符）
+    size_t line_len = end - start;
+    char *line = (char*)malloc(line_len + 1);
+    if (!line) return NULL;  // 分配失败
+
+    // 复制行内容
+    memcpy(line, self + start, line_len);
+    line[line_len] = '\0';
+
+    // 更新游标
+    if (end < len && self[end] == '\n') {
+        *cursor_pointer = end + 1;  // 跳过 '\n'
+        // 处理 Windows 风格的 "\r\n"：若前一个字符是 '\r'，则游标指向 '\n' 之后即可
+        // 注意：我们只跳过一个 '\n'，因为 "\r\n" 中的 '\r' 被视为行内容的一部分？
+        // 更常见的是将 "\r\n" 整体视为换行符，因此需要额外处理：
+        if (line_len > 0 && line[line_len - 1] == '\r') {
+            // 去掉行尾的 '\r'，并调整游标（实际上游标已在 '\n' 之后，无需额外移动）
+            line[line_len - 1] = '\0';  // 将 '\r' 替换为 '\0'
         }
+    } else {
+        // 最后一行没有换行符
+        *cursor_pointer = end;
     }
 
-    char *line = string_builder_produce(builder);
-    string_builder_free(builder);
-    *cursor_pointer = cursor;
     return line;
 }
+
+// char *
+// string_next_line(const char *self, size_t *cursor_pointer) {
+//     size_t cursor = *cursor_pointer;
+//     if (cursor >= string_length(self)) {
+//         return NULL;
+//     }
+
+//     string_builder_t *builder = make_string_builder();
+//     while (cursor < string_length(self)) {
+//         char c = self[cursor];
+//         if (c == '\n') {
+//             cursor++;
+//             break;
+//         } else {
+//             string_builder_append_char(builder, c);
+//             cursor++;
+//         }
+//     }
+
+//     char *line = string_builder_produce(builder);
+//     string_builder_free(builder);
+//     *cursor_pointer = cursor;
+//     return line;
+// }
 
 void
 string_print(const char *self) {
