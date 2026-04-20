@@ -1,3 +1,5 @@
+[li.c] `builtin-test` command
+
 # later
 
 [meta-lisp.js] meta-lisp -- check claimed undefined name

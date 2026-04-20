@@ -43,11 +43,11 @@ main(int argc, char *argv[]) {
     cmd_router_t *router = cmd_make_router("li", "0.1.0");
 
     cmd_define_route(router, "run file");
-    cmd_define_route(router, "run-fn function file");
+    cmd_define_route(router, "call function file");
     cmd_define_route(router, "test file --snapshot");
 
     cmd_define_handler(router, "run", handle_run);
-    cmd_define_handler(router, "run-fn", handle_run_fn);
+    cmd_define_handler(router, "call", handle_run_fn);
     cmd_define_handler(router, "test", handle_test);
 
     cmd_router_run(router, argc, argv);
