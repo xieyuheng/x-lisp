@@ -30,13 +30,6 @@ handle_test(cmd_ctx_t *ctx) {
 }
 
 static void
-handle_bytecode(cmd_ctx_t *ctx) {
-    char *pathname = cmd_get_arg(ctx, 0);
-    mod_t *mod = li_load(make_path(pathname));
-    li_print_bytecode(mod);
-}
-
-static void
 init(void) {
     init_global_gc();
 }
@@ -52,12 +45,10 @@ main(int argc, char *argv[]) {
     cmd_define_route(router, "run file");
     cmd_define_route(router, "run-fn function file");
     cmd_define_route(router, "test file --snapshot");
-    cmd_define_route(router, "bytecode file");
 
     cmd_define_handler(router, "run", handle_run);
     cmd_define_handler(router, "run-fn", handle_run_fn);
     cmd_define_handler(router, "test", handle_test);
-    cmd_define_handler(router, "bytecode", handle_bytecode);
 
     cmd_router_run(router, argc, argv);
     cmd_router_free(router);
