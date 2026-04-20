@@ -24,7 +24,7 @@ path_free(path_t *self) {
 }
 
 path_t *
-make_path_cwd(void) {
+make_cwd_path(void) {
     char *cwd = getcwd(NULL, 0);
     path_t *cwd_path = make_path(cwd);
     string_free(cwd);
@@ -240,7 +240,7 @@ path_relative_print(path_t *from, path_t *to) {
 
 void
 path_relative_cwd_print(path_t *to) {
-    path_t *cwd_path = make_path_cwd();
+    path_t *cwd_path = make_cwd_path();
     path_relative_print(cwd_path, to);
     path_free(cwd_path);
 }

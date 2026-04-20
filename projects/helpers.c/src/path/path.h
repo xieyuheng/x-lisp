@@ -3,7 +3,7 @@
 path_t *make_path(const char *string);
 void path_free(path_t *self);
 
-path_t *make_path_cwd(void);
+path_t *make_cwd_path(void);
 
 bool path_is_relative(const path_t *self);
 bool path_is_absolute(const path_t *self);
