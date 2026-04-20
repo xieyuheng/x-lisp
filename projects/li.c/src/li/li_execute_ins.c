@@ -99,6 +99,7 @@ li_execute_ins(mod_t *mod, line_t *line) {
     if (string_equal(op->string, "apply")) {
         struct instr_t instr;
         instr.op = OP_APPLY;
+        instr.apply.argc = to_int64(line_get_arg(line, 1));
         function_append_instr(function, instr);
         return;
     }
@@ -106,6 +107,7 @@ li_execute_ins(mod_t *mod, line_t *line) {
     if (string_equal(op->string, "tail-apply")) {
         struct instr_t instr;
         instr.op = OP_TAIL_APPLY;
+        instr.apply.argc = to_int64(line_get_arg(line, 1));
         function_append_instr(function, instr);
         return;
     }

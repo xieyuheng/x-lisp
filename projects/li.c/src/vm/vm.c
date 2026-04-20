@@ -146,18 +146,16 @@ vm_execute_instr(vm_t *vm, frame_t *frame, struct instr_t instr) {
     }
 
     case OP_APPLY: {
-        value_t n = vm_pop(vm);
         value_t target = vm_pop(vm);
-        apply(vm, to_int64(n), target);
+        apply(vm, instr.apply.argc, target);
         return;
     }
 
     case OP_TAIL_APPLY: {
-        value_t n = vm_pop(vm);
         value_t target = vm_pop(vm);
         stack_pop(vm->frame_stack);
         frame_free(frame);
-        apply(vm, to_int64(n), target);
+        apply(vm, instr.apply.argc, target);
         return;
     }
 

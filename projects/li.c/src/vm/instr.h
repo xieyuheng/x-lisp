@@ -28,6 +28,7 @@ struct instr_t {
         struct { definition_t *definition; } ref;
         struct { uint32_t index; } local;
         struct { int32_t offset; } jump; // offset is based on next instr.
+        struct { uint8_t argc; } apply;
     };
 };
 
