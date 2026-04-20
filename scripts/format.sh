@@ -2,4 +2,4 @@
 
 set -e
 
-pnpm run -r format
+pnpm run -r --parallel format
