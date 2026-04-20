@@ -15,12 +15,16 @@ li_test(mod_t *mod, const char *snapshot) {
                 path_t *path = make_path(snapshot);
                 path_join(path, "modules");
                 path_join(path, definition->name);
-                fs_ensure_file(path_raw_string(path));
+                path_join_extension(path, ".out");
+
+                char *segment = path_pop_segment(path);
+                fs_ensure_directory(path_raw_string(path));
+                path_push_segment(path, segment);
+
                 stdout_push(path_raw_string(path));
-
                 li_run(mod, definition->name);
-
                 stdout_drop();
+
                 path_free(path);
             }
 
