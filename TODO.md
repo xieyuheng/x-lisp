@@ -1,7 +1,3 @@
-# li
-
-[meta-lisp.js] `CodegenPass` -- `local-load` & `local-store` take index
-
 # helpers
 
 [helpers.c] refactor fast `string_next_line`
