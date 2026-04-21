@@ -1,7 +1,6 @@
 #include "index.h"
 
-cmd_ctx_t *
-cmd_make_ctx(
+cmd_ctx_t * cmd_make_ctx(
   const cmd_router_t *router,
   const cmd_route_t *route,
   size_t argc,
@@ -17,8 +16,7 @@ cmd_make_ctx(
   return self;
 }
 
-void
-cmd_ctx_free(cmd_ctx_t *self) {
+void cmd_ctx_free(cmd_ctx_t *self) {
   array_free(self->args);
   record_free(self->options);
   free(self);

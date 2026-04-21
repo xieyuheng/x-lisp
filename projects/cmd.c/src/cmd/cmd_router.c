@@ -1,7 +1,6 @@
 #include "index.h"
 
-cmd_router_t *
-cmd_make_router(const char *name, const char *version) {
+cmd_router_t * cmd_make_router(const char *name, const char *version) {
   cmd_router_t *self = new(cmd_router_t);
   self->name = name;
   self->version = version;
@@ -9,14 +8,12 @@ cmd_make_router(const char *name, const char *version) {
   return self;
 }
 
-void
-cmd_router_free(cmd_router_t *self) {
+void cmd_router_free(cmd_router_t *self) {
   array_free(self->routes);
   free(self);
 }
 
-cmd_route_t *
-cmd_router_lookup(cmd_router_t *self, const char *name) {
+cmd_route_t * cmd_router_lookup(cmd_router_t *self, const char *name) {
   for (size_t i = 0; i < array_length(self->routes); i++) {
     cmd_route_t *route = array_get(self->routes, i);
     if (string_equal(name, route->name)) {
@@ -27,13 +24,11 @@ cmd_router_lookup(cmd_router_t *self, const char *name) {
   return NULL;
 }
 
-static void
-print_name_and_version(cmd_router_t *self) {
+static void print_name_and_version(cmd_router_t *self) {
   printf("%s %s\n", self->name, self->version);
 }
 
-static void
-print_commands(cmd_router_t *self) {
+static void print_commands(cmd_router_t *self) {
   printf("commands:\n");
   for (size_t i = 0; i < array_length(self->routes); i++) {
     cmd_route_t *route = array_get(self->routes, i);
@@ -41,8 +36,7 @@ print_commands(cmd_router_t *self) {
   }
 }
 
-void
-cmd_router_run(cmd_router_t *self, size_t argc, char **argv) {
+void cmd_router_run(cmd_router_t *self, size_t argc, char **argv) {
   if (argc < 2) {
     print_name_and_version(self);
     print_commands(self);

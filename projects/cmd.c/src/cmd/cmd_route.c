@@ -1,7 +1,6 @@
 #include "index.h"
 
-cmd_route_t *
-cmd_parse_route(const char *command) {
+cmd_route_t * cmd_parse_route(const char *command) {
   cmd_route_t *self = new(cmd_route_t);
   self->command = command;
 
@@ -35,16 +34,14 @@ cmd_parse_route(const char *command) {
   return self;
 }
 
-void
-cmd_route_free(cmd_route_t *self) {
+void cmd_route_free(cmd_route_t *self) {
   string_free(self->name);
   array_free(self->arg_names);
   array_free(self->option_names);
   free(self);
 }
 
-void
-cmd_route_match(cmd_route_t *self, cmd_ctx_t *ctx) {
+void cmd_route_match(cmd_route_t *self, cmd_ctx_t *ctx) {
   size_t base = 2;
   for (size_t i = 0; i < array_length(self->arg_names); i++) {
     const char *arg = ctx->argv[base + i];
