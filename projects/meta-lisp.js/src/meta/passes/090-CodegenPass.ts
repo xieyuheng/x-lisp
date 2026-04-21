@@ -108,7 +108,7 @@ function onDefinition(mod: B.Mod, definition: B.Definition): Array<L.Line> {
         ...definition.parameters
           .toReversed()
           .map((parameter) =>
-            L.Line("ins", definition.name, [
+            L.Line("fn", definition.name, [
               L.Keyword("local-store"),
               L.Int(BigInt(lookupLocalIndex(state, parameter))),
               L.Keyword(parameter),
@@ -131,7 +131,7 @@ function onDefinition(mod: B.Mod, definition: B.Definition): Array<L.Line> {
 
 function onBlock(state: State, name: string, block: B.Block): Array<L.Line> {
   return [
-    L.Line("ins", name, [L.Keyword("label"), L.Keyword(block.label)]),
+    L.Line("fn", name, [L.Keyword("label"), L.Keyword(block.label)]),
     ...block.instrs.flatMap((instr) => onInstr(state, name, instr)),
   ]
 }
@@ -141,7 +141,7 @@ function onInstr(state: State, name: string, instr: B.Instr): Array<L.Line> {
     case "Assign": {
       return [
         ...onExp(state, name, instr.exp),
-        L.Line("ins", name, [
+        L.Line("fn", name, [
           L.Keyword("local-store"),
           L.Int(BigInt(lookupLocalIndex(state, instr.dest))),
           L.Keyword(instr.dest),
@@ -152,7 +152,7 @@ function onInstr(state: State, name: string, instr: B.Instr): Array<L.Line> {
     case "Perform": {
       return [
         ...onExp(state, name, instr.exp),
-        L.Line("ins", name, [L.Keyword("drop")]),
+        L.Line("fn", name, [L.Keyword("drop")]),
       ]
     }
 
@@ -162,16 +162,16 @@ function onInstr(state: State, name: string, instr: B.Instr): Array<L.Line> {
 
     case "Branch": {
       return [
-        L.Line("ins", name, [
+        L.Line("fn", name, [
           L.Keyword("jump-if-not"),
           L.Keyword(instr.elseLabel),
         ]),
-        L.Line("ins", name, [L.Keyword("jump"), L.Keyword(instr.thenLabel)]),
+        L.Line("fn", name, [L.Keyword("jump"), L.Keyword(instr.thenLabel)]),
       ]
     }
 
     case "Goto": {
-      return [L.Line("ins", name, [L.Keyword("jump"), L.Keyword(instr.label)])]
+      return [L.Line("fn", name, [L.Keyword("jump"), L.Keyword(instr.label)])]
     }
 
     case "Return": {
@@ -187,7 +187,7 @@ function onExp(state: State, name: string, exp: B.Exp): Array<L.Line> {
     case "String":
     case "Int":
     case "Float": {
-      return [L.Line("ins", name, [L.Keyword("literal"), exp])]
+      return [L.Line("fn", name, [L.Keyword("literal"), exp])]
     }
 
     case "Var": {
@@ -208,15 +208,15 @@ function onTailExp(state: State, name: string, exp: B.Exp): Array<L.Line> {
     case "Int":
     case "Float": {
       return [
-        L.Line("ins", name, [L.Keyword("literal"), exp]),
-        L.Line("ins", name, [L.Keyword("return")]),
+        L.Line("fn", name, [L.Keyword("literal"), exp]),
+        L.Line("fn", name, [L.Keyword("return")]),
       ]
     }
 
     case "Var": {
       return [
         ...onVar(state, name, exp),
-        L.Line("ins", name, [L.Keyword("return")]),
+        L.Line("fn", name, [L.Keyword("return")]),
       ]
     }
 
@@ -230,7 +230,7 @@ function onVar(state: State, name: string, exp: B.Var): Array<L.Line> {
   const definition = B.modLookupDefinition(state.mod, exp.name)
   if (definition === undefined) {
     return [
-      L.Line("ins", name, [
+      L.Line("fn", name, [
         L.Keyword("local-load"),
         L.Int(BigInt(lookupLocalIndex(state, exp.name))),
         L.Keyword(exp.name),
@@ -241,13 +241,13 @@ function onVar(state: State, name: string, exp: B.Var): Array<L.Line> {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
     case "FunctionDefinition": {
-      return [L.Line("ins", name, [L.Keyword("ref"), L.Keyword(exp.name)])]
+      return [L.Line("fn", name, [L.Keyword("ref"), L.Keyword(exp.name)])]
     }
 
     case "PrimitiveVariableDeclaration":
     case "VariableDefinition": {
       return [
-        L.Line("ins", name, [L.Keyword("global-load"), L.Keyword(exp.name)]),
+        L.Line("fn", name, [L.Keyword("global-load"), L.Keyword(exp.name)]),
       ]
     }
   }
@@ -273,12 +273,12 @@ function onGeneralApply(
   if (definition === undefined) {
     return [
       ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-      L.Line("ins", name, [
+      L.Line("fn", name, [
         L.Keyword("local-load"),
         L.Int(BigInt(lookupLocalIndex(state, B.asVar(exp.target).name))),
         L.Keyword(B.asVar(exp.target).name),
       ]),
-      L.Line("ins", name, [
+      L.Line("fn", name, [
         L.Keyword(applyMode),
         L.Int(BigInt(exp.args.length)),
       ]),
@@ -292,11 +292,11 @@ function onGeneralApply(
       if (exp.args.length < arity) {
         return [
           ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-          L.Line("ins", name, [
+          L.Line("fn", name, [
             L.Keyword("ref"),
             L.Keyword(B.asVar(exp.target).name),
           ]),
-          L.Line("ins", name, [
+          L.Line("fn", name, [
             L.Keyword(applyMode),
             L.Int(BigInt(exp.args.length)),
           ]),
@@ -304,7 +304,7 @@ function onGeneralApply(
       } else if (exp.args.length === arity) {
         return [
           ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-          L.Line("ins", name, [
+          L.Line("fn", name, [
             L.Keyword(callMode),
             L.Keyword(B.asVar(exp.target).name),
           ]),
@@ -312,12 +312,12 @@ function onGeneralApply(
       } else {
         return [
           ...exp.args.slice(0, arity).flatMap((arg) => onExp(state, name, arg)),
-          L.Line("ins", name, [
+          L.Line("fn", name, [
             L.Keyword("call"),
             L.Keyword(B.asVar(exp.target).name),
           ]),
           ...exp.args.slice(arity).flatMap((arg) => onExp(state, name, arg)),
-          L.Line("ins", name, [
+          L.Line("fn", name, [
             L.Keyword(applyMode),
             L.Int(BigInt(exp.args.length - arity)),
           ]),
@@ -329,11 +329,11 @@ function onGeneralApply(
     case "VariableDefinition": {
       return [
         ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-        L.Line("ins", name, [
+        L.Line("fn", name, [
           L.Keyword("global-load"),
           L.Keyword(B.asVar(exp.target).name),
         ]),
-        L.Line("ins", name, [
+        L.Line("fn", name, [
           L.Keyword(applyMode),
           L.Int(BigInt(exp.args.length)),
         ]),

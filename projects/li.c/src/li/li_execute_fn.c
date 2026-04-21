@@ -15,7 +15,7 @@ ensure_definition(mod_t *mod, const char *name) {
 }
 
 void
-li_execute_ins(mod_t *mod, line_t *line) {
+li_execute_fn(mod_t *mod, line_t *line) {
     const path_t *path = line_path(line);
     definition_t *definition = ensure_definition(mod, path_raw_string(path));
     function_t *function = definition_function(definition);
