@@ -2,8 +2,7 @@
 
 // https://en.wikipedia.org/wiki/UTF-8
 
-uint8_t
-utf8_char_length(char c) {
+uint8_t utf8_char_length(char c) {
   uint8_t byte =  c;
   uint8_t pattern_1 = 0x00; // 0b0_______ >> 7
   uint8_t pattern_2 = 0x06; // 0b110_____ >> 5
@@ -19,8 +18,7 @@ utf8_char_length(char c) {
   exit(1);
 }
 
-code_point_t
-utf8_decode(const char *string) {
+code_point_t utf8_decode(const char *string) {
   uint8_t mask_2 = 0x1F; // 0b00011111
   uint8_t mask_3 = 0x0F; // 0b00001111
   uint8_t mask_4 = 0x07; // 0b00000111
@@ -67,8 +65,7 @@ utf8_decode(const char *string) {
   exit(1);
 }
 
-size_t
-utf8_string_length(const char *string) {
+size_t utf8_string_length(const char *string) {
   size_t length = 0;
   utf8_iter_t *iter = make_utf8_iter(string);
   code_point_t code_point = utf8_iter_first(iter);
@@ -81,8 +78,7 @@ utf8_string_length(const char *string) {
   return length;
 }
 
-void
-utf8_encode_into(code_point_t code_point, char *dest) {
+void utf8_encode_into(code_point_t code_point, char *dest) {
   uint8_t pattern_r = 0x80; // 0b10000000
   uint8_t pattern_2 = 0xC0; // 0b11000000
   uint8_t pattern_3 = 0xE0; // 0b11100000
@@ -128,8 +124,7 @@ utf8_encode_into(code_point_t code_point, char *dest) {
   exit(1);
 }
 
-char *
-utf8_encode(code_point_t code_point) {
+char *utf8_encode(code_point_t code_point) {
   size_t max_encode_length = 4;
   char *dest = allocate(max_encode_length + 1);
   utf8_encode_into(code_point, dest);

@@ -21,8 +21,7 @@ struct hash_t {
   free_fn_t *value_free_fn;
 };
 
-size_t
-hash_key_index(hash_t *self, const void *key) {
+size_t hash_key_index(hash_t *self, const void *key) {
   size_t base = self->hash_fn ? self->hash_fn(key) : (size_t) key;
   size_t limit = hash_primes[self->prime_index];
   size_t index = base % limit;
@@ -30,8 +29,8 @@ hash_key_index(hash_t *self, const void *key) {
 }
 
 // reused by `hash_purge` to shrink table.
-static void
-hash_init(hash_t *self) {
+
+static void hash_init(hash_t *self) {
   self->prime_index = 0;
   self->used_indexes_size = 0;
   self->length = 0;
@@ -40,37 +39,31 @@ hash_init(hash_t *self) {
   self->cursor_entry = NULL;
 }
 
-hash_t *
-make_hash(void) {
+hash_t *make_hash(void) {
   hash_t *self = new(hash_t);
   hash_init(self);
   return self;
 }
 
-void
-hash_put_hash_fn(hash_t *self, hash_fn_t *hash_fn) {
+void hash_put_hash_fn(hash_t *self, hash_fn_t *hash_fn) {
   self->hash_fn = hash_fn;
 }
 
-void
-hash_put_value_free_fn(hash_t *self, free_fn_t *value_free_fn) {
+void hash_put_value_free_fn(hash_t *self, free_fn_t *value_free_fn) {
   self->value_free_fn = value_free_fn;
 }
 
-void
-hash_put_key_free_fn(hash_t *self, free_fn_t *key_free_fn) {
+void hash_put_key_free_fn(hash_t *self, free_fn_t *key_free_fn) {
   self->key_free_fn = key_free_fn;
 }
 
-void
-hash_put_key_equal_fn(hash_t *self, equal_fn_t *key_equal_fn) {
+void hash_put_key_equal_fn(hash_t *self, equal_fn_t *key_equal_fn) {
   self->key_equal_fn = key_equal_fn;
 }
 
 static void hash_delete_entry(hash_t *self, hash_entry_t *entry);
 
-static void
-hash_purge_without_shrink(hash_t *self) {
+static void hash_purge_without_shrink(hash_t *self) {
   size_t limit = hash_primes[self->prime_index];
   for (size_t index = 0; index < limit; index++) {
     // free all entries in this hash bucket.
@@ -85,32 +78,27 @@ hash_purge_without_shrink(hash_t *self) {
   }
 }
 
-void
-hash_free(hash_t *self) {
+void hash_free(hash_t *self) {
   hash_purge_without_shrink(self);
   free(self->entries);
   free(self);
 }
 
-void
-hash_purge(hash_t *self) {
+void hash_purge(hash_t *self) {
   hash_purge_without_shrink(self);
   free(self->entries);
   hash_init(self);
 }
 
-size_t
-hash_length(const hash_t *self) {
+size_t hash_length(const hash_t *self) {
   return self->length;
 }
 
-bool
-hash_is_empty(const hash_t *self) {
+bool hash_is_empty(const hash_t *self) {
   return self->length == 0;
 }
 
-static void
-hash_rehash(hash_t *self, size_t new_prime_index) {
+static void hash_rehash(hash_t *self, size_t new_prime_index) {
   assert(self);
   assert(new_prime_index < sizeof(hash_primes));
 
@@ -146,16 +134,14 @@ hash_rehash(hash_t *self, size_t new_prime_index) {
   self->entries = new_entries;
 }
 
-static bool
-hash_key_equal(hash_t *self, const void *key1, const void *key2) {
+static bool hash_key_equal(hash_t *self, const void *key1, const void *key2) {
   if (!self->key_equal_fn)
     return key1 == key2;
 
   return self->key_equal_fn(key1, key2);
 }
 
-hash_entry_t *
-hash_get_entry(hash_t *self, const void *key) {
+hash_entry_t *hash_get_entry(hash_t *self, const void *key) {
   size_t index = hash_key_index(self, key);
   hash_entry_t *entry = self->entries[index];
   if (!entry) return NULL;
@@ -170,22 +156,19 @@ hash_get_entry(hash_t *self, const void *key) {
   return NULL;
 }
 
-bool
-hash_has(hash_t *self, const void *key) {
+bool hash_has(hash_t *self, const void *key) {
   hash_entry_t *entry = hash_get_entry(self, key);
   return entry != NULL;
 }
 
-void *
-hash_get(hash_t *self, const void *key) {
+void *hash_get(hash_t *self, const void *key) {
   hash_entry_t *entry = hash_get_entry(self, key);
   if (!entry) return NULL;
 
   return entry->value;
 }
 
-static void
-hash_delete_entry(hash_t *self, hash_entry_t *entry) {
+static void hash_delete_entry(hash_t *self, hash_entry_t *entry) {
   // find previous entry since it's a singly-linked list.
   hash_entry_t **entry_pointer = &(self->entries[entry->index]);
   hash_entry_t *cursor_entry = self->entries[entry->index];
@@ -229,8 +212,7 @@ hash_delete_entry(hash_t *self, hash_entry_t *entry) {
   hash_entry_free(entry);
 }
 
-bool
-hash_delete(hash_t *self, const void *key) {
+bool hash_delete(hash_t *self, const void *key) {
   hash_entry_t *entry = hash_get_entry(self, key);
   if (!entry) return false;
 
@@ -238,15 +220,13 @@ hash_delete(hash_t *self, const void *key) {
   return true;
 }
 
-static bool
-hash_is_overload(hash_t *self) {
+static bool hash_is_overload(hash_t *self) {
   size_t limit = hash_primes[self->prime_index];
   return ((self->length >= limit * LENGTH_REHASH_PERCENTAGE / 100) ||
       (self->used_indexes_size >= limit * INDEX_REHASH_PERCENTAGE / 100));
 }
 
-static void
-hash_order_push_entry(hash_t *self, hash_entry_t *entry) {
+static void hash_order_push_entry(hash_t *self, hash_entry_t *entry) {
   if (self->last_entry) {
     self->last_entry->next = entry;
     entry->prev = self->last_entry;
@@ -258,8 +238,7 @@ hash_order_push_entry(hash_t *self, hash_entry_t *entry) {
   }
 }
 
-bool
-hash_insert(hash_t *self, void *key, void *value) {
+bool hash_insert(hash_t *self, void *key, void *value) {
   if (hash_is_overload(self))
     hash_rehash(self, self->prime_index + 1);
 
@@ -290,13 +269,11 @@ hash_insert(hash_t *self, void *key, void *value) {
   return true;
 }
 
-void
-hash_insert_or_fail(hash_t *self, void *key, void *value) {
+void hash_insert_or_fail(hash_t *self, void *key, void *value) {
   assert(hash_insert(self, key, value));
 }
 
-void
-hash_put(hash_t *self, void *key, void *value) {
+void hash_put(hash_t *self, void *key, void *value) {
   hash_entry_t *entry = hash_get_entry(self, key);
   if (!entry) {
     assert(hash_insert(self, key, value));
@@ -313,13 +290,11 @@ hash_put(hash_t *self, void *key, void *value) {
   entry->value = value;
 }
 
-const hash_entry_t *
-hash_first_entry(const hash_t *self) {
+const hash_entry_t *hash_first_entry(const hash_t *self) {
   return self->first_entry;
 }
 
-void
-hash_report(const hash_t *self) {
+void hash_report(const hash_t *self) {
   size_t limit = hash_primes[self->prime_index];
   size_t length_percentage = self->length * 100 / limit;
   size_t index_percentage = self->used_indexes_size * 100 / limit;

@@ -1,7 +1,6 @@
 #include "index.h"
 
-mutex_t *
-make_mutex(void) {
+mutex_t *make_mutex(void) {
   mutex_t *self = new(mutex_t);
   pthread_mutexattr_t mutex_attr;
   pthread_mutexattr_init(&mutex_attr);
@@ -12,21 +11,18 @@ make_mutex(void) {
   return self;
 }
 
-void
-mutex_free(mutex_t *self) {
+void mutex_free(mutex_t *self) {
   int errno = pthread_mutex_destroy(self);
   assert(errno == 0);
   free(self);
 }
 
-void
-mutex_lock(mutex_t *self) {
+void mutex_lock(mutex_t *self) {
   int errno = pthread_mutex_lock(self);
   assert(errno == 0);
 }
 
-bool
-mutex_try_lock(mutex_t *self) {
+bool mutex_try_lock(mutex_t *self) {
   int errno = pthread_mutex_trylock(self);
   return errno == 0;
 }

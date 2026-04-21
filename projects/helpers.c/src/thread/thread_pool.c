@@ -4,21 +4,18 @@ struct thread_pool_t {
   array_t *thread_array;
 };
 
-thread_pool_t *
-make_thread_pool(void) {
+thread_pool_t *make_thread_pool(void) {
   thread_pool_t *self = new(thread_pool_t);
   self->thread_array = make_array();
   return self;
 }
 
-void
-thread_pool_free(thread_pool_t *self) {
+void thread_pool_free(thread_pool_t *self) {
   array_free(self->thread_array);
   free(self);
 }
 
-size_t
-thread_pool_start(thread_pool_t *self, thread_fn_t *thread_fn, void *arg) {
+size_t thread_pool_start(thread_pool_t *self, thread_fn_t *thread_fn, void *arg) {
   thread_t *thread = thread_start(thread_fn, arg);
   size_t id = array_length(self->thread_array);
   array_put(self->thread_array, id, thread);
@@ -27,16 +24,14 @@ thread_pool_start(thread_pool_t *self, thread_fn_t *thread_fn, void *arg) {
   return id;
 }
 
-void
-thread_pool_join(thread_pool_t *self, size_t id) {
+void thread_pool_join(thread_pool_t *self, size_t id) {
   thread_t *thread = array_get(self->thread_array, id);
   assert(thread);
   thread_join(thread);
   array_put(self->thread_array, id, NULL);
 }
 
-void
-thread_pool_join_all(thread_pool_t *self) {
+void thread_pool_join_all(thread_pool_t *self) {
   size_t length = array_length(self->thread_array);
   for (size_t i = 0; i < length; i++) {
     thread_t *thread = array_get(self->thread_array, i);

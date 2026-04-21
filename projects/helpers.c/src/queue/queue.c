@@ -36,13 +36,11 @@ struct queue_t {
   free_fn_t *free_fn;
 };
 
-static bool
-is_power_of_two(size_t n) {
+static bool is_power_of_two(size_t n) {
   return (n > 0) && ((n & (n - 1)) == 0);
 }
 
-queue_t *
-make_queue(size_t size) {
+queue_t *make_queue(size_t size) {
   assert(size > 1);
   assert(is_power_of_two(size));
   queue_t *self = new_page_aligned(queue_t);
@@ -58,8 +56,7 @@ make_queue(size_t size) {
   return self;
 }
 
-void
-queue_purge(queue_t *self) {
+void queue_purge(queue_t *self) {
   assert(self);
   while(!queue_is_empty(self)) {
     void *value = queue_pop_front(self);
@@ -68,8 +65,7 @@ queue_purge(queue_t *self) {
   }
 }
 
-void
-queue_free(queue_t *self) {
+void queue_free(queue_t *self) {
   queue_purge(self);
   free(self->values);
   free(self->front_cursor);
@@ -79,67 +75,56 @@ queue_free(queue_t *self) {
   free(self);
 }
 
-void
-queue_put_free_fn(queue_t *self, free_fn_t *free_fn) {
+void queue_put_free_fn(queue_t *self, free_fn_t *free_fn) {
   self->free_fn = free_fn;
 }
 
-queue_t *
-make_queue_with(size_t size, free_fn_t *free_fn) {
+queue_t *make_queue_with(size_t size, free_fn_t *free_fn) {
   queue_t *self = make_queue(size);
   self->free_fn = free_fn;
   return self;
 }
 
-size_t
-queue_size(const queue_t *self) {
+size_t queue_size(const queue_t *self) {
   return self->size;
 }
 
-size_t
-queue_length(const queue_t *self) {
+size_t queue_length(const queue_t *self) {
   cursor_t back_cursor = relaxed_load(self->back_cursor);
   cursor_t front_cursor = relaxed_load(self->front_cursor);
   return back_cursor - front_cursor;
 }
 
-static inline void *
-get_value(const queue_t *self, cursor_t cursor) {
+static inline void *get_value(const queue_t *self, cursor_t cursor) {
   return self->values[cursor & self->mask];
 }
 
-static inline void
-set_value(const queue_t *self, cursor_t cursor, void *value) {
+static inline void set_value(const queue_t *self, cursor_t cursor, void *value) {
   self->values[cursor & self->mask] = value;
 }
 
-static inline bool
-is_full(const queue_t *self, cursor_t front_cursor, cursor_t back_cursor) {
+static inline bool is_full(const queue_t *self, cursor_t front_cursor, cursor_t back_cursor) {
   return back_cursor - front_cursor == self->size;
 }
 
-static inline bool
-is_empty(const queue_t *self, cursor_t front_cursor, cursor_t back_cursor) {
+static inline bool is_empty(const queue_t *self, cursor_t front_cursor, cursor_t back_cursor) {
   (void) self;
   return back_cursor == front_cursor;
 }
 
-bool
-queue_is_full(const queue_t *self) {
+bool queue_is_full(const queue_t *self) {
   cursor_t front_cursor = relaxed_load(self->front_cursor);
   cursor_t back_cursor = relaxed_load(self->back_cursor);
   return is_full(self, front_cursor, back_cursor);
 }
 
-bool
-queue_is_empty(const queue_t *self) {
+bool queue_is_empty(const queue_t *self) {
   cursor_t front_cursor = relaxed_load(self->front_cursor);
   cursor_t back_cursor = relaxed_load(self->back_cursor);
   return is_empty(self, front_cursor, back_cursor);
 }
 
-bool
-queue_push_back(queue_t *self, void *value) {
+bool queue_push_back(queue_t *self, void *value) {
   cursor_t back_cursor = relaxed_load(self->back_cursor);
   if (is_full(self, *self->cached_front_cursor, back_cursor)) {
     *self->cached_front_cursor = acquire_load(self->front_cursor);
@@ -153,8 +138,7 @@ queue_push_back(queue_t *self, void *value) {
   return true;
 }
 
-void *
-queue_pop_front(queue_t *self) {
+void *queue_pop_front(queue_t *self) {
   cursor_t front_cursor = relaxed_load(self->front_cursor);
   if (is_empty(self, front_cursor, *self->cached_back_cursor)) {
     *self->cached_back_cursor = acquire_load(self->back_cursor);
@@ -168,8 +152,7 @@ queue_pop_front(queue_t *self) {
   return value;
 }
 
-void *
-queue_get(const queue_t *self, size_t index) {
+void *queue_get(const queue_t *self, size_t index) {
   cursor_t front_cursor = relaxed_load(self->front_cursor);
   if (is_empty(self, front_cursor, *self->cached_back_cursor)) {
     *self->cached_back_cursor = acquire_load(self->back_cursor);

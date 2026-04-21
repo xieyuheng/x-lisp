@@ -1,7 +1,6 @@
 #include "index.h"
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   assert(uint_max(1, 2) == 2);

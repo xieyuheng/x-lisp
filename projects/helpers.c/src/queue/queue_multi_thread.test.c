@@ -3,8 +3,7 @@
 #define QUEUE_SIZE 4
 #define LENGTH 1000000
 
-static void
-uint_producer(thread_t *thread) {
+static void uint_producer(thread_t *thread) {
   queue_t *queue = thread->arg;
   size_t count = 0;
   while (true) {
@@ -17,8 +16,7 @@ uint_producer(thread_t *thread) {
   }
 }
 
-static void
-uint_consumer(thread_t *thread) {
+static void uint_consumer(thread_t *thread) {
   queue_t *queue = thread->arg;
   size_t count = 0;
   while (true) {
@@ -29,10 +27,9 @@ uint_consumer(thread_t *thread) {
     assert(((size_t) queue_pop_front(queue)) == count);
     count++;
   }
-
 }
-static void
-string_producer(thread_t *thread) {
+
+static void string_producer(thread_t *thread) {
   queue_t *queue = thread->arg;
   size_t count = 0;
   while (true) {
@@ -45,8 +42,7 @@ string_producer(thread_t *thread) {
   }
 }
 
-static void
-string_consumer(thread_t *thread) {
+static void string_consumer(thread_t *thread) {
   queue_t *queue = thread->arg;
   size_t count = 0;
   while (true) {
@@ -63,8 +59,7 @@ string_consumer(thread_t *thread) {
   }
 }
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   queue_t *queue = make_queue(QUEUE_SIZE);

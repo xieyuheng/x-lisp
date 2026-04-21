@@ -2,8 +2,7 @@
 
 static stack_t *stack = NULL;
 
-void
-stdout_push(const char *filename) {
+void stdout_push(const char *filename) {
   if (!stack) {
     stack = make_stack();
   }
@@ -18,8 +17,7 @@ stdout_push(const char *filename) {
   setbuf(stdout, NULL);
 }
 
-void
-stdout_drop(void) {
+void stdout_drop(void) {
   fflush(stdout);
   int fd = (int) (int64_t) stack_pop(stack);
   int ok = dup2(fd, 1);

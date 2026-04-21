@@ -3,8 +3,7 @@
 static size_t loop_count = 10000;
 static uint64_t global_count = 0;
 
-static void
-thread_fn(thread_t *thread) {
+static void thread_fn(thread_t *thread) {
   mutex_t *mutex = thread->arg;
   size_t count = 0;
   while (count < loop_count) {
@@ -22,8 +21,7 @@ thread_fn(thread_t *thread) {
   }
 }
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   mutex_t *mutex = make_mutex();

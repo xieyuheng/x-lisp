@@ -1,33 +1,28 @@
 #include "index.h"
 
-int64_t
-int_max(int64_t x, int64_t y) {
+int64_t int_max(int64_t x, int64_t y) {
   if (x > y) return x;
   else return y;
 }
 
-int64_t
-int_min(int64_t x, int64_t y) {
+int64_t int_min(int64_t x, int64_t y) {
   if (x < y) return x;
   else return y;
 }
 
-uint64_t
-uint_max(uint64_t x, uint64_t y) {
+uint64_t uint_max(uint64_t x, uint64_t y) {
   if (x > y) return x;
   else return y;
 }
 
-uint64_t
-uint_min(uint64_t x, uint64_t y) {
+uint64_t uint_min(uint64_t x, uint64_t y) {
   if (x < y) return x;
   else return y;
 }
 
 #define MAX_STRING_LENGTH 256
 
-char *
-uint_to_string(uint64_t self) {
+char *uint_to_string(uint64_t self) {
   char *buffer = allocate(MAX_STRING_LENGTH);
   sprintf(buffer, "%lu", self);
   char *string = string_copy(buffer);
@@ -37,8 +32,7 @@ uint_to_string(uint64_t self) {
 
 // ₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎
 
-char *
-uint_to_subscript(uint64_t self) {
+char *uint_to_subscript(uint64_t self) {
   char *buffer = allocate(MAX_STRING_LENGTH);
   char *number_string = uint_to_string(self);
   for (size_t i = 0; i < strlen(number_string); i++) {
@@ -63,11 +57,9 @@ uint_to_subscript(uint64_t self) {
   return subscript_string;
 }
 
-
 // ⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾
 
-char *
-uint_to_superscript(uint64_t self) {
+char *uint_to_superscript(uint64_t self) {
   char *buffer = allocate(MAX_STRING_LENGTH);
   char *number_string = uint_to_string(self);
   for (size_t i = 0; i < strlen(number_string); i++) {
@@ -92,16 +84,14 @@ uint_to_superscript(uint64_t self) {
   return superscript_string;
 }
 
-size_t
-uint_decimal_length(uint64_t self) {
+size_t uint_decimal_length(uint64_t self) {
   char *decimal_string = uint_to_string(self);
   size_t length = strlen(decimal_string);
   free(decimal_string);
   return length;
 }
 
-uint64_t
-int_relu(int64_t self) {
+uint64_t int_relu(int64_t self) {
   if (self > 0) {
     return self;
   } {
@@ -109,12 +99,10 @@ int_relu(int64_t self) {
   }
 }
 
-void
-int_print(int64_t self) {
+void int_print(int64_t self) {
   printf("%" PRId64, self);
 }
 
-void
-uint_print(uint64_t self) {
+void uint_print(uint64_t self) {
   printf("%" PRIu64, self);
 }

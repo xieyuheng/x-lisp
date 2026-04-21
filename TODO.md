@@ -1,4 +1,4 @@
-[helpers.c] no newline before return type
+[helpers.c] move newline from console/ to file/
 [li.c] gc with threshold
 
 # li
@@ -47,7 +47,3 @@
 (claim random-int (-> int-t int-t int-t))
 (claim random-float (-> float-t float-t float-t))
 ```
-
-# compose and pipe
-
-[meta-lisp.js] [maybe] `pipe` and `compose` as `Exp`

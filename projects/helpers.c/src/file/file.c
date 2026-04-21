@@ -1,7 +1,6 @@
 #include "index.h"
 
-file_t *
-open_file_or_fail(const char *pathname, const char *mode) {
+file_t *open_file_or_fail(const char *pathname, const char *mode) {
   file_t *file = fopen(pathname, mode);
   if (!file) {
     who_printf("file name: %s\n", pathname);
@@ -13,25 +12,21 @@ open_file_or_fail(const char *pathname, const char *mode) {
   return file;
 }
 
-void
-file_close(file_t *file) {
+void file_close(file_t *file) {
   assert(fclose(file) == 0);
 }
 
-int
-file_raw_fd(file_t *file) {
+int file_raw_fd(file_t *file) {
   return fileno(file);
 }
 
-off_t
-file_size(file_t *file) {
+off_t file_size(file_t *file) {
   struct stat st;
   fstat(fileno(file), &st);
   return st.st_size;
 }
 
-char *
-file_read_string(file_t *file) {
+char *file_read_string(file_t *file) {
   off_t size = file_size(file);
   char *string = allocate(size + 1); // +1 for the ending '\0'.
   size_t nbytes = fread(string, 1, size, file);
@@ -39,8 +34,7 @@ file_read_string(file_t *file) {
   return string;
 }
 
-uint8_t *
-file_read_bytes(file_t *file) {
+uint8_t *file_read_bytes(file_t *file) {
   off_t size = file_size(file);
   uint8_t *bytes = allocate(size);
   size_t nbytes = fread(bytes, 1, size, file);
@@ -48,20 +42,17 @@ file_read_bytes(file_t *file) {
   return bytes;
 }
 
-void
-file_write_bytes(file_t *file, uint8_t *bytes, size_t size) {
+void file_write_bytes(file_t *file, uint8_t *bytes, size_t size) {
   fwrite(bytes, 1, size, file);
 }
 
-void
-file_write_string(file_t *file, const char *string) {
+void file_write_string(file_t *file, const char *string) {
   file_write_bytes(file, (uint8_t *) string, string_length(string));
   fflush(file);
   fsync(fileno(file));
 }
 
-blob_t *
-file_read_blob(file_t *file) {
+blob_t *file_read_blob(file_t *file) {
   off_t size = file_size(file);
   blob_t *blob = make_blob(size);
   uint8_t *bytes = blob_bytes(blob);
@@ -70,19 +61,16 @@ file_read_blob(file_t *file) {
   return blob;
 }
 
-void
-file_write_blob(file_t *file, blob_t *blob) {
+void file_write_blob(file_t *file, blob_t *blob) {
   file_write_bytes(file, blob_bytes(blob), blob_size(blob));
   fflush(file);
   fsync(fileno(file));
 }
 
-void
-file_lock(file_t *file) {
+void file_lock(file_t *file) {
   flockfile(file);
 }
 
-void
-file_unlock(file_t *file) {
+void file_unlock(file_t *file) {
   funlockfile(file);
 }

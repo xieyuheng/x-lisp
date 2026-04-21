@@ -1,6 +1,5 @@
 #include "index.h"
 
-void
-newline(void) {
+void newline(void) {
   printf("\n");
 }

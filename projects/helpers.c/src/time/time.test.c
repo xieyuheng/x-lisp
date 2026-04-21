@@ -1,7 +1,6 @@
 #include "index.h"
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   where_printf("time_second(): %f\n", time_second());

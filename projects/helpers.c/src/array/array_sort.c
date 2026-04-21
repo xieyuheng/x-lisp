@@ -1,7 +1,6 @@
 #include "index.h"
 
-static void
-partition(
+static void partition(
   array_t *array, compare_fn_t *compare_fn,
   int64_t left, int64_t right,
   int64_t *less_pointer, int64_t *greater_pointer
@@ -28,8 +27,7 @@ partition(
   *greater_pointer = greater + 1;
 }
 
-static void
-quicksort(
+static void quicksort(
   array_t *array, compare_fn_t *compare_fn,
   int64_t left, int64_t right
 ) {
@@ -41,7 +39,6 @@ quicksort(
   }
 }
 
-void
-array_sort(array_t *array, compare_fn_t *compare_fn) {
+void array_sort(array_t *array, compare_fn_t *compare_fn) {
   quicksort(array, compare_fn, 0, array_length(array) - 1);
 }

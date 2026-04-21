@@ -1,7 +1,6 @@
 #include "index.h"
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   queue_t *queue = make_queue(4);

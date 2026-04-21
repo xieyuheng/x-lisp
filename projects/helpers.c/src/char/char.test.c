@@ -1,7 +1,6 @@
 #include "index.h"
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   assert(char_to_hex('0') == 0);

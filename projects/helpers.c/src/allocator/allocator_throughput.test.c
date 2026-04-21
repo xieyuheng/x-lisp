@@ -4,8 +4,7 @@
 #define BATCH_SIZE 1000
 #define REPEATION_COUNT 5000
 
-static void
-thread_fn(thread_t *thread) {
+static void thread_fn(thread_t *thread) {
   allocator_t *allocator = thread->arg;
   stack_t *stack = make_stack();
 
@@ -23,8 +22,7 @@ thread_fn(thread_t *thread) {
   }
 }
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   allocator_t *allocator = make_allocator(CACHE_SIZE);

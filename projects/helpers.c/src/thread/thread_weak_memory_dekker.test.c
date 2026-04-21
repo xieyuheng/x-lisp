@@ -3,24 +3,21 @@
 static atomic_int x, y;
 static atomic_int a, b;
 
-static void
-thread_fn_1(thread_t *thread) {
+static void thread_fn_1(thread_t *thread) {
   (void) thread;
 
   relaxed_store(&x, 1);
   relaxed_store(&a, relaxed_load(&y));
 }
 
-static void
-thread_fn_2(thread_t *thread) {
+static void thread_fn_2(thread_t *thread) {
   (void) thread;
 
   relaxed_store(&y, 1);
   relaxed_store(&b, relaxed_load(&x));
 }
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   // comment the follow early `return` to run this test.

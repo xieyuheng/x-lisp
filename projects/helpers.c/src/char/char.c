@@ -2,8 +2,7 @@
 
 // https://en.wikipedia.org/wiki/ASCII
 
-uint8_t
-char_to_hex(char c) {
+uint8_t char_to_hex(char c) {
   if ('0' <= c && c <= '9') return c - '0';
   if ('a' <= c && c <= 'f') return c - 'a' + 10;
   if ('A' <= c && c <= 'F') return c - 'A' + 10;
@@ -12,13 +11,11 @@ char_to_hex(char c) {
   exit(1);
 }
 
-bool
-char_is_digit(char c) {
+bool char_is_digit(char c) {
   return ('0' <= c && c <= '9');
 }
 
-bool
-char_is_space(char c) {
+bool char_is_space(char c) {
   if (c == ' ') return true;
   if (c == '\t') return true;
   if (c == '\n') return true;

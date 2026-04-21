@@ -9,8 +9,7 @@ struct array_t {
   free_fn_t *free_fn;
 };
 
-array_t *
-make_array(void) {
+array_t *make_array(void) {
   array_t *self = new(array_t);
   size_t capacity = 32;
   self->capacity = capacity;
@@ -21,8 +20,7 @@ make_array(void) {
   return self;
 }
 
-void
-array_purge(array_t *self) {
+void array_purge(array_t *self) {
   assert(self);
 
   if (self->free_fn) {
@@ -41,42 +39,35 @@ array_purge(array_t *self) {
   self->back = 0;
 }
 
-void
-array_free(array_t *self) {
+void array_free(array_t *self) {
   array_purge(self);
   free(self->values);
   free(self);
 }
 
-void
-array_put_free_fn(array_t *self, free_fn_t *free_fn) {
+void array_put_free_fn(array_t *self, free_fn_t *free_fn) {
   self->free_fn = free_fn;
 }
 
-array_t *
-make_array_with(free_fn_t *free_fn) {
+array_t *make_array_with(free_fn_t *free_fn) {
   array_t *self = make_array();
   self->free_fn = free_fn;
   return self;
 }
 
-inline size_t
-array_length(const array_t *self) {
+inline size_t array_length(const array_t *self) {
   return self->back - self->front;
 }
 
-inline bool
-array_is_empty(const array_t *self) {
+inline bool array_is_empty(const array_t *self) {
   return self->back == self->front;
 }
 
-inline bool
-array_is_full_capacity(const array_t *self) {
+inline bool array_is_full_capacity(const array_t *self) {
   return array_length(self) == self->capacity;
 }
 
-inline void
-array_double_capacity(array_t *self) {
+inline void array_double_capacity(array_t *self) {
   void **values = allocate_pointers(self->capacity * 2);
   size_t length = array_length(self);
   for (size_t i = 0; i < length; i++) {
@@ -91,14 +82,12 @@ array_double_capacity(array_t *self) {
   self->back = length;
 }
 
-inline void *
-array_top(const array_t *self) {
+inline void *array_top(const array_t *self) {
   assert(!array_is_empty(self));
   return self->values[(self->back - 1) & self->mask];
 }
 
-inline void *
-array_pop(array_t *self) {
+inline void *array_pop(array_t *self) {
   assert(!array_is_empty(self));
   self->back--;
   void *value = self->values[self->back & self->mask];
@@ -106,8 +95,7 @@ array_pop(array_t *self) {
   return value;
 }
 
-inline void
-array_push(array_t *self, void *value) {
+inline void array_push(array_t *self, void *value) {
   if (array_is_full_capacity(self)) {
     array_double_capacity(self);
   }
@@ -116,8 +104,7 @@ array_push(array_t *self, void *value) {
   self->back++;
 }
 
-inline void *
-array_pop_front(array_t *self) {
+inline void *array_pop_front(array_t *self) {
   assert(!array_is_empty(self));
   void *value = self->values[self->front & self->mask];
   self->values[self->front & self->mask] = NULL;
@@ -125,8 +112,7 @@ array_pop_front(array_t *self) {
   return value;
 }
 
-inline void
-array_push_front(array_t *self, void *value) {
+inline void array_push_front(array_t *self, void *value) {
   if (array_is_full_capacity(self)) {
     array_double_capacity(self);
   }
@@ -135,21 +121,18 @@ array_push_front(array_t *self, void *value) {
   self->values[self->front & self->mask] = value;
 }
 
-inline void *
-array_get(const array_t *self, size_t index) {
+inline void *array_get(const array_t *self, size_t index) {
   assert(index < array_length(self));
   return self->values[(self->front + index) & self->mask];
 }
 
-inline void *
-array_pick(const array_t *self, size_t back_index) {
+inline void *array_pick(const array_t *self, size_t back_index) {
   assert(back_index < array_length(self));
   size_t index = array_length(self) - 1 - back_index;
   return array_get(self, index);
 }
 
-inline void
-array_put(array_t *self, size_t index, void *value) {
+inline void array_put(array_t *self, size_t index, void *value) {
   if (index >= self->capacity) {
     array_double_capacity(self);
     array_put(self, index, value);
@@ -162,8 +145,7 @@ array_put(array_t *self, size_t index, void *value) {
     self->back += index + 1 - array_length(self);
 }
 
-void
-array_reverse(array_t *self) {
+void array_reverse(array_t *self) {
   size_t length = array_length(self);
   for (size_t i = 0; i < length / 2; i++) {
     void *lhs = array_get(self, i);
@@ -173,8 +155,7 @@ array_reverse(array_t *self) {
   }
 }
 
-inline void
-array_swap(array_t *array, size_t left, size_t right) {
+inline void array_swap(array_t *array, size_t left, size_t right) {
   if (left == right) return;
   void *left_value = array_get(array, left);
   void *right_value = array_get(array, right);

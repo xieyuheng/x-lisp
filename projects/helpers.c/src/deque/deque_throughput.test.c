@@ -2,8 +2,7 @@
 
 #define LENGTH 10000000
 
-static void
-uint_producer(thread_t *thread) {
+static void uint_producer(thread_t *thread) {
   deque_t *deque = thread->arg;
   size_t count = 0;
   while (true) {
@@ -14,8 +13,7 @@ uint_producer(thread_t *thread) {
   }
 }
 
-static void
-uint_consumer(thread_t *thread) {
+static void uint_consumer(thread_t *thread) {
   deque_t *deque = thread->arg;
   size_t count = 0;
   while (true) {
@@ -28,8 +26,7 @@ uint_consumer(thread_t *thread) {
   }
 }
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   deque_t *deque = make_deque();

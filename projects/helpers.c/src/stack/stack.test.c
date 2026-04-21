@@ -1,7 +1,6 @@
 #include "index.h"
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   stack_t *stack = make_stack_with((free_fn_t *) string_free);

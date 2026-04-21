@@ -1,13 +1,11 @@
 #include "index.h"
 
-static void
-thread_fn(thread_t *thread) {
+static void thread_fn(thread_t *thread) {
   char *message = thread->arg;
   printf("[thread_fn] %s\n", message);
 }
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   char *message = string_copy("hello thread");

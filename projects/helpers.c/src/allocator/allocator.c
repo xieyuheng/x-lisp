@@ -1,7 +1,6 @@
 #include "index.h"
 
-allocator_t *
-make_allocator(size_t cache_size) {
+allocator_t *make_allocator(size_t cache_size) {
   allocator_t *self = new_page_aligned(allocator_t);
   self->mutex = make_mutex();
   self->stack = make_stack();
@@ -9,15 +8,13 @@ make_allocator(size_t cache_size) {
   return self;
 }
 
-void
-allocator_free(allocator_t *self) {
+void allocator_free(allocator_t *self) {
   mutex_free(self->mutex);
   stack_free(self->stack);
   free(self);
 }
 
-void *
-allocator_maybe_allocate(allocator_t *self, stack_t *stack) {
+void *allocator_maybe_allocate(allocator_t *self, stack_t *stack) {
   if (stack_is_empty(stack)) {
     mutex_lock(self->mutex);
 
@@ -36,8 +33,7 @@ allocator_maybe_allocate(allocator_t *self, stack_t *stack) {
   return stack_pop(stack);
 }
 
-void *
-allocator_allocate(allocator_t *self, stack_t *stack) {
+void *allocator_allocate(allocator_t *self, stack_t *stack) {
   void *value = allocator_maybe_allocate(self, stack);
 
   if (!value) {
@@ -48,8 +44,7 @@ allocator_allocate(allocator_t *self, stack_t *stack) {
   return value;
 }
 
-void
-allocator_recycle(allocator_t *self, stack_t *stack, void *value) {
+void allocator_recycle(allocator_t *self, stack_t *stack, void *value) {
   if (stack_length(stack) >= 2 * self->cache_size) {
     mutex_lock(self->mutex);
 

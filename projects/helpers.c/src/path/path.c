@@ -6,8 +6,7 @@ struct path_t {
   bool is_absolute;
 };
 
-path_t *
-make_path(const char *string) {
+path_t *make_path(const char *string) {
   path_t *self = new(path_t);
   self->segment_stack = make_string_stack();
   if (string_starts_with(string, "/"))
@@ -16,38 +15,32 @@ make_path(const char *string) {
   return self;
 }
 
-void
-path_free(path_t *self) {
+void path_free(path_t *self) {
   stack_free(self->segment_stack);
   string_free(self->string);
   free(self);
 }
 
-path_t *
-make_cwd_path(void) {
+path_t *make_cwd_path(void) {
   char *cwd = getcwd(NULL, 0);
   path_t *cwd_path = make_path(cwd);
   string_free(cwd);
   return cwd_path;
 }
 
-bool
-path_is_relative(const path_t *self) {
+bool path_is_relative(const path_t *self) {
   return !self->is_absolute;
 }
 
-bool
-path_is_absolute(const path_t *self) {
+bool path_is_absolute(const path_t *self) {
   return self->is_absolute;
 }
 
-path_t *
-path_copy(const path_t *self) {
+path_t *path_copy(const path_t *self) {
   return make_path(path_raw_string(self));
 }
 
-bool
-path_equal(path_t *x, path_t *y) {
+bool path_equal(path_t *x, path_t *y) {
   return string_equal(path_raw_string(x), path_raw_string(y));
 }
 
@@ -56,8 +49,7 @@ typedef struct {
   char *segment;
 }  entry_t;
 
-static entry_t *
-next_segment(const char *string) {
+static entry_t *next_segment(const char *string) {
   if (string_is_empty(string))
     return NULL;
 
@@ -78,8 +70,7 @@ next_segment(const char *string) {
   return entry;
 }
 
-static void
-path_update_string(path_t *self) {
+static void path_update_string(path_t *self) {
   size_t length = stack_length(self->segment_stack);
   size_t size = 0;
   for (size_t i = 0; i < length; i++) {
@@ -114,8 +105,7 @@ path_update_string(path_t *self) {
   }
 }
 
-static void
-path_execute(path_t *self, char *segment) {
+static void path_execute(path_t *self, char *segment) {
   if (string_is_empty(segment)) {
     string_free(segment);
   } else if (string_equal(segment, ".")) {
@@ -135,8 +125,7 @@ path_execute(path_t *self, char *segment) {
   }
 }
 
-void
-path_join(path_t *self, const char *string) {
+void path_join(path_t *self, const char *string) {
   entry_t *entry = next_segment(string);
   while (entry) {
     path_execute(self, entry->segment);
@@ -148,8 +137,7 @@ path_join(path_t *self, const char *string) {
   path_update_string(self);
 }
 
-void
-path_join_extension(path_t *self, const char *extension) {
+void path_join_extension(path_t *self, const char *extension) {
   char *segment = path_pop_segment(self);
   char *new_segment = string_append(segment, extension);
   string_free(segment);
@@ -157,47 +145,39 @@ path_join_extension(path_t *self, const char *extension) {
   path_update_string(self);
 }
 
-const char *
-path_raw_string(const path_t *self) {
+const char *path_raw_string(const path_t *self) {
   assert(self->string);
   return self->string;
 }
 
-void
-path_print(const path_t *self) {
+void path_print(const path_t *self) {
   string_print(path_raw_string(self));
 }
 
-size_t
-path_segment_length(const path_t *self) {
+size_t path_segment_length(const path_t *self) {
   return stack_length(self->segment_stack);
 }
 
-const char *
-path_top_segment(const path_t *self) {
+const char *path_top_segment(const path_t *self) {
   return stack_top(self->segment_stack);
 }
 
-const char *
-path_get_segment(const path_t *self, size_t index) {
+const char *path_get_segment(const path_t *self, size_t index) {
   return stack_get(self->segment_stack, index);
 }
 
-char *
-path_pop_segment(path_t *self) {
+char *path_pop_segment(path_t *self) {
   char *segment = stack_pop(self->segment_stack);
   path_update_string(self);
   return segment;
 }
 
-void
-path_push_segment(path_t *self, char *segment) {
+void path_push_segment(path_t *self, char *segment) {
   stack_push(self->segment_stack, segment);
   path_update_string(self);
 }
 
-static size_t
-find_relative_index(path_t *from, path_t *to) {
+static size_t find_relative_index(path_t *from, path_t *to) {
   for (size_t i = 0; i < stack_length(from->segment_stack); i++) {
     if (i >= stack_length(to->segment_stack)) {
       return i;
@@ -214,8 +194,7 @@ find_relative_index(path_t *from, path_t *to) {
   return stack_length(from->segment_stack);
 }
 
-path_t *
-path_relative(path_t *from, path_t *to) {
+path_t *path_relative(path_t *from, path_t *to) {
   assert((path_is_relative(from) && path_is_relative(to)) ||
        (path_is_absolute(from) && path_is_absolute(to)));
 
@@ -240,15 +219,13 @@ path_relative(path_t *from, path_t *to) {
   return relative_path;
 }
 
-void
-path_relative_print(path_t *from, path_t *to) {
+void path_relative_print(path_t *from, path_t *to) {
   path_t *relative_path = path_relative(from, to);
   printf("%s", path_raw_string(relative_path));
   path_free(relative_path);
 }
 
-void
-path_relative_cwd_print(path_t *to) {
+void path_relative_cwd_print(path_t *to) {
   path_t *cwd_path = make_cwd_path();
   path_relative_print(cwd_path, to);
   path_free(cwd_path);

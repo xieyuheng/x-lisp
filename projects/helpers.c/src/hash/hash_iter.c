@@ -1,25 +1,21 @@
 #include "index.h"
 
-hash_iter_t *
-make_hash_iter(const hash_t *hash) {
+hash_iter_t *make_hash_iter(const hash_t *hash) {
   hash_iter_t *self = new(hash_iter_t);
   hash_iter_init(self, hash);
   return self;
 }
 
-void
-hash_iter_init(hash_iter_t *self, const hash_t *hash) {
+void hash_iter_init(hash_iter_t *self, const hash_t *hash) {
   self->hash = hash;
   self->entry = hash_first_entry(hash);
 }
 
-void
-hash_iter_free(hash_iter_t *self) {
+void hash_iter_free(hash_iter_t *self) {
   free(self);
 }
 
-const hash_entry_t *
-hash_iter_next_entry(hash_iter_t *self) {
+const hash_entry_t *hash_iter_next_entry(hash_iter_t *self) {
   if (self->entry) {
     const hash_entry_t *entry = self->entry;
     self->entry = self->entry->next;
@@ -29,8 +25,7 @@ hash_iter_next_entry(hash_iter_t *self) {
   }
 }
 
-void *
-hash_iter_next_value(hash_iter_t *self) {
+void *hash_iter_next_value(hash_iter_t *self) {
   const hash_entry_t *entry = hash_iter_next_entry(self);
   if (entry) {
     return entry->value;
@@ -39,8 +34,7 @@ hash_iter_next_value(hash_iter_t *self) {
   }
 }
 
-void *
-hash_iter_next_key(hash_iter_t *self) {
+void *hash_iter_next_key(hash_iter_t *self) {
   const hash_entry_t *entry = hash_iter_next_entry(self);
   if (entry) {
     return entry->key;
@@ -49,8 +43,7 @@ hash_iter_next_key(hash_iter_t *self) {
   }
 }
 
-array_t *
-hash_entries(const hash_t *hash) {
+array_t *hash_entries(const hash_t *hash) {
   array_t *entries = make_array();
   hash_iter_t iter;
   hash_iter_init(&iter, hash);
@@ -63,8 +56,7 @@ hash_entries(const hash_t *hash) {
   return entries;
 }
 
-array_t *
-hash_values(const hash_t *hash) {
+array_t *hash_values(const hash_t *hash) {
   array_t *values = make_array();
   hash_iter_t iter;
   hash_iter_init(&iter, hash);
@@ -77,8 +69,7 @@ hash_values(const hash_t *hash) {
   return values;
 }
 
-array_t *
-hash_keys(const hash_t *hash) {
+array_t *hash_keys(const hash_t *hash) {
   array_t *keys = make_array();
   hash_iter_t iter;
   hash_iter_init(&iter, hash);
