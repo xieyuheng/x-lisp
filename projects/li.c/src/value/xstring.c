@@ -19,13 +19,25 @@ make_xstring(char *string) {
     return self;
 }
 
+static record_t *global_static_xstring_record = NULL;
+
 xstring_t *
 make_static_xstring(char *string) {
+    if (!global_static_xstring_record) {
+        global_static_xstring_record = make_record();
+    }
+
+    xstring_t *found = record_get(global_static_xstring_record, string);
+    if (found) {
+        return found;
+    }
+
     xstring_t *self = new(xstring_t);
     self->header.class = &xstring_class;
     self->header.is_static = true;
     self->length = string_length(string);
     self->string = string;
+    record_insert_or_fail(global_static_xstring_record, string, self);
     return self;
 }
 

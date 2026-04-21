@@ -1,7 +1,3 @@
-# gc
-
-[li.c] `global_static_xstring_record`
-
 # li as db
 
 [li.c] `db_add` -- `db_t` has info to support set-like api
