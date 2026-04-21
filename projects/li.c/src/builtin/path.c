@@ -1,7 +1,6 @@
 #include "index.h"
 
-value_t
-x_path_base_name(value_t string) {
+value_t x_path_base_name(value_t string) {
   path_t *path = make_path(to_xstring(string)->string);
   if (path_segment_length(path) == 0) {
     path_free(path);
@@ -13,8 +12,7 @@ x_path_base_name(value_t string) {
   }
 }
 
-value_t
-x_path_directory_name(value_t string) {
+value_t x_path_directory_name(value_t string) {
   path_t *path = make_path(to_xstring(string)->string);
   if (path_segment_length(path) == 0) {
     if (path_is_absolute(path)) {
@@ -33,8 +31,7 @@ x_path_directory_name(value_t string) {
   }
 }
 
-value_t
-x_path_extension(value_t string) {
+value_t x_path_extension(value_t string) {
   string = x_path_base_name(string);
   if (string_starts_with(to_xstring(string)->string, ".")) {
     return x_object(make_xstring(string_copy("")));
@@ -50,8 +47,7 @@ x_path_extension(value_t string) {
   return x_object(make_xstring(extension));
 }
 
-value_t
-x_path_stem(value_t string) {
+value_t x_path_stem(value_t string) {
   string = x_path_base_name(string);
   if (string_starts_with(to_xstring(string)->string, ".")) {
     return string;
@@ -67,18 +63,15 @@ x_path_stem(value_t string) {
   return x_object(make_xstring(stem));
 }
 
-value_t
-x_path_absolute_p(value_t string) {
+value_t x_path_absolute_p(value_t string) {
   return x_bool(string_starts_with(to_xstring(string)->string, "/"));
 }
 
-value_t
-x_path_relative_p(value_t string) {
+value_t x_path_relative_p(value_t string) {
   return x_bool(!string_starts_with(to_xstring(string)->string, "/"));
 }
 
-value_t
-x_path_join(value_t left, value_t right) {
+value_t x_path_join(value_t left, value_t right) {
   path_t *path = make_path(to_xstring(left)->string);
   path_join(path, to_xstring(right)->string);
   char *path_name = string_copy(path_raw_string(path));
@@ -86,8 +79,7 @@ x_path_join(value_t left, value_t right) {
   return x_object(make_xstring(path_name));
 }
 
-value_t
-x_path_normalize(value_t string) {
+value_t x_path_normalize(value_t string) {
   path_t *path = make_path(to_xstring(string)->string);
   char *path_name = string_copy(path_raw_string(path));
   path_free(path);

@@ -1,12 +1,10 @@
 #include "index.h"
 
-static void
-echo(const char *string) {
+static void echo(const char *string) {
   x_println(parse_sexps(string));
 }
 
-int
-main(void) {
+int main(void) {
   init_global_gc();
 
   // symbol

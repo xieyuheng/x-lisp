@@ -1,44 +1,37 @@
 #include "index.h"
 
-printer_t *
-make_printer(void) {
+printer_t *make_printer(void) {
   printer_t *self = new(printer_t);
   self->occurred_objects = make_set();
   self->circle_indexes = make_hash();
   return self;
 }
 
-void
-printer_free(printer_t *self) {
+void printer_free(printer_t *self) {
   set_free(self->occurred_objects);
   hash_free(self->circle_indexes);
   free(self);
 }
 
-bool
-printer_circle_start_p(printer_t *self, object_t *object) {
+bool printer_circle_start_p(printer_t *self, object_t *object) {
   return hash_has(self->circle_indexes, object)
     && !set_member(self->occurred_objects, object);
 }
 
-bool
-printer_circle_end_p(printer_t *self, object_t *object) {
+bool printer_circle_end_p(printer_t *self, object_t *object) {
   return hash_has(self->circle_indexes, object)
     && set_member(self->occurred_objects, object);
 }
 
-size_t
-printer_circle_index(printer_t *self, object_t *object) {
+size_t printer_circle_index(printer_t *self, object_t *object) {
   return (size_t) hash_get(self->circle_indexes, object);
 }
 
-void
-printer_meet(printer_t *self, object_t *object) {
+void printer_meet(printer_t *self, object_t *object) {
   set_add(self->occurred_objects, object);
 }
 
-void
-printer_collect_circle(printer_t *self, object_t *object) {
+void printer_collect_circle(printer_t *self, object_t *object) {
   if (set_member(self->occurred_objects, object)) {
     if (hash_has(self->circle_indexes, object)) return;
 

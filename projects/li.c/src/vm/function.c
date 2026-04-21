@@ -1,7 +1,6 @@
 #include "index.h"
 
-function_t *
-make_function(void) {
+function_t *make_function(void) {
   function_t *self = new(function_t);
   self->label_offsets = make_record();
   self->label_references = make_record_with((free_fn_t *) list_free);
@@ -12,16 +11,14 @@ make_function(void) {
   return self;
 }
 
-void
-function_free(function_t *self) {
+void function_free(function_t *self) {
   record_free(self->label_offsets);
   record_free(self->label_references);
   free(self->code_area);
   free(self);
 }
 
-static void
-function_maybe_grow_code_area(function_t *self, size_t length) {
+static void function_maybe_grow_code_area(function_t *self, size_t length) {
   if (self->code_area_size <
     self->code_length + length) {
     self->code_area =
@@ -33,8 +30,7 @@ function_maybe_grow_code_area(function_t *self, size_t length) {
   }
 }
 
-void
-function_append_instr(function_t *self, struct instr_t instr) {
+void function_append_instr(function_t *self, struct instr_t instr) {
   size_t length = instr_length(instr);
   function_maybe_grow_code_area(self, length);
 
@@ -46,11 +42,7 @@ function_append_instr(function_t *self, struct instr_t instr) {
   self->code_length += length;
 }
 
-void function_put_instr(
-  function_t *self,
-  size_t code_index,
-  struct instr_t instr
-) {
+void function_put_instr(function_t *self, size_t code_index, struct instr_t instr) {
   size_t length = instr_length(instr);
   assert(code_index + length < self->code_area_size);
 
@@ -58,8 +50,7 @@ void function_put_instr(
   instr_encode(code, instr);
 }
 
-void
-function_put_definition(
+void function_put_definition(
   function_t *self,
   size_t code_index,
   definition_t *definition
@@ -70,26 +61,22 @@ function_put_definition(
   memory_store_little_endian(code, definition);
 }
 
-void
-function_add_label(function_t *self, const char *name) {
+void function_add_label(function_t *self, const char *name) {
   if (!function_has_label(self, name)) {
     record_insert(self->label_offsets, name, (void *) self->code_length);
   }
 }
 
-bool
-function_has_label(const function_t *self, const char *name) {
+bool function_has_label(const function_t *self, const char *name) {
   return record_has(self->label_offsets, name);
 }
 
-int32_t
-function_get_label_offset(const function_t *self, const char *name) {
+int32_t function_get_label_offset(const function_t *self, const char *name) {
   assert(function_has_label(self, name));
   return (int64_t) record_get(self->label_offsets, name);
 }
 
-char *
-function_get_label_name_from_offset(const function_t *self, int32_t offset) {
+char *function_get_label_name_from_offset(const function_t *self, int32_t offset) {
   record_iter_t iter;
   record_iter_init(&iter, self->label_offsets);
   const hash_entry_t *entry = record_iter_next_entry(&iter);
@@ -105,8 +92,7 @@ function_get_label_name_from_offset(const function_t *self, int32_t offset) {
   return NULL;
 }
 
-void
-function_add_label_reference(function_t *self, const char *name, int32_t offset) {
+void function_add_label_reference(function_t *self, const char *name, int32_t offset) {
   if (!record_has(self->label_references, name)) {
     record_insert(self->label_references, name, make_list());
   }
@@ -115,13 +101,11 @@ function_add_label_reference(function_t *self, const char *name, int32_t offset)
   list_push(reference_list, (void *) (int64_t) offset);
 }
 
-list_t *
-function_get_label_reference_list(const function_t *self, const char *name) {
+list_t *function_get_label_reference_list(const function_t *self, const char *name) {
   return record_get(self->label_references, name);
 }
 
-void
-function_patch_label_references(function_t *self) {
+void function_patch_label_references(function_t *self) {
   record_iter_t iter;
   record_iter_init(&iter, self->label_references);
   const hash_entry_t *entry = record_iter_next_entry(&iter);
@@ -235,8 +219,7 @@ static void function_inspect_instr(
   unreachable();
 }
 
-void
-function_inspect(const function_t *function) {
+void function_inspect(const function_t *function) {
   uint8_t *pc = function->code_area;
   while (pc < function->code_area + function->code_length) {
     int32_t offset = pc - function->code_area;

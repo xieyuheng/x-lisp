@@ -12,8 +12,7 @@ const object_class_t xrecord_class = {
   .child_iter_free_fn = (free_fn_t *) xrecord_child_iter_free,
 };
 
-xrecord_t *
-make_xrecord(void) {
+xrecord_t *make_xrecord(void) {
   xrecord_t *self = new(xrecord_t);
   self->header.class = &xrecord_class;
   self->attributes = make_record();
@@ -21,20 +20,17 @@ make_xrecord(void) {
   return self;
 }
 
-void
-xrecord_free(xrecord_t *self) {
+void xrecord_free(xrecord_t *self) {
   record_free(self->attributes);
   free(self);
 }
 
-bool
-xrecord_p(value_t value) {
+bool xrecord_p(value_t value) {
   return object_p(value) &&
     to_object(value)->header.class == &xrecord_class;
 }
 
-xrecord_t *
-to_xrecord(value_t value) {
+xrecord_t *to_xrecord(value_t value) {
   if (!xrecord_p(value)) {
     print(value);
     newline();
@@ -44,30 +40,25 @@ to_xrecord(value_t value) {
   return (xrecord_t *) to_object(value);
 }
 
-inline bool
-xrecord_has(const xrecord_t *self, const char *key) {
+inline bool xrecord_has(const xrecord_t *self, const char *key) {
   return record_has(self->attributes, key);
 }
 
-inline value_t
-xrecord_get(const xrecord_t *self, const char *key) {
+inline value_t xrecord_get(const xrecord_t *self, const char *key) {
   hash_entry_t *entry = record_get_entry(self->attributes, key);
   assert(entry);
   return (value_t) entry->value;
 }
 
-inline void
-xrecord_put(xrecord_t *self, const char *key, value_t value) {
+inline void xrecord_put(xrecord_t *self, const char *key, value_t value) {
   record_put(self->attributes, key, (void *) value);
 }
 
-inline void
-xrecord_delete(xrecord_t *self, const char *key) {
+inline void xrecord_delete(xrecord_t *self, const char *key) {
   record_delete(self->attributes, key);
 }
 
-xrecord_t *
-xrecord_copy(const xrecord_t *self) {
+xrecord_t *xrecord_copy(const xrecord_t *self) {
   xrecord_t *new_xrecord = make_xrecord();
 
   record_iter_t iter;
@@ -81,8 +72,7 @@ xrecord_copy(const xrecord_t *self) {
   return new_xrecord;
 }
 
-bool
-xrecord_equal(const xrecord_t *lhs, const xrecord_t *rhs) {
+bool xrecord_equal(const xrecord_t *lhs, const xrecord_t *rhs) {
   if (record_length(lhs->attributes) != record_length(rhs->attributes))
     return false;
 
@@ -101,8 +91,7 @@ xrecord_equal(const xrecord_t *lhs, const xrecord_t *rhs) {
   return true;
 }
 
-static void
-xrecord_print_attributes(printer_t *printer, const xrecord_t *self) {
+static void xrecord_print_attributes(printer_t *printer, const xrecord_t *self) {
   record_iter_t iter;
   record_iter_init(&iter, self->attributes);
 
@@ -124,8 +113,7 @@ xrecord_print_attributes(printer_t *printer, const xrecord_t *self) {
   }
 }
 
-void
-xrecord_print(printer_t *printer, const xrecord_t *self) {
+void xrecord_print(printer_t *printer, const xrecord_t *self) {
   if (record_is_empty(self->attributes)) {
     printf("{");
     printf("}");
@@ -136,13 +124,11 @@ xrecord_print(printer_t *printer, const xrecord_t *self) {
   }
 }
 
-static ordering_t
-compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
+static ordering_t compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
   return string_compare_lexical(lhs->key, rhs->key);
 }
 
-hash_code_t
-xrecord_hash_code(const xrecord_t *self) {
+hash_code_t xrecord_hash_code(const xrecord_t *self) {
   hash_code_t code = 6661; // any big prime number would do.
 
   array_t *entries = record_entries(self->attributes);
@@ -159,8 +145,7 @@ xrecord_hash_code(const xrecord_t *self) {
   return code;
 }
 
-static ordering_t
-compare_attribute_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
+static ordering_t compare_attribute_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
   ordering_t ordering = string_compare_lexical(lhs->key, rhs->key);
   if (ordering != 0) {
     return ordering;
@@ -169,8 +154,7 @@ compare_attribute_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
   return value_total_compare((value_t) lhs->value, (value_t) rhs->value);
 }
 
-static ordering_t
-xrecord_compare_attributes(const xrecord_t *lhs, const xrecord_t *rhs) {
+static ordering_t xrecord_compare_attributes(const xrecord_t *lhs, const xrecord_t *rhs) {
   array_t *lhs_entries = record_entries(lhs->attributes);
   array_t *rhs_entries = record_entries(rhs->attributes);
   array_sort(lhs_entries, (compare_fn_t *) compare_attribute_entry);
@@ -211,8 +195,7 @@ xrecord_compare_attributes(const xrecord_t *lhs, const xrecord_t *rhs) {
   return ordering;
 }
 
-ordering_t
-xrecord_compare(const xrecord_t *lhs, const xrecord_t *rhs) {
+ordering_t xrecord_compare(const xrecord_t *lhs, const xrecord_t *rhs) {
   return xrecord_compare_attributes(lhs, rhs);
 }
 
@@ -222,8 +205,7 @@ struct xrecord_child_iter_t {
   struct record_iter_t record_iter;
 };
 
-xrecord_child_iter_t *
-make_xrecord_child_iter(const xrecord_t *xrecord) {
+xrecord_child_iter_t *make_xrecord_child_iter(const xrecord_t *xrecord) {
   xrecord_child_iter_t *self = new(xrecord_child_iter_t);
   self->xrecord = xrecord;
   self->index = 0;
@@ -231,13 +213,11 @@ make_xrecord_child_iter(const xrecord_t *xrecord) {
   return self;
 }
 
-void
-xrecord_child_iter_free(xrecord_child_iter_t *self) {
+void xrecord_child_iter_free(xrecord_child_iter_t *self) {
   free(self);
 }
 
-object_t *
-xrecord_child_iter_next(xrecord_child_iter_t *iter) {
+object_t *xrecord_child_iter_next(xrecord_child_iter_t *iter) {
   const hash_entry_t *entry = record_iter_next_entry(&iter->record_iter);
   if (entry) {
     value_t value = (value_t) entry->value;

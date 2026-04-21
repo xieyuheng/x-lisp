@@ -63,7 +63,6 @@ struct consumer_t consumers[] = {
   },
 };
 
-size_t
-consumer_count(void) {
+size_t consumer_count(void) {
   return sizeof(consumers) / sizeof(consumers[0]);
 }

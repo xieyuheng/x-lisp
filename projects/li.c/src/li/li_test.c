@@ -1,7 +1,6 @@
 #include "index.h"
 
-void
-li_test(mod_t *mod, const char *snapshot) {
+void li_test(mod_t *mod, const char *snapshot) {
   record_iter_t iter;
   record_iter_init(&iter, mod->definitions);
   definition_t *definition = record_iter_next_value(&iter);
@@ -15,8 +14,7 @@ li_test(mod_t *mod, const char *snapshot) {
   }
 }
 
-void
-li_builtin_test(mod_t *mod, const char *snapshot) {
+void li_builtin_test(mod_t *mod, const char *snapshot) {
   record_iter_t iter;
   record_iter_init(&iter, mod->definitions);
   definition_t *definition = record_iter_next_value(&iter);
@@ -30,8 +28,7 @@ li_builtin_test(mod_t *mod, const char *snapshot) {
   }
 }
 
-void
-li_test_definition(mod_t *mod, const char *snapshot, definition_t *definition) {
+void li_test_definition(mod_t *mod, const char *snapshot, definition_t *definition) {
   assert(definition->kind == FUNCTION_DEFINITION);
   printf("[test] %s\n", definition->name);
   if (snapshot == NULL) {

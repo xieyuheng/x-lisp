@@ -12,18 +12,15 @@ const object_class_t xset_class = {
   .child_iter_free_fn = (free_fn_t *) xset_child_iter_free,
 };
 
-static hash_code_t
-value_hash_fn(const void *key) {
+static hash_code_t value_hash_fn(const void *key) {
   return value_hash_code((value_t) key);
 }
 
-static bool
-value_equal_fn(const void *lhs, const void *rhs) {
+static bool value_equal_fn(const void *lhs, const void *rhs) {
   return equal_p((value_t) lhs, (value_t) rhs);
 }
 
-xset_t *
-make_xset(void) {
+xset_t *make_xset(void) {
   xset_t *self = new(xset_t);
   self->header.class = &xset_class;
   self->set = make_set();
@@ -33,56 +30,46 @@ make_xset(void) {
   return self;
 }
 
-void
-xset_free(xset_t *self) {
+void xset_free(xset_t *self) {
   set_free(self->set);
   free(self);
 }
 
-bool
-xset_p(value_t value) {
+bool xset_p(value_t value) {
   return object_p(value) &&
     to_object(value)->header.class == &xset_class;
 }
 
-xset_t *
-to_xset(value_t value) {
+xset_t *to_xset(value_t value) {
   assert(xset_p(value));
   return (xset_t *) to_object(value);
 }
 
-size_t
-xset_size(const xset_t *self) {
+size_t xset_size(const xset_t *self) {
   return set_size(self->set);
 }
 
-bool
-xset_empty_p(const xset_t *self) {
+bool xset_empty_p(const xset_t *self) {
   return set_is_empty(self->set);
 }
 
-inline bool
-xset_member_p(const xset_t *self, value_t value) {
+inline bool xset_member_p(const xset_t *self, value_t value) {
   return set_member(self->set, (void *) value);
 }
 
-inline void
-xset_add(xset_t *self, value_t value) {
+inline void xset_add(xset_t *self, value_t value) {
   set_add(self->set, (void *) value);
 }
 
-inline bool
-xset_delete(xset_t *self, value_t value) {
+inline bool xset_delete(xset_t *self, value_t value) {
   return set_delete(self->set, (void *) value);
 }
 
-inline void
-xset_clear(xset_t *self) {
+inline void xset_clear(xset_t *self) {
   set_clear(self->set);
 }
 
-xset_t *
-xset_copy(const xset_t *self) {
+xset_t *xset_copy(const xset_t *self) {
   xset_t *new_set = make_xset();
   set_iter_t iter;
   set_iter_init(&iter, self->set);
@@ -95,8 +82,7 @@ xset_copy(const xset_t *self) {
   return new_set;
 }
 
-bool
-xset_equal(const xset_t *lhs, const xset_t *rhs) {
+bool xset_equal(const xset_t *lhs, const xset_t *rhs) {
   if (set_size(lhs->set) != set_size(rhs->set))
     return false;
 
@@ -113,8 +99,7 @@ xset_equal(const xset_t *lhs, const xset_t *rhs) {
   return true;
 }
 
-void
-xset_print(printer_t *printer, const xset_t *self) {
+void xset_print(printer_t *printer, const xset_t *self) {
   printf("{");
 
   set_iter_t iter;
@@ -135,13 +120,11 @@ xset_print(printer_t *printer, const xset_t *self) {
   printf("}");
 }
 
-static ordering_t
-compare_value(const void *lhs, const void *rhs) {
+static ordering_t compare_value(const void *lhs, const void *rhs) {
   return value_total_compare((value_t) lhs, (value_t) rhs);
 }
 
-hash_code_t
-xset_hash_code(const xset_t *self) {
+hash_code_t xset_hash_code(const xset_t *self) {
   hash_code_t code = 6947; // any big prime number would do.
 
   array_t *values = set_values(self->set);
@@ -155,8 +138,7 @@ xset_hash_code(const xset_t *self) {
   return code;
 }
 
-ordering_t
-xset_compare(const xset_t *lhs, const xset_t *rhs) {
+ordering_t xset_compare(const xset_t *lhs, const xset_t *rhs) {
   array_t *lhs_values = set_values(lhs->set);
   array_t *rhs_values = set_values(rhs->set);
   size_t lhs_length = array_length(lhs_values);
@@ -199,21 +181,18 @@ struct xset_child_iter_t {
   struct set_iter_t set_iter;
 };
 
-xset_child_iter_t *
-make_xset_child_iter(const xset_t *set) {
+xset_child_iter_t *make_xset_child_iter(const xset_t *set) {
   xset_child_iter_t *self = new(xset_child_iter_t);
   self->set = set;
   set_iter_init(&self->set_iter, set->set);
   return self;
 }
 
-void
-xset_child_iter_free(xset_child_iter_t *self) {
+void xset_child_iter_free(xset_child_iter_t *self) {
   free(self);
 }
 
-object_t *
-xset_child_iter_next(xset_child_iter_t *iter) {
+object_t *xset_child_iter_next(xset_child_iter_t *iter) {
   const hash_entry_t *entry = set_iter_next_entry(&iter->set_iter);
   if (entry) {
     value_t value = (value_t) entry->value;
@@ -225,8 +204,7 @@ xset_child_iter_next(xset_child_iter_t *iter) {
   return NULL;
 }
 
-xset_t *
-xset_union(const xset_t *lhs, const xset_t *rhs) {
+xset_t *xset_union(const xset_t *lhs, const xset_t *rhs) {
   xset_t *new_set = xset_copy(lhs);
   set_iter_t iter;
   set_iter_init(&iter, rhs->set);
@@ -239,8 +217,7 @@ xset_union(const xset_t *lhs, const xset_t *rhs) {
   return new_set;
 }
 
-xset_t *
-xset_inter(const xset_t *lhs, const xset_t *rhs) {
+xset_t *xset_inter(const xset_t *lhs, const xset_t *rhs) {
   xset_t *new_set = make_xset();
   set_iter_t iter;
   set_iter_init(&iter, lhs->set);
@@ -256,8 +233,7 @@ xset_inter(const xset_t *lhs, const xset_t *rhs) {
   return new_set;
 }
 
-xset_t *
-xset_difference(const xset_t *lhs, const xset_t *rhs) {
+xset_t *xset_difference(const xset_t *lhs, const xset_t *rhs) {
   xset_t *new_set = xset_copy(lhs);
   set_iter_t iter;
   set_iter_init(&iter, rhs->set);
@@ -270,8 +246,7 @@ xset_difference(const xset_t *lhs, const xset_t *rhs) {
   return new_set;
 }
 
-bool
-xset_subset_p(const xset_t *lhs, const xset_t *rhs) {
+bool xset_subset_p(const xset_t *lhs, const xset_t *rhs) {
   set_iter_t iter;
   set_iter_init(&iter, lhs->set);
   const hash_entry_t *entry = set_iter_next_entry(&iter);
@@ -285,8 +260,7 @@ xset_subset_p(const xset_t *lhs, const xset_t *rhs) {
   return true;
 }
 
-bool
-xset_disjoint_p(const xset_t *lhs, const xset_t *rhs) {
+bool xset_disjoint_p(const xset_t *lhs, const xset_t *rhs) {
   set_iter_t iter;
   set_iter_init(&iter, lhs->set);
   const hash_entry_t *entry = set_iter_next_entry(&iter);

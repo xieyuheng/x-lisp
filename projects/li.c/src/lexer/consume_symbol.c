@@ -1,13 +1,11 @@
 #include "index.h"
 
-bool
-can_consume_symbol(lexer_t *lexer) {
+bool can_consume_symbol(lexer_t *lexer) {
   if (char_is_digit(lexer_next_char(lexer))) return false;
   return true;
 }
 
-char *
-consume_symbol(lexer_t *lexer) {
+char *consume_symbol(lexer_t *lexer) {
   string_builder_t *builder = make_string_builder();
 
   while (!lexer_is_finished(lexer) &&

@@ -9,8 +9,7 @@ const object_class_t xfile_class = {
   .free_fn = (free_fn_t *) xfile_free,
 };
 
-xfile_t *
-make_xfile(file_t *file) {
+xfile_t *make_xfile(file_t *file) {
   xfile_t *self = new(xfile_t);
   self->header.class = &xfile_class;
   self->file = file;
@@ -19,8 +18,7 @@ make_xfile(file_t *file) {
   return self;
 }
 
-void
-xfile_free(xfile_t *self) {
+void xfile_free(xfile_t *self) {
   xfile_close(self);
   if (self->pathname) {
     string_free(self->pathname);
@@ -29,49 +27,42 @@ xfile_free(xfile_t *self) {
   free(self);
 }
 
-xfile_t *
-open_input_xfile(char *pathname) {
+xfile_t *open_input_xfile(char *pathname) {
   file_t *file = open_file_or_fail(pathname, "r");
   xfile_t *xfile = make_xfile(file);
   xfile->pathname = pathname;
   return xfile;
 }
 
-xfile_t *
-open_output_xfile(char *pathname) {
+xfile_t *open_output_xfile(char *pathname) {
   file_t *file = open_file_or_fail(pathname, "w");
   xfile_t *xfile = make_xfile(file);
   xfile->pathname = pathname;
   return xfile;
 }
 
-void
-xfile_close(xfile_t *self) {
+void xfile_close(xfile_t *self) {
   if (self->open_p) {
     file_close(self->file);
     self->open_p = false;
   }
 }
 
-bool
-xfile_p(value_t value) {
+bool xfile_p(value_t value) {
   return object_p(value) &&
     to_object(value)->header.class == &xfile_class;
 }
 
-xfile_t *
-to_xfile(value_t value) {
+xfile_t *to_xfile(value_t value) {
   assert(xfile_p(value));
   return (xfile_t *) to_object(value);
 }
 
-bool
-xfile_equal(const xfile_t *lhs, const xfile_t *rhs) {
+bool xfile_equal(const xfile_t *lhs, const xfile_t *rhs) {
   return lhs->file == rhs->file;
 }
 
-void
-xfile_print(printer_t *printer, const xfile_t *self) {
+void xfile_print(printer_t *printer, const xfile_t *self) {
   (void) printer;
   string_print("#(file ");
   int_print(file_raw_fd(self->file));
@@ -83,8 +74,7 @@ xfile_print(printer_t *printer, const xfile_t *self) {
   string_print(")");
 }
 
-hash_code_t
-xfile_hash_code(const xfile_t *self) {
+hash_code_t xfile_hash_code(const xfile_t *self) {
   if (self->pathname) {
     return file_raw_fd(self->file);
   } else {
@@ -92,17 +82,14 @@ xfile_hash_code(const xfile_t *self) {
   }
 }
 
-ordering_t
-xfile_compare(const xfile_t *lhs, const xfile_t *rhs){
+ordering_t xfile_compare(const xfile_t *lhs, const xfile_t *rhs){
   return file_raw_fd(lhs->file) - file_raw_fd(rhs->file);
 }
 
-char *
-xfile_read(xfile_t *self) {
+char *xfile_read(xfile_t *self) {
   return file_read_string(self->file);
 }
 
-void
-xfile_write(xfile_t *self, const char *string) {
+void xfile_write(xfile_t *self, const char *string) {
   file_write_string(self->file, string);
 }

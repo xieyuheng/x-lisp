@@ -8,8 +8,7 @@ struct line_t {
 
 typedef struct line_t line_t;
 
-static line_t *
-make_line(size_t index, char *content) {
+static line_t *make_line(size_t index, char *content) {
   line_t *line = new(line_t);
   line->index = index;
   line->content = content;
@@ -17,8 +16,7 @@ make_line(size_t index, char *content) {
   return line;
 }
 
-static void
-line_free(line_t *line) {
+static void line_free(line_t *line) {
   string_free(line->content);
   if (line->underline) {
     string_free(line->underline);
@@ -27,8 +25,7 @@ line_free(line_t *line) {
   free(line);
 }
 
-static char *
-make_underline(struct span_t span, size_t start, size_t end) {
+static char *make_underline(struct span_t span, size_t start, size_t end) {
   string_builder_t *builder = make_string_builder();
   for (size_t i = start; i < end; i++) {
     if (span.start.index <= i && i < span.end.index) {
@@ -49,8 +46,7 @@ make_underline(struct span_t span, size_t start, size_t end) {
   }
 }
 
-static void
-lines_mark_underline(array_t *lines, struct span_t span) {
+static void lines_mark_underline(array_t *lines, struct span_t span) {
   size_t cursor = 0;
   for (size_t i = 0; i < array_length(lines); i++) {
     line_t *line = array_get(lines, i);
@@ -61,15 +57,13 @@ lines_mark_underline(array_t *lines, struct span_t span) {
   }
 }
 
-static bool
-line_is_close_to_span(line_t *line, struct span_t span) {
+static bool line_is_close_to_span(line_t *line, struct span_t span) {
   size_t close_height = 3;
   return ((span.start.row < line->index + close_height) &&
       (line->index < span.end.row + close_height));
 }
 
-static size_t
-get_prefix_margin(array_t *lines) {
+static size_t get_prefix_margin(array_t *lines) {
   size_t length = array_length(lines);
   size_t digit_count = 0;
   while (length > 0) {
@@ -80,8 +74,7 @@ get_prefix_margin(array_t *lines) {
   return digit_count + 1;
 }
 
-static void
-line_report(line_t *line, size_t prefix_margin) {
+static void line_report(line_t *line, size_t prefix_margin) {
   size_t line_count = line->index + 1;
   printf("%*ld | %s\n", (int) prefix_margin, line_count, line->content);
   if (line->underline) {
@@ -89,8 +82,7 @@ line_report(line_t *line, size_t prefix_margin) {
   }
 }
 
-void
-span_report_in_context(struct span_t span, const char *context) {
+void span_report_in_context(struct span_t span, const char *context) {
   size_t cursor = 0;
   size_t index = 0;
   char *content = string_next_line(context, &cursor);

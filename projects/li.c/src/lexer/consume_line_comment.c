@@ -1,7 +1,6 @@
 #include "index.h"
 
-bool
-can_consume_line_comment(lexer_t *lexer) {
+bool can_consume_line_comment(lexer_t *lexer) {
   if (!lexer->line_comment_introducer)
     return false;
 
@@ -11,8 +10,7 @@ can_consume_line_comment(lexer_t *lexer) {
   return result;
 }
 
-char *
-consume_line_comment(lexer_t *lexer) {
+char *consume_line_comment(lexer_t *lexer) {
   string_builder_t *builder = make_string_builder();
 
   while (true) {

@@ -1,33 +1,27 @@
 #include "index.h"
 
-value_t
-x_bool(bool target) {
+value_t x_bool(bool target) {
   return target ? x_true : x_false;
 }
 
-bool
-bool_p(value_t value) {
+bool bool_p(value_t value) {
   return value == x_true || value == x_false;
 }
 
-bool
-true_p(value_t value) {
+bool true_p(value_t value) {
   return value == x_true;
 }
 
-bool
-false_p(value_t value) {
+bool false_p(value_t value) {
   return value == x_false;
 }
 
-bool
-to_bool(value_t value) {
+bool to_bool(value_t value) {
   assert(bool_p(value));
   return value == x_true;
 }
 
-value_t
-x_bool_p(value_t value) {
+value_t x_bool_p(value_t value) {
   return x_bool(bool_p(value));
 }
 

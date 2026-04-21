@@ -1,12 +1,10 @@
 #include "index.h"
 
-bool
-can_consume_string(lexer_t *lexer) {
+bool can_consume_string(lexer_t *lexer) {
   return lexer_next_char(lexer) == '"';
 }
 
-char *
-consume_string(lexer_t *lexer) {
+char *consume_string(lexer_t *lexer) {
   lexer_forward(lexer, 1); // over the starting '"'
 
   string_builder_t *builder = make_string_builder();

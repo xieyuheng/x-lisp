@@ -1,28 +1,24 @@
 #include "index.h"
 
-static void
-sanity_check(void) {
+static void sanity_check(void) {
   assert(sizeof(uint64_t) == sizeof(void *));
   assert(sizeof(uint64_t) == sizeof(size_t));
 }
 
-static void
-handle_run(cmd_ctx_t *ctx) {
+static void handle_run(cmd_ctx_t *ctx) {
   char *pathname = cmd_get_arg(ctx, 0);
   mod_t *mod = li_load(make_path(pathname));
   (void) mod;
 }
 
-static void
-handle_run_fn(cmd_ctx_t *ctx){
+static void handle_run_fn(cmd_ctx_t *ctx){
   char *name = cmd_get_arg(ctx, 0);
   char *pathname = cmd_get_arg(ctx, 1);
   mod_t *mod = li_load(make_path(pathname));
   li_call(mod, name);
 }
 
-static void
-handle_test(cmd_ctx_t *ctx) {
+static void handle_test(cmd_ctx_t *ctx) {
   char *pathname = cmd_get_arg(ctx, 0);
   char *snapshot = cmd_get_option(ctx, "--snapshot");
   mod_t *mod = li_load(make_path(pathname));
@@ -30,13 +26,11 @@ handle_test(cmd_ctx_t *ctx) {
   li_test(mod, snapshot);
 }
 
-static void
-init(void) {
+static void init(void) {
   init_global_gc();
 }
 
-int
-main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
   sanity_check();
 
   init();

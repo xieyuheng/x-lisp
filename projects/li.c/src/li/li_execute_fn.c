@@ -1,7 +1,6 @@
 #include "index.h"
 
-static definition_t *
-ensure_definition(mod_t *mod, const char *name) {
+static definition_t *ensure_definition(mod_t *mod, const char *name) {
   definition_t *definition = mod_lookup(mod, name);
   if (definition) return definition;
 
@@ -14,8 +13,7 @@ ensure_definition(mod_t *mod, const char *name) {
   return mod_lookup(mod, name);
 }
 
-void
-li_execute_fn(mod_t *mod, line_t *line) {
+void li_execute_fn(mod_t *mod, line_t *line) {
   const path_t *path = line_path(line);
   definition_t *definition = ensure_definition(mod, path_raw_string(path));
   function_t *function = definition_function(definition);

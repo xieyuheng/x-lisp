@@ -1,7 +1,6 @@
 #include "index.h"
 
-void
-import_builtin(mod_t *mod) {
+void import_builtin(mod_t *mod) {
   // int
 
   define_primitive_1(mod, "builtin/int?", x_int_p);

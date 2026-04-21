@@ -6,8 +6,7 @@ const object_class_t definition_class = {
   .print_fn = (object_print_fn_t *) definition_print,
 };
 
-static definition_t *
-make_definition(mod_t *mod, char *name) {
+static definition_t *make_definition(mod_t *mod, char *name) {
   definition_t *self = new(definition_t);
   self->header.class = &definition_class;
   self->mod = mod;
@@ -15,24 +14,21 @@ make_definition(mod_t *mod, char *name) {
   return self;
 }
 
-definition_t *
-make_function_definition(mod_t *mod, char *name, function_t *function) {
+definition_t *make_function_definition(mod_t *mod, char *name, function_t *function) {
   definition_t *self = make_definition(mod, name);
   self->kind = FUNCTION_DEFINITION;
   self->function_definition.function = function;
   return self;
 }
 
-definition_t *
-make_primitive_definition(mod_t *mod, char *name, primitive_t *primitive) {
+definition_t *make_primitive_definition(mod_t *mod, char *name, primitive_t *primitive) {
   definition_t *self = make_definition(mod, name);
   self->kind = PRIMITIVE_DEFINITION;
   self->primitive_definition.primitive = primitive;
   return self;
 }
 
-definition_t *
-make_variable_definition(mod_t *mod, char *name, value_t value) {
+definition_t *make_variable_definition(mod_t *mod, char *name, value_t value) {
   definition_t *self = make_definition(mod, name);
   self->kind = VARIABLE_DEFINITION;
   self->variable_definition.value = value;
@@ -40,8 +36,7 @@ make_variable_definition(mod_t *mod, char *name, value_t value) {
   return self;
 }
 
-void
-definition_free(definition_t *self) {
+void definition_free(definition_t *self) {
   free(self->name);
 
   switch (self->kind) {
@@ -66,31 +61,26 @@ definition_free(definition_t *self) {
   }
 }
 
-bool
-definition_p(value_t value) {
+bool definition_p(value_t value) {
   return object_p(value) &&
     to_object(value)->header.class == &definition_class;
 }
 
-definition_t *
-to_definition(value_t value) {
+definition_t *to_definition(value_t value) {
   assert(definition_p(value));
   return (definition_t *) to_object(value);
 }
 
-bool
-definition_equal(definition_t *lhs, definition_t *rhs) {
+bool definition_equal(definition_t *lhs, definition_t *rhs) {
   return lhs == rhs;
 }
 
-void
-definition_print(printer_t *printer, definition_t *self) {
+void definition_print(printer_t *printer, definition_t *self) {
   (void) printer;
   printf("#(definition %s)", self->name);
 }
 
-bool
-definition_has_arity(const definition_t *self) {
+bool definition_has_arity(const definition_t *self) {
   switch (self->kind) {
   case FUNCTION_DEFINITION: {
     return true;
@@ -108,8 +98,7 @@ definition_has_arity(const definition_t *self) {
   unreachable();
 }
 
-size_t
-definition_arity(const definition_t *self) {
+size_t definition_arity(const definition_t *self) {
   assert(definition_has_arity(self));
 
   switch (self->kind) {
@@ -129,8 +118,7 @@ definition_arity(const definition_t *self) {
   unreachable();
 }
 
-bool
-definition_has_function(const definition_t *self) {
+bool definition_has_function(const definition_t *self) {
   switch (self->kind) {
   case FUNCTION_DEFINITION: {
     return true;
@@ -148,8 +136,7 @@ definition_has_function(const definition_t *self) {
   unreachable();
 }
 
-function_t *
-definition_function(const definition_t *self) {
+function_t *definition_function(const definition_t *self) {
   assert(definition_has_function(self));
 
   switch (self->kind) {

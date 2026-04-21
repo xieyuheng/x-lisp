@@ -5,16 +5,14 @@ struct gc_t {
   stack_t *work_stack;
 };
 
-gc_t *
-make_gc(void) {
+gc_t *make_gc(void) {
   gc_t *self = new(gc_t);
   self->objects = make_array();
   self->work_stack = make_stack();
   return self;
 }
 
-void
-gc_free(gc_t *self) {
+void gc_free(gc_t *self) {
   for (size_t i = 0; i < array_length(self->objects); i++) {
     object_t *object = array_get(self->objects, i);
     object_free(object);
@@ -25,18 +23,15 @@ gc_free(gc_t *self) {
   free(self);
 }
 
-inline size_t
-gc_object_count(gc_t *self) {
+inline size_t gc_object_count(gc_t *self) {
   return array_length(self->objects);
 }
 
-inline void
-gc_add_object(gc_t *self, object_t *object) {
+inline void gc_add_object(gc_t *self, object_t *object) {
   array_push(self->objects, object);
 }
 
-void
-gc_mark_object(gc_t *self, object_t *object) {
+inline void gc_mark_object(gc_t *self, object_t *object) {
   if (object->header.is_static) return;
   if (object->header.mark) return;
 
@@ -48,8 +43,7 @@ gc_mark_object(gc_t *self, object_t *object) {
   }
 }
 
-void
-gc_mark(gc_t *self) {
+void gc_mark(gc_t *self) {
   while (!stack_is_empty(self->work_stack)) {
     object_t *object = stack_pop(self->work_stack);
     const object_class_t *class = object->header.class;
@@ -64,8 +58,7 @@ gc_mark(gc_t *self) {
   }
 }
 
-void
-gc_sweep(gc_t *self) {
+void gc_sweep(gc_t *self) {
   array_t *reachable_objects = make_array();
 
   for (size_t i = 0; i < array_length(self->objects); i++) {
@@ -82,8 +75,7 @@ gc_sweep(gc_t *self) {
   self->objects = reachable_objects;
 }
 
-void
-gc_report(gc_t *self) {
+void gc_report(gc_t *self) {
   if (array_is_empty(self->objects)) {
     printf("objects: (empty)\n");
     return;

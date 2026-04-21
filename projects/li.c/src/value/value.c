@@ -4,8 +4,7 @@ inline tag_t value_tag(value_t value) {
   return (size_t) value & TAG_MASK;
 }
 
-void
-value_print(printer_t *printer, value_t value) {
+void value_print(printer_t *printer, value_t value) {
   if (int_p(value)) {
     printf("%ld", to_int64(value));
     return;
@@ -60,8 +59,7 @@ value_print(printer_t *printer, value_t value) {
   return;
 }
 
-void
-print(value_t value) {
+void print(value_t value) {
   printer_t *printer = make_printer();
   if (object_p(value)) {
     printer_collect_circle(printer, to_object(value));
@@ -72,13 +70,11 @@ print(value_t value) {
   printer_free(printer);
 }
 
-bool
-same_p(value_t lhs, value_t rhs) {
+bool same_p(value_t lhs, value_t rhs) {
   return lhs == rhs;
 }
 
-bool
-equal_p(value_t lhs, value_t rhs) {
+bool equal_p(value_t lhs, value_t rhs) {
   if (same_p(lhs, rhs)) return true;
 
   if (object_p(lhs)
@@ -91,8 +87,7 @@ equal_p(value_t lhs, value_t rhs) {
   return false;
 }
 
-hash_code_t
-value_hash_code(value_t value) {
+hash_code_t value_hash_code(value_t value) {
   if (int_p(value)) {
     return value;
   }
@@ -115,8 +110,7 @@ value_hash_code(value_t value) {
   exit(1);
 }
 
-ordering_t
-value_total_compare(value_t lhs, value_t rhs) {
+ordering_t value_total_compare(value_t lhs, value_t rhs) {
   if (same_p(lhs, rhs)) return 0;
 
   if (value_tag(lhs) != value_tag(rhs)) {

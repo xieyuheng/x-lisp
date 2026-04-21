@@ -1,7 +1,6 @@
 #include "index.h"
 
-static list_t *
-test_lex(const char *string) {
+static list_t *test_lex(const char *string) {
   lexer_t *lexer = make_lexer(string);
   lexer->line_comment_introducer = "//";
   list_t *tokens = lexer_lex(lexer);
@@ -9,8 +8,7 @@ test_lex(const char *string) {
   return tokens;
 }
 
-int
-main(void) {
+int main(void) {
   test_start();
 
   {

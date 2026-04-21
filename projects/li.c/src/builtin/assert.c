@@ -1,7 +1,6 @@
 #include "index.h"
 
-value_t
-x_assert(value_t value) {
+value_t x_assert(value_t value) {
   if (value != x_true) {
     printf("(assert) fail");
     printf("\n  value: "); print(value);
@@ -12,8 +11,7 @@ x_assert(value_t value) {
   return x_void;
 }
 
-value_t
-x_assert_not(value_t value) {
+value_t x_assert_not(value_t value) {
   if (value != x_false) {
     printf("(assert-not) fail");
     printf("\n  value: "); print(value);
@@ -24,8 +22,7 @@ x_assert_not(value_t value) {
   return x_void;
 }
 
-value_t
-x_assert_equal(value_t lhs, value_t rhs) {
+value_t x_assert_equal(value_t lhs, value_t rhs) {
   if (!equal_p(lhs, rhs)) {
     printf("(assert-equal) fail");
     printf("\n  lhs: "); print(lhs);
@@ -37,8 +34,7 @@ x_assert_equal(value_t lhs, value_t rhs) {
   return x_void;
 }
 
-value_t
-x_assert_not_equal(value_t lhs, value_t rhs) {
+value_t x_assert_not_equal(value_t lhs, value_t rhs) {
   if (equal_p(lhs, rhs)) {
     printf("(assert-not-equal) fail");
     printf("\n  lhs: "); print(lhs);

@@ -1,3 +1,10 @@
+[helpers.c] no newline before return type
+[cmd.c] no newline before return type
+
+[li.c] gc with threshold
+
+[li.c] symbol and keyword xstring -- rename global record to static record
+
 # li
 
 [li.c] `xstring` use `text_t` instead of `char *`

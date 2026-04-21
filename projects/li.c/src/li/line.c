@@ -6,8 +6,7 @@ struct line_t {
   array_t *args;
 };
 
-line_t *
-make_line(char *op_name, path_t *path, array_t *args) {
+line_t *make_line(char *op_name, path_t *path, array_t *args) {
   line_t *self = new(line_t);
   self->op_name = op_name;
   self->path = path;
@@ -15,16 +14,14 @@ make_line(char *op_name, path_t *path, array_t *args) {
   return self;
 }
 
-void
-line_free(line_t *self) {
+void line_free(line_t *self) {
   string_free(self->op_name);
   path_free(self->path);
   array_free(self->args);
   free(self);
 }
 
-static value_t
-parse_line_arg(list_t *tokens) {
+static value_t parse_line_arg(list_t *tokens) {
   token_t *token = list_pop_front(tokens);
   switch (token->kind) {
   case SYMBOL_TOKEN: {
@@ -77,8 +74,7 @@ parse_line_arg(list_t *tokens) {
   }
 }
 
-line_t *
-parse_line(const char *string) {
+line_t *parse_line(const char *string) {
   lexer_t *lexer = make_lexer(string);
   list_t *tokens = lexer_lex(lexer);
   assert(list_length(tokens) >= 2);
@@ -105,24 +101,20 @@ parse_line(const char *string) {
   return line;
 }
 
-const char *
-line_op_name(line_t *self) {
+const char *line_op_name(line_t *self) {
   return self->op_name;
 }
 
-const path_t *
-line_path(line_t *self) {
+const path_t *line_path(line_t *self) {
   return self->path;
 }
 
-value_t
-line_get_arg(line_t *self, size_t i) {
+value_t line_get_arg(line_t *self, size_t i) {
   assert(i < array_length(self->args));
   return (value_t) array_get(self->args, i);
 }
 
-void
-line_print(line_t *self) {
+void line_print(line_t *self) {
   string_print(line_op_name(self));
   string_print(" ");
   path_print(line_path(self));

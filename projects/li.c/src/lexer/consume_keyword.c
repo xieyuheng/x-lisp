@@ -1,7 +1,6 @@
 #include "index.h"
 
-bool
-can_consume_keyword(lexer_t *lexer) {
+bool can_consume_keyword(lexer_t *lexer) {
   if (lexer_next_char(lexer) != ':') return false;
 
   char *word = lexer_next_word_string(lexer);
@@ -10,8 +9,7 @@ can_consume_keyword(lexer_t *lexer) {
   return result;
 }
 
-char *
-consume_keyword(lexer_t *lexer) {
+char *consume_keyword(lexer_t *lexer) {
   lexer_forward(lexer, 1);
   return consume_symbol(lexer);
 }

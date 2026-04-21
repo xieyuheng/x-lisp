@@ -1,7 +1,6 @@
 #include "index.h"
 
-static value_t
-make_position_value(struct position_t position) {
+static value_t make_position_value(struct position_t position) {
   xrecord_t *record = make_xrecord();
   xrecord_put(record, "index", x_int(position.index));
   xrecord_put(record, "row", x_int(position.row));
@@ -9,16 +8,14 @@ make_position_value(struct position_t position) {
   return x_object(record);
 }
 
-static value_t
-make_span_value(struct span_t span) {
+static value_t make_span_value(struct span_t span) {
   xrecord_t *record = make_xrecord();
   xrecord_put(record, "start", make_position_value(span.start));
   xrecord_put(record, "end", make_position_value(span.end));
   return x_object(record);
 }
 
-static value_t
-make_source_location_value(value_t path, struct span_t span) {
+static value_t make_source_location_value(value_t path, struct span_t span) {
   xrecord_t *record = make_xrecord();
   xrecord_put(record, "path", path);
   xrecord_put(record, "span", make_span_value(span));
@@ -30,8 +27,7 @@ static void ignore_line_comments(list_t *tokens);
 static value_t for_sexp(value_t path, list_t *tokens);
 static value_t for_elements(value_t path, const char *end, list_t *tokens);
 
-value_t
-parse_located_sexps(const char *path_string, const char *string) {
+value_t parse_located_sexps(const char *path_string, const char *string) {
   lexer_t *lexer = make_lexer(string);
   lexer->line_comment_introducer = ";;";
   list_t *tokens = lexer_lex(lexer);
@@ -52,8 +48,7 @@ parse_located_sexps(const char *path_string, const char *string) {
   return sexps;
 }
 
-static void
-ignore_line_comments(list_t *tokens) {
+static void ignore_line_comments(list_t *tokens) {
   while (!list_is_empty(tokens)) {
     token_t *token = list_first(tokens);
     if (token->kind == LINE_COMMENT_TOKEN) {
@@ -65,8 +60,7 @@ ignore_line_comments(list_t *tokens) {
   }
 }
 
-static value_t
-make_symbol_sexp(value_t content, value_t location) {
+static value_t make_symbol_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("symbol-sexp"));
   x_list_push_mut(tag, sexp);
@@ -75,8 +69,7 @@ make_symbol_sexp(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t
-make_keyword_sexp(value_t content, value_t location) {
+static value_t make_keyword_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("keyword-sexp"));
   x_list_push_mut(tag, sexp);
@@ -85,8 +78,7 @@ make_keyword_sexp(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t
-make_string_sexp(value_t content, value_t location) {
+static value_t make_string_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("string-sexp"));
   x_list_push_mut(tag, sexp);
@@ -95,8 +87,7 @@ make_string_sexp(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t
-make_int_sexp(value_t content, value_t location) {
+static value_t make_int_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("int-sexp"));
   x_list_push_mut(tag, sexp);
@@ -105,8 +96,7 @@ make_int_sexp(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t
-make_float_sexp(value_t content, value_t location) {
+static value_t make_float_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("float-sexp"));
   x_list_push_mut(tag, sexp);
@@ -115,8 +105,7 @@ make_float_sexp(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t
-make_list_sexp(value_t elements, value_t location) {
+static value_t make_list_sexp(value_t elements, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("list-sexp"));
   x_list_push_mut(tag, sexp);
@@ -127,8 +116,7 @@ make_list_sexp(value_t elements, value_t location) {
 
 // - assume a sexp exists (maybe after line comments)
 
-static value_t
-for_sexp(value_t path, list_t *tokens) {
+static value_t for_sexp(value_t path, list_t *tokens) {
   if (list_is_empty(tokens)) {
     who_printf("unexpected end of tokens");
     exit(1);
@@ -234,8 +222,7 @@ for_sexp(value_t path, list_t *tokens) {
   unreachable();
 }
 
-static value_t
-for_elements(value_t path, const char *end, list_t *tokens) {
+static value_t for_elements(value_t path, const char *end, list_t *tokens) {
   value_t sexp = x_make_list();
   while (true) {
     ignore_line_comments(tokens);

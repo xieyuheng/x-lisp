@@ -3,8 +3,7 @@
 static void apply_definition(vm_t *vm, size_t n, definition_t *definition);
 static void apply_curry(vm_t *vm, size_t n, curry_t *curry);
 
-void
-apply(vm_t *vm, size_t n, value_t target) {
+void apply(vm_t *vm, size_t n, value_t target) {
   if (definition_p(target)) {
     apply_definition(vm, n, to_definition(target));
   } else if (curry_p(target)) {
@@ -15,8 +14,7 @@ apply(vm_t *vm, size_t n, value_t target) {
   }
 }
 
-static void
-supply(vm_t *vm, size_t n, value_t target, size_t arity) {
+static void supply(vm_t *vm, size_t n, value_t target, size_t arity) {
   assert(n < arity);
 
   curry_t *curry = make_curry(target, arity - n, n);
@@ -27,8 +25,7 @@ supply(vm_t *vm, size_t n, value_t target, size_t arity) {
   vm_push(vm, x_object(curry));
 }
 
-void
-apply_definition(vm_t *vm, size_t n, definition_t *definition) {
+void apply_definition(vm_t *vm, size_t n, definition_t *definition) {
   if (!definition_has_arity(definition)) {
     who_printf("definition has no arity: %s\n", definition->name);
     exit(1);
@@ -50,8 +47,7 @@ apply_definition(vm_t *vm, size_t n, definition_t *definition) {
   }
 }
 
-void
-apply_curry(vm_t *vm, size_t n, curry_t *curry) {
+void apply_curry(vm_t *vm, size_t n, curry_t *curry) {
   if (n == curry->arity) {
     for (size_t i = 0; i < curry->size; i++) {
       vm_push(vm, curry->args[i]);

@@ -1,7 +1,6 @@
 #include "index.h"
 
-size_t
-instr_length(struct instr_t instr) {
+size_t instr_length(struct instr_t instr) {
   switch (instr.op) {
   case OP_LITERAL: {
     return 1 + sizeof(value_t);
@@ -45,8 +44,7 @@ instr_length(struct instr_t instr) {
   unreachable();
 }
 
-void
-instr_encode(uint8_t *code, struct instr_t instr) {
+void instr_encode(uint8_t *code, struct instr_t instr) {
   switch (instr.op) {
   case OP_LITERAL: {
     memory_store_little_endian(code + 0, instr.op);
@@ -124,8 +122,7 @@ instr_encode(uint8_t *code, struct instr_t instr) {
   unreachable();
 }
 
-struct instr_t
-instr_decode(uint8_t *code) {
+struct instr_t instr_decode(uint8_t *code) {
   switch (code[0]) {
   case OP_LITERAL: {
     struct instr_t instr = { .op = code[0] };
@@ -203,8 +200,7 @@ instr_decode(uint8_t *code) {
   unreachable();
 }
 
-uint8_t *
-make_code_from_instrs(size_t length, struct instr_t instrs[]) {
+uint8_t *make_code_from_instrs(size_t length, struct instr_t instrs[]) {
   size_t size = 0;
   for (size_t i = 0; i < length; i++) {
     size += instr_length(instrs[i]);

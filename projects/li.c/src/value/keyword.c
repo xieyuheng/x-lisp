@@ -9,8 +9,7 @@ const object_class_t keyword_class = {
 
 static record_t *global_keyword_record = NULL;
 
-keyword_t *
-intern_keyword(const char *string) {
+keyword_t *intern_keyword(const char *string) {
   if (!global_keyword_record) {
     global_keyword_record = make_record();
   }
@@ -28,47 +27,39 @@ intern_keyword(const char *string) {
   return self;
 }
 
-void
-keyword_free(keyword_t *self) {
+void keyword_free(keyword_t *self) {
   string_free(self->string);
   free(self);
 }
 
-const char *
-keyword_string(const keyword_t *self) {
+const char *keyword_string(const keyword_t *self) {
   return self->string;
 }
 
-size_t
-keyword_length(const keyword_t *self) {
+size_t keyword_length(const keyword_t *self) {
   return string_length(self->string);
 }
 
-bool
-keyword_p(value_t value) {
+bool keyword_p(value_t value) {
   return object_p(value) &&
     to_object(value)->header.class == &keyword_class;
 }
 
-keyword_t *
-to_keyword(value_t value) {
+keyword_t *to_keyword(value_t value) {
   assert(keyword_p(value));
   return (keyword_t *) to_object(value);
 }
 
-void
-keyword_print(printer_t *printer, const keyword_t *self) {
+void keyword_print(printer_t *printer, const keyword_t *self) {
   (void) printer,
   string_print(":");
   string_print(keyword_string(self));
 }
 
-hash_code_t
-keyword_hash_code(const keyword_t *self) {
+hash_code_t keyword_hash_code(const keyword_t *self) {
   return 5 * string_hash_code(self->string);
 }
 
-ordering_t
-keyword_compare(const keyword_t *lhs, const keyword_t *rhs) {
+ordering_t keyword_compare(const keyword_t *lhs, const keyword_t *rhs) {
   return string_compare_lexical(lhs->string, rhs->string);
 }

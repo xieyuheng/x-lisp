@@ -12,8 +12,7 @@ const object_class_t xlist_class = {
   .child_iter_free_fn = (free_fn_t *) xlist_child_iter_free,
 };
 
-xlist_t *
-make_xlist(void) {
+xlist_t *make_xlist(void) {
   xlist_t *self = new(xlist_t);
   self->header.class = &xlist_class;
   self->elements = make_array();
@@ -21,20 +20,17 @@ make_xlist(void) {
   return self;
 }
 
-void
-xlist_free(xlist_t *self) {
+void xlist_free(xlist_t *self) {
   array_free(self->elements);
   free(self);
 }
 
-bool
-xlist_p(value_t value) {
+bool xlist_p(value_t value) {
   return object_p(value) &&
     to_object(value)->header.class == &xlist_class;
 }
 
-xlist_t *
-to_xlist(value_t value) {
+xlist_t *to_xlist(value_t value) {
   if (!xlist_p(value)) {
     print(value);
     newline();
@@ -44,38 +40,31 @@ to_xlist(value_t value) {
   return (xlist_t *) to_object(value);
 }
 
-inline value_t
-xlist_get(const xlist_t *self, size_t index) {
+inline value_t xlist_get(const xlist_t *self, size_t index) {
   return (value_t) array_get(self->elements, index);
 }
 
-inline void
-xlist_put(xlist_t *self, size_t index, value_t value) {
+inline void xlist_put(xlist_t *self, size_t index, value_t value) {
   array_put(self->elements, index, (void *) value);
 }
 
-inline value_t
-xlist_pop(xlist_t *self) {
+inline value_t xlist_pop(xlist_t *self) {
   return (value_t) array_pop(self->elements);
 }
 
-inline void
-xlist_push(xlist_t *self, value_t value) {
+inline void xlist_push(xlist_t *self, value_t value) {
   array_push(self->elements, (void *) value);
 }
 
-inline value_t
-xlist_pop_front(xlist_t *self) {
+inline value_t xlist_pop_front(xlist_t *self) {
   return (value_t) array_pop_front(self->elements);
 }
 
-inline void
-xlist_push_front(xlist_t *self, value_t value) {
+inline void xlist_push_front(xlist_t *self, value_t value) {
   array_push_front(self->elements, (void *) value);
 }
 
-xlist_t *
-xlist_copy(const xlist_t *self) {
+xlist_t *xlist_copy(const xlist_t *self) {
   xlist_t *new_xlist = make_xlist();
 
   for (size_t i = 0; i < array_length(self->elements); i++) {
@@ -85,8 +74,7 @@ xlist_copy(const xlist_t *self) {
   return new_xlist;
 }
 
-bool
-xlist_equal(const xlist_t *lhs, const xlist_t *rhs) {
+bool xlist_equal(const xlist_t *lhs, const xlist_t *rhs) {
   if (array_length(lhs->elements) != array_length(rhs->elements))
     return false;
 
@@ -100,8 +88,7 @@ xlist_equal(const xlist_t *lhs, const xlist_t *rhs) {
   return true;
 }
 
-static void
-xlist_print_elements(printer_t *printer, const xlist_t *self) {
+static void xlist_print_elements(printer_t *printer, const xlist_t *self) {
   for (size_t i = 0; i < array_length(self->elements); i++) {
     value_print(printer, xlist_get(self, i));
     if (i < array_length(self->elements) - 1) {
@@ -110,8 +97,7 @@ xlist_print_elements(printer_t *printer, const xlist_t *self) {
   }
 }
 
-void
-xlist_print(printer_t *printer, const xlist_t *self) {
+void xlist_print(printer_t *printer, const xlist_t *self) {
   if (array_is_empty(self->elements)) {
     printf("[");
     printf("]");
@@ -122,8 +108,7 @@ xlist_print(printer_t *printer, const xlist_t *self) {
   }
 }
 
-hash_code_t
-xlist_hash_code(const xlist_t *self) {
+hash_code_t xlist_hash_code(const xlist_t *self) {
   hash_code_t code = 6661; // any big prime number would do.
 
   for (size_t i = 0; i < array_length(self->elements); i++) {
@@ -134,8 +119,7 @@ xlist_hash_code(const xlist_t *self) {
   return code;
 }
 
-static ordering_t
-xlist_compare_elements(const xlist_t *lhs, const xlist_t *rhs) {
+static ordering_t xlist_compare_elements(const xlist_t *lhs, const xlist_t *rhs) {
   size_t lhs_length = array_length(lhs->elements);
   size_t rhs_length = array_length(rhs->elements);
   size_t i = 0;
@@ -163,8 +147,7 @@ xlist_compare_elements(const xlist_t *lhs, const xlist_t *rhs) {
   }
 }
 
-ordering_t
-xlist_compare(const xlist_t *lhs, const xlist_t *rhs) {
+ordering_t xlist_compare(const xlist_t *lhs, const xlist_t *rhs) {
   return xlist_compare_elements(lhs, rhs);
 }
 
@@ -173,21 +156,18 @@ struct xlist_child_iter_t {
   size_t index;
 };
 
-xlist_child_iter_t *
-make_xlist_child_iter(const xlist_t *xlist) {
+xlist_child_iter_t *make_xlist_child_iter(const xlist_t *xlist) {
   xlist_child_iter_t *self = new(xlist_child_iter_t);
   self->xlist = xlist;
   self->index = 0;
   return self;
 }
 
-void
-xlist_child_iter_free(xlist_child_iter_t *self) {
+void xlist_child_iter_free(xlist_child_iter_t *self) {
   free(self);
 }
 
-object_t *
-xlist_child_iter_next(xlist_child_iter_t *iter) {
+object_t *xlist_child_iter_next(xlist_child_iter_t *iter) {
   if (iter->index < array_length(iter->xlist->elements)) {
     value_t value = xlist_get(iter->xlist, iter->index++);
     return object_p(value)

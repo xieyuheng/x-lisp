@@ -12,18 +12,15 @@ const object_class_t xhash_class = {
   .child_iter_free_fn = (free_fn_t *) xhash_child_iter_free,
 };
 
-static hash_code_t
-value_hash_fn(const void *key) {
+static hash_code_t value_hash_fn(const void *key) {
   return value_hash_code((value_t) key);
 }
 
-static bool
-value_equal_fn(const void *lhs, const void *rhs) {
+static bool value_equal_fn(const void *lhs, const void *rhs) {
   return equal_p((value_t) lhs, (value_t) rhs);
 }
 
-xhash_t *
-make_xhash(void) {
+xhash_t *make_xhash(void) {
   xhash_t *self = new(xhash_t);
   self->header.class = &xhash_class;
   self->hash = make_hash();
@@ -33,58 +30,48 @@ make_xhash(void) {
   return self;
 }
 
-void
-xhash_free(xhash_t *self) {
+void xhash_free(xhash_t *self) {
   hash_free(self->hash);
   free(self);
 }
 
-bool
-xhash_p(value_t value) {
+bool xhash_p(value_t value) {
   return object_p(value) &&
     to_object(value)->header.class == &xhash_class;
 }
 
-xhash_t *
-to_xhash(value_t value) {
+xhash_t *to_xhash(value_t value) {
   assert(xhash_p(value));
   return (xhash_t *) to_object(value);
 }
 
-size_t
-xhash_length(const xhash_t *self) {
+size_t xhash_length(const xhash_t *self) {
   return hash_length(self->hash);
 }
 
-bool
-xhash_empty_p(const xhash_t *self) {
+bool xhash_empty_p(const xhash_t *self) {
   return hash_is_empty(self->hash);
 }
 
-inline bool
-xhash_has(const xhash_t *self, value_t key) {
+inline bool xhash_has(const xhash_t *self, value_t key) {
   return hash_has(self->hash, (void *) key);
 }
 
-inline value_t
-xhash_get(const xhash_t *self, value_t key) {
+inline value_t xhash_get(const xhash_t *self, value_t key) {
   hash_entry_t *entry = hash_get_entry(self->hash, (void *) key);
   assert(entry);
   return (value_t) entry->value;
 }
 
-inline void
-xhash_put(xhash_t *self, value_t key, value_t value) {
+inline void xhash_put(xhash_t *self, value_t key, value_t value) {
   hash_put(self->hash, (void *) key, (void *) value);
 }
 
-inline void
-xhash_delete(xhash_t *self, value_t key) {
+inline void xhash_delete(xhash_t *self, value_t key) {
   hash_delete(self->hash, (void *) key);
 }
 
-xhash_t *
-xhash_copy(const xhash_t *self) {
+xhash_t *xhash_copy(const xhash_t *self) {
   xhash_t *new_hash = make_xhash();
   hash_iter_t iter;
   hash_iter_init(&iter, self->hash);
@@ -97,8 +84,7 @@ xhash_copy(const xhash_t *self) {
   return new_hash;
 }
 
-bool
-xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
+bool xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
   if (hash_length(lhs->hash) != hash_length(rhs->hash))
     return false;
 
@@ -117,8 +103,7 @@ xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
   return true;
 }
 
-static void
-xhash_print_entries(printer_t *printer, const xhash_t *self) {
+static void xhash_print_entries(printer_t *printer, const xhash_t *self) {
   hash_iter_t iter;
   hash_iter_init(&iter, self->hash);
 
@@ -133,15 +118,13 @@ xhash_print_entries(printer_t *printer, const xhash_t *self) {
   }
 }
 
-void
-xhash_print(printer_t *printer, const xhash_t *self) {
+void xhash_print(printer_t *printer, const xhash_t *self) {
   printf("(@hash");
   xhash_print_entries(printer, self);
   printf(")");
 }
 
-static ordering_t
-compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
+static ordering_t compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
   ordering_t ordering =
     value_total_compare((value_t) lhs->key, (value_t) rhs->key);
   if (ordering != 0) {
@@ -151,8 +134,7 @@ compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {
   return value_total_compare((value_t) lhs->value, (value_t) rhs->value);
 }
 
-hash_code_t
-xhash_hash_code(const xhash_t *self) {
+hash_code_t xhash_hash_code(const xhash_t *self) {
   hash_code_t code = 7001; // any big prime number would do.
 
   array_t *entries = hash_entries(self->hash);
@@ -169,8 +151,7 @@ xhash_hash_code(const xhash_t *self) {
   return code;
 }
 
-ordering_t
-xhash_compare(const xhash_t *lhs, const xhash_t *rhs) {
+ordering_t xhash_compare(const xhash_t *lhs, const xhash_t *rhs) {
   array_t *lhs_entries = hash_entries(lhs->hash);
   array_t *rhs_entries = hash_entries(rhs->hash);
   array_sort(lhs_entries, (compare_fn_t *) compare_hash_entry);
@@ -217,8 +198,7 @@ struct xhash_child_iter_t {
   const hash_entry_t *entry;
 };
 
-xhash_child_iter_t *
-make_xhash_child_iter(const xhash_t *hash) {
+xhash_child_iter_t *make_xhash_child_iter(const xhash_t *hash) {
   xhash_child_iter_t *self = new(xhash_child_iter_t);
   self->hash = hash;
   hash_iter_init(&self->hash_iter, hash->hash);
@@ -226,13 +206,11 @@ make_xhash_child_iter(const xhash_t *hash) {
   return self;
 }
 
-void
-xhash_child_iter_free(xhash_child_iter_t *self) {
+void xhash_child_iter_free(xhash_child_iter_t *self) {
   free(self);
 }
 
-object_t *
-xhash_child_iter_next(xhash_child_iter_t *iter) {
+object_t *xhash_child_iter_next(xhash_child_iter_t *iter) {
   if (iter->entry) {
     value_t value = (value_t) iter->entry->value;
     iter->entry = NULL;

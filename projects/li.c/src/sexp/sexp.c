@@ -5,8 +5,7 @@ static void ignore_line_comments(list_t *tokens);
 static value_t for_sexp(list_t *tokens);
 static value_t for_list(const char *end, list_t *tokens);
 
-value_t
-parse_sexps(const char *string) {
+value_t parse_sexps(const char *string) {
   lexer_t *lexer = make_lexer(string);
   lexer->line_comment_introducer = ";;";
   list_t *tokens = lexer_lex(lexer);
@@ -26,8 +25,7 @@ parse_sexps(const char *string) {
   return sexps;
 }
 
-static void
-ignore_line_comments(list_t *tokens) {
+static void ignore_line_comments(list_t *tokens) {
   while (!list_is_empty(tokens)) {
     token_t *token = list_first(tokens);
     if (token->kind == LINE_COMMENT_TOKEN) {
@@ -41,8 +39,7 @@ ignore_line_comments(list_t *tokens) {
 
 // - assume a sexp exists (maybe after line comments)
 
-static value_t
-for_sexp(list_t *tokens) {
+static value_t for_sexp(list_t *tokens) {
   if (list_is_empty(tokens)) {
     who_printf("unexpected end of tokens\n");
     exit(1);
@@ -130,8 +127,7 @@ for_sexp(list_t *tokens) {
   unreachable();
 }
 
-static value_t
-for_list(const char *end, list_t *tokens) {
+static value_t for_list(const char *end, list_t *tokens) {
   value_t sexp = x_make_list();
   while (true) {
     ignore_line_comments(tokens);
