@@ -1,3 +1,9 @@
+# gc
+
+[li.c] string (specially small string) can be static like symbol
+
+- static xstring should not be add to gc, even when it is an child of a runtime list
+
 # li as db
 
 [li.c] `db_add` -- `db_t` has info to support set-like api
@@ -48,8 +54,3 @@
 # compose and pipe
 
 [meta-lisp.js] [maybe] `pipe` and `compose` as `Exp`
-
-# later
-
-[li.c] xstring with no gc should not be add to gc, even when it is an child of a runtime list
-[li.c] string (specially small string) can be static like symbol

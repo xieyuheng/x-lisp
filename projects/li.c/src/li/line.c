@@ -40,7 +40,7 @@ parse_line_arg(list_t *tokens) {
     }
 
     case STRING_TOKEN: {
-        value_t value = x_object(make_xstring_no_gc(string_copy(token->content)));
+        value_t value = x_object(make_static_xstring(string_copy(token->content)));
         token_free(token);
         return value;
     }
