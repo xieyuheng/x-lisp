@@ -1,4 +1,3 @@
-[li.c] symbol and keyword xstring -- rename global record to static record
 [helpers.c] no newline before return type
 [li.c] gc with threshold
 

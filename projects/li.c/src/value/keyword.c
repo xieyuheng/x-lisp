@@ -7,14 +7,14 @@ const object_class_t keyword_class = {
   .compare_fn = (object_compare_fn_t *) keyword_compare,
 };
 
-static record_t *global_keyword_record = NULL;
+static record_t *static_keyword_record = NULL;
 
 keyword_t *intern_keyword(const char *string) {
-  if (!global_keyword_record) {
-    global_keyword_record = make_record();
+  if (!static_keyword_record) {
+    static_keyword_record = make_record();
   }
 
-  keyword_t *found = record_get(global_keyword_record, string);
+  keyword_t *found = record_get(static_keyword_record, string);
   if (found) {
     return found;
   }
@@ -23,7 +23,7 @@ keyword_t *intern_keyword(const char *string) {
   self->header.class = &keyword_class;
   self->header.is_static = true;
   self->string = string_copy(string);
-  record_insert_or_fail(global_keyword_record, string, self);
+  record_insert_or_fail(static_keyword_record, string, self);
   return self;
 }
 

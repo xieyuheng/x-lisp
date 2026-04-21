@@ -7,14 +7,14 @@ const object_class_t symbol_class = {
   .compare_fn = (object_compare_fn_t *) symbol_compare,
 };
 
-static record_t *global_symbol_record = NULL;
+static record_t *static_symbol_record = NULL;
 
 symbol_t *intern_symbol(const char *string) {
-  if (!global_symbol_record) {
-    global_symbol_record = make_record();
+  if (!static_symbol_record) {
+    static_symbol_record = make_record();
   }
 
-  symbol_t *found = record_get(global_symbol_record, string);
+  symbol_t *found = record_get(static_symbol_record, string);
   if (found) {
     return found;
   }
@@ -23,7 +23,7 @@ symbol_t *intern_symbol(const char *string) {
   self->header.class = &symbol_class;
   self->header.is_static = true;
   self->string = string_copy(string);
-  record_insert_or_fail(global_symbol_record, string, self);
+  record_insert_or_fail(static_symbol_record, string, self);
   return self;
 }
 
