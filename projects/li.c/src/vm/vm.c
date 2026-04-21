@@ -64,6 +64,11 @@ inline frame_t *vm_top_frame(const vm_t *vm) {
 
 inline void vm_drop_frame(vm_t *vm) {
   stack_pop(vm->frame_stack);
+
+  // - it is ok to try gc here,
+  //   if we do not use loop syntax,
+  //   and always use tail-call to implement loop.
+
   vm_gc_maybe_collect(vm);
 }
 
