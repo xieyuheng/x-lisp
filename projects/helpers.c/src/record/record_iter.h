@@ -1,7 +1,7 @@
 #pragma once
 
 struct record_iter_t {
-    struct hash_iter_t hash_iter;
+  struct hash_iter_t hash_iter;
 };
 
 record_iter_t *make_record_iter(const record_t *record);

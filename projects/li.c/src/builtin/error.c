@@ -2,6 +2,6 @@
 
 value_t
 x_error(value_t value) {
-    print(value);
-    exit(1);
+  print(value);
+  exit(1);
 }

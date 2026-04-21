@@ -3,8 +3,8 @@
 extern const object_class_t keyword_class;
 
 struct keyword_t {
-    struct object_header_t header;
-    char *string;
+  struct object_header_t header;
+  char *string;
 };
 
 keyword_t *intern_keyword(const char *string);

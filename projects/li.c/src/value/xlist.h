@@ -3,8 +3,8 @@
 extern const object_class_t xlist_class;
 
 struct xlist_t {
-    struct object_header_t header;
-    array_t *elements;
+  struct object_header_t header;
+  array_t *elements;
 };
 
 xlist_t *make_xlist(void);

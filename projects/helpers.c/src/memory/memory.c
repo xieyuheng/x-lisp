@@ -6,99 +6,99 @@
 
 bool
 pointer_is_8_bytes_aligned(void *pointer) {
-    return (((uintptr_t) pointer) & ((uintptr_t) 0x7)) == 0;
+  return (((uintptr_t) pointer) & ((uintptr_t) 0x7)) == 0;
 }
 
 void *
 allocate(size_t size) {
-    void *pointer = calloc(1, size);
-    assert(pointer);
-    assert(pointer_is_8_bytes_aligned(pointer));
-    return pointer;
+  void *pointer = calloc(1, size);
+  assert(pointer);
+  assert(pointer_is_8_bytes_aligned(pointer));
+  return pointer;
 }
 
 void *
 allocate_pointers(size_t size) {
-    return allocate(size * sizeof(void *));
+  return allocate(size * sizeof(void *));
 }
 
 void *
 reallocate(void *pointer, size_t old_size, size_t new_size) {
-    void *new_pointer = realloc(pointer, new_size);
-    assert(new_pointer);
-    assert(pointer_is_8_bytes_aligned(new_pointer));
-    memory_clear((((char *) new_pointer) + old_size), new_size - old_size);
-    return new_pointer;
+  void *new_pointer = realloc(pointer, new_size);
+  assert(new_pointer);
+  assert(pointer_is_8_bytes_aligned(new_pointer));
+  memory_clear((((char *) new_pointer) + old_size), new_size - old_size);
+  return new_pointer;
 }
 
 void *
 reallocate_pointers(void *pointer, size_t old_size, size_t new_size) {
-    size_t unit_size = sizeof(void *);
-    void *new_pointer = realloc(pointer, new_size * unit_size);
-    assert(new_pointer);
-    assert(pointer_is_8_bytes_aligned(new_pointer));
-    memory_clear((((char *) new_pointer) + old_size * unit_size),
-                 (new_size - old_size) * unit_size);
-    return new_pointer;
+  size_t unit_size = sizeof(void *);
+  void *new_pointer = realloc(pointer, new_size * unit_size);
+  assert(new_pointer);
+  assert(pointer_is_8_bytes_aligned(new_pointer));
+  memory_clear((((char *) new_pointer) + old_size * unit_size),
+         (new_size - old_size) * unit_size);
+  return new_pointer;
 }
 
 bool
 pointer_is_page_aligned(void *pointer) {
-    size_t page_size = sysconf(_SC_PAGE_SIZE);
-    return (((uintptr_t) pointer) % page_size) == 0;
+  size_t page_size = sysconf(_SC_PAGE_SIZE);
+  return (((uintptr_t) pointer) % page_size) == 0;
 }
 
 void *
 allocate_page_aligned(size_t size) {
-    size_t page_size = sysconf(_SC_PAGE_SIZE);
-    assert(page_size > 0);
-    size_t real_size = ((size / page_size) + 1) * page_size;
-    void *pointer = aligned_alloc(page_size, real_size);
-    memory_clear(pointer, real_size);
-    assert(pointer);
-    assert(pointer_is_8_bytes_aligned(pointer));
-    assert(pointer_is_page_aligned(pointer));
-    return pointer;
+  size_t page_size = sysconf(_SC_PAGE_SIZE);
+  assert(page_size > 0);
+  size_t real_size = ((size / page_size) + 1) * page_size;
+  void *pointer = aligned_alloc(page_size, real_size);
+  memory_clear(pointer, real_size);
+  assert(pointer);
+  assert(pointer_is_8_bytes_aligned(pointer));
+  assert(pointer_is_page_aligned(pointer));
+  return pointer;
 }
 
 void
 memory_clear(void *pointer, size_t size) {
-    memset(pointer, 0, size);
+  memset(pointer, 0, size);
 }
 
 inline void
 memory_copy(void* dest, const void* src, size_t n) {
-    memcpy(dest, src, n);
+  memcpy(dest, src, n);
 }
 
 inline void
 memory_copy_reverse(void* dest, const void* src, size_t n) {
-    const uint8_t *s = (const uint8_t *) src + n - 1;
-    uint8_t *d = (uint8_t *) dest;
-    while (n--) *d++ = *s--;
+  const uint8_t *s = (const uint8_t *) src + n - 1;
+  uint8_t *d = (uint8_t *) dest;
+  while (n--) *d++ = *s--;
 }
 
 inline bool
 memory_is_little_endian(void) {
-    uint16_t one = 0x0001;
-    uint8_t first_byte = *((uint8_t *) &one);
-    return first_byte == 0x01;
+  uint16_t one = 0x0001;
+  uint8_t first_byte = *((uint8_t *) &one);
+  return first_byte == 0x01;
 }
 
 inline void
 memory_copy_little_endian(void* dest, const void* src, size_t n) {
-    if (memory_is_little_endian()) {
-        memory_copy(dest, src, n);
-    } else {
-        memory_copy_reverse(dest, src, n);
-    }
+  if (memory_is_little_endian()) {
+    memory_copy(dest, src, n);
+  } else {
+    memory_copy_reverse(dest, src, n);
+  }
 }
 
 inline void
 memory_copy_big_endian(void* dest, const void* src, size_t n) {
-    if (memory_is_little_endian()) {
-        memory_copy_reverse(dest, src, n);
-    } else {
-        memory_copy(dest, src, n);
-    }
+  if (memory_is_little_endian()) {
+    memory_copy_reverse(dest, src, n);
+  } else {
+    memory_copy(dest, src, n);
+  }
 }

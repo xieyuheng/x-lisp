@@ -3,11 +3,11 @@
 extern const object_class_t curry_class;
 
 struct curry_t {
-    struct object_header_t header;
-    value_t target;
-    size_t arity;
-    size_t size;
-    value_t *args;
+  struct object_header_t header;
+  value_t target;
+  size_t arity;
+  size_t size;
+  value_t *args;
 };
 
 curry_t *make_curry(value_t target, size_t arity, size_t size);

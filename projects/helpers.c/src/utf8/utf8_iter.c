@@ -2,41 +2,41 @@
 
 utf8_iter_t *
 make_utf8_iter(const char *string) {
-    utf8_iter_t *self = new(utf8_iter_t);
-    self->cursor = 0;
-    self->string = string;
-    return self;
+  utf8_iter_t *self = new(utf8_iter_t);
+  self->cursor = 0;
+  self->string = string;
+  return self;
 }
 
 void
 utf8_iter_free(utf8_iter_t *self) {
-    free(self);
+  free(self);
 }
 
 code_point_t
 utf8_iter_current(utf8_iter_t *self) {
-    if (self->string[self->cursor] == '\0')
-        return '\0';
+  if (self->string[self->cursor] == '\0')
+    return '\0';
 
-    return utf8_decode(self->string + self->cursor);
+  return utf8_decode(self->string + self->cursor);
 }
 
 code_point_t
 utf8_iter_first(utf8_iter_t *self) {
-    self->cursor = 0;
+  self->cursor = 0;
 
-    if (self->string[self->cursor] == '\0')
-        return '\0';
+  if (self->string[self->cursor] == '\0')
+    return '\0';
 
-    return utf8_decode(self->string + self->cursor);
+  return utf8_decode(self->string + self->cursor);
 }
 
 code_point_t
 utf8_iter_next(utf8_iter_t *self) {
-    self->cursor += utf8_char_length(self->string[self->cursor]);
+  self->cursor += utf8_char_length(self->string[self->cursor]);
 
-    if (self->string[self->cursor] == '\0')
-        return '\0';
+  if (self->string[self->cursor] == '\0')
+    return '\0';
 
-    return utf8_decode(self->string + self->cursor);
+  return utf8_decode(self->string + self->cursor);
 }

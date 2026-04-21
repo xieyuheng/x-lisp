@@ -4,48 +4,48 @@
 
 static void
 uint_producer(thread_t *thread) {
-    deque_t *deque = thread->arg;
-    size_t count = 0;
-    while (true) {
-        if (count == LENGTH) return;
+  deque_t *deque = thread->arg;
+  size_t count = 0;
+  while (true) {
+    if (count == LENGTH) return;
 
-        deque_push_back(deque, (void *) count);
-        count++;
-    }
+    deque_push_back(deque, (void *) count);
+    count++;
+  }
 }
 
 static void
 uint_consumer(thread_t *thread) {
-    deque_t *deque = thread->arg;
-    size_t count = 0;
-    while (true) {
-        if (count == LENGTH) return;
+  deque_t *deque = thread->arg;
+  size_t count = 0;
+  while (true) {
+    if (count == LENGTH) return;
 
-        while (deque_is_empty(deque)) {}
+    while (deque_is_empty(deque)) {}
 
-        assert(((size_t) deque_pop_front(deque)) == count);
-        count++;
-    }
+    assert(((size_t) deque_pop_front(deque)) == count);
+    count++;
+  }
 }
 
 int
 main(void) {
-    test_start();
+  test_start();
 
-    deque_t *deque = make_deque();
+  deque_t *deque = make_deque();
 
-    double start_second = time_second();
+  double start_second = time_second();
 
-    thread_t *producer_thread = thread_start(uint_producer, deque);
-    thread_t *consumer_thread = thread_start(uint_consumer, deque);
+  thread_t *producer_thread = thread_start(uint_producer, deque);
+  thread_t *consumer_thread = thread_start(uint_consumer, deque);
 
-    thread_join(producer_thread);
-    thread_join(consumer_thread);
+  thread_join(producer_thread);
+  thread_join(consumer_thread);
 
-    double throughput = LENGTH / 1000 / time_passed_second(start_second);
-    where_printf("throughput: %.f k/s\n", throughput);
+  double throughput = LENGTH / 1000 / time_passed_second(start_second);
+  where_printf("throughput: %.f k/s\n", throughput);
 
-    deque_free(deque);
+  deque_free(deque);
 
-    test_end();
+  test_end();
 }

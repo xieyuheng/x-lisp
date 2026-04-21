@@ -1,7 +1,7 @@
 #pragma once
 
 struct set_t {
-    hash_t *hash;
+  hash_t *hash;
 };
 
 set_t *make_set(void);

@@ -5,50 +5,50 @@
 
 static void
 uint_producer(thread_t *thread) {
-    queue_t *queue = thread->arg;
-    size_t count = 0;
-    while (true) {
-        if (count == LENGTH) return;
+  queue_t *queue = thread->arg;
+  size_t count = 0;
+  while (true) {
+    if (count == LENGTH) return;
 
-        while (queue_is_full(queue)) {}
+    while (queue_is_full(queue)) {}
 
-        assert(queue_push_back(queue, (void *) count));
-        count++;
-    }
+    assert(queue_push_back(queue, (void *) count));
+    count++;
+  }
 }
 
 static void
 uint_consumer(thread_t *thread) {
-    queue_t *queue = thread->arg;
-    size_t count = 0;
-    while (true) {
-        if (count == LENGTH) return;
+  queue_t *queue = thread->arg;
+  size_t count = 0;
+  while (true) {
+    if (count == LENGTH) return;
 
-        while (queue_is_empty(queue)) {}
+    while (queue_is_empty(queue)) {}
 
-        assert(((size_t) queue_pop_front(queue)) == count);
-        count++;
-    }
+    assert(((size_t) queue_pop_front(queue)) == count);
+    count++;
+  }
 }
 
 int
 main(void) {
-    test_start();
+  test_start();
 
-    queue_t *queue = make_queue(QUEUE_SIZE);
+  queue_t *queue = make_queue(QUEUE_SIZE);
 
-    double start_second = time_second();
+  double start_second = time_second();
 
-    thread_t *producer_thread = thread_start(uint_producer, queue);
-    thread_t *consumer_thread = thread_start(uint_consumer, queue);
+  thread_t *producer_thread = thread_start(uint_producer, queue);
+  thread_t *consumer_thread = thread_start(uint_consumer, queue);
 
-    thread_join(producer_thread);
-    thread_join(consumer_thread);
+  thread_join(producer_thread);
+  thread_join(consumer_thread);
 
-    double throughput = LENGTH / 1000 / time_passed_second(start_second);
-    where_printf("throughput: %.f k/s\n", throughput);
+  double throughput = LENGTH / 1000 / time_passed_second(start_second);
+  where_printf("throughput: %.f k/s\n", throughput);
 
-    queue_free(queue);
+  queue_free(queue);
 
-    test_end();
+  test_end();
 }

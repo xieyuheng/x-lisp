@@ -3,12 +3,12 @@
 // a single producer single consumer
 // thread safe circular queue
 //
-//     +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-//     |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
-//     +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
-//                               ^           ^
-//                               |           |
-//         (dequeue) => front_cursor       back_cursor => (enqueue)
+//   +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+//   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+//   +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+//                 ^       ^
+//                 |       |
+//     (dequeue) => front_cursor     back_cursor => (enqueue)
 //
 // just like people waiting in a line:
 // - enqueue -- a new person enter the queue from the back;
@@ -26,14 +26,14 @@ typedef size_t cursor_t;
 typedef _Atomic cursor_t atomic_cursor_t;
 
 struct queue_t {
-    size_t size;
-    size_t mask;
-    void **values;
-    atomic_cursor_t *front_cursor;
-    atomic_cursor_t *back_cursor;
-    cursor_t *cached_front_cursor;
-    cursor_t *cached_back_cursor;
-    free_fn_t *free_fn;
+  size_t size;
+  size_t mask;
+  void **values;
+  atomic_cursor_t *front_cursor;
+  atomic_cursor_t *back_cursor;
+  cursor_t *cached_front_cursor;
+  cursor_t *cached_back_cursor;
+  free_fn_t *free_fn;
 };
 
 static bool
@@ -43,140 +43,140 @@ is_power_of_two(size_t n) {
 
 queue_t *
 make_queue(size_t size) {
-    assert(size > 1);
-    assert(is_power_of_two(size));
-    queue_t *self = new_page_aligned(queue_t);
-    self->size = size;
-    self->mask = size - 1;
-    self->values = allocate_pointers(size);
-    self->back_cursor = new_page_aligned(atomic_cursor_t);
-    self->front_cursor = new_page_aligned(atomic_cursor_t);
-    assert(atomic_is_lock_free(self->back_cursor));
-    assert(atomic_is_lock_free(self->front_cursor));
-    self->cached_back_cursor = new_page_aligned(cursor_t);
-    self->cached_front_cursor = new_page_aligned(cursor_t);
-    return self;
+  assert(size > 1);
+  assert(is_power_of_two(size));
+  queue_t *self = new_page_aligned(queue_t);
+  self->size = size;
+  self->mask = size - 1;
+  self->values = allocate_pointers(size);
+  self->back_cursor = new_page_aligned(atomic_cursor_t);
+  self->front_cursor = new_page_aligned(atomic_cursor_t);
+  assert(atomic_is_lock_free(self->back_cursor));
+  assert(atomic_is_lock_free(self->front_cursor));
+  self->cached_back_cursor = new_page_aligned(cursor_t);
+  self->cached_front_cursor = new_page_aligned(cursor_t);
+  return self;
 }
 
 void
 queue_purge(queue_t *self) {
-    assert(self);
-    while(!queue_is_empty(self)) {
-        void *value = queue_pop_front(self);
-        if (self->free_fn)
-            self->free_fn(value);
-    }
+  assert(self);
+  while(!queue_is_empty(self)) {
+    void *value = queue_pop_front(self);
+    if (self->free_fn)
+      self->free_fn(value);
+  }
 }
 
 void
 queue_free(queue_t *self) {
-    queue_purge(self);
-    free(self->values);
-    free(self->front_cursor);
-    free(self->back_cursor);
-    free(self->cached_front_cursor);
-    free(self->cached_back_cursor);
-    free(self);
+  queue_purge(self);
+  free(self->values);
+  free(self->front_cursor);
+  free(self->back_cursor);
+  free(self->cached_front_cursor);
+  free(self->cached_back_cursor);
+  free(self);
 }
 
 void
 queue_put_free_fn(queue_t *self, free_fn_t *free_fn) {
-    self->free_fn = free_fn;
+  self->free_fn = free_fn;
 }
 
 queue_t *
 make_queue_with(size_t size, free_fn_t *free_fn) {
-    queue_t *self = make_queue(size);
-    self->free_fn = free_fn;
-    return self;
+  queue_t *self = make_queue(size);
+  self->free_fn = free_fn;
+  return self;
 }
 
 size_t
 queue_size(const queue_t *self) {
-    return self->size;
+  return self->size;
 }
 
 size_t
 queue_length(const queue_t *self) {
-    cursor_t back_cursor = relaxed_load(self->back_cursor);
-    cursor_t front_cursor = relaxed_load(self->front_cursor);
-    return back_cursor - front_cursor;
+  cursor_t back_cursor = relaxed_load(self->back_cursor);
+  cursor_t front_cursor = relaxed_load(self->front_cursor);
+  return back_cursor - front_cursor;
 }
 
 static inline void *
 get_value(const queue_t *self, cursor_t cursor) {
-    return self->values[cursor & self->mask];
+  return self->values[cursor & self->mask];
 }
 
 static inline void
 set_value(const queue_t *self, cursor_t cursor, void *value) {
-    self->values[cursor & self->mask] = value;
+  self->values[cursor & self->mask] = value;
 }
 
 static inline bool
 is_full(const queue_t *self, cursor_t front_cursor, cursor_t back_cursor) {
-    return back_cursor - front_cursor == self->size;
+  return back_cursor - front_cursor == self->size;
 }
 
 static inline bool
 is_empty(const queue_t *self, cursor_t front_cursor, cursor_t back_cursor) {
-    (void) self;
-    return back_cursor == front_cursor;
+  (void) self;
+  return back_cursor == front_cursor;
 }
 
 bool
 queue_is_full(const queue_t *self) {
-    cursor_t front_cursor = relaxed_load(self->front_cursor);
-    cursor_t back_cursor = relaxed_load(self->back_cursor);
-    return is_full(self, front_cursor, back_cursor);
+  cursor_t front_cursor = relaxed_load(self->front_cursor);
+  cursor_t back_cursor = relaxed_load(self->back_cursor);
+  return is_full(self, front_cursor, back_cursor);
 }
 
 bool
 queue_is_empty(const queue_t *self) {
-    cursor_t front_cursor = relaxed_load(self->front_cursor);
-    cursor_t back_cursor = relaxed_load(self->back_cursor);
-    return is_empty(self, front_cursor, back_cursor);
+  cursor_t front_cursor = relaxed_load(self->front_cursor);
+  cursor_t back_cursor = relaxed_load(self->back_cursor);
+  return is_empty(self, front_cursor, back_cursor);
 }
 
 bool
 queue_push_back(queue_t *self, void *value) {
-    cursor_t back_cursor = relaxed_load(self->back_cursor);
+  cursor_t back_cursor = relaxed_load(self->back_cursor);
+  if (is_full(self, *self->cached_front_cursor, back_cursor)) {
+    *self->cached_front_cursor = acquire_load(self->front_cursor);
     if (is_full(self, *self->cached_front_cursor, back_cursor)) {
-        *self->cached_front_cursor = acquire_load(self->front_cursor);
-        if (is_full(self, *self->cached_front_cursor, back_cursor)) {
-            return false;
-        }
+      return false;
     }
+  }
 
-    set_value(self, back_cursor, value);
-    release_store(self->back_cursor, back_cursor + 1);
-    return true;
+  set_value(self, back_cursor, value);
+  release_store(self->back_cursor, back_cursor + 1);
+  return true;
 }
 
 void *
 queue_pop_front(queue_t *self) {
-    cursor_t front_cursor = relaxed_load(self->front_cursor);
+  cursor_t front_cursor = relaxed_load(self->front_cursor);
+  if (is_empty(self, front_cursor, *self->cached_back_cursor)) {
+    *self->cached_back_cursor = acquire_load(self->back_cursor);
     if (is_empty(self, front_cursor, *self->cached_back_cursor)) {
-        *self->cached_back_cursor = acquire_load(self->back_cursor);
-        if (is_empty(self, front_cursor, *self->cached_back_cursor)) {
-            return NULL;
-        }
+      return NULL;
     }
+  }
 
-    void *value = get_value(self, front_cursor);
-    release_store(self->front_cursor, front_cursor + 1);
-    return value;
+  void *value = get_value(self, front_cursor);
+  release_store(self->front_cursor, front_cursor + 1);
+  return value;
 }
 
 void *
 queue_get(const queue_t *self, size_t index) {
-    cursor_t front_cursor = relaxed_load(self->front_cursor);
+  cursor_t front_cursor = relaxed_load(self->front_cursor);
+  if (is_empty(self, front_cursor, *self->cached_back_cursor)) {
+    *self->cached_back_cursor = acquire_load(self->back_cursor);
     if (is_empty(self, front_cursor, *self->cached_back_cursor)) {
-        *self->cached_back_cursor = acquire_load(self->back_cursor);
-        if (is_empty(self, front_cursor, *self->cached_back_cursor)) {
-            return NULL;
-        }
+      return NULL;
     }
+  }
 
-    return get_value(self, front_cursor + index);
+  return get_value(self, front_cursor + index);
 }

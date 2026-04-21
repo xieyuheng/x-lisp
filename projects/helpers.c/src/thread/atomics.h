@@ -1,12 +1,12 @@
 #pragma once
 
 #define relaxed_load(pointer) \
-    atomic_load_explicit(pointer, memory_order_relaxed)
+  atomic_load_explicit(pointer, memory_order_relaxed)
 #define relaxed_store(pointer, value) \
-    atomic_store_explicit(pointer, value, memory_order_relaxed)
+  atomic_store_explicit(pointer, value, memory_order_relaxed)
 
 #define acquire_load(pointer) \
-    atomic_load_explicit(pointer, memory_order_acquire)
+  atomic_load_explicit(pointer, memory_order_acquire)
 
 #define release_store(pointer, value) \
-    atomic_store_explicit(pointer, value, memory_order_release)
+  atomic_store_explicit(pointer, value, memory_order_release)

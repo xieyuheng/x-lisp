@@ -2,6 +2,6 @@
 
 int
 main(void) {
-    test_start();
-    test_end();
+  test_start();
+  test_end();
 }

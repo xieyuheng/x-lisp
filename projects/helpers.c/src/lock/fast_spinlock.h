@@ -1,7 +1,7 @@
 #pragma once
 
 struct fast_spinlock_t {
-    atomic_bool atomic_is_locked;
+  atomic_bool atomic_is_locked;
 };
 
 fast_spinlock_t *make_fast_spinlock(void);

@@ -2,64 +2,64 @@
 
 static void
 echo(const char *string) {
-    x_println(parse_sexps(string));
+  x_println(parse_sexps(string));
 }
 
 int
 main(void) {
-    init_global_gc();
+  init_global_gc();
 
-    // symbol
+  // symbol
 
-    echo("abc");
-    echo("-sphere");
-    // TODO can not handle symbol starts with number
-    // echo("3-sphere");
+  echo("abc");
+  echo("-sphere");
+  // TODO can not handle symbol starts with number
+  // echo("3-sphere");
 
-    // // hashtag
+  // // hashtag
 
-    // echo("#t");
-    // echo("#f");
-    // echo("#null");
-    // echo("#void");
+  // echo("#t");
+  // echo("#f");
+  // echo("#null");
+  // echo("#void");
 
-    // keyword
+  // keyword
 
-    echo(":abc");
+  echo(":abc");
 
-    // number
+  // number
 
-    echo("1");
-    echo("0");
-    echo("-1");
-    echo("0.0");
-    echo("3.14");
+  echo("1");
+  echo("0");
+  echo("-1");
+  echo("0.0");
+  echo("3.14");
 
-    // list
+  // list
 
-    echo("()");
-    echo("(a b c)");
-    echo("(a (b) c)");
-    echo("(:x 1 :y 2)");
-    echo("(a b c :x 1 :y 2)");
+  echo("()");
+  echo("(a b c)");
+  echo("(a (b) c)");
+  echo("(:x 1 :y 2)");
+  echo("(a b c :x 1 :y 2)");
 
-    // literal list
+  // literal list
 
-    echo("[]");
-    echo("[a b c]");
+  echo("[]");
+  echo("[a b c]");
 
-    // record
+  // record
 
-    echo("{}");
-    echo("{:x 1 :y 2}");
+  echo("{}");
+  echo("{:x 1 :y 2}");
 
-    // quotes
+  // quotes
 
-    echo("'a");
-    echo("'(a)");
-    echo("'(#a)");
-    echo("'(a b c)");
-    echo(",(a b c)");
-    echo("`(a ,b c)");
-    echo("(f 'a x)");
+  echo("'a");
+  echo("'(a)");
+  echo("'(#a)");
+  echo("'(a b c)");
+  echo(",(a b c)");
+  echo("`(a ,b c)");
+  echo("(f 'a x)");
 }

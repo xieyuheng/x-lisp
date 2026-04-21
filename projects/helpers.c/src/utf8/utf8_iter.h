@@ -1,8 +1,8 @@
 #pragma once
 
 struct utf8_iter_t {
-    size_t cursor;
-    const char *string;
+  size_t cursor;
+  const char *string;
 };
 
 utf8_iter_t *make_utf8_iter(const char *string);

@@ -3,8 +3,8 @@
 extern const object_class_t xset_class;
 
 struct xset_t {
-    struct object_header_t header;
-    set_t *set;
+  struct object_header_t header;
+  set_t *set;
 };
 
 xset_t *make_xset(void);

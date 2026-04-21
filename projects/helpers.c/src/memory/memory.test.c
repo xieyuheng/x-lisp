@@ -1,120 +1,120 @@
 #include "index.h"
 
 struct vec2_t {
-    double x;
-    double y;
+  double x;
+  double y;
 };
 
 typedef struct vec2_t vec2_t;
 
 int
 main(void) {
-    test_start();
+  test_start();
 
-    {
-        void *pointer = allocate(10);
-        assert(pointer_is_8_bytes_aligned(pointer));
-        free(pointer);
-    }
+  {
+    void *pointer = allocate(10);
+    assert(pointer_is_8_bytes_aligned(pointer));
+    free(pointer);
+  }
 
-    {
-        uint8_t *pointer = allocate(3);
-        pointer[0] = 1;
-        pointer[1] = 2;
-        pointer[2] = 3;
+  {
+    uint8_t *pointer = allocate(3);
+    pointer[0] = 1;
+    pointer[1] = 2;
+    pointer[2] = 3;
 
-        assert(pointer[0] == 1);
-        assert(pointer[1] == 2);
-        assert(pointer[2] == 3);
+    assert(pointer[0] == 1);
+    assert(pointer[1] == 2);
+    assert(pointer[2] == 3);
 
-        pointer = reallocate(pointer, 3, 6);
+    pointer = reallocate(pointer, 3, 6);
 
-        assert(pointer[0] == 1);
-        assert(pointer[1] == 2);
-        assert(pointer[2] == 3);
-        assert(pointer[3] == 0);
-        assert(pointer[4] == 0);
-        assert(pointer[5] == 0);
+    assert(pointer[0] == 1);
+    assert(pointer[1] == 2);
+    assert(pointer[2] == 3);
+    assert(pointer[3] == 0);
+    assert(pointer[4] == 0);
+    assert(pointer[5] == 0);
 
-        free(pointer);
-    }
+    free(pointer);
+  }
 
-    {
-        uint64_t *pointer = allocate_pointers(3);
-        pointer[0] = 1;
-        pointer[1] = 2;
-        pointer[2] = 3;
+  {
+    uint64_t *pointer = allocate_pointers(3);
+    pointer[0] = 1;
+    pointer[1] = 2;
+    pointer[2] = 3;
 
-        assert(pointer[0] == 1);
-        assert(pointer[1] == 2);
-        assert(pointer[2] == 3);
+    assert(pointer[0] == 1);
+    assert(pointer[1] == 2);
+    assert(pointer[2] == 3);
 
-        pointer = reallocate_pointers(pointer, 3, 6);
+    pointer = reallocate_pointers(pointer, 3, 6);
 
-        assert(pointer[0] == 1);
-        assert(pointer[1] == 2);
-        assert(pointer[2] == 3);
-        assert(pointer[3] == 0);
-        assert(pointer[4] == 0);
-        assert(pointer[5] == 0);
+    assert(pointer[0] == 1);
+    assert(pointer[1] == 2);
+    assert(pointer[2] == 3);
+    assert(pointer[3] == 0);
+    assert(pointer[4] == 0);
+    assert(pointer[5] == 0);
 
-        free(pointer);
-    }
+    free(pointer);
+  }
 
-    {
-        void *pointer = allocate_page_aligned(10);
-        assert(pointer_is_8_bytes_aligned(pointer));
-        assert(pointer_is_page_aligned(pointer));
-        free(pointer);
-    }
+  {
+    void *pointer = allocate_page_aligned(10);
+    assert(pointer_is_8_bytes_aligned(pointer));
+    assert(pointer_is_page_aligned(pointer));
+    free(pointer);
+  }
 
-    {
-        vec2_t *v = new(vec2_t);
-        assert(sizeof *v == 16);
-        assert(pointer_is_8_bytes_aligned(v));
-        v->x = 0.1;
-        v->y = 0.1;
-        free(v);
-    }
+  {
+    vec2_t *v = new(vec2_t);
+    assert(sizeof *v == 16);
+    assert(pointer_is_8_bytes_aligned(v));
+    v->x = 0.1;
+    v->y = 0.1;
+    free(v);
+  }
 
-    {
-        vec2_t *v = new_page_aligned(vec2_t);
-        assert(sizeof *v == 16);
-        assert(pointer_is_8_bytes_aligned(v));
-        assert(pointer_is_page_aligned(v));
-        v->x = 0.1;
-        v->y = 0.1;
-        free(v);
-    }
+  {
+    vec2_t *v = new_page_aligned(vec2_t);
+    assert(sizeof *v == 16);
+    assert(pointer_is_8_bytes_aligned(v));
+    assert(pointer_is_page_aligned(v));
+    v->x = 0.1;
+    v->y = 0.1;
+    free(v);
+  }
 
-    {
-        uint16_t x = 0x0001;
-        uint16_t y;
+  {
+    uint16_t x = 0x0001;
+    uint16_t y;
 
-        memory_copy(&y, &x, sizeof(uint16_t));
-        assert(y == 0x0001);
+    memory_copy(&y, &x, sizeof(uint16_t));
+    assert(y == 0x0001);
 
-        memory_copy_reverse(&y, &x, sizeof(uint16_t));
-        assert(y == 0x0100);
-    }
+    memory_copy_reverse(&y, &x, sizeof(uint16_t));
+    assert(y == 0x0100);
+  }
 
-    {
-        uint16_t x = 0x0001;
-        uint16_t y1;
-        uint16_t y2;
+  {
+    uint16_t x = 0x0001;
+    uint16_t y1;
+    uint16_t y2;
 
-        memory_store_little_endian(&y1, x);
-        memory_store_little_endian(&y2, x);
-        assert(y1 == y2);
+    memory_store_little_endian(&y1, x);
+    memory_store_little_endian(&y2, x);
+    assert(y1 == y2);
 
-        memory_store_big_endian(&y1, x);
-        memory_store_big_endian(&y2, x);
-        assert(y1 == y2);
+    memory_store_big_endian(&y1, x);
+    memory_store_big_endian(&y2, x);
+    assert(y1 == y2);
 
-        memory_store_little_endian(&y1, x);
-        memory_store_big_endian(&y2, x);
-        assert(y1 != y2);
-    }
+    memory_store_little_endian(&y1, x);
+    memory_store_big_endian(&y2, x);
+    assert(y1 != y2);
+  }
 
-    test_end();
+  test_end();
 }

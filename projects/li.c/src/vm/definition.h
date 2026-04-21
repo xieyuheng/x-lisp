@@ -1,23 +1,23 @@
 #pragma once
 
 typedef enum {
-    FUNCTION_DEFINITION,
-    PRIMITIVE_DEFINITION,
-    VARIABLE_DEFINITION,
+  FUNCTION_DEFINITION,
+  PRIMITIVE_DEFINITION,
+  VARIABLE_DEFINITION,
 } definition_kind_t;
 
 extern const object_class_t definition_class;
 
 struct definition_t {
-    struct object_header_t header;
-    definition_kind_t kind;
-    mod_t *mod;
-    char *name;
-    union {
-        struct { function_t *function; } function_definition;
-        struct { primitive_t *primitive; } primitive_definition;
-        struct { function_t *function; value_t value; } variable_definition;
-    };
+  struct object_header_t header;
+  definition_kind_t kind;
+  mod_t *mod;
+  char *name;
+  union {
+    struct { function_t *function; } function_definition;
+    struct { primitive_t *primitive; } primitive_definition;
+    struct { function_t *function; value_t value; } variable_definition;
+  };
 };
 
 definition_t *make_function_definition(mod_t *mod, char *name, function_t *function);

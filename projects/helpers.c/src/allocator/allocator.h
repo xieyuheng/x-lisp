@@ -5,12 +5,12 @@
 // of the book "Is Parallel Programming Hard?".
 
 // - allocate := pop  per-thread stack -- return value to caller
-// - free     := push per-thread stack -- recycle value from caller
+// - free   := push per-thread stack -- recycle value from caller
 
 struct allocator_t {
-    mutex_t *mutex;
-    stack_t *stack;
-    size_t cache_size;
+  mutex_t *mutex;
+  stack_t *stack;
+  size_t cache_size;
 };
 
 allocator_t *make_allocator(size_t cache_size);

@@ -1,10 +1,10 @@
 #pragma once
 
 struct lexer_t {
-    const char *string;
-    size_t length;
-    struct position_t position;
-    const char *line_comment_introducer;
+  const char *string;
+  size_t length;
+  struct position_t position;
+  const char *line_comment_introducer;
 };
 
 lexer_t *make_lexer(const char *string);

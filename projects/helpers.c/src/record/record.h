@@ -1,7 +1,7 @@
 #pragma once
 
 struct record_t {
-    hash_t *hash;
+  hash_t *hash;
 };
 
 record_t *make_record(void);

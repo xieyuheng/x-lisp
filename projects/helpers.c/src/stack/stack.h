@@ -3,7 +3,7 @@
 // stack implemented by growable array
 
 struct stack_t {
-    array_t *array;
+  array_t *array;
 };
 
 stack_t *make_stack(void);

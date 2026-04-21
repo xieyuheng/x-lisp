@@ -3,9 +3,9 @@
 extern const object_class_t xstring_class;
 
 struct xstring_t {
-    struct object_header_t header;
-    size_t length;
-    char *string;
+  struct object_header_t header;
+  size_t length;
+  char *string;
 };
 
 xstring_t *make_xstring(char *string);

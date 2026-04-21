@@ -2,250 +2,250 @@
 
 int
 main(void) {
-    test_start();
+  test_start();
 
-    list_t *list = make_list();
-    assert(list);
+  list_t *list = make_list();
+  assert(list);
+  assert(list_length(list) == 0);
+
+  assert(list_first(list) == NULL);
+  assert(list_last(list) == NULL);
+
+  assert(list_pop(list) == NULL);
+  assert(list_pop_front(list) == NULL);
+
+  //  Three values we'll use as test data
+  //  List values are void *, not particularly strings
+  char *cheese = string_copy("cheese");
+  char *bread = string_copy("bread");
+  char *wine = string_copy("wine");
+
+  {
+    list_push(list, cheese);
+    assert(list_length(list) == 1);
+    assert(list_member(list, cheese));
+    assert(!list_member(list, bread));
+    assert(!list_member(list, wine));
+
+    list_push(list, bread);
+    assert(list_length(list) == 2);
+    assert(list_member(list, cheese));
+    assert(list_member(list, bread));
+    assert(!list_member(list, wine));
+
+    list_push(list, wine);
+    assert(list_length(list) == 3);
+    assert(list_member(list, cheese));
+    assert(list_member(list, bread));
+    assert(list_member(list, wine));
+
+    assert(list_first(list) == cheese);
+    assert(list_length(list) == 3);
+
+    list_remove(list, wine);
+    assert(list_length(list) == 2);
+
+    list_remove(list, cheese);
+    assert(list_length(list) == 1);
+
+    list_remove(list, bread);
+    assert(list_length(list) == 0);
+  }
+
+  {
+    list_push(list, cheese);
+    list_push(list, bread);
+    list_remove(list, bread);
+    list_remove(list, cheese);
+  }
+
+  {
+    list_push_front(list, cheese);
+    assert(list_length(list) == 1);
+
+    list_push_front(list, bread);
+    assert(list_length(list) == 2);
+    assert(list_first(list) == bread);
+
+    list_push(list, wine);
+    assert(list_length(list) == 3);
+
+    list_pop(list);
+    list_pop(list);
+    list_pop(list);
+  }
+
+  {
+    list_push_front(list, cheese);
+    list_push_front(list, bread);
+    list_push_front(list, wine);
+
+    assert(list_pop_front(list) == wine);
+    assert(list_pop_front(list) == bread);
+    assert(list_pop_front(list) == cheese);
+  }
+
+  {
+    list_push(list, cheese);
+    list_push(list, bread);
+    list_push(list, wine);
+
+    assert(list_first(list) == cheese);
+    assert(list_pop_front(list) == cheese);
+    assert(list_pop_front(list) == bread);
+    assert(list_pop_front(list) == wine);
+  }
+
+  {
+    list_push(list, cheese);
+    list_push(list, bread);
+    list_push(list, wine);
+
+    assert(list_last(list) == wine);
+    assert(list_pop(list) == wine);
+    assert(list_pop(list) == bread);
+    assert(list_pop(list) == cheese);
+  }
+
+
+  {
+    list_push(list, cheese);
+    list_push(list, bread);
+    list_push(list, wine);
+
+    assert(list_get(list, 0) == cheese);
+    assert(list_get(list, 1) == bread);
+    assert(list_get(list, 2) == wine);
+    assert(list_get(list, 3) == NULL);
+
+    assert(list_pop(list) == wine);
+    assert(list_pop(list) == bread);
+    assert(list_pop(list) == cheese);
+  }
+
+  {
+    list_push(list, cheese);
+    list_push(list, bread);
+    list_push(list, wine);
+
+    list_put_free_fn(list, (free_fn_t *) string_free);
+
+    list_purge(list);
     assert(list_length(list) == 0);
 
-    assert(list_first(list) == NULL);
-    assert(list_last(list) == NULL);
+    list_free(list);
+  }
 
-    assert(list_pop(list) == NULL);
-    assert(list_pop_front(list) == NULL);
+  {
+    char *a = string_copy("a");
+    char *b = string_copy("b");
+    char *c = string_copy("c");
 
-    //  Three values we'll use as test data
-    //  List values are void *, not particularly strings
-    char *cheese = string_copy("cheese");
-    char *bread = string_copy("bread");
-    char *wine = string_copy("wine");
+    list_t *list = make_list_with((free_fn_t *) string_free);
 
-    {
-        list_push(list, cheese);
-        assert(list_length(list) == 1);
-        assert(list_member(list, cheese));
-        assert(!list_member(list, bread));
-        assert(!list_member(list, wine));
+    list_push(list, a);
+    list_push(list, b);
+    list_push(list, c);
 
-        list_push(list, bread);
-        assert(list_length(list) == 2);
-        assert(list_member(list, cheese));
-        assert(list_member(list, bread));
-        assert(!list_member(list, wine));
+    assert(list_member(list, a));
+    assert(list_member(list, b));
+    assert(list_member(list, c));
 
-        list_push(list, wine);
-        assert(list_length(list) == 3);
-        assert(list_member(list, cheese));
-        assert(list_member(list, bread));
-        assert(list_member(list, wine));
+    assert(!list_member(list, "a"));
+    assert(!list_member(list, "b"));
+    assert(!list_member(list, "c"));
 
-        assert(list_first(list) == cheese);
-        assert(list_length(list) == 3);
+    assert(!list_member(list, "A"));
+    assert(!list_member(list, "B"));
+    assert(!list_member(list, "C"));
 
-        list_remove(list, wine);
-        assert(list_length(list) == 2);
+    list_put_equal_fn(list, (equal_fn_t *) string_equal);
 
-        list_remove(list, cheese);
-        assert(list_length(list) == 1);
+    assert(list_member(list, "a"));
+    assert(list_member(list, "b"));
+    assert(list_member(list, "c"));
 
-        list_remove(list, bread);
-        assert(list_length(list) == 0);
-    }
+    assert(!list_member(list, "A"));
+    assert(!list_member(list, "B"));
+    assert(!list_member(list, "C"));
 
-    {
-        list_push(list, cheese);
-        list_push(list, bread);
-        list_remove(list, bread);
-        list_remove(list, cheese);
-    }
+    assert(!list_find(list, "A"));
+    assert(!list_find(list, "B"));
+    assert(!list_find(list, "C"));
 
-    {
-        list_push_front(list, cheese);
-        assert(list_length(list) == 1);
+    list_put_equal_fn(list, (equal_fn_t *) string_equal_mod_case);
 
-        list_push_front(list, bread);
-        assert(list_length(list) == 2);
-        assert(list_first(list) == bread);
+    assert(list_member(list, "a"));
+    assert(list_member(list, "b"));
+    assert(list_member(list, "c"));
 
-        list_push(list, wine);
-        assert(list_length(list) == 3);
+    assert(list_member(list, "A"));
+    assert(list_member(list, "B"));
+    assert(list_member(list, "C"));
 
-        list_pop(list);
-        list_pop(list);
-        list_pop(list);
-    }
+    assert(list_find(list, "A") == a);
+    assert(list_find(list, "B") == b);
+    assert(list_find(list, "C") == c);
 
-    {
-        list_push_front(list, cheese);
-        list_push_front(list, bread);
-        list_push_front(list, wine);
+    list_purge(list);
+    assert(list_length(list) == 0);
 
-        assert(list_pop_front(list) == wine);
-        assert(list_pop_front(list) == bread);
-        assert(list_pop_front(list) == cheese);
-    }
+    list_free(list);
+  }
 
-    {
-        list_push(list, cheese);
-        list_push(list, bread);
-        list_push(list, wine);
+  {
+    char *a = string_copy("a");
+    char *b = string_copy("b");
+    char *c = string_copy("c");
 
-        assert(list_first(list) == cheese);
-        assert(list_pop_front(list) == cheese);
-        assert(list_pop_front(list) == bread);
-        assert(list_pop_front(list) == wine);
-    }
+    list_t *list = make_list_with((free_fn_t *) string_free);
+    list_put_equal_fn(list, (equal_fn_t *) string_equal_mod_case);
+    list_put_copy_fn(list, (copy_fn_t *) string_copy);
 
-    {
-        list_push(list, cheese);
-        list_push(list, bread);
-        list_push(list, wine);
+    list_push(list, a);
+    list_push(list, b);
+    list_push(list, c);
 
-        assert(list_last(list) == wine);
-        assert(list_pop(list) == wine);
-        assert(list_pop(list) == bread);
-        assert(list_pop(list) == cheese);
-    }
+    list_t *copy = list_copy(list);
+    list_put_free_fn(copy, (free_fn_t *) string_free);
+    list_put_equal_fn(copy, (equal_fn_t *) string_equal_mod_case);
 
+    list_free(list);
 
-    {
-        list_push(list, cheese);
-        list_push(list, bread);
-        list_push(list, wine);
+    assert(list_member(copy, "a"));
+    assert(list_member(copy, "b"));
+    assert(list_member(copy, "c"));
 
-        assert(list_get(list, 0) == cheese);
-        assert(list_get(list, 1) == bread);
-        assert(list_get(list, 2) == wine);
-        assert(list_get(list, 3) == NULL);
+    assert(list_member(copy, "A"));
+    assert(list_member(copy, "B"));
+    assert(list_member(copy, "C"));
 
-        assert(list_pop(list) == wine);
-        assert(list_pop(list) == bread);
-        assert(list_pop(list) == cheese);
-    }
+    list_free(copy);
+  }
 
-    {
-        list_push(list, cheese);
-        list_push(list, bread);
-        list_push(list, wine);
+  {
+    // list_remove with free_fn
 
-        list_put_free_fn(list, (free_fn_t *) string_free);
+    char *a = string_copy("a");
+    char *b = string_copy("b");
+    char *c = string_copy("c");
 
-        list_purge(list);
-        assert(list_length(list) == 0);
+    list_t *list = make_list();
+    list_put_free_fn(list, (free_fn_t *) string_free);
+    list_put_equal_fn(list, (equal_fn_t *) string_equal_mod_case);
 
-        list_free(list);
-    }
+    list_push(list, a);
+    list_push(list, b);
+    list_push(list, c);
 
-    {
-        char *a = string_copy("a");
-        char *b = string_copy("b");
-        char *c = string_copy("c");
+    list_remove(list, "B");
 
-        list_t *list = make_list_with((free_fn_t *) string_free);
+    assert(list_member(list, "A"));
+    assert(!list_member(list, "B"));
+    assert(list_member(list, "C"));
 
-        list_push(list, a);
-        list_push(list, b);
-        list_push(list, c);
+    list_free(list);
+  }
 
-        assert(list_member(list, a));
-        assert(list_member(list, b));
-        assert(list_member(list, c));
-
-        assert(!list_member(list, "a"));
-        assert(!list_member(list, "b"));
-        assert(!list_member(list, "c"));
-
-        assert(!list_member(list, "A"));
-        assert(!list_member(list, "B"));
-        assert(!list_member(list, "C"));
-
-        list_put_equal_fn(list, (equal_fn_t *) string_equal);
-
-        assert(list_member(list, "a"));
-        assert(list_member(list, "b"));
-        assert(list_member(list, "c"));
-
-        assert(!list_member(list, "A"));
-        assert(!list_member(list, "B"));
-        assert(!list_member(list, "C"));
-
-        assert(!list_find(list, "A"));
-        assert(!list_find(list, "B"));
-        assert(!list_find(list, "C"));
-
-        list_put_equal_fn(list, (equal_fn_t *) string_equal_mod_case);
-
-        assert(list_member(list, "a"));
-        assert(list_member(list, "b"));
-        assert(list_member(list, "c"));
-
-        assert(list_member(list, "A"));
-        assert(list_member(list, "B"));
-        assert(list_member(list, "C"));
-
-        assert(list_find(list, "A") == a);
-        assert(list_find(list, "B") == b);
-        assert(list_find(list, "C") == c);
-
-        list_purge(list);
-        assert(list_length(list) == 0);
-
-        list_free(list);
-    }
-
-    {
-        char *a = string_copy("a");
-        char *b = string_copy("b");
-        char *c = string_copy("c");
-
-        list_t *list = make_list_with((free_fn_t *) string_free);
-        list_put_equal_fn(list, (equal_fn_t *) string_equal_mod_case);
-        list_put_copy_fn(list, (copy_fn_t *) string_copy);
-
-        list_push(list, a);
-        list_push(list, b);
-        list_push(list, c);
-
-        list_t *copy = list_copy(list);
-        list_put_free_fn(copy, (free_fn_t *) string_free);
-        list_put_equal_fn(copy, (equal_fn_t *) string_equal_mod_case);
-
-        list_free(list);
-
-        assert(list_member(copy, "a"));
-        assert(list_member(copy, "b"));
-        assert(list_member(copy, "c"));
-
-        assert(list_member(copy, "A"));
-        assert(list_member(copy, "B"));
-        assert(list_member(copy, "C"));
-
-        list_free(copy);
-    }
-
-    {
-        // list_remove with free_fn
-
-        char *a = string_copy("a");
-        char *b = string_copy("b");
-        char *c = string_copy("c");
-
-        list_t *list = make_list();
-        list_put_free_fn(list, (free_fn_t *) string_free);
-        list_put_equal_fn(list, (equal_fn_t *) string_equal_mod_case);
-
-        list_push(list, a);
-        list_push(list, b);
-        list_push(list, c);
-
-        list_remove(list, "B");
-
-        assert(list_member(list, "A"));
-        assert(!list_member(list, "B"));
-        assert(list_member(list, "C"));
-
-        list_free(list);
-    }
-
-    test_end();
+  test_end();
 }

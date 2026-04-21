@@ -2,5 +2,5 @@
 
 void
 newline(void) {
-    printf("\n");
+  printf("\n");
 }

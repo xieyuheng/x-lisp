@@ -3,8 +3,8 @@
 extern const object_class_t xrecord_class;
 
 struct xrecord_t {
-    struct object_header_t header;
-    record_t *attributes;
+  struct object_header_t header;
+  record_t *attributes;
 };
 
 xrecord_t *make_xrecord(void);
