@@ -22,6 +22,7 @@ intern_keyword(const char *string) {
 
     keyword_t *self = new(keyword_t);
     self->header.class = &keyword_class;
+    self->header.is_static = true;
     self->string = string_copy(string);
     record_insert_or_fail(global_keyword_record, string, self);
     return self;

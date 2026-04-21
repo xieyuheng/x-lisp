@@ -22,6 +22,7 @@ intern_symbol(const char *string) {
 
     symbol_t *self = new(symbol_t);
     self->header.class = &symbol_class;
+    self->header.is_static = true;
     self->string = string_copy(string);
     record_insert_or_fail(global_symbol_record, string, self);
     return self;

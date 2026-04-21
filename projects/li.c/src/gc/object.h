@@ -29,6 +29,7 @@ struct object_class_t {
 struct object_header_t {
     const object_class_t *class;
     bool mark;
+    bool is_static;
 };
 
 struct object_t {

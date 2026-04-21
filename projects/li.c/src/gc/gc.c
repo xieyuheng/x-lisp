@@ -37,6 +37,7 @@ gc_add_object(gc_t *self, object_t *object) {
 
 void
 gc_mark_object(gc_t *self, object_t *object) {
+    if (object->header.is_static) return;
     if (object->header.mark) return;
 
     object->header.mark = true;

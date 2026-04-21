@@ -1,8 +1,6 @@
 # gc
 
-[li.c] string (specially small string) can be static like symbol
-
-- static xstring should not be add to gc, even when it is an child of a runtime list
+[li.c] `global_static_xstring_record`
 
 # li as db
 

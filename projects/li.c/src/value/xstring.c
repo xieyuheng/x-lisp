@@ -11,7 +11,10 @@ const object_class_t xstring_class = {
 
 xstring_t *
 make_xstring(char *string) {
-    xstring_t *self = make_static_xstring(string);
+    xstring_t *self = new(xstring_t);
+    self->header.class = &xstring_class;
+    self->length = string_length(string);
+    self->string = string;
     gc_add_object(global_gc, (object_t *) self);
     return self;
 }
@@ -20,6 +23,7 @@ xstring_t *
 make_static_xstring(char *string) {
     xstring_t *self = new(xstring_t);
     self->header.class = &xstring_class;
+    self->header.is_static = true;
     self->length = string_length(string);
     self->string = string;
     return self;
