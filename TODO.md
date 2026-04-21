@@ -1,4 +1,3 @@
-[helpers.c] move newline from console/ to file/
 [li.c] gc with threshold
 
 # li
