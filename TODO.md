@@ -6,7 +6,7 @@
 
 # li
 
-[li.c] [maybe] change `xstring` to `xtext`
+[li.c] change `xstring` to `xtext`
 
 # about format
 
