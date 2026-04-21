@@ -1,6 +1,6 @@
 #include "index.h"
 
-cmd_route_t * cmd_parse_route(const char *command) {
+cmd_route_t *cmd_parse_route(const char *command) {
   cmd_route_t *self = new(cmd_route_t);
   self->command = command;
 

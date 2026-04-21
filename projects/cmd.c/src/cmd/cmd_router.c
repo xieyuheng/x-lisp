@@ -1,6 +1,6 @@
 #include "index.h"
 
-cmd_router_t * cmd_make_router(const char *name, const char *version) {
+cmd_router_t *cmd_make_router(const char *name, const char *version) {
   cmd_router_t *self = new(cmd_router_t);
   self->name = name;
   self->version = version;
@@ -13,7 +13,7 @@ void cmd_router_free(cmd_router_t *self) {
   free(self);
 }
 
-cmd_route_t * cmd_router_lookup(cmd_router_t *self, const char *name) {
+cmd_route_t *cmd_router_lookup(cmd_router_t *self, const char *name) {
   for (size_t i = 0; i < array_length(self->routes); i++) {
     cmd_route_t *route = array_get(self->routes, i);
     if (string_equal(name, route->name)) {
