@@ -64,7 +64,7 @@ inline frame_t *vm_top_frame(const vm_t *vm) {
 
 inline void vm_drop_frame(vm_t *vm) {
   stack_pop(vm->frame_stack);
-  vm_perform_gc(vm);
+  vm_gc_maybe_collect(vm);
 }
 
 inline void vm_push_frame(vm_t *vm, frame_t *frame) {
@@ -243,11 +243,15 @@ static array_t *vm_gc_roots(vm_t *vm) {
   return roots;
 }
 
-void vm_perform_gc(vm_t *vm) {
-#if DEBUG_GC
+void vm_gc_maybe_collect(vm_t *vm) {
+#if GC_DEBUG
   who_printf("before\n");
   gc_report(global_gc);
 #endif
+
+  if (gc_object_count(global_gc) < GC_OBJECT_THRESHOLD) {
+    return;
+  }
 
   array_t *roots = vm_gc_roots(vm);
   for (size_t i = 0; i < array_length(roots); i++) {
@@ -258,7 +262,7 @@ void vm_perform_gc(vm_t *vm) {
   gc_sweep(global_gc);
   array_free(roots);
 
-#if DEBUG_GC
+#if GC_DEBUG
   who_printf("after\n");
   gc_report(global_gc);
 #endif

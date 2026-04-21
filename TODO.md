@@ -1,5 +1,3 @@
-[li.c] gc with threshold
-
 # li
 
 [li.c] `xstring` use `text_t` instead of `char *`

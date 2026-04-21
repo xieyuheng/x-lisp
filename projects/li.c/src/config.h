@@ -1,3 +1,4 @@
 #pragma once
 
-#define DEBUG_GC 0
+#define GC_DEBUG 0
+#define GC_OBJECT_THRESHOLD 1024 * 1024
