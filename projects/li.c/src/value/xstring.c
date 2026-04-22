@@ -34,12 +34,16 @@ xstring_t *make_static_xstring(const char *string) {
   return self;
 }
 
-xstring_t *make_xstring_take(char *string) {
+xstring_t *make_xstring_take_text(text_t *text) {
   xstring_t *self = new(xstring_t);
   self->header.class = &xstring_class;
-  self->text = make_text_take(string);
+  self->text = text;
   gc_add_object(global_gc, (object_t *) self);
   return self;
+}
+
+xstring_t *make_xstring_take(char *string) {
+  return make_xstring_take_text(make_text_take(string));
 }
 
 xstring_t *make_xstring(const char *string) {

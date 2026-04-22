@@ -121,6 +121,8 @@ void import_builtin(mod_t *mod) {
   define_primitive_2(mod, "builtin/string-join", x_string_join);
   define_primitive_2(mod, "builtin/string-compare-lexical", x_string_compare_lexical);
   define_primitive_1(mod, "builtin/string-to-symbol", x_string_to_symbol);
+  define_primitive_1(mod, "builtin/string-chars", x_string_chars);
+  define_primitive_1(mod, "builtin/string-lines", x_string_lines);
 
   // list
 

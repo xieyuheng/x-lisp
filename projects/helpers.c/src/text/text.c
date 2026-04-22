@@ -45,7 +45,7 @@ size_t text_length(const text_t *self) {
   return self->length;
 }
 
-char *text_string(text_t *self) {
+char *text_string(const text_t *self) {
   return self->string;
 }
 
@@ -106,7 +106,7 @@ text_t *text_append(text_t *left, text_t *right) {
   return text;
 }
 
-text_t *text_subtext(text_t *self, size_t start, size_t end) {
+text_t *text_subtext(const text_t *self, size_t start, size_t end) {
   assert(end >= start);
   assert(end <= text_length(self));
   size_t length = end - start;

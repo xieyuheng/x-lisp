@@ -54,3 +54,28 @@ value_t x_string_compare_lexical(value_t x, value_t y) {
 value_t x_string_to_symbol(value_t string) {
   return x_object(intern_symbol(xstring_string(to_xstring(string))));
 }
+
+value_t x_string_chars(value_t string) {
+  const text_t *text = xstring_text(to_xstring(string));
+  value_t chars = x_object(make_xlist());
+  for (size_t i = 0; i < text_length(text); i++) {
+    xstring_t *c = make_xstring_take_text(text_subtext(text, i, i + 1));
+    x_list_push_mut(x_object(c), chars);
+  }
+
+  return chars;
+}
+
+value_t x_string_lines(value_t string) {
+  const text_t *text = xstring_text(to_xstring(string));
+  value_t lines = x_object(make_xlist());
+  size_t cursor = 0;
+  char *line_string = string_next_line(text_string(text), &cursor);
+  while (line_string) {
+    xstring_t *line = make_xstring_take(line_string);
+    x_list_push_mut(x_object(line), lines);
+    line_string = string_next_line(text_string(text), &cursor);
+  }
+
+  return lines;
+}
