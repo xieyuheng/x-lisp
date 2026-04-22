@@ -1,3 +1,23 @@
+# li missing builtin
+
+[li.c] missing builtin -- random
+
+```scheme
+(claim random-int (-> int-t int-t int-t))
+(claim random-float (-> float-t float-t float-t))
+```
+
+# li missing builtin
+
+[li.c] missing builtin -- string
+
+```scheme
+(claim string-split (-> string-t string-t (list-t string-t)))
+(claim string-lines (-> string-t (list-t string-t)))
+(claim string-chars (-> string-t (list-t string-t)))
+(claim string-replace (-> string-t string-t string-t string-t))
+```
+
 # li as db
 
 [li.c] [maybe] `db_save`
@@ -28,21 +48,3 @@
 # li
 
 [li.c] redesign `global-load` & `global-load`
-
-# li missing builtin
-
-[li.c] missing builtin -- string
-
-```scheme
-(claim string-split (-> string-t string-t (list-t string-t)))
-(claim string-lines (-> string-t (list-t string-t)))
-(claim string-chars (-> string-t (list-t string-t)))
-(claim string-replace (-> string-t string-t string-t string-t))
-```
-
-[li.c] missing builtin -- random
-
-```scheme
-(claim random-int (-> int-t int-t int-t))
-(claim random-float (-> float-t float-t float-t))
-```

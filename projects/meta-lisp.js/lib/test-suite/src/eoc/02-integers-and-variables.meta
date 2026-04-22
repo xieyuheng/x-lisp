@@ -1,5 +1,7 @@
 (module test-suite)
 
+(define (random-dice) 6)
+
 (define-test eoc-02-00
   (println 42))
 

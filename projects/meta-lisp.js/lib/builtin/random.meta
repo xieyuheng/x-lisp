@@ -1,7 +1,4 @@
 (module builtin)
 
-(declare-primitive-function random-dice 0)
-
-(claim random-dice (-> int-t))
 ;; (claim random-int (-> int-t int-t int-t))
 ;; (claim random-float (-> float-t float-t float-t))

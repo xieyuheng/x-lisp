@@ -15,10 +15,6 @@ export function builtinRandom(mod: Mod) {
     )
   })
 
-  definePrimitiveFunction(mod, "random-dice", 0, () => {
-    return Values.IntValue(BigInt(6))
-  })
-
   definePrimitiveFunction(mod, "random-float", 2, (start, end) => {
     return Values.FloatValue(
       randomFloat(

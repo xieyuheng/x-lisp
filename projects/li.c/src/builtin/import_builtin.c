@@ -92,8 +92,6 @@ void import_builtin(mod_t *mod) {
 
   // random
 
-  define_primitive_0(mod, "builtin/random-dice", x_random_dice);
-
   // keyword
 
   define_primitive_1(mod, "builtin/keyword?", x_keyword_p);
