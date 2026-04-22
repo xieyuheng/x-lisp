@@ -1,7 +1,5 @@
 # string
 
-[helpers.c] string -- `string_next_line` quit using `string_builder`
-
 [li.c] builtin -- string-split
 
 ```scheme

@@ -259,22 +259,14 @@ char *string_next_line(const char *self, size_t *cursor_pointer) {
     return NULL;
   }
 
-  string_builder_t *builder = make_string_builder();
-  while (self[cursor] != 0) {
-    char c = self[cursor];
-    if (c == '\n') {
-      cursor++;
-      break;
-    } else {
-      string_builder_append_char(builder, c);
-      cursor++;
-    }
+  int index = string_find_char_index(self + cursor, '\n');
+  if (index != -1) {
+    *cursor_pointer += index + 1;
+    return string_substring(self, cursor, cursor + index);
+  } else {
+    *cursor_pointer += string_length(self + cursor);
+    return string_copy(self + cursor);
   }
-
-  char *line = string_builder_produce(builder);
-  string_builder_free(builder);
-  *cursor_pointer = cursor;
-  return line;
 }
 
 char *string_next_split(const char *self, const char *delimiter, size_t *cursor_pointer) {
