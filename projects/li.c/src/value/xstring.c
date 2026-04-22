@@ -2,8 +2,7 @@
 
 struct xstring_t {
   struct object_header_t header;
-  size_t length;
-  char *string;
+  text_t *text;
 };
 
 const object_class_t xstring_class = {
@@ -30,8 +29,7 @@ xstring_t *make_static_xstring(const char *string) {
   xstring_t *self = new(xstring_t);
   self->header.class = &xstring_class;
   self->header.is_static = true;
-  self->length = string_length(string);
-  self->string = string_copy(string);
+  self->text = make_text(string);
   record_insert_or_fail(static_xstring_record, string, self);
   return self;
 }
@@ -39,8 +37,7 @@ xstring_t *make_static_xstring(const char *string) {
 xstring_t *make_xstring_take(char *string) {
   xstring_t *self = new(xstring_t);
   self->header.class = &xstring_class;
-  self->length = string_length(string);
-  self->string = string;
+  self->text = make_text_take(string);
   gc_add_object(global_gc, (object_t *) self);
   return self;
 }
@@ -50,7 +47,7 @@ xstring_t *make_xstring(const char *string) {
 }
 
 void xstring_free(xstring_t *self) {
-  string_free(self->string);
+  text_free(self->text);
   free(self);
 }
 
@@ -65,37 +62,39 @@ xstring_t *to_xstring(value_t value) {
 }
 
 bool xstring_equal(const xstring_t *lhs, const xstring_t *rhs) {
-  return lhs->length == rhs->length
-    && string_equal(lhs->string, rhs->string);
+  return text_equal(lhs->text, rhs->text);
 }
 
 void xstring_print(printer_t *printer, const xstring_t *self) {
   (void) printer;
   string_print("\"");
-  string_print(self->string);
+  string_print(text_string(self->text));
   string_print("\"");
 }
 
 hash_code_t xstring_hash_code(const xstring_t *self) {
-  return string_hash_code(self->string);
+  return string_hash_code(text_string(self->text));
 }
 
 ordering_t xstring_compare(const xstring_t *lhs, const xstring_t *rhs){
-  return string_compare_lexical(lhs->string, rhs->string);
+  return string_compare_lexical(text_string(lhs->text), text_string(rhs->text));
 }
 
 const char *xstring_string(const xstring_t *self) {
-  return self->string;
+  return text_string(self->text);
 }
 
 size_t xstring_length(const xstring_t *self) {
-  return self->length;
+  return text_length(self->text);
 }
 
 bool xstring_is_empty(const xstring_t *self) {
-  return self->length == 0;
+  return xstring_length(self) == 0;
 }
 
 xstring_t *xstring_append(xstring_t *left, xstring_t *right) {
-  return make_xstring_take(string_append(left->string, right->string));
+  return make_xstring_take(
+    string_append(
+      text_string(left->text),
+      text_string(right->text)));
 }

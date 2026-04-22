@@ -1,6 +1,5 @@
 # li
 
-[li.c] `xstring` use `text_t` instead of `char *`
 [li.c] `xstring_text`
 
 # li as db
