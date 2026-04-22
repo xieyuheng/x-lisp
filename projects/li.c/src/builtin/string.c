@@ -25,7 +25,7 @@ value_t x_string_concat(value_t list) {
   }
 
   char *content = string_builder_produce(builder);
-  value_t result = x_object(make_xstring(content));
+  value_t result = x_object(make_xstring_take(content));
   string_builder_free(builder);
   return result;
 }
@@ -42,7 +42,7 @@ value_t x_string_join(value_t separator, value_t list) {
   }
 
   char *content = string_builder_produce(builder);
-  value_t result = x_object(make_xstring(content));
+  value_t result = x_object(make_xstring_take(content));
   string_builder_free(builder);
   return result;
 }

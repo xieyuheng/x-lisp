@@ -3,7 +3,8 @@
 extern const object_class_t xstring_class;
 
 xstring_t *make_static_xstring(const char *string);
-xstring_t *make_xstring(char *string);
+xstring_t *make_xstring_take(char *string);
+xstring_t *make_xstring(const char *string);
 void xstring_free(xstring_t *self);
 
 bool xstring_p(value_t value);

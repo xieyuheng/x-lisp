@@ -9,7 +9,7 @@ value_t x_keyword_length(value_t keyword) {
 }
 
 value_t x_keyword_to_string(value_t keyword) {
-  return x_object(make_xstring(string_copy(keyword_string(to_keyword(keyword)))));
+  return x_object(make_xstring(keyword_string(to_keyword(keyword))));
 }
 
 value_t x_keyword_append(value_t left, value_t right) {

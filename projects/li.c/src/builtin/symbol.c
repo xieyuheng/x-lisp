@@ -9,7 +9,7 @@ value_t x_symbol_length(value_t symbol) {
 }
 
 value_t x_symbol_to_string(value_t symbol) {
-  return x_object(make_xstring(string_copy(symbol_string(to_symbol(symbol)))));
+  return x_object(make_xstring(symbol_string(to_symbol(symbol))));
 }
 
 value_t x_symbol_append(value_t left, value_t right) {

@@ -36,13 +36,17 @@ xstring_t *make_static_xstring(const char *string) {
   return self;
 }
 
-xstring_t *make_xstring(char *string) {
+xstring_t *make_xstring_take(char *string) {
   xstring_t *self = new(xstring_t);
   self->header.class = &xstring_class;
   self->length = string_length(string);
   self->string = string;
   gc_add_object(global_gc, (object_t *) self);
   return self;
+}
+
+xstring_t *make_xstring(const char *string) {
+  return make_xstring_take(string_copy(string));
 }
 
 void xstring_free(xstring_t *self) {
@@ -93,5 +97,5 @@ bool xstring_is_empty(const xstring_t *self) {
 }
 
 xstring_t *xstring_append(xstring_t *left, xstring_t *right) {
-  return make_xstring(string_append(left->string, right->string));
+  return make_xstring_take(string_append(left->string, right->string));
 }

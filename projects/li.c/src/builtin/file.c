@@ -18,7 +18,7 @@ value_t x_file_close(value_t file) {
 }
 
 value_t x_file_read(value_t file) {
-  xstring_t *xstring = make_xstring(xfile_read(to_xfile(file)));
+  xstring_t *xstring = make_xstring_take(xfile_read(to_xfile(file)));
   return x_object(xstring);
 }
 
