@@ -92,6 +92,9 @@ void import_builtin(mod_t *mod) {
 
   // random
 
+  define_primitive_2(mod, "builtin/random-int", x_random_int);
+  define_primitive_2(mod, "builtin/random-float", x_random_float);
+
   // keyword
 
   define_primitive_1(mod, "builtin/keyword?", x_keyword_p);
