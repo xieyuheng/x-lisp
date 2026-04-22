@@ -1,5 +1,10 @@
 #include "index.h"
 
+struct symbol_t {
+  struct object_header_t header;
+  char *string;
+};
+
 const object_class_t symbol_class = {
   .name = "symbol",
   .print_fn = (object_print_fn_t *) symbol_print,
@@ -32,7 +37,7 @@ void symbol_free(symbol_t *self) {
   free(self);
 }
 
-const char *symbol_string(const symbol_t *self) {
+const char *symbol_content(const symbol_t *self) {
   return self->string;
 }
 
@@ -53,7 +58,7 @@ symbol_t *to_symbol(value_t value) {
 void symbol_print(printer_t *printer, const symbol_t *self) {
   (void) printer;
   string_print("'");
-  string_print(symbol_string(self));
+  string_print(symbol_content(self));
 }
 
 hash_code_t symbol_hash_code(const symbol_t *self) {

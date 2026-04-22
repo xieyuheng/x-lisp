@@ -1,8 +1,7 @@
 # li
 
-[li.c] `xstring_content` -- quit using `->string` directly -- make `xstring_t` private
-[li.c] `symbol_content` -- quit using `->string` directly -- make `symbol_t` private
 [li.c] `keyword_content` -- quit using `->string` directly -- make `keyword_t` private
+[li.c] `xstring_content` -- quit using `->string` directly -- make `xstring_t` private
 
 [li.c] `xstring` use `text_t` instead of `char *`
 
@@ -11,6 +10,10 @@
 [li.c] `db_add` -- `db_t` has info to support set-like api
 [li.c] quit using `<fn>/is-test` -- should not use iter on definitions
 [li.c] quit using `<fn>/is-variable` -- should not use iter on definitions
+
+# li db
+
+[li.c] [maybe] `open-db`
 
 # about format
 
