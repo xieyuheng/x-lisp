@@ -24,3 +24,4 @@
 #include "queue/index.h"
 #include "deque/index.h"
 #include "allocator/index.h"
+#include "random/index.h"

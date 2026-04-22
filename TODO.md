@@ -1,8 +1,11 @@
 # li missing builtin
 
-[li.c] missing builtin -- random
+[li.c] random-int & random-float
 
 ```scheme
+
+;; [start, end)
+
 (claim random-int (-> int-t int-t int-t))
 (claim random-float (-> float-t float-t float-t))
 ```
