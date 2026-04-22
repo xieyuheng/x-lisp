@@ -1,11 +1,16 @@
 # li missing builtin
 
-[li.c] missing builtin -- string
+[li.c] string-chars & string-lines
+
+```scheme
+(claim string-chars (-> string-t (list-t string-t)))
+(claim string-lines (-> string-t (list-t string-t)))
+```
+
+[li.c] string-split & string-replace
 
 ```scheme
 (claim string-split (-> string-t string-t (list-t string-t)))
-(claim string-lines (-> string-t (list-t string-t)))
-(claim string-chars (-> string-t (list-t string-t)))
 (claim string-replace (-> string-t string-t string-t string-t))
 ```
 

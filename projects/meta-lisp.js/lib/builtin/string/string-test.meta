@@ -1,6 +1,5 @@
-(module test-suite)
+(module builtin)
 
 (define-test string-test
   (assert-equal "abcdef" (string-append "abc" "def"))
-
   (println "abc"))
