@@ -4,7 +4,7 @@ int main(void) {
   test_start();
 
   {
-    text_t *text = text_from_string("abc");
+    text_t *text = make_text("abc");
     assert(text_length(text) == 3);
     assert(text_get(text, 0) == 0x61);
     assert(text_get(text, 1) == 0x62);
@@ -13,7 +13,7 @@ int main(void) {
   }
 
   {
-    text_t *text = text_from_string("中文");
+    text_t *text = make_text("中文");
     assert(text_length(text) == 2);
     assert(text_get(text, 0) == 0x4e2d);
     assert(text_get(text, 1) == 0x6587);
@@ -21,14 +21,14 @@ int main(void) {
   }
 
   {
-    assert(text_equal(text_from_string("中文"), text_from_string("中文")));
-    assert(!text_equal(text_from_string("中文"), text_from_string("中")));
-    assert(text_equal(text_from_string("abc"), text_from_string("abc")));
-    assert(!text_equal(text_from_string("abc"), text_from_string("abd")));
+    assert(text_equal(make_text("中文"), make_text("中文")));
+    assert(!text_equal(make_text("中文"), make_text("中")));
+    assert(text_equal(make_text("abc"), make_text("abc")));
+    assert(!text_equal(make_text("abc"), make_text("abd")));
   }
 
   {
-    text_t *text = text_from_string("中文");
+    text_t *text = make_text("中文");
     assert(text_copy(text) != text);
     assert(text_equal(text_copy(text), text));
   }
@@ -36,36 +36,36 @@ int main(void) {
   {
     assert(
       text_equal(
-        text_from_string("中文abc"),
+        make_text("中文abc"),
         text_append(
-          text_from_string("中文"),
-          text_from_string("abc"))));
+          make_text("中文"),
+          make_text("abc"))));
   }
 
   {
-    text_t *text = text_from_string("中文");
+    text_t *text = make_text("中文");
     assert(
       text_equal(
         text_subtext(text, 0, 1),
-        text_from_string("中")));
+        make_text("中")));
     assert(
       text_equal(
         text_subtext(text, 1, 2),
-        text_from_string("文")));
+        make_text("文")));
   }
 
   {
     assert(
       string_equal(
-        text_to_string(text_from_string("中文")),
+        text_string(make_text("中文")),
         "中文"));
     assert(
       string_equal(
-        text_to_string(text_from_string("abc")),
+        text_string(make_text("abc")),
         "abc"));
     assert(
       string_equal(
-        text_to_string(text_from_string("")),
+        text_string(make_text("")),
         ""));
   }
 
