@@ -38,20 +38,20 @@
 (define-test string-replace-test
   (assert-equal "a/b/c" (string-replace "." "/" "a.b.c")))
 
-(define-test string-prefix-test
-  (assert (string-prefix? "" "abc"))
-  (assert (string-prefix? "a" "abc"))
-  (assert (string-prefix? "ab" "abc"))
-  (assert (string-prefix? "abc" "abc"))
-  (assert-not (string-prefix? "abc~" "abc"))
-  (assert-not (string-prefix? "b" "abc"))
+(define-test string-starts-with-test
+  (assert (string-starts-with? "" "abc"))
+  (assert (string-starts-with? "a" "abc"))
+  (assert (string-starts-with? "ab" "abc"))
+  (assert (string-starts-with? "abc" "abc"))
+  (assert-not (string-starts-with? "abc~" "abc"))
+  (assert-not (string-starts-with? "b" "abc"))
 
-  (assert (string-suffix? "" "abc"))
-  (assert (string-suffix? "c" "abc"))
-  (assert (string-suffix? "bc" "abc"))
-  (assert (string-suffix? "abc" "abc"))
-  (assert-not (string-suffix? "~abc" "abc"))
-  (assert-not (string-suffix? "b" "abc")))
+  (assert (string-ends-with? "" "abc"))
+  (assert (string-ends-with? "c" "abc"))
+  (assert (string-ends-with? "bc" "abc"))
+  (assert (string-ends-with? "abc" "abc"))
+  (assert-not (string-ends-with? "~abc" "abc"))
+  (assert-not (string-ends-with? "b" "abc")))
 
 (define-test string-to-upper-case-test
   (assert-equal "ABC" (string-to-upper-case "abc"))

@@ -1,8 +1,12 @@
 # string
 
+[li.c] builtin -- (string-find-index substring string)
+
+[helpers.c] `string_contains`
+[li.c] builtin -- (string-contains? substring string)
+
+[helpers.c] `string_trim_left` / `string_trim_right` / `string_trim` -- only for blank chars
 [li.c] builtin -- string-trim-left / string-trim-right / string-trim -- only for blank chars
-[li.c] builtin -- (string-pad-left n substring string) / string-pad-right
-[li.c] builtin -- string-find-index
 
 # source location
 

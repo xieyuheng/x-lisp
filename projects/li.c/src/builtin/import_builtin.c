@@ -127,8 +127,8 @@ void import_builtin(mod_t *mod) {
   define_primitive_2(mod, "builtin/string-split", x_string_split);
   define_primitive_2(mod, "builtin/string-join", x_string_join);
   define_primitive_3(mod, "builtin/string-replace", x_string_replace);
-  define_primitive_2(mod, "builtin/string-prefix?", x_string_prefix_p);
-  define_primitive_2(mod, "builtin/string-suffix?", x_string_suffix_p);
+  define_primitive_2(mod, "builtin/string-starts-with?", x_string_starts_with_p);
+  define_primitive_2(mod, "builtin/string-ends-with?", x_string_ends_with_p);
   define_primitive_1(mod, "builtin/string-to-upper-case", x_string_to_upper_case);
   define_primitive_1(mod, "builtin/string-to-lower-case", x_string_to_lower_case);
   define_primitive_2(mod, "builtin/string-get-code-point", x_string_get_code_point);
