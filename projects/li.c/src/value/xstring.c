@@ -15,18 +15,9 @@ const object_class_t xstring_class = {
   .free_fn = (free_fn_t *) xstring_free,
 };
 
-xstring_t *make_xstring(char *string) {
-  xstring_t *self = new(xstring_t);
-  self->header.class = &xstring_class;
-  self->length = string_length(string);
-  self->string = string;
-  gc_add_object(global_gc, (object_t *) self);
-  return self;
-}
-
 static record_t *static_xstring_record = NULL;
 
-xstring_t *make_static_xstring(char *string) {
+xstring_t *make_static_xstring(const char *string) {
   if (!static_xstring_record) {
     static_xstring_record = make_record();
   }
@@ -40,8 +31,17 @@ xstring_t *make_static_xstring(char *string) {
   self->header.class = &xstring_class;
   self->header.is_static = true;
   self->length = string_length(string);
-  self->string = string;
+  self->string = string_copy(string);
   record_insert_or_fail(static_xstring_record, string, self);
+  return self;
+}
+
+xstring_t *make_xstring(char *string) {
+  xstring_t *self = new(xstring_t);
+  self->header.class = &xstring_class;
+  self->length = string_length(string);
+  self->string = string;
+  gc_add_object(global_gc, (object_t *) self);
   return self;
 }
 

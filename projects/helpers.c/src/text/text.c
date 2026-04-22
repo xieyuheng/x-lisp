@@ -41,7 +41,11 @@ size_t text_length(const text_t *self) {
   return self->length;
 }
 
-code_point_t text_get(const text_t *self, size_t index) {
+char *text_string(text_t *self) {
+  return self->string;
+}
+
+code_point_t text_get_code_point(const text_t *self, size_t index) {
   return self->code_points[index];
 }
 
@@ -72,7 +76,7 @@ static const char *text_update_string(text_t *self) {
   char *dest = allocate(text_length(self) * max_encode_length + 1);
   size_t cursor = 0;
   for (size_t i = 0; i < self->length; i++) {
-    code_point_t code_point = text_get(self, i);
+    code_point_t code_point = text_get_code_point(self, i);
     utf8_encode_into(code_point, dest + cursor);
     cursor += utf8_char_length(dest[cursor]);
   }
@@ -109,8 +113,4 @@ text_t *text_subtext(text_t *self, size_t start, size_t end) {
     length * sizeof(code_point_t));
   text_update_string(text);
   return text;
-}
-
-char *text_string(text_t *self) {
-  return self->string;
 }

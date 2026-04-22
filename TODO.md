@@ -1,5 +1,6 @@
 # li
 
+[li.c] `make_xstring` take static string
 [li.c] `xstring` use `text_t` instead of `char *`
 [li.c] `xstring_text`
 
