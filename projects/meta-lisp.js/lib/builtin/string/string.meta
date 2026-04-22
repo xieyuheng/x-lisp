@@ -16,6 +16,8 @@
 (declare-primitive-function string-replace 3)
 (declare-primitive-function string-prefix? 2)
 (declare-primitive-function string-suffix? 2)
+(declare-primitive-function string-to-upper-case 1)
+(declare-primitive-function string-to-lower-case 1)
 
 (claim string-t type-t)
 (claim string? (polymorphic (A) (-> A bool-t)))
@@ -33,3 +35,5 @@
 (claim string-replace (-> string-t string-t string-t string-t))
 (claim string-prefix? (-> string-t string-t bool-t))
 (claim string-suffix? (-> string-t string-t bool-t))
+(claim string-to-upper-case (-> string-t string-t))
+(claim string-to-lower-case (-> string-t string-t))

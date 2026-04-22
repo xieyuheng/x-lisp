@@ -42,3 +42,7 @@
   (assert (string-suffix? "abc" "abc"))
   (assert-not (string-suffix? "~abc" "abc"))
   (assert-not (string-suffix? "b" "abc")))
+
+(define-test string-to-upper-case-test
+  (assert-equal "ABC" (string-to-upper-case "abc"))
+  (assert-equal "abc" (string-to-lower-case "ABC")))

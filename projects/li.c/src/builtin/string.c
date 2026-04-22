@@ -136,3 +136,17 @@ value_t x_string_suffix_p(value_t suffix, value_t string) {
       xstring_string(to_xstring(string)),
       xstring_string(to_xstring(suffix))));
 }
+
+value_t x_string_to_upper_case(value_t string) {
+  return x_object(
+    make_xstring_take(
+      string_to_upper_case(
+        xstring_string(to_xstring(string)))));
+}
+
+value_t x_string_to_lower_case(value_t string) {
+  return x_object(
+    make_xstring_take(
+      string_to_lower_case(
+        xstring_string(to_xstring(string)))));
+}

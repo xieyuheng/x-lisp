@@ -15,3 +15,5 @@ x_fn_2_t x_string_join;
 x_fn_3_t x_string_replace;
 x_fn_2_t x_string_prefix_p;
 x_fn_2_t x_string_suffix_p;
+x_fn_1_t x_string_to_upper_case;
+x_fn_1_t x_string_to_lower_case;
