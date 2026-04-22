@@ -1,5 +1,9 @@
 # string
 
+[li.c] builtin -- string-prefix? / string-suffix?
+[li.c] builtin -- string-prefix-length / string-suffix-length
+[li.c] builtin -- string-trim / string-trim-left / string-trim-right
+[li.c] builtin -- string-get-code-point
 [li.c] builtin -- string-find-substring-index
 
 # source location
@@ -20,6 +24,9 @@
 [li.c] `db_add` -- `db_t` has info to support set-like api
 [li.c] quit using `<fn>/is-test` -- should not use iter on definitions
 [li.c] quit using `<fn>/is-variable` -- should not use iter on definitions
+
+# db api
+
 [li.c] [maybe] `db_save`
 [li.c] builtin `open-db`
 
