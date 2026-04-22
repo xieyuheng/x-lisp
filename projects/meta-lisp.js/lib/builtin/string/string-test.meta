@@ -46,3 +46,8 @@
 (define-test string-to-upper-case-test
   (assert-equal "ABC" (string-to-upper-case "abc"))
   (assert-equal "abc" (string-to-lower-case "ABC")))
+
+(define-test string-get-code-point-test
+  (assert-equal 97 (string-get-code-point 0 "abc"))
+  (assert-equal 98 (string-get-code-point 1 "abc"))
+  (assert-equal 99 (string-get-code-point 2 "abc")))

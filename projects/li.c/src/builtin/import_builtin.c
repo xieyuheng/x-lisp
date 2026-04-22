@@ -130,6 +130,7 @@ void import_builtin(mod_t *mod) {
   define_primitive_2(mod, "builtin/string-suffix?", x_string_suffix_p);
   define_primitive_1(mod, "builtin/string-to-upper-case", x_string_to_upper_case);
   define_primitive_1(mod, "builtin/string-to-lower-case", x_string_to_lower_case);
+  define_primitive_2(mod, "builtin/string-get-code-point", x_string_get_code_point);
 
   // list
 

@@ -1,7 +1,6 @@
 # string
 
 [li.c] builtin -- string-trim / string-trim-left / string-trim-right
-[li.c] builtin -- string-get-code-point
 [li.c] builtin -- string-find-substring-index
 
 # source location

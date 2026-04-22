@@ -150,3 +150,10 @@ value_t x_string_to_lower_case(value_t string) {
       string_to_lower_case(
         xstring_string(to_xstring(string)))));
 }
+
+value_t x_string_get_code_point(value_t index, value_t string) {
+  return x_int(
+    text_get_code_point(
+      xstring_text(to_xstring(string)),
+      to_int64(index)));
+}
