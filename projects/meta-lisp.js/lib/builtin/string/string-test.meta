@@ -1,5 +1,10 @@
 (module builtin)
 
 (define-test string-test
+  (println "abc")
   (assert-equal "abcdef" (string-append "abc" "def"))
-  (println "abc"))
+  (assert-equal ["a" "b" "c"] (string-chars "abc"))
+  (assert-equal ["123" "456" "789"] (string-lines "123\n456\n789\n"))
+  (assert-equal ["123" "456" "789"] (string-lines "123\n456\n789"))
+  (assert-equal ["123" "" "789"] (string-lines "123\n\n789\n"))
+  (assert-equal ["123" "" "789"] (string-lines "123\n\n789")))
