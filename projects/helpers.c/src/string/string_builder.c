@@ -44,6 +44,12 @@ void string_builder_append_string(string_builder_t *self, const char *string) {
   }
 }
 
+void string_builder_append_substring(string_builder_t *self, const char *string, size_t start, size_t end) {
+  for (size_t i = start; i < end; i++) {
+    string_builder_append_char(self, string[i]);
+  }
+}
+
 void string_builder_clear(string_builder_t *self) {
   self->length = 0;
   self->buffer[self->length] = '\0';

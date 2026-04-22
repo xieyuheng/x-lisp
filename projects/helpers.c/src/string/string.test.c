@@ -127,6 +127,16 @@ int main(void) {
   assert(string_find_char_index("", '5') == -1);
   assert(string_find_char_index("", '\0') == 0);
 
+  assert(string_find_substring_index("01234", "0") == 0);
+  assert(string_find_substring_index("01234", "1") == 1);
+  assert(string_find_substring_index("01234", "2") == 2);
+  assert(string_find_substring_index("01234", "5") == -1);
+
+  assert(string_find_substring_index("01234", "01") == 0);
+  assert(string_find_substring_index("01234", "12") == 1);
+  assert(string_find_substring_index("01234", "23") == 2);
+  assert(string_find_substring_index("01234", "21") == -1);
+
   assert(string_find_last_char_index("012340123401234", '0') == 10);
   assert(string_find_last_char_index("012340123401234", '1') == 11);
   assert(string_find_last_char_index("012340123401234", '2') == 12);
@@ -262,6 +272,20 @@ int main(void) {
     assert(string_next_line(string, &cursor) == NULL);
     assert(string_next_line(string, &cursor) == NULL);
     assert(string_next_line(string, &cursor) == NULL);
+  }
+
+  {
+    const char *string =
+      "123\n"
+      "456\n"
+      "789";
+    size_t cursor = 0;
+    assert(string_equal(string_next_split(string, "\n", &cursor), "123"));
+    assert(string_equal(string_next_split(string, "\n", &cursor), "456"));
+    assert(string_equal(string_next_split(string, "\n", &cursor), "789"));
+    assert(string_next_split(string, "\n", &cursor) == NULL);
+    assert(string_next_split(string, "\n", &cursor) == NULL);
+    assert(string_next_split(string, "\n", &cursor) == NULL);
   }
 
   test_end();

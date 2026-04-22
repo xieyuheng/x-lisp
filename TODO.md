@@ -1,9 +1,16 @@
 # string
 
-[li.c] string-split & string-replace
+[helpers.c] string -- `string_next_line` quit using `string_builder`
+
+[li.c] builtin -- string-split
 
 ```scheme
 (claim string-split (-> string-t string-t (list-t string-t)))
+```
+
+[li.c] builtin -- string-replace
+
+```scheme
 (claim string-replace (-> string-t string-t string-t string-t))
 ```
 

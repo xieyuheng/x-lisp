@@ -2,12 +2,17 @@
 
 (define-test string-test
   (println "abc")
+
   (assert-equal 2 (string-length "中文"))
+
   (assert-equal "abcdef" (string-append "abc" "def"))
+
   (assert-equal ["a" "b" "c"] (string-chars "abc"))
+
   (assert-equal ["123" "456" "789"] (string-lines "123\n456\n789\n"))
   (assert-equal ["123" "456" "789"] (string-lines "123\n456\n789"))
   (assert-equal ["123" "" "789"] (string-lines "123\n\n789\n"))
   (assert-equal ["123" "" "789"] (string-lines "123\n\n789"))
+
   (assert-equal "中" (string-substring 0 1 "中文"))
   (assert-equal "文" (string-substring 1 2 "中文")))

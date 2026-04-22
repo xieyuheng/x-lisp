@@ -144,7 +144,7 @@ char *string_substring(const char *self, size_t start, size_t end) {
 int string_find_char_index(const char *self, char ch) {
   char *p = strchr(self, ch);
   if (!p) return -1;
-  else return (int)(p - self);
+  else return (int) (p - self);
 }
 
 int string_find_last_char_index(const char *self, char ch) {
@@ -156,6 +156,13 @@ int string_find_last_char_index(const char *self, char ch) {
   }
 
   return -1;
+}
+
+int string_find_substring_index(const char *self, const char *substring) {
+  assert(substring);
+  char *p = strstr(self, substring);
+  if (!p) return -1;
+  else return (int) (p - self);
 }
 
 size_t string_count_char(const char *self, char ch) {
@@ -268,6 +275,22 @@ char *string_next_line(const char *self, size_t *cursor_pointer) {
   string_builder_free(builder);
   *cursor_pointer = cursor;
   return line;
+}
+
+char *string_next_split(const char *self, const char *delimiter, size_t *cursor_pointer) {
+  size_t cursor = *cursor_pointer;
+  if (self[cursor] == 0) {
+    return NULL;
+  }
+
+  int index = string_find_substring_index(self + cursor, delimiter);
+  if (index != -1) {
+    *cursor_pointer += index + string_length(delimiter);
+    return string_substring(self, cursor, cursor + index);
+  } else {
+    *cursor_pointer += string_length(self + cursor);
+    return string_copy(self + cursor);
+  }
 }
 
 void string_print(const char *self) {

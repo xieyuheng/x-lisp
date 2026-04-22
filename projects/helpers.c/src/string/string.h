@@ -26,6 +26,7 @@ char *string_append(const char *left, const char *right);
 char *string_substring(const char *self, size_t start, size_t end);
 int string_find_char_index(const char *self, char ch);
 int string_find_last_char_index(const char *self, char ch);
+int string_find_substring_index(const char *self, const char* substring);
 size_t string_count_char(const char *self, char ch);
 bool string_has_char(const char *self, char ch);
 size_t string_count_substring(const char *self, const char* substring);
@@ -35,5 +36,6 @@ bool string_equal_mod_case(const char *left, const char *right);
 
 char *string_next_word(const char *self, size_t *cursor_pointer);
 char *string_next_line(const char *self, size_t *cursor_pointer);
+char *string_next_split(const char *self, const char *delimiter, size_t *cursor_pointer);
 
 void string_print(const char *self);
