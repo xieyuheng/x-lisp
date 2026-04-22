@@ -126,6 +126,8 @@ void import_builtin(mod_t *mod) {
   define_primitive_2(mod, "builtin/string-split", x_string_split);
   define_primitive_2(mod, "builtin/string-join", x_string_join);
   define_primitive_3(mod, "builtin/string-replace", x_string_replace);
+  define_primitive_2(mod, "builtin/string-prefix?", x_string_prefix_p);
+  define_primitive_2(mod, "builtin/string-suffix?", x_string_suffix_p);
 
   // list
 

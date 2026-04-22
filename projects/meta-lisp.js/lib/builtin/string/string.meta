@@ -14,6 +14,8 @@
 (declare-primitive-function string-split 2)
 (declare-primitive-function string-join 2)
 (declare-primitive-function string-replace 3)
+(declare-primitive-function string-prefix? 2)
+(declare-primitive-function string-suffix? 2)
 
 (claim string-t type-t)
 (claim string? (polymorphic (A) (-> A bool-t)))
@@ -29,3 +31,5 @@
 (claim string-split (-> string-t string-t (list-t string-t)))
 (claim string-join (-> string-t (list-t string-t) string-t))
 (claim string-replace (-> string-t string-t string-t string-t))
+(claim string-prefix? (-> string-t string-t bool-t))
+(claim string-suffix? (-> string-t string-t bool-t))

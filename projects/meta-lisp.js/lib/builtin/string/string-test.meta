@@ -27,3 +27,18 @@
 
 (define-test string-replace-test
   (assert-equal "a/b/c" (string-replace "." "/" "a.b.c")))
+
+(define-test string-prefix-test
+  (assert (string-prefix? "" "abc"))
+  (assert (string-prefix? "a" "abc"))
+  (assert (string-prefix? "ab" "abc"))
+  (assert (string-prefix? "abc" "abc"))
+  (assert-not (string-prefix? "abc~" "abc"))
+  (assert-not (string-prefix? "b" "abc"))
+
+  (assert (string-suffix? "" "abc"))
+  (assert (string-suffix? "c" "abc"))
+  (assert (string-suffix? "bc" "abc"))
+  (assert (string-suffix? "abc" "abc"))
+  (assert-not (string-suffix? "~abc" "abc"))
+  (assert-not (string-suffix? "b" "abc")))

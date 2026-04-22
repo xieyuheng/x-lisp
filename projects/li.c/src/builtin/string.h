@@ -13,3 +13,5 @@ x_fn_1_t x_string_lines;
 x_fn_2_t x_string_split;
 x_fn_2_t x_string_join;
 x_fn_3_t x_string_replace;
+x_fn_2_t x_string_prefix_p;
+x_fn_2_t x_string_suffix_p;
