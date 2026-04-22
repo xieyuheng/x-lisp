@@ -12,6 +12,10 @@ value_t x_string_empty_p(value_t string) {
   return x_bool(xstring_is_empty(to_xstring(string)));
 }
 
+value_t x_string_blank_p(value_t string) {
+  return x_bool(string_is_blank(xstring_string(to_xstring(string))));
+}
+
 value_t x_string_substring(value_t start, value_t end, value_t string) {
   const text_t *text = xstring_text(to_xstring(string));
   return x_object(

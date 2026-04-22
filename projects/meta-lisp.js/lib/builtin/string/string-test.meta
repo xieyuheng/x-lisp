@@ -5,6 +5,16 @@
 
   (assert-equal 2 (string-length "中文"))
 
+  (assert (string-empty? ""))
+  (assert-not (string-empty? " "))
+
+  (assert (string-blank? ""))
+  (assert (string-blank? " "))
+  (assert (string-blank? "  "))
+  (assert (string-blank? " \n "))
+  (assert (string-blank? " \n\t "))
+  (assert-not (string-blank? " \n.\t "))
+
   (assert-equal "abcdef" (string-append "abc" "def"))
 
   (assert-equal ["a" "b" "c"] (string-chars "abc"))

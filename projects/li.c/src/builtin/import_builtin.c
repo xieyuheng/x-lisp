@@ -116,6 +116,7 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "builtin/string?", x_string_p);
   define_primitive_1(mod, "builtin/string-length", x_string_length);
   define_primitive_1(mod, "builtin/string-empty?", x_string_empty_p);
+  define_primitive_1(mod, "builtin/string-blank?", x_string_blank_p);
   define_primitive_3(mod, "builtin/string-substring", x_string_substring);
   define_primitive_2(mod, "builtin/string-append", x_string_append);
   define_primitive_1(mod, "builtin/string-concat", x_string_concat);
