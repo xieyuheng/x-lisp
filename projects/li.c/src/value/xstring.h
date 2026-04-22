@@ -15,6 +15,8 @@ void xstring_print(printer_t *printer, const xstring_t *self);
 hash_code_t xstring_hash_code(const xstring_t *self);
 ordering_t xstring_compare(const xstring_t *lhs, const xstring_t *rhs);
 
+
+const text_t *xstring_text(const xstring_t *self);
 const char *xstring_string(const xstring_t *self);
 size_t xstring_length(const xstring_t *self);
 bool xstring_is_empty(const xstring_t *self);

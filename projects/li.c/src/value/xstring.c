@@ -80,6 +80,10 @@ ordering_t xstring_compare(const xstring_t *lhs, const xstring_t *rhs){
   return string_compare_lexical(text_string(lhs->text), text_string(rhs->text));
 }
 
+const text_t *xstring_text(const xstring_t *self) {
+  return self->text;
+}
+
 const char *xstring_string(const xstring_t *self) {
   return text_string(self->text);
 }

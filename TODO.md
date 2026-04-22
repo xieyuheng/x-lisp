@@ -1,7 +1,3 @@
-# li
-
-[li.c] `xstring_text`
-
 # li as db
 
 [li.c] `db_add` -- `db_t` has info to support set-like api
