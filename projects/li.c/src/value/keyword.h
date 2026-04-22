@@ -2,15 +2,10 @@
 
 extern const object_class_t keyword_class;
 
-struct keyword_t {
-  struct object_header_t header;
-  char *string;
-};
-
 keyword_t *intern_keyword(const char *string);
 void keyword_free(keyword_t *self);
 
-const char *keyword_string(const keyword_t *self);
+const char *keyword_content(const keyword_t *self);
 size_t keyword_length(const keyword_t *self);
 
 bool keyword_p(value_t value);

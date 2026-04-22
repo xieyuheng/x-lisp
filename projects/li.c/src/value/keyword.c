@@ -1,5 +1,10 @@
 #include "index.h"
 
+struct keyword_t {
+  struct object_header_t header;
+  char *string;
+};
+
 const object_class_t keyword_class = {
   .name = "keyword",
   .print_fn = (object_print_fn_t *) keyword_print,
@@ -32,7 +37,7 @@ void keyword_free(keyword_t *self) {
   free(self);
 }
 
-const char *keyword_string(const keyword_t *self) {
+const char *keyword_content(const keyword_t *self) {
   return self->string;
 }
 
@@ -53,7 +58,7 @@ keyword_t *to_keyword(value_t value) {
 void keyword_print(printer_t *printer, const keyword_t *self) {
   (void) printer,
   string_print(":");
-  string_print(keyword_string(self));
+  string_print(keyword_content(self));
 }
 
 hash_code_t keyword_hash_code(const keyword_t *self) {
