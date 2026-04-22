@@ -123,6 +123,7 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "builtin/string-to-symbol", x_string_to_symbol);
   define_primitive_1(mod, "builtin/string-chars", x_string_chars);
   define_primitive_1(mod, "builtin/string-lines", x_string_lines);
+  define_primitive_3(mod, "builtin/string-substring", x_string_substring);
 
   // list
 

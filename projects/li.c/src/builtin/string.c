@@ -79,3 +79,13 @@ value_t x_string_lines(value_t string) {
 
   return lines;
 }
+
+value_t x_string_substring(value_t start, value_t end, value_t string) {
+  const text_t *text = xstring_text(to_xstring(string));
+  return x_object(
+    make_xstring_take_text(
+      text_subtext(
+        text,
+        to_int64(start),
+        to_int64(end))));
+}

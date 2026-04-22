@@ -11,6 +11,7 @@
 (declare-primitive-function string-to-symbol 1)
 (declare-primitive-function string-chars 1)
 (declare-primitive-function string-lines 1)
+(declare-primitive-function string-substring 3)
 ;; (declare-primitive-function string-split 2)
 ;; (declare-primitive-function string-replace 3)
 
@@ -25,5 +26,6 @@
 (claim string-to-symbol (-> string-t symbol-t))
 (claim string-chars (-> string-t (list-t string-t)))
 (claim string-lines (-> string-t (list-t string-t)))
+(claim string-substring (-> int-t int-t string-t string-t))
 ;; (claim string-split (-> string-t string-t (list-t string-t)))
 ;; (claim string-replace (-> string-t string-t string-t string-t))
