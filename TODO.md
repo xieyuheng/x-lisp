@@ -1,11 +1,5 @@
 # string
 
-[li.c] builtin -- string-split
-
-```scheme
-(claim string-split (-> string-t string-t (list-t string-t)))
-```
-
 [li.c] builtin -- string-replace
 
 ```scheme

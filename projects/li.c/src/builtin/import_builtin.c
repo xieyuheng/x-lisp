@@ -116,14 +116,15 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "builtin/string?", x_string_p);
   define_primitive_1(mod, "builtin/string-length", x_string_length);
   define_primitive_1(mod, "builtin/string-empty?", x_string_empty_p);
+  define_primitive_3(mod, "builtin/string-substring", x_string_substring);
   define_primitive_2(mod, "builtin/string-append", x_string_append);
   define_primitive_1(mod, "builtin/string-concat", x_string_concat);
-  define_primitive_2(mod, "builtin/string-join", x_string_join);
   define_primitive_2(mod, "builtin/string-compare-lexical", x_string_compare_lexical);
   define_primitive_1(mod, "builtin/string-to-symbol", x_string_to_symbol);
   define_primitive_1(mod, "builtin/string-chars", x_string_chars);
   define_primitive_1(mod, "builtin/string-lines", x_string_lines);
-  define_primitive_3(mod, "builtin/string-substring", x_string_substring);
+  define_primitive_2(mod, "builtin/string-split", x_string_split);
+  define_primitive_2(mod, "builtin/string-join", x_string_join);
 
   // list
 

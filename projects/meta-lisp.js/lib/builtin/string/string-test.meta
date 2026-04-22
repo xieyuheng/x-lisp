@@ -16,3 +16,11 @@
 
   (assert-equal "中" (string-substring 0 1 "中文"))
   (assert-equal "文" (string-substring 1 2 "中文")))
+
+(define-test string-join-test
+  (assert-equal "a.b.c" (string-join "." ["a" "b" "c"]))
+  (assert-equal "a..b..c" (string-join ".." ["a" "b" "c"])))
+
+(define-test string-split-test
+  (assert-equal ["a" "b" "c"] (string-split "." "a.b.c"))
+  (assert-equal ["a" "b" "c"] (string-split ".." "a..b..c")))
