@@ -24,3 +24,6 @@
 (define-test string-split-test
   (assert-equal ["a" "b" "c"] (string-split "." "a.b.c"))
   (assert-equal ["a" "b" "c"] (string-split ".." "a..b..c")))
+
+(define-test string-replace-test
+  (assert-equal "a/b/c" (string-replace "." "/" "a.b.c")))

@@ -1,11 +1,6 @@
 # string
 
-[li.c] builtin -- string-find-index
-[li.c] builtin -- string-replace
-
-```scheme
-(claim string-replace (-> string-t string-t string-t string-t))
-```
+[li.c] builtin -- string-find-substring-index
 
 # source location
 
