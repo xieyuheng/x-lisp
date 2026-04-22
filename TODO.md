@@ -1,6 +1,6 @@
 # li
 
-[li.c] `make_xstring` take static string
+[li.c] `make_xstring_take` vs `make_xstring`
 [li.c] `xstring` use `text_t` instead of `char *`
 [li.c] `xstring_text`
 

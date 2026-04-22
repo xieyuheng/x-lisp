@@ -13,10 +13,10 @@ static text_t *allocate_text(size_t length) {
   return self;
 }
 
-text_t *make_text(const char *string) {
+text_t *make_text_take(char *string) {
   size_t length = utf8_string_length(string);
   text_t *text = allocate_text(length);
-  text->string = string_copy(string);
+  text->string = string;
 
   utf8_iter_t *iter = make_utf8_iter(string);
   code_point_t code_point = utf8_iter_first(iter);
@@ -29,6 +29,10 @@ text_t *make_text(const char *string) {
 
   utf8_iter_free(iter);
   return text;
+}
+
+text_t *make_text(const char *string) {
+  return make_text_take(string_copy(string));
 }
 
 void text_free(text_t *self) {

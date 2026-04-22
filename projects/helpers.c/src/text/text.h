@@ -1,5 +1,6 @@
 #pragma once
 
+text_t *make_text_take(char *string);
 text_t *make_text(const char *string);
 void text_free(text_t *self);
 
