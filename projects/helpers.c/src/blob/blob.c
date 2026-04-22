@@ -27,7 +27,7 @@ uint8_t *blob_bytes(const blob_t *self) {
   return self->bytes;
 }
 
-char *blob_string(const blob_t *self) {
+const char *blob_string(const blob_t *self) {
   return (char *) self->bytes;
 }
 
@@ -39,7 +39,7 @@ void blob_copy_into(const blob_t *self, uint8_t *bytes) {
   memcpy(bytes, self->bytes, self->size);
 }
 
-bool blob_equal(blob_t *left, blob_t *right) {
+bool blob_equal(const blob_t *left, const blob_t *right) {
   if (left == right)
     return true;
 
@@ -52,7 +52,7 @@ bool blob_equal(blob_t *left, blob_t *right) {
     left->size) == 0;
 }
 
-blob_t *blob_copy(blob_t *self) {
+blob_t *blob_copy(const blob_t *self) {
   blob_t *blob = make_blob(self->size);
   memcpy(blob->bytes, self->bytes, self->size);
   return blob;

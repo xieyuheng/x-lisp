@@ -42,7 +42,7 @@ uint8_t *file_read_bytes(file_t *file) {
   return bytes;
 }
 
-void file_write_bytes(file_t *file, uint8_t *bytes, size_t size) {
+void file_write_bytes(file_t *file, const uint8_t *bytes, size_t size) {
   fwrite(bytes, 1, size, file);
 }
 
@@ -61,7 +61,7 @@ blob_t *file_read_blob(file_t *file) {
   return blob;
 }
 
-void file_write_blob(file_t *file, blob_t *blob) {
+void file_write_blob(file_t *file, const blob_t *blob) {
   file_write_bytes(file, blob_bytes(blob), blob_size(blob));
   fflush(file);
   fsync(fileno(file));
