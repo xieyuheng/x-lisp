@@ -17,7 +17,7 @@
 (claim list-find-index
   (polymorphic (A)
     (-> (-> A bool-t) (list-t A)
-        (maybe-t int-t))))
+        int-t)))
 
 (define (list-find-index p list)
   (list-find-index-aux p list 0))
@@ -25,13 +25,13 @@
 (claim list-find-index-aux
   (polymorphic (A)
     (-> (-> A bool-t) (list-t A) int-t
-        (maybe-t int-t))))
+        int-t)))
 
 (define (list-find-index-aux p list index)
-  (cond ((list-empty? list) nothing)
-        ((p (car list)) (just index))
+  (cond ((list-empty? list) -1)
+        ((p (car list)) index)
         (else (list-find-index-aux p (cdr list) (iadd 1 index)))))
 
 (define-test list-find-index-test
-  (assert-equal (just 2) (list-find-index int? ['a 'b 3 'd]))
-  (assert-equal nothing (list-find-index int? ['a 'b 'c 'd])))
+  (assert-equal 2 (list-find-index int? ['a 'b 3 'd]))
+  (assert-equal -1 (list-find-index int? ['a 'b 'c 'd])))

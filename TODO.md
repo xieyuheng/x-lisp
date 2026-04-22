@@ -1,5 +1,6 @@
 # string
 
+[li.c] builtin -- string-find-index
 [li.c] builtin -- string-replace
 
 ```scheme
