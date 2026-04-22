@@ -21,15 +21,15 @@ value_t x_record_empty_p(value_t record) {
 }
 
 value_t x_record_get(value_t key, value_t record) {
-  return xrecord_get(to_xrecord(record), keyword_content(to_keyword(key)));
+  return xrecord_get(to_xrecord(record), keyword_string(to_keyword(key)));
 }
 
 value_t x_record_has_p(value_t key, value_t record) {
-  return x_bool(xrecord_has(to_xrecord(record), keyword_content(to_keyword(key))));
+  return x_bool(xrecord_has(to_xrecord(record), keyword_string(to_keyword(key))));
 }
 
 value_t x_record_put_mut(value_t key, value_t value, value_t record) {
-  xrecord_put(to_xrecord(record), keyword_content(to_keyword(key)), value);
+  xrecord_put(to_xrecord(record), keyword_string(to_keyword(key)), value);
   return record;
 }
 
@@ -38,7 +38,7 @@ value_t x_record_put(value_t key, value_t value, value_t record) {
 }
 
 value_t x_record_delete_mut(value_t key, value_t record) {
-  xrecord_delete(to_xrecord(record), keyword_content(to_keyword(key)));
+  xrecord_delete(to_xrecord(record), keyword_string(to_keyword(key)));
   return record;
 }
 

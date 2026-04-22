@@ -1,17 +1,17 @@
 #include "index.h"
 
 value_t x_fs_exists_p(value_t path) {
-  const char *pathname = to_xstring(path)->string;
+  const char *pathname = xstring_string(to_xstring(path));
   return x_bool(fs_exists(pathname));
 }
 
 value_t x_fs_file_p(value_t path) {
-  const char *pathname = to_xstring(path)->string;
+  const char *pathname = xstring_string(to_xstring(path));
   return x_bool(fs_is_file(pathname));
 }
 
 value_t x_fs_directory_p(value_t path) {
-  const char *pathname = to_xstring(path)->string;
+  const char *pathname = xstring_string(to_xstring(path));
   return x_bool(fs_is_directory(pathname));
 }
 
@@ -31,7 +31,7 @@ value_t x_fs_write(value_t path, value_t string) {
 
 value_t x_fs_list(value_t path) {
   value_t list = x_make_list();
-  DIR *dir = opendir(to_xstring(path)->string);
+  DIR *dir = opendir(xstring_string(to_xstring(path)));
   struct dirent *dirent = readdir(dir);
   while (dirent) {
     if (!string_equal(dirent->d_name, ".")
@@ -48,31 +48,31 @@ value_t x_fs_list(value_t path) {
 }
 
 value_t x_fs_ensure_file(value_t path) {
-  fs_ensure_file(to_xstring(path)->string);
+  fs_ensure_file(xstring_string(to_xstring(path)));
   return x_void;
 }
 
 value_t x_fs_ensure_directory(value_t path) {
-  fs_ensure_directory(to_xstring(path)->string);
+  fs_ensure_directory(xstring_string(to_xstring(path)));
   return x_void;
 }
 
 value_t x_fs_delete_file(value_t path) {
-  fs_delete_file(to_xstring(path)->string);
+  fs_delete_file(xstring_string(to_xstring(path)));
   return x_void;
 }
 
 value_t x_fs_delete_directory(value_t path) {
-  fs_delete_directory(to_xstring(path)->string);
+  fs_delete_directory(xstring_string(to_xstring(path)));
   return x_void;
 }
 
 value_t x_fs_delete(value_t path) {
-  fs_delete(to_xstring(path)->string);
+  fs_delete(xstring_string(to_xstring(path)));
   return x_void;
 }
 
 value_t x_fs_rename(value_t old_path, value_t new_path) {
-  fs_rename(to_xstring(old_path)->string, to_xstring(new_path)->string);
+  fs_rename(xstring_string(to_xstring(old_path)), xstring_string(to_xstring(new_path)));
   return x_void;
 }

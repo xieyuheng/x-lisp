@@ -1,7 +1,5 @@
 # li
 
-[li.c] `xstring_content` -- quit using `->string` directly -- make `xstring_t` private
-
 [li.c] `xstring` use `text_t` instead of `char *`
 
 # li as db

@@ -9,13 +9,13 @@ value_t x_symbol_length(value_t symbol) {
 }
 
 value_t x_symbol_to_string(value_t symbol) {
-  return x_object(make_xstring(string_copy(symbol_content(to_symbol(symbol)))));
+  return x_object(make_xstring(string_copy(symbol_string(to_symbol(symbol)))));
 }
 
 value_t x_symbol_append(value_t left, value_t right) {
   char *string = string_append(
-    symbol_content(to_symbol(left)),
-    symbol_content(to_symbol(right)));
+    symbol_string(to_symbol(left)),
+    symbol_string(to_symbol(right)));
   symbol_t *symbol = intern_symbol(string);
   string_free(string);
   return x_object(symbol);
@@ -26,7 +26,7 @@ value_t x_symbol_concat(value_t list) {
   int64_t length = to_int64(x_list_length(list));
   for (int64_t i = 0; i < length; i++) {
     value_t element = x_list_get(x_int(i), list);
-    string_builder_append_string(builder, symbol_content(to_symbol(element)));
+    string_builder_append_string(builder, symbol_string(to_symbol(element)));
   }
 
   char *content = string_builder_produce(builder);

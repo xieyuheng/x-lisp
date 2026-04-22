@@ -21,7 +21,7 @@ value_t x_string_concat(value_t list) {
   int64_t length = to_int64(x_list_length(list));
   for (int64_t i = 0; i < length; i++) {
     value_t element = x_list_get(x_int(i), list);
-    string_builder_append_string(builder, to_xstring(element)->string);
+    string_builder_append_string(builder, xstring_string(to_xstring(element)));
   }
 
   char *content = string_builder_produce(builder);
@@ -35,9 +35,9 @@ value_t x_string_join(value_t separator, value_t list) {
   int64_t length = to_int64(x_list_length(list));
   for (int64_t i = 0; i < length; i++) {
     value_t element = x_list_get(x_int(i), list);
-    string_builder_append_string(builder, to_xstring(element)->string);
+    string_builder_append_string(builder, xstring_string(to_xstring(element)));
     if (i < length - 1) {
-      string_builder_append_string(builder, to_xstring(separator)->string);
+      string_builder_append_string(builder, xstring_string(to_xstring(separator)));
     }
   }
 
@@ -52,5 +52,5 @@ value_t x_string_compare_lexical(value_t x, value_t y) {
 }
 
 value_t x_string_to_symbol(value_t string) {
-  return x_object(intern_symbol(to_xstring(string)->string));
+  return x_object(intern_symbol(xstring_string(to_xstring(string))));
 }

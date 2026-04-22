@@ -1,13 +1,13 @@
 #include "index.h"
 
 value_t x_open_input_file(value_t path) {
-  char *pathname = string_copy(to_xstring(path)->string);
+  char *pathname = string_copy(xstring_string(to_xstring(path)));
   xfile_t *xfile = open_input_xfile(pathname);
   return x_object(xfile);
 }
 
 value_t x_open_output_file(value_t path) {
-  char *pathname = string_copy(to_xstring(path)->string);
+  char *pathname = string_copy(xstring_string(to_xstring(path)));
   xfile_t *xfile = open_output_xfile(pathname);
   return x_object(xfile);
 }
@@ -23,12 +23,12 @@ value_t x_file_read(value_t file) {
 }
 
 value_t x_file_write(value_t file, value_t string) {
-  xfile_write(to_xfile(file), to_xstring(string)->string);
+  xfile_write(to_xfile(file), xstring_string(to_xstring(string)));
   return x_void;
 }
 
 value_t x_file_writeln(value_t file, value_t string) {
-  xfile_write(to_xfile(file), to_xstring(string)->string);
+  xfile_write(to_xfile(file), xstring_string(to_xstring(string)));
   xfile_write(to_xfile(file), "\n");
   return x_void;
 }
@@ -39,12 +39,12 @@ value_t x_newline(void) {
 }
 
 value_t x_write(value_t x) {
-  string_print(to_xstring(x)->string);
+  string_print(xstring_string(to_xstring(x)));
   return x_void;
 }
 
 value_t x_writeln(value_t x) {
-  string_print(to_xstring(x)->string);
+  string_print(xstring_string(to_xstring(x)));
   newline();
   return x_void;
 }

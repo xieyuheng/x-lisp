@@ -9,13 +9,13 @@ value_t x_keyword_length(value_t keyword) {
 }
 
 value_t x_keyword_to_string(value_t keyword) {
-  return x_object(make_xstring(string_copy(keyword_content(to_keyword(keyword)))));
+  return x_object(make_xstring(string_copy(keyword_string(to_keyword(keyword)))));
 }
 
 value_t x_keyword_append(value_t left, value_t right) {
   char *string = string_append(
-    keyword_content(to_keyword(left)),
-    keyword_content(to_keyword(right)));
+    keyword_string(to_keyword(left)),
+    keyword_string(to_keyword(right)));
   keyword_t *keyword = intern_keyword(string);
   string_free(string);
   return x_object(keyword);
@@ -26,7 +26,7 @@ value_t x_keyword_concat(value_t list) {
   int64_t length = to_int64(x_list_length(list));
   for (int64_t i = 0; i < length; i++) {
     value_t element = x_list_get(x_int(i), list);
-    string_builder_append_string(builder, keyword_content(to_keyword(element)));
+    string_builder_append_string(builder, keyword_string(to_keyword(element)));
   }
 
   char *content = string_builder_produce(builder);

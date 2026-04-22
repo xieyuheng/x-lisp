@@ -1,5 +1,11 @@
 #include "index.h"
 
+struct xstring_t {
+  struct object_header_t header;
+  size_t length;
+  char *string;
+};
+
 const object_class_t xstring_class = {
   .name = "string",
   .equal_fn = (object_equal_fn_t *) xstring_equal,
@@ -72,6 +78,10 @@ hash_code_t xstring_hash_code(const xstring_t *self) {
 
 ordering_t xstring_compare(const xstring_t *lhs, const xstring_t *rhs){
   return string_compare_lexical(lhs->string, rhs->string);
+}
+
+const char *xstring_string(const xstring_t *self) {
+  return self->string;
 }
 
 size_t xstring_length(const xstring_t *self) {
