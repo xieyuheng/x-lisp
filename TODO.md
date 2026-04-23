@@ -1,9 +1,16 @@
 # string
 
-[li.c] builtin -- (string-find-index substring string)
-
 [helpers.c] `string_trim_left` / `string_trim_right` / `string_trim` -- only for blank chars
+
+- [helpers.c] `string_trim_start` / `string_trim_end`
+
 [li.c] builtin -- string-trim-left / string-trim-right / string-trim -- only for blank chars
+
+- [li.c] builtin -- string-trim-start / string-trim-end
+
+# string
+
+[li.c] builtin -- (string-find-index substring string)
 
 # source location
 

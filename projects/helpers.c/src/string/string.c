@@ -158,6 +158,27 @@ int string_find_last_char_index(const char *self, char ch) {
   return -1;
 }
 
+int string_find_non_blank_index(const char *self) {
+  for (size_t i = 0; i < string_length(self); i++) {
+    if (!string_is_blank(self[i])) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+int string_find_last_non_blank_index(const char *self) {
+  for (size_t i = 0; i < string_length(self); i++) {
+    size_t last_index = string_length(self) - 1 - i;
+    if (!string_is_blank(self[last_index])) {
+      return last_index;
+    }
+  }
+
+  return -1;
+}
+
 int string_find_substring_index(const char *self, const char *substring) {
   assert(substring);
   char *p = strstr(self, substring);
