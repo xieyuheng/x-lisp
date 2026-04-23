@@ -69,5 +69,17 @@ int main(void) {
         ""));
   }
 
+  {
+    assert(text_find_subtext_index(make_text("01234"), make_text("0")) == 0);
+    assert(text_find_subtext_index(make_text("01234"), make_text("1")) == 1);
+    assert(text_find_subtext_index(make_text("01234"), make_text("2")) == 2);
+    assert(text_find_subtext_index(make_text("01234"), make_text("5")) == -1);
+
+    assert(text_find_subtext_index(make_text("01234"), make_text("01")) == 0);
+    assert(text_find_subtext_index(make_text("01234"), make_text("12")) == 1);
+    assert(text_find_subtext_index(make_text("01234"), make_text("23")) == 2);
+    assert(text_find_subtext_index(make_text("01234"), make_text("21")) == -1);
+  }
+
   test_end();
 }

@@ -1,23 +1,21 @@
 #include "index.h"
 
-// static void
-// build_kmp_table(const text_t *subtext, int kmp_table[]) {
-//   size_t length = text_length(subtext);
-//   kmp_table[0] = -1;
-//   size_t i = 1;
-//   size_t j = 0;
-//   while (i < length) {
-//     if (text_get_code_point(subtext, i) ==
-//         text_get_code_point(subtext, j)) {
-//       i++;
-//       j++;
-//       kmp_table[i] = j;
-//     } else {
-//       j = kmp_table[j];
-//     }
-//   }
-// }
+static bool match_from(const text_t *self, const text_t *subtext, size_t i) {
+  for (size_t j = 0; j < text_length(subtext); j++) {
+    if (text_get_code_point(self, i + j) != text_get_code_point(subtext, j)) {
+      return false;
+    }
+  }
 
-// int text_find_subtext_index(const text_t *self, const text_t *subtext) {
+  return true;
+}
 
-// }
+int text_find_subtext_index(const text_t *self, const text_t *subtext) {
+  for (size_t i = 0; i < text_length(self); i++) {
+    if (match_from(self, subtext, i)) {
+      return i;
+    }
+  }
+
+  return -1;
+}
