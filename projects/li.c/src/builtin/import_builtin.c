@@ -228,7 +228,9 @@ void import_builtin(mod_t *mod) {
   define_primitive_2(mod, "builtin/assert-equal", x_assert_equal);
   define_primitive_2(mod, "builtin/assert-not-equal", x_assert_not_equal);
   define_primitive_2(mod, "builtin/assert-with-location", x_assert_with_location);
+  define_primitive_2(mod, "builtin/assert-not-with-location", x_assert_not_with_location);
   define_primitive_3(mod, "builtin/assert-equal-with-location", x_assert_equal_with_location);
+  define_primitive_3(mod, "builtin/assert-not-equal-with-location", x_assert_not_equal_with_location);
 
   // error
 

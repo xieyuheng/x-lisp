@@ -82,3 +82,16 @@ value_t x_assert_equal_with_location(value_t lhs, value_t rhs, value_t location)
 
   return x_void;
 }
+
+value_t x_assert_not_equal_with_location(value_t lhs, value_t rhs, value_t location) {
+  if (equal_p(lhs, rhs)) {
+    printf("(assert-not-equal) fail");
+    printf("\n  lhs: "); print(lhs);
+    printf("\n  rhs: "); print(rhs);
+    printf("\n");
+    x_println(location);
+    exit(1);
+  }
+
+  return x_void;
+}

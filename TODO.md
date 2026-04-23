@@ -1,11 +1,7 @@
-# source location
-
-[li.c] more assert functions with location
-
 # stack-lisp
 
 [stack-lisp.c] setup project
-[stack-lisp.c] compile
+[stack-lisp.c] compile sexp to vm again
 
 [meta-lisp.js] stack -- setup
 [meta-lisp.js] stack -- `Exp`

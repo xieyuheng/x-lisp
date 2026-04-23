@@ -1,6 +1,6 @@
 import * as S from "@xieyuheng/sexp.js"
-import * as M from "../index.ts"
 import assert from "node:assert"
+import * as M from "../index.ts"
 
 export function locateSpecialApply(exp: M.Exp): M.Exp {
   switch (exp.kind) {
@@ -49,12 +49,14 @@ export function locateSpecialApply(exp: M.Exp): M.Exp {
 const specialNameRecord: Record<string, string> = {
   error: "error-with-location",
   assert: "assert-with-location",
-  "assert-equal": "assert-equal-with-location"
+  "assert-equal": "assert-equal-with-location",
 }
 
 function isSpecialTarget(exp: M.Exp): boolean {
-  return (exp.kind === "QualifiedVar" && exp.modName === "builtin") && (
-    (exp.name) in specialNameRecord
+  return (
+    exp.kind === "QualifiedVar" &&
+    exp.modName === "builtin" &&
+    exp.name in specialNameRecord
   )
 }
 
@@ -64,25 +66,35 @@ function targetWithLocation(exp: M.Exp): M.Exp {
 }
 
 function expFromSourceLocation(location: S.SourceLocation): M.Exp {
-
-
-  return M.LiteralRecord({
-    path: M.String(location.path, location),
-    span: expFromSpan(location.span, location),
-  }, location)
+  return M.LiteralRecord(
+    {
+      path: M.String(location.path, location),
+      span: expFromSpan(location.span, location),
+    },
+    location,
+  )
 }
 
 function expFromSpan(span: S.Span, location: S.SourceLocation): M.Exp {
-  return M.LiteralRecord({
-    start: expFromPosition(span.start, location),
-    end: expFromPosition(span.end, location)
-  }, location)
+  return M.LiteralRecord(
+    {
+      start: expFromPosition(span.start, location),
+      end: expFromPosition(span.end, location),
+    },
+    location,
+  )
 }
 
-function expFromPosition(position: S.Position, location: S.SourceLocation): M.Exp {
-  return M.LiteralRecord({
-    index: M.Int(BigInt(position.index), location),
-    row: M.Int(BigInt(position.row), location),
-    column: M.Int(BigInt(position.column), location),
-  }, location)
+function expFromPosition(
+  position: S.Position,
+  location: S.SourceLocation,
+): M.Exp {
+  return M.LiteralRecord(
+    {
+      index: M.Int(BigInt(position.index), location),
+      row: M.Int(BigInt(position.row), location),
+      column: M.Int(BigInt(position.column), location),
+    },
+    location,
+  )
 }
