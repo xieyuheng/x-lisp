@@ -1,12 +1,12 @@
 #include "index.h"
 
-value_t x_error(value_t message) {
-  print(message);
+value_t x_error(value_t info) {
+  print(info);
   exit(1);
 }
 
-value_t x_error_with_source_location(value_t value, value_t source_location) {
-  print(value);
-  print(source_location);
+value_t x_error_with_source_location(value_t info, value_t location) {
+  x_println(info);
+  x_println(location);
   exit(1);
 }

@@ -1,9 +1,10 @@
 # source location
 
-[meta-lisp.js] desugar `error` to `error-with-source-location`
+[meta-lisp.js] desugar `error` `assert` `assert-equal`
 
-[li.c] builtin `error-with-source-location` -- print in context
-[li.c] builtin `assert-with-source-location`
+[li.c] builtin -- `error-with-source-location` -- print in context
+[li.c] builtin -- `assert-with-source-location` & `assert-equal-with-source-location` -- print in context
+
 
 # format
 
