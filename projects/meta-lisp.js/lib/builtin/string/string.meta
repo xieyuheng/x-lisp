@@ -20,6 +20,7 @@
 (declare-primitive-function string-to-upper-case 1)
 (declare-primitive-function string-to-lower-case 1)
 (declare-primitive-function string-get-code-point 2)
+(declare-primitive-function string-contains? 2)
 (declare-primitive-function string-find-index 2)
 
 (claim string-t type-t)
@@ -42,4 +43,5 @@
 (claim string-to-upper-case (-> string-t string-t))
 (claim string-to-lower-case (-> string-t string-t))
 (claim string-get-code-point (-> int-t string-t int-t))
+(claim string-contains? (-> string-t string-t bool-t))
 (claim string-find-index (-> string-t string-t int-t))

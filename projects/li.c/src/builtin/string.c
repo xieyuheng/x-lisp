@@ -162,9 +162,22 @@ value_t x_string_get_code_point(value_t index, value_t string) {
       to_int64(index)));
 }
 
+value_t x_string_contains_p(value_t substring, value_t string) {
+  return x_bool(
+    string_contains(
+      xstring_string(to_xstring(string)),
+      xstring_string(to_xstring(substring))));
+}
+
 value_t x_string_find_index(value_t substring, value_t string) {
-  return x_int(
-    text_find_subtext_index(
-      xstring_text(to_xstring(string)),
-      xstring_text(to_xstring(substring))));
+  // TODO
+  (void) substring;
+  (void) string;
+
+  // return x_int(
+  //   text_find_subtext_index(
+  //     xstring_text(to_xstring(string)),
+  //     xstring_text(to_xstring(substring))));
+
+  return x_void;
 }
