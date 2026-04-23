@@ -41,3 +41,85 @@ over-engineering 会让人忽略本质问题，
 
 over-engineering 会产生新的伪需求，
 比如设计了数据库，就自然需要持久化。
+
+# 关于汇编语言的设计
+
+```li
+put factorial/arity 1
+fn factorial :local-store 0 :n
+fn factorial :label :body
+fn factorial :local-load 0 :n
+fn factorial :literal 1
+fn factorial :call :builtin/int-less-or-equal?
+fn factorial :jump-if-not :else₂
+fn factorial :jump :then₁
+fn factorial :label :then₁
+fn factorial :literal 1
+fn factorial :return
+fn factorial :label :else₂
+fn factorial :local-load 0 :n
+fn factorial :literal 1
+fn factorial :call :builtin/isub
+fn factorial :local-store 1 :_₁
+fn factorial :local-load 1 :_₁
+fn factorial :call :factorial
+fn factorial :local-store 2 :_₂
+fn factorial :local-load 2 :_₂
+fn factorial :local-load 0 :n
+fn factorial :tail-call :builtin/imul
+```
+
+改为：
+
+```scheme
+(define-function factorial/1
+  (local-store 0 n)
+ body
+  (local-load 0 n)
+  (literal 1)
+  (call builtin/int-less-or-equal?)
+  (jump-if-not else₂)
+  (jump then₁)
+ then₁
+  (literal 1)
+  (return)
+ else₂
+  (local-load 0 n)
+  (literal 1)
+  (call builtin/isub)
+  (local-store 1 _₁)
+  (local-load 1 _₁)
+  (call factorial)
+  (local-store 2 _₂)
+  (local-load 2 _₂)
+  (local-load 0 n)
+  (tail-call builtin/imul))
+```
+
+或者，用更传统的汇编语法：
+
+```asm
+.arity factorial 1
+factorial:
+  local-store 0
+.body:
+  local-load 0
+  literal 1
+  call builtin/int-less-or-equal?
+  jump-if-not .else₂
+  jump .then₁
+.then₁:
+  literal 1
+  return
+.else₂:
+  local-load 0
+  literal 1
+  call builtin/isub
+  local-store 1
+  local-load 1
+  call factorial
+  local-store 2
+  local-load 2
+  local-load 0
+  tail-call builtin/imul
+```
