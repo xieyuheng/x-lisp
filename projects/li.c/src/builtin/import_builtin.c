@@ -231,6 +231,7 @@ void import_builtin(mod_t *mod) {
   // error
 
   define_primitive_1(mod, "builtin/error", x_error);
+  define_primitive_2(mod, "builtin/error-with-source-location", x_error_with_source_location);
 
   // sexp
 
