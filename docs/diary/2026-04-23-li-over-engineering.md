@@ -72,7 +72,7 @@ fn factorial :tail-call :builtin/imul
 改为：
 
 ```scheme
-(define-function factorial/1
+(define-function factorial 1
   (local-store 0 n)
  body
   (local-load 0 n)
