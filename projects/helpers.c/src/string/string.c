@@ -37,7 +37,7 @@ bool string_is_empty(const char *self) {
 
 bool string_is_blank(const char *self) {
   for (size_t i = 0; i < string_length(self); i++) {
-    if (!char_is_space(self[i])) {
+    if (!char_is_blank(self[i])) {
       return false;
     }
   }
@@ -160,7 +160,7 @@ int string_find_last_char_index(const char *self, char ch) {
 
 int string_find_non_blank_index(const char *self) {
   for (size_t i = 0; i < string_length(self); i++) {
-    if (!string_is_blank(self[i])) {
+    if (!char_is_blank(self[i])) {
       return i;
     }
   }
@@ -171,12 +171,53 @@ int string_find_non_blank_index(const char *self) {
 int string_find_last_non_blank_index(const char *self) {
   for (size_t i = 0; i < string_length(self); i++) {
     size_t last_index = string_length(self) - 1 - i;
-    if (!string_is_blank(self[last_index])) {
+    if (!char_is_blank(self[last_index])) {
       return last_index;
     }
   }
 
   return -1;
+}
+
+
+char *string_trim_left(const char *self) {
+  return string_trim_start(self);
+}
+
+char *string_trim_right(const char *self) {
+  return string_trim_end(self);
+}
+
+char *string_trim_start(const char *self) {
+  int index = string_find_non_blank_index(self);
+  if (index == -1) {
+    return string_copy(self);
+  } else {
+    return string_substring(self, index, string_length(self));
+  }
+}
+
+char *string_trim_end(const char *self) {
+  int index = string_find_last_non_blank_index(self);
+  if (index == -1) {
+    return string_copy(self);
+  } else {
+    return string_substring(self, 0, index + 1);
+  }
+}
+
+char *string_trim(const char *self) {
+  int start = string_find_non_blank_index(self);
+  int end = string_find_last_non_blank_index(self);
+  if (start == -1 && end == -1) {
+    return string_copy(self);
+  } else if (start == -1 && end != -1) {
+    return string_substring(self, 0, end + 1);
+  } else if (start != -1 && end == -1) {
+    return string_substring(self, start, string_length(self));
+  } else {
+    return string_substring(self, start, end + 1);
+  }
 }
 
 int string_find_substring_index(const char *self, const char *substring) {
@@ -248,7 +289,7 @@ char *string_next_word(const char *self, size_t *cursor_pointer) {
   size_t cursor = *cursor_pointer;
   while (self[cursor] != 0) {
     char c = self[cursor];
-    if (char_is_space(c)) {
+    if (char_is_blank(c)) {
       cursor++;
     } else {
       break;
@@ -258,7 +299,7 @@ char *string_next_word(const char *self, size_t *cursor_pointer) {
   string_builder_t *builder = make_string_builder();
   while (self[cursor] != 0) {
     char c = self[cursor];
-    if (char_is_space(c)) {
+    if (char_is_blank(c)) {
       break;
     } else {
       string_builder_append_char(builder, c);

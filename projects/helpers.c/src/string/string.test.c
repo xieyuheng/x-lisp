@@ -142,6 +142,12 @@ int main(void) {
   assert(string_find_last_char_index("012340123401234", '2') == 12);
   assert(string_find_last_char_index("012340123401234", '5') == -1);
 
+  assert(string_equal("abc  ", string_trim_left("  abc  ")));
+  assert(string_equal("  abc", string_trim_right("  abc  ")));
+  assert(string_equal("abc  ", string_trim_start("  abc  ")));
+  assert(string_equal("  abc", string_trim_end("  abc  ")));
+  assert(string_equal("abc", string_trim("  abc  ")));
+
   assert(string_count_char("0aaa0", 'b') == 0);
   assert(string_count_char("0aaa0", 'a') == 3);
   assert(string_count_char("0aaa0", '0') == 2);

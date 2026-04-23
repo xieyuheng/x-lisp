@@ -1,8 +1,5 @@
 # string
 
-[helpers.c] `string_trim_left` / `string_trim_right` / `string_trim` -- only for blank chars
-
-- [helpers.c] `string_trim_start` / `string_trim_end`
 
 [li.c] builtin -- string-trim-left / string-trim-right / string-trim -- only for blank chars
 

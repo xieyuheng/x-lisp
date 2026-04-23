@@ -15,7 +15,7 @@ bool char_is_digit(char c) {
   return ('0' <= c && c <= '9');
 }
 
-bool char_is_space(char c) {
+bool char_is_blank(char c) {
   if (c == ' ') return true;
   if (c == '\t') return true;
   if (c == '\n') return true;

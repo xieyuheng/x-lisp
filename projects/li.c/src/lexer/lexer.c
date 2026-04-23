@@ -31,7 +31,7 @@ char *lexer_next_word_string(lexer_t *self) {
   string_builder_t *builder = make_string_builder();
   size_t index = self->position.index;
   while (index < self->length &&
-       !char_is_space(self->string[index]) &&
+       !char_is_blank(self->string[index]) &&
        !lexer_char_is_mark(self, self->string[index]))
   {
     string_builder_append_char(builder, self->string[index]);
