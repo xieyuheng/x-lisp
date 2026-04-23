@@ -19,3 +19,4 @@ x_fn_2_t x_string_ends_with_p;
 x_fn_1_t x_string_to_upper_case;
 x_fn_1_t x_string_to_lower_case;
 x_fn_2_t x_string_get_code_point;
+x_fn_2_t x_string_find_index;

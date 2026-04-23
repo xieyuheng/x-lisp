@@ -27,6 +27,7 @@ char *string_substring(const char *self, size_t start, size_t end);
 int string_find_char_index(const char *self, char ch);
 int string_find_last_char_index(const char *self, char ch);
 int string_find_substring_index(const char *self, const char* substring);
+bool string_contains(const char *self, const char* substring);
 size_t string_count_char(const char *self, char ch);
 bool string_has_char(const char *self, char ch);
 size_t string_count_substring(const char *self, const char* substring);

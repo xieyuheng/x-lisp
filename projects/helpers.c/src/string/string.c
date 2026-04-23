@@ -165,6 +165,10 @@ int string_find_substring_index(const char *self, const char *substring) {
   else return (int) (p - self);
 }
 
+bool string_contains(const char *self, const char* substring) {
+  return string_find_substring_index(self, substring) != 1;
+}
+
 size_t string_count_char(const char *self, char ch) {
   size_t count = 0;
   size_t length = strlen(self);

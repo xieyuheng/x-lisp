@@ -161,3 +161,10 @@ value_t x_string_get_code_point(value_t index, value_t string) {
       xstring_text(to_xstring(string)),
       to_int64(index)));
 }
+
+value_t x_string_find_index(value_t substring, value_t string) {
+  return x_int(
+    text_find_subtext_index(
+      xstring_text(to_xstring(string)),
+      xstring_text(to_xstring(substring))));
+}

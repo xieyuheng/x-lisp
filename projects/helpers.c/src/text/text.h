@@ -12,3 +12,5 @@ bool text_equal(const text_t *left, const text_t *right);
 text_t *text_copy(const text_t *self);
 text_t *text_append(text_t *left, text_t *right);
 text_t *text_subtext(const text_t *self, size_t start, size_t end);
+
+int text_find_subtext_index(const text_t *self, const text_t *subtext);
