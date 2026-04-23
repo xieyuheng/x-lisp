@@ -10,6 +10,7 @@ import * as M from "../index.ts"
 export function projectCheck(project: M.Project): void {
   projectPerformClaim(project)
   projectPerformDesugar(project)
+  projectPerformLocate(project)
   projectPerformQualify(project)
   projectPerformCheck(project)
 }
@@ -43,6 +44,10 @@ export function projectPerformDesugar(project: M.Project): void {
 
 export function projectPerformQualify(project: M.Project): void {
   M.projectForEachDefinition(project, M.definitionQualifyFreeVar)
+}
+
+export function projectPerformLocate(project: M.Project): void {
+  M.projectForEachDefinition(project, M.definitionLocateSpecialApply)
 }
 
 export function projectPerformCheck(project: M.Project): void {

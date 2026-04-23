@@ -1,10 +1,25 @@
 # source location
 
-[meta-lisp.js] desugar `error` `assert` `assert-equal`
+[li.c] more assert functions with location
 
-[li.c] builtin -- `error-with-source-location` -- print in context
-[li.c] builtin -- `assert-with-source-location` & `assert-equal-with-source-location` -- print in context
+# stack-lisp
 
+[stack-lisp.c] setup project
+[stack-lisp.c] compile
+
+[meta-lisp.js] stack -- setup
+[meta-lisp.js] stack -- `Exp`
+[meta-lisp.js] stack -- `CodegenPass` to stack-lisp -- instead of li
+
+# remove li
+
+[stack-lisp.c] remove li.c project
+[stack-lisp.c] update todo list
+
+# error report
+
+[li.c] builtin -- `error-with-location` & `assert-with-location` -- print in context
+[li.c] error and assert -- print error to stderr -- instead of stdout
 
 # format
 

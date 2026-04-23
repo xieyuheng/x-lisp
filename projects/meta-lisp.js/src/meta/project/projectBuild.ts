@@ -16,11 +16,13 @@ export function projectBuild(
   options: { dump: boolean; basic: boolean },
 ): void {
   M.projectPerformClaim(project)
-  if (options.dump) projectDumpMods(project, "001-load")
+  if (options.dump) projectDumpMods(project, "000-load")
   M.projectPerformDesugar(project)
-  if (options.dump) projectDumpMods(project, "002-desugar")
+  if (options.dump) projectDumpMods(project, "001-desugar")
   M.projectPerformQualify(project)
-  if (options.dump) projectDumpMods(project, "003-qualify")
+  if (options.dump) projectDumpMods(project, "002-qualify")
+  M.projectPerformLocate(project)
+  if (options.dump) projectDumpMods(project, "003-locate")
   M.projectPerformCheck(project)
   if (options.dump) projectDumpMods(project, "004-check")
 

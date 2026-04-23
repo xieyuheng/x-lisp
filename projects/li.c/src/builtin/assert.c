@@ -46,7 +46,7 @@ value_t x_assert_not_equal(value_t lhs, value_t rhs) {
   return x_void;
 }
 
-value_t x_assert_with_source_location(value_t value, value_t location) {
+value_t x_assert_with_location(value_t value, value_t location) {
   if (value != x_true) {
     printf("(assert) fail");
     printf("\n  value: "); print(value);
@@ -58,7 +58,7 @@ value_t x_assert_with_source_location(value_t value, value_t location) {
   return x_void;
 }
 
-value_t x_assert_not_with_source_location(value_t value, value_t location) {
+value_t x_assert_not_with_location(value_t value, value_t location) {
   if (value != x_false) {
     printf("(assert-not) fail");
     printf("\n  value: "); print(value);
@@ -70,7 +70,7 @@ value_t x_assert_not_with_source_location(value_t value, value_t location) {
   return x_void;
 }
 
-value_t x_assert_equal_with_source_location(value_t lhs, value_t rhs, value_t location) {
+value_t x_assert_equal_with_location(value_t lhs, value_t rhs, value_t location) {
   if (!equal_p(lhs, rhs)) {
     printf("(assert-equal) fail");
     printf("\n  lhs: "); print(lhs);
