@@ -181,3 +181,38 @@ value_t x_string_find_index(value_t substring, value_t string) {
 
   return x_void;
 }
+
+value_t x_string_trim_left(value_t string) {
+  return x_object(
+    make_xstring_take(
+      string_trim_left(
+        xstring_string(to_xstring(string)))));
+}
+
+value_t x_string_trim_right(value_t string) {
+  return x_object(
+    make_xstring_take(
+      string_trim_right(
+        xstring_string(to_xstring(string)))));
+}
+
+value_t x_string_trim_start(value_t string) {
+  return x_object(
+    make_xstring_take(
+      string_trim_start(
+        xstring_string(to_xstring(string)))));
+}
+
+value_t x_string_trim_end(value_t string) {
+  return x_object(
+    make_xstring_take(
+      string_trim_end(
+        xstring_string(to_xstring(string)))));
+}
+
+value_t x_string_trim(value_t string) {
+  return x_object(
+    make_xstring_take(
+      string_trim(
+        xstring_string(to_xstring(string)))));
+}

@@ -21,3 +21,8 @@ x_fn_1_t x_string_to_lower_case;
 x_fn_2_t x_string_get_code_point;
 x_fn_2_t x_string_contains_p;
 x_fn_2_t x_string_find_index;
+x_fn_1_t x_string_trim_left;
+x_fn_1_t x_string_trim_right;
+x_fn_1_t x_string_trim_start;
+x_fn_1_t x_string_trim_end;
+x_fn_1_t x_string_trim;

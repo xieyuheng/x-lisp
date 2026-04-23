@@ -66,3 +66,10 @@
   (assert (string-contains? "bb" "aabbcc"))
   (assert (string-contains? "ab" "aabbcc"))
   (assert-not (string-contains? "ba" "aabbcc")))
+
+(define-test string-trim-test
+  (assert-equal "abc  " (string-trim-left "  abc  "))
+  (assert-equal "  abc" (string-trim-right "  abc  "))
+  (assert-equal "abc  " (string-trim-start "  abc  "))
+  (assert-equal "  abc" (string-trim-end "  abc  "))
+  (assert-equal "abc" (string-trim "  abc  ")))

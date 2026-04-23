@@ -134,7 +134,11 @@ void import_builtin(mod_t *mod) {
   define_primitive_2(mod, "builtin/string-get-code-point", x_string_get_code_point);
   define_primitive_2(mod, "builtin/string-contains?", x_string_contains_p);
   define_primitive_2(mod, "builtin/string-find-index", x_string_find_index);
-
+  define_primitive_1(mod, "builtin/string-trim-left", x_string_trim_left);
+  define_primitive_1(mod, "builtin/string-trim-right", x_string_trim_right);
+  define_primitive_1(mod, "builtin/string-trim-start", x_string_trim_start);
+  define_primitive_1(mod, "builtin/string-trim-end", x_string_trim_end);
+  define_primitive_1(mod, "builtin/string-trim", x_string_trim);
 
   // list
 

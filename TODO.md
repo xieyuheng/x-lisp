@@ -1,12 +1,5 @@
 # string
 
-
-[li.c] builtin -- string-trim-left / string-trim-right / string-trim -- only for blank chars
-
-- [li.c] builtin -- string-trim-start / string-trim-end
-
-# string
-
 [li.c] builtin -- (string-find-index substring string)
 
 # source location
