@@ -170,16 +170,10 @@ value_t x_string_contains_p(value_t substring, value_t string) {
 }
 
 value_t x_string_find_index(value_t substring, value_t string) {
-  // TODO
-  (void) substring;
-  (void) string;
-
-  // return x_int(
-  //   text_find_subtext_index(
-  //     xstring_text(to_xstring(string)),
-  //     xstring_text(to_xstring(substring))));
-
-  return x_void;
+  return x_int(
+    text_find_subtext_index(
+      xstring_text(to_xstring(string)),
+      xstring_text(to_xstring(substring))));
 }
 
 value_t x_string_trim_left(value_t string) {

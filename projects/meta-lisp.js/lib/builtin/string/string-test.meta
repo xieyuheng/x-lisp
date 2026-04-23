@@ -67,6 +67,17 @@
   (assert (string-contains? "ab" "aabbcc"))
   (assert-not (string-contains? "ba" "aabbcc")))
 
+(define-test string-find-index-test
+  (assert-equal 0 (string-find-index "0" "01234"))
+  (assert-equal 1 (string-find-index "1" "01234"))
+  (assert-equal 2 (string-find-index "2" "01234"))
+  (assert-equal -1 (string-find-index "5" "01234"))
+
+  (assert-equal 0 (string-find-index "01" "01234"))
+  (assert-equal 1 (string-find-index "12" "01234"))
+  (assert-equal 2 (string-find-index "23" "01234"))
+  (assert-equal -1 (string-find-index "21" "01234")))
+
 (define-test string-trim-test
   (assert-equal "abc  " (string-trim-left "  abc  "))
   (assert-equal "  abc" (string-trim-right "  abc  "))

@@ -1,7 +1,3 @@
-# string
-
-[li.c] builtin -- (string-find-index substring string)
-
 # source location
 
 [li.c] builtin `error-with-source-location`
