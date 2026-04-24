@@ -1,11 +1,17 @@
 # type
 
+[stack-lisp.c] variable definition support using primitive function as setup function
 [stack-lisp.c] builtin variable and function for types
 [stack-lisp.c] call `stk_declare`
 
 # test
 
-[stack-lisp.c] `test` command support `--verbose` options -- print parsing time and execution time
+[stack-lisp.c] `test` command support `--profile` options -- print parsing time and execution time
+
+# error report
+
+[stack-lisp.c] builtin -- `error-with-location` & `assert-with-location` -- print in context
+[stack-lisp.c] error and assert -- print error to stderr -- instead of stdout
 
 # format
 
@@ -14,8 +20,3 @@
 [stack-lisp.c] [sexp] `sexp_print`
 [stack-lisp.c] [sexp] `sexp.snapshot` -- call `sexp_print`
 [stack-lisp.c] [builtin] `format-sexp`
-
-# error report
-
-[stack-lisp.c] builtin -- `error-with-location` & `assert-with-location` -- print in context
-[stack-lisp.c] error and assert -- print error to stderr -- instead of stdout
