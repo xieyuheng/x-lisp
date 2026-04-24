@@ -1,10 +1,12 @@
 #pragma once
 
+mod_t *stk_load(path_t *path);
+
 void stk_prepare(mod_t *mod, value_t sexps);
 void stk_compile(mod_t *mod, value_t sexps);
 void stk_setup(mod_t *mod);
 
-mod_t *stk_load(path_t *path);
+void stk_compile_function(mod_t *mod, function_t *function, value_t sexp);
 
 void stk_call(mod_t *mod, const char *name);
 void stk_test(mod_t *mod, const char *snapshot);

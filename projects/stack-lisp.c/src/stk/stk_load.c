@@ -1,7 +1,6 @@
 #include "index.h"
 
-static value_t
-read_mod_body(path_t *path) {
+static value_t read_mod_body(path_t *path) {
     file_t *file = open_file_or_fail(path_raw_string(path), "r");
     char *string = file_read_string(file);
     value_t sexps = parse_sexps(string);
