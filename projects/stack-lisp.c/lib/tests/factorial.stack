@@ -26,3 +26,9 @@
   (call factorial)
   (call builtin/println)
   (return))
+
+(define-test factorial-test
+  (literal 3)
+  (call factorial)
+  (call builtin/println)
+  (return))

@@ -1,7 +1,6 @@
 # compile to stack-lisp
 
 [stack-lisp.c] suport `(declare-primitive-variable)` & `(declare-primitive-function)`
-[stack-lisp.c] suport `(define-test)`
 
 [meta-lisp.js] pass -- `ExplicateControlPass` -- compile to `TestDefinition`
 [meta-lisp.js] pass -- `CodegenPass` to stack-lisp -- instead of li

@@ -36,6 +36,24 @@ static void handle_define_variable(mod_t *mod, value_t sexp) {
   stk_compile_function(mod, function, x_variable_body(sexp));
 }
 
+static value_t x_test_name(value_t sexp) { return x_car(sexp); }
+static value_t x_test_body(value_t sexp) { return x_cdr(sexp); }
+
+static void prepare_define_test(mod_t *mod, value_t sexp) {
+  const char *name = symbol_string(to_symbol(x_test_name(sexp)));
+  function_t *function = make_function();
+  define_function(mod, name, function);
+  set_add(mod->test_names, string_copy(name));
+}
+
+static void handle_define_test(mod_t *mod, value_t sexp) {
+  const char *name = symbol_string(to_symbol(x_test_name(sexp)));
+  definition_t *definition = mod_lookup_or_fail(mod, name);
+  assert(definition->kind == FUNCTION_DEFINITION);
+  function_t *function = definition->function_definition.function;
+  stk_compile_function(mod, function, x_test_body(sexp));
+}
+
 void stk_prepare(mod_t *mod, value_t sexps) {
   for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
     value_t sexp = x_list_get(x_int(i), sexps);
@@ -45,6 +63,10 @@ void stk_prepare(mod_t *mod, value_t sexps) {
 
     if (sexp_has_tag(sexp, "define-variable")) {
       prepare_define_variable(mod, x_cdr(sexp));
+    }
+
+    if (sexp_has_tag(sexp, "define-test")) {
+      prepare_define_test(mod, x_cdr(sexp));
     }
   }
 }
@@ -58,6 +80,10 @@ void stk_compile(mod_t *mod, value_t sexps) {
 
     if (sexp_has_tag(sexp, "define-variable")) {
       handle_define_variable(mod, x_cdr(sexp));
+    }
+
+    if (sexp_has_tag(sexp, "define-test")) {
+      handle_define_test(mod, x_cdr(sexp));
     }
   }
 }
