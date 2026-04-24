@@ -2,6 +2,7 @@
 
 mod_t *stk_load(path_t *path);
 
+void stk_declare(mod_t *mod, value_t sexps);
 void stk_prepare(mod_t *mod, value_t sexps);
 void stk_compile(mod_t *mod, value_t sexps);
 void stk_setup(mod_t *mod);

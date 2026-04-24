@@ -54,6 +54,26 @@ static void handle_define_test(mod_t *mod, value_t sexp) {
   stk_compile_function(mod, function, x_test_body(sexp));
 }
 
+
+void stk_declare(mod_t *mod, value_t sexps) {
+  for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
+    value_t sexp = x_list_get(x_int(i), sexps);
+    if (sexp_has_tag(sexp, "declare-primitive-variable")) {
+      const char *name = symbol_string(to_symbol(x_car(x_cdr(sexp))));
+      definition_t *definition = mod_lookup_or_fail(mod, name);
+      assert(definition->kind == VARIABLE_DEFINITION);
+    }
+
+    if (sexp_has_tag(sexp, "declare-primitive-function")) {
+      const char *name = symbol_string(to_symbol(x_car(x_cdr(sexp))));
+      uint64_t arity = to_int64(x_car(x_cdr(x_cdr(sexp))));
+      definition_t *definition = mod_lookup_or_fail(mod, name);
+      assert(definition->kind == PRIMITIVE_DEFINITION);
+      assert(definition_arity(definition) == arity);
+    }
+  }
+}
+
 void stk_prepare(mod_t *mod, value_t sexps) {
   for (int64_t i = 0; i < to_int64(x_list_length(sexps)); i++) {
     value_t sexp = x_list_get(x_int(i), sexps);

@@ -12,6 +12,7 @@ mod_t *stk_load(path_t *path) {
   value_t sexps = read_mod_body(path);
   mod_t *mod = make_mod(path);
   import_builtin(mod);
+  stk_declare(mod, sexps);
   stk_prepare(mod, sexps);
   stk_compile(mod, sexps);
   stk_setup(mod);
