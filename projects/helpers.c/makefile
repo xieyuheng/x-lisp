@@ -1,1 +1,1 @@
-include ../../.make/c.mk
+include ../c.make/c.mk
