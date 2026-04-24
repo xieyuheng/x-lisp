@@ -1,6 +1,6 @@
 (module builtin)
 
-(declare-primitive-variable void-t)
+(declare-primitive-type void-t)
 (declare-primitive-variable void)
 (declare-primitive-function void? 1)
 

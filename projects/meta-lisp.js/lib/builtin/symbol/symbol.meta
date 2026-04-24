@@ -1,6 +1,6 @@
 (module builtin)
 
-(declare-primitive-variable symbol-t)
+(declare-primitive-type symbol-t)
 (declare-primitive-function symbol? 1)
 (declare-primitive-function symbol-length 1)
 (declare-primitive-function symbol-to-string 1)

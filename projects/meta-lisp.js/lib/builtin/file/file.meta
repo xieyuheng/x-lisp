@@ -1,6 +1,6 @@
 (module builtin)
 
-(declare-primitive-variable file-t)
+(declare-primitive-type file-t)
 (declare-primitive-function open-input-file 1)
 (declare-primitive-function open-output-file 1)
 (declare-primitive-function file-close 1)

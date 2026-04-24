@@ -1,3 +1,8 @@
+[meta-lisp.js] `PrimitiveTypeDeclaration`
+[meta-lisp.js] `DeclarePrimitiveType`
+[meta-lisp.js] parse `declare-primitive-type`
+[stack-lisp.c] call `stk_declare`
+
 # format
 
 [helpers.c] improve `string_builder_t` for `format_*`

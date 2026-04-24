@@ -1,5 +1,16 @@
 #include "index.h"
 
+static bool is_literal(value_t sexp) {
+  return keyword_p(sexp)
+    || xstring_p(sexp)
+    || int_p(sexp)
+    || float_p(sexp);
+}
+
+static bool is_quote(value_t sexp) {
+  return sexp_has_tag(sexp, "@quote");
+}
+
 static void compile_instr(mod_t *mod, function_t *function, value_t sexp) {
   if (symbol_p(sexp)) {
     function_add_label(function, symbol_string(to_symbol(sexp)));
@@ -8,11 +19,20 @@ static void compile_instr(mod_t *mod, function_t *function, value_t sexp) {
 
   if (sexp_has_tag(sexp, "literal")) {
     value_t operand = x_car(x_cdr(sexp));
-    struct instr_t instr;
-    instr.op = OP_LITERAL;
-    instr.literal.value = operand;
-    function_append_instr(function, instr);
-    return;
+    if (is_literal(operand)) {
+      struct instr_t instr;
+      instr.op = OP_LITERAL;
+      instr.literal.value = operand;
+      function_append_instr(function, instr);
+      return;
+    } else {
+      assert(is_quote);
+      struct instr_t instr;
+      instr.op = OP_LITERAL;
+      instr.literal.value = x_car(x_cdr(operand));
+      function_append_instr(function, instr);
+      return;
+    }
   }
 
   if (sexp_has_tag(sexp, "return")) {

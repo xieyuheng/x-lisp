@@ -31,6 +31,10 @@ definition_t *mod_lookup(mod_t *self, const char *name) {
 
 definition_t *mod_lookup_or_fail(mod_t *self, const char *name) {
   definition_t *definition = mod_lookup(self, name);
-  assert(definition);
+  if (definition == NULL) {
+    who_printf("undefined name: %s\n", name);
+    exit(1);
+  }
+
   return definition;
 }

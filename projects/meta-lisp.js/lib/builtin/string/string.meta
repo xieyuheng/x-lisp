@@ -1,6 +1,6 @@
 (module builtin)
 
-(declare-primitive-variable string-t)
+(declare-primitive-type string-t)
 (declare-primitive-function string? 1)
 (declare-primitive-function string-length 1)
 (declare-primitive-function string-empty? 1)

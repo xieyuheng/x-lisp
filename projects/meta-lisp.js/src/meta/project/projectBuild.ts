@@ -43,6 +43,7 @@ function projectBundleStack(project: M.Project): void {
   const basicMod = B.createMod()
   M.projectForEachMod(project, (mod) => {
     if (!mod.isTypeErrorModule) {
+      M.log("bundle.stack", mod.name)
       M.ExplicateControlPass(mod, basicMod)
     }
   })
@@ -51,16 +52,19 @@ function projectBundleStack(project: M.Project): void {
   M.CodegenPass(basicMod, stackMod)
 
   const directory = M.projectOutputDirectory(project)
-  callWithFile(openOutputFile(`${directory}/bundle.stack`), (file) =>
-    fileWrite(file, Stk.formatMod(stackMod)),
-  )
+  callWithFile(openOutputFile(`${directory}/bundle.stack`), (file) => {
+    for (const definition of stackMod.definitions.values()) {
+      fileWriteln(file, Stk.prettyDefinition(textWidth, definition))
+      fileWriteln(file, "")
+    }
+  })
 }
 
 function projectBundleBasic(project: M.Project): void {
   let code = ""
   M.projectForEachMod(project, (mod) => {
     if (!mod.isTypeErrorModule) {
-      M.log("bundle", mod.name)
+      M.log("bundle.basic", mod.name)
       const basicMod = B.createMod()
       M.ExplicateControlPass(mod, basicMod)
       code += B.prettyMod(textWidth, basicMod)

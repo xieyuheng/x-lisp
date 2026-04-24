@@ -1,6 +1,6 @@
 (module builtin)
 
-(declare-primitive-variable int-t)
+(declare-primitive-type int-t)
 (declare-primitive-function int? 1)
 (declare-primitive-function int-positive? 1)
 (declare-primitive-function int-non-negative? 1)

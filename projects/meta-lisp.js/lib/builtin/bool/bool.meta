@@ -1,6 +1,6 @@
 (module builtin)
 
-(declare-primitive-variable bool-t)
+(declare-primitive-type bool-t)
 (declare-primitive-variable true)
 (declare-primitive-variable false)
 (declare-primitive-function bool? 1)

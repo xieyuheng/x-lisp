@@ -14,7 +14,7 @@ export function formatDefinition(definition: Definition): string {
     case "FunctionDefinition": {
       const name = definition.name
       const instrs = definition.instrs.map(formatInstr).join(" ")
-      return `(define-function (${name} ${definition.arity}) ${instrs})`
+      return `(define-function ${name} ${definition.arity} ${instrs})`
     }
 
     case "VariableDefinition": {

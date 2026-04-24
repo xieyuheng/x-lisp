@@ -1,10 +1,7 @@
 import * as B from "../../basic/index.ts"
 import * as Stk from "../../stack/index.ts"
 
-export function CodegenPass(
-  basicMod: B.Mod,
-  stackMod: Stk.Mod,
-): void {
+export function CodegenPass(basicMod: B.Mod, stackMod: Stk.Mod): void {
   for (const definition of basicMod.definitions.values()) {
     for (const stackDefinition of onDefinition(basicMod, definition)) {
       stackMod.definitions.set(stackDefinition.name, stackDefinition)
