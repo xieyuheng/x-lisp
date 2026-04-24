@@ -1,9 +1,12 @@
 # compile to stack-lisp
 
-[meta-lisp.js] stack -- `Definition`
 [meta-lisp.js] stack -- `formatInstr`
 [meta-lisp.js] stack -- `formatDefinition`
 [meta-lisp.js] stack -- `formatMod`
+
+[stack-lisp.c] suport `(declare-primitive-variable)` & `(declare-primitive-function)`
+[stack-lisp.c] suport `(define-test)`
+[meta-lisp.js] basic -- `TestDefinition`
 
 [meta-lisp.js] stack -- `CodegenPass` to stack-lisp -- instead of li
 
@@ -24,7 +27,3 @@
 
 [li.c] builtin -- `error-with-location` & `assert-with-location` -- print in context
 [li.c] error and assert -- print error to stderr -- instead of stdout
-
-# vm
-
-[li.c] redesign `global-load` & `global-load`
