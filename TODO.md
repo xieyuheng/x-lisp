@@ -1,7 +1,3 @@
-# stack-lisp
-
-[stack-lisp.c] test factorial
-
 # compile to stack-lisp
 
 [meta-lisp.js] stack -- setup
