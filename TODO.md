@@ -1,7 +1,11 @@
-[meta-lisp.js] `PrimitiveTypeDeclaration`
-[meta-lisp.js] `DeclarePrimitiveType`
-[meta-lisp.js] parse `declare-primitive-type`
+# type
+
+[stack-lisp.c] builtin variable and function for types
 [stack-lisp.c] call `stk_declare`
+
+# test
+
+[stack-lisp.c] `test` command support `--verbose` options -- print parsing time and execution time
 
 # format
 

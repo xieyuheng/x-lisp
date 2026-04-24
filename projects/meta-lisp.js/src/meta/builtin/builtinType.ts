@@ -19,6 +19,7 @@ export function builtinType(mod: Mod) {
   definePrimitiveVariable(mod, "symbol-t", M.createAtomType("symbol"))
   definePrimitiveVariable(mod, "keyword-t", M.createAtomType("keyword"))
   definePrimitiveVariable(mod, "void-t", M.createAtomType("void"))
+  definePrimitiveVariable(mod, "file-t", M.createAtomType("file"))
 
   definePrimitiveFunction(mod, "list-t", 1, (elementType) => {
     return M.createListType(elementType)

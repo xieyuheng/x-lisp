@@ -54,8 +54,7 @@ function projectBundleStack(project: M.Project): void {
   const directory = M.projectOutputDirectory(project)
   callWithFile(openOutputFile(`${directory}/bundle.stack`), (file) => {
     for (const definition of stackMod.definitions.values()) {
-      fileWriteln(file, Stk.prettyDefinition(textWidth, definition))
-      fileWriteln(file, "")
+      fileWriteln(file, Stk.formatDefinition(definition))
     }
   })
 }

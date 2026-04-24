@@ -1,6 +1,6 @@
 (module builtin)
 
-(declare-primitive-type float-t)
+(declare-primitive-variable float-t)
 (declare-primitive-function float? 1)
 (declare-primitive-function float-positive? 1)
 (declare-primitive-function float-non-negative? 1)

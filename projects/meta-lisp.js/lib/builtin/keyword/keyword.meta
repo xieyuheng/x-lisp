@@ -1,6 +1,6 @@
 (module builtin)
 
-(declare-primitive-type keyword-t)
+(declare-primitive-variable keyword-t)
 (declare-primitive-function keyword? 1)
 (declare-primitive-function keyword-length 1)
 (declare-primitive-function keyword-to-string 1)
