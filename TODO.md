@@ -14,3 +14,10 @@
 [stack-lisp.c] [sexp] `sexp_print`
 [stack-lisp.c] [sexp] `sexp.snapshot` -- call `sexp_print`
 [stack-lisp.c] [builtin] `format-sexp`
+
+# self-hosting
+
+[meta-lisp.meta] `definition-t`
+[meta-lisp.meta] `mod-t`
+[meta-lisp.meta] `eval`
+[meta-lisp.meta] `parse`
