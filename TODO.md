@@ -1,6 +1,5 @@
 # type
 
-[stack-lisp.c] `stk_setup` -- support primitive setup function
 [stack-lisp.c] builtin variable and function for types
 [stack-lisp.c] call `stk_declare`
 
