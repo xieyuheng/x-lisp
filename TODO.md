@@ -1,6 +1,5 @@
 # test
 
-[meta-builtin.meta] move builtin to meta-builtin.meta
 [meta-example.meta] setup -- test-suite as top level project
 [meta-example.meta] move simple tests to builtin
 [stack-lisp.c] `test` command support `--profile` options -- print parsing time and execution time

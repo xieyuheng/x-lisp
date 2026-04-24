@@ -22,7 +22,7 @@ import { builtinVoid } from "./builtinVoid.ts"
 const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 
 export function loadBuiltinMod(project: M.Project): M.Mod {
-  const builtinPath = Path.join(currentDir, "../../../lib/builtin")
+  const builtinPath = Path.join(currentDir, "../../../../meta-builtin.meta")
   const modName = "builtin"
 
   const found = M.projectLookupMod(project, modName)
