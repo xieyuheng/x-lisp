@@ -1,6 +1,10 @@
 # compile to stack-lisp
 
-[meta-lisp.js] stack -- `Definition` & `Mod`
+[meta-lisp.js] stack -- `Definition`
+[meta-lisp.js] stack -- `formatInstr`
+[meta-lisp.js] stack -- `formatDefinition`
+[meta-lisp.js] stack -- `formatMod`
+
 [meta-lisp.js] stack -- `CodegenPass` to stack-lisp -- instead of li
 
 # remove li
