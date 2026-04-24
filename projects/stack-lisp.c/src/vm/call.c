@@ -50,7 +50,7 @@ inline void call_function_now(vm_t *vm, const function_t *function) {
 
 inline void call_primitive(vm_t *vm, const primitive_t *primitive) {
   switch (primitive->fn_kind) {
-  case X_FN: {
+  case X_FN_N: {
     primitive->fn(vm);
     return;
   }

@@ -31,8 +31,8 @@ definition_t *define_function(mod_t *mod, const char *name, function_t *function
   return definition;
 }
 
-definition_t *define_primitive(mod_t *mod, const char *name, size_t arity, x_fn_t *fn) {
-  primitive_t *primitive = make_primitive(arity, fn);
+definition_t *define_primitive_n(mod_t *mod, const char *name, size_t arity, x_fn_n_t *fn) {
+  primitive_t *primitive = make_primitive_n(arity, fn);
   definition_t *definition =
     make_primitive_definition(mod, string_copy(name), primitive);
   mod_define(mod, name, definition);

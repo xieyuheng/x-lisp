@@ -1,8 +1,8 @@
 #include "index.h"
 
-primitive_t *make_primitive(size_t arity, x_fn_t *fn) {
+primitive_t *make_primitive_n(size_t arity, x_fn_n_t *fn) {
   primitive_t *self = new(primitive_t);
-  self->fn_kind = X_FN;
+  self->fn_kind = X_FN_N;
   self->fn = fn;
   self->arity = arity;
   return self;
