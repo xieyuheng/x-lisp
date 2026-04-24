@@ -1,37 +1,31 @@
 #include "index.h"
 
 void stk_test(mod_t *mod, const char *snapshot) {
-  (void) mod;
-  (void) snapshot;
+  set_iter_t iter;
+  set_iter_init(&iter, mod->test_names);
+  char *name = set_iter_next(&iter);
+  while (name) {
+    if (!string_starts_with(name, "builtin/")) {
+      definition_t *definition = mod_lookup_or_fail(mod, name);
+      stk_test_definition(mod, snapshot, definition);
+    }
 
-  // record_iter_t iter;
-  // record_iter_init(&iter, mod->definitions);
-  // definition_t *definition = record_iter_next_value(&iter);
-  // while (definition) {
-  //   if (db_has_attribute(mod->db, definition->name, "is-test")
-  //     && !string_starts_with(definition->name, "builtin/")) {
-  //     stk_test_definition(mod, snapshot, definition);
-  //   }
-
-  //   definition = record_iter_next_value(&iter);
-  // }
+    name = set_iter_next(&iter);
+  }
 }
 
 void stk_builtin_test(mod_t *mod, const char *snapshot) {
-  (void) mod;
-  (void) snapshot;
+  set_iter_t iter;
+  set_iter_init(&iter, mod->test_names);
+  char *name = set_iter_next(&iter);
+  while (name) {
+    if (string_starts_with(name, "builtin/")) {
+      definition_t *definition = mod_lookup_or_fail(mod, name);
+      stk_test_definition(mod, snapshot, definition);
+    }
 
-  // record_iter_t iter;
-  // record_iter_init(&iter, mod->definitions);
-  // definition_t *definition = record_iter_next_value(&iter);
-  // while (definition) {
-  //   if (db_has_attribute(mod->db, definition->name, "is-test")
-  //     && string_starts_with(definition->name, "builtin/")) {
-  //     stk_test_definition(mod, snapshot, definition);
-  //   }
-
-  //   definition = record_iter_next_value(&iter);
-  // }
+    name = set_iter_next(&iter);
+  }
 }
 
 void stk_test_definition(mod_t *mod, const char *snapshot, definition_t *definition) {

@@ -2,8 +2,6 @@
 
 [stack-lisp.c] `stk_prepare`
 [stack-lisp.c] `stk_compile`
-[stack-lisp.c] `stk_call`
-[stack-lisp.c] `stk_test` & `stk_builtin_test`
 
 # compile to stack-lisp
 
