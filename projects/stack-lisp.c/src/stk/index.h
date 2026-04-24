@@ -2,5 +2,4 @@
 
 #include "deps.h"
 #include "types.h"
-#include "line.h"
 #include "stk.h"

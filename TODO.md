@@ -1,6 +1,5 @@
 # stack-lisp
 
-[stack-lisp.c] remove line_t
 [stack-lisp.c] compile sexp to vm again
 
 # compile to stack-lisp
