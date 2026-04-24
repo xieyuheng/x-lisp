@@ -1,9 +1,5 @@
 # compile to stack-lisp
 
-[meta-lisp.js] stack -- `formatInstr`
-[meta-lisp.js] stack -- `formatDefinition`
-[meta-lisp.js] stack -- `formatMod`
-
 [stack-lisp.c] suport `(declare-primitive-variable)` & `(declare-primitive-function)`
 [stack-lisp.c] suport `(define-test)`
 
