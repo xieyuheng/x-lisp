@@ -25,7 +25,7 @@ static value_t x_variable_body(value_t sexp) { return x_cdr(sexp); }
 static void prepare_define_variable(mod_t *mod, value_t sexp) {
   const char *name = symbol_string(to_symbol(x_variable_name(sexp)));
   function_t *function = make_function();
-  define_variable_setup(mod, name, function);
+  define_variable_function(mod, name, function);
 }
 
 static void handle_define_variable(mod_t *mod, value_t sexp) {
