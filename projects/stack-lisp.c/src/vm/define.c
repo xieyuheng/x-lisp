@@ -15,6 +15,15 @@ definition_t *define_variable_function(mod_t *mod, const char *name, function_t 
   return definition;
 }
 
+definition_t *define_variable_primitive_0(mod_t *mod, const char *name, x_fn_0_t *fn_0) {
+  primitive_t *primitive = make_primitive_0(fn_0);
+  definition_t *definition =
+    make_variable_definition(mod, string_copy(name), x_void);
+  definition->variable_definition.primitive = primitive;
+  mod_define(mod, name, definition);
+  return definition;
+}
+
 definition_t *define_function(mod_t *mod, const char *name, function_t *function) {
   definition_t *definition =
     make_function_definition(mod, string_copy(name), function);

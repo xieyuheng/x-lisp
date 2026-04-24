@@ -16,7 +16,7 @@ struct definition_t {
   union {
     struct { function_t *function; } function_definition;
     struct { primitive_t *primitive; } primitive_definition;
-    struct { function_t *function; value_t value; } variable_definition;
+    struct { primitive_t *primitive; function_t *function; value_t value; } variable_definition;
   };
 };
 
