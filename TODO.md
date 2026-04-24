@@ -1,7 +1,7 @@
 # stack-lisp
 
-[stack-lisp.c] remove old api
 [stack-lisp.c] remove db_t
+[stack-lisp.c] remove line_t
 [stack-lisp.c] compile sexp to vm again
 
 # compile to stack-lisp
