@@ -2,6 +2,7 @@
 
 #include "deps.h"
 #include "types.h"
+#include "type.h"
 #include "value.h"
 #include "file.h"
 #include "path.h"

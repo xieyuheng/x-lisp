@@ -1,6 +1,5 @@
 # type
 
-[stack-lisp.c] builtin variable and function for types
 [stack-lisp.c] call `stk_declare`
 
 # test

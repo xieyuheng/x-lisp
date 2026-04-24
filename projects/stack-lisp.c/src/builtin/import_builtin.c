@@ -57,6 +57,20 @@ void import_builtin(mod_t *mod) {
   define_variable(mod, "builtin/void", x_void);
   define_primitive_1(mod, "builtin/void?", x_void_p);
 
+  // type
+
+  define_variable_primitive_0(mod, "builtin/type-t", x_type_t);
+  define_variable_primitive_0(mod, "builtin/int-t", x_int_t);
+  define_variable_primitive_0(mod, "builtin/float-t", x_float_t);
+  define_variable_primitive_0(mod, "builtin/string-t", x_string_t);
+  define_variable_primitive_0(mod, "builtin/symbol-t", x_symbol_t);
+  define_variable_primitive_0(mod, "builtin/keyword-t", x_keyword_t);
+  define_variable_primitive_0(mod, "builtin/void-t", x_void_t);
+  define_variable_primitive_0(mod, "builtin/file-t", x_file_t);
+  define_primitive_1(mod, "builtin/list-t", x_list_t);
+  define_primitive_1(mod, "builtin/set-t", x_set_t);
+  define_primitive_2(mod, "builtin/hash-t", x_hash_t);
+
   // value
 
   define_primitive_1(mod, "builtin/any?", x_any_p);
