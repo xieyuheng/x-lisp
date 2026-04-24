@@ -1,7 +1,3 @@
-# type
-
-[stack-lisp.c] call `stk_declare`
-
 # test
 
 [stack-lisp.c] `test` command support `--profile` options -- print parsing time and execution time
