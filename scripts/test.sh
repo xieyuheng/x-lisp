@@ -4,7 +4,6 @@ set -e
 
 make --directory projects/helpers.c test -j
 make --directory projects/cmd.c test -j
-make --directory projects/li.c test -j
 make --directory projects/stack-lisp.c test -j
 
 pnpm run -r --parallel test

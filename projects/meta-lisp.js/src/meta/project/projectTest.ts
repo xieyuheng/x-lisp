@@ -5,9 +5,9 @@ import * as M from "../index.ts"
 
 const currentDir = Path.dirname(fileURLToPath(import.meta.url))
 
-export const LiInterpreterPath = Path.join(
+export const StackLispInterpreterPath = Path.join(
   currentDir,
-  "../../../../li.c/src/li.exe",
+  "../../../../stack-lisp.c/src/stack-lisp.exe",
 )
 
 export function projectTest(
@@ -15,9 +15,9 @@ export function projectTest(
   options: { builtin: boolean },
 ): void {
   M.projectBuild(project, { dump: false, basic: false })
-  systemShellRun(LiInterpreterPath, [
+  systemShellRun(StackLispInterpreterPath, [
     "test",
-    Path.join(M.projectOutputDirectory(project), "bundle.li"),
+    Path.join(M.projectOutputDirectory(project), "bundle.stack"),
     "--snapshot",
     M.projectSnapshotDirectory(project),
     options.builtin !== undefined ? "--builtin" : "",

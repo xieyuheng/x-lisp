@@ -1,6 +1,5 @@
 import { type SourceLocation } from "@xieyuheng/sexp.js"
 import { type Instr } from "../instr/index.ts"
-import type { Mod } from "../mod/index.ts"
 
 export type Definition =
   | PrimitiveFunctionDeclaration
@@ -11,21 +10,18 @@ export type Definition =
 
 export type PrimitiveFunctionDeclaration = {
   kind: "PrimitiveFunctionDeclaration"
-  mod: Mod
   name: string
   arity: number
   location?: SourceLocation
 }
 
 export function PrimitiveFunctionDeclaration(
-  mod: Mod,
   name: string,
   arity: number,
   location?: SourceLocation,
 ): PrimitiveFunctionDeclaration {
   return {
     kind: "PrimitiveFunctionDeclaration",
-    mod,
     name,
     arity,
     location,
@@ -34,19 +30,16 @@ export function PrimitiveFunctionDeclaration(
 
 export type PrimitiveVariableDeclaration = {
   kind: "PrimitiveVariableDeclaration"
-  mod: Mod
   name: string
   location?: SourceLocation
 }
 
 export function PrimitiveVariableDeclaration(
-  mod: Mod,
   name: string,
   location?: SourceLocation,
 ): PrimitiveVariableDeclaration {
   return {
     kind: "PrimitiveVariableDeclaration",
-    mod,
     name,
     location,
   }
@@ -54,7 +47,6 @@ export function PrimitiveVariableDeclaration(
 
 export type FunctionDefinition = {
   kind: "FunctionDefinition"
-  mod: Mod
   name: string
   arity: number
   instrs: Array<Instr>
@@ -62,7 +54,6 @@ export type FunctionDefinition = {
 }
 
 export function FunctionDefinition(
-  mod: Mod,
   name: string,
   arity: number,
   instrs: Array<Instr>,
@@ -70,7 +61,6 @@ export function FunctionDefinition(
 ): FunctionDefinition {
   return {
     kind: "FunctionDefinition",
-    mod,
     name,
     arity,
     instrs,
@@ -80,21 +70,18 @@ export function FunctionDefinition(
 
 export type VariableDefinition = {
   kind: "VariableDefinition"
-  mod: Mod
   name: string
   instrs: Array<Instr>
   location?: SourceLocation
 }
 
 export function VariableDefinition(
-  mod: Mod,
   name: string,
   instrs: Array<Instr>,
   location?: SourceLocation,
 ): VariableDefinition {
   return {
     kind: "VariableDefinition",
-    mod,
     name,
     instrs,
     location,
@@ -103,21 +90,18 @@ export function VariableDefinition(
 
 export type TestDefinition = {
   kind: "TestDefinition"
-  mod: Mod
   name: string
   instrs: Array<Instr>
   location?: SourceLocation
 }
 
 export function TestDefinition(
-  mod: Mod,
   name: string,
   instrs: Array<Instr>,
   location?: SourceLocation,
 ): TestDefinition {
   return {
     kind: "TestDefinition",
-    mod,
     name,
     instrs,
     location,

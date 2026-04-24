@@ -71,10 +71,9 @@ function onDefinition(
       addBlock(state, block)
       block.instrs = inTail(state, definition.body)
       return [
-        B.FunctionDefinition(
+        B.TestDefinition(
           basicMod,
           definitionQualifiedName(definition),
-          [],
           state.blocks,
           definition.location,
         ),

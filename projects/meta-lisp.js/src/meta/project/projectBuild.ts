@@ -8,7 +8,7 @@ import { pathRelativeToCwd } from "@xieyuheng/helpers.js/path"
 import Path from "node:path"
 import * as B from "../../basic/index.ts"
 import { textWidth } from "../../config.ts"
-import * as L from "../../li/index.ts"
+import * as Stk from "../../stack/index.ts"
 import * as M from "../index.ts"
 
 export function projectBuild(
@@ -36,10 +36,10 @@ export function projectBuild(
   if (options.dump) projectDumpMods(project, "020-unnest-operand")
 
   if (options.basic) projectBundleBasic(project)
-  projectBundleLi(project)
+  projectBundleStack(project)
 }
 
-function projectBundleLi(project: M.Project): void {
+function projectBundleStack(project: M.Project): void {
   const basicMod = B.createMod()
   M.projectForEachMod(project, (mod) => {
     if (!mod.isTypeErrorModule) {
@@ -47,19 +47,12 @@ function projectBundleLi(project: M.Project): void {
     }
   })
 
-  const testNames = new Set<string>()
-  M.projectForEachDefinition(project, (definition) => {
-    if (definition.kind === "TestDefinition") {
-      testNames.add(`${definition.mod.name}/${definition.name}`)
-    }
-  })
-
-  const liMod = L.createMod()
-  M.CodegenPass(basicMod, liMod, testNames)
+  const stackMod = Stk.createMod()
+  M.CodegenPass(basicMod, stackMod)
 
   const directory = M.projectOutputDirectory(project)
-  callWithFile(openOutputFile(`${directory}/bundle.li`), (file) =>
-    fileWrite(file, L.formatMod(liMod)),
+  callWithFile(openOutputFile(`${directory}/bundle.stack`), (file) =>
+    fileWrite(file, Stk.formatMod(stackMod)),
   )
 }
 

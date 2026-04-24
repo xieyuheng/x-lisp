@@ -9,5 +9,4 @@ export function formatInstr(instr: Instr): string {
     const operands = instr.operands.map(formatOperand).join(" ")
     return `(${instr.op} ${operands})`
   }
-
 }

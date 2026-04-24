@@ -1,25 +1,14 @@
 import * as B from "../../basic/index.ts"
-import * as L from "../../li/index.ts"
+import * as Stk from "../../stack/index.ts"
 
 export function CodegenPass(
   basicMod: B.Mod,
-  liMod: L.Mod,
-  testNames: Set<string>,
+  stackMod: Stk.Mod,
 ): void {
-  for (const name of testNames) {
-    liMod.lines.push(L.Line("put", `${name}/is-test`, [L.Keyword("true")]))
-  }
-
   for (const definition of basicMod.definitions.values()) {
-    if (definition.kind === "VariableDefinition") {
-      liMod.lines.push(
-        L.Line("put", `${definition.name}/is-variable`, [L.Keyword("true")]),
-      )
+    for (const stackDefinition of onDefinition(basicMod, definition)) {
+      stackMod.definitions.set(stackDefinition.name, stackDefinition)
     }
-  }
-
-  for (const definition of basicMod.definitions.values()) {
-    liMod.lines.push(...onDefinition(basicMod, definition))
   }
 }
 
@@ -35,11 +24,11 @@ function createState(mod: B.Mod): State {
   }
 }
 
-function collectLocalIndexes(state: State, definition: B.Definition): void {
+function collectLocalIndexes(state: State, definition: B.Definition): null {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
     case "PrimitiveVariableDeclaration": {
-      return
+      return null
     }
 
     case "FunctionDefinition": {
@@ -50,12 +39,24 @@ function collectLocalIndexes(state: State, definition: B.Definition): void {
       for (const block of definition.blocks.values()) {
         collectLocalIndexesFromBlock(state, block)
       }
+
+      return null
     }
 
     case "VariableDefinition": {
       for (const block of definition.blocks.values()) {
         collectLocalIndexesFromBlock(state, block)
       }
+
+      return null
+    }
+
+    case "TestDefinition": {
+      for (const block of definition.blocks.values()) {
+        collectLocalIndexesFromBlock(state, block)
+      }
+
+      return null
     }
   }
 }
@@ -90,32 +91,49 @@ function lookupLocalIndex(state: State, name: string): number {
   return index
 }
 
-function onDefinition(mod: B.Mod, definition: B.Definition): Array<L.Line> {
+function onDefinition(
+  mod: B.Mod,
+  definition: B.Definition,
+): Array<Stk.Definition> {
   switch (definition.kind) {
-    case "PrimitiveFunctionDeclaration":
-    case "PrimitiveVariableDeclaration":
-    case "TestDefinition": {
-      return []
+    case "PrimitiveFunctionDeclaration": {
+      return [
+        Stk.PrimitiveFunctionDeclaration(
+          definition.name,
+          definition.arity,
+          definition.location,
+        ),
+      ]
+    }
+
+    case "PrimitiveVariableDeclaration": {
+      return [
+        Stk.PrimitiveVariableDeclaration(definition.name, definition.location),
+      ]
     }
 
     case "FunctionDefinition": {
       const state = createState(mod)
       collectLocalIndexes(state, definition)
       const blocks = definition.blocks.values()
-      return [
-        L.Line("put", `${definition.name}/arity`, [
-          L.Int(BigInt(definition.parameters.length)),
-        ]),
+      const instrs = [
         ...definition.parameters
           .toReversed()
           .map((parameter) =>
-            L.Line("fn", definition.name, [
-              L.Keyword("local-store"),
-              L.Int(BigInt(lookupLocalIndex(state, parameter))),
-              L.Keyword(parameter),
+            Stk.Instr("local-store", [
+              Stk.Int(BigInt(lookupLocalIndex(state, parameter))),
+              Stk.Var(parameter),
             ]),
           ),
         ...blocks.flatMap((block) => onBlock(state, definition.name, block)),
+      ]
+      return [
+        Stk.FunctionDefinition(
+          definition.name,
+          definition.parameters.length,
+          instrs,
+          definition.location,
+        ),
       ]
     }
 
@@ -123,38 +141,47 @@ function onDefinition(mod: B.Mod, definition: B.Definition): Array<L.Line> {
       const state = createState(mod)
       collectLocalIndexes(state, definition)
       const blocks = definition.blocks.values()
-      return [
+      const instrs = [
         ...blocks.flatMap((block) => onBlock(state, definition.name, block)),
       ]
+      return [
+        Stk.VariableDefinition(definition.name, instrs, definition.location),
+      ]
+    }
+
+    case "TestDefinition": {
+      const state = createState(mod)
+      collectLocalIndexes(state, definition)
+      const blocks = definition.blocks.values()
+      const instrs = [
+        ...blocks.flatMap((block) => onBlock(state, definition.name, block)),
+      ]
+      return [Stk.TestDefinition(definition.name, instrs, definition.location)]
     }
   }
 }
 
-function onBlock(state: State, name: string, block: B.Block): Array<L.Line> {
+function onBlock(state: State, name: string, block: B.Block): Array<Stk.Instr> {
   return [
-    L.Line("fn", name, [L.Keyword("label"), L.Keyword(block.label)]),
+    Stk.Instr("label", [Stk.Var(block.label)]),
     ...block.instrs.flatMap((instr) => onInstr(state, name, instr)),
   ]
 }
 
-function onInstr(state: State, name: string, instr: B.Instr): Array<L.Line> {
+function onInstr(state: State, name: string, instr: B.Instr): Array<Stk.Instr> {
   switch (instr.kind) {
     case "Assign": {
       return [
         ...onExp(state, name, instr.exp),
-        L.Line("fn", name, [
-          L.Keyword("local-store"),
-          L.Int(BigInt(lookupLocalIndex(state, instr.dest))),
-          L.Keyword(instr.dest),
+        Stk.Instr("local-store", [
+          Stk.Int(BigInt(lookupLocalIndex(state, instr.dest))),
+          Stk.Var(instr.dest),
         ]),
       ]
     }
 
     case "Perform": {
-      return [
-        ...onExp(state, name, instr.exp),
-        L.Line("fn", name, [L.Keyword("drop")]),
-      ]
+      return [...onExp(state, name, instr.exp), Stk.Instr("drop", [])]
     }
 
     case "Test": {
@@ -163,16 +190,13 @@ function onInstr(state: State, name: string, instr: B.Instr): Array<L.Line> {
 
     case "Branch": {
       return [
-        L.Line("fn", name, [
-          L.Keyword("jump-if-not"),
-          L.Keyword(instr.elseLabel),
-        ]),
-        L.Line("fn", name, [L.Keyword("jump"), L.Keyword(instr.thenLabel)]),
+        Stk.Instr("jump-if-not", [Stk.Var(instr.elseLabel)]),
+        Stk.Instr("jump", [Stk.Var(instr.thenLabel)]),
       ]
     }
 
     case "Goto": {
-      return [L.Line("fn", name, [L.Keyword("jump"), L.Keyword(instr.label)])]
+      return [Stk.Instr("jump", [Stk.Var(instr.label)])]
     }
 
     case "Return": {
@@ -181,14 +205,14 @@ function onInstr(state: State, name: string, instr: B.Instr): Array<L.Line> {
   }
 }
 
-function onExp(state: State, name: string, exp: B.Exp): Array<L.Line> {
+function onExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
   switch (exp.kind) {
     case "Symbol":
     case "Keyword":
     case "String":
     case "Int":
     case "Float": {
-      return [L.Line("fn", name, [L.Keyword("literal"), exp])]
+      return [Stk.Instr("literal", [exp])]
     }
 
     case "Var": {
@@ -201,24 +225,18 @@ function onExp(state: State, name: string, exp: B.Exp): Array<L.Line> {
   }
 }
 
-function onTailExp(state: State, name: string, exp: B.Exp): Array<L.Line> {
+function onTailExp(state: State, name: string, exp: B.Exp): Array<Stk.Instr> {
   switch (exp.kind) {
     case "Symbol":
     case "Keyword":
     case "String":
     case "Int":
     case "Float": {
-      return [
-        L.Line("fn", name, [L.Keyword("literal"), exp]),
-        L.Line("fn", name, [L.Keyword("return")]),
-      ]
+      return [Stk.Instr("literal", [exp]), Stk.Instr("return", [])]
     }
 
     case "Var": {
-      return [
-        ...onVar(state, name, exp),
-        L.Line("fn", name, [L.Keyword("return")]),
-      ]
+      return [...onVar(state, name, exp), Stk.Instr("return", [])]
     }
 
     case "Apply": {
@@ -227,42 +245,44 @@ function onTailExp(state: State, name: string, exp: B.Exp): Array<L.Line> {
   }
 }
 
-function onVar(state: State, name: string, exp: B.Var): Array<L.Line> {
+function onVar(state: State, name: string, exp: B.Var): Array<Stk.Instr> {
   const definition = B.modLookupDefinition(state.mod, exp.name)
   if (definition === undefined) {
     return [
-      L.Line("fn", name, [
-        L.Keyword("local-load"),
-        L.Int(BigInt(lookupLocalIndex(state, exp.name))),
-        L.Keyword(exp.name),
+      Stk.Instr("local-load", [
+        Stk.Int(BigInt(lookupLocalIndex(state, exp.name))),
+        Stk.Var(exp.name),
       ]),
     ]
   }
 
   switch (definition.kind) {
     case "TestDefinition": {
-      throw new Error()
+      let message = `[CodegenPass / onVar] can not handle TestDefinition`
+      throw new Error(message)
     }
 
     case "PrimitiveFunctionDeclaration":
     case "FunctionDefinition": {
-      return [L.Line("fn", name, [L.Keyword("ref"), L.Keyword(exp.name)])]
+      return [Stk.Instr("ref", [Stk.Var(exp.name)])]
     }
 
     case "PrimitiveVariableDeclaration":
     case "VariableDefinition": {
-      return [
-        L.Line("fn", name, [L.Keyword("global-load"), L.Keyword(exp.name)]),
-      ]
+      return [Stk.Instr("global-load", [Stk.Var(exp.name)])]
     }
   }
 }
 
-function onApply(state: State, name: string, exp: B.Apply): Array<L.Line> {
+function onApply(state: State, name: string, exp: B.Apply): Array<Stk.Instr> {
   return onGeneralApply(state, name, exp, false)
 }
 
-function onTailApply(state: State, name: string, exp: B.Apply): Array<L.Line> {
+function onTailApply(
+  state: State,
+  name: string,
+  exp: B.Apply,
+): Array<Stk.Instr> {
   return onGeneralApply(state, name, exp, true)
 }
 
@@ -271,28 +291,25 @@ function onGeneralApply(
   name: string,
   exp: B.Apply,
   isTail: boolean,
-): Array<L.Line> {
+): Array<Stk.Instr> {
   const applyMode = isTail ? "tail-apply" : "apply"
   const callMode = isTail ? "tail-call" : "call"
   const definition = B.modLookupDefinition(state.mod, B.asVar(exp.target).name)
   if (definition === undefined) {
     return [
       ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-      L.Line("fn", name, [
-        L.Keyword("local-load"),
-        L.Int(BigInt(lookupLocalIndex(state, B.asVar(exp.target).name))),
-        L.Keyword(B.asVar(exp.target).name),
+      Stk.Instr("local-load", [
+        Stk.Int(BigInt(lookupLocalIndex(state, B.asVar(exp.target).name))),
+        Stk.Var(B.asVar(exp.target).name),
       ]),
-      L.Line("fn", name, [
-        L.Keyword(applyMode),
-        L.Int(BigInt(exp.args.length)),
-      ]),
+      Stk.Instr(applyMode, [Stk.Int(BigInt(exp.args.length))]),
     ]
   }
 
   switch (definition.kind) {
     case "TestDefinition": {
-      throw new Error()
+      let message = `[CodegenPass / onGeneralApply] can not handle TestDefinition`
+      throw new Error(message)
     }
 
     case "PrimitiveFunctionDeclaration":
@@ -301,35 +318,20 @@ function onGeneralApply(
       if (exp.args.length < arity) {
         return [
           ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-          L.Line("fn", name, [
-            L.Keyword("ref"),
-            L.Keyword(B.asVar(exp.target).name),
-          ]),
-          L.Line("fn", name, [
-            L.Keyword(applyMode),
-            L.Int(BigInt(exp.args.length)),
-          ]),
+          Stk.Instr("ref", [Stk.Var(B.asVar(exp.target).name)]),
+          Stk.Instr(applyMode, [Stk.Int(BigInt(exp.args.length))]),
         ]
       } else if (exp.args.length === arity) {
         return [
           ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-          L.Line("fn", name, [
-            L.Keyword(callMode),
-            L.Keyword(B.asVar(exp.target).name),
-          ]),
+          Stk.Instr(callMode, [Stk.Var(B.asVar(exp.target).name)]),
         ]
       } else {
         return [
           ...exp.args.slice(0, arity).flatMap((arg) => onExp(state, name, arg)),
-          L.Line("fn", name, [
-            L.Keyword("call"),
-            L.Keyword(B.asVar(exp.target).name),
-          ]),
+          Stk.Instr("call", [Stk.Var(B.asVar(exp.target).name)]),
           ...exp.args.slice(arity).flatMap((arg) => onExp(state, name, arg)),
-          L.Line("fn", name, [
-            L.Keyword(applyMode),
-            L.Int(BigInt(exp.args.length - arity)),
-          ]),
+          Stk.Instr(applyMode, [Stk.Int(BigInt(exp.args.length - arity))]),
         ]
       }
     }
@@ -338,14 +340,8 @@ function onGeneralApply(
     case "VariableDefinition": {
       return [
         ...exp.args.flatMap((arg) => onExp(state, name, arg)),
-        L.Line("fn", name, [
-          L.Keyword("global-load"),
-          L.Keyword(B.asVar(exp.target).name),
-        ]),
-        L.Line("fn", name, [
-          L.Keyword(applyMode),
-          L.Int(BigInt(exp.args.length)),
-        ]),
+        Stk.Instr("global-load", [Stk.Var(B.asVar(exp.target).name)]),
+        Stk.Instr(applyMode, [Stk.Int(BigInt(exp.args.length))]),
       ]
     }
   }
