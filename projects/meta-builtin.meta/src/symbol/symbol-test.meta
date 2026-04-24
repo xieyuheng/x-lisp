@@ -1,4 +1,4 @@
-(module test-suite)
+(module builtin)
 
 (define-test symbol-test
   (assert-equal 'abcdef (symbol-append 'abc 'def))

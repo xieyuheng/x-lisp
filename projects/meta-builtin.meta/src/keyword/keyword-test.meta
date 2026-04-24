@@ -1,4 +1,4 @@
-(module test-suite)
+(module builtin)
 
 (define-test keyword-test
   (assert-equal :abcdef (keyword-append :abc :def))

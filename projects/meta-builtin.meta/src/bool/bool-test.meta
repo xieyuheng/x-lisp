@@ -1,4 +1,4 @@
-(module test-suite)
+(module builtin)
 
 (define-test bool-test
   (println true)

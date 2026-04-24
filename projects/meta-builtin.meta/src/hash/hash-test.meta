@@ -1,4 +1,4 @@
-(module test-suite)
+(module builtin)
 
 (define-test hash-test
   (assert (hash-empty? (@hash)))

@@ -1,4 +1,4 @@
-(module test-suite)
+(module builtin)
 
 (define-test path-test
   (assert-equal "a/b/c" (path-directory-name "a/b/c/file.test.txt"))

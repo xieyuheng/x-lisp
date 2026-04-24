@@ -1,8 +1,8 @@
 (module test-suite)
 
 (claim identity
-    (polymorphic (A)
-      (-> A A)))
+  (polymorphic (A)
+    (-> A A)))
 
 (define (identity x) x)
 

@@ -1,4 +1,4 @@
-(module test-suite)
+(module builtin)
 
 (define-test void-test
   (println void))

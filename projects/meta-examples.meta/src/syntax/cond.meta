@@ -1,8 +1,6 @@
 (module test-suite)
 
 (define-test cond-test
-  ;; TODO (cond) should not be desugared to (assert false)
-
   (assert-equal
     1
     (cond

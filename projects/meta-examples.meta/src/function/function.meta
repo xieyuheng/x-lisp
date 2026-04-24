@@ -1,5 +1,0 @@
-(module test-suite)
-
-(define-test function-test
-  (println iadd)
-  (println (iadd 1)))

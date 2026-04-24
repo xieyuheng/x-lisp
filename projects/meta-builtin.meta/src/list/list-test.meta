@@ -1,4 +1,4 @@
-(module test-suite)
+(module builtin)
 
 (define-test list-test
   (= list (make-list))

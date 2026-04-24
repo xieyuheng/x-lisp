@@ -1,4 +1,4 @@
-(module test-suite)
+(module builtin)
 
 (define-test set-test
   (assert-equal (@set 1 2 3) (@set 3 2 1))

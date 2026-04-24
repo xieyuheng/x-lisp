@@ -9,5 +9,5 @@
 (claim three int-t)
 (define three (iadd 1 two))
 
-(define-test constant-test
+(define-test define-test
   (println three))
