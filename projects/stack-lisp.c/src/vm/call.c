@@ -3,7 +3,7 @@
 inline void call_definition(vm_t *vm, const definition_t *definition) {
   switch (definition->kind) {
   case PRIMITIVE_DEFINITION: {
-    call_primitive(vm, definition->primitive_definition.primitive);
+    call_primitive_now(vm, definition->primitive_definition.primitive);
     return;
   }
 
@@ -21,7 +21,7 @@ inline void call_definition(vm_t *vm, const definition_t *definition) {
 inline void call_definition_now(vm_t *vm, const definition_t *definition) {
   switch (definition->kind) {
   case PRIMITIVE_DEFINITION: {
-    call_primitive(vm, definition->primitive_definition.primitive);
+    call_primitive_now(vm, definition->primitive_definition.primitive);
     return;
   }
 
@@ -48,7 +48,7 @@ inline void call_function_now(vm_t *vm, const function_t *function) {
   return;
 }
 
-inline void call_primitive(vm_t *vm, const primitive_t *primitive) {
+inline void call_primitive_now(vm_t *vm, const primitive_t *primitive) {
   switch (primitive->fn_kind) {
   case X_FN_N: {
     primitive->fn(vm);
