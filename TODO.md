@@ -1,6 +1,5 @@
 # stack-lisp
 
-[stack-lisp.c] setup project -- copy li.c
 [stack-lisp.c] rename project
 [stack-lisp.c] remove db_t
 [stack-lisp.c] compile sexp to vm again
