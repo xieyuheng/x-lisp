@@ -1,6 +1,6 @@
 #include "index.h"
 
-void li_call(mod_t *mod, const char *name) {
+void stk_call(mod_t *mod, const char *name) {
   definition_t *definition = mod_lookup(mod, name);
   if (!definition) {
     who_printf("undefined function: %s\n", name);

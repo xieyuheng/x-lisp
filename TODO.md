@@ -1,6 +1,6 @@
 # stack-lisp
 
-[stack-lisp.c] rename project
+[stack-lisp.c] remove old api
 [stack-lisp.c] remove db_t
 [stack-lisp.c] compile sexp to vm again
 
