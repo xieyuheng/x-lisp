@@ -1,0 +1,28 @@
+(define-function factorial 1
+  (local-store 0 n)
+  body
+  (local-load 0 n)
+  (literal 1)
+  (call builtin/int-less-or-equal?)
+  (jump-if-not else₂)
+  (jump then₁)
+  then₁
+  (literal 1)
+  (return)
+  else₂
+  (local-load 0 n)
+  (literal 1)
+  (call builtin/isub)
+  (local-store 1 _₁)
+  (local-load 1 _₁)
+  (call factorial)
+  (local-store 2 _₂)
+  (local-load 2 _₂)
+  (local-load 0 n)
+  (tail-call builtin/imul))
+
+(define-function main 0
+  (literal 3)
+  (call factorial)
+  (call builtin/println)
+  (return))

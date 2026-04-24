@@ -1,6 +1,5 @@
 # stack-lisp
 
-[stack-lisp.c] `stk_compile_function`
 [stack-lisp.c] test factorial
 
 # compile to stack-lisp
