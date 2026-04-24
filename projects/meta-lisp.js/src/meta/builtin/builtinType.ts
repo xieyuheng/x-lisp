@@ -12,12 +12,12 @@ export function builtinType(mod: Mod) {
     type: M.createTypeType(),
   })
 
-  definePrimitiveVariable(mod, "bool-t", M.createAtomType("bool"))
   definePrimitiveVariable(mod, "int-t", M.createAtomType("int"))
   definePrimitiveVariable(mod, "float-t", M.createAtomType("float"))
   definePrimitiveVariable(mod, "string-t", M.createAtomType("string"))
   definePrimitiveVariable(mod, "symbol-t", M.createAtomType("symbol"))
   definePrimitiveVariable(mod, "keyword-t", M.createAtomType("keyword"))
+  definePrimitiveVariable(mod, "bool-t", M.createAtomType("bool"))
   definePrimitiveVariable(mod, "void-t", M.createAtomType("void"))
   definePrimitiveVariable(mod, "file-t", M.createAtomType("file"))
 

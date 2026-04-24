@@ -1,0 +1,20 @@
+(module builtin)
+
+(define-test type-test
+  (println type-t)
+  (println int-t)
+  (println float-t)
+  (println string-t)
+  (println symbol-t)
+  (println keyword-t)
+  (println bool-t)
+  (println void-t)
+  (println file-t)
+
+  (println list-t)
+  (println set-t)
+  (println hash-t)
+
+  (println (list-t int-t))
+  (println (set-t int-t))
+  (println (hash-t string-t int-t)))

@@ -65,6 +65,7 @@ void import_builtin(mod_t *mod) {
   define_variable_primitive_0(mod, "builtin/string-t", x_string_t);
   define_variable_primitive_0(mod, "builtin/symbol-t", x_symbol_t);
   define_variable_primitive_0(mod, "builtin/keyword-t", x_keyword_t);
+  define_variable_primitive_0(mod, "builtin/bool-t", x_bool_t);
   define_variable_primitive_0(mod, "builtin/void-t", x_void_t);
   define_variable_primitive_0(mod, "builtin/file-t", x_file_t);
   define_primitive_1(mod, "builtin/list-t", x_list_t);
@@ -272,6 +273,6 @@ void import_builtin(mod_t *mod) {
 
   // process
 
-  define_primitive_0(mod, "builtin/current-directory?", x_current_directory);
+  define_primitive_0(mod, "builtin/current-directory", x_current_directory);
   // define_primitive_0(mod, "builtin/exit", x_exit);
 }

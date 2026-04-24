@@ -1,0 +1,15 @@
+['type]
+['atom 'int]
+['atom 'float]
+['atom 'string]
+['atom 'symbol]
+['atom 'keyword]
+['atom 'bool]
+['atom 'void]
+['atom 'file]
+#(definition builtin/list-t)
+#(definition builtin/set-t)
+#(definition builtin/hash-t)
+['list ['atom 'int]]
+['set ['atom 'int]]
+['hash ['atom 'string] ['atom 'int]]
