@@ -1,5 +1,7 @@
 (module builtin)
 
+(declare-primitive-function exit 1)
 (declare-primitive-function current-directory 0)
 
+(claim exit (-> int-t void-t))
 (claim current-directory (-> string-t))
