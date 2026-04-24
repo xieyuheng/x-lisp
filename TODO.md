@@ -1,7 +1,6 @@
 # compile to stack-lisp
 
-[meta-lisp.js] stack -- setup
-[meta-lisp.js] stack -- `Exp`
+[meta-lisp.js] stack -- `Definition` & `Mod`
 [meta-lisp.js] stack -- `CodegenPass` to stack-lisp -- instead of li
 
 # remove li
