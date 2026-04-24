@@ -7,6 +7,7 @@ export type Definition =
   | PrimitiveVariableDeclaration
   | FunctionDefinition
   | VariableDefinition
+  | TestDefinition
 
 export type PrimitiveFunctionDeclaration = {
   kind: "PrimitiveFunctionDeclaration"
@@ -93,6 +94,29 @@ export function VariableDefinition(
 ): VariableDefinition {
   return {
     kind: "VariableDefinition",
+    mod,
+    name,
+    blocks,
+    location,
+  }
+}
+
+export type TestDefinition = {
+  kind: "TestDefinition"
+  mod: Mod
+  name: string
+  blocks: Map<string, Block>
+  location?: SourceLocation
+}
+
+export function TestDefinition(
+  mod: Mod,
+  name: string,
+  blocks: Map<string, Block>,
+  location?: SourceLocation,
+): TestDefinition {
+  return {
+    kind: "TestDefinition",
     mod,
     name,
     blocks,

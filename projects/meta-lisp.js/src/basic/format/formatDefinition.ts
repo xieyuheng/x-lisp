@@ -28,6 +28,14 @@ export function formatDefinition(definition: Definition): string {
       ).join(" ")
       return `(define-variable ${name} ${blocks})`
     }
+
+    case "TestDefinition": {
+      const name = definition.name
+      const blocks = Array.from(
+        definition.blocks.values().map(formatBlock),
+      ).join(" ")
+      return `(define-test ${name} ${blocks})`
+    }
   }
 }
 

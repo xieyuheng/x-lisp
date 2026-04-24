@@ -10,7 +10,7 @@ export type Instr = {
 export function Instr(
   op: string,
   operands: Array<Operand>,
-  location?: SourceLocation
+  location?: SourceLocation,
 ): Instr {
   return {
     op,

@@ -93,7 +93,8 @@ function lookupLocalIndex(state: State, name: string): number {
 function onDefinition(mod: B.Mod, definition: B.Definition): Array<L.Line> {
   switch (definition.kind) {
     case "PrimitiveFunctionDeclaration":
-    case "PrimitiveVariableDeclaration": {
+    case "PrimitiveVariableDeclaration":
+    case "TestDefinition": {
       return []
     }
 
@@ -239,6 +240,10 @@ function onVar(state: State, name: string, exp: B.Var): Array<L.Line> {
   }
 
   switch (definition.kind) {
+    case "TestDefinition": {
+      throw new Error()
+    }
+
     case "PrimitiveFunctionDeclaration":
     case "FunctionDefinition": {
       return [L.Line("fn", name, [L.Keyword("ref"), L.Keyword(exp.name)])]
@@ -286,6 +291,10 @@ function onGeneralApply(
   }
 
   switch (definition.kind) {
+    case "TestDefinition": {
+      throw new Error()
+    }
+
     case "PrimitiveFunctionDeclaration":
     case "FunctionDefinition": {
       const arity = B.definitionArity(definition)

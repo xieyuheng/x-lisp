@@ -11,7 +11,8 @@ export function definitionArity(definition: B.Definition): number {
     }
 
     case "PrimitiveVariableDeclaration":
-    case "VariableDefinition": {
+    case "VariableDefinition":
+    case "TestDefinition": {
       let message = `[definitionArity] unhandled kind: ${definition.kind}\n`
       throw new Error(message)
     }
