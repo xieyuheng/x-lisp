@@ -49,14 +49,14 @@ bool curry_equal(const curry_t *lhs, const curry_t *rhs) {
   return true;
 }
 
-void curry_print(printer_t *printer, const curry_t *self) {
+void curry_print(object_circle_ctx_t *ctx, const curry_t *self) {
   printf("(@curry ");
-  value_print(printer, self->target);
+  value_print(ctx, self->target);
   printf(" %ld", self->arity);
   printf(" [");
   for (size_t i = 0; i < self->size; i++) {
     if (i > 0) printf(" ");
-    value_print(printer, self->args[i]);
+    value_print(ctx, self->args[i]);
   }
   printf("]");
   printf(")");

@@ -75,8 +75,8 @@ bool definition_equal(definition_t *lhs, definition_t *rhs) {
   return lhs == rhs;
 }
 
-void definition_print(printer_t *printer, definition_t *self) {
-  (void) printer;
+void definition_print(object_circle_ctx_t *ctx, definition_t *self) {
+  (void) ctx;
   printf("#(definition %s)", self->name);
 }
 

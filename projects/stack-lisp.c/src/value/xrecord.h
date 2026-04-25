@@ -21,7 +21,7 @@ void xrecord_delete(xrecord_t *self, const char *key);
 xrecord_t *xrecord_copy(const xrecord_t *self);
 
 bool xrecord_equal(const xrecord_t *lhs, const xrecord_t *rhs);
-void xrecord_print(printer_t *printer, const xrecord_t *self);
+void xrecord_print(object_circle_ctx_t *ctx, const xrecord_t *self);
 hash_code_t xrecord_hash_code(const xrecord_t *self);
 ordering_t xrecord_compare(const xrecord_t *lhs, const xrecord_t *rhs);
 

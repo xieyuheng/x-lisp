@@ -88,22 +88,22 @@ bool xlist_equal(const xlist_t *lhs, const xlist_t *rhs) {
   return true;
 }
 
-static void xlist_print_elements(printer_t *printer, const xlist_t *self) {
+static void xlist_print_elements(object_circle_ctx_t *ctx, const xlist_t *self) {
   for (size_t i = 0; i < array_length(self->elements); i++) {
-    value_print(printer, xlist_get(self, i));
+    value_print(ctx, xlist_get(self, i));
     if (i < array_length(self->elements) - 1) {
       printf(" ");
     }
   }
 }
 
-void xlist_print(printer_t *printer, const xlist_t *self) {
+void xlist_print(object_circle_ctx_t *ctx, const xlist_t *self) {
   if (array_is_empty(self->elements)) {
     printf("[");
     printf("]");
   } else {
     printf("[");
-    xlist_print_elements(printer, self);
+    xlist_print_elements(ctx, self);
     printf("]");
   }
 }

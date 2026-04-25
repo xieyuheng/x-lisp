@@ -55,8 +55,8 @@ keyword_t *to_keyword(value_t value) {
   return (keyword_t *) to_object(value);
 }
 
-void keyword_print(printer_t *printer, const keyword_t *self) {
-  (void) printer,
+void keyword_print(object_circle_ctx_t *ctx, const keyword_t *self) {
+  (void) ctx,
   string_print(":");
   string_print(keyword_string(self));
 }

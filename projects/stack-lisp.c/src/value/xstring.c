@@ -69,8 +69,8 @@ bool xstring_equal(const xstring_t *lhs, const xstring_t *rhs) {
   return text_equal(lhs->text, rhs->text);
 }
 
-void xstring_print(printer_t *printer, const xstring_t *self) {
-  (void) printer;
+void xstring_print(object_circle_ctx_t *ctx, const xstring_t *self) {
+  (void) ctx;
   string_print("\"");
   string_print(text_string(self->text));
   string_print("\"");

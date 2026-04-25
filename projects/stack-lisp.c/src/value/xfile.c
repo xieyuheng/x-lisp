@@ -62,8 +62,8 @@ bool xfile_equal(const xfile_t *lhs, const xfile_t *rhs) {
   return lhs->file == rhs->file;
 }
 
-void xfile_print(printer_t *printer, const xfile_t *self) {
-  (void) printer;
+void xfile_print(object_circle_ctx_t *ctx, const xfile_t *self) {
+  (void) ctx;
   string_print("#(file ");
   int_print(file_raw_fd(self->file));
   if (self->pathname) {

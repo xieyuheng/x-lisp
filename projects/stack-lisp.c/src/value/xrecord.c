@@ -91,7 +91,7 @@ bool xrecord_equal(const xrecord_t *lhs, const xrecord_t *rhs) {
   return true;
 }
 
-static void xrecord_print_attributes(printer_t *printer, const xrecord_t *self) {
+static void xrecord_print_attributes(object_circle_ctx_t *ctx, const xrecord_t *self) {
   record_iter_t iter;
   record_iter_init(&iter, self->attributes);
 
@@ -101,25 +101,25 @@ static void xrecord_print_attributes(printer_t *printer, const xrecord_t *self) 
   if (key) {
     value_t value = xrecord_get(self, key);
     printf(":%s ", key);
-    value_print(printer, value);
+    value_print(ctx, value);
     key = record_iter_next_key(&iter);
   }
 
   while (key) {
     value_t value = xrecord_get(self, key);
     printf(" :%s ", key);
-    value_print(printer, value);
+    value_print(ctx, value);
     key = record_iter_next_key(&iter);
   }
 }
 
-void xrecord_print(printer_t *printer, const xrecord_t *self) {
+void xrecord_print(object_circle_ctx_t *ctx, const xrecord_t *self) {
   if (record_is_empty(self->attributes)) {
     printf("{");
     printf("}");
   } else {
     printf("{");
-    xrecord_print_attributes(printer, self);
+    xrecord_print_attributes(ctx, self);
     printf("}");
   }
 }

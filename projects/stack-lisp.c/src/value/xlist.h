@@ -25,7 +25,7 @@ void xlist_push_front(xlist_t *self, value_t value);
 xlist_t *xlist_copy(const xlist_t *self);
 
 bool xlist_equal(const xlist_t *lhs, const xlist_t *rhs);
-void xlist_print(printer_t *printer, const xlist_t *self);
+void xlist_print(object_circle_ctx_t *ctx, const xlist_t *self);
 hash_code_t xlist_hash_code(const xlist_t *self);
 ordering_t xlist_compare(const xlist_t *lhs, const xlist_t *rhs);
 

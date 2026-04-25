@@ -55,8 +55,8 @@ symbol_t *to_symbol(value_t value) {
   return (symbol_t *) to_object(value);
 }
 
-void symbol_print(printer_t *printer, const symbol_t *self) {
-  (void) printer;
+void symbol_print(object_circle_ctx_t *ctx, const symbol_t *self) {
+  (void) ctx;
   string_print("'");
   string_print(symbol_string(self));
 }

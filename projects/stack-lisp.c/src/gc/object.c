@@ -7,9 +7,9 @@ void object_free(object_t *self) {
   }
 }
 
-void object_print(printer_t *printer, object_t *self) {
+void object_print(object_circle_ctx_t *ctx, object_t *self) {
   if (self->header.class->print_fn) {
-    self->header.class->print_fn(printer, self);
+    self->header.class->print_fn(ctx, self);
     return;
   }
 

@@ -4,7 +4,7 @@ inline tag_t value_tag(value_t value) {
   return (size_t) value & TAG_MASK;
 }
 
-void value_print(printer_t *printer, value_t value) {
+void value_print(object_circle_ctx_t *ctx, value_t value) {
   if (int_p(value)) {
     printf("%ld", to_int64(value));
     return;
@@ -41,16 +41,16 @@ void value_print(printer_t *printer, value_t value) {
 
   if (object_p(value)) {
     object_t *object = to_object(value);
-    if (printer_circle_start_p(printer, object)) {
-      printf("#%ld=", printer_circle_index(printer, object));
-      printer_meet(printer, object);
-      object_print(printer, object);
+    if (object_circle_start_p(ctx, object)) {
+      printf("#%ld=", object_circle_index(ctx, object));
+      object_circle_meet(ctx, object);
+      object_print(ctx, object);
       return;
-    } else if (printer_circle_end_p(printer, object)) {
-      printf("#%ld#", printer_circle_index(printer, object));
+    } else if (object_circle_end_p(ctx, object)) {
+      printf("#%ld#", object_circle_index(ctx, object));
       return;
     } else {
-      object_print(printer, object);
+      object_print(ctx, object);
       return;
     }
   }
@@ -60,14 +60,14 @@ void value_print(printer_t *printer, value_t value) {
 }
 
 void print(value_t value) {
-  printer_t *printer = make_printer();
+  object_circle_ctx_t *ctx = make_object_circle_ctx();
   if (object_p(value)) {
-    printer_collect_circle(printer, to_object(value));
-    set_clear(printer->occurred_objects);
+    object_circle_collect(ctx, to_object(value));
+    set_clear(ctx->occurred_objects);
   }
 
-  value_print(printer, value);
-  printer_free(printer);
+  value_print(ctx, value);
+  object_circle_ctx_free(ctx);
 }
 
 bool same_p(value_t lhs, value_t rhs) {

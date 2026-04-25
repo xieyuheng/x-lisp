@@ -103,7 +103,7 @@ bool xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
   return true;
 }
 
-static void xhash_print_entries(printer_t *printer, const xhash_t *self) {
+static void xhash_print_entries(object_circle_ctx_t *ctx, const xhash_t *self) {
   hash_iter_t iter;
   hash_iter_init(&iter, self->hash);
 
@@ -111,16 +111,16 @@ static void xhash_print_entries(printer_t *printer, const xhash_t *self) {
   while (key) {
     value_t value = xhash_get(self, key);
     printf(" ");
-    value_print(printer, key);
+    value_print(ctx, key);
     printf(" ");
-    value_print(printer, value);
+    value_print(ctx, value);
     key = (value_t) hash_iter_next_key(&iter);
   }
 }
 
-void xhash_print(printer_t *printer, const xhash_t *self) {
+void xhash_print(object_circle_ctx_t *ctx, const xhash_t *self) {
   printf("(@hash");
-  xhash_print_entries(printer, self);
+  xhash_print_entries(ctx, self);
   printf(")");
 }
 

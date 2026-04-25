@@ -99,7 +99,7 @@ bool xset_equal(const xset_t *lhs, const xset_t *rhs) {
   return true;
 }
 
-void xset_print(printer_t *printer, const xset_t *self) {
+void xset_print(object_circle_ctx_t *ctx, const xset_t *self) {
   printf("{");
 
   set_iter_t iter;
@@ -107,13 +107,13 @@ void xset_print(printer_t *printer, const xset_t *self) {
 
   const hash_entry_t *entry = set_iter_next_entry(&iter);
   if (entry) {
-    value_print(printer, (value_t) entry->value);
+    value_print(ctx, (value_t) entry->value);
     entry = set_iter_next_entry(&iter);
   }
 
   while (entry) {
     printf(" ");
-    value_print(printer, (value_t) entry->value);
+    value_print(ctx, (value_t) entry->value);
     entry = set_iter_next_entry(&iter);
   }
 
