@@ -7,7 +7,7 @@ bool can_consume_string(lexer_t *lexer) {
 char *consume_string(lexer_t *lexer) {
   lexer_forward(lexer, 1); // over the starting '"'
 
-  string_builder_t *builder = make_string_builder();
+  buffer_t *buffer = make_buffer();
 
   while (true) {
     if (lexer_is_finished(lexer)) {
@@ -26,14 +26,14 @@ char *consume_string(lexer_t *lexer) {
 
       c = lexer_next_char(lexer);
       // escape char from: https://www.json.org/json-en.html
-      if (c == 'n') string_builder_append_char(builder, '\n');
-      else if (c == 't') string_builder_append_char(builder, '\t');
-      else if (c == 'b') string_builder_append_char(builder, '\b');
-      else if (c == 'f') string_builder_append_char(builder, '\f');
-      else if (c == 'r') string_builder_append_char(builder, '\r');
-      else if (c == '0') string_builder_append_char(builder, '\0');
-      else if (c == '"') string_builder_append_char(builder, '\"');
-      else if (c == '\\') string_builder_append_char(builder, '\\');
+      if (c == 'n') buffer_append_char(buffer, '\n');
+      else if (c == 't') buffer_append_char(buffer, '\t');
+      else if (c == 'b') buffer_append_char(buffer, '\b');
+      else if (c == 'f') buffer_append_char(buffer, '\f');
+      else if (c == 'r') buffer_append_char(buffer, '\r');
+      else if (c == '0') buffer_append_char(buffer, '\0');
+      else if (c == '"') buffer_append_char(buffer, '\"');
+      else if (c == '\\') buffer_append_char(buffer, '\\');
       else {
         where_printf("unknown escape char");
         exit(1);
@@ -41,12 +41,12 @@ char *consume_string(lexer_t *lexer) {
 
       lexer_forward(lexer, 1);
     } else {
-      string_builder_append_char(builder, c);
+      buffer_append_char(buffer, c);
       lexer_forward(lexer, 1);
     }
   }
 
-  char *content = string_builder_produce(builder);
-  string_builder_free(builder);
+  char *content = buffer_to_string(buffer);
+  buffer_free(buffer);
   return content;
 }

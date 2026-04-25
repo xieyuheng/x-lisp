@@ -22,16 +22,16 @@ value_t x_symbol_append(value_t left, value_t right) {
 }
 
 value_t x_symbol_concat(value_t list) {
-  string_builder_t *builder = make_string_builder();
+  buffer_t *buffer = make_buffer();
   int64_t length = to_int64(x_list_length(list));
   for (int64_t i = 0; i < length; i++) {
     value_t element = x_list_get(x_int(i), list);
-    string_builder_append_string(builder, symbol_string(to_symbol(element)));
+    buffer_append_string(buffer, symbol_string(to_symbol(element)));
   }
 
-  char *content = string_builder_produce(builder);
+  char *content = buffer_to_string(buffer);
   value_t result = x_object(intern_symbol(content));
   string_free(content);
-  string_builder_free(builder);
+  buffer_free(buffer);
   return result;
 }

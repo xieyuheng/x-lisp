@@ -26,17 +26,17 @@ static void line_free(line_t *line) {
 }
 
 static char *make_underline(struct span_t span, size_t start, size_t end) {
-  string_builder_t *builder = make_string_builder();
+  buffer_t *buffer = make_buffer();
   for (size_t i = start; i < end; i++) {
     if (span.start.index <= i && i < span.end.index) {
-      string_builder_append_char(builder, '~');
+      buffer_append_char(buffer, '~');
     } else {
-      string_builder_append_char(builder, ' ');
+      buffer_append_char(buffer, ' ');
     }
   }
 
-  char *content = string_builder_produce(builder);
-  string_builder_free(builder);
+  char *content = buffer_to_string(buffer);
+  buffer_free(buffer);
 
   if (string_is_blank(content)) {
     string_free(content);

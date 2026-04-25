@@ -11,7 +11,7 @@ bool can_consume_line_comment(lexer_t *lexer) {
 }
 
 char *consume_line_comment(lexer_t *lexer) {
-  string_builder_t *builder = make_string_builder();
+  buffer_t *buffer = make_buffer();
 
   while (true) {
     if (lexer_is_finished(lexer)) {
@@ -24,11 +24,11 @@ char *consume_line_comment(lexer_t *lexer) {
       break;
     }
 
-    string_builder_append_char(builder, c);
+    buffer_append_char(buffer, c);
     lexer_forward(lexer, 1);
   }
 
-  char *content = string_builder_produce(builder);
-  string_builder_free(builder);
+  char *content = buffer_to_string(buffer);
+  buffer_free(buffer);
   return content;
 }

@@ -31,16 +31,16 @@ value_t x_string_append(value_t left, value_t right) {
 }
 
 value_t x_string_concat(value_t list) {
-  string_builder_t *builder = make_string_builder();
+  buffer_t *buffer = make_buffer();
   int64_t length = to_int64(x_list_length(list));
   for (int64_t i = 0; i < length; i++) {
     value_t element = x_list_get(x_int(i), list);
-    string_builder_append_string(builder, xstring_string(to_xstring(element)));
+    buffer_append_string(buffer, xstring_string(to_xstring(element)));
   }
 
-  char *content = string_builder_produce(builder);
+  char *content = buffer_to_string(buffer);
   value_t result = x_object(make_xstring_take(content));
-  string_builder_free(builder);
+  buffer_free(buffer);
   return result;
 }
 
@@ -91,19 +91,19 @@ value_t x_string_split(value_t delimiter, value_t string) {
 }
 
 value_t x_string_join(value_t separator, value_t list) {
-  string_builder_t *builder = make_string_builder();
+  buffer_t *buffer = make_buffer();
   int64_t length = to_int64(x_list_length(list));
   for (int64_t i = 0; i < length; i++) {
     value_t element = x_list_get(x_int(i), list);
-    string_builder_append_string(builder, xstring_string(to_xstring(element)));
+    buffer_append_string(buffer, xstring_string(to_xstring(element)));
     if (i < length - 1) {
-      string_builder_append_string(builder, xstring_string(to_xstring(separator)));
+      buffer_append_string(buffer, xstring_string(to_xstring(separator)));
     }
   }
 
-  char *content = string_builder_produce(builder);
+  char *content = buffer_to_string(buffer);
   value_t result = x_object(make_xstring_take(content));
-  string_builder_free(builder);
+  buffer_free(buffer);
   return result;
 }
 
@@ -111,19 +111,19 @@ value_t x_string_replace(value_t pattern, value_t replacement, value_t string) {
   const text_t *text = xstring_text(to_xstring(string));
   const char *pattern_string = xstring_string(to_xstring(pattern));
   const char *replacement_string = xstring_string(to_xstring(replacement));
-  string_builder_t *builder = make_string_builder();
+  buffer_t *buffer = make_buffer();
   size_t cursor = 0;
   char *substring = string_next_split(text_string(text), pattern_string, &cursor);
   while (substring) {
-    string_builder_append_string(builder, substring);
+    buffer_append_string(buffer, substring);
     substring = string_next_split(text_string(text), pattern_string, &cursor);
     if (substring) {
-        string_builder_append_string(builder, replacement_string);
+        buffer_append_string(buffer, replacement_string);
     }
   }
 
-  value_t result = x_object(make_xstring_take(string_builder_produce(builder)));
-  string_builder_free(builder);
+  value_t result = x_object(make_xstring_take(buffer_to_string(buffer)));
+  buffer_free(buffer);
   return result;
 }
 

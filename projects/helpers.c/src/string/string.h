@@ -31,6 +31,9 @@ int string_find_last_char_index(const char *self, char ch);
 int string_find_non_blank_index(const char *self);
 int string_find_last_non_blank_index(const char *self);
 
+int string_find_non_blank_index(const char *self);
+int string_find_last_non_blank_index(const char *self);
+
 char *string_trim_left(const char *self);
 char *string_trim_right(const char *self);
 char *string_trim_start(const char *self);

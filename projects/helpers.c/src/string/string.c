@@ -158,6 +158,27 @@ int string_find_last_char_index(const char *self, char ch) {
   return -1;
 }
 
+int string_find_blank_index(const char *self) {
+  for (size_t i = 0; i < string_length(self); i++) {
+    if (char_is_blank(self[i])) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+int string_find_last_blank_index(const char *self) {
+  for (size_t i = 0; i < string_length(self); i++) {
+    size_t last_index = string_length(self) - 1 - i;
+    if (char_is_blank(self[last_index])) {
+      return last_index;
+    }
+  }
+
+  return -1;
+}
+
 int string_find_non_blank_index(const char *self) {
   for (size_t i = 0; i < string_length(self); i++) {
     if (!char_is_blank(self[i])) {
@@ -287,6 +308,7 @@ bool string_equal_mod_case(const char *left, const char *right) {
 
 char *string_next_word(const char *self, size_t *cursor_pointer) {
   size_t cursor = *cursor_pointer;
+
   while (self[cursor] != 0) {
     char c = self[cursor];
     if (char_is_blank(c)) {
@@ -296,26 +318,17 @@ char *string_next_word(const char *self, size_t *cursor_pointer) {
     }
   }
 
-  string_builder_t *builder = make_string_builder();
-  while (self[cursor] != 0) {
-    char c = self[cursor];
-    if (char_is_blank(c)) {
-      break;
-    } else {
-      string_builder_append_char(builder, c);
-      cursor++;
-    }
-  }
-
-  char *word = string_builder_produce(builder);
-  string_builder_free(builder);
-  *cursor_pointer = cursor;
-
-  if (string_length(word) == 0) {
-    string_free(word);
+  if (self[cursor] == 0) {
     return NULL;
+  }
+
+  int index = string_find_blank_index(self + cursor);
+  if (index != -1) {
+    *cursor_pointer += index + 1;
+    return string_substring(self, cursor, cursor + index);
   } else {
-    return word;
+    *cursor_pointer += string_length(self + cursor);
+    return string_copy(self + cursor);
   }
 }
 

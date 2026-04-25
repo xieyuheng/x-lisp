@@ -28,18 +28,18 @@ char *lexer_next_char_string(lexer_t *self) {
 }
 
 char *lexer_next_word_string(lexer_t *self) {
-  string_builder_t *builder = make_string_builder();
+  buffer_t *buffer = make_buffer();
   size_t index = self->position.index;
   while (index < self->length &&
        !char_is_blank(self->string[index]) &&
        !lexer_char_is_mark(self, self->string[index]))
   {
-    string_builder_append_char(builder, self->string[index]);
+    buffer_append_char(buffer, self->string[index]);
     index++;
   }
 
-  char *word = string_builder_produce(builder);
-  string_builder_free(builder);
+  char *word = buffer_to_string(buffer);
+  buffer_free(buffer);
   return word;
 }
 

@@ -6,17 +6,17 @@ bool can_consume_symbol(lexer_t *lexer) {
 }
 
 char *consume_symbol(lexer_t *lexer) {
-  string_builder_t *builder = make_string_builder();
+  buffer_t *buffer = make_buffer();
 
   while (!lexer_is_finished(lexer) &&
        !char_is_blank(lexer_next_char(lexer)) &&
        !lexer_char_is_mark(lexer, lexer_next_char(lexer)))
   {
-    string_builder_append_char(builder, lexer_next_char(lexer));
+    buffer_append_char(buffer, lexer_next_char(lexer));
     lexer_forward(lexer, 1);
   }
 
-  char *content = string_builder_produce(builder);
-  string_builder_free(builder);
+  char *content = buffer_to_string(buffer);
+  buffer_free(buffer);
   return content;
 }
