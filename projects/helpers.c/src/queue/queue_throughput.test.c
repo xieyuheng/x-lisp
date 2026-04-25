@@ -42,7 +42,7 @@ int main(void) {
   thread_join(producer_thread);
   thread_join(consumer_thread);
 
-  double throughput = LENGTH / 1000 / time_passed_second(start_second);
+  double throughput = LENGTH / 1000 / time_second_passed(start_second);
   where_printf("throughput: %.f k/s\n", throughput);
 
   queue_free(queue);

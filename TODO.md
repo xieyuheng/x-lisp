@@ -1,6 +1,5 @@
 # feedback
 
-[stack-lisp.c] `test` command support `--profile` options -- print parsing time and execution time
 [stack-lisp.c] rename `printer_t` to something about finding circle
 [stack-lisp.c] `error` & `assert` & `assert-equal` -- print error to stderr -- instead of stdout
 [stack-lisp.c] builtin -- `error-with-location` & `assert-with-location` -- print in context

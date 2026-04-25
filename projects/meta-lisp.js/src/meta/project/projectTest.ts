@@ -13,8 +13,9 @@ export const StackLispInterpreterPath = Path.join(
 export function projectTest(
   project: M.Project,
   options: {
-    builtin: boolean
     verbose: boolean
+    profile: boolean
+    builtin: boolean
   },
 ): void {
   M.projectBuild(project, {
@@ -28,6 +29,7 @@ export function projectTest(
     Path.join(M.projectOutputDirectory(project), "bundle.stack"),
     "--snapshot",
     M.projectSnapshotDirectory(project),
-    options.builtin !== undefined ? "--builtin" : "",
+    options.profile ? "--profile" : "",
+    options.builtin ? "--builtin" : "",
   ])
 }

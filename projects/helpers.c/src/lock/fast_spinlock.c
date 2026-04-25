@@ -19,7 +19,7 @@ inline void fast_spinlock_lock(fast_spinlock_t *self) {
          true,
          memory_order_acquire))
   {
-    time_sleep_nanosecond(1);
+    time_nanosecond_sleep(1);
   }
 }
 

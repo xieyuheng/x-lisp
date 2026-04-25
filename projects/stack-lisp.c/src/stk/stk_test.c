@@ -1,36 +1,36 @@
 #include "index.h"
 
-void stk_test(mod_t *mod, const char *snapshot) {
+void stk_test(mod_t *mod, const char *snapshot, bool profile) {
   set_iter_t iter;
   set_iter_init(&iter, mod->test_names);
   char *name = set_iter_next(&iter);
   while (name) {
     if (!string_starts_with(name, "builtin/")) {
       definition_t *definition = mod_lookup_or_fail(mod, name);
-      stk_test_definition(mod, snapshot, definition);
+      stk_test_definition(mod, snapshot, profile, definition);
     }
 
     name = set_iter_next(&iter);
   }
 }
 
-void stk_builtin_test(mod_t *mod, const char *snapshot) {
+void stk_builtin_test(mod_t *mod, const char *snapshot, bool profile) {
   set_iter_t iter;
   set_iter_init(&iter, mod->test_names);
   char *name = set_iter_next(&iter);
   while (name) {
     if (string_starts_with(name, "builtin/")) {
       definition_t *definition = mod_lookup_or_fail(mod, name);
-      stk_test_definition(mod, snapshot, definition);
+      stk_test_definition(mod, snapshot, profile, definition);
     }
 
     name = set_iter_next(&iter);
   }
 }
 
-void stk_test_definition(mod_t *mod, const char *snapshot, definition_t *definition) {
+void stk_test_definition(mod_t *mod, const char *snapshot, bool profile, definition_t *definition) {
   assert(definition->kind == FUNCTION_DEFINITION);
-  printf("[test] %s\n", definition->name);
+  double testing_start = time_millisecond();
   if (snapshot == NULL) {
     stk_call(mod, definition->name);
   } else {
@@ -54,4 +54,12 @@ void stk_test_definition(mod_t *mod, const char *snapshot, definition_t *definit
 
     path_free(path);
   }
+
+  printf("[test] %s", definition->name);
+  double testing_time = time_millisecond_passed(testing_start);
+  if (profile) {
+    printf(" (%.3f ms)", testing_time);
+  }
+
+  printf("\n");
 }

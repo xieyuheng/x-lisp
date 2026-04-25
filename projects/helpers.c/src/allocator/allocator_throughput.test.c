@@ -46,7 +46,7 @@ int main(void) {
   }
 
   where_printf("thread_count: %lu\n", thread_count);
-  double throughput = REPEATION_COUNT * BATCH_SIZE / 1000 / time_passed_second(start_second);
+  double throughput = REPEATION_COUNT * BATCH_SIZE / 1000 / time_second_passed(start_second);
   where_printf("throughput: %.f k/s\n", throughput);
 
   allocator_free(allocator);

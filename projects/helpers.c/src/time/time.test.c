@@ -7,6 +7,10 @@ int main(void) {
   where_printf("time_second(): %f\n", time_second());
   where_printf("time_second(): %f\n", time_second());
 
+  where_printf("time_millisecond(): %f\n", time_millisecond());
+  where_printf("time_millisecond(): %f\n", time_millisecond());
+  where_printf("time_millisecond(): %f\n", time_millisecond());
+
   where_printf("time_nanosecond(): %lu\n", time_nanosecond());
   where_printf("time_nanosecond(): %lu\n", time_nanosecond());
   where_printf("time_nanosecond(): %lu\n", time_nanosecond());
