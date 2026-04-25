@@ -52,21 +52,6 @@ void file_write_string(file_t *file, const char *string) {
   fsync(fileno(file));
 }
 
-buffer_t *file_read_buffer(file_t *file) {
-  off_t size = file_size(file);
-  buffer_t *buffer = make_buffer(size);
-  uint8_t *bytes = buffer_bytes(buffer);
-  size_t nbytes = fread(bytes, 1, size, file);
-  assert(nbytes == (size_t) size);
-  return buffer;
-}
-
-void file_write_buffer(file_t *file, const buffer_t *buffer) {
-  file_write_bytes(file, buffer_bytes(buffer), buffer_size(buffer));
-  fflush(file);
-  fsync(fileno(file));
-}
-
 void file_lock(file_t *file) {
   flockfile(file);
 }

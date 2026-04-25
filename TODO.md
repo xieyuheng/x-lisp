@@ -1,7 +1,10 @@
 # format
 
-[helpers.c] buffer -- `buffer_t` has `capacity` and `cursor`
-[helpers.c] buffer -- `buffer_length`
+[helpers.c] `buffer_is_full_capacity`
+[helpers.c] `buffer_double_capacity`
+
+[helpers.c] `buffer_get_byte`
+[helpers.c] `buffer_put_byte`
 
 [helpers.c] remove `string_builder_t` -- use `buffer_t`
 

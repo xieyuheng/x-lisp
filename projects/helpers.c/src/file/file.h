@@ -11,8 +11,5 @@ uint8_t *file_read_bytes(file_t *file);
 void file_write_bytes(file_t *file, const uint8_t *bytes, size_t size);
 void file_write_string(file_t *file, const char *string);
 
-buffer_t *file_read_buffer(file_t *file);
-void file_write_buffer(file_t *file, const buffer_t *buffer);
-
 void file_lock(file_t *file);
 void file_unlock(file_t *file);
