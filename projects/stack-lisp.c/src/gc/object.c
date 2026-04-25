@@ -7,12 +7,21 @@ void object_free(object_t *self) {
   }
 }
 
-void object_print(object_circle_ctx_t *ctx, object_t *self) {
-  if (self->header.class->print_fn) {
-    self->header.class->print_fn(ctx, self);
+void object_format(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self) {
+  if (self->header.class->format_fn) {
+    self->header.class->format_fn(buffer, ctx, self);
     return;
   }
 
-  printf("#(%s 0x%p)", self->header.class->name, (void *) self);
+  buffer_printf(buffer, "#(%s 0x%p)", self->header.class->name, (void *) self);
   return;
+}
+
+void object_print(object_circle_ctx_t *ctx, object_t *self) {
+  buffer_t *buffer = make_buffer();
+  object_format(buffer, ctx, self);
+  char *string = buffer_to_string(buffer);
+  printf("%s", string);
+  string_free(string);
+  buffer_free(buffer);
 }

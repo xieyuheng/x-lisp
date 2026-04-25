@@ -8,7 +8,7 @@ struct xstring_t {
 const object_class_t xstring_class = {
   .name = "string",
   .equal_fn = (object_equal_fn_t *) xstring_equal,
-  .print_fn = (object_print_fn_t *) xstring_print,
+  .format_fn = (object_format_fn_t *) xstring_format,
   .hash_code_fn = (object_hash_code_fn_t *) xstring_hash_code,
   .compare_fn = (object_compare_fn_t *) xstring_compare,
   .free_fn = (free_fn_t *) xstring_free,
@@ -69,11 +69,11 @@ bool xstring_equal(const xstring_t *lhs, const xstring_t *rhs) {
   return text_equal(lhs->text, rhs->text);
 }
 
-void xstring_print(object_circle_ctx_t *ctx, const xstring_t *self) {
+void xstring_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xstring_t *self) {
   (void) ctx;
-  string_print("\"");
-  string_print(text_string(self->text));
-  string_print("\"");
+  buffer_append_string(buffer, "\"");
+  buffer_append_string(buffer, text_string(self->text));
+  buffer_append_string(buffer, "\"");
 }
 
 hash_code_t xstring_hash_code(const xstring_t *self) {

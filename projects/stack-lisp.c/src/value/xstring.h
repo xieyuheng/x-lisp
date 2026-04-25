@@ -12,7 +12,7 @@ bool xstring_p(value_t value);
 xstring_t *to_xstring(value_t value);
 
 bool xstring_equal(const xstring_t *lhs, const xstring_t *rhs);
-void xstring_print(object_circle_ctx_t *ctx, const xstring_t *self);
+void xstring_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xstring_t *self);
 hash_code_t xstring_hash_code(const xstring_t *self);
 ordering_t xstring_compare(const xstring_t *lhs, const xstring_t *rhs);
 

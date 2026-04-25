@@ -24,7 +24,7 @@ void xhash_delete(xhash_t *self, value_t key);
 xhash_t *xhash_copy(const xhash_t *self);
 
 bool xhash_equal(const xhash_t *lhs, const xhash_t *rhs);
-void xhash_print(object_circle_ctx_t *ctx, const xhash_t *self);
+void xhash_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xhash_t *self);
 hash_code_t xhash_hash_code(const xhash_t *self);
 ordering_t xhash_compare(const xhash_t *lhs, const xhash_t *rhs);
 

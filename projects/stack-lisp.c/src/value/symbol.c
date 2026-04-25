@@ -7,7 +7,7 @@ struct symbol_t {
 
 const object_class_t symbol_class = {
   .name = "symbol",
-  .print_fn = (object_print_fn_t *) symbol_print,
+  .format_fn = (object_format_fn_t *) symbol_format,
   .hash_code_fn = (object_hash_code_fn_t *) symbol_hash_code,
   .compare_fn = (object_compare_fn_t *) symbol_compare,
 };
@@ -55,10 +55,11 @@ symbol_t *to_symbol(value_t value) {
   return (symbol_t *) to_object(value);
 }
 
-void symbol_print(object_circle_ctx_t *ctx, const symbol_t *self) {
+
+void symbol_format(buffer_t *buffer, object_circle_ctx_t *ctx, const symbol_t *self) {
   (void) ctx;
-  string_print("'");
-  string_print(symbol_string(self));
+  buffer_append_string(buffer, "'");
+  buffer_append_string(buffer, symbol_string(self));
 }
 
 hash_code_t symbol_hash_code(const symbol_t *self) {

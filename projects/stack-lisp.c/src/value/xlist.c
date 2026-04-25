@@ -3,7 +3,7 @@
 const object_class_t xlist_class = {
   .name = "list",
   .equal_fn = (object_equal_fn_t *) xlist_equal,
-  .print_fn = (object_print_fn_t *) xlist_print,
+  .format_fn = (object_format_fn_t *) xlist_format,
   .hash_code_fn = (object_hash_code_fn_t *) xlist_hash_code,
   .compare_fn = (object_compare_fn_t *) xlist_compare,
   .free_fn = (free_fn_t *) xlist_free,
@@ -31,11 +31,6 @@ bool xlist_p(value_t value) {
 }
 
 xlist_t *to_xlist(value_t value) {
-  if (!xlist_p(value)) {
-    print(value);
-    newline();
-  }
-
   assert(xlist_p(value));
   return (xlist_t *) to_object(value);
 }
@@ -88,23 +83,23 @@ bool xlist_equal(const xlist_t *lhs, const xlist_t *rhs) {
   return true;
 }
 
-static void xlist_print_elements(object_circle_ctx_t *ctx, const xlist_t *self) {
+static void xlist_format_elements(buffer_t *buffer, object_circle_ctx_t *ctx, const xlist_t *self) {
   for (size_t i = 0; i < array_length(self->elements); i++) {
-    value_print(ctx, xlist_get(self, i));
+    value_format(buffer, ctx, xlist_get(self, i));
     if (i < array_length(self->elements) - 1) {
-      printf(" ");
+      buffer_printf(buffer, " ");
     }
   }
 }
 
-void xlist_print(object_circle_ctx_t *ctx, const xlist_t *self) {
+void xlist_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xlist_t *self) {
   if (array_is_empty(self->elements)) {
-    printf("[");
-    printf("]");
+    buffer_printf(buffer, "[");
+    buffer_printf(buffer, "]");
   } else {
-    printf("[");
-    xlist_print_elements(ctx, self);
-    printf("]");
+    buffer_printf(buffer, "[");
+    xlist_format_elements(buffer, ctx, self);
+    buffer_printf(buffer, "]");
   }
 }
 

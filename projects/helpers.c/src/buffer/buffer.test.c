@@ -77,6 +77,30 @@ int main(void) {
 
   {
     buffer_t *buffer = make_buffer();
+    buffer_append_string(buffer, "abc");
+    buffer_append_string(buffer, "def");
+    assert(string_equal("abcdef", buffer_to_string(buffer)));
+    buffer_free(buffer);
+  }
+
+  {
+    buffer_t *buffer = make_buffer();
+    buffer_printf(buffer, "abc");
+    buffer_printf(buffer, "def");
+    assert(string_equal("abcdef", buffer_to_string(buffer)));
+    buffer_free(buffer);
+  }
+
+  {
+    buffer_t *buffer = make_buffer();
+    buffer_printf(buffer, "%s", "");
+    buffer_printf(buffer, "%s", "");
+    assert(string_equal("", buffer_to_string(buffer)));
+    buffer_free(buffer);
+  }
+
+  {
+    buffer_t *buffer = make_buffer();
     buffer_printf(buffer, " (%s) ", "abc");
     assert(string_equal(" (abc) ", buffer_to_string(buffer)));
     buffer_free(buffer);

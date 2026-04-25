@@ -3,7 +3,7 @@
 const object_class_t xhash_class = {
   .name = "hash",
   .equal_fn = (object_equal_fn_t *) xhash_equal,
-  .print_fn = (object_print_fn_t *) xhash_print,
+  .format_fn = (object_format_fn_t *) xhash_format,
   .hash_code_fn = (object_hash_code_fn_t *) xhash_hash_code,
   .compare_fn = (object_compare_fn_t *) xhash_compare,
   .free_fn = (free_fn_t *) xhash_free,
@@ -103,25 +103,25 @@ bool xhash_equal(const xhash_t *lhs, const xhash_t *rhs) {
   return true;
 }
 
-static void xhash_print_entries(object_circle_ctx_t *ctx, const xhash_t *self) {
+static void xhash_format_entries(buffer_t *buffer, object_circle_ctx_t *ctx, const xhash_t *self) {
   hash_iter_t iter;
   hash_iter_init(&iter, self->hash);
 
   value_t key = (value_t) hash_iter_next_key(&iter);
   while (key) {
     value_t value = xhash_get(self, key);
-    printf(" ");
-    value_print(ctx, key);
-    printf(" ");
-    value_print(ctx, value);
+    buffer_printf(buffer, " ");
+    value_format(buffer, ctx, key);
+    buffer_printf(buffer, " ");
+    value_format(buffer, ctx, value);
     key = (value_t) hash_iter_next_key(&iter);
   }
 }
 
-void xhash_print(object_circle_ctx_t *ctx, const xhash_t *self) {
-  printf("(@hash");
-  xhash_print_entries(ctx, self);
-  printf(")");
+void xhash_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xhash_t *self) {
+  buffer_printf(buffer, "(@hash");
+  xhash_format_entries(buffer, ctx, self);
+  buffer_printf(buffer, ")");
 }
 
 static ordering_t compare_hash_entry(const hash_entry_t *lhs, const hash_entry_t *rhs) {

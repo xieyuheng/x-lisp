@@ -3,7 +3,7 @@
 const object_class_t xrecord_class = {
   .name = "record",
   .equal_fn = (object_equal_fn_t *) xrecord_equal,
-  .print_fn = (object_print_fn_t *) xrecord_print,
+  .format_fn = (object_format_fn_t *) xrecord_format,
   .hash_code_fn = (object_hash_code_fn_t *) xrecord_hash_code,
   .compare_fn = (object_compare_fn_t *) xrecord_compare,
   .free_fn = (free_fn_t *) xrecord_free,
@@ -31,11 +31,6 @@ bool xrecord_p(value_t value) {
 }
 
 xrecord_t *to_xrecord(value_t value) {
-  if (!xrecord_p(value)) {
-    print(value);
-    newline();
-  }
-
   assert(xrecord_p(value));
   return (xrecord_t *) to_object(value);
 }
@@ -91,7 +86,7 @@ bool xrecord_equal(const xrecord_t *lhs, const xrecord_t *rhs) {
   return true;
 }
 
-static void xrecord_print_attributes(object_circle_ctx_t *ctx, const xrecord_t *self) {
+static void xrecord_format_attributes(buffer_t *buffer, object_circle_ctx_t *ctx, const xrecord_t *self) {
   record_iter_t iter;
   record_iter_init(&iter, self->attributes);
 
@@ -100,27 +95,27 @@ static void xrecord_print_attributes(object_circle_ctx_t *ctx, const xrecord_t *
   // no leading space for the first attribute
   if (key) {
     value_t value = xrecord_get(self, key);
-    printf(":%s ", key);
-    value_print(ctx, value);
+    buffer_printf(buffer, ":%s ", key);
+    value_format(buffer, ctx, value);
     key = record_iter_next_key(&iter);
   }
 
   while (key) {
     value_t value = xrecord_get(self, key);
-    printf(" :%s ", key);
-    value_print(ctx, value);
+    buffer_printf(buffer, " :%s ", key);
+    value_format(buffer, ctx, value);
     key = record_iter_next_key(&iter);
   }
 }
 
-void xrecord_print(object_circle_ctx_t *ctx, const xrecord_t *self) {
+void xrecord_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xrecord_t *self) {
   if (record_is_empty(self->attributes)) {
-    printf("{");
-    printf("}");
+    buffer_printf(buffer, "{");
+    buffer_printf(buffer, "}");
   } else {
-    printf("{");
-    xrecord_print_attributes(ctx, self);
-    printf("}");
+    buffer_printf(buffer, "{");
+    xrecord_format_attributes(buffer, ctx, self);
+    buffer_printf(buffer, "}");
   }
 }
 

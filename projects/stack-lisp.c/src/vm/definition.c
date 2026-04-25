@@ -3,7 +3,7 @@
 const object_class_t definition_class = {
   .name = "definition",
   .equal_fn = (object_equal_fn_t *) definition_equal,
-  .print_fn = (object_print_fn_t *) definition_print,
+  .format_fn = (object_format_fn_t *) definition_format,
 };
 
 static definition_t *make_definition(mod_t *mod, char *name) {
@@ -75,9 +75,9 @@ bool definition_equal(definition_t *lhs, definition_t *rhs) {
   return lhs == rhs;
 }
 
-void definition_print(object_circle_ctx_t *ctx, definition_t *self) {
+void definition_format(buffer_t *buffer, object_circle_ctx_t *ctx, definition_t *self) {
   (void) ctx;
-  printf("#(definition %s)", self->name);
+  buffer_printf(buffer, "#(definition %s)", self->name);
 }
 
 bool definition_has_arity(const definition_t *self) {

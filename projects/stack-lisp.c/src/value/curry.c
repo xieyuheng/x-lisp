@@ -3,7 +3,7 @@
 const object_class_t curry_class = {
   .name = "curry",
   .equal_fn = (object_equal_fn_t *) curry_equal,
-  .print_fn = (object_print_fn_t *) curry_print,
+  .format_fn = (object_format_fn_t *) curry_format,
   .free_fn = (free_fn_t *) curry_free,
   .make_child_iter_fn = (object_make_child_iter_fn_t *) make_curry_child_iter,
   .child_iter_next_fn = (object_child_iter_next_fn_t *) curry_child_iter_next,
@@ -49,17 +49,17 @@ bool curry_equal(const curry_t *lhs, const curry_t *rhs) {
   return true;
 }
 
-void curry_print(object_circle_ctx_t *ctx, const curry_t *self) {
-  printf("(@curry ");
-  value_print(ctx, self->target);
-  printf(" %ld", self->arity);
-  printf(" [");
+void curry_format(buffer_t *buffer, object_circle_ctx_t *ctx, const curry_t *self) {
+  buffer_printf(buffer, "(@curry ");
+  value_format(buffer, ctx, self->target);
+  buffer_printf(buffer, " %ld", self->arity);
+  buffer_printf(buffer, " [");
   for (size_t i = 0; i < self->size; i++) {
-    if (i > 0) printf(" ");
-    value_print(ctx, self->args[i]);
+    if (i > 0) buffer_printf(buffer, " ");
+    value_format(buffer, ctx, self->args[i]);
   }
-  printf("]");
-  printf(")");
+  buffer_printf(buffer, "]");
+  buffer_printf(buffer, ")");
 }
 
 struct curry_child_iter_t {

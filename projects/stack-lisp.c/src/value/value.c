@@ -4,59 +4,79 @@ inline tag_t value_tag(value_t value) {
   return (size_t) value & TAG_MASK;
 }
 
-void value_print(object_circle_ctx_t *ctx, value_t value) {
+void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
   if (int_p(value)) {
-    printf("%ld", to_int64(value));
+    buffer_printf(buffer, "%ld", to_int64(value));
     return;
   }
 
   if (float_p(value)) {
-    char buffer[64];
-    sprintf(buffer, "%.17g", to_double(value));
-    if (!string_has_char(buffer, '.')) {
-      size_t end = string_length(buffer);
-      buffer[end] = '.';
-      buffer[end + 1] = '0';
-      buffer[end + 2] = '\0';
+    char string[64];
+    sprintf(string, "%.17g", to_double(value));
+    if (!string_has_char(string, '.')) {
+      size_t end = string_length(string);
+      string[end] = '.';
+      string[end + 1] = '0';
+      string[end + 2] = '\0';
     }
 
-    printf("%s", buffer);
+    buffer_printf(buffer, "%s", string);
     return;
   }
 
   if (void_p(value)) {
-    printf("#void");
+    buffer_printf(buffer, "#void");
     return;
   }
 
   if (true_p(value)) {
-    printf("#t");
+    buffer_printf(buffer, "#t");
     return;
   }
 
   if (false_p(value)) {
-    printf("#f");
+    buffer_printf(buffer, "#f");
     return;
   }
 
   if (object_p(value)) {
     object_t *object = to_object(value);
     if (object_circle_start_p(ctx, object)) {
-      printf("#%ld=", object_circle_index(ctx, object));
+      buffer_printf(buffer, "#%ld=", object_circle_index(ctx, object));
       object_circle_meet(ctx, object);
-      object_print(ctx, object);
+      object_format(buffer, ctx, object);
       return;
     } else if (object_circle_end_p(ctx, object)) {
-      printf("#%ld#", object_circle_index(ctx, object));
+      buffer_printf(buffer, "#%ld#", object_circle_index(ctx, object));
       return;
     } else {
-      object_print(ctx, object);
+      object_format(buffer, ctx, object);
       return;
     }
   }
 
-  printf("#(unknown-value 0x%lx)", value);
+  buffer_printf(buffer, "#(unknown-value 0x%lx)", value);
   return;
+}
+
+void value_print(object_circle_ctx_t *ctx, value_t value) {
+  buffer_t *buffer = make_buffer();
+  value_format(buffer, ctx, value);
+  char *string = buffer_to_string(buffer);
+  printf("%s", string);
+  string_free(string);
+  buffer_free(buffer);
+}
+
+void format(buffer_t *buffer, value_t value) {
+  object_circle_ctx_t *ctx = make_object_circle_ctx();
+  if (object_p(value)) {
+    object_circle_collect(ctx, to_object(value));
+    set_clear(ctx->occurred_objects);
+  }
+
+  value_format(buffer, ctx, value);
+  object_circle_ctx_free(ctx);
 }
 
 void print(value_t value) {

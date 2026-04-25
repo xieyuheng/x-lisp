@@ -3,7 +3,7 @@
 const object_class_t xset_class = {
   .name = "set",
   .equal_fn = (object_equal_fn_t *) xset_equal,
-  .print_fn = (object_print_fn_t *) xset_print,
+  .format_fn = (object_format_fn_t *) xset_format,
   .hash_code_fn = (object_hash_code_fn_t *) xset_hash_code,
   .compare_fn = (object_compare_fn_t *) xset_compare,
   .free_fn = (free_fn_t *) xset_free,
@@ -99,25 +99,25 @@ bool xset_equal(const xset_t *lhs, const xset_t *rhs) {
   return true;
 }
 
-void xset_print(object_circle_ctx_t *ctx, const xset_t *self) {
-  printf("{");
+void xset_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xset_t *self) {
+  buffer_printf(buffer, "{");
 
   set_iter_t iter;
   set_iter_init(&iter, self->set);
 
   const hash_entry_t *entry = set_iter_next_entry(&iter);
   if (entry) {
-    value_print(ctx, (value_t) entry->value);
+    value_format(buffer, ctx, (value_t) entry->value);
     entry = set_iter_next_entry(&iter);
   }
 
   while (entry) {
-    printf(" ");
-    value_print(ctx, (value_t) entry->value);
+    buffer_printf(buffer, " ");
+    value_format(buffer, ctx, (value_t) entry->value);
     entry = set_iter_next_entry(&iter);
   }
 
-  printf("}");
+  buffer_printf(buffer, "}");
 }
 
 static ordering_t compare_value(const void *lhs, const void *rhs) {

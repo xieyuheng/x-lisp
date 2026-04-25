@@ -69,7 +69,7 @@ bool buffer_is_full_capacity(const buffer_t *self) {
 
 void buffer_double_capacity(buffer_t *self) {
   void *bytes = allocate(self->capacity * 2);
-  memcpy(self->bytes, bytes, buffer_length(self));
+  memcpy(bytes, self->bytes, buffer_length(self));
   free(self->bytes);
   self->bytes = bytes;
   self->capacity *= 2;
@@ -124,7 +124,11 @@ void buffer_append_substring(buffer_t *self, const char *string, size_t start, s
 }
 
 char *buffer_to_string(const buffer_t *self) {
-  return string_substring((char *) self->bytes, 0, self->cursor);
+  size_t length = buffer_length(self);
+  char *string = malloc(length + 1);
+  memcpy(string, self->bytes, length);
+  string[length] = '\0';
+  return string;
 }
 
 void buffer_printf(buffer_t *self, const char *fmt, ...) {

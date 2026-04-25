@@ -7,7 +7,7 @@ struct keyword_t {
 
 const object_class_t keyword_class = {
   .name = "keyword",
-  .print_fn = (object_print_fn_t *) keyword_print,
+  .format_fn = (object_format_fn_t *) keyword_format,
   .hash_code_fn = (object_hash_code_fn_t *) keyword_hash_code,
   .compare_fn = (object_compare_fn_t *) keyword_compare,
 };
@@ -55,10 +55,10 @@ keyword_t *to_keyword(value_t value) {
   return (keyword_t *) to_object(value);
 }
 
-void keyword_print(object_circle_ctx_t *ctx, const keyword_t *self) {
-  (void) ctx,
-  string_print(":");
-  string_print(keyword_string(self));
+void keyword_format(buffer_t *buffer, object_circle_ctx_t *ctx, const keyword_t *self) {
+  (void) ctx;
+  buffer_append_string(buffer, ":");
+  buffer_append_string(buffer, keyword_string(self));
 }
 
 hash_code_t keyword_hash_code(const keyword_t *self) {

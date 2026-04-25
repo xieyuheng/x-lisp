@@ -30,7 +30,7 @@ bool definition_p(value_t value);
 definition_t *to_definition(value_t value);
 
 bool definition_equal(definition_t *lhs, definition_t *rhs);
-void definition_print(object_circle_ctx_t *ctx, definition_t *self);
+void definition_format(buffer_t *buffer, object_circle_ctx_t *ctx, definition_t *self);
 
 bool definition_has_arity(const definition_t *self);
 size_t definition_arity(const definition_t *self);
