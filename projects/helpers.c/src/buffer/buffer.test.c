@@ -52,5 +52,17 @@ int main(void) {
     buffer_free(buffer_2);
   }
 
+  {
+    buffer_t *buffer = make_buffer();
+    assert(string_equal("", buffer_to_string(buffer)));
+    buffer_append_char(buffer, 'a');
+    assert(string_equal("a", buffer_to_string(buffer)));
+    buffer_append_char(buffer, 'b');
+    assert(string_equal("ab", buffer_to_string(buffer)));
+    buffer_append_char(buffer, 'c');
+    assert(string_equal("abc", buffer_to_string(buffer)));
+    buffer_free(buffer);
+  }
+
   test_end();
 }

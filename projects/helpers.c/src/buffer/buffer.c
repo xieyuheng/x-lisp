@@ -100,3 +100,7 @@ void buffer_append_substring(buffer_t *self, const char *string, size_t start, s
     buffer_append_char(self, string[i]);
   }
 }
+
+char *buffer_to_string(const buffer_t *self) {
+  return string_substring((char *) self->bytes, 0, self->cursor);
+}

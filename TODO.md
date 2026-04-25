@@ -1,7 +1,5 @@
 # format
 
-[helpers.c] `buffer_to_string`
-
 [helpers.c] remove `string_builder_t` -- use `buffer_t`
 
 [stack-lisp.c] sexp -- `sexp_format` -- take `buffer_t` as first argument
