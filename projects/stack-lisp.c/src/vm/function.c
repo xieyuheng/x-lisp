@@ -58,7 +58,7 @@ void function_put_definition(
   assert(code_index + sizeof(definition_t *) < self->code_area_size);
 
   uint8_t *code = self->code_area + code_index;
-  memory_store_little_endian(code, definition);
+  memory_store(code, definition);
 }
 
 void function_add_label(function_t *self, const char *name) {
@@ -118,7 +118,7 @@ void function_patch_label_references(function_t *self) {
       assert(code_offset + sizeof(definition_t *) < self->code_area_size);
       uint8_t *code = self->code_area + code_offset;
       int32_t offset = label_offset - (code_offset + sizeof(int32_t));
-      memory_store_little_endian(code, offset);
+      memory_store(code, offset);
     }
 
     entry = record_iter_next_entry(&iter);

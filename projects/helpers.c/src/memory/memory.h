@@ -22,15 +22,5 @@ void memory_copy_reverse(void* dest, const void* src, size_t n);
 
 bool memory_is_little_endian(void);
 
-void memory_copy_little_endian(void* dest, const void* src, size_t n);
-void memory_copy_big_endian(void* dest, const void* src, size_t n);
-
-#define memory_store_little_endian(dest, x) \
-  memory_copy_little_endian(dest, &x, sizeof x)
-#define memory_store_big_endian(dest, x) \
-  memory_copy_big_endian(dest, &x, sizeof x)
-
-#define memory_load_little_endian(dest, x) \
-  memory_copy_little_endian(&x, dest, sizeof x)
-#define memory_load_big_endian(dest, x) \
-  memory_copy_big_endian(&x, dest, sizeof x)
+#define memory_store(dest, x) memory_copy(dest, &x, sizeof x)
+#define memory_load(dest, x) memory_copy(&x, dest, sizeof x)

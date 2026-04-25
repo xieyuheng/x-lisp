@@ -73,19 +73,3 @@ inline bool memory_is_little_endian(void) {
   uint8_t first_byte = *((uint8_t *) &one);
   return first_byte == 0x01;
 }
-
-inline void memory_copy_little_endian(void* dest, const void* src, size_t n) {
-  if (memory_is_little_endian()) {
-    memory_copy(dest, src, n);
-  } else {
-    memory_copy_reverse(dest, src, n);
-  }
-}
-
-inline void memory_copy_big_endian(void* dest, const void* src, size_t n) {
-  if (memory_is_little_endian()) {
-    memory_copy_reverse(dest, src, n);
-  } else {
-    memory_copy(dest, src, n);
-  }
-}

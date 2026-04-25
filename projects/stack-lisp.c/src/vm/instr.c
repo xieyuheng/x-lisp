@@ -47,74 +47,74 @@ size_t instr_length(struct instr_t instr) {
 void instr_encode(uint8_t *code, struct instr_t instr) {
   switch (instr.op) {
   case OP_LITERAL: {
-    memory_store_little_endian(code + 0, instr.op);
-    memory_store_little_endian(code + 1, instr.literal.value);
+    memory_store(code + 0, instr.op);
+    memory_store(code + 1, instr.literal.value);
     return;
   }
 
   case OP_RETURN: {
-    memory_store_little_endian(code + 0, instr.op);
+    memory_store(code + 0, instr.op);
     return;
   }
 
   case OP_CALL: {
-    memory_store_little_endian(code + 0, instr.op);
-    memory_store_little_endian(code + 1, instr.ref.definition);
+    memory_store(code + 0, instr.op);
+    memory_store(code + 1, instr.ref.definition);
     return;
   }
 
   case OP_TAIL_CALL: {
-    memory_store_little_endian(code + 0, instr.op);
-    memory_store_little_endian(code + 1, instr.ref.definition);
+    memory_store(code + 0, instr.op);
+    memory_store(code + 1, instr.ref.definition);
     return;
   }
 
   case OP_REF: {
-    memory_store_little_endian(code + 0, instr.op);
-    memory_store_little_endian(code + 1, instr.ref.definition);
+    memory_store(code + 0, instr.op);
+    memory_store(code + 1, instr.ref.definition);
     return;
   }
 
   case OP_GLOBAL_LOAD:
   case OP_GLOBAL_STORE: {
-    memory_store_little_endian(code + 0, instr.op);
-    memory_store_little_endian(code + 1, instr.ref.definition);
+    memory_store(code + 0, instr.op);
+    memory_store(code + 1, instr.ref.definition);
     return;
   }
 
   case OP_APPLY:
   case OP_TAIL_APPLY: {
-    memory_store_little_endian(code + 0, instr.op);
-    memory_store_little_endian(code + 1, instr.apply.argc);
+    memory_store(code + 0, instr.op);
+    memory_store(code + 1, instr.apply.argc);
     return;
   }
 
   case OP_LOCAL_LOAD: {
-    memory_store_little_endian(code + 0, instr.op);
-    memory_store_little_endian(code + 1, instr.local.index);
+    memory_store(code + 0, instr.op);
+    memory_store(code + 1, instr.local.index);
     return;
   }
 
   case OP_LOCAL_STORE: {
-    memory_store_little_endian(code + 0, instr.op);
-    memory_store_little_endian(code + 1, instr.local.index);
+    memory_store(code + 0, instr.op);
+    memory_store(code + 1, instr.local.index);
     return;
   }
 
   case OP_JUMP: {
-    memory_store_little_endian(code + 0, instr.op);
-    memory_store_little_endian(code + 1, instr.jump.offset);
+    memory_store(code + 0, instr.op);
+    memory_store(code + 1, instr.jump.offset);
     return;
   }
 
   case OP_JUMP_IF_NOT: {
-    memory_store_little_endian(code + 0, instr.op);
-    memory_store_little_endian(code + 1, instr.jump.offset);
+    memory_store(code + 0, instr.op);
+    memory_store(code + 1, instr.jump.offset);
     return;
   }
 
   case OP_DROP: {
-    memory_store_little_endian(code + 0, instr.op);
+    memory_store(code + 0, instr.op);
     return;
   }
   }
@@ -126,7 +126,7 @@ struct instr_t instr_decode(uint8_t *code) {
   switch (code[0]) {
   case OP_LITERAL: {
     struct instr_t instr = { .op = code[0] };
-    memory_load_little_endian(code + 1, instr.literal.value);
+    memory_load(code + 1, instr.literal.value);
     return instr;
   }
 
@@ -137,57 +137,57 @@ struct instr_t instr_decode(uint8_t *code) {
 
   case OP_CALL: {
     struct instr_t instr = { .op = code[0] };
-    memory_load_little_endian(code + 1, instr.ref.definition);
+    memory_load(code + 1, instr.ref.definition);
     return instr;
   }
 
   case OP_TAIL_CALL: {
     struct instr_t instr = { .op = code[0] };
-    memory_load_little_endian(code + 1, instr.ref.definition);
+    memory_load(code + 1, instr.ref.definition);
     return instr;
   }
 
   case OP_REF: {
     struct instr_t instr = { .op = code[0] };
-    memory_load_little_endian(code + 1, instr.ref.definition);
+    memory_load(code + 1, instr.ref.definition);
     return instr;
   }
 
   case OP_GLOBAL_LOAD:
   case OP_GLOBAL_STORE: {
     struct instr_t instr = { .op = code[0] };
-    memory_load_little_endian(code + 1, instr.ref.definition);
+    memory_load(code + 1, instr.ref.definition);
     return instr;
   }
 
   case OP_APPLY:
   case OP_TAIL_APPLY: {
     struct instr_t instr = { .op = code[0] };
-    memory_load_little_endian(code + 1, instr.apply.argc);
+    memory_load(code + 1, instr.apply.argc);
     return instr;
   }
 
   case OP_LOCAL_LOAD: {
     struct instr_t instr = { .op = code[0] };
-    memory_load_little_endian(code + 1, instr.local.index);
+    memory_load(code + 1, instr.local.index);
     return instr;
   }
 
   case OP_LOCAL_STORE: {
     struct instr_t instr = { .op = code[0] };
-    memory_load_little_endian(code + 1, instr.local.index);
+    memory_load(code + 1, instr.local.index);
     return instr;
   }
 
   case OP_JUMP: {
     struct instr_t instr = { .op = code[0] };
-    memory_load_little_endian(code + 1, instr.jump.offset);
+    memory_load(code + 1, instr.jump.offset);
     return instr;
   }
 
   case OP_JUMP_IF_NOT: {
     struct instr_t instr = { .op = code[0] };
-    memory_load_little_endian(code + 1, instr.jump.offset);
+    memory_load(code + 1, instr.jump.offset);
     return instr;
   }
 

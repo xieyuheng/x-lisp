@@ -1,9 +1,10 @@
+[stack-lisp.c] `function_t` -- has `buffer`
+
 # format
 
 [stack-lisp.c] sexp -- `sexp_format` -- take `buffer_t` as first argument
 [stack-lisp.c] sexp -- `sexp_print`
 [stack-lisp.c] sexp -- `sexp.snapshot` -- call `sexp_print`
-
 [stack-lisp.c] builtin -- `format-sexp`
 
 # feedback

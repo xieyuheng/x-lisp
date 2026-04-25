@@ -99,20 +99,10 @@ int main(void) {
 
   {
     uint16_t x = 0x0001;
-    uint16_t y1;
-    uint16_t y2;
+    uint16_t y;
 
-    memory_store_little_endian(&y1, x);
-    memory_store_little_endian(&y2, x);
-    assert(y1 == y2);
-
-    memory_store_big_endian(&y1, x);
-    memory_store_big_endian(&y2, x);
-    assert(y1 == y2);
-
-    memory_store_little_endian(&y1, x);
-    memory_store_big_endian(&y2, x);
-    assert(y1 != y2);
+    memory_store(&y, x);
+    assert(x == y);
   }
 
   test_end();
