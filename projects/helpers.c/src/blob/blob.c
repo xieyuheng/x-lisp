@@ -46,10 +46,7 @@ bool blob_equal(const blob_t *left, const blob_t *right) {
   if (left->size != right->size)
     return false;
 
-  return memcmp(
-    left->bytes,
-    right->bytes,
-    left->size) == 0;
+  return memcmp(left->bytes, right->bytes, left->size) == 0;
 }
 
 blob_t *blob_copy(const blob_t *self) {
