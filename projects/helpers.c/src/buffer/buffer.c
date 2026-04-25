@@ -17,7 +17,7 @@ buffer_t *make_buffer(void) {
 
 buffer_t *
 make_zero_buffer(size_t length) {
-  size_t capacity = length;
+  size_t capacity = uint_align_to_power_of_two(length);
   buffer_t *self = new(buffer_t);
   self->capacity = capacity;
   self->bytes = allocate(capacity);
