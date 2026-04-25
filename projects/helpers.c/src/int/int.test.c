@@ -30,5 +30,19 @@ int main(void) {
     assert(32 == uint_align(16, 24));
   }
 
+  {
+    assert(0 == uint_align_to_power_of_two(0));
+    assert(1 == uint_align_to_power_of_two(1));
+    assert(2 == uint_align_to_power_of_two(2));
+    assert(4 == uint_align_to_power_of_two(3));
+    assert(4 == uint_align_to_power_of_two(4));
+    assert(8 == uint_align_to_power_of_two(5));
+    assert(8 == uint_align_to_power_of_two(6));
+    assert(8 == uint_align_to_power_of_two(7));
+    assert(8 == uint_align_to_power_of_two(8));
+    assert(16 == uint_align_to_power_of_two(16));
+    assert(32 == uint_align_to_power_of_two(24));
+  }
+
   test_end();
 }

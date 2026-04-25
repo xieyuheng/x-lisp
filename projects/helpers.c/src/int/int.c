@@ -115,3 +115,14 @@ uint64_t uint_align(uint64_t alignment, uint64_t n) {
     return n + alignment - remainder;
   }
 }
+
+uint64_t uint_align_to_power_of_two(uint64_t n) {
+  if (n == 0) return 0;
+
+  uint64_t aligned = 1;
+  while (aligned < n) {
+    aligned = aligned << 1;
+  }
+
+  return aligned;
+}

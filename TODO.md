@@ -1,6 +1,5 @@
 # format
 
-[helpers.c] `uint_align_to_power_of_two`
 [helpers.c] `make_zero_buffer` -- use 2^n as capacity
 
 [helpers.c] remove `string_builder_t` -- use `buffer_t`
