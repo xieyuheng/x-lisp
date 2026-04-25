@@ -66,30 +66,26 @@ void buffer_double_capacity(buffer_t *self) {
   self->capacity *= 2;
 }
 
+void buffer_ensure_capacity(buffer_t *self, size_t capacity) {
+  if (capacity > self->capacity) {
+    buffer_double_capacity(self);
+    buffer_ensure_capacity(self, capacity);
+  }
+}
+
 uint8_t buffer_get_byte(const buffer_t *self, size_t index) {
   assert(index < buffer_length(self));
   return self->bytes[index];
 }
 
 void buffer_put_byte(buffer_t *self, size_t index, uint8_t byte) {
-  if (index >= self->capacity) {
-    buffer_double_capacity(self);
-    buffer_put_byte(self, index, byte);
-    return;
-  }
+  buffer_ensure_capacity(self, index + 1);
 
   if (index + 1 > self->cursor) {
     self->cursor = index + 1;
   }
 
   self->bytes[index] = byte;
-}
-
-void buffer_ensure_capacity(buffer_t *self, size_t capacity) {
-  if (capacity > self->capacity) {
-    buffer_double_capacity(self);
-    buffer_ensure_capacity(self, capacity);
-  }
 }
 
 void buffer_append_char(buffer_t *self, char c) {

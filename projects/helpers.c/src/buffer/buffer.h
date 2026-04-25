@@ -13,11 +13,10 @@ bool buffer_equal(const buffer_t *left, const buffer_t *right);
 
 bool buffer_is_full_capacity(const buffer_t *self);
 void buffer_double_capacity(buffer_t *self);
+void buffer_ensure_capacity(buffer_t *self, size_t length);
 
 uint8_t buffer_get_byte(const buffer_t *self, size_t index);
 void buffer_put_byte(buffer_t *self, size_t index, uint8_t byte);
-
-void buffer_ensure_capacity(buffer_t *self, size_t length);
 
 void buffer_append_char(buffer_t *self, char c);
 void buffer_append_string(buffer_t *self, const char *string);
