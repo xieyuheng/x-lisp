@@ -1,6 +1,9 @@
 # format
-[helpers.c] rename `blob_t` to `buffer_t`
-[helpers.c] rename `string_builder_t` to `buffer_t` and extract `buffer/`
+
+[helpers.c] `buffer_t` has `capacity` and `cursor`
+[helpers.c] `buffer_length`
+
+[helpers.c] remove `string_builder_t` -- use `buffer_t`
 
 - `format_*` functions take `buffer_t` as first argument
 

@@ -20,10 +20,10 @@ int main(void) {
 
   {
     file_t *file = open_file_or_fail(pathname, "r");
-    blob_t *blob = file_read_blob(file);
+    buffer_t *buffer = file_read_buffer(file);
     assert(
       string_equal(
-        blob_string(blob),
+        buffer_string(buffer),
         "abc\n"
         "abc\n"
         "abc\n"));

@@ -9,7 +9,7 @@
 #include "record/index.h"
 #include "set/index.h"
 #include "vec/index.h"
-#include "blob/index.h"
+#include "buffer/index.h"
 #include "file/index.h"
 #include "path/index.h"
 #include "fs/index.h"
