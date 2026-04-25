@@ -1,6 +1,6 @@
-[stack-lisp.c] `function_t` -- has `buffer`
-
 # format
+
+[helper.c] buffer -- `string_format`
 
 [stack-lisp.c] sexp -- `sexp_format` -- take `buffer_t` as first argument
 [stack-lisp.c] sexp -- `sexp_print`
