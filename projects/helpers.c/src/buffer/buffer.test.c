@@ -25,6 +25,17 @@ int main(void) {
   }
 
   {
+    buffer_t *buffer = make_buffer();
+    buffer_put_byte(buffer, 0, 'a');
+    buffer_put_byte(buffer, 1, 'b');
+    buffer_put_byte(buffer, 2, 'c');
+    assert(buffer_length(buffer) == 3);
+    buffer_clear(buffer);
+    assert(buffer_length(buffer) == 0);
+    buffer_free(buffer);
+  }
+
+  {
     buffer_t *buffer_1 = make_buffer();
     buffer_put_byte(buffer_1, 0, 'a');
     buffer_put_byte(buffer_1, 1, 'b');

@@ -7,6 +7,7 @@ void buffer_free(buffer_t *self);
 size_t buffer_capacity(const buffer_t *self);
 size_t buffer_length(const buffer_t *self);
 void buffer_seek(buffer_t *self, size_t cursor);
+void buffer_clear(buffer_t *self);
 uint8_t *buffer_raw_bytes(const buffer_t *self);
 
 buffer_t *buffer_copy(const buffer_t *self);

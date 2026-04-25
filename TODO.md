@@ -2,16 +2,7 @@
 
 [helpers.c] `buffer_append_bytes`
 
-[helpers.c] buffer_clear
-
 ```c
-// 清空 buffer（将长度置为 0，容量不变）
-void buffer_clear(buffer_t *self);
-
-// 手动设置 buffer 的长度（前提：len <= capacity）
-void buffer_set_length(buffer_t *self, size_t len);
-
-// 追加原始字节数据到 buffer 末尾
 void buffer_append_bytes(buffer_t *self, const uint8_t *bytes, size_t count);
 
 // 将整个文件的内容追加到 buffer 末尾
