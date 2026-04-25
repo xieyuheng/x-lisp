@@ -31,14 +31,6 @@ const char *buffer_string(const buffer_t *self) {
   return (char *) self->bytes;
 }
 
-void buffer_copy_from(buffer_t *self, const uint8_t *bytes) {
-  memcpy(self->bytes, bytes, self->size);
-}
-
-void buffer_copy_into(const buffer_t *self, uint8_t *bytes) {
-  memcpy(bytes, self->bytes, self->size);
-}
-
 bool buffer_equal(const buffer_t *left, const buffer_t *right) {
   if (left == right)
     return true;
