@@ -1,7 +1,6 @@
 # format
 
 [helpers.c] `make_zero_buffer` -- use 2^n as capacity
-
 [helpers.c] remove `string_builder_t` -- use `buffer_t`
 
 - `format_*` functions take `buffer_t` as first argument

@@ -12,6 +12,15 @@ int main(void) {
     buffer_free(buffer);
   }
 
+  {
+    buffer_t *buffer = make_zero_buffer(3);
+    assert(buffer_length(buffer) == 3);
+    assert(0 == buffer_get_byte(buffer, 0));
+    assert(0 == buffer_get_byte(buffer, 1));
+    assert(0 == buffer_get_byte(buffer, 2));
+    buffer_free(buffer);
+  }
+
   // {
   //   buffer_t *buffer_1 = make_buffer(3);
   //   buffer_raw_bytes(buffer_1)[0] = 'a';
