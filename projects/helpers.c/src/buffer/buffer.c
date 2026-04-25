@@ -84,3 +84,7 @@ void buffer_put_byte(buffer_t *self, size_t index, uint8_t byte) {
 
   self->bytes[index] = byte;
 }
+
+void buffer_append_char(buffer_t *self, char c) {
+  buffer_put_byte(self, buffer_length(self), c);
+}

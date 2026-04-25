@@ -50,11 +50,6 @@ void string_builder_append_substring(string_builder_t *self, const char *string,
   }
 }
 
-void string_builder_clear(string_builder_t *self) {
-  self->length = 0;
-  self->buffer[self->length] = '\0';
-}
-
 char *string_builder_produce(string_builder_t *self) {
   return string_substring(self->buffer, 0, self->length);
 }

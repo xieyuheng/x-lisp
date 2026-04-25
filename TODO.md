@@ -1,10 +1,13 @@
 # format
 
+[helpers.c] `buffer_append_string`
+[helpers.c] `buffer_append_substring`
+[helpers.c] `buffer_clear`
+[helpers.c] `buffer_to_string`
+
 [helpers.c] remove `string_builder_t` -- use `buffer_t`
 
-- `format_*` functions take `buffer_t` as first argument
-
-[stack-lisp.c] sexp -- `sexp_format`
+[stack-lisp.c] sexp -- `sexp_format` -- take `buffer_t` as first argument
 [stack-lisp.c] sexp -- `sexp_print`
 [stack-lisp.c] sexp -- `sexp.snapshot` -- call `sexp_print`
 

@@ -13,11 +13,6 @@ int main(void) {
   string_builder_append_char(builder, 'c');
   assert(string_equal("abc", string_builder_produce(builder)));
 
-  string_builder_clear(builder);
-  assert(string_equal("", string_builder_produce(builder)));
-  string_builder_append_string(builder, "abc");
-  assert(string_equal("abc", string_builder_produce(builder)));
-
   string_builder_free(builder);
 
   test_end();
