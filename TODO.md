@@ -1,7 +1,5 @@
 # format
 
-[helper.c] buffer -- `string_format`
-
 [stack-lisp.c] sexp -- `sexp_format` -- take `buffer_t` as first argument
 [stack-lisp.c] sexp -- `sexp_print`
 [stack-lisp.c] sexp -- `sexp.snapshot` -- call `sexp_print`
