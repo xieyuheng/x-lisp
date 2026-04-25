@@ -12,9 +12,17 @@ export const StackLispInterpreterPath = Path.join(
 
 export function projectTest(
   project: M.Project,
-  options: { builtin: boolean },
+  options: {
+    builtin: boolean
+    verbose: boolean
+  },
 ): void {
-  M.projectBuild(project, { dump: false, basic: false })
+  M.projectBuild(project, {
+    dump: false,
+    basic: false,
+    verbose: options.verbose,
+  })
+
   systemShellRun(StackLispInterpreterPath, [
     "test",
     Path.join(M.projectOutputDirectory(project), "bundle.stack"),

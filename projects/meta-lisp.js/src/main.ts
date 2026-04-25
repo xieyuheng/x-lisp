@@ -13,8 +13,8 @@ const router = cmd.createRouter("meta-lisp-compile.js", version)
 
 router.defineRoutes([
   "check --config --verbose",
-  "build --config --dump --basic",
-  "test --config --builtin",
+  "build --config --verbose --dump --basic",
+  "test  --config --verbose --builtin",
   "clean --config",
 ])
 
@@ -22,7 +22,7 @@ router.defineHandlers({
   check: ({ options }) => {
     const project = M.loadProject(options["--config"])
     M.projectCheck(project, {
-      verbose: options["--verbose"] !== undefined
+      verbose: options["--verbose"] !== undefined,
     })
   },
 
@@ -31,12 +31,16 @@ router.defineHandlers({
     M.projectBuild(project, {
       dump: options["--dump"] !== undefined,
       basic: options["--basic"] !== undefined,
+      verbose: options["--verbose"] !== undefined,
     })
   },
 
   test: ({ options }) => {
     const project = M.loadProject(options["--config"])
-    M.projectTest(project, { builtin: options["--builtin"] })
+    M.projectTest(project, {
+      builtin: options["--builtin"],
+      verbose: options["--verbose"] !== undefined,
+    })
   },
 
   clean: ({ options }) => {

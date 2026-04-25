@@ -13,7 +13,11 @@ import * as M from "../index.ts"
 
 export function projectBuild(
   project: M.Project,
-  options: { dump: boolean; basic: boolean },
+  options: {
+    dump: boolean
+    basic: boolean
+    verbose: boolean
+  },
 ): void {
   M.projectPerformClaim(project)
   if (options.dump) projectDumpMods(project, "000-load")
@@ -23,7 +27,7 @@ export function projectBuild(
   if (options.dump) projectDumpMods(project, "002-qualify")
   M.projectPerformLocate(project)
   if (options.dump) projectDumpMods(project, "003-locate")
-  M.projectPerformCheck(project)
+  M.projectPerformCheck(project, { verbose: options.verbose })
   if (options.dump) projectDumpMods(project, "004-check")
 
   M.projectForEachMod(project, M.ShrinkPass)

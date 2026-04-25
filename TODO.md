@@ -1,5 +1,3 @@
-[meta-lisp.js] `build` and `test` command support `--verbose` options
-
 # feedback
 
 [stack-lisp.c] `test` command support `--profile` options -- print parsing time and execution time

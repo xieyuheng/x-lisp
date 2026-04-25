@@ -7,9 +7,12 @@ import {
 import * as S from "@xieyuheng/sexp.js"
 import * as M from "../index.ts"
 
-export function projectCheck(project: M.Project, options: {
-  verbose: boolean
-}): void {
+export function projectCheck(
+  project: M.Project,
+  options: {
+    verbose: boolean
+  },
+): void {
   projectPerformClaim(project)
   projectPerformDesugar(project)
   projectPerformLocate(project)
@@ -52,9 +55,12 @@ export function projectPerformLocate(project: M.Project): void {
   M.projectForEachDefinition(project, M.definitionLocateSpecialApply)
 }
 
-export function projectPerformCheck(project: M.Project, options: {
-  verbose: boolean
-}): void {
+export function projectPerformCheck(
+  project: M.Project,
+  options: {
+    verbose: boolean
+  },
+): void {
   M.projectForEachMod(project, (mod) => {
     if (mod.isTypeErrorModule) {
       const directory = M.projectSnapshotDirectory(project)
@@ -62,15 +68,16 @@ export function projectPerformCheck(project: M.Project, options: {
         openOutputFile(`${directory}/type-error-modules/${mod.name}.out`),
         (file) => {
           withOutputToFile(file, () => {
-            M.modForEachOwnDefinition(mod, definition => {
-              if (options.verbose) M.log("check", `${mod.name}/${definition.name}`)
+            M.modForEachOwnDefinition(mod, (definition) => {
+              if (options.verbose)
+                M.log("check", `${mod.name}/${definition.name}`)
               M.definitionCheck(definition)
             })
           })
         },
       )
     } else {
-      M.modForEachOwnDefinition(mod, definition => {
+      M.modForEachOwnDefinition(mod, (definition) => {
         if (options.verbose) M.log("check", `${mod.name}/${definition.name}`)
         M.definitionCheck(definition)
       })
