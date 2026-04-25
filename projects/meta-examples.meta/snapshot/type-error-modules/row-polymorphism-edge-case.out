@@ -1,3 +1,4 @@
+[check] row-polymorphism-edge-case/f
 src/record/row-polymorphism-edge-case.meta:15:5 -- unification fail
   inferred type: (extend-interface A :y B)
   given type: (extend-interface A :x C)

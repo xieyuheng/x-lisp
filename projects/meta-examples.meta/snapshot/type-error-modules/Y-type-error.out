@@ -1,3 +1,4 @@
+[check] Y-type-error/Y
 src/function/Y-type-error.meta:8:19 -- unification fail
   inferred type: (-> A B)
   given type: A
