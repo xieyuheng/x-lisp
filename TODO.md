@@ -1,8 +1,5 @@
 # format
 
-[helpers.c] `buffer_append_string`
-[helpers.c] `buffer_append_substring`
-[helpers.c] `buffer_clear`
 [helpers.c] `buffer_to_string`
 
 [helpers.c] remove `string_builder_t` -- use `buffer_t`

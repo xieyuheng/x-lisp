@@ -88,3 +88,15 @@ void buffer_put_byte(buffer_t *self, size_t index, uint8_t byte) {
 void buffer_append_char(buffer_t *self, char c) {
   buffer_put_byte(self, buffer_length(self), c);
 }
+
+void buffer_append_string(buffer_t *self, const char *string) {
+  for (size_t i = 0; i < string_length(string); i++) {
+    buffer_append_char(self, string[i]);
+  }
+}
+
+void buffer_append_substring(buffer_t *self, const char *string, size_t start, size_t end) {
+  for (size_t i = start; i < end; i++) {
+    buffer_append_char(self, string[i]);
+  }
+}
