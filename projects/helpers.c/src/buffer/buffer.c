@@ -54,3 +54,8 @@ void buffer_double_capacity(buffer_t *self) {
   self->bytes = bytes;
   self->capacity *= 2;
 }
+
+uint8_t buffer_get_byte(const buffer_t *self, size_t index) {
+  assert(index < buffer_length(self));
+  return self->bytes[index];
+}
