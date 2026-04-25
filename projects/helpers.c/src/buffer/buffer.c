@@ -38,6 +38,11 @@ size_t buffer_length(const buffer_t *self) {
   return self->cursor;
 }
 
+void buffer_seek(buffer_t *self, size_t index) {
+  buffer_ensure_capacity(index);
+  self->cursor = index;
+}
+
 uint8_t *buffer_raw_bytes(const buffer_t *self) {
   return self->bytes;
 }

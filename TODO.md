@@ -1,8 +1,8 @@
 # format
 
-[helpers.c] buffer_append_bytes
+[helpers.c] `buffer_append_bytes`
 
-[helpers.c] buffer_seek -- move cursor
+[helpers.c] buffer_clear
 
 ```c
 // 清空 buffer（将长度置为 0，容量不变）
