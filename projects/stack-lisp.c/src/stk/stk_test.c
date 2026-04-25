@@ -58,7 +58,7 @@ void stk_test_definition(mod_t *mod, const char *snapshot, bool profile, definit
   printf("[test] %s", definition->name);
   double testing_time = time_millisecond_passed(testing_start);
   if (profile) {
-    printf(" (%.3f ms)", testing_time);
+    printf(" -- %.3fms", testing_time);
   }
 
   printf("\n");

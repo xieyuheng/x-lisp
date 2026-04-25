@@ -8,7 +8,7 @@ double test_time_millisecond_passed(double start_millisecond);
   printf("%s:%d -- start\n", __FILE__, __LINE__)
 
 #define test_end(...)                           \
-  printf("%s:%d -- end %.3f ms\n", __FILE__, __LINE__, test_time_millisecond_passed(test_start_millisecond))
+  printf("%s:%d -- end in %.3fms\n", __FILE__, __LINE__, test_time_millisecond_passed(test_start_millisecond))
 
 #define where_printf(...) printf("%s:%d ", __FILE__, __LINE__); printf(__VA_ARGS__)
 #define who_printf(...) printf("[%s] ", __func__); printf(__VA_ARGS__)

@@ -9,7 +9,7 @@ mod_t *stk_load(path_t *path, bool profile) {
   string_free(string);
   double parsing_time = time_millisecond_passed(parsing_start);
   if (profile) {
-    who_printf("parsing time: %.3f ms\n", parsing_time);
+    who_printf("parsing time: %.3fms\n", parsing_time);
   }
 
   double loading_start = time_millisecond();
@@ -21,7 +21,7 @@ mod_t *stk_load(path_t *path, bool profile) {
   stk_setup(mod);
   double loading_time = time_millisecond_passed(loading_start);
   if (profile) {
-    who_printf("loading time: %.3f ms\n", loading_time);
+    who_printf("loading time: %.3fms\n", loading_time);
   }
 
   return mod;
