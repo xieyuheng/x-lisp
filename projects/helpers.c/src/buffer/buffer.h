@@ -17,7 +17,13 @@ void buffer_double_capacity(buffer_t *self);
 uint8_t buffer_get_byte(const buffer_t *self, size_t index);
 void buffer_put_byte(buffer_t *self, size_t index, uint8_t byte);
 
+void buffer_ensure_capacity(buffer_t *self, size_t length);
+
 void buffer_append_char(buffer_t *self, char c);
 void buffer_append_string(buffer_t *self, const char *string);
 void buffer_append_substring(buffer_t *self, const char *string, size_t start, size_t end);
+
 char *buffer_to_string(const buffer_t *self);
+
+void buffer_printf(buffer_t *self, const char *fmt, ...)
+  __attribute__((format(printf, 2, 3)));

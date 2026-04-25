@@ -85,6 +85,13 @@ void buffer_put_byte(buffer_t *self, size_t index, uint8_t byte) {
   self->bytes[index] = byte;
 }
 
+void buffer_ensure_capacity(buffer_t *self, size_t capacity) {
+  if (capacity > self->capacity) {
+    buffer_double_capacity(self);
+    buffer_ensure_capacity(self, capacity);
+  }
+}
+
 void buffer_append_char(buffer_t *self, char c) {
   buffer_put_byte(self, buffer_length(self), c);
 }
@@ -103,4 +110,24 @@ void buffer_append_substring(buffer_t *self, const char *string, size_t start, s
 
 char *buffer_to_string(const buffer_t *self) {
   return string_substring((char *) self->bytes, 0, self->cursor);
+}
+
+void buffer_printf(buffer_t *self, const char *fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+
+  va_list args_copy;
+  va_copy(args_copy, args);
+  int expected_length = vsnprintf(NULL, 0, fmt, args_copy);
+  assert(expected_length != -1);
+  va_end(args_copy);
+
+  size_t length = buffer_length(self);
+  buffer_ensure_capacity(self, length + expected_length + 1);
+  self->cursor += expected_length;
+
+  char *string = (char *) buffer_raw_bytes(self) + length;
+  int written = vsnprintf(string, expected_length + 1, fmt, args);
+  assert(written != -1);
+  va_end(args);
 }

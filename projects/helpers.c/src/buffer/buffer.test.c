@@ -64,5 +64,15 @@ int main(void) {
     buffer_free(buffer);
   }
 
+  {
+    buffer_t *buffer = make_buffer();
+    buffer_printf(buffer, " (%s) ", "abc");
+    who_printf("buffer_capacity(buffer): %ld\n", buffer_capacity(buffer));
+    who_printf("buffer_length(buffer): %ld\n", buffer_length(buffer));
+    who_printf("|%s|\n", buffer_raw_bytes(buffer));
+    assert(string_equal(" (abc) ", buffer_to_string(buffer)));
+    buffer_free(buffer);
+  }
+
   test_end();
 }
