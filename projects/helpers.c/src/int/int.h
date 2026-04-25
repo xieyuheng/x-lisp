@@ -16,3 +16,5 @@ uint64_t int_relu(int64_t self);
 
 void int_print(int64_t self);
 void uint_print(uint64_t self);
+
+uint64_t uint_align(uint64_t alignment, uint64_t n);

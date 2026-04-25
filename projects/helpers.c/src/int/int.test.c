@@ -23,5 +23,12 @@ int main(void) {
     assert(int_relu(x) == 0);
   }
 
+  {
+    assert(0 == uint_align(16, 0));
+    assert(16 == uint_align(16, 8));
+    assert(16 == uint_align(16, 16));
+    assert(32 == uint_align(16, 24));
+  }
+
   test_end();
 }
