@@ -1,7 +1,6 @@
 # format
 
-[helpers.c] `buffer_get_byte`
-[helpers.c] `buffer_put_byte`
+[helpers.c] `make_zero_buffer` -- use 2^n as capacity
 
 [helpers.c] remove `string_builder_t` -- use `buffer_t`
 

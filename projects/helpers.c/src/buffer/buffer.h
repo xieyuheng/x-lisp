@@ -1,6 +1,8 @@
 #pragma once
 
-buffer_t *make_buffer(size_t capacity);
+buffer_t *make_buffer(void);
+buffer_t *make_zero_buffer(size_t length);
+
 void buffer_free(buffer_t *self);
 
 size_t buffer_capacity(const buffer_t *self);

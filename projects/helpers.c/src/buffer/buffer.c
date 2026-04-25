@@ -6,11 +6,22 @@ struct buffer_t {
   size_t cursor;
 };
 
-buffer_t *make_buffer(size_t capacity) {
+buffer_t *make_buffer(void) {
+  size_t capacity = 265;
   buffer_t *self = new(buffer_t);
   self->capacity = capacity;
   self->bytes = allocate(capacity);
   self->cursor = 0;
+  return self;
+}
+
+buffer_t *
+make_zero_buffer(size_t length) {
+  size_t capacity = length;
+  buffer_t *self = new(buffer_t);
+  self->capacity = capacity;
+  self->bytes = allocate(capacity);
+  self->cursor = length;
   return self;
 }
 
@@ -32,8 +43,8 @@ uint8_t *buffer_raw_bytes(const buffer_t *self) {
 }
 
 buffer_t *buffer_copy(const buffer_t *self) {
-  buffer_t *buffer = make_buffer(self->capacity);
-  memcpy(buffer->bytes, self->bytes, self->capacity);
+  buffer_t *buffer = make_zero_buffer(buffer_length(self));
+  memcpy(buffer->bytes, self->bytes, buffer_length(self));
   return buffer;
 }
 
