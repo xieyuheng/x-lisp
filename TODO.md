@@ -1,16 +1,3 @@
-# buffer and file
-
-[helpers.c] `buffer_append_file`
-[helpers.c] `buffer_read_file`
-
-```c
-// 将整个文件的内容追加到 buffer 末尾
-void buffer_append_file(buffer_t *buf, file_t *file);
-
-// 将整个文件的内容读入 buffer，覆盖原有内容（等价于 clear + append_from_file）
-void buffer_read_file(buffer_t *buf, file_t *file);
-```
-
 # format-sexp
 
 [stack-lisp.c] sexp -- `sexp_format` -- take `buffer_t` as first argument
