@@ -3,15 +3,15 @@
 int main(void) {
   test_start();
 
-  // {
-  //   buffer_t *buffer = make_buffer(3);
-  //   buffer_raw_bytes(buffer)[0] = 'a';
-  //   buffer_raw_bytes(buffer)[1] = 'b';
-  //   buffer_raw_bytes(buffer)[2] = 'c';
-
-  //   assert(buffer_capacity(buffer) == 3);
-  //   buffer_free(buffer);
-  // }
+  {
+    buffer_t *buffer = make_buffer(3);
+    buffer_put_byte(buffer, 0, 'a');
+    buffer_put_byte(buffer, 1, 'b');
+    buffer_put_byte(buffer, 2, 'c');
+    assert(buffer_capacity(buffer) == 3);
+    assert(buffer_length(buffer) == 3);
+    buffer_free(buffer);
+  }
 
   // {
   //   buffer_t *buffer_1 = make_buffer(3);

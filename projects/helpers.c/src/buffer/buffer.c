@@ -59,3 +59,17 @@ uint8_t buffer_get_byte(const buffer_t *self, size_t index) {
   assert(index < buffer_length(self));
   return self->bytes[index];
 }
+
+void buffer_put_byte(buffer_t *self, size_t index, uint8_t byte) {
+  if (index >= self->capacity) {
+    buffer_double_capacity(self);
+    buffer_put_byte(self, index, byte);
+    return;
+  }
+
+  if (index + 1 > self->cursor) {
+    self->cursor = index + 1;
+  }
+
+  self->bytes[index] = byte;
+}
