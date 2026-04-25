@@ -1,18 +1,16 @@
 #include "index.h"
 
-// with an extra ending '\0' to be viewed as string.
-
 struct buffer_t {
   size_t capacity;
-  size_t cursor;
   uint8_t *bytes;
+  size_t cursor;
 };
 
 buffer_t *make_buffer(size_t capacity) {
   buffer_t *self = new(buffer_t);
   self->capacity = capacity;
+  self->bytes = allocate(capacity);
   self->cursor = 0;
-  self->bytes = allocate(capacity + 1);
   return self;
 }
 
@@ -43,4 +41,16 @@ bool buffer_equal(const buffer_t *left, const buffer_t *right) {
   if (left == right) return true;
   if (buffer_length(left) != buffer_length(right)) return false;
   return memcmp(left->bytes, right->bytes, buffer_length(left)) == 0;
+}
+
+bool buffer_is_full_capacity(const buffer_t *self) {
+  return buffer_length(self) == self->capacity;
+}
+
+void buffer_double_capacity(buffer_t *self) {
+  void *bytes = allocate(self->capacity * 2);
+  memcpy(self->bytes, bytes, buffer_length(self));
+  free(self->bytes);
+  self->bytes = bytes;
+  self->capacity *= 2;
 }

@@ -1,8 +1,5 @@
 # format
 
-[helpers.c] `buffer_is_full_capacity`
-[helpers.c] `buffer_double_capacity`
-
 [helpers.c] `buffer_get_byte`
 [helpers.c] `buffer_put_byte`
 

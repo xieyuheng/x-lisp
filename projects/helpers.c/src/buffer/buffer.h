@@ -9,3 +9,6 @@ uint8_t *buffer_raw_bytes(const buffer_t *self);
 
 buffer_t *buffer_copy(const buffer_t *self);
 bool buffer_equal(const buffer_t *left, const buffer_t *right);
+
+bool buffer_is_full_capacity(const buffer_t *self);
+void buffer_double_capacity(buffer_t *self);
