@@ -150,3 +150,7 @@ void buffer_printf(buffer_t *self, const char *fmt, ...) {
   assert(written != -1);
   va_end(args);
 }
+
+void buffer_write_file(const buffer_t *self, file_t *file) {
+  file_write_bytes(file, buffer_raw_bytes(self), buffer_length(self));
+}

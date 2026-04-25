@@ -20,8 +20,6 @@ void object_format(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self) {
 void object_print(object_circle_ctx_t *ctx, object_t *self) {
   buffer_t *buffer = make_buffer();
   object_format(buffer, ctx, self);
-  char *string = buffer_to_string(buffer);
-  printf("%s", string);
-  string_free(string);
+  buffer_write_file(buffer, stdout);
   buffer_free(buffer);
 }

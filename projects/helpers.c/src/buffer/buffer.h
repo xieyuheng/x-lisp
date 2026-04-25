@@ -30,3 +30,5 @@ char *buffer_to_string(const buffer_t *self);
 
 void buffer_printf(buffer_t *self, const char *fmt, ...)
   __attribute__((format(printf, 2, 3)));
+
+void buffer_write_file(const buffer_t *self, file_t *file);
