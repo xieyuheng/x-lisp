@@ -131,13 +131,13 @@ char *buffer_to_string(const buffer_t *self) {
   return string;
 }
 
-void buffer_printf(buffer_t *self, const char *fmt, ...) {
+void buffer_printf(buffer_t *self, const char *template, ...) {
   va_list args;
-  va_start(args, fmt);
+  va_start(args, template);
 
   va_list args_copy;
   va_copy(args_copy, args);
-  int expected_length = vsnprintf(NULL, 0, fmt, args_copy);
+  int expected_length = vsnprintf(NULL, 0, template, args_copy);
   assert(expected_length != -1);
   va_end(args_copy);
 
@@ -146,7 +146,7 @@ void buffer_printf(buffer_t *self, const char *fmt, ...) {
   self->cursor += expected_length;
 
   char *string = (char *) buffer_raw_bytes(self) + length;
-  int written = vsnprintf(string, expected_length + 1, fmt, args);
+  int written = vsnprintf(string, expected_length + 1, template, args);
   assert(written != -1);
   va_end(args);
 }

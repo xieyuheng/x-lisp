@@ -1,4 +1,10 @@
-[stack-lisp.c] improve format function naming
+[helpers.c] improve buffer function naming
+
+ambr buffer_write_file buffer_write
+ambr buffer_read_file buffer_read
+
+[helpers.c] ambr buffer_printf format_template
+
 [stack-lisp.c] `error` & `assert` & `assert-equal` -- print error to stderr -- instead of stdout
 
 # format-sexp

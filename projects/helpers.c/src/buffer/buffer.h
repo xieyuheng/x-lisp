@@ -28,7 +28,7 @@ void buffer_append_substring(buffer_t *self, const char *string, size_t start, s
 
 char *buffer_to_string(const buffer_t *self);
 
-void buffer_printf(buffer_t *self, const char *fmt, ...)
+void buffer_printf(buffer_t *self, const char *template, ...)
   __attribute__((format(printf, 2, 3)));
 
 void buffer_read_file(buffer_t *self, file_t *file);
