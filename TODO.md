@@ -1,3 +1,6 @@
+[stack-lisp.c] improve format function naming
+[stack-lisp.c] `error` & `assert` & `assert-equal` -- print error to stderr -- instead of stdout
+
 # format-sexp
 
 [stack-lisp.c] sexp -- `sexp_format` -- take `buffer_t` as first argument
@@ -7,7 +10,6 @@
 
 # feedback
 
-[stack-lisp.c] `error` & `assert` & `assert-equal` -- print error to stderr -- instead of stdout
 [stack-lisp.c] builtin -- `error-with-location` & `assert-with-location` -- print in context
 
 # self-hosting
