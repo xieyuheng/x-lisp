@@ -31,5 +31,5 @@ char *buffer_to_string(const buffer_t *self);
 void buffer_printf(buffer_t *self, const char *template, ...)
   __attribute__((format(printf, 2, 3)));
 
-void buffer_read_file(buffer_t *self, file_t *file);
-void buffer_write_file(const buffer_t *self, file_t *file);
+void buffer_read(buffer_t *self, file_t *file);
+void buffer_write(const buffer_t *self, file_t *file);

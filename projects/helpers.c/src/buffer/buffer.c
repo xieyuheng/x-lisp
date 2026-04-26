@@ -151,7 +151,7 @@ void buffer_printf(buffer_t *self, const char *template, ...) {
   va_end(args);
 }
 
-void buffer_read_file(buffer_t *self, file_t *file) {
+void buffer_read(buffer_t *self, file_t *file) {
   off_t size = file_size(file);
   buffer_ensure_capacity(self, size);
   uint8_t *bytes = buffer_raw_bytes(self);
@@ -159,6 +159,6 @@ void buffer_read_file(buffer_t *self, file_t *file) {
   assert(nbytes == (size_t) size);
 }
 
-void buffer_write_file(const buffer_t *self, file_t *file) {
+void buffer_write(const buffer_t *self, file_t *file) {
   file_write_bytes(file, buffer_raw_bytes(self), buffer_length(self));
 }

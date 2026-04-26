@@ -62,7 +62,7 @@ void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
 void value_print(object_circle_ctx_t *ctx, value_t value) {
   buffer_t *buffer = make_buffer();
   value_format(buffer, ctx, value);
-  buffer_write_file(buffer, stdout);
+  buffer_write(buffer, stdout);
   buffer_free(buffer);
 }
 
