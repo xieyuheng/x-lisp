@@ -100,7 +100,7 @@ bool xset_equal(const xset_t *lhs, const xset_t *rhs) {
 }
 
 void xset_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xset_t *self) {
-  buffer_printf(buffer, "{");
+  format_template(buffer, "{");
 
   set_iter_t iter;
   set_iter_init(&iter, self->set);
@@ -112,12 +112,12 @@ void xset_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xset_t *self)
   }
 
   while (entry) {
-    buffer_printf(buffer, " ");
+    format_template(buffer, " ");
     value_format(buffer, ctx, (value_t) entry->value);
     entry = set_iter_next_entry(&iter);
   }
 
-  buffer_printf(buffer, "}");
+  format_template(buffer, "}");
 }
 
 static ordering_t compare_value(const void *lhs, const void *rhs) {

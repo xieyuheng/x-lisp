@@ -87,19 +87,19 @@ static void xlist_format_elements(buffer_t *buffer, object_circle_ctx_t *ctx, co
   for (size_t i = 0; i < array_length(self->elements); i++) {
     value_format(buffer, ctx, xlist_get(self, i));
     if (i < array_length(self->elements) - 1) {
-      buffer_printf(buffer, " ");
+      format_template(buffer, " ");
     }
   }
 }
 
 void xlist_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xlist_t *self) {
   if (array_is_empty(self->elements)) {
-    buffer_printf(buffer, "[");
-    buffer_printf(buffer, "]");
+    format_template(buffer, "[");
+    format_template(buffer, "]");
   } else {
-    buffer_printf(buffer, "[");
+    format_template(buffer, "[");
     xlist_format_elements(buffer, ctx, self);
-    buffer_printf(buffer, "]");
+    format_template(buffer, "]");
   }
 }
 

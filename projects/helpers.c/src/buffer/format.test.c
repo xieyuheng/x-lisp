@@ -5,6 +5,29 @@ int main(void) {
 
   {
     buffer_t *buffer = make_buffer();
+    format_template(buffer, "abc");
+    format_template(buffer, "def");
+    assert(string_equal("abcdef", buffer_to_string(buffer)));
+    buffer_free(buffer);
+  }
+
+  {
+    buffer_t *buffer = make_buffer();
+    format_template(buffer, "%s", "");
+    format_template(buffer, "%s", "");
+    assert(string_equal("", buffer_to_string(buffer)));
+    buffer_free(buffer);
+  }
+
+  {
+    buffer_t *buffer = make_buffer();
+    format_template(buffer, " (%s) ", "abc");
+    assert(string_equal(" (abc) ", buffer_to_string(buffer)));
+    buffer_free(buffer);
+  }
+
+  {
+    buffer_t *buffer = make_buffer();
     format_uint(buffer, 1);
     format_uint(buffer, 2);
     format_uint(buffer, 3);

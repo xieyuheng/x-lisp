@@ -13,7 +13,7 @@ void object_format(buffer_t *buffer, object_circle_ctx_t *ctx, object_t *self) {
     return;
   }
 
-  buffer_printf(buffer, "#(%s 0x%p)", self->header.class->name, (void *) self);
+  format_template(buffer, "#(%s 0x%p)", self->header.class->name, (void *) self);
   return;
 }
 

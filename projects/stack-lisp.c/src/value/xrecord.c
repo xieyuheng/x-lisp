@@ -95,14 +95,14 @@ static void xrecord_format_attributes(buffer_t *buffer, object_circle_ctx_t *ctx
   // no leading space for the first attribute
   if (key) {
     value_t value = xrecord_get(self, key);
-    buffer_printf(buffer, ":%s ", key);
+    format_template(buffer, ":%s ", key);
     value_format(buffer, ctx, value);
     key = record_iter_next_key(&iter);
   }
 
   while (key) {
     value_t value = xrecord_get(self, key);
-    buffer_printf(buffer, " :%s ", key);
+    format_template(buffer, " :%s ", key);
     value_format(buffer, ctx, value);
     key = record_iter_next_key(&iter);
   }
@@ -110,12 +110,12 @@ static void xrecord_format_attributes(buffer_t *buffer, object_circle_ctx_t *ctx
 
 void xrecord_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xrecord_t *self) {
   if (record_is_empty(self->attributes)) {
-    buffer_printf(buffer, "{");
-    buffer_printf(buffer, "}");
+    format_template(buffer, "{");
+    format_template(buffer, "}");
   } else {
-    buffer_printf(buffer, "{");
+    format_template(buffer, "{");
     xrecord_format_attributes(buffer, ctx, self);
-    buffer_printf(buffer, "}");
+    format_template(buffer, "}");
   }
 }
 

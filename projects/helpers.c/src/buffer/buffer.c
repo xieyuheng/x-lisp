@@ -131,26 +131,6 @@ char *buffer_to_string(const buffer_t *self) {
   return string;
 }
 
-void buffer_printf(buffer_t *self, const char *template, ...) {
-  va_list args;
-  va_start(args, template);
-
-  va_list args_copy;
-  va_copy(args_copy, args);
-  int expected_length = vsnprintf(NULL, 0, template, args_copy);
-  assert(expected_length != -1);
-  va_end(args_copy);
-
-  size_t length = buffer_length(self);
-  buffer_ensure_capacity(self, length + expected_length + 1);
-  self->cursor += expected_length;
-
-  char *string = (char *) buffer_raw_bytes(self) + length;
-  int written = vsnprintf(string, expected_length + 1, template, args);
-  assert(written != -1);
-  va_end(args);
-}
-
 void buffer_read(buffer_t *self, file_t *file) {
   off_t size = file_size(file);
   buffer_ensure_capacity(self, size);

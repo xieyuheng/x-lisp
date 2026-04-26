@@ -50,16 +50,16 @@ bool curry_equal(const curry_t *lhs, const curry_t *rhs) {
 }
 
 void curry_format(buffer_t *buffer, object_circle_ctx_t *ctx, const curry_t *self) {
-  buffer_printf(buffer, "(@curry ");
+  format_template(buffer, "(@curry ");
   value_format(buffer, ctx, self->target);
-  buffer_printf(buffer, " %ld", self->arity);
-  buffer_printf(buffer, " [");
+  format_template(buffer, " %ld", self->arity);
+  format_template(buffer, " [");
   for (size_t i = 0; i < self->size; i++) {
-    if (i > 0) buffer_printf(buffer, " ");
+    if (i > 0) format_template(buffer, " ");
     value_format(buffer, ctx, self->args[i]);
   }
-  buffer_printf(buffer, "]");
-  buffer_printf(buffer, ")");
+  format_template(buffer, "]");
+  format_template(buffer, ")");
 }
 
 struct curry_child_iter_t {

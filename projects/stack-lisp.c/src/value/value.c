@@ -6,7 +6,7 @@ inline tag_t value_tag(value_t value) {
 
 void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
   if (int_p(value)) {
-    buffer_printf(buffer, "%ld", to_int64(value));
+    format_template(buffer, "%ld", to_int64(value));
     return;
   }
 
@@ -20,34 +20,34 @@ void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
       string[end + 2] = '\0';
     }
 
-    buffer_printf(buffer, "%s", string);
+    format_template(buffer, "%s", string);
     return;
   }
 
   if (void_p(value)) {
-    buffer_printf(buffer, "#void");
+    format_template(buffer, "#void");
     return;
   }
 
   if (true_p(value)) {
-    buffer_printf(buffer, "#t");
+    format_template(buffer, "#t");
     return;
   }
 
   if (false_p(value)) {
-    buffer_printf(buffer, "#f");
+    format_template(buffer, "#f");
     return;
   }
 
   if (object_p(value)) {
     object_t *object = to_object(value);
     if (object_circle_start_p(ctx, object)) {
-      buffer_printf(buffer, "#%ld=", object_circle_index(ctx, object));
+      format_template(buffer, "#%ld=", object_circle_index(ctx, object));
       object_circle_meet(ctx, object);
       object_format(buffer, ctx, object);
       return;
     } else if (object_circle_end_p(ctx, object)) {
-      buffer_printf(buffer, "#%ld#", object_circle_index(ctx, object));
+      format_template(buffer, "#%ld#", object_circle_index(ctx, object));
       return;
     } else {
       object_format(buffer, ctx, object);
@@ -55,7 +55,7 @@ void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
     }
   }
 
-  buffer_printf(buffer, "#(unknown-value 0x%lx)", value);
+  format_template(buffer, "#(unknown-value 0x%lx)", value);
   return;
 }
 

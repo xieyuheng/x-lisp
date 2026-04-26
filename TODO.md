@@ -1,5 +1,3 @@
-[helpers.c] ambr buffer_printf format_template
-
 [stack-lisp.c] `error` & `assert` & `assert-equal` -- print error to stderr -- instead of stdout
 
 # format-sexp
