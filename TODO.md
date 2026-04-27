@@ -1,7 +1,3 @@
-# feedback
-
-[stack-lisp.c] builtin -- `assert-with-location` -- print in context
-
 # format-sexp
 
 [stack-lisp.c] sexp -- `format_sexp` -- take `buffer_t` as first argument
