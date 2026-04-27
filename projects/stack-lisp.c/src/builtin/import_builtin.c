@@ -77,6 +77,7 @@ void import_builtin(mod_t *mod) {
   define_primitive_1(mod, "builtin/atom?", x_atom_p);
   define_primitive_2(mod, "builtin/same?", x_same_p);
   define_primitive_2(mod, "builtin/equal?", x_equal_p);
+  define_primitive_1(mod, "builtin/format", x_format);
   define_primitive_1(mod, "builtin/hash-code", x_hash_code);
   define_primitive_2(mod, "builtin/total-compare", x_total_compare);
 

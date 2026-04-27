@@ -1,0 +1,4 @@
+(module builtin)
+
+(define-test format-test
+  (assert-equal "['a 'b 'c]" (format '(a b c))))

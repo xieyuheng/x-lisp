@@ -19,6 +19,14 @@ value_t x_equal_p(value_t lhs, value_t rhs) {
   return x_same_p(lhs, rhs);
 }
 
+value_t x_format(value_t value) {
+  buffer_t *buffer = make_buffer();
+  format_value(buffer, value);
+  value_t result = x_object(make_xstring_take(buffer_to_string(buffer)));
+  buffer_free(buffer);
+  return result;
+}
+
 value_t x_hash_code(value_t value) {
   return x_int(value_hash_code(value));
 }

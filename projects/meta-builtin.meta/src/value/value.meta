@@ -1,0 +1,15 @@
+(module builtin)
+
+(declare-primitive-function atom? 1)
+(declare-primitive-function same? 2)
+(declare-primitive-function equal? 2)
+(declare-primitive-function format 1)
+(declare-primitive-function hash-code 1)
+(declare-primitive-function total-compare 2)
+
+(claim atom? (polymorphic (A) (-> A bool-t)))
+(claim same? (polymorphic (A) (-> A A bool-t)))
+(claim equal? (polymorphic (A) (-> A A bool-t)))
+(claim format (polymorphic (A) (-> A string-t)))
+(claim hash-code (polymorphic (A) (-> A int-t)))
+(claim total-compare (polymorphic (A) (-> A A int-t)))
