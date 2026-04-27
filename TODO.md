@@ -1,3 +1,6 @@
+[stack-lisp.c] rename format to format_value
+[stack-lisp.c] rename print to print_value
+[helpers.c] improve print function naming
 [stack-lisp.c] `error` & `assert` & `assert-equal` -- print error to stderr -- instead of stdout
 
 # format-sexp
