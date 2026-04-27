@@ -1,24 +1,24 @@
-['abc]
-['-sphere]
-[:abc]
-[1]
-[0]
-[-1]
-[0.0]
-[3.139999999999997]
-[[]]
-[['a 'b 'c]]
-[['a ['b] 'c]]
-[[:x 1 :y 2]]
-[['a 'b 'c :x 1 :y 2]]
-[['@list]]
-[['@list 'a 'b 'c]]
-[['@record]]
-[['@record :x 1 :y 2]]
-[['@quote 'a]]
-[['@quote ['a]]]
-[['@quote ['#a]]]
-[['@quote ['a 'b 'c]]]
-[['@unquote ['a 'b 'c]]]
-[['@quasiquote ['a ['@unquote 'b] 'c]]]
-[['f ['@quote 'a] 'x]]
+(abc)
+(-sphere)
+(:abc)
+(1)
+(0)
+(-1)
+(0.0)
+(3.139999999999997)
+(())
+((a b c))
+((a (b) c))
+((:x 1 :y 2))
+((a b c :x 1 :y 2))
+((@list))
+((@list a b c))
+((@record))
+((@record :x 1 :y 2))
+((@quote a))
+((@quote (a)))
+((@quote (#a)))
+((@quote (a b c)))
+((@unquote (a b c)))
+((@quasiquote (a (@unquote b) c)))
+((f (@quote a) x))

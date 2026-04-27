@@ -1,7 +1,10 @@
 #include "index.h"
 
 static void echo(const char *string) {
-  x_println(parse_sexps(string));
+  buffer_t *buffer = make_buffer();
+  format_sexp(buffer, parse_sexps(string));
+  format_newline(buffer);
+  buffer_write_and_free(buffer, stdout);
 }
 
 int main(void) {
