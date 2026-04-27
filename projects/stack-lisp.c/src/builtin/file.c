@@ -50,12 +50,12 @@ value_t x_writeln(value_t x) {
 }
 
 value_t x_print(value_t x) {
-  print(x);
+  print_value(x);
   return x_void;
 }
 
 value_t x_println(value_t x) {
-  print(x);
+  print_value(x);
   newline();
   return x_void;
 }

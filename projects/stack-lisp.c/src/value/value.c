@@ -35,12 +35,12 @@ hash_code_t value_hash_code(value_t value) {
     if (object->header.class->hash_code_fn) {
       return object->header.class->hash_code_fn(object);
     } else {
-      who_printf("unhandled object: "); print(value); newline();
+      who_printf("unhandled object: "); print_value(value); newline();
       exit(1);
     }
   }
 
-  who_printf("unhandled value: "); print(value); newline();
+  who_printf("unhandled value: "); print_value(value); newline();
   exit(1);
 }
 
@@ -72,14 +72,14 @@ ordering_t value_total_compare(value_t lhs, value_t rhs) {
       return compare_fn(to_object(lhs), to_object(rhs));
     } else {
       who_printf("unhandled objects\n");
-      printf("  lhs: "); print(lhs); newline();
-      printf("  rhs: "); print(rhs); newline();
+      printf("  lhs: "); print_value(lhs); newline();
+      printf("  rhs: "); print_value(rhs); newline();
     }
   }
 
   who_printf("unhandled values\n");
-  printf("  lhs: "); print(lhs); newline();
-  printf("  rhs: "); print(rhs); newline();
+  printf("  lhs: "); print_value(lhs); newline();
+  printf("  rhs: "); print_value(rhs); newline();
   exit(1);
 }
 
@@ -138,7 +138,7 @@ void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
   return;
 }
 
-void format(buffer_t *buffer, value_t value) {
+void format_value(buffer_t *buffer, value_t value) {
   object_circle_ctx_t *ctx = make_object_circle_ctx();
   if (object_p(value)) {
     object_circle_collect(ctx, to_object(value));
@@ -149,16 +149,9 @@ void format(buffer_t *buffer, value_t value) {
   object_circle_ctx_free(ctx);
 }
 
-void print(value_t value) {
-  object_circle_ctx_t *ctx = make_object_circle_ctx();
-  if (object_p(value)) {
-    object_circle_collect(ctx, to_object(value));
-    set_clear(ctx->occurred_objects);
-  }
-
+void print_value(value_t value) {
   buffer_t *buffer = make_buffer();
-  value_format(buffer, ctx, value);
-  object_circle_ctx_free(ctx);
+  format_value(buffer, value);
   buffer_write(buffer, stdout);
   buffer_free(buffer);
 }

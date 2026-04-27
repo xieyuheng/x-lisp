@@ -169,7 +169,7 @@ static void compile_instr(mod_t *mod, function_t *function, value_t sexp) {
     return;
   }
 
-  who_printf("unhandled instr: "); print(sexp); newline();
+  who_printf("unhandled instr: "); print_value(sexp); newline();
 }
 
 void stk_compile_function(mod_t *mod, function_t *function, value_t body) {

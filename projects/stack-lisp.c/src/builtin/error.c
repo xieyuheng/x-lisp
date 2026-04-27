@@ -1,7 +1,7 @@
 #include "index.h"
 
 value_t x_error(value_t info) {
-  print(info);
+  print_value(info);
   exit(1);
 }
 

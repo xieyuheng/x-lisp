@@ -280,7 +280,7 @@ void vm_inspect(vm_t *vm) {
 
   for (size_t i = 0; i < stack_length(vm->value_stack); i++) {
     value_t value = (value_t) stack_get(vm->value_stack, i);
-    print(value);
+    print_value(value);
     string_print(" ");
   }
 
