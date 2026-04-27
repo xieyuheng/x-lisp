@@ -1,6 +1,5 @@
 # feedback
 
-[stack-lisp.c] `value_to_span`
 [stack-lisp.c] builtin -- `error-with-location` print in context
 [stack-lisp.c] builtin -- `assert-with-location` -- print in context
 

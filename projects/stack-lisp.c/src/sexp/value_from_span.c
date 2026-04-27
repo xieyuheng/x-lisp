@@ -21,3 +21,19 @@ value_t value_from_source_location(value_t path, struct span_t span) {
   xrecord_put(record, "span", value_from_span(span));
   return x_object(record);
 }
+
+
+struct position_t value_to_position(value_t value) {
+  return (struct position_t) {
+    .index = to_int64(xrecord_get(to_xrecord(value), "index")),
+    .row = to_int64(xrecord_get(to_xrecord(value), "row")),
+    .column = to_int64(xrecord_get(to_xrecord(value), "column")),
+  };
+}
+
+struct span_t value_to_span(value_t value) {
+  return (struct span_t) {
+    .start = value_to_position(xrecord_get(to_xrecord(value), "start")),
+    .end = value_to_position(xrecord_get(to_xrecord(value), "end")),
+  };
+}
