@@ -1,6 +1,5 @@
 # feedback
 
-[stack-lisp.c] `format_source_location_report`
 [stack-lisp.c] builtin -- `error-with-location` print in context
 [stack-lisp.c] builtin -- `assert-with-location` -- print in context
 

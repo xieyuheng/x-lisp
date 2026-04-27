@@ -24,5 +24,5 @@ char *path_pop_segment(path_t *self);
 void path_push_segment(path_t *self, char *segment);
 
 path_t *path_relative(const path_t *from, const path_t *to);
-// void format_path_relative_to(buffer_t *buffer, const path_t *from, const path_t *to);
-// void format_path_relative_to_cwd(buffer_t *buffer, const path_t *to);
+void format_path_relative_to(buffer_t *buffer, const path_t *from, const path_t *to);
+void format_path_relative_to_cwd(buffer_t *buffer, const path_t *to);

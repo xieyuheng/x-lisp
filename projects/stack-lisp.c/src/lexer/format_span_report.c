@@ -107,17 +107,27 @@ void format_span_report(buffer_t *buffer, struct span_t span, const char *contex
 }
 
 static void format_position(buffer_t *buffer, struct position_t position) {
-  format_template("%ld:%ld", position.row + 1, position.column + 1);
+  format_template(buffer, "%ld:%ld", position.row + 1, position.column + 1);
 }
 
-// void format_source_location_report(buffer_t *buffer, const char *pathname, struct span_t span, const char *message) {
-//   if (pathname) {
+void format_source_location_report(buffer_t *buffer, const char *pathname, struct span_t span, const char *message) {
+  assert(pathname);
 
-//   }
+  path_t *path = make_path(pathname);
+  format_path_relative_to_cwd(buffer, path);
+  path_free(path);
+  format_string(buffer, ":");
+  format_position(buffer, span.start);
+  if (message) {
+    format_string(buffer, " -- ");
+    format_string(buffer, message);
+  }
 
-//   if (pathname && fs_is_file(pathname)) {
-//     char *context = fs_read(pathname);
-//     format_span_report(buffer, span, context);
-//     string_free(context);
-//   }
-// }
+  format_newline(buffer);
+
+  if (fs_is_file(pathname)) {
+    char *context = fs_read(pathname);
+    format_span_report(buffer, span, context);
+    string_free(context);
+  }
+}
