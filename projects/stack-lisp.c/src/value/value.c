@@ -4,6 +4,17 @@ inline tag_t value_tag(value_t value) {
   return (size_t) value & TAG_MASK;
 }
 
+bool atom_p(value_t value) {
+  return int_p(value) ||
+    float_p(value) ||
+    xstring_p(value) ||
+    symbol_p(value) ||
+    keyword_p(value) ||
+    bool_p(value) ||
+    void_p(value) ||
+    xfile_p(value);
+}
+
 bool same_p(value_t lhs, value_t rhs) {
   return lhs == rhs;
 }

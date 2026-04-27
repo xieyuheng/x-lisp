@@ -1,8 +1,8 @@
 # format-sexp
 
-[stack-lisp.c] sexp -- `format_sexp` -- take `buffer_t` as first argument
-[stack-lisp.c] sexp -- `print_sexp`
-[stack-lisp.c] sexp -- `sexp.snapshot` -- call `print_sexp`
+[stack-lisp.c] value -- `format_atom`
+[stack-lisp.c] sexp -- `format_sexp`
+[stack-lisp.c] sexp -- `sexp.snapshot` -- call `format_sexp`
 [stack-lisp.c] builtin -- `format-sexp`
 
 # self-hosting
