@@ -1,4 +1,4 @@
-[stack-lisp.c] `error` & `assert` & `assert-equal` -- print error to stderr -- instead of stdout
+[stack-lisp.c] `assert` -- print error to stderr -- instead of stdout
 
 # format-sexp
 

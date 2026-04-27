@@ -32,6 +32,10 @@ void format_char(buffer_t *self, char c) {
   buffer_put_byte(self, buffer_length(self), c);
 }
 
+void format_newline(buffer_t *self) {
+  format_char(self, '\n');
+}
+
 void format_string(buffer_t *self, const char *string) {
   for (size_t i = 0; i < string_length(string); i++) {
     format_char(self, string[i]);

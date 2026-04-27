@@ -30,3 +30,5 @@ char *buffer_to_string(const buffer_t *self);
 
 void buffer_read(buffer_t *self, file_t *file);
 void buffer_write(const buffer_t *self, file_t *file);
+void buffer_write_and_free(buffer_t *self, file_t *file);
+[[noreturn]] void buffer_write_and_exit(buffer_t *self, file_t *file, int status);

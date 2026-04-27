@@ -142,3 +142,14 @@ void buffer_read(buffer_t *self, file_t *file) {
 void buffer_write(const buffer_t *self, file_t *file) {
   file_write_bytes(file, buffer_raw_bytes(self), buffer_length(self));
 }
+
+void buffer_write_and_free(buffer_t *self, file_t *file) {
+  buffer_write(self, file);
+  buffer_free(self);
+}
+
+[[noreturn]] void buffer_write_and_exit(buffer_t *self, file_t *file, int status) {
+  buffer_write(self, file);
+  buffer_free(self);
+  exit(status);
+}
