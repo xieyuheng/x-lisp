@@ -1,4 +1,4 @@
-[stack-lisp.c] builtin -- `format-sexp`
+[stack-lisp.c] builtin -- `format`
 
 # self-hosting
 

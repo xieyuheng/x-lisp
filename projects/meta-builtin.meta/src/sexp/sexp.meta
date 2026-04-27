@@ -1,0 +1,8 @@
+(module builtin)
+
+(declare-primitive-function format-sexp 1)
+
+(claim format-sexp (polymorphic (A) (-> A string-t)))
+
+(define-test format-sexp-test
+  (assert-equal "(a b c)" (format-sexp '(a b c))))

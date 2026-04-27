@@ -255,6 +255,7 @@ void import_builtin(mod_t *mod) {
   // sexp
 
   define_primitive_2(mod, "builtin/parse-located-sexps", x_parse_located_sexps);
+  define_primitive_1(mod, "builtin/format-sexp", x_format_sexp);
 
   // fs
 

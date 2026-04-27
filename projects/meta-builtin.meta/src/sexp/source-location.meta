@@ -1,0 +1,14 @@
+(module builtin)
+
+(define-interface source-location-t
+  :path string-t
+  :span source-span-t)
+
+(define-interface source-span-t
+  :start source-position-t
+  :end source-position-t)
+
+(define-interface source-position-t
+  :index int-t
+  :row int-t
+  :column int-t)
