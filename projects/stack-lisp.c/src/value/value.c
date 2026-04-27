@@ -115,21 +115,6 @@ void format_atom(buffer_t *buffer, value_t value) {
     return;
   }
 
-  if (true_p(value)) {
-    format_string(buffer, "#t");
-    return;
-  }
-
-  if (false_p(value)) {
-    format_string(buffer, "#f");
-    return;
-  }
-
-  if (void_p(value)) {
-    format_string(buffer, "#void");
-    return;
-  }
-
   if (xstring_p(value)) {
     format_string(buffer, "\"");
     format_string(buffer, xstring_string(to_xstring(value)));
@@ -146,6 +131,21 @@ void format_atom(buffer_t *buffer, value_t value) {
   if (keyword_p(value)) {
     format_string(buffer, ":");
     format_string(buffer, keyword_string(to_keyword(value)));
+    return;
+  }
+
+  if (true_p(value)) {
+    format_string(buffer, "#t");
+    return;
+  }
+
+  if (false_p(value)) {
+    format_string(buffer, "#f");
+    return;
+  }
+
+  if (void_p(value)) {
+    format_string(buffer, "#void");
     return;
   }
 }

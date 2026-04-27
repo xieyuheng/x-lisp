@@ -160,4 +160,35 @@ bool sexp_has_tag(value_t sexp, const char *tag) {
     && equal_p(x_car(sexp), x_object(intern_symbol(tag)));
 }
 
-// void format_sexp(buffer_t *buffer, value_t sexp)
+void format_sexp(buffer_t *buffer, value_t sexp) {
+  if (symbol_p(sexp)) {
+    format_string(buffer, symbol_string(to_symbol(sexp)));
+    return;
+  }
+
+  if (atom_p(sexp)) {
+    format_atom(buffer, sexp);
+    return;
+  }
+
+  if (xlist_p(sexp)) {
+    xlist_t *xlist = to_xlist(sexp);
+    size_t length = array_length(xlist->elements);
+    if (length == 0) {
+      format_string(buffer, "()");
+      return;
+    } else {
+      format_string(buffer, "(");
+      for (size_t i = 0; i < length; i++) {
+        if (i > 0) format_string(buffer, " ");
+        format_sexp(buffer, xlist_get(xlist, i));
+      }
+
+      format_string(buffer, ")");
+      return;
+    }
+  }
+
+  who_printf("non sexp value: "); print_value(sexp); newline();
+  exit(1);
+}
