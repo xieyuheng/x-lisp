@@ -1,6 +1,5 @@
 # feedback
 
-[stack-lisp.c] lexer -- extract `source_location_t`
 [stack-lisp.c] builtin -- `assert-with-location` -- print in context
 
 # format-sexp

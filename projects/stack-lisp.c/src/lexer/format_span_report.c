@@ -110,14 +110,14 @@ static void format_position(buffer_t *buffer, struct position_t position) {
   format_template(buffer, "%ld:%ld", position.row + 1, position.column + 1);
 }
 
-void format_source_location_report(buffer_t *buffer, const char *pathname, struct span_t span, const char *message) {
-  assert(pathname);
+void format_source_location_report(buffer_t *buffer, struct source_location_t location, const char *message) {
+  assert(location.pathname);
 
-  path_t *path = make_path(pathname);
+  path_t *path = make_path(location.pathname);
   format_path_relative_to_cwd(buffer, path);
   path_free(path);
   format_string(buffer, ":");
-  format_position(buffer, span.start);
+  format_position(buffer, location.span.start);
   if (message) {
     format_string(buffer, " -- ");
     format_string(buffer, message);
@@ -125,9 +125,9 @@ void format_source_location_report(buffer_t *buffer, const char *pathname, struc
 
   format_newline(buffer);
 
-  if (fs_is_file(pathname)) {
-    char *context = fs_read(pathname);
-    format_span_report(buffer, span, context);
+  if (fs_is_file(location.pathname)) {
+    char *context = fs_read(location.pathname);
+    format_span_report(buffer, location.span, context);
     string_free(context);
   }
 }

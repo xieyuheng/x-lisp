@@ -15,6 +15,13 @@ value_t value_from_span(struct span_t span) {
   return x_object(record);
 }
 
+value_t value_from_source_location(struct source_location_t location) {
+  xrecord_t *record = make_xrecord();
+  xrecord_put(record, "path", x_object(make_xstring(location.pathname)));
+  xrecord_put(record, "span", value_from_span(location.span));
+  return x_object(record);
+}
+
 struct position_t value_to_position(value_t value) {
   return (struct position_t) {
     .index = to_int64(xrecord_get(to_xrecord(value), "index")),
@@ -27,5 +34,12 @@ struct span_t value_to_span(value_t value) {
   return (struct span_t) {
     .start = value_to_position(xrecord_get(to_xrecord(value), "start")),
     .end = value_to_position(xrecord_get(to_xrecord(value), "end")),
+  };
+}
+
+struct source_location_t value_to_source_location(value_t value) {
+  return (struct source_location_t) {
+    .pathname = xstring_string(to_xstring(xrecord_get(to_xrecord(value), "path"))),
+    .span = value_to_span(xrecord_get(to_xrecord(value), "span")),
   };
 }

@@ -11,3 +11,8 @@ struct span_t {
 };
 
 struct span_t span_union(struct span_t, struct span_t);
+
+struct source_location_t {
+  const char *pathname;
+  struct span_t span;
+};
