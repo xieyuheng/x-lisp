@@ -71,9 +71,9 @@ bool xstring_equal(const xstring_t *lhs, const xstring_t *rhs) {
 
 void xstring_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xstring_t *self) {
   (void) ctx;
-  buffer_append_string(buffer, "\"");
-  buffer_append_string(buffer, text_string(self->text));
-  buffer_append_string(buffer, "\"");
+  format_string(buffer, "\"");
+  format_string(buffer, text_string(self->text));
+  format_string(buffer, "\"");
 }
 
 hash_code_t xstring_hash_code(const xstring_t *self) {

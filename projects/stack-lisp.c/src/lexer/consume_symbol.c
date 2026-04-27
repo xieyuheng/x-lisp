@@ -12,7 +12,7 @@ char *consume_symbol(lexer_t *lexer) {
        !char_is_blank(lexer_next_char(lexer)) &&
        !lexer_char_is_mark(lexer, lexer_next_char(lexer)))
   {
-    buffer_append_char(buffer, lexer_next_char(lexer));
+    format_char(buffer, lexer_next_char(lexer));
     lexer_forward(lexer, 1);
   }
 

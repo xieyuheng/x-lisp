@@ -26,7 +26,7 @@ value_t x_keyword_concat(value_t list) {
   int64_t length = to_int64(x_list_length(list));
   for (int64_t i = 0; i < length; i++) {
     value_t element = x_list_get(x_int(i), list);
-    buffer_append_string(buffer, keyword_string(to_keyword(element)));
+    format_string(buffer, keyword_string(to_keyword(element)));
   }
 
   char *content = buffer_to_string(buffer);

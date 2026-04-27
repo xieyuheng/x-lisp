@@ -29,9 +29,9 @@ static char *make_underline(struct span_t span, size_t start, size_t end) {
   buffer_t *buffer = make_buffer();
   for (size_t i = start; i < end; i++) {
     if (span.start.index <= i && i < span.end.index) {
-      buffer_append_char(buffer, '~');
+      format_char(buffer, '~');
     } else {
-      buffer_append_char(buffer, ' ');
+      format_char(buffer, ' ');
     }
   }
 

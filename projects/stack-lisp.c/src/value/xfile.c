@@ -64,7 +64,7 @@ bool xfile_equal(const xfile_t *lhs, const xfile_t *rhs) {
 
 void xfile_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xfile_t *self) {
   (void) ctx;
-  buffer_append_string(buffer, "#(file ");
+  format_string(buffer, "#(file ");
   format_int(buffer, file_raw_fd(self->file));
   if (self->pathname) {
     format_string(buffer, " ");

@@ -57,8 +57,8 @@ keyword_t *to_keyword(value_t value) {
 
 void keyword_format(buffer_t *buffer, object_circle_ctx_t *ctx, const keyword_t *self) {
   (void) ctx;
-  buffer_append_string(buffer, ":");
-  buffer_append_string(buffer, keyword_string(self));
+  format_string(buffer, ":");
+  format_string(buffer, keyword_string(self));
 }
 
 hash_code_t keyword_hash_code(const keyword_t *self) {

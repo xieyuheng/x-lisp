@@ -24,7 +24,7 @@ char *consume_line_comment(lexer_t *lexer) {
       break;
     }
 
-    buffer_append_char(buffer, c);
+    format_char(buffer, c);
     lexer_forward(lexer, 1);
   }
 

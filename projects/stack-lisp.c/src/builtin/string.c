@@ -35,7 +35,7 @@ value_t x_string_concat(value_t list) {
   int64_t length = to_int64(x_list_length(list));
   for (int64_t i = 0; i < length; i++) {
     value_t element = x_list_get(x_int(i), list);
-    buffer_append_string(buffer, xstring_string(to_xstring(element)));
+    format_string(buffer, xstring_string(to_xstring(element)));
   }
 
   char *content = buffer_to_string(buffer);
@@ -95,9 +95,9 @@ value_t x_string_join(value_t separator, value_t list) {
   int64_t length = to_int64(x_list_length(list));
   for (int64_t i = 0; i < length; i++) {
     value_t element = x_list_get(x_int(i), list);
-    buffer_append_string(buffer, xstring_string(to_xstring(element)));
+    format_string(buffer, xstring_string(to_xstring(element)));
     if (i < length - 1) {
-      buffer_append_string(buffer, xstring_string(to_xstring(separator)));
+      format_string(buffer, xstring_string(to_xstring(separator)));
     }
   }
 
@@ -115,10 +115,10 @@ value_t x_string_replace(value_t pattern, value_t replacement, value_t string) {
   size_t cursor = 0;
   char *substring = string_next_split(text_string(text), pattern_string, &cursor);
   while (substring) {
-    buffer_append_string(buffer, substring);
+    format_string(buffer, substring);
     substring = string_next_split(text_string(text), pattern_string, &cursor);
     if (substring) {
-        buffer_append_string(buffer, replacement_string);
+        format_string(buffer, replacement_string);
     }
   }
 

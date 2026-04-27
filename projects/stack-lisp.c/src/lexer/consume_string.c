@@ -26,14 +26,14 @@ char *consume_string(lexer_t *lexer) {
 
       c = lexer_next_char(lexer);
       // escape char from: https://www.json.org/json-en.html
-      if (c == 'n') buffer_append_char(buffer, '\n');
-      else if (c == 't') buffer_append_char(buffer, '\t');
-      else if (c == 'b') buffer_append_char(buffer, '\b');
-      else if (c == 'f') buffer_append_char(buffer, '\f');
-      else if (c == 'r') buffer_append_char(buffer, '\r');
-      else if (c == '0') buffer_append_char(buffer, '\0');
-      else if (c == '"') buffer_append_char(buffer, '\"');
-      else if (c == '\\') buffer_append_char(buffer, '\\');
+      if (c == 'n') format_char(buffer, '\n');
+      else if (c == 't') format_char(buffer, '\t');
+      else if (c == 'b') format_char(buffer, '\b');
+      else if (c == 'f') format_char(buffer, '\f');
+      else if (c == 'r') format_char(buffer, '\r');
+      else if (c == '0') format_char(buffer, '\0');
+      else if (c == '"') format_char(buffer, '\"');
+      else if (c == '\\') format_char(buffer, '\\');
       else {
         where_printf("unknown escape char");
         exit(1);
@@ -41,7 +41,7 @@ char *consume_string(lexer_t *lexer) {
 
       lexer_forward(lexer, 1);
     } else {
-      buffer_append_char(buffer, c);
+      format_char(buffer, c);
       lexer_forward(lexer, 1);
     }
   }

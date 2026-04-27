@@ -34,7 +34,7 @@ char *lexer_next_word_string(lexer_t *self) {
        !char_is_blank(self->string[index]) &&
        !lexer_char_is_mark(self, self->string[index]))
   {
-    buffer_append_char(buffer, self->string[index]);
+    format_char(buffer, self->string[index]);
     index++;
   }
 
