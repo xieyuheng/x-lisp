@@ -1,27 +1,5 @@
 #include "index.h"
 
-static value_t make_position_value(struct position_t position) {
-  xrecord_t *record = make_xrecord();
-  xrecord_put(record, "index", x_int(position.index));
-  xrecord_put(record, "row", x_int(position.row));
-  xrecord_put(record, "column", x_int(position.column));
-  return x_object(record);
-}
-
-static value_t make_span_value(struct span_t span) {
-  xrecord_t *record = make_xrecord();
-  xrecord_put(record, "start", make_position_value(span.start));
-  xrecord_put(record, "end", make_position_value(span.end));
-  return x_object(record);
-}
-
-static value_t make_source_location_value(value_t path, struct span_t span) {
-  xrecord_t *record = make_xrecord();
-  xrecord_put(record, "path", path);
-  xrecord_put(record, "span", make_span_value(span));
-  return x_object(record);
-}
-
 static void ignore_line_comments(list_t *tokens);
 
 static value_t for_sexp(value_t path, list_t *tokens);
@@ -126,42 +104,42 @@ static value_t for_sexp(value_t path, list_t *tokens) {
   switch (token->kind) {
   case SYMBOL_TOKEN: {
     value_t content = x_object(intern_symbol(token->content));
-    value_t location = make_source_location_value(path, token->span);
+    value_t location = value_from_source_location(path, token->span);
     token_free(token);
     return make_symbol_sexp(content, location);
   }
 
   case KEYWORD_TOKEN: {
     value_t content = x_object(intern_keyword(token->content));
-    value_t location = make_source_location_value(path, token->span);
+    value_t location = value_from_source_location(path, token->span);
     token_free(token);
     return make_keyword_sexp(content, location);
   }
 
   case STRING_TOKEN: {
     value_t content = x_object(make_xstring_take(string_copy(token->content)));
-    value_t location = make_source_location_value(path, token->span);
+    value_t location = value_from_source_location(path, token->span);
     token_free(token);
     return make_string_sexp(content, location);
   }
 
   case INT_TOKEN: {
     value_t content = x_int(string_parse_int(token->content));
-    value_t location = make_source_location_value(path, token->span);
+    value_t location = value_from_source_location(path, token->span);
     token_free(token);
     return make_int_sexp(content, location);
   }
 
   case FLOAT_TOKEN: {
     value_t content = x_float(string_parse_double(token->content));
-    value_t location = make_source_location_value(path, token->span);
+    value_t location = value_from_source_location(path, token->span);
     token_free(token);
     return make_float_sexp(content, location);
   }
 
   case QUOTATION_MARK_TOKEN: {
     value_t head = x_void;
-    value_t location = make_source_location_value(path, token->span);
+    value_t location = value_from_source_location(path, token->span);
     if (string_equal(token->content, "'")) {
       head = make_symbol_sexp(x_object(intern_symbol("@quote")), location);
     } else if (string_equal(token->content, "`")) {
@@ -182,12 +160,12 @@ static value_t for_sexp(value_t path, list_t *tokens) {
 
   case BRACKET_START_TOKEN: {
     if (string_equal(token->content, "(")) {
-      value_t location = make_source_location_value(path, token->span);
+      value_t location = value_from_source_location(path, token->span);
       value_t elements = for_elements(path, ")", tokens);
       token_free(token);
       return make_list_sexp(elements, location);
     } else if (string_equal(token->content, "[")) {
-      value_t location = make_source_location_value(path, token->span);
+      value_t location = value_from_source_location(path, token->span);
       value_t elements = for_elements(path, "]", tokens);
       value_t content = x_object(intern_symbol("@list"));
       value_t head = make_symbol_sexp(content, location);
@@ -195,7 +173,7 @@ static value_t for_sexp(value_t path, list_t *tokens) {
       token_free(token);
       return make_list_sexp(elements, location);
     } else if (string_equal(token->content, "{")) {
-      value_t location = make_source_location_value(path, token->span);
+      value_t location = value_from_source_location(path, token->span);
       value_t elements = for_elements(path, "}", tokens);
       value_t content = x_object(intern_symbol("@record"));
       value_t head = make_symbol_sexp(content, location);
