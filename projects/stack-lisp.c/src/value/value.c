@@ -93,7 +93,9 @@ ordering_t value_total_compare(value_t lhs, value_t rhs) {
   exit(1);
 }
 
-void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
+void format_atom(buffer_t *buffer, value_t value) {
+  assert(atom_p(value));
+
   if (int_p(value)) {
     format_template(buffer, "%ld", to_int64(value));
     return;
@@ -109,22 +111,48 @@ void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
       string[end + 2] = '\0';
     }
 
-    format_template(buffer, "%s", string);
-    return;
-  }
-
-  if (void_p(value)) {
-    format_template(buffer, "#void");
+    format_string(buffer, string);
     return;
   }
 
   if (true_p(value)) {
-    format_template(buffer, "#t");
+    format_string(buffer, "#t");
     return;
   }
 
   if (false_p(value)) {
-    format_template(buffer, "#f");
+    format_string(buffer, "#f");
+    return;
+  }
+
+  if (void_p(value)) {
+    format_string(buffer, "#void");
+    return;
+  }
+
+  if (xstring_p(value)) {
+    format_string(buffer, "\"");
+    format_string(buffer, xstring_string(to_xstring(value)));
+    format_string(buffer, "\"");
+    return;
+  }
+
+  if (symbol_p(value)) {
+    format_string(buffer, "'");
+    format_string(buffer, symbol_string(to_symbol(value)));
+    return;
+  }
+
+  if (keyword_p(value)) {
+    format_string(buffer, ":");
+    format_string(buffer, keyword_string(to_keyword(value)));
+    return;
+  }
+}
+
+void value_format(buffer_t *buffer, object_circle_ctx_t *ctx, value_t value) {
+  if (atom_p(value)) {
+    format_atom(buffer, value);
     return;
   }
 

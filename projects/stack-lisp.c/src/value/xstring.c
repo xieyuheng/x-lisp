@@ -72,7 +72,7 @@ bool xstring_equal(const xstring_t *lhs, const xstring_t *rhs) {
 void xstring_format(buffer_t *buffer, object_circle_ctx_t *ctx, const xstring_t *self) {
   (void) ctx;
   format_string(buffer, "\"");
-  format_string(buffer, text_string(self->text));
+  format_string(buffer, xstring_string(self));
   format_string(buffer, "\"");
 }
 
