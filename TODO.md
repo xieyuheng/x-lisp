@@ -1,6 +1,5 @@
 # feedback
 
-[stack-lisp.c] builtin -- `error-with-location` print in context
 [stack-lisp.c] builtin -- `assert-with-location` -- print in context
 
 # format-sexp
