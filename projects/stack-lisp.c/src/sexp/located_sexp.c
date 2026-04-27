@@ -5,13 +5,13 @@ static void ignore_line_comments(list_t *tokens);
 static value_t for_sexp(value_t path, list_t *tokens);
 static value_t for_elements(value_t path, const char *end, list_t *tokens);
 
-value_t parse_located_sexps(const char *path_string, const char *string) {
+value_t parse_located_sexps(const char *pathname, const char *string) {
   lexer_t *lexer = make_lexer(string);
   lexer->line_comment_introducer = ";;";
   list_t *tokens = lexer_lex(lexer);
   lexer_free(lexer);
 
-  value_t path = x_object(make_xstring(path_string));
+  value_t path = x_object(make_xstring(pathname));
   value_t sexps = x_make_list();
   while (true) {
     ignore_line_comments(tokens);
@@ -38,7 +38,7 @@ static void ignore_line_comments(list_t *tokens) {
   }
 }
 
-static value_t make_symbol_sexp(value_t content, value_t location) {
+static value_t symbol_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("symbol-sexp"));
   x_list_push_mut(tag, sexp);
@@ -47,7 +47,7 @@ static value_t make_symbol_sexp(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t make_keyword_sexp(value_t content, value_t location) {
+static value_t keyword_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("keyword-sexp"));
   x_list_push_mut(tag, sexp);
@@ -56,7 +56,7 @@ static value_t make_keyword_sexp(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t make_string_sexp(value_t content, value_t location) {
+static value_t string_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("string-sexp"));
   x_list_push_mut(tag, sexp);
@@ -65,7 +65,7 @@ static value_t make_string_sexp(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t make_int_sexp(value_t content, value_t location) {
+static value_t int_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("int-sexp"));
   x_list_push_mut(tag, sexp);
@@ -74,7 +74,7 @@ static value_t make_int_sexp(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t make_float_sexp(value_t content, value_t location) {
+static value_t float_sexp(value_t content, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("float-sexp"));
   x_list_push_mut(tag, sexp);
@@ -83,13 +83,20 @@ static value_t make_float_sexp(value_t content, value_t location) {
   return sexp;
 }
 
-static value_t make_list_sexp(value_t elements, value_t location) {
+static value_t list_sexp(value_t elements, value_t location) {
   value_t sexp = x_make_list();
   value_t tag = x_object(intern_symbol("list-sexp"));
   x_list_push_mut(tag, sexp);
   x_list_push_mut(elements, sexp);
   x_list_push_mut(location, sexp);
   return sexp;
+}
+
+static value_t make_source_location_sexp(value_t path, value_t span) {
+  xrecord_t *record = make_xrecord();
+  xrecord_put(record, "path", path);
+  xrecord_put(record, "span", span);
+  return x_object(record);
 }
 
 // - assume a sexp exists (maybe after line comments)
@@ -104,48 +111,54 @@ static value_t for_sexp(value_t path, list_t *tokens) {
   switch (token->kind) {
   case SYMBOL_TOKEN: {
     value_t content = x_object(intern_symbol(token->content));
-    value_t location = value_from_source_location(path, token->span);
+    value_t span = value_from_span(token->span);
+    value_t location = make_source_location_sexp(path, span);
     token_free(token);
-    return make_symbol_sexp(content, location);
+    return symbol_sexp(content, location);
   }
 
   case KEYWORD_TOKEN: {
     value_t content = x_object(intern_keyword(token->content));
-    value_t location = value_from_source_location(path, token->span);
+    value_t span = value_from_span(token->span);
+    value_t location = make_source_location_sexp(path, span);
     token_free(token);
-    return make_keyword_sexp(content, location);
+    return keyword_sexp(content, location);
   }
 
   case STRING_TOKEN: {
     value_t content = x_object(make_xstring_take(string_copy(token->content)));
-    value_t location = value_from_source_location(path, token->span);
+    value_t span = value_from_span(token->span);
+    value_t location = make_source_location_sexp(path, span);
     token_free(token);
-    return make_string_sexp(content, location);
+    return string_sexp(content, location);
   }
 
   case INT_TOKEN: {
     value_t content = x_int(string_parse_int(token->content));
-    value_t location = value_from_source_location(path, token->span);
+    value_t span = value_from_span(token->span);
+    value_t location = make_source_location_sexp(path, span);
     token_free(token);
-    return make_int_sexp(content, location);
+    return int_sexp(content, location);
   }
 
   case FLOAT_TOKEN: {
     value_t content = x_float(string_parse_double(token->content));
-    value_t location = value_from_source_location(path, token->span);
+    value_t span = value_from_span(token->span);
+    value_t location = make_source_location_sexp(path, span);
     token_free(token);
-    return make_float_sexp(content, location);
+    return float_sexp(content, location);
   }
 
   case QUOTATION_MARK_TOKEN: {
     value_t head = x_void;
-    value_t location = value_from_source_location(path, token->span);
+    value_t span = value_from_span(token->span);
+    value_t location = make_source_location_sexp(path, span);
     if (string_equal(token->content, "'")) {
-      head = make_symbol_sexp(x_object(intern_symbol("@quote")), location);
+      head = symbol_sexp(x_object(intern_symbol("@quote")), location);
     } else if (string_equal(token->content, "`")) {
-      head = make_symbol_sexp(x_object(intern_symbol("@quasiquote")), location);
+      head = symbol_sexp(x_object(intern_symbol("@quasiquote")), location);
     } else if (string_equal(token->content, ",")) {
-      head = make_symbol_sexp(x_object(intern_symbol("@unquote")), location);
+      head = symbol_sexp(x_object(intern_symbol("@unquote")), location);
     } else {
       who_printf("unexpected quasiquote mark: %s", token->content);
       exit(1);
@@ -155,31 +168,34 @@ static value_t for_sexp(value_t path, list_t *tokens) {
     x_list_push_mut(head, elements);
     x_list_push_mut(for_sexp(path, tokens), elements);
     token_free(token);
-    return make_list_sexp(elements, location);
+    return list_sexp(elements, location);
   }
 
   case BRACKET_START_TOKEN: {
     if (string_equal(token->content, "(")) {
-      value_t location = value_from_source_location(path, token->span);
+      value_t span = value_from_span(token->span);
+      value_t location = make_source_location_sexp(path, span);
       value_t elements = for_elements(path, ")", tokens);
       token_free(token);
-      return make_list_sexp(elements, location);
+      return list_sexp(elements, location);
     } else if (string_equal(token->content, "[")) {
-      value_t location = value_from_source_location(path, token->span);
+      value_t span = value_from_span(token->span);
+      value_t location = make_source_location_sexp(path, span);
       value_t elements = for_elements(path, "]", tokens);
       value_t content = x_object(intern_symbol("@list"));
-      value_t head = make_symbol_sexp(content, location);
+      value_t head = symbol_sexp(content, location);
       x_list_push_front_mut(head, elements);
       token_free(token);
-      return make_list_sexp(elements, location);
+      return list_sexp(elements, location);
     } else if (string_equal(token->content, "{")) {
-      value_t location = value_from_source_location(path, token->span);
+      value_t span = value_from_span(token->span);
+      value_t location = make_source_location_sexp(path, span);
       value_t elements = for_elements(path, "}", tokens);
       value_t content = x_object(intern_symbol("@record"));
-      value_t head = make_symbol_sexp(content, location);
+      value_t head = symbol_sexp(content, location);
       x_list_push_front_mut(head, elements);
       token_free(token);
-      return make_list_sexp(elements, location);
+      return list_sexp(elements, location);
     } else {
       who_printf("unexpected bracket start: %s", token->content);
       exit(1);
