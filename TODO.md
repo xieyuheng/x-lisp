@@ -1,5 +1,3 @@
-[stack-lisp.c] `assert` -- print error to stderr -- instead of stdout
-
 # format-sexp
 
 [stack-lisp.c] sexp -- `format_sexp` -- take `buffer_t` as first argument
