@@ -11,5 +11,3 @@ struct span_t {
 };
 
 struct span_t span_union(struct span_t, struct span_t);
-
-void span_report_in_context(struct span_t span, const char *context);

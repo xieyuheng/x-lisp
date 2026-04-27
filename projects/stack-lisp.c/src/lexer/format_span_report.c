@@ -74,15 +74,15 @@ static size_t get_prefix_margin(array_t *lines) {
   return digit_count + 1;
 }
 
-static void line_report(line_t *line, size_t prefix_margin) {
+static void format_line_report(buffer_t *buffer, line_t *line, size_t prefix_margin) {
   size_t line_count = line->index + 1;
-  printf("%*ld | %s\n", (int) prefix_margin, line_count, line->content);
+  format_template(buffer, "%*ld | %s\n", (int) prefix_margin, line_count, line->content);
   if (line->underline) {
-    printf("%*s | %s\n", (int) prefix_margin, "", line->underline);
+    format_template(buffer, "%*s | %s\n", (int) prefix_margin, "", line->underline);
   }
 }
 
-void span_report_in_context(struct span_t span, const char *context) {
+void format_span_report(buffer_t *buffer, struct span_t span, const char *context) {
   size_t cursor = 0;
   size_t index = 0;
   char *content = string_next_line(context, &cursor);
@@ -99,9 +99,13 @@ void span_report_in_context(struct span_t span, const char *context) {
   for (size_t i = 0; i < array_length(lines); i++) {
     line_t *line = array_get(lines, i);
     if (line_is_close_to_span(line, span)) {
-      line_report(line, prefix_margin);
+      format_line_report(buffer, line, prefix_margin);
     }
   }
 
   array_free(lines);
 }
+
+// void format_source_location_report(buffer_t *buffer, const char *pathname; struct span_t span) {
+
+// }

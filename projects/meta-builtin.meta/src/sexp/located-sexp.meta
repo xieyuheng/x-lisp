@@ -1,8 +1,8 @@
 (module builtin)
 
 (define-interface source-location-t
-  :span source-span-t
-  :path string-t)
+  :path string-t
+  :span source-span-t)
 
 (define-interface source-span-t
   :start source-position-t
