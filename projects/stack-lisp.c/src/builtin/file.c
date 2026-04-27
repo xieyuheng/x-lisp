@@ -39,12 +39,12 @@ value_t x_newline(void) {
 }
 
 value_t x_write(value_t x) {
-  string_print(xstring_string(to_xstring(x)));
+  print_string(xstring_string(to_xstring(x)));
   return x_void;
 }
 
 value_t x_writeln(value_t x) {
-  string_print(xstring_string(to_xstring(x)));
+  print_string(xstring_string(to_xstring(x)));
   newline();
   return x_void;
 }

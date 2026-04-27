@@ -276,13 +276,13 @@ void vm_gc_maybe_collect(vm_t *vm) {
 void vm_inspect(vm_t *vm) {
   // print value stack
 
-  string_print("-- ");
+  print_string("-- ");
 
   for (size_t i = 0; i < stack_length(vm->value_stack); i++) {
     value_t value = (value_t) stack_get(vm->value_stack, i);
     print_value(value);
-    string_print(" ");
+    print_string(" ");
   }
 
-  string_print("\n");
+  print_string("\n");
 }

@@ -364,6 +364,6 @@ char *string_next_split(const char *self, const char *delimiter, size_t *cursor_
   }
 }
 
-void string_print(const char *self) {
+void print_string(const char *self) {
   printf("%s" , self);
 }

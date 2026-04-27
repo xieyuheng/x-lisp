@@ -15,7 +15,7 @@ void path_join(path_t *self, const char *string);
 void path_join_extension(path_t *self, const char *extension);
 
 const char *path_raw_string(const path_t *self);
-void path_print(const path_t *self);
+void print_path(const path_t *self);
 
 size_t path_segment_length(const path_t *self);
 const char *path_top_segment(const path_t *self);
@@ -24,5 +24,5 @@ char *path_pop_segment(path_t *self);
 void path_push_segment(path_t *self, char *segment);
 
 path_t *path_relative(path_t *from, path_t *to);
-void path_relative_print(path_t *from, path_t *to);
-void path_relative_cwd_print(path_t *to);
+void print_path_relative_to(path_t *from, path_t *to);
+void print_path_relative_to_cwd(path_t *to);

@@ -99,11 +99,11 @@ uint64_t int_relu(int64_t self) {
   }
 }
 
-void int_print(int64_t self) {
+void print_int(int64_t self) {
   printf("%" PRId64, self);
 }
 
-void uint_print(uint64_t self) {
+void print_uint(uint64_t self) {
   printf("%" PRIu64, self);
 }
 

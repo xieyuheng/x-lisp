@@ -150,8 +150,8 @@ const char *path_raw_string(const path_t *self) {
   return self->string;
 }
 
-void path_print(const path_t *self) {
-  string_print(path_raw_string(self));
+void print_path(const path_t *self) {
+  print_string(path_raw_string(self));
 }
 
 size_t path_segment_length(const path_t *self) {
@@ -219,14 +219,14 @@ path_t *path_relative(path_t *from, path_t *to) {
   return relative_path;
 }
 
-void path_relative_print(path_t *from, path_t *to) {
+void print_path_relative_to(path_t *from, path_t *to) {
   path_t *relative_path = path_relative(from, to);
   printf("%s", path_raw_string(relative_path));
   path_free(relative_path);
 }
 
-void path_relative_cwd_print(path_t *to) {
+void print_path_relative_to_cwd(path_t *to) {
   path_t *cwd_path = make_cwd_path();
-  path_relative_print(cwd_path, to);
+  print_path_relative_to(cwd_path, to);
   path_free(cwd_path);
 }
