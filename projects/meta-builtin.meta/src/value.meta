@@ -1,9 +1,9 @@
 (module builtin)
 
-(declare-primitive-function any? 1)
+(declare-primitive-function atom? 1)
 (declare-primitive-function same? 2)
 (declare-primitive-function equal? 2)
 
-(claim any? (polymorphic (A) (-> A bool-t)))
+(claim atom? (polymorphic (A) (-> A bool-t)))
 (claim same? (polymorphic (A) (-> A A bool-t)))
 (claim equal? (polymorphic (A) (-> A A bool-t)))

@@ -1,12 +1,11 @@
 #include "index.h"
 
-value_t x_any_p(value_t x) {
-  (void) x;
-  return x_bool(true);
+value_t x_atom_p(value_t value) {
+  return x_bool(atom_p(value));
 }
 
 value_t x_same_p(value_t lhs, value_t rhs) {
-  return x_bool(lhs == rhs);
+  return x_bool(same_p(lhs, rhs));
 }
 
 value_t x_equal_p(value_t lhs, value_t rhs) {
@@ -18,18 +17,6 @@ value_t x_equal_p(value_t lhs, value_t rhs) {
   }
 
   return x_same_p(lhs, rhs);
-}
-
-value_t x_atom_p(value_t value) {
-  if (int_p(value)
-    || float_p(value)
-    || symbol_p(value)
-    || keyword_p(value)
-    || xstring_p(value)) {
-    return x_true;
-  }
-
-  return x_false;
 }
 
 value_t x_hash_code(value_t value) {

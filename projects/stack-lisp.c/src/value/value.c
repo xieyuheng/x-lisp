@@ -11,8 +11,7 @@ bool atom_p(value_t value) {
     symbol_p(value) ||
     keyword_p(value) ||
     bool_p(value) ||
-    void_p(value) ||
-    xfile_p(value);
+    void_p(value);
 }
 
 bool same_p(value_t lhs, value_t rhs) {
