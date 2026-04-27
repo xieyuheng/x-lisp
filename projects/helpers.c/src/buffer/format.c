@@ -28,6 +28,18 @@ void format_uint(buffer_t *buffer, uint64_t n) {
   format_template(buffer, "%" PRIu64, n);
 }
 
-void format_string(buffer_t *buffer, const char *string) {
-  format_template(buffer, "%s" , string);
+void format_char(buffer_t *self, char c) {
+  buffer_put_byte(self, buffer_length(self), c);
+}
+
+void format_string(buffer_t *self, const char *string) {
+  for (size_t i = 0; i < string_length(string); i++) {
+    format_char(self, string[i]);
+  }
+}
+
+void format_substring(buffer_t *self, const char *string, size_t start, size_t end) {
+  for (size_t i = start; i < end; i++) {
+    format_char(self, string[i]);
+  }
 }
