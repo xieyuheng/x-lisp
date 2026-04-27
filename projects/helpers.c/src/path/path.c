@@ -150,8 +150,8 @@ const char *path_raw_string(const path_t *self) {
   return self->string;
 }
 
-void print_path(const path_t *self) {
-  print_string(path_raw_string(self));
+void format_path(buffer_t *buffer, const path_t *self) {
+  format_string(buffer, path_raw_string(self));
 }
 
 size_t path_segment_length(const path_t *self) {
@@ -177,7 +177,7 @@ void path_push_segment(path_t *self, char *segment) {
   path_update_string(self);
 }
 
-static size_t find_relative_index(path_t *from, path_t *to) {
+static size_t find_relative_index(const path_t *from, const path_t *to) {
   for (size_t i = 0; i < stack_length(from->segment_stack); i++) {
     if (i >= stack_length(to->segment_stack)) {
       return i;
@@ -194,7 +194,7 @@ static size_t find_relative_index(path_t *from, path_t *to) {
   return stack_length(from->segment_stack);
 }
 
-path_t *path_relative(path_t *from, path_t *to) {
+path_t *path_relative(const path_t *from, const path_t *to) {
   assert((path_is_relative(from) && path_is_relative(to)) ||
        (path_is_absolute(from) && path_is_absolute(to)));
 
@@ -219,14 +219,14 @@ path_t *path_relative(path_t *from, path_t *to) {
   return relative_path;
 }
 
-void print_path_relative_to(path_t *from, path_t *to) {
+void format_path_relative_to(buffer_t *buffer, const path_t *from, const path_t *to) {
   path_t *relative_path = path_relative(from, to);
-  printf("%s", path_raw_string(relative_path));
+  format_template(buffer, "%s", path_raw_string(relative_path));
   path_free(relative_path);
 }
 
-void print_path_relative_to_cwd(path_t *to) {
+void format_path_relative_to_cwd(buffer_t *buffer, const path_t *to) {
   path_t *cwd_path = make_cwd_path();
-  print_path_relative_to(cwd_path, to);
+  format_path_relative_to(buffer, cwd_path, to);
   path_free(cwd_path);
 }

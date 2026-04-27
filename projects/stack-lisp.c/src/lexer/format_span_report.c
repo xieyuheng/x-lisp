@@ -106,6 +106,18 @@ void format_span_report(buffer_t *buffer, struct span_t span, const char *contex
   array_free(lines);
 }
 
-// void format_source_location_report(buffer_t *buffer, const char *pathname; struct span_t span) {
+static void format_position(buffer_t *buffer, struct position_t position) {
+  format_template("%ld:%ld", position.row + 1, position.column + 1);
+}
 
+// void format_source_location_report(buffer_t *buffer, const char *pathname, struct span_t span, const char *message) {
+//   if (pathname) {
+
+//   }
+
+//   if (pathname && fs_is_file(pathname)) {
+//     char *context = fs_read(pathname);
+//     format_span_report(buffer, span, context);
+//     string_free(context);
+//   }
 // }
