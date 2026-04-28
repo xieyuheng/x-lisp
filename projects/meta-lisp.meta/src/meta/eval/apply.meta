@@ -1,0 +1,12 @@
+(module meta)
+
+(claim apply
+  (-> value-t (list-t value-t)
+      value-t))
+
+(define (apply target args)
+  (match target
+    ((closure-value mod env parameters body)
+     (assert-equal (list-length parameters) (list-length args))
+     (evaluate mod (env-put-many parameters args env) body))
+    (else (error "todo"))))
