@@ -126,7 +126,7 @@ type GroupByHeadDataConstructor = {
   clauses: Array<M.MatchClause>
 }
 
-// - for debug 
+// - for debug
 
 function formatGroupByHeadDataConstructor(
   group: GroupByHeadDataConstructor,
