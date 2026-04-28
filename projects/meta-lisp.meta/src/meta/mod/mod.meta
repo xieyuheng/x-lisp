@@ -1,3 +1,5 @@
 (module meta)
 
-(define-interface mod-t)
+(define-interface mod-t
+  :name symbol-t
+  :definitions (hash-t string-t definition-t))

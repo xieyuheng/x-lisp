@@ -1,4 +1,15 @@
 (module meta)
 
 (define-data definition-t
-  )
+  (function-definition
+   (mod mod-t)
+   (name symbol-t)
+   (parameters (list-t symbol-t))
+   (body exp-t)
+   (location source-location-t))
+  (variable-definition
+   (mod mod-t)
+   (name symbol-t)
+   (body exp-t)
+   (value (maybe-t value-t))
+   (location source-location-t)))
