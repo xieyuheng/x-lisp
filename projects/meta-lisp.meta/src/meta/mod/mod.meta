@@ -3,3 +3,7 @@
 (define-interface mod-t
   :name symbol-t
   :definitions (hash-t string-t definition-t))
+
+(define (make-mod name)
+  {:name name
+   :definitions (make-hash)})

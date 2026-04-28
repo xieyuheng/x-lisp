@@ -1,8 +1,0 @@
-(module meta)
-
-;; TODO need test framework
-
-(define-test parse-exp-test
-  (= path "src/meta/parse/meta.txt")
-  (= text (fs-read path))
-  (println (parse-located-sexps path text)))
