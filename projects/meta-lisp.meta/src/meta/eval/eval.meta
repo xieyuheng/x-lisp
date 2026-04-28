@@ -1,0 +1,18 @@
+(module meta)
+
+(claim eval (-> mod-t env-t exp-t value-t))
+
+(define (eval mod env exp)
+  (match exp
+    ((symbol-exp content location) (symbol-value content))
+    ((keyword-exp content location) (keyword-value content))
+    ((string-exp content location) (string-value content))
+    ((int-exp content location) (int-value content))
+    ((float-exp content location) (float-value content))
+    ((var-exp name location)
+     (if (env-has? name env)
+       (env-lookup-value name env)
+       (error "(evaluate) undefined variable")))
+    ((qualified-var-exp mod-name name location)
+     (error "todo"))
+    (default (void-value void))))
