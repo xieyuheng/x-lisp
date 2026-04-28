@@ -1,1 +1,55 @@
 (module meta)
+
+(claim parse-exp
+  (-> located-sexp-t
+      exp-t))
+
+(define (parse-exp sexp)
+  (match sexp
+    ((symbol-sexp content location)
+     (var-exp content location))
+    ((keyword-sexp content location)
+     (keyword-exp content location))
+    ((string-sexp content location)
+     (string-exp content location))
+    ((int-sexp content location)
+     (int-exp content location))
+    ((float-sexp content location)
+     (float-exp content location))
+    ((list-sexp elements location)
+     (= head (list-head elements))
+     (if (symbol-sexp? head)
+       (begin
+         (= tag (symbol-sexp-content head))
+         (cond ((equal? tag 'lambda)
+                (= parameters (parse-parameters (car (cdr elements))))
+                (= body (parse-body (cdr (cdr elements)) location))
+                (lambda-exp parameters body location))
+               (else (parse-apply-exp elements location))))
+       (parse-apply-exp elements location)))
+    (else (error "todo"))))
+
+(claim parse-parameters
+  (-> located-sexp-t
+      (list-t symbol-t)))
+
+(define (parse-parameters sexp)
+  (= elements (list-sexp-elements sexp))
+  (list-map symbol-sexp-content elements))
+
+(claim parse-body
+  (-> (list-t located-sexp-t) source-location-t
+      exp-t))
+
+(define (parse-body sexps location)
+  (assert-equal 1 (list-length sexps))
+  (parse-exp (car sexps)))
+
+(claim parse-apply-exp
+  (-> (list-t located-sexp-t) source-location-t
+      exp-t))
+
+(define (parse-apply-exp sexps location)
+  (apply-exp (parse-exp (car sexps))
+             (list-map parse-exp (cdr sexps))
+             location))

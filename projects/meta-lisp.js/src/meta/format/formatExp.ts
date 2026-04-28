@@ -229,22 +229,26 @@ export function formatExp(exp: Exp): string {
     case "Match": {
       if (exp.targets.length === 1) {
         const target = formatExp(exp.targets[0])
-        const clauses = exp.clauses.map(formatMatchClause).join(" ")
+        const clauses = formatMatchClauses(exp.clauses)
         return `(match ${target} ${clauses})`
       } else {
         const targets = exp.targets.map(formatExp).join(" ")
-        const clauses = exp.clauses.map(formatMatchClause).join(" ")
+        const clauses = formatMatchClauses(exp.clauses)
         return `(match-many (${targets}) ${clauses})`
       }
     }
   }
 }
 
-function formatCondClause(clause: Exps.CondClause): string {
+export function formatCondClause(clause: Exps.CondClause): string {
   return `(${formatExp(clause.question)} ${formatExp(clause.answer)})`
 }
 
-function formatMatchClause(clause: Exps.MatchClause): string {
+export function formatMatchClauses(clauses: Array<Exps.MatchClause>): string {
+  return clauses.map(formatMatchClause).join(" ")
+}
+
+export function formatMatchClause(clause: Exps.MatchClause): string {
   if (clause.patterns.length === 1) {
     const pattern = formatExp(clause.patterns[0])
     const body = formatBody(clause.body)

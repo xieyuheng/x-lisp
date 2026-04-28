@@ -17,7 +17,17 @@ export function isVarPattern(mod: M.Mod, exp: M.Exp): boolean {
 
 function isDataConstructorName(mod: M.Mod, name: string): boolean {
   const definition = M.modLookupDefinition(mod, name)
-  return definition !== undefined && M.definitionIsDataConstructor(definition)
+  if (definition) {
+    return M.definitionIsDataConstructor(definition)
+  }
+
+  const builtinMod = M.loadBuiltinMod(mod.project)
+  const builtinDefinition = M.modLookupDefinition(builtinMod, name)
+  if (builtinDefinition) {
+    return M.definitionIsDataConstructor(builtinDefinition)
+  }
+
+  return false
 }
 
 export function createVarPattern(mod: M.Mod, name: string) {
